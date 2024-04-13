@@ -831,7 +831,6 @@ MonoBehaviour:
   <PredictedSpawn>k__BackingField: {fileID: 0}
   _networkBehaviours:
   - {fileID: 230616408}
-  - {fileID: 0}
   - {fileID: 230616412}
   <SerializedRootNetworkBehaviour>k__BackingField: {fileID: 0}
   <NestedRootNetworkBehaviours>k__BackingField: []
@@ -897,7 +896,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc4781bc8b9846542ae710b023b9a323, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 2
+  _componentIndexCache: 1
   _addedNetworkObject: {fileID: 230616409}
   _networkObjectCache: {fileID: 230616409}
 --- !u!135 &230616413
@@ -3015,7 +3014,6 @@ MonoBehaviour:
   <PredictedSpawn>k__BackingField: {fileID: 0}
   _networkBehaviours:
   - {fileID: 1011890298}
-  - {fileID: 0}
   - {fileID: 1011890302}
   <SerializedRootNetworkBehaviour>k__BackingField: {fileID: 0}
   <NestedRootNetworkBehaviours>k__BackingField: []
@@ -3081,7 +3079,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc4781bc8b9846542ae710b023b9a323, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 2
+  _componentIndexCache: 1
   _addedNetworkObject: {fileID: 1011890299}
   _networkObjectCache: {fileID: 1011890299}
 --- !u!65 &1011890303
@@ -3307,7 +3305,6 @@ MonoBehaviour:
   <PredictedSpawn>k__BackingField: {fileID: 0}
   _networkBehaviours:
   - {fileID: 1057931420}
-  - {fileID: 0}
   - {fileID: 1057931424}
   <SerializedRootNetworkBehaviour>k__BackingField: {fileID: 0}
   <NestedRootNetworkBehaviours>k__BackingField: []
@@ -3373,7 +3370,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc4781bc8b9846542ae710b023b9a323, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 2
+  _componentIndexCache: 1
   _addedNetworkObject: {fileID: 1057931421}
   _networkObjectCache: {fileID: 1057931421}
 --- !u!65 &1057931425
@@ -3629,7 +3626,6 @@ MonoBehaviour:
   <PredictedSpawn>k__BackingField: {fileID: 0}
   _networkBehaviours:
   - {fileID: 1137181968}
-  - {fileID: 0}
   - {fileID: 1137181972}
   <SerializedRootNetworkBehaviour>k__BackingField: {fileID: 0}
   <NestedRootNetworkBehaviours>k__BackingField: []
@@ -3695,7 +3691,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc4781bc8b9846542ae710b023b9a323, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 2
+  _componentIndexCache: 1
   _addedNetworkObject: {fileID: 1137181969}
   _networkObjectCache: {fileID: 1137181969}
 --- !u!135 &1137181973
@@ -3958,7 +3954,6 @@ MonoBehaviour:
   <PredictedSpawn>k__BackingField: {fileID: 0}
   _networkBehaviours:
   - {fileID: 1321448838}
-  - {fileID: 0}
   - {fileID: 1321448842}
   <SerializedRootNetworkBehaviour>k__BackingField: {fileID: 0}
   <NestedRootNetworkBehaviours>k__BackingField: []
@@ -4024,7 +4019,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc4781bc8b9846542ae710b023b9a323, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 2
+  _componentIndexCache: 1
   _addedNetworkObject: {fileID: 1321448839}
   _networkObjectCache: {fileID: 1321448839}
 --- !u!135 &1321448843
@@ -4517,7 +4512,6 @@ GameObject:
   - component: {fileID: 1757455639}
   - component: {fileID: 1757455638}
   - component: {fileID: 1757455637}
-  - component: {fileID: 1757455641}
   - component: {fileID: 1757455642}
   m_Layer: 0
   m_Name: CubePhysics (2)
@@ -4604,7 +4598,7 @@ MonoBehaviour:
   <PredictedSpawn>k__BackingField: {fileID: 0}
   _networkBehaviours:
   - {fileID: 1757455637}
-  - {fileID: 1757455641}
+  - {fileID: 0}
   <SerializedRootNetworkBehaviour>k__BackingField: {fileID: 0}
   <NestedRootNetworkBehaviours>k__BackingField: []
   SerializedTransformProperties:
@@ -4657,21 +4651,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 1
---- !u!114 &1757455641
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1757455634}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc4781bc8b9846542ae710b023b9a323, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _componentIndexCache: 1
-  _addedNetworkObject: {fileID: 1757455638}
-  _networkObjectCache: {fileID: 1757455638}
 --- !u!65 &1757455642
 BoxCollider:
   m_ObjectHideFlags: 0
