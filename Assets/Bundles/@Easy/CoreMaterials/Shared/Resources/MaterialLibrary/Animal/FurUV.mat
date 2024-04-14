@@ -165,7 +165,7 @@ Material:
     - _RimPower: 2
     - _RoughOverride: 0.814
     - _SLIDER_OVERRIDE: 1
-    - _SaturationMod: 2
+    - _SaturationMod: 1
     - _SkyShineStrength: 0
     - _SmoothnessTextureChannel: 0
     - _SpecMod: 1
@@ -181,17 +181,17 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 0.6024933, b: 0, a: 1}
-    - _ColorBot: {r: 1, g: 1, b: 1, a: 1}
+    - _ColorBot: {r: 0.1981132, g: 0.07286994, b: 0.04579032, a: 1}
     - _ColorBottom: {r: 1, g: 1, b: 1, a: 1}
-    - _ColorMid: {r: 0.2735849, g: 0.2735849, b: 0.2735849, a: 1}
-    - _ColorTop: {r: 0.4245283, g: 0.4245283, b: 0.4245283, a: 1}
+    - _ColorMid: {r: 0.5849056, g: 0.49618852, b: 0.40005338, a: 1}
+    - _ColorTop: {r: 0.2627451, g: 0.238474, b: 0.082352936, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColor: {r: 1, g: 1, b: 1, a: 1}
     - _IncidentColor: {r: 0.4, g: 0.75, b: 1, a: 1}
     - _OverrideColor: {r: 2, g: 0, b: 0, a: 1}
-    - _RimColor: {r: 1, g: 0.7185993, b: 0.32549024, a: 1}
-    - _RimColorShadow: {r: 0.15662213, g: 0.122152, b: 0.4245283, a: 1}
-    - _ShadowColor: {r: 0.084905684, g: 0.084905684, b: 0.084905684, a: 1}
+    - _RimColor: {r: 0.6509434, g: 0.43886554, b: 0.14431292, a: 1}
+    - _RimColorShadow: {r: 0.19473585, g: 0.1718138, b: 0.3679245, a: 1}
+    - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _SkyShine: {r: 0.4, g: 0.75, b: 1, a: 1}
     - _SpecColor: {r: 0.33962262, g: 0.28320512, b: 0.16820931, a: 1}
     - _SpecularColor: {r: 1, g: 0.73815185, b: 0.6462264, a: 1}
