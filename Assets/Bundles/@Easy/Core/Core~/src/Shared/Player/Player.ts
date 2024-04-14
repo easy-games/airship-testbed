@@ -172,7 +172,7 @@ export class Player {
 
 	public SendMessage(message: string, sender?: Player): void {
 		if (Game.IsServer()) {
-			CoreNetwork.ServerToClient.ChatMessage.server.FireClient(this, message);
+			CoreNetwork.ServerToClient.ChatMessage.server.FireClient(this, message, undefined, undefined);
 		} else {
 			Dependency<ChatController>().RenderChatMessage(message);
 		}

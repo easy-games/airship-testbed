@@ -20,6 +20,7 @@ import { ChatUtil } from "Shared/Util/ChatUtil";
 import { SignalPriority } from "Shared/Util/Signal";
 import { SetInterval, SetTimeout } from "Shared/Util/Timer";
 import { LocalCharacterSingleton } from "../../../Shared/Character/LocalCharacter/LocalCharacterSingleton";
+import { MainMenuBlockSingleton } from "../../MainMenuControllers/Settings/MainMenuBlockSingleton";
 import { CoreUIController } from "../UI/CoreUIController";
 import { MessageCommand } from "./ClientCommands/MessageCommand";
 import { ReplyCommand } from "./ClientCommands/ReplyCommand";
@@ -161,10 +162,19 @@ export class ChatController implements OnStart {
 	}
 
 	OnStart(): void {
-		CoreNetwork.ServerToClient.ChatMessage.client.OnServerEvent((text, senderClientId) => {
+		CoreNetwork.ServerToClient.ChatMessage.client.OnServerEvent((rawText, nameWithPrefix, senderClientId) => {
 			let sender: Player | undefined;
 			if (senderClientId !== undefined) {
 				sender = Airship.players.FindByClientId(senderClientId);
+				if (sender) {
+					if (Dependency<MainMenuBlockSingleton>().IsUserIdBlocked(sender.userId)) {
+						return;
+					}
+				}
+			}
+			let text = rawText;
+			if (nameWithPrefix) {
+				text = nameWithPrefix + rawText;
 			}
 			this.RenderChatMessage(text, sender);
 		});
