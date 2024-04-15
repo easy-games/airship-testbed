@@ -3,8 +3,8 @@ import { Signal } from "../../Util/Signal";
 export default class ProximityPrompt extends AirshipBehaviour {
     private primaryText;
     secondaryText: string;
-    maxRange: number;
     actionName: string;
+    maxRange: number;
     canvas: Canvas;
     primaryTextLabel: TMP_Text;
     secondaryTextLabel: TMP_Text;

@@ -2,7 +2,6 @@ import ProximityPrompt from "@Easy/Core/Shared/Input/ProximityPrompts/ProximityP
 import { CoreRefs } from "Shared/CoreRefs";
 import { Controller, OnStart } from "Shared/Flamework";
 import { Game } from "Shared/Game";
-import { Keyboard } from "Shared/UserInput";
 import { Task } from "Shared/Util/Task";
 
 /** Prompt poll rate, how frequently we update `activatableProximityPrompts`. */
@@ -13,8 +12,6 @@ const PROMPT_POLL_RATE = 0.1;
  */
 @Controller({})
 export class ProximityPromptController implements OnStart {
-	/** Keyboard instance. */
-	private keyboard = new Keyboard();
 	/** All active proximity prompts in world. */
 	private proximityPrompts: ProximityPrompt[] = [];
 	/** Proximity prompts in activation range. */

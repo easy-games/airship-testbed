@@ -8,15 +8,15 @@ import { Signal } from "../../Util/Signal";
 import { ActionInputType } from "../InputUtil";
 
 export default class ProximityPrompt extends AirshipBehaviour {
-	@Header("Display")
+	@Header("Config")
 	@SerializeField()
 	private primaryText = "Apple";
 	@SerializeField() public secondaryText = "Pickup";
+	@Tooltip("The action name should match something created with Airship.input.CreateAction()")
+	public actionName = "interact";
 	@SerializeField() public maxRange = 5;
 
 	@Header("References")
-	@Tooltip("The action name should match something created with Airship.input.CreateAction()")
-	public actionName = "interact";
 	public canvas!: Canvas;
 	public primaryTextLabel!: TMP_Text;
 	public secondaryTextLabel!: TMP_Text;
