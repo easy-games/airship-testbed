@@ -16,7 +16,7 @@ export default class ProximityPrompt extends AirshipBehaviour {
 
 	@Header("References")
 	@Tooltip("The action name should match something created with Airship.input.CreateAction()")
-	public actionName = "use";
+	public actionName = "interact";
 	public canvas!: Canvas;
 	public primaryTextLabel!: TMP_Text;
 	public secondaryTextLabel!: TMP_Text;

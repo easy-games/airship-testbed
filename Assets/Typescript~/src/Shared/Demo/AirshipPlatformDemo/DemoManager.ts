@@ -16,7 +16,7 @@ export default class DemoManager extends AirshipBehaviour {
 	public cleanupOnStart!: GameObject[];
 
 	override Start(): void {
-		Airship.input.CreateAction("use", Binding.Key(Key.F));
+		Airship.input.CreateAction("interact", Binding.Key(Key.F));
 
 		ItemUtil.RegisterItem("WoodSword", {
 			displayName: "Wood Sword",
