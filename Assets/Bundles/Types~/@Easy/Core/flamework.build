@@ -154,11 +154,14 @@
 		"@Easy/Core:Shared/Damage/DamageInfo@DamageInfo": "$:Damage/DamageInfo@DamageInfo",
 		"@Easy/Core:Shared/Damage/CanClientDamageInfo@CanClientDamageInfo": "$:Damage/CanClientDamageInfo@CanClientDamageInfo",
 		"@Easy/Core:Shared/Damage/DamageSingleton@DamageSingleton": "$:Damage/DamageSingleton@DamageSingleton",
-		"@Easy/Core:Shared/Input/Binding@Binding": "$:Input/Binding@Binding",
 		"@Easy/Core:Shared/Input/InputUtil@InputUtil": "$:Input/InputUtil@InputUtil",
+		"@Easy/Core:Shared/Input/Binding@Binding": "$:Input/Binding@Binding",
 		"@Easy/Core:Shared/Input/InputAction@InputActionConfig": "$:Input/InputAction@InputActionConfig",
 		"@Easy/Core:Shared/Input/InputAction@InputAction": "$:Input/InputAction@InputAction",
 		"@Easy/Core:Shared/Input/InputActionEvent@InputActionEvent": "$:Input/InputActionEvent@InputActionEvent",
+		"@Easy/Core:Client/Controllers/ProximityPrompt/ProximityPromptController@ProximityPromptController": "$:Controllers/ProximityPrompt/ProximityPromptController@ProximityPromptController",
+		"@Easy/Core:Shared/Util/InputUtils@InputUtils": "$:Util/InputUtils@InputUtils",
+		"@Easy/Core:Shared/Input/ProximityPrompts/ProximityPrompt@ProximityPrompt": "$:Input/ProximityPrompts/ProximityPrompt@ProximityPrompt",
 		"@Easy/Core:Shared/Input/AirshipInputSingleton@AirshipInputSingleton": "$:Input/AirshipInputSingleton@AirshipInputSingleton",
 		"@Easy/Core:Shared/Inventory/CharacterInventorySingleton@CharacterInventorySingleton": "$:Inventory/CharacterInventorySingleton@CharacterInventorySingleton",
 		"@Easy/Core:Shared/UI/Healthbar@Healthbar": "$:UI/Healthbar@Healthbar",
@@ -182,8 +185,6 @@
 		"@Easy/Core:Shared/GroundItem/GroundItemUtil@GroundItemUtil": "$:GroundItem/GroundItemUtil@GroundItemUtil",
 		"@Easy/Core:Client/Controllers/GroundItem/GroundItemController@GroundItemController": "$:Controllers/GroundItem/GroundItemController@GroundItemController",
 		"@Easy/Core:Client/Controllers/GroundItem/GroundItemPickupSoundsController@GroundItemPickupSoundsController": "$:Controllers/GroundItem/GroundItemPickupSoundsController@GroundItemPickupSoundsController",
-		"@Easy/Core:Client/Controllers/ProximityPrompt/ProximityPromptController@ProximityPromptController": "$:Controllers/ProximityPrompt/ProximityPromptController@ProximityPromptController",
-		"@Easy/Core:Client/Controllers/ProximityPrompt/ProximityPrompt@ProximityPrompt": "$:Controllers/ProximityPrompt/ProximityPrompt@ProximityPrompt",
 		"@Easy/Core:Shared/Util/Window@Window": "$:Util/Window@Window",
 		"@Easy/Core:Client/Controllers/TabList/TabListController@TabListController": "$:Controllers/TabList/TabListController@TabListController",
 		"@Easy/Core:Client/MainMenuControllers/MainMenuHomeController@MainMenuHomeController": "$:MainMenuControllers/MainMenuHomeController@MainMenuHomeController",
@@ -248,7 +249,6 @@
 		"@Easy/Core:Shared/MainMenu/Components/Settings/SettingsBlockPage@SettingsBlockPage": "$:MainMenu/Components/Settings/SettingsBlockPage@SettingsBlockPage",
 		"@Easy/Core:Shared/MainMenu/Components/Settings/SettingsDisconnectButton@SettingsDisconnectButton": "$:MainMenu/Components/Settings/SettingsDisconnectButton@SettingsDisconnectButton",
 		"@Easy/Core:Shared/Util/FormatUtil@FormatUtil": "$:Util/FormatUtil@FormatUtil",
-		"@Easy/Core:Shared/Util/InputUtils@InputUtils": "$:Util/InputUtils@InputUtils",
 		"@Easy/Core:Shared/MainMenu/Components/Settings/SettingsKeybind@SettingsKeybind": "$:MainMenu/Components/Settings/SettingsKeybind@SettingsKeybind",
 		"@Easy/Core:Shared/MainMenu/Components/Settings/SettingsKeybindPage@SettingsKeybindPage": "$:MainMenu/Components/Settings/SettingsKeybindPage@SettingsKeybindPage",
 		"@Easy/Core:Shared/MainMenu/Components/Settings/SettingsTabButton@SettingsTabButton": "$:MainMenu/Components/Settings/SettingsTabButton@SettingsTabButton",
@@ -698,6 +698,17 @@
 			]
 		},
 		{
+			"filePath": "../Client/Controllers/ProximityPrompt/ProximityPromptController.lua",
+			"internalId": "$:Controllers/ProximityPrompt/ProximityPromptController@ProximityPromptController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
 			"filePath": "../Shared/Input/AirshipInputSingleton.lua",
 			"internalId": "$:Input/AirshipInputSingleton@AirshipInputSingleton",
 			"decorators": [
@@ -911,17 +922,6 @@
 		{
 			"filePath": "../Client/Controllers/GroundItem/GroundItemPickupSoundsController.lua",
 			"internalId": "$:Controllers/GroundItem/GroundItemPickupSoundsController@GroundItemPickupSoundsController",
-			"decorators": [
-				{
-					"internalId": "$:Flamework/flamework@Controller",
-					"isFlameworkDecorator": true,
-					"name": "Controller"
-				}
-			]
-		},
-		{
-			"filePath": "../Client/Controllers/ProximityPrompt/ProximityPromptController.lua",
-			"internalId": "$:Controllers/ProximityPrompt/ProximityPromptController@ProximityPromptController",
 			"decorators": [
 				{
 					"internalId": "$:Flamework/flamework@Controller",

@@ -1,11 +1,12 @@
 import { OnStart } from "../Flamework";
 import { Preferred as PreferredControls } from "../UserInput";
 import { Signal } from "../Util/Signal";
+import { Binding } from "./Binding";
 import { InputAction, InputActionConfig, InputActionSchema } from "./InputAction";
+import { InputActionEvent } from "./InputActionEvent";
 import { ActionInputType } from "./InputUtil";
 import { MobileButtonConfig } from "./Mobile/MobileButton";
-import { Binding } from "./Binding";
-import { InputActionEvent } from "./InputActionEvent";
+import ProximityPrompt from "./ProximityPrompts/ProximityPrompt";
 export declare class AirshipInputSingleton implements OnStart {
     /**
      * Whether or not creating a duplicate keybind should immediately unbind matching keybinds.
@@ -62,6 +63,11 @@ export declare class AirshipInputSingleton implements OnStart {
     preferredControls: PreferredControls;
     constructor();
     OnStart(): void;
+    CreateProximityPrompt(actionName: string, parent?: Transform, config?: {
+        primaryText?: string;
+        secondaryText?: string;
+        maxRange?: number;
+    }): ProximityPrompt;
     /**
      *
      * @param actions
