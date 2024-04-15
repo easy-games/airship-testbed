@@ -134,9 +134,9 @@ export class MainMenuNavbarController implements OnStart {
 
 		task.spawn(() => {
 			const gameData = Game.WaitForGameData();
-			const text = runningGameButton.transform.Find("GameName")!.GetComponent<TMP_Text>();
-			text.text = ""; // have to do this or else setting to the default value "bedwars" will break.
-			text.text = gameData.name;
+			const text = runningGameButton.transform.Find("GameName")!.GetComponent<TMP_Text>()!;
+			//text.text = ""; // have to do this or else setting to the default value "bedwars" will break.
+			//text.text = gameData.name;
 			Bridge.UpdateLayout(runningGameButton.transform, false);
 		});
 
@@ -186,25 +186,25 @@ export class MainMenuNavbarController implements OnStart {
 		if (displayName.size() > 16) {
 			displayName = displayName.sub(0, 15);
 		}
-		usernameText.text = displayName;
+		//usernameText.text = displayName;
 		// disc.text = "#" + user.discriminator;
 		profileWrapper.SetActive(true);
 
 		const profileLayoutGroup = this.mainMenuController.refs.GetValue("Navbar", "ProfileLayoutGroup");
-		LayoutRebuilder.ForceRebuildLayoutImmediate(profileLayoutGroup.GetComponent<RectTransform>());
+		LayoutRebuilder.ForceRebuildLayoutImmediate(profileLayoutGroup.GetComponent<RectTransform>()!);
 
 		const profilerWrapperWrapper = this.mainMenuController.refs.GetValue(
 			"Navbar",
 			"ProfileWrapperWrapper",
 		) as HorizontalLayoutGroup;
-		LayoutRebuilder.ForceRebuildLayoutImmediate(profilerWrapperWrapper.GetComponent<RectTransform>());
+		LayoutRebuilder.ForceRebuildLayoutImmediate(profilerWrapperWrapper.GetComponent<RectTransform>()!);
 	}
 
 	private UpdateNavButton(go: GameObject, selected: boolean): void {
 		go.GetAirshipComponent<MainMenuNavButton>()?.SetSelected(selected);
-		// const img = go.GetComponent<Image>();
+		// const img = go.GetComponent<Image>()!;
 		// img.TweenGraphicColor(selected ? new Color(1, 1, 1, 0.27) : ColorUtil.HexToColor("18191A"), 0.12);
-		// const text = go.transform.GetChild(0).GetComponent<TMP_Text>();
+		// const text = go.transform.GetChild(0).GetComponent<TMP_Text>()!;
 		// if (selected) {
 		// 	text.color = new Color(1, 1, 1, 1);
 		// 	// go.transform.GetChild(0).gameObject.SetActive(true);

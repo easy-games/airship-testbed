@@ -7,8 +7,9 @@ import { MainMenuSingleton } from "../../Singletons/MainMenuSingleton";
 export default class SettingsPage extends MainMenuPageComponent {
 	public sidebar!: RectTransform;
 	public tabs!: RectTransform;
+	public scrollView!: RectTransform;
 
-	public mobilePages!: RectTransform[];
+	// public mobilePages!: RectTransform[];
 
 	private bin = new Bin();
 
@@ -19,8 +20,8 @@ export default class SettingsPage extends MainMenuPageComponent {
 			mainMenu.ObserveScreenSize((size) => {
 				if (size === "sm") {
 					this.sidebar.gameObject.SetActive(false);
-					this.tabs.offsetMax = new Vector2(-10, -7);
-					this.tabs.offsetMin = new Vector2(10, 0);
+					this.scrollView.offsetMax = new Vector2(-5, -7);
+					this.scrollView.offsetMin = new Vector2(5, 0);
 					// rect.offsetMax = new Vector2(rect.offsetMax.x, 40);
 					// rect.offsetMin = new Vector2(rect.offsetMin.x, 0);
 
@@ -37,13 +38,14 @@ export default class SettingsPage extends MainMenuPageComponent {
 					if (Game.deviceType === AirshipDeviceType.Phone) {
 						this.tabs.GetChild(0).gameObject.SetActive(true); // Input
 						this.tabs.GetChild(1).gameObject.SetActive(true); // Sound
-						this.tabs.GetChild(3).gameObject.SetActive(true); // Blocked
+						this.tabs.GetChild(4).gameObject.SetActive(true); // Blocked
+						this.tabs.GetChild(5).gameObject.SetActive(true); // Other
 					}
 				} else {
-					rect.offsetMax = new Vector2(rect.offsetMax.x, 0);
-					this.sidebar.gameObject.SetActive(true);
-					this.tabs.offsetMax = new Vector2(-41, -49);
-					this.tabs.offsetMin = new Vector2(270, -mainMenu.screenSize.y);
+					// rect.offsetMax = new Vector2(rect.offsetMax.x, 0);
+					// this.sidebar.gameObject.SetActive(true);
+					// this.tabs.offsetMax = new Vector2(-41, -49);
+					// this.tabs.offsetMin = new Vector2(270, -mainMenu.screenSize.y);
 				}
 			}),
 		);

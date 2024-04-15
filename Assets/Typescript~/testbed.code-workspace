@@ -8,10 +8,10 @@
             "name": "Core~",
             "path": "../Bundles/@Easy/Core/Core~"
         }
-        // {
-        //     "name": "Survival~",
-        //     "path": "../Bundles/@Easy/Survival/Survival~"
-        // }
+        {
+             "name": "Survival~",
+             "path": "../Bundles/@Easy/Survival/Survival~"
+        }
     ],
     "settings": {
         "files.exclude": {

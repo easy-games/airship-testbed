@@ -22,7 +22,6 @@ import { KillCommand } from "./Commands/KillCommand";
 import { LagCommand } from "./Commands/LagCommand";
 import { SaveWorldCommand } from "./Commands/SaveWorldCommand";
 import { SetTeamCommand } from "./Commands/SetTeamCommand";
-import { TeamChatCommand } from "./Commands/TeamChatCommand";
 import { TeamCommand } from "./Commands/TeamCommand";
 import { TpAllCommand } from "./Commands/TpAllCommand";
 import { TpCommand } from "./Commands/TpCommand";
@@ -54,7 +53,7 @@ export class ChatService implements OnStart {
 		this.RegisterCommand(new BotCommand());
 		this.RegisterCommand(new FlyCommand());
 		this.RegisterCommand(new HelpCommand());
-		this.RegisterCommand(new TeamChatCommand());
+		// this.RegisterCommand(new TeamChatCommand());
 		this.RegisterCommand(new SaveWorldCommand());
 	}
 
@@ -111,9 +110,10 @@ export class ChatService implements OnStart {
 				return;
 			}
 
-			let message = this.FormatUserChatMessage(player, text, this.canUseRichText);
-			CoreNetwork.ServerToClient.ChatMessage.server.FireAllClients(message, player.clientId);
-			CoreNetwork.ServerToClient.PlayerChatted.server.FireAllClients(rawMessage, player.clientId);
+			// todo: format name color
+			let nameWithPrefix = player.username + ": ";
+			// let message = this.FormatUserChatMessage(player, text, this.canUseRichText);
+			CoreNetwork.ServerToClient.ChatMessage.server.FireAllClients(rawMessage, nameWithPrefix, player.clientId);
 		});
 	}
 

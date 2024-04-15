@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.5871448, g: 0.5093683, b: 0.5738962, a: 1}
+  - materialColor: {r: 0.9149941, g: 0.85170555, b: 0.6439683, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
   addedByEditorScript: 0
@@ -202,7 +202,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.68086463, g: 0.528573, b: 0.63054156, a: 1}
+  - materialColor: {r: 0.99963313, g: 0.983762, b: 0.9822671, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 0.39607844}
     emissiveMix: 0.128
   addedByEditorScript: 0
@@ -305,7 +305,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.18607873, g: 0.23955297, b: 0.27747595, a: 1}
+  - materialColor: {r: 0.92260146, g: 0.600207, b: 0.24104658, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
   addedByEditorScript: 0
@@ -512,10 +512,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.18607873, g: 0.23955297, b: 0.27747595, a: 1}
+  - materialColor: {r: 0.92260146, g: 0.600207, b: 0.24104658, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-  - materialColor: {r: 0.18607873, g: 0.23955297, b: 0.27747595, a: 1}
+  - materialColor: {r: 0.92260146, g: 0.600207, b: 0.24104658, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
   addedByEditorScript: 0
@@ -618,7 +618,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.18607873, g: 0.23955297, b: 0.27747595, a: 1}
+  - materialColor: {r: 0.92260146, g: 0.600207, b: 0.24104658, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
   addedByEditorScript: 0
@@ -721,7 +721,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.18607873, g: 0.23955297, b: 0.27747595, a: 1}
+  - materialColor: {r: 0.92260146, g: 0.600207, b: 0.24104658, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
   addedByEditorScript: 0
@@ -758,7 +758,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8596552198816704982}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.035795342, y: -7.9021456e-11, z: 0.0000000032572538, w: -0.99935913}
+  m_LocalRotation: {x: -0.035797838, y: 0, z: 0, w: 0.9993591}
   m_LocalPosition: {x: 0.001, y: 0.194, z: 0.047}
   m_LocalScale: {x: 0.86742, y: 0.86742, z: 0.86742}
   m_ConstrainProportionsScale: 0
@@ -771,7 +771,7 @@ Transform:
   - {fileID: 1218165880575961163}
   - {fileID: 1513612784869382881}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -4.103, y: 0, z: 0}
 --- !u!114 &3955224052497085270
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -893,7 +893,7 @@ MonoBehaviour:
     atime6: 0
     atime7: 0
     m_Mode: 0
-    m_ColorSpace: 0
+    m_ColorSpace: -1
     m_NumColorKeys: 8
     m_NumAlphaKeys: 2
   SetEmmisive: 0
@@ -970,7 +970,7 @@ MonoBehaviour:
     key2: {r: 0.23584908, g: 0.23584908, b: 0.23584908, a: 0}
     key3: {r: 0.021537915, g: 0.25179806, b: 0.41509432, a: 0}
     key4: {r: 0, g: 0.3584906, b: 0.1958786, a: 0}
-    key5: {r: 0, g: 0.3584906, b: 0.1958786, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
     ctime0: 0
@@ -978,7 +978,7 @@ MonoBehaviour:
     ctime2: 49217
     ctime3: 57247
     ctime4: 63222
-    ctime5: 63222
+    ctime5: 0
     ctime6: 0
     ctime7: 0
     atime0: 0
@@ -990,7 +990,7 @@ MonoBehaviour:
     atime6: 0
     atime7: 0
     m_Mode: 0
-    m_ColorSpace: 0
+    m_ColorSpace: -1
     m_NumColorKeys: 5
     m_NumAlphaKeys: 2
   SetEmmisive: 0
@@ -1016,7 +1016,7 @@ MonoBehaviour:
     key2: {r: 0.46226418, g: 0.46226418, b: 0.46226418, a: 0}
     key3: {r: 0.52131647, g: 0.33107865, b: 0.754717, a: 0}
     key4: {r: 0.2943663, g: 0.5943396, b: 0.45918682, a: 0}
-    key5: {r: 0, g: 0.35686275, b: 0.19607845, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
     ctime0: 0
@@ -1024,7 +1024,7 @@ MonoBehaviour:
     ctime2: 49217
     ctime3: 57247
     ctime4: 63222
-    ctime5: 63222
+    ctime5: 0
     ctime6: 0
     ctime7: 0
     atime0: 0
@@ -1036,7 +1036,7 @@ MonoBehaviour:
     atime6: 0
     atime7: 0
     m_Mode: 0
-    m_ColorSpace: 0
+    m_ColorSpace: -1
     m_NumColorKeys: 5
     m_NumAlphaKeys: 2
   SetEmmisive: 0

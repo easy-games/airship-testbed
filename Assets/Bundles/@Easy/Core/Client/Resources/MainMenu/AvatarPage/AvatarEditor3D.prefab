@@ -596,7 +596,7 @@ MonoBehaviour:
       refPath: 
       decorators: []
       nullable: 0
-      serializedValue: '{"x":0.22499999403953553,"y":0.7250000238418579,"z":0.10000000149011612}'
+      serializedValue: '{"x":0.33000001311302187,"y":0.699999988079071,"z":0.10000000149011612}'
       serializedObject: {fileID: 0}
       modified: 1
     - name: anim
@@ -785,7 +785,7 @@ MonoBehaviour:
   convertColorTosRGB: 1
   doShadows: 0
   cubeMap: {fileID: 8900000, guid: 16cb5d0bcc88449498fe6cd39f24c952, type: 3}
-  cubemapCoefs: {fileID: 4900000, guid: c9f7c2a7287b2ea41a063ee5b4df469e, type: 3}
+  maxBrightness: 1
 --- !u!1 &4433631764270028334
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,5 +1,7 @@
 import { Dependency } from "@Easy/Core/Shared/Flamework";
+import { Game } from "@Easy/Core/Shared/Game";
 import SearchSingleton from "@Easy/Core/Shared/MainMenu/Components/Search/SearchSingleton";
+import { MobileGameList } from "@Easy/Core/Shared/Util/MobileGameList";
 import ObjectUtils from "@easy-games/unity-object-utils";
 import MainMenuPageComponent from "Client/MainMenuControllers/MainMenuPageComponent";
 import { AirshipUrl } from "Shared/Util/AirshipUrl";
@@ -91,6 +93,10 @@ export default class HomePageComponent extends MainMenuPageComponent {
 			let games = data[sortId].filter(
 				(g) => g.lastVersionUpdate !== undefined && !blockSingleton.IsGameIdBlocked(g.id),
 			);
+			// Temp: only show "The Campfire" on mobile for now.
+			if (!Game.IsEditor() && Game.IsMobile()) {
+				games = data[sortId].filter((g) => MobileGameList.includes(g.id));
+			}
 			this.loadedGameComponents = [...this.loadedGameComponents, ...sortComponent.SetGames(games)];
 		}
 

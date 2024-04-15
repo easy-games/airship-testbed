@@ -6,6 +6,10 @@ export class MathUtil {
 		return math.random() > 0.5 ? 1 : -1;
 	}
 
+	public static RandomFloat(min: number, max: number) {
+		return this.Lerp(min, max, math.random());
+	}
+
 	/**
 	 * Calculates an intermediate value between `a` and `b` given a `t`.
 	 * @param a Start number.

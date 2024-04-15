@@ -15,7 +15,8 @@ Shader "Airship/AirshipSpriteAlphaBlend"
         Tags { "RenderType"="Transparent"  
             "LightMode" = "AirshipForwardPass"
 			"Queue"="Transparent"}
-        Blend[_SrcBlend][_DstBlend]
+        Blend One One
+//        Blend[_SrcBlend][_DstBlend]
 
 		ZWrite off
 		Cull off

@@ -5,6 +5,12 @@ import { Signal } from "../Util/Signal";
 import { CameraSystem } from "./CameraSystem";
 import { CharacterCameraType } from "./CharacterCameraType";
 import { HumanoidCameraMode } from "./DefaultCameraModes/HumanoidCameraMode";
+interface ViewModelUpdate {
+    /** Target position of the view model. Update to change. */
+    position: Vector3;
+    /** Target rotation of the view model. Update to change. */
+    rotation: Quaternion;
+}
 export declare class AirshipCharacterCameraSingleton implements OnStart {
     static readonly cameraReferenceKey = "CameraRig";
     canToggleFirstPerson: boolean;
@@ -19,6 +25,8 @@ export declare class AirshipCharacterCameraSingleton implements OnStart {
     private firstPerson;
     /** Fires whenever the user changes their first-person state. */
     readonly firstPersonChanged: Signal<[isFirstPerson: boolean]>;
+    /** Fires before view model updates with position and rotation. Change these values to adjust view model position. */
+    onViewModelUpdate: Signal<[data: ViewModelUpdate]>;
     private fps?;
     humanoidCameraMode: HumanoidCameraMode | undefined;
     private orbitCameraMode;
@@ -77,3 +85,4 @@ export declare class AirshipCharacterCameraSingleton implements OnStart {
     /** Observes whether or not the player wants to look backwards. */
     ObserveLookBackwards(observer: (lookBackwards: boolean) => CleanupFunc): () => void;
 }
+export {};

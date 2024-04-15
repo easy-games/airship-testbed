@@ -631,6 +631,11 @@ declare const enum IPAddressType {
     IPv4 = 0,
     IPv6 = 1,
 }
+declare const enum OldTickOption {
+    Discard = 0,
+    SetLastRemoteTick = 1,
+    SetRemoteTick = 2,
+}
 declare const enum PhysicsMode {
     Unity = 0,
     TimeManager = 1,
@@ -668,11 +673,6 @@ declare const enum ServerUnloadMode {
     UnloadUnused = 0,
     KeepUnused = 1,
 }
-declare const enum PhysicsType {
-    TwoDimensional = 1,
-    ThreeDimensional = 2,
-    Both = 4,
-}
 declare const enum RollbackPhysicsType {
     Physics = 1,
     Physics2D = 2,
@@ -692,14 +692,13 @@ declare const enum DataOrderType {
     Default = 0,
     Last = 1,
 }
+declare const enum RigidbodyType {
+    Rigidbody = 0,
+    Rigidbody2D = 1,
+}
 declare const enum DespawnType {
     Destroy = 0,
     Pool = 1,
-}
-declare const enum OldTickOption {
-    Discard = 0,
-    SetLastRemoteTick = 1,
-    SetRemoteTick = 2,
 }
 declare const enum KickReason {
     Unset = 0,
@@ -3238,6 +3237,307 @@ declare const enum NavMeshObstacleShape {
     Capsule = 0,
     Box = 1,
 }
+declare const enum StylePropertyId {
+    Unknown = 0,
+    Color = 65536,
+    FontSize = 65537,
+    LetterSpacing = 65538,
+    TextShadow = 65539,
+    UnityFont = 65540,
+    UnityFontDefinition = 65541,
+    UnityFontStyleAndWeight = 65542,
+    UnityParagraphSpacing = 65543,
+    UnityTextAlign = 65544,
+    UnityTextOutlineColor = 65545,
+    UnityTextOutlineWidth = 65546,
+    Visibility = 65547,
+    WhiteSpace = 65548,
+    WordSpacing = 65549,
+    AlignContent = 131072,
+    AlignItems = 131073,
+    AlignSelf = 131074,
+    BorderBottomWidth = 131075,
+    BorderLeftWidth = 131076,
+    BorderRightWidth = 131077,
+    BorderTopWidth = 131078,
+    Bottom = 131079,
+    Display = 131080,
+    FlexBasis = 131081,
+    FlexDirection = 131082,
+    FlexGrow = 131083,
+    FlexShrink = 131084,
+    FlexWrap = 131085,
+    Height = 131086,
+    JustifyContent = 131087,
+    Left = 131088,
+    MarginBottom = 131089,
+    MarginLeft = 131090,
+    MarginRight = 131091,
+    MarginTop = 131092,
+    MaxHeight = 131093,
+    MaxWidth = 131094,
+    MinHeight = 131095,
+    MinWidth = 131096,
+    PaddingBottom = 131097,
+    PaddingLeft = 131098,
+    PaddingRight = 131099,
+    PaddingTop = 131100,
+    Position = 131101,
+    Right = 131102,
+    Top = 131103,
+    Width = 131104,
+    Cursor = 196608,
+    TextOverflow = 196609,
+    UnityBackgroundImageTintColor = 196610,
+    UnityOverflowClipBox = 196611,
+    UnitySliceBottom = 196612,
+    UnitySliceLeft = 196613,
+    UnitySliceRight = 196614,
+    UnitySliceScale = 196615,
+    UnitySliceTop = 196616,
+    UnityTextOverflowPosition = 196617,
+    All = 262144,
+    BackgroundPosition = 262145,
+    BorderColor = 262146,
+    BorderRadius = 262147,
+    BorderWidth = 262148,
+    Flex = 262149,
+    Margin = 262150,
+    Padding = 262151,
+    Transition = 262152,
+    UnityBackgroundScaleMode = 262153,
+    UnityTextOutline = 262154,
+    Rotate = 327680,
+    Scale = 327681,
+    TransformOrigin = 327682,
+    Translate = 327683,
+    TransitionDelay = 393216,
+    TransitionDuration = 393217,
+    TransitionProperty = 393218,
+    TransitionTimingFunction = 393219,
+    BackgroundColor = 458752,
+    BackgroundImage = 458753,
+    BackgroundPositionX = 458754,
+    BackgroundPositionY = 458755,
+    BackgroundRepeat = 458756,
+    BackgroundSize = 458757,
+    BorderBottomColor = 458758,
+    BorderBottomLeftRadius = 458759,
+    BorderBottomRightRadius = 458760,
+    BorderLeftColor = 458761,
+    BorderRightColor = 458762,
+    BorderTopColor = 458763,
+    BorderTopLeftRadius = 458764,
+    BorderTopRightRadius = 458765,
+    Opacity = 458766,
+    Overflow = 458767,
+    Custom = -1,
+}
+declare const enum LengthUnit {
+    Pixel = 0,
+    Percent = 1,
+}
+declare const enum AtlasPopulationMode {
+    Static = 0,
+    Dynamic = 1,
+    DynamicOS = 2,
+}
+declare const enum TextElementType {
+    Character = 1,
+    Sprite = 2,
+}
+declare const enum AngleUnit {
+    Degree = 0,
+    Gradian = 1,
+    Radian = 2,
+    Turn = 3,
+}
+declare const enum BackgroundPositionKeyword {
+    Center = 0,
+    Top = 1,
+    Bottom = 2,
+    Left = 3,
+    Right = 4,
+}
+declare const enum Repeat {
+    NoRepeat = 0,
+    Space = 1,
+    Round = 2,
+    Repeat = 3,
+}
+declare const enum BackgroundSizeType {
+    Length = 0,
+    Cover = 1,
+    Contain = 2,
+}
+declare const enum Align {
+    Auto = 0,
+    FlexStart = 1,
+    Center = 2,
+    FlexEnd = 3,
+    Stretch = 4,
+}
+declare const enum DisplayStyle {
+    Flex = 0,
+    None = 1,
+}
+declare const enum StyleKeyword {
+    Undefined = 0,
+    Null = 1,
+    Auto = 2,
+    None = 3,
+    Initial = 4,
+}
+declare const enum FlexDirection {
+    Column = 0,
+    ColumnReverse = 1,
+    Row = 2,
+    RowReverse = 3,
+}
+declare const enum Wrap {
+    NoWrap = 0,
+    Wrap = 1,
+    WrapReverse = 2,
+}
+declare const enum Justify {
+    FlexStart = 0,
+    Center = 1,
+    FlexEnd = 2,
+    SpaceBetween = 3,
+    SpaceAround = 4,
+    SpaceEvenly = 5,
+}
+declare const enum Position {
+    Relative = 0,
+    Absolute = 1,
+}
+declare const enum TextOverflow {
+    Clip = 0,
+    Ellipsis = 1,
+}
+declare const enum TimeUnit {
+    Second = 0,
+    Millisecond = 1,
+}
+declare const enum EasingMode {
+    Ease = 0,
+    EaseIn = 1,
+    EaseOut = 2,
+    EaseInOut = 3,
+    Linear = 4,
+    EaseInSine = 5,
+    EaseOutSine = 6,
+    EaseInOutSine = 7,
+    EaseInCubic = 8,
+    EaseOutCubic = 9,
+    EaseInOutCubic = 10,
+    EaseInCirc = 11,
+    EaseOutCirc = 12,
+    EaseInOutCirc = 13,
+    EaseInElastic = 14,
+    EaseOutElastic = 15,
+    EaseInOutElastic = 16,
+    EaseInBack = 17,
+    EaseOutBack = 18,
+    EaseInOutBack = 19,
+    EaseInBounce = 20,
+    EaseOutBounce = 21,
+    EaseInOutBounce = 22,
+}
+declare const enum TextOverflowPosition {
+    End = 0,
+    Start = 1,
+    Middle = 2,
+}
+declare const enum Visibility {
+    Visible = 0,
+    Hidden = 1,
+}
+declare const enum WhiteSpace {
+    Normal = 0,
+    NoWrap = 1,
+}
+declare const enum PropagationPhase {
+    None = 0,
+    TrickleDown = 1,
+    AtTarget = 2,
+    BubbleUp = 3,
+    DefaultAction = 4,
+    DefaultActionAtTarget = 5,
+}
+declare const enum TrickleDown {
+    NoTrickleDown = 0,
+    TrickleDown = 1,
+}
+declare const enum UsageHints {
+    None = 0,
+    DynamicTransform = 1,
+    GroupTransform = 2,
+    MaskContainer = 4,
+    DynamicColor = 8,
+}
+declare const enum PickingMode {
+    Position = 0,
+    Ignore = 1,
+}
+declare const enum LanguageDirection {
+    Inherit = 0,
+    LTR = 1,
+    RTL = 2,
+}
+declare const enum PropertyPathPartKind {
+    Name = 0,
+    Index = 1,
+    Key = 2,
+}
+declare const enum ContextType {
+    Player = 0,
+    Editor = 1,
+}
+declare const enum BindingUpdateTrigger {
+    WhenDirty = 0,
+    OnSourceChanged = 1,
+    EveryUpdate = 2,
+}
+declare const enum BindingLogLevel {
+    None = 0,
+    Once = 1,
+    All = 2,
+}
+declare const enum ScrollerVisibility {
+    Auto = 0,
+    AlwaysVisible = 1,
+    Hidden = 2,
+}
+declare const enum TouchScrollBehavior {
+    Unrestricted = 0,
+    Elastic = 1,
+    Clamped = 2,
+}
+declare const enum NestedInteractionKind {
+    Default = 0,
+    StopScrolling = 1,
+    ForwardScrolling = 2,
+}
+declare const enum DeltaSpeed {
+    Fast = 0,
+    Normal = 1,
+    Slow = 2,
+}
+declare const enum MeasureMode {
+    Undefined = 0,
+    Exactly = 1,
+    AtMost = 2,
+}
+declare const enum SliderDirection {
+    Horizontal = 0,
+    Vertical = 1,
+}
+declare const enum ScrollViewMode {
+    Vertical = 0,
+    Horizontal = 1,
+    VerticalAndHorizontal = 2,
+}
 
     
 interface RaycastHit {
@@ -5656,52 +5956,47 @@ declare const Net: NetConstructor;
     
 interface NetworkManager extends MonoBehaviour {
     Initialized: boolean;
-    IsServer: boolean;
-    IsServerOnly: boolean;
-    IsClient: boolean;
-    IsClientOnly: boolean;
-    IsHost: boolean;
-    IsOffline: boolean;
     ServerManager: ServerManager;
     ClientManager: ClientManager;
     TransportManager: TransportManager;
     TimeManager: TimeManager;
     SceneManager: SceneManager;
     ObserverManager: ObserverManager;
-    Authenticator: Authenticator;
     DebugManager: DebugManager;
     StatisticsManager: StatisticsManager;
     ObjectPool: ObjectPool;
     RollbackManager: RollbackManager;
+    IsClientOnly: boolean;
+    IsServerOnly: boolean;
+    IsHost: boolean;
+    IsClient: boolean;
+    IsServer: boolean;
+    IsServerStarted: boolean;
+    IsServerOnlyStarted: boolean;
+    IsClientStarted: boolean;
+    IsClientOnlyStarted: boolean;
+    IsHostStarted: boolean;
+    IsOffline: boolean;
     SpawnablePrefabs: PrefabObjects;
     RuntimeSpawnablePrefabs: CSDictionary<number, PrefabObjects>;
 
 
     CacheObjects(prefab: NetworkObject, count: number, asServer: boolean): void;
-    CanLog(loggingType: LoggingType): boolean;
     GetInstance<T>(): T;
-    GetInstance<T>(warn: boolean): T;
     GetPooledInstantiated(prefab: NetworkObject, asServer: boolean): NetworkObject;
     GetPooledInstantiated(prefab: NetworkObject, position: Vector3, rotation: Quaternion, asServer: boolean): NetworkObject;
-    GetPooledInstantiated(prefab: NetworkObject, collectionId: number, asServer: boolean): NetworkObject;
     GetPooledInstantiated(prefab: GameObject, asServer: boolean): NetworkObject;
-    GetPooledInstantiated(prefab: GameObject, collectionId: number, asServer: boolean): NetworkObject;
     GetPooledInstantiated(prefab: GameObject, position: Vector3, rotation: Quaternion, asServer: boolean): NetworkObject;
-    GetPooledInstantiated(prefabId: number, asServer: boolean): NetworkObject;
     GetPooledInstantiated(prefabId: number, collectionId: number, asServer: boolean): NetworkObject;
     GetPooledInstantiated(prefabId: number, collectionId: number, position: Vector3, rotation: Quaternion, asServer: boolean): NetworkObject;
+    GetPooledInstantiated(prefabId: number, collectionId: number, parent: Transform, position: unknown, rotation: unknown, scale: unknown, makeActive: boolean, asServer: boolean): NetworkObject;
     GetPrefab(prefabId: number, asServer: boolean): NetworkObject;
     GetPrefabIndex(prefab: GameObject, asServer: boolean): number;
     GetPrefabObjects<T>(spawnableCollectionId: number, createIfMissing: boolean): PrefabObjects;
     HasInstance<T>(): boolean;
-    Log(value: string): void;
-    Log(loggingType: LoggingType, value: string): void;
-    LogError(value: string): void;
-    LogWarning(value: string): void;
     RegisterInstance<T>(component: T, replace: boolean): void;
     RegisterInvokeOnInstance<T>(handler: unknown): void;
     RemoveSpawnableCollection(spawnableCollectionId: number): boolean;
-    StorePooledInstantiated(instantiated: NetworkObject, prefabId: number, asServer: boolean): void;
     StorePooledInstantiated(instantiated: NetworkObject, asServer: boolean): void;
     TryGetInstance<T>(result: unknown): boolean;
     TryRegisterInstance<T>(component: T): boolean;
@@ -5715,7 +6010,7 @@ interface ServerManager extends MonoBehaviour {
     Started: boolean;
     Objects: ServerObjects;
     NetworkManager: NetworkManager;
-    Authenticator: Authenticator;
+    ShareIds: boolean;
 
 
     AnyServerStarted(excludedIndex: unknown): boolean;
@@ -5737,6 +6032,7 @@ interface ServerManager extends MonoBehaviour {
     OneServerStarted(): boolean;
     RegisterBroadcast<T>(handler: unknown, requireAuthentication: boolean): void;
     SetAuthenticator(value: Authenticator): void;
+    SetFrameRate(value: number): void;
     SetRemoteClientTimeout(timeoutType: RemoteTimeoutType, duration: number): void;
     SetStartOnHeadless(value: boolean): void;
     Spawn(go: GameObject, ownerConnection: NetworkConnection, scene: Scene): void;
@@ -5752,19 +6048,19 @@ interface NetworkConnection {
     ClientId: number;
     Objects: CSArray<NetworkObject>;
     CustomData: unknown;
-    PacketTick: EstimatedTick;
-    LocalTick: EstimatedTick;
     LevelOfDetails: CSDictionary<NetworkObject, LevelOfDetailData>;
     NetworkManager: NetworkManager;
     TransportIndex: number;
+    IsAuthenticated: boolean;
     Authenticated: boolean;
     IsActive: boolean;
     IsValid: boolean;
     FirstObject: NetworkObject;
     Scenes: CSArray<Scene>;
     Disconnecting: boolean;
-    Tick: number;
-    LocalReplicateTick: number;
+    PacketTick: EstimatedTick;
+    LocalTick: EstimatedTick;
+    ReplicateTick: EstimatedTick;
     IsHost: boolean;
     IsLocalClient: boolean;
 
@@ -5800,14 +6096,12 @@ interface ObserverCondition extends ScriptableObject {
     NetworkObject: NetworkObject;
 
 
-    Clone(): ObserverCondition;
     ConditionMet(connection: NetworkConnection, currentlyAdded: boolean, notProcessed: unknown): boolean;
     Deinitialize(destroyed: boolean): void;
     GetConditionType(): ObserverConditionType;
     GetIsEnabled(): boolean;
     Initialize(networkObject: NetworkObject): void;
     SetIsEnabled(value: boolean): void;
-    Timed(): boolean;
 
 }
     
@@ -5825,7 +6119,12 @@ interface NetworkBehaviour extends MonoBehaviour {
     IsSpawned: boolean;
     ComponentIndex: number;
     NetworkObject: NetworkObject;
-    IsReconciling: boolean;
+    IsBehaviourReconciling: boolean;
+    IsClientOnly: boolean;
+    IsServerOnly: boolean;
+    IsHost: boolean;
+    IsClient: boolean;
+    IsServer: boolean;
     IsDeinitializing: boolean;
     NetworkManager: NetworkManager;
     ServerManager: ServerManager;
@@ -5838,16 +6137,22 @@ interface NetworkBehaviour extends MonoBehaviour {
     RollbackManager: RollbackManager;
     NetworkObserver: NetworkObserver;
     IsClientInitialized: boolean;
-    IsClient: boolean;
-    IsClientOnly: boolean;
+    IsClientStarted: boolean;
+    IsClientOnlyInitialized: boolean;
+    IsClientOnlyStarted: boolean;
     IsServerInitialized: boolean;
-    IsServer: boolean;
-    IsServerOnly: boolean;
-    IsHost: boolean;
+    IsServerStarted: boolean;
+    IsServerOnlyInitialized: boolean;
+    IsServerOnlyStarted: boolean;
+    IsHostInitialized: boolean;
+    IsHostStarted: boolean;
     IsOffline: boolean;
     IsNetworked: boolean;
+    IsManagerReconciling: boolean;
     Observers: CSArray<NetworkConnection>;
     IsOwner: boolean;
+    HasAuthority: boolean;
+    IsOwnerOrServer: boolean;
     Owner: NetworkConnection;
     OwnerId: number;
     ObjectId: number;
@@ -5856,15 +6161,13 @@ interface NetworkBehaviour extends MonoBehaviour {
 
     CanLog(loggingType: LoggingType): boolean;
     ClearBuffedRpcs(): void;
-    ClearReplicateCache(asServer: boolean): void;
     ClearReplicateCache(): void;
-    ClearReplicateCache_Virtual(asServer: boolean): void;
+    ClearReplicateCache_Internal<T>(replicatesQueue: unknown, replicatesHistory: CSArray<T>): void;
+    CreateReconcile(): void;
     Despawn(go: GameObject, despawnType: unknown): void;
     Despawn(nob: NetworkObject, despawnType: unknown): void;
     Despawn(despawnType: unknown): void;
     GetInstance<T>(): T;
-    GetLastReconcileTick(): number;
-    GetLastReplicateTick(): number;
     GiveOwnership(newOwner: NetworkConnection): void;
     NetworkInitializeIfDisabled(): void;
     OnDespawnServer(connection: NetworkConnection): void;
@@ -5878,8 +6181,8 @@ interface NetworkBehaviour extends MonoBehaviour {
     OnStopNetwork(): void;
     OnStopServer(): void;
     OwnerMatches(connection: NetworkConnection): boolean;
-    Reconcile_Client<T, T2>(reconcileDel: unknown, replicateULDel: unknown, replicates: CSArray<T2>, data: T, channel: Channel): void;
-    Reconcile_ExitEarly_A(asServer: boolean, channel: unknown): boolean;
+    ReadPayload(connection: NetworkConnection, reader: Reader): void;
+    Reconcile_Client<T, T2>(reconcileDel: unknown, replicatesHistory: CSArray<T2>, data: T): void;
     Reconcile_Reader<T>(reader: PooledReader, data: unknown, channel: Channel): void;
     Reconcile_Server<T>(methodHash: number, data: T, channel: Channel): void;
     RegisterInstance<T>(component: T, replace: boolean): void;
@@ -5888,23 +6191,25 @@ interface NetworkBehaviour extends MonoBehaviour {
     RegisterReconcileRpc(hash: number, del: ReconcileRpcDelegate): void;
     RegisterReplicateRpc(hash: number, del: ReplicateRpcDelegate): void;
     RegisterServerRpc(hash: number, del: ServerRpcDelegate): void;
-    RegisterSyncVarRead(del: SyncVarReadDelegate): void;
     RegisterTargetRpc(hash: number, del: ClientRpcDelegate): void;
     RemoveOwnership(): void;
-    Replicate_ExitEarly_A(asServer: boolean, replaying: boolean, allowServerControl: boolean): boolean;
-    Replicate_NonOwner<T>(del: unknown, q: unknown, serverControlData: T, allowServerControl: boolean, channel: Channel): void;
-    Replicate_Owner<T>(del: unknown, methodHash: number, replicates: CSArray<T>, data: T, channel: Channel): void;
-    Replicate_Reader<T>(reader: PooledReader, sender: NetworkConnection, arrBuffer: CSArray<T>, replicates: unknown, channel: Channel): void;
+    Replicate_Authoritative<T>(del: unknown, methodHash: number, replicatesQueue: unknown, replicatesHistory: CSArray<T>, data: T, channel: Channel): void;
+    Replicate_NonAuthoritative<T>(del: unknown, replicatesQueue: unknown, replicatesHistory: CSArray<T>, channel: Channel): void;
+    Replicate_Reader<T>(hash: number, reader: PooledReader, sender: NetworkConnection, arrBuffer: CSArray<T>, replicatesQueue: unknown, replicatesHistory: CSArray<T>, channel: Channel): void;
+    Replicate_SendNonAuthoritative<T>(hash: number, replicatesQueue: unknown, channel: Channel): void;
+    ResetState(asServer: boolean): void;
     ResetSyncVarFields(): void;
     SendObserversRpc(hash: number, methodWriter: PooledWriter, channel: Channel, orderType: DataOrderType, bufferLast: boolean, excludeServer: boolean, excludeOwner: boolean): void;
     SendServerRpc(hash: number, methodWriter: PooledWriter, channel: Channel, orderType: DataOrderType): void;
     SendTargetRpc(hash: number, methodWriter: PooledWriter, channel: Channel, orderType: DataOrderType, target: NetworkConnection, excludeServer: boolean, validateTarget: boolean): void;
+    Server_SendReconcileRpc<T>(hash: number, reconcileData: T, channel: Channel): void;
     Spawn(go: GameObject, ownerConnection: NetworkConnection, scene: Scene): void;
     Spawn(nob: NetworkObject, ownerConnection: NetworkConnection, scene: Scene): void;
     ToString(): string;
     TryRegisterInstance<T>(component: T): boolean;
     UnregisterInstance<T>(): void;
     UnregisterInvokeOnInstance<T>(handler: unknown): void;
+    WritePayload(connection: NetworkConnection, writer: Writer): void;
 
 }
     
@@ -5920,6 +6225,7 @@ interface ClientManager extends MonoBehaviour {
     Broadcast<T>(message: T, channel: Channel): void;
     GetTransportIndex(): number;
     RegisterBroadcast<T>(handler: unknown): void;
+    SetFrameRate(value: number): void;
     SetRemoteServerTimeout(timeoutType: RemoteTimeoutType, duration: number): void;
     StartConnection(): boolean;
     StartConnection(address: string): boolean;
@@ -5949,7 +6255,6 @@ interface ClientObjects extends ManagedObjects {
 
 
     WriteDepawn(nob: NetworkObject, writer: Writer): void;
-    WriteSpawn(nob: NetworkObject, writer: Writer): void;
 
 }
     
@@ -5992,10 +6297,10 @@ interface Writer {
     WriteInt16(value: number): void;
     WriteInt32(value: number, packType: AutoPackType): void;
     WriteInt64(value: number, packType: AutoPackType): void;
+    WriteLayerMask(value: LayerMask): void;
     WriteList<T>(value: CSArray<T>): void;
     WriteList<T>(value: CSArray<T>, offset: number, count: number): void;
     WriteList<T>(value: CSArray<T>, offset: number): void;
-    WriteListCache<T>(lc: unknown): void;
     WriteMatrix4x4(value: Matrix4x4): void;
     WriteNetworkBehaviour(nb: NetworkBehaviour): void;
     WriteNetworkBehaviourId(nb: NetworkBehaviour): void;
@@ -6018,6 +6323,7 @@ interface Writer {
     WriteUInt16(value: number): void;
     WriteUInt32(value: number, packType: AutoPackType): void;
     WriteUInt64(value: number, packType: AutoPackType): void;
+    WriteUnpacked<T>(value: T): void;
     WriteVector2(value: Vector2): void;
     WriteVector2Int(value: Vector2Int, packType: AutoPackType): void;
     WriteVector3(value: Vector3): void;
@@ -6068,8 +6374,10 @@ declare const ClientManager: ClientManagerConstructor;
     
 interface ObserverManager extends MonoBehaviour {
     UpdateHostVisibility: boolean;
+    MaximumTimedObserversDuration: number;
 
 
+    SetMaximumTimedObserversDuration(value: number): void;
     SetUpdateHostVisibility(value: boolean, updateType: HostVisibilityUpdateTypes): void;
 
 }
@@ -6089,13 +6397,16 @@ interface TransportManager extends MonoBehaviour {
     LatencySimulator: LatencySimulator;
 
 
+    GetLowestMTU(): number;
     GetLowestMTU(channel: number): number;
     GetMTU(channel: number): number;
     GetMTU(transportIndex: number, channel: number): number;
     GetMTU<T>(channel: number): number;
+    GetMTUReserve(): number;
     GetTransport(index: number): Transport;
     GetTransport<T>(): T;
     IsLocalTransport(connectionId: number): boolean;
+    SetMTUReserve(value: number): void;
 
 }
     
@@ -6256,6 +6567,8 @@ interface TransportManagerConstructor {
     TICK_BYTES: number;
     SPLIT_INDICATOR_SIZE: number;
     CHANNEL_COUNT: number;
+    MINIMUM_MTU_RESERVE: number;
+    INVALID_MTU: number;
 
     new(): TransportManager;
 
@@ -6264,21 +6577,24 @@ interface TransportManagerConstructor {
 declare const TransportManager: TransportManagerConstructor;
     
 interface TimeManager extends MonoBehaviour {
+    NetworkManager: NetworkManager;
     RoundTripTime: number;
-    LastPacketTick: number;
+    LastPacketTick: EstimatedTick;
     Tick: number;
     TickDelta: number;
     FrameTicked: boolean;
     ServerUptime: number;
     ClientUptime: number;
     TickRate: number;
+    PingInterval: number;
     PhysicsMode: PhysicsMode;
     LocalTick: number;
 
 
     GetPreciseTick(tick: number): PreciseTick;
     GetPreciseTick(tickType: TickType): PreciseTick;
-    GetTickPercent(): number;
+    GetTickPercentAsByte(): number;
+    GetTickPercentAsDouble(): number;
     LocalTickToTick(localTick: number): number;
     SetPhysicsMode(mode: PhysicsMode): void;
     SetTickRate(value: number): void;
@@ -6293,16 +6609,47 @@ interface TimeManager extends MonoBehaviour {
 
 }
     
+interface EstimatedTick {
+    LocalTick: number;
+    RemoteTick: number;
+    LastRemoteTick: number;
+    IsLastRemoteTickOrdered: boolean;
+    IsUnset: boolean;
+
+
+    Initialize(tm: TimeManager, remoteTick: number, lastRemoteTick: number, localTick: number): void;
+    IsCurrent(tm: TimeManager): boolean;
+    LocalTickDifference(tm: TimeManager): number;
+    Reset(): void;
+    Update(tm: TimeManager, remoteTick: number, oldTickOption: OldTickOption, resetValue: boolean): boolean;
+    Update(remoteTick: number, oldTickOption: OldTickOption, resetValue: boolean): boolean;
+    UpdateValue(): void;
+    Value(tm: TimeManager): number;
+    Value(isCurrent: unknown, tm: TimeManager): number;
+
+}
+    
+interface EstimatedTickConstructor {
+
+    new(): EstimatedTick;
+
+
+}
+declare const EstimatedTick: EstimatedTickConstructor;
+    
 interface PreciseTick {
     Tick: number;
-    Percent: number;
+    PercentAsDouble: number;
+    PercentAsByte: number;
 
 
+    ToString(): string;
 
 }
     
 interface PreciseTickConstructor {
 
+    new(tick: number, percentAsByte: number): PreciseTick;
     new(tick: number, percent: number): PreciseTick;
 
 
@@ -6315,6 +6662,7 @@ interface TimeManagerConstructor {
     new(): TimeManager;
 
 
+    GetTickPercentAsDouble(value: number): number;
 }
 declare const TimeManager: TimeManagerConstructor;
     
@@ -6395,7 +6743,7 @@ interface LoadQueueData {
 }
     
 interface SceneLoadData {
-    PreferredActiveScene: SceneLookupData;
+    PreferredActiveScene: PreferredScene;
     SceneLookupDatas: CSArray<SceneLookupData>;
     MovedNetworkObjects: CSArray<NetworkObject>;
     ReplaceScenes: ReplaceOption;
@@ -6404,6 +6752,14 @@ interface SceneLoadData {
 
 
     GetFirstLookupScene(): Scene;
+
+}
+    
+interface PreferredScene {
+    Client: SceneLookupData;
+    Server: SceneLookupData;
+
+
 
 }
     
@@ -6444,6 +6800,15 @@ interface SceneLookupDataConstructor {
     ValidateData(datas: CSArray<SceneLookupData>): CSArray<SceneLookupData>;
 }
 declare const SceneLookupData: SceneLookupDataConstructor;
+    
+interface PreferredSceneConstructor {
+
+    new(client: SceneLookupData, server: SceneLookupData): PreferredScene;
+    new(sld: SceneLookupData): PreferredScene;
+
+
+}
+declare const PreferredScene: PreferredSceneConstructor;
     
 interface LoadParams {
     ServerParams: CSArray<unknown>;
@@ -6525,7 +6890,7 @@ interface UnloadQueueData {
 }
     
 interface SceneUnloadData {
-    PreferredActiveScene: SceneLookupData;
+    PreferredActiveScene: PreferredScene;
     SceneLookupDatas: CSArray<SceneLookupData>;
     Params: UnloadParams;
     Options: UnloadOptions;
@@ -6604,17 +6969,15 @@ interface SceneManagerConstructor {
 declare const SceneManager: SceneManagerConstructor;
     
 interface PredictionManager extends MonoBehaviour {
-    LastReconcileTick: number;
-    LastReplicateTick: number;
+    IsReconciling: boolean;
+    ClientReplayTick: number;
+    ServerReplayTick: number;
+    ClientStateTick: number;
+    ServerStateTick: number;
     QueuedInputs: number;
 
 
-    AddRigidbodyCount(c: Component): void;
     GetMaximumServerReplicates(): number;
-    InvokeOnReconcile(nb: NetworkBehaviour, before: boolean): void;
-    IsReplaying(): boolean;
-    IsReplaying(scene: Scene): boolean;
-    RemoveRigidbodyCount(c: Component): void;
     SetMaximumServerReplicates(value: number): void;
 
 }
@@ -6631,14 +6994,13 @@ interface RollbackManager extends MonoBehaviour {
 
 
     Return(): void;
-    Rollback(pt: PreciseTick, physicsType: PhysicsType, asOwner: boolean): void;
-    Rollback(pt: PreciseTick, physicsType: RollbackPhysicsType, asOwner: boolean): void;
-    Rollback(scene: Scene, pt: PreciseTick, physicsType: RollbackPhysicsType, asOwner: boolean): void;
-    Rollback(sceneHandle: number, pt: PreciseTick, physicsType: RollbackPhysicsType, asOwner: boolean): void;
-    Rollback(origin: Vector3, normalizedDirection: Vector3, distance: number, pt: PreciseTick, asOwner: boolean): void;
-    Rollback(scene: Scene, origin: Vector3, normalizedDirection: Vector3, distance: number, pt: PreciseTick, asOwner: boolean): void;
-    Rollback(sceneHandle: number, origin: Vector3, normalizedDirection: Vector3, distance: number, pt: PreciseTick, asOwner: boolean): void;
-    Rollback(origin: Vector2, normalizedDirection: Vector2, distance: number, pt: PreciseTick, asOwner: boolean): void;
+    Rollback(pt: PreciseTick, physicsType: RollbackPhysicsType, asOwnerAndClientHost: boolean): void;
+    Rollback(scene: Scene, pt: PreciseTick, physicsType: RollbackPhysicsType, asOwnerAndClientHost: boolean): void;
+    Rollback(sceneHandle: number, pt: PreciseTick, physicsType: RollbackPhysicsType, asOwnerAndClientHost: boolean): void;
+    Rollback(origin: Vector3, normalizedDirection: Vector3, distance: number, pt: PreciseTick, asOwnerAndClientHost: boolean): void;
+    Rollback(scene: Scene, origin: Vector3, normalizedDirection: Vector3, distance: number, pt: PreciseTick, asOwnerAndClientHost: boolean): void;
+    Rollback(sceneHandle: number, origin: Vector3, normalizedDirection: Vector3, distance: number, pt: PreciseTick, asOwnerAndClientHost: boolean): void;
+    Rollback(origin: Vector2, normalizedDirection: Vector2, distance: number, pt: PreciseTick, asOwnerAndClientHost: boolean): void;
 
 }
     
@@ -6684,7 +7046,6 @@ interface Reader {
     ReadColor32(): Color32;
     ReadDateTime(): string;
     ReadDecimal(): number;
-    ReadDictionary<TKey, TValue>(): CSDictionary<TKey, TValue>;
     ReadDictionaryAllocated<TKey, TValue>(): CSDictionary<TKey, TValue>;
     ReadDouble(): number;
     ReadGameObject(): GameObject;
@@ -6692,10 +7053,9 @@ interface Reader {
     ReadInt16(): number;
     ReadInt32(packType: AutoPackType): number;
     ReadInt64(packType: AutoPackType): number;
+    ReadLayerMask(): LayerMask;
     ReadList<T>(collection: CSArray<T>, allowNullification: boolean): number;
     ReadListAllocated<T>(): CSArray<T>;
-    ReadListCache<T>(listCache: unknown): number;
-    ReadListCacheAllocated<T>(): unknown;
     ReadMatrix4x4(): Matrix4x4;
     ReadNetworkBehaviour(objectId: unknown, componentIndex: unknown, readSpawningObjects: CSArray<number>): NetworkBehaviour;
     ReadNetworkBehaviour(): NetworkBehaviour;
@@ -6718,6 +7078,7 @@ interface Reader {
     ReadUInt16(): number;
     ReadUInt32(packType: AutoPackType): number;
     ReadUInt64(packType: AutoPackType): number;
+    ReadUnpacked<T>(): T;
     ReadVector2(): Vector2;
     ReadVector2Int(packType: AutoPackType): Vector2Int;
     ReadVector3(): Vector3;
@@ -6744,7 +7105,6 @@ declare const Reader: ReaderConstructor;
 interface PooledReader extends Reader {
 
 
-    Dispose(): void;
     Store(): void;
 
 }
@@ -6826,28 +7186,9 @@ interface ServerRpcDelegateConstructor {
 }
 declare const ServerRpcDelegate: ServerRpcDelegateConstructor;
     
-interface SyncVarReadDelegate {
-
-
-    BeginInvoke(reader: PooledReader, index: number, asServer: boolean, callback: unknown, object: unknown): unknown;
-    EndInvoke(result: unknown): boolean;
-    Invoke(reader: PooledReader, index: number, asServer: boolean): boolean;
-
-}
-    
-interface SyncVarReadDelegateConstructor {
-
-    new(object: unknown, method: unknown): SyncVarReadDelegate;
-
-
-}
-declare const SyncVarReadDelegate: SyncVarReadDelegateConstructor;
-    
 interface PooledWriter extends Writer {
 
 
-    Dispose(): void;
-    DisposeLength(): void;
     Store(): void;
     StoreLength(): void;
 
@@ -6865,10 +7206,8 @@ interface PredictedSpawn extends NetworkBehaviour {
 
 
     Awake(): void;
-    Awake___UserLogic(): void;
     GetAllowDespawning(): boolean;
     GetAllowSpawning(): boolean;
-    GetAllowSyncTypes(): boolean;
     NetworkInitialize___Early(): void;
     NetworkInitialize__Late(): void;
     NetworkInitializeIfDisabled(): void;
@@ -6878,7 +7217,6 @@ interface PredictedSpawn extends NetworkBehaviour {
     OnTrySpawnServer(spawner: NetworkConnection, owner: NetworkConnection): boolean;
     SetAllowDespawning(value: boolean): void;
     SetAllowSpawning(value: boolean): void;
-    SetAllowSyncTypes(value: boolean): void;
 
 }
     
@@ -6890,23 +7228,6 @@ interface PredictedSpawnConstructor {
 }
 declare const PredictedSpawn: PredictedSpawnConstructor;
     
-    
-interface EstimatedTick {
-    LocalTick: number;
-    RemoteTick: number;
-    LastRemoteTick: number;
-    IsUnset: boolean;
-
-
-    IsCurrent(tm: TimeManager): boolean;
-    LocalTickDifference(tm: TimeManager): number;
-    Reset(): void;
-    Update(tm: TimeManager, remoteTick: number, oldTickOption: OldTickOption): boolean;
-    Value(tm: TimeManager): number;
-    Value(tm: TimeManager, isCurrent: unknown): number;
-
-}
-    
 interface IResettable {
 
 
@@ -6914,6 +7235,28 @@ interface IResettable {
     ResetState(): void;
 
 }
+    
+interface RigidbodyPauser extends IResettable {
+    Paused: boolean;
+
+
+    InitializeState(): void;
+    Pause(): void;
+    ResetState(): void;
+    Unpause(): void;
+    UpdateRigidbodies(): void;
+    UpdateRigidbodies(t: Transform, rbType: RigidbodyType, getInChildren: boolean): void;
+
+}
+    
+interface RigidbodyPauserConstructor {
+
+    new(): RigidbodyPauser;
+
+
+}
+declare const RigidbodyPauser: RigidbodyPauserConstructor;
+    
     
 interface LevelOfDetailData extends IResettable {
     CurrentLevelOfDetail: number;
@@ -6935,6 +7278,9 @@ declare const LevelOfDetailData: LevelOfDetailDataConstructor;
     
 interface NetworkConnectionConstructor {
     UNSET_CLIENTID_VALUE: number;
+    MAXIMUM_CLIENTID_VALUE: number;
+    SIMULATED_CLIENTID_VALUE: number;
+    CLIENTID_UNCOMPRESSED_RESERVE_BYTES: number;
 
     new(): NetworkConnection;
     new(manager: NetworkManager, clientId: number, transportIndex: number, asServer: boolean): NetworkConnection;
@@ -6950,11 +7296,6 @@ interface ServerObjects extends ManagedObjects {
     RebuildObservers(timedOnly: boolean): void;
     RebuildObservers(nob: NetworkObject, timedOnly: boolean): void;
     RebuildObservers(connection: NetworkConnection, timedOnly: boolean): void;
-    RebuildObservers(nobs: CSArray<NetworkObject>, timedOnly: boolean): void;
-    RebuildObservers(connections: CSArray<NetworkConnection>, timedOnly: boolean): void;
-    RebuildObservers(nobs: CSArray<NetworkObject>, conn: NetworkConnection, timedOnly: boolean): void;
-    RebuildObservers(networkObject: NetworkObject, connections: CSArray<NetworkConnection>, timedOnly: boolean): void;
-    RebuildObservers(nobs: CSArray<NetworkObject>, conns: CSArray<NetworkConnection>, timedOnly: boolean): void;
     RebuildObservers(nobs: CSArray<NetworkObject>, timedOnly: boolean): void;
     RebuildObservers(connections: CSArray<NetworkConnection>, timedOnly: boolean): void;
     RebuildObservers(nobs: CSArray<NetworkObject>, conn: NetworkConnection, timedOnly: boolean): void;
@@ -7044,10 +7385,10 @@ interface ObjectPool extends MonoBehaviour {
 
 
     CacheObjects(prefab: NetworkObject, count: number, asServer: boolean): void;
+    GetPrefab(prefabId: number, collectionId: number, asServer: boolean): NetworkObject;
     InitializeOnce(nm: NetworkManager): void;
-    RetrieveObject(prefabId: number, asServer: boolean): NetworkObject;
-    RetrieveObject(prefabId: number, collectionId: number, asServer: boolean): NetworkObject;
-    RetrieveObject(prefabId: number, collectionId: number, position: Vector3, rotation: Quaternion, asServer: boolean): NetworkObject;
+    LateUpdate(): void;
+    RetrieveObject(prefabId: number, collectionId: number, parent: Transform, position: unknown, rotation: unknown, scale: unknown, makeActive: boolean, asServer: boolean): NetworkObject;
     StoreObject(instantiated: NetworkObject, asServer: boolean): void;
 
 }
@@ -7085,10 +7426,6 @@ interface NetworkManagerConstructor {
     new(): NetworkManager;
 
 
-    StaticCanLog(loggingType: LoggingType): boolean;
-    StaticLog(value: string): void;
-    StaticLogError(value: string): void;
-    StaticLogWarning(value: string): void;
 }
 declare const NetworkManager: NetworkManagerConstructor;
     
@@ -9176,11 +9513,16 @@ interface InstanceFinderConstructor {
     RollbackManager: RollbackManager;
     PredictionManager: PredictionManager;
     StatisticsManager: StatisticsManager;
-    IsServer: boolean;
-    IsServerOnly: boolean;
-    IsClient: boolean;
     IsClientOnly: boolean;
+    IsServerOnly: boolean;
     IsHost: boolean;
+    IsClient: boolean;
+    IsServer: boolean;
+    IsServerStarted: boolean;
+    IsServerOnlyStarted: boolean;
+    IsClientStarted: boolean;
+    IsClientOnlyStarted: boolean;
+    IsHostStarted: boolean;
     IsOffline: boolean;
 
 
@@ -12000,19 +12342,25 @@ interface ClientSceneListenerConstructor {
 declare const ClientSceneListener: ClientSceneListenerConstructor;
     
 interface BundleLoadingScreen extends MonoBehaviour {
+    showContinueButton: boolean;
 
 
     SetProgress(text: string, percent: number): void;
+    SetTotalDownloadSize(sizeBytes: number): void;
 
 }
     
 interface CoreLoadingScreen extends BundleLoadingScreen {
     progressText: TMP_Text;
     disconnectButton: Button;
+    continueButton: Button;
+    spinner: GameObject;
 
 
+    ClickContinueButton(): void;
     Close(): void;
     SetProgress(text: string, percent: number): void;
+    SetTotalDownloadSize(sizeBytes: number): void;
 
 }
     
@@ -12440,23 +12788,15 @@ interface AgonesSdkConstructor {
 declare const AgonesSdk: AgonesSdkConstructor;
     
 interface ServerContext extends NetworkBehaviour {
-    serverId: string;
-    gameId: string;
-    organizationId: string;
-    syncVar___serverId: unknown;
-    syncVar___gameId: unknown;
-    syncVar___organizationId: unknown;
-    SyncAccessor_serverId: string;
-    SyncAccessor_gameId: string;
-    SyncAccessor_organizationId: string;
+    serverId: unknown;
+    gameId: unknown;
+    organizationId: unknown;
 
 
     Awake(): void;
-    Awake___UserLogic(): void;
     NetworkInitialize___Early(): void;
     NetworkInitialize__Late(): void;
     NetworkInitializeIfDisabled(): void;
-    ReadSyncVar___ServerContext(PooledReader0: PooledReader, UInt321: number, Boolean2: boolean): boolean;
 
 }
     
@@ -15206,7 +15546,6 @@ interface ProjectileLauncher extends NetworkBehaviour {
 
 
     Awake(): void;
-    Awake___UserLogic(): void;
     ClientFire(projectilePath: string, launcherItemTypeId: number, itemTypeId: number, position: Vector3, velocity: Vector3, gravity: number, drag: number): AirshipProjectile;
     NetworkInitialize___Early(): void;
     NetworkInitialize__Late(): void;
@@ -15340,6 +15679,7 @@ declare const WindowCore: WindowCoreConstructor;
     
 interface CharacterMoveModifier {
     speedMultiplier: number;
+    jumpMultiplier: number;
     blockSprint: boolean;
     blockJump: boolean;
 
@@ -15443,9 +15783,8 @@ interface DefaultObjectPool extends ObjectPool {
     CacheObjects(prefab: NetworkObject, count: number, asServer: boolean): void;
     ClearPool(): void;
     ClearPool(collectionId: number): void;
-    RetrieveObject(prefabId: number, asServer: boolean): NetworkObject;
-    RetrieveObject(prefabId: number, collectionId: number, position: Vector3, rotation: Quaternion, asServer: boolean): NetworkObject;
-    RetrieveObject(prefabId: number, collectionId: number, asServer: boolean): NetworkObject;
+    GetPrefab(prefabId: number, collectionId: number, asServer: boolean): NetworkObject;
+    RetrieveObject(prefabId: number, collectionId: number, parent: Transform, nullableLocalPosition: unknown, nullableLocalRotation: unknown, nullableLocalScale: unknown, makeActive: boolean, asServer: boolean): NetworkObject;
     StoreObject(instantiated: NetworkObject, asServer: boolean): void;
 
 }
@@ -15462,7 +15801,7 @@ interface AirshipObjectPool extends DefaultObjectPool {
     maxSpawnPerFrame: number;
 
 
-    RetrieveObject(prefabId: number, collectionId: number, position: Vector3, rotation: Quaternion, asServer: boolean): NetworkObject;
+    RetrieveObject(prefabId: number, collectionId: number, parent: Transform, nullableLocalPosition: unknown, nullableLocalRotation: unknown, nullableLocalScale: unknown, makeActive: boolean, asServer: boolean): NetworkObject;
     SlowlyCacheObjects(prefab: NetworkObject, count: number): void;
 
 }
@@ -15478,16 +15817,19 @@ declare const AirshipObjectPool: AirshipObjectPoolConstructor;
 interface MainMenuLoadingScreen extends BundleLoadingScreen {
     canvas: Canvas;
     progressText: TMP_Text;
+    continueButton: Button;
     spinner: GameObject;
     errorWrapper: GameObject;
     errorText: TMP_Text;
     sceneManager: MainMenuSceneManager;
 
 
+    ClickContinueButton(): void;
     Close(): void;
     Retry(): void;
     SetError(msg: string): void;
     SetProgress(text: string, percent: number): void;
+    SetTotalDownloadSize(sizeBytes: number): void;
 
 }
     
@@ -16361,7 +16703,7 @@ interface NetworkTransform extends NetworkBehaviour {
 
 
     Awake(): void;
-    Awake___UserLogic(): void;
+    ForceSend(ticks: number): void;
     ForceSend(): void;
     GetSendToOwner(): boolean;
     NetworkInitialize___Early(): void;
@@ -16869,7 +17211,6 @@ interface ColliderRollback extends NetworkBehaviour {
 
 
     Awake(): void;
-    Awake___UserLogic(): void;
     NetworkInitialize___Early(): void;
     NetworkInitialize__Late(): void;
     NetworkInitializeIfDisabled(): void;
@@ -17656,4 +17997,1661 @@ interface NavMeshObstacleConstructor {
 
 }
 declare const NavMeshObstacle: NavMeshObstacleConstructor;
+    
+interface IStylePropertyAnimations {
+    runningAnimationCount: number;
+    completedAnimationCount: number;
+
+
+    CancelAllAnimations(): void;
+    CancelAnimation(id: StylePropertyId): void;
+    GetAllAnimations(outPropertyIds: CSArray<StylePropertyId>): void;
+    HasRunningAnimation(id: StylePropertyId): boolean;
+    Start(id: StylePropertyId, from: number, to: number, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: number, to: number, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: Length, to: Length, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: Color, to: Color, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: Background, to: Background, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: FontDefinition, to: FontDefinition, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: Font, to: Font, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: TextShadow, to: TextShadow, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: Scale, to: Scale, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: Translate, to: Translate, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: Rotate, to: Rotate, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: TransformOrigin, to: TransformOrigin, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: BackgroundPosition, to: BackgroundPosition, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: BackgroundRepeat, to: BackgroundRepeat, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: BackgroundSize, to: BackgroundSize, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    StartEnum(id: StylePropertyId, from: number, to: number, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    UpdateAnimation(id: StylePropertyId): void;
+
+}
+    
+interface Length {
+    value: number;
+    unit: LengthUnit;
+
+
+    Equals(other: Length): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    IsAuto(): boolean;
+    IsNone(): boolean;
+    ToString(): string;
+
+}
+    
+interface LengthConstructor {
+
+    new(value: number): Length;
+    new(value: number, unit: LengthUnit): Length;
+
+
+    Auto(): Length;
+    None(): Length;
+    Percent(value: number): Length;
+}
+declare const Length: LengthConstructor;
+    
+interface Background {
+    texture: Texture2D;
+    sprite: Sprite;
+    renderTexture: RenderTexture;
+    vectorImage: VectorImage;
+
+
+    Equals(other: Background): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    GetSelectedImage(): Object;
+    IsEmpty(): boolean;
+    ToString(): string;
+
+}
+    
+interface VectorImage extends ScriptableObject {
+    width: number;
+    height: number;
+
+
+
+}
+    
+interface VectorImageConstructor {
+
+    new(): VectorImage;
+
+
+}
+declare const VectorImage: VectorImageConstructor;
+    
+interface BackgroundConstructor {
+
+    new(t: Texture2D): Background;
+
+
+    FromRenderTexture(rt: RenderTexture): Background;
+    FromSprite(s: Sprite): Background;
+    FromTexture2D(t: Texture2D): Background;
+    FromVectorImage(vi: VectorImage): Background;
+}
+declare const Background: BackgroundConstructor;
+    
+interface FontDefinition {
+    font: Font;
+    fontAsset: FontAsset;
+
+
+    Equals(other: FontDefinition): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface TextAsset extends ScriptableObject {
+    version: string;
+    instanceID: number;
+    hashCode: number;
+    material: Material;
+    materialHashCode: number;
+
+
+
+}
+    
+interface FontAsset extends TextAsset {
+    fontAssetCreationEditorSettings: FontAssetCreationEditorSettings;
+    sourceFontFile: Font;
+    atlasPopulationMode: AtlasPopulationMode;
+    faceInfo: FaceInfo;
+    glyphTable: CSArray<Glyph>;
+    glyphLookupTable: CSDictionary<number, Glyph>;
+    characterTable: CSArray<Character>;
+    characterLookupTable: CSDictionary<number, Character>;
+    atlasTexture: Texture2D;
+    atlasTextures: CSArray<Texture2D>;
+    atlasTextureCount: number;
+    isMultiAtlasTexturesEnabled: boolean;
+    getFontFeatures: boolean;
+    atlasWidth: number;
+    atlasHeight: number;
+    atlasPadding: number;
+    atlasRenderMode: GlyphRenderMode;
+    fontFeatureTable: FontFeatureTable;
+    fallbackFontAssetTable: CSArray<FontAsset>;
+    fontWeightTable: CSArray<FontWeightPair>;
+    regularStyleWeight: number;
+    regularStyleSpacing: number;
+    boldStyleWeight: number;
+    boldStyleSpacing: number;
+    italicStyleSlant: number;
+    tabMultiple: number;
+
+
+    ClearFontAssetData(setAtlasSizeToZero: boolean): void;
+    HasCharacter(character: number): boolean;
+    HasCharacter(character: string, searchFallbacks: boolean, tryAddCharacter: boolean): boolean;
+    HasCharacter(character: number, searchFallbacks: boolean, tryAddCharacter: boolean): boolean;
+    HasCharacters(text: string, missingCharacters: CSArray<string>): boolean;
+    HasCharacters(text: string, missingCharacters: CSArray<number>, searchFallbacks: boolean, tryAddCharacter: boolean): boolean;
+    HasCharacters(text: string): boolean;
+    ReadFontAssetDefinition(): void;
+    TryAddCharacters(unicodes: CSArray<number>, includeFontFeatures: boolean): boolean;
+    TryAddCharacters(unicodes: CSArray<number>, missingUnicodes: CSArray<number>, includeFontFeatures: boolean): boolean;
+    TryAddCharacters(characters: string, includeFontFeatures: boolean): boolean;
+    TryAddCharacters(characters: string, missingCharacters: CSArray<string>, includeFontFeatures: boolean): boolean;
+
+}
+    
+interface FontAssetCreationEditorSettings {
+    sourceFontFileGUID: string;
+    faceIndex: number;
+    pointSizeSamplingMode: number;
+    pointSize: number;
+    padding: number;
+    paddingMode: number;
+    packingMode: number;
+    atlasWidth: number;
+    atlasHeight: number;
+    characterSetSelectionMode: number;
+    characterSequence: string;
+    referencedFontAssetGUID: string;
+    referencedTextAssetGUID: string;
+    fontStyle: number;
+    fontStyleModifier: number;
+    renderMode: number;
+    includeFontFeatures: boolean;
+
+
+
+}
+    
+interface TextElement {
+    elementType: TextElementType;
+    unicode: number;
+    textAsset: TextAsset;
+    glyph: Glyph;
+    glyphIndex: number;
+    scale: number;
+
+
+
+}
+    
+interface Character extends TextElement {
+
+
+
+}
+    
+interface CharacterConstructor {
+
+    new(): Character;
+    new(unicode: number, glyph: Glyph): Character;
+    new(unicode: number, fontAsset: FontAsset, glyph: Glyph): Character;
+
+
+}
+declare const Character: CharacterConstructor;
+    
+interface FontFeatureTable {
+
+
+    SortGlyphPairAdjustmentRecords(): void;
+    SortMarkToBaseAdjustmentRecords(): void;
+    SortMarkToMarkAdjustmentRecords(): void;
+
+}
+    
+interface FontWeightPair {
+    regularTypeface: FontAsset;
+    italicTypeface: FontAsset;
+
+
+
+}
+    
+interface FontAssetConstructor {
+
+    new(): FontAsset;
+
+
+    CreateFontAsset(familyName: string, styleName: string, pointSize: number): FontAsset;
+    CreateFontAsset(fontFilePath: string, faceIndex: number, samplingPointSize: number, atlasPadding: number, renderMode: GlyphRenderMode, atlasWidth: number, atlasHeight: number): FontAsset;
+    CreateFontAsset(font: Font): FontAsset;
+    CreateFontAsset(font: Font, samplingPointSize: number, atlasPadding: number, renderMode: GlyphRenderMode, atlasWidth: number, atlasHeight: number, atlasPopulationMode: AtlasPopulationMode, enableMultiAtlasSupport: boolean): FontAsset;
+    GetCharacters(fontAsset: FontAsset): string;
+    GetCharactersArray(fontAsset: FontAsset): CSArray<number>;
+}
+declare const FontAsset: FontAssetConstructor;
+    
+interface FontDefinitionConstructor {
+
+
+
+    FromFont(f: Font): FontDefinition;
+    FromSDFFont(f: FontAsset): FontDefinition;
+}
+declare const FontDefinition: FontDefinitionConstructor;
+    
+interface TextShadow {
+    offset: Vector2;
+    blurRadius: number;
+    color: Color;
+
+
+    Equals(obj: unknown): boolean;
+    Equals(other: TextShadow): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface Scale {
+    value: Vector3;
+
+
+    Equals(other: Scale): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface ScaleConstructor {
+
+    new(scale: Vector2): Scale;
+    new(scale: Vector3): Scale;
+
+
+    None(): Scale;
+}
+declare const Scale: ScaleConstructor;
+    
+interface Translate {
+    x: Length;
+    y: Length;
+    z: number;
+
+
+    Equals(other: Translate): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface TranslateConstructor {
+
+    new(x: Length, y: Length, z: number): Translate;
+    new(x: Length, y: Length): Translate;
+
+
+    None(): Translate;
+}
+declare const Translate: TranslateConstructor;
+    
+interface Rotate {
+    angle: Angle;
+
+
+    Equals(other: Rotate): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface Angle {
+    value: number;
+    unit: AngleUnit;
+
+
+    Equals(other: Angle): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToDegrees(): number;
+    ToGradians(): number;
+    ToRadians(): number;
+    ToString(): string;
+    ToTurns(): number;
+
+}
+    
+interface AngleConstructor {
+
+    new(value: number): Angle;
+    new(value: number, unit: AngleUnit): Angle;
+
+
+    Degrees(value: number): Angle;
+    Gradians(value: number): Angle;
+    Radians(value: number): Angle;
+    Turns(value: number): Angle;
+}
+declare const Angle: AngleConstructor;
+    
+interface RotateConstructor {
+
+    new(angle: Angle): Rotate;
+
+
+    None(): Rotate;
+}
+declare const Rotate: RotateConstructor;
+    
+interface TransformOrigin {
+    x: Length;
+    y: Length;
+    z: number;
+
+
+    Equals(other: TransformOrigin): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface TransformOriginConstructor {
+
+    new(x: Length, y: Length, z: number): TransformOrigin;
+    new(x: Length, y: Length): TransformOrigin;
+
+
+    Initial(): TransformOrigin;
+}
+declare const TransformOrigin: TransformOriginConstructor;
+    
+interface BackgroundPosition {
+    keyword: BackgroundPositionKeyword;
+    offset: Length;
+
+
+    Equals(obj: unknown): boolean;
+    Equals(other: BackgroundPosition): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface BackgroundPositionConstructor {
+
+    new(keyword: BackgroundPositionKeyword): BackgroundPosition;
+    new(keyword: BackgroundPositionKeyword, offset: Length): BackgroundPosition;
+
+
+}
+declare const BackgroundPosition: BackgroundPositionConstructor;
+    
+interface BackgroundRepeat {
+    x: Repeat;
+    y: Repeat;
+
+
+    Equals(obj: unknown): boolean;
+    Equals(other: BackgroundRepeat): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface BackgroundRepeatConstructor {
+
+    new(repeatX: Repeat, repeatY: Repeat): BackgroundRepeat;
+
+
+}
+declare const BackgroundRepeat: BackgroundRepeatConstructor;
+    
+interface BackgroundSize {
+    sizeType: BackgroundSizeType;
+    x: Length;
+    y: Length;
+
+
+    Equals(obj: unknown): boolean;
+    Equals(other: BackgroundSize): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface BackgroundSizeConstructor {
+
+    new(sizeX: Length, sizeY: Length): BackgroundSize;
+    new(sizeType: BackgroundSizeType): BackgroundSize;
+
+
+}
+declare const BackgroundSize: BackgroundSizeConstructor;
+    
+interface IVisualElementScheduler {
+
+
+    Execute(timerUpdateEvent: unknown): IVisualElementScheduledItem;
+    Execute(updateEvent: unknown): IVisualElementScheduledItem;
+
+}
+    
+interface IVisualElementScheduledItem {
+    element: VisualElement;
+    isActive: boolean;
+
+
+    Every(intervalMs: number): IVisualElementScheduledItem;
+    ExecuteLater(delayMs: number): void;
+    ForDuration(durationMs: number): IVisualElementScheduledItem;
+    Pause(): void;
+    Resume(): void;
+    StartingIn(delayMs: number): IVisualElementScheduledItem;
+    Until(stopCondition: unknown): IVisualElementScheduledItem;
+
+}
+    
+interface ITransitionAnimations {
+
+
+    Layout(to: Rect, durationMs: number): unknown;
+    Position(to: Vector3, duration: number): unknown;
+    Rotation(to: Quaternion, duration: number): unknown;
+    Scale(to: number, duration: number): unknown;
+    Size(to: Vector2, durationMs: number): unknown;
+    Start(from: number, to: number, durationMs: number, onValueChanged: unknown): unknown;
+    Start(from: Rect, to: Rect, durationMs: number, onValueChanged: unknown): unknown;
+    Start(from: Color, to: Color, durationMs: number, onValueChanged: unknown): unknown;
+    Start(from: Vector3, to: Vector3, durationMs: number, onValueChanged: unknown): unknown;
+    Start(from: Vector2, to: Vector2, durationMs: number, onValueChanged: unknown): unknown;
+    Start(from: Quaternion, to: Quaternion, durationMs: number, onValueChanged: unknown): unknown;
+    Start(from: StyleValues, to: StyleValues, durationMs: number): unknown;
+    Start(to: StyleValues, durationMs: number): unknown;
+    Start(fromValueGetter: unknown, to: number, durationMs: number, onValueChanged: unknown): unknown;
+    Start(fromValueGetter: unknown, to: Rect, durationMs: number, onValueChanged: unknown): unknown;
+    Start(fromValueGetter: unknown, to: Color, durationMs: number, onValueChanged: unknown): unknown;
+    Start(fromValueGetter: unknown, to: Vector3, durationMs: number, onValueChanged: unknown): unknown;
+    Start(fromValueGetter: unknown, to: Vector2, durationMs: number, onValueChanged: unknown): unknown;
+    Start(fromValueGetter: unknown, to: Quaternion, durationMs: number, onValueChanged: unknown): unknown;
+    TopLeft(to: Vector2, durationMs: number): unknown;
+
+}
+    
+interface StyleValues {
+    top: number;
+    left: number;
+    width: number;
+    height: number;
+    right: number;
+    bottom: number;
+    color: Color;
+    backgroundColor: Color;
+    unityBackgroundImageTintColor: Color;
+    borderColor: Color;
+    marginLeft: number;
+    marginTop: number;
+    marginRight: number;
+    marginBottom: number;
+    paddingLeft: number;
+    paddingTop: number;
+    paddingRight: number;
+    paddingBottom: number;
+    borderLeftWidth: number;
+    borderRightWidth: number;
+    borderTopWidth: number;
+    borderBottomWidth: number;
+    borderTopLeftRadius: number;
+    borderTopRightRadius: number;
+    borderBottomLeftRadius: number;
+    borderBottomRightRadius: number;
+    opacity: number;
+    flexGrow: number;
+    flexShrink: number;
+
+
+
+}
+    
+interface IResolvedStyle {
+    alignContent: Align;
+    alignItems: Align;
+    alignSelf: Align;
+    backgroundColor: Color;
+    backgroundImage: Background;
+    backgroundPositionX: BackgroundPosition;
+    backgroundPositionY: BackgroundPosition;
+    backgroundRepeat: BackgroundRepeat;
+    backgroundSize: BackgroundSize;
+    borderBottomColor: Color;
+    borderBottomLeftRadius: number;
+    borderBottomRightRadius: number;
+    borderBottomWidth: number;
+    borderLeftColor: Color;
+    borderLeftWidth: number;
+    borderRightColor: Color;
+    borderRightWidth: number;
+    borderTopColor: Color;
+    borderTopLeftRadius: number;
+    borderTopRightRadius: number;
+    borderTopWidth: number;
+    bottom: number;
+    color: Color;
+    display: DisplayStyle;
+    flexBasis: StyleFloat;
+    flexDirection: FlexDirection;
+    flexGrow: number;
+    flexShrink: number;
+    flexWrap: Wrap;
+    fontSize: number;
+    height: number;
+    justifyContent: Justify;
+    left: number;
+    letterSpacing: number;
+    marginBottom: number;
+    marginLeft: number;
+    marginRight: number;
+    marginTop: number;
+    maxHeight: StyleFloat;
+    maxWidth: StyleFloat;
+    minHeight: StyleFloat;
+    minWidth: StyleFloat;
+    opacity: number;
+    paddingBottom: number;
+    paddingLeft: number;
+    paddingRight: number;
+    paddingTop: number;
+    position: Position;
+    right: number;
+    rotate: Rotate;
+    scale: Scale;
+    textOverflow: TextOverflow;
+    top: number;
+    transformOrigin: Vector3;
+    transitionDelay: CSArray<TimeValue>;
+    transitionDuration: CSArray<TimeValue>;
+    transitionProperty: CSArray<StylePropertyName>;
+    transitionTimingFunction: CSArray<EasingFunction>;
+    translate: Vector3;
+    unityBackgroundImageTintColor: Color;
+    unityFont: Font;
+    unityFontDefinition: FontDefinition;
+    unityFontStyleAndWeight: FontStyle;
+    unityParagraphSpacing: number;
+    unitySliceBottom: number;
+    unitySliceLeft: number;
+    unitySliceRight: number;
+    unitySliceScale: number;
+    unitySliceTop: number;
+    unityTextAlign: TextAnchor;
+    unityTextOutlineColor: Color;
+    unityTextOutlineWidth: number;
+    unityTextOverflowPosition: TextOverflowPosition;
+    visibility: Visibility;
+    whiteSpace: WhiteSpace;
+    width: number;
+    wordSpacing: number;
+    unityBackgroundScaleMode: unknown;
+
+
+
+}
+    
+interface StyleFloat {
+    value: number;
+    keyword: StyleKeyword;
+
+
+    Equals(other: StyleFloat): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface StyleFloatConstructor {
+
+    new(v: number): StyleFloat;
+    new(keyword: StyleKeyword): StyleFloat;
+
+
+}
+declare const StyleFloat: StyleFloatConstructor;
+    
+interface TimeValue {
+    value: number;
+    unit: TimeUnit;
+
+
+    Equals(other: TimeValue): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface TimeValueConstructor {
+
+    new(value: number): TimeValue;
+    new(value: number, unit: TimeUnit): TimeValue;
+
+
+}
+declare const TimeValue: TimeValueConstructor;
+    
+interface StylePropertyName {
+
+
+    Equals(other: unknown): boolean;
+    Equals(other: StylePropertyName): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface StylePropertyNameConstructor {
+
+    new(name: string): StylePropertyName;
+
+
+    IsNullOrEmpty(propertyName: StylePropertyName): boolean;
+}
+declare const StylePropertyName: StylePropertyNameConstructor;
+    
+interface EasingFunction {
+    mode: EasingMode;
+
+
+    Equals(other: EasingFunction): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface EasingFunctionConstructor {
+
+    new(mode: EasingMode): EasingFunction;
+
+
+}
+declare const EasingFunction: EasingFunctionConstructor;
+    
+interface IExperimentalFeatures {
+    animation: ITransitionAnimations;
+
+
+
+}
+    
+interface ITransform {
+    position: Vector3;
+    rotation: Quaternion;
+    scale: Vector3;
+    matrix: Matrix4x4;
+
+
+
+}
+    
+interface IEventHandler {
+
+
+    HandleEvent(evt: EventBase): void;
+    HasBubbleUpHandlers(): boolean;
+    HasTrickleDownHandlers(): boolean;
+    SendEvent(e: EventBase): void;
+
+}
+    
+interface EventBase {
+    eventTypeId: number;
+    timestamp: number;
+    bubbles: boolean;
+    tricklesDown: boolean;
+    target: IEventHandler;
+    isPropagationStopped: boolean;
+    isImmediatePropagationStopped: boolean;
+    isDefaultPrevented: boolean;
+    propagationPhase: PropagationPhase;
+    currentTarget: IEventHandler;
+    dispatch: boolean;
+    imguiEvent: Event;
+    originalMousePosition: Vector2;
+
+
+    Dispose(): void;
+    PreventDefault(): void;
+    StopImmediatePropagation(): void;
+    StopPropagation(): void;
+
+}
+    
+interface CallbackEventHandler extends IEventHandler {
+
+
+    HasBubbleUpHandlers(): boolean;
+    HasTrickleDownHandlers(): boolean;
+    RegisterCallback<TEventType>(callback: unknown, useTrickleDown: TrickleDown): void;
+    RegisterCallback<TEventType, TUserArgsType>(callback: unknown, userArgs: TUserArgsType, useTrickleDown: TrickleDown): void;
+    RegisterCallbackOnce<TEventType>(callback: unknown, useTrickleDown: TrickleDown): void;
+    RegisterCallbackOnce<TEventType, TUserArgsType>(callback: unknown, userArgs: TUserArgsType, useTrickleDown: TrickleDown): void;
+    SendEvent(e: EventBase): void;
+    UnregisterCallback<TEventType>(callback: unknown, useTrickleDown: TrickleDown): void;
+    UnregisterCallback<TEventType, TUserArgsType>(callback: unknown, useTrickleDown: TrickleDown): void;
+
+}
+    
+interface Focusable extends CallbackEventHandler {
+    focusController: FocusController;
+    focusable: boolean;
+    tabIndex: number;
+    delegatesFocus: boolean;
+    canGrabFocus: boolean;
+
+
+    Blur(): void;
+    Focus(): void;
+
+}
+    
+interface FocusController {
+    focusedElement: Focusable;
+
+
+    IgnoreEvent(evt: EventBase): void;
+
+}
+    
+interface FocusControllerConstructor {
+
+    new(focusRing: IFocusRing): FocusController;
+
+
+}
+declare const FocusController: FocusControllerConstructor;
+    
+    
+interface PropertyPath {
+    Length: number;
+    IsEmpty: boolean;
+    Item: PropertyPathPart;
+
+
+    Equals(other: PropertyPath): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface PropertyPathPart {
+    IsName: boolean;
+    IsIndex: boolean;
+    IsKey: boolean;
+    Kind: PropertyPathPartKind;
+    Name: string;
+    Index: number;
+    Key: unknown;
+
+
+    Equals(other: PropertyPathPart): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface PropertyPathPartConstructor {
+
+    new(name: string): PropertyPathPart;
+    new(index: number): PropertyPathPart;
+    new(key: unknown): PropertyPathPart;
+
+
+}
+declare const PropertyPathPart: PropertyPathPartConstructor;
+    
+interface IProperty {
+    Name: string;
+    IsReadOnly: boolean;
+
+
+    DeclaredValueType(): unknown;
+    GetAttribute<TAttribute>(): TAttribute;
+    GetAttributes<TAttribute>(): CSArray<TAttribute>;
+    GetAttributes(): CSArray<unknown>;
+    HasAttribute<TAttribute>(): boolean;
+
+}
+    
+interface PropertyPathConstructor {
+
+    new(path: string): PropertyPath;
+
+
+    AppendIndex(path: unknown, index: number): PropertyPath;
+    AppendKey(path: unknown, key: unknown): PropertyPath;
+    AppendName(path: unknown, name: string): PropertyPath;
+    AppendPart(path: unknown, part: unknown): PropertyPath;
+    AppendProperty(path: unknown, property: IProperty): PropertyPath;
+    Combine(path: unknown, pathToAppend: unknown): PropertyPath;
+    Combine(path: unknown, pathToAppend: string): PropertyPath;
+    FromIndex(index: number): PropertyPath;
+    FromKey(key: unknown): PropertyPath;
+    FromName(name: string): PropertyPath;
+    FromPart(part: unknown): PropertyPath;
+    Pop(path: unknown): PropertyPath;
+    SubPath(path: unknown, startIndex: number): PropertyPath;
+    SubPath(path: unknown, startIndex: number, length: number): PropertyPath;
+}
+declare const PropertyPath: PropertyPathConstructor;
+    
+interface Hierarchy {
+    parent: VisualElement;
+    childCount: number;
+    Item: VisualElement;
+
+
+    Add(child: VisualElement): void;
+    Children(): CSArray<VisualElement>;
+    Clear(): void;
+    ElementAt(index: number): VisualElement;
+    Equals(other: Hierarchy): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    IndexOf(element: VisualElement): number;
+    Insert(index: number, child: VisualElement): void;
+    Remove(child: VisualElement): void;
+    RemoveAt(index: number): void;
+    Sort(comp: unknown): void;
+
+}
+    
+interface IPanel {
+    visualTree: VisualElement;
+    dispatcher: EventDispatcher;
+    contextType: ContextType;
+    focusController: FocusController;
+    contextualMenuManager: ContextualMenuManager;
+    isDirty: boolean;
+
+
+    Pick(point: Vector2): VisualElement;
+    PickAll(point: Vector2, picked: CSArray<VisualElement>): VisualElement;
+
+}
+    
+interface EventDispatcher {
+
+
+
+}
+    
+interface ContextualMenuManager {
+
+
+    DisplayMenu(triggerEvent: EventBase, target: IEventHandler): void;
+    DisplayMenuIfEventMatches(evt: EventBase, eventHandler: IEventHandler): void;
+
+}
+    
+interface VisualTreeAsset extends ScriptableObject {
+    importedWithErrors: boolean;
+    importedWithWarnings: boolean;
+    templateDependencies: CSArray<VisualTreeAsset>;
+    stylesheets: CSArray<StyleSheet>;
+    contentHash: number;
+
+
+    CloneTree(): TemplateContainer;
+    CloneTree(bindingPath: string): TemplateContainer;
+    CloneTree(target: VisualElement): void;
+    CloneTree(target: VisualElement, firstElementIndex: unknown, elementAddedCount: unknown): void;
+    Instantiate(): TemplateContainer;
+    Instantiate(bindingPath: string): TemplateContainer;
+
+}
+    
+interface StyleSheet extends ScriptableObject {
+    importedWithErrors: boolean;
+    importedWithWarnings: boolean;
+    contentHash: number;
+
+
+
+}
+    
+interface StyleSheetConstructor {
+
+    new(): StyleSheet;
+
+
+}
+declare const StyleSheet: StyleSheetConstructor;
+    
+interface IBindable {
+    binding: IBinding;
+    bindingPath: string;
+
+
+
+}
+    
+interface IBinding {
+
+
+    PreUpdate(): void;
+    Release(): void;
+    Update(): void;
+
+}
+    
+interface BindableElement extends VisualElement, IBindable {
+    binding: IBinding;
+    bindingPath: string;
+
+
+
+}
+    
+interface BindableElementConstructor {
+
+    new(): BindableElement;
+
+
+}
+declare const BindableElement: BindableElementConstructor;
+    
+interface TemplateContainer extends BindableElement {
+    templateId: string;
+    templateSource: VisualTreeAsset;
+    contentContainer: VisualElement;
+
+
+
+}
+    
+interface TemplateContainerConstructor {
+
+    new(): TemplateContainer;
+    new(templateId: string): TemplateContainer;
+
+
+}
+declare const TemplateContainer: TemplateContainerConstructor;
+    
+interface VisualTreeAssetConstructor {
+
+    new(): VisualTreeAsset;
+
+
+}
+declare const VisualTreeAsset: VisualTreeAssetConstructor;
+    
+    
+interface StyleColor {
+    value: Color;
+    keyword: StyleKeyword;
+
+
+    Equals(other: StyleColor): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface StyleColorConstructor {
+
+    new(v: Color): StyleColor;
+    new(keyword: StyleKeyword): StyleColor;
+
+
+}
+declare const StyleColor: StyleColorConstructor;
+    
+interface StyleBackground {
+    value: Background;
+    keyword: StyleKeyword;
+
+
+    Equals(other: StyleBackground): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface StyleBackgroundConstructor {
+
+    new(v: Background): StyleBackground;
+    new(v: Texture2D): StyleBackground;
+    new(v: Sprite): StyleBackground;
+    new(v: VectorImage): StyleBackground;
+    new(keyword: StyleKeyword): StyleBackground;
+
+
+}
+declare const StyleBackground: StyleBackgroundConstructor;
+    
+interface StyleBackgroundPosition {
+    value: BackgroundPosition;
+    keyword: StyleKeyword;
+
+
+    Equals(other: StyleBackgroundPosition): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface StyleBackgroundPositionConstructor {
+
+    new(v: BackgroundPosition): StyleBackgroundPosition;
+    new(keyword: StyleKeyword): StyleBackgroundPosition;
+
+
+}
+declare const StyleBackgroundPosition: StyleBackgroundPositionConstructor;
+    
+interface StyleBackgroundRepeat {
+    value: BackgroundRepeat;
+    keyword: StyleKeyword;
+
+
+    Equals(other: StyleBackgroundRepeat): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface StyleBackgroundRepeatConstructor {
+
+    new(v: BackgroundRepeat): StyleBackgroundRepeat;
+    new(keyword: StyleKeyword): StyleBackgroundRepeat;
+
+
+}
+declare const StyleBackgroundRepeat: StyleBackgroundRepeatConstructor;
+    
+interface StyleBackgroundSize {
+    value: BackgroundSize;
+    keyword: StyleKeyword;
+
+
+    Equals(other: StyleBackgroundSize): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface StyleBackgroundSizeConstructor {
+
+    new(v: BackgroundSize): StyleBackgroundSize;
+    new(keyword: StyleKeyword): StyleBackgroundSize;
+
+
+}
+declare const StyleBackgroundSize: StyleBackgroundSizeConstructor;
+    
+interface StyleLength {
+    value: Length;
+    keyword: StyleKeyword;
+
+
+    Equals(other: StyleLength): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface StyleLengthConstructor {
+
+    new(v: number): StyleLength;
+    new(v: Length): StyleLength;
+    new(keyword: StyleKeyword): StyleLength;
+
+
+}
+declare const StyleLength: StyleLengthConstructor;
+    
+interface StyleCursor {
+    value: Cursor;
+    keyword: StyleKeyword;
+
+
+    Equals(other: StyleCursor): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface Cursor {
+    texture: Texture2D;
+    hotspot: Vector2;
+
+
+    Equals(obj: unknown): boolean;
+    Equals(other: Cursor): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface StyleCursorConstructor {
+
+    new(v: Cursor): StyleCursor;
+    new(keyword: StyleKeyword): StyleCursor;
+
+
+}
+declare const StyleCursor: StyleCursorConstructor;
+    
+interface StyleRotate {
+    value: Rotate;
+    keyword: StyleKeyword;
+
+
+    Equals(other: StyleRotate): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface StyleRotateConstructor {
+
+    new(v: Rotate): StyleRotate;
+    new(keyword: StyleKeyword): StyleRotate;
+
+
+}
+declare const StyleRotate: StyleRotateConstructor;
+    
+interface StyleScale {
+    value: Scale;
+    keyword: StyleKeyword;
+
+
+    Equals(other: StyleScale): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface StyleScaleConstructor {
+
+    new(v: Scale): StyleScale;
+    new(keyword: StyleKeyword): StyleScale;
+    new(scale: Vector2): StyleScale;
+
+
+}
+declare const StyleScale: StyleScaleConstructor;
+    
+interface StyleTextShadow {
+    value: TextShadow;
+    keyword: StyleKeyword;
+
+
+    Equals(other: StyleTextShadow): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface StyleTextShadowConstructor {
+
+    new(v: TextShadow): StyleTextShadow;
+    new(keyword: StyleKeyword): StyleTextShadow;
+
+
+}
+declare const StyleTextShadow: StyleTextShadowConstructor;
+    
+interface StyleTransformOrigin {
+    value: TransformOrigin;
+    keyword: StyleKeyword;
+
+
+    Equals(other: StyleTransformOrigin): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface StyleTransformOriginConstructor {
+
+    new(v: TransformOrigin): StyleTransformOrigin;
+    new(keyword: StyleKeyword): StyleTransformOrigin;
+
+
+}
+declare const StyleTransformOrigin: StyleTransformOriginConstructor;
+    
+interface StyleTranslate {
+    value: Translate;
+    keyword: StyleKeyword;
+
+
+    Equals(other: StyleTranslate): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface StyleTranslateConstructor {
+
+    new(v: Translate): StyleTranslate;
+    new(keyword: StyleKeyword): StyleTranslate;
+
+
+}
+declare const StyleTranslate: StyleTranslateConstructor;
+    
+interface StyleFont {
+    value: Font;
+    keyword: StyleKeyword;
+
+
+    Equals(other: StyleFont): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface StyleFontConstructor {
+
+    new(v: Font): StyleFont;
+    new(keyword: StyleKeyword): StyleFont;
+
+
+}
+declare const StyleFont: StyleFontConstructor;
+    
+interface StyleFontDefinition {
+    value: FontDefinition;
+    keyword: StyleKeyword;
+
+
+    Equals(other: StyleFontDefinition): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+
+}
+    
+interface StyleFontDefinitionConstructor {
+
+    new(f: FontDefinition): StyleFontDefinition;
+    new(f: FontAsset): StyleFontDefinition;
+    new(f: Font): StyleFontDefinition;
+    new(keyword: StyleKeyword): StyleFontDefinition;
+
+
+}
+declare const StyleFontDefinition: StyleFontDefinitionConstructor;
+    
+interface StyleInt {
+    value: number;
+    keyword: StyleKeyword;
+
+
+    Equals(other: StyleInt): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface StyleIntConstructor {
+
+    new(v: number): StyleInt;
+    new(keyword: StyleKeyword): StyleInt;
+
+
+}
+declare const StyleInt: StyleIntConstructor;
+    
+interface ICustomStyle {
+
+
+    TryGetValue(property: unknown, value: unknown): boolean;
+    TryGetValue(property: unknown, value: unknown): boolean;
+    TryGetValue(property: unknown, value: unknown): boolean;
+    TryGetValue(property: unknown, value: unknown): boolean;
+    TryGetValue(property: unknown, value: unknown): boolean;
+    TryGetValue(property: unknown, value: unknown): boolean;
+    TryGetValue(property: unknown, value: unknown): boolean;
+    TryGetValue<T>(property: unknown, value: unknown): boolean;
+    TryGetValue(property: unknown, value: CSArray<string>): boolean;
+
+}
+    
+interface VisualElementStyleSheetSet {
+    count: number;
+    Item: StyleSheet;
+
+
+    Add(styleSheet: StyleSheet): void;
+    Clear(): void;
+    Contains(styleSheet: StyleSheet): boolean;
+    Equals(other: VisualElementStyleSheetSet): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    Remove(styleSheet: StyleSheet): boolean;
+
+}
+    
+interface BindingId {
+
+
+    Equals(other: BindingId): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface BindingIdConstructor {
+    Invalid: BindingId;
+
+    new(path: string): BindingId;
+    new(path: unknown): BindingId;
+
+
+}
+declare const BindingId: BindingIdConstructor;
+    
+interface Binding {
+    isDirty: boolean;
+    updateTrigger: BindingUpdateTrigger;
+
+
+    MarkDirty(): void;
+
+}
+    
+interface BindingConstructor {
+
+
+
+    ResetPanelLogLevel(panel: IPanel): void;
+    SetGlobalLogLevel(logLevel: BindingLogLevel): void;
+    SetPanelLogLevel(panel: IPanel, logLevel: BindingLogLevel): void;
+}
+declare const Binding: BindingConstructor;
+    
+interface BindingInfo {
+    targetElement: VisualElement;
+    bindingId: BindingId;
+    binding: Binding;
+
+
+
+}
+    
+interface DataSourceContext {
+    dataSource: unknown;
+    dataSourcePath: PropertyPath;
+
+
+
+}
+    
+interface DataSourceContextConstructor {
+
+    new(dataSource: unknown, dataSourcePath: unknown): DataSourceContext;
+
+
+}
+declare const DataSourceContext: DataSourceContextConstructor;
+    
+    
+    
+    
+interface ScrollView extends VisualElement {
+    horizontalScrollerVisibility: ScrollerVisibility;
+    verticalScrollerVisibility: ScrollerVisibility;
+    elasticAnimationIntervalMs: number;
+    showHorizontal: boolean;
+    showVertical: boolean;
+    scrollOffset: Vector2;
+    horizontalPageSize: number;
+    verticalPageSize: number;
+    mouseWheelScrollSize: number;
+    scrollDecelerationRate: number;
+    elasticity: number;
+    touchScrollBehavior: TouchScrollBehavior;
+    nestedInteractionKind: NestedInteractionKind;
+    contentViewport: VisualElement;
+    horizontalScroller: Scroller;
+    verticalScroller: Scroller;
+    contentContainer: VisualElement;
+    mode: ScrollViewMode;
+
+
+    ScrollTo(child: VisualElement): void;
+
+}
+    
+interface Scroller extends VisualElement {
+    slider: Slider;
+    lowButton: RepeatButton;
+    highButton: RepeatButton;
+    value: number;
+    lowValue: number;
+    highValue: number;
+    direction: SliderDirection;
+
+
+    Adjust(factor: number): void;
+    ScrollPageDown(): void;
+    ScrollPageDown(factor: number): void;
+    ScrollPageUp(): void;
+    ScrollPageUp(factor: number): void;
+
+}
+    
+interface Slider {
+
+
+    ApplyInputDeviceDelta(delta: Vector3, speed: DeltaSpeed, startValue: number): void;
+
+}
+    
+interface SliderConstructor {
+    ussClassName: string;
+    labelUssClassName: string;
+    inputUssClassName: string;
+
+    new(): Slider;
+    new(start: number, end: number, direction: SliderDirection, pageSize: number): Slider;
+    new(label: string, start: number, end: number, direction: SliderDirection, pageSize: number): Slider;
+
+
+}
+declare const Slider: SliderConstructor;
+    
+interface ITextElement {
+    text: string;
+
+
+
+}
+    
+interface ITextEdition {
+    isReadOnly: boolean;
+    maxLength: number;
+    placeholder: string;
+    isDelayed: boolean;
+    maskChar: string;
+    isPassword: boolean;
+    hidePlaceholderOnFocus: boolean;
+    autoCorrection: boolean;
+    hideMobileInput: boolean;
+    touchScreenKeyboard: TouchScreenKeyboard;
+    keyboardType: TouchScreenKeyboardType;
+
+
+
+}
+    
+interface ITextElementExperimentalFeatures extends IExperimentalFeatures {
+
+
+    SetRenderedText(renderedText: string): void;
+
+}
+    
+interface ITextSelection {
+    isSelectable: boolean;
+    cursorColor: Color;
+    selectionColor: Color;
+    cursorIndex: number;
+    doubleClickSelectsWord: boolean;
+    selectIndex: number;
+    tripleClickSelectsLine: boolean;
+    selectAllOnFocus: boolean;
+    selectAllOnMouseUp: boolean;
+    cursorPosition: Vector2;
+
+
+    HasSelection(): boolean;
+    SelectAll(): void;
+    SelectNone(): void;
+    SelectRange(cursorIndex: number, selectionIndex: number): void;
+
+}
+    
+interface TextElement extends BindableElement, ITextElement, ITextEdition, ITextElementExperimentalFeatures, ITextSelection {
+    text: string;
+    enableRichText: boolean;
+    emojiFallbackSupport: boolean;
+    parseEscapeSequences: boolean;
+    displayTooltipWhenElided: boolean;
+    isElided: boolean;
+    experimental: ITextElementExperimentalFeatures;
+    selection: ITextSelection;
+
+
+    MeasureTextSize(textToMeasure: string, width: number, widthMode: MeasureMode, height: number, heightMode: MeasureMode): Vector2;
+
+}
+    
+interface TextElementConstructor {
+    ussClassName: string;
+    selectableUssClassName: string;
+
+    new(): TextElement;
+
+
+}
+declare const TextElement: TextElementConstructor;
+    
+interface RepeatButton extends TextElement {
+
+
+    SetAction(clickEvent: unknown, delay: number, interval: number): void;
+
+}
+    
+interface RepeatButtonConstructor {
+    ussClassName: string;
+
+    new(): RepeatButton;
+    new(clickEvent: unknown, delay: number, interval: number): RepeatButton;
+
+
+}
+declare const RepeatButton: RepeatButtonConstructor;
+    
+interface ScrollerConstructor {
+    ussClassName: string;
+    horizontalVariantUssClassName: string;
+    verticalVariantUssClassName: string;
+    sliderUssClassName: string;
+    lowButtonUssClassName: string;
+    highButtonUssClassName: string;
+
+    new(): Scroller;
+    new(lowValue: number, highValue: number, valueChanged: unknown, direction: SliderDirection): Scroller;
+
+
+}
+declare const Scroller: ScrollerConstructor;
+    
+interface ScrollViewConstructor {
+    ussClassName: string;
+    viewportUssClassName: string;
+    horizontalVariantViewportUssClassName: string;
+    verticalVariantViewportUssClassName: string;
+    verticalHorizontalVariantViewportUssClassName: string;
+    contentAndVerticalScrollUssClassName: string;
+    contentUssClassName: string;
+    horizontalVariantContentUssClassName: string;
+    verticalVariantContentUssClassName: string;
+    verticalHorizontalVariantContentUssClassName: string;
+    hScrollerUssClassName: string;
+    vScrollerUssClassName: string;
+    horizontalVariantUssClassName: string;
+    verticalVariantUssClassName: string;
+    verticalHorizontalVariantUssClassName: string;
+    scrollVariantUssClassName: string;
+
+    new(): ScrollView;
+    new(scrollViewMode: ScrollViewMode): ScrollView;
+
+
+}
+declare const ScrollView: ScrollViewConstructor;
+    
+interface AirshipLongPress extends MonoBehaviour, IBeginDragHandler, IDragHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler {
+    holdTime: number;
+
+
+    OnBeginDrag(eventData: PointerEventData): void;
+    OnDrag(eventData: PointerEventData): void;
+    OnPointerDown(eventData: PointerEventData): void;
+    OnPointerExit(eventData: PointerEventData): void;
+    OnPointerUp(eventData: PointerEventData): void;
+    Update(): void;
+
+}
+    
+interface AirshipLongPressConstructor {
+
+    new(): AirshipLongPress;
+
+
+}
+declare const AirshipLongPress: AirshipLongPressConstructor;
 

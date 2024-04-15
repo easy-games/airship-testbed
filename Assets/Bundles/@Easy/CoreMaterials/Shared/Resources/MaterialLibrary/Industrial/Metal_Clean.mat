@@ -13,13 +13,14 @@ Material:
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - EXPLICIT_MAPS_ON
-  - NUM_LIGHTS_LIGHTS2
-  - SLIDER_OVERRIDE_ON
+  - SHADOWS_ON
   - TRIPLANAR_STYLE_LOCAL
   m_InvalidKeywords:
   - EXPLICIT_MAPS
   - METAL_ON_ON
+  - NUM_LIGHTS_LIGHTS2
   - SLIDER_OVERRIDE
+  - SLIDER_OVERRIDE_ON
   - _LIGHTS_LIGHTS0
   - _TRIPLANAR_LOCAL
   - _TRIPLANAR_TRIPLANAR_LOCAL
@@ -39,6 +40,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ColorMaskTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -101,6 +106,7 @@ Material:
     m_Ints: []
     m_Floats:
     - AO_ON: 0
+    - DOUBLE_SIDED_NORMALS: 2
     - EMISSIVE: 0
     - EXPLICIT_MAPS: 1
     - INSTANCE_DATA: 0
@@ -109,8 +115,12 @@ Material:
     - OVERRIDE: 0
     - POINT_FILTER: 0
     - RIM_LIGHT: 0
+    - SHADOWS: 1
     - SLIDER_OVERRIDE: 1
     - TRIPLANAR_STYLE: 1
+    - USE_COLOR_MASK: 0
+    - USE_COLOR_MASK_ON: 0
+    - USE_SHADOW_COLOR: 0
     - VERTEX_LIGHT: 0
     - _Alpha: 1
     - _BumpScale: 1
@@ -124,7 +134,8 @@ Material:
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _Lights: 0
-    - _MetalOverride: 0.4
+    - _MRSliderOverrideMix: 0.5
+    - _MetalOverride: 0.7
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
@@ -133,9 +144,10 @@ Material:
     - _Parallax: 0.02
     - _RimIntensity: 0
     - _RimPower: 3
-    - _RoughOverride: 0.77
+    - _RoughOverride: 0.5
     - _SLIDER_OVERRIDE: 1
     - _SkyShineStrength: 0
+    - _SliderOverrideMix: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1

@@ -122,6 +122,14 @@ export class World {
 		return this.GetBlockAt(pos.add(new Vector3(0, 0.5, 0)));
 	}
 
+	public IsBlockOccupiedAt(pos: Vector3) {
+		return this.IsBlockOccupied(this.GetBlockAt(pos));
+	}
+
+	public IsBlockOccupied(block: Block | undefined) {
+		return block !== undefined && !block.IsAir();
+	}
+
 	/**
 	 * A way to find block data below a target. Used to know what a character is standing on
 	 * @param pos

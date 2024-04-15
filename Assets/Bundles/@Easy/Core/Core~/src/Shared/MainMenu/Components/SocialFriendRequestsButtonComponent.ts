@@ -12,7 +12,7 @@ export default class SocialFriendRequestsButtonComponent extends AirshipBehaviou
 					"@Easy/Core/Shared/Resources/Prefabs/UI/MainMenu/FriendRequests/FriendRequestsModal.prefab",
 				),
 			);
-			const canvas = go.GetComponent<Canvas>();
+			const canvas = go.GetComponent<Canvas>()!;
 			canvas.enabled = false;
 
 			AppManager.Open(canvas, {

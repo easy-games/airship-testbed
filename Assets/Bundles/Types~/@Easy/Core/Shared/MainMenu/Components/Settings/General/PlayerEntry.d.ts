@@ -5,6 +5,7 @@ export default class PlayerEntry extends AirshipBehaviour {
     profileImage: Image;
     usernameText: TMP_Text;
     addFriendBtn: GameObject;
+    reportBtn: GameObject;
     private bin;
     OnEnable(): void;
     Init(player: Player): void;

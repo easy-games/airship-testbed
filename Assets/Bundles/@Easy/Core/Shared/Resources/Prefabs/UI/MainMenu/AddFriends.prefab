@@ -325,7 +325,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8760657070376337533
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1388,8 +1388,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 557, y: 821}
+  m_AnchoredPosition: {x: 0, y: 97.273445}
+  m_SizeDelta: {x: 557, y: 626.4531}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8760657071612027741
 CanvasRenderer:
@@ -1466,7 +1466,9 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: Modal
+    decorators: []
     properties: []
+    displayName: 
 --- !u!1 &8760657071728503621
 GameObject:
   m_ObjectHideFlags: 0

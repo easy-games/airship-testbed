@@ -1,13 +1,13 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
-import Character from "@Easy/Core/Shared/Character/Character";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import TopDownBattleCharacter from "./TopDownBattleCharacter";
+import TopDownBattleGame, { GameMode } from "./TopDownBattleGame";
 
 export default class TopDownBattlePlayerSpawner extends AirshipBehaviour {
 	@Header("Templates")
-	public customCharacterTemplate?: GameObject;
 	public characterOutfit?: AccessoryOutfit;
 
 	@Header("References")
@@ -15,48 +15,96 @@ export default class TopDownBattlePlayerSpawner extends AirshipBehaviour {
 
 	private bin = new Bin();
 
+	private playersAlive = 0;
+
 	public override Awake(): void {}
 
 	override Start(): void {
 		if (Game.IsServer()) {
-			Airship.players.ObservePlayers((player) => {
-				this.SpawnCharacter(player);
+			//Listen to game start event
+			print("connecting to signal");
+			TopDownBattleGame.gameModeSignal.Connect((mode) => {
+				print("Listening to new game mode: " + mode);
+				if (mode === GameMode.GAME) {
+					let players = Airship.players.GetPlayers();
+					//Track how many players are playing
+					this.playersAlive = players.size();
+					//Spawn a character for each player
+					for (let i = 0; i < this.playersAlive; i++) {
+						this.SpawnCharacter(players[i]);
+					}
+				}
+			});
+
+			Airship.players.onPlayerJoined.Connect((player) => {
+				if (player) {
+					this.SpawnCharacter(player);
+				}
 			});
 
 			this.bin.Add(
+				//When a character dies, respawn it
 				Airship.damage.onDeath.Connect((info) => {
-					const character = info.gameObject.GetAirshipComponent<Character>();
-					if (character?.player) {
-						this.SpawnCharacter(character.player);
+					print("Dead GO: " + info.gameObject.name);
+					const battleCharacter = info.gameObject.GetAirshipComponent<TopDownBattleCharacter>();
+
+					if (battleCharacter) {
+						//Use up an extra life
+						battleCharacter.LoseLife();
+
+						//If has lives left
+						if (battleCharacter.GetRemainingLives() >= 0) {
+							//Character used up an extra life
+
+							//Respawn after 4 seconds
+							task.delay(4, () => {
+								if (battleCharacter.character.player) {
+									this.SpawnCharacter(battleCharacter.character.player);
+								}
+							});
+						} else {
+							//The player is dead
+							this.playersAlive--;
+							print("player died. Players remaining: " + this.playersAlive);
+							//Are all characters dead?
+							if (this.playersAlive <= 0) {
+								print("ALL PLAYERS ARE DEAD");
+								//All characters are dead
+								//Trigger the game over state
+								task.delay(2, () => {
+									print("Triggering GAME OVER");
+									TopDownBattleGame.instance.LoseGame();
+								});
+							}
+						}
+					} else {
+						error("Missing TopDownBattleCharacter on character who died");
 					}
 				}),
 			);
 		}
 		if (Game.IsClient()) {
-			Airship.characters.localCharacterManager.onBeforeLocalEntityInput.Connect((event) => {
-				event.jump = false;
-				event.sprinting = false;
-			});
-
+			//When a character is spawned
 			Airship.characters.ObserveCharacters((character) => {
+				//when the characters outfit is loaded
 				CoreNetwork.ServerToClient.Character.ChangeOutfit.client.OnServerEvent((characterId) => {
 					if (character.id === characterId) {
 						if (this.characterOutfit) {
+							//Manually replace some accessorys
 							character.accessoryBuilder.EquipAccessoryOutfit(this.characterOutfit, true);
 						}
 					}
 				});
 			});
 
+			//Turn off the core loading screen
 			Airship.loadingScreen.FinishLoading();
 		}
 	}
 
 	private SpawnCharacter(player: Player) {
-		print("Spawning character");
-		player.SpawnCharacter(this.spawnPosition.transform.position, {
-			customCharacterTemplate: this.customCharacterTemplate,
-		});
+		print("spawning character: " + this.playersAlive);
+		player.SpawnCharacter(this.spawnPosition.transform.position);
 	}
 
 	override OnDestroy(): void {

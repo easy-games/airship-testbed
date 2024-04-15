@@ -209,7 +209,7 @@ Shader "Airship/AirshipToon"
                 float4 pointLightColor = float4(0,0,0,0);
 
                 //Do point lighting
-                pointLightColor.rgb = CalculatePointLightsForPoint(i.worldPos, worldNormal, diffuseColor, roughnessLevel, specularColor, worldReflect);
+                pointLightColor.rgb = CalculatePointLightsForPoint(i.worldPos, worldNormal, diffuseColor, roughnessLevel, metallicLevel, specularColor, worldReflect);
 
                 float pointLightDelta = saturate(pointLightColor.r+pointLightColor.g+pointLightColor.b);
 

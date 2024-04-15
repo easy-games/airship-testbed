@@ -203,7 +203,7 @@ Shader "Airship/AirshipCrystal"
 				half4 depthBlend = surfaceOpacity * color + finalDepthColor;
 				
 				//Point lights
-				brightness += CalculatePointLightsForPoint(i.worldPos, worldNormal, finalDiffuseColor.rgb, 0, finalShineColor.rgb, worldReflect);
+				brightness += CalculatePointLightsForPoint(i.worldPos, worldNormal, finalDiffuseColor.rgb, 0, 0, finalShineColor.rgb, worldReflect);
 				
 				brightness = max(_MinLight, brightness * _Glossiness);
 

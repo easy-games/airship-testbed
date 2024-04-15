@@ -30,10 +30,10 @@ export class MainMenuAddFriendsController implements OnStart {
 			const go = Object.Instantiate(
 				AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/UI/MainMenu/AddFriends.prefab"),
 			);
-			this.canvas = go.GetComponent<Canvas>();
+			this.canvas = go.GetComponent<Canvas>()!;
 			this.canvas.enabled = false;
 
-			const refs = go.GetComponent<GameObjectReferences>();
+			const refs = go.GetComponent<GameObjectReferences>()!;
 			const searchInput = refs.GetValue("UI", "SearchBar") as TMP_InputField;
 			const closeButton = refs.GetValue("UI", "CloseButton");
 			const responseText = refs.GetValue("UI", "ResponseText") as TMP_Text;
@@ -86,7 +86,7 @@ export class MainMenuAddFriendsController implements OnStart {
 						),
 						sentRequestsContent.transform,
 					);
-					const sentRefs = sentRequestGo.GetComponent<GameObjectReferences>();
+					const sentRefs = sentRequestGo.GetComponent<GameObjectReferences>()!;
 					const usernameText = sentRefs.GetValue("UI", "Username") as TMP_Text;
 					usernameText.text = username;
 
@@ -124,7 +124,7 @@ export class MainMenuAddFriendsController implements OnStart {
 			});
 		}
 
-		const refs = this.canvas.gameObject.GetComponent<GameObjectReferences>();
+		const refs = this.canvas.gameObject.GetComponent<GameObjectReferences>()!;
 		const searchInput = refs.GetValue("UI", "SearchBar") as TMP_InputField;
 		const responseText = refs.GetValue("UI", "ResponseText") as TMP_Text;
 
@@ -138,7 +138,7 @@ export class MainMenuAddFriendsController implements OnStart {
 			sortingOrderOffset: 100,
 		});
 		const wrapper = this.canvas.transform.GetChild(0);
-		wrapper.localPosition = new Vector3(0, 15, 0);
-		wrapper.TweenLocalPosition(new Vector3(0, 0, 0), 0.1);
+		// wrapper.localPosition = new Vector3(0, 15, 0);
+		// wrapper.TweenLocalPosition(new Vector3(0, 0, 0), 0.1);
 	}
 }

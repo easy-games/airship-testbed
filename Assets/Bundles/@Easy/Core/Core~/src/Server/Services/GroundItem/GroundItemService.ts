@@ -202,7 +202,12 @@ export class GroundItemService implements OnStart {
 		GameObjectUtil.Destroy(groundItem.drop.gameObject);
 	}
 
-	public SpawnGroundItem(itemStack: ItemStack, pos: Vector3, velocity?: Vector3, data?: GroundItemData): GroundItem {
+	public SpawnGroundItem(
+		itemStack: ItemStack,
+		pos: Vector3,
+		velocity?: Vector3,
+		data?: GroundItemData,
+	): GroundItem | undefined {
 		if (velocity === undefined) {
 			velocity = Vector3.zero;
 		}
@@ -212,6 +217,9 @@ export class GroundItemService implements OnStart {
 		const rb = go.GetComponent<Rigidbody>();
 		// rb.velocity = velocity;
 		const drop = go.GetComponent<GroundItemDrop>();
+		if (!rb || !drop) {
+			error("Ground objects must include a rigidbody and groundItemDrop");
+		}
 		drop.SetVelocity(velocity);
 		const id = this.MakeNewID();
 		const pickupTime = data !== undefined && "generatorId" in data ? 0.1 : 1;
@@ -234,7 +242,11 @@ export class GroundItemService implements OnStart {
 
 		this.movingGroundItems.push(groundItem);
 
-		const destroyedConn = go.GetComponent<DestroyWatcher>().OnDestroyedEvent(() => {
+		let destroyWatcher = go.GetComponent<DestroyWatcher>();
+		if (!destroyWatcher) {
+			error("Ground objects must include a destroy watcher");
+		}
+		const destroyedConn = destroyWatcher.OnDestroyedEvent(() => {
 			this.RemoveGroundItemFromTracking(groundItem);
 			this.groundItems.delete(groundItem.id);
 			CoreNetwork.ServerToClient.GroundItemDestroyed.server.FireAllClients(groundItem.id);

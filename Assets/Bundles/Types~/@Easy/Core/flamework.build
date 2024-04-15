@@ -1,6 +1,6 @@
 {
 	"version": 1,
-	"flameworkVersion": "1.1.51",
+	"flameworkVersion": "1.1.52",
 	"identifiers": {
 		"@Easy/Core:Shared/Flamework/flamework@ArtificialDependency": "$:Flamework/flamework@ArtificialDependency",
 		"@Easy/Core:Client/Airship/Events/AirshipEventController@AirshipEventController": "$:Airship/Events/AirshipEventController@AirshipEventController",
@@ -111,6 +111,7 @@
 		"@Easy/Core:Shared/MainMenu/Components/Settings/General/GameGeneralPage@GameGeneralPage": "$:MainMenu/Components/Settings/General/GameGeneralPage@GameGeneralPage",
 		"@Easy/Core:Shared/MainMenu/Components/Settings/SettingsPage@SettingsPage": "$:MainMenu/Components/Settings/SettingsPage@SettingsPage",
 		"@Easy/Core:Shared/MainMenu/Components/Search/SearchSingleton@SearchSingleton": "$:MainMenu/Components/Search/SearchSingleton@SearchSingleton",
+		"@Easy/Core:Client/MainMenuControllers/Settings/MainMenuBlockSingleton@MainMenuBlockSingleton": "$:MainMenuControllers/Settings/MainMenuBlockSingleton@MainMenuBlockSingleton",
 		"@Easy/Core:Client/MainMenuControllers/Socket/SocketController@SocketController": "$:MainMenuControllers/Socket/SocketController@SocketController",
 		"@Easy/Core:Client/MainMenuControllers/Transfer/TransferController@TransferController": "$:MainMenuControllers/Transfer/TransferController@TransferController",
 		"@Easy/Core:Client/Components/HomePage/Sort/HomePageGameComponent@HomePageGameComponent": "$:Components/HomePage/Sort/HomePageGameComponent@HomePageGameComponent",
@@ -149,6 +150,7 @@
 		"@Easy/Core:Shared/Character/Footstep/AirshipCharacterFootstepsSingleton@AirshipCharacterFootstepsSingleton": "$:Character/Footstep/AirshipCharacterFootstepsSingleton@AirshipCharacterFootstepsSingleton",
 		"@Easy/Core:Shared/Item/HeldItems/CharacterItemManager@CharacterItemManager": "$:Item/HeldItems/CharacterItemManager@CharacterItemManager",
 		"@Easy/Core:Shared/Character/CharactersSingleton@CharactersSingleton": "$:Character/CharactersSingleton@CharactersSingleton",
+		"@Easy/Core:Shared/Chat/AirshipChatSingleton@AirshipChatSingleton": "$:Chat/AirshipChatSingleton@AirshipChatSingleton",
 		"@Easy/Core:Shared/Damage/DamageInfo@DamageInfo": "$:Damage/DamageInfo@DamageInfo",
 		"@Easy/Core:Shared/Damage/CanClientDamageInfo@CanClientDamageInfo": "$:Damage/CanClientDamageInfo@CanClientDamageInfo",
 		"@Easy/Core:Shared/Damage/DamageSingleton@DamageSingleton": "$:Damage/DamageSingleton@DamageSingleton",
@@ -208,12 +210,12 @@
 		"@Easy/Core:Server/Services/Chat/Commands/LagCommand@LagCommand": "$:Services/Chat/Commands/LagCommand@LagCommand",
 		"@Easy/Core:Server/Services/Chat/Commands/SaveWorldCommand@SaveWorldCommand": "$:Services/Chat/Commands/SaveWorldCommand@SaveWorldCommand",
 		"@Easy/Core:Server/Services/Chat/Commands/SetTeamCommand@SetTeamCommand": "$:Services/Chat/Commands/SetTeamCommand@SetTeamCommand",
-		"@Easy/Core:Server/Services/Chat/Commands/TeamChatCommand@TeamChatCommand": "$:Services/Chat/Commands/TeamChatCommand@TeamChatCommand",
 		"@Easy/Core:Server/Services/Chat/Commands/TeamCommand@TeamCommand": "$:Services/Chat/Commands/TeamCommand@TeamCommand",
 		"@Easy/Core:Server/Services/Chat/Commands/TpAllCommand@TpAllCommand": "$:Services/Chat/Commands/TpAllCommand@TpAllCommand",
 		"@Easy/Core:Server/Services/Chat/Commands/TpCommand@TpCommand": "$:Services/Chat/Commands/TpCommand@TpCommand",
 		"@Easy/Core:Server/Services/Chat/Commands/TpsCommand@TpsCommand": "$:Services/Chat/Commands/TpsCommand@TpsCommand",
 		"@Easy/Core:Server/Services/Chat/ChatService@ChatService": "$:Services/Chat/ChatService@ChatService",
+		"@Easy/Core:Server/Services/Chat/Commands/TeamChatCommand@TeamChatCommand": "$:Services/Chat/Commands/TeamChatCommand@TeamChatCommand",
 		"@Easy/Core:Server/Services/Player/BotService@BotService": "$:Services/Player/BotService@BotService",
 		"@Easy/Core:Server/Services/Shutdown/ShutdownService@ShutdownService": "$:Services/Shutdown/ShutdownService@ShutdownService",
 		"@Easy/Core:Shared/VoxelWorld/PrefabBlockManager/PrefabBlockManager@PrefabBlockManager": "$:VoxelWorld/PrefabBlockManager/PrefabBlockManager@PrefabBlockManager",
@@ -240,6 +242,10 @@
 		"@Easy/Core:Shared/MainMenu/Components/Search/SearchResult@SearchResult": "$:MainMenu/Components/Search/SearchResult@SearchResult",
 		"@Easy/Core:Shared/MainMenu/Components/Search/GameSearchResult@GameSearchResult": "$:MainMenu/Components/Search/GameSearchResult@GameSearchResult",
 		"@Easy/Core:Shared/MainMenu/Components/Search/SearchFocused@SearchFocused": "$:MainMenu/Components/Search/SearchFocused@SearchFocused",
+		"@Easy/Core:Shared/MainMenu/Components/Settings/BlockedGame@BlockedGame": "$:MainMenu/Components/Settings/BlockedGame@BlockedGame",
+		"@Easy/Core:Shared/MainMenu/Components/Settings/BlockedUser@BlockedUser": "$:MainMenu/Components/Settings/BlockedUser@BlockedUser",
+		"@Easy/Core:Shared/MainMenu/Components/Settings/DeleteAccountButton@DeleteAccountButton": "$:MainMenu/Components/Settings/DeleteAccountButton@DeleteAccountButton",
+		"@Easy/Core:Shared/MainMenu/Components/Settings/SettingsBlockPage@SettingsBlockPage": "$:MainMenu/Components/Settings/SettingsBlockPage@SettingsBlockPage",
 		"@Easy/Core:Shared/MainMenu/Components/Settings/SettingsDisconnectButton@SettingsDisconnectButton": "$:MainMenu/Components/Settings/SettingsDisconnectButton@SettingsDisconnectButton",
 		"@Easy/Core:Shared/Util/FormatUtil@FormatUtil": "$:Util/FormatUtil@FormatUtil",
 		"@Easy/Core:Shared/Util/InputUtils@InputUtils": "$:Util/InputUtils@InputUtils",
@@ -506,6 +512,17 @@
 			]
 		},
 		{
+			"filePath": "../Client/MainMenuControllers/Settings/MainMenuBlockSingleton.lua",
+			"internalId": "$:MainMenuControllers/Settings/MainMenuBlockSingleton@MainMenuBlockSingleton",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Singleton",
+					"isFlameworkDecorator": true,
+					"name": "Singleton"
+				}
+			]
+		},
+		{
 			"filePath": "../Client/MainMenuControllers/Socket/SocketController.lua",
 			"internalId": "$:MainMenuControllers/Socket/SocketController@SocketController",
 			"decorators": [
@@ -650,6 +667,17 @@
 					"internalId": "$:Flamework/flamework@Controller",
 					"isFlameworkDecorator": true,
 					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Shared/Chat/AirshipChatSingleton.lua",
+			"internalId": "$:Chat/AirshipChatSingleton@AirshipChatSingleton",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Singleton",
+					"isFlameworkDecorator": true,
+					"name": "Singleton"
 				}
 			]
 		},

@@ -20,7 +20,7 @@ export default class SortComponent extends AirshipBehaviour {
 	}
 
 	public OnEnable(): void {
-		const rect = this.gameObject.GetComponent<RectTransform>();
+		const rect = this.gameObject.GetComponent<RectTransform>()!;
 		const mainMenu = Dependency<MainMenuSingleton>();
 		this.bin.Add(
 			mainMenu.ObserveScreenSize((sizeType, size) => {
@@ -71,6 +71,8 @@ export default class SortComponent extends AirshipBehaviour {
 	}
 
 	public SetGames(games: GameDto[]): HomePageGameComponent[] {
+		this.titleText.gameObject.SetActive(games.size() > 0);
+
 		this.content.gameObject.ClearChildren();
 		let gameComponents: HomePageGameComponent[] = [];
 		for (const gameDto of games) {
@@ -96,6 +98,6 @@ export default class SortComponent extends AirshipBehaviour {
 	}
 
 	public SetTitle(title: string) {
-		this.titleText.GetComponent<TMP_Text>().text = title;
+		this.titleText.GetComponent<TMP_Text>()!.text = title;
 	}
 }

@@ -1,9 +1,9 @@
-import { Controller, OnStart } from "Shared/Flamework";
 import { Airship } from "Shared/Airship";
 import { AssetCache } from "Shared/AssetCache/AssetCache";
 import { AudioManager } from "Shared/Audio/AudioManager";
 import Character from "Shared/Character/Character";
 import { CoreRefs } from "Shared/CoreRefs";
+import { Controller, OnStart } from "Shared/Flamework";
 import { Bin } from "Shared/Util/Bin";
 import { ColorUtil } from "Shared/Util/ColorUtil";
 import { SetTimeout } from "Shared/Util/Timer";
@@ -26,14 +26,14 @@ export class DamageIndicatorController implements OnStart {
 			AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/UI/Combat/CombatEffectsUI.prefab"),
 			CoreRefs.rootTransform,
 		);
-		this.combatEffectsCanvas = combatEffectsUI.GetComponent<Canvas>();
+		this.combatEffectsCanvas = combatEffectsUI.GetComponent<Canvas>()!;
 		Object.Destroy(combatEffectsUI.transform.FindChild("DamageIndicator")!.gameObject);
-		this.hitMarkerImage = combatEffectsUI.transform.GetChild(0).GetComponent<Image>();
+		this.hitMarkerImage = combatEffectsUI.transform.GetChild(0).GetComponent<Image>()!;
 		this.hitMarkerImage.enabled = false;
 		this.indicatorPrefab = AssetCache.LoadAsset(
 			"@Easy/Core/Shared/Resources/Prefabs/UI/Combat/DamageIndicator.prefab",
 		);
-		this.indicatorPos = this.indicatorPrefab.GetComponent<RectTransform>().anchoredPosition;
+		this.indicatorPos = this.indicatorPrefab.GetComponent<RectTransform>()!.anchoredPosition;
 		PoolManager.PreLoadPool(this.indicatorPrefab, 5);
 	}
 
@@ -91,25 +91,25 @@ export class DamageIndicatorController implements OnStart {
 			}
 		});
 
-		Airship.players.ObservePlayers((player) => {
-			player.ObserveCharacter((character) => {
-				character?.onDeath.Connect(() => {
-					character.animator.PlayDeath();
+		// Airship.players.ObservePlayers((player) => {
+		// 	player.ObserveCharacter((character) => {
+		// 		character?.onDeath.Connect(() => {
+		// 			character.animator.PlayDeath();
 
-					// PvP Kill
-					// if (event.killer?.IsLocalCharacter() && event.killer !== event.entity) {
-					// 	AudioManager.PlayGlobal("@Easy/Core/Shared/Resources/Sound/Player_Kill", { volumeScale: 0.12 });
-					// }
+		// 			// PvP Kill
+		// 			// if (event.killer?.IsLocalCharacter() && event.killer !== event.entity) {
+		// 			// 	AudioManager.PlayGlobal("@Easy/Core/Shared/Resources/Sound/Player_Kill", { volumeScale: 0.12 });
+		// 			// }
 
-					// // Local death
-					// if (event.entity.IsLocalCharacter()) {
-					// 	AudioManager.PlayGlobal("@Easy/Core/Shared/Resources/Sound/Death", {
-					// 		volumeScale: 0.3,
-					// 	});
-					// }
-				});
-			});
-		});
+		// 			// // Local death
+		// 			// if (event.entity.IsLocalCharacter()) {
+		// 			// 	AudioManager.PlayGlobal("@Easy/Core/Shared/Resources/Sound/Death", {
+		// 			// 		volumeScale: 0.3,
+		// 			// 	});
+		// 			// }
+		// 		});
+		// 	});
+		// });
 	}
 
 	public CreateDamageIndicator(amount: number, criticalHit: boolean): void {
@@ -117,12 +117,12 @@ export class DamageIndicatorController implements OnStart {
 
 		const go = PoolManager.SpawnObject(this.indicatorPrefab);
 		go.transform.SetParent(this.combatEffectsCanvas.transform);
-		const rect = go.GetComponent<RectTransform>();
+		const rect = go.GetComponent<RectTransform>()!;
 		rect.anchoredPosition = this.indicatorPos;
 		const baseScale = new Vector3(1, 1, 1).mul(criticalHit ? 1.6 : 1);
 		rect.localScale = baseScale;
 
-		const text = go.GetComponent<TMP_Text>();
+		const text = go.GetComponent<TMP_Text>()!;
 		text.text = math.floor(amount) + "";
 		text.alpha = 1;
 

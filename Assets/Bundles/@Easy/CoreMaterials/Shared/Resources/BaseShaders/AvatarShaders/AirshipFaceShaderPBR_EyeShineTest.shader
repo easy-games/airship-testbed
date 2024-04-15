@@ -619,7 +619,7 @@ Shader "Airship/AirshipFaceShaderPBR"
                 finalColor *= ambientOcclusionMask;
         
                 //Do point lighting
-                finalColor.xyz += CalculatePointLightsForPoint(input.worldPos, worldNormal, diffuseColor, roughnessLevel, specularColor, worldReflect);
+                finalColor.xyz += CalculatePointLightsForPoint(input.worldPos, worldNormal, diffuseColor, roughnessLevel, metallicLevel, specularColor, worldReflect);
 
 
                 //Rim light

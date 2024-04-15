@@ -29,7 +29,7 @@ export class MainMenuSingleton implements OnStart {
 			CoreRefs.rootTransform,
 		);
 		const canvasRect = readOnlyCanvasGO.transform as RectTransform;
-		const canvasScaler = readOnlyCanvasGO.gameObject.GetComponent<CanvasScaler>();
+		const canvasScaler = readOnlyCanvasGO.gameObject.GetComponent<CanvasScaler>()!;
 
 		let lastTime = 0;
 		OnUpdate.Connect((dt) => {

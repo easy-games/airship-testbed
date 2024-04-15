@@ -6,15 +6,23 @@ interface BlockedGame {
 	name: string;
 }
 
+interface BlockedUser {
+	uid: string;
+	username: string;
+}
+
 interface BlockListFile {
 	games: BlockedGame[];
-	users: string[];
+	users: BlockedUser[];
 }
 
 @Singleton({})
 export class MainMenuBlockSingleton implements OnStart {
 	public blockedGameIds = new Set<string>();
 	public blockedGames: BlockedGame[] = [];
+
+	public blockedUserIds = new Set<string>();
+	public blockedUsers: BlockedUser[] = [];
 
 	OnStart(): void {
 		const blockListContents = DiskManager.ReadFileAsync("BlockList.json");
@@ -23,6 +31,10 @@ export class MainMenuBlockSingleton implements OnStart {
 			for (let game of data.games) {
 				this.blockedGameIds.add(game.id);
 				this.blockedGames.push(game);
+			}
+			for (let user of data.users) {
+				this.blockedUserIds.add(user.uid);
+				this.blockedUsers.push(user);
 			}
 		}
 	}
@@ -49,10 +61,32 @@ export class MainMenuBlockSingleton implements OnStart {
 		return this.blockedGameIds.has(gameId);
 	}
 
+	public BlockUserAsync(uid: string, username: string): void {
+		if (!this.blockedUserIds.has(uid)) {
+			this.blockedUserIds.add(uid);
+			this.blockedUsers.push({
+				uid,
+				username,
+			});
+			this.SaveToDisk();
+		}
+	}
+
+	public UnblockUserAsync(uid: string): void {
+		if (this.blockedUserIds.delete(uid)) {
+			this.blockedUsers = this.blockedUsers.filter((g) => g.uid !== uid);
+			this.SaveToDisk();
+		}
+	}
+
+	public IsUserIdBlocked(uid: string): boolean {
+		return this.blockedUserIds.has(uid);
+	}
+
 	private SaveToDisk(): void {
 		let data: BlockListFile = {
 			games: this.blockedGames,
-			users: [],
+			users: this.blockedUsers,
 		};
 		DiskManager.WriteFileAsync("BlockList.json", EncodeJSON(data));
 	}

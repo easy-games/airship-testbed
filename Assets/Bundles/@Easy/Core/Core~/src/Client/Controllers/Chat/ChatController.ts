@@ -20,6 +20,7 @@ import { ChatUtil } from "Shared/Util/ChatUtil";
 import { SignalPriority } from "Shared/Util/Signal";
 import { SetInterval, SetTimeout } from "Shared/Util/Timer";
 import { LocalCharacterSingleton } from "../../../Shared/Character/LocalCharacter/LocalCharacterSingleton";
+import { MainMenuBlockSingleton } from "../../MainMenuControllers/Settings/MainMenuBlockSingleton";
 import { CoreUIController } from "../UI/CoreUIController";
 import { MessageCommand } from "./ClientCommands/MessageCommand";
 import { ReplyCommand } from "./ClientCommands/ReplyCommand";
@@ -34,7 +35,7 @@ class ChatMessageElement {
 		public readonly gameObject: GameObject,
 		public time: number,
 	) {
-		this.canvasGroup = gameObject.GetComponent<CanvasGroup>();
+		this.canvasGroup = gameObject.GetComponent<CanvasGroup>()!;
 	}
 
 	public Hide(): void {
@@ -66,7 +67,7 @@ class ChatMessageElement {
 
 @Controller({})
 export class ChatController implements OnStart {
-	private canvas!: Canvas;
+	public canvas!: Canvas;
 	private content: GameObject;
 	private wrapper: GameObject;
 	private chatMessagePrefab: Object;
@@ -91,19 +92,19 @@ export class ChatController implements OnStart {
 		private readonly directMessageController: DirectMessageController,
 		private readonly friendsController: FriendsController,
 	) {
-		const refs = this.coreUIController.refs.GetValue("Apps", "Chat").GetComponent<GameObjectReferences>();
-		this.canvas = refs.GetValue("UI", "Canvas").GetComponent<Canvas>();
+		const refs = this.coreUIController.refs.GetValue("Apps", "Chat").GetComponent<GameObjectReferences>()!;
+		this.canvas = refs.GetValue("UI", "Canvas").GetComponent<Canvas>()!;
 		this.content = refs.GetValue("UI", "Content");
 		this.wrapper = refs.GetValue("UI", "Wrapper");
 		this.chatMessagePrefab = refs.GetValue("UI", "ChatMessagePrefab");
 		this.inputField = refs.GetValue("UI", "InputField");
-		this.inputWrapperImage = refs.GetValue("UI", "Input").GetComponent<Image>();
+		this.inputWrapperImage = refs.GetValue("UI", "Input").GetComponent<Image>()!;
 		this.content.gameObject.ClearChildren();
 
 		Dependency<MainMenuSingleton>().ObserveScreenSize((st, size) => {
 			if (Game.IsMobile()) {
-				this.canvas.GetComponent<CanvasScaler>().scaleFactor = Game.GetScaleFactor();
-				const wrapperRect = this.wrapper.GetComponent<RectTransform>();
+				this.canvas.GetComponent<CanvasScaler>()!.scaleFactor = Game.GetScaleFactor();
+				const wrapperRect = this.wrapper.GetComponent<RectTransform>()!;
 
 				if (Game.deviceType === AirshipDeviceType.Phone) {
 					wrapperRect.anchorMin = new Vector2(0, 0);
@@ -120,8 +121,8 @@ export class ChatController implements OnStart {
 				}
 				wrapperRect.anchoredPosition = new Vector2(121, -14);
 			} else {
-				const wrapperRect = this.wrapper.GetComponent<RectTransform>();
-				const wrapperImg = wrapperRect.GetComponent<Image>();
+				const wrapperRect = this.wrapper.GetComponent<RectTransform>()!;
+				const wrapperImg = wrapperRect.GetComponent<Image>()!;
 				wrapperImg.color = new Color(0, 0, 0, 0);
 			}
 		});
@@ -133,7 +134,7 @@ export class ChatController implements OnStart {
 		if (Game.IsMobile()) {
 			this.canvas.enabled = false;
 		} else {
-			this.wrapper.GetComponent<Mask>().enabled = false;
+			this.wrapper.GetComponent<Mask>()!.enabled = false;
 		}
 	}
 
@@ -161,10 +162,19 @@ export class ChatController implements OnStart {
 	}
 
 	OnStart(): void {
-		CoreNetwork.ServerToClient.ChatMessage.client.OnServerEvent((text, senderClientId) => {
+		CoreNetwork.ServerToClient.ChatMessage.client.OnServerEvent((rawText, nameWithPrefix, senderClientId) => {
 			let sender: Player | undefined;
 			if (senderClientId !== undefined) {
 				sender = Airship.players.FindByClientId(senderClientId);
+				if (sender) {
+					if (Dependency<MainMenuBlockSingleton>().IsUserIdBlocked(sender.userId)) {
+						return;
+					}
+				}
+			}
+			let text = rawText;
+			if (nameWithPrefix) {
+				text = nameWithPrefix + rawText;
 			}
 			this.RenderChatMessage(text, sender);
 		});
@@ -346,7 +356,7 @@ export class ChatController implements OnStart {
 		print(message);
 		try {
 			const chatMessage = GameObjectUtil.InstantiateIn(this.chatMessagePrefab, this.content.transform);
-			const refs = chatMessage.GetComponent<GameObjectReferences>();
+			const refs = chatMessage.GetComponent<GameObjectReferences>()!;
 
 			const textGui = refs.GetValue<TextMeshProUGUI>("UI", "Text");
 			textGui.text = message;
@@ -362,7 +372,7 @@ export class ChatController implements OnStart {
 			const element = new ChatMessageElement(chatMessage, os.clock());
 			this.chatMessageElements.push(element);
 
-			if (Time.time > this.lastChatMessageRenderedTime) {
+			if (Time.time > this.lastChatMessageRenderedTime && this.canvas.gameObject.active) {
 				AudioManager.PlayGlobal(CoreSound.chatMessageReceived, {
 					volumeScale: 0.24,
 				});

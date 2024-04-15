@@ -39,10 +39,10 @@ export class MainMenuController implements OnStart {
 	constructor() {
 		const mainMenuPrefab = AssetBridge.Instance.LoadAsset("@Easy/Core/Client/Resources/MainMenu/MainMenu.prefab");
 		this.mainMenuGo = Object.Instantiate(mainMenuPrefab, CoreRefs.rootTransform) as GameObject;
-		this.refs = this.mainMenuGo.GetComponent<GameObjectReferences>();
+		this.refs = this.mainMenuGo.GetComponent<GameObjectReferences>()!;
 		const wrapperGo = this.refs.GetValue("UI", "Wrapper");
-		this.wrapperRect = wrapperGo.GetComponent<RectTransform>();
-		this.rootCanvasGroup = this.mainMenuGo.GetComponent<CanvasGroup>();
+		this.wrapperRect = wrapperGo.GetComponent<RectTransform>()!;
+		this.rootCanvasGroup = this.mainMenuGo.GetComponent<CanvasGroup>()!;
 		this.mainContentCanvas = this.refs.GetValue<Canvas>("UI", "MainContentCanvas");
 		this.mainContentGroup = this.refs.GetValue<CanvasGroup>("UI", "MainContentGroup");
 		this.socialMenuGroup = this.refs.GetValue<CanvasGroup>("UI", "SocialGroup");
@@ -80,6 +80,10 @@ export class MainMenuController implements OnStart {
 		}
 
 		this.gameBG = this.refs.GetValue("UI", "GameBG");
+		if (Game.IsMobile()) {
+			this.gameBG.GetComponent<Image>()!.color = new Color(0.223, 0.233, 0.264, 1);
+		}
+
 		this.mainMenuBG = this.refs.GetValue("UI", "MainMenuBG");
 		this.ToggleGameBG(true);
 
@@ -135,9 +139,6 @@ export class MainMenuController implements OnStart {
 
 		this.avatarView?.HideAvatar();
 		EventSystem.current.ClearSelected();
-
-		//Clear menu's cache on menu close
-		CloudImage.ClearCache();
 
 		const duration = 0.06;
 		this.wrapperRect.TweenLocalScale(new Vector3(1.1, 1.1, 1.1), duration);

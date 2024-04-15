@@ -6,7 +6,6 @@ import { GroundItemData } from "./GroundItem/GroundItem";
 import { InventoryDto } from "./Inventory/Inventory";
 import { ItemStackDto } from "./Inventory/ItemStack";
 import { CoreItemType } from "./Item/CoreItemType";
-import { HeldItemActionState } from "./Item/HeldItems/HeldItemManager";
 import { RemoteEvent } from "./Network/RemoteEvent";
 import { RemoteFunction } from "./Network/RemoteFunction";
 import { PlayerDto } from "./Player/Player";
@@ -83,9 +82,8 @@ export const CoreNetwork = {
 			>(),
 		},
 		CharacterModelChanged: new RemoteEvent<[characterModelId: number]>(),
-		ChatMessage: new RemoteEvent<[text: string, senderClientId?: number]>(),
 		/** Fired when a player sends a chat message with the raw chat message */
-		PlayerChatted: new RemoteEvent<[rawMessage: string, senderClientId: number]>(),
+		ChatMessage: new RemoteEvent<[message: string, senderPrefix?: string, senderClientId?: number]>(),
 		SetAccessory: new RemoteEvent<[entityId: number, slot: AccessorySlot, accessoryPath: string]>(),
 		RemoveAccessory: new RemoteEvent<[entityId: number, slot: AccessorySlot]>(),
 		AddPlayer: new RemoteEvent<[player: PlayerDto]>(),

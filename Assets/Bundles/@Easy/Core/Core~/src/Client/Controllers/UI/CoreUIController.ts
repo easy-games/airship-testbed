@@ -12,7 +12,7 @@ export class CoreUIController implements OnStart {
 			CoreRefs.rootTransform,
 		);
 		this.coreUIGO.name = "CoreUI";
-		this.refs = this.coreUIGO.GetComponent<GameObjectReferences>();
+		this.refs = this.coreUIGO.GetComponent<GameObjectReferences>()!;
 	}
 
 	OnStart(): void {}

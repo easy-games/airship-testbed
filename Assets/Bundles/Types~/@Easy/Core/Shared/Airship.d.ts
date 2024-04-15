@@ -15,6 +15,7 @@ import { TransferService } from "../Server/Airship/Transfer/TransferService";
 import { UserService } from "../Server/Airship/User/UserService";
 import { AirshipCharacterCameraSingleton } from "./Camera/AirshipCharacterCameraSingleton";
 import { CharactersSingleton } from "./Character/CharactersSingleton";
+import { AirshipChatSingleton } from "./Chat/AirshipChatSingleton";
 import { DamageSingleton } from "./Damage/DamageSingleton";
 import { AirshipInputSingleton } from "./Input/AirshipInputSingleton";
 import { InventorySingleton } from "./Inventory/InventorySingleton";
@@ -130,12 +131,13 @@ export declare const Airship: {
     teams: Omit<TeamsSingleton, "OnStart">;
     inventory: Omit<InventorySingleton, "OnStart">;
     loadingScreen: Omit<LoadingScreenSingleton, "OnStart">;
-    characterCamera: AirshipCharacterCameraSingleton;
+    characterCamera: Omit<AirshipCharacterCameraSingleton, "OnStart">;
     /**
      * Namespace for managing and query Airship tags on game objects
      * @see https://docs.airship.gg/tags
      */
     tags: Omit<TagsSingleton, "OnStart">;
+    chat: Omit<AirshipChatSingleton, "OnStart">;
     /**
      * Internal method used to wait until Airship singletons are ready.
      * This is only needed when developing inside the Core package.

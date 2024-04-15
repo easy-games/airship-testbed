@@ -33,13 +33,13 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Brightness: 1
+    - _Brightness: 0.41
     - _Exposure: 1
     - _FogPower: 1
-    - _FogSize: 3.5
+    - _FogSize: 2.84
     - _Rotation: 0
     m_Colors:
-    - _FogColor: {r: 1, g: 1, b: 1, a: 1}
+    - _FogColor: {r: 0, g: 0, b: 0, a: 1}
     - _Tint: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

@@ -16,6 +16,6 @@ export declare class GroundItemService implements OnStart {
     private IsGroundItemMoving;
     private ScanForIdleItems;
     DestroyGroundItem(groundItem: GroundItem): void;
-    SpawnGroundItem(itemStack: ItemStack, pos: Vector3, velocity?: Vector3, data?: GroundItemData): GroundItem;
+    SpawnGroundItem(itemStack: ItemStack, pos: Vector3, velocity?: Vector3, data?: GroundItemData): GroundItem | undefined;
     private MakeNewID;
 }

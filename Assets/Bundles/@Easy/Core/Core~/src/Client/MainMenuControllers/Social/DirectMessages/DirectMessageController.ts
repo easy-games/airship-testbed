@@ -154,7 +154,7 @@ export class DirectMessageController implements OnStart {
 
 		const friendGo = this.friendsController.GetFriendGo(uid);
 		if (friendGo) {
-			const refs = friendGo.GetComponent<GameObjectReferences>();
+			const refs = friendGo.GetComponent<GameObjectReferences>()!;
 			const badge = refs.GetValue("UI", "UnreadBadge") as GameObject;
 			const badgeText = refs.GetValue("UI", "UnreadBadgeText") as TMP_Text;
 
@@ -170,9 +170,9 @@ export class DirectMessageController implements OnStart {
 			),
 			this.mainMenuController.socialMenuGroup.transform,
 		);
-		this.windowGo.GetComponent<RectTransform>().anchoredPosition = new Vector2(this.xPos, this.yPos);
+		this.windowGo.GetComponent<RectTransform>()!.anchoredPosition = new Vector2(this.xPos, this.yPos);
 
-		this.windowGoRefs = this.windowGo.GetComponent<GameObjectReferences>();
+		this.windowGoRefs = this.windowGo.GetComponent<GameObjectReferences>()!;
 		this.messagesContentGo = this.windowGoRefs.GetValue("UI", "MessagesContent");
 		this.scrollRect = this.windowGoRefs.GetValue("UI", "ScrollRect") as ScrollRect;
 		this.offlineNoticeWrapper = this.windowGoRefs.GetValue("UI", "NoticeWrapper");
@@ -322,7 +322,7 @@ export class DirectMessageController implements OnStart {
 		} else {
 			messageGo = Object.Instantiate(this.incomingMessagePrefab, this.messagesContentGo!.transform);
 		}
-		const messageRefs = messageGo.GetComponent<GameObjectReferences>();
+		const messageRefs = messageGo.GetComponent<GameObjectReferences>()!;
 		const text = messageRefs.GetValue("UI", "Text") as TMP_Text;
 
 		if (isParty && !outgoing) {
@@ -330,7 +330,7 @@ export class DirectMessageController implements OnStart {
 			const profilePictureGo = content.GetChild(0).gameObject;
 			const profilePicSprite = Airship.players.GetProfilePictureSpriteAsync(dm.sender);
 			if (profilePicSprite) {
-				profilePictureGo.GetComponent<Image>().sprite = profilePicSprite;
+				profilePictureGo.GetComponent<Image>()!.sprite = profilePicSprite;
 			}
 			profilePictureGo.SetActive(true);
 			content.GetChild(1).gameObject.SetActive(true);
@@ -450,7 +450,7 @@ export class DirectMessageController implements OnStart {
 	private ClearUnreadBadge(uid: string): void {
 		const friendGo = this.friendsController.GetFriendGo(uid);
 		if (friendGo) {
-			friendGo.GetComponent<GameObjectReferences>().GetValue("UI", "UnreadBadge").SetActive(false);
+			friendGo.GetComponent<GameObjectReferences>()!.GetValue("UI", "UnreadBadge").SetActive(false);
 		}
 	}
 

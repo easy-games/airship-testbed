@@ -110,12 +110,10 @@ export class EffectsManager {
 	): GameObject | undefined {
 		if (!bundle || effectId < 0) {
 			error("Trying to spawn effect that doesnt exist: " + bundle + ", " + effectId);
-			return;
 		}
 		let template = BundleReferenceManager.LoadResourceFromBundle<GameObject>(bundle, effectId);
 		if (template === undefined) {
 			error("Trying to spawn effect but prefab template wasn't found: " + bundle.id + ", " + effectId);
-			return undefined;
 		}
 		return this.SpawnGameObject(template, hitTransform, destroyInSeconds);
 	}
@@ -163,6 +161,9 @@ export class EffectsManager {
 		if (blockGO) {
 			const blockRen = blockGO.GetComponent<Renderer>();
 			const blockFilter = blockGO.GetComponent<MeshFilter>();
+			if (!blockRen || !blockFilter) {
+				error("Missing renderer or mesh filter on instantiated block prefab");
+			}
 			particles.mesh = blockFilter.mesh;
 			particles.sharedMaterial = blockRen.sharedMaterial;
 			GameObjectUtil.Destroy(blockGO);

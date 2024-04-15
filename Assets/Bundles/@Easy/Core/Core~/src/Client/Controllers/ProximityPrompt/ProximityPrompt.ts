@@ -67,10 +67,10 @@ export class ProximityPrompt {
 		// Set activation key, action, and object text.
 		const keyCode = this.promptGameObject.transform
 			.Find("Canvas/Background/KeyCodeBackground/KeyCode")!
-			.GetComponent<TextMeshProUGUI>();
+			.GetComponent<TextMeshProUGUI>()!;
 		const textWrapper = this.promptGameObject.transform.Find("Canvas/Background/TextWrapper")!;
-		const bottomText = textWrapper.FindChild("BottomText")!.GetComponent<TextMeshProUGUI>();
-		const topText = textWrapper.FindChild("TopText")!.GetComponent<TextMeshProUGUI>();
+		const bottomText = textWrapper.FindChild("BottomText")!.GetComponent<TextMeshProUGUI>()!;
+		const topText = textWrapper.FindChild("TopText")!.GetComponent<TextMeshProUGUI>()!;
 		keyCode.text = this.data.activationKeyString;
 		bottomText.text = this.data.bottomText;
 		topText.text = this.data.topText;

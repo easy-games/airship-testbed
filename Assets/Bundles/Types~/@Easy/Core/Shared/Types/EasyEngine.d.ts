@@ -51,17 +51,20 @@ interface PlayerManagerConstructor {
 declare const PlayerManagerBridge: PlayerManagerConstructor;
 
 interface PlayerInfo extends Component {
-	clientId: number;
-	userId: string;
-	username: string;
-	usernameTag: string;
+	clientId: SyncVar<number>;
+	userId: SyncVar<string>;
+	username: SyncVar<string>;
+	usernameTag: SyncVar<string>;
 }
 
-interface PlayerInfoDto extends Component {
+interface SyncVar<T> {
+	Value: T;
+}
+
+interface PlayerInfoDto {
 	clientId: number;
 	userId: string;
 	username: string;
-	usernameTag: string;
 	gameObject: GameObject;
 }
 
@@ -352,23 +355,6 @@ interface OcclusionCam extends Component {
 interface PredictedObject extends GameObject {
 	SetGraphicalObject(transform: Transform): void;
 }
-
-interface Animator extends MonoBehaviour {
-	Play(stateName: string, layer?: number, normalizedTime?: number): void;
-	Play(stateNameHash: number, layer?: number, normalizedTime?: number): void;
-	SetBool(name: string, value: boolean): void;
-	SetBool(id: number, value: boolean): void;
-	SetFloat(name: string, value: number): void;
-	SetFloat(name: string, value: number, dampTime: number, deltaTime: number): void;
-	SetFloat(id: number, value: number): void;
-	SetFloat(id: number, value: number, dampTime: number, deltaTime: number): void;
-	Rebind(): void;
-}
-
-interface AnimatorStatic {
-	StringToHash(name: string): number;
-}
-declare const Animator: AnimatorStatic;
 
 declare const enum CharacterState {
 	Idle = 0,
@@ -926,4 +912,8 @@ interface AirshipTags extends MonoBehaviour {
 	AddTag(tag: string): void;
 	HasTag(tag: string): boolean;
 	RemoveTag(tag: string): void;
+}
+
+interface AirshipLongPress extends MonoBehaviour {
+	OnLongPress(callback: (pressPosition: Vector2) => void): EngineEventConnection;
 }

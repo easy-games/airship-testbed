@@ -54,7 +54,7 @@ export default class Character extends AirshipBehaviour {
 	public Awake(): void {
 		this.inventory = this.gameObject.GetAirshipComponent<Inventory>()!;
 		this.animator = new CharacterAnimator(this);
-		this.rig = this.rigRoot.GetComponent<CharacterRig>();
+		this.rig = this.rigRoot.GetComponent<CharacterRig>()!;
 	}
 
 	public LateUpdate(dt: number): void {

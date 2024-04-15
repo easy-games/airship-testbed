@@ -6,6 +6,7 @@ import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
+import { MobileGameList } from "@Easy/Core/Shared/Util/MobileGameList";
 import { OnFixedUpdate, OnLateUpdate } from "@Easy/Core/Shared/Util/Timer";
 import { DecodeJSON } from "@Easy/Core/Shared/json";
 import { MainMenuSingleton } from "../../Singletons/MainMenuSingleton";
@@ -164,6 +165,10 @@ export default class SearchFocused extends AirshipBehaviour {
 			games = [...Dependency<SearchSingleton>().games];
 		}
 
+		if (!Game.IsEditor() && Game.IsMobile()) {
+			games = games.filter((g) => MobileGameList.includes(g.id));
+		}
+
 		this.activeResult = undefined;
 
 		// const search = Dependency<SearchSingleton>();
@@ -198,7 +203,7 @@ export default class SearchFocused extends AirshipBehaviour {
 		if (searchResults.size() === 0) {
 			// no results
 			const go = Object.Instantiate(this.noResultsPrefab, this.resultsWrapper);
-			const text = go.transform.GetChild(0).GetComponent<TMP_Text>();
+			const text = go.transform.GetChild(0).GetComponent<TMP_Text>()!;
 			text.text = `${searchTerm}   <color=#A2A2A2>-   No results</color>`;
 			return;
 		}

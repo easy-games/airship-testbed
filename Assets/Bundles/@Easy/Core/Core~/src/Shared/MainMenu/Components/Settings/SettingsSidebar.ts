@@ -25,7 +25,7 @@ export default class SettingsSidebar extends AirshipBehaviour {
 				other.SetSelected(true);
 				other.tab.SetActive(true);
 
-				// const rect = other.tab.GetComponent<RectTransform>();
+				// const rect = other.tab.GetComponent<RectTransform>()!;
 				// rect.anchoredPosition = new Vector2(0, -10);
 				// rect.TweenAnchoredPosition(new Vector2(0, 0), 0.1);
 			} else {

@@ -30,7 +30,7 @@ export default class DirectMessagesWindow extends AirshipBehaviour {
 		this.bin.Clean();
 		this.messagesParent.ClearChildren();
 
-		this.gameObject.GetComponent<RectTransform>().TweenAnchoredPositionY(75, 0.1);
+		this.gameObject.GetComponent<RectTransform>()!.TweenAnchoredPositionY(75, 0.1);
 
 		Bridge.UpdateLayout(this.messagesContent.transform, false);
 		this.scrollRect.velocity = new Vector2(0, 0);
@@ -98,7 +98,7 @@ export default class DirectMessagesWindow extends AirshipBehaviour {
 			const go = Object.Instantiate(this.profilePicturePrefab, parentTransform);
 			const sprite = Airship.players.GetProfilePictureSpriteAsync(member.uid);
 			if (sprite) {
-				go.GetComponent<Image>().sprite = sprite;
+				go.GetComponent<Image>()!.sprite = sprite;
 			}
 		}
 	}

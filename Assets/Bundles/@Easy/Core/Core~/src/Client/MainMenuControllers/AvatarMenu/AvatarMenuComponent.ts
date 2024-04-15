@@ -95,6 +95,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			let image = this.avatarRenderHolder?.GetComponent<RawImage>();
 			if (image) {
 				image.texture = texture;
+			} else {
+				error("Missing raw image on avatarrenderholder");
 			}
 			this.RefreshAvatar();
 		});
@@ -496,7 +498,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 				this.currentContentBtns.push({ id: instanceId, button: accessoryBtn });
 
 				//download the items thumbnail
-				let cloudImage = newButton.gameObject.GetComponent<CloudImage>();
+				let cloudImage = newButton.gameObject.GetComponent<CloudImage>()!;
 				if (cloudImage === undefined) {
 					cloudImage = newButton.gameObject.AddComponent<CloudImage>();
 				}

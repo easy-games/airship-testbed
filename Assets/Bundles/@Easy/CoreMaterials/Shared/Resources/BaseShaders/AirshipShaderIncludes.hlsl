@@ -14,6 +14,8 @@ half3 globalAmbientLight[9];//Global ambient values
 half3 globalAmbientTint;    //last second RGB tint of the ambient SH
 half globalAmbientOcclusion; //For anything that calc's AO
 
+float globalMaxLightingValue;
+
 //Point Lights - these are propertyBlocked onto each material affected
 int globalDynamicLightCount;
 half4 globalDynamicLightColor[4];
@@ -149,10 +151,11 @@ half PhongApprox(half Roughness, half RoL)
     half a2 = a * a;
     float rcp_a2 = rcp(a2);
     half c = 0.72134752 * rcp_a2 + 0.39674113;
-    return rcp_a2 * exp2(c * RoL - c);
+    return sqrt(rcp_a2 * exp2(c * RoL - c));
 }
+ 
 
-half3 CalculatePointLightsForPoint(float3 worldPos, half3 normal, half3 albedo, half roughness, half3 specularColor, half3 reflectionVector)
+half3 CalculatePointLightsForPoint(float3 worldPos, half3 normal, half3 albedo, half roughness, half metallic, half3 specularColor, half3 reflectionVector)
 {
 	half3 result = half3(0, 0, 0);
     
@@ -175,7 +178,10 @@ half3 CalculatePointLightsForPoint(float3 worldPos, half3 normal, half3 albedo, 
 
         falloff *= NoL;
 
-        result += falloff * (albedo * lightColor.rgb + (specularColor * PhongApprox(roughness, RoL) * lightColor.a));
+        half phong = PhongApprox(roughness, RoL);
+        specularColor = lerp(specularColor, specularColor * lightColor.rgb, metallic); //approx
+
+        result += falloff* (albedo * lightColor.rgb + (phong * specularColor) * lightColor.a);
     }
     return result;
 }
@@ -274,11 +280,24 @@ half EnvBRDFApproxNonmetal(half Roughness, half NoV)
     half2 r = Roughness * const0 + const1;
     return min(r.x * r.x, exp2(-9.28 * NoV)) * r.x + r.y;
 }
-
+ 
 //Insert exposure controls here
-half4 DoFinalColorWrite(half4 input)
+void DoFinalColorWrite(float4 inputRGBA, float3 emissive, out half4 MRT0, out half4 MRT1)
 {
-    return half4(input.rgb, input.a);
+    //half4 rgbm = EncodeRGBM(inputRGBA.rgb);
+    
+	//MRT0 = half4(rgbm.r, rgbm.g, rgbm.b, inputRGBA.a);
+	//MRT1 = half4(rgbm.a, rgbm.a, rgbm.a, rgbm.a);
+    MRT0 = inputRGBA;
+    MRT1 = float4(emissive, 1);
+}
+
+
+float3 CalculateSimpleSpecularLight(float3 lightDir, float3 viewDir, float3 normal, float specPow)
+{
+    float3 reflectDir = reflect(lightDir, normal);
+    float specFactor = pow(max(dot(reflectDir, viewDir), 0.0), specPow);
+    return float3(specFactor, specFactor, specFactor);
 }
 
 #endif

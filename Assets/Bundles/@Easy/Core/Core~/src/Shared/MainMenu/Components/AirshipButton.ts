@@ -20,13 +20,13 @@ export default class AirshipButton extends AirshipBehaviour {
 	public loadingIndicator?: GameObject;
 
 	public Awake(): void {
-		this.image = this.gameObject.GetComponent<Image>();
+		this.image = this.gameObject.GetComponent<Image>()!;
 		this.startingColor = this.image.color;
-		this.button = this.gameObject.GetComponent<Button>();
+		this.button = this.gameObject.GetComponent<Button>()!;
 	}
 
 	override Start(): void {
-		const rect = this.gameObject.GetComponent<RectTransform>();
+		const rect = this.gameObject.GetComponent<RectTransform>()!;
 		const startPos = rect.anchoredPosition;
 		let startingScale = rect.localScale;
 		this.bin.AddEngineEventConnection(
@@ -36,11 +36,11 @@ export default class AirshipButton extends AirshipBehaviour {
 
 				if (this.clickType === 0) {
 					this.gameObject
-						.GetComponent<RectTransform>()
+						.GetComponent<RectTransform>()!
 						.TweenLocalScale(dir === PointerDirection.DOWN ? startingScale.mul(0.9) : startingScale, 0.1);
 				} else if (this.clickType === 1) {
 					this.gameObject
-						.GetComponent<RectTransform>()
+						.GetComponent<RectTransform>()!
 						.TweenAnchoredPosition(
 							dir === PointerDirection.DOWN ? startPos.add(new Vector2(0, -2)) : startPos,
 							0.05,
@@ -70,8 +70,8 @@ export default class AirshipButton extends AirshipBehaviour {
 	public PlayClickEffect(): void {
 		if (this.clickType === 0) {
 			this.gameObject
-				.GetComponent<RectTransform>()
-				.TweenLocalScale(this.gameObject.GetComponent<RectTransform>().localScale.mul(0.9), 0.1)
+				.GetComponent<RectTransform>()!
+				.TweenLocalScale(this.gameObject.GetComponent<RectTransform>()!.localScale.mul(0.9), 0.1)
 				.SetPingPong();
 		}
 	}
