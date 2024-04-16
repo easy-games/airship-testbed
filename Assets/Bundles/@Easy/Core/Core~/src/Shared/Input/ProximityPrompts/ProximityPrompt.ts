@@ -43,7 +43,9 @@ export default class ProximityPrompt extends AirshipBehaviour {
 	override OnEnable(): void {
 		this.SetPrimaryText(this.primaryText);
 		this.SetSecondaryText(this.secondaryText);
-		Dependency<ProximityPromptController>().RegisterProximityPrompt(this);
+		if (Game.IsClient()) {
+			Dependency<ProximityPromptController>().RegisterProximityPrompt(this);
+		}
 
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnClickEvent(this.button.gameObject, () => {
@@ -62,7 +64,9 @@ export default class ProximityPrompt extends AirshipBehaviour {
 	}
 
 	override OnDisable(): void {
-		Dependency<ProximityPromptController>().UnregisterProximityPrompt(this);
+		if (Game.IsClient()) {
+			Dependency<ProximityPromptController>().UnregisterProximityPrompt(this);
+		}
 		this.activatedBin.Clean();
 		this.bin.Clean();
 	}
@@ -100,6 +104,8 @@ export default class ProximityPrompt extends AirshipBehaviour {
 	}
 
 	public IsHighestPriorityPrompt(): boolean {
+		if (!Game.IsClient()) return false;
+
 		let activatablePrompts = Dependency<ProximityPromptController>().activatableProximityPrompts;
 		activatablePrompts = activatablePrompts.filter((p) => p.actionName === this.actionName);
 		if (activatablePrompts.size() > 0 && activatablePrompts[0] === this) {
