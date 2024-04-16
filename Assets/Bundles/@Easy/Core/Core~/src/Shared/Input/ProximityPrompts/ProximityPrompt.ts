@@ -16,6 +16,7 @@ export default class ProximityPrompt extends AirshipBehaviour {
 	@Tooltip("The action name should match something created with Airship.input.CreateAction()")
 	public actionName = "interact";
 	@SerializeField() public maxRange = 5;
+	@SerializeField() public mouseRaycastTarget = false;
 
 	@Header("References")
 	public canvas!: Canvas;
@@ -158,7 +159,7 @@ export default class ProximityPrompt extends AirshipBehaviour {
 		this.canvas.transform.TweenLocalScale(Vector3.one, 0.18).SetEaseQuadOut();
 
 		// for button
-		this.backgroundImg.raycastTarget = Game.IsMobile();
+		this.backgroundImg.raycastTarget = Game.IsMobile() || this.mouseRaycastTarget;
 
 		task.spawn(() => {
 			if (Game.IsMobile()) {
