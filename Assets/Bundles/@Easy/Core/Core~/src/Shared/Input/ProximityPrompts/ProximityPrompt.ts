@@ -75,7 +75,7 @@ export default class ProximityPrompt extends AirshipBehaviour {
 	}
 
 	public KeyDown(): void {
-		this.canvas.transform.TweenLocalScale(Vector3.one.mul(0.76), 0.08).SetEaseQuadOut();
+		this.canvas.transform.TweenLocalScale(Vector3.one.mul(0.8), 0.08).SetEaseQuadOut();
 	}
 
 	public KeyUp(): void {
@@ -158,7 +158,7 @@ export default class ProximityPrompt extends AirshipBehaviour {
 		this.canvas.transform.TweenLocalScale(Vector3.one, 0.18).SetEaseQuadOut();
 
 		// for button
-		this.backgroundImg.raycastTarget = Game.IsMobile() || true;
+		this.backgroundImg.raycastTarget = Game.IsMobile();
 
 		task.spawn(() => {
 			if (Game.IsMobile()) {
