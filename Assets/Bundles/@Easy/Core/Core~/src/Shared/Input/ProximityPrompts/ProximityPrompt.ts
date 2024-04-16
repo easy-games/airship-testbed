@@ -16,7 +16,9 @@ export default class ProximityPrompt extends AirshipBehaviour {
 	@Tooltip("The action name should match something created with Airship.input.CreateAction()")
 	public actionName = "interact";
 	@SerializeField() public maxRange = 5;
-	@SerializeField() public mouseRaycastTarget = false;
+	@Tooltip("Makes the prompt clickable with mouse.")
+	@SerializeField()
+	public mouseRaycastTarget = false;
 
 	@Header("References")
 	public canvas!: Canvas;
