@@ -49,6 +49,7 @@ export default class ProximityPrompt extends AirshipBehaviour {
 
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnClickEvent(this.button.gameObject, () => {
+				print("clicked!");
 				this.Activate();
 			}),
 		);
@@ -155,7 +156,7 @@ export default class ProximityPrompt extends AirshipBehaviour {
 		this.canvas.transform.TweenLocalScale(Vector3.one, 0.18);
 
 		// for button
-		this.backgroundImg.raycastTarget = Game.IsMobile();
+		this.backgroundImg.raycastTarget = Game.IsMobile() || true;
 
 		task.spawn(() => {
 			if (Game.IsMobile()) {
