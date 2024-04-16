@@ -9,6 +9,8 @@ export default class ProximityPrompt extends AirshipBehaviour {
     primaryTextLabel: TMP_Text;
     secondaryTextLabel: TMP_Text;
     keybindTextLabel: TMP_Text;
+    backgroundImg: Image;
+    button: Button;
     id: number;
     /** On activated signal. */
     onActivated: Signal<void>;
@@ -18,8 +20,12 @@ export default class ProximityPrompt extends AirshipBehaviour {
     onProximityExit: Signal<void>;
     private canActivate;
     private activatedBin;
+    private bin;
+    private stateChangeBin;
     OnEnable(): void;
     OnDisable(): void;
+    KeyDown(): void;
+    KeyUp(): void;
     SetCanActivate(canActivate: boolean): void;
     IsHighestPriorityPrompt(): boolean;
     SetPrimaryText(val: string): void;

@@ -3,6 +3,7 @@ import { Airship } from "../../Airship";
 import { Dependency } from "../../Flamework";
 import { Game } from "../../Game";
 import { Bin } from "../../Util/Bin";
+import { CanvasAPI, PointerDirection } from "../../Util/CanvasAPI";
 import { InputUtils } from "../../Util/InputUtils";
 import { Signal } from "../../Util/Signal";
 import { ActionInputType } from "../InputUtil";
@@ -21,6 +22,8 @@ export default class ProximityPrompt extends AirshipBehaviour {
 	public primaryTextLabel!: TMP_Text;
 	public secondaryTextLabel!: TMP_Text;
 	public keybindTextLabel!: TMP_Text;
+	public backgroundImg!: Image;
+	public button!: Button;
 
 	@NonSerialized()
 	public id!: number;
@@ -34,20 +37,42 @@ export default class ProximityPrompt extends AirshipBehaviour {
 
 	private canActivate = false;
 	private activatedBin = new Bin();
+	private bin = new Bin();
+	private stateChangeBin = new Bin();
 
 	override OnEnable(): void {
 		this.SetPrimaryText(this.primaryText);
 		this.SetSecondaryText(this.secondaryText);
 		Dependency<ProximityPromptController>().RegisterProximityPrompt(this);
 
-		Airship.input.CreateProximityPrompt("interact", this.transform, {
-			primaryText: "Apple",
-			secondaryText: "Pickup",
-		});
+		this.bin.AddEngineEventConnection(
+			CanvasAPI.OnClickEvent(this.button.gameObject, () => {
+				this.Activate();
+			}),
+		);
+		this.bin.AddEngineEventConnection(
+			CanvasAPI.OnPointerEvent(this.button.gameObject, (dir, btn) => {
+				if (dir === PointerDirection.DOWN) {
+					this.KeyDown();
+				} else {
+					this.KeyUp();
+				}
+			}),
+		);
 	}
 
 	override OnDisable(): void {
 		Dependency<ProximityPromptController>().UnregisterProximityPrompt(this);
+		this.activatedBin.Clean();
+		this.bin.Clean();
+	}
+
+	public KeyDown(): void {
+		this.canvas.transform.TweenLocalScale(Vector3.one.mul(0.76), 0.08);
+	}
+
+	public KeyUp(): void {
+		this.canvas.transform.TweenLocalScale(new Vector3(1, 1, 1), 0.08);
 	}
 
 	public SetCanActivate(canActivate: boolean) {
@@ -58,7 +83,13 @@ export default class ProximityPrompt extends AirshipBehaviour {
 				Airship.input.OnUp(this.actionName).Connect((event) => {
 					if (event.uiProcessed) return;
 
+					this.KeyUp();
 					this.Activate();
+				}),
+			);
+			this.activatedBin.Add(
+				Airship.input.OnDown(this.actionName).Connect((event) => {
+					this.KeyDown();
 				}),
 			);
 			this.onProximityEnter.Fire();
@@ -98,11 +129,27 @@ export default class ProximityPrompt extends AirshipBehaviour {
 	}
 
 	public Hide(): void {
-		this.canvas.enabled = false;
+		this.stateChangeBin.Clean();
+		this.canvas.transform.TweenLocalScale(Vector3.zero, 0.18);
+		let interupt = false;
+		this.stateChangeBin.Add(() => {
+			interupt = true;
+		});
+		task.delay(0.18, () => {
+			if (!interupt) {
+				this.canvas.enabled = false;
+			}
+		});
 	}
 
 	public Show(): void {
+		this.stateChangeBin.Clean();
 		this.canvas.enabled = true;
+		this.canvas.transform.localScale = Vector3.zero;
+		this.canvas.transform.TweenLocalScale(Vector3.one, 0.18);
+
+		// for button
+		this.backgroundImg.raycastTarget = Game.IsMobile();
 
 		task.spawn(() => {
 			if (Game.IsMobile()) {
