@@ -5,6 +5,7 @@ export default class ProximityPrompt extends AirshipBehaviour {
     secondaryText: string;
     actionName: string;
     maxRange: number;
+    mouseRaycastTarget: boolean;
     canvas: Canvas;
     primaryTextLabel: TMP_Text;
     secondaryTextLabel: TMP_Text;
