@@ -44,7 +44,9 @@ export default class ProximityPrompt extends AirshipBehaviour {
 		this.SetPrimaryText(this.primaryText);
 		this.SetSecondaryText(this.secondaryText);
 		if (Game.IsClient()) {
-			Dependency<ProximityPromptController>().RegisterProximityPrompt(this);
+			task.delay(0, () => {
+				Dependency<ProximityPromptController>().RegisterProximityPrompt(this);
+			});
 		}
 
 		this.bin.AddEngineEventConnection(
@@ -73,11 +75,11 @@ export default class ProximityPrompt extends AirshipBehaviour {
 	}
 
 	public KeyDown(): void {
-		this.canvas.transform.TweenLocalScale(Vector3.one.mul(0.76), 0.08);
+		this.canvas.transform.TweenLocalScale(Vector3.one.mul(0.76), 0.08).SetEaseQuadOut();
 	}
 
 	public KeyUp(): void {
-		this.canvas.transform.TweenLocalScale(new Vector3(1, 1, 1), 0.08);
+		this.canvas.transform.TweenLocalScale(new Vector3(1, 1, 1), 0.08).SetEaseQuadOut();
 	}
 
 	public SetCanActivate(canActivate: boolean) {
@@ -137,7 +139,7 @@ export default class ProximityPrompt extends AirshipBehaviour {
 
 	public Hide(): void {
 		this.stateChangeBin.Clean();
-		this.canvas.transform.TweenLocalScale(Vector3.zero, 0.18);
+		this.canvas.transform.TweenLocalScale(Vector3.zero, 0.18).SetEaseQuadOut();
 		let interupt = false;
 		this.stateChangeBin.Add(() => {
 			interupt = true;
@@ -153,7 +155,7 @@ export default class ProximityPrompt extends AirshipBehaviour {
 		this.stateChangeBin.Clean();
 		this.canvas.enabled = true;
 		this.canvas.transform.localScale = Vector3.zero;
-		this.canvas.transform.TweenLocalScale(Vector3.one, 0.18);
+		this.canvas.transform.TweenLocalScale(Vector3.one, 0.18).SetEaseQuadOut();
 
 		// for button
 		this.backgroundImg.raycastTarget = Game.IsMobile() || true;
