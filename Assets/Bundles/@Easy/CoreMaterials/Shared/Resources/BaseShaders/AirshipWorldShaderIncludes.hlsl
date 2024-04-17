@@ -423,8 +423,8 @@
         half sunShadowMask = 0;
 #endif
         //Matches better to substance
-        roughnessLevel = roughnessLevel * roughnessLevel;
-        metallicLevel = metallicLevel * metallicLevel;
+        roughnessLevel = pow(roughnessLevel, 0.4545454545);
+        metallicLevel = pow(metallicLevel, 0.4545454545);
         
         //Sun
         half RoL = max(0, dot(worldReflect, -globalSunDirection));
