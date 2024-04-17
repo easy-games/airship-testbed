@@ -1,10 +1,14 @@
-/// <reference types="@easy-games/compiler-types" />
+/// <reference types="compiler-types" />
+import AvatarRenderComponent from "../../Client/MainMenuControllers/AvatarMenu/AvatarRenderComponent";
 export default class AvatarViewComponent extends AirshipBehaviour {
+    avatarRenderTemplate?: GameObject;
     humanEntityGo?: GameObject;
     avatarHolder?: Transform;
+    anim?: CharacterAnimationHelper;
+    accessoryBuilder?: AccessoryBuilder;
     cameraRigTransform?: Transform;
     avatarCamera?: Camera;
-    testTransform?: Transform;
+    backdropHolder?: GameObject;
     cameraWaypointDefault?: Transform;
     cameraWaypointHead?: Transform;
     cameraWaypointFeet?: Transform;
@@ -16,15 +20,13 @@ export default class AvatarViewComponent extends AirshipBehaviour {
     freeSpinDrag: number;
     cameraTransitionDuration: number;
     screenspaceDistance: number;
-    dragging: boolean;
     alignmentOffsetWorldpsace: Vector3;
-    accessoryBuilder?: AccessoryBuilder;
-    anim?: CharacterAnimationHelper;
     idleAnim: AnimationClip;
     spinAnimLoop: AnimationClip;
     spinAnimStop: AnimationClip;
     spinBigRequiredTime: number;
     spinBigRequiredSpeed: number;
+    dragging: boolean;
     private targetTransform?;
     private mouse?;
     private lastMousePos;
@@ -39,6 +41,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
     private spinAnimationTriggered;
     private freeSpinning;
     private bin;
+    Awake(): void;
     Start(): void;
     OnEnable(): void;
     private UpdateSpinAnimation;
@@ -52,5 +55,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
     ResetAvatar(): void;
     AlignCamera(screenPos: Vector3): void;
     CameraFocusSlot(slotType: AccessorySlot): void;
+    GetFocusTransform(slotType: AccessorySlot): Transform | undefined;
     CameraFocusTransform(transform?: Transform, instant?: boolean): void;
+    CreateRenderScene(): AvatarRenderComponent | undefined;
 }

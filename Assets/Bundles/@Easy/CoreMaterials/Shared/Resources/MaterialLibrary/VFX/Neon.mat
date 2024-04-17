@@ -9,16 +9,19 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Neon
   m_Shader: {fileID: 4800000, guid: b8fcfddb128a0284e9f5e927061e61d1, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - EMISSIVE_ON
   - EXPLICIT_MAPS_ON
-  - NUM_LIGHTS_LIGHTS0
   - RIM_LIGHT_ON
+  - SHADOWS_ON
   - SLIDER_OVERRIDE_ON
   - TRIPLANAR_STYLE_OFF
   m_InvalidKeywords:
   - EXPLICIT_MAPS
   - METAL_ON_ON
+  - NUM_LIGHTS_LIGHTS2
   - SLIDER_OVERRIDE
   - _LIGHTS_LIGHTS0
   - _TRIPLANAR_LOCAL
@@ -30,6 +33,7 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -102,13 +106,16 @@ Material:
     - AO_ON: 0
     - EMISSIVE: 1
     - EXPLICIT_MAPS: 1
+    - INSTANCE_DATA: 0
     - METAL_ON: 1
     - NUM_LIGHTS: 0
     - OVERRIDE: 0
     - POINT_FILTER: 0
     - RIM_LIGHT: 1
+    - SHADOWS: 1
     - SLIDER_OVERRIDE: 1
     - TRIPLANAR_STYLE: 0
+    - USE_SHADOW_COLOR: 0
     - VERTEX_LIGHT: 0
     - _Alpha: 1
     - _BumpScale: 1
@@ -134,6 +141,7 @@ Material:
     - _RoughOverride: 1
     - _SLIDER_OVERRIDE: 1
     - _SkyShineStrength: 0
+    - _SliderOverrideMix: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -149,6 +157,9 @@ Material:
     - _EmissiveColor: {r: 1, g: 1, b: 1, a: 1}
     - _OverrideColor: {r: 1, g: 1, b: 1, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
+    - _ShadowColor: {r: 1, g: 1, b: 1, a: 1}
+    - _ShadowTint: {r: 1, g: 1, b: 1, a: 1}
     - _SkyShine: {r: 0.4, g: 0.75, b: 1, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
+  m_AllowLocking: 1

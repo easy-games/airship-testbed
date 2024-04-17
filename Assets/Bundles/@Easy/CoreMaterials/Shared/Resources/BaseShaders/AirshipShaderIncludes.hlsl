@@ -9,15 +9,18 @@ half3 globalSunDirection = normalize(half3(-1, -3, 1.5));
 half globalSunShadow;   //Shadow transparency
 half3 globalSunColor;   //Suns color
 float globalSunBrightness;  //Suns brightness
+half globalAmbientBrightness;
 half3 globalAmbientLight[9];//Global ambient values
 half3 globalAmbientTint;    //last second RGB tint of the ambient SH
 half globalAmbientOcclusion; //For anything that calc's AO
 
-//Point Lights
-float NUM_LIGHTS; //Required for dynamic lights
-half4 globalDynamicLightColor[2];
-float4 globalDynamicLightPos[2];
-half globalDynamicLightRadius[2];
+float globalMaxLightingValue;
+
+//Point Lights - these are propertyBlocked onto each material affected
+int globalDynamicLightCount;
+half4 globalDynamicLightColor[4];
+float4 globalDynamicLightPos[4];
+half globalDynamicLightRadius[4];
 
 //Fog///////////////
 float globalFogStart;
@@ -53,16 +56,6 @@ half4 LinearToSRGB(half4 srgb)
 half3 LinearToSRGB(half3 srgb)
 {
     return pow(srgb, 2.2333333);
-}
-
-half PhongApprox(half Roughness, half RoL)
-{
-    half a = Roughness * Roughness;
-    half a2 = a * a;
-    float rcp_a2 = rcp(a2);
-    // 0.5 / ln(2), 0.275 / ln(2)
-    half c = 0.72134752 * rcp_a2 + 0.39674113;
-    return rcp_a2 * exp2(c * RoL - c);
 }
 
 //Shadows require your vertex prog to have something akin to:
@@ -152,23 +145,44 @@ half GetShadow(float4 shadowCasterPos0, float4 shadowCasterPos1, half3 worldNorm
     }
 }
 
-half3 CalculatePointLightForPoint(float3 worldPos, half3 normal, half3 albedo, half roughness, half3 specularColor, half3 reflectionVector, float3 lightPos, half4 lightColor, half lightRange)
+half PhongApprox(half Roughness, half RoL)
 {
-    float3 lightVec = lightPos - worldPos;
-    half distance = length(lightVec);
-    half3 lightDir = normalize(lightVec);
+    half a = Roughness * Roughness;
+    half a2 = a * a;
+    float rcp_a2 = rcp(a2);
+    half c = 0.72134752 * rcp_a2 + 0.39674113;
+    return sqrt(rcp_a2 * exp2(c * RoL - c));
+}
+ 
 
-    float RoL = max(0, dot(reflectionVector, lightDir));
-    float NoL = max(0, dot(normal, lightDir));
-
-    float distanceNorm = saturate(distance / lightRange);
-    float falloff = pow(distanceNorm, 2.0);
-    falloff = 1.0 - falloff;
+half3 CalculatePointLightsForPoint(float3 worldPos, half3 normal, half3 albedo, half roughness, half metallic, half3 specularColor, half3 reflectionVector)
+{
+	half3 result = half3(0, 0, 0);
     
-    falloff *= NoL;
+    for (int i = 0; i < globalDynamicLightCount; i++)
+    {
+        float3 lightPos = globalDynamicLightPos[i].xyz;
+        half4 lightColor = globalDynamicLightColor[i];
+        half lightRange = globalDynamicLightRadius[i];
 
-    half3 result = falloff * (albedo * lightColor + (specularColor * PhongApprox(roughness, RoL) * lightColor.a));
+        float3 lightVec = lightPos - worldPos;
+        half distance = length(lightVec);
+        half3 lightDir = normalize(lightVec);
 
+        float RoL = max(0, dot(reflectionVector, lightDir));
+        float NoL = max(0, dot(normal, lightDir));
+
+        float distanceNorm = saturate(distance / lightRange);
+        float falloff = pow(distanceNorm, 2.0);
+        falloff = 1.0 - falloff;
+
+        falloff *= NoL;
+
+        half phong = PhongApprox(roughness, RoL);
+        specularColor = lerp(specularColor, specularColor * lightColor.rgb, metallic); //approx
+
+        result += falloff* (albedo * lightColor.rgb + (phong * specularColor) * lightColor.a);
+    }
     return result;
 }
 
@@ -235,7 +249,7 @@ inline half3 SampleAmbientSphericalHarmonics(half3 nor)
         2.0 * c2 * globalAmbientLight[3].xyz * nor.x +
         2.0 * c2 * globalAmbientLight[1].xyz * nor.y +
         2.0 * c2 * globalAmbientLight[2].xyz * nor.z
-        );
+        ) * globalAmbientBrightness;
 }
 
 float ConvertFromNormalizedRange(float normalizedNumber)
@@ -250,11 +264,40 @@ float ConvertToNormalizedRange(float negativeRangeNumber)
 
 half3 EnvBRDFApprox(half3 SpecularColor, half Roughness, half NoV)
 {
-    const half4 c0 = { -1, -0.0275, -0.572, 0.022 };
-    const half4 c1 = { 1, 0.0425, 1.04, -0.04 };
-    half4 r = Roughness * c0 + c1;
-    half a004 = min(r.x * r.x, exp2(-9.28 * NoV)) * r.x + r.y;
-    half2 AB = half2(-1.04, 1.04) * a004 + r.zw;
+    const half4 const0 = { -1, -0.0275, -0.572, 0.022 };
+    const half4 const1 = { 1, 0.0425, 1.04, -0.04 };
+    half4 r = Roughness * const0 + const1;
+    half minFac = min(r.x * r.x, exp2(-9.28 * NoV)) * r.x + r.y;
+    half2 AB = half2(-1.04, 1.04) * minFac + r.zw;
     return SpecularColor * AB.x + AB.y;
 }
+
+half EnvBRDFApproxNonmetal(half Roughness, half NoV)
+{
+    // Same as EnvBRDFApprox( 0.04, Roughness, NoV )
+    const half2 const0 = { -1, -0.0275 };
+    const half2 const1 = { 1, 0.0425 };
+    half2 r = Roughness * const0 + const1;
+    return min(r.x * r.x, exp2(-9.28 * NoV)) * r.x + r.y;
+}
+ 
+//Insert exposure controls here
+void DoFinalColorWrite(float4 inputRGBA, float3 emissive, out half4 MRT0, out half4 MRT1)
+{
+    //half4 rgbm = EncodeRGBM(inputRGBA.rgb);
+    
+	//MRT0 = half4(rgbm.r, rgbm.g, rgbm.b, inputRGBA.a);
+	//MRT1 = half4(rgbm.a, rgbm.a, rgbm.a, rgbm.a);
+    MRT0 = inputRGBA;
+    MRT1 = float4(emissive, 1);
+}
+
+
+float3 CalculateSimpleSpecularLight(float3 lightDir, float3 viewDir, float3 normal, float specPow)
+{
+    float3 reflectDir = reflect(lightDir, normal);
+    float specFactor = pow(max(dot(reflectDir, viewDir), 0.0), specPow);
+    return float3(specFactor, specFactor, specFactor);
+}
+
 #endif

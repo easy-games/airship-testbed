@@ -1,8 +1,7 @@
-/// <reference types="@easy-games/compiler-types" />
+/// <reference types="compiler-types" />
 import SettingsTabButton from "./SettingsTabButton";
 export default class SettingsSidebar extends AirshipBehaviour {
-    disconnectBtn: GameObject;
-    gameHomeTab: GameObject;
+    tabs: RectTransform;
     private tabBtns;
     OnEnable(): void;
     OnDisable(): void;

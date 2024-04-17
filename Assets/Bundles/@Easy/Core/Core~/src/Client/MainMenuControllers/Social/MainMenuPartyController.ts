@@ -64,7 +64,7 @@ export class MainMenuPartyController implements OnStart {
 				},
 			);
 			AudioManager.PlayGlobal("@Easy/Core/Shared/Resources/Sound/FriendRequest.wav");
-			if (Game.context === CoreContext.GAME) {
+			if (Game.coreContext === CoreContext.GAME) {
 				Game.localPlayer.SendMessage(
 					ChatColor.Yellow(data.members[0].username) + ChatColor.Gray(" invited you to their party."),
 				);
@@ -155,21 +155,6 @@ export class MainMenuPartyController implements OnStart {
 
 			const partyMemberComponent = go.GetAirshipComponent<PartyMember>()!;
 			partyMemberComponent.SetUser(member, isLocalPartyLeader);
-
-			const refs = go.GetComponent<GameObjectReferences>();
-
-			const usernameText = refs.GetValue("UI", "Username") as TMP_Text;
-			if (member.uid === Game.localPlayer.userId) {
-				usernameText.text = Game.localPlayer.username;
-			} else {
-				usernameText.text = member.username;
-			}
-
-			// const leftLayout = refs.GetValue("UI", "LeftLayout") as HorizontalLayoutGroup;
-			// LayoutRebuilder.ForceRebuildLayoutImmediate(leftLayout.GetComponent<RectTransform>());
-
-			const partyTitle = this.mainMenuController.refs.GetValue("Social", "PartyTitle") as TMP_Text;
-			partyTitle.text = `(${this.party.members.size()}/8)`;
 		}
 
 		CanvasAPI.OnClickEvent(leaveButton, () => {

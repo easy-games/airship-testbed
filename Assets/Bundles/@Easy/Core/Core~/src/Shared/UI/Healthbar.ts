@@ -29,8 +29,8 @@ export class Healthbar {
 	private currentDelta = -999;
 
 	constructor(transform: Transform, options?: ProgressBarOptions) {
-		this.transform = transform.gameObject.GetComponent<RectTransform>();
-		this.refs = transform.GetComponent<GameObjectReferences>();
+		this.transform = transform.gameObject.GetComponent<RectTransform>()!;
+		this.refs = transform.GetComponent<GameObjectReferences>()!;
 		this.fillImage = this.refs.GetValue<Image>(this.graphicsKey, "Fill");
 		this.fillTransform = this.refs.GetValue<RectTransform>(this.transformKey, "Fill");
 		this.changeFillTransform = this.refs.GetValue<RectTransform>(this.transformKey, "ChangeFill");

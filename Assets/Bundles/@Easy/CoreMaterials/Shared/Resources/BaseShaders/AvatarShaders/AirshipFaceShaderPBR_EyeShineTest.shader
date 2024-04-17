@@ -18,13 +18,12 @@ Shader "Airship/AirshipFaceShaderPBR"
         _EmissiveMaskTex("Emissive Mask", 2D) = "white" {}
         
         [Toggle] _ZWrite("Z-Write", Float) = 1.0
-
-        [Toggle] POINT_FILTER("Use Stylized Point Filtering", Float) = 0.0
+            
         [KeywordEnum(OFF, LOCAL, WORLD)] TRIPLANAR_STYLE("Triplanar", Float) = 0.0
         _TriplanarScale("TriplanarScale", Range(0.0, 16)) = 0.0
 
-        [KeywordEnum(LIGHTS0, LIGHTS1, LIGHTS2)] NUM_LIGHTS("NumLights", Float) = 0.0
         [Toggle] SLIDER_OVERRIDE("Use Metal/Rough Sliders", Float) = 1.0
+        _SliderOverrideMix("Metal Rough Mix", Range(0.0, 1)) = 0.0
 
         _MetalOverride("Metal", Range(0.0, 1)) = 0.0
         _RoughOverride("Rough", range(0.0, 1)) = 0.0
@@ -32,9 +31,7 @@ Shader "Airship/AirshipFaceShaderPBR"
         [Toggle] EMISSIVE("Emissive", Float) = 0.0
         [HDR] _EmissiveColor("Emissive Color", Color) = (1,1,1,1)
         _EmissiveMix("Emissive/Albedo Mix", range(0, 1)) = 1.0
-
-        [Toggle] VERTEX_LIGHT("Has Baked Vertex Shadows", Float) = 0.0
-
+ 
         [Toggle] RIM_LIGHT("Use Rim Light", Float) = 0.0
         [HDR] _RimColor("Rim Color", Color) = (1,1,1,1)
         _RimPower("Rim Power", Range(0.0, 10)) = 2.5
@@ -60,12 +57,11 @@ Shader "Airship/AirshipFaceShaderPBR"
 
             #include "../AirshipShaderIncludes.hlsl"
                 
-            #pragma multi_compile NUM_LIGHTS_LIGHTS0 NUM_LIGHTS_LIGHTS1 NUM_LIGHTS_LIGHTS2
             #pragma multi_compile TRIPLANAR_STYLE_OFF TRIPLANAR_STYLE_LOCAL TRIPLANAR_STYLE_WORLD
             #pragma multi_compile _ SLIDER_OVERRIDE_ON
-            #pragma multi_compile _ VERTEX_LIGHT_ON
+     
             #pragma multi_compile _ EXPLICIT_MAPS_ON
-            #pragma multi_compile _ POINT_FILTER_ON
+     
 			#pragma multi_compile _ EMISSIVE_ON
 			#pragma multi_compile _ RIM_LIGHT_ON
             #pragma multi_compile _ INSTANCE_DATA_ON
@@ -75,9 +71,7 @@ Shader "Airship/AirshipFaceShaderPBR"
             #pragma fragment fragFunction
 
             //Multi shader vars (you need these even if you're not using them, so that material properties can survive editor script reloads)
-            float VERTEX_LIGHT;  
             float SLIDER_OVERRIDE;
-            float POINT_FILTER;
             float EXPLICIT_MAPS;
             float EMISSIVE;
             float RIM_LIGHT;
@@ -118,6 +112,7 @@ Shader "Airship/AirshipFaceShaderPBR"
 
             half _MetalOverride;
             half _RoughOverride;
+            half _SliderOverrideMix;
             
             half _TriplanarScale;
 
@@ -212,9 +207,9 @@ Shader "Airship/AirshipFaceShaderPBR"
 
                 //Do ambient occlusion at the vertex level, encode it into vertex color g
                 //But only if we're part of the world geometry...
-        #if VERTEX_LIGHT_ON
-                output.color.g = clamp(output.color.g + (1 - globalAmbientOcclusion), 0, 1);
-        #endif        
+                //#if VERTEX_LIGHT_ON
+                //output.color.g = clamp(output.color.g + (1 - globalAmbientOcclusion), 0, 1);
+                //#endif        
 
 
         #if INSTANCE_DATA_ON
@@ -534,8 +529,8 @@ Shader "Airship/AirshipFaceShaderPBR"
            
                 // Finish doing ALU calcs while the cubemap fetches in
         #ifdef SLIDER_OVERRIDE_ON
-                metallicLevel = (metallicLevel + _MetalOverride) / 2;
-                roughnessLevel = (roughnessLevel + _RoughOverride) / 2;
+                metallicLevel = lerp(_MetalOverride, metallicLevel, _SliderOverrideMix);
+                roughnessLevel = lerp(_RoughOverride, roughnessLevel, _SliderOverrideMix);
                 roughnessLevel = max(roughnessLevel, 0.04);
         #endif
 
@@ -567,16 +562,7 @@ Shader "Airship/AirshipFaceShaderPBR"
 
                 half3 textureColor = texSample.xyz;
 
-        #if VERTEX_LIGHT_ON
-                //If we're using baked shadows (voxel world geometry)
-                //The input diffuse gets multiplied by the vertex color.r
-                ambientOcclusionMask = input.color.g; //Creases
-                pointLight0Mask = input.color.b;
-                pointLight1Mask = input.color.a;
-        #else
-                //Otherwise it gets multiplied by the whole thing
-                textureColor.rgb *= input.color.rgb;
-        #endif  
+ 
 
                 //Specular
                // float eyeMask = tex2D(_EyeMaskTex, input.uv_MainTex);
@@ -622,28 +608,19 @@ Shader "Airship/AirshipFaceShaderPBR"
                 
                 //SH ambient 
                 half3 ambientLight = (complexAmbientSample * globalAmbientTint);
-        #if VERTEX_LIGHT_ON
-                half3 bakedLighting = input.bakedLight.xyz;
-                ambientLight = max(ambientLight, bakedLighting);
-        #endif        
+  
                 half3 finalAmbient = (ambientLight * diffuseColor);
 
                 //Composite sun and ambient together
                 finalColor = (finalSun + finalAmbient);
                 
-
                 //Start messing with the final color in fun ways
                 //Ambient occlusion term
                 finalColor *= ambientOcclusionMask;
-         
-                //Point lights
-        #ifdef NUM_LIGHTS_LIGHTS1
-                finalColor.xyz += CalculatePointLightForPoint(input.worldPos, worldNormal, diffuseColor, roughnessLevel, specularColor, worldReflect, globalDynamicLightPos[0], globalDynamicLightColor[0], globalDynamicLightRadius[0]) * pointLight0Mask;
-        #endif
-        #ifdef NUM_LIGHTS_LIGHTS2
-                finalColor.xyz += CalculatePointLightForPoint(input.worldPos, worldNormal, diffuseColor, roughnessLevel, specularColor, worldReflect, globalDynamicLightPos[0], globalDynamicLightColor[0], globalDynamicLightRadius[0]) * pointLight0Mask;
-                finalColor.xyz += CalculatePointLightForPoint(input.worldPos, worldNormal, diffuseColor, roughnessLevel, specularColor, worldReflect, globalDynamicLightPos[1], globalDynamicLightColor[1], globalDynamicLightRadius[1]) * pointLight1Mask;
-        #endif
+        
+                //Do point lighting
+                finalColor.xyz += CalculatePointLightsForPoint(input.worldPos, worldNormal, diffuseColor, roughnessLevel, metallicLevel, specularColor, worldReflect);
+
 
                 //Rim light
         #ifdef RIM_LIGHT_ON

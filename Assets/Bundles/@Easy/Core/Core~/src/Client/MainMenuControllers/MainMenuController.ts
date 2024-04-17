@@ -1,3 +1,5 @@
+import GameGeneralPage from "@Easy/Core/Shared/MainMenu/Components/Settings/General/GameGeneralPage";
+import SettingsPage from "@Easy/Core/Shared/MainMenu/Components/Settings/SettingsPage";
 import HomePageComponent from "Client/Components/HomePage/HomePageComponent";
 import { CoreContext } from "Shared/CoreClientContext";
 import { CoreRefs } from "Shared/CoreRefs";
@@ -5,7 +7,6 @@ import { Controller, OnStart } from "Shared/Flamework";
 import { Game } from "Shared/Game";
 import { Keyboard, Mouse } from "Shared/UserInput";
 import { AppManager } from "Shared/Util/AppManager";
-import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { Signal, SignalPriority } from "Shared/Util/Signal";
 import { SetTimeout } from "Shared/Util/Timer";
 import AvatarViewComponent from "../../Shared/Avatar/AvatarViewComponent";
@@ -29,8 +30,8 @@ export class MainMenuController implements OnStart {
 	public mainContentGroup: CanvasGroup;
 	public socialMenuGroup: CanvasGroup;
 	private rootCanvasGroup: CanvasGroup;
-
-	private toggleSocialButton: Button;
+	private gameBG?: GameObject;
+	private mainMenuBG?: GameObject;
 
 	private open = false;
 	private socialIsVisible = true;
@@ -38,42 +39,55 @@ export class MainMenuController implements OnStart {
 	constructor() {
 		const mainMenuPrefab = AssetBridge.Instance.LoadAsset("@Easy/Core/Client/Resources/MainMenu/MainMenu.prefab");
 		this.mainMenuGo = Object.Instantiate(mainMenuPrefab, CoreRefs.rootTransform) as GameObject;
-		this.refs = this.mainMenuGo.GetComponent<GameObjectReferences>();
+		this.refs = this.mainMenuGo.GetComponent<GameObjectReferences>()!;
 		const wrapperGo = this.refs.GetValue("UI", "Wrapper");
-		this.wrapperRect = wrapperGo.GetComponent<RectTransform>();
-		this.rootCanvasGroup = this.mainMenuGo.GetComponent<CanvasGroup>();
+		this.wrapperRect = wrapperGo.GetComponent<RectTransform>()!;
+		this.rootCanvasGroup = this.mainMenuGo.GetComponent<CanvasGroup>()!;
 		this.mainContentCanvas = this.refs.GetValue<Canvas>("UI", "MainContentCanvas");
 		this.mainContentGroup = this.refs.GetValue<CanvasGroup>("UI", "MainContentGroup");
 		this.socialMenuGroup = this.refs.GetValue<CanvasGroup>("UI", "SocialGroup");
+		CloudImage.ClearCache();
 
 		const mouse = new Mouse();
 
 		this.pageMap = new Map<MainMenuPageType, MainMenuPageComponent>([
-			[MainMenuPageType.Home, this.refs.GetValue("Pages", "Home").GetComponent<HomePageComponent>()],
-			[MainMenuPageType.MyGames, this.refs.GetValue("Pages", "MyGames").GetComponent<MainMenuPageComponent>()],
-			[MainMenuPageType.Settings, this.refs.GetValue("Pages", "Settings").GetComponent<MainMenuPageComponent>()],
-			[MainMenuPageType.Avatar, this.refs.GetValue("Pages", "Avatar").GetComponent<AvatarMenuComponent>()],
+			[MainMenuPageType.Home, this.refs.GetValue("Pages", "Home").GetAirshipComponent<HomePageComponent>()!],
+			[
+				MainMenuPageType.MyGames,
+				this.refs.GetValue("Pages", "MyGames").GetAirshipComponent<MainMenuPageComponent>()!,
+			],
+			[MainMenuPageType.Settings, this.refs.GetValue("Pages", "Settings").GetAirshipComponent<SettingsPage>()!],
+			[
+				MainMenuPageType.Avatar,
+				this.refs.GetValue("Pages", "Avatar").GetAirshipComponent<AvatarMenuComponent>()!,
+			],
+			[
+				MainMenuPageType.Friends,
+				this.refs.GetValue("Pages", "Friends").GetAirshipComponent<MainMenuPageComponent>()!,
+			],
+			[MainMenuPageType.Game, this.refs.GetValue("Pages", "Game").GetAirshipComponent<GameGeneralPage>()!],
 		]);
 
 		this.avatarView = Object.Instantiate(
 			this.refs.GetValue<GameObject>("Avatar", "Avatar3DSceneTemplate"),
 			CoreRefs.rootTransform,
-		).GetComponent<AvatarViewComponent>();
+		).GetAirshipComponent<AvatarViewComponent>()!;
 
-		if (Game.context === CoreContext.GAME) {
-			print("HIDING AVATAR");
+		if (Game.coreContext === CoreContext.GAME) {
 			this.avatarView.HideAvatar();
 		} else {
 			this.open = true;
 		}
 
-		const gameBG = this.refs.GetValue("UI", "GameBG");
-		const mainMenuBG = this.refs.GetValue("UI", "MainMenuBG");
-		const isMainMenu = Game.context === CoreContext.MAIN_MENU;
-		gameBG.SetActive(!isMainMenu);
-		mainMenuBG.SetActive(isMainMenu);
+		this.gameBG = this.refs.GetValue("UI", "GameBG");
+		if (Game.IsMobile()) {
+			this.gameBG.GetComponent<Image>()!.color = new Color(0.223, 0.233, 0.264, 1);
+		}
 
-		if (Game.context === CoreContext.MAIN_MENU) {
+		this.mainMenuBG = this.refs.GetValue("UI", "MainMenuBG");
+		this.ToggleGameBG(true);
+
+		if (Game.coreContext === CoreContext.MAIN_MENU) {
 			const mouse = new Mouse();
 			mouse.AddUnlocker();
 		}
@@ -88,19 +102,19 @@ export class MainMenuController implements OnStart {
 		// 	});
 		// }
 
-		this.toggleSocialButton = this.refs.GetValue("UI", "ToggleSocialButton");
-		CanvasAPI.OnClickEvent(this.toggleSocialButton.gameObject, () => {
-			this.ToggleSocialView();
-		});
-
-		if (Game.context === CoreContext.GAME) {
+		if (Game.coreContext === CoreContext.GAME) {
 			this.mainContentCanvas.enabled = false;
 		}
 	}
 
+	public ToggleGameBG(show: boolean) {
+		const isMainMenu = Game.coreContext === CoreContext.MAIN_MENU;
+		this.gameBG?.SetActive(show && !isMainMenu);
+		this.mainMenuBG?.SetActive(!show || isMainMenu);
+	}
+
 	public OpenFromGame(): void {
 		if (this.open) return;
-		this.avatarView?.ShowAvatar();
 
 		AppManager.OpenCustom(() => {
 			this.CloseFromGame();
@@ -111,13 +125,18 @@ export class MainMenuController implements OnStart {
 		this.wrapperRect.TweenLocalScale(new Vector3(1, 1, 1), duration);
 		this.mainContentCanvas.enabled = true;
 		this.rootCanvasGroup.TweenCanvasGroupAlpha(1, duration);
+
+		if (this.currentPage) {
+			this.RouteToPage(this.currentPage.pageType, true, true);
+		}
+
+		//CloudImage.PrintCache();
 	}
 
 	public CloseFromGame(): void {
 		if (!this.open) return;
 		this.open = false;
 
-		print("HIDING AVATAR");
 		this.avatarView?.HideAvatar();
 		EventSystem.current.ClearSelected();
 
@@ -144,17 +163,19 @@ export class MainMenuController implements OnStart {
 				}
 			}
 
-			if (Game.context === CoreContext.MAIN_MENU) {
+			if (Game.coreContext === CoreContext.MAIN_MENU) {
 				this.RouteToPage(MainMenuPageType.Home, true, true);
 			} else {
-				this.RouteToPage(MainMenuPageType.Settings, true, true);
+				this.RouteToPage(MainMenuPageType.Game, true, true);
 			}
+		} else {
+			this.RouteToPage(this.currentPage.pageType, true, true);
 		}
 
-		if (Game.context === CoreContext.GAME) {
+		if (Game.coreContext === CoreContext.GAME) {
 			const keyboard = new Keyboard();
 			keyboard.OnKeyDown(
-				KeyCode.Escape,
+				Key.Escape,
 				(event) => {
 					this.OpenFromGame();
 				},
@@ -169,7 +190,7 @@ export class MainMenuController implements OnStart {
 		}
 	}
 
-	public RouteToPage(pageType: MainMenuPageType, force = false, noTween = false) {
+	public RouteToPage(pageType: MainMenuPageType, force = false, noTween = false, params?: unknown) {
 		if (this.currentPage?.pageType === pageType && !force) {
 			return;
 		}
@@ -183,25 +204,11 @@ export class MainMenuController implements OnStart {
 		}
 
 		if (this.currentPage) {
-			this.currentPage.OpenPage();
+			this.currentPage.OpenPage(params);
 		} else {
 			error("Trying to route to undefined page: " + pageType);
 		}
 
 		this.onCurrentPageChanged.Fire(pageType, oldPage?.pageType);
-	}
-
-	private ToggleSocialView() {
-		this.socialIsVisible = !this.socialIsVisible;
-		this.toggleSocialButton.image.transform.localEulerAngles = new Vector3(0, 0, this.socialIsVisible ? 0 : 180);
-		this.socialMenuGroup.transform.TweenAnchoredPositionX(this.socialIsVisible ? 0 : 400, this.socialTweenDuration);
-
-		let mainRect = this.mainContentGroup.GetComponent<RectTransform>();
-		// mainRect.TweenAnchorMax(
-		// 	new Vector2(this.socialIsVisible ? Screen.width : Screen.width - 400, mainRect.anchorMax.y),
-		// 	this.socialTweenDuration,
-		// );
-		mainRect.sizeDelta = new Vector2(this.socialIsVisible ? -400 : 0, mainRect.sizeDelta.y);
-		mainRect.TweenAnchoredPositionX(this.socialIsVisible ? -200 : 0, this.socialTweenDuration);
 	}
 }

@@ -1,7 +1,7 @@
-/// <reference types="@easy-games/compiler-types" />
+/// <reference types="compiler-types" />
 import { CoreItemType } from "../Item/CoreItemType";
 import { BlockDef } from "../Item/ItemDefinitionTypes";
-import { Signal } from "../Util/Signal";
+import { Signal, SignalCallback } from "../Util/Signal";
 import { Block } from "./Block";
 export type BlockData = {
     [key: string]: unknown;
@@ -18,7 +18,7 @@ export declare class World {
     readonly voxelWorld: VoxelWorld;
     static skybox: string;
     onVoxelPlaced: Signal<[pos: Vector3, voxel: number]>;
-    onFinishedLoading: Signal<void>;
+    private onFinishedLoading;
     onFinishedReplicatingChunksFromServer: Signal<void>;
     private finishedLoading;
     private finishedReplicatingChunksFromServer;
@@ -27,6 +27,7 @@ export declare class World {
     WaitForFinishedLoading(): Promise<void>;
     IsFinishedReplicatingChunksFromServer(): boolean;
     WaitForFinishedReplicatingChunksFromServer(): Promise<void>;
+    OnFinishedWorldLoading(callback: SignalCallback<void>): void;
     /**
      *
      * @param pos
@@ -42,6 +43,8 @@ export declare class World {
     GetBlockAt(pos: Vector3): Block;
     GetBlockBelow(pos: Vector3): Block;
     GetBlockAbove(pos: Vector3): Block;
+    IsBlockOccupiedAt(pos: Vector3): boolean;
+    IsBlockOccupied(block: Block | undefined): boolean;
     /**
      * A way to find block data below a target. Used to know what a character is standing on
      * @param pos
@@ -51,7 +54,7 @@ export declare class World {
     RaycastBlockBelow(startPos: Vector3, maxDistance?: number): BlockDef | undefined;
     /**
      * Translates the string block id to the corresponding voxel block id
-     * @param blockStringId The id of the block, e.g. `@Easy/Core:STONE`
+     * @param blockStringId The id of the block, e.g. `@Easy/Survival:STONE`
      * @returns The voxel block id
      */
     GetVoxelIdFromId(blockStringId: string): number;

@@ -1,12 +1,21 @@
-/// <reference types="@easy-games/compiler-types" />
+/// <reference types="compiler-types" />
 export declare class InputUtils {
-    static keyCodeMap: Record<KeyCode, string | undefined>;
+    static keyCodeMap: Record<Key, string>;
+    static mouseButtonMap: Record<MouseButton, string>;
     /**
-     * Gets the corresponding string for the given keycode (if possible)
+     * Gets the corresponding string for the given key (if possible).
      *
-     * E.g. `KeyCode.Alpha1` → `"1"`, `KeyCode.A` → `"A"`, `KeyCode.Equals` → `"="`
-     * @param keyCode The keycode
-     * @returns A string for the keycode (if applicable) - otherwise `undefined`.
+     * E.g. `Key.Digit1` → `"1"`, `Key.A` → `"A"`, `Key.Equals` → `"="`.
+     * @param key The key
+     * @returns A string for the key (if applicable) - otherwise `undefined`.
      */
-    static GetStringForKeyCode(keyCode: KeyCode): string | undefined;
+    static GetStringForKeyCode(key: Key): string;
+    /**
+     * Gets the corresponding string for the given mouse button (if possible).
+     *
+     * E.g. `MouseButton.LeftButton` → `"Left Button"`.
+     * @param mouseButton The mouse button
+     * @returns A string for the mouse button (if applicable) - otherwise `undefined`.
+     */
+    static GetStringForMouseButton(mouseButton: MouseButton): string;
 }

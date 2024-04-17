@@ -1,3 +1,4 @@
+import { MainMenuBlockSingleton } from "@Easy/Core/Client/MainMenuControllers/Settings/MainMenuBlockSingleton";
 import { FriendsController } from "@Easy/Core/Client/MainMenuControllers/Social/FriendsController";
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
@@ -10,6 +11,7 @@ export default class PlayerEntry extends AirshipBehaviour {
 	public profileImage!: Image;
 	public usernameText!: TMP_Text;
 	public addFriendBtn!: GameObject;
+	public reportBtn!: GameObject;
 
 	private bin = new Bin();
 
@@ -17,7 +19,7 @@ export default class PlayerEntry extends AirshipBehaviour {
 
 	public Init(player: Player): void {
 		task.spawn(() => {
-			const profileSprite = Airship.players.CreateProfilePictureSpriteAsync(player.userId);
+			const profileSprite = Airship.players.GetProfilePictureSpriteAsync(player.userId);
 			if (profileSprite) {
 				this.profileImage.sprite = profileSprite;
 			}
@@ -36,6 +38,24 @@ export default class PlayerEntry extends AirshipBehaviour {
 					}),
 				);
 			}
+
+			this.reportBtn.SetActive(!player.IsLocalPlayer());
+			if (Dependency<MainMenuBlockSingleton>().IsUserIdBlocked(player.userId)) {
+				this.reportBtn.GetComponent<Image>()!.color = new Color(1, 1, 1, 0.2);
+			}
+			this.bin.AddEngineEventConnection(
+				CanvasAPI.OnClickEvent(this.reportBtn, () => {
+					task.spawn(() => {
+						if (Dependency<MainMenuBlockSingleton>().IsUserIdBlocked(player.userId)) {
+							Dependency<MainMenuBlockSingleton>().UnblockUserAsync(player.userId);
+							this.reportBtn.GetComponent<Image>()!.color = new Color(1, 1, 1, 1);
+						} else {
+							Dependency<MainMenuBlockSingleton>().BlockUserAsync(player.userId, player.username);
+							this.reportBtn.GetComponent<Image>()!.color = new Color(1, 1, 1, 0.2);
+						}
+					});
+				}),
+			);
 		});
 	}
 

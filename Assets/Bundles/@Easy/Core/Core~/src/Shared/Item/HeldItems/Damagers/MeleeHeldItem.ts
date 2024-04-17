@@ -1,9 +1,9 @@
-﻿import { Dependency } from "Shared/Flamework";
+﻿import { AirshipCharacterCameraSingleton } from "@Easy/Core/Shared/Camera/AirshipCharacterCameraSingleton";
 import { ViewmodelController } from "Client/Controllers/Viewmodel/ViewmodelController";
 import { Airship } from "Shared/Airship";
 import Character from "Shared/Character/Character";
-import { LocalCharacterSingleton } from "Shared/Character/LocalCharacter/LocalCharacterSingleton";
 import { DamageUtils } from "Shared/Damage/DamageUtils";
+import { Dependency } from "Shared/Flamework";
 import { MeleeItemDef } from "Shared/Item/ItemDefinitionTypes";
 import { Bin } from "Shared/Util/Bin";
 import { CSArrayUtil } from "Shared/Util/CSArrayUtil";
@@ -23,7 +23,7 @@ export class MeleeHeldItem extends HeldItem {
 	// private combatVars = DynamicVariablesManager.Instance.GetVars("Combat")!;
 
 	override OnUseClient(useIndex: number) {
-		if (this.character.IsDead()) return;
+		if (useIndex !== 0 || this.character.IsDead()) return;
 
 		//Don't do the default use animations
 		this.playEffectsOnUse = false;
@@ -42,10 +42,14 @@ export class MeleeHeldItem extends HeldItem {
 
 		//Play the items use effect
 		const isFirstPerson =
-			this.character.IsLocalCharacter() && Dependency<LocalCharacterSingleton>().IsFirstPerson();
+			this.character.IsLocalCharacter() && Dependency<AirshipCharacterCameraSingleton>().IsFirstPerson();
 		if (meleeData.onUseVFX) {
 			if (isFirstPerson) {
-				this.currentUseVFX = EffectsManager.SpawnBundleEffectById(meleeData.onUseVFX_FP[this.animationIndex]);
+				this.currentUseVFX = EffectsManager.SpawnPrefabEffect(
+					meleeData.onUseVFX_FP[this.animationIndex],
+					Vector3.zero,
+					Vector3.zero,
+				);
 				if (this.currentUseVFX) {
 					//Spawn first person effect on the spine
 					this.currentUseVFX.transform.SetParent(Dependency<ViewmodelController>().rig.spineChest);
@@ -54,7 +58,7 @@ export class MeleeHeldItem extends HeldItem {
 				}
 			} else {
 				//Spawn third person effect on the root
-				this.currentUseVFX = EffectsManager.SpawnBundleEffectById(
+				this.currentUseVFX = EffectsManager.SpawnPrefabEffect(
 					meleeData.onUseVFX[this.animationIndex],
 					this.character.model.transform.position,
 					this.character.model.transform.eulerAngles,
@@ -67,7 +71,7 @@ export class MeleeHeldItem extends HeldItem {
 			if (this.currentUseVFX) {
 				const particleSystems = this.currentUseVFX.gameObject.GetComponentsInChildren<ParticleSystem>();
 				for (const particleSystem of CSArrayUtil.Convert(particleSystems)) {
-					particleSystem.gameObject.layer = isFirstPerson ? Layer.FIRST_PERSON : Layer.CHARACTER;
+					particleSystem.gameObject.layer = isFirstPerson ? Layer.VIEW_MODEL : Layer.CHARACTER;
 					particleSystem.Play();
 				}
 			}
@@ -157,7 +161,7 @@ export class MeleeHeldItem extends HeldItem {
 	override OnUseServer(useIndex: number) {
 		super.OnUseServer(useIndex);
 
-		if (this.character.IsDead()) return;
+		if (useIndex !== 0 || this.character.IsDead()) return;
 
 		let meleeData = this.itemMeta?.melee;
 		if (!meleeData) {

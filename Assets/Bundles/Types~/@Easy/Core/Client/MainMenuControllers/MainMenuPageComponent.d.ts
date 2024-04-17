@@ -1,4 +1,4 @@
-/// <reference types="@easy-games/compiler-types" />
+/// <reference types="compiler-types" />
 import { MainMenuController } from "./MainMenuController";
 import { MainMenuPageType } from "./MainMenuPageName";
 export default class MainMenuPageComponent extends AirshipBehaviour {
@@ -18,6 +18,7 @@ export default class MainMenuPageComponent extends AirshipBehaviour {
      * **DO NOT YIELD INSIDE THIS METHOD**
      * @returns
      */
-    OpenPage(): void;
+    OpenPage(params?: unknown): void;
+    GetTargetAnchoredPositionY(): number;
     ClosePage(instant?: boolean): void;
 }

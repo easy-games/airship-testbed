@@ -1,15 +1,25 @@
+import AvatarRenderComponent from "@Easy/Core/Client/MainMenuControllers/AvatarMenu/AvatarRenderComponent";
 import {} from "Shared/Flamework";
 import { Mouse } from "Shared/UserInput";
 import { Bin } from "../Util/Bin";
 import { CanvasAPI } from "../Util/CanvasAPI";
 import { OnUpdate } from "../Util/Timer";
+import AvatarBackdropComponent, { AvatarBackdropType } from "./AvatarBackdropComponent";
+import { ColorUtil } from "../Util/ColorUtil";
+import { Game } from "../Game";
 
 export default class AvatarViewComponent extends AirshipBehaviour {
+	@Header("Templates")
+	public avatarRenderTemplate?: GameObject;
+
+	@Header("References")
 	public humanEntityGo?: GameObject;
 	public avatarHolder?: Transform;
+	public anim?: CharacterAnimationHelper;
+	public accessoryBuilder?: AccessoryBuilder;
 	public cameraRigTransform?: Transform;
 	public avatarCamera?: Camera;
-	public testTransform?: Transform;
+	public backdropHolder?: GameObject;
 
 	public cameraWaypointDefault?: Transform;
 	public cameraWaypointHead?: Transform;
@@ -19,15 +29,13 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	public cameraWaypointCenterHero?: Transform;
 	public cameraWaypointBirdsEye?: Transform;
 
+	@Header("Variables")
 	public dragSpeedMod = 10;
 	public freeSpinDrag = 3;
 	public cameraTransitionDuration = 1;
 	public screenspaceDistance = 3;
-	public dragging = false;
-	public alignmentOffsetWorldpsace = new Vector3(0, 0, 0);
 
-	public accessoryBuilder?: AccessoryBuilder;
-	public anim?: CharacterAnimationHelper;
+	public alignmentOffsetWorldpsace = new Vector3(0, 0, 0);
 
 	@Header("Spin Big")
 	public idleAnim!: AnimationClip;
@@ -36,9 +44,12 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	public spinBigRequiredTime = 3;
 	public spinBigRequiredSpeed = 10;
 
+	@NonSerialized()
+	public dragging = false;
+
 	private targetTransform?: Transform;
 	private mouse?: Mouse;
-	private lastMousePos: Vector3 = Vector3.zero;
+	private lastMousePos: Vector2 = Vector2.zero;
 	private initialized = false;
 	private spinVel = 0;
 
@@ -54,19 +65,29 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 
 	private bin = new Bin();
 
-	public override Start(): void {
-		print("AVATAR VIEW START");
-		if (this.humanEntityGo) {
-			this.accessoryBuilder = this.humanEntityGo.GetComponent<AccessoryBuilder>();
-			if (this.accessoryBuilder) {
-				this.accessoryBuilder.thirdPersonLayer = this.humanEntityGo.layer;
-				this.accessoryBuilder.firstPersonLayer = this.humanEntityGo.layer;
-			}
-			this.anim = this.humanEntityGo.GetComponent<CharacterAnimationHelper>();
-		}
+	public override Awake(): void {
 		this.dragging = false;
+		if (Game.IsPortrait()) {
+			this.alignmentOffsetWorldpsace = new Vector3(0, 1.1, 0);
+		}
+	}
+
+	public override Start(): void {
+		let backdrop = this.backdropHolder?.GetAirshipComponent<AvatarBackdropComponent>();
+		backdrop?.SetSolidColorBackdrop(ColorUtil.HexToColor("#202122"));
+
+		if (this.humanEntityGo) {
+			this.accessoryBuilder = this.humanEntityGo.GetComponent<AccessoryBuilder>()!;
+			if (this.accessoryBuilder) {
+				this.accessoryBuilder.thirdPersonLayer = this.gameObject.layer;
+				this.accessoryBuilder.firstPersonLayer = this.gameObject.layer;
+				this.accessoryBuilder.UpdateAccessoryLayers();
+			}
+			this.anim = this.humanEntityGo.GetComponent<CharacterAnimationHelper>()!;
+		}
+
 		this.mouse = new Mouse();
-		this.mouse.moved.Connect((pos: Vector3) => {
+		this.mouse.moved.Connect((pos: Vector2) => {
 			if (this.dragging) {
 				let diff = pos.sub(this.lastMousePos);
 				let vel = diff.x * -this.dragSpeedMod;
@@ -77,7 +98,6 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 			this.lastMousePos = pos;
 		});
 		this.initialized = true;
-
 		this.CreateRenderTexture(Screen.width, Screen.height);
 		CanvasAPI.OnScreenSizeEvent((width, height) => {
 			this.lastScreenRefreshTime = Time.time;
@@ -152,8 +172,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 		if (!this.avatarCamera) {
 			return;
 		}
-		print("Creating new Avatar Render Texture: " + width + ", " + height);
-		this.renderTexture = new RenderTexture(width, height, 24, RenderTextureFormat.ARGB32);
+		this.renderTexture = RenderUtils.CreateDefaultRenderTexture(width, height);
 		this.avatarCamera.targetTexture = this.renderTexture;
 		this.avatarCamera.enabled = true;
 		for (let i = 0; i < this.onNewRenderTexture.size(); i++) {
@@ -189,7 +208,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 			return;
 		}
 
-		print("Aligning to: " + screenPos);
+		//print("Aligning to: " + screenPos + " offset: " + this.alignmentOffsetWorldpsace);
 		this.cameraRigTransform.localPosition = Vector3.zero;
 		if (this.cameraWaypointDefault) {
 			this.avatarCamera.transform.position = this.cameraWaypointDefault.position;
@@ -198,10 +217,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 		let worldspace = this.avatarCamera.ScreenToWorldPoint(
 			new Vector3(screenPos.x, screenPos.y, this.screenspaceDistance),
 		);
-		print("worldspace align: " + worldspace);
-		if (this.testTransform) {
-			this.testTransform.position = worldspace;
-		}
+		//print("worldspace align: " + worldspace);
 		let diff = this.cameraRigTransform.position.sub(worldspace);
 		this.cameraRigTransform.position = this.cameraRigTransform.position
 			.add(new Vector3(diff.x, diff.y, 0))
@@ -210,32 +226,42 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	}
 
 	public CameraFocusSlot(slotType: AccessorySlot) {
-		this.targetTransform = this.cameraWaypointDefault;
+		this.targetTransform = this.GetFocusTransform(slotType);
+		this.CameraFocusTransform(this.targetTransform);
+	}
+
+	public GetFocusTransform(slotType: AccessorySlot) {
 		if (
 			slotType === AccessorySlot.Head ||
-			slotType === AccessorySlot.Face ||
 			slotType === AccessorySlot.Hair ||
 			slotType === AccessorySlot.Neck ||
-			slotType === AccessorySlot.Ears
+			slotType === AccessorySlot.Ears ||
+			slotType === AccessorySlot.Nose
 		) {
-			this.targetTransform = this.cameraWaypointHead;
+			//return this.cameraWaypointHead;
 		} else if (
 			slotType === AccessorySlot.Feet ||
 			slotType === AccessorySlot.Waist ||
-			slotType === AccessorySlot.Legs
+			slotType === AccessorySlot.Legs ||
+			slotType === AccessorySlot.LegsInner ||
+			slotType === AccessorySlot.LegsOuter ||
+			slotType === AccessorySlot.LeftFoot ||
+			slotType === AccessorySlot.RightFoot ||
+			slotType === AccessorySlot.FeetInner
 		) {
-			this.targetTransform = this.cameraWaypointFeet;
+			return this.cameraWaypointFeet;
 		} else if (
 			slotType === AccessorySlot.Hands ||
 			slotType === AccessorySlot.LeftHand ||
 			slotType === AccessorySlot.RightHand ||
-			slotType === AccessorySlot.Torso
+			slotType === AccessorySlot.Torso ||
+			slotType === AccessorySlot.HandsOuter
 		) {
-			this.targetTransform = this.cameraWaypointHands;
+			//return this.cameraWaypointHands;
 		} else if (slotType === AccessorySlot.Backpack) {
-			this.targetTransform = this.cameraWaypointBack;
+			return this.cameraWaypointBack;
 		}
-		this.CameraFocusTransform(this.targetTransform);
+		return this.cameraWaypointDefault;
 	}
 
 	public CameraFocusTransform(transform?: Transform, instant = false) {
@@ -253,5 +279,12 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 					.SetEaseQuadInOut();
 			}
 		}
+	}
+
+	public CreateRenderScene() {
+		return Object.Instantiate(
+			this.avatarRenderTemplate,
+			this.transform,
+		)?.GetAirshipComponent<AvatarRenderComponent>();
 	}
 }

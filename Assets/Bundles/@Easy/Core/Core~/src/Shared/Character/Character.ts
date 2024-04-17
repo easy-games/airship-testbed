@@ -26,6 +26,7 @@ export default class Character extends AirshipBehaviour {
 	public networkObject!: NetworkObject;
 	public rigRoot!: GameObject;
 	public collider!: CharacterController;
+	public footstepAudioSource!: AudioSource;
 	@NonSerialized() public rig!: CharacterRig;
 
 	// State
@@ -39,6 +40,8 @@ export default class Character extends AirshipBehaviour {
 	@NonSerialized() public inventory!: Inventory;
 	@NonSerialized() public heldItems!: HeldItemManager;
 	@NonSerialized() public outfitDto: OutfitDto | undefined;
+	private spineBone!: Transform;
+	private headBone!: Transform;
 
 	// Signals
 	@NonSerialized() public onDeath = new Signal<void>();
@@ -51,24 +54,39 @@ export default class Character extends AirshipBehaviour {
 	public Awake(): void {
 		this.inventory = this.gameObject.GetAirshipComponent<Inventory>()!;
 		this.animator = new CharacterAnimator(this);
-		this.rig = this.rigRoot.GetComponent<CharacterRig>();
+		this.rig = this.rigRoot.GetComponent<CharacterRig>()!;
 	}
 
-	public Start(): void {
+	public LateUpdate(dt: number): void {
+		// const vec = this.movement.GetLookVector();
+		// // -10 is an offset to account for players naturally looking down at horizon
+		// let degX = -math.deg(vec.y) - 10;
+		// const spinEul = this.spineBone.rotation.eulerAngles;
+		// this.spineBone.rotation = Quaternion.Euler(degX * 0.3, spinEul.y, spinEul.z);
+		// const neckEul = this.headBone.rotation.eulerAngles;
+		// this.headBone.rotation = Quaternion.Euler(degX * 0.8, neckEul.y, neckEul.z);
+	}
+
+	public OnEnable(): void {
+		this.despawned = false;
+
+		this.spineBone = this.rig.spine;
+		this.headBone = this.rig.head;
 		if (this.IsLocalCharacter()) {
 			task.spawn(() => {
 				Game.WaitForLocalPlayerLoaded();
 				this.gameObject.name = "Character_" + Game.localPlayer.username;
 			});
 		}
-
 		this.bin.Add(
 			Airship.damage.onDamage.ConnectWithPriority(SignalPriority.MONITOR, (damageInfo) => {
 				if (damageInfo.gameObject.GetInstanceID() === this.gameObject.GetInstanceID()) {
+					if (this.IsDead()) return;
 					let newHealth = math.max(0, this.health - damageInfo.damage);
+
 					this.SetHealth(newHealth);
 
-					if (newHealth <= 0) {
+					if (RunUtil.IsServer() && newHealth <= 0) {
 						Airship.damage.BroadcastDeath(damageInfo);
 					}
 				}
@@ -85,6 +103,7 @@ export default class Character extends AirshipBehaviour {
 		{
 			// state change
 			const conn = this.movement.OnStateChanged((state) => {
+				if (this.state === state) return;
 				const oldState = this.state;
 				this.state = state;
 				this.onStateChanged.Fire(state, oldState);
@@ -97,6 +116,13 @@ export default class Character extends AirshipBehaviour {
 
 	public OnDisable(): void {
 		Airship.characters.UnregisterCharacter(this);
+		if (RunUtil.IsClient()) {
+			this.bin.Clean();
+			this.despawned = true;
+			this.onDespawn.Fire();
+			Airship.characters.onCharacterDespawned.Fire(this);
+			this.player?.SetCharacter(undefined);
+		}
 	}
 
 	public Init(player: Player | undefined, id: number, outfitDto: OutfitDto | undefined): void {
@@ -104,6 +130,8 @@ export default class Character extends AirshipBehaviour {
 		this.id = id;
 		this.outfitDto = outfitDto;
 		this.animator.SetViewModelEnabled(player?.IsLocalPlayer() ?? false);
+		this.health = 100;
+		this.maxHealth = 100;
 		this.despawned = false;
 
 		if (outfitDto) {
@@ -131,6 +159,7 @@ export default class Character extends AirshipBehaviour {
 		assert(RunUtil.IsServer(), "You can only call Character.Despawn() on the server.");
 		assert(!this.despawned, "Character has already been despawned");
 
+		this.bin.Clean();
 		this.despawned = true;
 		this.onDespawn.Fire();
 		Airship.characters.onCharacterDespawned.Fire(this);
@@ -169,6 +198,6 @@ export default class Character extends AirshipBehaviour {
 	}
 
 	public IsLocalCharacter(): boolean {
-		return RunUtil.IsClient() && this.player?.userId === Game.localPlayer?.userId;
+		return Game.IsClient() && this.player?.userId === Game.localPlayer?.userId;
 	}
 }

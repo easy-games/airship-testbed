@@ -1,7 +1,8 @@
-import { Controller, OnStart, Service } from "Shared/Flamework";
+import { InventoryUIController } from "@Easy/Core/Client/Controllers/Inventory/InventoryUIController";
 import { Airship } from "Shared/Airship";
 import Character from "Shared/Character/Character";
 import { CoreNetwork } from "Shared/CoreNetwork";
+import { Controller, Dependency, OnStart, Service } from "Shared/Flamework";
 import { RemoteFunction } from "Shared/Network/RemoteFunction";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { CharacterInventorySingleton } from "./CharacterInventorySingleton";
@@ -45,10 +46,9 @@ export class InventorySingleton implements OnStart {
 		});
 		CoreNetwork.ServerToClient.SetInventorySlot.client.OnServerEvent(
 			(invId, slot, itemStackDto, clientPredicted) => {
+				if (RunUtil.IsHosting()) return;
 				const inv = this.GetInventory(invId);
 				if (!inv) return;
-
-				// if (this.localInventory === inv && clientPredicted) return;
 
 				const itemStack = itemStackDto !== undefined ? ItemStack.Decode(itemStackDto) : undefined;
 				inv.SetItem(slot, itemStack);
@@ -68,19 +68,13 @@ export class InventorySingleton implements OnStart {
 				itemStack.SetAmount(amount);
 			}
 		});
-		CoreNetwork.ServerToClient.SetHeldInventorySlot.client.OnServerEvent((invId, slot, clientPredicted) => {
-			const inv = this.GetInventory(invId);
-			if (!inv) return;
-
-			// if (this.localInventory === inv && clientPredicted) return;
-
-			inv.SetHeldSlot(slot);
-		});
 	}
 
 	private StartServer(): void {
 		this.remotes.clientToServer.getFullUpdate.server.SetCallback((player, invId) => {
-			return this.GetInventory(invId)?.Encode();
+			const inv = this.GetInventory(invId);
+			inv?.StartNetworkingDiffs();
+			return inv?.Encode();
 		});
 
 		CoreNetwork.ClientToServer.SetHeldSlot.server.OnClientEvent((player, slot) => {
@@ -90,11 +84,17 @@ export class InventorySingleton implements OnStart {
 			const inv = character.gameObject.GetAirshipComponent<Inventory>();
 			inv?.SetHeldSlot(slot);
 
-			CoreNetwork.ServerToClient.SetHeldInventorySlot.server.FireAllClients(character.id, slot, true);
+			CoreNetwork.ServerToClient.SetHeldInventorySlot.server.FireExcept(
+				player,
+				inv?.id,
+				player.clientId,
+				slot,
+				true,
+			);
 		});
 
 		CoreNetwork.ClientToServer.Inventory.SwapSlots.server.OnClientEvent(
-			(player, frommInvId, fromSlot, toInvId, toSlot) => {},
+			(player, fromInvId, fromSlot, toInvId, toSlot) => {},
 		);
 
 		CoreNetwork.ClientToServer.Inventory.MoveToSlot.server.OnClientEvent(
@@ -257,36 +257,6 @@ export class InventorySingleton implements OnStart {
 				}
 			},
 		);
-
-		// CoreNetwork.ClientToServer.Inventory.CheckOutOfSync.server.OnClientEvent((clientId, invDto) => {
-		// 	const character = Airship.characters.FindByClientId(clientId);
-		// 	if (!character) {
-		// 		error("Character not found.");
-		// 	}
-
-		// 	const serverInvDto = character.GetInventory().Encode();
-
-		// 	//print("----- INV SYNC CHECK -----");
-		// 	if (serverInvDto.items.size() !== invDto.items.size()) {
-		// 		// print(
-		// 		// 	"Inventory sizes don't match. Client: " +
-		// 		// 		invDto.items.size() +
-		// 		// 		", Server: " +
-		// 		// 		serverInvDto.items.size(),
-		// 		// );
-		// 	}
-
-		// 	for (let slot = 0; slot < 45; slot++) {
-		// 		const serverItem = serverInvDto.items.get(slot);
-		// 		const clientItem = invDto.items.get(slot);
-		// 		if (inspect(serverItem) !== inspect(clientItem)) {
-		// 			// print(
-		// 			// 	`Slot ${slot} mismatch. Server: ${serverItem?.i},${serverItem?.a}  Client: ${clientItem?.i},${clientItem?.a}`,
-		// 			// );
-		// 		}
-		// 	}
-		// 	//print("----- END -----");
-		// });
 	}
 
 	private SwapSlots(
@@ -515,5 +485,21 @@ export class InventorySingleton implements OnStart {
 			toSlot,
 			amount,
 		);
+	}
+
+	public SetUIEnabled(enabled: boolean): void {
+		Dependency<InventoryUIController>().SetEnabled(enabled);
+	}
+
+	public SetHealtbarVisible(visible: boolean) {
+		Dependency<InventoryUIController>().SetHealtbarVisible(visible);
+	}
+
+	public SetHotbarVisible(visible: boolean) {
+		Dependency<InventoryUIController>().SetHotbarVisible(visible);
+	}
+
+	public SetBackpackVisible(visible: boolean) {
+		Dependency<InventoryUIController>().SetBackpackVisible(visible);
 	}
 }

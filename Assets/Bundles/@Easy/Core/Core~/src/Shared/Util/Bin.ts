@@ -109,7 +109,12 @@ export class Bin {
 		this.cleaning = false;
 	}
 
-	/** Alias for `Bin.Clean()`. */
+	/**
+	 * @deprecated use {@link Clean} instead.
+	 *
+	 * Alias for `Bin.Clean()`.
+	 *
+	 **/
 	public Destroy() {
 		this.Clean();
 	}

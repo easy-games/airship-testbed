@@ -10,6 +10,7 @@ export declare class PlayersSingleton implements OnStart {
     private playerManagerBridge;
     private server?;
     private playersPendingReady;
+    private cachedProfilePictureTextures;
     private cachedProfilePictureSprite;
     private outfitFetchTime;
     constructor();
@@ -57,5 +58,12 @@ export declare class PlayersSingleton implements OnStart {
      * @param userId
      * @returns
      */
-    CreateProfilePictureSpriteAsync(userId: string): Sprite | undefined;
+    private pictureIndex;
+    GetProfilePictureTextureAsync(userId: string): Texture2D | undefined;
+    /**
+     * **MAY YIELD**
+     * @param userId
+     * @returns
+     */
+    GetProfilePictureSpriteAsync(userId: string): Sprite | undefined;
 }

@@ -1,4 +1,4 @@
-/// <reference types="@easy-games/compiler-types" />
+/// <reference types="compiler-types" />
 import { GameDto } from "../API/GamesAPI";
 export default class HomePageGameComponent extends AirshipBehaviour {
     titleText: TMP_Text;
@@ -7,13 +7,19 @@ export default class HomePageGameComponent extends AirshipBehaviour {
     playerCountWrapper: GameObject;
     playerCountText: TMP_Text;
     buttonGo: GameObject;
+    gameImage: CloudImage;
     orgImage: CloudImage;
     authorText: TMP_Text;
+    shadow: TrueShadow;
+    gameDto: GameDto;
+    loadingOverlay: GameObject;
     private redirectDrag;
     private bin;
+    Awake(): void;
     Start(): void;
     OnDestroy(): void;
-    OnDisabled(): void;
+    OnDisable(): void;
     SetDragRedirectTarget(target: ScrollRect): void;
     Init(gameDto: GameDto): void;
+    HasAdminPermissions(): boolean;
 }

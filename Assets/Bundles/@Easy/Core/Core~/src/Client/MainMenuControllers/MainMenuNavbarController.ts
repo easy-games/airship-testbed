@@ -1,4 +1,3 @@
-import NavbarControlButton from "@Easy/Core/Shared/MainMenu/Components/NavbarControlButton";
 import { Keyboard } from "@Easy/Core/Shared/UserInput";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import { CoreContext } from "Shared/CoreClientContext";
@@ -14,7 +13,6 @@ import { UserController } from "./User/UserController";
 
 @Controller({})
 export class MainMenuNavbarController implements OnStart {
-	private refreshButton!: NavbarControlButton;
 	private searchFocused!: GameObject;
 
 	constructor(
@@ -27,9 +25,8 @@ export class MainMenuNavbarController implements OnStart {
 		this.Setup();
 
 		const keyboard = new Keyboard();
-		keyboard.OnKeyDown(KeyCode.R, (event) => {
-			if (keyboard.IsEitherKeyDown(KeyCode.LeftCommand, KeyCode.LeftControl)) {
-				this.refreshButton.PlayClickEffect();
+		keyboard.OnKeyDown(Key.R, (event) => {
+			if (keyboard.IsEitherKeyDown(Key.LeftCommand, Key.LeftCtrl)) {
 				this.DoRefresh();
 			}
 		});
@@ -47,20 +44,18 @@ export class MainMenuNavbarController implements OnStart {
 
 		const homeButton = refs.GetValue("UI", "NavbarHomeButton");
 		const avatarButton = refs.GetValue("UI", "NavbarAvatarButton");
-		const shopButton = refs.GetValue("UI", "NavbarShopButton");
 		const myGamesButton = refs.GetValue("UI", "NavbarMyGamesButton");
 		const settingsButton = refs.GetValue("UI", "NavbarSettingsButton");
 		const runningGameButton = refs.GetValue("UI", "NavbarRunningGameButton");
+		const disconnectButton = refs.GetValue("UI", "DisconnectButton");
 
-		this.refreshButton = refs.GetValue("UI", "RefreshPageButton").GetAirshipComponent<NavbarControlButton>()!;
-		CanvasAPI.OnClickEvent(this.refreshButton.gameObject, () => {
-			this.DoRefresh();
-		});
-
-		if (Game.context === CoreContext.GAME) {
-			settingsButton.SetActive(false);
+		if (Game.coreContext === CoreContext.GAME) {
+			// settingsButton.SetActive(false);
+			disconnectButton.SetActive(true);
+			runningGameButton.SetActive(true);
 		} else {
 			runningGameButton.SetActive(false);
+			disconnectButton.SetActive(false);
 		}
 
 		CoreUI.SetupButton(homeButton, { noHoverSound: true });
@@ -73,10 +68,10 @@ export class MainMenuNavbarController implements OnStart {
 			this.mainMenuController.RouteToPage(MainMenuPageType.Avatar);
 		});
 
-		CoreUI.SetupButton(shopButton, { noHoverSound: true });
-		CanvasAPI.OnClickEvent(shopButton, () => {
-			this.mainMenuController.RouteToPage(MainMenuPageType.Shop);
-		});
+		// CoreUI.SetupButton(shopButton, { noHoverSound: true });
+		// CanvasAPI.OnClickEvent(shopButton, () => {
+		// 	this.mainMenuController.RouteToPage(MainMenuPageType.Shop);
+		// });
 
 		CoreUI.SetupButton(myGamesButton, { noHoverSound: true });
 		CanvasAPI.OnClickEvent(myGamesButton, () => {
@@ -95,11 +90,11 @@ export class MainMenuNavbarController implements OnStart {
 
 		CoreUI.SetupButton(runningGameButton, { noHoverSound: true });
 		CanvasAPI.OnClickEvent(runningGameButton, () => {
-			this.mainMenuController.RouteToPage(MainMenuPageType.Settings);
+			this.mainMenuController.RouteToPage(MainMenuPageType.Game);
 		});
 
 		let currentSelectedNavbarButton: GameObject | undefined = homeButton;
-		if (Game.context === CoreContext.GAME) {
+		if (Game.coreContext === CoreContext.GAME) {
 			currentSelectedNavbarButton = runningGameButton;
 		}
 		this.UpdateNavButton(currentSelectedNavbarButton, true);
@@ -110,15 +105,11 @@ export class MainMenuNavbarController implements OnStart {
 			if (page === MainMenuPageType.Home) {
 				currentSelectedNavbarButton = homeButton;
 			} else if (page === MainMenuPageType.Settings) {
-				if (Game.context === CoreContext.GAME) {
-					currentSelectedNavbarButton = runningGameButton;
-				} else {
-					currentSelectedNavbarButton = settingsButton;
-				}
+				currentSelectedNavbarButton = settingsButton;
+			} else if (page === MainMenuPageType.Game) {
+				currentSelectedNavbarButton = runningGameButton;
 			} else if (page === MainMenuPageType.Avatar) {
 				currentSelectedNavbarButton = avatarButton;
-			} else if (page === MainMenuPageType.Shop) {
-				currentSelectedNavbarButton = shopButton;
 			} else if (page === MainMenuPageType.MyGames) {
 				currentSelectedNavbarButton = myGamesButton;
 			}
@@ -143,9 +134,9 @@ export class MainMenuNavbarController implements OnStart {
 
 		task.spawn(() => {
 			const gameData = Game.WaitForGameData();
-			const text = runningGameButton.transform.GetChild(1).GetComponent<TMP_Text>();
-			text.text = ""; // have to do this or else setting to the default value "bedwars" will break.
-			text.text = gameData.name;
+			const text = runningGameButton.transform.Find("GameName")!.GetComponent<TMP_Text>()!;
+			//text.text = ""; // have to do this or else setting to the default value "bedwars" will break.
+			//text.text = gameData.name;
 			Bridge.UpdateLayout(runningGameButton.transform, false);
 		});
 
@@ -156,8 +147,8 @@ export class MainMenuNavbarController implements OnStart {
 		});
 
 		const keyboard = new Keyboard();
-		keyboard.OnKeyDown(KeyCode.K, () => {
-			if (keyboard.IsEitherKeyDown(KeyCode.LeftCommand, KeyCode.LeftControl)) {
+		keyboard.OnKeyDown(Key.K, () => {
+			if (keyboard.IsEitherKeyDown(Key.LeftCommand, Key.LeftCtrl)) {
 				this.FocusSearchbar();
 			}
 		});
@@ -195,25 +186,25 @@ export class MainMenuNavbarController implements OnStart {
 		if (displayName.size() > 16) {
 			displayName = displayName.sub(0, 15);
 		}
-		usernameText.text = displayName;
+		//usernameText.text = displayName;
 		// disc.text = "#" + user.discriminator;
 		profileWrapper.SetActive(true);
 
 		const profileLayoutGroup = this.mainMenuController.refs.GetValue("Navbar", "ProfileLayoutGroup");
-		LayoutRebuilder.ForceRebuildLayoutImmediate(profileLayoutGroup.GetComponent<RectTransform>());
+		LayoutRebuilder.ForceRebuildLayoutImmediate(profileLayoutGroup.GetComponent<RectTransform>()!);
 
 		const profilerWrapperWrapper = this.mainMenuController.refs.GetValue(
 			"Navbar",
 			"ProfileWrapperWrapper",
 		) as HorizontalLayoutGroup;
-		LayoutRebuilder.ForceRebuildLayoutImmediate(profilerWrapperWrapper.GetComponent<RectTransform>());
+		LayoutRebuilder.ForceRebuildLayoutImmediate(profilerWrapperWrapper.GetComponent<RectTransform>()!);
 	}
 
 	private UpdateNavButton(go: GameObject, selected: boolean): void {
 		go.GetAirshipComponent<MainMenuNavButton>()?.SetSelected(selected);
-		// const img = go.GetComponent<Image>();
+		// const img = go.GetComponent<Image>()!;
 		// img.TweenGraphicColor(selected ? new Color(1, 1, 1, 0.27) : ColorUtil.HexToColor("18191A"), 0.12);
-		// const text = go.transform.GetChild(0).GetComponent<TMP_Text>();
+		// const text = go.transform.GetChild(0).GetComponent<TMP_Text>()!;
 		// if (selected) {
 		// 	text.color = new Color(1, 1, 1, 1);
 		// 	// go.transform.GetChild(0).gameObject.SetActive(true);

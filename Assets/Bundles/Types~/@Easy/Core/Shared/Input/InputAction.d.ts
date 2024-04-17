@@ -1,5 +1,5 @@
+import { Binding } from "./Binding";
 import { ModifierKey } from "./InputUtil";
-import { Keybind } from "./Keybind";
 export interface SerializableAction {
     /**
      *
@@ -8,11 +8,15 @@ export interface SerializableAction {
     /**
      *
      */
-    primaryKey: KeyCode;
+    primaryKey: Key;
     /**
      *
      */
     modifierKey: ModifierKey;
+    /**
+     *
+     */
+    mouseButton: MouseButton;
     /**
      *
      */
@@ -26,11 +30,11 @@ export interface InputActionSchema {
     /**
      *
      */
-    keybind: Keybind;
+    binding: Binding;
     /**
      *
      */
-    secondaryKeybind?: Keybind;
+    secondaryBinding?: Binding;
     /**
      *
      */
@@ -40,7 +44,7 @@ export declare class InputActionConfig {
     /**
      *
      */
-    secondaryKeybind?: Keybind;
+    secondaryBinding?: Binding;
     /**
      *
      */
@@ -62,11 +66,11 @@ export declare class InputAction {
     /**
      *
      */
-    defaultKeybind: Keybind;
+    defaultBinding: Binding;
     /**
      *
      */
-    keybind: Keybind;
+    binding: Binding;
     /**
      *
      */
@@ -75,20 +79,20 @@ export declare class InputAction {
      *
      */
     isSecondary: boolean;
-    constructor(name: string, keybind: Keybind, isSecondary: boolean, category?: string);
+    constructor(name: string, binding: Binding, isSecondary: boolean, category?: string);
     /**
      *
      * @param newKeybind
      */
-    UpdateKeybind(newKeybind: Keybind): void;
+    UpdateBinding(newBinding: Binding): void;
     /**
      *
      */
-    UnsetKeybind(): void;
+    UnsetBinding(): void;
     /**
      *
      */
-    ResetKeybind(): void;
+    ResetBinding(): void;
     /**
      *
      * @returns
@@ -98,13 +102,13 @@ export declare class InputAction {
      *
      * @returns
      */
-    IsComplexKeybind(): boolean;
+    IsComplexBinding(): boolean;
     /**
      *
      * @param otherAction
      * @returns
      */
-    DoKeybindsMatch(otherAction: InputAction): boolean;
+    DoBindingsMatch(otherAction: InputAction): boolean;
     /**
      *
      * @returns

@@ -2,8 +2,8 @@ Shader "Airship/AirshipSpriteOpaque"
 {
     Properties
     {
-        _Color("Tint", Color) = (1,1,1,1)
-        _MainTex ("Texture", 2D) = "white" {}
+        [HDR] _Color("Tint", Color) = (1,1,1,1)
+        _MainTex ("Texture", 2D) = "white" {} 
     }
     SubShader
     {
@@ -14,16 +14,15 @@ Shader "Airship/AirshipSpriteOpaque"
             "LightMode" = "AirshipForwardPass"
         }
 
-		ZWrite off
+		ZWrite on
 		Cull off
         
         Pass
         {
             CGPROGRAM
+
             #pragma vertex vert
             #pragma fragment frag
-            // make fog work
-            #pragma multi_compile_fog
 
             #include "UnityCG.cginc"
             #include "../AirshipShaderIncludes.hlsl"
@@ -57,8 +56,9 @@ Shader "Airship/AirshipSpriteOpaque"
 
             void frag (v2f i, out half4 MRT0 : SV_Target0, out half4 MRT1 : SV_Target1)
             {
-                const half4 chosenColor = SRGBtoLinear(_Color);
-                float4 finalColor = tex2D(_MainTex, i.uv) * chosenColor * i.color;
+                float4 finalColor = tex2D(_MainTex, i.uv) * _Color * i.color;
+                finalColor.a = 1;
+
 				MRT0 = finalColor;
 				MRT1 = float4(0,0,0,1);
             }

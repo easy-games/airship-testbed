@@ -6,7 +6,7 @@ export class MobileJoystickDriver {
 	public readonly changed = new Signal<[position: Vector3, phase: MobileJoystickPhase]>();
 
 	private constructor() {
-		// InputBridge.Instance.OnMobileJoystickEvent((position, phase) => {
+		// UserInputService.InputProxy.OnMobileJoystickEvent((position, phase) => {
 		// 	this.Changed.Fire(position, phase);
 		// });
 	}
@@ -15,7 +15,9 @@ export class MobileJoystickDriver {
 		// InputBridge.Instance.SetMobileJoystickVisible(visible);
 	}
 
-	public IsVisible() {}
+	public IsVisible() {
+		// return InputBridge.Instance.IsMobileJoystickVisible();
+	}
 
 	/** **NOTE:** Internal only. Use `Touchscreen` class instead. */
 	public static Instance() {

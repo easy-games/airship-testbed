@@ -1,7 +1,9 @@
 import { RemoteEvent } from "@Easy/Core/Shared/Network/RemoteEvent";
 
 export const Network = {
-	ClientToServer: {},
+	ClientToServer: {
+		BounceBall: new RemoteEvent<[nobId: number]>(),
+	},
 	ServerToClient: {
 		//DEMO SCENE
 		KillData: new RemoteEvent<[rank: string, total: number]>(),

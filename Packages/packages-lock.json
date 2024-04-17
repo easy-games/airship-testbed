@@ -104,6 +104,15 @@
       },
       "url": "https://packages.unity.com"
     },
+    "com.unity.inputsystem": {
+      "version": "1.7.0",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.modules.uielements": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
     "com.unity.mathematics": {
       "version": "1.2.6",
       "depth": 2,
@@ -121,7 +130,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.multiplayer.playmode": {
-      "version": "0.6.0",
+      "version": "1.0.0-pre.2",
       "depth": 1,
       "source": "registry",
       "dependencies": {
@@ -323,9 +332,10 @@
         "com.unity.scriptablebuildpipeline": "1.21.0",
         "com.unity.nuget.newtonsoft-json": "3.2.1",
         "com.unity.animation.rigging": "1.1.1",
-        "com.unity.multiplayer.playmode": "0.6.0",
+        "com.unity.multiplayer.playmode": "1.0.0-pre.2",
         "com.unity.ugui": "2.0.0",
-        "com.unity.visualscripting": "1.9.1"
+        "com.unity.visualscripting": "1.9.1",
+        "com.unity.inputsystem": "1.7.0"
       }
     },
     "com.unity.modules.ai": {

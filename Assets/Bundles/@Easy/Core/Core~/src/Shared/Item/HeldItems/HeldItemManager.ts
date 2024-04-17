@@ -1,13 +1,11 @@
 ﻿import Character from "Shared/Character/Character";
-import { LocalCharacterSingleton } from "Shared/Character/LocalCharacter/LocalCharacterSingleton";
-import { Dependency } from "Shared/Flamework";
 import Inventory from "Shared/Inventory/Inventory";
 import { Bin } from "Shared/Util/Bin";
 import { CoreItemType } from "../CoreItemType";
 import { ItemDef } from "../ItemDefinitionTypes";
 import { MeleeHeldItem } from "./Damagers/MeleeHeldItem";
 import { HeldItem } from "./HeldItem";
-import { HeldItemState } from "./HeldItemState";
+import { Airship } from "../../Airship";
 
 export type HeldItemCondition = (itemDef: ItemDef) => boolean;
 export type HeldItemFactory = (character: Character, itemDef: ItemDef) => HeldItem;
@@ -15,18 +13,24 @@ export type HeldItemEntry = {
 	condition: HeldItemCondition;
 	factory: HeldItemFactory;
 };
+export interface HeldItemActionState {
+	characterId: number;
+	stateIndex: number;
+	isActive: boolean;
+	lookVector: Vector3; //Just a Convenience so the server can know where the client was looking. Maybe add lookStartPos?
+}
 
 /**
- * This class is attached to an {@link Entity}.
+ * This class is attached to an {@link Character}.
  *
- * One item manager per entity, calls functionality on currently equipped item for that entity
+ * One item manager per character, calls functionality on currently equipped item for that entity
  */
 export class HeldItemManager {
 	public character: Character;
-	private heldItemMap = new Map<string, HeldItem>();
+	private heldItemMap = new Map<number, HeldItem>();
 	private emptyHeldItem: HeldItem | undefined;
 	private currentHeldItem: HeldItem;
-	private currentItemState: HeldItemState = HeldItemState.NONE;
+	private currentItemState = -1;
 	private bin = new Bin();
 	private newStateQueued = false;
 
@@ -44,13 +48,8 @@ export class HeldItemManager {
 		return this.currentHeldItem;
 	}
 
-	public TryGetItem(itemType: CoreItemType) {
-		return this.heldItemMap.get(itemType);
-	}
-
 	private Log(message: string) {
-		return;
-		print("Entity " + this.character.id + " " + message);
+		//print("HeldItem: " + this.character.id + " " + message);
 	}
 
 	private GetOrCreateHeldItem(itemDef?: ItemDef) {
@@ -63,7 +62,7 @@ export class HeldItemManager {
 			return this.emptyHeldItem;
 		}
 
-		let item = this.heldItemMap.get(itemDef.itemType);
+		let item = this.heldItemMap.get(itemDef.id);
 		if (item === undefined) {
 			//Create the held item instance
 			for (let i = HeldItemManager.heldItemClasses.size() - 1; i >= 0; i--) {
@@ -76,7 +75,7 @@ export class HeldItemManager {
 				item = new HeldItem(this.character, itemDef);
 			}
 			item.OnLoadAssets();
-			this.heldItemMap.set(itemDef.itemType, item);
+			this.heldItemMap.set(itemDef.id, item);
 		}
 		return item;
 	}
@@ -98,7 +97,7 @@ export class HeldItemManager {
 						this.currentHeldItem.OnUnEquip();
 					}
 					//Equip the new item
-					this.currentItemState = HeldItemState.NONE;
+					this.currentItemState = -1;
 					this.currentHeldItem = this.GetOrCreateHeldItem(itemStack?.GetMeta());
 					this.currentHeldItem.OnEquip();
 				}),
@@ -111,59 +110,42 @@ export class HeldItemManager {
 	}
 
 	//LOCAL CLIENT ONLY
-	public TriggerNewState(itemState: HeldItemState) {
-		if (this.newStateQueued) return;
+	public TriggerNewState(stateIndex: number, isActive: boolean) {
+		if (this.newStateQueued) return; //TODO what is this? It should be replaced with an actual queue if needed
 		this.newStateQueued = true;
 
 		const lookVector = this.character.movement.GetLookVector();
 
 		//Notify server of new State
-		Dependency<LocalCharacterSingleton>().AddToMoveData(
-			"HeldItemState",
-			{
-				e: this.character.id,
-				s: itemState,
-				l: lookVector,
-			},
-			() => {
-				this.newStateQueued = false;
-				//Handle the state locally
-				this.OnNewState(itemState, lookVector);
-			},
-		);
+		let stateData: HeldItemActionState = {
+			characterId: this.character.id,
+			stateIndex: stateIndex,
+			isActive: isActive,
+			lookVector: lookVector,
+		};
+		Airship.characters.localCharacterManager.AddToMoveData("HeldItemState", stateData, () => {
+			//Handle the state locally
+			this.newStateQueued = false;
+			this.OnNewState(stateIndex, isActive, lookVector);
+		});
 	}
 
-	public OnNewState(itemState: HeldItemState, lookVector: Vector3) {
-		this.Log("New State: " + itemState);
-		// if (this.currentItemState === itemState) {
-		// 	return;
-		// }
+	public OnNewState(stateIndex: number, isActive: boolean, lookVector: Vector3) {
+		this.Log("New State: " + stateIndex);
 		if (this.currentHeldItem === undefined) {
 			error("Trying to interact without any held item!");
 		}
-		this.currentItemState = itemState;
+
+		this.currentItemState = stateIndex;
 		this.currentHeldItem.SetLookVector(lookVector);
-		switch (itemState) {
-			case HeldItemState.CALL_TO_ACTION_START:
-				this.currentHeldItem.OnCallToActionStart();
-				break;
-			case HeldItemState.CALL_TO_ACTION_END:
-				this.currentHeldItem.OnCallToActionEnd();
-				break;
-			case HeldItemState.SECONDARY_ACTION_START:
-				this.currentHeldItem.OnSecondaryActionStart();
-				break;
-			case HeldItemState.SECONDARY_ACTION_END:
-				this.currentHeldItem.OnSecondaryActionEnd();
-				break;
-			case HeldItemState.INSPECT:
-				this.currentHeldItem.OnInspect();
-				break;
-			case HeldItemState.ON_DESTROY:
-				//When destroyed un equip so any logic can clean itself up
-				this.currentHeldItem.OnUnEquip();
-				//Fill current held item with default item
-				this.currentHeldItem = this.GetOrCreateHeldItem();
+		if (stateIndex >= 0) {
+			this.currentHeldItem.OnNewActionState(stateIndex, isActive);
+		} else {
+			//DESTROYING
+			//When destroyed un equip so any logic can clean itself up
+			this.currentHeldItem.OnUnEquip();
+			//Fill current held item with default item
+			this.currentHeldItem = this.GetOrCreateHeldItem();
 		}
 	}
 }

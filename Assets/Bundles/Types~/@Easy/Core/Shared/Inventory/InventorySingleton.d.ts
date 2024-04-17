@@ -1,4 +1,4 @@
-/// <reference types="@easy-games/compiler-types" />
+/// <reference types="compiler-types" />
 import { OnStart } from "../Flamework";
 import { RemoteFunction } from "../Network/RemoteFunction";
 import { CharacterInventorySingleton } from "./CharacterInventorySingleton";
@@ -29,5 +29,9 @@ export declare class InventorySingleton implements OnStart {
     UnregisterInventory(inventory: Inventory): void;
     QuickMoveSlot(inv: Inventory, slot: number): void;
     MoveToSlot(fromInv: Inventory, fromSlot: number, toInv: Inventory, toSlot: number, amount: number): void;
+    SetUIEnabled(enabled: boolean): void;
+    SetHealtbarVisible(visible: boolean): void;
+    SetHotbarVisible(visible: boolean): void;
+    SetBackpackVisible(visible: boolean): void;
 }
 export {};

@@ -15,6 +15,7 @@ import { GameInfoSingleton } from "../Airship/Game/GameInfoSingleton";
 import { OutfitDto } from "../Airship/Types/Outputs/PlatformInventory";
 import { AssetCache } from "../AssetCache/AssetCache";
 import { AirshipUrl } from "../Util/AirshipUrl";
+import { OnUpdate } from "../Util/Timer";
 import { DecodeJSON, EncodeJSON } from "../json";
 import { Player, PlayerDto } from "./Player";
 
@@ -35,6 +36,7 @@ export class PlayersSingleton implements OnStart {
 
 	private playersPendingReady = new Map<number, Player>();
 
+	private cachedProfilePictureTextures = new Map<string, Texture2D>();
 	private cachedProfilePictureSprite = new Map<string, Sprite>();
 
 	private outfitFetchTime = new Map<string, number>();
@@ -51,11 +53,10 @@ export class PlayersSingleton implements OnStart {
 			}
 
 			const mutable = Game.localPlayer as Mutable<Player>;
-			mutable.clientId = localPlayerInfo.clientId;
-			mutable.networkObject = localPlayerInfo.gameObject.GetComponent<NetworkObject>();
-			mutable.username = localPlayerInfo.username;
-			mutable.usernameTag = localPlayerInfo.usernameTag;
-			mutable.userId = localPlayerInfo.userId;
+			mutable.clientId = localPlayerInfo.clientId.Value;
+			mutable.networkObject = localPlayerInfo.gameObject.GetComponent<NetworkObject>()!;
+			mutable.username = localPlayerInfo.username.Value;
+			mutable.userId = localPlayerInfo.userId.Value;
 			Game.localPlayerLoaded = true;
 			Game.onLocalPlayerLoaded.Fire();
 
@@ -63,9 +64,9 @@ export class PlayersSingleton implements OnStart {
 			// print("took " + timeDiff + " ms to load local player.");
 		};
 
-		if (RunUtil.IsClient()) {
-			Game.localPlayer = new Player(undefined as unknown as NetworkObject, 0, "loading", "loading", "null");
-			if (!RunUtil.IsHosting()) {
+		if (Game.IsClient()) {
+			Game.localPlayer = new Player(undefined as unknown as NetworkObject, 0, "loading", "loading");
+			if (!Game.IsHosting()) {
 				/**
 				 * Host mode: start with no players
 				 * Dedicated client: start with LocalPlayer
@@ -78,42 +79,42 @@ export class PlayersSingleton implements OnStart {
 				FetchLocalPlayerWithWait();
 			});
 		}
-		if (RunUtil.IsServer()) {
+		if (Game.IsServer()) {
 			this.server = {
 				botCounter: 0,
 			};
 		}
 
 		this.onPlayerJoined.Connect((player) => {
-			if (RunUtil.IsServer() && this.joinMessagesEnabled) {
+			if (Game.IsServer() && this.joinMessagesEnabled) {
 				Game.BroadcastMessage(ChatColor.Aqua(player.username) + ChatColor.Gray(" joined the server."));
 			}
 		});
 		this.onPlayerDisconnected.Connect((player) => {
-			if (RunUtil.IsServer() && this.disconnectMessagesEnabled) {
+			if (Game.IsServer() && this.disconnectMessagesEnabled) {
 				Game.BroadcastMessage(ChatColor.Aqua(player.username) + ChatColor.Gray(" disconnected."));
 			}
 		});
 	}
 
 	OnStart(): void {
-		if (RunUtil.IsServer() && !RunUtil.IsEditor()) {
+		if (Game.IsServer() && !Game.IsEditor()) {
 			InternalHttpManager.SetAuthToken("");
 			// HttpManager.SetLoggingEnabled(true);
 		}
 
 		task.spawn(() => {
-			if (RunUtil.IsClient()) {
+			if (Game.IsClient()) {
 				this.InitClient();
 			}
-			if (RunUtil.IsServer()) {
-				if (RunUtil.IsClient()) {
+			if (Game.IsServer()) {
+				if (Game.IsClient()) {
 					Game.WaitForLocalPlayerLoaded();
 				}
 				this.InitServer();
 			}
 
-			if (RunUtil.IsClient() && Game.context === CoreContext.GAME) {
+			if (Game.IsClient() && Game.coreContext === CoreContext.GAME) {
 				Game.WaitForLocalPlayerLoaded();
 				CoreNetwork.ClientToServer.Ready.client.FireServer();
 			}
@@ -178,12 +179,14 @@ export class PlayersSingleton implements OnStart {
 			if (RunUtil.IsHosting() && playerInfo.clientId === 0) {
 				player = Game.localPlayer;
 			} else {
+				print(
+					`making new player. clientId=${playerInfo.clientId} userId=${playerInfo.userId} username=${playerInfo.username}`,
+				);
 				player = new Player(
-					playerInfo.gameObject.GetComponent<NetworkObject>(),
+					playerInfo.gameObject.GetComponent<NetworkObject>()!,
 					playerInfo.clientId,
 					playerInfo.userId,
 					playerInfo.username,
-					playerInfo.usernameTag,
 				);
 			}
 			playerInfo.gameObject.name = `Player_${playerInfo.username}`;
@@ -238,6 +241,7 @@ export class PlayersSingleton implements OnStart {
 
 			if (Airship.characters.allowMidGameOutfitChanges && player.character) {
 				const outfitDto = player.selectedOutfit;
+				player.character.outfitDto = outfitDto;
 				CoreNetwork.ServerToClient.Character.ChangeOutfit.server.FireAllClients(player.character.id, outfitDto);
 			}
 		});
@@ -270,9 +274,6 @@ export class PlayersSingleton implements OnStart {
 		// this.outfitFetchTime.set(player.userId, os.time());
 
 		let userId = player.userId;
-		if (!RunUtil.IsEditor()) {
-			print("fetching outfit for " + userId);
-		}
 		if (RunUtil.IsEditor() && player.IsLocalPlayer()) {
 			Dependency<UserController>().WaitForLocalUserReady();
 			let uid = Dependency<UserController>().localUser?.uid;
@@ -288,15 +289,12 @@ export class PlayersSingleton implements OnStart {
 			return;
 		}
 		if (res.data.size() === 0) {
-			if (!RunUtil.IsEditor()) {
-				print("Empty outfit.");
-			}
 			SetOutfit(undefined);
 			return;
 		}
 		const outfitDto = DecodeJSON<OutfitDto>(res.data);
 		if (!RunUtil.IsEditor()) {
-			print("outfit: " + res.data);
+			// print("outfit: " + res.data);
 		}
 		SetOutfit(outfitDto);
 	}
@@ -336,7 +334,7 @@ export class PlayersSingleton implements OnStart {
 		if (!player) {
 			const nob = NetworkUtil.WaitForNetworkObject(dto.nobId);
 			nob.gameObject.name = `Player_${dto.username}`;
-			player = new Player(nob, dto.clientId, dto.userId, dto.username, dto.usernameTag);
+			player = new Player(nob, dto.clientId, dto.userId, dto.username);
 		}
 
 		team?.AddPlayer(player);
@@ -447,6 +445,34 @@ export class PlayersSingleton implements OnStart {
 		return this.FindByClientId(clientId) ?? this.playersPendingReady.get(clientId);
 	}
 
+	/**
+	 * @internal
+	 */
+	public WaitForClientIdIncludePending(clientId: number, timeout = 5): Promise<Player | undefined> {
+		return new Promise((resolve) => {
+			let readyOrPending = this.FindByClientIdIncludePending(clientId);
+			if (readyOrPending) {
+				resolve(readyOrPending);
+				return;
+			}
+			let acc = 0;
+			const disconnect = OnUpdate.Connect((dt) => {
+				acc += dt;
+				readyOrPending = this.FindByClientIdIncludePending(clientId);
+				if (acc >= timeout) {
+					disconnect();
+					resolve(undefined);
+					return;
+				}
+				if (readyOrPending) {
+					disconnect();
+					resolve(readyOrPending);
+					return;
+				}
+			});
+		});
+	}
+
 	public FindByUserId(userId: string): Player | undefined {
 		for (const player of this.players) {
 			//print("checking player " + player.userId + " to " + userId);
@@ -471,13 +497,43 @@ export class PlayersSingleton implements OnStart {
 	 * @param userId
 	 * @returns
 	 */
-	public CreateProfilePictureSpriteAsync(userId: string): Sprite | undefined {
+	private pictureIndex = 0;
+	public GetProfilePictureTextureAsync(userId: string): Texture2D | undefined {
+		if (this.cachedProfilePictureTextures.has(userId)) {
+			return this.cachedProfilePictureTextures.get(userId);
+		}
+
+		let pictures = [
+			"@Easy/Core/Shared/Resources/Images/ProfilePictures/easy3.png",
+			"@Easy/Core/Shared/Resources/Images/ProfilePictures/batter.jpeg",
+			"@Easy/Core/Shared/Resources/Images/ProfilePictures/Dom.jpeg",
+			"@Easy/Core/Shared/Resources/Images/ProfilePictures/easy1.png",
+			"@Easy/Core/Shared/Resources/Images/ProfilePictures/easy2.png",
+			"@Easy/Core/Shared/Resources/Images/ProfilePictures/easy5.png",
+			"@Easy/Core/Shared/Resources/Images/ProfilePictures/easy6.png",
+			"@Easy/Core/Shared/Resources/Images/ProfilePictures/easy7.png",
+			"@Easy/Core/Shared/Resources/Images/ProfilePictures/heart.jpeg",
+			"@Easy/Core/Shared/Resources/Images/ProfilePictures/pilot.jpeg",
+			"@Easy/Core/Shared/Resources/Images/ProfilePictures/pirate.jpeg",
+			"@Easy/Core/Shared/Resources/Images/ProfilePictures/rad.jpeg",
+			"@Easy/Core/Shared/Resources/Images/ProfilePictures/scuba.jpeg",
+		];
+		let index = this.pictureIndex++ % pictures.size();
+		let path = pictures[index];
+		const texture = AssetCache.LoadAssetIfExists<Texture2D>(path);
+		return texture;
+	}
+
+	/**
+	 * **MAY YIELD**
+	 * @param userId
+	 * @returns
+	 */
+	public GetProfilePictureSpriteAsync(userId: string): Sprite | undefined {
 		if (this.cachedProfilePictureSprite.has(userId)) {
 			return this.cachedProfilePictureSprite.get(userId);
 		}
-		const texture = AssetCache.LoadAssetIfExists<Texture2D>(
-			"@Easy/Core/Shared/Resources/Images/ProfilePictures/Dom.png",
-		);
+		const texture = this.GetProfilePictureTextureAsync(userId);
 		if (texture !== undefined) {
 			const sprite = Bridge.MakeSprite(texture);
 			this.cachedProfilePictureSprite.set(userId, sprite);

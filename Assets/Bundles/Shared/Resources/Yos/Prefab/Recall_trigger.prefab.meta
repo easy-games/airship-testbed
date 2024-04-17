@@ -3,5 +3,5 @@ guid: 1f11422bf0b09004da7bdcdc087538ec
 PrefabImporter:
   externalObjects: {}
   userData: 
-  assetBundleName: '@easy/core_shared/resources'
+  assetBundleName: shared/resources
   assetBundleVariant: 

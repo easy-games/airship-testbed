@@ -1,10 +1,12 @@
-/// <reference types="@easy-games/compiler-types" />
-export default class GameGeneralPage extends AirshipBehaviour {
+import MainMenuPageComponent from "../../../../../Client/MainMenuControllers/MainMenuPageComponent";
+export default class GameGeneralPage extends MainMenuPageComponent {
     gameTitle: TMP_Text;
     gameDeveloper: TMP_Text;
     gameDescription: TMP_Text;
     gameImage: Image;
     private bin;
+    OnEnable(): void;
+    GetTargetAnchoredPositionY(): number;
     Start(): void;
     OnDestroy(): void;
 }

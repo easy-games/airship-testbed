@@ -37,10 +37,16 @@ export class InventoryUIController implements OnStart {
 	private backpackCanvas: Canvas;
 
 	private slotToBackpackTileMap = new Map<number, GameObject>();
+
 	private enabled = true;
+	private visible = false;
+	private backpackEnabled = true;
+
 	private draggingState: DraggingState | undefined;
 	private draggingBin = new Bin();
 	private spriteCacheForItemType = new Map<string, Sprite>();
+
+	private firstSpawn = true;
 
 	constructor(
 		private readonly invController: InventorySingleton,
@@ -48,10 +54,10 @@ export class InventoryUIController implements OnStart {
 		private readonly coreUIController: CoreUIController,
 	) {
 		const go = this.coreUIController.refs.GetValue("Apps", "Inventory");
-		this.hotbarCanvas = go.GetComponent<Canvas>();
+		this.hotbarCanvas = go.GetComponent<Canvas>()!;
 		this.hotbarCanvas.enabled = true;
 
-		this.inventoryRefs = go.GetComponent<GameObjectReferences>();
+		this.inventoryRefs = go.GetComponent<GameObjectReferences>()!;
 		this.hotbarContent = this.inventoryRefs.GetValue("UI", "HotbarContentGO").transform;
 		this.healthBar = new Healthbar(this.inventoryRefs.GetValue("UI", "HealthBarTransform"));
 
@@ -59,8 +65,8 @@ export class InventoryUIController implements OnStart {
 			AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/UI/Inventory/Backpack.prefab"),
 			CoreRefs.rootTransform,
 		);
-		this.backpackRefs = backpackGo.GetComponent<GameObjectReferences>();
-		this.backpackCanvas = backpackGo.GetComponent<Canvas>();
+		this.backpackRefs = backpackGo.GetComponent<GameObjectReferences>()!;
+		this.backpackCanvas = backpackGo.GetComponent<Canvas>()!;
 		this.backpackCanvas.enabled = false;
 	}
 
@@ -82,15 +88,51 @@ export class InventoryUIController implements OnStart {
 		if (this.enabled === enabled) return;
 		this.enabled = enabled;
 
-		this.hotbarCanvas.enabled = enabled;
+		const localCharacterExists = Game.localPlayer.character;
+
+		if (!enabled && this.visible && localCharacterExists) {
+			this.SetVisible(false);
+		}
+		if (enabled && !this.visible && localCharacterExists) {
+			this.SetVisible(true);
+		}
+	}
+
+	private SetVisible(visible: boolean): void {
+		this.visible = visible;
+		this.hotbarCanvas.enabled = visible;
+		this.RefreshHealthBarPosition();
+	}
+
+	public SetHealtbarVisible(visible: boolean) {
+		this.healthBar.transform.gameObject.SetActive(visible);
+		this.RefreshHealthBarPosition();
+	}
+
+	public SetHotbarVisible(visible: boolean) {
+		this.hotbarContent.gameObject.SetActive(visible);
+		this.RefreshHealthBarPosition();
+	}
+
+	private RefreshHealthBarPosition() {
+		this.healthBar.transform.anchoredPosition = new Vector2(0, this.hotbarContent.gameObject.activeSelf ? 120 : 0);
+	}
+
+	public SetBackpackVisible(visible: boolean) {
+		this.backpackEnabled = this.visible;
+		if (!visible) {
+			if (this.IsBackpackShown() || AppManager.IsOpen()) {
+				AppManager.Close();
+			}
+		}
 	}
 
 	public OpenBackpack(): void {
-		if (!this.enabled) return;
+		if (!this.enabled || !this.backpackEnabled) return;
 
 		this.backpackShown = true;
 
-		const wrapper = this.backpackCanvas.transform.GetChild(0).GetComponent<RectTransform>();
+		const wrapper = this.backpackCanvas.transform.GetChild(0).GetComponent<RectTransform>()!;
 		wrapper.anchoredPosition = new Vector2(0, -20);
 		wrapper.TweenAnchoredPositionY(0, 0.12);
 
@@ -172,14 +214,18 @@ export class InventoryUIController implements OnStart {
 			const bin = new Bin();
 
 			if (character === undefined) {
-				this.healthBar.SetValue(0);
-				this.healthBar.transform.gameObject.SetActive(false);
-				this.SetEnabled(false);
+				if (!this.firstSpawn) this.healthBar.SetValue(0);
+				if (this.firstSpawn) this.firstSpawn = false;
+
+				if (this.enabled) this.SetVisible(false);
+
+				// this.healthBar.transform.gameObject.SetActive(false);
+				// this.SetEnabled(false);
 				return;
 			}
-			this.SetEnabled(true);
+			if (this.enabled) this.SetVisible(true);
+			// this.healthBar.transform.gameObject.SetActive(true);
 
-			this.healthBar.transform.gameObject.SetActive(true);
 			const SetFill = (newHealth: number, instant: boolean) => {
 				let fill = newHealth / character.GetMaxHealth();
 				if (instant) {
@@ -201,7 +247,7 @@ export class InventoryUIController implements OnStart {
 	}
 
 	private UpdateTile(tile: GameObject, itemStack: ItemStack | undefined): void {
-		const refs = tile.GetComponent<GameObjectReferences>();
+		const refs = tile.GetComponent<GameObjectReferences>()!;
 		const image = refs.GetValue<Image>("UI", "Image");
 		const amount = refs.GetValue<TMP_Text>("UI", "Amount");
 		const name = refs.GetValue<TMP_Text>("UI", "Name");
@@ -255,7 +301,7 @@ export class InventoryUIController implements OnStart {
 		this.UpdateTile(go, itemStack);
 
 		const contentGO = go.transform.GetChild(0).gameObject;
-		const contentRect = contentGO.GetComponent<RectTransform>();
+		const contentRect = contentGO.GetComponent<RectTransform>()!;
 		if (selectedSlot === slot && (this.prevHeldSlot !== slot || reset)) {
 			contentRect.TweenAnchoredPositionY(10, 0.1);
 		} else if (selectedSlot !== slot && (this.prevHeldSlot === slot || reset)) {
@@ -338,7 +384,7 @@ export class InventoryUIController implements OnStart {
 						if (i < this.hotbarSlots) {
 							// hotbar
 							if (this.IsBackpackShown()) {
-								if (keyboard.IsKeyDown(KeyCode.LeftShift)) {
+								if (keyboard.IsKeyDown(Key.LeftShift)) {
 									this.invController.QuickMoveSlot(this.characterInvController.localInventory, i);
 								}
 							} else {
@@ -346,7 +392,7 @@ export class InventoryUIController implements OnStart {
 							}
 						} else {
 							// backpack
-							if (keyboard.IsKeyDown(KeyCode.LeftShift)) {
+							if (keyboard.IsKeyDown(Key.LeftShift)) {
 								this.invController.QuickMoveSlot(this.characterInvController.localInventory, i);
 							}
 						}
@@ -354,7 +400,7 @@ export class InventoryUIController implements OnStart {
 					CanvasAPI.OnBeginDragEvent(button, () => {
 						this.draggingBin.Clean();
 						if (!this.IsBackpackShown()) return;
-						if (keyboard.IsKeyDown(KeyCode.LeftShift)) return;
+						if (keyboard.IsKeyDown(Key.LeftShift)) return;
 
 						if (!this.characterInvController.localInventory) return;
 						const itemStack = this.characterInvController.localInventory.GetItem(i);
@@ -364,19 +410,19 @@ export class InventoryUIController implements OnStart {
 						const clone = Object.Instantiate(visual, this.backpackCanvas.transform) as GameObject;
 						clone.transform.SetAsLastSibling();
 
-						const cloneRect = clone.GetComponent<RectTransform>();
+						const cloneRect = clone.GetComponent<RectTransform>()!;
 						cloneRect.sizeDelta = new Vector2(100, 100);
-						const cloneImage = clone.transform.GetChild(0).GetComponent<Image>();
+						const cloneImage = clone.transform.GetChild(0).GetComponent<Image>()!;
 						cloneImage.raycastTarget = false;
 
 						visual.SetActive(false);
 
-						const cloneTransform = clone.GetComponent<RectTransform>();
-						cloneTransform.position = mouse.GetLocation();
+						const cloneTransform = clone.GetComponent<RectTransform>()!;
+						cloneTransform.position = mouse.GetPositionV3();
 
 						this.draggingBin.Add(
 							OnUpdate.Connect((dt) => {
-								cloneTransform.position = mouse.GetLocation();
+								cloneTransform.position = mouse.GetPositionV3();
 							}),
 						);
 						this.draggingBin.Add(() => {

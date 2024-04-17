@@ -51,9 +51,7 @@ Shader "Airship/AirshipToonHair"
             #pragma multi_compile _ INSTANCE_DATA_ON
 
             //Multi shader vars (you need these even if you're not using them, so that material properties can survive editor script reloads)
-            float VERTEX_LIGHT;  
             float SLIDER_OVERRIDE;
-            float POINT_FILTER;
             float EXPLICIT_MAPS;
             float EMISSIVE;
             float RIM_LIGHT;

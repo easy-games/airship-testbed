@@ -1,10 +1,11 @@
-/// <reference types="@easy-games/compiler-types" />
+/// <reference types="compiler-types" />
 import { Player } from "../../../../Player/Player";
 export default class PlayerEntry extends AirshipBehaviour {
     bgImage: Image;
     profileImage: Image;
     usernameText: TMP_Text;
     addFriendBtn: GameObject;
+    reportBtn: GameObject;
     private bin;
     OnEnable(): void;
     Init(player: Player): void;

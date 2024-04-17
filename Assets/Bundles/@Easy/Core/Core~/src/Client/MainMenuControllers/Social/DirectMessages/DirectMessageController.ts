@@ -97,7 +97,7 @@ export class DirectMessageController implements OnStart {
 			}
 
 			// in-game chat
-			if (Game.context === CoreContext.GAME) {
+			if (Game.coreContext === CoreContext.GAME) {
 				const friend = this.friendsController.GetFriendStatus(data.sender);
 				if (!friend) return;
 
@@ -132,7 +132,7 @@ export class DirectMessageController implements OnStart {
 			});
 
 			// in-game chat
-			if (Game.context === CoreContext.GAME) {
+			if (Game.coreContext === CoreContext.GAME) {
 				const member = this.partyController.party?.members.find((u) => u.uid === data.sender);
 				if (member) {
 					let text =
@@ -154,7 +154,7 @@ export class DirectMessageController implements OnStart {
 
 		const friendGo = this.friendsController.GetFriendGo(uid);
 		if (friendGo) {
-			const refs = friendGo.GetComponent<GameObjectReferences>();
+			const refs = friendGo.GetComponent<GameObjectReferences>()!;
 			const badge = refs.GetValue("UI", "UnreadBadge") as GameObject;
 			const badgeText = refs.GetValue("UI", "UnreadBadgeText") as TMP_Text;
 
@@ -170,9 +170,9 @@ export class DirectMessageController implements OnStart {
 			),
 			this.mainMenuController.socialMenuGroup.transform,
 		);
-		this.windowGo.GetComponent<RectTransform>().anchoredPosition = new Vector2(this.xPos, this.yPos);
+		this.windowGo.GetComponent<RectTransform>()!.anchoredPosition = new Vector2(this.xPos, this.yPos);
 
-		this.windowGoRefs = this.windowGo.GetComponent<GameObjectReferences>();
+		this.windowGoRefs = this.windowGo.GetComponent<GameObjectReferences>()!;
 		this.messagesContentGo = this.windowGoRefs.GetValue("UI", "MessagesContent");
 		this.scrollRect = this.windowGoRefs.GetValue("UI", "ScrollRect") as ScrollRect;
 		this.offlineNoticeWrapper = this.windowGoRefs.GetValue("UI", "NoticeWrapper");
@@ -216,13 +216,13 @@ export class DirectMessageController implements OnStart {
 			this.inputFieldSelected = false;
 		});
 		const keyboard = new Keyboard();
-		keyboard.anyKeyDown.ConnectWithPriority(SignalPriority.HIGHEST, (event) => {
+		keyboard.keyDown.ConnectWithPriority(SignalPriority.HIGHEST, (event) => {
 			if (this.inputFieldSelected) {
 				if (
-					event.keyCode !== KeyCode.Return &&
-					event.keyCode !== KeyCode.Escape &&
-					event.keyCode !== KeyCode.UpArrow &&
-					event.keyCode !== KeyCode.DownArrow
+					event.key !== Key.Enter &&
+					event.key !== Key.Escape &&
+					event.key !== Key.UpArrow &&
+					event.key !== Key.DownArrow
 				) {
 					event.SetCancelled(true);
 				}
@@ -274,7 +274,7 @@ export class DirectMessageController implements OnStart {
 			pitch: 1.5,
 		});
 
-		if (Game.context === CoreContext.GAME) {
+		if (Game.coreContext === CoreContext.GAME) {
 			let text =
 				ColorUtil.ColoredText(Theme.pink, "To ") +
 				ColorUtil.ColoredText(Theme.white, status.username) +
@@ -304,7 +304,7 @@ export class DirectMessageController implements OnStart {
 			pitch: 1.5,
 		});
 
-		if (Game.context === CoreContext.GAME) {
+		if (Game.coreContext === CoreContext.GAME) {
 			let text =
 				ColorUtil.ColoredText(Theme.pink, "[Party] ") +
 				ColorUtil.ColoredText(Theme.white, Game.localPlayer.username) +
@@ -322,15 +322,15 @@ export class DirectMessageController implements OnStart {
 		} else {
 			messageGo = Object.Instantiate(this.incomingMessagePrefab, this.messagesContentGo!.transform);
 		}
-		const messageRefs = messageGo.GetComponent<GameObjectReferences>();
+		const messageRefs = messageGo.GetComponent<GameObjectReferences>()!;
 		const text = messageRefs.GetValue("UI", "Text") as TMP_Text;
 
 		if (isParty && !outgoing) {
 			const content = messageGo.transform.GetChild(0);
 			const profilePictureGo = content.GetChild(0).gameObject;
-			const profilePicSprite = Airship.players.CreateProfilePictureSpriteAsync(dm.sender);
+			const profilePicSprite = Airship.players.GetProfilePictureSpriteAsync(dm.sender);
 			if (profilePicSprite) {
-				profilePictureGo.GetComponent<Image>().sprite = profilePicSprite;
+				profilePictureGo.GetComponent<Image>()!.sprite = profilePicSprite;
 			}
 			profilePictureGo.SetActive(true);
 			content.GetChild(1).gameObject.SetActive(true);
@@ -363,6 +363,7 @@ export class DirectMessageController implements OnStart {
 	}
 
 	public OpenFriend(uid: string): void {
+		if (Game.IsMobile()) return;
 		this.openWindowBin.Clean();
 		this.openedWindowTarget = uid;
 
@@ -413,6 +414,8 @@ export class DirectMessageController implements OnStart {
 	}
 
 	public OpenParty() {
+		if (Game.IsMobile()) return;
+
 		this.openWindowBin.Clean();
 		this.openedWindowTarget = "party";
 
@@ -447,7 +450,7 @@ export class DirectMessageController implements OnStart {
 	private ClearUnreadBadge(uid: string): void {
 		const friendGo = this.friendsController.GetFriendGo(uid);
 		if (friendGo) {
-			friendGo.GetComponent<GameObjectReferences>().GetValue("UI", "UnreadBadge").SetActive(false);
+			friendGo.GetComponent<GameObjectReferences>()!.GetValue("UI", "UnreadBadge").SetActive(false);
 		}
 	}
 

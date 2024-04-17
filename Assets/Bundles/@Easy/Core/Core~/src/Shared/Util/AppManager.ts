@@ -7,7 +7,7 @@ import { SignalPriority } from "./Signal";
 import { SetTimeout } from "./Timer";
 
 /** Global close key for hiding interfaces. */
-const CLOSE_KEY = KeyCode.Escape;
+const CLOSE_KEY = Key.Escape;
 
 interface OpenedApp {
 	canvas?: Canvas;
@@ -36,11 +36,11 @@ export class AppManager {
 			AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/AppManagerBackground.prefab"),
 			CoreRefs.rootTransform,
 		);
-		this.backgroundCanvas = backgroundGO.GetComponent<Canvas>();
+		this.backgroundCanvas = backgroundGO.GetComponent<Canvas>()!;
 		this.backgroundCanvas.enabled = false;
-		const refs = backgroundGO.GetComponent<GameObjectReferences>();
+		const refs = backgroundGO.GetComponent<GameObjectReferences>()!;
 		this.backgroundObject = refs.GetValue("UI", "Background");
-		this.backgroundCanvasGroup = this.backgroundCanvas.gameObject.GetComponent<CanvasGroup>();
+		this.backgroundCanvasGroup = this.backgroundCanvas.gameObject.GetComponent<CanvasGroup>()!;
 		this.backgroundCanvasGroup.alpha = 0;
 
 		CanvasAPI.OnPointerEvent(this.backgroundObject, (direction, button) => {
@@ -213,7 +213,7 @@ AppManager.keyboard.OnKeyDown(
 	SignalPriority.HIGH,
 );
 AppManager.keyboard.OnKeyDown(
-	KeyCode.F,
+	Key.F,
 	(event) => {
 		if (event.uiProcessed) return;
 		if (AppManager.IsOpen()) {

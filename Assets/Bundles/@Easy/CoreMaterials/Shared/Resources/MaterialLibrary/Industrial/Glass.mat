@@ -9,13 +9,15 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Glass
   m_Shader: {fileID: 4800000, guid: b29034c43a22c0941a7719fc0861f1a0, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - EXPLICIT_MAPS_ON
-  - NUM_LIGHTS_LIGHTS0
   - SLIDER_OVERRIDE_ON
   - TRIPLANAR_STYLE_LOCAL
   m_InvalidKeywords:
   - METAL_ON_ON
+  - NUM_LIGHTS_LIGHTS2
   - OVERRIDE_ON
   - _DSTBLEND_ONEMINUSSRCALPHA
   - _LIGHTS_LIGHTS0
@@ -29,6 +31,7 @@ Material:
   m_CustomRenderQueue: 3000
   stringTagMap: {}
   disabledShaderPasses: []
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -57,6 +60,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissiveMaskTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -97,13 +104,16 @@ Material:
     - ALPHA_BLEND: 0
     - ALTITUDE_FOG: 0
     - AO_ON: 0
+    - EMISSIVE: 0
     - EXPLICIT_MAPS: 1
     - METAL_ON: 1
     - NUM_LIGHTS: 0
     - OVERRIDE: 1
     - POINT_FILTER: 0
+    - RIM_LIGHT: 0
     - SLIDER_OVERRIDE: 1
     - TRIPLANAR_STYLE: 1
+    - USE_SHADOW_COLOR: 0
     - VERTEX_LIGHT: 0
     - _Alpha: 0.8
     - _BumpScale: 1
@@ -111,16 +121,20 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 10
     - _Emissive: 0
+    - _EmissiveMix: 1
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _Lights: 0
-    - _MetalOverride: 0.254
+    - _MetalOverride: 0.351
     - _Metallic: 0
     - _Mode: 2
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _RoughOverride: 0.144
+    - _RimIntensity: 0.75
+    - _RimPower: 2.5
+    - _RoughOverride: 0.213
+    - _SliderOverrideMix: 0.42
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 5
@@ -134,4 +148,8 @@ Material:
     - _Color: {r: 0.5446778, g: 0.7501848, b: 0.754717, a: 1}
     - _Color2: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _EmissiveColor: {r: 1, g: 1, b: 1, a: 1}
+    - _RimColor: {r: 1, g: 1, b: 1, a: 1}
+    - _ShadowColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
+  m_AllowLocking: 1

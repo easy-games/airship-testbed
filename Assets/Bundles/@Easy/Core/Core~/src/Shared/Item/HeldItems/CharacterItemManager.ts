@@ -1,123 +1,94 @@
 ﻿import { Airship } from "Shared/Airship";
 import Character from "Shared/Character/Character";
-import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { CoreNetwork } from "../../CoreNetwork";
-import { RunUtil } from "../../Util/RunUtil";
-import { HeldItemManager } from "./HeldItemManager";
-import { HeldItemState } from "./HeldItemState";
+import { Game } from "../../Game";
+import { HeldItemActionState, HeldItemManager } from "./HeldItemManager";
+import { Bin } from "../../Util/Bin";
+import { OnUpdate } from "../../Util/Timer";
 
-export class EntityItemManager {
-	//SINGLETON
-	private static instance: EntityItemManager;
-	public static Get(): EntityItemManager {
-		if (this.instance === undefined) {
-			this.instance = new EntityItemManager();
-		}
-		return this.instance;
-	}
-
+export class CharacterItemManager {
 	//Private
 	private characterItemManagers = new Map<number, HeldItemManager>();
 	private localCharacter?: Character;
-	private mouseIsDownLeft = false;
-	private mouseIsDownRight = false;
+	private userActionIds: string[] = [];
+	private inputBin: Bin = new Bin();
 
 	private Log(message: string) {
-		// return;
-		// print("EntityItemManager: " + message);
+		//print("EntityItemManager: " + message);
 	}
 
-	constructor() {
-		if (RunUtil.IsClient()) {
+	public OnStart() {
+		if (Game.IsClient()) {
 			this.InitializeClient();
 		}
-		if (RunUtil.IsServer()) {
+		if (Game.IsServer()) {
 			this.InitializeServer();
 		}
 	}
 
 	private InitializeClient() {
-		//Listen to mouse inputs
-		import("Shared/UserInput").then((userInputRef) => {
-			this.Log("UserInput");
-			//Process Inputs locally
-			Airship.input.OnDown("UseItem").Connect(() => {
-				this.Log("LeftDown");
-				if (CanvasAPI.IsPointerOverUI() || EventSystem.current.currentSelectedGameObject) {
-					return;
-				}
-				if (this.localCharacter) {
-					this.mouseIsDownLeft = true;
-					let items = this.GetOrCreateItemManager(this.localCharacter);
-					items.TriggerNewState(HeldItemState.CALL_TO_ACTION_START);
-				}
-			});
+		this.OverwriteInputActions(["UseItem", "SecondaryUseItem"]);
 
-			Airship.input.OnUp("UseItem").Connect(() => {
-				this.Log("LeftUp");
-				if (!this.mouseIsDownLeft) {
-					return;
-				}
-				this.mouseIsDownLeft = false;
-				if (this.localCharacter) {
-					let items = this.GetOrCreateItemManager(this.localCharacter);
-					items.TriggerNewState(HeldItemState.CALL_TO_ACTION_END);
-				}
-			});
-
-			Airship.input.OnDown("SecondaryUseItem").Connect(() => {
-				this.Log("RightDown");
-				if (CanvasAPI.IsPointerOverUI()) {
-					return;
-				}
-				if (this.localCharacter) {
-					this.mouseIsDownRight = true;
-					let items = this.GetOrCreateItemManager(this.localCharacter);
-					items.TriggerNewState(HeldItemState.SECONDARY_ACTION_START);
-				}
-			});
-
-			Airship.input.OnUp("SecondaryUseItem").Connect(() => {
-				this.Log("RightUp");
-				if (!this.mouseIsDownRight) {
-					return;
-				}
-				this.mouseIsDownRight = false;
-				if (this.localCharacter) {
-					let items = this.GetOrCreateItemManager(this.localCharacter);
-					items.TriggerNewState(HeldItemState.SECONDARY_ACTION_END);
-				}
-			});
-
-			Airship.input.OnUp("Inspect").Connect((event) => {
-				if (event.uiProcessed) return;
-				if (this.localCharacter) {
-					let items = this.GetOrCreateItemManager(this.localCharacter);
-					items.TriggerNewState(HeldItemState.INSPECT);
-				}
-			});
-		});
-
-		Airship.characters.onCharacterSpawned.Connect((character) => {
+		//Listen to character spawns
+		Airship.characters.ObserveCharacters((character) => {
 			this.GetOrCreateItemManager(character);
 			if (character.IsLocalCharacter()) {
 				this.localCharacter = character;
 			}
 		});
 
-		//Clean up destroyed entities
+		//Clean up destroyed characters
 		Airship.characters.onCharacterDespawned.Connect((character) => {
 			this.Log("EntityDespawn: " + character.id);
 			this.DestroyItemManager(character);
 		});
 
-		//Server Events
-		CoreNetwork.ServerToClient.HeldItemStateChanged.client.OnServerEvent((entityId, newState, lookVector) => {
-			const heldItem = this.characterItemManagers.get(entityId);
-			if (heldItem) {
-				heldItem.OnNewState(newState, lookVector);
-			}
-		});
+		//Client listens to state changes from server (for other players characters)
+		CoreNetwork.ServerToClient.HeldItemStateChanged.client.OnServerEvent(
+			(characterId, newState, isActive, lookVector) => {
+				const heldItem = this.characterItemManagers.get(characterId);
+				if (heldItem) {
+					heldItem.OnNewState(newState, isActive, lookVector);
+				}
+			},
+		);
+	}
+
+	private TriggerNewState(stateIndex: number, isActive: boolean) {
+		this.Log("Triggering new state: " + stateIndex + " isDown: " + isActive);
+
+		if (this.localCharacter) {
+			let items = this.GetOrCreateItemManager(this.localCharacter);
+			items.TriggerNewState(stateIndex, isActive);
+		}
+	}
+
+	public OverwriteInputActions(actionIds: string[]) {
+		this.userActionIds = actionIds;
+		this.ConnectToInputs();
+	}
+
+	public AddInputAction(action: string) {
+		this.userActionIds.push(action);
+		this.ConnectToInputs();
+	}
+
+	private ConnectToInputs() {
+		//Locally check for inputs
+		this.inputBin.Clean();
+		for (let i = 0; i < this.userActionIds.size(); i++) {
+			let key = this.userActionIds[i];
+			this.inputBin.Add(
+				Airship.input.OnDown(key).Connect(() => {
+					this.TriggerNewState(i, true);
+				}),
+			);
+			this.inputBin.Add(
+				Airship.input.OnUp(key).Connect(() => {
+					this.TriggerNewState(i, false);
+				}),
+			);
+		}
 	}
 
 	private InitializeServer() {
@@ -125,35 +96,34 @@ export class EntityItemManager {
 
 		//Listen to new entity spawns
 		Airship.characters.onCharacterSpawned.Connect((character) => {
+			this.Log("Character Spawn: " + character.id);
 			this.GetOrCreateItemManager(character);
 		});
 
 		//Clean up destroyed entities
 		Airship.characters.onCharacterDespawned.Connect((character) => {
-			this.Log("EntityDespawn: " + character.id);
+			this.Log("Character Despawn: " + character.id);
 			this.DestroyItemManager(character);
 		});
 
 		//Listen to state changes triggered by client
 		Airship.characters.onServerCustomMoveCommand.Connect((event) => {
-			if (event.Is("HeldItemState")) {
-				// const player = Airship.players.FindByClientId(event.clientId);
-				// if (RunUtil.IsClient() && player?.userId === Game.localPlayer.userId) {
-				// 	return;
-				// }
-				this.Log("NewState: " + event.value.s);
-				const heldItemManager = this.characterItemManagers.get(event.value.e);
-				if (heldItemManager) {
-					const lookVec = event.value.l;
-					heldItemManager.OnNewState(event.value.s, lookVec);
-					CoreNetwork.ServerToClient.HeldItemStateChanged.server.FireExcept(
-						event.player,
-						event.value.e,
-						event.value.s,
-						lookVec,
-					);
-				} else {
-					error("Reading custom move command from entity without held items???");
+			if (event.key === "HeldItemState") {
+				if (Game.IsHosting()) return;
+				let itemState = event.value as HeldItemActionState;
+				if (itemState) {
+					const heldItem = this.characterItemManagers.get(itemState.characterId);
+					if (heldItem) {
+						heldItem.OnNewState(itemState.stateIndex, itemState.isActive, itemState.lookVector);
+						//Notify all other clients about this state change
+						CoreNetwork.ServerToClient.HeldItemStateChanged.server.FireExcept(
+							event.player,
+							itemState.characterId,
+							itemState.stateIndex,
+							itemState.isActive,
+							itemState.lookVector,
+						);
+					}
 				}
 			}
 		});
@@ -176,7 +146,7 @@ export class EntityItemManager {
 		let entityId = character.id ?? 0;
 		let items = this.characterItemManagers.get(entityId);
 		if (items) {
-			items.OnNewState(HeldItemState.ON_DESTROY, character.movement.GetLookVector());
+			items.OnNewState(-1, false, character.movement.GetLookVector());
 			items.Destroy();
 			this.characterItemManagers.delete(entityId);
 		}

@@ -51,17 +51,20 @@ interface PlayerManagerConstructor {
 declare const PlayerManagerBridge: PlayerManagerConstructor;
 
 interface PlayerInfo extends Component {
-	clientId: number;
-	userId: string;
-	username: string;
-	usernameTag: string;
+	clientId: SyncVar<number>;
+	userId: SyncVar<string>;
+	username: SyncVar<string>;
+	usernameTag: SyncVar<string>;
 }
 
-interface PlayerInfoDto extends Component {
+interface SyncVar<T> {
+	Value: T;
+}
+
+interface PlayerInfoDto {
 	clientId: number;
 	userId: string;
 	username: string;
-	usernameTag: string;
 	gameObject: GameObject;
 }
 
@@ -74,6 +77,7 @@ interface CharacterMovement extends Component {
 	OnMoveDirectionChanged(callback: (direction: Vector3) => void): EngineEventConnection;
 
 	GetLookVector(): Vector3;
+	IsSprinting(): boolean;
 	IsGrounded(): boolean;
 	enabled: boolean;
 
@@ -101,10 +105,16 @@ interface CharacterMovement extends Component {
 
 	groundedBlockId: number;
 	groundedBlockPos: Vector3;
+	groundedRaycastHit: RaycastHit;
 	replicatedLookVector: Vector3;
 	disableInput: boolean;
 
 	animationHelper: CharacterAnimationHelper;
+}
+
+interface Nullable<T> {
+	HasValue: boolean;
+	Value: T;
 }
 
 interface VoxelWorld {
@@ -118,12 +128,6 @@ interface VoxelWorldConstructor {
 	VoxelDataToBlockId(voxel: number);
 }
 
-interface Screen {
-	height: number;
-	width: number;
-}
-declare const Screen: Screen;
-
 declare const enum MobileJoystickPhase {
 	Began = 0,
 	Moved = 1,
@@ -131,13 +135,13 @@ declare const enum MobileJoystickPhase {
 }
 
 interface InputBridge {
-	OnKeyPressEvent(callback: (key: KeyCode, isDown: boolean) => void): EngineEventConnection;
+	OnKeyPressEvent(callback: (key: Key, isDown: boolean) => void): EngineEventConnection;
 	OnLeftMouseButtonPressEvent(callback: (isDown: boolean) => void): EngineEventConnection;
 	OnRightMouseButtonPressEvent(callback: (isDown: boolean) => void): EngineEventConnection;
 	OnMiddleMouseButtonPressEvent(callback: (isDown: boolean) => void): EngineEventConnection;
 	OnMouseScrollEvent(callback: (scrollAmount: number) => void): EngineEventConnection;
-	OnMouseMoveEvent(callback: (location: Vector3) => void): EngineEventConnection;
-	OnMouseDeltaEvent(callback: (delta: Vector3) => void): EngineEventConnection;
+	OnMouseMoveEvent(callback: (location: Vector2) => void): EngineEventConnection;
+	OnMouseDeltaEvent(callback: (delta: Vector2) => void): EngineEventConnection;
 	OnTouchEvent(callback: (touchIndex: number, position: Vector3, phase: TouchPhase) => void): EngineEventConnection;
 	OnTouchTapEvent(
 		callback: (touchIndex: number, position: Vector3, phase: InputActionPhase) => void,
@@ -147,20 +151,19 @@ interface InputBridge {
 
 	IsMobileJoystickVisible(): boolean;
 	SetMobileJoystickVisible(visible: boolean): void;
-	IsKeyDown(key: KeyCode): boolean;
+	IsKeyDown(key: Key): boolean;
 	IsLeftMouseButtonDown(): boolean;
 	IsRightMouseButtonDown(): boolean;
 	IsMiddleMouseButtonDown(): boolean;
-	GetMouseLocation(): Vector3;
-	GetMouseDelta(): Vector3;
-	SetMouseLocation(position: Vector3): void;
+	ToggleMouseVisibility(isVisible: boolean): void;
+	GetMousePosition(): Vector2;
+	GetMouseDelta(): Vector2;
 	SetMouseLocked(locked: boolean): void;
 	IsMouseLocked(): boolean;
 	GetScheme(): string;
 	IsPointerOverUI(): boolean;
-	RegisterKeyCode(keyCode: KeyCode): void;
-	UnregisterKeyCode(keyCode: KeyCode): void;
 }
+
 interface InputBridgeStatic {
 	Instance: InputBridge;
 }
@@ -353,23 +356,6 @@ interface PredictedObject extends GameObject {
 	SetGraphicalObject(transform: Transform): void;
 }
 
-interface Animator extends MonoBehaviour {
-	Play(stateName: string, layer?: number, normalizedTime?: number): void;
-	Play(stateNameHash: number, layer?: number, normalizedTime?: number): void;
-	SetBool(name: string, value: boolean): void;
-	SetBool(id: number, value: boolean): void;
-	SetFloat(name: string, value: number): void;
-	SetFloat(name: string, value: number, dampTime: number, deltaTime: number): void;
-	SetFloat(id: number, value: number): void;
-	SetFloat(id: number, value: number, dampTime: number, deltaTime: number): void;
-	Rebind(): void;
-}
-
-interface AnimatorStatic {
-	StringToHash(name: string): number;
-}
-declare const Animator: AnimatorStatic;
-
 declare const enum CharacterState {
 	Idle = 0,
 	Running = 1,
@@ -397,14 +383,14 @@ interface CanvasUIEventInterceptor extends Component {
 	OnClickEvent(callback: (instanceId: number) => void): EngineEventConnection;
 	OnValueChangeEvent(callback: (instanceId: number, value: number) => void): EngineEventConnection;
 	OnToggleValueChangeEvent(callback: (instanceId: number, value: boolean) => void): EngineEventConnection;
-	OnBeginDragEvent(callback: (instanceId: number) => void): EngineEventConnection;
-	OnDragEvent(callback: (instanceId: number) => void): EngineEventConnection;
+	OnBeginDragEvent(callback: (instanceId: number, data: PointerEventData) => void): EngineEventConnection;
+	OnDragEvent(callback: (instanceId: number, data: PointerEventData) => void): EngineEventConnection;
 	OnScreenSizeChangeEvent(callback: (width: number, height: number) => void): EngineEventConnection;
 
 	/**
 	 * Sent to the dragged object.
 	 */
-	OnEndDragEvent(callback: (instanceId: number) => void): EngineEventConnection;
+	OnEndDragEvent(callback: (instanceId: number, data: PointerEventData) => void): EngineEventConnection;
 
 	/**
 	 * Sent to the dropped upon target.
@@ -568,10 +554,12 @@ declare const AnimationClipOptions: AnimationClipOptionsConstructor;
 interface PoolManager {
 	PreLoadPool(prefab: Object, size: number): void;
 	SpawnObject(prefab: Object): GameObject;
-	SpawnObject(prefab: Object, position: Vector3, rotation: Quaternion): GameObject;
-	SpawnObject(prefab: Object, position: Vector3, rotation: Quaternion, parent: Transform): GameObject;
+	SpawnObject(prefab: Object, parent: Transform): GameObject;
+	SpawnObject(prefab: Object, worldPosition: Vector3, worldRotation: Quaternion): GameObject;
+	SpawnObject(prefab: Object, localPosition: Vector3, localRotation: Quaternion, parent: Transform): GameObject;
 	ReleaseObject(clone: GameObject);
 }
+
 declare const PoolManager: PoolManager;
 
 interface TransferManager {
@@ -596,6 +584,7 @@ declare const StateManager: StateManagerStatic;
 
 interface EditorSessionStateStatic {
 	GetString(key: string): string | undefined;
+	GetBoolean(key: string): boolean;
 	SetString(key: string, value: string): void;
 	RemoveString(key: string): void;
 }
@@ -923,4 +912,8 @@ interface AirshipTags extends MonoBehaviour {
 	AddTag(tag: string): void;
 	HasTag(tag: string): boolean;
 	RemoveTag(tag: string): void;
+}
+
+interface AirshipLongPress extends MonoBehaviour {
+	OnLongPress(callback: (pressPosition: Vector2) => void): EngineEventConnection;
 }

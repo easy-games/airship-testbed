@@ -1,34 +1,6 @@
 {
 	"version": 1,
-	"flameworkVersion": "1.1.50",
-	"identifiers": {
-		"@Easy/Survival:Client/FallDamageController@FallDamageController": "@Easy/Survival:FallDamageController@FallDamageController",
-		"@Easy/Survival:Server/FallDamageService@FallDamageService": "@Easy/Survival:FallDamageService@FallDamageService",
-		"@Easy/Survival:Shared/SurvivalComponent@SurvivalComponent": "@Easy/Survival:SurvivalComponent@SurvivalComponent"
-	},
-	"identifierPrefix": "@Easy/Survival",
-	"classes": [
-		{
-			"filePath": "../Client/FallDamageController.lua",
-			"internalId": "@Easy/Survival:FallDamageController@FallDamageController",
-			"decorators": [
-				{
-					"internalId": "$:Flamework/flamework@Controller",
-					"isFlameworkDecorator": true,
-					"name": "Controller"
-				}
-			]
-		},
-		{
-			"filePath": "../Server/FallDamageService.lua",
-			"internalId": "@Easy/Survival:FallDamageService@FallDamageService",
-			"decorators": [
-				{
-					"internalId": "$:Flamework/flamework@Service",
-					"isFlameworkDecorator": true,
-					"name": "Service"
-				}
-			]
-		}
-	]
+	"flameworkVersion": "1.1.52",
+	"identifiers": {},
+	"identifierPrefix": "@Easy/Survival"
 }

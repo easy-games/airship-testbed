@@ -105,8 +105,11 @@ export class ItemUtil {
 					continue;
 				}
 
-				// this.itemAccessories.set(itemType, accessory);
-				accessories.push(accessory.GetComponent<AccessoryComponent>());
+				const accessoryComponent = accessory.GetComponent<AccessoryComponent>();
+				if (!accessoryComponent) {
+					error("Missing AccessoryComponent on game object prefab");
+				}
+				accessories.push(accessoryComponent);
 			}
 		}
 		this.runtimeIdCounter++;

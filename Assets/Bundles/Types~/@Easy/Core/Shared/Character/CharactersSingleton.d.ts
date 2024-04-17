@@ -1,15 +1,19 @@
-/// <reference types="@easy-games/compiler-types" />
+/// <reference types="compiler-types" />
 import { OnStart } from "../Flamework";
 import { Player } from "../Player/Player";
 import { Signal, SignalPriority } from "../Util/Signal";
 import Character from "./Character";
 import { CustomMoveData } from "./CustomMoveData";
+import { AirshipCharacterFootstepsSingleton } from "./Footstep/AirshipCharacterFootstepsSingleton";
 import { LocalCharacterSingleton } from "./LocalCharacter/LocalCharacterSingleton";
+import { CharacterItemManager } from "../Item/HeldItems/CharacterItemManager";
 export declare class CharactersSingleton implements OnStart {
     readonly localCharacterManager: LocalCharacterSingleton;
+    readonly footsteps: AirshipCharacterFootstepsSingleton;
     private characters;
     onCharacterSpawned: Signal<Character>;
     onCharacterDespawned: Signal<Character>;
+    itemManager: CharacterItemManager;
     /**
      * **SERVER ONLY**
      *
@@ -17,14 +21,15 @@ export declare class CharactersSingleton implements OnStart {
      *
      * Custom data that the client sends in their move packet.
      */
-    onServerCustomMoveCommand: Signal<CustomMoveData<unknown, unknown>>;
+    onServerCustomMoveCommand: Signal<CustomMoveData>;
     /**
      * If true, when a player disconnects their character will automatically be despawned.
      */
     autoDespawnCharactersOnPlayerDisconnect: boolean;
     allowMidGameOutfitChanges: boolean;
     private idCounter;
-    constructor(localCharacterManager: LocalCharacterSingleton);
+    private customCharacterTemplate?;
+    constructor(localCharacterManager: LocalCharacterSingleton, footsteps: AirshipCharacterFootstepsSingleton);
     OnStart(): void;
     /**
      * Observe every character in the game. The returned function can be
@@ -43,6 +48,7 @@ export declare class CharactersSingleton implements OnStart {
      */
     ObserveCharacters(observer: (character: Character) => (() => void) | void, signalPriority?: SignalPriority): () => void;
     SpawnNonPlayerCharacter(position: Vector3): Character;
+    private InitCharacter;
     FindById(characterId: number): Character | undefined;
     FindByPlayer(player: Player): Character | undefined;
     FindByClientId(clientId: number): Character | undefined;
@@ -55,4 +61,6 @@ export declare class CharactersSingleton implements OnStart {
     UnregisterCharacter(character: Character): void;
     GetCharacters(): Set<Character>;
     MakeNewId(): number;
+    SetDefaultCharacterPrefab(prefabTemplate: GameObject | undefined): void;
+    GetDefaultCharacterTemplate(): GameObject;
 }

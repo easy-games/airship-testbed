@@ -1,6 +1,6 @@
 import { AllBundleItems, BundleData, BundleGroup, BundleGroupNames } from "../Util/ReferenceManagerResources";
 export declare class EffectsManager {
-    static SpawnPrefabEffect(path: string, worldPosition: Vector3, worldRotation: Vector3, destroyInSeconds?: number): GameObject;
+    static SpawnPrefabEffect(path: string, worldPosition?: Vector3, worldRotation?: Vector3, destroyInSeconds?: number): GameObject;
     static SpawnRandomBundleEffectById(bundleId: AllBundleItems[], worldPosition?: Vector3, worldEuler?: Vector3, destroyInSeconds?: number): void;
     /**
      * @deprecated Use {@link SpawnPrefabEffect} instead.

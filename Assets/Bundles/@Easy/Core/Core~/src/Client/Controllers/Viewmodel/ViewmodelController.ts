@@ -23,13 +23,13 @@ export class ViewmodelController implements OnStart {
 		this.viewmodelTransform = this.viewmodelGo.transform;
 		this.viewmodelTransform.position = new Vector3(10_000, 0, 10_000);
 
-		const refs = this.viewmodelGo.GetComponent<GameObjectReferences>();
+		const refs = this.viewmodelGo.GetComponent<GameObjectReferences>()!;
 		const rig = refs.GetValue("Refs", "Rig");
-		this.animancer = rig.GetComponent<AnimancerComponent>();
-		this.rig = rig.GetComponent<CharacterRig>();
+		this.animancer = rig.GetComponent<AnimancerComponent>()!;
+		this.rig = rig.GetComponent<CharacterRig>()!;
 
 		const content = this.viewmodelTransform.GetChild(0).gameObject;
-		this.accessoryBuilder = content.GetComponent<AccessoryBuilder>();
+		this.accessoryBuilder = content.GetComponent<AccessoryBuilder>()!;
 
 		// this.rootLayer = this.animancer.Layers.GetLayer(0);
 		// this.rootLayer.SetDebugName("Root");

@@ -1,4 +1,4 @@
-/// <reference types="@easy-games/compiler-types" />
+/// <reference types="compiler-types" />
 export declare class Modifier<T extends defined> {
     /** Set of active tickets */
     private tickets;
@@ -12,6 +12,7 @@ export declare class Modifier<T extends defined> {
     Add(value: T): () => void;
     /** Observe all values within this modifier. Callback fires on ticket add/remove */
     Observe(observer: (values: T[]) => void): () => void;
+    GetTickets(): T[];
     /** Trigger all observers when we make a change to the tickets */
     private TriggerObservers;
 }

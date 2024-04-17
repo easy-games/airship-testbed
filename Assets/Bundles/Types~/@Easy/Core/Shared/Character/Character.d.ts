@@ -1,4 +1,4 @@
-/// <reference types="@easy-games/compiler-types" />
+/// <reference types="compiler-types" />
 import { CharacterAnimator } from "./Animation/CharacterAnimator";
 import Inventory from "../Inventory/Inventory";
 import { HeldItemManager } from "../Item/HeldItems/HeldItemManager";
@@ -16,6 +16,7 @@ export default class Character extends AirshipBehaviour {
     networkObject: NetworkObject;
     rigRoot: GameObject;
     collider: CharacterController;
+    footstepAudioSource: AudioSource;
     rig: CharacterRig;
     id: number;
     state: CharacterState;
@@ -26,13 +27,16 @@ export default class Character extends AirshipBehaviour {
     inventory: Inventory;
     heldItems: HeldItemManager;
     outfitDto: OutfitDto | undefined;
+    private spineBone;
+    private headBone;
     onDeath: Signal<void>;
     onDespawn: Signal<void>;
     onStateChanged: Signal<[newState: CharacterState, oldState: CharacterState]>;
     onHealthChanged: Signal<[newHealth: number, oldHealth: number]>;
     private despawned;
     Awake(): void;
-    Start(): void;
+    LateUpdate(dt: number): void;
+    OnEnable(): void;
     OnDisable(): void;
     Init(player: Player | undefined, id: number, outfitDto: OutfitDto | undefined): void;
     /**

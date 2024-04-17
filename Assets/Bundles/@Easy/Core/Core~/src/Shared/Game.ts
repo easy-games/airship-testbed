@@ -5,6 +5,9 @@ import { Player } from "./Player/Player";
 import { RunUtil } from "./Util/RunUtil";
 import { Signal } from "./Util/Signal";
 
+const platform = Application.platform;
+// const simulateMobile = EditorSessionState.GetBoolean("AirshipSimulateMobile");
+
 export class Game {
 	/**
 	 * The local client's player.
@@ -17,6 +20,9 @@ export class Game {
 	public static localPlayer: Player = undefined as unknown as Player;
 	public static localPlayerLoaded = false;
 	public static onLocalPlayerLoaded = new Signal<void>();
+	public static onDeviceOrientationChanged = new Signal<"landscape" | "portrait">();
+
+	public static readonly deviceType = DeviceBridge.GetDeviceType();
 
 	public static WaitForLocalPlayerLoaded(): void {
 		if (this.localPlayerLoaded) return;
@@ -31,7 +37,7 @@ export class Game {
 		}
 	}
 
-	public static context: CoreContext;
+	public static coreContext: CoreContext;
 
 	/**
 	 * Empty string when in editor.
@@ -55,5 +61,102 @@ export class Game {
 	public static WaitForGameData(): GameDto {
 		if (this.gameData) return this.gameData;
 		return this.onGameDataLoaded.Wait();
+	}
+
+	/**
+	 * The platform of this device.
+	 *
+	 * To get a certain player's platform, use {@link Player.platform}
+	 */
+	public static platform = AirshipPlatformUtil.GetLocalPlatform();
+
+	/**
+	 * Returns true if device is a phone or tablet.
+	 *
+	 * Returns false if on desktop or console.
+	 */
+	public static IsMobile(): boolean {
+		if (Game.IsEditor()) {
+			if (this.deviceType === AirshipDeviceType.Phone || this.deviceType === AirshipDeviceType.Tablet) {
+				return true;
+			}
+		}
+		return this.platform === AirshipPlatform.iOS || this.platform === AirshipPlatform.Android;
+	}
+
+	public static IsClient(): boolean {
+		return RunUtil.IsClient();
+	}
+
+	public static IsServer(): boolean {
+		return RunUtil.IsServer();
+	}
+
+	public static IsEditor(): boolean {
+		return RunUtil.IsEditor();
+	}
+
+	/**
+	 * @internal
+	 */
+	public static IsInternal(): boolean {
+		return RunUtil.IsInternal();
+	}
+
+	/**
+	 * Shortcut for checking if both IsClient() and IsServer() is true.
+	 */
+	public static IsHosting(): boolean {
+		return RunUtil.IsClient() && RunUtil.IsServer();
+	}
+
+	public static IsClone(): boolean {
+		return RunUtil.IsClone();
+	}
+
+	public static IsWindows(): boolean {
+		return platform === RuntimePlatform.WindowsPlayer || platform === RuntimePlatform.WindowsEditor;
+	}
+
+	public static IsMac(): boolean {
+		return platform === RuntimePlatform.OSXPlayer || platform === RuntimePlatform.OSXEditor;
+	}
+
+	public static IsLandscape(): boolean {
+		return Screen.width >= Screen.height;
+	}
+
+	public static IsPortrait(): boolean {
+		return !this.IsLandscape();
+	}
+
+	public static GetNotchHeight(): number {
+		if (Game.IsMobile()) {
+			return 35;
+		}
+		return 0;
+	}
+
+	/**
+	 * @internal
+	 */
+	public static GetScaleFactor(): number {
+		let dpi = Screen.dpi;
+
+		if (Game.IsMobile()) {
+			return dpi / 180;
+		} else if (dpi >= 255) {
+			return 1.75;
+		} else {
+			return 1;
+		}
+	}
+
+	/**
+	 * @internal
+	 * @returns
+	 */
+	public static IsInGame(): boolean {
+		return this.coreContext === CoreContext.GAME;
 	}
 }

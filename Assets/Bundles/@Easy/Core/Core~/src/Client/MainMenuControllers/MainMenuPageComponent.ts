@@ -1,3 +1,4 @@
+import { Game } from "@Easy/Core/Shared/Game";
 import {} from "Shared/Flamework";
 import { SetTimeout } from "Shared/Util/Timer";
 import { MainMenuController } from "./MainMenuController";
@@ -21,7 +22,7 @@ export default class MainMenuPageComponent extends AirshipBehaviour {
 	public Init(mainMenu: MainMenuController, pageType: MainMenuPageType) {
 		this.mainMenu = mainMenu;
 		this.pageType = pageType;
-		this.refs = this.gameObject.GetComponent<GameObjectReferences>();
+		this.refs = this.gameObject.GetComponent<GameObjectReferences>()!;
 		if (pageType === MainMenuPageType.Home) {
 			// this.OpenPage();
 		} else {
@@ -33,25 +34,30 @@ export default class MainMenuPageComponent extends AirshipBehaviour {
 	 * **DO NOT YIELD INSIDE THIS METHOD**
 	 * @returns
 	 */
-	public OpenPage() {
+	public OpenPage(params?: unknown) {
 		if (this.activePage) {
 			return;
 		}
 		this.activePage = true;
 		this.gameObject.SetActive(true);
+		this.mainMenu?.avatarView?.HideAvatar();
 
-		const canvasGroup = this.gameObject.GetComponent<CanvasGroup>();
-		if (canvasGroup && this.animateInDuration <= 0) {
-			this.gameObject.transform.localPosition = new Vector3(0, 0, 0);
+		const canvasGroup = this.gameObject.GetComponent<CanvasGroup>()!;
+		const targetY = this.GetTargetAnchoredPositionY();
+		if (this.animateInDuration <= 0 || Game.IsPortrait()) {
+			(this.gameObject.transform as RectTransform).anchoredPosition = new Vector2(0, targetY);
 			canvasGroup.alpha = 1;
 		} else {
-			this.gameObject.transform.localPosition = new Vector3(0, -20, 0);
-			this.gameObject
-				.GetComponent<RectTransform>()
-				.TweenLocalPosition(new Vector3(0, 0, 0), this.animateInDuration);
+			const rect = this.transform as RectTransform;
+			rect.anchoredPosition = new Vector2(0, targetY - 20);
+			rect.TweenAnchoredPositionY(targetY, this.animateInDuration);
 			canvasGroup.alpha = 0;
 			canvasGroup.TweenCanvasGroupAlpha(1, this.animateInDuration);
 		}
+	}
+
+	public GetTargetAnchoredPositionY(): number {
+		return 0;
 	}
 
 	public ClosePage(instant = false) {
@@ -61,8 +67,8 @@ export default class MainMenuPageComponent extends AirshipBehaviour {
 		this.activePage = false;
 		// print("closing page: " + this.pageType);
 
-		// gameObject.GetComponent<RectTransform>().TweenLocalPosition(new Vector3(-20, 0, 0), 0.1);
-		const canvasGroup = this.gameObject.GetComponent<CanvasGroup>();
+		// gameObject.GetComponent<RectTransform>()!.TweenLocalPosition(new Vector3(-20, 0, 0), 0.1);
+		const canvasGroup = this.gameObject.GetComponent<CanvasGroup>()!;
 		canvasGroup?.TweenCanvasGroupAlpha(0, this.animateOutDuration);
 		SetTimeout(instant ? 0 : this.animateOutDuration, () => {
 			if (!this.activePage) {

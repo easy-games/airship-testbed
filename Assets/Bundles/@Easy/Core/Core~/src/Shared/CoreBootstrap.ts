@@ -2,8 +2,8 @@
  * This is the entrypoint of Core.
  */
 
-import { Flamework } from "Shared/Flamework";
 import { AvatarUtil } from "Shared/Avatar/AvatarUtil";
+import { Flamework } from "Shared/Flamework";
 import { AudioManager } from "./Audio/AudioManager";
 import { Bootstrap } from "./Bootstrap/Bootstrap";
 import { CoreContext } from "./CoreClientContext";
@@ -18,15 +18,21 @@ import { OnFixedUpdate, OnLateUpdate, OnTick, OnUpdate } from "./Util/Timer";
 
 CoreRefs.Init();
 
-Game.context = CoreContext.GAME;
+Game.coreContext = CoreContext.GAME;
 
-const vars: DynamicVariables[] = [
-	AssetBridge.Instance.LoadAsset<DynamicVariables>("@Easy/Core/Shared/Resources/DynamicVariables/Combat.asset"),
-	AssetBridge.Instance.LoadAsset<DynamicVariables>("@Easy/Core/Shared/Resources/DynamicVariables/Camera.asset"),
-];
-for (const dynamicVar of vars) {
-	dynamicVar.Register();
-}
+task.spawn(() => {
+	if (Game.IsClient()) {
+		Screen.orientation = ScreenOrientation.LandscapeLeft;
+	}
+});
+
+// const vars: DynamicVariables[] = [
+// 	AssetBridge.Instance.LoadAsset<DynamicVariables>("@Easy/Core/Shared/Resources/DynamicVariables/Combat.asset"),
+// 	AssetBridge.Instance.LoadAsset<DynamicVariables>("@Easy/Core/Shared/Resources/DynamicVariables/Camera.asset"),
+// ];
+// for (const dynamicVar of vars) {
+// 	dynamicVar.Register();
+// }
 
 // Force import of TimeUtil
 TimeUtil.GetLifetimeSeconds();
@@ -60,6 +66,7 @@ if (RunUtil.IsClient()) {
 	Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/airship", "^.*controller.lua$");
 	Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/controllers", "^.*controller.lua$");
 	Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/mainmenucontrollers", "^.*controller.lua$");
+	Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/mainmenucontrollers", "^.*singleton.lua$");
 }
 if (RunUtil.IsServer()) {
 	Flamework.AddPath("assets/bundles/@Easy/Core/server/resources/ts/airship", "^.*service.lua$");

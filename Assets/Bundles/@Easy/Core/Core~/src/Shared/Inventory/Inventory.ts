@@ -6,6 +6,7 @@ import { ArmorType } from "Shared/Item/ArmorType";
 import { Bin } from "Shared/Util/Bin";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal } from "Shared/Util/Signal";
+import Character from "../Character/Character";
 import { ItemStack, ItemStackDto } from "./ItemStack";
 
 export interface InventoryDto {
@@ -41,7 +42,7 @@ export default class Inventory extends AirshipBehaviour {
 	@NonSerialized() private finishedInitialReplication = false;
 	@NonSerialized() private slotConnections = new Map<number, Bin>();
 
-	public Awake(): void {
+	public OnEnable(): void {
 		if (this.networkObject.IsSpawned) {
 			this.id = this.networkObject.ObjectId;
 			Airship.inventory.RegisterInventory(this);
@@ -62,6 +63,10 @@ export default class Inventory extends AirshipBehaviour {
 				}
 			});
 		}
+	}
+
+	public OnDisable(): void {
+		Airship.inventory.UnregisterInventory(this);
 	}
 
 	private RequestFullUpdate(): void {
@@ -88,6 +93,23 @@ export default class Inventory extends AirshipBehaviour {
 		const bin = new Bin();
 		let currentItemStack = this.items.get(this.heldSlot);
 		let cleanup = callback(currentItemStack);
+
+		bin.Add(
+			CoreNetwork.ServerToClient.SetHeldInventorySlot.client.OnServerEvent((invId, clientId, slot) => {
+				const inventoryClientId = this.gameObject.GetAirshipComponent<Character>()?.player?.clientId;
+				if (invId === this.id && clientId === inventoryClientId) {
+					const selected = this.items.get(slot);
+					if (selected?.GetItemType() === currentItemStack?.GetItemType()) return;
+
+					if (cleanup !== undefined) {
+						cleanup();
+					}
+					currentItemStack = selected;
+					cleanup = callback(selected);
+				}
+			}),
+		);
+
 		bin.Add(
 			this.heldSlotChanged.Connect((newSlot) => {
 				const selected = this.items.get(newSlot);
@@ -250,7 +272,6 @@ export default class Inventory extends AirshipBehaviour {
 	public SetHeldSlot(slot: number): void {
 		this.heldSlot = slot;
 		this.heldSlotChanged.Fire(slot);
-		const itemStack = this.GetHeldItem();
 	}
 
 	public Encode(): InventoryDto {
@@ -266,6 +287,7 @@ export default class Inventory extends AirshipBehaviour {
 	}
 
 	public ProcessDto(dto: InventoryDto): void {
+		this.id = dto.id;
 		for (let pair of dto.items) {
 			this.SetItem(pair[0], ItemStack.Decode(pair[1]));
 		}
@@ -284,10 +306,6 @@ export default class Inventory extends AirshipBehaviour {
 
 	public HasItemType(itemType: CoreItemType): boolean {
 		return this.HasEnough(itemType, 1);
-	}
-
-	GetPairs(): Array<[slot: number, itemStack: ItemStack]> {
-		return Object.entries(this.items);
 	}
 
 	public GetMaxSlots(): number {

@@ -1,4 +1,4 @@
-/// <reference types="@easy-games/compiler-types" />
+/// <reference types="compiler-types" />
 import { InputAction } from "../../../Input/InputAction";
 export default class SettingsKeybind extends AirshipBehaviour {
     title: TMP_Text;
@@ -17,13 +17,13 @@ export default class SettingsKeybind extends AirshipBehaviour {
     ResetToDefault(): void;
     /**
      *
-     * @param newKeybind
+     * @param newBinding
      */
-    private UpdateKeybind;
+    private UpdateBinding;
     /**
      *
      */
-    private UnsetKeybind;
+    private UnsetBinding;
     /**
      *
      * @param action
@@ -44,7 +44,7 @@ export default class SettingsKeybind extends AirshipBehaviour {
      *
      * @param keyCode
      */
-    private UpdateKeybindTextFromKeybind;
+    private UpdateBindingTextFromBinding;
     private SetListening;
     OnDisable(): void;
 }

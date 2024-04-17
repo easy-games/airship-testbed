@@ -1,4 +1,4 @@
-/// <reference types="@easy-games/compiler-types" />
+/// <reference types="compiler-types" />
 export declare class SpringTween {
     private readonly minDuration;
     private readonly spring;

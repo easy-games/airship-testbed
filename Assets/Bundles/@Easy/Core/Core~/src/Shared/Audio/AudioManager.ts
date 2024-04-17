@@ -134,8 +134,7 @@ export class AudioManager {
 
 	private static GetAudioSource(position: Vector3): AudioSource {
 		const go = PoolManager.SpawnObject(this.audioSourceTemplate, position, Quaternion.identity);
-		const audioSource = go.GetComponent<AudioSource>();
-		return audioSource;
+		return go.GetComponent<AudioSource>()!;
 	}
 
 	private static FriendlyPath(s: string): string {
@@ -151,7 +150,7 @@ export class AudioManager {
 		if (StringUtils.includes(sound, "@")) {
 			return this.LoadFullPathAudioClip(this.FriendlyPath(sound));
 		}
-		return this.LoadFullPathAudioClip(this.soundFolderPath + this.FriendlyPath(sound));
+		return this.LoadFullPathAudioClip(this.FriendlyPath(sound));
 	}
 
 	public static LoadFullPathAudioClip(fullPath: string): AudioClip | undefined {

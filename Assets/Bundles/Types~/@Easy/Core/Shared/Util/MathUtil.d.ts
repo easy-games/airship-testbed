@@ -3,6 +3,7 @@ export declare class MathUtil {
      * An equal chance of returning either -1 or +1
      */
     static RandomSign(): 1 | -1;
+    static RandomFloat(min: number, max: number): number;
     /**
      * Calculates an intermediate value between `a` and `b` given a `t`.
      * @param a Start number.

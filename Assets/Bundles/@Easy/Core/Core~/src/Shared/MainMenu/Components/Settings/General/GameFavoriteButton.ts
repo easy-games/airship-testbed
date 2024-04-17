@@ -21,7 +21,7 @@ export default class GameFavoriteButton extends AirshipBehaviour {
 	private rectTransform!: RectTransform;
 
 	public Awake(): void {
-		this.rectTransform = this.gameObject.GetComponent<RectTransform>();
+		this.rectTransform = this.gameObject.GetComponent<RectTransform>()!;
 	}
 
 	override Start(): void {
@@ -69,7 +69,7 @@ export default class GameFavoriteButton extends AirshipBehaviour {
 
 	private SpawnParticle(): void {
 		const go = Object.Instantiate(this.startPrefab, this.gameObject.transform.parent!);
-		const rect = go.GetComponent<RectTransform>();
+		const rect = go.GetComponent<RectTransform>()!;
 		rect.anchoredPosition = this.rectTransform.anchoredPosition;
 
 		let vel = new Vector2(
@@ -91,7 +91,7 @@ export default class GameFavoriteButton extends AirshipBehaviour {
 			}
 		});
 		bin.Add(() => {
-			const img = go.GetComponent<Image>();
+			const img = go.GetComponent<Image>()!;
 			img.TweenGraphicAlpha(0, math.random() * 0.3 + 0.2).SetEase(EaseType.QuadOut);
 			task.delay(0.5, () => {
 				updateConn();

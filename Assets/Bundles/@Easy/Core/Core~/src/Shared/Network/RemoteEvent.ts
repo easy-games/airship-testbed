@@ -5,8 +5,8 @@ type RemoteParamsToClient<T> = Parameters<
 	T extends unknown[]
 		? (player: Player, ...args: T) => void
 		: T extends unknown
-		? (player: Player, arg: T) => void
-		: (player: Player) => void
+			? (player: Player, arg: T) => void
+			: (player: Player) => void
 >;
 
 type RemoteParamsToServer<T> = Parameters<
@@ -20,8 +20,13 @@ type RemoteCallbackFromServer<T> = (...args: RemoteParamsToServer<T>) => void;
 
 let ID_COUNTER = 0;
 
+const packageMap = new Map<number, number>();
+
 class RemoteEventServer<T extends unknown[] | unknown> {
-	constructor(private readonly id: number, private readonly channel: NetworkChannel = NetworkChannel.Reliable) {}
+	constructor(
+		private readonly id: number,
+		private readonly channel: NetworkChannel = NetworkChannel.Reliable,
+	) {}
 
 	public FireAllClients(...args: RemoteParamsToAllClients<T>) {
 		NetworkAPI.fireAllClients(this.id, args, this.channel);
@@ -45,7 +50,10 @@ class RemoteEventServer<T extends unknown[] | unknown> {
 }
 
 class RemoteEventClient<T extends unknown[] | unknown> {
-	constructor(private readonly id: number, private readonly channel: NetworkChannel = NetworkChannel.Reliable) {}
+	constructor(
+		private readonly id: number,
+		private readonly channel: NetworkChannel = NetworkChannel.Reliable,
+	) {}
 
 	public FireServer(...args: RemoteParamsToServer<T>) {
 		NetworkAPI.fireServer(this.id, args, this.channel);
@@ -60,8 +68,24 @@ export class RemoteEvent<T extends unknown[] | unknown> {
 	public readonly server: RemoteEventServer<T>;
 	public readonly client: RemoteEventClient<T>;
 
-	constructor(channel: NetworkChannel = NetworkChannel.Reliable) {
-		const id = ID_COUNTER++;
+	/**
+	 *
+	 * @param channel
+	 * @param packageOffset Temporary workaround param.
+	 */
+	constructor(channel: NetworkChannel = NetworkChannel.Reliable, packageOffset?: number) {
+		let id: number;
+		if (packageOffset !== undefined) {
+			if (packageMap.has(packageOffset)) {
+				id = packageMap.get(packageOffset)! + 1;
+			} else {
+				id = packageOffset;
+			}
+			packageMap.set(packageOffset, id);
+		} else {
+			id = ID_COUNTER++;
+		}
+
 		this.server = new RemoteEventServer(id, channel);
 		this.client = new RemoteEventClient(id, channel);
 	}

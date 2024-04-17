@@ -1,31 +1,48 @@
 import { Bin } from "Shared/Util/Bin";
 import { Signal } from "Shared/Util/Signal";
-import { PreferredDriver } from "./Drivers/PreferredDriver";
+import { Game } from "../Game";
 
-export type ControlScheme = "MouseKeyboard" | "Touch";
+export enum ControlScheme {
+	MouseKeyboard = "MouseKeyboard",
+	Touch = "Touch",
+}
 
 /** Utility class for observing the player's currently-used control scheme. */
 export class Preferred {
 	private readonly bin = new Bin();
-	private readonly preferredDriver = PreferredDriver.Instance();
 
 	/** A signal that fires every time the currently-used control scheme changes. */
 	public readonly controlSchemeChanged = new Signal<[controlScheme: ControlScheme]>();
 
-	private controlScheme: ControlScheme;
+	private controlScheme!: ControlScheme;
 
 	constructor() {
 		this.bin.Add(this.controlSchemeChanged);
-		this.controlScheme = this.preferredDriver.GetScheme() as ControlScheme;
-		this.bin.Connect(this.preferredDriver.schemeChanged, (scheme) => {
-			this.controlScheme = scheme as ControlScheme;
-			this.controlSchemeChanged.Fire(this.controlScheme);
-		});
+		this.InitControlScheme();
+	}
+
+	private InitControlScheme(): void {
+		let platform = Game.platform;
+		if (Game.IsMobile()) {
+			this.controlScheme = ControlScheme.Touch;
+		} else {
+			this.controlScheme = ControlScheme.MouseKeyboard;
+		}
 	}
 
 	/** Get the currently-used control scheme. */
 	public GetControlScheme() {
 		return this.controlScheme;
+	}
+
+	/**
+	 *
+	 * @param scheme
+	 * @internal
+	 */
+	public SetControlScheme(scheme: ControlScheme): void {
+		this.controlScheme = scheme;
+		this.controlSchemeChanged.Fire(scheme);
 	}
 
 	/**

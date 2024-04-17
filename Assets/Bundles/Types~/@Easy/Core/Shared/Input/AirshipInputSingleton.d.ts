@@ -1,10 +1,17 @@
 import { OnStart } from "../Flamework";
-import { KeySignal } from "../UserInput/Drivers/Signals/KeySignal";
+import { Preferred as PreferredControls } from "../UserInput";
 import { Signal } from "../Util/Signal";
+import { Binding } from "./Binding";
 import { InputAction, InputActionConfig, InputActionSchema } from "./InputAction";
+import { InputActionEvent } from "./InputActionEvent";
 import { ActionInputType } from "./InputUtil";
-import { Keybind } from "./Keybind";
+import { MobileButtonConfig } from "./Mobile/MobileButton";
+import ProximityPrompt from "./ProximityPrompts/ProximityPrompt";
 export declare class AirshipInputSingleton implements OnStart {
+    /**
+     * Whether or not creating a duplicate keybind should immediately unbind matching keybinds.
+     */
+    unsetOnDuplicateKeybind: boolean;
     /**
      *
      */
@@ -16,7 +23,15 @@ export declare class AirshipInputSingleton implements OnStart {
     /**
      *
      */
-    private inputDevice;
+    private keyboard;
+    /**
+     *
+     */
+    private mouse;
+    /**
+     *
+     */
+    private controlManager;
     /**
      *
      */
@@ -34,11 +49,25 @@ export declare class AirshipInputSingleton implements OnStart {
      */
     private actionDownState;
     /**
-     * Whether or not creating a duplicate keybind should immediately unbind matching keybinds.
+     *
      */
-    unsetOnDuplicateKeybind: boolean;
+    private mobileControlsContainer;
+    /**
+     *
+     */
+    private mobileButtonPrefab;
+    /**
+     *
+     */
+    private actionToMobileButtonTable;
+    preferredControls: PreferredControls;
     constructor();
     OnStart(): void;
+    CreateProximityPrompt(actionName: string, parent?: Transform, config?: {
+        primaryText?: string;
+        secondaryText?: string;
+        maxRange?: number;
+    }): ProximityPrompt;
     /**
      *
      * @param actions
@@ -50,12 +79,28 @@ export declare class AirshipInputSingleton implements OnStart {
      * @param keybind
      * @param category
      */
-    CreateAction(name: string, keybind: Keybind, config?: InputActionConfig): void;
+    CreateAction(name: string, binding: Binding, config?: InputActionConfig): void;
     /**
      *
-     * @param actionSchema
      */
-    private CreateSecondaryKeybindForAction;
+    private CreateMobileControlCanvas;
+    /**
+     *
+     * @param name
+     * @param anchoredPosition
+     * @param config
+     */
+    CreateMobileButton(name: string, anchoredPosition: Vector2, config?: MobileButtonConfig): void;
+    /**
+     *
+     * @param name
+     */
+    HideMobileButtons(name: string): void;
+    /**
+     *
+     * @param name
+     */
+    ShowMobileButtons(name: string): void;
     /**
      *
      * @param name
@@ -74,13 +119,13 @@ export declare class AirshipInputSingleton implements OnStart {
      * @param name
      * @returns
      */
-    OnDown(name: string): Signal<KeySignal>;
+    OnDown(name: string): Signal<[event: InputActionEvent]>;
     /**
      *
      * @param name
      * @returns
      */
-    OnUp(name: string): Signal<KeySignal>;
+    OnUp(name: string): Signal<[event: InputActionEvent]>;
     /**
      *
      * @param name
@@ -96,7 +141,7 @@ export declare class AirshipInputSingleton implements OnStart {
      *
      * @returns
      */
-    GetKeybinds(): InputAction[];
+    GetBindings(): InputAction[];
     /**
      *
      * @param action
@@ -111,7 +156,7 @@ export declare class AirshipInputSingleton implements OnStart {
      *
      * @param action
      */
-    private UnsetDuplicateKeybinds;
+    private UnsetDuplicateBindings;
     /**
      *
      * @param signalIndices

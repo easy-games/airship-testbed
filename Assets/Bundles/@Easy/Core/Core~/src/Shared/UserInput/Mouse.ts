@@ -8,6 +8,8 @@ const mouseUnlockerKeys = new Set<number>();
 let mouseUnlockerIdCounter = 1;
 
 export class Mouse {
+	public static readonly global = new Mouse();
+
 	private readonly bin = new Bin();
 	private readonly mouseDriver = MouseDriver.Instance();
 
@@ -18,13 +20,13 @@ export class Mouse {
 	public readonly middleDown = new Signal<[event: PointerButtonSignal]>();
 	public readonly middleUp = new Signal<[event: PointerButtonSignal]>();
 	public readonly scrolled = new Signal<[event: ScrollSignal]>();
-	public readonly moved = new Signal<[location: Vector3]>();
-	// public readonly Delta = new Signal<[delta: Vector3]>();
+	public readonly moved = new Signal<[position: Vector2]>();
+	// public readonly Delta = new Signal<[delta: Vector2]>();
 
 	private isLeftDown = false;
 	private isRightDown = false;
 	private isMiddleDown = false;
-	private location = new Vector3(0, 0, 0);
+	private position = Vector2.zero;
 
 	constructor() {
 		// Track signals in bin:
@@ -42,7 +44,7 @@ export class Mouse {
 		this.isLeftDown = this.mouseDriver.IsLeftDown();
 		this.isRightDown = this.mouseDriver.IsRightDown();
 		this.isMiddleDown = this.mouseDriver.IsMiddleDown();
-		this.location = this.mouseDriver.GetLocation();
+		this.position = this.mouseDriver.GetPosition();
 
 		if (mouseUnlockerKeys.size() === 0) {
 			this.mouseDriver.SetLocked(true);
@@ -77,9 +79,9 @@ export class Mouse {
 			}
 		});
 
-		this.bin.Connect(this.mouseDriver.moved, (location) => {
-			this.location = location;
-			this.moved.Fire(location);
+		this.bin.Connect(this.mouseDriver.moved, (position) => {
+			this.position = position;
+			this.moved.Fire(position);
 		});
 
 		// this.bin.Connect(this.mouseDriver.Delta, (delta) => {
@@ -89,6 +91,28 @@ export class Mouse {
 		this.bin.Connect(this.mouseDriver.scrolled, (delta) => {
 			this.scrolled.Fire(delta);
 		});
+	}
+
+	public OnButtonDown(button: MouseButton, callback: (event: PointerButtonSignal) => void) {
+		switch (button) {
+			case MouseButton.LeftButton:
+				return this.leftDown.Connect(callback);
+			case MouseButton.MiddleButton:
+				return this.middleDown.Connect(callback);
+			case MouseButton.RightButton:
+				return this.rightDown.Connect(callback);
+		}
+	}
+
+	public OnButtonUp(button: MouseButton, callback: (event: PointerButtonSignal) => void) {
+		switch (button) {
+			case MouseButton.LeftButton:
+				return this.leftUp.Connect(callback);
+			case MouseButton.MiddleButton:
+				return this.middleUp.Connect(callback);
+			case MouseButton.RightButton:
+				return this.rightUp.Connect(callback);
+		}
 	}
 
 	/** Returns `true` if the left mouse button is down. */
@@ -107,13 +131,14 @@ export class Mouse {
 	}
 
 	/** Gets the position of the mouse on-screen. */
-	public GetLocation() {
-		return this.location;
+	public GetPosition() {
+		return this.position;
 	}
 
-	/** Sets the position of the mouse on-screen. */
-	public SetLocation(position: Vector3) {
-		this.mouseDriver.SetLocation(position);
+	/** Gets the position of the mouse on-screen as a Vector3, with the Z axis set to 0. */
+	public GetPositionV3() {
+		const pos = this.position;
+		return new Vector3(pos.x, pos.y, 0);
 	}
 
 	/** Gets the mouse's change in position on-screen over the last frame. */
@@ -154,6 +179,12 @@ export class Mouse {
 
 	/** Cleans up the mouse. */
 	public Destroy() {
-		this.bin.Destroy();
+		this.bin.Clean();
 	}
+
+	public ToggleMouseVisibility(isVisible: boolean) {
+		this.mouseDriver.ToggleMouseVisibility(isVisible);
+	}
+
+	public HideCursor() {}
 }

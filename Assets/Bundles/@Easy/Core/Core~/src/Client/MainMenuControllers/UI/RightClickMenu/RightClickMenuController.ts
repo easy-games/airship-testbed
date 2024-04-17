@@ -1,4 +1,5 @@
 import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
+import { Game } from "@Easy/Core/Shared/Game";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import { Theme } from "@Easy/Core/Shared/Util/Theme";
 import { Controller, OnStart } from "Shared/Flamework";
@@ -18,7 +19,7 @@ export class RightClickMenuController implements OnStart {
 
 	OnStart(): void {}
 
-	public OpenRightClickMenu(canvas: Canvas, position: Vector3, buttons: RightClickMenuButton[]): () => void {
+	public OpenRightClickMenu(canvas: Canvas, position: Vector2, buttons: RightClickMenuButton[]): () => void {
 		if (this.opened) {
 			this.currentBin.Clean();
 			return () => {};
@@ -43,13 +44,15 @@ export class RightClickMenuController implements OnStart {
 			}),
 		);
 
-		const canvasRect = canvas.GetComponent<RectTransform>();
-		const menuRect = menuGo.GetComponent<RectTransform>();
+		const canvasRect = canvas.GetComponent<RectTransform>()!;
+		const menuRect = menuGo.GetComponent<RectTransform>()!;
 
 		let mousePosInCanvas = Bridge.ScreenPointToLocalPointInRectangle(
 			canvasRect,
 			new Vector2(position.x, position.y),
 		);
+
+		print("posInCanvas: " + mousePosInCanvas + ", canvasSize: " + canvasRect.sizeDelta);
 
 		if (mousePosInCanvas.x + menuRect.sizeDelta.x > canvasRect.sizeDelta.x / 2) {
 			menuRect.anchorMin = Vector2.one;
@@ -61,7 +64,7 @@ export class RightClickMenuController implements OnStart {
 			menuRect.anchorMax = new Vector2(menuRect.anchorMax.x, 0);
 			menuRect.pivot = new Vector2(menuRect.pivot.x, 0);
 		}
-		menuRect.transform.position = position;
+		menuRect.transform.position = new Vector3(position.x, position.y, 0);
 
 		const buttonPrefab = AssetBridge.Instance.LoadAsset(
 			"@Easy/Core/Shared/Resources/Prefabs/UI/RightClickMenu/RightClickButton.prefab",
@@ -69,8 +72,8 @@ export class RightClickMenuController implements OnStart {
 
 		for (const button of buttons) {
 			const buttonGo = Object.Instantiate(buttonPrefab, menuGo.transform);
-			const btnImage = buttonGo.GetComponent<Image>();
-			const refs = buttonGo.GetComponent<GameObjectReferences>();
+			const btnImage = buttonGo.GetComponent<Image>()!;
+			const refs = buttonGo.GetComponent<GameObjectReferences>()!;
 			const text = refs.GetValue("UI", "Text") as TMP_Text;
 			text.text = button.text;
 
@@ -81,12 +84,14 @@ export class RightClickMenuController implements OnStart {
 					this.currentBin.Clean();
 				}),
 			);
-			this.currentBin.AddEngineEventConnection(
-				CanvasAPI.OnHoverEvent(buttonGo, (hoverState) => {
-					btnImage.color = hoverState === HoverState.ENTER ? Theme.primary : new Color(0, 0, 0, 0);
-					text.color = hoverState === HoverState.ENTER ? Theme.white : ColorUtil.HexToColor("#B2B2B2");
-				}),
-			);
+			if (!Game.IsMobile()) {
+				this.currentBin.AddEngineEventConnection(
+					CanvasAPI.OnHoverEvent(buttonGo, (hoverState) => {
+						btnImage.color = hoverState === HoverState.ENTER ? Theme.primary : new Color(0, 0, 0, 0);
+						text.color = hoverState === HoverState.ENTER ? Theme.white : ColorUtil.HexToColor("#B2B2B2");
+					}),
+				);
+			}
 		}
 
 		const mouse = new Mouse();

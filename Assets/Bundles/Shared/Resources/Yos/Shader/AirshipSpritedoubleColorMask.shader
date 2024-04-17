@@ -2,9 +2,9 @@ Shader "Airship/AirshipSpritedoubleColorMask"
 {
     Properties
     {
-         [HDR] _Color1("Color1", Color) = (1,1,1,1)
+        [HDR] _Color1("Color1", Color) = (1,1,1,1)
         [HDR] _Color2("Color2", Color) = (1,1,1,1)
-        _Emissive("Emissive", Range(0,1)) = 1
+        [HDR] _Emissive("Emissive", Range(0,1)) = 1
         _MainTex("Texture", 2D) = "white" {}
         _PowerAlpha("PowerAlpha;", Float) = 0
 
@@ -84,7 +84,7 @@ Shader "Airship/AirshipSpritedoubleColorMask"
                float2 uv_MainTex = i.uv.xy * _MainTex_ST.xy + _MainTex_ST.zw;
 
                 float smoothstepCol = smoothstep(_SmoothColor.x, _SmoothColor.y, tex2D(_MainTex, uv_MainTex).r);
-                float4 finalColor = lerp(SRGBtoLinear(_Color1), SRGBtoLinear(_Color2), smoothstepCol) * i.color;
+                float4 finalColor = lerp(_Color1, _Color2, smoothstepCol) * i.color;
                 finalColor.a = pow(tex2D(_MainTex, uv_MainTex).a, _PowerAlpha) * i.color.a;
                     
 

@@ -1,7 +1,6 @@
-/// <reference types="@easy-games/compiler-types" />
+/// <reference types="compiler-types" />
 import { AccessoryClass, OutfitDto } from "../Airship/Types/Outputs/PlatformInventory";
 export declare class AvatarUtil {
-    static readonly defaultAccessoryOutfitPath = "@Easy/Core/Shared/Resources/Accessories/AvatarItems/GothGirl/Kit_GothGirl_Collection.asset";
     private static readonly allAvatarAccessories;
     private static readonly allAvatarFaces;
     private static readonly allAvatarClasses;
@@ -15,9 +14,12 @@ export declare class AvatarUtil {
     static GetClass(classId: string): AccessoryClass | undefined;
     static GetClassThumbnailUrl(classId: string): string;
     static InitUserOutfits(userId: string): void;
-    static AddAvailableAvatarItem(item: AccessoryComponent): void;
+    static AddAvailableAvatarItem(instanceId: string, item: AccessoryComponent): void;
     static AddAvailableFaceItem(item: AccessoryFace): void;
-    static GetAllAvatarItems(slotType: AccessorySlot): AccessoryComponent[] | undefined;
+    static GetAllAvatarItems(slotType: AccessorySlot): {
+        instanceId: string;
+        item: AccessoryComponent;
+    }[] | undefined;
     static GetAllAvatarFaceItems(): AccessoryFace[];
     static GetAllAvatarSkins(): AccessorySkin[];
     static GetAllPossibleAvatarItems(): Map<string, AccessoryComponent>;

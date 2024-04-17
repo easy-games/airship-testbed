@@ -1,4 +1,4 @@
-/// <reference types="@easy-games/compiler-types" />
+/// <reference types="compiler-types" />
 import { FriendStatus } from "../../../Client/MainMenuControllers/Social/SocketAPI";
 import { PublicUser } from "../../SocketIOMessages/PublicUser";
 export default class DirectMessagesWindow extends AirshipBehaviour {

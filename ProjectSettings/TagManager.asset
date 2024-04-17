@@ -14,12 +14,12 @@ TagManager:
   - Character
   - Water
   - UI
-  - VoxelWorld
+  - WorldUI
   - ViewModel
   - VisuallyHidden
   - IgnoreCollision
   - AvatarEditor
-  - 
+  - VoxelWorld
   - 
   - 
   - 

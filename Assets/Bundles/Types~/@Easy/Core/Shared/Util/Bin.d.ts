@@ -1,7 +1,6 @@
-/// <reference types="@easy-games/compiler-types" />
-/// <reference types="@easy-games/compiler-types" />
-/// <reference types="@easy-games/compiler-types" />
-/// <reference types="@easy-games/types" />
+/// <reference types="compiler-types" />
+/// <reference types="compiler-types" />
+/// <reference types="compiler-types" />
 interface ConnectionLike {
     Disconnect(this: ConnectionLike): void;
 }
@@ -41,7 +40,12 @@ export declare class Bin {
     Extend(): Bin;
     /** Clean up all tracked objects. */
     Clean(): void;
-    /** Alias for `Bin.Clean()`. */
+    /**
+     * @deprecated use {@link Clean} instead.
+     *
+     * Alias for `Bin.Clean()`.
+     *
+     **/
     Destroy(): void;
     private cleanupObj;
 }

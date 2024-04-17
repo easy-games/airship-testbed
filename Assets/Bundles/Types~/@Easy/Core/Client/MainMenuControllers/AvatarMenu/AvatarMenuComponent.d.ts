@@ -11,7 +11,10 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
     avatarCenterRect?: RectTransform;
     categoryLabelTxt?: TextMeshProUGUI;
     mainContentHolder?: Transform;
-    profilePicGO?: GameObject;
+    avatarProfileMenuGo?: GameObject;
+    avatarToolbar: RectTransform;
+    avatarOptionsHolder: RectTransform;
+    avatar3DHolder: RectTransform;
     outfitButtonHolder: Transform;
     mainNavButtonHolder: Transform;
     private outfitBtns;
@@ -31,11 +34,11 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
     private mouse;
     private saveBtn?;
     private currentFocusedSlot;
-    private avatarRenderRig?;
+    private avatarProfileMenu?;
     private Log;
     Init(mainMenu: MainMenuController, pageType: MainMenuPageType): void;
     private RefreshAvatar;
-    OpenPage(): void;
+    OpenPage(params?: unknown): void;
     ClosePage(instant?: boolean): void;
     private SelectMainNav;
     private SelectSubNav;
@@ -62,4 +65,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
     private UpdateButtonGraphics;
     private Save;
     private Revert;
+    private thumbnailRenderList;
+    private thumbnailFaceRenderList;
+    private inThumbnailMode;
+    private renderSetup?;
 }

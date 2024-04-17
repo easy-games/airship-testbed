@@ -164,18 +164,7 @@ Shader "Airship/AirshipCrystal"
 				//Do the fog
 				half3 viewVector = _WorldSpaceCameraPos.xyz - i.worldPos;
 				float viewDistance = length(viewVector);
-				
-				//Point lights
-#ifdef NUM_LIGHTS_LIGHTS1
-			    
-			    brightness += CalculatePointLightForPoint(i.worldPos, worldNormal, globalDynamicLightPos[0], globalDynamicLightColor[0], globalDynamicLightRadius[0]);
-#endif			    
-#ifdef NUM_LIGHTS_LIGHTS2
-			    brightness += CalculatePointLightForPoint(i.worldPos, worldNormal, globalDynamicLightPos[0], globalDynamicLightColor[0], globalDynamicLightRadius[0]);
-			    brightness += CalculatePointLightForPoint(i.worldPos, worldNormal, globalDynamicLightPos[1], globalDynamicLightColor[1], globalDynamicLightRadius[1]);
-#endif
-				brightness = max(_MinLight, brightness * _Glossiness);
-
+				half3 worldReflect = reflect(-viewVector, worldNormal);
 
 				// Calculate specular reflection.
 				float3 halfVector = normalize(-globalSunDirection + viewDir);
@@ -212,6 +201,12 @@ Shader "Airship/AirshipCrystal"
 				half4 finalDepthColor = saturate(lerp(screenColor * depthColor, depthTex * depthColor, depthColor.a));
 
 				half4 depthBlend = surfaceOpacity * color + finalDepthColor;
+				
+				//Point lights
+				brightness += CalculatePointLightsForPoint(i.worldPos, worldNormal, finalDiffuseColor.rgb, 0, 0, finalShineColor.rgb, worldReflect);
+				
+				brightness = max(_MinLight, brightness * _Glossiness);
+
 				half4 finalColor = lerp(finalDepthColor, finalSurfaceColor, surfaceMask) * brightness;
 				
 				//fog

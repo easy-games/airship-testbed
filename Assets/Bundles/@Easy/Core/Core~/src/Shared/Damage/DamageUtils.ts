@@ -37,7 +37,7 @@ export class DamageUtils {
 			return 0;
 		}
 
-		const driver = character.networkObject.gameObject.GetComponent<CharacterMovement>();
+		const driver = character.networkObject.gameObject.GetComponent<CharacterMovement>()!;
 		const damageDelta = math.clamp(damageAmount / this.maxHitstunDamage, 0, 1);
 		const hitStunDuration = this.GetStunDuration(damageDelta);
 		const hitStunFrequency = MathUtil.Lerp(30, 60, damageDelta);
@@ -82,7 +82,7 @@ export class DamageUtils {
 		vfx: GameObject[] | undefined,
 	) {
 		const anim = character.animator as CharacterAnimator;
-		const driver = character.networkObject.gameObject.GetComponent<CharacterMovement>();
+		const driver = character.networkObject.gameObject.GetComponent<CharacterMovement>()!;
 		if (anim) {
 			const duration = this.GetStunDuration(math.clamp(damageDealt / this.maxHitstunDamage, 0, 1));
 			let particles: ParticleSystem[] = [];

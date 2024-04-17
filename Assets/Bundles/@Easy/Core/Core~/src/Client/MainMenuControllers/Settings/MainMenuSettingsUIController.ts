@@ -26,6 +26,13 @@ export class MainMenuSettingsUIController implements OnStart {
 			},
 		);
 		this.SetupSlider(
+			this.mainMenuController.refs.GetValue("Settings", "TouchSensitivity"),
+			this.clientSettingsController.GetTouchSensitivity(),
+			(val) => {
+				this.clientSettingsController.SetTouchSensitivity(val);
+			},
+		);
+		this.SetupSlider(
 			this.mainMenuController.refs.GetValue("Settings", "Volume"),
 			this.clientSettingsController.GetGlobalVolume(),
 			(val) => {
@@ -50,8 +57,8 @@ export class MainMenuSettingsUIController implements OnStart {
 
 	private SetupSlider(go: GameObject, startingValue: number, onChange: (val: number) => void): void {
 		const transform = go.transform;
-		const inputField = transform.FindChild("InputField")!.GetComponent<TMP_InputField>();
-		const slider = transform.FindChild("Slider")!.GetComponent<Slider>();
+		const inputField = transform.FindChild("InputField")!.GetComponent<TMP_InputField>()!;
+		const slider = transform.FindChild("Slider")!.GetComponent<Slider>()!;
 
 		let valRounded = math.floor(startingValue * 10) / 10;
 		slider.value = valRounded;

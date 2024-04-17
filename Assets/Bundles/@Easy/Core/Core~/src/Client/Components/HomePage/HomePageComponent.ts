@@ -1,12 +1,16 @@
 import { Dependency } from "@Easy/Core/Shared/Flamework";
+import { Game } from "@Easy/Core/Shared/Game";
 import SearchSingleton from "@Easy/Core/Shared/MainMenu/Components/Search/SearchSingleton";
+import { MobileGameList } from "@Easy/Core/Shared/Util/MobileGameList";
 import ObjectUtils from "@easy-games/unity-object-utils";
 import MainMenuPageComponent from "Client/MainMenuControllers/MainMenuPageComponent";
 import { AirshipUrl } from "Shared/Util/AirshipUrl";
 import { Bin } from "Shared/Util/Bin";
 import { SetTimeout } from "Shared/Util/Timer";
 import { DecodeJSON } from "Shared/json";
+import { MainMenuBlockSingleton } from "../../MainMenuControllers/Settings/MainMenuBlockSingleton";
 import { GamesDto } from "./API/GamesAPI";
+import HomePageGameComponent from "./Sort/HomePageGameComponent";
 import SortComponent from "./Sort/SortComponent";
 import { SortId } from "./Sort/SortId";
 
@@ -17,15 +21,10 @@ export default class HomePageComponent extends MainMenuPageComponent {
 	public scrollRect!: ScrollRect;
 	private bin = new Bin();
 	private sorts = new Map<SortId, SortComponent>();
+	private loadedGameComponents: HomePageGameComponent[] = [];
 
-	override OpenPage(): void {
-		super.OpenPage();
-
-		let avatarView = this.mainMenu?.avatarView;
-		if (avatarView) {
-			avatarView.ResetAvatar();
-			avatarView.CameraFocusTransform(avatarView.cameraWaypointCenterHero, true);
-		}
+	override OpenPage(params?: unknown): void {
+		super.OpenPage(params);
 		this.ClearSorts();
 		this.CreateSort(SortId.RecentlyUpdated, "Recently Updated");
 		this.CreateSort(SortId.Popular, "Popular");
@@ -41,10 +40,13 @@ export default class HomePageComponent extends MainMenuPageComponent {
 	}
 
 	private ClearSorts(): void {
-		// for (let i = 1; i < this.mainContent.GetChildCount(); i++) {
-		// 	Object.Destroy(this.mainContent.GetChild(i));
-		// }
+		//Release pooled game cards
+		for (let i = 0; i < this.loadedGameComponents.size(); i++) {
+			PoolManager.ReleaseObject(this.loadedGameComponents[i].gameObject);
+		}
+		this.loadedGameComponents.clear();
 
+		//Destroy the sort containers
 		let toRemove: Transform[] = [];
 		for (let i = 0; i < this.mainContent.GetChildCount(); i++) {
 			toRemove.push(this.mainContent.GetChild(i));
@@ -56,10 +58,14 @@ export default class HomePageComponent extends MainMenuPageComponent {
 
 	private CreateSort(sortId: SortId, title: string): void {
 		const sortGo = Object.Instantiate(this.sortPrefab, this.mainContent) as GameObject;
-		const sortComponent = sortGo.GetComponent<SortComponent>();
+		const sortComponent = sortGo.GetAirshipComponent<SortComponent>()!;
 		sortComponent.SetTitle(title);
 		sortComponent.pageScrollRect = this.scrollRect;
 		this.sorts.set(sortId, sortComponent);
+	}
+
+	private CreateSpacer(): void {
+		const go = Object.Instantiate(this.spacerPrefab, this.mainContent);
 	}
 
 	public FetchGames(): void {
@@ -80,11 +86,18 @@ export default class HomePageComponent extends MainMenuPageComponent {
 		let sorts: SortId[];
 		sorts = ObjectUtils.keys(this.sorts);
 
+		const blockSingleton = Dependency<MainMenuBlockSingleton>();
 		for (let sortId of sorts) {
 			const sortComponent = this.sorts.get(sortId)!;
 
-			let games = data[sortId].filter((g) => g.lastVersionUpdate !== undefined);
-			sortComponent.SetGames(games);
+			let games = data[sortId].filter(
+				(g) => g.lastVersionUpdate !== undefined && !blockSingleton.IsGameIdBlocked(g.id),
+			);
+			// Temp: only show "The Campfire" on mobile for now.
+			if (!Game.IsEditor() && Game.IsMobile()) {
+				games = data[sortId].filter((g) => MobileGameList.includes(g.id));
+			}
+			this.loadedGameComponents = [...this.loadedGameComponents, ...sortComponent.SetGames(games)];
 		}
 
 		task.spawn(() => {

@@ -1,7 +1,7 @@
+import { AirshipCharacterCameraSingleton } from "@Easy/Core/Shared/Camera/AirshipCharacterCameraSingleton";
 import { Airship } from "Shared/Airship";
 import { AssetCache } from "Shared/AssetCache/AssetCache";
 import Character from "Shared/Character/Character";
-import { LocalCharacterSingleton } from "Shared/Character/LocalCharacter/LocalCharacterSingleton";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { Controller, Dependency, OnStart } from "Shared/Flamework";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
@@ -23,7 +23,7 @@ export class BubbleChatController implements OnStart {
 			this.GetOrCreateChatContainer(character);
 		});
 
-		CoreNetwork.ServerToClient.PlayerChatted.client.OnServerEvent((rawMessage, senderClientId) => {
+		CoreNetwork.ServerToClient.ChatMessage.client.OnServerEvent((rawMessage, nameWithPrefix, senderClientId) => {
 			let sender: Player | undefined;
 			if (senderClientId !== undefined) {
 				sender = Airship.players.FindByClientId(senderClientId);
@@ -35,40 +35,40 @@ export class BubbleChatController implements OnStart {
 		});
 
 		// Replace distant bubbles with "..."
-		task.spawn(() => {
-			while (true) {
-				task.wait(0.5);
+		// task.spawn(() => {
+		// 	while (true) {
+		// 		task.wait(0.5);
 
-				const mainCamera = Camera.main;
-				if (!mainCamera) continue;
+		// 		const mainCamera = Camera.main;
+		// 		if (!mainCamera) continue;
 
-				const cameraPosition = mainCamera.transform.position;
+		// 		const cameraPosition = mainCamera.transform.position;
 
-				for (const [containerTransform, minimized] of this.chatContainerMinimized) {
-					// Clear out destroyed containers
-					if (!containerTransform.gameObject) {
-						this.chatContainerMinimized.delete(containerTransform);
-						continue;
-					}
+		// 		for (const [containerTransform, minimized] of this.chatContainerMinimized) {
+		// 			// Clear out destroyed containers
+		// 			if (!containerTransform.gameObject) {
+		// 				this.chatContainerMinimized.delete(containerTransform);
+		// 				continue;
+		// 			}
 
-					const shouldBeMinimized = this.ShouldChatBeMinimized(containerTransform, cameraPosition);
-					if (shouldBeMinimized === minimized) continue;
+		// 			const shouldBeMinimized = this.ShouldChatBeMinimized(containerTransform, cameraPosition);
+		// 			if (shouldBeMinimized === minimized) continue;
 
-					this.chatContainerMinimized.set(containerTransform, shouldBeMinimized);
+		// 			this.chatContainerMinimized.set(containerTransform, shouldBeMinimized);
 
-					const canvas = containerTransform.FindChild("Canvas");
-					if (!canvas) continue;
+		// 			const canvas = containerTransform.FindChild("Canvas");
+		// 			if (!canvas) continue;
 
-					// Loop over all bubbles within the container and replace their contents
-					const childTextComponents = canvas.gameObject.GetComponentsInChildren<TextMeshProUGUI>();
-					const size = childTextComponents.Length;
-					for (let i = 0; i < size; i++) {
-						const textComponent = childTextComponents.GetValue(i);
-						this.UpdateTextComponentContents(textComponent, shouldBeMinimized);
-					}
-				}
-			}
-		});
+		// 			// Loop over all bubbles within the container and replace their contents
+		// 			const childTextComponents = canvas.gameObject.GetComponentsInChildren<TextMeshProUGUI>();
+		// 			const size = childTextComponents.Length;
+		// 			for (let i = 0; i < size; i++) {
+		// 				const textComponent = childTextComponents.GetValue(i);
+		// 				this.UpdateTextComponentContents(textComponent, shouldBeMinimized);
+		// 			}
+		// 		}
+		// 	}
+		// });
 	}
 
 	private startSendingRandomMessages(character: Character, i = 0) {
@@ -108,9 +108,9 @@ export class BubbleChatController implements OnStart {
 		const chatMessageObject = GameObjectUtil.Instantiate(chatMessageAsset);
 
 		// Set message contents
-		const refs = chatMessageObject.GetComponent<GameObjectReferences>();
+		const refs = chatMessageObject.GetComponent<GameObjectReferences>()!;
 		const messageObject = refs.GetValue("Content", "Message");
-		const textComponent = messageObject.GetComponent<TextMeshProUGUI>();
+		const textComponent = messageObject.GetComponent<TextMeshProUGUI>()!;
 		textComponent.text = text;
 
 		const isMinimized = this.chatContainerMinimized.get(chatContainer.transform) ?? false;
@@ -127,8 +127,8 @@ export class BubbleChatController implements OnStart {
 			GameObjectUtil.Destroy(firstChild.gameObject);
 		}
 
-		const messageCanvasGroup = chatMessageObject.GetComponent<CanvasGroup>();
-		const messageBackgroundImage = chatMessageObject.GetComponent<Image>();
+		const messageCanvasGroup = chatMessageObject.GetComponent<CanvasGroup>()!;
+		const messageBackgroundImage = chatMessageObject.GetComponent<Image>()!;
 
 		// Tween to semi-transparent state
 		task.delay(8, () => {
@@ -148,15 +148,13 @@ export class BubbleChatController implements OnStart {
 
 	/** Creates a chat container for an entity (or returns one if it already exists) */
 	private GetOrCreateChatContainer(character: Character): GameObject {
-		const existingChatContainer = character.model.gameObject.transform.Find("BubbleChatContainer");
+		const existingChatContainer = character.model.transform.Find("BubbleChatContainer");
 		if (existingChatContainer) {
 			return existingChatContainer.gameObject;
 		}
 
-		const chatContainer = AssetCache.LoadAsset<Object>(
-			"@Easy/Core/Client/Resources/Prefabs/BubbleChatContainer.prefab",
-		);
-		const chatContainerObject = GameObjectUtil.Instantiate(chatContainer);
+		const chatContainer = AssetCache.LoadAsset("@Easy/Core/Client/Resources/Prefabs/BubbleChatContainer.prefab");
+		const chatContainerObject = Object.Instantiate(chatContainer);
 		chatContainerObject.name = "BubbleChatContainer";
 		const chatTransform = chatContainerObject.transform;
 
@@ -164,11 +162,11 @@ export class BubbleChatController implements OnStart {
 		if (canvas) {
 			canvas.gameObject.ClearChildren();
 
-			const canvasComponent = canvas.GetComponent<Canvas>();
+			const canvasComponent = canvas.GetComponent<Canvas>()!;
 			if (character.IsLocalCharacter()) {
-				const isFirstPerson = Dependency<LocalCharacterSingleton>().IsFirstPerson();
+				const isFirstPerson = Dependency<AirshipCharacterCameraSingleton>().IsFirstPerson();
 				canvasComponent.enabled = !isFirstPerson;
-				Dependency<LocalCharacterSingleton>().firstPersonChanged.Connect((isFirst) => {
+				Dependency<AirshipCharacterCameraSingleton>().firstPersonChanged.Connect((isFirst) => {
 					canvasComponent.enabled = !isFirst;
 				});
 			}
@@ -177,8 +175,10 @@ export class BubbleChatController implements OnStart {
 		chatTransform.SetParent(character.model.gameObject.transform);
 		chatTransform.localPosition = new Vector3(0, 3.2, 0);
 
-		const shouldBeMinimized = this.ShouldChatBeMinimized(chatTransform, Camera.main.transform.position);
-		this.chatContainerMinimized.set(chatContainerObject.transform, shouldBeMinimized);
+		if (Camera.main) {
+			const shouldBeMinimized = this.ShouldChatBeMinimized(chatTransform, Camera.main.transform.position);
+			this.chatContainerMinimized.set(chatContainerObject.transform, shouldBeMinimized);
+		}
 		return chatContainerObject;
 	}
 
@@ -193,7 +193,7 @@ export class BubbleChatController implements OnStart {
 			// Store current contents
 			if (!this.bubbleChatContents.has(textComponent)) {
 				this.bubbleChatContents.set(textComponent, textComponent.text);
-				const connectionId = textComponent.gameObject.GetComponent<DestroyWatcher>().OnDestroyedEvent(() => {
+				const connectionId = textComponent.gameObject.GetComponent<DestroyWatcher>()!.OnDestroyedEvent(() => {
 					this.bubbleChatContents.delete(textComponent);
 					Bridge.DisconnectEvent(connectionId);
 				});

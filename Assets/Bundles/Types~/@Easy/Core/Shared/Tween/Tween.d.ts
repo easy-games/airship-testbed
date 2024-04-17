@@ -10,6 +10,7 @@ export declare class Tween {
     Cancel(): this;
     Pause(): this;
     Play(): this;
+    IsPlaying(): boolean;
     private elapsedTime;
     static InElastic(totalDuration: number, callback: (delta: number) => void, initialValue?: number, endValue?: number): Tween;
     static Linear(totalDuration: number, callback: (delta: number) => void, initialValue?: number, endValue?: number): Tween;

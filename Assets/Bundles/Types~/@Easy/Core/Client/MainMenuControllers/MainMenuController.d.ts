@@ -16,14 +16,15 @@ export declare class MainMenuController implements OnStart {
     mainContentGroup: CanvasGroup;
     socialMenuGroup: CanvasGroup;
     private rootCanvasGroup;
-    private toggleSocialButton;
+    private gameBG?;
+    private mainMenuBG?;
     private open;
     private socialIsVisible;
     constructor();
+    ToggleGameBG(show: boolean): void;
     OpenFromGame(): void;
     CloseFromGame(): void;
     IsOpen(): boolean;
     OnStart(): void;
-    RouteToPage(pageType: MainMenuPageType, force?: boolean, noTween?: boolean): void;
-    private ToggleSocialView;
+    RouteToPage(pageType: MainMenuPageType, force?: boolean, noTween?: boolean, params?: unknown): void;
 }

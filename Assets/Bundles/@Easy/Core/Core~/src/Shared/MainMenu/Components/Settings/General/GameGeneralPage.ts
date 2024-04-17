@@ -1,13 +1,24 @@
+import MainMenuPageComponent from "@Easy/Core/Client/MainMenuControllers/MainMenuPageComponent";
 import { Game } from "@Easy/Core/Shared/Game";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 
-export default class GameGeneralPage extends AirshipBehaviour {
+export default class GameGeneralPage extends MainMenuPageComponent {
 	public gameTitle!: TMP_Text;
 	public gameDeveloper!: TMP_Text;
 	public gameDescription!: TMP_Text;
 	public gameImage!: Image;
 	private bin = new Bin();
+
+	public OnEnable(): void {}
+
+	override GetTargetAnchoredPositionY(): number {
+		if (Game.deviceType === AirshipDeviceType.Phone) {
+			return -10;
+		} else {
+			return -95;
+		}
+	}
 
 	override Start(): void {
 		task.spawn(() => {
@@ -21,10 +32,7 @@ export default class GameGeneralPage extends AirshipBehaviour {
 			Bridge.UpdateLayout(this.gameDescription.transform.parent!, false);
 
 			let gameImageUrl = AirshipUrl.CDN + "/images/" + gameData.iconImageId + ".png";
-			print("gameImage: " + this.gameImage?.name);
-			const cloudImage = this.gameImage.GetComponent<CloudImage>();
-			print("cloud image: " + cloudImage?.name);
-			print("bin: " + this.bin);
+			const cloudImage = this.gameImage.GetComponent<CloudImage>()!;
 			cloudImage.url = gameImageUrl;
 			this.bin.AddEngineEventConnection(
 				cloudImage.OnFinishedLoading((success) => {

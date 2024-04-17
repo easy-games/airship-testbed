@@ -2,11 +2,11 @@ import { DataStoreService } from "@Easy/Core/Server/Airship/DataStore/DataStoreS
 import { LeaderboardService } from "@Easy/Core/Server/Airship/Leaderboard/LeaderboardService";
 import { Airship } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
+import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
-import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Network } from "Shared/Network";
 
 export default class TestScript extends AirshipBehaviour {
@@ -26,10 +26,10 @@ export default class TestScript extends AirshipBehaviour {
 
 		// Only runs server
 
-		const bounds = this.spawnArea.GetComponent<BoxCollider>("Box Collider").bounds;
+		// const bounds = this.spawnArea.GetComponent<BoxCollider>("Box Collider").bounds;
 
 		Airship.damage.onDeath.Connect((damageInfo) => {
-			const killer = damageInfo.attacker?.GetComponent<Character>()?.player;
+			const killer = damageInfo.attacker?.GetAirshipComponent<Character>()?.player;
 			if (!killer) return;
 
 			let kills = this.sessionKillMap.get(killer) ?? 0;

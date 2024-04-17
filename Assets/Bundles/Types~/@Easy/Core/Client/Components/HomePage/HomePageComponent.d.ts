@@ -6,9 +6,11 @@ export default class HomePageComponent extends MainMenuPageComponent {
     scrollRect: ScrollRect;
     private bin;
     private sorts;
-    OpenPage(): void;
+    private loadedGameComponents;
+    OpenPage(params?: unknown): void;
     private ClearSorts;
     private CreateSort;
+    private CreateSpacer;
     FetchGames(): void;
     OnDisable(): void;
     OnDestroy(): void;

@@ -1,8 +1,9 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
+import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
 import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
 import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
 import inspect from "@easy-games/unity-inspect";
-import Object from "@easy-games/unity-object-utils";
+import ObjectUtils from "@easy-games/unity-object-utils";
 import { RightClickMenuController } from "Client/MainMenuControllers/UI/RightClickMenu/RightClickMenuController";
 import { CoreContext } from "Shared/CoreClientContext";
 import { Controller, Dependency, OnStart } from "Shared/Flamework";
@@ -47,6 +48,8 @@ export class FriendsController implements OnStart {
 
 	public onIncomingFriendRequestsChanged = new Signal<void>();
 
+	private friendsScrollRect!: ScrollRect;
+
 	constructor(
 		private readonly authController: AuthController,
 		private readonly socketController: SocketController,
@@ -87,6 +90,10 @@ export class FriendsController implements OnStart {
 		const friendsContent = this.mainMenuController.refs.GetValue("Social", "FriendsContent");
 		friendsContent.ClearChildren();
 
+		this.friendsScrollRect = this.mainMenuController.refs
+			.GetValue("Social", "FriendsScrollViewGO")
+			.GetComponent<ScrollRect>()!;
+
 		this.socialNotification = this.mainMenuController.refs
 			.GetValue("Social", "SocialNotification")
 			.GetAirshipComponent<SocialNotificationComponent>()!;
@@ -105,7 +112,7 @@ export class FriendsController implements OnStart {
 
 		this.authController.WaitForAuthed().then(() => {
 			// Game context will send status update when client receives server info.
-			if (Game.context === CoreContext.MAIN_MENU) {
+			if (Game.coreContext === CoreContext.MAIN_MENU) {
 				this.SendStatusUpdate();
 			}
 			this.FetchFriends();
@@ -121,7 +128,7 @@ export class FriendsController implements OnStart {
 
 				this.socialNotification.usernameText.text = foundUser.username;
 
-				const sprite = Airship.players.CreateProfilePictureSpriteAsync(foundUser.uid);
+				const sprite = Airship.players.GetProfilePictureSpriteAsync(foundUser.uid);
 				if (sprite) {
 					this.socialNotification.userImage.sprite = sprite;
 				}
@@ -161,7 +168,7 @@ export class FriendsController implements OnStart {
 				// );
 
 				AudioManager.PlayGlobal("@Easy/Core/Shared/Resources/Sound/FriendRequest.wav");
-				if (Game.context === CoreContext.GAME) {
+				if (Game.coreContext === CoreContext.GAME) {
 					Game.localPlayer.SendMessage(
 						ChatColor.Yellow(foundUser.username) + ChatColor.Gray(" sent you a friend request."),
 					);
@@ -178,7 +185,7 @@ export class FriendsController implements OnStart {
 			for (const newFriend of data) {
 				const existing = this.friendStatuses.find((f) => f.userId === newFriend.userId);
 				if (existing) {
-					Object.assign(existing, newFriend);
+					ObjectUtils.assign(existing, newFriend);
 					this.friendStatusChanged.Fire(existing);
 				} else {
 					this.friendStatuses.push(newFriend);
@@ -255,7 +262,7 @@ export class FriendsController implements OnStart {
 	public SendStatusUpdate(): void {
 		const status: Partial<FriendStatus> = {
 			userId: Game.localPlayer.userId,
-			status: Game.context === CoreContext.GAME ? "in_game" : "online",
+			status: Game.coreContext === CoreContext.GAME ? "in_game" : "online",
 			serverId: Game.serverId,
 			gameId: Game.gameId,
 			metadata: {
@@ -386,88 +393,22 @@ export class FriendsController implements OnStart {
 			let go: GameObject | undefined = friendsContent.transform.FindChild(friend.userId)?.gameObject;
 			let init = false;
 			if (go === undefined) {
-				go = GameObjectUtil.InstantiateIn(
-					AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/UI/MainMenu/Friend.prefab"),
+				go = Object.Instantiate(
+					AssetCache.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/UI/MainMenu/Friend.prefab"),
 					friendsContent.transform,
-				);
+				) as GameObject;
 				go.name = friend.userId;
 
-				const refs = go.GetComponent<GameObjectReferences>();
+				const redirect = go.GetComponent<AirshipRedirectDrag>()!;
+				redirect.redirectTarget = this.friendsScrollRect;
+
+				const refs = go.GetComponent<GameObjectReferences>()!;
 				const joinButton = refs.GetValue("UI", "JoinButton");
 
 				this.renderedFriendUids.add(friend.userId);
 				init = true;
 
-				CoreUI.SetupButton(go, {
-					noHoverSound: true,
-				});
-				CanvasAPI.OnClickEvent(go, () => {
-					Dependency<DirectMessageController>().OpenFriend(friend.userId);
-				});
-				CanvasAPI.OnPointerEvent(go, (direction, button) => {
-					if (button === PointerButton.RIGHT && direction === PointerDirection.UP) {
-						const options: RightClickMenuButton[] = [];
-						if (friend.status !== "offline") {
-							options.push(
-								{
-									text: "Join Party",
-									onClick: () => {
-										task.spawn(() => {
-											const res = InternalHttpManager.PostAsync(
-												AirshipUrl.GameCoordinator + "/parties/party/join",
-												EncodeJSON({
-													uid: friend.userId,
-													// partyId: friend,
-												}),
-											);
-											if (!res.success) {
-												Debug.LogError(res.error);
-											}
-										});
-									},
-								},
-								{
-									text: "Invite to Party",
-									onClick: () => {
-										task.spawn(() => {
-											InternalHttpManager.PostAsync(
-												AirshipUrl.GameCoordinator + "/parties/party/invite",
-												EncodeJSON({
-													userToAdd: friend.userId,
-												}),
-											);
-										});
-									},
-								},
-							);
-						}
-						options.push(
-							{
-								text: "Send Message",
-								onClick: () => {
-									Dependency<DirectMessageController>().OpenFriend(friend.userId);
-								},
-							},
-							{
-								text: "Unfriend",
-								onClick: () => {
-									task.spawn(() => {
-										task.spawn(() => {
-											const success = this.RejectFriendRequestAsync(friend.userId);
-										});
-									});
-								},
-							},
-						);
-						this.rightClickMenuController.OpenRightClickMenu(
-							this.mainMenuController.mainContentCanvas,
-							mouse.GetLocation(),
-							options,
-						);
-					}
-				});
-
-				CanvasAPI.OnClickEvent(joinButton, () => {
+				const Teleport = () => {
 					if (friend.gameId === undefined || friend.serverId === undefined) return;
 
 					print(
@@ -479,11 +420,104 @@ export class FriendsController implements OnStart {
 							friend.serverId,
 					);
 					Dependency<TransferController>().TransferToGameAsync(friend.gameId, friend.serverId);
+				};
+
+				const OpenMenu = () => {
+					const options: RightClickMenuButton[] = [];
+					if (friend.status !== "offline") {
+						if (Game.IsMobile() && friend.gameId && friend.serverId) {
+							options.push({
+								text: "Teleport",
+								onClick: () => {
+									Teleport();
+								},
+							});
+						}
+
+						options.push(
+							{
+								text: "Join Party",
+								onClick: () => {
+									task.spawn(() => {
+										const res = InternalHttpManager.PostAsync(
+											AirshipUrl.GameCoordinator + "/parties/party/join",
+											EncodeJSON({
+												uid: friend.userId,
+												// partyId: friend,
+											}),
+										);
+										if (!res.success) {
+											Debug.LogError(res.error);
+										}
+									});
+								},
+							},
+							{
+								text: "Invite to Party",
+								onClick: () => {
+									task.spawn(() => {
+										InternalHttpManager.PostAsync(
+											AirshipUrl.GameCoordinator + "/parties/party/invite",
+											EncodeJSON({
+												userToAdd: friend.userId,
+											}),
+										);
+									});
+								},
+							},
+						);
+					}
+					if (!Game.IsMobile()) {
+						options.push({
+							text: "Send Message",
+							onClick: () => {
+								Dependency<DirectMessageController>().OpenFriend(friend.userId);
+							},
+						});
+					}
+					options.push({
+						text: "Unfriend",
+						onClick: () => {
+							task.spawn(() => {
+								task.spawn(() => {
+									const success = this.RejectFriendRequestAsync(friend.userId);
+								});
+							});
+						},
+					});
+					this.rightClickMenuController.OpenRightClickMenu(
+						this.mainMenuController.mainContentCanvas,
+						Game.IsMobile()
+							? new Vector2(go!.transform.position.x, go!.transform.position.y)
+							: mouse.GetPosition(),
+						options,
+					);
+				};
+
+				CoreUI.SetupButton(go, {
+					noHoverSound: true,
+				});
+				CanvasAPI.OnClickEvent(go, () => {
+					if (Game.IsMobile()) {
+						OpenMenu();
+					} else {
+						Dependency<DirectMessageController>().OpenFriend(friend.userId);
+					}
+				});
+
+				CanvasAPI.OnPointerEvent(go, (direction, button) => {
+					if (button === PointerButton.RIGHT && direction === PointerDirection.UP) {
+						OpenMenu();
+					}
+				});
+
+				CanvasAPI.OnClickEvent(joinButton, () => {
+					Teleport();
 				});
 			}
 			go.transform.SetSiblingIndex(i);
 
-			const refs = go.GetComponent<GameObjectReferences>();
+			const refs = go.GetComponent<GameObjectReferences>()!;
 			this.UpdateFriendStatusUI(friend, refs, {
 				loadImage: init,
 			});
@@ -524,7 +558,7 @@ export class FriendsController implements OnStart {
 		const status = refs.GetValue("UI", "Status") as TMP_Text;
 		const statusIndicator = refs.GetValue("UI", "StatusIndicator") as Image;
 		const profileImage = refs.GetValue("UI", "ProfilePicture") as Image;
-		const canvasGroup = refs.gameObject.GetComponent<CanvasGroup>();
+		const canvasGroup = refs.gameObject.GetComponent<CanvasGroup>()!;
 		const joinButton = refs.GetValue("UI", "JoinButton");
 
 		if (config.loadImage) {
@@ -532,7 +566,12 @@ export class FriendsController implements OnStart {
 				"@Easy/Core/Shared/Resources/Images/ProfilePictures/Dom.png",
 			);
 			if (texture !== undefined) {
-				profileImage.sprite = Bridge.MakeSprite(texture);
+				task.spawn(() => {
+					const sprite = Airship.players.GetProfilePictureSpriteAsync(friend.userId);
+					if (sprite) {
+						profileImage.sprite = sprite;
+					}
+				});
 			}
 		}
 

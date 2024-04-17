@@ -9,7 +9,6 @@ export interface PlayerDto {
     clientId: number;
     userId: string;
     username: string;
-    usernameTag: string;
     teamId: string | undefined;
 }
 export declare class Player {
@@ -39,16 +38,6 @@ export declare class Player {
      */
     username: string;
     /**
-     * @deprecated Username tags will be removed.
-     *
-     * The player's username tag. Append this value onto `username` for a
-     * unique username.
-     * ```ts
-     * const uniqueName = `${player.username}#${player.usernameTag}`;
-     * ```
-     */
-    usernameTag: string;
-    /**
      * The player controls this entity.
      */
     character: Character | undefined;
@@ -67,6 +56,10 @@ export declare class Player {
     private connected;
     selectedOutfit: OutfitDto | undefined;
     outfitLoaded: boolean;
+    /**
+     * WARNING: not implemented yet. only returns local platform for now.
+     */
+    platform: AirshipPlatform;
     constructor(
     /**
      * The GameObject representing the player.
@@ -92,17 +85,7 @@ export declare class Player {
     /**
      * The player's username. Non-unique, unless combined with `usernameTag`.
      */
-    username: string, 
-    /**
-     * @deprecated Username tags will be removed.
-     *
-     * The player's username tag. Append this value onto `username` for a
-     * unique username.
-     * ```ts
-     * const uniqueName = `${player.username}#${player.usernameTag}`;
-     * ```
-     */
-    usernameTag: string);
+    username: string);
     /**
      * Can yield if the player's outfit hasn't finished downloading.
      * @param position
@@ -111,6 +94,7 @@ export declare class Player {
      */
     SpawnCharacter(position: Vector3, config?: {
         lookDirection?: Vector3;
+        customCharacterTemplate?: GameObject;
     }): Character;
     WaitForOutfitLoaded(timeout?: number): void;
     GetProfilePicture(): ProfilePictureMeta;
@@ -123,7 +107,7 @@ export declare class Player {
     IsBot(): boolean;
     Encode(): PlayerDto;
     SetCharacter(character: Character | undefined): void;
-    ObserveCharacter(observer: (entity: Character | undefined) => CleanupFunc): Bin;
+    ObserveCharacter(observer: (character: Character | undefined) => CleanupFunc): Bin;
     IsLocalPlayer(): boolean;
     /**
      * Is the player connected to the server?

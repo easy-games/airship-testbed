@@ -1,4 +1,4 @@
-/// <reference types="@easy-games/compiler-types" />
+/// <reference types="compiler-types" />
 import { Player } from "../Player/Player";
 import { NetworkChannel } from "./NetworkAPI";
 type RemoteParamsToClient<T> = Parameters<T extends unknown[] ? (player: Player, ...args: T) => void : T extends unknown ? (player: Player, arg: T) => void : (player: Player) => void>;
@@ -26,6 +26,11 @@ declare class RemoteEventClient<T extends unknown[] | unknown> {
 export declare class RemoteEvent<T extends unknown[] | unknown> {
     readonly server: RemoteEventServer<T>;
     readonly client: RemoteEventClient<T>;
-    constructor(channel?: NetworkChannel);
+    /**
+     *
+     * @param channel
+     * @param packageOffset Temporary workaround param.
+     */
+    constructor(channel?: NetworkChannel, packageOffset?: number);
 }
 export {};

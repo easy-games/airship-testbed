@@ -1,3 +1,5 @@
+import SearchSingleton from "@Easy/Core/Shared/MainMenu/Components/Search/SearchSingleton";
+import { MainMenuSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/MainMenuSingleton";
 import { TransferController } from "Client/MainMenuControllers/Transfer/TransferController";
 import DateParser from "Shared/DateParser";
 import { Dependency } from "Shared/Flamework";
@@ -17,19 +19,38 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 	public playerCountText!: TMP_Text;
 
 	public buttonGo!: GameObject;
+	public gameImage!: CloudImage;
 	public orgImage!: CloudImage;
 	public authorText!: TMP_Text;
+
+	public shadow!: TrueShadow;
+
+	public gameDto!: GameDto;
+	public loadingOverlay!: GameObject;
 
 	@SerializeField()
 	private redirectDrag!: AirshipRedirectDrag;
 
 	private bin = new Bin();
 
-	override Start(): void {}
+	public Awake(): void {}
+
+	override Start(): void {
+		const mainMenu = Dependency<MainMenuSingleton>();
+		this.bin.Add(
+			mainMenu.ObserveScreenSize((size) => {
+				if (size === "sm") {
+					this.shadow.enabled = false;
+				} else {
+					this.shadow.enabled = true;
+				}
+			}),
+		);
+	}
 
 	override OnDestroy(): void {}
 
-	public OnDisabled(): void {
+	override OnDisable(): void {
 		this.bin.Clean();
 	}
 
@@ -38,6 +59,7 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 	}
 
 	public Init(gameDto: GameDto) {
+		this.gameDto = gameDto;
 		this.titleText.text = gameDto.name;
 		if (gameDto.liveStats?.playerCount !== undefined && gameDto.liveStats.playerCount > 0) {
 			this.playerCountText.text = gameDto.liveStats.playerCount + "";
@@ -52,16 +74,16 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 		{
 			// Game image
 			let url = AirshipUrl.CDN + "/images/" + gameDto.iconImageId + ".png";
-			let cloudImage = this.gameObject.transform.GetChild(0).GetComponent<CloudImage>();
-			cloudImage.url = url;
-			cloudImage.StartDownload();
-			const downloadConn = cloudImage.OnFinishedLoading((success) => {
+			this.gameImage.url = url;
+			this.gameImage.image.color = new Color(0, 0, 0, 1);
+			const downloadConn = this.gameImage.OnFinishedLoading((success) => {
 				if (success) {
-					cloudImage.image.TweenGraphicColor(new Color(1, 1, 1, 1), 0.2);
+					this.gameImage.image.TweenGraphicColor(new Color(1, 1, 1, 1), 0.2);
 				} else {
-					cloudImage.image.TweenGraphicColor(new Color(0, 0, 0, 0.3), 0.2);
+					this.gameImage.image.TweenGraphicColor(new Color(0, 0, 0, 1), 0.2);
 				}
 			});
+			this.gameImage.StartDownload();
 			this.bin.Add(() => {
 				Bridge.DisconnectEvent(downloadConn);
 			});
@@ -78,7 +100,7 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 			// Org image
 			let url = AirshipUrl.CDN + "/images/" + gameDto.organization.iconImageId + ".png";
 			this.orgImage.url = url;
-			this.orgImage.StartDownload();
+			this.orgImage.image.color = new Color(0, 0, 0, 0.3);
 			const downloadConn = this.orgImage.OnFinishedLoading((success) => {
 				if (success) {
 					this.orgImage.image.TweenGraphicColor(new Color(1, 1, 1, 1), 0.2);
@@ -86,17 +108,25 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 					this.orgImage.image.TweenGraphicColor(new Color(0, 0, 0, 0.3), 0.2);
 				}
 			});
+			this.orgImage.StartDownload();
 			this.bin.Add(() => {
 				Bridge.DisconnectEvent(downloadConn);
 			});
 		}
 
-		const clickConn = CanvasAPI.OnClickEvent(this.buttonGo, () => {
+		const clickConn = CanvasAPI.OnClickEvent(this.buttonGo, async () => {
 			if (this.redirectDrag.isDragging) return;
-			Dependency<TransferController>().TransferToGameAsync(gameDto.id);
+			this.loadingOverlay.SetActive(true);
+			print("Joining game " + gameDto.name + "...");
+			const res = await Dependency<TransferController>().TransferToGameAsync(gameDto.id);
+			this.loadingOverlay.SetActive(false);
 		});
 		this.bin.Add(() => {
 			Bridge.DisconnectEvent(clickConn);
 		});
+	}
+
+	public HasAdminPermissions(): boolean {
+		return Dependency<SearchSingleton>().myGamesIds.has(this.gameDto.id);
 	}
 }
