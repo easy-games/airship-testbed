@@ -138,7 +138,7 @@ export class PlayersSingleton implements OnStart {
 			});
 
 			print("accessing AuthController:IsAuthenticated", contextbridge.current());
-			const authenticated = contextbridge.invoke<boolean>(
+			const authenticated = contextbridge.invoke<() => boolean>(
 				"AuthController:IsAuthenticated",
 				LuauContext.Protected,
 			);

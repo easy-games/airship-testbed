@@ -1,4 +1,4 @@
-import { ChatController } from "Client/Controllers/Chat/ChatController";
+import { ClientChatSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/Chat/ClientChatSingleton";
 import { FriendsController } from "Client/MainMenuControllers/Social/FriendsController";
 import { Airship } from "Shared/Airship";
 import Character from "Shared/Character/Character";
@@ -174,7 +174,7 @@ export class Player {
 		if (Game.IsServer()) {
 			CoreNetwork.ServerToClient.ChatMessage.server.FireClient(this, message, undefined, undefined);
 		} else {
-			Dependency<ChatController>().RenderChatMessage(message);
+			Dependency<ClientChatSingleton>().RenderChatMessage(message);
 		}
 	}
 

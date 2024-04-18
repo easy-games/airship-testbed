@@ -65,8 +65,8 @@ Flamework.AddPath("assets/bundles/@Easy/Core/shared/resources/ts", "^.*singleton
 if (RunUtil.IsClient()) {
 	Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/airship", "^.*controller.lua$");
 	Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/controllers", "^.*controller.lua$");
-	Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/mainmenucontrollers", "^.*controller.lua$");
-	Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/mainmenucontrollers", "^.*singleton.lua$");
+	// Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/mainmenucontrollers", "^.*controller.lua$");
+	// Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/mainmenucontrollers", "^.*singleton.lua$");
 }
 if (RunUtil.IsServer()) {
 	Flamework.AddPath("assets/bundles/@Easy/Core/server/resources/ts/airship", "^.*service.lua$");

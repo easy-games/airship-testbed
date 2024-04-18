@@ -1,7 +1,5 @@
+import { CoreUIController } from "@Easy/Core/Client/MainMenuControllers/CoreUIController";
 import { MainMenuSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/MainMenuSingleton";
-import { DirectMessageController } from "Client/MainMenuControllers/Social/DirectMessages/DirectMessageController";
-import { FriendsController } from "Client/MainMenuControllers/Social/FriendsController";
-import { SocketController } from "Client/MainMenuControllers/Socket/SocketController";
 import { Airship } from "Shared/Airship";
 import { AudioManager } from "Shared/Audio/AudioManager";
 import { ChatCommand } from "Shared/Commands/ChatCommand";
@@ -19,9 +17,8 @@ import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { ChatUtil } from "Shared/Util/ChatUtil";
 import { SignalPriority } from "Shared/Util/Signal";
 import { SetInterval, SetTimeout } from "Shared/Util/Timer";
-import { LocalCharacterSingleton } from "../../../Shared/Character/LocalCharacter/LocalCharacterSingleton";
-import { MainMenuBlockSingleton } from "../../MainMenuControllers/Settings/MainMenuBlockSingleton";
-import { CoreUIController } from "../UI/CoreUIController";
+import { MainMenuBlockSingleton } from "../../../../Client/MainMenuControllers/Settings/MainMenuBlockSingleton";
+import { LocalCharacterSingleton } from "../../../Character/LocalCharacter/LocalCharacterSingleton";
 import { MessageCommand } from "./ClientCommands/MessageCommand";
 import { ReplyCommand } from "./ClientCommands/ReplyCommand";
 
@@ -66,7 +63,7 @@ class ChatMessageElement {
 }
 
 @Controller({})
-export class ChatController implements OnStart {
+export class ClientChatSingleton implements OnStart {
 	public canvas!: Canvas;
 	private content: GameObject;
 	private wrapper: GameObject;
@@ -85,14 +82,12 @@ export class ChatController implements OnStart {
 	private commands = new Map<string, ChatCommand>();
 	private lastChatMessageRenderedTime = Time.time;
 
-	constructor(
-		private readonly localEntityController: LocalCharacterSingleton,
-		private readonly coreUIController: CoreUIController,
-		private readonly socketController: SocketController,
-		private readonly directMessageController: DirectMessageController,
-		private readonly friendsController: FriendsController,
-	) {
-		const refs = this.coreUIController.refs.GetValue("Apps", "Chat").GetComponent<GameObjectReferences>()!;
+	constructor(private readonly localEntityController: LocalCharacterSingleton) {
+		const refs = Dependency<CoreUIController>().refs.GetValue("Apps", "Chat").GetComponent<GameObjectReferences>()!;
+		// const refs = contextbridge.invoke<() => GameObjectReferences>(
+		// 	"CoreUIController:GetRefs",
+		// 	LuauContext.Protected,
+		// );
 		this.canvas = refs.GetValue("UI", "Canvas").GetComponent<Canvas>()!;
 		this.content = refs.GetValue("UI", "Content");
 		this.wrapper = refs.GetValue("UI", "Wrapper");
@@ -136,6 +131,10 @@ export class ChatController implements OnStart {
 		} else {
 			this.wrapper.GetComponent<Mask>()!.enabled = false;
 		}
+
+		contextbridge.callback<(val: boolean) => void>("ClientChatSingleton:SetUIEnabled", (val) => {
+			this.canvas.gameObject.SetActive(val);
+		});
 	}
 
 	public OpenMobile(): void {

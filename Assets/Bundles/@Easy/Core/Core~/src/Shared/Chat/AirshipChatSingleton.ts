@@ -1,5 +1,4 @@
-import { ChatController } from "@Easy/Core/Client/Controllers/Chat/ChatController";
-import { Dependency, OnStart, Singleton } from "Shared/Flamework";
+import { OnStart, Singleton } from "Shared/Flamework";
 import { Airship } from "../Airship";
 
 @Singleton({})
@@ -11,6 +10,6 @@ export class AirshipChatSingleton implements OnStart {
 	OnStart(): void {}
 
 	public SetUIEnabled(val: boolean): void {
-		Dependency<ChatController>().canvas.gameObject.SetActive(val);
+		contextbridge.invoke<(val: boolean) => void>("ClientChatSingleton:SetUIEnabled", LuauContext.Protected, val);
 	}
 }
