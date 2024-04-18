@@ -37,7 +37,7 @@ TextureImporter:
     filterMode: 1
     aniso: 1
     mipBias: 0
-    wrapU: 0
+    wrapU: 1
     wrapV: 0
     wrapW: 0
   nPOTScale: 1
@@ -148,6 +148,6 @@ TextureImporter:
     nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
-  userData: 
+  userData: '{"isMetalOrRoughnessMap":false,"brightness":1.0}'
   assetBundleName: '@easy/corematerials_shared/resources'
   assetBundleVariant: 
