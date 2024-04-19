@@ -107,9 +107,9 @@ vertToFrag vertFunction(Attributes input)
     float3 viewDir = normalize(WorldSpaceViewDir(input.positionOS));
      
     //float4 lighting = half4(max(input.color.rrr, SampleAmbientSphericalHarmonics(half3(0, 1, 0))), 1);
-    float4 colorA = pow(_ColorA, 0.4545454545);
-    float4 colorB = pow(_ColorB, 0.4545454545);
-    float4 shadowColor = pow(_ShadowColor, 0.4545454545);
+    float4 colorA = _ColorA;
+    float4 colorB = _ColorB;
+    float4 shadowColor = _ShadowColor;
     
     float dotp0 = dot(normalize(-globalSunDirection), output.worldNormal);
     dotp0 = 0.5 * dotp0 + 0.5; // Remap from [-1,1] to [0,1]
