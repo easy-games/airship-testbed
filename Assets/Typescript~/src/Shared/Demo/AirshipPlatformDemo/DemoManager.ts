@@ -7,13 +7,17 @@ import { Binding } from "@Easy/Core/Shared/Input/Binding";
 import { ItemUtil } from "@Easy/Core/Shared/Item/ItemUtil";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 
 export default class DemoManager extends AirshipBehaviour {
 	public spawnPosition!: GameObject;
 	public useTaggedSpawns = false;
 	private deathCount = 0;
-
 	public cleanupOnStart!: GameObject[];
+
+	@Header("Network Ball")
+	public ballPrefab!: GameObject;
+	public ballSpawnPoint!: Transform;
 
 	override Start(): void {
 		Airship.input.CreateAction("interact", Binding.Key(Key.F));
@@ -67,6 +71,10 @@ export default class DemoManager extends AirshipBehaviour {
 					});
 				}
 			});
+
+			// spawn ball
+			const ballGo = Object.Instantiate(this.ballPrefab);
+			NetworkUtil.Spawn(ballGo);
 		}
 		if (Game.IsClient()) {
 			// Optional: use locked camera mode for first person support
