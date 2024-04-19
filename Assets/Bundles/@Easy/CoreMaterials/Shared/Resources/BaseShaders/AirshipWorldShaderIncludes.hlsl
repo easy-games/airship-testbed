@@ -8,7 +8,6 @@
     #pragma fragment fragFunction
 
     //Multi shader vars (you need these even if you're not using them, so that material properties can survive editor script reloads)
-    float SLIDER_OVERRIDE;
     float EXPLICIT_MAPS;
     float EMISSIVE;
     float RIM_LIGHT;
@@ -516,7 +515,7 @@
          
         //Rim light
 #ifdef RIM_LIGHT_ON
-        finalColor.xyz += RimLightSimple(worldNormal, viewDirection);
+        finalColor.xyz += RimLightSimple(worldNormal, -viewDirection);
 #endif
         //Mix in fog
 		finalColor = CalculateAtmosphericFog(finalColor, viewDistance);

@@ -7,7 +7,7 @@ TextureImporter:
   mipmaps:
     mipMapMode: 1
     enableMipMap: 1
-    sRGBTexture: 0
+    sRGBTexture: 1
     linearTexture: 0
     fadeOut: 0
     borderMipMap: 0
@@ -48,14 +48,14 @@ TextureImporter:
   spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0, y: 0}
-  spritePixelsToUnits: 0
+  spritePixelsToUnits: 0.001
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 0
   alphaUsage: 1
   alphaIsTransparency: 0
   spriteTessellationDetail: 0
   textureType: 0
-  textureShape: 0
+  textureShape: 2
   singleChannelComponent: 0
   flipbookRows: 0
   flipbookColumns: 0
@@ -74,7 +74,7 @@ TextureImporter:
     textureFormat: -1
     textureCompression: 1
     compressionQuality: 50
-    crunchedCompression: 1
+    crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
     ignorePlatformSupport: 0

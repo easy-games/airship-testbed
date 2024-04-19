@@ -467,10 +467,7 @@ Shader "Airship/AirshipFaceShaderPBR"
                     
         #if EXPLICIT_MAPS_ON //Path used by anything passing in explicit maps like triplanar materials
                 half4 metalSample = Tex2DSampleTexture(_MetalTex, coords);
-                metalSample = pow(metalSample, 0.45454545); //Match Substance painter. However we should do this at the importer!
                 half4 roughSample = Tex2DSampleTexture(_RoughTex, coords);
-                roughSample = pow(roughSample, 0.45454545); //Match Substance painter. However we should do this at the importer!
-
                 
             #if defined(TRIPLANAR_STYLE_LOCAL) || defined(TRIPLANAR_STYLE_WORLD)
                 worldNormal = TriplanarMapNormal(_NormalTex, coords, input.worldNormal);
