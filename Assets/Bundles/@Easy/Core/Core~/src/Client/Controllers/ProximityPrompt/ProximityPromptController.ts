@@ -19,6 +19,8 @@ export class ProximityPromptController implements OnStart {
 	public promptFolder: Transform;
 	private idCounter = 1;
 
+	private promptDistanceLogging = true;
+
 	constructor() {
 		const go = GameObject.Create("Proximity Prompts");
 		this.promptFolder = go.transform;
@@ -54,6 +56,9 @@ export class ProximityPromptController implements OnStart {
 			Task.Repeat(PROMPT_POLL_RATE, () => {
 				this.proximityPrompts.forEach((prompt) => {
 					const distToPrompt = this.GetDistanceToPrompt(prompt);
+					if (this.promptDistanceLogging) {
+						print(prompt.gameObject.name + " distance: " + distToPrompt);
+					}
 					if (distToPrompt <= prompt.maxRange) {
 						const alreadyActive = this.GetActivePromptIndexById(prompt.id) > -1;
 						// const keycodeActive = this.activatableKeycodes.has(prompt.data.activationKey);

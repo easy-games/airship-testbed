@@ -87,6 +87,7 @@ export default class ProximityPrompt extends AirshipBehaviour {
 
 	public SetCanActivate(canActivate: boolean) {
 		if (this.canActivate === canActivate) return;
+		this.activatedBin.Clean();
 		this.canActivate = canActivate;
 		if (canActivate) {
 			this.activatedBin.Add(
@@ -142,6 +143,7 @@ export default class ProximityPrompt extends AirshipBehaviour {
 
 	public Hide(): void {
 		this.stateChangeBin.Clean();
+		this.canActivate = false;
 		this.canvas.transform.TweenLocalScale(Vector3.zero, 0.18).SetEaseQuadOut();
 		let interupt = false;
 		this.stateChangeBin.Add(() => {
