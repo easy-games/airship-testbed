@@ -146,13 +146,13 @@ export class AirshipInputSingleton implements OnStart {
 		}
 		const prompt = go.GetAirshipComponent<ProximityPrompt>()!;
 		prompt.actionName = actionName;
-		if (config?.primaryText) {
+		if (config?.primaryText !== undefined) {
 			prompt.SetPrimaryText(config.primaryText);
 		}
-		if (config?.secondaryText) {
+		if (config?.secondaryText !== undefined) {
 			prompt.SetSecondaryText(config.secondaryText);
 		}
-		if (config?.maxRange) {
+		if (config?.maxRange !== undefined) {
 			prompt.SetMaxRange(config.maxRange);
 		}
 		return prompt;
