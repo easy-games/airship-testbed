@@ -1,5 +1,5 @@
-import { ModifierKey } from "./InputUtil";
 import { Binding } from "./Binding";
+import { ModifierKey } from "./InputUtil";
 export interface SerializableAction {
     /**
      *

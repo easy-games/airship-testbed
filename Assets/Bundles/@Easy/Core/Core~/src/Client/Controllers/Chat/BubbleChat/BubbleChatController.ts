@@ -23,7 +23,7 @@ export class BubbleChatController implements OnStart {
 			this.GetOrCreateChatContainer(character);
 		});
 
-		CoreNetwork.ServerToClient.PlayerChatted.client.OnServerEvent((rawMessage, senderClientId) => {
+		CoreNetwork.ServerToClient.ChatMessage.client.OnServerEvent((rawMessage, nameWithPrefix, senderClientId) => {
 			let sender: Player | undefined;
 			if (senderClientId !== undefined) {
 				sender = Airship.players.FindByClientId(senderClientId);

@@ -20,5 +20,7 @@ MonoBehaviour:
   typescriptVerbose: 0
   typescriptWriteOnlyChanged: 0
   typescriptUseDevBuild: 0
-  typescriptPreventPlayOnError: 1
-  typescriptAutostartCompiler: 1
+  typescriptPreventPlayOnError: 0
+  typescriptAutostartCompiler: 0
+  typescriptEditor: 0
+  typescriptEditorCustomPath: 

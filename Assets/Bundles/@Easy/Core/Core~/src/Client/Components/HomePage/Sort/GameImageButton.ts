@@ -23,31 +23,31 @@ export default class GameImageButton extends AirshipBehaviour {
 
 		const mouse = new Mouse();
 		if (Game.IsMobile()) {
-			// const longPress = this.gameObject.GetComponent<AirshipLongPress>()!;
-			// if (longPress) {
-			// 	this.bin.AddEngineEventConnection(
-			// 		longPress.OnLongPress((pressPos) => {
-			// 			Dependency<RightClickMenuController>().OpenRightClickMenu(
-			// 				Dependency<MainMenuController>().mainContentCanvas,
-			// 				pressPos,
-			// 				[
-			// 					{
-			// 						text: "Report",
-			// 						onClick: () => {
-			// 							task.spawn(() => {
-			// 								Dependency<MainMenuBlockSingleton>().BlockGameAsync(
-			// 									gameComponent!.gameDto.id,
-			// 									gameComponent!.gameDto.name,
-			// 								);
-			// 								this.transform.parent!.gameObject.SetActive(false);
-			// 							});
-			// 						},
-			// 					},
-			// 				],
-			// 			);
-			// 		}),
-			// 	);
-			// }
+			const longPress = this.gameObject.GetComponent<AirshipLongPress>()!;
+			if (longPress) {
+				this.bin.AddEngineEventConnection(
+					longPress.OnLongPress((pressPos) => {
+						Dependency<RightClickMenuController>().OpenRightClickMenu(
+							Dependency<MainMenuController>().mainContentCanvas,
+							pressPos,
+							[
+								{
+									text: "Report",
+									onClick: () => {
+										task.spawn(() => {
+											Dependency<MainMenuBlockSingleton>().BlockGameAsync(
+												gameComponent!.gameDto.id,
+												gameComponent!.gameDto.name,
+											);
+											this.transform.parent!.gameObject.SetActive(false);
+										});
+									},
+								},
+							],
+						);
+					}),
+				);
+			}
 		}
 
 		this.bin.AddEngineEventConnection(

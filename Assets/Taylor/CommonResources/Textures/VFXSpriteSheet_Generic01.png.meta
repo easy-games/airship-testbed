@@ -3,7 +3,7 @@ guid: f10cc90c80e31c743839f1c134fa9dea
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
-  serializedVersion: 12
+  serializedVersion: 13
   mipmaps:
     mipMapMode: 0
     enableMipMap: 1
@@ -20,11 +20,12 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
+    flipGreenChannel: 0
   isReadable: 1
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
-  ignoreMasterTextureLimit: 0
+  ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -63,6 +64,7 @@ TextureImporter:
   textureFormatSet: 0
   ignorePngGamma: 1
   applyGammaDecoding: 0
+  swizzle: 50462976
   cookieLightType: 0
   platformSettings:
   - serializedVersion: 3
@@ -75,6 +77,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -87,6 +90,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -99,6 +103,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -111,6 +116,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -123,6 +129,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
@@ -685,35 +692,34 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      VFX_LongFlare03: -247266312
-      VFX_Bang04: -938214310
-      VFX_RingBang03: -1063336434
-      VFX_Angle03: 1752451271
       AngleFull: -383357571
-      VFX_Ring03: -2133746516
-      VFX_Flare01: -167244636
-      VFX_Ring02: 96377341
-      VFX_Angle05: 354567180
-      VFX_Angle02: 1419259315
-      VFX_Flare03: 1070583655
-      VFX_Bang03: 954685117
-      VFX_RingBang02: 380088270
-      VFX_Ring04: -255657277
-      VFX_LongFlare02: 604684838
-      VFX_Bang01: 1175271868
-      VFX_LongFlare01: -308426272
-      VFX_RingBang04: -1951314284
-      VFX_Ring01: 1152997467
-      VFX_Flare02: 797124843
-      VFX_Bang02: -273901913
       VFX_Angle01: -835726139
+      VFX_Angle02: 1419259315
+      VFX_Angle03: 1752451271
       VFX_Angle04: -61148171
-      VFX_RingBang05: 232396495
+      VFX_Angle05: 354567180
+      VFX_Bang01: 1175271868
+      VFX_Bang02: -273901913
+      VFX_Bang03: 954685117
+      VFX_Bang04: -938214310
       VFX_Bang05: 1320982373
+      VFX_Flare01: -167244636
+      VFX_Flare02: 797124843
+      VFX_Flare03: 1070583655
+      VFX_LongFlare01: -308426272
+      VFX_LongFlare02: 604684838
+      VFX_LongFlare03: -247266312
+      VFX_Ring01: 1152997467
+      VFX_Ring02: 96377341
+      VFX_Ring03: -2133746516
+      VFX_Ring04: -255657277
       VFX_RingBang01: 619462893
-  spritePackingTag: 
+      VFX_RingBang02: 380088270
+      VFX_RingBang03: -1063336434
+      VFX_RingBang04: -1951314284
+      VFX_RingBang05: 232396495
+  mipmapLimitGroupName: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: '@easy/core_shared/resources'
   assetBundleVariant: 

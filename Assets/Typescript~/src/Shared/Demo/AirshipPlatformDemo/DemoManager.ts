@@ -3,18 +3,33 @@ import { Airship } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
 import { DamageType } from "@Easy/Core/Shared/Damage/DamageType";
 import { Game } from "@Easy/Core/Shared/Game";
+import { Binding } from "@Easy/Core/Shared/Input/Binding";
 import { ItemUtil } from "@Easy/Core/Shared/Item/ItemUtil";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 
 export default class DemoManager extends AirshipBehaviour {
 	public spawnPosition!: GameObject;
 	public useTaggedSpawns = false;
 	private deathCount = 0;
-
 	public cleanupOnStart!: GameObject[];
 
+	@Header("Network Ball")
+	public ballPrefab!: GameObject;
+	public ballSpawnPoint!: Transform;
+	public cubePrefab!: GameObject;
+
 	override Start(): void {
+		Airship.input.CreateAction("interact", Binding.Key(Key.F));
+
+		const p = Airship.input.CreateProximityPrompt("interact", undefined, {
+			primaryText: "????",
+			secondaryText: "Poke",
+			maxRange: 10,
+		});
+		p.transform.position = new Vector3(0, 5, 0);
+
 		ItemUtil.RegisterItem("WoodSword", {
 			displayName: "Wood Sword",
 			maxStackSize: 1,
@@ -62,6 +77,28 @@ export default class DemoManager extends AirshipBehaviour {
 					task.delay(2, () => {
 						this.SpawnPlayer(character.player!);
 					});
+				}
+			});
+
+			// spawn ball
+			task.spawn(() => {
+				for (let i = 0; i < 5; i++) {
+					const ballGo = Object.Instantiate(
+						this.ballPrefab,
+						this.ballSpawnPoint.position,
+						this.ballSpawnPoint.rotation,
+					);
+					NetworkUtil.Spawn(ballGo);
+
+					const cubeGo = Object.Instantiate(
+						this.cubePrefab,
+						new Vector3(0, 1, 0),
+						Quaternion.identity,
+						ballGo.transform,
+					);
+					cubeGo.transform.localPosition = new Vector3(0, 1, 0);
+					NetworkUtil.Spawn(cubeGo);
+					task.wait(1);
 				}
 			});
 		}
@@ -112,6 +149,12 @@ export default class DemoManager extends AirshipBehaviour {
 		if (collider) {
 			collider.isTrigger = false;
 		}
+
+		// const cubeGo = Object.Instantiate(this.cubePrefab);
+		// NetworkUtil.Spawn(cubeGo);
+		// cubeGo.GetComponent<NetworkObject>()!.SetParent(character.networkObject);
+		// cubeGo.transform.localPosition = new Vector3(0, 1, 0);
+
 		// character.inventory.AddItem(new ItemStack("WoodSword"));
 	}
 }

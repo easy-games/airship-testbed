@@ -3,7 +3,7 @@ Shader "Airship/WorldShaderPBR"
     
     Properties
     {
-        [HDR] _Color("Color", Color) = (1,1,1,1)
+        [HideInInspector][HDR] _Color("Color", Color) = (1,1,1,1)
         [HDR] _ShadowColor("Shadow Color", Color) = (1,1,1,1)
         [Toggle] USE_SHADOW_COLOR("Use Shadow Color", Float) = 0.0
         
@@ -15,20 +15,20 @@ Shader "Airship/WorldShaderPBR"
         _OverrideStrength("Override Strength", Range(0,1)) = 0
                
         [Toggle] EXPLICIT_MAPS("Not using atlas", Float) = 1.0
+        [Toggle] USE_COLOR_MASK("Use color mask", Float) = 0.0
         _MainTex("Albedo", 2D) = "white" {}
         _NormalTex("Normal", 2D) = "bump" {}
         _MetalTex("Metal", 2D) = "black" {}
         _RoughTex("Rough", 2D) = "white" {}
-        _CubeTex("Cube", Cube) = "white" {}
         _EmissiveMaskTex("Emissive Mask", 2D) = "white" {}
+        _ColorMaskTex("Color Mask", 2D) = "white" {}
         
         [Toggle] _ZWrite("Z-Write", Float) = 1.0
         
         [KeywordEnum(OFF, LOCAL, WORLD)] TRIPLANAR_STYLE("Triplanar", Float) = 0.0
         _TriplanarScale("TriplanarScale", Range(0.0, 16)) = 0.0
 
-        [Toggle] SLIDER_OVERRIDE("Use Metal/Rough Sliders", Float) = 1.0
-        _SliderOverrideMix("Metal Rough Mix", Range(0.0, 1)) = 0.0
+        _MRSliderOverrideMix("Metal Rough Slider Strength", Range(0.0, 1)) = 0.0
 
         _MetalOverride("Metal", Range(0.0, 1)) = 0.0
         _RoughOverride("Rough", range(0.0, 1)) = 1.0
@@ -61,7 +61,6 @@ Shader "Airship/WorldShaderPBR"
 
             HLSLPROGRAM
             #pragma multi_compile TRIPLANAR_STYLE_OFF TRIPLANAR_STYLE_LOCAL TRIPLANAR_STYLE_WORLD
-            #pragma multi_compile _ SLIDER_OVERRIDE_ON
         
             #pragma multi_compile _ EXPLICIT_MAPS_ON
 			#pragma multi_compile _ EMISSIVE_ON
@@ -69,6 +68,7 @@ Shader "Airship/WorldShaderPBR"
             #pragma multi_compile _ INSTANCE_DATA_ON
             #pragma multi_compile _ USE_SHADOW_COLOR_ON
 			#pragma multi_compile _ SHADOWS_ON
+			#pragma multi_compile _ USE_COLOR_MASK_ON
             #pragma multi_compile _ DOUBLE_SIDED_NORMALS
 	   
             

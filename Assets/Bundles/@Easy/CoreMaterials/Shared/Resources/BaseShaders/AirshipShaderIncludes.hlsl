@@ -50,12 +50,7 @@ half4 SRGBtoLinear(half4 srgb)
 }
 half4 LinearToSRGB(half4 srgb)
 {
-    return pow(srgb, 2.2333333);
-}
-            
-half3 LinearToSRGB(half3 srgb)
-{
-    return pow(srgb, 2.2333333);
+    return pow(srgb, 2.2);
 }
 
 //Shadows require your vertex prog to have something akin to:

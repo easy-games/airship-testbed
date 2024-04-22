@@ -1,23 +1,25 @@
-import { Controller, OnStart } from "Shared/Flamework";
+import ProximityPrompt from "@Easy/Core/Shared/Input/ProximityPrompts/ProximityPrompt";
 import { CoreRefs } from "Shared/CoreRefs";
+import { Controller, OnStart } from "Shared/Flamework";
 import { Game } from "Shared/Game";
-import { Keyboard } from "Shared/UserInput";
 import { Task } from "Shared/Util/Task";
-import { SetTimeout } from "Shared/Util/Timer";
-import { ProximityPrompt } from "./ProximityPrompt";
 
 /** Prompt poll rate, how frequently we update `activatableProximityPrompts`. */
 const PROMPT_POLL_RATE = 0.1;
 
+/**
+ * @internal
+ */
 @Controller({})
 export class ProximityPromptController implements OnStart {
-	/** Keyboard instance. */
-	private keyboard = new Keyboard();
 	/** All active proximity prompts in world. */
-	private proximityPrompts: ProximityPrompt[] = [];
+	private allPrompts: ProximityPrompt[] = [];
 	/** Proximity prompts in activation range. */
-	private activatableProximityPrompts: ProximityPrompt[] = [];
+	public shownPrompts = new Set<ProximityPrompt>();
 	public promptFolder: Transform;
+	private idCounter = 1;
+
+	private promptDistanceLogging = false;
 
 	constructor() {
 		const go = GameObject.Create("Proximity Prompts");
@@ -26,22 +28,17 @@ export class ProximityPromptController implements OnStart {
 	}
 
 	OnStart(): void {
-		this.FindActivatablePrompts();
-
-		// Hacked in to only support [F] keycode for now :)
-		this.keyboard.OnKeyDown(Key.F, (event) => {
-			if (event.uiProcessed) return;
-			if (this.activatableProximityPrompts.size() === 0) return;
-
-			const eligiblePrompt = this.activatableProximityPrompts[0];
-			eligiblePrompt.ActivatePrompt();
-		});
-
-		this.keyboard.OnKeyDown(Key.E, (event) => {});
+		this.StartPromptTicker();
 	}
 
 	public RegisterProximityPrompt(prompt: ProximityPrompt): void {
-		this.proximityPrompts.push(prompt);
+		this.allPrompts.push(prompt);
+		prompt.id = this.idCounter;
+		this.idCounter++;
+	}
+
+	public UnregisterProximityPrompt(prompt: ProximityPrompt): void {
+		this.allPrompts = this.allPrompts.filter((p) => p !== prompt);
 	}
 
 	/** Returns distance between local player and a proximity prompt. */
@@ -49,94 +46,69 @@ export class ProximityPromptController implements OnStart {
 		/* If local character does _not_ have a position, fallback to `math.huge`. */
 		const localCharacterPosition = Game.localPlayer.character?.gameObject.transform.position;
 		if (!localCharacterPosition) return math.huge;
+
+		if (!(prompt.canvas.transform as RectTransform).IsVisibleFrom(Camera.main)) {
+			return math.huge;
+		}
+
 		/* Otherwise, return distance. */
-		return localCharacterPosition.sub(prompt.data.promptPosition).magnitude;
+		return localCharacterPosition.sub(prompt.transform.position).magnitude;
 	}
 
 	/** Displays and hides prompts based on `activationRange`. */
-	private FindActivatablePrompts(): void {
-		Task.Spawn(() => {
+	private StartPromptTicker(): void {
+		task.spawn(() => {
+			let promptActionMap = new Map<string, ProximityPrompt[]>();
+			let distanceMap = new Map<ProximityPrompt, number>();
+
 			Task.Repeat(PROMPT_POLL_RATE, () => {
-				this.proximityPrompts.forEach((prompt) => {
-					const distToPrompt = this.GetDistanceToPrompt(prompt);
-					if (distToPrompt <= prompt.data.activationRange) {
-						const alreadyActive = this.GetActivePromptIndexById(prompt.id) > -1;
-						// const keycodeActive = this.activatableKeycodes.has(prompt.data.activationKey);
-						/*
-						 * If prompt is already active or prompt with same keycode is active,
-						 * do nothing. Otherwise, display prompt.
-						 */
-						if (!alreadyActive) {
-							// this.activatableKeycodes.add(prompt.data.activationKey);
-							this.activatableProximityPrompts.push(prompt);
-							this.ShowPrompt(prompt);
-							prompt.SetCanActivate(true);
-						}
+				for (let prompt of this.allPrompts) {
+					if (promptActionMap.has(prompt.actionName)) {
+						promptActionMap.get(prompt.actionName)!.push(prompt);
 					} else {
-						const promptIndex = this.GetActivePromptIndexById(prompt.id);
-						const wasActive = promptIndex > -1;
-						/* If prompt was active, but is now out of range, hide prompt. */
-						if (wasActive) {
-							// this.activatableKeycodes.delete(prompt.data.activationKey);
-							this.activatableProximityPrompts.remove(promptIndex);
-							this.HidePrompt(prompt);
-							prompt.SetCanActivate(false);
+						promptActionMap.set(prompt.actionName, [prompt]);
+					}
+				}
+				for (let prompt of this.allPrompts) {
+					const distToPrompt = this.GetDistanceToPrompt(prompt);
+					distanceMap.set(prompt, distToPrompt);
+					if (this.promptDistanceLogging) {
+						print(prompt.gameObject.name + " distance: " + distToPrompt);
+					}
+				}
+
+				this.allPrompts.forEach((prompt) => {
+					const distToPrompt = distanceMap.get(prompt)!;
+					if (distToPrompt <= prompt.maxRange) {
+						// check if closest
+						let closest = true;
+						let promptsOfSameAction = promptActionMap.get(prompt.actionName)!;
+						if (promptsOfSameAction.size() > 1) {
+							for (let other of promptsOfSameAction) {
+								if (other === prompt) continue;
+								const otherDistance = distanceMap.get(other)!;
+								if (otherDistance < distToPrompt) {
+									closest = false;
+									break;
+								}
+							}
+						}
+
+						if (closest) {
+							this.shownPrompts.add(prompt);
+							prompt.Show();
+							return;
 						}
 					}
+
+					// fallback to hide
+					this.shownPrompts.delete(prompt);
+					prompt.Hide();
 				});
+
+				distanceMap.clear();
+				promptActionMap.clear();
 			});
 		});
-	}
-
-	/** Shows a proximity prompt. */
-	private ShowPrompt(prompt: ProximityPrompt): void {
-		if (prompt.promptGameObject) {
-			prompt.promptGameObject.SetActive(true);
-
-			const duration = 0.12;
-
-			const t = prompt.promptGameObject.transform;
-			const pos = prompt.data.promptPosition;
-			t.localPosition = pos.add(new Vector3(0, -0.12, 0));
-			t.TweenLocalPosition(pos, duration);
-
-			const canvasGroup = prompt.promptGameObject.transform.GetChild(0).GetComponent<CanvasGroup>()!;
-			canvasGroup.alpha = 0;
-			canvasGroup.TweenCanvasGroupAlpha(1, duration);
-		}
-	}
-
-	/** Hides a proximity prompt. */
-	private HidePrompt(prompt: ProximityPrompt): void {
-		if (prompt.promptGameObject) {
-			const duration = 0.12;
-
-			const t = prompt.promptGameObject.transform;
-			t.TweenLocalPosition(t.localPosition.add(new Vector3(0, -0.12, 0)), duration);
-
-			const canvasGroup = prompt.promptGameObject.transform.GetChild(0).GetComponent<CanvasGroup>()!;
-			canvasGroup.TweenCanvasGroupAlpha(0, duration);
-
-			SetTimeout(duration, () => {
-				prompt.promptGameObject?.SetActive(false);
-			});
-		}
-	}
-
-	/**
-	 * Returns an active proximity prompt's index.
-	 * @param promptId An active proximity prompt id.
-	 * @returns Index that corresponds to active prompt with `promptId`. If prompt is _not_ active, the function returns -1.
-	 */
-	private GetActivePromptIndexById(promptId: string): number {
-		let promptIndex = -1;
-		for (let i = 0; i < this.activatableProximityPrompts.size(); i++) {
-			const promptAtIndex = this.activatableProximityPrompts[i];
-			if (promptAtIndex.id === promptId) {
-				promptIndex = i;
-				break;
-			}
-		}
-		return promptIndex;
 	}
 }

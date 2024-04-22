@@ -6,6 +6,26 @@ import { Player } from "Shared/Player/Player";
 import StringUtils from "Shared/Types/StringUtil";
 import { ChatUtil } from "Shared/Util/ChatUtil";
 import { ColorUtil } from "Shared/Util/ColorUtil";
+import { AddInventoryCommand } from "./Commands/AddInventoryCommand";
+import { BotCommand } from "./Commands/BotCommand";
+import { DamageCommand } from "./Commands/DamageCommand";
+import { GetVarCommand } from "./Commands/DynamicVariables/GetVarCommand";
+import { SetVarCommand } from "./Commands/DynamicVariables/SetVarCommand";
+import { EntityCommand } from "./Commands/EntityCommand";
+import { FlyCommand } from "./Commands/FlyCommand";
+import { CreateGeneratorCommand } from "./Commands/Generator/CreateGeneratorCommand";
+import { SetGeneratorSpawnRateCommand } from "./Commands/Generator/SetGeneratorSpawnRateCommand";
+import { HealCommand } from "./Commands/HealCommand";
+import { HelpCommand } from "./Commands/HelpCommand";
+import { JoinCodeCommand } from "./Commands/JoinCodeCommand";
+import { KillCommand } from "./Commands/KillCommand";
+import { LagCommand } from "./Commands/LagCommand";
+import { SaveWorldCommand } from "./Commands/SaveWorldCommand";
+import { SetTeamCommand } from "./Commands/SetTeamCommand";
+import { TeamCommand } from "./Commands/TeamCommand";
+import { TpAllCommand } from "./Commands/TpAllCommand";
+import { TpCommand } from "./Commands/TpCommand";
+import { TpsCommand } from "./Commands/TpsCommand";
 
 @Service({})
 export class ChatService implements OnStart {
@@ -13,7 +33,29 @@ export class ChatService implements OnStart {
 
 	public readonly canUseRichText = true;
 
-	constructor() {}
+	constructor() {
+		this.RegisterCommand(new EntityCommand());
+		this.RegisterCommand(new DamageCommand());
+		this.RegisterCommand(new JoinCodeCommand());
+		this.RegisterCommand(new CreateGeneratorCommand());
+		this.RegisterCommand(new SetGeneratorSpawnRateCommand());
+		this.RegisterCommand(new TeamCommand());
+		this.RegisterCommand(new AddInventoryCommand());
+		this.RegisterCommand(new KillCommand());
+		this.RegisterCommand(new SetTeamCommand());
+		this.RegisterCommand(new TpAllCommand());
+		this.RegisterCommand(new TpCommand());
+		this.RegisterCommand(new TpsCommand());
+		this.RegisterCommand(new LagCommand());
+		this.RegisterCommand(new SetVarCommand());
+		this.RegisterCommand(new GetVarCommand());
+		this.RegisterCommand(new HealCommand());
+		this.RegisterCommand(new BotCommand());
+		this.RegisterCommand(new FlyCommand());
+		this.RegisterCommand(new HelpCommand());
+		// this.RegisterCommand(new TeamChatCommand());
+		this.RegisterCommand(new SaveWorldCommand());
+	}
 
 	public RegisterCommand(command: ChatCommand) {
 		this.commands.set(command.commandLabel.lower(), command);
@@ -68,9 +110,10 @@ export class ChatService implements OnStart {
 				return;
 			}
 
-			let message = this.FormatUserChatMessage(player, text, this.canUseRichText);
-			CoreNetwork.ServerToClient.ChatMessage.server.FireAllClients(message, player.clientId);
-			CoreNetwork.ServerToClient.PlayerChatted.server.FireAllClients(rawMessage, player.clientId);
+			// todo: format name color
+			let nameWithPrefix = player.username + ": ";
+			// let message = this.FormatUserChatMessage(player, text, this.canUseRichText);
+			CoreNetwork.ServerToClient.ChatMessage.server.FireAllClients(rawMessage, nameWithPrefix, player.clientId);
 		});
 	}
 

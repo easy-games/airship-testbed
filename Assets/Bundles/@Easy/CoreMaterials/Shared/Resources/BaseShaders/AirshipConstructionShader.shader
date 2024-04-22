@@ -71,7 +71,7 @@ Shader "Airship/Construction"
                 //top
                 lighting += DoLight(float3(0, -1, 0), float3(0.9,0.9,1) * 0.2, output.worldNormal);
 
-                output.color = lighting * pow(abs(_ColorA.rgb),0.454545454);
+                output.color = lighting * _ColorA.rgb;
                 output.localPos = float4(input.positionOS.xyz,0);
 
                 if (input.barycentricUV.x < 1 && input.barycentricUV.y < 1)

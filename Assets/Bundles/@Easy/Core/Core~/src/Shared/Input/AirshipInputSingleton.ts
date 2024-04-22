@@ -6,15 +6,15 @@ import { CoreContext } from "../CoreClientContext";
 import { CoreRefs } from "../CoreRefs";
 import { Game } from "../Game";
 import { ControlScheme, Keyboard, Mouse, Preferred as PreferredControls } from "../UserInput";
-import { KeySignal } from "../UserInput/Drivers/Signals/KeySignal";
 import { Bin } from "../Util/Bin";
 import { CanvasAPI, PointerDirection } from "../Util/CanvasAPI";
 import { Signal } from "../Util/Signal";
+import { Binding } from "./Binding";
 import { InputAction, InputActionConfig, InputActionSchema } from "./InputAction";
+import { InputActionEvent } from "./InputActionEvent";
 import { ActionInputType, InputUtil, KeyType } from "./InputUtil";
 import { MobileButtonConfig } from "./Mobile/MobileButton";
-import { Binding } from "./Binding";
-import { InputActionEvent } from "./InputActionEvent";
+import ProximityPrompt from "./ProximityPrompts/ProximityPrompt";
 
 @Controller({})
 @Service({})
@@ -122,6 +122,40 @@ export class AirshipInputSingleton implements OnStart {
 				icon: "chevron-down-solid",
 			});
 		}
+	}
+
+	public CreateProximityPrompt(
+		actionName: string,
+		parent?: Transform,
+		config?: {
+			primaryText?: string;
+			secondaryText?: string;
+			maxRange?: number;
+		},
+	): ProximityPrompt {
+		let go: GameObject;
+		if (parent) {
+			go = Object.Instantiate(
+				AssetCache.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/Input/ProximityPrompt.prefab"),
+				parent,
+			);
+		} else {
+			go = Object.Instantiate(
+				AssetCache.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/Input/ProximityPrompt.prefab"),
+			);
+		}
+		const prompt = go.GetAirshipComponent<ProximityPrompt>()!;
+		prompt.actionName = actionName;
+		if (config?.primaryText) {
+			prompt.SetPrimaryText(config.primaryText);
+		}
+		if (config?.secondaryText) {
+			prompt.SetSecondaryText(config.secondaryText);
+		}
+		if (config?.maxRange) {
+			prompt.SetMaxRange(config.maxRange);
+		}
+		return prompt;
 	}
 
 	/**
@@ -296,7 +330,7 @@ export class AirshipInputSingleton implements OnStart {
 		const actions = this.actionTable.get(name);
 		if (!actions) return undefined;
 		return actions.find(
-			(action) => InputUtil.GetInputTypeFromBinding(action.defaultBinding, KeyType.Primary) === inputType,
+			(action) => InputUtil.GetInputTypeFromBinding(action.binding, KeyType.Primary) === inputType,
 		);
 	}
 

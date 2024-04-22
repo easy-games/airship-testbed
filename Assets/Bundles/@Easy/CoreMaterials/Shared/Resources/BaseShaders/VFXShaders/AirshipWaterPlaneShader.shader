@@ -176,10 +176,9 @@ Shader "Airship/WaterPlaneShader"
                 float3 viewDir = normalize(WorldSpaceViewDir(input.positionOS));
 
                 //float4 lighting = half4(max(input.color.rrr, SampleAmbientSphericalHarmonics(half3(0, 1, 0))), 1);
-                float4 colorA = pow(_ColorA, 0.4545454545);
-                float4 colorB = pow(_ColorB, 0.4545454545);
+                float4 colorA = _ColorA;
+                float4 colorB = _ColorB;
                 
-
                 output.color0 = colorA * _Brightness;
                 output.color1 = colorB * _Brightness;
 

@@ -1,7 +1,7 @@
 import ObjectUtils from "@easy-games/unity-object-utils";
 import { Airship } from "../Airship";
-import { ModifierKey } from "./InputUtil";
 import { Binding } from "./Binding";
+import { ModifierKey } from "./InputUtil";
 
 export interface SerializableAction {
 	/**
