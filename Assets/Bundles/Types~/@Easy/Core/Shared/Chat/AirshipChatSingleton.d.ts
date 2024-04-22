@@ -22,4 +22,5 @@ export declare class AirshipChatSingleton implements OnStart {
      * @param message A message.
      */
     BroadcastMessage(message: string): void;
+    private RegisterCoreCommands;
 }
