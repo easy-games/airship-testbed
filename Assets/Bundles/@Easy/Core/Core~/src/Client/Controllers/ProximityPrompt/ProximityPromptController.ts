@@ -1,3 +1,4 @@
+import { CameraReferences } from "@Easy/Core/Shared/Camera/CameraReferences";
 import ProximityPrompt from "@Easy/Core/Shared/Input/ProximityPrompts/ProximityPrompt";
 import { CoreRefs } from "Shared/CoreRefs";
 import { Controller, OnStart } from "Shared/Flamework";
@@ -47,8 +48,11 @@ export class ProximityPromptController implements OnStart {
 		const localCharacterPosition = Game.localPlayer.character?.gameObject.transform.position;
 		if (!localCharacterPosition) return math.huge;
 
-		if (!(prompt.canvas.transform as RectTransform).IsVisibleFrom(Camera.main)) {
-			return math.huge;
+		const mainCamera = CameraReferences.Instance().mainCamera;
+		if (mainCamera) {
+			if (!(prompt.canvas.transform as RectTransform).IsVisibleFrom(mainCamera)) {
+				return math.huge;
+			}
 		}
 
 		/* Otherwise, return distance. */
