@@ -31,25 +31,7 @@ export class AirshipChatSingleton implements OnStart {
 	}
 
 	OnStart(): void {
-		this.RegisterCommand(new EntityCommand());
-		this.RegisterCommand(new DamageCommand());
-		this.RegisterCommand(new JoinCodeCommand());
-		this.RegisterCommand(new TeamCommand());
-		this.RegisterCommand(new AddInventoryCommand());
-		this.RegisterCommand(new KillCommand());
-		this.RegisterCommand(new SetTeamCommand());
-		this.RegisterCommand(new TpAllCommand());
-		this.RegisterCommand(new TpCommand());
-		this.RegisterCommand(new TpsCommand());
-		this.RegisterCommand(new LagCommand());
-		this.RegisterCommand(new SetVarCommand());
-		this.RegisterCommand(new GetVarCommand());
-		this.RegisterCommand(new HealCommand());
-		this.RegisterCommand(new BotCommand());
-		this.RegisterCommand(new FlyCommand());
-		this.RegisterCommand(new HelpCommand());
-		this.RegisterCommand(new TeamChatCommand());
-		this.RegisterCommand(new SaveWorldCommand());
+		this.RegisterCoreCommands();
 	}
 
 	/**
@@ -78,5 +60,28 @@ export class AirshipChatSingleton implements OnStart {
 	 */
 	public BroadcastMessage(message: string): void {
 		Game.BroadcastMessage(message);
+	}
+
+	private RegisterCoreCommands(): void {
+		if (!Game.IsServer()) return;
+		this.RegisterCommand(new EntityCommand());
+		this.RegisterCommand(new DamageCommand());
+		this.RegisterCommand(new JoinCodeCommand());
+		this.RegisterCommand(new TeamCommand());
+		this.RegisterCommand(new AddInventoryCommand());
+		this.RegisterCommand(new KillCommand());
+		this.RegisterCommand(new SetTeamCommand());
+		this.RegisterCommand(new TpAllCommand());
+		this.RegisterCommand(new TpCommand());
+		this.RegisterCommand(new TpsCommand());
+		this.RegisterCommand(new LagCommand());
+		this.RegisterCommand(new SetVarCommand());
+		this.RegisterCommand(new GetVarCommand());
+		this.RegisterCommand(new HealCommand());
+		this.RegisterCommand(new BotCommand());
+		this.RegisterCommand(new FlyCommand());
+		this.RegisterCommand(new HelpCommand());
+		this.RegisterCommand(new TeamChatCommand());
+		this.RegisterCommand(new SaveWorldCommand());
 	}
 }
