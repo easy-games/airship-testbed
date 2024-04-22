@@ -49,7 +49,9 @@ export class FirstPersonCameraSystem {
 	//public spineLerpModMax = 75;
 	//public spineLerpMaxAngle = 75;
 
-	private headSpineOffset = -0.5415251;
+	// Head offset from spine for viewmodel camera position
+	private headSpinePosOffset = new Vector3(-3.40097417e-9, 0.541525066, 0.0108257439);
+	private headSpineRotOffset = new Quaternion(0.0456337668, -2.40711387e-7, -1.3870497e-9, 0.99895823);
 
 	private inFirstPerson;
 	private bin: Bin;
@@ -127,8 +129,8 @@ export class FirstPersonCameraSystem {
 		// let headLookRotation = transform.rotation.mul(headBobRotationOffset);
 		let targetTansform = this.viewmodelController.rig.spine;
 
-		const position = transform.TransformPoint(new Vector3(0, this.headSpineOffset, 0));
-		const rotation = transform.rotation;
+		const position = transform.TransformPoint(this.headSpinePosOffset);
+		const rotation = transform.rotation.mul(this.headSpineRotOffset);
 
 		const data = { position, rotation };
 		Dependency<AirshipCharacterCameraSingleton>().onViewModelUpdate.Fire(data);
