@@ -1,6 +1,7 @@
 /**
  * This is the entrypoint of Core.
  */
+print("Running Core Bootstrap..");
 
 import { AvatarUtil } from "Shared/Avatar/AvatarUtil";
 import { Flamework } from "Shared/Flamework";
