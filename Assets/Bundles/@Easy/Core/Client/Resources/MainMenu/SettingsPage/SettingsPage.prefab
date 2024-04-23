@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 482010628444925884}
   - component: {fileID: 4863290428083730085}
   - component: {fileID: 173143643766317725}
+  - component: {fileID: 7743532983088200805}
   m_Layer: 5
   m_Name: Keybinds
   m_TagString: Untagged
@@ -35,8 +36,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 1102.5, y: 0}
-  m_SizeDelta: {x: 2205, y: 0}
+  m_AnchoredPosition: {x: 303, y: 0}
+  m_SizeDelta: {x: 606, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &4863290428083730085
 MonoBehaviour:
@@ -78,6 +79,74 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
   m_VerticalFit: 2
+--- !u!114 &7743532983088200805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 24493160184959471}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_fileFullPath: Assets/Bundles/@Easy/Core/Shared/Resources/TS/MainMenu/Components/Settings/SettingsKeybindPage.lua
+  m_error: 0
+  m_yielded: 0
+  m_assetPath: 
+  m_canResume: 0
+  m_asyncYield: 0
+  m_onUpdateHandle: -1
+  m_onLateUpdateHandle: -1
+  m_shortFileName: 
+  m_metadata:
+    name: SettingsKeybindPage
+    decorators: []
+    properties:
+    - name: keybindPrefab
+      type: object
+      objectType: GameObject
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 7617586828931706855, guid: 21d73052eb0ae473f87b545be442088d, type: 3}
+      modified: 1
+    - name: list
+      type: object
+      objectType: Transform
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 2891081100412470360}
+      modified: 1
+    - name: resetToDefaultBtn
+      type: object
+      objectType: GameObject
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 1065851068657016029}
+      modified: 1
+    displayName: 
 --- !u!1 &948766809248298846
 GameObject:
   m_ObjectHideFlags: 0
@@ -119,8 +188,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 1102.5, y: 0}
-  m_SizeDelta: {x: 2205, y: 0}
+  m_AnchoredPosition: {x: 303, y: 0}
+  m_SizeDelta: {x: 606, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &453363436565625396
 CanvasRenderer:
@@ -1446,8 +1515,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 1102.5, y: 0}
-  m_SizeDelta: {x: 2205, y: 0}
+  m_AnchoredPosition: {x: 303, y: 0}
+  m_SizeDelta: {x: 606, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &7449561766943603376
 MonoBehaviour:
@@ -1673,8 +1742,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 1102.5, y: 0}
-  m_SizeDelta: {x: 2205, y: 0}
+  m_AnchoredPosition: {x: 303, y: 0}
+  m_SizeDelta: {x: 606, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &8613348569817994142
 CanvasRenderer:
@@ -2142,8 +2211,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 1102.5, y: 0}
-  m_SizeDelta: {x: 2205, y: 0}
+  m_AnchoredPosition: {x: 303, y: 0}
+  m_SizeDelta: {x: 606, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &2346221153196972020
 CanvasRenderer:
@@ -2855,8 +2924,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 1102.5, y: 0}
-  m_SizeDelta: {x: 2205, y: 0}
+  m_AnchoredPosition: {x: 303, y: 0}
+  m_SizeDelta: {x: 606, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &4368311227095225186
 CanvasRenderer:
@@ -2988,8 +3057,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 1102.5, y: 0}
-  m_SizeDelta: {x: 2205, y: 0}
+  m_AnchoredPosition: {x: 303, y: 0}
+  m_SizeDelta: {x: 606, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &7850685461503024709
 CanvasRenderer:
@@ -3203,8 +3272,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5417760502045124389}
   m_HandleRect: {fileID: 8576531578197854818}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 1
+  m_Value: 1
+  m_Size: 0.42860323
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

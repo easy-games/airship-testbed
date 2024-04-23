@@ -11,7 +11,8 @@ export declare class FirstPersonCameraSystem {
     private currentBobData;
     private targetBobStrength;
     private currentBobStrength;
-    private headSpineOffset;
+    private headSpinePosOffset;
+    private headSpineRotOffset;
     private inFirstPerson;
     private bin;
     private currentTime;

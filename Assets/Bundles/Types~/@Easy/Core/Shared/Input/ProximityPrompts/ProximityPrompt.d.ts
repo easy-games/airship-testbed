@@ -12,28 +12,27 @@ export default class ProximityPrompt extends AirshipBehaviour {
     keybindTextLabel: TMP_Text;
     backgroundImg: Image;
     button: Button;
+    touchIcon: Image;
     id: number;
     /** On activated signal. */
     onActivated: Signal<void>;
     /** On entered proximity signal. */
-    onProximityEnter: Signal<void>;
+    onShown: Signal<void>;
     /** On exited proximity signal. */
-    onProximityExit: Signal<void>;
-    private canActivate;
-    private activatedBin;
+    onHidden: Signal<void>;
+    private shownBin;
     private bin;
-    private stateChangeBin;
+    private shown;
     OnEnable(): void;
     OnDisable(): void;
     KeyDown(): void;
     KeyUp(): void;
-    SetCanActivate(canActivate: boolean): void;
-    IsHighestPriorityPrompt(): boolean;
     SetPrimaryText(val: string): void;
     SetSecondaryText(val: string): void;
     SetMaxRange(val: number): void;
     /** Called when prompt activates. */
     Activate(): void;
-    Hide(): void;
+    Hide(instant?: boolean): void;
     Show(): void;
+    IsShown(): boolean;
 }

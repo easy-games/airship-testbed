@@ -145,14 +145,15 @@ export class AirshipInputSingleton implements OnStart {
 			);
 		}
 		const prompt = go.GetAirshipComponent<ProximityPrompt>()!;
-		if (config?.primaryText) {
-			prompt?.SetPrimaryText(config.primaryText);
+		prompt.actionName = actionName;
+		if (config?.primaryText !== undefined) {
+			prompt.SetPrimaryText(config.primaryText);
 		}
-		if (config?.secondaryText) {
-			prompt?.SetSecondaryText(config.secondaryText);
+		if (config?.secondaryText !== undefined) {
+			prompt.SetSecondaryText(config.secondaryText);
 		}
-		if (config?.maxRange) {
-			prompt?.SetMaxRange(config.maxRange);
+		if (config?.maxRange !== undefined) {
+			prompt.SetMaxRange(config.maxRange);
 		}
 		return prompt;
 	}
@@ -177,7 +178,7 @@ export class AirshipInputSingleton implements OnStart {
 	 * @param category
 	 */
 	public CreateAction(name: string, binding: Binding, config?: InputActionConfig): void {
-		const action = new InputAction(name, binding, false, config?.category ?? "General");
+		const action = new InputAction(name.lower(), binding, false, config?.category ?? "General");
 		this.AddActionToTable(action);
 		this.onActionBound.Fire(action);
 	}
@@ -290,9 +291,9 @@ export class AirshipInputSingleton implements OnStart {
 		for (const mobileButton of mobileButtonsForAction) {
 			mobileButton.SetActive(false);
 		}
-		const isDown = this.actionDownState.has(name);
+		const isDown = this.actionDownState.has(name.lower());
 		if (isDown) {
-			const upSignals = this.actionUpSignals.get(name) ?? [];
+			const upSignals = this.actionUpSignals.get(name.lower()) ?? [];
 			for (const signal of upSignals) {
 				signal.Fire(new InputActionEvent(name, false));
 			}
@@ -304,7 +305,7 @@ export class AirshipInputSingleton implements OnStart {
 	 * @param name
 	 */
 	public ShowMobileButtons(name: string): void {
-		const mobileButtonsForAction = this.actionToMobileButtonTable.get(name) ?? [];
+		const mobileButtonsForAction = this.actionToMobileButtonTable.get(name.lower()) ?? [];
 		for (const mobileButton of mobileButtonsForAction) {
 			mobileButton.SetActive(true);
 		}
@@ -316,7 +317,7 @@ export class AirshipInputSingleton implements OnStart {
 	 * @returns
 	 */
 	public GetActions(name: string): InputAction[] {
-		return this.actionTable.get(name) ?? [];
+		return this.actionTable.get(name.lower()) ?? [];
 	}
 
 	/**
@@ -326,7 +327,7 @@ export class AirshipInputSingleton implements OnStart {
 	 * @returns
 	 */
 	public GetActionByInputType(name: string, inputType: ActionInputType): InputAction | undefined {
-		const actions = this.actionTable.get(name);
+		const actions = this.actionTable.get(name.lower());
 		if (!actions) return undefined;
 		return actions.find(
 			(action) => InputUtil.GetInputTypeFromBinding(action.binding, KeyType.Primary) === inputType,
@@ -340,9 +341,9 @@ export class AirshipInputSingleton implements OnStart {
 	 */
 	public OnDown(name: string): Signal<[event: InputActionEvent]> {
 		const downSignal = new Signal<[event: InputActionEvent]>();
-		const existingSignals = this.actionDownSignals.get(name);
+		const existingSignals = this.actionDownSignals.get(name.lower());
 		if (!existingSignals) {
-			this.actionDownSignals.set(name, [downSignal]);
+			this.actionDownSignals.set(name.lower(), [downSignal]);
 		} else {
 			existingSignals.push(downSignal);
 		}
@@ -356,9 +357,9 @@ export class AirshipInputSingleton implements OnStart {
 	 */
 	public OnUp(name: string): Signal<[event: InputActionEvent]> {
 		const upSignal = new Signal<[event: InputActionEvent]>();
-		const existingSignals = this.actionUpSignals.get(name);
+		const existingSignals = this.actionUpSignals.get(name.lower());
 		if (!existingSignals) {
-			this.actionUpSignals.set(name, [upSignal]);
+			this.actionUpSignals.set(name.lower(), [upSignal]);
 		} else {
 			existingSignals.push(upSignal);
 		}
@@ -371,7 +372,7 @@ export class AirshipInputSingleton implements OnStart {
 	 * @returns
 	 */
 	public IsDown(name: string): boolean {
-		return this.actionDownState.has(name);
+		return this.actionDownState.has(name.lower());
 	}
 
 	/**
@@ -379,7 +380,7 @@ export class AirshipInputSingleton implements OnStart {
 	 * @param name
 	 */
 	public IsUp(name: string) {
-		return !this.IsDown(name);
+		return !this.IsDown(name.lower());
 	}
 
 	/**

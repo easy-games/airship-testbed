@@ -18,9 +18,17 @@ export default class DemoManager extends AirshipBehaviour {
 	@Header("Network Ball")
 	public ballPrefab!: GameObject;
 	public ballSpawnPoint!: Transform;
+	public cubePrefab!: GameObject;
 
 	override Start(): void {
 		Airship.input.CreateAction("interact", Binding.Key(Key.F));
+
+		const p = Airship.input.CreateProximityPrompt("interact", undefined, {
+			primaryText: "????",
+			secondaryText: "Poke",
+			maxRange: 10,
+		});
+		p.transform.position = new Vector3(0, 5, 0);
 
 		ItemUtil.RegisterItem("WoodSword", {
 			displayName: "Wood Sword",
@@ -73,8 +81,25 @@ export default class DemoManager extends AirshipBehaviour {
 			});
 
 			// spawn ball
-			const ballGo = Object.Instantiate(this.ballPrefab);
-			NetworkUtil.Spawn(ballGo);
+			task.spawn(() => {
+				for (let i = 0; i < 5; i++) {
+					const ballGo = Object.Instantiate(
+						this.ballPrefab,
+						this.ballSpawnPoint.position,
+						this.ballSpawnPoint.rotation,
+					);
+					NetworkUtil.Spawn(ballGo);
+
+					const cubeGo = Object.Instantiate(
+						this.cubePrefab,
+						ballGo.transform.position.add(new Vector3(0, 1, 0)),
+						Quaternion.identity,
+					);
+					NetworkUtil.Spawn(cubeGo);
+					cubeGo.GetComponent<NetworkObject>()!.SetParent(ballGo.GetComponent<NetworkObject>()!);
+					task.wait(1);
+				}
+			});
 		}
 		if (Game.IsClient()) {
 			// Optional: use locked camera mode for first person support
@@ -123,6 +148,12 @@ export default class DemoManager extends AirshipBehaviour {
 		if (collider) {
 			collider.isTrigger = false;
 		}
+
+		// const cubeGo = Object.Instantiate(this.cubePrefab);
+		// NetworkUtil.Spawn(cubeGo);
+		// cubeGo.GetComponent<NetworkObject>()!.SetParent(character.networkObject);
+		// cubeGo.transform.localPosition = new Vector3(0, 1, 0);
+
 		// character.inventory.AddItem(new ItemStack("WoodSword"));
 	}
 }
