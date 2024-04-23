@@ -1,3 +1,8 @@
+/**
+ * Entry point for the Main Menu while in Main Menu.
+ * This is not ran while in-game.
+ */
+
 import { AvatarUtil } from "Shared/Avatar/AvatarUtil";
 import { Flamework } from "Shared/Flamework";
 import { AudioManager } from "./Audio/AudioManager";

@@ -37,8 +37,9 @@ export class MainMenuController implements OnStart {
 	private socialIsVisible = true;
 
 	constructor() {
+		print("MainMenuController " + contextbridge.current());
 		const mainMenuPrefab = AssetBridge.Instance.LoadAsset("@Easy/Core/Client/Resources/MainMenu/MainMenu.prefab");
-		this.mainMenuGo = Object.Instantiate(mainMenuPrefab, CoreRefs.rootTransform) as GameObject;
+		this.mainMenuGo = Object.Instantiate(mainMenuPrefab, CoreRefs.protectedTransform) as GameObject;
 		this.refs = this.mainMenuGo.GetComponent<GameObjectReferences>()!;
 		const wrapperGo = this.refs.GetValue("UI", "Wrapper");
 		this.wrapperRect = wrapperGo.GetComponent<RectTransform>()!;

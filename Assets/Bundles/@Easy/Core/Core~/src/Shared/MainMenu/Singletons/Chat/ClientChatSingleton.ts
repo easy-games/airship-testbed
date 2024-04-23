@@ -18,7 +18,6 @@ import { ChatUtil } from "Shared/Util/ChatUtil";
 import { SignalPriority } from "Shared/Util/Signal";
 import { SetInterval, SetTimeout } from "Shared/Util/Timer";
 import { MainMenuBlockSingleton } from "../../../../Client/MainMenuControllers/Settings/MainMenuBlockSingleton";
-import { LocalCharacterSingleton } from "../../../Character/LocalCharacter/LocalCharacterSingleton";
 import { MessageCommand } from "./ClientCommands/MessageCommand";
 import { ReplyCommand } from "./ClientCommands/ReplyCommand";
 
@@ -82,12 +81,9 @@ export class ClientChatSingleton implements OnStart {
 	private commands = new Map<string, ChatCommand>();
 	private lastChatMessageRenderedTime = Time.time;
 
-	constructor(private readonly localEntityController: LocalCharacterSingleton) {
+	constructor() {
+		print("ClientChatSingleton " + contextbridge.current());
 		const refs = Dependency<CoreUIController>().refs.GetValue("Apps", "Chat").GetComponent<GameObjectReferences>()!;
-		// const refs = contextbridge.invoke<() => GameObjectReferences>(
-		// 	"CoreUIController:GetRefs",
-		// 	LuauContext.Protected,
-		// );
 		this.canvas = refs.GetValue("UI", "Canvas").GetComponent<Canvas>()!;
 		this.content = refs.GetValue("UI", "Content");
 		this.wrapper = refs.GetValue("UI", "Wrapper");
@@ -275,10 +271,11 @@ export class ClientChatSingleton implements OnStart {
 			if (!Game.IsMobile()) {
 				this.inputWrapperImage.color = new Color(0, 0, 0, 0.4);
 			}
-			const entityInputDisabler = this.localEntityController.GetEntityInput()?.AddDisabler();
-			if (entityInputDisabler !== undefined) {
-				this.selectedBin.Add(entityInputDisabler);
-			}
+			// todo: movement disabler
+			// const entityInputDisabler = Dependency<LocalCharacterSingleton>().GetCharacterInput()?.AddDisabler();
+			// if (entityInputDisabler !== undefined) {
+			// 	this.selectedBin.Add(entityInputDisabler);
+			// }
 			const mouseLocker = mouse.AddUnlocker();
 			this.selectedBin.Add(() => {
 				mouse.RemoveUnlocker(mouseLocker);

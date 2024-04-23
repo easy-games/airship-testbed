@@ -198,7 +198,7 @@ export class LocalCharacterSingleton implements OnStart {
 		// }
 	}
 
-	public GetEntityInput(): CharacterInput | undefined {
+	public GetCharacterInput(): CharacterInput | undefined {
 		return this.input;
 	}
 

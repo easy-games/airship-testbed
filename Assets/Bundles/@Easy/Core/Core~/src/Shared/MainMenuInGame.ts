@@ -1,3 +1,7 @@
+/**
+ * Entry point for the Main Menu while in-game.
+ */
+
 import { AvatarUtil } from "Shared/Avatar/AvatarUtil";
 import { Flamework } from "Shared/Flamework";
 import { AudioManager } from "./Audio/AudioManager";
@@ -9,9 +13,8 @@ import { CanvasAPI } from "./Util/CanvasAPI";
 import { TimeUtil } from "./Util/TimeUtil";
 import { OnFixedUpdate, OnLateUpdate, OnUpdate } from "./Util/Timer";
 
+Game.coreContext = CoreContext.GAME;
 CoreRefs.Init();
-
-Game.coreContext = CoreContext.MAIN_MENU;
 
 TimeUtil.GetLifetimeSeconds();
 CanvasAPI.Init();
@@ -30,8 +33,8 @@ gameObject.OnFixedUpdate(() => {
 	OnFixedUpdate.Fire(TimeUtil.GetFixedDeltaTime());
 });
 
-Flamework.AddPath("assets/bundles/@Easy/Core/shared/resources/ts", "^.*singleton.lua$");
-// Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/mainmenucontrollers", "^.*controller.lua$");
+Flamework.AddPath("assets/bundles/@Easy/Core/shared/resources/ts/mainmenu", "^.*singleton.lua$");
+Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/mainmenucontrollers", "^.*controller.lua$");
 Flamework.Ignite();
 
 const mainMenuLoadingScreen = GameObject.Find("MainMenuLoadingScreen").GetComponent<MainMenuLoadingScreen>()!;

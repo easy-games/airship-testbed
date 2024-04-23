@@ -17,9 +17,8 @@ import { RunUtil } from "./Util/RunUtil";
 import { TimeUtil } from "./Util/TimeUtil";
 import { OnFixedUpdate, OnLateUpdate, OnTick, OnUpdate } from "./Util/Timer";
 
-CoreRefs.Init();
-
 Game.coreContext = CoreContext.GAME;
+CoreRefs.Init();
 
 task.spawn(() => {
 	if (Game.IsClient()) {
@@ -62,10 +61,10 @@ if (InstanceFinder.TimeManager !== undefined) {
 	});
 }
 
-Flamework.AddPath("assets/bundles/@Easy/Core/shared/resources/ts", "^.*singleton.lua$");
+Flamework.AddPath("assets/bundles/@Easy/Core/shared/resources/ts", "^.*singleton.lua$", "mainmenu/");
 if (RunUtil.IsClient()) {
 	Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/airship", "^.*controller.lua$");
-	Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/controllers", "^.*controller.lua$");
+	Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/controllers", "^.*controller.lua$", "mainmenu/");
 	// Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/mainmenucontrollers", "^.*controller.lua$");
 	// Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/mainmenucontrollers", "^.*singleton.lua$");
 }
