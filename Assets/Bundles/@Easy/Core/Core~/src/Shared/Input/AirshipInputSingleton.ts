@@ -73,7 +73,9 @@ export class AirshipInputSingleton implements OnStart {
 	 *
 	 */
 	private actionToMobileButtonTable = new Map<string, GameObject[]>();
-
+	/**
+	 *
+	 */
 	public preferredControls = new PreferredControls();
 
 	constructor() {
@@ -124,6 +126,13 @@ export class AirshipInputSingleton implements OnStart {
 		}
 	}
 
+	/**
+	 *
+	 * @param actionName
+	 * @param parent
+	 * @param config
+	 * @returns
+	 */
 	public CreateProximityPrompt(
 		actionName: string,
 		parent?: Transform,
@@ -145,7 +154,7 @@ export class AirshipInputSingleton implements OnStart {
 			);
 		}
 		const prompt = go.GetAirshipComponent<ProximityPrompt>()!;
-		prompt.actionName = actionName;
+		prompt.actionName = actionName.lower();
 		if (config?.primaryText !== undefined) {
 			prompt.SetPrimaryText(config.primaryText);
 		}
@@ -225,6 +234,7 @@ export class AirshipInputSingleton implements OnStart {
 	public CreateMobileButton(name: string, anchoredPosition: Vector2, config?: MobileButtonConfig): void {
 		const mobileButton = Object.Instantiate(this.mobileButtonPrefab);
 		mobileButton.transform.SetParent(this.mobileControlsContainer.transform);
+		const lowerName = name.lower();
 
 		const rect = mobileButton.GetComponent<RectTransform>()!;
 		rect.localScale = new Vector3(config?.scale?.x ?? 1, config?.scale?.y ?? 1, 1);
@@ -245,14 +255,14 @@ export class AirshipInputSingleton implements OnStart {
 
 		CanvasAPI.OnPointerEvent(mobileButton, (dir) => {
 			if (dir === PointerDirection.DOWN) {
-				this.actionDownState.add(name);
-				const actionDownSignals = this.actionDownSignals.get(name);
+				this.actionDownState.add(lowerName);
+				const actionDownSignals = this.actionDownSignals.get(lowerName);
 				if (!actionDownSignals) return;
 				const inactiveSignalIndices = [];
 				let signalIndex = 0;
 				for (const signal of actionDownSignals) {
 					if (signal.HasConnections()) {
-						signal.Fire(new InputActionEvent(name, false));
+						signal.Fire(new InputActionEvent(lowerName, false));
 					} else {
 						inactiveSignalIndices.push(signalIndex);
 					}
@@ -260,14 +270,14 @@ export class AirshipInputSingleton implements OnStart {
 				}
 				this.ClearInactiveSignals(inactiveSignalIndices, actionDownSignals);
 			} else if (dir === PointerDirection.UP) {
-				this.actionDownState.delete(name);
-				const actionUpSignals = this.actionUpSignals.get(name);
+				this.actionDownState.delete(lowerName);
+				const actionUpSignals = this.actionUpSignals.get(lowerName);
 				if (!actionUpSignals) return;
 				const inactiveSignalIndices = [];
 				let signalIndex = 0;
 				for (const signal of actionUpSignals) {
 					if (signal.HasConnections()) {
-						signal.Fire(new InputActionEvent(name, false));
+						signal.Fire(new InputActionEvent(lowerName, false));
 					} else {
 						inactiveSignalIndices.push(signalIndex);
 					}
@@ -277,9 +287,9 @@ export class AirshipInputSingleton implements OnStart {
 			}
 		});
 
-		const mobileButtonsForAction = this.actionToMobileButtonTable.get(name) ?? [];
+		const mobileButtonsForAction = this.actionToMobileButtonTable.get(lowerName) ?? [];
 		mobileButtonsForAction.push(mobileButton);
-		this.actionToMobileButtonTable.set(name, mobileButtonsForAction);
+		this.actionToMobileButtonTable.set(lowerName, mobileButtonsForAction);
 	}
 
 	/**
@@ -287,17 +297,18 @@ export class AirshipInputSingleton implements OnStart {
 	 * @param name
 	 */
 	public HideMobileButtons(name: string): void {
-		const mobileButtonsForAction = this.actionToMobileButtonTable.get(name) ?? [];
+		const lowerName = name.lower();
+		const mobileButtonsForAction = this.actionToMobileButtonTable.get(lowerName) ?? [];
 		for (const mobileButton of mobileButtonsForAction) {
 			mobileButton.SetActive(false);
 		}
-		const isDown = this.actionDownState.has(name.lower());
+		const isDown = this.actionDownState.has(lowerName);
 		if (isDown) {
-			const upSignals = this.actionUpSignals.get(name.lower()) ?? [];
+			const upSignals = this.actionUpSignals.get(lowerName) ?? [];
 			for (const signal of upSignals) {
-				signal.Fire(new InputActionEvent(name, false));
+				signal.Fire(new InputActionEvent(lowerName, false));
 			}
-			this.actionDownState.delete(name);
+			this.actionDownState.delete(lowerName);
 		}
 	}
 	/**
