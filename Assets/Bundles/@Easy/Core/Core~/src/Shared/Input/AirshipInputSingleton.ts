@@ -15,6 +15,7 @@ import { InputActionEvent } from "./InputActionEvent";
 import { ActionInputType, InputUtil, KeyType } from "./InputUtil";
 import { MobileButtonConfig } from "./Mobile/MobileButton";
 import ProximityPrompt from "./ProximityPrompts/ProximityPrompt";
+import { CoreIcon } from "./UI/CoreIcon";
 
 @Controller({})
 @Service({})
@@ -119,7 +120,7 @@ export class AirshipInputSingleton implements OnStart {
 			Airship.input.CreateMobileButton("Jump", new Vector2(-220, 180));
 			// Airship.input.CreateMobileButton("UseItem", new Vector2(-250, 490));
 			Airship.input.CreateMobileButton("Crouch", new Vector2(-140, 340), {
-				icon: "chevron-down-solid",
+				icon: CoreIcon.CHEVRON_DOWN,
 			});
 		}
 	}
