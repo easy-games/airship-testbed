@@ -2,6 +2,7 @@ import { MainMenuController } from "@Easy/Core/Client/MainMenuControllers/MainMe
 import { RightClickMenuController } from "@Easy/Core/Client/MainMenuControllers/UI/RightClickMenu/RightClickMenuController";
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
+import { Binding } from "@Easy/Core/Shared/Input/Binding";
 import { InputAction } from "@Easy/Core/Shared/Input/InputAction";
 import { InputUtil } from "@Easy/Core/Shared/Input/InputUtil";
 import { FormatUtil } from "@Easy/Core/Shared/Util/FormatUtil";
@@ -14,7 +15,6 @@ import { CanvasAPI, HoverState, PointerButton, PointerDirection } from "../../..
 import { InputUtils } from "../../../Util/InputUtils";
 import { SignalPriority } from "../../../Util/Signal";
 import { Theme } from "../../../Util/Theme";
-import { Binding } from "@Easy/Core/Shared/Input/Binding";
 
 /**
  *
@@ -27,8 +27,6 @@ export default class SettingsKeybind extends AirshipBehaviour {
 	public valueText!: TMP_Text;
 	public valueImageBG!: Image;
 	public overlay!: GameObject;
-
-	private inputDevice = new Keyboard();
 
 	private inputAction: InputAction | undefined;
 
@@ -167,30 +165,43 @@ export default class SettingsKeybind extends AirshipBehaviour {
 
 	private StartKeyListener(): void {
 		SetInterval(InputPollRate, () => {
-			if (this.isListening) {
-				if (this.downModifierKey !== Key.None && !Keyboard.global.IsKeyDown(this.downModifierKey)) {
-					this.UpdateBinding(Binding.Key(this.downModifierKey));
-					this.SetListening(false);
-				}
-				for (let key of ObjectUtils.keys(InputUtils.keyCodeMap) as Key[]) {
-					if (Keyboard.global.IsKeyDown(key)) {
-						const modifierKey = InputUtil.GetModifierFromKey(key);
-						if (modifierKey) {
-							this.downModifierKey = key;
-							const keyCodeText =
-								InputUtils.GetStringForKeyCode(this.downModifierKey) ??
-								`Unknown(${this.downModifierKey})`;
-							const complexKeyCodeText = `${keyCodeText} + `;
+			if (!this.isListening) return;
+
+			if (this.downModifierKey !== Key.None && !Keyboard.global.IsKeyDown(this.downModifierKey)) {
+				this.UpdateBinding(Binding.Key(this.downModifierKey));
+				this.SetListening(false);
+			}
+
+			if (Mouse.global.IsLeftButtonDown()) {
+				this.UpdateBinding(Binding.MouseButton(MouseButton.LeftButton));
+				this.SetListening(false);
+			}
+
+			if (Mouse.global.IsRightButtonDown()) {
+				this.UpdateBinding(Binding.MouseButton(MouseButton.RightButton));
+				this.SetListening(false);
+			}
+
+			for (let key of ObjectUtils.keys(InputUtils.keyCodeMap) as Key[]) {
+				if (key === Key.None) continue;
+				if (Keyboard.global.IsKeyDown(key) && this.isListening) {
+					const modifierKey = InputUtil.GetModifierFromKey(key);
+					if (modifierKey) {
+						this.downModifierKey = key;
+						const keyCodeText =
+							InputUtils.GetStringForKeyCode(this.downModifierKey) ?? `Unknown(${this.downModifierKey})`;
+						const complexKeyCodeText = `${keyCodeText} + `;
+						if (complexKeyCodeText !== this.valueText.text) {
 							this.UpdateKeybindText(complexKeyCodeText);
+						}
+					} else {
+						if (key !== this.downModifierKey && this.downModifierKey !== Key.None) {
+							const modifierKey = InputUtil.GetModifierFromKey(this.downModifierKey);
+							this.UpdateBinding(Binding.Key(key, modifierKey!));
+							this.SetListening(false);
 						} else {
-							if (key !== this.downModifierKey && this.downModifierKey !== Key.None) {
-								const modifierKey = InputUtil.GetModifierFromKey(this.downModifierKey);
-								this.UpdateBinding(Binding.Key(key, modifierKey!));
-								this.SetListening(false);
-							} else {
-								this.UpdateBinding(Binding.Key(key));
-								this.SetListening(false);
-							}
+							this.UpdateBinding(Binding.Key(key));
+							this.SetListening(false);
 						}
 					}
 				}
@@ -225,6 +236,7 @@ export default class SettingsKeybind extends AirshipBehaviour {
 				const modifierKeyCodeText =
 					InputUtils.GetStringForKeyCode(modifierAsKeyCode) ?? `Unknown(${modifierAsKeyCode})`;
 				const bindingText = `${modifierKeyCodeText} + ${primaryKeyCodeText}`;
+
 				this.UpdateKeybindText(bindingText);
 			}
 		} else {
@@ -250,10 +262,12 @@ export default class SettingsKeybind extends AirshipBehaviour {
 		if (!this.inputAction) return;
 		this.isListening = listening;
 		if (listening) {
+			EventSystem.current.SetSelectedGameObject(this.gameObject);
 			this.UpdateKeybindText("PRESS A KEY");
 			this.valueImageBG.color = Theme.primary;
 			this.overlay.SetActive(true);
 		} else {
+			EventSystem.current.SetSelectedGameObject(undefined);
 			this.downModifierKey = Key.None;
 			this.downPrimaryKeyCode = Key.None;
 			this.overlay.SetActive(false);
