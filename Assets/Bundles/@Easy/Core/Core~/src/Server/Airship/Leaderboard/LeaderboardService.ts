@@ -1,5 +1,5 @@
-import { Service, OnStart } from "Shared/Flamework";
 import { Platform } from "Shared/Airship";
+import { OnStart, Service } from "Shared/Flamework";
 import { Result } from "Shared/Types/Result";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { DecodeJSON, EncodeJSON } from "Shared/json";
@@ -11,7 +11,7 @@ export interface LeaderboardUpdate {
 /**
  * The data associated with a position on the leaderboard.
  */
-interface RankData {
+export interface RankData {
 	/** The id for this ranking */
 	id: string;
 	/** The location of the entry on the leaderboard. */
