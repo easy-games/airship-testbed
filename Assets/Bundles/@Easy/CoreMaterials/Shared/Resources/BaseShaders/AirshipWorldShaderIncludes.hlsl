@@ -295,6 +295,37 @@
         float result = metal > 0.5;
         return result;
     }
+ 
+ 
+    float3 envSampleLOD(float3 dir, float lod)
+    {
+        return texCUBElod(_CubeTex, half4(dir, lod)).rgb;
+    }
+    
+    float3 pbrComputeSpecularMobileCheap(float3 viewDirection, float3 normal, float3 specColor, float roughness, float3 cubemapSample)
+    {
+        float3 radiance = float3(0, 0, 0);
+        float ndv = dot(viewDirection, normal);
+        specColor = EnvBRDFApprox(specColor, roughness, max(ndv, 0));
+        radiance = cubemapSample * specColor;
+
+        return radiance;
+    }
+
+    float3 pbrComputeDiffuse(float3 dir, float3 diffColor)
+    {
+        return SampleAmbientSphericalHarmonics(dir) * diffColor;
+    }
+
+    float3 pbrComputeBRDFMobile(float3 viewDirection, float3 normal, float3 diffColor, float3 specColor, float roughness, float3 cubemapSample)
+    {
+        return pbrComputeDiffuse(normal, diffColor) + pbrComputeSpecularMobileCheap(viewDirection, normal, specColor, roughness, cubemapSample);
+    }
+ 
+
+
+    ///////////////////////////@@@@
+
 
     void fragFunction(vertToFrag input, out half4 MRT0 : SV_Target0, out half4 MRT1 : SV_Target1
 #ifdef DOUBLE_SIDED_NORMALS
@@ -405,26 +436,20 @@
 
 #endif
 
-        // Finish doing ALU calcs while the cubemap fetches in
         metallicLevel = lerp(metallicLevel, _MetalOverride, _MRSliderOverrideMix);
         roughnessLevel = lerp(roughnessLevel, _RoughOverride, _MRSliderOverrideMix);
         roughnessLevel = max(roughnessLevel, 0.04);
 
-        reflectedCubeSample = texCUBElod(_CubeTex, half4(worldReflect, roughnessLevel * maxMips));
-        
-        //half3 complexAmbientSample = texCUBElod(_CubeTex, half4(worldNormal, maxMips));
-        half3 complexAmbientSample = SampleAmbientSphericalHarmonics(worldNormal);
-        
+        //Start fetching the cubemap as early as possible
+        float3 cubemapSample = envSampleLOD(-reflect(-viewDirection, worldNormal), roughnessLevel * maxMips);
+
+
         //Shadows and light masks
 #if SHADOWS_ON        
         half sunShadowMask = GetShadow(input.shadowCasterPos0, input.shadowCasterPos1, worldNormal, globalSunDirection);
 #else
         half sunShadowMask = 0;
 #endif
-        //Matches better to substance
-        // not required anymore, you should mark the texture as being correcty postprocessed on import
-        //roughnessLevel = pow(roughnessLevel, 0.4545454545);
-        //metallicLevel = pow(metallicLevel, 0.4545454545);
         
         //Sun
         half RoL = max(0, dot(worldReflect, -globalSunDirection));
@@ -446,33 +471,29 @@
         half3 albedo = texSample.xyz * input.baseColor.rgb;
 #endif
   
-        //Specular
-        half3 imageSpecular = reflectedCubeSample.xyz;
+        //PBR setup
         half3 specularColor;
         half3 diffuseColor;
 		
-        if (metallicLevel > 0)
-        {
-            half dielectricSpecular = 0.08 * 0.3;  
-            diffuseColor = albedo - albedo * metallicLevel;
-            specularColor = (dielectricSpecular - dielectricSpecular * metallicLevel) + albedo * metallicLevel;
-            specularColor = EnvBRDFApprox(specularColor, roughnessLevel, NoV) * _SpecularColor;
-        }
-        else
-        {
-            //Alternate material for when metal is totally ignored
-            diffuseColor = albedo;
-            half specLevel = EnvBRDFApproxNonmetal(roughnessLevel, NoV);
-            specularColor = half3(specLevel, specLevel, specLevel);
-        }
-      
-        half3 phongSpec = PhongApprox(roughnessLevel, RoL) * specularColor;
-        //Simpler specphong with more artistic control over the highlight
-        //half3 phongSpec = CalculateSimpleSpecularLight(globalSunDirection, -viewDirection, worldNormal, 23) * specularColor;
+        float dielectricSpecular = 0.08 * 1;
+        diffuseColor = max(albedo - albedo * metallicLevel, 0);		 
+        specularColor = (dielectricSpecular - dielectricSpecular * metallicLevel) + albedo * metallicLevel;	 
 
-        //Start compositing it all now
-        half3 finalColor = half3(0, 0, 0);
-        half3 sunIntensity = half3(0, 0, 0);
+        //Image based lighting
+        float3 imageBasedLighting = pbrComputeBRDFMobile(-viewDirection, worldNormal, diffuseColor, specularColor, roughnessLevel, cubemapSample);
+       
+        //If we're using separate shadow tints NPR
+//#ifdef USE_SHADOW_COLOR_ON
+        //half3 finalAmbient = lerp((imageBasedLighting * _ShadowColor), (imageBasedLighting * albedo), sunShadowMask);
+//#else
+        half3 finalAmbient = imageBasedLighting;
+//#endif
+        //Slider
+        finalAmbient *= globalAmbientBrightness;
+        
+
+        //Sun based Lighting
+        half3 phongSpec = PhongApprox(roughnessLevel, RoL) * specularColor;
          
         //Direct sun + specular
         half3 sunColor = (globalSunColor * globalSunBrightness);
@@ -484,7 +505,8 @@
         half3 sunComposite = (diffuseColor + phongSpec);
  
         //Sun Image reflection
-        half3 sunImageLight = imageSpecular * specularColor;
+        half3 sunImageLight = cubemapSample * specularColor;
+        //half3 sunImageLight = specularColor;
         sunComposite += sunImageLight;
         sunComposite *= globalSunBrightness;
 
@@ -492,27 +514,13 @@
         
         //Mask in the sun, based on the shadows
         half3 finalSun = lerp(sunComposite, sunComposite * sunShadowMask, globalSunShadow);
-        
-
-        //Image Based Lighting (ambient)
-        //half3 ambientLight = (diffuseColor + phongSpec) + (reflectedCubeSample * specularColor); //incorrect
-        half3 ambientLight = (diffuseColor * complexAmbientSample) + (reflectedCubeSample * specularColor);
-        
-        //If we're using separate shadow tints NPR
-#ifdef USE_SHADOW_COLOR_ON
-        half3 finalAmbient = lerp((ambientLight * _ShadowColor), (ambientLight * albedo), sunShadowMask);
-#else
-        half3 finalAmbient = ambientLight;
-#endif
-		//Slider
-        finalAmbient *= globalAmbientBrightness;
    
-        finalColor = finalSun + finalAmbient;
- 
+        //PointLighting
+        float3 pointLights = CalculatePointLightsForPoint(input.worldPos, worldNormal, diffuseColor, roughnessLevel, metallicLevel, specularColor, worldReflect);
 
-        //Do point lighting
-        finalColor.xyz += CalculatePointLightsForPoint(input.worldPos, worldNormal, diffuseColor, roughnessLevel, metallicLevel, specularColor, worldReflect);
-         
+        //Start compositing now
+        float3 finalColor = finalSun + finalAmbient + pointLights;
+        
         //Rim light
 #ifdef RIM_LIGHT_ON
         finalColor.xyz += RimLightSimple(worldNormal, -viewDirection);
