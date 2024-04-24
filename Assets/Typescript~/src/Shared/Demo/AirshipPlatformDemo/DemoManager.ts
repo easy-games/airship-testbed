@@ -83,14 +83,14 @@ export default class DemoManager extends AirshipBehaviour {
 			// spawn ball
 			task.spawn(() => {
 				for (let i = 0; i < 5; i++) {
-					const ballGo = Object.Instantiate(
+					const ballGo = Object.Instantiate<GameObject>(
 						this.ballPrefab,
 						this.ballSpawnPoint.position,
 						this.ballSpawnPoint.rotation,
 					);
 					NetworkUtil.Spawn(ballGo);
 
-					const cubeGo = Object.Instantiate(
+					const cubeGo = Object.Instantiate<GameObject>(
 						this.cubePrefab,
 						ballGo.transform.position.add(new Vector3(0, 1, 0)),
 						Quaternion.identity,

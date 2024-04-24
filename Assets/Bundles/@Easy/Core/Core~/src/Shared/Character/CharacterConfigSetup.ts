@@ -31,7 +31,7 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 		Airship.characters.SetDefaultCharacterPrefab(this.customCharacterPrefab);
 
 		Physics.IgnoreLayerCollision(17, 18, false);
-		Layer.CHARACTER
+		Layer.CHARACTER;
 
 		//Local Character Configs
 		if (Game.IsClient()) {
@@ -80,6 +80,14 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 					event.sprinting = false;
 				}
 			});
+
+			if (!this.enableJumping) {
+				Airship.input.HideMobileButtons("Jump");
+			}
+
+			if (!this.enableCrouching) {
+				Airship.input.HideMobileButtons("Crouch");
+			}
 		}
 	}
 }
