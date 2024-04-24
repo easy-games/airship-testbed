@@ -36,10 +36,6 @@ export default class PromptAboveBall extends AirshipBehaviour {
 					Network.ClientToServer.BounceBall.client.FireServer(nob.ObjectId);
 				}),
 			);
-
-			prompt.onActivated.Connect(() => {
-				Object.Destroy(prompt.gameObject);
-			});
 		}
 
 		if (Game.IsServer()) {

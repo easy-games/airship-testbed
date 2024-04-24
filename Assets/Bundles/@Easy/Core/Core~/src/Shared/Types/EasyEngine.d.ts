@@ -917,3 +917,8 @@ interface AirshipTags extends MonoBehaviour {
 interface AirshipLongPress extends MonoBehaviour {
 	OnLongPress(callback: (pressPosition: Vector2) => void): EngineEventConnection;
 }
+
+interface RectTransform {
+	IsVisibleFrom(camera: Camera): boolean;
+	IsFullyVisibleFrom(camera: Camera): boolean;
+}

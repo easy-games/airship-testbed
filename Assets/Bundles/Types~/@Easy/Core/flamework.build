@@ -150,6 +150,26 @@
 		"@Easy/Core:Shared/Character/Footstep/AirshipCharacterFootstepsSingleton@AirshipCharacterFootstepsSingleton": "$:Character/Footstep/AirshipCharacterFootstepsSingleton@AirshipCharacterFootstepsSingleton",
 		"@Easy/Core:Shared/Item/HeldItems/CharacterItemManager@CharacterItemManager": "$:Item/HeldItems/CharacterItemManager@CharacterItemManager",
 		"@Easy/Core:Shared/Character/CharactersSingleton@CharactersSingleton": "$:Character/CharactersSingleton@CharactersSingleton",
+		"@Easy/Core:Server/Services/Chat/ChatService@ChatService": "$:Services/Chat/ChatService@ChatService",
+		"@Easy/Core:Server/Services/Chat/Commands/AddInventoryCommand@AddInventoryCommand": "$:Services/Chat/Commands/AddInventoryCommand@AddInventoryCommand",
+		"@Easy/Core:Server/Services/Chat/Commands/BotCommand@BotCommand": "$:Services/Chat/Commands/BotCommand@BotCommand",
+		"@Easy/Core:Server/Services/Chat/Commands/DamageCommand@DamageCommand": "$:Services/Chat/Commands/DamageCommand@DamageCommand",
+		"@Easy/Core:Server/Services/Chat/Commands/DynamicVariables/GetVarCommand@GetVarCommand": "$:Services/Chat/Commands/DynamicVariables/GetVarCommand@GetVarCommand",
+		"@Easy/Core:Server/Services/Chat/Commands/DynamicVariables/SetVarCommand@SetVarCommand": "$:Services/Chat/Commands/DynamicVariables/SetVarCommand@SetVarCommand",
+		"@Easy/Core:Server/Services/Chat/Commands/EntityCommand@EntityCommand": "$:Services/Chat/Commands/EntityCommand@EntityCommand",
+		"@Easy/Core:Server/Services/Chat/Commands/FlyCommand@FlyCommand": "$:Services/Chat/Commands/FlyCommand@FlyCommand",
+		"@Easy/Core:Server/Services/Chat/Commands/HealCommand@HealCommand": "$:Services/Chat/Commands/HealCommand@HealCommand",
+		"@Easy/Core:Server/Services/Chat/Commands/HelpCommand@HelpCommand": "$:Services/Chat/Commands/HelpCommand@HelpCommand",
+		"@Easy/Core:Server/Services/Chat/Commands/JoinCodeCommand@JoinCodeCommand": "$:Services/Chat/Commands/JoinCodeCommand@JoinCodeCommand",
+		"@Easy/Core:Server/Services/Chat/Commands/KillCommand@KillCommand": "$:Services/Chat/Commands/KillCommand@KillCommand",
+		"@Easy/Core:Server/Services/Chat/Commands/LagCommand@LagCommand": "$:Services/Chat/Commands/LagCommand@LagCommand",
+		"@Easy/Core:Server/Services/Chat/Commands/SaveWorldCommand@SaveWorldCommand": "$:Services/Chat/Commands/SaveWorldCommand@SaveWorldCommand",
+		"@Easy/Core:Server/Services/Chat/Commands/SetTeamCommand@SetTeamCommand": "$:Services/Chat/Commands/SetTeamCommand@SetTeamCommand",
+		"@Easy/Core:Server/Services/Chat/Commands/TeamChatCommand@TeamChatCommand": "$:Services/Chat/Commands/TeamChatCommand@TeamChatCommand",
+		"@Easy/Core:Server/Services/Chat/Commands/TeamCommand@TeamCommand": "$:Services/Chat/Commands/TeamCommand@TeamCommand",
+		"@Easy/Core:Server/Services/Chat/Commands/TpAllCommand@TpAllCommand": "$:Services/Chat/Commands/TpAllCommand@TpAllCommand",
+		"@Easy/Core:Server/Services/Chat/Commands/TpCommand@TpCommand": "$:Services/Chat/Commands/TpCommand@TpCommand",
+		"@Easy/Core:Server/Services/Chat/Commands/TpsCommand@TpsCommand": "$:Services/Chat/Commands/TpsCommand@TpsCommand",
 		"@Easy/Core:Shared/Chat/AirshipChatSingleton@AirshipChatSingleton": "$:Chat/AirshipChatSingleton@AirshipChatSingleton",
 		"@Easy/Core:Shared/Damage/DamageInfo@DamageInfo": "$:Damage/DamageInfo@DamageInfo",
 		"@Easy/Core:Shared/Damage/CanClientDamageInfo@CanClientDamageInfo": "$:Damage/CanClientDamageInfo@CanClientDamageInfo",
@@ -193,30 +213,10 @@
 		"@Easy/Core:Client/MainMenuControllers/RichPresence/MainMenuRichPresenceController@MainMenuRichPresenceController": "$:MainMenuControllers/RichPresence/MainMenuRichPresenceController@MainMenuRichPresenceController",
 		"@Easy/Core:Client/MainMenuControllers/Settings/MainMenuSettingsUIController@MainMenuSettingsUIController": "$:MainMenuControllers/Settings/MainMenuSettingsUIController@MainMenuSettingsUIController",
 		"@Easy/Core:Client/MainMenuControllers/Social/ChangeUsernameController@ChangeUsernameController": "$:MainMenuControllers/Social/ChangeUsernameController@ChangeUsernameController",
-		"@Easy/Core:Server/Services/Chat/Commands/AddInventoryCommand@AddInventoryCommand": "$:Services/Chat/Commands/AddInventoryCommand@AddInventoryCommand",
-		"@Easy/Core:Server/Services/Chat/Commands/BotCommand@BotCommand": "$:Services/Chat/Commands/BotCommand@BotCommand",
-		"@Easy/Core:Server/Services/Chat/Commands/DamageCommand@DamageCommand": "$:Services/Chat/Commands/DamageCommand@DamageCommand",
-		"@Easy/Core:Server/Services/Chat/Commands/DynamicVariables/GetVarCommand@GetVarCommand": "$:Services/Chat/Commands/DynamicVariables/GetVarCommand@GetVarCommand",
-		"@Easy/Core:Server/Services/Chat/Commands/DynamicVariables/SetVarCommand@SetVarCommand": "$:Services/Chat/Commands/DynamicVariables/SetVarCommand@SetVarCommand",
-		"@Easy/Core:Server/Services/Chat/Commands/EntityCommand@EntityCommand": "$:Services/Chat/Commands/EntityCommand@EntityCommand",
-		"@Easy/Core:Server/Services/Chat/Commands/FlyCommand@FlyCommand": "$:Services/Chat/Commands/FlyCommand@FlyCommand",
 		"@Easy/Core:Server/Services/GroundItem/GroundItemService@GroundItemService": "$:Services/GroundItem/GroundItemService@GroundItemService",
 		"@Easy/Core:Server/Services/Generator/GeneratorService@GeneratorService": "$:Services/Generator/GeneratorService@GeneratorService",
 		"@Easy/Core:Server/Services/Chat/Commands/Generator/CreateGeneratorCommand@CreateGeneratorCommand": "$:Services/Chat/Commands/Generator/CreateGeneratorCommand@CreateGeneratorCommand",
 		"@Easy/Core:Server/Services/Chat/Commands/Generator/SetGeneratorSpawnRateCommand@SetGeneratorSpawnRateCommand": "$:Services/Chat/Commands/Generator/SetGeneratorSpawnRateCommand@SetGeneratorSpawnRateCommand",
-		"@Easy/Core:Server/Services/Chat/Commands/HealCommand@HealCommand": "$:Services/Chat/Commands/HealCommand@HealCommand",
-		"@Easy/Core:Server/Services/Chat/Commands/HelpCommand@HelpCommand": "$:Services/Chat/Commands/HelpCommand@HelpCommand",
-		"@Easy/Core:Server/Services/Chat/Commands/JoinCodeCommand@JoinCodeCommand": "$:Services/Chat/Commands/JoinCodeCommand@JoinCodeCommand",
-		"@Easy/Core:Server/Services/Chat/Commands/KillCommand@KillCommand": "$:Services/Chat/Commands/KillCommand@KillCommand",
-		"@Easy/Core:Server/Services/Chat/Commands/LagCommand@LagCommand": "$:Services/Chat/Commands/LagCommand@LagCommand",
-		"@Easy/Core:Server/Services/Chat/Commands/SaveWorldCommand@SaveWorldCommand": "$:Services/Chat/Commands/SaveWorldCommand@SaveWorldCommand",
-		"@Easy/Core:Server/Services/Chat/Commands/SetTeamCommand@SetTeamCommand": "$:Services/Chat/Commands/SetTeamCommand@SetTeamCommand",
-		"@Easy/Core:Server/Services/Chat/Commands/TeamCommand@TeamCommand": "$:Services/Chat/Commands/TeamCommand@TeamCommand",
-		"@Easy/Core:Server/Services/Chat/Commands/TpAllCommand@TpAllCommand": "$:Services/Chat/Commands/TpAllCommand@TpAllCommand",
-		"@Easy/Core:Server/Services/Chat/Commands/TpCommand@TpCommand": "$:Services/Chat/Commands/TpCommand@TpCommand",
-		"@Easy/Core:Server/Services/Chat/Commands/TpsCommand@TpsCommand": "$:Services/Chat/Commands/TpsCommand@TpsCommand",
-		"@Easy/Core:Server/Services/Chat/ChatService@ChatService": "$:Services/Chat/ChatService@ChatService",
-		"@Easy/Core:Server/Services/Chat/Commands/TeamChatCommand@TeamChatCommand": "$:Services/Chat/Commands/TeamChatCommand@TeamChatCommand",
 		"@Easy/Core:Server/Services/Player/BotService@BotService": "$:Services/Player/BotService@BotService",
 		"@Easy/Core:Server/Services/Shutdown/ShutdownService@ShutdownService": "$:Services/Shutdown/ShutdownService@ShutdownService",
 		"@Easy/Core:Shared/VoxelWorld/PrefabBlockManager/PrefabBlockManager@PrefabBlockManager": "$:VoxelWorld/PrefabBlockManager/PrefabBlockManager@PrefabBlockManager",
@@ -671,6 +671,17 @@
 			]
 		},
 		{
+			"filePath": "..\\Server\\Services\\Chat\\ChatService.lua",
+			"internalId": "$:Services/Chat/ChatService@ChatService",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Service",
+					"isFlameworkDecorator": true,
+					"name": "Service"
+				}
+			]
+		},
+		{
 			"filePath": "..\\Shared\\Chat\\AirshipChatSingleton.lua",
 			"internalId": "$:Chat/AirshipChatSingleton@AirshipChatSingleton",
 			"decorators": [
@@ -1010,17 +1021,6 @@
 		{
 			"filePath": "..\\Server\\Services\\Generator\\GeneratorService.lua",
 			"internalId": "$:Services/Generator/GeneratorService@GeneratorService",
-			"decorators": [
-				{
-					"internalId": "$:Flamework/flamework@Service",
-					"isFlameworkDecorator": true,
-					"name": "Service"
-				}
-			]
-		},
-		{
-			"filePath": "..\\Server\\Services\\Chat\\ChatService.lua",
-			"internalId": "$:Services/Chat/ChatService@ChatService",
 			"decorators": [
 				{
 					"internalId": "$:Flamework/flamework@Service",

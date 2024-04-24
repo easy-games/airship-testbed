@@ -6,7 +6,6 @@ export default class SettingsKeybind extends AirshipBehaviour {
     valueText: TMP_Text;
     valueImageBG: Image;
     overlay: GameObject;
-    private inputDevice;
     private inputAction;
     private isListening;
     private downPrimaryKeyCode;
