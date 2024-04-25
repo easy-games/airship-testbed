@@ -6,6 +6,7 @@ export declare class AvatarPlatformAPI {
     static GetImageUrl(imageId: string): string;
     static GetAllOutfits(): OutfitDto[] | undefined;
     static GetEquippedOutfit(): OutfitDto | undefined;
+    static GetPlayerEquippedOutfit(playerId: string): OutfitDto | undefined;
     static GetAvatarOutfit(outfitId: string): OutfitDto | undefined;
     static CreateAvatarOutfit(outfit: OutfitDto): void;
     static EquipAvatarOutfit(outfitId: string): void;

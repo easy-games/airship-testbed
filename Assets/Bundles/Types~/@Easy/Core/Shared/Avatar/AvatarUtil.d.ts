@@ -30,6 +30,9 @@ export declare class AvatarUtil {
         combineMeshes?: boolean;
     }): void;
     static LoadDefaultOutfit(builder: AccessoryBuilder): void;
+    static LoadPlayersEquippedOutfit(playerId: string, builder: AccessoryBuilder, options?: {
+        removeOldClothingAccessories?: boolean;
+    }): void;
     static LoadUserOutfit(outfit: OutfitDto, builder: AccessoryBuilder, options?: {
         removeOldClothingAccessories?: boolean;
     }): void;

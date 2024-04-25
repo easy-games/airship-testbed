@@ -15210,6 +15210,7 @@ interface BridgeConstructor {
     GetCurrentFPS(): number;
     GetMonoRam(): number;
     GetReservedRam(): number;
+    GetScene(sceneName: string): Scene;
     GetVolume(): number;
     IsFullScreen(): boolean;
     LoadScene(sceneName: string, restartLuau: boolean): void;
