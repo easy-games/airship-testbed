@@ -211,20 +211,25 @@ export class CameraSystem {
 	}
 
 	private UpdateFOV(cameraType: CharacterCameraType, newFOV: number) {
-		let camerasToUpdate: Camera[] = [];
-		switch (cameraType) {
-			case CharacterCameraType.VIEW_MODEL:
-				camerasToUpdate = [this.viewmodelCamera];
-				break;
-			case CharacterCameraType.FIRST_PERSON:
-			case CharacterCameraType.THIRD_PERSON:
-				camerasToUpdate = [this.mainCamera, this.uiCamera];
-				break;
-		}
+		const camerasToUpdate = this.GetCamerasByType(cameraType);
 
 		for (const camera of camerasToUpdate) {
 			camera.fieldOfView = newFOV;
 		}
+	}
+
+	private GetCamerasByType(cameraType: CharacterCameraType) {
+		let relevantCameras: Camera[] = [];
+		switch (cameraType) {
+			case CharacterCameraType.VIEW_MODEL:
+				relevantCameras = [this.viewmodelCamera];
+				break;
+			case CharacterCameraType.FIRST_PERSON:
+			case CharacterCameraType.THIRD_PERSON:
+				relevantCameras = [this.mainCamera, this.uiCamera];
+				break;
+		}
+		return relevantCameras;
 	}
 
 	/**
@@ -238,5 +243,9 @@ export class CameraSystem {
 		return () => {
 			this.updateTransformCallbacks.delete(callback);
 		};
+	}
+
+	public GetFOV(cameraType: CharacterCameraType) {
+		return this.GetCamerasByType(cameraType)[0].fieldOfView;
 	}
 }
