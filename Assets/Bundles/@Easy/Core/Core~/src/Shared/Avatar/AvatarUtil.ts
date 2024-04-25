@@ -3,6 +3,7 @@ import { RandomUtil } from "Shared/Util/RandomUtil";
 import { CoreLogger } from "../Logger/CoreLogger";
 import { ColorUtil } from "../Util/ColorUtil";
 import { AvatarPlatformAPI } from "./AvatarPlatformAPI";
+import out from "@easy-games/unity-flamework-transformer";
 
 export class AvatarUtil {
 	// public static readonly defaultAccessoryOutfitPath =
@@ -197,6 +198,17 @@ export class AvatarUtil {
 	public static LoadDefaultOutfit(builder: AccessoryBuilder) {
 		if (this.defaultOutfit) {
 			builder.EquipAccessoryOutfit(this.defaultOutfit, true);
+		}
+	}
+
+	public static LoadPlayersEquippedOutfit(
+		playerId: string,
+		builder: AccessoryBuilder,
+		options: { removeOldClothingAccessories?: boolean } = {},
+	) {
+		let outfit = AvatarPlatformAPI.GetPlayerEquippedOutfit(playerId);
+		if (outfit) {
+			this.LoadUserOutfit(outfit, builder, options);
 		}
 	}
 
