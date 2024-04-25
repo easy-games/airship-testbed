@@ -54,7 +54,6 @@ export default class ProximityPrompt extends AirshipBehaviour {
 
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnClickEvent(this.button.gameObject, () => {
-				print("clicked!");
 				this.Activate();
 			}),
 		);
@@ -116,10 +115,13 @@ export default class ProximityPrompt extends AirshipBehaviour {
 			this.canvas.transform.localScale = Vector3.zero;
 			this.canvas.enabled = false;
 		} else {
-			this.canvas.transform.TweenLocalScale(Vector3.zero, 0.18).SetEaseQuadOut();
+			const tween = this.canvas.transform.TweenLocalScale(Vector3.zero, 0.18).SetEaseQuadOut();
 			let interupt = false;
 			this.shownBin.Add(() => {
 				interupt = true;
+				if (!tween.IsDestroyed()) {
+					tween.Cancel();
+				}
 			});
 			task.delay(0.18, () => {
 				if (!interupt) {
@@ -133,6 +135,7 @@ export default class ProximityPrompt extends AirshipBehaviour {
 	public Show(): void {
 		if (this.shown) return;
 		this.shown = true;
+		this.shownBin.Clean();
 
 		this.canvas.enabled = true;
 		this.canvas.transform.localScale = Vector3.zero;
