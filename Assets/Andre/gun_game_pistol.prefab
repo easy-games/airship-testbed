@@ -116,13 +116,13 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 0.5464048, b: 0, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-  - materialColor: {r: 1, g: 0.78481716, b: 0.07075471, a: 1}
+  - materialColor: {r: 0.9716981, g: 0.7061463, b: 0, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-  - materialColor: {r: 0.4022784, g: 0.6710126, b: 0.754717, a: 1}
+  - materialColor: {r: 0, g: 0.47062254, b: 0.5283019, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-  - materialColor: {r: 0.03773582, g: 0.034353837, b: 0.034353837, a: 1}
+  - materialColor: {r: 0, g: 0, b: 0, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
   - materialColor: {r: 1, g: 0.48200065, b: 0, a: 1}

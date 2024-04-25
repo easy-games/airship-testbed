@@ -60,19 +60,9 @@ export declare class AirshipInputSingleton implements OnStart {
      *
      */
     private actionToMobileButtonTable;
-    /**
-     *
-     */
     preferredControls: PreferredControls;
     constructor();
     OnStart(): void;
-    /**
-     *
-     * @param actionName
-     * @param parent
-     * @param config
-     * @returns
-     */
     CreateProximityPrompt(actionName: string, parent?: Transform, config?: {
         primaryText?: string;
         secondaryText?: string;

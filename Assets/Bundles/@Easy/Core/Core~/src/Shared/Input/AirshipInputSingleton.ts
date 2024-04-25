@@ -15,7 +15,6 @@ import { InputActionEvent } from "./InputActionEvent";
 import { ActionInputType, InputUtil, KeyType } from "./InputUtil";
 import { MobileButtonConfig } from "./Mobile/MobileButton";
 import ProximityPrompt from "./ProximityPrompts/ProximityPrompt";
-import { CoreIcon } from "./UI/CoreIcon";
 
 @Controller({})
 @Service({})
@@ -74,9 +73,7 @@ export class AirshipInputSingleton implements OnStart {
 	 *
 	 */
 	private actionToMobileButtonTable = new Map<string, GameObject[]>();
-	/**
-	 *
-	 */
+
 	public preferredControls = new PreferredControls();
 
 	constructor() {
@@ -122,18 +119,11 @@ export class AirshipInputSingleton implements OnStart {
 			Airship.input.CreateMobileButton("Jump", new Vector2(-220, 180));
 			// Airship.input.CreateMobileButton("UseItem", new Vector2(-250, 490));
 			Airship.input.CreateMobileButton("Crouch", new Vector2(-140, 340), {
-				icon: CoreIcon.CHEVRON_DOWN,
+				icon: "chevron-down-solid",
 			});
 		}
 	}
 
-	/**
-	 *
-	 * @param actionName
-	 * @param parent
-	 * @param config
-	 * @returns
-	 */
 	public CreateProximityPrompt(
 		actionName: string,
 		parent?: Transform,
@@ -155,7 +145,7 @@ export class AirshipInputSingleton implements OnStart {
 			);
 		}
 		const prompt = go.GetAirshipComponent<ProximityPrompt>()!;
-		prompt.actionName = actionName.lower();
+		prompt.actionName = actionName;
 		if (config?.primaryText !== undefined) {
 			prompt.SetPrimaryText(config.primaryText);
 		}
@@ -235,7 +225,6 @@ export class AirshipInputSingleton implements OnStart {
 	public CreateMobileButton(name: string, anchoredPosition: Vector2, config?: MobileButtonConfig): void {
 		const mobileButton = Object.Instantiate(this.mobileButtonPrefab);
 		mobileButton.transform.SetParent(this.mobileControlsContainer.transform);
-		const lowerName = name.lower();
 
 		const rect = mobileButton.GetComponent<RectTransform>()!;
 		rect.localScale = new Vector3(config?.scale?.x ?? 1, config?.scale?.y ?? 1, 1);
@@ -256,14 +245,14 @@ export class AirshipInputSingleton implements OnStart {
 
 		CanvasAPI.OnPointerEvent(mobileButton, (dir) => {
 			if (dir === PointerDirection.DOWN) {
-				this.actionDownState.add(lowerName);
-				const actionDownSignals = this.actionDownSignals.get(lowerName);
+				this.actionDownState.add(name);
+				const actionDownSignals = this.actionDownSignals.get(name);
 				if (!actionDownSignals) return;
 				const inactiveSignalIndices = [];
 				let signalIndex = 0;
 				for (const signal of actionDownSignals) {
 					if (signal.HasConnections()) {
-						signal.Fire(new InputActionEvent(lowerName, false));
+						signal.Fire(new InputActionEvent(name, false));
 					} else {
 						inactiveSignalIndices.push(signalIndex);
 					}
@@ -271,14 +260,14 @@ export class AirshipInputSingleton implements OnStart {
 				}
 				this.ClearInactiveSignals(inactiveSignalIndices, actionDownSignals);
 			} else if (dir === PointerDirection.UP) {
-				this.actionDownState.delete(lowerName);
-				const actionUpSignals = this.actionUpSignals.get(lowerName);
+				this.actionDownState.delete(name);
+				const actionUpSignals = this.actionUpSignals.get(name);
 				if (!actionUpSignals) return;
 				const inactiveSignalIndices = [];
 				let signalIndex = 0;
 				for (const signal of actionUpSignals) {
 					if (signal.HasConnections()) {
-						signal.Fire(new InputActionEvent(lowerName, false));
+						signal.Fire(new InputActionEvent(name, false));
 					} else {
 						inactiveSignalIndices.push(signalIndex);
 					}
@@ -288,9 +277,9 @@ export class AirshipInputSingleton implements OnStart {
 			}
 		});
 
-		const mobileButtonsForAction = this.actionToMobileButtonTable.get(lowerName) ?? [];
+		const mobileButtonsForAction = this.actionToMobileButtonTable.get(name) ?? [];
 		mobileButtonsForAction.push(mobileButton);
-		this.actionToMobileButtonTable.set(lowerName, mobileButtonsForAction);
+		this.actionToMobileButtonTable.set(name, mobileButtonsForAction);
 	}
 
 	/**
@@ -298,18 +287,17 @@ export class AirshipInputSingleton implements OnStart {
 	 * @param name
 	 */
 	public HideMobileButtons(name: string): void {
-		const lowerName = name.lower();
-		const mobileButtonsForAction = this.actionToMobileButtonTable.get(lowerName) ?? [];
+		const mobileButtonsForAction = this.actionToMobileButtonTable.get(name) ?? [];
 		for (const mobileButton of mobileButtonsForAction) {
 			mobileButton.SetActive(false);
 		}
-		const isDown = this.actionDownState.has(lowerName);
+		const isDown = this.actionDownState.has(name.lower());
 		if (isDown) {
-			const upSignals = this.actionUpSignals.get(lowerName) ?? [];
+			const upSignals = this.actionUpSignals.get(name.lower()) ?? [];
 			for (const signal of upSignals) {
-				signal.Fire(new InputActionEvent(lowerName, false));
+				signal.Fire(new InputActionEvent(name, false));
 			}
-			this.actionDownState.delete(lowerName);
+			this.actionDownState.delete(name);
 		}
 	}
 	/**

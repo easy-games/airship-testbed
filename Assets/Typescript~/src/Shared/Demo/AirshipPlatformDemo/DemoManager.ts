@@ -21,6 +21,16 @@ export default class DemoManager extends AirshipBehaviour {
 	public cubePrefab!: GameObject;
 
 	override Start(): void {
+		ItemUtil.RegisterItem("sniper", {
+			displayName: "Sniper",
+			accessoryPaths: ["Shared/Resources/Items/Sniper.prefab"],
+			holdConfig: {
+				viewmodel: {
+					idleAnim: ["Shared/Resources/Items/ScopedAKADSLoop.anim"],
+				},
+			},
+		});
+
 		Airship.input.CreateAction("interact", Binding.Key(Key.F));
 
 		const p = Airship.input.CreateProximityPrompt("interact", undefined, {
@@ -83,20 +93,21 @@ export default class DemoManager extends AirshipBehaviour {
 			// spawn ball
 			task.spawn(() => {
 				for (let i = 0; i < 5; i++) {
-					const ballGo = Object.Instantiate<GameObject>(
+					const ballGo = Object.Instantiate(
 						this.ballPrefab,
 						this.ballSpawnPoint.position,
 						this.ballSpawnPoint.rotation,
 					);
 					NetworkUtil.Spawn(ballGo);
 
-					const cubeGo = Object.Instantiate<GameObject>(
+					const cubeGo = Object.Instantiate(
 						this.cubePrefab,
-						ballGo.transform.position.add(new Vector3(0, 1, 0)),
+						new Vector3(0, 1, 0),
 						Quaternion.identity,
+						ballGo.transform,
 					);
+					cubeGo.transform.localPosition = new Vector3(0, 1, 0);
 					NetworkUtil.Spawn(cubeGo);
-					cubeGo.GetComponent<NetworkObject>()!.SetParent(ballGo.GetComponent<NetworkObject>()!);
 					task.wait(1);
 				}
 			});
