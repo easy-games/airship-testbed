@@ -36,6 +36,15 @@ export class AvatarPlatformAPI {
 		}
 	}
 
+	public static GetPlayerEquippedOutfit(playerId: string): OutfitDto | undefined {
+		const res = InternalHttpManager.GetAsync(this.GetHttpUrl(`/outfits/uid/${playerId}/equipped`));
+		if (res.success && res.data && res.data !== "") {
+			Debug.LogError("failed to load user outfit: " + res.error);
+			return;
+		}
+		return DecodeJSON<OutfitDto>(res.data);
+	}
+
 	public static GetAvatarOutfit(outfitId: string): OutfitDto | undefined {
 		this.Log("GetAvatarOutfit");
 		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/outfit-id/${outfitId}`));

@@ -49,20 +49,19 @@ export class FirstPersonCameraSystem {
 	//public spineLerpModMax = 75;
 	//public spineLerpMaxAngle = 75;
 
-	// Head offset from spine for viewmodel camera position
-	private headSpinePosOffset = new Vector3(-3.40097417e-9, 0.541525066, 0.0108257439).mul(-1);
-	// private headSpineRotOffset = new Quaternion(0.0456337668, -2.40711387e-7, -1.3870497e-9, 0.99895823);
-
 	private inFirstPerson;
 	private bin: Bin;
 	private currentTime = 0.01;
 	private viewmodelController: ViewmodelController;
+	/* Store default spine rotation, used to offset head from spine */
+	private defaultSpineRotation: Quaternion;
 
 	public constructor(
 		public readonly character: Character,
 		startInFirstPerson: boolean,
 	) {
 		this.viewmodelController = Dependency<ViewmodelController>();
+		this.defaultSpineRotation = this.viewmodelController.rig.spine.transform.localRotation;
 
 		this.cameras = CameraReferences.Instance();
 
@@ -124,19 +123,25 @@ export class FirstPersonCameraSystem {
 		);
 
 		//Get the cameras transform
-		const transform = this.cameras.fpsCamera.transform;
-		// let headLookPosition = transform.position;
-		// let headLookRotation = transform.rotation.mul(headBobRotationOffset);
-		let targetTansform = this.viewmodelController.rig.spine;
+		const camTransform = this.cameras.fpsCamera.transform;
+		const spineTransform = this.viewmodelController.rig.spine;
+		const headTransform = this.viewmodelController.rig.head;
+		const headLocalRotation = headTransform.localRotation;
+		const camRotation = camTransform.rotation;
 
-		const position = transform.TransformPoint(this.headSpinePosOffset);
-		const rotation = transform.rotation;
+		// Offset from head position (where the camera is) to where the spine should be
+		const offset = camRotation.mul(Quaternion.Inverse(headLocalRotation)).mul(headTransform.localPosition);
+		// Invsere spine->head offset to find spine position from head
+		const position = camTransform.position.add(offset.mul(-1));
+		// Undo head rotation from camera rotation to get spine forward
+		const forwardVec = camRotation.mul(Quaternion.Inverse(headLocalRotation)).mul(Vector3.forward);
+		const rotation = Quaternion.LookRotation(forwardVec, offset);
 
 		const data = { position, rotation };
 		Dependency<AirshipCharacterCameraSingleton>().onViewModelUpdate.Fire(data);
 
-		targetTansform.position = data.position;
-		targetTansform.rotation = data.rotation;
+		spineTransform.position = data.position;
+		spineTransform.rotation = data.rotation;
 
 		//Animated to the look direction
 		// let diffAngle = Quaternion.Angle(this.trackedHeadRotation, headLookRotation);
