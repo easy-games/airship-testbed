@@ -83,6 +83,8 @@ export class CameraSystem {
 			this.transform.SetPositionAndRotation(camTransform.position, camTransform.rotation);
 			this.currentMode.OnPostUpdate(this.mainCamera);
 			for (const [cameraType, fovState] of this.fovStateMap) {
+				if (!fovState.fovSpringMoving) continue;
+
 				this.UpdateFOVSpring(cameraType, fovState, dt);
 			}
 		});
