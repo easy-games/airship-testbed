@@ -36,7 +36,7 @@ export class AvatarPlatformAPI {
 		}
 	}
 
-	public static GetPlayerEquippedOutfit(playerId: string): OutfitDto | undefined {
+	public static async GetPlayerEquippedOutfit(playerId: string): Promise<OutfitDto | undefined> {
 		const res = InternalHttpManager.GetAsync(this.GetHttpUrl(`/outfits/uid/${playerId}/equipped`));
 		if (res.success && res.data && res.data !== "") {
 			Debug.LogError("failed to load user outfit: " + res.error);
@@ -45,7 +45,7 @@ export class AvatarPlatformAPI {
 		return DecodeJSON<OutfitDto>(res.data);
 	}
 
-	public static GetAvatarOutfit(outfitId: string): OutfitDto | undefined {
+	public static async GetAvatarOutfit(outfitId: string): Promise<OutfitDto | undefined> {
 		this.Log("GetAvatarOutfit");
 		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/outfit-id/${outfitId}`));
 		if (res.success && res.data && res.data !== "") {
@@ -53,7 +53,7 @@ export class AvatarPlatformAPI {
 		}
 	}
 
-	public static CreateAvatarOutfit(outfit: OutfitDto) {
+	public static async CreateAvatarOutfit(outfit: OutfitDto) {
 		this.Log("CreateAvatarOutfit");
 		let res = InternalHttpManager.PostAsync(this.GetHttpUrl(`outfits`), EncodeJSON(outfit));
 		if (res.success) {
@@ -61,7 +61,7 @@ export class AvatarPlatformAPI {
 		}
 	}
 
-	public static EquipAvatarOutfit(outfitId: string) {
+	public static async EquipAvatarOutfit(outfitId: string) {
 		this.Log("EquipAvatarOutfit");
 		let res = InternalHttpManager.PostAsync(this.GetHttpUrl(`outfits/outfit-id/${outfitId}/equip`));
 		if (res.success) {
@@ -71,7 +71,7 @@ export class AvatarPlatformAPI {
 		}
 	}
 
-	public static GetAccessories() {
+	public static async GetAccessories() {
 		this.Log("GetAccessories");
 		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`accessories/self`));
 		if (res.success) {
@@ -98,7 +98,7 @@ export class AvatarPlatformAPI {
 		return outfit;
 	}
 
-	public static SaveOutfitAccessories(outfitId: string, skinColor: string, instanceIds: string[]) {
+	public static async SaveOutfitAccessories(outfitId: string, skinColor: string, instanceIds: string[]) {
 		this.Log("SaveOutfitAccessories");
 		let res = InternalHttpManager.PatchAsync(
 			this.GetHttpUrl(`outfits/outfit-id/${outfitId}`),
@@ -115,13 +115,13 @@ export class AvatarPlatformAPI {
 		}
 	}
 
-	public static SaveAvatarOutfit(outfit: OutfitDto) {
+	/*public static SaveAvatarOutfit(outfit: OutfitDto) {
 		this.Log("SaveAvatarOutfit");
 		//TODO: Save Outfit to server
 		//InternalHttpManager.PatchAsync(this.GetHttpUrl(`outfits/outfit-id/${outfit.outfitId}`), EncodeJSON(outfit));
-	}
+	}*/
 
-	public static LoadImage(fileId: string) {
+	public static async LoadImage(fileId: string) {
 		let res = InternalHttpManager.GetAsync(this.GetImageUrl(fileId));
 		if (res.success) {
 			return DecodeJSON<AccessoryInstanceDto[]>(res.data);

@@ -78,30 +78,31 @@ export class AvatarUtil {
 	}
 
 	public static DownloadOwnedAccessories() {
-		let acc = AvatarPlatformAPI.GetAccessories();
-		if (acc) {
-			acc.forEach((itemData) => {
-				this.allAvatarClasses.set(itemData.class.classId, itemData.class);
-				//print("Possible item " + itemData.class.name + ": " + itemData.class.classId);
-				let item = this.allAvatarAccessories.get(itemData.class.classId);
-				let foundMatchingItem = false;
-				if (item) {
-					this.AddAvailableAvatarItem(itemData.instanceId, item);
-					foundMatchingItem = true;
-				} else {
-					let faceItem = this.allAvatarFaces.get(itemData.class.classId);
-					if (faceItem) {
-						faceItem.serverInstanceId = itemData.instanceId;
-						this.AddAvailableFaceItem(faceItem);
+		AvatarPlatformAPI.GetAccessories().then((acc) => {
+			if (acc) {
+				acc.forEach((itemData) => {
+					this.allAvatarClasses.set(itemData.class.classId, itemData.class);
+					//print("Possible item " + itemData.class.name + ": " + itemData.class.classId);
+					let item = this.allAvatarAccessories.get(itemData.class.classId);
+					let foundMatchingItem = false;
+					if (item) {
+						this.AddAvailableAvatarItem(itemData.instanceId, item);
 						foundMatchingItem = true;
+					} else {
+						let faceItem = this.allAvatarFaces.get(itemData.class.classId);
+						if (faceItem) {
+							faceItem.serverInstanceId = itemData.instanceId;
+							this.AddAvailableFaceItem(faceItem);
+							foundMatchingItem = true;
+						}
 					}
-				}
 
-				if (!foundMatchingItem) {
-					print("Unpaired Server Item " + itemData.class.name + ": " + itemData.class.classId);
-				}
-			});
-		}
+					if (!foundMatchingItem) {
+						print("Unpaired Server Item " + itemData.class.name + ": " + itemData.class.classId);
+					}
+				});
+			}
+		});
 	}
 
 	public static GetClass(classId: string) {
@@ -206,10 +207,11 @@ export class AvatarUtil {
 		builder: AccessoryBuilder,
 		options: { removeOldClothingAccessories?: boolean } = {},
 	) {
-		let outfit = AvatarPlatformAPI.GetPlayerEquippedOutfit(playerId);
-		if (outfit) {
-			this.LoadUserOutfit(outfit, builder, options);
-		}
+		AvatarPlatformAPI.GetPlayerEquippedOutfit(playerId).then((outfit) => {
+			if (outfit) {
+				this.LoadUserOutfit(outfit, builder, options);
+			}
+		});
 	}
 
 	public static LoadUserOutfit(
