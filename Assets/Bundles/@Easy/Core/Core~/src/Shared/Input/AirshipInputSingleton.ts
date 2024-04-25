@@ -1,5 +1,6 @@
+import { ClientSettingsController } from "@Easy/Core/Client/MainMenuControllers/Settings/ClientSettingsController";
 import ObjectUtils from "@easy-games/unity-object-utils";
-import { Controller, OnStart, Service } from "Shared/Flamework";
+import { Controller, Dependency, OnStart, Service } from "Shared/Flamework";
 import { Airship } from "../Airship";
 import { AssetCache } from "../AssetCache/AssetCache";
 import { CoreContext } from "../CoreClientContext";
@@ -73,6 +74,8 @@ export class AirshipInputSingleton implements OnStart {
 	 *
 	 */
 	private actionToMobileButtonTable = new Map<string, GameObject[]>();
+	/** Sensitivty multiplier maintained by game */
+	private gameSensitivityMultiplier = 1;
 
 	public preferredControls = new PreferredControls();
 
@@ -697,5 +700,24 @@ export class AirshipInputSingleton implements OnStart {
 		for (const index of signalIndices) {
 			signals.remove(index);
 		}
+	}
+
+	/** Returns mouse sensitivity based on player's setting & game's sensitivity multiplier. */
+	public GetMouseSensitivity() {
+		return this.gameSensitivityMultiplier * Dependency<ClientSettingsController>().GetMouseSensitivity();
+	}
+
+	/** Returns touch sensitivity based on player's setting & game's sensitivity multiplier. */
+	public GetTouchSensitivity() {
+		return this.gameSensitivityMultiplier * Dependency<ClientSettingsController>().GetTouchSensitivity();
+	}
+
+	/**
+	 * Register a multiplier on user's set sensitivity
+	 *
+	 * @param sensitivity Set to 1 for no effect, >1 for increased sensitivty.
+	 */
+	public SetSensitivityMultiplier(sensitivity: number) {
+		this.gameSensitivityMultiplier = sensitivity;
 	}
 }

@@ -60,6 +60,8 @@ export declare class AirshipInputSingleton implements OnStart {
      *
      */
     private actionToMobileButtonTable;
+    /** Sensitivty multiplier maintained by game */
+    private gameSensitivityMultiplier;
     preferredControls: PreferredControls;
     constructor();
     OnStart(): void;
@@ -163,4 +165,14 @@ export declare class AirshipInputSingleton implements OnStart {
      * @param signals
      */
     private ClearInactiveSignals;
+    /** Returns mouse sensitivity based on player's setting & game's sensitivity multiplier. */
+    GetMouseSensitivity(): number;
+    /** Returns touch sensitivity based on player's setting & game's sensitivity multiplier. */
+    GetTouchSensitivity(): number;
+    /**
+     * Register a multiplier on user's set sensitivity
+     *
+     * @param sensitivity Set to 1 for no effect, >1 for increased sensitivty.
+     */
+    SetSensitivityMultiplier(sensitivity: number): void;
 }
