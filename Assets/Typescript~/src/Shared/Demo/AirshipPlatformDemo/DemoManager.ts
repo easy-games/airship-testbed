@@ -21,6 +21,16 @@ export default class DemoManager extends AirshipBehaviour {
 	public cubePrefab!: GameObject;
 
 	override Start(): void {
+		ItemUtil.RegisterItem("sniper", {
+			displayName: "Sniper",
+			accessoryPaths: ["Shared/Resources/Items/Sniper.prefab"],
+			holdConfig: {
+				viewmodel: {
+					idleAnim: ["Shared/Resources/Items/ScopedAKADSLoop.anim"],
+				},
+			},
+		});
+
 		Airship.input.CreateAction("interact", Binding.Key(Key.F));
 
 		const p = Airship.input.CreateProximityPrompt("interact", undefined, {
