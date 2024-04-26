@@ -1,13 +1,14 @@
 import { ClientSettingsController } from "Client/MainMenuControllers/Settings/ClientSettingsController";
 import { Dependency } from "Shared/Flamework";
+import { Game } from "Shared/Game";
 import { Keyboard, Mouse } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
 import { MathUtil } from "Shared/Util/MathUtil";
 import { SignalPriority } from "Shared/Util/Signal";
 import { Spring } from "Shared/Util/Spring";
+import { Airship } from "../../Airship";
 import { CameraMode } from "../CameraMode";
 import { CameraTransform } from "../CameraTransform";
-import { Game } from "Shared/Game";
 
 const SPEED = 12;
 
@@ -147,7 +148,7 @@ export class FlyCameraMode extends CameraMode {
 		if (rightClick) {
 			const sensFovScalar = MathUtil.Map(this.currentFov, MIN_FOV, MAX_FOV, 0.2, 1);
 			const mouseDelta = this.mouse.GetDelta();
-			const sensitivity = this.clientSettingsController.GetMouseSensitivity() * MOUSE_SENS_SCALAR * sensFovScalar;
+			const sensitivity = Airship.input.GetMouseSensitivity() * MOUSE_SENS_SCALAR * sensFovScalar;
 			this.xRotSpring.goal = new Vector3(
 				math.clamp(this.xRotSpring.goal.x + mouseDelta.y * sensitivity, MIN_ROT_X, MAX_ROT_X),
 				0,

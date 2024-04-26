@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 360350af892321345afcc42f9bbb6c52
+guid: a05e8bb3cebedda498adab6df6dc8171
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -28,7 +28,7 @@ TextureImporter:
   ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
-  cubemapConvolution: 0
+  cubemapConvolution: 1
   seamlessCubemap: 0
   textureFormat: 1
   maxTextureSize: 2048
@@ -55,7 +55,7 @@ TextureImporter:
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
   textureType: 0
-  textureShape: 1
+  textureShape: 2
   singleChannelComponent: 0
   flipbookRows: 1
   flipbookColumns: 1
@@ -149,5 +149,5 @@ TextureImporter:
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
-  assetBundleName: '@easy/core_shared/resources'
+  assetBundleName: 
   assetBundleVariant: 

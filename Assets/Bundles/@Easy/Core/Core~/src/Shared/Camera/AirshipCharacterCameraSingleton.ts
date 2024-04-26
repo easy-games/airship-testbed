@@ -121,6 +121,14 @@ export class AirshipCharacterCameraSingleton implements OnStart {
 	}
 
 	/**
+	 * Returns the camera's field-of-view.
+	 */
+	public GetFOV(targetCamera: CharacterCameraType) {
+		assert(this.cameraSystem, "Failed to GetFOV: No camera system setup");
+		return this.cameraSystem.GetFOV(targetCamera);
+	}
+
+	/**
 	 * @internal
 	 */
 	public UpdateLocalCharacterState(stateUpdate: Partial<CharacterStateSnapshot>) {

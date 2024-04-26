@@ -56,9 +56,10 @@ Material:
     m_Floats:
     - TRIPLANAR_STYLE: 0
     - _EmissiveMix: 1
-    - _MetalOverride: 0.803
-    - _RoughOverride: 0.672
-    - _TriplanarScale: 1
+    - _MRSliderOverrideMix: 1
+    - _MetalOverride: 0.96
+    - _RoughOverride: 0.633
+    - _TriplanarScale: 0
     m_Colors: []
   m_BuildTextureStacks: []
   m_AllowLocking: 1

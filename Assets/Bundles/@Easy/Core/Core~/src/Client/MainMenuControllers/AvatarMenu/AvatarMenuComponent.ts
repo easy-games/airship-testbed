@@ -753,17 +753,18 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			accessoryIds.push(this.selectedFaceId);
 		}
 
-		this.currentUserOutfit = AvatarPlatformAPI.SaveOutfitAccessories(
-			this.currentUserOutfit.outfitId,
-			this.selectedColor,
-			accessoryIds,
+		AvatarPlatformAPI.SaveOutfitAccessories(this.currentUserOutfit.outfitId, this.selectedColor, accessoryIds).then(
+			(value) => {
+				this.currentUserOutfit = value;
+				if (this.outfits && this.currentUserOutfit) {
+					this.outfits[this.currentUserOutfitIndex] = this.currentUserOutfit;
+				}
+				if (Game.coreContext === CoreContext.GAME) {
+					CoreNetwork.ClientToServer.ChangedOutfit.client.FireServer();
+				}
+			},
 		);
-		if (this.outfits && this.currentUserOutfit) {
-			this.outfits[this.currentUserOutfitIndex] = this.currentUserOutfit;
-		}
-		if (Game.coreContext === CoreContext.GAME) {
-			CoreNetwork.ClientToServer.ChangedOutfit.client.FireServer();
-		}
+
 		this.saveBtn?.SetDisabled(true);
 		this.saveBtn?.SetLoading(false);
 	}

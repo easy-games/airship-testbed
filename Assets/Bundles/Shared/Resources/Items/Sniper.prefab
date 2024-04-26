@@ -1,0 +1,1080 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &835871358900886556
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1077840494292089298}
+  - component: {fileID: 5581588409028131227}
+  - component: {fileID: 5102371051983692626}
+  - component: {fileID: 5973806179283865911}
+  m_Layer: 0
+  m_Name: Cylinder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1077840494292089298
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 835871358900886556}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
+  m_LocalPosition: {x: -0.1284, y: 0.2664, z: 0.0046}
+  m_LocalScale: {x: 0.109034516, y: 0.06925109, z: 0.109034516}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8661584535676107933}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: -90}
+--- !u!33 &5581588409028131227
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 835871358900886556}
+  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &5102371051983692626
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 835871358900886556}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a3b00a304876a428aa2691a061459808, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &5973806179283865911
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 835871358900886556}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5000001
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
+--- !u!1 &1818706248570231645
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8661584535676107933}
+  - component: {fileID: 8290823414237484024}
+  - component: {fileID: -3265895300672210944}
+  - component: {fileID: -4629353129247670260}
+  - component: {fileID: -3751819842887536843}
+  m_Layer: 0
+  m_Name: Sniper
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8661584535676107933
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1818706248570231645}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.34169623, y: -0.44349185, z: -0.64931536, w: 0.5147313}
+  m_LocalPosition: {x: -0.030713426, y: 0.03895095, z: 0.058610607}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5032881947920169511}
+  - {fileID: 397297693963099881}
+  - {fileID: 5300763438831988038}
+  - {fileID: 3194284977108388132}
+  - {fileID: 1077840494292089298}
+  - {fileID: 911872109808341542}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: -12.954, y: -67.489, z: -94.516}
+--- !u!114 &8290823414237484024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1818706248570231645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b74917b00f1d374c9a7136917a61ddf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serverClassId: 
+  accessorySlot: 6
+  visibilityMode: 2
+  skinnedToCharacter: 0
+--- !u!114 &-3265895300672210944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1818706248570231645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_fileFullPath: Assets/Bundles/@EmptyShell/Guns/Shared/Resources/TS/Component/Gun/GunSchema.lua
+  m_error: 0
+  m_yielded: 0
+  m_assetPath: 
+  m_canResume: 0
+  m_asyncYield: 0
+  m_onUpdateHandle: -1
+  m_onLateUpdateHandle: -1
+  m_shortFileName: 
+  m_metadata:
+    name: GunSchema
+    decorators: []
+    properties:
+    - name: Damage
+      type: number
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"Core Configuration"'
+      - name: Tooltip
+        parameters:
+        - type: string
+          serializedValue: '"How much damage gun does when it hits an entity."'
+      nullable: 0
+      serializedValue: 90
+      serializedObject: {fileID: 0}
+      modified: 1
+    - name: MaxSpreadAngleDeg
+      type: number
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators:
+      - name: Tooltip
+        parameters:
+        - type: string
+          serializedValue: '"Gun bloom in degrees."'
+      nullable: 0
+      serializedValue: 0
+      serializedObject: {fileID: 0}
+      modified: 1
+    - name: Automatic
+      type: boolean
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators:
+      - name: Tooltip
+        parameters:
+        - type: string
+          serializedValue: '"Whether or not gun is automatic."'
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: FireRate
+      type: number
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators:
+      - name: Tooltip
+        parameters:
+        - type: string
+          serializedValue: '"How often gun can fire in seconds."'
+      nullable: 0
+      serializedValue: 2
+      serializedObject: {fileID: 0}
+      modified: 1
+    - name: MagazineSize
+      type: number
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators:
+      - name: Tooltip
+        parameters:
+        - type: string
+          serializedValue: '"How many bullets per magazine."'
+      nullable: 0
+      serializedValue: 5
+      serializedObject: {fileID: 0}
+      modified: 1
+    - name: EquipDelay
+      type: number
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators:
+      - name: Tooltip
+        parameters:
+        - type: string
+          serializedValue: '"How long in seconds until gun can fire after equip."'
+      nullable: 0
+      serializedValue: 1.25
+      serializedObject: {fileID: 0}
+      modified: 1
+    - name: ReloadTime
+      type: number
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators:
+      - name: Tooltip
+        parameters:
+        - type: string
+          serializedValue: '"How long in seconds it takes to reload gun."'
+      nullable: 0
+      serializedValue: 3
+      serializedObject: {fileID: 0}
+      modified: 1
+    displayName: 
+--- !u!114 &-4629353129247670260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1818706248570231645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_fileFullPath: Assets/Bundles/@EmptyShell/Guns/Shared/Resources/TS/Component/Gun/GunEffects.lua
+  m_error: 0
+  m_yielded: 0
+  m_assetPath: 
+  m_canResume: 0
+  m_asyncYield: 0
+  m_onUpdateHandle: -1
+  m_onLateUpdateHandle: -1
+  m_shortFileName: 
+  m_metadata:
+    name: GunEffects
+    decorators: []
+    properties:
+    - name: ReloadSound
+      type: object
+      objectType: AudioClip
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"Sound Configuration"'
+      - name: Tooltip
+        parameters:
+        - type: string
+          serializedValue: '"Gun reload sound."'
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 8300000, guid: 21d2ac95ccc5b3b45a84cf6642aaaadf, type: 3}
+      modified: 1
+    - name: FireSounds
+      type: Array
+      objectType: 
+      items:
+        type: object
+        objectType: AudioClip
+        serializedItems:
+        - 
+        objectRefs:
+        - {fileID: 8300000, guid: 5e4089a8255b14326874a33c98439fcb, type: 3}
+      refPath: 
+      decorators:
+      - name: Tooltip
+        parameters:
+        - type: string
+          serializedValue: '"Sounds played when gun is fired. If more than one sound
+            is provided, a sound is randomly chosen."'
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 1
+    - name: BulletCasingSounds
+      type: Array
+      objectType: 
+      items:
+        type: object
+        objectType: AudioClip
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators:
+      - name: Tooltip
+        parameters:
+        - type: string
+          serializedValue: '"Bullet casing sound played slightly after shoot sound"'
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 1
+    - name: ImpactParticle
+      type: object
+      objectType: GameObject
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"Effect Configuration"'
+      - name: Tooltip
+        parameters:
+        - type: string
+          serializedValue: '"Particle effect that is played when gun hits a surface."'
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 4732771614933931986, guid: e73e1f13ebecc4f5bb429a94f319a204, type: 3}
+      modified: 1
+    - name: BulletTracer
+      type: object
+      objectType: GameObject
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators:
+      - name: Tooltip
+        parameters:
+        - type: string
+          serializedValue: '"Bullet tracer effect."'
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 2920973040023870176, guid: a808dc78dfd380e4b9cc5d830fa88d4b, type: 3}
+      modified: 1
+    - name: MuzzleFlash
+      type: object
+      objectType: GameObject
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators:
+      - name: Tooltip
+        parameters:
+        - type: string
+          serializedValue: '"Muzzle flash effect."'
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 5157291449046292993, guid: cf8e9c7f7e804c748a9c1dfe2e4269da, type: 3}
+      modified: 1
+    - name: IdleAnimationFP
+      type: object
+      objectType: AnimationClip
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"Animation Configuration"'
+      - name: Tooltip
+        parameters:
+        - type: string
+          serializedValue: '"First person animation played in idle state."'
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 7400000, guid: 6572e52be48b64ef39a08ce33205d86d, type: 2}
+      modified: 1
+    - name: WalkAnimationFP
+      type: object
+      objectType: AnimationClip
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators:
+      - name: Tooltip
+        parameters:
+        - type: string
+          serializedValue: '"First person animation played while walking."'
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: ShootAnimationFP
+      type: object
+      objectType: AnimationClip
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators:
+      - name: Tooltip
+        parameters:
+        - type: string
+          serializedValue: '"First person animation played when firing gun."'
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 7400000, guid: 87c60d845fc4c4a688eca20760fe76c8, type: 2}
+      modified: 1
+    - name: SprintLoopAnimationFP
+      type: object
+      objectType: AnimationClip
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators:
+      - name: Tooltip
+        parameters:
+        - type: string
+          serializedValue: '"First person animation played when sprint loops."'
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 7400000, guid: 4e44d41e852fc3a449a28b657bbd1039, type: 2}
+      modified: 1
+    - name: ReloadAnimationFP
+      type: object
+      objectType: AnimationClip
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators:
+      - name: Tooltip
+        parameters:
+        - type: string
+          serializedValue: '"First person animation played when reloading gun."'
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 7400000, guid: f9e2009c4c082f840aec4f5d1a1eb13b, type: 2}
+      modified: 1
+    - name: ScopeAnimationFP
+      type: object
+      objectType: AnimationClip
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators:
+      - name: Tooltip
+        parameters:
+        - type: string
+          serializedValue: '"First person animation played when scoped in."'
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 7400000, guid: 339d286d474824663b0ca8056be4bb7d, type: 2}
+      modified: 1
+    displayName: 
+--- !u!114 &-3751819842887536843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1818706248570231645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d82379a4470c44728b1d1aee2442db2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &3204629670067534322
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5032881947920169511}
+  - component: {fileID: 4273921383160359083}
+  - component: {fileID: 1692546556982227498}
+  - component: {fileID: 9039244468206488198}
+  m_Layer: 0
+  m_Name: AK Body.001
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5032881947920169511
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3204629670067534322}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.7071069, y: 0, z: 0, w: 0.7071067}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8661584535676107933}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &4273921383160359083
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3204629670067534322}
+  m_Mesh: {fileID: 4469088871017381531, guid: b8c3a4109292d44e794d97566612660c, type: 3}
+--- !u!23 &1692546556982227498
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3204629670067534322}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
+  - {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
+  - {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
+  - {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
+  - {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
+  - {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
+  - {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
+  - {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
+  - {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
+  - {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
+  - {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &9039244468206488198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3204629670067534322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - materialColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveMix: 1
+  - materialColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveMix: 1
+  - materialColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveMix: 1
+  - materialColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveMix: 1
+  - materialColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveMix: 1
+  - materialColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveMix: 1
+  - materialColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveMix: 1
+  - materialColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveMix: 1
+  - materialColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveMix: 1
+  - materialColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveMix: 1
+  - materialColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveMix: 1
+  addedByEditorScript: 0
+--- !u!1 &4646968577920040868
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5300763438831988038}
+  - component: {fileID: 8892604875453767570}
+  - component: {fileID: 2364197372028425977}
+  - component: {fileID: 7419166268560185258}
+  m_Layer: 0
+  m_Name: Magazine.001
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5300763438831988038
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4646968577920040868}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.7071069, y: 0, z: 0, w: 0.7071067}
+  m_LocalPosition: {x: -0.21559738, y: 0.051617984, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8661584535676107933}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &8892604875453767570
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4646968577920040868}
+  m_Mesh: {fileID: -2544055758852533965, guid: b8c3a4109292d44e794d97566612660c, type: 3}
+--- !u!23 &2364197372028425977
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4646968577920040868}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
+  - {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &7419166268560185258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4646968577920040868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - materialColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveMix: 1
+  - materialColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveMix: 1
+  addedByEditorScript: 0
+--- !u!1 &5487455546603689362
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 911872109808341542}
+  m_Layer: 0
+  m_Name: Muzzle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &911872109808341542
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5487455546603689362}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -0.928, y: 0.126, z: -0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8661584535676107933}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+--- !u!1 &6038923785531724894
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 397297693963099881}
+  - component: {fileID: 7611129511820047609}
+  - component: {fileID: 3853541932530102376}
+  - component: {fileID: 1693355652635643531}
+  m_Layer: 0
+  m_Name: Bolt.001
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &397297693963099881
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6038923785531724894}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.7071069, y: 0, z: 0, w: 0.7071067}
+  m_LocalPosition: {x: -0.06410005, y: 0.14661084, z: 0.043763943}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8661584535676107933}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &7611129511820047609
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6038923785531724894}
+  m_Mesh: {fileID: -1067657541063529765, guid: b8c3a4109292d44e794d97566612660c, type: 3}
+--- !u!23 &3853541932530102376
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6038923785531724894}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &1693355652635643531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6038923785531724894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - materialColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveMix: 1
+  addedByEditorScript: 0
+--- !u!1 &8432359438053449532
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3194284977108388132}
+  - component: {fileID: 6928366330437864511}
+  - component: {fileID: 2330523703093277554}
+  - component: {fileID: 248204554129989535}
+  m_Layer: 5
+  m_Name: OuterScope
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3194284977108388132
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8432359438053449532}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.47352335, y: -0.5230781, z: 0.47657004, w: 0.5244483}
+  m_LocalPosition: {x: -0.1284, y: 0.2664, z: 0.0046}
+  m_LocalScale: {x: 6.063611, y: 6.0636106, z: 6.0636106}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8661584535676107933}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &6928366330437864511
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8432359438053449532}
+  m_Mesh: {fileID: -541972338762556549, guid: b8c3a4109292d44e794d97566612660c, type: 3}
+--- !u!23 &2330523703093277554
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8432359438053449532}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &248204554129989535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8432359438053449532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - materialColor: {r: 0.122641504, g: 0.09660911, b: 0.09660911, a: 1}
+    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveMix: 1
+  addedByEditorScript: 0
