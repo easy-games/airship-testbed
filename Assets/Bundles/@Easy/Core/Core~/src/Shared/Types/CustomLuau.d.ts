@@ -22,8 +22,8 @@ declare namespace task {
 
 /** The context in which Luau is running. */
 declare const enum LuauContext {
-	Game,
-	Protected,
+	Game = 1 << 0,
+	Protected = 1 << 1,
 }
 
 declare namespace contextbridge {
