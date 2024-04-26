@@ -3538,6 +3538,24 @@ declare const enum ScrollViewMode {
     Horizontal = 1,
     VerticalAndHorizontal = 2,
 }
+declare const enum DetailScatterMode {
+    CoverageMode = 0,
+    InstanceCountMode = 1,
+}
+declare const enum DetailRenderMode {
+    GrassBillboard = 0,
+    VertexLit = 1,
+    Grass = 2,
+}
+declare const enum TerrainLayerSmoothnessSource {
+    Constant = 0,
+    DiffuseAlphaChannel = 1,
+}
+declare const enum TerrainHeightmapSyncControl {
+    None = 0,
+    HeightOnly = 1,
+    HeightAndLod = 2,
+}
 
     
 interface RaycastHit {
@@ -21337,4 +21355,570 @@ interface AirshipLongPressConstructor {
 
 }
 declare const AirshipLongPress: AirshipLongPressConstructor;
+    
+interface BoxCollider2D extends Collider2D {
+    size: Vector2;
+    edgeRadius: number;
+    autoTiling: boolean;
+    center: Vector2;
+
+
+
+}
+    
+interface BoxCollider2DConstructor {
+
+    new(): BoxCollider2D;
+
+
+}
+declare const BoxCollider2D: BoxCollider2DConstructor;
+    
+interface CircleCollider2D extends Collider2D {
+    radius: number;
+    center: Vector2;
+
+
+
+}
+    
+interface CircleCollider2DConstructor {
+
+    new(): CircleCollider2D;
+
+
+}
+declare const CircleCollider2D: CircleCollider2DConstructor;
+    
+interface CapsuleCollider2D extends Collider2D {
+    size: Vector2;
+    direction: CapsuleDirection2D;
+
+
+
+}
+    
+interface CapsuleCollider2DConstructor {
+
+    new(): CapsuleCollider2D;
+
+
+}
+declare const CapsuleCollider2D: CapsuleCollider2DConstructor;
+    
+interface PolygonCollider2D extends Collider2D {
+    useDelaunayMesh: boolean;
+    autoTiling: boolean;
+    points: CSArray<Vector2>;
+    pathCount: number;
+
+
+    CreatePrimitive(sides: number): void;
+    CreatePrimitive(sides: number, scale: Vector2): void;
+    /** Creates as regular primitive polygon with the specified number of sides. */
+    CreatePrimitive(sides: number, scale: Vector2, offset: Vector2): void;
+    /** Gets a path from the Collider by its index. */
+    GetPath(index: number): CSArray<Vector2>;
+    GetPath(index: number, points: CSArray<Vector2>): number;
+    /** Return the total number of points in the polygon in all paths. */
+    GetTotalPointCount(): number;
+    /** Define a path by its constituent points. */
+    SetPath(index: number, points: CSArray<Vector2>): void;
+    SetPath(index: number, points: CSArray<Vector2>): void;
+
+}
+    
+interface PolygonCollider2DConstructor {
+
+    new(): PolygonCollider2D;
+
+
+}
+declare const PolygonCollider2D: PolygonCollider2DConstructor;
+    
+interface CustomCollider2D extends Collider2D {
+    customShapeCount: number;
+    customVertexCount: number;
+
+
+    /** Deletes a specific number of shapes defined by shapeCount starting at shapeIndex along with all associated vertices those shapes use. */
+    ClearCustomShapes(shapeIndex: number, shapeCount: number): void;
+    /** Deletes all the shapes and associated vertices for those shapes from the Collider. */
+    ClearCustomShapes(): void;
+    /** Gets all the physics shapes and vertices in the Collider and places them in the specified PhysicsShapeGroup2D. */
+    GetCustomShapes(physicsShapeGroup: PhysicsShapeGroup2D): number;
+    /** Gets a specified number of physics shapes defined byshapeCount starting at shapeIndex along with all associated vertices those shapes use and places them in the specified PhysicsShapeGroup2D. */
+    GetCustomShapes(physicsShapeGroup: PhysicsShapeGroup2D, shapeIndex: number, shapeCount: number): number;
+    GetCustomShapes(shapes: CSArray<PhysicsShape2D>, vertices: CSArray<Vector2>): number;
+    /** Sets a single shape and all associated shape vertices from the specified physicsShapeGroup into the Collider. */
+    SetCustomShape(physicsShapeGroup: PhysicsShapeGroup2D, srcShapeIndex: number, dstShapeIndex: number): void;
+    SetCustomShape(shapes: CSArray<PhysicsShape2D>, vertices: CSArray<Vector2>, srcShapeIndex: number, dstShapeIndex: number): void;
+    /** Sets all the shapes and vertices in the Collider to those represented by the specified PhysicsShapeGroup2D. */
+    SetCustomShapes(physicsShapeGroup: PhysicsShapeGroup2D): void;
+    SetCustomShapes(shapes: CSArray<PhysicsShape2D>, vertices: CSArray<Vector2>): void;
+
+}
+    
+interface CustomCollider2DConstructor {
+
+    new(): CustomCollider2D;
+
+
+}
+declare const CustomCollider2D: CustomCollider2DConstructor;
+    
+interface EdgeCollider2D extends Collider2D {
+    edgeRadius: number;
+    edgeCount: number;
+    pointCount: number;
+    points: CSArray<Vector2>;
+    useAdjacentStartPoint: boolean;
+    useAdjacentEndPoint: boolean;
+    adjacentStartPoint: Vector2;
+    adjacentEndPoint: Vector2;
+
+
+    GetPoints(points: CSArray<Vector2>): number;
+    /** Reset to a single edge consisting of two points. */
+    Reset(): void;
+    SetPoints(points: CSArray<Vector2>): boolean;
+
+}
+    
+interface EdgeCollider2DConstructor {
+
+    new(): EdgeCollider2D;
+
+
+}
+declare const EdgeCollider2D: EdgeCollider2DConstructor;
+    
+interface TilemapCollider2D extends Collider2D {
+    useDelaunayMesh: boolean;
+    maximumTileChangeCount: number;
+    extrusionFactor: number;
+    hasTilemapChanges: boolean;
+
+
+    /** Processes Tilemap changes for Collider updates immediately, if there are any. */
+    ProcessTilemapChanges(): void;
+
+}
+    
+interface TilemapCollider2DConstructor {
+
+    new(): TilemapCollider2D;
+
+
+}
+declare const TilemapCollider2D: TilemapCollider2DConstructor;
+    
+interface SphereCollider extends Collider {
+    center: Vector3;
+    radius: number;
+
+
+
+}
+    
+interface SphereColliderConstructor {
+
+    new(): SphereCollider;
+
+
+}
+declare const SphereCollider: SphereColliderConstructor;
+    
+interface CapsuleCollider extends Collider {
+    center: Vector3;
+    radius: number;
+    height: number;
+    direction: number;
+
+
+
+}
+    
+interface CapsuleColliderConstructor {
+
+    new(): CapsuleCollider;
+
+
+}
+declare const CapsuleCollider: CapsuleColliderConstructor;
+    
+interface MeshCollider extends Collider {
+    sharedMesh: Mesh;
+    convex: boolean;
+    cookingOptions: MeshColliderCookingOptions;
+    smoothSphereCollisions: boolean;
+    skinWidth: number;
+    inflateMesh: boolean;
+
+
+
+}
+    
+interface MeshColliderConstructor {
+
+    new(): MeshCollider;
+
+
+}
+declare const MeshCollider: MeshColliderConstructor;
+    
+interface WheelCollider extends Collider {
+    center: Vector3;
+    radius: number;
+    suspensionDistance: number;
+    suspensionSpring: JointSpring;
+    suspensionExpansionLimited: boolean;
+    forceAppPointDistance: number;
+    mass: number;
+    wheelDampingRate: number;
+    forwardFriction: WheelFrictionCurve;
+    sidewaysFriction: WheelFrictionCurve;
+    motorTorque: number;
+    brakeTorque: number;
+    steerAngle: number;
+    isGrounded: boolean;
+    rpm: number;
+    sprungMass: number;
+    rotationSpeed: number;
+
+
+    /** Configure vehicle sub-stepping parameters. */
+    ConfigureVehicleSubsteps(speedThreshold: number, stepsBelowThreshold: number, stepsAboveThreshold: number): void;
+    /** Gets ground collision data for the wheel. */
+    GetGroundHit(hit: unknown): boolean;
+    /** Gets the world space pose of the wheel accounting for ground contact, suspension limits, steer angle, and rotation angle (angles in degrees). */
+    GetWorldPose(pos: unknown, quat: unknown): void;
+    /** Reset the sprung masses of the vehicle. */
+    ResetSprungMasses(): void;
+
+}
+    
+interface JointSpring {
+    spring: number;
+    damper: number;
+    targetPosition: number;
+
+
+
+}
+    
+interface WheelFrictionCurve {
+    extremumSlip: number;
+    extremumValue: number;
+    asymptoteSlip: number;
+    asymptoteValue: number;
+    stiffness: number;
+
+
+
+}
+    
+interface WheelColliderConstructor {
+
+    new(): WheelCollider;
+
+
+}
+declare const WheelCollider: WheelColliderConstructor;
+    
+interface TerrainCollider extends Collider {
+    terrainData: TerrainData;
+
+
+
+}
+    
+interface TerrainData extends Object {
+    heightmapWidth: number;
+    heightmapHeight: number;
+    heightmapTexture: RenderTexture;
+    heightmapResolution: number;
+    heightmapScale: Vector3;
+    holesTexture: Texture;
+    enableHolesTextureCompression: boolean;
+    holesResolution: number;
+    size: Vector3;
+    bounds: Bounds;
+    thickness: number;
+    wavingGrassStrength: number;
+    wavingGrassAmount: number;
+    wavingGrassSpeed: number;
+    wavingGrassTint: Color;
+    detailWidth: number;
+    detailHeight: number;
+    maxDetailScatterPerRes: number;
+    detailPatchCount: number;
+    detailResolution: number;
+    detailResolutionPerPatch: number;
+    detailScatterMode: DetailScatterMode;
+    detailPrototypes: CSArray<DetailPrototype>;
+    treeInstances: CSArray<TreeInstance>;
+    treeInstanceCount: number;
+    treePrototypes: CSArray<TreePrototype>;
+    alphamapLayers: number;
+    alphamapResolution: number;
+    alphamapWidth: number;
+    alphamapHeight: number;
+    baseMapResolution: number;
+    alphamapTextureCount: number;
+    alphamapTextures: CSArray<Texture2D>;
+    splatPrototypes: CSArray<SplatPrototype>;
+    terrainLayers: CSArray<TerrainLayer>;
+
+
+    /** This function computes and returns the coverage (how many instances fit in a square unit) of a detail prototype, given its index. */
+    ComputeDetailCoverage(detailPrototypeIndex: number): number;
+    /** This function computes and returns an array of detail object transforms for the specified patch and the specified prototype. You can use this function to retrieve the exact same transform data the Unity engine uses for detail rendering. */
+    ComputeDetailInstanceTransforms(patchX: number, patchY: number, layer: number, density: number, bounds: unknown): CSArray<DetailInstanceTransform>;
+    /** Copies the specified part of the active RenderTexture to the Terrain heightmap texture. */
+    CopyActiveRenderTextureToHeightmap(sourceRect: RectInt, dest: Vector2Int, syncControl: TerrainHeightmapSyncControl): void;
+    /** Copies the specified part of the active RenderTexture to the Terrain texture. */
+    CopyActiveRenderTextureToTexture(textureName: string, textureIndex: number, sourceRect: RectInt, dest: Vector2Int, allowDelayedCPUSync: boolean): void;
+    /** Marks the specified part of the heightmap as dirty. */
+    DirtyHeightmapRegion(region: RectInt, syncControl: TerrainHeightmapSyncControl): void;
+    /** Marks the specified part of the Terrain texture as dirty. */
+    DirtyTextureRegion(textureName: string, region: RectInt, allowDelayedCPUSync: boolean): void;
+    /** Returns the alpha map at a position x, y given a width and height. */
+    GetAlphamaps(x: number, y: number, width: number, height: number): unknown;
+    /** Returns the alphamap texture at the specified index. */
+    GetAlphamapTexture(index: number): Texture2D;
+    /** Returns an array of detail patches, which are each identified by X-Z coordinates. Detail objects in the patches are clamped to the maximum count. */
+    GetClampedDetailPatches(density: number): CSArray<Vector2Int>;
+    /** Returns a 2D array of the detail object density (i.e. the number of detail objects for this layer) in the specific location. */
+    GetDetailLayer(xBase: number, yBase: number, width: number, height: number, layer: number): unknown;
+    GetDetailLayer(positionBase: Vector2Int, size: Vector2Int, layer: number): unknown;
+    /** Gets the world space height of the Terrain at a certain point x,y without adding the Terrain&#x27;s world position y. */
+    GetHeight(x: number, y: number): number;
+    /** Gets an array of heightmap samples. */
+    GetHeights(xBase: number, yBase: number, width: number, height: number): unknown;
+    /** Gets an array of Terrain holes samples. */
+    GetHoles(xBase: number, yBase: number, width: number, height: number): unknown;
+    /** Gets an interpolated height at a point x,y. The x and y coordinates are clamped to [0, 1]. */
+    GetInterpolatedHeight(x: number, y: number): number;
+    /** Gets an array of terrain height values using the normalized x,y coordinates. */
+    GetInterpolatedHeights(xBase: number, yBase: number, xCount: number, yCount: number, xInterval: number, yInterval: number): unknown;
+    /** Fills the array with Terrain height values using normalized x,y coordinates. */
+    GetInterpolatedHeights(results: unknown, resultXOffset: number, resultYOffset: number, xBase: number, yBase: number, xCount: number, yCount: number, xInterval: number, yInterval: number): void;
+    /** Get an interpolated normal at a given location. */
+    GetInterpolatedNormal(x: number, y: number): Vector3;
+    /** Returns an array of tesselation maximum height error values per renderable terrain patch.  The returned array can be modified and passed to OverrideMaximumHeightError. */
+    GetMaximumHeightError(): CSArray<number>;
+    /** Returns an array of min max height values for all the renderable patches in a terrain.  The returned array can be modified and then passed to OverrideMinMaxPatchHeights. */
+    GetPatchMinMaxHeights(): CSArray<PatchExtents>;
+    /** Gets the gradient of the terrain at point (x,y). */
+    GetSteepness(x: number, y: number): number;
+    /** Returns an array of all supported detail layer indices in the area. */
+    GetSupportedLayers(xBase: number, yBase: number, totalWidth: number, totalHeight: number): CSArray<number>;
+    GetSupportedLayers(positionBase: Vector2Int, size: Vector2Int): CSArray<number>;
+    /** Gets the tree instance at the specified index. It is used as a faster version of treeInstances[index] as this function doesn&#x27;t create the entire tree instances array. */
+    GetTreeInstance(index: number): TreeInstance;
+    /** Gets whether a certain point at x,y is a hole. */
+    IsHole(x: number, y: number): boolean;
+    /** Override the maximum tessellation height error with user provided values.  Note that the overriden values get reset when the terrain resolution is changed and stays unchanged when the terrain heightmap is painted or changed via script. */
+    OverrideMaximumHeightError(maxError: CSArray<number>): void;
+    /** Override the minimum and maximum patch heights for every renderable terrain patch.  Note that the overriden values get reset when the terrain resolution is changed and stays unchanged when the terrain heightmap is painted or changed via script. */
+    OverrideMinMaxPatchHeights(minMaxHeights: CSArray<PatchExtents>): void;
+    /** Reloads all the values of the available prototypes (ie, detail mesh assets) in the TerrainData Object. */
+    RefreshPrototypes(): void;
+    /** Removes the detail prototype at the specified index. */
+    RemoveDetailPrototype(index: number): void;
+    /** Assign all splat values in the given map area. */
+    SetAlphamaps(x: number, y: number, map: unknown): void;
+    /** Marks the terrain data as dirty to trigger an update of the terrain basemap texture. */
+    SetBaseMapDirty(): void;
+    /** Sets the detail layer density map. */
+    SetDetailLayer(xBase: number, yBase: number, layer: number, details: unknown): void;
+    SetDetailLayer(basePosition: Vector2Int, layer: number, details: unknown): void;
+    /** Sets the resolution of the detail map. */
+    SetDetailResolution(detailResolution: number, resolutionPerPatch: number): void;
+    /** Sets the DetailScatterMode. */
+    SetDetailScatterMode(scatterMode: DetailScatterMode): void;
+    /** Sets an array of heightmap samples. */
+    SetHeights(xBase: number, yBase: number, heights: unknown): void;
+    /** Sets an array of heightmap samples. */
+    SetHeightsDelayLOD(xBase: number, yBase: number, heights: unknown): void;
+    /** Sets an array of Terrain holes samples. */
+    SetHoles(xBase: number, yBase: number, holes: unknown): void;
+    /** Sets an array of Terrain holes samples. */
+    SetHolesDelayLOD(xBase: number, yBase: number, holes: unknown): void;
+    /** This function sets the terrainLayers property, and in addition, registers the action to the Editor&#x27;s undo stack. */
+    SetTerrainLayersRegisterUndo(terrainLayers: CSArray<TerrainLayer>, undoName: string): void;
+    /** Sets the tree instance with new parameters at the specified index. However, you cannot change TreeInstance.prototypeIndex and TreeInstance.position. If you change them, the method throws an ArgumentException. */
+    SetTreeInstance(index: number, instance: TreeInstance): void;
+    /** Sets the Tree Instance array, and optionally snaps Trees onto the surface of the Terrain heightmap. */
+    SetTreeInstances(instances: CSArray<TreeInstance>, snapToHeightmap: boolean): void;
+    /** Performs synchronization queued by previous calls to CopyActiveRenderTextureToHeightmap and DirtyHeightmapRegion, which makes the height data and LOD data used for tessellation up to date. */
+    SyncHeightmap(): void;
+    /** Performs synchronization queued by previous calls to CopyActiveRenderTextureToTexture and DirtyTextureRegion, which makes CPU data of the Terrain textures up to date. */
+    SyncTexture(textureName: string): void;
+    /** Triggers an update to integrate modifications done to the heightmap outside of unity. */
+    UpdateDirtyRegion(x: number, y: number, width: number, height: number, syncHeightmapTextureImmediately: boolean): void;
+
+}
+    
+interface DetailPrototype {
+    prototype: GameObject;
+    prototypeTexture: Texture2D;
+    minWidth: number;
+    maxWidth: number;
+    minHeight: number;
+    maxHeight: number;
+    noiseSeed: number;
+    noiseSpread: number;
+    density: number;
+    bendFactor: number;
+    holeEdgePadding: number;
+    healthyColor: Color;
+    dryColor: Color;
+    renderMode: DetailRenderMode;
+    usePrototypeMesh: boolean;
+    useInstancing: boolean;
+    targetCoverage: number;
+    useDensityScaling: boolean;
+    alignToGround: number;
+    positionJitter: number;
+
+
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    /** Returns true if the detail prototype is valid and the Terrain can accept it. */
+    Validate(): boolean;
+    /** Returns true if the detail prototype is valid and the Terrain can accept it. */
+    Validate(errorMessage: CSArray<string>): boolean;
+
+}
+    
+interface DetailPrototypeConstructor {
+
+    new(): DetailPrototype;
+    new(other: DetailPrototype): DetailPrototype;
+
+
+}
+declare const DetailPrototype: DetailPrototypeConstructor;
+    
+interface TreeInstance {
+    position: Vector3;
+    widthScale: number;
+    heightScale: number;
+    rotation: number;
+    color: Color32;
+    lightmapColor: Color32;
+    prototypeIndex: number;
+
+
+
+}
+    
+interface TreePrototype {
+    prefab: GameObject;
+    bendFactor: number;
+    navMeshLod: number;
+
+
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+
+}
+    
+interface TreePrototypeConstructor {
+
+    new(): TreePrototype;
+    new(other: TreePrototype): TreePrototype;
+
+
+}
+declare const TreePrototype: TreePrototypeConstructor;
+    
+interface SplatPrototype {
+    texture: Texture2D;
+    normalMap: Texture2D;
+    tileSize: Vector2;
+    tileOffset: Vector2;
+    specular: Color;
+    metallic: number;
+    smoothness: number;
+
+
+
+}
+    
+interface SplatPrototypeConstructor {
+
+    new(): SplatPrototype;
+
+
+}
+declare const SplatPrototype: SplatPrototypeConstructor;
+    
+interface TerrainLayer extends Object {
+    diffuseTexture: Texture2D;
+    normalMapTexture: Texture2D;
+    maskMapTexture: Texture2D;
+    tileSize: Vector2;
+    tileOffset: Vector2;
+    specular: Color;
+    metallic: number;
+    smoothness: number;
+    normalScale: number;
+    diffuseRemapMin: Vector4;
+    diffuseRemapMax: Vector4;
+    maskMapRemapMin: Vector4;
+    maskMapRemapMax: Vector4;
+    smoothnessSource: TerrainLayerSmoothnessSource;
+
+
+
+}
+    
+interface TerrainLayerConstructor {
+
+    new(): TerrainLayer;
+
+
+}
+declare const TerrainLayer: TerrainLayerConstructor;
+    
+interface DetailInstanceTransform {
+    posX: number;
+    posY: number;
+    posZ: number;
+    scaleXZ: number;
+    scaleY: number;
+    rotationY: number;
+
+
+
+}
+    
+interface PatchExtents {
+    min: number;
+    max: number;
+
+
+
+}
+    
+interface TerrainDataConstructor {
+    AlphamapTextureName: string;
+    HolesTextureName: string;
+
+    new(): TerrainData;
+
+
+}
+declare const TerrainData: TerrainDataConstructor;
+    
+interface TerrainColliderConstructor {
+
+    new(): TerrainCollider;
+
+
+}
+declare const TerrainCollider: TerrainColliderConstructor;
 
