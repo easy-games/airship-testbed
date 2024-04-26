@@ -1,4 +1,4 @@
-import { OnFixedUpdate } from "Shared/Util/Timer";
+import { OnUpdate } from "Shared/Util/Timer";
 
 /* eslint-disable @typescript-eslint/no-loss-of-precision */
 type BasicEasingFunction = (
@@ -104,7 +104,7 @@ export class Tween {
 
 	public Play() {
 		if (!this.running) {
-			this.disconnect = OnFixedUpdate.Connect(this.interpolator);
+			this.disconnect = OnUpdate.Connect(this.interpolator);
 			this.running = true;
 		}
 
