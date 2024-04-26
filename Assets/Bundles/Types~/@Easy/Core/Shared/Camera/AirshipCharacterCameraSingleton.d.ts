@@ -58,6 +58,10 @@ export declare class AirshipCharacterCameraSingleton implements OnStart {
      * @param smooth If `true` the FOV will transition smoothly to the target.
      */
     SetFOV(targetCamera: CharacterCameraType, fieldOfView: number, smooth?: boolean): void;
+    /**
+     * Returns the camera's field-of-view.
+     */
+    GetFOV(targetCamera: CharacterCameraType): number;
     /** Updates FOV to reflect the current character state object */
     private MakeFOVReflectCharacterState;
     /**

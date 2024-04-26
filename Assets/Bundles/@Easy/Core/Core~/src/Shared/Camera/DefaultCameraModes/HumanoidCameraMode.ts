@@ -2,6 +2,7 @@ import { Airship } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
 import { ClientSettingsController } from "Client/MainMenuControllers/Settings/ClientSettingsController";
 import { Dependency } from "Shared/Flamework";
+import { Game } from "Shared/Game";
 import { ControlScheme, Keyboard, Mouse, Preferred, Touchscreen } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
 import { MathUtil } from "Shared/Util/MathUtil";
@@ -11,7 +12,6 @@ import { CameraMode, CameraTransform } from "..";
 import { LocalCharacterSingleton } from "../../Character/LocalCharacter/LocalCharacterSingleton";
 import { AirshipCharacterCameraSingleton } from "../AirshipCharacterCameraSingleton";
 import DefaultCameraMask from "../DefaultCameraMask";
-import { Game } from "Shared/Game";
 
 const CAM_Y_OFFSET = 1.7;
 const CAM_Y_OFFSET_CROUCH_1ST_PERSON = CAM_Y_OFFSET / 1.5;
@@ -109,10 +109,9 @@ export class HumanoidCameraMode extends CameraMode {
 					if (touchOverUI) break;
 					const deltaPosSinceStart = position.sub(touchStartPos);
 					this.rotationY =
-						(touchStartRotY - deltaPosSinceStart.x * this.clientSettingsController.GetTouchSensitivity()) %
-						TAU;
+						(touchStartRotY - deltaPosSinceStart.x * Airship.input.GetTouchSensitivity()) % TAU;
 					this.rotationX = math.clamp(
-						touchStartRotX + deltaPosSinceStart.y * this.clientSettingsController.GetTouchSensitivity(),
+						touchStartRotX + deltaPosSinceStart.y * Airship.input.GetTouchSensitivity(),
 						MIN_ROT_X,
 						MAX_ROT_X,
 					);
@@ -180,7 +179,7 @@ export class HumanoidCameraMode extends CameraMode {
 			}
 			if (this.mouse.IsLocked() && (rightClick || this.firstPerson || this.lockView)) {
 				const mouseDelta = this.mouse.GetDelta();
-				const mouseSensitivity = this.clientSettingsController.GetMouseSensitivity();
+				const mouseSensitivity = Airship.input.GetMouseSensitivity();
 				if (!this.firstPerson && !this.lockView) {
 					// this.mouse.SetPosition(this.rightClickPos);
 				}
