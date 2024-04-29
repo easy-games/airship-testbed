@@ -90,7 +90,7 @@
 		"@Easy/Core:Shared/Item/ItemUtil@ItemUtil": "$:Item/ItemUtil@ItemUtil",
 		"@Easy/Core:Shared/Inventory/ItemStack@ItemStack": "$:Inventory/ItemStack@ItemStack",
 		"@Easy/Core:Shared/GroundItem/GroundItem@GroundItem": "$:GroundItem/GroundItem@GroundItem",
-		"@Easy/Core:Shared/Network/RemoteKeyGenerator@RemoteKeyGenerator": "$:Network/RemoteKeyGenerator@RemoteKeyGenerator",
+		"@Easy/Core:Shared/Network/RemoteKeyHasher@RemoteKeyHasher": "$:Network/RemoteKeyHasher@RemoteKeyHasher",
 		"@Easy/Core:Shared/Network/RemoteEvent@RemoteEventServer": "$:Network/RemoteEvent@RemoteEventServer",
 		"@Easy/Core:Shared/Network/RemoteEvent@RemoteEventClient": "$:Network/RemoteEvent@RemoteEventClient",
 		"@Easy/Core:Shared/Network/RemoteEvent@RemoteEvent": "$:Network/RemoteEvent@RemoteEvent",

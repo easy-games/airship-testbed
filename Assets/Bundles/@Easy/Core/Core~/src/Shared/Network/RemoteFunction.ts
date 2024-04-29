@@ -1,5 +1,6 @@
 import { Player } from "Shared/Player/Player";
 import NetworkAPI, { NetworkChannel } from "./NetworkAPI";
+import { RemoteKeyHasher } from "./RemoteKeyHasher";
 
 type RemoteParamsToClient<T> = Parameters<
 	T extends unknown[]
@@ -81,20 +82,18 @@ export class RemoteFunction<TX extends unknown[] | unknown, RX extends unknown[]
 	public readonly server: RemoteFunctionServer<TX, RX>;
 	public readonly client: RemoteFunctionClient<TX, RX>;
 
-	constructor(packageOffset?: number) {
-		let id: number;
-		if (packageOffset !== undefined) {
-			if (packageMap.has(packageOffset)) {
-				id = packageMap.get(packageOffset)! + 1;
-			} else {
-				id = packageOffset;
-			}
-			packageMap.set(packageOffset, id);
+	constructor(remoteIdentifier: string) {
+		let id = 0;
+		const context = RemoteKeyHasher.GetCallerContext();
+		if (context) {
+			id = RemoteKeyHasher.GetRemoteHash(context, remoteIdentifier, "_f");
 		} else {
-			id = ID_COUNTER++;
+			warn(
+				`Could not generate id for remote: ${remoteIdentifier}. Unable to determine the context that it was created in. 
+				This may result in unexpected network behavior.`,
+			);
 		}
 
-		id += RF_ID_OFFSET;
 		this.server = new RemoteFunctionServer(id);
 		this.client = new RemoteFunctionClient(id);
 	}
