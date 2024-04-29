@@ -12,8 +12,6 @@ const defaultData: ClientSettingsFile = {
 	globalVolume: 1,
 	ambientVolume: 0.1,
 	musicVolume: 0.11,
-	firstPersonFov: 80,
-	thirdPersonFov: 80,
 	screenshotRenderHD: false,
 	screenshotShowUI: false,
 	statusText: "",
@@ -37,7 +35,6 @@ export class ClientSettingsController implements OnStart {
 		} else {
 			this.data = defaultData;
 		}
-		this.data.thirdPersonFov = 80;
 
 		this.SetGlobalVolume(this.GetGlobalVolume());
 
@@ -129,14 +126,6 @@ export class ClientSettingsController implements OnStart {
 
 	public GetGlobalVolume(): number {
 		return this.data.globalVolume;
-	}
-
-	public GetFirstPersonFov(): number {
-		return this.data.firstPersonFov;
-	}
-
-	public GetThirdPersonFov(): number {
-		return this.data.thirdPersonFov;
 	}
 
 	public GetScreenshotShowUI(): boolean {
