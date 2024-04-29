@@ -124,7 +124,7 @@ export class AudioManager {
 		audioSource.volume = config?.volumeScale ?? 1;
 		audioSource.PlayOneShot(clip);
 		if (!audioSource.loop) {
-			Task.Delay(clip.length + 1, () => {
+			task.delay(clip.length + 1, () => {
 				audioSource.Stop();
 				PoolManager.ReleaseObject(audioSource.gameObject);
 			});

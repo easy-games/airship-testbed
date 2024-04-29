@@ -1,3 +1,3 @@
 export class PhysicsUtil {
-	public static gravity = -54.936;
+	public static gravity = -9.81;
 }
