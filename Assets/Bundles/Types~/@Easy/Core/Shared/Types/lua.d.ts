@@ -361,6 +361,9 @@ interface String {
 
 	/** Receives a string and returns a copy of this string with all lowercase letters changed to uppercase. All other characters are left unchanged. */
 	upper(this: string): string;
+
+	/** Get the string hash. */
+	hash(this: string): number;
 }
 
 declare namespace string {
@@ -453,6 +456,9 @@ declare namespace string {
 
 	/** Receives a string and returns a copy of this string with all lowercase letters changed to uppercase. All other characters are left unchanged. */
 	function upper(str: string): string;
+
+	/** Get the string hash. */
+	function hash(str: string): number;
 }
 
 declare namespace math {
