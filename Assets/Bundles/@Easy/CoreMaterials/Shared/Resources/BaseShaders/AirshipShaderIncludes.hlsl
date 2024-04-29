@@ -139,16 +139,43 @@ half GetShadow(float4 shadowCasterPos0, float4 shadowCasterPos1, half3 worldNorm
         return shadowFactor0 * lightTerm;
     }
 }
-
-half PhongApprox(half Roughness, half RoL)
-{
-    half a = Roughness * Roughness;
-    half a2 = a * a;
-    float rcp_a2 = rcp(a2);
-    half c = 0.72134752 * rcp_a2 + 0.39674113;
-    return sqrt(rcp_a2 * exp2(c * RoL - c));
-}
  
+float rcp(float r)
+{
+    return 1.0 / r;
+}
+
+float3 EnvBRDFApprox(float3 SpecularColor, float Roughness, float NoV)
+{
+    // [ Lazarov 2013, "Getting More Physical in Call of Duty: Black Ops II" ]
+    // Adaptation to fit our G term.
+    const float4 c0 = float4(-1, -0.0275, -0.572, 0.022);
+    const float4 c1 = float4(1, 0.0425, 1.04, -0.04);
+    float4 r = Roughness * c0 + c1;
+    float a004 = min(r.x * r.x, exp2(-9.28 * NoV)) * r.x + r.y;
+    float2 AB = float2(-1.04, 1.04) * a004 + r.zw;
+
+    return SpecularColor * AB.x + AB.y;
+}
+
+float PhongApprox(float Roughness, float RoL)
+{
+    float a = Roughness * Roughness;			// 1 mul
+    //!! Ronin Hack?
+    a = max(a, 0.008);						// avoid underflow in FP16, next sqr should be bigger than 6.1e-5
+    float a2 = a * a;						// 1 mul
+    float rcp_a2 = rcp(a2);					// 1 rcp
+    //float rcp_a2 = exp2(-6.88886882 * Roughness + 6.88886882);
+
+    // Spherical Gaussian approximation: pow( x, n ) ~= exp( (n + 0.775) * (x - 1) )
+    // Phong: n = 0.5 / a2 - 0.5
+    // 0.5 / ln(2), 0.275 / ln(2)
+    float c = 0.72134752 * rcp_a2 + 0.39674113;	// 1 mad
+    float p = rcp_a2 * exp2(c * RoL - c);		// 2 mad, 1 exp2, 1 mul
+    // Total 7 instr
+    return min(p, rcp_a2);						// Avoid overflow/underflow on Mali GPUs
+}
+
 
 half3 CalculatePointLightsForPoint(float3 worldPos, half3 normal, half3 albedo, half roughness, half metallic, half3 specularColor, half3 reflectionVector)
 {
@@ -257,24 +284,7 @@ float ConvertToNormalizedRange(float negativeRangeNumber)
     return (negativeRangeNumber + 1) / 2;
 }
 
-half3 EnvBRDFApprox(half3 SpecularColor, half Roughness, half NoV)
-{
-    const half4 const0 = { -1, -0.0275, -0.572, 0.022 };
-    const half4 const1 = { 1, 0.0425, 1.04, -0.04 };
-    half4 r = Roughness * const0 + const1;
-    half minFac = min(r.x * r.x, exp2(-9.28 * NoV)) * r.x + r.y;
-    half2 AB = half2(-1.04, 1.04) * minFac + r.zw;
-    return SpecularColor * AB.x + AB.y;
-}
-
-half EnvBRDFApproxNonmetal(half Roughness, half NoV)
-{
-    // Same as EnvBRDFApprox( 0.04, Roughness, NoV )
-    const half2 const0 = { -1, -0.0275 };
-    const half2 const1 = { 1, 0.0425 };
-    half2 r = Roughness * const0 + const1;
-    return min(r.x * r.x, exp2(-9.28 * NoV)) * r.x + r.y;
-}
+ 
  
 //Insert exposure controls here
 void DoFinalColorWrite(float4 inputRGBA, float3 emissive, out half4 MRT0, out half4 MRT1)

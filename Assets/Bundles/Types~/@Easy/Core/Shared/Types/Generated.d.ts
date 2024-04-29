@@ -3538,6 +3538,24 @@ declare const enum ScrollViewMode {
     Horizontal = 1,
     VerticalAndHorizontal = 2,
 }
+declare const enum DetailScatterMode {
+    CoverageMode = 0,
+    InstanceCountMode = 1,
+}
+declare const enum DetailRenderMode {
+    GrassBillboard = 0,
+    VertexLit = 1,
+    Grass = 2,
+}
+declare const enum TerrainLayerSmoothnessSource {
+    Constant = 0,
+    DiffuseAlphaChannel = 1,
+}
+declare const enum TerrainHeightmapSyncControl {
+    None = 0,
+    HeightOnly = 1,
+    HeightAndLod = 2,
+}
 
     
 interface RaycastHit {
@@ -3588,17 +3606,26 @@ interface Plane {
     flipped: Plane;
 
 
+    /** For a given point returns the closest point on the plane. */
     ClosestPointOnPlane(point: Vector3): Vector3;
+    /** Makes the plane face in the opposite direction. */
     Flip(): void;
+    /** Returns a signed distance from plane to point. */
     GetDistanceToPoint(point: Vector3): number;
+    /** Is a point on the positive side of the plane? */
     GetSide(point: Vector3): boolean;
+    /** Intersects a ray with the plane. */
     Raycast(ray: Ray, enter: unknown): boolean;
+    /** Are two points on the same side of the plane? */
     SameSide(inPt0: Vector3, inPt1: Vector3): boolean;
+    /** Sets a plane using three points that lie within it.  The points go around clockwise as you look down on the top surface of the plane. */
     Set3Points(a: Vector3, b: Vector3, c: Vector3): void;
+    /** Sets a plane using a point that lies within it along with a normal to orient it. */
     SetNormalAndPosition(inNormal: Vector3, inPoint: Vector3): void;
     ToString(): string;
     ToString(format: string): string;
     ToString(format: string, formatProvider: unknown): string;
+    /** Moves the plane in space by the translation vector. */
     Translate(translation: Vector3): void;
 
 }
@@ -3631,8 +3658,11 @@ interface Scene {
 
     Equals(other: unknown): boolean;
     GetHashCode(): number;
+    /** Returns all the root game objects in the Scene. */
     GetRootGameObjects(): CSArray<GameObject>;
     GetRootGameObjects(rootGameObjects: CSArray<GameObject>): void;
+    /** Whether this is a valid Scene.
+A Scene may be invalid if, for example, you tried to open a Scene that does not exist. In this case, the Scene returned from EditorSceneManager.OpenScene would return False for IsValid. */
     IsValid(): boolean;
 
 }
@@ -3695,50 +3725,88 @@ interface Rigidbody extends Component {
     solverVelocityIterationCount: number;
 
 
+    /** Applies a force to a rigidbody that simulates explosion effects. */
     AddExplosionForce(explosionForce: number, explosionPosition: Vector3, explosionRadius: number, upwardsModifier: number, mode: ForceMode): void;
+    /** Applies a force to a rigidbody that simulates explosion effects. */
     AddExplosionForce(explosionForce: number, explosionPosition: Vector3, explosionRadius: number, upwardsModifier: number): void;
+    /** Applies a force to a rigidbody that simulates explosion effects. */
     AddExplosionForce(explosionForce: number, explosionPosition: Vector3, explosionRadius: number): void;
+    /** Adds a force to the Rigidbody. */
     AddForce(force: Vector3, mode: ForceMode): void;
+    /** Adds a force to the Rigidbody. */
     AddForce(force: Vector3): void;
+    /** Adds a force to the Rigidbody. */
     AddForce(x: number, y: number, z: number, mode: ForceMode): void;
+    /** Adds a force to the Rigidbody. */
     AddForce(x: number, y: number, z: number): void;
+    /** Applies force at position. As a result this will apply a torque and force on the object. */
     AddForceAtPosition(force: Vector3, position: Vector3, mode: ForceMode): void;
+    /** Applies force at position. As a result this will apply a torque and force on the object. */
     AddForceAtPosition(force: Vector3, position: Vector3): void;
+    /** Adds a force to the rigidbody relative to its coordinate system. */
     AddRelativeForce(force: Vector3, mode: ForceMode): void;
+    /** Adds a force to the rigidbody relative to its coordinate system. */
     AddRelativeForce(force: Vector3): void;
+    /** Adds a force to the rigidbody relative to its coordinate system. */
     AddRelativeForce(x: number, y: number, z: number, mode: ForceMode): void;
+    /** Adds a force to the rigidbody relative to its coordinate system. */
     AddRelativeForce(x: number, y: number, z: number): void;
+    /** Adds a torque to the rigidbody relative to its coordinate system. */
     AddRelativeTorque(torque: Vector3, mode: ForceMode): void;
+    /** Adds a torque to the rigidbody relative to its coordinate system. */
     AddRelativeTorque(torque: Vector3): void;
+    /** Adds a torque to the rigidbody relative to its coordinate system. */
     AddRelativeTorque(x: number, y: number, z: number, mode: ForceMode): void;
+    /** Adds a torque to the rigidbody relative to its coordinate system. */
     AddRelativeTorque(x: number, y: number, z: number): void;
+    /** Adds a torque to the rigidbody. */
     AddTorque(torque: Vector3, mode: ForceMode): void;
+    /** Adds a torque to the rigidbody. */
     AddTorque(torque: Vector3): void;
+    /** Adds a torque to the rigidbody. */
     AddTorque(x: number, y: number, z: number, mode: ForceMode): void;
+    /** Adds a torque to the rigidbody. */
     AddTorque(x: number, y: number, z: number): void;
+    /** The closest point to the bounding box of the attached colliders. */
     ClosestPointOnBounds(position: Vector3): Vector3;
+    /** Returns the force that the Rigidbody has accumulated before the simulation step. */
     GetAccumulatedForce(step: number): Vector3;
     GetAccumulatedForce(): Vector3;
+    /** Returns the torque that the Rigidbody has accumulated before the simulation step. */
     GetAccumulatedTorque(step: number): Vector3;
     GetAccumulatedTorque(): Vector3;
+    /** The velocity of the rigidbody at the point worldPoint in global space. */
     GetPointVelocity(worldPoint: Vector3): Vector3;
+    /** The velocity relative to the rigidbody at the point relativePoint. */
     GetRelativePointVelocity(relativePoint: Vector3): Vector3;
+    /** Is the rigidbody sleeping? */
     IsSleeping(): boolean;
+    /** Moves the Rigidbody to position and rotates the Rigidbody to rotation. */
     Move(position: Vector3, rotation: Quaternion): void;
+    /** Moves the kinematic Rigidbody towards position. */
     MovePosition(position: Vector3): void;
+    /** Rotates the rigidbody to rotation. */
     MoveRotation(rot: Quaternion): void;
+    /** Applies the position and rotation of the Rigidbody to the corresponding Transform component. */
     PublishTransform(): void;
+    /** Reset the center of mass of the rigidbody. */
     ResetCenterOfMass(): void;
+    /** Reset the inertia tensor value and rotation. */
     ResetInertiaTensor(): void;
+    /** Sets the mass based on the attached colliders assuming a constant density. */
     SetDensity(density: number): void;
     SetMaxAngularVelocity(a: number): void;
+    /** Forces a rigidbody to sleep at least one frame. */
     Sleep(): void;
+    /** Tests if a rigidbody would collide with anything, if it was moved through the Scene. */
     SweepTest(direction: Vector3, hitInfo: unknown, maxDistance: number, queryTriggerInteraction: QueryTriggerInteraction): boolean;
     SweepTest(direction: Vector3, hitInfo: unknown, maxDistance: number): boolean;
     SweepTest(direction: Vector3, hitInfo: unknown): boolean;
+    /** Like Rigidbody.SweepTest, but returns all hits. */
     SweepTestAll(direction: Vector3, maxDistance: number, queryTriggerInteraction: QueryTriggerInteraction): CSArray<RaycastHit>;
     SweepTestAll(direction: Vector3, maxDistance: number): CSArray<RaycastHit>;
     SweepTestAll(direction: Vector3): CSArray<RaycastHit>;
+    /** Forces a rigidbody to wake up. */
     WakeUp(): void;
 
 }
@@ -3820,21 +3888,35 @@ interface ArticulationBody extends Behaviour {
     computeParentAnchor: boolean;
 
 
+    /** Applies a force to the ArticulationBody. */
     AddForce(force: Vector3, mode: ForceMode): void;
+    /** Applies a force to the ArticulationBody. */
     AddForce(force: Vector3): void;
+    /** Applies a force at a specific position, resulting in applying a torque and force on the object. */
     AddForceAtPosition(force: Vector3, position: Vector3, mode: ForceMode): void;
+    /** Applies a force at a specific position, resulting in applying a torque and force on the object. */
     AddForceAtPosition(force: Vector3, position: Vector3): void;
+    /** Applies a force to the Articulation Body, relative to its local coordinate system. */
     AddRelativeForce(force: Vector3, mode: ForceMode): void;
+    /** Applies a force to the Articulation Body, relative to its local coordinate system. */
     AddRelativeForce(force: Vector3): void;
+    /** Applies a torque to the articulation body, relative to its local coordinate system. */
     AddRelativeTorque(torque: Vector3, mode: ForceMode): void;
+    /** Applies a torque to the articulation body, relative to its local coordinate system. */
     AddRelativeTorque(torque: Vector3): void;
+    /** Add torque to the articulation body. */
     AddTorque(torque: Vector3, mode: ForceMode): void;
+    /** Add torque to the articulation body. */
     AddTorque(torque: Vector3): void;
+    /** Returns the force that the ArticulationBody has accumulated before the simulation step. */
     GetAccumulatedForce(step: number): Vector3;
     GetAccumulatedForce(): Vector3;
+    /** Returns the torque that the ArticulationBody has accumulated before the simulation step. */
     GetAccumulatedTorque(step: number): Vector3;
     GetAccumulatedTorque(): Vector3;
+    /** Return the point on the articulation body that is closest to a given one. */
     GetClosestPoint(point: Vector3): Vector3;
+    /** Calculates and writes dense Jacobian matrix of the articulation body hierarchy to the supplied struct. */
     GetDenseJacobian(jacobian: unknown): number;
     GetDofStartIndices(dofStartIndices: CSArray<number>): number;
     GetDriveForces(forces: CSArray<number>): number;
@@ -3844,31 +3926,48 @@ interface ArticulationBody extends Behaviour {
     GetJointCoriolisCentrifugalForces(forces: CSArray<number>): number;
     GetJointExternalForces(forces: CSArray<number>, step: number): number;
     GetJointForces(forces: CSArray<number>): number;
+    /** Returns the forces required for the body to reach the provided acceleration in reduced space. */
     GetJointForcesForAcceleration(acceleration: ArticulationReducedSpace): ArticulationReducedSpace;
     GetJointGravityForces(forces: CSArray<number>): number;
     GetJointPositions(positions: CSArray<number>): number;
     GetJointVelocities(velocities: CSArray<number>): number;
+    /** Gets the velocity of the articulation body at the specified worldPoint in global space. */
     GetPointVelocity(worldPoint: Vector3): Vector3;
+    /** The velocity relative to the articulation body at the point relativePoint. */
     GetRelativePointVelocity(relativePoint: Vector3): Vector3;
+    /** Indicates whether the articulation body is sleeping. */
     IsSleeping(): boolean;
+    /** Reads the position and rotation of the Articulation Body from the physics system and applies it to the corresponding Transform component. */
     PublishTransform(): void;
+    /** Resets the center of mass of the articulation body. */
     ResetCenterOfMass(): void;
+    /** Resets the inertia tensor value and rotation. */
     ResetInertiaTensor(): void;
+    /** Sets the damping value of the specified drive. */
     SetDriveDamping(axis: ArticulationDriveAxis, value: number): void;
+    /** Sets the force limit of the specified drive. */
     SetDriveForceLimit(axis: ArticulationDriveAxis, value: number): void;
+    /** Sets the lower and upper limits of the drive. */
     SetDriveLimits(axis: ArticulationDriveAxis, lower: number, upper: number): void;
+    /** Sets the stiffness value of the specified drive. */
     SetDriveStiffness(axis: ArticulationDriveAxis, value: number): void;
+    /** Sets the target value of the specified drive. */
     SetDriveTarget(axis: ArticulationDriveAxis, value: number): void;
     SetDriveTargets(targets: CSArray<number>): void;
     SetDriveTargetVelocities(targetVelocities: CSArray<number>): void;
+    /** Sets the target velocity value of the specified drive. */
     SetDriveTargetVelocity(axis: ArticulationDriveAxis, value: number): void;
     SetJointAccelerations(accelerations: CSArray<number>): void;
     SetJointForces(forces: CSArray<number>): void;
     SetJointPositions(positions: CSArray<number>): void;
     SetJointVelocities(velocities: CSArray<number>): void;
+    /** Forces an articulation body to sleep. */
     Sleep(): void;
+    /** Snap the anchor to the closest contact between the connected bodies. */
     SnapAnchorToClosestContact(): void;
+    /** Teleport the root body of the articulation to a new pose. */
     TeleportRoot(position: Vector3, rotation: Quaternion): void;
+    /** Forces an articulation body to wake up. */
     WakeUp(): void;
 
 }
@@ -3921,22 +4020,36 @@ interface Bounds {
     max: Vector3;
 
 
+    /** The closest point on the bounding box. */
     ClosestPoint(point: Vector3): Vector3;
+    /** Is point contained in the bounding box? */
     Contains(point: Vector3): boolean;
+    /** Grows the Bounds to include the point. */
     Encapsulate(point: Vector3): void;
+    /** Grow the bounds to encapsulate the bounds. */
     Encapsulate(bounds: Bounds): void;
     Equals(other: unknown): boolean;
     Equals(other: Bounds): boolean;
+    /** Expand the bounds by increasing its size by amount along each side. */
     Expand(amount: number): void;
+    /** Expand the bounds by increasing its size by amount along each side. */
     Expand(amount: Vector3): void;
     GetHashCode(): number;
+    /** Does ray intersect this bounding box? */
     IntersectRay(ray: Ray): boolean;
+    /** Does ray intersect this bounding box? */
     IntersectRay(ray: Ray, distance: unknown): boolean;
+    /** Does another bounding box intersect with this bounding box? */
     Intersects(bounds: Bounds): boolean;
+    /** Sets the bounds to the min and max value of the box. */
     SetMinMax(min: Vector3, max: Vector3): void;
+    /** The smallest squared distance between the point and this bounding box. */
     SqrDistance(point: Vector3): number;
+    /** Returns a formatted string for the bounds. */
     ToString(): string;
+    /** Returns a formatted string for the bounds. */
     ToString(format: string): string;
+    /** Returns a formatted string for the bounds. */
     ToString(format: string, formatProvider: unknown): string;
 
 }
@@ -3953,6 +4066,7 @@ interface GeometryHolder {
     Type: GeometryType;
 
 
+    /** Return the specified geometric shape stored inside this Geometry Holder object. */
     As<T>(): T;
 
 }
@@ -3998,29 +4112,47 @@ declare const PhysicMaterial: PhysicMaterialConstructor;
 interface PhysicsScene {
 
 
+    /** Casts the box along a ray and returns detailed information on what was hit. */
     BoxCast(center: Vector3, halfExtents: Vector3, direction: Vector3, hitInfo: unknown, orientation: Quaternion, maxDistance: number, layerMask: number, queryTriggerInteraction: QueryTriggerInteraction): boolean;
     BoxCast(center: Vector3, halfExtents: Vector3, direction: Vector3, hitInfo: unknown): boolean;
+    /** Casts the box along a ray and returns detailed information on what was hit. */
     BoxCast(center: Vector3, halfExtents: Vector3, direction: Vector3, results: CSArray<RaycastHit>, orientation: Quaternion, maxDistance: number, layerMask: number, queryTriggerInteraction: QueryTriggerInteraction): number;
     BoxCast(center: Vector3, halfExtents: Vector3, direction: Vector3, results: CSArray<RaycastHit>): number;
+    /** Casts a capsule against all colliders in this physics scene and returns detailed information on what was hit. */
     CapsuleCast(point1: Vector3, point2: Vector3, radius: number, direction: Vector3, hitInfo: unknown, maxDistance: number, layerMask: number, queryTriggerInteraction: QueryTriggerInteraction): boolean;
+    /** Casts a capsule against all colliders in this physics scene and returns detailed information on what was hit. */
     CapsuleCast(point1: Vector3, point2: Vector3, radius: number, direction: Vector3, results: CSArray<RaycastHit>, maxDistance: number, layerMask: number, queryTriggerInteraction: QueryTriggerInteraction): number;
     Equals(other: unknown): boolean;
     Equals(other: PhysicsScene): boolean;
     GetHashCode(): number;
+    /** Interpolates Rigidbodies in this PhysicsScene. */
     InterpolateBodies(): void;
+    /** Gets whether the physics Scene is empty or not. */
     IsEmpty(): boolean;
+    /** Gets whether the physics Scene is valid or not. */
     IsValid(): boolean;
+    /** Find all colliders touching or inside of the given box, and store them into the buffer. */
     OverlapBox(center: Vector3, halfExtents: Vector3, results: CSArray<Collider>, orientation: Quaternion, layerMask: number, queryTriggerInteraction: QueryTriggerInteraction): number;
     OverlapBox(center: Vector3, halfExtents: Vector3, results: CSArray<Collider>): number;
+    /** Check the given capsule against the physics world and return all overlapping colliders in the user-provided buffer. */
     OverlapCapsule(point0: Vector3, point1: Vector3, radius: number, results: CSArray<Collider>, layerMask: number, queryTriggerInteraction: QueryTriggerInteraction): number;
+    /** Computes and stores colliders touching or inside the sphere into the provided buffer. */
     OverlapSphere(position: Vector3, radius: number, results: CSArray<Collider>, layerMask: number, queryTriggerInteraction: QueryTriggerInteraction): number;
+    /** Casts a ray, from point origin, in direction direction, of length maxDistance, against all colliders in the Scene. */
     Raycast(origin: Vector3, direction: Vector3, maxDistance: number, layerMask: number, queryTriggerInteraction: QueryTriggerInteraction): boolean;
+    /** Casts a ray, from point origin, in direction direction, of length maxDistance, against all colliders in the Scene. */
     Raycast(origin: Vector3, direction: Vector3, hitInfo: unknown, maxDistance: number, layerMask: number, queryTriggerInteraction: QueryTriggerInteraction): boolean;
+    /** Casts a ray, from point origin, in direction direction, of length maxDistance, against all colliders in the Scene. */
     Raycast(origin: Vector3, direction: Vector3, raycastHits: CSArray<RaycastHit>, maxDistance: number, layerMask: number, queryTriggerInteraction: QueryTriggerInteraction): number;
+    /** Resets the Transform positions of interpolated and extrapolated Rigidbodies in this PhysicsScene to Rigidbody.position and Transform rotations to Rigidbody.rotation. */
     ResetInterpolationPoses(): void;
+    /** Runs specified physics simulation stages on this physics scene. */
     RunSimulationStages(step: number, stages: SimulationStage, options: SimulationOption): void;
+    /** Simulate physics associated with this PhysicsScene. */
     Simulate(step: number): void;
+    /** Casts a sphere along a ray and returns detailed information on what was hit. */
     SphereCast(origin: Vector3, radius: number, direction: Vector3, hitInfo: unknown, maxDistance: number, layerMask: number, queryTriggerInteraction: QueryTriggerInteraction): boolean;
+    /** Cast sphere along the direction and store the results into buffer. */
     SphereCast(origin: Vector3, radius: number, direction: Vector3, results: CSArray<RaycastHit>, maxDistance: number, layerMask: number, queryTriggerInteraction: QueryTriggerInteraction): number;
     ToString(): string;
 
@@ -4038,65 +4170,110 @@ interface PhysicsScene2D {
     subStepLostTime: number;
 
 
+    /** Casts a box against colliders in the PhysicsScene2D, returning the first intersection only. */
     BoxCast(origin: Vector2, size: Vector2, angle: number, direction: Vector2, distance: number, layerMask: number): RaycastHit2D;
+    /** Casts a box against colliders in the PhysicsScene2D, returning the first intersection only. */
     BoxCast(origin: Vector2, size: Vector2, angle: number, direction: Vector2, distance: number, contactFilter: ContactFilter2D): RaycastHit2D;
+    /** Casts a box against the colliders in the PhysicsScene2D, returning all intersections. */
     BoxCast(origin: Vector2, size: Vector2, angle: number, direction: Vector2, distance: number, results: CSArray<RaycastHit2D>, layerMask: number): number;
+    /** Casts a box against the colliders in the PhysicsScene2D, returning all intersections. */
     BoxCast(origin: Vector2, size: Vector2, angle: number, direction: Vector2, distance: number, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
     BoxCast(origin: Vector2, size: Vector2, angle: number, direction: Vector2, distance: number, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
+    /** Casts a capsule against colliders in the PhysicsScene2D, returning the first intersection only. */
     CapsuleCast(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, distance: number, layerMask: number): RaycastHit2D;
+    /** Casts a capsule against colliders in the PhysicsScene2D, returning the first intersection only. */
     CapsuleCast(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, distance: number, contactFilter: ContactFilter2D): RaycastHit2D;
+    /** Casts a capsule against the Colliders in the PhysicsScene2D, returning all intersections. */
     CapsuleCast(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, distance: number, results: CSArray<RaycastHit2D>, layerMask: number): number;
+    /** Casts a capsule against the Colliders in the PhysicsScene2D, returning all intersections. */
     CapsuleCast(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, distance: number, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
     CapsuleCast(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, distance: number, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
+    /** Casts a circle against colliders in the PhysicsScene2D, returning the first intersection only. */
     CircleCast(origin: Vector2, radius: number, direction: Vector2, distance: number, layerMask: number): RaycastHit2D;
+    /** Casts a circle against colliders in the PhysicsScene2D, returning the first intersection only. */
     CircleCast(origin: Vector2, radius: number, direction: Vector2, distance: number, contactFilter: ContactFilter2D): RaycastHit2D;
+    /** Casts a circle against the colliders in the PhysicsScene2D, returning all intersections. */
     CircleCast(origin: Vector2, radius: number, direction: Vector2, distance: number, results: CSArray<RaycastHit2D>, layerMask: number): number;
+    /** Casts a circle against the colliders in the PhysicsScene2D, returning all intersections. */
     CircleCast(origin: Vector2, radius: number, direction: Vector2, distance: number, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
     CircleCast(origin: Vector2, radius: number, direction: Vector2, distance: number, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
     Equals(other: unknown): boolean;
     Equals(other: PhysicsScene2D): boolean;
     GetHashCode(): number;
+    /** Cast a 3D ray against the 2D Colliders in the Scene. */
     GetRayIntersection(ray: Ray, distance: number, layerMask: number): RaycastHit2D;
+    /** Cast a 3D ray against the 2D Colliders in the Scene. */
     GetRayIntersection(ray: Ray, distance: number, results: CSArray<RaycastHit2D>, layerMask: number): number;
     GetRayIntersection(ray: Ray, distance: number, results: CSArray<RaycastHit2D>, layerMask: number): number;
+    /** Determines whether the physics Scene is empty or not. */
     IsEmpty(): boolean;
+    /** Determines whether the physics Scene is valid or not. */
     IsValid(): boolean;
+    /** Casts a line segment against colliders in the PhysicsScene2D, returning the first intersection only. */
     Linecast(start: Vector2, end: Vector2, layerMask: number): RaycastHit2D;
+    /** Casts a line segment against colliders in the PhysicsScene2D, returning the first intersection only. */
     Linecast(start: Vector2, end: Vector2, contactFilter: ContactFilter2D): RaycastHit2D;
+    /** Casts a line segment against colliders in the PhysicsScene2D. */
     Linecast(start: Vector2, end: Vector2, results: CSArray<RaycastHit2D>, layerMask: number): number;
+    /** Casts a line segment against colliders in the PhysicsScene2D. */
     Linecast(start: Vector2, end: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
     Linecast(start: Vector2, end: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
+    /** Checks an area (non-rotated box) against Colliders in the PhysicsScene2D, returning the first intersection only. */
     OverlapArea(pointA: Vector2, pointB: Vector2, layerMask: number): Collider2D;
+    /** Checks an area (non-rotated box) against Colliders in the PhysicsScene2D, returning the first intersection only. */
     OverlapArea(pointA: Vector2, pointB: Vector2, contactFilter: ContactFilter2D): Collider2D;
+    /** Checks an area (non-rotated box) against Colliders in the PhysicsScene2D, returning all intersections. */
     OverlapArea(pointA: Vector2, pointB: Vector2, results: CSArray<Collider2D>, layerMask: number): number;
+    /** Checks an area (non-rotated box) against Colliders in the PhysicsScene2D, returning all intersections. */
     OverlapArea(pointA: Vector2, pointB: Vector2, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
     OverlapArea(pointA: Vector2, pointB: Vector2, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    /** Checks a box against Colliders in the PhysicsScene2D, returning the first intersection only. */
     OverlapBox(point: Vector2, size: Vector2, angle: number, layerMask: number): Collider2D;
+    /** Checks a box against Colliders in the PhysicsScene2D, returning the first intersection only. */
     OverlapBox(point: Vector2, size: Vector2, angle: number, contactFilter: ContactFilter2D): Collider2D;
+    /** Checks a box against Colliders in the PhysicsScene2D, returning all intersections. */
     OverlapBox(point: Vector2, size: Vector2, angle: number, results: CSArray<Collider2D>, layerMask: number): number;
+    /** Checks a box against Colliders in the PhysicsScene2D, returning all intersections. */
     OverlapBox(point: Vector2, size: Vector2, angle: number, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
     OverlapBox(point: Vector2, size: Vector2, angle: number, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    /** Checks a capsule against Colliders in the PhysicsScene2D, returning the first intersection only. */
     OverlapCapsule(point: Vector2, size: Vector2, direction: CapsuleDirection2D, angle: number, layerMask: number): Collider2D;
+    /** Checks a capsule against Colliders in the PhysicsScene2D, returning the first intersection only. */
     OverlapCapsule(point: Vector2, size: Vector2, direction: CapsuleDirection2D, angle: number, contactFilter: ContactFilter2D): Collider2D;
+    /** Checks a capsule against Colliders in the PhysicsScene2D, returning all intersections. */
     OverlapCapsule(point: Vector2, size: Vector2, direction: CapsuleDirection2D, angle: number, results: CSArray<Collider2D>, layerMask: number): number;
+    /** Checks a capsule against Colliders in the PhysicsScene2D, returning all intersections. */
     OverlapCapsule(point: Vector2, size: Vector2, direction: CapsuleDirection2D, angle: number, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
     OverlapCapsule(point: Vector2, size: Vector2, direction: CapsuleDirection2D, angle: number, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    /** Checks a circle against Colliders in the PhysicsScene2D, returning the first intersection only. */
     OverlapCircle(point: Vector2, radius: number, layerMask: number): Collider2D;
+    /** Checks a circle against Colliders in the PhysicsScene2D, returning the first intersection only. */
     OverlapCircle(point: Vector2, radius: number, contactFilter: ContactFilter2D): Collider2D;
+    /** Checks a circle against Colliders in the PhysicsScene2D, returning all intersections. */
     OverlapCircle(point: Vector2, radius: number, results: CSArray<Collider2D>, layerMask: number): number;
+    /** Checks a circle against Colliders in the PhysicsScene2D, returning all intersections. */
     OverlapCircle(point: Vector2, radius: number, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
     OverlapCircle(point: Vector2, radius: number, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    /** Checks a point against Colliders in the PhysicsScene2D, returning the first intersection only. */
     OverlapPoint(point: Vector2, layerMask: number): Collider2D;
+    /** Checks a point against Colliders in the PhysicsScene2D, returning the first intersection only. */
     OverlapPoint(point: Vector2, contactFilter: ContactFilter2D): Collider2D;
+    /** Checks a point against Colliders in the PhysicsScene2D, returning all intersections. */
     OverlapPoint(point: Vector2, results: CSArray<Collider2D>, layerMask: number): number;
+    /** Checks a point against Colliders in the PhysicsScene2D, returning all intersections. */
     OverlapPoint(point: Vector2, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
     OverlapPoint(point: Vector2, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    /** Casts a ray against colliders in the PhysicsScene2D, returning the first intersection only. */
     Raycast(origin: Vector2, direction: Vector2, distance: number, layerMask: number): RaycastHit2D;
+    /** Casts a ray against colliders in the PhysicsScene2D, returning the first intersection only. */
     Raycast(origin: Vector2, direction: Vector2, distance: number, contactFilter: ContactFilter2D): RaycastHit2D;
+    /** Casts a ray against colliders the PhysicsScene2D, returning all intersections. */
     Raycast(origin: Vector2, direction: Vector2, distance: number, results: CSArray<RaycastHit2D>, layerMask: number): number;
+    /** Casts a ray against colliders the PhysicsScene2D, returning all intersections. */
     Raycast(origin: Vector2, direction: Vector2, distance: number, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
     Raycast(origin: Vector2, direction: Vector2, distance: number, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
     Simulate(deltaTime: number): boolean;
+    /** Simulate physics associated with this PhysicsScene. */
     Simulate(deltaTime: number, simulationLayers: number): boolean;
     ToString(): string;
 
@@ -4146,36 +4323,54 @@ interface Collider2D extends Behaviour {
 
     Cast(direction: Vector2, results: CSArray<RaycastHit2D>): number;
     Cast(direction: Vector2, results: CSArray<RaycastHit2D>, distance: number): number;
+    /** Casts the Collider shape into the Scene starting at the Collider position ignoring the Collider itself. */
     Cast(direction: Vector2, results: CSArray<RaycastHit2D>, distance: number, ignoreSiblingColliders: boolean): number;
     Cast(direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
     Cast(direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number): number;
+    /** Casts the Collider shape into the Scene starting at the Collider position ignoring the Collider itself. */
     Cast(direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number, ignoreSiblingColliders: boolean): number;
     Cast(direction: Vector2, results: CSArray<RaycastHit2D>, distance: number, ignoreSiblingColliders: boolean): number;
     Cast(direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number, ignoreSiblingColliders: boolean): number;
     Cast(position: Vector2, angle: number, direction: Vector2, results: CSArray<RaycastHit2D>, distance: number, ignoreSiblingColliders: boolean): number;
     Cast(position: Vector2, angle: number, direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number, ignoreSiblingColliders: boolean): number;
+    /** Returns a point on the perimeter of this Collider that is closest to the specified position. */
     ClosestPoint(position: Vector2): Vector2;
     CreateMesh(useBodyPosition: boolean, useBodyRotation: boolean): Mesh;
+    /** Creates a planar Mesh that is identical to the area defined by the Collider2D geometry. */
     CreateMesh(useBodyPosition: boolean, useBodyRotation: boolean, useDelaunay: boolean): Mesh;
+    /** Calculates the minimum separation of this collider against another collider. */
     Distance(collider: Collider2D): ColliderDistance2D;
+    /** A valid collider must be provided for the ColliderDistance2D to be valid.  If there are any problems with collider or this Collider2D such as they are disabled or do not contain any collision shapes then the separation will be invalid as indicated by ColliderDistance2D.isValid. */
     Distance(thisPosition: Vector2, thisAngle: number, collider: Collider2D, position: Vector2, angle: number): ColliderDistance2D;
+    /** Retrieves all contact points for this Collider. */
     GetContacts(contacts: CSArray<ContactPoint2D>): number;
     GetContacts(contacts: CSArray<ContactPoint2D>): number;
+    /** Retrieves all contact points for this Collider, with the results filtered by the contactFilter. */
     GetContacts(contactFilter: ContactFilter2D, contacts: CSArray<ContactPoint2D>): number;
     GetContacts(contactFilter: ContactFilter2D, contacts: CSArray<ContactPoint2D>): number;
+    /** Retrieves all colliders in contact with this Collider. */
     GetContacts(colliders: CSArray<Collider2D>): number;
     GetContacts(colliders: CSArray<Collider2D>): number;
+    /** Retrieves all colliders in contact with this Collider, with the results filtered by the contactFilter. */
     GetContacts(contactFilter: ContactFilter2D, colliders: CSArray<Collider2D>): number;
     GetContacts(contactFilter: ContactFilter2D, colliders: CSArray<Collider2D>): number;
     GetShapeBounds(bounds: CSArray<Bounds>, useRadii: boolean, useWorldSpace: boolean): Bounds;
+    /** Generates a simple hash value based upon the geometry of the Collider2D. */
     GetShapeHash(): number;
+    /** Gets all the PhysicsShape2D used by the Collider2D. */
     GetShapes(physicsShapeGroup: PhysicsShapeGroup2D): number;
+    /** Gets the specified range of the PhysicsShape2D used by the Collider2D. */
     GetShapes(physicsShapeGroup: PhysicsShapeGroup2D, shapeIndex: number, shapeCount: number): number;
+    /** Check whether this collider is touching the collider or not. */
     IsTouching(collider: Collider2D): boolean;
+    /** Check whether this collider is touching the collider or not with the results filtered by the contactFilter. */
     IsTouching(collider: Collider2D, contactFilter: ContactFilter2D): boolean;
+    /** Check whether this collider is touching other colliders or not with the results filtered by the contactFilter. */
     IsTouching(contactFilter: ContactFilter2D): boolean;
     IsTouchingLayers(): boolean;
+    /** Checks whether this collider is touching any colliders on the specified layerMask or not. */
     IsTouchingLayers(layerMask: number): boolean;
+    /** Get a list of all colliders that overlap this collider. */
     Overlap(contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
     Overlap(results: CSArray<Collider2D>): number;
     Overlap(contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
@@ -4183,13 +4378,16 @@ interface Collider2D extends Behaviour {
     Overlap(position: Vector2, angle: number, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
     OverlapCollider(contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
     OverlapCollider(contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    /** Check if a collider overlaps a point in space. */
     OverlapPoint(point: Vector2): boolean;
     Raycast(direction: Vector2, results: CSArray<RaycastHit2D>): number;
     Raycast(direction: Vector2, results: CSArray<RaycastHit2D>, distance: number): number;
     Raycast(direction: Vector2, results: CSArray<RaycastHit2D>, distance: number, layerMask: number): number;
     Raycast(direction: Vector2, results: CSArray<RaycastHit2D>, distance: number, layerMask: number, minDepth: number): number;
+    /** Casts a ray into the Scene that starts at the Collider position and ignores the Collider itself. */
     Raycast(direction: Vector2, results: CSArray<RaycastHit2D>, distance: number, layerMask: number, minDepth: number, maxDepth: number): number;
     Raycast(direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
+    /** Casts a ray into the Scene that starts at the Collider position and ignores the Collider itself. */
     Raycast(direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number): number;
     Raycast(direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number): number;
 
@@ -4206,10 +4404,13 @@ interface CompositeCollider2D extends Collider2D {
     pointCount: number;
 
 
+    /** Regenerates the Composite Collider geometry. */
     GenerateGeometry(): void;
     GetCompositedColliders(colliders: CSArray<Collider2D>): number;
+    /** Gets a path from the Collider by its index. */
     GetPath(index: number, points: CSArray<Vector2>): number;
     GetPath(index: number, points: CSArray<Vector2>): number;
+    /** Gets the number of points in the specified path from the Collider by its index. */
     GetPathPointCount(index: number): number;
 
 }
@@ -4257,59 +4458,96 @@ interface Rigidbody2D extends Component {
 
 
     AddForce(force: Vector2): void;
+    /** Apply a force to the rigidbody. */
     AddForce(force: Vector2, mode: ForceMode2D): void;
     AddForceAtPosition(force: Vector2, position: Vector2): void;
+    /** Apply a force at a given position in space. */
     AddForceAtPosition(force: Vector2, position: Vector2, mode: ForceMode2D): void;
+    /** Adds a force to the X component of the Rigidbody2D.velocity|velocity only leaving the Y component of the world space Rigidbody2D.velocity|velocity untouched. */
     AddForceX(force: number, mode: ForceMode2D): void;
+    /** Adds a force to the Y component of the Rigidbody2D.velocity|velocity only leaving the X component of the world space Rigidbody2D.velocity|velocity untouched. */
     AddForceY(force: number, mode: ForceMode2D): void;
     AddRelativeForce(relativeForce: Vector2): void;
+    /** Adds a force to the local space Rigidbody2D.velocity|velocity. In other words, the force is applied in the rotated coordinate space of the Rigidbody2D. */
     AddRelativeForce(relativeForce: Vector2, mode: ForceMode2D): void;
+    /** Adds a force to the X component of the Rigidbody2D.velocity|velocity in the local space of the Rigidbody2D only leaving the Y component of the local space Rigidbody2D.velocity|velocity untouched. */
     AddRelativeForceX(force: number, mode: ForceMode2D): void;
+    /** Adds a force to the Y component of the Rigidbody2D.velocity|velocity in the local space of the Rigidbody2D only leaving the X component of the local space Rigidbody2D.velocity|velocity untouched. */
     AddRelativeForceY(force: number, mode: ForceMode2D): void;
     AddTorque(torque: number): void;
+    /** Apply a torque at the rigidbody&#x27;s centre of mass. */
     AddTorque(torque: number, mode: ForceMode2D): void;
     Cast(direction: Vector2, results: CSArray<RaycastHit2D>): number;
+    /** All the Collider2D shapes attached to the Rigidbody2D are cast into the Scene starting at each Collider position ignoring the Colliders attached to the same Rigidbody2D. */
     Cast(direction: Vector2, results: CSArray<RaycastHit2D>, distance: number): number;
     Cast(direction: Vector2, results: CSArray<RaycastHit2D>, distance: number): number;
     Cast(direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
+    /** All the Collider2D shapes attached to the Rigidbody2D are cast into the Scene starting at each Collider position ignoring the Colliders attached to the same Rigidbody2D. */
     Cast(direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number): number;
     Cast(direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number): number;
     Cast(position: Vector2, angle: number, direction: Vector2, results: CSArray<RaycastHit2D>, distance: number): number;
     Cast(position: Vector2, angle: number, direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number): number;
+    /** Returns a point on the perimeter of all enabled Colliders attached to this Rigidbody that is closest to the specified position. */
     ClosestPoint(position: Vector2): Vector2;
+    /** Calculates the minimum distance of this collider against all Collider2D attached to this Rigidbody2D. */
     Distance(collider: Collider2D): ColliderDistance2D;
+    /** Calculates the minimum distance of this collider against all Collider2D attached to this Rigidbody2D. */
     Distance(thisPosition: Vector2, thisAngle: number, collider: Collider2D, position: Vector2, angle: number): ColliderDistance2D;
     GetAttachedColliders(results: CSArray<Collider2D>): number;
     GetAttachedColliders(results: CSArray<Collider2D>): number;
+    /** Returns all Collider2D that are attached to this Rigidbody2D. */
     GetAttachedColliders(results: CSArray<Collider2D>, findTriggers: boolean): number;
     GetAttachedColliders(results: CSArray<Collider2D>, findTriggers: boolean): number;
+    /** Retrieves all contact points for all of the Collider(s) attached to this Rigidbody. */
     GetContacts(contacts: CSArray<ContactPoint2D>): number;
     GetContacts(contacts: CSArray<ContactPoint2D>): number;
+    /** Retrieves all contact points for all of the Collider(s) attached to this Rigidbody, with the results filtered by the ContactFilter2D. */
     GetContacts(contactFilter: ContactFilter2D, contacts: CSArray<ContactPoint2D>): number;
     GetContacts(contactFilter: ContactFilter2D, contacts: CSArray<ContactPoint2D>): number;
+    /** Retrieves all Colliders in contact with any of the Collider(s) attached to this Rigidbody. */
     GetContacts(colliders: CSArray<Collider2D>): number;
     GetContacts(colliders: CSArray<Collider2D>): number;
+    /** Retrieves all Colliders in contact with any of the Collider(s) attached to this rigidbody, with the results filtered by the ContactFilter2D. */
     GetContacts(contactFilter: ContactFilter2D, colliders: CSArray<Collider2D>): number;
     GetContacts(contactFilter: ContactFilter2D, colliders: CSArray<Collider2D>): number;
+    /** Get a local space point given the point point in rigidBody global space. */
     GetPoint(point: Vector2): Vector2;
+    /** The velocity of the rigidbody at the point Point in global space. */
     GetPointVelocity(point: Vector2): Vector2;
+    /** Get a global space point given the point relativePoint in rigidBody local space. */
     GetRelativePoint(relativePoint: Vector2): Vector2;
+    /** The velocity of the rigidbody at the point Point in local space. */
     GetRelativePointVelocity(relativePoint: Vector2): Vector2;
+    /** Get a global space vector given the vector relativeVector in rigidBody local space. */
     GetRelativeVector(relativeVector: Vector2): Vector2;
+    /** Gets all the PhysicsShape2D used by all Collider2D attached to the Rigidbody2D. */
     GetShapes(physicsShapeGroup: PhysicsShapeGroup2D): number;
+    /** Get a local space vector given the vector vector in rigidBody global space. */
     GetVector(vector: Vector2): Vector2;
+    /** Is the rigidbody &quot;awake&quot;? */
     IsAwake(): boolean;
+    /** Is the rigidbody &quot;sleeping&quot;? */
     IsSleeping(): boolean;
+    /** Checks whether the collider  is touching any of the collider(s) attached to this rigidbody or not. */
     IsTouching(collider: Collider2D): boolean;
+    /** Checks whether the collider  is touching any of the collider(s) attached to this rigidbody or not with the results filtered by the ContactFilter2D. */
     IsTouching(collider: Collider2D, contactFilter: ContactFilter2D): boolean;
+    /** Checks whether any collider is touching any of the collider(s) attached to this rigidbody or not with the results filtered by the ContactFilter2D. */
     IsTouching(contactFilter: ContactFilter2D): boolean;
     IsTouchingLayers(): boolean;
+    /** Checks whether any of the collider(s) attached to this rigidbody are touching any colliders on the specified layerMask or not. */
     IsTouchingLayers(layerMask: number): boolean;
+    /** Moves the rigidbody to position. */
     MovePosition(position: Vector2): void;
+    /** Moves the rigidbody position to position and the rigidbody angle to angle. */
     MovePositionAndRotation(position: Vector2, angle: number): void;
+    /** Moves the rigidbody position to position and the rigidbody angle to rotation. */
     MovePositionAndRotation(position: Vector2, rotation: Quaternion): void;
+    /** Rotates the Rigidbody to angle (given in degrees). */
     MoveRotation(angle: number): void;
+    /** An overload of MoveRotation that allows a full 3D rotation as an argument. */
     MoveRotation(rotation: Quaternion): void;
+    /** Get a list of all Colliders that overlap all Colliders attached to this Rigidbody2D filtered by the contactFilter. */
     Overlap(contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
     Overlap(results: CSArray<Collider2D>): number;
     Overlap(contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
@@ -4317,11 +4555,16 @@ interface Rigidbody2D extends Component {
     Overlap(position: Vector2, angle: number, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
     OverlapCollider(contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
     OverlapCollider(contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    /** Check if any of the Rigidbody2D colliders overlap a point in space. */
     OverlapPoint(point: Vector2): boolean;
+    /** Sets the rotation of the Rigidbody2D to angle (given in degrees). */
     SetRotation(angle: number): void;
+    /** Sets the rotation of the Rigidbody2D to the z-axis rotation extracted from the full 3D rotation. */
     SetRotation(rotation: Quaternion): void;
+    /** Make the rigidbody &quot;sleep&quot;. */
     Sleep(): void;
     Slide(velocity: Vector2, deltaTime: number, slideMovement: SlideMovement): SlideResults;
+    /** Disables the &quot;sleeping&quot; state of a rigidbody. */
     WakeUp(): void;
 
 }
@@ -4358,17 +4601,29 @@ interface ContactFilter2D {
     isFiltering: boolean;
 
 
+    /** Turns off depth filtering by setting useDepth to false.  The associated values of minDepth and maxDepth are not changed. */
     ClearDepth(): void;
+    /** Turns off layer mask filtering by setting useLayerMask to false.  The associated value of layerMask is not changed. */
     ClearLayerMask(): void;
+    /** Turns off normal angle filtering by setting useNormalAngle to false. The associated values of minNormalAngle and maxNormalAngle are not changed. */
     ClearNormalAngle(): void;
+    /** Checks if the Transform for obj is within the depth range to be filtered. */
     IsFilteringDepth(obj: GameObject): boolean;
+    /** Checks if the GameObject.layer for obj is included in the layerMask to be filtered. */
     IsFilteringLayerMask(obj: GameObject): boolean;
+    /** Checks if the angle of normal is within the normal angle range to be filtered. */
     IsFilteringNormalAngle(normal: Vector2): boolean;
+    /** Checks if the angle is within the normal angle range to be filtered. */
     IsFilteringNormalAngle(angle: number): boolean;
+    /** Checks if the collider is a trigger and should be filtered by the useTriggers to be filtered. */
     IsFilteringTrigger(collider: Collider2D): boolean;
+    /** Sets the contact filter to not filter any ContactPoint2D. */
     NoFilter(): ContactFilter2D;
+    /** Sets the minDepth and maxDepth filter properties and turns on depth filtering by setting useDepth to true. */
     SetDepth(minDepth: number, maxDepth: number): void;
+    /** Sets the layerMask filter property using the layerMask parameter provided and also enables layer mask filtering by setting useLayerMask to true. */
     SetLayerMask(layerMask: LayerMask): void;
+    /** Sets the minNormalAngle and maxNormalAngle filter properties and turns on normal angle filtering by setting useNormalAngle to true. */
     SetNormalAngle(minNormalAngle: number, maxNormalAngle: number): void;
 
 }
@@ -4416,22 +4671,33 @@ interface PhysicsShapeGroup2D {
     localToWorldMatrix: Matrix4x4;
 
 
+    /** Adds a copy of all the PhysicsShape2D and their geometry from the specified physicsShapeGroup into this shape group. The specified physicsShapeGroup is not modified. */
     Add(physicsShapeGroup: PhysicsShapeGroup2D): void;
+    /** Adds a box shape (PhysicsShapeType2D.Polygon) to the shape group. */
     AddBox(center: Vector2, size: Vector2, angle: number, edgeRadius: number): number;
+    /** Adds a capsule shape (PhysicsShapeType2D.Capsule) to the shape group. */
     AddCapsule(vertex0: Vector2, vertex1: Vector2, radius: number): number;
+    /** Adds a circle shape (PhysicsShapeType2D.Circle) to the shape group. */
     AddCircle(center: Vector2, radius: number): number;
     AddEdges(vertices: CSArray<Vector2>, edgeRadius: number): number;
     AddEdges(vertices: CSArray<Vector2>, useAdjacentStart: boolean, useAdjacentEnd: boolean, adjacentStart: Vector2, adjacentEnd: Vector2, edgeRadius: number): number;
     AddPolygon(vertices: CSArray<Vector2>): number;
+    /** Clears all the vertices and shapes from the PhysicsShapeGroup. */
     Clear(): void;
+    /** When destroying a shape at the specified shapeIndex, all other shapes that exist above the specified shapeIndex will have their shape indices updated appropriately. */
     DeleteShape(shapeIndex: number): void;
+    /** Gets the PhysicsShape2D stored at the specified shapeIndex. */
     GetShape(shapeIndex: number): PhysicsShape2D;
     GetShapeData(shapes: CSArray<PhysicsShape2D>, vertices: CSArray<Vector2>): void;
     GetShapeData(shapes: CSArray<PhysicsShape2D>, vertices: CSArray<Vector2>): void;
+    /** Gets a single vertex of a shape. The vertex index is zero-based with the shape having a quantity of vertex specified by PhysicsShape2D.vertexCount. */
     GetShapeVertex(shapeIndex: number, vertexIndex: number): Vector2;
     GetShapeVertices(shapeIndex: number, vertices: CSArray<Vector2>): void;
+    /** Sets the adjacent vertices of a shape. */
     SetShapeAdjacentVertices(shapeIndex: number, useAdjacentStart: boolean, useAdjacentEnd: boolean, adjacentStart: Vector2, adjacentEnd: Vector2): void;
+    /** Sets the radius of a shape. */
     SetShapeRadius(shapeIndex: number, radius: number): void;
+    /** Sets a single vertex of a shape. */
     SetShapeVertex(shapeIndex: number, vertexIndex: number, vertex: Vector2): void;
 
 }
@@ -4539,92 +4805,150 @@ interface Mesh extends Object {
     skinWeightBufferLayout: SkinWeights;
 
 
+    /** Adds a new blend shape frame. */
     AddBlendShapeFrame(shapeName: string, frameWeight: number, deltaVertices: CSArray<Vector3>, deltaNormals: CSArray<Vector3>, deltaTangents: CSArray<Vector3>): void;
+    /** Clears all vertex data and all triangle indices. */
     Clear(keepVertexLayout: boolean): void;
     Clear(): void;
+    /** Clears all blend shapes from Mesh. */
     ClearBlendShapes(): void;
+    /** Combines several Meshes into this Mesh. */
     CombineMeshes(combine: CSArray<CombineInstance>, mergeSubMeshes: boolean, useMatrices: boolean, hasLightmapData: boolean): void;
+    /** Combines several Meshes into this Mesh. */
     CombineMeshes(combine: CSArray<CombineInstance>, mergeSubMeshes: boolean, useMatrices: boolean): void;
+    /** Combines several Meshes into this Mesh. */
     CombineMeshes(combine: CSArray<CombineInstance>, mergeSubMeshes: boolean): void;
+    /** Combines several Meshes into this Mesh. */
     CombineMeshes(combine: CSArray<CombineInstance>): void;
+    /** Gets the bone weights for the Mesh. */
     GetAllBoneWeights(): CSArray<BoneWeight1>;
+    /** Gets the base vertex index of the given sub-mesh. */
     GetBaseVertex(submesh: number): number;
+    /** Gets the bind poses of the Mesh. */
     GetBindposes(): CSArray<Matrix4x4>;
     GetBindposes(bindposes: CSArray<Matrix4x4>): void;
+    /** Retrieves a GraphicsBuffer that provides direct read and write access to GPU blend shape vertex data. */
     GetBlendShapeBuffer(layout: BlendShapeBufferLayout): GraphicsBuffer;
+    /** Retrieves a GraphicsBuffer that provides direct read and write access to GPU blend shape vertex data. */
     GetBlendShapeBuffer(): GraphicsBuffer;
+    /** Get the location of blend shape vertex data for a given blend shape. */
     GetBlendShapeBufferRange(blendShapeIndex: number): BlendShapeBufferRange;
+    /** Returns the frame count for a blend shape. */
     GetBlendShapeFrameCount(shapeIndex: number): number;
+    /** Retreives deltaVertices, deltaNormals and deltaTangents of a blend shape frame. */
     GetBlendShapeFrameVertices(shapeIndex: number, frameIndex: number, deltaVertices: CSArray<Vector3>, deltaNormals: CSArray<Vector3>, deltaTangents: CSArray<Vector3>): void;
+    /** Returns the weight of a blend shape frame. */
     GetBlendShapeFrameWeight(shapeIndex: number, frameIndex: number): number;
+    /** Returns index of BlendShape by given name. */
     GetBlendShapeIndex(blendShapeName: string): number;
+    /** Returns name of BlendShape by given index. */
     GetBlendShapeName(shapeIndex: number): string;
+    /** The number of non-zero bone weights for each vertex. */
     GetBonesPerVertex(): CSArray<number>;
+    /** Retrieves a GraphicsBuffer that provides direct read and write access to GPU bone weight data. */
     GetBoneWeightBuffer(layout: SkinWeights): GraphicsBuffer;
     GetBoneWeights(boneWeights: CSArray<BoneWeight>): void;
     GetColors(colors: CSArray<Color>): void;
     GetColors(colors: CSArray<Color32>): void;
+    /** Retrieves a GraphicsBuffer to the GPU index buffer. */
     GetIndexBuffer(): GraphicsBuffer;
+    /** Gets the index count of the given sub-mesh. */
     GetIndexCount(submesh: number): number;
+    /** Gets the starting index location within the Mesh&#x27;s index buffer, for the given sub-mesh. */
     GetIndexStart(submesh: number): number;
+    /** Fetches the index list for the specified sub-mesh. */
     GetIndices(submesh: number): CSArray<number>;
+    /** Fetches the index list for the specified sub-mesh. */
     GetIndices(submesh: number, applyBaseVertex: boolean): CSArray<number>;
     GetIndices(indices: CSArray<number>, submesh: number): void;
     GetIndices(indices: CSArray<number>, submesh: number, applyBaseVertex: boolean): void;
     GetIndices(indices: CSArray<number>, submesh: number, applyBaseVertex: boolean): void;
+    /** Retrieves a native (underlying graphics API) pointer to the index buffer. */
     GetNativeIndexBufferPtr(): unknown;
+    /** Retrieves a native (underlying graphics API) pointer to the vertex buffer. */
     GetNativeVertexBufferPtr(index: number): unknown;
     GetNormals(normals: CSArray<Vector3>): void;
+    /** Get information about a sub-mesh of the Mesh. */
     GetSubMesh(index: number): SubMeshDescriptor;
     GetTangents(tangents: CSArray<Vector4>): void;
+    /** Gets the topology of a sub-mesh. */
     GetTopology(submesh: number): MeshTopology;
+    /** Fetches the triangle list for the specified sub-mesh on this object. */
     GetTriangles(submesh: number): CSArray<number>;
+    /** Fetches the triangle list for the specified sub-mesh on this object. */
     GetTriangles(submesh: number, applyBaseVertex: boolean): CSArray<number>;
     GetTriangles(triangles: CSArray<number>, submesh: number): void;
     GetTriangles(triangles: CSArray<number>, submesh: number, applyBaseVertex: boolean): void;
     GetTriangles(triangles: CSArray<number>, submesh: number, applyBaseVertex: boolean): void;
+    /** The UV distribution metric can be used to calculate the desired mipmap level based on the position of the camera. */
     GetUVDistributionMetric(uvSetIndex: number): number;
     GetUVs(channel: number, uvs: CSArray<Vector2>): void;
     GetUVs(channel: number, uvs: CSArray<Vector3>): void;
     GetUVs(channel: number, uvs: CSArray<Vector4>): void;
+    /** Returns information about a vertex attribute based on its index. */
     GetVertexAttribute(index: number): VertexAttributeDescriptor;
+    /** Get dimension of a specific vertex data attribute on this Mesh. */
     GetVertexAttributeDimension(attr: VertexAttribute): number;
+    /** Get format of a specific vertex data attribute on this Mesh. */
     GetVertexAttributeFormat(attr: VertexAttribute): VertexAttributeFormat;
+    /** Get offset within a vertex buffer stream of a specific vertex data attribute on this Mesh. */
     GetVertexAttributeOffset(attr: VertexAttribute): number;
+    /** Get information about vertex attributes of a Mesh. */
     GetVertexAttributes(): CSArray<VertexAttributeDescriptor>;
+    /** Get information about vertex attributes of a Mesh, without memory allocations. */
     GetVertexAttributes(attributes: CSArray<VertexAttributeDescriptor>): number;
     GetVertexAttributes(attributes: CSArray<VertexAttributeDescriptor>): number;
+    /** Gets the vertex buffer stream index of a specific vertex data attribute on this Mesh. */
     GetVertexAttributeStream(attr: VertexAttribute): number;
+    /** Retrieves a GraphicsBuffer that provides direct acces to the GPU vertex buffer. */
     GetVertexBuffer(index: number): GraphicsBuffer;
+    /** Get vertex buffer stream stride in bytes. */
     GetVertexBufferStride(stream: number): number;
     GetVertices(vertices: CSArray<Vector3>): void;
+    /** Checks if a specific vertex data attribute exists on this Mesh. */
     HasVertexAttribute(attr: VertexAttribute): boolean;
+    /** Optimize mesh for frequent updates. */
     MarkDynamic(): void;
+    /** Notify Renderer components of mesh geometry change. */
     MarkModified(): void;
+    /** Optimizes the Mesh data to improve rendering performance. */
     Optimize(): void;
+    /** Optimizes the geometry of the Mesh to improve rendering performance. */
     OptimizeIndexBuffers(): void;
+    /** Optimizes the vertices of the Mesh to improve rendering performance. */
     OptimizeReorderVertexBuffer(): void;
     RecalculateBounds(): void;
+    /** Recalculate the bounding volume of the Mesh and all of its sub-meshes with the vertex data. */
     RecalculateBounds(flags: MeshUpdateFlags): void;
     RecalculateNormals(): void;
+    /** Recalculates the normals of the Mesh from the triangles and vertices. */
     RecalculateNormals(flags: MeshUpdateFlags): void;
     RecalculateTangents(): void;
+    /** Recalculates the tangents of the Mesh from the normals and texture coordinates. */
     RecalculateTangents(flags: MeshUpdateFlags): void;
+    /** Recalculates the UV distribution metric of the Mesh from the vertices and uv coordinates. */
     RecalculateUVDistributionMetric(uvSetIndex: number, uvAreaThreshold: number): void;
+    /** Recalculates the UV distribution metrics of the Mesh from the vertices and uv coordinates. */
     RecalculateUVDistributionMetrics(uvAreaThreshold: number): void;
     SetBindposes(poses: CSArray<Matrix4x4>): void;
     SetBoneWeights(bonesPerVertex: CSArray<number>, weights: CSArray<BoneWeight1>): void;
     SetColors(inColors: CSArray<Color>): void;
     SetColors(inColors: CSArray<Color>, start: number, length: number): void;
     SetColors(inColors: CSArray<Color>, start: number, length: number, flags: MeshUpdateFlags): void;
+    /** Set the per-vertex colors of the Mesh. */
     SetColors(inColors: CSArray<Color>): void;
+    /** Sets the per-vertex colors of the Mesh, using a part of the input array. */
     SetColors(inColors: CSArray<Color>, start: number, length: number): void;
+    /** Sets the per-vertex colors of the Mesh, using a part of the input array. */
     SetColors(inColors: CSArray<Color>, start: number, length: number, flags: MeshUpdateFlags): void;
     SetColors(inColors: CSArray<Color32>): void;
     SetColors(inColors: CSArray<Color32>, start: number, length: number): void;
     SetColors(inColors: CSArray<Color32>, start: number, length: number, flags: MeshUpdateFlags): void;
+    /** Set the per-vertex colors of the Mesh. */
     SetColors(inColors: CSArray<Color32>): void;
+    /** Sets the per-vertex colors of the Mesh, using a part of the input array. */
     SetColors(inColors: CSArray<Color32>, start: number, length: number): void;
+    /** Sets the per-vertex colors of the Mesh, using a part of the input array. */
     SetColors(inColors: CSArray<Color32>, start: number, length: number, flags: MeshUpdateFlags): void;
     SetColors<T>(inColors: CSArray<T>): void;
     SetColors<T>(inColors: CSArray<T>, start: number, length: number): void;
@@ -4632,12 +4956,19 @@ interface Mesh extends Object {
     SetIndexBufferData<T>(data: CSArray<T>, dataStart: number, meshBufferStart: number, count: number, flags: MeshUpdateFlags): void;
     SetIndexBufferData<T>(data: CSArray<T>, dataStart: number, meshBufferStart: number, count: number, flags: MeshUpdateFlags): void;
     SetIndexBufferData<T>(data: CSArray<T>, dataStart: number, meshBufferStart: number, count: number, flags: MeshUpdateFlags): void;
+    /** Sets the index buffer size and format. */
     SetIndexBufferParams(indexCount: number, format: IndexFormat): void;
+    /** Sets the index buffer for the sub-mesh. */
     SetIndices(indices: CSArray<number>, topology: MeshTopology, submesh: number): void;
+    /** Sets the index buffer for the sub-mesh. */
     SetIndices(indices: CSArray<number>, topology: MeshTopology, submesh: number, calculateBounds: boolean): void;
+    /** Sets the index buffer for the sub-mesh. */
     SetIndices(indices: CSArray<number>, topology: MeshTopology, submesh: number, calculateBounds: boolean, baseVertex: number): void;
+    /** Sets the index buffer of a sub-mesh, using a part of the input array. */
     SetIndices(indices: CSArray<number>, indicesStart: number, indicesLength: number, topology: MeshTopology, submesh: number, calculateBounds: boolean, baseVertex: number): void;
+    /** Sets the index buffer for the sub-mesh. */
     SetIndices(indices: CSArray<number>, topology: MeshTopology, submesh: number, calculateBounds: boolean, baseVertex: number): void;
+    /** Sets the index buffer of a sub-mesh, using a part of the input array. */
     SetIndices(indices: CSArray<number>, indicesStart: number, indicesLength: number, topology: MeshTopology, submesh: number, calculateBounds: boolean, baseVertex: number): void;
     SetIndices<T>(indices: CSArray<T>, topology: MeshTopology, submesh: number, calculateBounds: boolean, baseVertex: number): void;
     SetIndices<T>(indices: CSArray<T>, indicesStart: number, indicesLength: number, topology: MeshTopology, submesh: number, calculateBounds: boolean, baseVertex: number): void;
@@ -4648,14 +4979,20 @@ interface Mesh extends Object {
     SetNormals(inNormals: CSArray<Vector3>): void;
     SetNormals(inNormals: CSArray<Vector3>, start: number, length: number): void;
     SetNormals(inNormals: CSArray<Vector3>, start: number, length: number, flags: MeshUpdateFlags): void;
+    /** Set the normals of the Mesh. */
     SetNormals(inNormals: CSArray<Vector3>): void;
+    /** Sets the vertex normals of the Mesh, using a part of the input array. */
     SetNormals(inNormals: CSArray<Vector3>, start: number, length: number): void;
+    /** Sets the vertex normals of the Mesh, using a part of the input array. */
     SetNormals(inNormals: CSArray<Vector3>, start: number, length: number, flags: MeshUpdateFlags): void;
     SetNormals<T>(inNormals: CSArray<T>): void;
     SetNormals<T>(inNormals: CSArray<T>, start: number, length: number): void;
     SetNormals<T>(inNormals: CSArray<T>, start: number, length: number, flags: MeshUpdateFlags): void;
+    /** Sets the information about a sub-mesh of the Mesh. */
     SetSubMesh(index: number, desc: SubMeshDescriptor, flags: MeshUpdateFlags): void;
+    /** Sets information defining all sub-meshes in this Mesh, replacing any existing sub-meshes. */
     SetSubMeshes(desc: CSArray<SubMeshDescriptor>, start: number, count: number, flags: MeshUpdateFlags): void;
+    /** Sets information defining all sub-meshes in this Mesh, replacing any existing sub-meshes. */
     SetSubMeshes(desc: CSArray<SubMeshDescriptor>, flags: MeshUpdateFlags): void;
     SetSubMeshes(desc: CSArray<SubMeshDescriptor>, start: number, count: number, flags: MeshUpdateFlags): void;
     SetSubMeshes(desc: CSArray<SubMeshDescriptor>, flags: MeshUpdateFlags): void;
@@ -4664,17 +5001,26 @@ interface Mesh extends Object {
     SetTangents(inTangents: CSArray<Vector4>): void;
     SetTangents(inTangents: CSArray<Vector4>, start: number, length: number): void;
     SetTangents(inTangents: CSArray<Vector4>, start: number, length: number, flags: MeshUpdateFlags): void;
+    /** Set the tangents of the Mesh. */
     SetTangents(inTangents: CSArray<Vector4>): void;
+    /** Sets the tangents of the Mesh, using a part of the input array. */
     SetTangents(inTangents: CSArray<Vector4>, start: number, length: number): void;
+    /** Sets the tangents of the Mesh, using a part of the input array. */
     SetTangents(inTangents: CSArray<Vector4>, start: number, length: number, flags: MeshUpdateFlags): void;
     SetTangents<T>(inTangents: CSArray<T>): void;
     SetTangents<T>(inTangents: CSArray<T>, start: number, length: number): void;
     SetTangents<T>(inTangents: CSArray<T>, start: number, length: number, flags: MeshUpdateFlags): void;
+    /** Sets the triangle list for the sub-mesh. */
     SetTriangles(triangles: CSArray<number>, submesh: number): void;
+    /** Sets the triangle list for the sub-mesh. */
     SetTriangles(triangles: CSArray<number>, submesh: number, calculateBounds: boolean): void;
+    /** Sets the triangle list for the sub-mesh. */
     SetTriangles(triangles: CSArray<number>, submesh: number, calculateBounds: boolean, baseVertex: number): void;
+    /** Sets the triangle list of the Mesh, using a part of the input array. */
     SetTriangles(triangles: CSArray<number>, trianglesStart: number, trianglesLength: number, submesh: number, calculateBounds: boolean, baseVertex: number): void;
+    /** Sets the triangle list for the sub-mesh. */
     SetTriangles(triangles: CSArray<number>, submesh: number, calculateBounds: boolean, baseVertex: number): void;
+    /** Sets the triangle list of the Mesh, using a part of the input array. */
     SetTriangles(triangles: CSArray<number>, trianglesStart: number, trianglesLength: number, submesh: number, calculateBounds: boolean, baseVertex: number): void;
     SetTriangles(triangles: CSArray<number>, submesh: number): void;
     SetTriangles(triangles: CSArray<number>, submesh: number, calculateBounds: boolean): void;
@@ -4691,14 +5037,23 @@ interface Mesh extends Object {
     SetUVs(channel: number, uvs: CSArray<Vector3>, start: number, length: number, flags: MeshUpdateFlags): void;
     SetUVs(channel: number, uvs: CSArray<Vector4>, start: number, length: number): void;
     SetUVs(channel: number, uvs: CSArray<Vector4>, start: number, length: number, flags: MeshUpdateFlags): void;
+    /** Sets the texture coordinates (UVs) stored in a given channel. */
     SetUVs(channel: number, uvs: CSArray<Vector2>): void;
+    /** Sets the texture coordinates (UVs) stored in a given channel. */
     SetUVs(channel: number, uvs: CSArray<Vector3>): void;
+    /** Sets the texture coordinates (UVs) stored in a given channel. */
     SetUVs(channel: number, uvs: CSArray<Vector4>): void;
+    /** Sets the UVs of the Mesh, using a part of the input array. */
     SetUVs(channel: number, uvs: CSArray<Vector2>, start: number, length: number): void;
+    /** Sets the UVs of the Mesh, using a part of the input array. */
     SetUVs(channel: number, uvs: CSArray<Vector2>, start: number, length: number, flags: MeshUpdateFlags): void;
+    /** Sets the UVs of the Mesh, using a part of the input array. */
     SetUVs(channel: number, uvs: CSArray<Vector3>, start: number, length: number): void;
+    /** Sets the UVs of the Mesh, using a part of the input array. */
     SetUVs(channel: number, uvs: CSArray<Vector3>, start: number, length: number, flags: MeshUpdateFlags): void;
+    /** Sets the UVs of the Mesh, using a part of the input array. */
     SetUVs(channel: number, uvs: CSArray<Vector4>, start: number, length: number): void;
+    /** Sets the UVs of the Mesh, using a part of the input array. */
     SetUVs(channel: number, uvs: CSArray<Vector4>, start: number, length: number, flags: MeshUpdateFlags): void;
     SetUVs<T>(channel: number, uvs: CSArray<T>): void;
     SetUVs<T>(channel: number, uvs: CSArray<T>, start: number, length: number): void;
@@ -4706,17 +5061,22 @@ interface Mesh extends Object {
     SetVertexBufferData<T>(data: CSArray<T>, dataStart: number, meshBufferStart: number, count: number, stream: number, flags: MeshUpdateFlags): void;
     SetVertexBufferData<T>(data: CSArray<T>, dataStart: number, meshBufferStart: number, count: number, stream: number, flags: MeshUpdateFlags): void;
     SetVertexBufferData<T>(data: CSArray<T>, dataStart: number, meshBufferStart: number, count: number, stream: number, flags: MeshUpdateFlags): void;
+    /** Sets the vertex buffer size and layout. */
     SetVertexBufferParams(vertexCount: number, attributes: CSArray<VertexAttributeDescriptor>): void;
     SetVertexBufferParams(vertexCount: number, attributes: CSArray<VertexAttributeDescriptor>): void;
     SetVertices(inVertices: CSArray<Vector3>): void;
     SetVertices(inVertices: CSArray<Vector3>, start: number, length: number): void;
     SetVertices(inVertices: CSArray<Vector3>, start: number, length: number, flags: MeshUpdateFlags): void;
+    /** Assigns a new vertex positions array. */
     SetVertices(inVertices: CSArray<Vector3>): void;
+    /** Sets the vertex positions of the Mesh, using a part of the input array. */
     SetVertices(inVertices: CSArray<Vector3>, start: number, length: number): void;
+    /** Sets the vertex positions of the Mesh, using a part of the input array. */
     SetVertices(inVertices: CSArray<Vector3>, start: number, length: number, flags: MeshUpdateFlags): void;
     SetVertices<T>(inVertices: CSArray<T>): void;
     SetVertices<T>(inVertices: CSArray<T>, start: number, length: number): void;
     SetVertices<T>(inVertices: CSArray<T>, start: number, length: number, flags: MeshUpdateFlags): void;
+    /** Upload previously done Mesh modifications to the graphics API. */
     UploadMeshData(markNoLongerReadable: boolean): void;
 
 }
@@ -4731,8 +5091,11 @@ interface Color32 {
     Item: number;
 
 
+    /** Returns a formatted string for this color. */
     ToString(): string;
+    /** Returns a formatted string for this color. */
     ToString(format: string): string;
+    /** Returns a formatted string for this color. */
     ToString(format: string, formatProvider: unknown): string;
 
 }
@@ -4796,19 +5159,29 @@ interface GraphicsBuffer {
 
 
     Dispose(): void;
+    /** Read data values from the buffer into an array. The array can only use &amp;lt;a href&#x3D;&quot;https:docs.microsoft.comen-usdotnetframeworkinteropblittable-and-non-blittable-types&quot;&amp;gt;blittable&amp;lt;a&amp;gt; types. */
     GetData(data: unknown): void;
+    /** Read data values from the buffer into an array. The array can only use &amp;lt;a href&#x3D;&quot;https:docs.microsoft.comen-usdotnetframeworkinteropblittable-and-non-blittable-types&quot;&amp;gt;blittable&amp;lt;a&amp;gt; types. */
     GetData(data: unknown, managedBufferStartIndex: number, computeBufferStartIndex: number, count: number): void;
+    /** Retrieve a native (underlying graphics API) pointer to the buffer. */
     GetNativeBufferPtr(): unknown;
+    /** Returns true if this graphics buffer is valid, or false otherwise. */
     IsValid(): boolean;
+    /** Begins a write operation to the buffer */
     LockBufferForWrite<T>(bufferStartIndex: number, count: number): CSArray<T>;
+    /** Release a Graphics Buffer. */
     Release(): void;
+    /** Sets counter value of append/consume buffer. */
     SetCounterValue(counterValue: number): void;
+    /** Set the buffer with values from an array. */
     SetData(data: unknown): void;
     SetData<T>(data: CSArray<T>): void;
     SetData<T>(data: CSArray<T>): void;
+    /** Partial copy of data values from an array into the buffer. */
     SetData(data: unknown, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
     SetData<T>(data: CSArray<T>, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
     SetData<T>(data: CSArray<T>, nativeBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
+    /** Ends a write operation to the buffer */
     UnlockBufferAfterWrite<T>(countWritten: number): void;
 
 }
@@ -4830,18 +5203,28 @@ interface ComputeBuffer {
     name: string;
 
 
+    /** Begins a write operation to the buffer */
     BeginWrite<T>(computeBufferStartIndex: number, count: number): CSArray<T>;
     Dispose(): void;
+    /** Ends a write operation to the buffer */
     EndWrite<T>(countWritten: number): void;
+    /** Read data values from the buffer into an array. The array can only use &amp;lt;a href&#x3D;&quot;https:docs.microsoft.comen-usdotnetframeworkinteropblittable-and-non-blittable-types&quot;&amp;gt;blittable&amp;lt;a&amp;gt; types. */
     GetData(data: unknown): void;
+    /** Partial read of data values from the buffer into an array. */
     GetData(data: unknown, managedBufferStartIndex: number, computeBufferStartIndex: number, count: number): void;
+    /** Retrieve a native (underlying graphics API) pointer to the buffer. */
     GetNativeBufferPtr(): unknown;
+    /** Returns true if this compute buffer is valid and false otherwise. */
     IsValid(): boolean;
+    /** Release a Compute Buffer. */
     Release(): void;
+    /** Sets counter value of append/consume buffer. */
     SetCounterValue(counterValue: number): void;
+    /** Set the buffer with values from an array. */
     SetData(data: unknown): void;
     SetData<T>(data: CSArray<T>): void;
     SetData<T>(data: CSArray<T>): void;
+    /** Partial copy of data values from an array into the buffer. */
     SetData(data: unknown, managedBufferStartIndex: number, computeBufferStartIndex: number, count: number): void;
     SetData<T>(data: CSArray<T>, managedBufferStartIndex: number, computeBufferStartIndex: number, count: number): void;
     SetData<T>(data: CSArray<T>, nativeBufferStartIndex: number, computeBufferStartIndex: number, count: number): void;
@@ -5299,19 +5682,32 @@ interface MonoBehaviour extends Behaviour {
     runInEditMode: boolean;
 
 
+    /** Cancels all Invoke calls on this MonoBehaviour. */
     CancelInvoke(): void;
+    /** Cancels all Invoke calls with name methodName on this behaviour. */
     CancelInvoke(methodName: string): void;
+    /** Invokes the method methodName in time seconds. */
     Invoke(methodName: string, time: number): void;
+    /** Invokes the method methodName in time seconds, then repeatedly every repeatRate seconds. */
     InvokeRepeating(methodName: string, time: number, repeatRate: number): void;
+    /** Is any invoke pending on this MonoBehaviour? */
     IsInvoking(): boolean;
+    /** Is any invoke on methodName pending? */
     IsInvoking(methodName: string): boolean;
+    /** Starts a coroutine named methodName. */
     StartCoroutine(methodName: string): Coroutine;
+    /** Starts a coroutine named methodName. */
     StartCoroutine(methodName: string, value: unknown): Coroutine;
+    /** Starts a Coroutine. */
     StartCoroutine(routine: unknown): Coroutine;
     StartCoroutine_Auto(routine: unknown): Coroutine;
+    /** Stops all coroutines running on this behaviour. */
     StopAllCoroutines(): void;
+    /** Stops the first coroutine named methodName, or the coroutine stored in routine running on this behaviour. */
     StopCoroutine(routine: unknown): void;
+    /** Stops the first coroutine named methodName, or the coroutine stored in routine running on this behaviour. */
     StopCoroutine(routine: Coroutine): void;
+    /** Stops the first coroutine named methodName, or the coroutine stored in routine running on this behaviour. */
     StopCoroutine(methodName: string): void;
 
 }
@@ -5433,17 +5829,27 @@ interface Sprite extends Object {
     uv: CSArray<Vector2>;
 
 
+    /** Adds a ScriptableObject reference to the sprite. */
     AddScriptableObject(obj: ScriptableObject): boolean;
     GetPhysicsShape(shapeIdx: number, physicsShape: CSArray<Vector2>): number;
+    /** The number of physics shapes for the Sprite. */
     GetPhysicsShapeCount(): number;
+    /** Retrieves the number of points in the selected physics shape for the sprite. */
     GetPhysicsShapePointCount(shapeIdx: number): number;
+    /** Retrieves an array of ScriptableObject referenced by the sprite. */
     GetScriptableObjects(scriptableObjects: CSArray<ScriptableObject>): number;
+    /** Gets the number of ScriptableObject that the sprite references. */
     GetScriptableObjectsCount(): number;
+    /** Gets the number of Secondary Textures that the Sprite is using. */
     GetSecondaryTextureCount(): number;
+    /** Retrieves an array of SecondarySpriteTexture used by the Sprite. */
     GetSecondaryTextures(secondaryTexture: CSArray<SecondarySpriteTexture>): number;
+    /** Sets up new Sprite geometry. */
     OverrideGeometry(vertices: CSArray<Vector2>, triangles: CSArray<number>): void;
     OverridePhysicsShape(physicsShapes: CSArray<CSArray<Vector2>>): void;
+    /** Removes the ScriptableObject reference from the sprite. */
     RemoveScriptableObjectAt(i: number): boolean;
+    /** Replace the ScriptableObject reference from the sprite. */
     SetScriptableObjectAt(obj: ScriptableObject, i: number): boolean;
 
 }
@@ -5468,17 +5874,26 @@ interface Rect {
     bottom: number;
 
 
+    /** Returns true if the x and y components of point is a point inside this rectangle. If allowInverse is present and true, the width and height of the Rect are allowed to take negative values (ie, the min value is greater than the max), and the test will still work. */
     Contains(point: Vector2): boolean;
+    /** Returns true if the x and y components of point is a point inside this rectangle. If allowInverse is present and true, the width and height of the Rect are allowed to take negative values (ie, the min value is greater than the max), and the test will still work. */
     Contains(point: Vector3): boolean;
+    /** Returns true if the x and y components of point is a point inside this rectangle. If allowInverse is present and true, the width and height of the Rect are allowed to take negative values (ie, the min value is greater than the max), and the test will still work. */
     Contains(point: Vector3, allowInverse: boolean): boolean;
     Equals(other: unknown): boolean;
     Equals(other: Rect): boolean;
     GetHashCode(): number;
+    /** Returns true if the other rectangle overlaps this one. If allowInverse is present and true, the widths and heights of the Rects are allowed to take negative values (ie, the min value is greater than the max), and the test will still work. */
     Overlaps(other: Rect): boolean;
+    /** Returns true if the other rectangle overlaps this one. If allowInverse is present and true, the widths and heights of the Rects are allowed to take negative values (ie, the min value is greater than the max), and the test will still work. */
     Overlaps(other: Rect, allowInverse: boolean): boolean;
+    /** Set components of an existing Rect. */
     Set(x: number, y: number, width: number, height: number): void;
+    /** Returns a formatted string for this Rect. */
     ToString(): string;
+    /** Returns a formatted string for this Rect. */
     ToString(format: string): string;
+    /** Returns a formatted string for this Rect. */
     ToString(format: string, formatProvider: unknown): string;
 
 }
@@ -5519,7 +5934,9 @@ interface Texture extends Object {
 
 
     GetNativeTextureID(): number;
+    /** Retrieve a native (underlying graphics API) pointer to the Texture resource. */
     GetNativeTexturePtr(): unknown;
+    /** Increment the update counter. */
     IncrementUpdateCount(): void;
 
 }
@@ -5528,6 +5945,7 @@ interface Hash128 {
     isValid: boolean;
 
 
+    /** Hash new input string and combine with the current hash value. */
     Append(data: string): void;
     Append<T>(data: CSArray<T>): void;
     Append<T>(data: CSArray<T>, start: number, count: number): void;
@@ -5536,14 +5954,18 @@ interface Hash128 {
     Append<T>(data: CSArray<T>): void;
     Append<T>(data: CSArray<T>, start: number, count: number): void;
     Append<T>(val: unknown): void;
+    /** Hash new input data and combine with the current hash value. */
     Append(val: number): void;
+    /** Hash new input data and combine with the current hash value. */
     Append(val: number): void;
+    /** Hash new input data and combine with the current hash value. */
     Append(data: unknown, size: number): void;
     CompareTo(rhs: Hash128): number;
     CompareTo(obj: unknown): number;
     Equals(obj: unknown): boolean;
     Equals(obj: Hash128): boolean;
     GetHashCode(): number;
+    /** Convert a Hash128 to string. */
     ToString(): string;
 
 }
@@ -5647,52 +6069,86 @@ interface Texture2D extends Texture {
     ignoreMipmapLimit: boolean;
 
 
+    /** Copies changes you&#x27;ve made in a CPU texture to the GPU. */
     Apply(updateMipmaps: boolean, makeNoLongerReadable: boolean): void;
     Apply(updateMipmaps: boolean): void;
     Apply(): void;
+    /** Resets the minimumMipmapLevel field. */
     ClearMinimumMipmapLevel(): void;
+    /** Resets the requestedMipmapLevel field. */
     ClearRequestedMipmapLevel(): void;
+    /** Compress texture at runtime to DXT/BCn or ETC formats. */
     Compress(highQuality: boolean): void;
+    /** Gets the pixel color at coordinates (x, y). */
     GetPixel(x: number, y: number): Color;
+    /** Gets the pixel color at coordinates (x, y). */
     GetPixel(x: number, y: number, mipLevel: number): Color;
+    /** Gets the filtered pixel color at the normalized coordinates (u, v). */
     GetPixelBilinear(u: number, v: number): Color;
+    /** Gets the filtered pixel color at the normalized coordinates (u, v). */
     GetPixelBilinear(u: number, v: number, mipLevel: number): Color;
+    /** Gets the raw data from a texture. */
     GetPixelData<T>(mipLevel: number): CSArray<T>;
+    /** Gets the pixel color data for part of a mipmap level as Color structs. */
     GetPixels(x: number, y: number, blockWidth: number, blockHeight: number, miplevel: number): CSArray<Color>;
+    /** Gets the pixel color data for part of a mipmap level as Color structs. */
     GetPixels(x: number, y: number, blockWidth: number, blockHeight: number): CSArray<Color>;
+    /** Gets the pixel color data for a mipmap level as Color structs. */
     GetPixels(miplevel: number): CSArray<Color>;
     GetPixels(): CSArray<Color>;
+    /** Gets the pixel color data for a mipmap level as Color32 structs. */
     GetPixels32(miplevel: number): CSArray<Color32>;
     GetPixels32(): CSArray<Color32>;
+    /** Gets the raw data from a texture, as a copy. */
     GetRawTextureData(): CSArray<number>;
+    /** Gets the raw data from a texture, as a copy. */
     GetRawTextureData<T>(): CSArray<T>;
+    /** Checks to see whether the mipmap level set by requestedMipmapLevel has finished loading. */
     IsRequestedMipmapLevelLoaded(): boolean;
+    /** Sets the raw data of an entire texture in CPU memory. */
     LoadRawTextureData(data: unknown, size: number): void;
+    /** Sets the raw data of an entire texture in CPU memory. */
     LoadRawTextureData(data: CSArray<number>): void;
     LoadRawTextureData<T>(data: CSArray<T>): void;
+    /** Packs multiple Textures into a texture atlas. */
     PackTextures(textures: CSArray<Texture2D>, padding: number, maximumAtlasSize: number, makeNoLongerReadable: boolean): CSArray<Rect>;
     PackTextures(textures: CSArray<Texture2D>, padding: number, maximumAtlasSize: number): CSArray<Rect>;
     PackTextures(textures: CSArray<Texture2D>, padding: number): CSArray<Rect>;
+    /** Reads pixels from the current render target and writes them to a texture. */
     ReadPixels(source: Rect, destX: number, destY: number, recalculateMipMaps: boolean): void;
     ReadPixels(source: Rect, destX: number, destY: number): void;
+    /** Reinitializes a Texture2D, making it possible for you to replace width, height, textureformat, and graphicsformat data for that texture. */
     Reinitialize(width: number, height: number): boolean;
+    /** Reinitializes a Texture2D, making it possible for you to replace width, height, textureformat, and graphicsformat data for that texture. */
     Reinitialize(width: number, height: number, format: TextureFormat, hasMipMap: boolean): boolean;
+    /** Reinitializes a Texture2D, making it possible for you to replace width, height, textureformat, and graphicsformat data for that texture. */
     Reinitialize(width: number, height: number, format: GraphicsFormat, hasMipMap: boolean): boolean;
+    /** Resizes the texture. */
     Resize(width: number, height: number): boolean;
+    /** Resizes the texture. */
     Resize(width: number, height: number, format: TextureFormat, hasMipMap: boolean): boolean;
     Resize(width: number, height: number, format: GraphicsFormat, hasMipMap: boolean): boolean;
+    /** Sets the pixel color at coordinates (x,y). */
     SetPixel(x: number, y: number, color: Color): void;
+    /** Sets the pixel color at coordinates (x,y). */
     SetPixel(x: number, y: number, color: Color, mipLevel: number): void;
     SetPixelData<T>(data: CSArray<T>, mipLevel: number, sourceDataStartIndex: number): void;
     SetPixelData<T>(data: CSArray<T>, mipLevel: number, sourceDataStartIndex: number): void;
+    /** Sets the pixel colors of part of a mipmap level. */
     SetPixels(x: number, y: number, blockWidth: number, blockHeight: number, colors: CSArray<Color>, miplevel: number): void;
     SetPixels(x: number, y: number, blockWidth: number, blockHeight: number, colors: CSArray<Color>): void;
+    /** Sets the pixel colors of an entire mipmap level. */
     SetPixels(colors: CSArray<Color>, miplevel: number): void;
     SetPixels(colors: CSArray<Color>): void;
+    /** Sets the pixel colors of an entire mipmap level. */
     SetPixels32(colors: CSArray<Color32>, miplevel: number): void;
+    /** Sets the pixel colors of an entire mipmap level. */
     SetPixels32(colors: CSArray<Color32>): void;
+    /** Sets the pixel colors of part of a mipmap level. */
     SetPixels32(x: number, y: number, blockWidth: number, blockHeight: number, colors: CSArray<Color32>, miplevel: number): void;
+    /** Sets the pixel colors of part of a mipmap level. */
     SetPixels32(x: number, y: number, blockWidth: number, blockHeight: number, colors: CSArray<Color32>): void;
+    /** Updates Unity texture to use different native texture object. */
     UpdateExternalTexture(nativeTex: unknown): void;
 
 }
@@ -5774,7 +6230,9 @@ interface TextAsset extends Object {
     dataSize: number;
 
 
+    /** Gets raw text asset data. */
     GetData<T>(): CSArray<T>;
+    /** Returns the contents of the TextAsset. */
     ToString(): string;
 
 }
@@ -6338,9 +6796,13 @@ interface Ray2D {
     direction: Vector2;
 
 
+    /** Get a point that lies a given distance along a ray. */
     GetPoint(distance: number): Vector2;
+    /** Returns a formatted string for this 2D ray. */
     ToString(): string;
+    /** Returns a formatted string for this 2D ray. */
     ToString(format: string): string;
+    /** Returns a formatted string for this 2D ray. */
     ToString(format: string, formatProvider: unknown): string;
 
 }
@@ -7519,15 +7981,24 @@ interface Camera extends Behaviour {
     stereoMirrorMode: boolean;
 
 
+    /** Add a command buffer to be executed at a specified place. */
     AddCommandBuffer(evt: CameraEvent, buffer: CommandBuffer): void;
+    /** Adds a command buffer to the GPU&#x27;s async compute queues and executes that command buffer when graphics processing reaches a given point. */
     AddCommandBufferAsync(evt: CameraEvent, buffer: CommandBuffer, queueType: ComputeQueueType): void;
     CalculateFrustumCorners(viewport: Rect, z: number, eye: MonoOrStereoscopicEye, outCorners: CSArray<Vector3>): void;
+    /** Calculates and returns oblique near-plane projection matrix. */
     CalculateObliqueMatrix(clipPlane: Vector4): Matrix4x4;
+    /** Makes this camera&#x27;s settings match other camera. */
     CopyFrom(other: Camera): void;
     CopyStereoDeviceProjectionMatrixToNonJittered(eye: StereoscopicEye): void;
     DoClear(): void;
+    /** Get command buffers to be executed at a specified place. */
     GetCommandBuffers(evt: CameraEvent): CSArray<CommandBuffer>;
+    /** Retrieves the effective vertical field of view of the camera, including GateFit.
+                    Fitting the sensor gate and the resolution gate has an impact on the final field of view. If the sensor gate aspect ratio is the same as the resolution gate aspect ratio or if the camera is not in physical mode, then this method returns the same value as the fieldofview property. */
     GetGateFittedFieldOfView(): number;
+    /** Retrieves the effective lens offset of the camera, including GateFit.
+                    Fitting the sensor gate and the resolution gate has an impact on the final obliqueness of the projection. If the sensor gate aspect ratio is the same as the resolution gate aspect ratio, then this method returns the same value as the lenshift property. If the camera is not in physical mode, then this methods returns Vector2.zero. */
     GetGateFittedLensShift(): Vector2;
     GetScreenHeight(): number;
     GetScreenWidth(): number;
@@ -7536,51 +8007,83 @@ interface Camera extends Behaviour {
     GetStereoProjectionMatrix(eye: StereoscopicEye): Matrix4x4;
     GetStereoViewMatrices(): CSArray<Matrix4x4>;
     GetStereoViewMatrix(eye: StereoscopicEye): Matrix4x4;
+    /** Remove all command buffers set on this camera. */
     RemoveAllCommandBuffers(): void;
+    /** Remove command buffer from execution at a specified place. */
     RemoveCommandBuffer(evt: CameraEvent, buffer: CommandBuffer): void;
+    /** Remove command buffers from execution at a specified place. */
     RemoveCommandBuffers(evt: CameraEvent): void;
+    /** Render the camera manually. */
     Render(): void;
     RenderDontRestore(): void;
+    /** Render into a static cubemap from this camera. */
     RenderToCubemap(cubemap: Cubemap, faceMask: number): boolean;
     RenderToCubemap(cubemap: Cubemap): boolean;
+    /** Render into a cubemap from this camera. */
     RenderToCubemap(cubemap: RenderTexture, faceMask: number): boolean;
     RenderToCubemap(cubemap: RenderTexture): boolean;
     RenderToCubemap(cubemap: RenderTexture, faceMask: number, stereoEye: MonoOrStereoscopicEye): boolean;
+    /** Render the camera with shader replacement. */
     RenderWithShader(shader: Shader, replacementTag: string): void;
+    /** Revert all camera parameters to default. */
     Reset(): void;
+    /** Revert the aspect ratio to the screen&#x27;s aspect ratio. */
     ResetAspect(): void;
+    /** Make culling queries reflect the camera&#x27;s built in parameters. */
     ResetCullingMatrix(): void;
+    /** Reset to the default field of view. */
     ResetFieldOfView(): void;
+    /** Make the projection reflect normal camera&#x27;s parameters. */
     ResetProjectionMatrix(): void;
+    /** Remove shader replacement from camera. */
     ResetReplacementShader(): void;
+    /** Reset the camera to using the Unity computed projection matrices for all stereoscopic eyes. */
     ResetStereoProjectionMatrices(): void;
+    /** Reset the camera to using the Unity computed view matrices for all stereoscopic eyes. */
     ResetStereoViewMatrices(): void;
+    /** Resets this Camera&#x27;s transparency sort settings to the default. Default transparency settings are taken from GraphicsSettings instead of directly from this Camera. */
     ResetTransparencySortSettings(): void;
+    /** Make the rendering position reflect the camera&#x27;s position in the Scene. */
     ResetWorldToCameraMatrix(): void;
     ScreenPointToRay(pos: Vector3, eye: MonoOrStereoscopicEye): Ray;
+    /** Returns a ray going from camera through a screen point. */
     ScreenPointToRay(pos: Vector3): Ray;
+    /** Transforms position from screen space into viewport space. */
     ScreenToViewportPoint(position: Vector3): Vector3;
     ScreenToWorldPoint(position: Vector3, eye: MonoOrStereoscopicEye): Vector3;
+    /** Transforms a point from screen space into world space, where world space is defined as the coordinate system at the very top of your game&#x27;s hierarchy. */
     ScreenToWorldPoint(position: Vector3): Vector3;
+    /** Make the camera render with shader replacement. */
     SetReplacementShader(shader: Shader, replacementTag: string): void;
+    /** Sets custom projection matrices for both the left and right stereoscopic eyes. */
     SetStereoProjectionMatrices(leftMatrix: Matrix4x4, rightMatrix: Matrix4x4): void;
     SetStereoProjectionMatrix(eye: StereoscopicEye, matrix: Matrix4x4): void;
+    /** Set custom view matrices for both eyes. */
     SetStereoViewMatrices(leftMatrix: Matrix4x4, rightMatrix: Matrix4x4): void;
     SetStereoViewMatrix(eye: StereoscopicEye, matrix: Matrix4x4): void;
+    /** Sets the Camera to render to the chosen buffers of one or more RenderTextures. */
     SetTargetBuffers(colorBuffer: RenderBuffer, depthBuffer: RenderBuffer): void;
+    /** Sets the Camera to render to the chosen buffers of one or more RenderTextures. */
     SetTargetBuffers(colorBuffer: CSArray<RenderBuffer>, depthBuffer: RenderBuffer): void;
     SubmitRenderRequest<RequestData>(renderRequest: RequestData): void;
     SubmitRenderRequests(renderRequests: CSArray<RenderRequest>): void;
+    /** Get culling parameters for a camera. */
     TryGetCullingParameters(cullingParameters: unknown): boolean;
+    /** Get culling parameters for a camera. */
     TryGetCullingParameters(stereoAware: boolean, cullingParameters: unknown): boolean;
     ViewportPointToRay(pos: Vector3, eye: MonoOrStereoscopicEye): Ray;
+    /** Returns a ray going from camera through a viewport point. */
     ViewportPointToRay(pos: Vector3): Ray;
+    /** Transforms position from viewport space into screen space. */
     ViewportToScreenPoint(position: Vector3): Vector3;
     ViewportToWorldPoint(position: Vector3, eye: MonoOrStereoscopicEye): Vector3;
+    /** Transforms position from viewport space into world space. */
     ViewportToWorldPoint(position: Vector3): Vector3;
     WorldToScreenPoint(position: Vector3, eye: MonoOrStereoscopicEye): Vector3;
+    /** Transforms position from world space into screen space. */
     WorldToScreenPoint(position: Vector3): Vector3;
     WorldToViewportPoint(position: Vector3, eye: MonoOrStereoscopicEye): Vector3;
+    /** Transforms position from world space into viewport space. */
     WorldToViewportPoint(position: Vector3): Vector3;
 
 }
@@ -7614,20 +8117,32 @@ interface RenderTexture extends Texture {
     isVolume: boolean;
 
 
+    /** Applies the scale. */
     ApplyDynamicScale(): void;
     ConvertToEquirect(equirect: RenderTexture, eye: MonoOrStereoscopicEye): void;
+    /** Actually creates the RenderTexture. */
     Create(): boolean;
+    /** Hint the GPU driver that the contents of the RenderTexture will not be used. */
     DiscardContents(discardColor: boolean, discardDepth: boolean): void;
+    /** Hint the GPU driver that the contents of the RenderTexture will not be used. */
     DiscardContents(): void;
+    /** Generate mipmap levels of a render texture. */
     GenerateMips(): void;
+    /** Retrieve a native (underlying graphics API) pointer to the depth buffer resource. */
     GetNativeDepthBufferPtr(): unknown;
     GetTexelOffset(): Vector2;
+    /** Is the render texture actually created? */
     IsCreated(): boolean;
+    /** Indicate that there&#x27;s a RenderTexture restore operation expected. */
     MarkRestoreExpected(): void;
+    /** Releases the RenderTexture. */
     Release(): void;
+    /** Force an antialiased render texture to be resolved. */
     ResolveAntiAliasedSurface(): void;
+    /** Force an antialiased render texture to be resolved. */
     ResolveAntiAliasedSurface(target: RenderTexture): void;
     SetBorderColor(color: Color): void;
+    /** Assigns this RenderTexture as a global shader property named propertyName. */
     SetGlobalShaderProperty(propertyName: string): void;
 
 }
@@ -7635,6 +8150,7 @@ interface RenderTexture extends Texture {
 interface RenderBuffer {
 
 
+    /** Returns native RenderBuffer. Be warned this is not native Texture, but rather pointer to unity struct that can be used with native unity API. Currently such API exists only on iOS. */
     GetNativeRenderBufferPtr(): unknown;
 
 }
@@ -7728,105 +8244,222 @@ interface CommandBuffer {
     BeginRenderPass(width: number, height: number, volumeDepth: number, samples: number, attachments: CSArray<AttachmentDescriptor>, depthAttachmentIndex: number, subPasses: CSArray<SubPassDescriptor>): void;
     BeginRenderPass(width: number, height: number, samples: number, attachments: CSArray<AttachmentDescriptor>, depthAttachmentIndex: number, subPasses: CSArray<SubPassDescriptor>, debugNameUtf8: unknown): void;
     BeginRenderPass(width: number, height: number, volumeDepth: number, samples: number, attachments: CSArray<AttachmentDescriptor>, depthAttachmentIndex: number, subPasses: CSArray<SubPassDescriptor>, debugNameUtf8: unknown): void;
+    /** Adds a command to begin profile sampling. */
     BeginSample(name: string): void;
+    /** Adds a command to begin profile sampling. */
     BeginSample(sampler: CustomSampler): void;
     BeginSample(marker: ProfilerMarker): void;
+    /** Adds a command to use a shader to copy the pixel data from a texture into a render texture. */
     Blit(source: Texture, dest: RenderTargetIdentifier): void;
+    /** Adds a command to use a shader to copy the pixel data from a texture into a render texture. */
     Blit(source: Texture, dest: RenderTargetIdentifier, scale: Vector2, offset: Vector2): void;
+    /** Adds a command to use a shader to copy the pixel data from a texture into a render texture. */
     Blit(source: Texture, dest: RenderTargetIdentifier, mat: Material): void;
+    /** Adds a command to use a shader to copy the pixel data from a texture into a render texture. */
     Blit(source: Texture, dest: RenderTargetIdentifier, mat: Material, pass: number): void;
+    /** Adds a command to use a shader to copy the pixel data from a texture into a render texture. */
     Blit(source: RenderTargetIdentifier, dest: RenderTargetIdentifier): void;
+    /** Adds a command to use a shader to copy the pixel data from a texture into a render texture. */
     Blit(source: RenderTargetIdentifier, dest: RenderTargetIdentifier, scale: Vector2, offset: Vector2): void;
+    /** Adds a command to use a shader to copy the pixel data from a texture into a render texture. */
     Blit(source: RenderTargetIdentifier, dest: RenderTargetIdentifier, mat: Material): void;
+    /** Adds a command to use a shader to copy the pixel data from a texture into a render texture. */
     Blit(source: RenderTargetIdentifier, dest: RenderTargetIdentifier, mat: Material, pass: number): void;
+    /** Adds a command to use a shader to copy the pixel data from a texture into a render texture. */
     Blit(source: RenderTargetIdentifier, dest: RenderTargetIdentifier, sourceDepthSlice: number, destDepthSlice: number): void;
+    /** Adds a command to use a shader to copy the pixel data from a texture into a render texture. */
     Blit(source: RenderTargetIdentifier, dest: RenderTargetIdentifier, scale: Vector2, offset: Vector2, sourceDepthSlice: number, destDepthSlice: number): void;
+    /** Adds a command to use a shader to copy the pixel data from a texture into a render texture. */
     Blit(source: RenderTargetIdentifier, dest: RenderTargetIdentifier, mat: Material, pass: number, destDepthSlice: number): void;
+    /** Adds a command to build the RayTracingAccelerationStructure to be used in a ray tracing dispatch or when using inline ray tracing (ray queries). */
     BuildRayTracingAccelerationStructure(accelerationStructure: RayTracingAccelerationStructure): void;
+    /** Adds a command to build the RayTracingAccelerationStructure to be used in a ray tracing dispatch or when using inline ray tracing (ray queries). */
     BuildRayTracingAccelerationStructure(accelerationStructure: RayTracingAccelerationStructure, relativeOrigin: Vector3): void;
     BuildRayTracingAccelerationStructure(accelerationStructure: RayTracingAccelerationStructure, buildSettings: BuildSettings): void;
+    /** Clear all commands in the buffer. */
     Clear(): void;
+    /** Clear random write targets for level pixel shaders. */
     ClearRandomWriteTargets(): void;
+    /** Adds a &quot;clear render target&quot; command. */
     ClearRenderTarget(clearDepth: boolean, clearColor: boolean, backgroundColor: Color): void;
+    /** Adds a &quot;clear render target&quot; command. */
     ClearRenderTarget(clearDepth: boolean, clearColor: boolean, backgroundColor: Color, depth: number): void;
+    /** Adds a &quot;clear render target&quot; command. */
     ClearRenderTarget(clearDepth: boolean, clearColor: boolean, backgroundColor: Color, depth: number, stencil: number): void;
+    /** Adds a &quot;clear render target&quot; command. */
     ClearRenderTarget(clearFlags: RTClearFlags, backgroundColor: Color, depth: number, stencil: number): void;
+    /** Adds a &quot;clear render target&quot; command. */
     ClearRenderTarget(clearFlags: RTClearFlags, backgroundColors: CSArray<Color>, depth: number, stencil: number): void;
+    /** Adds a command to configure foveated rendering. */
     ConfigureFoveatedRendering(platformData: unknown): void;
+    /** Adds a command to copy the pixel data from one texture, convert the data into a different format, and copy it into another texture. */
     ConvertTexture(src: RenderTargetIdentifier, dst: RenderTargetIdentifier): void;
+    /** Adds a command to copy the pixel data from one texture, convert the data into a different format, and copy it into another texture. */
     ConvertTexture(src: RenderTargetIdentifier, srcElement: number, dst: RenderTargetIdentifier, dstElement: number): void;
+    /** Adds a command to copy the contents of one GraphicsBuffer into another. */
     CopyBuffer(source: GraphicsBuffer, dest: GraphicsBuffer): void;
+    /** Adds a command to copy ComputeBuffer or GraphicsBuffer counter value. */
     CopyCounterValue(src: ComputeBuffer, dst: ComputeBuffer, dstOffsetBytes: number): void;
+    /** Adds a command to copy ComputeBuffer or GraphicsBuffer counter value. */
     CopyCounterValue(src: GraphicsBuffer, dst: ComputeBuffer, dstOffsetBytes: number): void;
+    /** Adds a command to copy ComputeBuffer or GraphicsBuffer counter value. */
     CopyCounterValue(src: ComputeBuffer, dst: GraphicsBuffer, dstOffsetBytes: number): void;
+    /** Adds a command to copy ComputeBuffer or GraphicsBuffer counter value. */
     CopyCounterValue(src: GraphicsBuffer, dst: GraphicsBuffer, dstOffsetBytes: number): void;
+    /** Adds a command to copy pixel data from one texture to another. */
     CopyTexture(src: RenderTargetIdentifier, dst: RenderTargetIdentifier): void;
+    /** Adds a command to copy pixel data from one texture to another. */
     CopyTexture(src: RenderTargetIdentifier, srcElement: number, dst: RenderTargetIdentifier, dstElement: number): void;
+    /** Adds a command to copy pixel data from one texture to another. */
     CopyTexture(src: RenderTargetIdentifier, srcElement: number, srcMip: number, dst: RenderTargetIdentifier, dstElement: number, dstMip: number): void;
+    /** Adds a command to copy pixel data from one texture to another. */
     CopyTexture(src: RenderTargetIdentifier, srcElement: number, srcMip: number, srcX: number, srcY: number, srcWidth: number, srcHeight: number, dst: RenderTargetIdentifier, dstElement: number, dstMip: number, dstX: number, dstY: number): void;
+    /** Shortcut for calling CommandBuffer.CreateGraphicsFence with Rendering.GraphicsFenceType.AsyncQueueSynchronisation as the first parameter. */
     CreateAsyncGraphicsFence(): GraphicsFence;
+    /** Shortcut for calling CommandBuffer.CreateGraphicsFence with Rendering.GraphicsFenceType.AsyncQueueSynchronisation as the first parameter. */
     CreateAsyncGraphicsFence(stage: SynchronisationStage): GraphicsFence;
+    /** This functionality is deprecated, and should no longer be used. Please use CommandBuffer.CreateGraphicsFence. */
     CreateGPUFence(stage: SynchronisationStage): GPUFence;
     CreateGPUFence(): GPUFence;
+    /** Creates a GraphicsFence. */
     CreateGraphicsFence(fenceType: GraphicsFenceType, stage: SynchronisationStageFlags): GraphicsFence;
+    /** Adds a command to disable a global or local shader keyword. */
     DisableKeyword(keyword: unknown): void;
+    /** Adds a command to disable a global or local shader keyword. */
     DisableKeyword(material: Material, keyword: unknown): void;
+    /** Adds a command to disable a global or local shader keyword. */
     DisableKeyword(computeShader: ComputeShader, keyword: unknown): void;
+    /** Add a command to disable the hardware scissor rectangle. */
     DisableScissorRect(): void;
+    /** Adds a command to disable a global shader keyword with a given name. */
     DisableShaderKeyword(keyword: string): void;
+    /** Add a command to execute a ComputeShader. */
     DispatchCompute(computeShader: ComputeShader, kernelIndex: number, threadGroupsX: number, threadGroupsY: number, threadGroupsZ: number): void;
+    /** Add a command to execute a ComputeShader. */
     DispatchCompute(computeShader: ComputeShader, kernelIndex: number, indirectBuffer: ComputeBuffer, argsOffset: number): void;
+    /** Add a command to execute a ComputeShader. */
     DispatchCompute(computeShader: ComputeShader, kernelIndex: number, indirectBuffer: GraphicsBuffer, argsOffset: number): void;
+    /** Adds a command to execute a RayTracingShader. */
     DispatchRays(rayTracingShader: RayTracingShader, rayGenName: string, width: number, height: number, depth: number, camera: Camera): void;
     Dispose(): void;
+    /** Add a &quot;draw mesh&quot; command. */
     DrawMesh(mesh: Mesh, matrix: Matrix4x4, material: Material, submeshIndex: number, shaderPass: number, properties: MaterialPropertyBlock): void;
+    /** Add a &quot;draw mesh&quot; command. */
     DrawMesh(mesh: Mesh, matrix: Matrix4x4, material: Material, submeshIndex: number, shaderPass: number): void;
+    /** Add a &quot;draw mesh&quot; command. */
     DrawMesh(mesh: Mesh, matrix: Matrix4x4, material: Material, submeshIndex: number): void;
+    /** Add a &quot;draw mesh&quot; command. */
     DrawMesh(mesh: Mesh, matrix: Matrix4x4, material: Material): void;
+    /** Adds a &quot;draw mesh with instancing&quot; command.
+
+The mesh will be just drawn once, it won&#x27;t be per-pixel lit and will not cast or receive realtime shadows.
+
+The command will not immediately fail and throw an exception if Material.enableInstancing is false, but it will log an error and skips rendering each time the command is being executed if such a condition is detected.
+
+InvalidOperationException will be thrown if the current platform doesn&#x27;t support this API (i.e. if GPU instancing is not available). See SystemInfo.supportsInstancing. */
     DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, matrices: CSArray<Matrix4x4>, count: number, properties: MaterialPropertyBlock): void;
+    /** Adds a &quot;draw mesh with instancing&quot; command.
+
+The mesh will be just drawn once, it won&#x27;t be per-pixel lit and will not cast or receive realtime shadows.
+
+The command will not immediately fail and throw an exception if Material.enableInstancing is false, but it will log an error and skips rendering each time the command is being executed if such a condition is detected.
+
+InvalidOperationException will be thrown if the current platform doesn&#x27;t support this API (i.e. if GPU instancing is not available). See SystemInfo.supportsInstancing. */
     DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, matrices: CSArray<Matrix4x4>, count: number): void;
+    /** Adds a &quot;draw mesh with instancing&quot; command.
+
+The mesh will be just drawn once, it won&#x27;t be per-pixel lit and will not cast or receive realtime shadows.
+
+The command will not immediately fail and throw an exception if Material.enableInstancing is false, but it will log an error and skips rendering each time the command is being executed if such a condition is detected.
+
+InvalidOperationException will be thrown if the current platform doesn&#x27;t support this API (i.e. if GPU instancing is not available). See SystemInfo.supportsInstancing. */
     DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, matrices: CSArray<Matrix4x4>): void;
+    /** Add a &quot;draw mesh with indirect instancing&quot; command. */
     DrawMeshInstancedIndirect(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, bufferWithArgs: ComputeBuffer, argsOffset: number, properties: MaterialPropertyBlock): void;
+    /** Add a &quot;draw mesh with indirect instancing&quot; command. */
     DrawMeshInstancedIndirect(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, bufferWithArgs: ComputeBuffer, argsOffset: number): void;
+    /** Add a &quot;draw mesh with indirect instancing&quot; command. */
     DrawMeshInstancedIndirect(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, bufferWithArgs: ComputeBuffer): void;
+    /** Add a &quot;draw mesh with indirect instancing&quot; command. */
     DrawMeshInstancedIndirect(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, bufferWithArgs: GraphicsBuffer, argsOffset: number, properties: MaterialPropertyBlock): void;
+    /** Add a &quot;draw mesh with indirect instancing&quot; command. */
     DrawMeshInstancedIndirect(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, bufferWithArgs: GraphicsBuffer, argsOffset: number): void;
+    /** Add a &quot;draw mesh with indirect instancing&quot; command. */
     DrawMeshInstancedIndirect(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, bufferWithArgs: GraphicsBuffer): void;
+    /** Add a &quot;draw mesh with instancing&quot; command.
+
+Draw a mesh using Procedural Instancing. This is similar to Graphics.DrawMeshInstancedIndirect, except that when the instance count is known from script, it can be supplied directly using this method, rather than via a ComputeBuffer.
+If Material.enableInstancing is false, the command logs an error and skips rendering each time the command is executed; the command does not immediately fail and throw an exception.
+
+InvalidOperationException will be thrown if the current platform doesn&#x27;t support this API (for example, if GPU instancing is not available). See SystemInfo.supportsInstancing. */
     DrawMeshInstancedProcedural(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, count: number, properties: MaterialPropertyBlock): void;
     DrawMultipleMeshes(matrices: CSArray<Matrix4x4>, meshes: CSArray<Mesh>, subsetIndices: CSArray<number>, count: number, material: Material, shaderPass: number, properties: MaterialPropertyBlock): void;
+    /** Adds a command onto the commandbuffer to draw the VR Device&#x27;s occlusion mesh to the current render target. */
     DrawOcclusionMesh(normalizedCamViewport: RectInt): void;
+    /** Add a &quot;draw procedural geometry&quot; command. */
     DrawProcedural(matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, vertexCount: number, instanceCount: number, properties: MaterialPropertyBlock): void;
+    /** Add a &quot;draw procedural geometry&quot; command. */
     DrawProcedural(matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, vertexCount: number, instanceCount: number): void;
+    /** Add a &quot;draw procedural geometry&quot; command. */
     DrawProcedural(matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, vertexCount: number): void;
+    /** Add a &quot;draw procedural geometry&quot; command. */
     DrawProcedural(indexBuffer: GraphicsBuffer, matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, indexCount: number, instanceCount: number, properties: MaterialPropertyBlock): void;
+    /** Add a &quot;draw procedural geometry&quot; command. */
     DrawProcedural(indexBuffer: GraphicsBuffer, matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, indexCount: number, instanceCount: number): void;
+    /** Add a &quot;draw procedural geometry&quot; command. */
     DrawProcedural(indexBuffer: GraphicsBuffer, matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, indexCount: number): void;
+    /** Add a &quot;draw procedural geometry&quot; command. */
     DrawProceduralIndirect(matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, bufferWithArgs: ComputeBuffer, argsOffset: number, properties: MaterialPropertyBlock): void;
+    /** Add a &quot;draw procedural geometry&quot; command. */
     DrawProceduralIndirect(matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, bufferWithArgs: ComputeBuffer, argsOffset: number): void;
+    /** Add a &quot;draw procedural geometry&quot; command. */
     DrawProceduralIndirect(matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, bufferWithArgs: ComputeBuffer): void;
+    /** Add a &quot;draw procedural geometry&quot; command. */
     DrawProceduralIndirect(indexBuffer: GraphicsBuffer, matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, bufferWithArgs: ComputeBuffer, argsOffset: number, properties: MaterialPropertyBlock): void;
+    /** Add a &quot;draw procedural geometry&quot; command. */
     DrawProceduralIndirect(indexBuffer: GraphicsBuffer, matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, bufferWithArgs: ComputeBuffer, argsOffset: number): void;
+    /** Add a &quot;draw procedural geometry&quot; command. */
     DrawProceduralIndirect(indexBuffer: GraphicsBuffer, matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, bufferWithArgs: ComputeBuffer): void;
+    /** Add a &quot;draw procedural geometry&quot; command. */
     DrawProceduralIndirect(matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, bufferWithArgs: GraphicsBuffer, argsOffset: number, properties: MaterialPropertyBlock): void;
+    /** Add a &quot;draw procedural geometry&quot; command. */
     DrawProceduralIndirect(matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, bufferWithArgs: GraphicsBuffer, argsOffset: number): void;
+    /** Add a &quot;draw procedural geometry&quot; command. */
     DrawProceduralIndirect(matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, bufferWithArgs: GraphicsBuffer): void;
+    /** Add a &quot;draw procedural geometry&quot; command. */
     DrawProceduralIndirect(indexBuffer: GraphicsBuffer, matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, bufferWithArgs: GraphicsBuffer, argsOffset: number, properties: MaterialPropertyBlock): void;
+    /** Add a &quot;draw procedural geometry&quot; command. */
     DrawProceduralIndirect(indexBuffer: GraphicsBuffer, matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, bufferWithArgs: GraphicsBuffer, argsOffset: number): void;
+    /** Add a &quot;draw procedural geometry&quot; command. */
     DrawProceduralIndirect(indexBuffer: GraphicsBuffer, matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, bufferWithArgs: GraphicsBuffer): void;
+    /** Add a &quot;draw renderer&quot; command. */
     DrawRenderer(renderer: Renderer, material: Material, submeshIndex: number, shaderPass: number): void;
+    /** Add a &quot;draw renderer&quot; command. */
     DrawRenderer(renderer: Renderer, material: Material, submeshIndex: number): void;
+    /** Add a &quot;draw renderer&quot; command. */
     DrawRenderer(renderer: Renderer, material: Material): void;
+    /** Adds a &quot;draw renderer list&quot; command. */
     DrawRendererList(rendererList: RendererList): void;
+    /** Adds a command to enable a global or local shader keyword. */
     EnableKeyword(keyword: unknown): void;
+    /** Adds a command to enable a global or local shader keyword. */
     EnableKeyword(material: Material, keyword: unknown): void;
+    /** Adds a command to enable a global or local shader keyword. */
     EnableKeyword(computeShader: ComputeShader, keyword: unknown): void;
+    /** Add a command to enable the hardware scissor rectangle. */
     EnableScissorRect(scissor: Rect): void;
+    /** Adds a command to enable a global keyword with a given name. */
     EnableShaderKeyword(keyword: string): void;
+    /** Terminate the active native renderpass. */
     EndRenderPass(): void;
+    /** Adds a command to end profile sampling. */
     EndSample(name: string): void;
+    /** Adds a command to end profile sampling. */
     EndSample(sampler: CustomSampler): void;
     EndSample(marker: ProfilerMarker): void;
+    /** Generate mipmap levels of a render texture. */
     GenerateMips(rt: RenderTargetIdentifier): void;
+    /** Generate mipmap levels of a render texture. */
     GenerateMips(rt: RenderTexture): void;
     GetTemporaryRT(nameID: number, width: number, height: number, depthBuffer: number, filter: FilterMode, format: GraphicsFormat, antiAliasing: number, enableRandomWrite: boolean, memorylessMode: RenderTextureMemoryless, useDynamicScale: boolean): void;
     GetTemporaryRT(nameID: number, width: number, height: number, depthBuffer: number, filter: FilterMode, format: GraphicsFormat, antiAliasing: number, enableRandomWrite: boolean, memorylessMode: RenderTextureMemoryless): void;
@@ -7835,6 +8468,7 @@ interface CommandBuffer {
     GetTemporaryRT(nameID: number, width: number, height: number, depthBuffer: number, filter: FilterMode, format: GraphicsFormat): void;
     GetTemporaryRT(nameID: number, width: number, height: number, depthBuffer: number, filter: FilterMode, format: RenderTextureFormat, readWrite: RenderTextureReadWrite, antiAliasing: number, enableRandomWrite: boolean, memorylessMode: RenderTextureMemoryless, useDynamicScale: boolean): void;
     GetTemporaryRT(nameID: number, width: number, height: number, depthBuffer: number, filter: FilterMode, format: RenderTextureFormat, readWrite: RenderTextureReadWrite, antiAliasing: number, enableRandomWrite: boolean, memorylessMode: RenderTextureMemoryless): void;
+    /** Add a &quot;get a temporary render texture&quot; command. */
     GetTemporaryRT(nameID: number, width: number, height: number, depthBuffer: number, filter: FilterMode, format: RenderTextureFormat, readWrite: RenderTextureReadWrite, antiAliasing: number, enableRandomWrite: boolean): void;
     GetTemporaryRT(nameID: number, width: number, height: number, depthBuffer: number, filter: FilterMode, format: RenderTextureFormat, readWrite: RenderTextureReadWrite, antiAliasing: number): void;
     GetTemporaryRT(nameID: number, width: number, height: number, depthBuffer: number, filter: FilterMode, format: RenderTextureFormat, readWrite: RenderTextureReadWrite): void;
@@ -7842,12 +8476,14 @@ interface CommandBuffer {
     GetTemporaryRT(nameID: number, width: number, height: number, depthBuffer: number, filter: FilterMode): void;
     GetTemporaryRT(nameID: number, width: number, height: number, depthBuffer: number): void;
     GetTemporaryRT(nameID: number, width: number, height: number): void;
+    /** Add a &quot;get a temporary render texture&quot; command. */
     GetTemporaryRT(nameID: number, desc: RenderTextureDescriptor, filter: FilterMode): void;
     GetTemporaryRT(nameID: number, desc: RenderTextureDescriptor): void;
     GetTemporaryRTArray(nameID: number, width: number, height: number, slices: number, depthBuffer: number, filter: FilterMode, format: GraphicsFormat, antiAliasing: number, enableRandomWrite: boolean, useDynamicScale: boolean): void;
     GetTemporaryRTArray(nameID: number, width: number, height: number, slices: number, depthBuffer: number, filter: FilterMode, format: GraphicsFormat, antiAliasing: number, enableRandomWrite: boolean): void;
     GetTemporaryRTArray(nameID: number, width: number, height: number, slices: number, depthBuffer: number, filter: FilterMode, format: GraphicsFormat, antiAliasing: number): void;
     GetTemporaryRTArray(nameID: number, width: number, height: number, slices: number, depthBuffer: number, filter: FilterMode, format: GraphicsFormat): void;
+    /** Add a &quot;get a temporary render texture array&quot; command. */
     GetTemporaryRTArray(nameID: number, width: number, height: number, slices: number, depthBuffer: number, filter: FilterMode, format: RenderTextureFormat, readWrite: RenderTextureReadWrite, antiAliasing: number, enableRandomWrite: boolean): void;
     GetTemporaryRTArray(nameID: number, width: number, height: number, slices: number, depthBuffer: number, filter: FilterMode, format: RenderTextureFormat, readWrite: RenderTextureReadWrite, antiAliasing: number): void;
     GetTemporaryRTArray(nameID: number, width: number, height: number, slices: number, depthBuffer: number, filter: FilterMode, format: RenderTextureFormat, readWrite: RenderTextureReadWrite): void;
@@ -7855,19 +8491,31 @@ interface CommandBuffer {
     GetTemporaryRTArray(nameID: number, width: number, height: number, slices: number, depthBuffer: number, filter: FilterMode): void;
     GetTemporaryRTArray(nameID: number, width: number, height: number, slices: number, depthBuffer: number): void;
     GetTemporaryRTArray(nameID: number, width: number, height: number, slices: number): void;
+    /** Increments the updateCount property of a Texture. */
     IncrementUpdateCount(dest: RenderTargetIdentifier): void;
+    /** Schedules an invocation of the OnRenderObject callback for MonoBehaviour scripts. */
     InvokeOnRenderObjectCallbacks(): void;
+    /** Send a user-defined blit event to a native code plugin. */
     IssuePluginCustomBlit(callback: unknown, command: number, source: RenderTargetIdentifier, dest: RenderTargetIdentifier, commandParam: number, commandFlags: number): void;
+    /** Deprecated. Use CommandBuffer.IssuePluginCustomTextureUpdateV2 instead. */
     IssuePluginCustomTextureUpdate(callback: unknown, targetTexture: Texture, userData: number): void;
+    /** Deprecated. Use CommandBuffer.IssuePluginCustomTextureUpdateV2 instead. */
     IssuePluginCustomTextureUpdateV1(callback: unknown, targetTexture: Texture, userData: number): void;
+    /** Send a texture update event to a native code plugin. */
     IssuePluginCustomTextureUpdateV2(callback: unknown, targetTexture: Texture, userData: number): void;
+    /** Send a user-defined event to a native code plugin. */
     IssuePluginEvent(callback: unknown, eventID: number): void;
+    /** Send a user-defined event to a native code plugin with custom data. */
     IssuePluginEventAndData(callback: unknown, eventID: number, data: unknown): void;
+    /** Send a user-defined event to a native code plugin with custom data and callback flags. */
     IssuePluginEventAndDataWithFlags(callback: unknown, eventID: number, flags: CustomMarkerCallbackFlags, data: unknown): void;
+    /** Mark a global shader property id to be late latched.  Possible shader properties include view, inverseView, viewProjection, and inverseViewProjection matrices. The Universal Render Pipeline (URP) uses this function to support late latching of shader properties. If you call this function when using built-in Unity rendering or the High-Definition Rendering Pipeline (HDRP), the results are ignored. */
     MarkLateLatchMatrixShaderPropertyID(matrixPropertyType: CameraLateLatchMatrixType, shaderPropertyID: number): void;
+    /** Start the next native subpass as discribed by CommandBuffer.BeginRenderPass. */
     NextSubPass(): void;
     ProcessVTFeedback(rt: RenderTargetIdentifier, resolver: unknown, slice: number, x: number, width: number, y: number, height: number, mip: number): void;
     Release(): void;
+    /** Add a &quot;release a temporary render texture&quot; command. */
     ReleaseTemporaryRT(nameID: number): void;
     RequestAsyncReadback(src: ComputeBuffer, callback: unknown): void;
     RequestAsyncReadback(src: GraphicsBuffer, callback: unknown): void;
@@ -7902,18 +8550,25 @@ interface CommandBuffer {
     RequestAsyncReadbackIntoNativeSlice<T>(output: CSArray<T>, src: Texture, mipIndex: number, x: number, width: number, y: number, height: number, z: number, depth: number, callback: unknown): void;
     RequestAsyncReadbackIntoNativeSlice<T>(output: CSArray<T>, src: Texture, mipIndex: number, x: number, width: number, y: number, height: number, z: number, depth: number, dstFormat: TextureFormat, callback: unknown): void;
     RequestAsyncReadbackIntoNativeSlice<T>(output: CSArray<T>, src: Texture, mipIndex: number, x: number, width: number, y: number, height: number, z: number, depth: number, dstFormat: GraphicsFormat, callback: unknown): void;
+    /** Force an antialiased render texture to be resolved. */
     ResolveAntiAliasedSurface(rt: RenderTexture, target: RenderTexture): void;
+    /** Adds a command to set the counter value of append/consume buffer. */
     SetBufferCounterValue(buffer: ComputeBuffer, counterValue: number): void;
+    /** Adds a command to set the counter value of append/consume buffer. */
     SetBufferCounterValue(buffer: GraphicsBuffer, counterValue: number): void;
+    /** Adds a command to set the buffer with values from an array. */
     SetBufferData(buffer: ComputeBuffer, data: unknown): void;
     SetBufferData<T>(buffer: ComputeBuffer, data: CSArray<T>): void;
     SetBufferData<T>(buffer: ComputeBuffer, data: CSArray<T>): void;
+    /** Adds a command to process a partial copy of data values from an array into the buffer. */
     SetBufferData(buffer: ComputeBuffer, data: unknown, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
     SetBufferData<T>(buffer: ComputeBuffer, data: CSArray<T>, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
     SetBufferData<T>(buffer: ComputeBuffer, data: CSArray<T>, nativeBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
+    /** Adds a command to set the buffer with values from an array. */
     SetBufferData(buffer: GraphicsBuffer, data: unknown): void;
     SetBufferData<T>(buffer: GraphicsBuffer, data: CSArray<T>): void;
     SetBufferData<T>(buffer: GraphicsBuffer, data: CSArray<T>): void;
+    /** Adds a command to process a partial copy of data values from an array into the buffer. */
     SetBufferData(buffer: GraphicsBuffer, data: unknown, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
     SetBufferData<T>(buffer: GraphicsBuffer, data: CSArray<T>, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
     SetBufferData<T>(buffer: GraphicsBuffer, data: CSArray<T>, nativeBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
@@ -7924,152 +8579,291 @@ interface CommandBuffer {
     SetComputeBufferData(buffer: ComputeBuffer, data: unknown, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
     SetComputeBufferData<T>(buffer: ComputeBuffer, data: CSArray<T>, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
     SetComputeBufferData<T>(buffer: ComputeBuffer, data: CSArray<T>, nativeBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
+    /** Adds a command to set an input or output buffer parameter on a ComputeShader. */
     SetComputeBufferParam(computeShader: ComputeShader, kernelIndex: number, nameID: number, buffer: ComputeBuffer): void;
+    /** Adds a command to set an input or output buffer parameter on a ComputeShader. */
     SetComputeBufferParam(computeShader: ComputeShader, kernelIndex: number, name: string, buffer: ComputeBuffer): void;
+    /** Adds a command to set an input or output buffer parameter on a ComputeShader. */
     SetComputeBufferParam(computeShader: ComputeShader, kernelIndex: number, nameID: number, bufferHandle: GraphicsBufferHandle): void;
+    /** Adds a command to set an input or output buffer parameter on a ComputeShader. */
     SetComputeBufferParam(computeShader: ComputeShader, kernelIndex: number, name: string, bufferHandle: GraphicsBufferHandle): void;
+    /** Adds a command to set an input or output buffer parameter on a ComputeShader. */
     SetComputeBufferParam(computeShader: ComputeShader, kernelIndex: number, nameID: number, buffer: GraphicsBuffer): void;
+    /** Adds a command to set an input or output buffer parameter on a ComputeShader. */
     SetComputeBufferParam(computeShader: ComputeShader, kernelIndex: number, name: string, buffer: GraphicsBuffer): void;
+    /** Adds a command to set a constant buffer on a ComputeShader. */
     SetComputeConstantBufferParam(computeShader: ComputeShader, nameID: number, buffer: ComputeBuffer, offset: number, size: number): void;
+    /** Adds a command to set a constant buffer on a ComputeShader. */
     SetComputeConstantBufferParam(computeShader: ComputeShader, name: string, buffer: ComputeBuffer, offset: number, size: number): void;
+    /** Adds a command to set a constant buffer on a ComputeShader. */
     SetComputeConstantBufferParam(computeShader: ComputeShader, nameID: number, buffer: GraphicsBuffer, offset: number, size: number): void;
+    /** Adds a command to set a constant buffer on a ComputeShader. */
     SetComputeConstantBufferParam(computeShader: ComputeShader, name: string, buffer: GraphicsBuffer, offset: number, size: number): void;
+    /** Adds a command to set a float parameter on a ComputeShader. */
     SetComputeFloatParam(computeShader: ComputeShader, nameID: number, val: number): void;
+    /** Adds a command to set a float parameter on a ComputeShader. */
     SetComputeFloatParam(computeShader: ComputeShader, name: string, val: number): void;
+    /** Adds a command to set multiple consecutive float parameters on a ComputeShader. */
     SetComputeFloatParams(computeShader: ComputeShader, name: string, values: CSArray<number>): void;
+    /** Adds a command to set multiple consecutive float parameters on a ComputeShader. */
     SetComputeFloatParams(computeShader: ComputeShader, nameID: number, values: CSArray<number>): void;
+    /** Adds a command to set an integer parameter on a ComputeShader. */
     SetComputeIntParam(computeShader: ComputeShader, nameID: number, val: number): void;
+    /** Adds a command to set an integer parameter on a ComputeShader. */
     SetComputeIntParam(computeShader: ComputeShader, name: string, val: number): void;
+    /** Adds a command to set multiple consecutive integer parameters on a ComputeShader. */
     SetComputeIntParams(computeShader: ComputeShader, name: string, values: CSArray<number>): void;
+    /** Adds a command to set multiple consecutive integer parameters on a ComputeShader. */
     SetComputeIntParams(computeShader: ComputeShader, nameID: number, values: CSArray<number>): void;
+    /** Adds a command to set a matrix array parameter on a ComputeShader. */
     SetComputeMatrixArrayParam(computeShader: ComputeShader, nameID: number, values: CSArray<Matrix4x4>): void;
+    /** Adds a command to set a matrix array parameter on a ComputeShader. */
     SetComputeMatrixArrayParam(computeShader: ComputeShader, name: string, values: CSArray<Matrix4x4>): void;
+    /** Adds a command to set a matrix parameter on a ComputeShader. */
     SetComputeMatrixParam(computeShader: ComputeShader, nameID: number, val: Matrix4x4): void;
+    /** Adds a command to set a matrix parameter on a ComputeShader. */
     SetComputeMatrixParam(computeShader: ComputeShader, name: string, val: Matrix4x4): void;
+    /** Sets the parameters for a compute shader kernel from a Material. */
     SetComputeParamsFromMaterial(computeShader: ComputeShader, kernelIndex: number, material: Material): void;
+    /** Adds a command to set a texture parameter on a ComputeShader. */
     SetComputeTextureParam(computeShader: ComputeShader, kernelIndex: number, name: string, rt: RenderTargetIdentifier): void;
+    /** Adds a command to set a texture parameter on a ComputeShader. */
     SetComputeTextureParam(computeShader: ComputeShader, kernelIndex: number, nameID: number, rt: RenderTargetIdentifier): void;
+    /** Adds a command to set a texture parameter on a ComputeShader. */
     SetComputeTextureParam(computeShader: ComputeShader, kernelIndex: number, name: string, rt: RenderTargetIdentifier, mipLevel: number): void;
+    /** Adds a command to set a texture parameter on a ComputeShader. */
     SetComputeTextureParam(computeShader: ComputeShader, kernelIndex: number, nameID: number, rt: RenderTargetIdentifier, mipLevel: number): void;
+    /** Adds a command to set a texture parameter on a ComputeShader. */
     SetComputeTextureParam(computeShader: ComputeShader, kernelIndex: number, name: string, rt: RenderTargetIdentifier, mipLevel: number, element: RenderTextureSubElement): void;
+    /** Adds a command to set a texture parameter on a ComputeShader. */
     SetComputeTextureParam(computeShader: ComputeShader, kernelIndex: number, nameID: number, rt: RenderTargetIdentifier, mipLevel: number, element: RenderTextureSubElement): void;
+    /** Adds a command to set a vector array parameter on a ComputeShader. */
     SetComputeVectorArrayParam(computeShader: ComputeShader, nameID: number, values: CSArray<Vector4>): void;
+    /** Adds a command to set a vector array parameter on a ComputeShader. */
     SetComputeVectorArrayParam(computeShader: ComputeShader, name: string, values: CSArray<Vector4>): void;
+    /** Adds a command to set a vector parameter on a ComputeShader. */
     SetComputeVectorParam(computeShader: ComputeShader, nameID: number, val: Vector4): void;
+    /** Adds a command to set a vector parameter on a ComputeShader. */
     SetComputeVectorParam(computeShader: ComputeShader, name: string, val: Vector4): void;
+    /** Set flags describing the intention for how the command buffer will be executed. */
     SetExecutionFlags(flags: CommandBufferExecutionFlags): void;
+    /** Adds a command to set the mode to use for foveated rendering. */
     SetFoveatedRenderingMode(foveatedRenderingMode: FoveatedRenderingMode): void;
+    /** Add a &quot;set global shader buffer property&quot; command. */
     SetGlobalBuffer(name: string, value: ComputeBuffer): void;
+    /** Add a &quot;set global shader buffer property&quot; command. */
     SetGlobalBuffer(nameID: number, value: ComputeBuffer): void;
+    /** Add a &quot;set global shader buffer property&quot; command. */
     SetGlobalBuffer(name: string, value: GraphicsBuffer): void;
+    /** Add a &quot;set global shader buffer property&quot; command. */
     SetGlobalBuffer(nameID: number, value: GraphicsBuffer): void;
+    /** Add a &quot;set global shader color property&quot; command. */
     SetGlobalColor(nameID: number, value: Color): void;
+    /** Add a &quot;set global shader color property&quot; command. */
     SetGlobalColor(name: string, value: Color): void;
+    /** Add a command to bind a global constant buffer. */
     SetGlobalConstantBuffer(buffer: ComputeBuffer, nameID: number, offset: number, size: number): void;
+    /** Add a command to bind a global constant buffer. */
     SetGlobalConstantBuffer(buffer: ComputeBuffer, name: string, offset: number, size: number): void;
+    /** Add a command to bind a global constant buffer. */
     SetGlobalConstantBuffer(buffer: GraphicsBuffer, nameID: number, offset: number, size: number): void;
+    /** Add a command to bind a global constant buffer. */
     SetGlobalConstantBuffer(buffer: GraphicsBuffer, name: string, offset: number, size: number): void;
+    /** Adds a command to set the global depth bias. */
     SetGlobalDepthBias(bias: number, slopeBias: number): void;
+    /** Add a &quot;set global shader float property&quot; command. */
     SetGlobalFloat(nameID: number, value: number): void;
+    /** Add a &quot;set global shader float property&quot; command. */
     SetGlobalFloat(name: string, value: number): void;
+    /** Add a &quot;set global shader float array property&quot; command. */
     SetGlobalFloatArray(nameID: number, values: CSArray<number>): void;
     SetGlobalFloatArray(propertyName: string, values: CSArray<number>): void;
     SetGlobalFloatArray(nameID: number, values: CSArray<number>): void;
+    /** Add a &quot;set global shader float array property&quot; command. */
     SetGlobalFloatArray(propertyName: string, values: CSArray<number>): void;
+    /** Adds a command to set the value of a given property for all Shaders, where the property has a type of Int in ShaderLab code. */
     SetGlobalInt(nameID: number, value: number): void;
+    /** Adds a command to set the value of a given property for all Shaders, where the property has a type of Int in ShaderLab code. */
     SetGlobalInt(name: string, value: number): void;
+    /** Adds a command to set the value of a given property for all Shaders, where the property is an integer. */
     SetGlobalInteger(nameID: number, value: number): void;
+    /** Adds a command to set the value of a given property for all Shaders, where the property is an integer. */
     SetGlobalInteger(name: string, value: number): void;
+    /** Add a &quot;set global shader matrix property&quot; command. */
     SetGlobalMatrix(nameID: number, value: Matrix4x4): void;
+    /** Add a &quot;set global shader matrix property&quot; command. */
     SetGlobalMatrix(name: string, value: Matrix4x4): void;
+    /** Add a &quot;set global shader matrix array property&quot; command. */
     SetGlobalMatrixArray(nameID: number, values: CSArray<Matrix4x4>): void;
     SetGlobalMatrixArray(propertyName: string, values: CSArray<Matrix4x4>): void;
     SetGlobalMatrixArray(nameID: number, values: CSArray<Matrix4x4>): void;
+    /** Add a &quot;set global shader matrix array property&quot; command. */
     SetGlobalMatrixArray(propertyName: string, values: CSArray<Matrix4x4>): void;
+    /** Adds a command to bind the RayTracingAccelerationStructure object to all shader stages. */
     SetGlobalRayTracingAccelerationStructure(name: string, accelerationStructure: RayTracingAccelerationStructure): void;
+    /** Adds a command to bind the RayTracingAccelerationStructure object to all shader stages. */
     SetGlobalRayTracingAccelerationStructure(nameID: number, accelerationStructure: RayTracingAccelerationStructure): void;
+    /** Add a &quot;set global shader texture property&quot; command, referencing a RenderTexture. */
     SetGlobalTexture(name: string, value: RenderTargetIdentifier): void;
+    /** Add a &quot;set global shader texture property&quot; command, referencing a RenderTexture. */
     SetGlobalTexture(nameID: number, value: RenderTargetIdentifier): void;
+    /** Add a &quot;set global shader texture property&quot; command, referencing a RenderTexture. */
     SetGlobalTexture(name: string, value: RenderTargetIdentifier, element: RenderTextureSubElement): void;
+    /** Add a &quot;set global shader texture property&quot; command, referencing a RenderTexture. */
     SetGlobalTexture(nameID: number, value: RenderTargetIdentifier, element: RenderTextureSubElement): void;
+    /** Add a &quot;set global shader vector property&quot; command. */
     SetGlobalVector(nameID: number, value: Vector4): void;
+    /** Add a &quot;set global shader vector property&quot; command. */
     SetGlobalVector(name: string, value: Vector4): void;
+    /** Add a &quot;set global shader vector array property&quot; command. */
     SetGlobalVectorArray(nameID: number, values: CSArray<Vector4>): void;
     SetGlobalVectorArray(propertyName: string, values: CSArray<Vector4>): void;
     SetGlobalVectorArray(nameID: number, values: CSArray<Vector4>): void;
+    /** Add a &quot;set global shader vector array property&quot; command. */
     SetGlobalVectorArray(propertyName: string, values: CSArray<Vector4>): void;
+    /** Adds a command to multiply the instance count of every draw call by a specific multiplier. */
     SetInstanceMultiplier(multiplier: number): void;
+    /** Add a &quot;set invert culling&quot; command to the buffer. */
     SetInvertCulling(invertCulling: boolean): void;
+    /** Adds a command to set the state of a global or local shader keyword. */
     SetKeyword(keyword: unknown, value: boolean): void;
+    /** Adds a command to set the state of a global or local shader keyword. */
     SetKeyword(material: Material, keyword: unknown, value: boolean): void;
+    /** Adds a command to set the state of a global or local shader keyword. */
     SetKeyword(computeShader: ComputeShader, keyword: unknown, value: boolean): void;
+    /** Set the current stereo projection matrices for late latching. Stereo matrices is passed in as an array of two matrices. */
     SetLateLatchProjectionMatrices(projectionMat: CSArray<Matrix4x4>): void;
+    /** Add a command to set the projection matrix. */
     SetProjectionMatrix(proj: Matrix4x4): void;
+    /** Set random write target for level pixel shaders. */
     SetRandomWriteTarget(index: number, rt: RenderTargetIdentifier): void;
+    /** Set random write target for level pixel shaders. */
     SetRandomWriteTarget(index: number, buffer: ComputeBuffer, preserveCounterValue: boolean): void;
+    /** Set random write target for level pixel shaders. */
     SetRandomWriteTarget(index: number, buffer: ComputeBuffer): void;
+    /** Set random write target for level pixel shaders. */
     SetRandomWriteTarget(index: number, buffer: GraphicsBuffer, preserveCounterValue: boolean): void;
+    /** Set random write target for level pixel shaders. */
     SetRandomWriteTarget(index: number, buffer: GraphicsBuffer): void;
+    /** Adds a command to set the RayTracingAccelerationStructure to be used in a RayTracingShader or a ComputeShader. */
     SetRayTracingAccelerationStructure(rayTracingShader: RayTracingShader, name: string, rayTracingAccelerationStructure: RayTracingAccelerationStructure): void;
+    /** Adds a command to set the RayTracingAccelerationStructure to be used in a RayTracingShader or a ComputeShader. */
     SetRayTracingAccelerationStructure(rayTracingShader: RayTracingShader, nameID: number, rayTracingAccelerationStructure: RayTracingAccelerationStructure): void;
+    /** Adds a command to set the RayTracingAccelerationStructure to be used in a RayTracingShader or a ComputeShader. */
     SetRayTracingAccelerationStructure(computeShader: ComputeShader, kernelIndex: number, name: string, rayTracingAccelerationStructure: RayTracingAccelerationStructure): void;
+    /** Adds a command to set the RayTracingAccelerationStructure to be used in a RayTracingShader or a ComputeShader. */
     SetRayTracingAccelerationStructure(computeShader: ComputeShader, kernelIndex: number, nameID: number, rayTracingAccelerationStructure: RayTracingAccelerationStructure): void;
+    /** Adds a command to set an input or output buffer parameter on a RayTracingShader. */
     SetRayTracingBufferParam(rayTracingShader: RayTracingShader, name: string, buffer: ComputeBuffer): void;
+    /** Adds a command to set an input or output buffer parameter on a RayTracingShader. */
     SetRayTracingBufferParam(rayTracingShader: RayTracingShader, nameID: number, buffer: ComputeBuffer): void;
+    /** Adds a command to set an input or output buffer parameter on a RayTracingShader. */
     SetRayTracingBufferParam(rayTracingShader: RayTracingShader, name: string, buffer: GraphicsBuffer): void;
+    /** Adds a command to set an input or output buffer parameter on a RayTracingShader. */
     SetRayTracingBufferParam(rayTracingShader: RayTracingShader, nameID: number, buffer: GraphicsBuffer): void;
+    /** Adds a command to set an input or output buffer parameter on a RayTracingShader. */
     SetRayTracingBufferParam(rayTracingShader: RayTracingShader, name: string, bufferHandle: GraphicsBufferHandle): void;
+    /** Adds a command to set an input or output buffer parameter on a RayTracingShader. */
     SetRayTracingBufferParam(rayTracingShader: RayTracingShader, nameID: number, bufferHandle: GraphicsBufferHandle): void;
+    /** Adds a command to set a constant buffer on a RayTracingShader. */
     SetRayTracingConstantBufferParam(rayTracingShader: RayTracingShader, nameID: number, buffer: ComputeBuffer, offset: number, size: number): void;
+    /** Adds a command to set a constant buffer on a RayTracingShader. */
     SetRayTracingConstantBufferParam(rayTracingShader: RayTracingShader, name: string, buffer: ComputeBuffer, offset: number, size: number): void;
+    /** Adds a command to set a constant buffer on a RayTracingShader. */
     SetRayTracingConstantBufferParam(rayTracingShader: RayTracingShader, nameID: number, buffer: GraphicsBuffer, offset: number, size: number): void;
+    /** Adds a command to set a constant buffer on a RayTracingShader. */
     SetRayTracingConstantBufferParam(rayTracingShader: RayTracingShader, name: string, buffer: GraphicsBuffer, offset: number, size: number): void;
+    /** Adds a command to set a float parameter on a RayTracingShader. */
     SetRayTracingFloatParam(rayTracingShader: RayTracingShader, name: string, val: number): void;
+    /** Adds a command to set a float parameter on a RayTracingShader. */
     SetRayTracingFloatParam(rayTracingShader: RayTracingShader, nameID: number, val: number): void;
+    /** Adds a command to set multiple consecutive float parameters on a RayTracingShader. */
     SetRayTracingFloatParams(rayTracingShader: RayTracingShader, name: string, values: CSArray<number>): void;
+    /** Adds a command to set multiple consecutive float parameters on a RayTracingShader. */
     SetRayTracingFloatParams(rayTracingShader: RayTracingShader, nameID: number, values: CSArray<number>): void;
+    /** Adds a command to set an integer parameter on a RayTracingShader. */
     SetRayTracingIntParam(rayTracingShader: RayTracingShader, name: string, val: number): void;
+    /** Adds a command to set an integer parameter on a RayTracingShader. */
     SetRayTracingIntParam(rayTracingShader: RayTracingShader, nameID: number, val: number): void;
+    /** Adds a command to set multiple consecutive integer parameters on a RayTracingShader. */
     SetRayTracingIntParams(rayTracingShader: RayTracingShader, name: string, values: CSArray<number>): void;
+    /** Adds a command to set multiple consecutive integer parameters on a RayTracingShader. */
     SetRayTracingIntParams(rayTracingShader: RayTracingShader, nameID: number, values: CSArray<number>): void;
+    /** Adds a command to set a matrix array parameter on a RayTracingShader. */
     SetRayTracingMatrixArrayParam(rayTracingShader: RayTracingShader, name: string, values: CSArray<Matrix4x4>): void;
+    /** Adds a command to set a matrix array parameter on a RayTracingShader. */
     SetRayTracingMatrixArrayParam(rayTracingShader: RayTracingShader, nameID: number, values: CSArray<Matrix4x4>): void;
+    /** Adds a command to set a matrix parameter on a RayTracingShader. */
     SetRayTracingMatrixParam(rayTracingShader: RayTracingShader, name: string, val: Matrix4x4): void;
+    /** Adds a command to set a matrix parameter on a RayTracingShader. */
     SetRayTracingMatrixParam(rayTracingShader: RayTracingShader, nameID: number, val: Matrix4x4): void;
+    /** Adds a command to select which Shader Pass to use when executing ray/geometry intersection shaders. */
     SetRayTracingShaderPass(rayTracingShader: RayTracingShader, passName: string): void;
+    /** Adds a command to set a texture parameter on a RayTracingShader. */
     SetRayTracingTextureParam(rayTracingShader: RayTracingShader, name: string, rt: RenderTargetIdentifier): void;
+    /** Adds a command to set a texture parameter on a RayTracingShader. */
     SetRayTracingTextureParam(rayTracingShader: RayTracingShader, nameID: number, rt: RenderTargetIdentifier): void;
+    /** Adds a command to set a vector array parameter on a RayTracingShader. */
     SetRayTracingVectorArrayParam(rayTracingShader: RayTracingShader, name: string, values: CSArray<Vector4>): void;
+    /** Adds a command to set a vector array parameter on a RayTracingShader. */
     SetRayTracingVectorArrayParam(rayTracingShader: RayTracingShader, nameID: number, values: CSArray<Vector4>): void;
+    /** Adds a command to set a vector parameter on a RayTracingShader. */
     SetRayTracingVectorParam(rayTracingShader: RayTracingShader, name: string, val: Vector4): void;
+    /** Adds a command to set a vector parameter on a RayTracingShader. */
     SetRayTracingVectorParam(rayTracingShader: RayTracingShader, nameID: number, val: Vector4): void;
+    /** Add a &quot;set active render target&quot; command. */
     SetRenderTarget(rt: RenderTargetIdentifier): void;
+    /** Add a &quot;set active render target&quot; command. */
     SetRenderTarget(rt: RenderTargetIdentifier, loadAction: RenderBufferLoadAction, storeAction: RenderBufferStoreAction): void;
+    /** Add a &quot;set active render target&quot; command. */
     SetRenderTarget(rt: RenderTargetIdentifier, colorLoadAction: RenderBufferLoadAction, colorStoreAction: RenderBufferStoreAction, depthLoadAction: RenderBufferLoadAction, depthStoreAction: RenderBufferStoreAction): void;
+    /** Add a &quot;set active render target&quot; command. */
     SetRenderTarget(rt: RenderTargetIdentifier, mipLevel: number): void;
+    /** Add a &quot;set active render target&quot; command. */
     SetRenderTarget(rt: RenderTargetIdentifier, mipLevel: number, cubemapFace: CubemapFace): void;
+    /** Add a &quot;set active render target&quot; command. */
     SetRenderTarget(rt: RenderTargetIdentifier, mipLevel: number, cubemapFace: CubemapFace, depthSlice: number): void;
+    /** Add a &quot;set active render target&quot; command. */
     SetRenderTarget(color: RenderTargetIdentifier, depth: RenderTargetIdentifier): void;
+    /** Add a &quot;set active render target&quot; command. */
     SetRenderTarget(color: RenderTargetIdentifier, depth: RenderTargetIdentifier, mipLevel: number): void;
+    /** Add a &quot;set active render target&quot; command. */
     SetRenderTarget(color: RenderTargetIdentifier, depth: RenderTargetIdentifier, mipLevel: number, cubemapFace: CubemapFace): void;
+    /** Add a &quot;set active render target&quot; command. */
     SetRenderTarget(color: RenderTargetIdentifier, depth: RenderTargetIdentifier, mipLevel: number, cubemapFace: CubemapFace, depthSlice: number): void;
+    /** Add a &quot;set active render target&quot; command. */
     SetRenderTarget(color: RenderTargetIdentifier, colorLoadAction: RenderBufferLoadAction, colorStoreAction: RenderBufferStoreAction, depth: RenderTargetIdentifier, depthLoadAction: RenderBufferLoadAction, depthStoreAction: RenderBufferStoreAction): void;
+    /** Add a &quot;set active render target&quot; command. */
     SetRenderTarget(colors: CSArray<RenderTargetIdentifier>, depth: RenderTargetIdentifier): void;
+    /** Add a &quot;set active render target&quot; command. */
     SetRenderTarget(colors: CSArray<RenderTargetIdentifier>, depth: RenderTargetIdentifier, mipLevel: number, cubemapFace: CubemapFace, depthSlice: number): void;
+    /** Add a &quot;set active render target&quot; command. */
     SetRenderTarget(binding: RenderTargetBinding, mipLevel: number, cubemapFace: CubemapFace, depthSlice: number): void;
+    /** Add a &quot;set active render target&quot; command. */
     SetRenderTarget(binding: RenderTargetBinding): void;
+    /** Add a &quot;set shadow sampling mode&quot; command. */
     SetShadowSamplingMode(shadowmap: RenderTargetIdentifier, mode: ShadowSamplingMode): void;
     SetSinglePassStereo(mode: SinglePassStereoMode): void;
+    /** Schedules the setup of Camera specific global Shader variables. */
     SetupCameraProperties(camera: Camera): void;
+    /** Add a command to set the view matrix. */
     SetViewMatrix(view: Matrix4x4): void;
+    /** Add a command to set the rendering viewport. */
     SetViewport(pixelRect: Rect): void;
+    /** Add a command to set the view and projection matrices. */
     SetViewProjectionMatrices(view: Matrix4x4, proj: Matrix4x4): void;
+    /** Add a &quot;set wireframe&quot; command to the buffer. */
     SetWireframe(enable: boolean): void;
+    /** Unmark a global shader property for late latching. After unmarking, the shader property will no longer be late latched.  This function is intended for the Universal Render Pipeline (URP) to specify late latched shader properties. */
     UnmarkLateLatchMatrix(matrixPropertyType: CameraLateLatchMatrixType): void;
+    /** Adds an &quot;AsyncGPUReadback.WaitAllRequests&quot; command to the CommandBuffer. */
     WaitAllAsyncReadbackRequests(): void;
+    /** Instructs the GPU to pause processing of the queue until it passes through the GraphicsFence fence. */
     WaitOnAsyncGraphicsFence(fence: GraphicsFence): void;
+    /** Instructs the GPU to pause processing of the queue until it passes through the GraphicsFence fence. */
     WaitOnAsyncGraphicsFence(fence: GraphicsFence, stage: SynchronisationStage): void;
     WaitOnAsyncGraphicsFence(fence: GraphicsFence, stage: SynchronisationStageFlags): void;
+    /** This functionality is deprecated, and should no longer be used. Please use CommandBuffer.WaitOnAsyncGraphicsFence. */
     WaitOnGPUFence(fence: GPUFence, stage: SynchronisationStage): void;
     WaitOnGPUFence(fence: GPUFence): void;
 
@@ -8087,8 +8881,11 @@ interface AttachmentDescriptor {
     clearStencil: number;
 
 
+    /** When the RenderPass starts, clear this attachment into the color or depth/stencil values given (depending on the format of this attachment). Changes loadAction to RenderBufferLoadAction.Clear. */
     ConfigureClear(clearColor: Color, clearDepth: number, clearStencil: number): void;
+    /** When the renderpass that uses this attachment ends, resolve the MSAA surface into the given target. */
     ConfigureResolveTarget(target: RenderTargetIdentifier): void;
+    /** Binds this AttachmentDescriptor to the given target surface. */
     ConfigureTarget(target: RenderTargetIdentifier, loadExistingContents: boolean, storeResults: boolean): void;
     Equals(other: AttachmentDescriptor): boolean;
     Equals(obj: unknown): boolean;
@@ -8168,6 +8965,7 @@ interface Sampler {
     name: string;
 
 
+    /** Returns Recorder associated with the Sampler. */
     GetRecorder(): Recorder;
 
 }
@@ -8181,7 +8979,9 @@ interface Recorder {
     gpuSampleBlockCount: number;
 
 
+    /** Configures the recorder to collect samples from all threads. */
     CollectFromAllThreads(): void;
+    /** Configures the recorder to only collect data from the current thread. */
     FilterToCurrentThread(): void;
 
 }
@@ -8206,8 +9006,11 @@ declare const Sampler: SamplerConstructor;
 interface CustomSampler extends Sampler {
 
 
+    /** Begin profiling a piece of code with a custom label defined by this instance of CustomSampler. */
     Begin(): void;
+    /** Begin profiling a piece of code with a custom label defined by this instance of CustomSampler. */
     Begin(targetObject: Object): void;
+    /** End profiling a piece of code with a custom label. */
     End(): void;
 
 }
@@ -8224,9 +9027,13 @@ interface ProfilerMarker {
     Handle: unknown;
 
 
+    /** Creates a helper struct for the scoped using blocks. */
     Auto(): AutoScope;
+    /** Begin profiling a piece of code marked with a custom name defined by this instance of ProfilerMarker. */
     Begin(): void;
+    /** Begin profiling a piece of code marked with a custom name defined by this instance of ProfilerMarker. */
     Begin(contextUnityObject: Object): void;
+    /** End profiling a piece of code marked with a custom name defined by this instance of ProfilerMarker. */
     End(): void;
 
 }
@@ -8268,143 +9075,263 @@ interface Material extends Object {
     isVariant: boolean;
 
 
+    /** Applies an override associated with a Material Variant to a target. */
     ApplyPropertyOverride(destination: Material, nameID: number, recordUndo: boolean): void;
+    /** Applies an override associated with a Material Variant to a target. */
     ApplyPropertyOverride(destination: Material, name: string, recordUndo: boolean): void;
+    /** Computes a CRC hash value from the content of the material. */
     ComputeCRC(): number;
+    /** Copies properties, keyword states and settings from mat to this material, but only if they exist in both materials. */
     CopyMatchingPropertiesFromMaterial(mat: Material): void;
+    /** Copy properties from other material into this material. */
     CopyPropertiesFromMaterial(mat: Material): void;
+    /** Disables a local shader keyword for this material. */
     DisableKeyword(keyword: string): void;
+    /** Disables a local shader keyword for this material. */
     DisableKeyword(keyword: unknown): void;
+    /** Enables a local shader keyword for this material. */
     EnableKeyword(keyword: string): void;
+    /** Enables a local shader keyword for this material. */
     EnableKeyword(keyword: unknown): void;
+    /** Returns the index of the pass passName. */
     FindPass(passName: string): number;
+    /** Get a named Graphics Buffer value. */
     GetBuffer(name: string): GraphicsBufferHandle;
+    /** Get a named color value. */
     GetColor(name: string): Color;
+    /** Get a named color value. */
     GetColor(nameID: number): Color;
+    /** Get a named color array. */
     GetColorArray(name: string): CSArray<Color>;
+    /** Get a named color array. */
     GetColorArray(nameID: number): CSArray<Color>;
     GetColorArray(name: string, values: CSArray<Color>): void;
     GetColorArray(nameID: number, values: CSArray<Color>): void;
+    /** Get a named Constant Buffer value. */
     GetConstantBuffer(name: string): GraphicsBufferHandle;
+    /** Get a named float value. */
     GetFloat(name: string): number;
+    /** Get a named float value. */
     GetFloat(nameID: number): number;
+    /** Get a named float array. */
     GetFloatArray(name: string): CSArray<number>;
+    /** Get a named float array. */
     GetFloatArray(nameID: number): CSArray<number>;
     GetFloatArray(name: string, values: CSArray<number>): void;
     GetFloatArray(nameID: number, values: CSArray<number>): void;
+    /** This method is deprecated. Use GetFloat or GetInteger instead. */
     GetInt(name: string): number;
+    /** This method is deprecated. Use GetFloat or GetInteger instead. */
     GetInt(nameID: number): number;
+    /** Get a named integer value. */
     GetInteger(name: string): number;
+    /** Get a named integer value. */
     GetInteger(nameID: number): number;
+    /** Get a named matrix value from the shader. */
     GetMatrix(name: string): Matrix4x4;
+    /** Get a named matrix value from the shader. */
     GetMatrix(nameID: number): Matrix4x4;
+    /** Get a named matrix array. */
     GetMatrixArray(name: string): CSArray<Matrix4x4>;
+    /** Get a named matrix array. */
     GetMatrixArray(nameID: number): CSArray<Matrix4x4>;
     GetMatrixArray(name: string, values: CSArray<Matrix4x4>): void;
     GetMatrixArray(nameID: number, values: CSArray<Matrix4x4>): void;
+    /** Returns the name of the shader pass at index pass. */
     GetPassName(pass: number): string;
+    /** Retrieves a list of the named properties in the material that match the input property type. */
     GetPropertyNames(type: MaterialPropertyType): CSArray<string>;
+    /** Checks whether a given Shader pass is enabled on this Material. */
     GetShaderPassEnabled(passName: string): boolean;
+    /** Get the value of material&#x27;s shader tag. */
     GetTag(tag: string, searchFallbacks: boolean, defaultValue: string): string;
+    /** Get the value of material&#x27;s shader tag. */
     GetTag(tag: string, searchFallbacks: boolean): string;
+    /** Get a named texture. */
     GetTexture(name: string): Texture;
+    /** Get a named texture. */
     GetTexture(nameID: number): Texture;
+    /** Gets the placement offset of texture propertyName. */
     GetTextureOffset(name: string): Vector2;
+    /** Gets the placement offset of texture propertyName. */
     GetTextureOffset(nameID: number): Vector2;
+    /** Return the name IDs of all texture properties exposed on this material. */
     GetTexturePropertyNameIDs(): CSArray<number>;
     GetTexturePropertyNameIDs(outNames: CSArray<number>): void;
+    /** Returns the names of all texture properties exposed on this material. */
     GetTexturePropertyNames(): CSArray<string>;
     GetTexturePropertyNames(outNames: CSArray<string>): void;
+    /** Gets the placement scale of texture propertyName. */
     GetTextureScale(name: string): Vector2;
+    /** Gets the placement scale of texture propertyName. */
     GetTextureScale(nameID: number): Vector2;
+    /** Get a named vector value. */
     GetVector(name: string): Vector4;
+    /** Get a named vector value. */
     GetVector(nameID: number): Vector4;
+    /** Get a named vector array. */
     GetVectorArray(name: string): CSArray<Vector4>;
+    /** Get a named vector array. */
     GetVectorArray(nameID: number): CSArray<Vector4>;
     GetVectorArray(name: string, values: CSArray<Vector4>): void;
     GetVectorArray(nameID: number, values: CSArray<Vector4>): void;
+    /** Checks if the ShaderLab file assigned to the Material has a ComputeBuffer property with the given name. */
     HasBuffer(name: string): boolean;
+    /** Checks if the ShaderLab file assigned to the Material has a ComputeBuffer property with the given name. */
     HasBuffer(nameID: number): boolean;
+    /** Checks if the ShaderLab file assigned to the Material has a Color property with the given name. */
     HasColor(name: string): boolean;
+    /** Checks if the ShaderLab file assigned to the Material has a Color property with the given name. */
     HasColor(nameID: number): boolean;
+    /** Checks if the ShaderLab file assigned to the Material has a ConstantBuffer property with the given name. */
     HasConstantBuffer(name: string): boolean;
+    /** Checks if the ShaderLab file assigned to the Material has a ConstantBuffer property with the given name. */
     HasConstantBuffer(nameID: number): boolean;
+    /** Checks if the ShaderLab file assigned to the Material has a Float property with the given name. This also works with the Float Array property. */
     HasFloat(name: string): boolean;
+    /** Checks if the ShaderLab file assigned to the Material has a Float property with the given name. This also works with the Float Array property. */
     HasFloat(nameID: number): boolean;
+    /** This method is deprecated. Use HasFloat or HasInteger instead. */
     HasInt(name: string): boolean;
+    /** This method is deprecated. Use HasFloat or HasInteger instead. */
     HasInt(nameID: number): boolean;
+    /** Checks if the ShaderLab file assigned to the Material has an Integer property with the given name. */
     HasInteger(name: string): boolean;
+    /** Checks if the ShaderLab file assigned to the Material has an Integer property with the given name. */
     HasInteger(nameID: number): boolean;
+    /** Checks if the ShaderLab file assigned to the Material has a Matrix property with the given name. This also works with the Matrix Array property. */
     HasMatrix(name: string): boolean;
+    /** Checks if the ShaderLab file assigned to the Material has a Matrix property with the given name. This also works with the Matrix Array property. */
     HasMatrix(nameID: number): boolean;
+    /** Checks if the ShaderLab file assigned to the Material has a property with the given name. */
     HasProperty(nameID: number): boolean;
+    /** Checks if the ShaderLab file assigned to the Material has a property with the given name. */
     HasProperty(name: string): boolean;
+    /** Checks if the ShaderLab file assigned to the Material has a Texture property with the given name. */
     HasTexture(name: string): boolean;
+    /** Checks if the ShaderLab file assigned to the Material has a Texture property with the given name. */
     HasTexture(nameID: number): boolean;
+    /** Checks if the ShaderLab file assigned to the Material has a Vector property with the given name. This also works with the Vector Array property. */
     HasVector(name: string): boolean;
+    /** Checks if the ShaderLab file assigned to the Material has a Vector property with the given name. This also works with the Vector Array property. */
     HasVector(nameID: number): boolean;
+    /** Returns True if the given material is an ancestor of this Material. */
     IsChildOf(ancestor: Material): boolean;
+    /** Checks whether a local shader keyword is enabled for this material. */
     IsKeywordEnabled(keyword: string): boolean;
+    /** Checks whether a local shader keyword is enabled for this material. */
     IsKeywordEnabled(keyword: unknown): boolean;
+    /** Checks whether a property is locked by this material. */
     IsPropertyLocked(nameID: number): boolean;
+    /** Checks whether a property is locked by this material. */
     IsPropertyLocked(name: string): boolean;
+    /** Checks whether a property is locked by any of ancestor of this material. */
     IsPropertyLockedByAncestor(nameID: number): boolean;
+    /** Checks whether a property is locked by any of ancestor of this material. */
     IsPropertyLockedByAncestor(name: string): boolean;
+    /** Checks whether a property is overriden by this material. */
     IsPropertyOverriden(nameID: number): boolean;
+    /** Checks whether a property is overriden by this material. */
     IsPropertyOverriden(name: string): boolean;
+    /** Interpolate properties between two materials. */
     Lerp(start: Material, end: Material, t: number): void;
+    /** Removes all property overrides on this material. */
     RevertAllPropertyOverrides(): void;
+    /** Removes the override on a property. */
     RevertPropertyOverride(nameID: number): void;
+    /** Removes the override on a property. */
     RevertPropertyOverride(name: string): void;
+    /** Sets a named buffer value. */
     SetBuffer(name: string, value: ComputeBuffer): void;
+    /** Sets a named buffer value. */
     SetBuffer(nameID: number, value: ComputeBuffer): void;
+    /** Sets a named buffer value. */
     SetBuffer(name: string, value: GraphicsBuffer): void;
+    /** Sets a named buffer value. */
     SetBuffer(nameID: number, value: GraphicsBuffer): void;
+    /** Sets a color value. */
     SetColor(name: string, value: Color): void;
+    /** Sets a color value. */
     SetColor(nameID: number, value: Color): void;
     SetColorArray(name: string, values: CSArray<Color>): void;
     SetColorArray(nameID: number, values: CSArray<Color>): void;
+    /** Sets a color array property. */
     SetColorArray(name: string, values: CSArray<Color>): void;
+    /** Sets a color array property. */
     SetColorArray(nameID: number, values: CSArray<Color>): void;
+    /** Sets a ComputeBuffer or GraphicsBuffer as a named constant buffer for the material. */
     SetConstantBuffer(name: string, value: ComputeBuffer, offset: number, size: number): void;
+    /** Sets a ComputeBuffer or GraphicsBuffer as a named constant buffer for the material. */
     SetConstantBuffer(nameID: number, value: ComputeBuffer, offset: number, size: number): void;
+    /** Sets a ComputeBuffer or GraphicsBuffer as a named constant buffer for the material. */
     SetConstantBuffer(name: string, value: GraphicsBuffer, offset: number, size: number): void;
+    /** Sets a ComputeBuffer or GraphicsBuffer as a named constant buffer for the material. */
     SetConstantBuffer(nameID: number, value: GraphicsBuffer, offset: number, size: number): void;
+    /** Sets a named float value. */
     SetFloat(name: string, value: number): void;
+    /** Sets a named float value. */
     SetFloat(nameID: number, value: number): void;
     SetFloatArray(name: string, values: CSArray<number>): void;
     SetFloatArray(nameID: number, values: CSArray<number>): void;
+    /** Sets a float array property. */
     SetFloatArray(name: string, values: CSArray<number>): void;
+    /** Sets a float array property. */
     SetFloatArray(nameID: number, values: CSArray<number>): void;
+    /** This method is deprecated. Use SetFloat or SetInteger instead. */
     SetInt(name: string, value: number): void;
+    /** This method is deprecated. Use SetFloat or SetInteger instead. */
     SetInt(nameID: number, value: number): void;
+    /** Sets a named integer value. */
     SetInteger(name: string, value: number): void;
+    /** Sets a named integer value. */
     SetInteger(nameID: number, value: number): void;
+    /** Sets the state of a local shader keyword for this material. */
     SetKeyword(keyword: unknown, value: boolean): void;
+    /** Sets a named matrix for the shader. */
     SetMatrix(name: string, value: Matrix4x4): void;
+    /** Sets a named matrix for the shader. */
     SetMatrix(nameID: number, value: Matrix4x4): void;
     SetMatrixArray(name: string, values: CSArray<Matrix4x4>): void;
     SetMatrixArray(nameID: number, values: CSArray<Matrix4x4>): void;
+    /** Sets a matrix array property. */
     SetMatrixArray(name: string, values: CSArray<Matrix4x4>): void;
+    /** Sets a matrix array property. */
     SetMatrixArray(nameID: number, values: CSArray<Matrix4x4>): void;
+    /** Sets an override tag/value on the material. */
     SetOverrideTag(tag: string, val: string): void;
+    /** Activate the given pass for rendering. */
     SetPass(pass: number): boolean;
+    /** Sets the lock state of a property for this material. */
     SetPropertyLock(nameID: number, value: boolean): void;
+    /** Sets the lock state of a property for this material. */
     SetPropertyLock(name: string, value: boolean): void;
+    /** Enables or disables a Shader pass on a per-Material level. */
     SetShaderPassEnabled(passName: string, enabled: boolean): void;
+    /** Sets a named texture. */
     SetTexture(name: string, value: Texture): void;
+    /** Sets a named texture. */
     SetTexture(nameID: number, value: Texture): void;
+    /** Sets a named texture. */
     SetTexture(name: string, value: RenderTexture, element: RenderTextureSubElement): void;
+    /** Sets a named texture. */
     SetTexture(nameID: number, value: RenderTexture, element: RenderTextureSubElement): void;
+    /** Sets the placement offset of a given texture. The name parameter is defined in the shader. This method creates a new Material instance. */
     SetTextureOffset(name: string, value: Vector2): void;
+    /** Sets the placement offset of a given texture. The name parameter is defined in the shader. This method creates a new Material instance. */
     SetTextureOffset(nameID: number, value: Vector2): void;
+    /** Sets the placement scale of texture propertyName. */
     SetTextureScale(name: string, value: Vector2): void;
+    /** Sets the placement scale of texture propertyName. */
     SetTextureScale(nameID: number, value: Vector2): void;
+    /** Sets a named vector value. */
     SetVector(name: string, value: Vector4): void;
+    /** Sets a named vector value. */
     SetVector(nameID: number, value: Vector4): void;
     SetVectorArray(name: string, values: CSArray<Vector4>): void;
     SetVectorArray(nameID: number, values: CSArray<Vector4>): void;
+    /** Sets a vector array property. */
     SetVectorArray(name: string, values: CSArray<Vector4>): void;
+    /** Sets a vector array property. */
     SetVectorArray(nameID: number, values: CSArray<Vector4>): void;
 
 }
@@ -8418,25 +9345,45 @@ interface Shader extends Object {
     subshaderCount: number;
 
 
+    /** Searches for the tag specified by tagName on the shader&#x27;s active SubShader and returns the value of the tag. */
     FindPassTagValue(passIndex: number, tagName: ShaderTagId): ShaderTagId;
+    /** Searches for the tag specified by tagName on the SubShader specified by subshaderIndex and returns the value of the tag. */
     FindPassTagValue(subshaderIndex: number, passIndex: number, tagName: ShaderTagId): ShaderTagId;
+    /** Finds the index of a shader property by its name. */
     FindPropertyIndex(propertyName: string): number;
+    /** Searches for the tag specified by tagName on the SubShader specified by subshaderIndex and returns the value of the tag. */
     FindSubshaderTagValue(subshaderIndex: number, tagName: ShaderTagId): ShaderTagId;
+    /** Find the name of a texture stack a texture belongs too. */
     FindTextureStack(propertyIndex: number, stackName: CSArray<string>, layerIndex: unknown): boolean;
+    /** Returns the dependency shader. */
     GetDependency(name: string): Shader;
+    /** Returns the number of passes in the given SubShader. */
     GetPassCountInSubshader(subshaderIndex: number): number;
+    /** Returns an array of strings containing attributes of the shader property at the specified index. */
     GetPropertyAttributes(propertyIndex: number): CSArray<string>;
+    /** Returns the number of properties in this Shader. */
     GetPropertyCount(): number;
+    /** Returns the default float value of the shader property at the specified index. */
     GetPropertyDefaultFloatValue(propertyIndex: number): number;
+    /** Returns the default int value of the shader property at the specified index. */
     GetPropertyDefaultIntValue(propertyIndex: number): number;
+    /** Returns the default Vector4 value of the shader property at the specified index. */
     GetPropertyDefaultVectorValue(propertyIndex: number): Vector4;
+    /** Returns the description string of the shader property at the specified index. */
     GetPropertyDescription(propertyIndex: number): string;
+    /** Returns the ShaderPropertyFlags of the shader property at the specified index. */
     GetPropertyFlags(propertyIndex: number): ShaderPropertyFlags;
+    /** Returns the name of the shader property at the specified index. */
     GetPropertyName(propertyIndex: number): string;
+    /** Returns the nameId of the shader property at the specified index. */
     GetPropertyNameId(propertyIndex: number): number;
+    /** Returns the min and max limits for a &amp;lt;a href&#x3D;&quot;Rendering.ShaderPropertyType.Range.html&quot;&amp;gt;Range&amp;lt;/a&amp;gt; property at the specified index. */
     GetPropertyRangeLimits(propertyIndex: number): Vector2;
+    /** Returns the default Texture name of a &amp;lt;a href&#x3D;&quot;Rendering.ShaderPropertyType.Texture.html&quot;&amp;gt;Texture&amp;lt;/a&amp;gt; shader property at the specified index. */
     GetPropertyTextureDefaultName(propertyIndex: number): string;
+    /** Returns the TextureDimension of a &amp;lt;a href&#x3D;&quot;Rendering.ShaderPropertyType.Texture.html&quot;&amp;gt;Texture&amp;lt;/a&amp;gt; shader property at the specified index. */
     GetPropertyTextureDimension(propertyIndex: number): TextureDimension;
+    /** Returns the ShaderPropertyType of the property at the specified index. */
     GetPropertyType(propertyIndex: number): ShaderPropertyType;
 
 }
@@ -8449,6 +9396,7 @@ interface LocalKeywordSpace {
 
     Equals(o: unknown): boolean;
     Equals(rhs: LocalKeywordSpace): boolean;
+    /** Searches for a local shader keyword with a given name in the keyword space. */
     FindKeyword(name: string): LocalKeyword;
     GetHashCode(): number;
 
@@ -8517,38 +9465,64 @@ declare const GlobalKeyword: GlobalKeywordConstructor;
 interface RayTracingAccelerationStructure {
 
 
+    /** Adds a ray tracing instance to the RayTracingAccelerationStructure. */
     AddInstance(targetRenderer: Renderer, subMeshFlags: CSArray<number>, enableTriangleCulling: boolean, frontTriangleCounterClockwise: boolean, mask: number, id: number): number;
+    /** Adds a ray tracing instance associated with a list of axis-aligned bounding boxes (AABBs) to the RayTracingAccelerationStructure for procedural geometry generation using intersection shaders. */
     AddInstance(config: RayTracingAABBsInstanceConfig, matrix: Matrix4x4, id: number): number;
     AddInstance(config: unknown, matrix: Matrix4x4, prevMatrix: unknown, id: number): number;
     AddInstance(config: unknown, matrix: Matrix4x4, prevMatrix: unknown, id: number): number;
+    /** Deprecated. Please use the alternate method for adding Renderers to the acceleration structure. */
     AddInstance(targetRenderer: Renderer, subMeshMask: CSArray<boolean>, subMeshTransparencyFlags: CSArray<boolean>, enableTriangleCulling: boolean, frontTriangleCounterClockwise: boolean, mask: number, id: number): void;
+    /** Deprecated. Please use the alternate method for adding procedural geometry (AABBs) to the acceleration structure. */
     AddInstance(aabbBuffer: GraphicsBuffer, numElements: number, material: Material, isCutOff: boolean, enableTriangleCulling: boolean, frontTriangleCounterClockwise: boolean, mask: number, reuseBounds: boolean, id: number): void;
+    /** Deprecated. Please use the alternate method for adding procedural geometry (AABBs) to the acceleration structure. */
     AddInstance(aabbBuffer: GraphicsBuffer, aabbCount: number, dynamicData: boolean, matrix: Matrix4x4, material: Material, opaqueMaterial: boolean, properties: MaterialPropertyBlock, mask: number, id: number): number;
     AddInstances<T>(config: unknown, instanceData: CSArray<T>, instanceCount: number, startInstance: number, id: number): number;
     AddInstances<T>(config: unknown, instanceData: CSArray<T>, instanceCount: number, startInstance: number, id: number): number;
     AddInstances<T>(config: unknown, instanceData: CSArray<T>, instanceCount: number, startInstance: number, id: number): number;
     AddInstances<T>(config: unknown, instanceData: CSArray<T>, id: number): number;
+    /** Adds the ray tracing instances associated with a VFXRenderer to the RayTracingAccelerationStructure. */
     AddVFXInstances(targetRenderer: Renderer, vfxSystemMasks: CSArray<number>): void;
+    /** Builds acceleration structures on the GPU. Allocates any GPU memory required for storing acceleration structure data. */
     Build(): void;
+    /** Builds acceleration structures on the GPU. Allocates any GPU memory required for storing acceleration structure data. */
     Build(relativeOrigin: Vector3): void;
     Build(buildSettings: BuildSettings): void;
+    /** Removes all ray tracing instances from the RayTracingAccelerationStructure. */
     ClearInstances(): void;
+    /** Populates the RayTracingAccelerationStructure with ray tracing instances that Unity associates with Renderers in the Scene by using filtering and culling parameters. */
     CullInstances(cullingConfig: unknown): RayTracingInstanceCullingResults;
+    /** Destroys this RayTracingAccelerationStructure and frees the GPU memory used for storing acceleration structure data. */
     Dispose(): void;
+    /** Returns the number of ray tracing instances in the RayTracingAccelerationStructure. */
     GetInstanceCount(): number;
+    /** Returns the total size of this RayTracingAccelerationStructure in GPU memory in bytes. */
     GetSize(): number;
+    /** Destroys this RayTracingAccelerationStructure and frees the GPU memory used for storing acceleration structure data. */
     Release(): void;
+    /** Removes a ray tracing instance associated with a Renderer from this RayTracingAccelerationStructure. */
     RemoveInstance(targetRenderer: Renderer): void;
+    /** Removes a ray tracing instance associated with an axis-aligned bounding box (AABBs) GraphicsBuffer or a Mesh instance from this RayTracingAccelerationStructure. */
     RemoveInstance(handle: number): void;
+    /** Remove the ray tracing instances associated with a VFXRenderer from the RayTracingAccelerationStructure. */
     RemoveVFXInstances(targetRenderer: Renderer): void;
+    /** Updates the transforms of all instances in this RayTracingAccelerationStructure. */
     Update(): void;
+    /** Updates the transforms of all instances in this RayTracingAccelerationStructure. */
     Update(relativeOrigin: Vector3): void;
+    /** Updates the instance ID of a ray tracing instance. */
     UpdateInstanceID(renderer: Renderer, instanceID: number): void;
+    /** Updates the instance ID of a ray tracing instance. */
     UpdateInstanceID(handle: number, instanceID: number): void;
+    /** Updates the instance mask of a ray tracing instance. */
     UpdateInstanceMask(renderer: Renderer, mask: number): void;
+    /** Updates the instance mask of a ray tracing instance. */
     UpdateInstanceMask(handle: number, mask: number): void;
+    /** Updates per ray tracing instance Material properties. */
     UpdateInstancePropertyBlock(handle: number, properties: MaterialPropertyBlock): void;
+    /** Updates the transformation of a ray tracing instance. */
     UpdateInstanceTransform(renderer: Renderer): void;
+    /** Updates the transformation of a ray tracing instance. */
     UpdateInstanceTransform(handle: number, matrix: Matrix4x4): void;
 
 }
@@ -8596,14 +9570,21 @@ interface Renderer extends Component {
 
     GetClosestReflectionProbes(result: CSArray<ReflectionProbeBlendInfo>): void;
     GetMaterials(m: CSArray<Material>): void;
+    /** Get per-Renderer or per-Material property block. */
     GetPropertyBlock(properties: MaterialPropertyBlock): void;
+    /** Get per-Renderer or per-Material property block. */
     GetPropertyBlock(properties: MaterialPropertyBlock, materialIndex: number): void;
     GetSharedMaterials(m: CSArray<Material>): void;
+    /** Returns true if the Renderer has a material property block attached via SetPropertyBlock. */
     HasPropertyBlock(): boolean;
+    /** Reset custom world space bounds. */
     ResetBounds(): void;
+    /** Reset custom local space bounds. */
     ResetLocalBounds(): void;
     SetMaterials(materials: CSArray<Material>): void;
+    /** Lets you set or clear per-renderer or per-material parameter overrides. */
     SetPropertyBlock(properties: MaterialPropertyBlock): void;
+    /** Lets you set or clear per-renderer or per-material parameter overrides. */
     SetPropertyBlock(properties: MaterialPropertyBlock, materialIndex: number): void;
     SetSharedMaterials(materials: CSArray<Material>): void;
 
@@ -8645,9 +9626,12 @@ interface ReflectionProbe extends Behaviour {
     textureHDRDecodeValues: Vector4;
 
 
+    /** Checks if a probe has finished a time-sliced render. */
     IsFinishedRendering(renderId: number): boolean;
     RenderProbe(): number;
+    /** Refreshes the probe&#x27;s cubemap. */
     RenderProbe(targetTexture: RenderTexture): number;
+    /** Revert all ReflectionProbe parameters to default. */
     Reset(): void;
 
 }
@@ -8680,96 +9664,171 @@ interface MaterialPropertyBlock {
     AddTexture(nameID: number, value: Texture): void;
     AddVector(name: string, value: Vector4): void;
     AddVector(nameID: number, value: Vector4): void;
+    /** Clear material property values. */
     Clear(): void;
     CopyProbeOcclusionArrayFrom(occlusionProbes: CSArray<Vector4>): void;
+    /** This function copies the entire source array into a Vector4 property array named unity_ProbesOcclusion for use with instanced rendering. */
     CopyProbeOcclusionArrayFrom(occlusionProbes: CSArray<Vector4>): void;
     CopyProbeOcclusionArrayFrom(occlusionProbes: CSArray<Vector4>, sourceStart: number, destStart: number, count: number): void;
+    /** This function copies the source array into a Vector4 property array named unity_ProbesOcclusion with the specified source and destination range for use with instanced rendering. */
     CopyProbeOcclusionArrayFrom(occlusionProbes: CSArray<Vector4>, sourceStart: number, destStart: number, count: number): void;
     CopySHCoefficientArraysFrom(lightProbes: CSArray<SphericalHarmonicsL2>): void;
+    /** This function converts and copies the entire source array into 7 Vector4 property arrays named unity_SHAr, unity_SHAg, unity_SHAb, unity_SHBr, unity_SHBg, unity_SHBb and unity_SHC for use with instanced rendering. */
     CopySHCoefficientArraysFrom(lightProbes: CSArray<SphericalHarmonicsL2>): void;
     CopySHCoefficientArraysFrom(lightProbes: CSArray<SphericalHarmonicsL2>, sourceStart: number, destStart: number, count: number): void;
+    /** This function converts and copies the source array into 7 Vector4 property arrays named unity_SHAr, unity_SHAg, unity_SHAb, unity_SHBr, unity_SHBg, unity_SHBb and unity_SHC with the specified source and destination range for use with instanced rendering. */
     CopySHCoefficientArraysFrom(lightProbes: CSArray<SphericalHarmonicsL2>, sourceStart: number, destStart: number, count: number): void;
+    /** Get a color from the property block. */
     GetColor(name: string): Color;
+    /** Get a color from the property block. */
     GetColor(nameID: number): Color;
+    /** Get a float from the property block. */
     GetFloat(name: string): number;
+    /** Get a float from the property block. */
     GetFloat(nameID: number): number;
+    /** Get a float array from the property block. */
     GetFloatArray(name: string): CSArray<number>;
+    /** Get a float array from the property block. */
     GetFloatArray(nameID: number): CSArray<number>;
     GetFloatArray(name: string, values: CSArray<number>): void;
     GetFloatArray(nameID: number, values: CSArray<number>): void;
+    /** This method is deprecated. Use GetFloat or GetInteger instead. */
     GetInt(name: string): number;
+    /** This method is deprecated. Use GetFloat or GetInteger instead. */
     GetInt(nameID: number): number;
+    /** Get an integer from the property block. */
     GetInteger(name: string): number;
+    /** Get an integer from the property block. */
     GetInteger(nameID: number): number;
+    /** Get a matrix from the property block. */
     GetMatrix(name: string): Matrix4x4;
+    /** Get a matrix from the property block. */
     GetMatrix(nameID: number): Matrix4x4;
+    /** Get a matrix array from the property block. */
     GetMatrixArray(name: string): CSArray<Matrix4x4>;
+    /** Get a matrix array from the property block. */
     GetMatrixArray(nameID: number): CSArray<Matrix4x4>;
     GetMatrixArray(name: string, values: CSArray<Matrix4x4>): void;
     GetMatrixArray(nameID: number, values: CSArray<Matrix4x4>): void;
+    /** Get a texture from the property block. */
     GetTexture(name: string): Texture;
+    /** Get a texture from the property block. */
     GetTexture(nameID: number): Texture;
+    /** Get a vector from the property block. */
     GetVector(name: string): Vector4;
+    /** Get a vector from the property block. */
     GetVector(nameID: number): Vector4;
+    /** Get a vector array from the property block. */
     GetVectorArray(name: string): CSArray<Vector4>;
+    /** Get a vector array from the property block. */
     GetVectorArray(nameID: number): CSArray<Vector4>;
     GetVectorArray(name: string, values: CSArray<Vector4>): void;
     GetVectorArray(nameID: number, values: CSArray<Vector4>): void;
+    /** Checks if MaterialPropertyBlock has the ComputeBuffer property with the given name or name ID. To set the property, use SetBuffer. */
     HasBuffer(name: string): boolean;
+    /** Checks if MaterialPropertyBlock has the ComputeBuffer property with the given name or name ID. To set the property, use SetBuffer. */
     HasBuffer(nameID: number): boolean;
+    /** Checks if MaterialPropertyBlock has the Color property with the given name or name ID. To set the property, use SetColor. */
     HasColor(name: string): boolean;
+    /** Checks if MaterialPropertyBlock has the Color property with the given name or name ID. To set the property, use SetColor. */
     HasColor(nameID: number): boolean;
+    /** Checks if MaterialPropertyBlock has the ConstantBuffer property with the given name or name ID. To set the property, use SetConstantBuffer. */
     HasConstantBuffer(name: string): boolean;
+    /** Checks if MaterialPropertyBlock has the ConstantBuffer property with the given name or name ID. To set the property, use SetConstantBuffer. */
     HasConstantBuffer(nameID: number): boolean;
+    /** Checks if MaterialPropertyBlock has the Float property with the given name or name ID. To set the property, use SetFloat. */
     HasFloat(name: string): boolean;
+    /** Checks if MaterialPropertyBlock has the Float property with the given name or name ID. To set the property, use SetFloat. */
     HasFloat(nameID: number): boolean;
+    /** This method is deprecated. Use HasFloat or HasInteger instead. */
     HasInt(name: string): boolean;
+    /** This method is deprecated. Use HasFloat or HasInteger instead. */
     HasInt(nameID: number): boolean;
+    /** Checks if MaterialPropertyBlock has the Integer property with the given name or name ID. To set the property, use SetInteger. */
     HasInteger(name: string): boolean;
+    /** Checks if MaterialPropertyBlock has the Integer property with the given name or name ID. To set the property, use SetInteger. */
     HasInteger(nameID: number): boolean;
+    /** Checks if MaterialPropertyBlock has the Matrix property with the given name or name ID. This also works with the Matrix Array property. To set the property, use SetMatrix. */
     HasMatrix(name: string): boolean;
+    /** Checks if MaterialPropertyBlock has the Matrix property with the given name or name ID. This also works with the Matrix Array property. To set the property, use SetMatrix. */
     HasMatrix(nameID: number): boolean;
+    /** Checks if MaterialPropertyBlock has the property with the given name or name ID. To set the property, use one of the Set methods for MaterialPropertyBlock. */
     HasProperty(name: string): boolean;
+    /** Checks if MaterialPropertyBlock has the property with the given name or name ID. To set the property, use one of the Set methods for MaterialPropertyBlock. */
     HasProperty(nameID: number): boolean;
+    /** Checks if MaterialPropertyBlock has the Texture property with the given name or name ID. To set the property, use SetTexture. */
     HasTexture(name: string): boolean;
+    /** Checks if MaterialPropertyBlock has the Texture property with the given name or name ID. To set the property, use SetTexture. */
     HasTexture(nameID: number): boolean;
+    /** Checks if MaterialPropertyBlock has the Vector property with the given name or name ID. This also works with the Vector Array property. To set the property, use SetVector. */
     HasVector(name: string): boolean;
+    /** Checks if MaterialPropertyBlock has the Vector property with the given name or name ID. This also works with the Vector Array property. To set the property, use SetVector. */
     HasVector(nameID: number): boolean;
+    /** Set a buffer property. */
     SetBuffer(name: string, value: ComputeBuffer): void;
+    /** Set a buffer property. */
     SetBuffer(nameID: number, value: ComputeBuffer): void;
+    /** Set a buffer property. */
     SetBuffer(name: string, value: GraphicsBuffer): void;
+    /** Set a buffer property. */
     SetBuffer(nameID: number, value: GraphicsBuffer): void;
+    /** Set a color property. */
     SetColor(name: string, value: Color): void;
+    /** Set a color property. */
     SetColor(nameID: number, value: Color): void;
+    /** Sets a ComputeBuffer or GraphicsBuffer as a named constant buffer for the MaterialPropertyBlock. */
     SetConstantBuffer(name: string, value: ComputeBuffer, offset: number, size: number): void;
+    /** Sets a ComputeBuffer or GraphicsBuffer as a named constant buffer for the MaterialPropertyBlock. */
     SetConstantBuffer(nameID: number, value: ComputeBuffer, offset: number, size: number): void;
+    /** Sets a ComputeBuffer or GraphicsBuffer as a named constant buffer for the MaterialPropertyBlock. */
     SetConstantBuffer(name: string, value: GraphicsBuffer, offset: number, size: number): void;
+    /** Sets a ComputeBuffer or GraphicsBuffer as a named constant buffer for the MaterialPropertyBlock. */
     SetConstantBuffer(nameID: number, value: GraphicsBuffer, offset: number, size: number): void;
+    /** Set a float property. */
     SetFloat(name: string, value: number): void;
+    /** Set a float property. */
     SetFloat(nameID: number, value: number): void;
     SetFloatArray(name: string, values: CSArray<number>): void;
     SetFloatArray(nameID: number, values: CSArray<number>): void;
+    /** Set a float array property. */
     SetFloatArray(name: string, values: CSArray<number>): void;
+    /** Set a float array property. */
     SetFloatArray(nameID: number, values: CSArray<number>): void;
+    /** This method is deprecated. Use SetFloat or SetInteger instead. */
     SetInt(name: string, value: number): void;
+    /** This method is deprecated. Use SetFloat or SetInteger instead. */
     SetInt(nameID: number, value: number): void;
+    /** Adds a property to the block. If an integer property with the given name already exists, the old value is replaced. */
     SetInteger(name: string, value: number): void;
+    /** Adds a property to the block. If an integer property with the given name already exists, the old value is replaced. */
     SetInteger(nameID: number, value: number): void;
+    /** Set a matrix property. */
     SetMatrix(name: string, value: Matrix4x4): void;
+    /** Set a matrix property. */
     SetMatrix(nameID: number, value: Matrix4x4): void;
     SetMatrixArray(name: string, values: CSArray<Matrix4x4>): void;
     SetMatrixArray(nameID: number, values: CSArray<Matrix4x4>): void;
+    /** Set a matrix array property. */
     SetMatrixArray(name: string, values: CSArray<Matrix4x4>): void;
+    /** Set a matrix array property. */
     SetMatrixArray(nameID: number, values: CSArray<Matrix4x4>): void;
+    /** Set a texture property. */
     SetTexture(name: string, value: Texture): void;
+    /** Set a texture property. */
     SetTexture(nameID: number, value: Texture): void;
+    /** Set a texture property. */
     SetTexture(name: string, value: RenderTexture, element: RenderTextureSubElement): void;
+    /** Set a texture property. */
     SetTexture(nameID: number, value: RenderTexture, element: RenderTextureSubElement): void;
+    /** Set a vector property. */
     SetVector(name: string, value: Vector4): void;
+    /** Set a vector property. */
     SetVector(nameID: number, value: Vector4): void;
     SetVectorArray(name: string, values: CSArray<Vector4>): void;
     SetVectorArray(nameID: number, values: CSArray<Vector4>): void;
+    /** Set a vector array property. */
     SetVectorArray(name: string, values: CSArray<Vector4>): void;
+    /** Set a vector array property. */
     SetVectorArray(nameID: number, values: CSArray<Vector4>): void;
 
 }
@@ -8778,11 +9837,15 @@ interface SphericalHarmonicsL2 {
     Item: number;
 
 
+    /** Add an ambient light to the spherical harmonics. */
     AddAmbientLight(color: Color): void;
+    /** Add a directional light to the spherical harmonics. */
     AddDirectionalLight(direction: Vector3, color: Color, intensity: number): void;
+    /** Clears the spherical harmonics coefficients to zero. */
     Clear(): void;
     Equals(other: unknown): boolean;
     Equals(other: SphericalHarmonicsL2): boolean;
+    /** Evaluates the spherical harmonics for each given direction. The directions and results arrays must have the same size. */
     Evaluate(directions: CSArray<Vector3>, results: CSArray<Color>): void;
     GetHashCode(): number;
 
@@ -8992,57 +10055,107 @@ interface ComputeShader extends Object {
     enabledKeywords: CSArray<LocalKeyword>;
 
 
+    /** Disables a local shader keyword for this compute shader. */
     DisableKeyword(keyword: string): void;
+    /** Disables a local shader keyword for this compute shader. */
     DisableKeyword(keyword: unknown): void;
+    /** Execute a compute shader. */
     Dispatch(kernelIndex: number, threadGroupsX: number, threadGroupsY: number, threadGroupsZ: number): void;
+    /** Execute a compute shader. */
     DispatchIndirect(kernelIndex: number, argsBuffer: ComputeBuffer, argsOffset: number): void;
     DispatchIndirect(kernelIndex: number, argsBuffer: ComputeBuffer): void;
+    /** Execute a compute shader. */
     DispatchIndirect(kernelIndex: number, argsBuffer: GraphicsBuffer, argsOffset: number): void;
     DispatchIndirect(kernelIndex: number, argsBuffer: GraphicsBuffer): void;
+    /** Enables a local shader keyword for this compute shader. */
     EnableKeyword(keyword: string): void;
+    /** Enables a local shader keyword for this compute shader. */
     EnableKeyword(keyword: unknown): void;
+    /** Find ComputeShader kernel index. */
     FindKernel(name: string): number;
+    /** Get kernel thread group sizes. */
     GetKernelThreadGroupSizes(kernelIndex: number, x: unknown, y: unknown, z: unknown): void;
+    /** Checks whether a shader contains a given kernel. */
     HasKernel(name: string): boolean;
+    /** Checks whether a local shader keyword is enabled for this compute shader. */
     IsKeywordEnabled(keyword: string): boolean;
+    /** Checks whether a local shader keyword is enabled for this compute shader. */
     IsKeywordEnabled(keyword: unknown): boolean;
+    /** Allows you to check whether the current end user device supports the features required to run the specified compute shader kernel. */
     IsSupported(kernelIndex: number): boolean;
+    /** Set a bool parameter. */
     SetBool(name: string, val: boolean): void;
+    /** Set a bool parameter. */
     SetBool(nameID: number, val: boolean): void;
+    /** Sets an input or output compute buffer. */
     SetBuffer(kernelIndex: number, nameID: number, buffer: ComputeBuffer): void;
+    /** Sets an input or output compute buffer. */
     SetBuffer(kernelIndex: number, nameID: number, buffer: GraphicsBuffer): void;
+    /** Sets an input or output compute buffer. */
     SetBuffer(kernelIndex: number, name: string, buffer: ComputeBuffer): void;
+    /** Sets an input or output compute buffer. */
     SetBuffer(kernelIndex: number, name: string, buffer: GraphicsBuffer): void;
+    /** Sets a ComputeBuffer or GraphicsBuffer as a named constant buffer for the ComputeShader. */
     SetConstantBuffer(nameID: number, buffer: ComputeBuffer, offset: number, size: number): void;
+    /** Sets a ComputeBuffer or GraphicsBuffer as a named constant buffer for the ComputeShader. */
     SetConstantBuffer(name: string, buffer: ComputeBuffer, offset: number, size: number): void;
+    /** Sets a ComputeBuffer or GraphicsBuffer as a named constant buffer for the ComputeShader. */
     SetConstantBuffer(nameID: number, buffer: GraphicsBuffer, offset: number, size: number): void;
+    /** Sets a ComputeBuffer or GraphicsBuffer as a named constant buffer for the ComputeShader. */
     SetConstantBuffer(name: string, buffer: GraphicsBuffer, offset: number, size: number): void;
+    /** Set a float parameter. */
     SetFloat(nameID: number, val: number): void;
+    /** Set a float parameter. */
     SetFloat(name: string, val: number): void;
+    /** Set multiple consecutive float parameters at once. */
     SetFloats(name: string, values: CSArray<number>): void;
+    /** Set multiple consecutive float parameters at once. */
     SetFloats(nameID: number, values: CSArray<number>): void;
+    /** Set an integer parameter. */
     SetInt(nameID: number, val: number): void;
+    /** Set an integer parameter. */
     SetInt(name: string, val: number): void;
+    /** Set multiple consecutive integer parameters at once. */
     SetInts(name: string, values: CSArray<number>): void;
+    /** Set multiple consecutive integer parameters at once. */
     SetInts(nameID: number, values: CSArray<number>): void;
+    /** Sets the state of a local shader keyword for this compute shader. */
     SetKeyword(keyword: unknown, value: boolean): void;
+    /** Set a Matrix parameter. */
     SetMatrix(nameID: number, val: Matrix4x4): void;
+    /** Set a Matrix parameter. */
     SetMatrix(name: string, val: Matrix4x4): void;
+    /** Set a Matrix array parameter. */
     SetMatrixArray(nameID: number, values: CSArray<Matrix4x4>): void;
+    /** Set a Matrix array parameter. */
     SetMatrixArray(name: string, values: CSArray<Matrix4x4>): void;
+    /** Sets a RayTracingAccelerationStructure to be used for Inline Ray Tracing (Ray Queries). */
     SetRayTracingAccelerationStructure(kernelIndex: number, nameID: number, accelerationStructure: RayTracingAccelerationStructure): void;
+    /** Sets a RayTracingAccelerationStructure to be used for Inline Ray Tracing (Ray Queries). */
     SetRayTracingAccelerationStructure(kernelIndex: number, name: string, accelerationStructure: RayTracingAccelerationStructure): void;
+    /** Set a texture parameter. */
     SetTexture(kernelIndex: number, nameID: number, texture: Texture, mipLevel: number): void;
+    /** Set a texture parameter. */
     SetTexture(kernelIndex: number, nameID: number, texture: Texture): void;
+    /** Set a texture parameter. */
     SetTexture(kernelIndex: number, name: string, texture: Texture): void;
+    /** Set a texture parameter. */
     SetTexture(kernelIndex: number, name: string, texture: Texture, mipLevel: number): void;
+    /** Set a texture parameter. */
     SetTexture(kernelIndex: number, nameID: number, texture: RenderTexture, mipLevel: number, element: RenderTextureSubElement): void;
+    /** Set a texture parameter. */
     SetTexture(kernelIndex: number, name: string, texture: RenderTexture, mipLevel: number, element: RenderTextureSubElement): void;
+    /** Set a texture parameter from a global texture property. */
     SetTextureFromGlobal(kernelIndex: number, nameID: number, globalTextureNameID: number): void;
+    /** Set a texture parameter from a global texture property. */
     SetTextureFromGlobal(kernelIndex: number, name: string, globalTextureName: string): void;
+    /** Set a vector parameter. */
     SetVector(nameID: number, val: Vector4): void;
+    /** Set a vector parameter. */
     SetVector(name: string, val: Vector4): void;
+    /** Set a vector array parameter. */
     SetVectorArray(nameID: number, values: CSArray<Vector4>): void;
+    /** Set a vector array parameter. */
     SetVectorArray(name: string, values: CSArray<Vector4>): void;
 
 }
@@ -9051,41 +10164,77 @@ interface RayTracingShader extends Object {
     maxRecursionDepth: number;
 
 
+    /** Dispatches this RayTracingShader. */
     Dispatch(rayGenFunctionName: string, width: number, height: number, depth: number, camera: Camera): void;
+    /** Sets the value for RayTracingAccelerationStructure property of this RayTracingShader. */
     SetAccelerationStructure(nameID: number, accelerationStructure: RayTracingAccelerationStructure): void;
+    /** Sets the value for RayTracingAccelerationStructure property of this RayTracingShader. */
     SetAccelerationStructure(name: string, accelerationStructure: RayTracingAccelerationStructure): void;
+    /** Sets the value of a boolean uniform. */
     SetBool(name: string, val: boolean): void;
+    /** Sets the value of a boolean uniform. */
     SetBool(nameID: number, val: boolean): void;
+    /** Binds an input or output compute buffer. */
     SetBuffer(nameID: number, buffer: ComputeBuffer): void;
+    /** Binds an input or output compute buffer. */
     SetBuffer(nameID: number, buffer: GraphicsBuffer): void;
+    /** Binds an input or output compute buffer. */
     SetBuffer(nameID: number, bufferHandle: GraphicsBufferHandle): void;
+    /** Binds an input or output compute buffer. */
     SetBuffer(name: string, buffer: ComputeBuffer): void;
+    /** Binds an input or output compute buffer. */
     SetBuffer(name: string, buffer: GraphicsBuffer): void;
+    /** Binds an input or output compute buffer. */
     SetBuffer(name: string, bufferHandle: GraphicsBufferHandle): void;
+    /** Binds a constant buffer created through a ComputeBuffer or a GraphicsBuffer. */
     SetConstantBuffer(nameID: number, buffer: ComputeBuffer, offset: number, size: number): void;
+    /** Binds a constant buffer created through a ComputeBuffer or a GraphicsBuffer. */
     SetConstantBuffer(name: string, buffer: ComputeBuffer, offset: number, size: number): void;
+    /** Binds a constant buffer created through a ComputeBuffer or a GraphicsBuffer. */
     SetConstantBuffer(nameID: number, buffer: GraphicsBuffer, offset: number, size: number): void;
+    /** Binds a constant buffer created through a ComputeBuffer or a GraphicsBuffer. */
     SetConstantBuffer(name: string, buffer: GraphicsBuffer, offset: number, size: number): void;
+    /** Sets the value of a float uniform. */
     SetFloat(nameID: number, val: number): void;
+    /** Sets the value of a float uniform. */
     SetFloat(name: string, val: number): void;
+    /** Sets the values for a float array uniform. */
     SetFloats(name: string, values: CSArray<number>): void;
+    /** Sets the values for a float array uniform. */
     SetFloats(nameID: number, values: CSArray<number>): void;
+    /** Sets the value of a int uniform. */
     SetInt(nameID: number, val: number): void;
+    /** Sets the value of a int uniform. */
     SetInt(name: string, val: number): void;
+    /** Sets the values for a int array uniform. */
     SetInts(name: string, values: CSArray<number>): void;
+    /** Sets the values for a int array uniform. */
     SetInts(nameID: number, values: CSArray<number>): void;
+    /** Sets the value of a matrix uniform. */
     SetMatrix(nameID: number, val: Matrix4x4): void;
+    /** Sets the value of a matrix uniform. */
     SetMatrix(name: string, val: Matrix4x4): void;
+    /** Sets a matrix array uniform. */
     SetMatrixArray(nameID: number, values: CSArray<Matrix4x4>): void;
+    /** Sets a matrix array uniform. */
     SetMatrixArray(name: string, values: CSArray<Matrix4x4>): void;
+    /** Selects which Shader Pass to use when executing ray/geometry intersection shaders. */
     SetShaderPass(passName: string): void;
+    /** Binds a texture resource. This can be a input or an output texture (UAV). */
     SetTexture(nameID: number, texture: Texture): void;
+    /** Binds a texture resource. This can be a input or an output texture (UAV). */
     SetTexture(name: string, texture: Texture): void;
+    /** Binds a global texture to a RayTracingShader. */
     SetTextureFromGlobal(nameID: number, globalTextureNameID: number): void;
+    /** Binds a global texture to a RayTracingShader. */
     SetTextureFromGlobal(name: string, globalTextureName: string): void;
+    /** Sets the value for a vector uniform. */
     SetVector(nameID: number, val: Vector4): void;
+    /** Sets the value for a vector uniform. */
     SetVector(name: string, val: Vector4): void;
+    /** Sets a vector array uniform. */
     SetVectorArray(nameID: number, values: CSArray<Vector4>): void;
+    /** Sets a vector array uniform. */
     SetVectorArray(name: string, values: CSArray<Vector4>): void;
 
 }
@@ -9107,15 +10256,23 @@ interface RectInt {
     allPositionsWithin: PositionEnumerator;
 
 
+    /** Clamps the position and size of the RectInt to the given bounds. */
     ClampToBounds(bounds: RectInt): void;
+    /** Returns true if the given position is within the RectInt. */
     Contains(position: Vector2Int): boolean;
     Equals(other: unknown): boolean;
+    /** Returns true if the given RectInt is equal to this RectInt. */
     Equals(other: RectInt): boolean;
     GetHashCode(): number;
+    /** RectInts overlap if each RectInt Contains a shared point. */
     Overlaps(other: RectInt): boolean;
+    /** Sets the bounds to the min and max value of the rect. */
     SetMinMax(minPosition: Vector2Int, maxPosition: Vector2Int): void;
+    /** Returns the x, y, width and height of the RectInt. */
     ToString(): string;
+    /** Returns the x, y, width and height of the RectInt. */
     ToString(format: string): string;
+    /** Returns the x, y, width and height of the RectInt. */
     ToString(format: string, formatProvider: unknown): string;
 
 }
@@ -9206,24 +10363,38 @@ interface Cubemap extends Texture {
     loadedMipmapLevel: number;
 
 
+    /** Copies changes you&#x27;ve made in a CPU texture to the GPU. */
     Apply(updateMipmaps: boolean, makeNoLongerReadable: boolean): void;
     Apply(updateMipmaps: boolean): void;
     Apply(): void;
+    /** Resets the requestedMipmapLevel field. */
     ClearRequestedMipmapLevel(): void;
+    /** Gets the pixel color at coordinates (x, y). */
     GetPixel(face: CubemapFace, x: number, y: number): Color;
+    /** Gets the pixel color at coordinates (x, y). */
     GetPixel(face: CubemapFace, x: number, y: number, mip: number): Color;
+    /** Gets the raw data from a texture. */
     GetPixelData<T>(mipLevel: number, face: CubemapFace): CSArray<T>;
+    /** Gets the pixel color data for a mipmap level of a face as Color structs. */
     GetPixels(face: CubemapFace, miplevel: number): CSArray<Color>;
+    /** Gets the pixel color data for a mipmap level of a face as Color structs. */
     GetPixels(face: CubemapFace): CSArray<Color>;
+    /** Checks to see whether the mipmap level set by requestedMipmapLevel has finished loading. */
     IsRequestedMipmapLevelLoaded(): boolean;
+    /** Sets the pixel color at coordinates (x,y). */
     SetPixel(face: CubemapFace, x: number, y: number, color: Color): void;
+    /** Sets the pixel color at coordinates (x,y). */
     SetPixel(face: CubemapFace, x: number, y: number, color: Color, mip: number): void;
     SetPixelData<T>(data: CSArray<T>, mipLevel: number, face: CubemapFace, sourceDataStartIndex: number): void;
     SetPixelData<T>(data: CSArray<T>, mipLevel: number, face: CubemapFace, sourceDataStartIndex: number): void;
+    /** Sets the pixel colors of an entire mipmap level of a face. */
     SetPixels(colors: CSArray<Color>, face: CubemapFace, miplevel: number): void;
+    /** Sets the pixel colors of an entire mipmap level of a face. */
     SetPixels(colors: CSArray<Color>, face: CubemapFace): void;
+    /** Performs smoothing of near edge regions. */
     SmoothEdges(smoothRegionWidthInPixels: number): void;
     SmoothEdges(): void;
+    /** Updates Unity cubemap to use different native cubemap texture object. */
     UpdateExternalTexture(nativeTexture: unknown): void;
 
 }
@@ -9335,9 +10506,13 @@ interface LocationService {
     lastData: LocationInfo;
 
 
+    /** Starts location service updates. */
     Start(desiredAccuracyInMeters: number, updateDistanceInMeters: number): void;
+    /** Starts location service updates. */
     Start(desiredAccuracyInMeters: number): void;
+    /** Starts location service updates. */
     Start(): void;
+    /** Stops location service updates. This is useful to save battery power when the application doesn&#x27;t require the location service. */
     Stop(): void;
 
 }
@@ -9997,8 +11172,11 @@ interface RectTransform extends Transform {
     drivenByObject: Object;
 
 
+    /** Force the recalculation of RectTransforms internal data. */
     ForceUpdateRectTransforms(): void;
+    /** Get the corners of the calculated rectangle in the local space of its Transform. */
     GetLocalCorners(fourCornersArray: CSArray<Vector3>): void;
+    /** Get the corners of the calculated rectangle in world space. */
     GetWorldCorners(fourCornersArray: CSArray<Vector3>): void;
     SetInsetAndSizeFromParentEdge(edge: Edge, inset: number, size: number): void;
     SetSizeWithCurrentAnchors(axis: Axis, size: number): void;
@@ -10068,25 +11246,46 @@ interface CanvasRenderer extends Component {
     clippingSoftness: Vector2;
 
 
+    /** Remove all cached vertices. */
     Clear(): void;
+    /** Disables rectangle clipping for this CanvasRenderer. */
     DisableRectClipping(): void;
+    /** Enables rect clipping on the CanvasRendered. Geometry outside of the specified rect will be clipped (not rendered). */
     EnableRectClipping(rect: Rect): void;
+    /** Get the current alpha of the renderer. */
     GetAlpha(): number;
+    /** Get the current color of the renderer. */
     GetColor(): Color;
+    /** Get the final inherited alpha calculated by including all the parent alphas from included parent CanvasGroups. */
     GetInheritedAlpha(): number;
+    /** Gets the current Material assigned to the CanvasRenderer. */
     GetMaterial(index: number): Material;
+    /** Gets the current Material assigned to the CanvasRenderer. */
     GetMaterial(): Material;
+    /** Returns the current mesh used to render the canvas content into. */
     GetMesh(): Mesh;
+    /** Gets the current Material assigned to the CanvasRenderer. Used internally for masking. */
     GetPopMaterial(index: number): Material;
+    /** Set the alpha of the renderer. Will be multiplied with the UIVertex alpha and the Canvas alpha. */
     SetAlpha(alpha: number): void;
+    /** The Alpha Texture that will be passed to the Shader under the _AlphaTex property. */
     SetAlphaTexture(texture: Texture): void;
+    /** Set the color of the renderer. Will be multiplied with the UIVertex color and the Canvas color. */
     SetColor(color: Color): void;
+    /** Set the material for the canvas renderer. If a texture is specified then it will be used as the &#x27;MainTex&#x27; instead of the material&#x27;s &#x27;MainTex&#x27;.
+See Also: CanvasRenderer.materialCount, CanvasRenderer.SetTexture. */
     SetMaterial(material: Material, index: number): void;
+    /** Set the material for the canvas renderer. If a texture is specified then it will be used as the &#x27;MainTex&#x27; instead of the material&#x27;s &#x27;MainTex&#x27;.
+See Also: CanvasRenderer.materialCount, CanvasRenderer.SetTexture. */
     SetMaterial(material: Material, texture: Texture): void;
+    /** Sets the Mesh used by this renderer. Note the Mesh must be read/write enabled. */
     SetMesh(mesh: Mesh): void;
+    /** Set the material for the canvas renderer. Used internally for masking. */
     SetPopMaterial(material: Material, index: number): void;
+    /** Sets the texture used by this renderer&#x27;s material. */
     SetTexture(texture: Texture): void;
     SetVertices(vertices: CSArray<UIVertex>): void;
+    /** Set the vertices for the UIRenderer. */
     SetVertices(vertices: CSArray<UIVertex>, size: number): void;
 
 }
@@ -10155,7 +11354,9 @@ declare const Graphic: GraphicConstructor;
 interface ISerializationCallbackReceiver {
 
 
+    /** Implement this method to receive a callback after Unity deserializes your object. */
     OnAfterDeserialize(): void;
+    /** Implement this method to receive a callback before Unity serializes your object. */
     OnBeforeSerialize(): void;
 
 }
@@ -10163,6 +11364,7 @@ interface ISerializationCallbackReceiver {
 interface ICanvasRaycastFilter {
 
 
+    /** Given a point and a camera is the raycast valid. */
     IsRaycastLocationValid(sp: Vector2, eventCamera: Camera): boolean;
 
 }
@@ -10334,11 +11536,14 @@ interface Animator extends Behaviour {
     writeDefaultValuesOnDisable: boolean;
 
 
+    /** Apply the default Root Motion. */
     ApplyBuiltinRootMotion(): void;
     CrossFade(stateName: string, normalizedTransitionDuration: number, layer: number, normalizedTimeOffset: number): void;
     CrossFade(stateName: string, normalizedTransitionDuration: number, layer: number): void;
     CrossFade(stateName: string, normalizedTransitionDuration: number): void;
+    /** Creates a crossfade from the current state to any other state using normalized times. */
     CrossFade(stateName: string, normalizedTransitionDuration: number, layer: number, normalizedTimeOffset: number, normalizedTransitionTime: number): void;
+    /** Creates a crossfade from the current state to any other state using normalized times. */
     CrossFade(stateHashName: number, normalizedTransitionDuration: number, layer: number, normalizedTimeOffset: number, normalizedTransitionTime: number): void;
     CrossFade(stateHashName: number, normalizedTransitionDuration: number, layer: number, normalizedTimeOffset: number): void;
     CrossFade(stateHashName: number, normalizedTransitionDuration: number, layer: number): void;
@@ -10346,107 +11551,191 @@ interface Animator extends Behaviour {
     CrossFadeInFixedTime(stateName: string, fixedTransitionDuration: number): void;
     CrossFadeInFixedTime(stateName: string, fixedTransitionDuration: number, layer: number): void;
     CrossFadeInFixedTime(stateName: string, fixedTransitionDuration: number, layer: number, fixedTimeOffset: number): void;
+    /** Creates a crossfade from the current state to any other state using times in seconds. */
     CrossFadeInFixedTime(stateName: string, fixedTransitionDuration: number, layer: number, fixedTimeOffset: number, normalizedTransitionTime: number): void;
     CrossFadeInFixedTime(stateHashName: number, fixedTransitionDuration: number, layer: number, fixedTimeOffset: number): void;
     CrossFadeInFixedTime(stateHashName: number, fixedTransitionDuration: number, layer: number): void;
     CrossFadeInFixedTime(stateHashName: number, fixedTransitionDuration: number): void;
+    /** Creates a crossfade from the current state to any other state using times in seconds. */
     CrossFadeInFixedTime(stateHashName: number, fixedTransitionDuration: number, layer: number, fixedTimeOffset: number, normalizedTransitionTime: number): void;
     ForceStateNormalizedTime(normalizedTime: number): void;
+    /** Returns an AnimatorTransitionInfo with the informations on the current transition. */
     GetAnimatorTransitionInfo(layerIndex: number): AnimatorTransitionInfo;
+    /** Returns the first StateMachineBehaviour that matches type T or is derived from T. Returns null if none are found. */
     GetBehaviour<T>(): T;
+    /** Returns all StateMachineBehaviour that match type T or are derived from T. Returns null if none are found. */
     GetBehaviours<T>(): CSArray<T>;
     GetBehaviours(fullPathHash: number, layerIndex: number): CSArray<StateMachineBehaviour>;
+    /** Retrieves the Transform mapped to a human bone based on its id. */
     GetBoneTransform(humanBoneId: HumanBodyBones): Transform;
+    /** Returns the value of the given boolean parameter. */
     GetBool(name: string): boolean;
+    /** Returns the value of the given boolean parameter. */
     GetBool(id: number): boolean;
+    /** Gets the list of AnimatorClipInfo currently played by the current state. */
     GetCurrentAnimationClipState(layerIndex: number): CSArray<AnimationInfo>;
+    /** Returns an array of all the AnimatorClipInfo in the current state of the given layer. */
     GetCurrentAnimatorClipInfo(layerIndex: number): CSArray<AnimatorClipInfo>;
     GetCurrentAnimatorClipInfo(layerIndex: number, clips: CSArray<AnimatorClipInfo>): void;
+    /** Returns the number of AnimatorClipInfo in the current state. */
     GetCurrentAnimatorClipInfoCount(layerIndex: number): number;
+    /** Returns an AnimatorStateInfo with the information on the current state. */
     GetCurrentAnimatorStateInfo(layerIndex: number): AnimatorStateInfo;
+    /** Returns the value of the given float parameter. */
     GetFloat(name: string): number;
+    /** Returns the value of the given float parameter. */
     GetFloat(id: number): number;
+    /** Gets the position of an IK hint. */
     GetIKHintPosition(hint: AvatarIKHint): Vector3;
+    /** Gets the translative weight of an IK Hint (0 &#x3D; at the original animation before IK, 1 &#x3D; at the hint). */
     GetIKHintPositionWeight(hint: AvatarIKHint): number;
+    /** Gets the position of an IK goal. */
     GetIKPosition(goal: AvatarIKGoal): Vector3;
+    /** Gets the translative weight of an IK goal (0 &#x3D; at the original animation before IK, 1 &#x3D; at the goal). */
     GetIKPositionWeight(goal: AvatarIKGoal): number;
+    /** Gets the rotation of an IK goal. */
     GetIKRotation(goal: AvatarIKGoal): Quaternion;
+    /** Gets the rotational weight of an IK goal (0 &#x3D; rotation before IK, 1 &#x3D; rotation at the IK goal). */
     GetIKRotationWeight(goal: AvatarIKGoal): number;
+    /** Returns the value of the given integer parameter. */
     GetInteger(name: string): number;
+    /** Returns the value of the given integer parameter. */
     GetInteger(id: number): number;
+    /** Returns the index of the layer with the given name. */
     GetLayerIndex(layerName: string): number;
+    /** Returns the layer name. */
     GetLayerName(layerIndex: number): string;
+    /** Returns the weight of the layer at the specified index. */
     GetLayerWeight(layerIndex: number): number;
+    /** Gets the list of AnimatorClipInfo currently played by the next state. */
     GetNextAnimationClipState(layerIndex: number): CSArray<AnimationInfo>;
+    /** Returns an array of all the AnimatorClipInfo in the next state of the given layer. */
     GetNextAnimatorClipInfo(layerIndex: number): CSArray<AnimatorClipInfo>;
     GetNextAnimatorClipInfo(layerIndex: number, clips: CSArray<AnimatorClipInfo>): void;
+    /** Returns the number of AnimatorClipInfo in the next state. */
     GetNextAnimatorClipInfoCount(layerIndex: number): number;
+    /** Returns an AnimatorStateInfo with the information on the next state. */
     GetNextAnimatorStateInfo(layerIndex: number): AnimatorStateInfo;
+    /** See AnimatorController.parameters. */
     GetParameter(index: number): AnimatorControllerParameter;
+    /** Gets the value of a quaternion parameter. */
     GetQuaternion(name: string): Quaternion;
+    /** Gets the value of a quaternion parameter. */
     GetQuaternion(id: number): Quaternion;
+    /** Gets the value of a vector parameter. */
     GetVector(name: string): Vector3;
+    /** Gets the value of a vector parameter. */
     GetVector(id: number): Vector3;
+    /** Returns true if the state exists in this layer, false otherwise. */
     HasState(layerIndex: number, stateID: number): boolean;
+    /** Interrupts the automatic target matching. */
     InterruptMatchTarget(): void;
+    /** Interrupts the automatic target matching. */
     InterruptMatchTarget(completeMatch: boolean): void;
+    /** Returns true if the transform is controlled by the Animator\. */
     IsControlled(transform: Transform): boolean;
+    /** Returns true if there is a transition on the given layer, false otherwise. */
     IsInTransition(layerIndex: number): boolean;
+    /** Returns true if the parameter is controlled by a curve, false otherwise. */
     IsParameterControlledByCurve(name: string): boolean;
+    /** Returns true if the parameter is controlled by a curve, false otherwise. */
     IsParameterControlledByCurve(id: number): boolean;
     MatchTarget(matchPosition: Vector3, matchRotation: Quaternion, targetBodyPart: AvatarTarget, weightMask: MatchTargetWeightMask, startNormalizedTime: number): void;
+    /** Automatically adjust the GameObject position and rotation. */
     MatchTarget(matchPosition: Vector3, matchRotation: Quaternion, targetBodyPart: AvatarTarget, weightMask: MatchTargetWeightMask, startNormalizedTime: number, targetNormalizedTime: number): void;
     MatchTarget(matchPosition: Vector3, matchRotation: Quaternion, targetBodyPart: AvatarTarget, weightMask: MatchTargetWeightMask, startNormalizedTime: number, targetNormalizedTime: number, completeMatch: boolean): void;
     Play(stateName: string, layer: number): void;
     Play(stateName: string): void;
+    /** Plays a state. */
     Play(stateName: string, layer: number, normalizedTime: number): void;
+    /** Plays a state. */
     Play(stateNameHash: number, layer: number, normalizedTime: number): void;
     Play(stateNameHash: number, layer: number): void;
     Play(stateNameHash: number): void;
     PlayInFixedTime(stateName: string, layer: number): void;
     PlayInFixedTime(stateName: string): void;
+    /** Plays a state. */
     PlayInFixedTime(stateName: string, layer: number, fixedTime: number): void;
+    /** Plays a state. */
     PlayInFixedTime(stateNameHash: number, layer: number, fixedTime: number): void;
     PlayInFixedTime(stateNameHash: number, layer: number): void;
     PlayInFixedTime(stateNameHash: number): void;
+    /** Rebind all the animated properties and mesh data with the Animator. */
     Rebind(): void;
+    /** Resets the value of the given trigger parameter. */
     ResetTrigger(name: string): void;
+    /** Resets the value of the given trigger parameter. */
     ResetTrigger(id: number): void;
+    /** Sets local rotation of a human bone during a IK pass. */
     SetBoneLocalRotation(humanBoneId: HumanBodyBones, rotation: Quaternion): void;
+    /** Sets the value of the given boolean parameter. */
     SetBool(name: string, value: boolean): void;
+    /** Sets the value of the given boolean parameter. */
     SetBool(id: number, value: boolean): void;
+    /** Send float values to the Animator to affect transitions. */
     SetFloat(name: string, value: number): void;
+    /** Send float values to the Animator to affect transitions. */
     SetFloat(name: string, value: number, dampTime: number, deltaTime: number): void;
+    /** Send float values to the Animator to affect transitions. */
     SetFloat(id: number, value: number): void;
+    /** Send float values to the Animator to affect transitions. */
     SetFloat(id: number, value: number, dampTime: number, deltaTime: number): void;
+    /** Sets the position of an IK hint. */
     SetIKHintPosition(hint: AvatarIKHint, hintPosition: Vector3): void;
+    /** Sets the translative weight of an IK hint (0 &#x3D; at the original animation before IK, 1 &#x3D; at the hint). */
     SetIKHintPositionWeight(hint: AvatarIKHint, value: number): void;
+    /** Sets the position of an IK goal. */
     SetIKPosition(goal: AvatarIKGoal, goalPosition: Vector3): void;
+    /** Sets the translative weight of an IK goal (0 &#x3D; at the original animation before IK, 1 &#x3D; at the goal). */
     SetIKPositionWeight(goal: AvatarIKGoal, value: number): void;
+    /** Sets the rotation of an IK goal. */
     SetIKRotation(goal: AvatarIKGoal, goalRotation: Quaternion): void;
+    /** Sets the rotational weight of an IK goal (0 &#x3D; rotation before IK, 1 &#x3D; rotation at the IK goal). */
     SetIKRotationWeight(goal: AvatarIKGoal, value: number): void;
+    /** Sets the value of the given integer parameter. */
     SetInteger(name: string, value: number): void;
+    /** Sets the value of the given integer parameter. */
     SetInteger(id: number, value: number): void;
+    /** Sets the weight of the layer at the given index. */
     SetLayerWeight(layerIndex: number, weight: number): void;
+    /** Sets the look at position. */
     SetLookAtPosition(lookAtPosition: Vector3): void;
+    /** Set look at weights. */
     SetLookAtWeight(weight: number): void;
+    /** Set look at weights. */
     SetLookAtWeight(weight: number, bodyWeight: number): void;
+    /** Set look at weights. */
     SetLookAtWeight(weight: number, bodyWeight: number, headWeight: number): void;
+    /** Set look at weights. */
     SetLookAtWeight(weight: number, bodyWeight: number, headWeight: number, eyesWeight: number): void;
+    /** Set look at weights. */
     SetLookAtWeight(weight: number, bodyWeight: number, headWeight: number, eyesWeight: number, clampWeight: number): void;
+    /** Sets the value of a quaternion parameter. */
     SetQuaternion(name: string, value: Quaternion): void;
+    /** Sets the value of a quaternion parameter. */
     SetQuaternion(id: number, value: Quaternion): void;
+    /** Sets an AvatarTarget and a targetNormalizedTime for the current state. */
     SetTarget(targetIndex: AvatarTarget, targetNormalizedTime: number): void;
+    /** Sets the value of the given trigger parameter. */
     SetTrigger(name: string): void;
+    /** Sets the value of the given trigger parameter. */
     SetTrigger(id: number): void;
+    /** Sets the value of a vector parameter. */
     SetVector(name: string, value: Vector3): void;
+    /** Sets the value of a vector parameter. */
     SetVector(id: number, value: Vector3): void;
+    /** Sets the animator in playback mode. */
     StartPlayback(): void;
+    /** Sets the animator in recording mode, and allocates a circular buffer of size frameCount. */
     StartRecording(frameCount: number): void;
     Stop(): void;
+    /** Stops the animator playback mode. When playback stops, the avatar resumes getting control from game logic. */
     StopPlayback(): void;
+    /** Stops animator record mode. */
     StopRecording(): void;
+    /** Evaluates the animator based on deltaTime. */
     Update(deltaTime: number): void;
+    /** Forces a write of the default values stored in the animator. */
     WriteDefaultValues(): void;
 
 }
@@ -10510,10 +11799,15 @@ interface AnimationClip extends Motion {
     events: CSArray<AnimationEvent>;
 
 
+    /** Adds an animation event to the clip. */
     AddEvent(evt: AnimationEvent): void;
+    /** Clears all curves from the clip. */
     ClearCurves(): void;
+    /** Realigns quaternion keys to ensure shortest interpolation paths. */
     EnsureQuaternionContinuity(): void;
+    /** Samples an animation at a given time for any animated properties. */
     SampleAnimation(go: GameObject, time: number): void;
+    /** Assigns the curve to animate a specific property. */
     SetCurve(relativePath: string, type: unknown, propertyName: string, curve: AnimationCurve): void;
 
 }
@@ -10560,8 +11854,11 @@ interface AnimationState extends TrackedReference {
     blendMode: AnimationBlendMode;
 
 
+    /** Adds a transform which should be animated. This allows you to reduce the number of animations you have to create. */
     AddMixingTransform(mix: Transform): void;
+    /** Adds a transform which should be animated. This allows you to reduce the number of animations you have to create. */
     AddMixingTransform(mix: Transform, recursive: boolean): void;
+    /** Removes a transform which should be animated. */
     RemoveMixingTransform(mix: Transform): void;
 
 }
@@ -10586,7 +11883,9 @@ interface AnimatorStateInfo {
     loop: boolean;
 
 
+    /** Does name match the name of the active state in the statemachine? */
     IsName(name: string): boolean;
+    /** Does tag match the tag of the active state in the statemachine. */
     IsTag(tag: string): boolean;
 
 }
@@ -10615,16 +11914,25 @@ interface AnimationCurve {
     postWrapMode: WrapMode;
 
 
+    /** Add a new key to the curve. */
     AddKey(time: number, value: number): number;
+    /** Add a new key to the curve. */
     AddKey(key: Keyframe): number;
+    /** Erases all KeyFrame from this instance of the AnimationCurve. */
     ClearKeys(): void;
+    /** Copies the keys and properties of the specified AnimationCurve object into this instance of the  AnimationCurve class. */
     CopyFrom(other: AnimationCurve): void;
     Equals(o: unknown): boolean;
     Equals(other: AnimationCurve): boolean;
+    /** Evaluate the curve at time. */
     Evaluate(time: number): number;
+    /** A HashCode for the animation curve, computed using all individual Keyframe. */
     GetHashCode(): number;
+    /** Removes the keyframe at index and inserts key. */
     MoveKey(index: number, key: Keyframe): number;
+    /** Removes a key. */
     RemoveKey(index: number): void;
+    /** Smooth the in and out tangents of the keyframe at index. */
     SmoothTangents(index: number, weight: number): void;
 
 }
@@ -10733,29 +12041,49 @@ interface PlayableGraph {
 
 
     Connect<U, V>(source: U, sourceOutputPort: number, destination: V, destinationInputPort: number): boolean;
+    /** Destroys the graph. */
     Destroy(): void;
     DestroyOutput<U>(output: U): void;
     DestroyPlayable<U>(playable: U): void;
     DestroySubgraph<U>(playable: U): void;
     Disconnect<U>(input: U, inputPort: number): void;
+    /** Evaluates all the PlayableOutputs in the graph, and updates all the connected Playables in the graph. */
     Evaluate(): void;
+    /** Evaluates all the PlayableOutputs in the graph, and updates all the connected Playables in the graph. */
     Evaluate(deltaTime: number): void;
+    /** Returns the name of the PlayableGraph. */
     GetEditorName(): string;
+    /** Get PlayableOutput at the given index in the graph. */
     GetOutput(index: number): PlayableOutput;
+    /** Get PlayableOutput of the requested type at the given index in the graph. */
     GetOutputByType<T>(index: number): PlayableOutput;
+    /** Returns the number of PlayableOutput in the graph. */
     GetOutputCount(): number;
+    /** Get the number of PlayableOutput of the requested type in the graph. */
     GetOutputCountByType<T>(): number;
+    /** Returns the number of Playable owned by the Graph. */
     GetPlayableCount(): number;
+    /** Returns the table used by the graph to resolve ExposedReferences. */
     GetResolver(): IExposedPropertyTable;
+    /** Returns the Playable with no output connections at the given index. */
     GetRootPlayable(index: number): Playable;
+    /** Returns the number of Playable owned by the Graph that have no connected outputs. */
     GetRootPlayableCount(): number;
+    /** Returns how time is incremented when playing back. */
     GetTimeUpdateMode(): DirectorUpdateMode;
+    /** Indicates that a graph has completed its operations. */
     IsDone(): boolean;
+    /** Indicates that a graph is presently running. */
     IsPlaying(): boolean;
+    /** Returns true if the PlayableGraph has been properly constructed using PlayableGraph.CreateGraph and is not deleted. */
     IsValid(): boolean;
+    /** Plays the graph. */
     Play(): void;
+    /** Changes the table used by the graph to resolve ExposedReferences. */
     SetResolver(value: IExposedPropertyTable): void;
+    /** Changes how time is incremented when playing back. */
     SetTimeUpdateMode(value: DirectorUpdateMode): void;
+    /** Stops the graph, if it is playing. */
     Stop(): void;
 
 }
@@ -10805,8 +12133,11 @@ declare const PlayableOutput: PlayableOutputConstructor;
 interface IExposedPropertyTable {
 
 
+    /** Remove a value for the given reference. */
     ClearReferenceValue(id: PropertyName): void;
+    /** Retrieves a value for the given identifier. */
     GetReferenceValue(id: PropertyName, idValid: unknown): Object;
+    /** Assigns a value for an ExposedReference. */
     SetReferenceValue(id: PropertyName, value: Object): void;
 
 }
@@ -10814,9 +12145,13 @@ interface IExposedPropertyTable {
 interface PropertyName {
 
 
+    /** Determines whether this instance and a specified object, which must also be a PropertyName object, have the same value. */
     Equals(other: unknown): boolean;
     Equals(other: PropertyName): boolean;
+    /** Returns the hash code for this PropertyName. */
     GetHashCode(): number;
+    /** For debugging purposes only. Returns the string value representing the string in the Editor.
+Returns &quot;UnityEngine.PropertyName&quot; in the player. */
     ToString(): string;
 
 }
@@ -10894,7 +12229,9 @@ interface AnimatorTransitionInfo {
     anyState: boolean;
 
 
+    /** Does name match the name of the active Transition. */
     IsName(name: string): boolean;
+    /** Does userName match the name of the active Transition. */
     IsUserName(name: string): boolean;
 
 }
@@ -10908,8 +12245,10 @@ interface StateMachineBehaviour extends ScriptableObject {
     OnStateExit(animator: Animator, stateInfo: AnimatorStateInfo, layerIndex: number, controller: AnimatorControllerPlayable): void;
     OnStateIK(animator: Animator, stateInfo: AnimatorStateInfo, layerIndex: number): void;
     OnStateIK(animator: Animator, stateInfo: AnimatorStateInfo, layerIndex: number, controller: AnimatorControllerPlayable): void;
+    /** Called on the first Update frame when making a transition to a state machine. This is not called when making a transition into a state machine sub-state. */
     OnStateMachineEnter(animator: Animator, stateMachinePathHash: number): void;
     OnStateMachineEnter(animator: Animator, stateMachinePathHash: number, controller: AnimatorControllerPlayable): void;
+    /** Called on the last Update frame when making a transition out of a StateMachine. This is not called when making a transition into a StateMachine sub-state. */
     OnStateMachineExit(animator: Animator, stateMachinePathHash: number): void;
     OnStateMachineExit(animator: Animator, stateMachinePathHash: number, controller: AnimatorControllerPlayable): void;
     OnStateMove(animator: Animator, stateInfo: AnimatorStateInfo, layerIndex: number): void;
@@ -10935,55 +12274,91 @@ interface AnimatorControllerPlayable extends IPlayable {
     CrossFadeInFixedTime(stateNameHash: number, transitionDuration: number, layer: number): void;
     CrossFadeInFixedTime(stateNameHash: number, transitionDuration: number, layer: number, fixedTime: number): void;
     Equals(other: AnimatorControllerPlayable): boolean;
+    /** Returns an AnimatorTransitionInfo with the informations on the current transition. */
     GetAnimatorTransitionInfo(layerIndex: number): AnimatorTransitionInfo;
+    /** Returns the value of the given boolean parameter. */
     GetBool(name: string): boolean;
+    /** Returns the value of the given boolean parameter. */
     GetBool(id: number): boolean;
+    /** Returns an array of all the AnimatorClipInfo in the current state of the given layer. */
     GetCurrentAnimatorClipInfo(layerIndex: number): CSArray<AnimatorClipInfo>;
     GetCurrentAnimatorClipInfo(layerIndex: number, clips: CSArray<AnimatorClipInfo>): void;
+    /** Returns the number of AnimatorClipInfo in the current state. */
     GetCurrentAnimatorClipInfoCount(layerIndex: number): number;
+    /** Returns an AnimatorStateInfo with the information on the current state. */
     GetCurrentAnimatorStateInfo(layerIndex: number): AnimatorStateInfo;
+    /** Returns the value of the given float parameter. */
     GetFloat(name: string): number;
+    /** Returns the value of the given float parameter. */
     GetFloat(id: number): number;
     GetHandle(): PlayableHandle;
+    /** Returns the value of the given integer parameter. */
     GetInteger(name: string): number;
+    /** Returns the value of the given integer parameter. */
     GetInteger(id: number): number;
     GetLayerCount(): number;
+    /** Returns the index of the layer with the given name. */
     GetLayerIndex(layerName: string): number;
+    /** Returns the layer name. */
     GetLayerName(layerIndex: number): string;
+    /** Returns the weight of the layer at the specified index. */
     GetLayerWeight(layerIndex: number): number;
     GetNextAnimatorClipInfo(layerIndex: number, clips: CSArray<AnimatorClipInfo>): void;
+    /** Returns an array of all the AnimatorClipInfo in the next state of the given layer. */
     GetNextAnimatorClipInfo(layerIndex: number): CSArray<AnimatorClipInfo>;
+    /** Returns the number of AnimatorClipInfo in the next state. */
     GetNextAnimatorClipInfoCount(layerIndex: number): number;
+    /** Returns an AnimatorStateInfo with the information on the next state. */
     GetNextAnimatorStateInfo(layerIndex: number): AnimatorStateInfo;
+    /** See AnimatorController.parameters. */
     GetParameter(index: number): AnimatorControllerParameter;
     GetParameterCount(): number;
+    /** Returns true if the state exists in this layer, false otherwise. */
     HasState(layerIndex: number, stateID: number): boolean;
+    /** Returns true if there is a transition on the given layer, false otherwise. */
     IsInTransition(layerIndex: number): boolean;
+    /** Returns true if the parameter is controlled by a curve, false otherwise. */
     IsParameterControlledByCurve(name: string): boolean;
+    /** Returns true if the parameter is controlled by a curve, false otherwise. */
     IsParameterControlledByCurve(id: number): boolean;
     Play(stateName: string): void;
     Play(stateName: string, layer: number): void;
+    /** Plays a state. */
     Play(stateName: string, layer: number, normalizedTime: number): void;
     Play(stateNameHash: number): void;
     Play(stateNameHash: number, layer: number): void;
+    /** Plays a state. */
     Play(stateNameHash: number, layer: number, normalizedTime: number): void;
     PlayInFixedTime(stateName: string): void;
     PlayInFixedTime(stateName: string, layer: number): void;
+    /** Plays a state. */
     PlayInFixedTime(stateName: string, layer: number, fixedTime: number): void;
     PlayInFixedTime(stateNameHash: number): void;
     PlayInFixedTime(stateNameHash: number, layer: number): void;
+    /** Plays a state. */
     PlayInFixedTime(stateNameHash: number, layer: number, fixedTime: number): void;
+    /** Resets the value of the given trigger parameter. */
     ResetTrigger(name: string): void;
+    /** Resets the value of the given trigger parameter. */
     ResetTrigger(id: number): void;
+    /** Sets the value of the given boolean parameter. */
     SetBool(name: string, value: boolean): void;
+    /** Sets the value of the given boolean parameter. */
     SetBool(id: number, value: boolean): void;
+    /** Send float values to the AnimatorController to affect transitions. */
     SetFloat(name: string, value: number): void;
+    /** Send float values to the AnimatorController to affect transitions. */
     SetFloat(id: number, value: number): void;
     SetHandle(handle: PlayableHandle): void;
+    /** Sets the value of the given integer parameter. */
     SetInteger(name: string, value: number): void;
+    /** Sets the value of the given integer parameter. */
     SetInteger(id: number, value: number): void;
+    /** Sets the weight of the layer at the given index. */
     SetLayerWeight(layerIndex: number, weight: number): void;
+    /** Sets the value of the given trigger parameter. */
     SetTrigger(name: string): void;
+    /** Sets the value of the given trigger parameter. */
     SetTrigger(id: number): void;
 
 }
@@ -11053,11 +12428,17 @@ interface Button extends Selectable, ISubmitHandler, IPointerClickHandler {
 interface UnityEventBase extends ISerializationCallbackReceiver {
 
 
+    /** Get the number of registered persistent listeners. */
     GetPersistentEventCount(): number;
+    /** Returns the execution state of a persistent listener. */
     GetPersistentListenerState(index: number): UnityEventCallState;
+    /** Get the target method name of the listener at index index. */
     GetPersistentMethodName(index: number): string;
+    /** Get the target component of the listener at index index. */
     GetPersistentTarget(index: number): Object;
+    /** Remove all non-persistent (ie created from script) listeners  from the event. */
     RemoveAllListeners(): void;
+    /** Modify the execution state of a persistent listener. */
     SetPersistentListenerState(index: number, state: UnityEventCallState): void;
     ToString(): string;
 
@@ -11075,8 +12456,11 @@ declare const UnityEventBase: UnityEventBaseConstructor;
 interface UnityEvent extends UnityEventBase {
 
 
+    /** Add a non persistent listener to the UnityEvent. */
     AddListener(call: UnityAction): void;
+    /** Invoke all registered callbacks (runtime and persistent). */
     Invoke(): void;
+    /** Remove a non persistent listener from the UnityEvent. If you have added the same listener multiple times, this method will remove all occurrences of it. */
     RemoveListener(call: UnityAction): void;
 
 }
@@ -11311,6 +12695,7 @@ interface FaceInfo {
     tabWidth: number;
 
 
+    /** Compares the information in this FaceInfo structure with the information in the given FaceInfo structure to determine whether they have the same values. */
     Compare(other: FaceInfo): boolean;
 
 }
@@ -11394,10 +12779,15 @@ interface Font extends Object {
     textureRebuildCallback: FontTextureRebuildCallback;
 
 
+    /** Get rendering info for a specific character. */
     GetCharacterInfo(ch: string, info: unknown, size: number, style: FontStyle): boolean;
+    /** Get rendering info for a specific character. */
     GetCharacterInfo(ch: string, info: unknown, size: number): boolean;
+    /** Get rendering info for a specific character. */
     GetCharacterInfo(ch: string, info: unknown): boolean;
+    /** Does this font have a specific character? */
     HasCharacter(c: string): boolean;
+    /** Request characters to be added to the font texture (dynamic fonts only). */
     RequestCharactersInTexture(characters: string, size: number, style: FontStyle): void;
     RequestCharactersInTexture(characters: string, size: number): void;
     RequestCharactersInTexture(characters: string): void;
@@ -11469,6 +12859,7 @@ interface Glyph {
     classDefinitionType: GlyphClassDefinitionType;
 
 
+    /** Compares two glyphs to determine if they have the same values. */
     Compare(other: Glyph): boolean;
 
 }
@@ -12280,38 +13671,66 @@ interface Animation extends Behaviour {
     localBounds: Bounds;
 
 
+    /** Adds a clip to the animation with name newName. */
     AddClip(clip: AnimationClip, newName: string): void;
+    /** Adds clip to the only play between firstFrame and lastFrame. The new clip will also be added to the animation with name newName. */
     AddClip(clip: AnimationClip, newName: string, firstFrame: number, lastFrame: number): void;
+    /** Adds clip to the only play between firstFrame and lastFrame. The new clip will also be added to the animation with name newName. */
     AddClip(clip: AnimationClip, newName: string, firstFrame: number, lastFrame: number, addLoopFrame: boolean): void;
+    /** Blends the animation named animation towards targetWeight over the next time seconds. */
     Blend(animation: string): void;
+    /** Blends the animation named animation towards targetWeight over the next time seconds. */
     Blend(animation: string, targetWeight: number): void;
+    /** Blends the animation named animation towards targetWeight over the next time seconds. */
     Blend(animation: string, targetWeight: number, fadeLength: number): void;
+    /** Fades in the animation with the name animation over a period of time defined by fadeLength. */
     CrossFade(animation: string): void;
+    /** Fades in the animation with the name animation over a period of time defined by fadeLength. */
     CrossFade(animation: string, fadeLength: number): void;
+    /** Fades in the animation with the name animation over a period of time defined by fadeLength. */
     CrossFade(animation: string, fadeLength: number, mode: PlayMode): void;
+    /** Cross fades an animation after previous animations has finished playing. */
     CrossFadeQueued(animation: string): AnimationState;
+    /** Cross fades an animation after previous animations has finished playing. */
     CrossFadeQueued(animation: string, fadeLength: number): AnimationState;
+    /** Cross fades an animation after previous animations has finished playing. */
     CrossFadeQueued(animation: string, fadeLength: number, queue: QueueMode): AnimationState;
+    /** Cross fades an animation after previous animations has finished playing. */
     CrossFadeQueued(animation: string, fadeLength: number, queue: QueueMode, mode: PlayMode): AnimationState;
     GetClip(name: string): AnimationClip;
+    /** Get the number of clips currently assigned to this animation. */
     GetClipCount(): number;
     GetEnumerator(): unknown;
+    /** Is the animation named name playing? */
     IsPlaying(name: string): boolean;
     Play(): boolean;
+    /** Plays an animation without blending. */
     Play(mode: PlayMode): boolean;
+    /** Plays an animation without blending. */
     Play(animation: string): boolean;
+    /** Plays an animation without blending. */
     Play(animation: string, mode: PlayMode): boolean;
     Play(mode: AnimationPlayMode): boolean;
     Play(animation: string, mode: AnimationPlayMode): boolean;
+    /** Plays an animation after previous animations has finished playing. */
     PlayQueued(animation: string): AnimationState;
+    /** Plays an animation after previous animations has finished playing. */
     PlayQueued(animation: string, queue: QueueMode): AnimationState;
+    /** Plays an animation after previous animations has finished playing. */
     PlayQueued(animation: string, queue: QueueMode, mode: PlayMode): AnimationState;
+    /** Remove clip from the animation list. */
     RemoveClip(clip: AnimationClip): void;
+    /** Remove clip from the animation list. */
     RemoveClip(clipName: string): void;
+    /** Rewinds all animations. */
     Rewind(): void;
+    /** Rewinds the animation named name. */
     Rewind(name: string): void;
+    /** Samples animations at the current state. */
     Sample(): void;
+    /** Stops all playing animations that were started with this Animation. */
     Stop(): void;
+    /** Stops an animation named name. */
     Stop(name: string): void;
     SyncLayer(layer: number): void;
 
@@ -12495,15 +13914,25 @@ interface Light extends Behaviour {
     alreadyLightmapped: boolean;
 
 
+    /** Add a command buffer to be executed at a specified place. */
     AddCommandBuffer(evt: LightEvent, buffer: CommandBuffer): void;
+    /** Add a command buffer to be executed at a specified place. */
     AddCommandBuffer(evt: LightEvent, buffer: CommandBuffer, shadowPassMask: ShadowMapPass): void;
+    /** Adds a command buffer to the GPU&#x27;s async compute queues and executes that command buffer when graphics processing reaches a given point. */
     AddCommandBufferAsync(evt: LightEvent, buffer: CommandBuffer, queueType: ComputeQueueType): void;
+    /** Adds a command buffer to the GPU&#x27;s async compute queues and executes that command buffer when graphics processing reaches a given point. */
     AddCommandBufferAsync(evt: LightEvent, buffer: CommandBuffer, shadowPassMask: ShadowMapPass, queueType: ComputeQueueType): void;
+    /** Get command buffers to be executed at a specified place. */
     GetCommandBuffers(evt: LightEvent): CSArray<CommandBuffer>;
+    /** Remove all command buffers set on this light. */
     RemoveAllCommandBuffers(): void;
+    /** Remove command buffer from execution at a specified place. */
     RemoveCommandBuffer(evt: LightEvent, buffer: CommandBuffer): void;
+    /** Remove command buffers from execution at a specified place. */
     RemoveCommandBuffers(evt: LightEvent): void;
+    /** Revert all light parameters to default. */
     Reset(): void;
+    /** Sets a light dirty to notify the light baking backends to update their internal light representation (Editor only). */
     SetLightDirty(): void;
 
 }
@@ -12977,11 +14406,17 @@ interface SkinnedMeshRenderer extends Renderer {
     vertexBufferTarget: Target;
 
 
+    /** Creates a snapshot of SkinnedMeshRenderer and stores it in mesh. */
     BakeMesh(mesh: Mesh): void;
+    /** Creates a snapshot of SkinnedMeshRenderer and stores it in mesh. */
     BakeMesh(mesh: Mesh, useScale: boolean): void;
+    /** Returns the weight of a BlendShape for this Renderer. */
     GetBlendShapeWeight(index: number): number;
+    /** Retrieves a GraphicsBuffer that provides direct access to the GPU vertex buffer for this skinned mesh, for the previous frame. */
     GetPreviousVertexBuffer(): GraphicsBuffer;
+    /** Retrieves a GraphicsBuffer that provides direct access to the GPU vertex buffer for this skinned mesh, for the current frame. */
     GetVertexBuffer(): GraphicsBuffer;
+    /** Sets the weight of a BlendShape for this Renderer. */
     SetBlendShapeWeight(index: number, value: number): void;
 
 }
@@ -13149,13 +14584,19 @@ interface ParticleSystem extends Component {
     customData: CustomDataModule;
 
 
+    /** Ensures that the ParticleSystemJobs.ParticleSystemJobData._axisOfRotations|axisOfRotations particle attribute array is allocated. */
     AllocateAxisOfRotationAttribute(): void;
+    /** Ensures that the ParticleSystemJobs.ParticleSystemJobData.customData1|customData1 and ParticleSystemJobs.ParticleSystemJobData.customData1|customData2 particle attribute arrays are allocated. */
     AllocateCustomDataAttribute(stream: ParticleSystemCustomData): void;
+    /** Ensures that the ParticleSystemJobs.ParticleSystemJobData._meshIndices|meshIndices particle attribute array is allocated. */
     AllocateMeshIndexAttribute(): void;
+    /** Remove all particles in the Particle System. */
     Clear(withChildren: boolean): void;
+    /** Remove all particles in the Particle System. */
     Clear(): void;
     Emit(position: Vector3, velocity: Vector3, size: number, lifetime: number, color: Color32): void;
     Emit(particle: Particle): void;
+    /** Emit count particles immediately. */
     Emit(count: number): void;
     Emit(emitParams: EmitParams, count: number): void;
     GetCustomParticleData(customData: CSArray<Vector4>, streamIndex: ParticleSystemCustomData): number;
@@ -13165,14 +14606,22 @@ interface ParticleSystem extends Component {
     GetParticles(particles: CSArray<Particle>, size: number, offset: number): number;
     GetParticles(particles: CSArray<Particle>, size: number): number;
     GetParticles(particles: CSArray<Particle>): number;
+    /** Returns all the data that relates to the current internal state of the Particle System. */
     GetPlaybackState(): PlaybackState;
+    /** Returns all the data relating to the current internal state of the Particle System Trails. */
     GetTrails(): Trails;
     GetTrails(trailData: unknown): number;
+    /** Does the Particle System contain any live particles, or will it produce more? */
     IsAlive(withChildren: boolean): boolean;
+    /** Does the Particle System contain any live particles, or will it produce more? */
     IsAlive(): boolean;
+    /** Pauses the system so no new particles are emitted and the existing particles are not updated. */
     Pause(withChildren: boolean): void;
+    /** Pauses the system so no new particles are emitted and the existing particles are not updated. */
     Pause(): void;
+    /** Starts the Particle System. */
     Play(withChildren: boolean): void;
+    /** Starts the Particle System. */
     Play(): void;
     SetCustomParticleData(customData: CSArray<Vector4>, streamIndex: ParticleSystemCustomData): void;
     SetParticles(particles: CSArray<Particle>, size: number, offset: number): void;
@@ -13183,13 +14632,21 @@ interface ParticleSystem extends Component {
     SetParticles(particles: CSArray<Particle>): void;
     SetPlaybackState(playbackState: PlaybackState): void;
     SetTrails(trailData: Trails): void;
+    /** Fast-forwards the Particle System by simulating particles over the given period of time, then pauses it. */
     Simulate(t: number, withChildren: boolean, restart: boolean, fixedTimeStep: boolean): void;
+    /** Fast-forwards the Particle System by simulating particles over the given period of time, then pauses it. */
     Simulate(t: number, withChildren: boolean, restart: boolean): void;
+    /** Fast-forwards the Particle System by simulating particles over the given period of time, then pauses it. */
     Simulate(t: number, withChildren: boolean): void;
+    /** Fast-forwards the Particle System by simulating particles over the given period of time, then pauses it. */
     Simulate(t: number): void;
+    /** Stops playing the Particle System using the supplied stop behaviour. */
     Stop(withChildren: boolean, stopBehavior: ParticleSystemStopBehavior): void;
+    /** Stops playing the Particle System using the supplied stop behaviour. */
     Stop(withChildren: boolean): void;
+    /** Stops playing the Particle System using the supplied stop behaviour. */
     Stop(): void;
+    /** Triggers the specified sub emitter on all particles of the Particle System. */
     TriggerSubEmitter(subEmitterIndex: number): void;
     TriggerSubEmitter(subEmitterIndex: number, particle: unknown): void;
     TriggerSubEmitter(subEmitterIndex: number, particles: CSArray<Particle>): void;
@@ -13300,8 +14757,10 @@ interface Gradient {
 
     Equals(o: unknown): boolean;
     Equals(other: Gradient): boolean;
+    /** Calculate color at a given time. */
     Evaluate(time: number): Color;
     GetHashCode(): number;
+    /** Setup Gradient with an array of color keys and alpha keys. */
     SetKeys(colorKeys: CSArray<GradientColorKey>, alphaKeys: CSArray<GradientAlphaKey>): void;
 
 }
@@ -13697,26 +15156,43 @@ interface Texture3D extends Texture {
     isReadable: boolean;
 
 
+    /** Copies changes you&#x27;ve made in a CPU texture to the GPU. */
     Apply(updateMipmaps: boolean, makeNoLongerReadable: boolean): void;
     Apply(updateMipmaps: boolean): void;
     Apply(): void;
+    /** Gets the pixel color at coordinates (x, y, z). */
     GetPixel(x: number, y: number, z: number): Color;
+    /** Gets the pixel color at coordinates (x, y, z). */
     GetPixel(x: number, y: number, z: number, mipLevel: number): Color;
+    /** Gets the filtered pixel color at the normalized coordinates (u, v, w). */
     GetPixelBilinear(u: number, v: number, w: number): Color;
+    /** Gets the filtered pixel color at the normalized coordinates (u, v, w). */
     GetPixelBilinear(u: number, v: number, w: number, mipLevel: number): Color;
+    /** Gets the raw data from a texture. */
     GetPixelData<T>(mipLevel: number): CSArray<T>;
+    /** Gets the pixel color data for a mipmap level as Color structs. */
     GetPixels(miplevel: number): CSArray<Color>;
+    /** Gets the pixel color data for a mipmap level as Color structs. */
     GetPixels(): CSArray<Color>;
+    /** Gets the pixel color data for a mipmap level as Color32 structs. */
     GetPixels32(miplevel: number): CSArray<Color32>;
+    /** Gets the pixel color data for a mipmap level as Color32 structs. */
     GetPixels32(): CSArray<Color32>;
+    /** Sets the pixel color at coordinates (x, y, z). */
     SetPixel(x: number, y: number, z: number, color: Color): void;
+    /** Sets the pixel color at coordinates (x, y, z). */
     SetPixel(x: number, y: number, z: number, color: Color, mipLevel: number): void;
     SetPixelData<T>(data: CSArray<T>, mipLevel: number, sourceDataStartIndex: number): void;
     SetPixelData<T>(data: CSArray<T>, mipLevel: number, sourceDataStartIndex: number): void;
+    /** Sets the pixel colors of an entire mipmap level. */
     SetPixels(colors: CSArray<Color>, miplevel: number): void;
+    /** Sets the pixel colors of an entire mipmap level. */
     SetPixels(colors: CSArray<Color>): void;
+    /** Sets the pixel colors of an entire mipmap level. */
     SetPixels32(colors: CSArray<Color32>, miplevel: number): void;
+    /** Sets the pixel colors of an entire mipmap level. */
     SetPixels32(colors: CSArray<Color32>): void;
+    /** Updates Unity texture to use different native texture object. */
     UpdateExternalTexture(nativeTex: unknown): void;
 
 }
@@ -14055,14 +15531,22 @@ interface AvatarMask extends Object {
 
 
     AddTransformPath(transform: Transform): void;
+    /** Adds a transform path into the AvatarMask. */
     AddTransformPath(transform: Transform, recursive: boolean): void;
+    /** Returns true if the humanoid body part at the given index is active. */
     GetHumanoidBodyPartActive(index: AvatarMaskBodyPart): boolean;
+    /** Returns true if the transform at the given index is active. */
     GetTransformActive(index: number): boolean;
+    /** Returns the path of the transform at the given index. */
     GetTransformPath(index: number): string;
     RemoveTransformPath(transform: Transform): void;
+    /** Removes a transform path from the AvatarMask. */
     RemoveTransformPath(transform: Transform, recursive: boolean): void;
+    /** Sets the humanoid body part at the given index to active or not. */
     SetHumanoidBodyPartActive(index: AvatarMaskBodyPart, value: boolean): void;
+    /** Sets the tranform at the given index to active or not. */
     SetTransformActive(index: number, value: boolean): void;
+    /** Sets the path of the transform at the given index. */
     SetTransformPath(index: number, path: string): void;
 
 }
@@ -14348,33 +15832,58 @@ interface ParticleSystemRenderer extends Renderer {
     supportsMeshInstancing: boolean;
 
 
+    /** Query whether the Particle System Renderer uses a particular set of vertex streams. */
     AreVertexStreamsEnabled(streams: ParticleSystemVertexStreams): boolean;
+    /** Creates a snapshot of ParticleSystemRenderer and stores it in a mesh. */
     BakeMesh(mesh: Mesh, useTransform: boolean): void;
+    /** Creates a snapshot of ParticleSystemRenderer and stores it in a mesh. */
     BakeMesh(mesh: Mesh, camera: Camera, useTransform: boolean): void;
+    /** Creates a snapshot of ParticleSystemRenderer and stores it in a mesh. */
     BakeMesh(mesh: Mesh, options: ParticleSystemBakeMeshOptions): void;
+    /** Creates a snapshot of ParticleSystemRenderer and stores it in a mesh. */
     BakeMesh(mesh: Mesh, camera: Camera, options: ParticleSystemBakeMeshOptions): void;
+    /** Creates a snapshot of ParticleSystemRenderer and stores it in a Texture2D. */
     BakeTexture(verticesTexture: unknown, options: ParticleSystemBakeTextureOptions): number;
+    /** Creates a snapshot of ParticleSystemRenderer and stores it in a Texture2D. */
     BakeTexture(verticesTexture: unknown, camera: Camera, options: ParticleSystemBakeTextureOptions): number;
+    /** Creates a snapshot of ParticleSystemRenderer and stores it in a Texture2D. */
     BakeTexture(verticesTexture: unknown, indicesTexture: unknown, options: ParticleSystemBakeTextureOptions): number;
+    /** Creates a snapshot of ParticleSystemRenderer and stores it in a Texture2D. */
     BakeTexture(verticesTexture: unknown, indicesTexture: unknown, camera: Camera, options: ParticleSystemBakeTextureOptions): number;
+    /** Creates a snapshot of ParticleSystem Trails and stores them in a mesh. */
     BakeTrailsMesh(mesh: Mesh, useTransform: boolean): void;
+    /** Creates a snapshot of ParticleSystem Trails and stores them in a mesh. */
     BakeTrailsMesh(mesh: Mesh, camera: Camera, useTransform: boolean): void;
+    /** Creates a snapshot of ParticleSystem Trails and stores them in a mesh. */
     BakeTrailsMesh(mesh: Mesh, options: ParticleSystemBakeMeshOptions): void;
+    /** Creates a snapshot of ParticleSystem Trails and stores them in a mesh. */
     BakeTrailsMesh(mesh: Mesh, camera: Camera, options: ParticleSystemBakeMeshOptions): void;
+    /** Creates a snapshot of ParticleSystem Trails and stores them in a Texture2D. */
     BakeTrailsTexture(verticesTexture: unknown, indicesTexture: unknown, options: ParticleSystemBakeTextureOptions): number;
+    /** Creates a snapshot of ParticleSystem Trails and stores them in a Texture2D. */
     BakeTrailsTexture(verticesTexture: unknown, indicesTexture: unknown, camera: Camera, options: ParticleSystemBakeTextureOptions): number;
+    /** Disable a set of vertex Shader streams on the Particle System Renderer.
+The position stream is always enabled, and any attempts to remove it are ignored. */
     DisableVertexStreams(streams: ParticleSystemVertexStreams): void;
+    /** Enable a set of vertex Shader streams on the Particle System renderer. */
     EnableVertexStreams(streams: ParticleSystemVertexStreams): void;
     GetActiveTrailVertexStreams(streams: CSArray<ParticleSystemVertexStream>): void;
     GetActiveVertexStreams(streams: CSArray<ParticleSystemVertexStream>): void;
+    /** Queries whether the Particle System renderer uses a particular set of vertex streams. */
     GetEnabledVertexStreams(streams: ParticleSystemVertexStreams): ParticleSystemVertexStreams;
+    /** Gets the array of Meshes to use when selecting particle meshes. */
     GetMeshes(meshes: CSArray<Mesh>): number;
+    /** Gets the array of Mesh weightings to use when randomly selecting particle meshes. */
     GetMeshWeightings(weightings: CSArray<number>): number;
     SetActiveTrailVertexStreams(streams: CSArray<ParticleSystemVertexStream>): void;
     SetActiveVertexStreams(streams: CSArray<ParticleSystemVertexStream>): void;
+    /** Sets the Meshes that the ParticleSystemRenderer uses to display particles when the ParticleSystemRenderer.renderMode is set to ParticleSystemRenderMode.Mesh. */
     SetMeshes(meshes: CSArray<Mesh>, size: number): void;
+    /** Sets the Meshes that the ParticleSystemRenderer uses to display particles when the ParticleSystemRenderer.renderMode is set to ParticleSystemRenderMode.Mesh. */
     SetMeshes(meshes: CSArray<Mesh>): void;
+    /** Sets the weights that the ParticleSystemRenderer uses to assign Meshes to particles. */
     SetMeshWeightings(weightings: CSArray<number>, size: number): void;
+    /** Sets the weights that the ParticleSystemRenderer uses to assign Meshes to particles. */
     SetMeshWeightings(weightings: CSArray<number>): void;
 
 }
@@ -14848,8 +16357,10 @@ interface Event {
 
     Equals(obj: unknown): boolean;
     GetHashCode(): number;
+    /** Get a filtered event type for a given control ID. */
     GetTypeForControl(controlID: number): EventType;
     ToString(): string;
+    /** Use this event. */
     Use(): void;
 
 }
@@ -14978,31 +16489,53 @@ interface AudioSource extends AudioBehaviour {
     rolloffFactor: number;
 
 
+    /** Disables audio output to a gamepad for this audio source. */
     DisableGamepadOutput(): boolean;
+    /** Reads a user-defined parameter of a custom ambisonic decoder effect that is attached to an AudioSource. */
     GetAmbisonicDecoderFloat(index: number, value: unknown): boolean;
+    /** Get the current custom curve for the given AudioSourceCurveType. */
     GetCustomCurve(type: AudioSourceCurveType): AnimationCurve;
+    /** Deprecated Version. Returns a block of the currently playing source&#x27;s output data. */
     GetOutputData(numSamples: number, channel: number): CSArray<number>;
+    /** Provides a block of the currently playing source&#x27;s output data. */
     GetOutputData(samples: CSArray<number>, channel: number): void;
+    /** Reads a user-defined parameter of a custom spatializer effect that is attached to an AudioSource. */
     GetSpatializerFloat(index: number, value: unknown): boolean;
+    /** Deprecated Version. Returns a block of the currently playing source&#x27;s spectrum data. */
     GetSpectrumData(numSamples: number, channel: number, window: FFTWindow): CSArray<number>;
+    /** Provides a block of the currently playing audio source&#x27;s spectrum data. */
     GetSpectrumData(samples: CSArray<number>, channel: number, window: FFTWindow): void;
+    /** Pauses playing the clip. */
     Pause(): void;
     Play(): void;
+    /** Plays the clip. */
     Play(delay: number): void;
+    /** Plays the clip with a delay specified in seconds. Users are advised to use this function instead of the old Play(delay) function that took a delay specified in samples relative to a reference rate of 44.1 kHz as an argument. */
     PlayDelayed(delay: number): void;
+    /** Plays an AudioClip, and scales the AudioSource volume by volumeScale. */
     PlayOneShot(clip: AudioClip): void;
+    /** Plays an AudioClip, and scales the AudioSource volume by volumeScale. */
     PlayOneShot(clip: AudioClip, volumeScale: number): void;
+    /** Enable playing of audio source though a specfic gamepad. */
     PlayOnGamepad(slot: number): boolean;
+    /** Plays the clip at a specific time on the absolute time-line that AudioSettings.dspTime reads from. */
     PlayScheduled(time: number): void;
+    /** Sets a user-defined parameter of a custom ambisonic decoder effect that is attached to an AudioSource. */
     SetAmbisonicDecoderFloat(index: number, value: number): boolean;
+    /** Set the custom curve for the given AudioSourceCurveType. */
     SetCustomCurve(type: AudioSourceCurveType, curve: AnimationCurve): void;
     SetGamepadSpeakerMixLevel(slot: number, mixLevel: number): boolean;
     SetGamepadSpeakerMixLevelDefault(slot: number): boolean;
     SetGamepadSpeakerRestrictedAudio(slot: number, restricted: boolean): boolean;
+    /** Changes the time at which a sound that has already been scheduled to play will end. Notice that depending on the timing not all rescheduling requests can be fulfilled. */
     SetScheduledEndTime(time: number): void;
+    /** Changes the time at which a sound that has already been scheduled to play will start. */
     SetScheduledStartTime(time: number): void;
+    /** Sets a user-defined parameter of a custom spatializer effect that is attached to an AudioSource. */
     SetSpatializerFloat(index: number, value: number): boolean;
+    /** Stops playing the clip. */
     Stop(): void;
+    /** Unpause the paused playback of this AudioSource. */
     UnPause(): void;
 
 }
@@ -15027,10 +16560,14 @@ interface AudioClip extends AudioResource {
 
 
     GetData(data: unknown, offsetSamples: number): boolean;
+    /** Fills an array with sample data from the clip. */
     GetData(data: CSArray<number>, offsetSamples: number): boolean;
+    /** Loads the audio data of a clip. Clips that have &quot;Preload Audio Data&quot; set will load the audio data automatically. */
     LoadAudioData(): boolean;
+    /** Set sample data in a clip. */
     SetData(data: CSArray<number>, offsetSamples: number): boolean;
     SetData(data: unknown, offsetSamples: number): boolean;
+    /** Unloads the audio data associated with the clip. This works only for AudioClips that are based on actual sound file assets. */
     UnloadAudioData(): boolean;
 
 }
@@ -15100,11 +16637,19 @@ interface AudioMixer extends Object {
     updateMode: AudioMixerUpdateMode;
 
 
+    /** Resets an exposed parameter to its initial value. */
     ClearFloat(name: string): boolean;
+    /** Connected groups in the mixer form a path from the mixer&#x27;s master group to the leaves. This path has the format Master GroupChild of Master GroupGrandchild of Master Group, and so on. For example, in the hierarchy below, the group DROPS has the path MasterWATERDROPS.  To return only the group called DROPS, enter DROPS. The substring MasterAMBIENCE returns three groups, AMBIENCECROWD, AMBIENCEROAD, and AMBIENCE. The substring R would return both ROAD and RIVER. */
     FindMatchingGroups(subPath: string): CSArray<AudioMixerGroup>;
+    /** The name must be an exact match. */
     FindSnapshot(name: string): AudioMixerSnapshot;
+    /** Returns the value of the exposed parameter specified. If the parameter doesn&#x27;t exist the function returns false. Prior to calling SetFloat and after ClearFloat has been called on this parameter the value returned will be that of the current snapshot or snapshot transition. */
     GetFloat(name: string, value: unknown): boolean;
+    /** Sets the value of the exposed parameter specified. When a parameter is exposed, it is not controlled by mixer snapshots. You can only change the parameter with this function.
+
+Note: Calling this function in MonoBehaviour.Awake will result in unexpected behavior. Use MonoBehaviour.Start instead. */
     SetFloat(name: string, value: number): boolean;
+    /** Transitions to a weighted mixture of the snapshots specified. This can be used for games that specify the game state as a continuum between states or for interpolating snapshots from a triangulated map location. */
     TransitionToSnapshots(snapshots: CSArray<AudioMixerSnapshot>, weights: CSArray<number>, timeToReach: number): void;
 
 }
@@ -15113,6 +16658,7 @@ interface AudioMixerSnapshot extends Object, ISubAssetNotDuplicatable {
     audioMixer: AudioMixer;
 
 
+    /** Performs an interpolated transition towards this snapshot over the time interval specified. */
     TransitionTo(timeToReach: number): void;
 
 }
@@ -15234,6 +16780,7 @@ interface CanvasGroup extends Behaviour, ICanvasRaycastFilter {
     ignoreParentGroups: boolean;
 
 
+    /** Returns true if the Group allows raycasts. */
     IsRaycastLocationValid(sp: Vector2, eventCamera: Camera): boolean;
 
 }
@@ -15511,7 +17058,9 @@ interface CharacterController extends Collider {
     enableOverlapRecovery: boolean;
 
 
+    /** Supplies the movement of a GameObject with an attached CharacterController component. */
     Move(motion: Vector3): CollisionFlags;
+    /** Moves the character with speed. */
     SimpleMove(speed: Vector3): boolean;
 
 }
@@ -15619,21 +17168,32 @@ interface TrailRenderer extends Renderer {
     colorGradient: Gradient;
 
 
+    /** Adds a position to the trail. */
     AddPosition(position: Vector3): void;
+    /** Add an array of positions to the trail. */
     AddPositions(positions: CSArray<Vector3>): void;
     AddPositions(positions: CSArray<Vector3>): void;
     AddPositions(positions: CSArray<Vector3>): void;
+    /** Creates a snapshot of TrailRenderer and stores it in mesh. */
     BakeMesh(mesh: Mesh, useTransform: boolean): void;
+    /** Creates a snapshot of TrailRenderer and stores it in mesh. */
     BakeMesh(mesh: Mesh, camera: Camera, useTransform: boolean): void;
+    /** Removes all points from the TrailRenderer.
+Useful for restarting a trail from a new position. */
     Clear(): void;
+    /** Get the position of a vertex in the trail. */
     GetPosition(index: number): Vector3;
+    /** Get the positions of all vertices in the trail. */
     GetPositions(positions: CSArray<Vector3>): number;
     GetPositions(positions: CSArray<Vector3>): number;
     GetPositions(positions: CSArray<Vector3>): number;
+    /** Get the visible positions of all vertices in the trail. */
     GetVisiblePositions(positions: CSArray<Vector3>): number;
     GetVisiblePositions(positions: CSArray<Vector3>): number;
     GetVisiblePositions(positions: CSArray<Vector3>): number;
+    /** Set the position of a vertex in the trail. */
     SetPosition(index: number, position: Vector3): void;
+    /** Sets the positions of all vertices in the trail. */
     SetPositions(positions: CSArray<Vector3>): void;
     SetPositions(positions: CSArray<Vector3>): void;
     SetPositions(positions: CSArray<Vector3>): void;
@@ -15923,11 +17483,17 @@ interface WWWForm {
     data: CSArray<number>;
 
 
+    /** Add binary data to the form. */
     AddBinaryData(fieldName: string, contents: CSArray<number>): void;
+    /** Add binary data to the form. */
     AddBinaryData(fieldName: string, contents: CSArray<number>, fileName: string): void;
+    /** Add binary data to the form. */
     AddBinaryData(fieldName: string, contents: CSArray<number>, fileName: string, mimeType: string): void;
+    /** Add a simple field to the form. */
     AddField(fieldName: string, value: string): void;
+    /** Add a simple field to the form. */
     AddField(fieldName: string, value: string, e: unknown): void;
+    /** Adds a simple field to the form. */
     AddField(fieldName: string, i: number): void;
 
 }
@@ -15953,6 +17519,7 @@ interface IMultipartFormSection {
 interface CertificateHandler {
 
 
+    /** Signals that this [CertificateHandler] is no longer being used, and should clean up any resources it is using. */
     Dispose(): void;
 
 }
@@ -15963,6 +17530,7 @@ interface UploadHandler {
     progress: number;
 
 
+    /** Signals that this UploadHandler is no longer being used, and should clean up any resources it is using. */
     Dispose(): void;
 
 }
@@ -15975,6 +17543,7 @@ interface DownloadHandler {
     text: string;
 
 
+    /** Signals that this DownloadHandler is no longer being used, and should clean up any resources it is using. */
     Dispose(): void;
 
 }
@@ -16007,13 +17576,21 @@ interface UnityWebRequest {
     isError: boolean;
 
 
+    /** If in progress, halts the UnityWebRequest as soon as possible. */
     Abort(): void;
+    /** Signals that this UnityWebRequest is no longer being used, and should clean up any resources it is using. */
     Dispose(): void;
+    /** Retrieves the value of a custom request header. */
     GetRequestHeader(name: string): string;
+    /** Retrieves the value of a response header from the latest HTTP response received. */
     GetResponseHeader(name: string): string;
+    /** Retrieves a dictionary containing all the response headers received by this UnityWebRequest in the latest HTTP response. */
     GetResponseHeaders(): CSDictionary<string, string>;
+    /** Begin communicating with the remote server. */
     Send(): AsyncOperation;
+    /** Begin communicating with the remote server. */
     SendWebRequest(): UnityWebRequestAsyncOperation;
+    /** Set a HTTP request header to a custom value. */
     SetRequestHeader(name: string, value: string): void;
 
 }
@@ -16521,10 +18098,15 @@ interface RectOffset {
     vertical: number;
 
 
+    /** Add the border offsets to a rect. */
     Add(rect: Rect): Rect;
+    /** Remove the border offsets from a rect. */
     Remove(rect: Rect): Rect;
+    /** Returns a formatted string for this RectOffset. */
     ToString(): string;
+    /** Returns a formatted string for this RectOffset. */
     ToString(format: string): string;
+    /** Returns a formatted string for this RectOffset. */
     ToString(format: string, formatProvider: unknown): string;
 
 }
@@ -17036,19 +18618,29 @@ interface LineRenderer extends Renderer {
     colorGradient: Gradient;
 
 
+    /** Creates a snapshot of LineRenderer and stores it in mesh. */
     BakeMesh(mesh: Mesh, useTransform: boolean): void;
+    /** Creates a snapshot of LineRenderer and stores it in mesh. */
     BakeMesh(mesh: Mesh, camera: Camera, useTransform: boolean): void;
+    /** Get the position of a vertex in the line. */
     GetPosition(index: number): Vector3;
+    /** Get the positions of all vertices in the line. */
     GetPositions(positions: CSArray<Vector3>): number;
     GetPositions(positions: CSArray<Vector3>): number;
     GetPositions(positions: CSArray<Vector3>): number;
+    /** Set the line color at the start and at the end. */
     SetColors(start: Color, end: Color): void;
+    /** Set the position of a vertex in the line. */
     SetPosition(index: number, position: Vector3): void;
+    /** Set the positions of all vertices in the line. */
     SetPositions(positions: CSArray<Vector3>): void;
     SetPositions(positions: CSArray<Vector3>): void;
     SetPositions(positions: CSArray<Vector3>): void;
+    /** Set the number of line segments. */
     SetVertexCount(count: number): void;
+    /** Set the line width at the start and at the end. */
     SetWidth(start: number, end: number): void;
+    /** Generates a simplified version of the original line by removing points that fall within the specified tolerance. */
     Simplify(tolerance: number): void;
 
 }
@@ -17454,6 +19046,7 @@ interface Resolution {
     refreshRate: number;
 
 
+    /** Returns a nicely formatted string of the resolution. */
     ToString(): string;
 
 }
@@ -17721,23 +19314,40 @@ interface NavMeshAgent extends Behaviour {
     isOnNavMesh: boolean;
 
 
+    /** Enables or disables the current off-mesh link. */
     ActivateCurrentOffMeshLink(activated: boolean): void;
+    /** Calculate a path to a specified point and store the resulting path. */
     CalculatePath(targetPosition: Vector3, path: NavMeshPath): boolean;
+    /** Completes the movement on the current OffMeshLink. */
     CompleteOffMeshLink(): void;
+    /** Locate the closest NavMesh edge. */
     FindClosestEdge(hit: unknown): boolean;
+    /** Gets the cost for path calculation when crossing area of a particular type. */
     GetAreaCost(areaIndex: number): number;
+    /** Gets the cost for crossing ground of a particular type. */
     GetLayerCost(layer: number): number;
+    /** Apply relative movement to current position. */
     Move(offset: Vector3): void;
+    /** Trace a straight path towards a target postion in the NavMesh without moving the agent. */
     Raycast(targetPosition: Vector3, hit: unknown): boolean;
+    /** Clears the current path. */
     ResetPath(): void;
+    /** Resumes the movement along the current path after a pause. */
     Resume(): void;
+    /** Sample a position along the current path. */
     SamplePathPosition(areaMask: number, maxDistance: number, hit: unknown): boolean;
+    /** Sets the cost for traversing over areas of the area type. */
     SetAreaCost(areaIndex: number, areaCost: number): void;
+    /** Sets or updates the destination thus triggering the calculation for a new path. */
     SetDestination(target: Vector3): boolean;
+    /** Sets the cost for traversing over geometry of the layer type. */
     SetLayerCost(layer: number, cost: number): void;
+    /** Assign a new path to this agent. */
     SetPath(path: NavMeshPath): boolean;
+    /** Stop movement of this agent along its current path. */
     Stop(): void;
     Stop(stopUpdates: boolean): void;
+    /** Warps agent to the provided position. */
     Warp(newPosition: Vector3): boolean;
 
 }
@@ -17767,6 +19377,7 @@ interface OffMeshLink extends Behaviour {
     endTransform: Transform;
 
 
+    /** Explicitly update the link endpoints. */
     UpdatePositions(): void;
 
 }
@@ -17784,7 +19395,9 @@ interface NavMeshPath {
     status: NavMeshPathStatus;
 
 
+    /** Erase all corner points from path. */
     ClearCorners(): void;
+    /** Calculate the corners for the path. */
     GetCornersNonAlloc(results: CSArray<Vector3>): number;
 
 }
@@ -17833,6 +19446,7 @@ interface NavMeshLinkInstance {
     owner: Object;
 
 
+    /** Removes this instance from the game. */
     Remove(): void;
 
 }
@@ -17855,6 +19469,7 @@ interface NavMeshDataInstance {
     owner: Object;
 
 
+    /** Removes this instance from the NavMesh system. */
     Remove(): void;
 
 }
@@ -17882,7 +19497,9 @@ interface NavMeshQueryFilter {
     agentTypeID: number;
 
 
+    /** Returns the area cost multiplier for the given area type for this filter. */
     GetAreaCost(areaIndex: number): number;
+    /** Sets the pathfinding cost multiplier for this filter for a given area type. */
     SetAreaCost(areaIndex: number, cost: number): void;
 
 }
@@ -17916,6 +19533,7 @@ interface NavMeshBuildSettings {
     debug: NavMeshBuildDebugSettings;
 
 
+    /** Validates the properties of NavMeshBuildSettings. */
     ValidationReport(buildBounds: Bounds): CSArray<string>;
 
 }
@@ -18036,7 +19654,9 @@ interface Length {
     Equals(other: Length): boolean;
     Equals(obj: unknown): boolean;
     GetHashCode(): number;
+    /** Check if Length is Auto. */
     IsAuto(): boolean;
+    /** Check if Length is None. */
     IsNone(): boolean;
     ToString(): string;
 
@@ -18064,7 +19684,9 @@ interface Background {
     Equals(other: Background): boolean;
     Equals(obj: unknown): boolean;
     GetHashCode(): number;
+    /** Retrieves the selected asset which can be of a type of Texture, Sprite, RenderTexture or VectorImage. */
     GetSelectedImage(): Object;
+    /** Help verify whether an asset has been assigned or not. */
     IsEmpty(): boolean;
     ToString(): string;
 
@@ -18219,8 +19841,11 @@ declare const Character: CharacterConstructor;
 interface FontFeatureTable {
 
 
+    /** Sorts the glyph pair adjustment records by glyph index. */
     SortGlyphPairAdjustmentRecords(): void;
+    /** Sorts the Mark-to-Base Adjustment Table records. */
     SortMarkToBaseAdjustmentRecords(): void;
+    /** Sorts the Mark-to-Mark Adjustment Table records. */
     SortMarkToMarkAdjustmentRecords(): void;
 
 }
@@ -18332,10 +19957,14 @@ interface Angle {
     Equals(other: Angle): boolean;
     Equals(obj: unknown): boolean;
     GetHashCode(): number;
+    /** Returns the value of the angle, expressed in degrees. */
     ToDegrees(): number;
+    /** Returns the value of the angle, expressed in gradians. */
     ToGradians(): number;
+    /** Returns the value of the angle, expressed in radians. */
     ToRadians(): number;
     ToString(): string;
+    /** Returns the value of the angle, expressed in turns. */
     ToTurns(): number;
 
 }
@@ -18452,6 +20081,7 @@ interface IVisualElementScheduler {
 
 
     Execute(timerUpdateEvent: unknown): IVisualElementScheduledItem;
+    /** Schedule this action to be executed later. */
     Execute(updateEvent: unknown): IVisualElementScheduledItem;
 
 }
@@ -18461,11 +20091,17 @@ interface IVisualElementScheduledItem {
     isActive: boolean;
 
 
+    /** Repeats this action after a specified time. */
     Every(intervalMs: number): IVisualElementScheduledItem;
+    /** Cancels any previously scheduled execution of this item and re-schedules the item. */
     ExecuteLater(delayMs: number): void;
+    /** After specified duration, the item will be automatically unscheduled. */
     ForDuration(durationMs: number): IVisualElementScheduledItem;
+    /** Removes this item from its VisualElement&#x27;s scheduler. */
     Pause(): void;
+    /** If not already active, will schedule this item on its VisualElement&#x27;s scheduler. */
     Resume(): void;
+    /** Adds a delay to the first invokation. */
     StartingIn(delayMs: number): IVisualElementScheduledItem;
     Until(stopCondition: unknown): IVisualElementScheduledItem;
 
@@ -18474,10 +20110,15 @@ interface IVisualElementScheduledItem {
 interface ITransitionAnimations {
 
 
+    /** Triggers an animation changing this element&#x27;s layout style values. */
     Layout(to: Rect, durationMs: number): unknown;
+    /** Triggers an animation changing this element&#x27;s transform position. */
     Position(to: Vector3, duration: number): unknown;
+    /** Triggers an animation changing this element&#x27;s transform rotation. */
     Rotation(to: Quaternion, duration: number): unknown;
+    /** Triggers an animation changing this element&#x27;s transform scale. */
     Scale(to: number, duration: number): unknown;
+    /** Triggers an animation changing this element&#x27;s size style values. */
     Size(to: Vector2, durationMs: number): unknown;
     Start(from: number, to: number, durationMs: number, onValueChanged: unknown): unknown;
     Start(from: Rect, to: Rect, durationMs: number, onValueChanged: unknown): unknown;
@@ -18485,7 +20126,9 @@ interface ITransitionAnimations {
     Start(from: Vector3, to: Vector3, durationMs: number, onValueChanged: unknown): unknown;
     Start(from: Vector2, to: Vector2, durationMs: number, onValueChanged: unknown): unknown;
     Start(from: Quaternion, to: Quaternion, durationMs: number, onValueChanged: unknown): unknown;
+    /** Starts a transition animation on this VisualElement. */
     Start(from: StyleValues, to: StyleValues, durationMs: number): unknown;
+    /** Starts a transition animation on this VisualElement. */
     Start(to: StyleValues, durationMs: number): unknown;
     Start(fromValueGetter: unknown, to: number, durationMs: number, onValueChanged: unknown): unknown;
     Start(fromValueGetter: unknown, to: Rect, durationMs: number, onValueChanged: unknown): unknown;
@@ -18493,6 +20136,7 @@ interface ITransitionAnimations {
     Start(fromValueGetter: unknown, to: Vector3, durationMs: number, onValueChanged: unknown): unknown;
     Start(fromValueGetter: unknown, to: Vector2, durationMs: number, onValueChanged: unknown): unknown;
     Start(fromValueGetter: unknown, to: Quaternion, durationMs: number, onValueChanged: unknown): unknown;
+    /** Triggers an animation changing this element&#x27;s positioning style values. */
     TopLeft(to: Vector2, durationMs: number): unknown;
 
 }
@@ -18716,9 +20360,14 @@ interface ITransform {
 interface IEventHandler {
 
 
+    /** Handles an event according to its propagation phase and current target, by executing the element&#x27;s
+ default action or callbacks associated with the event. */
     HandleEvent(evt: EventBase): void;
+    /** Returns true if event handlers for the event propagation BubbleUp phase, have been attached on this object. */
     HasBubbleUpHandlers(): boolean;
+    /** Returns true if event handlers, for the event propagation TrickleDown phase, are attached to this object. */
     HasTrickleDownHandlers(): boolean;
+    /** Sends an event to the event handler. */
     SendEvent(e: EventBase): void;
 
 }
@@ -18739,9 +20388,16 @@ interface EventBase {
     originalMousePosition: Vector2;
 
 
+    /** Implementation of IDisposable. */
     Dispose(): void;
+    /** Indicates whether the default actions are prevented from being executed for this event. */
     PreventDefault(): void;
+    /** Immediately stops the propagation of the event. The event isn&#x27;t sent to other elements along the propagation path. This method prevents other event handlers from executing on the current target. */
     StopImmediatePropagation(): void;
+    /** Stops propagating this event. The event is not sent to other elements along the propagation path.
+ This method does not prevent other event handlers from executing on the current target.
+ If this method is called during the TrickleDown propagation phase, it will prevent default actions
+ to be processed, such as an element getting focused as a result of a PointerDownEvent. */
     StopPropagation(): void;
 
 }
@@ -18749,12 +20405,15 @@ interface EventBase {
 interface CallbackEventHandler extends IEventHandler {
 
 
+    /** Return true if event handlers for the event propagation BubbleUp phase have been attached on this object. */
     HasBubbleUpHandlers(): boolean;
+    /** Returns true if event handlers, for the event propagation TrickleDown phase, are attached to this object. */
     HasTrickleDownHandlers(): boolean;
     RegisterCallback<TEventType>(callback: unknown, useTrickleDown: TrickleDown): void;
     RegisterCallback<TEventType, TUserArgsType>(callback: unknown, userArgs: TUserArgsType, useTrickleDown: TrickleDown): void;
     RegisterCallbackOnce<TEventType>(callback: unknown, useTrickleDown: TrickleDown): void;
     RegisterCallbackOnce<TEventType, TUserArgsType>(callback: unknown, userArgs: TUserArgsType, useTrickleDown: TrickleDown): void;
+    /** Sends an event to the event handler. */
     SendEvent(e: EventBase): void;
     UnregisterCallback<TEventType>(callback: unknown, useTrickleDown: TrickleDown): void;
     UnregisterCallback<TEventType, TUserArgsType>(callback: unknown, useTrickleDown: TrickleDown): void;
@@ -18769,7 +20428,9 @@ interface Focusable extends CallbackEventHandler {
     canGrabFocus: boolean;
 
 
+    /** Tell the element to release the focus. */
     Blur(): void;
+    /** Attempt to give the focus to this element. */
     Focus(): void;
 
 }
@@ -18778,6 +20439,8 @@ interface FocusController {
     focusedElement: Focusable;
 
 
+    /** Instructs the FocusController to ignore the given event.
+ This will prevent the event from changing the current focused VisualElement or triggering focus events. */
     IgnoreEvent(evt: EventBase): void;
 
 }
@@ -18797,6 +20460,7 @@ interface PropertyPath {
     Item: PropertyPathPart;
 
 
+    /** Indicates whether this instance and a specified object are equal. */
     Equals(other: PropertyPath): boolean;
     Equals(obj: unknown): boolean;
     GetHashCode(): number;
@@ -18814,6 +20478,7 @@ interface PropertyPathPart {
     Key: unknown;
 
 
+    /** Indicates whether this instance and a specified object are equal. */
     Equals(other: PropertyPathPart): boolean;
     Equals(obj: unknown): boolean;
     GetHashCode(): number;
@@ -18836,10 +20501,15 @@ interface IProperty {
     IsReadOnly: boolean;
 
 
+    /** Returns the declared value type of the property. */
     DeclaredValueType(): unknown;
+    /** Returns the first attribute of the given type. */
     GetAttribute<TAttribute>(): TAttribute;
+    /** Returns all attribute of the given type. */
     GetAttributes<TAttribute>(): CSArray<TAttribute>;
+    /** Returns all attribute of the given type. */
     GetAttributes(): CSArray<unknown>;
+    /** Returns true if the property has any attributes of the given type. */
     HasAttribute<TAttribute>(): boolean;
 
 }
@@ -18896,6 +20566,7 @@ interface IPanel {
     isDirty: boolean;
 
 
+    /** Returns the top element at this position. Will not return elements with pickingMode set to PickingMode.Ignore. */
     Pick(point: Vector2): VisualElement;
     PickAll(point: Vector2, picked: CSArray<VisualElement>): VisualElement;
 
@@ -18910,7 +20581,9 @@ interface EventDispatcher {
 interface ContextualMenuManager {
 
 
+    /** Displays the contextual menu. */
     DisplayMenu(triggerEvent: EventBase, target: IEventHandler): void;
+    /** Checks if the event triggers the display of the contextual menu. This method also displays the menu. */
     DisplayMenuIfEventMatches(evt: EventBase, eventHandler: IEventHandler): void;
 
 }
@@ -18923,11 +20596,16 @@ interface VisualTreeAsset extends ScriptableObject {
     contentHash: number;
 
 
+    /** Build a tree of VisualElements from the asset. */
     CloneTree(): TemplateContainer;
+    /** Build a tree of VisualElements from the asset. */
     CloneTree(bindingPath: string): TemplateContainer;
+    /** Builds a tree of VisualElements from the asset. */
     CloneTree(target: VisualElement): void;
     CloneTree(target: VisualElement, firstElementIndex: unknown, elementAddedCount: unknown): void;
+    /** Build a tree of VisualElements from the asset. */
     Instantiate(): TemplateContainer;
+    /** Build a tree of VisualElements from the asset. */
     Instantiate(bindingPath: string): TemplateContainer;
 
 }
@@ -18960,8 +20638,11 @@ interface IBindable {
 interface IBinding {
 
 
+    /** Called at regular intervals to synchronize bound properties to their IBindable counterparts. Called before the Update() method. */
     PreUpdate(): void;
+    /** Disconnects the field from its bound property */
     Release(): void;
+    /** Called at regular intervals to synchronize bound properties to their IBindable counterparts. Called before the Update() method. */
     Update(): void;
 
 }
@@ -19362,12 +21043,17 @@ interface VisualElementStyleSheetSet {
     Item: StyleSheet;
 
 
+    /** Adds a style sheet for the owner element. */
     Add(styleSheet: StyleSheet): void;
+    /** Removes all style sheets for the owner element. */
     Clear(): void;
+    /** Looks for the specified StyleSheet */
     Contains(styleSheet: StyleSheet): boolean;
+    /** Compares instances of the VisualElementStyleSheetSet struct for equality. */
     Equals(other: VisualElementStyleSheetSet): boolean;
     Equals(obj: unknown): boolean;
     GetHashCode(): number;
+    /** Removes a style sheet for the owner element. */
     Remove(styleSheet: StyleSheet): boolean;
 
 }
@@ -19375,9 +21061,11 @@ interface VisualElementStyleSheetSet {
 interface BindingId {
 
 
+    /** Indicates whether two binding properties are equal. */
     Equals(other: BindingId): boolean;
     Equals(obj: unknown): boolean;
     GetHashCode(): number;
+    /** Returns the binding property as a string. */
     ToString(): string;
 
 }
@@ -19397,6 +21085,7 @@ interface Binding {
     updateTrigger: BindingUpdateTrigger;
 
 
+    /** Notifies the binding system to process this binding. */
     MarkDirty(): void;
 
 }
@@ -19460,6 +21149,7 @@ interface ScrollView extends VisualElement {
     mode: ScrollViewMode;
 
 
+    /** Scroll to a specific child element. */
     ScrollTo(child: VisualElement): void;
 
 }
@@ -19474,10 +21164,15 @@ interface Scroller extends VisualElement {
     direction: SliderDirection;
 
 
+    /** Updates the slider element size as a ratio of total range. A value greater than or equal to 1 will disable the Scroller. */
     Adjust(factor: number): void;
+    /** Will change the value according to the current slider pageSize. */
     ScrollPageDown(): void;
+    /** Will change the value according to the current slider pageSize. */
     ScrollPageDown(factor: number): void;
+    /** Will change the value according to the current slider pageSize. */
     ScrollPageUp(): void;
+    /** Will change the value according to the current slider pageSize. */
     ScrollPageUp(factor: number): void;
 
 }
@@ -19529,6 +21224,7 @@ interface ITextEdition {
 interface ITextElementExperimentalFeatures extends IExperimentalFeatures {
 
 
+    /** Setting this property will override the displayed text while preserving the original text value. */
     SetRenderedText(renderedText: string): void;
 
 }
@@ -19546,9 +21242,13 @@ interface ITextSelection {
     cursorPosition: Vector2;
 
 
+    /** Return true is the TextElement has a selection. */
     HasSelection(): boolean;
+    /** Selects all the text contained in the field. */
     SelectAll(): void;
+    /** Remove selection */
     SelectNone(): void;
+    /** Select text between cursorIndex and selectIndex. */
     SelectRange(cursorIndex: number, selectionIndex: number): void;
 
 }
@@ -19655,4 +21355,570 @@ interface AirshipLongPressConstructor {
 
 }
 declare const AirshipLongPress: AirshipLongPressConstructor;
+    
+interface BoxCollider2D extends Collider2D {
+    size: Vector2;
+    edgeRadius: number;
+    autoTiling: boolean;
+    center: Vector2;
+
+
+
+}
+    
+interface BoxCollider2DConstructor {
+
+    new(): BoxCollider2D;
+
+
+}
+declare const BoxCollider2D: BoxCollider2DConstructor;
+    
+interface CircleCollider2D extends Collider2D {
+    radius: number;
+    center: Vector2;
+
+
+
+}
+    
+interface CircleCollider2DConstructor {
+
+    new(): CircleCollider2D;
+
+
+}
+declare const CircleCollider2D: CircleCollider2DConstructor;
+    
+interface CapsuleCollider2D extends Collider2D {
+    size: Vector2;
+    direction: CapsuleDirection2D;
+
+
+
+}
+    
+interface CapsuleCollider2DConstructor {
+
+    new(): CapsuleCollider2D;
+
+
+}
+declare const CapsuleCollider2D: CapsuleCollider2DConstructor;
+    
+interface PolygonCollider2D extends Collider2D {
+    useDelaunayMesh: boolean;
+    autoTiling: boolean;
+    points: CSArray<Vector2>;
+    pathCount: number;
+
+
+    CreatePrimitive(sides: number): void;
+    CreatePrimitive(sides: number, scale: Vector2): void;
+    /** Creates as regular primitive polygon with the specified number of sides. */
+    CreatePrimitive(sides: number, scale: Vector2, offset: Vector2): void;
+    /** Gets a path from the Collider by its index. */
+    GetPath(index: number): CSArray<Vector2>;
+    GetPath(index: number, points: CSArray<Vector2>): number;
+    /** Return the total number of points in the polygon in all paths. */
+    GetTotalPointCount(): number;
+    /** Define a path by its constituent points. */
+    SetPath(index: number, points: CSArray<Vector2>): void;
+    SetPath(index: number, points: CSArray<Vector2>): void;
+
+}
+    
+interface PolygonCollider2DConstructor {
+
+    new(): PolygonCollider2D;
+
+
+}
+declare const PolygonCollider2D: PolygonCollider2DConstructor;
+    
+interface CustomCollider2D extends Collider2D {
+    customShapeCount: number;
+    customVertexCount: number;
+
+
+    /** Deletes a specific number of shapes defined by shapeCount starting at shapeIndex along with all associated vertices those shapes use. */
+    ClearCustomShapes(shapeIndex: number, shapeCount: number): void;
+    /** Deletes all the shapes and associated vertices for those shapes from the Collider. */
+    ClearCustomShapes(): void;
+    /** Gets all the physics shapes and vertices in the Collider and places them in the specified PhysicsShapeGroup2D. */
+    GetCustomShapes(physicsShapeGroup: PhysicsShapeGroup2D): number;
+    /** Gets a specified number of physics shapes defined byshapeCount starting at shapeIndex along with all associated vertices those shapes use and places them in the specified PhysicsShapeGroup2D. */
+    GetCustomShapes(physicsShapeGroup: PhysicsShapeGroup2D, shapeIndex: number, shapeCount: number): number;
+    GetCustomShapes(shapes: CSArray<PhysicsShape2D>, vertices: CSArray<Vector2>): number;
+    /** Sets a single shape and all associated shape vertices from the specified physicsShapeGroup into the Collider. */
+    SetCustomShape(physicsShapeGroup: PhysicsShapeGroup2D, srcShapeIndex: number, dstShapeIndex: number): void;
+    SetCustomShape(shapes: CSArray<PhysicsShape2D>, vertices: CSArray<Vector2>, srcShapeIndex: number, dstShapeIndex: number): void;
+    /** Sets all the shapes and vertices in the Collider to those represented by the specified PhysicsShapeGroup2D. */
+    SetCustomShapes(physicsShapeGroup: PhysicsShapeGroup2D): void;
+    SetCustomShapes(shapes: CSArray<PhysicsShape2D>, vertices: CSArray<Vector2>): void;
+
+}
+    
+interface CustomCollider2DConstructor {
+
+    new(): CustomCollider2D;
+
+
+}
+declare const CustomCollider2D: CustomCollider2DConstructor;
+    
+interface EdgeCollider2D extends Collider2D {
+    edgeRadius: number;
+    edgeCount: number;
+    pointCount: number;
+    points: CSArray<Vector2>;
+    useAdjacentStartPoint: boolean;
+    useAdjacentEndPoint: boolean;
+    adjacentStartPoint: Vector2;
+    adjacentEndPoint: Vector2;
+
+
+    GetPoints(points: CSArray<Vector2>): number;
+    /** Reset to a single edge consisting of two points. */
+    Reset(): void;
+    SetPoints(points: CSArray<Vector2>): boolean;
+
+}
+    
+interface EdgeCollider2DConstructor {
+
+    new(): EdgeCollider2D;
+
+
+}
+declare const EdgeCollider2D: EdgeCollider2DConstructor;
+    
+interface TilemapCollider2D extends Collider2D {
+    useDelaunayMesh: boolean;
+    maximumTileChangeCount: number;
+    extrusionFactor: number;
+    hasTilemapChanges: boolean;
+
+
+    /** Processes Tilemap changes for Collider updates immediately, if there are any. */
+    ProcessTilemapChanges(): void;
+
+}
+    
+interface TilemapCollider2DConstructor {
+
+    new(): TilemapCollider2D;
+
+
+}
+declare const TilemapCollider2D: TilemapCollider2DConstructor;
+    
+interface SphereCollider extends Collider {
+    center: Vector3;
+    radius: number;
+
+
+
+}
+    
+interface SphereColliderConstructor {
+
+    new(): SphereCollider;
+
+
+}
+declare const SphereCollider: SphereColliderConstructor;
+    
+interface CapsuleCollider extends Collider {
+    center: Vector3;
+    radius: number;
+    height: number;
+    direction: number;
+
+
+
+}
+    
+interface CapsuleColliderConstructor {
+
+    new(): CapsuleCollider;
+
+
+}
+declare const CapsuleCollider: CapsuleColliderConstructor;
+    
+interface MeshCollider extends Collider {
+    sharedMesh: Mesh;
+    convex: boolean;
+    cookingOptions: MeshColliderCookingOptions;
+    smoothSphereCollisions: boolean;
+    skinWidth: number;
+    inflateMesh: boolean;
+
+
+
+}
+    
+interface MeshColliderConstructor {
+
+    new(): MeshCollider;
+
+
+}
+declare const MeshCollider: MeshColliderConstructor;
+    
+interface WheelCollider extends Collider {
+    center: Vector3;
+    radius: number;
+    suspensionDistance: number;
+    suspensionSpring: JointSpring;
+    suspensionExpansionLimited: boolean;
+    forceAppPointDistance: number;
+    mass: number;
+    wheelDampingRate: number;
+    forwardFriction: WheelFrictionCurve;
+    sidewaysFriction: WheelFrictionCurve;
+    motorTorque: number;
+    brakeTorque: number;
+    steerAngle: number;
+    isGrounded: boolean;
+    rpm: number;
+    sprungMass: number;
+    rotationSpeed: number;
+
+
+    /** Configure vehicle sub-stepping parameters. */
+    ConfigureVehicleSubsteps(speedThreshold: number, stepsBelowThreshold: number, stepsAboveThreshold: number): void;
+    /** Gets ground collision data for the wheel. */
+    GetGroundHit(hit: unknown): boolean;
+    /** Gets the world space pose of the wheel accounting for ground contact, suspension limits, steer angle, and rotation angle (angles in degrees). */
+    GetWorldPose(pos: unknown, quat: unknown): void;
+    /** Reset the sprung masses of the vehicle. */
+    ResetSprungMasses(): void;
+
+}
+    
+interface JointSpring {
+    spring: number;
+    damper: number;
+    targetPosition: number;
+
+
+
+}
+    
+interface WheelFrictionCurve {
+    extremumSlip: number;
+    extremumValue: number;
+    asymptoteSlip: number;
+    asymptoteValue: number;
+    stiffness: number;
+
+
+
+}
+    
+interface WheelColliderConstructor {
+
+    new(): WheelCollider;
+
+
+}
+declare const WheelCollider: WheelColliderConstructor;
+    
+interface TerrainCollider extends Collider {
+    terrainData: TerrainData;
+
+
+
+}
+    
+interface TerrainData extends Object {
+    heightmapWidth: number;
+    heightmapHeight: number;
+    heightmapTexture: RenderTexture;
+    heightmapResolution: number;
+    heightmapScale: Vector3;
+    holesTexture: Texture;
+    enableHolesTextureCompression: boolean;
+    holesResolution: number;
+    size: Vector3;
+    bounds: Bounds;
+    thickness: number;
+    wavingGrassStrength: number;
+    wavingGrassAmount: number;
+    wavingGrassSpeed: number;
+    wavingGrassTint: Color;
+    detailWidth: number;
+    detailHeight: number;
+    maxDetailScatterPerRes: number;
+    detailPatchCount: number;
+    detailResolution: number;
+    detailResolutionPerPatch: number;
+    detailScatterMode: DetailScatterMode;
+    detailPrototypes: CSArray<DetailPrototype>;
+    treeInstances: CSArray<TreeInstance>;
+    treeInstanceCount: number;
+    treePrototypes: CSArray<TreePrototype>;
+    alphamapLayers: number;
+    alphamapResolution: number;
+    alphamapWidth: number;
+    alphamapHeight: number;
+    baseMapResolution: number;
+    alphamapTextureCount: number;
+    alphamapTextures: CSArray<Texture2D>;
+    splatPrototypes: CSArray<SplatPrototype>;
+    terrainLayers: CSArray<TerrainLayer>;
+
+
+    /** This function computes and returns the coverage (how many instances fit in a square unit) of a detail prototype, given its index. */
+    ComputeDetailCoverage(detailPrototypeIndex: number): number;
+    /** This function computes and returns an array of detail object transforms for the specified patch and the specified prototype. You can use this function to retrieve the exact same transform data the Unity engine uses for detail rendering. */
+    ComputeDetailInstanceTransforms(patchX: number, patchY: number, layer: number, density: number, bounds: unknown): CSArray<DetailInstanceTransform>;
+    /** Copies the specified part of the active RenderTexture to the Terrain heightmap texture. */
+    CopyActiveRenderTextureToHeightmap(sourceRect: RectInt, dest: Vector2Int, syncControl: TerrainHeightmapSyncControl): void;
+    /** Copies the specified part of the active RenderTexture to the Terrain texture. */
+    CopyActiveRenderTextureToTexture(textureName: string, textureIndex: number, sourceRect: RectInt, dest: Vector2Int, allowDelayedCPUSync: boolean): void;
+    /** Marks the specified part of the heightmap as dirty. */
+    DirtyHeightmapRegion(region: RectInt, syncControl: TerrainHeightmapSyncControl): void;
+    /** Marks the specified part of the Terrain texture as dirty. */
+    DirtyTextureRegion(textureName: string, region: RectInt, allowDelayedCPUSync: boolean): void;
+    /** Returns the alpha map at a position x, y given a width and height. */
+    GetAlphamaps(x: number, y: number, width: number, height: number): unknown;
+    /** Returns the alphamap texture at the specified index. */
+    GetAlphamapTexture(index: number): Texture2D;
+    /** Returns an array of detail patches, which are each identified by X-Z coordinates. Detail objects in the patches are clamped to the maximum count. */
+    GetClampedDetailPatches(density: number): CSArray<Vector2Int>;
+    /** Returns a 2D array of the detail object density (i.e. the number of detail objects for this layer) in the specific location. */
+    GetDetailLayer(xBase: number, yBase: number, width: number, height: number, layer: number): unknown;
+    GetDetailLayer(positionBase: Vector2Int, size: Vector2Int, layer: number): unknown;
+    /** Gets the world space height of the Terrain at a certain point x,y without adding the Terrain&#x27;s world position y. */
+    GetHeight(x: number, y: number): number;
+    /** Gets an array of heightmap samples. */
+    GetHeights(xBase: number, yBase: number, width: number, height: number): unknown;
+    /** Gets an array of Terrain holes samples. */
+    GetHoles(xBase: number, yBase: number, width: number, height: number): unknown;
+    /** Gets an interpolated height at a point x,y. The x and y coordinates are clamped to [0, 1]. */
+    GetInterpolatedHeight(x: number, y: number): number;
+    /** Gets an array of terrain height values using the normalized x,y coordinates. */
+    GetInterpolatedHeights(xBase: number, yBase: number, xCount: number, yCount: number, xInterval: number, yInterval: number): unknown;
+    /** Fills the array with Terrain height values using normalized x,y coordinates. */
+    GetInterpolatedHeights(results: unknown, resultXOffset: number, resultYOffset: number, xBase: number, yBase: number, xCount: number, yCount: number, xInterval: number, yInterval: number): void;
+    /** Get an interpolated normal at a given location. */
+    GetInterpolatedNormal(x: number, y: number): Vector3;
+    /** Returns an array of tesselation maximum height error values per renderable terrain patch.  The returned array can be modified and passed to OverrideMaximumHeightError. */
+    GetMaximumHeightError(): CSArray<number>;
+    /** Returns an array of min max height values for all the renderable patches in a terrain.  The returned array can be modified and then passed to OverrideMinMaxPatchHeights. */
+    GetPatchMinMaxHeights(): CSArray<PatchExtents>;
+    /** Gets the gradient of the terrain at point (x,y). */
+    GetSteepness(x: number, y: number): number;
+    /** Returns an array of all supported detail layer indices in the area. */
+    GetSupportedLayers(xBase: number, yBase: number, totalWidth: number, totalHeight: number): CSArray<number>;
+    GetSupportedLayers(positionBase: Vector2Int, size: Vector2Int): CSArray<number>;
+    /** Gets the tree instance at the specified index. It is used as a faster version of treeInstances[index] as this function doesn&#x27;t create the entire tree instances array. */
+    GetTreeInstance(index: number): TreeInstance;
+    /** Gets whether a certain point at x,y is a hole. */
+    IsHole(x: number, y: number): boolean;
+    /** Override the maximum tessellation height error with user provided values.  Note that the overriden values get reset when the terrain resolution is changed and stays unchanged when the terrain heightmap is painted or changed via script. */
+    OverrideMaximumHeightError(maxError: CSArray<number>): void;
+    /** Override the minimum and maximum patch heights for every renderable terrain patch.  Note that the overriden values get reset when the terrain resolution is changed and stays unchanged when the terrain heightmap is painted or changed via script. */
+    OverrideMinMaxPatchHeights(minMaxHeights: CSArray<PatchExtents>): void;
+    /** Reloads all the values of the available prototypes (ie, detail mesh assets) in the TerrainData Object. */
+    RefreshPrototypes(): void;
+    /** Removes the detail prototype at the specified index. */
+    RemoveDetailPrototype(index: number): void;
+    /** Assign all splat values in the given map area. */
+    SetAlphamaps(x: number, y: number, map: unknown): void;
+    /** Marks the terrain data as dirty to trigger an update of the terrain basemap texture. */
+    SetBaseMapDirty(): void;
+    /** Sets the detail layer density map. */
+    SetDetailLayer(xBase: number, yBase: number, layer: number, details: unknown): void;
+    SetDetailLayer(basePosition: Vector2Int, layer: number, details: unknown): void;
+    /** Sets the resolution of the detail map. */
+    SetDetailResolution(detailResolution: number, resolutionPerPatch: number): void;
+    /** Sets the DetailScatterMode. */
+    SetDetailScatterMode(scatterMode: DetailScatterMode): void;
+    /** Sets an array of heightmap samples. */
+    SetHeights(xBase: number, yBase: number, heights: unknown): void;
+    /** Sets an array of heightmap samples. */
+    SetHeightsDelayLOD(xBase: number, yBase: number, heights: unknown): void;
+    /** Sets an array of Terrain holes samples. */
+    SetHoles(xBase: number, yBase: number, holes: unknown): void;
+    /** Sets an array of Terrain holes samples. */
+    SetHolesDelayLOD(xBase: number, yBase: number, holes: unknown): void;
+    /** This function sets the terrainLayers property, and in addition, registers the action to the Editor&#x27;s undo stack. */
+    SetTerrainLayersRegisterUndo(terrainLayers: CSArray<TerrainLayer>, undoName: string): void;
+    /** Sets the tree instance with new parameters at the specified index. However, you cannot change TreeInstance.prototypeIndex and TreeInstance.position. If you change them, the method throws an ArgumentException. */
+    SetTreeInstance(index: number, instance: TreeInstance): void;
+    /** Sets the Tree Instance array, and optionally snaps Trees onto the surface of the Terrain heightmap. */
+    SetTreeInstances(instances: CSArray<TreeInstance>, snapToHeightmap: boolean): void;
+    /** Performs synchronization queued by previous calls to CopyActiveRenderTextureToHeightmap and DirtyHeightmapRegion, which makes the height data and LOD data used for tessellation up to date. */
+    SyncHeightmap(): void;
+    /** Performs synchronization queued by previous calls to CopyActiveRenderTextureToTexture and DirtyTextureRegion, which makes CPU data of the Terrain textures up to date. */
+    SyncTexture(textureName: string): void;
+    /** Triggers an update to integrate modifications done to the heightmap outside of unity. */
+    UpdateDirtyRegion(x: number, y: number, width: number, height: number, syncHeightmapTextureImmediately: boolean): void;
+
+}
+    
+interface DetailPrototype {
+    prototype: GameObject;
+    prototypeTexture: Texture2D;
+    minWidth: number;
+    maxWidth: number;
+    minHeight: number;
+    maxHeight: number;
+    noiseSeed: number;
+    noiseSpread: number;
+    density: number;
+    bendFactor: number;
+    holeEdgePadding: number;
+    healthyColor: Color;
+    dryColor: Color;
+    renderMode: DetailRenderMode;
+    usePrototypeMesh: boolean;
+    useInstancing: boolean;
+    targetCoverage: number;
+    useDensityScaling: boolean;
+    alignToGround: number;
+    positionJitter: number;
+
+
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    /** Returns true if the detail prototype is valid and the Terrain can accept it. */
+    Validate(): boolean;
+    /** Returns true if the detail prototype is valid and the Terrain can accept it. */
+    Validate(errorMessage: CSArray<string>): boolean;
+
+}
+    
+interface DetailPrototypeConstructor {
+
+    new(): DetailPrototype;
+    new(other: DetailPrototype): DetailPrototype;
+
+
+}
+declare const DetailPrototype: DetailPrototypeConstructor;
+    
+interface TreeInstance {
+    position: Vector3;
+    widthScale: number;
+    heightScale: number;
+    rotation: number;
+    color: Color32;
+    lightmapColor: Color32;
+    prototypeIndex: number;
+
+
+
+}
+    
+interface TreePrototype {
+    prefab: GameObject;
+    bendFactor: number;
+    navMeshLod: number;
+
+
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+
+}
+    
+interface TreePrototypeConstructor {
+
+    new(): TreePrototype;
+    new(other: TreePrototype): TreePrototype;
+
+
+}
+declare const TreePrototype: TreePrototypeConstructor;
+    
+interface SplatPrototype {
+    texture: Texture2D;
+    normalMap: Texture2D;
+    tileSize: Vector2;
+    tileOffset: Vector2;
+    specular: Color;
+    metallic: number;
+    smoothness: number;
+
+
+
+}
+    
+interface SplatPrototypeConstructor {
+
+    new(): SplatPrototype;
+
+
+}
+declare const SplatPrototype: SplatPrototypeConstructor;
+    
+interface TerrainLayer extends Object {
+    diffuseTexture: Texture2D;
+    normalMapTexture: Texture2D;
+    maskMapTexture: Texture2D;
+    tileSize: Vector2;
+    tileOffset: Vector2;
+    specular: Color;
+    metallic: number;
+    smoothness: number;
+    normalScale: number;
+    diffuseRemapMin: Vector4;
+    diffuseRemapMax: Vector4;
+    maskMapRemapMin: Vector4;
+    maskMapRemapMax: Vector4;
+    smoothnessSource: TerrainLayerSmoothnessSource;
+
+
+
+}
+    
+interface TerrainLayerConstructor {
+
+    new(): TerrainLayer;
+
+
+}
+declare const TerrainLayer: TerrainLayerConstructor;
+    
+interface DetailInstanceTransform {
+    posX: number;
+    posY: number;
+    posZ: number;
+    scaleXZ: number;
+    scaleY: number;
+    rotationY: number;
+
+
+
+}
+    
+interface PatchExtents {
+    min: number;
+    max: number;
+
+
+
+}
+    
+interface TerrainDataConstructor {
+    AlphamapTextureName: string;
+    HolesTextureName: string;
+
+    new(): TerrainData;
+
+
+}
+declare const TerrainData: TerrainDataConstructor;
+    
+interface TerrainColliderConstructor {
+
+    new(): TerrainCollider;
+
+
+}
+declare const TerrainCollider: TerrainColliderConstructor;
 
