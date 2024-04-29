@@ -74,7 +74,7 @@ export class RemoteEvent<T extends unknown[] | unknown> {
 	 * @param channel
 	 * @param packageOffset Temporary workaround param.
 	 */
-	constructor(channel: NetworkChannel = NetworkChannel.Reliable, remoteIdentifier: string) {
+	constructor(remoteIdentifier: string, channel: NetworkChannel = NetworkChannel.Reliable) {
 		let id = 0;
 		const context = RemoteKeyHasher.GetCallerContext();
 		if (context) {

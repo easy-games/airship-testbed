@@ -1,7 +1,6 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
 import { Game } from "@Easy/Core/Shared/Game";
-import { NetworkChannel } from "@Easy/Core/Shared/Network/NetworkAPI";
 import { RemoteEvent } from "@Easy/Core/Shared/Network/RemoteEvent";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { Layer } from "@Easy/Core/Shared/Util/Layer";
@@ -27,7 +26,7 @@ export default class TopDownBattleEnemy extends AirshipBehaviour {
 
 	//Events
 	private bin: Bin = new Bin();
-	private onMoveEvent = new RemoteEvent<[nobId: number, targetTime: number]>(NetworkChannel.Reliable, "OnMoveEvent");
+	private onMoveEvent = new RemoteEvent<[nobId: number, targetTime: number]>("OnMoveEvent");
 	private enabled = false;
 
 	override OnEnable(): void {

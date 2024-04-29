@@ -22,10 +22,6 @@ type RemoteCallbackFromServer<T> = (...args: RemoteParamsToServer<T>) => void;
 type RemoteFunctionReturn<RX> = RX extends [infer A] ? A : RX;
 type RemoteFunctionCallback<TX, RX> = (player: Player, ...args: RemoteParamsToServer<TX>) => RemoteFunctionReturn<RX>;
 
-// To prevent collisions with RemoteEvent IDs:
-const RF_ID_OFFSET = 1000000;
-let ID_COUNTER = 0;
-
 const packageMap = new Map<number, number>();
 
 class RemoteFunctionClient<TX extends unknown[] | unknown, RX extends unknown[] | unknown> {
@@ -89,8 +85,7 @@ export class RemoteFunction<TX extends unknown[] | unknown, RX extends unknown[]
 			id = RemoteKeyHasher.GetRemoteHash(context, remoteIdentifier, "_f");
 		} else {
 			warn(
-				`Could not generate id for remote: ${remoteIdentifier}. Unable to determine the context that it was created in. 
-				This may result in unexpected network behavior.`,
+				`Could not generate id for remote: ${remoteIdentifier}. Unable to determine the context that it was created in. This may result in unexpected network behavior.`,
 			);
 		}
 

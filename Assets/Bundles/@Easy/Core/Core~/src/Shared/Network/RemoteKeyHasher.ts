@@ -79,20 +79,20 @@ export class RemoteKeyHasher {
 			: `${context.packageOrg}/${context.packageName}/${uniqueIdentifier}`;
 		if (append) absoluteKey = `${absoluteKey}${append}`;
 		const keyHash = absoluteKey.hash();
+		if (this.remoteIdentifierCache.has(absoluteKey)) {
+			error(
+				`<b>Remote key ${uniqueIdentifier} is already in use. (${absoluteKey}) Please choose a unique name for remote. If you are seeing this error unexpectedly, please contact support.</b>`,
+			);
+		}
 		if (this.hashToIdentifier.has(keyHash)) {
 			const collision = this.hashToIdentifier.get(keyHash);
 			error(
-				`FATAL ERROR. Remote keys ${absoluteKey} and ${collision} both produced hash ${keyHash}. Please send this error to support.`,
+				`<b>FATAL ERROR. Remote keys ${absoluteKey} and ${collision} both produced hash ${keyHash}. Please send this error to support.</b>`,
 			);
 		}
-		if (this.remoteIdentifierCache.has(absoluteKey)) {
-			error(
-				`Remote key ${uniqueIdentifier} is already in use. (${absoluteKey}) Please choose a unique name for remote. If you are seeing this error unexpectedly, please contact support.`,
-			);
-		}
+		print(`[Debug] ${absoluteKey} (${keyHash})`);
 		this.hashToIdentifier.set(keyHash, absoluteKey);
 		this.remoteIdentifierCache.add(absoluteKey);
-		print(`Hash for key: ${absoluteKey} (${keyHash})`);
 		return keyHash;
 	}
 }

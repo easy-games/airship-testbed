@@ -4,7 +4,6 @@ import { RemoteEvent } from "Shared/Network/RemoteEvent";
 import { NetworkUtil } from "Shared/Util/NetworkUtil";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal } from "Shared/Util/Signal";
-import { NetworkChannel } from "../Network/NetworkAPI";
 import { CanClientDamageInfo } from "./CanClientDamageInfo";
 import { DamageInfo, DamageInfoCustomData } from "./DamageInfo";
 
@@ -27,11 +26,11 @@ export class DamageSingleton implements OnStart {
 
 	private damageRemote = new RemoteEvent<
 		[nobId: number, damage: number, attackerNobId: number | undefined, data: DamageInfoCustomData]
-	>(NetworkChannel.Reliable, "DamageRemote");
+	>("DamageRemote");
 
 	private deathRemote = new RemoteEvent<
 		[nobId: number, damage: number, attackerNobId: number | undefined, data: DamageInfoCustomData]
-	>(NetworkChannel.Reliable, "DeathRemote");
+	>("DeathRemote");
 
 	constructor() {
 		Airship.damage = this;
