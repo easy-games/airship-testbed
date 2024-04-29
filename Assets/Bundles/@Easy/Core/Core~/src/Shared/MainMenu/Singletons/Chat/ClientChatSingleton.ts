@@ -94,7 +94,9 @@ export class ClientChatSingleton implements OnStart {
 
 		Dependency<MainMenuSingleton>().ObserveScreenSize((st, size) => {
 			if (Game.IsMobile()) {
-				this.canvas.GetComponent<CanvasScaler>()!.scaleFactor = Game.GetScaleFactor();
+				const scaler = this.canvas.GetComponent<CanvasScaler>()!;
+				scaler.uiScaleMode = ScaleMode.ConstantPixelSize;
+				scaler.scaleFactor = Game.GetScaleFactor();
 				const wrapperRect = this.wrapper.GetComponent<RectTransform>()!;
 
 				if (Game.deviceType === AirshipDeviceType.Phone) {

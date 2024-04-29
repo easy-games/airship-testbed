@@ -31,6 +31,9 @@ export declare class AirshipCharacterCameraSingleton implements OnStart {
     humanoidCameraMode: HumanoidCameraMode | undefined;
     private orbitCameraMode;
     private characterCameraMode;
+    private overrideFOV;
+    private firstPersonFOV;
+    private thirdPersonFOV;
     constructor();
     OnStart(): void;
     /**
@@ -57,7 +60,7 @@ export declare class AirshipCharacterCameraSingleton implements OnStart {
      * @param fieldOfView Field of view.
      * @param smooth If `true` the FOV will transition smoothly to the target.
      */
-    SetFOV(targetCamera: CharacterCameraType, fieldOfView: number, smooth?: boolean): void;
+    SetFOV(targetCameraType: CharacterCameraType, fieldOfView: number, smooth?: boolean): void;
     /**
      * Returns the camera's field-of-view.
      */

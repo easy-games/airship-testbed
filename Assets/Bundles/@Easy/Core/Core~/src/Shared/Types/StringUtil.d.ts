@@ -1,11 +1,20 @@
 declare namespace StringUtils {
-	/** Returns a new string equivalent to this string but with the whitespace removed from the start and end. */
+	/**
+	 * Returns a new string equivalent to this string but with the whitespace removed from the start and end.
+	 * @deprecated Use `string.trim` instead.
+	 */
 	function trim(str: string): string;
 
-	/** Returns a new string equivalent to this string but with the whitespace removed from the start. */
+	/**
+	 * Returns a new string equivalent to this string but with the whitespace removed from the start.
+	 * @deprecated Use `string.trimStart` instead.
+	 */
 	function trimStart(str: string): string;
 
-	/** Returns a new string equivalent to this string but with the whitespace removed from the end. */
+	/**
+	 * Returns a new string equivalent to this string but with the whitespace removed from the end.
+	 * @deprecated Use `string.trimEnd` instead.
+	 */
 	function trimEnd(str: string): string;
 
 	/**

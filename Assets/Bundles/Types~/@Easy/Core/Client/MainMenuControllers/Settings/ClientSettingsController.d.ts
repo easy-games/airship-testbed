@@ -23,8 +23,6 @@ export declare class ClientSettingsController implements OnStart {
     SetScreenshotShowUI(showUI: boolean): void;
     SetScreenshotRenderHD(renderHd: boolean): void;
     GetGlobalVolume(): number;
-    GetFirstPersonFov(): number;
-    GetThirdPersonFov(): number;
     GetScreenshotShowUI(): boolean;
     GetScreenshotRenderHD(): boolean;
 }

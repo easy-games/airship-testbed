@@ -1,4 +1,3 @@
-import { ClientSettingsController } from "@Easy/Core/Client/MainMenuControllers/Settings/ClientSettingsController";
 import ObjectUtils from "@easy-games/unity-object-utils";
 import { Controller, Dependency, OnStart } from "Shared/Flamework";
 import { CameraMode } from ".";
@@ -64,6 +63,11 @@ export class AirshipCharacterCameraSingleton implements OnStart {
 
 	private characterCameraMode: CharacterCameraMode = CharacterCameraMode.Orbit;
 
+	private overrideFOV = new Map<CharacterCameraType, number>();
+
+	private firstPersonFOV = 80;
+	private thirdPersonFOV = 70;
+
 	constructor() {
 		Airship.characterCamera = this;
 		if (CameraReferences.Instance().DoesCameraRigExist()) {
@@ -116,8 +120,9 @@ export class AirshipCharacterCameraSingleton implements OnStart {
 	 * @param fieldOfView Field of view.
 	 * @param smooth If `true` the FOV will transition smoothly to the target.
 	 */
-	public SetFOV(targetCamera: CharacterCameraType, fieldOfView: number, smooth = false) {
-		this.cameraSystem?.SetFOV(targetCamera, fieldOfView, !smooth);
+	public SetFOV(targetCameraType: CharacterCameraType, fieldOfView: number, smooth = false) {
+		this.cameraSystem?.SetFOV(targetCameraType, fieldOfView, !smooth);
+		this.overrideFOV.set(targetCameraType, fieldOfView);
 	}
 
 	/**
@@ -161,14 +166,22 @@ export class AirshipCharacterCameraSingleton implements OnStart {
 	private MakeFOVReflectCharacterState(): void {
 		if (!this.IsEnabled()) return;
 
-		const clientSettings = Dependency<ClientSettingsController>();
-		let baseFov = this.characterState?.firstPerson
-			? clientSettings.GetFirstPersonFov()
-			: clientSettings.GetThirdPersonFov();
-		if (this.characterState?.sprinting) baseFov *= this.sprintFovMultiplier;
+		// first person
+		{
+			let fov = this.overrideFOV.get(CharacterCameraType.FIRST_PERSON) ?? this.firstPersonFOV;
+			if (this.characterState?.sprinting) {
+				fov *= this.sprintFovMultiplier;
+			}
+			this.SetFOV(CharacterCameraType.FIRST_PERSON, fov, true);
+		}
 
-		for (const cameraType of [CharacterCameraType.FIRST_PERSON, CharacterCameraType.THIRD_PERSON]) {
-			this.SetFOV(cameraType, baseFov, true);
+		// third person
+		{
+			let fov = this.overrideFOV.get(CharacterCameraType.THIRD_PERSON) ?? this.thirdPersonFOV;
+			if (this.characterState?.sprinting) {
+				fov *= this.sprintFovMultiplier;
+			}
+			this.SetFOV(CharacterCameraType.THIRD_PERSON, fov, true);
 		}
 	}
 
