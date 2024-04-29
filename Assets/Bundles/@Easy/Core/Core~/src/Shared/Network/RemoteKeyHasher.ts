@@ -90,7 +90,6 @@ export class RemoteKeyHasher {
 				`<b>FATAL ERROR. Remote keys ${absoluteKey} and ${collision} both produced hash ${keyHash}. Please send this error to support.</b>`,
 			);
 		}
-		print(`[Debug] ${absoluteKey} (${keyHash})`);
 		this.hashToIdentifier.set(keyHash, absoluteKey);
 		this.remoteIdentifierCache.add(absoluteKey);
 		return keyHash;
