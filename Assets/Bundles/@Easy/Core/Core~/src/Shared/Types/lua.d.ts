@@ -361,6 +361,18 @@ interface String {
 
 	/** Receives a string and returns a copy of this string with all lowercase letters changed to uppercase. All other characters are left unchanged. */
 	upper(this: string): string;
+
+	/** Get the string hash. */
+	hash(this: string): number;
+
+	/** Returns the string with all leading and trailing whitespace removed. */
+	trim(this: string): string;
+
+	/** Returns the string with all leading whitespace removed. */
+	trimStart(this: string): string;
+
+	/** Returns the string with all trailing whitespace removed. */
+	trimEnd(this: string): string;
 }
 
 declare namespace string {
@@ -453,6 +465,18 @@ declare namespace string {
 
 	/** Receives a string and returns a copy of this string with all lowercase letters changed to uppercase. All other characters are left unchanged. */
 	function upper(str: string): string;
+
+	/** Get the string hash. */
+	function hash(str: string): number;
+
+	/** Returns the string with all leading and trailing whitespace removed. */
+	function trim(str: string): string;
+
+	/** Returns the string with all leading whitespace removed. */
+	function trimStart(str: string): string;
+
+	/** Returns the string with all trailing whitespace removed. */
+	function trimEnd(str: string): string;
 }
 
 declare namespace math {

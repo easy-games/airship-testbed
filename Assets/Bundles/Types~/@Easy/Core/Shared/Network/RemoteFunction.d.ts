@@ -21,6 +21,6 @@ declare class RemoteFunctionServer<TX extends unknown[] | unknown, RX extends un
 export declare class RemoteFunction<TX extends unknown[] | unknown, RX extends unknown[] | unknown> {
     readonly server: RemoteFunctionServer<TX, RX>;
     readonly client: RemoteFunctionClient<TX, RX>;
-    constructor(packageOffset?: number);
+    constructor(remoteIdentifier: string);
 }
 export {};

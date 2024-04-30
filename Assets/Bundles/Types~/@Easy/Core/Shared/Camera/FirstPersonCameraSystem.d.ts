@@ -15,6 +15,7 @@ export declare class FirstPersonCameraSystem {
     private bin;
     private currentTime;
     private viewmodelController;
+    private defaultSpineRotation;
     constructor(character: Character, startInFirstPerson: boolean);
     Destroy(): void;
     private LateUpdate;
