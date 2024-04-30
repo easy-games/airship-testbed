@@ -410,6 +410,35 @@ declare const CanvasUIBridge: CanvasUIBridgeConstructor;
 declare namespace debug {
 	function traceback(message?: string, level?: number): string;
 	function traceback(thread: thread, message?: string, level?: number): string;
+	function info<T extends string>(
+		thread: thread,
+		functionOrLevel: Callback | number,
+		options: T,
+	): T extends `${infer A}${infer B}${infer C}${infer D}${infer E}${infer _}`
+		? LuaTuple<TS.InfoFlags<[A, B, C, D, E]>>
+		: T extends `${infer A}${infer B}${infer C}${infer D}${infer _}`
+			? LuaTuple<TS.InfoFlags<[A, B, C, D]>>
+			: T extends `${infer A}${infer B}${infer C}${infer _}`
+				? LuaTuple<TS.InfoFlags<[A, B, C]>>
+				: T extends `${infer A}${infer B}${infer _}`
+					? LuaTuple<TS.InfoFlags<[A, B]>>
+					: T extends `${infer A}${infer _}`
+						? LuaTuple<TS.InfoFlags<[A]>>
+						: LuaTuple<[unknown, unknown, unknown, unknown, unknown]>;
+	function info<T extends string>(
+		functionOrLevel: Callback | number,
+		options: T,
+	): T extends `${infer A}${infer B}${infer C}${infer D}${infer E}${infer _}`
+		? LuaTuple<TS.InfoFlags<[A, B, C, D, E]>>
+		: T extends `${infer A}${infer B}${infer C}${infer D}${infer _}`
+			? LuaTuple<TS.InfoFlags<[A, B, C, D]>>
+			: T extends `${infer A}${infer B}${infer C}${infer _}`
+				? LuaTuple<TS.InfoFlags<[A, B, C]>>
+				: T extends `${infer A}${infer B}${infer _}`
+					? LuaTuple<TS.InfoFlags<[A, B]>>
+					: T extends `${infer A}${infer _}`
+						? LuaTuple<TS.InfoFlags<[A]>>
+						: LuaTuple<[unknown, unknown, unknown, unknown, unknown]>;
 }
 
 interface TimeManager {

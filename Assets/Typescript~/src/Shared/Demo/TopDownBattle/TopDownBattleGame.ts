@@ -1,8 +1,8 @@
-import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
-import TopDownBattleEnemySpawner from "./TopDownBattleEnemies/TopDownBattleEnemySpawner";
-import { RemoteEvent } from "@Easy/Core/Shared/Network/RemoteEvent";
 import { Game } from "@Easy/Core/Shared/Game";
+import { RemoteEvent } from "@Easy/Core/Shared/Network/RemoteEvent";
+import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
+import TopDownBattleEnemySpawner from "./TopDownBattleEnemies/TopDownBattleEnemySpawner";
 
 export enum GameMode {
 	IDLE,
@@ -15,7 +15,7 @@ export default class TopDownBattleGame extends AirshipBehaviour {
 	public static instance: TopDownBattleGame;
 
 	//Trigger new game modes over the network
-	public static gameModeEvent = new RemoteEvent<[gameMode: GameMode]>();
+	public static gameModeEvent = new RemoteEvent<[gameMode: GameMode]>("GameModeEvent");
 	//Notify local scripts of game mode changes
 	public static gameModeSignal = new Signal<[gameMode: GameMode]>();
 

@@ -1,5 +1,6 @@
 import { Player } from "Shared/Player/Player";
 import NetworkAPI, { NetworkChannel } from "./NetworkAPI";
+import { RemoteKeyHasher } from "./RemoteKeyHasher";
 
 type RemoteParamsToClient<T> = Parameters<
 	T extends unknown[]
@@ -73,17 +74,16 @@ export class RemoteEvent<T extends unknown[] | unknown> {
 	 * @param channel
 	 * @param packageOffset Temporary workaround param.
 	 */
-	constructor(channel: NetworkChannel = NetworkChannel.Reliable, packageOffset?: number) {
-		let id: number;
-		if (packageOffset !== undefined) {
-			if (packageMap.has(packageOffset)) {
-				id = packageMap.get(packageOffset)! + 1;
-			} else {
-				id = packageOffset;
-			}
-			packageMap.set(packageOffset, id);
+	constructor(remoteIdentifier: string, channel: NetworkChannel = NetworkChannel.Reliable) {
+		let id = 0;
+		const context = RemoteKeyHasher.GetCallerContext();
+		if (context) {
+			id = RemoteKeyHasher.GetRemoteHash(context, remoteIdentifier, "_e");
 		} else {
-			id = ID_COUNTER++;
+			warn(
+				`Could not generate id for remote: ${remoteIdentifier}. Unable to determine the context that it was created in. 
+				This may result in unexpected network behavior.`,
+			);
 		}
 
 		this.server = new RemoteEventServer(id, channel);

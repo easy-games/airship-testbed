@@ -26,11 +26,11 @@ export class DamageSingleton implements OnStart {
 
 	private damageRemote = new RemoteEvent<
 		[nobId: number, damage: number, attackerNobId: number | undefined, data: DamageInfoCustomData]
-	>();
+	>("DamageRemote");
 
 	private deathRemote = new RemoteEvent<
 		[nobId: number, damage: number, attackerNobId: number | undefined, data: DamageInfoCustomData]
-	>();
+	>("DeathRemote");
 
 	constructor() {
 		Airship.damage = this;

@@ -26,7 +26,7 @@ export default class TopDownBattleEnemy extends AirshipBehaviour {
 
 	//Events
 	private bin: Bin = new Bin();
-	private onMoveEvent = new RemoteEvent<[nobId: number, targetTime: number]>();
+	private onMoveEvent = new RemoteEvent<[nobId: number, targetTime: number]>("OnMoveEvent");
 	private enabled = false;
 
 	override OnEnable(): void {
