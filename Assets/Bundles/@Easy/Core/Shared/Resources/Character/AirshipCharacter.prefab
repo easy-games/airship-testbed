@@ -6138,6 +6138,7 @@ MonoBehaviour:
   upwardsGravityMod: 0.75
   maxSlopeSpeed: 2
   slopeForce: 10
+  maxStepUpHeight: 0.225
   airDensity: 0.05
   drag: 15
   friction: 0.3
