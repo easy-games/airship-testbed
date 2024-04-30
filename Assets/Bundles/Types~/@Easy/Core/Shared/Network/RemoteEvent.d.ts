@@ -31,6 +31,6 @@ export declare class RemoteEvent<T extends unknown[] | unknown> {
      * @param channel
      * @param packageOffset Temporary workaround param.
      */
-    constructor(channel?: NetworkChannel, packageOffset?: number);
+    constructor(remoteIdentifier: string, channel?: NetworkChannel);
 }
 export {};

@@ -22,7 +22,7 @@ export class InventorySingleton implements OnStart {
 
 	public remotes = {
 		clientToServer: {
-			getFullUpdate: new RemoteFunction<[invId: number], InventoryDto | undefined>(),
+			getFullUpdate: new RemoteFunction<[invId: number], InventoryDto | undefined>("GetInventoryUpdate"),
 		},
 	};
 
