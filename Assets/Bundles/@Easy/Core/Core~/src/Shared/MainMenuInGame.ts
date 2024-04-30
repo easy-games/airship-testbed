@@ -36,6 +36,3 @@ gameObject.OnFixedUpdate(() => {
 Flamework.AddPath("assets/bundles/@Easy/Core/shared/resources/ts/mainmenu", "^.*singleton.lua$");
 Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/mainmenucontrollers", "^.*controller.lua$");
 Flamework.Ignite();
-
-const mainMenuLoadingScreen = GameObject.Find("MainMenuLoadingScreen").GetComponent<MainMenuLoadingScreen>()!;
-mainMenuLoadingScreen.Close();

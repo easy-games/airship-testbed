@@ -48,7 +48,7 @@ export class UserController implements OnStart {
 				this.localUser = data;
 				this.localUserLoaded = true;
 
-				if (Game.coreContext === CoreContext.MAIN_MENU) {
+				if (Game.coreContext === CoreContext.MAIN_MENU || true) {
 					const writeUser = Game.localPlayer as Writable<Player>;
 					writeUser.userId = data.uid;
 					writeUser.username = data.username;

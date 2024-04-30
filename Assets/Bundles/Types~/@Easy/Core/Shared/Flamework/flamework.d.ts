@@ -27,7 +27,7 @@ export declare namespace Flamework {
     /** @hidden */
     export function resolveDependency(id: string): {} | null;
     /** @hidden */
-    export function AddPath(path: string, searchPattern?: string): void;
+    export function AddPath(path: string, searchPattern?: string, ignorePattern?: string): void;
     /** @hidden */
     export function _implements<T>(object: unknown, id: string): object is T;
     /**

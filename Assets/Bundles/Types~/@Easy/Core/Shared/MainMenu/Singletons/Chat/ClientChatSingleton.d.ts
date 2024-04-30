@@ -1,0 +1,32 @@
+import { ChatCommand } from "../../../Commands/ChatCommand";
+import { OnStart } from "../../../Flamework";
+import { Player } from "../../../Player/Player";
+export declare class ClientChatSingleton implements OnStart {
+    canvas: Canvas;
+    private content;
+    private wrapper;
+    private chatMessagePrefab;
+    private inputField;
+    private inputWrapperImage;
+    private selected;
+    private selectedBin;
+    private chatMessageElements;
+    private prevSentMessages;
+    private historyIndex;
+    private commands;
+    private lastChatMessageRenderedTime;
+    constructor();
+    OpenMobile(): void;
+    HideMobile(): void;
+    IsOpenMobile(): boolean;
+    RegisterCommand(command: ChatCommand): void;
+    IsOpen(): boolean;
+    OnStart(): void;
+    private CheckIfShouldHide;
+    ShowAllChatMessages(): void;
+    SubmitInputField(): void;
+    SendChatMessage(message: string): void;
+    RenderChatMessage(message: string, sender?: Player): void;
+    ClearChatMessages(): void;
+    IsChatFocused(): boolean;
+}

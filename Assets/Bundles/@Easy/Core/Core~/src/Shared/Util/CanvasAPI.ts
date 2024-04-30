@@ -43,6 +43,7 @@ export class CanvasAPI {
 	}
 
 	public static OnScreenSizeEvent(callback: (width: number, height: number) => void) {
+		this.CheckForInterceptor();
 		return this.eventInterceptor!.OnScreenSizeChangeEvent((width, height) => {
 			callback(width as number, height as number);
 		});
@@ -239,6 +240,11 @@ export class CanvasAPI {
 
 	/** Fetches and sets the global event interceptor. */
 	private static Setup(gameObject: GameObject): void {
+		this.CheckForInterceptor();
+		this.RegisterEvents(gameObject);
+	}
+
+	private static CheckForInterceptor() {
 		if (CanvasAPI.eventInterceptor === undefined) {
 			this.eventInterceptor =
 				GameObject.Find("CanvasUIEventsInterceptor").GetComponent<CanvasUIEventInterceptor>()!;
@@ -252,6 +258,5 @@ export class CanvasAPI {
 				this.selectedInstanceId = undefined;
 			});
 		}
-		this.RegisterEvents(gameObject);
 	}
 }

@@ -133,6 +133,18 @@ export class ClientChatSingleton implements OnStart {
 		contextbridge.callback<(val: boolean) => void>("ClientChatSingleton:SetUIEnabled", (val) => {
 			this.canvas.gameObject.SetActive(val);
 		});
+
+		contextbridge.callback<(val: boolean) => void>("ClientChatSingleton:SetOpenMobile", (val) => {
+			if (val) {
+				this.OpenMobile();
+			} else {
+				this.HideMobile();
+			}
+		});
+
+		contextbridge.callback<() => boolean>("ClientChatSingleton:IsOpenMobile", () => {
+			return this.IsOpenMobile();
+		});
 	}
 
 	public OpenMobile(): void {

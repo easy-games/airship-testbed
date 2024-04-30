@@ -71,7 +71,7 @@ export class MainMenuController implements OnStart {
 
 		this.avatarView = Object.Instantiate(
 			this.refs.GetValue<GameObject>("Avatar", "Avatar3DSceneTemplate"),
-			CoreRefs.rootTransform,
+			CoreRefs.protectedTransform,
 		).GetAirshipComponent<AvatarViewComponent>()!;
 
 		if (Game.coreContext === CoreContext.GAME) {
