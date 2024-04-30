@@ -46,7 +46,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ColorMaskTex:
-        m_Texture: {fileID: 2800000, guid: cdfce0ca5afe5464e9c97c97bf56ebb5, type: 3}
+        m_Texture: {fileID: 2800000, guid: 9914819c162b8a54780721d0cf665692, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _CubeTex:
@@ -86,7 +86,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalTex:
-        m_Texture: {fileID: 2800000, guid: 3613c164ee3335f488e7a97688c59020, type: 3}
+        m_Texture: {fileID: 2800000, guid: 83b278469687ab043ae295b434d650e5, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -156,7 +156,7 @@ Material:
     - _SrcBlend: 1
     - _SunScale: 1
     - _Triplanar: 1
-    - _TriplanarScale: 2.13
+    - _TriplanarScale: 0.5
     - _UVSec: 0
     - _VERTEX_LIGHT: 0
     - _ZWrite: 1
