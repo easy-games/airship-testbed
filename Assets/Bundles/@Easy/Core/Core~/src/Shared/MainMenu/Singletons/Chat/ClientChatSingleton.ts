@@ -1,4 +1,6 @@
 import { CoreUIController } from "@Easy/Core/Client/MainMenuControllers/CoreUIController";
+import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
+import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
 import { MainMenuSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/MainMenuSingleton";
 import { Airship } from "Shared/Airship";
 import { AudioManager } from "Shared/Audio/AudioManager";
@@ -10,7 +12,7 @@ import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { Player } from "Shared/Player/Player";
 import { CoreSound } from "Shared/Sound/CoreSound";
-import { Keyboard, Mouse } from "Shared/UserInput";
+import { ControlScheme, Keyboard, Mouse, Preferred } from "Shared/UserInput";
 import { AppManager } from "Shared/Util/AppManager";
 import { Bin } from "Shared/Util/Bin";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
@@ -134,16 +136,21 @@ export class ClientChatSingleton implements OnStart {
 			this.canvas.gameObject.SetActive(val);
 		});
 
-		contextbridge.callback<(val: boolean) => void>("ClientChatSingleton:SetOpenMobile", (val) => {
-			if (val) {
-				this.OpenMobile();
-			} else {
-				this.HideMobile();
-			}
-		});
-
-		contextbridge.callback<() => boolean>("ClientChatSingleton:IsOpenMobile", () => {
-			return this.IsOpenMobile();
+		task.delay(0, () => {
+			const mobileOverlayCanvas = Object.Instantiate(
+				AssetCache.LoadAsset(
+					"@Easy/Core/Shared/Resources/Prefabs/UI/MobileControls/MobileOverlayCanvas.prefab",
+				),
+				CoreRefs.protectedTransform,
+			);
+			const controls = new Preferred();
+			controls.ObserveControlScheme((scheme) => {
+				if (scheme === ControlScheme.Touch) {
+					mobileOverlayCanvas.SetActive(true);
+				} else {
+					mobileOverlayCanvas.SetActive(false);
+				}
+			});
 		});
 	}
 

@@ -2,11 +2,8 @@ import { Controller, Dependency, OnStart } from "Shared/Flamework";
 import { Game } from "Shared/Game";
 import { Keyboard } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
-import { ColorUtil } from "Shared/Util/ColorUtil";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal } from "Shared/Util/Signal";
-import { Theme } from "Shared/Util/Theme";
-import { ClientSettingsController } from "../../../Client/MainMenuControllers/Settings/ClientSettingsController";
 import { AirshipCharacterCameraSingleton } from "../../Camera/AirshipCharacterCameraSingleton";
 import { CharacterInput } from "./CharacterInput";
 import { LocalCharacterInputSignal } from "./LocalCharacterInputSignal";
@@ -57,26 +54,26 @@ export class LocalCharacterSingleton implements OnStart {
 	}
 
 	private TakeScreenshot() {
-		if (!this.screenshot) {
-			return;
-		}
-		const clientSettings = Dependency<ClientSettingsController>();
-		const showUI = clientSettings.GetScreenshotShowUI();
-		const supersample = clientSettings.GetScreenshotRenderHD();
-		let screenshotFilename = os.date("Screenshot-%Y-%m-%d-%H-%M-%S");
-		const superSampleSize = supersample ? 4 : 1;
-		print(`Capturing screenshot. UI: ${showUI} Supersample: ${superSampleSize} Name: ${screenshotFilename}`);
-		if (showUI) {
-			this.screenshot.TakeScreenshot(screenshotFilename, superSampleSize, true);
-		} else {
-			this.screenshot.TakeCameraScreenshot(Camera.main, screenshotFilename, superSampleSize);
-		}
-		if (supersample && !showUI) {
-			Game.localPlayer.SendMessage(
-				ColorUtil.ColoredText(Theme.red, "HD withoutout UI is currently not supported"),
-			);
-		}
-		Game.localPlayer.SendMessage(ColorUtil.ColoredText(Theme.yellow, `Captured screenshot ${screenshotFilename}`));
+		// if (!this.screenshot) {
+		// 	return;
+		// }
+		// const clientSettings = Dependency<ClientSettingsController>();
+		// const showUI = clientSettings.GetScreenshotShowUI();
+		// const supersample = clientSettings.GetScreenshotRenderHD();
+		// let screenshotFilename = os.date("Screenshot-%Y-%m-%d-%H-%M-%S");
+		// const superSampleSize = supersample ? 4 : 1;
+		// print(`Capturing screenshot. UI: ${showUI} Supersample: ${superSampleSize} Name: ${screenshotFilename}`);
+		// if (showUI) {
+		// 	this.screenshot.TakeScreenshot(screenshotFilename, superSampleSize, true);
+		// } else {
+		// 	this.screenshot.TakeCameraScreenshot(Camera.main, screenshotFilename, superSampleSize);
+		// }
+		// if (supersample && !showUI) {
+		// 	Game.localPlayer.SendMessage(
+		// 		ColorUtil.ColoredText(Theme.red, "HD withoutout UI is currently not supported"),
+		// 	);
+		// }
+		// Game.localPlayer.SendMessage(ColorUtil.ColoredText(Theme.yellow, `Captured screenshot ${screenshotFilename}`));
 	}
 
 	OnStart() {

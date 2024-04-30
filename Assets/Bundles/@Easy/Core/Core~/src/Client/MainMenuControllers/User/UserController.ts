@@ -16,7 +16,9 @@ export class UserController implements OnStart {
 	public onLocalUserUpdated = new Signal<User>();
 	private localUserLoaded = false;
 
-	constructor(private readonly authController: AuthController) {}
+	constructor(private readonly authController: AuthController) {
+		// Game.localPlayer = new Player(undefined as unknown as NetworkObject, 0, "loading", "loading");
+	}
 
 	OnStart(): void {
 		this.authController.onAuthenticated.Connect(() => {
@@ -49,7 +51,7 @@ export class UserController implements OnStart {
 				this.localUserLoaded = true;
 
 				if (Game.coreContext === CoreContext.MAIN_MENU || true) {
-					const writeUser = Game.localPlayer as Writable<Player>;
+					const writeUser = Game.localPlayer as Player;
 					writeUser.userId = data.uid;
 					writeUser.username = data.username;
 					Game.localPlayerLoaded = true;

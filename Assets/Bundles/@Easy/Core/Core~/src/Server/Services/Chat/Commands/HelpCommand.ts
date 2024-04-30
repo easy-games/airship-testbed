@@ -1,5 +1,5 @@
-import { Dependency } from "Shared/Flamework";
 import { ChatCommand } from "Shared/Commands/ChatCommand";
+import { Dependency } from "Shared/Flamework";
 import { Player } from "Shared/Player/Player";
 import { ColorUtil } from "Shared/Util/ColorUtil";
 import { Theme } from "Shared/Util/Theme";

@@ -1,5 +1,7 @@
+import { Dependency } from "../../Flamework";
 import { Bin } from "../../Util/Bin";
 import { CanvasAPI } from "../../Util/CanvasAPI";
+import { ClientChatSingleton } from "../Singletons/Chat/ClientChatSingleton";
 
 export default class MobileChatToggleButton extends AirshipBehaviour {
 	@Header("Variables")
@@ -14,19 +16,14 @@ export default class MobileChatToggleButton extends AirshipBehaviour {
 	private bin = new Bin();
 
 	public OnEnable(): void {
-		this.SetActiveVisuals(
-			contextbridge.invoke<() => boolean>("ClientChatSingleton:IsOpenMobile", LuauContext.Protected),
-		);
+		const clientChat = Dependency<ClientChatSingleton>();
+		this.SetActiveVisuals(clientChat.IsOpenMobile());
 
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnClickEvent(this.button.gameObject, () => {
 				let newVal = !this.active;
 				this.SetActiveVisuals(newVal);
-				contextbridge.invoke<(val: boolean) => void>(
-					"ClientChatSingleton:SetOpenMobile",
-					LuauContext.Protected,
-					newVal,
-				);
+				newVal ? clientChat.OpenMobile() : clientChat.HideMobile();
 			}),
 		);
 	}

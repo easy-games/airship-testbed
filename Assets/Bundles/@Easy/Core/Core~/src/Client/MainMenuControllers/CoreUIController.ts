@@ -14,7 +14,6 @@ export class CoreUIController implements OnStart {
 		this.coreUIGO.name = "CoreUI";
 		this.refs = this.coreUIGO.GetComponent<GameObjectReferences>()!;
 
-		print("registering callback CoreUIController:GetRefs");
 		contextbridge.callback<() => GameObjectReferences>("CoreUIController:GetRefs", () => {
 			return this.refs;
 		});

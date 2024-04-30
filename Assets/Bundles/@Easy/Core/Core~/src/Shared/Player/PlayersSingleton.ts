@@ -1,4 +1,3 @@
-import { UserController } from "@Easy/Core/Client/MainMenuControllers/User/UserController";
 import ObjectUtils from "@easy-games/unity-object-utils";
 import { Airship } from "Shared/Airship";
 import { CoreContext } from "Shared/CoreClientContext";
@@ -18,6 +17,13 @@ import { AirshipUrl } from "../Util/AirshipUrl";
 import { OnUpdate } from "../Util/Timer";
 import { DecodeJSON, EncodeJSON } from "../json";
 import { Player, PlayerDto } from "./Player";
+
+/*
+ * This class is instantiated in BOTH Game and Protected context.
+ * This means there are two instances of it running.
+ *
+ * Protected context mainly uses this for utilities (e.g. GetProfilePictureSpriteAsync)
+ */
 
 @Controller({ loadOrder: -1000 })
 @Service({ loadOrder: -1000 })
@@ -85,16 +91,18 @@ export class PlayersSingleton implements OnStart {
 			};
 		}
 
-		this.onPlayerJoined.Connect((player) => {
-			if (Game.IsServer() && this.joinMessagesEnabled) {
-				Game.BroadcastMessage(ChatColor.Aqua(player.username) + ChatColor.Gray(" joined the server."));
-			}
-		});
-		this.onPlayerDisconnected.Connect((player) => {
-			if (Game.IsServer() && this.disconnectMessagesEnabled) {
-				Game.BroadcastMessage(ChatColor.Aqua(player.username) + ChatColor.Gray(" disconnected."));
-			}
-		});
+		if (Game.IsGameContext()) {
+			this.onPlayerJoined.Connect((player) => {
+				if (Game.IsServer() && this.joinMessagesEnabled) {
+					Game.BroadcastMessage(ChatColor.Aqua(player.username) + ChatColor.Gray(" joined the server."));
+				}
+			});
+			this.onPlayerDisconnected.Connect((player) => {
+				if (Game.IsServer() && this.disconnectMessagesEnabled) {
+					Game.BroadcastMessage(ChatColor.Aqua(player.username) + ChatColor.Gray(" disconnected."));
+				}
+			});
+		}
 	}
 
 	OnStart(): void {
@@ -103,22 +111,24 @@ export class PlayersSingleton implements OnStart {
 			// HttpManager.SetLoggingEnabled(true);
 		}
 
-		task.spawn(() => {
-			if (Game.IsClient()) {
-				this.InitClient();
-			}
-			if (Game.IsServer()) {
+		if (Game.IsGameContext()) {
+			task.spawn(() => {
 				if (Game.IsClient()) {
-					Game.WaitForLocalPlayerLoaded();
+					this.InitClient();
 				}
-				this.InitServer();
-			}
+				if (Game.IsServer()) {
+					if (Game.IsClient()) {
+						Game.WaitForLocalPlayerLoaded();
+					}
+					this.InitServer();
+				}
 
-			if (Game.IsClient() && Game.coreContext === CoreContext.GAME) {
-				Game.WaitForLocalPlayerLoaded();
-				CoreNetwork.ClientToServer.Ready.client.FireServer();
-			}
-		});
+				if (Game.IsClient() && Game.coreContext === CoreContext.GAME) {
+					Game.WaitForLocalPlayerLoaded();
+					CoreNetwork.ClientToServer.Ready.client.FireServer();
+				}
+			});
+		}
 	}
 
 	private InitClient(): void {
@@ -274,9 +284,9 @@ export class PlayersSingleton implements OnStart {
 		// this.outfitFetchTime.set(player.userId, os.time());
 
 		let userId = player.userId;
-		if (RunUtil.IsEditor() && player.IsLocalPlayer()) {
-			Dependency<UserController>().WaitForLocalUserReady();
-			let uid = Dependency<UserController>().localUser?.uid;
+		if (Game.IsEditor() && player.IsLocalPlayer()) {
+			Game.WaitForLocalPlayerLoaded();
+			let uid = Game.localPlayer.userId;
 			if (uid) {
 				userId = uid;
 			}

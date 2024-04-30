@@ -30,7 +30,9 @@ export class AirshipChatSingleton implements OnStart {
 	}
 
 	OnStart(): void {
-		this.RegisterCoreCommands();
+		if (Game.IsInGame()) {
+			this.RegisterCoreCommands();
+		}
 	}
 
 	/**
@@ -48,7 +50,9 @@ export class AirshipChatSingleton implements OnStart {
 	 * @param command A command instance.
 	 */
 	public RegisterCommand(command: ChatCommand): void {
-		Dependency<ChatService>().RegisterCommand(command);
+		if (Game.IsServer()) {
+			Dependency<ChatService>().RegisterCommand(command);
+		}
 	}
 
 	/**

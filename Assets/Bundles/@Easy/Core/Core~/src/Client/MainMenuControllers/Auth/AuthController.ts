@@ -15,9 +15,7 @@ export class AuthController implements OnStart {
 	public readonly onAuthenticated = new Signal<void>();
 	public readonly onSignOut = new Signal<void>();
 
-	constructor() {
-		print("AuthController constructor context=" + contextbridge.current());
-	}
+	constructor() {}
 
 	OnStart(): void {
 		const loginResult = this.TryAutoLogin();
@@ -32,7 +30,7 @@ export class AuthController implements OnStart {
 		}
 
 		print("creating AuthController:IsAuthenticated", contextbridge.current());
-		contextbridge.callback("AuthController:IsAuthenticated", (from) => {
+		contextbridge.callback("AuthController:IsAuthenticated", () => {
 			return this.IsAuthenticated();
 		});
 	}

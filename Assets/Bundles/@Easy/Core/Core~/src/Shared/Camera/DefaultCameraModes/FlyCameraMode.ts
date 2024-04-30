@@ -1,5 +1,3 @@
-import { ClientSettingsController } from "Client/MainMenuControllers/Settings/ClientSettingsController";
-import { Dependency } from "Shared/Flamework";
 import { Game } from "Shared/Game";
 import { Keyboard, Mouse } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
@@ -44,8 +42,6 @@ export class FlyCameraMode extends CameraMode {
 	private keyboard!: Keyboard;
 	private mouse!: Mouse;
 	private readonly keysDown = new Set<Key>();
-
-	private readonly clientSettingsController = Dependency<ClientSettingsController>();
 
 	OnStart(camera: Camera, rootTransform: Transform) {
 		const transform = rootTransform;

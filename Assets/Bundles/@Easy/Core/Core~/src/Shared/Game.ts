@@ -159,4 +159,20 @@ export class Game {
 	public static IsInGame(): boolean {
 		return this.coreContext === CoreContext.GAME;
 	}
+
+	/**
+	 * @internal
+	 * @returns
+	 */
+	public static IsProtectedContext(): boolean {
+		return contextbridge.current() === LuauContext.Protected;
+	}
+
+	/**
+	 * @internal
+	 * @returns
+	 */
+	public static IsGameContext(): boolean {
+		return contextbridge.current() === LuauContext.Game;
+	}
 }

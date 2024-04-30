@@ -18,10 +18,9 @@
 		"@Easy/Core:Server/Airship/Matchmaking/MatchmakingService@MatchmakingService": "$:Airship/Matchmaking/MatchmakingService@MatchmakingService",
 		"@Easy/Core:Server/Airship/Party/PartyService@PartyService": "$:Airship/Party/PartyService@PartyService",
 		"@Easy/Core:Server/Airship/PlatformInventory/PlatformInventoryService@PlatformInventoryService": "$:Airship/PlatformInventory/PlatformInventoryService@PlatformInventoryService",
-		"@Easy/Core:Shared/AssetCache/AssetCache@AssetCache": "$:AssetCache/AssetCache@AssetCache",
-		"@Easy/Core:Shared/CoreRefs@CoreRefs": "$:CoreRefs@CoreRefs",
 		"@Easy/Core:Shared/Util/Cancellable@Cancellable": "$:Util/Cancellable@Cancellable",
 		"@Easy/Core:Shared/Util/Signal@Signal": "$:Util/Signal@Signal",
+		"@Easy/Core:Shared/AssetCache/AssetCache@AssetCache": "$:AssetCache/AssetCache@AssetCache",
 		"@Easy/Core:Shared/Util/TimeUtil@TimeUtil": "$:Util/TimeUtil@TimeUtil",
 		"@Easy/Core:Shared/Util/Task@Task": "$:Util/Task@Task",
 		"@Easy/Core:Shared/Audio/AudioManager@AudioManager": "$:Audio/AudioManager@AudioManager",
@@ -99,12 +98,18 @@
 		"@Easy/Core:Shared/Network/RemoteFunction@RemoteFunction": "$:Network/RemoteFunction@RemoteFunction",
 		"@Easy/Core:Shared/Team/Team@Team": "$:Team/Team@Team",
 		"@Easy/Core:Shared/Game@Game": "$:Game@Game",
+		"@Easy/Core:Shared/CoreRefs@CoreRefs": "$:CoreRefs@CoreRefs",
+		"@Easy/Core:Client/MainMenuControllers/CoreUIController@CoreUIController": "$:MainMenuControllers/CoreUIController@CoreUIController",
 		"@Easy/Core:Shared/Util/Modifier@Modifier": "$:Util/Modifier@Modifier",
 		"@Easy/Core:Shared/MainMenu/Singletons/MainMenuSingleton@MainMenuSingleton": "$:MainMenu/Singletons/MainMenuSingleton@MainMenuSingleton",
 		"@Easy/Core:Shared/Flamework/flamework@Singleton": "$:Flamework/flamework@Singleton",
+		"@Easy/Core:Shared/Commands/ChatCommand@ChatCommand": "$:Commands/ChatCommand@ChatCommand",
+		"@Easy/Core:Shared/Commands/ClearCommand@ClearCommand": "$:Commands/ClearCommand@ClearCommand",
+		"@Easy/Core:Shared/Util/AppManager@AppManager": "$:Util/AppManager@AppManager",
+		"@Easy/Core:Shared/Util/ChatUtil@ChatUtil": "$:Util/ChatUtil@ChatUtil",
+		"@Easy/Core:Client/MainMenuControllers/Settings/MainMenuBlockSingleton@MainMenuBlockSingleton": "$:MainMenuControllers/Settings/MainMenuBlockSingleton@MainMenuBlockSingleton",
 		"@Easy/Core:Shared/UI/CoreUI@CoreUI": "$:UI/CoreUI@CoreUI",
 		"@Easy/Core:Client/MainMenuControllers/UI/RightClickMenu/RightClickMenuController@RightClickMenuController": "$:MainMenuControllers/UI/RightClickMenu/RightClickMenuController@RightClickMenuController",
-		"@Easy/Core:Shared/Util/AppManager@AppManager": "$:Util/AppManager@AppManager",
 		"@Easy/Core:Shared/MainMenu/Components/SocialFriendRequestsButtonComponent@SocialFriendRequestsButtonComponent": "$:MainMenu/Components/SocialFriendRequestsButtonComponent@SocialFriendRequestsButtonComponent",
 		"@Easy/Core:Shared/MainMenu/Components/SocialNotificationComponent@SocialNotificationComponent": "$:MainMenu/Components/SocialNotificationComponent@SocialNotificationComponent",
 		"@Easy/Core:Client/MainMenuControllers/Auth/AuthController@AuthController": "$:MainMenuControllers/Auth/AuthController@AuthController",
@@ -112,7 +117,6 @@
 		"@Easy/Core:Shared/MainMenu/Components/Settings/General/GameGeneralPage@GameGeneralPage": "$:MainMenu/Components/Settings/General/GameGeneralPage@GameGeneralPage",
 		"@Easy/Core:Shared/MainMenu/Components/Settings/SettingsPage@SettingsPage": "$:MainMenu/Components/Settings/SettingsPage@SettingsPage",
 		"@Easy/Core:Shared/MainMenu/Components/Search/SearchSingleton@SearchSingleton": "$:MainMenu/Components/Search/SearchSingleton@SearchSingleton",
-		"@Easy/Core:Client/MainMenuControllers/Settings/MainMenuBlockSingleton@MainMenuBlockSingleton": "$:MainMenuControllers/Settings/MainMenuBlockSingleton@MainMenuBlockSingleton",
 		"@Easy/Core:Client/MainMenuControllers/Socket/SocketController@SocketController": "$:MainMenuControllers/Socket/SocketController@SocketController",
 		"@Easy/Core:Client/MainMenuControllers/Transfer/TransferController@TransferController": "$:MainMenuControllers/Transfer/TransferController@TransferController",
 		"@Easy/Core:Client/Components/HomePage/Sort/HomePageGameComponent@HomePageGameComponent": "$:Components/HomePage/Sort/HomePageGameComponent@HomePageGameComponent",
@@ -135,14 +139,10 @@
 		"@Easy/Core:Client/MainMenuControllers/Social/MainMenuAddFriendsController@MainMenuAddFriendsController": "$:MainMenuControllers/Social/MainMenuAddFriendsController@MainMenuAddFriendsController",
 		"@Easy/Core:Client/MainMenuControllers/Social/MainMenuPartyController@MainMenuPartyController": "$:MainMenuControllers/Social/MainMenuPartyController@MainMenuPartyController",
 		"@Easy/Core:Client/MainMenuControllers/Social/DirectMessages/DirectMessageController@DirectMessageController": "$:MainMenuControllers/Social/DirectMessages/DirectMessageController@DirectMessageController",
-		"@Easy/Core:Shared/Commands/ChatCommand@ChatCommand": "$:Commands/ChatCommand@ChatCommand",
-		"@Easy/Core:Shared/Commands/ClearCommand@ClearCommand": "$:Commands/ClearCommand@ClearCommand",
-		"@Easy/Core:Shared/Util/ChatUtil@ChatUtil": "$:Util/ChatUtil@ChatUtil",
-		"@Easy/Core:Client/Controllers/UI/CoreUIController@CoreUIController": "$:Controllers/UI/CoreUIController@CoreUIController",
-		"@Easy/Core:Client/Controllers/Chat/ClientCommands/MessageCommand@MessageCommand": "$:Controllers/Chat/ClientCommands/MessageCommand@MessageCommand",
-		"@Easy/Core:Client/Controllers/Chat/ClientCommands/ReplyCommand@ReplyCommand": "$:Controllers/Chat/ClientCommands/ReplyCommand@ReplyCommand",
-		"@Easy/Core:Client/Controllers/Chat/ChatController@ChatMessageElement": "$:Controllers/Chat/ChatController@ChatMessageElement",
-		"@Easy/Core:Client/Controllers/Chat/ChatController@ChatController": "$:Controllers/Chat/ChatController@ChatController",
+		"@Easy/Core:Shared/MainMenu/Singletons/Chat/ClientCommands/MessageCommand@MessageCommand": "$:MainMenu/Singletons/Chat/ClientCommands/MessageCommand@MessageCommand",
+		"@Easy/Core:Shared/MainMenu/Singletons/Chat/ClientCommands/ReplyCommand@ReplyCommand": "$:MainMenu/Singletons/Chat/ClientCommands/ReplyCommand@ReplyCommand",
+		"@Easy/Core:Shared/MainMenu/Singletons/Chat/ClientChatSingleton@ChatMessageElement": "$:MainMenu/Singletons/Chat/ClientChatSingleton@ChatMessageElement",
+		"@Easy/Core:Shared/MainMenu/Singletons/Chat/ClientChatSingleton@ClientChatSingleton": "$:MainMenu/Singletons/Chat/ClientChatSingleton@ClientChatSingleton",
 		"@Easy/Core:Shared/Player/Player@Player": "$:Player/Player@Player",
 		"@Easy/Core:Server/Airship/Transfer/TransferService@TransferService": "$:Airship/Transfer/TransferService@TransferService",
 		"@Easy/Core:Server/Airship/User/UserService@UserService": "$:Airship/User/UserService@UserService",
@@ -200,14 +200,13 @@
 		"@Easy/Core:Client/Components/HomePage/MyGames/MyGamesSortComponent@MyGamesSortComponent": "$:Components/HomePage/MyGames/MyGamesSortComponent@MyGamesSortComponent",
 		"@Easy/Core:Client/Components/HomePage/Sort/GameImageButton@GameImageButton": "$:Components/HomePage/Sort/GameImageButton@GameImageButton",
 		"@Easy/Core:Client/Controllers/Accessory/CharacterAccessoryController@CharacterAccessoryController": "$:Controllers/Accessory/CharacterAccessoryController@CharacterAccessoryController",
-		"@Easy/Core:Client/Controllers/Chat/BubbleChat/BubbleChatController@BubbleChatController": "$:Controllers/Chat/BubbleChat/BubbleChatController@BubbleChatController",
 		"@Easy/Core:Client/Controllers/Damage/DamageIndicatorController@DamageIndicatorController": "$:Controllers/Damage/DamageIndicatorController@DamageIndicatorController",
 		"@Easy/Core:Client/Controllers/Entity/Nametag/NametagController@NametagController": "$:Controllers/Entity/Nametag/NametagController@NametagController",
 		"@Easy/Core:Shared/GroundItem/GroundItemUtil@GroundItemUtil": "$:GroundItem/GroundItemUtil@GroundItemUtil",
 		"@Easy/Core:Client/Controllers/GroundItem/GroundItemController@GroundItemController": "$:Controllers/GroundItem/GroundItemController@GroundItemController",
 		"@Easy/Core:Client/Controllers/GroundItem/GroundItemPickupSoundsController@GroundItemPickupSoundsController": "$:Controllers/GroundItem/GroundItemPickupSoundsController@GroundItemPickupSoundsController",
 		"@Easy/Core:Shared/Util/Window@Window": "$:Util/Window@Window",
-		"@Easy/Core:Client/Controllers/TabList/TabListController@TabListController": "$:Controllers/TabList/TabListController@TabListController",
+		"@Easy/Core:Client/Controllers/TabList/TabListSingleton@TabListController": "$:Controllers/TabList/TabListSingleton@TabListController",
 		"@Easy/Core:Client/MainMenuControllers/MainMenuHomeController@MainMenuHomeController": "$:MainMenuControllers/MainMenuHomeController@MainMenuHomeController",
 		"@Easy/Core:Shared/MainMenu/Components/MainMenuNavButton@MainMenuNavButton": "$:MainMenu/Components/MainMenuNavButton@MainMenuNavButton",
 		"@Easy/Core:Client/MainMenuControllers/MainMenuNavbarController@MainMenuNavbarController": "$:MainMenuControllers/MainMenuNavbarController@MainMenuNavbarController",
@@ -257,10 +256,12 @@
 		"@Easy/Core:Shared/MainMenu/Components/Settings/General/GameFavoriteButton@GameFavoriteButton": "$:MainMenu/Components/Settings/General/GameFavoriteButton@GameFavoriteButton",
 		"@Easy/Core:Shared/MainMenu/Components/Settings/General/PlayerEntry@PlayerEntry": "$:MainMenu/Components/Settings/General/PlayerEntry@PlayerEntry",
 		"@Easy/Core:Shared/MainMenu/Components/Settings/General/PlayerList@PlayerList": "$:MainMenu/Components/Settings/General/PlayerList@PlayerList",
+		"@Easy/Core:Shared/MainMenu/Singletons/Chat/BubbleChat/BubbleChatController@BubbleChatController": "$:MainMenu/Singletons/Chat/BubbleChat/BubbleChatController@BubbleChatController",
 		"@Easy/Core:Shared/MobileControls/MobileCameraMovement@MobileCameraMovement": "$:MobileControls/MobileCameraMovement@MobileCameraMovement",
 		"@Easy/Core:Shared/MobileControls/MobileJoystick@MobileJoystick": "$:MobileControls/MobileJoystick@MobileJoystick",
 		"@Easy/Core:Shared/MobileControls/MobileOverlayManager@MobileOverlayManager": "$:MobileControls/MobileOverlayManager@MobileOverlayManager",
 		"@Easy/Core:Shared/Privileged/Steam/SteamworksSingleton@SteamworksSingleton": "$:Privileged/Steam/SteamworksSingleton@SteamworksSingleton",
+		"@Easy/Core:Shared/ScreenSize/ScreenSizeSingleton@ScreenSizeSingleton": "$:ScreenSize/ScreenSizeSingleton@ScreenSizeSingleton",
 		"@Easy/Core:Shared/SocketIOMessages/UpdateUserDto@UpdateUserDto": "$:SocketIOMessages/UpdateUserDto@UpdateUserDto",
 		"@Easy/Core:Shared/Team/TeamJoinSignal@ChangeTeamSignal": "$:Team/TeamJoinSignal@ChangeTeamSignal",
 		"@Easy/Core:Shared/Tween/Tween@Tween": "$:Tween/Tween@Tween",
@@ -277,7 +278,7 @@
 	"identifierPrefix": "$",
 	"classes": [
 		{
-			"filePath": "..\\Client\\Airship\\Events\\AirshipEventController.lua",
+			"filePath": "../Client/Airship/Events/AirshipEventController.lua",
 			"internalId": "$:Airship/Events/AirshipEventController@AirshipEventController",
 			"decorators": [
 				{
@@ -288,7 +289,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Client\\Airship\\Matchmaking\\MatchmakingController.lua",
+			"filePath": "../Client/Airship/Matchmaking/MatchmakingController.lua",
 			"internalId": "$:Airship/Matchmaking/MatchmakingController@MatchmakingController",
 			"decorators": [
 				{
@@ -299,7 +300,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Client\\Airship\\Party\\PartyController.lua",
+			"filePath": "../Client/Airship/Party/PartyController.lua",
 			"internalId": "$:Airship/Party/PartyController@PartyController",
 			"decorators": [
 				{
@@ -310,7 +311,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Client\\Airship\\PlatformInventory\\PlatformInventoryController.lua",
+			"filePath": "../Client/Airship/PlatformInventory/PlatformInventoryController.lua",
 			"internalId": "$:Airship/PlatformInventory/PlatformInventoryController@PlatformInventoryController",
 			"decorators": [
 				{
@@ -321,7 +322,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Client\\Airship\\Transfer\\TransferController.lua",
+			"filePath": "../Client/Airship/Transfer/TransferController.lua",
 			"internalId": "$:Airship/Transfer/TransferController@TransferController",
 			"decorators": [
 				{
@@ -332,7 +333,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Client\\Airship\\User\\UserController.lua",
+			"filePath": "../Client/Airship/User/UserController.lua",
 			"internalId": "$:Airship/User/UserController@UserController",
 			"decorators": [
 				{
@@ -343,7 +344,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Server\\Airship\\CacheStore\\CacheStoreService.lua",
+			"filePath": "../Server/Airship/CacheStore/CacheStoreService.lua",
 			"internalId": "$:Airship/CacheStore/CacheStoreService@CacheStoreService",
 			"decorators": [
 				{
@@ -354,7 +355,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Server\\Airship\\DataStore\\DataStoreService.lua",
+			"filePath": "../Server/Airship/DataStore/DataStoreService.lua",
 			"internalId": "$:Airship/DataStore/DataStoreService@DataStoreService",
 			"decorators": [
 				{
@@ -365,7 +366,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Server\\Airship\\Leaderboard\\LeaderboardService.lua",
+			"filePath": "../Server/Airship/Leaderboard/LeaderboardService.lua",
 			"internalId": "$:Airship/Leaderboard/LeaderboardService@LeaderboardService",
 			"decorators": [
 				{
@@ -376,7 +377,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Server\\Airship\\Matchmaking\\MatchmakingService.lua",
+			"filePath": "../Server/Airship/Matchmaking/MatchmakingService.lua",
 			"internalId": "$:Airship/Matchmaking/MatchmakingService@MatchmakingService",
 			"decorators": [
 				{
@@ -387,7 +388,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Server\\Airship\\Party\\PartyService.lua",
+			"filePath": "../Server/Airship/Party/PartyService.lua",
 			"internalId": "$:Airship/Party/PartyService@PartyService",
 			"decorators": [
 				{
@@ -398,7 +399,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Server\\Airship\\PlatformInventory\\PlatformInventoryService.lua",
+			"filePath": "../Server/Airship/PlatformInventory/PlatformInventoryService.lua",
 			"internalId": "$:Airship/PlatformInventory/PlatformInventoryService@PlatformInventoryService",
 			"decorators": [
 				{
@@ -409,7 +410,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Client\\Controllers\\Viewmodel\\ViewmodelController.lua",
+			"filePath": "../Client/Controllers/Viewmodel/ViewmodelController.lua",
 			"internalId": "$:Controllers/Viewmodel/ViewmodelController@ViewmodelController",
 			"decorators": [
 				{
@@ -420,7 +421,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Client\\MainMenuControllers\\AmbientSound\\AmbientSoundController.lua",
+			"filePath": "../Client/MainMenuControllers/AmbientSound/AmbientSoundController.lua",
 			"internalId": "$:MainMenuControllers/AmbientSound/AmbientSoundController@AmbientSoundController",
 			"decorators": [
 				{
@@ -431,7 +432,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Client\\MainMenuControllers\\Settings\\ClientSettingsController.lua",
+			"filePath": "../Client/MainMenuControllers/Settings/ClientSettingsController.lua",
 			"internalId": "$:MainMenuControllers/Settings/ClientSettingsController@ClientSettingsController",
 			"decorators": [
 				{
@@ -442,7 +443,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Shared\\Character\\LocalCharacter\\LocalCharacterSingleton.lua",
+			"filePath": "../Shared/Character/LocalCharacter/LocalCharacterSingleton.lua",
 			"internalId": "$:Character/LocalCharacter/LocalCharacterSingleton@LocalCharacterSingleton",
 			"decorators": [
 				{
@@ -453,7 +454,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Shared\\Camera\\AirshipCharacterCameraSingleton.lua",
+			"filePath": "../Shared/Camera/AirshipCharacterCameraSingleton.lua",
 			"internalId": "$:Camera/AirshipCharacterCameraSingleton@AirshipCharacterCameraSingleton",
 			"decorators": [
 				{
@@ -464,7 +465,18 @@
 			]
 		},
 		{
-			"filePath": "..\\Shared\\MainMenu\\Singletons\\MainMenuSingleton.lua",
+			"filePath": "../Client/MainMenuControllers/CoreUIController.lua",
+			"internalId": "$:MainMenuControllers/CoreUIController@CoreUIController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Shared/MainMenu/Singletons/MainMenuSingleton.lua",
 			"internalId": "$:MainMenu/Singletons/MainMenuSingleton@MainMenuSingleton",
 			"decorators": [
 				{
@@ -475,7 +487,18 @@
 			]
 		},
 		{
-			"filePath": "..\\Client\\MainMenuControllers\\UI\\RightClickMenu\\RightClickMenuController.lua",
+			"filePath": "../Client/MainMenuControllers/Settings/MainMenuBlockSingleton.lua",
+			"internalId": "$:MainMenuControllers/Settings/MainMenuBlockSingleton@MainMenuBlockSingleton",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Singleton",
+					"isFlameworkDecorator": true,
+					"name": "Singleton"
+				}
+			]
+		},
+		{
+			"filePath": "../Client/MainMenuControllers/UI/RightClickMenu/RightClickMenuController.lua",
 			"internalId": "$:MainMenuControllers/UI/RightClickMenu/RightClickMenuController@RightClickMenuController",
 			"decorators": [
 				{
@@ -486,7 +509,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Client\\MainMenuControllers\\Auth\\AuthController.lua",
+			"filePath": "../Client/MainMenuControllers/Auth/AuthController.lua",
 			"internalId": "$:MainMenuControllers/Auth/AuthController@AuthController",
 			"decorators": [
 				{
@@ -497,7 +520,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Shared\\MainMenu\\Components\\Search\\SearchSingleton.lua",
+			"filePath": "../Shared/MainMenu/Components/Search/SearchSingleton.lua",
 			"internalId": "$:MainMenu/Components/Search/SearchSingleton@SearchSingleton",
 			"decorators": [
 				{
@@ -513,18 +536,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Client\\MainMenuControllers\\Settings\\MainMenuBlockSingleton.lua",
-			"internalId": "$:MainMenuControllers/Settings/MainMenuBlockSingleton@MainMenuBlockSingleton",
-			"decorators": [
-				{
-					"internalId": "$:Flamework/flamework@Singleton",
-					"isFlameworkDecorator": true,
-					"name": "Singleton"
-				}
-			]
-		},
-		{
-			"filePath": "..\\Client\\MainMenuControllers\\Socket\\SocketController.lua",
+			"filePath": "../Client/MainMenuControllers/Socket/SocketController.lua",
 			"internalId": "$:MainMenuControllers/Socket/SocketController@SocketController",
 			"decorators": [
 				{
@@ -535,7 +547,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Client\\MainMenuControllers\\Transfer\\TransferController.lua",
+			"filePath": "../Client/MainMenuControllers/Transfer/TransferController.lua",
 			"internalId": "$:MainMenuControllers/Transfer/TransferController@TransferController",
 			"decorators": [
 				{
@@ -546,7 +558,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Client\\MainMenuControllers\\MainMenuController.lua",
+			"filePath": "../Client/MainMenuControllers/MainMenuController.lua",
 			"internalId": "$:MainMenuControllers/MainMenuController@MainMenuController",
 			"decorators": [
 				{
@@ -557,7 +569,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Client\\MainMenuControllers\\Social\\FriendsController.lua",
+			"filePath": "../Client/MainMenuControllers/Social/FriendsController.lua",
 			"internalId": "$:MainMenuControllers/Social/FriendsController@FriendsController",
 			"decorators": [
 				{
@@ -568,7 +580,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Client\\MainMenuControllers\\Social\\MainMenuAddFriendsController.lua",
+			"filePath": "../Client/MainMenuControllers/Social/MainMenuAddFriendsController.lua",
 			"internalId": "$:MainMenuControllers/Social/MainMenuAddFriendsController@MainMenuAddFriendsController",
 			"decorators": [
 				{
@@ -579,7 +591,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Client\\MainMenuControllers\\Social\\MainMenuPartyController.lua",
+			"filePath": "../Client/MainMenuControllers/Social/MainMenuPartyController.lua",
 			"internalId": "$:MainMenuControllers/Social/MainMenuPartyController@MainMenuPartyController",
 			"decorators": [
 				{
@@ -590,7 +602,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Client\\MainMenuControllers\\Social\\DirectMessages\\DirectMessageController.lua",
+			"filePath": "../Client/MainMenuControllers/Social/DirectMessages/DirectMessageController.lua",
 			"internalId": "$:MainMenuControllers/Social/DirectMessages/DirectMessageController@DirectMessageController",
 			"decorators": [
 				{
@@ -601,8 +613,8 @@
 			]
 		},
 		{
-			"filePath": "..\\Client\\Controllers\\UI\\CoreUIController.lua",
-			"internalId": "$:Controllers/UI/CoreUIController@CoreUIController",
+			"filePath": "../Shared/MainMenu/Singletons/Chat/ClientChatSingleton.lua",
+			"internalId": "$:MainMenu/Singletons/Chat/ClientChatSingleton@ClientChatSingleton",
 			"decorators": [
 				{
 					"internalId": "$:Flamework/flamework@Controller",
@@ -612,18 +624,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Client\\Controllers\\Chat\\ChatController.lua",
-			"internalId": "$:Controllers/Chat/ChatController@ChatController",
-			"decorators": [
-				{
-					"internalId": "$:Flamework/flamework@Controller",
-					"isFlameworkDecorator": true,
-					"name": "Controller"
-				}
-			]
-		},
-		{
-			"filePath": "..\\Server\\Airship\\Transfer\\TransferService.lua",
+			"filePath": "../Server/Airship/Transfer/TransferService.lua",
 			"internalId": "$:Airship/Transfer/TransferService@TransferService",
 			"decorators": [
 				{
@@ -634,7 +635,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Server\\Airship\\User\\UserService.lua",
+			"filePath": "../Server/Airship/User/UserService.lua",
 			"internalId": "$:Airship/User/UserService@UserService",
 			"decorators": [
 				{
@@ -645,7 +646,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Shared\\Character\\Footstep\\AirshipCharacterFootstepsSingleton.lua",
+			"filePath": "../Shared/Character/Footstep/AirshipCharacterFootstepsSingleton.lua",
 			"internalId": "$:Character/Footstep/AirshipCharacterFootstepsSingleton@AirshipCharacterFootstepsSingleton",
 			"decorators": [
 				{
@@ -656,7 +657,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Shared\\Character\\CharactersSingleton.lua",
+			"filePath": "../Shared/Character/CharactersSingleton.lua",
 			"internalId": "$:Character/CharactersSingleton@CharactersSingleton",
 			"decorators": [
 				{
@@ -672,7 +673,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Server\\Services\\Chat\\ChatService.lua",
+			"filePath": "../Server/Services/Chat/ChatService.lua",
 			"internalId": "$:Services/Chat/ChatService@ChatService",
 			"decorators": [
 				{
@@ -683,7 +684,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Shared\\Chat\\AirshipChatSingleton.lua",
+			"filePath": "../Shared/Chat/AirshipChatSingleton.lua",
 			"internalId": "$:Chat/AirshipChatSingleton@AirshipChatSingleton",
 			"decorators": [
 				{
@@ -694,7 +695,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Shared\\Damage\\DamageSingleton.lua",
+			"filePath": "../Shared/Damage/DamageSingleton.lua",
 			"internalId": "$:Damage/DamageSingleton@DamageSingleton",
 			"decorators": [
 				{
@@ -710,7 +711,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Client\\Controllers\\ProximityPrompt\\ProximityPromptController.lua",
+			"filePath": "../Client/Controllers/ProximityPrompt/ProximityPromptController.lua",
 			"internalId": "$:Controllers/ProximityPrompt/ProximityPromptController@ProximityPromptController",
 			"decorators": [
 				{
@@ -721,7 +722,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Shared\\Input\\AirshipInputSingleton.lua",
+			"filePath": "../Shared/Input/AirshipInputSingleton.lua",
 			"internalId": "$:Input/AirshipInputSingleton@AirshipInputSingleton",
 			"decorators": [
 				{
@@ -737,7 +738,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Shared\\Inventory\\CharacterInventorySingleton.lua",
+			"filePath": "../Shared/Inventory/CharacterInventorySingleton.lua",
 			"internalId": "$:Inventory/CharacterInventorySingleton@CharacterInventorySingleton",
 			"decorators": [
 				{
@@ -753,7 +754,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Client\\Controllers\\Inventory\\InventoryUIController.lua",
+			"filePath": "../Client/Controllers/Inventory/InventoryUIController.lua",
 			"internalId": "$:Controllers/Inventory/InventoryUIController@InventoryUIController",
 			"decorators": [
 				{
@@ -764,7 +765,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Shared\\Inventory\\InventorySingleton.lua",
+			"filePath": "../Shared/Inventory/InventorySingleton.lua",
 			"internalId": "$:Inventory/InventorySingleton@InventorySingleton",
 			"decorators": [
 				{
@@ -780,7 +781,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Shared\\LoadingScreen\\LoadingScreenSingleton.lua",
+			"filePath": "../Shared/LoadingScreen/LoadingScreenSingleton.lua",
 			"internalId": "$:LoadingScreen/LoadingScreenSingleton@LoadingScreenSingleton",
 			"decorators": [
 				{
@@ -791,7 +792,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Client\\MainMenuControllers\\User\\UserController.lua",
+			"filePath": "../Client/MainMenuControllers/User/UserController.lua",
 			"internalId": "$:MainMenuControllers/User/UserController@UserController",
 			"decorators": [
 				{
@@ -802,7 +803,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Shared\\Airship\\Game\\GameInfoSingleton.lua",
+			"filePath": "../Shared/Airship/Game/GameInfoSingleton.lua",
 			"internalId": "$:Airship/Game/GameInfoSingleton@GameInfoSingleton",
 			"decorators": [
 				{
@@ -818,7 +819,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Shared\\Player\\PlayersSingleton.lua",
+			"filePath": "../Shared/Player/PlayersSingleton.lua",
 			"internalId": "$:Player/PlayersSingleton@PlayersSingleton",
 			"decorators": [
 				{
@@ -834,7 +835,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Shared\\Tags\\TagsSingleton.lua",
+			"filePath": "../Shared/Tags/TagsSingleton.lua",
 			"internalId": "$:Tags/TagsSingleton@TagsSingleton",
 			"decorators": [
 				{
@@ -850,7 +851,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Shared\\Team\\TeamSingleton.lua",
+			"filePath": "../Shared/Team/TeamSingleton.lua",
 			"internalId": "$:Team/TeamSingleton@TeamsSingleton",
 			"decorators": [
 				{
@@ -866,7 +867,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Client\\Airship\\Friends\\FriendsController.lua",
+			"filePath": "../Client/Airship/Friends/FriendsController.lua",
 			"internalId": "$:Airship/Friends/FriendsController@FriendsController",
 			"decorators": [
 				{
@@ -877,7 +878,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Client\\Controllers\\Accessory\\CharacterAccessoryController.lua",
+			"filePath": "../Client/Controllers/Accessory/CharacterAccessoryController.lua",
 			"internalId": "$:Controllers/Accessory/CharacterAccessoryController@CharacterAccessoryController",
 			"decorators": [
 				{
@@ -888,18 +889,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Client\\Controllers\\Chat\\BubbleChat\\BubbleChatController.lua",
-			"internalId": "$:Controllers/Chat/BubbleChat/BubbleChatController@BubbleChatController",
-			"decorators": [
-				{
-					"internalId": "$:Flamework/flamework@Controller",
-					"isFlameworkDecorator": true,
-					"name": "Controller"
-				}
-			]
-		},
-		{
-			"filePath": "..\\Client\\Controllers\\Damage\\DamageIndicatorController.lua",
+			"filePath": "../Client/Controllers/Damage/DamageIndicatorController.lua",
 			"internalId": "$:Controllers/Damage/DamageIndicatorController@DamageIndicatorController",
 			"decorators": [
 				{
@@ -910,7 +900,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Client\\Controllers\\Entity\\Nametag\\NametagController.lua",
+			"filePath": "../Client/Controllers/Entity/Nametag/NametagController.lua",
 			"internalId": "$:Controllers/Entity/Nametag/NametagController@NametagController",
 			"decorators": [
 				{
@@ -921,7 +911,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Client\\Controllers\\GroundItem\\GroundItemController.lua",
+			"filePath": "../Client/Controllers/GroundItem/GroundItemController.lua",
 			"internalId": "$:Controllers/GroundItem/GroundItemController@GroundItemController",
 			"decorators": [
 				{
@@ -932,7 +922,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Client\\Controllers\\GroundItem\\GroundItemPickupSoundsController.lua",
+			"filePath": "../Client/Controllers/GroundItem/GroundItemPickupSoundsController.lua",
 			"internalId": "$:Controllers/GroundItem/GroundItemPickupSoundsController@GroundItemPickupSoundsController",
 			"decorators": [
 				{
@@ -943,8 +933,8 @@
 			]
 		},
 		{
-			"filePath": "..\\Client\\Controllers\\TabList\\TabListController.lua",
-			"internalId": "$:Controllers/TabList/TabListController@TabListController",
+			"filePath": "../Client/Controllers/TabList/TabListSingleton.lua",
+			"internalId": "$:Controllers/TabList/TabListSingleton@TabListController",
 			"decorators": [
 				{
 					"internalId": "$:Flamework/flamework@Controller",
@@ -954,7 +944,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Client\\MainMenuControllers\\MainMenuHomeController.lua",
+			"filePath": "../Client/MainMenuControllers/MainMenuHomeController.lua",
 			"internalId": "$:MainMenuControllers/MainMenuHomeController@MainMenuHomeController",
 			"decorators": [
 				{
@@ -965,7 +955,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Client\\MainMenuControllers\\MainMenuNavbarController.lua",
+			"filePath": "../Client/MainMenuControllers/MainMenuNavbarController.lua",
 			"internalId": "$:MainMenuControllers/MainMenuNavbarController@MainMenuNavbarController",
 			"decorators": [
 				{
@@ -976,7 +966,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Client\\MainMenuControllers\\RichPresence\\MainMenuRichPresenceController.lua",
+			"filePath": "../Client/MainMenuControllers/RichPresence/MainMenuRichPresenceController.lua",
 			"internalId": "$:MainMenuControllers/RichPresence/MainMenuRichPresenceController@MainMenuRichPresenceController",
 			"decorators": [
 				{
@@ -987,7 +977,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Client\\MainMenuControllers\\Settings\\MainMenuSettingsUIController.lua",
+			"filePath": "../Client/MainMenuControllers/Settings/MainMenuSettingsUIController.lua",
 			"internalId": "$:MainMenuControllers/Settings/MainMenuSettingsUIController@MainMenuSettingsUIController",
 			"decorators": [
 				{
@@ -998,7 +988,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Client\\MainMenuControllers\\Social\\ChangeUsernameController.lua",
+			"filePath": "../Client/MainMenuControllers/Social/ChangeUsernameController.lua",
 			"internalId": "$:MainMenuControllers/Social/ChangeUsernameController@ChangeUsernameController",
 			"decorators": [
 				{
@@ -1009,7 +999,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Server\\Services\\GroundItem\\GroundItemService.lua",
+			"filePath": "../Server/Services/GroundItem/GroundItemService.lua",
 			"internalId": "$:Services/GroundItem/GroundItemService@GroundItemService",
 			"decorators": [
 				{
@@ -1020,7 +1010,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Server\\Services\\Generator\\GeneratorService.lua",
+			"filePath": "../Server/Services/Generator/GeneratorService.lua",
 			"internalId": "$:Services/Generator/GeneratorService@GeneratorService",
 			"decorators": [
 				{
@@ -1031,7 +1021,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Server\\Services\\Player\\BotService.lua",
+			"filePath": "../Server/Services/Player/BotService.lua",
 			"internalId": "$:Services/Player/BotService@BotService",
 			"decorators": [
 				{
@@ -1042,7 +1032,7 @@
 			]
 		},
 		{
-			"filePath": "..\\Server\\Services\\Shutdown\\ShutdownService.lua",
+			"filePath": "../Server/Services/Shutdown/ShutdownService.lua",
 			"internalId": "$:Services/Shutdown/ShutdownService@ShutdownService",
 			"decorators": [
 				{
@@ -1053,7 +1043,18 @@
 			]
 		},
 		{
-			"filePath": "..\\Shared\\Privileged\\Steam\\SteamworksSingleton.lua",
+			"filePath": "../Shared/MainMenu/Singletons/Chat/BubbleChat/BubbleChatController.lua",
+			"internalId": "$:MainMenu/Singletons/Chat/BubbleChat/BubbleChatController@BubbleChatController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Shared/Privileged/Steam/SteamworksSingleton.lua",
 			"internalId": "$:Privileged/Steam/SteamworksSingleton@SteamworksSingleton",
 			"decorators": [
 				{
@@ -1065,6 +1066,17 @@
 					"internalId": "$:Flamework/flamework@Service",
 					"isFlameworkDecorator": true,
 					"name": "Service"
+				}
+			]
+		},
+		{
+			"filePath": "../Shared/ScreenSize/ScreenSizeSingleton.lua",
+			"internalId": "$:ScreenSize/ScreenSizeSingleton@ScreenSizeSingleton",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Singleton",
+					"isFlameworkDecorator": true,
+					"name": "Singleton"
 				}
 			]
 		}

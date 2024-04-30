@@ -49,6 +49,14 @@ export class ClientSettingsController implements OnStart {
 				this.SaveSettings();
 			}
 		});
+
+		contextbridge.callback<() => number>("ClientSettings:GetMouseSensitivity", () => {
+			return this.GetMouseSensitivity();
+		});
+
+		contextbridge.callback<() => number>("ClientSettings:GetTouchSensitivity", () => {
+			return this.GetTouchSensitivity();
+		});
 	}
 
 	public MarkAsDirty(): void {
