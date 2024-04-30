@@ -5,6 +5,7 @@ import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import TopDownBattleCharacter from "./TopDownBattleCharacter";
 import TopDownBattleGame, { GameMode } from "./TopDownBattleGame";
+import { TopDownBattleEvents } from "./TopDownEvents";
 
 export default class TopDownBattlePlayerSpawner extends AirshipBehaviour {
 	@Header("Templates")
@@ -23,7 +24,7 @@ export default class TopDownBattlePlayerSpawner extends AirshipBehaviour {
 		if (Game.IsServer()) {
 			//Listen to game start event
 			print("connecting to signal");
-			TopDownBattleGame.gameModeSignal.Connect((mode) => {
+			TopDownBattleEvents.gameModeSignal.Connect((mode) => {
 				print("Listening to new game mode: " + mode);
 				if (mode === GameMode.GAME) {
 					let players = Airship.players.GetPlayers();

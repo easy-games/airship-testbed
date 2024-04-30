@@ -1,8 +1,7 @@
 import { Game } from "@Easy/Core/Shared/Game";
-import { RemoteEvent } from "@Easy/Core/Shared/Network/RemoteEvent";
 import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
-import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import TopDownBattleEnemySpawner from "./TopDownBattleEnemies/TopDownBattleEnemySpawner";
+import { TopDownBattleEvents } from "./TopDownEvents";
 
 export enum GameMode {
 	IDLE,
@@ -13,11 +12,6 @@ export enum GameMode {
 export default class TopDownBattleGame extends AirshipBehaviour {
 	//There is only one game class so expose it for anyone to access
 	public static instance: TopDownBattleGame;
-
-	//Trigger new game modes over the network
-	public static gameModeEvent = new RemoteEvent<[gameMode: GameMode]>("GameModeEvent");
-	//Notify local scripts of game mode changes
-	public static gameModeSignal = new Signal<[gameMode: GameMode]>();
 
 	@Header("References")
 	public startBtn!: Button;
@@ -38,7 +32,7 @@ export default class TopDownBattleGame extends AirshipBehaviour {
 	override Start(): void {
 		if (Game.IsServer()) {
 			//The server listens to see when a client interacts with the start button
-			TopDownBattleGame.gameModeEvent.server.OnClientEvent((player, mode) => {
+			TopDownBattleEvents.gameModeEvent.server.OnClientEvent((player, mode) => {
 				this.SetGameMode(mode);
 			});
 		}
@@ -46,13 +40,13 @@ export default class TopDownBattleGame extends AirshipBehaviour {
 		//The client listens to button clicks
 		if (Game.IsClient()) {
 			//Listen to the game modes sent from the server
-			TopDownBattleGame.gameModeEvent.client.OnServerEvent((mode) => {
+			TopDownBattleEvents.gameModeEvent.client.OnServerEvent((mode) => {
 				this.SetGameMode(mode);
 			});
 
 			CanvasAPI.OnClickEvent(this.startBtn.gameObject, () => {
 				//The client tells the server to start the game on click
-				TopDownBattleGame.gameModeEvent.client.FireServer(GameMode.GAME);
+				TopDownBattleEvents.gameModeEvent.client.FireServer(GameMode.GAME);
 			});
 		}
 	}
@@ -101,7 +95,7 @@ export default class TopDownBattleGame extends AirshipBehaviour {
 			}
 
 			//When the server enters a new state, tell ALL clients the new game mode
-			TopDownBattleGame.gameModeEvent.server.FireAllClients(gameMode);
+			TopDownBattleEvents.gameModeEvent.server.FireAllClients(gameMode);
 		} else if (Game.IsClient()) {
 			//Client updates its visual state to match the game mode
 			switch (gameMode) {
@@ -121,8 +115,10 @@ export default class TopDownBattleGame extends AirshipBehaviour {
 		}
 
 		//Notify other classes about new game mode
-		print("notifying game mode: " + gameMode + " count: " + TopDownBattleGame.gameModeSignal.GetConnectionCount());
+		print(
+			"notifying game mode: " + gameMode + " count: " + TopDownBattleEvents.gameModeSignal.GetConnectionCount(),
+		);
 
-		TopDownBattleGame.gameModeSignal.Fire(gameMode);
+		TopDownBattleEvents.gameModeSignal.Fire(gameMode);
 	}
 }

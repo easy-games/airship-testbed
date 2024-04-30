@@ -1,5 +1,4 @@
 import { Game } from "@Easy/Core/Shared/Game";
-import { RemoteEvent } from "@Easy/Core/Shared/Network/RemoteEvent";
 import { MathUtil } from "@Easy/Core/Shared/Util/MathUtil";
 import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 import { WorldAPI } from "@Easy/Core/Shared/VoxelWorld/WorldAPI";
