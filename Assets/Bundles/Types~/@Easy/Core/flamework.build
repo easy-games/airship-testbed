@@ -51,10 +51,6 @@
 		"@Easy/Core:Shared/UserInput/Drivers/GestureDriver@TwoFingerGestureCapture": "$:UserInput/Drivers/GestureDriver@TwoFingerGestureCapture",
 		"@Easy/Core:Shared/UserInput/Drivers/GestureDriver@GestureDriver": "$:UserInput/Drivers/GestureDriver@GestureDriver",
 		"@Easy/Core:Shared/UserInput/Touchscreen@Touchscreen": "$:UserInput/Touchscreen@Touchscreen",
-		"@Easy/Core:Shared/Util/ColorUtil@ColorUtil": "$:Util/ColorUtil@ColorUtil",
-		"@Easy/Core:Shared/Util/Theme@Theme": "$:Util/Theme@Theme",
-		"@Easy/Core:Client/MainMenuControllers/AmbientSound/AmbientSoundController@AmbientSoundController": "$:MainMenuControllers/AmbientSound/AmbientSoundController@AmbientSoundController",
-		"@Easy/Core:Client/MainMenuControllers/Settings/ClientSettingsController@ClientSettingsController": "$:MainMenuControllers/Settings/ClientSettingsController@ClientSettingsController",
 		"@Easy/Core:Shared/Character/LocalCharacter/LocalCharacterInputSignal@LocalCharacterInputSignal": "$:Character/LocalCharacter/LocalCharacterInputSignal@LocalCharacterInputSignal",
 		"@Easy/Core:Shared/Character/LocalCharacter/CharacterInput@CharacterInput": "$:Character/LocalCharacter/CharacterInput@CharacterInput",
 		"@Easy/Core:Shared/Character/LocalCharacter/LocalCharacterSingleton@LocalCharacterSingleton": "$:Character/LocalCharacter/LocalCharacterSingleton@LocalCharacterSingleton",
@@ -73,6 +69,8 @@
 		"@Easy/Core:Shared/Inventory/Inventory@Inventory": "$:Inventory/Inventory@Inventory",
 		"@Easy/Core:Shared/Damage/DamageUtils@DamageUtils": "$:Damage/DamageUtils@DamageUtils",
 		"@Easy/Core:Shared/Util/CSArrayUtil@CSArrayUtil": "$:Util/CSArrayUtil@CSArrayUtil",
+		"@Easy/Core:Shared/Util/ColorUtil@ColorUtil": "$:Util/ColorUtil@ColorUtil",
+		"@Easy/Core:Shared/Util/Theme@Theme": "$:Util/Theme@Theme",
 		"@Easy/Core:Shared/Item/HeldItems/HeldItem@HeldItem": "$:Item/HeldItems/HeldItem@HeldItem",
 		"@Easy/Core:Shared/Item/HeldItems/Damagers/MeleeHeldItem@MeleeHeldItem": "$:Item/HeldItems/Damagers/MeleeHeldItem@MeleeHeldItem",
 		"@Easy/Core:Shared/Item/HeldItems/HeldItemManager@HeldItemManager": "$:Item/HeldItems/HeldItemManager@HeldItemManager",
@@ -131,6 +129,8 @@
 		"@Easy/Core:Client/MainMenuControllers/AvatarMenu/AvatarMenuProfileComponent@AvatarMenuProfileComponent": "$:MainMenuControllers/AvatarMenu/AvatarMenuProfileComponent@AvatarMenuProfileComponent",
 		"@Easy/Core:Client/MainMenuControllers/AvatarMenu/AvatarMenuComponent@AvatarMenuComponent": "$:MainMenuControllers/AvatarMenu/AvatarMenuComponent@AvatarMenuComponent",
 		"@Easy/Core:Client/MainMenuControllers/MainMenuController@MainMenuController": "$:MainMenuControllers/MainMenuController@MainMenuController",
+		"@Easy/Core:Client/MainMenuControllers/AmbientSound/AmbientSoundController@AmbientSoundController": "$:MainMenuControllers/AmbientSound/AmbientSoundController@AmbientSoundController",
+		"@Easy/Core:Client/MainMenuControllers/Settings/ClientSettingsController@ClientSettingsController": "$:MainMenuControllers/Settings/ClientSettingsController@ClientSettingsController",
 		"@Easy/Core:Client/MainMenuControllers/Social/FriendsController@FriendsController": "$:MainMenuControllers/Social/FriendsController@FriendsController",
 		"@Easy/Core:Shared/MainMenu/Components/DirectMessagesWindow@DirectMessagesWindow": "$:MainMenu/Components/DirectMessagesWindow@DirectMessagesWindow",
 		"@Easy/Core:Shared/MainMenu/Components/PartyChatButton@PartyChatButton": "$:MainMenu/Components/PartyChatButton@PartyChatButton",
@@ -189,7 +189,6 @@
 		"@Easy/Core:Client/Controllers/Inventory/InventoryUIController@InventoryUIController": "$:Controllers/Inventory/InventoryUIController@InventoryUIController",
 		"@Easy/Core:Shared/Inventory/InventorySingleton@InventorySingleton": "$:Inventory/InventorySingleton@InventorySingleton",
 		"@Easy/Core:Shared/LoadingScreen/LoadingScreenSingleton@LoadingScreenSingleton": "$:LoadingScreen/LoadingScreenSingleton@LoadingScreenSingleton",
-		"@Easy/Core:Client/MainMenuControllers/User/UserController@UserController": "$:MainMenuControllers/User/UserController@UserController",
 		"@Easy/Core:Shared/Util/PlayerUtils@PlayerUtils": "$:Util/PlayerUtils@PlayerUtils",
 		"@Easy/Core:Shared/Airship/Game/GameInfoSingleton@GameInfoSingleton": "$:Airship/Game/GameInfoSingleton@GameInfoSingleton",
 		"@Easy/Core:Shared/Player/PlayersSingleton@PlayersSingleton": "$:Player/PlayersSingleton@PlayersSingleton",
@@ -209,6 +208,7 @@
 		"@Easy/Core:Client/Controllers/TabList/TabListSingleton@TabListController": "$:Controllers/TabList/TabListSingleton@TabListController",
 		"@Easy/Core:Client/MainMenuControllers/MainMenuHomeController@MainMenuHomeController": "$:MainMenuControllers/MainMenuHomeController@MainMenuHomeController",
 		"@Easy/Core:Shared/MainMenu/Components/MainMenuNavButton@MainMenuNavButton": "$:MainMenu/Components/MainMenuNavButton@MainMenuNavButton",
+		"@Easy/Core:Client/MainMenuControllers/User/UserController@UserController": "$:MainMenuControllers/User/UserController@UserController",
 		"@Easy/Core:Client/MainMenuControllers/MainMenuNavbarController@MainMenuNavbarController": "$:MainMenuControllers/MainMenuNavbarController@MainMenuNavbarController",
 		"@Easy/Core:Client/MainMenuControllers/RichPresence/MainMenuRichPresenceController@MainMenuRichPresenceController": "$:MainMenuControllers/RichPresence/MainMenuRichPresenceController@MainMenuRichPresenceController",
 		"@Easy/Core:Client/MainMenuControllers/Settings/MainMenuSettingsUIController@MainMenuSettingsUIController": "$:MainMenuControllers/Settings/MainMenuSettingsUIController@MainMenuSettingsUIController",
@@ -421,28 +421,6 @@
 			]
 		},
 		{
-			"filePath": "../Client/MainMenuControllers/AmbientSound/AmbientSoundController.lua",
-			"internalId": "$:MainMenuControllers/AmbientSound/AmbientSoundController@AmbientSoundController",
-			"decorators": [
-				{
-					"internalId": "$:Flamework/flamework@Controller",
-					"isFlameworkDecorator": true,
-					"name": "Controller"
-				}
-			]
-		},
-		{
-			"filePath": "../Client/MainMenuControllers/Settings/ClientSettingsController.lua",
-			"internalId": "$:MainMenuControllers/Settings/ClientSettingsController@ClientSettingsController",
-			"decorators": [
-				{
-					"internalId": "$:Flamework/flamework@Controller",
-					"isFlameworkDecorator": true,
-					"name": "Controller"
-				}
-			]
-		},
-		{
 			"filePath": "../Shared/Character/LocalCharacter/LocalCharacterSingleton.lua",
 			"internalId": "$:Character/LocalCharacter/LocalCharacterSingleton@LocalCharacterSingleton",
 			"decorators": [
@@ -560,6 +538,28 @@
 		{
 			"filePath": "../Client/MainMenuControllers/MainMenuController.lua",
 			"internalId": "$:MainMenuControllers/MainMenuController@MainMenuController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Client/MainMenuControllers/AmbientSound/AmbientSoundController.lua",
+			"internalId": "$:MainMenuControllers/AmbientSound/AmbientSoundController@AmbientSoundController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Client/MainMenuControllers/Settings/ClientSettingsController.lua",
+			"internalId": "$:MainMenuControllers/Settings/ClientSettingsController@ClientSettingsController",
 			"decorators": [
 				{
 					"internalId": "$:Flamework/flamework@Controller",
@@ -792,17 +792,6 @@
 			]
 		},
 		{
-			"filePath": "../Client/MainMenuControllers/User/UserController.lua",
-			"internalId": "$:MainMenuControllers/User/UserController@UserController",
-			"decorators": [
-				{
-					"internalId": "$:Flamework/flamework@Controller",
-					"isFlameworkDecorator": true,
-					"name": "Controller"
-				}
-			]
-		},
-		{
 			"filePath": "../Shared/Airship/Game/GameInfoSingleton.lua",
 			"internalId": "$:Airship/Game/GameInfoSingleton@GameInfoSingleton",
 			"decorators": [
@@ -946,6 +935,17 @@
 		{
 			"filePath": "../Client/MainMenuControllers/MainMenuHomeController.lua",
 			"internalId": "$:MainMenuControllers/MainMenuHomeController@MainMenuHomeController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Client/MainMenuControllers/User/UserController.lua",
+			"internalId": "$:MainMenuControllers/User/UserController@UserController",
 			"decorators": [
 				{
 					"internalId": "$:Flamework/flamework@Controller",

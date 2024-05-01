@@ -13,7 +13,6 @@ import { Game } from "./Game";
 import { InitNet } from "./Network/NetworkAPI";
 import { AppManager } from "./Util/AppManager";
 import { CanvasAPI } from "./Util/CanvasAPI";
-import { RunUtil } from "./Util/RunUtil";
 import { TimeUtil } from "./Util/TimeUtil";
 import { OnFixedUpdate, OnLateUpdate, OnTick, OnUpdate } from "./Util/Timer";
 
@@ -62,25 +61,30 @@ if (InstanceFinder.TimeManager !== undefined) {
 }
 
 Flamework.AddPath("assets/bundles/@Easy/Core/shared/resources/ts", "^.*singleton.lua$", "mainmenu/");
-if (RunUtil.IsClient()) {
+if (Game.IsClient()) {
 	Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/airship", "^.*controller.lua$");
 	Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/controllers", "^.*controller.lua$", "mainmenu/");
 	// Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/mainmenucontrollers", "^.*controller.lua$");
 	// Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/mainmenucontrollers", "^.*singleton.lua$");
 }
-if (RunUtil.IsServer()) {
+if (Game.IsServer()) {
 	Flamework.AddPath("assets/bundles/@Easy/Core/server/resources/ts/airship", "^.*service.lua$");
 	Flamework.AddPath("assets/bundles/@Easy/Core/server/resources/ts/services", "^.*service.lua$");
 }
 Flamework.Ignite();
 
-if (RunUtil.IsServer()) {
-	const server = require("@Easy/Core/Server/Resources/TS/CoreServerBootstrap") as {
-		SetupServer: () => void;
-	};
-	server.SetupServer();
+if (Game.IsServer()) {
+	const serverInfo = contextbridge.invoke<
+		() => {
+			gameId: string;
+			serverId: string;
+			organizationId: string;
+		}
+	>("ServerInfo", LuauContext.Protected);
+	Game.serverId = serverInfo.serverId;
+	Game.gameId = serverInfo.gameId;
+	Game.organizationId = serverInfo.organizationId;
 }
 
 Bootstrap.PrepareVoxelWorld();
 Bootstrap.Prepare();
-Bootstrap.FinishedSetup();

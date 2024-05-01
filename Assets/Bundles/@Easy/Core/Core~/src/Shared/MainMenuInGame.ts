@@ -37,3 +37,31 @@ Flamework.AddPath("assets/bundles/@Easy/Core/shared/resources/ts/mainmenu", "^.*
 Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/mainmenucontrollers", "^.*controller.lua$");
 Flamework.AddPath("assets/bundles/@Easy/Core/shared/resources/ts/player/playerssingleton", "^.*singleton.lua$");
 Flamework.Ignite();
+
+if (Game.IsServer()) {
+	const autoShutdownBridge = GameObject.Find("AutoShutdownBridge").GetComponent<AutoShutdownBridge>()!;
+	if (autoShutdownBridge) {
+		autoShutdownBridge.SetBundlesLoaded(true);
+	}
+
+	const serverBootstrap = GameObject.Find("ServerBootstrap").GetComponent<ServerBootstrap>()!;
+	Game.gameId = serverBootstrap.gameId;
+	Game.serverId = serverBootstrap.serverId;
+	Game.organizationId = serverBootstrap.organizationId;
+
+	contextbridge.callback<
+		() => {
+			gameId: string;
+			serverId: string;
+			organizationId: string;
+		}
+	>("ServerInfo", () => {
+		return {
+			gameId: Game.gameId,
+			serverId: Game.serverId,
+			organizationId: Game.organizationId,
+		};
+	});
+
+	serverBootstrap.FinishedSetup();
+}
