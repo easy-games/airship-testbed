@@ -15,6 +15,7 @@ Material:
   - EXPLICIT_MAPS_ON
   - SHADOWS_ON
   - TRIPLANAR_STYLE_OFF
+  - USE_COLOR_MASK_ON
   m_InvalidKeywords:
   - EXPLICIT_MAPS
   - METAL_ON_ON
@@ -72,7 +73,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 9aa6ce88a42747f40b900bb53c4fa97e, type: 3}
+        m_Texture: {fileID: 2800000, guid: 92af4fb717d50e643b15a2b53c4e15c0, type: 3}
         m_Scale: {x: 2, y: 2}
         m_Offset: {x: 0, y: 0}
     - _MetalTex:
@@ -118,7 +119,7 @@ Material:
     - SHADOWS: 1
     - SLIDER_OVERRIDE: 1
     - TRIPLANAR_STYLE: 0
-    - USE_COLOR_MASK: 0
+    - USE_COLOR_MASK: 1
     - USE_SHADOW_COLOR: 0
     - VERTEX_LIGHT: 0
     - _Alpha: 1
@@ -153,7 +154,7 @@ Material:
     - _SrcBlend: 1
     - _SunScale: 1
     - _Triplanar: 1
-    - _TriplanarScale: 1
+    - _TriplanarScale: 0.8
     - _UVSec: 0
     - _VERTEX_LIGHT: 0
     - _ZWrite: 1
