@@ -30,7 +30,7 @@ export class Game {
 	}
 
 	public static BroadcastMessage(message: string): void {
-		if (RunUtil.IsServer()) {
+		if (Game.IsServer()) {
 			CoreNetwork.ServerToClient.ChatMessage.server.FireAllClients(message);
 		} else {
 			Game.localPlayer.SendMessage(message);

@@ -17,10 +17,11 @@ export class WorldAPI {
 			return this.world;
 		}
 
-		const voxelWorld = GameObject.Find("VoxelWorld")?.GetComponent<VoxelWorld>()! as VoxelWorld | undefined;
-		if (voxelWorld) {
-			this.world = new World(voxelWorld);
-		}
+		// todo: fix VoxelWorld access. 5/1/23
+		// const voxelWorld = GameObject.Find("VoxelWorld")?.GetComponent<VoxelWorld>()! as VoxelWorld | undefined;
+		// if (voxelWorld) {
+		// 	this.world = new World(voxelWorld);
+		// }
 
 		return this.world;
 	}

@@ -132,9 +132,12 @@ export class ClientChatSingleton implements OnStart {
 			this.wrapper.GetComponent<Mask>()!.enabled = false;
 		}
 
-		contextbridge.callback<(val: boolean) => void>("ClientChatSingleton:SetUIEnabled", (val) => {
-			this.canvas.gameObject.SetActive(val);
-		});
+		contextbridge.callback<(from: LuauContext, val: boolean) => void>(
+			"ClientChatSingleton:SetUIEnabled",
+			(from, val) => {
+				this.canvas.gameObject.SetActive(val);
+			},
+		);
 
 		task.delay(0, () => {
 			const mobileOverlayCanvas = Object.Instantiate(
@@ -177,22 +180,37 @@ export class ClientChatSingleton implements OnStart {
 		return this.selected;
 	}
 
-	OnStart(): void {
-		CoreNetwork.ServerToClient.ChatMessage.client.OnServerEvent((rawText, nameWithPrefix, senderClientId) => {
-			let sender: Player | undefined;
-			if (senderClientId !== undefined) {
-				sender = Airship.players.FindByClientId(senderClientId);
-				if (sender) {
-					if (Dependency<MainMenuBlockSingleton>().IsUserIdBlocked(sender.userId)) {
-						return;
-					}
+	public AddMessage(rawText: string, nameWithPrefix: string | undefined, senderClientId: number | undefined): void {
+		let sender: Player | undefined;
+		if (senderClientId !== undefined) {
+			sender = Airship.players.FindByClientId(senderClientId);
+			if (sender) {
+				if (Dependency<MainMenuBlockSingleton>().IsUserIdBlocked(sender.userId)) {
+					return;
 				}
 			}
-			let text = rawText;
-			if (nameWithPrefix) {
-				text = nameWithPrefix + rawText;
-			}
-			this.RenderChatMessage(text, sender);
+		}
+		let text = rawText;
+		if (nameWithPrefix) {
+			text = nameWithPrefix + rawText;
+		}
+		this.RenderChatMessage(text, sender);
+	}
+
+	OnStart(): void {
+		contextbridge.callback<
+			(
+				fromContext: LuauContext,
+				rawText: string,
+				nameWithPrefix: string | undefined,
+				senderClientId: number | undefined,
+			) => void
+		>("Chat:AddMessage", (fromContext, rawText, nameWithPrefix, senderClientId) => {
+			this.AddMessage(rawText, nameWithPrefix, senderClientId);
+		});
+
+		CoreNetwork.ServerToClient.ChatMessage.client.OnServerEvent((rawText, nameWithPrefix, senderClientId) => {
+			this.AddMessage(rawText, nameWithPrefix, senderClientId);
 		});
 
 		const keyboard = new Keyboard();
@@ -293,10 +311,19 @@ export class ClientChatSingleton implements OnStart {
 				this.inputWrapperImage.color = new Color(0, 0, 0, 0.4);
 			}
 			// todo: movement disabler
-			// const entityInputDisabler = Dependency<LocalCharacterSingleton>().GetCharacterInput()?.AddDisabler();
-			// if (entityInputDisabler !== undefined) {
-			// 	this.selectedBin.Add(entityInputDisabler);
-			// }
+			const disableId = contextbridge.invoke<() => number | undefined>(
+				"LocalCharacterSingleton:AddInputDisabler",
+				LuauContext.Game,
+			);
+			if (disableId !== undefined) {
+				this.selectedBin.Add(() => {
+					contextbridge.invoke<(id: number) => void>(
+						"LocalCharacterSingleton:RemoveInputDisabler",
+						LuauContext.Game,
+						disableId,
+					);
+				});
+			}
 			const mouseLocker = mouse.AddUnlocker();
 			this.selectedBin.Add(() => {
 				mouse.RemoveUnlocker(mouseLocker);

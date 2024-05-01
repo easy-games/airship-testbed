@@ -182,6 +182,32 @@ export class LocalCharacterSingleton implements OnStart {
 			};
 		});
 
+		{
+			let disablers = new Map<number, () => void>();
+			let idCounter = 0;
+			contextbridge.callback<() => number | undefined>("LocalCharacterSingleton:AddInputDisabler", () => {
+				const cleanup = this.GetCharacterInput()?.AddDisabler();
+				if (cleanup !== undefined) {
+					idCounter++;
+					const id = idCounter;
+					disablers.set(id, cleanup);
+					print("AddInputDisabler returning " + id);
+					return id;
+				}
+			});
+			contextbridge.callback<(from: LuauContext, id: number, t: number) => void>(
+				"LocalCharacterSingleton:RemoveInputDisabler",
+				(id, t) => {
+					print("RemoveInputDisabler got " + t);
+					const cleanup = disablers.get(t);
+					if (cleanup !== undefined) {
+						cleanup();
+						disablers.delete(id);
+					}
+				},
+			);
+		}
+
 		//Sprinting overlay vfx
 		// let sprintOverlaytemplate = AssetBridge.Instance.LoadAssetIfExists<GameObject>(
 		// 	AllBundleItems.Entity_Movement_SprintOverlayVFX,

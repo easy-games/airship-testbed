@@ -78,6 +78,7 @@ export default class DemoManager extends AirshipBehaviour {
 		});
 
 		if (Game.IsServer()) {
+			Airship.chat.BroadcastMessage("test broadcast");
 			Airship.players.ObservePlayers((player) => {
 				this.SpawnPlayer(player);
 			});

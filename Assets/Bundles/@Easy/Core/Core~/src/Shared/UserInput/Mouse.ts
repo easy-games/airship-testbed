@@ -1,5 +1,6 @@
 import { Bin } from "Shared/Util/Bin";
 import { Signal } from "Shared/Util/Signal";
+import { Game } from "../Game";
 import { MouseDriver } from "./Drivers/MouseDriver";
 import { PointerButtonSignal } from "./Drivers/Signals/PointerButtonSignal";
 import { ScrollSignal } from "./Drivers/Signals/ScrollSignal";
@@ -151,6 +152,11 @@ export class Mouse {
 	 * Returns an ID that can be used to unlock the mouse.
 	 */
 	public AddUnlocker(): number {
+		if (contextbridge.current() === LuauContext.Protected) {
+			let id = contextbridge.invoke<() => number>("Mouse:AddUnlocker", LuauContext.Game);
+			return id;
+		}
+
 		const id = mouseUnlockerIdCounter;
 		mouseUnlockerIdCounter++;
 		mouseUnlockerKeys.add(id);
@@ -161,6 +167,10 @@ export class Mouse {
 	}
 
 	public RemoveUnlocker(id: number): void {
+		if (contextbridge.current() === LuauContext.Protected) {
+			contextbridge.invoke<(id: number) => void>("Mouse:RemoveUnlocker", LuauContext.Game, id);
+			return;
+		}
 		mouseUnlockerKeys.delete(id);
 		if (mouseUnlockerKeys.size() === 0) {
 			this.mouseDriver.SetLocked(true);
@@ -187,4 +197,17 @@ export class Mouse {
 	}
 
 	public HideCursor() {}
+}
+
+if (Game.IsGameContext()) {
+	print("register AddUnlocker");
+	const mouse = new Mouse();
+	contextbridge.callback<() => number>("Mouse:AddUnlocker", () => {
+		let id = mouse.AddUnlocker();
+		return id;
+	});
+
+	contextbridge.callback<(from: LuauContext, id: number) => void>("Mouse:RemoveUnlocker", (from, id) => {
+		mouse.RemoveUnlocker(id);
+	});
 }

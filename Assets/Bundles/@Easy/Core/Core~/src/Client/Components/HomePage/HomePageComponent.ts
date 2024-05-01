@@ -86,6 +86,7 @@ export default class HomePageComponent extends MainMenuPageComponent {
 		let sorts: SortId[];
 		sorts = ObjectUtils.keys(this.sorts);
 
+		print("HomePage context=" + contextbridge.current());
 		const blockSingleton = Dependency<MainMenuBlockSingleton>();
 		for (let sortId of sorts) {
 			const sortComponent = this.sorts.get(sortId)!;

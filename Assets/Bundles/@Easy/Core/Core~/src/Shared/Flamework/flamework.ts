@@ -50,7 +50,6 @@ export namespace Flamework {
 			if (ignorePattern !== undefined) {
 				let res = string.match(filePath.lower(), ignorePattern);
 				if (res[0]) {
-					print("ignored: " + filePath);
 					continue;
 				}
 			}

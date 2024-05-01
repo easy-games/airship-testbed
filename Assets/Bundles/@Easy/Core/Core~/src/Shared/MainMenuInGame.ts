@@ -35,6 +35,7 @@ gameObject.OnFixedUpdate(() => {
 
 Flamework.AddPath("assets/bundles/@Easy/Core/shared/resources/ts/mainmenu", "^.*singleton.lua$");
 Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/mainmenucontrollers", "^.*controller.lua$");
+Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/mainmenucontrollers", "^.*singleton.lua$");
 Flamework.AddPath("assets/bundles/@Easy/Core/shared/resources/ts/player/playerssingleton", "^.*singleton.lua$");
 Flamework.Ignite();
 
@@ -50,12 +51,12 @@ if (Game.IsServer()) {
 	Game.organizationId = serverBootstrap.organizationId;
 
 	contextbridge.callback<
-		() => {
+		(fromContext: LuauContext) => {
 			gameId: string;
 			serverId: string;
 			organizationId: string;
 		}
-	>("ServerInfo", () => {
+	>("ServerInfo", (from) => {
 		return {
 			gameId: Game.gameId,
 			serverId: Game.serverId,
