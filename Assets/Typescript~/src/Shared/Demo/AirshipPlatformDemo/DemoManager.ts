@@ -92,7 +92,7 @@ export default class DemoManager extends AirshipBehaviour {
 
 			// spawn ball
 			task.spawn(() => {
-				for (let i = 0; i < 5; i++) {
+				for (let i = 0; i < 3; i++) {
 					const ballGo = Object.Instantiate<GameObject>(
 						this.ballPrefab,
 						this.ballSpawnPoint.position,
@@ -140,10 +140,6 @@ export default class DemoManager extends AirshipBehaviour {
 		for (let go of this.cleanupOnStart) {
 			Object.Destroy(go);
 		}
-
-		// test security
-		const test = GameObject.Create("test");
-		test.transform.parent = PlayerManagerBridge.Instance.transform;
 	}
 
 	public SpawnPlayer(player: Player): void {

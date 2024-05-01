@@ -24,7 +24,6 @@ export class CoreRefs {
 
 		if (contextbridge.current() === LuauContext.Protected) {
 			let protectedSceneName = Game.IsInGame() ? "CoreScene" : "MainMenu";
-			print("protectedSceneName: " + protectedSceneName);
 			let protectedGo = GameObject.Find("AirshipProtected");
 			if (protectedGo && protectedGo.scene.name === protectedSceneName) {
 				this.protectedTransform = protectedGo.transform;

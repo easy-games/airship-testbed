@@ -32,7 +32,6 @@ export class ChangeUsernameController implements OnStart {
 	private openBin = new Bin();
 
 	constructor(private readonly authController: AuthController) {
-		print("ChangeUsernameController " + contextbridge.current());
 		const go = Object.Instantiate(
 			AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/UI/MainMenu/ChangeUsername.prefab"),
 			CoreRefs.protectedTransform,

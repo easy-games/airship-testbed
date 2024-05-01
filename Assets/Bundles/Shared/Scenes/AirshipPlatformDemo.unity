@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: f0eb73c89666e984ea23b067162b87a8, type: 2}
+  m_SkyboxMaterial: {fileID: 2100000, guid: f5c2186f7ebace244a6a20db5e97f5fd, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -844,6 +844,7 @@ MonoBehaviour:
       serializedObject: {fileID: 0}
       modified: 0
     displayName: 
+  contextOverwritten: 0
 --- !u!114 &788576784
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1179,6 +1180,7 @@ MonoBehaviour:
       serializedObject: {fileID: 2748669429789584642, guid: 9cd09b32e10194976b43f4c363815292, type: 3}
       modified: 1
     displayName: 
+  contextOverwritten: 0
 --- !u!81 &1065048245
 AudioListener:
   m_ObjectHideFlags: 0
@@ -1577,7 +1579,7 @@ MonoBehaviour:
   shadowRange: 50
   postProcess: 1
   doShadows: 1
-  cubeMap: {fileID: 8900000, guid: a05e8bb3cebedda498adab6df6dc8171, type: 3}
+  cubeMap: {fileID: 8900000, guid: 7b6fb1e32e8195d45bb1770100fbc001, type: 3}
   maxBrightness: 1
 --- !u!4 &1592361740
 Transform:

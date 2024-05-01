@@ -20,12 +20,10 @@ export class MainMenuSingleton implements OnStart {
 	public socialMenuModifier = new Modifier<{ hidden: boolean }>();
 
 	constructor() {
-		print("MainMenuSingleton.1");
 		this.screenSize = new Vector2(Screen.width, Screen.height);
 	}
 
 	OnStart(): void {
-		print("MainMenuSingleton.2");
 		const readOnlyCanvasGO = Object.Instantiate(
 			AssetCache.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/UI/AirshipReadOnlyCanvas.prefab"),
 			CoreRefs.rootTransform,

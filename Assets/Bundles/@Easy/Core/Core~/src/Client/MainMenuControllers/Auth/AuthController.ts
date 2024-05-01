@@ -29,7 +29,6 @@ export class AuthController implements OnStart {
 			}
 		}
 
-		print("creating AuthController:IsAuthenticated", contextbridge.current());
 		contextbridge.callback("AuthController:IsAuthenticated", () => {
 			return this.IsAuthenticated();
 		});
