@@ -16751,6 +16751,7 @@ interface BridgeConstructor {
 
 
     CopyToClipboard(text: string): void;
+    GetActiveScene(): string;
     GetAllocatedRam(): number;
     GetAverageFPS(): number;
     GetCurrentFPS(): number;
@@ -17362,7 +17363,6 @@ interface AirshipObjectPool extends DefaultObjectPool {
     maxSpawnPerFrame: number;
 
 
-    RetrieveObject(prefabId: number, collectionId: number, parent: Transform, nullableLocalPosition: unknown, nullableLocalRotation: unknown, nullableLocalScale: unknown, makeActive: boolean, asServer: boolean): NetworkObject;
     SlowlyCacheObjects(prefab: NetworkObject, count: number): void;
 
 }

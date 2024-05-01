@@ -11,6 +11,7 @@ export class Bootstrap {
 		// Setup Managers
 		BlockDataAPI.Init();
 		PrefabBlockManager.Get();
+		VoxelWorld.chunkSize;
 	}
 
 	/**

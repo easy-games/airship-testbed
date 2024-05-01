@@ -54,7 +54,7 @@ export class Game {
 	 */
 	public static organizationId: string;
 
-	public static startingScene = SceneManager.GetActiveScene().name;
+	public static startingScene = Bridge.GetActiveScene();
 
 	public static gameData: GameDto | undefined;
 	public static onGameDataLoaded = new Signal<GameDto>();
