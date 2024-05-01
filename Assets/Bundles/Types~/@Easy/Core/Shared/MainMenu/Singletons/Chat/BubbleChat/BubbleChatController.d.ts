@@ -1,4 +1,4 @@
-import { OnStart } from "../../../../Shared/Flamework";
+import { OnStart } from "../../../../Flamework";
 export declare class BubbleChatController implements OnStart {
     private static maxDisplayedMessages;
     /** Map from transform to minimized status (true = minimized) */

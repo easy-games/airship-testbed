@@ -28,6 +28,10 @@ export class AuthController implements OnStart {
 				Bridge.LoadScene("Login", true);
 			}
 		}
+
+		contextbridge.callback("AuthController:IsAuthenticated", () => {
+			return this.IsAuthenticated();
+		});
 	}
 
 	public async WaitForAuthed(): Promise<void> {
@@ -78,6 +82,7 @@ export class AuthController implements OnStart {
 			StateManager.SetString("firebase_localId", data.user_id);
 			this.authenticated = true;
 			this.onAuthenticated.Fire();
+			contextbridge.broadcast("AuthController:OnAuthenticated");
 			return true;
 		}
 		print("failed login with refresh token: " + res.error + " statusCode=" + res.statusCode);
@@ -102,6 +107,7 @@ export class AuthController implements OnStart {
 			StateManager.SetString("firebase_localId", data.localId);
 			this.authenticated = true;
 			this.onAuthenticated.Fire();
+			contextbridge.broadcast("AuthController:OnAuthenticated");
 
 			if (!RunUtil.IsClone()) {
 				AuthManager.SaveAuthAccount(data.refreshToken);

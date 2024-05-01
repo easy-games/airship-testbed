@@ -7,10 +7,10 @@ export class TouchscreenDriver {
 	public readonly touchTap = new Signal<[touchIndex: number, position: Vector3, phase: InputActionPhase]>();
 
 	private constructor() {
-		// UserInputService.InputProxy.OnTouchEvent((touchIndex, position, phase) => {
+		// InputBridge.Instance.OnTouchEvent((touchIndex, position, phase) => {
 		// 	this.Touch.Fire(touchIndex, position, phase);
 		// });
-		// UserInputService.InputProxy.OnTouchTapEvent((touchIndex, position, phase) => {
+		// InputBridge.Instance.OnTouchTapEvent((touchIndex, position, phase) => {
 		// 	this.TouchTap.Fire(touchIndex, position, phase);
 		// });
 	}

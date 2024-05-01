@@ -83,8 +83,11 @@ export class MainMenuPartyController implements OnStart {
 				this.UpdateParty();
 			});
 
-		Game.localPlayer.onUsernameChanged.Connect(() => {
-			this.UpdateParty();
+		task.spawn(() => {
+			Game.WaitForLocalPlayerLoaded();
+			Game.localPlayer.onUsernameChanged.Connect(() => {
+				this.UpdateParty();
+			});
 		});
 
 		const addFriendsButton = this.mainMenuController.refs.GetValue("Social", "AddFriendsButton");

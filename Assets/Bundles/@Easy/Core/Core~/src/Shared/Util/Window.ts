@@ -11,6 +11,7 @@ export class Window {
 }
 
 // Driver:
-WindowCore.Window.OnWindowFocus((hasFocus) => {
-	Window.focusChanged.Fire(hasFocus);
-});
+// todo: fix this
+// WindowCore.Window.OnWindowFocus((hasFocus) => {
+// 	Window.focusChanged.Fire(hasFocus);
+// });

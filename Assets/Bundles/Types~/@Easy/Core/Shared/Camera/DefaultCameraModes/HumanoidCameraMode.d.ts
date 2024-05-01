@@ -21,7 +21,6 @@ export declare class HumanoidCameraMode extends CameraMode {
     private readonly keyboard;
     private readonly touchscreen;
     private readonly mouse;
-    private readonly clientSettingsController;
     private spineBone;
     constructor(character: Character, graphicalCharacterGO: GameObject, initialFirstPerson: boolean);
     private SetupMobileControls;

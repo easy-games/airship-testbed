@@ -1,11 +1,9 @@
 import { OnStart } from "../../../Shared/Flamework";
 import { CharacterInventorySingleton } from "../../../Shared/Inventory/CharacterInventorySingleton";
 import { InventorySingleton } from "../../../Shared/Inventory/InventorySingleton";
-import { CoreUIController } from "../UI/CoreUIController";
 export declare class InventoryUIController implements OnStart {
     private readonly invController;
     private readonly characterInvController;
-    private readonly coreUIController;
     private hotbarSlots;
     private backpackShown;
     private hotbarCanvas;
@@ -22,7 +20,7 @@ export declare class InventoryUIController implements OnStart {
     private draggingBin;
     private spriteCacheForItemType;
     private firstSpawn;
-    constructor(invController: InventorySingleton, characterInvController: CharacterInventorySingleton, coreUIController: CoreUIController);
+    constructor(invController: InventorySingleton, characterInvController: CharacterInventorySingleton);
     OnStart(): void;
     SetEnabled(enabled: boolean): void;
     private SetVisible;

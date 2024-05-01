@@ -1,6 +1,5 @@
 /**
- * Entry point for the Main Menu while in Main Menu.
- * This is not ran while in-game.
+ * Entry point for the Main Menu while in-game.
  */
 
 import { AvatarUtil } from "Shared/Avatar/AvatarUtil";
@@ -14,7 +13,7 @@ import { CanvasAPI } from "./Util/CanvasAPI";
 import { TimeUtil } from "./Util/TimeUtil";
 import { OnFixedUpdate, OnLateUpdate, OnUpdate } from "./Util/Timer";
 
-Game.coreContext = CoreContext.MAIN_MENU;
+Game.coreContext = CoreContext.GAME;
 CoreRefs.Init();
 
 TimeUtil.GetLifetimeSeconds();
@@ -34,10 +33,35 @@ gameObject.OnFixedUpdate(() => {
 	OnFixedUpdate.Fire(TimeUtil.GetFixedDeltaTime());
 });
 
-Flamework.AddPath("assets/bundles/@Easy/Core/shared/resources/ts", "^.*singleton.lua$");
+Flamework.AddPath("assets/bundles/@Easy/Core/shared/resources/ts/mainmenu", "^.*singleton.lua$");
 Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/mainmenucontrollers", "^.*controller.lua$");
-Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/mainmenucontrollers", "^.*singleton.lua$");
+Flamework.AddPath("assets/bundles/@Easy/Core/shared/resources/ts/player/playerssingleton", "^.*singleton.lua$");
 Flamework.Ignite();
 
-const mainMenuLoadingScreen = GameObject.Find("MainMenuLoadingScreen").GetComponent<MainMenuLoadingScreen>()!;
-mainMenuLoadingScreen.Close();
+if (Game.IsServer()) {
+	const autoShutdownBridge = GameObject.Find("AutoShutdownBridge").GetComponent<AutoShutdownBridge>()!;
+	if (autoShutdownBridge) {
+		autoShutdownBridge.SetBundlesLoaded(true);
+	}
+
+	const serverBootstrap = GameObject.Find("ServerBootstrap").GetComponent<ServerBootstrap>()!;
+	Game.gameId = serverBootstrap.gameId;
+	Game.serverId = serverBootstrap.serverId;
+	Game.organizationId = serverBootstrap.organizationId;
+
+	contextbridge.callback<
+		() => {
+			gameId: string;
+			serverId: string;
+			organizationId: string;
+		}
+	>("ServerInfo", () => {
+		return {
+			gameId: Game.gameId,
+			serverId: Game.serverId,
+			organizationId: Game.organizationId,
+		};
+	});
+
+	serverBootstrap.FinishedSetup();
+}

@@ -92,7 +92,7 @@ export default class DemoManager extends AirshipBehaviour {
 
 			// spawn ball
 			task.spawn(() => {
-				for (let i = 0; i < 5; i++) {
+				for (let i = 0; i < 3; i++) {
 					const ballGo = Object.Instantiate<GameObject>(
 						this.ballPrefab,
 						this.ballSpawnPoint.position,

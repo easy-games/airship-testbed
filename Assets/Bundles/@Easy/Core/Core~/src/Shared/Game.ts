@@ -54,7 +54,7 @@ export class Game {
 	 */
 	public static organizationId: string;
 
-	public static startingScene = SceneManager.GetActiveScene().name;
+	public static startingScene = Bridge.GetActiveScene();
 
 	public static gameData: GameDto | undefined;
 	public static onGameDataLoaded = new Signal<GameDto>();
@@ -158,5 +158,21 @@ export class Game {
 	 */
 	public static IsInGame(): boolean {
 		return this.coreContext === CoreContext.GAME;
+	}
+
+	/**
+	 * @internal
+	 * @returns
+	 */
+	public static IsProtectedContext(): boolean {
+		return contextbridge.current() === LuauContext.Protected;
+	}
+
+	/**
+	 * @internal
+	 * @returns
+	 */
+	public static IsGameContext(): boolean {
+		return contextbridge.current() === LuauContext.Game;
 	}
 }

@@ -1,7 +1,7 @@
+import { CoreUIController } from "@Easy/Core/Client/MainMenuControllers/CoreUIController";
+import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
+import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
 import { MainMenuSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/MainMenuSingleton";
-import { DirectMessageController } from "Client/MainMenuControllers/Social/DirectMessages/DirectMessageController";
-import { FriendsController } from "Client/MainMenuControllers/Social/FriendsController";
-import { SocketController } from "Client/MainMenuControllers/Socket/SocketController";
 import { Airship } from "Shared/Airship";
 import { AudioManager } from "Shared/Audio/AudioManager";
 import { ChatCommand } from "Shared/Commands/ChatCommand";
@@ -12,16 +12,14 @@ import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { Player } from "Shared/Player/Player";
 import { CoreSound } from "Shared/Sound/CoreSound";
-import { Keyboard, Mouse } from "Shared/UserInput";
+import { ControlScheme, Keyboard, Mouse, Preferred } from "Shared/UserInput";
 import { AppManager } from "Shared/Util/AppManager";
 import { Bin } from "Shared/Util/Bin";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { ChatUtil } from "Shared/Util/ChatUtil";
 import { SignalPriority } from "Shared/Util/Signal";
 import { SetInterval, SetTimeout } from "Shared/Util/Timer";
-import { LocalCharacterSingleton } from "../../../Shared/Character/LocalCharacter/LocalCharacterSingleton";
-import { MainMenuBlockSingleton } from "../../MainMenuControllers/Settings/MainMenuBlockSingleton";
-import { CoreUIController } from "../UI/CoreUIController";
+import { MainMenuBlockSingleton } from "../../../../Client/MainMenuControllers/Settings/MainMenuBlockSingleton";
 import { MessageCommand } from "./ClientCommands/MessageCommand";
 import { ReplyCommand } from "./ClientCommands/ReplyCommand";
 
@@ -66,7 +64,7 @@ class ChatMessageElement {
 }
 
 @Controller({})
-export class ChatController implements OnStart {
+export class ClientChatSingleton implements OnStart {
 	public canvas!: Canvas;
 	private content: GameObject;
 	private wrapper: GameObject;
@@ -85,14 +83,9 @@ export class ChatController implements OnStart {
 	private commands = new Map<string, ChatCommand>();
 	private lastChatMessageRenderedTime = Time.time;
 
-	constructor(
-		private readonly localEntityController: LocalCharacterSingleton,
-		private readonly coreUIController: CoreUIController,
-		private readonly socketController: SocketController,
-		private readonly directMessageController: DirectMessageController,
-		private readonly friendsController: FriendsController,
-	) {
-		const refs = this.coreUIController.refs.GetValue("Apps", "Chat").GetComponent<GameObjectReferences>()!;
+	constructor() {
+		print("ClientChatSingleton " + contextbridge.current());
+		const refs = Dependency<CoreUIController>().refs.GetValue("Apps", "Chat").GetComponent<GameObjectReferences>()!;
 		this.canvas = refs.GetValue("UI", "Canvas").GetComponent<Canvas>()!;
 		this.content = refs.GetValue("UI", "Content");
 		this.wrapper = refs.GetValue("UI", "Wrapper");
@@ -138,6 +131,27 @@ export class ChatController implements OnStart {
 		} else {
 			this.wrapper.GetComponent<Mask>()!.enabled = false;
 		}
+
+		contextbridge.callback<(val: boolean) => void>("ClientChatSingleton:SetUIEnabled", (val) => {
+			this.canvas.gameObject.SetActive(val);
+		});
+
+		task.delay(0, () => {
+			const mobileOverlayCanvas = Object.Instantiate(
+				AssetCache.LoadAsset(
+					"@Easy/Core/Shared/Resources/Prefabs/UI/MobileControls/MobileOverlayCanvas.prefab",
+				),
+				CoreRefs.protectedTransform,
+			);
+			const controls = new Preferred();
+			controls.ObserveControlScheme((scheme) => {
+				if (scheme === ControlScheme.Touch) {
+					mobileOverlayCanvas.SetActive(true);
+				} else {
+					mobileOverlayCanvas.SetActive(false);
+				}
+			});
+		});
 	}
 
 	public OpenMobile(): void {
@@ -278,10 +292,11 @@ export class ChatController implements OnStart {
 			if (!Game.IsMobile()) {
 				this.inputWrapperImage.color = new Color(0, 0, 0, 0.4);
 			}
-			const entityInputDisabler = this.localEntityController.GetEntityInput()?.AddDisabler();
-			if (entityInputDisabler !== undefined) {
-				this.selectedBin.Add(entityInputDisabler);
-			}
+			// todo: movement disabler
+			// const entityInputDisabler = Dependency<LocalCharacterSingleton>().GetCharacterInput()?.AddDisabler();
+			// if (entityInputDisabler !== undefined) {
+			// 	this.selectedBin.Add(entityInputDisabler);
+			// }
 			const mouseLocker = mouse.AddUnlocker();
 			this.selectedBin.Add(() => {
 				mouse.RemoveUnlocker(mouseLocker);

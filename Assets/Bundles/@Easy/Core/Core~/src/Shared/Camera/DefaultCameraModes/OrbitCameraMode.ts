@@ -1,6 +1,4 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
-import { ClientSettingsController } from "Client/MainMenuControllers/Settings/ClientSettingsController";
-import { Dependency } from "Shared/Flamework";
 import { Game } from "Shared/Game";
 import { ControlScheme, Keyboard, Mouse, Preferred, Touchscreen } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
@@ -40,7 +38,6 @@ export class OrbitCameraMode extends CameraMode {
 	private readonly keyboard = this.bin.Add(new Keyboard());
 	private readonly touchscreen = this.bin.Add(new Touchscreen());
 	private readonly mouse = this.bin.Add(new Mouse());
-	private readonly clientSettingsController = Dependency<ClientSettingsController>();
 
 	constructor(
 		private readonly distance: number,

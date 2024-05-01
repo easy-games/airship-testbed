@@ -202,6 +202,10 @@ export class FriendsController implements OnStart {
 			this.SendStatusUpdate();
 		});
 
+		contextbridge.callback("FriendsController:SendStatusUpdate", (from) => {
+			this.SendStatusUpdate();
+		});
+
 		this.Setup();
 	}
 
