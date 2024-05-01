@@ -257,10 +257,10 @@
 		"@Easy/Core:Shared/MainMenu/Components/Settings/General/PlayerEntry@PlayerEntry": "$:MainMenu/Components/Settings/General/PlayerEntry@PlayerEntry",
 		"@Easy/Core:Shared/MainMenu/Components/Settings/General/PlayerList@PlayerList": "$:MainMenu/Components/Settings/General/PlayerList@PlayerList",
 		"@Easy/Core:Shared/MainMenu/Singletons/Chat/BubbleChat/BubbleChatController@BubbleChatController": "$:MainMenu/Singletons/Chat/BubbleChat/BubbleChatController@BubbleChatController",
+		"@Easy/Core:Shared/MainMenu/Singletons/Steam/SteamworksSingleton@SteamworksSingleton": "$:MainMenu/Singletons/Steam/SteamworksSingleton@SteamworksSingleton",
 		"@Easy/Core:Shared/MobileControls/MobileCameraMovement@MobileCameraMovement": "$:MobileControls/MobileCameraMovement@MobileCameraMovement",
 		"@Easy/Core:Shared/MobileControls/MobileJoystick@MobileJoystick": "$:MobileControls/MobileJoystick@MobileJoystick",
 		"@Easy/Core:Shared/MobileControls/MobileOverlayManager@MobileOverlayManager": "$:MobileControls/MobileOverlayManager@MobileOverlayManager",
-		"@Easy/Core:Shared/Privileged/Steam/SteamworksSingleton@SteamworksSingleton": "$:Privileged/Steam/SteamworksSingleton@SteamworksSingleton",
 		"@Easy/Core:Shared/ScreenSize/ScreenSizeSingleton@ScreenSizeSingleton": "$:ScreenSize/ScreenSizeSingleton@ScreenSizeSingleton",
 		"@Easy/Core:Shared/SocketIOMessages/UpdateUserDto@UpdateUserDto": "$:SocketIOMessages/UpdateUserDto@UpdateUserDto",
 		"@Easy/Core:Shared/Team/TeamJoinSignal@ChangeTeamSignal": "$:Team/TeamJoinSignal@ChangeTeamSignal",
@@ -1054,18 +1054,13 @@
 			]
 		},
 		{
-			"filePath": "../Shared/Privileged/Steam/SteamworksSingleton.lua",
-			"internalId": "$:Privileged/Steam/SteamworksSingleton@SteamworksSingleton",
+			"filePath": "../Shared/MainMenu/Singletons/Steam/SteamworksSingleton.lua",
+			"internalId": "$:MainMenu/Singletons/Steam/SteamworksSingleton@SteamworksSingleton",
 			"decorators": [
 				{
-					"internalId": "$:Flamework/flamework@Controller",
+					"internalId": "$:Flamework/flamework@Singleton",
 					"isFlameworkDecorator": true,
-					"name": "Controller"
-				},
-				{
-					"internalId": "$:Flamework/flamework@Service",
-					"isFlameworkDecorator": true,
-					"name": "Service"
+					"name": "Singleton"
 				}
 			]
 		},
