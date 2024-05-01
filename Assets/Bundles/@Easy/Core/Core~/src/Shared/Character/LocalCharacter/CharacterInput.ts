@@ -115,9 +115,9 @@ export class CharacterInput {
 				let sprinting = Airship.input.IsDown("Sprint") || this.autoSprinting;
 				const moveSignal = new LocalCharacterInputSignal(
 					this.queuedMoveDirection,
-					Airship.input.IsDown("Jump"),
+					this.enabled ? Airship.input.IsDown("Jump") : false,
 					sprinting,
-					Airship.input.IsDown("Crouch"),
+					this.enabled ? Airship.input.IsDown("Crouch") : false,
 				);
 				Dependency<LocalCharacterSingleton>().onBeforeLocalEntityInput.Fire(moveSignal);
 

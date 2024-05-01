@@ -194,10 +194,10 @@ export class LocalCharacterSingleton implements OnStart {
 					return id;
 				}
 			});
-			contextbridge.callback<(from: LuauContext, id: number, t: number) => void>(
+			contextbridge.callback<(from: LuauContext, id: number) => void>(
 				"LocalCharacterSingleton:RemoveInputDisabler",
-				(id, t) => {
-					const cleanup = disablers.get(t);
+				(from, id) => {
+					const cleanup = disablers.get(id);
 					if (cleanup !== undefined) {
 						cleanup();
 						disablers.delete(id);
