@@ -21,6 +21,7 @@ export declare class ClientChatSingleton implements OnStart {
     IsOpenMobile(): boolean;
     RegisterCommand(command: ChatCommand): void;
     IsOpen(): boolean;
+    AddMessage(rawText: string, nameWithPrefix: string | undefined, senderClientId: number | undefined): void;
     OnStart(): void;
     private CheckIfShouldHide;
     ShowAllChatMessages(): void;
