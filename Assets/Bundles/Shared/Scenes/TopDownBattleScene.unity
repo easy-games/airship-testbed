@@ -292,6 +292,10 @@ PrefabInstance:
       propertyPath: SerializedTransformProperties.LocalScale.z
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 1130922584293354641, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1668323441027821565, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -306,7 +310,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2651648165723727902, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
       propertyPath: m_LocalScale.y
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2651648165723727902, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
       propertyPath: m_LocalScale.z
@@ -394,7 +398,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 1, y: 5, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &116144137
 GameObject:
@@ -1728,6 +1732,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 748366958}
     m_Modifications:
+    - target: {fileID: 178497306733903817, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
+      propertyPath: m_Radius
+      value: 1.5
+      objectReference: {fileID: 0}
     - target: {fileID: 1031125428126405970, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
       propertyPath: _scenePathHash
       value: 4259774391
@@ -1736,21 +1744,33 @@ PrefabInstance:
       propertyPath: <SceneId>k__BackingField
       value: 18295591698985245389
       objectReference: {fileID: 0}
+    - target: {fileID: 1130922584293354641, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1130922584293354641, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1130922584293354641, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 1809283668337679231, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 1938020289}
     - target: {fileID: 2651648165723727902, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
       propertyPath: m_LocalScale.x
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2651648165723727902, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
       propertyPath: m_LocalScale.y
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2651648165723727902, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
       propertyPath: m_LocalScale.z
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2651648165723727902, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2725,6 +2745,14 @@ PrefabInstance:
       propertyPath: SerializedTransformProperties.LocalScale.z
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 1130922584293354641, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1130922584293354641, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1668323441027821565, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -2739,11 +2767,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2651648165723727902, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
       propertyPath: m_LocalScale.y
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2651648165723727902, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
       propertyPath: m_LocalScale.z
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2651648165723727902, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2827,7 +2855,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 1, y: 3, z: 5}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &913210011
 GameObject:
@@ -3557,6 +3585,18 @@ PrefabInstance:
       propertyPath: SerializedTransformProperties.LocalScale.z
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 1130922584293354641, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1130922584293354641, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1130922584293354641, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 1668323441027821565, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -3567,15 +3607,15 @@ PrefabInstance:
       objectReference: {fileID: 1938020289}
     - target: {fileID: 2651648165723727902, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
       propertyPath: m_LocalScale.x
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2651648165723727902, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
       propertyPath: m_LocalScale.y
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2651648165723727902, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
       propertyPath: m_LocalScale.z
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2651648165723727902, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3663,7 +3703,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 3, y: 3, z: 3}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1172613570
 GameObject:
@@ -3993,6 +4033,18 @@ PrefabInstance:
       propertyPath: SerializedTransformProperties.LocalScale.z
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 1130922584293354641, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1130922584293354641, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1130922584293354641, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1668323441027821565, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -4003,15 +4055,15 @@ PrefabInstance:
       objectReference: {fileID: 1938020289}
     - target: {fileID: 2651648165723727902, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2651648165723727902, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2651648165723727902, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
       propertyPath: m_LocalScale.z
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2651648165723727902, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4099,7 +4151,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 2, y: 2, z: 2}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1931515291
 GameObject:
@@ -4695,6 +4747,18 @@ PrefabInstance:
       propertyPath: SerializedTransformProperties.LocalScale.z
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 1130922584293354641, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1130922584293354641, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1130922584293354641, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1668323441027821565, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -4705,15 +4769,15 @@ PrefabInstance:
       objectReference: {fileID: 1938020289}
     - target: {fileID: 2651648165723727902, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2651648165723727902, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2651648165723727902, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
       propertyPath: m_LocalScale.z
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2651648165723727902, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4801,7 +4865,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 2, y: 2, z: 2}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1593605303836071960
 MonoBehaviour:
