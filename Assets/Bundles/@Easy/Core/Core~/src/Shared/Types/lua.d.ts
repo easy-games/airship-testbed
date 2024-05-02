@@ -685,6 +685,102 @@ declare namespace bit32 {
 	function rshift(x: number, displacement: number): number;
 }
 
+/**
+ * A variant of Lua's bit32 library that uses signed ints (rather than bit32's unsigned). This means all outputs are
+ * in the range [-2^31, 2^31 - 1].
+ */
+declare namespace sbit32 {
+	/**
+	 * Returns the number `x` shifted `displacement` bits to the right. The number `displacement` may be any representable integer.
+	 * Negative displacements shift to the left. This shift operation is what is called arithmetic shift.
+	 * Vacant bits on the left are filled with copies of the higher bit of `x`; vacant bits on the right are filled
+	 * with zeros. In particular, displacements with absolute values higher than 31 result in zero or `0xFFFFFFFF`
+	 * (all original bits are shifted out).
+	 */
+	function arshift(x: number, displacement: number): number;
+
+	/** Returns the bitwise _and_ of its operands. */
+	function band(...operands: Array<number>): number;
+
+	/**
+	 * Returns the bitwise negation of `x`. For any integer `x`, the following identity holds:
+	 *
+	 * `assert(bit32.bnot(x) == (-1 - x) % 2^32)`
+	 */
+	function bnot(x: number): number;
+
+	/** Returns the bitwise _or_ of its operands. */
+	function bor(...operands: Array<number>): number;
+
+	/** Returns a boolean signaling whether the bitwise _and_ of its operands is different from zero. */
+	function btest(...operands: Array<number>): boolean;
+
+	/** Returns the bitwise _exclusive or_ of its operands. */
+	function bxor(...operands: Array<number>): number;
+
+	/**
+	 * Returns the unsigned number formed by the bits `field` to `field + width - 1` from `n`.
+	 * Bits are numbered from 0 (least significant) to 31 (most significant).
+	 * All accessed bits must be in the range `[0, 31]`.
+	 *
+	 * The default for `width` is 1.
+	 */
+	function extract(n: number, field: number, width?: number): number;
+
+	/**
+	 * Returns a copy of `n` with the bits `field` to `field + width - 1` replaced by the value `v`.
+	 *
+	 * See `bit32.extract` for details about `field` and `width`.
+	 */
+	function replace(n: number, v: number, field: number, width?: number): number;
+
+	/**
+	 * Returns the number `x` rotated `displacement` bits to the left. The number `displacement` may be any representable integer.
+	 *
+	 * For any valid displacement, the following identity holds:
+	 *
+	 * `assert(bit32.lrotate(x, displacement) == bit32.lrotate(x, displacement % 32))`
+	 *
+	 * In particular, negative displacements rotate to the right.
+	 */
+	function lrotate(x: number, displacement: number): number;
+
+	/**
+	 * Returns the number `x` shifted `displacement` bits to the left. The number `displacement` may be any representable integer.
+	 * Negative displacements shift to the right. In any direction, vacant bits are filled with zeros.
+	 * In particular, displacements with absolute values higher than 31 result in zero (all bits are shifted out).
+	 *
+	 * For positive displacements, the following equality holds:
+	 *
+	 * `assert(bit32.lshift(b, displacement) == (b * 2^displacement) % 2^32)`
+	 */
+	function lshift(x: number, displacement: number): number;
+
+	/**
+	 * Returns the number `x` rotated `displacement` bits to the right. The number `displacement` may be any representable integer.
+	 *
+	 * For any valid displacement, the following identity holds:
+	 *
+	 * `assert(bit32.rrotate(x, displacement) == bit32.rrotate(x, displacement % 32))`
+	 *
+	 * In particular, negative displacements rotate to the left.
+	 */
+	function rrotate(x: number, displacement: number): number;
+
+	/**
+	 * Returns the number `x` shifted `displacement` bits to the right. The number `displacement` may be any representable integer.
+	 * Negative displacements shift to the left. In any direction, vacant bits are filled with zeros.
+	 * In particular, displacements with absolute values higher than 31 result in zero (all bits are shifted out).
+	 *
+	 * For positive displacements, the following equality holds:
+	 *
+	 * `assert(bit32.rshift(b, displacement) == math.floor(b % 2^32 / 2^displacement))`
+	 *
+	 * This shift operation is what is called logical shift.
+	 */
+	function rshift(x: number, displacement: number): number;
+}
+
 declare namespace table {
 	/**
 	 * Sets the value for all keys within the given table to nil. This causes the # operator to return 0 for the given

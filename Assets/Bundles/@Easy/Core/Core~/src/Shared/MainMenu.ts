@@ -1,3 +1,8 @@
+/**
+ * Entry point for the Main Menu while in Main Menu.
+ * This is not ran while in-game.
+ */
+
 import { AvatarUtil } from "Shared/Avatar/AvatarUtil";
 import { Flamework } from "Shared/Flamework";
 import { AudioManager } from "./Audio/AudioManager";
@@ -9,9 +14,8 @@ import { CanvasAPI } from "./Util/CanvasAPI";
 import { TimeUtil } from "./Util/TimeUtil";
 import { OnFixedUpdate, OnLateUpdate, OnUpdate } from "./Util/Timer";
 
-CoreRefs.Init();
-
 Game.coreContext = CoreContext.MAIN_MENU;
+CoreRefs.Init();
 
 TimeUtil.GetLifetimeSeconds();
 CanvasAPI.Init();

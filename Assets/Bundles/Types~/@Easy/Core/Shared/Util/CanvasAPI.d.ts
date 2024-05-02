@@ -64,4 +64,5 @@ export declare class CanvasAPI {
     static Register(targetGameObject: GameObject): void;
     /** Fetches and sets the global event interceptor. */
     private static Setup;
+    private static CheckForInterceptor;
 }

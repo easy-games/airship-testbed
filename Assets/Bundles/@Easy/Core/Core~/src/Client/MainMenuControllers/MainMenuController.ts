@@ -38,7 +38,7 @@ export class MainMenuController implements OnStart {
 
 	constructor() {
 		const mainMenuPrefab = AssetBridge.Instance.LoadAsset("@Easy/Core/Client/Resources/MainMenu/MainMenu.prefab");
-		this.mainMenuGo = Object.Instantiate(mainMenuPrefab, CoreRefs.rootTransform) as GameObject;
+		this.mainMenuGo = Object.Instantiate(mainMenuPrefab, CoreRefs.protectedTransform) as GameObject;
 		this.refs = this.mainMenuGo.GetComponent<GameObjectReferences>()!;
 		const wrapperGo = this.refs.GetValue("UI", "Wrapper");
 		this.wrapperRect = wrapperGo.GetComponent<RectTransform>()!;
@@ -70,7 +70,7 @@ export class MainMenuController implements OnStart {
 
 		this.avatarView = Object.Instantiate(
 			this.refs.GetValue<GameObject>("Avatar", "Avatar3DSceneTemplate"),
-			CoreRefs.rootTransform,
+			CoreRefs.protectedTransform,
 		).GetAirshipComponent<AvatarViewComponent>()!;
 
 		if (Game.coreContext === CoreContext.GAME) {

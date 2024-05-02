@@ -78,6 +78,7 @@ export default class DemoManager extends AirshipBehaviour {
 		});
 
 		if (Game.IsServer()) {
+			Airship.chat.BroadcastMessage("test broadcast");
 			Airship.players.ObservePlayers((player) => {
 				this.SpawnPlayer(player);
 			});
@@ -92,7 +93,7 @@ export default class DemoManager extends AirshipBehaviour {
 
 			// spawn ball
 			task.spawn(() => {
-				for (let i = 0; i < 5; i++) {
+				for (let i = 0; i < 3; i++) {
 					const ballGo = Object.Instantiate<GameObject>(
 						this.ballPrefab,
 						this.ballSpawnPoint.position,
@@ -140,6 +141,10 @@ export default class DemoManager extends AirshipBehaviour {
 		for (let go of this.cleanupOnStart) {
 			Object.Destroy(go);
 		}
+
+        // pen testing
+        // const go = GameObject.Create("test");
+        // go.transform.SetParent(PlayerManagerBridge.Instance.transform);
 	}
 
 	public SpawnPlayer(player: Player): void {

@@ -1,4 +1,3 @@
-import { ChatController } from "@Easy/Core/Client/Controllers/Chat/ChatController";
 import { ChatService } from "@Easy/Core/Server/Services/Chat/ChatService";
 import { AddInventoryCommand } from "@Easy/Core/Server/Services/Chat/Commands/AddInventoryCommand";
 import { BotCommand } from "@Easy/Core/Server/Services/Chat/Commands/BotCommand";
@@ -31,7 +30,9 @@ export class AirshipChatSingleton implements OnStart {
 	}
 
 	OnStart(): void {
-		this.RegisterCoreCommands();
+		if (Game.IsInGame()) {
+			this.RegisterCoreCommands();
+		}
 	}
 
 	/**
@@ -40,7 +41,7 @@ export class AirshipChatSingleton implements OnStart {
 	 * @param val Whether or not chat should be visible.
 	 */
 	public SetUIEnabled(val: boolean): void {
-		Dependency<ChatController>().canvas.gameObject.SetActive(val);
+		contextbridge.invoke<(val: boolean) => void>("ClientChatSingleton:SetUIEnabled", LuauContext.Protected, val);
 	}
 
 	/**
@@ -49,7 +50,9 @@ export class AirshipChatSingleton implements OnStart {
 	 * @param command A command instance.
 	 */
 	public RegisterCommand(command: ChatCommand): void {
-		Dependency<ChatService>().RegisterCommand(command);
+		if (Game.IsServer()) {
+			Dependency<ChatService>().RegisterCommand(command);
+		}
 	}
 
 	/**

@@ -121,8 +121,8 @@ export class AirshipCharacterCameraSingleton implements OnStart {
 	 * @param smooth If `true` the FOV will transition smoothly to the target.
 	 */
 	public SetFOV(targetCameraType: CharacterCameraType, fieldOfView: number, smooth = false) {
-		this.cameraSystem?.SetFOV(targetCameraType, fieldOfView, !smooth);
 		this.overrideFOV.set(targetCameraType, fieldOfView);
+		this.cameraSystem?.SetFOV(targetCameraType, fieldOfView, !smooth);
 	}
 
 	/**
@@ -172,7 +172,8 @@ export class AirshipCharacterCameraSingleton implements OnStart {
 			if (this.characterState?.sprinting) {
 				fov *= this.sprintFovMultiplier;
 			}
-			this.SetFOV(CharacterCameraType.FIRST_PERSON, fov, true);
+			// this.SetFOV(CharacterCameraType.FIRST_PERSON, fov, true);
+			this.cameraSystem?.SetFOV(CharacterCameraType.FIRST_PERSON, fov, false);
 		}
 
 		// third person
@@ -181,7 +182,7 @@ export class AirshipCharacterCameraSingleton implements OnStart {
 			if (this.characterState?.sprinting) {
 				fov *= this.sprintFovMultiplier;
 			}
-			this.SetFOV(CharacterCameraType.THIRD_PERSON, fov, true);
+			this.cameraSystem?.SetFOV(CharacterCameraType.THIRD_PERSON, fov, false);
 		}
 	}
 

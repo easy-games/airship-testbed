@@ -125,6 +125,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serverClassId: 
-  accessorySlot: 1
+  accessorySlot: 0
   visibilityMode: 0
   skinnedToCharacter: 0

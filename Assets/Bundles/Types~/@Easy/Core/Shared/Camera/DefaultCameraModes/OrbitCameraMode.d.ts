@@ -15,7 +15,6 @@ export declare class OrbitCameraMode extends CameraMode {
     private readonly keyboard;
     private readonly touchscreen;
     private readonly mouse;
-    private readonly clientSettingsController;
     constructor(distance: number, transform: Transform, graphicalCharacter?: Transform);
     private SetupMobileControls;
     SetTransform(transform: Transform): void;

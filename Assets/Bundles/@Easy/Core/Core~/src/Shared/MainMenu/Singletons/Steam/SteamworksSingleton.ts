@@ -1,18 +1,17 @@
 import SteamRichPresence from "@Easy/Core/Client/Airship/Steam/SteamRichPresence";
 import { TransferController } from "@Easy/Core/Client/MainMenuControllers/Transfer/TransferController";
 import inspect from "@easy-games/unity-inspect";
-import { CoreNetwork } from "../../CoreNetwork";
-import { Controller, Dependency, OnStart, Service } from "../../Flamework";
-import { Game } from "../../Game";
-import { DecodeJSON, EncodeJSON } from "../../json";
+import { CoreNetwork } from "../../../CoreNetwork";
+import { Dependency, OnStart, Singleton } from "../../../Flamework";
+import { Game } from "../../../Game";
+import { DecodeJSON, EncodeJSON } from "../../../json";
 
 interface SteamConnectPacket {
 	gameId: string;
 	serverId: string;
 }
 
-@Controller({})
-@Service({})
+@Singleton()
 export class SteamworksSingleton implements OnStart {
 	OnStart(): void {
 		SteamLuauAPI.OnRichPresenceGameJoinRequest((connectionStr, steamId) => {

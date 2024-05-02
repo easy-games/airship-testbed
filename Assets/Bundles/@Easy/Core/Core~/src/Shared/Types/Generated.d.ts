@@ -16752,6 +16752,7 @@ interface BridgeConstructor {
 
 
     CopyToClipboard(text: string): void;
+    GetActiveScene(): Scene;
     GetAllocatedRam(): number;
     GetAverageFPS(): number;
     GetCurrentFPS(): number;

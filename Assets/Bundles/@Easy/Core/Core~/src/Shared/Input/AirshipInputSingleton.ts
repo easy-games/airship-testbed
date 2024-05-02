@@ -1,6 +1,5 @@
-import { ClientSettingsController } from "@Easy/Core/Client/MainMenuControllers/Settings/ClientSettingsController";
 import ObjectUtils from "@easy-games/unity-object-utils";
-import { Controller, Dependency, OnStart, Service } from "Shared/Flamework";
+import { Controller, OnStart, Service } from "Shared/Flamework";
 import { Airship } from "../Airship";
 import { AssetCache } from "../AssetCache/AssetCache";
 import { CoreContext } from "../CoreClientContext";
@@ -204,21 +203,14 @@ export class AirshipInputSingleton implements OnStart {
 		);
 		this.mobileControlsContainer = mobileControlsCanvas;
 
-		const mobileOverlayCanvas = Object.Instantiate(
-			AssetCache.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/UI/MobileControls/MobileOverlayCanvas.prefab"),
-			CoreRefs.rootTransform,
-		);
-
 		this.controlManager.ObserveControlScheme((controlScheme) => {
 			if (controlScheme === ControlScheme.Touch) {
-				mobileOverlayCanvas.SetActive(true);
 				this.mobileControlsContainer.SetActive(true);
 				for (const [name, _] of this.actionToMobileButtonTable) {
 					this.ShowMobileButtons(name);
 				}
 			}
 			if (controlScheme === ControlScheme.MouseKeyboard) {
-				mobileOverlayCanvas.SetActive(false);
 				this.mobileControlsContainer.SetActive(false);
 				for (const [name, _] of this.actionToMobileButtonTable) {
 					this.HideMobileButtons(name);
@@ -714,12 +706,18 @@ export class AirshipInputSingleton implements OnStart {
 
 	/** Returns mouse sensitivity based on player's setting & game's sensitivity multiplier. */
 	public GetMouseSensitivity() {
-		return this.gameSensitivityMultiplier * Dependency<ClientSettingsController>().GetMouseSensitivity();
+		return (
+			this.gameSensitivityMultiplier *
+			contextbridge.invoke<() => number>("ClientSettings:GetMouseSensitivity", LuauContext.Protected)
+		);
 	}
 
 	/** Returns touch sensitivity based on player's setting & game's sensitivity multiplier. */
 	public GetTouchSensitivity() {
-		return this.gameSensitivityMultiplier * Dependency<ClientSettingsController>().GetTouchSensitivity();
+		return (
+			this.gameSensitivityMultiplier *
+			contextbridge.invoke<() => number>("ClientSettings:GetTouchSensitivity", LuauContext.Protected)
+		);
 	}
 
 	/**

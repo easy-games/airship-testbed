@@ -22,8 +22,8 @@ declare namespace task {
 
 /** The context in which Luau is running. */
 declare const enum LuauContext {
-	Game,
-	Protected,
+	Game = 1 << 0,
+	Protected = 1 << 1,
 }
 
 declare namespace contextbridge {
@@ -48,7 +48,10 @@ declare namespace contextbridge {
 	 *
 	 * **NOTE**: Use with `contextbridge.invoke()`.
 	 */
-	function callback<T extends Callback>(topic: string, callback: (...args: Parameters<T>) => ReturnType<T>): void;
+	function callback<T extends Callback>(
+		topic: string,
+		callback: (fromContext: LuauContext, ...args: Parameters<T>) => ReturnType<T>,
+	): void;
 
 	/**
 	 * Invoke a callback within `toContext` for `topic`.

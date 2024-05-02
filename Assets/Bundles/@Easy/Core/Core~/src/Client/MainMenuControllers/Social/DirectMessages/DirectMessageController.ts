@@ -1,7 +1,7 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
 import DirectMessagesWindow from "@Easy/Core/Shared/MainMenu/Components/DirectMessagesWindow";
 import PartyChatButton from "@Easy/Core/Shared/MainMenu/Components/PartyChatButton";
-import { ChatController } from "Client/Controllers/Chat/ChatController";
+import { ClientChatSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/Chat/ClientChatSingleton";
 import { SocketController } from "Client/MainMenuControllers/Socket/SocketController";
 import { AudioManager } from "Shared/Audio/AudioManager";
 import { CoreContext } from "Shared/CoreClientContext";
@@ -105,7 +105,7 @@ export class DirectMessageController implements OnStart {
 					ColorUtil.ColoredText(Theme.pink, "From ") +
 					ColorUtil.ColoredText(Theme.white, friend.username) +
 					ColorUtil.ColoredText(Theme.gray, ": " + data.text);
-				Dependency<ChatController>().RenderChatMessage(text);
+				Dependency<ClientChatSingleton>().RenderChatMessage(text);
 			}
 
 			if (data.sender !== "") {
@@ -139,7 +139,7 @@ export class DirectMessageController implements OnStart {
 						ColorUtil.ColoredText(Theme.pink, "[Party] ") +
 						ColorUtil.ColoredText(Theme.white, member.username) +
 						ColorUtil.ColoredText(Theme.gray, ": " + data.text);
-					Dependency<ChatController>().RenderChatMessage(text);
+					Dependency<ClientChatSingleton>().RenderChatMessage(text);
 				}
 			}
 
@@ -279,7 +279,7 @@ export class DirectMessageController implements OnStart {
 				ColorUtil.ColoredText(Theme.pink, "To ") +
 				ColorUtil.ColoredText(Theme.white, status.username) +
 				ColorUtil.ColoredText(Theme.gray, ": " + message);
-			Dependency<ChatController>().RenderChatMessage(text);
+			Dependency<ClientChatSingleton>().RenderChatMessage(text);
 		}
 	}
 
@@ -309,7 +309,7 @@ export class DirectMessageController implements OnStart {
 				ColorUtil.ColoredText(Theme.pink, "[Party] ") +
 				ColorUtil.ColoredText(Theme.white, Game.localPlayer.username) +
 				ColorUtil.ColoredText(Theme.gray, ": " + message);
-			Dependency<ChatController>().RenderChatMessage(text);
+			Dependency<ClientChatSingleton>().RenderChatMessage(text);
 		}
 	}
 
