@@ -48,7 +48,10 @@ declare namespace contextbridge {
 	 *
 	 * **NOTE**: Use with `contextbridge.invoke()`.
 	 */
-	function callback<T extends Callback>(topic: string, callback: (...args: Parameters<T>) => ReturnType<T>): void;
+	function callback<T extends Callback>(
+		topic: string,
+		callback: (fromContext: LuauContext, ...args: Parameters<T>) => ReturnType<T>,
+	): void;
 
 	/**
 	 * Invoke a callback within `toContext` for `topic`.

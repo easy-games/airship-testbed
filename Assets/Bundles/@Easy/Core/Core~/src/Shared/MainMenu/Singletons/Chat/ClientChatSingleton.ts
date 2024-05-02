@@ -132,12 +132,9 @@ export class ClientChatSingleton implements OnStart {
 			this.wrapper.GetComponent<Mask>()!.enabled = false;
 		}
 
-		contextbridge.callback<(from: LuauContext, val: boolean) => void>(
-			"ClientChatSingleton:SetUIEnabled",
-			(from, val) => {
-				this.canvas.gameObject.SetActive(val);
-			},
-		);
+		contextbridge.callback<(val: boolean) => void>("ClientChatSingleton:SetUIEnabled", (from, val) => {
+			this.canvas.gameObject.SetActive(val);
+		});
 
 		task.delay(0, () => {
 			const mobileOverlayCanvas = Object.Instantiate(
@@ -199,12 +196,7 @@ export class ClientChatSingleton implements OnStart {
 
 	OnStart(): void {
 		contextbridge.callback<
-			(
-				fromContext: LuauContext,
-				rawText: string,
-				nameWithPrefix: string | undefined,
-				senderClientId: number | undefined,
-			) => void
+			(rawText: string, nameWithPrefix: string | undefined, senderClientId: number | undefined) => void
 		>("Chat:AddMessage", (fromContext, rawText, nameWithPrefix, senderClientId) => {
 			this.AddMessage(rawText, nameWithPrefix, senderClientId);
 		});

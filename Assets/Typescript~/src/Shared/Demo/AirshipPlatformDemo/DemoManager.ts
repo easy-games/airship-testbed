@@ -141,6 +141,10 @@ export default class DemoManager extends AirshipBehaviour {
 		for (let go of this.cleanupOnStart) {
 			Object.Destroy(go);
 		}
+
+        // pen testing
+        // const go = GameObject.Create("test");
+        // go.transform.SetParent(PlayerManagerBridge.Instance.transform);
 	}
 
 	public SpawnPlayer(player: Player): void {
