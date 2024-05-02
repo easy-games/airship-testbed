@@ -135,22 +135,24 @@ export class ClientChatSingleton implements OnStart {
 			this.canvas.gameObject.SetActive(val);
 		});
 
-		task.delay(0, () => {
-			const mobileOverlayCanvas = Object.Instantiate(
-				AssetCache.LoadAsset(
-					"@Easy/Core/Shared/Resources/Prefabs/UI/MobileControls/MobileOverlayCanvas.prefab",
-				),
-				CoreRefs.protectedTransform,
-			);
-			const controls = new Preferred();
-			controls.ObserveControlScheme((scheme) => {
-				if (scheme === ControlScheme.Touch) {
-					mobileOverlayCanvas.SetActive(true);
-				} else {
-					mobileOverlayCanvas.SetActive(false);
-				}
+		if (Game.IsInGame()) {
+			task.delay(0, () => {
+				const mobileOverlayCanvas = Object.Instantiate(
+					AssetCache.LoadAsset(
+						"@Easy/Core/Shared/Resources/Prefabs/UI/MobileControls/MobileOverlayCanvas.prefab",
+					),
+					CoreRefs.protectedTransform,
+				);
+				const controls = new Preferred();
+				controls.ObserveControlScheme((scheme) => {
+					if (scheme === ControlScheme.Touch) {
+						mobileOverlayCanvas.SetActive(true);
+					} else {
+						mobileOverlayCanvas.SetActive(false);
+					}
+				});
 			});
-		});
+		}
 	}
 
 	public OpenMobile(): void {
