@@ -6110,6 +6110,8 @@ MonoBehaviour:
   groundCollisionLayerMask:
     serializedVersion: 2
     m_Bits: 2305
+  drawDebugGizmos: 0
+  useExtraLogging: 1
 --- !u!114 &1645000729044007242
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6122,6 +6124,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e9d0a47793548c8aaf9c8f8b493e7bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  characterHeight: 1.8
+  characterRadius: 0.5
+  colliderHeightOffset: 0.1
   speed: 4.666667
   sprintSpeed: 6.666667
   crouchSpeedMultiplier: 0.455
@@ -6137,16 +6142,12 @@ MonoBehaviour:
   gravityMod: 3
   upwardsGravityMod: 0.75
   maxSlopeSpeed: 2
-  slopeForce: 15
+  slopeForce: 45
   minSlopeDelta: 0.1
-  maxStepUpHeight: 0.225
+  maxStepUpHeight: 0.25
   airDensity: 0.05
-  drag: 15
-  friction: 0.3
-  elasticity: 0.2
-  impulseMoveDisableTime: 0
-  impulseMoveDisabledScalar: 0.05
-  mass: 1
+  drag: 13.5
+  friction: 0
 --- !u!114 &903796914586745664
 MonoBehaviour:
   m_ObjectHideFlags: 0
