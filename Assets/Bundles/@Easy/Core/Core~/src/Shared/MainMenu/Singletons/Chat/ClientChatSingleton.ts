@@ -84,7 +84,6 @@ export class ClientChatSingleton implements OnStart {
 	private lastChatMessageRenderedTime = Time.time;
 
 	constructor() {
-		print("ClientChatSingleton " + contextbridge.current());
 		const refs = Dependency<CoreUIController>().refs.GetValue("Apps", "Chat").GetComponent<GameObjectReferences>()!;
 		this.canvas = refs.GetValue("UI", "Canvas").GetComponent<Canvas>()!;
 		this.content = refs.GetValue("UI", "Content");

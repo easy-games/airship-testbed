@@ -200,7 +200,6 @@ export class Mouse {
 }
 
 if (Game.IsGameContext()) {
-	print("register AddUnlocker");
 	const mouse = new Mouse();
 	contextbridge.callback<() => number>("Mouse:AddUnlocker", () => {
 		let id = mouse.AddUnlocker();
