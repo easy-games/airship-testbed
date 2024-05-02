@@ -56,7 +56,11 @@ export class FriendsController implements OnStart {
 		private readonly mainMenuController: MainMenuController,
 		private readonly rightClickMenuController: RightClickMenuController,
 		private readonly clientSettingsController: ClientSettingsController,
-	) {}
+	) {
+		contextbridge.callback("FriendsController:SendStatusUpdate", (from) => {
+			this.SendStatusUpdate();
+		});
+	}
 
 	public AddSocialNotification(
 		key: string,
@@ -199,10 +203,6 @@ export class FriendsController implements OnStart {
 		});
 
 		this.socketController.On("game-coordinator/status-update-request", (data) => {
-			this.SendStatusUpdate();
-		});
-
-		contextbridge.callback("FriendsController:SendStatusUpdate", (from) => {
 			this.SendStatusUpdate();
 		});
 
