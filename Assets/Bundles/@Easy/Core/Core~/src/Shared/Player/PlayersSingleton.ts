@@ -188,9 +188,6 @@ export class PlayersSingleton implements OnStart {
 			if (RunUtil.IsHosting() && playerInfo.clientId === 0) {
 				player = Game.localPlayer;
 			} else {
-				print(
-					`making new player. clientId=${playerInfo.clientId} userId=${playerInfo.userId} username=${playerInfo.username}`,
-				);
 				player = new Player(
 					playerInfo.gameObject.GetComponent<NetworkObject>()!,
 					playerInfo.clientId,
