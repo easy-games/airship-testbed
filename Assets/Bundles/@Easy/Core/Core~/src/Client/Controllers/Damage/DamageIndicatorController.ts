@@ -34,7 +34,7 @@ export class DamageIndicatorController implements OnStart {
 			"@Easy/Core/Shared/Resources/Prefabs/UI/Combat/DamageIndicator.prefab",
 		);
 		this.indicatorPos = this.indicatorPrefab.GetComponent<RectTransform>()!.anchoredPosition;
-		PoolManager.PreLoadPool(this.indicatorPrefab, 5);
+		// PoolManager.PreLoadPool(this.indicatorPrefab, 5);
 	}
 
 	OnStart(): void {
