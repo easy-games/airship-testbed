@@ -1,4 +1,3 @@
-import { ClientSettingsController } from "@Easy/Core/Client/MainMenuControllers/Settings/ClientSettingsController";
 import { AirshipCharacterCameraSingleton } from "../Camera/AirshipCharacterCameraSingleton";
 import { Dependency } from "../Flamework";
 import { Bin } from "../Util/Bin";
@@ -41,14 +40,13 @@ export default class MobileCameraMovement extends AirshipBehaviour {
 				if (this.touchPointerId !== data.pointerId) return;
 
 				const deltaPosSinceStart = data.position.sub(this.touchStartPos);
-				const clientSettingsController = Dependency<ClientSettingsController>();
-				camMode.rotationY =
-					(this.touchStartRotY -
-						deltaPosSinceStart.x * SENS_SCALAR * clientSettingsController.GetTouchSensitivity()) %
-					TAU;
+				const touchSensitivity = contextbridge.invoke<() => number>(
+					"ClientSettings:GetTouchSensitivity",
+					LuauContext.Protected,
+				);
+				camMode.rotationY = (this.touchStartRotY - deltaPosSinceStart.x * SENS_SCALAR * touchSensitivity) % TAU;
 				camMode.rotationX = math.clamp(
-					this.touchStartRotX +
-						deltaPosSinceStart.y * SENS_SCALAR * clientSettingsController.GetTouchSensitivity(),
+					this.touchStartRotX + deltaPosSinceStart.y * SENS_SCALAR * touchSensitivity,
 					MIN_ROT_X,
 					MAX_ROT_X,
 				);
