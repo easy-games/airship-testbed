@@ -152,7 +152,7 @@ export class Mouse {
 	 * Returns an ID that can be used to unlock the mouse.
 	 */
 	public AddUnlocker(): number {
-		if (contextbridge.current() === LuauContext.Protected) {
+		if (contextbridge.current() === LuauContext.Protected && Game.IsInGame()) {
 			let id = contextbridge.invoke<() => number>("Mouse:AddUnlocker", LuauContext.Game);
 			return id;
 		}
@@ -167,7 +167,7 @@ export class Mouse {
 	}
 
 	public RemoveUnlocker(id: number): void {
-		if (contextbridge.current() === LuauContext.Protected) {
+		if (contextbridge.current() === LuauContext.Protected && Game.IsInGame()) {
 			contextbridge.invoke<(id: number) => void>("Mouse:RemoveUnlocker", LuauContext.Game, id);
 			return;
 		}
