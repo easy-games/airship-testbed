@@ -246,6 +246,7 @@
 		"@Easy/Core:Shared/MainMenu/Components/Settings/BlockedGame@BlockedGame": "$:MainMenu/Components/Settings/BlockedGame@BlockedGame",
 		"@Easy/Core:Shared/MainMenu/Components/Settings/BlockedUser@BlockedUser": "$:MainMenu/Components/Settings/BlockedUser@BlockedUser",
 		"@Easy/Core:Shared/MainMenu/Components/Settings/DeleteAccountButton@DeleteAccountButton": "$:MainMenu/Components/Settings/DeleteAccountButton@DeleteAccountButton",
+		"@Easy/Core:Shared/MainMenu/Components/Settings/DevConsoleButton@DevConsoleButton": "$:MainMenu/Components/Settings/DevConsoleButton@DevConsoleButton",
 		"@Easy/Core:Shared/MainMenu/Components/Settings/SettingsBlockPage@SettingsBlockPage": "$:MainMenu/Components/Settings/SettingsBlockPage@SettingsBlockPage",
 		"@Easy/Core:Shared/MainMenu/Components/Settings/SettingsDisconnectButton@SettingsDisconnectButton": "$:MainMenu/Components/Settings/SettingsDisconnectButton@SettingsDisconnectButton",
 		"@Easy/Core:Shared/Util/FormatUtil@FormatUtil": "$:Util/FormatUtil@FormatUtil",
