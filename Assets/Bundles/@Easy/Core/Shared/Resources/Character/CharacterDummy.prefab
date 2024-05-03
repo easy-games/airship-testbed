@@ -224,6 +224,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 3386317269300102083, guid: f9e63d29a868542e585dd0c6a90df6f7, type: 3}
+      propertyPath: _componentIndexCache
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3690567221722091215, guid: f9e63d29a868542e585dd0c6a90df6f7, type: 3}
       propertyPath: m_Layer
       value: 10
@@ -400,6 +404,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 7679537615927596659, guid: f9e63d29a868542e585dd0c6a90df6f7, type: 3}
+      propertyPath: _componentIndexCache
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7931457288082626079, guid: f9e63d29a868542e585dd0c6a90df6f7, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -551,32 +559,9 @@ PrefabInstance:
     - {fileID: -1773167598321551048, guid: f9e63d29a868542e585dd0c6a90df6f7, type: 3}
     - {fileID: 4965018457883988656, guid: f9e63d29a868542e585dd0c6a90df6f7, type: 3}
     - {fileID: -1624083086148811293, guid: f9e63d29a868542e585dd0c6a90df6f7, type: 3}
+    - {fileID: 3386317269300102083, guid: f9e63d29a868542e585dd0c6a90df6f7, type: 3}
+    - {fileID: 7679537615927596659, guid: f9e63d29a868542e585dd0c6a90df6f7, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 7261230199465727865, guid: f9e63d29a868542e585dd0c6a90df6f7, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7760856720865646444}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f9e63d29a868542e585dd0c6a90df6f7, type: 3}
---- !u!1 &7237453644234860147 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7261230199465727865, guid: f9e63d29a868542e585dd0c6a90df6f7, type: 3}
-  m_PrefabInstance: {fileID: 51100745269244170}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &7760856720865646444
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7237453644234860147}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colorSettings:
-  - materialColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-  addedByEditorScript: 1

@@ -123,13 +123,13 @@ export class LocalCharacterSingleton implements OnStart {
 			keyboard.OnKeyDown(Key.F1, (event) => {
 				if (event.uiProcessed) return;
 				if (keyboard.IsKeyDown(Key.LeftShift)) {
-					DebugUtil.TogglePauseEngine();
+					GizmoUtils.TogglePauseEngine();
 				}
 			});
 			keyboard.OnKeyDown(Key.Backquote, (event) => {
 				if (event.uiProcessed) return;
 				if (keyboard.IsKeyDown(Key.LeftShift)) {
-					DebugUtil.TogglePauseEngine();
+					GizmoUtils.TogglePauseEngine();
 				}
 			});
 

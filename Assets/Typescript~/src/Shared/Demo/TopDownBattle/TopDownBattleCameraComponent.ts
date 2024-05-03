@@ -18,7 +18,7 @@ export default class TopDownBattleCameraComponent extends AirshipBehaviour {
 	private cameraVelocity = new Vector3();
 
 	public override OnEnable(): void {
-		if (Game.IsServer()) return; //This is a client only script
+		if (!Game.IsClient()) return; //This is a client only script
 
 		//Stops airship from locking the cursor in game
 		const mouseUnlockId = this.mouse.AddUnlocker();

@@ -4,8 +4,8 @@
 PhysicsManager:
   m_ObjectHideFlags: 0
   serializedVersion: 16
-  m_Gravity: {x: 0, y: -54.936, z: 0}
-  m_DefaultMaterial: {fileID: 0}
+  m_Gravity: {x: 0, y: -9.81, z: 0}
+  m_DefaultMaterial: {fileID: 13400000, guid: a44f649880868cd47a44c02416d01b03, type: 2}
   m_BounceThreshold: 2
   m_DefaultMaxDepenetrationVelocity: 10
   m_SleepThreshold: 0.005
@@ -17,14 +17,14 @@ PhysicsManager:
   m_EnableAdaptiveForce: 0
   m_ClothInterCollisionDistance: 0
   m_ClothInterCollisionStiffness: 0
-  m_LayerCollisionMatrix: 09e0ffff00e0010000e0010001e0ffff00f8010000e0010000e8010000e0010000e0ffff00e0010000e0010050f0ffff10e8ffffffffffffffffffffffffffffffffffff09f9ffff09f9ffff09f9ffff09f9ffff09f9ffff09f9ffff09f9ffff09f9ffff09f9ffff09f9ffff09f9ffff09f9ffff09f9ffff09f9ffff09f9ffff
+  m_LayerCollisionMatrix: 49e0ffff00e0010000e0010041e0ffff00f8010000e0010009e8ffff00e0010000e0ffff00e0010000e0010050f0ffff10e8ffffffffffffffffffffffffffffffffffff49f9ffff49f9ffff49f9ffff49f9ffff49f9ffff49f9ffff49f9ffff49f9ffff49f9ffff49f9ffff49f9ffff49f9ffff49f9ffff49f9ffff49f9ffff
   m_SimulationMode: 2
   m_AutoSyncTransforms: 0
   m_ReuseCollisionCallbacks: 1
   m_InvokeCollisionCallbacks: 1
   m_ClothInterCollisionSettingsToggle: 0
   m_ClothGravity: {x: 0, y: -9.81, z: 0}
-  m_ContactPairsMode: 0
+  m_ContactPairsMode: 3
   m_BroadphaseType: 0
   m_FrictionType: 0
   m_EnableEnhancedDeterminism: 0

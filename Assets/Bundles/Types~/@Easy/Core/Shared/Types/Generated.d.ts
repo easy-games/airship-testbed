@@ -6752,7 +6752,7 @@ interface Writer {
     WriteDouble(value: number): void;
     WriteGameObject(go: GameObject): void;
     WriteGuidAllocated(value: unknown): void;
-    WriteInt16(value: number): void;
+    WriteInt16(value: number, packType: AutoPackType): void;
     WriteInt32(value: number, packType: AutoPackType): void;
     WriteInt64(value: number, packType: AutoPackType): void;
     WriteLayerMask(value: LayerMask): void;
@@ -6778,7 +6778,7 @@ interface Writer {
     WriteString(value: string): void;
     WriteTickUnpacked(value: number): void;
     WriteTransform(t: Transform): void;
-    WriteUInt16(value: number): void;
+    WriteUInt16(value: number, packType: AutoPackType): void;
     WriteUInt32(value: number, packType: AutoPackType): void;
     WriteUInt64(value: number, packType: AutoPackType): void;
     WriteUnpacked<T>(value: T): void;
@@ -7023,11 +7023,12 @@ interface LatencySimulatorConstructor {
 declare const LatencySimulator: LatencySimulatorConstructor;
     
 interface TransportManagerConstructor {
-    PACKET_ID_BYTES: number;
-    OBJECT_ID_BYTES: number;
-    COMPONENT_INDEX_BYTES: number;
-    TICK_BYTES: number;
-    SPLIT_INDICATOR_SIZE: number;
+    PACKETID_LENGTH: number;
+    OBJECT_ID_LENGTH: number;
+    COMPONENT_INDEX_LENGTH: number;
+    UNPACKED_TICK_LENGTH: number;
+    UNPACKED_SIZE_LENGTH: number;
+    SPLIT_INDICATOR_LENGTH: number;
     CHANNEL_COUNT: number;
     MINIMUM_MTU_RESERVE: number;
     INVALID_MTU: number;
@@ -7512,7 +7513,7 @@ interface Reader {
     ReadDouble(): number;
     ReadGameObject(): GameObject;
     ReadGuid(): unknown;
-    ReadInt16(): number;
+    ReadInt16(packType: AutoPackType): number;
     ReadInt32(packType: AutoPackType): number;
     ReadInt64(packType: AutoPackType): number;
     ReadLayerMask(): LayerMask;
@@ -7537,7 +7538,7 @@ interface Reader {
     ReadString(): string;
     ReadTickUnpacked(): number;
     ReadTransform(): Transform;
-    ReadUInt16(): number;
+    ReadUInt16(packType: AutoPackType): number;
     ReadUInt32(packType: AutoPackType): number;
     ReadUInt64(packType: AutoPackType): number;
     ReadUnpacked<T>(): T;
@@ -7742,7 +7743,7 @@ interface NetworkConnectionConstructor {
     UNSET_CLIENTID_VALUE: number;
     MAXIMUM_CLIENTID_VALUE: number;
     SIMULATED_CLIENTID_VALUE: number;
-    CLIENTID_UNCOMPRESSED_RESERVE_BYTES: number;
+    CLIENTID_UNCOMPRESSED_RESERVE_LENGTH: number;
 
     new(): NetworkConnection;
     new(manager: NetworkManager, clientId: number, transportIndex: number, asServer: boolean): NetworkConnection;
@@ -15559,15 +15560,15 @@ interface AvatarMaskConstructor {
 }
 declare const AvatarMask: AvatarMaskConstructor;
     
-interface DebugUtil extends Debug {
+interface GizmoUtils extends Debug {
 
 
 
 }
     
-interface DebugUtilConstructor {
+interface GizmoUtilsConstructor {
 
-    new(): DebugUtil;
+    new(): GizmoUtils;
 
 
     DrawArc(startAngle: number, endAngle: number, position: Vector3, orientation: Quaternion, radius: number, color: Color, drawChord: boolean, drawSector: boolean, arcSegments: number, durationSec: number): void;
@@ -15576,10 +15577,10 @@ interface DebugUtilConstructor {
     DrawQuad(pointA: Vector3, pointB: Vector3, pointC: Vector3, pointD: Vector3, color: Color, durationSec: number): void;
     DrawRect(origin: Vector3, orientation: Quaternion, extent: Vector2, color: Color, durationSec: number): void;
     DrawSingleLine(startPosition: Vector3, endPosition: Vector3, color: Color, durationSec: number): void;
-    DrawSphere(position: Vector3, orientation: Quaternion, radius: number, color: Color, segments: number, durationSec: number): void;
+    DrawSphere(position: Vector3, radius: number, color: Color, segments: number, durationSec: number): void;
     TogglePauseEngine(): void;
 }
-declare const DebugUtil: DebugUtilConstructor;
+declare const GizmoUtils: GizmoUtilsConstructor;
     
 interface CollisionWatcher extends MonoBehaviour {
 
@@ -18283,6 +18284,7 @@ declare const ScrollRectEvent: ScrollRectEventConstructor;
     
 interface NetworkTransform extends NetworkBehaviour {
     TakenOwnership: boolean;
+    ParentBehaviour: NetworkBehaviour;
 
 
     Awake(): void;
