@@ -16,6 +16,7 @@ MonoBehaviour:
   autoConvertMaterials: 1
   autoUpdatePackages: 1
   manageTypescriptProject: 0
+  safeguardBundleModification: 1
   promptIfLuauPluginChanged: 1
   typescriptVerbose: 0
   typescriptWriteOnlyChanged: 0
