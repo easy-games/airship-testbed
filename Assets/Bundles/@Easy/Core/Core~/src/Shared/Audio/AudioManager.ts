@@ -32,7 +32,7 @@ export class AudioManager {
 		this.audioSourceTemplate.SetActive(false);
 		this.audioSourceTemplate.transform.SetParent(CoreRefs.rootTransform);
 
-		PoolManager.PreLoadPool(this.audioSourceTemplate, 15, CoreRefs.protectedTransform);
+		PoolManager.PreLoadPool(this.audioSourceTemplate, 15, CoreRefs.rootTransform);
 	}
 
 	public static PlayGlobal(sound: string, config?: PlaySoundConfig) {
