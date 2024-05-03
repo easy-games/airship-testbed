@@ -6145,8 +6145,8 @@ MonoBehaviour:
   slopeForce: 45
   minSlopeDelta: 0.1
   maxStepUpHeight: 0.25
-  airDensity: 0.05
-  drag: 13.5
+  airDensity: 0.1
+  drag: 30
 --- !u!114 &903796914586745664
 MonoBehaviour:
   m_ObjectHideFlags: 0
