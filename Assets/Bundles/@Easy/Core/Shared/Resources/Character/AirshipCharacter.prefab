@@ -6004,6 +6004,7 @@ MonoBehaviour:
       serializedObject: {fileID: 0}
       modified: 0
     displayName: 
+  contextOverwritten: 0
 --- !u!114 &7088081142443290682
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6086,6 +6087,7 @@ MonoBehaviour:
       serializedObject: {fileID: 0}
       modified: 0
     displayName: 
+  contextOverwritten: 0
 --- !u!114 &7931457288082626079
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6111,7 +6113,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2305
   drawDebugGizmos: 0
-  useExtraLogging: 1
+  useExtraLogging: 0
 --- !u!114 &1645000729044007242
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6136,18 +6138,15 @@ MonoBehaviour:
   slideCooldown: 0.8
   jumpSpeed: 10
   jumpCoyoteTime: 0.14
-  jumpBufferTime: 0.1
   jumpUpBlockCooldown: 0.4
   terminalVelocity: 50
   gravityMod: 3
   upwardsGravityMod: 0.75
-  maxSlopeSpeed: 2
   slopeForce: 45
   minSlopeDelta: 0.1
   maxStepUpHeight: 0.25
   airDensity: 0.05
   drag: 13.5
-  friction: 0
 --- !u!114 &903796914586745664
 MonoBehaviour:
   m_ObjectHideFlags: 0
