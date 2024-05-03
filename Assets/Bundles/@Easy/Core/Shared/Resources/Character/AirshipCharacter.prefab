@@ -6004,6 +6004,7 @@ MonoBehaviour:
       serializedObject: {fileID: 0}
       modified: 0
     displayName: 
+  contextOverwritten: 0
 --- !u!114 &7088081142443290682
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6086,6 +6087,7 @@ MonoBehaviour:
       serializedObject: {fileID: 0}
       modified: 0
     displayName: 
+  contextOverwritten: 0
 --- !u!114 &7931457288082626079
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6136,18 +6138,15 @@ MonoBehaviour:
   slideCooldown: 0.8
   jumpSpeed: 10
   jumpCoyoteTime: 0.14
-  jumpBufferTime: 0.1
   jumpUpBlockCooldown: 0.4
   terminalVelocity: 50
   gravityMod: 3
   upwardsGravityMod: 0.75
-  maxSlopeSpeed: 2
   slopeForce: 45
   minSlopeDelta: 0.1
   maxStepUpHeight: 0.25
   airDensity: 0.05
   drag: 13.5
-  friction: 0
 --- !u!114 &903796914586745664
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6347,7 +6346,7 @@ MonoBehaviour:
   _graphicalObject: {fileID: 7911948219130051474}
   _enableStateForwarding: 0
   _networkTransform: {fileID: 5420625271334097286}
-  _ownerInterpolation: 3
+  _ownerInterpolation: 1
   _enableTeleport: 0
   _teleportThreshold: 5
   <PrefabId>k__BackingField: 0
