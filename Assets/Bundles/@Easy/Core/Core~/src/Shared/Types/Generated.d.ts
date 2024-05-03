@@ -16766,6 +16766,7 @@ interface BridgeConstructor {
     MakeMesh(): Mesh;
     MakeSprite(texture2D: Texture2D): Sprite;
     MakeVector2(x: number, y: number): Vector2;
+    OpenDevConsole(): void;
     RemoveRichText(input: string): string;
     ScreenPointToLocalPointInRectangle(rectTransform: RectTransform, screenPoint: Vector2): Vector2;
     SetFullScreen(value: boolean): void;
