@@ -7437,7 +7437,6 @@ interface PredictionManager extends MonoBehaviour {
     ServerReplayTick: number;
     ClientStateTick: number;
     ServerStateTick: number;
-    QueuedInputs: number;
 
 
     GetMaximumServerReplicates(): number;
@@ -7742,6 +7741,7 @@ declare const LevelOfDetailData: LevelOfDetailDataConstructor;
 interface NetworkConnectionConstructor {
     UNSET_CLIENTID_VALUE: number;
     MAXIMUM_CLIENTID_VALUE: number;
+    MAXIMUM_CLIENTID_WITHOUT_SIMULATED_VALUE: number;
     SIMULATED_CLIENTID_VALUE: number;
     CLIENTID_UNCOMPRESSED_RESERVE_LENGTH: number;
 
@@ -17346,6 +17346,7 @@ interface DefaultObjectPool extends ObjectPool {
     CacheObjects(prefab: NetworkObject, count: number, asServer: boolean): void;
     ClearPool(): void;
     ClearPool(collectionId: number): void;
+    GetOrCreateCache(collectionId: number, prefabId: number): CSArray<NetworkObject>;
     GetPrefab(prefabId: number, collectionId: number, asServer: boolean): NetworkObject;
     RetrieveObject(prefabId: number, collectionId: number, parent: Transform, nullableLocalPosition: unknown, nullableLocalRotation: unknown, nullableLocalScale: unknown, makeActive: boolean, asServer: boolean): NetworkObject;
     StoreObject(instantiated: NetworkObject, asServer: boolean): void;

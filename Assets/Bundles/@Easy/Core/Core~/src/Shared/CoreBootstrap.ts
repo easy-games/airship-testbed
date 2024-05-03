@@ -41,9 +41,6 @@ AudioManager.Init();
 AvatarUtil.Initialize();
 InitNet();
 
-const coreCamera = GameObject.Find("CoreCamera");
-Object.Destroy(coreCamera);
-
 // Drive timer:
 gameObject.OnUpdate(() => {
 	OnUpdate.Fire(TimeUtil.GetDeltaTime());
