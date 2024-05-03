@@ -290,7 +290,9 @@ export class PlayersSingleton implements OnStart {
 
 		const res = InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/outfits/uid/" + userId + "/equipped");
 		if (!res.success) {
-			Debug.LogError("failed to load user outfit: " + res.error);
+			if (!Application.isEditor) {
+				Debug.LogError("failed to load user outfit: " + res.error);
+			}
 			SetOutfit(undefined);
 			return;
 		}
