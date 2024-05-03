@@ -6113,7 +6113,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2305
   drawDebugGizmos: 0
-  useExtraLogging: 1
+  useExtraLogging: 0
 --- !u!114 &1645000729044007242
 MonoBehaviour:
   m_ObjectHideFlags: 0
