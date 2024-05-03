@@ -15,7 +15,6 @@ export default class Character extends AirshipBehaviour {
     model: GameObject;
     networkObject: NetworkObject;
     rigRoot: GameObject;
-    collider: CharacterController;
     footstepAudioSource: AudioSource;
     rig: CharacterRig;
     id: number;
