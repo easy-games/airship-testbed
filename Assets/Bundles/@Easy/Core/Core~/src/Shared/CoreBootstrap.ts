@@ -15,6 +15,7 @@ import { AppManager } from "./Util/AppManager";
 import { CanvasAPI } from "./Util/CanvasAPI";
 import { TimeUtil } from "./Util/TimeUtil";
 import { OnFixedUpdate, OnLateUpdate, OnTick, OnUpdate } from "./Util/Timer";
+import "Shared/Network/RPC/NetworkRpc"; // ensure NetworkRpc is global
 
 Game.coreContext = CoreContext.GAME;
 CoreRefs.Init();
