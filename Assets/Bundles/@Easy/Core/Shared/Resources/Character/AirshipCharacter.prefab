@@ -6127,8 +6127,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterHeight: 1.8
-  characterRadius: 0.5
-  colliderHeightOffset: 0.1
+  characterRadius: 0.35
+  colliderHeightOffset: 0.25
   speed: 4.666667
   sprintSpeed: 6.666667
   crouchSpeedMultiplier: 0.455
