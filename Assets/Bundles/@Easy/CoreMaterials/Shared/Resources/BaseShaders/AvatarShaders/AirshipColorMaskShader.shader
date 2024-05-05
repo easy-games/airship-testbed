@@ -26,8 +26,7 @@ Shader "Unlit/AirshipColorMaskShader"
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-
-			#include "UnityCG.cginc"
+		 
             #include "../AirshipShaderIncludes.hlsl"
 
             struct VertData

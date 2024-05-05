@@ -23,8 +23,7 @@ Shader "Airship/AirshipSpriteOpaque"
 
             #pragma vertex vert
             #pragma fragment frag
-
-            #include "UnityCG.cginc"
+ 
             #include "../AirshipShaderIncludes.hlsl"
 
             struct appdata

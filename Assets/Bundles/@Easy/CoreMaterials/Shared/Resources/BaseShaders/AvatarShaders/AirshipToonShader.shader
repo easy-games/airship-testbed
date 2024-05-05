@@ -29,7 +29,7 @@ Shader "Airship/AirshipToon"
         {
             CGPROGRAM
             
-			#include "UnityCG.cginc"
+		 
             #include "../AirshipShaderIncludes.hlsl"
             
             static float4 RimDirTest = float4(1,1,0,1);
@@ -209,7 +209,7 @@ Shader "Airship/AirshipToon"
                 float4 pointLightColor = float4(0,0,0,0);
 
                 //Do point lighting
-                pointLightColor.rgb = CalculatePointLightsForPoint(i.worldPos, worldNormal, diffuseColor, roughnessLevel, metallicLevel, specularColor, worldReflect);
+                pointLightColor.rgb = CalculatePointLightsForPoint(i.worldPos, worldNormal, diffuseColor, roughnessLevel, metallicLevel, specularColor, worldReflect, half3(0,0,0));
 
                 float pointLightDelta = saturate(pointLightColor.r+pointLightColor.g+pointLightColor.b);
 

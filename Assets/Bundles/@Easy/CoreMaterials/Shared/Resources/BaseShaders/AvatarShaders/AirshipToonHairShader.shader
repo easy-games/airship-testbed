@@ -38,8 +38,7 @@ Shader "Airship/AirshipToonHair"
         Pass
         {
             CGPROGRAM
-            
-			#include "UnityCG.cginc"
+             
             #include "../AirshipShaderIncludes.hlsl"
             
             static float4 RimDirTest = float4(1,1,0,1);
@@ -277,7 +276,7 @@ Shader "Airship/AirshipToonHair"
             }
             ENDCG
         }
-         
+          
         Pass
         {
 			Name "ShadowCaster"

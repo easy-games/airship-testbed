@@ -75,13 +75,6 @@ Shader "Airship/AirshipFaceShaderPBR"
             float EXPLICIT_MAPS;
             float EMISSIVE;
             float RIM_LIGHT;
-                        
-            //Unity stuff
-            float4x4 unity_MatrixVP;
-            float4x4 unity_ObjectToWorld;
-            float4x4 unity_WorldToObject;
-            float4 unity_WorldTransformParams;
-            float3 _WorldSpaceCameraPos;
 
             //SamplerState sampler_MainTex;
             SamplerState my_sampler_point_repeat;
@@ -105,9 +98,9 @@ Shader "Airship/AirshipFaceShaderPBR"
             float _OverrideStrength;
             float4 _EmissiveColor;
             half _EmissiveMix;
-            float4 _Time;
+    
 
-            float4 _ProjectionParams;
+            
             float4 _MainTex_ST;
 
             half _MetalOverride;
@@ -156,16 +149,7 @@ Shader "Airship/AirshipFaceShaderPBR"
                 
 
             };
-
-            inline float3 UnityObjectToWorldNormal(in float3 dir)
-            {
-                return normalize(mul(dir, (float3x3)unity_WorldToObject));
-            }
-
-            inline float3 UnityObjectToWorldDir(in float3 dir)
-            {
-                return normalize(mul((float3x3)unity_ObjectToWorld, dir));
-            }
+ 
            
             vertToFrag vertFunction(Attributes input)
             {
@@ -359,17 +343,7 @@ Shader "Airship/AirshipFaceShaderPBR"
                 return tex.Sample(my_sampler_trilinear_repeat, coords.uvs);
         #endif
             }
-            //Unity encoded normals (the pink ones)
-            half3 UnpackNormalmapRGorAG(half4 packednormal)
-            {
-                packednormal.x *= packednormal.w;
-
-                half3 normal;
-                normal.xy = packednormal.xy * 2 - 1;
-                normal.z = sqrt(1 - saturate(dot(normal.xy, normal.xy)));
-
-                return normal;
-            }
+  
 
             float3 BlendTriplanarNormal(float3 mappedNormal, float3 surfaceNormal) 
             {
@@ -616,7 +590,7 @@ Shader "Airship/AirshipFaceShaderPBR"
                 finalColor *= ambientOcclusionMask;
         
                 //Do point lighting
-                finalColor.xyz += CalculatePointLightsForPoint(input.worldPos, worldNormal, diffuseColor, roughnessLevel, metallicLevel, specularColor, worldReflect);
+                finalColor.xyz += CalculatePointLightsForPoint(input.worldPos, worldNormal, diffuseColor, roughnessLevel, metallicLevel, specularColor, worldReflect, reflectedCubeSample);
 
 
                 //Rim light
@@ -689,7 +663,7 @@ Shader "Airship/AirshipFaceShaderPBR"
             #pragma vertex vert
             #pragma fragment frag
             
-			#include "UnityCG.cginc"
+			 
             #include "../AirshipShaderIncludes.hlsl"
                        
             struct VertData

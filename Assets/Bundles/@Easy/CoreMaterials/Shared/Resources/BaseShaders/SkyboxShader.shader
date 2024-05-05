@@ -16,8 +16,8 @@ Shader "Airship/Skybox"
                     CGPROGRAM
                     #pragma vertex vert
                     #pragma fragment frag
-                    #include "UnityCG.cginc"
-                      #include "Assets/Bundles/@Easy/CoreMaterials/Shared/Resources/BaseShaders/AirshipShaderIncludes.hlsl"
+                 
+                    #include "Assets/Bundles/@Easy/CoreMaterials/Shared/Resources/BaseShaders/AirshipShaderIncludes.hlsl"
 
                     #pragma multi_compile _ FOG_ON
 
