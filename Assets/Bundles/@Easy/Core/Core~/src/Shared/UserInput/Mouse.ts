@@ -47,7 +47,7 @@ export class Mouse {
 		this.isMiddleDown = this.mouseDriver.IsMiddleDown();
 		this.position = this.mouseDriver.GetPosition();
 
-		if (mouseUnlockerKeys.size() === 0) {
+		if (mouseUnlockerKeys.size() === 0 && Game.IsGameLuauContext()) {
 			this.mouseDriver.SetLocked(true);
 		}
 
