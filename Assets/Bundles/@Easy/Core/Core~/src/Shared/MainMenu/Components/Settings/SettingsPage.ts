@@ -18,7 +18,7 @@ export default class SettingsPage extends MainMenuPageComponent {
 		const mainMenu = Dependency<MainMenuSingleton>();
 		this.bin.Add(
 			mainMenu.ObserveScreenSize((size) => {
-				if (size === "sm") {
+				if (size === "sm" && Game.IsMobile()) {
 					this.sidebar.gameObject.SetActive(false);
 					this.scrollView.offsetMax = new Vector2(-5, -7);
 					this.scrollView.offsetMin = new Vector2(5, 0);

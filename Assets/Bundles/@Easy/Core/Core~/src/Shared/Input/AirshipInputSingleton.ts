@@ -86,7 +86,7 @@ export class AirshipInputSingleton implements OnStart {
 	OnStart(): void {
 		if (!Game.IsClient()) return;
 
-		if (Game.coreContext === CoreContext.GAME) {
+		if (Game.coreContext === CoreContext.GAME && Game.IsGameLuauContext()) {
 			this.CreateMobileControlCanvas();
 		}
 
@@ -118,7 +118,7 @@ export class AirshipInputSingleton implements OnStart {
 			{ name: "Inspect", binding: Binding.Key(Key.Y) },
 		]);
 
-		if (Game.coreContext === CoreContext.GAME) {
+		if (Game.coreContext === CoreContext.GAME && Game.IsGameLuauContext()) {
 			Airship.input.CreateMobileButton("Jump", new Vector2(-220, 180));
 			// Airship.input.CreateMobileButton("UseItem", new Vector2(-250, 490));
 			Airship.input.CreateMobileButton("Crouch", new Vector2(-140, 340), {

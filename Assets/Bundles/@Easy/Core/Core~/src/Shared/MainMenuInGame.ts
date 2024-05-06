@@ -40,6 +40,7 @@ Flamework.AddPath("assets/bundles/@Easy/Core/shared/resources/ts/mainmenu", "^.*
 Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/protectedcontrollers", "^.*controller.lua$");
 Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/protectedcontrollers", "^.*singleton.lua$");
 Flamework.AddPath("assets/bundles/@Easy/Core/shared/resources/ts/player/playerssingleton", "^.*singleton.lua$");
+Flamework.AddPath("assets/bundles/@Easy/Core/shared/resources/ts/input/airshipinputsingleton", "^.*singleton.lua$");
 Flamework.Ignite();
 
 if (Game.IsServer()) {
