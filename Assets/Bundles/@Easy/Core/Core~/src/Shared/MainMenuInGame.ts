@@ -1,5 +1,6 @@
 /**
- * Entry point for the Main Menu while in-game.
+ * Entry point for the Protected Context while in-game.
+ * This is ran on both server and client.
  */
 
 import { AvatarUtil } from "Shared/Avatar/AvatarUtil";
@@ -41,6 +42,11 @@ Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/protectedcontro
 Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/protectedcontrollers", "^.*singleton.lua$");
 Flamework.AddPath("assets/bundles/@Easy/Core/shared/resources/ts/player/playerssingleton", "^.*singleton.lua$");
 Flamework.AddPath("assets/bundles/@Easy/Core/shared/resources/ts/input/airshipinputsingleton", "^.*singleton.lua$");
+
+if (Game.IsServer()) {
+	Flamework.AddPath("assets/bundles/@Easy/Core/server/resources/ts/protectedservices", "^.*service.lua$");
+}
+
 Flamework.Ignite();
 
 if (Game.IsServer()) {

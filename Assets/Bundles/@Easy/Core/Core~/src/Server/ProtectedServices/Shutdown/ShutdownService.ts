@@ -1,5 +1,5 @@
-import { OnStart, Service } from "Shared/Flamework";
 import { Airship } from "Shared/Airship";
+import { OnStart, Service } from "Shared/Flamework";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { SetInterval } from "Shared/Util/Timer";
 
@@ -14,6 +14,7 @@ export class ShutdownService implements OnStart {
 	constructor() {}
 
 	OnStart(): void {
+		print("ShutdownService " + contextbridge.current());
 		Airship.players.onPlayerJoined.Connect((player) => {
 			this.playerConnected = true;
 			this.timeWithNoPlayers = 0;
