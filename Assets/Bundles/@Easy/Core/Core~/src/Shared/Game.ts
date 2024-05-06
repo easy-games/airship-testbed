@@ -164,7 +164,7 @@ export class Game {
 	 * @internal
 	 * @returns
 	 */
-	public static IsProtectedContext(): boolean {
+	public static IsProtectedLuauContext(): boolean {
 		return contextbridge.current() === LuauContext.Protected;
 	}
 
@@ -172,7 +172,7 @@ export class Game {
 	 * @internal
 	 * @returns
 	 */
-	public static IsGameContext(): boolean {
+	public static IsGameLuauContext(): boolean {
 		return contextbridge.current() === LuauContext.Game;
 	}
 }

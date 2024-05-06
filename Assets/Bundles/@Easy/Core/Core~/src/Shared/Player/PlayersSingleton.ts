@@ -91,7 +91,7 @@ export class PlayersSingleton implements OnStart {
 			};
 		}
 
-		if (Game.IsGameContext()) {
+		if (Game.IsGameLuauContext()) {
 			this.onPlayerJoined.Connect((player) => {
 				if (Game.IsServer() && this.joinMessagesEnabled) {
 					Game.BroadcastMessage(ChatColor.Aqua(player.username) + ChatColor.Gray(" joined the server."));
@@ -111,7 +111,7 @@ export class PlayersSingleton implements OnStart {
 			// HttpManager.SetLoggingEnabled(true);
 		}
 
-		if (Game.IsGameContext()) {
+		if (Game.IsGameLuauContext()) {
 			task.spawn(() => {
 				if (Game.IsClient()) {
 					this.InitClient();

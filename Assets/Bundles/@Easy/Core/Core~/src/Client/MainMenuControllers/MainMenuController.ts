@@ -5,9 +5,9 @@ import { CoreContext } from "Shared/CoreClientContext";
 import { CoreRefs } from "Shared/CoreRefs";
 import { Controller, OnStart } from "Shared/Flamework";
 import { Game } from "Shared/Game";
-import { Keyboard, Mouse } from "Shared/UserInput";
+import { Mouse } from "Shared/UserInput";
 import { AppManager } from "Shared/Util/AppManager";
-import { Signal, SignalPriority } from "Shared/Util/Signal";
+import { Signal } from "Shared/Util/Signal";
 import { SetTimeout } from "Shared/Util/Timer";
 import AvatarViewComponent from "../../Shared/Avatar/AvatarViewComponent";
 import AvatarMenuComponent from "./AvatarMenu/AvatarMenuComponent";
@@ -92,6 +92,10 @@ export class MainMenuController implements OnStart {
 			mouse.AddUnlocker();
 		}
 
+		contextbridge.callback<() => void>("MainMenu:OpenFromGame", (from) => {
+			this.OpenFromGameInProtectedContext();
+		});
+
 		// const closeButton = this.refs.GetValue("UI", "CloseButton");
 		// if (Game.context === CoreContext.MAIN_MENU) {
 
@@ -113,8 +117,8 @@ export class MainMenuController implements OnStart {
 		this.mainMenuBG?.SetActive(!show || isMainMenu);
 	}
 
-	public OpenFromGame(): void {
-		if (this.open) return;
+	public OpenFromGameInProtectedContext(): void {
+		if (this.IsOpen()) return;
 
 		AppManager.OpenCustom(() => {
 			this.CloseFromGame();
@@ -134,7 +138,7 @@ export class MainMenuController implements OnStart {
 	}
 
 	public CloseFromGame(): void {
-		if (!this.open) return;
+		if (!this.IsOpen()) return;
 		this.open = false;
 
 		this.avatarView?.HideAvatar();
@@ -173,15 +177,6 @@ export class MainMenuController implements OnStart {
 		}
 
 		if (Game.coreContext === CoreContext.GAME) {
-			const keyboard = new Keyboard();
-			keyboard.OnKeyDown(
-				Key.Escape,
-				(event) => {
-					this.OpenFromGame();
-				},
-				SignalPriority.LOW,
-			);
-
 			// const leaveButton = this.refs.GetValue("UI", "LeaveButton");
 			// CoreUI.SetupButton(leaveButton);
 			// CanvasAPI.OnClickEvent(leaveButton, () => {

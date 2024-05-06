@@ -199,7 +199,7 @@ export class Mouse {
 	public HideCursor() {}
 }
 
-if (Game.IsGameContext()) {
+if (Game.IsGameLuauContext()) {
 	const mouse = new Mouse();
 	contextbridge.callback<() => number>("Mouse:AddUnlocker", () => {
 		let id = mouse.AddUnlocker();

@@ -156,7 +156,7 @@ export class MainMenuNavbarController implements OnStart {
 
 	public FocusSearchbar(): void {
 		if (!this.mainMenuController.IsOpen()) {
-			this.mainMenuController.OpenFromGame();
+			this.mainMenuController.OpenFromGameInProtectedContext();
 		}
 		AppManager.OpenCustom(
 			() => {
