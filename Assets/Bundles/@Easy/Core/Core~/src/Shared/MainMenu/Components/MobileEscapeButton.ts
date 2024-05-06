@@ -1,4 +1,4 @@
-import { MainMenuController } from "@Easy/Core/Client/MainMenuControllers/MainMenuController";
+import { MainMenuController } from "@Easy/Core/Client/ProtectedControllers/MainMenuController";
 import { Dependency } from "../../Flamework";
 import { Bin } from "../../Util/Bin";
 import { CanvasAPI } from "../../Util/CanvasAPI";

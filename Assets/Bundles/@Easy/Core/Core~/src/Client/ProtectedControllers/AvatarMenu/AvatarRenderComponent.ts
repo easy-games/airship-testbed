@@ -1,7 +1,6 @@
 import AvatarBackdropComponent, { AvatarBackdropType } from "@Easy/Core/Shared/Avatar/AvatarBackdropComponent";
 import { AvatarPlatformAPI } from "@Easy/Core/Shared/Avatar/AvatarPlatformAPI";
 import { AvatarUtil } from "@Easy/Core/Shared/Avatar/AvatarUtil";
-import { Keyboard } from "@Easy/Core/Shared/UserInput";
 
 export enum AvatarRenderSlot {
 	BODY,

@@ -1,7 +1,7 @@
 import { OnStart } from "../../Shared/Flamework";
 import { Signal } from "../../Shared/Util/Signal";
 import AvatarViewComponent from "../../Shared/Avatar/AvatarViewComponent";
-import MainMenuPageComponent from "./MainMenuPageComponent";
+import MainMenuPageComponent from "../../Shared/MainMenu/Components/MainMenuPageComponent";
 import { MainMenuPageType } from "./MainMenuPageName";
 export declare class MainMenuController implements OnStart {
     private readonly socialTweenDuration;

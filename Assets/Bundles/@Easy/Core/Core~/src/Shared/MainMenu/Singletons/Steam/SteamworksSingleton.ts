@@ -1,5 +1,5 @@
 import SteamRichPresence from "@Easy/Core/Client/Airship/Steam/SteamRichPresence";
-import { TransferController } from "@Easy/Core/Client/MainMenuControllers/Transfer/TransferController";
+import { TransferController } from "@Easy/Core/Client/ProtectedControllers/Transfer/TransferController";
 import inspect from "@easy-games/unity-inspect";
 import { CoreNetwork } from "../../../CoreNetwork";
 import { Dependency, OnStart, Singleton } from "../../../Flamework";

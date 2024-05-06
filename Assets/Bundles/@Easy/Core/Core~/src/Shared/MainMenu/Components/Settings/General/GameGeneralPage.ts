@@ -1,7 +1,7 @@
-import MainMenuPageComponent from "@Easy/Core/Client/MainMenuControllers/MainMenuPageComponent";
 import { Game } from "@Easy/Core/Shared/Game";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import MainMenuPageComponent from "../../MainMenuPageComponent";
 
 export default class GameGeneralPage extends MainMenuPageComponent {
 	public gameTitle!: TMP_Text;

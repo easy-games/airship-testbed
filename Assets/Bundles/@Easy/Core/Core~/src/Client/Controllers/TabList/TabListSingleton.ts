@@ -10,7 +10,7 @@ import { ColorUtil } from "Shared/Util/ColorUtil";
 import { Task } from "Shared/Util/Task";
 import { OnLateUpdate } from "Shared/Util/Timer";
 import { Window } from "Shared/Util/Window";
-import { CoreUIController } from "../../MainMenuControllers/CoreUIController";
+import { CoreUIController } from "../../ProtectedControllers//CoreUIController";
 
 @Controller({})
 export class TabListController implements OnStart {

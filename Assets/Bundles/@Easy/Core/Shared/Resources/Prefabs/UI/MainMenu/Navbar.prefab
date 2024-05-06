@@ -160,7 +160,6 @@ GameObject:
   m_Component:
   - component: {fileID: 990896539852046539}
   - component: {fileID: 480004826333522319}
-  - component: {fileID: 1823232841733982343}
   m_Layer: 0
   m_Name: Right
   m_TagString: Untagged
@@ -217,232 +216,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &1823232841733982343
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 275442105504767509}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Client/Resources/TS/MainMenuControllers/AvatarMenu/AvatarMenuComponent.lua
-  m_error: 0
-  m_yielded: 0
-  m_assetPath: Assets/Bundles/@Easy/Core/Client/Resources/TS/MainMenuControllers/AvatarMenu/AvatarMenuComponent.lua
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
-    name: AvatarMenuComponent
-    decorators: []
-    properties:
-    - name: itemButtonTemplate
-      type: object
-      objectType: GameObject
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 0
-    - name: avatarRenderHolder
-      type: object
-      objectType: GameObject
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 0
-    - name: categoryLabelTxt
-      type: object
-      objectType: TextMeshProUGUI
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 0
-    - name: avatarCenterRect
-      type: object
-      objectType: RectTransform
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 0
-    - name: canvas
-      type: object
-      objectType: Canvas
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 0
-    - name: mainContentHolder
-      type: object
-      objectType: Transform
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 0
-    - name: outfitButtonHolder
-      type: object
-      objectType: Transform
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators:
-      - name: Header
-        parameters:
-        - type: string
-          serializedValue: '"Button Holders"'
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 0
-    - name: mainNavButtonHolder
-      type: object
-      objectType: Transform
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 0
-    - name: mainCanvasGroup
-      type: object
-      objectType: CanvasGroup
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 0
-    - name: avatarProfileMenuGo
-      type: object
-      objectType: GameObject
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 0
-    - name: pageType
-      type: StringEnum
-      objectType: 
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators: []
-      nullable: 0
-      serializedValue: Home
-      serializedObject: {fileID: 0}
-      modified: 0
-    - name: avatarToolbar
-      type: object
-      objectType: RectTransform
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 0
-    - name: avatarOptionsHolder
-      type: object
-      objectType: RectTransform
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 0
-    - name: avatar3DHolder
-      type: object
-      objectType: RectTransform
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 0
-    displayName: 
 --- !u!1 &710901869117550561
 GameObject:
   m_ObjectHideFlags: 0
@@ -741,6 +514,7 @@ MonoBehaviour:
       serializedObject: {fileID: 359417637822934665}
       modified: 1
     displayName: 
+  contextOverwritten: 0
 --- !u!114 &1191198598687229105
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -813,6 +587,7 @@ MonoBehaviour:
       serializedObject: {fileID: 0}
       modified: 0
     displayName: 
+  contextOverwritten: 0
 --- !u!114 &6791199731394365313
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1620,6 +1395,7 @@ MonoBehaviour:
       serializedObject: {fileID: 2919227520518421273}
       modified: 1
     displayName: 
+  contextOverwritten: 0
 --- !u!1 &3557070146285580100
 GameObject:
   m_ObjectHideFlags: 0
@@ -3009,6 +2785,7 @@ MonoBehaviour:
       serializedObject: {fileID: 0}
       modified: 0
     displayName: 
+  contextOverwritten: 0
 --- !u!114 &4606635480561924388
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3035,6 +2812,7 @@ MonoBehaviour:
     decorators: []
     properties: []
     displayName: 
+  contextOverwritten: 0
 --- !u!1 &7118930125260112738
 GameObject:
   m_ObjectHideFlags: 0
@@ -3193,6 +2971,7 @@ MonoBehaviour:
       serializedObject: {fileID: 0}
       modified: 0
     displayName: 
+  contextOverwritten: 0
 --- !u!114 &463522419559145696
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3609,6 +3388,7 @@ MonoBehaviour:
     decorators: []
     properties: []
     displayName: 
+  contextOverwritten: 0
 --- !u!1 &9054160930676389354
 GameObject:
   m_ObjectHideFlags: 0
@@ -4046,6 +3826,7 @@ MonoBehaviour:
       serializedObject: {fileID: 2748297159345226229}
       modified: 1
     displayName: 
+  contextOverwritten: 0
 --- !u!1001 &3220427978399501479
 PrefabInstance:
   m_ObjectHideFlags: 0

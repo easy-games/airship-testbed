@@ -1,8 +1,8 @@
-import { MainMenuController } from "@Easy/Core/Client/MainMenuControllers/MainMenuController";
-import { MainMenuPageType } from "@Easy/Core/Client/MainMenuControllers/MainMenuPageName";
-import { ChangeUsernameController } from "@Easy/Core/Client/MainMenuControllers/Social/ChangeUsernameController";
-import { RightClickMenuButton } from "@Easy/Core/Client/MainMenuControllers/UI/RightClickMenu/RightClickMenuButton";
-import { RightClickMenuController } from "@Easy/Core/Client/MainMenuControllers/UI/RightClickMenu/RightClickMenuController";
+import { MainMenuController } from "@Easy/Core/Client/ProtectedControllers/MainMenuController";
+import { MainMenuPageType } from "@Easy/Core/Client/ProtectedControllers/MainMenuPageName";
+import { ChangeUsernameController } from "@Easy/Core/Client/ProtectedControllers/Social/ChangeUsernameController";
+import { RightClickMenuButton } from "@Easy/Core/Client/ProtectedControllers/UI/RightClickMenu/RightClickMenuButton";
+import { RightClickMenuController } from "@Easy/Core/Client/ProtectedControllers/UI/RightClickMenu/RightClickMenuController";
 import { Airship } from "../../Airship";
 import { Dependency } from "../../Flamework";
 import { Game } from "../../Game";

@@ -1,6 +1,6 @@
-import { FriendsController } from "@Easy/Core/Client/MainMenuControllers/Social/FriendsController";
-import { FriendStatus } from "@Easy/Core/Client/MainMenuControllers/Social/SocketAPI";
-import { TransferController } from "@Easy/Core/Client/MainMenuControllers/Transfer/TransferController";
+import { FriendsController } from "@Easy/Core/Client/ProtectedControllers/Social/FriendsController";
+import { FriendStatus } from "@Easy/Core/Client/ProtectedControllers/Social/SocketAPI";
+import { TransferController } from "@Easy/Core/Client/ProtectedControllers/Transfer/TransferController";
 import inspect from "@easy-games/unity-inspect";
 import { Airship } from "../../Airship";
 import { Dependency } from "../../Flamework";

@@ -1,5 +1,5 @@
 /// <reference types="compiler-types" />
-import AvatarRenderComponent from "../../Client/MainMenuControllers/AvatarMenu/AvatarRenderComponent";
+import AvatarRenderComponent from "../../Client/ProtectedControllers/AvatarMenu/AvatarRenderComponent";
 export default class AvatarViewComponent extends AirshipBehaviour {
     avatarRenderTemplate?: GameObject;
     humanEntityGo?: GameObject;

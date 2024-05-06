@@ -1,10 +1,10 @@
+import { RightClickMenuController } from "@Easy/Core/Client/ProtectedControllers//UI/RightClickMenu/RightClickMenuController";
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
 import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
 import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
 import inspect from "@easy-games/unity-inspect";
 import ObjectUtils from "@easy-games/unity-object-utils";
-import { RightClickMenuController } from "Client/MainMenuControllers/UI/RightClickMenu/RightClickMenuController";
 import { CoreContext } from "Shared/CoreClientContext";
 import { Controller, Dependency, OnStart } from "Shared/Flamework";
 import { Game } from "Shared/Game";

@@ -1,5 +1,5 @@
+import MainMenuPageComponent from "../../../Shared/MainMenu/Components/MainMenuPageComponent";
 import { MainMenuController } from "../MainMenuController";
-import MainMenuPageComponent from "../MainMenuPageComponent";
 import { MainMenuPageType } from "../MainMenuPageName";
 export default class AvatarMenuComponent extends MainMenuPageComponent {
     private readonly generalHookupKey;

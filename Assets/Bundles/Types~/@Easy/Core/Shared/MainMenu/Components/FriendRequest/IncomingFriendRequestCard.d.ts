@@ -1,5 +1,5 @@
 /// <reference types="compiler-types" />
-import { User } from "../../../../Client/MainMenuControllers/User/User";
+import { User } from "../../../../Client/ProtectedControllers/User/User";
 export default class IncomingFriendRequestCard extends AirshipBehaviour {
     usernameText: TMP_Text;
     profileImage: Image;

@@ -1,4 +1,4 @@
-import MainMenuPageComponent from "../../MainMenuControllers/MainMenuPageComponent";
+import MainMenuPageComponent from "./MainMenuPageComponent";
 export default class HomePageComponent extends MainMenuPageComponent {
     mainContent: Transform;
     spacerPrefab: GameObject;

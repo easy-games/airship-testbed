@@ -1,5 +1,5 @@
 import { OnStart } from "../../../Shared/Flamework";
-import { CoreUIController } from "../../MainMenuControllers/CoreUIController";
+import { CoreUIController } from "../../ProtectedControllers//CoreUIController";
 export declare class TabListController implements OnStart {
     private readonly coreUIController;
     private tablistGO;

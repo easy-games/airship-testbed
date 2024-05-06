@@ -1,6 +1,6 @@
 /// <reference types="compiler-types" />
-import { MainMenuController } from "./MainMenuController";
-import { MainMenuPageType } from "./MainMenuPageName";
+import { MainMenuController } from "../../../Client/ProtectedControllers//MainMenuController";
+import { MainMenuPageType } from "../../../Client/ProtectedControllers//MainMenuPageName";
 export default class MainMenuPageComponent extends AirshipBehaviour {
     private animateOutDuration;
     private animateInDuration;

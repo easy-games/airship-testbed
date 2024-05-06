@@ -1,6 +1,6 @@
+import HomePageComponent from "@Easy/Core/Shared/MainMenu/Components/HomePageComponent";
 import GameGeneralPage from "@Easy/Core/Shared/MainMenu/Components/Settings/General/GameGeneralPage";
 import SettingsPage from "@Easy/Core/Shared/MainMenu/Components/Settings/SettingsPage";
-import HomePageComponent from "Client/Components/HomePage/HomePageComponent";
 import { CoreContext } from "Shared/CoreClientContext";
 import { CoreRefs } from "Shared/CoreRefs";
 import { Controller, OnStart } from "Shared/Flamework";
@@ -10,8 +10,8 @@ import { AppManager } from "Shared/Util/AppManager";
 import { Signal } from "Shared/Util/Signal";
 import { SetTimeout } from "Shared/Util/Timer";
 import AvatarViewComponent from "../../Shared/Avatar/AvatarViewComponent";
+import MainMenuPageComponent from "../../Shared/MainMenu/Components/MainMenuPageComponent";
 import AvatarMenuComponent from "./AvatarMenu/AvatarMenuComponent";
-import MainMenuPageComponent from "./MainMenuPageComponent";
 import { MainMenuPageType } from "./MainMenuPageName";
 
 @Controller()

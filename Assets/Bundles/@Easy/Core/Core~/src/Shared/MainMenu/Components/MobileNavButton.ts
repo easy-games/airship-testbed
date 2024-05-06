@@ -1,5 +1,5 @@
-import { MainMenuController } from "@Easy/Core/Client/MainMenuControllers/MainMenuController";
-import { MainMenuPageType } from "@Easy/Core/Client/MainMenuControllers/MainMenuPageName";
+import { MainMenuController } from "@Easy/Core/Client/ProtectedControllers/MainMenuController";
+import { MainMenuPageType } from "@Easy/Core/Client/ProtectedControllers/MainMenuPageName";
 import { Dependency } from "../../Flamework";
 import { Game } from "../../Game";
 import { Bin } from "../../Util/Bin";

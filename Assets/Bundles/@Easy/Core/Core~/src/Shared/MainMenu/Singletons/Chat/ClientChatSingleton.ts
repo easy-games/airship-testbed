@@ -1,4 +1,4 @@
-import { CoreUIController } from "@Easy/Core/Client/MainMenuControllers/CoreUIController";
+import { CoreUIController } from "@Easy/Core/Client/ProtectedControllers/CoreUIController";
 import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
 import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
 import { MainMenuSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/MainMenuSingleton";
@@ -19,7 +19,7 @@ import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { ChatUtil } from "Shared/Util/ChatUtil";
 import { SignalPriority } from "Shared/Util/Signal";
 import { SetInterval, SetTimeout } from "Shared/Util/Timer";
-import { MainMenuBlockSingleton } from "../../../../Client/MainMenuControllers/Settings/MainMenuBlockSingleton";
+import { MainMenuBlockSingleton } from "../../../../Client/ProtectedControllers//Settings/MainMenuBlockSingleton";
 import { MessageCommand } from "./ClientCommands/MessageCommand";
 import { ReplyCommand } from "./ClientCommands/ReplyCommand";
 

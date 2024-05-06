@@ -1,8 +1,8 @@
+import { SocketController } from "@Easy/Core/Client/ProtectedControllers//Socket/SocketController";
 import { Airship } from "@Easy/Core/Shared/Airship";
 import DirectMessagesWindow from "@Easy/Core/Shared/MainMenu/Components/DirectMessagesWindow";
 import PartyChatButton from "@Easy/Core/Shared/MainMenu/Components/PartyChatButton";
 import { ClientChatSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/Chat/ClientChatSingleton";
-import { SocketController } from "Client/MainMenuControllers/Socket/SocketController";
 import { AudioManager } from "Shared/Audio/AudioManager";
 import { CoreContext } from "Shared/CoreClientContext";
 import { Controller, Dependency, OnStart } from "Shared/Flamework";

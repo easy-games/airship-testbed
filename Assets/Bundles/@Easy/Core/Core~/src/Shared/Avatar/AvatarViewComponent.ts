@@ -1,12 +1,12 @@
-import AvatarRenderComponent from "@Easy/Core/Client/MainMenuControllers/AvatarMenu/AvatarRenderComponent";
+import AvatarRenderComponent from "@Easy/Core/Client/ProtectedControllers//AvatarMenu/AvatarRenderComponent";
 import {} from "Shared/Flamework";
 import { Mouse } from "Shared/UserInput";
+import { Game } from "../Game";
 import { Bin } from "../Util/Bin";
 import { CanvasAPI } from "../Util/CanvasAPI";
-import { OnUpdate } from "../Util/Timer";
-import AvatarBackdropComponent, { AvatarBackdropType } from "./AvatarBackdropComponent";
 import { ColorUtil } from "../Util/ColorUtil";
-import { Game } from "../Game";
+import { OnUpdate } from "../Util/Timer";
+import AvatarBackdropComponent from "./AvatarBackdropComponent";
 
 export default class AvatarViewComponent extends AirshipBehaviour {
 	@Header("Templates")

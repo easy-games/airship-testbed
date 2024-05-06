@@ -1,5 +1,5 @@
-import { FriendsController } from "Client/MainMenuControllers/Social/FriendsController";
-import { User } from "Client/MainMenuControllers/User/User";
+import { FriendsController } from "@Easy/Core/Client/ProtectedControllers//Social/FriendsController";
+import { User } from "@Easy/Core/Client/ProtectedControllers//User/User";
 import { Dependency } from "Shared/Flamework";
 import { Bin } from "Shared/Util/Bin";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";

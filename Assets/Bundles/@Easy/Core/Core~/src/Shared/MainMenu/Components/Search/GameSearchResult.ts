@@ -1,4 +1,4 @@
-import { TransferController } from "@Easy/Core/Client/MainMenuControllers/Transfer/TransferController";
+import { TransferController } from "@Easy/Core/Client/ProtectedControllers/Transfer/TransferController";
 import DateParser from "@Easy/Core/Shared/DateParser";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";

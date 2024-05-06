@@ -3,16 +3,16 @@ import { Game } from "@Easy/Core/Shared/Game";
 import SearchSingleton from "@Easy/Core/Shared/MainMenu/Components/Search/SearchSingleton";
 import { MobileGameList } from "@Easy/Core/Shared/Util/MobileGameList";
 import ObjectUtils from "@easy-games/unity-object-utils";
-import MainMenuPageComponent from "Client/MainMenuControllers/MainMenuPageComponent";
 import { AirshipUrl } from "Shared/Util/AirshipUrl";
 import { Bin } from "Shared/Util/Bin";
 import { SetTimeout } from "Shared/Util/Timer";
 import { DecodeJSON } from "Shared/json";
-import { MainMenuBlockSingleton } from "../../MainMenuControllers/Settings/MainMenuBlockSingleton";
-import { GamesDto } from "./API/GamesAPI";
-import HomePageGameComponent from "./Sort/HomePageGameComponent";
-import SortComponent from "./Sort/SortComponent";
-import { SortId } from "./Sort/SortId";
+import { GamesDto } from "../../../Client/Components/HomePage/API/GamesAPI";
+import HomePageGameComponent from "../../../Client/Components/HomePage/Sort/HomePageGameComponent";
+import SortComponent from "../../../Client/Components/HomePage/Sort/SortComponent";
+import { SortId } from "../../../Client/Components/HomePage/Sort/SortId";
+import { MainMenuBlockSingleton } from "../../../Client/ProtectedControllers//Settings/MainMenuBlockSingleton";
+import MainMenuPageComponent from "./MainMenuPageComponent";
 
 export default class HomePageComponent extends MainMenuPageComponent {
 	public mainContent!: Transform;

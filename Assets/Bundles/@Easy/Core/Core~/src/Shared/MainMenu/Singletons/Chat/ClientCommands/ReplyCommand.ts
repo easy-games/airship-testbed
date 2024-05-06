@@ -1,6 +1,6 @@
-import { Dependency } from "Shared/Flamework";
-import { DirectMessageController } from "Client/MainMenuControllers/Social/DirectMessages/DirectMessageController";
+import { DirectMessageController } from "@Easy/Core/Client/ProtectedControllers//Social/DirectMessages/DirectMessageController";
 import { ChatCommand } from "Shared/Commands/ChatCommand";
+import { Dependency } from "Shared/Flamework";
 import { Player } from "Shared/Player/Player";
 
 export class ReplyCommand extends ChatCommand {
