@@ -52,7 +52,14 @@ export class RightClickMenuController implements OnStart {
 			new Vector2(position.x, position.y),
 		);
 
-		print("posInCanvas: " + mousePosInCanvas + ", canvasSize: " + canvasRect.sizeDelta);
+		// print(
+		// 	"posInCanvas: " +
+		// 		mousePosInCanvas +
+		// 		", menuSize: " +
+		// 		menuRect.sizeDelta +
+		// 		", canvasSize: " +
+		// 		canvasRect.sizeDelta,
+		// );
 
 		if (mousePosInCanvas.x + menuRect.sizeDelta.x > canvasRect.sizeDelta.x / 2) {
 			menuRect.anchorMin = Vector2.one;
