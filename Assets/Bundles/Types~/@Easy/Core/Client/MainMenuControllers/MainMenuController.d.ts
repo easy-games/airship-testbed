@@ -22,7 +22,7 @@ export declare class MainMenuController implements OnStart {
     private socialIsVisible;
     constructor();
     ToggleGameBG(show: boolean): void;
-    OpenFromGame(): void;
+    OpenFromGameInProtectedContext(): void;
     CloseFromGame(): void;
     IsOpen(): boolean;
     OnStart(): void;
