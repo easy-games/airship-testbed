@@ -60,6 +60,50 @@ float _PixelLightsLayerMasks[MAX_VISIBLE_PIXEL_LIGHTS];
 float _PixelLightsVisible[MAX_VISIBLE_PIXEL_LIGHTS];
 //CBUFFER_END
 
+half3 AS_SHEvalLinearL2(half3 N, half4 shBr, half4 shBg, half4 shBb, half4 shC)
+{
+    half3 x2;
+    // 4 of the quadratic (L2) polynomials
+    half4 vB = N.xyzz * N.yzzx;
+    x2.r = dot(shBr, vB);
+    x2.g = dot(shBg, vB);
+    x2.b = dot(shBb, vB);
+
+    // Final (5th) quadratic (L2) polynomial
+    half vC = N.x * N.x - N.y * N.y;
+    half3 x3 = shC.rgb * vC;
+
+    return x2 + x3;
+}
+
+half3 AS_SHEvalLinearL0L1(half3 N, half4 shAr, half4 shAg, half4 shAb)
+{
+    half4 vA = half4(N, 1.0);
+
+    half3 x1;
+    // Linear (L1) + constant (L0) polynomial terms
+    x1.r = dot(shAr, vA);
+    x1.g = dot(shAg, vA);
+    x1.b = dot(shAb, vA);
+
+    return x1;
+}
+
+half3 SampleUnityLightProbe(half3 worldNormal) 
+{
+#ifdef LIGHTMAP_ON    
+    return half3(0, 0, 0);
+#else
+    // Linear + constant polynomial terms
+    half3 res = AS_SHEvalLinearL0L1(worldNormal, unity_SHAr, unity_SHAg, unity_SHAb);
+
+    // Quadratic polynomials
+    res += AS_SHEvalLinearL2(worldNormal, unity_SHBr, unity_SHBg, unity_SHBb, unity_SHC);
+
+    return max(res,0);
+#endif
+}
+
 half4 SRGBtoLinear(half4 srgb)
 {
     return pow(srgb, 0.4545454545);

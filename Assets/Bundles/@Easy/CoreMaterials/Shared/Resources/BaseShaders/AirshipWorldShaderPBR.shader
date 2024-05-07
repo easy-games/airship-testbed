@@ -73,6 +73,7 @@ Shader "Airship/WorldShaderPBR"
             //Lightmapping
             #pragma multi_compile _ DIRLIGHTMAP_COMBINED
             #pragma multi_compile _ LIGHTMAP_ON
+            #pragma multi_compile _ LIGHTPROBE_ON
             
             //Ours
             #pragma multi_compile TRIPLANAR_STYLE_OFF TRIPLANAR_STYLE_LOCAL TRIPLANAR_STYLE_WORLD

@@ -497,6 +497,16 @@
         half3 finalAmbient = half3(0, 0, 0);
 #endif
 
+
+        half3 lightProbe = half3(0, 0, 0);
+#ifdef LIGHTPROBE_ON 
+#ifndef LIGHTMAP_ON        
+        //only do lightprobes for materials that that dont have lightmaps
+        half3 lightColor = SampleUnityLightProbe(worldNormal) * diffuseColor;
+        lightProbe = lightColor;// pbrComputeBRDFMobile(-viewDirection, worldNormal, diffuseColor, specularColor, roughnessLevel, lightColor);
+#endif         
+#endif
+        
         //Sun based Lighting
         half3 phongSpec = PhongApprox(roughnessLevel, RoL) * specularColor;
          
@@ -530,15 +540,12 @@
         //strength *= strength;
         //work out what bit is the directional light component
         half3 lightmapPhong = lightmappingSample * (diffuseColor + lightmapPhongSpec * strength) + (cubemapSample * specularColor * strength);
-               
-
         lightmapping = lightmapPhong;
-       
 #endif                
 
         //Start compositing now
-        float3 finalColor = finalSun + finalAmbient + pointLights + lightmapping;
-  
+        float3 finalColor = finalSun + finalAmbient + pointLights + lightmapping +lightProbe;
+ 
         //Rim light
 #ifdef RIM_LIGHT_ON
         finalColor.xyz += RimLightSimple(worldNormal, -viewDirection);
@@ -546,12 +553,7 @@
         //Mix in fog
 		finalColor = CalculateAtmosphericFog(finalColor, viewDistance);
     
-        //uint lightsCount = unity_LightData.y;
-		//finalColor.r = (float)lightsCount * 0.25f;
-
-        //Final color 
-       
-
+        //Write time
         half4 MRT0Val;
         half4 MRT1Val;
 
@@ -567,10 +569,7 @@
         else
         {
             MRT0Val = half4(finalColor.r, finalColor.g, finalColor.b, alpha);
- 
             MRT1Val = DoBloomCutoff(finalColor, alpha, 2);
-            
-
         }
 #else
         MRT0Val = half4(finalColor.r, finalColor.g, finalColor.b, alpha);
