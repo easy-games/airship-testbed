@@ -481,6 +481,7 @@
         diffuseColor = max(albedo - albedo * metallicLevel, 0);		 
         specularColor = (dielectricSpecular - dielectricSpecular * metallicLevel) + albedo * metallicLevel;	 
 
+#ifdef IMAGEBASED_LIGHTING_ON      
         //Image based lighting
         float3 imageBasedLighting = pbrComputeBRDFMobile(-viewDirection, worldNormal, diffuseColor, specularColor, roughnessLevel, cubemapSample);
        
@@ -492,7 +493,9 @@
 //#endif
         //Slider
         finalAmbient *= globalAmbientBrightness;
-        
+#else
+        half3 finalAmbient = half3(0, 0, 0);
+#endif
 
         //Sun based Lighting
         half3 phongSpec = PhongApprox(roughnessLevel, RoL) * specularColor;

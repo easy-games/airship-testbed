@@ -65,9 +65,17 @@ Shader "Airship/WorldShaderPBR"
 
             HLSLPROGRAM
             #pragma target 3.5
-            #pragma multi_compile TRIPLANAR_STYLE_OFF TRIPLANAR_STYLE_LOCAL TRIPLANAR_STYLE_WORLD
-        
+
+            //Unity ones
             #pragma multi_compile _ _ADDITIONAL_LIGHTS
+            #pragma multi_compile _ DOUBLE_SIDED_NORMALS            
+            
+            //Lightmapping
+            #pragma multi_compile _ DIRLIGHTMAP_COMBINED
+            #pragma multi_compile _ LIGHTMAP_ON
+            
+            //Ours
+            #pragma multi_compile TRIPLANAR_STYLE_OFF TRIPLANAR_STYLE_LOCAL TRIPLANAR_STYLE_WORLD
             #pragma multi_compile _ EXPLICIT_MAPS_ON
 			#pragma multi_compile _ EMISSIVE_ON
 			#pragma multi_compile _ RIM_LIGHT_ON
@@ -75,11 +83,7 @@ Shader "Airship/WorldShaderPBR"
             #pragma multi_compile _ USE_SHADOW_COLOR_ON
 			#pragma multi_compile _ SHADOWS_ON
 			#pragma multi_compile _ USE_COLOR_MASK_ON
-            #pragma multi_compile _ DOUBLE_SIDED_NORMALS
-	   
-            //Lightmapping
-            #pragma multi_compile _ DIRLIGHTMAP_COMBINED
-            #pragma multi_compile _ LIGHTMAP_ON
+            #pragma multi_compile _ IMAGEBASED_LIGHTING_ON
             
             #include "AirshipWorldShaderIncludes.hlsl"
                           

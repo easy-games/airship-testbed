@@ -86,7 +86,7 @@ float4 SampleDirectionalLightmapAirship(TEXTURE2D_LIGHTMAP_PARAM(lightmapTex, li
     
     half halfLambert = dot(normalWS, direction.xyz - 0.5) + 0.5;
     bakeDiffuseLighting += illuminance * halfLambert / max(1e-4, direction.w);
-    //bakeDiffuseLighting += illuminance;
+ 
     return direction;
 }
 
