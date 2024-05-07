@@ -213,12 +213,12 @@
 		"@Easy/Core:Client/ProtectedControllers/RichPresence/MainMenuRichPresenceController@MainMenuRichPresenceController": "$:ProtectedControllers/RichPresence/MainMenuRichPresenceController@MainMenuRichPresenceController",
 		"@Easy/Core:Client/ProtectedControllers/Settings/MainMenuSettingsUIController@MainMenuSettingsUIController": "$:ProtectedControllers/Settings/MainMenuSettingsUIController@MainMenuSettingsUIController",
 		"@Easy/Core:Client/ProtectedControllers/Social/ChangeUsernameController@ChangeUsernameController": "$:ProtectedControllers/Social/ChangeUsernameController@ChangeUsernameController",
+		"@Easy/Core:Server/ProtectedServices/Shutdown/ShutdownService@ShutdownService": "$:ProtectedServices/Shutdown/ShutdownService@ShutdownService",
 		"@Easy/Core:Server/Services/GroundItem/GroundItemService@GroundItemService": "$:Services/GroundItem/GroundItemService@GroundItemService",
 		"@Easy/Core:Server/Services/Generator/GeneratorService@GeneratorService": "$:Services/Generator/GeneratorService@GeneratorService",
 		"@Easy/Core:Server/Services/Chat/Commands/Generator/CreateGeneratorCommand@CreateGeneratorCommand": "$:Services/Chat/Commands/Generator/CreateGeneratorCommand@CreateGeneratorCommand",
 		"@Easy/Core:Server/Services/Chat/Commands/Generator/SetGeneratorSpawnRateCommand@SetGeneratorSpawnRateCommand": "$:Services/Chat/Commands/Generator/SetGeneratorSpawnRateCommand@SetGeneratorSpawnRateCommand",
 		"@Easy/Core:Server/Services/Player/BotService@BotService": "$:Services/Player/BotService@BotService",
-		"@Easy/Core:Server/Services/Shutdown/ShutdownService@ShutdownService": "$:Services/Shutdown/ShutdownService@ShutdownService",
 		"@Easy/Core:Shared/VoxelWorld/PrefabBlockManager/PrefabBlockManager@PrefabBlockManager": "$:VoxelWorld/PrefabBlockManager/PrefabBlockManager@PrefabBlockManager",
 		"@Easy/Core:Shared/Bootstrap/Bootstrap@Bootstrap": "$:Bootstrap/Bootstrap@Bootstrap",
 		"@Easy/Core:Shared/Character/CharacterConfigSetup@CharacterConfigSetup": "$:Character/CharacterConfigSetup@CharacterConfigSetup",
@@ -1000,6 +1000,17 @@
 			]
 		},
 		{
+			"filePath": "../Server/ProtectedServices/Shutdown/ShutdownService.lua",
+			"internalId": "$:ProtectedServices/Shutdown/ShutdownService@ShutdownService",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Service",
+					"isFlameworkDecorator": true,
+					"name": "Service"
+				}
+			]
+		},
+		{
 			"filePath": "../Server/Services/GroundItem/GroundItemService.lua",
 			"internalId": "$:Services/GroundItem/GroundItemService@GroundItemService",
 			"decorators": [
@@ -1024,17 +1035,6 @@
 		{
 			"filePath": "../Server/Services/Player/BotService.lua",
 			"internalId": "$:Services/Player/BotService@BotService",
-			"decorators": [
-				{
-					"internalId": "$:Flamework/flamework@Service",
-					"isFlameworkDecorator": true,
-					"name": "Service"
-				}
-			]
-		},
-		{
-			"filePath": "../Server/Services/Shutdown/ShutdownService.lua",
-			"internalId": "$:Services/Shutdown/ShutdownService@ShutdownService",
 			"decorators": [
 				{
 					"internalId": "$:Flamework/flamework@Service",
