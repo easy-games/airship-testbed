@@ -1849,21 +1849,6 @@ interface Component extends Object {
 	transform: Transform;
 	gameObject: GameObject;
 	tag: string;
-	rigidbody: Component;
-	rigidbody2D: Component;
-	camera: Component;
-	light: Component;
-	animation: Component;
-	constantForce: Component;
-	renderer: Component;
-	audio: Component;
-	networkView: Component;
-	collider: Component;
-	collider2D: Component;
-	hingeJoint: Component;
-	particleSystem: Component;
-
-	enabled: boolean;
 
 	constructor(): Component;
 
