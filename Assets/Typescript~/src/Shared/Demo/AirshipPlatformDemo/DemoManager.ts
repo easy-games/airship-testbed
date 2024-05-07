@@ -101,14 +101,14 @@ export default class DemoManager extends AirshipBehaviour {
 					);
 					NetworkUtil.Spawn(ballGo);
 
-					const cubeGo = Object.Instantiate<GameObject>(
-						this.cubePrefab,
-						ballGo.transform.position.add(new Vector3(0, 1, 0)),
-						Quaternion.identity,
-					);
-					NetworkUtil.Spawn(cubeGo);
-					cubeGo.GetComponent<NetworkObject>()!.SetParent(ballGo.GetComponent<NetworkObject>()!);
-					task.wait(1);
+					// const cubeGo = Object.Instantiate<GameObject>(
+					// 	this.cubePrefab,
+					// 	ballGo.transform.position.add(new Vector3(0, 1, 0)),
+					// 	Quaternion.identity,
+					// );
+					// NetworkUtil.Spawn(cubeGo);
+					// cubeGo.GetComponent<NetworkObject>()!.SetParent(ballGo.GetComponent<NetworkObject>()!);
+					// task.wait(1);
 				}
 			});
 		}
