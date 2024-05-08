@@ -3,6 +3,8 @@
 
     #include "AirshipShaderIncludes.hlsl"
     
+
+
     //Main programs
     #pragma vertex vertFunction
     #pragma fragment fragFunction
@@ -15,11 +17,11 @@
     
         
     //Unity stuff
-    float4x4 unity_MatrixVP;
-    float4x4 unity_ObjectToWorld;
-    float4x4 unity_WorldToObject;
-    float4 unity_WorldTransformParams;
-    float3 _WorldSpaceCameraPos;
+    //float4x4 unity_MatrixVP;
+    //float4x4 unity_ObjectToWorld;
+    //float4x4 unity_WorldToObject;
+    //float4 unity_WorldTransformParams;
+    //float3 _WorldSpaceCameraPos;
 
     //SamplerState sampler_MainTex;
     SamplerState my_sampler_point_repeat;
@@ -43,7 +45,7 @@
     float _OverrideStrength;
     float4 _EmissiveColor;
     half _EmissiveMix;
-    float4 _Time;
+    
     float4 _MainTex_ST;
 
     half _MetalOverride;
@@ -54,6 +56,8 @@
 
     static const float maxMips = 12;//This is how many miplevels the cubemaps have
 
+    
+
     struct Attributes
     {
         float4 positionOS   : POSITION;
@@ -63,14 +67,17 @@
         float4 uv_MainTex : TEXCOORD0;
 
         float2 instanceIndex : TEXCOORD7;
+
+        ////////////////////
+        float2 staticLightmapUV : TEXCOORD1;
+        ////////////////////
     };
 
     struct vertToFrag
     {
         float4 positionCS : SV_POSITION;
-
-        float4 color      : COLOR;
-        float4 baseColor : TEXCOORD0;
+        
+        float4 baseColor : COLOR;
         float4 uv_MainTex : TEXCOORD1;
         float3 worldPos   : TEXCOORD2;
 
@@ -87,6 +94,11 @@
         half3 worldNormal : TEXCOORD11;
 
         half3 viewVector : TEXCOORD12;
+
+//If lightmapping /////////        
+        float2 staticLightmapUV   : TEXCOORD13;
+        float2 dynamicLightmapUV  : TEXCOORD14;
+/////////////////        
     };
 
     vertToFrag vertFunction(Attributes input)
@@ -122,14 +134,15 @@
 #endif
 
         output.worldPos = worldPos;
-        output.color = input.color;
-        output.baseColor = lerp(_Color, _OverrideColor, _OverrideStrength);
-
-        
-#if INSTANCE_DATA_ON
-		float4 instanceColor = _ColorInstanceData[input.instanceIndex.x];
-        output.color *= instanceColor;
+        output.baseColor = _Color;
+#ifdef INSTANCE_DATA_ON
+        float4 instanceColor = _ColorInstanceData[input.instanceIndex.x];
+        output.baseColor = instanceColor;
+ 
 #endif
+        
+        output.baseColor = lerp(output.baseColor, _OverrideColor, _OverrideStrength);
+        
 
         float3 normalWorld = normalize(mul(float4(input.normal, 0.0), unity_WorldToObject).xyz);
         float3 tangentWorld = normalize(mul(unity_ObjectToWorld, input.tangent.xyz));
@@ -160,6 +173,12 @@
 #endif
 
         output.viewVector = worldPos - _WorldSpaceCameraPos.xyz;
+
+//Lightmapping
+        OUTPUT_LIGHTMAP_UV(input.staticLightmapUV, unity_LightmapST, output.staticLightmapUV);
+#ifdef DYNAMICLIGHTMAP_ON
+        output.dynamicLightmapUV = input.dynamicLightmapUV.xy * unity_DynamicLightmapST.xy + unity_DynamicLightmapST.zw;
+#endif
 
         return output;
     }
@@ -237,17 +256,7 @@
         return tex.Sample(my_sampler_trilinear_repeat, coords.uvs);
 #endif
     }
-    //Unity encoded normals (the pink ones)
-    half3 UnpackNormalmapRGorAG(half4 packednormal)
-    {
-        packednormal.x *= packednormal.w;
-
-        half3 normal;
-        normal.xy = packednormal.xy * 2 - 1;
-        normal.z = sqrt(1 - saturate(dot(normal.xy, normal.xy)));
-
-        return normal;
-    }
+ 
 
     float3 BlendTriplanarNormal(float3 mappedNormal, float3 surfaceNormal)
     {
@@ -284,7 +293,6 @@
         return cx;
     }
  
-
     half UnpackMetal(float metal)
     {
         return metal / 2.0;
@@ -295,8 +303,7 @@
         float result = metal > 0.5;
         return result;
     }
- 
- 
+  
     float3 envSampleLOD(float3 dir, float lod)
     {
         return texCUBElod(_CubeTex, half4(dir, lod)).rgb;
@@ -321,12 +328,7 @@
     {
         return pbrComputeDiffuse(normal, diffColor) + pbrComputeSpecularMobileCheap(viewDirection, normal, specColor, roughness, cubemapSample);
     }
- 
-
-
-    ///////////////////////////@@@@
-
-
+    
     void fragFunction(vertToFrag input, out half4 MRT0 : SV_Target0, out half4 MRT1 : SV_Target1
 #ifdef DOUBLE_SIDED_NORMALS
         , FRONT_FACE_TYPE frontFace : FRONT_FACE_SEMANTIC
@@ -479,6 +481,7 @@
         diffuseColor = max(albedo - albedo * metallicLevel, 0);		 
         specularColor = (dielectricSpecular - dielectricSpecular * metallicLevel) + albedo * metallicLevel;	 
 
+#ifdef IMAGEBASED_LIGHTING_ON      
         //Image based lighting
         float3 imageBasedLighting = pbrComputeBRDFMobile(-viewDirection, worldNormal, diffuseColor, specularColor, roughnessLevel, cubemapSample);
        
@@ -490,47 +493,67 @@
 //#endif
         //Slider
         finalAmbient *= globalAmbientBrightness;
-        
+#else
+        half3 finalAmbient = half3(0, 0, 0);
+#endif
 
+
+        half3 lightProbe = half3(0, 0, 0);
+#ifdef LIGHTPROBE_ON 
+#ifndef LIGHTMAP_ON        
+        //only do lightprobes for materials that that dont have lightmaps
+        half3 lightColor = SampleUnityLightProbe(worldNormal) * diffuseColor;
+        lightProbe = lightColor;// pbrComputeBRDFMobile(-viewDirection, worldNormal, diffuseColor, specularColor, roughnessLevel, lightColor);
+#endif         
+#endif
+        
         //Sun based Lighting
         half3 phongSpec = PhongApprox(roughnessLevel, RoL) * specularColor;
          
         //Direct sun + specular
         half3 sunColor = (globalSunColor * globalSunBrightness);
-
-        //Sun Term
-        half3 sunShineTerm = (sunColor * NoL);
          
         //Final sun term
-        half3 sunComposite = (diffuseColor + phongSpec);
- 
-        //Sun Image reflection
-        half3 sunImageLight = cubemapSample * specularColor;
-        //half3 sunImageLight = specularColor;
-        sunComposite += sunImageLight;
+        half3 sunComposite = sunColor * (diffuseColor + phongSpec) + (cubemapSample * specularColor);
+        
+        sunComposite *= NoL;
         sunComposite *= globalSunBrightness;
-
-        sunComposite *= sunShineTerm;
         
         //Mask in the sun, based on the shadows
         half3 finalSun = lerp(sunComposite, sunComposite * sunShadowMask, globalSunShadow);
    
         //PointLighting
-        float3 pointLights = CalculatePointLightsForPoint(input.worldPos, worldNormal, diffuseColor, roughnessLevel, metallicLevel, specularColor, worldReflect);
+        float3 pointLights = CalculatePointLightsForPoint(input.worldPos, worldNormal, diffuseColor, roughnessLevel, metallicLevel, specularColor, worldReflect, cubemapSample);
+
+
+        half3 lightmapping = half3(0, 0, 0);
+#ifdef LIGHTMAP_ON
+        half4 lightmapNormal = half4(0, 0, 0,0);
+        half3 lightmappingSample = SampleLightmapAirship(input.staticLightmapUV, input.dynamicLightmapUV, worldNormal, lightmapNormal);
+        
+        half3 lightmapDir = normalize(lightmapNormal.xyz - 0.5);
+        half pRoL = max(0, dot(worldReflect, lightmapDir));
+        half3 lightmapPhongSpec = PhongApprox(roughnessLevel, pRoL) * specularColor;
+       
+		half lightmapBrightness = max(lightmappingSample.r, max(lightmappingSample.g, lightmappingSample.b));
+        half strength = lightmapNormal.w * lightmapBrightness;
+        //strength *= strength;
+        //work out what bit is the directional light component
+        half3 lightmapPhong = lightmappingSample * (diffuseColor + lightmapPhongSpec * strength) + (cubemapSample * specularColor * strength);
+        lightmapping = lightmapPhong;
+#endif                
 
         //Start compositing now
-        float3 finalColor = finalSun + finalAmbient + pointLights;
-        
+        float3 finalColor = finalSun + finalAmbient + pointLights + lightmapping +lightProbe;
+ 
         //Rim light
 #ifdef RIM_LIGHT_ON
         finalColor.xyz += RimLightSimple(worldNormal, -viewDirection);
 #endif
         //Mix in fog
 		finalColor = CalculateAtmosphericFog(finalColor, viewDistance);
-        
-        //Final color 
-        half brightness = max(max(finalColor.r, finalColor.g), finalColor.b) * alpha;
-
+    
+        //Write time
         half4 MRT0Val;
         half4 MRT1Val;
 
@@ -546,17 +569,7 @@
         else
         {
             MRT0Val = half4(finalColor.r, finalColor.g, finalColor.b, alpha);
- 
-            ///if (brightness > globalSunBrightness + globalAmbientBrightness)
-            if (brightness > 2)
-            {
-                MRT1Val = half4(finalColor.r, finalColor.g, finalColor.b, alpha);
-            }
-            else
-            {
-                MRT1Val = half4(0, 0, 0, alpha);
-            }
-
+            MRT1Val = DoBloomCutoff(finalColor, alpha, 2);
         }
 #else
         MRT0Val = half4(finalColor.r, finalColor.g, finalColor.b, alpha);
@@ -565,14 +578,7 @@
         //half brightness = max(max(finalColor.r, finalColor.g), finalColor.b) * (1 - roughnessLevel) * alpha;
       
         ///if (brightness > globalSunBrightness + globalAmbientBrightness)
-        if (brightness > 2)
-        {
-            MRT1Val = half4(finalColor.r, finalColor.g, finalColor.b, alpha);
-        }
-        else
-        {
-            MRT1Val = half4(0, 0, 0, alpha);
-        }
+        MRT1Val = DoBloomCutoff(finalColor, alpha, 2);
 #endif
 
         DoFinalColorWrite(MRT0Val, MRT1Val, MRT0, MRT1);

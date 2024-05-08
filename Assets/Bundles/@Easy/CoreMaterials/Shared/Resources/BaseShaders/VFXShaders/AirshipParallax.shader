@@ -33,8 +33,7 @@ Shader "Airship/AirshipParallax"
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-
-            #include "UnityCG.cginc"
+                       
             #include "../AirshipShaderIncludes.hlsl"
 
             struct appdata
@@ -107,3 +106,4 @@ Shader "Airship/AirshipParallax"
         }
     }
 }
+ 
