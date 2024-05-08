@@ -279,7 +279,7 @@
 	"identifierPrefix": "$",
 	"classes": [
 		{
-			"filePath": "../Client/Airship/Events/AirshipEventController.lua",
+			"filePath": "..\\Client\\Airship\\Events\\AirshipEventController.lua",
 			"internalId": "$:Airship/Events/AirshipEventController@AirshipEventController",
 			"decorators": [
 				{
@@ -290,7 +290,7 @@
 			]
 		},
 		{
-			"filePath": "../Client/Airship/Matchmaking/MatchmakingController.lua",
+			"filePath": "..\\Client\\Airship\\Matchmaking\\MatchmakingController.lua",
 			"internalId": "$:Airship/Matchmaking/MatchmakingController@MatchmakingController",
 			"decorators": [
 				{
@@ -301,7 +301,7 @@
 			]
 		},
 		{
-			"filePath": "../Client/Airship/Party/PartyController.lua",
+			"filePath": "..\\Client\\Airship\\Party\\PartyController.lua",
 			"internalId": "$:Airship/Party/PartyController@PartyController",
 			"decorators": [
 				{
@@ -312,7 +312,7 @@
 			]
 		},
 		{
-			"filePath": "../Client/Airship/PlatformInventory/PlatformInventoryController.lua",
+			"filePath": "..\\Client\\Airship\\PlatformInventory\\PlatformInventoryController.lua",
 			"internalId": "$:Airship/PlatformInventory/PlatformInventoryController@PlatformInventoryController",
 			"decorators": [
 				{
@@ -323,7 +323,7 @@
 			]
 		},
 		{
-			"filePath": "../Client/Airship/Transfer/TransferController.lua",
+			"filePath": "..\\Client\\Airship\\Transfer\\TransferController.lua",
 			"internalId": "$:Airship/Transfer/TransferController@TransferController",
 			"decorators": [
 				{
@@ -334,7 +334,7 @@
 			]
 		},
 		{
-			"filePath": "../Client/Airship/User/UserController.lua",
+			"filePath": "..\\Client\\Airship\\User\\UserController.lua",
 			"internalId": "$:Airship/User/UserController@UserController",
 			"decorators": [
 				{
@@ -345,7 +345,7 @@
 			]
 		},
 		{
-			"filePath": "../Server/Airship/CacheStore/CacheStoreService.lua",
+			"filePath": "..\\Server\\Airship\\CacheStore\\CacheStoreService.lua",
 			"internalId": "$:Airship/CacheStore/CacheStoreService@CacheStoreService",
 			"decorators": [
 				{
@@ -356,7 +356,7 @@
 			]
 		},
 		{
-			"filePath": "../Server/Airship/DataStore/DataStoreService.lua",
+			"filePath": "..\\Server\\Airship\\DataStore\\DataStoreService.lua",
 			"internalId": "$:Airship/DataStore/DataStoreService@DataStoreService",
 			"decorators": [
 				{
@@ -367,7 +367,7 @@
 			]
 		},
 		{
-			"filePath": "../Server/Airship/Leaderboard/LeaderboardService.lua",
+			"filePath": "..\\Server\\Airship\\Leaderboard\\LeaderboardService.lua",
 			"internalId": "$:Airship/Leaderboard/LeaderboardService@LeaderboardService",
 			"decorators": [
 				{
@@ -378,7 +378,7 @@
 			]
 		},
 		{
-			"filePath": "../Server/Airship/Matchmaking/MatchmakingService.lua",
+			"filePath": "..\\Server\\Airship\\Matchmaking\\MatchmakingService.lua",
 			"internalId": "$:Airship/Matchmaking/MatchmakingService@MatchmakingService",
 			"decorators": [
 				{
@@ -389,7 +389,7 @@
 			]
 		},
 		{
-			"filePath": "../Server/Airship/Party/PartyService.lua",
+			"filePath": "..\\Server\\Airship\\Party\\PartyService.lua",
 			"internalId": "$:Airship/Party/PartyService@PartyService",
 			"decorators": [
 				{
@@ -400,7 +400,7 @@
 			]
 		},
 		{
-			"filePath": "../Server/Airship/PlatformInventory/PlatformInventoryService.lua",
+			"filePath": "..\\Server\\Airship\\PlatformInventory\\PlatformInventoryService.lua",
 			"internalId": "$:Airship/PlatformInventory/PlatformInventoryService@PlatformInventoryService",
 			"decorators": [
 				{
@@ -411,7 +411,7 @@
 			]
 		},
 		{
-			"filePath": "../Client/Controllers/Viewmodel/ViewmodelController.lua",
+			"filePath": "..\\Client\\Controllers\\Viewmodel\\ViewmodelController.lua",
 			"internalId": "$:Controllers/Viewmodel/ViewmodelController@ViewmodelController",
 			"decorators": [
 				{
@@ -422,7 +422,7 @@
 			]
 		},
 		{
-			"filePath": "../Shared/Character/LocalCharacter/LocalCharacterSingleton.lua",
+			"filePath": "..\\Shared\\Character\\LocalCharacter\\LocalCharacterSingleton.lua",
 			"internalId": "$:Character/LocalCharacter/LocalCharacterSingleton@LocalCharacterSingleton",
 			"decorators": [
 				{
@@ -433,7 +433,7 @@
 			]
 		},
 		{
-			"filePath": "../Shared/Camera/AirshipCharacterCameraSingleton.lua",
+			"filePath": "..\\Shared\\Camera\\AirshipCharacterCameraSingleton.lua",
 			"internalId": "$:Camera/AirshipCharacterCameraSingleton@AirshipCharacterCameraSingleton",
 			"decorators": [
 				{
@@ -444,7 +444,7 @@
 			]
 		},
 		{
-			"filePath": "../Client/ProtectedControllers/UI/RightClickMenu/RightClickMenuController.lua",
+			"filePath": "..\\Client\\ProtectedControllers\\UI\\RightClickMenu\\RightClickMenuController.lua",
 			"internalId": "$:ProtectedControllers/UI/RightClickMenu/RightClickMenuController@RightClickMenuController",
 			"decorators": [
 				{
@@ -455,7 +455,7 @@
 			]
 		},
 		{
-			"filePath": "../Client/ProtectedControllers/Auth/AuthController.lua",
+			"filePath": "..\\Client\\ProtectedControllers\\Auth\\AuthController.lua",
 			"internalId": "$:ProtectedControllers/Auth/AuthController@AuthController",
 			"decorators": [
 				{
@@ -466,7 +466,7 @@
 			]
 		},
 		{
-			"filePath": "../Shared/MainMenu/Components/Search/SearchSingleton.lua",
+			"filePath": "..\\Shared\\MainMenu\\Components\\Search\\SearchSingleton.lua",
 			"internalId": "$:MainMenu/Components/Search/SearchSingleton@SearchSingleton",
 			"decorators": [
 				{
@@ -482,7 +482,7 @@
 			]
 		},
 		{
-			"filePath": "../Client/ProtectedControllers/Socket/SocketController.lua",
+			"filePath": "..\\Client\\ProtectedControllers\\Socket\\SocketController.lua",
 			"internalId": "$:ProtectedControllers/Socket/SocketController@SocketController",
 			"decorators": [
 				{
@@ -493,7 +493,7 @@
 			]
 		},
 		{
-			"filePath": "../Client/ProtectedControllers/Transfer/TransferController.lua",
+			"filePath": "..\\Client\\ProtectedControllers\\Transfer\\TransferController.lua",
 			"internalId": "$:ProtectedControllers/Transfer/TransferController@TransferController",
 			"decorators": [
 				{
@@ -504,7 +504,7 @@
 			]
 		},
 		{
-			"filePath": "../Shared/MainMenu/Singletons/MainMenuSingleton.lua",
+			"filePath": "..\\Shared\\MainMenu\\Singletons\\MainMenuSingleton.lua",
 			"internalId": "$:MainMenu/Singletons/MainMenuSingleton@MainMenuSingleton",
 			"decorators": [
 				{
@@ -515,7 +515,7 @@
 			]
 		},
 		{
-			"filePath": "../Client/ProtectedControllers/Settings/MainMenuBlockSingleton.lua",
+			"filePath": "..\\Client\\ProtectedControllers\\Settings\\MainMenuBlockSingleton.lua",
 			"internalId": "$:ProtectedControllers/Settings/MainMenuBlockSingleton@MainMenuBlockSingleton",
 			"decorators": [
 				{
@@ -526,7 +526,7 @@
 			]
 		},
 		{
-			"filePath": "../Client/ProtectedControllers/MainMenuController.lua",
+			"filePath": "..\\Client\\ProtectedControllers\\MainMenuController.lua",
 			"internalId": "$:ProtectedControllers/MainMenuController@MainMenuController",
 			"decorators": [
 				{
@@ -537,7 +537,7 @@
 			]
 		},
 		{
-			"filePath": "../Client/ProtectedControllers/AmbientSound/AmbientSoundController.lua",
+			"filePath": "..\\Client\\ProtectedControllers\\AmbientSound\\AmbientSoundController.lua",
 			"internalId": "$:ProtectedControllers/AmbientSound/AmbientSoundController@AmbientSoundController",
 			"decorators": [
 				{
@@ -548,7 +548,7 @@
 			]
 		},
 		{
-			"filePath": "../Client/ProtectedControllers/Settings/ClientSettingsController.lua",
+			"filePath": "..\\Client\\ProtectedControllers\\Settings\\ClientSettingsController.lua",
 			"internalId": "$:ProtectedControllers/Settings/ClientSettingsController@ClientSettingsController",
 			"decorators": [
 				{
@@ -559,7 +559,7 @@
 			]
 		},
 		{
-			"filePath": "../Client/ProtectedControllers/CoreUIController.lua",
+			"filePath": "..\\Client\\ProtectedControllers\\CoreUIController.lua",
 			"internalId": "$:ProtectedControllers/CoreUIController@CoreUIController",
 			"decorators": [
 				{
@@ -570,7 +570,7 @@
 			]
 		},
 		{
-			"filePath": "../Shared/MainMenu/Singletons/Chat/ClientChatSingleton.lua",
+			"filePath": "..\\Shared\\MainMenu\\Singletons\\Chat\\ClientChatSingleton.lua",
 			"internalId": "$:MainMenu/Singletons/Chat/ClientChatSingleton@ClientChatSingleton",
 			"decorators": [
 				{
@@ -581,7 +581,7 @@
 			]
 		},
 		{
-			"filePath": "../Client/ProtectedControllers/Social/MainMenuAddFriendsController.lua",
+			"filePath": "..\\Client\\ProtectedControllers\\Social\\MainMenuAddFriendsController.lua",
 			"internalId": "$:ProtectedControllers/Social/MainMenuAddFriendsController@MainMenuAddFriendsController",
 			"decorators": [
 				{
@@ -592,7 +592,7 @@
 			]
 		},
 		{
-			"filePath": "../Client/ProtectedControllers/Social/MainMenuPartyController.lua",
+			"filePath": "..\\Client\\ProtectedControllers\\Social\\MainMenuPartyController.lua",
 			"internalId": "$:ProtectedControllers/Social/MainMenuPartyController@MainMenuPartyController",
 			"decorators": [
 				{
@@ -603,7 +603,7 @@
 			]
 		},
 		{
-			"filePath": "../Client/ProtectedControllers/Social/DirectMessages/DirectMessageController.lua",
+			"filePath": "..\\Client\\ProtectedControllers\\Social\\DirectMessages\\DirectMessageController.lua",
 			"internalId": "$:ProtectedControllers/Social/DirectMessages/DirectMessageController@DirectMessageController",
 			"decorators": [
 				{
@@ -614,7 +614,7 @@
 			]
 		},
 		{
-			"filePath": "../Client/ProtectedControllers/Social/FriendsController.lua",
+			"filePath": "..\\Client\\ProtectedControllers\\Social\\FriendsController.lua",
 			"internalId": "$:ProtectedControllers/Social/FriendsController@FriendsController",
 			"decorators": [
 				{
@@ -625,7 +625,7 @@
 			]
 		},
 		{
-			"filePath": "../Server/Airship/Transfer/TransferService.lua",
+			"filePath": "..\\Server\\Airship\\Transfer\\TransferService.lua",
 			"internalId": "$:Airship/Transfer/TransferService@TransferService",
 			"decorators": [
 				{
@@ -636,7 +636,7 @@
 			]
 		},
 		{
-			"filePath": "../Server/Airship/User/UserService.lua",
+			"filePath": "..\\Server\\Airship\\User\\UserService.lua",
 			"internalId": "$:Airship/User/UserService@UserService",
 			"decorators": [
 				{
@@ -647,7 +647,7 @@
 			]
 		},
 		{
-			"filePath": "../Shared/Character/Footstep/AirshipCharacterFootstepsSingleton.lua",
+			"filePath": "..\\Shared\\Character\\Footstep\\AirshipCharacterFootstepsSingleton.lua",
 			"internalId": "$:Character/Footstep/AirshipCharacterFootstepsSingleton@AirshipCharacterFootstepsSingleton",
 			"decorators": [
 				{
@@ -658,7 +658,7 @@
 			]
 		},
 		{
-			"filePath": "../Shared/Character/CharactersSingleton.lua",
+			"filePath": "..\\Shared\\Character\\CharactersSingleton.lua",
 			"internalId": "$:Character/CharactersSingleton@CharactersSingleton",
 			"decorators": [
 				{
@@ -674,7 +674,7 @@
 			]
 		},
 		{
-			"filePath": "../Server/Services/Chat/ChatService.lua",
+			"filePath": "..\\Server\\Services\\Chat\\ChatService.lua",
 			"internalId": "$:Services/Chat/ChatService@ChatService",
 			"decorators": [
 				{
@@ -685,7 +685,7 @@
 			]
 		},
 		{
-			"filePath": "../Shared/Chat/AirshipChatSingleton.lua",
+			"filePath": "..\\Shared\\Chat\\AirshipChatSingleton.lua",
 			"internalId": "$:Chat/AirshipChatSingleton@AirshipChatSingleton",
 			"decorators": [
 				{
@@ -696,7 +696,7 @@
 			]
 		},
 		{
-			"filePath": "../Shared/Damage/DamageSingleton.lua",
+			"filePath": "..\\Shared\\Damage\\DamageSingleton.lua",
 			"internalId": "$:Damage/DamageSingleton@DamageSingleton",
 			"decorators": [
 				{
@@ -712,7 +712,7 @@
 			]
 		},
 		{
-			"filePath": "../Client/Controllers/ProximityPrompt/ProximityPromptController.lua",
+			"filePath": "..\\Client\\Controllers\\ProximityPrompt\\ProximityPromptController.lua",
 			"internalId": "$:Controllers/ProximityPrompt/ProximityPromptController@ProximityPromptController",
 			"decorators": [
 				{
@@ -723,7 +723,7 @@
 			]
 		},
 		{
-			"filePath": "../Shared/Input/AirshipInputSingleton.lua",
+			"filePath": "..\\Shared\\Input\\AirshipInputSingleton.lua",
 			"internalId": "$:Input/AirshipInputSingleton@AirshipInputSingleton",
 			"decorators": [
 				{
@@ -739,7 +739,7 @@
 			]
 		},
 		{
-			"filePath": "../Shared/Inventory/CharacterInventorySingleton.lua",
+			"filePath": "..\\Shared\\Inventory\\CharacterInventorySingleton.lua",
 			"internalId": "$:Inventory/CharacterInventorySingleton@CharacterInventorySingleton",
 			"decorators": [
 				{
@@ -755,7 +755,7 @@
 			]
 		},
 		{
-			"filePath": "../Client/Controllers/Inventory/InventoryUIController.lua",
+			"filePath": "..\\Client\\Controllers\\Inventory\\InventoryUIController.lua",
 			"internalId": "$:Controllers/Inventory/InventoryUIController@InventoryUIController",
 			"decorators": [
 				{
@@ -766,7 +766,7 @@
 			]
 		},
 		{
-			"filePath": "../Shared/Inventory/InventorySingleton.lua",
+			"filePath": "..\\Shared\\Inventory\\InventorySingleton.lua",
 			"internalId": "$:Inventory/InventorySingleton@InventorySingleton",
 			"decorators": [
 				{
@@ -782,7 +782,7 @@
 			]
 		},
 		{
-			"filePath": "../Shared/LoadingScreen/LoadingScreenSingleton.lua",
+			"filePath": "..\\Shared\\LoadingScreen\\LoadingScreenSingleton.lua",
 			"internalId": "$:LoadingScreen/LoadingScreenSingleton@LoadingScreenSingleton",
 			"decorators": [
 				{
@@ -793,7 +793,7 @@
 			]
 		},
 		{
-			"filePath": "../Shared/Airship/Game/GameInfoSingleton.lua",
+			"filePath": "..\\Shared\\Airship\\Game\\GameInfoSingleton.lua",
 			"internalId": "$:Airship/Game/GameInfoSingleton@GameInfoSingleton",
 			"decorators": [
 				{
@@ -809,7 +809,7 @@
 			]
 		},
 		{
-			"filePath": "../Shared/Player/PlayersSingleton.lua",
+			"filePath": "..\\Shared\\Player\\PlayersSingleton.lua",
 			"internalId": "$:Player/PlayersSingleton@PlayersSingleton",
 			"decorators": [
 				{
@@ -825,7 +825,7 @@
 			]
 		},
 		{
-			"filePath": "../Shared/Tags/TagsSingleton.lua",
+			"filePath": "..\\Shared\\Tags\\TagsSingleton.lua",
 			"internalId": "$:Tags/TagsSingleton@TagsSingleton",
 			"decorators": [
 				{
@@ -841,7 +841,7 @@
 			]
 		},
 		{
-			"filePath": "../Shared/Team/TeamSingleton.lua",
+			"filePath": "..\\Shared\\Team\\TeamSingleton.lua",
 			"internalId": "$:Team/TeamSingleton@TeamsSingleton",
 			"decorators": [
 				{
@@ -857,7 +857,7 @@
 			]
 		},
 		{
-			"filePath": "../Client/Airship/Friends/FriendsController.lua",
+			"filePath": "..\\Client\\Airship\\Friends\\FriendsController.lua",
 			"internalId": "$:Airship/Friends/FriendsController@FriendsController",
 			"decorators": [
 				{
@@ -868,7 +868,7 @@
 			]
 		},
 		{
-			"filePath": "../Client/Controllers/Accessory/CharacterAccessoryController.lua",
+			"filePath": "..\\Client\\Controllers\\Accessory\\CharacterAccessoryController.lua",
 			"internalId": "$:Controllers/Accessory/CharacterAccessoryController@CharacterAccessoryController",
 			"decorators": [
 				{
@@ -879,7 +879,7 @@
 			]
 		},
 		{
-			"filePath": "../Client/Controllers/Damage/DamageIndicatorController.lua",
+			"filePath": "..\\Client\\Controllers\\Damage\\DamageIndicatorController.lua",
 			"internalId": "$:Controllers/Damage/DamageIndicatorController@DamageIndicatorController",
 			"decorators": [
 				{
@@ -890,7 +890,7 @@
 			]
 		},
 		{
-			"filePath": "../Client/Controllers/Entity/Nametag/NametagController.lua",
+			"filePath": "..\\Client\\Controllers\\Entity\\Nametag\\NametagController.lua",
 			"internalId": "$:Controllers/Entity/Nametag/NametagController@NametagController",
 			"decorators": [
 				{
@@ -901,7 +901,7 @@
 			]
 		},
 		{
-			"filePath": "../Client/Controllers/GroundItem/GroundItemController.lua",
+			"filePath": "..\\Client\\Controllers\\GroundItem\\GroundItemController.lua",
 			"internalId": "$:Controllers/GroundItem/GroundItemController@GroundItemController",
 			"decorators": [
 				{
@@ -912,7 +912,7 @@
 			]
 		},
 		{
-			"filePath": "../Client/Controllers/GroundItem/GroundItemPickupSoundsController.lua",
+			"filePath": "..\\Client\\Controllers\\GroundItem\\GroundItemPickupSoundsController.lua",
 			"internalId": "$:Controllers/GroundItem/GroundItemPickupSoundsController@GroundItemPickupSoundsController",
 			"decorators": [
 				{
@@ -923,7 +923,7 @@
 			]
 		},
 		{
-			"filePath": "../Client/Controllers/TabList/TabListSingleton.lua",
+			"filePath": "..\\Client\\Controllers\\TabList\\TabListSingleton.lua",
 			"internalId": "$:Controllers/TabList/TabListSingleton@TabListController",
 			"decorators": [
 				{
@@ -934,7 +934,7 @@
 			]
 		},
 		{
-			"filePath": "../Client/ProtectedControllers/MainMenuHomeController.lua",
+			"filePath": "..\\Client\\ProtectedControllers\\MainMenuHomeController.lua",
 			"internalId": "$:ProtectedControllers/MainMenuHomeController@MainMenuHomeController",
 			"decorators": [
 				{
@@ -945,7 +945,7 @@
 			]
 		},
 		{
-			"filePath": "../Client/ProtectedControllers/User/UserController.lua",
+			"filePath": "..\\Client\\ProtectedControllers\\User\\UserController.lua",
 			"internalId": "$:ProtectedControllers/User/UserController@UserController",
 			"decorators": [
 				{
@@ -956,7 +956,7 @@
 			]
 		},
 		{
-			"filePath": "../Client/ProtectedControllers/MainMenuNavbarController.lua",
+			"filePath": "..\\Client\\ProtectedControllers\\MainMenuNavbarController.lua",
 			"internalId": "$:ProtectedControllers/MainMenuNavbarController@MainMenuNavbarController",
 			"decorators": [
 				{
@@ -967,7 +967,7 @@
 			]
 		},
 		{
-			"filePath": "../Client/ProtectedControllers/RichPresence/MainMenuRichPresenceController.lua",
+			"filePath": "..\\Client\\ProtectedControllers\\RichPresence\\MainMenuRichPresenceController.lua",
 			"internalId": "$:ProtectedControllers/RichPresence/MainMenuRichPresenceController@MainMenuRichPresenceController",
 			"decorators": [
 				{
@@ -978,7 +978,7 @@
 			]
 		},
 		{
-			"filePath": "../Client/ProtectedControllers/Settings/MainMenuSettingsUIController.lua",
+			"filePath": "..\\Client\\ProtectedControllers\\Settings\\MainMenuSettingsUIController.lua",
 			"internalId": "$:ProtectedControllers/Settings/MainMenuSettingsUIController@MainMenuSettingsUIController",
 			"decorators": [
 				{
@@ -989,7 +989,7 @@
 			]
 		},
 		{
-			"filePath": "../Client/ProtectedControllers/Social/ChangeUsernameController.lua",
+			"filePath": "..\\Client\\ProtectedControllers\\Social\\ChangeUsernameController.lua",
 			"internalId": "$:ProtectedControllers/Social/ChangeUsernameController@ChangeUsernameController",
 			"decorators": [
 				{
@@ -1000,7 +1000,7 @@
 			]
 		},
 		{
-			"filePath": "../Server/ProtectedServices/Shutdown/ShutdownService.lua",
+			"filePath": "..\\Server\\ProtectedServices\\Shutdown\\ShutdownService.lua",
 			"internalId": "$:ProtectedServices/Shutdown/ShutdownService@ShutdownService",
 			"decorators": [
 				{
@@ -1011,7 +1011,7 @@
 			]
 		},
 		{
-			"filePath": "../Server/Services/GroundItem/GroundItemService.lua",
+			"filePath": "..\\Server\\Services\\GroundItem\\GroundItemService.lua",
 			"internalId": "$:Services/GroundItem/GroundItemService@GroundItemService",
 			"decorators": [
 				{
@@ -1022,7 +1022,7 @@
 			]
 		},
 		{
-			"filePath": "../Server/Services/Generator/GeneratorService.lua",
+			"filePath": "..\\Server\\Services\\Generator\\GeneratorService.lua",
 			"internalId": "$:Services/Generator/GeneratorService@GeneratorService",
 			"decorators": [
 				{
@@ -1033,7 +1033,7 @@
 			]
 		},
 		{
-			"filePath": "../Server/Services/Player/BotService.lua",
+			"filePath": "..\\Server\\Services\\Player\\BotService.lua",
 			"internalId": "$:Services/Player/BotService@BotService",
 			"decorators": [
 				{
@@ -1044,7 +1044,7 @@
 			]
 		},
 		{
-			"filePath": "../Shared/MainMenu/Singletons/Chat/BubbleChat/BubbleChatController.lua",
+			"filePath": "..\\Shared\\MainMenu\\Singletons\\Chat\\BubbleChat\\BubbleChatController.lua",
 			"internalId": "$:MainMenu/Singletons/Chat/BubbleChat/BubbleChatController@BubbleChatController",
 			"decorators": [
 				{
@@ -1055,7 +1055,7 @@
 			]
 		},
 		{
-			"filePath": "../Shared/MainMenu/Singletons/Steam/SteamworksSingleton.lua",
+			"filePath": "..\\Shared\\MainMenu\\Singletons\\Steam\\SteamworksSingleton.lua",
 			"internalId": "$:MainMenu/Singletons/Steam/SteamworksSingleton@SteamworksSingleton",
 			"decorators": [
 				{
@@ -1066,7 +1066,7 @@
 			]
 		},
 		{
-			"filePath": "../Shared/ScreenSize/ScreenSizeSingleton.lua",
+			"filePath": "..\\Shared\\ScreenSize\\ScreenSizeSingleton.lua",
 			"internalId": "$:ScreenSize/ScreenSizeSingleton@ScreenSizeSingleton",
 			"decorators": [
 				{

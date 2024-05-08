@@ -6,8 +6,7 @@ Shader "Airship/AirshipSmokePlanes"
         _Emissive("Emissive", Range(0,1)) = 1
         _MaskTex ("Mask", 2D) = "white" {}
         _NoiseTex ("Noise", 2D) = "white" {}
-       
-       
+              
         [KeywordEnum(Zero, One, DstColor, SrcColor, OneMinusDstColor, SrcAlpha, OneMinusSrcColor, DstAlpha, OneMinusDstAlpha, SrcAlphaSaturate, OneMinusSrcAlpha)] _SrcBlend("SourceBlend", Float) = 1.0
 		[KeywordEnum(Zero, One, DstColor, SrcColor, OneMinusDstColor, SrcAlpha, OneMinusSrcColor, DstAlpha, OneMinusDstAlpha, SrcAlphaSaturate, OneMinusSrcAlpha)] _DstBlend("DestBlend", Float) = 10.0
     }
@@ -31,8 +30,7 @@ Shader "Airship/AirshipSmokePlanes"
             #pragma fragment frag
             // make fog work
             #pragma multi_compile_fog
-
-            #include "UnityCG.cginc"
+            
             #include "Assets/Bundles/@Easy/CoreMaterials/Shared/Resources/BaseShaders/AirshipShaderIncludes.hlsl"
 
             struct appdata

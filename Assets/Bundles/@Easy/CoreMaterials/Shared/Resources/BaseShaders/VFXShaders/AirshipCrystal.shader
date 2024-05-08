@@ -49,7 +49,7 @@ Shader "Airship/AirshipCrystal"
 			#pragma fragment frag
 			#pragma multi_compile NUM_LIGHTS_LIGHTS0 NUM_LIGHTS_LIGHTS1 NUM_LIGHTS_LIGHTS2
 			
-			#include "UnityCG.cginc"
+		 
             #include "../AirshipShaderIncludes.hlsl"
 
 			struct appdata
@@ -203,7 +203,7 @@ Shader "Airship/AirshipCrystal"
 				half4 depthBlend = surfaceOpacity * color + finalDepthColor;
 				
 				//Point lights
-				brightness += CalculatePointLightsForPoint(i.worldPos, worldNormal, finalDiffuseColor.rgb, 0, 0, finalShineColor.rgb, worldReflect);
+				brightness += CalculatePointLightsForPoint(i.worldPos, worldNormal, finalDiffuseColor.rgb, 0, 0, finalShineColor.rgb, worldReflect, half3(0,0,0));
 				
 				brightness = max(_MinLight, brightness * _Glossiness);
 

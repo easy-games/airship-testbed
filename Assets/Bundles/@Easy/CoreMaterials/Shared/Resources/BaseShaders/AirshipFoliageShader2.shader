@@ -53,7 +53,7 @@ Shader "Airship/FoliageShader2"
             #pragma vertex vertFunction
             #pragma fragment fragFunction
             
-            #include "UnityCG.cginc"
+          
             #include "Assets/Bundles/@Easy/CoreMaterials/Shared/Resources/BaseShaders/AirshipShaderIncludes.hlsl"
 
             //Most of this shader lives in an include file
@@ -127,7 +127,7 @@ Shader "Airship/FoliageShader2"
             #pragma vertex vertFunction
             #pragma fragment fragFunction
             
-            #include "UnityCG.cginc"
+           
             #include "Assets/Bundles/@Easy/CoreMaterials/Shared/Resources/BaseShaders/AirshipShaderIncludes.hlsl"
 
             //Most of this shader lives in an include file

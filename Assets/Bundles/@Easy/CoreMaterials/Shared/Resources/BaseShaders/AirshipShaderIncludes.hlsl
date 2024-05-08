@@ -1,6 +1,9 @@
 #ifndef AIRSHIPSHADER_INCLUDE
 #define AIRSHIPSHADER_INCLUDE
 
+#include "UnityCG.cginc"
+#include "AirshipLightmappingInclude.hlsl"
+
 float INSTANCE_DATA;//Instance of baked mesh
 float4 _ColorInstanceData[16];//Instance data (for this material)
 
@@ -33,7 +36,7 @@ half _RimIntensity;
 half4 _RimColor;
 
 //Shadow stuff///////
-float4 _ShadowBias;
+float4 _AirshipShadowBias;
 float4x4 _ShadowmapMatrix0;
 float4x4 _ShadowmapMatrix1;
 Texture2D _GlobalShadowTexture0;
@@ -41,8 +44,65 @@ Texture2D _GlobalShadowTexture1;
 SamplerComparisonState sampler_GlobalShadowTexture0;
 SamplerComparisonState sampler_GlobalShadowTexture1;
 /////////////////////
+half4 unity_LightData;
+half4 unity_LightIndices[2];
 
+//Unity Pixel light stuff
+#define MAX_VISIBLE_PIXEL_LIGHTS 256
+ 
+//This is our own custom mirror of the Unity dataset (they call it _AdditionalLights) but seeing we can set this ourselves, we do.
+//CBUFFER_START(PixelLights)
+float4 _PixelLightsPosition[MAX_VISIBLE_PIXEL_LIGHTS];
+half4 _PixelLightsColor[MAX_VISIBLE_PIXEL_LIGHTS];
+half4 _PixelLightsAttenuation[MAX_VISIBLE_PIXEL_LIGHTS];
+half4 _PixelLightsSpotDir[MAX_VISIBLE_PIXEL_LIGHTS];
+float _PixelLightsLayerMasks[MAX_VISIBLE_PIXEL_LIGHTS];
+float _PixelLightsVisible[MAX_VISIBLE_PIXEL_LIGHTS];
+//CBUFFER_END
 
+half3 AS_SHEvalLinearL2(half3 N, half4 shBr, half4 shBg, half4 shBb, half4 shC)
+{
+    half3 x2;
+    // 4 of the quadratic (L2) polynomials
+    half4 vB = N.xyzz * N.yzzx;
+    x2.r = dot(shBr, vB);
+    x2.g = dot(shBg, vB);
+    x2.b = dot(shBb, vB);
+
+    // Final (5th) quadratic (L2) polynomial
+    half vC = N.x * N.x - N.y * N.y;
+    half3 x3 = shC.rgb * vC;
+
+    return x2 + x3;
+}
+
+half3 AS_SHEvalLinearL0L1(half3 N, half4 shAr, half4 shAg, half4 shAb)
+{
+    half4 vA = half4(N, 1.0);
+
+    half3 x1;
+    // Linear (L1) + constant (L0) polynomial terms
+    x1.r = dot(shAr, vA);
+    x1.g = dot(shAg, vA);
+    x1.b = dot(shAb, vA);
+
+    return x1;
+}
+
+half3 SampleUnityLightProbe(half3 worldNormal) 
+{
+#ifdef LIGHTMAP_ON    
+    return half3(0, 0, 0);
+#else
+    // Linear + constant polynomial terms
+    half3 res = AS_SHEvalLinearL0L1(worldNormal, unity_SHAr, unity_SHAg, unity_SHAb);
+
+    // Quadratic polynomials
+    res += AS_SHEvalLinearL2(worldNormal, unity_SHBr, unity_SHBg, unity_SHBb, unity_SHC);
+
+    return max(res,0);
+#endif
+}
 
 half4 SRGBtoLinear(half4 srgb)
 {
@@ -59,12 +119,12 @@ half4 LinearToSRGB(half4 srgb)
 
 float4 CalculateVertexShadowData0(float4 worldspacePos, float3 worldspaceNormal)
 {
-    return mul(_ShadowmapMatrix0, worldspacePos + float4((worldspaceNormal * _ShadowBias.x), 0));
+    return mul(_ShadowmapMatrix0, worldspacePos + float4((worldspaceNormal * _AirshipShadowBias.x), 0));
 }
 
 float4 CalculateVertexShadowData1(float4 worldspacePos, float3 worldspaceNormal)
 {
-    return mul(_ShadowmapMatrix1, worldspacePos + float4((worldspaceNormal * _ShadowBias.y), 0));
+    return mul(_ShadowmapMatrix1, worldspacePos + float4((worldspaceNormal * _AirshipShadowBias.y), 0));
 }
 
 #define SAMPLE_TEXTURE2D_SHADOW(textureName, samplerName, coord3) textureName.SampleCmpLevelZero(samplerName, (coord3).xy, (coord3).z)
@@ -176,8 +236,164 @@ float PhongApprox(float Roughness, float RoL)
     return min(p, rcp_a2);						// Avoid overflow/underflow on Mali GPUs
 }
 
+uint GetLightsCount()
+{
+    return (uint)unity_LightData.y;
+}
 
-half3 CalculatePointLightsForPoint(float3 worldPos, half3 normal, half3 albedo, half roughness, half metallic, half3 specularColor, half3 reflectionVector)
+uint GetGlobalLightIndex(uint index)
+{
+    //float4 tmp = unity_LightIndices[index / 4];
+    //return int(tmp[index % 4]);
+    int lightIndex = unity_LightIndices[(uint)index / 4][(uint)index % 4];
+    return lightIndex;
+}
+
+struct LightStruct {
+    float3 position;
+    half3 lightColor;
+    half3 lightDirection;
+	half intensity;
+    half attenuation;
+    half visible;
+};
+
+float DistanceAttenuation(float distanceSqr, half2 distanceAttenuation)
+{
+    // We use a shared distance attenuation for additional directional and puctual lights
+    // for directional lights attenuation will be 1
+    float lightAtten = rcp(distanceSqr);
+    float2 distanceAttenuationFloat = float2(distanceAttenuation);
+
+    // Use the smoothing factor also used in the Unity lightmapper.
+    half factor = half(distanceSqr * distanceAttenuationFloat.x);
+    half smoothFactor = saturate(half(1.0) - factor * factor);
+    smoothFactor = smoothFactor * smoothFactor;
+
+    return lightAtten * smoothFactor;
+}
+
+half AngleAttenuation(half3 spotDirection, half3 lightDirection, half2 spotAttenuation)
+{
+    // Spot Attenuation with a linear falloff can be defined as
+    // (SdotL - cosOuterAngle) / (cosInnerAngle - cosOuterAngle)
+    // This can be rewritten as
+    // invAngleRange = 1.0 / (cosInnerAngle - cosOuterAngle)
+    // SdotL * invAngleRange + (-cosOuterAngle * invAngleRange)
+    // SdotL * spotAttenuation.x + spotAttenuation.y
+
+    // If we precompute the terms in a MAD instruction
+    half SdotL = dot(spotDirection, lightDirection);
+    half atten = saturate(SdotL * spotAttenuation.x + spotAttenuation.y);
+    return atten * atten;
+}
+
+LightStruct GetLight(uint localIndex, float3 worldPos)
+{
+    //Largely lifted directly from unity
+	uint globalIndex = GetGlobalLightIndex(localIndex);
+    
+    //Grab the light object out of the structs
+    LightStruct result;
+
+    result.visible = _PixelLightsVisible[globalIndex];
+
+    half4 lightPositionWS = _PixelLightsPosition[globalIndex];
+    result.position = lightPositionWS.xyz;
+	result.lightColor = _PixelLightsColor[globalIndex].rgb;
+    result.intensity = _PixelLightsColor[globalIndex].a;
+
+    half4 distanceAndSpotAttenuation = _PixelLightsAttenuation[globalIndex];
+    half4 spotDirection = _PixelLightsSpotDir[globalIndex];
+    
+    // Directional lights store direction in lightPosition.xyz and have .w set to 0.0.
+    // This way the following code will work for both directional and punctual lights.
+    float3 lightVector = lightPositionWS.xyz - worldPos * lightPositionWS.w;
+    float distanceSqr = max(dot(lightVector, lightVector), 6.103515625e-5); //HALF_MIN
+
+    half3 lightDirection = half3(lightVector * rsqrt(distanceSqr));
+    result.lightDirection = lightDirection;
+    // full-float precision required on some platforms
+    result.attenuation = DistanceAttenuation(distanceSqr, distanceAndSpotAttenuation.xy) * AngleAttenuation(spotDirection.xyz, lightDirection, distanceAndSpotAttenuation.zw);
+    
+    //result.layerMasl = _PixelLightsLayerMasks[MAX_VISIBLE_PIXEL_LIGHTS];
+
+	return result;
+}
+
+half3 IntToDebugColor(int input)
+{
+	//Return distinctive colors for 0,1,2 etc
+	if (input == 0)
+	{
+		return float3(1, 0, 0); //red
+	}
+	else if (input == 1)
+	{
+		return float3(0, 1, 0); //green
+	}
+	else if (input == 2)
+	{
+		return float3(0, 0, 1); //blue
+	}
+	else if (input == 3)
+	{
+		return float3(1, 1, 0); //yellow
+	}
+	else if (input == 4)
+	{
+		return float3(1, 0, 1); //purple
+	}
+	else if (input == 5)
+	{
+		return float3(0, 1, 1); //teal
+	}
+	else if (input == 6)
+	{
+		return float3(1, 1, 1); //white
+	}
+	else
+	{
+		return float3(0, 0, 0); //black
+	}
+
+}
+
+half3 CalculatePointLightsForPoint(float3 worldPos, half3 normal, half3 albedo, half roughness, half metallic, half3 specularColor, half3 reflectionVector, half3 cubemapSample)
+{
+    uint pixelLightCount = GetLightsCount();
+    half3 results = half3(0, 0, 0);
+   
+    for (uint lightIndex = 0; lightIndex < min(8,pixelLightCount); lightIndex++) //min here to tell the compiler its 8 max
+    {
+        LightStruct light = GetLight(lightIndex, worldPos);
+      
+        if (light.visible > 0) { //Lights can be marked as assigned to this object even if they didnt pass the visibility test. So we doublecheck it here with our own visibility list
+
+#ifdef _LIGHT_LAYERS
+            if (IsMatchingLightLayer(light.layerMask, meshRenderingLayers)) //todo
+#endif
+            {
+                float RoL = max(0, dot(reflectionVector, light.lightDirection));
+                float NoL = max(0, dot(normal, light.lightDirection));
+
+                half falloff = max(light.attenuation * NoL * light.intensity,0);
+
+                half phong = PhongApprox(roughness, RoL);
+                half3 localSpecularColor = specularColor * light.lightColor.rgb;
+                half3 lightContribution = (albedo * light.lightColor.rgb) + (phong * localSpecularColor) + (cubemapSample * localSpecularColor);
+
+                results += lightContribution * falloff;
+            }
+        }
+       
+    }
+    
+    return results;
+}
+
+
+half3 CalculatePointLightsForPointOld(float3 worldPos, half3 normal, half3 albedo, half roughness, half metallic, half3 specularColor, half3 reflectionVector, half3 cubemapSample)
 {
 	half3 result = half3(0, 0, 0);
     
@@ -190,7 +406,7 @@ half3 CalculatePointLightsForPoint(float3 worldPos, half3 normal, half3 albedo, 
         float3 lightVec = lightPos - worldPos;
         half distance = length(lightVec);
         half3 lightDir = normalize(lightVec);
-
+        
         float RoL = max(0, dot(reflectionVector, lightDir));
         float NoL = max(0, dot(normal, lightDir));
 
@@ -200,10 +416,11 @@ half3 CalculatePointLightsForPoint(float3 worldPos, half3 normal, half3 albedo, 
 
         falloff *= NoL;
 
-        half phong = PhongApprox(roughness, RoL);
-        specularColor = lerp(specularColor, specularColor * lightColor.rgb, metallic); //approx
+        half phong = PhongApprox(roughness, RoL) ;
+        
+		half3 lightContribution = (albedo * lightColor.rgb) + (phong * specularColor) + (cubemapSample * specularColor);
 
-        result += falloff* (albedo * lightColor.rgb + (phong * specularColor) * lightColor.a);
+        result += lightContribution * falloff * lightColor.a;
     }
     return result;
 }
@@ -304,5 +521,15 @@ float3 CalculateSimpleSpecularLight(float3 lightDir, float3 viewDir, float3 norm
     float specFactor = pow(max(dot(reflectDir, viewDir), 0.0), specPow);
     return float3(specFactor, specFactor, specFactor);
 }
+
+half4 DoBloomCutoff(half3 inputColor, half alpha, half cutoff)
+{
+	half luminance = max(max(inputColor.r, inputColor.g), inputColor.b);
+    half bloomFactor = smoothstep(cutoff, cutoff + 0.05, luminance);
+    bloomFactor *= luminance;
+  
+	return half4(inputColor * bloomFactor, alpha);
+}
+
 
 #endif

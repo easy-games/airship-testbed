@@ -83,7 +83,7 @@ Shader "Airship/WaterPlaneShader"
             #pragma vertex simpleVertFunction
             #pragma fragment fragFunction
             
-            #include "UnityCG.cginc"
+           
             #include "Assets/Bundles/@Easy/CoreMaterials/Shared/Resources/BaseShaders/AirshipShaderIncludes.hlsl"
 
             struct Attributes
