@@ -150,7 +150,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 210, y: -27.9}
+  m_AnchoredPosition: {x: 190, y: -27.9}
   m_SizeDelta: {x: 189.1559, y: 25}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &3929057459962770372
@@ -183,8 +183,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Current Category
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 2e5637e11d0b84259bb0badf23a53cbf, type: 2}
-  m_sharedMaterial: {fileID: -7502912169348233058, guid: 2e5637e11d0b84259bb0badf23a53cbf, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f0ce55d58d63e4deab29e7ad50308632, type: 2}
+  m_sharedMaterial: {fileID: 813049023685960433, guid: f0ce55d58d63e4deab29e7ad50308632, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -309,7 +309,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1063477963677416328
 RectTransform:
   m_ObjectHideFlags: 0
@@ -394,7 +394,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Client/Resources/TS/MainMenuControllers/AvatarMenu/AvatarMenuComponent.lua
+  m_fileFullPath: Assets/Bundles/@Easy/Core/Client/Resources/TS/ProtectedControllers/AvatarMenu/AvatarMenuComponent.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: Assets/Bundles/@Easy/Core/Client/Resources/TS/MainMenuControllers/AvatarMenu/AvatarMenuComponent.lua
@@ -407,6 +407,20 @@ MonoBehaviour:
     name: AvatarMenuComponent
     decorators: []
     properties:
+    - name: pageType
+      type: StringEnum
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators: []
+      nullable: 0
+      serializedValue: Home
+      serializedObject: {fileID: 0}
+      modified: 0
     - name: itemButtonTemplate
       type: object
       objectType: GameObject
@@ -416,11 +430,47 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"Templates"'
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: canvas
+      type: object
+      objectType: Canvas
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"References"'
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: mainCanvasGroup
+      type: object
+      objectType: CanvasGroup
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
       decorators: []
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 5040413862591958478, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
-      modified: 1
+      serializedObject: {fileID: 0}
+      modified: 0
     - name: avatarRenderHolder
       type: object
       objectType: GameObject
@@ -434,21 +484,7 @@ MonoBehaviour:
       nullable: 0
       serializedValue: 
       serializedObject: {fileID: 0}
-      modified: 1
-    - name: categoryLabelTxt
-      type: object
-      objectType: TextMeshProUGUI
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 6760938698788942309}
-      modified: 1
+      modified: 0
     - name: avatarCenterRect
       type: object
       objectType: RectTransform
@@ -461,11 +497,11 @@ MonoBehaviour:
       decorators: []
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 8806527203194656027}
-      modified: 1
-    - name: canvas
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: categoryLabelTxt
       type: object
-      objectType: Canvas
+      objectType: TextMeshProUGUI
       items:
         type: 
         objectType: 
@@ -476,7 +512,7 @@ MonoBehaviour:
       nullable: 0
       serializedValue: 
       serializedObject: {fileID: 0}
-      modified: 1
+      modified: 0
     - name: mainContentHolder
       type: object
       objectType: Transform
@@ -489,9 +525,65 @@ MonoBehaviour:
       decorators: []
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 5478668999766834506}
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: avatarProfileMenuGo
+      type: object
+      objectType: GameObject
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: avatarToolbar
+      type: object
+      objectType: RectTransform
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: avatarOptionsHolder
+      type: object
+      objectType: RectTransform
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators: []
+      nullable: 0
+      serializedValue: Avatar
+      serializedObject: {fileID: 0}
       modified: 1
-    - name: mainNavButtonHolder
+    - name: avatar3DHolder
+      type: object
+      objectType: RectTransform
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: outfitButtonHolder
       type: object
       objectType: Transform
       items:
@@ -507,9 +599,9 @@ MonoBehaviour:
           serializedValue: '"Button Holders"'
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 4942970221007149302}
-      modified: 1
-    - name: outfitButtonHolder
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: mainNavButtonHolder
       type: object
       objectType: Transform
       items:
@@ -521,93 +613,10 @@ MonoBehaviour:
       decorators: []
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 4775447045803972303}
-      modified: 1
-    - name: mainCanvasGroup
-      type: object
-      objectType: CanvasGroup
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 6342705625492222094}
-      modified: 1
-    - name: avatarProfileMenuGo
-      type: object
-      objectType: GameObject
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 5136451371242813915}
-      modified: 1
-    - name: pageType
-      type: StringEnum
-      objectType: 
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators: []
-      nullable: 0
-      serializedValue: Home
       serializedObject: {fileID: 0}
       modified: 0
-    - name: avatarToolbar
-      type: object
-      objectType: RectTransform
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 7664068802410899013}
-      modified: 1
-    - name: avatarOptionsHolder
-      type: object
-      objectType: RectTransform
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 1696253171366054744}
-      modified: 1
-    - name: avatar3DHolder
-      type: object
-      objectType: RectTransform
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 1737546173658115557}
-      modified: 1
     displayName: 
+  contextOverwritten: 0
 --- !u!114 &7489676922720409085
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1006,6 +1015,7 @@ MonoBehaviour:
       serializedObject: {fileID: 0}
       modified: 0
     displayName: 
+  contextOverwritten: 0
 --- !u!114 &2348695858848215157
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1574,6 +1584,7 @@ MonoBehaviour:
       serializedObject: {fileID: 0}
       modified: 0
     displayName: 
+  contextOverwritten: 0
 --- !u!114 &5877901390576900711
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2909,7 +2920,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Client/Resources/TS/MainMenuControllers/AvatarMenu/AvatarMenuProfileComponent.lua
+  m_fileFullPath: Assets/Bundles/@Easy/Core/Client/Resources/TS/ProtectedControllers/AvatarMenu/AvatarMenuProfileComponent.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -2965,6 +2976,7 @@ MonoBehaviour:
       serializedObject: {fileID: 8633402009502342705}
       modified: 1
     displayName: 
+  contextOverwritten: 0
 --- !u!1 &5206208421496188203
 GameObject:
   m_ObjectHideFlags: 0
