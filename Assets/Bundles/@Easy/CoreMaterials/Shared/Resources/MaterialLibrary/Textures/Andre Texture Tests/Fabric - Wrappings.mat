@@ -14,7 +14,7 @@ Material:
   m_ValidKeywords:
   - EXPLICIT_MAPS_ON
   - SHADOWS_ON
-  - TRIPLANAR_STYLE_LOCAL
+  - TRIPLANAR_STYLE_OFF
   m_InvalidKeywords:
   - EXPLICIT_MAPS
   - METAL_ON_ON
@@ -117,7 +117,7 @@ Material:
     - RIM_LIGHT: 0
     - SHADOWS: 1
     - SLIDER_OVERRIDE: 1
-    - TRIPLANAR_STYLE: 1
+    - TRIPLANAR_STYLE: 0
     - USE_COLOR_MASK: 0
     - USE_SHADOW_COLOR: 0
     - VERTEX_LIGHT: 0
