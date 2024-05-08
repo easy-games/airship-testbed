@@ -1,4 +1,4 @@
-import { DirectMessageController } from "@Easy/Core/Client/MainMenuControllers/Social/DirectMessages/DirectMessageController";
+import { DirectMessageController } from "@Easy/Core/Client/ProtectedControllers/Social/DirectMessages/DirectMessageController";
 import { Dependency } from "../../Flamework";
 import { Bin } from "../../Util/Bin";
 import { CanvasAPI } from "../../Util/CanvasAPI";

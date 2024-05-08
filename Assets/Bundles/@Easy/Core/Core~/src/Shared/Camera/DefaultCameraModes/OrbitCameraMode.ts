@@ -1,13 +1,11 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
-import { ClientSettingsController } from "Client/MainMenuControllers/Settings/ClientSettingsController";
-import { Dependency } from "Shared/Flamework";
+import { Game } from "Shared/Game";
 import { ControlScheme, Keyboard, Mouse, Preferred, Touchscreen } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
 import { TimeUtil } from "Shared/Util/TimeUtil";
 import { CameraMode } from "../CameraMode";
 import { CameraTransform } from "../CameraTransform";
 import DefaultCameraMask from "../DefaultCameraMask";
-import { Game } from "Shared/Game";
 
 const MIN_ROT_X = math.rad(1);
 const MAX_ROT_X = math.rad(179);
@@ -40,7 +38,6 @@ export class OrbitCameraMode extends CameraMode {
 	private readonly keyboard = this.bin.Add(new Keyboard());
 	private readonly touchscreen = this.bin.Add(new Touchscreen());
 	private readonly mouse = this.bin.Add(new Mouse());
-	private readonly clientSettingsController = Dependency<ClientSettingsController>();
 
 	constructor(
 		private readonly distance: number,
@@ -175,7 +172,7 @@ export class OrbitCameraMode extends CameraMode {
 		}
 		if (this.mouse.IsLocked() && (rightClick || this.lockView)) {
 			const mouseDelta = this.mouse.GetDelta();
-			const mouseSensitivity = this.clientSettingsController.GetMouseSensitivity();
+			const mouseSensitivity = Airship.input.GetMouseSensitivity();
 			if (!this.lockView) {
 				// this.mouse.SetPosition(this.rightClickPos);
 			}

@@ -1,4 +1,4 @@
-import MainMenuPageComponent from "../../../../../Client/MainMenuControllers/MainMenuPageComponent";
+import MainMenuPageComponent from "../../MainMenuPageComponent";
 export default class GameGeneralPage extends MainMenuPageComponent {
     gameTitle: TMP_Text;
     gameDeveloper: TMP_Text;

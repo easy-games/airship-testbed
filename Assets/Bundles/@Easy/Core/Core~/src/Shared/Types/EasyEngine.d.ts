@@ -94,8 +94,9 @@ interface CharacterMovement extends Component {
 	IsFlying(): boolean;
 	SetAllowFlight(allowed: boolean): void;
 	IsAllowFlight(): boolean;
-	Teleport(position: Vector3): void;
-	ApplyImpulse(impulse: Vector3, ignoreYIfInAir = false): void;
+	Teleport(position: Vector3, rotation: Quaternion): void;
+	ApplyImpulse(impulse: Vector3): void;
+	ApplyImpulseInAir(impulse: Vector3, ignoreYIfInAir = false): void;
 	SetVelocity(velocity: Vector3): void;
 	GetVelocity(): Vector3;
 	DisableMovement();
@@ -410,6 +411,35 @@ declare const CanvasUIBridge: CanvasUIBridgeConstructor;
 declare namespace debug {
 	function traceback(message?: string, level?: number): string;
 	function traceback(thread: thread, message?: string, level?: number): string;
+	function info<T extends string>(
+		thread: thread,
+		functionOrLevel: Callback | number,
+		options: T,
+	): T extends `${infer A}${infer B}${infer C}${infer D}${infer E}${infer _}`
+		? LuaTuple<TS.InfoFlags<[A, B, C, D, E]>>
+		: T extends `${infer A}${infer B}${infer C}${infer D}${infer _}`
+			? LuaTuple<TS.InfoFlags<[A, B, C, D]>>
+			: T extends `${infer A}${infer B}${infer C}${infer _}`
+				? LuaTuple<TS.InfoFlags<[A, B, C]>>
+				: T extends `${infer A}${infer B}${infer _}`
+					? LuaTuple<TS.InfoFlags<[A, B]>>
+					: T extends `${infer A}${infer _}`
+						? LuaTuple<TS.InfoFlags<[A]>>
+						: LuaTuple<[unknown, unknown, unknown, unknown, unknown]>;
+	function info<T extends string>(
+		functionOrLevel: Callback | number,
+		options: T,
+	): T extends `${infer A}${infer B}${infer C}${infer D}${infer E}${infer _}`
+		? LuaTuple<TS.InfoFlags<[A, B, C, D, E]>>
+		: T extends `${infer A}${infer B}${infer C}${infer D}${infer _}`
+			? LuaTuple<TS.InfoFlags<[A, B, C, D]>>
+			: T extends `${infer A}${infer B}${infer C}${infer _}`
+				? LuaTuple<TS.InfoFlags<[A, B, C]>>
+				: T extends `${infer A}${infer B}${infer _}`
+					? LuaTuple<TS.InfoFlags<[A, B]>>
+					: T extends `${infer A}${infer _}`
+						? LuaTuple<TS.InfoFlags<[A]>>
+						: LuaTuple<[unknown, unknown, unknown, unknown, unknown]>;
 }
 
 interface TimeManager {
@@ -553,6 +583,7 @@ declare const AnimationClipOptions: AnimationClipOptionsConstructor;
 
 interface PoolManager {
 	PreLoadPool(prefab: Object, size: number): void;
+	PreLoadPool(prefab: Object, size: number, parent: Transform): void;
 	SpawnObject(prefab: Object): GameObject;
 	SpawnObject(prefab: Object, parent: Transform): GameObject;
 	SpawnObject(prefab: Object, worldPosition: Vector3, worldRotation: Quaternion): GameObject;

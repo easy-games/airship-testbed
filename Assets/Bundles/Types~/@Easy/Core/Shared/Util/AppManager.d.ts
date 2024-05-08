@@ -32,9 +32,4 @@ export declare class AppManager {
     static Close(config?: {
         noCloseSound?: boolean;
     }): void;
-    /**
-     * Check whether not an `CanvasAppManager` owned canvas is open.
-     * @returns Whether or not an `CanvasAppManager` owned canvas is open.
-     */
-    static IsOpen(): boolean;
 }

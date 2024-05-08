@@ -1,5 +1,5 @@
-import { MainMenuController } from "@Easy/Core/Client/MainMenuControllers/MainMenuController";
-import { RightClickMenuController } from "@Easy/Core/Client/MainMenuControllers/UI/RightClickMenu/RightClickMenuController";
+import { MainMenuController } from "@Easy/Core/Client/ProtectedControllers/MainMenuController";
+import { RightClickMenuController } from "@Easy/Core/Client/ProtectedControllers/UI/RightClickMenu/RightClickMenuController";
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Binding } from "@Easy/Core/Shared/Input/Binding";

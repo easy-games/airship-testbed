@@ -27,7 +27,7 @@ export declare class LocalCharacterSingleton implements OnStart {
     onProcessedCallback?: () => void): void;
     private TakeScreenshot;
     OnStart(): void;
-    GetEntityInput(): CharacterInput | undefined;
+    GetCharacterInput(): CharacterInput | undefined;
     /**
      * When set to true, the move input will always make "W" point north, "A" west, etc.
      *

@@ -31,7 +31,7 @@ export declare class Game {
      * Empty string when in editor.
      */
     static organizationId: string;
-    static startingScene: string;
+    static startingScene: Scene;
     static gameData: GameDto | undefined;
     static onGameDataLoaded: Signal<GameDto>;
     static WaitForGameData(): GameDto;

@@ -14,7 +14,6 @@ import { AppManager } from "Shared/Util/AppManager";
 import { Bin } from "Shared/Util/Bin";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { OnUpdate } from "Shared/Util/Timer";
-import { CoreUIController } from "../UI/CoreUIController";
 
 type DraggingState = {
 	inventory: Inventory;
@@ -51,9 +50,11 @@ export class InventoryUIController implements OnStart {
 	constructor(
 		private readonly invController: InventorySingleton,
 		private readonly characterInvController: CharacterInventorySingleton,
-		private readonly coreUIController: CoreUIController,
 	) {
-		const go = this.coreUIController.refs.GetValue("Apps", "Inventory");
+		const go = Object.Instantiate(
+			AssetCache.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/UI/Inventory/Inventory.prefab"),
+		);
+		go.transform.name = "Inventory";
 		this.hotbarCanvas = go.GetComponent<Canvas>()!;
 		this.hotbarCanvas.enabled = true;
 

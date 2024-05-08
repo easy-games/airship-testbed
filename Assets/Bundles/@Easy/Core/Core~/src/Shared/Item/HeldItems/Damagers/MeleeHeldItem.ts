@@ -234,7 +234,7 @@ export class MeleeHeldItem extends HeldItem {
 		let rotation = Quaternion.LookRotation(lookVec);
 
 		if (this.gizmoEnabled) {
-			DebugUtil.DrawBox(colliderWorldPos, rotation, halfExtents, debugColor, 2);
+			GizmoUtils.DrawBox(colliderWorldPos, rotation, halfExtents, debugColor, 2);
 		}
 		const hitColliders = Physics.OverlapBox(
 			colliderWorldPos,

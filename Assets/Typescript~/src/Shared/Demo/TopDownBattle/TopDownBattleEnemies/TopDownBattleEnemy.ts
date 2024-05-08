@@ -26,7 +26,7 @@ export default class TopDownBattleEnemy extends AirshipBehaviour {
 
 	//Events
 	private bin: Bin = new Bin();
-	private onMoveEvent = new RemoteEvent<[nobId: number, targetTime: number]>();
+	private onMoveEvent = new RemoteEvent<[nobId: number, targetTime: number]>("OnMoveEvent");
 	private enabled = false;
 
 	override OnEnable(): void {
@@ -156,7 +156,7 @@ export default class TopDownBattleEnemy extends AirshipBehaviour {
 			Airship.damage.InflictDamage(character.gameObject, this.damageAmount, this.gameObject);
 			//Knockback
 			let dir = character.transform.position.sub(this.transform.position).normalized;
-			character.movement.ApplyImpulse(new Vector3(dir.x, dir.y + 0.5, dir.z).mul(this.knockbackForce), false);
+			character.movement.ApplyImpulse(new Vector3(dir.x, dir.y + 0.5, dir.z).mul(this.knockbackForce));
 		}
 	}
 }

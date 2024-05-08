@@ -12,7 +12,6 @@ export declare class FlyCameraMode extends CameraMode {
     private keyboard;
     private mouse;
     private readonly keysDown;
-    private readonly clientSettingsController;
     OnStart(camera: Camera, rootTransform: Transform): void;
     OnStop(): void;
     OnUpdate(dt: number): void;

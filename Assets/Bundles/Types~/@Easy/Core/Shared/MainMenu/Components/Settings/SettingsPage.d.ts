@@ -1,4 +1,4 @@
-import MainMenuPageComponent from "../../../../Client/MainMenuControllers/MainMenuPageComponent";
+import MainMenuPageComponent from "../MainMenuPageComponent";
 export default class SettingsPage extends MainMenuPageComponent {
     sidebar: RectTransform;
     tabs: RectTransform;

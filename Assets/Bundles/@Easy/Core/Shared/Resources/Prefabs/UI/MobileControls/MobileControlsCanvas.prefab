@@ -188,7 +188,7 @@ GameObject:
   - component: {fileID: 279624506939109690}
   - component: {fileID: 3698838489364257686}
   - component: {fileID: 5231142010838910841}
-  - component: {fileID: 8772436157455848830}
+  - component: {fileID: 8010347601195754013}
   m_Layer: 8
   m_Name: MobileControlsCanvas
   m_TagString: Untagged
@@ -263,7 +263,7 @@ MonoBehaviour:
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
   m_PresetInfoIsWorld: 0
---- !u!114 &8772436157455848830
+--- !u!114 &8010347601195754013
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -272,7 +272,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7090916502956745191}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Script: {fileID: 11500000, guid: 6aa9c2bc3c9d46c5839bf587b5fc4201, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_IgnoreReversedGraphics: 1
@@ -280,6 +280,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+  SortOrder: -100
 --- !u!1 &9086183524998565299
 GameObject:
   m_ObjectHideFlags: 0

@@ -32,7 +32,7 @@ export class AudioManager {
 		this.audioSourceTemplate.SetActive(false);
 		this.audioSourceTemplate.transform.SetParent(CoreRefs.rootTransform);
 
-		PoolManager.PreLoadPool(this.audioSourceTemplate, 15);
+		PoolManager.PreLoadPool(this.audioSourceTemplate, 15, CoreRefs.rootTransform);
 	}
 
 	public static PlayGlobal(sound: string, config?: PlaySoundConfig) {
@@ -124,7 +124,7 @@ export class AudioManager {
 		audioSource.volume = config?.volumeScale ?? 1;
 		audioSource.PlayOneShot(clip);
 		if (!audioSource.loop) {
-			Task.Delay(clip.length + 1, () => {
+			task.delay(clip.length + 1, () => {
 				audioSource.Stop();
 				PoolManager.ReleaseObject(audioSource.gameObject);
 			});
@@ -134,6 +134,7 @@ export class AudioManager {
 
 	private static GetAudioSource(position: Vector3): AudioSource {
 		const go = PoolManager.SpawnObject(this.audioSourceTemplate, position, Quaternion.identity);
+		go.transform.SetParent(CoreRefs.rootTransform);
 		return go.GetComponent<AudioSource>()!;
 	}
 

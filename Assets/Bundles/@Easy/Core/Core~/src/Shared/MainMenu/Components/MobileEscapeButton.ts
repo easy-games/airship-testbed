@@ -1,4 +1,4 @@
-import { MainMenuController } from "@Easy/Core/Client/MainMenuControllers/MainMenuController";
+import { MainMenuController } from "@Easy/Core/Client/ProtectedControllers/MainMenuController";
 import { Dependency } from "../../Flamework";
 import { Bin } from "../../Util/Bin";
 import { CanvasAPI } from "../../Util/CanvasAPI";
@@ -16,7 +16,7 @@ export default class MobileEscapeButton extends AirshipBehaviour {
 					mainMenuController.CloseFromGame();
 					this.chatButton.SetActive(true);
 				} else {
-					mainMenuController.OpenFromGame();
+					mainMenuController.OpenFromGameInProtectedContext();
 					this.chatButton.SetActive(false);
 				}
 			}),

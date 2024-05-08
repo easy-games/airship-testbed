@@ -1,4 +1,4 @@
-import { MainMenuBlockSingleton } from "@Easy/Core/Client/MainMenuControllers/Settings/MainMenuBlockSingleton";
+import { MainMenuBlockSingleton } from "@Easy/Core/Client/ProtectedControllers/Settings/MainMenuBlockSingleton";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import BlockedGame from "./BlockedGame";
 import BlockedUser from "./BlockedUser";

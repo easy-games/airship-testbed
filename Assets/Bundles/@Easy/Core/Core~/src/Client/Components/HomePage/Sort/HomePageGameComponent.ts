@@ -1,6 +1,6 @@
+import { TransferController } from "@Easy/Core/Client/ProtectedControllers//Transfer/TransferController";
 import SearchSingleton from "@Easy/Core/Shared/MainMenu/Components/Search/SearchSingleton";
 import { MainMenuSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/MainMenuSingleton";
-import { TransferController } from "Client/MainMenuControllers/Transfer/TransferController";
 import DateParser from "Shared/DateParser";
 import { Dependency } from "Shared/Flamework";
 import { AirshipUrl } from "Shared/Util/AirshipUrl";

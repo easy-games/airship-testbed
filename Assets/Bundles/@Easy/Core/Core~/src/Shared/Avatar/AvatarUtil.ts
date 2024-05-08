@@ -3,6 +3,7 @@ import { RandomUtil } from "Shared/Util/RandomUtil";
 import { CoreLogger } from "../Logger/CoreLogger";
 import { ColorUtil } from "../Util/ColorUtil";
 import { AvatarPlatformAPI } from "./AvatarPlatformAPI";
+import out from "@easy-games/unity-flamework-transformer";
 
 export class AvatarUtil {
 	// public static readonly defaultAccessoryOutfitPath =
@@ -77,30 +78,31 @@ export class AvatarUtil {
 	}
 
 	public static DownloadOwnedAccessories() {
-		let acc = AvatarPlatformAPI.GetAccessories();
-		if (acc) {
-			acc.forEach((itemData) => {
-				this.allAvatarClasses.set(itemData.class.classId, itemData.class);
-				//print("Possible item " + itemData.class.name + ": " + itemData.class.classId);
-				let item = this.allAvatarAccessories.get(itemData.class.classId);
-				let foundMatchingItem = false;
-				if (item) {
-					this.AddAvailableAvatarItem(itemData.instanceId, item);
-					foundMatchingItem = true;
-				} else {
-					let faceItem = this.allAvatarFaces.get(itemData.class.classId);
-					if (faceItem) {
-						faceItem.serverInstanceId = itemData.instanceId;
-						this.AddAvailableFaceItem(faceItem);
+		AvatarPlatformAPI.GetAccessories().then((acc) => {
+			if (acc) {
+				acc.forEach((itemData) => {
+					this.allAvatarClasses.set(itemData.class.classId, itemData.class);
+					//print("Possible item " + itemData.class.name + ": " + itemData.class.classId);
+					let item = this.allAvatarAccessories.get(itemData.class.classId);
+					let foundMatchingItem = false;
+					if (item) {
+						this.AddAvailableAvatarItem(itemData.instanceId, item);
 						foundMatchingItem = true;
+					} else {
+						let faceItem = this.allAvatarFaces.get(itemData.class.classId);
+						if (faceItem) {
+							faceItem.serverInstanceId = itemData.instanceId;
+							this.AddAvailableFaceItem(faceItem);
+							foundMatchingItem = true;
+						}
 					}
-				}
 
-				if (!foundMatchingItem) {
-					print("Unpaired Server Item " + itemData.class.name + ": " + itemData.class.classId);
-				}
-			});
-		}
+					if (!foundMatchingItem) {
+						print("Unpaired Server Item " + itemData.class.name + ": " + itemData.class.classId);
+					}
+				});
+			}
+		});
 	}
 
 	public static GetClass(classId: string) {
@@ -198,6 +200,18 @@ export class AvatarUtil {
 		if (this.defaultOutfit) {
 			builder.EquipAccessoryOutfit(this.defaultOutfit, true);
 		}
+	}
+
+	public static LoadPlayersEquippedOutfit(
+		playerId: string,
+		builder: AccessoryBuilder,
+		options: { removeOldClothingAccessories?: boolean } = {},
+	) {
+		AvatarPlatformAPI.GetPlayerEquippedOutfit(playerId).then((outfit) => {
+			if (outfit) {
+				this.LoadUserOutfit(outfit, builder, options);
+			}
+		});
 	}
 
 	public static LoadUserOutfit(

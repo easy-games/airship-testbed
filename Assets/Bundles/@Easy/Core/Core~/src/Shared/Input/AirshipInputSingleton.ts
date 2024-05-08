@@ -74,9 +74,9 @@ export class AirshipInputSingleton implements OnStart {
 	 *
 	 */
 	private actionToMobileButtonTable = new Map<string, GameObject[]>();
-	/**
-	 *
-	 */
+	/** Sensitivty multiplier maintained by game */
+	private gameSensitivityMultiplier = 1;
+
 	public preferredControls = new PreferredControls();
 
 	constructor() {
@@ -86,7 +86,7 @@ export class AirshipInputSingleton implements OnStart {
 	OnStart(): void {
 		if (!Game.IsClient()) return;
 
-		if (Game.coreContext === CoreContext.GAME) {
+		if (Game.coreContext === CoreContext.GAME && Game.IsGameLuauContext()) {
 			this.CreateMobileControlCanvas();
 		}
 
@@ -118,7 +118,7 @@ export class AirshipInputSingleton implements OnStart {
 			{ name: "Inspect", binding: Binding.Key(Key.Y) },
 		]);
 
-		if (Game.coreContext === CoreContext.GAME) {
+		if (Game.coreContext === CoreContext.GAME && Game.IsGameLuauContext()) {
 			Airship.input.CreateMobileButton("Jump", new Vector2(-220, 180));
 			// Airship.input.CreateMobileButton("UseItem", new Vector2(-250, 490));
 			Airship.input.CreateMobileButton("Crouch", new Vector2(-140, 340), {
@@ -203,21 +203,14 @@ export class AirshipInputSingleton implements OnStart {
 		);
 		this.mobileControlsContainer = mobileControlsCanvas;
 
-		const mobileOverlayCanvas = Object.Instantiate(
-			AssetCache.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/UI/MobileControls/MobileOverlayCanvas.prefab"),
-			CoreRefs.rootTransform,
-		);
-
 		this.controlManager.ObserveControlScheme((controlScheme) => {
 			if (controlScheme === ControlScheme.Touch) {
-				mobileOverlayCanvas.SetActive(true);
 				this.mobileControlsContainer.SetActive(true);
 				for (const [name, _] of this.actionToMobileButtonTable) {
 					this.ShowMobileButtons(name);
 				}
 			}
 			if (controlScheme === ControlScheme.MouseKeyboard) {
-				mobileOverlayCanvas.SetActive(false);
 				this.mobileControlsContainer.SetActive(false);
 				for (const [name, _] of this.actionToMobileButtonTable) {
 					this.HideMobileButtons(name);
@@ -709,5 +702,30 @@ export class AirshipInputSingleton implements OnStart {
 		for (const index of signalIndices) {
 			signals.remove(index);
 		}
+	}
+
+	/** Returns mouse sensitivity based on player's setting & game's sensitivity multiplier. */
+	public GetMouseSensitivity() {
+		return (
+			this.gameSensitivityMultiplier *
+			contextbridge.invoke<() => number>("ClientSettings:GetMouseSensitivity", LuauContext.Protected)
+		);
+	}
+
+	/** Returns touch sensitivity based on player's setting & game's sensitivity multiplier. */
+	public GetTouchSensitivity() {
+		return (
+			this.gameSensitivityMultiplier *
+			contextbridge.invoke<() => number>("ClientSettings:GetTouchSensitivity", LuauContext.Protected)
+		);
+	}
+
+	/**
+	 * Register a multiplier on user's set sensitivity
+	 *
+	 * @param sensitivity Set to 1 for no effect, >1 for increased sensitivty.
+	 */
+	public SetSensitivityMultiplier(sensitivity: number) {
+		this.gameSensitivityMultiplier = sensitivity;
 	}
 }

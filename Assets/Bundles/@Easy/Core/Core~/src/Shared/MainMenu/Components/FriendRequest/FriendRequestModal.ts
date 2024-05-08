@@ -1,7 +1,7 @@
-import { FriendsController } from "Client/MainMenuControllers/Social/FriendsController";
+import { FriendsController } from "@Easy/Core/Client/ProtectedControllers//Social/FriendsController";
+import { Dependency } from "Shared/Flamework";
 import { Bin } from "Shared/Util/Bin";
 import IncomingFriendRequestCard from "./IncomingFriendRequestCard";
-import { Dependency } from "Shared/Flamework";
 
 export default class FriendRequestModal extends AirshipBehaviour {
 	public content!: Transform;

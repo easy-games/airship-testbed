@@ -21,6 +21,16 @@ export default class DemoManager extends AirshipBehaviour {
 	public cubePrefab!: GameObject;
 
 	override Start(): void {
+		ItemUtil.RegisterItem("sniper", {
+			displayName: "Sniper",
+			accessoryPaths: ["Shared/Resources/Items/Sniper.prefab"],
+			holdConfig: {
+				viewmodel: {
+					idleAnim: ["Shared/Resources/Items/ScopedAKADSLoop.anim"],
+				},
+			},
+		});
+
 		Airship.input.CreateAction("interact", Binding.Key(Key.F));
 
 		const p = Airship.input.CreateProximityPrompt("interact", undefined, {
@@ -68,6 +78,7 @@ export default class DemoManager extends AirshipBehaviour {
 		});
 
 		if (Game.IsServer()) {
+			Airship.chat.BroadcastMessage("test broadcast");
 			Airship.players.ObservePlayers((player) => {
 				this.SpawnPlayer(player);
 			});
@@ -82,7 +93,7 @@ export default class DemoManager extends AirshipBehaviour {
 
 			// spawn ball
 			task.spawn(() => {
-				for (let i = 0; i < 5; i++) {
+				for (let i = 0; i < 3; i++) {
 					const ballGo = Object.Instantiate<GameObject>(
 						this.ballPrefab,
 						this.ballSpawnPoint.position,
@@ -90,14 +101,14 @@ export default class DemoManager extends AirshipBehaviour {
 					);
 					NetworkUtil.Spawn(ballGo);
 
-					const cubeGo = Object.Instantiate<GameObject>(
-						this.cubePrefab,
-						ballGo.transform.position.add(new Vector3(0, 1, 0)),
-						Quaternion.identity,
-					);
-					NetworkUtil.Spawn(cubeGo);
-					cubeGo.GetComponent<NetworkObject>()!.SetParent(ballGo.GetComponent<NetworkObject>()!);
-					task.wait(1);
+					// const cubeGo = Object.Instantiate<GameObject>(
+					// 	this.cubePrefab,
+					// 	ballGo.transform.position.add(new Vector3(0, 1, 0)),
+					// 	Quaternion.identity,
+					// );
+					// NetworkUtil.Spawn(cubeGo);
+					// cubeGo.GetComponent<NetworkObject>()!.SetParent(ballGo.GetComponent<NetworkObject>()!);
+					// task.wait(1);
 				}
 			});
 		}
@@ -130,6 +141,9 @@ export default class DemoManager extends AirshipBehaviour {
 		for (let go of this.cleanupOnStart) {
 			Object.Destroy(go);
 		}
+
+		// pen testing
+		// PlayerManagerBridge.Instance.transform.SetParent(this.transform);
 	}
 
 	public SpawnPlayer(player: Player): void {

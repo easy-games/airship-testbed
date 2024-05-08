@@ -1,25 +1,23 @@
 /**
  * This is the entrypoint of Core.
  */
-print("Running Core Bootstrap..");
 
 import { AvatarUtil } from "Shared/Avatar/AvatarUtil";
 import { Flamework } from "Shared/Flamework";
 import { AudioManager } from "./Audio/AudioManager";
 import { Bootstrap } from "./Bootstrap/Bootstrap";
 import { CoreContext } from "./CoreClientContext";
+import { CoreNetwork } from "./CoreNetwork";
 import { CoreRefs } from "./CoreRefs";
 import { Game } from "./Game";
 import { InitNet } from "./Network/NetworkAPI";
 import { AppManager } from "./Util/AppManager";
 import { CanvasAPI } from "./Util/CanvasAPI";
-import { RunUtil } from "./Util/RunUtil";
 import { TimeUtil } from "./Util/TimeUtil";
 import { OnFixedUpdate, OnLateUpdate, OnTick, OnUpdate } from "./Util/Timer";
 
-CoreRefs.Init();
-
 Game.coreContext = CoreContext.GAME;
+CoreRefs.Init();
 
 task.spawn(() => {
 	if (Game.IsClient()) {
@@ -43,9 +41,6 @@ AudioManager.Init();
 AvatarUtil.Initialize();
 InitNet();
 
-const coreCamera = GameObject.Find("CoreCamera");
-Object.Destroy(coreCamera);
-
 // Drive timer:
 gameObject.OnUpdate(() => {
 	OnUpdate.Fire(TimeUtil.GetDeltaTime());
@@ -62,26 +57,43 @@ if (InstanceFinder.TimeManager !== undefined) {
 	});
 }
 
-Flamework.AddPath("assets/bundles/@Easy/Core/shared/resources/ts", "^.*singleton.lua$");
-if (RunUtil.IsClient()) {
+Flamework.AddPath("assets/bundles/@Easy/Core/shared/resources/ts", "^.*singleton.lua$", "mainmenu/");
+if (Game.IsClient()) {
 	Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/airship", "^.*controller.lua$");
-	Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/controllers", "^.*controller.lua$");
-	Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/mainmenucontrollers", "^.*controller.lua$");
-	Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/mainmenucontrollers", "^.*singleton.lua$");
+	Flamework.AddPath(
+		"assets/bundles/@Easy/Core/client/resources/ts/controllers",
+		"^.*controller.lua$",
+		"protectedcontrollers/",
+	);
+	// Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/mainmenucontrollers", "^.*controller.lua$");
+	// Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/mainmenucontrollers", "^.*singleton.lua$");
 }
-if (RunUtil.IsServer()) {
+if (Game.IsServer()) {
 	Flamework.AddPath("assets/bundles/@Easy/Core/server/resources/ts/airship", "^.*service.lua$");
 	Flamework.AddPath("assets/bundles/@Easy/Core/server/resources/ts/services", "^.*service.lua$");
 }
 Flamework.Ignite();
 
-if (RunUtil.IsServer()) {
-	const server = require("@Easy/Core/Server/Resources/TS/CoreServerBootstrap") as {
-		SetupServer: () => void;
-	};
-	server.SetupServer();
+if (Game.IsServer()) {
+	const serverInfo = contextbridge.invoke<
+		() => {
+			gameId: string;
+			serverId: string;
+			organizationId: string;
+		}
+	>("ServerInfo", LuauContext.Protected);
+	Game.serverId = serverInfo.serverId;
+	Game.gameId = serverInfo.gameId;
+	Game.organizationId = serverInfo.organizationId;
+}
+
+if (Game.IsClient()) {
+	CoreNetwork.ServerToClient.ChatMessage.client.OnServerEvent((message, senderPrefix, senderClientId) => {
+		contextbridge.invoke<
+			(rawText: string, nameWithPrefix: string | undefined, senderClientId: number | undefined) => void
+		>("Chat:AddMessage", LuauContext.Protected, message, senderPrefix, senderClientId);
+	});
 }
 
 Bootstrap.PrepareVoxelWorld();
 Bootstrap.Prepare();
-Bootstrap.FinishedSetup();

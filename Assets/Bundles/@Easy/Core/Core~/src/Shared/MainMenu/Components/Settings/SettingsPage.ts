@@ -1,8 +1,8 @@
-import MainMenuPageComponent from "@Easy/Core/Client/MainMenuControllers/MainMenuPageComponent";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { MainMenuSingleton } from "../../Singletons/MainMenuSingleton";
+import MainMenuPageComponent from "../MainMenuPageComponent";
 
 export default class SettingsPage extends MainMenuPageComponent {
 	public sidebar!: RectTransform;
@@ -18,7 +18,7 @@ export default class SettingsPage extends MainMenuPageComponent {
 		const mainMenu = Dependency<MainMenuSingleton>();
 		this.bin.Add(
 			mainMenu.ObserveScreenSize((size) => {
-				if (size === "sm") {
+				if (size === "sm" && Game.IsMobile()) {
 					this.sidebar.gameObject.SetActive(false);
 					this.scrollView.offsetMax = new Vector2(-5, -7);
 					this.scrollView.offsetMin = new Vector2(5, 0);
@@ -39,7 +39,8 @@ export default class SettingsPage extends MainMenuPageComponent {
 						this.tabs.GetChild(0).gameObject.SetActive(true); // Input
 						this.tabs.GetChild(1).gameObject.SetActive(true); // Sound
 						this.tabs.GetChild(4).gameObject.SetActive(true); // Blocked
-						this.tabs.GetChild(5).gameObject.SetActive(true); // Other
+						this.tabs.GetChild(5).gameObject.SetActive(true); // Developer
+						this.tabs.GetChild(6).gameObject.SetActive(true); // Other
 					}
 				} else {
 					// rect.offsetMax = new Vector2(rect.offsetMax.x, 0);

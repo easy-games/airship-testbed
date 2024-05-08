@@ -1,6 +1,7 @@
 import { CoreRefs } from "Shared/CoreRefs";
 import { Keyboard, Mouse } from "Shared/UserInput";
 import { AudioManager } from "../Audio/AudioManager";
+import { Game } from "../Game";
 import { Bin } from "./Bin";
 import { CanvasAPI, PointerDirection } from "./CanvasAPI";
 import { SignalPriority } from "./Signal";
@@ -32,10 +33,18 @@ export class AppManager {
 	private static darkBackgroundTransitionBin = new Bin();
 
 	public static Init() {
-		const backgroundGO = Object.Instantiate(
-			AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/AppManagerBackground.prefab"),
-			CoreRefs.rootTransform,
-		);
+		let backgroundGO: GameObject;
+		if (Game.IsGameLuauContext()) {
+			backgroundGO = Object.Instantiate(
+				AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/AppManagerBackground.prefab"),
+				CoreRefs.rootTransform,
+			);
+		} else {
+			backgroundGO = Object.Instantiate(
+				AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/AppManagerBackground.prefab"),
+				CoreRefs.protectedTransform,
+			);
+		}
 		this.backgroundCanvas = backgroundGO.GetComponent<Canvas>()!;
 		this.backgroundCanvas.enabled = false;
 		const refs = backgroundGO.GetComponent<GameObjectReferences>()!;
@@ -48,6 +57,21 @@ export class AppManager {
 				this.Close();
 			}
 		});
+
+		if (Game.IsProtectedLuauContext()) {
+			// returns true if consumed [esc] press
+			contextbridge.callback<() => boolean>("AppManager:EscapePressedFromGame", (from) => {
+				if (AppManager.IsOpen()) {
+					AppManager.Close();
+					return true;
+				}
+				return false;
+			});
+
+			contextbridge.callback<() => boolean>("AppManager:IsOpenFromGame", (from) => {
+				return this.IsOpen();
+			});
+		}
 	}
 
 	public static OpenCustom(
@@ -163,6 +187,12 @@ export class AppManager {
 	}
 
 	public static Close(config?: { noCloseSound?: boolean }): void {
+		if (Game.IsGameLuauContext()) {
+			if (contextbridge.invoke<() => boolean>("AppManager:EscapePressedFromGame", LuauContext.Protected)) {
+				return;
+			}
+		}
+
 		if (!this.opened) return;
 
 		if (!config?.noCloseSound) {
@@ -192,34 +222,59 @@ export class AppManager {
 	}
 
 	/**
+	 * @internal
+	 */
+	// public static OpenMainMenu(): void {
+	// 	contextbridge.invoke<() => void>("MainMenu:OpenFromGame", LuauContext.Protected);
+	// 	this.OpenCustom(() => {
+	// 		contextbridge.invoke<() => void>("MainMenu:CloseFromGame", LuauContext.Protected);
+	// 	});
+	// }
+
+	/**
 	 * Check whether not an `CanvasAppManager` owned canvas is open.
 	 * @returns Whether or not an `CanvasAppManager` owned canvas is open.
 	 */
 	public static IsOpen(): boolean {
+		if (Game.IsGameLuauContext()) {
+			if (contextbridge.invoke<() => boolean>("AppManager:IsOpenFromGame", LuauContext.Protected)) {
+				return true;
+			}
+		}
 		return this.opened;
 	}
 }
 
 /* Listen for close key globally. */
-AppManager.keyboard.OnKeyDown(
-	CLOSE_KEY,
-	(event) => {
-		if (event.IsCancelled()) return;
-		if (AppManager.IsOpen()) {
+if (Game.IsGameLuauContext()) {
+	AppManager.keyboard.OnKeyDown(
+		CLOSE_KEY,
+		(event) => {
+			if (event.IsCancelled()) return;
+			if (AppManager.IsOpen()) {
+				event.SetCancelled(true);
+				AppManager.Close();
+			}
+		},
+		SignalPriority.HIGH,
+	);
+	AppManager.keyboard.OnKeyDown(
+		CLOSE_KEY,
+		(event) => {
 			event.SetCancelled(true);
-			AppManager.Close();
-		}
-	},
-	SignalPriority.HIGH,
-);
-AppManager.keyboard.OnKeyDown(
-	Key.F,
-	(event) => {
-		if (event.uiProcessed) return;
-		if (AppManager.IsOpen()) {
-			event.SetCancelled(true);
-			AppManager.Close();
-		}
-	},
-	SignalPriority.HIGH,
-);
+			contextbridge.invoke<() => void>("MainMenu:OpenFromGame", LuauContext.Protected);
+		},
+		SignalPriority.LOW,
+	);
+	AppManager.keyboard.OnKeyDown(
+		Key.F,
+		(event) => {
+			if (event.uiProcessed) return;
+			if (AppManager.IsOpen()) {
+				event.SetCancelled(true);
+				AppManager.Close();
+			}
+		},
+		SignalPriority.HIGH,
+	);
+}

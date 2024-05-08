@@ -1849,21 +1849,6 @@ interface Component extends Object {
 	transform: Transform;
 	gameObject: GameObject;
 	tag: string;
-	rigidbody: Component;
-	rigidbody2D: Component;
-	camera: Component;
-	light: Component;
-	animation: Component;
-	constantForce: Component;
-	renderer: Component;
-	audio: Component;
-	networkView: Component;
-	collider: Component;
-	collider2D: Component;
-	hingeJoint: Component;
-	particleSystem: Component;
-
-	enabled: boolean;
 
 	constructor(): Component;
 
@@ -4403,3 +4388,56 @@ interface CloudImage {
 	 */
 	OnFinishedLoading(callback: (success: boolean) => void): EngineEventConnection;
 }
+
+interface NavMesh {}
+
+interface NavMeshConstructor {
+	AllAreas: number;
+	onPreUpdate: OnNavMeshPreUpdate;
+	avoidancePredictionTime: number;
+	pathfindingIterationsPerFrame: number;
+
+	AddLink(link: NavMeshLinkData): NavMeshLinkInstance;
+	AddLink(link: NavMeshLinkData, position: Vector3, rotation: Quaternion): NavMeshLinkInstance;
+	AddNavMeshData(navMeshData: NavMeshData): NavMeshDataInstance;
+	AddNavMeshData(navMeshData: NavMeshData, position: Vector3, rotation: Quaternion): NavMeshDataInstance;
+	AddOffMeshLinks(): void;
+	CalculatePath(sourcePosition: Vector3, targetPosition: Vector3, areaMask: number, path: NavMeshPath): boolean;
+	CalculatePath(
+		sourcePosition: Vector3,
+		targetPosition: Vector3,
+		filter: NavMeshQueryFilter,
+		path: NavMeshPath,
+	): boolean;
+	CalculateTriangulation(): NavMeshTriangulation;
+	CreateSettings(): NavMeshBuildSettings;
+	FindClosestEdge(sourcePosition: Vector3, areaMask: number): NavMeshHit | undefined;
+	// FindClosestEdge(sourcePosition: Vector3, hit: unknown, filter: NavMeshQueryFilter): boolean;
+	GetAreaCost(areaIndex: number): number;
+	GetAreaFromName(areaName: string): number;
+	GetLayerCost(layer: number): number;
+	GetLinkOwner(handle: NavMeshLinkInstance): Object;
+	GetNavMeshLayerFromName(layerName: string): number;
+	GetSettingsByID(agentTypeID: number): NavMeshBuildSettings;
+	GetSettingsByIndex(index: number): NavMeshBuildSettings;
+	GetSettingsCount(): number;
+	GetSettingsNameFromID(agentTypeID: number): string;
+	IsLinkActive(handle: NavMeshLinkInstance): boolean;
+	IsLinkOccupied(handle: NavMeshLinkInstance): boolean;
+	IsLinkValid(handle: NavMeshLinkInstance): boolean;
+	Raycast(sourcePosition: Vector3, targetPosition: Vector3, areaMask: number): NavMeshHit | undefined;
+	// Raycast(sourcePosition: Vector3, targetPosition: Vector3, hit: unknown, filter: NavMeshQueryFilter): boolean;
+	RemoveAllNavMeshData(): void;
+	RemoveLink(handle: NavMeshLinkInstance): void;
+	RemoveNavMeshData(handle: NavMeshDataInstance): void;
+	RemoveSettings(agentTypeID: number): void;
+	RestoreNavMesh(): void;
+	SamplePosition(sourcePosition: Vector3, maxDistance: number, areaMask: number): NavMeshHit | undefined;
+	// SamplePosition(sourcePosition: Vector3, hit: unknown, maxDistance: number, filter: NavMeshQueryFilter): boolean;
+	SetAreaCost(areaIndex: number, cost: number): void;
+	SetLayerCost(layer: number, cost: number): void;
+	SetLinkActive(handle: NavMeshLinkInstance, value: boolean): void;
+	SetLinkOwner(handle: NavMeshLinkInstance, owner: Object): void;
+	Triangulate(vertices: CSArray<Vector3>, indices: CSArray<number>): void;
+}
+declare const NavMesh: NavMeshConstructor;
