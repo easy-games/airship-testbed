@@ -309,7 +309,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1063477963677416328
 RectTransform:
   m_ObjectHideFlags: 0
@@ -418,9 +418,9 @@ MonoBehaviour:
       refPath: 
       decorators: []
       nullable: 0
-      serializedValue: Home
+      serializedValue: Avatar
       serializedObject: {fileID: 0}
-      modified: 0
+      modified: 1
     - name: itemButtonTemplate
       type: object
       objectType: GameObject
@@ -437,8 +437,8 @@ MonoBehaviour:
           serializedValue: '"Templates"'
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 0
+      serializedObject: {fileID: 5040413862591958478, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
+      modified: 1
     - name: canvas
       type: object
       objectType: Canvas
@@ -469,8 +469,8 @@ MonoBehaviour:
       decorators: []
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 0
+      serializedObject: {fileID: 98629860430141082}
+      modified: 1
     - name: avatarRenderHolder
       type: object
       objectType: GameObject
@@ -497,22 +497,8 @@ MonoBehaviour:
       decorators: []
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 0
-    - name: categoryLabelTxt
-      type: object
-      objectType: TextMeshProUGUI
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 0
+      serializedObject: {fileID: 8806527203194656027}
+      modified: 1
     - name: mainContentHolder
       type: object
       objectType: Transform
@@ -525,8 +511,8 @@ MonoBehaviour:
       decorators: []
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 0
+      serializedObject: {fileID: 5478668999766834506}
+      modified: 1
     - name: avatarProfileMenuGo
       type: object
       objectType: GameObject
@@ -539,8 +525,8 @@ MonoBehaviour:
       decorators: []
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 0
+      serializedObject: {fileID: 8899320511306990226}
+      modified: 1
     - name: avatarToolbar
       type: object
       objectType: RectTransform
@@ -553,21 +539,7 @@ MonoBehaviour:
       decorators: []
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 0
-    - name: avatarOptionsHolder
-      type: object
-      objectType: RectTransform
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators: []
-      nullable: 0
-      serializedValue: Avatar
-      serializedObject: {fileID: 0}
+      serializedObject: {fileID: 7664068802410899013}
       modified: 1
     - name: avatar3DHolder
       type: object
@@ -581,8 +553,8 @@ MonoBehaviour:
       decorators: []
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 0
+      serializedObject: {fileID: 1737546173658115557}
+      modified: 1
     - name: outfitButtonHolder
       type: object
       objectType: Transform
@@ -599,8 +571,8 @@ MonoBehaviour:
           serializedValue: '"Button Holders"'
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 0
+      serializedObject: {fileID: 4775447045803972303}
+      modified: 1
     - name: mainNavButtonHolder
       type: object
       objectType: Transform
@@ -613,8 +585,36 @@ MonoBehaviour:
       decorators: []
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 0
+      serializedObject: {fileID: 4942970221007149302}
+      modified: 1
+    - name: avatarOptionsHolder
+      type: object
+      objectType: RectTransform
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 1696253171366054744}
+      modified: 1
+    - name: categoryLabelTxt
+      type: object
+      objectType: TextMeshProUGUI
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 6760938698788942309}
+      modified: 1
     displayName: 
   contextOverwritten: 0
 --- !u!114 &7489676922720409085
@@ -9794,6 +9794,11 @@ PrefabInstance:
 --- !u!224 &3220627497608779599 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7220448358463266816, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+  m_PrefabInstance: {fileID: 5225820591655941967}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8899320511306990226 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3676455692557874653, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
   m_PrefabInstance: {fileID: 5225820591655941967}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5705886918087475149
