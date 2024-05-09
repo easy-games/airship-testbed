@@ -19,6 +19,9 @@ import AvatarAccessoryBtn from "./AvatarAccessoryBtn";
 import AvatarMenuBtn from "./AvatarMenuBtn";
 import AvatarMenuProfileComponent from "./AvatarMenuProfileComponent";
 import AvatarRenderComponent from "./AvatarRenderComponent";
+import { CoreUI } from "@Easy/Core/Shared/UI/CoreUI";
+import { Keyboard } from "@Easy/Core/Shared/UserInput";
+import { MainMenuSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/MainMenuSingleton";
 
 export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private readonly generalHookupKey = "General";
@@ -32,10 +35,11 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	public mainCanvasGroup!: CanvasGroup;
 	public avatarRenderHolder?: GameObject;
 	public avatarCenterRect?: RectTransform;
+	public categoryLabelTxt?: TextMeshProUGUI;
 	public mainContentHolder?: Transform;
 	public avatarProfileMenuGo?: GameObject;
 	public avatarToolbar!: RectTransform;
-	// public avatarOptionsHolder!: RectTransform;
+	public avatarOptionsHolder!: RectTransform;
 	public avatar3DHolder!: RectTransform;
 
 	@Header("Button Holders")
@@ -73,111 +77,111 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	override Init(mainMenu: MainMenuController, pageType: MainMenuPageType): void {
 		super.Init(mainMenu, pageType);
-		// this.clientId = 9999; //Dependency<PlayerController>().clientId;
+		this.clientId = 9999; //Dependency<PlayerController>().clientId;
 
-		// this.mainNavBtns = this.mainNavButtonHolder.gameObject.GetAirshipComponentsInChildren<AvatarMenuBtn>();
-		// //this.subNavBtns = this.subNavBarButtonHolder.gameObject.GetComponentsInChildren<AvatarMenuBtn>();
-		// this.outfitBtns = this.outfitButtonHolder.gameObject.GetAirshipComponentsInChildren<AvatarMenuBtn>();
-		// this.avatarProfileMenu = this.avatarProfileMenuGo?.GetAirshipComponent<AvatarMenuProfileComponent>();
-		// this.avatarProfileMenu?.Init(mainMenu);
+		this.mainNavBtns = this.mainNavButtonHolder.gameObject.GetAirshipComponentsInChildren<AvatarMenuBtn>();
+		//this.subNavBtns = this.subNavBarButtonHolder.gameObject.GetComponentsInChildren<AvatarMenuBtn>();
+		this.outfitBtns = this.outfitButtonHolder.gameObject.GetAirshipComponentsInChildren<AvatarMenuBtn>();
+		this.avatarProfileMenu = this.avatarProfileMenuGo?.GetAirshipComponent<AvatarMenuProfileComponent>();
+		this.avatarProfileMenu?.Init(mainMenu);
 
-		// //Remove any dummy content
-		// if (this.mainContentHolder) {
-		// 	this.mainContentHolder.gameObject.ClearChildren();
-		// }
+		//Remove any dummy content
+		if (this.mainContentHolder) {
+			this.mainContentHolder.gameObject.ClearChildren();
+		}
 
-		// let i = 0;
-		// this.mainMenu?.avatarView?.OnNewRenderTexture((texture) => {
-		// 	let image = this.avatarRenderHolder?.GetComponent<RawImage>();
-		// 	if (image) {
-		// 		image.texture = texture;
-		// 	} else {
-		// 		error("Missing raw image on avatarrenderholder");
-		// 	}
-		// 	this.RefreshAvatar();
-		// });
+		let i = 0;
+		this.mainMenu?.avatarView?.OnNewRenderTexture((texture) => {
+			let image = this.avatarRenderHolder?.GetComponent<RawImage>();
+			if (image) {
+				image.texture = texture;
+			} else {
+				error("Missing raw image on avatarrenderholder");
+			}
+			this.RefreshAvatar();
+		});
 
-		// //Hookup Nav buttons
-		// if (!this.mainNavBtns) {
-		// 	warn("Unablet to find main nav btns on Avatar Editor Page");
-		// 	return;
-		// }
-		// for (i = 0; i < this.mainNavBtns.size(); i++) {
-		// 	const navI = i;
-		// 	CoreUI.SetupButton(this.mainNavBtns[i].gameObject, { noHoverSound: true });
-		// 	CanvasAPI.OnClickEvent(this.mainNavBtns[i].gameObject, () => {
-		// 		this.SelectMainNav(navI);
-		// 	});
-		// }
+		//Hookup Nav buttons
+		if (!this.mainNavBtns) {
+			warn("Unablet to find main nav btns on Avatar Editor Page");
+			return;
+		}
+		for (i = 0; i < this.mainNavBtns.size(); i++) {
+			const navI = i;
+			CoreUI.SetupButton(this.mainNavBtns[i].gameObject, { noHoverSound: true });
+			CanvasAPI.OnClickEvent(this.mainNavBtns[i].gameObject, () => {
+				this.SelectMainNav(navI);
+			});
+		}
 
-		// //Hookup outfit buttons
-		// if (!this.outfitBtns) {
-		// 	warn("Unable to find outfit btns on Avatar Editor Page");
-		// 	return;
-		// }
-		// for (i = 0; i < this.outfitBtns.size(); i++) {
-		// 	const outfitI = i;
-		// 	const go = this.outfitBtns[i].gameObject;
-		// 	CoreUI.SetupButton(go, { noHoverSound: true });
-		// 	CanvasAPI.OnClickEvent(go, () => {
-		// 		this.SelectOutfit(outfitI);
-		// 	});
-		// }
+		//Hookup outfit buttons
+		if (!this.outfitBtns) {
+			warn("Unable to find outfit btns on Avatar Editor Page");
+			return;
+		}
+		for (i = 0; i < this.outfitBtns.size(); i++) {
+			const outfitI = i;
+			const go = this.outfitBtns[i].gameObject;
+			CoreUI.SetupButton(go, { noHoverSound: true });
+			CanvasAPI.OnClickEvent(go, () => {
+				this.SelectOutfit(outfitI);
+			});
+		}
 
-		// //Hookup general buttons
-		// let button = this.refs?.GetValue<RectTransform>(this.generalHookupKey, "AvatarInteractionBtn").gameObject;
-		// if (button) {
-		// 	CoreUI.SetupButton(button, { noHoverSound: true });
-		// 	CanvasAPI.OnBeginDragEvent(button, () => {
-		// 		this.OnDragAvatar(true);
-		// 	});
-		// 	CanvasAPI.OnEndDragEvent(button, () => {
-		// 		this.OnDragAvatar(false);
-		// 	});
-		// }
+		//Hookup general buttons
+		let button = this.refs?.GetValue<RectTransform>(this.generalHookupKey, "AvatarInteractionBtn").gameObject;
+		if (button) {
+			CoreUI.SetupButton(button, { noHoverSound: true });
+			CanvasAPI.OnBeginDragEvent(button, () => {
+				this.OnDragAvatar(true);
+			});
+			CanvasAPI.OnEndDragEvent(button, () => {
+				this.OnDragAvatar(false);
+			});
+		}
 
-		// button = this.refs?.GetValue<RectTransform>(this.generalHookupKey, "ResetCameraBtn").gameObject;
-		// if (button) {
-		// 	CoreUI.SetupButton(button, { noHoverSound: true });
-		// 	CanvasAPI.OnClickEvent(button, () => {
-		// 		//this.mainMenu?.avatarView?.CameraFocusSlot(AccessorySlot.Root);
-		// 		print("Showing avatar profil pic: " + this.avatarProfileMenu);
-		// 		this.avatarProfileMenu?.OpenPage(this.mainCanvasGroup);
-		// 	});
-		// }
+		button = this.refs?.GetValue<RectTransform>(this.generalHookupKey, "ResetCameraBtn").gameObject;
+		if (button) {
+			CoreUI.SetupButton(button, { noHoverSound: true });
+			CanvasAPI.OnClickEvent(button, () => {
+				//this.mainMenu?.avatarView?.CameraFocusSlot(AccessorySlot.Root);
+				print("Showing avatar profil pic: " + this.avatarProfileMenu);
+				this.avatarProfileMenu?.OpenPage(this.mainCanvasGroup);
+			});
+		}
 
-		// button = this.refs?.GetValue<RectTransform>(this.generalHookupKey, "SaveBtn").gameObject;
-		// if (button) {
-		// 	CoreUI.SetupButton(button, { noHoverSound: true });
-		// 	CanvasAPI.OnClickEvent(button, () => {
-		// 		this.Save();
-		// 	});
-		// }
-		// this.saveBtn = button?.GetAirshipComponent<AirshipButton>();
+		button = this.refs?.GetValue<RectTransform>(this.generalHookupKey, "SaveBtn").gameObject;
+		if (button) {
+			CoreUI.SetupButton(button, { noHoverSound: true });
+			CanvasAPI.OnClickEvent(button, () => {
+				this.Save();
+			});
+		}
+		this.saveBtn = button?.GetAirshipComponent<AirshipButton>();
 
-		// button = this.refs?.GetValue<RectTransform>(this.generalHookupKey, "RevertBtn").gameObject;
-		// if (button) {
-		// 	CoreUI.SetupButton(button, { noHoverSound: true });
-		// 	CanvasAPI.OnClickEvent(button, () => {
-		// 		this.Revert();
-		// 	});
-		// }
+		button = this.refs?.GetValue<RectTransform>(this.generalHookupKey, "RevertBtn").gameObject;
+		if (button) {
+			CoreUI.SetupButton(button, { noHoverSound: true });
+			CanvasAPI.OnClickEvent(button, () => {
+				this.Revert();
+			});
+		}
 
-		// this.ClearItembuttons();
-		// this.InitializeAutherizedAccessories();
+		this.ClearItembuttons();
+		this.InitializeAutherizedAccessories();
 
-		// if (Game.IsEditor()) {
-		// 	let keyboard = new Keyboard();
-		// 	keyboard.OnKeyDown(Key.PrintScreen, (event) => {
-		// 		if (keyboard.IsKeyDown(Key.LeftShift)) {
-		// 			if (this.inThumbnailMode) {
-		// 				this.LeaveThumbnailMode();
-		// 			} else {
-		// 				this.EnterThumbnailMode();
-		// 			}
-		// 		}
-		// 	});
-		// }
+		if (Game.IsEditor()) {
+			let keyboard = new Keyboard();
+			keyboard.OnKeyDown(Key.PrintScreen, (event) => {
+				if (keyboard.IsKeyDown(Key.LeftShift)) {
+					if (this.inThumbnailMode) {
+						this.LeaveThumbnailMode();
+					} else {
+						this.EnterThumbnailMode();
+					}
+				}
+			});
+		}
 	}
 
 	private RefreshAvatar() {
@@ -194,57 +198,57 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	override OpenPage(params?: unknown): void {
 		super.OpenPage(params);
 
-		// this.bin.Add(Dependency<MainMenuSingleton>().socialMenuModifier.Add({ hidden: true }));
+		this.bin.Add(Dependency<MainMenuSingleton>().socialMenuModifier.Add({ hidden: true }));
 
-		// if (Game.IsPortrait()) {
-		// 	this.bin.Add(Dependency<MainMenuSingleton>().navbarModifier.Add({ hidden: true }));
-		// 	this.avatarOptionsHolder.gameObject.SetActive(false);
-		// 	this.avatarToolbar.gameObject.SetActive(false);
+		if (Game.IsPortrait()) {
+			this.bin.Add(Dependency<MainMenuSingleton>().navbarModifier.Add({ hidden: true }));
+			this.avatarOptionsHolder.gameObject.SetActive(false);
+			this.avatarToolbar.gameObject.SetActive(false);
 
-		// 	this.avatar3DHolder.anchorMin = new Vector2(0, 0.3);
-		// 	this.avatar3DHolder.anchorMax = new Vector2(1, 1);
-		// 	this.avatar3DHolder.anchoredPosition = new Vector2(0, 0);
-		// } else {
-		// 	this.avatarOptionsHolder.gameObject.SetActive(true);
-		// 	this.avatarToolbar.gameObject.SetActive(true);
-		// }
+			this.avatar3DHolder.anchorMin = new Vector2(0, 0.3);
+			this.avatar3DHolder.anchorMax = new Vector2(1, 1);
+			this.avatar3DHolder.anchoredPosition = new Vector2(0, 0);
+		} else {
+			this.avatarOptionsHolder.gameObject.SetActive(true);
+			this.avatarToolbar.gameObject.SetActive(true);
+		}
 
-		// this.Log("Open AVATAR");
-		// if (this.avatarRenderHolder) {
-		// 	this.avatarRenderHolder?.SetActive(true);
-		// } else {
-		// 	error("No avatar render veiew in avatar editor menu page");
-		// }
-		// this.mainMenu?.avatarView?.ShowAvatar();
-		// this.mainMenu?.ToggleGameBG(false);
-		// this.RefreshAvatar();
-		// this.mainMenu?.avatarView?.CameraFocusTransform(this.mainMenu?.avatarView?.cameraWaypointDefault, true);
+		this.Log("Open AVATAR");
+		if (this.avatarRenderHolder) {
+			this.avatarRenderHolder?.SetActive(true);
+		} else {
+			error("No avatar render veiew in avatar editor menu page");
+		}
+		this.mainMenu?.avatarView?.ShowAvatar();
+		this.mainMenu?.ToggleGameBG(false);
+		this.RefreshAvatar();
+		this.mainMenu?.avatarView?.CameraFocusTransform(this.mainMenu?.avatarView?.cameraWaypointDefault, true);
 
-		// this.saveBtn?.SetDisabled(true);
-		// this.SelectMainNav(0);
-		// this.SelectSubNav(0);
+		this.saveBtn?.SetDisabled(true);
+		this.SelectMainNav(0);
+		this.SelectSubNav(0);
 
-		// this.mouse = this.bin.Add(new Mouse());
-		// this.bin.Connect(this.mouse.scrolled, (event) => {
-		// 	if (event.delta < -1) {
-		// 		this.mainMenu?.avatarView?.CameraFocusSlot(AccessorySlot.Root);
-		// 	} else if (event.delta > 1) {
-		// 		this.mainMenu?.avatarView?.CameraFocusSlot(this.currentFocusedSlot);
-		// 	}
-		// });
+		this.mouse = this.bin.Add(new Mouse());
+		this.bin.Connect(this.mouse.scrolled, (event) => {
+			if (event.delta < -1) {
+				this.mainMenu?.avatarView?.CameraFocusSlot(AccessorySlot.Root);
+			} else if (event.delta > 1) {
+				this.mainMenu?.avatarView?.CameraFocusSlot(this.currentFocusedSlot);
+			}
+		});
 	}
 
 	override ClosePage(instant?: boolean): void {
 		super.ClosePage(instant);
-		// this.Log("Close AVATAR");
-		// this.bin.Clean();
-		// this.avatarRenderHolder?.SetActive(false);
-		// this.mainMenu?.ToggleGameBG(true);
-		// if (this.mainMenu?.avatarView) {
-		// 	this.mainMenu.avatarView.dragging = false;
-		// } else {
-		// 	error("no 3D avatar to render in avatar editor");
-		// }
+		this.Log("Close AVATAR");
+		this.bin.Clean();
+		this.avatarRenderHolder?.SetActive(false);
+		this.mainMenu?.ToggleGameBG(true);
+		if (this.mainMenu?.avatarView) {
+			this.mainMenu.avatarView.dragging = false;
+		} else {
+			error("no 3D avatar to render in avatar editor");
+		}
 	}
 
 	private SelectMainNav(index: number) {
@@ -259,8 +263,11 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		//Highlight this category button
 		for (i = 0; i < this.mainNavBtns.size(); i++) {
 			const nav = this.mainNavBtns[i];
-			nav.SetText(nav.gameObject.GetComponentsInChildren<TextMeshProUGUI>().GetValue(0).text ?? "No Category");
 			nav.SetSelected(i === index);
+			if (i === index && this.categoryLabelTxt) {
+				this.categoryLabelTxt.text =
+					nav.gameObject.GetComponentsInChildren<TextMeshProUGUI>().GetValue(0).text ?? "No Category";
+			}
 		}
 
 		this.SelectSubNav(0);
@@ -270,12 +277,9 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		if (this.inThumbnailMode) {
 			return;
 		}
-		this.Log("Selecting SUB nav: " + subIndex);
 		this.activeSubIndex = subIndex;
 
-		this.Log("Buttons.1");
 		this.ClearItembuttons();
-		this.Log("Buttons.2");
 
 		switch (this.activeMainIndex) {
 			case 0:
@@ -376,7 +380,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.Log("ClearItemButtons");
 		//Highlight selected items
 		for (let i = 0; i < this.currentContentBtns.size(); i++) {
-			PoolManager.ReleaseObject(this.currentContentBtns[i].button.gameObject);
+			//PoolManager.ReleaseObject(this.currentContentBtns[i].button.gameObject);
+			Object.Destroy(this.currentContentBtns[i].button.gameObject);
 		}
 		this.itemButtonBin.Clean();
 		this.currentContentBtns.clear();
@@ -432,7 +437,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	private AddItemButton(classId: string, instanceId: string, itemName: string, onClickCallback: () => void) {
 		if (this.itemButtonTemplate && this.mainContentHolder) {
-			let newButton = PoolManager.SpawnObject(this.itemButtonTemplate, this.mainContentHolder);
+			//let newButton = PoolManager.SpawnObject(this.itemButtonTemplate, this.mainContentHolder);
+			let newButton = Object.Instantiate(this.itemButtonTemplate, this.mainContentHolder);
 			let eventIndex = CanvasAPI.OnClickEvent(newButton, onClickCallback);
 			this.itemButtonBin.Add(() => {
 				Bridge.DisconnectEvent(eventIndex);
