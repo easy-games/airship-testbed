@@ -33,13 +33,6 @@ export default class DemoManager extends AirshipBehaviour {
 
 		Airship.input.CreateAction("interact", Binding.Key(Key.F));
 
-		const p = Airship.input.CreateProximityPrompt("interact", undefined, {
-			primaryText: "????",
-			secondaryText: "Poke",
-			maxRange: 10,
-		});
-		p.transform.position = new Vector3(0, 5, 0);
-
 		ItemUtil.RegisterItem("WoodSword", {
 			displayName: "Wood Sword",
 			maxStackSize: 1,
