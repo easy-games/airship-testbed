@@ -6162,7 +6162,7 @@ MonoBehaviour:
   upwardsGravityMod: 0.75
   slopeForce: 45
   minSlopeDelta: 0.1
-  maxSlopeDelta: 0.65
+  maxSlopeDelta: 0.3
   maxStepUpHeight: 0.25
   airDensity: 0.1
   drag: 30
@@ -6342,6 +6342,7 @@ MonoBehaviour:
   <IsNested>k__BackingField: 0
   <ComponentIndex>k__BackingField: 0
   <PredictedSpawn>k__BackingField: {fileID: 0}
+  airshipGUID: 
   _networkBehaviours:
   - {fileID: 7931457288082626079}
   - {fileID: 5838268274975822121}
