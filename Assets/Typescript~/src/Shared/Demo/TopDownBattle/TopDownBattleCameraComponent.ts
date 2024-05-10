@@ -2,6 +2,7 @@ import Character from "@Easy/Core/Shared/Character/Character";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Mouse } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import TopDownBattleCharacter from "./TopDownBattleCharacter";
 
 export default class TopDownBattleCameraComponent extends AirshipBehaviour {
 	@Header("References")
@@ -12,7 +13,7 @@ export default class TopDownBattleCameraComponent extends AirshipBehaviour {
 	public cameraSmoothTime = 0.3;
 	public lookOffsetMod = 1;
 
-	private character: Character | undefined;
+	private localBattleCharacter: TopDownBattleCharacter | undefined;
 	private bin = new Bin();
 	private mouse = new Mouse();
 	private cameraVelocity = new Vector3();
@@ -31,7 +32,7 @@ export default class TopDownBattleCameraComponent extends AirshipBehaviour {
 		//Grab the local character whenever it has spawned
 		this.bin.Add(
 			Game.localPlayer.ObserveCharacter((entity) => {
-				this.character = entity;
+				this.localBattleCharacter = entity?.gameObject.GetAirshipComponent<TopDownBattleCharacter>();
 			}),
 		);
 	}
@@ -41,12 +42,14 @@ export default class TopDownBattleCameraComponent extends AirshipBehaviour {
 	}
 
 	public override Update(dt: number): void {
-		if (this.character?.IsAlive()) {
+		if (this.localBattleCharacter?.character.IsAlive()) {
 			//Point the character towards the mouse
 			const mousePos = this.mouse.GetPositionV3();
-			let characterScreenSpacePos = this.camera.WorldToScreenPoint(this.character.model.transform.position);
+			let characterScreenSpacePos = this.camera.WorldToScreenPoint(
+				this.localBattleCharacter.character.model.transform.position,
+			);
 			let relDir = mousePos.sub(characterScreenSpacePos).normalized;
-			this.character.movement.SetLookVector(new Vector3(relDir.x, 0, relDir.y));
+			this.localBattleCharacter.SetLookVector(new Vector3(relDir.x, 0, relDir.y));
 
 			//Move our custom cursor graphic
 			this.cursorTransform.position = mousePos;
@@ -54,12 +57,12 @@ export default class TopDownBattleCameraComponent extends AirshipBehaviour {
 	}
 
 	public override LateUpdate(dt: number): void {
-		if (this.character) {
+		if (this.localBattleCharacter) {
 			//Smoothly follow the character
 			const [targetPos, newVelocity] = this.transform.position.SmoothDamp(
 				//Character pos + the direction they are looking so you can see more of where you are aiming
-				this.character.model.transform.position.add(
-					this.character.movement.GetLookVector().mul(this.lookOffsetMod),
+				this.localBattleCharacter.character.model.transform.position.add(
+					this.localBattleCharacter.character.movement.GetLookVector().mul(this.lookOffsetMod),
 				),
 				this.cameraVelocity,
 				this.cameraSmoothTime,

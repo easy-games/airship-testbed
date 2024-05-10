@@ -128,13 +128,13 @@ Transform:
   m_GameObject: {fileID: 2067608852345161290}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2403532805653456052}
   - {fileID: 8486790160942490940}
-  m_Father: {fileID: 8570439402876947945}
+  m_Father: {fileID: 2138307597597709851}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3950273220486223199
 GameObject:
@@ -353,7 +353,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -98370938496583557, guid: f9e63d29a868542e585dd0c6a90df6f7, type: 3}
       propertyPath: _scenePathHash
-      value: 4259774391
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -98370938496583557, guid: f9e63d29a868542e585dd0c6a90df6f7, type: 3}
       propertyPath: <PrefabId>k__BackingField
@@ -406,7 +406,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 7911948219130051474, guid: f9e63d29a868542e585dd0c6a90df6f7, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 473010626989301856, guid: f9e63d29a868542e585dd0c6a90df6f7, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5729406980951111535}
     m_AddedComponents:
@@ -414,6 +414,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1240483404078471250}
   m_SourcePrefab: {fileID: 100100000, guid: f9e63d29a868542e585dd0c6a90df6f7, type: 3}
+--- !u!4 &2138307597597709851 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 473010626989301856, guid: f9e63d29a868542e585dd0c6a90df6f7, type: 3}
+  m_PrefabInstance: {fileID: 1962641204839069307}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &7829558420882853935 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8616685848737228372, guid: f9e63d29a868542e585dd0c6a90df6f7, type: 3}
@@ -462,9 +467,23 @@ MonoBehaviour:
       serializedValue: 1
       serializedObject: {fileID: 0}
       modified: 1
+    - name: characterHighlight
+      type: object
+      objectType: Transform
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"References"'
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 5729406980951111535}
+      modified: 1
     displayName: 
---- !u!4 &8570439402876947945 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7911948219130051474, guid: f9e63d29a868542e585dd0c6a90df6f7, type: 3}
-  m_PrefabInstance: {fileID: 1962641204839069307}
-  m_PrefabAsset: {fileID: 0}
+  contextOverwritten: 0

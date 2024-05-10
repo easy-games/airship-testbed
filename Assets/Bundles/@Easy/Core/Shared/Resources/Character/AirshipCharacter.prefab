@@ -5303,6 +5303,37 @@ SkinnedMeshRenderer:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
   m_DirtyAABB: 0
+--- !u!1 &4803588965652456270
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 473010626989301856}
+  m_Layer: 3
+  m_Name: SlopeVisuals
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &473010626989301856
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4803588965652456270}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7911948219130051474}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6156126593727608046
 GameObject:
   m_ObjectHideFlags: 0
@@ -5813,6 +5844,7 @@ Transform:
   - {fileID: 3071466931845967825}
   - {fileID: 2810499598466432418}
   - {fileID: 6580981537398420984}
+  - {fileID: 473010626989301856}
   m_Father: {fileID: 8997996947095583982}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8616685848737228372
@@ -5989,20 +6021,6 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 2719586711620922124}
       modified: 1
-    - name: collider
-      type: object
-      objectType: CharacterController
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 0
     displayName: 
   contextOverwritten: 0
 --- !u!114 &7088081142443290682
@@ -6106,6 +6124,7 @@ MonoBehaviour:
   moveData: {fileID: 1645000729044007242}
   animationHelper: {fileID: 903796914586745664}
   mainCollider: {fileID: 1581521313428545767}
+  slopeVisualizer: {fileID: 473010626989301856}
   disableInput: 0
   useGravity: 1
   detectSlopes: 1
@@ -6128,7 +6147,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterHeight: 1.8
   characterRadius: 0.35
-  colliderHeightOffset: 0.25
   speed: 4.666667
   sprintSpeed: 6.666667
   crouchSpeedMultiplier: 0.455
@@ -6144,6 +6162,7 @@ MonoBehaviour:
   upwardsGravityMod: 0.75
   slopeForce: 45
   minSlopeDelta: 0.1
+  maxSlopeDelta: 0.65
   maxStepUpHeight: 0.25
   airDensity: 0.1
   drag: 30

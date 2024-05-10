@@ -6,6 +6,9 @@ import { InputActionConfig } from "@Easy/Core/Shared/Input/InputAction";
 export default class TopDownBattleCharacter extends AirshipBehaviour {
 	private static extraLives: Map<number, number> = new Map(); //Map of playerID, numberOfLives
 
+	@Header("References")
+	public characterHighlight!: Transform;
+
 	@Header("Variables")
 	public startingExtraLives = 2;
 
@@ -41,5 +44,16 @@ export default class TopDownBattleCharacter extends AirshipBehaviour {
 			return TopDownBattleCharacter.extraLives.set(this.character.player.clientId, this.GetRemainingLives() - 1);
 		}
 		return -1;
+	}
+
+	public SetLookVector(dir: Vector3) {
+		this.character.movement.SetLookVector(dir);
+		let rotation = this.characterHighlight.localEulerAngles;
+		this.characterHighlight.LookAt(this.characterHighlight.position.add(dir));
+		this.characterHighlight.localEulerAngles = new Vector3(
+			rotation.x,
+			this.characterHighlight.localEulerAngles.y,
+			rotation.z,
+		);
 	}
 }
