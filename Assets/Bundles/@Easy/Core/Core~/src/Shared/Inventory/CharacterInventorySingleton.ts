@@ -6,6 +6,7 @@ import { Bin } from "Shared/Util/Bin";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal } from "Shared/Util/Signal";
 import { Airship } from "../Airship";
+import { CanvasAPI } from "../Util/CanvasAPI";
 import Inventory from "./Inventory";
 import { ItemStack } from "./ItemStack";
 
@@ -67,6 +68,7 @@ export class CharacterInventorySingleton implements OnStart {
 		// Scroll to select held item:
 		mouse.scrolled.Connect((event) => {
 			if (!this.enabled || event.uiProcessed) return;
+			if (CanvasAPI.IsPointerOverUI()) return;
 			// print("scroll: " + delta);
 			if (math.abs(event.delta) < 0.05) return;
 
