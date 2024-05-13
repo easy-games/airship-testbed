@@ -1,4 +1,4 @@
-﻿import { ViewmodelController } from "Client/Controllers/Viewmodel/ViewmodelController";
+﻿import { ViewmodelController } from "@Easy/Core/Client/Controllers/Viewmodel/ViewmodelController";
 import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
 import Character from "@Easy/Core/Shared/Character/Character";
 import { Dependency } from "@Easy/Core/Shared/Flamework";

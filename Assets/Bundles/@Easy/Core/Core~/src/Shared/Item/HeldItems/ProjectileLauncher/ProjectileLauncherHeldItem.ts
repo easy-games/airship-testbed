@@ -1,8 +1,8 @@
 // import { CharacterEntity } from "@Easy/Core/Shared/Entity/Character/CharacterEntity";
 // import { Entity } from "@Easy/Core/Shared/Entity/Entity";
 // import { Dependency } from "@Easy/Core/Shared/Flamework";
-// import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
-// import { CrosshairController } from "Client/Controllers/Crosshair/CrosshairController";
+// import { LocalEntityController } from "@Easy/Core/Client/Controllers/Character/LocalEntityController";
+// import { CrosshairController } from "@Easy/Core/Client/Controllers/Crosshair/CrosshairController";
 // import { AmmoDef, ItemDef, SoundDef } from "@Easy/Core/Shared/Item/ItemDefinitionTypes";
 // import { Mouse } from "@Easy/Core/Shared/UserInput";
 // import { Bin } from "@Easy/Core/Shared/Util/Bin";

@@ -1,5 +1,5 @@
 ﻿﻿import { CoreItemType } from "@Easy/Core/Shared/Item/CoreItemType";
-import { ViewmodelController } from "Client/Controllers/Viewmodel/ViewmodelController";
+import { ViewmodelController } from "@Easy/Core/Client/Controllers/Viewmodel/ViewmodelController";
 import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
 import { AudioBundleSpacialMode, AudioClipBundle } from "@Easy/Core/Shared/Audio/AudioClipBundle";
 import Character from "@Easy/Core/Shared/Character/Character";

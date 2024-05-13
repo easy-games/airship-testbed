@@ -1,5 +1,5 @@
 import { Dependency } from "@Easy/Core/Shared/Flamework";
-import { GeneratorService } from "Server/Services/Generator/GeneratorService";
+import { GeneratorService } from "@Easy/Core/Server/Services/Generator/GeneratorService";
 import { ChatCommand } from "@Easy/Core/Shared/Commands/ChatCommand";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 

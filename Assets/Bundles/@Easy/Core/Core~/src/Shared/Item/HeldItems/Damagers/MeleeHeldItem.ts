@@ -1,5 +1,5 @@
 ﻿import { AirshipCharacterCameraSingleton } from "@Easy/Core/Shared/Camera/AirshipCharacterCameraSingleton";
-import { ViewmodelController } from "Client/Controllers/Viewmodel/ViewmodelController";
+import { ViewmodelController } from "@Easy/Core/Client/Controllers/Viewmodel/ViewmodelController";
 import { Airship } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
 import { DamageUtils } from "@Easy/Core/Shared/Damage/DamageUtils";

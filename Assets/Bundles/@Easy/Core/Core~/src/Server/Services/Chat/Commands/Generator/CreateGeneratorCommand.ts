@@ -1,5 +1,5 @@
 import { CoreItemType } from "@Easy/Core/Shared/Item/CoreItemType";
-import { GeneratorService } from "Server/Services/Generator/GeneratorService";
+import { GeneratorService } from "@Easy/Core/Server/Services/Generator/GeneratorService";
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { ChatCommand } from "@Easy/Core/Shared/Commands/ChatCommand";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
