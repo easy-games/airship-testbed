@@ -1,5 +1,5 @@
-import { Platform } from "Shared/Airship";
-import { ItemQueryParameters } from "Shared/Airship/Types/Inputs/PlatformInventory";
+import { Platform } from "@Easy/Core/Shared/Airship";
+import { ItemQueryParameters } from "@Easy/Core/Shared/Airship/Types/Inputs/PlatformInventory";
 import {
 	AccessoryInstanceDto,
 	EquippedProfilePicture,
@@ -8,10 +8,10 @@ import {
 	ProfilePictureInstanceDto,
 	Transaction,
 } from "Shared/Airship/Types/Outputs/PlatformInventory";
-import { OnStart, Service } from "Shared/Flamework";
-import { Result } from "Shared/Types/Result";
-import { RunUtil } from "Shared/Util/RunUtil";
-import { DecodeJSON, EncodeJSON } from "Shared/json";
+import { OnStart, Service } from "@Easy/Core/Shared/Flamework";
+import { Result } from "@Easy/Core/Shared/Types/Result";
+import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
+import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 
 @Service({})
 export class PlatformInventoryService implements OnStart {

@@ -1,4 +1,4 @@
-import { PublicUser } from "Shared/SocketIOMessages/PublicUser";
+import { PublicUser } from "@Easy/Core/Shared/SocketIOMessages/PublicUser";
 
 export interface GameServer {
 	serverId: string;

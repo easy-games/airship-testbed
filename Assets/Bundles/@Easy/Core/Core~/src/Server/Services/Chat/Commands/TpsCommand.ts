@@ -1,6 +1,6 @@
-import { ChatCommand } from "Shared/Commands/ChatCommand";
-import { Player } from "Shared/Player/Player";
-import { ChatColor } from "Shared/Util/ChatColor";
+import { ChatCommand } from "@Easy/Core/Shared/Commands/ChatCommand";
+import { Player } from "@Easy/Core/Shared/Player/Player";
+import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
 
 export class TpsCommand extends ChatCommand {
 	constructor() {

@@ -1,13 +1,13 @@
-import { Airship } from "Shared/Airship";
-import { CharacterAnimator } from "Shared/Character/Animation/CharacterAnimator";
-import { Game } from "Shared/Game";
-import Inventory from "Shared/Inventory/Inventory";
-import { HeldItemManager } from "Shared/Item/HeldItems/HeldItemManager";
-import { Player } from "Shared/Player/Player";
-import { Bin } from "Shared/Util/Bin";
-import { NetworkUtil } from "Shared/Util/NetworkUtil";
-import { RunUtil } from "Shared/Util/RunUtil";
-import { Signal, SignalPriority } from "Shared/Util/Signal";
+import { Airship } from "@Easy/Core/Shared/Airship";
+import { CharacterAnimator } from "@Easy/Core/Shared/Character/Animation/CharacterAnimator";
+import { Game } from "@Easy/Core/Shared/Game";
+import Inventory from "@Easy/Core/Shared/Inventory/Inventory";
+import { HeldItemManager } from "@Easy/Core/Shared/Item/HeldItems/HeldItemManager";
+import { Player } from "@Easy/Core/Shared/Player/Player";
+import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
+import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
+import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { OutfitDto } from "../Airship/Types/Outputs/PlatformInventory";
 import { AvatarUtil } from "../Avatar/AvatarUtil";
 

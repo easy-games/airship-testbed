@@ -1,11 +1,11 @@
 import Object from "@easy-games/unity-object-utils";
-import { ChatCommand } from "Shared/Commands/ChatCommand";
-import { CoreNetwork } from "Shared/CoreNetwork";
-import { OnStart, Service } from "Shared/Flamework";
-import { Player } from "Shared/Player/Player";
-import StringUtils from "Shared/Types/StringUtil";
-import { ChatUtil } from "Shared/Util/ChatUtil";
-import { ColorUtil } from "Shared/Util/ColorUtil";
+import { ChatCommand } from "@Easy/Core/Shared/Commands/ChatCommand";
+import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
+import { OnStart, Service } from "@Easy/Core/Shared/Flamework";
+import { Player } from "@Easy/Core/Shared/Player/Player";
+import StringUtils from "@Easy/Core/Shared/Types/StringUtil";
+import { ChatUtil } from "@Easy/Core/Shared/Util/ChatUtil";
+import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 
 @Service({})
 export class ChatService implements OnStart {

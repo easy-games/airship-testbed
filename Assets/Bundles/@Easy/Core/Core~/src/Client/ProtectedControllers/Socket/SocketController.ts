@@ -1,9 +1,9 @@
-import { Controller, OnStart } from "Shared/Flamework";
-import { AirshipUrl } from "Shared/Util/AirshipUrl";
-import { Signal } from "Shared/Util/Signal";
-import { Task } from "Shared/Util/Task";
-import { SetInterval } from "Shared/Util/Timer";
-import { DecodeJSON, EncodeJSON } from "Shared/json";
+import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
+import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
+import { Signal } from "@Easy/Core/Shared/Util/Signal";
+import { Task } from "@Easy/Core/Shared/Util/Task";
+import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
+import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 import { AuthController } from "../Auth/AuthController";
 
 @Controller({})

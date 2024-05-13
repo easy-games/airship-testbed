@@ -1,4 +1,4 @@
-import { ItemStack } from "Shared/Inventory/ItemStack";
+import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
 
 export interface GroundItemData {
 	[name: string]: unknown;

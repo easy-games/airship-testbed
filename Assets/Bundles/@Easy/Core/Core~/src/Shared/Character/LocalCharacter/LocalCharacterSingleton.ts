@@ -1,9 +1,9 @@
-import { Controller, Dependency, OnStart } from "Shared/Flamework";
-import { Game } from "Shared/Game";
-import { Keyboard } from "Shared/UserInput";
-import { Bin } from "Shared/Util/Bin";
-import { RunUtil } from "Shared/Util/RunUtil";
-import { Signal } from "Shared/Util/Signal";
+import { Controller, Dependency, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Game } from "@Easy/Core/Shared/Game";
+import { Keyboard } from "@Easy/Core/Shared/UserInput";
+import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
+import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { AirshipCharacterCameraSingleton } from "../../Camera/AirshipCharacterCameraSingleton";
 import { CharacterInput } from "./CharacterInput";
 import { LocalCharacterInputSignal } from "./LocalCharacterInputSignal";

@@ -1,6 +1,6 @@
-import { Airship } from "Shared/Airship";
-import { Player } from "Shared/Player/Player";
-import { RunUtil } from "Shared/Util/RunUtil";
+import { Airship } from "@Easy/Core/Shared/Airship";
+import { Player } from "@Easy/Core/Shared/Player/Player";
+import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 
 export enum NetworkChannel {
 	Reliable,

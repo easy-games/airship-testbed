@@ -1,10 +1,10 @@
-﻿import Character from "Shared/Character/Character";
-import { Dependency } from "Shared/Flamework";
-import { Game } from "Shared/Game";
-import { Bin } from "Shared/Util/Bin";
-import { MathUtil } from "Shared/Util/MathUtil";
-import { SignalPriority } from "Shared/Util/Signal";
-import { OnLateUpdate } from "Shared/Util/Timer";
+﻿import Character from "@Easy/Core/Shared/Character/Character";
+import { Dependency } from "@Easy/Core/Shared/Flamework";
+import { Game } from "@Easy/Core/Shared/Game";
+import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { MathUtil } from "@Easy/Core/Shared/Util/MathUtil";
+import { SignalPriority } from "@Easy/Core/Shared/Util/Signal";
+import { OnLateUpdate } from "@Easy/Core/Shared/Util/Timer";
 import { ViewmodelController } from "../../Client/Controllers/Viewmodel/ViewmodelController";
 import { LocalCharacterSingleton } from "../Character/LocalCharacter/LocalCharacterSingleton";
 import { AirshipCharacterCameraSingleton } from "./AirshipCharacterCameraSingleton";

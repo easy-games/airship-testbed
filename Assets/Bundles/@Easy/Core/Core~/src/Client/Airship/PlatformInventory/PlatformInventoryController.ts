@@ -1,9 +1,9 @@
-import { Platform } from "Shared/Airship";
-import { EquippedProfilePicture, OutfitDto } from "Shared/Airship/Types/Outputs/PlatformInventory";
-import { Controller, OnStart } from "Shared/Flamework";
-import { Result } from "Shared/Types/Result";
-import { RunUtil } from "Shared/Util/RunUtil";
-import { DecodeJSON } from "Shared/json";
+import { Platform } from "@Easy/Core/Shared/Airship";
+import { EquippedProfilePicture, OutfitDto } from "@Easy/Core/Shared/Airship/Types/Outputs/PlatformInventory";
+import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Result } from "@Easy/Core/Shared/Types/Result";
+import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
+import { DecodeJSON } from "@Easy/Core/Shared/json";
 
 @Controller({})
 export class PlatformInventoryController implements OnStart {

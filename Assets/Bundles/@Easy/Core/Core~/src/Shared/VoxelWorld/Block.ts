@@ -1,4 +1,4 @@
-import { ItemDef } from "Shared/Item/ItemDefinitionTypes";
+import { ItemDef } from "@Easy/Core/Shared/Item/ItemDefinitionTypes";
 import { ItemUtil } from "../Item/ItemUtil";
 import { World } from "./World";
 

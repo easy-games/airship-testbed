@@ -1,13 +1,13 @@
 import { AirshipCharacterCameraSingleton } from "@Easy/Core/Shared/Camera/AirshipCharacterCameraSingleton";
-import { Airship } from "Shared/Airship";
-import { AssetCache } from "Shared/AssetCache/AssetCache";
-import Character from "Shared/Character/Character";
-import { CoreNetwork } from "Shared/CoreNetwork";
-import { Controller, Dependency, OnStart } from "Shared/Flamework";
-import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
-import { Player } from "Shared/Player/Player";
-import StringUtils from "Shared/Types/StringUtil";
-import { Task } from "Shared/Util/Task";
+import { Airship } from "@Easy/Core/Shared/Airship";
+import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
+import Character from "@Easy/Core/Shared/Character/Character";
+import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
+import { Controller, Dependency, OnStart } from "@Easy/Core/Shared/Flamework";
+import { GameObjectUtil } from "@Easy/Core/Shared/GameObject/GameObjectUtil";
+import { Player } from "@Easy/Core/Shared/Player/Player";
+import StringUtils from "@Easy/Core/Shared/Types/StringUtil";
+import { Task } from "@Easy/Core/Shared/Util/Task";
 
 @Controller({})
 export class BubbleChatController implements OnStart {

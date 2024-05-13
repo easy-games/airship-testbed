@@ -1,5 +1,5 @@
 import ObjectUtils from "@easy-games/unity-object-utils";
-import { Controller, Dependency, OnStart } from "Shared/Flamework";
+import { Controller, Dependency, OnStart } from "@Easy/Core/Shared/Flamework";
 import { CameraMode } from ".";
 import { Airship } from "../Airship";
 import Character from "../Character/Character";

@@ -1,4 +1,4 @@
-import { Signal } from "Shared/Util/Signal";
+import { Signal } from "@Easy/Core/Shared/Util/Signal";
 
 export class TouchscreenDriver {
 	private static inst: TouchscreenDriver;

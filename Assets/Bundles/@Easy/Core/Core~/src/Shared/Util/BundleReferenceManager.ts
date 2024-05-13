@@ -1,4 +1,4 @@
-﻿import { AssetCache } from "Shared/AssetCache/AssetCache";
+﻿import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
 import { AllBundleItems, BundleData, BundleGroupNames, ReferenceManagerAssets } from "./ReferenceManagerResources";
 
 export class BundleReferenceManager {

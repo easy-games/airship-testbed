@@ -1,16 +1,16 @@
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { OnFixedUpdate } from "@Easy/Core/Shared/Util/Timer";
-import { CoreRefs } from "Shared/CoreRefs";
-import { Controller, Dependency, OnStart } from "Shared/Flamework";
-import { Game } from "Shared/Game";
-import { CoreUI } from "Shared/UI/CoreUI";
-import { Keyboard } from "Shared/UserInput";
-import { AirshipUrl } from "Shared/Util/AirshipUrl";
-import { AppManager } from "Shared/Util/AppManager";
-import { CanvasAPI } from "Shared/Util/CanvasAPI";
-import { ColorUtil } from "Shared/Util/ColorUtil";
-import { SignalPriority } from "Shared/Util/Signal";
-import { DecodeJSON, EncodeJSON } from "Shared/json";
+import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
+import { Controller, Dependency, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Game } from "@Easy/Core/Shared/Game";
+import { CoreUI } from "@Easy/Core/Shared/UI/CoreUI";
+import { Keyboard } from "@Easy/Core/Shared/UserInput";
+import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
+import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
+import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
+import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
+import { SignalPriority } from "@Easy/Core/Shared/Util/Signal";
+import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 import { AuthController } from "../Auth/AuthController";
 import { UserController } from "../User/UserController";
 

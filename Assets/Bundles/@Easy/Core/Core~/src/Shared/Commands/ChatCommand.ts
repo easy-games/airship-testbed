@@ -1,4 +1,4 @@
-import { Player } from "Shared/Player/Player";
+import { Player } from "@Easy/Core/Shared/Player/Player";
 
 export abstract class ChatCommand {
 	constructor(

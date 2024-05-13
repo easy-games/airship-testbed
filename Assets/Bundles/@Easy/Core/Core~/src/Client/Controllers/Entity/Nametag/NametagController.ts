@@ -1,12 +1,12 @@
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
-import { Airship } from "Shared/Airship";
-import Character from "Shared/Character/Character";
-import { Controller, OnStart } from "Shared/Flamework";
-import { Game } from "Shared/Game";
-import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
-import { Team } from "Shared/Team/Team";
-import { SignalPriority } from "Shared/Util/Signal";
-import { Theme } from "Shared/Util/Theme";
+import { Airship } from "@Easy/Core/Shared/Airship";
+import Character from "@Easy/Core/Shared/Character/Character";
+import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Game } from "@Easy/Core/Shared/Game";
+import { GameObjectUtil } from "@Easy/Core/Shared/GameObject/GameObjectUtil";
+import { Team } from "@Easy/Core/Shared/Team/Team";
+import { SignalPriority } from "@Easy/Core/Shared/Util/Signal";
+import { Theme } from "@Easy/Core/Shared/Util/Theme";
 
 @Controller({})
 export class NametagController implements OnStart {

@@ -1,7 +1,7 @@
-import { Dependency } from "Shared/Flamework";
+import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { GeneratorService } from "Server/Services/Generator/GeneratorService";
-import { ChatCommand } from "Shared/Commands/ChatCommand";
-import { Player } from "Shared/Player/Player";
+import { ChatCommand } from "@Easy/Core/Shared/Commands/ChatCommand";
+import { Player } from "@Easy/Core/Shared/Player/Player";
 
 /** Default generator spawn rate. */
 const DEFAULT_SPAWN_RATE = 2;

@@ -1,10 +1,10 @@
-import { Dependency, OnStart, Service } from "Shared/Flamework";
+import { Dependency, OnStart, Service } from "@Easy/Core/Shared/Flamework";
 import ObjectUtil from "@easy-games/unity-object-utils";
-import { CoreNetwork } from "Shared/CoreNetwork";
-import { GeneratorCreationConfig } from "Shared/Generator/GeneratorMeta";
-import { ItemStack } from "Shared/Inventory/ItemStack";
-import { TimeUtil } from "Shared/Util/TimeUtil";
-import { SetInterval } from "Shared/Util/Timer";
+import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
+import { GeneratorCreationConfig } from "@Easy/Core/Shared/Generator/GeneratorMeta";
+import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
+import { TimeUtil } from "@Easy/Core/Shared/Util/TimeUtil";
+import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
 import { GroundItemService } from "../GroundItem/GroundItemService";
 import { GeneratorState } from "./GeneratorState";
 

@@ -1,8 +1,8 @@
-import { Airship } from "Shared/Airship";
-import Character from "Shared/Character/Character";
-import { OnStart, Service } from "Shared/Flamework";
-import { Bin } from "Shared/Util/Bin";
-import { SetInterval } from "Shared/Util/Timer";
+import { Airship } from "@Easy/Core/Shared/Airship";
+import Character from "@Easy/Core/Shared/Character/Character";
+import { OnStart, Service } from "@Easy/Core/Shared/Flamework";
+import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
 
 @Service({})
 export class BotService implements OnStart {

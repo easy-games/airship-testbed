@@ -1,8 +1,8 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
-import { Game } from "Shared/Game";
-import { ControlScheme, Keyboard, Mouse, Preferred, Touchscreen } from "Shared/UserInput";
-import { Bin } from "Shared/Util/Bin";
-import { TimeUtil } from "Shared/Util/TimeUtil";
+import { Game } from "@Easy/Core/Shared/Game";
+import { ControlScheme, Keyboard, Mouse, Preferred, Touchscreen } from "@Easy/Core/Shared/UserInput";
+import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { TimeUtil } from "@Easy/Core/Shared/Util/TimeUtil";
 import { CameraMode } from "../CameraMode";
 import { CameraTransform } from "../CameraTransform";
 import DefaultCameraMask from "../DefaultCameraMask";

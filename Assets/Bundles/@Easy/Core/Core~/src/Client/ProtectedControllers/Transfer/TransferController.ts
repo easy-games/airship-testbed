@@ -1,10 +1,10 @@
-import { Controller, OnStart } from "Shared/Flamework";
+import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
 import inspect from "@easy-games/unity-inspect";
-import { GameServer } from "Shared/SocketIOMessages/Party";
-import { AirshipUrl } from "Shared/Util/AirshipUrl";
-import { EncodeJSON } from "Shared/json";
+import { GameServer } from "@Easy/Core/Shared/SocketIOMessages/Party";
+import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
+import { EncodeJSON } from "@Easy/Core/Shared/json";
 import { SocketController } from "../Socket/SocketController";
-import { Result } from "Shared/Types/Result";
+import { Result } from "@Easy/Core/Shared/Types/Result";
 
 @Controller({})
 export class TransferController implements OnStart {

@@ -1,5 +1,5 @@
-﻿import { Mouse } from "Shared/UserInput";
-import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
+﻿import { Mouse } from "@Easy/Core/Shared/UserInput";
+import { WorldAPI } from "@Easy/Core/Shared/VoxelWorld/WorldAPI";
 
 export class CameraReferences {
 	private static instances: CameraReferences;

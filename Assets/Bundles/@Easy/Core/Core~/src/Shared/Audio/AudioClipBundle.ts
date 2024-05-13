@@ -1,5 +1,5 @@
-import {} from "Shared/Flamework";
-import { Task } from "Shared/Util/Task";
+import {} from "@Easy/Core/Shared/Flamework";
+import { Task } from "@Easy/Core/Shared/Util/Task";
 import { AudioManager, PlaySoundConfig } from "./AudioManager";
 
 export enum AudioBundlePlayMode {

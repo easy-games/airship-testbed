@@ -1,5 +1,5 @@
-import { AssetCache } from "Shared/AssetCache/AssetCache";
-import { CoreRefs } from "Shared/CoreRefs";
+import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
+import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
 import StringUtils from "../Types/StringUtil";
 import { Task } from "../Util/Task";
 

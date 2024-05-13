@@ -1,8 +1,8 @@
-import Character from "Shared/Character/Character";
-import { Dependency } from "Shared/Flamework";
-import { ControlScheme, Keyboard, Preferred } from "Shared/UserInput";
-import { Bin } from "Shared/Util/Bin";
-import { OnUpdate } from "Shared/Util/Timer";
+import Character from "@Easy/Core/Shared/Character/Character";
+import { Dependency } from "@Easy/Core/Shared/Flamework";
+import { ControlScheme, Keyboard, Preferred } from "@Easy/Core/Shared/UserInput";
+import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { OnUpdate } from "@Easy/Core/Shared/Util/Timer";
 import { Airship } from "../../Airship";
 import { LocalCharacterInputSignal } from "./LocalCharacterInputSignal";
 import { LocalCharacterSingleton } from "./LocalCharacterSingleton";

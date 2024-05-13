@@ -1,9 +1,9 @@
-import { Service, OnStart } from "Shared/Flamework";
-import { Platform } from "Shared/Airship";
-import { PublicUser } from "Shared/SocketIOMessages/PublicUser";
-import { Result } from "Shared/Types/Result";
-import { RunUtil } from "Shared/Util/RunUtil";
-import { DecodeJSON } from "Shared/json";
+import { Service, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Platform } from "@Easy/Core/Shared/Airship";
+import { PublicUser } from "@Easy/Core/Shared/SocketIOMessages/PublicUser";
+import { Result } from "@Easy/Core/Shared/Types/Result";
+import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
+import { DecodeJSON } from "@Easy/Core/Shared/json";
 
 @Service({})
 export class UserService implements OnStart {

@@ -1,7 +1,7 @@
-import { ChatCommand } from "Shared/Commands/ChatCommand";
-import { ItemStack } from "Shared/Inventory/ItemStack";
-import { ItemUtil } from "Shared/Item/ItemUtil";
-import { Player } from "Shared/Player/Player";
+import { ChatCommand } from "@Easy/Core/Shared/Commands/ChatCommand";
+import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
+import { ItemUtil } from "@Easy/Core/Shared/Item/ItemUtil";
+import { Player } from "@Easy/Core/Shared/Player/Player";
 
 export class AddInventoryCommand extends ChatCommand {
 	constructor() {

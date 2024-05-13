@@ -1,10 +1,10 @@
 import { InventoryUIController } from "@Easy/Core/Client/Controllers/Inventory/InventoryUIController";
-import { Airship } from "Shared/Airship";
-import Character from "Shared/Character/Character";
-import { CoreNetwork } from "Shared/CoreNetwork";
-import { Controller, Dependency, OnStart, Service } from "Shared/Flamework";
-import { RemoteFunction } from "Shared/Network/RemoteFunction";
-import { RunUtil } from "Shared/Util/RunUtil";
+import { Airship } from "@Easy/Core/Shared/Airship";
+import Character from "@Easy/Core/Shared/Character/Character";
+import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
+import { Controller, Dependency, OnStart, Service } from "@Easy/Core/Shared/Flamework";
+import { RemoteFunction } from "@Easy/Core/Shared/Network/RemoteFunction";
+import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { CharacterInventorySingleton } from "./CharacterInventorySingleton";
 import Inventory, { InventoryDto } from "./Inventory";
 import { ItemStack } from "./ItemStack";

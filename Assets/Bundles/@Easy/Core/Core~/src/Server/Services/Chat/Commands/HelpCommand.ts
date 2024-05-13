@@ -1,8 +1,8 @@
-import { ChatCommand } from "Shared/Commands/ChatCommand";
-import { Dependency } from "Shared/Flamework";
-import { Player } from "Shared/Player/Player";
-import { ColorUtil } from "Shared/Util/ColorUtil";
-import { Theme } from "Shared/Util/Theme";
+import { ChatCommand } from "@Easy/Core/Shared/Commands/ChatCommand";
+import { Dependency } from "@Easy/Core/Shared/Flamework";
+import { Player } from "@Easy/Core/Shared/Player/Player";
+import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
+import { Theme } from "@Easy/Core/Shared/Util/Theme";
 import { ChatService } from "../ChatService";
 
 export class HelpCommand extends ChatCommand {

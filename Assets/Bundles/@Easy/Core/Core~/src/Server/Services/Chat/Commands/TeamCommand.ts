@@ -1,5 +1,5 @@
-import { ChatCommand } from "Shared/Commands/ChatCommand";
-import { Player } from "Shared/Player/Player";
+import { ChatCommand } from "@Easy/Core/Shared/Commands/ChatCommand";
+import { Player } from "@Easy/Core/Shared/Player/Player";
 
 export class TeamCommand extends ChatCommand {
 	constructor() {

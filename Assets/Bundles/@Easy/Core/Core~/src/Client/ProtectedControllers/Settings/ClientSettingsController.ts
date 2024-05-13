@@ -1,8 +1,8 @@
-import { Controller, Dependency, OnStart } from "Shared/Flamework";
-import { Signal } from "Shared/Util/Signal";
-import { Task } from "Shared/Util/Task";
-import { SetInterval } from "Shared/Util/Timer";
-import { DecodeJSON, EncodeJSON } from "Shared/json";
+import { Controller, Dependency, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Signal } from "@Easy/Core/Shared/Util/Signal";
+import { Task } from "@Easy/Core/Shared/Util/Task";
+import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
+import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 import { AmbientSoundController } from "../AmbientSound/AmbientSoundController";
 import { ClientSettingsFile } from "./ClientSettingsFile";
 

@@ -1,10 +1,10 @@
 ﻿import { ViewmodelController } from "Client/Controllers/Viewmodel/ViewmodelController";
-import { AudioManager } from "Shared/Audio/AudioManager";
-import Character from "Shared/Character/Character";
-import { Dependency } from "Shared/Flamework";
-import { Bin } from "Shared/Util/Bin";
-import { RandomUtil } from "Shared/Util/RandomUtil";
-import { SetInterval } from "Shared/Util/Timer";
+import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
+import Character from "@Easy/Core/Shared/Character/Character";
+import { Dependency } from "@Easy/Core/Shared/Flamework";
+import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { RandomUtil } from "@Easy/Core/Shared/Util/RandomUtil";
+import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
 import { TimeUtil } from "../../Util/TimeUtil";
 import { ItemDef } from "../ItemDefinitionTypes";
 import { ItemUtil } from "../ItemUtil";

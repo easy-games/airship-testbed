@@ -1,8 +1,8 @@
-import { Platform } from "Shared/Airship";
-import { OnStart, Service } from "Shared/Flamework";
-import { Result } from "Shared/Types/Result";
-import { RunUtil } from "Shared/Util/RunUtil";
-import { DecodeJSON, EncodeJSON } from "Shared/json";
+import { Platform } from "@Easy/Core/Shared/Airship";
+import { OnStart, Service } from "@Easy/Core/Shared/Flamework";
+import { Result } from "@Easy/Core/Shared/Types/Result";
+import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
+import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 
 export interface LeaderboardUpdate {
 	[id: string]: number;

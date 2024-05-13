@@ -1,10 +1,10 @@
-import { CoreNetwork } from "Shared/CoreNetwork";
-import { Controller, OnStart, Service } from "Shared/Flamework";
-import { Game } from "Shared/Game";
-import { Keyboard, Mouse } from "Shared/UserInput";
-import { Bin } from "Shared/Util/Bin";
-import { RunUtil } from "Shared/Util/RunUtil";
-import { Signal } from "Shared/Util/Signal";
+import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
+import { Controller, OnStart, Service } from "@Easy/Core/Shared/Flamework";
+import { Game } from "@Easy/Core/Shared/Game";
+import { Keyboard, Mouse } from "@Easy/Core/Shared/UserInput";
+import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
+import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { Airship } from "../Airship";
 import { CanvasAPI } from "../Util/CanvasAPI";
 import Inventory from "./Inventory";

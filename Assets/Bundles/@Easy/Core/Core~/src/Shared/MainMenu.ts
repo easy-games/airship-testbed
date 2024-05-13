@@ -3,8 +3,8 @@
  * This is not ran while in-game.
  */
 
-import { AvatarUtil } from "Shared/Avatar/AvatarUtil";
-import { Flamework } from "Shared/Flamework";
+import { AvatarUtil } from "@Easy/Core/Shared/Avatar/AvatarUtil";
+import { Flamework } from "@Easy/Core/Shared/Flamework";
 import { AudioManager } from "./Audio/AudioManager";
 import { CoreContext } from "./CoreClientContext";
 import { CoreRefs } from "./CoreRefs";

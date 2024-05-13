@@ -1,10 +1,10 @@
-import { Airship } from "Shared/Airship";
-import { AssetCache } from "Shared/AssetCache/AssetCache";
-import { CoreNetwork } from "Shared/CoreNetwork";
-import { Controller, OnStart, Service } from "Shared/Flamework";
-import { Player } from "Shared/Player/Player";
-import { NetworkUtil } from "Shared/Util/NetworkUtil";
-import { Signal, SignalPriority } from "Shared/Util/Signal";
+import { Airship } from "@Easy/Core/Shared/Airship";
+import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
+import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
+import { Controller, OnStart, Service } from "@Easy/Core/Shared/Flamework";
+import { Player } from "@Easy/Core/Shared/Player/Player";
+import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
+import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { AvatarUtil } from "../Avatar/AvatarUtil";
 import { CoreContext } from "../CoreClientContext";
 import { Game } from "../Game";

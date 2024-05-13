@@ -1,9 +1,9 @@
-import { Airship } from "Shared/Airship";
-import { CoreContext } from "Shared/CoreClientContext";
-import { Controller, OnStart } from "Shared/Flamework";
-import { Game } from "Shared/Game";
-import { Mouse } from "Shared/UserInput";
-import { Bin } from "Shared/Util/Bin";
+import { Airship } from "@Easy/Core/Shared/Airship";
+import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
+import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Game } from "@Easy/Core/Shared/Game";
+import { Mouse } from "@Easy/Core/Shared/UserInput";
+import { Bin } from "@Easy/Core/Shared/Util/Bin";
 
 @Controller({ loadOrder: -10 })
 export class LoadingScreenSingleton implements OnStart {

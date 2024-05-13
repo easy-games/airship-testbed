@@ -1,11 +1,11 @@
-import { Controller, OnStart, Service } from "Shared/Flamework";
+import { Controller, OnStart, Service } from "@Easy/Core/Shared/Flamework";
 import ObjectUtils from "@easy-games/unity-object-utils";
-import { Airship } from "Shared/Airship";
-import { CoreNetwork } from "Shared/CoreNetwork";
-import { Player } from "Shared/Player/Player";
-import { Bin } from "Shared/Util/Bin";
-import { RunUtil } from "Shared/Util/RunUtil";
-import { Signal, SignalPriority } from "Shared/Util/Signal";
+import { Airship } from "@Easy/Core/Shared/Airship";
+import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
+import { Player } from "@Easy/Core/Shared/Player/Player";
+import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
+import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { Team } from "./Team";
 
 interface TeamEntry {

@@ -1,14 +1,14 @@
-import { OnStart, Service } from "Shared/Flamework";
+import { OnStart, Service } from "@Easy/Core/Shared/Flamework";
 import Object from "@easy-games/unity-object-utils";
-import { Airship } from "Shared/Airship";
-import { CoreNetwork } from "Shared/CoreNetwork";
-import { CoreRefs } from "Shared/CoreRefs";
-import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
-import { GroundItem, GroundItemData } from "Shared/GroundItem/GroundItem";
-import { GroundItemUtil } from "Shared/GroundItem/GroundItemUtil";
-import { ItemStack } from "Shared/Inventory/ItemStack";
-import { Task } from "Shared/Util/Task";
-import { TimeUtil } from "Shared/Util/TimeUtil";
+import { Airship } from "@Easy/Core/Shared/Airship";
+import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
+import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
+import { GameObjectUtil } from "@Easy/Core/Shared/GameObject/GameObjectUtil";
+import { GroundItem, GroundItemData } from "@Easy/Core/Shared/GroundItem/GroundItem";
+import { GroundItemUtil } from "@Easy/Core/Shared/GroundItem/GroundItemUtil";
+import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
+import { Task } from "@Easy/Core/Shared/Util/Task";
+import { TimeUtil } from "@Easy/Core/Shared/Util/TimeUtil";
 
 // Position of items are rounded to a multiple of this number,
 // and are merged if they share the same rounded position:

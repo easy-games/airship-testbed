@@ -1,5 +1,5 @@
-import { CoreRefs } from "Shared/CoreRefs";
-import { Controller, OnStart } from "Shared/Flamework";
+import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
+import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
 
 @Controller({})
 export class ViewmodelController implements OnStart {

@@ -1,9 +1,9 @@
-import { Airship } from "Shared/Airship";
-import { Controller, OnStart, Service } from "Shared/Flamework";
-import { RemoteEvent } from "Shared/Network/RemoteEvent";
-import { NetworkUtil } from "Shared/Util/NetworkUtil";
-import { RunUtil } from "Shared/Util/RunUtil";
-import { Signal } from "Shared/Util/Signal";
+import { Airship } from "@Easy/Core/Shared/Airship";
+import { Controller, OnStart, Service } from "@Easy/Core/Shared/Flamework";
+import { RemoteEvent } from "@Easy/Core/Shared/Network/RemoteEvent";
+import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
+import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
+import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { CanClientDamageInfo } from "./CanClientDamageInfo";
 import { DamageInfo, DamageInfoCustomData } from "./DamageInfo";
 

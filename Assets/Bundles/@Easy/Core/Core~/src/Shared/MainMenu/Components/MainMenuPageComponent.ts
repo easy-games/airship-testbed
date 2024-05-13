@@ -1,6 +1,6 @@
 import { Game } from "@Easy/Core/Shared/Game";
-import {} from "Shared/Flamework";
-import { SetTimeout } from "Shared/Util/Timer";
+import {} from "@Easy/Core/Shared/Flamework";
+import { SetTimeout } from "@Easy/Core/Shared/Util/Timer";
 import { MainMenuController } from "../../../Client/ProtectedControllers//MainMenuController";
 import { MainMenuPageType } from "../../../Client/ProtectedControllers//MainMenuPageName";
 

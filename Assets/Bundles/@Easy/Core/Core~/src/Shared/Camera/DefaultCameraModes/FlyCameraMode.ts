@@ -1,9 +1,9 @@
-import { Game } from "Shared/Game";
-import { Keyboard, Mouse } from "Shared/UserInput";
-import { Bin } from "Shared/Util/Bin";
-import { MathUtil } from "Shared/Util/MathUtil";
-import { SignalPriority } from "Shared/Util/Signal";
-import { Spring } from "Shared/Util/Spring";
+import { Game } from "@Easy/Core/Shared/Game";
+import { Keyboard, Mouse } from "@Easy/Core/Shared/UserInput";
+import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { MathUtil } from "@Easy/Core/Shared/Util/MathUtil";
+import { SignalPriority } from "@Easy/Core/Shared/Util/Signal";
+import { Spring } from "@Easy/Core/Shared/Util/Spring";
 import { Airship } from "../../Airship";
 import { CameraMode } from "../CameraMode";
 import { CameraTransform } from "../CameraTransform";

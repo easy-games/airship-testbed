@@ -1,6 +1,6 @@
 import ObjectUtils from "@easy-games/unity-object-utils";
-import { CoreSound } from "Shared/Sound/CoreSound";
-import { PhysicsUtil } from "Shared/Util/PhysicsUtil";
+import { CoreSound } from "@Easy/Core/Shared/Sound/CoreSound";
+import { PhysicsUtil } from "@Easy/Core/Shared/Util/PhysicsUtil";
 import { AllBundleItems } from "../Util/ReferenceManagerResources";
 import { ArmorType } from "./ArmorType";
 import { CoreItemType } from "./CoreItemType";

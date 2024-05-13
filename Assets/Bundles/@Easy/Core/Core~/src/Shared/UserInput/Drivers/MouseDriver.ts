@@ -1,5 +1,5 @@
-import { CanvasAPI } from "Shared/Util/CanvasAPI";
-import { Signal } from "Shared/Util/Signal";
+import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
+import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { PointerButtonSignal } from "./Signals/PointerButtonSignal";
 import { ScrollSignal } from "./Signals/ScrollSignal";
 

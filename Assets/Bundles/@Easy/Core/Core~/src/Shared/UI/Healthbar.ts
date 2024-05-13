@@ -1,4 +1,4 @@
-﻿import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
+﻿import { GameObjectUtil } from "@Easy/Core/Shared/GameObject/GameObjectUtil";
 import { Task } from "../Util/Task";
 
 export interface ProgressBarOptions {

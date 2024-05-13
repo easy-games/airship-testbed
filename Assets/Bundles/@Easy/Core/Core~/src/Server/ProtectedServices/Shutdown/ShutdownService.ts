@@ -1,7 +1,7 @@
-import { Airship } from "Shared/Airship";
-import { OnStart, Service } from "Shared/Flamework";
-import { RunUtil } from "Shared/Util/RunUtil";
-import { SetInterval } from "Shared/Util/Timer";
+import { Airship } from "@Easy/Core/Shared/Airship";
+import { OnStart, Service } from "@Easy/Core/Shared/Flamework";
+import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
+import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
 
 @Service({})
 export class ShutdownService implements OnStart {

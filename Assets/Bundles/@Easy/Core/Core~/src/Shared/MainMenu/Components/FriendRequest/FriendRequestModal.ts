@@ -1,6 +1,6 @@
 import { FriendsController } from "@Easy/Core/Client/ProtectedControllers//Social/FriendsController";
-import { Dependency } from "Shared/Flamework";
-import { Bin } from "Shared/Util/Bin";
+import { Dependency } from "@Easy/Core/Shared/Flamework";
+import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import IncomingFriendRequestCard from "./IncomingFriendRequestCard";
 
 export default class FriendRequestModal extends AirshipBehaviour {

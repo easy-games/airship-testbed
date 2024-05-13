@@ -1,5 +1,5 @@
 import Object from "@easy-games/unity-object-utils";
-import { Signal } from "Shared/Util/Signal";
+import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { ItemDef } from "./ItemDefinitionTypes";
 import { CoreItemDefinitions, ItemTypeComponentsInternal } from "./ItemDefinitions";
 

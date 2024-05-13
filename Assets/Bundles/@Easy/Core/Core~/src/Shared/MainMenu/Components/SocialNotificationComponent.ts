@@ -1,6 +1,6 @@
-import { Bin } from "Shared/Util/Bin";
-import { CanvasAPI } from "Shared/Util/CanvasAPI";
-import { Signal } from "Shared/Util/Signal";
+import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
+import { Signal } from "@Easy/Core/Shared/Util/Signal";
 
 export default class SocialNotificationComponent extends AirshipBehaviour {
 	public titleText!: TMP_Text;

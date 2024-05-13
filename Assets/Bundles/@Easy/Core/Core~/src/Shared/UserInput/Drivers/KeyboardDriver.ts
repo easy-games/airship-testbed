@@ -1,5 +1,5 @@
-import { CanvasAPI } from "Shared/Util/CanvasAPI";
-import { Signal, SignalPriority } from "Shared/Util/Signal";
+import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
+import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { KeySignal } from "./Signals/KeySignal";
 
 export class KeyboardDriver {
