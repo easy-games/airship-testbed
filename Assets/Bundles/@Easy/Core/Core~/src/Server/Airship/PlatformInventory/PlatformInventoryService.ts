@@ -7,7 +7,7 @@ import {
 	OutfitDto,
 	ProfilePictureInstanceDto,
 	Transaction,
-} from "Shared/Airship/Types/Outputs/PlatformInventory";
+} from "@Easy/Core/Shared/Airship/Types/Outputs/PlatformInventory";
 import { OnStart, Service } from "@Easy/Core/Shared/Flamework";
 import { Result } from "@Easy/Core/Shared/Types/Result";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";

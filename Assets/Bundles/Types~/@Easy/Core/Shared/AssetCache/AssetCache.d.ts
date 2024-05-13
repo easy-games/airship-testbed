@@ -3,7 +3,7 @@ export declare class AssetCache {
     /**
      * Loads a file from game bundle.
      *
-     * Example path: "Shared/Resources/Test.prefab"
+     * Example path: "@Easy/Core/Shared/Resources/Test.prefab"
      *
      * Make sure to include a file extension (example: `.prefab` or `.png`)
      * @returns
@@ -12,7 +12,7 @@ export declare class AssetCache {
     /**
      * Loads a file from game bundle.
      *
-     * Example path: "Shared/Resources/Test.prefab"
+     * Example path: "@Easy/Core/Shared/Resources/Test.prefab"
      *
      * Make sure to include a file extension (example: `.prefab` or `.png`)
      * @returns
