@@ -2849,6 +2849,10 @@ declare const enum SaveFolder {
     PicturesFolder = 1,
     Documents = 2,
 }
+declare const enum LogContext {
+    Client = 0,
+    Server = 1,
+}
 declare const enum Key {
     None = 0,
     Space = 1,
@@ -2969,10 +2973,6 @@ declare const enum Key {
     OEM4 = 109,
     OEM5 = 110,
     IMESelected = 111,
-}
-declare const enum LogContext {
-    Client = 0,
-    Server = 1,
 }
 declare const enum BlendMode {
     Normal = 0,
@@ -3555,6 +3555,54 @@ declare const enum TerrainHeightmapSyncControl {
     None = 0,
     HeightOnly = 1,
     HeightAndLod = 2,
+}
+declare const enum ColorGamut {
+    sRGB = 0,
+    Rec709 = 1,
+    Rec2020 = 2,
+    DisplayP3 = 3,
+    HDR10 = 4,
+    DolbyHDR = 5,
+    P3D65G22 = 6,
+}
+declare const enum GraphicsTier {
+    Tier1 = 0,
+    Tier2 = 1,
+    Tier3 = 2,
+}
+declare const enum OpenGLESVersion {
+    None = 0,
+    OpenGLES20 = 1,
+    OpenGLES30 = 2,
+    OpenGLES31 = 3,
+    OpenGLES31AEP = 4,
+    OpenGLES32 = 5,
+}
+declare const enum BoundingBoxMode {
+    AutomaticLocal = 0,
+    AutomaticWorld = 1,
+    Custom = 2,
+}
+declare const enum ResolutionMode {
+    Automatic = 0,
+    Custom = 1,
+}
+declare const enum ProbePositionMode {
+    CellCorner = 0,
+    CellCenter = 1,
+}
+declare const enum RefreshMode {
+    Automatic = 0,
+    EveryFrame = 1,
+    ViaScripting = 2,
+}
+declare const enum QualityMode {
+    Low = 0,
+    Normal = 1,
+}
+declare const enum DataFormat {
+    HalfFloat = 0,
+    Float = 1,
 }
 
     
@@ -13821,6 +13869,7 @@ interface GameConfig extends ScriptableObject {
     gameScenes: CSArray<Object>;
     packages: CSArray<AirshipPackageDocument>;
     tags: CSArray<string>;
+    gameLayers: CSArray<string>;
 
 
     ToJson(): string;
@@ -18401,6 +18450,31 @@ interface DevConsole {
 
 }
     
+interface DevConsoleMono extends MonoBehaviour {
+    activeContext: LogContext;
+
+
+    ClearActiveConsoleContext(): void;
+    CloseConsole(): void;
+    OnClientTabClick(): void;
+    OnLogMessageCallback(logString: string, stackTrace: string, type: LogType): void;
+    OnLogMessageReceived(logString: string, stackTrace: string, type: LogType, context: LogContext, time: string, prepend: boolean): void;
+    OnRepositionButtonPointerDown(eventData: BaseEventData): void;
+    OnRepositionButtonPointerUp(_: BaseEventData): void;
+    OnServerTabClick(): void;
+    OpenLogsFolder(): void;
+    SetActiveContext(context: LogContext): void;
+
+}
+    
+interface DevConsoleMonoConstructor {
+
+    new(): DevConsoleMono;
+
+
+}
+declare const DevConsoleMono: DevConsoleMonoConstructor;
+    
 interface Command {
     Name: string;
     HelpText: string;
@@ -18450,6 +18524,7 @@ interface CommandConstructor {
 declare const Command: CommandConstructor;
     
 interface DevConsoleConstructor {
+    console: DevConsoleMono;
     IsEnabled: boolean;
     IsOpen: boolean;
     IsOpenAndFocused: boolean;
@@ -18472,17 +18547,17 @@ interface DevConsoleConstructor {
     GetCommand(name: string, command: unknown): boolean;
     InvokeCoroutine(enumerator: unknown): Coroutine;
     InvokeDelayed(action: unknown, delay: number): Coroutine;
-    Log(message: unknown, context: LogContext): void;
-    Log(message: unknown, colour: Color, context: LogContext): void;
+    Log(message: unknown, context: LogContext, prepend: boolean): void;
+    Log(message: unknown, colour: Color, context: LogContext, prepend: boolean): void;
     LogCollection<T>(collection: CSArray<T>, toString: unknown, prefix: string, suffix: string): void;
     LogCommand(): void;
     LogCommand(name: string): void;
-    LogError(message: unknown, context: LogContext): void;
-    LogException(exception: unknown, context: LogContext): void;
+    LogError(message: unknown, context: LogContext, prepend: boolean): void;
+    LogException(exception: unknown, context: LogContext, prepend: boolean): void;
     LogSeperator(message: unknown): void;
     LogSuccess(message: unknown, context: LogContext): void;
     LogVariable(variableName: string, value: unknown, suffix: string): void;
-    LogWarning(message: unknown, context: LogContext): void;
+    LogWarning(message: unknown, context: LogContext, prepend: boolean): void;
     OpenConsole(): void;
     RemoveCommand(name: string): boolean;
     RemoveTrackedStat(name: string): boolean;
@@ -19116,38 +19191,6 @@ interface ScreenConstructor {
     SetResolution(width: number, height: number, fullscreen: boolean): void;
 }
 declare const Screen: ScreenConstructor;
-    
-interface AirshipPointLight extends MonoBehaviour {
-    color: Color;
-    intensity: number;
-    range: number;
-    castShadows: boolean;
-
-
-    BuildDto(): PointLightDto;
-
-}
-    
-interface PointLightDto {
-    color: Color;
-    position: Vector3;
-    rotation: Quaternion;
-    intensity: number;
-    range: number;
-    castShadows: boolean;
-
-
-
-}
-    
-interface AirshipPointLightConstructor {
-
-    new(): AirshipPointLight;
-
-
-    GetAllPointLights(): CSArray<AirshipPointLight>;
-}
-declare const AirshipPointLight: AirshipPointLightConstructor;
     
 interface Gizmos {
 
@@ -21884,4 +21927,263 @@ interface NavMeshHit {
 
 
 }
+    
+interface Graphics {
+
+
+
+}
+    
+interface LightProbeProxyVolume extends Behaviour {
+    boundsGlobal: Bounds;
+    sizeCustom: Vector3;
+    originCustom: Vector3;
+    probeDensity: number;
+    gridResolutionX: number;
+    gridResolutionY: number;
+    gridResolutionZ: number;
+    boundingBoxMode: BoundingBoxMode;
+    resolutionMode: ResolutionMode;
+    probePositionMode: ProbePositionMode;
+    refreshMode: RefreshMode;
+    qualityMode: QualityMode;
+    dataFormat: DataFormat;
+
+
+    /** Triggers an update of the Light Probe Proxy Volume. */
+    Update(): void;
+
+}
+    
+interface LightProbeProxyVolumeConstructor {
+    isFeatureSupported: boolean;
+
+    new(): LightProbeProxyVolume;
+
+
+}
+declare const LightProbeProxyVolume: LightProbeProxyVolumeConstructor;
+    
+interface RenderParams {
+    layer: number;
+    renderingLayerMask: number;
+    rendererPriority: number;
+    instanceID: number;
+    worldBounds: Bounds;
+    camera: Camera;
+    motionVectorMode: MotionVectorGenerationMode;
+    reflectionProbeUsage: ReflectionProbeUsage;
+    material: Material;
+    matProps: MaterialPropertyBlock;
+    shadowCastingMode: ShadowCastingMode;
+    receiveShadows: boolean;
+    lightProbeUsage: LightProbeUsage;
+    lightProbeProxyVolume: LightProbeProxyVolume;
+    overrideSceneCullingMask: boolean;
+    sceneCullingMask: number;
+
+
+
+}
+    
+interface RenderParamsConstructor {
+
+    new(mat: Material): RenderParams;
+
+
+}
+declare const RenderParams: RenderParamsConstructor;
+    
+interface RenderTargetSetup {
+    color: CSArray<RenderBuffer>;
+    depth: RenderBuffer;
+    mipLevel: number;
+    cubemapFace: CubemapFace;
+    depthSlice: number;
+    colorLoad: CSArray<number>;
+    colorStore: CSArray<number>;
+    depthLoad: RenderBufferLoadAction;
+    depthStore: RenderBufferStoreAction;
+
+
+
+}
+    
+interface RenderTargetSetupConstructor {
+
+    new(color: CSArray<RenderBuffer>, depth: RenderBuffer, mip: number, face: CubemapFace, colorLoad: CSArray<number>, colorStore: CSArray<number>, depthLoad: RenderBufferLoadAction, depthStore: RenderBufferStoreAction): RenderTargetSetup;
+    new(color: RenderBuffer, depth: RenderBuffer): RenderTargetSetup;
+    new(color: RenderBuffer, depth: RenderBuffer, mipLevel: number): RenderTargetSetup;
+    new(color: RenderBuffer, depth: RenderBuffer, mipLevel: number, face: CubemapFace): RenderTargetSetup;
+    new(color: RenderBuffer, depth: RenderBuffer, mipLevel: number, face: CubemapFace, depthSlice: number): RenderTargetSetup;
+    new(color: CSArray<RenderBuffer>, depth: RenderBuffer): RenderTargetSetup;
+    new(color: CSArray<RenderBuffer>, depth: RenderBuffer, mipLevel: number): RenderTargetSetup;
+    new(color: CSArray<RenderBuffer>, depth: RenderBuffer, mip: number, face: CubemapFace): RenderTargetSetup;
+
+
+}
+declare const RenderTargetSetup: RenderTargetSetupConstructor;
+    
+interface GraphicsConstructor {
+    activeColorGamut: ColorGamut;
+    activeTier: GraphicsTier;
+    preserveFramebufferAlpha: boolean;
+    minOpenGLESVersion: OpenGLESVersion;
+    activeColorBuffer: RenderBuffer;
+    activeDepthBuffer: RenderBuffer;
+    deviceName: string;
+    deviceVendor: string;
+    deviceVersion: string;
+
+    new(): Graphics;
+
+
+    Blit(source: Texture, dest: RenderTexture): void;
+    Blit(source: Texture, dest: RenderTexture, sourceDepthSlice: number, destDepthSlice: number): void;
+    Blit(source: Texture, dest: RenderTexture, scale: Vector2, offset: Vector2): void;
+    Blit(source: Texture, dest: RenderTexture, scale: Vector2, offset: Vector2, sourceDepthSlice: number, destDepthSlice: number): void;
+    Blit(source: Texture, dest: RenderTexture, mat: Material, pass: number): void;
+    Blit(source: Texture, dest: RenderTexture, mat: Material, pass: number, destDepthSlice: number): void;
+    Blit(source: Texture, dest: RenderTexture, mat: Material): void;
+    Blit(source: Texture, mat: Material, pass: number): void;
+    Blit(source: Texture, mat: Material, pass: number, destDepthSlice: number): void;
+    Blit(source: Texture, mat: Material): void;
+    Blit(source: Texture, dest: GraphicsTexture): void;
+    Blit(source: Texture, dest: GraphicsTexture, sourceDepthSlice: number, destDepthSlice: number): void;
+    Blit(source: Texture, dest: GraphicsTexture, scale: Vector2, offset: Vector2): void;
+    Blit(source: Texture, dest: GraphicsTexture, scale: Vector2, offset: Vector2, sourceDepthSlice: number, destDepthSlice: number): void;
+    Blit(source: Texture, dest: GraphicsTexture, mat: Material, pass: number): void;
+    Blit(source: Texture, dest: GraphicsTexture, mat: Material, pass: number, destDepthSlice: number): void;
+    Blit(source: Texture, dest: GraphicsTexture, mat: Material): void;
+    BlitMultiTap(source: Texture, dest: RenderTexture, mat: Material, offsets: CSArray<Vector2>): void;
+    BlitMultiTap(source: Texture, dest: RenderTexture, mat: Material, destDepthSlice: number, offsets: CSArray<Vector2>): void;
+    BlitMultiTap(source: Texture, dest: GraphicsTexture, mat: Material, offsets: CSArray<Vector2>): void;
+    BlitMultiTap(source: Texture, dest: GraphicsTexture, mat: Material, destDepthSlice: number, offsets: CSArray<Vector2>): void;
+    ClearRandomWriteTargets(): void;
+    ConvertTexture(src: Texture, dst: Texture): boolean;
+    ConvertTexture(src: Texture, srcElement: number, dst: Texture, dstElement: number): boolean;
+    CopyBuffer(source: GraphicsBuffer, dest: GraphicsBuffer): void;
+    CopyTexture(src: Texture, dst: Texture): void;
+    CopyTexture(src: Texture, srcElement: number, dst: Texture, dstElement: number): void;
+    CopyTexture(src: Texture, srcElement: number, srcMip: number, dst: Texture, dstElement: number, dstMip: number): void;
+    CopyTexture(src: Texture, srcElement: number, srcMip: number, srcX: number, srcY: number, srcWidth: number, srcHeight: number, dst: Texture, dstElement: number, dstMip: number, dstX: number, dstY: number): void;
+    CreateAsyncGraphicsFence(stage: SynchronisationStage): GraphicsFence;
+    CreateAsyncGraphicsFence(): GraphicsFence;
+    CreateGPUFence(stage: SynchronisationStage): GPUFence;
+    CreateGPUFence(): GPUFence;
+    CreateGraphicsFence(fenceType: GraphicsFenceType, stage: SynchronisationStageFlags): GraphicsFence;
+    DrawMesh(mesh: Mesh, position: Vector3, rotation: Quaternion, material: Material, layer: number, camera: Camera, submeshIndex: number, properties: MaterialPropertyBlock, castShadows: boolean, receiveShadows: boolean, useLightProbes: boolean): void;
+    DrawMesh(mesh: Mesh, position: Vector3, rotation: Quaternion, material: Material, layer: number, camera: Camera, submeshIndex: number, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean, probeAnchor: Transform, useLightProbes: boolean): void;
+    DrawMesh(mesh: Mesh, matrix: Matrix4x4, material: Material, layer: number, camera: Camera, submeshIndex: number, properties: MaterialPropertyBlock, castShadows: boolean, receiveShadows: boolean, useLightProbes: boolean): void;
+    DrawMesh(mesh: Mesh, matrix: Matrix4x4, material: Material, layer: number, camera: Camera, submeshIndex: number, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean, probeAnchor: Transform, lightProbeUsage: LightProbeUsage, lightProbeProxyVolume: LightProbeProxyVolume): void;
+    DrawMesh(mesh: Mesh, position: Vector3, rotation: Quaternion): void;
+    DrawMesh(mesh: Mesh, position: Vector3, rotation: Quaternion, materialIndex: number): void;
+    DrawMesh(mesh: Mesh, matrix: Matrix4x4): void;
+    DrawMesh(mesh: Mesh, matrix: Matrix4x4, materialIndex: number): void;
+    DrawMesh(mesh: Mesh, position: Vector3, rotation: Quaternion, material: Material, layer: number): void;
+    DrawMesh(mesh: Mesh, position: Vector3, rotation: Quaternion, material: Material, layer: number, camera: Camera): void;
+    DrawMesh(mesh: Mesh, position: Vector3, rotation: Quaternion, material: Material, layer: number, camera: Camera, submeshIndex: number): void;
+    DrawMesh(mesh: Mesh, position: Vector3, rotation: Quaternion, material: Material, layer: number, camera: Camera, submeshIndex: number, properties: MaterialPropertyBlock): void;
+    DrawMesh(mesh: Mesh, position: Vector3, rotation: Quaternion, material: Material, layer: number, camera: Camera, submeshIndex: number, properties: MaterialPropertyBlock, castShadows: boolean): void;
+    DrawMesh(mesh: Mesh, position: Vector3, rotation: Quaternion, material: Material, layer: number, camera: Camera, submeshIndex: number, properties: MaterialPropertyBlock, castShadows: boolean, receiveShadows: boolean): void;
+    DrawMesh(mesh: Mesh, position: Vector3, rotation: Quaternion, material: Material, layer: number, camera: Camera, submeshIndex: number, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode): void;
+    DrawMesh(mesh: Mesh, position: Vector3, rotation: Quaternion, material: Material, layer: number, camera: Camera, submeshIndex: number, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean): void;
+    DrawMesh(mesh: Mesh, position: Vector3, rotation: Quaternion, material: Material, layer: number, camera: Camera, submeshIndex: number, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean, probeAnchor: Transform): void;
+    DrawMesh(mesh: Mesh, matrix: Matrix4x4, material: Material, layer: number): void;
+    DrawMesh(mesh: Mesh, matrix: Matrix4x4, material: Material, layer: number, camera: Camera): void;
+    DrawMesh(mesh: Mesh, matrix: Matrix4x4, material: Material, layer: number, camera: Camera, submeshIndex: number): void;
+    DrawMesh(mesh: Mesh, matrix: Matrix4x4, material: Material, layer: number, camera: Camera, submeshIndex: number, properties: MaterialPropertyBlock): void;
+    DrawMesh(mesh: Mesh, matrix: Matrix4x4, material: Material, layer: number, camera: Camera, submeshIndex: number, properties: MaterialPropertyBlock, castShadows: boolean): void;
+    DrawMesh(mesh: Mesh, matrix: Matrix4x4, material: Material, layer: number, camera: Camera, submeshIndex: number, properties: MaterialPropertyBlock, castShadows: boolean, receiveShadows: boolean): void;
+    DrawMesh(mesh: Mesh, matrix: Matrix4x4, material: Material, layer: number, camera: Camera, submeshIndex: number, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode): void;
+    DrawMesh(mesh: Mesh, matrix: Matrix4x4, material: Material, layer: number, camera: Camera, submeshIndex: number, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean): void;
+    DrawMesh(mesh: Mesh, matrix: Matrix4x4, material: Material, layer: number, camera: Camera, submeshIndex: number, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean, probeAnchor: Transform): void;
+    DrawMesh(mesh: Mesh, matrix: Matrix4x4, material: Material, layer: number, camera: Camera, submeshIndex: number, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean, probeAnchor: Transform, useLightProbes: boolean): void;
+    DrawMesh(mesh: Mesh, matrix: Matrix4x4, material: Material, layer: number, camera: Camera, submeshIndex: number, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean, probeAnchor: Transform, lightProbeUsage: LightProbeUsage): void;
+    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: CSArray<Matrix4x4>, count: number, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean, layer: number, camera: Camera, lightProbeUsage: LightProbeUsage, lightProbeProxyVolume: LightProbeProxyVolume): void;
+    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: CSArray<Matrix4x4>, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean, layer: number, camera: Camera, lightProbeUsage: LightProbeUsage, lightProbeProxyVolume: LightProbeProxyVolume): void;
+    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: CSArray<Matrix4x4>): void;
+    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: CSArray<Matrix4x4>, count: number): void;
+    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: CSArray<Matrix4x4>, count: number, properties: MaterialPropertyBlock): void;
+    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: CSArray<Matrix4x4>, count: number, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode): void;
+    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: CSArray<Matrix4x4>, count: number, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean): void;
+    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: CSArray<Matrix4x4>, count: number, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean, layer: number): void;
+    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: CSArray<Matrix4x4>, count: number, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean, layer: number, camera: Camera): void;
+    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: CSArray<Matrix4x4>, count: number, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean, layer: number, camera: Camera, lightProbeUsage: LightProbeUsage): void;
+    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: CSArray<Matrix4x4>): void;
+    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: CSArray<Matrix4x4>, properties: MaterialPropertyBlock): void;
+    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: CSArray<Matrix4x4>, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode): void;
+    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: CSArray<Matrix4x4>, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean): void;
+    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: CSArray<Matrix4x4>, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean, layer: number): void;
+    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: CSArray<Matrix4x4>, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean, layer: number, camera: Camera): void;
+    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: CSArray<Matrix4x4>, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean, layer: number, camera: Camera, lightProbeUsage: LightProbeUsage): void;
+    DrawMeshInstancedIndirect(mesh: Mesh, submeshIndex: number, material: Material, bounds: Bounds, bufferWithArgs: ComputeBuffer, argsOffset: number, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean, layer: number, camera: Camera, lightProbeUsage: LightProbeUsage, lightProbeProxyVolume: LightProbeProxyVolume): void;
+    DrawMeshInstancedIndirect(mesh: Mesh, submeshIndex: number, material: Material, bounds: Bounds, bufferWithArgs: GraphicsBuffer, argsOffset: number, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean, layer: number, camera: Camera, lightProbeUsage: LightProbeUsage, lightProbeProxyVolume: LightProbeProxyVolume): void;
+    DrawMeshInstancedIndirect(mesh: Mesh, submeshIndex: number, material: Material, bounds: Bounds, bufferWithArgs: ComputeBuffer, argsOffset: number, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean, layer: number, camera: Camera, lightProbeUsage: LightProbeUsage): void;
+    DrawMeshInstancedIndirect(mesh: Mesh, submeshIndex: number, material: Material, bounds: Bounds, bufferWithArgs: GraphicsBuffer, argsOffset: number, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean, layer: number, camera: Camera, lightProbeUsage: LightProbeUsage): void;
+    DrawMeshInstancedProcedural(mesh: Mesh, submeshIndex: number, material: Material, bounds: Bounds, count: number, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean, layer: number, camera: Camera, lightProbeUsage: LightProbeUsage, lightProbeProxyVolume: LightProbeProxyVolume): void;
+    DrawMeshNow(mesh: Mesh, position: Vector3, rotation: Quaternion, materialIndex: number): void;
+    DrawMeshNow(mesh: Mesh, matrix: Matrix4x4, materialIndex: number): void;
+    DrawMeshNow(mesh: Mesh, position: Vector3, rotation: Quaternion): void;
+    DrawMeshNow(mesh: Mesh, matrix: Matrix4x4): void;
+    DrawProcedural(material: Material, bounds: Bounds, topology: MeshTopology, vertexCount: number, instanceCount: number, camera: Camera, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean, layer: number): void;
+    DrawProcedural(material: Material, bounds: Bounds, topology: MeshTopology, indexBuffer: GraphicsBuffer, indexCount: number, instanceCount: number, camera: Camera, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean, layer: number): void;
+    DrawProcedural(topology: MeshTopology, vertexCount: number, instanceCount: number): void;
+    DrawProceduralIndirect(material: Material, bounds: Bounds, topology: MeshTopology, bufferWithArgs: ComputeBuffer, argsOffset: number, camera: Camera, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean, layer: number): void;
+    DrawProceduralIndirect(material: Material, bounds: Bounds, topology: MeshTopology, bufferWithArgs: GraphicsBuffer, argsOffset: number, camera: Camera, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean, layer: number): void;
+    DrawProceduralIndirect(material: Material, bounds: Bounds, topology: MeshTopology, indexBuffer: GraphicsBuffer, bufferWithArgs: ComputeBuffer, argsOffset: number, camera: Camera, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean, layer: number): void;
+    DrawProceduralIndirect(material: Material, bounds: Bounds, topology: MeshTopology, indexBuffer: GraphicsBuffer, bufferWithArgs: GraphicsBuffer, argsOffset: number, camera: Camera, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean, layer: number): void;
+    DrawProceduralIndirect(topology: MeshTopology, bufferWithArgs: ComputeBuffer, argsOffset: number): void;
+    DrawProceduralIndirectNow(topology: MeshTopology, bufferWithArgs: ComputeBuffer, argsOffset: number): void;
+    DrawProceduralIndirectNow(topology: MeshTopology, indexBuffer: GraphicsBuffer, bufferWithArgs: ComputeBuffer, argsOffset: number): void;
+    DrawProceduralIndirectNow(topology: MeshTopology, bufferWithArgs: GraphicsBuffer, argsOffset: number): void;
+    DrawProceduralIndirectNow(topology: MeshTopology, indexBuffer: GraphicsBuffer, bufferWithArgs: GraphicsBuffer, argsOffset: number): void;
+    DrawProceduralNow(topology: MeshTopology, vertexCount: number, instanceCount: number): void;
+    DrawProceduralNow(topology: MeshTopology, indexBuffer: GraphicsBuffer, indexCount: number, instanceCount: number): void;
+    DrawTexture(screenRect: Rect, texture: Texture, sourceRect: Rect, leftBorder: number, rightBorder: number, topBorder: number, bottomBorder: number, color: Color, mat: Material, pass: number): void;
+    DrawTexture(screenRect: Rect, texture: Texture, sourceRect: Rect, leftBorder: number, rightBorder: number, topBorder: number, bottomBorder: number, mat: Material, pass: number): void;
+    DrawTexture(screenRect: Rect, texture: Texture, leftBorder: number, rightBorder: number, topBorder: number, bottomBorder: number, mat: Material, pass: number): void;
+    DrawTexture(screenRect: Rect, texture: Texture, mat: Material, pass: number): void;
+    DrawTexture(screenRect: Rect, texture: Texture, sourceRect: Rect, leftBorder: number, rightBorder: number, topBorder: number, bottomBorder: number, color: Color, mat: Material): void;
+    DrawTexture(screenRect: Rect, texture: Texture, sourceRect: Rect, leftBorder: number, rightBorder: number, topBorder: number, bottomBorder: number, color: Color): void;
+    DrawTexture(screenRect: Rect, texture: Texture, sourceRect: Rect, leftBorder: number, rightBorder: number, topBorder: number, bottomBorder: number, mat: Material): void;
+    DrawTexture(screenRect: Rect, texture: Texture, sourceRect: Rect, leftBorder: number, rightBorder: number, topBorder: number, bottomBorder: number): void;
+    DrawTexture(screenRect: Rect, texture: Texture, leftBorder: number, rightBorder: number, topBorder: number, bottomBorder: number, mat: Material): void;
+    DrawTexture(screenRect: Rect, texture: Texture, leftBorder: number, rightBorder: number, topBorder: number, bottomBorder: number): void;
+    DrawTexture(screenRect: Rect, texture: Texture, mat: Material): void;
+    DrawTexture(screenRect: Rect, texture: Texture): void;
+    ExecuteCommandBuffer(buffer: CommandBuffer): void;
+    ExecuteCommandBufferAsync(buffer: CommandBuffer, queueType: ComputeQueueType): void;
+    RenderMesh(rparams: unknown, mesh: Mesh, submeshIndex: number, objectToWorld: Matrix4x4, prevObjectToWorld: unknown): void;
+    RenderMeshIndirect(rparams: unknown, mesh: Mesh, commandBuffer: GraphicsBuffer, commandCount: number, startCommand: number): void;
+    RenderMeshInstanced<T>(rparams: unknown, mesh: Mesh, submeshIndex: number, instanceData: CSArray<T>, instanceCount: number, startInstance: number): void;
+    RenderMeshInstanced<T>(rparams: unknown, mesh: Mesh, submeshIndex: number, instanceData: CSArray<T>, instanceCount: number, startInstance: number): void;
+    RenderMeshInstanced<T>(rparams: RenderParams, mesh: Mesh, submeshIndex: number, instanceData: CSArray<T>, instanceCount: number, startInstance: number): void;
+    RenderMeshPrimitives(rparams: unknown, mesh: Mesh, submeshIndex: number, instanceCount: number): void;
+    RenderPrimitives(rparams: unknown, topology: MeshTopology, vertexCount: number, instanceCount: number): void;
+    RenderPrimitivesIndexed(rparams: unknown, topology: MeshTopology, indexBuffer: GraphicsBuffer, indexCount: number, startIndex: number, instanceCount: number): void;
+    RenderPrimitivesIndexedIndirect(rparams: unknown, topology: MeshTopology, indexBuffer: GraphicsBuffer, commandBuffer: GraphicsBuffer, commandCount: number, startCommand: number): void;
+    RenderPrimitivesIndirect(rparams: unknown, topology: MeshTopology, commandBuffer: GraphicsBuffer, commandCount: number, startCommand: number): void;
+    SetRandomWriteTarget(index: number, uav: RenderTexture): void;
+    SetRandomWriteTarget(index: number, uav: ComputeBuffer, preserveCounterValue: boolean): void;
+    SetRandomWriteTarget(index: number, uav: GraphicsBuffer, preserveCounterValue: boolean): void;
+    SetRandomWriteTarget(index: number, uav: ComputeBuffer): void;
+    SetRandomWriteTarget(index: number, uav: GraphicsBuffer): void;
+    SetRenderTarget(rt: RenderTexture, mipLevel: number, face: CubemapFace, depthSlice: number): void;
+    SetRenderTarget(rt: GraphicsTexture, mipLevel: number, face: CubemapFace, depthSlice: number): void;
+    SetRenderTarget(colorBuffer: RenderBuffer, depthBuffer: RenderBuffer, mipLevel: number, face: CubemapFace, depthSlice: number): void;
+    SetRenderTarget(colorBuffers: CSArray<RenderBuffer>, depthBuffer: RenderBuffer): void;
+    SetRenderTarget(setup: RenderTargetSetup): void;
+    SetRenderTarget(rt: RenderTexture): void;
+    SetRenderTarget(rt: RenderTexture, mipLevel: number): void;
+    SetRenderTarget(rt: RenderTexture, mipLevel: number, face: CubemapFace): void;
+    SetRenderTarget(colorBuffer: RenderBuffer, depthBuffer: RenderBuffer): void;
+    SetRenderTarget(colorBuffer: RenderBuffer, depthBuffer: RenderBuffer, mipLevel: number): void;
+    SetRenderTarget(colorBuffer: RenderBuffer, depthBuffer: RenderBuffer, mipLevel: number, face: CubemapFace): void;
+    WaitOnAsyncGraphicsFence(fence: GraphicsFence): void;
+    WaitOnAsyncGraphicsFence(fence: GraphicsFence, stage: SynchronisationStage): void;
+    WaitOnGPUFence(fence: GPUFence, stage: SynchronisationStage): void;
+    WaitOnGPUFence(fence: GPUFence): void;
+}
+declare const Graphics: GraphicsConstructor;
 

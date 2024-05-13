@@ -720,6 +720,7 @@ MonoBehaviour:
       serializedObject: {fileID: 387939359092445338}
       modified: 1
     displayName: 
+  contextOverwritten: 0
 --- !u!1 &3851732383462049854
 GameObject:
   m_ObjectHideFlags: 0
@@ -782,7 +783,8 @@ MonoBehaviour:
   fogColor: {r: 0.0627451, g: 0.078431375, b: 0.12156863, a: 1}
   shadowRange: 50
   postProcess: 1
-  convertColorTosRGB: 1
+  bakeSun: 1
+  globalLightingMode: 1
   doShadows: 0
   cubeMap: {fileID: 8900000, guid: 16cb5d0bcc88449498fe6cd39f24c952, type: 3}
   maxBrightness: 1
@@ -926,7 +928,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3382744596816048087}
-  - component: {fileID: 4718393306561290512}
   m_Layer: 0
   m_Name: MainLight (1)
   m_TagString: Untagged
@@ -949,22 +950,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5557742821885064354}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4718393306561290512
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5667949225978481709}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b144661d7f1e8cd40b19de6f2d9660af, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  color: {r: 0.5121039, g: 0.57028955, b: 0.7924528, a: 1}
-  intensity: 0.5
-  range: 10
-  castShadows: 1
 --- !u!1 &6302162783288655769
 GameObject:
   m_ObjectHideFlags: 0
@@ -1200,7 +1185,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6021419229152810134}
-  - component: {fileID: 5166295515237678485}
   m_Layer: 0
   m_Name: MainLight
   m_TagString: Untagged
@@ -1223,22 +1207,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5557742821885064354}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5166295515237678485
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7989267505325146026}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b144661d7f1e8cd40b19de6f2d9660af, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  color: {r: 1, g: 0.9060333, b: 0.85490197, a: 1}
-  intensity: 0.1
-  range: 3
-  castShadows: 1
 --- !u!1001 &1727726523347655367
 PrefabInstance:
   m_ObjectHideFlags: 0

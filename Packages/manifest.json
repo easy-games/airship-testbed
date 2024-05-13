@@ -53,7 +53,7 @@
   "scopedRegistries": [
     {
       "name": "Airship",
-      "url": "https://registry-staging.airship.gg",
+      "url": "https://registry.npmjs.org",
       "scopes": [
         "gg.easy"
       ]
