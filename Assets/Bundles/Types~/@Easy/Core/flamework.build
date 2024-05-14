@@ -272,6 +272,7 @@
 		"@Easy/Core:Shared/Util/ArrayUtil@ArrayUtil": "$:Util/ArrayUtil@ArrayUtil",
 		"@Easy/Core:Shared/Util/LayerUtil@LayerUtil": "$:Util/LayerUtil@LayerUtil",
 		"@Easy/Core:Shared/Util/SetUtil@SetUtil": "$:Util/SetUtil@SetUtil",
+		"@Easy/Core:Shared/Util/StatusModifier@StatusModifier": "$:Util/StatusModifier@StatusModifier",
 		"@Easy/Core:Shared/Util/Vector3Util@Vector3Util": "$:Util/Vector3Util@Vector3Util",
 		"@Easy/Core:Shared/Flamework/flamework@OnInit": "$:Flamework/flamework@OnInit",
 		"@Easy/Core:Shared/Flamework/flamework@OnStart": "$:Flamework/flamework@OnStart"

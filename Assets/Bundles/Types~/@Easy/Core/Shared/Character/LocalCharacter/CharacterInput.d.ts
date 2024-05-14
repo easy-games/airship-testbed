@@ -7,6 +7,8 @@ export declare class CharacterInput {
     private disablerCounter;
     private enabled;
     private autoSprinting;
+    /** If true holding the sprint key will not result in sprinting */
+    private blockSprint;
     private queuedMoveDirection;
     constructor(character: Character);
     /**
@@ -22,4 +24,10 @@ export declare class CharacterInput {
     AddDisabler(): () => void;
     private InitControls;
     Destroy(): void;
+    /**
+     * Set wether sprint is blocked. When true the player's sprint key won't result in sprint state.
+     */
+    SetSprintBlocked(blocked: boolean): void;
+    /** Returns true if player's sprint is currently blocked. */
+    IsSprintBlocked(): boolean;
 }
