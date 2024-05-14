@@ -1,10 +1,10 @@
 import { FriendsController } from "@Easy/Core/Client/ProtectedControllers//Social/FriendsController";
-import { ClientChatSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/Chat/ClientChatSingleton";
 import { Airship } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import { ClientChatSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/Chat/ClientChatSingleton";
 import { ProfilePictureDefinitions } from "@Easy/Core/Shared/ProfilePicture/ProfilePictureDefinitions";
 import { ProfilePictureId } from "@Easy/Core/Shared/ProfilePicture/ProfilePictureId";
 import { ProfilePictureMeta } from "@Easy/Core/Shared/ProfilePicture/ProfilePictureMeta";
@@ -48,6 +48,8 @@ export class Player {
 	public selectedOutfit: OutfitDto | undefined;
 	public outfitLoaded = false;
 
+	public readonly voiceChatAudioSource!: AudioSource;
+
 	/**
 	 * WARNING: not implemented yet. only returns local platform for now.
 	 */
@@ -82,7 +84,13 @@ export class Player {
 		 * The player's username. Non-unique, unless combined with `usernameTag`.
 		 */
 		public username: string,
-	) {}
+
+		private playerInfo: PlayerInfo,
+	) {
+		if (playerInfo !== undefined) {
+			this.voiceChatAudioSource = playerInfo.voiceChatAudioSource;
+		}
+	}
 
 	/**
 	 * Can yield if the player's outfit hasn't finished downloading.

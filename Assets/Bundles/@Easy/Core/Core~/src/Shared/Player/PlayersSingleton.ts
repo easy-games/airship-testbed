@@ -1,4 +1,3 @@
-import ObjectUtils from "@easy-games/unity-object-utils";
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
@@ -10,6 +9,7 @@ import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 import { PlayerUtils } from "@Easy/Core/Shared/Util/PlayerUtils";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
+import ObjectUtils from "@easy-games/unity-object-utils";
 import { GameInfoSingleton } from "../Airship/Game/GameInfoSingleton";
 import { OutfitDto } from "../Airship/Types/Outputs/PlatformInventory";
 import { AssetCache } from "../AssetCache/AssetCache";
@@ -63,6 +63,7 @@ export class PlayersSingleton implements OnStart {
 			mutable.networkObject = localPlayerInfo.gameObject.GetComponent<NetworkObject>()!;
 			mutable.username = localPlayerInfo.username.Value;
 			mutable.userId = localPlayerInfo.userId.Value;
+			mutable.voiceChatAudioSource = localPlayerInfo.voiceChatAudioSource;
 			Game.localPlayerLoaded = true;
 			Game.onLocalPlayerLoaded.Fire();
 
@@ -71,7 +72,13 @@ export class PlayersSingleton implements OnStart {
 		};
 
 		if (Game.IsClient()) {
-			Game.localPlayer = new Player(undefined as unknown as NetworkObject, 0, "loading", "loading");
+			Game.localPlayer = new Player(
+				undefined as unknown as NetworkObject,
+				0,
+				"loading",
+				"loading",
+				undefined as unknown as PlayerInfo,
+			);
 			if (!Game.IsHosting()) {
 				/**
 				 * Host mode: start with no players
@@ -182,25 +189,27 @@ export class PlayersSingleton implements OnStart {
 	}
 
 	private InitServer(): void {
-		const onPlayerPreJoin = (playerInfo: PlayerInfoDto) => {
+		const onPlayerPreJoin = (dto: PlayerInfoDto) => {
 			// LocalPlayer is hardcoded, so we check if this client should be treated as local player.
 			let player: Player;
-			if (RunUtil.IsHosting() && playerInfo.clientId === 0) {
+			if (RunUtil.IsHosting() && dto.clientId === 0) {
 				player = Game.localPlayer;
 			} else {
+				let playerInfo = dto.gameObject.GetComponent<PlayerInfo>()!;
 				player = new Player(
-					playerInfo.gameObject.GetComponent<NetworkObject>()!,
-					playerInfo.clientId,
-					playerInfo.userId,
-					playerInfo.username,
+					dto.gameObject.GetComponent<NetworkObject>()!,
+					dto.clientId,
+					dto.userId,
+					dto.username,
+					playerInfo,
 				);
 			}
-			playerInfo.gameObject.name = `Player_${playerInfo.username}`;
-			this.playersPendingReady.set(playerInfo.clientId, player);
+			dto.gameObject.name = `Player_${dto.username}`;
+			this.playersPendingReady.set(dto.clientId, player);
 
 			// Ready bots immediately
-			if (playerInfo.clientId < 0) {
-				this.playersPendingReady.delete(playerInfo.clientId);
+			if (dto.clientId < 0) {
+				this.playersPendingReady.delete(dto.clientId);
 				this.HandlePlayerReadyServer(player);
 			}
 		};
@@ -342,7 +351,8 @@ export class PlayersSingleton implements OnStart {
 		if (!player) {
 			const nob = NetworkUtil.WaitForNetworkObject(dto.nobId);
 			nob.gameObject.name = `Player_${dto.username}`;
-			player = new Player(nob, dto.clientId, dto.userId, dto.username);
+			let playerInfo = nob.gameObject.GetComponent<PlayerInfo>()!;
+			player = new Player(nob, dto.clientId, dto.userId, dto.username, playerInfo);
 		}
 
 		team?.AddPlayer(player);
