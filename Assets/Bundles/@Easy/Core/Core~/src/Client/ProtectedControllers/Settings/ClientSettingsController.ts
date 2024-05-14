@@ -1,4 +1,5 @@
 import { Controller, Dependency, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Game } from "@Easy/Core/Shared/Game";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { Task } from "@Easy/Core/Shared/Util/Task";
 import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
@@ -15,6 +16,7 @@ const defaultData: ClientSettingsFile = {
 	screenshotRenderHD: false,
 	screenshotShowUI: false,
 	statusText: "",
+	micDeviceName: undefined,
 };
 
 @Controller({ loadOrder: -1 })
@@ -56,6 +58,24 @@ export class ClientSettingsController implements OnStart {
 
 		contextbridge.callback<() => number>("ClientSettings:GetTouchSensitivity", () => {
 			return this.GetTouchSensitivity();
+		});
+
+		// Microphone
+		task.spawn(() => {
+			if (this.data.micDeviceName !== undefined) {
+				const currentDeviceIndex = Bridge.GetCurrentMicDeviceIndex();
+				const micDevices = Bridge.GetMicDevices();
+				for (let i = 0; i < micDevices.Length; i++) {
+					const deviceName = micDevices.GetValue(i);
+					if (deviceName === this.data.micDeviceName && i !== currentDeviceIndex) {
+						Bridge.SetMicDeviceIndex(i);
+						break;
+					}
+				}
+			}
+			if (Game.IsInGame()) {
+				Bridge.StartMicRecording(16_000, 10);
+			}
 		});
 	}
 
