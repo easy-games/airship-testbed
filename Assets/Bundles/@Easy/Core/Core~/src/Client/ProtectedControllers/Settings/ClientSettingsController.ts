@@ -74,7 +74,7 @@ export class ClientSettingsController implements OnStart {
 				}
 			}
 			if (Game.IsInGame()) {
-				Bridge.StartMicRecording(16_000, 10);
+				Bridge.StartMicRecording(16_000, 100);
 			}
 		});
 	}
