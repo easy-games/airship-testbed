@@ -1,4 +1,4 @@
-import { Signal } from "Shared/Util/Signal";
+import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { UserStatus } from "./SocketIOMessages/Status";
 
 export const CoreSignals = {

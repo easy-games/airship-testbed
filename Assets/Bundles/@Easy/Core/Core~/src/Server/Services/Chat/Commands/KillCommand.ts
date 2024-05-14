@@ -1,7 +1,7 @@
 import Character from "@Easy/Core/Shared/Character/Character";
-import { Airship } from "Shared/Airship";
-import { ChatCommand } from "Shared/Commands/ChatCommand";
-import { Player } from "Shared/Player/Player";
+import { Airship } from "@Easy/Core/Shared/Airship";
+import { ChatCommand } from "@Easy/Core/Shared/Commands/ChatCommand";
+import { Player } from "@Easy/Core/Shared/Player/Player";
 
 export class KillCommand extends ChatCommand {
 	constructor() {

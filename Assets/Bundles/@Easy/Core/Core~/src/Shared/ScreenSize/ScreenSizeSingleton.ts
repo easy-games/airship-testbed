@@ -1,4 +1,4 @@
-import { OnStart, Singleton } from "Shared/Flamework";
+import { OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
 import { AssetCache } from "../AssetCache/AssetCache";
 import { CoreRefs } from "../CoreRefs";
 import { Game } from "../Game";

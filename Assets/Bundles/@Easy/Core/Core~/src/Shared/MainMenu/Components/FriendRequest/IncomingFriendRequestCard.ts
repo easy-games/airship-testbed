@@ -1,8 +1,8 @@
 import { FriendsController } from "@Easy/Core/Client/ProtectedControllers//Social/FriendsController";
 import { User } from "@Easy/Core/Client/ProtectedControllers//User/User";
-import { Dependency } from "Shared/Flamework";
-import { Bin } from "Shared/Util/Bin";
-import { CanvasAPI } from "Shared/Util/CanvasAPI";
+import { Dependency } from "@Easy/Core/Shared/Flamework";
+import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
 
 export default class IncomingFriendRequestCard extends AirshipBehaviour {
 	public usernameText!: TMP_Text;

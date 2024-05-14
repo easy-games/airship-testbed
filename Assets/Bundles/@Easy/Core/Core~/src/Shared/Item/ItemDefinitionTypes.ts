@@ -1,5 +1,5 @@
-import { PlaySoundConfig } from "Shared/Audio/AudioManager";
-import { Duration } from "Shared/Util/Duration";
+import { PlaySoundConfig } from "@Easy/Core/Shared/Audio/AudioManager";
+import { Duration } from "@Easy/Core/Shared/Util/Duration";
 import { DamageType } from "../Damage/DamageType";
 import { ArmorType } from "./ArmorType";
 import { CoreItemType } from "./CoreItemType";

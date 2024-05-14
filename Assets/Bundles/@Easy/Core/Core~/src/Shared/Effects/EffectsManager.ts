@@ -1,6 +1,6 @@
-import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
-import { Task } from "Shared/Util/Task";
-import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
+import { GameObjectUtil } from "@Easy/Core/Shared/GameObject/GameObjectUtil";
+import { Task } from "@Easy/Core/Shared/Util/Task";
+import { WorldAPI } from "@Easy/Core/Shared/VoxelWorld/WorldAPI";
 import { BundleReferenceManager } from "../Util/BundleReferenceManager";
 import {
 	AllBundleItems,

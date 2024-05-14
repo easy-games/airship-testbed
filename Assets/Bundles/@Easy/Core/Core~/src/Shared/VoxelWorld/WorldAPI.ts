@@ -1,7 +1,7 @@
-import Character from "Shared/Character/Character";
-import { BlockArchetype, BlockDamageType, BreakBlockDef } from "Shared/Item/ItemDefinitionTypes";
-import { MathUtil } from "Shared/Util/MathUtil";
-import { Signal } from "Shared/Util/Signal";
+import Character from "@Easy/Core/Shared/Character/Character";
+import { BlockArchetype, BlockDamageType, BreakBlockDef } from "@Easy/Core/Shared/Item/ItemDefinitionTypes";
+import { MathUtil } from "@Easy/Core/Shared/Util/MathUtil";
+import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { Block } from "./Block";
 import { BlockHitDamageSignal } from "./Signal/BlockHitDamageSignal";
 import { World } from "./World";

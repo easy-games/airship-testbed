@@ -122,4 +122,21 @@ export class MathUtil {
 
 		return new Quaternion(-value.x * invNorm, -value.y * invNorm, -value.z * invNorm, value.w * invNorm);
 	}
+
+	/**
+	 * Returns a multiplier from a percentage change, for example:
+	 * f(-1) = 0.5
+	 * f(0) = 1
+	 * f(1) = 2
+	 */
+	public static GetMultiplierFromPercent(percentChange: number) {
+		return percentChange >= 0 ? percentChange + 1 : 1 / (1 + math.abs(percentChange));
+	}
+
+	/**
+	 * Returns percentage change from multiplier. Inverse of {@link getMultiplierFromPercent}
+	 */
+	public static GetPercentFromMultiplier(multiplier: number) {
+		return multiplier >= 1 ? multiplier - 1 : -1 / multiplier + 1;
+	}
 }

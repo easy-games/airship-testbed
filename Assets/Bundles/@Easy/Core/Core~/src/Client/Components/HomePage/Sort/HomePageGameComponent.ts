@@ -1,12 +1,12 @@
 import { TransferController } from "@Easy/Core/Client/ProtectedControllers//Transfer/TransferController";
 import SearchSingleton from "@Easy/Core/Shared/MainMenu/Components/Search/SearchSingleton";
 import { MainMenuSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/MainMenuSingleton";
-import DateParser from "Shared/DateParser";
-import { Dependency } from "Shared/Flamework";
-import { AirshipUrl } from "Shared/Util/AirshipUrl";
-import { Bin } from "Shared/Util/Bin";
-import { CanvasAPI } from "Shared/Util/CanvasAPI";
-import { TimeUtil } from "Shared/Util/TimeUtil";
+import DateParser from "@Easy/Core/Shared/DateParser";
+import { Dependency } from "@Easy/Core/Shared/Flamework";
+import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
+import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
+import { TimeUtil } from "@Easy/Core/Shared/Util/TimeUtil";
 import { GameDto } from "../API/GamesAPI";
 
 export default class HomePageGameComponent extends AirshipBehaviour {

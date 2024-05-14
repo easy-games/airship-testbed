@@ -1,6 +1,6 @@
-﻿import Character from "Shared/Character/Character";
-import Inventory from "Shared/Inventory/Inventory";
-import { Bin } from "Shared/Util/Bin";
+﻿import Character from "@Easy/Core/Shared/Character/Character";
+import Inventory from "@Easy/Core/Shared/Inventory/Inventory";
+import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CoreItemType } from "../CoreItemType";
 import { ItemDef } from "../ItemDefinitionTypes";
 import { MeleeHeldItem } from "./Damagers/MeleeHeldItem";

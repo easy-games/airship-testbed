@@ -1,7 +1,7 @@
-import { Airship } from "Shared/Airship";
-import { Game } from "Shared/Game";
-import { Player } from "Shared/Player/Player";
-import { Signal } from "Shared/Util/Signal";
+import { Airship } from "@Easy/Core/Shared/Airship";
+import { Game } from "@Easy/Core/Shared/Game";
+import { Player } from "@Easy/Core/Shared/Player/Player";
+import { Signal } from "@Easy/Core/Shared/Util/Signal";
 
 export interface TeamDto {
 	name: string;

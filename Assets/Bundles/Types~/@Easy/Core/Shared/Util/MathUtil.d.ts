@@ -42,4 +42,15 @@ export declare class MathUtil {
     static Clamp(value: number, min?: number, max?: number): number;
     static ClampAngle(angle: number, min: number, max: number): number;
     static Inverse(value: Quaternion): Quaternion;
+    /**
+     * Returns a multiplier from a percentage change, for example:
+     * f(-1) = 0.5
+     * f(0) = 1
+     * f(1) = 2
+     */
+    static GetMultiplierFromPercent(percentChange: number): number;
+    /**
+     * Returns percentage change from multiplier. Inverse of {@link getMultiplierFromPercent}
+     */
+    static GetPercentFromMultiplier(multiplier: number): number;
 }

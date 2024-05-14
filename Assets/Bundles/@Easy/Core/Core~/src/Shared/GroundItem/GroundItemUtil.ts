@@ -1,4 +1,4 @@
-import { TimeUtil } from "Shared/Util/TimeUtil";
+import { TimeUtil } from "@Easy/Core/Shared/Util/TimeUtil";
 import { GroundItem } from "./GroundItem";
 
 export class GroundItemUtil {

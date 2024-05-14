@@ -1,5 +1,5 @@
-import { AppManager } from "Shared/Util/AppManager";
-import { CanvasAPI } from "Shared/Util/CanvasAPI";
+import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
+import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
 
 export default class SocialFriendRequestsButtonComponent extends AirshipBehaviour {
 	public text!: TMP_Text;

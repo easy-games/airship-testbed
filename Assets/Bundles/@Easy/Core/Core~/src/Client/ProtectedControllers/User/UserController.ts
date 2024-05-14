@@ -1,11 +1,11 @@
-import { CoreContext } from "Shared/CoreClientContext";
-import { Controller, OnStart } from "Shared/Flamework";
-import { Game } from "Shared/Game";
-import { Player } from "Shared/Player/Player";
-import { AirshipUrl } from "Shared/Util/AirshipUrl";
-import { Signal } from "Shared/Util/Signal";
-import { Task } from "Shared/Util/Task";
-import { DecodeJSON } from "Shared/json";
+import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
+import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Game } from "@Easy/Core/Shared/Game";
+import { Player } from "@Easy/Core/Shared/Player/Player";
+import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
+import { Signal } from "@Easy/Core/Shared/Util/Signal";
+import { Task } from "@Easy/Core/Shared/Util/Task";
+import { DecodeJSON } from "@Easy/Core/Shared/json";
 import { AuthController } from "../Auth/AuthController";
 import { User } from "./User";
 

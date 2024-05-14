@@ -1,4 +1,4 @@
-import { Cancellable } from "Shared/Util/Cancellable";
+import { Cancellable } from "@Easy/Core/Shared/Util/Cancellable";
 
 export class KeySignal extends Cancellable {
 	constructor(

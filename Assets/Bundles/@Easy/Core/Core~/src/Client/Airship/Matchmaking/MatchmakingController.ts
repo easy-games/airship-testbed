@@ -1,7 +1,7 @@
-import { Controller, OnStart } from "Shared/Flamework";
-import { Platform } from "Shared/Airship";
-import { Result } from "Shared/Types/Result";
-import { RunUtil } from "Shared/Util/RunUtil";
+import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Platform } from "@Easy/Core/Shared/Airship";
+import { Result } from "@Easy/Core/Shared/Types/Result";
+import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 
 @Controller({})
 export class MatchmakingController implements OnStart {

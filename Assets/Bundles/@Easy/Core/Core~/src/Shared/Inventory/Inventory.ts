@@ -1,11 +1,11 @@
 import { CoreItemType } from "@Easy/Core/Shared/Item/CoreItemType";
 import Object from "@easy-games/unity-object-utils";
-import { Airship } from "Shared/Airship";
-import { CoreNetwork } from "Shared/CoreNetwork";
-import { ArmorType } from "Shared/Item/ArmorType";
-import { Bin } from "Shared/Util/Bin";
-import { RunUtil } from "Shared/Util/RunUtil";
-import { Signal } from "Shared/Util/Signal";
+import { Airship } from "@Easy/Core/Shared/Airship";
+import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
+import { ArmorType } from "@Easy/Core/Shared/Item/ArmorType";
+import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
+import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import Character from "../Character/Character";
 import { ItemStack, ItemStackDto } from "./ItemStack";
 

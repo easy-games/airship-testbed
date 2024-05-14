@@ -1,7 +1,7 @@
-import { ChatCommand } from "Shared/Commands/ChatCommand";
-import { Player } from "Shared/Player/Player";
-import { ColorUtil } from "Shared/Util/ColorUtil";
-import { Theme } from "Shared/Util/Theme";
+import { ChatCommand } from "@Easy/Core/Shared/Commands/ChatCommand";
+import { Player } from "@Easy/Core/Shared/Player/Player";
+import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
+import { Theme } from "@Easy/Core/Shared/Util/Theme";
 
 export class FlyCommand extends ChatCommand {
 	constructor() {

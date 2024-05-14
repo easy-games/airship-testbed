@@ -1,6 +1,6 @@
-import { Bin } from "Shared/Util/Bin";
-import { Signal, SignalPriority } from "Shared/Util/Signal";
-import { SignalProxy } from "Shared/Util/SignalProxy";
+import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
+import { SignalProxy } from "@Easy/Core/Shared/Util/SignalProxy";
 import { KeyboardDriver } from "./Drivers/KeyboardDriver";
 import { KeySignal } from "./Drivers/Signals/KeySignal";
 

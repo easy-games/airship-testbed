@@ -1,4 +1,4 @@
-﻿import StringUtils from "Shared/Types/StringUtil";
+﻿import StringUtils from "@Easy/Core/Shared/Types/StringUtil";
 
 export class ChatUtil {
 	public static ParseCommandData(commandText: string): CommandData | undefined {

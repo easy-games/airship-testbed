@@ -1,5 +1,5 @@
 import ObjectUtils from "@easy-games/unity-object-utils";
-import { Controller, OnStart, Service } from "Shared/Flamework";
+import { Controller, OnStart, Service } from "@Easy/Core/Shared/Flamework";
 import { Airship } from "../Airship";
 import { AssetCache } from "../AssetCache/AssetCache";
 import { CoreContext } from "../CoreClientContext";

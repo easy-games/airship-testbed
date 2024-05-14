@@ -1,15 +1,15 @@
-import { Airship } from "Shared/Airship";
-import { Controller, OnStart } from "Shared/Flamework";
-import { Game } from "Shared/Game";
-import { Player } from "Shared/Player/Player";
-import { ProfilePictureDefinitions } from "Shared/ProfilePicture/ProfilePictureDefinitions";
-import { ProfilePictureId } from "Shared/ProfilePicture/ProfilePictureId";
-import { Keyboard, Mouse } from "Shared/UserInput";
-import { Bin } from "Shared/Util/Bin";
-import { ColorUtil } from "Shared/Util/ColorUtil";
-import { Task } from "Shared/Util/Task";
-import { OnLateUpdate } from "Shared/Util/Timer";
-import { Window } from "Shared/Util/Window";
+import { Airship } from "@Easy/Core/Shared/Airship";
+import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Game } from "@Easy/Core/Shared/Game";
+import { Player } from "@Easy/Core/Shared/Player/Player";
+import { ProfilePictureDefinitions } from "@Easy/Core/Shared/ProfilePicture/ProfilePictureDefinitions";
+import { ProfilePictureId } from "@Easy/Core/Shared/ProfilePicture/ProfilePictureId";
+import { Keyboard, Mouse } from "@Easy/Core/Shared/UserInput";
+import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
+import { Task } from "@Easy/Core/Shared/Util/Task";
+import { OnLateUpdate } from "@Easy/Core/Shared/Util/Timer";
+import { Window } from "@Easy/Core/Shared/Util/Window";
 import { CoreUIController } from "../../ProtectedControllers//CoreUIController";
 
 @Controller({})

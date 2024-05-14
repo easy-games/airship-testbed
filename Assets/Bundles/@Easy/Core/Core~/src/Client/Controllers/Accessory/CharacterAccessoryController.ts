@@ -1,5 +1,5 @@
-import { Airship } from "Shared/Airship";
-import { Controller, OnStart } from "Shared/Flamework";
+import { Airship } from "@Easy/Core/Shared/Airship";
+import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
 
 @Controller({})
 export class CharacterAccessoryController implements OnStart {

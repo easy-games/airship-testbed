@@ -1,9 +1,9 @@
-import { Bin } from "Shared/Util/Bin";
+import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { Touchscreen } from "../Touchscreen";
 import { Mouse } from "../Mouse";
-import { Signal } from "Shared/Util/Signal";
+import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { PointerButtonSignal } from "../Drivers/Signals/PointerButtonSignal";
-import { CanvasAPI } from "Shared/Util/CanvasAPI";
+import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
 
 export class Pointer {
 	private readonly bin = new Bin();

@@ -1,9 +1,9 @@
 import { CoreItemType } from "@Easy/Core/Shared/Item/CoreItemType";
-import { Airship } from "Shared/Airship";
-import { ChatCommand } from "Shared/Commands/ChatCommand";
-import { ItemStack } from "Shared/Inventory/ItemStack";
-import { ArmorType } from "Shared/Item/ArmorType";
-import { Player } from "Shared/Player/Player";
+import { Airship } from "@Easy/Core/Shared/Airship";
+import { ChatCommand } from "@Easy/Core/Shared/Commands/ChatCommand";
+import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
+import { ArmorType } from "@Easy/Core/Shared/Item/ArmorType";
+import { Player } from "@Easy/Core/Shared/Player/Player";
 
 export class EntityCommand extends ChatCommand {
 	constructor() {

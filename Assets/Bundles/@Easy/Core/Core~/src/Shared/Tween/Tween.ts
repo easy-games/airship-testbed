@@ -1,4 +1,4 @@
-import { OnUpdate } from "Shared/Util/Timer";
+import { OnUpdate } from "@Easy/Core/Shared/Util/Timer";
 
 /* eslint-disable @typescript-eslint/no-loss-of-precision */
 type BasicEasingFunction = (

@@ -1,8 +1,8 @@
-import { Controller, OnStart } from "Shared/Flamework";
-import { CoreUI } from "Shared/UI/CoreUI";
-import { AirshipUrl } from "Shared/Util/AirshipUrl";
-import { CanvasAPI } from "Shared/Util/CanvasAPI";
-import { DecodeJSON } from "Shared/json";
+import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
+import { CoreUI } from "@Easy/Core/Shared/UI/CoreUI";
+import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
+import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
+import { DecodeJSON } from "@Easy/Core/Shared/json";
 import { MainMenuController } from "./MainMenuController";
 import { GameServer } from "./Social/SocketAPI";
 

@@ -1,5 +1,5 @@
 import { CoreItemType } from "@Easy/Core/Shared/Item/CoreItemType";
-import { Signal } from "Shared/Util/Signal";
+import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { ItemDef } from "../Item/ItemDefinitionTypes";
 import { ItemUtil } from "../Item/ItemUtil";
 

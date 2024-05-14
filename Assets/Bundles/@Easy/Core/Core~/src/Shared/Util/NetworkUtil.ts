@@ -1,5 +1,5 @@
-import { CoreContext } from "Shared/CoreClientContext";
-import { Game } from "Shared/Game";
+import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
+import { Game } from "@Easy/Core/Shared/Game";
 import { RunUtil } from "./RunUtil";
 import { Signal } from "./Signal";
 import { TimeUtil } from "./TimeUtil";

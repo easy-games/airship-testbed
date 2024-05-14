@@ -1,9 +1,9 @@
 import { CameraReferences } from "@Easy/Core/Shared/Camera/CameraReferences";
 import ProximityPrompt from "@Easy/Core/Shared/Input/ProximityPrompts/ProximityPrompt";
-import { CoreRefs } from "Shared/CoreRefs";
-import { Controller, OnStart } from "Shared/Flamework";
-import { Game } from "Shared/Game";
-import { Task } from "Shared/Util/Task";
+import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
+import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Game } from "@Easy/Core/Shared/Game";
+import { Task } from "@Easy/Core/Shared/Util/Task";
 
 /** Prompt poll rate, how frequently we update `activatableProximityPrompts`. */
 const PROMPT_POLL_RATE = 0.1;

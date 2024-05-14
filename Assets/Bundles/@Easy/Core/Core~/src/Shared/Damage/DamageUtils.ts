@@ -1,10 +1,10 @@
-﻿import { CharacterAnimator } from "Shared/Character/Animation/CharacterAnimator";
-import Character from "Shared/Character/Character";
-import { LocalCharacterSingleton } from "Shared/Character/LocalCharacter/LocalCharacterSingleton";
-import { Dependency } from "Shared/Flamework";
-import { MathUtil } from "Shared/Util/MathUtil";
-import { RunUtil } from "Shared/Util/RunUtil";
-import { Task } from "Shared/Util/Task";
+﻿import { CharacterAnimator } from "@Easy/Core/Shared/Character/Animation/CharacterAnimator";
+import Character from "@Easy/Core/Shared/Character/Character";
+import { LocalCharacterSingleton } from "@Easy/Core/Shared/Character/LocalCharacter/LocalCharacterSingleton";
+import { Dependency } from "@Easy/Core/Shared/Flamework";
+import { MathUtil } from "@Easy/Core/Shared/Util/MathUtil";
+import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
+import { Task } from "@Easy/Core/Shared/Util/Task";
 
 export class DamageUtils {
 	public static readonly minDamageFallSpeed = 35;

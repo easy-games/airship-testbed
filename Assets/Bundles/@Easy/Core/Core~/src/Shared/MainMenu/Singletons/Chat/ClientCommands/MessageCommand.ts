@@ -1,8 +1,8 @@
 import { DirectMessageController } from "@Easy/Core/Client/ProtectedControllers//Social/DirectMessages/DirectMessageController";
 import { FriendsController } from "@Easy/Core/Client/ProtectedControllers//Social/FriendsController";
-import { ChatCommand } from "Shared/Commands/ChatCommand";
-import { Dependency } from "Shared/Flamework";
-import { Player } from "Shared/Player/Player";
+import { ChatCommand } from "@Easy/Core/Shared/Commands/ChatCommand";
+import { Dependency } from "@Easy/Core/Shared/Flamework";
+import { Player } from "@Easy/Core/Shared/Player/Player";
 
 export class MessageCommand extends ChatCommand {
 	constructor() {

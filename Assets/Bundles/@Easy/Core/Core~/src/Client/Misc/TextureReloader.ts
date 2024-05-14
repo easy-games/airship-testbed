@@ -1,5 +1,5 @@
-import { Game } from "Shared/Game";
-import { Keyboard } from "Shared/UserInput";
+import { Game } from "@Easy/Core/Shared/Game";
+import { Keyboard } from "@Easy/Core/Shared/UserInput";
 
 const keyboard = new Keyboard();
 keyboard.OnKeyDown(Key.F9, (event) => {

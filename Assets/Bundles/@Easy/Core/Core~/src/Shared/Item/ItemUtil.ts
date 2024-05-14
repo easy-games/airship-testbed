@@ -1,5 +1,5 @@
 import Object from "@easy-games/unity-object-utils";
-import { Signal } from "Shared/Util/Signal";
+import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { ItemDef } from "./ItemDefinitionTypes";
 import { CoreItemDefinitions, ItemTypeComponentsInternal } from "./ItemDefinitions";
 
@@ -119,7 +119,7 @@ export class ItemUtil {
 	 * @deprecated
 	 */
 	public static GetItemTypeFromBlockId(blockId: number): string | undefined {
-		const WorldAPI = import("Shared/VoxelWorld/WorldAPI").expect().WorldAPI;
+		const WorldAPI = import("@Easy/Core/Shared/VoxelWorld/WorldAPI").expect().WorldAPI;
 		const world = WorldAPI.GetMainWorld();
 		if (!world) return undefined;
 

@@ -15,13 +15,12 @@ Shader "Airship/WorldShaderPBR"
         _OverrideStrength("Override Strength", Range(0,1)) = 0
                
         [Toggle] EXPLICIT_MAPS("Not using atlas", Float) = 1.0
-        [Toggle] USE_COLOR_MASK("Use color mask", Float) = 0.0
         _MainTex("Albedo", 2D) = "white" {}
         _NormalTex("Normal", 2D) = "bump" {}
         _MetalTex("Metal", 2D) = "black" {}
         _RoughTex("Rough", 2D) = "white" {}
-        _EmissiveMaskTex("Emissive Mask", 2D) = "white" {}
-        _ColorMaskTex("Color Mask", 2D) = "white" {}
+        _EmissiveMaskTex("Emissive Mask (extended)", 2D) = "white" {}
+        _ColorMaskTex("Color Mask (extended)", 2D) = "white" {}
         
         [Toggle] _ZWrite("Z-Write", Float) = 1.0
         
@@ -33,17 +32,15 @@ Shader "Airship/WorldShaderPBR"
         _MetalOverride("Metal", Range(0.0, 1)) = 0.0
         _RoughOverride("Rough", range(0.0, 1)) = 1.0
 
-        [Toggle] EMISSIVE("Emissive", Float) = 0.0
-        [HDR] _EmissiveColor("Emissive Color", Color) = (1,1,1,1)
-        _EmissiveMix("Emissive/Albedo Mix", range(0, 1)) = 1.0
-
-        [Toggle] RIM_LIGHT("Use Rim Light", Float) = 0.0
-        [HDR] _RimColor("Rim Color", Color) = (1,1,1,1)
-        _RimPower("Rim Power", Range(0.0, 10)) = 2.5
-        _RimIntensity("Rim Intensity", Range(0, 5)) = 0.75
-        
+        [Toggle] EXTENDED_FEATURES("Extended features", Float) = 0.0
+        //[Toggle] EMISSIVE("Emissive", Float) = 0.0
+        [HDR] _EmissiveColor("Emissive Color (extended)", Color) = (1,1,1,1)
+        _EmissiveMix("Emissive/Albedo Mix (extended)", range(0, 1)) = 1.0
+        [HDR] _RimColor("Rim Color (extended)", Color) = (1,1,1,1)
+        _RimPower("Rim Power (extended)", Range(0.0, 10)) = 2.5
+        _RimIntensity("Rim Intensity (extended)", Range(0, 5)) = 0.75
+            
         [Toggle] INSTANCE_DATA("Has Baked Instance Data", Float) = 0.0
-
         [Toggle] SHADOWS("Render Shadows", Float) = 1.0
 
         //lightmapping
@@ -66,26 +63,29 @@ Shader "Airship/WorldShaderPBR"
             HLSLPROGRAM
             #pragma target 3.5
 
-            //Unity ones
-            #pragma multi_compile _ _ADDITIONAL_LIGHTS
-            #pragma multi_compile _ DOUBLE_SIDED_NORMALS            
+            //Unity flag with lights enabled
+            #pragma multi_compile _ADDITIONAL_LIGHTS    //No longer optional
             
             //Lightmapping
-            #pragma multi_compile _ DIRLIGHTMAP_COMBINED
-            #pragma multi_compile _ LIGHTMAP_ON
-            #pragma multi_compile _ LIGHTPROBE_ON
-            
-            //Ours
-            #pragma multi_compile TRIPLANAR_STYLE_OFF TRIPLANAR_STYLE_LOCAL TRIPLANAR_STYLE_WORLD
-            #pragma multi_compile _ EXPLICIT_MAPS_ON
-			#pragma multi_compile _ EMISSIVE_ON
-			#pragma multi_compile _ RIM_LIGHT_ON
-            #pragma multi_compile _ INSTANCE_DATA_ON
-            #pragma multi_compile _ USE_SHADOW_COLOR_ON
-			#pragma multi_compile _ SHADOWS_ON
-			#pragma multi_compile _ USE_COLOR_MASK_ON
-            #pragma multi_compile _ IMAGEBASED_LIGHTING_ON
-            
+            #pragma multi_compile _ LIGHTMAP_ON         //Lightmapping 
+            #pragma multi_compile _ LIGHTPROBE_ON       //Entity under lightmapping wants to use lightprobes
+            #pragma multi_compile DIRLIGHTMAP_COMBINED  //No longer optional - only supports directional lightmapping
+        
+			//Local flags, as specified in the material as an asset change
+            #pragma multi_compile_local TRIPLANAR_STYLE_OFF TRIPLANAR_STYLE_LOCAL TRIPLANAR_STYLE_WORLD
+            #pragma multi_compile_local _ DOUBLE_SIDED_NORMALS 
+        
+            #pragma multie_compile_local _ EXTENDED_FEATURES_ON   //These all get bundled under this now
+			//#pragma multi_compile_local _ EMISSIVE_ON
+			//#pragma multi_compile_local _ RIM_LIGHT_ON
+            //#pragma multi_compile_local _ USE_COLOR_MASK_ON		
+            //#pragma multi_compile_local _ USE_SHADOW_COLOR_ON
+
+        
+            //our flags, but specified from the SRP
+            #pragma multi_compile _ SHADOWS_ON                  //shadows 
+            #pragma multi_compile _ INSTANCE_DATA_ON			//batching support
+            #pragma multi_compile _ EXPLICIT_MAPS_ON            //Texture atlas, voxelworld 
             #include "AirshipWorldShaderIncludes.hlsl"
                           
             ENDHLSL

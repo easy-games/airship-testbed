@@ -1,7 +1,7 @@
 import { ClientSettingsController } from "@Easy/Core/Client/ProtectedControllers//Settings/ClientSettingsController";
-import { AudioManager } from "Shared/Audio/AudioManager";
-import { Controller, OnStart } from "Shared/Flamework";
-import { CanvasAPI, PointerDirection } from "Shared/Util/CanvasAPI";
+import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
+import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
+import { CanvasAPI, PointerDirection } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { MainMenuController } from "../MainMenuController";
 
 @Controller({})

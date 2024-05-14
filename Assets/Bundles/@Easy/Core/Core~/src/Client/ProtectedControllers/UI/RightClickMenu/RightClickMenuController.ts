@@ -2,11 +2,11 @@ import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
 import { Game } from "@Easy/Core/Shared/Game";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import { Theme } from "@Easy/Core/Shared/Util/Theme";
-import { Controller, OnStart } from "Shared/Flamework";
-import { CoreUI } from "Shared/UI/CoreUI";
-import { Mouse } from "Shared/UserInput";
-import { Bin } from "Shared/Util/Bin";
-import { CanvasAPI, HoverState } from "Shared/Util/CanvasAPI";
+import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
+import { CoreUI } from "@Easy/Core/Shared/UI/CoreUI";
+import { Mouse } from "@Easy/Core/Shared/UserInput";
+import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { CanvasAPI, HoverState } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { RightClickMenuButton } from "./RightClickMenuButton";
 
 @Controller({})

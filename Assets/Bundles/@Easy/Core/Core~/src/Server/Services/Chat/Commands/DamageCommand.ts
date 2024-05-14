@@ -1,7 +1,7 @@
-import { Airship } from "Shared/Airship";
-import Character from "Shared/Character/Character";
-import { ChatCommand } from "Shared/Commands/ChatCommand";
-import { Player } from "Shared/Player/Player";
+import { Airship } from "@Easy/Core/Shared/Airship";
+import Character from "@Easy/Core/Shared/Character/Character";
+import { ChatCommand } from "@Easy/Core/Shared/Commands/ChatCommand";
+import { Player } from "@Easy/Core/Shared/Player/Player";
 
 export class DamageCommand extends ChatCommand {
 	constructor() {

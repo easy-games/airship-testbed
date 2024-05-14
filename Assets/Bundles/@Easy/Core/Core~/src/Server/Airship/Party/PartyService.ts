@@ -1,11 +1,11 @@
-import { Service, OnStart } from "Shared/Flamework";
-import { Platform } from "Shared/Airship";
-import { PartyMode, PartyStatus } from "Shared/SocketIOMessages/Party";
-import { PublicUser } from "Shared/SocketIOMessages/PublicUser";
-import { Result } from "Shared/Types/Result";
-import { AirshipUrl } from "Shared/Util/AirshipUrl";
-import { RunUtil } from "Shared/Util/RunUtil";
-import { DecodeJSON } from "Shared/json";
+import { Service, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Platform } from "@Easy/Core/Shared/Airship";
+import { PartyMode, PartyStatus } from "@Easy/Core/Shared/SocketIOMessages/Party";
+import { PublicUser } from "@Easy/Core/Shared/SocketIOMessages/PublicUser";
+import { Result } from "@Easy/Core/Shared/Types/Result";
+import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
+import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
+import { DecodeJSON } from "@Easy/Core/Shared/json";
 
 /**
  * Information about a users party.

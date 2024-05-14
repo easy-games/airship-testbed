@@ -32,7 +32,7 @@
 	"Singleton": {
 		"prefix": "singleton",
 		"body": [
-			"import { Singleton, OnStart } from \"Shared/Flamework\";",
+			"import { Singleton, OnStart } from \"@Easy/Core/Shared/Flamework\";",
 			"",
 			"@Singleton({})",
 			"export class ${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g} implements OnStart {",

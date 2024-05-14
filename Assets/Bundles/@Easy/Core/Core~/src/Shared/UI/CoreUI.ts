@@ -1,4 +1,4 @@
-import { CanvasAPI, HoverState } from "Shared/Util/CanvasAPI";
+import { CanvasAPI, HoverState } from "@Easy/Core/Shared/Util/CanvasAPI";
 
 export class CoreUI {
 	/**

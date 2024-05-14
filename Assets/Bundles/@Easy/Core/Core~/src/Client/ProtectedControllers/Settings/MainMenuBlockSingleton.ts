@@ -1,5 +1,5 @@
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
-import { OnStart, Singleton } from "Shared/Flamework";
+import { OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
 
 interface BlockedGame {
 	id: string;

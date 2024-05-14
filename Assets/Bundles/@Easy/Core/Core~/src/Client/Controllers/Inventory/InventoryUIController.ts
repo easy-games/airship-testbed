@@ -1,19 +1,19 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
-import { AssetCache } from "Shared/AssetCache/AssetCache";
-import { CoreRefs } from "Shared/CoreRefs";
-import { Controller, OnStart } from "Shared/Flamework";
-import { Game } from "Shared/Game";
-import { CharacterInventorySingleton } from "Shared/Inventory/CharacterInventorySingleton";
-import Inventory from "Shared/Inventory/Inventory";
-import { InventorySingleton } from "Shared/Inventory/InventorySingleton";
-import { ItemStack } from "Shared/Inventory/ItemStack";
-import { CoreUI } from "Shared/UI/CoreUI";
-import { Healthbar } from "Shared/UI/Healthbar";
-import { Keyboard, Mouse } from "Shared/UserInput";
-import { AppManager } from "Shared/Util/AppManager";
-import { Bin } from "Shared/Util/Bin";
-import { CanvasAPI } from "Shared/Util/CanvasAPI";
-import { OnUpdate } from "Shared/Util/Timer";
+import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
+import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
+import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Game } from "@Easy/Core/Shared/Game";
+import { CharacterInventorySingleton } from "@Easy/Core/Shared/Inventory/CharacterInventorySingleton";
+import Inventory from "@Easy/Core/Shared/Inventory/Inventory";
+import { InventorySingleton } from "@Easy/Core/Shared/Inventory/InventorySingleton";
+import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
+import { CoreUI } from "@Easy/Core/Shared/UI/CoreUI";
+import { Healthbar } from "@Easy/Core/Shared/UI/Healthbar";
+import { Keyboard, Mouse } from "@Easy/Core/Shared/UserInput";
+import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
+import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
+import { OnUpdate } from "@Easy/Core/Shared/Util/Timer";
 
 type DraggingState = {
 	inventory: Inventory;

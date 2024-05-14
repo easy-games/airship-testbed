@@ -1,10 +1,10 @@
 import { CoreItemType } from "@Easy/Core/Shared/Item/CoreItemType";
 import Object from "@easy-games/unity-object-utils";
-import { CoreNetwork } from "Shared/CoreNetwork";
-import { Game } from "Shared/Game";
-import { BlockDef } from "Shared/Item/ItemDefinitionTypes";
-import { RunUtil } from "Shared/Util/RunUtil";
-import { Signal, SignalCallback } from "Shared/Util/Signal";
+import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
+import { Game } from "@Easy/Core/Shared/Game";
+import { BlockDef } from "@Easy/Core/Shared/Item/ItemDefinitionTypes";
+import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
+import { Signal, SignalCallback } from "@Easy/Core/Shared/Util/Signal";
 import { ItemUtil } from "../Item/ItemUtil";
 import { Block } from "./Block";
 import { BlockDataAPI } from "./BlockData/BlockDataAPI";

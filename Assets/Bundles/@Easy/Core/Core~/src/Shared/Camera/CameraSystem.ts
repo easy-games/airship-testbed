@@ -1,8 +1,8 @@
 import ObjectUtils from "@easy-games/unity-object-utils";
-import { Bin } from "Shared/Util/Bin";
-import { SignalPriority } from "Shared/Util/Signal";
-import { Spring } from "Shared/Util/Spring";
-import { OnLateUpdate, OnUpdate } from "Shared/Util/Timer";
+import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { SignalPriority } from "@Easy/Core/Shared/Util/Signal";
+import { Spring } from "@Easy/Core/Shared/Util/Spring";
+import { OnLateUpdate, OnUpdate } from "@Easy/Core/Shared/Util/Timer";
 import { CameraMode } from "./CameraMode";
 import { CameraReferences } from "./CameraReferences";
 import { CameraTransform } from "./CameraTransform";

@@ -1,5 +1,5 @@
-import { AccessoryClass, OutfitDto } from "Shared/Airship/Types/Outputs/PlatformInventory";
-import { RandomUtil } from "Shared/Util/RandomUtil";
+import { AccessoryClass, OutfitDto } from "@Easy/Core/Shared/Airship/Types/Outputs/PlatformInventory";
+import { RandomUtil } from "@Easy/Core/Shared/Util/RandomUtil";
 import { CoreLogger } from "../Logger/CoreLogger";
 import { ColorUtil } from "../Util/ColorUtil";
 import { AvatarPlatformAPI } from "./AvatarPlatformAPI";

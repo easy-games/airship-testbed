@@ -1,5 +1,5 @@
 import ObjectUtils from "@easy-games/unity-object-utils";
-import { Airship } from "Shared/Airship";
+import { Airship } from "@Easy/Core/Shared/Airship";
 import { CoreNetwork } from "../../CoreNetwork";
 import { GameObjectUtil } from "../../GameObject/GameObjectUtil";
 import { ItemUtil } from "../../Item/ItemUtil";

@@ -1,7 +1,7 @@
-import { AccessoryInstanceDto, OutfitDto } from "Shared/Airship/Types/Outputs/PlatformInventory";
-import { AirshipUrl } from "Shared/Util/AirshipUrl";
-import { ColorUtil } from "Shared/Util/ColorUtil";
-import { DecodeJSON, EncodeJSON } from "Shared/json";
+import { AccessoryInstanceDto, OutfitDto } from "@Easy/Core/Shared/Airship/Types/Outputs/PlatformInventory";
+import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
+import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
+import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 import { CoreLogger } from "../Logger/CoreLogger";
 
 // TODO this needs to be moved to the main menu lua sandbox

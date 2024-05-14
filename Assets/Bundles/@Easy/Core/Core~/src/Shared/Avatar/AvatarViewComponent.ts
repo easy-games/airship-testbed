@@ -1,6 +1,6 @@
 import AvatarRenderComponent from "@Easy/Core/Client/ProtectedControllers//AvatarMenu/AvatarRenderComponent";
-import {} from "Shared/Flamework";
-import { Mouse } from "Shared/UserInput";
+import {} from "@Easy/Core/Shared/Flamework";
+import { Mouse } from "@Easy/Core/Shared/UserInput";
 import { Game } from "../Game";
 import { Bin } from "../Util/Bin";
 import { CanvasAPI } from "../Util/CanvasAPI";

@@ -1,6 +1,6 @@
 import { ClientChatSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/Chat/ClientChatSingleton";
-import { Dependency } from "Shared/Flamework";
-import { Player } from "Shared/Player/Player";
+import { Dependency } from "@Easy/Core/Shared/Flamework";
+import { Player } from "@Easy/Core/Shared/Player/Player";
 import { ChatCommand } from "./ChatCommand";
 
 export class ClearCommand extends ChatCommand {

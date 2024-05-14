@@ -1,5 +1,5 @@
-import { Bin } from "Shared/Util/Bin";
-import { Signal } from "Shared/Util/Signal";
+import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { GestureDriver } from "./Drivers/GestureDriver";
 import { TouchscreenDriver } from "./Drivers/TouchscreenDriver";
 

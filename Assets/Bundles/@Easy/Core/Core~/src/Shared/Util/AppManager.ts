@@ -1,5 +1,5 @@
-import { CoreRefs } from "Shared/CoreRefs";
-import { Keyboard, Mouse } from "Shared/UserInput";
+import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
+import { Keyboard, Mouse } from "@Easy/Core/Shared/UserInput";
 import { AudioManager } from "../Audio/AudioManager";
 import { Game } from "../Game";
 import { Bin } from "./Bin";

@@ -1,6 +1,6 @@
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import SearchSingleton from "@Easy/Core/Shared/MainMenu/Components/Search/SearchSingleton";
-import { Bin } from "Shared/Util/Bin";
+import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import SortComponent from "../Sort/SortComponent";
 
 export default class MyGamesSortComponent extends AirshipBehaviour {

@@ -1,10 +1,10 @@
-import { OnStart, Service } from "Shared/Flamework";
-import { Player } from "Shared/Player/Player";
-import { AirshipUrl } from "Shared/Util/AirshipUrl";
-import { DecodeJSON, EncodeJSON } from "Shared/json";
-import { Result } from "Shared/Types/Result";
-import { Platform } from "Shared/Airship";
-import { RunUtil } from "Shared/Util/RunUtil";
+import { OnStart, Service } from "@Easy/Core/Shared/Flamework";
+import { Player } from "@Easy/Core/Shared/Player/Player";
+import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
+import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
+import { Result } from "@Easy/Core/Shared/Types/Result";
+import { Platform } from "@Easy/Core/Shared/Airship";
+import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 
 export type CreateServerResponse = {
 	serverId: string;

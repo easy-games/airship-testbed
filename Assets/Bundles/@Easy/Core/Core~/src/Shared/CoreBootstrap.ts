@@ -2,8 +2,8 @@
  * This is the entrypoint of Core.
  */
 
-import { AvatarUtil } from "Shared/Avatar/AvatarUtil";
-import { Flamework } from "Shared/Flamework";
+import { AvatarUtil } from "@Easy/Core/Shared/Avatar/AvatarUtil";
+import { Flamework } from "@Easy/Core/Shared/Flamework";
 import { AudioManager } from "./Audio/AudioManager";
 import { Bootstrap } from "./Bootstrap/Bootstrap";
 import { CoreContext } from "./CoreClientContext";

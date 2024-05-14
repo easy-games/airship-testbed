@@ -1,17 +1,17 @@
-import { Airship } from "Shared/Airship";
-import { CoreNetwork } from "Shared/CoreNetwork";
-import { CoreRefs } from "Shared/CoreRefs";
-import { Controller, OnStart } from "Shared/Flamework";
-import { Game } from "Shared/Game";
-import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
-import { GroundItem } from "Shared/GroundItem/GroundItem";
-import { GroundItemUtil } from "Shared/GroundItem/GroundItemUtil";
-import { ItemStack } from "Shared/Inventory/ItemStack";
-import { ItemUtil } from "Shared/Item/ItemUtil";
-import { Bin } from "Shared/Util/Bin";
-import { TimeUtil } from "Shared/Util/TimeUtil";
-import { SetInterval } from "Shared/Util/Timer";
-import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
+import { Airship } from "@Easy/Core/Shared/Airship";
+import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
+import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
+import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Game } from "@Easy/Core/Shared/Game";
+import { GameObjectUtil } from "@Easy/Core/Shared/GameObject/GameObjectUtil";
+import { GroundItem } from "@Easy/Core/Shared/GroundItem/GroundItem";
+import { GroundItemUtil } from "@Easy/Core/Shared/GroundItem/GroundItemUtil";
+import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
+import { ItemUtil } from "@Easy/Core/Shared/Item/ItemUtil";
+import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { TimeUtil } from "@Easy/Core/Shared/Util/TimeUtil";
+import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
+import { WorldAPI } from "@Easy/Core/Shared/VoxelWorld/WorldAPI";
 
 interface GroundItemEntry {
 	nob: NetworkObject;

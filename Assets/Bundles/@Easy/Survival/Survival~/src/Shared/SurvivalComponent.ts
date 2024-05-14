@@ -2,8 +2,8 @@ import Character from "@Easy/Core/Shared/Character/Character";
 import { Flamework } from "@Easy/Core/Shared/Flamework";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { TestParam, test } from "./TestModule";
-import { Game } from "../../../../../Types~/@Easy/Core/Shared/Game";
-import { Airship } from "../../../../../Types~/@Easy/Core/Shared/Airship";
+import { Game } from "@Easy/Core/Shared/Game";
+import { Airship } from "@Easy/Core/Shared/Airship";
 
 export default class SurvivalComponent extends AirshipBehaviour {
 	override Start(): void {

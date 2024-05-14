@@ -1,4 +1,4 @@
-import { Controller, OnStart } from "Shared/Flamework";
+import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
 
 @Controller({})
 export class AirshipEventController implements OnStart {

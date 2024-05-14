@@ -1,11 +1,11 @@
 import { Keyboard } from "@Easy/Core/Shared/UserInput";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
-import { CoreContext } from "Shared/CoreClientContext";
-import { Controller, OnStart } from "Shared/Flamework";
-import { Game } from "Shared/Game";
-import MainMenuNavButton from "Shared/MainMenu/Components/MainMenuNavButton";
-import { CoreUI } from "Shared/UI/CoreUI";
-import { CanvasAPI } from "Shared/Util/CanvasAPI";
+import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
+import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Game } from "@Easy/Core/Shared/Game";
+import MainMenuNavButton from "@Easy/Core/Shared/MainMenu/Components/MainMenuNavButton";
+import { CoreUI } from "@Easy/Core/Shared/UI/CoreUI";
+import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { AuthController } from "./Auth/AuthController";
 import { MainMenuController } from "./MainMenuController";
 import { MainMenuPageType } from "./MainMenuPageName";

@@ -1,5 +1,5 @@
-﻿import { Airship } from "Shared/Airship";
-import Character from "Shared/Character/Character";
+﻿import { Airship } from "@Easy/Core/Shared/Airship";
+import Character from "@Easy/Core/Shared/Character/Character";
 import { CoreNetwork } from "../../CoreNetwork";
 import { Game } from "../../Game";
 import { HeldItemActionState, HeldItemManager } from "./HeldItemManager";

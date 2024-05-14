@@ -1,12 +1,12 @@
-import { Airship } from "Shared/Airship";
-import { AssetCache } from "Shared/AssetCache/AssetCache";
-import { AudioManager } from "Shared/Audio/AudioManager";
-import Character from "Shared/Character/Character";
-import { CoreRefs } from "Shared/CoreRefs";
-import { Controller, OnStart } from "Shared/Flamework";
-import { Bin } from "Shared/Util/Bin";
-import { ColorUtil } from "Shared/Util/ColorUtil";
-import { SetTimeout } from "Shared/Util/Timer";
+import { Airship } from "@Easy/Core/Shared/Airship";
+import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
+import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
+import Character from "@Easy/Core/Shared/Character/Character";
+import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
+import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
+import { SetTimeout } from "@Easy/Core/Shared/Util/Timer";
 
 @Controller({})
 export class DamageIndicatorController implements OnStart {

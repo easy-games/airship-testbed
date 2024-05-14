@@ -1,4 +1,4 @@
-import { OnStart, Singleton } from "Shared/Flamework";
+import { OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
 import { Airship } from "../../Airship";
 import { AssetCache } from "../../AssetCache/AssetCache";
 import { CameraReferences } from "../../Camera/CameraReferences";

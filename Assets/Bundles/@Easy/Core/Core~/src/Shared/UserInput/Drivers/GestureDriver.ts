@@ -1,6 +1,6 @@
-import { Bin } from "Shared/Util/Bin";
-import { Signal } from "Shared/Util/Signal";
-// import { DirectionV3, DistanceV3, DotV3, LerpV3, MagnitudeV3 } from "Shared/Util/Vector3Util";
+import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { Signal } from "@Easy/Core/Shared/Util/Signal";
+// import { DirectionV3, DistanceV3, DotV3, LerpV3, MagnitudeV3 } from "@Easy/Core/Shared/Util/Vector3Util";
 import { TouchscreenDriver } from "./TouchscreenDriver";
 
 // -1 would be a perfect pinch:
