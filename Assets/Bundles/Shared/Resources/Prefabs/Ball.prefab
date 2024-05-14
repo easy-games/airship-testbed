@@ -163,6 +163,7 @@ MonoBehaviour:
   <IsNested>k__BackingField: 0
   <ComponentIndex>k__BackingField: 0
   <PredictedSpawn>k__BackingField: {fileID: 0}
+  airshipGUID: 
   _networkBehaviours:
   - {fileID: 8120107824103280230}
   - {fileID: 3641629332060154460}
@@ -190,7 +191,7 @@ MonoBehaviour:
   <SpawnableCollectionId>k__BackingField: 0
   _scenePathHash: 0
   <SceneId>k__BackingField: 0
-  <AssetPathHash>k__BackingField: 0
+  <AssetPathHash>k__BackingField: 12069361917781442781
 --- !u!114 &3641629332060154460
 MonoBehaviour:
   m_ObjectHideFlags: 0

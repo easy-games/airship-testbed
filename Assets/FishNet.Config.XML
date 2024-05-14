@@ -7,7 +7,7 @@
     <FullRebuild>false</FullRebuild>
     <SpawnableOnly>true</SpawnableOnly>
     <SaveChanges>true</SaveChanges>
-    <DefaultPrefabObjectsPath>Packages/gg.easy.airship/Runtime/Code/DefaultPrefabObjects.asset</DefaultPrefabObjectsPath>
+    <DefaultPrefabObjectsPath>Packages/gg.easy.airship/Runtime/Code/AirshipDefaultPrefabObjects.asset</DefaultPrefabObjectsPath>
     <SearchScope>0</SearchScope>
     <ExcludedFolders />
     <IncludedFolders />
