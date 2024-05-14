@@ -43,7 +43,11 @@ export class CharactersSingleton implements OnStart {
 	public allowMidGameOutfitChanges = true;
 
 	/**
-	 * If false, VoiceChatAudioSource will be parented to the Player instead of Character.
+	 * Default: true.
+	 *
+	 * If true, this enables Proximity Voice Chat. The AudioSource is parented to Character and is configured as 3D.
+	 *
+	 * If false, VoiceChatAudioSource will be parented to the Player instead of Character. AudioSource is configured as 2D.
 	 */
 	public autoParentVoiceChatAudioSourceToCharacter = true;
 
@@ -138,7 +142,9 @@ export class CharactersSingleton implements OnStart {
 
 		this.onCharacterSpawned.Connect((character) => {
 			if (this.autoParentVoiceChatAudioSourceToCharacter && character.player) {
-				character.player.voiceChatAudioSource.transform.SetParent(character.transform);
+				const audioSource = character.player.voiceChatAudioSource;
+				audioSource.transform.SetParent(character.transform);
+				audioSource.spatialBlend = 1;
 			}
 		});
 		this.onCharacterDespawned.Connect((character) => {
