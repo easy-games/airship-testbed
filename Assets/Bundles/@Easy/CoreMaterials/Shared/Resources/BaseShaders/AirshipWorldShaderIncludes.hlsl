@@ -11,7 +11,7 @@
 
     //Multi shader vars (you need these even if you're not using them, so that material properties can survive editor script reloads)
     float EXPLICIT_MAPS;
-    float EMISSIVE;
+    float EXTRA_FEATURES;
     float RIM_LIGHT;
     float SHADOW_COLOR;
     
@@ -402,7 +402,7 @@
         //Note to self: should try and sample reflectedCubeSample as early as possible
         roughnessLevel = max(roughSample.r, 0.04);
         metallicLevel = metalSample.r;
-    #if EMISSIVE_ON
+    #if EXTRA_FEATURES_ON
         emissiveLevel = Tex2DSampleTexture(_EmissiveMaskTex, coords).r;
     #else
 		emissiveLevel = 0;
@@ -431,7 +431,7 @@
 
         //metallic is packed
         metallicLevel = UnpackMetal(specialSample.b);
-    #if EMISSIVE_ON
+    #if EXTRA_FEATURES_ON
         emissiveLevel = UnpackEmission(specialSample.b);
         _EmissiveMix = 0;
     #endif
@@ -464,7 +464,7 @@
         /////////////////////////////////////////////////////
                 
         //If using a color mask
-#if USE_COLOR_MASK_ON
+#if EXTRA_FEATURES_ON
         //Use a color texture to determine if the baseColor effects the scene
         //White on the color mask = use base color. Black on the color mask = only use texture color
         half3 albedo = lerp(texSample.xyz, texSample.xyz * input.baseColor.rgb, Tex2DSampleTexture(_ColorMaskTex, coords).r);
@@ -481,7 +481,7 @@
         diffuseColor = max(albedo - albedo * metallicLevel, 0);		 
         specularColor = (dielectricSpecular - dielectricSpecular * metallicLevel) + albedo * metallicLevel;	 
 
-#ifdef IMAGEBASED_LIGHTING_ON      
+#ifndef LIGHTPROBE_ON      
         //Image based lighting
         float3 imageBasedLighting = pbrComputeBRDFMobile(-viewDirection, worldNormal, diffuseColor, specularColor, roughnessLevel, cubemapSample);
        
@@ -547,7 +547,7 @@
         float3 finalColor = finalSun + finalAmbient + pointLights + lightmapping +lightProbe;
  
         //Rim light
-#ifdef RIM_LIGHT_ON
+#ifdef EXTRA_FEATURES_ON
         finalColor.xyz += RimLightSimple(worldNormal, -viewDirection);
 #endif
         //Mix in fog
@@ -557,7 +557,7 @@
         half4 MRT0Val;
         half4 MRT1Val;
 
-#ifdef EMISSIVE_ON
+#ifdef EXTRA_FEATURES_ON
         if (emissiveLevel > 0)
         {
             float3 colorMix = lerp(finalColor, albedo, _EmissiveMix);
