@@ -16,6 +16,9 @@ export class CharacterInput {
 	private enabled = true;
 	private autoSprinting = false;
 
+	/** If true holding the sprint key will not result in sprinting */
+	private blockSprint = false;
+
 	private queuedMoveDirection = Vector3.zero;
 
 	constructor(private readonly character: Character) {
@@ -45,6 +48,7 @@ export class CharacterInput {
 	}
 
 	public IsSprinting(): boolean {
+		if (this.IsSprintBlocked()) return false;
 		return this.autoSprinting || Airship.input.IsDown("Sprint");
 	}
 
@@ -110,23 +114,25 @@ export class CharacterInput {
 			this.movement.SetMoveInput(position, false, false, false, false);
 		};
 
+		const localCharacterSingleton = Dependency<LocalCharacterSingleton>();
 		this.bin.Add(
 			OnUpdate.Connect((dt) => {
-				let sprinting = Airship.input.IsDown("Sprint") || this.autoSprinting;
+				let sprinting = this.IsSprinting();
+
 				const moveSignal = new LocalCharacterInputSignal(
 					this.queuedMoveDirection,
 					this.enabled ? Airship.input.IsDown("Jump") : false,
 					sprinting,
 					this.enabled ? Airship.input.IsDown("Crouch") : false,
 				);
-				Dependency<LocalCharacterSingleton>().onBeforeLocalEntityInput.Fire(moveSignal);
+				localCharacterSingleton.onBeforeLocalEntityInput.Fire(moveSignal);
 
 				this.movement.SetMoveInput(
 					moveSignal.moveDirection,
 					moveSignal.jump,
 					moveSignal.sprinting,
 					moveSignal.crouchOrSlide,
-					Dependency<LocalCharacterSingleton>().IsMoveDirWorldSpace(),
+					localCharacterSingleton.IsMoveDirWorldSpace(),
 				);
 			}),
 		);
@@ -148,5 +154,18 @@ export class CharacterInput {
 
 	public Destroy() {
 		this.bin.Destroy();
+	}
+
+	/**
+	 * Set wether sprint is blocked. When true the player's sprint key won't result in sprint state.
+	 */
+	public SetSprintBlocked(blocked: boolean) {
+		if (blocked === this.blockSprint) return;
+		this.blockSprint = blocked;
+	}
+
+	/** Returns true if player's sprint is currently blocked. */
+	public IsSprintBlocked() {
+		return this.blockSprint;
 	}
 }
