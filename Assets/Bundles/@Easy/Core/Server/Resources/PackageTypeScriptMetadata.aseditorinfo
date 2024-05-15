@@ -13,6 +13,11 @@
 		"@Easy/Core/Shared/Resources/TS/Types/Generated.d@Space": {
 			"World": 0,
 			"Self": 1
+		},
+		"@Easy/Core/Shared/Resources/TS/MainMenu/Components/AirshipButtonClickEffect@AirshipButtonClickEffect": {
+			"None": 0,
+			"Squish": 1,
+			"ShiftDown": 2
 		}
 	}
 }

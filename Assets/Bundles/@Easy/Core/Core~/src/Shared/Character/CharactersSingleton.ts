@@ -8,12 +8,12 @@ import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { AvatarUtil } from "../Avatar/AvatarUtil";
 import { CoreContext } from "../CoreClientContext";
 import { Game } from "../Game";
+import { CharacterItemManager } from "../Item/HeldItems/CharacterItemManager";
 import Character from "./Character";
 import { CharacterDto } from "./CharacterDto";
 import { CustomMoveData } from "./CustomMoveData";
 import { AirshipCharacterFootstepsSingleton } from "./Footstep/AirshipCharacterFootstepsSingleton";
 import { LocalCharacterSingleton } from "./LocalCharacter/LocalCharacterSingleton";
-import { CharacterItemManager } from "../Item/HeldItems/CharacterItemManager";
 
 const characterPrefab = AssetCache.LoadAsset("@Easy/Core/Shared/Resources/Character/AirshipCharacter.prefab");
 
@@ -41,6 +41,15 @@ export class CharactersSingleton implements OnStart {
 	public autoDespawnCharactersOnPlayerDisconnect = true;
 
 	public allowMidGameOutfitChanges = true;
+
+	/**
+	 * Default: true.
+	 *
+	 * If true, this enables Proximity Voice Chat. The AudioSource is parented to Character and is configured as 3D.
+	 *
+	 * If false, VoiceChatAudioSource will be parented to the Player instead of Character. AudioSource is configured as 2D.
+	 */
+	public autoParentVoiceChatAudioSourceToCharacter = true;
 
 	private idCounter = 0;
 	private customCharacterTemplate?: GameObject;
@@ -130,6 +139,21 @@ export class CharactersSingleton implements OnStart {
 				this.FindById(id)?.SetHealth(maxHealth);
 			});
 		}
+
+		this.onCharacterSpawned.Connect((character) => {
+			if (this.autoParentVoiceChatAudioSourceToCharacter && character.player) {
+				const audioSource = character.player.voiceChatAudioSource;
+				audioSource.transform.SetParent(character.transform);
+				audioSource.spatialBlend = 1;
+			}
+		});
+		this.onCharacterDespawned.Connect((character) => {
+			if (character.player) {
+				if (character.player.voiceChatAudioSource.transform.IsChildOf(character.transform)) {
+					character.player.voiceChatAudioSource.transform.SetParent(character.player.networkObject.transform);
+				}
+			}
+		});
 	}
 
 	/**

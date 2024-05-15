@@ -38,6 +38,7 @@ export default class SettingsPage extends MainMenuPageComponent {
 					if (Game.deviceType === AirshipDeviceType.Phone) {
 						this.tabs.GetChild(0).gameObject.SetActive(true); // Input
 						this.tabs.GetChild(1).gameObject.SetActive(true); // Sound
+						// this.tabs.GetChild(2).gameObject.SetActive(true); // Microphone
 						this.tabs.GetChild(4).gameObject.SetActive(true); // Blocked
 						this.tabs.GetChild(5).gameObject.SetActive(true); // Developer
 						this.tabs.GetChild(6).gameObject.SetActive(true); // Other

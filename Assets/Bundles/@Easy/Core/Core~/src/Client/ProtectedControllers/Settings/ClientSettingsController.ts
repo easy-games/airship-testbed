@@ -15,6 +15,7 @@ const defaultData: ClientSettingsFile = {
 	screenshotRenderHD: false,
 	screenshotShowUI: false,
 	statusText: "",
+	micDeviceName: undefined,
 };
 
 @Controller({ loadOrder: -1 })
@@ -23,6 +24,9 @@ export class ClientSettingsController implements OnStart {
 	private unsavedChanges = false;
 	private settingsLoaded = false;
 	private onSettingsLoaded = new Signal<ClientSettingsFile>();
+
+	public micFrequency = 16_000;
+	public micSampleLength = 100;
 
 	constructor() {
 		this.data = defaultData;
@@ -56,6 +60,21 @@ export class ClientSettingsController implements OnStart {
 
 		contextbridge.callback<() => number>("ClientSettings:GetTouchSensitivity", () => {
 			return this.GetTouchSensitivity();
+		});
+
+		// Microphone
+		task.spawn(() => {
+			if (this.data.micDeviceName !== undefined) {
+				const currentDeviceIndex = Bridge.GetCurrentMicDeviceIndex();
+				const micDevices = Bridge.GetMicDevices();
+				for (let i = 0; i < micDevices.Length; i++) {
+					const deviceName = micDevices.GetValue(i);
+					if (deviceName === this.data.micDeviceName && i !== currentDeviceIndex) {
+						Bridge.SetMicDeviceIndex(i);
+						break;
+					}
+				}
+			}
 		});
 	}
 

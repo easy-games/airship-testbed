@@ -1,7 +1,7 @@
-import { AirshipCharacterCameraSingleton } from "../Camera/AirshipCharacterCameraSingleton";
-import { Dependency } from "../Flamework";
-import { Bin } from "../Util/Bin";
-import { CanvasAPI } from "../Util/CanvasAPI";
+import { AirshipCharacterCameraSingleton } from "../../../Camera/AirshipCharacterCameraSingleton";
+import { Dependency } from "../../../Flamework";
+import { Bin } from "../../../Util/Bin";
+import { CanvasAPI } from "../../../Util/CanvasAPI";
 
 const MIN_ROT_X = math.rad(1);
 const MAX_ROT_X = math.rad(179);

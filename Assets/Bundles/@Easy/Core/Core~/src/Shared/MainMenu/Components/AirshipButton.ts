@@ -1,6 +1,7 @@
 import { Bin } from "../../Util/Bin";
 import { CanvasAPI, PointerButton, PointerDirection } from "../../Util/CanvasAPI";
 import { ColorUtil } from "../../Util/ColorUtil";
+import { AirshipButtonClickEffect } from "./AirshipButtonClickEffect";
 
 export default class AirshipButton extends AirshipBehaviour {
 	private bin = new Bin();
@@ -12,8 +13,7 @@ export default class AirshipButton extends AirshipBehaviour {
 	private loading = false;
 
 	@Header("Variables")
-	@Tooltip("0: Scale down when pressed.\n1: translate position down when pressed.")
-	public clickType = 0;
+	public clickEffect = AirshipButtonClickEffect.Squish;
 
 	@Header("Optional Variables")
 	public disabledColorHex = "#2E3035";
@@ -34,11 +34,11 @@ export default class AirshipButton extends AirshipBehaviour {
 				if (button !== PointerButton.LEFT) return;
 				if (this.disabled) return;
 
-				if (this.clickType === 0) {
+				if (this.clickEffect === AirshipButtonClickEffect.Squish) {
 					this.gameObject
 						.GetComponent<RectTransform>()!
 						.TweenLocalScale(dir === PointerDirection.DOWN ? startingScale.mul(0.9) : startingScale, 0.1);
-				} else if (this.clickType === 1) {
+				} else if (this.clickEffect === AirshipButtonClickEffect.ShiftDown) {
 					this.gameObject
 						.GetComponent<RectTransform>()!
 						.TweenAnchoredPosition(
@@ -68,7 +68,7 @@ export default class AirshipButton extends AirshipBehaviour {
 	}
 
 	public PlayClickEffect(): void {
-		if (this.clickType === 0) {
+		if (this.clickEffect === AirshipButtonClickEffect.Squish) {
 			this.gameObject
 				.GetComponent<RectTransform>()!
 				.TweenLocalScale(this.gameObject.GetComponent<RectTransform>()!.localScale.mul(0.9), 0.1)

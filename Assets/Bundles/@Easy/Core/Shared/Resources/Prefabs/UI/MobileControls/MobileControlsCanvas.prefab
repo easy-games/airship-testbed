@@ -86,7 +86,7 @@ GameObject:
   - component: {fileID: 6330314882020966801}
   - component: {fileID: 377572646602242574}
   - component: {fileID: 5530416397951097446}
-  - component: {fileID: 1064091822037440774}
+  - component: {fileID: 6286317343459586430}
   m_Layer: 8
   m_Name: CameraPanel
   m_TagString: Untagged
@@ -151,7 +151,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &1064091822037440774
+--- !u!114 &6286317343459586430
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -163,7 +163,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Shared/Resources/TS/MobileControls/MobileCameraMovement.lua
+  m_fileFullPath: Assets/Bundles/@Easy/Core/Shared/Resources/TS/MainMenu/Components/Overlay/MobileCameraMovement.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -177,6 +177,7 @@ MonoBehaviour:
     decorators: []
     properties: []
     displayName: 
+  contextOverwritten: 0
 --- !u!1 &7090916502956745191
 GameObject:
   m_ObjectHideFlags: 0
@@ -292,7 +293,7 @@ GameObject:
   - component: {fileID: 7854711655785950041}
   - component: {fileID: 3621341821076120221}
   - component: {fileID: 8518539271470560489}
-  - component: {fileID: 766244117407154814}
+  - component: {fileID: 3288377050970800545}
   m_Layer: 8
   m_Name: MobileJoystick
   m_TagString: Untagged
@@ -358,7 +359,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &766244117407154814
+--- !u!114 &3288377050970800545
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -370,7 +371,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Shared/Resources/TS/MobileControls/MobileJoystick.lua
+  m_fileFullPath: Assets/Bundles/@Easy/Core/Shared/Resources/TS/MainMenu/Components/Overlay/MobileJoystick.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -440,3 +441,4 @@ MonoBehaviour:
       serializedObject: {fileID: 0}
       modified: 0
     displayName: 
+  contextOverwritten: 0
