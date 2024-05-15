@@ -56,7 +56,7 @@ export class FirstPersonCameraSystem {
 	private cameraSpineOffset = new Vector3(-3.40097417e-9, 0.541525066, 0.0108257439);
 	/** Rotates viewmodel at some static offset from the camera.
 	 * Only applies if `positionViewmodelCameraUnderHead` is false. */
-	private cameraSpineRotOffset = Quaternion.Euler(5.23106146, -2.76772844e-5, -1.42344584e-6);
+	private invCameraSpineRotOffset = Quaternion.Inverse(Quaternion.Euler(5.23106146, -2.76772844e-5, -1.42344584e-6));
 
 	private inFirstPerson;
 	private bin: Bin;
@@ -152,7 +152,7 @@ export class FirstPersonCameraSystem {
 			rotation = Quaternion.LookRotation(forwardVec, offset);
 		} else {
 			// First calculate rotation of spine
-			rotation = camTransform.rotation.mul(Quaternion.Inverse(this.cameraSpineRotOffset));
+			rotation = camTransform.rotation.mul(this.invCameraSpineRotOffset);
 			// Use rotation of spine to find out where spine should be relative to camera
 			position = camTransform.position.add(rotation.mul(this.cameraSpineOffset.mul(-1)));
 		}
