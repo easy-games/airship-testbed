@@ -11,6 +11,14 @@ export declare class FirstPersonCameraSystem {
     private currentBobData;
     private targetBobStrength;
     private currentBobStrength;
+    /** If true the viewmodel will be positioned so the camera is located where the head is */
+    private positionViewmodelCameraUnderHead;
+    /** Positions viewmodel at some static offset from the camera.
+     * Only applies if `positionViewmodelCameraUnderHead` is false. */
+    private cameraSpineOffset;
+    /** Rotates viewmodel at some static offset from the camera.
+     * Only applies if `positionViewmodelCameraUnderHead` is false. */
+    private cameraSpineRotOffset;
     private inFirstPerson;
     private bin;
     private currentTime;

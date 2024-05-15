@@ -68,6 +68,13 @@ interface PlayerInfoDto {
 	gameObject: GameObject;
 }
 
+interface MoveModifier {
+	speedMultiplier: number;
+	jumpMultiplier: number;
+	blockSprint: boolean;
+	blockJump: boolean;
+}
+
 interface CharacterMovement extends Component {
 	OnStateChanged(callback: (state: CharacterState) => void): EngineEventConnection;
 	OnCustomDataFlushed(callback: () => void): EngineEventConnection;

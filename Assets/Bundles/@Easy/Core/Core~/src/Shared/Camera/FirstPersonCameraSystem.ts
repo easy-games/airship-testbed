@@ -45,9 +45,18 @@ export class FirstPersonCameraSystem {
 	private targetBobStrength = 0;
 	private currentBobStrength = 0;
 
-	//public spineLerpModMin = 25;
-	//public spineLerpModMax = 75;
-	//public spineLerpMaxAngle = 75;
+	/**
+	 * If true the viewmodel will be positioned so the camera is located where the head is.
+	 * If false it will use a static position that synchronizes head & camera as long as nothing
+	 * is animating the head's position.
+	 */
+	private positionViewmodelCameraUnderHead = false;
+	/** Positions viewmodel at some static offset from the camera.
+	 * Only applies if `positionViewmodelCameraUnderHead` is false. */
+	private cameraSpineOffset = new Vector3(-3.40097417e-9, 0.541525066, 0.0108257439);
+	/** Rotates viewmodel at some static offset from the camera.
+	 * Only applies if `positionViewmodelCameraUnderHead` is false. */
+	private cameraSpineRotOffset = Quaternion.Euler(5.23106146, -2.76772844e-5, -1.42344584e-6);
 
 	private inFirstPerson;
 	private bin: Bin;
@@ -122,20 +131,31 @@ export class FirstPersonCameraSystem {
 			0,
 		);
 
-		//Get the cameras transform
+		// Position viewmodel based on camera position
 		const camTransform = this.cameras.fpsCamera.transform;
 		const spineTransform = this.viewmodelController.rig.spine;
-		const headTransform = this.viewmodelController.rig.head;
-		const headLocalRotation = headTransform.localRotation;
-		const camRotation = camTransform.rotation;
 
-		// Offset from head position (where the camera is) to where the spine should be
-		const offset = camRotation.mul(Quaternion.Inverse(headLocalRotation)).mul(headTransform.localPosition);
-		// Invsere spine->head offset to find spine position from head
-		const position = camTransform.position.add(offset.mul(-1));
-		// Undo head rotation from camera rotation to get spine forward
-		const forwardVec = camRotation.mul(Quaternion.Inverse(headLocalRotation)).mul(Vector3.forward);
-		const rotation = Quaternion.LookRotation(forwardVec, offset);
+		let position = Vector3.zero;
+		let rotation = Quaternion.identity;
+
+		if (this.positionViewmodelCameraUnderHead) {
+			const headTransform = this.viewmodelController.rig.head;
+			const headLocalRotation = headTransform.localRotation;
+			const camRotation = camTransform.rotation;
+
+			// Offset from head position (where the camera is) to where the spine should be
+			const offset = camRotation.mul(Quaternion.Inverse(headLocalRotation)).mul(headTransform.localPosition);
+			// Invsere spine->head offset to find spine position from head
+			position = camTransform.position.add(offset.mul(-1));
+			// Undo head rotation from camera rotation to get spine forward
+			const forwardVec = camRotation.mul(Quaternion.Inverse(headLocalRotation)).mul(Vector3.forward);
+			rotation = Quaternion.LookRotation(forwardVec, offset);
+		} else {
+			// First calculate rotation of spine
+			rotation = camTransform.rotation.mul(Quaternion.Inverse(this.cameraSpineRotOffset));
+			// Use rotation of spine to find out where spine should be relative to camera
+			position = camTransform.position.add(rotation.mul(this.cameraSpineOffset.mul(-1)));
+		}
 
 		const data = { position, rotation };
 		Dependency<AirshipCharacterCameraSingleton>().onViewModelUpdate.Fire(data);
