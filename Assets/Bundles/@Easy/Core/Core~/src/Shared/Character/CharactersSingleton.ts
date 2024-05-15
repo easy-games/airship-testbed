@@ -140,20 +140,24 @@ export class CharactersSingleton implements OnStart {
 			});
 		}
 
-		this.onCharacterSpawned.Connect((character) => {
-			if (this.autoParentVoiceChatAudioSourceToCharacter && character.player) {
-				const audioSource = character.player.voiceChatAudioSource;
-				audioSource.transform.SetParent(character.transform);
-				audioSource.spatialBlend = 1;
-			}
-		});
-		this.onCharacterDespawned.Connect((character) => {
-			if (character.player) {
-				if (character.player.voiceChatAudioSource.transform.IsChildOf(character.transform)) {
-					character.player.voiceChatAudioSource.transform.SetParent(character.player.networkObject.transform);
+		if (Game.IsClient()) {
+			this.onCharacterSpawned.Connect((character) => {
+				if (this.autoParentVoiceChatAudioSourceToCharacter && character.player) {
+					const audioSource = character.player.voiceChatAudioSource;
+					audioSource.transform.SetParent(character.transform);
+					audioSource.spatialBlend = 1;
 				}
-			}
-		});
+			});
+			this.onCharacterDespawned.Connect((character) => {
+				if (character.player) {
+					if (character.player.voiceChatAudioSource.transform.IsChildOf(character.transform)) {
+						character.player.voiceChatAudioSource.transform.SetParent(
+							character.player.networkObject.transform,
+						);
+					}
+				}
+			});
+		}
 	}
 
 	/**
