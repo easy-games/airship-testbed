@@ -88,7 +88,18 @@ export class Player {
 		private playerInfo: PlayerInfo,
 	) {
 		if (playerInfo !== undefined) {
-			this.voiceChatAudioSource = playerInfo.voiceChatAudioSource;
+			this.SetVoiceChatAudioSource(playerInfo.voiceChatAudioSource);
+		}
+	}
+
+	/**
+	 * @internal
+	 * @param audioSource
+	 */
+	public SetVoiceChatAudioSource(audioSource: AudioSource): void {
+		(this.voiceChatAudioSource as AudioSource) = audioSource;
+		if (this.IsLocalPlayer()) {
+			audioSource.volume = 0;
 		}
 	}
 

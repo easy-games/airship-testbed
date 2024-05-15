@@ -1,6 +1,6 @@
-import { Airship } from "../Airship";
-import { Bin } from "../Util/Bin";
-import { CanvasAPI } from "../Util/CanvasAPI";
+import { Airship } from "../../../Airship";
+import { Bin } from "../../../Util/Bin";
+import { CanvasAPI } from "../../../Util/CanvasAPI";
 
 export default class MobileJoystick extends AirshipBehaviour {
 	public handle!: RectTransform;

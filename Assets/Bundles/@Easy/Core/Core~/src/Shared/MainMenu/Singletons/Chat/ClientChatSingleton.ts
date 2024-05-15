@@ -1,18 +1,18 @@
 import { CoreUIController } from "@Easy/Core/Client/ProtectedControllers/CoreUIController";
-import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
-import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
-import { MainMenuSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/MainMenuSingleton";
 import { Airship } from "@Easy/Core/Shared/Airship";
+import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
 import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
 import { ChatCommand } from "@Easy/Core/Shared/Commands/ChatCommand";
 import { ClearCommand } from "@Easy/Core/Shared/Commands/ClearCommand";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
+import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
 import { Controller, Dependency, OnStart } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { GameObjectUtil } from "@Easy/Core/Shared/GameObject/GameObjectUtil";
+import { MainMenuSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/MainMenuSingleton";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { CoreSound } from "@Easy/Core/Shared/Sound/CoreSound";
-import { ControlScheme, Keyboard, Mouse, Preferred } from "@Easy/Core/Shared/UserInput";
+import { Keyboard, Mouse } from "@Easy/Core/Shared/UserInput";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
@@ -137,20 +137,20 @@ export class ClientChatSingleton implements OnStart {
 
 		if (Game.IsInGame()) {
 			task.delay(0, () => {
-				const mobileOverlayCanvas = Object.Instantiate(
+				const overlayCanvas = Object.Instantiate(
 					AssetCache.LoadAsset(
-						"@Easy/Core/Shared/Resources/Prefabs/UI/MobileControls/MobileOverlayCanvas.prefab",
+						"@Easy/Core/Shared/Resources/Prefabs/UI/MobileControls/AirshipOverlayCanvas.prefab",
 					),
 					CoreRefs.protectedTransform,
 				);
-				const controls = new Preferred();
-				controls.ObserveControlScheme((scheme) => {
-					if (scheme === ControlScheme.Touch) {
-						mobileOverlayCanvas.SetActive(true);
-					} else {
-						mobileOverlayCanvas.SetActive(false);
-					}
-				});
+				// const controls = new Preferred();
+				// controls.ObserveControlScheme((scheme) => {
+				// 	if (scheme === ControlScheme.Touch) {
+				// 		overlayCanvas.SetActive(true);
+				// 	} else {
+				// 		overlayCanvas.SetActive(false);
+				// 	}
+				// });
 			});
 		}
 	}

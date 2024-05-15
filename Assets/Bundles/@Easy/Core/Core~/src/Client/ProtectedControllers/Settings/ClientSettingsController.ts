@@ -1,5 +1,4 @@
 import { Controller, Dependency, OnStart } from "@Easy/Core/Shared/Flamework";
-import { Game } from "@Easy/Core/Shared/Game";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { Task } from "@Easy/Core/Shared/Util/Task";
 import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
@@ -25,6 +24,9 @@ export class ClientSettingsController implements OnStart {
 	private unsavedChanges = false;
 	private settingsLoaded = false;
 	private onSettingsLoaded = new Signal<ClientSettingsFile>();
+
+	public micFrequency = 16_000;
+	public micSampleLength = 100;
 
 	constructor() {
 		this.data = defaultData;
@@ -72,9 +74,6 @@ export class ClientSettingsController implements OnStart {
 						break;
 					}
 				}
-			}
-			if (Game.IsInGame()) {
-				Bridge.StartMicRecording(16_000, 100);
 			}
 		});
 	}

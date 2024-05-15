@@ -1,5 +1,5 @@
-import ObjectUtils from "@easy-games/unity-object-utils";
 import { Controller, OnStart, Service } from "@Easy/Core/Shared/Flamework";
+import ObjectUtils from "@easy-games/unity-object-utils";
 import { Airship } from "../Airship";
 import { AssetCache } from "../AssetCache/AssetCache";
 import { CoreContext } from "../CoreClientContext";
@@ -116,6 +116,8 @@ export class AirshipInputSingleton implements OnStart {
 			{ name: "Inventory", binding: Binding.Key(Key.E) },
 			{ name: "DropItem", binding: Binding.Key(Key.Q) },
 			{ name: "Inspect", binding: Binding.Key(Key.Y) },
+			{ name: "Interact", binding: Binding.Key(Key.F) },
+			{ name: "PushToTalk", binding: Binding.Key(Key.V) },
 		]);
 
 		if (Game.coreContext === CoreContext.GAME && Game.IsGameLuauContext()) {

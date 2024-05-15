@@ -63,7 +63,7 @@ export class PlayersSingleton implements OnStart {
 			mutable.networkObject = localPlayerInfo.gameObject.GetComponent<NetworkObject>()!;
 			mutable.username = localPlayerInfo.username.Value;
 			mutable.userId = localPlayerInfo.userId.Value;
-			mutable.voiceChatAudioSource = localPlayerInfo.voiceChatAudioSource;
+			mutable.SetVoiceChatAudioSource(localPlayerInfo.voiceChatAudioSource);
 			Game.localPlayerLoaded = true;
 			Game.onLocalPlayerLoaded.Fire();
 
