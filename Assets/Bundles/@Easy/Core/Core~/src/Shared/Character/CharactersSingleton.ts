@@ -140,6 +140,7 @@ export class CharactersSingleton implements OnStart {
 			});
 		}
 
+		// Voice Chat
 		if (Game.IsClient()) {
 			this.onCharacterSpawned.Connect((character) => {
 				if (this.autoParentVoiceChatAudioSourceToCharacter && character.player) {
