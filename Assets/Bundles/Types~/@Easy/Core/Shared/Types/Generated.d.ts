@@ -16805,11 +16805,14 @@ interface BridgeConstructor {
     GetAllocatedRam(): number;
     GetAverageFPS(): number;
     GetCurrentFPS(): number;
+    GetCurrentMicDeviceIndex(): number;
+    GetMicDevices(): CSArray<string>;
     GetMonoRam(): number;
     GetReservedRam(): number;
     GetScene(sceneName: string): Scene;
     GetVolume(): number;
     IsFullScreen(): boolean;
+    IsMicRecording(): boolean;
     LoadScene(sceneName: string, restartLuau: boolean): void;
     MakeMaterialPropertyBlock(): MaterialPropertyBlock;
     MakeMesh(): Mesh;
@@ -16819,8 +16822,11 @@ interface BridgeConstructor {
     RemoveRichText(input: string): string;
     ScreenPointToLocalPointInRectangle(rectTransform: RectTransform, screenPoint: Vector2): Vector2;
     SetFullScreen(value: boolean): void;
+    SetMicDeviceIndex(i: number): void;
     SetParentToSceneRoot(transform: Transform): void;
     SetVolume(volume: number): void;
+    StartMicRecording(frequency: number, sampleLength: number): void;
+    StopMicRecording(): void;
     UpdateLayout(xform: Transform, recursive: boolean): void;
 }
 declare const Bridge: BridgeConstructor;

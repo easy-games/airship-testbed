@@ -37,6 +37,7 @@ export declare class Player {
      * The player's username. Non-unique, unless combined with `usernameTag`.
      */
     username: string;
+    private playerInfo;
     /**
      * The player controls this entity.
      */
@@ -56,6 +57,7 @@ export declare class Player {
     private connected;
     selectedOutfit: OutfitDto | undefined;
     outfitLoaded: boolean;
+    readonly voiceChatAudioSource: AudioSource;
     /**
      * WARNING: not implemented yet. only returns local platform for now.
      */
@@ -85,7 +87,7 @@ export declare class Player {
     /**
      * The player's username. Non-unique, unless combined with `usernameTag`.
      */
-    username: string);
+    username: string, playerInfo: PlayerInfo);
     /**
      * Can yield if the player's outfit hasn't finished downloading.
      * @param position

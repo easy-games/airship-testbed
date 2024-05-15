@@ -55,6 +55,7 @@ interface PlayerInfo extends Component {
 	userId: SyncVar<string>;
 	username: SyncVar<string>;
 	usernameTag: SyncVar<string>;
+	voiceChatAudioSource: AudioSource;
 }
 
 interface SyncVar<T> {

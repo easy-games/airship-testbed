@@ -1,4 +1,5 @@
 /// <reference types="compiler-types" />
+import { AirshipButtonClickEffect } from "./AirshipButtonClickEffect";
 export default class AirshipButton extends AirshipBehaviour {
     private bin;
     private disabled;
@@ -6,7 +7,7 @@ export default class AirshipButton extends AirshipBehaviour {
     private button;
     private startingColor;
     private loading;
-    clickType: number;
+    clickEffect: AirshipButtonClickEffect;
     disabledColorHex: string;
     loadingIndicator?: GameObject;
     Awake(): void;

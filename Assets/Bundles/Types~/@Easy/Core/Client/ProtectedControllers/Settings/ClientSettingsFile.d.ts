@@ -7,4 +7,5 @@ export interface ClientSettingsFile {
     screenshotShowUI: boolean;
     screenshotRenderHD: boolean;
     statusText: string;
+    micDeviceName: string | undefined;
 }

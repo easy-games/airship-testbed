@@ -32,9 +32,9 @@ export default class MicrophoneSettingsPage extends AirshipBehaviour {
 		clientSettings.data.micDeviceName = deviceName;
 		clientSettings.MarkAsDirty();
 
-		if (!Bridge.IsMicRecording()) {
-			Bridge.StartMicRecording(16_000, 100);
-		}
+		// if (!Bridge.IsMicRecording()) {
+		// 	Bridge.StartMicRecording(16_000, 100);
+		// }
 		for (let i = 0; i < this.content.childCount; i++) {
 			const go = this.content.GetChild(i);
 			const deviceComponent = go.gameObject.GetAirshipComponent<MicDevice>();

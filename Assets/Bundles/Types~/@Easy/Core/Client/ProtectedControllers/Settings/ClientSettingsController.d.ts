@@ -6,6 +6,8 @@ export declare class ClientSettingsController implements OnStart {
     private unsavedChanges;
     private settingsLoaded;
     private onSettingsLoaded;
+    micFrequency: number;
+    micSampleLength: number;
     constructor();
     OnStart(): void;
     MarkAsDirty(): void;

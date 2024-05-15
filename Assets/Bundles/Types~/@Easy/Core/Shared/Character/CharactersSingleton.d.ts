@@ -27,6 +27,14 @@ export declare class CharactersSingleton implements OnStart {
      */
     autoDespawnCharactersOnPlayerDisconnect: boolean;
     allowMidGameOutfitChanges: boolean;
+    /**
+     * Default: true.
+     *
+     * If true, this enables Proximity Voice Chat. The AudioSource is parented to Character and is configured as 3D.
+     *
+     * If false, VoiceChatAudioSource will be parented to the Player instead of Character. AudioSource is configured as 2D.
+     */
+    autoParentVoiceChatAudioSourceToCharacter: boolean;
     private idCounter;
     private customCharacterTemplate?;
     constructor(localCharacterManager: LocalCharacterSingleton, footsteps: AirshipCharacterFootstepsSingleton);
