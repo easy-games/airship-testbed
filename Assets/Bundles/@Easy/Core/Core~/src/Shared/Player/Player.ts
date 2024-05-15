@@ -101,6 +101,7 @@ export class Player {
 		if (this.IsLocalPlayer()) {
 			// audioSource.volume = 0;
 		}
+		audioSource.rolloffMode = AudioRolloffMode.Linear;
 	}
 
 	/**
