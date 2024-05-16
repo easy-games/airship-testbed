@@ -79,7 +79,7 @@ declare namespace json {
 	 * json.encode({hello: "world"}) === `{"hello":"world"}`
 	 * ```
 	 */
-	function encode(value: any, space?: string | number): string;
+	function encode(value: unknown, space?: string | number): string;
 
 	/**
 	 * Decodes the JSON string as a value.
@@ -89,5 +89,5 @@ declare namespace json {
 	 * print(data.hello) // -> world
 	 * ```
 	 */
-	function decode(json: string): any;
+	function decode<T = unknown>(json: string): T;
 }
