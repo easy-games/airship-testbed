@@ -6263,6 +6263,8 @@ MonoBehaviour:
   disableInput: 0
   useGravity: 1
   detectSlopes: 1
+  detectStepUps: 1
+  preventWallClipping: 1
   groundCollisionLayerMask:
     serializedVersion: 2
     m_Bits: 2305
@@ -7159,6 +7161,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -38.661
       objectReference: {fileID: 0}
+    - target: {fileID: 7598432165122203391, guid: 4aa6768ebfa5a5b4ebf2fb45c873c97c, type: 3}
+      propertyPath: m_Avatar
+      value: 
+      objectReference: {fileID: 9000000, guid: 0c3f4e0c47ef31f4c841822649c2473f, type: 3}
     - target: {fileID: 8242817677000904988, guid: 4aa6768ebfa5a5b4ebf2fb45c873c97c, type: 3}
       propertyPath: m_Name
       value: Airship_Rig
