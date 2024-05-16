@@ -11,7 +11,6 @@
 
     //Multi shader vars (you need these even if you're not using them, so that material properties can survive editor script reloads)
     float EXPLICIT_MAPS;
-    float EXTRA_FEATURES;
     float RIM_LIGHT;
     float SHADOW_COLOR;
     
@@ -39,6 +38,7 @@
 
     float  _Alpha;
     float4 _Color;
+    float4 _ColorMaskColor;
     float4 _ShadowColor;
     float4 _SpecularColor;
     float4 _OverrideColor;
@@ -467,7 +467,7 @@
 #if EXTRA_FEATURES_ON
         //Use a color texture to determine if the baseColor effects the scene
         //White on the color mask = use base color. Black on the color mask = only use texture color
-        half3 albedo = lerp(texSample.xyz, texSample.xyz * input.baseColor.rgb, Tex2DSampleTexture(_ColorMaskTex, coords).r);
+        half3 albedo = lerp(texSample.xyz * _ColorMaskColor, texSample.xyz * input.baseColor.rgb, Tex2DSampleTexture(_ColorMaskTex, coords).r);
 #else
         //Otherwise always use the color
         half3 albedo = texSample.xyz * input.baseColor.rgb;

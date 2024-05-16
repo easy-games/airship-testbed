@@ -10,9 +10,6 @@ export enum GameMode {
 }
 
 export default class TopDownBattleGame extends AirshipBehaviour {
-	//There is only one game class so expose it for anyone to access
-	public static instance: TopDownBattleGame;
-
 	@Header("References")
 	public startBtn!: Button;
 	public gameOverScreen!: GameObject;
@@ -26,7 +23,6 @@ export default class TopDownBattleGame extends AirshipBehaviour {
 
 	public override Awake(): void {
 		this.enemySpawner = this.gameObject.GetAirshipComponent<TopDownBattleEnemySpawner>()!;
-		TopDownBattleGame.instance = this;
 	}
 
 	override Start(): void {
@@ -94,9 +90,12 @@ export default class TopDownBattleGame extends AirshipBehaviour {
 					break;
 			}
 
-			//When the server enters a new state, tell ALL clients the new game mode
-			TopDownBattleEvents.gameModeEvent.server.FireAllClients(gameMode);
-		} else if (Game.IsClient()) {
+			if (!Game.IsClient()) {
+				//When the server enters a new state, tell ALL clients the new game mode
+				TopDownBattleEvents.gameModeEvent.server.FireAllClients(gameMode);
+			}
+		}
+		if (Game.IsClient()) {
 			//Client updates its visual state to match the game mode
 			switch (gameMode) {
 				case GameMode.IDLE:
@@ -114,11 +113,7 @@ export default class TopDownBattleGame extends AirshipBehaviour {
 			}
 		}
 
-		//Notify other classes about new game mode
-		print(
-			"notifying game mode: " + gameMode + " count: " + TopDownBattleEvents.gameModeSignal.GetConnectionCount(),
-		);
-
+		//Fire on server
 		TopDownBattleEvents.gameModeSignal.Fire(gameMode);
 	}
 }

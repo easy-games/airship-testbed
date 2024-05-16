@@ -7,6 +7,9 @@ export const TopDownBattleEvents = {
 	KillData: new RemoteEvent<[rank: string, total: number]>("KillData"),
 	TopScores: new RemoteEvent<[topKills: { id: string; rank: number; value: string }[]]>("TopScores"),
 
+	//ENEMIES
+	onEnemyMoveEvent: new RemoteEvent<[nobId: number, targetTime: number]>("OnEnemyMoveEvent"),
+
 	//Trigger new game modes over the network
 	gameModeEvent: new RemoteEvent<[gameMode: GameMode]>("TopDownBattleGameMode"),
 	//Notify local scripts of game mode changes
