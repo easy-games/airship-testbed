@@ -23,7 +23,7 @@ RenderSettings:
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
-  m_AmbientIntensity: 1
+  m_AmbientIntensity: 0.914
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 2100000, guid: f5c2186f7ebace244a6a20db5e97f5fd, type: 2}
@@ -94,7 +94,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 20201, guid: 0000000000000000f000000000000000, type: 0}
-  m_LightingSettings: {fileID: 0}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: ef71d743c1201e14a8ce16355e933aaa, type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1248,12 +1248,12 @@ MonoBehaviour:
   _negativeSunDirectionNormalized: {x: -0.3671977, y: 0.5928473, z: -0.71672726}
   _sunDirectionNormalized: {x: 0.3671977, y: -0.5928473, z: 0.71672726}
   _sunDirection: {x: 0.3671977, y: -0.5928473, z: 0.71672726}
-  sunBrightness: 0.5
+  sunBrightness: 0.023
   sunShadow: 0.7
   sunColor: {r: 1, g: 1, b: 1, a: 1}
-  skySaturation: 0.3
+  skySaturation: 0.335
   globalAmbientLight: {r: 1, g: 0.88576406, b: 0.7783019, a: 1}
-  globalAmbientBrightness: 0.5
+  globalAmbientBrightness: 0.79
   globalAmbientOcclusion: 0.25
   fogEnabled: 0
   fogStart: 75
@@ -1262,7 +1262,7 @@ MonoBehaviour:
   shadowRange: 50
   postProcess: 1
   bakeSun: 1
-  globalLightingMode: 1
+  globalLightingMode: 0
   doShadows: 1
   cubeMap: {fileID: 8900000, guid: 7b6fb1e32e8195d45bb1770100fbc001, type: 3}
   maxBrightness: 1
@@ -5716,7 +5716,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &920360047
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7380,6 +7380,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1648556075}
   - component: {fileID: 1648556074}
+  - component: {fileID: 1648556076}
   m_Layer: 0
   m_Name: ScriptingEntryPoint
   m_TagString: Untagged
@@ -7414,6 +7415,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 913210012}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1648556076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1648556073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_fileFullPath: Assets/Bundles/Shared/Resources/TS/Demo/TopDownBattle/TopDownEntryPoint.lua
+  m_error: 0
+  m_yielded: 0
+  m_assetPath: 
+  m_canResume: 0
+  m_asyncYield: 0
+  m_onUpdateHandle: -1
+  m_onLateUpdateHandle: -1
+  m_shortFileName: 
+  m_metadata:
+    name: 
+    decorators: []
+    properties: []
+    displayName: 
+  contextOverwritten: 0
 --- !u!1 &1666197636
 GameObject:
   m_ObjectHideFlags: 0
@@ -8671,6 +8699,7 @@ Material:
     - DOUBLE_SIDED_NORMALS: 2
     - EMISSIVE: 0
     - EXPLICIT_MAPS: 1
+    - EXTENDED_FEATURES: 0
     - INSTANCE_DATA: 0
     - RIM_LIGHT: 0
     - SHADOWS: 1

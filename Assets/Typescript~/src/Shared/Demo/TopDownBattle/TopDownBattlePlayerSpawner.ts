@@ -6,6 +6,7 @@ import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import TopDownBattleCharacter from "./TopDownBattleCharacter";
 import TopDownBattleGame, { GameMode } from "./TopDownBattleGame";
 import { TopDownBattleEvents } from "./TopDownEvents";
+import { TopDownBattle } from "./TopDownEntryPoint";
 
 export default class TopDownBattlePlayerSpawner extends AirshipBehaviour {
 	@Header("Templates")
@@ -37,11 +38,11 @@ export default class TopDownBattlePlayerSpawner extends AirshipBehaviour {
 				}
 			});
 
-			Airship.players.onPlayerJoined.Connect((player) => {
-				if (player) {
-					this.SpawnCharacter(player);
-				}
-			});
+			// Airship.players.onPlayerJoined.Connect((player) => {
+			// 	if (player) {
+			// 		this.SpawnCharacter(player);
+			// 	}
+			// });
 
 			this.bin.Add(
 				//When a character dies, respawn it
@@ -74,7 +75,7 @@ export default class TopDownBattlePlayerSpawner extends AirshipBehaviour {
 								//Trigger the game over state
 								task.delay(2, () => {
 									print("Triggering GAME OVER");
-									TopDownBattleGame.instance.LoseGame();
+									TopDownBattle.LoseGame();
 								});
 							}
 						}

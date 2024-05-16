@@ -6,6 +6,7 @@ import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { Layer } from "@Easy/Core/Shared/Util/Layer";
 import { MathUtil } from "@Easy/Core/Shared/Util/MathUtil";
 import { SharedTime } from "@Easy/Core/Shared/Util/TimeUtil";
+import { TopDownBattleEvents } from "../TopDownEvents";
 
 export default class TopDownBattleEnemy extends AirshipBehaviour {
 	@Header("References")
@@ -26,7 +27,6 @@ export default class TopDownBattleEnemy extends AirshipBehaviour {
 
 	//Events
 	private bin: Bin = new Bin();
-	private onMoveEvent = new RemoteEvent<[nobId: number, targetTime: number]>("OnMoveEvent");
 	private enabled = false;
 
 	override OnEnable(): void {
@@ -38,9 +38,16 @@ export default class TopDownBattleEnemy extends AirshipBehaviour {
 		//Add to bin so we can remove the listener when the enemy is disabled
 		this.bin.Add(
 			//Listen to the server to know when the enemy is moving
-			this.onMoveEvent.client.OnServerEvent((id, targetTime) => {
+			TopDownBattleEvents.onEnemyMoveEvent.client.OnServerEvent((id, targetTime) => {
 				if (this.nob.ObjectId === id) {
 					this.targetMoveTime = targetTime;
+				}
+			}),
+		);
+		this.bin.Add(
+			Airship.damage.onDeath.Connect((damageInfo) => {
+				if (damageInfo.gameObject === this.targetCharacter?.gameObject) {
+					this.targetCharacter = undefined;
 				}
 			}),
 		);
@@ -63,7 +70,7 @@ export default class TopDownBattleEnemy extends AirshipBehaviour {
 
 		if (Game.IsServer()) {
 			//Look towards our target if we have one
-			if (this.targetCharacter) {
+			if (this.targetCharacter && this.targetCharacter.gameObject !== undefined) {
 				//Look at the character along a flat plane
 				this.transform.LookAt(
 					new Vector3(
@@ -115,7 +122,7 @@ export default class TopDownBattleEnemy extends AirshipBehaviour {
 		this.targetMoveTime = SharedTime() + MathUtil.Lerp(this.minMoveTime, this.maxMoveTime, math.random());
 
 		//Notify the clients when this character will move
-		this.onMoveEvent.server.FireAllClients(this.nob.ObjectId, this.targetMoveTime);
+		TopDownBattleEvents.onEnemyMoveEvent.server.FireAllClients(this.nob.ObjectId, this.targetMoveTime);
 	}
 
 	private GetClosestCharacter(): Character | undefined {
@@ -156,7 +163,7 @@ export default class TopDownBattleEnemy extends AirshipBehaviour {
 			Airship.damage.InflictDamage(character.gameObject, this.damageAmount, this.gameObject);
 			//Knockback
 			let dir = character.transform.position.sub(this.transform.position).normalized;
-			character.movement.ApplyImpulse(new Vector3(dir.x, dir.y + 0.5, dir.z).mul(this.knockbackForce));
+			character.movement.ApplyImpulseInAir(new Vector3(dir.x, dir.y + 0.5, dir.z).mul(this.knockbackForce), true);
 		}
 	}
 }
