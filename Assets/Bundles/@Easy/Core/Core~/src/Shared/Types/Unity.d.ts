@@ -1789,6 +1789,8 @@ interface AnimancerStateDictionary extends CSDictionary<Object, AnimancerState> 
 
 interface AnimancerLayers {
 	GetLayer(index: number): AnimancerLayer;
+	/** Sets an {@link AvatarMask} to determine which bones the layer at the specified index will affect. */
+	SetMask(index: number, mask: AvatarMask): void;
 }
 
 interface AnimancerComponent extends Component {

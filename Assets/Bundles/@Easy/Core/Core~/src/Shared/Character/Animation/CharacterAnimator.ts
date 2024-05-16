@@ -1,10 +1,10 @@
-﻿﻿import { CoreItemType } from "@Easy/Core/Shared/Item/CoreItemType";
-import { ViewmodelController } from "@Easy/Core/Client/Controllers/Viewmodel/ViewmodelController";
+﻿﻿import { ViewmodelController } from "@Easy/Core/Client/Controllers/Viewmodel/ViewmodelController";
 import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
 import { AudioBundleSpacialMode, AudioClipBundle } from "@Easy/Core/Shared/Audio/AudioClipBundle";
 import Character from "@Easy/Core/Shared/Character/Character";
 import { EffectsManager } from "@Easy/Core/Shared/Effects/EffectsManager";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
+import { CoreItemType } from "@Easy/Core/Shared/Item/CoreItemType";
 import { ItemUtil } from "@Easy/Core/Shared/Item/ItemUtil";
 import StringUtils from "@Easy/Core/Shared/Types/StringUtil";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
@@ -290,6 +290,7 @@ export class CharacterAnimator {
 		if (!RunUtil.IsClient()) {
 			return error("Tried to play viewmodel animation on server.");
 		}
+		assert(clip, "PlayItemAnimationInViewmodel failed: AnimationClip is undefined");
 		if (!this.isFirstPerson) return undefined;
 
 		let animState: AnimancerState;
