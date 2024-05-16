@@ -1,8 +1,8 @@
-import ObjectUtils from "@easy-games/unity-object-utils";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { Spring } from "@Easy/Core/Shared/Util/Spring";
 import { OnLateUpdate, OnUpdate } from "@Easy/Core/Shared/Util/Timer";
+import ObjectUtils from "@easy-games/unity-object-utils";
 import { CameraMode } from "./CameraMode";
 import { CameraReferences } from "./CameraReferences";
 import { CameraTransform } from "./CameraTransform";
@@ -33,6 +33,8 @@ export class CameraSystem {
 
 	private enabled = true;
 	private readonly enabledBin = new Bin();
+
+	private fovEnabled = true;
 
 	public GetActiveCamera(): Camera {
 		return this.mainCamera;
@@ -82,10 +84,11 @@ export class CameraSystem {
 
 			this.transform.SetPositionAndRotation(camTransform.position, camTransform.rotation);
 			this.currentMode.OnPostUpdate(this.mainCamera);
-			for (const [cameraType, fovState] of this.fovStateMap) {
-				if (!fovState.fovSpringMoving) continue;
-
-				this.UpdateFOVSpring(cameraType, fovState, dt);
+			if (!this.fovEnabled) {
+				for (const [cameraType, fovState] of this.fovStateMap) {
+					if (!fovState.fovSpringMoving) continue;
+					this.UpdateFOVSpring(cameraType, fovState, dt);
+				}
 			}
 		});
 
@@ -124,6 +127,11 @@ export class CameraSystem {
 		} else {
 			this.OnDisabled();
 		}
+	}
+
+	public SetFOVUpdateEnabled(enabled: boolean) {
+		if (this.fovEnabled === enabled) return;
+		this.fovEnabled = enabled;
 	}
 
 	/**
