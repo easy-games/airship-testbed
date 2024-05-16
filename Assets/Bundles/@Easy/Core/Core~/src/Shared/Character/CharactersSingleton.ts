@@ -146,7 +146,10 @@ export class CharactersSingleton implements OnStart {
 				if (this.autoParentVoiceChatAudioSourceToCharacter && character.player) {
 					const audioSource = character.player.voiceChatAudioSource;
 					audioSource.transform.SetParent(character.transform);
+					audioSource.transform.localPosition = new Vector3(0, 1.4, 0);
 					audioSource.spatialBlend = 1;
+					audioSource.maxDistance = 50;
+					audioSource.rolloffMode = AudioRolloffMode.Linear;
 				}
 			});
 			this.onCharacterDespawned.Connect((character) => {

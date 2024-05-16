@@ -26,6 +26,14 @@ export class ViewmodelController implements OnStart {
 		const refs = this.viewmodelGo.GetComponent<GameObjectReferences>()!;
 		const rig = refs.GetValue("Refs", "Rig");
 		this.animancer = rig.GetComponent<AnimancerComponent>()!;
+
+		const mask = AssetBridge.Instance.LoadAsset<AvatarMask>(
+			"@Easy/Core/Shared/Resources/Character/Animations/AvatarMask_Viewmodel.mask",
+		);
+		for (let i = 0; i <= 4; i++) {
+			this.animancer.Layers.SetMask(i, mask);
+		}
+
 		this.rig = rig.GetComponent<CharacterRig>()!;
 
 		const content = this.viewmodelTransform.GetChild(0).gameObject;
