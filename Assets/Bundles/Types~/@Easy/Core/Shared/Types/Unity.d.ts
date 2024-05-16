@@ -152,6 +152,7 @@ interface ObjectConstructor {
 	Instantiate<T>(original: T, position: Vector3, rotation: Quaternion, parent: Transform): T;
 	Instantiate<T>(original: T, parent: Transform): T;
 	Instantiate<T>(original: T, parent: Transform, worldPositionStays: boolean): T;
+	IsA<T>(): this is T;
 }
 declare const Object: ObjectConstructor;
 
