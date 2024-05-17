@@ -117,6 +117,7 @@ interface Object {
 	GetHashCode(): number;
 	GetInstanceID(): number;
 	ToString(): string;
+	IsA<T>(): this is T;
 }
 interface ObjectConstructor {
 	Destroy(obj: Object, t: number): void;
@@ -152,7 +153,6 @@ interface ObjectConstructor {
 	Instantiate<T>(original: T, position: Vector3, rotation: Quaternion, parent: Transform): T;
 	Instantiate<T>(original: T, parent: Transform): T;
 	Instantiate<T>(original: T, parent: Transform, worldPositionStays: boolean): T;
-	IsA<T>(): this is T;
 }
 declare const Object: ObjectConstructor;
 
