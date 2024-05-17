@@ -1,7 +1,8 @@
-import { Service, OnStart } from "@Easy/Core/Shared/Flamework";
 import { Platform } from "@Easy/Core/Shared/Airship";
+import { OnStart, Service } from "@Easy/Core/Shared/Flamework";
+import { Game } from "@Easy/Core/Shared/Game";
 import { Result } from "@Easy/Core/Shared/Types/Result";
-import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
+import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 
 @Service({})
@@ -10,7 +11,7 @@ export class CacheStoreService implements OnStart {
 	private maxExpireSec = 60 * 60 * 24; // 24h in seconds
 
 	constructor() {
-		if (RunUtil.IsServer()) Platform.server.cacheStore = this;
+		if (Game.IsServer()) Platform.server.cacheStore = this;
 	}
 
 	OnStart(): void {}
@@ -29,7 +30,8 @@ export class CacheStoreService implements OnStart {
 		this.CheckKey(key);
 
 		const expireTime = expireTimeSec !== undefined ? math.clamp(expireTimeSec, 0, this.maxExpireSec) : undefined;
-		const result = CacheStoreServiceBackend.GetKey(key, expireTime);
+		const query = expireTime !== undefined ? `?expiry=${expireTime}` : "";
+		const result = InternalHttpManager.GetAsync(`${AirshipUrl.DataStoreService}/cache/key/${key}${query}`);
 		if (!result.success) {
 			warn(`Unable to get cache key. Status Code: ${result.statusCode}.\n`, result.data);
 			return {
@@ -61,7 +63,10 @@ export class CacheStoreService implements OnStart {
 		this.CheckKey(key);
 
 		const expireTime = math.clamp(expireTimeSec, 0, this.maxExpireSec);
-		const result = CacheStoreServiceBackend.SetKey(key, expireTime, EncodeJSON(data));
+		const result = InternalHttpManager.PostAsync(
+			`${AirshipUrl.DataStoreService}/cache/key/${key}?expiry=${expireTime}`,
+			EncodeJSON(data),
+		);
 		if (!result.success || result.statusCode > 299) {
 			warn(`Unable to set cache key. Status Code: ${result.statusCode}.\n`, result.data);
 			return {
@@ -96,7 +101,9 @@ export class CacheStoreService implements OnStart {
 	public async SetKeyTTL(key: string, expireTimeSec: number): Promise<Result<number, undefined>> {
 		this.CheckKey(key);
 
-		const result = CacheStoreServiceBackend.SetKeyTTL(key, math.clamp(expireTimeSec, 0, this.maxExpireSec));
+		const result = InternalHttpManager.GetAsync(
+			`${AirshipUrl.DataStoreService}/cache/key/${key}/ttl?expiry=${math.clamp(expireTimeSec, 0, this.maxExpireSec)}`,
+		);
 		if (!result.success || result.statusCode > 299) {
 			warn(`Unable to set cache key ttl. Status Code: ${result.statusCode}.\n`, result.data);
 			return {

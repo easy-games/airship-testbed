@@ -1,7 +1,8 @@
-import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
 import { Platform } from "@Easy/Core/Shared/Airship";
+import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
 import { PublicUser } from "@Easy/Core/Shared/SocketIOMessages/PublicUser";
 import { Result } from "@Easy/Core/Shared/Types/Result";
+import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { DecodeJSON } from "@Easy/Core/Shared/json";
 
@@ -18,7 +19,7 @@ export class FriendsController implements OnStart {
 	 * @returns A list of friends.
 	 */
 	public async GetFriends(): Promise<Result<PublicUser[], undefined>> {
-		const res = await FriendsControllerBackend.GetFriends();
+		const res = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/friends/self`);
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to get friends. Status Code ${res.statusCode}.\n`, res.data);
@@ -40,7 +41,7 @@ export class FriendsController implements OnStart {
 	 * @returns True if friends, false otherwise.
 	 */
 	public async IsFriendsWith(userId: string): Promise<Result<boolean, undefined>> {
-		const res = await FriendsControllerBackend.IsFriendsWith(userId);
+		const res = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/friends/uid/${userId}/status`);
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to get friends. Status Code ${res.statusCode}.\n`, res.data);

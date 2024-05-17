@@ -1,14 +1,14 @@
-import { Service, OnStart } from "@Easy/Core/Shared/Flamework";
 import { Platform } from "@Easy/Core/Shared/Airship";
+import { OnStart, Service } from "@Easy/Core/Shared/Flamework";
+import { Game } from "@Easy/Core/Shared/Game";
 import { Result } from "@Easy/Core/Shared/Types/Result";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
-import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 
 @Service({})
 export class MatchmakingService implements OnStart {
 	constructor() {
-		if (RunUtil.IsServer()) Platform.server.matchmaking = this;
+		if (Game.IsServer()) Platform.server.matchmaking = this;
 	}
 
 	OnStart(): void {}
@@ -22,7 +22,7 @@ export class MatchmakingService implements OnStart {
 	 * @returns A list of currently available matchmaking regions.
 	 */
 	public async GetMatchmakingRegions(): Promise<Result<string[], undefined>> {
-		const res = await MatchmakingServiceBackend.GetMatchmakingRegions();
+		const res = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/matchmaking/regions`);
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to get matchmaking regions. Status Code:  ${res.statusCode}.\n`, res.data);
@@ -51,8 +51,8 @@ export class MatchmakingService implements OnStart {
 		queueId: string,
 		regions?: string[],
 	): Promise<Result<undefined, undefined>> {
-		const res = await MatchmakingServiceBackend.JoinPartyToQueue(
-			partyId,
+		const res = InternalHttpManager.PostAsync(
+			`${AirshipUrl.GameCoordinator}/matchmaking/party-id/${partyId}/queue`,
 			EncodeJSON({
 				regions,
 				queueId,
@@ -78,7 +78,10 @@ export class MatchmakingService implements OnStart {
 	 * @param partyId The id of the party
 	 */
 	public async RemovePartyFromQueue(partyId: string): Promise<Result<undefined, undefined>> {
-		const res = await MatchmakingServiceBackend.RemovePartyFromQueue(partyId);
+		const res = InternalHttpManager.PostAsync(
+			`${AirshipUrl.GameCoordinator}/matchmaking/party-id/${partyId}/dequeue`,
+			"",
+		);
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to queue user party. Status Code:  ${res.statusCode}.\n`, res.data);

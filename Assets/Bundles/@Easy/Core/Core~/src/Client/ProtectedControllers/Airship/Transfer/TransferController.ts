@@ -1,13 +1,14 @@
-import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
-import { EncodeJSON } from "@Easy/Core/Shared/json";
-import { Result } from "@Easy/Core/Shared/Types/Result";
 import { Platform } from "@Easy/Core/Shared/Airship";
-import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
+import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Game } from "@Easy/Core/Shared/Game";
+import { Result } from "@Easy/Core/Shared/Types/Result";
+import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
+import { EncodeJSON } from "@Easy/Core/Shared/json";
 
 @Controller({})
 export class TransferController implements OnStart {
 	constructor() {
-		if (RunUtil.IsClient()) Platform.client.transfer = this;
+		if (Game.IsClient()) Platform.client.transfer = this;
 	}
 
 	OnStart(): void {}
@@ -24,7 +25,8 @@ export class TransferController implements OnStart {
 		gameId: string,
 		preferredServerId?: string,
 	): Promise<Result<undefined, undefined>> {
-		const res = await TransferControllerBackend.TransferToGame(
+		const res = InternalHttpManager.PostAsync(
+			`${AirshipUrl.GameCoordinator}/transfers/transfer/self`,
 			EncodeJSON({
 				gameId: gameId,
 				preferredServerId,
@@ -50,7 +52,7 @@ export class TransferController implements OnStart {
 	 * or the client is not in a party, this function will have no effect.
 	 */
 	public async TransferToPartyLeader(): Promise<Result<undefined, undefined>> {
-		const res = await TransferControllerBackend.TransferToPartyLeader();
+		const res = InternalHttpManager.PostAsync(`${AirshipUrl.GameCoordinator}/transfers/transfer/self/party`, "");
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to complete transfer request. Status Code:  ${res.statusCode}.\n`, res.data);

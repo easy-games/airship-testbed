@@ -1,10 +1,10 @@
+import { Platform } from "@Easy/Core/Shared/Airship";
 import { OnStart, Service } from "@Easy/Core/Shared/Flamework";
+import { Game } from "@Easy/Core/Shared/Game";
 import { Player } from "@Easy/Core/Shared/Player/Player";
+import { Result } from "@Easy/Core/Shared/Types/Result";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
-import { Result } from "@Easy/Core/Shared/Types/Result";
-import { Platform } from "@Easy/Core/Shared/Airship";
-import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 
 export type CreateServerResponse = {
 	serverId: string;
@@ -13,7 +13,7 @@ export type CreateServerResponse = {
 @Service({})
 export class TransferService implements OnStart {
 	constructor() {
-		if (RunUtil.IsServer()) Platform.server.transfer = this;
+		if (Game.IsServer()) Platform.server.transfer = this;
 	}
 
 	OnStart(): void {}
@@ -25,7 +25,8 @@ export class TransferService implements OnStart {
 	 * @returns The id of the new server. Undefined if the server was not able to be created.
 	 */
 	public async CreateServer(sceneId?: string): Promise<Result<CreateServerResponse, undefined>> {
-		const res = await TransferServiceBackend.CreateServer(
+		const res = InternalHttpManager.PostAsync(
+			`${AirshipUrl.GameCoordinator}/servers/create`,
 			EncodeJSON({
 				sceneId: sceneId,
 			}),
@@ -76,7 +77,8 @@ export class TransferService implements OnStart {
 		serverTransferData?: unknown,
 		clientTransferData?: unknown,
 	): Promise<Result<undefined, undefined>> {
-		const res = await TransferServiceBackend.Transfer(
+		const res = InternalHttpManager.PostAsync(
+			`${AirshipUrl.GameCoordinator}`,
 			EncodeJSON({
 				uid: players.map((p) => p.userId),
 				gameId,
@@ -128,7 +130,8 @@ export class TransferService implements OnStart {
 		serverTransferData?: unknown,
 		clientTransferData?: unknown,
 	): Promise<Result<undefined, undefined>> {
-		const res = await TransferServiceBackend.Transfer(
+		const res = InternalHttpManager.PostAsync(
+			`${AirshipUrl.GameCoordinator}/transfers/transfer`,
 			EncodeJSON({
 				uids: players.map((p) => p.userId),
 				serverId,

@@ -1,13 +1,14 @@
-import { OnStart, Service } from "@Easy/Core/Shared/Flamework";
 import { Platform } from "@Easy/Core/Shared/Airship";
+import { OnStart, Service } from "@Easy/Core/Shared/Flamework";
+import { Game } from "@Easy/Core/Shared/Game";
 import { Result } from "@Easy/Core/Shared/Types/Result";
-import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
+import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 
 @Service({})
 export class DataStoreService implements OnStart {
 	constructor() {
-		if (RunUtil.IsServer()) Platform.server.dataStore = this;
+		if (Game.IsServer()) Platform.server.dataStore = this;
 	}
 
 	OnStart(): void {}
@@ -20,7 +21,7 @@ export class DataStoreService implements OnStart {
 	public async GetKey<T extends object>(key: string): Promise<Result<T | undefined, undefined>> {
 		this.checkKey(key);
 
-		const result = await DataStoreServiceBackend.GetKey(key);
+		const result = InternalHttpManager.GetAsync(`${AirshipUrl.DataStoreService}/data/key/${key}`);
 		if (!result.success || result.statusCode > 299) {
 			warn(`Unable to get data key. Status Code: ${result.statusCode}.\n`, result.data);
 			return {
@@ -51,7 +52,10 @@ export class DataStoreService implements OnStart {
 	public async SetKey<T extends object>(key: string, data: T): Promise<Result<T, undefined>> {
 		this.checkKey(key);
 
-		const result = await DataStoreServiceBackend.SetKey(key, EncodeJSON(data));
+		const result = InternalHttpManager.PostAsync(
+			`${AirshipUrl.DataStoreService}/data/key/${key}`,
+			EncodeJSON(data),
+		);
 		if (!result.success || result.statusCode > 299) {
 			warn(`Unable to set data key. Status Code: ${result.statusCode}.\n`, result.data);
 			return {
@@ -74,7 +78,7 @@ export class DataStoreService implements OnStart {
 	public async DeleteKey<T extends object>(key: string): Promise<Result<T | undefined, undefined>> {
 		this.checkKey(key);
 
-		const result = await DataStoreServiceBackend.DeleteKey(key);
+		const result = InternalHttpManager.DeleteAsync(`${AirshipUrl.DataStoreService}/data/key/${key}`);
 		if (!result.success || result.statusCode > 299) {
 			warn(`Unable to delete data key. Status Code: ${result.statusCode}.\n`, result.data);
 			return {

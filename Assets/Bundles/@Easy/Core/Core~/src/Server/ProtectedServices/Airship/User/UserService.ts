@@ -1,14 +1,15 @@
-import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
 import { Platform } from "@Easy/Core/Shared/Airship";
+import { OnStart, Service } from "@Easy/Core/Shared/Flamework";
+import { Game } from "@Easy/Core/Shared/Game";
 import { PublicUser } from "@Easy/Core/Shared/SocketIOMessages/PublicUser";
 import { Result } from "@Easy/Core/Shared/Types/Result";
-import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
+import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { DecodeJSON } from "@Easy/Core/Shared/json";
 
-@Controller({})
-export class UserController implements OnStart {
+@Service({})
+export class UserService implements OnStart {
 	constructor() {
-		if (RunUtil.IsClient()) Platform.client.user = this;
+		if (Game.IsServer()) Platform.server.user = this;
 	}
 
 	OnStart(): void {}
@@ -19,7 +20,9 @@ export class UserController implements OnStart {
 	 * @returns A user object
 	 */
 	public async GetUserByUsername(username: string): Promise<Result<PublicUser | undefined, undefined>> {
-		const res = await UsersControllerBackend.GetUserByUsername(username);
+		const res = InternalHttpManager.GetAsync(
+			`${AirshipUrl.GameCoordinator}/users/user?descriminatedUsername=${username}`,
+		);
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to get user. Status Code:  ${res.statusCode}.\n`, res.data);
@@ -48,7 +51,7 @@ export class UserController implements OnStart {
 	 * @returns A user object
 	 */
 	public async GetUserById(userId: string): Promise<Result<PublicUser | undefined, undefined>> {
-		const res = await UsersControllerBackend.GetUserById(userId);
+		const res = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/users/uid/${userId}`);
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to get user. Status Code:  ${res.statusCode}.\n`, res.data);
@@ -93,8 +96,8 @@ export class UserController implements OnStart {
 			};
 		}
 
-		const res = await UsersControllerBackend.GetUsersById(
-			`users[]=${userIds.join("&users[]=")}&strict=${strict ? "true" : "false"}`,
+		const res = InternalHttpManager.GetAsync(
+			`${AirshipUrl.GameCoordinator}/users?users[]=${userIds.join("&users[]=")}&strict=${strict ? "true" : "false"}`,
 		);
 
 		if (!res.success || res.statusCode > 299) {

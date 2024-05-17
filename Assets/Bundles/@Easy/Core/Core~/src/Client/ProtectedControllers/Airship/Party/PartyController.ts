@@ -1,9 +1,10 @@
-import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
 import { Platform } from "@Easy/Core/Shared/Airship";
+import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
 import { Party } from "@Easy/Core/Shared/SocketIOMessages/Party";
 import { Result } from "@Easy/Core/Shared/Types/Result";
+import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
-import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
+import { DecodeJSON } from "@Easy/Core/Shared/json";
 
 @Controller({})
 export class PartyController implements OnStart {
@@ -17,7 +18,7 @@ export class PartyController implements OnStart {
 	 * Gets the users current party data.
 	 */
 	public async GetParty(): Promise<Result<Party, undefined>> {
-		const res = await PartyControllerBackend.GetParty();
+		const res = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/parties/party/self`);
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to get user pary. Status Code: ${res.statusCode}.\n`, res.data);

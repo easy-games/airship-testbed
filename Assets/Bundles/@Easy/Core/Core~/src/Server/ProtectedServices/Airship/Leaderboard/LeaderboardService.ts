@@ -1,7 +1,8 @@
 import { Platform } from "@Easy/Core/Shared/Airship";
 import { OnStart, Service } from "@Easy/Core/Shared/Flamework";
+import { Game } from "@Easy/Core/Shared/Game";
 import { Result } from "@Easy/Core/Shared/Types/Result";
-import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
+import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 
 export interface LeaderboardUpdate {
@@ -23,7 +24,7 @@ export interface RankData {
 @Service({})
 export class LeaderboardService implements OnStart {
 	constructor() {
-		if (RunUtil.IsServer()) Platform.server.leaderboard = this;
+		if (Game.IsServer()) Platform.server.leaderboard = this;
 	}
 
 	OnStart(): void {}
@@ -35,12 +36,13 @@ export class LeaderboardService implements OnStart {
 	 * @param update An object containing a map of ids and scores.
 	 */
 	public async Update(leaderboardName: string, update: LeaderboardUpdate): Promise<Result<undefined, undefined>> {
-		const result = await LeaderboardServiceBackend.Update(
-			leaderboardName,
+		const result = InternalHttpManager.PostAsync(
+			`${AirshipUrl.DataStoreService}/leaderboards/leaderboard-id/${leaderboardName}/stats`,
 			EncodeJSON({
 				stats: update,
 			}),
 		);
+
 		if (!result.success || result.statusCode > 299) {
 			warn(`Unable to update leaderboard. Status Code: ${result.statusCode}.\n`, result.data);
 			return {
@@ -61,7 +63,9 @@ export class LeaderboardService implements OnStart {
 	 * @param id The id
 	 */
 	public async GetRank(leaderboardName: string, id: string): Promise<Result<RankData | undefined, undefined>> {
-		const result = await LeaderboardServiceBackend.GetRank(leaderboardName, id);
+		const result = InternalHttpManager.GetAsync(
+			`${AirshipUrl.DataStoreService}/leaderboards/leaderboard-id/${leaderboardName}/id/${id}/ranking`,
+		);
 		if (!result.success || result.statusCode > 299) {
 			warn(`Unable to get leaderboard rank. Status Code: ${result.statusCode}.\n`, result.data);
 			return {
@@ -100,7 +104,9 @@ export class LeaderboardService implements OnStart {
 	): Promise<Result<RankData[], undefined>> {
 		count = math.clamp(count, 1, 1000 - startIndex); // ensure they don't reach past 1000;
 
-		const result = await LeaderboardServiceBackend.GetRankRange(leaderboardName, startIndex, count);
+		const result = InternalHttpManager.GetAsync(
+			`${AirshipUrl.DataStoreService}/loaderboards/leaderboard-id/${leaderboardName}/rankings?skip=${startIndex}&limit=${count}`,
+		);
 		if (!result.success || result.statusCode > 299) {
 			warn(`Unable to get leaderboard rankings. Status Code: ${result.statusCode}.\n`, result.data);
 			return {
