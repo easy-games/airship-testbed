@@ -7,12 +7,13 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Leather - Stained
+  m_Name: Glow
   m_Shader: {fileID: 4800000, guid: b8fcfddb128a0284e9f5e927061e61d1, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - EXPLICIT_MAPS_ON
+  - EXTRA_FEATURES_ON
   - SHADOWS_ON
   - TRIPLANAR_STYLE_OFF
   m_InvalidKeywords:
@@ -31,7 +32,7 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
-  m_LockedProperties: _RimPower
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -44,7 +45,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ColorMaskTex:
-        m_Texture: {fileID: 2800000, guid: 1699aa93de0248e46bbb34e3c1a7199b, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _CubeTex:
@@ -72,11 +73,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 8b64bdcf08a960845850139f8494f150, type: 3}
-        m_Scale: {x: 1, y: 1}
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 8, y: 8}
         m_Offset: {x: 0, y: 0}
     - _MetalTex:
-        m_Texture: {fileID: 2800000, guid: 08e6bad5f5d88d34a867ab11a0791557, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -84,7 +85,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalTex:
-        m_Texture: {fileID: 2800000, guid: 0e38868795bd2064a92536b8fcabe006, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -96,7 +97,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RoughTex:
-        m_Texture: {fileID: 2800000, guid: b48c1abdd1fc3b446a9b79e73cd37af8, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RoughnessTex:
@@ -117,8 +118,7 @@ Material:
     - DOUBLE_SIDED_NORMALS: 2
     - EMISSIVE: 0
     - EXPLICIT_MAPS: 1
-    - EXTENDED_FEATURES: 0
-    - EXTRA_FEATURES: 0
+    - EXTRA_FEATURES: 1
     - INSTANCE_DATA: 0
     - METAL_ON: 1
     - NUM_LIGHTS: 0
@@ -144,8 +144,8 @@ Material:
     - _GlossyReflections: 1
     - _IncidentStrength: 1
     - _Lights: 0
-    - _MRSliderOverrideMix: 0.4
-    - _MetalOverride: 0.33
+    - _MRSliderOverrideMix: 1
+    - _MetalOverride: 0
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
@@ -154,7 +154,7 @@ Material:
     - _Parallax: 0.02
     - _RimIntensity: 0
     - _RimPower: 0
-    - _RoughOverride: 1
+    - _RoughOverride: 0
     - _SLIDER_OVERRIDE: 1
     - _SkyShineStrength: 0
     - _SliderOverrideMix: 0
@@ -169,9 +169,9 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _ColorMaskColor: {r: 0, g: 0, b: 0, a: 0}
+    - _ColorMaskColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _EmissiveColor: {r: 0, g: 0, b: 0, a: 0}
+    - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
     - _IncidentColor: {r: 0.4, g: 0.75, b: 1, a: 1}
     - _OverrideColor: {r: 2, g: 0, b: 0, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
