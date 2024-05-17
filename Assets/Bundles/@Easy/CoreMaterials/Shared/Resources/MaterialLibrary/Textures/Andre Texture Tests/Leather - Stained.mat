@@ -13,6 +13,7 @@ Material:
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - EXPLICIT_MAPS_ON
+  - EXTRA_FEATURES_ON
   - SHADOWS_ON
   - TRIPLANAR_STYLE_OFF
   m_InvalidKeywords:
@@ -118,7 +119,7 @@ Material:
     - EMISSIVE: 0
     - EXPLICIT_MAPS: 1
     - EXTENDED_FEATURES: 0
-    - EXTRA_FEATURES: 0
+    - EXTRA_FEATURES: 1
     - INSTANCE_DATA: 0
     - METAL_ON: 1
     - NUM_LIGHTS: 0
@@ -144,8 +145,8 @@ Material:
     - _GlossyReflections: 1
     - _IncidentStrength: 1
     - _Lights: 0
-    - _MRSliderOverrideMix: 0.4
-    - _MetalOverride: 0.33
+    - _MRSliderOverrideMix: 0.5
+    - _MetalOverride: 0.5
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
@@ -169,7 +170,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _ColorMaskColor: {r: 0, g: 0, b: 0, a: 0}
+    - _ColorMaskColor: {r: 0, g: 0.27745163, b: 0.4528302, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 0}
     - _IncidentColor: {r: 0.4, g: 0.75, b: 1, a: 1}
