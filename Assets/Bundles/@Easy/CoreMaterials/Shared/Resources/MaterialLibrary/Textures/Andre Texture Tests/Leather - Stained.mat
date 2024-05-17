@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Fabric - Rough
+  m_Name: Leather - Stained
   m_Shader: {fileID: 4800000, guid: b8fcfddb128a0284e9f5e927061e61d1, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -44,7 +44,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ColorMaskTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 1699aa93de0248e46bbb34e3c1a7199b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _CubeTex:
@@ -72,11 +72,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 174ef1bdcfcd64a4cba594ff037f3da8, type: 3}
-        m_Scale: {x: 2, y: 2}
+        m_Texture: {fileID: 2800000, guid: 8b64bdcf08a960845850139f8494f150, type: 3}
+        m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetalTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 08e6bad5f5d88d34a867ab11a0791557, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -84,7 +84,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalTex:
-        m_Texture: {fileID: 2800000, guid: e2ec764d3fdb5f2419f1156b5a2b63cc, type: 3}
+        m_Texture: {fileID: 2800000, guid: 0e38868795bd2064a92536b8fcabe006, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -96,7 +96,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RoughTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: b48c1abdd1fc3b446a9b79e73cd37af8, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RoughnessTex:
@@ -143,17 +143,17 @@ Material:
     - _GlossyReflections: 1
     - _IncidentStrength: 1
     - _Lights: 0
-    - _MRSliderOverrideMix: 1
-    - _MetalOverride: 0.755
+    - _MRSliderOverrideMix: 0.4
+    - _MetalOverride: 0.33
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
     - _OverrideStrength: 0
     - _POINT_FILTER: 1
     - _Parallax: 0.02
-    - _RimIntensity: 1.45
-    - _RimPower: 4.46
-    - _RoughOverride: 0.948
+    - _RimIntensity: 0
+    - _RimPower: 0
+    - _RoughOverride: 1
     - _SLIDER_OVERRIDE: 1
     - _SkyShineStrength: 0
     - _SliderOverrideMix: 0
