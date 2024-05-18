@@ -2,8 +2,6 @@
 #define WORLDSHADER_INCLUDE
 
     #include "AirshipShaderIncludes.hlsl"
-    
-
 
     //Main programs
     #pragma vertex vertFunction
@@ -13,15 +11,8 @@
     float EXPLICIT_MAPS;
     float RIM_LIGHT;
     float SHADOW_COLOR;
-    
-        
-    //Unity stuff
-    //float4x4 unity_MatrixVP;
-    //float4x4 unity_ObjectToWorld;
-    //float4x4 unity_WorldToObject;
-    //float4 unity_WorldTransformParams;
-    //float3 _WorldSpaceCameraPos;
-
+    float EXTRA_FEATURES;
+ 
     //SamplerState sampler_MainTex;
     SamplerState my_sampler_point_repeat;
     SamplerState my_sampler_trilinear_repeat;
@@ -43,6 +34,7 @@
     float4 _SpecularColor;
     float4 _OverrideColor;
     float _OverrideStrength;
+    half   _EmissiveLevel;
     float4 _EmissiveColor;
     half _EmissiveMix;
     
@@ -403,7 +395,7 @@
         roughnessLevel = max(roughSample.r, 0.04);
         metallicLevel = metalSample.r;
     #if EXTRA_FEATURES_ON
-        emissiveLevel = Tex2DSampleTexture(_EmissiveMaskTex, coords).r;
+        emissiveLevel = Tex2DSampleTexture(_EmissiveMaskTex, coords).r * _EmissiveLevel;
     #else
 		emissiveLevel = 0;
     #endif
@@ -547,9 +539,12 @@
         float3 finalColor = finalSun + finalAmbient + pointLights + lightmapping + lightProbe;
       
         //Rim light
-#ifdef EXTRA_FEATURES_ON
+   
+#if  EXTRA_FEATURES_ON
         finalColor.xyz += RimLightSimple(worldNormal, -viewDirection);
+       
 #endif
+        
         //Mix in fog
 		finalColor = CalculateAtmosphericFog(finalColor, viewDistance);
     
@@ -560,11 +555,11 @@
 #ifdef EXTRA_FEATURES_ON
         if (emissiveLevel > 0)
         {
-            float3 colorMix = lerp(finalColor, albedo, _EmissiveMix);
-            MRT0Val = half4(colorMix.r, colorMix.g, colorMix.b, alpha);
+            half3 mixedColor = lerp(finalColor, _EmissiveColor.rgb, emissiveLevel); //Take the shading out based on emissive level
+            MRT0Val = half4(mixedColor, alpha);
 
-            float3 emissiveMix = lerp(diffuseColor.rgb, _EmissiveColor.rgb, _EmissiveMix);
-            MRT1Val = half4(emissiveMix * _EmissiveColor.a, alpha);
+            half3 emissiveMix = lerp(finalColor, mixedColor, _EmissiveMix) * emissiveLevel;
+            MRT1Val = half4(emissiveMix, alpha);
         }
         else
         {
