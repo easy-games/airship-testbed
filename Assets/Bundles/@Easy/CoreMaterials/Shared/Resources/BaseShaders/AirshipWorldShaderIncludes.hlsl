@@ -544,7 +544,7 @@
 #endif                
 
         //Start compositing now
-        float3 finalColor = finalSun;// +finalAmbient + pointLights + lightmapping + lightProbe;
+        float3 finalColor = finalSun + finalAmbient + pointLights + lightmapping + lightProbe;
         finalColor = lightmapping;
         //Rim light
 #ifdef EXTRA_FEATURES_ON
