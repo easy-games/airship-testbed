@@ -63,3 +63,31 @@ declare namespace contextbridge {
 	/** Gets the context of the current running thread. */
 	function current(): LuauContext;
 }
+
+declare namespace json {
+	/**
+	 * Encodes the value as a JSON string.
+	 *
+	 * An optional `space` string or number can be used as a indentation. If a string
+	 * is provided, the string will be used as the indentation. If a number is provided,
+	 * that number of spaces will be used as the indentation.
+	 *
+	 * If the `space` argument is left out, the JSON string will be generated with no
+	 * extra whitespace.
+	 *
+	 * ```ts
+	 * json.encode({hello: "world"}) === `{"hello":"world"}`
+	 * ```
+	 */
+	function encode(value: unknown, space?: string | number): string;
+
+	/**
+	 * Decodes the JSON string as a value.
+	 *
+	 * ```ts
+	 * const data = json.decode(`{"hello":"world"}`);
+	 * print(data.hello) // -> world
+	 * ```
+	 */
+	function decode<T = unknown>(json: string): T;
+}

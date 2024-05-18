@@ -17,6 +17,7 @@ export declare class CameraSystem {
     private fovStateMap;
     private enabled;
     private readonly enabledBin;
+    private fovEnabled;
     GetActiveCamera(): Camera;
     constructor();
     HasCameraRig(): boolean;
@@ -27,6 +28,7 @@ export declare class CameraSystem {
      * camera system if custom camera code is being used.
      */
     SetEnabled(enabled: boolean): void;
+    SetFOVUpdateEnabled(enabled: boolean): void;
     /**
      * Returns `true` if the camera system is enabled.
      */

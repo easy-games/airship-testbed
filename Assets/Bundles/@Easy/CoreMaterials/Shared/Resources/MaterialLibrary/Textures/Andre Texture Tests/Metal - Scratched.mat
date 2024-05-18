@@ -15,13 +15,13 @@ Material:
   - EXPLICIT_MAPS_ON
   - SHADOWS_ON
   - TRIPLANAR_STYLE_OFF
-  - USE_COLOR_MASK_ON
   m_InvalidKeywords:
   - EXPLICIT_MAPS
   - METAL_ON_ON
   - NUM_LIGHTS_LIGHTS2
   - SLIDER_OVERRIDE
   - SLIDER_OVERRIDE_ON
+  - USE_COLOR_MASK_ON
   - _LIGHTS_LIGHTS0
   - _TRIPLANAR_LOCAL
   - _TRIPLANAR_TRIPLANAR_LOCAL
@@ -61,8 +61,8 @@ Material:
     - TRIPLANAR_STYLE: 0
     - _EmissiveMix: 1
     - _MRSliderOverrideMix: 1
-    - _MetalOverride: 1
-    - _RoughOverride: 0.72
+    - _MetalOverride: 0.73
+    - _RoughOverride: 0.62
     - _TriplanarScale: 0
     m_Colors: []
   m_BuildTextureStacks: []

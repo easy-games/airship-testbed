@@ -29,7 +29,6 @@ Shader "Airship/WorldShaderPBR"
         _TriplanarScale("TriplanarScale", Range(0.0, 16)) = 0.0
 
         _MRSliderOverrideMix("Metal Rough Slider Strength", Range(0.0, 1)) = 0.0
-
         _MetalOverride("Metal", Range(0.0, 1)) = 0.0
         _RoughOverride("Rough", range(0.0, 1)) = 1.0
 

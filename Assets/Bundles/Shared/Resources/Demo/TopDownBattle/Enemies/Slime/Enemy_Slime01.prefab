@@ -546,7 +546,7 @@ MonoBehaviour:
       refPath: 
       decorators: []
       nullable: 0
-      serializedValue: 3
+      serializedValue: 10
       serializedObject: {fileID: 0}
       modified: 1
     - name: nob
