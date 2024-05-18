@@ -514,13 +514,13 @@
         half3 sunColor = (globalSunColor * globalSunBrightness);
          
         //Final sun term
-        half3 sunComposite = sunColor * (diffuseColor + phongSpec) + (cubemapSample * specularColor);
+        half3 sunComposite = (diffuseColor + phongSpec) + (cubemapSample * specularColor);
         
         sunComposite *= NoL;
         sunComposite *= globalSunBrightness;
         
         //Mask in the sun, based on the shadows
-        half3 finalSun = lerp(sunComposite, sunComposite * sunShadowMask, globalSunShadow);
+        half3 finalSun = max( lerp(sunComposite, sunComposite * sunShadowMask, globalSunShadow),0);
    
         //PointLighting
         float3 pointLights = CalculatePointLightsForPoint(input.worldPos, worldNormal, diffuseColor, roughnessLevel, metallicLevel, specularColor, worldReflect, cubemapSample);
@@ -540,12 +540,12 @@
         //strength *= strength;
         //work out what bit is the directional light component
         half3 lightmapPhong = lightmappingSample * (diffuseColor + lightmapPhongSpec * strength) + (cubemapSample * specularColor * strength);
-        lightmapping = lightmapPhong;
+        lightmapping = max(lightmapPhong,0);
 #endif                
 
         //Start compositing now
-        float3 finalColor = finalSun + finalAmbient + pointLights + lightmapping +lightProbe;
- 
+        float3 finalColor = finalSun;// +finalAmbient + pointLights + lightmapping + lightProbe;
+        finalColor = lightmapping;
         //Rim light
 #ifdef EXTRA_FEATURES_ON
         finalColor.xyz += RimLightSimple(worldNormal, -viewDirection);
