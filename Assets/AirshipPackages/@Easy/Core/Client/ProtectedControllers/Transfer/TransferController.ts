@@ -1,5 +1,5 @@
 import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
-import inspect from "@easy-games/unity-inspect";
+import inspect from "@Easy/Core/Shared/Util/Inspect";
 import { GameServer } from "@Easy/Core/Shared/SocketIOMessages/Party";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { EncodeJSON } from "@Easy/Core/Shared/json";
