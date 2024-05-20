@@ -7,6 +7,7 @@ import TopDownBattleCharacter from "./TopDownBattleCharacter";
 import TopDownBattleGame, { GameMode } from "./TopDownBattleGame";
 import { TopDownBattleEvents } from "./TopDownEvents";
 import { TopDownBattle } from "./TopDownEntryPoint";
+import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
 
 export default class TopDownBattlePlayerSpawner extends AirshipBehaviour {
 	@Header("Templates")
@@ -97,6 +98,7 @@ export default class TopDownBattlePlayerSpawner extends AirshipBehaviour {
 						}
 					}
 				});
+				character.inventory.AddItem(new ItemStack("Weapon01"));
 			});
 
 			//Turn off the core loading screen
