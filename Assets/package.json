@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@easy-games/unity-object-utils": "^1.2.12"
+  }
+}
