@@ -8700,6 +8700,7 @@ Material:
     - EMISSIVE: 0
     - EXPLICIT_MAPS: 1
     - EXTENDED_FEATURES: 0
+    - EXTRA_FEATURES: 0
     - INSTANCE_DATA: 0
     - RIM_LIGHT: 0
     - SHADOWS: 1
@@ -8718,6 +8719,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _ColorMaskColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissiveColor: {r: 1, g: 1, b: 1, a: 1}
     - _OverrideColor: {r: 1, g: 1, b: 1, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
