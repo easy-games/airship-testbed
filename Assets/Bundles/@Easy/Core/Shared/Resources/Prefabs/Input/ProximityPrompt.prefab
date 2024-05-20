@@ -59,7 +59,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Shared/Resources/TS/Input/ProximityPrompts/ProximityPrompt.lua
+  scriptFile: {fileID: 183749498165355873, guid: 9851b2a991bb1c24c82f8213eb177e5b, type: 3}
+  m_fileFullPath: 
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -253,6 +254,7 @@ MonoBehaviour:
       serializedObject: {fileID: 2132229173519441375}
       modified: 1
     displayName: 
+  contextOverwritten: 0
 --- !u!1 &473965667367053343
 GameObject:
   m_ObjectHideFlags: 0

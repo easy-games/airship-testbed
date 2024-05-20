@@ -1,4 +1,4 @@
-local Promise = require("@Easy/Core/Shared/Resources/TS/Runtime/Promise")
+local Promise = require("./Promise")
 
 local OUTPUT_PREFIX = "roblox-ts: "
 local NODE_MODULES = "node_modules"

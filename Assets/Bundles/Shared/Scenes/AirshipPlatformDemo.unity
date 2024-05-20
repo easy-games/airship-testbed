@@ -743,7 +743,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Shared/Resources/TS/Character/CharacterConfigSetup.lua
+  scriptFile: {fileID: 796400153169862170, guid: c4fa48bfb1281a04baca6e795001cd63, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/CharacterConfigSetup.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -990,7 +991,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/Shared/Resources/TS/Demo/AirshipPlatformDemo/Scoreboard.lua
+  scriptFile: {fileID: 3003507451195902610, guid: 29d71453b6fb2f9439f4b30cfc361769, type: 3}
+  m_fileFullPath: Assets/Shared/Demo/AirshipPlatformDemo/Scoreboard.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -1420,7 +1422,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/Shared/Resources/TS/Demo/AirshipPlatformDemo/DemoManager.lua
+  scriptFile: {fileID: -2374732274171936872, guid: 58888838f0b9ee14399e0c3e5b729b78, type: 3}
+  m_fileFullPath: Assets/Shared/Demo/AirshipPlatformDemo/DemoManager.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
