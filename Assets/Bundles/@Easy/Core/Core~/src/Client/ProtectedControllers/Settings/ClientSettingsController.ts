@@ -64,6 +64,10 @@ export class ClientSettingsController implements OnStart {
 
 		// Microphone
 		task.spawn(() => {
+			if (!Bridge.HasMicrophonePermission()) {
+				Bridge.RequestMicrophonePermissionAsync();
+			}
+
 			const micDevices = Bridge.GetMicDevices();
 			if (this.data.micDeviceName !== undefined) {
 				const currentDeviceIndex = Bridge.GetCurrentMicDeviceIndex();

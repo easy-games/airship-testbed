@@ -1,6 +1,5 @@
-import { HeldItemManager } from "@Easy/Core/Shared/Item/HeldItems/HeldItemManager";
-import TopDownBattleGame from "./TopDownBattleGame";
 import { ItemUtil } from "@Easy/Core/Shared/Item/ItemUtil";
+import TopDownBattleGame from "./TopDownBattleGame";
 
 //There is only one game class so expose it for anyone to access
 export const TopDownBattle: TopDownBattleGame =
@@ -42,7 +41,7 @@ ItemUtil.RegisterItem("Weapon01", {
 	TopDownRanged: true,
 });
 
-HeldItemManager.RegisterHeldItem(
-	(itemMeta) => itemMeta.TopDownRanged !== undefined,
-	(entity, itemMeta) => new TopDownBattleRangedItem(entity, itemMeta),
-);
+// HeldItemManager.RegisterHeldItem(
+// 	(itemMeta) => itemMeta.TopDownRanged !== undefined,
+// 	(entity, itemMeta) => new TopDownBattleRangedItem(entity, itemMeta),
+// );
