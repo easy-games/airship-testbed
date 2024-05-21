@@ -145,7 +145,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Shared/Resources/TS/Chat/ChatManager.lua
+  scriptFile: {fileID: -1006994567462013250, guid: 3c14a0670c2a2a542b18a2acf418ba49, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/Chat/ChatManager.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -173,6 +174,7 @@ MonoBehaviour:
       serializedObject: {fileID: 4470850130474952004}
       modified: 1
     displayName: 
+  contextOverwritten: 0
 --- !u!1 &4470850130521673983
 GameObject:
   m_ObjectHideFlags: 0
