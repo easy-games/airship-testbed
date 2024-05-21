@@ -27731,4 +27731,44 @@ interface GraphicsConstructor {
     WaitOnGPUFence(fence: GPUFence): void;
 }
 declare const Graphics: GraphicsConstructor;
+    
+interface StandaloneFileBrowser {
+
+
+
+}
+    
+interface ExtensionFilter {
+    Name: string;
+    Extensions: CSArray<string>;
+
+
+
+}
+    
+interface ExtensionFilterConstructor {
+
+    new(filterName: string, filterExtensions: CSArray<string>): ExtensionFilter;
+
+
+}
+declare const ExtensionFilter: ExtensionFilterConstructor;
+    
+interface StandaloneFileBrowserConstructor {
+
+    new(): StandaloneFileBrowser;
+
+
+    OpenFilePanel(title: string, directory: string, extension: string, multiselect: boolean): CSArray<string>;
+    OpenFilePanel(title: string, directory: string, extensions: CSArray<ExtensionFilter>, multiselect: boolean): CSArray<string>;
+    OpenFilePanelAsync(title: string, directory: string, extension: string, multiselect: boolean, cb: unknown): void;
+    OpenFilePanelAsync(title: string, directory: string, extensions: CSArray<ExtensionFilter>, multiselect: boolean, cb: unknown): void;
+    OpenFolderPanel(title: string, directory: string, multiselect: boolean): CSArray<string>;
+    OpenFolderPanelAsync(title: string, directory: string, multiselect: boolean, cb: unknown): void;
+    SaveFilePanel(title: string, directory: string, defaultName: string, extension: string): string;
+    SaveFilePanel(title: string, directory: string, defaultName: string, extensions: CSArray<ExtensionFilter>): string;
+    SaveFilePanelAsync(title: string, directory: string, defaultName: string, extension: string, cb: unknown): void;
+    SaveFilePanelAsync(title: string, directory: string, defaultName: string, extensions: CSArray<ExtensionFilter>, cb: unknown): void;
+}
+declare const StandaloneFileBrowser: StandaloneFileBrowserConstructor;
 
