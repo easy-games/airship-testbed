@@ -1,6 +1,4 @@
-import { ClientSettingsController } from "@Easy/Core/Client/ProtectedControllers/Settings/ClientSettingsController";
 import { Airship } from "@Easy/Core/Shared/Airship";
-import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 
 type VoiceState = "talking" | "silent";
@@ -14,12 +12,13 @@ export default class MicIndicator extends AirshipBehaviour {
 	private stateBin = new Bin();
 
 	override OnEnable(): void {
-		const clientSettings = Dependency<ClientSettingsController>();
+		const voiceChat = Bridge.GetAirshipVoiceChatNetwork();
+		voiceChat.agent.MuteSelf = true;
 		Airship.input.OnDown("PushToTalk").Connect((event) => {
-			Bridge.StartMicRecording(clientSettings.micFrequency, clientSettings.micSampleLength);
+			voiceChat.agent.MuteSelf = false;
 		});
 		Airship.input.OnUp("PushToTalk").Connect((event) => {
-			Bridge.StopMicRecording();
+			voiceChat.agent.MuteSelf = true;
 		});
 		this.canvasGroup.alpha = 0;
 	}

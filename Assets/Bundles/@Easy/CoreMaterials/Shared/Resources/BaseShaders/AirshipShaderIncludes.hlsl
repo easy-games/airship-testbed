@@ -129,7 +129,7 @@ float4 CalculateVertexShadowData1(float4 worldspacePos, float3 worldspaceNormal)
 
 #define SAMPLE_TEXTURE2D_SHADOW(textureName, samplerName, coord3) textureName.SampleCmpLevelZero(samplerName, (coord3).xy, (coord3).z)
 
-half GetShadowSample(Texture2D tex, SamplerComparisonState textureSampler, half2 uv, half bias, half comparison)
+half GetShadowSampleOld(Texture2D tex, SamplerComparisonState textureSampler, half2 uv, half bias, half comparison)
 {
     const float scale = (1.0 / 2048.0) * 0.5;
     half3 offset0 = half3(-1.5 * scale, 0 * scale, 0);
@@ -145,6 +145,126 @@ half GetShadowSample(Texture2D tex, SamplerComparisonState textureSampler, half2
     half shadowDepth3 = SAMPLE_TEXTURE2D_SHADOW(tex, textureSampler, input + offset3).r;
 
     return (shadowDepth0 + shadowDepth1 + shadowDepth2 + shadowDepth3) * 0.25;
+}
+
+float SampleShadow_GetTriangleTexelArea(float triangleHeight)
+{
+    return triangleHeight - 0.5;
+}
+
+void SampleShadow_GetTexelAreas_Tent_3x3(float offset, out float4 computedArea, out float4 computedAreaUncut)
+{
+    // Compute the exterior areas
+    float offset01SquaredHalved = (offset + 0.5) * (offset + 0.5) * 0.5;
+    computedAreaUncut.x = computedArea.x = offset01SquaredHalved - offset;
+    computedAreaUncut.w = computedArea.w = offset01SquaredHalved;
+
+    // Compute the middle areas
+    // For Y : We find the area in Y of as if the left section of the isoceles triangle would
+    // intersect the axis between Y and Z (ie where offset = 0).
+    computedAreaUncut.y = SampleShadow_GetTriangleTexelArea(1.5 - offset);
+    // This area is superior to the one we are looking for if (offset < 0) thus we need to
+    // subtract the area of the triangle defined by (0,1.5-offset), (0,1.5+offset), (-offset,1.5).
+    float clampedOffsetLeft = min(offset, 0);
+    float areaOfSmallLeftTriangle = clampedOffsetLeft * clampedOffsetLeft;
+    computedArea.y = computedAreaUncut.y - areaOfSmallLeftTriangle;
+
+    // We do the same for the Z but with the right part of the isoceles triangle
+    computedAreaUncut.z = SampleShadow_GetTriangleTexelArea(1.5 + offset);
+    float clampedOffsetRight = max(offset, 0);
+    float areaOfSmallRightTriangle = clampedOffsetRight * clampedOffsetRight;
+    computedArea.z = computedAreaUncut.z - areaOfSmallRightTriangle;
+}
+
+void SampleShadow_GetTexelWeights_Tent_5x5(float offset, out float3 texelsWeightsA, out float3 texelsWeightsB)
+{
+    // See _UnityInternalGetAreaPerTexel_3TexelTriangleFilter for details.
+    float4 computedArea_From3texelTriangle;
+    float4 computedAreaUncut_From3texelTriangle;
+    SampleShadow_GetTexelAreas_Tent_3x3(offset, computedArea_From3texelTriangle, computedAreaUncut_From3texelTriangle);
+
+    // Triangle slope is 45 degree thus we can almost reuse the result of the 3 texel wide computation.
+    // the 5 texel wide triangle can be seen as the 3 texel wide one but shifted up by one unit/texel.
+    // 0.16 is 1/(the triangle area)
+    texelsWeightsA.x = 0.16 * (computedArea_From3texelTriangle.x);
+    texelsWeightsA.y = 0.16 * (computedAreaUncut_From3texelTriangle.y);
+    texelsWeightsA.z = 0.16 * (computedArea_From3texelTriangle.y + 1);
+    texelsWeightsB.x = 0.16 * (computedArea_From3texelTriangle.z + 1);
+    texelsWeightsB.y = 0.16 * (computedAreaUncut_From3texelTriangle.z);
+    texelsWeightsB.z = 0.16 * (computedArea_From3texelTriangle.w);
+}
+
+// 5x5 Tent filter (45 degree sloped triangles in U and V)
+void SampleShadow_ComputeSamples_Tent_5x5(float4 shadowMapTexture_TexelSize, float2 coord, out float fetchesWeights[9], out float2 fetchesUV[9])
+{
+    // tent base is 5x5 base thus covering from 25 to 36 texels, thus we need 9 bilinear PCF fetches
+    float2 tentCenterInTexelSpace = coord.xy * shadowMapTexture_TexelSize.zw;
+    float2 centerOfFetchesInTexelSpace = floor(tentCenterInTexelSpace + 0.5);
+    float2 offsetFromTentCenterToCenterOfFetches = tentCenterInTexelSpace - centerOfFetchesInTexelSpace;
+
+    // find the weight of each texel based on the area of a 45 degree slop tent above each of them.
+    float3 texelsWeightsU_A, texelsWeightsU_B;
+    float3 texelsWeightsV_A, texelsWeightsV_B;
+    SampleShadow_GetTexelWeights_Tent_5x5(offsetFromTentCenterToCenterOfFetches.x, texelsWeightsU_A, texelsWeightsU_B);
+    SampleShadow_GetTexelWeights_Tent_5x5(offsetFromTentCenterToCenterOfFetches.y, texelsWeightsV_A, texelsWeightsV_B);
+
+    // each fetch will cover a group of 2x2 texels, the weight of each group is the sum of the weights of the texels
+    float3 fetchesWeightsU = float3(texelsWeightsU_A.xz, texelsWeightsU_B.y) + float3(texelsWeightsU_A.y, texelsWeightsU_B.xz);
+    float3 fetchesWeightsV = float3(texelsWeightsV_A.xz, texelsWeightsV_B.y) + float3(texelsWeightsV_A.y, texelsWeightsV_B.xz);
+
+    // move the PCF bilinear fetches to respect texels weights
+    float3 fetchesOffsetsU = float3(texelsWeightsU_A.y, texelsWeightsU_B.xz) / fetchesWeightsU.xyz + float3(-2.5, -0.5, 1.5);
+    float3 fetchesOffsetsV = float3(texelsWeightsV_A.y, texelsWeightsV_B.xz) / fetchesWeightsV.xyz + float3(-2.5, -0.5, 1.5);
+    fetchesOffsetsU *= shadowMapTexture_TexelSize.xxx;
+    fetchesOffsetsV *= shadowMapTexture_TexelSize.yyy;
+
+    float2 bilinearFetchOrigin = centerOfFetchesInTexelSpace * shadowMapTexture_TexelSize.xy;
+    fetchesUV[0] = bilinearFetchOrigin + float2(fetchesOffsetsU.x, fetchesOffsetsV.x);
+    fetchesUV[1] = bilinearFetchOrigin + float2(fetchesOffsetsU.y, fetchesOffsetsV.x);
+    fetchesUV[2] = bilinearFetchOrigin + float2(fetchesOffsetsU.z, fetchesOffsetsV.x);
+    fetchesUV[3] = bilinearFetchOrigin + float2(fetchesOffsetsU.x, fetchesOffsetsV.y);
+    fetchesUV[4] = bilinearFetchOrigin + float2(fetchesOffsetsU.y, fetchesOffsetsV.y);
+    fetchesUV[5] = bilinearFetchOrigin + float2(fetchesOffsetsU.z, fetchesOffsetsV.y);
+    fetchesUV[6] = bilinearFetchOrigin + float2(fetchesOffsetsU.x, fetchesOffsetsV.z);
+    fetchesUV[7] = bilinearFetchOrigin + float2(fetchesOffsetsU.y, fetchesOffsetsV.z);
+    fetchesUV[8] = bilinearFetchOrigin + float2(fetchesOffsetsU.z, fetchesOffsetsV.z);
+
+    fetchesWeights[0] = fetchesWeightsU.x * fetchesWeightsV.x;
+    fetchesWeights[1] = fetchesWeightsU.y * fetchesWeightsV.x;
+    fetchesWeights[2] = fetchesWeightsU.z * fetchesWeightsV.x;
+    fetchesWeights[3] = fetchesWeightsU.x * fetchesWeightsV.y;
+    fetchesWeights[4] = fetchesWeightsU.y * fetchesWeightsV.y;
+    fetchesWeights[5] = fetchesWeightsU.z * fetchesWeightsV.y;
+    fetchesWeights[6] = fetchesWeightsU.x * fetchesWeightsV.z;
+    fetchesWeights[7] = fetchesWeightsU.y * fetchesWeightsV.z;
+    fetchesWeights[8] = fetchesWeightsU.z * fetchesWeightsV.z;
+}
+
+
+half GetShadowSample(Texture2D tex, SamplerComparisonState textureSampler, half2 shadowCoord, half bias, half comparison)
+{
+
+    //Improved shadow sampling
+    float fetchesWeights[9];
+    float2 fetchesUV[9];
+    float size = 2048;
+
+	shadowCoord = half2(shadowCoord.x, 1 - shadowCoord.y); //Flip Y, because RTT
+	float4 shadowmapSize = float4(1.0 / size, 1.0 / size, size, size); // (xy: 1/width and 1/height, zw: width and height)
+    SampleShadow_ComputeSamples_Tent_5x5(shadowmapSize, shadowCoord.xy, fetchesWeights, fetchesUV);
+
+    half attenuation = 0;
+    attenuation =  fetchesWeights[0] * SAMPLE_TEXTURE2D_SHADOW(tex, textureSampler, float3(fetchesUV[0].xy, comparison));
+    attenuation += fetchesWeights[1] * SAMPLE_TEXTURE2D_SHADOW(tex, textureSampler, float3(fetchesUV[1].xy, comparison));
+    attenuation += fetchesWeights[2] * SAMPLE_TEXTURE2D_SHADOW(tex, textureSampler, float3(fetchesUV[2].xy, comparison));
+    attenuation += fetchesWeights[3] * SAMPLE_TEXTURE2D_SHADOW(tex, textureSampler, float3(fetchesUV[3].xy, comparison));
+    attenuation += fetchesWeights[4] * SAMPLE_TEXTURE2D_SHADOW(tex, textureSampler, float3(fetchesUV[4].xy, comparison));
+    attenuation += fetchesWeights[5] * SAMPLE_TEXTURE2D_SHADOW(tex, textureSampler, float3(fetchesUV[5].xy, comparison));
+    attenuation += fetchesWeights[6] * SAMPLE_TEXTURE2D_SHADOW(tex, textureSampler, float3(fetchesUV[6].xy, comparison));
+    attenuation += fetchesWeights[7] * SAMPLE_TEXTURE2D_SHADOW(tex, textureSampler, float3(fetchesUV[7].xy, comparison));
+    attenuation += fetchesWeights[8] * SAMPLE_TEXTURE2D_SHADOW(tex, textureSampler, float3(fetchesUV[8].xy, comparison));
+
+    return attenuation;
 }
 
 half CalculateShadowLightTerm(half3 worldNormal, half3 lightDir)
@@ -383,7 +503,7 @@ half3 CalculatePointLightsForPoint(float3 worldPos, half3 normal, half3 albedo, 
                 half3 localSpecularColor = specularColor * light.lightColor.rgb;
                 half3 lightContribution = (albedo * light.lightColor.rgb) + (phong * localSpecularColor) + (cubemapSample * localSpecularColor);
 
-                results += lightContribution * falloff;
+                results += max(lightContribution * falloff,0);
             }
         }
        
@@ -530,6 +650,7 @@ half4 DoBloomCutoff(half3 inputColor, half alpha, half cutoff)
   
 	return half4(inputColor * bloomFactor, alpha);
 }
+
 
 
 #endif

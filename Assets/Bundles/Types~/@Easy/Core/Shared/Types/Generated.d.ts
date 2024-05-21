@@ -2740,6 +2740,11 @@ declare const enum EaseType {
     BounceOut = 101,
     BounceInOut = 102,
 }
+declare const enum ChatroomAgentMode {
+    Unconnected = 0,
+    Host = 1,
+    Guest = 2,
+}
 declare const enum StereoScreenCaptureMode {
     LeftEye = 1,
     RightEye = 2,
@@ -16796,12 +16801,135 @@ interface Bridge {
 
 }
     
+interface IChatroomNetwork {
+    OwnID: number;
+    PeerIDs: CSArray<number>;
+
+
+    BroadcastAudioSegment(data: ChatroomAudioSegment): void;
+    CloseChatroom(data: unknown): void;
+    HostChatroom(data: unknown): void;
+    JoinChatroom(data: unknown): void;
+    LeaveChatroom(data: unknown): void;
+
+}
+    
+interface ChatroomAudioSegment {
+    segmentIndex: number;
+    frequency: number;
+    channelCount: number;
+    samples: CSArray<number>;
+
+
+
+}
+    
+interface AirshipUniVoiceNetwork extends NetworkBehaviour, IChatroomNetwork {
+    agent: ChatroomAgent;
+    OwnID: number;
+    PeerIDs: CSArray<number>;
+
+
+    Awake(): void;
+    BroadcastAudioSegment(data: ChatroomAudioSegment): void;
+    CloseChatroom(data: unknown): void;
+    Dispose(): void;
+    FromByteArray<T>(data: CSArray<number>): T;
+    HostChatroom(data: unknown): void;
+    JoinChatroom(data: unknown): void;
+    LeaveChatroom(data: unknown): void;
+    NetworkInitialize___Early(): void;
+    NetworkInitialize__Late(): void;
+    NetworkInitializeIfDisabled(): void;
+    OnDespawnServer(connection: NetworkConnection): void;
+    OnSpawnServer(conn: NetworkConnection): void;
+    OnStartNetwork(): void;
+    OnStartServer(): void;
+    OnStopNetwork(): void;
+    ToByteArray<T>(obj: T): CSArray<number>;
+
+}
+    
+interface ChatroomAgent {
+    PeerOutputs: CSDictionary<number, IAudioOutput>;
+    OnModeChanged: unknown;
+    PeerSettings: CSDictionary<number, ChatroomPeerSettings>;
+    Network: IChatroomNetwork;
+    AudioInput: IAudioInput;
+    AudioOutputFactory: IAudioOutputFactory;
+    CurrentMode: ChatroomAgentMode;
+    MuteOthers: boolean;
+    MuteSelf: boolean;
+
+
+    Dispose(): void;
+
+}
+    
+interface IAudioOutput {
+    ID: string;
+
+
+    Feed(segmentIndex: number, frequency: number, channelCount: number, audioSamples: CSArray<number>): void;
+    Feed(segment: ChatroomAudioSegment): void;
+
+}
+    
+interface ChatroomPeerSettings {
+    muteThem: boolean;
+    muteSelf: boolean;
+
+
+
+}
+    
+interface ChatroomPeerSettingsConstructor {
+
+    new(): ChatroomPeerSettings;
+
+
+}
+declare const ChatroomPeerSettings: ChatroomPeerSettingsConstructor;
+    
+interface IAudioInput {
+    Frequency: number;
+    ChannelCount: number;
+    SegmentRate: number;
+
+
+
+}
+    
+interface IAudioOutputFactory {
+
+
+    Create(frequency: number, channelCount: number, samplesLen: number, audioSource: AudioSource): IAudioOutput;
+
+}
+    
+interface ChatroomAgentConstructor {
+
+    new(chatroomNetwork: IChatroomNetwork, audioInput: IAudioInput, audioOutputFactory: IAudioOutputFactory): ChatroomAgent;
+
+
+}
+declare const ChatroomAgent: ChatroomAgentConstructor;
+    
+interface AirshipUniVoiceNetworkConstructor {
+
+    new(): AirshipUniVoiceNetwork;
+
+
+}
+declare const AirshipUniVoiceNetwork: AirshipUniVoiceNetworkConstructor;
+    
 interface BridgeConstructor {
 
 
 
     CopyToClipboard(text: string): void;
     GetActiveScene(): Scene;
+    GetAirshipVoiceChatNetwork(): AirshipUniVoiceNetwork;
     GetAllocatedRam(): number;
     GetAverageFPS(): number;
     GetCurrentFPS(): number;

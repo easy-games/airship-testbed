@@ -139,6 +139,14 @@ export default class DemoManager extends AirshipBehaviour {
 		// PlayerManagerBridge.Instance.transform.SetParent(this.transform);
 	}
 
+	public override Update(dt: number): void {
+		Airship.characters.GetCharacters().forEach((character) => {
+			if (character.transform.position.y < -25) {
+				character.Teleport(this.spawnPosition.transform.position, Vector3.forward);
+			}
+		});
+	}
+
 	public SpawnPlayer(player: Player): void {
 		// fun little experiment
 		// if (this.useTaggedSpawns) {

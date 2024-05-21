@@ -3,10 +3,11 @@ Shader "Airship/WorldShaderPBR"
     
     Properties
     {
-         [HDR] _Color("Color", Color) = (1,1,1,1)
-         [HDR] _ShadowColor("Shadow Color", Color) = (1,1,1,1)
-        [Toggle] USE_SHADOW_COLOR("Use Shadow Color", Float) = 0.0
-        
+        [HDR] _Color("Color", Color) = (1,1,1,1)
+ 
+        [Toggle] EXTRA_FEATURES("Extra features", Float) = 0.0
+        [HDR] _ShadowColor("Shadow Color", Color) = (1,1,1,1)
+
         [Enum(No,2,Yes,0)] DOUBLE_SIDED_NORMALS("Two Sided", Int) = 2
 
         _Alpha("Alpha", Float) = 1.0
@@ -19,6 +20,10 @@ Shader "Airship/WorldShaderPBR"
         _NormalTex("Normal", 2D) = "bump" {}
         _MetalTex("Metal", 2D) = "black" {}
         _RoughTex("Rough", 2D) = "white" {}
+        _EmissiveMaskTex("Emissive Mask (extra)", 2D) = "white" {}
+        _ColorMaskTex("Color Mask (extra)", 2D) = "white" {}
+        
+        [Toggle] _ZWrite("Z-Write", Float) = 1.0
         
         [KeywordEnum(OFF, LOCAL, WORLD)] TRIPLANAR_STYLE("Triplanar", Float) = 0.0
         _TriplanarScale("TriplanarScale", Range(0.0, 16)) = 0.0
@@ -27,21 +32,17 @@ Shader "Airship/WorldShaderPBR"
         _MetalOverride("Metal", Range(0.0, 1)) = 0.0
         _RoughOverride("Rough", range(0.0, 1)) = 1.0
 
-        [Toggle] _ZWrite("Z-Write", Float) = 1.0
+        _EmissiveLevel("Emissive Level (extra)", range(0,3)) = 0.0
+        [HDR] _EmissiveColor("Emissive Color (extra)", Color) = (1,1,1,1)
+        _EmissiveMix("Emissive/Albedo Mix (extra)", range(0, 1)) = 1.0
+        [HDR] _RimColor("Rim Color (extra)", Color) = (1,1,1,1)
+        _RimIntensity("Rim Intensity (extra)", Range(0, 5)) = 0
+        _RimPower("Rim Power (extra)", Range(0.0, 10)) = 2.5
+        
         [Toggle] INSTANCE_DATA("Has Baked Instance Data", Float) = 0.0
         [Toggle] SHADOWS("Render Shadows", Float) = 1.0
-        [Toggle] EXTRA_FEATURES("Extended features", Float) = 0.0
 
-        _EmissiveMaskTex("Emissive Mask (extended)", 2D) = "white" {}
-        _ColorMaskTex("Color Mask (extended)", 2D) = "white" {}
-        [HDR] _ColorMaskColor("Color Mask Color (extended)", Color) = (1,1,1,1)
-
-        //[Toggle] EMISSIVE("Emissive", Float) = 0.0
-        [HDR] _EmissiveColor("Emissive Color (extended)", Color) = (1,1,1,1)
-        _EmissiveMix("Emissive/Albedo Mix (extended)", range(0, 1)) = 1.0
-        [HDR] _RimColor("Rim Color (extended)", Color) = (1,1,1,1)
-        _RimPower("Rim Power (extended)", Range(0.0, 10)) = 2.5
-        _RimIntensity("Rim Intensity (extended)", Range(0, 5)) = 0.75
+      
 
         //lightmapping
         [HideInInspector][NoScaleOffset]unity_Lightmaps("unity_Lightmaps", 2DArray) = "" {}
@@ -75,13 +76,12 @@ Shader "Airship/WorldShaderPBR"
             #pragma multi_compile_local TRIPLANAR_STYLE_OFF TRIPLANAR_STYLE_LOCAL TRIPLANAR_STYLE_WORLD
             #pragma multi_compile_local _ DOUBLE_SIDED_NORMALS 
         
-            #pragma multi_compile _ EXTRA_FEATURES_ON   //These all get bundled under this now
+            #pragma multi_compile_local _ EXTRA_FEATURES_ON
 			//#pragma multi_compile_local _ EMISSIVE_ON
 			//#pragma multi_compile_local _ RIM_LIGHT_ON
             //#pragma multi_compile_local _ USE_COLOR_MASK_ON		
             //#pragma multi_compile_local _ USE_SHADOW_COLOR_ON
-
-        
+           
             //our flags, but specified from the SRP
             #pragma multi_compile _ SHADOWS_ON                  //shadows 
             #pragma multi_compile _ INSTANCE_DATA_ON			//batching support
