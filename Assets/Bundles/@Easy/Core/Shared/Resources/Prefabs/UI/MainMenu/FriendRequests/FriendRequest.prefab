@@ -453,7 +453,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Shared/Resources/TS/MainMenu/Components/FriendRequest/IncomingFriendRequestCard.lua
+  scriptFile: {fileID: -2848937401451248109, guid: e4d9e4a313345404fb5e1b9df229c37d, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/FriendRequest/IncomingFriendRequestCard.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -464,6 +465,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: IncomingFriendRequestCard
+    decorators: []
     properties:
     - name: usernameText
       type: object
@@ -471,6 +473,9 @@ MonoBehaviour:
       items:
         type: 
         objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -482,6 +487,9 @@ MonoBehaviour:
       items:
         type: 
         objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -493,6 +501,9 @@ MonoBehaviour:
       items:
         type: 
         objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -504,11 +515,16 @@ MonoBehaviour:
       items:
         type: 
         objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
       decorators: []
       nullable: 0
       serializedValue: 
       serializedObject: {fileID: 1988724840183163506}
       modified: 1
+    displayName: 
+  contextOverwritten: 0
 --- !u!1 &8247581589671351472
 GameObject:
   m_ObjectHideFlags: 0
