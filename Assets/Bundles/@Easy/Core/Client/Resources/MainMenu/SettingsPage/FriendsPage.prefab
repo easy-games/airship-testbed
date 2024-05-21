@@ -63,7 +63,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Client/Resources/TS/MainMenuControllers/MainMenuPageComponent.lua
+  scriptFile: {fileID: 7477317579821688817, guid: 83b7d6c5790d4244e9c1122bc865730d, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/MainMenuPageComponent.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: Assets/Bundles/@Easy/Core/Client/Resources/TS/MainMenuControllers/MenuPageComponent.lua
@@ -74,7 +75,24 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: MainMenuPageComponent
-    properties: []
+    decorators: []
+    properties:
+    - name: pageType
+      type: StringEnum
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators: []
+      nullable: 0
+      serializedValue: Home
+      serializedObject: {fileID: 0}
+      modified: 0
+    displayName: 
+  contextOverwritten: 0
 --- !u!114 &7885932779296754046
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -87,7 +105,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Shared/Resources/TS/MainMenu/Components/Settings/SettingsPage.lua
+  scriptFile: {fileID: 6640080153634063183, guid: b6bb54670543bfb48910075d55331a41, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsPage.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -98,6 +117,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: SettingsPage
+    decorators: []
     properties:
     - name: sidebar
       type: object
@@ -127,24 +147,36 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 0}
       modified: 1
-    - name: mobilePages
-      type: Array
+    - name: pageType
+      type: StringEnum
       objectType: 
       items:
-        type: object
-        objectType: RectTransform
-        serializedItems:
-        - 
-        - 
-        objectRefs:
-        - {fileID: 0}
-        - {fileID: 0}
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators: []
+      nullable: 0
+      serializedValue: Home
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: scrollView
+      type: object
+      objectType: RectTransform
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
       refPath: 
       decorators: []
       nullable: 0
       serializedValue: 
       serializedObject: {fileID: 0}
       modified: 0
+    displayName: 
+  contextOverwritten: 0
 --- !u!1001 &6262709822904875272
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -225,6 +257,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1559377799354038886, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1814211924744186372, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
       propertyPath: m_Material
       value: 
@@ -260,6 +296,10 @@ PrefabInstance:
     - target: {fileID: 2415542728507561266, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
       propertyPath: m_Name
       value: SocialMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 2447924049481527439, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
+      propertyPath: m_Material
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 3175722008528629696, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
       propertyPath: m_Material
@@ -318,6 +358,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4305791407394552997, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4314307989788269644, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 0}

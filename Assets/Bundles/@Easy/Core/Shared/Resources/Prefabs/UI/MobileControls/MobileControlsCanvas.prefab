@@ -163,7 +163,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Shared/Resources/TS/MainMenu/Components/Overlay/MobileCameraMovement.lua
+  scriptFile: {fileID: -2688115457458467679, guid: 1376d254a60405a46b490bce8fd88542, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Overlay/MobileCameraMovement.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -371,7 +372,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Shared/Resources/TS/MainMenu/Components/Overlay/MobileJoystick.lua
+  scriptFile: {fileID: 5902611829797176272, guid: 1f239a6bd9dacd24588233a026cf3e1b, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Overlay/MobileJoystick.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 

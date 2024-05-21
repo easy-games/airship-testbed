@@ -280,7 +280,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Shared/Resources/TS/MainMenu/Components/PartyChatButton.lua
+  scriptFile: {fileID: -8624363767111287660, guid: fa472528554927c4cae18bcefce31a23, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/PartyChatButton.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -322,6 +323,7 @@ MonoBehaviour:
       serializedObject: {fileID: 5674838181332558582}
       modified: 1
     displayName: 
+  contextOverwritten: 0
 --- !u!1 &1023421365994291790
 GameObject:
   m_ObjectHideFlags: 0
@@ -620,7 +622,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Shared/Resources/TS/MainMenu/Components/NavbarControlButton.lua
+  scriptFile: {fileID: -4704025446017437422, guid: 9929560f725aa4d47815af64ce907032, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/NavbarControlButton.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -634,6 +637,7 @@ MonoBehaviour:
     decorators: []
     properties: []
     displayName: 
+  contextOverwritten: 0
 --- !u!114 &3557343383091592559
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -646,7 +650,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Shared/Resources/TS/MainMenu/Components/ProfileOptionsButton.lua
+  scriptFile: {fileID: 743283800666076597, guid: ee21bf611d743d24086367f1c889cec1, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/ProfileOptionsButton.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -660,6 +665,7 @@ MonoBehaviour:
     decorators: []
     properties: []
     displayName: 
+  contextOverwritten: 0
 --- !u!1 &1088477707263399052
 GameObject:
   m_ObjectHideFlags: 0
@@ -1507,7 +1513,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Shared/Resources/TS/MainMenu/Components/AirshipButton.lua
+  scriptFile: {fileID: 247699700030261788, guid: 6155702a7b8e9f445b9ce853cd33d000, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipButton.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -1520,20 +1527,6 @@ MonoBehaviour:
     name: AirshipButton
     decorators: []
     properties:
-    - name: clickType
-      type: number
-      objectType: 
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 0
     - name: loadingIndicator
       type: object
       objectType: GameObject
@@ -1566,7 +1559,26 @@ MonoBehaviour:
       serializedValue: '#2E3035'
       serializedObject: {fileID: 0}
       modified: 0
+    - name: clickEffect
+      type: IntEnum
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"Optional Variables"'
+      nullable: 0
+      serializedValue: 1
+      serializedObject: {fileID: 0}
+      modified: 0
     displayName: 
+  contextOverwritten: 0
 --- !u!1 &2263314788933928586
 GameObject:
   m_ObjectHideFlags: 0
@@ -1842,7 +1854,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Shared/Resources/TS/MainMenu/Components/SocialMenu.lua
+  scriptFile: {fileID: 3075410219473054311, guid: f5598336363264748a9d6f43e6f0e4e6, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/SocialMenu.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -1870,6 +1883,7 @@ MonoBehaviour:
       serializedObject: {fileID: 246352281172351195}
       modified: 1
     displayName: 
+  contextOverwritten: 0
 --- !u!1 &2640575328591173390
 GameObject:
   m_ObjectHideFlags: 0
@@ -3580,7 +3594,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Shared/Resources/TS/MainMenu/Components/SocialFriendRequestsButtonComponent.lua
+  scriptFile: {fileID: 7258512920844207514, guid: 6995059be2384b64295df38d40e38ace, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/SocialFriendRequestsButtonComponent.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -3622,6 +3637,7 @@ MonoBehaviour:
       serializedObject: {fileID: 1919176026058401245}
       modified: 1
     displayName: 
+  contextOverwritten: 0
 --- !u!114 &6313874641373235251
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3634,7 +3650,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Shared/Resources/TS/MainMenu/Components/AirshipButton.lua
+  scriptFile: {fileID: 247699700030261788, guid: 6155702a7b8e9f445b9ce853cd33d000, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipButton.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -3647,20 +3664,6 @@ MonoBehaviour:
     name: AirshipButton
     decorators: []
     properties:
-    - name: clickType
-      type: number
-      objectType: 
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 0
     - name: loadingIndicator
       type: object
       objectType: GameObject
@@ -3693,7 +3696,26 @@ MonoBehaviour:
       serializedValue: '#2E3035'
       serializedObject: {fileID: 0}
       modified: 0
+    - name: clickEffect
+      type: IntEnum
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"Optional Variables"'
+      nullable: 0
+      serializedValue: 1
+      serializedObject: {fileID: 0}
+      modified: 0
     displayName: 
+  contextOverwritten: 0
 --- !u!1 &4480443164818120478
 GameObject:
   m_ObjectHideFlags: 0
@@ -5173,7 +5195,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Shared/Resources/TS/MainMenu/Components/SocialNotificationComponent.lua
+  scriptFile: {fileID: -6161703700367286607, guid: 3f722dd1de9616b4997e74580d8e44e5, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/SocialNotificationComponent.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -5257,6 +5280,7 @@ MonoBehaviour:
       serializedObject: {fileID: 4812589028008682264}
       modified: 1
     displayName: 
+  contextOverwritten: 0
 --- !u!114 &5163487470730408897
 MonoBehaviour:
   m_ObjectHideFlags: 0

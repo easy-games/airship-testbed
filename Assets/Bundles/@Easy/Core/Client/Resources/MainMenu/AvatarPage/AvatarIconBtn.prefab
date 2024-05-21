@@ -135,7 +135,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Client/Resources/TS/ProtectedControllers/AvatarMenu/AvatarMenuBtn.lua
+  scriptFile: {fileID: 3258903401201625531, guid: aa8bc832bcf997149a027c512b3b08dd, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/AvatarMenuBtn.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 

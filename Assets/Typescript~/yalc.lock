@@ -2,7 +2,9 @@
   "version": "v1",
   "packages": {
     "@easy-games/unity-flamework-transformer": {
-      "signature": "5610cd0bca59091a0be9b370084259ef"
+      "signature": "c15cd307676a84050e5649d824f7778b",
+      "file": true,
+      "replaced": "file:./.yalc/@easy-games/unity-flamework-transformer"
     }
   }
 }

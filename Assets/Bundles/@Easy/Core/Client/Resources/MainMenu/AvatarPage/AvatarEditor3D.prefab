@@ -348,7 +348,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Shared/Resources/TS/Avatar/AvatarViewComponent.lua
+  scriptFile: {fileID: 5971327804806352644, guid: 1e6988b40f0812948b4b23d4fd4cb7c6, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/Avatar/AvatarViewComponent.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 

@@ -346,7 +346,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Shared/Resources/TS/MainMenu/Components/Settings/BlockedUser.lua
+  scriptFile: {fileID: 2663299327056289773, guid: 31076bcace0ac02459a37c7214b66961, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/BlockedUser.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -388,3 +389,4 @@ MonoBehaviour:
       serializedObject: {fileID: 7337908481148017860}
       modified: 1
     displayName: 
+  contextOverwritten: 0

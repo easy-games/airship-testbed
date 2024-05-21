@@ -57,20 +57,18 @@ if (InstanceFinder.TimeManager !== undefined) {
 	});
 }
 
-Flamework.AddPath("assets/bundles/@Easy/Core/shared/resources/ts", "^.*singleton.lua$", "mainmenu/");
+const COREPATH = "@Easy/Core".lower();
+
+Flamework.AddPath(`${COREPATH}/shared`, "^.*singleton.ts$", "mainmenu/");
 if (Game.IsClient()) {
-	Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/airship", "^.*controller.lua$");
-	Flamework.AddPath(
-		"assets/bundles/@Easy/Core/client/resources/ts/controllers",
-		"^.*controller.lua$",
-		"protectedcontrollers/",
-	);
+	Flamework.AddPath(`${COREPATH}/client/airship`, "^.*controller.ts$");
+	Flamework.AddPath(`${COREPATH}/client/controllers`, "^.*controller.ts$", "protectedcontrollers/");
 	// Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/mainmenucontrollers", "^.*controller.lua$");
 	// Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/mainmenucontrollers", "^.*singleton.lua$");
 }
 if (Game.IsServer()) {
-	Flamework.AddPath("assets/bundles/@Easy/Core/server/resources/ts/airship", "^.*service.lua$");
-	Flamework.AddPath("assets/bundles/@Easy/Core/server/resources/ts/services", "^.*service.lua$");
+	Flamework.AddPath(`${COREPATH}/server/airship`, "^.*service.ts$");
+	Flamework.AddPath(`${COREPATH}/server/services`, "^.*service.ts$");
 }
 Flamework.Ignite();
 

@@ -37,14 +37,14 @@ gameObject.OnFixedUpdate(() => {
 	OnFixedUpdate.Fire(TimeUtil.GetFixedDeltaTime());
 });
 
-Flamework.AddPath("assets/bundles/@Easy/Core/shared/resources/ts/mainmenu", "^.*singleton.lua$");
-Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/protectedcontrollers", "^.*controller.lua$");
-Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/protectedcontrollers", "^.*singleton.lua$");
-Flamework.AddPath("assets/bundles/@Easy/Core/shared/resources/ts/player/playerssingleton", "^.*singleton.lua$");
-Flamework.AddPath("assets/bundles/@Easy/Core/shared/resources/ts/input/airshipinputsingleton", "^.*singleton.lua$");
+Flamework.AddPath("@easy/core/shared/mainmenu", "^.*singleton.ts$");
+Flamework.AddPath("@easy/core/client/protectedcontrollers", "^.*controller.ts$");
+Flamework.AddPath("@easy/core/client/protectedcontrollers", "^.*singleton.ts$");
+Flamework.AddPath("@easy/core/shared/player/playerssingleton", "^.*singleton.ts$");
+Flamework.AddPath("@easy/core/shared/input/airshipinputsingleton", "^.*singleton.ts$");
 
 if (Game.IsServer()) {
-	Flamework.AddPath("assets/bundles/@Easy/Core/server/resources/ts/protectedservices", "^.*service.lua$");
+	Flamework.AddPath("@easy/core/server/protectedservices", "^.*service.ts$");
 }
 
 Flamework.Ignite();

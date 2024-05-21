@@ -192,8 +192,8 @@ MonoBehaviour:
   _spectatorInterpolation: 2
   _enableTeleport: 0
   _teleportThreshold: 1
-  <PrefabId>k__BackingField: 0
-  <SpawnableCollectionId>k__BackingField: 0
+  <PrefabId>k__BackingField: 4
+  <SpawnableCollectionId>k__BackingField: 1
   _scenePathHash: 0
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 12069361917781442781
@@ -336,6 +336,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 1780944780591434724, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: scriptFile
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1780944780591434724, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
       propertyPath: m_metadata.properties.Array.data[10].modified
       value: 1
       objectReference: {fileID: 0}
@@ -417,8 +421,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptFile: {fileID: 0}
-  m_fileFullPath: Assets/Bundles/Shared/Resources/TS/Demo/AirshipPlatformDemo/PromptAboveBall.lua
+  scriptFile: {fileID: 4996133961761139130, guid: 06cb9fa0651f2f34ab739ec348296682, type: 3}
+  m_fileFullPath: Assets/Shared/Demo/AirshipPlatformDemo/PromptAboveBall.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 

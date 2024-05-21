@@ -436,7 +436,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/Shared/Resources/TS/Demo/TopDownBattle/TopDownBattleCharacter.lua
+  scriptFile: {fileID: 8748306010591126955, guid: 84d0bb7f45048a04ca783d74de5c1f59, type: 3}
+  m_fileFullPath: Assets/Shared/Demo/TopDownBattle/TopDownBattleCharacter.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 

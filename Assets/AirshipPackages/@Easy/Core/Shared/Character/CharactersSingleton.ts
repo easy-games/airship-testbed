@@ -58,6 +58,7 @@ export class CharactersSingleton implements OnStart {
 		public readonly localCharacterManager: LocalCharacterSingleton,
 		public readonly footsteps: AirshipCharacterFootstepsSingleton,
 	) {
+		print("call constructor pls");
 		Airship.characters = this;
 	}
 

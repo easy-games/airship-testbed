@@ -204,7 +204,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Shared/Resources/TS/MainMenu/Components/PartyMember.lua
+  scriptFile: {fileID: 5266427417015015698, guid: 9453bf0ee0233e7428539c8ef8868a27, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/PartyMember.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -232,3 +233,4 @@ MonoBehaviour:
       serializedObject: {fileID: 7456303551240248902}
       modified: 1
     displayName: 
+  contextOverwritten: 0

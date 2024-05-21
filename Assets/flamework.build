@@ -1,0 +1,26 @@
+{
+	"version": 1,
+	"flameworkVersion": "1.1.0",
+	"identifiers": {
+		"Server/TestService@TestService": "Server/TestService@TestService",
+		"Shared/TestSingleton@TestSingleton": "Shared/TestSingleton@TestSingleton",
+		"Shared/Demo/AirshipPlatformDemo/Scoreboard@Scoreboard": "Shared/Demo/AirshipPlatformDemo/Scoreboard@Scoreboard",
+		"Shared/Demo/AirshipPlatformDemo/ClientScript@ClientScript": "Shared/Demo/AirshipPlatformDemo/ClientScript@ClientScript",
+		"Shared/Demo/AirshipPlatformDemo/CubeMover@CubeMover": "Shared/Demo/AirshipPlatformDemo/CubeMover@CubeMover",
+		"Shared/Demo/AirshipPlatformDemo/DemoManager@DemoManager": "Shared/Demo/AirshipPlatformDemo/DemoManager@DemoManager",
+		"Shared/Demo/AirshipPlatformDemo/PromptAboveBall@PromptAboveBall": "Shared/Demo/AirshipPlatformDemo/PromptAboveBall@PromptAboveBall",
+		"Shared/Demo/AirshipPlatformDemo/ServerScript@TestScript": "Shared/Demo/AirshipPlatformDemo/ServerScript@TestScript",
+		"Shared/Demo/AirshipPlatformDemo/TagDemo@TagDemo": "Shared/Demo/AirshipPlatformDemo/TagDemo@TagDemo",
+		"Shared/Demo/TopDownBattle/TopDownBattleCharacter@TopDownBattleCharacter": "Shared/Demo/TopDownBattle/TopDownBattleCharacter@TopDownBattleCharacter",
+		"Shared/Demo/TopDownBattle/TopDownBattleCameraComponent@TopDownBattleCameraComponent": "Shared/Demo/TopDownBattle/TopDownBattleCameraComponent@TopDownBattleCameraComponent",
+		"Shared/Demo/TopDownBattle/TopDownBattleEnemies/TopDownBattleEnemy@TopDownBattleEnemy": "Shared/Demo/TopDownBattle/TopDownBattleEnemies/TopDownBattleEnemy@TopDownBattleEnemy",
+		"Shared/Demo/TopDownBattle/TopDownBattleEnemies/TopDownBattleEnemySpawner@TopDownBattleEnemySpawner": "Shared/Demo/TopDownBattle/TopDownBattleEnemies/TopDownBattleEnemySpawner@TopDownBattleEnemySpawner",
+		"Shared/Demo/TopDownBattle/TopDownBattleGame@TopDownBattleGame": "Shared/Demo/TopDownBattle/TopDownBattleGame@TopDownBattleGame",
+		"Shared/Demo/TopDownBattle/TopDownBattleLevelGenerator@TopDownBattleLevelGenerator": "Shared/Demo/TopDownBattle/TopDownBattleLevelGenerator@TopDownBattleLevelGenerator",
+		"Shared/Demo/TopDownBattle/TopDownItems/TopDownRangedItem@TopDownBattleRangedItem": "Shared/Demo/TopDownBattle/TopDownItems/TopDownRangedItem@TopDownBattleRangedItem",
+		"Shared/Demo/TopDownBattle/TopDownBattlePlayerSpawner@TopDownBattlePlayerSpawner": "Shared/Demo/TopDownBattle/TopDownBattlePlayerSpawner@TopDownBattlePlayerSpawner",
+		"Shared/Demo/TopDownScene/CubeSpinner@CubeSpinner": "Shared/Demo/TopDownScene/CubeSpinner@CubeSpinner",
+		"Shared/Demo/TopDownScene/GameManager@GameManager": "Shared/Demo/TopDownScene/GameManager@GameManager",
+		"Shared/Demo/TopDownScene/NetComponent@NetComponent": "Shared/Demo/TopDownScene/NetComponent@NetComponent"
+	}
+}

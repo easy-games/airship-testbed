@@ -53,7 +53,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Shared/Resources/TS/MainMenu/Components/MobileNavButton.lua
+  scriptFile: {fileID: 7112289858733805125, guid: 4fb5460c11ffe2d409ed96ee8d7cc471, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/MobileNavButton.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -137,6 +138,7 @@ MonoBehaviour:
       serializedObject: {fileID: 0}
       modified: 1
     displayName: 
+  contextOverwritten: 0
 --- !u!222 &7199070030543246991
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -686,7 +686,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Shared/Resources/TS/MainMenu/Components/Settings/SettingsKeybind.lua
+  scriptFile: {fileID: -588904696007209124, guid: 1c6280447c673c849ad292c626b4114f, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsKeybind.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -770,6 +771,7 @@ MonoBehaviour:
       serializedObject: {fileID: 1984348185662472844}
       modified: 1
     displayName: 
+  contextOverwritten: 0
 --- !u!114 &8379333342261646407
 MonoBehaviour:
   m_ObjectHideFlags: 0

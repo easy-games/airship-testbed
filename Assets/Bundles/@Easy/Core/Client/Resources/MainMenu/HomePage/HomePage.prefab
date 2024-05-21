@@ -3956,7 +3956,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Client/Resources/TS/Components/HomePage/HomePageComponent.lua
+  scriptFile: {fileID: 6889083072550576456, guid: 14e66d73297e5dd43a64398d6c13b0d7, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/HomePageComponent.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -3967,6 +3968,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: HomePageComponent
+    decorators: []
     properties:
     - name: mainContent
       type: object
@@ -4038,6 +4040,8 @@ MonoBehaviour:
       serializedValue: Home
       serializedObject: {fileID: 0}
       modified: 0
+    displayName: 
+  contextOverwritten: 0
 --- !u!1 &9165046556870726425
 GameObject:
   m_ObjectHideFlags: 0

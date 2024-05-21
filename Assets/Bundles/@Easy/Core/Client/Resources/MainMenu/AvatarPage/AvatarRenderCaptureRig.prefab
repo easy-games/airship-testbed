@@ -49,7 +49,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Client/Resources/TS/MainMenuControllers/AvatarMenu/AvatarRenderComponent.lua
+  scriptFile: {fileID: -5059136008333416200, guid: 5828a7049ad72ef44abcca87322e904e, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/AvatarRenderComponent.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -187,6 +188,7 @@ MonoBehaviour:
       serializedObject: {fileID: 0}
       modified: 1
     displayName: 
+  contextOverwritten: 0
 --- !u!1 &686835754178078473
 GameObject:
   m_ObjectHideFlags: 0
@@ -588,9 +590,11 @@ MonoBehaviour:
   fogColor: {r: 0.5, g: 0.8, b: 1, a: 1}
   shadowRange: 100
   postProcess: 1
+  bakeSun: 1
+  globalLightingMode: 1
   doShadows: 1
   cubeMap: {fileID: 0}
-  cubemapCoefs: {fileID: 0}
+  maxBrightness: 1
 --- !u!1 &6336977857862869467
 GameObject:
   m_ObjectHideFlags: 0
@@ -693,7 +697,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4478922661203466773}
-  - component: {fileID: 1579043974167738727}
   m_Layer: 10
   m_Name: AirshipPointlight
   m_TagString: Untagged
@@ -716,22 +719,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8282180270977711201}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1579043974167738727
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8371777969857679976}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b144661d7f1e8cd40b19de6f2d9660af, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  color: {r: 1, g: 1, b: 1, a: 1}
-  intensity: 0.39
-  range: 10
-  castShadows: 1
 --- !u!1001 &4483858351681087180
 PrefabInstance:
   m_ObjectHideFlags: 0

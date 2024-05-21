@@ -174,7 +174,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Shared/Resources/TS/MainMenu/Components/Settings/General/GameFavoriteButton.lua
+  scriptFile: {fileID: -4861968124022137575, guid: 34cffcda624bcd04ca251b5f4e3e9447, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/General/GameFavoriteButton.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -290,6 +291,7 @@ MonoBehaviour:
       serializedObject: {fileID: 0}
       modified: 0
     displayName: 
+  contextOverwritten: 0
 --- !u!114 &329733079518539386
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -302,7 +304,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Shared/Resources/TS/MainMenu/Components/AirshipButton.lua
+  scriptFile: {fileID: 247699700030261788, guid: 6155702a7b8e9f445b9ce853cd33d000, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipButton.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -362,6 +365,7 @@ MonoBehaviour:
       serializedObject: {fileID: 0}
       modified: 0
     displayName: 
+  contextOverwritten: 0
 --- !u!1 &3210829509019363785
 GameObject:
   m_ObjectHideFlags: 0
@@ -1173,7 +1177,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Shared/Resources/TS/MainMenu/Components/Settings/General/GameGeneralPage.lua
+  scriptFile: {fileID: -7023370088831765392, guid: d806647b2ab2963478aa72c83004a8dc, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/General/GameGeneralPage.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -1257,6 +1262,7 @@ MonoBehaviour:
       serializedObject: {fileID: 0}
       modified: 1
     displayName: 
+  contextOverwritten: 0
 --- !u!1 &5034519424415281478
 GameObject:
   m_ObjectHideFlags: 0
@@ -1394,7 +1400,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Shared/Resources/TS/MainMenu/Components/Settings/General/PlayerList.lua
+  scriptFile: {fileID: -8466746093026454591, guid: 8f40ce6d72862a24d936da3b94a4f5d9, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/General/PlayerList.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -1436,6 +1443,7 @@ MonoBehaviour:
       serializedObject: {fileID: 5599986350978140070, guid: 4b1aa10aa3cc04b49a47dab2ebe1c3d6, type: 3}
       modified: 1
     displayName: 
+  contextOverwritten: 0
 --- !u!114 &5712564446181445086
 MonoBehaviour:
   m_ObjectHideFlags: 0

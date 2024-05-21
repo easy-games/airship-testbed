@@ -42,7 +42,12 @@ export namespace Flamework {
 
 	/** @hidden */
 	export function AddPath(path: string, searchPattern?: string, ignorePattern?: string) {
+		print("AddPath", path);
 		const preloadPaths: string[] = [];
+
+		if (path.find("^@([A-z]+)/([A-z]+)", 1)[0]) {
+			path = "assets/airshippackages/" + path.lower();
+		}
 
 		const files = EasyFileService.GetFilesInPath(path, searchPattern);
 		for (let i = 0; i < files.Length; i++) {
@@ -53,8 +58,9 @@ export namespace Flamework {
 					continue;
 				}
 			}
-			filePath = filePath.split("assets/bundles/")[1];
-			filePath = filePath.split(".lua")[0];
+
+			filePath = filePath.split(".ts")[0];
+			print("import path ", filePath);
 			preloadPaths.push(filePath);
 		}
 

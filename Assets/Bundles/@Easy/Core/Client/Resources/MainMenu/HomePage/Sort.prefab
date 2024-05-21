@@ -247,7 +247,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Client/Resources/TS/Components/HomePage/Sort/SortComponent.lua
+  scriptFile: {fileID: 4878152350792215143, guid: bb6fd622ffd09a24086926938486bed4, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Client/Components/HomePage/Sort/SortComponent.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: Assets/Bundles/@Easy/Core/Client/Resources/TS/Components/HomePage/SortComponent.lua
@@ -258,6 +259,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: SortComponent
+    decorators: []
     properties:
     - name: titleText
       type: object
@@ -343,6 +345,8 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 3900116177330669572}
       modified: 1
+    displayName: 
+  contextOverwritten: 0
 --- !u!1 &6147684609869041775
 GameObject:
   m_ObjectHideFlags: 0

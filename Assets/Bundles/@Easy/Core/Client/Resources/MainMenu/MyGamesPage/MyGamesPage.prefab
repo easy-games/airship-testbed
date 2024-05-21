@@ -2961,7 +2961,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Shared/Resources/TS/MainMenu/Components/MainMenuPageComponent.lua
+  scriptFile: {fileID: 7477317579821688817, guid: 83b7d6c5790d4244e9c1122bc865730d, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/MainMenuPageComponent.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -4795,7 +4796,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Client/Resources/TS/Components/HomePage/MyGames/MyGamesSortComponent.lua
+  scriptFile: {fileID: 917611626780036339, guid: 0dd963bf296b5594488814730ff851f0, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Client/Components/HomePage/MyGames/MyGamesSortComponent.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 

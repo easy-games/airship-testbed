@@ -715,7 +715,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Shared/Resources/TS/Avatar/AvatarBackdropComponent.lua
+  scriptFile: {fileID: 5842661104909546540, guid: f53842464852d1744b908d0f1b4e597f, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/Avatar/AvatarBackdropComponent.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -743,6 +744,7 @@ MonoBehaviour:
       serializedObject: {fileID: 3271256478194827109}
       modified: 1
     displayName: 
+  contextOverwritten: 0
 --- !u!1 &8864547050094139047
 GameObject:
   m_ObjectHideFlags: 0

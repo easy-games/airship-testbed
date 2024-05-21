@@ -107,7 +107,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Shared/Resources/TS/MainMenu/Components/Search/GameSearchResult.lua
+  scriptFile: {fileID: 1936486822003930623, guid: e1a403c73072af6438e74610c1d36028, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Search/GameSearchResult.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -233,6 +234,7 @@ MonoBehaviour:
       serializedObject: {fileID: 4301477776968536454}
       modified: 1
     displayName: 
+  contextOverwritten: 0
 --- !u!114 &1533275111181086838
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1304,7 +1306,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Client/Resources/TS/Components/HomePage/Sort/GameImageButton.lua
+  scriptFile: {fileID: 5216912681911322509, guid: 848975e072441364c89ccac04c450fb1, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Client/Components/HomePage/Sort/GameImageButton.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -1332,6 +1335,7 @@ MonoBehaviour:
       serializedObject: {fileID: 0}
       modified: 0
     displayName: 
+  contextOverwritten: 0
 --- !u!1 &8266592778768060816
 GameObject:
   m_ObjectHideFlags: 0

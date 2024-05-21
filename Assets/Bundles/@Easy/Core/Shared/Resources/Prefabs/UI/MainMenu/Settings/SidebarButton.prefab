@@ -91,7 +91,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Shared/Resources/TS/MainMenu/Components/Settings/SettingsTabButton.lua
+  scriptFile: {fileID: 371340824522278783, guid: 1e187779e0e72d04bb8581eddd270f4c, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsTabButton.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -102,6 +103,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: SettingsTabButton
+    decorators: []
     properties:
     - name: tab
       type: object
@@ -159,6 +161,8 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 7416440295657132370}
       modified: 1
+    displayName: 
+  contextOverwritten: 0
 --- !u!114 &2875591465625101388
 MonoBehaviour:
   m_ObjectHideFlags: 0

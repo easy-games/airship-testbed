@@ -259,8 +259,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <IsNested>k__BackingField: 0
   <ComponentIndex>k__BackingField: 0
-  <PredictedSpawn>k__BackingField: {fileID: 0}
   airshipGUID: 
+  <PredictedSpawn>k__BackingField: {fileID: 0}
   _networkBehaviours:
   - {fileID: 1373916567797579376}
   - {fileID: 3769179108955811012}
@@ -279,13 +279,18 @@ MonoBehaviour:
   _enablePrediction: 0
   _predictionType: 0
   _graphicalObject: {fileID: 0}
+  _detachGraphicalObject: 0
   _enableStateForwarding: 1
   _networkTransform: {fileID: 0}
   _ownerInterpolation: 1
+  _ownerSmoothedProperties: 255
+  _adaptiveInterpolation: 3
+  _spectatorSmoothedProperties: 255
+  _spectatorInterpolation: 2
   _enableTeleport: 0
   _teleportThreshold: 1
-  <PrefabId>k__BackingField: 0
-  <SpawnableCollectionId>k__BackingField: 0
+  <PrefabId>k__BackingField: 3
+  <SpawnableCollectionId>k__BackingField: 1
   _scenePathHash: 0
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 5878059804944601439
@@ -412,7 +417,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/Shared/Resources/TS/Demo/TopDownBattle/TopDownBattleEnemies/TopDownBattleEnemy.lua
+  scriptFile: {fileID: 7413320281675706762, guid: 5d2e688bef2b3d243a1a23090d82f26c, type: 3}
+  m_fileFullPath: Assets/Shared/Demo/TopDownBattle/TopDownBattleEnemies/TopDownBattleEnemy.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 

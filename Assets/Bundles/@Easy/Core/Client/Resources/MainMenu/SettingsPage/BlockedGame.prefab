@@ -90,7 +90,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Shared/Resources/TS/MainMenu/Components/Settings/BlockedGame.lua
+  scriptFile: {fileID: 1055884756415107220, guid: 8ec6077665a6d844cba7df78a881402e, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/BlockedGame.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -132,6 +133,7 @@ MonoBehaviour:
       serializedObject: {fileID: 7632732046187264883}
       modified: 1
     displayName: 
+  contextOverwritten: 0
 --- !u!1 &4280504192813154040
 GameObject:
   m_ObjectHideFlags: 0

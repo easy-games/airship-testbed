@@ -1118,7 +1118,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Shared/Resources/TS/MainMenu/Components/Search/SearchFocused.lua
+  scriptFile: {fileID: 642439493959342224, guid: efb1e73d99e530143bceb73975bdea18, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Search/SearchFocused.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -1262,6 +1263,7 @@ MonoBehaviour:
       serializedObject: {fileID: 1404135758326690783}
       modified: 1
     displayName: 
+  contextOverwritten: 0
 --- !u!1 &6351040801053649358
 GameObject:
   m_ObjectHideFlags: 0
