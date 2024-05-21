@@ -1,6 +1,7 @@
 /* eslint-disable no-inner-declarations */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable @typescript-eslint/no-namespace */
+import inspect from "../Util/Inspect";
 import { Modding } from "./modding";
 import { Reflect } from "./reflect";
 import { Constructor } from "./Types/types";
@@ -42,7 +43,6 @@ export namespace Flamework {
 
 	/** @hidden */
 	export function AddPath(path: string, searchPattern?: string, ignorePattern?: string) {
-		print("AddPath", path);
 		const preloadPaths: string[] = [];
 
 		if (path.find("^@([A-z]+)/([A-z]+)", 1)[0]) {
@@ -60,7 +60,6 @@ export namespace Flamework {
 			}
 
 			filePath = filePath.split(".ts")[0];
-			print("import path ", filePath);
 			preloadPaths.push(filePath);
 		}
 

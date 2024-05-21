@@ -57,7 +57,7 @@ if (InstanceFinder.TimeManager !== undefined) {
 	});
 }
 
-const COREPATH = "@Easy/Core".lower();
+const COREPATH = "@easy/core";
 
 Flamework.AddPath(`${COREPATH}/shared`, "^.*singleton.ts$", "mainmenu/");
 if (Game.IsClient()) {

@@ -34,9 +34,9 @@ gameObject.OnFixedUpdate(() => {
 	OnFixedUpdate.Fire(TimeUtil.GetFixedDeltaTime());
 });
 
-Flamework.AddPath("assets/bundles/@Easy/Core/shared/resources/ts", "^.*singleton.lua$");
-Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/protectedcontrollers", "^.*controller.lua$");
-Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/protectedcontrollers", "^.*singleton.lua$");
+Flamework.AddPath("@easy/core/shared", "^.*singleton.ts$");
+Flamework.AddPath("@easy/core/client/protectedcontrollers", "^.*controller.ts$");
+Flamework.AddPath("@easy/core/client/protectedcontrollers", "^.*singleton.ts$");
 Flamework.Ignite();
 
 const mainMenuLoadingScreen = GameObject.Find("MainMenuLoadingScreen").GetComponent<MainMenuLoadingScreen>()!;
