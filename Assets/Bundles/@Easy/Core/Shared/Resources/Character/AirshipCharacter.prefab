@@ -6263,7 +6263,7 @@ MonoBehaviour:
   disableInput: 0
   useGravity: 1
   detectSlopes: 1
-  detectStepUps: 1
+  detectStepUps: 0
   preventWallClipping: 1
   groundCollisionLayerMask:
     serializedVersion: 2
@@ -6478,8 +6478,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <IsNested>k__BackingField: 0
   <ComponentIndex>k__BackingField: 0
-  <PredictedSpawn>k__BackingField: {fileID: 0}
   airshipGUID: 
+  <PredictedSpawn>k__BackingField: {fileID: 0}
   _networkBehaviours:
   - {fileID: 7931457288082626079}
   - {fileID: 5838268274975822121}
@@ -6501,9 +6501,14 @@ MonoBehaviour:
   _enablePrediction: 1
   _predictionType: 1
   _graphicalObject: {fileID: 7911948219130051474}
+  _detachGraphicalObject: 0
   _enableStateForwarding: 0
   _networkTransform: {fileID: 5420625271334097286}
   _ownerInterpolation: 1
+  _ownerSmoothedProperties: 255
+  _adaptiveInterpolation: 3
+  _spectatorSmoothedProperties: 255
+  _spectatorInterpolation: 2
   _enableTeleport: 0
   _teleportThreshold: 5
   <PrefabId>k__BackingField: 0
