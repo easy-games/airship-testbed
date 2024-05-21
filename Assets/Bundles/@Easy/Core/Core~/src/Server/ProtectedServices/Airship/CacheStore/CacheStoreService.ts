@@ -1,9 +1,18 @@
-import { Platform } from "@Easy/Core/Shared/Airship";
 import { OnStart, Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Result } from "@Easy/Core/Shared/Types/Result";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
+
+export enum CacheStoreServiceBridgeTopics {
+	GetKey = "CacheStore:GetKey",
+	SetKey = "CacheStore:SetKey",
+	SetKeyTTL = "CacheStore:SetKeyTTL",
+}
+
+export type ServerBridgeApiCacheGetKey<T> = (key: string, expireTimeSec?: number) => Result<T | undefined, undefined>;
+export type ServerBridgeApiCacheSetKey<T> = (key: string, data: T, expireTimeSec: number) => Result<T, undefined>;
+export type ServerBridgeApiCacheSetKeyTTL = (key: string, expireTimeSec: number) => Result<number, undefined>;
 
 @Service({})
 export class CacheStoreService implements OnStart {
@@ -11,121 +20,80 @@ export class CacheStoreService implements OnStart {
 	private maxExpireSec = 60 * 60 * 24; // 24h in seconds
 
 	constructor() {
-		if (Game.IsServer()) Platform.server.cacheStore = this;
+		if (!Game.IsServer()) return;
+
+		contextbridge.callback<ServerBridgeApiCacheGetKey<unknown>>(
+			CacheStoreServiceBridgeTopics.GetKey,
+			(_, key, expireTimeSec) => {
+				const expireTime =
+					expireTimeSec !== undefined ? math.clamp(expireTimeSec, 0, this.maxExpireSec) : undefined;
+				const query = expireTime !== undefined ? `?expiry=${expireTime}` : "";
+				const result = InternalHttpManager.GetAsync(`${AirshipUrl.DataStoreService}/cache/key/${key}${query}`);
+				if (!result.success) {
+					warn(`Unable to get cache key. Status Code: ${result.statusCode}.\n`, result.data);
+					return {
+						success: false,
+						data: undefined,
+					};
+				}
+
+				if (!result.data) {
+					return {
+						success: false,
+						data: undefined,
+					};
+				}
+				return {
+					success: true,
+					data: DecodeJSON(result.data),
+				};
+			},
+		);
+
+		contextbridge.callback<ServerBridgeApiCacheSetKey<unknown>>(
+			CacheStoreServiceBridgeTopics.SetKey,
+			(_, key, data, expireTimeSec) => {
+				const expireTime = math.clamp(expireTimeSec, 0, this.maxExpireSec);
+				const result = InternalHttpManager.PostAsync(
+					`${AirshipUrl.DataStoreService}/cache/key/${key}?expiry=${expireTime}`,
+					EncodeJSON(data),
+				);
+				if (!result.success || result.statusCode > 299) {
+					warn(`Unable to set cache key. Status Code: ${result.statusCode}.\n`, result.data);
+					return {
+						success: false,
+						data: undefined,
+					};
+				}
+
+				return {
+					success: true,
+					data: DecodeJSON(result.data),
+				};
+			},
+		);
+
+		contextbridge.callback<ServerBridgeApiCacheSetKeyTTL>(
+			CacheStoreServiceBridgeTopics.SetKeyTTL,
+			(_, key, expireTimeSec) => {
+				const result = InternalHttpManager.GetAsync(
+					`${AirshipUrl.DataStoreService}/cache/key/${key}/ttl?expiry=${math.clamp(expireTimeSec, 0, this.maxExpireSec)}`,
+				);
+				if (!result.success || result.statusCode > 299) {
+					warn(`Unable to set cache key ttl. Status Code: ${result.statusCode}.\n`, result.data);
+					return {
+						success: false,
+						data: undefined,
+					};
+				}
+
+				return {
+					success: true,
+					data: (DecodeJSON(result.data) as { ttl: number }).ttl,
+				};
+			},
+		);
 	}
 
 	OnStart(): void {}
-
-	/**
-	 * Gets the cached data for the provided key.
-	 * @param key Key to use. Keys must be alphanumeric and may include the following symbols: _.:
-	 * @param expireTimeSec The duration this key should live after being accessed in seconds. If not provided, key duration will
-	 * be unchanged. The maximum expire time is 24 hours.
-	 * @returns The data associated with the provided key. If no data is associated with the provided key, then nothing will be returned.
-	 */
-	public async GetKey<T extends object>(
-		key: string,
-		expireTimeSec?: number,
-	): Promise<Result<T | undefined, undefined>> {
-		this.CheckKey(key);
-
-		const expireTime = expireTimeSec !== undefined ? math.clamp(expireTimeSec, 0, this.maxExpireSec) : undefined;
-		const query = expireTime !== undefined ? `?expiry=${expireTime}` : "";
-		const result = InternalHttpManager.GetAsync(`${AirshipUrl.DataStoreService}/cache/key/${key}${query}`);
-		if (!result.success) {
-			warn(`Unable to get cache key. Status Code: ${result.statusCode}.\n`, result.data);
-			return {
-				success: false,
-				data: undefined,
-			};
-		}
-
-		if (!result.data) {
-			return {
-				success: false,
-				data: undefined,
-			};
-		}
-		return {
-			success: true,
-			data: DecodeJSON(result.data) as T,
-		};
-	}
-
-	/**
-	 * Sets the data for the given key.
-	 * @param key The key to use. Keys must be alphanumeric and may include the following symbols: _.:
-	 * @param data The data to associate with the provided key.
-	 * @param expireTimeSec The duration this key should live after being set in seconds. The maximum duration is 24 hours.
-	 * @returns The data that was associated with the provided key.
-	 */
-	public async SetKey<T extends object>(key: string, data: T, expireTimeSec: number): Promise<Result<T, undefined>> {
-		this.CheckKey(key);
-
-		const expireTime = math.clamp(expireTimeSec, 0, this.maxExpireSec);
-		const result = InternalHttpManager.PostAsync(
-			`${AirshipUrl.DataStoreService}/cache/key/${key}?expiry=${expireTime}`,
-			EncodeJSON(data),
-		);
-		if (!result.success || result.statusCode > 299) {
-			warn(`Unable to set cache key. Status Code: ${result.statusCode}.\n`, result.data);
-			return {
-				success: false,
-				data: undefined,
-			};
-		}
-
-		return {
-			success: true,
-			data: DecodeJSON(result.data) as T,
-		};
-	}
-
-	/**
-	 * Deletes the data associated with the provided key.
-	 * @param key The key to use. Keys must be alphanumeric and may include the following symbols: _.:
-	 */
-	public async DeleteKey(key: string): Promise<Result<number, undefined>> {
-		this.CheckKey(key);
-
-		const res = await this.SetKeyTTL(key, 0);
-		return res;
-	}
-
-	/**
-	 * Sets a new lifetime for the given key.
-	 * @param key The key to use. Keys must be alphanumeric and may include the following symbols: _.:
-	 * @param expireTimeSec The duration this key should live in seconds. The maximum duration is 24 hours.
-	 * @returns The new lifetime of the key.
-	 */
-	public async SetKeyTTL(key: string, expireTimeSec: number): Promise<Result<number, undefined>> {
-		this.CheckKey(key);
-
-		const result = InternalHttpManager.GetAsync(
-			`${AirshipUrl.DataStoreService}/cache/key/${key}/ttl?expiry=${math.clamp(expireTimeSec, 0, this.maxExpireSec)}`,
-		);
-		if (!result.success || result.statusCode > 299) {
-			warn(`Unable to set cache key ttl. Status Code: ${result.statusCode}.\n`, result.data);
-			return {
-				success: false,
-				data: undefined,
-			};
-		}
-
-		return {
-			success: true,
-			data: (DecodeJSON(result.data) as { ttl: number }).ttl,
-		};
-	}
-
-	/**
-	 * Checks that the key is valid. Throws an error if not valid.
-	 */
-	private CheckKey(key: string): void {
-		if (!key || key.match("^[%w%.%:]+$")[0] === undefined) {
-			throw error(
-				"Bad key provided. Ensure that your data store keys only include alphanumeric characters, _, ., and :",
-			);
-		}
-	}
 }
