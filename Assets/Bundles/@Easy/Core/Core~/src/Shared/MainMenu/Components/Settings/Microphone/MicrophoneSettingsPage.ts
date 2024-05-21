@@ -25,6 +25,10 @@ export default class MicrophoneSettingsPage extends AirshipBehaviour {
 	}
 
 	public SelectMicIndex(deviceIndex: number, deviceName: string): void {
+		if (!Bridge.HasMicrophonePermission()) {
+			Bridge.RequestMicrophonePermissionAsync();
+		}
+
 		Bridge.StopMicRecording();
 		Bridge.SetMicDeviceIndex(deviceIndex);
 
