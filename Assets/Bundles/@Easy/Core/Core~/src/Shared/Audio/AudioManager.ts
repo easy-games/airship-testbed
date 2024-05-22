@@ -10,6 +10,7 @@ export interface PlaySoundConfig {
 	loop?: boolean;
 	pitch?: number;
 	maxDistance?: number;
+	minDistance?: number;
 	rollOffMode?: AudioRolloffMode;
 }
 
@@ -60,6 +61,7 @@ export class AudioManager {
 		audioSource.pitch = config?.pitch ?? 1;
 		audioSource.rolloffMode = config?.rollOffMode ?? AudioRolloffMode.Logarithmic;
 		audioSource.maxDistance = config?.maxDistance ?? 500;
+		audioSource.minDistance = config?.minDistance ?? 1;
 		audioSource.volume = config?.volumeScale ?? 1;
 		if (!clip) {
 			warn("Trying to play unidentified clip");
@@ -120,6 +122,7 @@ export class AudioManager {
 		}
 		audioSource.rolloffMode = config?.rollOffMode ?? AudioRolloffMode.Logarithmic;
 		audioSource.maxDistance = config?.maxDistance ?? 500;
+		audioSource.minDistance = config?.minDistance ?? 1;
 		audioSource.pitch = config?.pitch ?? 1;
 		audioSource.volume = config?.volumeScale ?? 1;
 		audioSource.PlayOneShot(clip);
