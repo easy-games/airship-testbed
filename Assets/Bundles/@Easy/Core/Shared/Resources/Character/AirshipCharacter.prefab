@@ -6260,7 +6260,7 @@ MonoBehaviour:
   animationHelper: {fileID: 903796914586745664}
   mainCollider: {fileID: 7844427990841407885}
   slopeVisualizer: {fileID: 473010626989301856}
-  ticksUntilReconcile: 5
+  ticksUntilReconcile: 1
   interactWithPhysics: 1
   disableInput: 0
   useGravity: 1
