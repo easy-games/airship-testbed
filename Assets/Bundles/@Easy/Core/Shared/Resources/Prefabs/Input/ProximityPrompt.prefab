@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7566797586292866402}
   - component: {fileID: 5189031555702888496}
-  - component: {fileID: 1780944780591434724}
+  - component: {fileID: 2245620844483191104}
   m_Layer: 6
   m_Name: ProximityPrompt
   m_TagString: Untagged
@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Flipped: 0
---- !u!114 &1780944780591434724
+--- !u!114 &2245620844483191104
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -60,7 +60,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scriptFile: {fileID: 183749498165355873, guid: 9851b2a991bb1c24c82f8213eb177e5b, type: 3}
-  m_fileFullPath: 
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/Input/ProximityPrompts/ProximityPrompt.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -73,7 +73,7 @@ MonoBehaviour:
     name: ProximityPrompt
     decorators: []
     properties:
-    - name: actionName
+    - name: primaryText
       type: string
       objectType: 
       items:
@@ -86,11 +86,76 @@ MonoBehaviour:
       - name: Header
         parameters:
         - type: string
-          serializedValue: '"References"'
+          serializedValue: '"Config"'
+      nullable: 0
+      serializedValue: Apple
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: secondaryText
+      type: string
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators: []
+      nullable: 0
+      serializedValue: Pickup
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: actionName
+      type: string
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators:
+      - name: Tooltip
+        parameters:
+        - type: string
+          serializedValue: '"The action name should match something created with
+            Airship.input.CreateAction()"'
       nullable: 0
       serializedValue: interact
       serializedObject: {fileID: 0}
-      modified: 1
+      modified: 0
+    - name: maxRange
+      type: number
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators: []
+      nullable: 0
+      serializedValue: 5
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: mouseRaycastTarget
+      type: boolean
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators:
+      - name: Tooltip
+        parameters:
+        - type: string
+          serializedValue: '"Makes the prompt clickable with mouse."'
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
     - name: canvas
       type: object
       objectType: Canvas
@@ -100,7 +165,11 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
-      decorators: []
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"References"'
       nullable: 0
       serializedValue: 
       serializedObject: {fileID: 1984986574555985619}
@@ -133,52 +202,6 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 5312260118929156263}
       modified: 1
-    - name: primaryText
-      type: string
-      objectType: 
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators:
-      - name: Header
-        parameters:
-        - type: string
-          serializedValue: '"Display"'
-      nullable: 0
-      serializedValue: Apple
-      serializedObject: {fileID: 0}
-      modified: 0
-    - name: secondaryText
-      type: string
-      objectType: 
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators: []
-      nullable: 0
-      serializedValue: Pickup
-      serializedObject: {fileID: 0}
-      modified: 0
-    - name: maxRange
-      type: number
-      objectType: 
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators: []
-      nullable: 0
-      serializedValue: 5
-      serializedObject: {fileID: 0}
-      modified: 0
     - name: keybindTextLabel
       type: object
       objectType: TMP_Text
@@ -221,24 +244,6 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 3996361904181193762}
       modified: 1
-    - name: mouseRaycastTarget
-      type: boolean
-      objectType: 
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators:
-      - name: Tooltip
-        parameters:
-        - type: string
-          serializedValue: '"Makes the prompt clickable with mouse."'
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 0
     - name: touchIcon
       type: object
       objectType: Image
