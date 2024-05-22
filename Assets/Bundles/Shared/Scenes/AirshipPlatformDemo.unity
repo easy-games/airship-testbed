@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.34868056, g: 0.19675665, b: 0.24042493, a: 1}
+  m_IndirectSpecularColor: {r: 0.03418387, g: 0.03414903, b: 0.02957629, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -15874,10 +15874,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 328324b9b586ee749acb4d8a5762986f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _negativeSunDirectionNormalized: {x: -0.01956266, y: 0.99976075, z: 0.009786903}
-  _sunDirectionNormalized: {x: 0.01956266, y: -0.99976075, z: -0.009786903}
-  _sunDirection: {x: 0.019562662, y: -0.99976087, z: -0.009786904}
-  sunBrightness: 1
+  _negativeSunDirectionNormalized: {x: -0.39067057, y: 0.91071886, z: 0.13404357}
+  _sunDirectionNormalized: {x: 0.39067057, y: -0.91071886, z: -0.13404357}
+  _sunDirection: {x: 0.39067063, y: -0.910719, z: -0.13404359}
+  sunBrightness: 0.96
   sunShadow: 0.659
   sunColor: {r: 1, g: 0.9929245, b: 0.9292453, a: 1}
   skySaturation: 1
@@ -16990,7 +16990,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 1e-45, z: 9.1835e-41, w: -2.1016786e+27}
+  m_BoundingSphereOverride: {x: 2.87e-42, y: 0, z: NaN, w: 1e-45}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
@@ -17128,7 +17128,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 5.497558e+11, z: 6.7406024e+22, w: 4.35806e+27}
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: -3.0817325e-28}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
