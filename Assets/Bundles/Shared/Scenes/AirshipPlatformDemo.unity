@@ -1884,6 +1884,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PhysicsObject (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 4011174337080358292, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6075611675475958784, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
       propertyPath: _synchronizeParent
       value: 1
@@ -3298,6 +3302,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PhysicsObject (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 4011174337080358292, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6075611675475958784, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
       propertyPath: _synchronizeParent
       value: 1
@@ -3791,6 +3799,10 @@ PrefabInstance:
     - target: {fileID: 4011174337080358292, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
       propertyPath: m_Name
       value: PhysicsObject (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4011174337080358292, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6075611675475958784, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
       propertyPath: _synchronizeParent
@@ -6447,6 +6459,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PhysicsObject (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 4011174337080358292, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5251289822162383384, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
       propertyPath: m_Mass
       value: 6
@@ -7179,6 +7195,10 @@ PrefabInstance:
     - target: {fileID: 4011174337080358292, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
       propertyPath: m_Name
       value: PhysicsObject (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4011174337080358292, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6075611675475958784, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
       propertyPath: _synchronizeParent
@@ -14010,6 +14030,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PhysicsObject (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 4011174337080358292, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6075611675475958784, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
       propertyPath: _synchronizeParent
       value: 1
@@ -17036,6 +17060,10 @@ PrefabInstance:
     - target: {fileID: 4011174337080358292, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
       propertyPath: m_Name
       value: PhysicsObject (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4011174337080358292, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5251289822162383384, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
       propertyPath: m_Mass
@@ -30398,6 +30426,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PhysicsObject (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 4011174337080358292, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5251289822162383384, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
       propertyPath: m_Mass
       value: 3
@@ -33282,6 +33314,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PhysicsObject (9)
       objectReference: {fileID: 0}
+    - target: {fileID: 4011174337080358292, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5251289822162383384, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
       propertyPath: m_Mass
       value: 3
@@ -34584,6 +34620,10 @@ PrefabInstance:
     - target: {fileID: 4011174337080358292, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
       propertyPath: m_Name
       value: PhysicsObject
+      objectReference: {fileID: 0}
+    - target: {fileID: 4011174337080358292, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6075611675475958784, guid: 7426bf73fadfe0a4b89f0093db8b222b, type: 3}
       propertyPath: _synchronizeParent
