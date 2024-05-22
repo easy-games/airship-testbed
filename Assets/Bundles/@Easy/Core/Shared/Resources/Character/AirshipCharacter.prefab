@@ -6291,7 +6291,7 @@ MonoBehaviour:
   slideSpeedMultiplier: 3.28
   slideHeightMultiplier: 0.5
   slideCooldown: 0.8
-  jumpSpeed: 18
+  jumpSpeed: 14
   jumpCoyoteTime: 0.14
   jumpUpBlockCooldown: 0.4
   terminalVelocity: 50
