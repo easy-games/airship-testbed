@@ -3,6 +3,7 @@ export interface PlaySoundConfig {
     loop?: boolean;
     pitch?: number;
     maxDistance?: number;
+    minDistance?: number;
     rollOffMode?: AudioRolloffMode;
 }
 export declare class AudioManager {
