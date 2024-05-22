@@ -309,8 +309,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <IsNested>k__BackingField: 0
   <ComponentIndex>k__BackingField: 0
-  <PredictedSpawn>k__BackingField: {fileID: 0}
   airshipGUID: 
+  <PredictedSpawn>k__BackingField: {fileID: 0}
   _networkBehaviours:
   - {fileID: 74274516}
   <SerializedRootNetworkBehaviour>k__BackingField: {fileID: 1137181968}
@@ -328,9 +328,14 @@ MonoBehaviour:
   _enablePrediction: 0
   _predictionType: 0
   _graphicalObject: {fileID: 0}
+  _detachGraphicalObject: 0
   _enableStateForwarding: 1
   _networkTransform: {fileID: 0}
   _ownerInterpolation: 1
+  _ownerSmoothedProperties: 255
+  _adaptiveInterpolation: 3
+  _spectatorSmoothedProperties: 255
+  _spectatorInterpolation: 2
   _enableTeleport: 0
   _teleportThreshold: 1
   <PrefabId>k__BackingField: 0
@@ -1851,6 +1856,80 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 245874718}
   m_Mesh: {fileID: -5495902117074765545, guid: bdf2babf7a223774cae5f80a52733f88, type: 3}
+--- !u!1 &259481485
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 259481487}
+  - component: {fileID: 259481486}
+  m_Layer: 0
+  m_Name: SomeGameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &259481486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 259481485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scriptFile: {fileID: 5255999702116131321, guid: 9afefd98e8e291242bd1a2b461c48148, type: 3}
+  m_fileFullPath: Assets/Shared/SomeNewComponent.lua
+  m_error: 0
+  m_yielded: 0
+  m_assetPath: 
+  m_canResume: 0
+  m_asyncYield: 0
+  m_onUpdateHandle: -1
+  m_onLateUpdateHandle: -1
+  m_shortFileName: 
+  m_metadata:
+    name: SomeNewComponent
+    decorators: []
+    properties:
+    - name: test
+      type: boolean
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators: []
+      nullable: 0
+      serializedValue: 1
+      serializedObject: {fileID: 0}
+      modified: 1
+    displayName: 
+  contextOverwritten: 0
+--- !u!4 &259481487
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 259481485}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 34.740364, y: 26.533937, z: 47.214096}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &265294568
 GameObject:
   m_ObjectHideFlags: 0
@@ -1880,7 +1959,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/Shared/Resources/TS/Demo/TopDownBattle/TopDownBattleCameraComponent.lua
+  scriptFile: {fileID: -8528065138938106986, guid: a49fc3d149c186a4ab754dbbb8610c8f, type: 3}
+  m_fileFullPath: Assets/Shared/Demo/TopDownBattle/TopDownBattleCameraComponent.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -5243,7 +5323,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/Shared/Resources/TS/Demo/TopDownBattle/TopDownBattleGame.lua
+  scriptFile: {fileID: 5680736291391239917, guid: 35eb9107fffae9d46b8e6fb6d9692edd, type: 3}
+  m_fileFullPath: Assets/Shared/Demo/TopDownBattle/TopDownBattleGame.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -5316,7 +5397,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/Shared/Resources/TS/Demo/TopDownBattle/TopDownBattlePlayerSpawner.lua
+  scriptFile: {fileID: -8520694619574865156, guid: 42581f7224c1b5b4eb0a37d53798c50e, type: 3}
+  m_fileFullPath: Assets/Shared/Demo/TopDownBattle/TopDownBattlePlayerSpawner.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -5379,7 +5461,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Shared/Resources/TS/Character/CharacterConfigSetup.lua
+  scriptFile: {fileID: 796400153169862170, guid: c4fa48bfb1281a04baca6e795001cd63, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/CharacterConfigSetup.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -5595,7 +5678,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/Shared/Resources/TS/Demo/TopDownBattle/TopDownBattleEnemies/TopDownBattleEnemySpawner.lua
+  scriptFile: {fileID: 249845195452588596, guid: 782b9fd536bd8d04eb950aacefc42775, type: 3}
+  m_fileFullPath: Assets/Shared/Demo/TopDownBattle/TopDownBattleEnemies/TopDownBattleEnemySpawner.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -7427,7 +7511,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/Shared/Resources/TS/Demo/TopDownBattle/TopDownEntryPoint.lua
+  scriptFile: {fileID: 6696786292486268722, guid: d0f3dcb26224c2d48bb56a63dac96b7d, type: 3}
+  m_fileFullPath: Assets/Shared/Demo/TopDownBattle/TopDownEntryPoint.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -7741,7 +7826,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/Shared/Resources/TS/Demo/TopDownBattle/TopDownBattleLevelGenerator.lua
+  scriptFile: {fileID: 5083781811375912070, guid: edec6a6104f64d64ab3a3cf0c5733d93, type: 3}
+  m_fileFullPath: Assets/Shared/Demo/TopDownBattle/TopDownBattleLevelGenerator.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -8708,6 +8794,7 @@ Material:
     - USE_COLOR_MASK: 0
     - USE_SHADOW_COLOR: 0
     - _Alpha: 1
+    - _EmissiveLevel: 0
     - _EmissiveMix: 1
     - _MRSliderOverrideMix: 0
     - _MetalOverride: 0
@@ -10223,3 +10310,4 @@ SceneRoots:
   - {fileID: 1744718879}
   - {fileID: 265294570}
   - {fileID: 517553521}
+  - {fileID: 259481487}

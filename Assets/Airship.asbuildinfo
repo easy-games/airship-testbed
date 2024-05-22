@@ -410,6 +410,11 @@
 			"filePath": "AirshipPackages\\@Easy\\Core\\Shared\\Item\\ItemDefinition\\ItemDefinitionComponent.lua",
 			"extends": []
 		},
+		"SomeNewComponent": {
+			"component": true,
+			"filePath": "Shared\\SomeNewComponent.lua",
+			"extends": []
+		},
 		"CubeSpinner": {
 			"component": true,
 			"filePath": "Shared\\Demo\\TopDownScene\\CubeSpinner.lua",
