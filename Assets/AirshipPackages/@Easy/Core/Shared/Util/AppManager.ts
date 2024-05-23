@@ -36,12 +36,16 @@ export class AppManager {
 		let backgroundGO: GameObject;
 		if (Game.IsGameLuauContext()) {
 			backgroundGO = Object.Instantiate(
-				AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/AppManagerBackground.prefab"),
+				AssetBridge.Instance.LoadAsset(
+					"AirshipPackages/@Easy/Core/Prefabs/Prefabs/AppManagerBackground.prefab",
+				),
 				CoreRefs.rootTransform,
 			);
 		} else {
 			backgroundGO = Object.Instantiate(
-				AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/AppManagerBackground.prefab"),
+				AssetBridge.Instance.LoadAsset(
+					"AirshipPackages/@Easy/Core/Prefabs/Prefabs/AppManagerBackground.prefab",
+				),
 				CoreRefs.protectedTransform,
 			);
 		}
