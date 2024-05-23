@@ -1,8 +1,10 @@
 Shader "Airship/WorldShaderPBR"
 {
-    
     Properties
     {
+        [KeywordEnum(Zero, One, DstColor, SrcColor, OneMinusDstColor, SrcAlpha, OneMinusSrcColor, DstAlpha, OneMinusDstAlpha, SrcAlphaSaturate, OneMinusSrcAlpha)] _SrcBlend("SourceBlend", Float) = 1.0
+        [KeywordEnum(Zero, One, DstColor, SrcColor, OneMinusDstColor, SrcAlpha, OneMinusSrcColor, DstAlpha, OneMinusDstAlpha, SrcAlphaSaturate, OneMinusSrcAlpha)] _DstBlend("DestBlend", Float) = 10.0
+        
         [HDR] _Color("Color", Color) = (1,1,1,1)
  
         [Toggle] EXTRA_FEATURES("Extra features", Float) = 0.0
@@ -10,6 +12,7 @@ Shader "Airship/WorldShaderPBR"
 
         [Enum(No,2,Yes,0)] DOUBLE_SIDED_NORMALS("Two Sided", Int) = 2
 
+        [KeywordEnum(OPAQUE, TRANSPARENTBLEND, TRANSPARENTCUTOUT)] _SurfaceType("Transparency Mode", Float) = 0.0
         _Alpha("Alpha", Float) = 1.0
         [HDR] _SpecularColor("Specular Color", Color) = (1,1,1,1)
         [HDR] _OverrideColor("Override Color", Color) = (1,1,1,1)
@@ -42,8 +45,6 @@ Shader "Airship/WorldShaderPBR"
         [Toggle] INSTANCE_DATA("Has Baked Instance Data", Float) = 0.0
         [Toggle] SHADOWS("Render Shadows", Float) = 1.0
 
-      
-
         //lightmapping
         [HideInInspector][NoScaleOffset]unity_Lightmaps("unity_Lightmaps", 2DArray) = "" {}
         [HideInInspector][NoScaleOffset]unity_LightmapsInd("unity_LightmapsInd", 2DArray) = "" {}
@@ -55,9 +56,10 @@ Shader "Airship/WorldShaderPBR"
         {
             // The value of the LightMode Pass tag must match the ShaderTagId in ScriptableRenderContext.DrawRenderers
             Name "Forward"
-            Tags { "LightMode" = "AirshipForwardPass" "Queue" = "Opaque"}
+            Tags { "LightMode" = "AirshipForwardPass" "Rendertype" = "Opaque"}
 
-            //Blend[_SrcBlend][_DstBlend]
+            Blend 0 [_SrcBlend][_DstBlend]
+            Blend 1 One One
             ZWrite[_ZWrite]
             Cull[DOUBLE_SIDED_NORMALS]
 
@@ -75,7 +77,7 @@ Shader "Airship/WorldShaderPBR"
 			//Local flags, as specified in the material as an asset change
             #pragma multi_compile_local TRIPLANAR_STYLE_OFF TRIPLANAR_STYLE_LOCAL TRIPLANAR_STYLE_WORLD
             #pragma multi_compile_local _ DOUBLE_SIDED_NORMALS 
-        
+            #pragma multi_compile_local _ ALPHA_CUTOUT_ON     
             #pragma multi_compile_local _ EXTRA_FEATURES_ON
 			//#pragma multi_compile_local _ EMISSIVE_ON
 			//#pragma multi_compile_local _ RIM_LIGHT_ON
@@ -86,10 +88,12 @@ Shader "Airship/WorldShaderPBR"
             #pragma multi_compile _ SHADOWS_ON                  //shadows 
             #pragma multi_compile _ INSTANCE_DATA_ON			//batching support
             #pragma multi_compile _ EXPLICIT_MAPS_ON            //Texture atlas, voxelworld 
+            
             #include "AirshipWorldShaderIncludes.hlsl"
                           
             ENDHLSL
         }
+ 
          
         Pass
         {
@@ -199,5 +203,5 @@ Shader "Airship/WorldShaderPBR"
             ENDHLSL
         }
     }
-    
+    CustomEditor "AirshipWorldShaderInspector"
 }
