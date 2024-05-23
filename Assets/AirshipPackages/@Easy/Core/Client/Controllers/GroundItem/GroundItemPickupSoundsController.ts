@@ -1,6 +1,6 @@
 import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
 
-const PICKUP_ITEM_DEFAULT_SOUND = ["@Easy/Core/Shared/Resources/Sound/Pickup_Item.ogg"];
+const PICKUP_ITEM_DEFAULT_SOUND = ["AirshipPackages/@Easy/Core/Sound/Pickup_Item.ogg"];
 
 @Controller({})
 export class GroundItemPickupSoundsController implements OnStart {
@@ -14,9 +14,9 @@ export class GroundItemPickupSoundsController implements OnStart {
 		// 	});
 		// 	// Extra sound layers
 		// 	if (itemMeta.itemType === ItemType.EMERALD) {
-		// 		AudioManager.PlayGlobal("@Easy/Core/Shared/Resources/Sound/PickupItemLayer_Emerald");
+		// 		AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/PickupItemLayer_Emerald");
 		// 	} else if (itemMeta.itemType === ItemType.DIAMOND) {
-		// 		AudioManager.PlayGlobal("@Easy/Core/Shared/Resources/Sound/PickupItemLayer_Diamond");
+		// 		AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/PickupItemLayer_Diamond");
 		// 	}
 		// });
 	}

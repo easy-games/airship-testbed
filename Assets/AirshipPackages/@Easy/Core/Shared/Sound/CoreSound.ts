@@ -1,9 +1,9 @@
-const coreSoundPath = "@Easy/Core/Shared/Resources/Sound/";
+const coreSoundPath = "AirshipPackages/@Easy/Core/Prefabs/Sound/";
 
 /**
  * Shortcut for a Core sound.
  *
- * Passing in "test" will return "@Easy/Core/Shared/Resources/Sound/test"
+ * Passing in "test" will return "AirshipPackages/@Easy/Core/Sound/test"
  */
 export const S = (path: string): string => {
 	return coreSoundPath + path;

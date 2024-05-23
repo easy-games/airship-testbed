@@ -6,7 +6,7 @@
 <!-- if you do not supply the maps, you can specify a constant value directly using <Metallic>0</<Metallic> or <Roughness>1</Roughness> or <Emissive>1</Emissive> etc -->
 
 <Blocks>
-  <RootAssetPath>@Easy/Core/Shared/Resources/VoxelWorld</RootAssetPath>
+  <RootAssetPath>AirshipPackages/@Easy/Core/VoxelWorld</RootAssetPath>
   <Scope>Bedwars</Scope>
 
   <Block>

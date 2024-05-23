@@ -26,8 +26,8 @@ task.spawn(() => {
 });
 
 // const vars: DynamicVariables[] = [
-// 	AssetBridge.Instance.LoadAsset<DynamicVariables>("@Easy/Core/Shared/Resources/DynamicVariables/Combat.asset"),
-// 	AssetBridge.Instance.LoadAsset<DynamicVariables>("@Easy/Core/Shared/Resources/DynamicVariables/Camera.asset"),
+// 	AssetBridge.Instance.LoadAsset<DynamicVariables>("AirshipPackages/@Easy/Core/DynamicVariables/Combat.asset"),
+// 	AssetBridge.Instance.LoadAsset<DynamicVariables>("AirshipPackages/@Easy/Core/DynamicVariables/Camera.asset"),
 // ];
 // for (const dynamicVar of vars) {
 // 	dynamicVar.Register();

@@ -12,12 +12,12 @@ export class CoreUI {
 		},
 	): void {
 		CanvasAPI.OnClickEvent(gameObject, () => {
-			// AudioManager.PlayGlobal("@Easy/Core/Shared/Resources/Sound/UI_Select.wav");
+			// AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/UI_Select.wav");
 		});
 		if (!config?.noHoverSound) {
 			CanvasAPI.OnHoverEvent(gameObject, (hoverState) => {
 				if (hoverState === HoverState.ENTER) {
-					// AudioManager.PlayGlobal("@Easy/Core/Shared/Resources/Sound/UI_Hover_01.wav");
+					// AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/UI_Hover_01.wav");
 				}
 			});
 		}

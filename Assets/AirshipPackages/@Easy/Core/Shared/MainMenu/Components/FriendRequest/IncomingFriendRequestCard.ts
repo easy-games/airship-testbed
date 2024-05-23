@@ -19,7 +19,7 @@ export default class IncomingFriendRequestCard extends AirshipBehaviour {
 		this.user = user;
 		this.usernameText.text = user.username;
 		const texture = AssetBridge.Instance.LoadAssetIfExists<Texture2D>(
-			"@Easy/Core/Shared/Resources/Images/ProfilePictures/Dom.png",
+			"AirshipPackages/@Easy/Core/Images/ProfilePictures/Dom.png",
 		);
 		if (texture !== undefined) {
 			this.profileImage.sprite = Bridge.MakeSprite(texture);

@@ -1,23 +1,23 @@
-import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 import { CoreSound } from "@Easy/Core/Shared/Sound/CoreSound";
+import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 import { PhysicsUtil } from "@Easy/Core/Shared/Util/PhysicsUtil";
 import { AllBundleItems } from "../Util/ReferenceManagerResources";
 import { ArmorType } from "./ArmorType";
 import { CoreItemType } from "./CoreItemType";
 import { BlockArchetype, HoldConfig, ItemDef, UsableHeldItemDef } from "./ItemDefinitionTypes";
 
-const coreSoundPath = "@Easy/Core/Shared/Resources/Sound/";
+const coreSoundPath = "AirshipPackages/@Easy/Core/Sound/";
 const CoreAnim = (...p: string[]) => {
 	return p.map((s) => {
 		if (s === "none") {
 			return "none";
 		}
-		return `@Easy/Core/Shared/Resources/Character/Animations/${s}.anim`;
+		return `AirshipPackages/@Easy/Core/Character/Animations/${s}.anim`;
 	});
 };
 
 const GroundItemPrefab = (s: string) => {
-	return `@Easy/Core/Shared/Resources/Prefabs/GroundItems/${s}.prefab`;
+	return `AirshipPackages/@Easy/Core/Prefabs/GroundItems/${s}.prefab`;
 };
 
 const defaultGravity = PhysicsUtil.gravity;
@@ -771,13 +771,13 @@ export const CoreItemDefinitions: {
 	// 		projectileHitLayerMask: LayerUtil.GetLayerMask([Layer.DEFAULT, Layer.BLOCK, Layer.CHARACTER]),
 	// 		onHitEntitySound: [
 	// 			{
-	// 				path: "@Easy/Core/Shared/Resources/Sound/Items/Projectiles/BowArrowHitSuccess",
+	// 				path: "AirshipPackages/@Easy/Core/Sound/Items/Projectiles/BowArrowHitSuccess",
 	// 				volumeScale: 0.5,
 	// 			},
 	// 		],
 	// 		onHitGroundSound: [
 	// 			{
-	// 				path: "@Easy/Core/Shared/Resources/Sound/Items/Projectiles/BowArrowHitFail",
+	// 				path: "AirshipPackages/@Easy/Core/Sound/Items/Projectiles/BowArrowHitFail",
 	// 				volumeScale: 0.7,
 	// 				maxDistance: 50,
 	// 			},
@@ -794,7 +794,7 @@ export const CoreItemDefinitions: {
 	// 		minChargeSeconds: 0.05,
 	// 		maxChargeSeconds: 0.4,
 	// 		cooldownSeconds: 0.25,
-	// 		onUseSound: ["@Easy/Core/Shared/Resources/Sound/TelepearlThrow"],
+	// 		onUseSound: ["AirshipPackages/@Easy/Core/Sound/TelepearlThrow"],
 	// 		onUseAnimViewmodel: CoreAnim("FP_Generic_Charge", "FP_Generic_Throw"),
 	// 		onUseAnimWorldmodel: CoreAnim("TP_Generic_Charge", "TP_Generic_Throw"),
 	// 	},
@@ -846,13 +846,13 @@ export const CoreItemDefinitions: {
 	// 			damage: 20,
 	// 			extraDamage: 20,
 	// 			extraDamageBlockArchetype: BlockArchetype.WOOD,
-	// 			onHitPrefabPath: "@Easy/Core/Shared/Resources/Prefabs/VFX/Blocks/OnBlockHitFireVFX.prefab",
+	// 			onHitPrefabPath: "AirshipPackages/@Easy/Core/Prefabs/VFX/Blocks/OnBlockHitFireVFX.prefab",
 	// 		},
 	// 		gravity: defaultGravity * 0.2,
 	// 		projectileHitLayerMask: LayerUtil.GetLayerMask([Layer.DEFAULT, Layer.BLOCK, Layer.CHARACTER]),
 	// 		// onHitGroundSound: [
 	// 		// 	{
-	// 		// 		path: "@Easy/Core/Shared/Resources/Sound/Items/Projectiles/Fireball_Explosion",
+	// 		// 		path: "AirshipPackages/@Easy/Core/Sound/Items/Projectiles/Fireball_Explosion",
 	// 		// 		volumeScale: 0.8,
 	// 		// 		rollOffMode: AudioRolloffMode.Logarithmic,
 	// 		// 		maxDistance: 700,
@@ -927,6 +927,6 @@ for (const itemType of ObjectUtils.keys(CoreItemDefinitions)) {
 	const itemDef = CoreItemDefinitions[itemType];
 	if (!itemDef.image) {
 		const [_, id] = ItemTypeComponentsInternal(itemType as string);
-		itemDef.image = `@Easy/Core/Shared/Resources/ItemRenders/${id.lower()}.png`;
+		itemDef.image = `AirshipPackages/@Easy/Core/ItemRenders/${id.lower()}.png`;
 	}
 }
