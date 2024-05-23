@@ -5,6 +5,6 @@ ScriptedImporter:
   externalObjects: {}
   serializedVersion: 2
   userData: 
-  assetBundleName: 
+  assetBundleName: '@easy/core_shared/resources'
   assetBundleVariant: 
   script: {fileID: 11500000, guid: 724eab6530215ec42938eedf5e35fbe9, type: 3}
