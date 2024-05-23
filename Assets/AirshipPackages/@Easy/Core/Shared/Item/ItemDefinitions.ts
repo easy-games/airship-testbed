@@ -138,7 +138,19 @@ export function ItemTypeComponentsInternal(itemType: string): [scope: string, id
 function AccPath(itemType: CoreItemType, localPath = "", itemName: string | undefined = undefined): string {
 	const [scope, itemId] = ItemTypeComponentsInternal(itemType);
 
-	return scope + "/Shared/Resources/Accessories/" + localPath + "/" + (itemName ?? itemId.lower()) + ".prefab";
+	if (scope === "") {
+		return "Assets/Resources/Accessories/" + localPath + "/" + (itemName ?? itemId.lower()) + ".prefab";
+	} else {
+		return (
+			"Assets/AirshipPackages/" +
+			scope +
+			"/Accessories/" +
+			localPath +
+			"/" +
+			(itemName ?? itemId.lower()) +
+			".prefab"
+		);
+	}
 }
 
 export const CoreItemDefinitions: {

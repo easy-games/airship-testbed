@@ -21,16 +21,6 @@ export default class DemoManager extends AirshipBehaviour {
 	public cubePrefab!: GameObject;
 
 	override Start(): void {
-		ItemUtil.RegisterItem("sniper", {
-			displayName: "Sniper",
-			accessoryPaths: ["Shared/Resources/Items/Sniper.prefab"],
-			holdConfig: {
-				viewmodel: {
-					idleAnim: ["Shared/Resources/Items/ScopedAKADSLoop.anim"],
-				},
-			},
-		});
-
 		Airship.input.CreateAction("interact", Binding.Key(Key.F));
 
 		ItemUtil.RegisterItem("WoodSword", {
@@ -44,25 +34,25 @@ export default class DemoManager extends AirshipBehaviour {
 				canHoldToUse: false,
 				onUseSound: [
 					//"Shared/Resources/Sound/s_Sword_Swing_Wood_01.wav",
-					"Shared/Resources/Sound/s_Sword_Swing_Wood_02.wav",
-					"Shared/Resources/Sound/s_Sword_Swing_Wood_03.wav",
-					"Shared/Resources/Sound/s_Sword_Swing_Wood_04.wav",
+					"Assets/Resources/Sound/s_Sword_Swing_Wood_02.wav",
+					"Assets/Resources/Sound/s_Sword_Swing_Wood_03.wav",
+					"Assets/Resources/Sound/s_Sword_Swing_Wood_04.wav",
 				],
 				onUseSoundVolume: 0.3,
 			},
-			accessoryPaths: ["Shared/Resources/Accessories/Weapons/Swords/WoodSword/wood_sword.prefab"],
-			image: "Shared/Resources/ItemRenders/wood_sword.png",
+			accessoryPaths: ["Assets/Resources/Accessories/Weapons/Swords/WoodSword/wood_sword.prefab"],
+			image: "Assets/Resources/ItemRenders/wood_sword.png",
 			melee: {
 				instantDamage: true,
 				// hitDelay: 0.1345,
-				onHitPrefabPath: "Shared/Resources/Yos/Prefab/SwordHitVFX.prefab",
+				onHitPrefabPath: "Assets/Resources/Yos/Prefab/SwordHitVFX.prefab",
 				onUseVFX: [
-					"Shared/Resources/Yos/Prefab/SwordSwingVFX01.prefab",
-					"Shared/Resources/Yos/Prefab/SwordSwingVFX02.prefab",
+					"Assets/Resources/Yos/Prefab/SwordSwingVFX01.prefab",
+					"Assets/Resources/Yos/Prefab/SwordSwingVFX02.prefab",
 				],
 				onUseVFX_FP: [
-					"Shared/Resources/Yos/Prefab/SwordSwingVFX_FP01.prefab",
-					"Shared/Resources/Yos/Prefab/SwordSwingVFX_FP02.prefab",
+					"Assets/Resources/Yos/Prefab/SwordSwingVFX_FP01.prefab",
+					"Assets/Resources/Yos/Prefab/SwordSwingVFX_FP02.prefab",
 				],
 				canHitMultipleTargets: false,
 				damageType: DamageType.SWORD,

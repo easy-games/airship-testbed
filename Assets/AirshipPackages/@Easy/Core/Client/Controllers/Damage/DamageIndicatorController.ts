@@ -39,12 +39,10 @@ export class DamageIndicatorController implements OnStart {
 
 	OnStart(): void {
 		// this.damageIndicatorObject = AssetBridge.Instance.LoadAsset("Client/Resources/Prefabs/DamageIndicator.prefab");
-		this.hitMarkerAudioClip = AssetBridge.Instance.LoadAsset(
-			"AirshipPackages/@Easy/Core/Prefabs/Sound/Hit_Health.ogg",
-		);
+		this.hitMarkerAudioClip = AssetBridge.Instance.LoadAsset("AirshipPackages/@Easy/Core/Sound/Hit_Health.ogg");
 		this.criticalHitAudioClips = [
-			AssetBridge.Instance.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/Sound/Drone_Damage_01.ogg"),
-			AssetBridge.Instance.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/Sound/Drone_Damage_02.ogg"),
+			AssetBridge.Instance.LoadAsset("AirshipPackages/@Easy/Core/Sound/Drone_Damage_01.ogg"),
+			AssetBridge.Instance.LoadAsset("AirshipPackages/@Easy/Core/Sound/Drone_Damage_02.ogg"),
 		];
 
 		Airship.damage.onDamage.Connect((event) => {
@@ -58,7 +56,7 @@ export class DamageIndicatorController implements OnStart {
 
 			// Damage taken sound
 			AudioManager.PlayAtPosition(
-				"AirshipPackages/@Easy/Core/Prefabs/Sound/Damage_Taken.wav",
+				"AirshipPackages/@Easy/Core/Sound/Damage_Taken.wav",
 				character.model.transform.position,
 				{
 					maxDistance: 50,

@@ -1,4 +1,4 @@
-const coreSoundPath = "AirshipPackages/@Easy/Core/Prefabs/Sound/";
+const coreSoundPath = "AirshipPackages/@Easy/Core/Sound/";
 
 /**
  * Shortcut for a Core sound.
