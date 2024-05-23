@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.104915336, g: 0.08391523, b: 0.03682275, a: 1}
+  m_IndirectSpecularColor: {r: 0.0031799423, g: 0.0022276547, b: 0.0004939648, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -170,7 +170,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &23916085
 MeshRenderer:
@@ -850,7 +849,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &77746379
 MeshRenderer:
@@ -976,7 +974,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &79557853
 MeshRenderer:
@@ -2167,7 +2164,6 @@ MonoBehaviour:
   - materialColor: {r: 0.8867924, g: 0.8867924, b: 0.8867924, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &124900563
 MeshRenderer:
@@ -2293,7 +2289,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &125159981
 MeshRenderer:
@@ -2398,7 +2393,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &129956928
 MeshRenderer:
@@ -2980,7 +2974,7 @@ Transform:
   m_GameObject: {fileID: 162433958}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.82, y: 1.61, z: 13.49}
+  m_LocalPosition: {x: -1.82, y: 2.17, z: 13.49}
   m_LocalScale: {x: 3, y: 0.3243244, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3023,7 +3017,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &162433962
 MeshRenderer:
@@ -3128,7 +3121,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &171991934
 MeshRenderer:
@@ -3424,7 +3416,6 @@ MonoBehaviour:
   - materialColor: {r: 0.6037736, g: 0.6037736, b: 0.6037736, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &195832288
 MeshRenderer:
@@ -3586,7 +3577,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &207208533
 MeshRenderer:
@@ -4082,7 +4072,6 @@ MonoBehaviour:
   - materialColor: {r: 0.4716981, g: 0.4716981, b: 0.4716981, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &245874722
 MeshRenderer:
@@ -4237,7 +4226,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &268091390
 MeshRenderer:
@@ -4363,7 +4351,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &273736235
 MeshRenderer:
@@ -4510,7 +4497,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &277750004
 MeshRenderer:
@@ -4957,7 +4943,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &305596853
 MeshRenderer:
@@ -5083,7 +5068,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &308947541
 MeshRenderer:
@@ -5464,6 +5448,131 @@ Material:
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
+--- !u!1 &393119152
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 393119153}
+  - component: {fileID: 393119157}
+  - component: {fileID: 393119156}
+  - component: {fileID: 393119155}
+  - component: {fileID: 393119154}
+  m_Layer: 0
+  m_Name: AirshipCube (13)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 1
+  m_IsActive: 1
+--- !u!4 &393119153
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 393119152}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -4.22, y: 1.62, z: 11.02}
+  m_LocalScale: {x: 3, y: 0.3243244, z: 3}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1772512299}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &393119154
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 393119152}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0.5, z: -0.000000029802322}
+--- !u!114 &393119155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 393119152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - materialColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveMix: 1
+  addedByEditorScript: 0
+--- !u!23 &393119156
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 393119152}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 16c9aa28b6820e4458962092cb733832, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &393119157
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 393119152}
+  m_Mesh: {fileID: -5495902117074765545, guid: bdf2babf7a223774cae5f80a52733f88, type: 3}
 --- !u!1 &400480273
 GameObject:
   m_ObjectHideFlags: 0
@@ -5515,7 +5624,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &400480276
 MeshRenderer:
@@ -5662,7 +5770,6 @@ MonoBehaviour:
   - materialColor: {r: 0.2830189, g: 0.2830189, b: 0.2830189, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &403918314
 MeshRenderer:
@@ -6178,7 +6285,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &441541587
 MeshRenderer:
@@ -6304,7 +6410,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &455003651
 MeshRenderer:
@@ -6430,7 +6535,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &455171596
 MeshRenderer:
@@ -6577,7 +6681,6 @@ MonoBehaviour:
   - materialColor: {r: 0.4716981, g: 0.4716981, b: 0.4716981, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &480807053
 MeshRenderer:
@@ -6682,7 +6785,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &489032652
 MeshRenderer:
@@ -6808,7 +6910,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &501176650
 MeshRenderer:
@@ -6934,7 +7035,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &515533086
 MeshRenderer:
@@ -7060,7 +7160,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &520451397
 MeshRenderer:
@@ -7392,7 +7491,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &541849415
 MeshRenderer:
@@ -7518,7 +7616,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &558842861
 MeshRenderer:
@@ -8014,7 +8111,6 @@ MonoBehaviour:
   - materialColor: {r: 0.8867924, g: 0.8867924, b: 0.8867924, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &621911286
 MeshRenderer:
@@ -8140,7 +8236,6 @@ MonoBehaviour:
   - materialColor: {r: 0.8867924, g: 0.8867924, b: 0.8867924, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &630189114
 MeshRenderer:
@@ -8704,7 +8799,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &741594135
 MeshRenderer:
@@ -8830,7 +8924,6 @@ MonoBehaviour:
   - materialColor: {r: 0.8867924, g: 0.8867924, b: 0.8867924, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &744919525
 MeshRenderer:
@@ -8987,7 +9080,6 @@ MonoBehaviour:
   - materialColor: {r: 0.8862745, g: 0.8862745, b: 0.8862745, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &751821623
 MeshRenderer:
@@ -9521,7 +9613,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &778894162
 MeshRenderer:
@@ -9647,7 +9738,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &780523962
 MeshRenderer:
@@ -10189,7 +10279,6 @@ MonoBehaviour:
   - materialColor: {r: 0.8867924, g: 0.8867924, b: 0.8867924, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &795231907
 MeshRenderer:
@@ -10315,7 +10404,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &837293360
 MeshRenderer:
@@ -10441,7 +10529,6 @@ MonoBehaviour:
   - materialColor: {r: 0.4716981, g: 0.4716981, b: 0.4716981, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &843296930
 MeshRenderer:
@@ -10921,7 +11008,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &897655173
 MeshRenderer:
@@ -11502,7 +11588,6 @@ MonoBehaviour:
   - materialColor: {r: 0.8867924, g: 0.8867924, b: 0.8867924, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &962990295
 MeshRenderer:
@@ -11607,7 +11692,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &1000020167
 MeshRenderer:
@@ -11939,7 +12023,6 @@ MonoBehaviour:
   - materialColor: {r: 0.7411765, g: 0.8, b: 0.6313726, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &1059439568
 MeshRenderer:
@@ -12258,7 +12341,6 @@ MonoBehaviour:
   - materialColor: {r: 0.6037736, g: 0.6037736, b: 0.6037736, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &1076615816
 MeshRenderer:
@@ -12363,7 +12445,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &1077172792
 MeshRenderer:
@@ -12550,7 +12631,6 @@ MonoBehaviour:
   - materialColor: {r: 0.8867924, g: 0.8867924, b: 0.8867924, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &1082431085
 MeshRenderer:
@@ -12676,7 +12756,6 @@ MonoBehaviour:
   - materialColor: {r: 0.6037736, g: 0.6037736, b: 0.6037736, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &1084711601
 MeshRenderer:
@@ -13035,7 +13114,6 @@ MonoBehaviour:
   - materialColor: {r: 0.8867924, g: 0.8867924, b: 0.8867924, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &1136415314
 MeshRenderer:
@@ -14225,7 +14303,6 @@ MonoBehaviour:
   - materialColor: {r: 0.6037736, g: 0.6037736, b: 0.6037736, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &1251695102
 MeshRenderer:
@@ -14351,7 +14428,6 @@ MonoBehaviour:
   - materialColor: {r: 0.8867924, g: 0.8867924, b: 0.8867924, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &1274085142
 MeshRenderer:
@@ -14759,7 +14835,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &1296224644
 MeshRenderer:
@@ -14891,7 +14966,6 @@ MonoBehaviour:
   - materialColor: {r: 0.31132078, g: 0.29516736, b: 0.29516736, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &1296549501
 MeshRenderer:
@@ -15415,7 +15489,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &1335079110
 MeshRenderer:
@@ -15562,7 +15635,6 @@ MonoBehaviour:
   - materialColor: {r: 0.8867924, g: 0.8867924, b: 0.8867924, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &1336453815
 MeshRenderer:
@@ -15667,7 +15739,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &1337574330
 MeshRenderer:
@@ -15793,7 +15864,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &1363283697
 MeshRenderer:
@@ -16125,7 +16195,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &1391801539
 MeshRenderer:
@@ -16263,7 +16332,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &1429122961
 MeshRenderer:
@@ -16389,7 +16457,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &1432784128
 MeshRenderer:
@@ -16906,7 +16973,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &1442539562
 MeshRenderer:
@@ -17032,7 +17098,6 @@ MonoBehaviour:
   - materialColor: {r: 0.6037736, g: 0.6037736, b: 0.6037736, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &1491209859
 MeshRenderer:
@@ -17343,7 +17408,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &1513689296
 MeshRenderer:
@@ -17690,7 +17754,6 @@ MonoBehaviour:
   - materialColor: {r: 0.8867924, g: 0.8867924, b: 0.8867924, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &1534355396
 MeshRenderer:
@@ -18186,7 +18249,6 @@ MonoBehaviour:
   - materialColor: {r: 0.8867924, g: 0.8867924, b: 0.8867924, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &1584641445
 MeshRenderer:
@@ -18312,7 +18374,6 @@ MonoBehaviour:
   - materialColor: {r: 0.7411765, g: 0.8, b: 0.6313726, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &1591683287
 MeshRenderer:
@@ -18667,7 +18728,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &1645557102
 MeshRenderer:
@@ -19199,7 +19259,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &1666197639
 MeshRenderer:
@@ -19346,7 +19405,6 @@ MonoBehaviour:
   - materialColor: {r: 0.7411765, g: 0.8, b: 0.6313726, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &1671572890
 MeshRenderer:
@@ -19451,7 +19509,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &1673174992
 MeshRenderer:
@@ -20178,7 +20235,6 @@ MonoBehaviour:
   - materialColor: {r: 0.4716981, g: 0.4716981, b: 0.4716981, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &1740862560
 MeshRenderer:
@@ -20304,7 +20360,6 @@ MonoBehaviour:
   - materialColor: {r: 0.6037736, g: 0.6037736, b: 0.6037736, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &1753803628
 MeshRenderer:
@@ -20671,6 +20726,7 @@ Transform:
   - {fileID: 2086557365}
   - {fileID: 1513689293}
   - {fileID: 162433959}
+  - {fileID: 393119153}
   - {fileID: 1280209992}
   - {fileID: 308947538}
   - {fileID: 1391801536}
@@ -21212,7 +21268,6 @@ MonoBehaviour:
   - materialColor: {r: 0.6132076, g: 0.6132076, b: 0.6132076, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &1791340865
 MeshRenderer:
@@ -21523,7 +21578,6 @@ MonoBehaviour:
   - materialColor: {r: 0.8867924, g: 0.8867924, b: 0.8867924, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &1793306827
 MeshRenderer:
@@ -22204,7 +22258,6 @@ MonoBehaviour:
   - materialColor: {r: 0.4716981, g: 0.4716981, b: 0.4716981, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &1831026334
 MeshRenderer:
@@ -22315,7 +22368,6 @@ MonoBehaviour:
   - materialColor: {r: 0.8679245, g: 0.7158623, b: 0.6018156, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &1842015550
 MeshRenderer:
@@ -22620,7 +22672,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &1876442431
 MeshRenderer:
@@ -22746,7 +22797,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &1884389376
 MeshRenderer:
@@ -22872,7 +22922,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &1899006362
 MeshRenderer:
@@ -23349,7 +23398,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &1960490419
 MeshRenderer:
@@ -23512,7 +23560,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &1965611579
 MeshRenderer:
@@ -23844,7 +23891,6 @@ MonoBehaviour:
   - materialColor: {r: 0.7411765, g: 0.8, b: 0.6313726, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &1995043023
 MeshRenderer:
@@ -23970,7 +24016,6 @@ MonoBehaviour:
   - materialColor: {r: 0.6037736, g: 0.6037736, b: 0.6037736, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &1998485603
 MeshRenderer:
@@ -24281,7 +24326,6 @@ MonoBehaviour:
   - materialColor: {r: 0.4716981, g: 0.4716981, b: 0.4716981, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &2005952897
 MeshRenderer:
@@ -24386,7 +24430,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &2014237520
 MeshRenderer:
@@ -24718,7 +24761,6 @@ MonoBehaviour:
   - materialColor: {r: 0.8867924, g: 0.8867924, b: 0.8867924, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &2054911207
 MeshRenderer:
@@ -25246,7 +25288,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &2086557368
 MeshRenderer:
@@ -25351,7 +25392,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &2092793102
 MeshRenderer:
@@ -25477,7 +25517,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!23 &2100969446
 MeshRenderer:
