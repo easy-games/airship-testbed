@@ -127,6 +127,7 @@ MonoBehaviour:
   - materialColor: {r: 0.8509804, g: 0.61960787, b: 0.44705883, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
+    emissiveLevel: 0
   addedByEditorScript: 1
 --- !u!1 &1611444276698400702
 GameObject:
@@ -5343,7 +5344,7 @@ MeshCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3994489106181738915}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 160d101a02c657f47b6905e440ea7370, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -5843,6 +5844,7 @@ MonoBehaviour:
   - materialColor: {r: 0.8509804, g: 0.61960787, b: 0.44705883, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
+    emissiveLevel: 0
   addedByEditorScript: 1
 --- !u!1 &7387929036933538088
 GameObject:
@@ -5981,6 +5983,7 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
+    emissiveLevel: 0
   addedByEditorScript: 1
 --- !u!1 &8616685848737228372
 GameObject:
