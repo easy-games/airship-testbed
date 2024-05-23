@@ -6304,6 +6304,7 @@ MonoBehaviour:
   minSlopeDelta: 0.1
   maxSlopeDelta: 0.3
   maxStepUpHeight: 0.5
+  stepUpDelta: 0.25
   airDensity: 0.1
   drag: 30
 --- !u!114 &903796914586745664
