@@ -11,9 +11,7 @@ Material:
   m_Shader: {fileID: 4800000, guid: b29034c43a22c0941a7719fc0861f1a0, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords:
-  - SLIDER_OVERRIDE_ON
-  - TRIPLANAR_STYLE_OFF
+  m_ValidKeywords: []
   m_InvalidKeywords:
   - METAL_ON_ON
   - NUM_LIGHTS_LIGHTS0
@@ -23,6 +21,8 @@ Material:
   - POINT_FILTER_ON
   - POINT_FILTER_ON_ON
   - SLIDER_OVERRIDE
+  - SLIDER_OVERRIDE_ON
+  - TRIPLANAR_STYLE_OFF
   - _DSTBLEND_ONEMINUSSRCALPHA
   - _LIGHTS_LIGHTS0
   - _SRCBLEND_SRCALPHA
