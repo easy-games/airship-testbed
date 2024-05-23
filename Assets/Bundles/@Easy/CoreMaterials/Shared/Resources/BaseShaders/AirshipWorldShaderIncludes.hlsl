@@ -383,7 +383,12 @@
         worldNormal.z = dot(input.tspace2, textureNormal);
     #endif
         alpha = texSample.a * _Alpha;
-
+#ifdef ALPHA_CUTOUT_ON
+        if (alpha < 0.5) {
+            discard;
+        }
+#endif
+        
         worldNormal = normalize(worldNormal); //Normalize?
 #ifdef DOUBLE_SIDED_NORMALS
         worldNormal *= IS_FRONT_VFACE(worldNormal, 1, -1);

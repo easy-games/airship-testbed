@@ -608,6 +608,15 @@ declare const enum AutoPackType {
     Packed = 1,
     PackedLess = 2,
 }
+declare const enum RotationOrder {
+    XYZ = 0,
+    XZY = 1,
+    YXZ = 2,
+    YZX = 3,
+    ZXY = 4,
+    Default = 4,
+    ZYX = 5,
+}
 declare const enum RemoteTimeoutType {
     Disabled = 0,
     Release = 1,
@@ -691,6 +700,21 @@ declare const enum DataSource {
 declare const enum DataOrderType {
     Default = 0,
     Last = 1,
+}
+declare const enum TransformPropertiesFlag {
+    Unset = 0,
+    Position = 1,
+    Rotation = 2,
+    LocalScale = 4,
+    Everything = 255,
+}
+declare const enum AdaptiveInterpolationType {
+    Off = 0,
+    VeryLow = 1,
+    Low = 2,
+    Medium = 3,
+    High = 4,
+    VeryHigh = 5,
 }
 declare const enum RigidbodyType {
     Rigidbody = 0,
@@ -6555,7 +6579,15 @@ interface ServerManager extends MonoBehaviour {
 
 }
     
-interface NetworkConnection {
+interface IResettable {
+
+
+    InitializeState(): void;
+    ResetState(): void;
+
+}
+    
+interface NetworkConnection extends IResettable {
     ClientId: number;
     Objects: CSArray<NetworkObject>;
     CustomData: unknown;
@@ -6582,10 +6614,12 @@ interface NetworkConnection {
     Equals(nc: NetworkConnection): boolean;
     GetAddress(): string;
     GetHashCode(): number;
+    InitializeState(): void;
     Kick(kickReason: KickReason, loggingType: LoggingType, log: string): void;
     Kick(reader: Reader, kickReason: KickReason, loggingType: LoggingType, log: string): void;
     LoadedStartScenes(): boolean;
     LoadedStartScenes(asServer: boolean): boolean;
+    ResetState(): void;
     SetFirstObject(nob: NetworkObject): void;
     ToString(): string;
 
@@ -6727,6 +6761,7 @@ interface NetworkBehaviour extends MonoBehaviour {
 interface ClientManager extends MonoBehaviour {
     Connection: NetworkConnection;
     Clients: CSDictionary<number, NetworkConnection>;
+    IsServerDevelopment: boolean;
     Started: boolean;
     Objects: ClientObjects;
     NetworkManager: NetworkManager;
@@ -6790,6 +6825,18 @@ interface Writer {
     WriteArray<T>(value: CSArray<T>): void;
     WriteArraySegment(value: CSArray<number>): void;
     WriteArraySegmentAndSize(value: CSArray<number>): void;
+    Writebool2(value: bool2): void;
+    Writebool2x2(value: bool2x2): void;
+    Writebool2x3(value: bool2x3): void;
+    Writebool2x4(value: bool2x4): void;
+    Writebool3(value: bool3): void;
+    Writebool3x2(value: bool3x2): void;
+    Writebool3x3(value: bool3x3): void;
+    Writebool3x4(value: bool3x4): void;
+    Writebool4(value: bool4): void;
+    Writebool4x2(value: bool4x2): void;
+    Writebool4x3(value: bool4x3): void;
+    Writebool4x4(value: bool4x4): void;
     WriteBoolean(value: boolean): void;
     WriteByte(value: number): void;
     WriteBytes(value: CSArray<number>, offset: number, count: number): void;
@@ -6803,10 +6850,50 @@ interface Writer {
     WriteDecimal(value: number): void;
     WriteDictionary<TKey, TValue>(dict: CSDictionary<TKey, TValue>): void;
     WriteDouble(value: number): void;
+    Writedouble2(value: double2): void;
+    Writedouble2x2(value: double2x2): void;
+    Writedouble2x3(value: double2x3): void;
+    Writedouble2x4(value: double2x4): void;
+    Writedouble3(value: double3): void;
+    Writedouble3x2(value: double3x2): void;
+    Writedouble3x3(value: double3x3): void;
+    Writedouble3x4(value: double3x4): void;
+    Writedouble4(value: double4): void;
+    Writedouble4x2(value: double4x2): void;
+    Writedouble4x3(value: double4x3): void;
+    Writedouble4x4(value: double4x4): void;
+    Writefloat2(value: float2): void;
+    Writefloat2x2(value: float2x2): void;
+    Writefloat2x3(value: float2x3): void;
+    Writefloat2x4(value: float2x4): void;
+    Writefloat3(value: float3): void;
+    Writefloat3x2(value: float3x2): void;
+    Writefloat3x3(value: float3x3): void;
+    Writefloat3x4(value: float3x4): void;
+    Writefloat4(value: float4): void;
+    Writefloat4x2(value: float4x2): void;
+    Writefloat4x3(value: float4x3): void;
+    Writefloat4x4(value: float4x4): void;
     WriteGameObject(go: GameObject): void;
     WriteGuidAllocated(value: unknown): void;
+    Writehalf(value: half): void;
+    Writehalf2(value: half2): void;
+    Writehalf3(value: half3): void;
+    Writehalf4(value: half4): void;
     WriteInt16(value: number, packType: AutoPackType): void;
+    Writeint2(value: int2): void;
+    Writeint2x2(value: int2x2): void;
+    Writeint2x3(value: int2x3): void;
+    Writeint2x4(value: int2x4): void;
+    Writeint3(value: int3): void;
     WriteInt32(value: number, packType: AutoPackType): void;
+    Writeint3x2(value: int3x2): void;
+    Writeint3x3(value: int3x3): void;
+    Writeint3x4(value: int3x4): void;
+    Writeint4(value: int4): void;
+    Writeint4x2(value: int4x2): void;
+    Writeint4x3(value: int4x3): void;
+    Writeint4x4(value: int4x4): void;
     WriteInt64(value: number, packType: AutoPackType): void;
     WriteLayerMask(value: LayerMask): void;
     WriteList<T>(value: CSArray<T>): void;
@@ -6822,17 +6909,32 @@ interface Writer {
     WriteNetworkObjectId(objectId: number): void;
     WritePackedWhole(value: number): void;
     WritePlane(value: Plane): void;
+    Writequaternion(value: quaternion): void;
     WriteQuaternion(value: Quaternion, packType: AutoPackType): void;
+    Writerandom(random: Random): void;
     WriteRay(value: Ray): void;
     WriteRay2D(value: Ray2D): void;
     WriteRect(value: Rect): void;
+    WriteRigidTransform(value: RigidTransform): void;
     WriteSByte(value: number): void;
     WriteSingle(value: number, packType: AutoPackType): void;
     WriteString(value: string): void;
     WriteTickUnpacked(value: number): void;
     WriteTransform(t: Transform): void;
     WriteUInt16(value: number, packType: AutoPackType): void;
+    Writeuint2(value: uint2): void;
+    Writeuint2x2(value: uint2x2): void;
+    Writeuint2x3(value: uint2x3): void;
+    Writeuint2x4(value: uint2x4): void;
+    Writeuint3(value: uint3): void;
     WriteUInt32(value: number, packType: AutoPackType): void;
+    Writeuint3x2(value: uint3x2): void;
+    Writeuint3x3(value: uint3x3): void;
+    Writeuint3x4(value: uint3x4): void;
+    Writeuint4(value: uint4): void;
+    Writeuint4x2(value: uint4x2): void;
+    Writeuint4x3(value: uint4x3): void;
+    Writeuint4x4(value: uint4x4): void;
     WriteUInt64(value: number, packType: AutoPackType): void;
     WriteUnpacked<T>(value: T): void;
     WriteVector2(value: Vector2): void;
@@ -6843,6 +6945,4870 @@ interface Writer {
     ZigZagEncode(value: number): number;
 
 }
+    
+interface bool2 {
+    x: boolean;
+    y: boolean;
+    xxxx: bool4;
+    xxxy: bool4;
+    xxyx: bool4;
+    xxyy: bool4;
+    xyxx: bool4;
+    xyxy: bool4;
+    xyyx: bool4;
+    xyyy: bool4;
+    yxxx: bool4;
+    yxxy: bool4;
+    yxyx: bool4;
+    yxyy: bool4;
+    yyxx: bool4;
+    yyxy: bool4;
+    yyyx: bool4;
+    yyyy: bool4;
+    xxx: bool3;
+    xxy: bool3;
+    xyx: bool3;
+    xyy: bool3;
+    yxx: bool3;
+    yxy: bool3;
+    yyx: bool3;
+    yyy: bool3;
+    xx: bool2;
+    xy: bool2;
+    yx: bool2;
+    yy: bool2;
+    Item: boolean;
+
+
+    Equals(rhs: bool2): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface bool4 {
+    x: boolean;
+    y: boolean;
+    z: boolean;
+    w: boolean;
+    xxxx: bool4;
+    xxxy: bool4;
+    xxxz: bool4;
+    xxxw: bool4;
+    xxyx: bool4;
+    xxyy: bool4;
+    xxyz: bool4;
+    xxyw: bool4;
+    xxzx: bool4;
+    xxzy: bool4;
+    xxzz: bool4;
+    xxzw: bool4;
+    xxwx: bool4;
+    xxwy: bool4;
+    xxwz: bool4;
+    xxww: bool4;
+    xyxx: bool4;
+    xyxy: bool4;
+    xyxz: bool4;
+    xyxw: bool4;
+    xyyx: bool4;
+    xyyy: bool4;
+    xyyz: bool4;
+    xyyw: bool4;
+    xyzx: bool4;
+    xyzy: bool4;
+    xyzz: bool4;
+    xyzw: bool4;
+    xywx: bool4;
+    xywy: bool4;
+    xywz: bool4;
+    xyww: bool4;
+    xzxx: bool4;
+    xzxy: bool4;
+    xzxz: bool4;
+    xzxw: bool4;
+    xzyx: bool4;
+    xzyy: bool4;
+    xzyz: bool4;
+    xzyw: bool4;
+    xzzx: bool4;
+    xzzy: bool4;
+    xzzz: bool4;
+    xzzw: bool4;
+    xzwx: bool4;
+    xzwy: bool4;
+    xzwz: bool4;
+    xzww: bool4;
+    xwxx: bool4;
+    xwxy: bool4;
+    xwxz: bool4;
+    xwxw: bool4;
+    xwyx: bool4;
+    xwyy: bool4;
+    xwyz: bool4;
+    xwyw: bool4;
+    xwzx: bool4;
+    xwzy: bool4;
+    xwzz: bool4;
+    xwzw: bool4;
+    xwwx: bool4;
+    xwwy: bool4;
+    xwwz: bool4;
+    xwww: bool4;
+    yxxx: bool4;
+    yxxy: bool4;
+    yxxz: bool4;
+    yxxw: bool4;
+    yxyx: bool4;
+    yxyy: bool4;
+    yxyz: bool4;
+    yxyw: bool4;
+    yxzx: bool4;
+    yxzy: bool4;
+    yxzz: bool4;
+    yxzw: bool4;
+    yxwx: bool4;
+    yxwy: bool4;
+    yxwz: bool4;
+    yxww: bool4;
+    yyxx: bool4;
+    yyxy: bool4;
+    yyxz: bool4;
+    yyxw: bool4;
+    yyyx: bool4;
+    yyyy: bool4;
+    yyyz: bool4;
+    yyyw: bool4;
+    yyzx: bool4;
+    yyzy: bool4;
+    yyzz: bool4;
+    yyzw: bool4;
+    yywx: bool4;
+    yywy: bool4;
+    yywz: bool4;
+    yyww: bool4;
+    yzxx: bool4;
+    yzxy: bool4;
+    yzxz: bool4;
+    yzxw: bool4;
+    yzyx: bool4;
+    yzyy: bool4;
+    yzyz: bool4;
+    yzyw: bool4;
+    yzzx: bool4;
+    yzzy: bool4;
+    yzzz: bool4;
+    yzzw: bool4;
+    yzwx: bool4;
+    yzwy: bool4;
+    yzwz: bool4;
+    yzww: bool4;
+    ywxx: bool4;
+    ywxy: bool4;
+    ywxz: bool4;
+    ywxw: bool4;
+    ywyx: bool4;
+    ywyy: bool4;
+    ywyz: bool4;
+    ywyw: bool4;
+    ywzx: bool4;
+    ywzy: bool4;
+    ywzz: bool4;
+    ywzw: bool4;
+    ywwx: bool4;
+    ywwy: bool4;
+    ywwz: bool4;
+    ywww: bool4;
+    zxxx: bool4;
+    zxxy: bool4;
+    zxxz: bool4;
+    zxxw: bool4;
+    zxyx: bool4;
+    zxyy: bool4;
+    zxyz: bool4;
+    zxyw: bool4;
+    zxzx: bool4;
+    zxzy: bool4;
+    zxzz: bool4;
+    zxzw: bool4;
+    zxwx: bool4;
+    zxwy: bool4;
+    zxwz: bool4;
+    zxww: bool4;
+    zyxx: bool4;
+    zyxy: bool4;
+    zyxz: bool4;
+    zyxw: bool4;
+    zyyx: bool4;
+    zyyy: bool4;
+    zyyz: bool4;
+    zyyw: bool4;
+    zyzx: bool4;
+    zyzy: bool4;
+    zyzz: bool4;
+    zyzw: bool4;
+    zywx: bool4;
+    zywy: bool4;
+    zywz: bool4;
+    zyww: bool4;
+    zzxx: bool4;
+    zzxy: bool4;
+    zzxz: bool4;
+    zzxw: bool4;
+    zzyx: bool4;
+    zzyy: bool4;
+    zzyz: bool4;
+    zzyw: bool4;
+    zzzx: bool4;
+    zzzy: bool4;
+    zzzz: bool4;
+    zzzw: bool4;
+    zzwx: bool4;
+    zzwy: bool4;
+    zzwz: bool4;
+    zzww: bool4;
+    zwxx: bool4;
+    zwxy: bool4;
+    zwxz: bool4;
+    zwxw: bool4;
+    zwyx: bool4;
+    zwyy: bool4;
+    zwyz: bool4;
+    zwyw: bool4;
+    zwzx: bool4;
+    zwzy: bool4;
+    zwzz: bool4;
+    zwzw: bool4;
+    zwwx: bool4;
+    zwwy: bool4;
+    zwwz: bool4;
+    zwww: bool4;
+    wxxx: bool4;
+    wxxy: bool4;
+    wxxz: bool4;
+    wxxw: bool4;
+    wxyx: bool4;
+    wxyy: bool4;
+    wxyz: bool4;
+    wxyw: bool4;
+    wxzx: bool4;
+    wxzy: bool4;
+    wxzz: bool4;
+    wxzw: bool4;
+    wxwx: bool4;
+    wxwy: bool4;
+    wxwz: bool4;
+    wxww: bool4;
+    wyxx: bool4;
+    wyxy: bool4;
+    wyxz: bool4;
+    wyxw: bool4;
+    wyyx: bool4;
+    wyyy: bool4;
+    wyyz: bool4;
+    wyyw: bool4;
+    wyzx: bool4;
+    wyzy: bool4;
+    wyzz: bool4;
+    wyzw: bool4;
+    wywx: bool4;
+    wywy: bool4;
+    wywz: bool4;
+    wyww: bool4;
+    wzxx: bool4;
+    wzxy: bool4;
+    wzxz: bool4;
+    wzxw: bool4;
+    wzyx: bool4;
+    wzyy: bool4;
+    wzyz: bool4;
+    wzyw: bool4;
+    wzzx: bool4;
+    wzzy: bool4;
+    wzzz: bool4;
+    wzzw: bool4;
+    wzwx: bool4;
+    wzwy: bool4;
+    wzwz: bool4;
+    wzww: bool4;
+    wwxx: bool4;
+    wwxy: bool4;
+    wwxz: bool4;
+    wwxw: bool4;
+    wwyx: bool4;
+    wwyy: bool4;
+    wwyz: bool4;
+    wwyw: bool4;
+    wwzx: bool4;
+    wwzy: bool4;
+    wwzz: bool4;
+    wwzw: bool4;
+    wwwx: bool4;
+    wwwy: bool4;
+    wwwz: bool4;
+    wwww: bool4;
+    xxx: bool3;
+    xxy: bool3;
+    xxz: bool3;
+    xxw: bool3;
+    xyx: bool3;
+    xyy: bool3;
+    xyz: bool3;
+    xyw: bool3;
+    xzx: bool3;
+    xzy: bool3;
+    xzz: bool3;
+    xzw: bool3;
+    xwx: bool3;
+    xwy: bool3;
+    xwz: bool3;
+    xww: bool3;
+    yxx: bool3;
+    yxy: bool3;
+    yxz: bool3;
+    yxw: bool3;
+    yyx: bool3;
+    yyy: bool3;
+    yyz: bool3;
+    yyw: bool3;
+    yzx: bool3;
+    yzy: bool3;
+    yzz: bool3;
+    yzw: bool3;
+    ywx: bool3;
+    ywy: bool3;
+    ywz: bool3;
+    yww: bool3;
+    zxx: bool3;
+    zxy: bool3;
+    zxz: bool3;
+    zxw: bool3;
+    zyx: bool3;
+    zyy: bool3;
+    zyz: bool3;
+    zyw: bool3;
+    zzx: bool3;
+    zzy: bool3;
+    zzz: bool3;
+    zzw: bool3;
+    zwx: bool3;
+    zwy: bool3;
+    zwz: bool3;
+    zww: bool3;
+    wxx: bool3;
+    wxy: bool3;
+    wxz: bool3;
+    wxw: bool3;
+    wyx: bool3;
+    wyy: bool3;
+    wyz: bool3;
+    wyw: bool3;
+    wzx: bool3;
+    wzy: bool3;
+    wzz: bool3;
+    wzw: bool3;
+    wwx: bool3;
+    wwy: bool3;
+    wwz: bool3;
+    www: bool3;
+    xx: bool2;
+    xy: bool2;
+    xz: bool2;
+    xw: bool2;
+    yx: bool2;
+    yy: bool2;
+    yz: bool2;
+    yw: bool2;
+    zx: bool2;
+    zy: bool2;
+    zz: bool2;
+    zw: bool2;
+    wx: bool2;
+    wy: bool2;
+    wz: bool2;
+    ww: bool2;
+    Item: boolean;
+
+
+    Equals(rhs: bool4): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface bool3 {
+    x: boolean;
+    y: boolean;
+    z: boolean;
+    xxxx: bool4;
+    xxxy: bool4;
+    xxxz: bool4;
+    xxyx: bool4;
+    xxyy: bool4;
+    xxyz: bool4;
+    xxzx: bool4;
+    xxzy: bool4;
+    xxzz: bool4;
+    xyxx: bool4;
+    xyxy: bool4;
+    xyxz: bool4;
+    xyyx: bool4;
+    xyyy: bool4;
+    xyyz: bool4;
+    xyzx: bool4;
+    xyzy: bool4;
+    xyzz: bool4;
+    xzxx: bool4;
+    xzxy: bool4;
+    xzxz: bool4;
+    xzyx: bool4;
+    xzyy: bool4;
+    xzyz: bool4;
+    xzzx: bool4;
+    xzzy: bool4;
+    xzzz: bool4;
+    yxxx: bool4;
+    yxxy: bool4;
+    yxxz: bool4;
+    yxyx: bool4;
+    yxyy: bool4;
+    yxyz: bool4;
+    yxzx: bool4;
+    yxzy: bool4;
+    yxzz: bool4;
+    yyxx: bool4;
+    yyxy: bool4;
+    yyxz: bool4;
+    yyyx: bool4;
+    yyyy: bool4;
+    yyyz: bool4;
+    yyzx: bool4;
+    yyzy: bool4;
+    yyzz: bool4;
+    yzxx: bool4;
+    yzxy: bool4;
+    yzxz: bool4;
+    yzyx: bool4;
+    yzyy: bool4;
+    yzyz: bool4;
+    yzzx: bool4;
+    yzzy: bool4;
+    yzzz: bool4;
+    zxxx: bool4;
+    zxxy: bool4;
+    zxxz: bool4;
+    zxyx: bool4;
+    zxyy: bool4;
+    zxyz: bool4;
+    zxzx: bool4;
+    zxzy: bool4;
+    zxzz: bool4;
+    zyxx: bool4;
+    zyxy: bool4;
+    zyxz: bool4;
+    zyyx: bool4;
+    zyyy: bool4;
+    zyyz: bool4;
+    zyzx: bool4;
+    zyzy: bool4;
+    zyzz: bool4;
+    zzxx: bool4;
+    zzxy: bool4;
+    zzxz: bool4;
+    zzyx: bool4;
+    zzyy: bool4;
+    zzyz: bool4;
+    zzzx: bool4;
+    zzzy: bool4;
+    zzzz: bool4;
+    xxx: bool3;
+    xxy: bool3;
+    xxz: bool3;
+    xyx: bool3;
+    xyy: bool3;
+    xyz: bool3;
+    xzx: bool3;
+    xzy: bool3;
+    xzz: bool3;
+    yxx: bool3;
+    yxy: bool3;
+    yxz: bool3;
+    yyx: bool3;
+    yyy: bool3;
+    yyz: bool3;
+    yzx: bool3;
+    yzy: bool3;
+    yzz: bool3;
+    zxx: bool3;
+    zxy: bool3;
+    zxz: bool3;
+    zyx: bool3;
+    zyy: bool3;
+    zyz: bool3;
+    zzx: bool3;
+    zzy: bool3;
+    zzz: bool3;
+    xx: bool2;
+    xy: bool2;
+    xz: bool2;
+    yx: bool2;
+    yy: bool2;
+    yz: bool2;
+    zx: bool2;
+    zy: bool2;
+    zz: bool2;
+    Item: boolean;
+
+
+    Equals(rhs: bool3): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface bool3Constructor {
+
+    new(x: boolean, y: boolean, z: boolean): bool3;
+    new(x: boolean, yz: bool2): bool3;
+    new(xy: bool2, z: boolean): bool3;
+    new(xyz: bool3): bool3;
+    new(v: boolean): bool3;
+
+
+}
+declare const bool3: bool3Constructor;
+    
+interface bool4Constructor {
+
+    new(x: boolean, y: boolean, z: boolean, w: boolean): bool4;
+    new(x: boolean, y: boolean, zw: bool2): bool4;
+    new(x: boolean, yz: bool2, w: boolean): bool4;
+    new(x: boolean, yzw: bool3): bool4;
+    new(xy: bool2, z: boolean, w: boolean): bool4;
+    new(xy: bool2, zw: bool2): bool4;
+    new(xyz: bool3, w: boolean): bool4;
+    new(xyzw: bool4): bool4;
+    new(v: boolean): bool4;
+
+
+}
+declare const bool4: bool4Constructor;
+    
+interface bool2Constructor {
+
+    new(x: boolean, y: boolean): bool2;
+    new(xy: bool2): bool2;
+    new(v: boolean): bool2;
+
+
+}
+declare const bool2: bool2Constructor;
+    
+interface bool2x2 {
+    c0: bool2;
+    c1: bool2;
+    Item: unknown;
+
+
+    Equals(rhs: bool2x2): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface bool2x2Constructor {
+
+    new(c0: bool2, c1: bool2): bool2x2;
+    new(m00: boolean, m01: boolean, m10: boolean, m11: boolean): bool2x2;
+    new(v: boolean): bool2x2;
+
+
+}
+declare const bool2x2: bool2x2Constructor;
+    
+interface bool2x3 {
+    c0: bool2;
+    c1: bool2;
+    c2: bool2;
+    Item: unknown;
+
+
+    Equals(rhs: bool2x3): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface bool2x3Constructor {
+
+    new(c0: bool2, c1: bool2, c2: bool2): bool2x3;
+    new(m00: boolean, m01: boolean, m02: boolean, m10: boolean, m11: boolean, m12: boolean): bool2x3;
+    new(v: boolean): bool2x3;
+
+
+}
+declare const bool2x3: bool2x3Constructor;
+    
+interface bool2x4 {
+    c0: bool2;
+    c1: bool2;
+    c2: bool2;
+    c3: bool2;
+    Item: unknown;
+
+
+    Equals(rhs: bool2x4): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface bool2x4Constructor {
+
+    new(c0: bool2, c1: bool2, c2: bool2, c3: bool2): bool2x4;
+    new(m00: boolean, m01: boolean, m02: boolean, m03: boolean, m10: boolean, m11: boolean, m12: boolean, m13: boolean): bool2x4;
+    new(v: boolean): bool2x4;
+
+
+}
+declare const bool2x4: bool2x4Constructor;
+    
+interface bool3x2 {
+    c0: bool3;
+    c1: bool3;
+    Item: unknown;
+
+
+    Equals(rhs: bool3x2): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface bool3x2Constructor {
+
+    new(c0: bool3, c1: bool3): bool3x2;
+    new(m00: boolean, m01: boolean, m10: boolean, m11: boolean, m20: boolean, m21: boolean): bool3x2;
+    new(v: boolean): bool3x2;
+
+
+}
+declare const bool3x2: bool3x2Constructor;
+    
+interface bool3x3 {
+    c0: bool3;
+    c1: bool3;
+    c2: bool3;
+    Item: unknown;
+
+
+    Equals(rhs: bool3x3): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface bool3x3Constructor {
+
+    new(c0: bool3, c1: bool3, c2: bool3): bool3x3;
+    new(m00: boolean, m01: boolean, m02: boolean, m10: boolean, m11: boolean, m12: boolean, m20: boolean, m21: boolean, m22: boolean): bool3x3;
+    new(v: boolean): bool3x3;
+
+
+}
+declare const bool3x3: bool3x3Constructor;
+    
+interface bool3x4 {
+    c0: bool3;
+    c1: bool3;
+    c2: bool3;
+    c3: bool3;
+    Item: unknown;
+
+
+    Equals(rhs: bool3x4): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface bool3x4Constructor {
+
+    new(c0: bool3, c1: bool3, c2: bool3, c3: bool3): bool3x4;
+    new(m00: boolean, m01: boolean, m02: boolean, m03: boolean, m10: boolean, m11: boolean, m12: boolean, m13: boolean, m20: boolean, m21: boolean, m22: boolean, m23: boolean): bool3x4;
+    new(v: boolean): bool3x4;
+
+
+}
+declare const bool3x4: bool3x4Constructor;
+    
+interface bool4x2 {
+    c0: bool4;
+    c1: bool4;
+    Item: unknown;
+
+
+    Equals(rhs: bool4x2): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface bool4x2Constructor {
+
+    new(c0: bool4, c1: bool4): bool4x2;
+    new(m00: boolean, m01: boolean, m10: boolean, m11: boolean, m20: boolean, m21: boolean, m30: boolean, m31: boolean): bool4x2;
+    new(v: boolean): bool4x2;
+
+
+}
+declare const bool4x2: bool4x2Constructor;
+    
+interface bool4x3 {
+    c0: bool4;
+    c1: bool4;
+    c2: bool4;
+    Item: unknown;
+
+
+    Equals(rhs: bool4x3): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface bool4x3Constructor {
+
+    new(c0: bool4, c1: bool4, c2: bool4): bool4x3;
+    new(m00: boolean, m01: boolean, m02: boolean, m10: boolean, m11: boolean, m12: boolean, m20: boolean, m21: boolean, m22: boolean, m30: boolean, m31: boolean, m32: boolean): bool4x3;
+    new(v: boolean): bool4x3;
+
+
+}
+declare const bool4x3: bool4x3Constructor;
+    
+interface bool4x4 {
+    c0: bool4;
+    c1: bool4;
+    c2: bool4;
+    c3: bool4;
+    Item: unknown;
+
+
+    Equals(rhs: bool4x4): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface bool4x4Constructor {
+
+    new(c0: bool4, c1: bool4, c2: bool4, c3: bool4): bool4x4;
+    new(m00: boolean, m01: boolean, m02: boolean, m03: boolean, m10: boolean, m11: boolean, m12: boolean, m13: boolean, m20: boolean, m21: boolean, m22: boolean, m23: boolean, m30: boolean, m31: boolean, m32: boolean, m33: boolean): bool4x4;
+    new(v: boolean): bool4x4;
+
+
+}
+declare const bool4x4: bool4x4Constructor;
+    
+interface double2 {
+    x: number;
+    y: number;
+    xxxx: double4;
+    xxxy: double4;
+    xxyx: double4;
+    xxyy: double4;
+    xyxx: double4;
+    xyxy: double4;
+    xyyx: double4;
+    xyyy: double4;
+    yxxx: double4;
+    yxxy: double4;
+    yxyx: double4;
+    yxyy: double4;
+    yyxx: double4;
+    yyxy: double4;
+    yyyx: double4;
+    yyyy: double4;
+    xxx: double3;
+    xxy: double3;
+    xyx: double3;
+    xyy: double3;
+    yxx: double3;
+    yxy: double3;
+    yyx: double3;
+    yyy: double3;
+    xx: double2;
+    xy: double2;
+    yx: double2;
+    yy: double2;
+    Item: number;
+
+
+    Equals(rhs: double2): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface double4 {
+    x: number;
+    y: number;
+    z: number;
+    w: number;
+    xxxx: double4;
+    xxxy: double4;
+    xxxz: double4;
+    xxxw: double4;
+    xxyx: double4;
+    xxyy: double4;
+    xxyz: double4;
+    xxyw: double4;
+    xxzx: double4;
+    xxzy: double4;
+    xxzz: double4;
+    xxzw: double4;
+    xxwx: double4;
+    xxwy: double4;
+    xxwz: double4;
+    xxww: double4;
+    xyxx: double4;
+    xyxy: double4;
+    xyxz: double4;
+    xyxw: double4;
+    xyyx: double4;
+    xyyy: double4;
+    xyyz: double4;
+    xyyw: double4;
+    xyzx: double4;
+    xyzy: double4;
+    xyzz: double4;
+    xyzw: double4;
+    xywx: double4;
+    xywy: double4;
+    xywz: double4;
+    xyww: double4;
+    xzxx: double4;
+    xzxy: double4;
+    xzxz: double4;
+    xzxw: double4;
+    xzyx: double4;
+    xzyy: double4;
+    xzyz: double4;
+    xzyw: double4;
+    xzzx: double4;
+    xzzy: double4;
+    xzzz: double4;
+    xzzw: double4;
+    xzwx: double4;
+    xzwy: double4;
+    xzwz: double4;
+    xzww: double4;
+    xwxx: double4;
+    xwxy: double4;
+    xwxz: double4;
+    xwxw: double4;
+    xwyx: double4;
+    xwyy: double4;
+    xwyz: double4;
+    xwyw: double4;
+    xwzx: double4;
+    xwzy: double4;
+    xwzz: double4;
+    xwzw: double4;
+    xwwx: double4;
+    xwwy: double4;
+    xwwz: double4;
+    xwww: double4;
+    yxxx: double4;
+    yxxy: double4;
+    yxxz: double4;
+    yxxw: double4;
+    yxyx: double4;
+    yxyy: double4;
+    yxyz: double4;
+    yxyw: double4;
+    yxzx: double4;
+    yxzy: double4;
+    yxzz: double4;
+    yxzw: double4;
+    yxwx: double4;
+    yxwy: double4;
+    yxwz: double4;
+    yxww: double4;
+    yyxx: double4;
+    yyxy: double4;
+    yyxz: double4;
+    yyxw: double4;
+    yyyx: double4;
+    yyyy: double4;
+    yyyz: double4;
+    yyyw: double4;
+    yyzx: double4;
+    yyzy: double4;
+    yyzz: double4;
+    yyzw: double4;
+    yywx: double4;
+    yywy: double4;
+    yywz: double4;
+    yyww: double4;
+    yzxx: double4;
+    yzxy: double4;
+    yzxz: double4;
+    yzxw: double4;
+    yzyx: double4;
+    yzyy: double4;
+    yzyz: double4;
+    yzyw: double4;
+    yzzx: double4;
+    yzzy: double4;
+    yzzz: double4;
+    yzzw: double4;
+    yzwx: double4;
+    yzwy: double4;
+    yzwz: double4;
+    yzww: double4;
+    ywxx: double4;
+    ywxy: double4;
+    ywxz: double4;
+    ywxw: double4;
+    ywyx: double4;
+    ywyy: double4;
+    ywyz: double4;
+    ywyw: double4;
+    ywzx: double4;
+    ywzy: double4;
+    ywzz: double4;
+    ywzw: double4;
+    ywwx: double4;
+    ywwy: double4;
+    ywwz: double4;
+    ywww: double4;
+    zxxx: double4;
+    zxxy: double4;
+    zxxz: double4;
+    zxxw: double4;
+    zxyx: double4;
+    zxyy: double4;
+    zxyz: double4;
+    zxyw: double4;
+    zxzx: double4;
+    zxzy: double4;
+    zxzz: double4;
+    zxzw: double4;
+    zxwx: double4;
+    zxwy: double4;
+    zxwz: double4;
+    zxww: double4;
+    zyxx: double4;
+    zyxy: double4;
+    zyxz: double4;
+    zyxw: double4;
+    zyyx: double4;
+    zyyy: double4;
+    zyyz: double4;
+    zyyw: double4;
+    zyzx: double4;
+    zyzy: double4;
+    zyzz: double4;
+    zyzw: double4;
+    zywx: double4;
+    zywy: double4;
+    zywz: double4;
+    zyww: double4;
+    zzxx: double4;
+    zzxy: double4;
+    zzxz: double4;
+    zzxw: double4;
+    zzyx: double4;
+    zzyy: double4;
+    zzyz: double4;
+    zzyw: double4;
+    zzzx: double4;
+    zzzy: double4;
+    zzzz: double4;
+    zzzw: double4;
+    zzwx: double4;
+    zzwy: double4;
+    zzwz: double4;
+    zzww: double4;
+    zwxx: double4;
+    zwxy: double4;
+    zwxz: double4;
+    zwxw: double4;
+    zwyx: double4;
+    zwyy: double4;
+    zwyz: double4;
+    zwyw: double4;
+    zwzx: double4;
+    zwzy: double4;
+    zwzz: double4;
+    zwzw: double4;
+    zwwx: double4;
+    zwwy: double4;
+    zwwz: double4;
+    zwww: double4;
+    wxxx: double4;
+    wxxy: double4;
+    wxxz: double4;
+    wxxw: double4;
+    wxyx: double4;
+    wxyy: double4;
+    wxyz: double4;
+    wxyw: double4;
+    wxzx: double4;
+    wxzy: double4;
+    wxzz: double4;
+    wxzw: double4;
+    wxwx: double4;
+    wxwy: double4;
+    wxwz: double4;
+    wxww: double4;
+    wyxx: double4;
+    wyxy: double4;
+    wyxz: double4;
+    wyxw: double4;
+    wyyx: double4;
+    wyyy: double4;
+    wyyz: double4;
+    wyyw: double4;
+    wyzx: double4;
+    wyzy: double4;
+    wyzz: double4;
+    wyzw: double4;
+    wywx: double4;
+    wywy: double4;
+    wywz: double4;
+    wyww: double4;
+    wzxx: double4;
+    wzxy: double4;
+    wzxz: double4;
+    wzxw: double4;
+    wzyx: double4;
+    wzyy: double4;
+    wzyz: double4;
+    wzyw: double4;
+    wzzx: double4;
+    wzzy: double4;
+    wzzz: double4;
+    wzzw: double4;
+    wzwx: double4;
+    wzwy: double4;
+    wzwz: double4;
+    wzww: double4;
+    wwxx: double4;
+    wwxy: double4;
+    wwxz: double4;
+    wwxw: double4;
+    wwyx: double4;
+    wwyy: double4;
+    wwyz: double4;
+    wwyw: double4;
+    wwzx: double4;
+    wwzy: double4;
+    wwzz: double4;
+    wwzw: double4;
+    wwwx: double4;
+    wwwy: double4;
+    wwwz: double4;
+    wwww: double4;
+    xxx: double3;
+    xxy: double3;
+    xxz: double3;
+    xxw: double3;
+    xyx: double3;
+    xyy: double3;
+    xyz: double3;
+    xyw: double3;
+    xzx: double3;
+    xzy: double3;
+    xzz: double3;
+    xzw: double3;
+    xwx: double3;
+    xwy: double3;
+    xwz: double3;
+    xww: double3;
+    yxx: double3;
+    yxy: double3;
+    yxz: double3;
+    yxw: double3;
+    yyx: double3;
+    yyy: double3;
+    yyz: double3;
+    yyw: double3;
+    yzx: double3;
+    yzy: double3;
+    yzz: double3;
+    yzw: double3;
+    ywx: double3;
+    ywy: double3;
+    ywz: double3;
+    yww: double3;
+    zxx: double3;
+    zxy: double3;
+    zxz: double3;
+    zxw: double3;
+    zyx: double3;
+    zyy: double3;
+    zyz: double3;
+    zyw: double3;
+    zzx: double3;
+    zzy: double3;
+    zzz: double3;
+    zzw: double3;
+    zwx: double3;
+    zwy: double3;
+    zwz: double3;
+    zww: double3;
+    wxx: double3;
+    wxy: double3;
+    wxz: double3;
+    wxw: double3;
+    wyx: double3;
+    wyy: double3;
+    wyz: double3;
+    wyw: double3;
+    wzx: double3;
+    wzy: double3;
+    wzz: double3;
+    wzw: double3;
+    wwx: double3;
+    wwy: double3;
+    wwz: double3;
+    www: double3;
+    xx: double2;
+    xy: double2;
+    xz: double2;
+    xw: double2;
+    yx: double2;
+    yy: double2;
+    yz: double2;
+    yw: double2;
+    zx: double2;
+    zy: double2;
+    zz: double2;
+    zw: double2;
+    wx: double2;
+    wy: double2;
+    wz: double2;
+    ww: double2;
+    Item: number;
+
+
+    Equals(rhs: double4): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface double3 {
+    x: number;
+    y: number;
+    z: number;
+    xxxx: double4;
+    xxxy: double4;
+    xxxz: double4;
+    xxyx: double4;
+    xxyy: double4;
+    xxyz: double4;
+    xxzx: double4;
+    xxzy: double4;
+    xxzz: double4;
+    xyxx: double4;
+    xyxy: double4;
+    xyxz: double4;
+    xyyx: double4;
+    xyyy: double4;
+    xyyz: double4;
+    xyzx: double4;
+    xyzy: double4;
+    xyzz: double4;
+    xzxx: double4;
+    xzxy: double4;
+    xzxz: double4;
+    xzyx: double4;
+    xzyy: double4;
+    xzyz: double4;
+    xzzx: double4;
+    xzzy: double4;
+    xzzz: double4;
+    yxxx: double4;
+    yxxy: double4;
+    yxxz: double4;
+    yxyx: double4;
+    yxyy: double4;
+    yxyz: double4;
+    yxzx: double4;
+    yxzy: double4;
+    yxzz: double4;
+    yyxx: double4;
+    yyxy: double4;
+    yyxz: double4;
+    yyyx: double4;
+    yyyy: double4;
+    yyyz: double4;
+    yyzx: double4;
+    yyzy: double4;
+    yyzz: double4;
+    yzxx: double4;
+    yzxy: double4;
+    yzxz: double4;
+    yzyx: double4;
+    yzyy: double4;
+    yzyz: double4;
+    yzzx: double4;
+    yzzy: double4;
+    yzzz: double4;
+    zxxx: double4;
+    zxxy: double4;
+    zxxz: double4;
+    zxyx: double4;
+    zxyy: double4;
+    zxyz: double4;
+    zxzx: double4;
+    zxzy: double4;
+    zxzz: double4;
+    zyxx: double4;
+    zyxy: double4;
+    zyxz: double4;
+    zyyx: double4;
+    zyyy: double4;
+    zyyz: double4;
+    zyzx: double4;
+    zyzy: double4;
+    zyzz: double4;
+    zzxx: double4;
+    zzxy: double4;
+    zzxz: double4;
+    zzyx: double4;
+    zzyy: double4;
+    zzyz: double4;
+    zzzx: double4;
+    zzzy: double4;
+    zzzz: double4;
+    xxx: double3;
+    xxy: double3;
+    xxz: double3;
+    xyx: double3;
+    xyy: double3;
+    xyz: double3;
+    xzx: double3;
+    xzy: double3;
+    xzz: double3;
+    yxx: double3;
+    yxy: double3;
+    yxz: double3;
+    yyx: double3;
+    yyy: double3;
+    yyz: double3;
+    yzx: double3;
+    yzy: double3;
+    yzz: double3;
+    zxx: double3;
+    zxy: double3;
+    zxz: double3;
+    zyx: double3;
+    zyy: double3;
+    zyz: double3;
+    zzx: double3;
+    zzy: double3;
+    zzz: double3;
+    xx: double2;
+    xy: double2;
+    xz: double2;
+    yx: double2;
+    yy: double2;
+    yz: double2;
+    zx: double2;
+    zy: double2;
+    zz: double2;
+    Item: number;
+
+
+    Equals(rhs: double3): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface double3Constructor {
+    zero: double3;
+
+    new(x: number, y: number, z: number): double3;
+    new(x: number, yz: double2): double3;
+    new(xy: double2, z: number): double3;
+    new(xyz: double3): double3;
+    new(v: number): double3;
+    new(v: boolean): double3;
+    new(v: bool3): double3;
+    new(v: number): double3;
+    new(v: int3): double3;
+    new(v: number): double3;
+    new(v: uint3): double3;
+    new(v: half): double3;
+    new(v: half3): double3;
+    new(v: number): double3;
+    new(v: float3): double3;
+
+
+}
+declare const double3: double3Constructor;
+    
+interface double4Constructor {
+    zero: double4;
+
+    new(x: number, y: number, z: number, w: number): double4;
+    new(x: number, y: number, zw: double2): double4;
+    new(x: number, yz: double2, w: number): double4;
+    new(x: number, yzw: double3): double4;
+    new(xy: double2, z: number, w: number): double4;
+    new(xy: double2, zw: double2): double4;
+    new(xyz: double3, w: number): double4;
+    new(xyzw: double4): double4;
+    new(v: number): double4;
+    new(v: boolean): double4;
+    new(v: bool4): double4;
+    new(v: number): double4;
+    new(v: int4): double4;
+    new(v: number): double4;
+    new(v: uint4): double4;
+    new(v: half): double4;
+    new(v: half4): double4;
+    new(v: number): double4;
+    new(v: float4): double4;
+
+
+}
+declare const double4: double4Constructor;
+    
+interface double2Constructor {
+    zero: double2;
+
+    new(x: number, y: number): double2;
+    new(xy: double2): double2;
+    new(v: number): double2;
+    new(v: boolean): double2;
+    new(v: bool2): double2;
+    new(v: number): double2;
+    new(v: int2): double2;
+    new(v: number): double2;
+    new(v: uint2): double2;
+    new(v: half): double2;
+    new(v: half2): double2;
+    new(v: number): double2;
+    new(v: float2): double2;
+
+
+}
+declare const double2: double2Constructor;
+    
+interface double2x2 {
+    c0: double2;
+    c1: double2;
+    Item: unknown;
+
+
+    Equals(rhs: double2x2): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface double2x2Constructor {
+    identity: double2x2;
+    zero: double2x2;
+
+    new(c0: double2, c1: double2): double2x2;
+    new(m00: number, m01: number, m10: number, m11: number): double2x2;
+    new(v: number): double2x2;
+    new(v: boolean): double2x2;
+    new(v: bool2x2): double2x2;
+    new(v: number): double2x2;
+    new(v: int2x2): double2x2;
+    new(v: number): double2x2;
+    new(v: uint2x2): double2x2;
+    new(v: number): double2x2;
+    new(v: float2x2): double2x2;
+
+
+}
+declare const double2x2: double2x2Constructor;
+    
+interface double2x3 {
+    c0: double2;
+    c1: double2;
+    c2: double2;
+    Item: unknown;
+
+
+    Equals(rhs: double2x3): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface double2x3Constructor {
+    zero: double2x3;
+
+    new(c0: double2, c1: double2, c2: double2): double2x3;
+    new(m00: number, m01: number, m02: number, m10: number, m11: number, m12: number): double2x3;
+    new(v: number): double2x3;
+    new(v: boolean): double2x3;
+    new(v: bool2x3): double2x3;
+    new(v: number): double2x3;
+    new(v: int2x3): double2x3;
+    new(v: number): double2x3;
+    new(v: uint2x3): double2x3;
+    new(v: number): double2x3;
+    new(v: float2x3): double2x3;
+
+
+}
+declare const double2x3: double2x3Constructor;
+    
+interface double2x4 {
+    c0: double2;
+    c1: double2;
+    c2: double2;
+    c3: double2;
+    Item: unknown;
+
+
+    Equals(rhs: double2x4): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface double2x4Constructor {
+    zero: double2x4;
+
+    new(c0: double2, c1: double2, c2: double2, c3: double2): double2x4;
+    new(m00: number, m01: number, m02: number, m03: number, m10: number, m11: number, m12: number, m13: number): double2x4;
+    new(v: number): double2x4;
+    new(v: boolean): double2x4;
+    new(v: bool2x4): double2x4;
+    new(v: number): double2x4;
+    new(v: int2x4): double2x4;
+    new(v: number): double2x4;
+    new(v: uint2x4): double2x4;
+    new(v: number): double2x4;
+    new(v: float2x4): double2x4;
+
+
+}
+declare const double2x4: double2x4Constructor;
+    
+interface double3x2 {
+    c0: double3;
+    c1: double3;
+    Item: unknown;
+
+
+    Equals(rhs: double3x2): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface double3x2Constructor {
+    zero: double3x2;
+
+    new(c0: double3, c1: double3): double3x2;
+    new(m00: number, m01: number, m10: number, m11: number, m20: number, m21: number): double3x2;
+    new(v: number): double3x2;
+    new(v: boolean): double3x2;
+    new(v: bool3x2): double3x2;
+    new(v: number): double3x2;
+    new(v: int3x2): double3x2;
+    new(v: number): double3x2;
+    new(v: uint3x2): double3x2;
+    new(v: number): double3x2;
+    new(v: float3x2): double3x2;
+
+
+}
+declare const double3x2: double3x2Constructor;
+    
+interface double3x3 {
+    c0: double3;
+    c1: double3;
+    c2: double3;
+    Item: unknown;
+
+
+    Equals(rhs: double3x3): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface double3x3Constructor {
+    identity: double3x3;
+    zero: double3x3;
+
+    new(c0: double3, c1: double3, c2: double3): double3x3;
+    new(m00: number, m01: number, m02: number, m10: number, m11: number, m12: number, m20: number, m21: number, m22: number): double3x3;
+    new(v: number): double3x3;
+    new(v: boolean): double3x3;
+    new(v: bool3x3): double3x3;
+    new(v: number): double3x3;
+    new(v: int3x3): double3x3;
+    new(v: number): double3x3;
+    new(v: uint3x3): double3x3;
+    new(v: number): double3x3;
+    new(v: float3x3): double3x3;
+
+
+}
+declare const double3x3: double3x3Constructor;
+    
+interface double3x4 {
+    c0: double3;
+    c1: double3;
+    c2: double3;
+    c3: double3;
+    Item: unknown;
+
+
+    Equals(rhs: double3x4): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface double3x4Constructor {
+    zero: double3x4;
+
+    new(c0: double3, c1: double3, c2: double3, c3: double3): double3x4;
+    new(m00: number, m01: number, m02: number, m03: number, m10: number, m11: number, m12: number, m13: number, m20: number, m21: number, m22: number, m23: number): double3x4;
+    new(v: number): double3x4;
+    new(v: boolean): double3x4;
+    new(v: bool3x4): double3x4;
+    new(v: number): double3x4;
+    new(v: int3x4): double3x4;
+    new(v: number): double3x4;
+    new(v: uint3x4): double3x4;
+    new(v: number): double3x4;
+    new(v: float3x4): double3x4;
+
+
+}
+declare const double3x4: double3x4Constructor;
+    
+interface double4x2 {
+    c0: double4;
+    c1: double4;
+    Item: unknown;
+
+
+    Equals(rhs: double4x2): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface double4x2Constructor {
+    zero: double4x2;
+
+    new(c0: double4, c1: double4): double4x2;
+    new(m00: number, m01: number, m10: number, m11: number, m20: number, m21: number, m30: number, m31: number): double4x2;
+    new(v: number): double4x2;
+    new(v: boolean): double4x2;
+    new(v: bool4x2): double4x2;
+    new(v: number): double4x2;
+    new(v: int4x2): double4x2;
+    new(v: number): double4x2;
+    new(v: uint4x2): double4x2;
+    new(v: number): double4x2;
+    new(v: float4x2): double4x2;
+
+
+}
+declare const double4x2: double4x2Constructor;
+    
+interface double4x3 {
+    c0: double4;
+    c1: double4;
+    c2: double4;
+    Item: unknown;
+
+
+    Equals(rhs: double4x3): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface double4x3Constructor {
+    zero: double4x3;
+
+    new(c0: double4, c1: double4, c2: double4): double4x3;
+    new(m00: number, m01: number, m02: number, m10: number, m11: number, m12: number, m20: number, m21: number, m22: number, m30: number, m31: number, m32: number): double4x3;
+    new(v: number): double4x3;
+    new(v: boolean): double4x3;
+    new(v: bool4x3): double4x3;
+    new(v: number): double4x3;
+    new(v: int4x3): double4x3;
+    new(v: number): double4x3;
+    new(v: uint4x3): double4x3;
+    new(v: number): double4x3;
+    new(v: float4x3): double4x3;
+
+
+}
+declare const double4x3: double4x3Constructor;
+    
+interface double4x4 {
+    c0: double4;
+    c1: double4;
+    c2: double4;
+    c3: double4;
+    Item: unknown;
+
+
+    Equals(rhs: double4x4): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface double4x4Constructor {
+    identity: double4x4;
+    zero: double4x4;
+
+    new(c0: double4, c1: double4, c2: double4, c3: double4): double4x4;
+    new(m00: number, m01: number, m02: number, m03: number, m10: number, m11: number, m12: number, m13: number, m20: number, m21: number, m22: number, m23: number, m30: number, m31: number, m32: number, m33: number): double4x4;
+    new(v: number): double4x4;
+    new(v: boolean): double4x4;
+    new(v: bool4x4): double4x4;
+    new(v: number): double4x4;
+    new(v: int4x4): double4x4;
+    new(v: number): double4x4;
+    new(v: uint4x4): double4x4;
+    new(v: number): double4x4;
+    new(v: float4x4): double4x4;
+
+
+}
+declare const double4x4: double4x4Constructor;
+    
+interface float2 {
+    x: number;
+    y: number;
+    xxxx: float4;
+    xxxy: float4;
+    xxyx: float4;
+    xxyy: float4;
+    xyxx: float4;
+    xyxy: float4;
+    xyyx: float4;
+    xyyy: float4;
+    yxxx: float4;
+    yxxy: float4;
+    yxyx: float4;
+    yxyy: float4;
+    yyxx: float4;
+    yyxy: float4;
+    yyyx: float4;
+    yyyy: float4;
+    xxx: float3;
+    xxy: float3;
+    xyx: float3;
+    xyy: float3;
+    yxx: float3;
+    yxy: float3;
+    yyx: float3;
+    yyy: float3;
+    xx: float2;
+    xy: float2;
+    yx: float2;
+    yy: float2;
+    Item: number;
+
+
+    Equals(rhs: float2): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface float4 {
+    x: number;
+    y: number;
+    z: number;
+    w: number;
+    xxxx: float4;
+    xxxy: float4;
+    xxxz: float4;
+    xxxw: float4;
+    xxyx: float4;
+    xxyy: float4;
+    xxyz: float4;
+    xxyw: float4;
+    xxzx: float4;
+    xxzy: float4;
+    xxzz: float4;
+    xxzw: float4;
+    xxwx: float4;
+    xxwy: float4;
+    xxwz: float4;
+    xxww: float4;
+    xyxx: float4;
+    xyxy: float4;
+    xyxz: float4;
+    xyxw: float4;
+    xyyx: float4;
+    xyyy: float4;
+    xyyz: float4;
+    xyyw: float4;
+    xyzx: float4;
+    xyzy: float4;
+    xyzz: float4;
+    xyzw: float4;
+    xywx: float4;
+    xywy: float4;
+    xywz: float4;
+    xyww: float4;
+    xzxx: float4;
+    xzxy: float4;
+    xzxz: float4;
+    xzxw: float4;
+    xzyx: float4;
+    xzyy: float4;
+    xzyz: float4;
+    xzyw: float4;
+    xzzx: float4;
+    xzzy: float4;
+    xzzz: float4;
+    xzzw: float4;
+    xzwx: float4;
+    xzwy: float4;
+    xzwz: float4;
+    xzww: float4;
+    xwxx: float4;
+    xwxy: float4;
+    xwxz: float4;
+    xwxw: float4;
+    xwyx: float4;
+    xwyy: float4;
+    xwyz: float4;
+    xwyw: float4;
+    xwzx: float4;
+    xwzy: float4;
+    xwzz: float4;
+    xwzw: float4;
+    xwwx: float4;
+    xwwy: float4;
+    xwwz: float4;
+    xwww: float4;
+    yxxx: float4;
+    yxxy: float4;
+    yxxz: float4;
+    yxxw: float4;
+    yxyx: float4;
+    yxyy: float4;
+    yxyz: float4;
+    yxyw: float4;
+    yxzx: float4;
+    yxzy: float4;
+    yxzz: float4;
+    yxzw: float4;
+    yxwx: float4;
+    yxwy: float4;
+    yxwz: float4;
+    yxww: float4;
+    yyxx: float4;
+    yyxy: float4;
+    yyxz: float4;
+    yyxw: float4;
+    yyyx: float4;
+    yyyy: float4;
+    yyyz: float4;
+    yyyw: float4;
+    yyzx: float4;
+    yyzy: float4;
+    yyzz: float4;
+    yyzw: float4;
+    yywx: float4;
+    yywy: float4;
+    yywz: float4;
+    yyww: float4;
+    yzxx: float4;
+    yzxy: float4;
+    yzxz: float4;
+    yzxw: float4;
+    yzyx: float4;
+    yzyy: float4;
+    yzyz: float4;
+    yzyw: float4;
+    yzzx: float4;
+    yzzy: float4;
+    yzzz: float4;
+    yzzw: float4;
+    yzwx: float4;
+    yzwy: float4;
+    yzwz: float4;
+    yzww: float4;
+    ywxx: float4;
+    ywxy: float4;
+    ywxz: float4;
+    ywxw: float4;
+    ywyx: float4;
+    ywyy: float4;
+    ywyz: float4;
+    ywyw: float4;
+    ywzx: float4;
+    ywzy: float4;
+    ywzz: float4;
+    ywzw: float4;
+    ywwx: float4;
+    ywwy: float4;
+    ywwz: float4;
+    ywww: float4;
+    zxxx: float4;
+    zxxy: float4;
+    zxxz: float4;
+    zxxw: float4;
+    zxyx: float4;
+    zxyy: float4;
+    zxyz: float4;
+    zxyw: float4;
+    zxzx: float4;
+    zxzy: float4;
+    zxzz: float4;
+    zxzw: float4;
+    zxwx: float4;
+    zxwy: float4;
+    zxwz: float4;
+    zxww: float4;
+    zyxx: float4;
+    zyxy: float4;
+    zyxz: float4;
+    zyxw: float4;
+    zyyx: float4;
+    zyyy: float4;
+    zyyz: float4;
+    zyyw: float4;
+    zyzx: float4;
+    zyzy: float4;
+    zyzz: float4;
+    zyzw: float4;
+    zywx: float4;
+    zywy: float4;
+    zywz: float4;
+    zyww: float4;
+    zzxx: float4;
+    zzxy: float4;
+    zzxz: float4;
+    zzxw: float4;
+    zzyx: float4;
+    zzyy: float4;
+    zzyz: float4;
+    zzyw: float4;
+    zzzx: float4;
+    zzzy: float4;
+    zzzz: float4;
+    zzzw: float4;
+    zzwx: float4;
+    zzwy: float4;
+    zzwz: float4;
+    zzww: float4;
+    zwxx: float4;
+    zwxy: float4;
+    zwxz: float4;
+    zwxw: float4;
+    zwyx: float4;
+    zwyy: float4;
+    zwyz: float4;
+    zwyw: float4;
+    zwzx: float4;
+    zwzy: float4;
+    zwzz: float4;
+    zwzw: float4;
+    zwwx: float4;
+    zwwy: float4;
+    zwwz: float4;
+    zwww: float4;
+    wxxx: float4;
+    wxxy: float4;
+    wxxz: float4;
+    wxxw: float4;
+    wxyx: float4;
+    wxyy: float4;
+    wxyz: float4;
+    wxyw: float4;
+    wxzx: float4;
+    wxzy: float4;
+    wxzz: float4;
+    wxzw: float4;
+    wxwx: float4;
+    wxwy: float4;
+    wxwz: float4;
+    wxww: float4;
+    wyxx: float4;
+    wyxy: float4;
+    wyxz: float4;
+    wyxw: float4;
+    wyyx: float4;
+    wyyy: float4;
+    wyyz: float4;
+    wyyw: float4;
+    wyzx: float4;
+    wyzy: float4;
+    wyzz: float4;
+    wyzw: float4;
+    wywx: float4;
+    wywy: float4;
+    wywz: float4;
+    wyww: float4;
+    wzxx: float4;
+    wzxy: float4;
+    wzxz: float4;
+    wzxw: float4;
+    wzyx: float4;
+    wzyy: float4;
+    wzyz: float4;
+    wzyw: float4;
+    wzzx: float4;
+    wzzy: float4;
+    wzzz: float4;
+    wzzw: float4;
+    wzwx: float4;
+    wzwy: float4;
+    wzwz: float4;
+    wzww: float4;
+    wwxx: float4;
+    wwxy: float4;
+    wwxz: float4;
+    wwxw: float4;
+    wwyx: float4;
+    wwyy: float4;
+    wwyz: float4;
+    wwyw: float4;
+    wwzx: float4;
+    wwzy: float4;
+    wwzz: float4;
+    wwzw: float4;
+    wwwx: float4;
+    wwwy: float4;
+    wwwz: float4;
+    wwww: float4;
+    xxx: float3;
+    xxy: float3;
+    xxz: float3;
+    xxw: float3;
+    xyx: float3;
+    xyy: float3;
+    xyz: float3;
+    xyw: float3;
+    xzx: float3;
+    xzy: float3;
+    xzz: float3;
+    xzw: float3;
+    xwx: float3;
+    xwy: float3;
+    xwz: float3;
+    xww: float3;
+    yxx: float3;
+    yxy: float3;
+    yxz: float3;
+    yxw: float3;
+    yyx: float3;
+    yyy: float3;
+    yyz: float3;
+    yyw: float3;
+    yzx: float3;
+    yzy: float3;
+    yzz: float3;
+    yzw: float3;
+    ywx: float3;
+    ywy: float3;
+    ywz: float3;
+    yww: float3;
+    zxx: float3;
+    zxy: float3;
+    zxz: float3;
+    zxw: float3;
+    zyx: float3;
+    zyy: float3;
+    zyz: float3;
+    zyw: float3;
+    zzx: float3;
+    zzy: float3;
+    zzz: float3;
+    zzw: float3;
+    zwx: float3;
+    zwy: float3;
+    zwz: float3;
+    zww: float3;
+    wxx: float3;
+    wxy: float3;
+    wxz: float3;
+    wxw: float3;
+    wyx: float3;
+    wyy: float3;
+    wyz: float3;
+    wyw: float3;
+    wzx: float3;
+    wzy: float3;
+    wzz: float3;
+    wzw: float3;
+    wwx: float3;
+    wwy: float3;
+    wwz: float3;
+    www: float3;
+    xx: float2;
+    xy: float2;
+    xz: float2;
+    xw: float2;
+    yx: float2;
+    yy: float2;
+    yz: float2;
+    yw: float2;
+    zx: float2;
+    zy: float2;
+    zz: float2;
+    zw: float2;
+    wx: float2;
+    wy: float2;
+    wz: float2;
+    ww: float2;
+    Item: number;
+
+
+    Equals(rhs: float4): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface float3 {
+    x: number;
+    y: number;
+    z: number;
+    xxxx: float4;
+    xxxy: float4;
+    xxxz: float4;
+    xxyx: float4;
+    xxyy: float4;
+    xxyz: float4;
+    xxzx: float4;
+    xxzy: float4;
+    xxzz: float4;
+    xyxx: float4;
+    xyxy: float4;
+    xyxz: float4;
+    xyyx: float4;
+    xyyy: float4;
+    xyyz: float4;
+    xyzx: float4;
+    xyzy: float4;
+    xyzz: float4;
+    xzxx: float4;
+    xzxy: float4;
+    xzxz: float4;
+    xzyx: float4;
+    xzyy: float4;
+    xzyz: float4;
+    xzzx: float4;
+    xzzy: float4;
+    xzzz: float4;
+    yxxx: float4;
+    yxxy: float4;
+    yxxz: float4;
+    yxyx: float4;
+    yxyy: float4;
+    yxyz: float4;
+    yxzx: float4;
+    yxzy: float4;
+    yxzz: float4;
+    yyxx: float4;
+    yyxy: float4;
+    yyxz: float4;
+    yyyx: float4;
+    yyyy: float4;
+    yyyz: float4;
+    yyzx: float4;
+    yyzy: float4;
+    yyzz: float4;
+    yzxx: float4;
+    yzxy: float4;
+    yzxz: float4;
+    yzyx: float4;
+    yzyy: float4;
+    yzyz: float4;
+    yzzx: float4;
+    yzzy: float4;
+    yzzz: float4;
+    zxxx: float4;
+    zxxy: float4;
+    zxxz: float4;
+    zxyx: float4;
+    zxyy: float4;
+    zxyz: float4;
+    zxzx: float4;
+    zxzy: float4;
+    zxzz: float4;
+    zyxx: float4;
+    zyxy: float4;
+    zyxz: float4;
+    zyyx: float4;
+    zyyy: float4;
+    zyyz: float4;
+    zyzx: float4;
+    zyzy: float4;
+    zyzz: float4;
+    zzxx: float4;
+    zzxy: float4;
+    zzxz: float4;
+    zzyx: float4;
+    zzyy: float4;
+    zzyz: float4;
+    zzzx: float4;
+    zzzy: float4;
+    zzzz: float4;
+    xxx: float3;
+    xxy: float3;
+    xxz: float3;
+    xyx: float3;
+    xyy: float3;
+    xyz: float3;
+    xzx: float3;
+    xzy: float3;
+    xzz: float3;
+    yxx: float3;
+    yxy: float3;
+    yxz: float3;
+    yyx: float3;
+    yyy: float3;
+    yyz: float3;
+    yzx: float3;
+    yzy: float3;
+    yzz: float3;
+    zxx: float3;
+    zxy: float3;
+    zxz: float3;
+    zyx: float3;
+    zyy: float3;
+    zyz: float3;
+    zzx: float3;
+    zzy: float3;
+    zzz: float3;
+    xx: float2;
+    xy: float2;
+    xz: float2;
+    yx: float2;
+    yy: float2;
+    yz: float2;
+    zx: float2;
+    zy: float2;
+    zz: float2;
+    Item: number;
+
+
+    Equals(rhs: float3): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface float3Constructor {
+    zero: float3;
+
+    new(x: number, y: number, z: number): float3;
+    new(x: number, yz: float2): float3;
+    new(xy: float2, z: number): float3;
+    new(xyz: float3): float3;
+    new(v: number): float3;
+    new(v: boolean): float3;
+    new(v: bool3): float3;
+    new(v: number): float3;
+    new(v: int3): float3;
+    new(v: number): float3;
+    new(v: uint3): float3;
+    new(v: half): float3;
+    new(v: half3): float3;
+    new(v: number): float3;
+    new(v: double3): float3;
+
+
+}
+declare const float3: float3Constructor;
+    
+interface float4Constructor {
+    zero: float4;
+
+    new(x: number, y: number, z: number, w: number): float4;
+    new(x: number, y: number, zw: float2): float4;
+    new(x: number, yz: float2, w: number): float4;
+    new(x: number, yzw: float3): float4;
+    new(xy: float2, z: number, w: number): float4;
+    new(xy: float2, zw: float2): float4;
+    new(xyz: float3, w: number): float4;
+    new(xyzw: float4): float4;
+    new(v: number): float4;
+    new(v: boolean): float4;
+    new(v: bool4): float4;
+    new(v: number): float4;
+    new(v: int4): float4;
+    new(v: number): float4;
+    new(v: uint4): float4;
+    new(v: half): float4;
+    new(v: half4): float4;
+    new(v: number): float4;
+    new(v: double4): float4;
+
+
+}
+declare const float4: float4Constructor;
+    
+interface float2Constructor {
+    zero: float2;
+
+    new(x: number, y: number): float2;
+    new(xy: float2): float2;
+    new(v: number): float2;
+    new(v: boolean): float2;
+    new(v: bool2): float2;
+    new(v: number): float2;
+    new(v: int2): float2;
+    new(v: number): float2;
+    new(v: uint2): float2;
+    new(v: half): float2;
+    new(v: half2): float2;
+    new(v: number): float2;
+    new(v: double2): float2;
+
+
+}
+declare const float2: float2Constructor;
+    
+interface float2x2 {
+    c0: float2;
+    c1: float2;
+    Item: unknown;
+
+
+    Equals(rhs: float2x2): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface float2x2Constructor {
+    identity: float2x2;
+    zero: float2x2;
+
+    new(c0: float2, c1: float2): float2x2;
+    new(m00: number, m01: number, m10: number, m11: number): float2x2;
+    new(v: number): float2x2;
+    new(v: boolean): float2x2;
+    new(v: bool2x2): float2x2;
+    new(v: number): float2x2;
+    new(v: int2x2): float2x2;
+    new(v: number): float2x2;
+    new(v: uint2x2): float2x2;
+    new(v: number): float2x2;
+    new(v: double2x2): float2x2;
+
+
+    Rotate(angle: number): float2x2;
+    Scale(s: number): float2x2;
+    Scale(x: number, y: number): float2x2;
+    Scale(v: float2): float2x2;
+}
+declare const float2x2: float2x2Constructor;
+    
+interface float2x3 {
+    c0: float2;
+    c1: float2;
+    c2: float2;
+    Item: unknown;
+
+
+    Equals(rhs: float2x3): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface float2x3Constructor {
+    zero: float2x3;
+
+    new(c0: float2, c1: float2, c2: float2): float2x3;
+    new(m00: number, m01: number, m02: number, m10: number, m11: number, m12: number): float2x3;
+    new(v: number): float2x3;
+    new(v: boolean): float2x3;
+    new(v: bool2x3): float2x3;
+    new(v: number): float2x3;
+    new(v: int2x3): float2x3;
+    new(v: number): float2x3;
+    new(v: uint2x3): float2x3;
+    new(v: number): float2x3;
+    new(v: double2x3): float2x3;
+
+
+}
+declare const float2x3: float2x3Constructor;
+    
+interface float2x4 {
+    c0: float2;
+    c1: float2;
+    c2: float2;
+    c3: float2;
+    Item: unknown;
+
+
+    Equals(rhs: float2x4): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface float2x4Constructor {
+    zero: float2x4;
+
+    new(c0: float2, c1: float2, c2: float2, c3: float2): float2x4;
+    new(m00: number, m01: number, m02: number, m03: number, m10: number, m11: number, m12: number, m13: number): float2x4;
+    new(v: number): float2x4;
+    new(v: boolean): float2x4;
+    new(v: bool2x4): float2x4;
+    new(v: number): float2x4;
+    new(v: int2x4): float2x4;
+    new(v: number): float2x4;
+    new(v: uint2x4): float2x4;
+    new(v: number): float2x4;
+    new(v: double2x4): float2x4;
+
+
+}
+declare const float2x4: float2x4Constructor;
+    
+interface float3x2 {
+    c0: float3;
+    c1: float3;
+    Item: unknown;
+
+
+    Equals(rhs: float3x2): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface float3x2Constructor {
+    zero: float3x2;
+
+    new(c0: float3, c1: float3): float3x2;
+    new(m00: number, m01: number, m10: number, m11: number, m20: number, m21: number): float3x2;
+    new(v: number): float3x2;
+    new(v: boolean): float3x2;
+    new(v: bool3x2): float3x2;
+    new(v: number): float3x2;
+    new(v: int3x2): float3x2;
+    new(v: number): float3x2;
+    new(v: uint3x2): float3x2;
+    new(v: number): float3x2;
+    new(v: double3x2): float3x2;
+
+
+}
+declare const float3x2: float3x2Constructor;
+    
+interface float3x3 {
+    c0: float3;
+    c1: float3;
+    c2: float3;
+    Item: unknown;
+
+
+    Equals(rhs: float3x3): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface float3x3Constructor {
+    identity: float3x3;
+    zero: float3x3;
+
+    new(c0: float3, c1: float3, c2: float3): float3x3;
+    new(m00: number, m01: number, m02: number, m10: number, m11: number, m12: number, m20: number, m21: number, m22: number): float3x3;
+    new(v: number): float3x3;
+    new(v: boolean): float3x3;
+    new(v: bool3x3): float3x3;
+    new(v: number): float3x3;
+    new(v: int3x3): float3x3;
+    new(v: number): float3x3;
+    new(v: uint3x3): float3x3;
+    new(v: number): float3x3;
+    new(v: double3x3): float3x3;
+    new(f4x4: float4x4): float3x3;
+    new(q: quaternion): float3x3;
+
+
+    AxisAngle(axis: float3, angle: number): float3x3;
+    Euler(xyz: float3, order: RotationOrder): float3x3;
+    Euler(x: number, y: number, z: number, order: RotationOrder): float3x3;
+    EulerXYZ(xyz: float3): float3x3;
+    EulerXYZ(x: number, y: number, z: number): float3x3;
+    EulerXZY(xyz: float3): float3x3;
+    EulerXZY(x: number, y: number, z: number): float3x3;
+    EulerYXZ(xyz: float3): float3x3;
+    EulerYXZ(x: number, y: number, z: number): float3x3;
+    EulerYZX(xyz: float3): float3x3;
+    EulerYZX(x: number, y: number, z: number): float3x3;
+    EulerZXY(xyz: float3): float3x3;
+    EulerZXY(x: number, y: number, z: number): float3x3;
+    EulerZYX(xyz: float3): float3x3;
+    EulerZYX(x: number, y: number, z: number): float3x3;
+    LookRotation(forward: float3, up: float3): float3x3;
+    LookRotationSafe(forward: float3, up: float3): float3x3;
+    RotateX(angle: number): float3x3;
+    RotateY(angle: number): float3x3;
+    RotateZ(angle: number): float3x3;
+    Scale(s: number): float3x3;
+    Scale(x: number, y: number, z: number): float3x3;
+    Scale(v: float3): float3x3;
+}
+declare const float3x3: float3x3Constructor;
+    
+interface float3x4 {
+    c0: float3;
+    c1: float3;
+    c2: float3;
+    c3: float3;
+    Item: unknown;
+
+
+    Equals(rhs: float3x4): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface float3x4Constructor {
+    zero: float3x4;
+
+    new(c0: float3, c1: float3, c2: float3, c3: float3): float3x4;
+    new(m00: number, m01: number, m02: number, m03: number, m10: number, m11: number, m12: number, m13: number, m20: number, m21: number, m22: number, m23: number): float3x4;
+    new(v: number): float3x4;
+    new(v: boolean): float3x4;
+    new(v: bool3x4): float3x4;
+    new(v: number): float3x4;
+    new(v: int3x4): float3x4;
+    new(v: number): float3x4;
+    new(v: uint3x4): float3x4;
+    new(v: number): float3x4;
+    new(v: double3x4): float3x4;
+
+
+}
+declare const float3x4: float3x4Constructor;
+    
+interface float4x2 {
+    c0: float4;
+    c1: float4;
+    Item: unknown;
+
+
+    Equals(rhs: float4x2): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface float4x2Constructor {
+    zero: float4x2;
+
+    new(c0: float4, c1: float4): float4x2;
+    new(m00: number, m01: number, m10: number, m11: number, m20: number, m21: number, m30: number, m31: number): float4x2;
+    new(v: number): float4x2;
+    new(v: boolean): float4x2;
+    new(v: bool4x2): float4x2;
+    new(v: number): float4x2;
+    new(v: int4x2): float4x2;
+    new(v: number): float4x2;
+    new(v: uint4x2): float4x2;
+    new(v: number): float4x2;
+    new(v: double4x2): float4x2;
+
+
+}
+declare const float4x2: float4x2Constructor;
+    
+interface float4x3 {
+    c0: float4;
+    c1: float4;
+    c2: float4;
+    Item: unknown;
+
+
+    Equals(rhs: float4x3): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface float4x3Constructor {
+    zero: float4x3;
+
+    new(c0: float4, c1: float4, c2: float4): float4x3;
+    new(m00: number, m01: number, m02: number, m10: number, m11: number, m12: number, m20: number, m21: number, m22: number, m30: number, m31: number, m32: number): float4x3;
+    new(v: number): float4x3;
+    new(v: boolean): float4x3;
+    new(v: bool4x3): float4x3;
+    new(v: number): float4x3;
+    new(v: int4x3): float4x3;
+    new(v: number): float4x3;
+    new(v: uint4x3): float4x3;
+    new(v: number): float4x3;
+    new(v: double4x3): float4x3;
+
+
+}
+declare const float4x3: float4x3Constructor;
+    
+interface float4x4 {
+    c0: float4;
+    c1: float4;
+    c2: float4;
+    c3: float4;
+    Item: unknown;
+
+
+    Equals(rhs: float4x4): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface quaternion {
+    value: float4;
+
+
+    Equals(x: quaternion): boolean;
+    Equals(x: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface quaternionConstructor {
+    identity: quaternion;
+
+    new(x: number, y: number, z: number, w: number): quaternion;
+    new(value: float4): quaternion;
+    new(m: float3x3): quaternion;
+    new(m: float4x4): quaternion;
+
+
+    AxisAngle(axis: float3, angle: number): quaternion;
+    Euler(xyz: float3, order: RotationOrder): quaternion;
+    Euler(x: number, y: number, z: number, order: RotationOrder): quaternion;
+    EulerXYZ(xyz: float3): quaternion;
+    EulerXYZ(x: number, y: number, z: number): quaternion;
+    EulerXZY(xyz: float3): quaternion;
+    EulerXZY(x: number, y: number, z: number): quaternion;
+    EulerYXZ(xyz: float3): quaternion;
+    EulerYXZ(x: number, y: number, z: number): quaternion;
+    EulerYZX(xyz: float3): quaternion;
+    EulerYZX(x: number, y: number, z: number): quaternion;
+    EulerZXY(xyz: float3): quaternion;
+    EulerZXY(x: number, y: number, z: number): quaternion;
+    EulerZYX(xyz: float3): quaternion;
+    EulerZYX(x: number, y: number, z: number): quaternion;
+    LookRotation(forward: float3, up: float3): quaternion;
+    LookRotationSafe(forward: float3, up: float3): quaternion;
+    RotateX(angle: number): quaternion;
+    RotateY(angle: number): quaternion;
+    RotateZ(angle: number): quaternion;
+}
+declare const quaternion: quaternionConstructor;
+    
+interface float4x4Constructor {
+    identity: float4x4;
+    zero: float4x4;
+
+    new(c0: float4, c1: float4, c2: float4, c3: float4): float4x4;
+    new(m00: number, m01: number, m02: number, m03: number, m10: number, m11: number, m12: number, m13: number, m20: number, m21: number, m22: number, m23: number, m30: number, m31: number, m32: number, m33: number): float4x4;
+    new(v: number): float4x4;
+    new(v: boolean): float4x4;
+    new(v: bool4x4): float4x4;
+    new(v: number): float4x4;
+    new(v: int4x4): float4x4;
+    new(v: number): float4x4;
+    new(v: uint4x4): float4x4;
+    new(v: number): float4x4;
+    new(v: double4x4): float4x4;
+    new(rotation: float3x3, translation: float3): float4x4;
+    new(rotation: quaternion, translation: float3): float4x4;
+    new(transform: RigidTransform): float4x4;
+
+
+    AxisAngle(axis: float3, angle: number): float4x4;
+    Euler(xyz: float3, order: RotationOrder): float4x4;
+    Euler(x: number, y: number, z: number, order: RotationOrder): float4x4;
+    EulerXYZ(xyz: float3): float4x4;
+    EulerXYZ(x: number, y: number, z: number): float4x4;
+    EulerXZY(xyz: float3): float4x4;
+    EulerXZY(x: number, y: number, z: number): float4x4;
+    EulerYXZ(xyz: float3): float4x4;
+    EulerYXZ(x: number, y: number, z: number): float4x4;
+    EulerYZX(xyz: float3): float4x4;
+    EulerYZX(x: number, y: number, z: number): float4x4;
+    EulerZXY(xyz: float3): float4x4;
+    EulerZXY(x: number, y: number, z: number): float4x4;
+    EulerZYX(xyz: float3): float4x4;
+    EulerZYX(x: number, y: number, z: number): float4x4;
+    LookAt(eye: float3, target: float3, up: float3): float4x4;
+    Ortho(width: number, height: number, near: number, far: number): float4x4;
+    OrthoOffCenter(left: number, right: number, bottom: number, top: number, near: number, far: number): float4x4;
+    PerspectiveFov(verticalFov: number, aspect: number, near: number, far: number): float4x4;
+    PerspectiveOffCenter(left: number, right: number, bottom: number, top: number, near: number, far: number): float4x4;
+    RotateX(angle: number): float4x4;
+    RotateY(angle: number): float4x4;
+    RotateZ(angle: number): float4x4;
+    Scale(s: number): float4x4;
+    Scale(x: number, y: number, z: number): float4x4;
+    Scale(scales: float3): float4x4;
+    Translate(vector: float3): float4x4;
+    TRS(translation: float3, rotation: quaternion, scale: float3): float4x4;
+}
+declare const float4x4: float4x4Constructor;
+    
+interface half {
+    value: number;
+
+
+    Equals(rhs: half): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface halfConstructor {
+    zero: half;
+    MaxValue: number;
+    MinValue: number;
+    MaxValueAsHalf: half;
+    MinValueAsHalf: half;
+
+    new(x: half): half;
+    new(v: number): half;
+    new(v: number): half;
+
+
+}
+declare const half: halfConstructor;
+    
+interface half2 {
+    x: half;
+    y: half;
+    xxxx: half4;
+    xxxy: half4;
+    xxyx: half4;
+    xxyy: half4;
+    xyxx: half4;
+    xyxy: half4;
+    xyyx: half4;
+    xyyy: half4;
+    yxxx: half4;
+    yxxy: half4;
+    yxyx: half4;
+    yxyy: half4;
+    yyxx: half4;
+    yyxy: half4;
+    yyyx: half4;
+    yyyy: half4;
+    xxx: half3;
+    xxy: half3;
+    xyx: half3;
+    xyy: half3;
+    yxx: half3;
+    yxy: half3;
+    yyx: half3;
+    yyy: half3;
+    xx: half2;
+    xy: half2;
+    yx: half2;
+    yy: half2;
+    Item: half;
+
+
+    Equals(rhs: half2): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface half4 {
+    x: half;
+    y: half;
+    z: half;
+    w: half;
+    xxxx: half4;
+    xxxy: half4;
+    xxxz: half4;
+    xxxw: half4;
+    xxyx: half4;
+    xxyy: half4;
+    xxyz: half4;
+    xxyw: half4;
+    xxzx: half4;
+    xxzy: half4;
+    xxzz: half4;
+    xxzw: half4;
+    xxwx: half4;
+    xxwy: half4;
+    xxwz: half4;
+    xxww: half4;
+    xyxx: half4;
+    xyxy: half4;
+    xyxz: half4;
+    xyxw: half4;
+    xyyx: half4;
+    xyyy: half4;
+    xyyz: half4;
+    xyyw: half4;
+    xyzx: half4;
+    xyzy: half4;
+    xyzz: half4;
+    xyzw: half4;
+    xywx: half4;
+    xywy: half4;
+    xywz: half4;
+    xyww: half4;
+    xzxx: half4;
+    xzxy: half4;
+    xzxz: half4;
+    xzxw: half4;
+    xzyx: half4;
+    xzyy: half4;
+    xzyz: half4;
+    xzyw: half4;
+    xzzx: half4;
+    xzzy: half4;
+    xzzz: half4;
+    xzzw: half4;
+    xzwx: half4;
+    xzwy: half4;
+    xzwz: half4;
+    xzww: half4;
+    xwxx: half4;
+    xwxy: half4;
+    xwxz: half4;
+    xwxw: half4;
+    xwyx: half4;
+    xwyy: half4;
+    xwyz: half4;
+    xwyw: half4;
+    xwzx: half4;
+    xwzy: half4;
+    xwzz: half4;
+    xwzw: half4;
+    xwwx: half4;
+    xwwy: half4;
+    xwwz: half4;
+    xwww: half4;
+    yxxx: half4;
+    yxxy: half4;
+    yxxz: half4;
+    yxxw: half4;
+    yxyx: half4;
+    yxyy: half4;
+    yxyz: half4;
+    yxyw: half4;
+    yxzx: half4;
+    yxzy: half4;
+    yxzz: half4;
+    yxzw: half4;
+    yxwx: half4;
+    yxwy: half4;
+    yxwz: half4;
+    yxww: half4;
+    yyxx: half4;
+    yyxy: half4;
+    yyxz: half4;
+    yyxw: half4;
+    yyyx: half4;
+    yyyy: half4;
+    yyyz: half4;
+    yyyw: half4;
+    yyzx: half4;
+    yyzy: half4;
+    yyzz: half4;
+    yyzw: half4;
+    yywx: half4;
+    yywy: half4;
+    yywz: half4;
+    yyww: half4;
+    yzxx: half4;
+    yzxy: half4;
+    yzxz: half4;
+    yzxw: half4;
+    yzyx: half4;
+    yzyy: half4;
+    yzyz: half4;
+    yzyw: half4;
+    yzzx: half4;
+    yzzy: half4;
+    yzzz: half4;
+    yzzw: half4;
+    yzwx: half4;
+    yzwy: half4;
+    yzwz: half4;
+    yzww: half4;
+    ywxx: half4;
+    ywxy: half4;
+    ywxz: half4;
+    ywxw: half4;
+    ywyx: half4;
+    ywyy: half4;
+    ywyz: half4;
+    ywyw: half4;
+    ywzx: half4;
+    ywzy: half4;
+    ywzz: half4;
+    ywzw: half4;
+    ywwx: half4;
+    ywwy: half4;
+    ywwz: half4;
+    ywww: half4;
+    zxxx: half4;
+    zxxy: half4;
+    zxxz: half4;
+    zxxw: half4;
+    zxyx: half4;
+    zxyy: half4;
+    zxyz: half4;
+    zxyw: half4;
+    zxzx: half4;
+    zxzy: half4;
+    zxzz: half4;
+    zxzw: half4;
+    zxwx: half4;
+    zxwy: half4;
+    zxwz: half4;
+    zxww: half4;
+    zyxx: half4;
+    zyxy: half4;
+    zyxz: half4;
+    zyxw: half4;
+    zyyx: half4;
+    zyyy: half4;
+    zyyz: half4;
+    zyyw: half4;
+    zyzx: half4;
+    zyzy: half4;
+    zyzz: half4;
+    zyzw: half4;
+    zywx: half4;
+    zywy: half4;
+    zywz: half4;
+    zyww: half4;
+    zzxx: half4;
+    zzxy: half4;
+    zzxz: half4;
+    zzxw: half4;
+    zzyx: half4;
+    zzyy: half4;
+    zzyz: half4;
+    zzyw: half4;
+    zzzx: half4;
+    zzzy: half4;
+    zzzz: half4;
+    zzzw: half4;
+    zzwx: half4;
+    zzwy: half4;
+    zzwz: half4;
+    zzww: half4;
+    zwxx: half4;
+    zwxy: half4;
+    zwxz: half4;
+    zwxw: half4;
+    zwyx: half4;
+    zwyy: half4;
+    zwyz: half4;
+    zwyw: half4;
+    zwzx: half4;
+    zwzy: half4;
+    zwzz: half4;
+    zwzw: half4;
+    zwwx: half4;
+    zwwy: half4;
+    zwwz: half4;
+    zwww: half4;
+    wxxx: half4;
+    wxxy: half4;
+    wxxz: half4;
+    wxxw: half4;
+    wxyx: half4;
+    wxyy: half4;
+    wxyz: half4;
+    wxyw: half4;
+    wxzx: half4;
+    wxzy: half4;
+    wxzz: half4;
+    wxzw: half4;
+    wxwx: half4;
+    wxwy: half4;
+    wxwz: half4;
+    wxww: half4;
+    wyxx: half4;
+    wyxy: half4;
+    wyxz: half4;
+    wyxw: half4;
+    wyyx: half4;
+    wyyy: half4;
+    wyyz: half4;
+    wyyw: half4;
+    wyzx: half4;
+    wyzy: half4;
+    wyzz: half4;
+    wyzw: half4;
+    wywx: half4;
+    wywy: half4;
+    wywz: half4;
+    wyww: half4;
+    wzxx: half4;
+    wzxy: half4;
+    wzxz: half4;
+    wzxw: half4;
+    wzyx: half4;
+    wzyy: half4;
+    wzyz: half4;
+    wzyw: half4;
+    wzzx: half4;
+    wzzy: half4;
+    wzzz: half4;
+    wzzw: half4;
+    wzwx: half4;
+    wzwy: half4;
+    wzwz: half4;
+    wzww: half4;
+    wwxx: half4;
+    wwxy: half4;
+    wwxz: half4;
+    wwxw: half4;
+    wwyx: half4;
+    wwyy: half4;
+    wwyz: half4;
+    wwyw: half4;
+    wwzx: half4;
+    wwzy: half4;
+    wwzz: half4;
+    wwzw: half4;
+    wwwx: half4;
+    wwwy: half4;
+    wwwz: half4;
+    wwww: half4;
+    xxx: half3;
+    xxy: half3;
+    xxz: half3;
+    xxw: half3;
+    xyx: half3;
+    xyy: half3;
+    xyz: half3;
+    xyw: half3;
+    xzx: half3;
+    xzy: half3;
+    xzz: half3;
+    xzw: half3;
+    xwx: half3;
+    xwy: half3;
+    xwz: half3;
+    xww: half3;
+    yxx: half3;
+    yxy: half3;
+    yxz: half3;
+    yxw: half3;
+    yyx: half3;
+    yyy: half3;
+    yyz: half3;
+    yyw: half3;
+    yzx: half3;
+    yzy: half3;
+    yzz: half3;
+    yzw: half3;
+    ywx: half3;
+    ywy: half3;
+    ywz: half3;
+    yww: half3;
+    zxx: half3;
+    zxy: half3;
+    zxz: half3;
+    zxw: half3;
+    zyx: half3;
+    zyy: half3;
+    zyz: half3;
+    zyw: half3;
+    zzx: half3;
+    zzy: half3;
+    zzz: half3;
+    zzw: half3;
+    zwx: half3;
+    zwy: half3;
+    zwz: half3;
+    zww: half3;
+    wxx: half3;
+    wxy: half3;
+    wxz: half3;
+    wxw: half3;
+    wyx: half3;
+    wyy: half3;
+    wyz: half3;
+    wyw: half3;
+    wzx: half3;
+    wzy: half3;
+    wzz: half3;
+    wzw: half3;
+    wwx: half3;
+    wwy: half3;
+    wwz: half3;
+    www: half3;
+    xx: half2;
+    xy: half2;
+    xz: half2;
+    xw: half2;
+    yx: half2;
+    yy: half2;
+    yz: half2;
+    yw: half2;
+    zx: half2;
+    zy: half2;
+    zz: half2;
+    zw: half2;
+    wx: half2;
+    wy: half2;
+    wz: half2;
+    ww: half2;
+    Item: half;
+
+
+    Equals(rhs: half4): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface half3 {
+    x: half;
+    y: half;
+    z: half;
+    xxxx: half4;
+    xxxy: half4;
+    xxxz: half4;
+    xxyx: half4;
+    xxyy: half4;
+    xxyz: half4;
+    xxzx: half4;
+    xxzy: half4;
+    xxzz: half4;
+    xyxx: half4;
+    xyxy: half4;
+    xyxz: half4;
+    xyyx: half4;
+    xyyy: half4;
+    xyyz: half4;
+    xyzx: half4;
+    xyzy: half4;
+    xyzz: half4;
+    xzxx: half4;
+    xzxy: half4;
+    xzxz: half4;
+    xzyx: half4;
+    xzyy: half4;
+    xzyz: half4;
+    xzzx: half4;
+    xzzy: half4;
+    xzzz: half4;
+    yxxx: half4;
+    yxxy: half4;
+    yxxz: half4;
+    yxyx: half4;
+    yxyy: half4;
+    yxyz: half4;
+    yxzx: half4;
+    yxzy: half4;
+    yxzz: half4;
+    yyxx: half4;
+    yyxy: half4;
+    yyxz: half4;
+    yyyx: half4;
+    yyyy: half4;
+    yyyz: half4;
+    yyzx: half4;
+    yyzy: half4;
+    yyzz: half4;
+    yzxx: half4;
+    yzxy: half4;
+    yzxz: half4;
+    yzyx: half4;
+    yzyy: half4;
+    yzyz: half4;
+    yzzx: half4;
+    yzzy: half4;
+    yzzz: half4;
+    zxxx: half4;
+    zxxy: half4;
+    zxxz: half4;
+    zxyx: half4;
+    zxyy: half4;
+    zxyz: half4;
+    zxzx: half4;
+    zxzy: half4;
+    zxzz: half4;
+    zyxx: half4;
+    zyxy: half4;
+    zyxz: half4;
+    zyyx: half4;
+    zyyy: half4;
+    zyyz: half4;
+    zyzx: half4;
+    zyzy: half4;
+    zyzz: half4;
+    zzxx: half4;
+    zzxy: half4;
+    zzxz: half4;
+    zzyx: half4;
+    zzyy: half4;
+    zzyz: half4;
+    zzzx: half4;
+    zzzy: half4;
+    zzzz: half4;
+    xxx: half3;
+    xxy: half3;
+    xxz: half3;
+    xyx: half3;
+    xyy: half3;
+    xyz: half3;
+    xzx: half3;
+    xzy: half3;
+    xzz: half3;
+    yxx: half3;
+    yxy: half3;
+    yxz: half3;
+    yyx: half3;
+    yyy: half3;
+    yyz: half3;
+    yzx: half3;
+    yzy: half3;
+    yzz: half3;
+    zxx: half3;
+    zxy: half3;
+    zxz: half3;
+    zyx: half3;
+    zyy: half3;
+    zyz: half3;
+    zzx: half3;
+    zzy: half3;
+    zzz: half3;
+    xx: half2;
+    xy: half2;
+    xz: half2;
+    yx: half2;
+    yy: half2;
+    yz: half2;
+    zx: half2;
+    zy: half2;
+    zz: half2;
+    Item: half;
+
+
+    Equals(rhs: half3): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface half3Constructor {
+    zero: half3;
+
+    new(x: half, y: half, z: half): half3;
+    new(x: half, yz: half2): half3;
+    new(xy: half2, z: half): half3;
+    new(xyz: half3): half3;
+    new(v: half): half3;
+    new(v: number): half3;
+    new(v: float3): half3;
+    new(v: number): half3;
+    new(v: double3): half3;
+
+
+}
+declare const half3: half3Constructor;
+    
+interface half4Constructor {
+    zero: half4;
+
+    new(x: half, y: half, z: half, w: half): half4;
+    new(x: half, y: half, zw: half2): half4;
+    new(x: half, yz: half2, w: half): half4;
+    new(x: half, yzw: half3): half4;
+    new(xy: half2, z: half, w: half): half4;
+    new(xy: half2, zw: half2): half4;
+    new(xyz: half3, w: half): half4;
+    new(xyzw: half4): half4;
+    new(v: half): half4;
+    new(v: number): half4;
+    new(v: float4): half4;
+    new(v: number): half4;
+    new(v: double4): half4;
+
+
+}
+declare const half4: half4Constructor;
+    
+interface half2Constructor {
+    zero: half2;
+
+    new(x: half, y: half): half2;
+    new(xy: half2): half2;
+    new(v: half): half2;
+    new(v: number): half2;
+    new(v: float2): half2;
+    new(v: number): half2;
+    new(v: double2): half2;
+
+
+}
+declare const half2: half2Constructor;
+    
+interface int2 {
+    x: number;
+    y: number;
+    xxxx: int4;
+    xxxy: int4;
+    xxyx: int4;
+    xxyy: int4;
+    xyxx: int4;
+    xyxy: int4;
+    xyyx: int4;
+    xyyy: int4;
+    yxxx: int4;
+    yxxy: int4;
+    yxyx: int4;
+    yxyy: int4;
+    yyxx: int4;
+    yyxy: int4;
+    yyyx: int4;
+    yyyy: int4;
+    xxx: int3;
+    xxy: int3;
+    xyx: int3;
+    xyy: int3;
+    yxx: int3;
+    yxy: int3;
+    yyx: int3;
+    yyy: int3;
+    xx: int2;
+    xy: int2;
+    yx: int2;
+    yy: int2;
+    Item: number;
+
+
+    Equals(rhs: int2): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface int4 {
+    x: number;
+    y: number;
+    z: number;
+    w: number;
+    xxxx: int4;
+    xxxy: int4;
+    xxxz: int4;
+    xxxw: int4;
+    xxyx: int4;
+    xxyy: int4;
+    xxyz: int4;
+    xxyw: int4;
+    xxzx: int4;
+    xxzy: int4;
+    xxzz: int4;
+    xxzw: int4;
+    xxwx: int4;
+    xxwy: int4;
+    xxwz: int4;
+    xxww: int4;
+    xyxx: int4;
+    xyxy: int4;
+    xyxz: int4;
+    xyxw: int4;
+    xyyx: int4;
+    xyyy: int4;
+    xyyz: int4;
+    xyyw: int4;
+    xyzx: int4;
+    xyzy: int4;
+    xyzz: int4;
+    xyzw: int4;
+    xywx: int4;
+    xywy: int4;
+    xywz: int4;
+    xyww: int4;
+    xzxx: int4;
+    xzxy: int4;
+    xzxz: int4;
+    xzxw: int4;
+    xzyx: int4;
+    xzyy: int4;
+    xzyz: int4;
+    xzyw: int4;
+    xzzx: int4;
+    xzzy: int4;
+    xzzz: int4;
+    xzzw: int4;
+    xzwx: int4;
+    xzwy: int4;
+    xzwz: int4;
+    xzww: int4;
+    xwxx: int4;
+    xwxy: int4;
+    xwxz: int4;
+    xwxw: int4;
+    xwyx: int4;
+    xwyy: int4;
+    xwyz: int4;
+    xwyw: int4;
+    xwzx: int4;
+    xwzy: int4;
+    xwzz: int4;
+    xwzw: int4;
+    xwwx: int4;
+    xwwy: int4;
+    xwwz: int4;
+    xwww: int4;
+    yxxx: int4;
+    yxxy: int4;
+    yxxz: int4;
+    yxxw: int4;
+    yxyx: int4;
+    yxyy: int4;
+    yxyz: int4;
+    yxyw: int4;
+    yxzx: int4;
+    yxzy: int4;
+    yxzz: int4;
+    yxzw: int4;
+    yxwx: int4;
+    yxwy: int4;
+    yxwz: int4;
+    yxww: int4;
+    yyxx: int4;
+    yyxy: int4;
+    yyxz: int4;
+    yyxw: int4;
+    yyyx: int4;
+    yyyy: int4;
+    yyyz: int4;
+    yyyw: int4;
+    yyzx: int4;
+    yyzy: int4;
+    yyzz: int4;
+    yyzw: int4;
+    yywx: int4;
+    yywy: int4;
+    yywz: int4;
+    yyww: int4;
+    yzxx: int4;
+    yzxy: int4;
+    yzxz: int4;
+    yzxw: int4;
+    yzyx: int4;
+    yzyy: int4;
+    yzyz: int4;
+    yzyw: int4;
+    yzzx: int4;
+    yzzy: int4;
+    yzzz: int4;
+    yzzw: int4;
+    yzwx: int4;
+    yzwy: int4;
+    yzwz: int4;
+    yzww: int4;
+    ywxx: int4;
+    ywxy: int4;
+    ywxz: int4;
+    ywxw: int4;
+    ywyx: int4;
+    ywyy: int4;
+    ywyz: int4;
+    ywyw: int4;
+    ywzx: int4;
+    ywzy: int4;
+    ywzz: int4;
+    ywzw: int4;
+    ywwx: int4;
+    ywwy: int4;
+    ywwz: int4;
+    ywww: int4;
+    zxxx: int4;
+    zxxy: int4;
+    zxxz: int4;
+    zxxw: int4;
+    zxyx: int4;
+    zxyy: int4;
+    zxyz: int4;
+    zxyw: int4;
+    zxzx: int4;
+    zxzy: int4;
+    zxzz: int4;
+    zxzw: int4;
+    zxwx: int4;
+    zxwy: int4;
+    zxwz: int4;
+    zxww: int4;
+    zyxx: int4;
+    zyxy: int4;
+    zyxz: int4;
+    zyxw: int4;
+    zyyx: int4;
+    zyyy: int4;
+    zyyz: int4;
+    zyyw: int4;
+    zyzx: int4;
+    zyzy: int4;
+    zyzz: int4;
+    zyzw: int4;
+    zywx: int4;
+    zywy: int4;
+    zywz: int4;
+    zyww: int4;
+    zzxx: int4;
+    zzxy: int4;
+    zzxz: int4;
+    zzxw: int4;
+    zzyx: int4;
+    zzyy: int4;
+    zzyz: int4;
+    zzyw: int4;
+    zzzx: int4;
+    zzzy: int4;
+    zzzz: int4;
+    zzzw: int4;
+    zzwx: int4;
+    zzwy: int4;
+    zzwz: int4;
+    zzww: int4;
+    zwxx: int4;
+    zwxy: int4;
+    zwxz: int4;
+    zwxw: int4;
+    zwyx: int4;
+    zwyy: int4;
+    zwyz: int4;
+    zwyw: int4;
+    zwzx: int4;
+    zwzy: int4;
+    zwzz: int4;
+    zwzw: int4;
+    zwwx: int4;
+    zwwy: int4;
+    zwwz: int4;
+    zwww: int4;
+    wxxx: int4;
+    wxxy: int4;
+    wxxz: int4;
+    wxxw: int4;
+    wxyx: int4;
+    wxyy: int4;
+    wxyz: int4;
+    wxyw: int4;
+    wxzx: int4;
+    wxzy: int4;
+    wxzz: int4;
+    wxzw: int4;
+    wxwx: int4;
+    wxwy: int4;
+    wxwz: int4;
+    wxww: int4;
+    wyxx: int4;
+    wyxy: int4;
+    wyxz: int4;
+    wyxw: int4;
+    wyyx: int4;
+    wyyy: int4;
+    wyyz: int4;
+    wyyw: int4;
+    wyzx: int4;
+    wyzy: int4;
+    wyzz: int4;
+    wyzw: int4;
+    wywx: int4;
+    wywy: int4;
+    wywz: int4;
+    wyww: int4;
+    wzxx: int4;
+    wzxy: int4;
+    wzxz: int4;
+    wzxw: int4;
+    wzyx: int4;
+    wzyy: int4;
+    wzyz: int4;
+    wzyw: int4;
+    wzzx: int4;
+    wzzy: int4;
+    wzzz: int4;
+    wzzw: int4;
+    wzwx: int4;
+    wzwy: int4;
+    wzwz: int4;
+    wzww: int4;
+    wwxx: int4;
+    wwxy: int4;
+    wwxz: int4;
+    wwxw: int4;
+    wwyx: int4;
+    wwyy: int4;
+    wwyz: int4;
+    wwyw: int4;
+    wwzx: int4;
+    wwzy: int4;
+    wwzz: int4;
+    wwzw: int4;
+    wwwx: int4;
+    wwwy: int4;
+    wwwz: int4;
+    wwww: int4;
+    xxx: int3;
+    xxy: int3;
+    xxz: int3;
+    xxw: int3;
+    xyx: int3;
+    xyy: int3;
+    xyz: int3;
+    xyw: int3;
+    xzx: int3;
+    xzy: int3;
+    xzz: int3;
+    xzw: int3;
+    xwx: int3;
+    xwy: int3;
+    xwz: int3;
+    xww: int3;
+    yxx: int3;
+    yxy: int3;
+    yxz: int3;
+    yxw: int3;
+    yyx: int3;
+    yyy: int3;
+    yyz: int3;
+    yyw: int3;
+    yzx: int3;
+    yzy: int3;
+    yzz: int3;
+    yzw: int3;
+    ywx: int3;
+    ywy: int3;
+    ywz: int3;
+    yww: int3;
+    zxx: int3;
+    zxy: int3;
+    zxz: int3;
+    zxw: int3;
+    zyx: int3;
+    zyy: int3;
+    zyz: int3;
+    zyw: int3;
+    zzx: int3;
+    zzy: int3;
+    zzz: int3;
+    zzw: int3;
+    zwx: int3;
+    zwy: int3;
+    zwz: int3;
+    zww: int3;
+    wxx: int3;
+    wxy: int3;
+    wxz: int3;
+    wxw: int3;
+    wyx: int3;
+    wyy: int3;
+    wyz: int3;
+    wyw: int3;
+    wzx: int3;
+    wzy: int3;
+    wzz: int3;
+    wzw: int3;
+    wwx: int3;
+    wwy: int3;
+    wwz: int3;
+    www: int3;
+    xx: int2;
+    xy: int2;
+    xz: int2;
+    xw: int2;
+    yx: int2;
+    yy: int2;
+    yz: int2;
+    yw: int2;
+    zx: int2;
+    zy: int2;
+    zz: int2;
+    zw: int2;
+    wx: int2;
+    wy: int2;
+    wz: int2;
+    ww: int2;
+    Item: number;
+
+
+    Equals(rhs: int4): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface int3 {
+    x: number;
+    y: number;
+    z: number;
+    xxxx: int4;
+    xxxy: int4;
+    xxxz: int4;
+    xxyx: int4;
+    xxyy: int4;
+    xxyz: int4;
+    xxzx: int4;
+    xxzy: int4;
+    xxzz: int4;
+    xyxx: int4;
+    xyxy: int4;
+    xyxz: int4;
+    xyyx: int4;
+    xyyy: int4;
+    xyyz: int4;
+    xyzx: int4;
+    xyzy: int4;
+    xyzz: int4;
+    xzxx: int4;
+    xzxy: int4;
+    xzxz: int4;
+    xzyx: int4;
+    xzyy: int4;
+    xzyz: int4;
+    xzzx: int4;
+    xzzy: int4;
+    xzzz: int4;
+    yxxx: int4;
+    yxxy: int4;
+    yxxz: int4;
+    yxyx: int4;
+    yxyy: int4;
+    yxyz: int4;
+    yxzx: int4;
+    yxzy: int4;
+    yxzz: int4;
+    yyxx: int4;
+    yyxy: int4;
+    yyxz: int4;
+    yyyx: int4;
+    yyyy: int4;
+    yyyz: int4;
+    yyzx: int4;
+    yyzy: int4;
+    yyzz: int4;
+    yzxx: int4;
+    yzxy: int4;
+    yzxz: int4;
+    yzyx: int4;
+    yzyy: int4;
+    yzyz: int4;
+    yzzx: int4;
+    yzzy: int4;
+    yzzz: int4;
+    zxxx: int4;
+    zxxy: int4;
+    zxxz: int4;
+    zxyx: int4;
+    zxyy: int4;
+    zxyz: int4;
+    zxzx: int4;
+    zxzy: int4;
+    zxzz: int4;
+    zyxx: int4;
+    zyxy: int4;
+    zyxz: int4;
+    zyyx: int4;
+    zyyy: int4;
+    zyyz: int4;
+    zyzx: int4;
+    zyzy: int4;
+    zyzz: int4;
+    zzxx: int4;
+    zzxy: int4;
+    zzxz: int4;
+    zzyx: int4;
+    zzyy: int4;
+    zzyz: int4;
+    zzzx: int4;
+    zzzy: int4;
+    zzzz: int4;
+    xxx: int3;
+    xxy: int3;
+    xxz: int3;
+    xyx: int3;
+    xyy: int3;
+    xyz: int3;
+    xzx: int3;
+    xzy: int3;
+    xzz: int3;
+    yxx: int3;
+    yxy: int3;
+    yxz: int3;
+    yyx: int3;
+    yyy: int3;
+    yyz: int3;
+    yzx: int3;
+    yzy: int3;
+    yzz: int3;
+    zxx: int3;
+    zxy: int3;
+    zxz: int3;
+    zyx: int3;
+    zyy: int3;
+    zyz: int3;
+    zzx: int3;
+    zzy: int3;
+    zzz: int3;
+    xx: int2;
+    xy: int2;
+    xz: int2;
+    yx: int2;
+    yy: int2;
+    yz: int2;
+    zx: int2;
+    zy: int2;
+    zz: int2;
+    Item: number;
+
+
+    Equals(rhs: int3): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface int3Constructor {
+    zero: int3;
+
+    new(x: number, y: number, z: number): int3;
+    new(x: number, yz: int2): int3;
+    new(xy: int2, z: number): int3;
+    new(xyz: int3): int3;
+    new(v: number): int3;
+    new(v: boolean): int3;
+    new(v: bool3): int3;
+    new(v: number): int3;
+    new(v: uint3): int3;
+    new(v: number): int3;
+    new(v: float3): int3;
+    new(v: number): int3;
+    new(v: double3): int3;
+
+
+}
+declare const int3: int3Constructor;
+    
+interface int4Constructor {
+    zero: int4;
+
+    new(x: number, y: number, z: number, w: number): int4;
+    new(x: number, y: number, zw: int2): int4;
+    new(x: number, yz: int2, w: number): int4;
+    new(x: number, yzw: int3): int4;
+    new(xy: int2, z: number, w: number): int4;
+    new(xy: int2, zw: int2): int4;
+    new(xyz: int3, w: number): int4;
+    new(xyzw: int4): int4;
+    new(v: number): int4;
+    new(v: boolean): int4;
+    new(v: bool4): int4;
+    new(v: number): int4;
+    new(v: uint4): int4;
+    new(v: number): int4;
+    new(v: float4): int4;
+    new(v: number): int4;
+    new(v: double4): int4;
+
+
+}
+declare const int4: int4Constructor;
+    
+interface int2Constructor {
+    zero: int2;
+
+    new(x: number, y: number): int2;
+    new(xy: int2): int2;
+    new(v: number): int2;
+    new(v: boolean): int2;
+    new(v: bool2): int2;
+    new(v: number): int2;
+    new(v: uint2): int2;
+    new(v: number): int2;
+    new(v: float2): int2;
+    new(v: number): int2;
+    new(v: double2): int2;
+
+
+}
+declare const int2: int2Constructor;
+    
+interface int2x2 {
+    c0: int2;
+    c1: int2;
+    Item: unknown;
+
+
+    Equals(rhs: int2x2): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface int2x2Constructor {
+    identity: int2x2;
+    zero: int2x2;
+
+    new(c0: int2, c1: int2): int2x2;
+    new(m00: number, m01: number, m10: number, m11: number): int2x2;
+    new(v: number): int2x2;
+    new(v: boolean): int2x2;
+    new(v: bool2x2): int2x2;
+    new(v: number): int2x2;
+    new(v: uint2x2): int2x2;
+    new(v: number): int2x2;
+    new(v: float2x2): int2x2;
+    new(v: number): int2x2;
+    new(v: double2x2): int2x2;
+
+
+}
+declare const int2x2: int2x2Constructor;
+    
+interface int2x3 {
+    c0: int2;
+    c1: int2;
+    c2: int2;
+    Item: unknown;
+
+
+    Equals(rhs: int2x3): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface int2x3Constructor {
+    zero: int2x3;
+
+    new(c0: int2, c1: int2, c2: int2): int2x3;
+    new(m00: number, m01: number, m02: number, m10: number, m11: number, m12: number): int2x3;
+    new(v: number): int2x3;
+    new(v: boolean): int2x3;
+    new(v: bool2x3): int2x3;
+    new(v: number): int2x3;
+    new(v: uint2x3): int2x3;
+    new(v: number): int2x3;
+    new(v: float2x3): int2x3;
+    new(v: number): int2x3;
+    new(v: double2x3): int2x3;
+
+
+}
+declare const int2x3: int2x3Constructor;
+    
+interface int2x4 {
+    c0: int2;
+    c1: int2;
+    c2: int2;
+    c3: int2;
+    Item: unknown;
+
+
+    Equals(rhs: int2x4): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface int2x4Constructor {
+    zero: int2x4;
+
+    new(c0: int2, c1: int2, c2: int2, c3: int2): int2x4;
+    new(m00: number, m01: number, m02: number, m03: number, m10: number, m11: number, m12: number, m13: number): int2x4;
+    new(v: number): int2x4;
+    new(v: boolean): int2x4;
+    new(v: bool2x4): int2x4;
+    new(v: number): int2x4;
+    new(v: uint2x4): int2x4;
+    new(v: number): int2x4;
+    new(v: float2x4): int2x4;
+    new(v: number): int2x4;
+    new(v: double2x4): int2x4;
+
+
+}
+declare const int2x4: int2x4Constructor;
+    
+interface int3x2 {
+    c0: int3;
+    c1: int3;
+    Item: unknown;
+
+
+    Equals(rhs: int3x2): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface int3x2Constructor {
+    zero: int3x2;
+
+    new(c0: int3, c1: int3): int3x2;
+    new(m00: number, m01: number, m10: number, m11: number, m20: number, m21: number): int3x2;
+    new(v: number): int3x2;
+    new(v: boolean): int3x2;
+    new(v: bool3x2): int3x2;
+    new(v: number): int3x2;
+    new(v: uint3x2): int3x2;
+    new(v: number): int3x2;
+    new(v: float3x2): int3x2;
+    new(v: number): int3x2;
+    new(v: double3x2): int3x2;
+
+
+}
+declare const int3x2: int3x2Constructor;
+    
+interface int3x3 {
+    c0: int3;
+    c1: int3;
+    c2: int3;
+    Item: unknown;
+
+
+    Equals(rhs: int3x3): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface int3x3Constructor {
+    identity: int3x3;
+    zero: int3x3;
+
+    new(c0: int3, c1: int3, c2: int3): int3x3;
+    new(m00: number, m01: number, m02: number, m10: number, m11: number, m12: number, m20: number, m21: number, m22: number): int3x3;
+    new(v: number): int3x3;
+    new(v: boolean): int3x3;
+    new(v: bool3x3): int3x3;
+    new(v: number): int3x3;
+    new(v: uint3x3): int3x3;
+    new(v: number): int3x3;
+    new(v: float3x3): int3x3;
+    new(v: number): int3x3;
+    new(v: double3x3): int3x3;
+
+
+}
+declare const int3x3: int3x3Constructor;
+    
+interface int3x4 {
+    c0: int3;
+    c1: int3;
+    c2: int3;
+    c3: int3;
+    Item: unknown;
+
+
+    Equals(rhs: int3x4): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface int3x4Constructor {
+    zero: int3x4;
+
+    new(c0: int3, c1: int3, c2: int3, c3: int3): int3x4;
+    new(m00: number, m01: number, m02: number, m03: number, m10: number, m11: number, m12: number, m13: number, m20: number, m21: number, m22: number, m23: number): int3x4;
+    new(v: number): int3x4;
+    new(v: boolean): int3x4;
+    new(v: bool3x4): int3x4;
+    new(v: number): int3x4;
+    new(v: uint3x4): int3x4;
+    new(v: number): int3x4;
+    new(v: float3x4): int3x4;
+    new(v: number): int3x4;
+    new(v: double3x4): int3x4;
+
+
+}
+declare const int3x4: int3x4Constructor;
+    
+interface int4x2 {
+    c0: int4;
+    c1: int4;
+    Item: unknown;
+
+
+    Equals(rhs: int4x2): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface int4x2Constructor {
+    zero: int4x2;
+
+    new(c0: int4, c1: int4): int4x2;
+    new(m00: number, m01: number, m10: number, m11: number, m20: number, m21: number, m30: number, m31: number): int4x2;
+    new(v: number): int4x2;
+    new(v: boolean): int4x2;
+    new(v: bool4x2): int4x2;
+    new(v: number): int4x2;
+    new(v: uint4x2): int4x2;
+    new(v: number): int4x2;
+    new(v: float4x2): int4x2;
+    new(v: number): int4x2;
+    new(v: double4x2): int4x2;
+
+
+}
+declare const int4x2: int4x2Constructor;
+    
+interface int4x3 {
+    c0: int4;
+    c1: int4;
+    c2: int4;
+    Item: unknown;
+
+
+    Equals(rhs: int4x3): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface int4x3Constructor {
+    zero: int4x3;
+
+    new(c0: int4, c1: int4, c2: int4): int4x3;
+    new(m00: number, m01: number, m02: number, m10: number, m11: number, m12: number, m20: number, m21: number, m22: number, m30: number, m31: number, m32: number): int4x3;
+    new(v: number): int4x3;
+    new(v: boolean): int4x3;
+    new(v: bool4x3): int4x3;
+    new(v: number): int4x3;
+    new(v: uint4x3): int4x3;
+    new(v: number): int4x3;
+    new(v: float4x3): int4x3;
+    new(v: number): int4x3;
+    new(v: double4x3): int4x3;
+
+
+}
+declare const int4x3: int4x3Constructor;
+    
+interface int4x4 {
+    c0: int4;
+    c1: int4;
+    c2: int4;
+    c3: int4;
+    Item: unknown;
+
+
+    Equals(rhs: int4x4): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface int4x4Constructor {
+    identity: int4x4;
+    zero: int4x4;
+
+    new(c0: int4, c1: int4, c2: int4, c3: int4): int4x4;
+    new(m00: number, m01: number, m02: number, m03: number, m10: number, m11: number, m12: number, m13: number, m20: number, m21: number, m22: number, m23: number, m30: number, m31: number, m32: number, m33: number): int4x4;
+    new(v: number): int4x4;
+    new(v: boolean): int4x4;
+    new(v: bool4x4): int4x4;
+    new(v: number): int4x4;
+    new(v: uint4x4): int4x4;
+    new(v: number): int4x4;
+    new(v: float4x4): int4x4;
+    new(v: number): int4x4;
+    new(v: double4x4): int4x4;
+
+
+}
+declare const int4x4: int4x4Constructor;
+    
+interface Random {
+    state: number;
+
+
+    InitState(seed: number): void;
+    NextBool(): boolean;
+    NextBool2(): bool2;
+    NextBool3(): bool3;
+    NextBool4(): bool4;
+    NextDouble(): number;
+    NextDouble(max: number): number;
+    NextDouble(min: number, max: number): number;
+    NextDouble2(): double2;
+    NextDouble2(max: double2): double2;
+    NextDouble2(min: double2, max: double2): double2;
+    NextDouble2Direction(): double2;
+    NextDouble3(): double3;
+    NextDouble3(max: double3): double3;
+    NextDouble3(min: double3, max: double3): double3;
+    NextDouble3Direction(): double3;
+    NextDouble4(): double4;
+    NextDouble4(max: double4): double4;
+    NextDouble4(min: double4, max: double4): double4;
+    NextFloat(): number;
+    NextFloat(max: number): number;
+    NextFloat(min: number, max: number): number;
+    NextFloat2(): float2;
+    NextFloat2(max: float2): float2;
+    NextFloat2(min: float2, max: float2): float2;
+    NextFloat2Direction(): float2;
+    NextFloat3(): float3;
+    NextFloat3(max: float3): float3;
+    NextFloat3(min: float3, max: float3): float3;
+    NextFloat3Direction(): float3;
+    NextFloat4(): float4;
+    NextFloat4(max: float4): float4;
+    NextFloat4(min: float4, max: float4): float4;
+    NextInt(): number;
+    NextInt(max: number): number;
+    NextInt(min: number, max: number): number;
+    NextInt2(): int2;
+    NextInt2(max: int2): int2;
+    NextInt2(min: int2, max: int2): int2;
+    NextInt3(): int3;
+    NextInt3(max: int3): int3;
+    NextInt3(min: int3, max: int3): int3;
+    NextInt4(): int4;
+    NextInt4(max: int4): int4;
+    NextInt4(min: int4, max: int4): int4;
+    NextQuaternionRotation(): quaternion;
+    NextUInt(): number;
+    NextUInt(max: number): number;
+    NextUInt(min: number, max: number): number;
+    NextUInt2(): uint2;
+    NextUInt2(max: uint2): uint2;
+    NextUInt2(min: uint2, max: uint2): uint2;
+    NextUInt3(): uint3;
+    NextUInt3(max: uint3): uint3;
+    NextUInt3(min: uint3, max: uint3): uint3;
+    NextUInt4(): uint4;
+    NextUInt4(max: uint4): uint4;
+    NextUInt4(min: uint4, max: uint4): uint4;
+
+}
+    
+interface uint2 {
+    x: number;
+    y: number;
+    xxxx: uint4;
+    xxxy: uint4;
+    xxyx: uint4;
+    xxyy: uint4;
+    xyxx: uint4;
+    xyxy: uint4;
+    xyyx: uint4;
+    xyyy: uint4;
+    yxxx: uint4;
+    yxxy: uint4;
+    yxyx: uint4;
+    yxyy: uint4;
+    yyxx: uint4;
+    yyxy: uint4;
+    yyyx: uint4;
+    yyyy: uint4;
+    xxx: uint3;
+    xxy: uint3;
+    xyx: uint3;
+    xyy: uint3;
+    yxx: uint3;
+    yxy: uint3;
+    yyx: uint3;
+    yyy: uint3;
+    xx: uint2;
+    xy: uint2;
+    yx: uint2;
+    yy: uint2;
+    Item: number;
+
+
+    Equals(rhs: uint2): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface uint4 {
+    x: number;
+    y: number;
+    z: number;
+    w: number;
+    xxxx: uint4;
+    xxxy: uint4;
+    xxxz: uint4;
+    xxxw: uint4;
+    xxyx: uint4;
+    xxyy: uint4;
+    xxyz: uint4;
+    xxyw: uint4;
+    xxzx: uint4;
+    xxzy: uint4;
+    xxzz: uint4;
+    xxzw: uint4;
+    xxwx: uint4;
+    xxwy: uint4;
+    xxwz: uint4;
+    xxww: uint4;
+    xyxx: uint4;
+    xyxy: uint4;
+    xyxz: uint4;
+    xyxw: uint4;
+    xyyx: uint4;
+    xyyy: uint4;
+    xyyz: uint4;
+    xyyw: uint4;
+    xyzx: uint4;
+    xyzy: uint4;
+    xyzz: uint4;
+    xyzw: uint4;
+    xywx: uint4;
+    xywy: uint4;
+    xywz: uint4;
+    xyww: uint4;
+    xzxx: uint4;
+    xzxy: uint4;
+    xzxz: uint4;
+    xzxw: uint4;
+    xzyx: uint4;
+    xzyy: uint4;
+    xzyz: uint4;
+    xzyw: uint4;
+    xzzx: uint4;
+    xzzy: uint4;
+    xzzz: uint4;
+    xzzw: uint4;
+    xzwx: uint4;
+    xzwy: uint4;
+    xzwz: uint4;
+    xzww: uint4;
+    xwxx: uint4;
+    xwxy: uint4;
+    xwxz: uint4;
+    xwxw: uint4;
+    xwyx: uint4;
+    xwyy: uint4;
+    xwyz: uint4;
+    xwyw: uint4;
+    xwzx: uint4;
+    xwzy: uint4;
+    xwzz: uint4;
+    xwzw: uint4;
+    xwwx: uint4;
+    xwwy: uint4;
+    xwwz: uint4;
+    xwww: uint4;
+    yxxx: uint4;
+    yxxy: uint4;
+    yxxz: uint4;
+    yxxw: uint4;
+    yxyx: uint4;
+    yxyy: uint4;
+    yxyz: uint4;
+    yxyw: uint4;
+    yxzx: uint4;
+    yxzy: uint4;
+    yxzz: uint4;
+    yxzw: uint4;
+    yxwx: uint4;
+    yxwy: uint4;
+    yxwz: uint4;
+    yxww: uint4;
+    yyxx: uint4;
+    yyxy: uint4;
+    yyxz: uint4;
+    yyxw: uint4;
+    yyyx: uint4;
+    yyyy: uint4;
+    yyyz: uint4;
+    yyyw: uint4;
+    yyzx: uint4;
+    yyzy: uint4;
+    yyzz: uint4;
+    yyzw: uint4;
+    yywx: uint4;
+    yywy: uint4;
+    yywz: uint4;
+    yyww: uint4;
+    yzxx: uint4;
+    yzxy: uint4;
+    yzxz: uint4;
+    yzxw: uint4;
+    yzyx: uint4;
+    yzyy: uint4;
+    yzyz: uint4;
+    yzyw: uint4;
+    yzzx: uint4;
+    yzzy: uint4;
+    yzzz: uint4;
+    yzzw: uint4;
+    yzwx: uint4;
+    yzwy: uint4;
+    yzwz: uint4;
+    yzww: uint4;
+    ywxx: uint4;
+    ywxy: uint4;
+    ywxz: uint4;
+    ywxw: uint4;
+    ywyx: uint4;
+    ywyy: uint4;
+    ywyz: uint4;
+    ywyw: uint4;
+    ywzx: uint4;
+    ywzy: uint4;
+    ywzz: uint4;
+    ywzw: uint4;
+    ywwx: uint4;
+    ywwy: uint4;
+    ywwz: uint4;
+    ywww: uint4;
+    zxxx: uint4;
+    zxxy: uint4;
+    zxxz: uint4;
+    zxxw: uint4;
+    zxyx: uint4;
+    zxyy: uint4;
+    zxyz: uint4;
+    zxyw: uint4;
+    zxzx: uint4;
+    zxzy: uint4;
+    zxzz: uint4;
+    zxzw: uint4;
+    zxwx: uint4;
+    zxwy: uint4;
+    zxwz: uint4;
+    zxww: uint4;
+    zyxx: uint4;
+    zyxy: uint4;
+    zyxz: uint4;
+    zyxw: uint4;
+    zyyx: uint4;
+    zyyy: uint4;
+    zyyz: uint4;
+    zyyw: uint4;
+    zyzx: uint4;
+    zyzy: uint4;
+    zyzz: uint4;
+    zyzw: uint4;
+    zywx: uint4;
+    zywy: uint4;
+    zywz: uint4;
+    zyww: uint4;
+    zzxx: uint4;
+    zzxy: uint4;
+    zzxz: uint4;
+    zzxw: uint4;
+    zzyx: uint4;
+    zzyy: uint4;
+    zzyz: uint4;
+    zzyw: uint4;
+    zzzx: uint4;
+    zzzy: uint4;
+    zzzz: uint4;
+    zzzw: uint4;
+    zzwx: uint4;
+    zzwy: uint4;
+    zzwz: uint4;
+    zzww: uint4;
+    zwxx: uint4;
+    zwxy: uint4;
+    zwxz: uint4;
+    zwxw: uint4;
+    zwyx: uint4;
+    zwyy: uint4;
+    zwyz: uint4;
+    zwyw: uint4;
+    zwzx: uint4;
+    zwzy: uint4;
+    zwzz: uint4;
+    zwzw: uint4;
+    zwwx: uint4;
+    zwwy: uint4;
+    zwwz: uint4;
+    zwww: uint4;
+    wxxx: uint4;
+    wxxy: uint4;
+    wxxz: uint4;
+    wxxw: uint4;
+    wxyx: uint4;
+    wxyy: uint4;
+    wxyz: uint4;
+    wxyw: uint4;
+    wxzx: uint4;
+    wxzy: uint4;
+    wxzz: uint4;
+    wxzw: uint4;
+    wxwx: uint4;
+    wxwy: uint4;
+    wxwz: uint4;
+    wxww: uint4;
+    wyxx: uint4;
+    wyxy: uint4;
+    wyxz: uint4;
+    wyxw: uint4;
+    wyyx: uint4;
+    wyyy: uint4;
+    wyyz: uint4;
+    wyyw: uint4;
+    wyzx: uint4;
+    wyzy: uint4;
+    wyzz: uint4;
+    wyzw: uint4;
+    wywx: uint4;
+    wywy: uint4;
+    wywz: uint4;
+    wyww: uint4;
+    wzxx: uint4;
+    wzxy: uint4;
+    wzxz: uint4;
+    wzxw: uint4;
+    wzyx: uint4;
+    wzyy: uint4;
+    wzyz: uint4;
+    wzyw: uint4;
+    wzzx: uint4;
+    wzzy: uint4;
+    wzzz: uint4;
+    wzzw: uint4;
+    wzwx: uint4;
+    wzwy: uint4;
+    wzwz: uint4;
+    wzww: uint4;
+    wwxx: uint4;
+    wwxy: uint4;
+    wwxz: uint4;
+    wwxw: uint4;
+    wwyx: uint4;
+    wwyy: uint4;
+    wwyz: uint4;
+    wwyw: uint4;
+    wwzx: uint4;
+    wwzy: uint4;
+    wwzz: uint4;
+    wwzw: uint4;
+    wwwx: uint4;
+    wwwy: uint4;
+    wwwz: uint4;
+    wwww: uint4;
+    xxx: uint3;
+    xxy: uint3;
+    xxz: uint3;
+    xxw: uint3;
+    xyx: uint3;
+    xyy: uint3;
+    xyz: uint3;
+    xyw: uint3;
+    xzx: uint3;
+    xzy: uint3;
+    xzz: uint3;
+    xzw: uint3;
+    xwx: uint3;
+    xwy: uint3;
+    xwz: uint3;
+    xww: uint3;
+    yxx: uint3;
+    yxy: uint3;
+    yxz: uint3;
+    yxw: uint3;
+    yyx: uint3;
+    yyy: uint3;
+    yyz: uint3;
+    yyw: uint3;
+    yzx: uint3;
+    yzy: uint3;
+    yzz: uint3;
+    yzw: uint3;
+    ywx: uint3;
+    ywy: uint3;
+    ywz: uint3;
+    yww: uint3;
+    zxx: uint3;
+    zxy: uint3;
+    zxz: uint3;
+    zxw: uint3;
+    zyx: uint3;
+    zyy: uint3;
+    zyz: uint3;
+    zyw: uint3;
+    zzx: uint3;
+    zzy: uint3;
+    zzz: uint3;
+    zzw: uint3;
+    zwx: uint3;
+    zwy: uint3;
+    zwz: uint3;
+    zww: uint3;
+    wxx: uint3;
+    wxy: uint3;
+    wxz: uint3;
+    wxw: uint3;
+    wyx: uint3;
+    wyy: uint3;
+    wyz: uint3;
+    wyw: uint3;
+    wzx: uint3;
+    wzy: uint3;
+    wzz: uint3;
+    wzw: uint3;
+    wwx: uint3;
+    wwy: uint3;
+    wwz: uint3;
+    www: uint3;
+    xx: uint2;
+    xy: uint2;
+    xz: uint2;
+    xw: uint2;
+    yx: uint2;
+    yy: uint2;
+    yz: uint2;
+    yw: uint2;
+    zx: uint2;
+    zy: uint2;
+    zz: uint2;
+    zw: uint2;
+    wx: uint2;
+    wy: uint2;
+    wz: uint2;
+    ww: uint2;
+    Item: number;
+
+
+    Equals(rhs: uint4): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface uint3 {
+    x: number;
+    y: number;
+    z: number;
+    xxxx: uint4;
+    xxxy: uint4;
+    xxxz: uint4;
+    xxyx: uint4;
+    xxyy: uint4;
+    xxyz: uint4;
+    xxzx: uint4;
+    xxzy: uint4;
+    xxzz: uint4;
+    xyxx: uint4;
+    xyxy: uint4;
+    xyxz: uint4;
+    xyyx: uint4;
+    xyyy: uint4;
+    xyyz: uint4;
+    xyzx: uint4;
+    xyzy: uint4;
+    xyzz: uint4;
+    xzxx: uint4;
+    xzxy: uint4;
+    xzxz: uint4;
+    xzyx: uint4;
+    xzyy: uint4;
+    xzyz: uint4;
+    xzzx: uint4;
+    xzzy: uint4;
+    xzzz: uint4;
+    yxxx: uint4;
+    yxxy: uint4;
+    yxxz: uint4;
+    yxyx: uint4;
+    yxyy: uint4;
+    yxyz: uint4;
+    yxzx: uint4;
+    yxzy: uint4;
+    yxzz: uint4;
+    yyxx: uint4;
+    yyxy: uint4;
+    yyxz: uint4;
+    yyyx: uint4;
+    yyyy: uint4;
+    yyyz: uint4;
+    yyzx: uint4;
+    yyzy: uint4;
+    yyzz: uint4;
+    yzxx: uint4;
+    yzxy: uint4;
+    yzxz: uint4;
+    yzyx: uint4;
+    yzyy: uint4;
+    yzyz: uint4;
+    yzzx: uint4;
+    yzzy: uint4;
+    yzzz: uint4;
+    zxxx: uint4;
+    zxxy: uint4;
+    zxxz: uint4;
+    zxyx: uint4;
+    zxyy: uint4;
+    zxyz: uint4;
+    zxzx: uint4;
+    zxzy: uint4;
+    zxzz: uint4;
+    zyxx: uint4;
+    zyxy: uint4;
+    zyxz: uint4;
+    zyyx: uint4;
+    zyyy: uint4;
+    zyyz: uint4;
+    zyzx: uint4;
+    zyzy: uint4;
+    zyzz: uint4;
+    zzxx: uint4;
+    zzxy: uint4;
+    zzxz: uint4;
+    zzyx: uint4;
+    zzyy: uint4;
+    zzyz: uint4;
+    zzzx: uint4;
+    zzzy: uint4;
+    zzzz: uint4;
+    xxx: uint3;
+    xxy: uint3;
+    xxz: uint3;
+    xyx: uint3;
+    xyy: uint3;
+    xyz: uint3;
+    xzx: uint3;
+    xzy: uint3;
+    xzz: uint3;
+    yxx: uint3;
+    yxy: uint3;
+    yxz: uint3;
+    yyx: uint3;
+    yyy: uint3;
+    yyz: uint3;
+    yzx: uint3;
+    yzy: uint3;
+    yzz: uint3;
+    zxx: uint3;
+    zxy: uint3;
+    zxz: uint3;
+    zyx: uint3;
+    zyy: uint3;
+    zyz: uint3;
+    zzx: uint3;
+    zzy: uint3;
+    zzz: uint3;
+    xx: uint2;
+    xy: uint2;
+    xz: uint2;
+    yx: uint2;
+    yy: uint2;
+    yz: uint2;
+    zx: uint2;
+    zy: uint2;
+    zz: uint2;
+    Item: number;
+
+
+    Equals(rhs: uint3): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface uint3Constructor {
+    zero: uint3;
+
+    new(x: number, y: number, z: number): uint3;
+    new(x: number, yz: uint2): uint3;
+    new(xy: uint2, z: number): uint3;
+    new(xyz: uint3): uint3;
+    new(v: number): uint3;
+    new(v: boolean): uint3;
+    new(v: bool3): uint3;
+    new(v: number): uint3;
+    new(v: int3): uint3;
+    new(v: number): uint3;
+    new(v: float3): uint3;
+    new(v: number): uint3;
+    new(v: double3): uint3;
+
+
+}
+declare const uint3: uint3Constructor;
+    
+interface uint4Constructor {
+    zero: uint4;
+
+    new(x: number, y: number, z: number, w: number): uint4;
+    new(x: number, y: number, zw: uint2): uint4;
+    new(x: number, yz: uint2, w: number): uint4;
+    new(x: number, yzw: uint3): uint4;
+    new(xy: uint2, z: number, w: number): uint4;
+    new(xy: uint2, zw: uint2): uint4;
+    new(xyz: uint3, w: number): uint4;
+    new(xyzw: uint4): uint4;
+    new(v: number): uint4;
+    new(v: boolean): uint4;
+    new(v: bool4): uint4;
+    new(v: number): uint4;
+    new(v: int4): uint4;
+    new(v: number): uint4;
+    new(v: float4): uint4;
+    new(v: number): uint4;
+    new(v: double4): uint4;
+
+
+}
+declare const uint4: uint4Constructor;
+    
+interface uint2Constructor {
+    zero: uint2;
+
+    new(x: number, y: number): uint2;
+    new(xy: uint2): uint2;
+    new(v: number): uint2;
+    new(v: boolean): uint2;
+    new(v: bool2): uint2;
+    new(v: number): uint2;
+    new(v: int2): uint2;
+    new(v: number): uint2;
+    new(v: float2): uint2;
+    new(v: number): uint2;
+    new(v: double2): uint2;
+
+
+}
+declare const uint2: uint2Constructor;
+    
+interface RandomConstructor {
+
+    new(seed: number): Random;
+
+
+    CreateFromIndex(index: number): Random;
+}
+declare const Random: RandomConstructor;
     
 interface Ray2D {
     origin: Vector2;
@@ -6867,6 +11833,358 @@ interface Ray2DConstructor {
 
 }
 declare const Ray2D: Ray2DConstructor;
+    
+interface RigidTransform {
+    rot: quaternion;
+    pos: float3;
+
+
+    Equals(x: RigidTransform): boolean;
+    Equals(x: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface RigidTransformConstructor {
+    identity: RigidTransform;
+
+    new(rotation: quaternion, translation: float3): RigidTransform;
+    new(rotation: float3x3, translation: float3): RigidTransform;
+    new(transform: float4x4): RigidTransform;
+
+
+    AxisAngle(axis: float3, angle: number): RigidTransform;
+    Euler(xyz: float3, order: RotationOrder): RigidTransform;
+    Euler(x: number, y: number, z: number, order: RotationOrder): RigidTransform;
+    EulerXYZ(xyz: float3): RigidTransform;
+    EulerXYZ(x: number, y: number, z: number): RigidTransform;
+    EulerXZY(xyz: float3): RigidTransform;
+    EulerXZY(x: number, y: number, z: number): RigidTransform;
+    EulerYXZ(xyz: float3): RigidTransform;
+    EulerYXZ(x: number, y: number, z: number): RigidTransform;
+    EulerYZX(xyz: float3): RigidTransform;
+    EulerYZX(x: number, y: number, z: number): RigidTransform;
+    EulerZXY(xyz: float3): RigidTransform;
+    EulerZXY(x: number, y: number, z: number): RigidTransform;
+    EulerZYX(xyz: float3): RigidTransform;
+    EulerZYX(x: number, y: number, z: number): RigidTransform;
+    RotateX(angle: number): RigidTransform;
+    RotateY(angle: number): RigidTransform;
+    RotateZ(angle: number): RigidTransform;
+    Translate(vector: float3): RigidTransform;
+}
+declare const RigidTransform: RigidTransformConstructor;
+    
+interface uint2x2 {
+    c0: uint2;
+    c1: uint2;
+    Item: unknown;
+
+
+    Equals(rhs: uint2x2): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface uint2x2Constructor {
+    identity: uint2x2;
+    zero: uint2x2;
+
+    new(c0: uint2, c1: uint2): uint2x2;
+    new(m00: number, m01: number, m10: number, m11: number): uint2x2;
+    new(v: number): uint2x2;
+    new(v: boolean): uint2x2;
+    new(v: bool2x2): uint2x2;
+    new(v: number): uint2x2;
+    new(v: int2x2): uint2x2;
+    new(v: number): uint2x2;
+    new(v: float2x2): uint2x2;
+    new(v: number): uint2x2;
+    new(v: double2x2): uint2x2;
+
+
+}
+declare const uint2x2: uint2x2Constructor;
+    
+interface uint2x3 {
+    c0: uint2;
+    c1: uint2;
+    c2: uint2;
+    Item: unknown;
+
+
+    Equals(rhs: uint2x3): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface uint2x3Constructor {
+    zero: uint2x3;
+
+    new(c0: uint2, c1: uint2, c2: uint2): uint2x3;
+    new(m00: number, m01: number, m02: number, m10: number, m11: number, m12: number): uint2x3;
+    new(v: number): uint2x3;
+    new(v: boolean): uint2x3;
+    new(v: bool2x3): uint2x3;
+    new(v: number): uint2x3;
+    new(v: int2x3): uint2x3;
+    new(v: number): uint2x3;
+    new(v: float2x3): uint2x3;
+    new(v: number): uint2x3;
+    new(v: double2x3): uint2x3;
+
+
+}
+declare const uint2x3: uint2x3Constructor;
+    
+interface uint2x4 {
+    c0: uint2;
+    c1: uint2;
+    c2: uint2;
+    c3: uint2;
+    Item: unknown;
+
+
+    Equals(rhs: uint2x4): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface uint2x4Constructor {
+    zero: uint2x4;
+
+    new(c0: uint2, c1: uint2, c2: uint2, c3: uint2): uint2x4;
+    new(m00: number, m01: number, m02: number, m03: number, m10: number, m11: number, m12: number, m13: number): uint2x4;
+    new(v: number): uint2x4;
+    new(v: boolean): uint2x4;
+    new(v: bool2x4): uint2x4;
+    new(v: number): uint2x4;
+    new(v: int2x4): uint2x4;
+    new(v: number): uint2x4;
+    new(v: float2x4): uint2x4;
+    new(v: number): uint2x4;
+    new(v: double2x4): uint2x4;
+
+
+}
+declare const uint2x4: uint2x4Constructor;
+    
+interface uint3x2 {
+    c0: uint3;
+    c1: uint3;
+    Item: unknown;
+
+
+    Equals(rhs: uint3x2): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface uint3x2Constructor {
+    zero: uint3x2;
+
+    new(c0: uint3, c1: uint3): uint3x2;
+    new(m00: number, m01: number, m10: number, m11: number, m20: number, m21: number): uint3x2;
+    new(v: number): uint3x2;
+    new(v: boolean): uint3x2;
+    new(v: bool3x2): uint3x2;
+    new(v: number): uint3x2;
+    new(v: int3x2): uint3x2;
+    new(v: number): uint3x2;
+    new(v: float3x2): uint3x2;
+    new(v: number): uint3x2;
+    new(v: double3x2): uint3x2;
+
+
+}
+declare const uint3x2: uint3x2Constructor;
+    
+interface uint3x3 {
+    c0: uint3;
+    c1: uint3;
+    c2: uint3;
+    Item: unknown;
+
+
+    Equals(rhs: uint3x3): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface uint3x3Constructor {
+    identity: uint3x3;
+    zero: uint3x3;
+
+    new(c0: uint3, c1: uint3, c2: uint3): uint3x3;
+    new(m00: number, m01: number, m02: number, m10: number, m11: number, m12: number, m20: number, m21: number, m22: number): uint3x3;
+    new(v: number): uint3x3;
+    new(v: boolean): uint3x3;
+    new(v: bool3x3): uint3x3;
+    new(v: number): uint3x3;
+    new(v: int3x3): uint3x3;
+    new(v: number): uint3x3;
+    new(v: float3x3): uint3x3;
+    new(v: number): uint3x3;
+    new(v: double3x3): uint3x3;
+
+
+}
+declare const uint3x3: uint3x3Constructor;
+    
+interface uint3x4 {
+    c0: uint3;
+    c1: uint3;
+    c2: uint3;
+    c3: uint3;
+    Item: unknown;
+
+
+    Equals(rhs: uint3x4): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface uint3x4Constructor {
+    zero: uint3x4;
+
+    new(c0: uint3, c1: uint3, c2: uint3, c3: uint3): uint3x4;
+    new(m00: number, m01: number, m02: number, m03: number, m10: number, m11: number, m12: number, m13: number, m20: number, m21: number, m22: number, m23: number): uint3x4;
+    new(v: number): uint3x4;
+    new(v: boolean): uint3x4;
+    new(v: bool3x4): uint3x4;
+    new(v: number): uint3x4;
+    new(v: int3x4): uint3x4;
+    new(v: number): uint3x4;
+    new(v: float3x4): uint3x4;
+    new(v: number): uint3x4;
+    new(v: double3x4): uint3x4;
+
+
+}
+declare const uint3x4: uint3x4Constructor;
+    
+interface uint4x2 {
+    c0: uint4;
+    c1: uint4;
+    Item: unknown;
+
+
+    Equals(rhs: uint4x2): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface uint4x2Constructor {
+    zero: uint4x2;
+
+    new(c0: uint4, c1: uint4): uint4x2;
+    new(m00: number, m01: number, m10: number, m11: number, m20: number, m21: number, m30: number, m31: number): uint4x2;
+    new(v: number): uint4x2;
+    new(v: boolean): uint4x2;
+    new(v: bool4x2): uint4x2;
+    new(v: number): uint4x2;
+    new(v: int4x2): uint4x2;
+    new(v: number): uint4x2;
+    new(v: float4x2): uint4x2;
+    new(v: number): uint4x2;
+    new(v: double4x2): uint4x2;
+
+
+}
+declare const uint4x2: uint4x2Constructor;
+    
+interface uint4x3 {
+    c0: uint4;
+    c1: uint4;
+    c2: uint4;
+    Item: unknown;
+
+
+    Equals(rhs: uint4x3): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface uint4x3Constructor {
+    zero: uint4x3;
+
+    new(c0: uint4, c1: uint4, c2: uint4): uint4x3;
+    new(m00: number, m01: number, m02: number, m10: number, m11: number, m12: number, m20: number, m21: number, m22: number, m30: number, m31: number, m32: number): uint4x3;
+    new(v: number): uint4x3;
+    new(v: boolean): uint4x3;
+    new(v: bool4x3): uint4x3;
+    new(v: number): uint4x3;
+    new(v: int4x3): uint4x3;
+    new(v: number): uint4x3;
+    new(v: float4x3): uint4x3;
+    new(v: number): uint4x3;
+    new(v: double4x3): uint4x3;
+
+
+}
+declare const uint4x3: uint4x3Constructor;
+    
+interface uint4x4 {
+    c0: uint4;
+    c1: uint4;
+    c2: uint4;
+    c3: uint4;
+    Item: unknown;
+
+
+    Equals(rhs: uint4x4): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: unknown): string;
+
+}
+    
+interface uint4x4Constructor {
+    identity: uint4x4;
+    zero: uint4x4;
+
+    new(c0: uint4, c1: uint4, c2: uint4, c3: uint4): uint4x4;
+    new(m00: number, m01: number, m02: number, m03: number, m10: number, m11: number, m12: number, m13: number, m20: number, m21: number, m22: number, m23: number, m30: number, m31: number, m32: number, m33: number): uint4x4;
+    new(v: number): uint4x4;
+    new(v: boolean): uint4x4;
+    new(v: bool4x4): uint4x4;
+    new(v: number): uint4x4;
+    new(v: int4x4): uint4x4;
+    new(v: number): uint4x4;
+    new(v: float4x4): uint4x4;
+    new(v: number): uint4x4;
+    new(v: double4x4): uint4x4;
+
+
+}
+declare const uint4x4: uint4x4Constructor;
     
     
     
@@ -7107,12 +12425,14 @@ interface TimeManager extends MonoBehaviour {
     LocalTick: number;
 
 
+    GetPhysicsTimeScale(): number;
     GetPreciseTick(tick: number): PreciseTick;
     GetPreciseTick(tickType: TickType): PreciseTick;
     GetTickPercentAsByte(): number;
     GetTickPercentAsDouble(): number;
     LocalTickToTick(localTick: number): number;
     SetPhysicsMode(mode: PhysicsMode): void;
+    SetPhysicsTimeScale(value: number): void;
     SetTickRate(value: number): void;
     TicksToTime(tickType: TickType): number;
     TicksToTime(pt: PreciseTick): number;
@@ -7509,13 +12829,16 @@ interface RollbackManager extends MonoBehaviour {
 
 
     Return(): void;
-    Rollback(pt: PreciseTick, physicsType: RollbackPhysicsType, asOwnerAndClientHost: boolean): void;
-    Rollback(scene: Scene, pt: PreciseTick, physicsType: RollbackPhysicsType, asOwnerAndClientHost: boolean): void;
-    Rollback(sceneHandle: number, pt: PreciseTick, physicsType: RollbackPhysicsType, asOwnerAndClientHost: boolean): void;
     Rollback(origin: Vector3, normalizedDirection: Vector3, distance: number, pt: PreciseTick, asOwnerAndClientHost: boolean): void;
     Rollback(scene: Scene, origin: Vector3, normalizedDirection: Vector3, distance: number, pt: PreciseTick, asOwnerAndClientHost: boolean): void;
     Rollback(sceneHandle: number, origin: Vector3, normalizedDirection: Vector3, distance: number, pt: PreciseTick, asOwnerAndClientHost: boolean): void;
+    Rollback(scene: Scene, origin: Vector2, normalizedDirection: Vector2, distance: number, pt: PreciseTick, asOwnerAndClientHost: boolean): void;
     Rollback(origin: Vector2, normalizedDirection: Vector2, distance: number, pt: PreciseTick, asOwnerAndClientHost: boolean): void;
+    Rollback(pt: PreciseTick, physicsType: RollbackPhysicsType, asOwnerAndClientHost: boolean): void;
+    Rollback(scene: Scene, pt: PreciseTick, physicsType: RollbackPhysicsType, asOwnerAndClientHost: boolean): void;
+    Rollback(sceneHandle: number, pt: PreciseTick, physicsType: RollbackPhysicsType, asOwnerAndClientHost: boolean): void;
+    Rollback(scene: Scene, origin: Vector3, normalizedDirection: Vector3, distance: number, pt: PreciseTick, physicsType: RollbackPhysicsType, asOwnerAndClientHost: boolean): void;
+    Rollback(sceneHandle: number, origin: Vector3, normalizedDirection: Vector3, distance: number, pt: PreciseTick, physicsType: RollbackPhysicsType, asOwnerAndClientHost: boolean): void;
 
 }
     
@@ -7549,6 +12872,18 @@ interface Reader {
     ReadArrayAllocated<T>(): CSArray<T>;
     ReadArraySegment(count: number): CSArray<number>;
     ReadArraySegmentAndSize(): CSArray<number>;
+    Readbool2(): bool2;
+    Readbool2x2(): bool2x2;
+    Readbool2x3(): bool2x3;
+    Readbool2x4(): bool2x4;
+    Readbool3(): bool3;
+    Readbool3x2(): bool3x2;
+    Readbool3x3(): bool3x3;
+    Readbool3x4(): bool3x4;
+    Readbool4(): bool4;
+    Readbool4x2(): bool4x2;
+    Readbool4x3(): bool4x3;
+    Readbool4x4(): bool4x4;
     ReadBoolean(): boolean;
     ReadByte(): number;
     ReadBytes(buffer: CSArray<number>, count: number): void;
@@ -7563,10 +12898,50 @@ interface Reader {
     ReadDecimal(): number;
     ReadDictionaryAllocated<TKey, TValue>(): CSDictionary<TKey, TValue>;
     ReadDouble(): number;
+    Readdouble2(): double2;
+    Readdouble2x2(): double2x2;
+    Readdouble2x3(): double2x3;
+    Readdouble2x4(): double2x4;
+    Readdouble3(): double3;
+    Readdouble3x2(): double3x2;
+    Readdouble3x3(): double3x3;
+    Readdouble3x4(): double3x4;
+    Readdouble4(): double4;
+    Readdouble4x2(): double4x2;
+    Readdouble4x3(): double4x3;
+    Readdouble4x4(): double4x4;
+    Readfloat2(): float2;
+    Readfloat2x2(): float2x2;
+    Readfloat2x3(): float2x3;
+    Readfloat2x4(): float2x4;
+    Readfloat3(): float3;
+    Readfloat3x2(): float3x2;
+    Readfloat3x3(): float3x3;
+    Readfloat3x4(): float3x4;
+    Readfloat4(): float4;
+    Readfloat4x2(): float4x2;
+    Readfloat4x3(): float4x3;
+    Readfloat4x4(): float4x4;
     ReadGameObject(): GameObject;
     ReadGuid(): unknown;
+    Readhalf(): half;
+    Readhalf2(): half2;
+    Readhalf3(): half3;
+    Readhalf4(): half4;
     ReadInt16(packType: AutoPackType): number;
+    Readint2(): int2;
+    Readint2x2(): int2x2;
+    Readint2x3(): int2x3;
+    Readint2x4(): int2x4;
+    Readint3(): int3;
     ReadInt32(packType: AutoPackType): number;
+    Readint3x2(): int3x2;
+    Readint3x3(): int3x3;
+    Readint3x4(): int3x4;
+    Readint4(): int4;
+    Readint4x2(): int4x2;
+    Readint4x3(): int4x3;
+    Readint4x4(): int4x4;
     ReadInt64(packType: AutoPackType): number;
     ReadLayerMask(): LayerMask;
     ReadList<T>(collection: CSArray<T>, allowNullification: boolean): number;
@@ -7581,17 +12956,32 @@ interface Reader {
     ReadNetworkObjectId(): number;
     ReadPackedWhole(): number;
     ReadPlane(): Plane;
+    Readquaternion(): quaternion;
     ReadQuaternion(packType: AutoPackType): Quaternion;
+    Readrandom(): Random;
     ReadRay(): Ray;
     ReadRay2D(): Ray2D;
     ReadRect(): Rect;
+    ReadRigidTransform(): RigidTransform;
     ReadSByte(): number;
     ReadSingle(packType: AutoPackType): number;
     ReadString(): string;
     ReadTickUnpacked(): number;
     ReadTransform(): Transform;
     ReadUInt16(packType: AutoPackType): number;
+    Readuint2(): uint2;
+    Readuint2x2(): uint2x2;
+    Readuint2x3(): uint2x3;
+    Readuint2x4(): uint2x4;
+    Readuint3(): uint3;
     ReadUInt32(packType: AutoPackType): number;
+    Readuint3x2(): uint3x2;
+    Readuint3x3(): uint3x3;
+    Readuint3x4(): uint3x4;
+    Readuint4(): uint4;
+    Readuint4x2(): uint4x2;
+    Readuint4x3(): uint4x3;
+    Readuint4x4(): uint4x4;
     ReadUInt64(packType: AutoPackType): number;
     ReadUnpacked<T>(): T;
     ReadVector2(): Vector2;
@@ -7743,13 +13133,30 @@ interface PredictedSpawnConstructor {
 }
 declare const PredictedSpawn: PredictedSpawnConstructor;
     
-interface IResettable {
+interface ChildTransformTickSmoother extends IResettable {
 
 
+    Deinitialize(): void;
+    Initialize(nob: NetworkObject, graphicalObject: Transform, detach: boolean, teleportDistance: number, tickDelta: number, ownerInterpolation: number, ownerSmoothedProperties: TransformPropertiesFlag, spectatorInterpolation: number, specatorSmoothedProperties: TransformPropertiesFlag, adaptiveInterpolation: AdaptiveInterpolationType): void;
     InitializeState(): void;
+    OnPostReplay(clientTick: number): void;
+    OnPostTick(clientTick: number): void;
+    OnPreReconcile(): void;
+    OnPreTick(): void;
     ResetState(): void;
+    SetAdaptiveInterpolation(adaptiveInterpolation: AdaptiveInterpolationType): void;
+    SetSmoothedProperties(value: TransformPropertiesFlag, forSpectator: boolean): void;
+    SetSpectatorInterpolation(value: number, disableAdaptiveInterpolation: boolean): void;
 
 }
+    
+interface ChildTransformTickSmootherConstructor {
+
+    new(): ChildTransformTickSmoother;
+
+
+}
+declare const ChildTransformTickSmoother: ChildTransformTickSmootherConstructor;
     
 interface RigidbodyPauser extends IResettable {
     Paused: boolean;
@@ -7936,6 +13343,7 @@ interface DualPrefab {
 }
     
 interface NetworkManagerConstructor {
+    FISHNET_VERSION: string;
     Instances: CSArray<NetworkManager>;
     EmptyConnection: NetworkConnection;
 
@@ -13818,6 +19226,7 @@ interface BundleLoadingScreen extends MonoBehaviour {
     showContinueButton: boolean;
 
 
+    SetError(msg: string): void;
     SetProgress(text: string, percent: number): void;
     SetTotalDownloadSize(sizeBytes: number): void;
 
@@ -16939,6 +22348,7 @@ interface BridgeConstructor {
     GetReservedRam(): number;
     GetScene(sceneName: string): Scene;
     GetVolume(): number;
+    HasMicrophonePermission(): boolean;
     IsFullScreen(): boolean;
     IsMicRecording(): boolean;
     LoadScene(sceneName: string, restartLuau: boolean): void;
@@ -16948,6 +22358,7 @@ interface BridgeConstructor {
     MakeVector2(x: number, y: number): Vector2;
     OpenDevConsole(): void;
     RemoveRichText(input: string): string;
+    RequestMicrophonePermissionAsync(): void;
     ScreenPointToLocalPointInRectangle(rectTransform: RectTransform, screenPoint: Vector2): Vector2;
     SetFullScreen(value: boolean): void;
     SetMicDeviceIndex(i: number): void;
@@ -22320,4 +27731,44 @@ interface GraphicsConstructor {
     WaitOnGPUFence(fence: GPUFence): void;
 }
 declare const Graphics: GraphicsConstructor;
+    
+interface StandaloneFileBrowser {
+
+
+
+}
+    
+interface ExtensionFilter {
+    Name: string;
+    Extensions: CSArray<string>;
+
+
+
+}
+    
+interface ExtensionFilterConstructor {
+
+    new(filterName: string, filterExtensions: CSArray<string>): ExtensionFilter;
+
+
+}
+declare const ExtensionFilter: ExtensionFilterConstructor;
+    
+interface StandaloneFileBrowserConstructor {
+
+    new(): StandaloneFileBrowser;
+
+
+    OpenFilePanel(title: string, directory: string, extension: string, multiselect: boolean): CSArray<string>;
+    OpenFilePanel(title: string, directory: string, extensions: CSArray<ExtensionFilter>, multiselect: boolean): CSArray<string>;
+    OpenFilePanelAsync(title: string, directory: string, extension: string, multiselect: boolean, cb: unknown): void;
+    OpenFilePanelAsync(title: string, directory: string, extensions: CSArray<ExtensionFilter>, multiselect: boolean, cb: unknown): void;
+    OpenFolderPanel(title: string, directory: string, multiselect: boolean): CSArray<string>;
+    OpenFolderPanelAsync(title: string, directory: string, multiselect: boolean, cb: unknown): void;
+    SaveFilePanel(title: string, directory: string, defaultName: string, extension: string): string;
+    SaveFilePanel(title: string, directory: string, defaultName: string, extensions: CSArray<ExtensionFilter>): string;
+    SaveFilePanelAsync(title: string, directory: string, defaultName: string, extension: string, cb: unknown): void;
+    SaveFilePanelAsync(title: string, directory: string, defaultName: string, extensions: CSArray<ExtensionFilter>, cb: unknown): void;
+}
+declare const StandaloneFileBrowser: StandaloneFileBrowserConstructor;
 

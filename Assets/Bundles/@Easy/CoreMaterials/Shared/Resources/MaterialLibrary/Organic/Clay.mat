@@ -117,6 +117,7 @@ Material:
     - DOUBLE_SIDED_NORMALS: 2
     - EMISSIVE: 0
     - EXPLICIT_MAPS: 1
+    - EXTRA_FEATURES: 0
     - INSTANCE_DATA: 0
     - METAL_ON: 1
     - NUM_LIGHTS: 0
@@ -137,6 +138,7 @@ Material:
     - _DstBlend: 0
     - _EXPLICIT_MAPS: 1
     - _Emissive: 0
+    - _EmissiveLevel: 0
     - _EmissiveMix: 1
     - _GlossMapScale: 1
     - _Glossiness: 0.5
@@ -153,7 +155,7 @@ Material:
     - _Parallax: 0.02
     - _RimIntensity: 1.45
     - _RimPower: 4.46
-    - _RoughOverride: 0.385
+    - _RoughOverride: 0.8
     - _SLIDER_OVERRIDE: 1
     - _SkyShineStrength: 0
     - _SliderOverrideMix: 0
