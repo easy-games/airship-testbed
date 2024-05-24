@@ -16,7 +16,7 @@
   "license": "ISC",
   "devDependencies": {
     "@easy-games/compiler-types": "^3.0.42",
-    "@easy-games/unity-flamework-transformer": "github:easy-games/unity-flamework-transformer#5a69f3435a49e598da3a0a4b1b1d63ca9ea0c894",
+    "@easy-games/unity-flamework-transformer": "github:easy-games/unity-flamework-transformer",
     "@easy-games/unity-ts": "^3.0.193",
     "@typescript-eslint/eslint-plugin": "^5.40.0",
     "@typescript-eslint/parser": "^5.40.0",
