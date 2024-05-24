@@ -4,7 +4,6 @@ import { Game } from "@Easy/Core/Shared/Game";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
-import { Task } from "@Easy/Core/Shared/Util/Task";
 import { DecodeJSON } from "@Easy/Core/Shared/json";
 import { AuthController } from "../Auth/AuthController";
 import { User } from "./User";
@@ -34,6 +33,7 @@ export class UserController implements OnStart {
 
 	public FetchLocalUser(): void {
 		const res = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/users/self`);
+		let success = false;
 		if (res.success) {
 			if (res.data.size() === 0 || res.data === "") {
 				let ignore = false;
@@ -65,9 +65,11 @@ export class UserController implements OnStart {
 		}
 
 		// retry
-		Task.Delay(1, () => {
-			this.FetchLocalUser();
-		});
+		if (!success) {
+			task.delay(1, () => {
+				this.FetchLocalUser();
+			});
+		}
 	}
 
 	public WaitForLocalUserReady(): void {
