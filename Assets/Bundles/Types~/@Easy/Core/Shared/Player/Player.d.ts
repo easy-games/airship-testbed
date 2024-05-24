@@ -95,7 +95,7 @@ export declare class Player {
      * @returns
      */
     SpawnCharacter(position: Vector3, config?: {
-        lookDirection?: Vector3;
+        lookDirection?: Quaternion;
         customCharacterTemplate?: GameObject;
     }): Character;
     WaitForOutfitLoaded(timeout?: number): void;

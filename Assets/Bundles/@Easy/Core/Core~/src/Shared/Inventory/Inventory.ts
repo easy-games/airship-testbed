@@ -1,11 +1,11 @@
-import { CoreItemType } from "@Easy/Core/Shared/Item/CoreItemType";
-import Object from "@easy-games/unity-object-utils";
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
 import { ArmorType } from "@Easy/Core/Shared/Item/ArmorType";
+import { CoreItemType } from "@Easy/Core/Shared/Item/CoreItemType";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
+import Object from "@easy-games/unity-object-utils";
 import Character from "../Character/Character";
 import { ItemStack, ItemStackDto } from "./ItemStack";
 
@@ -42,6 +42,8 @@ export default class Inventory extends AirshipBehaviour {
 	@NonSerialized() private finishedInitialReplication = false;
 	@NonSerialized() private slotConnections = new Map<number, Bin>();
 
+	private observeHeldItemBins: Bin[] = [];
+
 	public OnEnable(): void {
 		if (this.networkObject.IsSpawned) {
 			this.id = this.networkObject.ObjectId;
@@ -67,6 +69,10 @@ export default class Inventory extends AirshipBehaviour {
 
 	public OnDisable(): void {
 		Airship.inventory.UnregisterInventory(this);
+		for (const bin of this.observeHeldItemBins) {
+			bin.Clean();
+		}
+		this.observeHeldItemBins.clear();
 	}
 
 	private RequestFullUpdate(): void {
@@ -91,6 +97,7 @@ export default class Inventory extends AirshipBehaviour {
 
 	public ObserveHeldItem(callback: (itemStack: ItemStack | undefined) => CleanupFunc): Bin {
 		const bin = new Bin();
+		this.observeHeldItemBins.push(bin);
 		let currentItemStack = this.items.get(this.heldSlot);
 		let cleanup = callback(currentItemStack);
 

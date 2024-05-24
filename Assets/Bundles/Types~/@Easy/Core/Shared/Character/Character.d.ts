@@ -43,7 +43,7 @@ export default class Character extends AirshipBehaviour {
      *
      * You can call it from the client only when using Client Authoratative characters.
      */
-    Teleport(pos: Vector3, lookDirection?: Vector3): void;
+    Teleport(pos: Vector3, lookDirection?: Quaternion): void;
     /**
      * Despawns this character.
      *
