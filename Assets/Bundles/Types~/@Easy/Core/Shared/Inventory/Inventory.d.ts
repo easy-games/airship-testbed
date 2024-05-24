@@ -1,7 +1,7 @@
 /// <reference types="compiler-types" />
 /// <reference types="compiler-types" />
-import { CoreItemType } from "../Item/CoreItemType";
 import { ArmorType } from "../Item/ArmorType";
+import { CoreItemType } from "../Item/CoreItemType";
 import { Bin } from "../Util/Bin";
 import { Signal } from "../Util/Signal";
 import { ItemStack, ItemStackDto } from "./ItemStack";
@@ -30,6 +30,7 @@ export default class Inventory extends AirshipBehaviour {
     readonly changed: Signal<void>;
     private finishedInitialReplication;
     private slotConnections;
+    private observeHeldItemBins;
     OnEnable(): void;
     OnDisable(): void;
     private RequestFullUpdate;
