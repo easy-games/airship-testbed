@@ -90,6 +90,6 @@ export class MainMenuSettingsUIController implements OnStart {
 	}
 
 	private PlaySelectSound() {
-		AudioManager.PlayGlobal("@Easy/Core/Shared/Resources/Sound/UI_Select.wav");
+		AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/UI_Select.wav");
 	}
 }

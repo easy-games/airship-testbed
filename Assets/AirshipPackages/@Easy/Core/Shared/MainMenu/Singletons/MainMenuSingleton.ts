@@ -25,7 +25,7 @@ export class MainMenuSingleton implements OnStart {
 
 	OnStart(): void {
 		const readOnlyCanvasGO = Object.Instantiate(
-			AssetCache.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/UI/AirshipReadOnlyCanvas.prefab"),
+			AssetCache.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/UI/AirshipReadOnlyCanvas.prefab"),
 			CoreRefs.rootTransform,
 		);
 		const canvasRect = readOnlyCanvasGO.transform as RectTransform;

@@ -1,14 +1,14 @@
 import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
-import PartyMember from "@Easy/Core/Shared/MainMenu/Components/PartyMember";
-import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
-import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { Controller, Dependency, OnStart } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import PartyMember from "@Easy/Core/Shared/MainMenu/Components/PartyMember";
 import { Result } from "@Easy/Core/Shared/Types/Result";
 import { CoreUI } from "@Easy/Core/Shared/UI/CoreUI";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
+import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
+import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { EncodeJSON } from "@Easy/Core/Shared/json";
 import { AuthController } from "../Auth/AuthController";
 import { MainMenuController } from "../MainMenuController";
@@ -23,7 +23,7 @@ export class MainMenuPartyController implements OnStart {
 	public onPartyUpdated = new Signal<[newParty: Party | undefined, oldParty: Party | undefined]>();
 
 	private partyMemberPrefab = AssetBridge.Instance.LoadAsset<GameObject>(
-		"@Easy/Core/Shared/Resources/Prefabs/UI/MainMenu/PartyMember.prefab",
+		"AirshipPackages/@Easy/Core/Prefabs/UI/MainMenu/PartyMember.prefab",
 	);
 
 	constructor(
@@ -63,7 +63,7 @@ export class MainMenuPartyController implements OnStart {
 					}
 				},
 			);
-			AudioManager.PlayGlobal("@Easy/Core/Shared/Resources/Sound/FriendRequest.wav");
+			AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/FriendRequest.wav");
 			if (Game.coreContext === CoreContext.GAME) {
 				Game.localPlayer.SendMessage(
 					ChatColor.Yellow(data.members[0].username) + ChatColor.Gray(" invited you to their party."),

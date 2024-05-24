@@ -9,7 +9,7 @@ export default class SocialFriendRequestsButtonComponent extends AirshipBehaviou
 		CanvasAPI.OnClickEvent(this.button.gameObject, () => {
 			const go = Object.Instantiate(
 				AssetBridge.Instance.LoadAsset(
-					"@Easy/Core/Shared/Resources/Prefabs/UI/MainMenu/FriendRequests/FriendRequestsModal.prefab",
+					"AirshipPackages/@Easy/Core/Prefabs/UI/MainMenu/FriendRequests/FriendRequestsModal.prefab",
 				),
 			);
 			const canvas = go.GetComponent<Canvas>()!;

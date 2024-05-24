@@ -8,7 +8,7 @@ export class CoreUIController implements OnStart {
 
 	constructor() {
 		this.coreUIGO = Object.Instantiate(
-			AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/UI/CoreUI.prefab"),
+			AssetBridge.Instance.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/UI/CoreUI.prefab"),
 			CoreRefs.protectedTransform,
 		);
 		this.coreUIGO.name = "CoreUI";

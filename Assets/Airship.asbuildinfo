@@ -2,12 +2,12 @@
 	"behaviours": {
 		"ClientScript": {
 			"component": true,
-			"filePath": "Shared/Demo/AirshipPlatformDemo/ClientScript.lua",
+			"filePath": "Code/AirshipPlatformDemo/ClientScript.lua",
 			"extends": []
 		},
 		"TestScript": {
 			"component": true,
-			"filePath": "Shared/Demo/AirshipPlatformDemo/ServerScript.lua",
+			"filePath": "Code/AirshipPlatformDemo/ServerScript.lua",
 			"extends": []
 		},
 		"Character": {
@@ -27,42 +27,37 @@
 		},
 		"PromptAboveBall": {
 			"component": true,
-			"filePath": "Shared/Demo/AirshipPlatformDemo/PromptAboveBall.lua",
+			"filePath": "Code/AirshipPlatformDemo/PromptAboveBall.lua",
 			"extends": []
 		},
 		"TopDownBattlePlayerSpawner": {
 			"component": true,
-			"filePath": "Shared/Demo/TopDownBattle/TopDownBattlePlayerSpawner.lua",
+			"filePath": "Code/TopDownBattle/TopDownBattlePlayerSpawner.lua",
 			"extends": []
 		},
 		"GameManager": {
 			"component": true,
-			"filePath": "Shared/Demo/TopDownScene/GameManager.lua",
+			"filePath": "Code/TopDownScene/GameManager.lua",
 			"extends": []
 		},
 		"DemoManager": {
 			"component": true,
-			"filePath": "Shared/Demo/AirshipPlatformDemo/DemoManager.lua",
+			"filePath": "Code/AirshipPlatformDemo/DemoManager.lua",
 			"extends": []
 		},
 		"TopDownBattleEnemySpawner": {
 			"component": true,
-			"filePath": "Shared/Demo/TopDownBattle/TopDownBattleEnemies/TopDownBattleEnemySpawner.lua",
+			"filePath": "Code/TopDownBattle/TopDownBattleEnemies/TopDownBattleEnemySpawner.lua",
 			"extends": []
 		},
 		"TopDownBattleGame": {
 			"component": true,
-			"filePath": "Shared/Demo/TopDownBattle/TopDownBattleGame.lua",
+			"filePath": "Code/TopDownBattle/TopDownBattleGame.lua",
 			"extends": []
 		},
 		"TopDownBattleEnemy": {
 			"component": true,
-			"filePath": "Shared/Demo/TopDownBattle/TopDownBattleEnemies/TopDownBattleEnemy.lua",
-			"extends": []
-		},
-		"TopDownBattleLevelGenerator": {
-			"component": true,
-			"filePath": "Shared/Demo/TopDownBattle/TopDownBattleLevelGenerator.lua",
+			"filePath": "Code/TopDownBattle/TopDownBattleEnemies/TopDownBattleEnemy.lua",
 			"extends": []
 		},
 		"SocialFriendRequestsButtonComponent": {
@@ -242,7 +237,7 @@
 		},
 		"TopDownBattleCameraComponent": {
 			"component": true,
-			"filePath": "Shared/Demo/TopDownBattle/TopDownBattleCameraComponent.lua",
+			"filePath": "Code/TopDownBattle/TopDownBattleCameraComponent.lua",
 			"extends": []
 		},
 		"CharacterConfigSetup": {
@@ -265,24 +260,14 @@
 			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Search/SearchResult.lua",
 			"extends": []
 		},
-		"SurvivalComponent": {
-			"component": true,
-			"filePath": "AirshipPackages/@Easy/Survival/Shared/SurvivalComponent.lua",
-			"extends": []
-		},
 		"CubeMover": {
 			"component": true,
-			"filePath": "Shared/Demo/AirshipPlatformDemo/CubeMover.lua",
-			"extends": []
-		},
-		"TagDemo": {
-			"component": true,
-			"filePath": "Shared/Demo/AirshipPlatformDemo/TagDemo.lua",
+			"filePath": "Code/AirshipPlatformDemo/CubeMover.lua",
 			"extends": []
 		},
 		"TopDownBattleCharacter": {
 			"component": true,
-			"filePath": "Shared/Demo/TopDownBattle/TopDownBattleCharacter.lua",
+			"filePath": "Code/TopDownBattle/TopDownBattleCharacter.lua",
 			"extends": []
 		},
 		"MobileCameraMovement": {
@@ -327,7 +312,7 @@
 		},
 		"Scoreboard": {
 			"component": true,
-			"filePath": "Shared/Demo/AirshipPlatformDemo/Scoreboard.lua",
+			"filePath": "Code/AirshipPlatformDemo/Scoreboard.lua",
 			"extends": []
 		},
 		"DeleteAccountButton": {
@@ -410,14 +395,19 @@
 			"filePath": "AirshipPackages/@Easy/Core/Shared/Item/ItemDefinition/ItemDefinitionComponent.lua",
 			"extends": []
 		},
+		"TopDownBattleLevelGenerator": {
+			"component": true,
+			"filePath": "Code/TopDownBattle/TopDownBattleLevelGenerator.lua",
+			"extends": []
+		},
 		"CubeSpinner": {
 			"component": true,
-			"filePath": "Shared/Demo/TopDownScene/CubeSpinner.lua",
+			"filePath": "Code/TopDownScene/CubeSpinner.lua",
 			"extends": []
 		},
 		"NetComponent": {
 			"component": true,
-			"filePath": "Shared/Demo/TopDownScene/NetComponent.lua",
+			"filePath": "Code/TopDownScene/NetComponent.lua",
 			"extends": []
 		}
 	},

@@ -36,12 +36,12 @@ export class AppManager {
 		let backgroundGO: GameObject;
 		if (Game.IsGameLuauContext()) {
 			backgroundGO = Object.Instantiate(
-				AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/AppManagerBackground.prefab"),
+				AssetBridge.Instance.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/AppManagerBackground.prefab"),
 				CoreRefs.rootTransform,
 			);
 		} else {
 			backgroundGO = Object.Instantiate(
-				AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/AppManagerBackground.prefab"),
+				AssetBridge.Instance.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/AppManagerBackground.prefab"),
 				CoreRefs.protectedTransform,
 			);
 		}
@@ -125,7 +125,7 @@ export class AppManager {
 		}
 
 		if (!config?.noOpenSound) {
-			AudioManager.PlayGlobal("@Easy/Core/Shared/Resources/Sound/UI_Open.wav", {
+			AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/UI_Open.wav", {
 				volumeScale: 0.4,
 			});
 		}
@@ -196,7 +196,7 @@ export class AppManager {
 		if (!this.opened) return;
 
 		if (!config?.noCloseSound) {
-			// AudioManager.PlayGlobal("@Easy/Core/Shared/Resources/Sound/UI_Close.wav");
+			// AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/UI_Close.wav");
 		}
 
 		if (this.stack.size() > 0) {

@@ -23,7 +23,7 @@ export class DamageIndicatorController implements OnStart {
 
 	constructor() {
 		const combatEffectsUI = Object.Instantiate<GameObject>(
-			AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/UI/Combat/CombatEffectsUI.prefab"),
+			AssetBridge.Instance.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/UI/Combat/CombatEffectsUI.prefab"),
 			CoreRefs.rootTransform,
 		);
 		this.combatEffectsCanvas = combatEffectsUI.GetComponent<Canvas>()!;
@@ -31,7 +31,7 @@ export class DamageIndicatorController implements OnStart {
 		this.hitMarkerImage = combatEffectsUI.transform.GetChild(0).GetComponent<Image>()!;
 		this.hitMarkerImage.enabled = false;
 		this.indicatorPrefab = AssetCache.LoadAsset(
-			"@Easy/Core/Shared/Resources/Prefabs/UI/Combat/DamageIndicator.prefab",
+			"AirshipPackages/@Easy/Core/Prefabs/UI/Combat/DamageIndicator.prefab",
 		);
 		this.indicatorPos = this.indicatorPrefab.GetComponent<RectTransform>()!.anchoredPosition;
 		// PoolManager.PreLoadPool(this.indicatorPrefab, 5);
@@ -39,10 +39,10 @@ export class DamageIndicatorController implements OnStart {
 
 	OnStart(): void {
 		// this.damageIndicatorObject = AssetBridge.Instance.LoadAsset("Client/Resources/Prefabs/DamageIndicator.prefab");
-		this.hitMarkerAudioClip = AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Sound/Hit_Health.ogg");
+		this.hitMarkerAudioClip = AssetBridge.Instance.LoadAsset("AirshipPackages/@Easy/Core/Sound/Hit_Health.ogg");
 		this.criticalHitAudioClips = [
-			AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Sound/Drone_Damage_01.ogg"),
-			AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Sound/Drone_Damage_02.ogg"),
+			AssetBridge.Instance.LoadAsset("AirshipPackages/@Easy/Core/Sound/Drone_Damage_01.ogg"),
+			AssetBridge.Instance.LoadAsset("AirshipPackages/@Easy/Core/Sound/Drone_Damage_02.ogg"),
 		];
 
 		Airship.damage.onDamage.Connect((event) => {
@@ -56,7 +56,7 @@ export class DamageIndicatorController implements OnStart {
 
 			// Damage taken sound
 			AudioManager.PlayAtPosition(
-				"@Easy/Core/Shared/Resources/Sound/Damage_Taken.wav",
+				"AirshipPackages/@Easy/Core/Sound/Damage_Taken.wav",
 				character.model.transform.position,
 				{
 					maxDistance: 50,
@@ -98,12 +98,12 @@ export class DamageIndicatorController implements OnStart {
 
 		// 			// PvP Kill
 		// 			// if (event.killer?.IsLocalCharacter() && event.killer !== event.entity) {
-		// 			// 	AudioManager.PlayGlobal("@Easy/Core/Shared/Resources/Sound/Player_Kill", { volumeScale: 0.12 });
+		// 			// 	AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/Player_Kill", { volumeScale: 0.12 });
 		// 			// }
 
 		// 			// // Local death
 		// 			// if (event.entity.IsLocalCharacter()) {
-		// 			// 	AudioManager.PlayGlobal("@Easy/Core/Shared/Resources/Sound/Death", {
+		// 			// 	AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/Death", {
 		// 			// 		volumeScale: 0.3,
 		// 			// 	});
 		// 			// }

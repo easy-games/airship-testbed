@@ -5,10 +5,10 @@ import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { RandomUtil } from "@Easy/Core/Shared/Util/RandomUtil";
 import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
+import { Game } from "../../Game";
 import { TimeUtil } from "../../Util/TimeUtil";
 import { ItemDef } from "../ItemDefinitionTypes";
 import { ItemUtil } from "../ItemUtil";
-import { Game } from "../../Game";
 
 export class HeldItem {
 	private readonly serverOffsetMargin = 0.025;
@@ -83,7 +83,7 @@ export class HeldItem {
 		//Play the equip sound
 		//TODO need to make bundles string accessible for when you dont know the exact bundle you are loading
 		if (this.itemMeta !== undefined) {
-			let equipPath = "@Easy/Core/Shared/Resources/Sound/Items/Equip/Equip_Generic.ogg";
+			let equipPath = "AirshipPackages/@Easy/Core/Sound/Items/Equip/Equip_Generic.ogg";
 			if (this.itemMeta.holdConfig?.equipSound) {
 				equipPath = RandomUtil.FromArray(this.itemMeta.holdConfig.equipSound);
 			}

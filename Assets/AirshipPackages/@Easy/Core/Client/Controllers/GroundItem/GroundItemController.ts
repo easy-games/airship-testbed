@@ -31,14 +31,14 @@ export class GroundItemController implements OnStart {
 	constructor() {
 		// this.groundItemsFolder = GameObject.Create("GroundItems");
 		this.groundItemsFolder = Object.Instantiate(
-			AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/GroundItems.prefab"),
+			AssetBridge.Instance.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/GroundItems.prefab"),
 			CoreRefs.rootTransform,
 		);
 		// this.offlineGroundItems = this.groundItemsFolder.GetComponent<OfflineGroundItems>()!;
-		this.groundItemPrefab = AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/GroundItem.prefab");
+		this.groundItemPrefab = AssetBridge.Instance.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/GroundItem.prefab");
 		// PoolManager.PreLoadPool(this.groundItemPrefab, 4);
 		this.fallbackDisplayObj = AssetBridge.Instance.LoadAsset(
-			"@Easy/Core/Shared/Resources/Prefabs/GroundItems/_fallback.prefab",
+			"AirshipPackages/@Easy/Core/Prefabs/GroundItems/_fallback.prefab",
 		);
 
 		ItemUtil.WaitForInitialized().then(() => {
