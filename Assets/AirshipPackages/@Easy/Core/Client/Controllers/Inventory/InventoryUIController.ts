@@ -52,7 +52,7 @@ export class InventoryUIController implements OnStart {
 		private readonly characterInvController: CharacterInventorySingleton,
 	) {
 		const go = Object.Instantiate(
-			AssetCache.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/UI/Inventory/Inventory.prefab"),
+			AssetCache.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/UI/Inventory/Inventory.prefab"),
 		);
 		go.transform.name = "Inventory";
 		this.hotbarCanvas = go.GetComponent<Canvas>()!;
@@ -63,7 +63,7 @@ export class InventoryUIController implements OnStart {
 		this.healthBar = new Healthbar(this.inventoryRefs.GetValue("UI", "HealthBarTransform"));
 
 		const backpackGo = Object.Instantiate(
-			AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/UI/Inventory/Backpack.prefab"),
+			AssetBridge.Instance.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/UI/Inventory/Backpack.prefab"),
 			CoreRefs.rootTransform,
 		);
 		this.backpackRefs = backpackGo.GetComponent<GameObjectReferences>()!;

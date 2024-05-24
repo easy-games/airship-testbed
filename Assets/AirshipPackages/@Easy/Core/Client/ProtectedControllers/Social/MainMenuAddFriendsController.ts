@@ -18,17 +18,14 @@ export class MainMenuAddFriendsController implements OnStart {
 	private canvas: Canvas | undefined;
 	private inputFieldSelected = false;
 
-	constructor(
-		private readonly authController: AuthController,
-		private readonly socketController: SocketController,
-	) {}
+	constructor(private readonly authController: AuthController, private readonly socketController: SocketController) {}
 
 	OnStart(): void {}
 
 	public Open(): void {
 		if (this.canvas === undefined) {
 			const go = Object.Instantiate(
-				AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/UI/MainMenu/AddFriends.prefab"),
+				AssetBridge.Instance.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/UI/MainMenu/AddFriends.prefab"),
 			);
 			this.canvas = go.GetComponent<Canvas>()!;
 			this.canvas.enabled = false;
@@ -82,7 +79,7 @@ export class MainMenuAddFriendsController implements OnStart {
 					this.sentRequests.add(username);
 					const sentRequestGo = GameObjectUtil.InstantiateIn(
 						AssetBridge.Instance.LoadAsset(
-							"@Easy/Core/Shared/Resources/Prefabs/UI/MainMenu/SentFriendRequest.prefab",
+							"AirshipPackages/@Easy/Core/Prefabs/UI/MainMenu/SentFriendRequest.prefab",
 						),
 						sentRequestsContent.transform,
 					);

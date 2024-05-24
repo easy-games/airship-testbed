@@ -1,5 +1,3 @@
-import { Bin } from "@Easy/Core/Shared/Util/Bin";
-import { OnFixedUpdate } from "@Easy/Core/Shared/Util/Timer";
 import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
 import { Controller, Dependency, OnStart } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
@@ -7,9 +5,11 @@ import { CoreUI } from "@Easy/Core/Shared/UI/CoreUI";
 import { Keyboard } from "@Easy/Core/Shared/UserInput";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
+import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import { SignalPriority } from "@Easy/Core/Shared/Util/Signal";
+import { OnFixedUpdate } from "@Easy/Core/Shared/Util/Timer";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 import { AuthController } from "../Auth/AuthController";
 import { UserController } from "../User/UserController";
@@ -33,7 +33,7 @@ export class ChangeUsernameController implements OnStart {
 
 	constructor(private readonly authController: AuthController) {
 		const go = Object.Instantiate(
-			AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/UI/MainMenu/ChangeUsername.prefab"),
+			AssetBridge.Instance.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/UI/MainMenu/ChangeUsername.prefab"),
 			CoreRefs.protectedTransform,
 		);
 		this.canvas = go.GetComponent<Canvas>()!;

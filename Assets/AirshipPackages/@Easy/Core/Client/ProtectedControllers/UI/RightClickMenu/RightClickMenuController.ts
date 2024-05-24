@@ -1,12 +1,12 @@
 import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
-import { Game } from "@Easy/Core/Shared/Game";
-import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
-import { Theme } from "@Easy/Core/Shared/Util/Theme";
 import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Game } from "@Easy/Core/Shared/Game";
 import { CoreUI } from "@Easy/Core/Shared/UI/CoreUI";
 import { Mouse } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI, HoverState } from "@Easy/Core/Shared/Util/CanvasAPI";
+import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
+import { Theme } from "@Easy/Core/Shared/Util/Theme";
 import { RightClickMenuButton } from "./RightClickMenuButton";
 
 @Controller({})
@@ -31,7 +31,7 @@ export class RightClickMenuController implements OnStart {
 		this.openedTime = Time.time;
 
 		const parentGo = Object.Instantiate(
-			AssetCache.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/UI/RightClickMenu/RightClickMenu.prefab"),
+			AssetCache.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/UI/RightClickMenu/RightClickMenu.prefab"),
 			canvas.transform,
 		);
 		const bgGo = parentGo.transform.GetChild(0).gameObject;
@@ -74,7 +74,7 @@ export class RightClickMenuController implements OnStart {
 		menuRect.transform.position = new Vector3(position.x, position.y, 0);
 
 		const buttonPrefab = AssetBridge.Instance.LoadAsset(
-			"@Easy/Core/Shared/Resources/Prefabs/UI/RightClickMenu/RightClickButton.prefab",
+			"AirshipPackages/@Easy/Core/Prefabs/UI/RightClickMenu/RightClickButton.prefab",
 		) as GameObject;
 
 		for (const button of buttons) {

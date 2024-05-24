@@ -15,7 +15,7 @@ import { CustomMoveData } from "./CustomMoveData";
 import { AirshipCharacterFootstepsSingleton } from "./Footstep/AirshipCharacterFootstepsSingleton";
 import { LocalCharacterSingleton } from "./LocalCharacter/LocalCharacterSingleton";
 
-const characterPrefab = AssetCache.LoadAsset("@Easy/Core/Shared/Resources/Character/AirshipCharacter.prefab");
+const characterPrefab = AssetCache.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/Character/AirshipCharacter.prefab");
 
 @Service()
 @Controller()
@@ -58,7 +58,6 @@ export class CharactersSingleton implements OnStart {
 		public readonly localCharacterManager: LocalCharacterSingleton,
 		public readonly footsteps: AirshipCharacterFootstepsSingleton,
 	) {
-		print("call constructor pls");
 		Airship.characters = this;
 	}
 

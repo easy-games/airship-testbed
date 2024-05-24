@@ -29,16 +29,16 @@ export enum ItemPlayMode {
 }
 
 // const EMPTY_ANIM = AssetCache.LoadAsset<AnimationClip>(
-// 	"@Easy/Core/Shared/Resources/Character/Animations/Airship_Empty.anim",
+// 	"AirshipPackages/@Easy/Core/Character/Animations/Airship_Empty.anim",
 // );
 // const DEFAULT_USE_FP = AssetCache.LoadAsset<AnimationClip>(
-// 	"@Easy/Core/Shared/Resources/Character/Animations/FP_Sword_Use.anim",
+// 	"AirshipPackages/@Easy/Core/Character/Animations/FP_Sword_Use.anim",
 // );
 // const BLOCK_IDLE_FP = AssetCache.LoadAsset<AnimationClip>(
-// 	"@Easy/Core/Shared/Resources/Character/Animations/FP_Block_Idle.anim",
+// 	"AirshipPackages/@Easy/Core/Character/Animations/FP_Block_Idle.anim",
 // );
 // const BLOCK_USE_FP = AssetCache.LoadAsset<AnimationClip>(
-// 	"@Easy/Core/Shared/Resources/Character/Animations/FP_Block_Place.anim",
+// 	"AirshipPackages/@Easy/Core/Character/Animations/FP_Block_Place.anim",
 // );
 
 export class CharacterAnimator {
@@ -49,16 +49,16 @@ export class CharacterAnimator {
 	private currentEndEventConnection = -1;
 
 	private defaultIdleItemAnimFP = AssetCache.LoadAsset<AnimationClip>(
-		"@Easy/Core/Shared/Resources/Character/Animations/FP_Item_Idle.anim",
+		"AirshipPackages/@Easy/Core/Prefabs/Character/Animations/FP_Item_Idle.anim",
 	);
 	private defaultIdleEmptyAnimFP = AssetCache.LoadAsset<AnimationClip>(
-		"@Easy/Core/Shared/Resources/Character/Animations/FP_Hands_Lowered.anim",
+		"AirshipPackages/@Easy/Core/Prefabs/Character/Animations/FP_Hands_Lowered.anim",
 	);
 	private defaultIdleAnimFPUnarmed = AssetCache.LoadAsset<AnimationClip>(
-		"@Easy/Core/Shared/Resources/Character/Animations/Airship_Empty.anim",
+		"AirshipPackages/@Easy/Core/Prefabs/Character/Animations/Airship_Empty.anim",
 	);
 	private defaultIdleAnimTP = AssetCache.LoadAsset<AnimationClip>(
-		"@Easy/Core/Shared/Resources/Character/Animations/Airship_Empty.anim",
+		"AirshipPackages/@Easy/Core/Prefabs/Character/Animations/Airship_Empty.anim",
 	);
 
 	private readonly flashTransitionDuration = 0.035;

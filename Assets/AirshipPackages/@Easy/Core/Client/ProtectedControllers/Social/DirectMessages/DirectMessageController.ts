@@ -1,13 +1,13 @@
 import { SocketController } from "@Easy/Core/Client/ProtectedControllers//Socket/SocketController";
 import { Airship } from "@Easy/Core/Shared/Airship";
-import DirectMessagesWindow from "@Easy/Core/Shared/MainMenu/Components/DirectMessagesWindow";
-import PartyChatButton from "@Easy/Core/Shared/MainMenu/Components/PartyChatButton";
-import { ClientChatSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/Chat/ClientChatSingleton";
 import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { Controller, Dependency, OnStart } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { GameObjectUtil } from "@Easy/Core/Shared/GameObject/GameObjectUtil";
+import DirectMessagesWindow from "@Easy/Core/Shared/MainMenu/Components/DirectMessagesWindow";
+import PartyChatButton from "@Easy/Core/Shared/MainMenu/Components/PartyChatButton";
+import { ClientChatSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/Chat/ClientChatSingleton";
 import { CoreUI } from "@Easy/Core/Shared/UI/CoreUI";
 import { Keyboard } from "@Easy/Core/Shared/UserInput";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
@@ -27,10 +27,10 @@ import { DirectMessage } from "./DirectMessage";
 @Controller({})
 export class DirectMessageController implements OnStart {
 	private incomingMessagePrefab = AssetBridge.Instance.LoadAsset(
-		"@Easy/Core/Shared/Resources/Prefabs/UI/Messages/IncomingMessage.prefab",
+		"AirshipPackages/@Easy/Core/Prefabs/UI/Messages/IncomingMessage.prefab",
 	) as GameObject;
 	private outgoingMessagePrefab = AssetBridge.Instance.LoadAsset(
-		"@Easy/Core/Shared/Resources/Prefabs/UI/Messages/OutgoingMessage.prefab",
+		"AirshipPackages/@Easy/Core/Prefabs/UI/Messages/OutgoingMessage.prefab",
 	) as GameObject;
 	private messagesMap = new Map<string, Array<DirectMessage>>();
 	private unreadMessageCounterMap = new Map<string, number>();
@@ -84,7 +84,7 @@ export class DirectMessageController implements OnStart {
 			this.onDirectMessageReceived.Fire(data);
 
 			// sound
-			AudioManager.PlayGlobal("@Easy/Core/Shared/Resources/Sound/MessageReceived.wav", {
+			AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/MessageReceived.wav", {
 				volumeScale: 0.3,
 			});
 
@@ -127,7 +127,7 @@ export class DirectMessageController implements OnStart {
 			}
 
 			// sound
-			AudioManager.PlayGlobal("@Easy/Core/Shared/Resources/Sound/MessageReceived.wav", {
+			AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/MessageReceived.wav", {
 				volumeScale: 0.3,
 			});
 
@@ -165,9 +165,7 @@ export class DirectMessageController implements OnStart {
 
 	public Setup(): void {
 		this.windowGo = GameObjectUtil.InstantiateIn(
-			AssetBridge.Instance.LoadAsset(
-				"@Easy/Core/Shared/Resources/Prefabs/UI/Messages/DirectMessageWindow.prefab",
-			),
+			AssetBridge.Instance.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/UI/Messages/DirectMessageWindow.prefab"),
 			this.mainMenuController.socialMenuGroup.transform,
 		);
 		this.windowGo.GetComponent<RectTransform>()!.anchoredPosition = new Vector2(this.xPos, this.yPos);
@@ -249,7 +247,7 @@ export class DirectMessageController implements OnStart {
 		const status = this.friendsController.GetFriendStatus(uid);
 		if (status === undefined) return;
 		if (status.status === "offline") {
-			AudioManager.PlayGlobal("@Easy/Core/Shared/Resources/Sound/UI_Error.wav");
+			AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/UI_Error.wav");
 			return;
 		}
 
@@ -269,7 +267,7 @@ export class DirectMessageController implements OnStart {
 		};
 		this.GetMessages(uid).push(sentMessage);
 		this.RenderChatMessage(sentMessage, true);
-		AudioManager.PlayGlobal("@Easy/Core/Shared/Resources/Sound/SendMessage.ogg", {
+		AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/SendMessage.ogg", {
 			volumeScale: 0.8,
 			pitch: 1.5,
 		});
@@ -299,7 +297,7 @@ export class DirectMessageController implements OnStart {
 		};
 		this.GetMessages("party").push(sentMessage);
 		this.RenderChatMessage(sentMessage, true, true);
-		AudioManager.PlayGlobal("@Easy/Core/Shared/Resources/Sound/SendMessage.ogg", {
+		AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/SendMessage.ogg", {
 			volumeScale: 0.8,
 			pitch: 1.5,
 		});

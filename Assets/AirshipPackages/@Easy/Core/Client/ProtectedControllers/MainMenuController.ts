@@ -1,10 +1,10 @@
-import HomePageComponent from "@Easy/Core/Shared/MainMenu/Components/HomePageComponent";
-import GameGeneralPage from "@Easy/Core/Shared/MainMenu/Components/Settings/General/GameGeneralPage";
-import SettingsPage from "@Easy/Core/Shared/MainMenu/Components/Settings/SettingsPage";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
 import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import HomePageComponent from "@Easy/Core/Shared/MainMenu/Components/HomePageComponent";
+import GameGeneralPage from "@Easy/Core/Shared/MainMenu/Components/Settings/General/GameGeneralPage";
+import SettingsPage from "@Easy/Core/Shared/MainMenu/Components/Settings/SettingsPage";
 import { Mouse } from "@Easy/Core/Shared/UserInput";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
@@ -37,7 +37,9 @@ export class MainMenuController implements OnStart {
 	private socialIsVisible = true;
 
 	constructor() {
-		const mainMenuPrefab = AssetBridge.Instance.LoadAsset("@Easy/Core/Client/Resources/MainMenu/MainMenu.prefab");
+		const mainMenuPrefab = AssetBridge.Instance.LoadAsset(
+			"Assets/AirshipPackages/@Easy/Core/Prefabs/MainMenu/MainMenu.prefab",
+		);
 		this.mainMenuGo = Object.Instantiate(mainMenuPrefab, CoreRefs.protectedTransform) as GameObject;
 		this.refs = this.mainMenuGo.GetComponent<GameObjectReferences>()!;
 		const wrapperGo = this.refs.GetValue("UI", "Wrapper");

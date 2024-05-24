@@ -2,7 +2,6 @@
  * Entry point for the Protected Context while in-game.
  * This is ran on both server and client.
  */
-print("MainMenuInGame");
 
 import { AvatarUtil } from "@Easy/Core/Shared/Avatar/AvatarUtil";
 import { Flamework } from "@Easy/Core/Shared/Flamework";

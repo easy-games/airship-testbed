@@ -29,10 +29,7 @@ class ChatMessageElement {
 	public shown = true;
 	private hideBin = new Bin();
 
-	constructor(
-		public readonly gameObject: GameObject,
-		public time: number,
-	) {
+	constructor(public readonly gameObject: GameObject, public time: number) {
 		this.canvasGroup = gameObject.GetComponent<CanvasGroup>()!;
 	}
 
@@ -139,7 +136,7 @@ export class ClientChatSingleton implements OnStart {
 			task.delay(0, () => {
 				const overlayCanvas = Object.Instantiate(
 					AssetCache.LoadAsset(
-						"@Easy/Core/Shared/Resources/Prefabs/UI/MobileControls/AirshipOverlayCanvas.prefab",
+						"AirshipPackages/@Easy/Core/Prefabs/UI/MobileControls/AirshipOverlayCanvas.prefab",
 					),
 					CoreRefs.protectedTransform,
 				);

@@ -17,7 +17,7 @@ export class ViewmodelController implements OnStart {
 
 	constructor() {
 		this.viewmodelGo = Object.Instantiate(
-			AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Character/CharacterViewmodel.prefab"),
+			AssetBridge.Instance.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/Character/CharacterViewmodel.prefab"),
 			CoreRefs.rootTransform,
 		);
 		this.viewmodelTransform = this.viewmodelGo.transform;
@@ -28,7 +28,7 @@ export class ViewmodelController implements OnStart {
 		this.animancer = rig.GetComponent<AnimancerComponent>()!;
 
 		const mask = AssetBridge.Instance.LoadAsset<AvatarMask>(
-			"@Easy/Core/Shared/Resources/Character/Animations/AvatarMask_Viewmodel.mask",
+			"AirshipPackages/@Easy/Core/Prefabs/Character/Animations/AvatarMask_Viewmodel.mask",
 		);
 		for (let i = 0; i <= 4; i++) {
 			this.animancer.Layers.SetMask(i, mask);
