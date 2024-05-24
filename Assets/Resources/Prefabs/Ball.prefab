@@ -54,6 +54,7 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
+    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!54 &3682544928945854770
 Rigidbody:
@@ -318,6 +319,7 @@ MonoBehaviour:
   - materialColor: {r: 0.36320752, g: 0.5581348, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
+    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!1001 &8421326446592406466
 PrefabInstance:
@@ -453,8 +455,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptFile: {fileID: 4996133961761139130, guid: 06cb9fa0651f2f34ab739ec348296682, type: 3}
-  m_fileFullPath: Assets/Shared/Demo/AirshipPlatformDemo/PromptAboveBall.lua
+  scriptFile: {fileID: -2386680410148366158, guid: 06cb9fa0651f2f34ab739ec348296682, type: 3}
+  m_fileFullPath: Assets/Code/AirshipPlatformDemo/PromptAboveBall.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
