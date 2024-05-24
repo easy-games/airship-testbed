@@ -6295,7 +6295,7 @@ MonoBehaviour:
   graphicTransform: {fileID: 3906567886165901999}
   moveData: {fileID: 1645000729044007242}
   animationHelper: {fileID: 903796914586745664}
-  mainCollider: {fileID: 0}
+  mainCollider: {fileID: 3569249470052007930}
   slopeVisualizer: {fileID: 473010626989301856}
   ticksUntilReconcile: 1
   interactWithPhysics: 1
@@ -6307,8 +6307,8 @@ MonoBehaviour:
   groundCollisionLayerMask:
     serializedVersion: 2
     m_Bits: 2305
-  drawDebugGizmos: 0
-  useExtraLogging: 0
+  drawDebugGizmos: 1
+  useExtraLogging: 1
   voxelWorld: {fileID: 0}
 --- !u!114 &1645000729044007242
 MonoBehaviour:
@@ -6592,7 +6592,7 @@ MonoBehaviour:
     X: 0
     Y: 0
     Z: 0
-  _synchronizeRotation: 1
+  _synchronizeRotation: 0
   _rotationSnapping:
     X: 1
     Y: 0
