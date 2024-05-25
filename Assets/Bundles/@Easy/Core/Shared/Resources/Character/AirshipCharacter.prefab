@@ -5197,7 +5197,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b4c67e2b57a298e4389ee3204f6d883b, type: 2}
+  - {fileID: 2100000, guid: 1ef0f374c922add4ea288b4df9b765e1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5763,7 +5763,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8119664724234704368}
   - component: {fileID: 2911094191388312299}
-  - component: {fileID: 6273415653783523656}
   m_Layer: 3
   m_Name: Body
   m_TagString: Untagged
@@ -5808,7 +5807,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9b1dff1dbc3703b4595ea2ee348062ec, type: 2}
+  - {fileID: 2100000, guid: a8a28a4ac0736e543b8ae503d5d16f3f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5864,24 +5863,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.00000014901161, y: -0.019463152, z: 0.84620667}
     m_Extent: {x: 0.7362758, y: 0.35384354, z: 0.9661521}
   m_DirtyAABB: 0
---- !u!114 &6273415653783523656
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7374121103104743358}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colorSettings:
-  - materialColor: {r: 0.8509804, g: 0.61960787, b: 0.44705883, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-    emissiveLevel: 0
-  addedByEditorScript: 1
 --- !u!1 &7387929036933538088
 GameObject:
   m_ObjectHideFlags: 0
@@ -6531,7 +6512,7 @@ MonoBehaviour:
   <SerializedRootNetworkBehaviour>k__BackingField: {fileID: 0}
   <NestedRootNetworkBehaviours>k__BackingField: []
   SerializedTransformProperties:
-    Position: {x: 0, y: 0, z: 0}
+    Position: {x: 0, y: 0, z: -1.38}
     Rotation: {x: 0, y: 0, z: 0, w: 1}
     LocalScale: {x: 1, y: 1, z: 1}
   _isNetworked: 1
@@ -6555,7 +6536,7 @@ MonoBehaviour:
   _teleportThreshold: 5
   <PrefabId>k__BackingField: 0
   <SpawnableCollectionId>k__BackingField: 1
-  _scenePathHash: 0
+  _scenePathHash: 70619830
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 15428013612131838016
 --- !u!114 &5420625271334097286
