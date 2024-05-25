@@ -142,7 +142,7 @@ export default class DemoManager extends AirshipBehaviour {
 	public override Update(dt: number): void {
 		Airship.characters.GetCharacters().forEach((character) => {
 			if (character.transform.position.y < -25) {
-				character.Teleport(this.spawnPosition.transform.position, Vector3.forward);
+				character.Teleport(this.spawnPosition.transform.position, Quaternion.identity);
 			}
 		});
 	}
