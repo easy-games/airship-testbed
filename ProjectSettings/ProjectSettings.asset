@@ -159,7 +159,7 @@ PlayerSettings:
   androidMaxAspectRatio: 2.1
   androidMinAspectRatio: 1
   applicationIdentifier:
-    Standalone: com.DefaultCompany.bedwars-standalone
+    Standalone: com.Easy.airship-testbed
     iPhone: com.Easy.airship-testbed
   buildNumber:
     Bratwurst: 0
