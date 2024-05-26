@@ -106,7 +106,7 @@ Material:
     - _AddPrecomputedVelocity: 0
     - _AlphaClip: 0
     - _AlphaToMask: 0
-    - _Blend: 0.75
+    - _Blend: 0.6
     - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
     - _ClearCoatMask: 0
@@ -128,13 +128,13 @@ Material:
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _Scale: 0.51
-    - _Smoothness: 0.206
+    - _Smoothness: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Surface: 0
-    - _Triplanar_Scale: 0.15
+    - _Triplanar_Scale: 0.2
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
