@@ -12,13 +12,12 @@ GameObject:
   - component: {fileID: 6328919722131172565}
   - component: {fileID: 1841782118036277799}
   - component: {fileID: 8226422588619875414}
-  - component: {fileID: 2709768864604968906}
   m_Layer: 0
   m_Name: GG - Karambit Knife
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 1
   m_IsActive: 1
 --- !u!4 &8573954932239130613
 Transform:
@@ -28,13 +27,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5139470612983467430}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+  m_LocalRotation: {x: -0.7069834, y: 0, z: 0, w: 0.7072302}
   m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1.0107764, y: 1.0107764, z: 1.0107764}
+  m_LocalScale: {x: 5.272311, y: 5.272311, z: 5.272311}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -89.98, y: 0, z: 0}
 --- !u!33 &6328919722131172565
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -65,12 +64,12 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c93930bc60ebadf4787bb0509ac39cf2, type: 2}
-  - {fileID: 2100000, guid: a61c499d0eb278d4ea32d4394d9d1eb6, type: 2}
-  - {fileID: 2100000, guid: b3621dcaffffd52469ccf7d7633aaf90, type: 2}
-  - {fileID: 2100000, guid: fb3739ee5b5418846b82fd14091ed05f, type: 2}
-  - {fileID: 2100000, guid: a61c499d0eb278d4ea32d4394d9d1eb6, type: 2}
-  - {fileID: 2100000, guid: 678a670ad01d8fe4aaec90d437232aee, type: 2}
+  - {fileID: 2100000, guid: deff129e10c82a24cb972d1be312967e, type: 2}
+  - {fileID: 2100000, guid: 35578ca0060e8fe4eb81b2eb6d15810c, type: 2}
+  - {fileID: 2100000, guid: eb45922cf36bb824f8671997aff0c00c, type: 2}
+  - {fileID: 2100000, guid: b3fa7367056c3084e8e5e8caa9f7c42e, type: 2}
+  - {fileID: 2100000, guid: 35578ca0060e8fe4eb81b2eb6d15810c, type: 2}
+  - {fileID: 2100000, guid: 5cfec1f724ea92b45aea4706280bbfb9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -78,7 +77,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
+  m_ReceiveGI: 2
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -108,35 +107,3 @@ MonoBehaviour:
   accessorySlot: 6
   visibilityMode: 2
   skinnedToCharacter: 0
---- !u!114 &2709768864604968906
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5139470612983467430}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colorSettings:
-  - materialColor: {r: 0.15036489, g: 0.2041279, b: 0.2924528, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-  - materialColor: {r: 0.31612673, g: 0.45173162, b: 0.6037736, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-  - materialColor: {r: 0.6839622, g: 0.9075245, b: 1, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-  - materialColor: {r: 0.38679248, g: 0.30422506, b: 0.26455146, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-  - materialColor: {r: 0.6132076, g: 0.52354044, b: 0.52354044, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-  - materialColor: {r: 0.7924528, g: 0.70587397, b: 0.63171947, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-  addedByEditorScript: 0
