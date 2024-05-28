@@ -1,6 +1,6 @@
 {
 	"version": 1,
-	"flameworkVersion": "1.1.0",
+	"flameworkVersion": "1.1.54",
 	"identifiers": {
 		"Code/TestSingleton@TestSingleton": "Code/TestSingleton@TestSingleton",
 		"Code/AirshipPlatformDemo/Scoreboard@Scoreboard": "Code/AirshipPlatformDemo/Scoreboard@Scoreboard",

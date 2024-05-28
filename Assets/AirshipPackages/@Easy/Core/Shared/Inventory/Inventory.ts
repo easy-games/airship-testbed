@@ -6,7 +6,6 @@ import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import Object from "@Easy/Core/Shared/Util/ObjectUtils";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
-import Object from "@easy-games/unity-object-utils";
 import Character from "../Character/Character";
 import { ItemStack, ItemStackDto } from "./ItemStack";
 
