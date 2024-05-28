@@ -114,7 +114,7 @@ export class Player {
 	public SpawnCharacter(
 		position: Vector3,
 		config?: {
-			lookDirection?: Vector3;
+			lookDirection?: Quaternion;
 			customCharacterTemplate?: GameObject;
 		},
 	): Character {
@@ -128,7 +128,7 @@ export class Player {
 				? config.customCharacterTemplate
 				: Airship.characters.GetDefaultCharacterTemplate(),
 			position,
-			Quaternion.identity,
+			config?.lookDirection ?? Quaternion.identity,
 		);
 		go.name = `Character_${this.username}`;
 		const characterComponent = go.GetAirshipComponent<Character>()!;

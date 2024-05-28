@@ -1,348 +1,342 @@
-import { CoreItemType } from "@Easy/Core/Shared/Item/CoreItemType";
-import Object from "@Easy/Core/Shared/Util/ObjectUtils";
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
 import { ArmorType } from "@Easy/Core/Shared/Item/ArmorType";
+import { CoreItemType } from "@Easy/Core/Shared/Item/CoreItemType";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import Object from "@Easy/Core/Shared/Util/ObjectUtils";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import Character from "../Character/Character";
 import { ItemStack, ItemStackDto } from "./ItemStack";
 
 export interface InventoryDto {
-  id: number;
-  items: Map<number, ItemStackDto>;
-  heldSlot: number;
+	id: number;
+	items: Map<number, ItemStackDto>;
+	heldSlot: number;
 }
 
 export default class Inventory extends AirshipBehaviour {
-  public networkObject!: NetworkObject;
-  @NonSerialized() public id!: number;
-  public maxSlots = 48;
-  public hotbarSlots = 9;
-  public heldSlot = 0;
-  @NonSerialized() public armorSlots: {
-    [key in ArmorType]: number;
-  } = {
-    [ArmorType.HELMET]: 45,
-    [ArmorType.CHESTPLATE]: 46,
-    [ArmorType.BOOTS]: 47,
-  };
+	public networkObject!: NetworkObject;
+	@NonSerialized() public id!: number;
+	public maxSlots = 48;
+	public hotbarSlots = 9;
+	public heldSlot = 0;
+	@NonSerialized() public armorSlots: {
+		[key in ArmorType]: number;
+	} = {
+		[ArmorType.HELMET]: 45,
+		[ArmorType.CHESTPLATE]: 46,
+		[ArmorType.BOOTS]: 47,
+	};
 
-  @NonSerialized() private items = new Map<number, ItemStack>();
+	@NonSerialized() private items = new Map<number, ItemStack>();
 
-  /** Fired when a `slot` points to a new `ItemStack`. Changes to the same ItemStack will **not** fire this event. */
-  @NonSerialized() public readonly slotChanged = new Signal<
-    [slot: number, itemStack: ItemStack | undefined]
-  >();
-  @NonSerialized() public readonly heldSlotChanged = new Signal<number>();
-  /**
-   * Fired whenever any change happens.
-   * This includes changes to ItemStacks.
-   **/
-  @NonSerialized() public readonly changed = new Signal<void>();
-  @NonSerialized() private finishedInitialReplication = false;
-  @NonSerialized() private slotConnections = new Map<number, Bin>();
+	/** Fired when a `slot` points to a new `ItemStack`. Changes to the same ItemStack will **not** fire this event. */
+	@NonSerialized() public readonly slotChanged = new Signal<[slot: number, itemStack: ItemStack | undefined]>();
+	@NonSerialized() public readonly heldSlotChanged = new Signal<number>();
+	/**
+	 * Fired whenever any change happens.
+	 * This includes changes to ItemStacks.
+	 **/
+	@NonSerialized() public readonly changed = new Signal<void>();
+	@NonSerialized() private finishedInitialReplication = false;
+	@NonSerialized() private slotConnections = new Map<number, Bin>();
 
-  public OnEnable(): void {
-    if (this.networkObject.IsSpawned) {
-      this.id = this.networkObject.ObjectId;
-      Airship.inventory.RegisterInventory(this);
-      if (RunUtil.IsClient()) {
-        task.spawn(() => {
-          this.RequestFullUpdate();
-        });
-      }
-    } else {
-      const conn = this.networkObject.OnStartNetwork(() => {
-        Bridge.DisconnectEvent(conn);
-        this.id = this.networkObject.ObjectId;
-        Airship.inventory.RegisterInventory(this);
-        if (RunUtil.IsClient()) {
-          task.spawn(() => {
-            this.RequestFullUpdate();
-          });
-        }
-      });
-    }
-  }
+	private observeHeldItemBins: Bin[] = [];
 
-  public OnDisable(): void {
-    Airship.inventory.UnregisterInventory(this);
-  }
+	public OnEnable(): void {
+		if (this.networkObject.IsSpawned) {
+			this.id = this.networkObject.ObjectId;
+			Airship.inventory.RegisterInventory(this);
+			if (RunUtil.IsClient()) {
+				task.spawn(() => {
+					this.RequestFullUpdate();
+				});
+			}
+		} else {
+			const conn = this.networkObject.OnStartNetwork(() => {
+				Bridge.DisconnectEvent(conn);
+				this.id = this.networkObject.ObjectId;
+				Airship.inventory.RegisterInventory(this);
+				if (RunUtil.IsClient()) {
+					task.spawn(() => {
+						this.RequestFullUpdate();
+					});
+				}
+			});
+		}
+	}
 
-  private RequestFullUpdate(): void {
-    const dto =
-      Airship.inventory.remotes.clientToServer.getFullUpdate.client.FireServer(
-        this.id
-      );
-    if (dto) {
-      this.ProcessDto(dto);
-    }
-  }
+	public OnDisable(): void {
+		Airship.inventory.UnregisterInventory(this);
+		for (const bin of this.observeHeldItemBins) {
+			bin.Clean();
+		}
+		this.observeHeldItemBins.clear();
+	}
 
-  public GetItem(slot: number): ItemStack | undefined {
-    return this.items.get(slot);
-  }
+	private RequestFullUpdate(): void {
+		const dto = Airship.inventory.remotes.clientToServer.getFullUpdate.client.FireServer(this.id);
+		if (dto) {
+			this.ProcessDto(dto);
+		}
+	}
 
-  public GetSlot(itemStack: ItemStack): number | undefined {
-    for (let pair of this.items) {
-      if (pair[1] === itemStack) {
-        return pair[0];
-      }
-    }
-    return undefined;
-  }
+	public GetItem(slot: number): ItemStack | undefined {
+		return this.items.get(slot);
+	}
 
-  public ObserveHeldItem(
-    callback: (itemStack: ItemStack | undefined) => CleanupFunc
-  ): Bin {
-    const bin = new Bin();
-    let currentItemStack = this.items.get(this.heldSlot);
-    let cleanup = callback(currentItemStack);
+	public GetSlot(itemStack: ItemStack): number | undefined {
+		for (let pair of this.items) {
+			if (pair[1] === itemStack) {
+				return pair[0];
+			}
+		}
+		return undefined;
+	}
 
-    bin.Add(
-      CoreNetwork.ServerToClient.SetHeldInventorySlot.client.OnServerEvent(
-        (invId, clientId, slot) => {
-          const inventoryClientId =
-            this.gameObject.GetAirshipComponent<Character>()?.player?.clientId;
-          if (invId === this.id && clientId === inventoryClientId) {
-            const selected = this.items.get(slot);
-            if (selected?.GetItemType() === currentItemStack?.GetItemType())
-              return;
+	public ObserveHeldItem(callback: (itemStack: ItemStack | undefined) => CleanupFunc): Bin {
+		const bin = new Bin();
+		let currentItemStack = this.items.get(this.heldSlot);
+		let cleanup = callback(currentItemStack);
 
-            if (cleanup !== undefined) {
-              cleanup();
-            }
-            currentItemStack = selected;
-            cleanup = callback(selected);
-          }
-        }
-      )
-    );
+		bin.Add(
+			CoreNetwork.ServerToClient.SetHeldInventorySlot.client.OnServerEvent((invId, clientId, slot) => {
+				const inventoryClientId = this.gameObject.GetAirshipComponent<Character>()?.player?.clientId;
+				if (invId === this.id && clientId === inventoryClientId) {
+					const selected = this.items.get(slot);
+					if (selected?.GetItemType() === currentItemStack?.GetItemType()) return;
 
-    bin.Add(
-      this.heldSlotChanged.Connect((newSlot) => {
-        const selected = this.items.get(newSlot);
-        if (selected?.GetItemType() === currentItemStack?.GetItemType()) return;
+					if (cleanup !== undefined) {
+						cleanup();
+					}
+					currentItemStack = selected;
+					cleanup = callback(selected);
+				}
+			}),
+		);
 
-        if (cleanup !== undefined) {
-          cleanup();
-        }
-        currentItemStack = selected;
-        cleanup = callback(selected);
-      })
-    );
-    bin.Add(
-      this.slotChanged.Connect((slot, itemStack) => {
-        if (slot === this.heldSlot) {
-          if (itemStack?.GetItemType() === currentItemStack?.GetItemType())
-            return;
-          if (cleanup !== undefined) {
-            cleanup();
-          }
-          currentItemStack = itemStack;
-          cleanup = callback(itemStack);
-        }
-      })
-    );
-    bin.Add(() => {
-      cleanup?.();
-    });
-    return bin;
-  }
+		bin.Add(
+			this.heldSlotChanged.Connect((newSlot) => {
+				const selected = this.items.get(newSlot);
+				if (selected?.GetItemType() === currentItemStack?.GetItemType()) return;
 
-  public SetItem(
-    slot: number,
-    itemStack: ItemStack | undefined,
-    config?: {
-      clientPredicted?: boolean;
-    }
-  ): void {
-    this.slotConnections.get(slot)?.Clean();
-    this.slotConnections.delete(slot);
+				if (cleanup !== undefined) {
+					cleanup();
+				}
+				currentItemStack = selected;
+				cleanup = callback(selected);
+			}),
+		);
+		bin.Add(
+			this.slotChanged.Connect((slot, itemStack) => {
+				if (slot === this.heldSlot) {
+					if (itemStack?.GetItemType() === currentItemStack?.GetItemType()) return;
+					if (cleanup !== undefined) {
+						cleanup();
+					}
+					currentItemStack = itemStack;
+					cleanup = callback(itemStack);
+				}
+			}),
+		);
+		bin.Add(() => {
+			cleanup?.();
+		});
+		return bin;
+	}
 
-    if (itemStack) {
-      this.items.set(slot, itemStack);
-    } else {
-      this.items.delete(slot);
-    }
+	public SetItem(
+		slot: number,
+		itemStack: ItemStack | undefined,
+		config?: {
+			clientPredicted?: boolean;
+		},
+	): void {
+		this.slotConnections.get(slot)?.Clean();
+		this.slotConnections.delete(slot);
 
-    if (itemStack) {
-      const bin = new Bin();
-      bin.Add(
-        itemStack.destroyed.Connect(() => {
-          this.SetItem(slot, undefined);
-          this.changed.Fire();
-        })
-      );
-      bin.Add(
-        itemStack.changed.Connect(() => {
-          this.changed.Fire();
-        })
-      );
-      this.slotConnections.set(slot, bin);
+		if (itemStack) {
+			this.items.set(slot, itemStack);
+		} else {
+			this.items.delete(slot);
+		}
 
-      if (RunUtil.IsServer()) {
-        bin.Add(
-          itemStack.amountChanged.Connect((e) => {
-            if (e.NoNetwork) return;
-            CoreNetwork.ServerToClient.UpdateInventorySlot.server.FireAllClients(
-              this.id,
-              slot,
-              undefined,
-              e.Amount
-            );
-          })
-        );
-        bin.Add(
-          itemStack.itemTypeChanged.Connect((e) => {
-            if (e.NoNetwork) return;
-            CoreNetwork.ServerToClient.UpdateInventorySlot.server.FireAllClients(
-              this.id,
-              slot,
-              e.ItemType,
-              undefined
-            );
-          })
-        );
-      }
-    }
-    this.slotChanged.Fire(slot, itemStack);
-    this.changed.Fire();
+		if (itemStack) {
+			const bin = new Bin();
+			bin.Add(
+				itemStack.destroyed.Connect(() => {
+					this.SetItem(slot, undefined);
+					this.changed.Fire();
+				}),
+			);
+			bin.Add(
+				itemStack.changed.Connect(() => {
+					this.changed.Fire();
+				}),
+			);
+			this.slotConnections.set(slot, bin);
 
-    if (RunUtil.IsServer() && this.finishedInitialReplication) {
-      // todo: figure out which clients to include
-      CoreNetwork.ServerToClient.SetInventorySlot.server.FireAllClients(
-        this.id,
-        slot,
-        itemStack?.Encode(),
-        config?.clientPredicted ?? false
-      );
-    }
-  }
+			if (RunUtil.IsServer()) {
+				bin.Add(
+					itemStack.amountChanged.Connect((e) => {
+						if (e.NoNetwork) return;
+						CoreNetwork.ServerToClient.UpdateInventorySlot.server.FireAllClients(
+							this.id,
+							slot,
+							undefined,
+							e.Amount,
+						);
+					}),
+				);
+				bin.Add(
+					itemStack.itemTypeChanged.Connect((e) => {
+						if (e.NoNetwork) return;
+						CoreNetwork.ServerToClient.UpdateInventorySlot.server.FireAllClients(
+							this.id,
+							slot,
+							e.ItemType,
+							undefined,
+						);
+					}),
+				);
+			}
+		}
+		this.slotChanged.Fire(slot, itemStack);
+		this.changed.Fire();
 
-  public Decrement(itemType: string, amount: number): void {
-    let counter = 0;
-    for (let [slot, itemStack] of this.items) {
-      if (itemStack.GetItemType() === itemType) {
-        let remaining = amount - counter;
-        if (itemStack.GetAmount() > remaining) {
-          itemStack.SetAmount(itemStack.GetAmount() - remaining);
-          break;
-        } else {
-          counter += itemStack.GetAmount();
-          itemStack.Destroy();
-        }
-      }
-    }
-  }
+		if (RunUtil.IsServer() && this.finishedInitialReplication) {
+			// todo: figure out which clients to include
+			CoreNetwork.ServerToClient.SetInventorySlot.server.FireAllClients(
+				this.id,
+				slot,
+				itemStack?.Encode(),
+				config?.clientPredicted ?? false,
+			);
+		}
+	}
 
-  public StartNetworkingDiffs(): void {
-    this.finishedInitialReplication = true;
-  }
+	public Decrement(itemType: string, amount: number): void {
+		let counter = 0;
+		for (let [slot, itemStack] of this.items) {
+			if (itemStack.GetItemType() === itemType) {
+				let remaining = amount - counter;
+				if (itemStack.GetAmount() > remaining) {
+					itemStack.SetAmount(itemStack.GetAmount() - remaining);
+					break;
+				} else {
+					counter += itemStack.GetAmount();
+					itemStack.Destroy();
+				}
+			}
+		}
+	}
 
-  public AddItem(itemStack: ItemStack): boolean {
-    // Merge with existing
-    for (let [otherId, otherItem] of this.items) {
-      if (itemStack.CanMerge(otherItem)) {
-        otherItem.SetAmount(otherItem.GetAmount() + itemStack.GetAmount());
-        itemStack.Destroy();
-        return true;
-      }
-    }
+	public StartNetworkingDiffs(): void {
+		this.finishedInitialReplication = true;
+	}
 
-    const openSlot = this.GetFirstOpenSlot();
-    if (openSlot === -1) {
-      return false;
-    }
+	public AddItem(itemStack: ItemStack): boolean {
+		// Merge with existing
+		for (let [otherId, otherItem] of this.items) {
+			if (itemStack.CanMerge(otherItem)) {
+				otherItem.SetAmount(otherItem.GetAmount() + itemStack.GetAmount());
+				itemStack.Destroy();
+				return true;
+			}
+		}
 
-    this.SetItem(openSlot, itemStack);
-    return true;
-  }
+		const openSlot = this.GetFirstOpenSlot();
+		if (openSlot === -1) {
+			return false;
+		}
 
-  /**
-   * @returns Returns the index of first empty slot. Returns -1 if no open slot found.
-   */
-  public GetFirstOpenSlot(): number {
-    for (let i = 0; i < this.maxSlots; i++) {
-      if (!this.items.has(i)) {
-        return i;
-      }
-    }
-    return -1;
-  }
+		this.SetItem(openSlot, itemStack);
+		return true;
+	}
 
-  public GetHeldItem(): ItemStack | undefined {
-    return this.GetItem(this.heldSlot);
-  }
+	/**
+	 * @returns Returns the index of first empty slot. Returns -1 if no open slot found.
+	 */
+	public GetFirstOpenSlot(): number {
+		for (let i = 0; i < this.maxSlots; i++) {
+			if (!this.items.has(i)) {
+				return i;
+			}
+		}
+		return -1;
+	}
 
-  public GetHeldSlot(): number {
-    return this.heldSlot;
-  }
+	public GetHeldItem(): ItemStack | undefined {
+		return this.GetItem(this.heldSlot);
+	}
 
-  public SetHeldSlot(slot: number): void {
-    this.heldSlot = slot;
-    this.heldSlotChanged.Fire(slot);
-  }
+	public GetHeldSlot(): number {
+		return this.heldSlot;
+	}
 
-  public Encode(): InventoryDto {
-    let mappedItems = new Map<number, ItemStackDto>();
-    for (let item of this.items) {
-      mappedItems.set(item[0], item[1].Encode());
-    }
-    return {
-      id: this.id,
-      items: mappedItems,
-      heldSlot: this.heldSlot,
-    };
-  }
+	public SetHeldSlot(slot: number): void {
+		this.heldSlot = slot;
+		this.heldSlotChanged.Fire(slot);
+	}
 
-  public ProcessDto(dto: InventoryDto): void {
-    this.id = dto.id;
-    for (let pair of dto.items) {
-      this.SetItem(pair[0], ItemStack.Decode(pair[1]));
-    }
-    this.SetHeldSlot(dto.heldSlot);
-  }
+	public Encode(): InventoryDto {
+		let mappedItems = new Map<number, ItemStackDto>();
+		for (let item of this.items) {
+			mappedItems.set(item[0], item[1].Encode());
+		}
+		return {
+			id: this.id,
+			items: mappedItems,
+			heldSlot: this.heldSlot,
+		};
+	}
 
-  public HasEnough(itemType: CoreItemType, amount: number): boolean {
-    let total = 0;
-    for (let itemStack of Object.values(this.items)) {
-      if (itemStack.GetItemType() === itemType) {
-        total += itemStack.GetAmount();
-      }
-    }
-    return total >= amount;
-  }
+	public ProcessDto(dto: InventoryDto): void {
+		this.id = dto.id;
+		for (let pair of dto.items) {
+			this.SetItem(pair[0], ItemStack.Decode(pair[1]));
+		}
+		this.SetHeldSlot(dto.heldSlot);
+	}
 
-  public HasItemType(itemType: CoreItemType): boolean {
-    return this.HasEnough(itemType, 1);
-  }
+	public HasEnough(itemType: CoreItemType, amount: number): boolean {
+		let total = 0;
+		for (let itemStack of Object.values(this.items)) {
+			if (itemStack.GetItemType() === itemType) {
+				total += itemStack.GetAmount();
+			}
+		}
+		return total >= amount;
+	}
 
-  public GetMaxSlots(): number {
-    return this.maxSlots;
-  }
+	public HasItemType(itemType: CoreItemType): boolean {
+		return this.HasEnough(itemType, 1);
+	}
 
-  public GetBackpackTileCount(): number {
-    return this.maxSlots - 9;
-  }
+	public GetMaxSlots(): number {
+		return this.maxSlots;
+	}
 
-  public GetHotbarSlotCount(): number {
-    return this.hotbarSlots;
-  }
+	public GetBackpackTileCount(): number {
+		return this.maxSlots - 9;
+	}
 
-  public FindSlotWithItemType(itemType: CoreItemType): number | undefined {
-    for (let i = 0; i < this.maxSlots; i++) {
-      const itemStack = this.GetItem(i);
-      if (itemStack?.GetItemType() === itemType) {
-        return i;
-      }
-    }
-    return undefined;
-  }
+	public GetHotbarSlotCount(): number {
+		return this.hotbarSlots;
+	}
 
-  public GetAllItems(): ItemStack[] {
-    return Object.values(this.items);
-  }
+	public FindSlotWithItemType(itemType: CoreItemType): number | undefined {
+		for (let i = 0; i < this.maxSlots; i++) {
+			const itemStack = this.GetItem(i);
+			if (itemStack?.GetItemType() === itemType) {
+				return i;
+			}
+		}
+		return undefined;
+	}
+
+	public GetAllItems(): ItemStack[] {
+		return Object.values(this.items);
+	}
 }
