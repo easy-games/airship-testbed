@@ -1,0 +1,24 @@
+{
+	"version": 1,
+	"flameworkVersion": "1.1.0",
+	"identifiers": {
+		"Code/TestSingleton@TestSingleton": "Code/TestSingleton@TestSingleton",
+		"Code/AirshipPlatformDemo/Scoreboard@Scoreboard": "Code/AirshipPlatformDemo/Scoreboard@Scoreboard",
+		"Code/AirshipPlatformDemo/ClientScript@ClientScript": "Code/AirshipPlatformDemo/ClientScript@ClientScript",
+		"Code/AirshipPlatformDemo/CubeMover@CubeMover": "Code/AirshipPlatformDemo/CubeMover@CubeMover",
+		"Code/AirshipPlatformDemo/DemoManager@DemoManager": "Code/AirshipPlatformDemo/DemoManager@DemoManager",
+		"Code/AirshipPlatformDemo/PromptAboveBall@PromptAboveBall": "Code/AirshipPlatformDemo/PromptAboveBall@PromptAboveBall",
+		"Code/AirshipPlatformDemo/ServerScript@TestScript": "Code/AirshipPlatformDemo/ServerScript@TestScript",
+		"Code/TopDownBattle/TopDownBattleCharacter@TopDownBattleCharacter": "Code/TopDownBattle/TopDownBattleCharacter@TopDownBattleCharacter",
+		"Code/TopDownBattle/TopDownBattleCameraComponent@TopDownBattleCameraComponent": "Code/TopDownBattle/TopDownBattleCameraComponent@TopDownBattleCameraComponent",
+		"Code/TopDownBattle/TopDownBattleEnemies/TopDownBattleEnemy@TopDownBattleEnemy": "Code/TopDownBattle/TopDownBattleEnemies/TopDownBattleEnemy@TopDownBattleEnemy",
+		"Code/TopDownBattle/TopDownBattleEnemies/TopDownBattleEnemySpawner@TopDownBattleEnemySpawner": "Code/TopDownBattle/TopDownBattleEnemies/TopDownBattleEnemySpawner@TopDownBattleEnemySpawner",
+		"Code/TopDownBattle/TopDownBattleGame@TopDownBattleGame": "Code/TopDownBattle/TopDownBattleGame@TopDownBattleGame",
+		"Code/TopDownBattle/TopDownBattleLevelGenerator@TopDownBattleLevelGenerator": "Code/TopDownBattle/TopDownBattleLevelGenerator@TopDownBattleLevelGenerator",
+		"Code/TopDownBattle/TopDownItems/TopDownRangedItem@TopDownBattleRangedItem": "Code/TopDownBattle/TopDownItems/TopDownRangedItem@TopDownBattleRangedItem",
+		"Code/TopDownBattle/TopDownBattlePlayerSpawner@TopDownBattlePlayerSpawner": "Code/TopDownBattle/TopDownBattlePlayerSpawner@TopDownBattlePlayerSpawner",
+		"Code/TopDownScene/CubeSpinner@CubeSpinner": "Code/TopDownScene/CubeSpinner@CubeSpinner",
+		"Code/TopDownScene/GameManager@GameManager": "Code/TopDownScene/GameManager@GameManager",
+		"Code/TopDownScene/NetComponent@NetComponent": "Code/TopDownScene/NetComponent@NetComponent"
+	}
+}

@@ -1,0 +1,425 @@
+{
+	"behaviours": {
+		"ClientScript": {
+			"component": true,
+			"filePath": "Code/AirshipPlatformDemo/ClientScript.lua",
+			"extends": []
+		},
+		"TestScript": {
+			"component": true,
+			"filePath": "Code/AirshipPlatformDemo/ServerScript.lua",
+			"extends": []
+		},
+		"Character": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/Character/Character.lua",
+			"extends": []
+		},
+		"Inventory": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/Inventory/Inventory.lua",
+			"extends": []
+		},
+		"ProximityPrompt": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/Input/ProximityPrompts/ProximityPrompt.lua",
+			"extends": []
+		},
+		"PromptAboveBall": {
+			"component": true,
+			"filePath": "Code/AirshipPlatformDemo/PromptAboveBall.lua",
+			"extends": []
+		},
+		"TopDownBattlePlayerSpawner": {
+			"component": true,
+			"filePath": "Code/TopDownBattle/TopDownBattlePlayerSpawner.lua",
+			"extends": []
+		},
+		"GameManager": {
+			"component": true,
+			"filePath": "Code/TopDownScene/GameManager.lua",
+			"extends": []
+		},
+		"DemoManager": {
+			"component": true,
+			"filePath": "Code/AirshipPlatformDemo/DemoManager.lua",
+			"extends": []
+		},
+		"TopDownBattleEnemySpawner": {
+			"component": true,
+			"filePath": "Code/TopDownBattle/TopDownBattleEnemies/TopDownBattleEnemySpawner.lua",
+			"extends": []
+		},
+		"TopDownBattleGame": {
+			"component": true,
+			"filePath": "Code/TopDownBattle/TopDownBattleGame.lua",
+			"extends": []
+		},
+		"TopDownBattleEnemy": {
+			"component": true,
+			"filePath": "Code/TopDownBattle/TopDownBattleEnemies/TopDownBattleEnemy.lua",
+			"extends": []
+		},
+		"SocialFriendRequestsButtonComponent": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/SocialFriendRequestsButtonComponent.lua",
+			"extends": []
+		},
+		"DirectMessagesWindow": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/DirectMessagesWindow.lua",
+			"extends": []
+		},
+		"PartyChatButton": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/PartyChatButton.lua",
+			"extends": []
+		},
+		"ProfileOptionsButton": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/ProfileOptionsButton.lua",
+			"extends": []
+		},
+		"PlayerEntry": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/General/PlayerEntry.lua",
+			"extends": []
+		},
+		"PlayerList": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/General/PlayerList.lua",
+			"extends": []
+		},
+		"MobileChatToggleButton": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/MobileChatToggleButton.lua",
+			"extends": []
+		},
+		"IncomingFriendRequestCard": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/FriendRequest/IncomingFriendRequestCard.lua",
+			"extends": []
+		},
+		"FriendRequestModal": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/FriendRequest/FriendRequestModal.lua",
+			"extends": []
+		},
+		"MainMenuPageComponent": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/MainMenuPageComponent.lua",
+			"extends": []
+		},
+		"HomePageComponent": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/HomePageComponent.lua",
+			"extends": [
+				"MainMenuPageComponent"
+			]
+		},
+		"GameGeneralPage": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/General/GameGeneralPage.lua",
+			"extends": [
+				"MainMenuPageComponent"
+			]
+		},
+		"SettingsPage": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsPage.lua",
+			"extends": [
+				"MainMenuPageComponent"
+			]
+		},
+		"AvatarMenuComponent": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/AvatarMenuComponent.lua",
+			"extends": [
+				"MainMenuPageComponent"
+			]
+		},
+		"AvatarMenuProfileComponent": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/AvatarMenuProfileComponent.lua",
+			"extends": []
+		},
+		"GameImageButton": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Client/Components/HomePage/Sort/GameImageButton.lua",
+			"extends": []
+		},
+		"MobileEscapeButton": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/MobileEscapeButton.lua",
+			"extends": []
+		},
+		"MobileNavButton": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/MobileNavButton.lua",
+			"extends": []
+		},
+		"SettingsKeybind": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsKeybind.lua",
+			"extends": []
+		},
+		"SettingsKeybindPage": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsKeybindPage.lua",
+			"extends": []
+		},
+		"SearchFocused": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Search/SearchFocused.lua",
+			"extends": []
+		},
+		"HomePageGameComponent": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Client/Components/HomePage/Sort/HomePageGameComponent.lua",
+			"extends": []
+		},
+		"SortComponent": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Client/Components/HomePage/Sort/SortComponent.lua",
+			"extends": []
+		},
+		"MyGamesSortComponent": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Client/Components/HomePage/MyGames/MyGamesSortComponent.lua",
+			"extends": []
+		},
+		"MainMenuContent": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/MainMenuContent.lua",
+			"extends": []
+		},
+		"Modal": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Modal.lua",
+			"extends": []
+		},
+		"Navbar": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Navbar.lua",
+			"extends": []
+		},
+		"Searchbar": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Searchbar.lua",
+			"extends": []
+		},
+		"FriendsPage": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Friends/FriendsPage.lua",
+			"extends": []
+		},
+		"GameSearchResult": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Search/GameSearchResult.lua",
+			"extends": [
+				"SearchResult"
+			]
+		},
+		"MicrophoneSettingsPage": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/Microphone/MicrophoneSettingsPage.lua",
+			"extends": []
+		},
+		"AvatarViewComponent": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/Avatar/AvatarViewComponent.lua",
+			"extends": []
+		},
+		"AirshipOverlayManager": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Overlay/AirshipOverlayManager.lua",
+			"extends": []
+		},
+		"TopDownBattleCameraComponent": {
+			"component": true,
+			"filePath": "Code/TopDownBattle/TopDownBattleCameraComponent.lua",
+			"extends": []
+		},
+		"CharacterConfigSetup": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/Character/CharacterConfigSetup.lua",
+			"extends": []
+		},
+		"MyCreditsButton": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/MyCreditsButton.lua",
+			"extends": []
+		},
+		"SocialMenu": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/SocialMenu.lua",
+			"extends": []
+		},
+		"SearchResult": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Search/SearchResult.lua",
+			"extends": []
+		},
+		"CubeMover": {
+			"component": true,
+			"filePath": "Code/AirshipPlatformDemo/CubeMover.lua",
+			"extends": []
+		},
+		"TopDownBattleCharacter": {
+			"component": true,
+			"filePath": "Code/TopDownBattle/TopDownBattleCharacter.lua",
+			"extends": []
+		},
+		"MobileCameraMovement": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Overlay/MobileCameraMovement.lua",
+			"extends": []
+		},
+		"PartyMember": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/PartyMember.lua",
+			"extends": []
+		},
+		"MicIndicator": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Overlay/MicIndicator.lua",
+			"extends": []
+		},
+		"MobileJoystick": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Overlay/MobileJoystick.lua",
+			"extends": []
+		},
+		"BlockedGame": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/BlockedGame.lua",
+			"extends": []
+		},
+		"SettingsBlockPage": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsBlockPage.lua",
+			"extends": []
+		},
+		"BlockedUser": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/BlockedUser.lua",
+			"extends": []
+		},
+		"AvatarRenderComponent": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/AvatarRenderComponent.lua",
+			"extends": []
+		},
+		"Scoreboard": {
+			"component": true,
+			"filePath": "Code/AirshipPlatformDemo/Scoreboard.lua",
+			"extends": []
+		},
+		"DeleteAccountButton": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/DeleteAccountButton.lua",
+			"extends": []
+		},
+		"GameFavoriteButton": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/General/GameFavoriteButton.lua",
+			"extends": []
+		},
+		"SocialNotificationComponent": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/SocialNotificationComponent.lua",
+			"extends": []
+		},
+		"AvatarMenuBtn": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/AvatarMenuBtn.lua",
+			"extends": []
+		},
+		"SettingsTabButton": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsTabButton.lua",
+			"extends": []
+		},
+		"SettingsSidebar": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsSidebar.lua",
+			"extends": []
+		},
+		"AirshipButton": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipButton.lua",
+			"extends": []
+		},
+		"MainMenuNavButton": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/MainMenuNavButton.lua",
+			"extends": []
+		},
+		"SettingsDisconnectButton": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsDisconnectButton.lua",
+			"extends": []
+		},
+		"MicDevice": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/Microphone/MicDevice.lua",
+			"extends": []
+		},
+		"AvatarAccessoryBtn": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/AvatarAccessoryBtn.lua",
+			"extends": []
+		},
+		"DevConsoleButton": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/DevConsoleButton.lua",
+			"extends": []
+		},
+		"NavbarControlButton": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/NavbarControlButton.lua",
+			"extends": []
+		},
+		"AvatarBackdropComponent": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/Avatar/AvatarBackdropComponent.lua",
+			"extends": []
+		},
+		"ChatManager": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/Chat/ChatManager.lua",
+			"extends": []
+		},
+		"ItemDefinitionComponent": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/Item/ItemDefinition/ItemDefinitionComponent.lua",
+			"extends": []
+		},
+		"TopDownBattleLevelGenerator": {
+			"component": true,
+			"filePath": "Code/TopDownBattle/TopDownBattleLevelGenerator.lua",
+			"extends": []
+		},
+		"CubeSpinner": {
+			"component": true,
+			"filePath": "Code/TopDownScene/CubeSpinner.lua",
+			"extends": []
+		},
+		"NetComponent": {
+			"component": true,
+			"filePath": "Code/TopDownScene/NetComponent.lua",
+			"extends": []
+		}
+	},
+	"extends": {
+		"MainMenuPageComponent": [
+			"HomePageComponent",
+			"GameGeneralPage",
+			"SettingsPage",
+			"AvatarMenuComponent"
+		],
+		"SearchResult": [
+			"GameSearchResult"
+		]
+	}
+}
