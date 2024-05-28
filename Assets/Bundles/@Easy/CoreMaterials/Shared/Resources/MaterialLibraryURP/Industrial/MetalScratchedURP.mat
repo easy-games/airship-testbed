@@ -69,6 +69,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _MainTexture:
+        m_Texture: {fileID: 2800000, guid: e0333b4c311d5f043925252bb43fdd52, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MetalTex:
         m_Texture: {fileID: 2800000, guid: c68c0c05d862ba24c874a924c7bb4a33, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -80,6 +84,10 @@ Material:
     - _NormalTex:
         m_Texture: {fileID: 2800000, guid: 520b41f82aa6d454789d7d335e90753b, type: 3}
         m_Scale: {x: 0, y: 0}
+        m_Offset: {x: 0, y: 0}
+    - _NormalTexture:
+        m_Texture: {fileID: 2800000, guid: 02514f87087c6fc408a44d23ad640f93, type: 3}
+        m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
         m_Texture: {fileID: 0}
@@ -158,12 +166,13 @@ Material:
     - _Lights: 0
     - _MRSliderOverrideMix: 0
     - _MetalOverride: 0.091
-    - _Metallic: 0
+    - _Metallic: 1
     - _Mode: 0
     - _OcclusionStrength: 1
     - _OverrideStrength: 0
     - _POINT_FILTER: 1
     - _Parallax: 0.02
+    - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _RimIntensity: 1.45
@@ -172,7 +181,7 @@ Material:
     - _SLIDER_OVERRIDE: 1
     - _SkyShineStrength: 0
     - _SliderOverrideMix: 0
-    - _Smoothness: 0.5
+    - _Smoothness: 1
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -182,6 +191,7 @@ Material:
     - _SurfaceType: 0
     - _Triplanar: 1
     - _TriplanarScale: 1
+    - _Triplanar_Scale: 2
     - _UVSec: 0
     - _VERTEX_LIGHT: 0
     - _WorkflowMode: 1
