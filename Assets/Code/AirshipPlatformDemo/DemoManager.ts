@@ -7,7 +7,6 @@ import { Binding } from "@Easy/Core/Shared/Input/Binding";
 import { ItemUtil } from "@Easy/Core/Shared/Item/ItemUtil";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
-import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 
 export default class DemoManager extends AirshipBehaviour {
 	public spawnPosition!: GameObject;
@@ -16,10 +15,9 @@ export default class DemoManager extends AirshipBehaviour {
 	public cleanupOnStart!: GameObject[];
 
 	@Header("Network Ball")
-	public ballPrefab!: GameObject;
-	public ballSpawnPoint!: Transform;
-	public cubePrefab!: GameObject;
-
+	// public ballPrefab!: GameObject;
+	// public ballSpawnPoint!: Transform;
+	// public cubePrefab!: GameObject;
 	override Start(): void {
 		Airship.input.CreateAction("interact", Binding.Key(Key.F));
 
@@ -75,25 +73,25 @@ export default class DemoManager extends AirshipBehaviour {
 			});
 
 			// spawn ball
-			task.spawn(() => {
-				for (let i = 0; i < 3; i++) {
-					const ballGo = Object.Instantiate<GameObject>(
-						this.ballPrefab,
-						this.ballSpawnPoint.position,
-						this.ballSpawnPoint.rotation,
-					);
-					NetworkUtil.Spawn(ballGo);
+			// task.spawn(() => {
+			// 	for (let i = 0; i < 3; i++) {
+			// 		const ballGo = Object.Instantiate<GameObject>(
+			// 			this.ballPrefab,
+			// 			this.ballSpawnPoint.position,
+			// 			this.ballSpawnPoint.rotation,
+			// 		);
+			// 		NetworkUtil.Spawn(ballGo);
 
-					// const cubeGo = Object.Instantiate<GameObject>(
-					// 	this.cubePrefab,
-					// 	ballGo.transform.position.add(new Vector3(0, 1, 0)),
-					// 	Quaternion.identity,
-					// );
-					// NetworkUtil.Spawn(cubeGo);
-					// cubeGo.GetComponent<NetworkObject>()!.SetParent(ballGo.GetComponent<NetworkObject>()!);
-					// task.wait(1);
-				}
-			});
+			// 		// const cubeGo = Object.Instantiate<GameObject>(
+			// 		// 	this.cubePrefab,
+			// 		// 	ballGo.transform.position.add(new Vector3(0, 1, 0)),
+			// 		// 	Quaternion.identity,
+			// 		// );
+			// 		// NetworkUtil.Spawn(cubeGo);
+			// 		// cubeGo.GetComponent<NetworkObject>()!.SetParent(ballGo.GetComponent<NetworkObject>()!);
+			// 		// task.wait(1);
+			// 	}
+			// });
 		}
 		if (Game.IsClient()) {
 			// Optional: use locked camera mode for first person support
