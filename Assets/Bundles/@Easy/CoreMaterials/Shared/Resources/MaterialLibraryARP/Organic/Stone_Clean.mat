@@ -22,15 +22,19 @@ Material:
   - RIM_LIGHT_ON
   - SLIDER_OVERRIDE
   - SLIDER_OVERRIDE_ON
+  - _DSTBLEND_ZERO
   - _LIGHTS_LIGHTS0
+  - _SRCBLEND_ONE
+  - _SURFACETYPE_OPAQUE
   - _TRIPLANAR_LOCAL
   - _TRIPLANAR_TRIPLANAR_LOCAL
   - _ZWRITE_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
+  m_CustomRenderQueue: 2000
+  stringTagMap:
+    RenderType: Opaque
   disabledShaderPasses: []
   m_LockedProperties: 
   m_SavedProperties:
@@ -139,6 +143,7 @@ Material:
     - _DstBlend: 0
     - _EXPLICIT_MAPS: 1
     - _Emissive: 0
+    - _EmissiveLevel: 0
     - _EmissiveMix: 1
     - _GlossMapScale: 1
     - _Glossiness: 0.5
@@ -162,6 +167,7 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _SunScale: 1
+    - _SurfaceType: 0
     - _Triplanar: 1
     - _TriplanarScale: 0.5
     - _UVSec: 0
