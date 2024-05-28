@@ -2237,6 +2237,7 @@ GameObject:
   - component: {fileID: 195832289}
   - component: {fileID: 195832288}
   - component: {fileID: 195832291}
+  - component: {fileID: 195832292}
   m_Layer: 0
   m_Name: Floor
   m_TagString: Untagged
@@ -2332,6 +2333,21 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.99999994, y: 1, z: 0.99999994}
   m_Center: {x: 0, y: 0.5, z: -0.00000002980232}
+--- !u!114 &195832292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 195832286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - baseColor: {r: 0.6698113, g: 0.7197668, b: 1, a: 1}
+  addedByEditorScript: 0
 --- !u!1 &207208529
 GameObject:
   m_ObjectHideFlags: 0
@@ -4513,7 +4529,16 @@ PrefabInstance:
     - {fileID: 567189039974732135, guid: 964f75fe831425647afd635a714cd2c2, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1010744704171664977, guid: 964f75fe831425647afd635a714cd2c2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1771032231}
+    - targetCorrespondingSourceObject: {fileID: 5121720270714895256, guid: 964f75fe831425647afd635a714cd2c2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 538140367}
+    - targetCorrespondingSourceObject: {fileID: 1261833186284829171, guid: 964f75fe831425647afd635a714cd2c2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1773281151}
   m_SourcePrefab: {fileID: 100100000, guid: 964f75fe831425647afd635a714cd2c2, type: 3}
 --- !u!4 &435279233 stripped
 Transform:
@@ -5174,6 +5199,7 @@ GameObject:
   - component: {fileID: 480807054}
   - component: {fileID: 480807053}
   - component: {fileID: 480807051}
+  - component: {fileID: 480807055}
   m_Layer: 0
   m_Name: AirshipCube (2)
   m_TagString: Untagged
@@ -5269,6 +5295,21 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 480807049}
   m_Mesh: {fileID: -5495902117074765545, guid: bdf2babf7a223774cae5f80a52733f88, type: 3}
+--- !u!114 &480807055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 480807049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - baseColor: {r: 0.23113209, g: 1, b: 0.37787458, a: 1}
+  addedByEditorScript: 0
 --- !u!1 &489032649
 GameObject:
   m_ObjectHideFlags: 0
@@ -5911,6 +5952,26 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.99999994, y: 1.0000004, z: 1.0000002}
   m_Center: {x: 0, y: 0.49998492, z: -0.000000029802315}
+--- !u!1 &538140361 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5121720270714895256, guid: 964f75fe831425647afd635a714cd2c2, type: 3}
+  m_PrefabInstance: {fileID: 435279232}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &538140367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 538140361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - baseColor: {r: 0.8113208, g: 0.4996721, b: 0.36739054, a: 1}
+  addedByEditorScript: 0
 --- !u!1 &541686317
 GameObject:
   m_ObjectHideFlags: 0
@@ -13411,6 +13472,7 @@ GameObject:
   - component: {fileID: 1491209860}
   - component: {fileID: 1491209859}
   - component: {fileID: 1491209857}
+  - component: {fileID: 1491209861}
   m_Layer: 0
   m_Name: Floor
   m_TagString: Untagged
@@ -13506,6 +13568,21 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1491209855}
   m_Mesh: {fileID: -5495902117074765545, guid: bdf2babf7a223774cae5f80a52733f88, type: 3}
+--- !u!114 &1491209861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1491209855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - baseColor: {r: 0.98298186, g: 1, b: 0.5660378, a: 1}
+  addedByEditorScript: 0
 --- !u!1 &1513689292
 GameObject:
   m_ObjectHideFlags: 0
@@ -15848,6 +15925,26 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1753803624}
   m_Mesh: {fileID: -5495902117074765545, guid: bdf2babf7a223774cae5f80a52733f88, type: 3}
+--- !u!1 &1771032225 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1010744704171664977, guid: 964f75fe831425647afd635a714cd2c2, type: 3}
+  m_PrefabInstance: {fileID: 435279232}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1771032231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1771032225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - baseColor: {r: 0.9150943, g: 0.7689768, b: 0.5956746, a: 1}
+  addedByEditorScript: 0
 --- !u!1 &1771584111
 GameObject:
   m_ObjectHideFlags: 0
@@ -16013,6 +16110,26 @@ Transform:
   - {fileID: 1791340862}
   m_Father: {fileID: 1077937132}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1773281145 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1261833186284829171, guid: 964f75fe831425647afd635a714cd2c2, type: 3}
+  m_PrefabInstance: {fileID: 435279232}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1773281151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1773281145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - baseColor: {r: 0.8018868, g: 0.6328838, b: 0.43120325, a: 1}
+  addedByEditorScript: 0
 --- !u!1 &1775206482
 GameObject:
   m_ObjectHideFlags: 0
