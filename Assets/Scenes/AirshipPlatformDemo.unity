@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.0020127671, g: 0.0017355089, b: 0.00071137253, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -9152,9 +9152,9 @@ MonoBehaviour:
       refPath: 
       decorators: []
       nullable: 0
-      serializedValue: 0
+      serializedValue: 
       serializedObject: {fileID: 0}
-      modified: 1
+      modified: 0
     - name: allowFirstPersonToggle
       type: boolean
       objectType: 
@@ -10628,7 +10628,7 @@ MonoBehaviour:
       decorators: []
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 131862466}
+      serializedObject: {fileID: 131862465}
       modified: 1
     - name: useTaggedSpawns
       type: boolean
@@ -10657,7 +10657,7 @@ MonoBehaviour:
       nullable: 0
       serializedValue: 
       serializedObject: {fileID: 0}
-      modified: 1
+      modified: 0
     - name: ballPrefab
       type: object
       objectType: GameObject
@@ -10674,8 +10674,8 @@ MonoBehaviour:
           serializedValue: '"Network Ball"'
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 3659927884800523514, guid: c2681cdc092144c4389c2276c084e434, type: 3}
-      modified: 1
+      serializedObject: {fileID: 0}
+      modified: 0
     - name: ballSpawnPoint
       type: object
       objectType: Transform
@@ -10688,8 +10688,8 @@ MonoBehaviour:
       decorators: []
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 692114624}
-      modified: 1
+      serializedObject: {fileID: 0}
+      modified: 0
     - name: cubePrefab
       type: object
       objectType: GameObject
@@ -10702,8 +10702,8 @@ MonoBehaviour:
       decorators: []
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 2748669429789584642, guid: 9cd09b32e10194976b43f4c363815292, type: 3}
-      modified: 1
+      serializedObject: {fileID: 0}
+      modified: 0
     displayName: 
   contextOverwritten: 0
 --- !u!21 &924066458
