@@ -29,7 +29,8 @@ export class TpCommand extends ChatCommand {
 
 		if (!player.character) return;
 
-		player.character.Teleport(pos, targetPlayer.character?.movement.GetLookVector());
+		const lookDir = targetPlayer.character?.movement.GetLookVector();
+		player.character.Teleport(pos, lookDir ? Quaternion.LookRotation(lookDir) : undefined);
 		player.SendMessage(
 			ColorUtil.ColoredText(Theme.gray, "Teleported to ") +
 				ColorUtil.ColoredText(Theme.yellow, targetPlayer.username),
