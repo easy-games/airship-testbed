@@ -1,4 +1,3 @@
-import { FriendsController } from "@Easy/Core/Client/Controllers/Airship/Friends/FriendsController";
 import { MatchmakingController } from "@Easy/Core/Client/Controllers/Airship/Matchmaking/MatchmakingController";
 import { PartyController } from "@Easy/Core/Client/Controllers/Airship/Party/PartyController";
 import { PlatformInventoryController } from "@Easy/Core/Client/Controllers/Airship/PlatformInventory/PlatformInventoryController";
@@ -101,8 +100,6 @@ export const Platform = {
 	 * Client accessible services.
 	 */
 	client: {
-		/** Provides information about the users friends. */
-		friends: undefined as unknown as Omit<FriendsController, "OnStart">,
 		/** Provides access to matchmaking status. */
 		matchmaking: undefined as unknown as Omit<MatchmakingController, "OnStart">,
 		/**

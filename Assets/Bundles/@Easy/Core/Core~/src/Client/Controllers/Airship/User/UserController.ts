@@ -1,7 +1,9 @@
 import {
+	BridgeApiGetFriends,
 	BridgeApiGetUserById,
 	BridgeApiGetUserByUsername,
 	BridgeApiGetUsersById,
+	BrigdeApiIsFriendsWith,
 	UserControllerBridgeTopics,
 } from "@Easy/Core/Client/ProtectedControllers/Airship/User/UserController";
 import { Platform } from "@Easy/Core/Shared/Airship";
@@ -61,6 +63,26 @@ export class UserController implements OnStart {
 			UserControllerBridgeTopics.GetUsersById,
 			userIds,
 			strict,
+		);
+	}
+
+	/**
+	 * Gets the users friends list.
+	 * @returns A list of friends.
+	 */
+	public async GetFriends(): Promise<Result<PublicUser[], undefined>> {
+		return await AirshipUtil.PromisifyBridgeInvoke<BridgeApiGetFriends>(UserControllerBridgeTopics.GetFriends);
+	}
+
+	/**
+	 * Checks if the user is friends with the user provided.
+	 * @param userId The user id to check friend status with.
+	 * @returns True if friends, false otherwise.
+	 */
+	public async IsFriendsWith(userId: string): Promise<Result<boolean, undefined>> {
+		return await AirshipUtil.PromisifyBridgeInvoke<BrigdeApiIsFriendsWith>(
+			UserControllerBridgeTopics.IsFriendsWith,
+			userId,
 		);
 	}
 }
