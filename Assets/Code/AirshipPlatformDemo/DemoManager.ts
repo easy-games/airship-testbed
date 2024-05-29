@@ -1,6 +1,7 @@
 import SteamRichPresence from "@Easy/Core/Client/Airship/Steam/SteamRichPresence";
 import { Airship } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
+import { CharacterCameraMode } from "@Easy/Core/Shared/Character/LocalCharacter/CharacterCameraMode";
 import { DamageType } from "@Easy/Core/Shared/Damage/DamageType";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Binding } from "@Easy/Core/Shared/Input/Binding";
@@ -60,7 +61,6 @@ export default class DemoManager extends AirshipBehaviour {
 		});
 
 		if (Game.IsServer()) {
-			Airship.chat.BroadcastMessage("test broadcast");
 			Airship.players.ObservePlayers((player) => {
 				this.SpawnPlayer(player);
 			});
@@ -96,7 +96,7 @@ export default class DemoManager extends AirshipBehaviour {
 		}
 		if (Game.IsClient()) {
 			// Optional: use locked camera mode for first person support
-			// Airship.characterCamera.SetCharacterCameraMode(CharacterCameraMode.Locked);
+			Airship.characterCamera.SetCharacterCameraMode(CharacterCameraMode.Locked);
 			// Airship.characterCamera.SetFirstPerson(true);
 			Airship.inventory.SetUIEnabled(false);
 
@@ -146,19 +146,20 @@ export default class DemoManager extends AirshipBehaviour {
 		// 	}
 		// }
 		const character = player.SpawnCharacter(this.spawnPosition.transform.position, {
+			lookDirection: this.spawnPosition.transform.rotation,
 			// customCharacterTemplate: AssetCache.LoadAsset("Shared/Resources/CharacterWithLight Variant.prefab"),
 		});
 		const collider = character.transform.Find("ProximityReceiver")?.GetComponent<Collider>();
 		if (collider) {
 			collider.isTrigger = false;
 		}
-		character.inventory.AddItem(new ItemStack("WoodSword", 10));
+		// character.inventory.AddItem(new ItemStack("WoodSword", 10));
 
 		// const cubeGo = Object.Instantiate(this.cubePrefab);
 		// NetworkUtil.Spawn(cubeGo);
 		// cubeGo.GetComponent<NetworkObject>()!.SetParent(character.networkObject);
 		// cubeGo.transform.localPosition = new Vector3(0, 1, 0);
 
-		// character.inventory.AddItem(new ItemStack("WoodSword"));
+		character.inventory.AddItem(new ItemStack("WoodSword"));
 	}
 }

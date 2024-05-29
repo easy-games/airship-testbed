@@ -30,11 +30,6 @@
 			"filePath": "Code/AirshipPlatformDemo/PromptAboveBall.lua",
 			"extends": []
 		},
-		"DemoManager": {
-			"component": true,
-			"filePath": "Code/AirshipPlatformDemo/DemoManager.lua",
-			"extends": []
-		},
 		"TopDownBattlePlayerSpawner": {
 			"component": true,
 			"filePath": "Code/TopDownBattle/TopDownBattlePlayerSpawner.lua",
@@ -43,6 +38,11 @@
 		"GameManager": {
 			"component": true,
 			"filePath": "Code/TopDownScene/GameManager.lua",
+			"extends": []
+		},
+		"DemoManager": {
+			"component": true,
+			"filePath": "Code/AirshipPlatformDemo/DemoManager.lua",
 			"extends": []
 		},
 		"TopDownBattleEnemySpawner": {
