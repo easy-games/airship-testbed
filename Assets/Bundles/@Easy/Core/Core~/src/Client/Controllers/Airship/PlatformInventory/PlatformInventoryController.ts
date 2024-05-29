@@ -1,13 +1,6 @@
-import {
-	BridgeApiGetEquippedOutfitByUserId,
-	PlatformInventoryControllerBridgeTopics,
-} from "@Easy/Core/Client/ProtectedControllers/Airship/PlatformInventory/PlatformInventoryController";
 import { Platform } from "@Easy/Core/Shared/Airship";
-import { OutfitDto } from "@Easy/Core/Shared/Airship/Types/Outputs/PlatformInventory";
-import { AirshipUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
 import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { Result } from "@Easy/Core/Shared/Types/Result";
 
 @Controller({})
 export class PlatformInventoryController implements OnStart {
@@ -19,13 +12,16 @@ export class PlatformInventoryController implements OnStart {
 
 	OnStart(): void {}
 
-	/**
-	 * Gets the users currently equipped outfit.
-	 */
-	public async GetEquippedOutfitByUserId(userId: string): Promise<Result<OutfitDto | undefined, undefined>> {
-		return await AirshipUtil.PromisifyBridgeInvoke<BridgeApiGetEquippedOutfitByUserId>(
-			PlatformInventoryControllerBridgeTopics.GetEquippedOutfitByUserId,
-			userId,
-		);
-	}
+	// TODO: Add methods for client to get its owned inventory for the current game + organization.
+
+	// TODO: Like on the server, I don't know if this makes sense to expose or if it should exist here.
+	// /**
+	//  * Gets the users currently equipped outfit.
+	//  */
+	// public async GetEquippedOutfitByUserId(userId: string): Promise<Result<OutfitDto | undefined, undefined>> {
+	// 	return await AirshipUtil.PromisifyBridgeInvoke<BridgeApiGetEquippedOutfitByUserId>(
+	// 		PlatformInventoryControllerBridgeTopics.GetEquippedOutfitByUserId,
+	// 		userId,
+	// 	);
+	// }
 }
