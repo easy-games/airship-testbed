@@ -22896,13 +22896,12 @@ interface MaterialColor extends MonoBehaviour {
     addedByEditorScript: boolean;
 
 
-    ConvertColor(color: Color): Color;
     DoUpdate(): void;
     EditorFirstTimeSetup(): void;
-    GetColor(materialIndex: number): ColorSetting;
+    GetColorSettings(materialIndex: number): ColorSetting;
     SetAllColors(diffuseColor: Color, multiplyColor: boolean): void;
     SetAllEmissive(emissiveColor: Color, emissiveMix: number): void;
-    SetColor(settings: ColorSetting, materialIndex: number): boolean;
+    SetColorSettings(materialIndex: number, settings: ColorSetting): boolean;
     SetMaterialColor(index: number, color: Color): void;
 
 }
@@ -22911,6 +22910,7 @@ interface ColorSetting {
     materialColor: Color;
     emissiveColor: Color;
     emissiveMix: number;
+    emissiveLevel: number;
     reference: string;
 
 
@@ -22920,7 +22920,7 @@ interface ColorSetting {
     
 interface ColorSettingConstructor {
 
-    new(materialColor: Color, emissiveColor: Color, emissiveMix: number): ColorSetting;
+    new(materialColor: Color, emissiveColor: Color, emissiveMix: number, emissiveLevel: number): ColorSetting;
 
 
 }
