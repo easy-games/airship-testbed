@@ -4,6 +4,7 @@ import Character from "@Easy/Core/Shared/Character/Character";
 import { DamageType } from "@Easy/Core/Shared/Damage/DamageType";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Binding } from "@Easy/Core/Shared/Input/Binding";
+import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
 import { ItemUtil } from "@Easy/Core/Shared/Item/ItemUtil";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
@@ -151,6 +152,7 @@ export default class DemoManager extends AirshipBehaviour {
 		if (collider) {
 			collider.isTrigger = false;
 		}
+		character.inventory.AddItem(new ItemStack("WoodSword", 10));
 
 		// const cubeGo = Object.Instantiate(this.cubePrefab);
 		// NetworkUtil.Spawn(cubeGo);
