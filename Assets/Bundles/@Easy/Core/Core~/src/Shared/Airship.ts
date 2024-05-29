@@ -50,8 +50,8 @@ export const Platform = {
 		 * The data store provides durable storage that can be accessed from any game server. Data access is slower than
 		 * the Cache Store, but the data will never expire.
 		 *
-		 * The Data Store is good for things like user configuration settings. If you want to keep track of user statistics or
-		 * inventory, check out the Leaderboard and AirshipInventory systems.
+		 * The Data Store is good for things like user profiles or unlocks. If you want to keep track of user statistics or
+		 * build tradable inventory, check out the Leaderboard and PlatformInventory systems.s
 		 */
 		dataStore: undefined as unknown as Omit<DataStoreService, "OnStart">,
 		/**
