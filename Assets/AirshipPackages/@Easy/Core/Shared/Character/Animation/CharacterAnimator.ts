@@ -350,35 +350,59 @@ export class CharacterAnimator {
 		if (itemDef) {
 			/***** Viewmodel ******/
 			if (itemDef.holdConfig?.viewmodel?.equipAnim) {
-				this.viewmodelClips.set(
-					ItemAnimationId.EQUIP,
-					itemDef.holdConfig.viewmodel?.equipAnim.mapFiltered((s) => {
-						const clip = AssetCache.LoadAssetIfExists<AnimationClip>(s);
-						if (clip) return clip;
-					}),
-				);
+				const equipAnims = itemDef.holdConfig.viewmodel?.equipAnim.mapFiltered((s) => {
+					const clip = AssetCache.LoadAssetIfExists<AnimationClip>(s);
+					if (clip) {
+						return clip;
+					} else {
+						warn(`Couldn't find animation asset for ${itemDef.displayName}: ${s}`);
+					}
+				});
+
+				if (equipAnims.size() > 0) {
+					this.viewmodelClips.set(
+						ItemAnimationId.EQUIP,
+						equipAnims,
+					);
+				}
 			}
 			if (itemDef.holdConfig?.viewmodel?.idleAnim) {
-				this.viewmodelClips.set(
-					ItemAnimationId.IDLE,
-					itemDef.holdConfig.viewmodel?.idleAnim.mapFiltered((s) => {
-						const clip = AssetCache.LoadAssetIfExists<AnimationClip>(s);
-						if (clip) return clip;
-					}),
-				);
+				const idleAnims = itemDef.holdConfig.viewmodel?.idleAnim.mapFiltered((s) => {
+					const clip = AssetCache.LoadAssetIfExists<AnimationClip>(s);
+					if (clip) {
+						return clip;
+					} else {
+						warn(`Couldn't find animation asset for ${itemDef.displayName}: ${s}`);
+					}
+				});
+
+				if (idleAnims.size() > 0) {
+					this.viewmodelClips.set(
+						ItemAnimationId.IDLE,
+						idleAnims,
+					);
+				}
 			}
 			// else if (itemDef.block) {
 			// 	this.viewmodelClips.set(ItemAnimationId.IDLE, [BLOCK_IDLE_FP]);
 			// }
 
 			if (itemDef.usable?.onUseAnimViewmodel) {
-				this.viewmodelClips.set(
-					ItemAnimationId.USE,
-					itemDef.usable.onUseAnimViewmodel.mapFiltered((s) => {
-						const clip = AssetCache.LoadAssetIfExists<AnimationClip>(s);
-						if (clip) return clip;
-					}),
-				);
+				const useAnims = itemDef.usable.onUseAnimViewmodel.mapFiltered((s) => {
+					const clip = AssetCache.LoadAssetIfExists<AnimationClip>(s);
+					if (clip) {
+						return clip;
+					} else {
+						warn(`Couldn't find animation asset for ${itemDef.displayName}: ${s}`);
+					}
+				});
+
+				if (useAnims.size() > 0) {
+					this.viewmodelClips.set(
+						ItemAnimationId.USE,
+						useAnims,
+					);
+				}
 			}
 			// else if (itemDef.block) {
 			// 	this.viewmodelClips.set(ItemAnimationId.USE, [BLOCK_USE_FP]);
@@ -389,6 +413,7 @@ export class CharacterAnimator {
 				let clips = itemDef.holdConfig.worldmodel?.equipAnim.mapFiltered((s) => {
 					const clip = AssetCache.LoadAssetIfExists<AnimationClip>(s);
 					if (clip) return clip;
+					else warn(`Couldn't find animation asset for ${itemDef.displayName}: ${s}`);
 				});
 				if (clips.size() > 0) {
 					this.worldmodelClips.set(ItemAnimationId.EQUIP, clips);
@@ -398,6 +423,7 @@ export class CharacterAnimator {
 				let clips = itemDef.holdConfig.worldmodel?.idleAnim.mapFiltered((s) => {
 					const clip = AssetCache.LoadAssetIfExists<AnimationClip>(s);
 					if (clip) return clip;
+					else warn(`Couldn't find animation asset for ${itemDef.displayName}: ${s}`);
 				});
 				if (clips.size() > 0) {
 					this.worldmodelClips.set(ItemAnimationId.IDLE, clips);
@@ -407,6 +433,7 @@ export class CharacterAnimator {
 				let clips = itemDef.usable.onUseAnimWorldmodel.mapFiltered((s) => {
 					const clip = AssetCache.LoadAssetIfExists<AnimationClip>(s);
 					if (clip) return clip;
+					else warn(`Couldn't find animation asset for ${itemDef.displayName}: ${s}`);
 				});
 				if (clips.size() > 0) {
 					this.worldmodelClips.set(ItemAnimationId.USE, clips);
