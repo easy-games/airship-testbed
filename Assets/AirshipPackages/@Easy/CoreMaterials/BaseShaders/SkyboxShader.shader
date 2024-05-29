@@ -17,7 +17,7 @@ Shader "Airship/Skybox"
                     #pragma vertex vert
                     #pragma fragment frag
                  
-                    #include "Assets/AirshipPackages/@Easy/CoreMaterials//BaseShaders/AirshipShaderIncludes.hlsl"
+                    #include "Assets/AirshipPackages/@Easy/CoreMaterials/BaseShaders/AirshipShaderIncludes.hlsl"
 
                     #pragma multi_compile _ FOG_ON
 

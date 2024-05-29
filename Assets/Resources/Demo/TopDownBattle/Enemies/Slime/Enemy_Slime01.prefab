@@ -103,6 +103,7 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
+    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!1 &924287633931857237
 GameObject:
@@ -206,6 +207,7 @@ MonoBehaviour:
   - materialColor: {r: 0.20754719, g: 0.20754719, b: 0.20754719, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
+    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!1 &3209343139396513454
 GameObject:
@@ -221,7 +223,7 @@ GameObject:
   - component: {fileID: 3769179108955811012}
   - component: {fileID: 2366322638051716042}
   - component: {fileID: 7465617981528983034}
-  - component: {fileID: 4488545619872097874}
+  - component: {fileID: 1658037104442656252}
   m_Layer: 0
   m_Name: Enemy_Slime01
   m_TagString: Untagged
@@ -405,7 +407,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0.5, z: 0}
---- !u!114 &4488545619872097874
+--- !u!114 &1658037104442656252
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -417,8 +419,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptFile: {fileID: 7413320281675706762, guid: 5d2e688bef2b3d243a1a23090d82f26c, type: 3}
-  m_fileFullPath: Assets/Shared/Demo/TopDownBattle/TopDownBattleEnemies/TopDownBattleEnemy.lua
+  scriptFile: {fileID: -6658402480366335237, guid: 5d2e688bef2b3d243a1a23090d82f26c, type: 3}
+  m_fileFullPath: Assets/Code/TopDownBattle/TopDownBattleEnemies/TopDownBattleEnemy.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -431,84 +433,6 @@ MonoBehaviour:
     name: TopDownBattleEnemy
     decorators: []
     properties:
-    - name: anim
-      type: object
-      objectType: Animator
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators:
-      - name: Header
-        parameters:
-        - type: string
-          serializedValue: '"References"'
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 1280141020439120962}
-      modified: 1
-    - name: rigid
-      type: object
-      objectType: Rigidbody
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 2366322638051716042}
-      modified: 1
-    - name: moveForce
-      type: number
-      objectType: 
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators:
-      - name: Header
-        parameters:
-        - type: string
-          serializedValue: '"Variables"'
-      nullable: 0
-      serializedValue: 20
-      serializedObject: {fileID: 0}
-      modified: 1
-    - name: minMoveTime
-      type: number
-      objectType: 
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators: []
-      nullable: 0
-      serializedValue: 1.5
-      serializedObject: {fileID: 0}
-      modified: 1
-    - name: maxMoveTime
-      type: number
-      objectType: 
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators: []
-      nullable: 0
-      serializedValue: 5
-      serializedObject: {fileID: 0}
-      modified: 1
     - name: graphicsHolder
       type: object
       objectType: Transform
@@ -525,9 +449,83 @@ MonoBehaviour:
           serializedValue: '"References"'
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 2677044120290366665}
-      modified: 1
-    - name: damageAmount
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: nob
+      type: object
+      objectType: NetworkObject
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: anim
+      type: object
+      objectType: Animator
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: rigid
+      type: object
+      objectType: Rigidbody
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: moveForce
+      type: number
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"Variables"'
+      nullable: 0
+      serializedValue: 10
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: minMoveTime
+      type: number
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators: []
+      nullable: 0
+      serializedValue: 3
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: maxMoveTime
       type: number
       objectType: 
       items:
@@ -540,7 +538,21 @@ MonoBehaviour:
       nullable: 0
       serializedValue: 10
       serializedObject: {fileID: 0}
-      modified: 1
+      modified: 0
+    - name: damageAmount
+      type: number
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators: []
+      nullable: 0
+      serializedValue: 1
+      serializedObject: {fileID: 0}
+      modified: 0
     - name: knockbackForce
       type: number
       objectType: 
@@ -554,21 +566,7 @@ MonoBehaviour:
       nullable: 0
       serializedValue: 10
       serializedObject: {fileID: 0}
-      modified: 1
-    - name: nob
-      type: object
-      objectType: NetworkObject
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 2106157267949230125}
-      modified: 1
+      modified: 0
     displayName: 
   contextOverwritten: 0
 --- !u!1 &3499941963146062281
@@ -673,6 +671,7 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
+    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!1 &4470022503661164560
 GameObject:
@@ -776,6 +775,7 @@ MonoBehaviour:
   - materialColor: {r: 0.20754719, g: 0.20754719, b: 0.20754719, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
+    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!1 &4809262610585558458
 GameObject:
@@ -968,6 +968,7 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
+    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!1 &8945973966241634517
 GameObject:

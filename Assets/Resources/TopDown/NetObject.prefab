@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3989528085794835094}
   - component: {fileID: 7128279626201669692}
-  - component: {fileID: 3108533575580792280}
   - component: {fileID: 2170937675072678938}
   - component: {fileID: 5747066507118191663}
+  - component: {fileID: 7233989967731473002}
   m_Layer: 0
   m_Name: NetObject
   m_TagString: Untagged
@@ -83,34 +83,6 @@ MonoBehaviour:
   _scenePathHash: 0
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 10587898148289538191
---- !u!114 &3108533575580792280
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7996787048906898585}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  scriptFile: {fileID: 5969674447374222969, guid: 464ebf54d8ef8134eba5686cf6d0fc57, type: 3}
-  m_fileFullPath: Assets/Shared/Demo/TopDownScene/NetComponent.lua
-  m_error: 0
-  m_yielded: 0
-  m_assetPath: 
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
-    name: NetComponent
-    decorators: []
-    properties: []
-    displayName: 
-  contextOverwritten: 0
 --- !u!114 &2170937675072678938
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -178,3 +150,31 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!114 &7233989967731473002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7996787048906898585}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scriptFile: {fileID: 8569101630664231926, guid: 464ebf54d8ef8134eba5686cf6d0fc57, type: 3}
+  m_fileFullPath: Assets/Code/TopDownScene/NetComponent.lua
+  m_error: 0
+  m_yielded: 0
+  m_assetPath: 
+  m_canResume: 0
+  m_asyncYield: 0
+  m_onUpdateHandle: -1
+  m_onLateUpdateHandle: -1
+  m_shortFileName: 
+  m_metadata:
+    name: 
+    decorators: []
+    properties: []
+    displayName: 
+  contextOverwritten: 0
