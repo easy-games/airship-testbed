@@ -23,18 +23,18 @@ export class AirshipCharacterFootstepsSingleton implements OnStart {
 	constructor() {
 		task.spawn(() => {
 			const stonePaths = [
-				"AirshipPackages/@Easy/Core/Sound/Footsteps/Footstep_Stone_01.ogg",
-				"AirshipPackages/@Easy/Core/Sound/Footsteps/Footstep_Stone_02.ogg",
-				"AirshipPackages/@Easy/Core/Sound/Footsteps/Footstep_Stone_03.ogg",
-				"AirshipPackages/@Easy/Core/Sound/Footsteps/Footstep_Stone_04.ogg",
+				"Assets/AirshipPackages/@Easy/Core/Sound/Footsteps/Footstep_Stone_01.ogg",
+				"Assets/AirshipPackages/@Easy/Core/Sound/Footsteps/Footstep_Stone_02.ogg",
+				"Assets/AirshipPackages/@Easy/Core/Sound/Footsteps/Footstep_Stone_03.ogg",
+				"Assets/AirshipPackages/@Easy/Core/Sound/Footsteps/Footstep_Stone_04.ogg",
 			];
 			this.materialMap.set("Stone_Clean", stonePaths);
 
 			const woodPaths = [
-				"AirshipPackages/@Easy/Core/Sound/Footsteps/Footstep_Wood_01.ogg",
-				"AirshipPackages/@Easy/Core/Sound/Footsteps/Footstep_Wood_02.ogg",
-				"AirshipPackages/@Easy/Core/Sound/Footsteps/Footstep_Wood_03.ogg",
-				"AirshipPackages/@Easy/Core/Sound/Footsteps/Footstep_Wood_04.ogg",
+				"Assets/AirshipPackages/@Easy/Core/Sound/Footsteps/Footstep_Wood_01.ogg",
+				"Assets/AirshipPackages/@Easy/Core/Sound/Footsteps/Footstep_Wood_02.ogg",
+				"Assets/AirshipPackages/@Easy/Core/Sound/Footsteps/Footstep_Wood_03.ogg",
+				"Assets/AirshipPackages/@Easy/Core/Sound/Footsteps/Footstep_Wood_04.ogg",
 			];
 			this.materialMap.set("Wood_Cherry_Natural", woodPaths);
 			this.materialMap.set("Wood_Cherry_Toon", woodPaths);
@@ -44,18 +44,18 @@ export class AirshipCharacterFootstepsSingleton implements OnStart {
 			this.materialMap.set("Wood_Cherry_Painted_UV", woodPaths);
 
 			const woolPaths = [
-				"AirshipPackages/@Easy/Core/Sound/Footsteps/Footstep_Wool_01.ogg",
-				"AirshipPackages/@Easy/Core/Sound/Footsteps/Footstep_Wool_02.ogg",
-				"AirshipPackages/@Easy/Core/Sound/Footsteps/Footstep_Wool_03.ogg",
-				"AirshipPackages/@Easy/Core/Sound/Footsteps/Footstep_Wool_04.ogg",
+				"Assets/AirshipPackages/@Easy/Core/Sound/Footsteps/Footstep_Wool_01.ogg",
+				"Assets/AirshipPackages/@Easy/Core/Sound/Footsteps/Footstep_Wool_02.ogg",
+				"Assets/AirshipPackages/@Easy/Core/Sound/Footsteps/Footstep_Wool_03.ogg",
+				"Assets/AirshipPackages/@Easy/Core/Sound/Footsteps/Footstep_Wool_04.ogg",
 			];
 			this.materialMap.set("Denim_UV", woolPaths);
 
 			const grassPaths = [
-				"AirshipPackages/@Easy/Core/Sound/Footsteps/Footstep_Grass_01.ogg",
-				"AirshipPackages/@Easy/Core/Sound/Footsteps/Footstep_Grass_02.ogg",
-				"AirshipPackages/@Easy/Core/Sound/Footsteps/Footstep_Grass_03.ogg",
-				"AirshipPackages/@Easy/Core/Sound/Footsteps/Footstep_Grass_04.ogg",
+				"Assets/AirshipPackages/@Easy/Core/Sound/Footsteps/Footstep_Grass_01.ogg",
+				"Assets/AirshipPackages/@Easy/Core/Sound/Footsteps/Footstep_Grass_02.ogg",
+				"Assets/AirshipPackages/@Easy/Core/Sound/Footsteps/Footstep_Grass_03.ogg",
+				"Assets/AirshipPackages/@Easy/Core/Sound/Footsteps/Footstep_Grass_04.ogg",
 			];
 			this.materialMap.set("Grass", grassPaths);
 			this.materialMap.set("Dirt", grassPaths);
