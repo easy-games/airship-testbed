@@ -5379,7 +5379,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3994489106181738915}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 160d101a02c657f47b6905e440ea7370, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -6301,9 +6301,9 @@ MonoBehaviour:
   interactWithPhysics: 1
   disableInput: 0
   useGravity: 1
-  detectSlopes: 1
-  detectStepUps: 0
-  preventWallClipping: 1
+  detectSlopes: 0
+  detectStepUps: 1
+  preventWallClipping: 0
   groundCollisionLayerMask:
     serializedVersion: 2
     m_Bits: 2305
@@ -6323,7 +6323,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterHeight: 1.8
-  characterRadius: 0.35
+  characterRadius: 0.2
   speed: 4.666667
   sprintSpeed: 6.666667
   crouchSpeedMultiplier: 0.455
@@ -6331,12 +6331,12 @@ MonoBehaviour:
   slideSpeedMultiplier: 3.28
   slideHeightMultiplier: 0.5
   slideCooldown: 0.8
-  jumpSpeed: 14
+  jumpSpeed: 16
   jumpCoyoteTime: 0.14
   jumpUpBlockCooldown: 0.4
   terminalVelocity: 50
-  gravityMod: 3
-  upwardsGravityMod: 0.75
+  gravityMod: 2
+  upwardsGravityMod: 1
   slopeForce: 45
   minSlopeDelta: 0.1
   maxSlopeDelta: 0.3
