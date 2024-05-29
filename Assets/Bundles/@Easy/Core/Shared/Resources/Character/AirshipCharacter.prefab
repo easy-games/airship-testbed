@@ -6303,7 +6303,7 @@ MonoBehaviour:
   useGravity: 1
   detectSlopes: 0
   detectStepUps: 1
-  preventWallClipping: 0
+  preventWallClipping: 1
   groundCollisionLayerMask:
     serializedVersion: 2
     m_Bits: 2305
