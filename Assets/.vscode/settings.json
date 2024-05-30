@@ -1,0 +1,21 @@
+{
+  "files.exclude": {
+    "**/*.asset": true,
+    "**/*.meta": true,
+    "**/*.mat": true,
+    "**/*.prefab": true,
+    "**/*.unity": true,
+    "**/*.hdr": true,
+    "**/*.aseditorinfo": true,
+    "**/*.asbuildinfo": true,
+    "**/*.confg": true,
+    "FishNet.Config.XML": true,
+    "Bundles": true,
+    // "Typescript~": true
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "files.eol": "\n"
+}

@@ -15,10 +15,10 @@ EditorBuildSettings:
     path: Packages/gg.easy.airship/Runtime/Scenes/Login.unity
     guid: 7cbc249662f9a43ff80aee8c8cb84984
   - enabled: 1
-    path: Assets/Bundles/Shared/Scenes/AirshipPlatformDemo.unity
+    path: Assets/Scenes/AirshipPlatformDemo.unity
     guid: 7adf34f37f4884c5ab92c16c58f38874
   - enabled: 1
-    path: Assets/Bundles/Shared/Scenes/TopDownBattleScene.unity
+    path: Assets/Scenes/TopDownBattleScene.unity
     guid: 2e133b1c311427345a363fb38ae7ff22
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

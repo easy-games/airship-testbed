@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 58706bd32b0cdca4f8a04d791f7158e7
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: '@easy/core_shared/resources'
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: 724eab6530215ec42938eedf5e35fbe9, type: 3}
