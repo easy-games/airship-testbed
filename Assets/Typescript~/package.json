@@ -16,8 +16,8 @@
   "license": "ISC",
   "devDependencies": {
     "@easy-games/compiler-types": "^3.0.42",
-    "@easy-games/unity-flamework-transformer": "^1.1.52",
-    "@easy-games/unity-ts": "^3.0.193",
+    "@easy-games/unity-flamework-transformer": "^1.1.54",
+    "@easy-games/unity-ts": "^3.1.194",
     "@typescript-eslint/eslint-plugin": "^5.40.0",
     "@typescript-eslint/parser": "^5.40.0",
     "eslint": "^8.25.0",
@@ -26,8 +26,5 @@
     "eslint-plugin-roblox-ts": "^0.0.34",
     "prettier": "^2.7.1",
     "typescript": "=5.1.6"
-  },
-  "dependencies": {
-    "@easy-games/unity-inspect": "^1.0.5"
   }
 }

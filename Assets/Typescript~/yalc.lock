@@ -1,8 +1,0 @@
-{
-  "version": "v1",
-  "packages": {
-    "@easy-games/unity-flamework-transformer": {
-      "signature": "5610cd0bca59091a0be9b370084259ef"
-    }
-  }
-}
