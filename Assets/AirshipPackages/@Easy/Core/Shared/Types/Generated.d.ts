@@ -27771,4 +27771,39 @@ interface StandaloneFileBrowserConstructor {
     SaveFilePanelAsync(title: string, directory: string, defaultName: string, extensions: CSArray<ExtensionFilter>, cb: unknown): void;
 }
 declare const StandaloneFileBrowser: StandaloneFileBrowserConstructor;
+    
+interface MaterialColorURP extends MonoBehaviour {
+    colorSettings: CSArray<ColorSetting>;
+    addedByEditorScript: boolean;
+
+
+    DoUpdate(): void;
+    EditorFirstTimeSetup(): void;
+
+}
+    
+interface ColorSetting {
+    baseColor: Color;
+    reference: string;
+
+
+    CopyFrom(otherSettings: ColorSetting): void;
+
+}
+    
+interface ColorSettingConstructor {
+
+    new(baseColor: Color): ColorSetting;
+
+
+}
+declare const ColorSetting: ColorSettingConstructor;
+    
+interface MaterialColorURPConstructor {
+
+    new(): MaterialColorURP;
+
+
+}
+declare const MaterialColorURP: MaterialColorURPConstructor;
 
