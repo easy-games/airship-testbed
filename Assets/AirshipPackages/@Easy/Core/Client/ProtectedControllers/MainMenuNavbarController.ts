@@ -1,10 +1,10 @@
-import { Keyboard } from "@Easy/Core/Shared/UserInput";
-import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import MainMenuNavButton from "@Easy/Core/Shared/MainMenu/Components/MainMenuNavButton";
 import { CoreUI } from "@Easy/Core/Shared/UI/CoreUI";
+import { Keyboard } from "@Easy/Core/Shared/UserInput";
+import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { AuthController } from "./Auth/AuthController";
 import { MainMenuController } from "./MainMenuController";
@@ -34,7 +34,6 @@ export class MainMenuNavbarController implements OnStart {
 
 	public DoRefresh(): void {
 		if (!this.mainMenuController.currentPage) return;
-		print("Refreshing!");
 
 		this.mainMenuController.RouteToPage(this.mainMenuController.currentPage.pageType, true);
 	}
