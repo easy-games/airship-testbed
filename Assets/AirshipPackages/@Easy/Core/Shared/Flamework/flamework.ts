@@ -1,7 +1,6 @@
 /* eslint-disable no-inner-declarations */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable @typescript-eslint/no-namespace */
-import inspect from "../Util/Inspect";
 import { Modding } from "./modding";
 import { Reflect } from "./reflect";
 import { Constructor } from "./Types/types";

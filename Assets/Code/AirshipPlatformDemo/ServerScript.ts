@@ -1,8 +1,5 @@
-import { DataStoreService } from "@Easy/Core/Server/Airship/DataStore/DataStoreService";
-import { LeaderboardService } from "@Easy/Core/Server/Airship/Leaderboard/LeaderboardService";
-import { Airship } from "@Easy/Core/Shared/Airship";
+import { Airship, Platform } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
-import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
@@ -45,11 +42,11 @@ export default class TestScript extends AirshipBehaviour {
 
 		this.bin.Add(
 			Airship.players.onPlayerJoined.Connect(async (player) => {
-				const res = await Dependency<LeaderboardService>().GetRank("TopDemoSessionKills", player.userId);
+				const res = await Platform.server.leaderboard.GetRank("TopDemoSessionKills", player.userId);
 				if (!res.success) return;
-				const dataRes = await Dependency<DataStoreService>().GetKey<{ kills: number }>(player.userId);
+				const dataRes = await Platform.server.dataStore.GetKey<{ kills: number }>(player.userId);
 				if (!dataRes.success) return;
-				const topRes = await Dependency<LeaderboardService>().GetRankRange("TopDemoSessionKills", 0, 3);
+				const topRes = await Platform.server.leaderboard.GetRankRange("TopDemoSessionKills", 0, 3);
 				if (!topRes.success) return;
 
 				this.totalKillMap.set(player, dataRes.data?.kills ?? 0);
@@ -100,12 +97,12 @@ export default class TestScript extends AirshipBehaviour {
 		let sessionKills = this.sessionKillMap.get(player) ?? 0;
 		if (!sessionKills) return;
 
-		await Dependency<DataStoreService>().SetKey(player.userId, { kills: sessionKills + totalKills });
+		await Platform.server.dataStore.SetKey(player.userId, { kills: sessionKills + totalKills });
 	}
 
 	private async UpdateLeaderboard(player: Player) {
 		let sessionKills = this.sessionKillMap.get(player) ?? 0;
-		await Dependency<LeaderboardService>().Update("TopDemoSessionKills", { [player.userId]: sessionKills });
+		await Platform.server.leaderboard.Update("TopDemoSessionKills", { [player.userId]: sessionKills });
 	}
 
 	override OnDestroy(): void {}

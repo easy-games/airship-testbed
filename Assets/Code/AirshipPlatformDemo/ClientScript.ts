@@ -1,5 +1,4 @@
-import { UserController } from "@Easy/Core/Client/Airship/User/UserController";
-import { Dependency } from "@Easy/Core/Shared/Flamework";
+import { Platform } from "@Easy/Core/Shared/Airship";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { Network } from "Code/Network";
@@ -21,7 +20,7 @@ export default class ClientScript extends AirshipBehaviour {
 
 		this.bin.Add(
 			Network.ServerToClient.TopScores.client.OnServerEvent(async (event) => {
-				const { data } = await Dependency<UserController>().GetUsersById(
+				const { data } = await Platform.client.user.GetUsersById(
 					event.map((u) => u.id),
 					false,
 				);

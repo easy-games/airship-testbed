@@ -20,5 +20,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/TopDownBattleScene.unity
     guid: 2e133b1c311427345a363fb38ae7ff22
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.input.settings: {fileID: 11400000, guid: 8f5f84253ea8c478f885bdb429d860d9, type: 2}
   m_UseUCBPForAssetBundles: 0
