@@ -1,17 +1,14 @@
-import { FriendsController } from "@Easy/Core/Client/Airship/Friends/FriendsController";
-import { MatchmakingController } from "@Easy/Core/Client/Airship/Matchmaking/MatchmakingController";
-import { PartyController } from "@Easy/Core/Client/Airship/Party/PartyController";
-import { PlatformInventoryController } from "@Easy/Core/Client/Airship/PlatformInventory/PlatformInventoryController";
-import { TransferController } from "@Easy/Core/Client/Airship/Transfer/TransferController";
-import { UserController } from "@Easy/Core/Client/Airship/User/UserController";
-import { CacheStoreService } from "@Easy/Core/Server/Airship/CacheStore/CacheStoreService";
-import { DataStoreService } from "@Easy/Core/Server/Airship/DataStore/DataStoreService";
-import { LeaderboardService } from "@Easy/Core/Server/Airship/Leaderboard/LeaderboardService";
-import { MatchmakingService } from "@Easy/Core/Server/Airship/Matchmaking/MatchmakingService";
-import { PartyService } from "@Easy/Core/Server/Airship/Party/PartyService";
-import { PlatformInventoryService } from "@Easy/Core/Server/Airship/PlatformInventory/PlatformInventoryService";
-import { TransferService } from "@Easy/Core/Server/Airship/Transfer/TransferService";
-import { UserService } from "@Easy/Core/Server/Airship/User/UserService";
+import { PartyController } from "../Client/Controllers/Airship/Party/PartyController";
+import { PlatformInventoryController } from "../Client/Controllers/Airship/PlatformInventory/PlatformInventoryController";
+import { TransferController } from "../Client/Controllers/Airship/Transfer/TransferController";
+import { UserController } from "../Client/Controllers/Airship/User/UserController";
+import { CacheStoreService } from "../Server/Services/Airship/CacheStore/CacheStoreService";
+import { DataStoreService } from "../Server/Services/Airship/DataStore/DataStoreService";
+import { LeaderboardService } from "../Server/Services/Airship/Leaderboard/LeaderboardService";
+import { PartyService } from "../Server/Services/Airship/Party/PartyService";
+import { PlatformInventoryService } from "../Server/Services/Airship/PlatformInventory/PlatformInventoryService";
+import { TransferService } from "../Server/Services/Airship/Transfer/TransferService";
+import { UserService } from "../Server/Services/Airship/User/UserService";
 import { AirshipCharacterCameraSingleton } from "./Camera/AirshipCharacterCameraSingleton";
 import { CharactersSingleton } from "./Character/CharactersSingleton";
 import { AirshipChatSingleton } from "./Chat/AirshipChatSingleton";
@@ -51,8 +48,8 @@ export const Platform = {
 		 * The data store provides durable storage that can be accessed from any game server. Data access is slower than
 		 * the Cache Store, but the data will never expire.
 		 *
-		 * The Data Store is good for things like user configuration settings. If you want to keep track of user statistics or
-		 * inventory, check out the Leaderboard and AirshipInventory systems.
+		 * The Data Store is good for things like user profiles or unlocks. If you want to keep track of user statistics or
+		 * build tradable inventory, check out the Leaderboard and PlatformInventory systems.s
 		 */
 		dataStore: undefined as unknown as Omit<DataStoreService, "OnStart">,
 		/**
@@ -61,11 +58,6 @@ export const Platform = {
 		 * accessed using the name provided during setup.
 		 */
 		leaderboard: undefined as unknown as Omit<LeaderboardService, "OnStart">,
-		/**
-		 * Allows game servers to match make players. These functions are currently only
-		 * enabled upon request. Email us at hello@easy.gg to see if you might qualify.
-		 */
-		matchmaking: undefined as unknown as Omit<MatchmakingService, "OnStart">,
 		/**
 		 * Allows access to player party information.
 		 */
@@ -101,10 +93,6 @@ export const Platform = {
 	 * Client accessible services.
 	 */
 	client: {
-		/** Provides information about the users friends. */
-		friends: undefined as unknown as Omit<FriendsController, "OnStart">,
-		/** Provides access to matchmaking status. */
-		matchmaking: undefined as unknown as Omit<MatchmakingController, "OnStart">,
 		/**
 		 * This controller provides information about the users current party.
 		 */
