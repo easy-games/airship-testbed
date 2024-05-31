@@ -1,7 +1,6 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
-import { Game } from "@Easy/Core/Shared/Game";
 import { ControlScheme, Keyboard, Mouse, Preferred, Touchscreen } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { MathUtil } from "@Easy/Core/Shared/Util/MathUtil";
@@ -24,13 +23,13 @@ const Y_LOCKED_ROTATION = 0;
 
 const TAU = math.pi * 2;
 
-let MOUSE_SENS_SCALAR = 0.02;
-if (Game.IsMac()) {
-	MOUSE_SENS_SCALAR *= 5;
-}
-if (!Game.IsEditor()) {
-	MOUSE_SENS_SCALAR *= 0.15;
-}
+let MOUSE_SENS_SCALAR = 30;
+// if (Game.IsMac()) {
+// 	MOUSE_SENS_SCALAR *= 5;
+// }
+// if (!Game.IsEditor()) {
+// 	MOUSE_SENS_SCALAR *= 0.15;
+// }
 
 export class HumanoidCameraMode extends CameraMode {
 	private readonly bin = new Bin();
@@ -181,9 +180,9 @@ export class HumanoidCameraMode extends CameraMode {
 				if (!this.firstPerson && !this.lockView) {
 					// this.mouse.SetPosition(this.rightClickPos);
 				}
-				this.rotationY = (this.rotationY - mouseDelta.x * mouseSensitivity * MOUSE_SENS_SCALAR) % TAU;
+				this.rotationY = (this.rotationY - mouseDelta.x / Screen.width * mouseSensitivity * MOUSE_SENS_SCALAR) % TAU;
 				this.rotationX = math.clamp(
-					this.rotationX + mouseDelta.y * mouseSensitivity * MOUSE_SENS_SCALAR,
+					this.rotationX + mouseDelta.y / Screen.height * mouseSensitivity * MOUSE_SENS_SCALAR,
 					MIN_ROT_X,
 					MAX_ROT_X,
 				);
