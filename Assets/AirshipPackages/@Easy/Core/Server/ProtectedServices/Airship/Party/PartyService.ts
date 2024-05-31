@@ -1,4 +1,4 @@
-import { GameServerPartyData } from "@Easy/Core/Server/Services/Airship/Party/PartyService";
+import { GameServerPartyData } from "@Easy/Core/Server/Services/Airship/Party/AirshipPartyService";
 import { OnStart, Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Result } from "@Easy/Core/Shared/Types/Result";

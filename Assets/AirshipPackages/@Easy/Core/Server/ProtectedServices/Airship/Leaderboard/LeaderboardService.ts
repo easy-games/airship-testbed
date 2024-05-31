@@ -1,4 +1,4 @@
-import { LeaderboardUpdate, RankData } from "@Easy/Core/Server/Services/Airship/Leaderboard/LeaderboardService";
+import { LeaderboardUpdate, RankData } from "@Easy/Core/Server/Services/Airship/Leaderboard/AirshipLeaderboardService";
 import { OnStart, Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Result } from "@Easy/Core/Shared/Types/Result";
