@@ -24,7 +24,7 @@ const Y_LOCKED_ROTATION = 0;
 const TAU = math.pi * 2;
 
 let MOUSE_SENS_SCALAR = 15;
-let MOUSE_SMOOTHING = 2;
+let MOUSE_SMOOTHING = 1.35;
 
 export class HumanoidCameraMode extends CameraMode {
 	private readonly bin = new Bin();
@@ -187,9 +187,11 @@ export class HumanoidCameraMode extends CameraMode {
 				if (!this.firstPerson && !this.lockView) {
 					// this.mouse.SetPosition(this.rightClickPos);
 				}
+
+				// Using Screen.width for both X and Y sensitivity (feels wrong having different vertical & horizontal sens)
 				this.rotationY = (this.rotationY - moveDelta.x / Screen.width * mouseSensitivity * MOUSE_SENS_SCALAR) % TAU;
 				this.rotationX = math.clamp(
-					this.rotationX + moveDelta.y / Screen.height * mouseSensitivity * MOUSE_SENS_SCALAR,
+					this.rotationX + moveDelta.y / Screen.width * mouseSensitivity * MOUSE_SENS_SCALAR,
 					MIN_ROT_X,
 					MAX_ROT_X,
 				);
