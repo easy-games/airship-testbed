@@ -16,7 +16,9 @@ import { Result } from "@Easy/Core/Shared/Types/Result";
 @Service({})
 export class PlatformInventoryService implements OnStart {
 	constructor() {
-		if (Game.IsServer()) Platform.server.inventory = this;
+		if (!Game.IsServer()) return;
+
+		Platform.server.inventory = this;
 	}
 
 	OnStart(): void {}
