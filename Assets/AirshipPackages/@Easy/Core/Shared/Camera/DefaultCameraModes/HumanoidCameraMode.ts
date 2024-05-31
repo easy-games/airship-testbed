@@ -23,13 +23,8 @@ const Y_LOCKED_ROTATION = 0;
 
 const TAU = math.pi * 2;
 
-let MOUSE_SENS_SCALAR = 30;
-// if (Game.IsMac()) {
-// 	MOUSE_SENS_SCALAR *= 5;
-// }
-// if (!Game.IsEditor()) {
-// 	MOUSE_SENS_SCALAR *= 0.15;
-// }
+let MOUSE_SENS_SCALAR = 15;
+let MOUSE_SMOOTHING = 2;
 
 export class HumanoidCameraMode extends CameraMode {
 	private readonly bin = new Bin();
@@ -58,6 +53,9 @@ export class HumanoidCameraMode extends CameraMode {
 	private readonly mouse = this.bin.Add(new Mouse());
 
 	private spineBone: Transform;
+	
+	private mouseSmoothingEnabled = true;
+	private smoothVector = new Vector2(0, 0);
 
 	constructor(
 		private character: Character,
@@ -176,13 +174,22 @@ export class HumanoidCameraMode extends CameraMode {
 			}
 			if (this.mouse.IsLocked() && (rightClick || this.firstPerson || this.lockView)) {
 				const mouseDelta = this.mouse.GetDelta();
+				let moveDelta = mouseDelta;
+
+				// Trying to do 1/MOUSE_SMOOTHING every 1/120th of a second (while supporting variable dt). Not sure if this math checks out.
+				if (this.mouseSmoothingEnabled) {
+					const smoothFactor = math.pow(1 / MOUSE_SMOOTHING, Time.deltaTime * 120);
+					this.smoothVector = new Vector2(Mathf.Lerp(this.smoothVector.x, mouseDelta.x, smoothFactor), Mathf.Lerp(this.smoothVector.y, mouseDelta.y, smoothFactor));
+					moveDelta = this.smoothVector;
+				}
+				
 				const mouseSensitivity = Airship.input.GetMouseSensitivity();
 				if (!this.firstPerson && !this.lockView) {
 					// this.mouse.SetPosition(this.rightClickPos);
 				}
-				this.rotationY = (this.rotationY - mouseDelta.x / Screen.width * mouseSensitivity * MOUSE_SENS_SCALAR) % TAU;
+				this.rotationY = (this.rotationY - moveDelta.x / Screen.width * mouseSensitivity * MOUSE_SENS_SCALAR) % TAU;
 				this.rotationX = math.clamp(
-					this.rotationX + mouseDelta.y / Screen.height * mouseSensitivity * MOUSE_SENS_SCALAR,
+					this.rotationX + moveDelta.y / Screen.height * mouseSensitivity * MOUSE_SENS_SCALAR,
 					MIN_ROT_X,
 					MAX_ROT_X,
 				);
@@ -298,5 +305,12 @@ export class HumanoidCameraMode extends CameraMode {
 					: CAM_Y_OFFSET_CROUCH_3RD_PERSON
 				: CAM_Y_OFFSET;
 		return yOffset;
+	}
+
+	/**
+	 * By default mouse smoothing is enabled. Disable to get precise camera movement (this introduces visible "jumps" of camera angle).
+	 */
+	public SetMouseSmoothingEnabled(enabled: boolean) {
+		this.mouseSmoothingEnabled = enabled;
 	}
 }
