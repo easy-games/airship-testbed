@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.41051087, g: 0.49457768, b: 0.7075472, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: f5c2186f7ebace244a6a20db5e97f5fd, type: 2}
+  m_SkyboxMaterial: {fileID: 2100000, guid: df110e0e6929e432bbf78de9de2784b3, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -5736,7 +5736,6 @@ MonoBehaviour:
   m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/CharacterConfigSetup.lua
   m_error: 0
   m_yielded: 0
-  m_assetPath: 
   m_canResume: 0
   m_asyncYield: 0
   m_onUpdateHandle: -1
@@ -7326,7 +7325,6 @@ MonoBehaviour:
   m_fileFullPath: Assets/Code/AirshipPlatformDemo/DemoManager.lua
   m_error: 0
   m_yielded: 0
-  m_assetPath: 
   m_canResume: 0
   m_asyncYield: 0
   m_onUpdateHandle: -1
