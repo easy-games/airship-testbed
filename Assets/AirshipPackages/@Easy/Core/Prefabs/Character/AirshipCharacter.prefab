@@ -6439,12 +6439,14 @@ MonoBehaviour:
   mainCollider: {fileID: 3569249470052007930}
   slopeVisualizer: {fileID: 473010626989301856}
   ticksUntilReconcile: 1
-  interactWithPhysics: 1
+  ovserverRotationLerpDelta: 10
   disableInput: 0
   useGravity: 1
   detectSlopes: 0
   detectStepUps: 1
+  assistedLedgeJump: 1
   preventWallClipping: 1
+  preventFallingWhileCrouching: 1
   groundCollisionLayerMask:
     serializedVersion: 2
     m_Bits: 2305
@@ -6719,7 +6721,7 @@ MonoBehaviour:
     Position: 1
     Rotation: 1
     Scale: 0
-  _interpolation: 1
+  _interpolation: 2
   _extrapolation: 0
   _enableTeleport: 0
   _teleportThreshold: 10
