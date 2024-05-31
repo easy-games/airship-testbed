@@ -5557,7 +5557,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &275988063163131779
 Transform:
   m_ObjectHideFlags: 0
@@ -6218,7 +6218,6 @@ MonoBehaviour:
   m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/Character.lua
   m_error: 0
   m_yielded: 0
-  m_assetPath: 
   m_canResume: 0
   m_asyncYield: 0
   m_onUpdateHandle: -1
@@ -6348,7 +6347,6 @@ MonoBehaviour:
   m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/Inventory/Inventory.lua
   m_error: 0
   m_yielded: 0
-  m_assetPath: 
   m_canResume: 0
   m_asyncYield: 0
   m_onUpdateHandle: -1
@@ -6442,6 +6440,7 @@ MonoBehaviour:
   ovserverRotationLerpDelta: 10
   disableInput: 0
   useGravity: 1
+  useGravityWhileGrounded: 1
   detectSlopes: 0
   detectStepUps: 1
   assistedLedgeJump: 1
@@ -6474,7 +6473,7 @@ MonoBehaviour:
   slideSpeedMultiplier: 3.28
   slideHeightMultiplier: 0.5
   slideCooldown: 0.8
-  jumpSpeed: 16
+  jumpSpeed: 14
   jumpCoyoteTime: 0.14
   jumpUpBlockCooldown: 0.4
   terminalVelocity: 50
@@ -6484,7 +6483,6 @@ MonoBehaviour:
   minSlopeDelta: 0.1
   maxSlopeDelta: 0.3
   maxStepUpHeight: 0.5
-  stepUpDelta: 0.091
   airDensity: 0.1
   drag: 30
 --- !u!114 &903796914586745664
