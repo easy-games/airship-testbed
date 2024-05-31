@@ -20,7 +20,7 @@ MonoBehaviour:
   promptIfLuauPluginChanged: 1
   typescriptVerbose: 0
   typescriptWriteOnlyChanged: 0
-  typescriptUseDevBuild: 1
+  typescriptUseDevBuild: 0
   typescriptPreventPlayOnError: 0
   typescriptAutostartCompiler: 0
   typescriptEditor: 0
