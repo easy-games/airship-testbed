@@ -173,11 +173,16 @@ export class HumanoidCameraMode extends CameraMode {
 				this.rotationY += (lf ? 1 : -1) * TimeUtil.GetDeltaTime() * 4;
 			}
 			if (this.mouse.IsLocked() && (rightClick || this.firstPerson || this.lockView)) {
-				const mouseDelta = this.mouse.GetDelta();
+				let mouseDelta = this.mouse.GetDelta();
 				let moveDelta = mouseDelta;
 
 				// Trying to do 1/MOUSE_SMOOTHING every 1/120th of a second (while supporting variable dt). Not sure if this math checks out.
 				if (this.mouseSmoothingEnabled) {
+					// Raise to the 1.8 to reduce movement near 0
+					if (math.abs(mouseDelta.x) < 1 && math.abs(mouseDelta.y) < 1) {
+						mouseDelta = new Vector2(math.pow(math.abs(mouseDelta.x), 1.8) * math.sign(mouseDelta.x), math.pow(math.abs(mouseDelta.y), 1.8) * math.sign(mouseDelta.y));
+					}
+
 					const smoothFactor = math.pow(1 / MOUSE_SMOOTHING, Time.deltaTime * 120);
 					this.smoothVector = new Vector2(Mathf.Lerp(this.smoothVector.x, mouseDelta.x, smoothFactor), Mathf.Lerp(this.smoothVector.y, mouseDelta.y, smoothFactor));
 					moveDelta = this.smoothVector;
