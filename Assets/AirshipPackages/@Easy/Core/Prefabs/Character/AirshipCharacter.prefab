@@ -6440,7 +6440,7 @@ MonoBehaviour:
   ovserverRotationLerpDelta: 10
   disableInput: 0
   useGravity: 1
-  useGravityWhileGrounded: 1
+  useGravityWhileGrounded: 0
   detectSlopes: 0
   detectStepUps: 1
   assistedLedgeJump: 1
