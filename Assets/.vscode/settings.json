@@ -1,7 +1,7 @@
 {
   "files.exclude": {
     "**/*.asset": true,
-    "**/*.meta": true,
+    // "**/*.meta": true,
     "**/*.mat": true,
     "**/*.prefab": true,
     "**/*.unity": true,
@@ -10,7 +10,7 @@
     "**/*.asbuildinfo": true,
     "**/*.confg": true,
     "FishNet.Config.XML": true,
-    "Bundles": true,
+    // "Bundles": true,
     // "Typescript~": true
   },
   "[typescript]": {
