@@ -1,4 +1,4 @@
-import { OutfitDto } from "./Airship/Types/Outputs/PlatformInventory";
+import { OutfitDto } from "./Airship/Types/Outputs/AirshipPlatformInventory";
 import { AccessorySlot } from "./Character/Accessory/AccessorySlot";
 import { CharacterDto } from "./Character/CharacterDto";
 import { GeneratorDto } from "./Generator/GeneratorMeta";

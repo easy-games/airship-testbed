@@ -1,7 +1,7 @@
 import { GameDto } from "@Easy/Core/Client/Components/HomePage/API/GamesAPI";
-import { FriendStatus } from "@Easy/Core/Client/ProtectedControllers/Social/SocketAPI";
+import { UserStatusData } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipUser";
 
 export interface SearchResultDto {
 	game?: GameDto;
-	friend?: FriendStatus;
+	friend?: UserStatusData;
 }

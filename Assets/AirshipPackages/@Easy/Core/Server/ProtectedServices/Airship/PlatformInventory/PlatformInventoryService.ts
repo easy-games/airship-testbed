@@ -1,5 +1,9 @@
-import { ItemQueryParameters } from "@Easy/Core/Shared/Airship/Types/Inputs/PlatformInventory";
-import { ItemInstanceDto, OutfitDto, Transaction } from "@Easy/Core/Shared/Airship/Types/Outputs/PlatformInventory";
+import { ItemQueryParameters } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipPlatformInventory";
+import {
+	ItemInstanceDto,
+	OutfitDto,
+	Transaction,
+} from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipPlatformInventory";
 import { OnStart, Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Result } from "@Easy/Core/Shared/Types/Result";

@@ -1,4 +1,16 @@
-import { PublicUser } from "./PublicUser";
+import { PublicUser } from "./AirshipUser";
+
+/**
+ * Information about a users party.
+ */
+export interface GameServerPartyData {
+	partyId: string;
+	leader: string;
+	mode: PartyMode;
+	lastUpdated: number;
+	members: PublicUser[];
+	status: PartyStatus;
+}
 
 export type Party = {
 	leader: string;
@@ -11,19 +23,13 @@ export type Party = {
 	lastUpdated: number;
 };
 
-export interface GameServer {
-	serverId: string;
-	ip: string;
-	port: number;
-}
-
-export enum PartyStatus {
+export const enum PartyStatus {
 	IN_GAME = "in_game",
 	QUEUED = "queued",
 	IDLE = "idle",
 }
 
-export enum PartyMode {
+export const enum PartyMode {
 	/** Invite only */
 	CLOSED = "closed",
 	/** Open to all */

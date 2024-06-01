@@ -1,5 +1,6 @@
 import { RightClickMenuController } from "@Easy/Core/Client/ProtectedControllers//UI/RightClickMenu/RightClickMenuController";
 import { Airship } from "@Easy/Core/Shared/Airship";
+import { UserStatus, UserStatusData } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipUser";
 import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
 import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
@@ -27,18 +28,17 @@ import { TransferController } from "../Transfer/TransferController";
 import { RightClickMenuButton } from "../UI/RightClickMenu/RightClickMenuButton";
 import { User } from "../User/User";
 import { DirectMessageController } from "./DirectMessages/DirectMessageController";
-import { FriendStatus } from "./SocketAPI";
 
 @Controller({})
 export class FriendsController implements OnStart {
 	public friends: User[] = [];
 	public incomingFriendRequests: User[] = [];
 	public outgoingFriendRequests: User[] = [];
-	public friendStatuses: FriendStatus[] = [];
+	public friendStatuses: UserStatusData[] = [];
 	private renderedFriendUids = new Set<string>();
 	private statusText = "";
 	private friendBinMap = new Map<string, Bin>();
-	public friendStatusChanged = new Signal<FriendStatus>();
+	public friendStatusChanged = new Signal<UserStatusData>();
 	private customGameTitle: string | undefined;
 
 	private socialNotification!: SocialNotificationComponent;
@@ -184,7 +184,7 @@ export class FriendsController implements OnStart {
 			this.FetchFriends();
 		});
 
-		this.socketController.On<FriendStatus[]>("game-coordinator/friend-status-update-multi", (data) => {
+		this.socketController.On<UserStatusData[]>("game-coordinator/friend-status-update-multi", (data) => {
 			// print("status updates: " + inspect(data));
 			for (const newFriend of data) {
 				const existing = this.friendStatuses.find((f) => f.userId === newFriend.userId);
@@ -260,9 +260,9 @@ export class FriendsController implements OnStart {
 	}
 
 	public SendStatusUpdate(): void {
-		const status: Partial<FriendStatus> = {
+		const status: Partial<UserStatusData> = {
 			userId: Game.localPlayer.userId,
-			status: Game.coreContext === CoreContext.GAME ? "in_game" : "online",
+			status: Game.coreContext === CoreContext.GAME ? UserStatus.IN_GAME : UserStatus.ONLINE,
 			serverId: Game.serverId,
 			gameId: Game.gameId,
 			metadata: {
@@ -409,7 +409,8 @@ export class FriendsController implements OnStart {
 				init = true;
 
 				const Teleport = () => {
-					if (friend.gameId === undefined || friend.serverId === undefined) return;
+					if (friend.status !== UserStatus.IN_GAME) return;
+					if (friend.game === undefined || friend.serverId === undefined) return;
 
 					print(
 						"Transfering to friend " +
@@ -425,7 +426,12 @@ export class FriendsController implements OnStart {
 				const OpenMenu = () => {
 					const options: RightClickMenuButton[] = [];
 					if (friend.status !== "offline") {
-						if (Game.IsMobile() && friend.gameId && friend.serverId) {
+						if (
+							Game.IsMobile() &&
+							friend.status === UserStatus.IN_GAME &&
+							friend.gameId &&
+							friend.serverId
+						) {
 							options.push({
 								text: "Teleport",
 								onClick: () => {
@@ -542,12 +548,12 @@ export class FriendsController implements OnStart {
 		}
 	}
 
-	public GetFriendStatus(uid: string): FriendStatus | undefined {
+	public GetFriendStatus(uid: string): UserStatusData | undefined {
 		return this.friendStatuses.find((f) => f.userId === uid);
 	}
 
 	public UpdateFriendStatusUI(
-		friend: FriendStatus,
+		friend: UserStatusData,
 		refs: GameObjectReferences,
 		config: {
 			loadImage: boolean;
@@ -584,8 +590,8 @@ export class FriendsController implements OnStart {
 		// }
 		username.text = displayName;
 
-		if (friend.metadata?.statusText && friend.metadata.statusText !== "") {
-			status.text = friend.metadata.statusText;
+		if (friend.statusText && friend.statusText !== "") {
+			status.text = friend.statusText;
 		} else {
 			if (friend.status === "online") {
 				status.text = "Online";
@@ -604,7 +610,7 @@ export class FriendsController implements OnStart {
 			canvasGroup.alpha = 1;
 			statusIndicator.color = ColorUtil.HexToColor("#70D4FF");
 			status.color = ColorUtil.HexToColor("70D4FF");
-			status.text = `Playing ${friend.metadata?.customGameTitle ?? "???"}`;
+			status.text = `Playing ${friend.game.name ?? "???"}`;
 			joinButton.SetActive(true);
 		} else {
 			canvasGroup.alpha = 0.5;

@@ -8,7 +8,7 @@ import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
-import { OutfitDto } from "../Airship/Types/Outputs/PlatformInventory";
+import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { AvatarUtil } from "../Avatar/AvatarUtil";
 
 export default class Character extends AirshipBehaviour {

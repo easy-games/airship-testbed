@@ -1,15 +1,18 @@
-import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
-import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
-import AirshipButton from "@Easy/Core/Shared/MainMenu/Components/AirshipButton";
-import { Mouse } from "@Easy/Core/Shared/UserInput/Mouse";
-import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
-import { OutfitDto } from "@Easy/Core/Shared/Airship/Types/Outputs/PlatformInventory";
+import { OutfitDto } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipPlatformInventory";
 import { AvatarPlatformAPI } from "@Easy/Core/Shared/Avatar/AvatarPlatformAPI";
 import { AvatarUtil } from "@Easy/Core/Shared/Avatar/AvatarUtil";
+import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
+import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import AirshipButton from "@Easy/Core/Shared/MainMenu/Components/AirshipButton";
+import { MainMenuSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/MainMenuSingleton";
+import { CoreUI } from "@Easy/Core/Shared/UI/CoreUI";
+import { Keyboard } from "@Easy/Core/Shared/UserInput";
+import { Mouse } from "@Easy/Core/Shared/UserInput/Mouse";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
+import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import { RandomUtil } from "@Easy/Core/Shared/Util/RandomUtil";
 import MainMenuPageComponent from "../../../Shared/MainMenu/Components/MainMenuPageComponent";
 import { AuthController } from "../Auth/AuthController";
@@ -19,9 +22,6 @@ import AvatarAccessoryBtn from "./AvatarAccessoryBtn";
 import AvatarMenuBtn from "./AvatarMenuBtn";
 import AvatarMenuProfileComponent from "./AvatarMenuProfileComponent";
 import AvatarRenderComponent from "./AvatarRenderComponent";
-import { CoreUI } from "@Easy/Core/Shared/UI/CoreUI";
-import { Keyboard } from "@Easy/Core/Shared/UserInput";
-import { MainMenuSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/MainMenuSingleton";
 
 export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private readonly generalHookupKey = "General";

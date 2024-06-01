@@ -1,4 +1,4 @@
-import { OutfitDto } from "../Airship/Types/Outputs/PlatformInventory";
+import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 
 export interface CharacterDto {
 	id: number;

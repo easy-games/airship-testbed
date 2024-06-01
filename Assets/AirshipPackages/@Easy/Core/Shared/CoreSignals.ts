@@ -1,5 +1,5 @@
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
-import { UserStatus } from "./SocketIOMessages/Status";
+import { UserStatus } from "./Airship/Types/Outputs/AirshipUser";
 
 export const CoreSignals = {
 	CoreInitialized: new Signal<{ idToken: string }>(),

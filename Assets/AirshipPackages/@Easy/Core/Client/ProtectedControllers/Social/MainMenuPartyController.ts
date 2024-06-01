@@ -1,3 +1,4 @@
+import { Party } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipParty";
 import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { Controller, Dependency, OnStart } from "@Easy/Core/Shared/Flamework";
@@ -15,7 +16,6 @@ import { MainMenuController } from "../MainMenuController";
 import { SocketController } from "../Socket/SocketController";
 import { FriendsController } from "./FriendsController";
 import { MainMenuAddFriendsController } from "./MainMenuAddFriendsController";
-import { Party } from "./SocketAPI";
 
 @Controller({})
 export class MainMenuPartyController implements OnStart {

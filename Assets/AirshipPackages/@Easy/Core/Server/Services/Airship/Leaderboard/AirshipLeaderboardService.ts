@@ -5,6 +5,7 @@ import {
 	ServerBridgeApiLeaderboardUpdate,
 } from "@Easy/Core/Server/ProtectedServices/Airship/Leaderboard/LeaderboardService";
 import { Platform } from "@Easy/Core/Shared/Airship";
+import { RankData } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipLeaderboard";
 import { AirshipUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
 import { OnStart, Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
@@ -12,18 +13,6 @@ import { Result } from "@Easy/Core/Shared/Types/Result";
 
 export interface LeaderboardUpdate {
 	[id: string]: number;
-}
-
-/**
- * The data associated with a position on the leaderboard.
- */
-export interface RankData {
-	/** The id for this ranking */
-	id: string;
-	/** The location of the entry on the leaderboard. */
-	rank: number;
-	/** The score value on the leaderboard */
-	value: string;
 }
 
 @Service({})

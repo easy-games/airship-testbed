@@ -1,10 +1,10 @@
+import { AirshipGameServer } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipTransfers";
 import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
 import { CoreUI } from "@Easy/Core/Shared/UI/CoreUI";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { DecodeJSON } from "@Easy/Core/Shared/json";
 import { MainMenuController } from "./MainMenuController";
-import { GameServer } from "./Social/SocketAPI";
 
 @Controller({})
 export class MainMenuHomeController implements OnStart {
@@ -47,7 +47,7 @@ export class MainMenuHomeController implements OnStart {
 			if (res.success) {
 				print("data: " + res.data);
 				const data = DecodeJSON(res.data) as {
-					gameServer: GameServer;
+					gameServer: AirshipGameServer;
 				};
 				print(`got server ${data.gameServer.ip}:${data.gameServer.port}`);
 				TransferManager.Instance.ConnectToServer(data.gameServer.ip, data.gameServer.port);
@@ -67,7 +67,7 @@ export class MainMenuHomeController implements OnStart {
 			if (res.success) {
 				print("data: " + res.data);
 				const data = DecodeJSON(res.data) as {
-					gameServer: GameServer;
+					gameServer: AirshipGameServer;
 				};
 				print(`got server ${data.gameServer.ip}:${data.gameServer.port}`);
 				TransferManager.Instance.ConnectToServer(data.gameServer.ip, data.gameServer.port);
@@ -128,7 +128,7 @@ export class MainMenuHomeController implements OnStart {
 		if (res.success) {
 			print("data: " + res.data);
 			const data = DecodeJSON(res.data) as {
-				gameServer: GameServer;
+				gameServer: AirshipGameServer;
 			};
 			print(`found server ${data.gameServer.ip}:${data.gameServer.port}`);
 			TransferManager.Instance.ConnectToServer(data.gameServer.ip, data.gameServer.port);

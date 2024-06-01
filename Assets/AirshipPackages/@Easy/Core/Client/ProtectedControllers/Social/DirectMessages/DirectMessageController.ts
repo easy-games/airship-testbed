@@ -1,5 +1,6 @@
 import { SocketController } from "@Easy/Core/Client/ProtectedControllers//Socket/SocketController";
 import { Airship } from "@Easy/Core/Shared/Airship";
+import { UserStatusData } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipUser";
 import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { Controller, Dependency, OnStart } from "@Easy/Core/Shared/Flamework";
@@ -21,7 +22,6 @@ import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 import { MainMenuController } from "../../MainMenuController";
 import { FriendsController } from "../FriendsController";
 import { MainMenuPartyController } from "../MainMenuPartyController";
-import { FriendStatus } from "../SocketAPI";
 import { DirectMessage } from "./DirectMessage";
 
 @Controller({})
@@ -50,7 +50,7 @@ export class DirectMessageController implements OnStart {
 	private doScrollToBottom = 0;
 	private inputFieldSelected = false;
 
-	public lastMessagedFriend: FriendStatus | undefined;
+	public lastMessagedFriend: UserStatusData | undefined;
 
 	public onDirectMessageReceived = new Signal<DirectMessage>();
 
@@ -239,7 +239,7 @@ export class DirectMessageController implements OnStart {
 		});
 	}
 
-	public GetFriendLastMessaged(): FriendStatus | undefined {
+	public GetFriendLastMessaged(): UserStatusData | undefined {
 		return this.lastMessagedFriend;
 	}
 
@@ -351,7 +351,7 @@ export class DirectMessageController implements OnStart {
 		}
 	}
 
-	public UpdateOfflineNotice(friendStatus: FriendStatus): void {
+	public UpdateOfflineNotice(friendStatus: UserStatusData): void {
 		if (friendStatus.status !== "offline") {
 			this.offlineNoticeWrapper?.SetActive(false);
 		} else {
