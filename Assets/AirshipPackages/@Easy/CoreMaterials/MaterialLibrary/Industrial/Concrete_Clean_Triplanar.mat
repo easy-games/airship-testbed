@@ -183,7 +183,7 @@ Material:
     - _Lights: 0
     - _MRSliderOverrideMix: 0
     - _MetalOverride: 0.15
-    - _Metallic: 0.846
+    - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
     - _OverrideStrength: 0
