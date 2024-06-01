@@ -7,7 +7,7 @@ import { AmbientSoundController } from "../AmbientSound/AmbientSoundController";
 import { ClientSettingsFile } from "./ClientSettingsFile";
 
 const defaultData: ClientSettingsFile = {
-	mouseSensitivity: 0.5,
+	mouseSensitivity: 2,
 	touchSensitivity: 0.5,
 	globalVolume: 1,
 	ambientVolume: 0.1,
