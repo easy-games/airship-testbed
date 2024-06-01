@@ -23,13 +23,13 @@ export type Party = {
 	lastUpdated: number;
 };
 
-export enum PartyStatus {
+export const enum PartyStatus {
 	IN_GAME = "in_game",
 	QUEUED = "queued",
 	IDLE = "idle",
 }
 
-export enum PartyMode {
+export const enum PartyMode {
 	/** Invite only */
 	CLOSED = "closed",
 	/** Open to all */

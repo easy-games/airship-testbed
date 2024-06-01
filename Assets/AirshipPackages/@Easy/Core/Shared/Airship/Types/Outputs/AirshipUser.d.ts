@@ -4,7 +4,7 @@ export interface PublicUser {
 	statusText?: string;
 }
 
-export enum UserStatus {
+export const enum UserStatus {
 	OFFLINE = "offline",
 	ONLINE = "online",
 	IN_GAME = "in_game",

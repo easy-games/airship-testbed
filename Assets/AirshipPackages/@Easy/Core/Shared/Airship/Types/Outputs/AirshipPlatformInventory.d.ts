@@ -4,7 +4,7 @@ export interface ProfilePicture {
 	imageId: string;
 }
 
-export enum ResourceType {
+export const enum ResourceType {
 	GAME = "GAME",
 	ORGANIZATION = "ORGANIZATION",
 }
