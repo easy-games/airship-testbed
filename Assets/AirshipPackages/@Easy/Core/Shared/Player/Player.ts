@@ -9,7 +9,7 @@ import { ProfilePictureDefinitions } from "@Easy/Core/Shared/ProfilePicture/Prof
 import { ProfilePictureId } from "@Easy/Core/Shared/ProfilePicture/ProfilePictureId";
 import { ProfilePictureMeta } from "@Easy/Core/Shared/ProfilePicture/ProfilePictureMeta";
 import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
-import { OutfitDto } from "../Airship/Types/Outputs/PlatformInventory";
+import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { Team } from "../Team/Team";
 import { Bin } from "../Util/Bin";
 import { Signal } from "../Util/Signal";

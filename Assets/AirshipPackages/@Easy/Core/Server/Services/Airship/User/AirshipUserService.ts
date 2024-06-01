@@ -5,10 +5,10 @@ import {
 	UserServiceBridgeTopics,
 } from "@Easy/Core/Server/ProtectedServices/Airship/User/UserService";
 import { Platform } from "@Easy/Core/Shared/Airship";
+import { PublicUser } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipUser";
 import { AirshipUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
 import { OnStart, Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { PublicUser } from "@Easy/Core/Shared/SocketIOMessages/PublicUser";
 import { Result } from "@Easy/Core/Shared/Types/Result";
 
 @Service({})

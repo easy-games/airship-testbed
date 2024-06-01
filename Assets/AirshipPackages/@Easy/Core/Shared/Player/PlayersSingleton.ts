@@ -11,7 +11,7 @@ import { PlayerUtils } from "@Easy/Core/Shared/Util/PlayerUtils";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { GameInfoSingleton } from "../Airship/Game/GameInfoSingleton";
-import { OutfitDto } from "../Airship/Types/Outputs/PlatformInventory";
+import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { AssetCache } from "../AssetCache/AssetCache";
 import { AirshipUrl } from "../Util/AirshipUrl";
 import { OnUpdate } from "../Util/Timer";

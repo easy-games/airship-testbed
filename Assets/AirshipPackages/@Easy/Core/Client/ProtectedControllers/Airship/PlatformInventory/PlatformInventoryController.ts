@@ -1,4 +1,4 @@
-import { OutfitDto } from "@Easy/Core/Shared/Airship/Types/Outputs/PlatformInventory";
+import { OutfitDto } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipPlatformInventory";
 import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Result } from "@Easy/Core/Shared/Types/Result";

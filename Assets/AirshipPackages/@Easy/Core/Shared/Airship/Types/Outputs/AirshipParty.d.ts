@@ -1,10 +1,27 @@
-import { PublicUser } from "@Easy/Core/Shared/SocketIOMessages/PublicUser";
+import { PublicUser } from "./AirshipUser";
 
-export interface GameServer {
-	serverId: string;
-	ip: string;
-	port: number;
+/**
+ * Information about a users party.
+ */
+export interface GameServerPartyData {
+	partyId: string;
+	leader: string;
+	mode: PartyMode;
+	lastUpdated: number;
+	members: PublicUser[];
+	status: PartyStatus;
 }
+
+export type Party = {
+	leader: string;
+	partyId: string;
+	/** Members includes the leader */
+	members: PublicUser[];
+	invited: string[];
+	data: PartyStateData;
+	mode: PartyMode;
+	lastUpdated: number;
+};
 
 export enum PartyStatus {
 	IN_GAME = "in_game",
@@ -42,28 +59,3 @@ interface PartyInGameStateData extends BaseStateData<PartyStatus.IN_GAME> {
 }
 
 export type PartyStateData = PartyIdleStateData | PartyQueuedStateData | PartyInGameStateData;
-
-/** Party data should be immutable, use the party service to modify it */
-export type Party = {
-	/** Party leader uid */
-	leader: string;
-	partyId: string;
-	/** Members includes the leader */
-	members: PublicUser[];
-	invited: string[];
-	data: PartyStateData;
-	mode: PartyMode;
-	lastUpdated: number;
-};
-
-export type FriendStatus = {
-	status: "offline" | "online" | "in_game";
-	userId: string;
-	username: string;
-	serverId: string | undefined;
-	gameId: string | undefined;
-	metadata?: {
-		statusText: string;
-		customGameTitle?: string;
-	};
-};

@@ -1,5 +1,5 @@
 import { Airship } from "../../Airship";
-import { PublicUser } from "../../SocketIOMessages/PublicUser";
+import { PublicUser } from "../../Airship/Types/Outputs/AirshipUser";
 import { Bin } from "../../Util/Bin";
 
 export default class PartyMember extends AirshipBehaviour {

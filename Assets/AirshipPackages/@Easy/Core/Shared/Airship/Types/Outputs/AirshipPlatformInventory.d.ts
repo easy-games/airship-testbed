@@ -17,7 +17,7 @@ export interface ItemClass {
 	classId: string;
 
 	name: string;
-	imageId: string; // thumbnail ID (https://easy-cdn/images/{imageId}.jpg)
+	imageId: string; // thumbnail ID (https://easy-cdn/images/{imageId})
 	tags: string[];
 	description: string;
 

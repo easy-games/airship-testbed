@@ -360,11 +360,6 @@
 			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/DeleteAccountButton.lua",
 			"extends": []
 		},
-		"Scoreboard": {
-			"component": true,
-			"filePath": "Code/AirshipPlatformDemo/Scoreboard.lua",
-			"extends": []
-		},
 		"AvatarAccessoryBtn": {
 			"component": true,
 			"filePath": "AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/AvatarAccessoryBtn.lua",
@@ -378,6 +373,11 @@
 		"DevConsoleButton": {
 			"component": true,
 			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/DevConsoleButton.lua",
+			"extends": []
+		},
+		"Scoreboard": {
+			"component": true,
+			"filePath": "Code/AirshipPlatformDemo/Scoreboard.lua",
 			"extends": []
 		},
 		"AvatarBackdropComponent": {
@@ -413,10 +413,10 @@
 	},
 	"extends": {
 		"MainMenuPageComponent": [
-			"AvatarMenuComponent",
 			"HomePageComponent",
 			"GameGeneralPage",
-			"SettingsPage"
+			"SettingsPage",
+			"AvatarMenuComponent"
 		],
 		"SearchResult": [
 			"GameSearchResult"

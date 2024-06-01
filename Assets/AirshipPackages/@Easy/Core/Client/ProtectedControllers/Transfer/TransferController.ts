@@ -1,10 +1,10 @@
+import { AirshipGameServer } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipTransfers";
 import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
-import inspect from "@Easy/Core/Shared/Util/Inspect";
-import { GameServer } from "@Easy/Core/Shared/SocketIOMessages/Party";
+import { Result } from "@Easy/Core/Shared/Types/Result";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
+import inspect from "@Easy/Core/Shared/Util/Inspect";
 import { EncodeJSON } from "@Easy/Core/Shared/json";
 import { SocketController } from "../Socket/SocketController";
-import { Result } from "@Easy/Core/Shared/Types/Result";
 
 @Controller({})
 export class TransferController implements OnStart {
@@ -12,7 +12,7 @@ export class TransferController implements OnStart {
 
 	OnStart(): void {
 		this.socketController.On<{
-			gameServer: GameServer;
+			gameServer: AirshipGameServer;
 			gameId: string;
 			gameVersion: number;
 			requestTime: number;

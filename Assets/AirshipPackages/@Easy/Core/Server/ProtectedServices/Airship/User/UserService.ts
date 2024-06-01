@@ -1,6 +1,6 @@
+import { PublicUser } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipUser";
 import { OnStart, Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { PublicUser } from "@Easy/Core/Shared/SocketIOMessages/PublicUser";
 import { Result } from "@Easy/Core/Shared/Types/Result";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { DecodeJSON } from "@Easy/Core/Shared/json";
@@ -90,7 +90,9 @@ export class UserService implements OnStart {
 				}
 
 				const res = InternalHttpManager.GetAsync(
-					`${AirshipUrl.GameCoordinator}/users?users[]=${userIds.join("&users[]=")}&strict=${strict ? "true" : "false"}`,
+					`${AirshipUrl.GameCoordinator}/users?users[]=${userIds.join("&users[]=")}&strict=${
+						strict ? "true" : "false"
+					}`,
 				);
 
 				if (!res.success || res.statusCode > 299) {
