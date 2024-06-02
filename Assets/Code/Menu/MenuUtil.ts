@@ -17,8 +17,11 @@ export class MenuUtil {
 	public static menu: Menu;
 
 	public static BackToMenu() {
-		const currentScene = Airship.sceneManager.GetActiveSceneName();
+		if (Airship.sceneManager.GetActiveSceneName() === "Menu") {
+			return;
+		}
+
 		this.menu.Show();
-		Airship.sceneManager.UnloadGlobalScene(currentScene);
+		Airship.sceneManager.UnloadGlobalScene(Airship.sceneManager.GetActiveSceneName());
 	}
 }
