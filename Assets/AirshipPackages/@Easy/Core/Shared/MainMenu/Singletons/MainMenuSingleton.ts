@@ -1,6 +1,5 @@
 import { OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
 import { AssetCache } from "../../AssetCache/AssetCache";
-import { CoreRefs } from "../../CoreRefs";
 import { Game } from "../../Game";
 import { Bin } from "../../Util/Bin";
 import { Modifier } from "../../Util/Modifier";
@@ -26,8 +25,8 @@ export class MainMenuSingleton implements OnStart {
 	OnStart(): void {
 		const readOnlyCanvasGO = Object.Instantiate(
 			AssetCache.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/UI/AirshipReadOnlyCanvas.prefab"),
-			CoreRefs.rootTransform,
 		);
+		Object.DontDestroyOnLoad(readOnlyCanvasGO);
 		const canvasRect = readOnlyCanvasGO.transform as RectTransform;
 		const canvasScaler = readOnlyCanvasGO.gameObject.GetComponent<CanvasScaler>()!;
 

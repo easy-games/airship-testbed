@@ -83,7 +83,8 @@ export class HeldItem {
 		//Play the equip sound
 		//TODO need to make bundles string accessible for when you dont know the exact bundle you are loading
 		if (this.itemMeta !== undefined) {
-			let equipPath = "Assets/AirshipPackages/@Easy/Core/Sound/Items/Equip/Equip_Generic.ogg";
+			// let equipPath = "Assets/AirshipPackages/@Easy/Core/Sound/Items/Equip/Equip_Generic.ogg";
+			let equipPath = "";
 			if (this.itemMeta.holdConfig?.equipSound) {
 				equipPath = RandomUtil.FromArray(this.itemMeta.holdConfig.equipSound);
 			}
@@ -97,8 +98,6 @@ export class HeldItem {
 						volumeScale: 0.2,
 					});
 				}
-			} else {
-				error("No default equip sound found");
 			}
 		}
 

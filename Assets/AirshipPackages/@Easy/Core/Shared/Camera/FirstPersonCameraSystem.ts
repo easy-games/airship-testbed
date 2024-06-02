@@ -18,7 +18,6 @@ interface BobData {
 
 export class FirstPersonCameraSystem {
 	private bobLerpMod = 10;
-	public cameras: CameraReferences;
 
 	private sprintingBob: BobData = {
 		bobMovementFrequency: 22,
@@ -65,14 +64,9 @@ export class FirstPersonCameraSystem {
 	/* Store default spine rotation, used to offset head from spine */
 	private defaultSpineRotation: Quaternion;
 
-	public constructor(
-		public readonly character: Character,
-		startInFirstPerson: boolean,
-	) {
+	public constructor(public readonly character: Character, startInFirstPerson: boolean) {
 		this.viewmodelController = Dependency<ViewmodelController>();
 		this.defaultSpineRotation = this.viewmodelController.rig.spine.transform.localRotation;
-
-		this.cameras = CameraReferences.Instance();
 
 		this.inFirstPerson = startInFirstPerson;
 		this.OnFirstPersonChanged(this.inFirstPerson);
@@ -98,7 +92,7 @@ export class FirstPersonCameraSystem {
 		if (!this.inFirstPerson) {
 			return;
 		}
-		if (!this.cameras.fpsCamera) return;
+		if (!CameraReferences.viewmodelCamera) return;
 		this.currentTime += Time.deltaTime;
 
 		const lerpDelta = Time.deltaTime * this.bobLerpMod;
@@ -132,7 +126,7 @@ export class FirstPersonCameraSystem {
 		);
 
 		// Position viewmodel based on camera position
-		const camTransform = this.cameras.fpsCamera.transform;
+		const camTransform = CameraReferences.viewmodelCamera.transform;
 		const spineTransform = this.viewmodelController.rig.spine;
 
 		let position = Vector3.zero;
@@ -224,8 +218,8 @@ export class FirstPersonCameraSystem {
 
 	public OnFirstPersonChanged(isFirstPerson: boolean) {
 		this.inFirstPerson = isFirstPerson;
-		if (!this.cameras.fpsCamera) return;
-		this.cameras.fpsCamera.gameObject.SetActive(isFirstPerson);
+		if (!CameraReferences.viewmodelCamera) return;
+		CameraReferences.viewmodelCamera.gameObject.SetActive(isFirstPerson);
 		// Game.localPlayer.character?.animationHelper?.SetFirstPerson(isFirstPerson);
 		Game.localPlayer.character?.animator.SetFirstPerson(isFirstPerson);
 

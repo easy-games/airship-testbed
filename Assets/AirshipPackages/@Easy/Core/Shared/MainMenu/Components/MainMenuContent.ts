@@ -72,7 +72,9 @@ export default class MainMenuContent extends AirshipBehaviour {
 		}
 
 		CoreLogger.Log(
-			`screenSize.x: ${screenSize.x}, sizetype: ${this.mainMenu.sizeType}, scaleFactor: ${this.canvasScalar.scaleFactor}, portrait: ${Game.IsPortrait()}`,
+			`screenSize.x: ${screenSize.x}, sizetype: ${this.mainMenu.sizeType}, scaleFactor: ${
+				this.canvasScalar.scaleFactor
+			}, portrait: ${Game.IsPortrait()}`,
 		);
 		// CoreLogger.Log("dpi: " + Screen.dpi);
 		// CoreLogger.Log("resolution: " + Screen.currentResolution.width + ", " + Screen.currentResolution.height);

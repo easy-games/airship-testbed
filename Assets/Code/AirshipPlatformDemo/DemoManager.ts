@@ -1,8 +1,6 @@
 import SteamRichPresence from "@Easy/Core/Client/Airship/Steam/SteamRichPresence";
 import { Airship } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
-import { CharacterCameraMode } from "@Easy/Core/Shared/Character/LocalCharacter/CharacterCameraMode";
-import { DamageType } from "@Easy/Core/Shared/Damage/DamageType";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Binding } from "@Easy/Core/Shared/Input/Binding";
 import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
@@ -26,38 +24,38 @@ export default class DemoManager extends AirshipBehaviour {
 		ItemUtil.RegisterItem("WoodSword", {
 			displayName: "Wood Sword",
 			maxStackSize: 1,
-			usable: {
-				startUpInSeconds: 0,
-				minChargeSeconds: 0,
-				maxChargeSeconds: 0,
-				cooldownSeconds: 0.25,
-				canHoldToUse: false,
-				onUseSound: [
-					//"Shared/Resources/Sound/s_Sword_Swing_Wood_01.wav",
-					"Assets/Resources/Sound/s_Sword_Swing_Wood_02.wav",
-					"Assets/Resources/Sound/s_Sword_Swing_Wood_03.wav",
-					"Assets/Resources/Sound/s_Sword_Swing_Wood_04.wav",
-				],
-				onUseSoundVolume: 0.3,
-			},
+			// usable: {
+			// 	startUpInSeconds: 0,
+			// 	minChargeSeconds: 0,
+			// 	maxChargeSeconds: 0,
+			// 	cooldownSeconds: 0.25,
+			// 	canHoldToUse: false,
+			// 	onUseSound: [
+			// 		//"Shared/Resources/Sound/s_Sword_Swing_Wood_01.wav",
+			// 		"Assets/Resources/Sound/s_Sword_Swing_Wood_02.wav",
+			// 		"Assets/Resources/Sound/s_Sword_Swing_Wood_03.wav",
+			// 		"Assets/Resources/Sound/s_Sword_Swing_Wood_04.wav",
+			// 	],
+			// 	onUseSoundVolume: 0.3,
+			// },
 			accessoryPaths: ["Assets/Resources/Accessories/Weapons/Swords/WoodSword/wood_sword.prefab"],
 			image: "Assets/Resources/ItemRenders/wood_sword.png",
-			melee: {
-				instantDamage: true,
-				// hitDelay: 0.1345,
-				onHitPrefabPath: "Assets/Resources/Yos/Prefab/SwordHitVFX.prefab",
-				onUseVFX: [
-					"Assets/Resources/Yos/Prefab/SwordSwingVFX01.prefab",
-					"Assets/Resources/Yos/Prefab/SwordSwingVFX02.prefab",
-				],
-				onUseVFX_FP: [
-					"Assets/Resources/Yos/Prefab/SwordSwingVFX_FP01.prefab",
-					"Assets/Resources/Yos/Prefab/SwordSwingVFX_FP02.prefab",
-				],
-				canHitMultipleTargets: false,
-				damageType: DamageType.SWORD,
-				damage: 18,
-			},
+			// melee: {
+			// 	instantDamage: true,
+			// 	// hitDelay: 0.1345,
+			// 	onHitPrefabPath: "Assets/Resources/Yos/Prefab/SwordHitVFX.prefab",
+			// 	onUseVFX: [
+			// 		"Assets/Resources/Yos/Prefab/SwordSwingVFX01.prefab",
+			// 		"Assets/Resources/Yos/Prefab/SwordSwingVFX02.prefab",
+			// 	],
+			// 	onUseVFX_FP: [
+			// 		"Assets/Resources/Yos/Prefab/SwordSwingVFX_FP01.prefab",
+			// 		"Assets/Resources/Yos/Prefab/SwordSwingVFX_FP02.prefab",
+			// 	],
+			// 	canHitMultipleTargets: false,
+			// 	damageType: DamageType.SWORD,
+			// 	damage: 18,
+			// },
 		});
 
 		if (Game.IsServer()) {
@@ -96,7 +94,7 @@ export default class DemoManager extends AirshipBehaviour {
 		}
 		if (Game.IsClient()) {
 			// Optional: use locked camera mode for first person support
-			Airship.characterCamera.SetCharacterCameraMode(CharacterCameraMode.Locked);
+			// Airship.characterCamera.SetCharacterCameraMode(CharacterCameraMode.Locked);
 			// Airship.characterCamera.SetFirstPerson(true);
 			Airship.inventory.SetUIEnabled(false);
 

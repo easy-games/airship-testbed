@@ -22351,6 +22351,7 @@ interface BridgeConstructor {
     HasMicrophonePermission(): boolean;
     IsFullScreen(): boolean;
     IsMicRecording(): boolean;
+    LoadGlobalSceneByName(sceneName: string): void;
     LoadScene(sceneName: string, restartLuau: boolean): void;
     MakeMaterialPropertyBlock(): MaterialPropertyBlock;
     MakeMesh(): Mesh;
@@ -22366,6 +22367,7 @@ interface BridgeConstructor {
     SetVolume(volume: number): void;
     StartMicRecording(frequency: number, sampleLength: number): void;
     StopMicRecording(): void;
+    UnloadGlobalSceneByName(sceneName: string): void;
     UpdateLayout(xform: Transform, recursive: boolean): void;
 }
 declare const Bridge: BridgeConstructor;

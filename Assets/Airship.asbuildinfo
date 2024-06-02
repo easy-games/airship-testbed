@@ -108,6 +108,11 @@
 			"filePath": "Code/AirshipPlatformDemo/PromptAboveBall.lua",
 			"extends": []
 		},
+		"CameraRig": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/Camera/CameraRig.lua",
+			"extends": []
+		},
 		"TopDownBattleEnemySpawner": {
 			"component": true,
 			"filePath": "Code/TopDownBattle/TopDownBattleEnemies/TopDownBattleEnemySpawner.lua",
@@ -178,6 +183,43 @@
 			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsKeybindPage.lua",
 			"extends": []
 		},
+		"MicrophoneSettingsPage": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/Microphone/MicrophoneSettingsPage.lua",
+			"extends": []
+		},
+		"GameImageButton": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Client/Components/HomePage/Sort/GameImageButton.lua",
+			"extends": []
+		},
+		"AvatarViewComponent": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/Avatar/AvatarViewComponent.lua",
+			"extends": []
+		},
+		"AirshipOverlayManager": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Overlay/AirshipOverlayManager.lua",
+			"extends": []
+		},
+		"Menu": {
+			"component": true,
+			"filePath": "Code/Menu/Menu.lua",
+			"extends": []
+		},
+		"SceneEntryComponent": {
+			"component": true,
+			"filePath": "Code/Menu/SceneEntryComponent.lua",
+			"extends": []
+		},
+		"GameSearchResult": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Search/GameSearchResult.lua",
+			"extends": [
+				"SearchResult"
+			]
+		},
 		"MainMenuContent": {
 			"component": true,
 			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/MainMenuContent.lua",
@@ -201,33 +243,6 @@
 		"FriendsPage": {
 			"component": true,
 			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Friends/FriendsPage.lua",
-			"extends": []
-		},
-		"GameSearchResult": {
-			"component": true,
-			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Search/GameSearchResult.lua",
-			"extends": [
-				"SearchResult"
-			]
-		},
-		"MicrophoneSettingsPage": {
-			"component": true,
-			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/Microphone/MicrophoneSettingsPage.lua",
-			"extends": []
-		},
-		"GameImageButton": {
-			"component": true,
-			"filePath": "AirshipPackages/@Easy/Core/Client/Components/HomePage/Sort/GameImageButton.lua",
-			"extends": []
-		},
-		"AvatarViewComponent": {
-			"component": true,
-			"filePath": "AirshipPackages/@Easy/Core/Shared/Avatar/AvatarViewComponent.lua",
-			"extends": []
-		},
-		"AirshipOverlayManager": {
-			"component": true,
-			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Overlay/AirshipOverlayManager.lua",
 			"extends": []
 		},
 		"CharacterConfigSetup": {
