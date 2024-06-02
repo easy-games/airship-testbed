@@ -96,7 +96,7 @@ export default class DemoManager extends AirshipBehaviour {
 			// Optional: use locked camera mode for first person support
 			// Airship.characterCamera.SetCharacterCameraMode(CharacterCameraMode.Locked);
 			// Airship.characterCamera.SetFirstPerson(true);
-			Airship.inventory.SetUIEnabled(false);
+			// Airship.inventory.SetUIEnabled(false);
 
 			Airship.loadingScreen.FinishLoading();
 

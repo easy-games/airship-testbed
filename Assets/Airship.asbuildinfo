@@ -290,6 +290,11 @@
 			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Overlay/MobileJoystick.lua",
 			"extends": []
 		},
+		"ClientSceneComponent": {
+			"component": true,
+			"filePath": "Code/Menu/ClientSceneComponent.lua",
+			"extends": []
+		},
 		"MobileChatToggleButton": {
 			"component": true,
 			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/MobileChatToggleButton.lua",

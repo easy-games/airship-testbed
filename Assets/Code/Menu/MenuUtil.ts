@@ -10,18 +10,26 @@ export class MenuUtil {
 			subtitle: "Varying surfaces to test character movement.",
 			sceneName: "AirshipPlatformDemo",
 		},
+		{
+			title: "Client Sided",
+			subtitle: "A scene that is only loaded on your local client.",
+			sceneName: "ClientSidedScene",
+			clientSided: true,
+		},
 	];
 
-	public static loadSceneRequest = new RemoteFunction<string, boolean>("LoadScene");
+	public static loadGlobalSceneRequest = new RemoteFunction<string, boolean>("LoadGlobalScene");
+	public static unloadGlobalSceneRequest = new RemoteFunction<string, boolean>("UnloadGlobalScene");
 
 	public static menu: Menu;
 
 	public static BackToMenu() {
-		if (Airship.sceneManager.GetActiveSceneName() === "Menu") {
+		const activeScene = Airship.sceneManager.GetActiveScene().name;
+		if (activeScene === "Menu") {
 			return;
 		}
 
 		this.menu.Show();
-		Airship.sceneManager.UnloadGlobalScene(Airship.sceneManager.GetActiveSceneName());
+		this.unloadGlobalSceneRequest.client.FireServer(activeScene);
 	}
 }

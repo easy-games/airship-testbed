@@ -46,10 +46,13 @@ export default class Menu extends AirshipBehaviour {
 		}
 
 		if (Game.IsServer()) {
-			MenuUtil.loadSceneRequest.server.SetCallback((player, sceneName) => {
+			MenuUtil.loadGlobalSceneRequest.server.SetCallback((player, sceneName) => {
 				Airship.sceneManager.LoadGlobalScene(sceneName);
 				return true;
-				// Airship.sceneManager.UnloadGlobalScene("Menu");
+			});
+			MenuUtil.unloadGlobalSceneRequest.server.SetCallback((player, sceneName) => {
+				Airship.sceneManager.UnloadGlobalScene(sceneName);
+				return true;
 			});
 		}
 

@@ -183,7 +183,7 @@ Material:
     - _Lights: 0
     - _MRSliderOverrideMix: 0
     - _MetalOverride: 0.15
-    - _Metallic: 0
+    - _Metallic: 0.08
     - _Mode: 0
     - _OcclusionStrength: 1
     - _OverrideStrength: 0
@@ -198,7 +198,7 @@ Material:
     - _SLIDER_OVERRIDE: 1
     - _SkyShineStrength: 0
     - _SliderOverrideMix: 0
-    - _Smoothness: 0.058
+    - _Smoothness: 0.145
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1

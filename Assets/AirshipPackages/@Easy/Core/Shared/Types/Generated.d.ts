@@ -19473,9 +19473,6 @@ interface ServerBootstrap extends MonoBehaviour {
     startupConfig: StartupConfig;
     overrideGameBundleId: string;
     overrideGameBundleVersion: string;
-    overrideCoreBundleId: string;
-    overrideCoreBundleVersion: string;
-    overrideQueueType: string;
     airshipJWT: string;
     agones: AgonesSdk;
     gameId: string;
@@ -19489,7 +19486,6 @@ interface ServerBootstrap extends MonoBehaviour {
 
     FinishedSetup(): void;
     GetJoinCode(): string;
-    GetQueueType(): string;
     IsAgonesEnvironment(): boolean;
     Shutdown(): void;
 
@@ -19720,6 +19716,7 @@ interface AirshipEditorConfigConstructor {
 declare const AirshipEditorConfig: AirshipEditorConfigConstructor;
     
 interface ServerBootstrapConstructor {
+    editorStartingSceneIntent: string;
 
     new(): ServerBootstrap;
 
@@ -22352,7 +22349,7 @@ interface BridgeConstructor {
     IsFullScreen(): boolean;
     IsMicRecording(): boolean;
     LoadGlobalSceneByName(sceneName: string): void;
-    LoadScene(sceneName: string, restartLuau: boolean): void;
+    LoadScene(sceneName: string, restartLuau: boolean, loadSceneMode: LoadSceneMode): void;
     MakeMaterialPropertyBlock(): MaterialPropertyBlock;
     MakeMesh(): Mesh;
     MakeSprite(texture2D: Texture2D): Sprite;
@@ -22368,6 +22365,7 @@ interface BridgeConstructor {
     StartMicRecording(frequency: number, sampleLength: number): void;
     StopMicRecording(): void;
     UnloadGlobalSceneByName(sceneName: string): void;
+    UnloadScene(sceneName: string): void;
     UpdateLayout(xform: Transform, recursive: boolean): void;
 }
 declare const Bridge: BridgeConstructor;

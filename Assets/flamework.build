@@ -9,6 +9,7 @@
 		"Code/AirshipPlatformDemo/DemoManager@DemoManager": "Code/AirshipPlatformDemo/DemoManager@DemoManager",
 		"Code/AirshipPlatformDemo/PromptAboveBall@PromptAboveBall": "Code/AirshipPlatformDemo/PromptAboveBall@PromptAboveBall",
 		"Code/AirshipPlatformDemo/ServerScript@TestScript": "Code/AirshipPlatformDemo/ServerScript@TestScript",
+		"Code/Menu/ClientSceneComponent@ClientSceneComponent": "Code/Menu/ClientSceneComponent@ClientSceneComponent",
 		"Code/Menu/MenuUtil@MenuUtil": "Code/Menu/MenuUtil@MenuUtil",
 		"Code/Menu/SceneEntryComponent@SceneEntryComponent": "Code/Menu/SceneEntryComponent@SceneEntryComponent",
 		"Code/Menu/Menu@Menu": "Code/Menu/Menu@Menu",

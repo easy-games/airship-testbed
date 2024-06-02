@@ -13,7 +13,7 @@ export default class DeleteAccountButton extends AirshipBehaviour {
 					error(res.error);
 				}
 				AuthManager.ClearSavedAccount();
-				Bridge.LoadScene("Login", true);
+				Bridge.LoadScene("Login", true, LoadSceneMode.Single);
 			});
 		});
 	}

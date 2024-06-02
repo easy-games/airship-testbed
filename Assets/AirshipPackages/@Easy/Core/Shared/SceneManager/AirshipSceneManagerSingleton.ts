@@ -21,7 +21,19 @@ export class AirshipSceneManagerSingleton implements OnStart {
 		contextbridge.invoke("SceneManager:UnloadGlobalSceneByName", LuauContext.Protected, sceneName);
 	}
 
-	public GetActiveSceneName(): string {
-		return contextbridge.invoke("SceneManager:GetActiveSceneName", LuauContext.Protected);
+	public LoadClientSidedScene(sceneName: string): void {
+		assert(Game.IsClient(), "LoadClientSidedScene can only be called from the client.");
+
+		contextbridge.invoke("SceneManager:LoadClientSidedSceneByName", LuauContext.Protected, sceneName);
+	}
+
+	public UnloadClientSidedScene(sceneName: string): void {
+		assert(Game.IsClient(), "UnloadClientSidedScene can only be called from the client.");
+
+		contextbridge.invoke("SceneManager:UnloadClientSidedSceneByName", LuauContext.Protected, sceneName);
+	}
+
+	public GetActiveScene(): Scene {
+		return Bridge.GetActiveScene();
 	}
 }

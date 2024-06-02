@@ -150,6 +150,7 @@ GameObject:
   - component: {fileID: 8734052143356321648}
   - component: {fileID: 6428141434406308631}
   - component: {fileID: 6774730416369193043}
+  - component: {fileID: 5631675412370831904}
   m_Layer: 5
   m_Name: SceneEntry
   m_TagString: Untagged
@@ -199,7 +200,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.043137256}
+  m_Color: {r: 0.38039216, g: 0.3882353, b: 0.39607844, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 0
@@ -235,7 +236,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -347,6 +348,97 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 8734052143356321648}
       modified: 1
+    - name: bgImage
+      type: object
+      objectType: Image
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 4471101453692558470}
+      modified: 1
+    displayName: 
+  contextOverwritten: 0
+--- !u!114 &5631675412370831904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6382568377373385091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scriptFile: {fileID: 247699700030261788, guid: 6155702a7b8e9f445b9ce853cd33d000, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipButton.lua
+  m_error: 0
+  m_yielded: 0
+  m_canResume: 0
+  m_asyncYield: 0
+  m_onUpdateHandle: -1
+  m_onLateUpdateHandle: -1
+  m_shortFileName: 
+  m_metadata:
+    name: AirshipButton
+    decorators: []
+    properties:
+    - name: clickEffect
+      type: IntEnum
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"Variables"'
+      nullable: 0
+      serializedValue: 0
+      serializedObject: {fileID: 0}
+      modified: 1
+    - name: disabledColorHex
+      type: string
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"Optional Variables"'
+      nullable: 0
+      serializedValue: '#2E3035'
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: loadingIndicator
+      type: object
+      objectType: GameObject
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
     displayName: 
   contextOverwritten: 0
 --- !u!1 &7273436033291085949
