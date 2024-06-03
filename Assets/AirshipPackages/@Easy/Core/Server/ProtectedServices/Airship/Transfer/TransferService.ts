@@ -1,3 +1,5 @@
+import { AirshipServerConfig } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipTransfers";
+import { CreateServerResponse } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipTransfers";
 import { OnStart, Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Player } from "@Easy/Core/Shared/Player/Player";
@@ -5,20 +7,17 @@ import { Result } from "@Easy/Core/Shared/Types/Result";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 
-export type CreateServerResponse = {
-	serverId: string;
-};
-
 export enum TransferServiceBridgeTopics {
 	CreateServer = "TransferService:CreateServer",
 	TransferGroupToGame = "TransferService:TransferGroupToGame",
 	TransferGroupToServer = "TransferService:TransferGroupToServer",
 }
 
-export type ServerBridgeApiCreateServer = (sceneId?: string) => Result<CreateServerResponse, undefined>;
+export type ServerBridgeApiCreateServer = (config?: AirshipServerConfig) => Result<CreateServerResponse, undefined>;
 export type ServerBridgeApiTransferGroupToGame = (
 	players: readonly Player[],
 	gameId: string,
+	sceneId?: string,
 	serverTransferData?: unknown,
 	clientTransferData?: unknown,
 ) => Result<undefined, undefined>;
@@ -34,11 +33,14 @@ export class TransferService implements OnStart {
 	constructor() {
 		if (!Game.IsServer()) return;
 
-		contextbridge.callback<ServerBridgeApiCreateServer>(TransferServiceBridgeTopics.CreateServer, (_, sceneId) => {
+		contextbridge.callback<ServerBridgeApiCreateServer>(TransferServiceBridgeTopics.CreateServer, (_, config) => {
 			const res = InternalHttpManager.PostAsync(
 				`${AirshipUrl.GameCoordinator}/servers/create`,
 				EncodeJSON({
-					sceneId: sceneId,
+					sceneId: config?.sceneId,
+					region: config?.region,
+					accessMode: config?.accessMode,
+					allowedUids: config?.allowedUserIds,
 				}),
 			);
 
@@ -60,12 +62,13 @@ export class TransferService implements OnStart {
 
 		contextbridge.callback<ServerBridgeApiTransferGroupToGame>(
 			TransferServiceBridgeTopics.TransferGroupToGame,
-			(_, players, gameId, serverTransferData, clientTransferData) => {
+			(_, players, gameId, sceneId, serverTransferData, clientTransferData) => {
 				const res = InternalHttpManager.PostAsync(
 					`${AirshipUrl.GameCoordinator}`,
 					EncodeJSON({
 						uid: players.map((p) => p.userId),
 						gameId,
+						sceneId,
 						serverTransferData,
 						clientTransferData,
 					}),

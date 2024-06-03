@@ -198,61 +198,6 @@ Transform:
   - {fileID: 2855710406756483329}
   m_Father: {fileID: 3906567886165901999}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2378402726998128659
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6660263042795517143}
-  - component: {fileID: 3518471340449962399}
-  m_Layer: 3
-  m_Name: CharacterTrigger
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6660263042795517143
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2378402726998128659}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 132385838244982214}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &3518471340449962399
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2378402726998128659}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.8
-  m_Height: 2.4
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.95, z: 0}
 --- !u!1 &2381545753476681761
 GameObject:
   m_ObjectHideFlags: 0
@@ -5454,7 +5399,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5887290797789770780}
-  - {fileID: 6660263042795517143}
   m_Father: {fileID: 8997996947095583982}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6230016313360556336
@@ -6449,7 +6393,7 @@ MonoBehaviour:
   groundCollisionLayerMask:
     serializedVersion: 2
     m_Bits: 2305
-  drawDebugGizmos: 1
+  drawDebugGizmos: 0
   useExtraLogging: 0
   voxelWorld: {fileID: 0}
 --- !u!114 &1645000729044007242
@@ -6468,11 +6412,13 @@ MonoBehaviour:
   characterRadius: 0.2
   speed: 4.666667
   sprintSpeed: 6.666667
+  autoCrouch: 1
   crouchSpeedMultiplier: 0.455
   crouchHeightMultiplier: 0.75
   slideSpeedMultiplier: 3.28
   slideHeightMultiplier: 0.5
   slideCooldown: 0.8
+  numberOfJumps: 1
   jumpSpeed: 14
   jumpCoyoteTime: 0.14
   jumpUpBlockCooldown: 0.4
@@ -6725,7 +6671,7 @@ MonoBehaviour:
   _teleportThreshold: 10
   _scaleThreshold: 1
   _clientAuthoritative: 0
-  _sendToOwner: 1
+  _sendToOwner: 0
   _enableNetworkLod: 1
   _interval: 1
   _synchronizePosition: 1

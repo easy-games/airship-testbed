@@ -3,3 +3,7 @@ export interface AirshipGameServer {
 	ip: string;
 	port: number;
 }
+
+export type CreateServerResponse = {
+	serverId: string;
+};
