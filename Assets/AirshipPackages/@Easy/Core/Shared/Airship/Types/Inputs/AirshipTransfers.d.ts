@@ -12,10 +12,38 @@ export const enum AirshipServerAccessMode {
 export interface AirshipServerConfig {
 	/** The scene the server will start on. Defaults to the scene provided during deployment. */
 	sceneId?: string;
-	/** The access mode of the server. Defaults to OPEN. */
+	/** The access mode of the server. Defaults to OPEN on the default scene, and DIRECT_JOIN on any other scene. */
 	accessMode?: AirshipServerAccessMode;
 	/** The region the game server should be started in. Defaults to the same region as the server that makes the create request. */
 	region?: string;
 	/** Only allow the players in this list to join the server. Forces accessMode to CLOSED. */
 	allowedUserIds?: string[];
+}
+
+/** Configuration for Airship transfers to games. */
+export interface AirshipGameTransferConfig {
+	/**
+	 * The sceneId to transfer the player to. Note that this is based on the scene the server was _started_ with,
+	 * not it's currently active scene. If no servers are available, a new server with this starting scene will be created.
+	 *
+	 * This parameter is ignored if the gameId being transfered to does not match the calling server gameId.
+	 */
+	sceneId?: string;
+	/**
+	 * The preferred server to transfer to. If transfering to this server is not possible or it does not match the other
+	 * requested parameters, a different server will be selected.
+	 */
+	preferredServerId?: string;
+	/** JSON encodable object that will be provided to the server being joined */
+	serverTransferData?: unknown;
+	/** JSON encodable object that will be provided to the client on transfer */
+	clientTransferData?: unknown;
+}
+
+/** Configuration for Airship transfers to specific game servers. */
+export interface AirshipServerTransferConfig {
+	/** JSON encodable object that will be provided to the server being joined */
+	serverTransferData?: unknown;
+	/** JSON encodable object that will be provided to the client on transfer */
+	clientTransferData?: unknown;
 }
