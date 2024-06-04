@@ -7,11 +7,6 @@ export class CameraReferences {
 	public static mainCamera?: Camera;
 	public static viewmodelCamera?: Camera;
 	public static uiCamera?: Camera;
-	public static existsCounter = 0;
-
-	public static DoesCameraRigExist(): boolean {
-		return this.existsCounter > 0;
-	}
 
 	/**
 	 *

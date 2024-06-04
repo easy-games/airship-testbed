@@ -11,6 +11,7 @@ export class LoadingScreenSingleton implements OnStart {
 	private loadingBin = new Bin();
 
 	constructor() {
+		print("loading screen controller context: " + contextbridge.current());
 		Airship.loadingScreen = this;
 
 		if (Game.coreContext === CoreContext.MAIN_MENU) return;

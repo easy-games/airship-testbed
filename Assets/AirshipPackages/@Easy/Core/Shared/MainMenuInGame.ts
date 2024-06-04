@@ -14,9 +14,6 @@ import { CanvasAPI } from "./Util/CanvasAPI";
 import { TimeUtil } from "./Util/TimeUtil";
 import { OnFixedUpdate, OnLateUpdate, OnUpdate } from "./Util/Timer";
 
-const coreCamera = GameObject.Find("CoreCamera");
-Object.Destroy(coreCamera);
-
 Game.coreContext = CoreContext.GAME;
 CoreRefs.Init();
 

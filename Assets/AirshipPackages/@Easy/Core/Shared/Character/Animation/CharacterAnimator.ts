@@ -547,7 +547,7 @@ export class CharacterAnimator {
 	}
 
 	private PlayDamageFlash() {
-		if (this.character.IsDestroyed() || this.isFlashing) return;
+		if (this.character.IsDespawned() || this.isFlashing) return;
 		let allMeshes = this.character.accessoryBuilder.GetAllAccessoryMeshes();
 		const duration = this.flashTransitionDuration + this.flashOnTime;
 		this.isFlashing = true;

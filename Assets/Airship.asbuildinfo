@@ -98,6 +98,11 @@
 			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Overlay/MobileCameraMovement.lua",
 			"extends": []
 		},
+		"CameraRig": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/Camera/CameraRig.lua",
+			"extends": []
+		},
 		"ProximityPrompt": {
 			"component": true,
 			"filePath": "AirshipPackages/@Easy/Core/Shared/Input/ProximityPrompts/ProximityPrompt.lua",
@@ -106,11 +111,6 @@
 		"PromptAboveBall": {
 			"component": true,
 			"filePath": "Code/AirshipPlatformDemo/PromptAboveBall.lua",
-			"extends": []
-		},
-		"CameraRig": {
-			"component": true,
-			"filePath": "AirshipPackages/@Easy/Core/Shared/Camera/CameraRig.lua",
 			"extends": []
 		},
 		"TopDownBattleEnemySpawner": {
@@ -146,6 +146,11 @@
 		"TestScript": {
 			"component": true,
 			"filePath": "Code/AirshipPlatformDemo/ServerScript.lua",
+			"extends": []
+		},
+		"CharacterSpawner": {
+			"component": true,
+			"filePath": "Code/Components/CharacterSpawner.lua",
 			"extends": []
 		},
 		"TopDownBattleCharacter": {
@@ -295,6 +300,11 @@
 			"filePath": "Code/Menu/ClientSceneComponent.lua",
 			"extends": []
 		},
+		"TeleportToRoom": {
+			"component": true,
+			"filePath": "Code/MultiScene/TeleportToRoom.lua",
+			"extends": []
+		},
 		"MobileChatToggleButton": {
 			"component": true,
 			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/MobileChatToggleButton.lua",
@@ -433,10 +443,10 @@
 	},
 	"extends": {
 		"MainMenuPageComponent": [
+			"AvatarMenuComponent",
 			"HomePageComponent",
 			"GameGeneralPage",
-			"SettingsPage",
-			"AvatarMenuComponent"
+			"SettingsPage"
 		],
 		"SearchResult": [
 			"GameSearchResult"

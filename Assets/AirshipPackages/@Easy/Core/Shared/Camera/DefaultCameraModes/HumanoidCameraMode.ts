@@ -53,33 +53,31 @@ export class HumanoidCameraMode extends CameraMode {
 	private readonly mouse = this.bin.Add(new Mouse());
 
 	private spineBone: Transform;
-	
+
 	private mouseSmoothingEnabled = true;
 	private smoothVector = new Vector2(0, 0);
 
-	constructor(
-		private character: Character,
-		private graphicalCharacterGO: GameObject,
-		initialFirstPerson: boolean,
-	) {
+	constructor(private character: Character, private graphicalCharacterGO: GameObject, initialFirstPerson: boolean) {
 		super();
 
-		Dependency<LocalCharacterSingleton>().stateChanged.Connect((state) => {
-			this.SetYOffset(this.GetCamYOffset(this.firstPerson));
-		});
+		this.bin.Add(
+			Dependency<LocalCharacterSingleton>().stateChanged.Connect((state) => {
+				this.SetYOffset(this.GetCamYOffset(this.firstPerson));
+			}),
+		);
 		this.yOffset = this.GetCamYOffset(this.firstPerson);
 
-		Dependency<AirshipCharacterCameraSingleton>().firstPersonChanged.Connect((isFirstPerson) => {
-			this.SetYOffset(this.GetCamYOffset(isFirstPerson), true);
-		});
+		this.bin.Add(
+			Dependency<AirshipCharacterCameraSingleton>().firstPersonChanged.Connect((isFirstPerson) => {
+				this.SetYOffset(this.GetCamYOffset(isFirstPerson), true);
+			}),
+		);
 
 		this.movement = character.movement;
 		this.attachTo = graphicalCharacterGO.transform;
 		this.firstPerson = initialFirstPerson;
 		this.spineBone = character.rig.spine;
 		this.SetupMobileControls();
-
-		this.bin.Add(() => {});
 	}
 
 	private SetupMobileControls() {
@@ -88,37 +86,39 @@ export class HumanoidCameraMode extends CameraMode {
 		let touchStartRotX = 0;
 		let touchStartRotY = 0;
 		let touchOverUI = false;
-		touchscreen.pan.Connect((position, phase) => {
-			switch (phase) {
-				case TouchPhase.Began:
-					if (InputBridge.Instance.IsPointerOverUI()) {
-						touchOverUI = true;
-					} else {
-						touchOverUI = false;
-						touchStartPos = position;
-						touchStartRotX = this.rotationX;
-						touchStartRotY = this.rotationY;
+		this.bin.Add(
+			touchscreen.pan.Connect((position, phase) => {
+				switch (phase) {
+					case TouchPhase.Began:
+						if (InputBridge.Instance.IsPointerOverUI()) {
+							touchOverUI = true;
+						} else {
+							touchOverUI = false;
+							touchStartPos = position;
+							touchStartRotX = this.rotationX;
+							touchStartRotY = this.rotationY;
+						}
+						break;
+					case TouchPhase.Moved: {
+						if (touchOverUI) break;
+						const deltaPosSinceStart = position.sub(touchStartPos);
+						this.rotationY =
+							(touchStartRotY - deltaPosSinceStart.x * Airship.input.GetTouchSensitivity()) % TAU;
+						this.rotationX = math.clamp(
+							touchStartRotX + deltaPosSinceStart.y * Airship.input.GetTouchSensitivity(),
+							MIN_ROT_X,
+							MAX_ROT_X,
+						);
+						break;
 					}
-					break;
-				case TouchPhase.Moved: {
-					if (touchOverUI) break;
-					const deltaPosSinceStart = position.sub(touchStartPos);
-					this.rotationY =
-						(touchStartRotY - deltaPosSinceStart.x * Airship.input.GetTouchSensitivity()) % TAU;
-					this.rotationX = math.clamp(
-						touchStartRotX + deltaPosSinceStart.y * Airship.input.GetTouchSensitivity(),
-						MIN_ROT_X,
-						MAX_ROT_X,
-					);
-					break;
+					case TouchPhase.Ended:
+						touchOverUI = false;
+						break;
+					default:
+						break;
 				}
-				case TouchPhase.Ended:
-					touchOverUI = false;
-					break;
-				default:
-					break;
-			}
-		});
+			}),
+		);
 	}
 
 	OnStart(camera: Camera, rootTransform: Transform) {
@@ -184,19 +184,23 @@ export class HumanoidCameraMode extends CameraMode {
 					// }
 
 					const smoothFactor = math.pow(1 / MOUSE_SMOOTHING, Time.deltaTime * 120);
-					this.smoothVector = new Vector2(Mathf.Lerp(this.smoothVector.x, mouseDelta.x, smoothFactor), Mathf.Lerp(this.smoothVector.y, mouseDelta.y, smoothFactor));
+					this.smoothVector = new Vector2(
+						Mathf.Lerp(this.smoothVector.x, mouseDelta.x, smoothFactor),
+						Mathf.Lerp(this.smoothVector.y, mouseDelta.y, smoothFactor),
+					);
 					moveDelta = this.smoothVector;
 				}
-				
+
 				const mouseSensitivity = Airship.input.GetMouseSensitivity();
 				if (!this.firstPerson && !this.lockView) {
 					// this.mouse.SetPosition(this.rightClickPos);
 				}
 
 				// Using Screen.width for both X and Y sensitivity (feels wrong having different vertical & horizontal sens)
-				this.rotationY = (this.rotationY - moveDelta.x / Screen.width * mouseSensitivity * MOUSE_SENS_SCALAR) % TAU;
+				this.rotationY =
+					(this.rotationY - (moveDelta.x / Screen.width) * mouseSensitivity * MOUSE_SENS_SCALAR) % TAU;
 				this.rotationX = math.clamp(
-					this.rotationX + moveDelta.y / Screen.width * mouseSensitivity * MOUSE_SENS_SCALAR,
+					this.rotationX + (moveDelta.y / Screen.width) * mouseSensitivity * MOUSE_SENS_SCALAR,
 					MIN_ROT_X,
 					MAX_ROT_X,
 				);

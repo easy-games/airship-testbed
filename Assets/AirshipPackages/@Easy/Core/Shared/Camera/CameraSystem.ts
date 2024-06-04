@@ -56,10 +56,6 @@ export class CameraSystem {
 		}
 	}
 
-	public HasCameraRig(): boolean {
-		return CameraReferences.DoesCameraRigExist();
-	}
-
 	private OnEnabled() {
 		print("CameraSystem.OnEnable");
 		const stopOnUpdate = OnUpdate.ConnectWithPriority(SignalPriority.LOWEST, (dt) => {
@@ -67,7 +63,9 @@ export class CameraSystem {
 		});
 
 		const stopOnLateUpdate = OnLateUpdate.ConnectWithPriority(SignalPriority.HIGHEST, (dt) => {
-			if (!CameraReferences.DoesCameraRigExist()) return;
+			if (!CameraReferences.mainCamera) {
+				return;
+			}
 			let camTransform = this.currentMode.OnLateUpdate(dt);
 
 			// Run game specified functions to update CameraTransform
@@ -107,6 +105,7 @@ export class CameraSystem {
 
 	private OnDisabled() {
 		this.enabledBin.Clean();
+		this.currentMode.OnStop();
 	}
 
 	/**

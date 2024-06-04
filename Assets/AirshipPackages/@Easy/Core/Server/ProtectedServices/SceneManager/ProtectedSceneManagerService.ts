@@ -1,4 +1,3 @@
-import { Airship } from "@Easy/Core/Shared/Airship";
 import { OnStart, Service } from "@Easy/Core/Shared/Flamework";
 
 @Service({})
@@ -58,37 +57,53 @@ export class ProtectedSceneManagerService implements OnStart {
 			},
 		);
 
-		contextbridge.callback<(userId: string, sceneName: string, stacked: boolean) => void>(
+		contextbridge.callback<(clientId: number, sceneName: string, makeActiveScene: boolean) => void>(
 			"SceneManager:LoadSceneForPlayer",
-			(fromContext, userId, sceneName, stacked) => {
+			(fromContext, clientId, sceneName, makeActiveScene) => {
 				if (this.IsProtectedSceneName(sceneName)) {
 					Debug.LogError("Not allowed to load protected scene: " + sceneName);
 					return;
 				}
 
-				const player = Airship.players.FindByUserId(userId);
-				if (!player) {
-					error("Failed to load scene for player. Unable to find player with userId: " + userId);
+				const connection = InstanceFinder.ServerManager.Clients.Get(clientId);
+				if (!connection) {
+					error("Failed to load scene for player. Unable to find player with clientId: " + clientId);
 				}
-				Bridge.LoadSceneForConnection(player.networkObject.LocalConnection, sceneName, stacked);
+				Bridge.LoadSceneForConnection(connection, sceneName, makeActiveScene);
 			},
 		);
 
-		contextbridge.callback<(userId: string, sceneName: string) => void>(
+		contextbridge.callback<(clientId: number, sceneName: string, preferredActiveScene: string | undefined) => void>(
 			"SceneManager:UnloadSceneForPlayer",
-			(fromContext, userId, sceneName) => {
+			(fromContext, clientId, sceneName, preferredActiveScene) => {
 				if (this.IsProtectedSceneName(sceneName)) {
-					Debug.LogError("Not allowed to load protected scene: " + sceneName);
-					return;
+					error("Not allowed to load protected scene: " + sceneName);
+				}
+				if (preferredActiveScene && this.IsProtectedSceneName(preferredActiveScene)) {
+					error("Not allowed to set active scene to a protected scene: " + preferredActiveScene);
 				}
 
-				const player = Airship.players.FindByUserId(userId);
-				if (!player) {
-					error("Failed to load scene for player. Unable to find player with userId: " + userId);
+				const connection = InstanceFinder.ServerManager.Clients.Get(clientId);
+				if (!connection) {
+					error("Failed to load scene for player. Unable to find player with clientId: " + clientId);
 				}
-				Bridge.UnloadSceneForConnection(player.networkObject.LocalConnection, sceneName);
+				Bridge.UnloadSceneForConnection(connection, sceneName, preferredActiveScene ?? "");
 			},
 		);
+
+		contextbridge.callback<(sceneName: string) => void>("SceneManager:SetActiveScene", (fromContext, sceneName) => {
+			if (this.IsProtectedSceneName(sceneName)) {
+				Debug.LogError("Not allowed to set active scene to a protected scene: " + sceneName);
+				return false;
+			}
+
+			let scene = SceneManager.GetSceneByName(sceneName);
+			if (!scene) {
+				Debug.LogError("Scene not found: " + sceneName);
+				return false;
+			}
+			return SceneManager.SetActiveScene(scene);
+		});
 	}
 
 	public IsProtectedSceneName(sceneName: string): boolean {

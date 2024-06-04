@@ -1,5 +1,5 @@
 import { Airship } from "../Airship";
-import { CameraReferences } from "./CameraReferences";
+import { CameraSystem } from "./CameraSystem";
 
 export default class CameraRig extends AirshipBehaviour {
 	@Header("Cameras")
@@ -7,23 +7,23 @@ export default class CameraRig extends AirshipBehaviour {
 	public viewmodelCamera!: Camera;
 	public uiCamera!: Camera;
 
+	private systemReference: CameraSystem | undefined;
+
 	public Awake(): void {}
 
 	public OnEnable(): void {
-		CameraReferences.cameraHolder = this.transform;
-		CameraReferences.mainCamera = this.mainCamera;
-		CameraReferences.viewmodelCamera = this.viewmodelCamera;
-		CameraReferences.uiCamera = this.uiCamera;
-		CameraReferences.existsCounter++;
-
-		Airship.characterCamera.CreateCameraSystem();
+		print("CameraRig.OnEnable");
+		Airship.characterCamera.StopCameraSystem();
+		this.systemReference = Airship.characterCamera.StartNewCameraSystem(this);
 	}
-
-	override Start(): void {}
 
 	override OnDestroy(): void {}
 
 	public OnDisable(): void {
-		CameraReferences.existsCounter--;
+		print("CameraRig.OnDisable.1");
+		if (Airship.characterCamera.cameraSystem === this.systemReference) {
+			print("CameraRig.OnDisable.2");
+			Airship.characterCamera.StopCameraSystem();
+		}
 	}
 }

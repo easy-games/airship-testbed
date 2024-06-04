@@ -22350,7 +22350,7 @@ interface BridgeConstructor {
     IsMicRecording(): boolean;
     LoadGlobalSceneByName(sceneName: string): void;
     LoadScene(sceneName: string, restartLuau: boolean, loadSceneMode: LoadSceneMode): void;
-    LoadSceneForConnection(conn: NetworkConnection, sceneName: string, allowStacking: boolean): void;
+    LoadSceneForConnection(conn: NetworkConnection, sceneName: string, makeActiveScene: boolean): void;
     MakeMaterialPropertyBlock(): MaterialPropertyBlock;
     MakeMesh(): Mesh;
     MakeSprite(texture2D: Texture2D): Sprite;
@@ -22367,7 +22367,7 @@ interface BridgeConstructor {
     StopMicRecording(): void;
     UnloadGlobalSceneByName(sceneName: string): void;
     UnloadScene(sceneName: string): void;
-    UnloadSceneForConnection(conn: NetworkConnection, sceneName: string): void;
+    UnloadSceneForConnection(conn: NetworkConnection, sceneName: string, preferredActiveScene: string): void;
     UpdateLayout(xform: Transform, recursive: boolean): void;
 }
 declare const Bridge: BridgeConstructor;

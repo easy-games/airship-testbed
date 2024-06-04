@@ -289,9 +289,8 @@ export class CharactersSingleton implements OnStart {
 	public FindByCollider(collider: Collider): Character | undefined {
 		for (let character of this.characters) {
 			if (
-				character.gameObject.GetInstanceID() === collider.gameObject.GetInstanceID() ||
-				character.gameObject.transform.parent?.gameObject.GetInstanceID() ===
-					collider.gameObject.GetInstanceID()
+				character.gameObject === collider.gameObject ||
+				character.gameObject === collider.gameObject.transform.parent?.parent?.gameObject
 			) {
 				return character;
 			}

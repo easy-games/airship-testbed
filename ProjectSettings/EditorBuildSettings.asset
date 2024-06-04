@@ -26,6 +26,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ClientSidedScene.unity
     guid: 2a62ab5d3234b46098d8876bc6fa2271
+  - enabled: 1
+    path: Assets/Scenes/MultiScene/MultiScene_Base.unity
+    guid: 54812eb57ead64c33ac7034860038994
+  - enabled: 1
+    path: Assets/Scenes/MultiScene/MultiScene_Room.unity
+    guid: 348dce646eda54d87abe568e1b9ca22c
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 8f5f84253ea8c478f885bdb429d860d9, type: 2}
   m_UseUCBPForAssetBundles: 0

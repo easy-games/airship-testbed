@@ -19,6 +19,8 @@ MonoBehaviour:
   - {fileID: 102900000, guid: 2e133b1c311427345a363fb38ae7ff22, type: 3}
   - {fileID: 102900000, guid: 497a63aec7ca045bab13a5e25c5d7bba, type: 3}
   - {fileID: 102900000, guid: 2a62ab5d3234b46098d8876bc6fa2271, type: 3}
+  - {fileID: 102900000, guid: 54812eb57ead64c33ac7034860038994, type: 3}
+  - {fileID: 102900000, guid: 348dce646eda54d87abe568e1b9ca22c, type: 3}
   packages:
   - id: '@Easy/Core'
     assetVersion: 488

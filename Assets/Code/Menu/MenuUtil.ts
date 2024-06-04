@@ -16,6 +16,11 @@ export class MenuUtil {
 			sceneName: "ClientSidedScene",
 			clientSided: true,
 		},
+		{
+			title: "Multi Networked Scenes",
+			subtitle: "Loading multiple networked scenes per player.",
+			sceneName: "MultiScene_Base",
+		},
 	];
 
 	public static loadGlobalSceneRequest = new RemoteFunction<string, boolean>("LoadGlobalScene");

@@ -10,6 +10,7 @@ import { Keyboard } from "../UserInput";
 import { Bin } from "../Util/Bin";
 import { Signal } from "../Util/Signal";
 import { CameraReferences } from "./CameraReferences";
+import CameraRig from "./CameraRig";
 import { CameraSystem } from "./CameraSystem";
 import { CharacterCameraType } from "./CharacterCameraType";
 import { FlyCameraMode } from "./DefaultCameraModes/FlyCameraMode";
@@ -67,21 +68,30 @@ export class AirshipCharacterCameraSingleton implements OnStart {
 
 	private firstPersonFOV = 80;
 	private thirdPersonFOV = 70;
-	private cameraMode: CameraMode | undefined;
 
 	constructor() {
 		Airship.characterCamera = this;
 	}
 
-	public CreateCameraSystem() {
-		if (this.cameraSystem) return;
+	public StartNewCameraSystem(cameraRig: CameraRig): CameraSystem {
+		CameraReferences.cameraHolder = cameraRig.transform;
+		CameraReferences.mainCamera = cameraRig.mainCamera;
+		CameraReferences.viewmodelCamera = cameraRig.viewmodelCamera;
+		CameraReferences.uiCamera = cameraRig.uiCamera;
 
-		if (CameraReferences.DoesCameraRigExist()) {
-			this.cameraSystem = new CameraSystem();
-			if (this.cameraMode) {
-				this.cameraSystem.SetMode(this.cameraMode);
-			}
-		}
+		this.cameraSystem = new CameraSystem();
+		this.SetCharacterCameraMode(this.characterCameraMode);
+		return this.cameraSystem;
+	}
+
+	public StopCameraSystem() {
+		CameraReferences.cameraHolder = undefined;
+		CameraReferences.mainCamera = undefined;
+		CameraReferences.viewmodelCamera = undefined;
+		CameraReferences.uiCamera = undefined;
+
+		this.cameraSystem?.SetEnabled(false);
+		this.cameraSystem = undefined;
 	}
 
 	OnStart(): void {
@@ -114,7 +124,6 @@ export class AirshipCharacterCameraSingleton implements OnStart {
 	 * @param mode New mode.
 	 */
 	public SetMode(mode: CameraMode) {
-		this.cameraMode = mode;
 		this.cameraSystem?.SetMode(mode);
 	}
 
