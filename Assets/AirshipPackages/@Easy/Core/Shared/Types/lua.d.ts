@@ -373,6 +373,9 @@ interface String {
 
 	/** Returns the string with all trailing whitespace removed. */
 	trimEnd(this: string): string;
+
+	/** Returns `true` if `str` includes the `find` string. Case-sensitive. */
+	includes(this: string, find: string): boolean;
 }
 
 declare namespace string {
@@ -477,6 +480,9 @@ declare namespace string {
 
 	/** Returns the string with all trailing whitespace removed. */
 	function trimEnd(str: string): string;
+
+	/** Returns `true` if `str` includes the `find` string. Case-sensitive. */
+	function includes(str: string, find: string): boolean;
 }
 
 declare namespace math {
@@ -584,6 +590,45 @@ declare namespace math {
 
 	/** Returns the hyperbolic tangent of x. */
 	function tanh(n: number): number;
+
+	/** Returns `true` if values are nearly equal. */
+	function approximately(a: number, b: number): boolean;
+
+	/** Clamps the value of `n` within the range of `[0, 1]`. */
+	function clamp01(n: number): number;
+
+	/** Linearly interpolates between `a` and `b` by amount `t`. The value `t` is clamped to the range of `[0, 1]`. */
+	function lerp(a: number, b: number, t: number): number;
+
+	/** Linearly interpolates between `a` and `b` by amount `t`. */
+	function lerpUnclamped(a: number, b: number, t: number): number;
+
+	/** Returns where a value lies between `a` and `b`. */
+	function inverseLerp(a: number, b: number, value: number): number;
+
+	/** Returns the closest power of two from `n`. */
+	function closestPowerOfTwo(n: number): number;
+
+	/** Returns `true` if `n` is a power of two. */
+	function isPowerOfTwo(n: number): boolean;
+
+	/** Loops the value `t` to keep it within `length`. */
+	function repeat(t: number, length: number): number;
+
+	/** Returns the delta angle between `angle` and `target`. Works in degrees. */
+	function deltaAngle(angle: number, target: number): number;
+
+	/** Bounces value `t` between the range of `[0, length]`. */
+	function pingPong(t: number, length: number): number;
+
+	/** Moves `current` toward `target` by a max of `maxDelta`. */
+	function moveTowards(current: number, target: number, maxDelta: number): number;
+
+	/** Moves `current` toward `target` by a max of `maxDeltaAngle`. Works in degrees. */
+	function moveTowardsAngle(current: number, target: number, maxDeltaAngle: number): number;
+
+	/** Interpolates `current` toward `target` with smoothing. */
+	function smoothStep(current: number, target: number, t: number): number;
 }
 
 /**

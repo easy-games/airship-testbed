@@ -55,8 +55,8 @@ export class UserService implements OnStart {
 	 */
 	public async GetUsersById(
 		userIds: string[],
-		strict = true,
-	): Promise<Result<{ map: Record<string, PublicUser>; array: PublicUser[] }, undefined>> {
+		strict: boolean = false,
+	): Promise<Result<Record<string, PublicUser | undefined>, undefined>> {
 		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiGetUsersById>(
 			UserServiceBridgeTopics.GetUsersById,
 			userIds,
