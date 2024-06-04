@@ -1,12 +1,8 @@
-import { Airship } from "./Airship";
 import { Game } from "./Game";
 import { Player } from "./Player/Player";
+import { CSArrayUtil } from "./Util/CSArrayUtil";
 
 export class SceneManager {
-	constructor() {
-		Airship.sceneManager = this;
-	}
-
 	OnStart(): void {}
 
 	/**
@@ -132,5 +128,16 @@ export class SceneManager {
 	 */
 	public static MoveGameObjectToScene(gameObject: GameObject, scene: Scene): void {
 		Bridge.MoveGameObjectToScene(gameObject, scene);
+	}
+
+	/**
+	 * Returns an array of all the game scenes currently open in the hierarchy.
+	 *
+	 * This does not include any Airship protected scenes.
+	 *
+	 * @returns Array of scenes in the hierarchy.
+	 */
+	public static GetScenes(): Scene[] {
+		return CSArrayUtil.Convert(Bridge.GetScenes());
 	}
 }

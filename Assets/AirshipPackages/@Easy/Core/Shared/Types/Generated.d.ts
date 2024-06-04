@@ -22265,6 +22265,7 @@ interface BridgeConstructor {
     GetMonoRam(): number;
     GetReservedRam(): number;
     GetScene(sceneName: string): Scene;
+    GetScenes(): CSArray<Scene>;
     GetVolume(): number;
     HasMicrophonePermission(): boolean;
     IsFullScreen(): boolean;

@@ -1,5 +1,4 @@
 import { OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
-import { AssetCache } from "../../AssetCache/AssetCache";
 import { Game } from "../../Game";
 import { Bin } from "../../Util/Bin";
 import { Modifier } from "../../Util/Modifier";
@@ -23,22 +22,21 @@ export class MainMenuSingleton implements OnStart {
 	}
 
 	OnStart(): void {
-		const readOnlyCanvasGO = Object.Instantiate(
-			AssetCache.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/UI/AirshipReadOnlyCanvas.prefab"),
-		);
-		Object.DontDestroyOnLoad(readOnlyCanvasGO);
-		const canvasRect = readOnlyCanvasGO.transform as RectTransform;
-		const canvasScaler = readOnlyCanvasGO.gameObject.GetComponent<CanvasScaler>()!;
+		// const readOnlyCanvasGO = Object.Instantiate(
+		// 	AssetCache.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/UI/AirshipReadOnlyCanvas.prefab"),
+		// );
+		// const canvasRect = readOnlyCanvasGO.transform as RectTransform;
+		// const canvasScaler = readOnlyCanvasGO.gameObject.GetComponent<CanvasScaler>()!;
 
 		let lastTime = 0;
 		OnUpdate.Connect((dt) => {
-			if (canvasRect.sizeDelta !== this.screenSize || this.firstRun) {
+			if (this.screenSize.x !== Screen.width || this.screenSize.y !== Screen.height || this.firstRun) {
 				this.firstRun = false;
 				lastTime = Time.time;
-				this.screenSize = canvasRect.sizeDelta;
+				this.screenSize = new Vector2(Screen.width, Screen.height);
 
-				const scaleFactor = Game.GetScaleFactor();
-				canvasScaler.scaleFactor = scaleFactor;
+				// const scaleFactor = Game.GetScaleFactor();
+				// canvasScaler.scaleFactor = scaleFactor;
 
 				let sizeType: ScreenSizeType = "md";
 				if (Game.IsPortrait()) {
