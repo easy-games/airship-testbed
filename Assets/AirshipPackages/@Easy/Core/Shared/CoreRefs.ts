@@ -1,4 +1,5 @@
 import { Game } from "./Game";
+import { SceneManager } from "./SceneManager";
 
 export class CoreRefs {
 	/**

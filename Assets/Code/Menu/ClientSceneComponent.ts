@@ -1,4 +1,4 @@
-import { Airship } from "@Easy/Core/Shared/Airship";
+import { SceneManager } from "@Easy/Core/Shared/SceneManager";
 import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
 
 export default class ClientSceneComponent extends AirshipBehaviour {
@@ -6,7 +6,7 @@ export default class ClientSceneComponent extends AirshipBehaviour {
 
 	override Start(): void {
 		CanvasAPI.OnClickEvent(this.closeButton.gameObject, () => {
-			Airship.sceneManager.UnloadClientSidedScene("ClientSidedScene");
+			SceneManager.UnloadOfflineScene("ClientSidedScene");
 		});
 	}
 

@@ -1,4 +1,4 @@
-import { Airship } from "@Easy/Core/Shared/Airship";
+import { SceneManager } from "@Easy/Core/Shared/SceneManager";
 import { CanvasAPI, HoverState } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import { Theme } from "@Easy/Core/Shared/Util/Theme";
@@ -29,7 +29,7 @@ export default class SceneEntryComponent extends AirshipBehaviour {
 		});
 		CanvasAPI.OnClickEvent(this.button.gameObject, () => {
 			if (this.entry.clientSided) {
-				Airship.sceneManager.LoadClientSidedScene(this.entry.sceneName);
+				SceneManager.LoadOfflineScene(this.entry.sceneName);
 				return;
 			}
 			const result = MenuUtil.loadGlobalSceneRequest.client.FireServer(this.entry.sceneName);

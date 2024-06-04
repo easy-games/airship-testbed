@@ -1,5 +1,5 @@
-import { Airship } from "@Easy/Core/Shared/Airship";
 import { RemoteFunction } from "@Easy/Core/Shared/Network/RemoteFunction";
+import { SceneManager } from "@Easy/Core/Shared/SceneManager";
 import Menu from "./Menu";
 import { SceneEntry } from "./SceneEntry";
 
@@ -29,7 +29,7 @@ export class MenuUtil {
 	public static menu: Menu;
 
 	public static BackToMenu() {
-		const activeScene = Airship.sceneManager.GetActiveScene().name;
+		const activeScene = SceneManager.GetActiveScene().name;
 		if (activeScene === "Menu") {
 			return;
 		}

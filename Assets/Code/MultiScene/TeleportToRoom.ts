@@ -1,5 +1,6 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { Game } from "@Easy/Core/Shared/Game";
+import { SceneManager } from "@Easy/Core/Shared/SceneManager";
 
 export default class TeleportToRoom extends AirshipBehaviour {
 	public targetScene!: string;
@@ -26,9 +27,9 @@ export default class TeleportToRoom extends AirshipBehaviour {
 
 			character.Despawn();
 			task.wait(0);
-			const existingScene = Airship.sceneManager.GetActiveScene().name;
-			Airship.sceneManager.LoadSceneForPlayer(character.player, this.targetScene, true);
-			Airship.sceneManager.UnloadSceneForPlayer(character.player, existingScene, this.targetScene);
+			const existingScene = SceneManager.GetActiveScene().name;
+			SceneManager.LoadSceneForPlayer(character.player, this.targetScene, true);
+			SceneManager.UnloadSceneForPlayer(character.player, existingScene, this.targetScene);
 		}
 	}
 

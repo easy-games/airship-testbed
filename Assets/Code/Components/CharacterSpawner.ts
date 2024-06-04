@@ -3,6 +3,7 @@ import Character from "@Easy/Core/Shared/Character/Character";
 import { CharacterCameraMode } from "@Easy/Core/Shared/Character/LocalCharacter/CharacterCameraMode";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Player } from "@Easy/Core/Shared/Player/Player";
+import { SceneManager } from "@Easy/Core/Shared/SceneManager";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 
 export default class CharacterSpawner extends AirshipBehaviour {
@@ -17,10 +18,10 @@ export default class CharacterSpawner extends AirshipBehaviour {
 		if (Game.IsServer()) {
 			this.bin.Add(
 				Airship.players.ObservePlayers((player) => {
-					print("spawn scene: " + Airship.sceneManager.GetActiveScene().name);
+					print("spawn scene: " + SceneManager.GetActiveScene().name);
 					this.SpawnCharacter(player);
 					task.delay(0, () => {
-						print("delay scene: " + Airship.sceneManager.GetActiveScene().name);
+						print("delay scene: " + SceneManager.GetActiveScene().name);
 					});
 				}),
 			);

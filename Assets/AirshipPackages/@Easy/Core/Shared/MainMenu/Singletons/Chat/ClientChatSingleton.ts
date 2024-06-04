@@ -3,7 +3,6 @@ import { Airship } from "@Easy/Core/Shared/Airship";
 import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
 import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
 import { ChatCommand } from "@Easy/Core/Shared/Commands/ChatCommand";
-import { ClearCommand } from "@Easy/Core/Shared/Commands/ClearCommand";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
 import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
 import { Controller, Dependency, OnStart } from "@Easy/Core/Shared/Flamework";
@@ -118,7 +117,6 @@ export class ClientChatSingleton implements OnStart {
 			}
 		});
 
-		this.RegisterCommand(new ClearCommand());
 		this.RegisterCommand(new MessageCommand());
 		this.RegisterCommand(new ReplyCommand());
 

@@ -1,7 +1,18 @@
 import { OnStart, Service } from "@Easy/Core/Shared/Flamework";
 
+interface UnitySceneManagerConstructor {
+	new (): UnitySceneManagerConstructor;
+	GetSceneByName(sceneName: string): Scene;
+	SetActiveScene(scene: Scene): void;
+	GetActiveScene(): Scene;
+}
+declare const SceneManager: UnitySceneManagerConstructor;
+
+/**
+ * @protected
+ */
 @Service({})
-export class ProtectedSceneManagerService implements OnStart {
+export class ProtectedSceneManagerSingleton implements OnStart {
 	private protectedSceneNames = ["corescene", "mainmenu", "login"];
 
 	OnStart(): void {

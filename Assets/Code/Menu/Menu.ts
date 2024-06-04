@@ -1,7 +1,6 @@
-print("Menu.ts");
-
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { Game } from "@Easy/Core/Shared/Game";
+import { SceneManager } from "@Easy/Core/Shared/SceneManager";
 import { Keyboard, Mouse } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { MenuUtil } from "./MenuUtil";
@@ -37,7 +36,6 @@ export default class Menu extends AirshipBehaviour {
 	}
 
 	override Start(): void {
-		print("Menu context: " + contextbridge.current());
 		Airship.loadingScreen.FinishLoading();
 		this.Show();
 
@@ -50,11 +48,11 @@ export default class Menu extends AirshipBehaviour {
 
 		if (Game.IsServer()) {
 			MenuUtil.loadGlobalSceneRequest.server.SetCallback((player, sceneName) => {
-				Airship.sceneManager.LoadSceneForPlayer(player, sceneName, true);
+				SceneManager.LoadSceneForPlayer(player, sceneName, true);
 				return true;
 			});
 			MenuUtil.unloadGlobalSceneRequest.server.SetCallback((player, sceneName) => {
-				Airship.sceneManager.UnloadSceneForPlayer(player, sceneName, "Menu");
+				SceneManager.UnloadSceneForPlayer(player, sceneName, "Menu");
 				return true;
 			});
 		}

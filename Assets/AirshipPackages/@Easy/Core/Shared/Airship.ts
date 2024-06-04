@@ -18,7 +18,7 @@ import { AirshipInputSingleton } from "./Input/AirshipInputSingleton";
 import { InventorySingleton } from "./Inventory/InventorySingleton";
 import { LoadingScreenSingleton } from "./LoadingScreen/LoadingScreenSingleton";
 import { PlayersSingleton } from "./Player/PlayersSingleton";
-import { AirshipSceneManagerSingleton } from "./SceneManager/AirshipSceneManagerSingleton";
+import { SceneManager } from "./SceneManager";
 import { TagsSingleton } from "./Tags/TagsSingleton";
 import { TeamsSingleton } from "./Team/TeamSingleton";
 
@@ -123,7 +123,7 @@ export const Airship = {
 	inventory: undefined as unknown as Omit<InventorySingleton, "OnStart">,
 	loadingScreen: undefined as unknown as Omit<LoadingScreenSingleton, "OnStart">,
 	characterCamera: undefined as unknown as Omit<AirshipCharacterCameraSingleton, "OnStart">,
-	sceneManager: undefined as unknown as Omit<AirshipSceneManagerSingleton, "OnStart">,
+	sceneManager: undefined as unknown as Omit<SceneManager, "OnStart">,
 	/**
 	 * Namespace for managing and query Airship tags on game objects
 	 * @see https://docs.airship.gg/tags
