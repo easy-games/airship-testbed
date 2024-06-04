@@ -1,5 +1,6 @@
 ﻿import { Mouse } from "@Easy/Core/Shared/UserInput";
 import { WorldAPI } from "@Easy/Core/Shared/VoxelWorld/WorldAPI";
+import { Viewmodel } from "../Viewmodel/Viewmodel";
 
 export class CameraReferences {
 	private static mouse = new Mouse();
@@ -7,6 +8,8 @@ export class CameraReferences {
 	public static mainCamera?: Camera;
 	public static viewmodelCamera?: Camera;
 	public static uiCamera?: Camera;
+
+	public static viewmodel?: Viewmodel;
 
 	/**
 	 *

@@ -1,5 +1,4 @@
-﻿﻿import { ViewmodelController } from "@Easy/Core/Client/Controllers/Viewmodel/ViewmodelController";
-import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
+﻿﻿import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
 import { AudioBundleSpacialMode, AudioClipBundle } from "@Easy/Core/Shared/Audio/AudioClipBundle";
 import Character from "@Easy/Core/Shared/Character/Character";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
@@ -11,6 +10,7 @@ import { RandomUtil } from "@Easy/Core/Shared/Util/RandomUtil";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { Task } from "@Easy/Core/Shared/Util/Task";
 import { AirshipCharacterCameraSingleton } from "../../Camera/AirshipCharacterCameraSingleton";
+import { CameraReferences } from "../../Camera/CameraReferences";
 import { ItemDef } from "../../Item/ItemDefinitionTypes";
 import { CharacterAnimationLayer } from "./CharacterAnimationLayer";
 
@@ -287,7 +287,7 @@ export class CharacterAnimator {
 		if ((config?.autoFadeOut === undefined || config?.autoFadeOut) && !clip.isLooping) {
 			//Play once then fade away
 			animState = AnimancerBridge.PlayOnceOnLayer(
-				Dependency<ViewmodelController>().animancer,
+				CameraReferences.viewmodel!.animancer,
 				clip,
 				layer,
 				config?.fadeInDuration ?? this.defaultTransitionTime,
@@ -298,7 +298,7 @@ export class CharacterAnimator {
 		} else {
 			//Play permenantly on player
 			animState = AnimancerBridge.PlayOnLayer(
-				Dependency<ViewmodelController>().animancer,
+				CameraReferences.viewmodel!.animancer,
 				clip,
 				layer,
 				config?.fadeInDuration ?? this.defaultTransitionTime,

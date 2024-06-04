@@ -33,5 +33,7 @@ export class CoreRefs {
 				this.protectedTransform = protectedGo.transform;
 			}
 		}
+
+		Object.DontDestroyOnLoad(this.rootTransform);
 	}
 }

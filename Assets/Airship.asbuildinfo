@@ -280,6 +280,11 @@
 			"filePath": "Code/AirshipPlatformDemo/CubeMover.lua",
 			"extends": []
 		},
+		"TeleportToRoom": {
+			"component": true,
+			"filePath": "Code/MultiScene/TeleportToRoom.lua",
+			"extends": []
+		},
 		"ClientScript": {
 			"component": true,
 			"filePath": "Code/AirshipPlatformDemo/ClientScript.lua",
@@ -298,11 +303,6 @@
 		"ClientSceneComponent": {
 			"component": true,
 			"filePath": "Code/Menu/ClientSceneComponent.lua",
-			"extends": []
-		},
-		"TeleportToRoom": {
-			"component": true,
-			"filePath": "Code/MultiScene/TeleportToRoom.lua",
 			"extends": []
 		},
 		"MobileChatToggleButton": {
@@ -443,10 +443,10 @@
 	},
 	"extends": {
 		"MainMenuPageComponent": [
-			"AvatarMenuComponent",
 			"HomePageComponent",
 			"GameGeneralPage",
-			"SettingsPage"
+			"SettingsPage",
+			"AvatarMenuComponent"
 		],
 		"SearchResult": [
 			"GameSearchResult"

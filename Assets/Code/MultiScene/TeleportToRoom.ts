@@ -13,7 +13,7 @@ export default class TeleportToRoom extends AirshipBehaviour {
 		if (character?.player && !character.IsDespawned()) {
 			print("teleporting!");
 			character.Despawn();
-			task.wait();
+			task.wait(0);
 			const existingScene = Airship.sceneManager.GetActiveScene().name;
 			Airship.sceneManager.LoadSceneForPlayer(character.player, this.targetScene, true);
 			Airship.sceneManager.UnloadSceneForPlayer(character.player, existingScene, this.targetScene);

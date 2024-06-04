@@ -1,19 +1,11 @@
-import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
-import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
+import { CoreRefs } from "../CoreRefs";
 
-@Controller({})
-export class ViewmodelController implements OnStart {
-	public readonly viewmodelGo: GameObject;
-	public readonly viewmodelTransform: Transform;
-	public readonly animancer: AnimancerComponent;
-	public readonly accessoryBuilder: AccessoryBuilder;
-	public readonly rig!: CharacterRig;
-
-	// private rootLayer: AnimancerLayer;
-	// private layer1: AnimancerLayer;
-	// private layer2: AnimancerLayer;
-	// private layer3: AnimancerLayer;
-	// private layer4: AnimancerLayer;
+export class Viewmodel {
+	public viewmodelGo: GameObject;
+	public viewmodelTransform: Transform;
+	public animancer: AnimancerComponent;
+	public accessoryBuilder: AccessoryBuilder;
+	public rig!: CharacterRig;
 
 	constructor() {
 		this.viewmodelGo = Object.Instantiate(
@@ -48,5 +40,7 @@ export class ViewmodelController implements OnStart {
 		// this.layer4 = this.animancer.Layers.GetLayer(4);
 	}
 
-	OnStart(): void {}
+	public Destroy(): void {
+		Object.Destroy(this.viewmodelGo);
+	}
 }

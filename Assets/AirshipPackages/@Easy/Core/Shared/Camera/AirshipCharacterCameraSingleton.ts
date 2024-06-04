@@ -34,8 +34,6 @@ interface ViewModelUpdate {
 
 @Controller({})
 export class AirshipCharacterCameraSingleton implements OnStart {
-	public static readonly cameraReferenceKey = "CameraRig";
-
 	public canToggleFirstPerson = true;
 
 	private lookBackwards = false;

@@ -115,7 +115,7 @@ export default class Character extends AirshipBehaviour {
 
 	public OnDisable(): void {
 		Airship.characters.UnregisterCharacter(this);
-		if (RunUtil.IsClient()) {
+		if (Game.IsClient() && !Game.IsServer()) {
 			this.bin.Clean();
 			this.despawned = true;
 			this.onDespawn.Fire();

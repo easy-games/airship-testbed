@@ -979,6 +979,20 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 1770117590}
       modified: 1
+    - name: delay
+      type: number
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators: []
+      nullable: 0
+      serializedValue: 0
+      serializedObject: {fileID: 0}
+      modified: 1
     displayName: 
   contextOverwritten: 0
 --- !u!4 &2011389678
