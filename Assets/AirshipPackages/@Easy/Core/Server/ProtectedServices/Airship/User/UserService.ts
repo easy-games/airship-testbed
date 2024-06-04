@@ -16,7 +16,7 @@ export type ServerBridgeApiGetUserById = (userId: string) => Result<PublicUser |
 export type ServerBridgeApiGetUsersById = (
 	userIds: string[],
 	strict?: boolean,
-) => Result<{ map: Record<string, PublicUser>; array: PublicUser[] }, undefined>;
+) => Result<Record<string, PublicUser>, undefined>;
 
 @Service({})
 export class UserService implements OnStart {
@@ -82,10 +82,7 @@ export class UserService implements OnStart {
 				if (userIds.size() === 0) {
 					return {
 						success: true,
-						data: {
-							map: {},
-							array: [],
-						},
+						data: {},
 					};
 				}
 
@@ -106,24 +103,17 @@ export class UserService implements OnStart {
 				if (!res.data) {
 					return {
 						success: true,
-						data: {
-							map: {},
-							array: [],
-						},
+						data: {},
 					};
 				}
 
 				let array = DecodeJSON(res.data) as PublicUser[];
 				const map: Record<string, PublicUser> = {};
 				array.forEach((u) => (map[u.uid] = u));
-				array = userIds.map((uid) => map[uid]);
 
 				return {
 					success: true,
-					data: {
-						map,
-						array,
-					},
+					data: map,
 				};
 			},
 		);
