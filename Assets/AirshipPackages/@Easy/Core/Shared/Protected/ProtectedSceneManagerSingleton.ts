@@ -1,4 +1,4 @@
-import { OnStart, Service } from "@Easy/Core/Shared/Flamework";
+import { OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
 
 interface UnitySceneManagerConstructor {
 	new (): UnitySceneManagerConstructor;
@@ -11,7 +11,7 @@ declare const SceneManager: UnitySceneManagerConstructor;
 /**
  * @protected
  */
-@Service({})
+@Singleton()
 export class ProtectedSceneManagerSingleton implements OnStart {
 	private protectedSceneNames = ["corescene", "mainmenu", "login"];
 
