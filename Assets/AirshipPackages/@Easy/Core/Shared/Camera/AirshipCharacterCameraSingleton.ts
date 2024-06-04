@@ -1,4 +1,4 @@
-import { Controller, Dependency, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Dependency, OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
 import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 import { CameraMode } from ".";
 import { Airship } from "../Airship";
@@ -32,7 +32,7 @@ interface ViewModelUpdate {
 	rotation: Quaternion;
 }
 
-@Controller({})
+@Singleton({})
 export class AirshipCharacterCameraSingleton implements OnStart {
 	public canToggleFirstPerson = true;
 
@@ -332,6 +332,7 @@ export class AirshipCharacterCameraSingleton implements OnStart {
 	}
 
 	public SetCharacterCameraMode(mode: CharacterCameraMode): void {
+		if (!Game.IsClient()) return;
 		this.characterCameraMode = mode;
 
 		if (Game.localPlayer.character) {

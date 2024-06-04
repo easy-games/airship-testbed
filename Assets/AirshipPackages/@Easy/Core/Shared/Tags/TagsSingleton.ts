@@ -1,13 +1,12 @@
 import { Airship } from "../Airship";
-import { Controller, OnStart, Service } from "../Flamework";
+import { OnStart, Singleton } from "../Flamework";
 import { CSArrayUtil } from "../Util/CSArrayUtil";
 import { MapUtil } from "../Util/MapUtil";
 import { Signal } from "../Util/Signal";
 
 type TagSignal = Pick<Signal<[GameObject]>, "Connect" | "ConnectWithPriority" | "Once" | "Wait">;
 
-@Controller()
-@Service()
+@Singleton()
 export class TagsSingleton implements OnStart {
 	private tagManager!: TagManager;
 

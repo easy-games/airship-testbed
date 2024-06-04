@@ -1,14 +1,13 @@
-import { Controller, Dependency, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Dependency, OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Keyboard } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
-import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { AirshipCharacterCameraSingleton } from "../../Camera/AirshipCharacterCameraSingleton";
 import { CharacterInput } from "./CharacterInput";
 import { LocalCharacterInputSignal } from "./LocalCharacterInputSignal";
 
-@Controller({
+@Singleton({
 	loadOrder: 10000,
 })
 export class LocalCharacterSingleton implements OnStart {
@@ -77,7 +76,7 @@ export class LocalCharacterSingleton implements OnStart {
 	}
 
 	OnStart() {
-		if (!RunUtil.IsClient()) return;
+		if (!Game.IsClient()) return;
 		Game.localPlayer.ObserveCharacter((character) => {
 			if (!character) return;
 
