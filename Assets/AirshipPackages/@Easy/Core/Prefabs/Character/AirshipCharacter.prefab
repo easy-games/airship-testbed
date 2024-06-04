@@ -6120,6 +6120,7 @@ GameObject:
   - component: {fileID: 3386317269300102083}
   - component: {fileID: -6219229748269268009}
   - component: {fileID: 5519949438957097557}
+  - component: {fileID: 1279903852990399244}
   m_Layer: 3
   m_Name: AirshipCharacter
   m_TagString: Character
@@ -6380,7 +6381,7 @@ MonoBehaviour:
   animationHelper: {fileID: 903796914586745664}
   mainCollider: {fileID: 3569249470052007930}
   slopeVisualizer: {fileID: 473010626989301856}
-  isClientAthoritative: 0
+  isClientAthoritative: 1
   ticksUntilReconcile: 1
   ovserverRotationLerpDelta: 10
   disableInput: 0
@@ -6615,6 +6616,7 @@ MonoBehaviour:
   - {fileID: 5420625271334097286}
   - {fileID: 7679537615927596659}
   - {fileID: 3386317269300102083}
+  - {fileID: 1279903852990399244}
   <SerializedRootNetworkBehaviour>k__BackingField: {fileID: 0}
   <NestedRootNetworkBehaviours>k__BackingField: []
   SerializedTransformProperties:
@@ -6765,6 +6767,24 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 2
+--- !u!114 &1279903852990399244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8616685848737228372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6dcb9fd44a7969d4f9cfbc130479b3ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 5
+  _addedNetworkObject: {fileID: -98370938496583557}
+  _networkObjectCache: {fileID: -98370938496583557}
+  _graphicalObject: {fileID: 7911948219130051474}
+  _enableTeleport: 0
+  _teleportThreshold: 0
 --- !u!1001 &3212846051738532583
 PrefabInstance:
   m_ObjectHideFlags: 0
