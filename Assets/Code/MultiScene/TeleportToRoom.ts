@@ -12,6 +12,18 @@ export default class TeleportToRoom extends AirshipBehaviour {
 		const character = Airship.characters.FindByCollider(collider);
 		if (character?.player && !character.IsDespawned()) {
 			print("teleporting!");
+
+			// const ui = Object.Instantiate(AssetCache.LoadAsset("Assets/Resources/Prefabs/TeleportScreen.prefab"));
+			// Object.DontDestroyOnLoad(ui);
+			// const img = ui.transform.GetChild(0).GetComponent<Image>();
+			// img.transform.localScale = Vector3.zero;
+			// img.TweenLocalScale(Vector3.one.mul(1.3), 0.7).SetEase(EaseType.QuadInOut);
+			// task.delay(1.5, () => {
+			// 	img.TweenLocalScale(Vector3.zero, 0.7).SetEase(EaseType.QuadOut);
+			// 	task.wait(1);
+			// 	Object.Destroy(ui);
+			// });
+
 			character.Despawn();
 			task.wait(0);
 			const existingScene = Airship.sceneManager.GetActiveScene().name;

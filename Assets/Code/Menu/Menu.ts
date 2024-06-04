@@ -61,7 +61,9 @@ export default class Menu extends AirshipBehaviour {
 
 		const keyboard = new Keyboard();
 		keyboard.OnKeyDown(Key.P, (event) => {
-			MenuUtil.BackToMenu();
+			task.spawn(() => {
+				MenuUtil.BackToMenu();
+			});
 		});
 	}
 

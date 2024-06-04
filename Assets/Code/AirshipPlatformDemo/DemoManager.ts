@@ -15,6 +15,8 @@ export default class DemoManager extends AirshipBehaviour {
 	private deathCount = 0;
 	public cleanupOnStart!: GameObject[];
 
+	private bin = new Bin();
+
 	@Header("Network Ball")
 	// public ballPrefab!: GameObject;
 	// public ballSpawnPoint!: Transform;
@@ -60,17 +62,21 @@ export default class DemoManager extends AirshipBehaviour {
 		});
 
 		if (Game.IsServer()) {
-			Airship.players.ObservePlayers((player) => {
-				this.SpawnPlayer(player);
-			});
-			Airship.damage.onDeath.Connect((damageInfo) => {
-				const character = damageInfo.gameObject.GetAirshipComponent<Character>();
-				if (character?.player) {
-					task.delay(2, () => {
-						this.SpawnPlayer(character.player!);
-					});
-				}
-			});
+			this.bin.Add(
+				Airship.players.ObservePlayers((player) => {
+					this.SpawnPlayer(player);
+				}),
+			);
+			this.bin.Add(
+				Airship.damage.onDeath.Connect((damageInfo) => {
+					const character = damageInfo.gameObject.GetAirshipComponent<Character>();
+					if (character?.player) {
+						task.delay(2, () => {
+							this.SpawnPlayer(character.player!);
+						});
+					}
+				}),
+			);
 
 			// spawn ball
 			// task.spawn(() => {
@@ -102,20 +108,22 @@ export default class DemoManager extends AirshipBehaviour {
 			Airship.loadingScreen.FinishLoading();
 
 			// Display local player deaths
-			Game.localPlayer.ObserveCharacter((character) => {
-				if (!character) return;
+			this.bin.Add(
+				Game.localPlayer.ObserveCharacter((character) => {
+					if (!character) return;
 
-				const bin = new Bin();
-				bin.Add(
-					character?.onDeath.Connect(() => {
-						this.deathCount++;
-						SteamRichPresence.SetStatus(`Deaths: ${this.deathCount}`);
-					}),
-				);
-				return () => {
-					bin.Clean();
-				};
-			});
+					const bin = new Bin();
+					bin.Add(
+						character?.onDeath.Connect(() => {
+							this.deathCount++;
+							SteamRichPresence.SetStatus(`Deaths: ${this.deathCount}`);
+						}),
+					);
+					return () => {
+						bin.Clean();
+					};
+				}),
+			);
 		}
 
 		// cleanup
@@ -144,6 +152,7 @@ export default class DemoManager extends AirshipBehaviour {
 		// 		return;
 		// 	}
 		// }
+		print("[demo] spawning player");
 		const character = player.SpawnCharacter(this.spawnPosition.transform.position, {
 			lookDirection: this.spawnPosition.transform.rotation,
 			// customCharacterTemplate: AssetCache.LoadAsset("Shared/Resources/CharacterWithLight Variant.prefab"),
@@ -160,5 +169,9 @@ export default class DemoManager extends AirshipBehaviour {
 		// cubeGo.transform.localPosition = new Vector3(0, 1, 0);
 
 		character.inventory.AddItem(new ItemStack("WoodSword"));
+	}
+
+	public OnDestroy(): void {
+		this.bin.Clean();
 	}
 }

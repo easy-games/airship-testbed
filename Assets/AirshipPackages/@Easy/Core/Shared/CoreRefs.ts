@@ -34,6 +34,6 @@ export class CoreRefs {
 			}
 		}
 
-		Object.DontDestroyOnLoad(this.rootTransform);
+		// Object.DontDestroyOnLoad(this.rootTransform);
 	}
 }
