@@ -78,7 +78,7 @@ export class UserService implements OnStart {
 
 		contextbridge.callback<ServerBridgeApiGetUsersById>(
 			UserServiceBridgeTopics.GetUsersById,
-			(_, userIds, strict = true) => {
+			(_, userIds, strict = false) => {
 				if (userIds.size() === 0) {
 					return {
 						success: true,
@@ -113,9 +113,10 @@ export class UserService implements OnStart {
 					};
 				}
 
-				const array = DecodeJSON(res.data) as PublicUser[];
+				let array = DecodeJSON(res.data) as PublicUser[];
 				const map: Record<string, PublicUser> = {};
 				array.forEach((u) => (map[u.uid] = u));
+				array = userIds.map((uid) => map[uid]);
 
 				return {
 					success: true,
