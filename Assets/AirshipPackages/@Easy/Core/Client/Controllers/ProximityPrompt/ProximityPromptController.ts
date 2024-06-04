@@ -1,8 +1,8 @@
 import { CameraReferences } from "@Easy/Core/Shared/Camera/CameraReferences";
-import ProximityPrompt from "@Easy/Core/Shared/Input/ProximityPrompts/ProximityPrompt";
 import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
 import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import ProximityPrompt from "@Easy/Core/Shared/Input/ProximityPrompts/ProximityPrompt";
 import { Task } from "@Easy/Core/Shared/Util/Task";
 
 /** Prompt poll rate, how frequently we update `activatableProximityPrompts`. */
@@ -48,7 +48,7 @@ export class ProximityPromptController implements OnStart {
 		const localCharacterPosition = Game.localPlayer.character?.gameObject.transform.position;
 		if (!localCharacterPosition) return math.huge;
 
-		const mainCamera = CameraReferences.Instance().mainCamera;
+		const mainCamera = CameraReferences.mainCamera;
 		if (mainCamera) {
 			if (!(prompt.canvas.transform as RectTransform).IsVisibleFrom(mainCamera)) {
 				return math.huge;

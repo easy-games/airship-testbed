@@ -373,6 +373,9 @@ interface String {
 
 	/** Returns the string with all trailing whitespace removed. */
 	trimEnd(this: string): string;
+
+	/** Returns `true` if `str` includes the `find` string. Case-sensitive. */
+	includes(this: string, find: string): boolean;
 }
 
 declare namespace string {
@@ -477,6 +480,9 @@ declare namespace string {
 
 	/** Returns the string with all trailing whitespace removed. */
 	function trimEnd(str: string): string;
+
+	/** Returns `true` if `str` includes the `find` string. Case-sensitive. */
+	function includes(str: string, find: string): boolean;
 }
 
 declare namespace math {

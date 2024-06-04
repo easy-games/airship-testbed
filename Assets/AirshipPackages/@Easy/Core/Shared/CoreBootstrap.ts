@@ -59,12 +59,10 @@ if (InstanceFinder.TimeManager !== undefined) {
 
 const COREPATH = "@easy/core";
 
-Flamework.AddPath(`${COREPATH}/shared`, "^.*singleton.ts$", "mainmenu/");
+Flamework.AddPath(`${COREPATH}/shared`, "^.*singleton.ts$", ["mainmenu/", "protected/"]);
 if (Game.IsClient()) {
 	Flamework.AddPath(`${COREPATH}/client/airship`, "^.*controller.ts$");
-	Flamework.AddPath(`${COREPATH}/client/controllers`, "^.*controller.ts$", "protectedcontrollers/");
-	// Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/mainmenucontrollers", "^.*controller.lua$");
-	// Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/mainmenucontrollers", "^.*singleton.lua$");
+	Flamework.AddPath(`${COREPATH}/client/controllers`, "^.*controller.ts$", ["protectedcontrollers/"]);
 }
 if (Game.IsServer()) {
 	Flamework.AddPath(`${COREPATH}/server/airship`, "^.*service.ts$");

@@ -1,5 +1,5 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
-import { Controller, OnStart, Service } from "@Easy/Core/Shared/Flamework";
+import { OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
 import { RemoteEvent } from "@Easy/Core/Shared/Network/RemoteEvent";
 import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
@@ -7,8 +7,7 @@ import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { CanClientDamageInfo } from "./CanClientDamageInfo";
 import { DamageInfo, DamageInfoCustomData } from "./DamageInfo";
 
-@Service()
-@Controller()
+@Singleton()
 export class DamageSingleton implements OnStart {
 	public readonly onDamage = new Signal<DamageInfo>();
 	public readonly onCanClientDamage = new Signal<CanClientDamageInfo>();

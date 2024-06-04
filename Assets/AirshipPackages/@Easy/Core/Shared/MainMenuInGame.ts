@@ -14,9 +14,6 @@ import { CanvasAPI } from "./Util/CanvasAPI";
 import { TimeUtil } from "./Util/TimeUtil";
 import { OnFixedUpdate, OnLateUpdate, OnUpdate } from "./Util/Timer";
 
-const coreCamera = GameObject.Find("CoreCamera");
-Object.Destroy(coreCamera);
-
 Game.coreContext = CoreContext.GAME;
 CoreRefs.Init();
 
@@ -42,6 +39,7 @@ Flamework.AddPath("@easy/core/client/protectedcontrollers", "^.*controller.ts$")
 Flamework.AddPath("@easy/core/client/protectedcontrollers", "^.*singleton.ts$");
 Flamework.AddPath("@easy/core/shared/player/playerssingleton", "^.*singleton.ts$");
 Flamework.AddPath("@easy/core/shared/input/airshipinputsingleton", "^.*singleton.ts$");
+Flamework.AddPath("@easy/core/shared/protected", "^.*singleton.ts");
 
 if (Game.IsServer()) {
 	Flamework.AddPath("@easy/core/server/protectedservices", "^.*service.ts$");

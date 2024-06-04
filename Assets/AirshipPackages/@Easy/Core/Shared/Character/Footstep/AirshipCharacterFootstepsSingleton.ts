@@ -66,7 +66,7 @@ export class AirshipCharacterFootstepsSingleton implements OnStart {
 		if (!Game.IsClient()) return;
 
 		task.delay(0.1, () => {
-			const camTransform = CameraReferences.Instance().mainCamera?.transform;
+			const camTransform = CameraReferences.mainCamera?.transform;
 			SetInterval(0.05, () => {
 				if (!this.foostepSoundsEnabled) return;
 				if (camTransform === undefined) return;

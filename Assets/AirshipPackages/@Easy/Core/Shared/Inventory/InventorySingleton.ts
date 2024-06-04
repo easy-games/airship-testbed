@@ -2,7 +2,7 @@ import { InventoryUIController } from "@Easy/Core/Client/Controllers/Inventory/I
 import { Airship } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
-import { Controller, Dependency, OnStart, Service } from "@Easy/Core/Shared/Flamework";
+import { Dependency, OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
 import { RemoteFunction } from "@Easy/Core/Shared/Network/RemoteFunction";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { CharacterInventorySingleton } from "./CharacterInventorySingleton";
@@ -15,8 +15,7 @@ interface InventoryEntry {
 	Owners: Set<number>;
 }
 
-@Controller({})
-@Service({})
+@Singleton()
 export class InventorySingleton implements OnStart {
 	private inventories = new Map<number, InventoryEntry>();
 

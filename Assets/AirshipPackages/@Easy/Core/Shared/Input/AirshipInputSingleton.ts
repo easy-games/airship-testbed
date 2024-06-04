@@ -1,4 +1,4 @@
-import { Controller, OnStart, Service } from "@Easy/Core/Shared/Flamework";
+import { OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
 import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 import { Airship } from "../Airship";
 import { AssetCache } from "../AssetCache/AssetCache";
@@ -17,8 +17,7 @@ import { MobileButtonConfig } from "./Mobile/MobileButton";
 import ProximityPrompt from "./ProximityPrompts/ProximityPrompt";
 import { CoreIcon } from "./UI/CoreIcon";
 
-@Controller({})
-@Service({})
+@Singleton()
 export class AirshipInputSingleton implements OnStart {
 	/**
 	 * Whether or not creating a duplicate keybind should immediately unbind matching keybinds.

@@ -1,7 +1,7 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
-import { Controller, OnStart, Service } from "@Easy/Core/Shared/Flamework";
+import { OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
@@ -17,8 +17,7 @@ import { LocalCharacterSingleton } from "./LocalCharacter/LocalCharacterSingleto
 
 const characterPrefab = AssetCache.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/Character/AirshipCharacter.prefab");
 
-@Service()
-@Controller()
+@Singleton()
 export class CharactersSingleton implements OnStart {
 	private characters = new Set<Character>();
 
@@ -289,9 +288,8 @@ export class CharactersSingleton implements OnStart {
 	public FindByCollider(collider: Collider): Character | undefined {
 		for (let character of this.characters) {
 			if (
-				character.gameObject.GetInstanceID() === collider.gameObject.GetInstanceID() ||
-				character.gameObject.transform.parent?.gameObject.GetInstanceID() ===
-					collider.gameObject.GetInstanceID()
+				character.gameObject === collider.gameObject ||
+				character.gameObject === collider.gameObject.transform.parent?.parent?.gameObject
 			) {
 				return character;
 			}

@@ -1,11 +1,10 @@
 ﻿import Character from "@Easy/Core/Shared/Character/Character";
 import Inventory from "@Easy/Core/Shared/Inventory/Inventory";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
-import { CoreItemType } from "../CoreItemType";
+import { Airship } from "../../Airship";
 import { ItemDef } from "../ItemDefinitionTypes";
 import { MeleeHeldItem } from "./Damagers/MeleeHeldItem";
 import { HeldItem } from "./HeldItem";
-import { Airship } from "../../Airship";
 
 export type HeldItemCondition = (itemDef: ItemDef) => boolean;
 export type HeldItemFactory = (character: Character, itemDef: ItemDef) => HeldItem;
@@ -49,7 +48,7 @@ export class HeldItemManager {
 	}
 
 	private Log(message: string) {
-		//print("HeldItem: " + this.character.id + " " + message);
+		// print("HeldItem: " + this.character.id + " " + message);
 	}
 
 	private GetOrCreateHeldItem(itemDef?: ItemDef) {
@@ -135,6 +134,8 @@ export class HeldItemManager {
 		if (this.currentHeldItem === undefined) {
 			error("Trying to interact without any held item!");
 		}
+
+		if (!this.character) return;
 
 		this.currentItemState = stateIndex;
 		this.currentHeldItem.SetLookVector(lookVector);

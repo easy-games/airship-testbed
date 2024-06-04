@@ -1,12 +1,11 @@
 import { GameDto } from "@Easy/Core/Client/Components/HomePage/API/GamesAPI";
 import { OnStart } from "@Easy/Core/Shared/Flamework";
-import { Controller, Service } from "@Easy/Core/Shared/Flamework/flamework";
+import { Singleton } from "@Easy/Core/Shared/Flamework/flamework";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { DecodeJSON } from "@Easy/Core/Shared/json";
 import { CoreLogger } from "../../Logger/CoreLogger";
 
-@Service()
-@Controller()
+@Singleton()
 export class GameInfoSingleton implements OnStart {
 	OnStart(): void {}
 

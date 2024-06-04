@@ -293,7 +293,7 @@ GameObject:
   - component: {fileID: 5211942566301910163}
   - component: {fileID: 8569643676273386656}
   m_Layer: 1
-  m_Name: FPSCamera
+  m_Name: ViewmodelCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -418,7 +418,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1136170332740488720}
-  - component: {fileID: 6224369888903270829}
+  - component: {fileID: 4277821964946275559}
   m_Layer: 1
   m_Name: CameraRig
   m_TagString: Untagged
@@ -442,7 +442,7 @@ Transform:
   - {fileID: 7736549642688669424}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6224369888903270829
+--- !u!114 &4277821964946275559
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -451,21 +451,67 @@ MonoBehaviour:
   m_GameObject: {fileID: 8641171116531024999}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e87e0668ae7abb47800944852d422c9, type: 3}
+  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isStaticInstance: 1
-  staticBundleId: CameraRig
-  bundledReferences:
-  - key: Cameras
-    keyValuePairs:
-    - key: MainCamera
-      value: {fileID: 7736549642688669425}
-    - key: FPSCamera
-      value: {fileID: 5211942566301910163}
-    - key: UICamera
-      value: {fileID: 216459701}
-  - key: Transforms
-    keyValuePairs:
-    - key: Root
-      value: {fileID: 1136170332740488720}
+  scriptFile: {fileID: 6865547369804822654, guid: e35ff836d054e43a2b0a9249f23640e4, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/Camera/CameraRig.lua
+  m_error: 0
+  m_yielded: 0
+  m_canResume: 0
+  m_asyncYield: 0
+  m_onUpdateHandle: -1
+  m_onLateUpdateHandle: -1
+  m_shortFileName: 
+  m_metadata:
+    name: CameraRig
+    decorators: []
+    properties:
+    - name: mainCamera
+      type: object
+      objectType: Camera
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"Cameras"'
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 7736549642688669425}
+      modified: 1
+    - name: uiCamera
+      type: object
+      objectType: Camera
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 216459701}
+      modified: 1
+    - name: viewmodelCamera
+      type: object
+      objectType: Camera
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 5211942566301910163}
+      modified: 1
+    displayName: 
+  contextOverwritten: 0

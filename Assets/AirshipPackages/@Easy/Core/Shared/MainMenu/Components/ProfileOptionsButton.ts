@@ -42,7 +42,7 @@ export default class ProfileOptionsButton extends AirshipBehaviour {
 				text: "Logout",
 				onClick: () => {
 					AuthManager.ClearSavedAccount();
-					Bridge.LoadScene("Login", true);
+					Bridge.LoadScene("Login", true, LoadSceneMode.Single);
 				},
 			});
 			if (!Game.IsMobile()) {

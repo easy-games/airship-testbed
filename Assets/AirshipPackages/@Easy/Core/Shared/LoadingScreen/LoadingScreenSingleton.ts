@@ -1,11 +1,11 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
-import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
+import { OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Mouse } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 
-@Controller({ loadOrder: -10 })
+@Singleton({ loadOrder: -10 })
 export class LoadingScreenSingleton implements OnStart {
 	private coreLoadingScreen?: CoreLoadingScreen;
 	private loadingBin = new Bin();

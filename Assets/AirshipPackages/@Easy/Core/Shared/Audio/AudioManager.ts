@@ -1,7 +1,6 @@
 import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
 import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
 import StringUtils from "../Types/StringUtil";
-import { Task } from "../Util/Task";
 
 const MAX_DISTANCE = 18;
 
@@ -18,7 +17,7 @@ export class AudioManager {
 	public static soundFolderPath = "Shared/Resources/Sound/";
 	private static soundFolderIndex: number;
 
-	private static audioSourceTemplate: GameObject;
+	private static audioSourceTemplate: GameObject | undefined;
 	private static globalAudioSources: Map<number, AudioSource> = new Map();
 
 	public static Init(): void {
@@ -33,7 +32,7 @@ export class AudioManager {
 		this.audioSourceTemplate.SetActive(false);
 		this.audioSourceTemplate.transform.SetParent(CoreRefs.rootTransform);
 
-		PoolManager.PreLoadPool(this.audioSourceTemplate, 15, CoreRefs.rootTransform);
+		// PoolManager.PreLoadPool(this.audioSourceTemplate, 15, CoreRefs.rootTransform);
 	}
 
 	public static PlayGlobal(sound: string, config?: PlaySoundConfig) {
@@ -71,10 +70,12 @@ export class AudioManager {
 		//audioSource.PlayOneShot(clip, );
 		this.globalAudioSources.set(audioSource.gameObject.GetInstanceID(), audioSource);
 		if (!audioSource.loop) {
-			Task.Delay(clip.length + 1, () => {
+			task.delay(clip.length + 1, () => {
+				if (audioSource.IsDestroyed()) return;
 				audioSource.Stop();
 				this.globalAudioSources.delete(audioSource.gameObject.GetInstanceID());
-				PoolManager.ReleaseObject(audioSource.gameObject);
+				// PoolManager.ReleaseObject(audioSource.gameObject);
+				Object.Destroy(audioSource.gameObject);
 			});
 		}
 		return audioSource;
@@ -129,15 +130,21 @@ export class AudioManager {
 		if (!audioSource.loop) {
 			task.delay(clip.length + 1, () => {
 				audioSource.Stop();
-				PoolManager.ReleaseObject(audioSource.gameObject);
+				// PoolManager.ReleaseObject(audioSource.gameObject);
+				Object.Destroy(audioSource.gameObject);
 			});
 		}
 		return audioSource;
 	}
 
 	private static GetAudioSource(position: Vector3): AudioSource {
-		const go = PoolManager.SpawnObject(this.audioSourceTemplate, position, Quaternion.identity);
+		if (!this.audioSourceTemplate || this.audioSourceTemplate.IsDestroyed()) {
+			this.CacheAudioSources();
+		}
+		// const go = PoolManager.SpawnObject(this.audioSourceTemplate!, position, Quaternion.identity);
+		const go = Object.Instantiate(this.audioSourceTemplate!, position, Quaternion.identity);
 		go.transform.SetParent(CoreRefs.rootTransform);
+		go.SetActive(true);
 		return go.GetComponent<AudioSource>()!;
 	}
 

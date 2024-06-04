@@ -41,7 +41,7 @@ export namespace Flamework {
 	}
 
 	/** @hidden */
-	export function AddPath(path: string, searchPattern?: string, ignorePattern?: string) {
+	export function AddPath(path: string, searchPattern?: string, ignorePatterns?: string[]) {
 		const preloadPaths: string[] = [];
 
 		if (path.find("^@([A-z]+)/([A-z]+)", 1)[0]) {
@@ -51,9 +51,16 @@ export namespace Flamework {
 		const files = EasyFileService.GetFilesInPath(path, searchPattern);
 		for (let i = 0; i < files.Length; i++) {
 			let filePath = files.GetValue(i);
-			if (ignorePattern !== undefined) {
-				let res = string.match(filePath.lower(), ignorePattern);
-				if (res[0]) {
+			if (ignorePatterns !== undefined) {
+				let ignored = false;
+				for (let ignorePattern of ignorePatterns) {
+					let res = string.match(filePath.lower(), ignorePattern);
+					if (res[0]) {
+						ignored = true;
+						break;
+					}
+				}
+				if (ignored) {
 					continue;
 				}
 			}
