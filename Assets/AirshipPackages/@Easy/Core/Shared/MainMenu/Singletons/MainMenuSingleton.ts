@@ -35,8 +35,8 @@ export class MainMenuSingleton implements OnStart {
 				lastTime = Time.time;
 				this.screenSize = new Vector2(Screen.width, Screen.height);
 
-				// const scaleFactor = Game.GetScaleFactor();
-				// canvasScaler.scaleFactor = scaleFactor;
+				const scaleFactor = Game.GetScaleFactor();
+				this.screenSize = this.screenSize.div(scaleFactor);
 
 				let sizeType: ScreenSizeType = "md";
 				if (Game.IsPortrait()) {
