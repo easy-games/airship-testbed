@@ -115,7 +115,7 @@ export default class Character extends AirshipBehaviour {
 
 	public OnDisable(): void {
 		Airship.characters.UnregisterCharacter(this);
-		if (RunUtil.IsClient()) {
+		if (Game.IsClient() && !this.despawned) {
 			this.bin.Clean();
 			this.despawned = true;
 			this.onDespawn.Fire();
@@ -170,8 +170,8 @@ export default class Character extends AirshipBehaviour {
 		NetworkUtil.Despawn(this.gameObject);
 	}
 
-	public IsDestroyed(): boolean {
-		return this.gameObject.IsDestroyed();
+	public IsDespawned(): boolean {
+		return this.despawned;
 	}
 
 	public IsAlive(): boolean {

@@ -1718,10 +1718,6 @@ interface SceneAPIConstructor {
 	OnSceneLoadedEvent: (callback: (sceneName: string) => void) => void;
 }
 
-interface SceneManager {
-	OnOnLoadEnd(callback: (e: unknown) => void): void;
-}
-
 interface ClientSceneListener {
 	OnSceneLoadedEvent(callback: (sceneName: string) => void): void;
 }

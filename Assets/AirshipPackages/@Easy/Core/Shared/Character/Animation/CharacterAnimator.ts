@@ -1,8 +1,6 @@
-﻿﻿import { ViewmodelController } from "@Easy/Core/Client/Controllers/Viewmodel/ViewmodelController";
-import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
+﻿﻿import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
 import { AudioBundleSpacialMode, AudioClipBundle } from "@Easy/Core/Shared/Audio/AudioClipBundle";
 import Character from "@Easy/Core/Shared/Character/Character";
-import { EffectsManager } from "@Easy/Core/Shared/Effects/EffectsManager";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { CoreItemType } from "@Easy/Core/Shared/Item/CoreItemType";
 import { ItemUtil } from "@Easy/Core/Shared/Item/ItemUtil";
@@ -12,6 +10,7 @@ import { RandomUtil } from "@Easy/Core/Shared/Util/RandomUtil";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { Task } from "@Easy/Core/Shared/Util/Task";
 import { AirshipCharacterCameraSingleton } from "../../Camera/AirshipCharacterCameraSingleton";
+import { CameraReferences } from "../../Camera/CameraReferences";
 import { ItemDef } from "../../Item/ItemDefinitionTypes";
 import { CharacterAnimationLayer } from "./CharacterAnimationLayer";
 
@@ -216,15 +215,6 @@ export class CharacterAnimator {
 		if (isFirstPerson) {
 			return;
 		}
-
-		//Play specific effects for different damage types like fire attacks or magic damage
-		let vfxTemplate = this.damageEffectTemplate;
-		if (vfxTemplate) {
-			const go = EffectsManager.SpawnGameObjectAtPosition(vfxTemplate, position, undefined, 2);
-			if (characterModel) {
-				go.transform.SetParent(characterModel.transform);
-			}
-		}
 	}
 
 	public PlayItemAnimationInWorldmodel(
@@ -297,7 +287,7 @@ export class CharacterAnimator {
 		if ((config?.autoFadeOut === undefined || config?.autoFadeOut) && !clip.isLooping) {
 			//Play once then fade away
 			animState = AnimancerBridge.PlayOnceOnLayer(
-				Dependency<ViewmodelController>().animancer,
+				CameraReferences.viewmodel!.animancer,
 				clip,
 				layer,
 				config?.fadeInDuration ?? this.defaultTransitionTime,
@@ -308,7 +298,7 @@ export class CharacterAnimator {
 		} else {
 			//Play permenantly on player
 			animState = AnimancerBridge.PlayOnLayer(
-				Dependency<ViewmodelController>().animancer,
+				CameraReferences.viewmodel!.animancer,
 				clip,
 				layer,
 				config?.fadeInDuration ?? this.defaultTransitionTime,
@@ -360,10 +350,7 @@ export class CharacterAnimator {
 				});
 
 				if (equipAnims.size() > 0) {
-					this.viewmodelClips.set(
-						ItemAnimationId.EQUIP,
-						equipAnims,
-					);
+					this.viewmodelClips.set(ItemAnimationId.EQUIP, equipAnims);
 				}
 			}
 			if (itemDef.holdConfig?.viewmodel?.idleAnim) {
@@ -377,10 +364,7 @@ export class CharacterAnimator {
 				});
 
 				if (idleAnims.size() > 0) {
-					this.viewmodelClips.set(
-						ItemAnimationId.IDLE,
-						idleAnims,
-					);
+					this.viewmodelClips.set(ItemAnimationId.IDLE, idleAnims);
 				}
 			}
 			// else if (itemDef.block) {
@@ -398,10 +382,7 @@ export class CharacterAnimator {
 				});
 
 				if (useAnims.size() > 0) {
-					this.viewmodelClips.set(
-						ItemAnimationId.USE,
-						useAnims,
-					);
+					this.viewmodelClips.set(ItemAnimationId.USE, useAnims);
 				}
 			}
 			// else if (itemDef.block) {
@@ -563,31 +544,10 @@ export class CharacterAnimator {
 		if (deathClip) {
 			this.PlayItemAnimationInWorldmodel(deathClip, CharacterAnimationLayer.LAYER_3);
 		}
-		//Spawn death particle
-		// const inVoid = damageType === DamageType.VOID;
-		let deathEffect = this.deathEffectTemplate;
-		// if (inVoid && this.character.IsLocalCharacter()) {
-		// 	deathEffect = undefined;
-		// }
-		if (deathEffect) {
-			this.deathVfx = EffectsManager.SpawnGameObjectAtPosition(
-				deathEffect,
-				this.character.rig.head.position,
-				undefined,
-			);
-			// if (!inVoid) {
-			this.deathVfx.transform.SetParent(this.character.gameObject.transform);
-			// }
-		}
-
-		// Task.Delay(0.5, () => {
-		// 	if (this.character.IsDestroyed() || this.character.gameObject.IsDestroyed()) return;
-		// 	this.character.gameObject.SetActive(false);
-		// });
 	}
 
 	private PlayDamageFlash() {
-		if (this.character.IsDestroyed() || this.isFlashing) return;
+		if (this.character.IsDespawned() || this.isFlashing) return;
 		let allMeshes = this.character.accessoryBuilder.GetAllAccessoryMeshes();
 		const duration = this.flashTransitionDuration + this.flashOnTime;
 		this.isFlashing = true;
@@ -733,10 +693,6 @@ export class CharacterAnimator {
 	}
 
 	public Destroy(): void {
-		if (this.deathVfx) {
-			//TODO Move the transform off this entity so the effect can keep playing even after the body is gone
-			EffectsManager.ReleaseGameObject(this.deathVfx);
-		}
 		this.bin.Clean();
 	}
 }

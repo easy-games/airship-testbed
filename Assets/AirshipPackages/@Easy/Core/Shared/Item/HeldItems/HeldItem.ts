@@ -1,10 +1,9 @@
-﻿import { ViewmodelController } from "@Easy/Core/Client/Controllers/Viewmodel/ViewmodelController";
-import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
+﻿import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
 import Character from "@Easy/Core/Shared/Character/Character";
-import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { RandomUtil } from "@Easy/Core/Shared/Util/RandomUtil";
 import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
+import { CameraReferences } from "../../Camera/CameraReferences";
 import { Game } from "../../Game";
 import { TimeUtil } from "../../Util/TimeUtil";
 import { ItemDef } from "../ItemDefinitionTypes";
@@ -83,7 +82,8 @@ export class HeldItem {
 		//Play the equip sound
 		//TODO need to make bundles string accessible for when you dont know the exact bundle you are loading
 		if (this.itemMeta !== undefined) {
-			let equipPath = "Assets/AirshipPackages/@Easy/Core/Sound/Items/Equip/Equip_Generic.ogg";
+			// let equipPath = "Assets/AirshipPackages/@Easy/Core/Sound/Items/Equip/Equip_Generic.ogg";
+			let equipPath = "";
 			if (this.itemMeta.holdConfig?.equipSound) {
 				equipPath = RandomUtil.FromArray(this.itemMeta.holdConfig.equipSound);
 			}
@@ -97,8 +97,6 @@ export class HeldItem {
 						volumeScale: 0.2,
 					});
 				}
-			} else {
-				error("No default equip sound found");
 			}
 		}
 
@@ -112,8 +110,8 @@ export class HeldItem {
 		this.currentItemGOs = [];
 		this.character.accessoryBuilder.RemoveAccessorySlot(AccessorySlot.LeftHand, false);
 		this.character.accessoryBuilder.RemoveAccessorySlot(AccessorySlot.RightHand, false);
-		if (this.character.IsLocalCharacter()) {
-			this.viewmodelAccessoryBuilder = Dependency<ViewmodelController>().accessoryBuilder;
+		if (this.character.IsLocalCharacter() && CameraReferences.viewmodel) {
+			this.viewmodelAccessoryBuilder = CameraReferences.viewmodel.accessoryBuilder;
 			this.viewmodelAccessoryBuilder.RemoveAccessorySlot(AccessorySlot.LeftHand, false);
 			this.viewmodelAccessoryBuilder.RemoveAccessorySlot(AccessorySlot.RightHand, false);
 		}
@@ -148,7 +146,7 @@ export class HeldItem {
 		// this.entity.accessoryBuilder.TryCombineMeshes();
 		this.character.accessoryBuilder.UpdateAccessoryLayers();
 		if (this.character.IsLocalCharacter()) {
-			Dependency<ViewmodelController>().accessoryBuilder.UpdateAccessoryLayers();
+			CameraReferences.viewmodel?.accessoryBuilder.UpdateAccessoryLayers();
 		}
 	}
 

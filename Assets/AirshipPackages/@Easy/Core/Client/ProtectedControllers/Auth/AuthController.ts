@@ -29,7 +29,7 @@ export class AuthController implements OnStart {
 				ignore = true;
 			}
 			if (!ignore) {
-				Bridge.LoadScene("Login", true);
+				Bridge.LoadScene("Login", true, LoadSceneMode.Single);
 			}
 		}
 	}

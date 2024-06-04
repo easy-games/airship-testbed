@@ -41,7 +41,7 @@ export class UserController implements OnStart {
 					ignore = true;
 				}
 				if (!ignore) {
-					Bridge.LoadScene("Login", true);
+					Bridge.LoadScene("Login", true, LoadSceneMode.Single);
 					return;
 				}
 			}
