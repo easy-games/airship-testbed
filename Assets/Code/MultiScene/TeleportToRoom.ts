@@ -11,7 +11,7 @@ export default class TeleportToRoom extends AirshipBehaviour {
 		if (!Game.IsServer()) return;
 		if (collider.isTrigger) return;
 		const character = Airship.characters.FindByCollider(collider);
-		if (character?.player && !character.IsDespawned()) {
+		if (character?.player && !character.IsDestroyed()) {
 			print("teleporting!");
 
 			// const ui = Object.Instantiate(AssetCache.LoadAsset("Assets/Resources/Prefabs/TeleportScreen.prefab"));

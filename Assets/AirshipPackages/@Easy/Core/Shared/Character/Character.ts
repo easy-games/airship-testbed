@@ -170,8 +170,8 @@ export default class Character extends AirshipBehaviour {
 		NetworkUtil.Despawn(this.gameObject);
 	}
 
-	public IsDespawned(): boolean {
-		return this.despawned;
+	public IsDestroyed(): boolean {
+		return this.despawned || this.gameObject.IsDestroyed();
 	}
 
 	public IsAlive(): boolean {
