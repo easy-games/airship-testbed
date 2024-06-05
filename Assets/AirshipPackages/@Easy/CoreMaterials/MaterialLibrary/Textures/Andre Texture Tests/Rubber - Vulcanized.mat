@@ -159,7 +159,7 @@ Material:
     - _Lights: 0
     - _MRSliderOverrideMix: 1
     - _MetalOverride: 0.322
-    - _Metallic: 0.474
+    - _Metallic: 0.256
     - _Mode: 0
     - _OcclusionStrength: 1
     - _OverrideStrength: 0
@@ -173,7 +173,7 @@ Material:
     - _SLIDER_OVERRIDE: 1
     - _SkyShineStrength: 0
     - _SliderOverrideMix: 0.2
-    - _Smoothness: 0.155
+    - _Smoothness: 0.126
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -188,8 +188,8 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0.5566038, g: 0.44262126, b: 0.30718228, a: 1}
-    - _Color: {r: 0.5566037, g: 0.44262123, b: 0.30718225, a: 1}
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColor: {r: 1, g: 1, b: 1, a: 1}
     - _IncidentColor: {r: 0.4, g: 0.75, b: 1, a: 1}

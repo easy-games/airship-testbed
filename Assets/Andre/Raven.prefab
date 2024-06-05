@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 1173707095930098867}
   - component: {fileID: 5762071759172385193}
   - component: {fileID: 2996008635866238262}
-  - component: {fileID: 276100218732955537}
   - component: {fileID: 3453690018457984258}
+  - component: {fileID: 8982775677856388315}
   m_Layer: 0
   m_Name: Raven
   m_TagString: Untagged
@@ -67,7 +67,7 @@ MeshRenderer:
   m_Materials:
   - {fileID: 2100000, guid: 72e90aa23fa35ad468922c367b3b1792, type: 2}
   - {fileID: 2100000, guid: 12a29c78a35e94e4b8a57328abf7eda6, type: 2}
-  - {fileID: 2100000, guid: b3621dcaffffd52469ccf7d7633aaf90, type: 2}
+  - {fileID: 2100000, guid: fb3739ee5b5418846b82fd14091ed05f, type: 2}
   - {fileID: 2100000, guid: 12a29c78a35e94e4b8a57328abf7eda6, type: 2}
   - {fileID: 2100000, guid: 0330364aab93f294ca11b65e893b0a8e, type: 2}
   - {fileID: 2100000, guid: a716a1169ea7fba45b061e82efac2526, type: 2}
@@ -94,44 +94,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &276100218732955537
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7514119893737553071}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colorSettings:
-  - materialColor: {r: 0.49047703, g: 0.5149975, b: 0.6226415, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-  - materialColor: {r: 0.4433962, g: 0.34091312, b: 0.38749635, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-  - materialColor: {r: 1, g: 0.9669811, b: 0.9669811, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-  - materialColor: {r: 0.735849, g: 0.5449448, b: 0.5605048, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-  - materialColor: {r: 0.45874524, g: 0.7924528, b: 0.39248842, a: 1}
-    emissiveColor: {r: 0, g: 0, b: 0, a: 0}
-    emissiveMix: 0
-  - materialColor: {r: 0.37761652, g: 1, b: 0, a: 1}
-    emissiveColor: {r: 1, g: 0.83542955, b: 0, a: 1}
-    emissiveMix: 0.609
-  - materialColor: {r: 0.2264151, g: 0.21893913, b: 0.21893913, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-  - materialColor: {r: 1, g: 0.96289146, b: 0.8537736, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-  addedByEditorScript: 0
 --- !u!114 &3453690018457984258
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -148,3 +110,25 @@ MonoBehaviour:
   accessorySlot: 6
   visibilityMode: 2
   skinnedToCharacter: 0
+--- !u!114 &8982775677856388315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7514119893737553071}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - baseColor: {r: 0.23754005, g: 0.252225, b: 0.3207547, a: 1}
+  - baseColor: {r: 0.4431373, g: 0.34117648, b: 0.38823533, a: 1}
+  - baseColor: {r: 0.49056602, g: 0.476051, b: 0.43734422, a: 1}
+  - baseColor: {r: 0.6981132, g: 0.48515782, b: 0.45113918, a: 1}
+  - baseColor: {r: 0.2520915, g: 0.46008658, b: 0.5188679, a: 1}
+  - baseColor: {r: 0.6391325, g: 1, b: 0, a: 1}
+  - baseColor: {r: 0.2830189, g: 0.2830189, b: 0.2830189, a: 1}
+  - baseColor: {r: 0.8497241, g: 0.8782163, b: 0.8962264, a: 1}
+  addedByEditorScript: 0
