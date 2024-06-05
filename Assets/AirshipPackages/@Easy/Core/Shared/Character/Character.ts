@@ -145,11 +145,11 @@ export default class Character extends AirshipBehaviour {
 	 *
 	 * You can call it from the client only when using Client Authoratative characters.
 	 */
-	public Teleport(pos: Vector3, lookDirection?: Quaternion): void {
-		if (lookDirection) {
-			this.movement.Teleport(pos, lookDirection);
+	public Teleport(pos: Vector3, lookVector?: Vector3): void {
+		if (lookVector) {
+			this.movement.TeleportAndLook(pos, lookVector);
 		} else {
-			this.movement.Teleport(pos, Quaternion.identity);
+			this.movement.Teleport(pos);
 		}
 	}
 
