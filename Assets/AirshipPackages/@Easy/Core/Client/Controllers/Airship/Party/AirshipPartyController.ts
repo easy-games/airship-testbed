@@ -1,5 +1,5 @@
 import {
-	BridgeApiGetParty,
+	ClientBridgeApiGetParty,
 	PartyControllerBridgeTopics,
 } from "@Easy/Core/Client/ProtectedControllers/Airship/Party/PartyController";
 import { Platform } from "@Easy/Core/Shared/Airship";
@@ -23,6 +23,6 @@ export class PartyController implements OnStart {
 	 * Gets the users current party data.
 	 */
 	public async GetParty(): Promise<Result<Party, undefined>> {
-		return await AirshipUtil.PromisifyBridgeInvoke<BridgeApiGetParty>(PartyControllerBridgeTopics.GetParty);
+		return await AirshipUtil.PromisifyBridgeInvoke<ClientBridgeApiGetParty>(PartyControllerBridgeTopics.GetParty);
 	}
 }

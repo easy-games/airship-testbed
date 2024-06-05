@@ -9,14 +9,14 @@ export enum PartyControllerBridgeTopics {
 	GetParty = "PartyController:GetParty",
 }
 
-export type BridgeApiGetParty = () => Result<Party, undefined>;
+export type ClientBridgeApiGetParty = () => Result<Party, undefined>;
 
 @Controller({})
 export class PartyController implements OnStart {
 	constructor() {
 		if (!Game.IsClient()) return;
 
-		contextbridge.callback<BridgeApiGetParty>(PartyControllerBridgeTopics.GetParty, (_) => {
+		contextbridge.callback<ClientBridgeApiGetParty>(PartyControllerBridgeTopics.GetParty, (_) => {
 			const res = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/parties/party/self`);
 
 			if (!res.success || res.statusCode > 299) {

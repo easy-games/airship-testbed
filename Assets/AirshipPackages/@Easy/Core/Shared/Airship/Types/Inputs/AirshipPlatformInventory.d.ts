@@ -1,6 +1,6 @@
 interface ItemBaseQueryParameters<T extends "tag" | "class"> {
 	queryType: T;
-	resourceIds?: [];
+	resourceIds?: string[];
 }
 
 interface TagQueryParameters extends ItemBaseQueryParameters<"tag"> {

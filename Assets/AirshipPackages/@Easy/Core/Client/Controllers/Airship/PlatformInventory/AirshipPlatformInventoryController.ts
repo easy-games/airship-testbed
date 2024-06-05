@@ -1,4 +1,10 @@
+import {
+	ClientBridgeApiGetItems,
+	PlatformInventoryControllerBridgeTopics,
+} from "@Easy/Core/Client/ProtectedControllers/Airship/PlatformInventory/PlatformInventoryController";
 import { Platform } from "@Easy/Core/Shared/Airship";
+import { ItemQueryParameters } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipPlatformInventory";
+import { AirshipUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
 import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 
@@ -12,5 +18,15 @@ export class PlatformInventoryController implements OnStart {
 
 	OnStart(): void {}
 
-	// TODO: Add methods for client to get its owned inventory for the current game + organization.
+	/**
+	 * Gets the items in the users inventory that belong to this game or organization.
+	 * @param query Additional filter parameters for retrieving a subset of items.
+	 * @returns
+	 */
+	public async GetItems(query?: ItemQueryParameters) {
+		return await AirshipUtil.PromisifyBridgeInvoke<ClientBridgeApiGetItems>(
+			PlatformInventoryControllerBridgeTopics.GetItems,
+			query,
+		);
+	}
 }

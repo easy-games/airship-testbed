@@ -10,10 +10,12 @@ export const enum ResourceType {
 }
 
 export interface ItemClass {
+	/** The type of resource that owns this item class */
 	resourceType: ResourceType;
 	/** Either the game ID or the organization ID depending on the resource type */
 	resourceId: string;
 
+	/** The ID of the item class. Item instances will reference this class ID. */
 	classId: string;
 
 	name: string;
@@ -21,6 +23,7 @@ export interface ItemClass {
 	tags: string[];
 	description: string;
 
+	/** Whether or not this item will be granted by default when a player joins your game. */
 	default: boolean; // whether or not it will be granted to users by default
 
 	tradable: {
