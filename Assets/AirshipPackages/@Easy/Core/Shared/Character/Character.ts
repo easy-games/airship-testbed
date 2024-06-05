@@ -39,8 +39,8 @@ export default class Character extends AirshipBehaviour {
 	@NonSerialized() public inventory!: Inventory;
 	@NonSerialized() public heldItems!: HeldItemManager;
 	@NonSerialized() public outfitDto: OutfitDto | undefined;
-	private spineBone!: Transform;
-	private headBone!: Transform;
+	public spineBone!: Transform;
+	public headBone!: Transform;
 
 	// Signals
 	@NonSerialized() public onDeath = new Signal<void>();

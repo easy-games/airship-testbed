@@ -1,10 +1,9 @@
-import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { Airship } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
 import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { GameObjectUtil } from "@Easy/Core/Shared/GameObject/GameObjectUtil";
 import { Team } from "@Easy/Core/Shared/Team/Team";
+import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { Theme } from "@Easy/Core/Shared/Util/Theme";
 
@@ -61,12 +60,10 @@ export class NametagController implements OnStart {
 
 	private CreateNametag(character: Character): GameObject {
 		const nametagPrefab = AssetBridge.Instance.LoadAsset(
-			"@Easy/Core/Client/Resources/Prefabs/Nametag.prefab",
+			"Assets/AirshipPackages/@Easy/Core/Prefabs/Nametag.prefab",
 		) as GameObject;
-		const nametag = GameObjectUtil.Instantiate(nametagPrefab);
+		const nametag = Object.Instantiate(nametagPrefab, character.headBone);
 		nametag.name = this.nameTagId;
-		nametag.transform.SetParent(character.model.transform);
-		nametag.transform.localPosition = new Vector3(0, 1.8, 0);
 
 		this.UpdateNametag(character);
 
@@ -79,7 +76,7 @@ export class NametagController implements OnStart {
 		const team: Team | undefined = character.player?.GetTeam();
 		const localTeam = Game.localPlayer.GetTeam();
 
-		const nameTag = character.model.transform.FindChild(this.nameTagId);
+		const nameTag = character.headBone.transform.FindChild(this.nameTagId);
 		if (nameTag === undefined) {
 			this.CreateNametag(character);
 			return;
@@ -93,10 +90,6 @@ export class NametagController implements OnStart {
 		// Username text
 		let displayName = character.player?.username ?? character.gameObject.name;
 		textLabel.text = displayName;
-
-		const rawDisplayName = Bridge.RemoveRichText(displayName);
-		const rect = canvas.gameObject.GetComponent<RectTransform>()!;
-		rect.sizeDelta = new Vector2(230 * rawDisplayName.size(), 480);
 
 		// Username color
 		let color: Color | undefined;
