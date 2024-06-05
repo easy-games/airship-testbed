@@ -102,7 +102,8 @@ interface CharacterMovement extends Component {
 	IsFlying(): boolean;
 	SetAllowFlight(allowed: boolean): void;
 	IsAllowFlight(): boolean;
-	Teleport(position: Vector3, rotation: Quaternion): void;
+	Teleport(position: Vector3): void;
+	TeleportAndLook(position: Vector3, lookVector: Vector3): void;
 	ApplyImpulse(impulse: Vector3): void;
 	ApplyImpulseInAir(impulse: Vector3, ignoreYIfInAir = false): void;
 	SetVelocity(velocity: Vector3): void;
