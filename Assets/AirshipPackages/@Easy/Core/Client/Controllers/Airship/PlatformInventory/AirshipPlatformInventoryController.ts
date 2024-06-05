@@ -13,15 +13,4 @@ export class PlatformInventoryController implements OnStart {
 	OnStart(): void {}
 
 	// TODO: Add methods for client to get its owned inventory for the current game + organization.
-
-	// TODO: Like on the server, I don't know if this makes sense to expose or if it should exist here.
-	// /**
-	//  * Gets the users currently equipped outfit.
-	//  */
-	// public async GetEquippedOutfitByUserId(userId: string): Promise<Result<OutfitDto | undefined, undefined>> {
-	// 	return await AirshipUtil.PromisifyBridgeInvoke<BridgeApiGetEquippedOutfitByUserId>(
-	// 		PlatformInventoryControllerBridgeTopics.GetEquippedOutfitByUserId,
-	// 		userId,
-	// 	);
-	// }
 }

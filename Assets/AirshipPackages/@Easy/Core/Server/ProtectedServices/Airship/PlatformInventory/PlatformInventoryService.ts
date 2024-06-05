@@ -100,26 +100,6 @@ export class PlatformInventoryService implements OnStart {
 			},
 		);
 
-		contextbridge.callback<ServerBridgeApiGetEquippedOutfitByUserId>(
-			PlatformInventoryServiceBridgeTopics.GetEquippedOutfitByUserId,
-			(_, userId) => {
-				const res = InternalHttpManager.GetAsync(`${AirshipUrl.ContentService}/outfits/uid/${userId}/equipped`);
-
-				if (!res.success || res.statusCode > 299) {
-					warn(`Unable to complete request. Status Code:  ${res.statusCode}.\n`, res.data);
-					return {
-						success: false,
-						data: undefined,
-					};
-				}
-
-				return {
-					success: true,
-					data: DecodeJSON(res.data),
-				};
-			},
-		);
-
 		contextbridge.callback<ServerBridgeApiPerformTrade>(
 			PlatformInventoryServiceBridgeTopics.PerformTrade,
 			(_, user1, user2) => {

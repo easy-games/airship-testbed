@@ -55,17 +55,6 @@ export class PlatformInventoryService implements OnStart {
 		);
 	}
 
-	// TODO: I"m not sure if it makes sense to expose this, or if it should be part of this file
-	// /**
-	//  * Gets the users currently equipped outfit.
-	//  */
-	// public async GetEquippedOutfitByUserId(userId: string): Promise<Result<OutfitDto, undefined>> {
-	// 	return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiGetEquippedOutfitByUserId>(
-	// 		PlatformInventoryServiceBridgeTopics.GetEquippedOutfitByUserId,
-	// 		userId,
-	// 	);
-	// }
-
 	/**
 	 * Performs a trade between two players. Trades are atomic, if the transaction does not succeed, no
 	 * items are lost or modified.

@@ -42,12 +42,12 @@ export class TransferService implements OnStart {
 
 	/**
 	 * Transfers a player to the provided game. A server in the default scene will be selected, or a new one will be created.
-	 * @param player The player to transfer
+	 * @param player The player to transfer, either userId or Player object
 	 * @param gameId The gameId to transfer the player to
 	 * @param config The configuration to be used for this transfer {@link AirshipGameTransferConfig}
 	 */
 	public async TransferToGame(
-		player: Player,
+		player: Player | string,
 		gameId: string,
 		config?: AirshipGameTransferConfig,
 	): Promise<Result<undefined, undefined>> {
@@ -56,12 +56,12 @@ export class TransferService implements OnStart {
 
 	/**
 	 * Transfers a group of players to the provided game. A server in the default scene will be selected, or a new one will be created.
-	 * @param player The players to transfer
+	 * @param players The players to transfer, either userIds or Player objects
 	 * @param gameId The gameId to transfer the players to
 	 * @param config The configuration to be used for this transfer {@link AirshipGameTransferConfig}
 	 */
 	public async TransferGroupToGame(
-		players: readonly Player[],
+		players: readonly (Player | string)[],
 		gameId: string,
 		config?: AirshipGameTransferConfig,
 	): Promise<Result<undefined, undefined>> {
@@ -75,12 +75,12 @@ export class TransferService implements OnStart {
 
 	/**
 	 * Transfers a player to the provided server. The server can be in any scene, but must be part of the current servers game.
-	 * @param player The player to transfer
+	 * @param player The player to transfer, either userId or Player object
 	 * @param serverId The server to transfer the player to
 	 * @param config The configuration to be used for this transfer {@link AirshipGameTransferConfig}
 	 */
 	public async TransferToServer(
-		player: Player,
+		player: Player | string,
 		serverId: string,
 		config?: AirshipServerTransferConfig,
 	): Promise<Result<undefined, undefined>> {
@@ -89,12 +89,12 @@ export class TransferService implements OnStart {
 
 	/**
 	 * Transfers a group of players to the provided server. The server can be in any scene, but must be part of the current servers game.
-	 * @param player The players to transfer
+	 * @param player The players to transfer, either userIds or Player objects
 	 * @param serverId The server to transfer the players to
 	 * @param config The configuration to be used for this transfer {@link AirshipGameTransferConfig}
 	 */
 	public async TransferGroupToServer(
-		players: readonly Player[],
+		players: readonly (Player | string)[],
 		serverId: string,
 		config?: AirshipServerTransferConfig,
 	): Promise<Result<undefined, undefined>> {

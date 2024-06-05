@@ -1,6 +1,5 @@
 import { PartyController } from "../Client/Controllers/Airship/Party/AirshipPartyController";
 import { PlatformInventoryController } from "../Client/Controllers/Airship/PlatformInventory/AirshipPlatformInventoryController";
-import { TransferController } from "../Client/Controllers/Airship/Transfer/AirshipTransferController";
 import { UserController } from "../Client/Controllers/Airship/User/AirshipUserController";
 import { CacheStoreService } from "../Server/Services/Airship/CacheStore/AirshipCacheStoreService";
 import { DataStoreService } from "../Server/Services/Airship/DataStore/AirshipDataStoreService";
@@ -102,10 +101,6 @@ export const Platform = {
 		 * is managed by game servers and configured on the https://create.airship.gg website.
 		 */
 		inventory: undefined as unknown as Omit<PlatformInventoryController, "OnStart">,
-		/**
-		 * Provides access to user initiated transfer functionality.
-		 */
-		transfer: undefined as unknown as Omit<TransferController, "OnStart">,
 		/**
 		 * Provides access to user information.
 		 */

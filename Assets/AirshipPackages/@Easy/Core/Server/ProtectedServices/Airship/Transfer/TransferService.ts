@@ -19,12 +19,12 @@ export enum TransferServiceBridgeTopics {
 
 export type ServerBridgeApiCreateServer = (config?: AirshipServerConfig) => Result<CreateServerResponse, undefined>;
 export type ServerBridgeApiTransferGroupToGame = (
-	players: readonly Player[],
+	players: readonly (Player | string)[],
 	gameId: string,
 	config?: AirshipGameTransferConfig,
 ) => Result<undefined, undefined>;
 export type ServerBridgeApiTransferGroupToServer = (
-	players: readonly Player[],
+	players: readonly (Player | string)[],
 	serverId: string,
 	config?: AirshipServerTransferConfig,
 ) => Result<undefined, undefined>;
@@ -67,7 +67,7 @@ export class TransferService implements OnStart {
 				const res = InternalHttpManager.PostAsync(
 					`${AirshipUrl.GameCoordinator}/transfers/transfer`,
 					EncodeJSON({
-						uid: players.map((p) => p.userId),
+						uids: players.map((p) => (typeIs(p, "string") ? p : p.userId)),
 						gameId,
 						preferredServerId: config?.preferredServerId,
 						sceneId: config?.sceneId,
@@ -97,7 +97,7 @@ export class TransferService implements OnStart {
 				const res = InternalHttpManager.PostAsync(
 					`${AirshipUrl.GameCoordinator}/transfers/transfer`,
 					EncodeJSON({
-						uids: players.map((p) => p.userId),
+						uids: players.map((p) => (typeIs(p, "string") ? p : p.userId)),
 						serverId,
 						serverTransferData: config?.serverTransferData,
 						clientTransferData: config?.clientTransferData,
