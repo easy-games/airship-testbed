@@ -47,9 +47,11 @@ export interface ProfilePictureClass extends ItemClass {
 
 export interface ItemInstanceDto {
 	ownerId: string;
+	classId: string;
 	class: ItemClass;
 	instanceId: string;
 	createdAt: string;
+	float: number;
 }
 
 export interface AccessoryInstanceDto extends ItemInstanceDto {
