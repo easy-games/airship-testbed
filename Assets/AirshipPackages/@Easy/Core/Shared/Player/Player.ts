@@ -114,12 +114,17 @@ export class Player {
 	public SpawnCharacter(
 		position: Vector3,
 		config?: {
-			lookDirection?: Quaternion;
+			lookDirection?: Vector3;
 			customCharacterTemplate?: GameObject;
 		},
 	): Character {
 		if (!Game.IsServer()) {
 			error("Player.SpawnCharacter must be called on the server.");
+		}
+
+		let characterQuaternion = Quaternion.identity;
+		if (config?.lookDirection) {
+			characterQuaternion = Quaternion.LookRotation(config.lookDirection);
 		}
 
 		//Spawn with the custom character template or get the global character template
@@ -128,7 +133,7 @@ export class Player {
 				? config.customCharacterTemplate
 				: Airship.characters.GetDefaultCharacterTemplate(),
 			position,
-			config?.lookDirection ?? Quaternion.identity,
+			characterQuaternion,
 		);
 		go.name = `Character_${this.username}`;
 		const characterComponent = go.GetAirshipComponent<Character>()!;

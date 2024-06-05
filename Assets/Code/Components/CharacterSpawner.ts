@@ -48,7 +48,7 @@ export default class CharacterSpawner extends AirshipBehaviour {
 	public SpawnCharacter(player: Player): void {
 		print("[spawner] spawning player");
 		const character = player.SpawnCharacter(this.spawnPoint.position, {
-			lookDirection: this.spawnPoint.rotation,
+			lookDirection: this.spawnPoint.forward,
 		});
 	}
 

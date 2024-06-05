@@ -153,7 +153,7 @@ export default class DemoManager extends AirshipBehaviour {
 		// }
 		print("[demo] spawning player");
 		const character = player.SpawnCharacter(this.spawnPosition.transform.position, {
-			lookDirection: this.spawnPosition.transform.rotation,
+			lookDirection: this.spawnPosition.transform.forward,
 			// customCharacterTemplate: AssetCache.LoadAsset("Shared/Resources/CharacterWithLight Variant.prefab"),
 		});
 		const collider = character.transform.Find("ProximityReceiver")?.GetComponent<Collider>();
