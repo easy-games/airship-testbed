@@ -12,7 +12,7 @@ export enum PartyControllerBridgeTopics {
 export type ClientBridgeApiGetParty = () => Result<Party, undefined>;
 
 @Controller({})
-export class PartyController implements OnStart {
+export class ProtectedPartyController implements OnStart {
 	constructor() {
 		if (!Game.IsClient()) return;
 

@@ -18,7 +18,7 @@ import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Result } from "@Easy/Core/Shared/Types/Result";
 
 @Service({})
-export class TransferService implements OnStart {
+export class AirshipTransferService implements OnStart {
 	constructor() {
 		if (!Game.IsServer()) return;
 

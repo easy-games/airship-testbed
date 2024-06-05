@@ -1,13 +1,13 @@
-import { PartyController } from "../Client/Controllers/Airship/Party/AirshipPartyController";
-import { PlatformInventoryController } from "../Client/Controllers/Airship/PlatformInventory/AirshipPlatformInventoryController";
-import { UserController } from "../Client/Controllers/Airship/User/AirshipUserController";
-import { CacheStoreService } from "../Server/Services/Airship/CacheStore/AirshipCacheStoreService";
-import { DataStoreService } from "../Server/Services/Airship/DataStore/AirshipDataStoreService";
-import { LeaderboardService } from "../Server/Services/Airship/Leaderboard/AirshipLeaderboardService";
-import { PartyService } from "../Server/Services/Airship/Party/AirshipPartyService";
-import { PlatformInventoryService } from "../Server/Services/Airship/PlatformInventory/AirshipPlatformInventoryService";
-import { TransferService } from "../Server/Services/Airship/Transfer/AirshipTransferService";
-import { UserService } from "../Server/Services/Airship/User/AirshipUserService";
+import { AirshipPartyController } from "../Client/Controllers/Airship/Party/AirshipPartyController";
+import { AirshipPlatformInventoryController } from "../Client/Controllers/Airship/PlatformInventory/AirshipPlatformInventoryController";
+import { AirshipUserController } from "../Client/Controllers/Airship/User/AirshipUserController";
+import { AirshipCacheStoreService } from "../Server/Services/Airship/CacheStore/AirshipCacheStoreService";
+import { AirshipDataStoreService } from "../Server/Services/Airship/DataStore/AirshipDataStoreService";
+import { AirshipLeaderboardService } from "../Server/Services/Airship/Leaderboard/AirshipLeaderboardService";
+import { AirshipPartyService } from "../Server/Services/Airship/Party/AirshipPartyService";
+import { AirshipPlatformInventoryService } from "../Server/Services/Airship/PlatformInventory/AirshipPlatformInventoryService";
+import { AirshipTransferService } from "../Server/Services/Airship/Transfer/AirshipTransferService";
+import { AirshipUserService } from "../Server/Services/Airship/User/AirshipUserService";
 import { AirshipCharacterCameraSingleton } from "./Camera/AirshipCharacterCameraSingleton";
 import { CharactersSingleton } from "./Character/CharactersSingleton";
 import { AirshipChatSingleton } from "./Chat/AirshipChatSingleton";
@@ -40,7 +40,7 @@ export const Platform = {
 		 * The Cache Store is good for things like queue cooldowns or share codes. If you want your data to be persistent, check
 		 * out the Data Store.
 		 */
-		cacheStore: undefined as unknown as Omit<CacheStoreService, "OnStart">,
+		cacheStore: undefined as unknown as Omit<AirshipCacheStoreService, "OnStart">,
 		/**
 		 * The Data Store provides simple key/value persistent storage.
 		 *
@@ -50,25 +50,25 @@ export const Platform = {
 		 * The Data Store is good for things like user profiles or unlocks. If you want to keep track of user statistics or
 		 * build tradable inventory, check out the Leaderboard and PlatformInventory systems.s
 		 */
-		dataStore: undefined as unknown as Omit<DataStoreService, "OnStart">,
+		dataStore: undefined as unknown as Omit<AirshipDataStoreService, "OnStart">,
 		/**
 		 * This service provides access to leaderboard information as well as methods for updating existing leaderboards.
 		 * Leaderboards must be created using the https://create.airship.gg website. Once a leaderboard is created, it can be
 		 * accessed using the name provided during setup.
 		 */
-		leaderboard: undefined as unknown as Omit<LeaderboardService, "OnStart">,
+		leaderboard: undefined as unknown as Omit<AirshipLeaderboardService, "OnStart">,
 		/**
 		 * Allows access to player party information.
 		 */
-		party: undefined as unknown as Omit<PartyService, "OnStart">,
+		party: undefined as unknown as Omit<AirshipPartyService, "OnStart">,
 		/**
 		 * The transfer service allows you to move players between servers and create new servers.
 		 */
-		transfer: undefined as unknown as Omit<TransferService, "OnStart">,
+		transfer: undefined as unknown as Omit<AirshipTransferService, "OnStart">,
 		/**
 		 * Provides access to user information.
 		 */
-		user: undefined as unknown as Omit<UserService, "OnStart">,
+		user: undefined as unknown as Omit<AirshipUserService, "OnStart">,
 		/**
 		 * Allows management of platform inventory for a player. These functions manipluate a persistent inventory
 		 * that the player owns. Items, Accessories, and Profile Pictures are all managed by this inventory and the
@@ -86,7 +86,7 @@ export const Platform = {
 		 * - Content purchased with real money
 		 * - Content that players may want to trade or sell to other players
 		 */
-		inventory: undefined as unknown as Omit<PlatformInventoryService, "OnStart">,
+		inventory: undefined as unknown as Omit<AirshipPlatformInventoryService, "OnStart">,
 	},
 	/**
 	 * Client accessible services.
@@ -95,16 +95,16 @@ export const Platform = {
 		/**
 		 * This controller provides information about the users current party.
 		 */
-		party: undefined as unknown as Omit<PartyController, "OnStart">,
+		party: undefined as unknown as Omit<AirshipPartyController, "OnStart">,
 		/**
 		 * This controller allows access to the current players platform inventory. Platform inventory
 		 * is managed by game servers and configured on the https://create.airship.gg website.
 		 */
-		inventory: undefined as unknown as Omit<PlatformInventoryController, "OnStart">,
+		inventory: undefined as unknown as Omit<AirshipPlatformInventoryController, "OnStart">,
 		/**
 		 * Provides access to user information.
 		 */
-		user: undefined as unknown as Omit<UserController, "OnStart">,
+		user: undefined as unknown as Omit<AirshipUserController, "OnStart">,
 	},
 };
 

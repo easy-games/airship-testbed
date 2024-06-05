@@ -14,7 +14,7 @@ import { Game } from "@Easy/Core/Shared/Game";
 import { Result } from "@Easy/Core/Shared/Types/Result";
 
 @Service({})
-export class PlatformInventoryService implements OnStart {
+export class AirshipPlatformInventoryService implements OnStart {
 	constructor() {
 		if (!Game.IsServer()) return;
 

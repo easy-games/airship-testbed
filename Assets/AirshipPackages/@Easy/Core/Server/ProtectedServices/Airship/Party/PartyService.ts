@@ -14,7 +14,7 @@ export type ServerBridgeApiGetPartyForUserId = (userId: string) => Result<GameSe
 export type ServerBridgeApiGetPartyById = (partyId: string) => Result<GameServerPartyData | undefined, undefined>;
 
 @Service({})
-export class PartyService implements OnStart {
+export class ProtectedPartyService implements OnStart {
 	constructor() {
 		if (!Game.IsServer()) return;
 

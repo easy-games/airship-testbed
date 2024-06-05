@@ -10,7 +10,7 @@ import { OnStart, Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Result } from "@Easy/Core/Shared/Types/Result";
 @Service({})
-export class PartyService implements OnStart {
+export class AirshipPartyService implements OnStart {
 	constructor() {
 		if (!Game.IsServer()) return;
 

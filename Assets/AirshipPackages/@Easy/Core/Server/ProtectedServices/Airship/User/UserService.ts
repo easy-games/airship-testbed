@@ -19,7 +19,7 @@ export type ServerBridgeApiGetUsersById = (
 ) => Result<Record<string, PublicUser>, undefined>;
 
 @Service({})
-export class UserService implements OnStart {
+export class ProtectedUserService implements OnStart {
 	constructor() {
 		if (!Game.IsServer()) return;
 

@@ -9,7 +9,7 @@ import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 
 @Controller({})
-export class PlatformInventoryController implements OnStart {
+export class AirshipPlatformInventoryController implements OnStart {
 	constructor() {
 		if (!Game.IsClient()) return;
 

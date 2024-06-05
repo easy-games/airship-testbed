@@ -15,7 +15,7 @@ export type ServerBridgeApiCacheSetKey<T> = (key: string, data: T, expireTimeSec
 export type ServerBridgeApiCacheSetKeyTTL = (key: string, expireTimeSec: number) => Result<number, undefined>;
 
 @Service({})
-export class CacheStoreService implements OnStart {
+export class ProtectedCacheStoreService implements OnStart {
 	/** Reflects backend data-store-service settings */
 	private maxExpireSec = 60 * 60 * 24; // 24h in seconds
 
@@ -77,7 +77,11 @@ export class CacheStoreService implements OnStart {
 			CacheStoreServiceBridgeTopics.SetKeyTTL,
 			(_, key, expireTimeSec) => {
 				const result = InternalHttpManager.GetAsync(
-					`${AirshipUrl.DataStoreService}/cache/key/${key}/ttl?expiry=${math.clamp(expireTimeSec, 0, this.maxExpireSec)}`,
+					`${AirshipUrl.DataStoreService}/cache/key/${key}/ttl?expiry=${math.clamp(
+						expireTimeSec,
+						0,
+						this.maxExpireSec,
+					)}`,
 				);
 				if (!result.success || result.statusCode > 299) {
 					warn(`Unable to set cache key ttl. Status Code: ${result.statusCode}.\n`, result.data);

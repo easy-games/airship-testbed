@@ -10,7 +10,7 @@ import { Game } from "@Easy/Core/Shared/Game";
 import { Result } from "@Easy/Core/Shared/Types/Result";
 
 @Controller({})
-export class PartyController implements OnStart {
+export class AirshipPartyController implements OnStart {
 	constructor() {
 		if (!Game.IsClient()) return;
 

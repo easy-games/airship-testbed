@@ -14,7 +14,7 @@ import { Game } from "@Easy/Core/Shared/Game";
 import { Result } from "@Easy/Core/Shared/Types/Result";
 
 @Controller({})
-export class UserController implements OnStart {
+export class AirshipUserController implements OnStart {
 	constructor() {
 		if (!Game.IsClient()) return;
 

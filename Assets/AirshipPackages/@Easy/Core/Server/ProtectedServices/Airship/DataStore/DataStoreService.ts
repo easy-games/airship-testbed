@@ -15,7 +15,7 @@ export type ServerBridgeApiDataSetKey<T> = (key: string, data: T) => Result<T, u
 export type ServerBridgeApiDataDeleteKey<T> = (key: string) => Result<T, undefined>;
 
 @Service({})
-export class DataStoreService implements OnStart {
+export class ProtectedDataStoreService implements OnStart {
 	constructor() {
 		if (!Game.IsServer()) return;
 

@@ -26,7 +26,7 @@ export type ServerBridgeApiPerformTrade = (
 ) => Result<Transaction, undefined>;
 
 @Service({})
-export class PlatformInventoryService implements OnStart {
+export class ProtectedPlatformInventoryService implements OnStart {
 	constructor() {
 		if (!Game.IsServer()) return;
 

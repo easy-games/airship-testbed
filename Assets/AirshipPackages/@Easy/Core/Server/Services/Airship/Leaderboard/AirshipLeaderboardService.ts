@@ -16,7 +16,7 @@ export interface LeaderboardUpdate {
 }
 
 @Service({})
-export class LeaderboardService implements OnStart {
+export class AirshipLeaderboardService implements OnStart {
 	constructor() {
 		if (!Game.IsServer()) return;
 

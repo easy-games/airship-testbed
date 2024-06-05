@@ -12,7 +12,7 @@ import { Game } from "@Easy/Core/Shared/Game";
 import { Result } from "@Easy/Core/Shared/Types/Result";
 
 @Service({})
-export class UserService implements OnStart {
+export class AirshipUserService implements OnStart {
 	constructor() {
 		if (!Game.IsServer()) return;
 

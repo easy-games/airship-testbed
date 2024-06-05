@@ -27,7 +27,7 @@ export type ServerBridgeApiLeaderboardGetRankRange = (
 ) => Result<RankData[], undefined>;
 
 @Service({})
-export class LeaderboardService implements OnStart {
+export class ProtectedLeaderboardService implements OnStart {
 	constructor() {
 		if (!Game.IsServer()) return;
 

@@ -23,7 +23,7 @@ export type BridgeApiGetFriends = () => Result<PublicUser[], undefined>;
 export type BrigdeApiIsFriendsWith = (userId: string) => Result<boolean, undefined>;
 
 @Controller({})
-export class UserController implements OnStart {
+export class ProtectedUserController implements OnStart {
 	constructor() {
 		if (!Game.IsClient()) return;
 

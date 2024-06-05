@@ -18,7 +18,7 @@ export enum PlatformInventoryControllerBridgeTopics {
 export type ClientBridgeApiGetItems = (query?: ItemQueryParameters) => Result<ItemInstanceDto[], undefined>;
 
 @Controller({})
-export class PlatformInventoryController implements OnStart {
+export class ProtectedPlatformInventoryController implements OnStart {
 	constructor() {
 		if (!Game.IsClient()) return;
 

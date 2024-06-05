@@ -30,7 +30,7 @@ export type ServerBridgeApiTransferGroupToServer = (
 ) => Result<undefined, undefined>;
 
 @Service({})
-export class TransferService implements OnStart {
+export class ProtectedTransferService implements OnStart {
 	constructor() {
 		if (!Game.IsServer()) return;
 
