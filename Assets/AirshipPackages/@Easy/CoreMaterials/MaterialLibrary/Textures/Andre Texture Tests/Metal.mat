@@ -24,7 +24,8 @@ Material:
   m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - _NORMALMAP
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -43,11 +44,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
+        m_Texture: {fileID: 2800000, guid: bdc374c3f10d19244a1b666547970897, type: 3}
+        m_Scale: {x: 0.5, y: 0.5}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 11977da4006ee764fbf5d8e0863251ee, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ColorMaskTex:
@@ -79,8 +80,8 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
+        m_Texture: {fileID: 2800000, guid: bdc374c3f10d19244a1b666547970897, type: 3}
+        m_Scale: {x: 0.5, y: 0.5}
         m_Offset: {x: 0, y: 0}
     - _MetalTex:
         m_Texture: {fileID: 0}
@@ -142,7 +143,8 @@ Material:
     - SHADOWS: 1
     - SLIDER_OVERRIDE: 1
     - TRIPLANAR_STYLE: 0
-    - USE_COLOR_MASK: 0
+    - USE_COLOR_MASK: 1
+    - USE_COLOR_MASK_ON: 1
     - USE_SHADOW_COLOR: 0
     - VERTEX_LIGHT: 0
     - _AddPrecomputedVelocity: 0
@@ -172,7 +174,7 @@ Material:
     - _Lights: 0
     - _MRSliderOverrideMix: 1
     - _MetalOverride: 0.934
-    - _Metallic: 0.947
+    - _Metallic: 0.836
     - _Mode: 0
     - _OcclusionStrength: 1
     - _OverrideStrength: 0
@@ -185,8 +187,8 @@ Material:
     - _RoughOverride: 0.777
     - _SLIDER_OVERRIDE: 1
     - _SkyShineStrength: 0
-    - _SliderOverrideMix: 0.16
-    - _Smoothness: 0.501
+    - _SliderOverrideMix: 0.5
+    - _Smoothness: 0.447
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -195,14 +197,14 @@ Material:
     - _Surface: 0
     - _SurfaceType: 0
     - _Triplanar: 1
-    - _TriplanarScale: 1
+    - _TriplanarScale: 0
     - _UVSec: 0
     - _VERTEX_LIGHT: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0.3773585, g: 0.34439734, b: 0.31149876, a: 1}
-    - _Color: {r: 0.37735847, g: 0.3443973, b: 0.3114987, a: 1}
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColor: {r: 1, g: 1, b: 1, a: 1}
     - _IncidentColor: {r: 0.4, g: 0.75, b: 1, a: 1}

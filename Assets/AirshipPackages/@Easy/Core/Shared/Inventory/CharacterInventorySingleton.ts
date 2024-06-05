@@ -1,5 +1,5 @@
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
-import { Controller, OnStart, Service } from "@Easy/Core/Shared/Flamework";
+import { OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Keyboard, Mouse } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
@@ -14,8 +14,7 @@ import { ItemStack } from "./ItemStack";
  * The CharacterInventorySingleton is responsible for controlling
  * the inventory attached to your local character.
  */
-@Controller({})
-@Service({})
+@Singleton()
 export class CharacterInventorySingleton implements OnStart {
 	public localInventory?: Inventory;
 

@@ -1,18 +1,12 @@
-﻿import { AirshipCharacterCameraSingleton } from "@Easy/Core/Shared/Camera/AirshipCharacterCameraSingleton";
-import { ViewmodelController } from "@Easy/Core/Client/Controllers/Viewmodel/ViewmodelController";
-import { Airship } from "@Easy/Core/Shared/Airship";
+﻿import { Airship } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
 import { DamageUtils } from "@Easy/Core/Shared/Damage/DamageUtils";
-import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { MeleeItemDef } from "@Easy/Core/Shared/Item/ItemDefinitionTypes";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
-import { CSArrayUtil } from "@Easy/Core/Shared/Util/CSArrayUtil";
-import { Layer } from "@Easy/Core/Shared/Util/Layer";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { Task } from "@Easy/Core/Shared/Util/Task";
 import { Theme } from "@Easy/Core/Shared/Util/Theme";
 import { SetTimeout } from "@Easy/Core/Shared/Util/Timer";
-import { EffectsManager } from "../../../Effects/EffectsManager";
 import { HeldItem } from "../HeldItem";
 
 export class MeleeHeldItem extends HeldItem {
@@ -41,47 +35,6 @@ export class MeleeHeldItem extends HeldItem {
 		}
 
 		//Play the items use effect
-		const isFirstPerson =
-			this.character.IsLocalCharacter() && Dependency<AirshipCharacterCameraSingleton>().IsFirstPerson();
-		if (meleeData.onUseVFX) {
-			if (isFirstPerson) {
-				this.currentUseVFX = EffectsManager.SpawnPrefabEffect(
-					meleeData.onUseVFX_FP[this.animationIndex],
-					Vector3.zero,
-					Vector3.zero,
-				);
-				if (this.currentUseVFX) {
-					//Spawn first person effect on the spine
-					this.currentUseVFX.transform.SetParent(Dependency<ViewmodelController>().rig.spineChest);
-					this.currentUseVFX.transform.localRotation = Quaternion.identity;
-					this.currentUseVFX.transform.localPosition = Vector3.zero;
-				}
-			} else {
-				//Spawn third person effect on the root
-				this.currentUseVFX = EffectsManager.SpawnPrefabEffect(
-					meleeData.onUseVFX[this.animationIndex],
-					this.character.model.transform.position,
-					this.character.model.transform.eulerAngles,
-				);
-				if (this.currentUseVFX) {
-					//Spawn first person effect on the spine
-					this.currentUseVFX.transform.SetParent(this.character.model.transform);
-				}
-			}
-			if (this.currentUseVFX) {
-				const particleSystems = this.currentUseVFX.gameObject.GetComponentsInChildren<ParticleSystem>();
-				for (const particleSystem of CSArrayUtil.Convert(particleSystems)) {
-					particleSystem.gameObject.layer = isFirstPerson ? Layer.VIEW_MODEL : Layer.CHARACTER;
-					particleSystem.Play();
-				}
-			}
-
-			this.animationIndex++;
-			if (this.animationIndex >= meleeData.onUseVFX.size()) {
-				this.animationIndex = 0;
-			}
-		}
-
 		const DoHit = () => {
 			if (!meleeData) {
 				return;
@@ -124,22 +77,21 @@ export class MeleeHeldItem extends HeldItem {
 			let hitTargets = this.ScanForHits();
 			let hitSomething = false;
 			let effectGO: GameObject | undefined;
-			for (const data of hitTargets) {
-				hitSomething = true;
-				if (meleeData.onHitPrefabPath) {
-					//Local damage predictions
-					effectGO = EffectsManager.SpawnPrefabEffect(
-						meleeData.onHitPrefabPath,
-						data.hitPosition,
-						Quaternion.LookRotation(data.hitDirection).eulerAngles,
-					);
-					if (effectGO) {
-						effectGO.transform.SetParent(data.hitCharacter.model.transform);
-					}
-				}
-			}
+			// for (const data of hitTargets) {
+			// 	hitSomething = true;
+			// 	if (meleeData.onHitPrefabPath) {
+			// 		//Local damage predictions
+			// 		effectGO = EffectsManager.SpawnPrefabEffect(
+			// 			meleeData.onHitPrefabPath,
+			// 			data.hitPosition,
+			// 			Quaternion.LookRotation(data.hitDirection).eulerAngles,
+			// 		);
+			// 		if (effectGO) {
+			// 			effectGO.transform.SetParent(data.hitCharacter.model.transform);
+			// 		}
+			// 	}
+			// }
 			if (hitSomething) {
-				this.Log("client found hits");
 				let effectI = 0;
 				let effects: GameObject[] = [];
 				if (this.currentUseVFX) {

@@ -195,7 +195,9 @@ export class Player {
 		if (Game.IsServer()) {
 			CoreNetwork.ServerToClient.ChatMessage.server.FireClient(this, message, undefined, undefined);
 		} else {
-			Dependency<ClientChatSingleton>().RenderChatMessage(message);
+			if (Game.IsProtectedLuauContext()) {
+				Dependency<ClientChatSingleton>().RenderChatMessage(message);
+			}
 		}
 	}
 

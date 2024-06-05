@@ -136,6 +136,11 @@ export class CharacterInput {
 				);
 			}),
 		);
+		this.bin.Add(
+			this.character.onDespawn.Connect(() => {
+				this.Destroy();
+			}),
+		);
 
 		// Switch controls based on preferred user input:
 		preferred.ObserveControlScheme((controlScheme) => {
@@ -153,7 +158,7 @@ export class CharacterInput {
 	}
 
 	public Destroy() {
-		this.bin.Destroy();
+		this.bin.Clean();
 	}
 
 	/**

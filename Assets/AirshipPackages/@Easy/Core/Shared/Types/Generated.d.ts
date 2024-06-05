@@ -12502,28 +12502,6 @@ interface TimeManagerConstructor {
 }
 declare const TimeManager: TimeManagerConstructor;
     
-interface SceneManager extends MonoBehaviour {
-    SceneConnections: CSDictionary<Scene, CSArray<NetworkConnection>>;
-    NetworkManager: NetworkManager;
-
-
-    AddConnectionToScene(conn: NetworkConnection, scene: Scene): void;
-    AddOwnerToDefaultScene(nob: NetworkObject): void;
-    GetSceneProcessor(): SceneProcessorBase;
-    LoadConnectionScenes(conn: NetworkConnection, sceneLoadData: SceneLoadData): void;
-    LoadConnectionScenes(conns: CSArray<NetworkConnection>, sceneLoadData: SceneLoadData): void;
-    LoadConnectionScenes(sceneLoadData: SceneLoadData): void;
-    LoadGlobalScenes(sceneLoadData: SceneLoadData): void;
-    RemoveAllConnectionsFromScene(scene: Scene): void;
-    RemoveConnectionsFromNonGlobalScenes(conns: CSArray<NetworkConnection>): void;
-    RemoveConnectionsFromScene(conns: CSArray<NetworkConnection>, scene: Scene): void;
-    SetSceneProcessor(value: SceneProcessorBase): void;
-    UnloadConnectionScenes(connection: NetworkConnection, sceneUnloadData: SceneUnloadData): void;
-    UnloadConnectionScenes(connections: CSArray<NetworkConnection>, sceneUnloadData: SceneUnloadData): void;
-    UnloadConnectionScenes(sceneUnloadData: SceneUnloadData): void;
-    UnloadGlobalScenes(sceneUnloadData: SceneUnloadData): void;
-
-}
     
 interface SceneProcessorBase extends MonoBehaviour {
 
@@ -12794,15 +12772,6 @@ interface UnloadQueueDataConstructor {
 }
 declare const UnloadQueueData: UnloadQueueDataConstructor;
     
-interface SceneManagerConstructor {
-
-    new(): SceneManager;
-
-
-    GetScene(sceneName: string, nm: NetworkManager, warnIfDuplicates: boolean): Scene;
-    GetScene(sceneHandle: number): Scene;
-}
-declare const SceneManager: SceneManagerConstructor;
     
 interface PredictionManager extends MonoBehaviour {
     IsReconciling: boolean;
@@ -19473,9 +19442,6 @@ interface ServerBootstrap extends MonoBehaviour {
     startupConfig: StartupConfig;
     overrideGameBundleId: string;
     overrideGameBundleVersion: string;
-    overrideCoreBundleId: string;
-    overrideCoreBundleVersion: string;
-    overrideQueueType: string;
     airshipJWT: string;
     agones: AgonesSdk;
     gameId: string;
@@ -19489,7 +19455,6 @@ interface ServerBootstrap extends MonoBehaviour {
 
     FinishedSetup(): void;
     GetJoinCode(): string;
-    GetQueueType(): string;
     IsAgonesEnvironment(): boolean;
     Shutdown(): void;
 
@@ -19720,6 +19685,7 @@ interface AirshipEditorConfigConstructor {
 declare const AirshipEditorConfig: AirshipEditorConfigConstructor;
     
 interface ServerBootstrapConstructor {
+    editorStartingSceneIntent: string;
 
     new(): ServerBootstrap;
 
@@ -19727,11 +19693,6 @@ interface ServerBootstrapConstructor {
 }
 declare const ServerBootstrap: ServerBootstrapConstructor;
     
-interface SceneManager {
-
-
-
-}
     
 interface CreateSceneParameters {
     localPhysicsMode: LocalPhysicsMode;
@@ -19748,49 +19709,6 @@ interface CreateSceneParametersConstructor {
 }
 declare const CreateSceneParameters: CreateSceneParametersConstructor;
     
-interface SceneManagerConstructor {
-    sceneCount: number;
-    loadedSceneCount: number;
-    sceneCountInBuildSettings: number;
-
-    new(): SceneManager;
-
-
-    CreateScene(sceneName: string, parameters: CreateSceneParameters): Scene;
-    CreateScene(sceneName: string): Scene;
-    GetActiveScene(): Scene;
-    GetAllScenes(): CSArray<Scene>;
-    GetSceneAt(index: number): Scene;
-    GetSceneByBuildIndex(buildIndex: number): Scene;
-    GetSceneByName(name: string): Scene;
-    GetSceneByPath(scenePath: string): Scene;
-    LoadScene(sceneName: string, mode: LoadSceneMode): void;
-    LoadScene(sceneName: string): void;
-    LoadScene(sceneName: string, parameters: LoadSceneParameters): Scene;
-    LoadScene(sceneBuildIndex: number, mode: LoadSceneMode): void;
-    LoadScene(sceneBuildIndex: number): void;
-    LoadScene(sceneBuildIndex: number, parameters: LoadSceneParameters): Scene;
-    LoadSceneAsync(sceneBuildIndex: number, mode: LoadSceneMode): AsyncOperation;
-    LoadSceneAsync(sceneBuildIndex: number): AsyncOperation;
-    LoadSceneAsync(sceneBuildIndex: number, parameters: LoadSceneParameters): AsyncOperation;
-    LoadSceneAsync(sceneName: string, mode: LoadSceneMode): AsyncOperation;
-    LoadSceneAsync(sceneName: string): AsyncOperation;
-    LoadSceneAsync(sceneName: string, parameters: LoadSceneParameters): AsyncOperation;
-    MergeScenes(sourceScene: Scene, destinationScene: Scene): void;
-    MoveGameObjectsToScene(instanceIDs: CSArray<number>, scene: Scene): void;
-    MoveGameObjectToScene(go: GameObject, scene: Scene): void;
-    SetActiveScene(scene: Scene): boolean;
-    UnloadScene(scene: Scene): boolean;
-    UnloadScene(sceneBuildIndex: number): boolean;
-    UnloadScene(sceneName: string): boolean;
-    UnloadSceneAsync(sceneBuildIndex: number): AsyncOperation;
-    UnloadSceneAsync(sceneName: string): AsyncOperation;
-    UnloadSceneAsync(scene: Scene): AsyncOperation;
-    UnloadSceneAsync(sceneBuildIndex: number, options: UnloadSceneOptions): AsyncOperation;
-    UnloadSceneAsync(sceneName: string, options: UnloadSceneOptions): AsyncOperation;
-    UnloadSceneAsync(scene: Scene, options: UnloadSceneOptions): AsyncOperation;
-}
-declare const SceneManager: SceneManagerConstructor;
     
 interface AccessoryBuilder extends MonoBehaviour {
     rig: CharacterRig;
@@ -22347,15 +22265,19 @@ interface BridgeConstructor {
     GetMonoRam(): number;
     GetReservedRam(): number;
     GetScene(sceneName: string): Scene;
+    GetScenes(): CSArray<Scene>;
     GetVolume(): number;
     HasMicrophonePermission(): boolean;
     IsFullScreen(): boolean;
     IsMicRecording(): boolean;
-    LoadScene(sceneName: string, restartLuau: boolean): void;
+    LoadGlobalSceneByName(sceneName: string): void;
+    LoadScene(sceneName: string, restartLuau: boolean, loadSceneMode: LoadSceneMode): void;
+    LoadSceneForConnection(conn: NetworkConnection, sceneName: string, makeActiveScene: boolean): void;
     MakeMaterialPropertyBlock(): MaterialPropertyBlock;
     MakeMesh(): Mesh;
     MakeSprite(texture2D: Texture2D): Sprite;
     MakeVector2(x: number, y: number): Vector2;
+    MoveGameObjectToScene(gameObject: GameObject, scene: Scene): void;
     OpenDevConsole(): void;
     RemoveRichText(input: string): string;
     RequestMicrophonePermissionAsync(): void;
@@ -22366,6 +22288,9 @@ interface BridgeConstructor {
     SetVolume(volume: number): void;
     StartMicRecording(frequency: number, sampleLength: number): void;
     StopMicRecording(): void;
+    UnloadGlobalSceneByName(sceneName: string): void;
+    UnloadScene(sceneName: string): void;
+    UnloadSceneForConnection(conn: NetworkConnection, sceneName: string, preferredActiveScene: string): void;
     UpdateLayout(xform: Transform, recursive: boolean): void;
 }
 declare const Bridge: BridgeConstructor;

@@ -1,15 +1,15 @@
-import { AirshipCharacterCameraSingleton } from "@Easy/Core/Shared/Camera/AirshipCharacterCameraSingleton";
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
+import { AirshipCharacterCameraSingleton } from "@Easy/Core/Shared/Camera/AirshipCharacterCameraSingleton";
 import Character from "@Easy/Core/Shared/Character/Character";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
-import { Controller, Dependency, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Dependency, OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
 import { GameObjectUtil } from "@Easy/Core/Shared/GameObject/GameObjectUtil";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import StringUtils from "@Easy/Core/Shared/Types/StringUtil";
 import { Task } from "@Easy/Core/Shared/Util/Task";
 
-@Controller({})
+@Singleton()
 export class BubbleChatController implements OnStart {
 	private static maxDisplayedMessages = 3;
 	/** Map from transform to minimized status (true = minimized) */

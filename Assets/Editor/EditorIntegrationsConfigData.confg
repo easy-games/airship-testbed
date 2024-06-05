@@ -18,10 +18,12 @@ MonoBehaviour:
   manageTypescriptProject: 0
   safeguardBundleModification: 1
   promptIfLuauPluginChanged: 1
+  luauScriptTimeout: 10
   typescriptVerbose: 0
   typescriptWriteOnlyChanged: 0
   typescriptUseDevBuild: 0
   typescriptPreventPlayOnError: 0
-  typescriptAutostartCompiler: 0
+  typescriptAutostartCompiler: 1
+  compilerVersion: 1
   typescriptEditor: 0
   typescriptEditorCustomPath: 

@@ -1,4 +1,5 @@
 import { Game } from "./Game";
+import { SceneManager } from "./SceneManager";
 
 export class CoreRefs {
 	/**
@@ -33,5 +34,7 @@ export class CoreRefs {
 				this.protectedTransform = protectedGo.transform;
 			}
 		}
+
+		// Object.DontDestroyOnLoad(this.rootTransform);
 	}
 }

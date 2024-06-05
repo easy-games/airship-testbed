@@ -1,7 +1,6 @@
 import { CoreContext } from "../../CoreClientContext";
 import { Dependency } from "../../Flamework";
 import { Game } from "../../Game";
-import { CoreLogger } from "../../Logger/CoreLogger";
 import { Bin } from "../../Util/Bin";
 import { MainMenuSingleton } from "../Singletons/MainMenuSingleton";
 
@@ -71,9 +70,11 @@ export default class MainMenuContent extends AirshipBehaviour {
 			}
 		}
 
-		CoreLogger.Log(
-			`screenSize.x: ${screenSize.x}, sizetype: ${this.mainMenu.sizeType}, scaleFactor: ${this.canvasScalar.scaleFactor}, portrait: ${Game.IsPortrait()}`,
-		);
+		// CoreLogger.Log(
+		// 	`screenSize.x: ${screenSize.x}, sizetype: ${this.mainMenu.sizeType}, scaleFactor: ${
+		// 		this.canvasScalar.scaleFactor
+		// 	}, portrait: ${Game.IsPortrait()}`,
+		// );
 		// CoreLogger.Log("dpi: " + Screen.dpi);
 		// CoreLogger.Log("resolution: " + Screen.currentResolution.width + ", " + Screen.currentResolution.height);
 
