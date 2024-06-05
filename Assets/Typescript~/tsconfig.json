@@ -30,10 +30,7 @@
 		"baseUrl": "src",
 		// "incremental": false,
 		// "tsBuildInfoFile": "out/tsconfig.tsbuildinfo",
-        "skipLibCheck": false,
-		"plugins": [
-			{ "transform": "@easy-games/unity-flamework-transformer" }
-		]
+        "skipLibCheck": false
 	},
     "include": [
         "../Bundles/Types~/**/*.d.ts",

@@ -451,5 +451,9 @@
 		"SearchResult": [
 			"GameSearchResult"
 		]
+	},
+	"flamework": {
+		"version": 1,
+		"identifiers": {}
 	}
 }
