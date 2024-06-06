@@ -12,6 +12,7 @@ import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { Team } from "../Team/Team";
 import { Bin } from "../Util/Bin";
+import { CSArrayUtil } from "../Util/CSArrayUtil";
 import { Signal } from "../Util/Signal";
 
 export interface PlayerDto {
@@ -248,6 +249,14 @@ export class Player {
 
 	public IsLocalPlayer(): boolean {
 		return Game.IsClient() && Game.localPlayer === this;
+	}
+
+	public IsInScene(sceneName: string): boolean {
+		const scenes = CSArrayUtil.Convert(this.networkObject.LocalConnection.Scenes);
+		if (scenes.find((s) => s.name === sceneName)) {
+			return true;
+		}
+		return false;
 	}
 
 	/**

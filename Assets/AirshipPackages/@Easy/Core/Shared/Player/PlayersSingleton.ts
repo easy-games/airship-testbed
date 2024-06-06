@@ -463,10 +463,7 @@ export class PlayersSingleton implements OnStart {
 		return this.FindByClientId(clientId) ?? this.playersPendingReady.get(clientId);
 	}
 
-	/**
-	 * @internal
-	 */
-	public WaitForClientIdIncludePending(clientId: number, timeout = 5): Promise<Player | undefined> {
+	public WaitForClientId(clientId: number, timeout = 5): Promise<Player | undefined> {
 		return new Promise((resolve) => {
 			let readyOrPending = this.FindByClientIdIncludePending(clientId);
 			if (readyOrPending) {
