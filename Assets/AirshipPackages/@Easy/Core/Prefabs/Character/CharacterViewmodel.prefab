@@ -216,7 +216,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7001132757706131974}
   - component: {fileID: 5646842700801351022}
-  - component: {fileID: 7840041008295759272}
   m_Layer: 7
   m_Name: BodyViewModel
   m_TagString: Untagged
@@ -317,24 +316,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.00000011920929, y: -0.5864524, z: 0.6989716}
     m_Extent: {x: 0.7362758, y: 0.8597457, z: 1.9178494}
   m_DirtyAABB: 0
---- !u!114 &7840041008295759272
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5777495848685937748}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colorSettings:
-  - materialColor: {r: 0.8509804, g: 0.61960787, b: 0.44705883, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-    emissiveLevel: 0
-  addedByEditorScript: 1
 --- !u!1 &7172678626230927459
 GameObject:
   m_ObjectHideFlags: 0

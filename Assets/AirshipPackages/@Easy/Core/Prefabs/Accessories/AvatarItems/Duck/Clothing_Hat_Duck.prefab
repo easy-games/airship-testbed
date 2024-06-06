@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 832413711098379685}
   - component: {fileID: 2133063113801947222}
   - component: {fileID: 3931346441684550505}
-  - component: {fileID: 532882619442634688}
   - component: {fileID: 6153385789131365943}
   m_Layer: 0
   m_Name: Hat_Duck.014
@@ -87,24 +86,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &532882619442634688
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 168227564713324740}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colorSettings:
-  - materialColor: {r: 0.9149941, g: 0.85170555, b: 0.6439683, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-    emissiveLevel: 0
-  addedByEditorScript: 0
 --- !u!114 &6153385789131365943
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -131,7 +112,6 @@ GameObject:
   - component: {fileID: 896810805680933675}
   - component: {fileID: 2843680638086623143}
   - component: {fileID: 8799414750638759548}
-  - component: {fileID: 8634787447894850008}
   - component: {fileID: 2792434135837283594}
   m_Layer: 0
   m_Name: Hat_Duck.026
@@ -207,24 +187,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &8634787447894850008
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1906405691871423290}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colorSettings:
-  - materialColor: {r: 0.99963313, g: 0.983762, b: 0.9822671, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 0.39607844}
-    emissiveMix: 0.128
-    emissiveLevel: 0
-  addedByEditorScript: 0
 --- !u!114 &2792434135837283594
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -238,7 +200,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - baseColor: {r: 1, g: 0.9843138, b: 0.9803922, a: 1}
+  - baseColor: {r: 0.03773582, g: 0.03773582, b: 0.03773582, a: 1}
   addedByEditorScript: 0
 --- !u!1 &2255719316708110042
 GameObject:
@@ -251,7 +213,6 @@ GameObject:
   - component: {fileID: 1513612784869382881}
   - component: {fileID: 8227688474669692569}
   - component: {fileID: 6277048415173095474}
-  - component: {fileID: 4167373204055441832}
   - component: {fileID: 6011051928279116275}
   m_Layer: 0
   m_Name: Hat_Duck.030
@@ -327,24 +288,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &4167373204055441832
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2255719316708110042}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colorSettings:
-  - materialColor: {r: 0.92260146, g: 0.600207, b: 0.24104658, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-    emissiveLevel: 0
-  addedByEditorScript: 0
 --- !u!114 &6011051928279116275
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -491,7 +434,6 @@ GameObject:
   - component: {fileID: 266315393814225882}
   - component: {fileID: 1301900034103368684}
   - component: {fileID: 5828183441137697476}
-  - component: {fileID: 2101512241500465179}
   - component: {fileID: 2546131186145112016}
   m_Layer: 0
   m_Name: Hat_Duck.028
@@ -568,28 +510,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &2101512241500465179
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7476174288045454088}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colorSettings:
-  - materialColor: {r: 0.92260146, g: 0.600207, b: 0.24104658, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-    emissiveLevel: 0
-  - materialColor: {r: 0.92260146, g: 0.600207, b: 0.24104658, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-    emissiveLevel: 0
-  addedByEditorScript: 0
 --- !u!114 &2546131186145112016
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -617,7 +537,6 @@ GameObject:
   - component: {fileID: 6957759030191434104}
   - component: {fileID: 6311483338383953106}
   - component: {fileID: 5876343866947298814}
-  - component: {fileID: 6358626333389031693}
   - component: {fileID: 7035552567903092019}
   m_Layer: 0
   m_Name: Hat_Duck.027
@@ -693,24 +612,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &6358626333389031693
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7758170433421606984}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colorSettings:
-  - materialColor: {r: 0.92260146, g: 0.600207, b: 0.24104658, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-    emissiveLevel: 0
-  addedByEditorScript: 0
 --- !u!114 &7035552567903092019
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -737,7 +638,6 @@ GameObject:
   - component: {fileID: 1218165880575961163}
   - component: {fileID: 8242660759385250591}
   - component: {fileID: 4608677725826502001}
-  - component: {fileID: 5047388347849186552}
   - component: {fileID: 2202246621483667365}
   m_Layer: 0
   m_Name: Hat_Duck.029
@@ -813,24 +713,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &5047388347849186552
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7786710824079278753}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colorSettings:
-  - materialColor: {r: 0.92260146, g: 0.600207, b: 0.24104658, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-    emissiveLevel: 0
-  addedByEditorScript: 0
 --- !u!114 &2202246621483667365
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -985,7 +867,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   materialColors:
-  - {fileID: 8634787447894850008}
+  - {fileID: 0}
   materialIndexes: 00000000
   possibleColors:
     serializedVersion: 2
@@ -1079,10 +961,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   materialColors:
-  - {fileID: 2101512241500465179}
-  - {fileID: 5047388347849186552}
-  - {fileID: 4167373204055441832}
-  - {fileID: 6358626333389031693}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   materialIndexes: 0000000001000000
   possibleColors:
     serializedVersion: 2
@@ -1128,7 +1010,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   materialColors:
-  - {fileID: 532882619442634688}
+  - {fileID: 0}
   materialIndexes: 0000000001000000
   possibleColors:
     serializedVersion: 2
