@@ -6,7 +6,7 @@ export enum AvatarBackdropType {
 }
 
 export default class AvatarBackdropComponent extends AirshipBehaviour {
-	public solidColor!: MaterialColor;
+	public solidColor!: MaterialColorURP;
 
 	public SetBackgdrop(backdrop: AvatarBackdropType) {
 		for (let i = 0; i < this.gameObject.transform.childCount; i++) {
@@ -16,6 +16,6 @@ export default class AvatarBackdropComponent extends AirshipBehaviour {
 
 	public SetSolidColorBackdrop(color: Color) {
 		this.SetBackgdrop(AvatarBackdropType.WHITE_FLAT);
-		this.solidColor.SetAllColors(color, false);
+		//this.solidColor.(color, false);
 	}
 }
