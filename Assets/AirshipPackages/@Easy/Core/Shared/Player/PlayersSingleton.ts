@@ -463,7 +463,10 @@ export class PlayersSingleton implements OnStart {
 		return this.FindByClientId(clientId) ?? this.playersPendingReady.get(clientId);
 	}
 
-	public WaitForClientId(clientId: number, timeout = 5): Promise<Player | undefined> {
+	/**
+	 * @internal
+	 */
+	public WaitForClientIdIncludePending(clientId: number, timeout = 5): Promise<Player | undefined> {
 		return new Promise((resolve) => {
 			let readyOrPending = this.FindByClientIdIncludePending(clientId);
 			if (readyOrPending) {
@@ -474,6 +477,31 @@ export class PlayersSingleton implements OnStart {
 			const disconnect = OnUpdate.Connect((dt) => {
 				acc += dt;
 				readyOrPending = this.FindByClientIdIncludePending(clientId);
+				if (acc >= timeout) {
+					disconnect();
+					resolve(undefined);
+					return;
+				}
+				if (readyOrPending) {
+					disconnect();
+					resolve(readyOrPending);
+					return;
+				}
+			});
+		});
+	}
+
+	public WaitForClientId(clientId: number, timeout = 5): Promise<Player | undefined> {
+		return new Promise((resolve) => {
+			let readyOrPending = this.FindByClientId(clientId);
+			if (readyOrPending) {
+				resolve(readyOrPending);
+				return;
+			}
+			let acc = 0;
+			const disconnect = OnUpdate.Connect((dt) => {
+				acc += dt;
+				readyOrPending = this.FindByClientId(clientId);
 				if (acc >= timeout) {
 					disconnect();
 					resolve(undefined);

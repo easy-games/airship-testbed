@@ -32,6 +32,7 @@ export default class CharacterSpawner extends AirshipBehaviour {
 					} else {
 						// Removed from scene
 						if (player.character) {
+							print(`Despawning ${player.username} in scene ${this.gameObject.scene.name}`);
 							player.character.Despawn();
 						}
 					}
@@ -65,5 +66,12 @@ export default class CharacterSpawner extends AirshipBehaviour {
 
 	override OnDestroy(): void {
 		this.bin.Clean();
+
+		for (let player of Airship.players.GetPlayers()) {
+			if (player.character?.gameObject.scene.name === this.gameObject.scene.name) {
+				print(`Despawning ${player.username} in scene ${this.gameObject.scene.name}`);
+				player.character.Despawn();
+			}
+		}
 	}
 }

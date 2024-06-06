@@ -86,6 +86,7 @@ export class LocalCharacterSingleton implements OnStart {
 			const keyboard = bin.Add(new Keyboard());
 
 			this.entityDriver = character.gameObject.GetComponent<CharacterMovement>()!;
+			print("characterMovement: " + tostring(this.entityDriver.GetLookVector()));
 			this.input = new CharacterInput(character);
 
 			this.screenshot = character.gameObject.AddComponent<CameraScreenshotRecorder>();

@@ -1,4 +1,5 @@
 import { OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
+import { Game } from "../Game";
 
 interface UnitySceneManagerConstructor {
 	new (): UnitySceneManagerConstructor;
@@ -16,13 +17,25 @@ export class ProtectedSceneManagerSingleton implements OnStart {
 	private protectedSceneNames = ["corescene", "mainmenu", "login"];
 
 	constructor() {
-		// const scriptingManager = GameObject.Find("CoreScriptingManager").GetComponent<CoreScriptingManager>()!;
-		// scriptingManager.OnClientPresenceChangeStart((scene, connection, added) => {
-		// 	contextbridge.broadcast("SceneManager:OnClientPresenceChangeStart", scene.name, connection.ClientId, added);
-		// });
-		// scriptingManager.OnClientPresenceChangeStart((scene, connection, added) => {
-		// 	contextbridge.broadcast("SceneManager:OnClientPresenceChangeEnd", scene.name, connection.ClientId, added);
-		// });
+		if (Game.IsInGame()) {
+			const scriptingManager = GameObject.Find("CoreScriptingManager").GetComponent<CoreScriptingManager>()!;
+			scriptingManager.OnClientPresenceChangeStart((scene, connection, added) => {
+				contextbridge.broadcast(
+					"SceneManager:OnClientPresenceChangeStart",
+					scene.name,
+					connection.ClientId,
+					added,
+				);
+			});
+			scriptingManager.OnClientPresenceChangeStart((scene, connection, added) => {
+				contextbridge.broadcast(
+					"SceneManager:OnClientPresenceChangeEnd",
+					scene.name,
+					connection.ClientId,
+					added,
+				);
+			});
+		}
 	}
 
 	OnStart(): void {
