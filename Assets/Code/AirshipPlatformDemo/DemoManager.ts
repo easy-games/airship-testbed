@@ -18,48 +18,14 @@ export default class DemoManager extends AirshipBehaviour {
 
 	private bin = new Bin();
 
-	@Header("Network Ball")
-	// public ballPrefab!: GameObject;
-	// public ballSpawnPoint!: Transform;
-	// public cubePrefab!: GameObject;
 	override Start(): void {
 		Airship.input.CreateAction("interact", Binding.Key(Key.F));
 
 		ItemUtil.RegisterItem("WoodSword", {
 			displayName: "Wood Sword",
 			maxStackSize: 1,
-			// usable: {
-			// 	startUpInSeconds: 0,
-			// 	minChargeSeconds: 0,
-			// 	maxChargeSeconds: 0,
-			// 	cooldownSeconds: 0.25,
-			// 	canHoldToUse: false,
-			// 	onUseSound: [
-			// 		//"Shared/Resources/Sound/s_Sword_Swing_Wood_01.wav",
-			// 		"Assets/Resources/Sound/s_Sword_Swing_Wood_02.wav",
-			// 		"Assets/Resources/Sound/s_Sword_Swing_Wood_03.wav",
-			// 		"Assets/Resources/Sound/s_Sword_Swing_Wood_04.wav",
-			// 	],
-			// 	onUseSoundVolume: 0.3,
-			// },
 			accessoryPaths: ["Assets/Resources/Accessories/Weapons/Swords/WoodSword/wood_sword.prefab"],
 			image: "Assets/Resources/ItemRenders/wood_sword.png",
-			// melee: {
-			// 	instantDamage: true,
-			// 	// hitDelay: 0.1345,
-			// 	onHitPrefabPath: "Assets/Resources/Yos/Prefab/SwordHitVFX.prefab",
-			// 	onUseVFX: [
-			// 		"Assets/Resources/Yos/Prefab/SwordSwingVFX01.prefab",
-			// 		"Assets/Resources/Yos/Prefab/SwordSwingVFX02.prefab",
-			// 	],
-			// 	onUseVFX_FP: [
-			// 		"Assets/Resources/Yos/Prefab/SwordSwingVFX_FP01.prefab",
-			// 		"Assets/Resources/Yos/Prefab/SwordSwingVFX_FP02.prefab",
-			// 	],
-			// 	canHitMultipleTargets: false,
-			// 	damageType: DamageType.SWORD,
-			// 	damage: 18,
-			// },
 		});
 
 		if (Game.IsServer()) {
@@ -78,27 +44,6 @@ export default class DemoManager extends AirshipBehaviour {
 					}
 				}),
 			);
-
-			// spawn ball
-			// task.spawn(() => {
-			// 	for (let i = 0; i < 3; i++) {
-			// 		const ballGo = Object.Instantiate<GameObject>(
-			// 			this.ballPrefab,
-			// 			this.ballSpawnPoint.position,
-			// 			this.ballSpawnPoint.rotation,
-			// 		);
-			// 		NetworkUtil.Spawn(ballGo);
-
-			// 		// const cubeGo = Object.Instantiate<GameObject>(
-			// 		// 	this.cubePrefab,
-			// 		// 	ballGo.transform.position.add(new Vector3(0, 1, 0)),
-			// 		// 	Quaternion.identity,
-			// 		// );
-			// 		// NetworkUtil.Spawn(cubeGo);
-			// 		// cubeGo.GetComponent<NetworkObject>()!.SetParent(ballGo.GetComponent<NetworkObject>()!);
-			// 		// task.wait(1);
-			// 	}
-			// });
 		}
 		if (Game.IsClient()) {
 			// Optional: use locked camera mode for first person support
@@ -131,9 +76,6 @@ export default class DemoManager extends AirshipBehaviour {
 		for (let go of this.cleanupOnStart) {
 			Object.Destroy(go);
 		}
-
-		// pen testing
-		// PlayerManagerBridge.Instance.transform.SetParent(this.transform);
 	}
 
 	public override Update(dt: number): void {
@@ -146,29 +88,12 @@ export default class DemoManager extends AirshipBehaviour {
 
 	public SpawnPlayer(player: Player): void {
 		if (!this.spawnCharacter) return;
-		// fun little experiment
-		// if (this.useTaggedSpawns) {
-		// 	const taggedSpawns = Airship.tags.GetTagged(Tags.AirshipTest_Spawn);
-		// 	if (taggedSpawns.size() > 0) {
-		// 		player.SpawnCharacter(RandomUtil.FromArray(taggedSpawns.map((v) => v.transform.position)));
-		// 		return;
-		// 	}
-		// }
+
 		print("[demo] spawning player");
 		const character = player.SpawnCharacter(this.spawnPosition.transform.position, {
 			lookDirection: this.spawnPosition.transform.forward,
 			// customCharacterTemplate: AssetCache.LoadAsset("Shared/Resources/CharacterWithLight Variant.prefab"),
 		});
-		const collider = character.transform.Find("ProximityReceiver")?.GetComponent<Collider>();
-		if (collider) {
-			collider.isTrigger = false;
-		}
-		// character.inventory.AddItem(new ItemStack("WoodSword", 10));
-
-		// const cubeGo = Object.Instantiate(this.cubePrefab);
-		// NetworkUtil.Spawn(cubeGo);
-		// cubeGo.GetComponent<NetworkObject>()!.SetParent(character.networkObject);
-		// cubeGo.transform.localPosition = new Vector3(0, 1, 0);
 
 		character.inventory.AddItem(new ItemStack("WoodSword"));
 	}
