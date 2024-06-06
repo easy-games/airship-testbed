@@ -45,8 +45,8 @@ GameObject:
   - component: {fileID: 8865312553734803602}
   - component: {fileID: 8466345760860630873}
   - component: {fileID: 2427062692221424655}
-  - component: {fileID: 5804318436023760946}
   - component: {fileID: 4201144580923120534}
+  - component: {fileID: 1195238442789411321}
   m_Layer: 0
   m_Name: AirshipTrapezoid (2)
   m_TagString: Untagged
@@ -62,8 +62,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1350641913391432926}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.29699498, y: 0.39180884, z: -0.8089699, w: -0.3222539}
-  m_LocalPosition: {x: -3.4694465e-18, y: 0.00000023841858, z: 0}
+  m_LocalRotation: {x: 0.2865299, y: 0.04192312, z: -0.9388444, w: 0.1863179}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.49567, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -121,23 +121,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &5804318436023760946
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1350641913391432926}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colorSettings:
-  - materialColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-  addedByEditorScript: 0
 --- !u!114 &4201144580923120534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -156,6 +139,21 @@ MonoBehaviour:
   trapDepth: 0.775
   topColor: {r: 0.3915094, g: 0.6486883, b: 1, a: 1}
   bottomColor: {r: 0.39658976, g: 0.25698647, b: 0.5188679, a: 1}
+--- !u!114 &1195238442789411321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1350641913391432926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - baseColor: {r: 0.3921569, g: 0.64705884, b: 1, a: 1}
+  addedByEditorScript: 0
 --- !u!1 &1432666070379167125
 GameObject:
   m_ObjectHideFlags: 0
@@ -167,7 +165,7 @@ GameObject:
   - component: {fileID: 7905453630978803992}
   - component: {fileID: 6628511073509619084}
   - component: {fileID: 8484728013859311626}
-  - component: {fileID: 229979551221300241}
+  - component: {fileID: 4026450968349916824}
   m_Layer: 0
   m_Name: AirshipCylinder
   m_TagString: Untagged
@@ -220,7 +218,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 695b9d21ad1cf644ebc554aa1a9aa4a7, type: 2}
+  - {fileID: 2100000, guid: a2d7327811c038f4e963df292a5969c9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -242,7 +240,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &229979551221300241
+--- !u!114 &4026450968349916824
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -251,13 +249,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1432666070379167125}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
+  - baseColor: {r: 1, g: 0.8260063, b: 0.43921566, a: 1}
   addedByEditorScript: 0
 --- !u!1 &2668250343000437183
 GameObject:
@@ -326,8 +322,8 @@ GameObject:
   - component: {fileID: 5490801520492672510}
   - component: {fileID: 2298404149468847740}
   - component: {fileID: 3048386562785843167}
-  - component: {fileID: 4010820081746759466}
   - component: {fileID: 7803541834260127693}
+  - component: {fileID: 2589154376518775960}
   m_Layer: 0
   m_Name: AirshipTrapezoid
   m_TagString: Untagged
@@ -343,8 +339,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2819597749701383536}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.68105525, y: -0.19061266, z: -0.19410127, w: -0.6798201}
-  m_LocalPosition: {x: -3.4694465e-18, y: 0.00000023841858, z: 0}
+  m_LocalRotation: {x: -0.6367032, y: -0.07591099, z: 0.14724793, w: 0.7531034}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.49567, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -402,23 +398,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &4010820081746759466
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2819597749701383536}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colorSettings:
-  - materialColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-  addedByEditorScript: 0
 --- !u!114 &7803541834260127693
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -437,6 +416,21 @@ MonoBehaviour:
   trapDepth: 0.775
   topColor: {r: 0.3915094, g: 0.6486883, b: 1, a: 1}
   bottomColor: {r: 0.39658976, g: 0.25698647, b: 0.5188679, a: 1}
+--- !u!114 &2589154376518775960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2819597749701383536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - baseColor: {r: 0.3921569, g: 0.64705884, b: 1, a: 1}
+  addedByEditorScript: 0
 --- !u!1 &4649428686546540818
 GameObject:
   m_ObjectHideFlags: 0
@@ -448,8 +442,8 @@ GameObject:
   - component: {fileID: 4261560701056825488}
   - component: {fileID: 1081296739279947740}
   - component: {fileID: 5978870542043611363}
-  - component: {fileID: 2540428094475986295}
   - component: {fileID: 9183753751707398644}
+  - component: {fileID: 4765217732366866130}
   m_Layer: 0
   m_Name: AirshipTrapezoid (1)
   m_TagString: Untagged
@@ -465,8 +459,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4649428686546540818}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.74900365, y: 0.53857523, z: -0.23967217, w: 0.302469}
-  m_LocalPosition: {x: -3.4694465e-18, y: 0.00000023841858, z: 0}
+  m_LocalRotation: {x: 0.2872448, y: 0.3803746, z: 0.306534, w: 0.82391906}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.49566996, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -524,23 +518,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &2540428094475986295
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4649428686546540818}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colorSettings:
-  - materialColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-  addedByEditorScript: 0
 --- !u!114 &9183753751707398644
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -559,6 +536,21 @@ MonoBehaviour:
   trapDepth: 0.775
   topColor: {r: 0.3915094, g: 0.6486883, b: 1, a: 1}
   bottomColor: {r: 0.39658976, g: 0.25698647, b: 0.5188679, a: 1}
+--- !u!114 &4765217732366866130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4649428686546540818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - baseColor: {r: 0.3921569, g: 0.64705884, b: 1, a: 1}
+  addedByEditorScript: 0
 --- !u!1 &5699207121785817789
 GameObject:
   m_ObjectHideFlags: 0
@@ -570,7 +562,7 @@ GameObject:
   - component: {fileID: 6700297295775668173}
   - component: {fileID: 9108778952233693472}
   - component: {fileID: 7230456593846716622}
-  - component: {fileID: 1251251436234280247}
+  - component: {fileID: 328213899182390873}
   m_Layer: 0
   m_Name: AirshipTorus
   m_TagString: Untagged
@@ -623,7 +615,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 695b9d21ad1cf644ebc554aa1a9aa4a7, type: 2}
+  - {fileID: 2100000, guid: a2d7327811c038f4e963df292a5969c9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -645,7 +637,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1251251436234280247
+--- !u!114 &328213899182390873
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -654,13 +646,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 5699207121785817789}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
+  - baseColor: {r: 1, g: 0.827451, b: 0.4392157, a: 1}
   addedByEditorScript: 0
 --- !u!1 &6128172540185002467
 GameObject:
@@ -673,8 +663,8 @@ GameObject:
   - component: {fileID: 2249462873600610242}
   - component: {fileID: 3766403737636451212}
   - component: {fileID: 6667489080953500531}
-  - component: {fileID: 6156872081379478008}
   - component: {fileID: 8875872619665823714}
+  - component: {fileID: 3208711062785515662}
   m_Layer: 0
   m_Name: AirshipTrapezoid (4)
   m_TagString: Untagged
@@ -690,8 +680,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6128172540185002467}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.17319563, y: -0.16044478, z: -0.40858743, w: 0.8816559}
-  m_LocalPosition: {x: -3.4694465e-18, y: 0.00000023841858, z: 0}
+  m_LocalRotation: {x: -0.110737294, y: 0.99198467, z: 0.03028024, w: 0.05279026}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.49567, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -749,23 +739,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &6156872081379478008
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6128172540185002467}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colorSettings:
-  - materialColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-  addedByEditorScript: 0
 --- !u!114 &8875872619665823714
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -784,6 +757,21 @@ MonoBehaviour:
   trapDepth: 0.775
   topColor: {r: 0.3915094, g: 0.6486883, b: 1, a: 1}
   bottomColor: {r: 0.39658976, g: 0.25698647, b: 0.5188679, a: 1}
+--- !u!114 &3208711062785515662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6128172540185002467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - baseColor: {r: 0.3921569, g: 0.64705884, b: 1, a: 1}
+  addedByEditorScript: 0
 --- !u!1 &6859088201741961591
 GameObject:
   m_ObjectHideFlags: 0
@@ -795,8 +783,8 @@ GameObject:
   - component: {fileID: 8332459220741373202}
   - component: {fileID: 5285251946476726345}
   - component: {fileID: 8634573941058525061}
-  - component: {fileID: 5877264623590238930}
   - component: {fileID: 7658450587521004936}
+  - component: {fileID: 3737621492713438748}
   m_Layer: 0
   m_Name: AirshipTrapezoid (5)
   m_TagString: Untagged
@@ -812,8 +800,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6859088201741961591}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.34011698, y: -0.6141865, z: -0.19215737, w: 0.68569016}
-  m_LocalPosition: {x: -3.4694465e-18, y: 0.00000023841858, z: 0}
+  m_LocalRotation: {x: 0.21716462, y: 0.744784, z: -0.58882916, w: 0.22675239}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.49566996, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -871,23 +859,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &5877264623590238930
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6859088201741961591}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colorSettings:
-  - materialColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-  addedByEditorScript: 0
 --- !u!114 &7658450587521004936
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -906,6 +877,21 @@ MonoBehaviour:
   trapDepth: 0.775
   topColor: {r: 0.3915094, g: 0.6486883, b: 1, a: 1}
   bottomColor: {r: 0.39658976, g: 0.25698647, b: 0.5188679, a: 1}
+--- !u!114 &3737621492713438748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6859088201741961591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - baseColor: {r: 0.3921569, g: 0.64705884, b: 1, a: 1}
+  addedByEditorScript: 0
 --- !u!1 &7199311627603628143
 GameObject:
   m_ObjectHideFlags: 0
@@ -917,8 +903,8 @@ GameObject:
   - component: {fileID: 5732587071934392733}
   - component: {fileID: 7591223262388514874}
   - component: {fileID: 8324251579121522905}
-  - component: {fileID: 4104126292178937498}
   - component: {fileID: 6954780467982964773}
+  - component: {fileID: 4400096520713265423}
   m_Layer: 0
   m_Name: AirshipTrapezoid (3)
   m_TagString: Untagged
@@ -934,8 +920,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7199311627603628143}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.016769588, y: -0.6170333, z: 0.74692893, w: -0.24715556}
-  m_LocalPosition: {x: -3.4694465e-18, y: 0.00000023841858, z: 0}
+  m_LocalRotation: {x: -0.4860734, y: -0.057162568, z: -0.022018805, w: 0.87176853}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.49566996, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -993,23 +979,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &4104126292178937498
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7199311627603628143}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colorSettings:
-  - materialColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-  addedByEditorScript: 0
 --- !u!114 &6954780467982964773
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1028,3 +997,18 @@ MonoBehaviour:
   trapDepth: 0.775
   topColor: {r: 0.3915094, g: 0.6486883, b: 1, a: 1}
   bottomColor: {r: 0.39658976, g: 0.25698647, b: 0.5188679, a: 1}
+--- !u!114 &4400096520713265423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7199311627603628143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - baseColor: {r: 0.3921569, g: 0.64705884, b: 1, a: 1}
+  addedByEditorScript: 0

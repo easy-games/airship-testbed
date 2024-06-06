@@ -6274,6 +6274,34 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 2719586711620922124}
       modified: 1
+    - name: spineBone
+      type: object
+      objectType: Transform
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: headBone
+      type: object
+      objectType: Transform
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
     displayName: 
   contextOverwritten: 0
 --- !u!114 &7088081142443290682
@@ -6383,7 +6411,7 @@ MonoBehaviour:
   slopeVisualizer: {fileID: 473010626989301856}
   isClientAthoritative: 1
   ticksUntilReconcile: 1
-  ovserverRotationLerpDelta: 10
+  observerRotationLerpMod: 1
   disableInput: 0
   useGravity: 1
   useGravityWhileGrounded: 0
@@ -6446,7 +6474,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   worldmodelAnimancer: {fileID: 6842595581887861874}
   events: {fileID: 9930229533298952}
-  SlideAnimation: {fileID: 7400000, guid: 3e640d7fcaf774c91b154bdcbeae903c, type: 2}
+  SlideAnimation: {fileID: 0}
+  jumpStart: {fileID: 1935616708919860678, guid: 875d50be9d6291e44b473c4df0b7172b, type: 3}
+  jumpLoop: {fileID: -7401292744004777105, guid: 875d50be9d6291e44b473c4df0b7172b, type: 3}
+  jumpEnd: {fileID: 1630554268186973954, guid: 875d50be9d6291e44b473c4df0b7172b, type: 3}
   moveTransition:
     _FadeDuration: 0.1
     _Events:
