@@ -3,6 +3,9 @@ import { Player } from "./Player/Player";
 import { CSArrayUtil } from "./Util/CSArrayUtil";
 import { Signal } from "./Util/Signal";
 
+/**
+ * Scene management at run-time.
+ */
 export class SceneManager {
 	/**
 	 * Called when a client presence changes within a scene, before the server rebuilds observers.
