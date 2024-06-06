@@ -14,6 +14,8 @@ export default class DemoManager extends AirshipBehaviour {
 	private deathCount = 0;
 	public cleanupOnStart!: GameObject[];
 
+	public spawnCharacter = false;
+
 	private bin = new Bin();
 
 	@Header("Network Ball")
@@ -143,6 +145,7 @@ export default class DemoManager extends AirshipBehaviour {
 	}
 
 	public SpawnPlayer(player: Player): void {
+		if (!this.spawnCharacter) return;
 		// fun little experiment
 		// if (this.useTaggedSpawns) {
 		// 	const taggedSpawns = Airship.tags.GetTagged(Tags.AirshipTest_Spawn);

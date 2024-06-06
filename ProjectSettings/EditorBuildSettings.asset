@@ -15,7 +15,7 @@ EditorBuildSettings:
     path: Packages/gg.easy.airship/Runtime/Scenes/Login.unity
     guid: 7cbc249662f9a43ff80aee8c8cb84984
   - enabled: 1
-    path: Assets/Scenes/AirshipPlatformDemo.unity
+    path: Assets/Scenes/Movement.unity
     guid: 7adf34f37f4884c5ab92c16c58f38874
   - enabled: 1
     path: Assets/Scenes/TopDownBattleScene.unity

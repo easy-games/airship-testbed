@@ -8,7 +8,7 @@ export class MenuUtil {
 		{
 			title: "Movement",
 			subtitle: "Varying surfaces to test character movement.",
-			sceneName: "AirshipPlatformDemo",
+			sceneName: "Movement",
 		},
 		{
 			title: "Client Sided",
