@@ -427,28 +427,28 @@ declare namespace debug {
 	): T extends `${infer A}${infer B}${infer C}${infer D}${infer E}${infer _}`
 		? LuaTuple<TS.InfoFlags<[A, B, C, D, E]>>
 		: T extends `${infer A}${infer B}${infer C}${infer D}${infer _}`
-			? LuaTuple<TS.InfoFlags<[A, B, C, D]>>
-			: T extends `${infer A}${infer B}${infer C}${infer _}`
-				? LuaTuple<TS.InfoFlags<[A, B, C]>>
-				: T extends `${infer A}${infer B}${infer _}`
-					? LuaTuple<TS.InfoFlags<[A, B]>>
-					: T extends `${infer A}${infer _}`
-						? LuaTuple<TS.InfoFlags<[A]>>
-						: LuaTuple<[unknown, unknown, unknown, unknown, unknown]>;
+		? LuaTuple<TS.InfoFlags<[A, B, C, D]>>
+		: T extends `${infer A}${infer B}${infer C}${infer _}`
+		? LuaTuple<TS.InfoFlags<[A, B, C]>>
+		: T extends `${infer A}${infer B}${infer _}`
+		? LuaTuple<TS.InfoFlags<[A, B]>>
+		: T extends `${infer A}${infer _}`
+		? LuaTuple<TS.InfoFlags<[A]>>
+		: LuaTuple<[unknown, unknown, unknown, unknown, unknown]>;
 	function info<T extends string>(
 		functionOrLevel: Callback | number,
 		options: T,
 	): T extends `${infer A}${infer B}${infer C}${infer D}${infer E}${infer _}`
 		? LuaTuple<TS.InfoFlags<[A, B, C, D, E]>>
 		: T extends `${infer A}${infer B}${infer C}${infer D}${infer _}`
-			? LuaTuple<TS.InfoFlags<[A, B, C, D]>>
-			: T extends `${infer A}${infer B}${infer C}${infer _}`
-				? LuaTuple<TS.InfoFlags<[A, B, C]>>
-				: T extends `${infer A}${infer B}${infer _}`
-					? LuaTuple<TS.InfoFlags<[A, B]>>
-					: T extends `${infer A}${infer _}`
-						? LuaTuple<TS.InfoFlags<[A]>>
-						: LuaTuple<[unknown, unknown, unknown, unknown, unknown]>;
+		? LuaTuple<TS.InfoFlags<[A, B, C, D]>>
+		: T extends `${infer A}${infer B}${infer C}${infer _}`
+		? LuaTuple<TS.InfoFlags<[A, B, C]>>
+		: T extends `${infer A}${infer B}${infer _}`
+		? LuaTuple<TS.InfoFlags<[A, B]>>
+		: T extends `${infer A}${infer _}`
+		? LuaTuple<TS.InfoFlags<[A]>>
+		: LuaTuple<[unknown, unknown, unknown, unknown, unknown]>;
 }
 
 interface TimeManager {
@@ -961,4 +961,13 @@ interface AirshipLongPress extends MonoBehaviour {
 interface RectTransform {
 	IsVisibleFrom(camera: Camera): boolean;
 	IsFullyVisibleFrom(camera: Camera): boolean;
+}
+
+interface CoreScriptingManager extends MonoBehaviour {
+	OnClientPresenceChangeStart(
+		callback: (scene: Scene, connection: NetworkConnection, added: boolean) => void,
+	): EngineEventConnection;
+	OnClientPresenceChangeEnd(
+		callback: (scene: Scene, connection: NetworkConnection, added: boolean) => void,
+	): EngineEventConnection;
 }

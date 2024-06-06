@@ -115,6 +115,14 @@ export class ProtectedSceneManagerSingleton implements OnStart {
 			}
 			return SceneManager.SetActiveScene(scene);
 		});
+
+		const scriptingManager = GameObject.Find("CoreScriptingManager").GetComponent<CoreScriptingManager>()!;
+		scriptingManager.OnClientPresenceChangeStart((scene, connection, added) => {
+			contextbridge.broadcast("SceneManager:OnClientPresenceChangeStart", scene.name, connection.ClientId, added);
+		});
+		scriptingManager.OnClientPresenceChangeStart((scene, connection, added) => {
+			contextbridge.broadcast("SceneManager:OnClientPresenceChangeEnd", scene.name, connection.ClientId, added);
+		});
 	}
 
 	public IsProtectedSceneName(sceneName: string): boolean {

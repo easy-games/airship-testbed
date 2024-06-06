@@ -1,9 +1,24 @@
 import { Game } from "./Game";
 import { Player } from "./Player/Player";
 import { CSArrayUtil } from "./Util/CSArrayUtil";
+import { Signal } from "./Util/Signal";
 
 export class SceneManager {
-	OnStart(): void {}
+	/**
+	 * Called when a client presence changes within a scene, before the server rebuilds observers.
+	 */
+	public static readonly onClientPresenceChangeStart = new Signal<
+		[clientId: number, sceneName: string, added: boolean]
+	>();
+
+	/**
+	 * Called when a client presence changes within a scene, after the server rebuilds observers.
+	 *
+	 * When this is called, the client has fully loaded the scene.
+	 */
+	public static readonly onClientPresenceChangeEnd = new Signal<
+		[clientId: number, sceneName: string, added: boolean]
+	>();
 
 	/**
 	 * Sets the scene to be active.
@@ -139,5 +154,25 @@ export class SceneManager {
 	 */
 	public static GetScenes(): Scene[] {
 		return CSArrayUtil.Convert(Bridge.GetScenes());
+	}
+
+	/**
+	 * Searches through the Scenes loaded for a Scene with the given name.
+	 *
+	 * The name has to be without the .unity extension.
+	 * The name can be the last part of the name as displayed in the BuildSettings window in which case the first Scene that matches will be returned.
+	 * The name can also the be path as displayed in the Build Settings (still without the .unity extension), in which case only the exact match will be returned.
+	 * This is case insensitive.
+	 *
+	 * @param sceneName
+	 * @returns A reference to the Scene, if valid. If not, an invalid Scene is returned. Returns undefined if no scene found.
+	 */
+	public static GetSceneByName(sceneName: string): Scene | undefined {
+		for (let scene of this.GetScenes()) {
+			if (scene.name === sceneName) {
+				return scene;
+			}
+		}
+		return undefined;
 	}
 }
