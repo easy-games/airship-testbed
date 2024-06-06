@@ -454,6 +454,31 @@
 	},
 	"flamework": {
 		"version": 1,
-		"identifiers": {}
+		"identifiers": {
+			"typescript:Code/TestSingleton@TestSingleton": "TestSingleton@TestSingleton",
+			"typescript:Code/AirshipPlatformDemo/ClientScript@ClientScript": "AirshipPlatformDemo/ClientScript@ClientScript",
+			"typescript:Code/AirshipPlatformDemo/PromptAboveBall@PromptAboveBall": "AirshipPlatformDemo/PromptAboveBall@PromptAboveBall",
+			"typescript:Code/AirshipPlatformDemo/ServerScript@TestScript": "AirshipPlatformDemo/ServerScript@TestScript",
+			"typescript:Code/TopDownBattle/TopDownBattleEnemies/TopDownBattleEnemy@TopDownBattleEnemy": "TopDownBattle/TopDownBattleEnemies/TopDownBattleEnemy@TopDownBattleEnemy",
+			"typescript:Code/TopDownBattle/TopDownBattleEnemies/TopDownBattleEnemySpawner@TopDownBattleEnemySpawner": "TopDownBattle/TopDownBattleEnemies/TopDownBattleEnemySpawner@TopDownBattleEnemySpawner",
+			"typescript:Code/TopDownBattle/TopDownBattleGame@TopDownBattleGame": "TopDownBattle/TopDownBattleGame@TopDownBattleGame",
+			"typescript:Code/TopDownBattle/TopDownItems/TopDownRangedItem@TopDownBattleRangedItem": "TopDownBattle/TopDownItems/TopDownRangedItem@TopDownBattleRangedItem",
+			"typescript:Code/AirshipPlatformDemo/DemoManager@DemoManager": "AirshipPlatformDemo/DemoManager@DemoManager",
+			"typescript:Code/TopDownBattle/TopDownBattlePlayerSpawner@TopDownBattlePlayerSpawner": "TopDownBattle/TopDownBattlePlayerSpawner@TopDownBattlePlayerSpawner",
+			"typescript:Code/TopDownScene/GameManager@GameManager": "TopDownScene/GameManager@GameManager",
+			"typescript:Code/Menu/MenuUtil@MenuUtil": "Menu/MenuUtil@MenuUtil",
+			"typescript:Code/Menu/SceneEntryComponent@SceneEntryComponent": "Menu/SceneEntryComponent@SceneEntryComponent",
+			"typescript:Code/Menu/Menu@Menu": "Menu/Menu@Menu",
+			"typescript:Code/Components/CharacterSpawner@CharacterSpawner": "Components/CharacterSpawner@CharacterSpawner",
+			"typescript:Code/Menu/ClientSceneComponent@ClientSceneComponent": "Menu/ClientSceneComponent@ClientSceneComponent",
+			"typescript:Code/MultiScene/TeleportToRoom@TeleportToRoom": "MultiScene/TeleportToRoom@TeleportToRoom",
+			"typescript:Code/TopDownBattle/TopDownBattleCameraComponent@TopDownBattleCameraComponent": "TopDownBattle/TopDownBattleCameraComponent@TopDownBattleCameraComponent",
+			"typescript:Code/AirshipPlatformDemo/CubeMover@CubeMover": "AirshipPlatformDemo/CubeMover@CubeMover",
+			"typescript:Code/TopDownBattle/TopDownBattleCharacter@TopDownBattleCharacter": "TopDownBattle/TopDownBattleCharacter@TopDownBattleCharacter",
+			"typescript:Code/AirshipPlatformDemo/Scoreboard@Scoreboard": "AirshipPlatformDemo/Scoreboard@Scoreboard",
+			"typescript:Code/TopDownBattle/TopDownBattleLevelGenerator@TopDownBattleLevelGenerator": "TopDownBattle/TopDownBattleLevelGenerator@TopDownBattleLevelGenerator",
+			"typescript:Code/TopDownScene/CubeSpinner@CubeSpinner": "TopDownScene/CubeSpinner@CubeSpinner",
+			"typescript:Code/TopDownScene/NetComponent@NetComponent": "TopDownScene/NetComponent@NetComponent"
+		}
 	}
 }

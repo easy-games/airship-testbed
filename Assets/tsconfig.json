@@ -24,10 +24,7 @@
     "typeRoots": [
       "Typescript~/node_modules/@easy-games"
     ],
-    "skipLibCheck": true,
-    "plugins": [
-			{ "transform": "@easy-games/unity-flamework-transformer" }
-		]
+    "skipLibCheck": true
   },
   "airship": {
     "type": "game",
