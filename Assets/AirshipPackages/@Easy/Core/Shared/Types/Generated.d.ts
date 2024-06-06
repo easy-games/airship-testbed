@@ -22273,6 +22273,7 @@ interface BridgeConstructor {
     LoadGlobalSceneByName(sceneName: string): void;
     LoadScene(sceneName: string, restartLuau: boolean, loadSceneMode: LoadSceneMode): void;
     LoadSceneForConnection(conn: NetworkConnection, sceneName: string, makeActiveScene: boolean): void;
+    LoadSceneFromAssetBundle(sceneName: string, loadSceneMode: LoadSceneMode): void;
     MakeMaterialPropertyBlock(): MaterialPropertyBlock;
     MakeMesh(): Mesh;
     MakeSprite(texture2D: Texture2D): Sprite;
@@ -23804,6 +23805,7 @@ interface ScrollRectEventConstructor {
 declare const ScrollRectEvent: ScrollRectEventConstructor;
     
 interface NetworkTransform extends NetworkBehaviour {
+    _clientAuthoritative: boolean;
     TakenOwnership: boolean;
     ParentBehaviour: NetworkBehaviour;
 

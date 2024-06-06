@@ -52,7 +52,7 @@ export class ProtectedSceneManagerSingleton implements OnStart {
 					return;
 				}
 
-				Bridge.LoadScene(sceneName, false, LoadSceneMode.Additive);
+				Bridge.LoadSceneFromAssetBundle(sceneName, LoadSceneMode.Additive);
 			},
 		);
 

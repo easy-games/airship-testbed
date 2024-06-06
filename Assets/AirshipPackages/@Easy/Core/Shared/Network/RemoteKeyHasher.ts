@@ -44,7 +44,7 @@ export class RemoteKeyHasher {
 	public static GetCallerContext(): CallerContext | undefined {
 		const context = debug.info(4, "s")[0];
 		if (!context) return undefined;
-		const isPackage = StringUtils.startsWith(context, "@");
+		const isPackage = StringUtils.startsWith(context, "airshippackages");
 		if (!isPackage) {
 			return {
 				isGame: true,
@@ -53,8 +53,8 @@ export class RemoteKeyHasher {
 			};
 		}
 		const parts = context.split("/");
-		const packageOrg = parts[0];
-		const packageName = parts[1];
+		const packageOrg = parts[1];
+		const packageName = parts[2];
 		return {
 			isGame: false,
 			isPackage: true,
