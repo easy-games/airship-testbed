@@ -24,7 +24,7 @@ const Y_LOCKED_ROTATION = 0;
 const TAU = math.pi * 2;
 
 let MOUSE_SENS_SCALAR = 15;
-let MOUSE_SMOOTHING = 1.35;
+let MOUSE_SMOOTHING = 1.6;
 
 export class HumanoidCameraMode extends CameraMode {
 	private readonly bin = new Bin();
@@ -183,7 +183,8 @@ export class HumanoidCameraMode extends CameraMode {
 					// 	mouseDelta = new Vector2(math.pow(math.abs(mouseDelta.x), 1.8) * math.sign(mouseDelta.x), math.pow(math.abs(mouseDelta.y), 1.8) * math.sign(mouseDelta.y));
 					// }
 
-					const smoothFactor = math.pow(1 / MOUSE_SMOOTHING, Time.deltaTime * 120);
+					const smoothFactor = math.pow(1 / (1 + Airship.input.GetMouseSmoothing()), Time.deltaTime * 120);
+					// print(smoothFactor);
 					this.smoothVector = new Vector2(
 						Mathf.Lerp(this.smoothVector.x, mouseDelta.x, smoothFactor),
 						Mathf.Lerp(this.smoothVector.y, mouseDelta.y, smoothFactor),

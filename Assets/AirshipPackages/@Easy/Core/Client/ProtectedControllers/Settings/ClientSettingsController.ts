@@ -8,6 +8,7 @@ import { ClientSettingsFile } from "./ClientSettingsFile";
 
 const defaultData: ClientSettingsFile = {
 	mouseSensitivity: 2,
+	mouseSmoothing: 0.5,
 	touchSensitivity: 0.5,
 	globalVolume: 1,
 	ambientVolume: 0.1,
@@ -56,6 +57,10 @@ export class ClientSettingsController implements OnStart {
 
 		contextbridge.callback<() => number>("ClientSettings:GetMouseSensitivity", () => {
 			return this.GetMouseSensitivity();
+		});
+
+		contextbridge.callback<() => number>("ClientSettings:GetMouseSmoothing", () => {
+			return this.GetMouseSmoothing();
 		});
 
 		contextbridge.callback<() => number>("ClientSettings:GetTouchSensitivity", () => {
@@ -112,8 +117,17 @@ export class ClientSettingsController implements OnStart {
 		return this.data.mouseSensitivity;
 	}
 
+	public GetMouseSmoothing(): number {
+		return this.data.mouseSmoothing;
+	}
+
 	public SetMouseSensitivity(value: number): void {
 		this.data.mouseSensitivity = value;
+		this.unsavedChanges = true;
+	}
+
+	public SetMouseSmoothing(value: number): void {
+		this.data.mouseSmoothing = value;
 		this.unsavedChanges = true;
 	}
 

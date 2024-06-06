@@ -716,6 +716,13 @@ export class AirshipInputSingleton implements OnStart {
 		);
 	}
 
+	/** Returns mouse smoothing (0 is no smoothing). */
+	public GetMouseSmoothing() {
+		return (
+			contextbridge.invoke<() => number>("ClientSettings:GetMouseSmoothing", LuauContext.Protected)
+		);
+	}
+
 	/** Returns touch sensitivity based on player's setting & game's sensitivity multiplier. */
 	public GetTouchSensitivity() {
 		return (

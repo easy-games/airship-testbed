@@ -60,7 +60,7 @@ export class AirshipCharacterCameraSingleton implements OnStart {
 	public humanoidCameraMode: HumanoidCameraMode | undefined;
 	private orbitCameraMode: OrbitCameraMode | undefined;
 
-	private characterCameraMode: CharacterCameraMode = CharacterCameraMode.Orbit;
+	private characterCameraMode: CharacterCameraMode = CharacterCameraMode.Locked;
 
 	private overrideFOV = new Map<CharacterCameraType, number>();
 

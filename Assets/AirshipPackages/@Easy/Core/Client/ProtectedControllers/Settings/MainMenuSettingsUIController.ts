@@ -26,6 +26,13 @@ export class MainMenuSettingsUIController implements OnStart {
 			},
 		);
 		this.SetupSlider(
+			this.mainMenuController.refs.GetValue("Settings", "MouseSmoothing"),
+			this.clientSettingsController.GetMouseSmoothing(),
+			(val) => {
+				this.clientSettingsController.SetMouseSmoothing(val);
+			},
+		);
+		this.SetupSlider(
 			this.mainMenuController.refs.GetValue("Settings", "TouchSensitivity"),
 			this.clientSettingsController.GetTouchSensitivity(),
 			(val) => {
