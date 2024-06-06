@@ -7548,9 +7548,9 @@ MonoBehaviour:
       refPath: 
       decorators: []
       nullable: 0
-      serializedValue: 
+      serializedValue: 1
       serializedObject: {fileID: 0}
-      modified: 0
+      modified: 1
     displayName: 
   contextOverwritten: 0
 --- !u!114 &913210014
@@ -7560,7 +7560,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 913210011}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
