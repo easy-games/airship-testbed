@@ -13,12 +13,19 @@ export default class DemoManager extends AirshipBehaviour {
 	public useTaggedSpawns = false;
 	private deathCount = 0;
 	public cleanupOnStart!: GameObject[];
+	public TestSound!: AudioClip;
 
 	public spawnCharacter = false;
 
 	private bin = new Bin();
 
 	override Start(): void {
+		// task.spawn(() => {
+		// 	while (task.wait(1)) {
+		// 		AudioManager.PlayClipGlobal(this.TestSound);
+		// 	}
+		// })
+
 		Airship.input.CreateAction("interact", Binding.Key(Key.F));
 
 		ItemUtil.RegisterItem("WoodSword", {

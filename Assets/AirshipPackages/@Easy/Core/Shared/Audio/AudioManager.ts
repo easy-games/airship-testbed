@@ -74,8 +74,8 @@ export class AudioManager {
 				if (audioSource.IsDestroyed()) return;
 				audioSource.Stop();
 				this.globalAudioSources.delete(audioSource.gameObject.GetInstanceID());
-				// PoolManager.ReleaseObject(audioSource.gameObject);
-				Object.Destroy(audioSource.gameObject);
+				PoolManager.ReleaseObject(audioSource.gameObject);
+				// Object.Destroy(audioSource.gameObject);
 			});
 		}
 		return audioSource;
@@ -130,8 +130,8 @@ export class AudioManager {
 		if (!audioSource.loop) {
 			task.delay(clip.length + 1, () => {
 				audioSource.Stop();
-				// PoolManager.ReleaseObject(audioSource.gameObject);
-				Object.Destroy(audioSource.gameObject);
+				PoolManager.ReleaseObject(audioSource.gameObject);
+				// Object.Destroy(audioSource.gameObject);
 			});
 		}
 		return audioSource;
@@ -141,8 +141,8 @@ export class AudioManager {
 		if (!this.audioSourceTemplate || this.audioSourceTemplate.IsDestroyed()) {
 			this.CacheAudioSources();
 		}
-		// const go = PoolManager.SpawnObject(this.audioSourceTemplate!, position, Quaternion.identity);
-		const go = Object.Instantiate(this.audioSourceTemplate!, position, Quaternion.identity);
+		const go = PoolManager.SpawnObject(this.audioSourceTemplate!, position, Quaternion.identity);
+		// const go = Object.Instantiate(this.audioSourceTemplate!, position, Quaternion.identity);
 		go.transform.SetParent(CoreRefs.rootTransform);
 		go.SetActive(true);
 		return go.GetComponent<AudioSource>()!;
