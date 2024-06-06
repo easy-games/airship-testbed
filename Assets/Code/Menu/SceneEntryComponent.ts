@@ -18,8 +18,12 @@ export default class SceneEntryComponent extends AirshipBehaviour {
 		this.subtitle.text = entry.subtitle;
 	}
 
-	private SetColorState(hovered: boolean) {
-		this.bgImage.TweenGraphicColor(hovered ? Theme.primary : ColorUtil.HexToColor("616365"), 0.12);
+	private SetColorState(hovered: boolean, immediate?: boolean) {
+		if (immediate) {
+			this.bgImage.color = hovered ? Theme.primary : ColorUtil.HexToColor("444A4D");
+			return;
+		}
+		this.bgImage.TweenGraphicColor(hovered ? Theme.primary : ColorUtil.HexToColor("444A4D"), 0.12);
 	}
 
 	override Start(): void {
@@ -32,9 +36,10 @@ export default class SceneEntryComponent extends AirshipBehaviour {
 				SceneManager.LoadOfflineScene(this.entry.sceneName);
 				return;
 			}
+
+			this.SetColorState(false, true);
 			const result = MenuUtil.loadGlobalSceneRequest.client.FireServer(this.entry.sceneName);
 			if (result) {
-				this.SetColorState(false);
 				MenuUtil.menu.Hide();
 			}
 		});
