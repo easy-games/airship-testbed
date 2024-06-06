@@ -36,7 +36,6 @@ export default class Menu extends AirshipBehaviour {
 	}
 
 	override Start(): void {
-		print("Menu.ts ProtectedContext: " + Game.IsProtectedLuauContext());
 		Airship.loadingScreen.FinishLoading();
 		this.Show();
 
