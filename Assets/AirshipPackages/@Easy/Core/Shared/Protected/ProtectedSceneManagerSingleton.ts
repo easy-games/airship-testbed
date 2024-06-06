@@ -18,11 +18,9 @@ export class ProtectedSceneManagerSingleton implements OnStart {
 	constructor() {
 		const scriptingManager = GameObject.Find("CoreScriptingManager").GetComponent<CoreScriptingManager>()!;
 		scriptingManager.OnClientPresenceChangeStart((scene, connection, added) => {
-			print("presence start " + scene.name);
 			contextbridge.broadcast("SceneManager:OnClientPresenceChangeStart", scene.name, connection.ClientId, added);
 		});
 		scriptingManager.OnClientPresenceChangeStart((scene, connection, added) => {
-			print("presence end " + scene.name);
 			contextbridge.broadcast("SceneManager:OnClientPresenceChangeEnd", scene.name, connection.ClientId, added);
 		});
 	}
