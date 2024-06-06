@@ -11,6 +11,7 @@ import { CoreNetwork } from "./CoreNetwork";
 import { CoreRefs } from "./CoreRefs";
 import { Game } from "./Game";
 import { InitNet } from "./Network/NetworkAPI";
+import { SceneManager } from "./SceneManager";
 import { AppManager } from "./Util/AppManager";
 import { CanvasAPI } from "./Util/CanvasAPI";
 import { TimeUtil } from "./Util/TimeUtil";
@@ -90,6 +91,19 @@ if (Game.IsClient()) {
 		>("Chat:AddMessage", LuauContext.Protected, message, senderPrefix, senderClientId);
 	});
 }
+
+contextbridge.subscribe<(from: LuauContext, sceneName: string, clientId: number, added: boolean) => void>(
+	"SceneManager:OnClientPresenceChangeStart",
+	(from, sceneName, clientId, added) => {
+		SceneManager.onClientPresenceChangeStart.Fire(clientId, sceneName, added);
+	},
+);
+contextbridge.subscribe<(from: LuauContext, sceneName: string, clientId: number, added: boolean) => void>(
+	"SceneManager:OnClientPresenceChangeEnd",
+	(from, sceneName, clientId, added) => {
+		SceneManager.onClientPresenceChangeEnd.Fire(clientId, sceneName, added);
+	},
+);
 
 Bootstrap.PrepareVoxelWorld();
 Bootstrap.Prepare();

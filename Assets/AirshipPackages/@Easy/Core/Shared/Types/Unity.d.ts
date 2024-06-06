@@ -126,17 +126,11 @@ interface ObjectConstructor {
 	DestroyImmediate(obj: Object): void;
 	DestroyObject(obj: Object, t: number): void;
 	DestroyObject(obj: Object): void;
+	/**
+	 * @deprecated Not usable.
+	 * @param target
+	 */
 	DontDestroyOnLoad(target: Object): void;
-	FindObjectOfType<T>(): T;
-	FindObjectOfType<T>(includeInactive: boolean): T;
-	FindObjectOfType(type: unknown): Object;
-	FindObjectOfType(type: unknown, includeInactive: boolean): Object;
-	FindObjectsOfType(type: unknown): Array<Object>;
-	FindObjectsOfType(type: unknown, includeInactive: boolean): Array<Object>;
-	FindObjectsOfType<T>(): Array<T>;
-	FindObjectsOfType<T>(includeInactive: boolean): Array<T>;
-	FindObjectsOfTypeAll(type: unknown): Array<Object>;
-	FindObjectsOfTypeIncludingAssets(type: unknown): Array<Object>;
 	FindSceneObjectsOfType(type: unknown): Array<Object>;
 	Instantiate<T extends Object = GameObject>(original: T, position: Vector3, rotation: Quaternion): T;
 	Instantiate<T extends Object = GameObject>(

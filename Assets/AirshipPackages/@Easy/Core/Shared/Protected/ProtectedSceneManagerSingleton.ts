@@ -15,6 +15,16 @@ declare const SceneManager: UnitySceneManagerConstructor;
 export class ProtectedSceneManagerSingleton implements OnStart {
 	private protectedSceneNames = ["corescene", "mainmenu", "login"];
 
+	constructor() {
+		// const scriptingManager = GameObject.Find("CoreScriptingManager").GetComponent<CoreScriptingManager>()!;
+		// scriptingManager.OnClientPresenceChangeStart((scene, connection, added) => {
+		// 	contextbridge.broadcast("SceneManager:OnClientPresenceChangeStart", scene.name, connection.ClientId, added);
+		// });
+		// scriptingManager.OnClientPresenceChangeStart((scene, connection, added) => {
+		// 	contextbridge.broadcast("SceneManager:OnClientPresenceChangeEnd", scene.name, connection.ClientId, added);
+		// });
+	}
+
 	OnStart(): void {
 		contextbridge.callback<(sceneName: string) => void>(
 			"SceneManager:LoadGlobalSceneByName",
