@@ -37,6 +37,7 @@ export class ClientSettingsController implements OnStart {
 		const savedContents = DiskManager.ReadFileAsync("ClientSettings.json");
 		if (savedContents && savedContents !== "") {
 			this.data = DecodeJSON(savedContents);
+			this.data = { ...defaultData, ...this.data };
 		} else {
 			this.data = defaultData;
 		}
