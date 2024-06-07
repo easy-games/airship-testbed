@@ -1,5 +1,6 @@
 export interface ClientSettingsFile {
 	mouseSensitivity: number;
+	mouseSmoothing: number;
 	touchSensitivity: number;
 	globalVolume: number;
 	ambientVolume: number;
