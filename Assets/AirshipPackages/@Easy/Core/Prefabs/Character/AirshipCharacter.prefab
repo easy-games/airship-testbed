@@ -6387,7 +6387,7 @@ MonoBehaviour:
   animationHelper: {fileID: 903796914586745664}
   mainCollider: {fileID: 3569249470052007930}
   slopeVisualizer: {fileID: 473010626989301856}
-  isClientAthoritative: 1
+  authorityMode: 0
   ticksUntilReconcile: 1
   observerRotationLerpMod: 10
   disableInput: 0
@@ -6395,6 +6395,7 @@ MonoBehaviour:
   useGravityWhileGrounded: 0
   detectSlopes: 0
   detectStepUps: 1
+  alwaysStepUp: 0
   assistedLedgeJump: 1
   preventWallClipping: 1
   preventFallingWhileCrouching: 1

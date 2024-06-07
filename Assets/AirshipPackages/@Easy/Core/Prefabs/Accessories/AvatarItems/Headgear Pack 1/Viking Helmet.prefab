@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 4325684730467084411}
   - component: {fileID: 6873538007278904699}
   - component: {fileID: 7592820795438805672}
-  - component: {fileID: 3550659644018781132}
   - component: {fileID: 4697556620608190759}
+  - component: {fileID: 2985706876337677003}
   m_Layer: 0
   m_Name: Viking Helmet
   m_TagString: Untagged
@@ -29,8 +29,8 @@ Transform:
   m_GameObject: {fileID: 5504314225359089646}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: 3, y: 0, z: -2}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -0, y: -1.48, z: 0.03}
+  m_LocalScale: {x: 0.65, y: 0.65, z: 0.65}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -91,35 +91,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &3550659644018781132
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5504314225359089646}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colorSettings:
-  - materialColor: {r: 0.8679245, g: 0.6509434, b: 0, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-  - materialColor: {r: 0.7169812, g: 0.6144647, b: 0.38892847, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-  - materialColor: {r: 0.509434, g: 0.32560524, b: 0.14177644, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-  - materialColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-  - materialColor: {r: 0.8679245, g: 0.51327133, b: 0.25792095, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-  addedByEditorScript: 0
 --- !u!114 &4697556620608190759
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,6 +104,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serverClassId: 
-  accessorySlot: 0
+  accessorySlot: 1
   visibilityMode: 0
   skinnedToCharacter: 0
+--- !u!114 &2985706876337677003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5504314225359089646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - baseColor: {r: 0.86666673, g: 0.6509804, b: 0, a: 1}
+  - baseColor: {r: 0.7176471, g: 0.6156863, b: 0.38823533, a: 1}
+  - baseColor: {r: 0.50980395, g: 0.3254902, b: 0.14117648, a: 1}
+  - baseColor: {r: 1, g: 1, b: 1, a: 1}
+  - baseColor: {r: 0.86666673, g: 0.5137255, b: 0.25882354, a: 1}
+  addedByEditorScript: 0
