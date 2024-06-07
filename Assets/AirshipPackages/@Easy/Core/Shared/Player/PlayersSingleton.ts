@@ -17,6 +17,8 @@ import { AirshipUrl } from "../Util/AirshipUrl";
 import { OnUpdate } from "../Util/Timer";
 import { DecodeJSON, EncodeJSON } from "../json";
 import { Player, PlayerDto } from "./Player";
+import { AvatarUtil } from "../Avatar/AvatarUtil";
+import { AvatarPlatformAPI } from "../Avatar/AvatarPlatformAPI";
 
 /*
  * This class is instantiated in BOTH Game and Protected context.
@@ -266,12 +268,12 @@ export class PlayersSingleton implements OnStart {
 		const SetOutfit = (outfitDto: OutfitDto | undefined) => {
 			player.selectedOutfit = outfitDto;
 			player.outfitLoaded = true;
-			if (RunUtil.IsEditor()) {
+			if (Game.IsEditor()) {
 				EditorSessionState.SetString("player_" + player.userId + "_outfit", EncodeJSON(outfitDto));
 			}
 		};
 
-		if (RunUtil.IsEditor() && !ignoreCache) {
+		if (Game.IsEditor() && !ignoreCache) {
 			const data = EditorSessionState.GetString("player_" + player.userId + "_outfit");
 			if (data) {
 				const outfitDto = DecodeJSON<OutfitDto>(data);
@@ -288,32 +290,13 @@ export class PlayersSingleton implements OnStart {
 		// }
 		// this.outfitFetchTime.set(player.userId, os.time());
 
-		let userId = player.userId;
-		if (Game.IsEditor() && player.IsLocalPlayer()) {
-			Game.WaitForLocalPlayerLoaded();
-			let uid = Game.localPlayer.userId;
-			if (uid) {
-				userId = uid;
-			}
+		if (player.IsLocalPlayer()) {
+			AvatarPlatformAPI.GetEquippedOutfit().then(SetOutfit);
+		}else{
+			print("loading outfit from server for player: " + player.userId);
+			AvatarPlatformAPI.GetPlayerEquippedOutfit(player.userId).then(SetOutfit);
 		}
 
-		const res = InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/outfits/uid/" + userId + "/equipped");
-		if (!res.success) {
-			if (!Application.isEditor) {
-				Debug.LogError("failed to load user outfit: " + res.error);
-			}
-			SetOutfit(undefined);
-			return;
-		}
-		if (res.data.size() === 0) {
-			SetOutfit(undefined);
-			return;
-		}
-		const outfitDto = DecodeJSON<OutfitDto>(res.data);
-		if (!RunUtil.IsEditor()) {
-			// print("outfit: " + res.data);
-		}
-		SetOutfit(outfitDto);
 	}
 
 	private HandlePlayerReadyServer(player: Player): void {

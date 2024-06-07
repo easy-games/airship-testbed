@@ -189,13 +189,14 @@ export class AvatarUtil {
 			combineMeshes?: boolean;
 		} = {},
 	) {
-		const outfitDto = AvatarPlatformAPI.GetEquippedOutfit();
-		if (!outfitDto) {
-			// warn("Unable to load users default outfit. Equipping baked default outfit");
-			this.LoadDefaultOutfit(builder);
-			return;
-		}
-		this.LoadUserOutfit(outfitDto, builder, options);
+		AvatarPlatformAPI.GetEquippedOutfit().then((outfitDto)=>{
+			if (!outfitDto) {
+				// warn("Unable to load users default outfit. Equipping baked default outfit");
+				this.LoadDefaultOutfit(builder);
+				return;
+			}
+			this.LoadUserOutfit(outfitDto, builder, options);
+		})
 	}
 
 	public static LoadDefaultOutfit(builder: AccessoryBuilder) {

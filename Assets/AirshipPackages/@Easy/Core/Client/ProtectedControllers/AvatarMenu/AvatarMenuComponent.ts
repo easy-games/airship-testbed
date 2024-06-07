@@ -584,19 +584,20 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			}
 		}
 
-		const equippedOutfit = AvatarPlatformAPI.GetEquippedOutfit();
-		if (equippedOutfit && this.outfits) {
-			let i = 0;
-			for (let outfit of this.outfits) {
-				if (outfit.outfitId === equippedOutfit.outfitId) {
-					//Select equipped outfit
-					this.Log("Found default outfit index: " + i);
-					this.SelectOutfit(i);
-					return;
+		AvatarPlatformAPI.GetEquippedOutfit().then((equippedOutfit)=>{
+			if (equippedOutfit && this.outfits) {
+				let i = 0;
+				for (let outfit of this.outfits) {
+					if (outfit.outfitId === equippedOutfit.outfitId) {
+						//Select equipped outfit
+						this.Log("Found default outfit index: " + i);
+						this.SelectOutfit(i);
+						return;
+					}
+					i++;
 				}
-				i++;
 			}
-		}
+		});
 
 		//Select the first outfit if no outfit was found
 		this.SelectOutfit(0);

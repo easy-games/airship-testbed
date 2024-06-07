@@ -28,21 +28,23 @@ export class AvatarPlatformAPI {
 		}
 	}
 
-	public static GetEquippedOutfit(): OutfitDto | undefined {
+	public static async GetEquippedOutfit(): Promise<OutfitDto | undefined> {
 		this.Log("GetEquippedOutfit");
 		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/equipped/self`));
 		if (res.success && res.data && res.data !== "") {
 			return DecodeJSON(res.data) as OutfitDto;
+		}else{
+			Debug.LogError("failed to load user equipped outfit: " + (res.error ?? "Empty Data"));
 		}
 	}
 
 	public static async GetPlayerEquippedOutfit(playerId: string): Promise<OutfitDto | undefined> {
-		const res = InternalHttpManager.GetAsync(this.GetHttpUrl(`/outfits/uid/${playerId}/equipped`));
+		const res = InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/uid/${playerId}/equipped`));
 		if (res.success && res.data && res.data !== "") {
-			Debug.LogError("failed to load user outfit: " + res.error);
-			return;
+			return DecodeJSON<OutfitDto>(res.data);
+		}else{
+			Debug.LogError("failed to load player equipped outfit: " + (res.error ?? "Empty Data"));
 		}
-		return DecodeJSON<OutfitDto>(res.data);
 	}
 
 	public static async GetAvatarOutfit(outfitId: string): Promise<OutfitDto | undefined> {
@@ -50,6 +52,8 @@ export class AvatarPlatformAPI {
 		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/outfit-id/${outfitId}`));
 		if (res.success && res.data && res.data !== "") {
 			return DecodeJSON(res.data) as OutfitDto;
+		}else{
+			Debug.LogError("failed to load user outfit: " + (res.error ?? "Empty Data"));
 		}
 	}
 
