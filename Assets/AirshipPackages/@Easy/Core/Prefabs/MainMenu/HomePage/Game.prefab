@@ -217,7 +217,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &3643703000705366658
 RectTransform:
   m_ObjectHideFlags: 0
@@ -225,7 +225,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1867670366044781024}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -257,19 +257,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c280d1ddc7af1a04e8f71ea529d0c27f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.09411765}
+  m_Material: {fileID: 2100000, guid: b551479cbe0d145448c764925e4c8fc3, type: 2}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
   m_Texture: {fileID: 0}
-  _outlineWidth: 1
+  _outlineWidth: 2
   _cornerRadius: 12
   _cornerSegments: 9
   _mappingBias: 0.512
+  _slightlyThickerCorners: 1
   _fillCenter: 0
 --- !u!1 &1949978661599695519
 GameObject:
@@ -1379,7 +1376,6 @@ MonoBehaviour:
   m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Client/Components/HomePage/Sort/HomePageGameComponent.lua
   m_error: 0
   m_yielded: 0
-  m_assetPath: Assets/Bundles/@Easy/Core/Client/Resources/TS/Components/HomePage/Sort/HomePageGameComponent.lua
   m_canResume: 0
   m_asyncYield: 0
   m_onUpdateHandle: -1
@@ -1763,7 +1759,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0.514151, g: 0.7603583, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1928,7 +1924,6 @@ MonoBehaviour:
   m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Client/Components/HomePage/Sort/GameImageButton.lua
   m_error: 0
   m_yielded: 0
-  m_assetPath: 
   m_canResume: 0
   m_asyncYield: 0
   m_onUpdateHandle: -1
