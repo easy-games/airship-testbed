@@ -44,7 +44,7 @@ export default class Navbar extends AirshipBehaviour {
 				}
 
 				if (Game.IsInGame() && st === "sm") {
-					this.homeBtn.gameObject.SetActive(false);
+					// this.homeBtn.gameObject.SetActive(false);
 					this.myGamesBtn.gameObject.SetActive(false);
 					this.settingsBtn.gameObject.SetActive(true);
 				} else {
