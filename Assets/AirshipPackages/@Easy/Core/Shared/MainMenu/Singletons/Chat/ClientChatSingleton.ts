@@ -297,6 +297,7 @@ export class ClientChatSingleton implements OnStart {
 			this.historyIndex = -1;
 			if (!Game.IsMobile()) {
 				this.inputWrapperImage.color = new Color(0, 0, 0, 0.4);
+				this.inputField.textComponent.alpha = 1;
 			}
 			// todo: movement disabler
 			const disableId = contextbridge.invoke<() => number | undefined>(
@@ -324,6 +325,7 @@ export class ClientChatSingleton implements OnStart {
 			this.selected = false;
 			if (!Game.IsMobile()) {
 				this.inputWrapperImage.color = new Color(0, 0, 0, 0);
+				this.inputField.textComponent.alpha = 0;
 			}
 			this.CheckIfShouldHide();
 		});
