@@ -8,23 +8,19 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: LeafMatRed
-  m_Shader: {fileID: 4800000, guid: 4f5b3a974792e59449d345f4e37ec96b, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 921175038003485459d417d3808110ef, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
-  m_InvalidKeywords:
-  - EXPLICIT_MAPS
-  - NUM_LIGHTS_LIGHTS0
-  - POINT_FILTER_ON
-  - SLIDER_OVERRIDE_ON
-  - TRIPLANAR_STYLE_OFF
-  - _DSTBLEND_ZERO
-  - _SRCBLEND_ONE
-  - _ZWRITE_ON
+  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
-  disabledShaderPasses: []
+  disabledShaderPasses:
+  - MOTIONVECTORS
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -84,6 +80,18 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
     - EMISSIVE: 0
@@ -120,6 +128,8 @@ Material:
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _PhaseSpeed: 0
+    - _QueueControl: 0
+    - _QueueOffset: 0
     - _RimIntensity: 0.1
     - _RimPower: 2.5
     - _RoughOverride: 0.04
@@ -143,3 +153,17 @@ Material:
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
     - _ShadowColor: {r: 0.14901961, g: 0.027450975, b: 0.03333883, a: 1}
   m_BuildTextureStacks: []
+  m_AllowLocking: 1
+--- !u!114 &5474276962007209607
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 9

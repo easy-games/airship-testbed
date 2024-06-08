@@ -7,40 +7,35 @@
 <!-- if you do not supply the maps, you can specify a constant value directly using <Metallic>0</<Metallic> or <Roughness>1</Roughness> or <Emissive>1</Emissive> etc -->
 
 <Blocks>
-  <RootAssetPath>@Easy/Survival/Shared/Resources/VoxelWorld</RootAssetPath>
+  <RootAssetPath>@Easy/Survival/VoxelWorld</RootAssetPath>
   <Scope>@Easy/Survival</Scope>
 
   <Block>
     <Id>GRASS</Id>
     <Name>Grass</Name>
-<!--    <TopMaterial>grass/GrassTilingGenshin</TopMaterial>-->
-<!--    <TopTexture>liamgrass.t</TopTexture>-->
-<!--    <BottomTexture>liamgrass.t</BottomTexture>-->
-<!--    <SideTexture>liamgrass.s</SideTexture>-->
-  <!--    <TopMaterial>StylizedGrassTop</TopMaterial>-->
-    <!--    <TileSet>TileSets/BevelQuarter/</TileSet> -->
-    <TopTexture>grass_top</TopTexture>
-    <TileSet>TileSets/Grass Test/</TileSet>
-    <Solid>false</Solid>
-    <Collision>Solid</Collision>
+    <TopTexture>grass.t</TopTexture>
+    <BottomTexture>dirt.s</BottomTexture>
+    <SideTexture>grass.s</SideTexture>
+    <Solid>true</Solid>
+ 
     <Metallic>0</Metallic>
     <Roughness>1</Roughness>
     <Minecraft>2</Minecraft>
-    <Brightness>1</Brightness>v
+    <Brightness>3</Brightness>
     
-  </Block>
+  </Block> 
 
   <Block>
     <Id>DIRT</Id>
     <Name>Dirt</Name>
-<!--    <TopTexture>dirt.s</TopTexture>-->
-<!--    <SideTexture>dirt.s</SideTexture>-->
-    <Material>StylizedDirt</Material>
+    <TopTexture>dirt.s</TopTexture>
+    <SideTexture>dirt.s</SideTexture>
+<!--    <Material>StylizedDirt</Material> -->
     <Solid>true</Solid>
     <Metallic>0</Metallic>
     <Roughness>0.75</Roughness>
     <Minecraft>3</Minecraft>
-    <Brightness>2</Brightness>
+    <Brightness>3</Brightness>
   </Block>
   
   <Block>
