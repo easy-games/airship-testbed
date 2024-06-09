@@ -91,11 +91,3 @@ task.spawn(() => {
 		return undefined;
 	}
 });
-contextbridge.callback("GetGameInfo", (from: LuauContext, gameId: string) => {
-	print("info.1");
-});
-
-contextbridge.callback("TestWait", (from) => {
-	task.wait(1);
-	return "it worked!";
-});

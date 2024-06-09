@@ -530,47 +530,35 @@ export class PlayersSingleton implements OnStart {
 	}
 
 	/**
-	 * **MAY YIELD**
 	 * @param userId
 	 * @returns
 	 */
-	private pictureIndex = 0;
-	public GetProfilePictureTextureAsync(userId: string): Texture2D | undefined {
-		if (this.cachedProfilePictureTextures.has(userId)) {
-			return this.cachedProfilePictureTextures.get(userId);
-		}
+	public async GetProfilePictureTextureAsync(userId: string): Promise<Texture2D | undefined> {
+		return new Promise((resolve, reject) => {
+			if (this.cachedProfilePictureTextures.has(userId)) {
+				resolve(this.cachedProfilePictureTextures.get(userId));
+				return;
+			}
 
-		let pictures = [
-			"AirshipPackages/@Easy/Core/Images/ProfilePictures/easy3.png",
-			"AirshipPackages/@Easy/Core/Images/ProfilePictures/batter.jpeg",
-			"AirshipPackages/@Easy/Core/Images/ProfilePictures/Dom.jpeg",
-			"AirshipPackages/@Easy/Core/Images/ProfilePictures/easy1.png",
-			"AirshipPackages/@Easy/Core/Images/ProfilePictures/easy2.png",
-			"AirshipPackages/@Easy/Core/Images/ProfilePictures/easy5.png",
-			"AirshipPackages/@Easy/Core/Images/ProfilePictures/easy6.png",
-			"AirshipPackages/@Easy/Core/Images/ProfilePictures/easy7.png",
-			"AirshipPackages/@Easy/Core/Images/ProfilePictures/heart.jpeg",
-			"AirshipPackages/@Easy/Core/Images/ProfilePictures/pilot.jpeg",
-			"AirshipPackages/@Easy/Core/Images/ProfilePictures/pirate.jpeg",
-			"AirshipPackages/@Easy/Core/Images/ProfilePictures/rad.jpeg",
-			"AirshipPackages/@Easy/Core/Images/ProfilePictures/scuba.jpeg",
-		];
-		let index = this.pictureIndex++ % pictures.size();
-		let path = pictures[index];
-		const texture = AssetCache.LoadAssetIfExists<Texture2D>(path);
-		return texture;
+			let pictures = [
+				"Assets/AirshipPackages/@Easy/Core/Prefabs/Images/ProfilePictures/DefaultProfilePicture.png",
+			];
+			// let index = this.pictureIndex++ % pictures.size();
+			// let path = pictures[index];
+			const texture = AssetCache.LoadAssetIfExists<Texture2D>(pictures[0]);
+			resolve(texture);
+		});
 	}
 
 	/**
-	 * **MAY YIELD**
 	 * @param userId
 	 * @returns
 	 */
-	public GetProfilePictureSpriteAsync(userId: string): Sprite | undefined {
+	public async GetProfilePictureSpriteAsync(userId: string): Promise<Sprite | undefined> {
 		if (this.cachedProfilePictureSprite.has(userId)) {
 			return this.cachedProfilePictureSprite.get(userId);
 		}
-		const texture = this.GetProfilePictureTextureAsync(userId);
+		const texture = await this.GetProfilePictureTextureAsync(userId);
 		if (texture !== undefined) {
 			const sprite = Bridge.MakeSprite(texture);
 			this.cachedProfilePictureSprite.set(userId, sprite);

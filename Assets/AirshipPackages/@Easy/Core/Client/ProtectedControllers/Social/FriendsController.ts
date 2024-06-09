@@ -132,10 +132,12 @@ export class FriendsController implements OnStart {
 
 				this.socialNotification.usernameText.text = foundUser.username;
 
-				const sprite = Airship.players.GetProfilePictureSpriteAsync(foundUser.uid);
-				if (sprite) {
-					this.socialNotification.userImage.sprite = sprite;
-				}
+				task.spawn(async () => {
+					const sprite = await Airship.players.GetProfilePictureSpriteAsync(foundUser.uid);
+					if (sprite) {
+						this.socialNotification.userImage.sprite = sprite;
+					}
+				});
 
 				this.AddSocialNotification(
 					"friend-request:" + data.initiatorId,
@@ -568,17 +570,12 @@ export class FriendsController implements OnStart {
 		const joinButton = refs.GetValue("UI", "JoinButton");
 
 		if (config.loadImage) {
-			const texture = AssetBridge.Instance.LoadAssetIfExists<Texture2D>(
-				"AirshipPackages/@Easy/Core/Images/ProfilePictures/Dom.png",
-			);
-			if (texture !== undefined) {
-				task.spawn(() => {
-					const sprite = Airship.players.GetProfilePictureSpriteAsync(friend.userId);
-					if (sprite) {
-						profileImage.sprite = sprite;
-					}
-				});
-			}
+			task.spawn(async () => {
+				const sprite = await Airship.players.GetProfilePictureSpriteAsync(friend.userId);
+				if (sprite) {
+					profileImage.sprite = sprite;
+				}
+			});
 		}
 
 		let displayName = friend.username;

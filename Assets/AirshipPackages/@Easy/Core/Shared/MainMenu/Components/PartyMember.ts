@@ -31,8 +31,8 @@ export default class PartyMember extends AirshipBehaviour {
 		// 	this.kickButton.gameObject.SetActive(false);
 		// }
 
-		task.spawn(() => {
-			const profileTexture = Airship.players.GetProfilePictureTextureAsync(user.uid);
+		task.spawn(async () => {
+			const profileTexture = await Airship.players.GetProfilePictureTextureAsync(user.uid);
 			if (profileTexture) {
 				this.profileImage.texture = profileTexture;
 			}

@@ -10,9 +10,9 @@ import { CanvasAPI } from "../../Util/CanvasAPI";
 
 export default class ProfileOptionsButton extends AirshipBehaviour {
 	override Start(): void {
-		task.spawn(() => {
+		task.spawn(async () => {
 			Game.WaitForLocalPlayerLoaded();
-			const sprite = Airship.players.GetProfilePictureSpriteAsync(Game.localPlayer.userId);
+			const sprite = await Airship.players.GetProfilePictureSpriteAsync(Game.localPlayer.userId);
 			if (sprite) {
 				this.gameObject.GetComponent<Image>()!.sprite = sprite;
 			}
