@@ -41,7 +41,8 @@ export default class GameGeneralPage extends MainMenuPageComponent {
 					}
 				}),
 			);
-			cloudImage.StartDownload(true);
+			cloudImage.hideErrors = true;
+			cloudImage.StartDownload();
 		});
 	}
 

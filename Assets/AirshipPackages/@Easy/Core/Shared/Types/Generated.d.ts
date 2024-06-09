@@ -24128,12 +24128,12 @@ interface CloudImage extends MonoBehaviour {
     image: Image;
     downloadOnStart: boolean;
     releaseImageOnDisable: boolean;
+    hideErrors: boolean;
     loadedUrl: string;
 
 
     ReleaseImage(notifyCache: boolean): void;
     StartDownload(): void;
-    StartDownload(hideErrors: boolean): void;
 
 }
     
