@@ -79,6 +79,7 @@ if (Game.IsServer()) {
 
 task.spawn(() => {
 	while (Game.gameId === undefined) {
+		task.wait();
 		continue;
 	}
 	const res = InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/games/game-id/" + Game.gameId);
