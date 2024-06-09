@@ -4,5 +4,5 @@
  */
 export interface BridgedPlayer {
 	username: string;
-	uid: string;
+	userId: string;
 }
