@@ -15,6 +15,7 @@ import { AssetCache } from "../AssetCache/AssetCache";
 import { AvatarPlatformAPI } from "../Avatar/AvatarPlatformAPI";
 import { OnUpdate } from "../Util/Timer";
 import { DecodeJSON, EncodeJSON } from "../json";
+import { BridgedPlayer } from "./BridgedPlayer";
 import { Player, PlayerDto } from "./Player";
 
 /*
@@ -98,12 +99,31 @@ export class PlayersSingleton implements OnStart {
 		}
 
 		if (Game.IsGameLuauContext()) {
+			// task.spawn(() => {
+			// 	Game.WaitForLocalPlayerLoaded();
+			// 	contextbridge.invoke<(bp: BridgedPlayer) => void>("Players:OnPlayerJoined", LuauContext.Protected, {
+			// 		userId: Game.localPlayer.userId,
+			// 		username: Game.localPlayer.username,
+			// 	});
+			// });
 			this.onPlayerJoined.Connect((player) => {
+				contextbridge.invoke<(bp: BridgedPlayer) => void>("Players:OnPlayerJoined", LuauContext.Protected, {
+					userId: player.userId,
+					username: player.username,
+				});
 				if (Game.IsServer() && this.joinMessagesEnabled) {
 					Game.BroadcastMessage(ChatColor.Aqua(player.username) + ChatColor.Gray(" joined the server."));
 				}
 			});
 			this.onPlayerDisconnected.Connect((player) => {
+				contextbridge.invoke<(bp: BridgedPlayer) => void>(
+					"Players:OnPlayerDisconnected",
+					LuauContext.Protected,
+					{
+						userId: player.userId,
+						username: player.username,
+					},
+				);
 				if (Game.IsServer() && this.disconnectMessagesEnabled) {
 					Game.BroadcastMessage(ChatColor.Aqua(player.username) + ChatColor.Gray(" disconnected."));
 				}
