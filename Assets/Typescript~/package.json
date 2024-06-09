@@ -15,7 +15,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@easy-games/unity-ts": "^3.2.201",
+    "@easy-games/unity-ts": "^3.2.204",
     "@typescript-eslint/eslint-plugin": "^5.40.0",
     "@typescript-eslint/parser": "^5.40.0",
     "eslint": "^8.25.0",

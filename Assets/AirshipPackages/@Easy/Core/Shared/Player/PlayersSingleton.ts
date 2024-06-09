@@ -1,7 +1,7 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
-import { Controller, Dependency, OnStart, Service } from "@Easy/Core/Shared/Flamework";
+import { Controller, OnStart, Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Team } from "@Easy/Core/Shared/Team/Team";
 import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
@@ -10,15 +10,12 @@ import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 import { PlayerUtils } from "@Easy/Core/Shared/Util/PlayerUtils";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
-import { GameInfoSingleton } from "../Airship/Game/GameInfoSingleton";
 import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { AssetCache } from "../AssetCache/AssetCache";
-import { AirshipUrl } from "../Util/AirshipUrl";
+import { AvatarPlatformAPI } from "../Avatar/AvatarPlatformAPI";
 import { OnUpdate } from "../Util/Timer";
 import { DecodeJSON, EncodeJSON } from "../json";
 import { Player, PlayerDto } from "./Player";
-import { AvatarUtil } from "../Avatar/AvatarUtil";
-import { AvatarPlatformAPI } from "../Avatar/AvatarPlatformAPI";
 
 /*
  * This class is instantiated in BOTH Game and Protected context.
@@ -140,6 +137,9 @@ export class PlayersSingleton implements OnStart {
 		}
 	}
 
+	/**
+	 * Only called in LuauContext.Game
+	 */
 	private InitClient(): void {
 		CoreNetwork.ServerToClient.ServerInfo.client.OnServerEvent((gameId, serverId, organizationId) => {
 			// this.localConnection = InstanceFinder.ClientManager.Connection;
@@ -147,14 +147,6 @@ export class PlayersSingleton implements OnStart {
 			Game.gameId = gameId;
 			Game.serverId = serverId;
 			Game.organizationId = organizationId;
-
-			task.spawn(() => {
-				const gameData = Dependency<GameInfoSingleton>().GetGameData(gameId);
-				if (gameData) {
-					Game.gameData = gameData;
-					Game.onGameDataLoaded.Fire(gameData);
-				}
-			});
 
 			const authenticated = contextbridge.invoke<() => boolean>(
 				"AuthController:IsAuthenticated",
@@ -292,11 +284,10 @@ export class PlayersSingleton implements OnStart {
 
 		if (player.IsLocalPlayer()) {
 			AvatarPlatformAPI.GetEquippedOutfit().then(SetOutfit);
-		}else{
+		} else {
 			print("loading outfit from server for player: " + player.userId);
 			AvatarPlatformAPI.GetPlayerEquippedOutfit(player.userId).then(SetOutfit);
 		}
-
 	}
 
 	private HandlePlayerReadyServer(player: Player): void {

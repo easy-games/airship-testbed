@@ -24133,6 +24133,7 @@ interface CloudImage extends MonoBehaviour {
 
     ReleaseImage(notifyCache: boolean): void;
     StartDownload(): void;
+    StartDownload(hideErrors: boolean): void;
 
 }
     
