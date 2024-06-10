@@ -17,6 +17,17 @@ import { MobileButtonConfig } from "./Mobile/MobileButton";
 import ProximityPrompt from "./ProximityPrompts/ProximityPrompt";
 import { CoreIcon } from "./UI/CoreIcon";
 
+export enum InputActionDirection {
+	/**
+	 * Action is triggered by an up event.
+	 */
+	UP,
+	/**
+	 * Action is triggered by a down event.
+	 */
+	DOWN,
+}
+
 @Singleton()
 export class AirshipInputSingleton implements OnStart {
 	/**
@@ -266,7 +277,12 @@ export class AirshipInputSingleton implements OnStart {
 					}
 					signalIndex++;
 				}
-				this.ClearDestroyedSignals(inactiveSignalIndices, actionDownSignals);
+				this.ClearDestroyedSignals(
+					lowerName,
+					InputActionDirection.DOWN,
+					inactiveSignalIndices,
+					actionDownSignals,
+				);
 			} else if (dir === PointerDirection.UP) {
 				this.actionDownState.delete(lowerName);
 				const actionUpSignals = this.actionUpSignals.get(lowerName);
@@ -281,7 +297,7 @@ export class AirshipInputSingleton implements OnStart {
 					}
 					signalIndex++;
 				}
-				this.ClearDestroyedSignals(inactiveSignalIndices, actionUpSignals);
+				this.ClearDestroyedSignals(lowerName, InputActionDirection.UP, inactiveSignalIndices, actionUpSignals);
 			}
 		});
 
@@ -476,7 +492,12 @@ export class AirshipInputSingleton implements OnStart {
 							}
 							signalIndex++;
 						}
-						this.ClearDestroyedSignals(inactiveSignalIndices, actionDownSignals);
+						this.ClearDestroyedSignals(
+							action.name,
+							InputActionDirection.DOWN,
+							inactiveSignalIndices,
+							actionDownSignals,
+						);
 					}),
 				);
 				signalCleanup.Add(
@@ -496,7 +517,12 @@ export class AirshipInputSingleton implements OnStart {
 							}
 							signalIndex++;
 						}
-						this.ClearDestroyedSignals(inactiveSignalIndices, actionUpSignals);
+						this.ClearDestroyedSignals(
+							action.name,
+							InputActionDirection.UP,
+							inactiveSignalIndices,
+							actionUpSignals,
+						);
 					}),
 				);
 				signalCleanup.Add(
@@ -516,7 +542,12 @@ export class AirshipInputSingleton implements OnStart {
 							}
 							signalIndex++;
 						}
-						this.ClearDestroyedSignals(inactiveSignalIndices, actionUpSignals);
+						this.ClearDestroyedSignals(
+							action.name,
+							InputActionDirection.UP,
+							inactiveSignalIndices,
+							actionUpSignals,
+						);
 					}),
 				);
 			} else {
@@ -537,7 +568,12 @@ export class AirshipInputSingleton implements OnStart {
 							}
 							signalIndex++;
 						}
-						this.ClearDestroyedSignals(inactiveSignalIndices, actionDownSignals);
+						this.ClearDestroyedSignals(
+							action.name,
+							InputActionDirection.DOWN,
+							inactiveSignalIndices,
+							actionDownSignals,
+						);
 					}),
 				);
 				signalCleanup.Add(
@@ -557,7 +593,12 @@ export class AirshipInputSingleton implements OnStart {
 							}
 							signalIndex++;
 						}
-						this.ClearDestroyedSignals(inactiveSignalIndices, actionUpSignals);
+						this.ClearDestroyedSignals(
+							action.name,
+							InputActionDirection.UP,
+							inactiveSignalIndices,
+							actionUpSignals,
+						);
 					}),
 				);
 				signalCleanup.Add(
@@ -577,7 +618,12 @@ export class AirshipInputSingleton implements OnStart {
 							}
 							signalIndex++;
 						}
-						this.ClearDestroyedSignals(inactiveSignalIndices, actionUpSignals);
+						this.ClearDestroyedSignals(
+							action.name,
+							InputActionDirection.UP,
+							inactiveSignalIndices,
+							actionUpSignals,
+						);
 					}),
 				);
 			}
@@ -609,7 +655,12 @@ export class AirshipInputSingleton implements OnStart {
 							}
 							signalIndex++;
 						}
-						this.ClearDestroyedSignals(inactiveSignalIndices, actionDownSignals);
+						this.ClearDestroyedSignals(
+							action.name,
+							InputActionDirection.DOWN,
+							inactiveSignalIndices,
+							actionDownSignals,
+						);
 					}),
 				);
 				signalCleanup.Add(
@@ -629,7 +680,12 @@ export class AirshipInputSingleton implements OnStart {
 							}
 							signalIndex++;
 						}
-						this.ClearDestroyedSignals(inactiveSignalIndices, actionUpSignals);
+						this.ClearDestroyedSignals(
+							action.name,
+							InputActionDirection.UP,
+							inactiveSignalIndices,
+							actionUpSignals,
+						);
 					}),
 				);
 			} else {
@@ -658,7 +714,12 @@ export class AirshipInputSingleton implements OnStart {
 							}
 							signalIndex++;
 						}
-						this.ClearDestroyedSignals(inactiveSignalIndices, actionDownSignals);
+						this.ClearDestroyedSignals(
+							action.name,
+							InputActionDirection.DOWN,
+							inactiveSignalIndices,
+							actionDownSignals,
+						);
 					}),
 				);
 				signalCleanup.Add(
@@ -678,7 +739,12 @@ export class AirshipInputSingleton implements OnStart {
 							}
 							signalIndex++;
 						}
-						this.ClearDestroyedSignals(inactiveSignalIndices, actionUpSignals);
+						this.ClearDestroyedSignals(
+							action.name,
+							InputActionDirection.UP,
+							inactiveSignalIndices,
+							actionUpSignals,
+						);
 					}),
 				);
 			}
@@ -699,13 +765,27 @@ export class AirshipInputSingleton implements OnStart {
 
 	/**
 	 *
+	 * @param actionName
+	 * @param actionDirection
 	 * @param signalIndices
 	 * @param signals
 	 */
-	private ClearDestroyedSignals(signalIndices: number[], signals: Signal<[event: InputActionEvent]>[]): void {
-		for (const index of signalIndices) {
-			signals.remove(index);
+	private ClearDestroyedSignals(
+		actionName: string,
+		actionDirection: InputActionDirection,
+		signalIndices: number[],
+		signals: Signal<[event: InputActionEvent]>[],
+	): void {
+		const targetSignals =
+			actionDirection === InputActionDirection.UP ? this.actionUpSignals : this.actionDownSignals;
+		const newSignals: Signal<[event: InputActionEvent]>[] = [];
+		for (let i = 0; i < signals.size(); i++) {
+			if (!signalIndices.includes(i)) {
+				const signal = signals[i];
+				newSignals.push(signal);
+			}
 		}
+		targetSignals.set(actionName, newSignals);
 	}
 
 	/** Returns mouse sensitivity based on player's setting & game's sensitivity multiplier. */
