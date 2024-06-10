@@ -21,11 +21,11 @@ export enum InputActionDirection {
 	/**
 	 * Action is triggered by an up event.
 	 */
-	UP,
+	Up,
 	/**
 	 * Action is triggered by a down event.
 	 */
-	DOWN,
+	Down,
 }
 
 @Singleton()
@@ -279,7 +279,7 @@ export class AirshipInputSingleton implements OnStart {
 				}
 				this.ClearDestroyedSignals(
 					lowerName,
-					InputActionDirection.DOWN,
+					InputActionDirection.Down,
 					inactiveSignalIndices,
 					actionDownSignals,
 				);
@@ -297,7 +297,7 @@ export class AirshipInputSingleton implements OnStart {
 					}
 					signalIndex++;
 				}
-				this.ClearDestroyedSignals(lowerName, InputActionDirection.UP, inactiveSignalIndices, actionUpSignals);
+				this.ClearDestroyedSignals(lowerName, InputActionDirection.Up, inactiveSignalIndices, actionUpSignals);
 			}
 		});
 
@@ -494,7 +494,7 @@ export class AirshipInputSingleton implements OnStart {
 						}
 						this.ClearDestroyedSignals(
 							action.name,
-							InputActionDirection.DOWN,
+							InputActionDirection.Down,
 							inactiveSignalIndices,
 							actionDownSignals,
 						);
@@ -519,7 +519,7 @@ export class AirshipInputSingleton implements OnStart {
 						}
 						this.ClearDestroyedSignals(
 							action.name,
-							InputActionDirection.UP,
+							InputActionDirection.Up,
 							inactiveSignalIndices,
 							actionUpSignals,
 						);
@@ -544,7 +544,7 @@ export class AirshipInputSingleton implements OnStart {
 						}
 						this.ClearDestroyedSignals(
 							action.name,
-							InputActionDirection.UP,
+							InputActionDirection.Up,
 							inactiveSignalIndices,
 							actionUpSignals,
 						);
@@ -570,7 +570,7 @@ export class AirshipInputSingleton implements OnStart {
 						}
 						this.ClearDestroyedSignals(
 							action.name,
-							InputActionDirection.DOWN,
+							InputActionDirection.Down,
 							inactiveSignalIndices,
 							actionDownSignals,
 						);
@@ -595,7 +595,7 @@ export class AirshipInputSingleton implements OnStart {
 						}
 						this.ClearDestroyedSignals(
 							action.name,
-							InputActionDirection.UP,
+							InputActionDirection.Up,
 							inactiveSignalIndices,
 							actionUpSignals,
 						);
@@ -620,7 +620,7 @@ export class AirshipInputSingleton implements OnStart {
 						}
 						this.ClearDestroyedSignals(
 							action.name,
-							InputActionDirection.UP,
+							InputActionDirection.Up,
 							inactiveSignalIndices,
 							actionUpSignals,
 						);
@@ -657,7 +657,7 @@ export class AirshipInputSingleton implements OnStart {
 						}
 						this.ClearDestroyedSignals(
 							action.name,
-							InputActionDirection.DOWN,
+							InputActionDirection.Down,
 							inactiveSignalIndices,
 							actionDownSignals,
 						);
@@ -682,7 +682,7 @@ export class AirshipInputSingleton implements OnStart {
 						}
 						this.ClearDestroyedSignals(
 							action.name,
-							InputActionDirection.UP,
+							InputActionDirection.Up,
 							inactiveSignalIndices,
 							actionUpSignals,
 						);
@@ -716,7 +716,7 @@ export class AirshipInputSingleton implements OnStart {
 						}
 						this.ClearDestroyedSignals(
 							action.name,
-							InputActionDirection.DOWN,
+							InputActionDirection.Down,
 							inactiveSignalIndices,
 							actionDownSignals,
 						);
@@ -741,7 +741,7 @@ export class AirshipInputSingleton implements OnStart {
 						}
 						this.ClearDestroyedSignals(
 							action.name,
-							InputActionDirection.UP,
+							InputActionDirection.Up,
 							inactiveSignalIndices,
 							actionUpSignals,
 						);
@@ -777,7 +777,7 @@ export class AirshipInputSingleton implements OnStart {
 		signals: Signal<[event: InputActionEvent]>[],
 	): void {
 		const targetSignals =
-			actionDirection === InputActionDirection.UP ? this.actionUpSignals : this.actionDownSignals;
+			actionDirection === InputActionDirection.Up ? this.actionUpSignals : this.actionDownSignals;
 		const newSignals: Signal<[event: InputActionEvent]>[] = [];
 		for (let i = 0; i < signals.size(); i++) {
 			if (!signalIndices.includes(i)) {
