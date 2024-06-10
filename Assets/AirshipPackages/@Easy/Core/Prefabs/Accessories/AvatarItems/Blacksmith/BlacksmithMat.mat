@@ -156,7 +156,7 @@ Material:
     - _GlossyReflections: 1
     - _MRSliderOverrideMix: 0
     - _MetalOverride: 0
-    - _Metallic: 0
+    - _Metallic: 0.122
     - _Mode: 0
     - _OcclusionStrength: 1
     - _OverrideStrength: 0
@@ -167,7 +167,7 @@ Material:
     - _RimPower: 2.5
     - _RoughOverride: 1
     - _SliderOverrideMix: 0
-    - _Smoothness: 0.5
+    - _Smoothness: 0.244
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1

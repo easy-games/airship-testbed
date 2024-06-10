@@ -56,7 +56,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 56631354d3a834d46b16e0a289e6c158, type: 2}
+  - {fileID: 2100000, guid: 8ef0d7e2294867a4c98cb10139d85e0f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -128,6 +128,7 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
+    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!114 &210703450389781417
 MonoBehaviour:

@@ -66,7 +66,7 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 		//this.builder.rig.faceMesh?.gameObject.SetActive(false);
 		//this.builder.rig.head?.gameObject.SetActive(false);
 
-		this.backdrops.SetBackgdrop(AvatarBackdropType.NONE);
+		//this.backdrops.SetBackgdrop(AvatarBackdropType.NONE);
 
 		this.captureCamera.targetTexture = this.renderTexture;
 		this.captureCamera.enabled = false;

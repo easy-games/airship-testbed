@@ -167,7 +167,7 @@ Material:
     - _RimPower: 2.5
     - _RoughOverride: 0.75
     - _SliderOverrideMix: 0
-    - _Smoothness: 0.5
+    - _Smoothness: 0.634
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1

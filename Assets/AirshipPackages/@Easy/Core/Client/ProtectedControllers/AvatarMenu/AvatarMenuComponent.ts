@@ -729,7 +729,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.saveBtn?.SetDisabled(false);
 		this.ClearItembuttons();
 		this.ClearAllAccessories();
-		this.Log("Displaying Thumbnail Mode");
+		print("Entering Thumbnail Mode");
 		//Accessories
 		let foundItems = AvatarUtil.GetAllPossibleAvatarItems();
 		let foundFaces = AvatarUtil.GetAllAvatarFaceItems();
@@ -771,6 +771,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	 * @internal
 	 */
 	public LeaveThumbnailMode() {
+		print("Leaving Thumbnail Mode");
 		if (this.renderSetup) {
 			Object.Destroy(this.renderSetup);
 		}
