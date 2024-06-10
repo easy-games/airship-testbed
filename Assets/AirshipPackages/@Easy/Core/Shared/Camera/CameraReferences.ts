@@ -7,7 +7,6 @@ export class CameraReferences {
 	public static cameraHolder?: Transform;
 	public static mainCamera?: Camera;
 	public static viewmodelCamera?: Camera;
-	public static uiCamera?: Camera;
 
 	public static viewmodel?: Viewmodel;
 

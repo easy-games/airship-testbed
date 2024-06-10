@@ -228,7 +228,7 @@ export class CameraSystem {
 				break;
 			case CharacterCameraType.FIRST_PERSON:
 			case CharacterCameraType.THIRD_PERSON:
-				relevantCameras = [CameraReferences.mainCamera!, CameraReferences.uiCamera!];
+				relevantCameras = [CameraReferences.mainCamera!];
 				break;
 		}
 		return relevantCameras;
