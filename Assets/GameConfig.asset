@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55587e6da00a44bf9f7d5798297ebf2b, type: 3}
   m_Name: GameConfig
   m_EditorClassIdentifier: 
-  gameId: 
+  gameId: 66158b436197f84bec646cff
   startingSceneName: Menu
   gameScenes:
   - {fileID: 102900000, guid: 7adf34f37f4884c5ab92c16c58f38874, type: 3}
