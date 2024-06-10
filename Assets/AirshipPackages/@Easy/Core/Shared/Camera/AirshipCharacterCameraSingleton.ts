@@ -75,7 +75,6 @@ export class AirshipCharacterCameraSingleton implements OnStart {
 		CameraReferences.cameraHolder = cameraRig.transform;
 		CameraReferences.mainCamera = cameraRig.mainCamera;
 		CameraReferences.viewmodelCamera = cameraRig.viewmodelCamera;
-		CameraReferences.uiCamera = cameraRig.uiCamera;
 
 		this.cameraSystem = new CameraSystem();
 		this.SetCharacterCameraMode(this.characterCameraMode);
@@ -86,7 +85,6 @@ export class AirshipCharacterCameraSingleton implements OnStart {
 		CameraReferences.cameraHolder = undefined;
 		CameraReferences.mainCamera = undefined;
 		CameraReferences.viewmodelCamera = undefined;
-		CameraReferences.uiCamera = undefined;
 
 		this.cameraSystem?.SetEnabled(false);
 		this.cameraSystem = undefined;

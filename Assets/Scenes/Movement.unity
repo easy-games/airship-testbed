@@ -14787,18 +14787,6 @@ PrefabInstance:
       value: Stairs
       objectReference: {fileID: 0}
     - target: {fileID: 653460411298812346, guid: 4e16def16981b1f46b7ad23b5940bb5f, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 5.7461
-      objectReference: {fileID: 0}
-    - target: {fileID: 653460411298812346, guid: 4e16def16981b1f46b7ad23b5940bb5f, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.28599
-      objectReference: {fileID: 0}
-    - target: {fileID: 653460411298812346, guid: 4e16def16981b1f46b7ad23b5940bb5f, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.75255
-      objectReference: {fileID: 0}
-    - target: {fileID: 653460411298812346, guid: 4e16def16981b1f46b7ad23b5940bb5f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 13.48
       objectReference: {fileID: 0}
