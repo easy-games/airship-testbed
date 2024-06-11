@@ -1,5 +1,4 @@
 import { MainMenuController } from "@Easy/Core/Client/ProtectedControllers/MainMenuController";
-import { MainMenuPageType } from "@Easy/Core/Client/ProtectedControllers/MainMenuPageName";
 import { ChangeUsernameController } from "@Easy/Core/Client/ProtectedControllers/Social/ChangeUsernameController";
 import { RightClickMenuButton } from "@Easy/Core/Client/ProtectedControllers/UI/RightClickMenu/RightClickMenuButton";
 import { RightClickMenuController } from "@Easy/Core/Client/ProtectedControllers/UI/RightClickMenu/RightClickMenuController";
@@ -7,6 +6,7 @@ import { Airship } from "../../Airship";
 import { Dependency } from "../../Flamework";
 import { Game } from "../../Game";
 import { CanvasAPI } from "../../Util/CanvasAPI";
+import { SettingsPageSingleton } from "../Singletons/SettingsPageSingleton";
 
 export default class ProfileOptionsButton extends AirshipBehaviour {
 	override Start(): void {
@@ -24,7 +24,7 @@ export default class ProfileOptionsButton extends AirshipBehaviour {
 				options.push({
 					text: "Settings",
 					onClick: () => {
-						Dependency<MainMenuController>().RouteToPage(MainMenuPageType.Settings);
+						Dependency<SettingsPageSingleton>().Open();
 					},
 				});
 			}

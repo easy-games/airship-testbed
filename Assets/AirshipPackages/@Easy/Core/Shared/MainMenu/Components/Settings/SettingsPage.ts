@@ -2,9 +2,8 @@ import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { MainMenuSingleton } from "../../Singletons/MainMenuSingleton";
-import MainMenuPageComponent from "../MainMenuPageComponent";
 
-export default class SettingsPage extends MainMenuPageComponent {
+export default class SettingsPage extends AirshipBehaviour {
 	public sidebar!: RectTransform;
 	public tabs!: RectTransform;
 	public scrollView!: RectTransform;

@@ -4,14 +4,12 @@ import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import HomePageComponent from "@Easy/Core/Shared/MainMenu/Components/HomePageComponent";
 import GameGeneralPage from "@Easy/Core/Shared/MainMenu/Components/Settings/General/GameGeneralPage";
-import SettingsPage from "@Easy/Core/Shared/MainMenu/Components/Settings/SettingsPage";
 import { Mouse } from "@Easy/Core/Shared/UserInput";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { SetTimeout } from "@Easy/Core/Shared/Util/Timer";
 import AvatarViewComponent from "../../Shared/Avatar/AvatarViewComponent";
 import MainMenuPageComponent from "../../Shared/MainMenu/Components/MainMenuPageComponent";
-import AvatarMenuComponent from "./AvatarMenu/AvatarMenuComponent";
 import { MainMenuPageType } from "./MainMenuPageName";
 
 @Controller()
@@ -57,11 +55,6 @@ export class MainMenuController implements OnStart {
 			[
 				MainMenuPageType.MyGames,
 				this.refs.GetValue("Pages", "MyGames").GetAirshipComponent<MainMenuPageComponent>()!,
-			],
-			[MainMenuPageType.Settings, this.refs.GetValue("Pages", "Settings").GetAirshipComponent<SettingsPage>()!],
-			[
-				MainMenuPageType.Avatar,
-				this.refs.GetValue("Pages", "Avatar").GetAirshipComponent<AvatarMenuComponent>()!,
 			],
 			[
 				MainMenuPageType.Friends,
