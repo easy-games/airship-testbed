@@ -266,17 +266,17 @@ export class PlayersSingleton implements OnStart {
 		});
 
 		CoreNetwork.ClientToServer.ChangedOutfit.server.OnClientEvent((player) => {
-			this.FetchEquippedOutfit(player, true);
-
-			if (Airship.characters.allowMidGameOutfitChanges && player.character) {
-				const outfitDto = player.selectedOutfit;
-				player.character.outfitDto = outfitDto;
-				CoreNetwork.ServerToClient.Character.ChangeOutfit.server.FireAllClients(player.character.id, outfitDto);
-			}
+			this.FetchEquippedOutfit(player, true).then(()=>{
+				if (Airship.characters.allowMidGameOutfitChanges && player.character) {
+					const outfitDto = player.selectedOutfit;
+					player.character.outfitDto = outfitDto;
+					CoreNetwork.ServerToClient.Character.ChangeOutfit.server.FireAllClients(player.character.id, outfitDto);
+				}
+			})
 		});
 	}
 
-	private FetchEquippedOutfit(player: Player, ignoreCache: boolean): void {
+	private async FetchEquippedOutfit(player: Player, ignoreCache: boolean): Promise<boolean> {
 		const SetOutfit = (outfitDto: OutfitDto | undefined) => {
 			player.selectedOutfit = outfitDto;
 			player.outfitLoaded = true;
@@ -291,7 +291,6 @@ export class PlayersSingleton implements OnStart {
 				const outfitDto = DecodeJSON<OutfitDto>(data);
 				if (outfitDto) {
 					SetOutfit(outfitDto);
-					return;
 				}
 			}
 		}
@@ -303,11 +302,12 @@ export class PlayersSingleton implements OnStart {
 		// this.outfitFetchTime.set(player.userId, os.time());
 
 		if (player.IsLocalPlayer()) {
-			AvatarPlatformAPI.GetEquippedOutfit().then(SetOutfit);
+			await AvatarPlatformAPI.GetEquippedOutfit().then(SetOutfit);
 		} else {
 			print("loading outfit from server for player: " + player.userId);
-			AvatarPlatformAPI.GetPlayerEquippedOutfit(player.userId).then(SetOutfit);
+			await AvatarPlatformAPI.GetPlayerEquippedOutfit(player.userId).then(SetOutfit);
 		}
+		return true;
 	}
 
 	private HandlePlayerReadyServer(player: Player): void {

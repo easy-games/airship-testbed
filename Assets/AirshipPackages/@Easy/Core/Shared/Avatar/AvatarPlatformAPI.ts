@@ -20,7 +20,7 @@ export class AvatarPlatformAPI {
 		return `${AirshipUrl.CDN}/images/${imageId}.png`;
 	}
 
-	public static GetAllOutfits(): OutfitDto[] | undefined {
+	public static async GetAllOutfits(): Promise<OutfitDto[] | undefined> {
 		this.Log("GetAllOutfits");
 		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits`));
 		if (res.success) {

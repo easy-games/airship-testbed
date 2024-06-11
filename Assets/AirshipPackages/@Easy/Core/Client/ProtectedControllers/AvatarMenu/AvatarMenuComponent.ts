@@ -563,44 +563,46 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	private LoadAllOutfits() {
 		this.Log("LoadAllOutfits");
-		this.outfits = AvatarPlatformAPI.GetAllOutfits();
-		const outfitSize = this.outfits ? this.outfits.size() : 0;
-		if (outfitSize <= 0) {
-			warn("No outfits exist on user. Making initial default one");
-			this.outfits = [
-				AvatarPlatformAPI.CreateDefaultAvatarOutfit(
-					"9999",
-					"Default0",
-					"Default0",
-					RandomUtil.FromArray(AvatarUtil.skinColors),
-				),
-			];
-		}
-
-		//Disable Outfit buttons that we don't need
-		if (this.outfitBtns) {
-			for (let i = 0; i < this.outfitBtns.size(); i++) {
-				this.outfitBtns[i].gameObject.SetActive(i < outfitSize);
+		AvatarPlatformAPI.GetAllOutfits().then((outfits)=>{
+			this.outfits = outfits;
+			const outfitSize = this.outfits ? this.outfits.size() : 0;
+			if (outfitSize <= 0) {
+				warn("No outfits exist on user. Making initial default one");
+				this.outfits = [
+					AvatarPlatformAPI.CreateDefaultAvatarOutfit(
+						"9999",
+						"Default0",
+						"Default0",
+						RandomUtil.FromArray(AvatarUtil.skinColors),
+					),
+				];
 			}
-		}
 
-		AvatarPlatformAPI.GetEquippedOutfit().then((equippedOutfit)=>{
-			if (equippedOutfit && this.outfits) {
-				let i = 0;
-				for (let outfit of this.outfits) {
-					if (outfit.outfitId === equippedOutfit.outfitId) {
-						//Select equipped outfit
-						this.Log("Found default outfit index: " + i);
-						this.SelectOutfit(i);
-						return;
-					}
-					i++;
+			//Disable Outfit buttons that we don't need
+			if (this.outfitBtns) {
+				for (let i = 0; i < this.outfitBtns.size(); i++) {
+					this.outfitBtns[i].gameObject.SetActive(i < outfitSize);
 				}
 			}
-		});
 
-		//Select the first outfit if no outfit was found
-		this.SelectOutfit(0);
+			AvatarPlatformAPI.GetEquippedOutfit().then((equippedOutfit)=>{
+				if (equippedOutfit && this.outfits) {
+					let i = 0;
+					for (let outfit of this.outfits) {
+						if (outfit.outfitId === equippedOutfit.outfitId) {
+							//Select equipped outfit
+							this.Log("Found default outfit index: " + i);
+							this.SelectOutfit(i);
+							return;
+						}
+						i++;
+					}
+				}
+
+				//Select the first outfit if no outfit was found
+				this.SelectOutfit(0);
+			});
+		});
 	}
 
 	private SelectOutfit(index: number) {
