@@ -1,10 +1,10 @@
 
 <!-- There are special maps available -->
 <!-- texture_n  Normal map  -->
-<!-- texture_r  Roughness map, 0 is glossy/reflective, 0.25 has a small specular circle, 0.5 big specular circle, 1.0 fully rough (matte)  -->
+<!-- texture_s  Smoothness map, 0 fully rough (matte), 0.5 big specular circle, 0.75 has a small specular circle, 1 is glossy/reflective  -->
 <!-- texture_m  Metal map, 0 is non metallic, 1 is metallic.  Metal has colored anodized specular and shine -->
 <!-- texture_e  Emissive map, 1 is emissive/fullbright. If you want it to bloom, the underlaying diffuse color needs to be relatively bright -->
-<!-- if you do not supply the maps, you can specify a constant value directly using <Metallic>0</<Metallic> or <Roughness>1</Roughness> or <Emissive>1</Emissive> etc -->
+<!-- if you do not supply the maps, you can specify a constant value directly using <Metallic>0</<Metallic> or <Smoothness>0</Smoothness> or <Emissive>1</Emissive> etc -->
 
 <Blocks>
   <RootAssetPath>@Easy/Survival/VoxelWorld</RootAssetPath>
@@ -19,7 +19,7 @@
     <Solid>true</Solid>
  
     <Metallic>0</Metallic>
-    <Roughness>1</Roughness>
+    <Smoothness>0</Smoothness>
     <Minecraft>2</Minecraft>
     <Brightness>3</Brightness>
     
@@ -33,7 +33,7 @@
 <!--    <Material>StylizedDirt</Material> -->
     <Solid>true</Solid>
     <Metallic>0</Metallic>
-    <Roughness>0.75</Roughness>
+    <Smoothness>0.25</Smoothness>
     <Minecraft>3</Minecraft>
     <Brightness>3</Brightness>
   </Block>
@@ -46,7 +46,7 @@
     <Material>StylizedDirt</Material>
     <Solid>true</Solid>
     <Metallic>0</Metallic>
-    <Roughness>0.75</Roughness>
+    <Smoothness>0.25</Smoothness>
     <Minecraft>3</Minecraft>
     <Brightness>2</Brightness>
   </Block>
@@ -60,7 +60,7 @@
 <!--    <SideTexture>rock_test_C</SideTexture>-->
     <Material>StylizedStone</Material>
     <Metallic>0</Metallic>
-    <Roughness>2</Roughness>
+    <Smoothness>0</Smoothness>
     <Minecraft>1,43,43:8</Minecraft>
     <Brightness>1.8</Brightness>
     <Solid>false</Solid>
@@ -90,7 +90,7 @@
     <Material>StylizedWoodPlanks</Material>
     <Solid>true</Solid>
     <Metallic>0</Metallic>
-    <Roughness>0.6</Roughness>
+    <Smoothness>0.4</Smoothness>
     <Minecraft>5</Minecraft>
     <Brightness>1.7</Brightness>
     
@@ -105,7 +105,7 @@
     <Solid>false</Solid>
     <Collision>Solid</Collision>
     <Metallic>0</Metallic>
-    <Roughness>1</Roughness>
+    <Smoothness>0.5</Smoothness>
     <Minecraft>17</Minecraft>
     <Brightness>1.5</Brightness>
        
@@ -123,7 +123,7 @@
     <Collision>Solid</Collision>
     <TileSet>TileSets/BevelQuarter/</TileSet>
     <Metallic>0</Metallic>
-    <Roughness>1</Roughness>
+    <Smoothness>0</Smoothness>
     <Minecraft>4</Minecraft>
     <Brightness>1.8</Brightness>
   </Block>
@@ -135,21 +135,11 @@
     <SideTexture>grim_stone.s</SideTexture>
     <Solid>true</Solid>
     <Metallic>0</Metallic>
-    <Roughness>1</Roughness>
+    <Smoothness>0</Smoothness>
     <Brightness>2</Brightness>
   </Block>
 
-<!--  <Block>-->
-<!--    <Id>EMERALD_BLOCK</Id>-->
-<!--    <Name>Emerald Block</Name>-->
-<!--    <TopTexture>emerald_block.s</TopTexture>-->
-<!--    <SideTexture>emerald_block.s</SideTexture>-->
-<!--    <Solid>true</Solid>-->
-<!--    <Metallic>0.5</Metallic>-->
-<!--    <Roughness>0.5</Roughness>-->
-<!--    <Brightness>2</Brightness>-->
-<!--  </Block>-->
-
+ 
   <Block>
     <Id>TNT</Id>
     <Name>TNT</Name>
@@ -158,7 +148,7 @@
     <BottomTexture>tnt.d</BottomTexture>
     <Solid>true</Solid>
     <Metallic>0</Metallic>
-    <Roughness>0</Roughness>
+    <Smoothness>1</Smoothness>
     <Brightness>2</Brightness>
   </Block>
 
@@ -181,7 +171,7 @@
     <Collision>Solid</Collision>
     <TileSet>TileSets/BevelQuarterThin/</TileSet>
     <Metallic>0</Metallic>
-    <Roughness>1</Roughness>
+    <Smoothness>0</Smoothness>
     <Minecraft>1:5,1:1</Minecraft>
     <Brightness>2</Brightness>
   </Block>
@@ -193,7 +183,7 @@
     <SideTexture>clay_light_green.s</SideTexture>
     <Solid>true</Solid>
     <Metallic>0</Metallic>
-    <Roughness>1</Roughness>
+    <Smoothness>0</Smoothness>
     <Minecraft>159:13,18:1,251:13,251:5</Minecraft>
     <Brightness>2</Brightness>
   </Block>
@@ -205,7 +195,7 @@
     <SideTexture>clay_dark_green.s</SideTexture>
     <Solid>true</Solid>
     <Metallic>0</Metallic>
-    <Roughness>1</Roughness>
+    <Smoothness>0</Smoothness>
     <Minecraft>159:5</Minecraft>
     <Brightness>2</Brightness>
   </Block>
@@ -217,7 +207,7 @@
     <SideTexture>slate_brick.s</SideTexture>
     <Solid>true</Solid>
     <Metallic>0</Metallic>
-    <Roughness>1</Roughness>
+    <Smoothness>0</Smoothness>
     <Minecraft>159:11</Minecraft>
     <Brightness>2</Brightness>
   </Block>
@@ -230,7 +220,7 @@
 <!--    <Material>stone/Stone1</Material>-->
     <Solid>true</Solid>
     <Metallic>0</Metallic>
-    <Roughness>1</Roughness>
+    <Smoothness>0</Smoothness>
     <Minecraft>1:6,1:2</Minecraft>
     <Brightness>2</Brightness>
   </Block>
@@ -242,7 +232,7 @@
     <SideTexture>emerald_block.s</SideTexture>
     <Solid>true</Solid>
     <Metallic>0.5</Metallic>
-    <Roughness>0.5</Roughness>
+    <Smoothness>0.5</Smoothness>
     <Minecraft>133</Minecraft>
     <Brightness>1</Brightness>
   </Block>
@@ -254,7 +244,7 @@
     <SideTexture>diamond_block.s</SideTexture>
     <Solid>true</Solid>
     <Metallic>0.5</Metallic>
-    <Roughness>0.5</Roughness>
+    <Smoothness>0.9</Smoothness>
     <Minecraft>57</Minecraft>
     <Brightness>1</Brightness>
   </Block>
@@ -266,7 +256,7 @@
     <SideTexture>iron_block.s</SideTexture>
     <Solid>true</Solid>
     <Metallic>0.5</Metallic>
-    <Roughness>0.5</Roughness>
+    <Smoothness>0.5</Smoothness>
     <Minecraft>42</Minecraft>
     <Brightness>1</Brightness>
   </Block>
@@ -279,7 +269,7 @@
     <Material>glass_block</Material>
     <Solid>false</Solid>
     <Metallic>0</Metallic>
-    <Roughness>0</Roughness>
+    <Smoothness>1</Smoothness>
     <AmbientOcclussion>true</AmbientOcclussion>
     <Minecraft>95</Minecraft>
     <Brightness>2</Brightness>
@@ -301,7 +291,7 @@
     <SideTexture>wool_white.s</SideTexture>
     <Solid>true</Solid>
     <Metallic>0</Metallic>
-    <Roughness>1</Roughness>
+    <Smoothness>0</Smoothness>
     <Minecraft>35</Minecraft>
     <Brightness>0.8</Brightness>
   </Block>
@@ -312,7 +302,7 @@
     <SideTexture>wool_red.s</SideTexture>
     <Solid>true</Solid>
     <Metallic>0</Metallic>
-    <Roughness>1</Roughness>
+    <Smoothness>0</Smoothness>
     <Minecraft>35:14</Minecraft>
     <Brightness>2</Brightness>
   </Block>
@@ -323,7 +313,7 @@
     <SideTexture>wool_blue.s</SideTexture>
     <Solid>true</Solid>
     <Metallic>0</Metallic>
-    <Roughness>1</Roughness>
+    <Smoothness>0</Smoothness>
     <Minecraft>35:11</Minecraft>
     <Brightness>2</Brightness>
   </Block>
@@ -334,7 +324,7 @@
     <SideTexture>wool_green.s</SideTexture>
     <Solid>true</Solid>
     <Metallic>0</Metallic>
-    <Roughness>1</Roughness>
+    <Smoothness>0</Smoothness>
     <Minecraft>35:13</Minecraft>
     <Brightness>2</Brightness>
   </Block>
@@ -345,7 +335,7 @@
     <SideTexture>wool_yellow.s</SideTexture>
     <Solid>true</Solid>
     <Metallic>0</Metallic>
-    <Roughness>1</Roughness>
+    <Smoothness>0</Smoothness>
     <Minecraft>35:4</Minecraft>
     <Brightness>2</Brightness>
   </Block>
@@ -356,7 +346,7 @@
     <SideTexture>obsidian.s</SideTexture>
     <Solid>true</Solid>
     <Metallic>0.4</Metallic>
-    <Roughness>0.6</Roughness>
+    <Smoothness>0.4</Smoothness>
     <Minecraft>49</Minecraft>
     <Brightness>2</Brightness>
   </Block>
@@ -399,7 +389,7 @@
 <!--    <SideTexture>log_spruce.s</SideTexture>-->
     <Solid>true</Solid>
     <Metallic>0</Metallic>
-    <Roughness>1</Roughness>
+    <Smoothness>0</Smoothness>
     <Minecraft>54,130</Minecraft>
     <Brightness>2</Brightness>
   </Block>
@@ -411,7 +401,7 @@
     <SideTexture>clay.s</SideTexture>
     <Solid>true</Solid>
     <Metallic>0</Metallic>
-    <Roughness>1</Roughness>
+    <Smoothness>0</Smoothness>
     <Brightness>2</Brightness>
   </Block>
   <Block>
@@ -421,7 +411,7 @@
     <SideTexture>clay_white.s</SideTexture>
     <Solid>true</Solid>
     <Metallic>0</Metallic>
-    <Roughness>1</Roughness>
+    <Smoothness>0</Smoothness>
     <Brightness>1.1</Brightness>
   </Block>
   <Block>
@@ -431,7 +421,7 @@
     <SideTexture>clay_yellow.s</SideTexture>
     <Solid>true</Solid>
     <Metallic>0</Metallic>
-    <Roughness>1</Roughness>
+    <Smoothness>0</Smoothness>
     <Brightness>1.5</Brightness>
   </Block>
   <Block>
@@ -441,7 +431,7 @@
     <SideTexture>clay_black.s</SideTexture>
     <Solid>true</Solid>
     <Metallic>0</Metallic>
-    <Roughness>1</Roughness>
+    <Smoothness>0</Smoothness>
     <Brightness>2</Brightness>
   </Block>
   <Block>
@@ -451,7 +441,7 @@
     <SideTexture>clay_gray.s</SideTexture>
     <Solid>true</Solid>
     <Metallic>0</Metallic>
-    <Roughness>1</Roughness>
+    <Smoothness>0</Smoothness>
     <Brightness>2</Brightness>
   </Block>
   <Block>
@@ -461,7 +451,7 @@
     <Solid>false</Solid>
     <Collision>Solid</Collision>
     <Metallic>0</Metallic>
-    <Roughness>1</Roughness>
+    <Smoothness>0</Smoothness>
     <Brightness>2</Brightness>
     <Minecraft>48</Minecraft>
     <RandomRotation>true</RandomRotation>
@@ -477,7 +467,7 @@
     <Material>StylizedDirtDark</Material>
     <Solid>true</Solid>
     <Metallic>0</Metallic>
-    <Roughness>1</Roughness>
+    <Smoothness>0</Smoothness>
     <Brightness>2</Brightness>
     <Minecraft>159:12</Minecraft>
   </Block>
@@ -488,7 +478,7 @@
     <SideTexture>blastproof_ceramic.s</SideTexture>
     <Solid>true</Solid>
     <Metallic>0</Metallic>
-    <Roughness>1</Roughness>
+    <Smoothness>0</Smoothness>
     <Brightness>2</Brightness>
   </Block>
   <Block>
@@ -498,7 +488,7 @@
     <SideTexture>leaf_oak.s</SideTexture>
     <Solid>false</Solid>
     <Metallic>0</Metallic>
-    <Roughness>1</Roughness>
+    <Smoothness>0</Smoothness>
     <Brightness>2</Brightness>
     <Minecraft>48:1</Minecraft>
     <RandomRotation>true</RandomRotation>
@@ -520,7 +510,7 @@
     <SideTexture>wool_cyan.s</SideTexture>
     <Solid>true</Solid>
     <Metallic>0</Metallic>
-    <Roughness>1</Roughness>
+    <Smoothness>0</Smoothness>
     <Minecraft>35:9</Minecraft>
     <Brightness>1.7</Brightness>
   </Block>
@@ -531,7 +521,7 @@
     <SideTexture>wool_grey.s</SideTexture>
     <Solid>true</Solid>
     <Metallic>0</Metallic>
-    <Roughness>1</Roughness>
+    <Smoothness>0</Smoothness>
     <Minecraft>35:7</Minecraft>
     <Brightness>1.7</Brightness>
   </Block>
@@ -542,7 +532,7 @@
     <SideTexture>stone_tiles.s</SideTexture>
     <Solid>true</Solid>
     <Metallic>0</Metallic>
-    <Roughness>1</Roughness>
+    <Smoothness>0</Smoothness>
     <Minecraft>201</Minecraft>
     <Brightness>1.7</Brightness>
   </Block>
@@ -553,7 +543,7 @@
     <SideTexture>slate_tiles.s</SideTexture>
     <Solid>true</Solid>
     <Metallic>0</Metallic>
-    <Roughness>1</Roughness>
+    <Smoothness>0</Smoothness>
     <Minecraft>168:2</Minecraft>
     <Brightness>2</Brightness>
   </Block>
@@ -565,7 +555,7 @@
     <Material>StylizedDirt</Material>
     <Solid>true</Solid>
     <Metallic>0</Metallic>
-    <Roughness>0.75</Roughness>
+    <Smoothness>0.25</Smoothness>
     <Minecraft>60</Minecraft>
     <Brightness>0</Brightness>
   </Block>

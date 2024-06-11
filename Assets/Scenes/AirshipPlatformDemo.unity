@@ -13051,7 +13051,7 @@ MonoBehaviour:
   m_ShadowRenderingLayers: 1
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
-  m_SoftShadowQuality: 0
+  m_SoftShadowQuality: 2
 --- !u!108 &1665474174
 Light:
   m_ObjectHideFlags: 0
@@ -13073,8 +13073,8 @@ Light:
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
-    m_Bias: 0.05
-    m_NormalBias: 0.4
+    m_Bias: 0
+    m_NormalBias: 0
     m_NearPlane: 0.2
     m_CullingMatrixOverride:
       e00: 1
@@ -13121,13 +13121,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1665474172}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.51795214, y: 0.12918812, z: -0.5322419, w: 0.6570805}
+  m_LocalRotation: {x: 0.44364083, y: 0.7369091, z: -0.5054787, w: -0.06811233}
   m_LocalPosition: {x: 7.9763007, y: 7.42, z: 0.97469133}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 125.09601, y: -221.581, z: -280.331}
+  m_LocalEulerAnglesHint: {x: 43.2, y: -131.152, z: -277.516}
 --- !u!1 &1666197636
 GameObject:
   m_ObjectHideFlags: 0
@@ -15708,14 +15708,14 @@ MonoBehaviour:
   globalRadiosityDirectLightAmp: 1
   showRadioistyProbes: 0
   autoLoad: 1
-  voxelWorldFile: {fileID: 11400000, guid: 427e251a670d7824e847886b49fda200, type: 2}
+  voxelWorldFile: {fileID: 11400000, guid: 29e0e64cadcacaf4683ffd51f35263c5, type: 2}
   blockDefines:
   - {fileID: 4900000, guid: c8b3c8f2a614f4c1386bf2b3cf55dafc, type: 3}
   worldNetworker: {fileID: 0}
   chunksFolder: {fileID: 0}
   lightsFolder: {fileID: 0}
   finishedReplicatingChunksFromServer: 0
-  selectedBlockIndex: 1
+  selectedBlockIndex: 2
   renderingDisabled: 0
 --- !u!114 &1926174311
 MonoBehaviour:
@@ -15738,13 +15738,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1926174309}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.008033838, z: -0, w: 0.9999678}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: -0.921, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1947011957
 GameObject:
   m_ObjectHideFlags: 0
