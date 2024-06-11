@@ -17,7 +17,7 @@ export default class NavbarSettingsButton extends AirshipBehaviour {
 
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnHoverEvent(this.gameObject, (hov) => {
-				this.bgImage.color = hov === HoverState.ENTER ? new Color(1, 1, 1, 0.1) : new Color(1, 1, 1, 0);
+				this.bgImage.color = hov === HoverState.ENTER ? new Color(1, 1, 1, 0.07) : new Color(1, 1, 1, 0);
 			}),
 		);
 	}

@@ -17,6 +17,8 @@ export default class AirshipButton extends AirshipBehaviour {
 
 	@Header("Variables")
 	public clickEffect = AirshipButtonClickEffect.Squish;
+	@Tooltip("Sets child text to underline on mouse hover.")
+	public underlineOnHover = false;
 
 	@Header("Optional Variables")
 	public disabledColorHex = "#2E3035";
@@ -40,6 +42,17 @@ export default class AirshipButton extends AirshipBehaviour {
 				dir === PointerDirection.DOWN ? this.PlayMouseDownEffect() : this.PlayMouseUpEffect();
 			}),
 		);
+
+		// if (this.underlineOnHover) {
+		// 	const text = this.gameObject.GetComponentInChildren<TMP_Text>();
+		// 	if (text) {
+		// 		this.bin.AddEngineEventConnection(
+		// 			CanvasAPI.OnHoverEvent(this.gameObject, (hov) => {
+		// 				text.fontStyle = hov === HoverState.ENTER ? FontStyles.Underline : FontStyles.Normal;
+		// 			}),
+		// 		);
+		// 	}
+		// }
 	}
 
 	public SetLoading(loading: boolean) {

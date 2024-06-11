@@ -452,6 +452,11 @@
 			"component": true,
 			"filePath": "Code/TopDownScene/NetComponent.lua",
 			"extends": []
+		},
+		"SettingsProfilePage": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsProfilePage.lua",
+			"extends": []
 		}
 	},
 	"extends": {
