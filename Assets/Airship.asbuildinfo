@@ -403,6 +403,11 @@
 			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/DevConsoleButton.lua",
 			"extends": []
 		},
+		"SettingsLogoutButton": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsLogoutButton.lua",
+			"extends": []
+		},
 		"SettingsTabButton": {
 			"component": true,
 			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsTabButton.lua",
@@ -451,9 +456,9 @@
 	},
 	"extends": {
 		"MainMenuPageComponent": [
+			"AvatarMenuComponent",
 			"HomePageComponent",
-			"GameGeneralPage",
-			"AvatarMenuComponent"
+			"GameGeneralPage"
 		],
 		"SearchResult": [
 			"GameSearchResult"

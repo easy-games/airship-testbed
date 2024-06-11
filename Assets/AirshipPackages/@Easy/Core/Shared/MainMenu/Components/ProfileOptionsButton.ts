@@ -18,13 +18,6 @@ export default class ProfileOptionsButton extends AirshipBehaviour {
 
 		CanvasAPI.OnClickEvent(this.gameObject, () => {
 			const options: RightClickMenuButton[] = [];
-			options.push({
-				text: "Logout",
-				onClick: () => {
-					AuthManager.ClearSavedAccount();
-					Bridge.LoadScene("Login", true, LoadSceneMode.Single);
-				},
-			});
 			if (!Game.IsMobile()) {
 				options.push({
 					text: "Quit",

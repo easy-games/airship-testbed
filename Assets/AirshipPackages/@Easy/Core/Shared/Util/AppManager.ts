@@ -193,6 +193,8 @@ export class AppManager {
 			}
 		}
 
+		if (!this.opened) return;
+
 		if (this.stack.size() > 0) {
 			const openedApp = this.stack.pop();
 
@@ -201,8 +203,6 @@ export class AppManager {
 			}
 			openedApp?.bin.Clean();
 		}
-
-		if (!this.opened) return;
 
 		if (this.stack.size() === 0) {
 			this.CloseDarkBackground();
@@ -242,6 +242,9 @@ export class AppManager {
 }
 
 /* Listen for close key globally. */
+if (!Game.IsInGame()) {
+	print("NOT lksdfjlskdjfklsdfjlksdlfjsllkjsfd");
+}
 if (Game.IsGameLuauContext() || !Game.IsInGame()) {
 	AppManager.keyboard.OnKeyDown(
 		CLOSE_KEY,

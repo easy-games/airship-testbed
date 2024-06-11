@@ -15,6 +15,7 @@ export default class Navbar extends AirshipBehaviour {
 	public scrollRect!: ScrollRect;
 	public creditsWrapper!: GameObject;
 	public left!: RectTransform;
+	public quitGameBtn!: RectTransform;
 
 	private bin = new Bin();
 
@@ -49,6 +50,8 @@ export default class Navbar extends AirshipBehaviour {
 				}
 			}),
 		);
+
+		this.quitGameBtn.gameObject.SetActive(Screen.fullScreen);
 
 		if (Game.deviceType !== AirshipDeviceType.Phone || Game.IsPortrait()) {
 			this.scrollRect.enabled = false;
