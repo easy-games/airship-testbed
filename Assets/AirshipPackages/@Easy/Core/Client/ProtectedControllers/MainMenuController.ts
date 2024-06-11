@@ -10,6 +10,7 @@ import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { SetTimeout } from "@Easy/Core/Shared/Util/Timer";
 import AvatarViewComponent from "../../Shared/Avatar/AvatarViewComponent";
 import MainMenuPageComponent from "../../Shared/MainMenu/Components/MainMenuPageComponent";
+import AvatarMenuComponent from "./AvatarMenu/AvatarMenuComponent";
 import { MainMenuPageType } from "./MainMenuPageName";
 
 @Controller()
@@ -48,13 +49,15 @@ export class MainMenuController implements OnStart {
 		this.socialMenuGroup = this.refs.GetValue<CanvasGroup>("UI", "SocialGroup");
 		CloudImage.ClearCache();
 
-		const mouse = new Mouse();
-
 		this.pageMap = new Map<MainMenuPageType, MainMenuPageComponent>([
 			[MainMenuPageType.Home, this.refs.GetValue("Pages", "Home").GetAirshipComponent<HomePageComponent>()!],
 			[
 				MainMenuPageType.MyGames,
 				this.refs.GetValue("Pages", "MyGames").GetAirshipComponent<MainMenuPageComponent>()!,
+			],
+			[
+				MainMenuPageType.Avatar,
+				this.refs.GetValue("Pages", "Avatar").GetAirshipComponent<AvatarMenuComponent>()!,
 			],
 			[
 				MainMenuPageType.Friends,

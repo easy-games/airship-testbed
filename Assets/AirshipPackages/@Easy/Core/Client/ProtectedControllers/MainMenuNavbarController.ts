@@ -44,7 +44,6 @@ export class MainMenuNavbarController implements OnStart {
 		const homeButton = refs.GetValue("UI", "NavbarHomeButton");
 		const avatarButton = refs.GetValue("UI", "NavbarAvatarButton");
 		const myGamesButton = refs.GetValue("UI", "NavbarMyGamesButton");
-		const settingsButton = refs.GetValue("UI", "NavbarSettingsButton");
 		const runningGameButton = refs.GetValue("UI", "NavbarRunningGameButton");
 		const disconnectButton = refs.GetValue("UI", "DisconnectButton");
 
@@ -77,11 +76,6 @@ export class MainMenuNavbarController implements OnStart {
 			this.mainMenuController.RouteToPage(MainMenuPageType.MyGames);
 		});
 
-		CoreUI.SetupButton(settingsButton, { noHoverSound: true });
-		CanvasAPI.OnClickEvent(settingsButton, () => {
-			this.mainMenuController.RouteToPage(MainMenuPageType.Settings);
-		});
-
 		// CoreUI.SetupButton(myServersButton, { noHoverSound: true });
 		// CanvasAPI.OnClickEvent(myServersButton, () => {
 		// 	// this.mainMenuController.RouteToPage(MainMenuPage.SETTINGS);
@@ -103,8 +97,6 @@ export class MainMenuNavbarController implements OnStart {
 			}
 			if (page === MainMenuPageType.Home) {
 				currentSelectedNavbarButton = homeButton;
-			} else if (page === MainMenuPageType.Settings) {
-				currentSelectedNavbarButton = settingsButton;
 			} else if (page === MainMenuPageType.Game) {
 				currentSelectedNavbarButton = runningGameButton;
 			} else if (page === MainMenuPageType.Avatar) {

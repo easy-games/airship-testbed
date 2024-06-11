@@ -193,12 +193,6 @@ export class AppManager {
 			}
 		}
 
-		if (!this.opened) return;
-
-		if (!config?.noCloseSound) {
-			// AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/UI_Close.wav");
-		}
-
 		if (this.stack.size() > 0) {
 			const openedApp = this.stack.pop();
 
@@ -207,6 +201,8 @@ export class AppManager {
 			}
 			openedApp?.bin.Clean();
 		}
+
+		if (!this.opened) return;
 
 		if (this.stack.size() === 0) {
 			this.CloseDarkBackground();
@@ -246,7 +242,7 @@ export class AppManager {
 }
 
 /* Listen for close key globally. */
-if (Game.IsGameLuauContext()) {
+if (Game.IsGameLuauContext() || !Game.IsInGame()) {
 	AppManager.keyboard.OnKeyDown(
 		CLOSE_KEY,
 		(event) => {

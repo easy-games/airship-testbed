@@ -13,7 +13,9 @@ export default class MicrophoneSettingsPage extends AirshipBehaviour {
 		for (let i = 0; i < deviceNames.Length; i++) {
 			const deviceName = deviceNames.GetValue(i);
 			const btnGo = Object.Instantiate(
-				AssetBridge.Instance.LoadAsset("@Easy/Core/Client/Resources/MainMenu/SettingsPage/MicDevice.prefab"),
+				AssetBridge.Instance.LoadAsset(
+					"Assets/AirshipPackages/@Easy/Core/Prefabs/MainMenu/SettingsPage/MicDevice.prefab",
+				),
 				this.content,
 			);
 			const micDeviceComponent = btnGo.GetAirshipComponent<MicDevice>()!;

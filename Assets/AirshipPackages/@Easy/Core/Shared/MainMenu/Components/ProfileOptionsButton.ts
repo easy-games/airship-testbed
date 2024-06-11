@@ -1,12 +1,10 @@
 import { MainMenuController } from "@Easy/Core/Client/ProtectedControllers/MainMenuController";
-import { ChangeUsernameController } from "@Easy/Core/Client/ProtectedControllers/Social/ChangeUsernameController";
 import { RightClickMenuButton } from "@Easy/Core/Client/ProtectedControllers/UI/RightClickMenu/RightClickMenuButton";
 import { RightClickMenuController } from "@Easy/Core/Client/ProtectedControllers/UI/RightClickMenu/RightClickMenuController";
 import { Airship } from "../../Airship";
 import { Dependency } from "../../Flamework";
 import { Game } from "../../Game";
 import { CanvasAPI } from "../../Util/CanvasAPI";
-import { SettingsPageSingleton } from "../Singletons/SettingsPageSingleton";
 
 export default class ProfileOptionsButton extends AirshipBehaviour {
 	override Start(): void {
@@ -20,24 +18,6 @@ export default class ProfileOptionsButton extends AirshipBehaviour {
 
 		CanvasAPI.OnClickEvent(this.gameObject, () => {
 			const options: RightClickMenuButton[] = [];
-			if (!Game.IsPortrait()) {
-				options.push({
-					text: "Settings",
-					onClick: () => {
-						Dependency<SettingsPageSingleton>().Open();
-					},
-				});
-			}
-			// options.push({
-			// 	text: "Change Profile Picture",
-			// 	onClick: () => {},
-			// });
-			options.push({
-				text: "Change Username",
-				onClick: () => {
-					Dependency<ChangeUsernameController>().Open();
-				},
-			});
 			options.push({
 				text: "Logout",
 				onClick: () => {

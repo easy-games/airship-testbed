@@ -29,22 +29,12 @@
 				"MainMenuPageComponent"
 			]
 		},
-		"SettingsPage": {
-			"component": true,
-			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsPage.lua",
-			"extends": []
-		},
 		"AvatarMenuComponent": {
 			"component": true,
 			"filePath": "AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/AvatarMenuComponent.lua",
 			"extends": [
 				"MainMenuPageComponent"
 			]
-		},
-		"AvatarMenuProfileComponent": {
-			"component": true,
-			"filePath": "AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/AvatarMenuProfileComponent.lua",
-			"extends": []
 		},
 		"DirectMessagesWindow": {
 			"component": true,
@@ -116,6 +106,11 @@
 			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Search/SearchFocused.lua",
 			"extends": []
 		},
+		"SettingsCloseButton": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsCloseButton.lua",
+			"extends": []
+		},
 		"SettingsKeybind": {
 			"component": true,
 			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsKeybind.lua",
@@ -181,11 +176,6 @@
 			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Modal.lua",
 			"extends": []
 		},
-		"Navbar": {
-			"component": true,
-			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Navbar.lua",
-			"extends": []
-		},
 		"Searchbar": {
 			"component": true,
 			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Searchbar.lua",
@@ -202,6 +192,11 @@
 			"extends": [
 				"SearchResult"
 			]
+		},
+		"SettingsPage": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsPage.lua",
+			"extends": []
 		},
 		"PlayerList": {
 			"component": true,
@@ -308,6 +303,11 @@
 			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/FriendRequest/FriendRequestModal.lua",
 			"extends": []
 		},
+		"AvatarMenuProfileComponent": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/AvatarMenuProfileComponent.lua",
+			"extends": []
+		},
 		"MobileEscapeButton": {
 			"component": true,
 			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/MobileEscapeButton.lua",
@@ -363,24 +363,14 @@
 			"filePath": "AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/AvatarMenuBtn.lua",
 			"extends": []
 		},
-		"SettingsTabButton": {
+		"MainMenuNavButton": {
 			"component": true,
-			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsTabButton.lua",
-			"extends": []
-		},
-		"SettingsSidebar": {
-			"component": true,
-			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsSidebar.lua",
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/MainMenuNavButton.lua",
 			"extends": []
 		},
 		"AirshipButton": {
 			"component": true,
 			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipButton.lua",
-			"extends": []
-		},
-		"MainMenuNavButton": {
-			"component": true,
-			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/MainMenuNavButton.lua",
 			"extends": []
 		},
 		"SettingsDisconnectButton": {
@@ -401,6 +391,16 @@
 		"DevConsoleButton": {
 			"component": true,
 			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/DevConsoleButton.lua",
+			"extends": []
+		},
+		"SettingsTabButton": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsTabButton.lua",
+			"extends": []
+		},
+		"SettingsSidebar": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsSidebar.lua",
 			"extends": []
 		},
 		"NavbarControlButton": {
@@ -436,6 +436,16 @@
 		"NetComponent": {
 			"component": true,
 			"filePath": "Code/TopDownScene/NetComponent.lua",
+			"extends": []
+		},
+		"Navbar": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Navbar/Navbar.lua",
+			"extends": []
+		},
+		"NavbarSettingsButton": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Navbar/NavbarSettingsButton.lua",
 			"extends": []
 		}
 	},

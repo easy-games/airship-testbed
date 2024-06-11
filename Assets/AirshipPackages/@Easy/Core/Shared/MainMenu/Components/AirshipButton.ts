@@ -12,6 +12,9 @@ export default class AirshipButton extends AirshipBehaviour {
 	private startingColor!: Color;
 	private loading = false;
 
+	private startingScale!: Vector3;
+	private startPos!: Vector2;
+
 	@Header("Variables")
 	public clickEffect = AirshipButtonClickEffect.Squish;
 
@@ -27,25 +30,14 @@ export default class AirshipButton extends AirshipBehaviour {
 
 	override Start(): void {
 		const rect = this.gameObject.GetComponent<RectTransform>()!;
-		const startPos = rect.anchoredPosition;
-		let startingScale = rect.localScale;
+		this.startPos = rect.anchoredPosition;
+		this.startingScale = rect.localScale;
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnPointerEvent(this.gameObject, (dir, button) => {
 				if (button !== PointerButton.LEFT) return;
 				if (this.disabled) return;
 
-				if (this.clickEffect === AirshipButtonClickEffect.Squish) {
-					this.gameObject
-						.GetComponent<RectTransform>()!
-						.TweenLocalScale(dir === PointerDirection.DOWN ? startingScale.mul(0.9) : startingScale, 0.1);
-				} else if (this.clickEffect === AirshipButtonClickEffect.ShiftDown) {
-					this.gameObject
-						.GetComponent<RectTransform>()!
-						.TweenAnchoredPosition(
-							dir === PointerDirection.DOWN ? startPos.add(new Vector2(0, -2)) : startPos,
-							0.05,
-						);
-				}
+				dir === PointerDirection.DOWN ? this.PlayMouseDownEffect() : this.PlayMouseUpEffect();
 			}),
 		);
 	}
@@ -65,6 +57,24 @@ export default class AirshipButton extends AirshipBehaviour {
 			this.image.color = this.startingColor;
 		}
 		this.button.enabled = !disabled;
+	}
+
+	public PlayMouseUpEffect(): void {
+		if (this.clickEffect === AirshipButtonClickEffect.Squish) {
+			this.gameObject.GetComponent<RectTransform>()!.TweenLocalScale(this.startingScale, 0.1);
+		} else if (this.clickEffect === AirshipButtonClickEffect.ShiftDown) {
+			this.gameObject.GetComponent<RectTransform>()!.TweenAnchoredPosition(this.startPos, 0.05);
+		}
+	}
+
+	public PlayMouseDownEffect(): void {
+		if (this.clickEffect === AirshipButtonClickEffect.Squish) {
+			this.gameObject.GetComponent<RectTransform>()!.TweenLocalScale(this.startingScale.mul(0.9), 0.1);
+		} else if (this.clickEffect === AirshipButtonClickEffect.ShiftDown) {
+			this.gameObject
+				.GetComponent<RectTransform>()!
+				.TweenAnchoredPosition(this.startPos.add(new Vector2(0, -2)), 0.05);
+		}
 	}
 
 	public PlayClickEffect(): void {

@@ -21,9 +21,10 @@ export class SettingsPageSingleton implements OnStart {
 			AssetCache.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/MainMenu/SettingsPage/SettingsPage.prefab"),
 			CoreRefs.protectedTransform,
 		);
+		const canvasGroup = settingsPage.GetComponent<CanvasGroup>();
 		const wrapper = settingsPage.transform.GetChild(0);
-		wrapper.localScale = Vector3.one.mul(1.2);
-		wrapper.TweenLocalScale(Vector3.one, 0.07).SetEase(EaseType.QuadIn);
+		wrapper.localScale = Vector3.one.mul(1.1);
+		wrapper.TweenLocalScale(Vector3.one, 0.07).SetEaseQuadIn();
 
 		AppManager.OpenCustom(
 			() => {
@@ -35,7 +36,11 @@ export class SettingsPageSingleton implements OnStart {
 		);
 
 		this.openBin.Add(() => {
-			Object.Destroy(settingsPage);
+			wrapper.TweenLocalScale(Vector3.one.mul(1.1), 0.07).SetEaseQuadOut();
+			canvasGroup?.TweenCanvasGroupAlpha(0, 0.07).SetEaseQuadOut();
+			task.delay(0.07, () => {
+				Object.Destroy(settingsPage);
+			});
 		});
 	}
 
