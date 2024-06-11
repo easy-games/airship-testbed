@@ -21,8 +21,9 @@ export class SettingsPageSingleton implements OnStart {
 			AssetCache.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/MainMenu/SettingsPage/SettingsPage.prefab"),
 			CoreRefs.protectedTransform,
 		);
-		settingsPage.transform.localScale = Vector3.one.mul(1.1);
-		settingsPage.transform.TweenLocalScale(Vector3.one, 0.12);
+		const wrapper = settingsPage.transform.GetChild(0);
+		wrapper.localScale = Vector3.one.mul(1.2);
+		wrapper.TweenLocalScale(Vector3.one, 0.07).SetEase(EaseType.QuadIn);
 
 		AppManager.OpenCustom(
 			() => {
