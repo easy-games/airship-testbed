@@ -428,7 +428,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: f2d80d098ae8a8a459c47e725a0a2d08, type: 2}
+  - {fileID: 2100000, guid: 1b71e5229f07c724492c482b791f8c11, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -726,7 +726,7 @@ MonoBehaviour:
     properties:
     - name: solidColor
       type: object
-      objectType: MaterialColor
+      objectType: MaterialColorURP
       items:
         type: 
         objectType: 
@@ -737,7 +737,7 @@ MonoBehaviour:
       nullable: 0
       serializedValue: 
       serializedObject: {fileID: 0}
-      modified: 1
+      modified: 0
     displayName: 
   contextOverwritten: 0
 --- !u!1 &8864547050094139047

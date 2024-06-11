@@ -22,6 +22,7 @@ import AvatarAccessoryBtn from "./AvatarAccessoryBtn";
 import AvatarMenuBtn from "./AvatarMenuBtn";
 import AvatarMenuProfileComponent from "./AvatarMenuProfileComponent";
 import AvatarRenderComponent from "./AvatarRenderComponent";
+import { Layer } from "@Easy/Core/Shared/Util/Layer";
 
 export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private readonly generalHookupKey = "General";
@@ -236,6 +237,15 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 				this.mainMenu?.avatarView?.CameraFocusSlot(this.currentFocusedSlot);
 			}
 		});
+
+		//Make sure no lights effect this scene
+		// let lights = GameObject.FindObjectsByType<Light>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+		// for(let i=0; i<lights.Length; i++){
+		// 	let light = lights.GetValue(i);
+		// 	if(light){
+		// 		light.cullingMask &= ~(1 << Layer.AVATAR_EDITOR);
+		// 	}
+		// }
 	}
 
 	override ClosePage(instant?: boolean): void {
@@ -505,6 +515,16 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.selectedAccessories.set(instanceId, true);
 		this.UpdateButtonGraphics();
 		this.saveBtn?.SetDisabled(false);
+
+		//Make these objects not use baked lighting settings
+		if(acc){
+			for(let i=0; i<acc.renderers.Length; i++){
+				let ren = acc.renderers.GetValue(i);
+				if(ren){
+					ren.lightProbeUsage = LightProbeUsage.CustomProvided;
+				}
+			};
+		}
 	}
 
 	private SelectFaceItem(face: AccessoryFace, instantRefresh = true) {
@@ -615,10 +635,11 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			this.outfitBtns[i].SetSelected(i === index);
 		}
 		this.currentUserOutfit = this.outfits[index];
-		AvatarPlatformAPI.EquipAvatarOutfit(this.currentUserOutfit.outfitId);
-		if (Game.coreContext === CoreContext.GAME) {
-			CoreNetwork.ClientToServer.ChangedOutfit.client.FireServer();
-		}
+		AvatarPlatformAPI.EquipAvatarOutfit(this.currentUserOutfit.outfitId).then(()=>{
+			if (Game.coreContext === CoreContext.GAME) {
+				CoreNetwork.ClientToServer.ChangedOutfit.client.FireServer();
+			}
+		})
 
 		this.LoadCurrentOutfit();
 	}
@@ -727,6 +748,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		if (!this.renderSetup) {
 			this.renderSetup = this.mainMenu?.avatarView?.CreateRenderScene();
 		}
+		this.mainMenu?.avatarView?.backdropHolder?.gameObject.SetActive(false);
 		this.inThumbnailMode = true;
 		this.saveBtn?.SetDisabled(false);
 		this.ClearItembuttons();
@@ -779,6 +801,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 		this.ClearItembuttons();
 		this.thumbnailRenderList.clear();
+		this.mainMenu?.avatarView?.backdropHolder?.gameObject.SetActive(true);
+		this.OpenPage();
 	}
 
 	/**
