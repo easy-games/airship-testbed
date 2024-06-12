@@ -550,6 +550,22 @@ export class PlayersSingleton implements OnStart {
 				return;
 			}
 
+			/*********************/
+			// print("starting download...");
+			// const www = UnityWebRequestTexture.GetTexture(
+			// 	"https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png",
+			// );
+			// www.SendWebRequest();
+			// while (!www.isDone) {
+			// 	task.wait();
+			// }
+			// if (www.result !== Result.Success) {
+			// 	Debug.LogError("download failed: " + www.error + " " + www.downloadHandler.error);
+			// } else {
+			// 	print("download success!");
+			// }
+			/*********************/
+
 			const texture = Bridge.DownloadTexture2DYielding(`${AirshipUrl.CDN}/images/${imageId}`);
 			if (texture) {
 				this.cachedProfilePictureTextures.set(userId, texture);
