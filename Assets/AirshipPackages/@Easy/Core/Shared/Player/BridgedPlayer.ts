@@ -5,4 +5,5 @@
 export interface BridgedPlayer {
 	username: string;
 	userId: string;
+	profileImageId: string;
 }

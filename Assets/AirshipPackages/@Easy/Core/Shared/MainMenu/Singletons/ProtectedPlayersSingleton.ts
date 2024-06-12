@@ -14,7 +14,7 @@ export class ProtectedPlayersSingleton implements OnStart {
 
 	constructor() {
 		contextbridge.callback("Players:OnPlayerJoined", (from, player: BridgedPlayer) => {
-			const protectedPlayer = new ProtectedPlayer(player.username, player.userId);
+			const protectedPlayer = new ProtectedPlayer(player.username, player.userId, player.profileImageId);
 			this.players.push(protectedPlayer);
 			this.onPlayerJoined.Fire(protectedPlayer);
 		});

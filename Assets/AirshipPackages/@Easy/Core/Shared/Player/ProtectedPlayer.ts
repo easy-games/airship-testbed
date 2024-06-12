@@ -6,7 +6,7 @@ import { Game } from "../Game";
  * A player object used within the Protected Context.
  */
 export class ProtectedPlayer {
-	constructor(public username: string, public userId: string) {}
+	constructor(public username: string, public userId: string, public profileImageId: string) {}
 
 	/** Is player friends with the local player? */
 	public IsFriend(): boolean {

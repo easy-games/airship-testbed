@@ -8,7 +8,7 @@ import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
 
 export default class PlayerEntry extends AirshipBehaviour {
 	public bgImage!: Image;
-	public profileImage!: Image;
+	public profileImage!: RawImage;
 	public usernameText!: TMP_Text;
 	public addFriendBtn!: GameObject;
 	public reportBtn!: GameObject;
@@ -19,9 +19,13 @@ export default class PlayerEntry extends AirshipBehaviour {
 
 	public Init(player: ProtectedPlayer): void {
 		task.spawn(async () => {
-			const profileSprite = await Airship.players.GetProfilePictureSpriteAsync(player.userId);
-			if (profileSprite) {
-				this.profileImage.sprite = profileSprite;
+			print("profileImageId: " + player.profileImageId);
+			const texture = await Airship.players.GetProfilePictureTextureFromImageIdAsync(
+				player.userId,
+				player.profileImageId,
+			);
+			if (texture) {
+				this.profileImage.texture = texture;
 			}
 
 			this.usernameText.text = player.username;

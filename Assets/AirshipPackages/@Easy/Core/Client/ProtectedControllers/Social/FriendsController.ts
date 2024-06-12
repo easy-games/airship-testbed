@@ -565,15 +565,18 @@ export class FriendsController implements OnStart {
 		const username = refs.GetValue("UI", "Username") as TMP_Text;
 		const status = refs.GetValue("UI", "Status") as TMP_Text;
 		const statusIndicator = refs.GetValue("UI", "StatusIndicator") as Image;
-		const profileImage = refs.GetValue("UI", "ProfilePicture") as Image;
+		const profileImage = refs.GetValue("UI", "ProfilePicture") as RawImage;
 		const canvasGroup = refs.gameObject.GetComponent<CanvasGroup>()!;
 		const joinButton = refs.GetValue("UI", "JoinButton");
 
 		if (config.loadImage) {
 			task.spawn(async () => {
-				const sprite = await Airship.players.GetProfilePictureSpriteAsync(friend.userId);
-				if (sprite) {
-					profileImage.sprite = sprite;
+				const texture = await Airship.players.GetProfilePictureTextureFromImageIdAsync(
+					friend.userId,
+					friend.profileImageId,
+				);
+				if (texture) {
+					profileImage.texture = texture;
 				}
 			});
 		}

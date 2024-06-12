@@ -19,6 +19,7 @@ export interface PlayerDto {
 	clientId: number;
 	userId: string;
 	username: string;
+	profileImageId: string;
 	teamId: string | undefined;
 }
 
@@ -84,6 +85,8 @@ export class Player {
 		 * The player's username. Non-unique, unless combined with `usernameTag`.
 		 */
 		public username: string,
+
+		public profileImageId: string,
 
 		private playerInfo: PlayerInfo,
 	) {
@@ -214,6 +217,7 @@ export class Player {
 			clientId: this.clientId,
 			userId: this.userId,
 			username: this.username,
+			profileImageId: this.profileImageId,
 			teamId: this.team?.id,
 		};
 	}

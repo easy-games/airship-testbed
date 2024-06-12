@@ -79,6 +79,7 @@ export class PlayersSingleton implements OnStart {
 				0,
 				"loading",
 				"loading",
+				"",
 				undefined as unknown as PlayerInfo,
 			);
 			if (!Game.IsHosting()) {
@@ -101,17 +102,11 @@ export class PlayersSingleton implements OnStart {
 		}
 
 		if (Game.IsGameLuauContext()) {
-			// task.spawn(() => {
-			// 	Game.WaitForLocalPlayerLoaded();
-			// 	contextbridge.invoke<(bp: BridgedPlayer) => void>("Players:OnPlayerJoined", LuauContext.Protected, {
-			// 		userId: Game.localPlayer.userId,
-			// 		username: Game.localPlayer.username,
-			// 	});
-			// });
 			this.onPlayerJoined.Connect((player) => {
 				contextbridge.invoke<(bp: BridgedPlayer) => void>("Players:OnPlayerJoined", LuauContext.Protected, {
 					userId: player.userId,
 					username: player.username,
+					profileImageId: player.profileImageId,
 				});
 				if (Game.IsServer() && this.joinMessagesEnabled) {
 					Game.BroadcastMessage(ChatColor.Aqua(player.username) + ChatColor.Gray(" joined the server."));
@@ -124,6 +119,7 @@ export class PlayersSingleton implements OnStart {
 					{
 						userId: player.userId,
 						username: player.username,
+						profileImageId: player.profileImageId,
 					},
 				);
 				if (Game.IsServer() && this.disconnectMessagesEnabled) {
@@ -217,6 +213,7 @@ export class PlayersSingleton implements OnStart {
 					dto.clientId,
 					dto.userId,
 					dto.username,
+					dto.profileImageId,
 					playerInfo,
 				);
 			}
@@ -351,7 +348,7 @@ export class PlayersSingleton implements OnStart {
 			const nob = NetworkUtil.WaitForNetworkObject(dto.nobId);
 			nob.gameObject.name = `Player_${dto.username}`;
 			let playerInfo = nob.gameObject.GetComponent<PlayerInfo>()!;
-			player = new Player(nob, dto.clientId, dto.userId, dto.username, playerInfo);
+			player = new Player(nob, dto.clientId, dto.userId, dto.username, dto.profileImageId, playerInfo);
 		}
 
 		team?.AddPlayer(player);
@@ -539,9 +536,12 @@ export class PlayersSingleton implements OnStart {
 		imageId: string | undefined,
 	): Promise<Texture2D | undefined> {
 		return new Promise((resolve, reject) => {
-			if (imageId === undefined) {
+			if (imageId === undefined || imageId === "") {
 				this.cachedProfilePictureTextures.delete(userId);
-				resolve(undefined);
+				const defaultTexture = AssetCache.LoadAssetIfExists<Texture2D>(
+					"Assets/AirshipPackages/@Easy/Core/Prefabs/Images/ProfilePictures/DefaultProfilePicture.png",
+				);
+				resolve(defaultTexture);
 				return;
 			}
 
@@ -602,12 +602,9 @@ export class PlayersSingleton implements OnStart {
 				}
 			}
 
-			let pictures = [
+			const texture = AssetCache.LoadAssetIfExists<Texture2D>(
 				"Assets/AirshipPackages/@Easy/Core/Prefabs/Images/ProfilePictures/DefaultProfilePicture.png",
-			];
-			// let index = this.pictureIndex++ % pictures.size();
-			// let path = pictures[index];
-			const texture = AssetCache.LoadAssetIfExists<Texture2D>(pictures[0]);
+			);
 			resolve(texture);
 		});
 	}

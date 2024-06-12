@@ -1521,7 +1521,6 @@ MonoBehaviour:
   m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/DirectMessagesWindow.lua
   m_error: 0
   m_yielded: 0
-  m_assetPath: 
   m_canResume: 0
   m_asyncYield: 0
   m_onUpdateHandle: -1
@@ -3052,10 +3051,6 @@ PrefabInstance:
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 1276071651756920775, guid: c2e02c9b6586c490eb10bdab0b067663, type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 1685579118445714766, guid: c2e02c9b6586c490eb10bdab0b067663, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -3140,10 +3135,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: FriendTeleportButton
       objectReference: {fileID: 0}
+    - target: {fileID: 6091327394017951777, guid: c2e02c9b6586c490eb10bdab0b067663, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 6886587796065662318, guid: c2e02c9b6586c490eb10bdab0b067663, type: 3}
       propertyPath: bundledReferences.Array.data[0].keyValuePairs.Array.data[4].value
       value: 
       objectReference: {fileID: 717568588160020171}
+    - target: {fileID: 7288447554843899270, guid: c2e02c9b6586c490eb10bdab0b067663, type: 3}
+      propertyPath: image
+      value: 
+      objectReference: {fileID: 1963388914506178819}
     - target: {fileID: 8686357906761830804, guid: c2e02c9b6586c490eb10bdab0b067663, type: 3}
       propertyPath: m_Name
       value: HeaderUser
@@ -3170,6 +3173,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1e87e0668ae7abb47800944852d422c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1963388914506178819 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6091327394017951777, guid: c2e02c9b6586c490eb10bdab0b067663, type: 3}
+  m_PrefabInstance: {fileID: 5744312932529824034}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &3979988357960609974 stripped
