@@ -385,6 +385,7 @@ export class FriendsController implements OnStart {
 		onlineCountText.text = `(${onlineCount}/${this.friendStatuses.size()})`;
 
 		const mouse = new Mouse();
+		const mainCanvasRect = this.mainMenuController.mainContentCanvas.GetComponent<RectTransform>();
 
 		// Add & update
 		const friendsContent = this.mainMenuController.refs.GetValue("Social", "FriendsContent");
@@ -400,6 +401,7 @@ export class FriendsController implements OnStart {
 					friendsContent.transform,
 				) as GameObject;
 				go.name = friend.userId;
+				const friendRect = go.GetComponent<RectTransform>()!;
 
 				const redirect = go.GetComponent<AirshipRedirectDrag>()!;
 				redirect.redirectTarget = this.friendsScrollRect;
@@ -424,7 +426,7 @@ export class FriendsController implements OnStart {
 					);
 					Dependency<TransferController>().TransferToGameAsync(friend.gameId, friend.serverId);
 				};
-
+				
 				const OpenMenu = () => {
 					const options: RightClickMenuButton[] = [];
 					if (friend.status !== "offline") {
@@ -493,6 +495,14 @@ export class FriendsController implements OnStart {
 							});
 						},
 					});
+
+					
+					// let profilePanelPos = Bridge.ScreenPointToLocalPointInRectangle(
+					// 	mainCanvasRect,
+					// 	new Vector2(go!.transform.position.x - 5, go!.transform.position.y),
+					// );
+					// profilePanelPos = profilePanelPos.add(new Vector2(-friendRect.rect.width / 2, friendRect.rect.height / 2));
+					// Dependency(ProfilePanelController).OpenProfilePanel(this.mainMenuController.mainContentCanvas, profilePanelPos);
 					this.rightClickMenuController.OpenRightClickMenu(
 						this.mainMenuController.mainContentCanvas,
 						Game.IsMobile()

@@ -423,6 +423,11 @@
 			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsLogoutButton.lua",
 			"extends": []
 		},
+		"AirshipCreateLink": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Client/ProtectedControllers/Develop/AirshipCreateLink.lua",
+			"extends": []
+		},
 		"NavbarControlButton": {
 			"component": true,
 			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/NavbarControlButton.lua",
@@ -461,9 +466,9 @@
 	},
 	"extends": {
 		"MainMenuPageComponent": [
+			"AvatarMenuComponent",
 			"HomePageComponent",
-			"GameGeneralPage",
-			"AvatarMenuComponent"
+			"GameGeneralPage"
 		],
 		"SearchResult": [
 			"GameSearchResult"

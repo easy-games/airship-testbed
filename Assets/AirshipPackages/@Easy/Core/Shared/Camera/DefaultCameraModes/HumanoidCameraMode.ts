@@ -57,6 +57,10 @@ export class HumanoidCameraMode extends CameraMode {
 	private mouseSmoothingEnabled = true;
 	private smoothVector = new Vector2(0, 0);
 
+	/** Keep track of mouse lock state (to prevent huge delta when locking mouse) */
+	private mouseLocked = this.mouse.IsLocked();
+	private mouseLockSwapped = false;
+
 	constructor(private character: Character, private graphicalCharacterGO: GameObject, initialFirstPerson: boolean) {
 		super();
 
@@ -174,6 +178,10 @@ export class HumanoidCameraMode extends CameraMode {
 			}
 			if (this.mouse.IsLocked() && (rightClick || this.firstPerson || this.lockView)) {
 				let mouseDelta = this.mouse.GetDelta();
+				if (this.mouseLockSwapped && mouseDelta.magnitude > 0) {
+					this.mouseLockSwapped = false;
+					mouseDelta = new Vector2(0, 0);
+				}
 				let moveDelta = mouseDelta;
 
 				// Trying to do 1/MOUSE_SMOOTHING every 1/120th of a second (while supporting variable dt). Not sure if this math checks out.
@@ -205,6 +213,12 @@ export class HumanoidCameraMode extends CameraMode {
 					MIN_ROT_X,
 					MAX_ROT_X,
 				);
+			}
+
+			// Update mouse locked state. This will make the next frame's delta be 0.
+			if (this.mouseLocked !== this.mouse.IsLocked()) {
+				this.mouseLocked = !this.mouseLocked;
+				this.mouseLockSwapped = true;
 			}
 		}
 	}

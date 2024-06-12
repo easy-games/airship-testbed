@@ -109,6 +109,8 @@ ProjectSettings/GvhProjectSettings.xml
 Assets/Bundles/Types~/Core
 **/.yalc
 *.bak
+*.orig
+*.orig.meta
 
 UMotionData/Temp/**
 Assets/UMotionEditor/Data/EditorUndoStackPointer.asset

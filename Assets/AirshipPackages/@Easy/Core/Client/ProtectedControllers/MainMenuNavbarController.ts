@@ -73,7 +73,7 @@ export class MainMenuNavbarController implements OnStart {
 
 		CoreUI.SetupButton(myGamesButton, { noHoverSound: true });
 		CanvasAPI.OnClickEvent(myGamesButton, () => {
-			this.mainMenuController.RouteToPage(MainMenuPageType.MyGames);
+			this.mainMenuController.RouteToPage(MainMenuPageType.Develop);
 		});
 
 		// CoreUI.SetupButton(myServersButton, { noHoverSound: true });
@@ -101,7 +101,7 @@ export class MainMenuNavbarController implements OnStart {
 				currentSelectedNavbarButton = runningGameButton;
 			} else if (page === MainMenuPageType.Avatar) {
 				currentSelectedNavbarButton = avatarButton;
-			} else if (page === MainMenuPageType.MyGames) {
+			} else if (page === MainMenuPageType.Develop) {
 				currentSelectedNavbarButton = myGamesButton;
 			}
 			if (currentSelectedNavbarButton) {

@@ -1,6 +1,6 @@
 export enum MainMenuPageType {
 	Home = "Home",
-	MyGames = "MyGames",
+	Develop = "Develop",
 	Settings = "Settings",
 	Game = "Game",
 	Avatar = "Avatar",

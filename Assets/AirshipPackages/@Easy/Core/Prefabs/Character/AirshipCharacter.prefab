@@ -6432,7 +6432,7 @@ MonoBehaviour:
   jumpCoyoteTime: 0.14
   jumpUpBlockCooldown: 0.4
   terminalVelocity: 50
-  gravityMod: 2
+  gravityMod: 0.5
   upwardsGravityMod: 1
   slopeForce: 45
   minSlopeDelta: 0.1
@@ -6469,8 +6469,8 @@ MonoBehaviour:
     _Speeds: []
     _SynchronizeChildren: 
     _Thresholds:
-    - -1
-    - 1
+    - -10
+    - 10
     _DefaultParameter: 0
     _ExtrapolateSpeed: 1
   jumpEnd: {fileID: 1630554268186973954, guid: 875d50be9d6291e44b473c4df0b7172b, type: 3}

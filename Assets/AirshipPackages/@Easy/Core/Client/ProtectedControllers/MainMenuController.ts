@@ -52,7 +52,7 @@ export class MainMenuController implements OnStart {
 		this.pageMap = new Map<MainMenuPageType, MainMenuPageComponent>([
 			[MainMenuPageType.Home, this.refs.GetValue("Pages", "Home").GetAirshipComponent<HomePageComponent>()!],
 			[
-				MainMenuPageType.MyGames,
+				MainMenuPageType.Develop,
 				this.refs.GetValue("Pages", "MyGames").GetAirshipComponent<MainMenuPageComponent>()!,
 			],
 			[
