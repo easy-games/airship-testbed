@@ -31,6 +31,15 @@ export default class SettingsProfilePage extends AirshipBehaviour {
 	private bin = new Bin();
 
 	override Start(): void {
+		if (Protected.user.localUser) {
+			this.usernameLabel.text = Protected.user.localUser.username;
+		}
+		this.bin.Add(
+			Protected.user.onLocalUserUpdated.Connect((user) => {
+				this.usernameLabel.text = user.username;
+			}),
+		);
+
 		this.SetProfilePictureLoading(false);
 		task.spawn(async () => {
 			await this.UpdateProfilePicturePreviews();
