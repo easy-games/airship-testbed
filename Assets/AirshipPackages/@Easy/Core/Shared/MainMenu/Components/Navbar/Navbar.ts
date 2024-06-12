@@ -1,7 +1,7 @@
-import { Dependency } from "../../Flamework";
-import { Game } from "../../Game";
-import { Bin } from "../../Util/Bin";
-import { MainMenuSingleton } from "../Singletons/MainMenuSingleton";
+import { Dependency } from "../../../Flamework";
+import { Game } from "../../../Game";
+import { Bin } from "../../../Util/Bin";
+import { MainMenuSingleton } from "../../Singletons/MainMenuSingleton";
 
 export default class Navbar extends AirshipBehaviour {
 	@Header("References")
@@ -12,10 +12,10 @@ export default class Navbar extends AirshipBehaviour {
 	public myGamesBtn!: RectTransform;
 	public homeBtn!: RectTransform;
 	public avatarBtn!: RectTransform;
-	public settingsBtn!: RectTransform;
 	public scrollRect!: ScrollRect;
 	public creditsWrapper!: GameObject;
 	public left!: RectTransform;
+	public quitGameBtn!: RectTransform;
 
 	private bin = new Bin();
 
@@ -44,14 +44,15 @@ export default class Navbar extends AirshipBehaviour {
 				}
 
 				if (Game.IsInGame() && st === "sm") {
-					// this.homeBtn.gameObject.SetActive(false);
 					this.myGamesBtn.gameObject.SetActive(false);
-					this.settingsBtn.gameObject.SetActive(true);
 				} else {
-					this.settingsBtn.gameObject.SetActive(false);
+					this.myGamesBtn.gameObject.SetActive(true);
 				}
 			}),
 		);
+
+		// this.quitGameBtn.gameObject.SetActive(Screen.fullScreen);
+		this.quitGameBtn.gameObject.SetActive(false);
 
 		if (Game.deviceType !== AirshipDeviceType.Phone || Game.IsPortrait()) {
 			this.scrollRect.enabled = false;

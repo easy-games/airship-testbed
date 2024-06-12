@@ -4,7 +4,6 @@ import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import HomePageComponent from "@Easy/Core/Shared/MainMenu/Components/HomePageComponent";
 import GameGeneralPage from "@Easy/Core/Shared/MainMenu/Components/Settings/General/GameGeneralPage";
-import SettingsPage from "@Easy/Core/Shared/MainMenu/Components/Settings/SettingsPage";
 import { Mouse } from "@Easy/Core/Shared/UserInput";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
@@ -50,15 +49,12 @@ export class MainMenuController implements OnStart {
 		this.socialMenuGroup = this.refs.GetValue<CanvasGroup>("UI", "SocialGroup");
 		CloudImage.ClearCache();
 
-		const mouse = new Mouse();
-
 		this.pageMap = new Map<MainMenuPageType, MainMenuPageComponent>([
 			[MainMenuPageType.Home, this.refs.GetValue("Pages", "Home").GetAirshipComponent<HomePageComponent>()!],
 			[
 				MainMenuPageType.MyGames,
 				this.refs.GetValue("Pages", "MyGames").GetAirshipComponent<MainMenuPageComponent>()!,
 			],
-			[MainMenuPageType.Settings, this.refs.GetValue("Pages", "Settings").GetAirshipComponent<SettingsPage>()!],
 			[
 				MainMenuPageType.Avatar,
 				this.refs.GetValue("Pages", "Avatar").GetAirshipComponent<AvatarMenuComponent>()!,
