@@ -20,6 +20,8 @@ export default class SettingsProfilePage extends AirshipBehaviour {
 	public usernameLabel!: TMP_Text;
 	public uploadProfileImageBtn!: Button;
 	public removeProfileImageBtn!: Button;
+	public previewWrapper!: RectTransform;
+	public profilePictureSpinnerWrapper!: RectTransform;
 
 	@Header("ProfilePicturePreviews")
 	public profileImagePreview1!: RawImage;
@@ -29,6 +31,7 @@ export default class SettingsProfilePage extends AirshipBehaviour {
 	private bin = new Bin();
 
 	override Start(): void {
+		this.SetProfilePictureLoading(false);
 		task.spawn(async () => {
 			await this.UpdateProfilePicturePreviews();
 		});
@@ -41,18 +44,18 @@ export default class SettingsProfilePage extends AirshipBehaviour {
 
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnClickEvent(this.uploadProfileImageBtn.gameObject, () => {
-				task.spawn(() => {
-					print("opening... ownerId=" + Game.localPlayer.userId);
+				task.spawn(async () => {
+					this.SetProfilePictureLoading(true);
 					const result = ProfileManager.UploadProfilePictureYielding(
 						this.profileImagePreview1,
 						Game.localPlayer.userId,
 					);
-					print("result: " + result);
 					if (result) {
 						Airship.players.ClearProfilePictureCache(Game.localPlayer.userId);
 						Protected.user.FetchLocalUser();
-						this.UpdateProfilePicturePreviews();
+						await this.UpdateProfilePicturePreviews();
 					}
+					this.SetProfilePictureLoading(false);
 				});
 			}),
 		);
@@ -92,6 +95,11 @@ export default class SettingsProfilePage extends AirshipBehaviour {
 			this.profileImagePreview2.texture = defaultTexture;
 			this.profileImagePreview3.texture = defaultTexture;
 		}
+	}
+
+	public SetProfilePictureLoading(val: boolean) {
+		this.previewWrapper.gameObject.SetActive(!val);
+		this.profilePictureSpinnerWrapper.gameObject.SetActive(val);
 	}
 
 	override OnDestroy(): void {
