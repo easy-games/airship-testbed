@@ -1,10 +1,18 @@
 import { ChangeUsernameController } from "@Easy/Core/Client/ProtectedControllers/Social/ChangeUsernameController";
+import { UserController } from "@Easy/Core/Client/ProtectedControllers/User/UserController";
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import { Protected } from "@Easy/Core/Shared/Protected";
+import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
+
+interface ProfileManager {
+	UploadProfilePictureYielding(previewImage: RawImage | undefined, ownerId: string): boolean;
+}
+declare const ProfileManager: ProfileManager;
 
 export default class SettingsProfilePage extends AirshipBehaviour {
 	@Header("References")
@@ -28,6 +36,44 @@ export default class SettingsProfilePage extends AirshipBehaviour {
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnClickEvent(this.editUsernameBtn.gameObject, () => {
 				Dependency<ChangeUsernameController>().Open();
+			}),
+		);
+
+		this.bin.AddEngineEventConnection(
+			CanvasAPI.OnClickEvent(this.uploadProfileImageBtn.gameObject, () => {
+				task.spawn(() => {
+					print("opening... ownerId=" + Game.localPlayer.userId);
+					const result = ProfileManager.UploadProfilePictureYielding(
+						this.profileImagePreview1,
+						Game.localPlayer.userId,
+					);
+					print("result: " + result);
+					if (result) {
+						Airship.players.ClearProfilePictureCache(Game.localPlayer.userId);
+						Protected.user.FetchLocalUser();
+						this.UpdateProfilePicturePreviews();
+					}
+				});
+			}),
+		);
+
+		this.bin.AddEngineEventConnection(
+			CanvasAPI.OnClickEvent(this.removeProfileImageBtn.gameObject, () => {
+				task.spawn(() => {
+					const res = InternalHttpManager.PatchAsync(
+						AirshipUrl.GameCoordinator + "/users",
+						json.encode({
+							profileImageId: "",
+						}),
+					);
+					if (res.success) {
+						Airship.players.ClearProfilePictureCache(Game.localPlayer.userId);
+						Dependency<UserController>().localUser!.profileImageId = undefined;
+						this.UpdateProfilePicturePreviews();
+					} else {
+						Debug.LogError(res.error);
+					}
+				});
 			}),
 		);
 	}

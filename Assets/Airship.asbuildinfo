@@ -101,6 +101,11 @@
 			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/SocialFriendRequestsButtonComponent.lua",
 			"extends": []
 		},
+		"SettingsProfilePage": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsProfilePage.lua",
+			"extends": []
+		},
 		"NavbarSettingsButton": {
 			"component": true,
 			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Navbar/NavbarSettingsButton.lua",
@@ -176,6 +181,13 @@
 			"filePath": "Code/TopDownBattle/TopDownBattleEnemies/TopDownBattleEnemy.lua",
 			"extends": []
 		},
+		"GameSearchResult": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Search/GameSearchResult.lua",
+			"extends": [
+				"SearchResult"
+			]
+		},
 		"MainMenuContent": {
 			"component": true,
 			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/MainMenuContent.lua",
@@ -200,13 +212,6 @@
 			"component": true,
 			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Navbar/Navbar.lua",
 			"extends": []
-		},
-		"GameSearchResult": {
-			"component": true,
-			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Search/GameSearchResult.lua",
-			"extends": [
-				"SearchResult"
-			]
 		},
 		"SettingsPage": {
 			"component": true,
@@ -388,6 +393,16 @@
 			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsDisconnectButton.lua",
 			"extends": []
 		},
+		"SettingsTabButton": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsTabButton.lua",
+			"extends": []
+		},
+		"SettingsSidebar": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsSidebar.lua",
+			"extends": []
+		},
 		"MicDevice": {
 			"component": true,
 			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/Microphone/MicDevice.lua",
@@ -406,16 +421,6 @@
 		"SettingsLogoutButton": {
 			"component": true,
 			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsLogoutButton.lua",
-			"extends": []
-		},
-		"SettingsTabButton": {
-			"component": true,
-			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsTabButton.lua",
-			"extends": []
-		},
-		"SettingsSidebar": {
-			"component": true,
-			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsSidebar.lua",
 			"extends": []
 		},
 		"NavbarControlButton": {
@@ -451,11 +456,6 @@
 		"NetComponent": {
 			"component": true,
 			"filePath": "Code/TopDownScene/NetComponent.lua",
-			"extends": []
-		},
-		"SettingsProfilePage": {
-			"component": true,
-			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsProfilePage.lua",
 			"extends": []
 		}
 	},

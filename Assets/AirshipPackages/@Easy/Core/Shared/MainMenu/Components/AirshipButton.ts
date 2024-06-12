@@ -7,9 +7,9 @@ export default class AirshipButton extends AirshipBehaviour {
 	private bin = new Bin();
 
 	private disabled = false;
-	private image!: Image;
+	private image: Image | undefined;
 	private button!: Button;
-	private startingColor!: Color;
+	private startingColor: Color | undefined;
 	private loading = false;
 
 	private startingScale!: Vector3;
@@ -25,8 +25,8 @@ export default class AirshipButton extends AirshipBehaviour {
 	public loadingIndicator?: GameObject;
 
 	public Awake(): void {
-		this.image = this.gameObject.GetComponent<Image>()!;
-		this.startingColor = this.image.color;
+		this.image = this.gameObject.GetComponent<Image>();
+		this.startingColor = this.image?.color;
 		this.button = this.gameObject.GetComponent<Button>()!;
 	}
 
@@ -64,10 +64,12 @@ export default class AirshipButton extends AirshipBehaviour {
 
 	public SetDisabled(disabled: boolean) {
 		this.disabled = disabled;
-		if (disabled) {
-			this.image.color = ColorUtil.HexToColor(this.disabledColorHex);
-		} else {
-			this.image.color = this.startingColor;
+		if (this.image && this.startingColor) {
+			if (disabled) {
+				this.image.color = ColorUtil.HexToColor(this.disabledColorHex);
+			} else {
+				this.image.color = this.startingColor;
+			}
 		}
 		this.button.enabled = !disabled;
 	}

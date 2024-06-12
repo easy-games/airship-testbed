@@ -51,7 +51,8 @@ export default class Navbar extends AirshipBehaviour {
 			}),
 		);
 
-		this.quitGameBtn.gameObject.SetActive(Screen.fullScreen);
+		// this.quitGameBtn.gameObject.SetActive(Screen.fullScreen);
+		this.quitGameBtn.gameObject.SetActive(false);
 
 		if (Game.deviceType !== AirshipDeviceType.Phone || Game.IsPortrait()) {
 			this.scrollRect.enabled = false;

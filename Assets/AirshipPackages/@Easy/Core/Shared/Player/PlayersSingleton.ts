@@ -1,7 +1,8 @@
+import { UserController } from "@Easy/Core/Client/ProtectedControllers/User/UserController";
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
-import { Controller, OnStart, Service } from "@Easy/Core/Shared/Flamework";
+import { Controller, Dependency, OnStart, Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Team } from "@Easy/Core/Shared/Team/Team";
 import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
@@ -13,6 +14,7 @@ import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { AssetCache } from "../AssetCache/AssetCache";
 import { AvatarPlatformAPI } from "../Avatar/AvatarPlatformAPI";
+import { AirshipUrl } from "../Util/AirshipUrl";
 import { OnUpdate } from "../Util/Timer";
 import { DecodeJSON, EncodeJSON } from "../json";
 import { BridgedPlayer } from "./BridgedPlayer";
@@ -266,13 +268,16 @@ export class PlayersSingleton implements OnStart {
 		});
 
 		CoreNetwork.ClientToServer.ChangedOutfit.server.OnClientEvent((player) => {
-			this.FetchEquippedOutfit(player, true).then(()=>{
+			this.FetchEquippedOutfit(player, true).then(() => {
 				if (Airship.characters.allowMidGameOutfitChanges && player.character) {
 					const outfitDto = player.selectedOutfit;
 					player.character.outfitDto = outfitDto;
-					CoreNetwork.ServerToClient.Character.ChangeOutfit.server.FireAllClients(player.character.id, outfitDto);
+					CoreNetwork.ServerToClient.Character.ChangeOutfit.server.FireAllClients(
+						player.character.id,
+						outfitDto,
+					);
 				}
-			})
+			});
 		});
 	}
 
@@ -529,6 +534,32 @@ export class PlayersSingleton implements OnStart {
 		return undefined;
 	}
 
+	public async GetProfilePictureTextureFromImageIdAsync(
+		userId: string,
+		imageId: string | undefined,
+	): Promise<Texture2D | undefined> {
+		return new Promise((resolve, reject) => {
+			if (imageId === undefined) {
+				this.cachedProfilePictureTextures.delete(userId);
+				resolve(undefined);
+				return;
+			}
+
+			if (this.cachedProfilePictureTextures.has(userId)) {
+				resolve(this.cachedProfilePictureTextures.get(userId));
+				return;
+			}
+
+			const texture = Bridge.DownloadTexture2DYielding(`${AirshipUrl.CDN}/images/${imageId}`);
+			if (texture) {
+				this.cachedProfilePictureTextures.set(userId, texture);
+				resolve(texture);
+				return;
+			}
+			resolve(undefined);
+		});
+	}
+
 	/**
 	 * @param userId
 	 * @returns
@@ -538,6 +569,21 @@ export class PlayersSingleton implements OnStart {
 			if (this.cachedProfilePictureTextures.has(userId)) {
 				resolve(this.cachedProfilePictureTextures.get(userId));
 				return;
+			}
+
+			if (Game.localPlayer?.userId === userId) {
+				const user = Dependency<UserController>().localUser;
+				if (user?.profileImageId) {
+					const url = `${AirshipUrl.CDN}/images/${user.profileImageId}`;
+					const texture = Bridge.DownloadTexture2DYielding(url);
+					if (texture === undefined) {
+						resolve(undefined);
+						return;
+					}
+					this.cachedProfilePictureTextures.set(userId, texture);
+					resolve(texture);
+					return;
+				}
 			}
 
 			let pictures = [
@@ -551,6 +597,7 @@ export class PlayersSingleton implements OnStart {
 	}
 
 	/**
+	 * @deprecated Should use {@link GetProfilePictureTextureAsync} with a RawImage instead.
 	 * @param userId
 	 * @returns
 	 */
@@ -564,5 +611,14 @@ export class PlayersSingleton implements OnStart {
 			this.cachedProfilePictureSprite.set(userId, sprite);
 			return sprite;
 		}
+	}
+
+	/**
+	 * @internal
+	 * @param userId
+	 */
+	public ClearProfilePictureCache(userId: string): void {
+		this.cachedProfilePictureSprite.delete(userId);
+		this.cachedProfilePictureTextures.delete(userId);
 	}
 }
