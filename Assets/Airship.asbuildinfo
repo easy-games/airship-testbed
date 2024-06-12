@@ -181,6 +181,11 @@
 			"filePath": "Code/TopDownBattle/TopDownBattleEnemies/TopDownBattleEnemy.lua",
 			"extends": []
 		},
+		"PartyMember": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/PartyMember.lua",
+			"extends": []
+		},
 		"GameSearchResult": {
 			"component": true,
 			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Search/GameSearchResult.lua",
@@ -291,11 +296,6 @@
 		"ClientScript": {
 			"component": true,
 			"filePath": "Code/AirshipPlatformDemo/ClientScript.lua",
-			"extends": []
-		},
-		"PartyMember": {
-			"component": true,
-			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/PartyMember.lua",
 			"extends": []
 		},
 		"MicIndicator": {
@@ -461,9 +461,9 @@
 	},
 	"extends": {
 		"MainMenuPageComponent": [
-			"AvatarMenuComponent",
 			"HomePageComponent",
-			"GameGeneralPage"
+			"GameGeneralPage",
+			"AvatarMenuComponent"
 		],
 		"SearchResult": [
 			"GameSearchResult"
