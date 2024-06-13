@@ -11,6 +11,7 @@ import { SetTimeout } from "@Easy/Core/Shared/Util/Timer";
 import AvatarViewComponent from "../../Shared/Avatar/AvatarViewComponent";
 import MainMenuPageComponent from "../../Shared/MainMenu/Components/MainMenuPageComponent";
 import AvatarMenuComponent from "./AvatarMenu/AvatarMenuComponent";
+import DevelopMenuPage from "./Develop/DevelopMenuPage";
 import { MainMenuPageType } from "./MainMenuPageName";
 
 @Controller()
@@ -53,7 +54,7 @@ export class MainMenuController implements OnStart {
 			[MainMenuPageType.Home, this.refs.GetValue("Pages", "Home").GetAirshipComponent<HomePageComponent>()!],
 			[
 				MainMenuPageType.Develop,
-				this.refs.GetValue("Pages", "MyGames").GetAirshipComponent<MainMenuPageComponent>()!,
+				this.refs.GetValue("Pages", "Develop").GetAirshipComponent<DevelopMenuPage>()!,
 			],
 			[
 				MainMenuPageType.Avatar,
