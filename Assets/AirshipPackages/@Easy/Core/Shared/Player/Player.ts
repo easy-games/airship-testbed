@@ -102,7 +102,7 @@ export class Player {
 	public SetVoiceChatAudioSource(audioSource: AudioSource): void {
 		(this.voiceChatAudioSource as AudioSource) = audioSource;
 		if (this.IsLocalPlayer()) {
-			audioSource.volume = 0;
+			// audioSource.volume = 0;
 		} else {
 			audioSource.volume = 1;
 		}
