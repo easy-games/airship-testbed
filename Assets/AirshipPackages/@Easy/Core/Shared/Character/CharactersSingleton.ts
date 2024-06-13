@@ -237,6 +237,9 @@ export class CharactersSingleton implements OnStart {
 	}
 
 	private InitCharacter(dto: CharacterDto): void {
+		// This can happen when client receives spawn character packet before client retrieves list of all existing characters.
+		if (this.FindById(dto.id)) return;
+
 		task.spawn(() => {
 			const characterNetworkObj = NetworkUtil.WaitForNetworkObject(dto.objectId);
 			const character = characterNetworkObj.gameObject.GetAirshipComponent<Character>();

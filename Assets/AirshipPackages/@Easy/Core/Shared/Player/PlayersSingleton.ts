@@ -1,3 +1,4 @@
+import { UserController } from "@Easy/Core/Client/ProtectedControllers/User/UserController";
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
@@ -10,15 +11,14 @@ import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 import { PlayerUtils } from "@Easy/Core/Shared/Util/PlayerUtils";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
-import { GameInfoSingleton } from "../Airship/Game/GameInfoSingleton";
 import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { AssetCache } from "../AssetCache/AssetCache";
+import { AvatarPlatformAPI } from "../Avatar/AvatarPlatformAPI";
 import { AirshipUrl } from "../Util/AirshipUrl";
 import { OnUpdate } from "../Util/Timer";
 import { DecodeJSON, EncodeJSON } from "../json";
+import { BridgedPlayer } from "./BridgedPlayer";
 import { Player, PlayerDto } from "./Player";
-import { AvatarUtil } from "../Avatar/AvatarUtil";
-import { AvatarPlatformAPI } from "../Avatar/AvatarPlatformAPI";
 
 /*
  * This class is instantiated in BOTH Game and Protected context.
@@ -79,6 +79,7 @@ export class PlayersSingleton implements OnStart {
 				0,
 				"loading",
 				"loading",
+				"",
 				undefined as unknown as PlayerInfo,
 			);
 			if (!Game.IsHosting()) {
@@ -102,11 +103,25 @@ export class PlayersSingleton implements OnStart {
 
 		if (Game.IsGameLuauContext()) {
 			this.onPlayerJoined.Connect((player) => {
+				contextbridge.invoke<(bp: BridgedPlayer) => void>("Players:OnPlayerJoined", LuauContext.Protected, {
+					userId: player.userId,
+					username: player.username,
+					profileImageId: player.profileImageId,
+				});
 				if (Game.IsServer() && this.joinMessagesEnabled) {
 					Game.BroadcastMessage(ChatColor.Aqua(player.username) + ChatColor.Gray(" joined the server."));
 				}
 			});
 			this.onPlayerDisconnected.Connect((player) => {
+				contextbridge.invoke<(bp: BridgedPlayer) => void>(
+					"Players:OnPlayerDisconnected",
+					LuauContext.Protected,
+					{
+						userId: player.userId,
+						username: player.username,
+						profileImageId: player.profileImageId,
+					},
+				);
 				if (Game.IsServer() && this.disconnectMessagesEnabled) {
 					Game.BroadcastMessage(ChatColor.Aqua(player.username) + ChatColor.Gray(" disconnected."));
 				}
@@ -140,6 +155,9 @@ export class PlayersSingleton implements OnStart {
 		}
 	}
 
+	/**
+	 * Only called in LuauContext.Game
+	 */
 	private InitClient(): void {
 		CoreNetwork.ServerToClient.ServerInfo.client.OnServerEvent((gameId, serverId, organizationId) => {
 			// this.localConnection = InstanceFinder.ClientManager.Connection;
@@ -147,14 +165,6 @@ export class PlayersSingleton implements OnStart {
 			Game.gameId = gameId;
 			Game.serverId = serverId;
 			Game.organizationId = organizationId;
-
-			task.spawn(() => {
-				const gameData = Dependency<GameInfoSingleton>().GetGameData(gameId);
-				if (gameData) {
-					Game.gameData = gameData;
-					Game.onGameDataLoaded.Fire(gameData);
-				}
-			});
 
 			const authenticated = contextbridge.invoke<() => boolean>(
 				"AuthController:IsAuthenticated",
@@ -203,6 +213,7 @@ export class PlayersSingleton implements OnStart {
 					dto.clientId,
 					dto.userId,
 					dto.username,
+					dto.profileImageId,
 					playerInfo,
 				);
 			}
@@ -254,17 +265,20 @@ export class PlayersSingleton implements OnStart {
 		});
 
 		CoreNetwork.ClientToServer.ChangedOutfit.server.OnClientEvent((player) => {
-			this.FetchEquippedOutfit(player, true);
-
-			if (Airship.characters.allowMidGameOutfitChanges && player.character) {
-				const outfitDto = player.selectedOutfit;
-				player.character.outfitDto = outfitDto;
-				CoreNetwork.ServerToClient.Character.ChangeOutfit.server.FireAllClients(player.character.id, outfitDto);
-			}
+			this.FetchEquippedOutfit(player, true).then(() => {
+				if (Airship.characters.allowMidGameOutfitChanges && player.character) {
+					const outfitDto = player.selectedOutfit;
+					player.character.outfitDto = outfitDto;
+					CoreNetwork.ServerToClient.Character.ChangeOutfit.server.FireAllClients(
+						player.character.id,
+						outfitDto,
+					);
+				}
+			});
 		});
 	}
 
-	private FetchEquippedOutfit(player: Player, ignoreCache: boolean): void {
+	private async FetchEquippedOutfit(player: Player, ignoreCache: boolean): Promise<boolean> {
 		const SetOutfit = (outfitDto: OutfitDto | undefined) => {
 			player.selectedOutfit = outfitDto;
 			player.outfitLoaded = true;
@@ -279,7 +293,6 @@ export class PlayersSingleton implements OnStart {
 				const outfitDto = DecodeJSON<OutfitDto>(data);
 				if (outfitDto) {
 					SetOutfit(outfitDto);
-					return;
 				}
 			}
 		}
@@ -291,12 +304,12 @@ export class PlayersSingleton implements OnStart {
 		// this.outfitFetchTime.set(player.userId, os.time());
 
 		if (player.IsLocalPlayer()) {
-			AvatarPlatformAPI.GetEquippedOutfit().then(SetOutfit);
-		}else{
+			await AvatarPlatformAPI.GetEquippedOutfit().then(SetOutfit);
+		} else {
 			print("loading outfit from server for player: " + player.userId);
-			AvatarPlatformAPI.GetPlayerEquippedOutfit(player.userId).then(SetOutfit);
+			await AvatarPlatformAPI.GetPlayerEquippedOutfit(player.userId).then(SetOutfit);
 		}
-
+		return true;
 	}
 
 	private HandlePlayerReadyServer(player: Player): void {
@@ -335,7 +348,7 @@ export class PlayersSingleton implements OnStart {
 			const nob = NetworkUtil.WaitForNetworkObject(dto.nobId);
 			nob.gameObject.name = `Player_${dto.username}`;
 			let playerInfo = nob.gameObject.GetComponent<PlayerInfo>()!;
-			player = new Player(nob, dto.clientId, dto.userId, dto.username, playerInfo);
+			player = new Player(nob, dto.clientId, dto.userId, dto.username, dto.profileImageId, playerInfo);
 		}
 
 		team?.AddPlayer(player);
@@ -518,52 +531,107 @@ export class PlayersSingleton implements OnStart {
 		return undefined;
 	}
 
-	/**
-	 * **MAY YIELD**
-	 * @param userId
-	 * @returns
-	 */
-	private pictureIndex = 0;
-	public GetProfilePictureTextureAsync(userId: string): Texture2D | undefined {
-		if (this.cachedProfilePictureTextures.has(userId)) {
-			return this.cachedProfilePictureTextures.get(userId);
-		}
+	public async GetProfilePictureTextureFromImageIdAsync(
+		userId: string,
+		imageId: string | undefined,
+	): Promise<Texture2D | undefined> {
+		return new Promise((resolve, reject) => {
+			if (imageId === undefined || imageId === "") {
+				this.cachedProfilePictureTextures.delete(userId);
+				const defaultTexture = AssetCache.LoadAssetIfExists<Texture2D>(
+					"Assets/AirshipPackages/@Easy/Core/Prefabs/Images/ProfilePictures/DefaultProfilePicture.png",
+				);
+				resolve(defaultTexture);
+				return;
+			}
 
-		let pictures = [
-			"AirshipPackages/@Easy/Core/Images/ProfilePictures/easy3.png",
-			"AirshipPackages/@Easy/Core/Images/ProfilePictures/batter.jpeg",
-			"AirshipPackages/@Easy/Core/Images/ProfilePictures/Dom.jpeg",
-			"AirshipPackages/@Easy/Core/Images/ProfilePictures/easy1.png",
-			"AirshipPackages/@Easy/Core/Images/ProfilePictures/easy2.png",
-			"AirshipPackages/@Easy/Core/Images/ProfilePictures/easy5.png",
-			"AirshipPackages/@Easy/Core/Images/ProfilePictures/easy6.png",
-			"AirshipPackages/@Easy/Core/Images/ProfilePictures/easy7.png",
-			"AirshipPackages/@Easy/Core/Images/ProfilePictures/heart.jpeg",
-			"AirshipPackages/@Easy/Core/Images/ProfilePictures/pilot.jpeg",
-			"AirshipPackages/@Easy/Core/Images/ProfilePictures/pirate.jpeg",
-			"AirshipPackages/@Easy/Core/Images/ProfilePictures/rad.jpeg",
-			"AirshipPackages/@Easy/Core/Images/ProfilePictures/scuba.jpeg",
-		];
-		let index = this.pictureIndex++ % pictures.size();
-		let path = pictures[index];
-		const texture = AssetCache.LoadAssetIfExists<Texture2D>(path);
-		return texture;
+			if (this.cachedProfilePictureTextures.has(userId)) {
+				resolve(this.cachedProfilePictureTextures.get(userId));
+				return;
+			}
+
+			/*********************/
+			// print("starting download...");
+			// const www = UnityWebRequestTexture.GetTexture(
+			// 	"https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png",
+			// );
+			// www.SendWebRequest();
+			// while (!www.isDone) {
+			// 	task.wait();
+			// }
+			// if (www.result !== Result.Success) {
+			// 	Debug.LogError("download failed: " + www.error + " " + www.downloadHandler.error);
+			// } else {
+			// 	print("download success!");
+			// }
+			/*********************/
+
+			const texture = Bridge.DownloadTexture2DYielding(`${AirshipUrl.CDN}/images/${imageId}`);
+			if (texture) {
+				this.cachedProfilePictureTextures.set(userId, texture);
+				resolve(texture);
+				return;
+			}
+			resolve(undefined);
+		});
 	}
 
 	/**
-	 * **MAY YIELD**
 	 * @param userId
 	 * @returns
 	 */
-	public GetProfilePictureSpriteAsync(userId: string): Sprite | undefined {
+	public async GetProfilePictureTextureAsync(userId: string): Promise<Texture2D | undefined> {
+		return new Promise((resolve, reject) => {
+			if (this.cachedProfilePictureTextures.has(userId)) {
+				resolve(this.cachedProfilePictureTextures.get(userId));
+				return;
+			}
+
+			if (Game.localPlayer?.userId === userId) {
+				const user = Dependency<UserController>().localUser;
+				if (user?.profileImageId) {
+					const url = `${AirshipUrl.CDN}/images/${user.profileImageId}`;
+					const texture = Bridge.DownloadTexture2DYielding(url);
+					if (texture === undefined) {
+						resolve(undefined);
+						return;
+					}
+					this.cachedProfilePictureTextures.set(userId, texture);
+					resolve(texture);
+					return;
+				}
+			}
+
+			const texture = AssetCache.LoadAssetIfExists<Texture2D>(
+				"Assets/AirshipPackages/@Easy/Core/Prefabs/Images/ProfilePictures/DefaultProfilePicture.png",
+			);
+			resolve(texture);
+		});
+	}
+
+	/**
+	 * @deprecated Should use {@link GetProfilePictureTextureAsync} with a RawImage instead.
+	 * @param userId
+	 * @returns
+	 */
+	public async GetProfilePictureSpriteAsync(userId: string): Promise<Sprite | undefined> {
 		if (this.cachedProfilePictureSprite.has(userId)) {
 			return this.cachedProfilePictureSprite.get(userId);
 		}
-		const texture = this.GetProfilePictureTextureAsync(userId);
+		const texture = await this.GetProfilePictureTextureAsync(userId);
 		if (texture !== undefined) {
 			const sprite = Bridge.MakeSprite(texture);
 			this.cachedProfilePictureSprite.set(userId, sprite);
 			return sprite;
 		}
+	}
+
+	/**
+	 * @internal
+	 * @param userId
+	 */
+	public ClearProfilePictureCache(userId: string): void {
+		this.cachedProfilePictureSprite.delete(userId);
+		this.cachedProfilePictureTextures.delete(userId);
 	}
 }

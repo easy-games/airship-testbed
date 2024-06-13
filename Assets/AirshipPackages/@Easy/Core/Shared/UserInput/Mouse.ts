@@ -177,7 +177,7 @@ export class Mouse {
 		}
 	}
 
-	public ClearAllLockers(): void {
+	public ClearAllUnlockers(): void {
 		mouseUnlockerKeys.clear();
 		this.mouseDriver.SetLocked(true);
 	}

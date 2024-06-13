@@ -1,5 +1,5 @@
+import { } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import {} from "@Easy/Core/Shared/Flamework";
 import { SetTimeout } from "@Easy/Core/Shared/Util/Timer";
 import { MainMenuController } from "../../../Client/ProtectedControllers//MainMenuController";
 import { MainMenuPageType } from "../../../Client/ProtectedControllers//MainMenuPageName";
@@ -50,7 +50,9 @@ export default class MainMenuPageComponent extends AirshipBehaviour {
 		} else {
 			const rect = this.transform as RectTransform;
 			rect.anchoredPosition = new Vector2(0, targetY - 20);
-			rect.TweenAnchoredPositionY(targetY, this.animateInDuration);
+			const tween = rect.TweenAnchoredPositionY(targetY, this.animateInDuration);
+			tween.SetEase(EaseType.QuadOut);
+
 			canvasGroup.alpha = 0;
 			canvasGroup.TweenCanvasGroupAlpha(1, this.animateInDuration);
 		}

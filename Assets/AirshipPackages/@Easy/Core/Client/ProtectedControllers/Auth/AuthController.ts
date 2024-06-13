@@ -32,6 +32,19 @@ export class AuthController implements OnStart {
 				Bridge.LoadScene("Login", true, LoadSceneMode.Single);
 			}
 		}
+
+		// auto login every 30 mins
+		task.spawn(() => {
+			while (true) {
+				task.wait(30 * 60);
+				const refreshToken = StateManager.GetString("firebase_refreshToken");
+				if (refreshToken) {
+					task.spawn(() => {
+						const res = this.LoginWithRefreshToken(refreshToken);
+					});
+				}
+			}
+		});
 	}
 
 	public async WaitForAuthed(): Promise<void> {
@@ -45,7 +58,7 @@ export class AuthController implements OnStart {
 	}
 
 	public TryAutoLogin(): boolean {
-		if (RunUtil.IsClone()) {
+		if (Game.IsClone()) {
 			return this.SignUpAnon();
 		}
 

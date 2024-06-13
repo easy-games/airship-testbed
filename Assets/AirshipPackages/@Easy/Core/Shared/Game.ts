@@ -58,6 +58,10 @@ export class Game {
 
 	public static gameData: GameDto | undefined;
 	public static onGameDataLoaded = new Signal<GameDto>();
+
+	/**
+	 * Yields until {@link Game.gameData} has been loaded.
+	 */
 	public static WaitForGameData(): GameDto {
 		if (this.gameData) return this.gameData;
 		return this.onGameDataLoaded.Wait();

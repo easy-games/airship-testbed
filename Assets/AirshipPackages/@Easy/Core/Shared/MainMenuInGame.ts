@@ -3,18 +3,21 @@
  * This is ran on both server and client.
  */
 
+import { CoreContext } from "./CoreClientContext";
+import { Game } from "./Game";
+Game.coreContext = CoreContext.GAME;
+
 import { AvatarUtil } from "@Easy/Core/Shared/Avatar/AvatarUtil";
 import { Flamework } from "@Easy/Core/Shared/Flamework";
+import { GameDto } from "../Client/Components/HomePage/API/GamesAPI";
 import { AudioManager } from "./Audio/AudioManager";
-import { CoreContext } from "./CoreClientContext";
 import { CoreRefs } from "./CoreRefs";
-import { Game } from "./Game";
+import { AirshipUrl } from "./Util/AirshipUrl";
 import { AppManager } from "./Util/AppManager";
 import { CanvasAPI } from "./Util/CanvasAPI";
 import { TimeUtil } from "./Util/TimeUtil";
 import { OnFixedUpdate, OnLateUpdate, OnUpdate } from "./Util/Timer";
 
-Game.coreContext = CoreContext.GAME;
 CoreRefs.Init();
 
 TimeUtil.GetLifetimeSeconds();
@@ -74,3 +77,18 @@ if (Game.IsServer()) {
 
 	serverBootstrap.FinishedSetup();
 }
+
+task.spawn(() => {
+	while (Game.gameId === undefined) {
+		task.wait();
+		continue;
+	}
+	const res = InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/games/game-id/" + Game.gameId);
+	if (res.success) {
+		const gameData = json.decode(res.data) as GameDto;
+		Game.gameData = gameData;
+		Game.onGameDataLoaded.Fire(Game.gameData);
+	} else {
+		return undefined;
+	}
+});

@@ -22,6 +22,8 @@ import AvatarAccessoryBtn from "./AvatarAccessoryBtn";
 import AvatarMenuBtn from "./AvatarMenuBtn";
 import AvatarMenuProfileComponent from "./AvatarMenuProfileComponent";
 import AvatarRenderComponent from "./AvatarRenderComponent";
+import OutfitButton from "./Outfit/OutfitButtonComponent";
+import OutfitButtonNameComponent from "./Outfit/OutfitButtonNameComponent";
 
 export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private readonly generalHookupKey = "General";
@@ -103,7 +105,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 		//Hookup Nav buttons
 		if (!this.mainNavBtns) {
-			warn("Unablet to find main nav btns on Avatar Editor Page");
+			warn("Unable to find main nav btns on Avatar Editor Page");
 			return;
 		}
 		for (i = 0; i < this.mainNavBtns.size(); i++) {
@@ -122,11 +124,26 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		for (i = 0; i < this.outfitBtns.size(); i++) {
 			const outfitI = i;
 			const go = this.outfitBtns[i].gameObject;
+
+			const outfitButton = go.GetAirshipComponent<OutfitButton>();
+			if (outfitButton) outfitButton.outfitIdx = i;
+
 			CoreUI.SetupButton(go, { noHoverSound: true });
 			CanvasAPI.OnClickEvent(go, () => {
 				this.SelectOutfit(outfitI);
 			});
 		}
+
+		//"Enter" should allow you to rename currently selected outfit button
+		const keyboard = new Keyboard();
+		this.bin.Add(keyboard);
+		keyboard.OnKeyDown(Key.Enter, () => {
+			const currentButton = this.outfitBtns[this.currentUserOutfitIndex];
+			if (!currentButton) return;
+
+			const name = currentButton.gameObject.GetAirshipComponentInChildren<OutfitButtonNameComponent>();
+			name?.StartRename();
+		});
 
 		//Hookup general buttons
 		let button = this.refs?.GetValue<RectTransform>(this.generalHookupKey, "AvatarInteractionBtn").gameObject;
@@ -236,6 +253,15 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 				this.mainMenu?.avatarView?.CameraFocusSlot(this.currentFocusedSlot);
 			}
 		});
+
+		//Make sure no lights effect this scene
+		// let lights = GameObject.FindObjectsByType<Light>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+		// for(let i=0; i<lights.Length; i++){
+		// 	let light = lights.GetValue(i);
+		// 	if(light){
+		// 		light.cullingMask &= ~(1 << Layer.AVATAR_EDITOR);
+		// 	}
+		// }
 	}
 
 	override ClosePage(instant?: boolean): void {
@@ -505,6 +531,16 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.selectedAccessories.set(instanceId, true);
 		this.UpdateButtonGraphics();
 		this.saveBtn?.SetDisabled(false);
+
+		//Make these objects not use baked lighting settings
+		if(acc){
+			for(let i=0; i<acc.renderers.Length; i++){
+				let ren = acc.renderers.GetValue(i);
+				if(ren){
+					ren.lightProbeUsage = LightProbeUsage.CustomProvided;
+				}
+			};
+		}
 	}
 
 	private SelectFaceItem(face: AccessoryFace, instantRefresh = true) {
@@ -563,62 +599,91 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	private LoadAllOutfits() {
 		this.Log("LoadAllOutfits");
-		this.outfits = AvatarPlatformAPI.GetAllOutfits();
-		const outfitSize = this.outfits ? this.outfits.size() : 0;
-		if (outfitSize <= 0) {
-			warn("No outfits exist on user. Making initial default one");
-			this.outfits = [
-				AvatarPlatformAPI.CreateDefaultAvatarOutfit(
-					"9999",
-					"Default0",
-					"Default0",
-					RandomUtil.FromArray(AvatarUtil.skinColors),
-				),
-			];
-		}
-
-		//Disable Outfit buttons that we don't need
-		if (this.outfitBtns) {
-			for (let i = 0; i < this.outfitBtns.size(); i++) {
-				this.outfitBtns[i].gameObject.SetActive(i < outfitSize);
+		AvatarPlatformAPI.GetAllOutfits().then((outfits)=>{
+			this.outfits = outfits;
+			const outfitSize = this.outfits ? this.outfits.size() : 0;
+			if (outfitSize <= 0) {
+				warn("No outfits exist on user. Making initial default one");
+				this.outfits = [
+					AvatarPlatformAPI.CreateDefaultAvatarOutfit(
+						"9999",
+						"Default0",
+						"Default0",
+						RandomUtil.FromArray(AvatarUtil.skinColors),
+					),
+				];
 			}
-		}
 
-		AvatarPlatformAPI.GetEquippedOutfit().then((equippedOutfit)=>{
-			if (equippedOutfit && this.outfits) {
-				let i = 0;
-				for (let outfit of this.outfits) {
-					if (outfit.outfitId === equippedOutfit.outfitId) {
-						//Select equipped outfit
-						this.Log("Found default outfit index: " + i);
-						this.SelectOutfit(i);
-						return;
+			if (this.outfitBtns) {
+				for (let i = 0; i < this.outfitBtns.size(); i++) {
+					// Disable Outfit buttons that we don't need
+					if (i >= outfitSize) {
+						this.outfitBtns[i].gameObject.SetActive(false);
+					} else if (outfits) {
+						const outfit = outfits[i];
+						if (outfit.name.match("Default%d+")[0]) continue;
+
+						// Set name on outfits
+						const nameComp = this.outfitBtns[i].gameObject.GetAirshipComponentInChildren<OutfitButtonNameComponent>();
+						if (!nameComp) continue;
+
+						nameComp.UpdateDisplayName(outfit.name);
 					}
-					i++;
 				}
 			}
-		});
 
-		//Select the first outfit if no outfit was found
-		this.SelectOutfit(0);
+			AvatarPlatformAPI.GetEquippedOutfit().then((equippedOutfit)=>{
+				if (equippedOutfit && this.outfits) {
+					let i = 0;
+					for (let outfit of this.outfits) {
+						if (outfit.outfitId === equippedOutfit.outfitId) {
+							//Select equipped outfit
+							this.Log("Found default outfit index: " + i);
+							this.SelectOutfit(i);
+							return;
+						}
+						i++;
+					}
+				}
+
+				//Select the first outfit if no outfit was found
+				this.SelectOutfit(0);
+			});
+		});
 	}
 
 	private SelectOutfit(index: number) {
 		this.Log("SelectOutfit: " + index);
 		if (!this.outfits || index < 0 || index >= this.outfits.size() || this.inThumbnailMode) {
-			error("Index out of range of outfits");
+			error(`Index ${index} out of range of outfits`);
 		}
 		this.currentUserOutfitIndex = index;
 		for (let i = 0; i < this.outfitBtns.size(); i++) {
 			this.outfitBtns[i].SetSelected(i === index);
 		}
 		this.currentUserOutfit = this.outfits[index];
-		AvatarPlatformAPI.EquipAvatarOutfit(this.currentUserOutfit.outfitId);
-		if (Game.coreContext === CoreContext.GAME) {
-			CoreNetwork.ClientToServer.ChangedOutfit.client.FireServer();
-		}
+		AvatarPlatformAPI.EquipAvatarOutfit(this.currentUserOutfit.outfitId).then(()=>{
+			if (Game.coreContext === CoreContext.GAME) {
+				CoreNetwork.ClientToServer.ChangedOutfit.client.FireServer();
+			}
+		})
 
 		this.LoadCurrentOutfit();
+	}
+
+	public RenameOutfit(index: number, newName: string) {
+		this.Log("RenameOutfit: " + index);
+		if (!this.outfits || index < 0 || index >= this.outfits.size() || this.inThumbnailMode) {
+			error(`Index ${index} out of range of outfits`);
+		}
+
+		const relevantOutfit = this.outfits[index];
+		if (relevantOutfit.name === newName) return;
+		
+		AvatarPlatformAPI.RenameOutfit(relevantOutfit.outfitId, newName).catch((e) => {
+			print("Failed to rename outfit.");
+			print(e);
+		});
 	}
 
 	private ClearAllAccessories() {
@@ -725,11 +790,12 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		if (!this.renderSetup) {
 			this.renderSetup = this.mainMenu?.avatarView?.CreateRenderScene();
 		}
+		this.mainMenu?.avatarView?.backdropHolder?.gameObject.SetActive(false);
 		this.inThumbnailMode = true;
 		this.saveBtn?.SetDisabled(false);
 		this.ClearItembuttons();
 		this.ClearAllAccessories();
-		this.Log("Displaying Thumbnail Mode");
+		print("Entering Thumbnail Mode");
 		//Accessories
 		let foundItems = AvatarUtil.GetAllPossibleAvatarItems();
 		let foundFaces = AvatarUtil.GetAllAvatarFaceItems();
@@ -771,11 +837,14 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	 * @internal
 	 */
 	public LeaveThumbnailMode() {
+		print("Leaving Thumbnail Mode");
 		if (this.renderSetup) {
 			Object.Destroy(this.renderSetup);
 		}
 		this.ClearItembuttons();
 		this.thumbnailRenderList.clear();
+		this.mainMenu?.avatarView?.backdropHolder?.gameObject.SetActive(true);
+		this.OpenPage();
 	}
 
 	/**

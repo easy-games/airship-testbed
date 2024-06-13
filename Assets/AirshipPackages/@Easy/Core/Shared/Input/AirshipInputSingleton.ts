@@ -17,6 +17,17 @@ import { MobileButtonConfig } from "./Mobile/MobileButton";
 import ProximityPrompt from "./ProximityPrompts/ProximityPrompt";
 import { CoreIcon } from "./UI/CoreIcon";
 
+export enum InputActionDirection {
+	/**
+	 * Action is triggered by an up event.
+	 */
+	Up,
+	/**
+	 * Action is triggered by a down event.
+	 */
+	Down,
+}
+
 @Singleton()
 export class AirshipInputSingleton implements OnStart {
 	/**
@@ -266,7 +277,12 @@ export class AirshipInputSingleton implements OnStart {
 					}
 					signalIndex++;
 				}
-				this.ClearInactiveSignals(inactiveSignalIndices, actionDownSignals);
+				this.ClearDestroyedSignals(
+					lowerName,
+					InputActionDirection.Down,
+					inactiveSignalIndices,
+					actionDownSignals,
+				);
 			} else if (dir === PointerDirection.UP) {
 				this.actionDownState.delete(lowerName);
 				const actionUpSignals = this.actionUpSignals.get(lowerName);
@@ -281,7 +297,7 @@ export class AirshipInputSingleton implements OnStart {
 					}
 					signalIndex++;
 				}
-				this.ClearInactiveSignals(inactiveSignalIndices, actionUpSignals);
+				this.ClearDestroyedSignals(lowerName, InputActionDirection.Up, inactiveSignalIndices, actionUpSignals);
 			}
 		});
 
@@ -471,12 +487,17 @@ export class AirshipInputSingleton implements OnStart {
 						for (const signal of actionDownSignals) {
 							if (signal.HasConnections()) {
 								signal.Fire(new InputActionEvent(action.name, event.uiProcessed));
-							} else {
+							} else if (signal.isDestroyed) {
 								inactiveSignalIndices.push(signalIndex);
 							}
 							signalIndex++;
 						}
-						this.ClearInactiveSignals(inactiveSignalIndices, actionDownSignals);
+						this.ClearDestroyedSignals(
+							action.name,
+							InputActionDirection.Down,
+							inactiveSignalIndices,
+							actionDownSignals,
+						);
 					}),
 				);
 				signalCleanup.Add(
@@ -491,12 +512,17 @@ export class AirshipInputSingleton implements OnStart {
 						for (const signal of actionUpSignals) {
 							if (signal.HasConnections()) {
 								signal.Fire(new InputActionEvent(action.name, event.uiProcessed));
-							} else {
+							} else if (signal.isDestroyed) {
 								inactiveSignalIndices.push(signalIndex);
 							}
 							signalIndex++;
 						}
-						this.ClearInactiveSignals(inactiveSignalIndices, actionUpSignals);
+						this.ClearDestroyedSignals(
+							action.name,
+							InputActionDirection.Up,
+							inactiveSignalIndices,
+							actionUpSignals,
+						);
 					}),
 				);
 				signalCleanup.Add(
@@ -511,12 +537,17 @@ export class AirshipInputSingleton implements OnStart {
 						for (const signal of actionUpSignals) {
 							if (signal.HasConnections()) {
 								signal.Fire(new InputActionEvent(action.name, event.uiProcessed));
-							} else {
+							} else if (signal.isDestroyed) {
 								inactiveSignalIndices.push(signalIndex);
 							}
 							signalIndex++;
 						}
-						this.ClearInactiveSignals(inactiveSignalIndices, actionUpSignals);
+						this.ClearDestroyedSignals(
+							action.name,
+							InputActionDirection.Up,
+							inactiveSignalIndices,
+							actionUpSignals,
+						);
 					}),
 				);
 			} else {
@@ -532,12 +563,17 @@ export class AirshipInputSingleton implements OnStart {
 						for (const signal of actionDownSignals) {
 							if (signal.HasConnections()) {
 								signal.Fire(new InputActionEvent(action.name, event.uiProcessed));
-							} else {
+							} else if (signal.isDestroyed) {
 								inactiveSignalIndices.push(signalIndex);
 							}
 							signalIndex++;
 						}
-						this.ClearInactiveSignals(inactiveSignalIndices, actionDownSignals);
+						this.ClearDestroyedSignals(
+							action.name,
+							InputActionDirection.Down,
+							inactiveSignalIndices,
+							actionDownSignals,
+						);
 					}),
 				);
 				signalCleanup.Add(
@@ -552,12 +588,17 @@ export class AirshipInputSingleton implements OnStart {
 						for (const signal of actionUpSignals) {
 							if (signal.HasConnections()) {
 								signal.Fire(new InputActionEvent(action.name, event.uiProcessed));
-							} else {
+							} else if (signal.isDestroyed) {
 								inactiveSignalIndices.push(signalIndex);
 							}
 							signalIndex++;
 						}
-						this.ClearInactiveSignals(inactiveSignalIndices, actionUpSignals);
+						this.ClearDestroyedSignals(
+							action.name,
+							InputActionDirection.Up,
+							inactiveSignalIndices,
+							actionUpSignals,
+						);
 					}),
 				);
 				signalCleanup.Add(
@@ -572,12 +613,17 @@ export class AirshipInputSingleton implements OnStart {
 						for (const signal of actionUpSignals) {
 							if (signal.HasConnections()) {
 								signal.Fire(new InputActionEvent(action.name, event.uiProcessed));
-							} else {
+							} else if (signal.isDestroyed) {
 								inactiveSignalIndices.push(signalIndex);
 							}
 							signalIndex++;
 						}
-						this.ClearInactiveSignals(inactiveSignalIndices, actionUpSignals);
+						this.ClearDestroyedSignals(
+							action.name,
+							InputActionDirection.Up,
+							inactiveSignalIndices,
+							actionUpSignals,
+						);
 					}),
 				);
 			}
@@ -604,12 +650,17 @@ export class AirshipInputSingleton implements OnStart {
 						for (const signal of actionDownSignals) {
 							if (signal.HasConnections()) {
 								signal.Fire(new InputActionEvent(action.name, event.uiProcessed));
-							} else {
+							} else if (signal.isDestroyed) {
 								inactiveSignalIndices.push(signalIndex);
 							}
 							signalIndex++;
 						}
-						this.ClearInactiveSignals(inactiveSignalIndices, actionDownSignals);
+						this.ClearDestroyedSignals(
+							action.name,
+							InputActionDirection.Down,
+							inactiveSignalIndices,
+							actionDownSignals,
+						);
 					}),
 				);
 				signalCleanup.Add(
@@ -624,12 +675,17 @@ export class AirshipInputSingleton implements OnStart {
 						for (const signal of actionUpSignals) {
 							if (signal.HasConnections()) {
 								signal.Fire(new InputActionEvent(action.name, event.uiProcessed));
-							} else {
+							} else if (signal.isDestroyed) {
 								inactiveSignalIndices.push(signalIndex);
 							}
 							signalIndex++;
 						}
-						this.ClearInactiveSignals(inactiveSignalIndices, actionUpSignals);
+						this.ClearDestroyedSignals(
+							action.name,
+							InputActionDirection.Up,
+							inactiveSignalIndices,
+							actionUpSignals,
+						);
 					}),
 				);
 			} else {
@@ -653,12 +709,17 @@ export class AirshipInputSingleton implements OnStart {
 						for (const signal of actionDownSignals) {
 							if (signal.HasConnections()) {
 								signal.Fire(new InputActionEvent(action.name, event.uiProcessed));
-							} else {
+							} else if (signal.isDestroyed) {
 								inactiveSignalIndices.push(signalIndex);
 							}
 							signalIndex++;
 						}
-						this.ClearInactiveSignals(inactiveSignalIndices, actionDownSignals);
+						this.ClearDestroyedSignals(
+							action.name,
+							InputActionDirection.Down,
+							inactiveSignalIndices,
+							actionDownSignals,
+						);
 					}),
 				);
 				signalCleanup.Add(
@@ -673,12 +734,17 @@ export class AirshipInputSingleton implements OnStart {
 						for (const signal of actionUpSignals) {
 							if (signal.HasConnections()) {
 								signal.Fire(new InputActionEvent(action.name, event.uiProcessed));
-							} else {
+							} else if (signal.isDestroyed) {
 								inactiveSignalIndices.push(signalIndex);
 							}
 							signalIndex++;
 						}
-						this.ClearInactiveSignals(inactiveSignalIndices, actionUpSignals);
+						this.ClearDestroyedSignals(
+							action.name,
+							InputActionDirection.Up,
+							inactiveSignalIndices,
+							actionUpSignals,
+						);
 					}),
 				);
 			}
@@ -699,13 +765,27 @@ export class AirshipInputSingleton implements OnStart {
 
 	/**
 	 *
+	 * @param actionName
+	 * @param actionDirection
 	 * @param signalIndices
 	 * @param signals
 	 */
-	private ClearInactiveSignals(signalIndices: number[], signals: Signal<[event: InputActionEvent]>[]): void {
-		for (const index of signalIndices) {
-			signals.remove(index);
+	private ClearDestroyedSignals(
+		actionName: string,
+		actionDirection: InputActionDirection,
+		signalIndices: number[],
+		signals: Signal<[event: InputActionEvent]>[],
+	): void {
+		const targetSignals =
+			actionDirection === InputActionDirection.Up ? this.actionUpSignals : this.actionDownSignals;
+		const newSignals: Signal<[event: InputActionEvent]>[] = [];
+		for (let i = 0; i < signals.size(); i++) {
+			if (!signalIndices.includes(i)) {
+				const signal = signals[i];
+				newSignals.push(signal);
+			}
 		}
+		targetSignals.set(actionName, newSignals);
 	}
 
 	/** Returns mouse sensitivity based on player's setting & game's sensitivity multiplier. */
@@ -718,9 +798,7 @@ export class AirshipInputSingleton implements OnStart {
 
 	/** Returns mouse smoothing (0 is no smoothing). */
 	public GetMouseSmoothing() {
-		return (
-			contextbridge.invoke<() => number>("ClientSettings:GetMouseSmoothing", LuauContext.Protected)
-		);
+		return contextbridge.invoke<() => number>("ClientSettings:GetMouseSmoothing", LuauContext.Protected);
 	}
 
 	/** Returns touch sensitivity based on player's setting & game's sensitivity multiplier. */

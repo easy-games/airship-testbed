@@ -22255,6 +22255,7 @@ interface BridgeConstructor {
 
 
     CopyToClipboard(text: string): void;
+    DownloadTexture2DYielding(url: string): Texture2D;
     GetActiveScene(): Scene;
     GetAirshipVoiceChatNetwork(): AirshipUniVoiceNetwork;
     GetAllocatedRam(): number;
@@ -24128,6 +24129,7 @@ interface CloudImage extends MonoBehaviour {
     image: Image;
     downloadOnStart: boolean;
     releaseImageOnDisable: boolean;
+    hideErrors: boolean;
     loadedUrl: string;
 
 
@@ -27813,4 +27815,39 @@ interface MathfConstructor {
     Tan(f: number): number;
 }
 declare const Mathf: MathfConstructor;
+    
+interface UnityWebRequestTexture {
+
+
+
+}
+    
+interface UnityWebRequestTextureConstructor {
+
+
+
+    GetTexture(uri: string): UnityWebRequest;
+    GetTexture(uri: unknown): UnityWebRequest;
+    GetTexture(uri: string, nonReadable: boolean): UnityWebRequest;
+    GetTexture(uri: unknown, nonReadable: boolean): UnityWebRequest;
+}
+declare const UnityWebRequestTexture: UnityWebRequestTextureConstructor;
+    
+interface DownloadHandlerTexture extends DownloadHandler {
+    texture: Texture2D;
+
+
+    Dispose(): void;
+
+}
+    
+interface DownloadHandlerTextureConstructor {
+
+    new(): DownloadHandlerTexture;
+    new(readable: boolean): DownloadHandlerTexture;
+
+
+    GetContent(www: UnityWebRequest): Texture2D;
+}
+declare const DownloadHandlerTexture: DownloadHandlerTextureConstructor;
 

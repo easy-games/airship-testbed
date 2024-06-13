@@ -68,6 +68,12 @@ export interface EquippedProfilePicture {
 	imageId: string;
 }
 
+export interface OutfitPatch {
+	accessories: string[];
+	skinColor: string;
+	name: string;
+}
+
 export interface OutfitDto {
 	outfitId: string;
 	owner: string;

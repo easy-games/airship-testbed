@@ -55,6 +55,7 @@ interface PlayerInfo extends Component {
 	userId: SyncVar<string>;
 	username: SyncVar<string>;
 	usernameTag: SyncVar<string>;
+	profileImageId: SyncVar<string>;
 	voiceChatAudioSource: AudioSource;
 }
 
@@ -66,6 +67,7 @@ interface PlayerInfoDto {
 	clientId: number;
 	userId: string;
 	username: string;
+	profileImageId: string;
 	gameObject: GameObject;
 }
 

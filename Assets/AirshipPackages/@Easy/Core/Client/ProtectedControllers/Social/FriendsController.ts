@@ -132,10 +132,12 @@ export class FriendsController implements OnStart {
 
 				this.socialNotification.usernameText.text = foundUser.username;
 
-				const sprite = Airship.players.GetProfilePictureSpriteAsync(foundUser.uid);
-				if (sprite) {
-					this.socialNotification.userImage.sprite = sprite;
-				}
+				task.spawn(async () => {
+					const sprite = await Airship.players.GetProfilePictureSpriteAsync(foundUser.uid);
+					if (sprite) {
+						this.socialNotification.userImage.sprite = sprite;
+					}
+				});
 
 				this.AddSocialNotification(
 					"friend-request:" + data.initiatorId,
@@ -383,6 +385,7 @@ export class FriendsController implements OnStart {
 		onlineCountText.text = `(${onlineCount}/${this.friendStatuses.size()})`;
 
 		const mouse = new Mouse();
+		const mainCanvasRect = this.mainMenuController.mainContentCanvas.GetComponent<RectTransform>();
 
 		// Add & update
 		const friendsContent = this.mainMenuController.refs.GetValue("Social", "FriendsContent");
@@ -398,6 +401,7 @@ export class FriendsController implements OnStart {
 					friendsContent.transform,
 				) as GameObject;
 				go.name = friend.userId;
+				const friendRect = go.GetComponent<RectTransform>()!;
 
 				const redirect = go.GetComponent<AirshipRedirectDrag>()!;
 				redirect.redirectTarget = this.friendsScrollRect;
@@ -422,7 +426,7 @@ export class FriendsController implements OnStart {
 					);
 					Dependency<TransferController>().TransferToGameAsync(friend.gameId, friend.serverId);
 				};
-
+				
 				const OpenMenu = () => {
 					const options: RightClickMenuButton[] = [];
 					if (friend.status !== "offline") {
@@ -491,6 +495,14 @@ export class FriendsController implements OnStart {
 							});
 						},
 					});
+
+					
+					// let profilePanelPos = Bridge.ScreenPointToLocalPointInRectangle(
+					// 	mainCanvasRect,
+					// 	new Vector2(go!.transform.position.x - 5, go!.transform.position.y),
+					// );
+					// profilePanelPos = profilePanelPos.add(new Vector2(-friendRect.rect.width / 2, friendRect.rect.height / 2));
+					// Dependency(ProfilePanelController).OpenProfilePanel(this.mainMenuController.mainContentCanvas, profilePanelPos);
 					this.rightClickMenuController.OpenRightClickMenu(
 						this.mainMenuController.mainContentCanvas,
 						Game.IsMobile()
@@ -563,22 +575,20 @@ export class FriendsController implements OnStart {
 		const username = refs.GetValue("UI", "Username") as TMP_Text;
 		const status = refs.GetValue("UI", "Status") as TMP_Text;
 		const statusIndicator = refs.GetValue("UI", "StatusIndicator") as Image;
-		const profileImage = refs.GetValue("UI", "ProfilePicture") as Image;
+		const profileImage = refs.GetValue("UI", "ProfilePicture") as RawImage;
 		const canvasGroup = refs.gameObject.GetComponent<CanvasGroup>()!;
 		const joinButton = refs.GetValue("UI", "JoinButton");
 
 		if (config.loadImage) {
-			const texture = AssetBridge.Instance.LoadAssetIfExists<Texture2D>(
-				"AirshipPackages/@Easy/Core/Images/ProfilePictures/Dom.png",
-			);
-			if (texture !== undefined) {
-				task.spawn(() => {
-					const sprite = Airship.players.GetProfilePictureSpriteAsync(friend.userId);
-					if (sprite) {
-						profileImage.sprite = sprite;
-					}
-				});
-			}
+			task.spawn(async () => {
+				const texture = await Airship.players.GetProfilePictureTextureFromImageIdAsync(
+					friend.userId,
+					friend.profileImageId,
+				);
+				if (texture) {
+					profileImage.texture = texture;
+				}
+			});
 		}
 
 		let displayName = friend.username;

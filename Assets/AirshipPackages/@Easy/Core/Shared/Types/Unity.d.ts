@@ -2065,7 +2065,8 @@ interface GameObjectConstructor {
 	CreatePrimitive(type: PrimitiveType): GameObject;
 	Find(name: string): GameObject;
 	FindObjectOfType<T extends Component>(): T;
-	FindObjectsByType<T extends Component>(): T;
+	FindObjectsByType<T extends Component>(includeInactive: FindObjectsInactive, sortMode: FindObjectsSortMode): CSArray<T>;
+	FindAnyObjectByType<T extends Component>(): T;
 	FindGameObjectsWithTag(tag: string): CSArray<GameObject>;
 	FindGameObjectWithTag(tag: string): GameObject;
 	FindWithTag(tag: string): GameObject;

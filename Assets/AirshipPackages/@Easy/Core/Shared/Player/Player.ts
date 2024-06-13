@@ -1,4 +1,3 @@
-import { FriendsController } from "@Easy/Core/Client/ProtectedControllers//Social/FriendsController";
 import { Airship } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
@@ -20,6 +19,7 @@ export interface PlayerDto {
 	clientId: number;
 	userId: string;
 	username: string;
+	profileImageId: string;
 	teamId: string | undefined;
 }
 
@@ -85,6 +85,8 @@ export class Player {
 		 * The player's username. Non-unique, unless combined with `usernameTag`.
 		 */
 		public username: string,
+
+		public profileImageId: string,
 
 		private playerInfo: PlayerInfo,
 	) {
@@ -205,14 +207,6 @@ export class Player {
 		}
 	}
 
-	/** Is player friends with the local player? */
-	public IsFriend(): boolean {
-		if (Game.IsClient()) {
-			return Dependency<FriendsController>().friends.find((u) => u.uid === this.userId) !== undefined;
-		}
-		return false;
-	}
-
 	public IsBot(): boolean {
 		return this.clientId < 0;
 	}
@@ -223,6 +217,7 @@ export class Player {
 			clientId: this.clientId,
 			userId: this.userId,
 			username: this.username,
+			profileImageId: this.profileImageId,
 			teamId: this.team?.id,
 		};
 	}

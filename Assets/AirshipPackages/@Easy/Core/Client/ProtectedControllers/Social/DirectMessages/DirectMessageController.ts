@@ -326,11 +326,13 @@ export class DirectMessageController implements OnStart {
 		if (isParty && !outgoing) {
 			const content = messageGo.transform.GetChild(0);
 			const profilePictureGo = content.GetChild(0).gameObject;
-			const profilePicSprite = Airship.players.GetProfilePictureSpriteAsync(dm.sender);
-			if (profilePicSprite) {
-				profilePictureGo.GetComponent<Image>()!.sprite = profilePicSprite;
-			}
-			profilePictureGo.SetActive(true);
+			task.spawn(async () => {
+				const profilePicSprite = await Airship.players.GetProfilePictureSpriteAsync(dm.sender);
+				if (profilePicSprite) {
+					profilePictureGo.GetComponent<Image>()!.sprite = profilePicSprite;
+				}
+				profilePictureGo.SetActive(true);
+			});
 			content.GetChild(1).gameObject.SetActive(true);
 
 			const member = this.partyController.party?.members.find((u) => u.uid === dm.sender);

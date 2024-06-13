@@ -3,18 +3,19 @@
  * This is not ran while in-game.
  */
 
+import { CoreContext } from "./CoreClientContext";
+import { Game } from "./Game";
+Game.coreContext = CoreContext.MAIN_MENU;
+
 import { AvatarUtil } from "@Easy/Core/Shared/Avatar/AvatarUtil";
 import { Flamework } from "@Easy/Core/Shared/Flamework";
 import { AudioManager } from "./Audio/AudioManager";
-import { CoreContext } from "./CoreClientContext";
 import { CoreRefs } from "./CoreRefs";
-import { Game } from "./Game";
 import { AppManager } from "./Util/AppManager";
 import { CanvasAPI } from "./Util/CanvasAPI";
 import { TimeUtil } from "./Util/TimeUtil";
 import { OnFixedUpdate, OnLateUpdate, OnUpdate } from "./Util/Timer";
 
-Game.coreContext = CoreContext.MAIN_MENU;
 CoreRefs.Init();
 
 TimeUtil.GetLifetimeSeconds();
