@@ -2,23 +2,23 @@ import { CanvasAPI } from "../../../../Shared/Util/CanvasAPI";
 import AvatarMenuComponent from "../AvatarMenuComponent";
 import OutfitButton from "./OutfitButtonComponent";
 
+let allOutfitNames = new Set<OutfitButtonNameComponent>();
+
 export default class OutfitButtonNameComponent extends AirshipBehaviour {
     public outfitButtonGo!: GameObject;
     public avatarMenuGo!: GameObject;
+    @HideInInspector()
+    public inputField!: TMP_InputField;
     private outfitButtonIndex: number | undefined;
     private avatarMenuComp: AvatarMenuComponent | undefined;
-    private inputField = this.transform.GetComponent<TMP_InputField>();
 
-    public StartRename() {
-        if (this.inputField.isFocused) return; // Already renaming
+    public Awake(): void {
+        this.inputField = this.transform.GetComponent<TMP_InputField>();
+        allOutfitNames.add(this);
+    }
 
-        this.inputField.ActivateInputField();
-        this.inputField.Select();
-        this.inputField.readOnly = false;
-
+    public Start(): void {
         CanvasAPI.OnInputFieldSubmit(this.gameObject, (name) => {
-            this.inputField.readOnly = true;
-
             if (this.outfitButtonIndex === undefined) {
                 this.outfitButtonIndex = this.outfitButtonGo.GetAirshipComponent<OutfitButton>()?.outfitIdx ?? -1;
             }
@@ -28,6 +28,21 @@ export default class OutfitButtonNameComponent extends AirshipBehaviour {
 
             this.avatarMenuComp?.RenameOutfit(this.outfitButtonIndex, name);
         });
+    }
+
+    public StartRename() {
+        // Check if we're already renaming an outfit name
+        for (const outfitNameComp of allOutfitNames) {
+            if (!outfitNameComp || !outfitNameComp.gameObject) {
+                allOutfitNames.delete(outfitNameComp);
+                continue;
+            }
+
+            if (outfitNameComp.inputField.isFocused) return;
+        }
+
+        this.inputField.ActivateInputField();
+        this.inputField.Select();
     }
 
     public UpdateDisplayName(newName: string) {

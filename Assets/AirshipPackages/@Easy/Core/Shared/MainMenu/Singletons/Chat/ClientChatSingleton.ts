@@ -3,6 +3,7 @@ import { Airship } from "@Easy/Core/Shared/Airship";
 import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
 import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
 import { ChatCommand } from "@Easy/Core/Shared/Commands/ChatCommand";
+import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
 import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
 import { Dependency, OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
@@ -191,6 +192,9 @@ export class ClientChatSingleton implements OnStart {
 	}
 
 	OnStart(): void {
+		const isMainMenu = Game.coreContext === CoreContext.MAIN_MENU;
+		if (isMainMenu) return;
+
 		contextbridge.callback<
 			(rawText: string, nameWithPrefix: string | undefined, senderClientId: number | undefined) => void
 		>("Chat:AddMessage", (fromContext, rawText, nameWithPrefix, senderClientId) => {

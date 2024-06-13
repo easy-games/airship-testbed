@@ -681,6 +681,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		if (relevantOutfit.name === newName) return;
 		
 		AvatarPlatformAPI.RenameOutfit(relevantOutfit.outfitId, newName).catch((e) => {
+			print("Failed to rename outfit.");
 			print(e);
 		});
 	}
