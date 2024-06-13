@@ -6432,7 +6432,7 @@ MonoBehaviour:
   jumpCoyoteTime: 0.14
   jumpUpBlockCooldown: 0.4
   terminalVelocity: 50
-  gravityMod: 0.5
+  gravityMod: 2
   upwardsGravityMod: 1
   slopeForce: 45
   minSlopeDelta: 0.1
