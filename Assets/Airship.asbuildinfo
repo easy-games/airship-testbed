@@ -36,6 +36,28 @@
 				"MainMenuPageComponent"
 			]
 		},
+		"OutfitButtonNameComponent": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/Outfit/OutfitButtonNameComponent.lua",
+			"extends": []
+		},
+		"AvatarAccessoryBtn": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/AvatarAccessoryBtn.lua",
+			"extends": []
+		},
+		"OutfitRenameButtonComponent": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/Outfit/OutfitRenameButtonComponent.lua",
+			"extends": []
+		},
+		"DevelopMenuPage": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Client/ProtectedControllers/Develop/DevelopMenuPage.lua",
+			"extends": [
+				"MainMenuPageComponent"
+			]
+		},
 		"AvatarMenuProfileComponent": {
 			"component": true,
 			"filePath": "AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/AvatarMenuProfileComponent.lua",
@@ -408,9 +430,9 @@
 			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/Microphone/MicDevice.lua",
 			"extends": []
 		},
-		"AvatarAccessoryBtn": {
+		"OutfitButton": {
 			"component": true,
-			"filePath": "AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/AvatarAccessoryBtn.lua",
+			"filePath": "AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/Outfit/OutfitButtonComponent.lua",
 			"extends": []
 		},
 		"DevConsoleButton": {
@@ -462,35 +484,13 @@
 			"component": true,
 			"filePath": "Code/TopDownScene/NetComponent.lua",
 			"extends": []
-		},
-		"DevelopMenuPage": {
-			"component": true,
-			"filePath": "AirshipPackages/@Easy/Core/Client/ProtectedControllers/Develop/DevelopMenuPage.lua",
-			"extends": [
-				"MainMenuPageComponent"
-			]
-		},
-		"OutfitButton": {
-			"component": true,
-			"filePath": "AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/Outfit/OutfitButtonComponent.lua",
-			"extends": []
-		},
-		"OutfitRenameButtonComponent": {
-			"component": true,
-			"filePath": "AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/Outfit/OutfitRenameButtonComponent.lua",
-			"extends": []
-		},
-		"OutfitButtonNameComponent": {
-			"component": true,
-			"filePath": "AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/Outfit/OutfitButtonNameComponent.lua",
-			"extends": []
 		}
 	},
 	"extends": {
 		"MainMenuPageComponent": [
-			"AvatarMenuComponent",
 			"HomePageComponent",
 			"GameGeneralPage",
+			"AvatarMenuComponent",
 			"DevelopMenuPage"
 		],
 		"SearchResult": [
