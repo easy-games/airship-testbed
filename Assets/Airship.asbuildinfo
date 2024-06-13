@@ -462,13 +462,36 @@
 			"component": true,
 			"filePath": "Code/TopDownScene/NetComponent.lua",
 			"extends": []
+		},
+		"DevelopMenuPage": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Client/ProtectedControllers/Develop/DevelopMenuPage.lua",
+			"extends": [
+				"MainMenuPageComponent"
+			]
+		},
+		"OutfitButton": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/Outfit/OutfitButtonComponent.lua",
+			"extends": []
+		},
+		"OutfitRenameButtonComponent": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/Outfit/OutfitRenameButtonComponent.lua",
+			"extends": []
+		},
+		"OutfitButtonNameComponent": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/Outfit/OutfitButtonNameComponent.lua",
+			"extends": []
 		}
 	},
 	"extends": {
 		"MainMenuPageComponent": [
-			"AvatarMenuComponent",
+			"DevelopMenuPage",
 			"HomePageComponent",
-			"GameGeneralPage"
+			"GameGeneralPage",
+			"AvatarMenuComponent"
 		],
 		"SearchResult": [
 			"GameSearchResult"

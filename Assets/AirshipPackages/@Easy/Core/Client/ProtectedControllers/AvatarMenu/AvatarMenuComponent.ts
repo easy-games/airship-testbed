@@ -22,7 +22,8 @@ import AvatarAccessoryBtn from "./AvatarAccessoryBtn";
 import AvatarMenuBtn from "./AvatarMenuBtn";
 import AvatarMenuProfileComponent from "./AvatarMenuProfileComponent";
 import AvatarRenderComponent from "./AvatarRenderComponent";
-import { Layer } from "@Easy/Core/Shared/Util/Layer";
+import OutfitButton from "./Outfit/OutfitButtonComponent";
+import OutfitButtonNameComponent from "./Outfit/OutfitButtonNameComponent";
 
 export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private readonly generalHookupKey = "General";
@@ -104,7 +105,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 		//Hookup Nav buttons
 		if (!this.mainNavBtns) {
-			warn("Unablet to find main nav btns on Avatar Editor Page");
+			warn("Unable to find main nav btns on Avatar Editor Page");
 			return;
 		}
 		for (i = 0; i < this.mainNavBtns.size(); i++) {
@@ -123,11 +124,26 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		for (i = 0; i < this.outfitBtns.size(); i++) {
 			const outfitI = i;
 			const go = this.outfitBtns[i].gameObject;
+
+			const outfitButton = go.GetAirshipComponent<OutfitButton>();
+			if (outfitButton) outfitButton.outfitIdx = i;
+
 			CoreUI.SetupButton(go, { noHoverSound: true });
 			CanvasAPI.OnClickEvent(go, () => {
 				this.SelectOutfit(outfitI);
 			});
 		}
+
+		//"Enter" should allow you to rename currently selected outfit button
+		const keyboard = new Keyboard();
+		this.bin.Add(keyboard);
+		keyboard.OnKeyDown(Key.Enter, () => {
+			const currentButton = this.outfitBtns[this.currentUserOutfitIndex];
+			if (!currentButton) return;
+
+			const name = currentButton.gameObject.GetAirshipComponentInChildren<OutfitButtonNameComponent>();
+			name?.StartRename();
+		});
 
 		//Hookup general buttons
 		let button = this.refs?.GetValue<RectTransform>(this.generalHookupKey, "AvatarInteractionBtn").gameObject;
@@ -598,10 +614,21 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 				];
 			}
 
-			//Disable Outfit buttons that we don't need
 			if (this.outfitBtns) {
 				for (let i = 0; i < this.outfitBtns.size(); i++) {
-					this.outfitBtns[i].gameObject.SetActive(i < outfitSize);
+					// Disable Outfit buttons that we don't need
+					if (i >= outfitSize) {
+						this.outfitBtns[i].gameObject.SetActive(false);
+					} else if (outfits) {
+						const outfit = outfits[i];
+						if (outfit.name.match("Default%d+")[0]) continue;
+
+						// Set name on outfits
+						const nameComp = this.outfitBtns[i].gameObject.GetAirshipComponentInChildren<OutfitButtonNameComponent>();
+						if (!nameComp) continue;
+
+						nameComp.UpdateDisplayName(outfit.name);
+					}
 				}
 			}
 
@@ -628,7 +655,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private SelectOutfit(index: number) {
 		this.Log("SelectOutfit: " + index);
 		if (!this.outfits || index < 0 || index >= this.outfits.size() || this.inThumbnailMode) {
-			error("Index out of range of outfits");
+			error(`Index ${index} out of range of outfits`);
 		}
 		this.currentUserOutfitIndex = index;
 		for (let i = 0; i < this.outfitBtns.size(); i++) {
@@ -642,6 +669,20 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		})
 
 		this.LoadCurrentOutfit();
+	}
+
+	public RenameOutfit(index: number, newName: string) {
+		this.Log("RenameOutfit: " + index);
+		if (!this.outfits || index < 0 || index >= this.outfits.size() || this.inThumbnailMode) {
+			error(`Index ${index} out of range of outfits`);
+		}
+
+		const relevantOutfit = this.outfits[index];
+		if (relevantOutfit.name === newName) return;
+		
+		AvatarPlatformAPI.RenameOutfit(relevantOutfit.outfitId, newName).catch((e) => {
+			print(e);
+		});
 	}
 
 	private ClearAllAccessories() {

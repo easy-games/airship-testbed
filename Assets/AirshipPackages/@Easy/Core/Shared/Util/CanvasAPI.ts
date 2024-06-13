@@ -248,6 +248,7 @@ export class CanvasAPI {
 		if (CanvasAPI.eventInterceptor === undefined) {
 			this.eventInterceptor =
 				GameObject.Find("CanvasUIEventsInterceptor").GetComponent<CanvasUIEventInterceptor>()!;
+			print(this.eventInterceptor);
 
 			this.eventInterceptor.OnSelectEvent((instanceId) => {
 				this.selectedInstanceId = instanceId;
