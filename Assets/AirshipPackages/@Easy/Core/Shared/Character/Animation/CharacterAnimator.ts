@@ -7,12 +7,12 @@ import { ItemUtil } from "@Easy/Core/Shared/Item/ItemUtil";
 import StringUtils from "@Easy/Core/Shared/Types/StringUtil";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { RandomUtil } from "@Easy/Core/Shared/Util/RandomUtil";
-import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { Task } from "@Easy/Core/Shared/Util/Task";
 import { AirshipCharacterCameraSingleton } from "../../Camera/AirshipCharacterCameraSingleton";
 import { CameraReferences } from "../../Camera/CameraReferences";
 import { ItemDef } from "../../Item/ItemDefinitionTypes";
 import { CharacterAnimationLayer } from "./CharacterAnimationLayer";
+import { Game } from "../../Game";
 
 export enum ItemAnimationId {
 	IDLE = "Idle",
@@ -62,7 +62,6 @@ export class CharacterAnimator {
 
 	private readonly flashTransitionDuration = 0.035;
 	private readonly flashOnTime = 0.07;
-	public readonly worldmodelAnimancerComponent: AnimancerComponent;
 	public readonly defaultTransitionTime: number = 0.15;
 
 	protected bin = new Bin();
@@ -87,16 +86,16 @@ export class CharacterAnimator {
 	public baseFootstepVolumeScale = 0.1;
 
 	private itemAnimStates: AnimancerState[] = [];
+	private animHelper: CharacterAnimationHelper;
 
 	//private camera: Camera;
 
 	public constructor(public readonly character: Character) {
-		const animator = character.movement.animationHelper;
-		this.worldmodelAnimancerComponent = animator.worldmodelAnimancer;
+		this.animHelper = character.movement.animationHelper;
 		this.isFlashing = false;
 
 		//AUDIO
-		if (RunUtil.IsClient()) {
+		if (Game.IsClient()) {
 			this.footstepAudioBundle = new AudioClipBundle([]);
 			this.footstepAudioBundle.volumeScale = this.baseFootstepVolumeScale;
 			this.footstepAudioBundle.soundOptions.maxDistance = 15;
@@ -180,7 +179,7 @@ export class CharacterAnimator {
 		this.isFirstPerson = isFirstPerson;
 
 		this.ClearItemAnimations();
-		if (RunUtil.IsClient()) {
+		if (Game.IsClient()) {
 			// this.viewmodelAnimancerComponent.enabled = isFirstPerson;
 		}
 		// this.worldmodelAnimancerComponent.enabled = !isFirstPerson;
@@ -192,7 +191,7 @@ export class CharacterAnimator {
 
 	public PlayTakeDamage(position: Vector3, characterModel: GameObject | undefined) {
 		const isFirstPerson =
-			RunUtil.IsClient() &&
+			Game.IsClient() &&
 			this.character.IsLocalCharacter() &&
 			Dependency<AirshipCharacterCameraSingleton>().IsFirstPerson();
 
@@ -231,38 +230,39 @@ export class CharacterAnimator {
 	): AnimancerState | undefined {
 		if (this.character.IsLocalCharacter() && this.isFirstPerson) return undefined;
 
-		let animState: AnimancerState;
-		if ((config?.autoFadeOut === undefined || config?.autoFadeOut) && !clip.isLooping) {
-			//Play once then fade away
-			animState = AnimancerBridge.PlayOnceOnLayer(
-				this.worldmodelAnimancerComponent,
-				clip,
-				layer,
-				config?.fadeInDuration ?? this.defaultTransitionTime,
-				config?.fadeOutDuration ?? this.defaultTransitionTime,
-				config?.fadeMode ?? FadeMode.FromStart,
-				config?.wrapMode ?? WrapMode.Default,
-			);
-		} else {
-			//Play permenantly on player
-			animState = AnimancerBridge.PlayOnLayer(
-				this.worldmodelAnimancerComponent,
-				clip,
-				layer,
-				config?.fadeInDuration ?? this.defaultTransitionTime,
-				config?.fadeMode ?? FadeMode.FromStart,
-				config?.wrapMode ?? WrapMode.Default,
-			);
-		}
+		// let animState: AnimancerState;
+		// if ((config?.autoFadeOut === undefined || config?.autoFadeOut) && !clip.isLooping) {
+		// 	//Play once then fade away
+		// 	animState = AnimancerBridge.PlayOnceOnLayer(
+		// 		this.worldmodelAnimancerComponent,
+		// 		clip,
+		// 		layer,
+		// 		config?.fadeInDuration ?? this.defaultTransitionTime,
+		// 		config?.fadeOutDuration ?? this.defaultTransitionTime,
+		// 		config?.fadeMode ?? FadeMode.FromStart,
+		// 		config?.wrapMode ?? WrapMode.Default,
+		// 	);
+		// } else {
+		// 	//Play permenantly on player
+		// 	animState = AnimancerBridge.PlayOnLayer(
+		// 		this.worldmodelAnimancerComponent,
+		// 		clip,
+		// 		layer,
+		// 		config?.fadeInDuration ?? this.defaultTransitionTime,
+		// 		config?.fadeMode ?? FadeMode.FromStart,
+		// 		config?.wrapMode ?? WrapMode.Default,
+		// 	);
+		// }
 
-		if (onEnd !== undefined) {
-			this.currentEndEventConnection = animState.Events.OnEndTS(() => {
-				Bridge.DisconnectEvent(this.currentEndEventConnection);
-				onEnd();
-			});
-		}
-		this.itemAnimStates.push(animState);
-		return animState;
+		// if (onEnd !== undefined) {
+		// 	this.currentEndEventConnection = animState.Events.OnEndTS(() => {
+		// 		Bridge.DisconnectEvent(this.currentEndEventConnection);
+		// 		onEnd();
+		// 	});
+		// }
+		// this.itemAnimStates.push(animState);
+		// return animState;
+		return undefined;
 	}
 
 	public PlayItemAnimationInViewmodel(
@@ -277,44 +277,45 @@ export class CharacterAnimator {
 			autoFadeOut?: boolean;
 		},
 	): AnimancerState | undefined {
-		if (!RunUtil.IsClient()) {
-			return error("Tried to play viewmodel animation on server.");
-		}
-		assert(clip, "PlayItemAnimationInViewmodel failed: AnimationClip is undefined");
-		if (!this.isFirstPerson) return undefined;
+		// if (!Game.IsClient()) {
+		// 	return error("Tried to play viewmodel animation on server.");
+		// }
+		// assert(clip, "PlayItemAnimationInViewmodel failed: AnimationClip is undefined");
+		// if (!this.isFirstPerson) return undefined;
 
-		let animState: AnimancerState;
-		if ((config?.autoFadeOut === undefined || config?.autoFadeOut) && !clip.isLooping) {
-			//Play once then fade away
-			animState = AnimancerBridge.PlayOnceOnLayer(
-				CameraReferences.viewmodel!.animancer,
-				clip,
-				layer,
-				config?.fadeInDuration ?? this.defaultTransitionTime,
-				config?.fadeOutDuration ?? this.defaultTransitionTime,
-				config?.fadeMode ?? FadeMode.FromStart,
-				config?.wrapMode ?? WrapMode.Default,
-			);
-		} else {
-			//Play permenantly on player
-			animState = AnimancerBridge.PlayOnLayer(
-				CameraReferences.viewmodel!.animancer,
-				clip,
-				layer,
-				config?.fadeInDuration ?? this.defaultTransitionTime,
-				config?.fadeMode ?? FadeMode.FromStart,
-				config?.wrapMode ?? WrapMode.Default,
-			);
-		}
+		// let animState: AnimancerState;
+		// if ((config?.autoFadeOut === undefined || config?.autoFadeOut) && !clip.isLooping) {
+		// 	//Play once then fade away
+		// 	animState = AnimancerBridge.PlayOnceOnLayer(
+		// 		CameraReferences.viewmodel!.animancer,
+		// 		clip,
+		// 		layer,
+		// 		config?.fadeInDuration ?? this.defaultTransitionTime,
+		// 		config?.fadeOutDuration ?? this.defaultTransitionTime,
+		// 		config?.fadeMode ?? FadeMode.FromStart,
+		// 		config?.wrapMode ?? WrapMode.Default,
+		// 	);
+		// } else {
+		// 	//Play permenantly on player
+		// 	animState = AnimancerBridge.PlayOnLayer(
+		// 		CameraReferences.viewmodel!.animancer,
+		// 		clip,
+		// 		layer,
+		// 		config?.fadeInDuration ?? this.defaultTransitionTime,
+		// 		config?.fadeMode ?? FadeMode.FromStart,
+		// 		config?.wrapMode ?? WrapMode.Default,
+		// 	);
+		// }
 
-		if (onEnd !== undefined) {
-			this.currentEndEventConnection = animState.Events.OnEndTS(() => {
-				Bridge.DisconnectEvent(this.currentEndEventConnection);
-				onEnd();
-			});
-		}
-		this.itemAnimStates.push(animState);
-		return animState;
+		// if (onEnd !== undefined) {
+		// 	this.currentEndEventConnection = animState.Events.OnEndTS(() => {
+		// 		Bridge.DisconnectEvent(this.currentEndEventConnection);
+		// 		onEnd();
+		// 	});
+		// }
+		// this.itemAnimStates.push(animState);
+		// return animState;
+		return undefined;
 	}
 
 	public ClearItemAnimations(): void {
@@ -685,7 +686,7 @@ export class CharacterAnimator {
 	}
 
 	public SetPlaybackSpeed(newSpeed: number) {
-		AnimancerBridge.SetGlobalSpeed(this.worldmodelAnimancerComponent, newSpeed);
+		this.animHelper.animator.speed = newSpeed;
 	}
 
 	public IsViewModelEnabled(): boolean {

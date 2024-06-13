@@ -563,19 +563,14 @@ declare const enum CharacterState {
 }
 
 interface CharacterAnimationHelper extends Component {
-	viewmodelAnimancer: AnimancerComponent;
-	worldmodelAnimancer: AnimancerComponent;
+	animator: Animator;
 	SetForceLookForward(forceLookForward: boolean): void;
 	SetFirstPerson(firstPerson: boolean): void;
 	SetRootMovementLayer(itemInHand: boolean): void;
 	ClearStatesOnNonRootLayers(): void;
 	SetState(newState: CharacterState, force = false, noRootLayerFade = false);
-	PlayRoot(clip: AnimationClip, options: AnimationClipOptions): AnimancerState | undefined;
-	PlayRootOneShot(clip: AnimationClip): AnimancerState | undefined;
-	PlayOneShot(clip: AnimationClip, layer: number): AnimancerState | undefined;
-	Play(clip: AnimationClip, layerIndex: number, options: AnimationClipOptions): AnimancerState | undefined;
-	GetPlayingState(layerIndex: number): AnimancerState | undefined;
 	SetVelocity(vel: Vector3);
+	SetGrounded(grounded: boolean);
 }
 
 interface AnimationClipOptions {
