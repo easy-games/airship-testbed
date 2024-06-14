@@ -1744,7 +1744,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <IsNested>k__BackingField: 0
   <ComponentIndex>k__BackingField: 0
-  airshipGUID: 
+  airshipGUID: f9e63d29a868542e585dd0c6a90df6f7
   <PredictedSpawn>k__BackingField: {fileID: 0}
   _networkBehaviours:
   - {fileID: 7931457288082626079}
