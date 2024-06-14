@@ -443,7 +443,6 @@ MonoBehaviour:
   m_fileFullPath: Assets/Code/TopDownBattle/TopDownBattleCharacter.lua
   m_error: 0
   m_yielded: 0
-  m_assetPath: 
   m_canResume: 0
   m_asyncYield: 0
   m_onUpdateHandle: -1

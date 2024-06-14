@@ -362,9 +362,9 @@ export class PlayersSingleton implements OnStart {
 		}
 	}
 
-	public AddBotPlayer(): void {
-		if (!RunUtil.IsServer()) {
-			error("AddBotPlayer must be called on the server.");
+	public AddBotPlayer(): Player {
+		if (!Game.IsServer()) {
+			error("AddBotPlayer() must be called on the server.");
 		}
 		this.server!.botCounter++;
 		let userId = `bot${this.server!.botCounter}`;
@@ -372,6 +372,9 @@ export class PlayersSingleton implements OnStart {
 		let tag = "bot";
 		print("Adding bot " + username);
 		this.playerManagerBridge.AddBotPlayer(username, tag, userId);
+
+		const botPlayer = this.FindByUserId(userId);
+		return botPlayer!;
 	}
 
 	public GetPlayers(): Player[] {

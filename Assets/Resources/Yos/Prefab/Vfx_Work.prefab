@@ -34421,15 +34421,15 @@ MonoBehaviour:
   - materialColor: {r: 0.5849056, g: 0.5849056, b: 0.5849056, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: M_AirshipDefault 1
+    emissiveLevel: 0
   - materialColor: {r: 0.4433962, g: 0.4433962, b: 0.4433962, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: M_AirshipDefault 1
+    emissiveLevel: 0
   - materialColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: M_AirshipDefault 1
+    emissiveLevel: 0
   addedByEditorScript: 1
 --- !u!1 &5525852144801778547
 GameObject:
@@ -151778,7 +151778,7 @@ ParticleSystemRenderer:
   m_FreeformStretching: 0
   m_RotateWithStretchDirection: 1
   m_UseCustomVertexStreams: 1
-  m_VertexStreams: 0001030422
+  m_VertexStreams: 000304
   m_UseCustomTrailVertexStreams: 0
   m_TrailVertexStreams: 00010304
   m_Mesh: {fileID: 0}

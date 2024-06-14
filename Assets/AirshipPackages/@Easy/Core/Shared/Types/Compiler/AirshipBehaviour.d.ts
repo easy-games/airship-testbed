@@ -167,7 +167,9 @@ type AirshipDecorator<T> = T & {
 type AirshipBehaviourFieldDecorator<T extends ReadonlyArray<unknown>> = (
 	...args: T
 ) => AirshipDecorator<(target: AirshipBehaviour, property: string) => void>;
-type AirshipBehaviourClassDecorator<T extends ReadonlyArray<unknown>> = (...args: T) => AirshipDecorator<(target: typeof AirshipBehaviour) => void>;
+type AirshipBehaviourClassDecorator<T extends ReadonlyArray<unknown>> = (
+	...args: T
+) => AirshipDecorator<(target: typeof AirshipBehaviour) => void>;
 
 /**
  * Marks this property to not be serialized in an AirshipBehaviour
@@ -195,25 +197,17 @@ declare const Tooltip: AirshipBehaviourFieldDecorator<[tooltip: string]>;
  * Attribute used to make a float or int variable in a script be restricted to a specific range.
  */
 declare const Range: AirshipBehaviourFieldDecorator<[min: number, max: number]>;
-/**
- * @deprecated Not yet implemented
- */
+
 declare const Min: AirshipBehaviourFieldDecorator<[min: number]>;
-/**
- * @deprecated Not yet implemented
- */
+
 declare const Max: AirshipBehaviourFieldDecorator<[max: number]>;
 /**
  * Attribute used to make a string value be shown in a multiline textarea.
  */
 declare const Multiline: AirshipBehaviourFieldDecorator<[lines?: number]>;
-/**
- * @deprecated Not yet implemented
- */
+
 declare const TextArea: AirshipBehaviourFieldDecorator<[]>;
-/**
- * @deprecated Not yet implemented
- */
+
 declare const HideInInspector: AirshipBehaviourFieldDecorator<[]>;
 /**
  * Use this to add some spacing in the Inspector.
