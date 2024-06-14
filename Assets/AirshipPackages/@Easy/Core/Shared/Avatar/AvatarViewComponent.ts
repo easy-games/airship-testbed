@@ -15,7 +15,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	@Header("References")
 	public humanEntityGo?: GameObject;
 	public avatarHolder?: Transform;
-	public anim?: CharacterAnimationHelper;
+	public anim!: Animator;
 	public accessoryBuilder?: AccessoryBuilder;
 	public cameraRigTransform?: Transform;
 	public avatarCamera?: Camera;
@@ -38,9 +38,6 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	public alignmentOffsetWorldpsace = new Vector3(0, 0, 0);
 
 	@Header("Spin Big")
-	public idleAnim!: AnimationClip;
-	public spinAnimLoop!: AnimationClip;
-	public spinAnimStop!: AnimationClip;
 	public spinBigRequiredTime = 3;
 	public spinBigRequiredSpeed = 10;
 
@@ -83,7 +80,6 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 				this.accessoryBuilder.firstPersonLayer = this.gameObject.layer;
 				this.accessoryBuilder.UpdateAccessoryLayers();
 			}
-			this.anim = this.humanEntityGo.GetComponent<CharacterAnimationHelper>()!;
 		}
 
 		this.mouse = new Mouse();
@@ -130,30 +126,21 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 				//Stop spinning big
 				this.spinningBig = false;
 				this.spinBigStartTime = 0;
-
-				if (this.spinAnimationTriggered) {
-					//Stumble animation
-					this.spinAnimationTriggered = false;
-					let options = new AnimationClipOptions();
-					options.fadeOutToClip = this.idleAnim;
-					this.anim?.Play(this.spinAnimStop, 0, options);
-				} else {
-					//Go to idle
-					let options = new AnimationClipOptions();
-					options.autoFadeOut = false;
-					this.anim?.Play(this.idleAnim, 0, options);
-				}
+				this.spinAnimationTriggered = false;
+				this.anim.SetBool("Spinning", false);
 			} else if (!this.spinAnimationTriggered) {
 				if (Time.time - this.spinBigStartTime > this.spinBigRequiredTime) {
 					//We will stumble at the end
 					this.spinAnimationTriggered = true;
+					this.anim.SetBool("Dizzy", true);
 				}
 			}
 		} else if (speed > this.spinBigRequiredSpeed) {
 			//Start spinning big
 			this.spinningBig = true;
 			this.spinBigStartTime = Time.time;
-			this.anim?.PlayOneShot(this.spinAnimLoop, 0);
+			this.anim.SetBool("Spinning", true);
+			this.anim.SetBool("Dizzy", false);
 		}
 	}
 
@@ -190,7 +177,6 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 
 	public ShowAvatar() {
 		this.gameObject.SetActive(true);
-		//this.anim?.SetState(CharacterState.Idle, true);
 	}
 
 	public HideAvatar() {

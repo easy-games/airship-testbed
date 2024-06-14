@@ -39,8 +39,6 @@ export default class Character extends AirshipBehaviour {
 	@NonSerialized() public inventory!: Inventory;
 	@NonSerialized() public heldItems!: HeldItemManager;
 	@NonSerialized() public outfitDto: OutfitDto | undefined;
-	public spineBone!: Transform;
-	public headBone!: Transform;
 
 	// Signals
 	@NonSerialized() public onDeath = new Signal<void>();
@@ -68,9 +66,6 @@ export default class Character extends AirshipBehaviour {
 
 	public OnEnable(): void {
 		this.despawned = false;
-
-		this.spineBone = this.rig.spine;
-		this.headBone = this.rig.head;
 		if (this.IsLocalCharacter()) {
 			task.spawn(() => {
 				Game.WaitForLocalPlayerLoaded();

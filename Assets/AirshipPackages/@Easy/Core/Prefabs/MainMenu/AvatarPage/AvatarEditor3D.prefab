@@ -837,7 +837,7 @@ MonoBehaviour:
       modified: 1
     - name: anim
       type: object
-      objectType: CharacterAnimationHelper
+      objectType: Animator
       items:
         type: 
         objectType: 
@@ -847,53 +847,7 @@ MonoBehaviour:
       decorators: []
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 2001141142760378509}
-      modified: 1
-    - name: idleAnim
-      type: object
-      objectType: AnimationClip
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators:
-      - name: Header
-        parameters:
-        - type: string
-          serializedValue: '"Spin Big"'
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 7400000, guid: 2cc6918b14daa480ca49b23f206a650e, type: 2}
-      modified: 1
-    - name: spinAnimLoop
-      type: object
-      objectType: AnimationClip
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 7400000, guid: 8d32939887866fc46854a31b3daecbb4, type: 2}
-      modified: 1
-    - name: spinAnimStop
-      type: object
-      objectType: AnimationClip
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 7400000, guid: 2b6f045a3fa0d0543a92d649dffca74f, type: 2}
+      serializedObject: {fileID: 3105424179656002902}
       modified: 1
     - name: spinBigRequiredTime
       type: number
@@ -906,7 +860,7 @@ MonoBehaviour:
       refPath: 
       decorators: []
       nullable: 0
-      serializedValue: 0.9
+      serializedValue: 0.75
       serializedObject: {fileID: 0}
       modified: 1
     - name: spinBigRequiredSpeed
@@ -1662,6 +1616,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4387263364018362257, guid: 52fb0088414a8f943ae786eb695b40fa, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: c273051c55eeeee41880bac3829a929b, type: 2}
     - target: {fileID: 4649571488364648286, guid: 52fb0088414a8f943ae786eb695b40fa, type: 3}
       propertyPath: m_Layer
       value: 10
@@ -1760,17 +1718,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 52fb0088414a8f943ae786eb695b40fa, type: 3}
---- !u!114 &2001141142760378509 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 882535490057570890, guid: 52fb0088414a8f943ae786eb695b40fa, type: 3}
+--- !u!95 &3105424179656002902 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 4387263364018362257, guid: 52fb0088414a8f943ae786eb695b40fa, type: 3}
   m_PrefabInstance: {fileID: 1727726523347655367}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6979185126918950297}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3aff24d436e74f47a8b777f6ce9a5676, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &5959368417349267470 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4992785674041076425, guid: 52fb0088414a8f943ae786eb695b40fa, type: 3}

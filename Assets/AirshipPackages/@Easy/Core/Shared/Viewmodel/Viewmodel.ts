@@ -3,7 +3,7 @@ import { CoreRefs } from "../CoreRefs";
 export class Viewmodel {
 	public viewmodelGo: GameObject;
 	public viewmodelTransform: Transform;
-	public animancer: AnimancerComponent;
+	public anim!: Animator;
 	public accessoryBuilder: AccessoryBuilder;
 	public rig!: CharacterRig;
 
@@ -17,14 +17,14 @@ export class Viewmodel {
 
 		const refs = this.viewmodelGo.GetComponent<GameObjectReferences>()!;
 		const rig = refs.GetValue("Refs", "Rig");
-		this.animancer = rig.GetComponent<AnimancerComponent>()!;
+		this.anim = rig.GetComponent<Animator>()!;
 
-		const mask = AssetBridge.Instance.LoadAsset<AvatarMask>(
-			"AirshipPackages/@Easy/Core/Prefabs/Character/Animations/AvatarMask_Viewmodel.mask",
-		);
-		for (let i = 0; i <= 4; i++) {
-			this.animancer.Layers.SetMask(i, mask);
-		}
+		// const mask = AssetBridge.Instance.LoadAsset<AvatarMask>(
+		// 	"AirshipPackages/@Easy/Core/Prefabs/Character/Animations/AvatarMasks/AvatarMask_Viewmodel.mask",
+		// );
+		// for (let i = 0; i <= 4; i++) {
+		// 	this.anim.layer.SetMask(i, mask);
+		// }
 
 		this.rig = rig.GetComponent<CharacterRig>()!;
 

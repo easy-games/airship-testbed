@@ -6252,34 +6252,6 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 2719586711620922124}
       modified: 1
-    - name: spineBone
-      type: object
-      objectType: Transform
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 0
-    - name: headBone
-      type: object
-      objectType: Transform
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 0
     displayName: 
   contextOverwritten: 0
 --- !u!114 &7088081142443290682
@@ -6451,11 +6423,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aff24d436e74f47a8b777f6ce9a5676, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  anim: {fileID: 4348008920286078619}
+  animator: {fileID: 4348008920286078619}
   events: {fileID: 9930229533298952}
   sprintVfx: {fileID: 834371153335341359}
   jumpPoofVfx: {fileID: 8321520850568583672}
   slideVfx: {fileID: 4591070209699312083}
+  minAirborneTime: 0.25
   runAnimSpeedMod: 0.8
   maxRunAnimSpeed: 2
   directionalLerpMod: 12
@@ -6545,7 +6518,7 @@ MonoBehaviour:
   _teleportThreshold: 5
   <PrefabId>k__BackingField: 0
   <SpawnableCollectionId>k__BackingField: 1
-  _scenePathHash: 2733764227
+  _scenePathHash: 0
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 15428013612131838016
 --- !u!114 &5420625271334097286
