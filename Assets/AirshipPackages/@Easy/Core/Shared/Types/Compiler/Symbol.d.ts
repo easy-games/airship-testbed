@@ -17,3 +17,6 @@ interface SymbolConstructor {
 	readonly asyncIterator: symbol;
 }
 declare const Symbol: SymbolConstructor;
+
+interface Disposable {}
+interface ImportAttributes {}
