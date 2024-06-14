@@ -107,6 +107,7 @@ export class PlayersSingleton implements OnStart {
 					userId: player.userId,
 					username: player.username,
 					profileImageId: player.profileImageId,
+					clientId: player.clientId,
 				});
 				if (Game.IsServer() && this.joinMessagesEnabled) {
 					Game.BroadcastMessage(ChatColor.Aqua(player.username) + ChatColor.Gray(" joined the server."));
@@ -120,6 +121,7 @@ export class PlayersSingleton implements OnStart {
 						userId: player.userId,
 						username: player.username,
 						profileImageId: player.profileImageId,
+						clientId: player.clientId,
 					},
 				);
 				if (Game.IsServer() && this.disconnectMessagesEnabled) {
