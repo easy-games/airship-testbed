@@ -6,7 +6,7 @@ AvatarMask:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: AvatarMask_Viewmodel
+  m_Name: AvatarMask_UpperBody
   m_Mask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
   m_Elements:
   - m_Path: 
@@ -18,9 +18,9 @@ AvatarMask:
   - m_Path: root_motion/master/hips
     m_Weight: 0
   - m_Path: root_motion/master/spine
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: root_motion/master/spine/head
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: root_motion/master/spine/upper_arm.L
     m_Weight: 1
   - m_Path: root_motion/master/spine/upper_arm.L/forearm.L

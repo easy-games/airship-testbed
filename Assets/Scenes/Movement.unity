@@ -6116,9 +6116,9 @@ MonoBehaviour:
       refPath: 
       decorators: []
       nullable: 0
-      serializedValue: 
+      serializedValue: 1
       serializedObject: {fileID: 0}
-      modified: 0
+      modified: 1
     - name: allowFirstPersonToggle
       type: boolean
       objectType: 
