@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3e7e988a1fa245d40abc74de0b80620b, type: 3}
-  m_Name: FaceAnime04
+  m_Name: FaceDecal12
   m_EditorClassIdentifier: 
-  serverClassId: ec3ab939-8f64-474b-9009-809621470327
-  serverInstanceId: 90add26c-bbc7-4669-8c9c-c0dc75b2ac43
-  decalTexture: {fileID: 2800000, guid: 54926e9bc5f4a054b944dbb313d640e1, type: 3}
+  serverClassId: 173f2265-e5d0-48ca-8c8c-297fb248337f
+  serverInstanceId: f38a10a9-31c7-4b49-9d07-c3b13a9e3ec2
+  decalTexture: {fileID: 2800000, guid: c650e9dde94d6c448901aece083734d8, type: 3}
