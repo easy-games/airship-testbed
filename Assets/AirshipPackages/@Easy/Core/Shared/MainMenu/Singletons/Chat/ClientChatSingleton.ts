@@ -10,7 +10,8 @@ import { Dependency, OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { GameObjectUtil } from "@Easy/Core/Shared/GameObject/GameObjectUtil";
 import { MainMenuSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/MainMenuSingleton";
-import { Player } from "@Easy/Core/Shared/Player/Player";
+import { ProtectedPlayer } from "@Easy/Core/Shared/Player/ProtectedPlayer";
+import { Protected } from "@Easy/Core/Shared/Protected";
 import { CoreSound } from "@Easy/Core/Shared/Sound/CoreSound";
 import { Keyboard, Mouse } from "@Easy/Core/Shared/UserInput";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
@@ -64,10 +65,11 @@ class ChatMessageElement {
 export class ClientChatSingleton implements OnStart {
 	public canvas!: Canvas;
 	private content: GameObject;
-	private wrapper: GameObject;
+	private wrapper: RectTransform;
 	private chatMessagePrefab: Object;
 	private inputField: TMP_InputField;
 	private inputWrapperImage: Image;
+	private inputTransform!: RectTransform;
 
 	private selected = false;
 	private selectedBin = new Bin();
@@ -80,6 +82,8 @@ export class ClientChatSingleton implements OnStart {
 	private commands = new Map<string, ChatCommand>();
 	private lastChatMessageRenderedTime = Time.time;
 
+	private chatInputBin = new Bin();
+
 	constructor() {
 		const refs = Dependency<CoreUIController>().refs.GetValue("Apps", "Chat").GetComponent<GameObjectReferences>()!;
 		this.canvas = refs.GetValue("UI", "Canvas").GetComponent<Canvas>()!;
@@ -87,7 +91,8 @@ export class ClientChatSingleton implements OnStart {
 		this.wrapper = refs.GetValue("UI", "Wrapper");
 		this.chatMessagePrefab = refs.GetValue("UI", "ChatMessagePrefab");
 		this.inputField = refs.GetValue("UI", "InputField");
-		this.inputWrapperImage = refs.GetValue("UI", "Input").GetComponent<Image>()!;
+		this.inputTransform = refs.GetValue("UI", "Input");
+		this.inputWrapperImage = this.inputTransform.GetComponent<Image>()!;
 		this.content.gameObject.ClearChildren();
 
 		Dependency<MainMenuSingleton>().ObserveScreenSize((st, size) => {
@@ -175,9 +180,9 @@ export class ClientChatSingleton implements OnStart {
 	}
 
 	public AddMessage(rawText: string, nameWithPrefix: string | undefined, senderClientId: number | undefined): void {
-		let sender: Player | undefined;
+		let sender: ProtectedPlayer | undefined;
 		if (senderClientId !== undefined) {
-			sender = Airship.players.FindByClientId(senderClientId);
+			sender = Protected.protectedPlayers.FindByClientId(senderClientId);
 			if (sender) {
 				if (Dependency<MainMenuBlockSingleton>().IsUserIdBlocked(sender.userId)) {
 					return;
@@ -211,6 +216,7 @@ export class ClientChatSingleton implements OnStart {
 		CanvasAPI.OnInputFieldSubmit(this.inputField.gameObject, (data) => {
 			this.SubmitInputField();
 		});
+		this.HideChatInput();
 
 		// Submitting on desktop.
 		// We cancel the form submit so the input field doesn't auto deselect.
@@ -300,8 +306,7 @@ export class ClientChatSingleton implements OnStart {
 			this.selected = true;
 			this.historyIndex = -1;
 			if (!Game.IsMobile()) {
-				this.inputWrapperImage.color = new Color(0, 0, 0, 0.4);
-				this.inputField.textComponent.alpha = 1;
+				this.ShowChatInput();
 			}
 			// todo: movement disabler
 			const disableId = contextbridge.invoke<() => number | undefined>(
@@ -328,8 +333,7 @@ export class ClientChatSingleton implements OnStart {
 			this.selectedBin.Clean();
 			this.selected = false;
 			if (!Game.IsMobile()) {
-				this.inputWrapperImage.color = new Color(0, 0, 0, 0);
-				this.inputField.textComponent.alpha = 0;
+				this.HideChatInput();
 			}
 			this.CheckIfShouldHide();
 		});
@@ -337,6 +341,26 @@ export class ClientChatSingleton implements OnStart {
 		SetInterval(0.5, () => {
 			this.CheckIfShouldHide();
 		});
+	}
+
+	private ShowChatInput(): void {
+		this.chatInputBin.Clean();
+		const t = this.inputTransform.TweenSizeDelta(new Vector2(this.inputTransform.sizeDelta.x, 40), 0.04);
+		// this.chatInputBin.Add(() => {
+		// 	t.Cancel();
+		// });
+		// this.inputWrapperImage.color = new Color(0, 0, 0, 0.8);
+		// this.inputField.textComponent.alpha = 1;
+	}
+
+	private HideChatInput(): void {
+		this.chatInputBin.Clean();
+		const t = this.inputTransform.TweenSizeDelta(new Vector2(this.inputTransform.sizeDelta.x, 0), 0.04);
+		// this.chatInputBin.Add(() => {
+		// 	t.Cancel();
+		// });
+		// this.inputWrapperImage.color = new Color(0, 0, 0, 0);
+		// this.inputField.textComponent.alpha = 0;
 	}
 
 	private CheckIfShouldHide(): void {
@@ -390,20 +414,31 @@ export class ClientChatSingleton implements OnStart {
 		}
 	}
 
-	public RenderChatMessage(message: string, sender?: Player): void {
+	public RenderChatMessage(message: string, sender?: ProtectedPlayer): void {
 		print(message);
 		try {
 			const chatMessage = GameObjectUtil.InstantiateIn(this.chatMessagePrefab, this.content.transform);
 			const refs = chatMessage.GetComponent<GameObjectReferences>()!;
 
-			const textGui = refs.GetValue<TextMeshProUGUI>("UI", "Text");
+			const textGui = refs.GetValue<TMP_Text>("UI", "Text");
 			textGui.text = message;
 
-			const profileImage = refs.GetValue<Image>("UI", "ProfilePicture");
-			const playerProfilePic = sender?.GetProfilePicture();
-			if (playerProfilePic) {
-				profileImage.sprite = Bridge.MakeSprite(AssetBridge.Instance.LoadAsset(playerProfilePic.path));
+			const profileImage = refs.GetValue<RawImage>("UI", "ProfilePicture");
+			if (sender) {
+				task.spawn(async () => {
+					const texture = await Airship.players.GetProfilePictureTextureFromImageIdAsync(
+						sender.userId,
+						sender.profileImageId,
+					);
+					if (texture) {
+						profileImage.texture = texture;
+					} else {
+						profileImage.gameObject.SetActive(false);
+					}
+				});
 			} else {
+				// system message
+				textGui.margin = new Vector4(0, 8, 8, 8);
 				profileImage.gameObject.SetActive(false);
 			}
 

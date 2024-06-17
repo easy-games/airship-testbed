@@ -10,8 +10,7 @@ export default class DevelopMenuPage extends MainMenuPageComponent {
     public Start(): void {
         const search = Dependency<SearchSingleton>();
 		search.FetchMyGames();
-
-        if (search.games.size() === 0) {
+        if (search.myGames.size() === 0) {
             this.DisplayDevIntroView();
         } else {
             this.DisplayMyGamesView();
@@ -19,8 +18,8 @@ export default class DevelopMenuPage extends MainMenuPageComponent {
     }
 
     private DisplayDevIntroView() {
-        this.devIntroView.SetActive(true);
         this.myGamesView.SetActive(false);
+        this.devIntroView.SetActive(true);
     }
 
     private DisplayMyGamesView() {

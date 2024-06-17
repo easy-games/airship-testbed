@@ -12489,6 +12489,7 @@ interface PreciseTickConstructor {
     new(tick: number, percent: number): PreciseTick;
 
 
+    AsDouble(tick: number, percent: number): PreciseTick;
 }
 declare const PreciseTick: PreciseTickConstructor;
     

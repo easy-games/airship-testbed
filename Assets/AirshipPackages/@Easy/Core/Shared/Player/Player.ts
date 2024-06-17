@@ -4,9 +4,7 @@ import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { ClientChatSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/Chat/ClientChatSingleton";
-import { ProfilePictureDefinitions } from "@Easy/Core/Shared/ProfilePicture/ProfilePictureDefinitions";
 import { ProfilePictureId } from "@Easy/Core/Shared/ProfilePicture/ProfilePictureId";
-import { ProfilePictureMeta } from "@Easy/Core/Shared/ProfilePicture/ProfilePictureMeta";
 import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { Team } from "../Team/Team";
@@ -178,8 +176,8 @@ export class Player {
 		}
 	}
 
-	public GetProfilePicture(): ProfilePictureMeta {
-		return ProfilePictureDefinitions[this.profilePicture];
+	async GetProfileImageTextureAsync(): Promise<Texture2D | undefined> {
+		return await Airship.players.GetProfilePictureTextureFromImageIdAsync(this.userId, this.profileImageId);
 	}
 
 	public SetTeam(team: Team): void {

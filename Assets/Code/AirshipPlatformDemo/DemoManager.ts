@@ -46,9 +46,9 @@ export default class DemoManager extends AirshipBehaviour {
 				Airship.damage.onDeath.Connect((damageInfo) => {
 					const character = damageInfo.gameObject.GetAirshipComponent<Character>();
 					if (character?.player) {
-						task.delay(2, () => {
-							this.SpawnPlayer(character.player!);
-						});
+						// task.delay(2, () => {
+						this.SpawnPlayer(character.player!);
+						// });
 					}
 				}),
 			);

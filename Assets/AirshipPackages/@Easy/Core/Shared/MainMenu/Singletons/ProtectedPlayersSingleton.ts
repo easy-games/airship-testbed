@@ -1,6 +1,7 @@
 import { OnStart, Singleton } from "../../Flamework";
 import { BridgedPlayer } from "../../Player/BridgedPlayer";
 import { ProtectedPlayer } from "../../Player/ProtectedPlayer";
+import { Protected } from "../../Protected";
 import { Signal } from "../../Util/Signal";
 
 /**
@@ -13,8 +14,15 @@ export class ProtectedPlayersSingleton implements OnStart {
 	public players: ProtectedPlayer[] = [];
 
 	constructor() {
+		Protected.protectedPlayers = this;
+
 		contextbridge.callback("Players:OnPlayerJoined", (from, player: BridgedPlayer) => {
-			const protectedPlayer = new ProtectedPlayer(player.username, player.userId, player.profileImageId);
+			const protectedPlayer = new ProtectedPlayer(
+				player.username,
+				player.userId,
+				player.profileImageId,
+				player.clientId,
+			);
 			this.players.push(protectedPlayer);
 			this.onPlayerJoined.Fire(protectedPlayer);
 		});
@@ -25,6 +33,10 @@ export class ProtectedPlayersSingleton implements OnStart {
 				this.onPlayerDisconnected.Fire(protectedPlayer);
 			}
 		});
+	}
+
+	public FindByClientId(clientId: number): ProtectedPlayer | undefined {
+		return this.players.find((p) => p.clientId === clientId);
 	}
 
 	OnStart(): void {}

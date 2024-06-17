@@ -177,6 +177,7 @@ export class LocalCharacterSingleton implements OnStart {
 			});
 
 			return () => {
+				print("Observe cleanup");
 				bin.Clean();
 			};
 		});

@@ -1,6 +1,5 @@
 ﻿import { Airship } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
-import { DamageUtils } from "@Easy/Core/Shared/Damage/DamageUtils";
 import { MeleeItemDef } from "@Easy/Core/Shared/Item/ItemDefinitionTypes";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
@@ -70,43 +69,42 @@ export class MeleeHeldItem extends HeldItem {
 	private ClientPredictDamage(meleeData: MeleeItemDef) {
 		//Only local player should do collisions checks
 		if (this.character.IsLocalCharacter()) {
-			Profiler.BeginSample("MeleeClientEffect");
-			// const entityDriver = this.entity.GetEntityDriver();
-			// entityDriver.UpdateSyncTick();
-
-			let hitTargets = this.ScanForHits();
-			let hitSomething = false;
-			let effectGO: GameObject | undefined;
-			// for (const data of hitTargets) {
-			// 	hitSomething = true;
-			// 	if (meleeData.onHitPrefabPath) {
-			// 		//Local damage predictions
-			// 		effectGO = EffectsManager.SpawnPrefabEffect(
-			// 			meleeData.onHitPrefabPath,
-			// 			data.hitPosition,
-			// 			Quaternion.LookRotation(data.hitDirection).eulerAngles,
-			// 		);
-			// 		if (effectGO) {
-			// 			effectGO.transform.SetParent(data.hitCharacter.model.transform);
-			// 		}
+			// Profiler.BeginSample("MeleeClientEffect");
+			// // const entityDriver = this.entity.GetEntityDriver();
+			// // entityDriver.UpdateSyncTick();
+			// let hitTargets = this.ScanForHits();
+			// let hitSomething = false;
+			// let effectGO: GameObject | undefined;
+			// // for (const data of hitTargets) {
+			// // 	hitSomething = true;
+			// // 	if (meleeData.onHitPrefabPath) {
+			// // 		//Local damage predictions
+			// // 		effectGO = EffectsManager.SpawnPrefabEffect(
+			// // 			meleeData.onHitPrefabPath,
+			// // 			data.hitPosition,
+			// // 			Quaternion.LookRotation(data.hitDirection).eulerAngles,
+			// // 		);
+			// // 		if (effectGO) {
+			// // 			effectGO.transform.SetParent(data.hitCharacter.model.transform);
+			// // 		}
+			// // 	}
+			// // }
+			// if (hitSomething) {
+			// 	let effectI = 0;
+			// 	let effects: GameObject[] = [];
+			// 	if (this.currentUseVFX) {
+			// 		effects[effectI] = this.currentUseVFX;
+			// 		effectI++;
 			// 	}
+			// 	if (effectGO) {
+			// 		effects[effectI] = effectGO;
+			// 		effectI++;
+			// 	}
+			// 	DamageUtils.AddAttackStun(this.character, meleeData.damage, false, effects);
+			// } else {
+			// 	this.Log("No client hits found");
 			// }
-			if (hitSomething) {
-				let effectI = 0;
-				let effects: GameObject[] = [];
-				if (this.currentUseVFX) {
-					effects[effectI] = this.currentUseVFX;
-					effectI++;
-				}
-				if (effectGO) {
-					effects[effectI] = effectGO;
-					effectI++;
-				}
-				DamageUtils.AddAttackStun(this.character, meleeData.damage, false, effects);
-			} else {
-				this.Log("No client hits found");
-			}
-			Profiler.EndSample();
+			// Profiler.EndSample();
 		}
 	}
 

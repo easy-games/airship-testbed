@@ -115,7 +115,9 @@ export default class Character extends AirshipBehaviour {
 			this.despawned = true;
 			this.onDespawn.Fire();
 			Airship.characters.onCharacterDespawned.Fire(this);
-			this.player?.SetCharacter(undefined);
+			if (this.player?.character === this) {
+				this.player?.SetCharacter(undefined);
+			}
 		}
 	}
 
@@ -154,14 +156,16 @@ export default class Character extends AirshipBehaviour {
 	 * **SERVER ONLY METHOD**
 	 */
 	public Despawn(): void {
-		assert(RunUtil.IsServer(), "You can only call Character.Despawn() on the server.");
+		assert(Game.IsServer(), "You can only call Character.Despawn() on the server.");
 		assert(!this.despawned, "Character has already been despawned");
 
 		this.bin.Clean();
 		this.despawned = true;
 		this.onDespawn.Fire();
 		Airship.characters.onCharacterDespawned.Fire(this);
-		this.player?.SetCharacter(undefined);
+		if (this.player?.character === this) {
+			this.player?.SetCharacter(undefined);
+		}
 		NetworkUtil.Despawn(this.gameObject);
 	}
 
