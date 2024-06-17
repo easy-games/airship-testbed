@@ -33,8 +33,8 @@ export class AvatarPlatformAPI {
 		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/equipped/self`));
 		if (res.success && res.data && res.data !== "") {
 			return DecodeJSON(res.data) as OutfitDto;
-		}else{
-			Debug.LogError("failed to load user equipped outfit: " + (res.error ?? "Empty Data"));
+		} else {
+			CoreLogger.Error("failed to load user equipped outfit: " + (res.error ?? "Empty Data"));
 		}
 	}
 
@@ -42,8 +42,8 @@ export class AvatarPlatformAPI {
 		const res = InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/uid/${playerId}/equipped`));
 		if (res.success && res.data && res.data !== "") {
 			return DecodeJSON<OutfitDto>(res.data);
-		}else{
-			Debug.LogError("failed to load player equipped outfit: " + (res.error ?? "Empty Data"));
+		} else {
+			CoreLogger.Error("failed to load player equipped outfit: " + (res.error ?? "Empty Data"));
 		}
 	}
 
@@ -52,8 +52,8 @@ export class AvatarPlatformAPI {
 		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/outfit-id/${outfitId}`));
 		if (res.success && res.data && res.data !== "") {
 			return DecodeJSON(res.data) as OutfitDto;
-		}else{
-			Debug.LogError("failed to load user outfit: " + (res.error ?? "Empty Data"));
+		} else {
+			CoreLogger.Error("failed to load user outfit: " + (res.error ?? "Empty Data"));
 		}
 	}
 
@@ -106,7 +106,7 @@ export class AvatarPlatformAPI {
 		this.Log("RenameOutfitAccessories");
 		return this.UpdateOutfit(outfitId, {
 			name: newName,
-		})
+		});
 	}
 
 	public static async SaveOutfitAccessories(outfitId: string, skinColor: string, instanceIds: string[]) {
@@ -114,14 +114,11 @@ export class AvatarPlatformAPI {
 		return this.UpdateOutfit(outfitId, {
 			accessories: instanceIds,
 			skinColor: skinColor,
-		})
+		});
 	}
 
 	private static UpdateOutfit(outfitId: string, update: Partial<OutfitPatch>) {
-		let res = InternalHttpManager.PatchAsync(
-			this.GetHttpUrl(`outfits/outfit-id/${outfitId}`),
-			EncodeJSON(update),
-		);
+		let res = InternalHttpManager.PatchAsync(this.GetHttpUrl(`outfits/outfit-id/${outfitId}`), EncodeJSON(update));
 		if (res.success) {
 			const decodedResult = DecodeJSON<OutfitDto>(res.data);
 			return decodedResult;

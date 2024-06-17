@@ -488,10 +488,10 @@
 	},
 	"extends": {
 		"MainMenuPageComponent": [
-			"AvatarMenuComponent",
+			"DevelopMenuPage",
 			"HomePageComponent",
 			"GameGeneralPage",
-			"DevelopMenuPage"
+			"AvatarMenuComponent"
 		],
 		"SearchResult": [
 			"GameSearchResult"
