@@ -442,8 +442,8 @@ MonoBehaviour:
           serializedValue: '"References"'
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 0
+      serializedObject: {fileID: 2677044120290366665}
+      modified: 1
     - name: nob
       type: object
       objectType: NetworkObject
@@ -456,8 +456,8 @@ MonoBehaviour:
       decorators: []
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 0
+      serializedObject: {fileID: 2106157267949230125}
+      modified: 1
     - name: anim
       type: object
       objectType: Animator
@@ -470,8 +470,8 @@ MonoBehaviour:
       decorators: []
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 0
+      serializedObject: {fileID: 1280141020439120962}
+      modified: 1
     - name: rigid
       type: object
       objectType: Rigidbody
@@ -484,8 +484,8 @@ MonoBehaviour:
       decorators: []
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 0
+      serializedObject: {fileID: 2366322638051716042}
+      modified: 1
     - name: moveForce
       type: number
       objectType: 
@@ -557,9 +557,9 @@ MonoBehaviour:
       refPath: 
       decorators: []
       nullable: 0
-      serializedValue: 10
+      serializedValue: 15
       serializedObject: {fileID: 0}
-      modified: 0
+      modified: 1
     displayName: 
   contextOverwritten: 0
 --- !u!1 &3499941963146062281

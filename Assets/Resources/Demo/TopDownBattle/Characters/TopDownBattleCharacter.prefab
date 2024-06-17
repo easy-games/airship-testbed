@@ -362,6 +362,14 @@ PrefabInstance:
       propertyPath: <PrefabId>k__BackingField
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 6272728288571928321, guid: f9e63d29a868542e585dd0c6a90df6f7, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6740932961554829767, guid: f9e63d29a868542e585dd0c6a90df6f7, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: cff4c76274bce2a4b9306323f60277c8, type: 2}
     - target: {fileID: 8616685848737228372, guid: f9e63d29a868542e585dd0c6a90df6f7, type: 3}
       propertyPath: m_Name
       value: TopDownBattleCharacter
@@ -468,8 +476,8 @@ MonoBehaviour:
           serializedValue: '"References"'
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 0
+      serializedObject: {fileID: 5729406980951111535}
+      modified: 1
     - name: startingExtraLives
       type: number
       objectType: 
