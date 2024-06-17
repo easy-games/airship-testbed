@@ -63,11 +63,6 @@
 			"filePath": "AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/AvatarMenuProfileComponent.lua",
 			"extends": []
 		},
-		"DirectMessagesWindow": {
-			"component": true,
-			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/DirectMessagesWindow.lua",
-			"extends": []
-		},
 		"PartyChatButton": {
 			"component": true,
 			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/PartyChatButton.lua",
@@ -81,21 +76,6 @@
 		"Inventory": {
 			"component": true,
 			"filePath": "AirshipPackages/@Easy/Core/Shared/Inventory/Inventory.lua",
-			"extends": []
-		},
-		"DemoManager": {
-			"component": true,
-			"filePath": "Code/AirshipPlatformDemo/DemoManager.lua",
-			"extends": []
-		},
-		"TopDownBattlePlayerSpawner": {
-			"component": true,
-			"filePath": "Code/TopDownBattle/TopDownBattlePlayerSpawner.lua",
-			"extends": []
-		},
-		"GameManager": {
-			"component": true,
-			"filePath": "Code/TopDownScene/GameManager.lua",
 			"extends": []
 		},
 		"CameraRig": {
@@ -123,9 +103,44 @@
 			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/SocialFriendRequestsButtonComponent.lua",
 			"extends": []
 		},
+		"DirectMessagesWindow": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/DirectMessagesWindow.lua",
+			"extends": []
+		},
+		"PartyMember": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/PartyMember.lua",
+			"extends": []
+		},
 		"SettingsProfilePage": {
 			"component": true,
 			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsProfilePage.lua",
+			"extends": []
+		},
+		"ProfileOptionsButton": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/ProfileOptionsButton.lua",
+			"extends": []
+		},
+		"PlayerList": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/General/PlayerList.lua",
+			"extends": []
+		},
+		"PlayerEntry": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/General/PlayerEntry.lua",
+			"extends": []
+		},
+		"IncomingFriendRequestCard": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/FriendRequest/IncomingFriendRequestCard.lua",
+			"extends": []
+		},
+		"FriendRequestModal": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/FriendRequest/FriendRequestModal.lua",
 			"extends": []
 		},
 		"NavbarSettingsButton": {
@@ -156,11 +171,6 @@
 		"GameImageButton": {
 			"component": true,
 			"filePath": "AirshipPackages/@Easy/Core/Client/Components/HomePage/Sort/GameImageButton.lua",
-			"extends": []
-		},
-		"ProfileOptionsButton": {
-			"component": true,
-			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/ProfileOptionsButton.lua",
 			"extends": []
 		},
 		"AvatarViewComponent": {
@@ -203,9 +213,9 @@
 			"filePath": "Code/TopDownBattle/TopDownBattleEnemies/TopDownBattleEnemy.lua",
 			"extends": []
 		},
-		"PartyMember": {
+		"TopDownBattlePlayerSpawner": {
 			"component": true,
-			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/PartyMember.lua",
+			"filePath": "Code/TopDownBattle/TopDownBattlePlayerSpawner.lua",
 			"extends": []
 		},
 		"GameSearchResult": {
@@ -245,11 +255,6 @@
 			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsPage.lua",
 			"extends": []
 		},
-		"PlayerList": {
-			"component": true,
-			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/General/PlayerList.lua",
-			"extends": []
-		},
 		"MicrophoneSettingsPage": {
 			"component": true,
 			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/Microphone/MicrophoneSettingsPage.lua",
@@ -268,6 +273,11 @@
 		"TeleportToRoom": {
 			"component": true,
 			"filePath": "Code/MultiScene/TeleportToRoom.lua",
+			"extends": []
+		},
+		"DemoManager": {
+			"component": true,
+			"filePath": "Code/AirshipPlatformDemo/DemoManager.lua",
 			"extends": []
 		},
 		"CharacterConfigSetup": {
@@ -295,14 +305,14 @@
 			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Search/SearchResult.lua",
 			"extends": []
 		},
-		"PlayerEntry": {
-			"component": true,
-			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/General/PlayerEntry.lua",
-			"extends": []
-		},
 		"CubeMover": {
 			"component": true,
 			"filePath": "Code/AirshipPlatformDemo/CubeMover.lua",
+			"extends": []
+		},
+		"GameManager": {
+			"component": true,
+			"filePath": "Code/TopDownScene/GameManager.lua",
 			"extends": []
 		},
 		"TestScript": {
@@ -333,16 +343,6 @@
 		"MobileChatToggleButton": {
 			"component": true,
 			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/MobileChatToggleButton.lua",
-			"extends": []
-		},
-		"IncomingFriendRequestCard": {
-			"component": true,
-			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/FriendRequest/IncomingFriendRequestCard.lua",
-			"extends": []
-		},
-		"FriendRequestModal": {
-			"component": true,
-			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/FriendRequest/FriendRequestModal.lua",
 			"extends": []
 		},
 		"MobileEscapeButton": {
@@ -488,10 +488,10 @@
 	},
 	"extends": {
 		"MainMenuPageComponent": [
-			"DevelopMenuPage",
+			"AvatarMenuComponent",
 			"HomePageComponent",
 			"GameGeneralPage",
-			"AvatarMenuComponent"
+			"DevelopMenuPage"
 		],
 		"SearchResult": [
 			"GameSearchResult"
@@ -502,9 +502,6 @@
 		"identifiers": {
 			"typescript:Code/TestSingleton@TestSingleton": "TestSingleton@TestSingleton",
 			"typescript:Code/TopDownBattle/TopDownItems/TopDownRangedItem@TopDownBattleRangedItem": "TopDownBattle/TopDownItems/TopDownRangedItem@TopDownBattleRangedItem",
-			"typescript:Code/AirshipPlatformDemo/DemoManager@DemoManager": "AirshipPlatformDemo/DemoManager@DemoManager",
-			"typescript:Code/TopDownBattle/TopDownBattlePlayerSpawner@TopDownBattlePlayerSpawner": "TopDownBattle/TopDownBattlePlayerSpawner@TopDownBattlePlayerSpawner",
-			"typescript:Code/TopDownScene/GameManager@GameManager": "TopDownScene/GameManager@GameManager",
 			"typescript:Code/AirshipPlatformDemo/PromptAboveBall@PromptAboveBall": "AirshipPlatformDemo/PromptAboveBall@PromptAboveBall",
 			"typescript:Code/Menu/Menu@Menu": "Menu/Menu@Menu",
 			"typescript:Code/Menu/MenuUtil@MenuUtil": "Menu/MenuUtil@MenuUtil",
@@ -513,10 +510,13 @@
 			"typescript:Code/TopDownBattle/TopDownBattleEnemies/TopDownBattleEnemySpawner@TopDownBattleEnemySpawner": "TopDownBattle/TopDownBattleEnemies/TopDownBattleEnemySpawner@TopDownBattleEnemySpawner",
 			"typescript:Code/TopDownBattle/TopDownBattleGame@TopDownBattleGame": "TopDownBattle/TopDownBattleGame@TopDownBattleGame",
 			"typescript:Code/TopDownBattle/TopDownBattleEnemies/TopDownBattleEnemy@TopDownBattleEnemy": "TopDownBattle/TopDownBattleEnemies/TopDownBattleEnemy@TopDownBattleEnemy",
+			"typescript:Code/TopDownBattle/TopDownBattlePlayerSpawner@TopDownBattlePlayerSpawner": "TopDownBattle/TopDownBattlePlayerSpawner@TopDownBattlePlayerSpawner",
 			"typescript:Code/Components/CharacterSpawner@CharacterSpawner": "Components/CharacterSpawner@CharacterSpawner",
 			"typescript:Code/Menu/ClientSceneComponent@ClientSceneComponent": "Menu/ClientSceneComponent@ClientSceneComponent",
 			"typescript:Code/MultiScene/TeleportToRoom@TeleportToRoom": "MultiScene/TeleportToRoom@TeleportToRoom",
+			"typescript:Code/AirshipPlatformDemo/DemoManager@DemoManager": "AirshipPlatformDemo/DemoManager@DemoManager",
 			"typescript:Code/AirshipPlatformDemo/CubeMover@CubeMover": "AirshipPlatformDemo/CubeMover@CubeMover",
+			"typescript:Code/TopDownScene/GameManager@GameManager": "TopDownScene/GameManager@GameManager",
 			"typescript:Code/AirshipPlatformDemo/ServerScript@TestScript": "AirshipPlatformDemo/ServerScript@TestScript",
 			"typescript:Code/TopDownBattle/TopDownBattleCharacter@TopDownBattleCharacter": "TopDownBattle/TopDownBattleCharacter@TopDownBattleCharacter",
 			"typescript:Code/AirshipPlatformDemo/ClientScript@ClientScript": "AirshipPlatformDemo/ClientScript@ClientScript",
