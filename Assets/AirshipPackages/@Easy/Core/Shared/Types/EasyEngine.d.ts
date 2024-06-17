@@ -571,6 +571,7 @@ interface CharacterAnimationHelper extends Component {
 	SetState(newState: CharacterState, force = false, noRootLayerFade = false);
 	SetVelocity(vel: Vector3);
 	SetGrounded(grounded: boolean);
+	PlayOneShot(clip: AnimationClip);
 }
 
 interface AnimationClipOptions {

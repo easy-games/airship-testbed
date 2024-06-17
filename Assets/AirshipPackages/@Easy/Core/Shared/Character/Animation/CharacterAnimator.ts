@@ -1,5 +1,4 @@
-﻿﻿import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
-import { AudioBundleSpacialMode, AudioClipBundle } from "@Easy/Core/Shared/Audio/AudioClipBundle";
+﻿﻿import { AudioBundleSpacialMode, AudioClipBundle } from "@Easy/Core/Shared/Audio/AudioClipBundle";
 import Character from "@Easy/Core/Shared/Character/Character";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { CoreItemType } from "@Easy/Core/Shared/Item/CoreItemType";
@@ -9,7 +8,6 @@ import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { RandomUtil } from "@Easy/Core/Shared/Util/RandomUtil";
 import { Task } from "@Easy/Core/Shared/Util/Task";
 import { AirshipCharacterCameraSingleton } from "../../Camera/AirshipCharacterCameraSingleton";
-import { CameraReferences } from "../../Camera/CameraReferences";
 import { ItemDef } from "../../Item/ItemDefinitionTypes";
 import { CharacterAnimationLayer } from "./CharacterAnimationLayer";
 import { Game } from "../../Game";
@@ -81,8 +79,8 @@ export class CharacterAnimator {
 		this.animHelper = character.movement.animationHelper;
 		this.isFlashing = false;
 
-		//AUDIO
 		if (Game.IsClient()) {
+			//AUDIO
 			this.footstepAudioBundle = new AudioClipBundle([]);
 			this.footstepAudioBundle.volumeScale = this.baseFootstepVolumeScale;
 			this.footstepAudioBundle.soundOptions.maxDistance = 15;
@@ -97,28 +95,17 @@ export class CharacterAnimator {
 			// this.slideAudioBundle.spacialMode = character.IsLocalCharacter()
 			// 	? AudioBundleSpacialMode.GLOBAL
 			// 	: AudioBundleSpacialMode.SPACIAL;
+		
 
 			//ANIMATIONS
-			// this.flinchClipFPS = BundleReferenceManager.LoadResource<AnimationClip>(
-			// 	BundleGroupNames.Entity,
-			// 	Bundle_Entity.OnHit,
-			// 	Bundle_Entity_OnHit.FlinchAnimFPS,
-			// );
-			// this.deathClipFPS = BundleReferenceManager.LoadResource<AnimationClip>(
-			// 	BundleGroupNames.Entity,
-			// 	Bundle_Entity.OnHit,
-			// 	Bundle_Entity_OnHit.DeathAnimFPS,
-			// );
-			// this.flinchClipTP = BundleReferenceManager.LoadResource<AnimationClip>(
-			// 	BundleGroupNames.Entity,
-			// 	Bundle_Entity.OnHit,
-			// 	Bundle_Entity_OnHit.FlinchAnimTP,
-			// );
-			// this.deathClipTP = BundleReferenceManager.LoadResource<AnimationClip>(
-			// 	BundleGroupNames.Entity,
-			// 	Bundle_Entity.OnHit,
-			// 	Bundle_Entity_OnHit.DeathAnimTP,
-			// );
+			this.bin.Add(character.onHealthChanged.Connect((newHealth, oldHealth)=>{
+				if(newHealth < oldHealth){
+					let flinchClip = this.isFirstPerson ? this.flinchClipFPS : this.flinchClipTP;
+					if(flinchClip){
+						character.animationHelper.PlayOneShot(flinchClip);
+					}
+				}
+			}));
 
 			//VFX
 			// this.damageEffectTemplate = BundleReferenceManager.LoadResource<GameObject>(
