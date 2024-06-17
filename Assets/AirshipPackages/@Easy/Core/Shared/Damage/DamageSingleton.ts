@@ -2,8 +2,8 @@ import { Airship } from "@Easy/Core/Shared/Airship";
 import { OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
 import { RemoteEvent } from "@Easy/Core/Shared/Network/RemoteEvent";
 import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
-import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
+import { Game } from "../Game";
 import { CanClientDamageInfo } from "./CanClientDamageInfo";
 import { DamageInfo, DamageInfoCustomData } from "./DamageInfo";
 
@@ -37,7 +37,7 @@ export class DamageSingleton implements OnStart {
 
 	OnStart(): void {
 		this.damageRemote.client.OnServerEvent((nobId, damage, attackerNobId, data) => {
-			if (RunUtil.IsHosting()) return;
+			if (Game.IsHosting()) return;
 			const nob = NetworkUtil.GetNetworkObject(nobId);
 			if (nob === undefined) return;
 
@@ -50,7 +50,7 @@ export class DamageSingleton implements OnStart {
 		});
 
 		this.deathRemote.client.OnServerEvent((nobId, damage, attackerNobId, data) => {
-			if (RunUtil.IsHosting()) return;
+			if (Game.IsHosting()) return;
 
 			const nob = NetworkUtil.GetNetworkObject(nobId);
 			if (nob === undefined) return;
@@ -73,8 +73,10 @@ export class DamageSingleton implements OnStart {
 	 * @param data
 	 */
 	public InflictDamage(gameObject: GameObject, damage: number, attacker?: GameObject, data?: DamageInfoCustomData) {
+		assert(damage >= 0, "Unable to InflictDamage with a negative damage amount.");
+
 		const damageInfo = new DamageInfo(gameObject, damage, attacker, data ?? {});
-		if (RunUtil.IsServer() && this.autoNetwork) {
+		if (Game.IsServer() && this.autoNetwork) {
 			const nob = damageInfo.gameObject.GetComponent<NetworkObject>();
 			const attackerNob = damageInfo.attacker?.GetComponent<NetworkObject>();
 			if (nob) {
@@ -94,7 +96,7 @@ export class DamageSingleton implements OnStart {
 	 * @param damageInfo
 	 */
 	public BroadcastDeath(damageInfo: DamageInfo): void {
-		if (RunUtil.IsServer() && this.autoNetwork) {
+		if (Game.IsServer() && this.autoNetwork) {
 			const nob = damageInfo.gameObject.GetComponent<NetworkObject>();
 			const attackerNob = damageInfo.attacker?.GetComponent<NetworkObject>();
 			if (nob) {

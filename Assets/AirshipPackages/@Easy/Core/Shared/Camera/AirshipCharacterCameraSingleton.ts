@@ -271,7 +271,6 @@ export class AirshipCharacterCameraSingleton implements OnStart {
 	 * @internal
 	 */
 	public CleanupCamera() {
-		print("CleanupCamera");
 		this.cameraSystem?.SetOnClearCallback(undefined);
 		this.ClearMode();
 		this.fps?.Destroy();

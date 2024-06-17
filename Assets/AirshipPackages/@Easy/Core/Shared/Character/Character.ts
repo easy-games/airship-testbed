@@ -6,10 +6,11 @@ import { HeldItemManager } from "@Easy/Core/Shared/Item/HeldItems/HeldItemManage
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
-import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { AvatarUtil } from "../Avatar/AvatarUtil";
+import { CoreNetwork } from "../CoreNetwork";
+import { DamageInfo, DamageInfoCustomData } from "../Damage/DamageInfo";
 
 export default class Character extends AirshipBehaviour {
 	@NonSerialized()
@@ -83,9 +84,9 @@ export default class Character extends AirshipBehaviour {
 					if (this.IsDead()) return;
 					let newHealth = math.max(0, this.health - damageInfo.damage);
 
-					this.SetHealth(newHealth);
+					this.SetHealth(newHealth, true);
 
-					if (RunUtil.IsServer() && newHealth <= 0) {
+					if (Game.IsServer() && newHealth <= 0) {
 						Airship.damage.BroadcastDeath(damageInfo);
 					}
 				}
@@ -174,6 +175,10 @@ export default class Character extends AirshipBehaviour {
 		NetworkUtil.Despawn(this.gameObject);
 	}
 
+	public InflictDamage(damage: number, attacker?: GameObject, data?: DamageInfoCustomData): void {
+		Airship.damage.InflictDamage(this.gameObject, damage, attacker, data);
+	}
+
 	public IsDestroyed(): boolean {
 		return this.despawned || this.gameObject.IsDestroyed();
 	}
@@ -190,10 +195,26 @@ export default class Character extends AirshipBehaviour {
 		return this.health;
 	}
 
-	public SetHealth(health: number): void {
+	/**
+	 * Sets a characters health to a certain value. If the health is <= 0, the character will die.
+	 *
+	 * @param health The new health value.
+	 * @param dontInflictDeath If true, a death event will not be fired if the character's new health is less than or equal to zero.
+	 * This is useful when you want to broadcast a custom death event with {@link Airship.damage.BroadcastDeath}.
+	 */
+	public SetHealth(health: number, dontInflictDeath?: boolean): void {
 		const oldHealth = this.health;
 		this.health = health;
 		this.onHealthChanged.Fire(health, oldHealth);
+
+		if (Game.IsServer()) {
+			CoreNetwork.ServerToClient.Character.SetHealth.server.FireAllClients(this.id, health);
+
+			if (this.health <= 0 && !dontInflictDeath) {
+				const damageInfo = new DamageInfo(this.gameObject, oldHealth, undefined, {});
+				Airship.damage.BroadcastDeath(damageInfo);
+			}
+		}
 	}
 
 	public GetMaxHealth(): number {
