@@ -6,7 +6,6 @@ import { HeldItemManager } from "@Easy/Core/Shared/Item/HeldItems/HeldItemManage
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
-import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { AvatarUtil } from "../Avatar/AvatarUtil";
@@ -80,7 +79,7 @@ export default class Character extends AirshipBehaviour {
 
 					this.SetHealth(newHealth);
 
-					if (RunUtil.IsServer() && newHealth <= 0) {
+					if (Game.IsServer() && newHealth <= 0) {
 						Airship.damage.BroadcastDeath(damageInfo);
 					}
 				}

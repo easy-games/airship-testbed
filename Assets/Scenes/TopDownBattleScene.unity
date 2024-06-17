@@ -1232,7 +1232,7 @@ MonoBehaviour:
       nullable: 0
       serializedValue: 1
       serializedObject: {fileID: 0}
-      modified: 0
+      modified: 1
     - name: showInventoryHotbar
       type: boolean
       objectType: 
@@ -1244,9 +1244,9 @@ MonoBehaviour:
       refPath: 
       decorators: []
       nullable: 0
-      serializedValue: 1
+      serializedValue: 0
       serializedObject: {fileID: 0}
-      modified: 0
+      modified: 1
     - name: showInventoryBackpack
       type: boolean
       objectType: 
@@ -1258,9 +1258,9 @@ MonoBehaviour:
       refPath: 
       decorators: []
       nullable: 0
-      serializedValue: 1
+      serializedValue: 0
       serializedObject: {fileID: 0}
-      modified: 0
+      modified: 1
     displayName: 
   contextOverwritten: 0
 --- !u!114 &913210016
@@ -1381,6 +1381,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   impulseStrength: 10
+  flinchAnim: {fileID: 0}
 --- !u!1 &920360046
 GameObject:
   m_ObjectHideFlags: 0
@@ -1755,7 +1756,7 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 0.8043089, g: 0.4481132, b: 1, a: 1}
-  m_Intensity: 2
+  m_Intensity: 10
   m_Range: 30
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
