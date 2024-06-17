@@ -6425,7 +6425,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 4348008920286078619}
-  oneOffAnimation: {fileID: 0}
+  oneOffAnimation: {fileID: 1290410922707510673}
   events: {fileID: 9930229533298952}
   sprintVfx: {fileID: 834371153335341359}
   jumpPoofVfx: {fileID: 8321520850568583672}
@@ -6780,10 +6780,6 @@ PrefabInstance:
       propertyPath: faceMesh
       value: 
       objectReference: {fileID: 4052477205016003765}
-    - target: {fileID: 6126990775742736748, guid: 4aa6768ebfa5a5b4ebf2fb45c873c97c, type: 3}
-      propertyPath: anim
-      value: 
-      objectReference: {fileID: 903796914586745664}
     - target: {fileID: 8242817677000904988, guid: 4aa6768ebfa5a5b4ebf2fb45c873c97c, type: 3}
       propertyPath: m_Name
       value: Airship_Rig
@@ -6854,6 +6850,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6751908600191737638, guid: 4aa6768ebfa5a5b4ebf2fb45c873c97c, type: 3}
   m_PrefabInstance: {fileID: 6135088894831720548}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1290410922707510673 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4957411223254638069, guid: 4aa6768ebfa5a5b4ebf2fb45c873c97c, type: 3}
+  m_PrefabInstance: {fileID: 6135088894831720548}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2828376946718566776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1933e0ab32a386b44af143b624e5defa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1500337480053964863 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4753111961790658651, guid: 4aa6768ebfa5a5b4ebf2fb45c873c97c, type: 3}
