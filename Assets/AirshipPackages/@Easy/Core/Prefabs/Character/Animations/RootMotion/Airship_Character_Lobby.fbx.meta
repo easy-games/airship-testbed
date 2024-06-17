@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 875d50be9d6291e44b473c4df0b7172b
+guid: 00d289211f56a584cbe540e407e580a9
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -31,11 +31,40 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Character__Jump_Down
-      takeName: Airship_Rig|Character__Jump_Down
-      internalID: 1268342976004595522
+      name: Character_Lobby__Idle
+      takeName: Airship_Rig|Character_Lobby__Idle
+      internalID: 4260563131841500165
       firstFrame: 0
-      lastFrame: 36
+      lastFrame: 200
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Character_Lobby__Reaction
+      takeName: Airship_Rig|Character_Lobby__Reaction
+      internalID: -3741418772325696703
+      firstFrame: 0
+      lastFrame: 113
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -60,11 +89,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Character__Jump_Finish
-      takeName: Airship_Rig|Character__Jump_Finish
-      internalID: 1630554268186973954
+      name: Character_Lobby__Reaction_Generic-01
+      takeName: Airship_Rig|Character_Lobby__Reaction_Generic-01
+      internalID: 15178314188979943
       firstFrame: 0
-      lastFrame: 5
+      lastFrame: 117
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -89,40 +118,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Character__Jump_Start
-      takeName: Airship_Rig|Character__Jump_Start
-      internalID: 1935616708919860678
+      name: Character_Lobby__Reaction_Gloves-01
+      takeName: Airship_Rig|Character_Lobby__Reaction_Gloves-01
+      internalID: 6025403705174041365
       firstFrame: 0
-      lastFrame: 5
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: Character__Jump_Up
-      takeName: Airship_Rig|Character__Jump_Up
-      internalID: -7401292744004777105
-      firstFrame: 0
-      lastFrame: 20
+      lastFrame: 84
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -219,5 +219,5 @@ ModelImporter:
   remapMaterialsIfMaterialImportModeIsNone: 0
   additionalBone: 0
   userData: 
-  assetBundleName: '@easy/core_shared/resources'
+  assetBundleName: 
   assetBundleVariant: 

@@ -31,7 +31,7 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Airship_Rig|Character_Crouch_Default__Back
+      name: Character_Crouch_Default__Back
       takeName: Airship_Rig|Character_Crouch_Default__Back
       internalID: -6524995568975489271
       firstFrame: 0
@@ -60,7 +60,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Airship_Rig|Character_Crouch_Default__Back_Left
+      name: Character_Crouch_Default__Back_Left
       takeName: Airship_Rig|Character_Crouch_Default__Back_Left
       internalID: 3705179342059899503
       firstFrame: 0
@@ -89,7 +89,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Airship_Rig|Character_Crouch_Default__Back_Right
+      name: Character_Crouch_Default__Back_Right
       takeName: Airship_Rig|Character_Crouch_Default__Back_Right
       internalID: 6077623067170589967
       firstFrame: 0
@@ -118,7 +118,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Airship_Rig|Character_Crouch_Default__Front
+      name: Character_Crouch_Default__Front
       takeName: Airship_Rig|Character_Crouch_Default__Front
       internalID: -2081900575307146429
       firstFrame: 0
@@ -147,7 +147,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Airship_Rig|Character_Crouch_Default__Front_Left
+      name: Character_Crouch_Default__Front_Left
       takeName: Airship_Rig|Character_Crouch_Default__Front_Left
       internalID: -8925816202851766316
       firstFrame: 0
@@ -176,11 +176,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Airship_Rig|Character_Crouch_Default__Front_Right
+      name: Character_Crouch_Default__Front_Right
       takeName: Airship_Rig|Character_Crouch_Default__Front_Right
       internalID: 6387478702313803056
       firstFrame: 0
-      lastFrame: 26
+      lastFrame: 22
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -205,7 +205,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Airship_Rig|Character_Crouch_Default__Idle
+      name: Character_Crouch_Default__Idle
       takeName: Airship_Rig|Character_Crouch_Default__Idle
       internalID: -7746182490098060621
       firstFrame: 0
@@ -234,7 +234,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Airship_Rig|Character_Crouch_Default__Left
+      name: Character_Crouch_Default__Left
       takeName: Airship_Rig|Character_Crouch_Default__Left
       internalID: -592234963524399755
       firstFrame: 0
@@ -263,7 +263,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Airship_Rig|Character_Crouch_Default__Right
+      name: Character_Crouch_Default__Right
       takeName: Airship_Rig|Character_Crouch_Default__Right
       internalID: 1262514350420056929
       firstFrame: 0

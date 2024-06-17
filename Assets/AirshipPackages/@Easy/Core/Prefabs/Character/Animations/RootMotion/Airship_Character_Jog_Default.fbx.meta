@@ -55,7 +55,7 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Airship_Rig|Character_Idle_Default
+      name: Character_Idle_Default
       takeName: Airship_Rig|Character_Idle_Default
       internalID: 0
       firstFrame: 0
@@ -84,7 +84,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Airship_Rig|Character_Jog_Default__Front
+      name: Character_Jog_Default__Front
       takeName: Airship_Rig|Character_Jog_Default__Front
       internalID: 0
       firstFrame: 0
@@ -113,7 +113,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Airship_Rig|Character_Jog_Default__Back
+      name: Character_Jog_Default__Back
       takeName: Airship_Rig|Character_Jog_Default__Back
       internalID: 0
       firstFrame: 0
@@ -142,7 +142,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Airship_Rig|Character_Jog_Default__Back_Left
+      name: Character_Jog_Default__Back_Left
       takeName: Airship_Rig|Character_Jog_Default__Back_Left
       internalID: 0
       firstFrame: 0
@@ -171,7 +171,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Airship_Rig|Character_Jog_Default__Back_Right
+      name: Character_Jog_Default__Back_Right
       takeName: Airship_Rig|Character_Jog_Default__Back_Right
       internalID: 0
       firstFrame: 0
@@ -200,7 +200,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Airship_Rig|Character_Jog_Default__Left
+      name: Character_Jog_Default__Left
       takeName: Airship_Rig|Character_Jog_Default__Left
       internalID: 0
       firstFrame: 0
@@ -229,7 +229,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Airship_Rig|Character_Jog_Default__Right
+      name: Character_Jog_Default__Right
       takeName: Airship_Rig|Character_Jog_Default__Right
       internalID: 0
       firstFrame: 0

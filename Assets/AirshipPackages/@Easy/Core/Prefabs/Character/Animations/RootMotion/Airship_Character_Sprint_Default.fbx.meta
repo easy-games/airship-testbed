@@ -31,7 +31,7 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Airship_Rig|Airship_Character_Sprint__Back
+      name: Character_Sprint__Back
       takeName: Airship_Rig|Airship_Character_Sprint__Back
       internalID: 5551039936228364779
       firstFrame: 0
@@ -60,7 +60,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Airship_Rig|Airship_Character_Sprint__Back_Left
+      name: Character_Sprint__Back_Left
       takeName: Airship_Rig|Airship_Character_Sprint__Back_Left
       internalID: 5458286642231147803
       firstFrame: 0
@@ -89,7 +89,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Airship_Rig|Airship_Character_Sprint__Back_Right
+      name: Character_Sprint__Back_Right
       takeName: Airship_Rig|Airship_Character_Sprint__Back_Right
       internalID: 354368399922336565
       firstFrame: 0
@@ -118,7 +118,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Airship_Rig|Airship_Character_Sprint__Front
+      name: Character_Sprint__Front
       takeName: Airship_Rig|Airship_Character_Sprint__Front
       internalID: 8193994672558293724
       firstFrame: 0
@@ -147,7 +147,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Airship_Rig|Airship_Character_Sprint__Front_Left
+      name: Character_Sprint__Front_Left
       takeName: Airship_Rig|Airship_Character_Sprint__Front_Left
       internalID: 229497299763100068
       firstFrame: 0
@@ -176,7 +176,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Airship_Rig|Airship_Character_Sprint__Front_Right
+      name: Character_Sprint__Front_Right
       takeName: Airship_Rig|Airship_Character_Sprint__Front_Right
       internalID: -728753388547561429
       firstFrame: 0
@@ -205,7 +205,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Airship_Rig|Airship_Character_Sprint__Left
+      name: Character_Sprint__Left
       takeName: Airship_Rig|Airship_Character_Sprint__Left
       internalID: 4475888952057554509
       firstFrame: 0
@@ -234,7 +234,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Airship_Rig|Airship_Character_Sprint__Right
+      name: Character_Sprint__Right
       takeName: Airship_Rig|Airship_Character_Sprint__Right
       internalID: 7511889702724058803
       firstFrame: 0

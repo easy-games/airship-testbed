@@ -5,28 +5,28 @@ ModelImporter:
   internalIDToNameTable:
   - first:
       74: -7638199428120532151
-    second: Airship_Character_01-Default Pose
+    second: Character_01-Default Pose
   - first:
       74: -284443630328104674
-    second: Airship_Character_Idle_Sword
+    second: Character_Idle_Sword
   - first:
       74: -8950454082296755233
-    second: Airship_Character_Jog_Sword__Back
+    second: Character_Jog_Sword__Back
   - first:
       74: -2629102201210480002
-    second: Airship_Character_Jog_Sword__Back_Left
+    second: Character_Jog_Sword__Back_Left
   - first:
       74: -8738556676227599779
-    second: Airship_Character_Jog_Sword__Back_Right
+    second: Character_Jog_Sword__Back_Right
   - first:
       74: -1816207066627079974
-    second: Airship_Character_Jog_Sword__Front
+    second: Character_Jog_Sword__Front
   - first:
       74: 210401524756289960
-    second: Airship_Character_Jog_Sword__Left
+    second: Character_Jog_Sword__Left
   - first:
       74: 4635818215884505396
-    second: Airship_Character_Jog_Sword__Right
+    second: Character_Jog_Sword__Right
   externalObjects: {}
   materials:
     materialImportMode: 0
@@ -55,7 +55,7 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Airship_Character_01-Default Pose
+      name: Character_01-Default Pose
       takeName: Airship_rig|Airship_Character_01-Default Pose
       internalID: 0
       firstFrame: 0
@@ -84,7 +84,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Airship_Character_Idle_Sword
+      name: Character_Idle_Sword
       takeName: Airship_rig|Airship_Character_Idle_Sword
       internalID: 0
       firstFrame: 0
@@ -113,7 +113,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Airship_Character_Jog_Sword__Back
+      name: Character_Jog_Sword__Back
       takeName: Airship_rig|Airship_Character_Jog_Sword__Back
       internalID: 0
       firstFrame: 0
@@ -142,7 +142,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Airship_Character_Jog_Sword__Back_Left
+      name: Character_Jog_Sword__Back_Left
       takeName: Airship_rig|Airship_Character_Jog_Sword__Back_Left
       internalID: 0
       firstFrame: 0
@@ -171,7 +171,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Airship_Character_Jog_Sword__Back_Right
+      name: Character_Jog_Sword__Back_Right
       takeName: Airship_rig|Airship_Character_Jog_Sword__Back_Right
       internalID: 0
       firstFrame: 0
@@ -200,7 +200,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Airship_Character_Jog_Sword__Front
+      name: Character_Jog_Sword__Front
       takeName: Airship_rig|Airship_Character_Jog_Sword__Front
       internalID: 0
       firstFrame: 0
@@ -229,7 +229,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Airship_Character_Jog_Sword__Left
+      name: Character_Jog_Sword__Left
       takeName: Airship_rig|Airship_Character_Jog_Sword__Left
       internalID: 0
       firstFrame: 0
@@ -258,7 +258,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Airship_Character_Jog_Sword__Right
+      name: Character_Jog_Sword__Right
       takeName: Airship_rig|Airship_Character_Jog_Sword__Right
       internalID: 0
       firstFrame: 0
