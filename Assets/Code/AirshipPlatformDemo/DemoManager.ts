@@ -104,6 +104,10 @@ export default class DemoManager extends AirshipBehaviour {
 		});
 
 		character.inventory.AddItem(new ItemStack("WoodSword"));
+
+		for (let i = 0; i < 10; i++) {
+			Airship.chat.BroadcastMessage("Hello " + i);
+		}
 	}
 
 	public OnDestroy(): void {
