@@ -576,15 +576,13 @@ interface CharacterAnimationHelper extends Component {
 }
 
 declare const enum CharacterAnimationLayer {
-	/** Lowest priority, used for Airship Core animations */
-	// CORE = 0,
-	/** Recommended layer for idle animations  */
+	/** Recommended layer for item idle animations  */
 	OVERRIDE_1 = 1,
-	/** Recommended layer for movement animations  */
+	/** Recommended layer for low-priority animations  */
 	OVERRIDE_2 = 2,
-	/** Recommended layer for low-priority actions */
+	/** Recommended layer for medium-priority animations */
 	OVERRIDE_3 = 3,
-	/** Highest priority, recommended for high-priority actions */
+	/** Highest priority, recommended for high-priority animations */
 	OVERRIDE_4 = 4,
 }
 
