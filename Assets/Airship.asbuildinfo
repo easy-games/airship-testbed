@@ -493,9 +493,9 @@
 	},
 	"extends": {
 		"MainMenuPageComponent": [
+			"AvatarMenuComponent",
 			"HomePageComponent",
 			"GameGeneralPage",
-			"AvatarMenuComponent",
 			"DevelopMenuPage"
 		],
 		"SearchResult": [
