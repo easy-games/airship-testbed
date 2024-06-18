@@ -571,7 +571,15 @@ interface CharacterAnimationHelper extends Component {
 	SetState(newState: CharacterState, force = false, noRootLayerFade = false);
 	SetVelocity(vel: Vector3);
 	SetGrounded(grounded: boolean);
-	PlayOneShot(clip: AnimationClip);
+	PlayOneShotSimple(clip: AnimationClip);
+	PlayOneShot(clip: AnimationClip, overrideLayer: CharacterAnimationOverride);
+}
+
+declare const enum CharacterAnimationOverride{
+	OVERRIDE_1 = 1,
+	OVERRIDE_2 = 2,
+	OVERRIDE_3 = 3,
+	OVERRIDE_4 = 4,
 }
 
 interface AnimationClipOptions {

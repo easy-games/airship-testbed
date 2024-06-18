@@ -69,28 +69,28 @@ export default class CharacterAnimator extends AirshipBehaviour {
 
 		if (Game.IsClient()) {
 			//AUDIO
-			// this.footstepAudioBundle = new AudioClipBundle([]);
-			// this.footstepAudioBundle.volumeScale = this.baseFootstepVolumeScale;
-			// this.footstepAudioBundle.soundOptions.maxDistance = 15;
-			// this.footstepAudioBundle.spacialMode = this.character.IsLocalCharacter()
+			this.footstepAudioBundle = new AudioClipBundle([]);
+			this.footstepAudioBundle.volumeScale = this.baseFootstepVolumeScale;
+			this.footstepAudioBundle.soundOptions.maxDistance = 15;
+			this.footstepAudioBundle.spacialMode = this.character.IsLocalCharacter()
+				? AudioBundleSpacialMode.GLOBAL
+				: AudioBundleSpacialMode.SPACIAL;
+
+			// this.slideAudioBundle = new AudioClipBundle(this.refs.slideSoundPaths);
+			// this.slideAudioBundle.volumeScale = 0.2;
+			// this.slideAudioBundle.useFullPath = true;
+			// this.slideAudioBundle.playMode = AudioBundlePlayMode.RANDOM_TO_LOOP;
+			// this.slideAudioBundle.spacialMode = character.IsLocalCharacter()
 			// 	? AudioBundleSpacialMode.GLOBAL
 			// 	: AudioBundleSpacialMode.SPACIAL;
-
-			// // this.slideAudioBundle = new AudioClipBundle(this.refs.slideSoundPaths);
-			// // this.slideAudioBundle.volumeScale = 0.2;
-			// // this.slideAudioBundle.useFullPath = true;
-			// // this.slideAudioBundle.playMode = AudioBundlePlayMode.RANDOM_TO_LOOP;
-			// // this.slideAudioBundle.spacialMode = character.IsLocalCharacter()
-			// // 	? AudioBundleSpacialMode.GLOBAL
-			// // 	: AudioBundleSpacialMode.SPACIAL;
 		
 
-			// //ANIMATIONS
-			// this.bin.Add(this.character.onHealthChanged.Connect((newHealth, oldHealth)=>{
-			// 	if(newHealth < oldHealth){
-			// 		this.PlayTakeDamage();
-			// 	}
-			// }));
+			//ANIMATIONS
+			this.bin.Add(this.character.onHealthChanged.Connect((newHealth, oldHealth)=>{
+				if(newHealth < oldHealth){
+					this.PlayTakeDamage();
+				}
+			}));
 
 			//VFX
 		}
@@ -139,12 +139,12 @@ export default class CharacterAnimator extends AirshipBehaviour {
 			this.character.IsLocalCharacter() &&
 			Dependency<AirshipCharacterCameraSingleton>().IsFirstPerson();
 
-		this.PlayDamageFlash();
+		//this.PlayDamageFlash();
 
 		//Animate flinch
 		let foundFlinchClip = this.isFirstPerson ? this.flinchClipViewModel : this.flinchClip;
 		if(foundFlinchClip){
-			this.character.animationHelper.PlayOneShot(foundFlinchClip);
+			this.character.animationHelper.PlayOneShotSimple(foundFlinchClip);
 		}
 
 		//Don't render some effects if we are in first person

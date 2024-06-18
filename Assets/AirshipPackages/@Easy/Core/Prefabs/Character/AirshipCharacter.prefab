@@ -6100,7 +6100,6 @@ GameObject:
   - component: {fileID: -6219229748269268009}
   - component: {fileID: 5519949438957097557}
   - component: {fileID: 1279903852990399244}
-  - component: {fileID: 1434321558732178063}
   m_Layer: 3
   m_Name: AirshipCharacter
   m_TagString: Character
@@ -6767,20 +6766,6 @@ MonoBehaviour:
   _graphicalObject: {fileID: 7911948219130051474}
   _enableTeleport: 0
   _teleportThreshold: 0
---- !u!114 &1434321558732178063
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8616685848737228372}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fad93602426e48d438040caa4fa7d0b1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  impulseStrength: 10
-  flinchAnim: {fileID: 1935616708919860678, guid: 875d50be9d6291e44b473c4df0b7172b, type: 3}
 --- !u!1001 &3212846051738532583
 PrefabInstance:
   m_ObjectHideFlags: 0
