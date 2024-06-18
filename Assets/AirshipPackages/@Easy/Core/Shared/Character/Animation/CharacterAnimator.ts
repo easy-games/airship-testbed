@@ -63,33 +63,34 @@ export default class CharacterAnimator extends AirshipBehaviour {
 
 	private itemAnimStates: AnimancerState[] = [];
 
-	public Awake() {
+	public Start() {
+		this.character = this.gameObject.GetAirshipComponent<Character>()!;
 		this.isFlashing = false;
 
 		if (Game.IsClient()) {
 			//AUDIO
-			this.footstepAudioBundle = new AudioClipBundle([]);
-			this.footstepAudioBundle.volumeScale = this.baseFootstepVolumeScale;
-			this.footstepAudioBundle.soundOptions.maxDistance = 15;
-			this.footstepAudioBundle.spacialMode = this.character.IsLocalCharacter()
-				? AudioBundleSpacialMode.GLOBAL
-				: AudioBundleSpacialMode.SPACIAL;
-
-			// this.slideAudioBundle = new AudioClipBundle(this.refs.slideSoundPaths);
-			// this.slideAudioBundle.volumeScale = 0.2;
-			// this.slideAudioBundle.useFullPath = true;
-			// this.slideAudioBundle.playMode = AudioBundlePlayMode.RANDOM_TO_LOOP;
-			// this.slideAudioBundle.spacialMode = character.IsLocalCharacter()
+			// this.footstepAudioBundle = new AudioClipBundle([]);
+			// this.footstepAudioBundle.volumeScale = this.baseFootstepVolumeScale;
+			// this.footstepAudioBundle.soundOptions.maxDistance = 15;
+			// this.footstepAudioBundle.spacialMode = this.character.IsLocalCharacter()
 			// 	? AudioBundleSpacialMode.GLOBAL
 			// 	: AudioBundleSpacialMode.SPACIAL;
+
+			// // this.slideAudioBundle = new AudioClipBundle(this.refs.slideSoundPaths);
+			// // this.slideAudioBundle.volumeScale = 0.2;
+			// // this.slideAudioBundle.useFullPath = true;
+			// // this.slideAudioBundle.playMode = AudioBundlePlayMode.RANDOM_TO_LOOP;
+			// // this.slideAudioBundle.spacialMode = character.IsLocalCharacter()
+			// // 	? AudioBundleSpacialMode.GLOBAL
+			// // 	: AudioBundleSpacialMode.SPACIAL;
 		
 
-			//ANIMATIONS
-			this.bin.Add(this.character.onHealthChanged.Connect((newHealth, oldHealth)=>{
-				if(newHealth < oldHealth){
-					this.PlayTakeDamage();
-				}
-			}));
+			// //ANIMATIONS
+			// this.bin.Add(this.character.onHealthChanged.Connect((newHealth, oldHealth)=>{
+			// 	if(newHealth < oldHealth){
+			// 		this.PlayTakeDamage();
+			// 	}
+			// }));
 
 			//VFX
 		}
@@ -106,7 +107,7 @@ export default class CharacterAnimator extends AirshipBehaviour {
 		// });
 
 		// todo: is this needed?
-		this.character.gameObject.SetActive(true);
+		this.gameObject.SetActive(true);
 	}
 
 	public SetViewModelEnabled(enabled: boolean): void {
