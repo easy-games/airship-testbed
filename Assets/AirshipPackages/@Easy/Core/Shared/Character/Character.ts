@@ -1,5 +1,4 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
-import { CharacterAnimator } from "@Easy/Core/Shared/Character/Animation/CharacterAnimator";
 import { Game } from "@Easy/Core/Shared/Game";
 import Inventory from "@Easy/Core/Shared/Inventory/Inventory";
 import { HeldItemManager } from "@Easy/Core/Shared/Item/HeldItems/HeldItemManager";
@@ -9,6 +8,7 @@ import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { AvatarUtil } from "../Avatar/AvatarUtil";
+import CharacterAnimator from "./Animation/CharacterAnimator";
 
 export default class Character extends AirshipBehaviour {
 	@NonSerialized()
@@ -49,7 +49,6 @@ export default class Character extends AirshipBehaviour {
 
 	public Awake(): void {
 		this.inventory = this.gameObject.GetAirshipComponent<Inventory>()!;
-		this.animator = new CharacterAnimator(this);
 		this.rig = this.rigRoot.GetComponent<CharacterRig>()!;
 	}
 

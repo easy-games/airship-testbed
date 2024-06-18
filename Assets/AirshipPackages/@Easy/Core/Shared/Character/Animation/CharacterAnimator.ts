@@ -25,34 +25,27 @@ export enum ItemPlayMode {
 	HOLD,
 }
 
-export class CharacterAnimator {
+export default class CharacterAnimator extends AirshipBehaviour {
+	@Header("References")
+	public character!: Character;
+	public flinchClip?: AnimationClip;
+	public flinchClipViewModel?: AnimationClip;
+
+	@Header("Variables")
+	public baseFootstepVolumeScale = 0.1;
+
 	private worldmodelClips: Map<ItemAnimationId, AnimationClip[]> = new Map();
 	private viewmodelClips: Map<ItemAnimationId, AnimationClip[]> = new Map();
 	private currentItemMeta: ItemDef | undefined;
 	private currentItemState: string = ItemAnimationId.IDLE;
 	private currentEndEventConnection = -1;
 
-	// private defaultIdleItemAnimFP = AssetCache.LoadAsset<AnimationClip>(
-	// 	"AirshipPackages/@Easy/Core/Prefabs/Character/Animations/FP_Item_Idle.anim",
-	// );
-	// private defaultIdleEmptyAnimFP = AssetCache.LoadAsset<AnimationClip>(
-	// 	"AirshipPackages/@Easy/Core/Prefabs/Character/Animations/FP_Hands_Lowered.anim",
-	// );
-	// private defaultIdleAnimFPUnarmed = AssetCache.LoadAsset<AnimationClip>(
-	// 	"AirshipPackages/@Easy/Core/Prefabs/Character/Animations/Airship_Empty.anim",
-	// );
-	// private defaultIdleAnimTP = AssetCache.LoadAsset<AnimationClip>(
-	// 	"AirshipPackages/@Easy/Core/Prefabs/Character/Animations/Airship_Empty.anim",
-	// );
-
 	private readonly flashTransitionDuration = 0.035;
 	private readonly flashOnTime = 0.07;
 	public readonly defaultTransitionTime: number = 0.15;
 
 	protected bin = new Bin();
-	private flinchClipFPS?: AnimationClip;
 	private deathClipFPS?: AnimationClip;
-	private flinchClipTP?: AnimationClip;
 	private deathClipTP?: AnimationClip;
 	private damageEffectTemplate?: GameObject;
 	private deathEffectTemplate?: GameObject;
@@ -68,15 +61,9 @@ export class CharacterAnimator {
 	private lastFootstepSoundTime = 0;
 	private deathVfx?: GameObject;
 
-	public baseFootstepVolumeScale = 0.1;
-
 	private itemAnimStates: AnimancerState[] = [];
-	private animHelper: CharacterAnimationHelper;
 
-	//private camera: Camera;
-
-	public constructor(public readonly character: Character) {
-		this.animHelper = character.movement.animationHelper;
+	public Awake() {
 		this.isFlashing = false;
 
 		if (Game.IsClient()) {
@@ -84,7 +71,7 @@ export class CharacterAnimator {
 			this.footstepAudioBundle = new AudioClipBundle([]);
 			this.footstepAudioBundle.volumeScale = this.baseFootstepVolumeScale;
 			this.footstepAudioBundle.soundOptions.maxDistance = 15;
-			this.footstepAudioBundle.spacialMode = character.IsLocalCharacter()
+			this.footstepAudioBundle.spacialMode = this.character.IsLocalCharacter()
 				? AudioBundleSpacialMode.GLOBAL
 				: AudioBundleSpacialMode.SPACIAL;
 
@@ -98,31 +85,13 @@ export class CharacterAnimator {
 		
 
 			//ANIMATIONS
-			this.bin.Add(character.onHealthChanged.Connect((newHealth, oldHealth)=>{
+			this.bin.Add(this.character.onHealthChanged.Connect((newHealth, oldHealth)=>{
 				if(newHealth < oldHealth){
-					let flinchClip = this.isFirstPerson ? this.flinchClipFPS : this.flinchClipTP;
-					if(flinchClip){
-						character.animationHelper.PlayOneShot(flinchClip);
-					}
+					this.PlayTakeDamage();
 				}
 			}));
 
 			//VFX
-			// this.damageEffectTemplate = BundleReferenceManager.LoadResource<GameObject>(
-			// 	BundleGroupNames.Entity,
-			// 	Bundle_Entity.OnHit,
-			// 	Bundle_Entity_OnHit.GenericVFX,
-			// );
-			// this.deathEffectTemplate = BundleReferenceManager.LoadResource<GameObject>(
-			// 	BundleGroupNames.Entity,
-			// 	Bundle_Entity.OnHit,
-			// 	Bundle_Entity_OnHit.DeathVFX,
-			// );
-			// this.deathEffectVoidTemplate = BundleReferenceManager.LoadResource<GameObject>(
-			// 	BundleGroupNames.Entity,
-			// 	Bundle_Entity.OnHit,
-			// 	Bundle_Entity_OnHit.DeathVoidVFX,
-			// );
 		}
 
 		//Listen to animation events
@@ -163,7 +132,7 @@ export class CharacterAnimator {
 		this.StartItemIdleAnim(true);
 	}
 
-	public PlayTakeDamage(position: Vector3, characterModel: GameObject | undefined) {
+	public PlayTakeDamage() {
 		const isFirstPerson =
 			Game.IsClient() &&
 			this.character.IsLocalCharacter() &&
@@ -172,16 +141,9 @@ export class CharacterAnimator {
 		this.PlayDamageFlash();
 
 		//Animate flinch
-		const flinchClip = isFirstPerson ? this.flinchClipFPS : this.flinchClipTP;
-		if (flinchClip) {
-			this.PlayItemAnimationInWorldmodel(flinchClip, CharacterAnimationLayer.LAYER_2, undefined, {
-				fadeInDuration: 0.01,
-			});
-			if (this.IsViewModelEnabled()) {
-				this.PlayItemAnimationInViewmodel(flinchClip, CharacterAnimationLayer.LAYER_2, undefined, {
-					fadeInDuration: 0.01,
-				});
-			}
+		let foundFlinchClip = this.isFirstPerson ? this.flinchClipViewModel : this.flinchClip;
+		if(foundFlinchClip){
+			this.character.animationHelper.PlayOneShot(foundFlinchClip);
 		}
 
 		//Don't render some effects if we are in first person
@@ -660,7 +622,7 @@ export class CharacterAnimator {
 	}
 
 	public SetPlaybackSpeed(newSpeed: number) {
-		this.animHelper.animator.speed = newSpeed;
+		this.character.animator.SetPlaybackSpeed(newSpeed);
 	}
 
 	public IsViewModelEnabled(): boolean {

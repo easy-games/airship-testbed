@@ -6090,6 +6090,7 @@ GameObject:
   - component: {fileID: 7931457288082626079}
   - component: {fileID: 1645000729044007242}
   - component: {fileID: 903796914586745664}
+  - component: {fileID: 7124091312930647041}
   - component: {fileID: 5043041770756594627}
   - component: {fileID: 5838268274975822121}
   - component: {fileID: -98370938496583557}
@@ -6437,6 +6438,79 @@ MonoBehaviour:
   particleMaxDistance: 25
   blendSpeed: 10
   idleRectionLength: 5
+--- !u!114 &7124091312930647041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8616685848737228372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scriptFile: {fileID: -3495772444630422662, guid: 1d9ff343e68ebb247bb7a1dd2270fd63, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/Animation/CharacterAnimator.lua
+  m_error: 0
+  m_yielded: 0
+  m_canResume: 0
+  m_asyncYield: 0
+  m_onUpdateHandle: -1
+  m_onLateUpdateHandle: -1
+  m_shortFileName: 
+  m_metadata:
+    name: CharacterAnimator
+    decorators: []
+    properties:
+    - name: flinchClip
+      type: object
+      objectType: AnimationClip
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 1630554268186973954, guid: 875d50be9d6291e44b473c4df0b7172b, type: 3}
+      modified: 1
+    - name: flinchClipViewModel
+      type: object
+      objectType: AnimationClip
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 1630554268186973954, guid: 875d50be9d6291e44b473c4df0b7172b, type: 3}
+      modified: 1
+    - name: baseFootstepVolumeScale
+      type: number
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"Variables"'
+      nullable: 0
+      serializedValue: 0.1
+      serializedObject: {fileID: 0}
+      modified: 0
+    displayName: 
+  contextOverwritten: 0
 --- !u!114 &5043041770756594627
 MonoBehaviour:
   m_ObjectHideFlags: 0
