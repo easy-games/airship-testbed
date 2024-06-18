@@ -8,6 +8,8 @@ import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { AvatarUtil } from "../Avatar/AvatarUtil";
+import { CoreNetwork } from "../CoreNetwork";
+import { DamageInfo, DamageInfoCustomData } from "../Damage/DamageInfo";
 import CharacterAnimator from "./Animation/CharacterAnimator";
 
 export default class Character extends AirshipBehaviour {

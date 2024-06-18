@@ -68,14 +68,19 @@
 			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/PartyChatButton.lua",
 			"extends": []
 		},
+		"Inventory": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/Inventory/Inventory.lua",
+			"extends": []
+		},
 		"Character": {
 			"component": true,
 			"filePath": "AirshipPackages/@Easy/Core/Shared/Character/Character.lua",
 			"extends": []
 		},
-		"Inventory": {
+		"CharacterAnimator": {
 			"component": true,
-			"filePath": "AirshipPackages/@Easy/Core/Shared/Inventory/Inventory.lua",
+			"filePath": "AirshipPackages/@Easy/Core/Shared/Character/Animation/CharacterAnimator.lua",
 			"extends": []
 		},
 		"CameraRig": {
@@ -216,6 +221,11 @@
 		"TopDownBattlePlayerSpawner": {
 			"component": true,
 			"filePath": "Code/TopDownBattle/TopDownBattlePlayerSpawner.lua",
+			"extends": []
+		},
+		"TopDownBattleLevelGenerator": {
+			"component": true,
+			"filePath": "Code/TopDownBattle/TopDownBattleLevelGenerator.lua",
 			"extends": []
 		},
 		"GameSearchResult": {
@@ -390,9 +400,14 @@
 			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/DeleteAccountButton.lua",
 			"extends": []
 		},
-		"Scoreboard": {
+		"AirshipButton": {
 			"component": true,
-			"filePath": "Code/AirshipPlatformDemo/Scoreboard.lua",
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipButton.lua",
+			"extends": []
+		},
+		"OutfitButton": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/Outfit/OutfitButtonComponent.lua",
 			"extends": []
 		},
 		"AvatarMenuBtn": {
@@ -400,19 +415,19 @@
 			"filePath": "AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/AvatarMenuBtn.lua",
 			"extends": []
 		},
-		"AirshipButton": {
+		"DevConsoleButton": {
 			"component": true,
-			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipButton.lua",
-			"extends": []
-		},
-		"MainMenuNavButton": {
-			"component": true,
-			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/MainMenuNavButton.lua",
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/DevConsoleButton.lua",
 			"extends": []
 		},
 		"SettingsDisconnectButton": {
 			"component": true,
 			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsDisconnectButton.lua",
+			"extends": []
+		},
+		"SettingsLogoutButton": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsLogoutButton.lua",
 			"extends": []
 		},
 		"SettingsTabButton": {
@@ -430,19 +445,14 @@
 			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/Microphone/MicDevice.lua",
 			"extends": []
 		},
-		"OutfitButton": {
+		"Scoreboard": {
 			"component": true,
-			"filePath": "AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/Outfit/OutfitButtonComponent.lua",
+			"filePath": "Code/AirshipPlatformDemo/Scoreboard.lua",
 			"extends": []
 		},
-		"DevConsoleButton": {
+		"MainMenuNavButton": {
 			"component": true,
-			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/DevConsoleButton.lua",
-			"extends": []
-		},
-		"SettingsLogoutButton": {
-			"component": true,
-			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsLogoutButton.lua",
+			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/MainMenuNavButton.lua",
 			"extends": []
 		},
 		"AirshipCreateLink": {
@@ -470,11 +480,6 @@
 			"filePath": "AirshipPackages/@Easy/Core/Shared/Item/ItemDefinition/ItemDefinitionComponent.lua",
 			"extends": []
 		},
-		"TopDownBattleLevelGenerator": {
-			"component": true,
-			"filePath": "Code/TopDownBattle/TopDownBattleLevelGenerator.lua",
-			"extends": []
-		},
 		"CubeSpinner": {
 			"component": true,
 			"filePath": "Code/TopDownScene/CubeSpinner.lua",
@@ -500,8 +505,8 @@
 	"flamework": {
 		"version": 1,
 		"identifiers": {
-			"typescript:Code/TestSingleton@TestSingleton": "TestSingleton@TestSingleton",
 			"typescript:Code/TopDownBattle/TopDownItems/TopDownRangedItem@TopDownBattleRangedItem": "TopDownBattle/TopDownItems/TopDownRangedItem@TopDownBattleRangedItem",
+			"typescript:Code/TestSingleton@TestSingleton": "TestSingleton@TestSingleton",
 			"typescript:Code/AirshipPlatformDemo/PromptAboveBall@PromptAboveBall": "AirshipPlatformDemo/PromptAboveBall@PromptAboveBall",
 			"typescript:Code/Menu/Menu@Menu": "Menu/Menu@Menu",
 			"typescript:Code/Menu/MenuUtil@MenuUtil": "Menu/MenuUtil@MenuUtil",
@@ -511,6 +516,7 @@
 			"typescript:Code/TopDownBattle/TopDownBattleGame@TopDownBattleGame": "TopDownBattle/TopDownBattleGame@TopDownBattleGame",
 			"typescript:Code/TopDownBattle/TopDownBattleEnemies/TopDownBattleEnemy@TopDownBattleEnemy": "TopDownBattle/TopDownBattleEnemies/TopDownBattleEnemy@TopDownBattleEnemy",
 			"typescript:Code/TopDownBattle/TopDownBattlePlayerSpawner@TopDownBattlePlayerSpawner": "TopDownBattle/TopDownBattlePlayerSpawner@TopDownBattlePlayerSpawner",
+			"typescript:Code/TopDownBattle/TopDownBattleLevelGenerator@TopDownBattleLevelGenerator": "TopDownBattle/TopDownBattleLevelGenerator@TopDownBattleLevelGenerator",
 			"typescript:Code/Components/CharacterSpawner@CharacterSpawner": "Components/CharacterSpawner@CharacterSpawner",
 			"typescript:Code/Menu/ClientSceneComponent@ClientSceneComponent": "Menu/ClientSceneComponent@ClientSceneComponent",
 			"typescript:Code/MultiScene/TeleportToRoom@TeleportToRoom": "MultiScene/TeleportToRoom@TeleportToRoom",
@@ -521,7 +527,6 @@
 			"typescript:Code/TopDownBattle/TopDownBattleCharacter@TopDownBattleCharacter": "TopDownBattle/TopDownBattleCharacter@TopDownBattleCharacter",
 			"typescript:Code/AirshipPlatformDemo/ClientScript@ClientScript": "AirshipPlatformDemo/ClientScript@ClientScript",
 			"typescript:Code/AirshipPlatformDemo/Scoreboard@Scoreboard": "AirshipPlatformDemo/Scoreboard@Scoreboard",
-			"typescript:Code/TopDownBattle/TopDownBattleLevelGenerator@TopDownBattleLevelGenerator": "TopDownBattle/TopDownBattleLevelGenerator@TopDownBattleLevelGenerator",
 			"typescript:Code/TopDownScene/CubeSpinner@CubeSpinner": "TopDownScene/CubeSpinner@CubeSpinner",
 			"typescript:Code/TopDownScene/NetComponent@NetComponent": "TopDownScene/NetComponent@NetComponent"
 		}

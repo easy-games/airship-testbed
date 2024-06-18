@@ -6,7 +6,6 @@ import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { Game } from "../Game";
 import { CanClientDamageInfo } from "./CanClientDamageInfo";
 import { DamageInfo, DamageInfoCustomData } from "./DamageInfo";
-import { Game } from "../Game";
 
 @Singleton()
 export class DamageSingleton implements OnStart {
