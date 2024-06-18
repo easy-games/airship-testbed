@@ -749,7 +749,6 @@ GameObject:
   - component: {fileID: 4898828769311973979}
   - component: {fileID: 7598432165122203391}
   - component: {fileID: 6126990775742736748}
-  - component: {fileID: 4957411223254638069}
   m_Layer: 3
   m_Name: Airship_Rig
   m_TagString: Untagged
@@ -850,20 +849,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 0}
---- !u!114 &4957411223254638069
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8242817677000904988}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1933e0ab32a386b44af143b624e5defa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Animator: {fileID: 7598432165122203391}
-  ExposedCurves: []
 --- !u!1 &8501705354204851853
 GameObject:
   m_ObjectHideFlags: 0

@@ -8,9 +8,8 @@ import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { RandomUtil } from "@Easy/Core/Shared/Util/RandomUtil";
 import { Task } from "@Easy/Core/Shared/Util/Task";
 import { AirshipCharacterCameraSingleton } from "../../Camera/AirshipCharacterCameraSingleton";
-import { ItemDef } from "../../Item/ItemDefinitionTypes";
-import { CharacterAnimationLayer } from "./CharacterAnimationLayer";
 import { Game } from "../../Game";
+import { ItemDef } from "../../Item/ItemDefinitionTypes";
 
 export enum ItemAnimationId {
 	IDLE = "Idle",
@@ -83,14 +82,15 @@ export default class CharacterAnimator extends AirshipBehaviour {
 			// this.slideAudioBundle.spacialMode = character.IsLocalCharacter()
 			// 	? AudioBundleSpacialMode.GLOBAL
 			// 	: AudioBundleSpacialMode.SPACIAL;
-		
 
 			//ANIMATIONS
-			this.bin.Add(this.character.onHealthChanged.Connect((newHealth, oldHealth)=>{
-				if(newHealth < oldHealth){
-					this.PlayTakeDamage();
-				}
-			}));
+			this.bin.Add(
+				this.character.onHealthChanged.Connect((newHealth, oldHealth) => {
+					if (newHealth < oldHealth) {
+						this.PlayTakeDamage();
+					}
+				}),
+			);
 
 			//VFX
 		}
@@ -143,8 +143,8 @@ export default class CharacterAnimator extends AirshipBehaviour {
 
 		//Animate flinch
 		let foundFlinchClip = this.isFirstPerson ? this.flinchClipViewModel : this.flinchClip;
-		if(foundFlinchClip){
-			this.character.animationHelper.PlayOneShotSimple(foundFlinchClip);
+		if (foundFlinchClip) {
+			this.character.animationHelper.PlayAnimation(foundFlinchClip, CharacterAnimationLayer.OVERRIDE_1);
 		}
 
 		//Don't render some effects if we are in first person
@@ -155,7 +155,7 @@ export default class CharacterAnimator extends AirshipBehaviour {
 
 	public PlayItemAnimationInWorldmodel(
 		clip: AnimationClip,
-		layer: CharacterAnimationLayer = CharacterAnimationLayer.LAYER_1,
+		layer: CharacterAnimationLayer = CharacterAnimationLayer.OVERRIDE_1,
 		onEnd?: Callback,
 		config?: {
 			fadeMode?: FadeMode;
@@ -204,7 +204,7 @@ export default class CharacterAnimator extends AirshipBehaviour {
 
 	public PlayItemAnimationInViewmodel(
 		clip: AnimationClip,
-		layer: CharacterAnimationLayer = CharacterAnimationLayer.LAYER_1,
+		layer: CharacterAnimationLayer = CharacterAnimationLayer.OVERRIDE_1,
 		onEnd?: Callback,
 		config?: {
 			fadeMode?: FadeMode;
@@ -480,7 +480,7 @@ export default class CharacterAnimator extends AirshipBehaviour {
 		}
 		const deathClip = this.deathClipTP; // isFirstPerson ? this.deathClipFPS : this.deathClipTP;
 		if (deathClip) {
-			this.PlayItemAnimationInWorldmodel(deathClip, CharacterAnimationLayer.LAYER_3);
+			this.PlayItemAnimationInWorldmodel(deathClip, CharacterAnimationLayer.OVERRIDE_3);
 		}
 	}
 

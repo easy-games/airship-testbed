@@ -103,6 +103,11 @@
 			"filePath": "Code/AirshipPlatformDemo/PromptAboveBall.lua",
 			"extends": []
 		},
+		"CharacterConfigSetup": {
+			"component": true,
+			"filePath": "AirshipPackages/@Easy/Core/Shared/Character/CharacterConfigSetup.lua",
+			"extends": []
+		},
 		"SocialFriendRequestsButtonComponent": {
 			"component": true,
 			"filePath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/SocialFriendRequestsButtonComponent.lua",
@@ -288,11 +293,6 @@
 		"DemoManager": {
 			"component": true,
 			"filePath": "Code/AirshipPlatformDemo/DemoManager.lua",
-			"extends": []
-		},
-		"CharacterConfigSetup": {
-			"component": true,
-			"filePath": "AirshipPackages/@Easy/Core/Shared/Character/CharacterConfigSetup.lua",
 			"extends": []
 		},
 		"MobileNavButton": {
@@ -493,9 +493,9 @@
 	},
 	"extends": {
 		"MainMenuPageComponent": [
-			"AvatarMenuComponent",
 			"HomePageComponent",
 			"GameGeneralPage",
+			"AvatarMenuComponent",
 			"DevelopMenuPage"
 		],
 		"SearchResult": [

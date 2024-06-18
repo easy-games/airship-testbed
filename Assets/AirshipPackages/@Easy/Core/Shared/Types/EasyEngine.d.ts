@@ -571,14 +571,20 @@ interface CharacterAnimationHelper extends Component {
 	SetState(newState: CharacterState, force = false, noRootLayerFade = false);
 	SetVelocity(vel: Vector3);
 	SetGrounded(grounded: boolean);
-	PlayOneShotSimple(clip: AnimationClip);
-	PlayOneShot(clip: AnimationClip, overrideLayer: CharacterAnimationOverride);
+	PlayAnimation(clip: AnimationClip, layer: CharacterAnimationLayer);
+	StopAnimation(layer: CharacterAnimationLayer);
 }
 
-declare const enum CharacterAnimationOverride{
+declare const enum CharacterAnimationLayer {
+	/** Lowest priority, used for Airship Core animations */
+	// CORE = 0,
+	/** Recommended layer for idle animations  */
 	OVERRIDE_1 = 1,
+	/** Recommended layer for movement animations  */
 	OVERRIDE_2 = 2,
+	/** Recommended layer for low-priority actions */
 	OVERRIDE_3 = 3,
+	/** Highest priority, recommended for high-priority actions */
 	OVERRIDE_4 = 4,
 }
 
