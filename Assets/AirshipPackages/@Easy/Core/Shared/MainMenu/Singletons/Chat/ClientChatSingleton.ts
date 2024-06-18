@@ -17,6 +17,7 @@ import { Keyboard, Mouse } from "@Easy/Core/Shared/UserInput";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
+import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
 import { ChatUtil } from "@Easy/Core/Shared/Util/ChatUtil";
 import { SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { SetInterval, SetTimeout } from "@Easy/Core/Shared/Util/Timer";
@@ -189,7 +190,7 @@ export class ClientChatSingleton implements OnStart {
 		}
 		let text = rawText;
 		if (nameWithPrefix) {
-			text = nameWithPrefix + rawText;
+			text = ChatColor.White(nameWithPrefix) + ChatColor.White(rawText);
 		}
 		this.RenderChatMessage(text, sender);
 	}
