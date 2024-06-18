@@ -3,6 +3,7 @@ import { OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
 import { RemoteEvent } from "@Easy/Core/Shared/Network/RemoteEvent";
 import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
+import { Game } from "../Game";
 import { CanClientDamageInfo } from "./CanClientDamageInfo";
 import { DamageInfo, DamageInfoCustomData } from "./DamageInfo";
 import { Game } from "../Game";
@@ -73,6 +74,8 @@ export class DamageSingleton implements OnStart {
 	 * @param data
 	 */
 	public InflictDamage(gameObject: GameObject, damage: number, attacker?: GameObject, data?: DamageInfoCustomData) {
+		assert(damage >= 0, "Unable to InflictDamage with a negative damage amount.");
+
 		const damageInfo = new DamageInfo(gameObject, damage, attacker, data ?? {});
 		if (Game.IsServer() && this.autoNetwork) {
 			const nob = damageInfo.gameObject.GetComponent<NetworkObject>();

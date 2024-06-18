@@ -247,7 +247,7 @@ export class DirectMessageController implements OnStart {
 		const status = this.friendsController.GetFriendStatus(uid);
 		if (status === undefined) return;
 		if (status.status === "offline") {
-			AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/UI_Error.wav");
+			AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/UI_Error.ogg");
 			return;
 		}
 

@@ -102,7 +102,7 @@ export class PlayersSingleton implements OnStart {
 		}
 
 		if (Game.IsGameLuauContext()) {
-			this.onPlayerJoined.Connect((player) => {
+			this.onPlayerJoined.ConnectWithPriority(SignalPriority.HIGHEST, (player) => {
 				contextbridge.invoke<(bp: BridgedPlayer) => void>("Players:OnPlayerJoined", LuauContext.Protected, {
 					userId: player.userId,
 					username: player.username,
@@ -113,7 +113,7 @@ export class PlayersSingleton implements OnStart {
 					Game.BroadcastMessage(ChatColor.Aqua(player.username) + ChatColor.Gray(" joined the server."));
 				}
 			});
-			this.onPlayerDisconnected.Connect((player) => {
+			this.onPlayerDisconnected.ConnectWithPriority(SignalPriority.HIGHEST, (player) => {
 				contextbridge.invoke<(bp: BridgedPlayer) => void>(
 					"Players:OnPlayerDisconnected",
 					LuauContext.Protected,
