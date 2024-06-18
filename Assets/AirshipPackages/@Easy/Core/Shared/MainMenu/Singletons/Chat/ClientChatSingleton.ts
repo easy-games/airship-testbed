@@ -17,6 +17,7 @@ import { Keyboard, Mouse } from "@Easy/Core/Shared/UserInput";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
+import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
 import { ChatUtil } from "@Easy/Core/Shared/Util/ChatUtil";
 import { SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { SetInterval, SetTimeout } from "@Easy/Core/Shared/Util/Timer";
@@ -81,8 +82,6 @@ export class ClientChatSingleton implements OnStart {
 
 	private commands = new Map<string, ChatCommand>();
 	private lastChatMessageRenderedTime = Time.time;
-
-	private chatInputBin = new Bin();
 
 	constructor() {
 		const refs = Dependency<CoreUIController>().refs.GetValue("Apps", "Chat").GetComponent<GameObjectReferences>()!;
@@ -191,7 +190,7 @@ export class ClientChatSingleton implements OnStart {
 		}
 		let text = rawText;
 		if (nameWithPrefix) {
-			text = nameWithPrefix + rawText;
+			text = ChatColor.White(nameWithPrefix) + ChatColor.White(rawText);
 		}
 		this.RenderChatMessage(text, sender);
 	}
@@ -225,10 +224,6 @@ export class ClientChatSingleton implements OnStart {
 			(event) => {
 				if (EventSystem.current.currentSelectedGameObject && !this.selected) return;
 				if (this.selected) {
-					if (this.inputField.text === "") {
-						EventSystem.current.ClearSelected();
-						return;
-					}
 					this.SubmitInputField();
 					event.SetCancelled(true);
 				} else {
@@ -344,7 +339,6 @@ export class ClientChatSingleton implements OnStart {
 	}
 
 	private ShowChatInput(): void {
-		this.chatInputBin.Clean();
 		const t = this.inputTransform.TweenSizeDelta(new Vector2(this.inputTransform.sizeDelta.x, 40), 0.04);
 		// this.chatInputBin.Add(() => {
 		// 	t.Cancel();
@@ -354,8 +348,8 @@ export class ClientChatSingleton implements OnStart {
 	}
 
 	private HideChatInput(): void {
-		this.chatInputBin.Clean();
 		const t = this.inputTransform.TweenSizeDelta(new Vector2(this.inputTransform.sizeDelta.x, 0), 0.04);
+		this.selected = false;
 		// this.chatInputBin.Add(() => {
 		// 	t.Cancel();
 		// });
@@ -386,6 +380,11 @@ export class ClientChatSingleton implements OnStart {
 
 	public SubmitInputField(): void {
 		let text = this.inputField.text;
+		if (text === "") {
+			EventSystem.current.ClearSelected();
+			return;
+		}
+
 		this.SendChatMessage(text);
 		this.inputField.SetTextWithoutNotify("");
 		EventSystem.current.ClearSelected();
