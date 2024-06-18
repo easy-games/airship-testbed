@@ -62,7 +62,7 @@ export class NametagController implements OnStart {
 		const nametagPrefab = AssetBridge.Instance.LoadAsset(
 			"Assets/AirshipPackages/@Easy/Core/Prefabs/Nametag.prefab",
 		) as GameObject;
-		const nametag = Object.Instantiate(nametagPrefab, character.headBone);
+		const nametag = Object.Instantiate(nametagPrefab, character.rig.head);
 		nametag.name = this.nameTagId;
 
 		this.UpdateNametag(character);
@@ -76,7 +76,7 @@ export class NametagController implements OnStart {
 		const team: Team | undefined = character.player?.GetTeam();
 		const localTeam = Game.localPlayer.GetTeam();
 
-		const nameTag = character.headBone.transform.FindChild(this.nameTagId);
+		const nameTag = character.rig.head.FindChild(this.nameTagId);
 		if (nameTag === undefined) {
 			this.CreateNametag(character);
 			return;

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8721204672019448486}
   - component: {fileID: 4375246546201973280}
   - component: {fileID: 4167352253744232997}
-  - component: {fileID: 1230032952606128868}
+  - component: {fileID: 6509896815089862260}
   m_Layer: 0
   m_Name: Visor
   m_TagString: Untagged
@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 77381fea1549df449863ed07e630042e, type: 2}
+  - {fileID: 2100000, guid: ca35b60b91b46294fb8ffc68710df6d9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -86,7 +86,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1230032952606128868
+--- !u!114 &6509896815089862260
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -95,13 +95,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 3248505694732828970}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.030037642, g: 1, b: 0, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 0.25490198}
-    emissiveMix: 0.46
+  - baseColor: {r: 0.03137255, g: 1, b: 0, a: 1}
   addedByEditorScript: 0
 --- !u!1 &3812383094966743941
 GameObject:
@@ -114,7 +112,7 @@ GameObject:
   - component: {fileID: 3400281252390624605}
   - component: {fileID: 8054355639031314913}
   - component: {fileID: 680231237534899698}
-  - component: {fileID: 573618586178566462}
+  - component: {fileID: 3611809940763550389}
   m_Layer: 0
   m_Name: HelmetBase
   m_TagString: Untagged
@@ -167,7 +165,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a595d8ae12dbec942a734eebdbe1e2a0, type: 2}
+  - {fileID: 2100000, guid: a819460e8530c8040b978d1ff6fc3069, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -189,7 +187,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &573618586178566462
+--- !u!114 &3611809940763550389
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -198,13 +196,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 3812383094966743941}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
+  - baseColor: {r: 1, g: 1, b: 1, a: 1}
   addedByEditorScript: 0
 --- !u!1 &4308767994598677626
 GameObject:

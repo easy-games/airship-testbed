@@ -50,7 +50,7 @@ export class DamageIndicatorController implements OnStart {
 
 			const character = event.gameObject.GetAirshipComponent<Character>();
 			if (!character) return;
-			character.animator?.PlayTakeDamage(character.model.transform.position, character.model);
+			character.animator?.PlayTakeDamage();
 
 			const attackerCharacter = event.attacker?.GetAirshipComponent<Character>();
 

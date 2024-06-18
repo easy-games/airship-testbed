@@ -1,7 +1,4 @@
-import { Airship } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
-import { Binding } from "@Easy/Core/Shared/Input/Binding";
-import { InputActionConfig } from "@Easy/Core/Shared/Input/InputAction";
 
 export default class TopDownBattleCharacter extends AirshipBehaviour {
 	private static extraLives: Map<number, number> = new Map(); //Map of playerID, numberOfLives

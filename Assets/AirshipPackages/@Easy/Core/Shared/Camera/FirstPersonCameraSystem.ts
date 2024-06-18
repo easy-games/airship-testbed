@@ -237,7 +237,7 @@ export class FirstPersonCameraSystem {
 		// }
 
 		if (CameraReferences.viewmodel) {
-			CameraReferences.viewmodel.animancer.Animator.Rebind();
+			CameraReferences.viewmodel.anim.Rebind();
 			CameraReferences.viewmodel.viewmodelGo.SetActive(isFirstPerson);
 			CameraReferences.viewmodel.viewmodelGo.transform.position = isFirstPerson
 				? new Vector3(0, 0, 0)

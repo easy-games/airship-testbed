@@ -1,3 +1,4 @@
+import { Airship } from "@Easy/Core/Shared/Airship";
 import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
 import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
 import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
@@ -68,23 +69,19 @@ export class InventoryUIController implements OnStart {
 		this.backpackRefs = backpackGo.GetComponent<GameObjectReferences>()!;
 		this.backpackCanvas = backpackGo.GetComponent<Canvas>()!;
 		this.backpackCanvas.enabled = false;
-
-		// todo: remove below
-		inventoryGo.SetActive(false);
-		backpackGo.SetActive(false);
 	}
 
 	OnStart(): void {
-		// this.SetupHotbar();
-		// this.SetupBackpack();
-		// Airship.input.OnDown("Inventory").Connect((event) => {
-		// 	if (event.uiProcessed || !this.enabled) return;
-		// 	if (this.IsBackpackShown() || AppManager.IsOpen()) {
-		// 		AppManager.Close();
-		// 	} else {
-		// 		this.OpenBackpack();
-		// 	}
-		// });
+		this.SetupHotbar();
+		this.SetupBackpack();
+		Airship.input.OnDown("Inventory").Connect((event) => {
+			if (event.uiProcessed || !this.enabled) return;
+			if (this.IsBackpackShown() || AppManager.IsOpen()) {
+				AppManager.Close();
+			} else {
+				this.OpenBackpack();
+			}
+		});
 	}
 
 	public SetEnabled(enabled: boolean): void {

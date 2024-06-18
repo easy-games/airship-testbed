@@ -1,5 +1,4 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
-import { CharacterAnimator } from "@Easy/Core/Shared/Character/Animation/CharacterAnimator";
 import { Game } from "@Easy/Core/Shared/Game";
 import Inventory from "@Easy/Core/Shared/Inventory/Inventory";
 import { HeldItemManager } from "@Easy/Core/Shared/Item/HeldItems/HeldItemManager";
@@ -11,6 +10,7 @@ import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { AvatarUtil } from "../Avatar/AvatarUtil";
 import { CoreNetwork } from "../CoreNetwork";
 import { DamageInfo, DamageInfoCustomData } from "../Damage/DamageInfo";
+import CharacterAnimator from "./Animation/CharacterAnimator";
 
 export default class Character extends AirshipBehaviour {
 	@NonSerialized()
@@ -40,8 +40,6 @@ export default class Character extends AirshipBehaviour {
 	@NonSerialized() public inventory!: Inventory;
 	@NonSerialized() public heldItems!: HeldItemManager;
 	@NonSerialized() public outfitDto: OutfitDto | undefined;
-	public spineBone!: Transform;
-	public headBone!: Transform;
 
 	// Signals
 	@NonSerialized() public onDeath = new Signal<void>();
@@ -53,8 +51,8 @@ export default class Character extends AirshipBehaviour {
 
 	public Awake(): void {
 		this.inventory = this.gameObject.GetAirshipComponent<Inventory>()!;
-		this.animator = new CharacterAnimator(this);
 		this.rig = this.rigRoot.GetComponent<CharacterRig>()!;
+		this.animator = this.gameObject.GetAirshipComponent<CharacterAnimator>()!;
 	}
 
 	public LateUpdate(dt: number): void {
@@ -69,9 +67,6 @@ export default class Character extends AirshipBehaviour {
 
 	public OnEnable(): void {
 		this.despawned = false;
-
-		this.spineBone = this.rig.spine;
-		this.headBone = this.rig.head;
 		if (this.IsLocalCharacter()) {
 			task.spawn(() => {
 				Game.WaitForLocalPlayerLoaded();

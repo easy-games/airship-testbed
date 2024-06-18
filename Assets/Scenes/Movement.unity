@@ -1683,8 +1683,8 @@ GameObject:
   - component: {fileID: 169382323}
   - component: {fileID: 169382327}
   - component: {fileID: 169382326}
-  - component: {fileID: 169382325}
   - component: {fileID: 169382324}
+  - component: {fileID: 169382328}
   m_Layer: 0
   m_Name: AirshipCube (13)
   m_TagString: Untagged
@@ -1728,24 +1728,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0.5, z: -0.000000029802322}
---- !u!114 &169382325
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 169382322}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colorSettings:
-  - materialColor: {r: 0.2830189, g: 0.2830189, b: 0.2830189, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-    emissiveLevel: 0
-  addedByEditorScript: 0
 --- !u!23 &169382326
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1798,6 +1780,21 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 169382322}
   m_Mesh: {fileID: -5495902117074765545, guid: bdf2babf7a223774cae5f80a52733f88, type: 3}
+--- !u!114 &169382328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 169382322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - baseColor: {r: 0.2264151, g: 0.2264151, b: 0.2264151, a: 1}
+  addedByEditorScript: 0
 --- !u!1 &171991931
 GameObject:
   m_ObjectHideFlags: 0
@@ -1810,6 +1807,7 @@ GameObject:
   - component: {fileID: 171991935}
   - component: {fileID: 171991934}
   - component: {fileID: 171991936}
+  - component: {fileID: 171991937}
   m_Layer: 0
   m_Name: AirshipCube (10)
   m_TagString: Untagged
@@ -1905,6 +1903,21 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0.5, z: 0.00000020861626}
+--- !u!114 &171991937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 171991931}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - baseColor: {r: 0.2735849, g: 0.2735849, b: 0.2735849, a: 1}
+  addedByEditorScript: 0
 --- !u!1 &195832286
 GameObject:
   m_ObjectHideFlags: 0
@@ -2024,6 +2037,7 @@ GameObject:
   - component: {fileID: 207208534}
   - component: {fileID: 207208533}
   - component: {fileID: 207208531}
+  - component: {fileID: 207208535}
   m_Layer: 0
   m_Name: AirshipCube (4)
   m_TagString: Untagged
@@ -2119,6 +2133,21 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 207208529}
   m_Mesh: {fileID: -5495902117074765545, guid: bdf2babf7a223774cae5f80a52733f88, type: 3}
+--- !u!114 &207208535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 207208529}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - baseColor: {r: 0.3679245, g: 0.3679245, b: 0.3679245, a: 1}
+  addedByEditorScript: 0
 --- !u!1 &222440439
 GameObject:
   m_ObjectHideFlags: 0
@@ -2132,6 +2161,7 @@ GameObject:
   - component: {fileID: 222440443}
   - component: {fileID: 222440442}
   - component: {fileID: 222440441}
+  - component: {fileID: 222440445}
   m_Layer: 0
   m_Name: AirshipCube (11)
   m_TagString: Untagged
@@ -2245,6 +2275,21 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 222440439}
   m_Mesh: {fileID: -5495902117074765545, guid: bdf2babf7a223774cae5f80a52733f88, type: 3}
+--- !u!114 &222440445
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 222440439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - baseColor: {r: 0.4433962, g: 0.4433962, b: 0.4433962, a: 1}
+  addedByEditorScript: 0
 --- !u!1 &245874718
 GameObject:
   m_ObjectHideFlags: 0
@@ -2734,8 +2779,8 @@ GameObject:
   - component: {fileID: 293967354}
   - component: {fileID: 293967358}
   - component: {fileID: 293967357}
-  - component: {fileID: 293967356}
   - component: {fileID: 293967355}
+  - component: {fileID: 293967359}
   m_Layer: 0
   m_Name: AirshipCube (15)
   m_TagString: Untagged
@@ -2779,24 +2824,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0.5, z: -0.000000029802322}
---- !u!114 &293967356
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 293967353}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colorSettings:
-  - materialColor: {r: 0.2830189, g: 0.2830189, b: 0.2830189, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-    emissiveLevel: 0
-  addedByEditorScript: 0
 --- !u!23 &293967357
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2849,6 +2876,21 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 293967353}
   m_Mesh: {fileID: -5495902117074765545, guid: bdf2babf7a223774cae5f80a52733f88, type: 3}
+--- !u!114 &293967359
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 293967353}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - baseColor: {r: 0.16981131, g: 0.16981131, b: 0.16981131, a: 1}
+  addedByEditorScript: 0
 --- !u!1 &305596849
 GameObject:
   m_ObjectHideFlags: 0
@@ -3849,6 +3891,7 @@ GameObject:
   - component: {fileID: 441541588}
   - component: {fileID: 441541587}
   - component: {fileID: 441541589}
+  - component: {fileID: 441541590}
   m_Layer: 0
   m_Name: AirshipCube (7)
   m_TagString: Untagged
@@ -3944,6 +3987,21 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.99999994, y: 1, z: 0.99999994}
   m_Center: {x: 0, y: 0.5, z: -0.00000002980232}
+--- !u!114 &441541590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 441541584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - baseColor: {r: 1, g: 1, b: 1, a: 1}
+  addedByEditorScript: 0
 --- !u!1 &455003648
 GameObject:
   m_ObjectHideFlags: 0
@@ -3956,6 +4014,7 @@ GameObject:
   - component: {fileID: 455003652}
   - component: {fileID: 455003651}
   - component: {fileID: 455003653}
+  - component: {fileID: 455003654}
   m_Layer: 0
   m_Name: AirshipCube (9)
   m_TagString: Untagged
@@ -4051,6 +4110,21 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0.00000047683716, y: 0.5, z: -0.000000029802322}
+--- !u!114 &455003654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 455003648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - baseColor: {r: 0.3490566, g: 0.3490566, b: 0.3490566, a: 1}
+  addedByEditorScript: 0
 --- !u!1 &455171593
 GameObject:
   m_ObjectHideFlags: 0
@@ -4170,6 +4244,7 @@ GameObject:
   - component: {fileID: 480807054}
   - component: {fileID: 480807053}
   - component: {fileID: 480807051}
+  - component: {fileID: 480807055}
   m_Layer: 0
   m_Name: AirshipCube (2)
   m_TagString: Untagged
@@ -4265,6 +4340,21 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 480807049}
   m_Mesh: {fileID: -5495902117074765545, guid: bdf2babf7a223774cae5f80a52733f88, type: 3}
+--- !u!114 &480807055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 480807049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - baseColor: {r: 0.5754717, g: 0.5754717, b: 0.5754717, a: 1}
+  addedByEditorScript: 0
 --- !u!1 &489032649
 GameObject:
   m_ObjectHideFlags: 0
@@ -4976,6 +5066,7 @@ GameObject:
   - component: {fileID: 621911287}
   - component: {fileID: 621911286}
   - component: {fileID: 621911284}
+  - component: {fileID: 621911288}
   m_Layer: 0
   m_Name: Floor (12)
   m_TagString: Untagged
@@ -5071,6 +5162,21 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 621911282}
   m_Mesh: {fileID: -5495902117074765545, guid: bdf2babf7a223774cae5f80a52733f88, type: 3}
+--- !u!114 &621911288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 621911282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - baseColor: {r: 0.4245283, g: 0.4245283, b: 0.4245283, a: 1}
+  addedByEditorScript: 0
 --- !u!1 &630189110
 GameObject:
   m_ObjectHideFlags: 0
@@ -5683,8 +5789,8 @@ GameObject:
   - component: {fileID: 752787802}
   - component: {fileID: 752787806}
   - component: {fileID: 752787805}
-  - component: {fileID: 752787804}
   - component: {fileID: 752787803}
+  - component: {fileID: 752787807}
   m_Layer: 0
   m_Name: AirshipCube (17)
   m_TagString: Untagged
@@ -5728,24 +5834,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0.5, z: -0.000000029802322}
---- !u!114 &752787804
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 752787801}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colorSettings:
-  - materialColor: {r: 0.2830189, g: 0.2830189, b: 0.2830189, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-    emissiveLevel: 0
-  addedByEditorScript: 0
 --- !u!23 &752787805
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -5798,6 +5886,21 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 752787801}
   m_Mesh: {fileID: -5495902117074765545, guid: bdf2babf7a223774cae5f80a52733f88, type: 3}
+--- !u!114 &752787807
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 752787801}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - baseColor: {r: 0.2264151, g: 0.2264151, b: 0.2264151, a: 1}
+  addedByEditorScript: 0
 --- !u!1 &758285590
 GameObject:
   m_ObjectHideFlags: 0
@@ -5955,9 +6058,9 @@ MonoBehaviour:
       fileRef: 
       decorators: []
       nullable: 0
-      serializedValue: 
+      serializedValue: 1
       serializedObject: {fileID: 0}
-      modified: 0
+      modified: 1
     - name: allowFirstPersonToggle
       type: boolean
       objectType: 
@@ -6037,6 +6140,25 @@ MonoBehaviour:
       serializedValue: 1
       serializedObject: {fileID: 0}
       modified: 0
+    - name: customViewmodelPrefab
+      type: object
+      objectType: GameObject
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"Viewmodel"'
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 1
     displayName: 
   contextOverwritten: 0
 --- !u!4 &758285592
@@ -6461,6 +6583,7 @@ GameObject:
   - component: {fileID: 795231908}
   - component: {fileID: 795231907}
   - component: {fileID: 795231905}
+  - component: {fileID: 795231909}
   m_Layer: 0
   m_Name: Floor (15)
   m_TagString: Untagged
@@ -6556,6 +6679,21 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 795231903}
   m_Mesh: {fileID: -5495902117074765545, guid: bdf2babf7a223774cae5f80a52733f88, type: 3}
+--- !u!114 &795231909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 795231903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - baseColor: {r: 0.4245283, g: 0.4245283, b: 0.4245283, a: 1}
+  addedByEditorScript: 0
 --- !u!1 &837293356
 GameObject:
   m_ObjectHideFlags: 0
@@ -6675,6 +6813,7 @@ GameObject:
   - component: {fileID: 843296931}
   - component: {fileID: 843296930}
   - component: {fileID: 843296928}
+  - component: {fileID: 843296932}
   m_Layer: 0
   m_Name: AirshipCube (9)
   m_TagString: Untagged
@@ -6770,6 +6909,21 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 843296926}
   m_Mesh: {fileID: -5495902117074765545, guid: bdf2babf7a223774cae5f80a52733f88, type: 3}
+--- !u!114 &843296932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 843296926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - baseColor: {r: 0.7264151, g: 0.7264151, b: 0.7264151, a: 1}
+  addedByEditorScript: 0
 --- !u!1 &844453223
 GameObject:
   m_ObjectHideFlags: 0
@@ -7055,8 +7209,8 @@ GameObject:
   - component: {fileID: 863947188}
   - component: {fileID: 863947192}
   - component: {fileID: 863947191}
-  - component: {fileID: 863947190}
   - component: {fileID: 863947189}
+  - component: {fileID: 863947193}
   m_Layer: 0
   m_Name: AirshipCube (5)
   m_TagString: Untagged
@@ -7100,24 +7254,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0.5, z: -0.000000029802322}
---- !u!114 &863947190
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 863947187}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colorSettings:
-  - materialColor: {r: 0.4716981, g: 0.4716981, b: 0.4716981, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-    emissiveLevel: 0
-  addedByEditorScript: 0
 --- !u!23 &863947191
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -7170,6 +7306,21 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 863947187}
   m_Mesh: {fileID: -5495902117074765545, guid: bdf2babf7a223774cae5f80a52733f88, type: 3}
+--- !u!114 &863947193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 863947187}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - baseColor: {r: 0.3018868, g: 0.3018868, b: 0.3018868, a: 1}
+  addedByEditorScript: 0
 --- !u!1 &897655170
 GameObject:
   m_ObjectHideFlags: 0
@@ -7182,6 +7333,7 @@ GameObject:
   - component: {fileID: 897655174}
   - component: {fileID: 897655173}
   - component: {fileID: 897655175}
+  - component: {fileID: 897655176}
   m_Layer: 0
   m_Name: AirshipCube (8)
   m_TagString: Untagged
@@ -7277,6 +7429,21 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0.00000047683716, y: 0.5, z: -0.000000029802322}
+--- !u!114 &897655176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 897655170}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - baseColor: {r: 0.3490566, g: 0.3490566, b: 0.3490566, a: 1}
+  addedByEditorScript: 0
 --- !u!1 &912091527
 GameObject:
   m_ObjectHideFlags: 0
@@ -7894,8 +8061,8 @@ GameObject:
   - component: {fileID: 932181846}
   - component: {fileID: 932181850}
   - component: {fileID: 932181849}
-  - component: {fileID: 932181848}
   - component: {fileID: 932181847}
+  - component: {fileID: 932181851}
   m_Layer: 0
   m_Name: AirshipCube (12)
   m_TagString: Untagged
@@ -7939,24 +8106,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0.5, z: -0.000000029802322}
---- !u!114 &932181848
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 932181845}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colorSettings:
-  - materialColor: {r: 0.2830189, g: 0.2830189, b: 0.2830189, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-    emissiveLevel: 0
-  addedByEditorScript: 0
 --- !u!23 &932181849
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -8009,6 +8158,21 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 932181845}
   m_Mesh: {fileID: -5495902117074765545, guid: bdf2babf7a223774cae5f80a52733f88, type: 3}
+--- !u!114 &932181851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 932181845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - baseColor: {r: 0.2264151, g: 0.2264151, b: 0.2264151, a: 1}
+  addedByEditorScript: 0
 --- !u!1 &962990291
 GameObject:
   m_ObjectHideFlags: 0
@@ -8254,6 +8418,7 @@ GameObject:
   - component: {fileID: 1000020168}
   - component: {fileID: 1000020167}
   - component: {fileID: 1000020169}
+  - component: {fileID: 1000020170}
   m_Layer: 0
   m_Name: AirshipCube
   m_TagString: Untagged
@@ -8349,6 +8514,21 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0.00000047683716, y: 0.5, z: -0.000000029802322}
+--- !u!114 &1000020170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000020164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - baseColor: {r: 0.3490566, g: 0.3490566, b: 0.3490566, a: 1}
+  addedByEditorScript: 0
 --- !u!1 &1059439564
 GameObject:
   m_ObjectHideFlags: 0
@@ -8361,6 +8541,7 @@ GameObject:
   - component: {fileID: 1059439569}
   - component: {fileID: 1059439568}
   - component: {fileID: 1059439566}
+  - component: {fileID: 1059439570}
   m_Layer: 0
   m_Name: AirshipCube (4)
   m_TagString: Untagged
@@ -8456,6 +8637,21 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1059439564}
   m_Mesh: {fileID: -5495902117074765545, guid: bdf2babf7a223774cae5f80a52733f88, type: 3}
+--- !u!114 &1059439570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1059439564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - baseColor: {r: 0.31132078, g: 0.31132078, b: 0.31132078, a: 1}
+  addedByEditorScript: 0
 --- !u!1 &1076615812
 GameObject:
   m_ObjectHideFlags: 0
@@ -8468,6 +8664,7 @@ GameObject:
   - component: {fileID: 1076615817}
   - component: {fileID: 1076615816}
   - component: {fileID: 1076615814}
+  - component: {fileID: 1076615818}
   m_Layer: 0
   m_Name: Floor
   m_TagString: Untagged
@@ -8563,6 +8760,21 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1076615812}
   m_Mesh: {fileID: -5495902117074765545, guid: bdf2babf7a223774cae5f80a52733f88, type: 3}
+--- !u!114 &1076615818
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1076615812}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - baseColor: {r: 1, g: 1, b: 1, a: 1}
+  addedByEditorScript: 0
 --- !u!1 &1077172789
 GameObject:
   m_ObjectHideFlags: 0
@@ -8829,6 +9041,7 @@ GameObject:
   - component: {fileID: 1084711602}
   - component: {fileID: 1084711601}
   - component: {fileID: 1084711599}
+  - component: {fileID: 1084711603}
   m_Layer: 0
   m_Name: AirshipCube (7)
   m_TagString: Untagged
@@ -8924,6 +9137,21 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1084711597}
   m_Mesh: {fileID: -5495902117074765545, guid: bdf2babf7a223774cae5f80a52733f88, type: 3}
+--- !u!114 &1084711603
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1084711597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - baseColor: {r: 0.4811321, g: 0.4811321, b: 0.4811321, a: 1}
+  addedByEditorScript: 0
 --- !u!1 &1094807231
 GameObject:
   m_ObjectHideFlags: 0
@@ -8935,8 +9163,8 @@ GameObject:
   - component: {fileID: 1094807232}
   - component: {fileID: 1094807236}
   - component: {fileID: 1094807235}
-  - component: {fileID: 1094807234}
   - component: {fileID: 1094807233}
+  - component: {fileID: 1094807237}
   m_Layer: 0
   m_Name: AirshipCube (4)
   m_TagString: Untagged
@@ -8980,24 +9208,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0.5, z: -0.000000029802322}
---- !u!114 &1094807234
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1094807231}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colorSettings:
-  - materialColor: {r: 0.4716981, g: 0.4716981, b: 0.4716981, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-    emissiveLevel: 0
-  addedByEditorScript: 0
 --- !u!23 &1094807235
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -9050,6 +9260,21 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1094807231}
   m_Mesh: {fileID: -5495902117074765545, guid: bdf2babf7a223774cae5f80a52733f88, type: 3}
+--- !u!114 &1094807237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1094807231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - baseColor: {r: 0.5377358, g: 0.43637308, b: 0.39822888, a: 1}
+  addedByEditorScript: 0
 --- !u!1 &1096188699
 GameObject:
   m_ObjectHideFlags: 0
@@ -9406,6 +9631,7 @@ GameObject:
   - component: {fileID: 1251695103}
   - component: {fileID: 1251695102}
   - component: {fileID: 1251695100}
+  - component: {fileID: 1251695104}
   m_Layer: 0
   m_Name: Floor
   m_TagString: Untagged
@@ -9501,6 +9727,21 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1251695098}
   m_Mesh: {fileID: -5495902117074765545, guid: bdf2babf7a223774cae5f80a52733f88, type: 3}
+--- !u!114 &1251695104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1251695098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - baseColor: {r: 1, g: 1, b: 1, a: 1}
+  addedByEditorScript: 0
 --- !u!1 &1274085138
 GameObject:
   m_ObjectHideFlags: 0
@@ -9763,6 +10004,7 @@ GameObject:
   - component: {fileID: 1296549502}
   - component: {fileID: 1296549501}
   - component: {fileID: 1296549499}
+  - component: {fileID: 1296549504}
   m_Layer: 0
   m_Name: Ramp
   m_TagString: Untagged
@@ -9858,6 +10100,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 844453224}
   m_LocalEulerAnglesHint: {x: 0, y: -180, z: 8.053}
+--- !u!114 &1296549504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1296549498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - baseColor: {r: 0.23584908, g: 0.23584908, b: 0.23584908, a: 1}
+  addedByEditorScript: 0
 --- !u!1 &1301114293
 GameObject:
   m_ObjectHideFlags: 0
@@ -9869,8 +10126,8 @@ GameObject:
   - component: {fileID: 1301114294}
   - component: {fileID: 1301114298}
   - component: {fileID: 1301114297}
-  - component: {fileID: 1301114296}
   - component: {fileID: 1301114295}
+  - component: {fileID: 1301114299}
   m_Layer: 0
   m_Name: AirshipCube (16)
   m_TagString: Untagged
@@ -9914,24 +10171,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0.5, z: -0.000000029802322}
---- !u!114 &1301114296
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1301114293}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colorSettings:
-  - materialColor: {r: 0.2830189, g: 0.2830189, b: 0.2830189, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-    emissiveLevel: 0
-  addedByEditorScript: 0
 --- !u!23 &1301114297
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -9984,6 +10223,21 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1301114293}
   m_Mesh: {fileID: -5495902117074765545, guid: bdf2babf7a223774cae5f80a52733f88, type: 3}
+--- !u!114 &1301114299
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1301114293}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - baseColor: {r: 0.16981131, g: 0.16981131, b: 0.16981131, a: 1}
+  addedByEditorScript: 0
 --- !u!21 &1304077909
 Material:
   serializedVersion: 8
@@ -10794,8 +11048,8 @@ GameObject:
   - component: {fileID: 1412418301}
   - component: {fileID: 1412418305}
   - component: {fileID: 1412418304}
-  - component: {fileID: 1412418303}
   - component: {fileID: 1412418302}
+  - component: {fileID: 1412418306}
   m_Layer: 0
   m_Name: AirshipCube (3)
   m_TagString: Untagged
@@ -10839,24 +11093,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0.5, z: -0.000000029802322}
---- !u!114 &1412418303
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1412418300}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colorSettings:
-  - materialColor: {r: 0.4716981, g: 0.4716981, b: 0.4716981, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-    emissiveLevel: 0
-  addedByEditorScript: 0
 --- !u!23 &1412418304
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -10909,6 +11145,21 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1412418300}
   m_Mesh: {fileID: -5495902117074765545, guid: bdf2babf7a223774cae5f80a52733f88, type: 3}
+--- !u!114 &1412418306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1412418300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - baseColor: {r: 0.5377358, g: 0.43637308, b: 0.39822888, a: 1}
+  addedByEditorScript: 0
 --- !u!1 &1422890863
 GameObject:
   m_ObjectHideFlags: 0
@@ -11367,8 +11618,8 @@ GameObject:
   - component: {fileID: 1448965583}
   - component: {fileID: 1448965587}
   - component: {fileID: 1448965586}
-  - component: {fileID: 1448965585}
   - component: {fileID: 1448965584}
+  - component: {fileID: 1448965588}
   m_Layer: 0
   m_Name: AirshipCube (6)
   m_TagString: Untagged
@@ -11412,24 +11663,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0.5, z: -0.000000029802322}
---- !u!114 &1448965585
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1448965582}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colorSettings:
-  - materialColor: {r: 0.4716981, g: 0.4716981, b: 0.4716981, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-    emissiveLevel: 0
-  addedByEditorScript: 0
 --- !u!23 &1448965586
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -11482,6 +11715,21 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1448965582}
   m_Mesh: {fileID: -5495902117074765545, guid: bdf2babf7a223774cae5f80a52733f88, type: 3}
+--- !u!114 &1448965588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1448965582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - baseColor: {r: 0.764151, g: 0.764151, b: 0.764151, a: 1}
+  addedByEditorScript: 0
 --- !u!1 &1491209855
 GameObject:
   m_ObjectHideFlags: 0
@@ -12992,6 +13240,7 @@ GameObject:
   - component: {fileID: 1671572891}
   - component: {fileID: 1671572890}
   - component: {fileID: 1671572888}
+  - component: {fileID: 1671572892}
   m_Layer: 0
   m_Name: Floor (14)
   m_TagString: Untagged
@@ -13087,6 +13336,21 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1671572886}
   m_Mesh: {fileID: -5495902117074765545, guid: bdf2babf7a223774cae5f80a52733f88, type: 3}
+--- !u!114 &1671572892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1671572886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - baseColor: {r: 0.5707547, g: 1, b: 0.67653084, a: 1}
+  addedByEditorScript: 0
 --- !u!1 &1673174989
 GameObject:
   m_ObjectHideFlags: 0
@@ -13814,6 +14078,7 @@ GameObject:
   - component: {fileID: 1753803629}
   - component: {fileID: 1753803628}
   - component: {fileID: 1753803626}
+  - component: {fileID: 1753803630}
   m_Layer: 0
   m_Name: Floor
   m_TagString: Untagged
@@ -13909,6 +14174,21 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1753803624}
   m_Mesh: {fileID: -5495902117074765545, guid: bdf2babf7a223774cae5f80a52733f88, type: 3}
+--- !u!114 &1753803630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1753803624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - baseColor: {r: 1, g: 1, b: 1, a: 1}
+  addedByEditorScript: 0
 --- !u!1 &1771584111
 GameObject:
   m_ObjectHideFlags: 0
@@ -14268,6 +14548,7 @@ GameObject:
   - component: {fileID: 1791340866}
   - component: {fileID: 1791340865}
   - component: {fileID: 1791340863}
+  - component: {fileID: 1791340867}
   m_Layer: 0
   m_Name: AirshipCube (10)
   m_TagString: Untagged
@@ -14363,6 +14644,21 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1791340861}
   m_Mesh: {fileID: -5495902117074765545, guid: bdf2babf7a223774cae5f80a52733f88, type: 3}
+--- !u!114 &1791340867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1791340861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - baseColor: {r: 0.5471698, g: 0.5471698, b: 0.5471698, a: 1}
+  addedByEditorScript: 0
 --- !u!1 &1793306823
 GameObject:
   m_ObjectHideFlags: 0
@@ -14770,6 +15066,7 @@ GameObject:
   - component: {fileID: 1876442432}
   - component: {fileID: 1876442431}
   - component: {fileID: 1876442433}
+  - component: {fileID: 1876442434}
   m_Layer: 0
   m_Name: AirshipCube (12)
   m_TagString: Untagged
@@ -14865,6 +15162,21 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0.0000009536743, y: 0.5, z: 0.00000020861626}
+--- !u!114 &1876442434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1876442428}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - baseColor: {r: 0.2735849, g: 0.2735849, b: 0.2735849, a: 1}
+  addedByEditorScript: 0
 --- !u!1 &1884389373
 GameObject:
   m_ObjectHideFlags: 0
@@ -16109,6 +16421,7 @@ GameObject:
   - component: {fileID: 2014237521}
   - component: {fileID: 2014237520}
   - component: {fileID: 2014237522}
+  - component: {fileID: 2014237523}
   m_Layer: 0
   m_Name: AirshipCube (11)
   m_TagString: Untagged
@@ -16204,6 +16517,21 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: -0.00000047683716, y: 0.5, z: 0.00000020861626}
+--- !u!114 &2014237523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2014237517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - baseColor: {r: 0.2735849, g: 0.2735849, b: 0.2735849, a: 1}
+  addedByEditorScript: 0
 --- !u!1 &2054911203
 GameObject:
   m_ObjectHideFlags: 0

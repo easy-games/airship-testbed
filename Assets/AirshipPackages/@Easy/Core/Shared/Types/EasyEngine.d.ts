@@ -563,19 +563,27 @@ declare const enum CharacterState {
 }
 
 interface CharacterAnimationHelper extends Component {
-	viewmodelAnimancer: AnimancerComponent;
-	worldmodelAnimancer: AnimancerComponent;
+	animator: Animator;
 	SetForceLookForward(forceLookForward: boolean): void;
 	SetFirstPerson(firstPerson: boolean): void;
 	SetRootMovementLayer(itemInHand: boolean): void;
 	ClearStatesOnNonRootLayers(): void;
 	SetState(newState: CharacterState, force = false, noRootLayerFade = false);
-	PlayRoot(clip: AnimationClip, options: AnimationClipOptions): AnimancerState | undefined;
-	PlayRootOneShot(clip: AnimationClip): AnimancerState | undefined;
-	PlayOneShot(clip: AnimationClip, layer: number): AnimancerState | undefined;
-	Play(clip: AnimationClip, layerIndex: number, options: AnimationClipOptions): AnimancerState | undefined;
-	GetPlayingState(layerIndex: number): AnimancerState | undefined;
 	SetVelocity(vel: Vector3);
+	SetGrounded(grounded: boolean);
+	PlayAnimation(clip: AnimationClip, layer: CharacterAnimationLayer);
+	StopAnimation(layer: CharacterAnimationLayer);
+}
+
+declare const enum CharacterAnimationLayer {
+	/** Recommended layer for item idle animations  */
+	OVERRIDE_1 = 1,
+	/** Recommended layer for low-priority animations  */
+	OVERRIDE_2 = 2,
+	/** Recommended layer for medium-priority animations */
+	OVERRIDE_3 = 3,
+	/** Highest priority, recommended for high-priority animations */
+	OVERRIDE_4 = 4,
 }
 
 interface AnimationClipOptions {
