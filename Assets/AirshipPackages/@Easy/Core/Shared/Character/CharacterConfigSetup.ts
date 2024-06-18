@@ -1,4 +1,5 @@
 import { Airship } from "../Airship";
+import { CameraReferences } from "../Camera/CameraReferences";
 import { Game } from "../Game";
 import { Layer } from "../Util/Layer";
 import { CharacterCameraMode } from "./LocalCharacter/CharacterCameraMode";
@@ -6,13 +7,16 @@ import { CharacterCameraMode } from "./LocalCharacter/CharacterCameraMode";
 export default class CharacterConfigSetup extends AirshipBehaviour {
 	@Header("Character")
 	@Tooltip(
-		"Must include a Character component. Make sure this prefab is also assigned in the NetworkPrefabCollection in Shared/Resources",
+		"Must include a Character component. Make sure this prefab is also assigned in the Resources/NetworkPrefabCollection.asset",
 	)
 	public customCharacterPrefab?: GameObject;
 	public movementSpace = Space.Self;
 	public enableJumping = true;
 	public enableSprinting = true;
 	public enableCrouching = true;
+
+	@Header("Viewmodel")
+	public customViewmodelPrefab?: GameObject;
 
 	@Header("Camera System")
 	public useAirshipCameraSystem = true;
@@ -25,11 +29,17 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 	public showInventoryHotbar = true;
 	public showInventoryBackpack = true;
 
-	public OnEnable() {
+	public Awake(): void {
 		//Character
 		//Set the default prefab to use whenever a character is spawned
 		Airship.characters.SetDefaultCharacterPrefab(this.customCharacterPrefab);
+		Airship.characters.SetDefaultViewmodelPrefab(this.customViewmodelPrefab);
+		if (this.customViewmodelPrefab !== undefined && CameraReferences.viewmodel !== undefined) {
+			CameraReferences.viewmodel.SetViewmodelGameObject(Object.Instantiate(this.customViewmodelPrefab));
+		}
+	}
 
+	public OnEnable() {
 		Physics.IgnoreLayerCollision(17, 18, false);
 		Layer.CHARACTER;
 

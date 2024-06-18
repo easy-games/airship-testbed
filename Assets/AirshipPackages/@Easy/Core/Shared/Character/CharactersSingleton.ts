@@ -52,6 +52,7 @@ export class CharactersSingleton implements OnStart {
 
 	private idCounter = 0;
 	private customCharacterTemplate?: GameObject;
+	private customViewmodelTemplate?: GameObject;
 
 	constructor(
 		public readonly localCharacterManager: LocalCharacterSingleton,
@@ -352,5 +353,16 @@ export class CharactersSingleton implements OnStart {
 
 	public GetDefaultCharacterTemplate() {
 		return this.customCharacterTemplate === undefined ? characterPrefab : this.customCharacterTemplate;
+	}
+
+	public SetDefaultViewmodelPrefab(prefab: GameObject | undefined) {
+		this.customViewmodelTemplate = prefab;
+	}
+
+	public GetDefaultViewmodelPrefab() {
+		if (this.customViewmodelTemplate !== undefined) {
+			return this.customViewmodelTemplate;
+		}
+		return AssetCache.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/Character/CharacterViewmodel.prefab");
 	}
 }
