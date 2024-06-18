@@ -435,6 +435,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators:
       - name: Header
         parameters:
@@ -453,6 +454,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -467,6 +469,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -481,6 +484,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -495,6 +499,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators:
       - name: Header
         parameters:
@@ -513,6 +518,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 3
@@ -527,6 +533,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 10
@@ -541,11 +548,12 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
-      serializedValue: 1
+      serializedValue: 3
       serializedObject: {fileID: 0}
-      modified: 0
+      modified: 1
     - name: knockbackForce
       type: number
       objectType: 
@@ -555,6 +563,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 15

@@ -22,7 +22,7 @@ export default class TopDownBattleLevelGenerator extends AirshipBehaviour {
 
 	public override OnEnable(): void {
 	 	//Only the server needs to generate the level
-		if (Game.IsClient()) {
+		if (!Game.IsServer()) {
 			return;
 		}
 	 	//Store half size for conveniance
