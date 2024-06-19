@@ -1,8 +1,10 @@
 import { Party } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipParty";
+import { UserStatusData } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipUser";
 import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { Controller, Dependency, OnStart } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import { CoreLogger } from "@Easy/Core/Shared/Logger/CoreLogger";
 import PartyCard from "@Easy/Core/Shared/MainMenu/Components/Party/PartyCard";
 import PartyMember from "@Easy/Core/Shared/MainMenu/Components/PartyMember";
 import { Result } from "@Easy/Core/Shared/Types/Result";
@@ -40,6 +42,17 @@ export class MainMenuPartyController implements OnStart {
 			this.party = data;
 			this.onPartyUpdated.Fire(data, oldParty);
 			this.UpdateParty();
+
+			if (this.party === undefined) {
+				this.partyCard.SetLeaderStatus(undefined);
+			}
+		});
+
+		this.socketController.On<UserStatusData[]>("game-coordinator/party-member-status-update-multi", (data) => {
+			if (!this.party) return;
+
+			const partyLeader = data.find((d) => d.userId === this.party!.leader);
+			this.partyCard.SetLeaderStatus(partyLeader);
 		});
 
 		this.socketController.On<Party>("game-coordinator/party-invite", (data) => {
@@ -132,7 +145,7 @@ export class MainMenuPartyController implements OnStart {
 			leaveButton.SetActive(true);
 		}
 
-		// print("party: " + json.encode(this.party));
+		CoreLogger.Log("party: " + json.encode(this.party));
 
 		// Remove old
 		let membersToRemove: GameObject[] = [];
