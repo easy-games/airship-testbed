@@ -168,6 +168,9 @@ export class PlayersSingleton implements OnStart {
 			Game.serverId = serverId;
 			Game.organizationId = organizationId;
 
+			// Temp
+			contextbridge.broadcast("ProtectedGetServerInfo_Temp", Game.gameId, Game.serverId, Game.organizationId);
+
 			const authenticated = contextbridge.invoke<() => boolean>(
 				"AuthController:IsAuthenticated",
 				LuauContext.Protected,

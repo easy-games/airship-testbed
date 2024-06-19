@@ -7,6 +7,7 @@ import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { Controller, Dependency, OnStart } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { GameObjectUtil } from "@Easy/Core/Shared/GameObject/GameObjectUtil";
+import { CoreLogger } from "@Easy/Core/Shared/Logger/CoreLogger";
 import SocialFriendRequestsButtonComponent from "@Easy/Core/Shared/MainMenu/Components/SocialFriendRequestsButtonComponent";
 import SocialNotificationComponent from "@Easy/Core/Shared/MainMenu/Components/SocialNotificationComponent";
 import { CoreUI } from "@Easy/Core/Shared/UI/CoreUI";
@@ -58,7 +59,7 @@ export class FriendsController implements OnStart {
 		private readonly clientSettingsController: ClientSettingsController,
 	) {
 		contextbridge.callback("FriendsController:SendStatusUpdate", (from) => {
-			this.SendStatusUpdate();
+			this.SendStatusUpdateYielding();
 		});
 	}
 
@@ -117,7 +118,7 @@ export class FriendsController implements OnStart {
 		this.authController.WaitForAuthed().then(() => {
 			// Game context will send status update when client receives server info.
 			if (Game.coreContext === CoreContext.MAIN_MENU) {
-				this.SendStatusUpdate();
+				this.SendStatusUpdateYielding();
 			}
 			this.FetchFriends();
 		});
@@ -187,7 +188,12 @@ export class FriendsController implements OnStart {
 		});
 
 		this.socketController.On<UserStatusData[]>("game-coordinator/friend-status-update-multi", (data) => {
-			// print("status updates: " + inspect(data));
+			// print("status updates: " + json.encode(data));
+			let lukeOnSteam = data.find((d) => d.usernameLower === "luke_on_steam");
+			if (lukeOnSteam) {
+				CoreLogger.Log("luke: " + json.encode(lukeOnSteam));
+			}
+
 			for (const newFriend of data) {
 				const existing = this.friendStatuses.find((f) => f.userId === newFriend.userId);
 				if (existing) {
@@ -205,7 +211,7 @@ export class FriendsController implements OnStart {
 		});
 
 		this.socketController.On("game-coordinator/status-update-request", (data) => {
-			this.SendStatusUpdate();
+			this.SendStatusUpdateYielding();
 		});
 
 		this.Setup();
@@ -254,14 +260,15 @@ export class FriendsController implements OnStart {
 		StateManager.SetString("social:status-text", text);
 		this.clientSettingsController.data.statusText = text;
 		this.clientSettingsController.MarkAsDirty();
-		this.SendStatusUpdate();
+		this.SendStatusUpdateYielding();
 	}
 
 	public GetStatusText(): string {
 		return this.statusText;
 	}
 
-	public SendStatusUpdate(): void {
+	public SendStatusUpdateYielding(): void {
+		Game.WaitForLocalPlayerLoaded();
 		const status: Partial<UserStatusData> = {
 			userId: Game.localPlayer.userId,
 			status: Game.coreContext === CoreContext.GAME ? UserStatus.IN_GAME : UserStatus.ONLINE,
@@ -272,7 +279,8 @@ export class FriendsController implements OnStart {
 				customGameTitle: Game.gameData?.name,
 			},
 		};
-		InternalHttpManager.PutAsync(AirshipUrl.GameCoordinator + "/user-status/self", EncodeJSON(status));
+		CoreLogger.Log("send status update: " + json.encode(status));
+		InternalHttpManager.PutAsync(AirshipUrl.GameCoordinator + "/user-status/self", json.encode(status));
 	}
 
 	public FetchFriends(): void {
@@ -426,7 +434,7 @@ export class FriendsController implements OnStart {
 					);
 					Dependency<TransferController>().TransferToGameAsync(friend.gameId, friend.serverId);
 				};
-				
+
 				const OpenMenu = () => {
 					const options: RightClickMenuButton[] = [];
 					if (friend.status !== "offline") {
@@ -496,7 +504,6 @@ export class FriendsController implements OnStart {
 						},
 					});
 
-					
 					// let profilePanelPos = Bridge.ScreenPointToLocalPointInRectangle(
 					// 	mainCanvasRect,
 					// 	new Vector2(go!.transform.position.x - 5, go!.transform.position.y),

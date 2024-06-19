@@ -12,6 +12,7 @@ import { Flamework } from "@Easy/Core/Shared/Flamework";
 import { GameDto } from "../Client/Components/HomePage/API/GamesAPI";
 import { AudioManager } from "./Audio/AudioManager";
 import { CoreRefs } from "./CoreRefs";
+import { RemoteFunction } from "./Network/RemoteFunction";
 import { AirshipUrl } from "./Util/AirshipUrl";
 import { AppManager } from "./Util/AppManager";
 import { CanvasAPI } from "./Util/CanvasAPI";
@@ -50,6 +51,10 @@ if (Game.IsServer()) {
 
 Flamework.Ignite();
 
+const serverInfoRemoteFunction = new RemoteFunction<[], [gameId: string, serverId: string, orgId: string]>(
+	"Protected_CoreServerInfo",
+);
+
 if (Game.IsServer()) {
 	const autoShutdownBridge = GameObject.Find("AutoShutdownBridge").GetComponent<AutoShutdownBridge>()!;
 	if (autoShutdownBridge) {
@@ -76,6 +81,24 @@ if (Game.IsServer()) {
 	});
 
 	serverBootstrap.FinishedSetup();
+}
+
+if (Game.IsClient()) {
+	// This is not working atm. Waiting on stephen to fix remotes in protected context.
+	task.spawn(() => {
+		const [gameId, serverId, orgId] = serverInfoRemoteFunction.client.FireServer();
+		Game.gameId = gameId;
+		Game.serverId = serverId;
+		Game.organizationId = orgId;
+	});
+
+	// This is out temp workaround since above is not working.
+	// Protected server -> Game server -> Game client -> Protected client
+	contextbridge.subscribe("ProtectedGetServerInfo_Temp", (from, gameId: string, serverId: string, orgId: string) => {
+		Game.gameId = gameId;
+		Game.serverId = serverId;
+		Game.organizationId = orgId;
+	});
 }
 
 task.spawn(() => {
