@@ -9,19 +9,19 @@ export default class TopDownBattleCharacter extends AirshipBehaviour {
 	@Header("Variables")
 	public startingExtraLives = 2;
 
+	@NonSerialized()
 	public character!: Character;
+
+	public lookVector = Vector3.zero;
 
 	public override Awake(): void {
 		this.character = this.gameObject.GetAirshipComponent<Character>()!;
 	}
 
 	public override Start(): void {
-		print("start character");
 		if (this.character.player) {
 			//If this is the first character for this player
-			print("character has player");
 			if (!TopDownBattleCharacter.extraLives.has(this.character.player.clientId)) {
-				print("setting lives of " + this.character.player.clientId + " to: " + this.startingExtraLives);
 				//Store their number of lives
 				TopDownBattleCharacter.extraLives.set(this.character.player.clientId, this.startingExtraLives);
 			}
@@ -30,7 +30,6 @@ export default class TopDownBattleCharacter extends AirshipBehaviour {
 
 	public GetRemainingLives() {
 		if (this.character.player) {
-			print("Remaining lives: " + TopDownBattleCharacter.extraLives.get(this.character.player.clientId));
 			return TopDownBattleCharacter.extraLives.get(this.character.player.clientId) ?? -1;
 		}
 		return -1;
@@ -44,9 +43,10 @@ export default class TopDownBattleCharacter extends AirshipBehaviour {
 	}
 
 	public SetLookVector(dir: Vector3) {
-		this.character.movement.SetLookVector(dir);
+		this.lookVector = dir.normalized;
+		this.character.movement.SetLookVector(this.lookVector);
 		let rotation = this.characterHighlight.localEulerAngles;
-		this.characterHighlight.LookAt(this.characterHighlight.position.add(dir));
+		this.characterHighlight.LookAt(this.characterHighlight.position.add(this.lookVector));
 		this.characterHighlight.localEulerAngles = new Vector3(
 			rotation.x,
 			this.characterHighlight.localEulerAngles.y,

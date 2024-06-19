@@ -2,6 +2,9 @@ import { Game } from "@Easy/Core/Shared/Game";
 import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 
 export default class TopDownBattleLevelGenerator extends AirshipBehaviour {
+	@Header("Referneces")
+	public floorTransform!: Transform;
+
 	@Header("Templates")
 	public baseTemplate!: GameObject;
 	public wallTemplate!: GameObject;
@@ -40,53 +43,26 @@ export default class TopDownBattleLevelGenerator extends AirshipBehaviour {
 	}
 
 	public GenerateWalls() {
-	// 	//Fill an array of positions that will be each wall point
-	// 	let blockPositions: Vector3[] = [];
-	// 	//Each id is an index to the type of block. Parallel to blockPositions
-	// 	let blockIds: string[] = [];
-	// 	let blockI = 0; //Index to block positions
-	// 	//Close wall
-	// 	for (let i = 0; i < this.levelSize; i++) {
-	// 		for (let height = 0; height < this.wallHeight; height++) {
-	// 			blockPositions[blockI] = new Vector3(-this.levelHalfSize + i, height, this.levelHalfSize);
-	// 			blockIds[blockI] = this.wallBlockType;
-	// 			blockI++;
-	// 		}
-	// 	}
-	// 	//Far wall
-	// 	for (let i = 0; i < this.levelSize; i++) {
-	// 		for (let height = 0; height < this.wallHeight; height++) {
-	// 			blockPositions[blockI] = new Vector3(-this.levelHalfSize + i, height, -this.levelHalfSize);
-	// 			blockIds[blockI] = this.wallBlockType;
-	// 			blockI++;
-	// 		}
-	// 	}
-	// 	//Left Wall
-	// 	for (let i = 1; i < this.levelSize; i++) {
-	// 		for (let height = 0; height < this.wallHeight; height++) {
-	// 			blockPositions[blockI] = new Vector3(-this.levelHalfSize, height, -this.levelHalfSize + i);
-	// 			blockIds[blockI] = this.wallBlockType;
-	// 			blockI++;
-	// 		}
-	// 	}
-	// 	//Right Wall
-	// 	for (let i = 1; i < this.levelSize; i++) {
-	// 		for (let height = 0; height < this.wallHeight; height++) {
-	// 			blockPositions[blockI] = new Vector3(this.levelHalfSize, height, -this.levelHalfSize + i);
-	// 			blockIds[blockI] = this.wallBlockType;
-	// 			blockI++;
-	// 		}
-	// 	}
-	// 	//Create floor
-	// 	for (let x = -this.levelHalfSize; x < this.levelHalfSize; x++) {
-	// 		for (let z = -this.levelHalfSize; z < this.levelHalfSize; z++) {
-	// 			blockPositions[blockI] = new Vector3(x, -1, z);
-	// 			blockIds[blockI] = this.floorBlockType;
-	// 			blockI++;
-	// 		}
-	// 	}
-	// 	//Write the blocks to the VoxelWorld
-	// 	this.world.PlaceBlockGroupById(blockPositions, blockIds);
+	 	//Fill an array of positions that will be each wall point
+
+	 	//Close wall
+		this.CreateBlock(new Vector3(0, 0, -this.levelHalfSize), 
+				new Vector3(this.levelSize, this.wallHeight, 1));
+
+		//Far wall
+		this.CreateBlock(new Vector3(0, 0, this.levelHalfSize), 
+		new Vector3(this.levelSize, this.wallHeight, 1));
+		
+		//Left Wall
+		this.CreateBlock(new Vector3(-this.levelHalfSize, 0, 0), 
+		new Vector3(1, this.wallHeight, this.levelSize-.5));
+
+		//Right Wall
+		this.CreateBlock(new Vector3(this.levelHalfSize, 0, 0), 
+		new Vector3(1, this.wallHeight, this.levelSize-.5));
+
+		//Create floor
+		this.floorTransform.localScale = new Vector3(this.levelSize, 1, this.levelSize);
 	}
 
 	public GenerateObstacles() {
@@ -107,14 +83,14 @@ export default class TopDownBattleLevelGenerator extends AirshipBehaviour {
 				foundSpot = this.CanPlaceObstacle(startingPosition, blockSize/2);
 				count++;
 			}while(!foundSpot && count < 50);
-			this.CreateBlock(startingPosition, blockSize);
+			this.CreateBlock(startingPosition, Vector3.one.mul(blockSize));
 		}
 	}
 
-	private CreateBlock(pos: Vector3, size: number){
+	private CreateBlock(pos: Vector3, size: Vector3){
 		//Create the object in the scene
 		let wall = Object.Instantiate(this.wallTemplate, pos, Quaternion.identity);
-		wall.transform.localScale = Vector3.one.mul(size);
+		wall.transform.localScale = size;
 		//Sync the creation to all the clients
 		NetworkUtil.Spawn(wall);
 	}

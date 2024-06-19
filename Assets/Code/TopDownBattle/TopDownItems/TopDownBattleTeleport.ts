@@ -2,22 +2,30 @@ import TopDownBattleItem from "./TopDownBattleItem"
 
 export default class TopDownBattleTeleport extends TopDownBattleItem{
     public teleportDistance = 3;
-    public UseClient(): undefined {
 
+    public UseClient(down:Boolean): undefined {
+        if(down){
+            this.UseServer(down, this.character.lookVector);
+        }
     }
 
-    public UseServer(): undefined {
-        //Find a valid teleport position
-        let lookDir = this.character.movement.GetLookVector().normalized;
-        let hitInfo = Physics.Raycast(
-            this.character.movement.transform.position.add(new Vector3(0,this.character.movement.currentCharacterHeight/2,0)), 
-            new Vector3(lookDir.x, 0, lookDir.z).normalized,
-            this.teleportDistance,
-            this.character.movement.groundCollisionLayerMask.value);
+    public UseServer(down:Boolean, lookVector: Vector3): undefined {
+        if(!down){
+            return;
+        }
 
-        this.character.movement.Teleport(
-            hitInfo[0] ? 
-            hitInfo[1] : 
-            this.character.movement.transform.position.add(lookDir).mul(this.teleportDistance));
+        let movement = this.character.character.movement;
+        //Find a valid teleport position
+        let heightOffset = new Vector3(0,movement.currentCharacterHeight/2,0);
+        let hitInfo = Physics.Raycast(
+            movement.transform.position.add(heightOffset), 
+            new Vector3(lookVector.x, 0, lookVector.z).normalized,
+            this.teleportDistance,
+            movement.groundCollisionLayerMask.value);
+
+        let teleportPos =  hitInfo[0] ? hitInfo[1].sub(lookVector.mul(movement.characterRadius)) : 
+                             movement.transform.position.add(lookVector.mul(this.teleportDistance))
+        print("teleporint from: " + movement.transform.position + " to: " + teleportPos + " loking: " + lookVector);
+        movement.Teleport(teleportPos);
     }
 }

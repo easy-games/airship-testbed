@@ -422,8 +422,17 @@ PrefabInstance:
       addedObject: {fileID: 5729406980951111535}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8616685848737228372, guid: f9e63d29a868542e585dd0c6a90df6f7, type: 3}
-      insertIndex: -1
+      insertIndex: 1
       addedObject: {fileID: 6902012742175203025}
+    - targetCorrespondingSourceObject: {fileID: 8616685848737228372, guid: f9e63d29a868542e585dd0c6a90df6f7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8069654889091158108}
+    - targetCorrespondingSourceObject: {fileID: 8616685848737228372, guid: f9e63d29a868542e585dd0c6a90df6f7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8478532343261955203}
+    - targetCorrespondingSourceObject: {fileID: 8616685848737228372, guid: f9e63d29a868542e585dd0c6a90df6f7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8921236530748964235}
   m_SourcePrefab: {fileID: 100100000, guid: f9e63d29a868542e585dd0c6a90df6f7, type: 3}
 --- !u!4 &2138307597597709851 stripped
 Transform:
@@ -498,6 +507,21 @@ MonoBehaviour:
       serializedValue: 2
       serializedObject: {fileID: 0}
       modified: 0
+    - name: lookVector
+      type: Vector3
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: '{"x":0.0,"y":0.0,"z":0.0}'
+      serializedObject: {fileID: 0}
+      modified: 0
     - name: character
       type: AirshipBehaviour
       objectType: Character
@@ -513,6 +537,102 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 8235582675970913176}
       modified: 1
+    displayName: 
+  contextOverwritten: 0
+--- !u!114 &8069654889091158108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7829558420882853935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scriptFile: {fileID: -9109590464283961657, guid: 767418909068e364c9f3c8586a5530f0, type: 3}
+  m_fileFullPath: Assets/Code/TopDownBattle/TopDownItems/TopDownBattleItemManager.lua
+  m_error: 0
+  m_yielded: 0
+  m_canResume: 0
+  m_asyncYield: 0
+  m_onUpdateHandle: -1
+  m_onLateUpdateHandle: -1
+  m_shortFileName: 
+  m_metadata:
+    name: TopDownBattleItemManager
+    decorators: []
+    properties: []
+    displayName: 
+  contextOverwritten: 0
+--- !u!114 &8478532343261955203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7829558420882853935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scriptFile: {fileID: 8658607017441322102, guid: eb1665edb979c2841aeb90f0329a8137, type: 3}
+  m_fileFullPath: Assets/Code/TopDownBattle/TopDownItems/TopDownBattleEnergyAttack.lua
+  m_error: 0
+  m_yielded: 0
+  m_canResume: 0
+  m_asyncYield: 0
+  m_onUpdateHandle: -1
+  m_onLateUpdateHandle: -1
+  m_shortFileName: 
+  m_metadata:
+    name: TopDownBattleEnergyAttack
+    decorators: []
+    properties: []
+    displayName: 
+  contextOverwritten: 0
+--- !u!114 &8921236530748964235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7829558420882853935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scriptFile: {fileID: -7968250874214350231, guid: 8da1819dc86cf72408b800d08230d16b, type: 3}
+  m_fileFullPath: Assets/Code/TopDownBattle/TopDownItems/TopDownBattleTeleport.lua
+  m_error: 0
+  m_yielded: 0
+  m_canResume: 0
+  m_asyncYield: 0
+  m_onUpdateHandle: -1
+  m_onLateUpdateHandle: -1
+  m_shortFileName: 
+  m_metadata:
+    name: TopDownBattleTeleport
+    decorators: []
+    properties:
+    - name: teleportDistance
+      type: number
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 3
+      serializedObject: {fileID: 0}
+      modified: 0
     displayName: 
   contextOverwritten: 0
 --- !u!114 &8235582675970913176 stripped

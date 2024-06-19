@@ -1,8 +1,12 @@
-import Character from "@Easy/Core/Shared/Character/Character";
+import TopDownBattleCharacter from "../TopDownBattleCharacter";
 
 export default abstract class TopDownBattleItem extends AirshipBehaviour{
-    public character!: Character;
+    protected character!: TopDownBattleCharacter;
 
-    public abstract UseClient(): undefined;
-    public abstract UseServer(): undefined;
+    public Awake(): void {
+        this.character = this.gameObject.GetAirshipComponent<TopDownBattleCharacter>()!;
+    }
+
+    public abstract UseClient(down:Boolean): undefined;
+    public abstract UseServer(down:Boolean, lookVector: Vector3): undefined;
 }

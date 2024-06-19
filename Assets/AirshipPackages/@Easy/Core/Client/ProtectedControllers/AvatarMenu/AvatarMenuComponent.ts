@@ -253,15 +253,6 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 				this.mainMenu?.avatarView?.CameraFocusSlot(this.currentFocusedSlot);
 			}
 		});
-
-		//Make sure no lights effect this scene
-		// let lights = GameObject.FindObjectsByType<Light>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-		// for(let i=0; i<lights.Length; i++){
-		// 	let light = lights.GetValue(i);
-		// 	if(light){
-		// 		light.cullingMask &= ~(1 << Layer.AVATAR_EDITOR);
-		// 	}
-		// }
 	}
 
 	override ClosePage(instant?: boolean): void {
