@@ -2073,6 +2073,7 @@ interface GameObjectConstructor {
 		includeInactive: FindObjectsInactive,
 		sortMode: FindObjectsSortMode,
 	): CSArray<T>;
+	FindObjectsByType<T extends Component>(sortMode: FindObjectsSortMode): CSArray<T>;
 	FindAnyObjectByType<T extends Component>(): T;
 	FindGameObjectsWithTag(tag: string): CSArray<GameObject>;
 	FindGameObjectWithTag(tag: string): GameObject;
