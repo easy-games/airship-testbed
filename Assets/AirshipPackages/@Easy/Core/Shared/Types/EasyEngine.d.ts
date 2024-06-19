@@ -122,6 +122,12 @@ interface CharacterMovement extends Component {
 	disableInput: boolean;
 
 	animationHelper: CharacterAnimationHelper;
+
+	standingCharacterHeight: number;
+	currentCharacterHeight: number;
+	characterRadius: number;
+	characterHalfExtents: Vector3;
+	groundCollisionLayerMask: LayerMask;
 }
 
 interface Nullable<T> {
@@ -466,6 +472,7 @@ interface LayerMask {
 	NameToLayer(layerName: string): number;
 	LayerToName(layer: number): string;
 	InvertMask(mask: number): number;
+	value: number;
 }
 declare const LayerMask: LayerMask;
 
