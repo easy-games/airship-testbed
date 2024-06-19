@@ -553,7 +553,7 @@ export class PlayersSingleton implements OnStart {
 			"Assets/AirshipPackages/@Easy/Core/Prefabs/Images/ProfilePictures/PurpleDefaultProfilePicture.png",
 		];
 		let index = num % files.size();
-		let path = files[math.random(0, index)];
+		let path = files[index];
 		return AssetCache.LoadAsset(path);
 	}
 
