@@ -536,6 +536,24 @@ export class PlayersSingleton implements OnStart {
 		return undefined;
 	}
 
+	/**
+	 * @internal
+	 * @param userId
+	 * @returns
+	 */
+	public GetDefaultProfilePictureFromUserId(userId: string): Texture2D {
+		const [num] = string.byte(userId);
+		let files = [
+			"Assets/AirshipPackages/@Easy/Core/Prefabs/Images/ProfilePictures/BlueDefaultProfilePicture.png",
+			"Assets/AirshipPackages/@Easy/Core/Prefabs/Images/ProfilePictures/RedDefaultProfilePicture.png",
+			"Assets/AirshipPackages/@Easy/Core/Prefabs/Images/ProfilePictures/GreenDefaultProfilePicture.png",
+			"Assets/AirshipPackages/@Easy/Core/Prefabs/Images/ProfilePictures/PurpleDefaultProfilePicture.png",
+		];
+		let index = num % files.size();
+		let path = files[math.random(0, index)];
+		return AssetCache.LoadAsset(path);
+	}
+
 	public async GetProfilePictureTextureFromImageIdAsync(
 		userId: string,
 		imageId: string | undefined,
@@ -543,9 +561,7 @@ export class PlayersSingleton implements OnStart {
 		return new Promise((resolve, reject) => {
 			if (imageId === undefined || imageId === "") {
 				this.cachedProfilePictureTextures.delete(userId);
-				const defaultTexture = AssetCache.LoadAssetIfExists<Texture2D>(
-					"Assets/AirshipPackages/@Easy/Core/Prefabs/Images/ProfilePictures/DefaultProfilePicture.png",
-				);
+				const defaultTexture = this.GetDefaultProfilePictureFromUserId(userId);
 				resolve(defaultTexture);
 				return;
 			}
@@ -607,9 +623,7 @@ export class PlayersSingleton implements OnStart {
 				}
 			}
 
-			const texture = AssetCache.LoadAssetIfExists<Texture2D>(
-				"Assets/AirshipPackages/@Easy/Core/Prefabs/Images/ProfilePictures/DefaultProfilePicture.png",
-			);
+			const texture = this.GetDefaultProfilePictureFromUserId(userId);
 			resolve(texture);
 		});
 	}

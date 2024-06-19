@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: bf445b97892604efa903cfaa4a79758d
+guid: 4fd4dc8396cc443469bad50163aa51d9
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -149,5 +149,5 @@ TextureImporter:
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
-  assetBundleName: '@easy/core_shared/resources'
+  assetBundleName: 
   assetBundleVariant: 

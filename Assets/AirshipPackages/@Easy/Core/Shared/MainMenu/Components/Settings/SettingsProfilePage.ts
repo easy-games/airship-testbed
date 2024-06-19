@@ -1,7 +1,6 @@
 import { ChangeUsernameController } from "@Easy/Core/Client/ProtectedControllers/Social/ChangeUsernameController";
 import { UserController } from "@Easy/Core/Client/ProtectedControllers/User/UserController";
 import { Airship } from "@Easy/Core/Shared/Airship";
-import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Protected } from "@Easy/Core/Shared/Protected";
@@ -97,9 +96,7 @@ export default class SettingsProfilePage extends AirshipBehaviour {
 			this.profileImagePreview2.texture = texture;
 			this.profileImagePreview3.texture = texture;
 		} else {
-			const defaultTexture = AssetCache.LoadAsset<Texture2D>(
-				"Assets/AirshipPackages/@Easy/Core/Prefabs/Images/ProfilePictures/DefaultProfilePicture.png",
-			);
+			const defaultTexture = Airship.players.GetDefaultProfilePictureFromUserId("");
 			this.profileImagePreview1.texture = defaultTexture;
 			this.profileImagePreview2.texture = defaultTexture;
 			this.profileImagePreview3.texture = defaultTexture;
