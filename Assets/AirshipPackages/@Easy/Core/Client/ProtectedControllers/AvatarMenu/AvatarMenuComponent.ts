@@ -134,17 +134,6 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			});
 		}
 
-		//"Enter" should allow you to rename currently selected outfit button
-		const keyboard = new Keyboard();
-		this.bin.Add(keyboard);
-		keyboard.OnKeyDown(Key.Enter, () => {
-			const currentButton = this.outfitBtns[this.currentUserOutfitIndex];
-			if (!currentButton) return;
-
-			const name = currentButton.gameObject.GetAirshipComponentInChildren<OutfitButtonNameComponent>();
-			name?.StartRename();
-		});
-
 		//Hookup general buttons
 		let button = this.refs?.GetValue<RectTransform>(this.generalHookupKey, "AvatarInteractionBtn").gameObject;
 		if (button) {
@@ -216,6 +205,19 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		super.OpenPage(params);
 
 		this.bin.Add(Dependency<MainMenuSingleton>().socialMenuModifier.Add({ hidden: true }));
+
+		//"Enter" should allow you to rename currently selected outfit button
+		const keyboard = new Keyboard();
+		this.bin.Add(keyboard);
+		keyboard.OnKeyDown(Key.Enter, (event) => {
+			if (event.uiProcessed) return;
+
+			const currentButton = this.outfitBtns[this.currentUserOutfitIndex];
+			if (!currentButton) return;
+
+			const name = currentButton.gameObject.GetAirshipComponentInChildren<OutfitButtonNameComponent>();
+			name?.StartRename();
+		});
 
 		if (Game.IsPortrait()) {
 			this.bin.Add(Dependency<MainMenuSingleton>().navbarModifier.Add({ hidden: true }));
@@ -524,13 +526,13 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.saveBtn?.SetDisabled(false);
 
 		//Make these objects not use baked lighting settings
-		if(acc){
-			for(let i=0; i<acc.renderers.Length; i++){
+		if (acc) {
+			for (let i = 0; i < acc.renderers.Length; i++) {
 				let ren = acc.renderers.GetValue(i);
-				if(ren){
+				if (ren) {
 					ren.lightProbeUsage = LightProbeUsage.CustomProvided;
 				}
-			};
+			}
 		}
 	}
 
@@ -590,7 +592,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	private LoadAllOutfits() {
 		this.Log("LoadAllOutfits");
-		AvatarPlatformAPI.GetAllOutfits().then((outfits)=>{
+		AvatarPlatformAPI.GetAllOutfits().then((outfits) => {
 			this.outfits = outfits;
 			const outfitSize = this.outfits ? this.outfits.size() : 0;
 			if (outfitSize <= 0) {
@@ -615,7 +617,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 						if (outfit.name.match("Default%d+")[0]) continue;
 
 						// Set name on outfits
-						const nameComp = this.outfitBtns[i].gameObject.GetAirshipComponentInChildren<OutfitButtonNameComponent>();
+						const nameComp =
+							this.outfitBtns[i].gameObject.GetAirshipComponentInChildren<OutfitButtonNameComponent>();
 						if (!nameComp) continue;
 
 						nameComp.UpdateDisplayName(outfit.name);
@@ -623,7 +626,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 				}
 			}
 
-			AvatarPlatformAPI.GetEquippedOutfit().then((equippedOutfit)=>{
+			AvatarPlatformAPI.GetEquippedOutfit().then((equippedOutfit) => {
 				if (equippedOutfit && this.outfits) {
 					let i = 0;
 					for (let outfit of this.outfits) {
@@ -653,11 +656,11 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			this.outfitBtns[i].SetSelected(i === index);
 		}
 		this.currentUserOutfit = this.outfits[index];
-		AvatarPlatformAPI.EquipAvatarOutfit(this.currentUserOutfit.outfitId).then(()=>{
+		AvatarPlatformAPI.EquipAvatarOutfit(this.currentUserOutfit.outfitId).then(() => {
 			if (Game.coreContext === CoreContext.GAME) {
 				CoreNetwork.ClientToServer.ChangedOutfit.client.FireServer();
 			}
-		})
+		});
 
 		this.LoadCurrentOutfit();
 	}
@@ -670,7 +673,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 		const relevantOutfit = this.outfits[index];
 		if (relevantOutfit.name === newName) return;
-		
+
 		AvatarPlatformAPI.RenameOutfit(relevantOutfit.outfitId, newName).catch((e) => {
 			print("Failed to rename outfit.");
 			print(e);
