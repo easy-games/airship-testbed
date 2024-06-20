@@ -24074,6 +24074,9 @@ interface EasyMotion extends MonoBehaviour {
     angularRotationSpeed: Vector3;
     scale: boolean;
     scaleSpeed: Vector3;
+    sineMotion: boolean;
+    sineMod: number;
+    sineOffset: number;
 
 
 
