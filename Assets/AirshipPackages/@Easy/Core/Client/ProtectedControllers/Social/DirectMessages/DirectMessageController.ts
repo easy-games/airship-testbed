@@ -58,7 +58,7 @@ export class DirectMessageController implements OnStart {
 	public onPartyMessageReceived = new Signal<DirectMessage>();
 	private partyUnreadMessageCount = 0;
 
-	private xPos = -320;
+	private xPos = 0;
 	private yPos = -479;
 
 	private loadedMessagesFromUserIdFromDisk = new Set<string>();
