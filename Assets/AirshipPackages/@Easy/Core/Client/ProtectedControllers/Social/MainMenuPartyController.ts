@@ -26,6 +26,7 @@ export class MainMenuPartyController implements OnStart {
 	public onPartyUpdated = new Signal<[newParty: Party | undefined, oldParty: Party | undefined]>();
 
 	private partyCard!: PartyCard;
+	private emptyPartyGO!: GameObject;
 
 	private partyMemberPrefab = AssetBridge.Instance.LoadAsset<GameObject>(
 		"AirshipPackages/@Easy/Core/Prefabs/UI/MainMenu/PartyMember.prefab",
@@ -91,6 +92,9 @@ export class MainMenuPartyController implements OnStart {
 	}
 
 	private Setup(): void {
+		this.partyCard = this.mainMenuController.refs.GetValue("Social", "PartyCard").GetAirshipComponent<PartyCard>()!;
+		this.emptyPartyGO = this.mainMenuController.refs.GetValue("Social", "EmptyPartyCard");
+
 		this.UpdateParty();
 
 		Dependency<AuthController>()
@@ -112,8 +116,6 @@ export class MainMenuPartyController implements OnStart {
 			Dependency<MainMenuAddFriendsController>().Open();
 		});
 
-		this.partyCard = this.mainMenuController.refs.GetValue("Social", "PartyCard").GetAirshipComponent<PartyCard>()!;
-
 		// const profilePictureButton = this.mainMenuController.refs.GetValue("UI", "ProfilePictureButton");
 		// CoreUI.SetupButton(profilePictureButton);
 		// CanvasAPI.OnClickEvent(profilePictureButton, () => {
@@ -122,18 +124,13 @@ export class MainMenuPartyController implements OnStart {
 	}
 
 	private UpdateParty(): void {
-		if (this.party === undefined) {
-			const partyContent = this.mainMenuController.refs.GetValue("Social", "PartyContent");
-			partyContent.ClearChildren();
-
-			const partyTitle = this.mainMenuController.refs.GetValue("Social", "PartyTitle") as TMP_Text;
-			partyTitle.text = `(0/8)`;
-
-			const leaveButton = this.mainMenuController.refs.GetValue("Social", "LeavePartyButton");
-			leaveButton.SetActive(false);
-
+		if (this.party === undefined || this.party.members.size() <= 1) {
+			this.partyCard.gameObject.SetActive(false);
+			this.emptyPartyGO.SetActive(true);
 			return;
 		}
+		this.partyCard.gameObject.SetActive(true);
+		this.emptyPartyGO.SetActive(false);
 
 		const partyContent = this.mainMenuController.refs.GetValue("Social", "PartyContent");
 		const partyMemberUids = this.party.members.map((m) => m.uid);

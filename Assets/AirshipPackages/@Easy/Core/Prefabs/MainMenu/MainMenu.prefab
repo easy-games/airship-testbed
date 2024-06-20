@@ -1111,6 +1111,8 @@ MonoBehaviour:
       value: {fileID: 3921286302442523531}
     - key: PartyCard
       value: {fileID: 7214515394086894622}
+    - key: EmptyPartyCard
+      value: {fileID: 8109965523539087801}
   - key: Avatar
     keyValuePairs:
     - key: Avatar3DSceneTemplate
@@ -2400,6 +2402,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4254412118351244043, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 4305791407394552997, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
       propertyPath: m_Material
       value: 
@@ -2761,6 +2767,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &8109965523539087801 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8704029679076033836, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
+  m_PrefabInstance: {fileID: 596320459167798421}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1246482127113989033
 PrefabInstance:
   m_ObjectHideFlags: 0
