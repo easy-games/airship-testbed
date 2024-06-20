@@ -237,6 +237,18 @@ export class DirectMessageController implements OnStart {
 			}
 			this.inputField!.ActivateInputField();
 		});
+
+		const directMessagesWindow = this.windowGo!.GetAirshipComponent<DirectMessagesWindow>()!;
+		this.partyController.onPartyUpdated.Connect((party, oldParty) => {
+			directMessagesWindow.UpdatePartyMembers(party?.members ?? []);
+			if (!party || party.members.size() <= 1) {
+				this.Close();
+				return;
+			}
+			if (party?.partyId !== oldParty?.partyId) {
+				this.OpenParty();
+			}
+		});
 	}
 
 	public GetFriendLastMessaged(): UserStatusData | undefined {
@@ -434,15 +446,6 @@ export class DirectMessageController implements OnStart {
 		for (let msg of messages) {
 			this.RenderChatMessage(msg, false, true);
 		}
-
-		this.openWindowBin.Add(
-			this.partyController.onPartyUpdated.Connect((party, oldParty) => {
-				directMessagesWindow.UpdatePartyMembers(party?.members ?? []);
-				if (party?.partyId !== oldParty?.partyId) {
-					this.OpenParty();
-				}
-			}),
-		);
 
 		this.partyChatButton.SetUnreadCount(0);
 	}
