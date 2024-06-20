@@ -398,7 +398,6 @@ MonoBehaviour:
   m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/AvatarMenuComponent.lua
   m_error: 0
   m_yielded: 0
-  m_assetPath: Assets/Bundles/@Easy/Core/Client/Resources/TS/MainMenuControllers/AvatarMenu/AvatarMenuComponent.lua
   m_canResume: 0
   m_asyncYield: 0
   m_onUpdateHandle: -1
@@ -417,6 +416,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: Avatar
@@ -431,6 +431,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators:
       - name: Header
         parameters:
@@ -449,6 +450,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators:
       - name: Header
         parameters:
@@ -467,6 +469,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -481,6 +484,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -495,6 +499,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -509,6 +514,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -523,6 +529,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -537,6 +544,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -551,6 +559,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -565,6 +574,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators:
       - name: Header
         parameters:
@@ -583,6 +593,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -597,6 +608,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -611,6 +623,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -956,7 +969,6 @@ MonoBehaviour:
   m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipButton.lua
   m_error: 0
   m_yielded: 0
-  m_assetPath: 
   m_canResume: 0
   m_asyncYield: 0
   m_onUpdateHandle: -1
@@ -966,24 +978,6 @@ MonoBehaviour:
     name: AirshipButton
     decorators: []
     properties:
-    - name: clickType
-      type: number
-      objectType: 
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators:
-      - name: Header
-        parameters:
-        - type: string
-          serializedValue: '"Variables"'
-      nullable: 0
-      serializedValue: 1
-      serializedObject: {fileID: 0}
-      modified: 1
     - name: loadingIndicator
       type: object
       objectType: GameObject
@@ -993,6 +987,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -1007,6 +1002,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators:
       - name: Header
         parameters:
@@ -1014,6 +1010,44 @@ MonoBehaviour:
           serializedValue: '"Optional Variables"'
       nullable: 0
       serializedValue: '#2E3035'
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: clickEffect
+      type: IntEnum
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"Variables"'
+      nullable: 0
+      serializedValue: 1
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: underlineOnHover
+      type: boolean
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators:
+      - name: Tooltip
+        parameters:
+        - type: string
+          serializedValue: '"Sets child text to underline on mouse hover."'
+      nullable: 0
+      serializedValue: 
       serializedObject: {fileID: 0}
       modified: 0
     displayName: 
@@ -1526,7 +1560,6 @@ MonoBehaviour:
   m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipButton.lua
   m_error: 0
   m_yielded: 0
-  m_assetPath: 
   m_canResume: 0
   m_asyncYield: 0
   m_onUpdateHandle: -1
@@ -1536,24 +1569,6 @@ MonoBehaviour:
     name: AirshipButton
     decorators: []
     properties:
-    - name: clickType
-      type: number
-      objectType: 
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators:
-      - name: Header
-        parameters:
-        - type: string
-          serializedValue: '"Variables"'
-      nullable: 0
-      serializedValue: 1
-      serializedObject: {fileID: 0}
-      modified: 1
     - name: loadingIndicator
       type: object
       objectType: GameObject
@@ -1563,6 +1578,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -1577,6 +1593,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators:
       - name: Header
         parameters:
@@ -1584,6 +1601,44 @@ MonoBehaviour:
           serializedValue: '"Optional Variables"'
       nullable: 0
       serializedValue: '#2E3035'
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: clickEffect
+      type: IntEnum
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"Variables"'
+      nullable: 0
+      serializedValue: 1
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: underlineOnHover
+      type: boolean
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators:
+      - name: Tooltip
+        parameters:
+        - type: string
+          serializedValue: '"Sets child text to underline on mouse hover."'
+      nullable: 0
+      serializedValue: 
       serializedObject: {fileID: 0}
       modified: 0
     displayName: 
@@ -2927,7 +2982,6 @@ MonoBehaviour:
   m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/AvatarMenuProfileComponent.lua
   m_error: 0
   m_yielded: 0
-  m_assetPath: 
   m_canResume: 0
   m_asyncYield: 0
   m_onUpdateHandle: -1
@@ -2946,6 +3000,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -2960,6 +3015,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -2974,6 +3030,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -5522,7 +5579,7 @@ PrefabInstance:
       objectReference: {fileID: 300966915287506605}
     - target: {fileID: 5887675340776634180, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
       propertyPath: m_text
-      value: Outfit 5
+      value: "Outfit 1\u200B"
       objectReference: {fileID: 0}
     - target: {fileID: 6002481594607549612, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
       propertyPath: m_Name
@@ -6183,7 +6240,7 @@ PrefabInstance:
       objectReference: {fileID: 951057039681615018}
     - target: {fileID: 5887675340776634180, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
       propertyPath: m_text
-      value: Outfit 4
+      value: "Outfit 1\u200B"
       objectReference: {fileID: 0}
     - target: {fileID: 6002481594607549612, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
       propertyPath: m_Name
@@ -6941,7 +6998,7 @@ PrefabInstance:
       objectReference: {fileID: 786484508648410916}
     - target: {fileID: 5887675340776634180, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
       propertyPath: m_text
-      value: Outfit 3
+      value: "Outfit 1\u200B"
       objectReference: {fileID: 0}
     - target: {fileID: 6002481594607549612, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
       propertyPath: m_Name
@@ -8824,6 +8881,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4775447045803972303}
     m_Modifications:
+    - target: {fileID: 192098170603919343, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+      propertyPath: m_CustomCaretColor
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 192098170603919343, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+      propertyPath: m_SelectionColor.a
+      value: 0.6392157
+      objectReference: {fileID: 0}
+    - target: {fileID: 192098170603919343, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+      propertyPath: m_SelectionColor.b
+      value: 0.43454072
+      objectReference: {fileID: 0}
+    - target: {fileID: 192098170603919343, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+      propertyPath: m_SelectionColor.g
+      value: 0.704059
+      objectReference: {fileID: 0}
+    - target: {fileID: 192098170603919343, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+      propertyPath: m_SelectionColor.r
+      value: 0.990566
+      objectReference: {fileID: 0}
     - target: {fileID: 323223754123094385, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -8930,7 +9007,7 @@ PrefabInstance:
       objectReference: {fileID: 2901106012505215480}
     - target: {fileID: 5887675340776634180, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
       propertyPath: m_text
-      value: Outfit 2
+      value: "Outfit 1\u200B"
       objectReference: {fileID: 0}
     - target: {fileID: 6002481594607549612, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
       propertyPath: m_Name
@@ -8979,7 +9056,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchorMin.x
@@ -8987,15 +9064,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_LocalPosition.x
@@ -9027,7 +9104,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 256
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -10087,7 +10164,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchorMin.x
@@ -10095,15 +10172,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_LocalPosition.x
@@ -11097,18 +11174,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1476760744204482235, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
-      propertyPath: m_Maskable
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3416049645295338797, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
-      propertyPath: m_metadata.properties.Array.data[3].modified
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3416049645295338797, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
-      propertyPath: m_metadata.properties.Array.data[3].serializedObject
-      value: 
-      objectReference: {fileID: 5360382975707604610}
     - target: {fileID: 6002481594607549612, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
       propertyPath: m_Name
       value: OutfitBtn_Slot0
@@ -11118,17 +11183,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
---- !u!114 &5360382975707604610 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1476760744204482235, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
-  m_PrefabInstance: {fileID: 6781688733735768121}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &6512547775290243400 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 323223754123094385, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
@@ -11156,7 +11210,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchorMin.x
@@ -11164,15 +11218,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_LocalPosition.x
@@ -11204,7 +11258,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 384
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -11652,7 +11706,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchorMin.x
@@ -11660,15 +11714,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_LocalPosition.x
@@ -11700,7 +11754,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 640
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -12061,7 +12115,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchorMin.x
@@ -12069,15 +12123,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_LocalPosition.x
@@ -12109,7 +12163,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 512
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -12175,7 +12229,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchorMin.x
@@ -12183,15 +12237,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_LocalPosition.x
@@ -12223,7 +12277,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 128
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchoredPosition.y
