@@ -19,7 +19,6 @@ export default class PartyCard extends AirshipBehaviour {
 
 	override Start(): void {
 		this.layoutElement.preferredHeight = 84;
-		this.layoutElement.gameObject.GetComponent<ImageWithRoundedCorners>()?.Refresh();
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnHoverEvent(this.gameButton.gameObject, (hov) => {
 				this.gameArrow.transform
