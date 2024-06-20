@@ -1205,8 +1205,6 @@ GameObject:
   - component: {fileID: 5838268274975822121}
   - component: {fileID: -98370938496583557}
   - component: {fileID: 5420625271334097286}
-  - component: {fileID: 7679537615927596659}
-  - component: {fileID: 3386317269300102083}
   - component: {fileID: -6219229748269268009}
   - component: {fileID: 5519949438957097557}
   - component: {fileID: 1279903852990399244}
@@ -1556,7 +1554,7 @@ MonoBehaviour:
   directionalLerpMod: 12
   particleMaxDistance: 25
   blendSpeed: 10
-  idleRectionLength: 5
+  idleRectionLength: 15
 --- !u!114 &7124091312930647041
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1667,8 +1665,8 @@ MonoBehaviour:
   rig: {fileID: 1646087756103719487}
   meshCombiner: {fileID: 2932437047851003139}
   firstPerson: 0
-  firstPersonLayer: 0
-  thirdPersonLayer: 0
+  firstPersonLayer: 7
+  thirdPersonLayer: 3
 --- !u!114 &5838268274975822121
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1704,8 +1702,6 @@ MonoBehaviour:
   - {fileID: 7931457288082626079}
   - {fileID: 5838268274975822121}
   - {fileID: 5420625271334097286}
-  - {fileID: 7679537615927596659}
-  - {fileID: 3386317269300102083}
   - {fileID: 1279903852990399244}
   <SerializedRootNetworkBehaviour>k__BackingField: {fileID: 0}
   <NestedRootNetworkBehaviours>k__BackingField: []
@@ -1782,42 +1778,6 @@ MonoBehaviour:
     X: 0
     Y: 0
     Z: 0
---- !u!114 &7679537615927596659
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8616685848737228372}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40bcde17fa5e03f44b87f9963ac281b3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _componentIndexCache: 3
-  _addedNetworkObject: {fileID: -98370938496583557}
-  _networkObjectCache: {fileID: -98370938496583557}
-  _maximumSimultaneousHits: 16
-  _historyDuration: 0.5
-  _additionalSize: 0.1
---- !u!114 &3386317269300102083
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8616685848737228372}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3dc97a8b9e628044e83004c93095c14d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _componentIndexCache: 4
-  _addedNetworkObject: {fileID: -98370938496583557}
-  _networkObjectCache: {fileID: -98370938496583557}
-  _maximumSimultaneousHits: 16
-  _historyDuration: 0.5
-  _additionalSize: 0.1
 --- !u!114 &-6219229748269268009
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1869,7 +1829,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6dcb9fd44a7969d4f9cfbc130479b3ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 5
+  _componentIndexCache: 3
   _addedNetworkObject: {fileID: -98370938496583557}
   _networkObjectCache: {fileID: -98370938496583557}
   _graphicalObject: {fileID: 7911948219130051474}
