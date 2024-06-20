@@ -31,6 +31,11 @@ export default class SocialNotificationComponent extends AirshipBehaviour {
 			});
 			this.bin.Add(() => Bridge.DisconnectEvent(conn));
 		}
+
+		// animation
+		let inner = this.transform.GetChild(0) as RectTransform;
+		inner.anchoredPosition = new Vector2(-20, 0);
+		inner.TweenAnchoredPositionX(0, 0.15).SetEaseBounceOut();
 	}
 
 	public OnDisable(): void {

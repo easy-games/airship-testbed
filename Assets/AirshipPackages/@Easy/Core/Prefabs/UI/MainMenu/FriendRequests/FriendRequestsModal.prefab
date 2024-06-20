@@ -448,7 +448,6 @@ MonoBehaviour:
   m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/FriendRequest/FriendRequestModal.lua
   m_error: 0
   m_yielded: 0
-  m_assetPath: 
   m_canResume: 0
   m_asyncYield: 0
   m_onUpdateHandle: -1
@@ -467,6 +466,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -481,6 +481,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -632,11 +633,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3341327002022934820}
     m_Modifications:
-    - target: {fileID: 6397340159967196693, guid: 21da7d50b019240928ae085f3c86bbac, type: 3}
+    - target: {fileID: 5636492973887253574, guid: 21da7d50b019240928ae085f3c86bbac, type: 3}
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 7266310771104509048, guid: 21da7d50b019240928ae085f3c86bbac, type: 3}
+    - target: {fileID: 6397340159967196693, guid: 21da7d50b019240928ae085f3c86bbac, type: 3}
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 0}

@@ -80,7 +80,9 @@ export class MainMenuPartyController implements OnStart {
 					}
 				},
 			);
-			AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/FriendRequest.wav");
+			AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/FriendRequest.wav", {
+				volumeScale: 0.5,
+			});
 			if (Game.coreContext === CoreContext.GAME) {
 				Game.localPlayer.SendMessage(
 					ChatColor.Yellow(data.members[0].username) + ChatColor.Gray(" invited you to their party."),

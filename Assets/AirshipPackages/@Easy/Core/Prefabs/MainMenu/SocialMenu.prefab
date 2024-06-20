@@ -1026,7 +1026,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3377400923801360058}
-  - {fileID: 2276800367215619153}
+  - {fileID: 411714957947943442}
   - {fileID: 5932243349685106212}
   - {fileID: 8648973646778911574}
   - {fileID: 1464399878247966579}
@@ -5750,11 +5750,9 @@ GameObject:
   - component: {fileID: 2276800367215619153}
   - component: {fileID: 1525777100514049007}
   - component: {fileID: 4314307989788269644}
-  - component: {fileID: 5591964319162049629}
-  - component: {fileID: 3713087490838600855}
   - component: {fileID: 5163487470730408897}
   m_Layer: 0
-  m_Name: SocialNotification
+  m_Name: Inner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5767,7 +5765,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6167417334339908670}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -5777,13 +5775,13 @@ RectTransform:
   - {fileID: 442229014340938048}
   - {fileID: 4839706646942285411}
   - {fileID: 2366866637576464169}
-  m_Father: {fileID: 124847073812640852}
+  m_Father: {fileID: 411714957947943442}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_SizeDelta: {x: 300, y: 75}
+  m_Pivot: {x: 1, y: 1}
 --- !u!222 &1525777100514049007
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5822,128 +5820,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &5591964319162049629
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6167417334339908670}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IgnoreLayout: 0
-  m_MinWidth: -1
-  m_MinHeight: -1
-  m_PreferredWidth: -1
-  m_PreferredHeight: 75
-  m_FlexibleWidth: -1
-  m_FlexibleHeight: -1
-  m_LayoutPriority: 1
---- !u!114 &3713087490838600855
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6167417334339908670}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  scriptFile: {fileID: -6161703700367286607, guid: 3f722dd1de9616b4997e74580d8e44e5, type: 3}
-  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/SocialNotificationComponent.lua
-  m_error: 0
-  m_yielded: 0
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
-    name: SocialNotificationComponent
-    decorators: []
-    properties:
-    - name: titleText
-      type: object
-      objectType: TMP_Text
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 3430775301857917194}
-      modified: 1
-    - name: userImage
-      type: object
-      objectType: Image
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 3175722008528629696}
-      modified: 1
-    - name: usernameText
-      type: object
-      objectType: TMP_Text
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 5272469157353754561}
-      modified: 1
-    - name: acceptButton
-      type: object
-      objectType: Button
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 5253802894590123081}
-      modified: 1
-    - name: declineButton
-      type: object
-      objectType: Button
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 4812589028008682264}
-      modified: 1
-    displayName: 
-  contextOverwritten: 0
 --- !u!114 &5163487470730408897
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7462,6 +7338,166 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &8368509059715376436
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 411714957947943442}
+  - component: {fileID: 1508304112025309020}
+  - component: {fileID: 363096197156107246}
+  m_Layer: 0
+  m_Name: SocialNotification
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &411714957947943442
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8368509059715376436}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2276800367215619153}
+  m_Father: {fileID: 124847073812640852}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 1}
+--- !u!114 &1508304112025309020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8368509059715376436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: -1
+  m_PreferredHeight: 75
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
+--- !u!114 &363096197156107246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8368509059715376436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scriptFile: {fileID: -6161703700367286607, guid: 3f722dd1de9616b4997e74580d8e44e5, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/SocialNotificationComponent.lua
+  m_error: 0
+  m_yielded: 0
+  m_canResume: 0
+  m_asyncYield: 0
+  m_onUpdateHandle: -1
+  m_onLateUpdateHandle: -1
+  m_shortFileName: 
+  m_metadata:
+    name: SocialNotificationComponent
+    decorators: []
+    properties:
+    - name: titleText
+      type: object
+      objectType: TMP_Text
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 3430775301857917194}
+      modified: 1
+    - name: userImage
+      type: object
+      objectType: Image
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 3175722008528629696}
+      modified: 1
+    - name: usernameText
+      type: object
+      objectType: TMP_Text
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 5272469157353754561}
+      modified: 1
+    - name: acceptButton
+      type: object
+      objectType: Button
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 5253802894590123081}
+      modified: 1
+    - name: declineButton
+      type: object
+      objectType: Button
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 4812589028008682264}
+      modified: 1
+    displayName: 
+  contextOverwritten: 0
 --- !u!1 &8704029679076033836
 GameObject:
   m_ObjectHideFlags: 0

@@ -74,7 +74,7 @@ export class FriendsController implements OnStart {
 		this.socialNotification.gameObject.SetActive(false);
 		this.socialNotification.gameObject.SetActive(true);
 
-		this.socialNotification.titleText.text = title;
+		this.socialNotification.titleText.text = title.upper();
 		this.socialNotification.usernameText.text = username;
 		this.socialNotification.onResult.Connect(onResult);
 	}
@@ -174,7 +174,9 @@ export class FriendsController implements OnStart {
 				// 	}),
 				// );
 
-				AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/FriendRequest.wav");
+				AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/FriendRequest.wav", {
+					volumeScale: 0.5,
+				});
 				if (Game.coreContext === CoreContext.GAME) {
 					Game.localPlayer.SendMessage(
 						ChatColor.Yellow(foundUser.username) + ChatColor.Gray(" sent you a friend request."),

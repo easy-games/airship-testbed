@@ -1,12 +1,13 @@
 import { FriendsController } from "@Easy/Core/Client/ProtectedControllers//Social/FriendsController";
 import { User } from "@Easy/Core/Client/ProtectedControllers//User/User";
+import { Airship } from "@Easy/Core/Shared/Airship";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
 
 export default class IncomingFriendRequestCard extends AirshipBehaviour {
 	public usernameText!: TMP_Text;
-	public profileImage!: Image;
+	public profileImage!: RawImage;
 	public acceptButton!: Button;
 	public declineButton!: Button;
 
@@ -18,12 +19,13 @@ export default class IncomingFriendRequestCard extends AirshipBehaviour {
 	public Init(user: User): void {
 		this.user = user;
 		this.usernameText.text = user.username;
-		const texture = AssetBridge.Instance.LoadAssetIfExists<Texture2D>(
-			"AirshipPackages/@Easy/Core/Images/ProfilePictures/Dom.png",
-		);
-		if (texture !== undefined) {
-			this.profileImage.sprite = Bridge.MakeSprite(texture);
-		}
+
+		task.spawn(async () => {
+			let texture = await Airship.players.GetProfilePictureTextureFromImageIdAsync(user.uid, user.profileImageId);
+			if (texture) {
+				this.profileImage.texture = texture;
+			}
+		});
 
 		// Accept
 		{
