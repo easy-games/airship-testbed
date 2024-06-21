@@ -198,6 +198,8 @@ export default class Character extends AirshipBehaviour {
 	 * This is useful when you want to broadcast a custom death event with {@link Airship.damage.BroadcastDeath}.
 	 */
 	public SetHealth(health: number, dontInflictDeath?: boolean): void {
+		if (this.health === health) return;
+
 		const oldHealth = this.health;
 		this.health = health;
 		this.onHealthChanged.Fire(health, oldHealth);
