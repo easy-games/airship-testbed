@@ -223,3 +223,4 @@ declare const InspectorName: AirshipBehaviourFieldDecorator<[name: string]>;
 declare const ColorUsage: AirshipBehaviourFieldDecorator<[hdr: boolean, showAlpha: boolean]>;
 
 declare const AirshipComponentMenu: AirshipBehaviourClassDecorator<[path: string]>;
+declare const AirshipComponentIcon: AirshipBehaviourClassDecorator<[assetPath: string]>;
