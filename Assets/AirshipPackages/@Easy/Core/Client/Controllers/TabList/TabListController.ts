@@ -1,0 +1,249 @@
+import { Airship } from "@Easy/Core/Shared/Airship";
+import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
+import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
+import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Game } from "@Easy/Core/Shared/Game";
+import { Player } from "@Easy/Core/Shared/Player/Player";
+import { Keyboard, Mouse } from "@Easy/Core/Shared/UserInput";
+import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
+import { Task } from "@Easy/Core/Shared/Util/Task";
+import { OnLateUpdate } from "@Easy/Core/Shared/Util/Timer";
+import { Window } from "@Easy/Core/Shared/Util/Window";
+
+@Controller({})
+export class TabListController implements OnStart {
+	private tablistGO: GameObject;
+	private tablistCanvas: Canvas;
+	private tablistRefs;
+	private tablistContentGO;
+	private tablistEntryPrefab;
+	private wrapperRect: RectTransform;
+	private canvasGroup: CanvasGroup;
+
+	private cellsPerRow = 4;
+	private rowCount = 13;
+	private maxSlots = this.cellsPerRow * this.rowCount;
+	private shown = false;
+	private mouse = new Mouse();
+	private showBin = new Bin();
+
+	private dirty = false;
+	private init = false;
+
+	private posY = -80;
+	private tweenDistance = 12;
+	private tweenDuration = 0.1;
+
+	constructor() {
+		print("tablist.1");
+		this.tablistGO = Object.Instantiate(
+			AssetCache.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/UI/TabList.prefab"),
+			CoreRefs.rootTransform,
+		);
+		this.tablistCanvas = this.tablistGO.GetComponent<Canvas>()!;
+		this.tablistRefs = this.tablistGO.GetComponent<GameObjectReferences>()!;
+		this.tablistContentGO = this.tablistRefs.GetValue("UI", "Content");
+		this.tablistEntryPrefab = this.tablistRefs.GetValue<Object>("UI", "TabListEntry");
+		this.wrapperRect = this.tablistGO.transform.GetChild(0) as RectTransform;
+		this.canvasGroup = this.tablistGO.GetComponent<CanvasGroup>()!;
+
+		this.Hide(true, true);
+	}
+
+	OnStart(): void {
+		this.FullUpdate();
+
+		Airship.players.onPlayerJoined.Connect((player) => {
+			this.dirty = true;
+		});
+		Airship.players.onPlayerDisconnected.Connect((player) => {
+			this.dirty = true;
+		});
+		Airship.teams.onPlayerChangeTeam.Connect((player, team, oldTeam) => {
+			this.dirty = true;
+		});
+
+		OnLateUpdate.Connect(() => {
+			if (this.dirty) {
+				this.dirty = false;
+				Profiler.BeginSample("TabList.FullUpdate");
+				this.FullUpdate();
+				Profiler.EndSample();
+			}
+		});
+
+		const keyboard = new Keyboard();
+		keyboard.OnKeyDown(Key.Tab, (e) => {
+			if (e.uiProcessed) return;
+			if (!keyboard.IsEitherKeyDown(Key.LeftAlt, Key.LeftCommand)) {
+				this.Show();
+			}
+		});
+		keyboard.OnKeyUp(Key.Tab, (e) => {
+			this.Hide();
+		});
+
+		Window.focusChanged.Connect((hasFocus) => {
+			if (hasFocus) {
+				Task.Delay(0, () => {
+					this.Hide();
+				});
+			}
+		});
+
+		// Prevent window from staying open once tabbed out.
+		// SetInterval(0.1, () => {
+		// 	if (this.IsShown() && !Application.isFocused) {
+		// 		this.Hide();
+		// 	}
+		// });
+
+		// Application.OnFocusChanged((focused) => {
+		// 	if (!focused) {
+		// 		this.Hide();
+		// 	}
+		// });
+	}
+
+	public FullUpdate(): void {
+		let teams = Airship.teams.GetTeams();
+		// if (teams.size() > 0) {
+		// 	teams = teams.sort((a, b) => {
+		// 		if (a.HasLocalPlayer()) {
+		// 			return true;
+		// 		}
+		// 		if (b.HasLocalPlayer()) {
+		// 			return false;
+		// 		}
+		// 		return string.byte(a.id)[0] < string.byte(b.id)[0];
+		// 	});
+		// }
+		let players = Airship.players.GetPlayers().sort((a, b) => {
+			if (a === Game.localPlayer) return true;
+
+			let aTeamIndex = math.huge;
+			let bTeamIndex = math.huge;
+
+			let aTeam = a.GetTeam();
+			let bTeam = b.GetTeam();
+
+			if (aTeam) {
+				aTeamIndex = teams.indexOf(aTeam);
+			}
+			if (bTeam) {
+				bTeamIndex = teams.indexOf(bTeam);
+			}
+
+			return aTeamIndex < bTeamIndex;
+		});
+
+		for (let i = 0; i < this.maxSlots; i++) {
+			let player: Player | undefined;
+			if (i < players.size()) {
+				player = players[i];
+
+				let entry: GameObject | undefined;
+				let init = this.init;
+				if (i < this.tablistContentGO.transform.childCount) {
+					entry = this.tablistContentGO.transform.GetChild(i).gameObject;
+				} else {
+					entry = Object.Instantiate(this.tablistEntryPrefab, this.tablistContentGO.transform) as GameObject;
+					init = true;
+				}
+
+				this.UpdateEntry(entry, player, init);
+			} else {
+				if (i < this.tablistContentGO.transform.childCount) {
+					let entry = this.tablistContentGO.transform.GetChild(i).gameObject;
+					Object.Destroy(entry);
+				}
+			}
+		}
+		this.init = false;
+	}
+
+	private UpdateEntry(entry: GameObject, player: Player, init: boolean): void {
+		const refs = entry.GetComponent<GameObjectReferences>()!;
+		const usernameText = refs.GetValue<TMP_Text>("UI", "Username");
+
+		let username = player.username;
+		if (player === Game.localPlayer) {
+			username = "<b>" + username + "</b>";
+		}
+		const team = player.GetTeam();
+		if (team) {
+			const hex = ColorUtil.ColorToHex(team.color);
+			username = `<color=${hex}>${username}</color>`;
+		}
+
+		const image = refs.GetValue("UI", "ProfilePicture").GetComponent<RawImage>()!;
+		task.spawn(async () => {
+			const texture = await player.GetProfileImageTextureAsync();
+			if (texture) {
+				image.texture = texture;
+			}
+		});
+
+		// const addFriendGo = refs.GetValue<GameObject>("UI", "AddFriendButton");
+		// const isFriends = player.IsFriend();
+		// addFriendGo.SetActive(!isFriends && !player.IsLocalPlayer());
+		// if (init) {
+		// 	CoreUI.SetupButton(addFriendGo);
+		// 	CanvasAPI.OnClickEvent(addFriendGo, () => {
+		// 		Dependency<FriendsController>().SendFriendRequest(player.username);
+		// 		addFriendGo.TweenGraphicAlpha(0.5, 0.12);
+		// 	});
+		// }
+		// if (isFriends) {
+		// 	if (Dependency<FriendsController>().HasOutgoingFriendRequest(player.userId)) {
+		// 		addFriendGo.GetComponent<Image>()!.color = new Color(1, 1, 1, 0.5);
+		// 	} else {
+		// 		addFriendGo.GetComponent<Image>()!.color = new Color(1, 1, 1, 1);
+		// 	}
+		// }
+
+		usernameText.text = username;
+	}
+
+	public SetTitleText(title: string): void {
+		let textLabel = this.tablistRefs.GetValue("UI", "TitleText") as TMP_Text;
+		textLabel.text = title;
+	}
+
+	public Show(): void {
+		if (this.shown) return;
+
+		this.shown = true;
+		this.tablistCanvas.enabled = true;
+		this.wrapperRect.anchoredPosition = new Vector2(0, this.posY - this.tweenDistance);
+		this.wrapperRect.TweenAnchoredPositionY(this.posY, this.tweenDuration);
+		this.canvasGroup.alpha = 0;
+		this.canvasGroup.TweenCanvasGroupAlpha(1, this.tweenDuration);
+	}
+
+	public Hide(force = false, immediate = false): void {
+		this.showBin.Clean();
+		if (!force) {
+			if (!this.shown) return;
+		}
+
+		this.shown = false;
+
+		if (immediate) {
+			this.canvasGroup.alpha = 0;
+		} else {
+			this.wrapperRect.TweenAnchoredPositionY(this.posY - this.tweenDistance, this.tweenDuration);
+			this.canvasGroup.TweenGraphicAlpha(0, this.tweenDuration);
+			task.delay(0.12, () => {
+				if (!this.shown) {
+					this.tablistCanvas.enabled = false;
+				}
+			});
+		}
+	}
+
+	public IsShown(): boolean {
+		return this.shown;
+	}
+}
