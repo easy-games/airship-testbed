@@ -39,5 +39,9 @@ export class ProtectedPlayersSingleton implements OnStart {
 		return this.players.find((p) => p.clientId === clientId);
 	}
 
+	public FindByUserId(userId: string): ProtectedPlayer | undefined {
+		return this.players.find((p) => p.userId === userId);
+	}
+
 	OnStart(): void {}
 }

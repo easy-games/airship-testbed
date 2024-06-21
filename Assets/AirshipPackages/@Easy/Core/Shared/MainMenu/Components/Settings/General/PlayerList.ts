@@ -1,5 +1,6 @@
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import { Protected } from "@Easy/Core/Shared/Protected";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { MainMenuSingleton } from "../../../Singletons/MainMenuSingleton";
 import { ProtectedPlayersSingleton } from "../../../Singletons/ProtectedPlayersSingleton";
@@ -42,7 +43,7 @@ export default class PlayerList extends AirshipBehaviour {
 		this.content.gameObject.ClearChildren();
 
 		let i = 0;
-		for (let player of Dependency<ProtectedPlayersSingleton>().players) {
+		for (let player of Protected.protectedPlayers.players) {
 			const go = Object.Instantiate(this.playerEntryPrefab, this.content);
 			const entry = go.GetAirshipComponent<PlayerEntry>()!;
 
