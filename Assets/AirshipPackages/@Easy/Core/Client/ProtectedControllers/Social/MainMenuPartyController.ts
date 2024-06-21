@@ -81,7 +81,7 @@ export class MainMenuPartyController implements OnStart {
 				},
 			);
 			AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/FriendRequest.wav", {
-				volumeScale: 0.5,
+				volumeScale: 0.3,
 			});
 			if (Game.coreContext === CoreContext.GAME) {
 				Game.localPlayer.SendMessage(

@@ -1,5 +1,6 @@
 import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
 import { Keyboard, Mouse } from "@Easy/Core/Shared/UserInput";
+import { AssetCache } from "../AssetCache/AssetCache";
 import { AudioManager } from "../Audio/AudioManager";
 import { Game } from "../Game";
 import { Bin } from "./Bin";
@@ -29,6 +30,7 @@ export class AppManager {
 	private static backgroundCanvas: Canvas;
 	private static backgroundObject: GameObject;
 	private static backgroundCanvasGroup: CanvasGroup;
+	private static backgroundImage: Image;
 
 	private static darkBackgroundTransitionBin = new Bin();
 
@@ -51,6 +53,7 @@ export class AppManager {
 		this.backgroundObject = refs.GetValue("UI", "Background");
 		this.backgroundCanvasGroup = this.backgroundCanvas.gameObject.GetComponent<CanvasGroup>()!;
 		this.backgroundCanvasGroup.alpha = 0;
+		this.backgroundImage = this.backgroundCanvas.transform.GetChild(0).GetComponent<Image>()!;
 
 		CanvasAPI.OnPointerEvent(this.backgroundObject, (direction, button) => {
 			if (direction === PointerDirection.DOWN) {
@@ -104,10 +107,62 @@ export class AppManager {
 	}
 
 	/**
+	 * Creates a canvas and opens the modal.
+	 * @param go
+	 */
+	public static OpenModal(
+		go: GameObject,
+		config?: {
+			noDarkBackground?: boolean;
+			sortingOrderOffset?: number;
+		},
+		onClose?: () => void,
+	): void {
+		/*
+		 * Canvas MUST be in Render Mode `RenderMode.ScreenSpaceOverlay`.
+		 * This enforced on the C# side.
+		 */
+		// CanvasUIBridge.InitializeCanvas(canvas, true);
+		const canvas = Object.Instantiate(
+			AssetCache.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/UI/Modals/AirshipModalCanvas.prefab"),
+			Game.IsProtectedLuauContext() ? CoreRefs.protectedTransform : CoreRefs.rootTransform,
+		).GetComponent<Canvas>()!;
+		go.transform.SetParent(canvas.transform);
+
+		/* Enable and cache. */
+		if (!config?.noDarkBackground) {
+			this.OpenDarkBackground(this.stack.size() + 10 + (config?.sortingOrderOffset ?? 0));
+		}
+		canvas.sortingOrder = this.stack.size() + 11 + (config?.sortingOrderOffset ?? 0);
+		canvas.enabled = true;
+		this.opened = true;
+
+		const bin = new Bin();
+		bin.Add(() => {
+			Object.Destroy(canvas.gameObject);
+		});
+
+		this.stack.push({
+			canvas,
+			bin,
+			darkBackground: !config?.noDarkBackground,
+		});
+
+		if (onClose !== undefined) {
+			bin.Add(onClose);
+		}
+
+		/* Handle mouse locking. */
+		const lockId = this.mouse.AddUnlocker();
+		bin.Add(() => this.mouse.RemoveUnlocker(lockId));
+	}
+
+	/**
 	 * Open a Canvas. Any other `AppManager` owned UIDocument will be immediately closed.
 	 * @param element A GameObject with a `Canvas` component.
+	 * @deprecated
 	 */
-	public static Open(
+	public static OpenCanvas(
 		canvas: Canvas,
 		config?: {
 			noOpenSound?: boolean;
@@ -163,24 +218,26 @@ export class AppManager {
 
 	public static OpenDarkBackground(sortOrder: number) {
 		this.darkBackgroundTransitionBin.Clean();
-		const t = this.backgroundCanvasGroup.TweenCanvasGroupAlpha(1, 0.06);
+		const t = this.backgroundCanvasGroup.TweenCanvasGroupAlpha(1, 0.25);
 		this.darkBackgroundTransitionBin.Add(() => {
 			if (t.IsDestroyed()) return;
 			t.Cancel();
 		});
 		this.backgroundCanvas.enabled = true;
 		this.backgroundCanvas.sortingOrder = sortOrder;
+		this.backgroundImage.raycastTarget = true;
 	}
 
 	public static CloseDarkBackground(): void {
 		this.darkBackgroundTransitionBin.Clean();
-		const t = this.backgroundCanvasGroup.TweenCanvasGroupAlpha(0, 0.06);
+		this.backgroundImage.raycastTarget = false;
+		const t = this.backgroundCanvasGroup.TweenCanvasGroupAlpha(0, 0.25);
 		this.darkBackgroundTransitionBin.Add(() => {
 			if (t.IsDestroyed()) return;
 			t.Cancel();
 		});
 		this.darkBackgroundTransitionBin.Add(
-			SetTimeout(0.06, () => {
+			SetTimeout(0.5, () => {
 				this.backgroundCanvas.enabled = false;
 			}),
 		);

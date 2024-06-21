@@ -138,7 +138,7 @@ export class InventoryUIController implements OnStart {
 
 		this.hotbarCanvas.enabled = false;
 
-		AppManager.Open(this.backpackCanvas, {
+		AppManager.OpenCanvas(this.backpackCanvas, {
 			onClose: () => {
 				this.backpackShown = false;
 				this.hotbarCanvas.enabled = true;
