@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e7e988a1fa245d40abc74de0b80620b, type: 3}
+  m_Name: FaceDecal13
+  m_EditorClassIdentifier: 
+  serverClassId: b16a078a-a962-48ba-9604-6d789ee7087e
+  serverInstanceId: f38a10a9-31c7-4b49-9d07-c3b13a9e3ec2
+  decalTexture: {fileID: 2800000, guid: 5f411bea57fcea5419362e1268f53095, type: 3}
