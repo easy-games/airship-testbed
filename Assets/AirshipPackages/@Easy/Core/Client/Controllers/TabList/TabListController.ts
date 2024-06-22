@@ -36,7 +36,6 @@ export class TabListController implements OnStart {
 	private tweenDuration = 0.1;
 
 	constructor() {
-		print("tablist.1");
 		this.tablistGO = Object.Instantiate(
 			AssetCache.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/UI/TabList.prefab"),
 			CoreRefs.rootTransform,
