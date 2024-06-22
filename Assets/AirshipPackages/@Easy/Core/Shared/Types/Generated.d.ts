@@ -3633,6 +3633,25 @@ declare const enum DataFormat {
     HalfFloat = 0,
     Float = 1,
 }
+declare const enum EventTriggerType {
+    PointerEnter = 0,
+    PointerExit = 1,
+    PointerDown = 2,
+    PointerUp = 3,
+    PointerClick = 4,
+    Drag = 5,
+    Drop = 6,
+    Scroll = 7,
+    UpdateSelected = 8,
+    Select = 9,
+    Deselect = 10,
+    Move = 11,
+    InitializePotentialDrag = 12,
+    BeginDrag = 13,
+    EndDrag = 14,
+    Submit = 15,
+    Cancel = 16,
+}
 
     
 interface RaycastHit {
@@ -22272,6 +22291,7 @@ interface BridgeConstructor {
     HasMicrophonePermission(): boolean;
     IsFullScreen(): boolean;
     IsMicRecording(): boolean;
+    Lerp(start: Vector3, goal: Vector3, alpha: number): Vector3;
     LoadGlobalSceneByName(sceneName: string): void;
     LoadScene(sceneName: string, restartLuau: boolean, loadSceneMode: LoadSceneMode): void;
     LoadSceneForConnection(conn: NetworkConnection, sceneName: string, makeActiveScene: boolean): void;
@@ -22289,6 +22309,7 @@ interface BridgeConstructor {
     SetMicDeviceIndex(i: number): void;
     SetParentToSceneRoot(transform: Transform): void;
     SetVolume(volume: number): void;
+    Slerp(start: Vector3, goal: Vector3, alpha: number): Vector3;
     StartMicRecording(frequency: number, sampleLength: number): void;
     StopMicRecording(): void;
     UnloadGlobalSceneByName(sceneName: string): void;
@@ -27854,4 +27875,81 @@ interface DownloadHandlerTextureConstructor {
     GetContent(www: UnityWebRequest): Texture2D;
 }
 declare const DownloadHandlerTexture: DownloadHandlerTextureConstructor;
+    
+interface UIOutline extends Graphic {
+    mainTexture: Texture;
+
+
+
+}
+    
+interface UIOutlineConstructor {
+
+    new(): UIOutline;
+
+
+}
+declare const UIOutline: UIOutlineConstructor;
+    
+interface IDropHandler extends IEventSystemHandler {
+
+
+    OnDrop(eventData: PointerEventData): void;
+
+}
+    
+interface EventTrigger extends MonoBehaviour, ISubmitHandler, IPointerClickHandler, ICancelHandler, IBeginDragHandler, IInitializePotentialDragHandler, IDragHandler, IEndDragHandler, IDropHandler, IScrollHandler, IUpdateSelectedHandler, IPointerEnterHandler, ISelectHandler, IPointerExitHandler, IDeselectHandler, IPointerDownHandler, IMoveHandler, IPointerUpHandler {
+    delegates: CSArray<Entry>;
+    triggers: CSArray<Entry>;
+
+
+    OnBeginDrag(eventData: PointerEventData): void;
+    OnCancel(eventData: BaseEventData): void;
+    OnDeselect(eventData: BaseEventData): void;
+    OnDrag(eventData: PointerEventData): void;
+    OnDrop(eventData: PointerEventData): void;
+    OnEndDrag(eventData: PointerEventData): void;
+    OnInitializePotentialDrag(eventData: PointerEventData): void;
+    OnMove(eventData: AxisEventData): void;
+    OnPointerClick(eventData: PointerEventData): void;
+    OnPointerDown(eventData: PointerEventData): void;
+    OnPointerEnter(eventData: PointerEventData): void;
+    OnPointerExit(eventData: PointerEventData): void;
+    OnPointerUp(eventData: PointerEventData): void;
+    OnScroll(eventData: PointerEventData): void;
+    OnSelect(eventData: BaseEventData): void;
+    OnSubmit(eventData: BaseEventData): void;
+    OnUpdateSelected(eventData: BaseEventData): void;
+
+}
+    
+interface Entry {
+    eventID: EventTriggerType;
+    callback: TriggerEvent;
+
+
+
+}
+    
+interface TriggerEvent {
+
+
+
+}
+    
+interface TriggerEventConstructor {
+
+    new(): TriggerEvent;
+
+
+}
+declare const TriggerEvent: TriggerEventConstructor;
+    
+interface EntryConstructor {
+
+    new(): Entry;
+
+
+}
+declare const Entry: EntryConstructor;
 

@@ -33,6 +33,9 @@ interface Time {
 	time: number;
 	deltaTime: number;
 	fixedDeltaTime: number;
+	frameCount: number;
+	timeScale: number;
+	unscaledTime: number;
 }
 
 declare const Time: Time;
