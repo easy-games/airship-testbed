@@ -22,11 +22,7 @@
             "m_Id": "b1ef486cf54745058607115a0834f5cd"
         }
     ],
-    "m_Keywords": [
-        {
-            "m_Id": "7664a757ffd7473c989e374f929cf453"
-        }
-    ],
+    "m_Keywords": [],
     "m_Dropdowns": [],
     "m_CategoryData": [
         {
@@ -2589,42 +2585,6 @@
 }
 
 {
-    "m_SGVersion": 1,
-    "m_Type": "UnityEditor.ShaderGraph.ShaderKeyword",
-    "m_ObjectId": "7664a757ffd7473c989e374f929cf453",
-    "m_Guid": {
-        "m_GuidSerialized": "7b90ef36-3908-46dd-9694-7bd09d191dc9"
-    },
-    "m_Name": "TriplanarMode",
-    "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "TriplanarMode",
-    "m_DefaultReferenceName": "_TRIPLANARMODE",
-    "m_OverrideReferenceName": "",
-    "m_GeneratePropertyBlock": true,
-    "m_UseCustomSlotLabel": false,
-    "m_CustomSlotLabel": "",
-    "m_DismissedVersion": 0,
-    "m_KeywordType": 1,
-    "m_KeywordDefinition": 0,
-    "m_KeywordScope": 0,
-    "m_KeywordStages": 63,
-    "m_Entries": [
-        {
-            "id": 3,
-            "displayName": "TRIPLANAR_WORLD",
-            "referenceName": "TRIPLANAR_WORLD"
-        },
-        {
-            "id": 1,
-            "displayName": "TRIPLANAR_LOCAL",
-            "referenceName": "TRIPLANAR_LOCAL"
-        }
-    ],
-    "m_Value": 0,
-    "m_IsEditable": true
-}
-
-{
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.Vector3MaterialSlot",
     "m_ObjectId": "7aaf2e63170b47718d45564a971130f3",
@@ -3521,9 +3481,6 @@
         },
         {
             "m_Id": "b94f5ed02c464384a31a94f7f677f7df"
-        },
-        {
-            "m_Id": "7664a757ffd7473c989e374f929cf453"
         }
     ]
 }
