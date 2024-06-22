@@ -62,6 +62,7 @@ export class AirshipCharacterCameraSingleton implements OnStart {
 
 	private characterCameraMode: CharacterCameraMode = CharacterCameraMode.Locked;
 
+	private manageFOV = true;
 	private overrideFOV = new Map<CharacterCameraType, number>();
 
 	private firstPersonFOV = 80;
@@ -105,6 +106,20 @@ export class AirshipCharacterCameraSingleton implements OnStart {
 	 */
 	public SetEnabled(enabled: boolean) {
 		this.cameraSystem?.SetEnabled(enabled);
+	}
+
+	public SetFOVManaged(shouldManage: boolean): void {
+		this.manageFOV = shouldManage;
+	}
+
+	/**
+	 * If FOV is managed, actions like sprinting will affect FOV.
+	 * It's useful to turn this off when you want to manage FOV entirely yourself.
+	 *
+	 * @returns true if FOV is being managed by the CharacterCamera system.
+	 */
+	public IsFOVManaged(): boolean {
+		return this.manageFOV;
 	}
 
 	/**
