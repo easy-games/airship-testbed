@@ -6,6 +6,7 @@ import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
+import { Game } from "../Game";
 import { Team } from "./Team";
 
 interface TeamEntry {
@@ -25,7 +26,7 @@ export class TeamsSingleton implements OnStart {
 	}
 
 	OnStart(): void {
-		if (RunUtil.IsClient()) {
+		if (Game.IsClient()) {
 			CoreNetwork.ServerToClient.AddTeams.client.OnServerEvent((teamDtos) => {
 				for (let dto of teamDtos) {
 					const team = new Team(
@@ -76,7 +77,7 @@ export class TeamsSingleton implements OnStart {
 				team.RemovePlayer(player);
 			});
 		}
-		if (RunUtil.IsServer()) {
+		if (Game.IsServer()) {
 			Airship.players.onPlayerJoined.ConnectWithPriority(SignalPriority.LOWEST, (player) => {
 				const teamDtos = ObjectUtils.values(this.teams).map((e) => e.team.Encode());
 				CoreNetwork.ServerToClient.AddTeams.server.FireClient(player, teamDtos);
