@@ -144,11 +144,10 @@ export class FirstPersonCameraSystem {
 			position = camTransform.position.add(rotation.mul(this.cameraSpineOffset.mul(-1)));
 		}
 
-		const data = { position, rotation };
-		Dependency<AirshipCharacterCameraSingleton>().onViewModelUpdate.Fire(data);
+		spineTransform.position = position;
+		spineTransform.rotation = rotation;
 
-		spineTransform.position = data.position;
-		spineTransform.rotation = data.rotation;
+		Dependency<AirshipCharacterCameraSingleton>().onViewModelUpdate.Fire(spineTransform);
 
 		//Animated to the look direction
 		// let diffAngle = Quaternion.Angle(this.trackedHeadRotation, headLookRotation);

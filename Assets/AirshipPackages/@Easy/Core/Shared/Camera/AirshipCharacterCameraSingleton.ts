@@ -53,8 +53,12 @@ export class AirshipCharacterCameraSingleton implements OnStart {
 	/** Fires whenever the user changes their first-person state. */
 	public readonly firstPersonChanged = new Signal<[isFirstPerson: boolean]>();
 
-	/** Fires before view model updates with position and rotation. Change these values to adjust view model position. */
-	public onViewModelUpdate = new Signal<[data: ViewModelUpdate]>();
+	/**
+	 * Fires before view model updates with position and rotation. Change these values to adjust view model position.
+	 *
+	 * Transform is the Spine Transform.
+	 */
+	public onViewModelUpdate = new Signal<[spineTransform: Transform]>();
 
 	private fps?: FirstPersonCameraSystem;
 	public humanoidCameraMode: HumanoidCameraMode | undefined;
@@ -62,6 +66,7 @@ export class AirshipCharacterCameraSingleton implements OnStart {
 
 	private characterCameraMode: CharacterCameraMode = CharacterCameraMode.Locked;
 
+	private sprintFOVEnabled = true;
 	private manageFOV = true;
 	private overrideFOV = new Map<CharacterCameraType, number>();
 
@@ -108,12 +113,26 @@ export class AirshipCharacterCameraSingleton implements OnStart {
 		this.cameraSystem?.SetEnabled(enabled);
 	}
 
+	public SetSprintFOVEnabled(enabled: boolean): void {
+		this.sprintFOVEnabled = enabled;
+	}
+
+	public IsSprintFOVEnabled(): boolean {
+		return this.sprintFOVEnabled;
+	}
+
+	/**
+	 * Sets if camera FOVs should be tweened.
+	 * @param shouldManage True if camera FOVs should be tweened by this class.
+	 */
 	public SetFOVManaged(shouldManage: boolean): void {
 		this.manageFOV = shouldManage;
 	}
 
 	/**
-	 * If FOV is managed, actions like sprinting will affect FOV.
+	 * If FOV is managed, camera fov will be updated by tweens.
+	 * You must control the FOV by calling {@link SetFOV}
+	 *
 	 * It's useful to turn this off when you want to manage FOV entirely yourself.
 	 *
 	 * @returns true if FOV is being managed by the CharacterCamera system.
@@ -195,6 +214,8 @@ export class AirshipCharacterCameraSingleton implements OnStart {
 	/** Updates FOV to reflect the current character state object */
 	private MakeFOVReflectCharacterState(): void {
 		if (!this.IsEnabled()) return;
+		if (!this.IsSprintFOVEnabled()) return;
+		if (!this.IsFOVManaged()) return;
 
 		// first person
 		{

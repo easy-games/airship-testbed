@@ -4444,3 +4444,27 @@ interface NavMeshConstructor {
 	Triangulate(vertices: CSArray<Vector3>, indices: CSArray<number>): void;
 }
 declare const NavMesh: NavMeshConstructor;
+
+declare const Entry: EntryConstructor;
+
+interface TwoBoneIKConstraint extends MonoBehaviour {
+	// data: {
+	// 	hint: Transform;
+	// 	target: Transform;
+	// 	root: Transform;
+	// 	mid: Transform;
+	// 	tip: Transform;
+	// };
+}
+
+interface TwoBoneIKConstraintConstructor {
+	new (): TwoBoneIKConstraint;
+}
+declare const TwoBoneIKConstraint: TwoBoneIKConstraintConstructor;
+
+interface MultiAimConstraint {}
+
+interface MultiAimConstraintConstructor {
+	new (): MultiAimConstraint;
+}
+declare const MultiAimConstraint: MultiAimConstraintConstructor;
