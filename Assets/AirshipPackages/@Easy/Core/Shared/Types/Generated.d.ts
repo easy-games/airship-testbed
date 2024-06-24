@@ -2276,14 +2276,6 @@ declare const enum ParticleSystemStopBehavior {
     StopEmittingAndClear = 0,
     StopEmitting = 1,
 }
-declare const enum FadeMode {
-    FixedSpeed = 0,
-    FixedDuration = 1,
-    FromStart = 2,
-    NormalizedSpeed = 3,
-    NormalizedDuration = 4,
-    NormalizedFromStart = 5,
-}
 declare const enum AvatarMaskBodyPart {
     Root = 0,
     Body = 1,
@@ -16163,47 +16155,6 @@ interface InstanceFinderConstructor {
     UnregisterInvokeOnInstance<T>(handler: unknown): void;
 }
 declare const InstanceFinder: InstanceFinderConstructor;
-    
-interface IListItem {
-    Key: Key;
-
-
-
-}
-    
-interface Key extends IListItem {
-
-
-
-}
-    
-interface KeyConstructor {
-    NotInList: number;
-
-    new(): Key;
-
-
-    IndexOf(key: Key): number;
-    IsInList(key: Key): boolean;
-}
-declare const Key: KeyConstructor;
-    
-interface Key extends IListItem {
-
-
-
-}
-    
-interface KeyConstructor {
-    NotInList: number;
-
-    new(): Key;
-
-
-    IndexOf(key: Key): number;
-    IsInList(key: Key): boolean;
-}
-declare const Key: KeyConstructor;
     
 interface IEventSystemHandler {
 

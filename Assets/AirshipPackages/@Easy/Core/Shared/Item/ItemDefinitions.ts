@@ -1,7 +1,6 @@
 import { CoreSound } from "@Easy/Core/Shared/Sound/CoreSound";
 import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 import { PhysicsUtil } from "@Easy/Core/Shared/Util/PhysicsUtil";
-import { AllBundleItems } from "../Util/ReferenceManagerResources";
 import { ArmorType } from "./ArmorType";
 import { CoreItemType } from "./CoreItemType";
 import { BlockArchetype, HoldConfig, ItemDef, UsableHeldItemDef } from "./ItemDefinitionTypes";
@@ -50,12 +49,10 @@ const bigSwordUsable: UsableHeldItemDef = {
 	onUseSoundVolume: 0.4,
 	cooldownSeconds: 0.25,
 	onUseAnimViewmodel: [
-		AllBundleItems.ItemSwordBig_FirstPerson_Swing01 as string,
-		AllBundleItems.ItemSwordBig_FirstPerson_Swing02 as string,
+		"",""
 	],
 	onUseAnimWorldmodel: [
-		AllBundleItems.ItemSwordBig_ThirdPerson_Swing01 as string,
-		AllBundleItems.ItemSwordBig_ThirdPerson_Swing02 as string,
+		"",""
 	],
 };
 const swordViewModel: HoldConfig = {

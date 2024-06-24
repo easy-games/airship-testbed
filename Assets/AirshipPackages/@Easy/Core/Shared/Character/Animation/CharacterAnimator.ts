@@ -1,51 +1,30 @@
 ﻿﻿import { AudioBundleSpacialMode, AudioClipBundle } from "@Easy/Core/Shared/Audio/AudioClipBundle";
 import Character from "@Easy/Core/Shared/Character/Character";
-import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { CoreItemType } from "@Easy/Core/Shared/Item/CoreItemType";
 import { ItemUtil } from "@Easy/Core/Shared/Item/ItemUtil";
 import StringUtils from "@Easy/Core/Shared/Types/StringUtil";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { RandomUtil } from "@Easy/Core/Shared/Util/RandomUtil";
 import { Task } from "@Easy/Core/Shared/Util/Task";
-import { AirshipCharacterCameraSingleton } from "../../Camera/AirshipCharacterCameraSingleton";
 import { Game } from "../../Game";
-import { ItemDef } from "../../Item/ItemDefinitionTypes";
 
-export enum ItemAnimationId {
-	IDLE = "Idle",
-	EQUIP = "Equip",
-	UN_EQUIP = "UnEquip",
-	USE = "Use",
-}
-
-export enum ItemPlayMode {
-	DEFAULT,
-	LOOP,
-	HOLD,
-}
 
 export default class CharacterAnimator extends AirshipBehaviour {
 	@Header("References")
 	public character!: Character;
 	public flinchClip?: AnimationClip;
-	public flinchClipViewModel?: AnimationClip;
+	public flinchClipViewmodel?: AnimationClip;
+	private deathClip?: AnimationClip;
+	private deathClipViewmodel?: AnimationClip;
 
 	@Header("Variables")
 	public baseFootstepVolumeScale = 0.1;
-
-	private worldmodelClips: Map<ItemAnimationId, AnimationClip[]> = new Map();
-	private viewmodelClips: Map<ItemAnimationId, AnimationClip[]> = new Map();
-	private currentItemMeta: ItemDef | undefined;
-	private currentItemState: string = ItemAnimationId.IDLE;
-	private currentEndEventConnection = -1;
 
 	private readonly flashTransitionDuration = 0.035;
 	private readonly flashOnTime = 0.07;
 	public readonly defaultTransitionTime: number = 0.15;
 
 	protected bin = new Bin();
-	private deathClipFPS?: AnimationClip;
-	private deathClipTP?: AnimationClip;
 	private damageEffectTemplate?: GameObject;
 	private deathEffectTemplate?: GameObject;
 	private deathEffectVoidTemplate?: GameObject;
@@ -58,9 +37,10 @@ export default class CharacterAnimator extends AirshipBehaviour {
 	private slideAudioBundle: AudioClipBundle | undefined;
 	private steppedOnBlockType = 0;
 	private lastFootstepSoundTime = 0;
-	private deathVfx?: GameObject;
 
-	private itemAnimStates: AnimancerState[] = [];
+	private Log(message: string) {
+		// print("Animator " + this.character.id + ": " + message);
+	}
 
 	public Start() {
 		this.character = this.gameObject.GetAirshipComponent<Character>()!;
@@ -95,17 +75,6 @@ export default class CharacterAnimator extends AirshipBehaviour {
 			//VFX
 		}
 
-		//Listen to animation events
-		// const animConn = this.refs.animationEvents.OnEntityAnimationEvent((data) => {
-		// 	// if (data !== 0) {
-		// 	// 	print("Animation Event: " + data + " On Entity: " + this.entity.id);
-		// 	// }
-		// 	this.OnAnimationEvent(data);
-		// });
-		// this.bin.Add(() => {
-		// 	Bridge.DisconnectEvent(animConn);
-		// });
-
 		// todo: is this needed?
 		this.gameObject.SetActive(true);
 	}
@@ -114,373 +83,30 @@ export default class CharacterAnimator extends AirshipBehaviour {
 		this.viewModelEnabled = enabled;
 	}
 
-	private Log(message: string) {
-		// return;
-		// print("Animator " + this.character.id + ": " + message);
-	}
-
 	public SetFirstPerson(isFirstPerson: boolean) {
 		this.isFirstPerson = isFirstPerson;
-
-		this.ClearItemAnimations();
-		if (Game.IsClient()) {
-			// this.viewmodelAnimancerComponent.enabled = isFirstPerson;
-		}
-		// this.worldmodelAnimancerComponent.enabled = !isFirstPerson;
-
 		this.character.animationHelper.SetFirstPerson(isFirstPerson);
-		this.LoadNewItemResources(this.currentItemMeta);
-		this.StartItemIdleAnim(true);
 	}
 
 	public PlayTakeDamage() {
-		const isFirstPerson =
-			Game.IsClient() &&
-			this.character.IsLocalCharacter() &&
-			Dependency<AirshipCharacterCameraSingleton>().IsFirstPerson();
-
 		//this.PlayDamageFlash();
 
 		//Animate flinch
-		let foundFlinchClip = this.isFirstPerson ? this.flinchClipViewModel : this.flinchClip;
+		let foundFlinchClip = this.isFirstPerson ? this.flinchClipViewmodel : this.flinchClip;
 		if (foundFlinchClip) {
 			this.character.animationHelper.PlayAnimation(foundFlinchClip, CharacterAnimationLayer.OVERRIDE_1);
 		}
-
-		//Don't render some effects if we are in first person
-		if (isFirstPerson) {
-			return;
-		}
-	}
-
-	public PlayItemAnimationInWorldmodel(
-		clip: AnimationClip,
-		layer: CharacterAnimationLayer = CharacterAnimationLayer.OVERRIDE_1,
-		onEnd?: Callback,
-		config?: {
-			fadeMode?: FadeMode;
-			wrapMode?: WrapMode;
-			fadeInDuration?: number;
-			fadeOutDuration?: number;
-			autoFadeOut?: boolean;
-		},
-	): AnimancerState | undefined {
-		if (this.character.IsLocalCharacter() && this.isFirstPerson) return undefined;
-
-		// let animState: AnimancerState;
-		// if ((config?.autoFadeOut === undefined || config?.autoFadeOut) && !clip.isLooping) {
-		// 	//Play once then fade away
-		// 	animState = AnimancerBridge.PlayOnceOnLayer(
-		// 		this.worldmodelAnimancerComponent,
-		// 		clip,
-		// 		layer,
-		// 		config?.fadeInDuration ?? this.defaultTransitionTime,
-		// 		config?.fadeOutDuration ?? this.defaultTransitionTime,
-		// 		config?.fadeMode ?? FadeMode.FromStart,
-		// 		config?.wrapMode ?? WrapMode.Default,
-		// 	);
-		// } else {
-		// 	//Play permenantly on player
-		// 	animState = AnimancerBridge.PlayOnLayer(
-		// 		this.worldmodelAnimancerComponent,
-		// 		clip,
-		// 		layer,
-		// 		config?.fadeInDuration ?? this.defaultTransitionTime,
-		// 		config?.fadeMode ?? FadeMode.FromStart,
-		// 		config?.wrapMode ?? WrapMode.Default,
-		// 	);
-		// }
-
-		// if (onEnd !== undefined) {
-		// 	this.currentEndEventConnection = animState.Events.OnEndTS(() => {
-		// 		Bridge.DisconnectEvent(this.currentEndEventConnection);
-		// 		onEnd();
-		// 	});
-		// }
-		// this.itemAnimStates.push(animState);
-		// return animState;
-		return undefined;
-	}
-
-	public PlayItemAnimationInViewmodel(
-		clip: AnimationClip,
-		layer: CharacterAnimationLayer = CharacterAnimationLayer.OVERRIDE_1,
-		onEnd?: Callback,
-		config?: {
-			fadeMode?: FadeMode;
-			wrapMode?: WrapMode;
-			fadeInDuration?: number;
-			fadeOutDuration?: number;
-			autoFadeOut?: boolean;
-		},
-	): AnimancerState | undefined {
-		// if (!Game.IsClient()) {
-		// 	return error("Tried to play viewmodel animation on server.");
-		// }
-		// assert(clip, "PlayItemAnimationInViewmodel failed: AnimationClip is undefined");
-		// if (!this.isFirstPerson) return undefined;
-
-		// let animState: AnimancerState;
-		// if ((config?.autoFadeOut === undefined || config?.autoFadeOut) && !clip.isLooping) {
-		// 	//Play once then fade away
-		// 	animState = AnimancerBridge.PlayOnceOnLayer(
-		// 		CameraReferences.viewmodel!.animancer,
-		// 		clip,
-		// 		layer,
-		// 		config?.fadeInDuration ?? this.defaultTransitionTime,
-		// 		config?.fadeOutDuration ?? this.defaultTransitionTime,
-		// 		config?.fadeMode ?? FadeMode.FromStart,
-		// 		config?.wrapMode ?? WrapMode.Default,
-		// 	);
-		// } else {
-		// 	//Play permenantly on player
-		// 	animState = AnimancerBridge.PlayOnLayer(
-		// 		CameraReferences.viewmodel!.animancer,
-		// 		clip,
-		// 		layer,
-		// 		config?.fadeInDuration ?? this.defaultTransitionTime,
-		// 		config?.fadeMode ?? FadeMode.FromStart,
-		// 		config?.wrapMode ?? WrapMode.Default,
-		// 	);
-		// }
-
-		// if (onEnd !== undefined) {
-		// 	this.currentEndEventConnection = animState.Events.OnEndTS(() => {
-		// 		Bridge.DisconnectEvent(this.currentEndEventConnection);
-		// 		onEnd();
-		// 	});
-		// }
-		// this.itemAnimStates.push(animState);
-		// return animState;
-		return undefined;
-	}
-
-	public ClearItemAnimations(): void {
-		for (let animState of this.itemAnimStates) {
-			if (animState.IsValid && animState.IsPlaying) {
-				animState.StartFade(0, 0.15);
-			}
-		}
-		this.itemAnimStates.clear();
-	}
-
-	private LoadNewItemResources(itemDef: ItemDef | undefined) {
-		this.Log("Loading Item: " + itemDef?.itemType);
-		this.currentItemMeta = itemDef;
-		// this.itemLayer.DestroyStates();
-		//Load the animation clips for the new item
-
-		// this.ClearItemAnimations();
-
-		// this.worldmodelClips.clear();
-		// this.viewmodelClips.clear();
-
-		// if (itemDef) {
-		// 	/***** Viewmodel ******/
-		// 	if (itemDef.holdConfig?.viewmodel?.equipAnim) {
-		// 		const equipAnims = itemDef.holdConfig.viewmodel?.equipAnim.mapFiltered((s) => {
-		// 			const clip = AssetCache.LoadAssetIfExists<AnimationClip>(s);
-		// 			if (clip) {
-		// 				return clip;
-		// 			} else {
-		// 				warn(`Couldn't find animation asset for ${itemDef.displayName}: ${s}`);
-		// 			}
-		// 		});
-
-		// 		if (equipAnims.size() > 0) {
-		// 			this.viewmodelClips.set(ItemAnimationId.EQUIP, equipAnims);
-		// 		}
-		// 	}
-		// 	if (itemDef.holdConfig?.viewmodel?.idleAnim) {
-		// 		const idleAnims = itemDef.holdConfig.viewmodel?.idleAnim.mapFiltered((s) => {
-		// 			const clip = AssetCache.LoadAssetIfExists<AnimationClip>(s);
-		// 			if (clip) {
-		// 				return clip;
-		// 			} else {
-		// 				warn(`Couldn't find animation asset for ${itemDef.displayName}: ${s}`);
-		// 			}
-		// 		});
-
-		// 		if (idleAnims.size() > 0) {
-		// 			this.viewmodelClips.set(ItemAnimationId.IDLE, idleAnims);
-		// 		}
-		// 	}
-		// 	// else if (itemDef.block) {
-		// 	// 	this.viewmodelClips.set(ItemAnimationId.IDLE, [BLOCK_IDLE_FP]);
-		// 	// }
-
-		// 	if (itemDef.usable?.onUseAnimViewmodel) {
-		// 		const useAnims = itemDef.usable.onUseAnimViewmodel.mapFiltered((s) => {
-		// 			const clip = AssetCache.LoadAssetIfExists<AnimationClip>(s);
-		// 			if (clip) {
-		// 				return clip;
-		// 			} else {
-		// 				warn(`Couldn't find animation asset for ${itemDef.displayName}: ${s}`);
-		// 			}
-		// 		});
-
-		// 		if (useAnims.size() > 0) {
-		// 			this.viewmodelClips.set(ItemAnimationId.USE, useAnims);
-		// 		}
-		// 	}
-		// 	// else if (itemDef.block) {
-		// 	// 	this.viewmodelClips.set(ItemAnimationId.USE, [BLOCK_USE_FP]);
-		// 	// }
-
-		// 	/***** Worldmodel ******/
-		// 	if (itemDef.holdConfig?.worldmodel?.equipAnim) {
-		// 		let clips = itemDef.holdConfig.worldmodel?.equipAnim.mapFiltered((s) => {
-		// 			const clip = AssetCache.LoadAssetIfExists<AnimationClip>(s);
-		// 			if (clip) return clip;
-		// 			else warn(`Couldn't find animation asset for ${itemDef.displayName}: ${s}`);
-		// 		});
-		// 		if (clips.size() > 0) {
-		// 			this.worldmodelClips.set(ItemAnimationId.EQUIP, clips);
-		// 		}
-		// 	}
-		// 	if (itemDef.holdConfig?.worldmodel?.idleAnim) {
-		// 		let clips = itemDef.holdConfig.worldmodel?.idleAnim.mapFiltered((s) => {
-		// 			const clip = AssetCache.LoadAssetIfExists<AnimationClip>(s);
-		// 			if (clip) return clip;
-		// 			else warn(`Couldn't find animation asset for ${itemDef.displayName}: ${s}`);
-		// 		});
-		// 		if (clips.size() > 0) {
-		// 			this.worldmodelClips.set(ItemAnimationId.IDLE, clips);
-		// 		}
-		// 	}
-		// 	if (itemDef.usable?.onUseAnimWorldmodel) {
-		// 		let clips = itemDef.usable.onUseAnimWorldmodel.mapFiltered((s) => {
-		// 			const clip = AssetCache.LoadAssetIfExists<AnimationClip>(s);
-		// 			if (clip) return clip;
-		// 			else warn(`Couldn't find animation asset for ${itemDef.displayName}: ${s}`);
-		// 		});
-		// 		if (clips.size() > 0) {
-		// 			this.worldmodelClips.set(ItemAnimationId.USE, clips);
-		// 		}
-		// 	}
-		// } else {
-		// 	//UNARMED
-		// 	this.viewmodelClips.set(ItemAnimationId.IDLE, [this.defaultIdleAnimFPUnarmed]);
-		// }
-	}
-
-	//When certain conditions are met, the items may want to play their own synced animations
-	//This was used in testing to sync that
-	//private HumanoidItemAnimEventData eventData = new ();
-	private TriggerEvent(key: ItemAnimationId, index = 0) {
-		this.Log("Trigger State: " + key + " index: " + index);
-		this.currentItemState = key;
-		/*eventData.eventKey = key;
-		eventData.eventIndex = index;
-		currentItem.OnAnimEvent(eventData);*/
-	}
-
-	public EquipItem(itemDef: ItemDef | undefined) {
-		this.Log("Equip: " + itemDef?.displayName);
-		this.LoadNewItemResources(itemDef);
-		this.StartItemIdleAnim(false);
-	}
-
-	public StartItemIdleAnim(instantTransition: boolean) {
-		this.TriggerEvent(ItemAnimationId.IDLE);
-
-		// if (this.currentItemMeta === undefined) {
-		// 	this.PlayClip(EMPTY_ANIM);
-		// 	return;
-		// }
-
-		// if (this.IsViewModelEnabled()) {
-		// 	let clips = this.viewmodelClips.get(ItemAnimationId.IDLE) ?? [
-		// 		this.currentItemMeta !== undefined ? this.defaultIdleItemAnimFP : this.defaultIdleEmptyAnimFP,
-		// 	];
-		// 	const clip = RandomUtil.FromArray(clips);
-		// 	this.PlayItemAnimationInViewmodel(clip, CharacterAnimationLayer.LAYER_1, undefined, {
-		// 		fadeInDuration: instantTransition ? 0 : this.defaultTransitionTime,
-		// 	});
-		// 	// AnimancerBridge.GetLayer(
-		// 	// 	Dependency<ViewmodelController>().animancer,
-		// 	// 	CharacterAnimationLayer.LAYER_2,
-		// 	// ).StartFade(0, 0.05);
-		// }
-		// let clips = this.worldmodelClips.get(ItemAnimationId.IDLE) ?? [this.defaultIdleAnimTP];
-		// const clip = RandomUtil.FromArray(clips);
-		// this.PlayItemAnimationInWorldmodel(clip, CharacterAnimationLayer.LAYER_1, undefined, {
-		// 	fadeInDuration: instantTransition ? 0 : this.defaultTransitionTime,
-		// });
-		// AnimancerBridge.GetLayer(this.worldmodelAnimancerComponent, CharacterAnimationLayer.LAYER_2).StartFade(0, 0.05);
-	}
-
-	public PlayItemUseAnim(
-		useIndex = 0,
-		config?: {
-			fadeMode?: FadeMode;
-			wrapMode?: WrapMode;
-			fadeInDuration?: number;
-			fadeOutDuration?: number;
-			autoFadeOut?: boolean;
-		},
-	) {
-		this.Log("Item Use Started: " + useIndex);
-		this.TriggerEvent(ItemAnimationId.USE, useIndex);
-
-		// if (this.IsViewModelEnabled()) {
-		// 	let clips: AnimationClip[] | undefined = this.viewmodelClips.get(ItemAnimationId.USE);
-		// 	if (!clips || clips.isEmpty() || useIndex >= clips.size()) {
-		// 		this.StartItemIdleAnim(false);
-		// 		return;
-		// 	}
-		// 	this.PlayItemAnimationInViewmodel(clips[useIndex], CharacterAnimationLayer.LAYER_2, undefined, config);
-		// }
-
-		// let clips: AnimationClip[] | undefined = this.worldmodelClips.get(ItemAnimationId.USE);
-		// if (!clips || clips.isEmpty() || useIndex >= clips.size()) {
-		// 	this.StartItemIdleAnim(false);
-		// 	return;
-		// }
-		// this.PlayItemAnimationInWorldmodel(clips[useIndex], CharacterAnimationLayer.LAYER_2, undefined, config);
-	}
-
-	public PlayRandomItemUseAnim(config?: {
-		fadeMode?: FadeMode;
-		wrapMode?: WrapMode;
-		transitionTime?: number;
-		autoFadeOut?: boolean;
-	}) {
-		this.Log("Random Item Use Started");
-		//In the animation array use animations are the 3rd index and beyond;
-
-		// if (this.IsViewModelEnabled()) {
-		// 	let clips = this.viewmodelClips.get(ItemAnimationId.USE);
-		// 	if (clips && clips.size() > 0) {
-		// 		this.PlayItemAnimationInViewmodel(
-		// 			RandomUtil.FromArray(clips),
-		// 			CharacterAnimationLayer.LAYER_2,
-		// 			undefined,
-		// 			config,
-		// 		);
-		// 	}
-		// }
-		// let clips: AnimationClip[] | undefined = this.worldmodelClips.get(ItemAnimationId.USE);
-		// if (clips && clips.size() > 0) {
-		// 	const clip = RandomUtil.FromArray(clips);
-		// 	this.PlayItemAnimationInWorldmodel(clip, CharacterAnimationLayer.LAYER_2, undefined, config);
-		// }
 	}
 
 	public PlayDeath() {
 		//Play death animation
-		let isFirstPerson = false;
 		if (this.character.IsLocalCharacter()) {
-			const cameraSingleton = Dependency<AirshipCharacterCameraSingleton>();
-			isFirstPerson = cameraSingleton.IsFirstPerson();
-			//Always play death animation in third person
-			// localController.ForceFirstPersonMode(false);
 			//Lock Inputs
 			this.character.movement.disableInput = true;
 		}
-		const deathClip = this.deathClipTP; // isFirstPerson ? this.deathClipFPS : this.deathClipTP;
+		const deathClip = this.isFirstPerson ? this.deathClipViewmodel : this.deathClip;
 		if (deathClip) {
-			this.PlayItemAnimationInWorldmodel(deathClip, CharacterAnimationLayer.OVERRIDE_3);
+			this.character.animationHelper.PlayAnimation(deathClip, CharacterAnimationLayer.OVERRIDE_1);
 		}
 	}
 

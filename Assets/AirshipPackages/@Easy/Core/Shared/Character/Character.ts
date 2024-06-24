@@ -1,7 +1,6 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { Game } from "@Easy/Core/Shared/Game";
 import Inventory from "@Easy/Core/Shared/Inventory/Inventory";
-import { HeldItemManager } from "@Easy/Core/Shared/Item/HeldItems/HeldItemManager";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
@@ -38,7 +37,6 @@ export default class Character extends AirshipBehaviour {
 	/** A bin that is cleaned when the entity despawns. */
 	@NonSerialized() public readonly bin = new Bin();
 	@NonSerialized() public inventory!: Inventory;
-	@NonSerialized() public heldItems!: HeldItemManager;
 	@NonSerialized() public outfitDto: OutfitDto | undefined;
 
 	// Signals
