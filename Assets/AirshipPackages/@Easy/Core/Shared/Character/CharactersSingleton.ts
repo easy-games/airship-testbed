@@ -8,7 +8,6 @@ import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { AvatarUtil } from "../Avatar/AvatarUtil";
 import { CoreContext } from "../CoreClientContext";
 import { Game } from "../Game";
-import { CharacterItemManager } from "../Item/HeldItems/CharacterItemManager";
 import Character from "./Character";
 import { CharacterDto } from "./CharacterDto";
 import { CustomMoveData } from "./CustomMoveData";
@@ -23,7 +22,6 @@ export class CharactersSingleton implements OnStart {
 
 	public onCharacterSpawned = new Signal<Character>();
 	public onCharacterDespawned = new Signal<Character>();
-	public itemManager = new CharacterItemManager();
 
 	/**
 	 * **SERVER ONLY**
@@ -63,7 +61,6 @@ export class CharactersSingleton implements OnStart {
 
 	OnStart(): void {
 		if (Game.coreContext === CoreContext.MAIN_MENU) return;
-		this.itemManager.OnStart();
 		if (Game.IsClient() && !Game.IsServer()) {
 			task.spawn(() => {
 				const dtos = CoreNetwork.ClientToServer.Character.RequestCharacters.client.FireServer();

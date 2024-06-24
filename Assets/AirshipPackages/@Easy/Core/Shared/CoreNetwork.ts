@@ -124,10 +124,7 @@ export const CoreNetwork = {
 		SyncPrefabBlocks: new RemoteEvent<[blockPositions: Vector3[]]>("SyncPrefabBlocks"),
 		/** Fired when a player is eliminated. */
 		PlayerEliminated: new RemoteEvent<[clientId: number]>("PlayerEliminated"),
-		/** Fired when the current selected items state changes on an entity*/
-		HeldItemStateChanged: new RemoteEvent<
-			[characterId: number, stateIndex: number, isActive: boolean, lookVector: Vector3]
-		>("HeldItemStateChanged"),
+		
 		BlockPlace: new RemoteEvent<[pos: Vector3, voxel: number, entityId?: number]>("BlockPlace"),
 		BlockGroupPlace: new RemoteEvent<[positions: Vector3[], voxels: number[], entityId?: number]>(
 			"BlockGroupPlace",
