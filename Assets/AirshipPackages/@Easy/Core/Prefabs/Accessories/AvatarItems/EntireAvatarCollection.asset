@@ -76,6 +76,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ed1e9a37a5dda0847b0d216d26052c9c, type: 2}
   - {fileID: 11400000, guid: 6f985fb37b6ed464bae4e9fc61078fe7, type: 2}
   - {fileID: 11400000, guid: 6bb4e4274df43f644afb19436771c62e, type: 2}
+  - {fileID: 11400000, guid: 797b65fd9031be74dbfe1d442f09bd57, type: 2}
+  - {fileID: 11400000, guid: 9ded033deca85144b8d7f14545e01cf6, type: 2}
+  - {fileID: 11400000, guid: 224ed66b89c0cc9428e14418470bfd0e, type: 2}
+  - {fileID: 11400000, guid: 0ed60b58c391f4c43abf5bae26a346e5, type: 2}
   skinColors:
   - {r: 1, g: 0.9529412, b: 0.91764706, a: 1}
   - {r: 0.9647059, g: 0.84313726, b: 0.73333335, a: 1}
