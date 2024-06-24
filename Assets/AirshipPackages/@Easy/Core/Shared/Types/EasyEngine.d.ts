@@ -396,7 +396,7 @@ interface CanvasUIEvents extends Component {
 
 interface CanvasUIEventInterceptor extends Component {
 	OnPointerEvent(callback: (instanceId: number, direction: number, button: number) => void): EngineEventConnection;
-	OnHoverEvent(callback: (instanceId: number, hoverState: number) => void): EngineEventConnection;
+	OnHoverEvent(callback: (instanceId: number, hoverState: number, data: PointerEventData) => void): EngineEventConnection;
 	OnSubmitEvent(callback: (instanceId: number) => void): EngineEventConnection;
 	OnInputFieldSubmitEvent(callback: (instanceId: number, data: string) => void): EngineEventConnection;
 	OnSelectEvent(callback: (instanceId: number) => void): EngineEventConnection;
@@ -416,7 +416,7 @@ interface CanvasUIEventInterceptor extends Component {
 	/**
 	 * Sent to the dropped upon target.
 	 */
-	OnDropEvent(callback: (instanceId: number) => void): EngineEventConnection;
+	OnDropEvent(callback: (instanceId: number, data: PointerEventData) => void): EngineEventConnection;
 }
 
 interface CanvasUIBridgeConstructor {

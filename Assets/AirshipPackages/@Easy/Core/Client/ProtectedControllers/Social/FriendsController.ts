@@ -8,6 +8,7 @@ import { Controller, Dependency, OnStart } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { GameObjectUtil } from "@Easy/Core/Shared/GameObject/GameObjectUtil";
 import { CoreLogger } from "@Easy/Core/Shared/Logger/CoreLogger";
+import FriendCard from "@Easy/Core/Shared/MainMenu/Components/Friends/FriendCard";
 import SocialFriendRequestsButtonComponent from "@Easy/Core/Shared/MainMenu/Components/SocialFriendRequestsButtonComponent";
 import SocialNotificationComponent from "@Easy/Core/Shared/MainMenu/Components/SocialNotificationComponent";
 import { CoreUI } from "@Easy/Core/Shared/UI/CoreUI";
@@ -21,6 +22,7 @@ import inspect from "@Easy/Core/Shared/Util/Inspect";
 import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
+import { ProtectedPartyController } from "../Airship/Party/PartyController";
 import { AuthController } from "../Auth/AuthController";
 import { MainMenuController } from "../MainMenuController";
 import { ClientSettingsController } from "../Settings/ClientSettingsController";
@@ -48,6 +50,7 @@ export class FriendsController implements OnStart {
 	private socialNotificationKey = "";
 
 	public onIncomingFriendRequestsChanged = new Signal<void>();
+	public onFetchFriends = new Signal<void>();
 
 	private friendsScrollRect!: ScrollRect;
 
@@ -256,6 +259,10 @@ export class FriendsController implements OnStart {
 	public GetFriendByUsername(username: string): User | undefined {
 		return this.friends.find((f) => f.username.lower() === username.lower());
 	}
+	
+	public GetFriendById(uid: string): User | undefined {
+		return this.friends.find((u) => u.uid === uid);
+	}
 
 	public SetStatusText(text: string): void {
 		this.statusText = text;
@@ -298,6 +305,7 @@ export class FriendsController implements OnStart {
 		this.friends = data.friends;
 		this.SetIncomingFriendRequests(data.incomingRequests);
 		this.outgoingFriendRequests = data.outgoingRequests;
+		this.onFetchFriends.Fire();
 
 		// print("friends: " + inspect(data));
 
@@ -410,6 +418,10 @@ export class FriendsController implements OnStart {
 					AssetCache.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/UI/MainMenu/Friend.prefab"),
 					friendsContent.transform,
 				) as GameObject;
+
+				const friendCard = go.GetAirshipComponent<FriendCard>()!;
+				friendCard.friendId = friend.userId;
+
 				go.name = friend.userId;
 				const friendRect = go.GetComponent<RectTransform>()!;
 
@@ -475,14 +487,7 @@ export class FriendsController implements OnStart {
 							{
 								text: "Invite to Party",
 								onClick: () => {
-									task.spawn(() => {
-										InternalHttpManager.PostAsync(
-											AirshipUrl.GameCoordinator + "/parties/party/invite",
-											EncodeJSON({
-												userToAdd: friend.userId,
-											}),
-										);
-									});
+									Dependency<ProtectedPartyController>().InviteToParty(friend.userId);
 								},
 							},
 						);

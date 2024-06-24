@@ -79,14 +79,14 @@ export class CanvasAPI {
 	 */
 	public static OnHoverEvent(
 		targetGameObject: GameObject,
-		callback: (hoverState: HoverState) => void,
+		callback: (hoverState: HoverState, data: PointerEventData) => void,
 	): EngineEventConnection {
 		this.Setup(targetGameObject);
 		let id = targetGameObject.GetInstanceID();
-		return this.eventInterceptor!.OnHoverEvent((instanceId, hoverState) => {
+		return this.eventInterceptor!.OnHoverEvent((instanceId, hoverState, data) => {
 			/* Only run callback if instance ids match. */
 			if (instanceId === id) {
-				callback(hoverState as HoverState);
+				callback(hoverState as HoverState, data);
 			}
 		});
 	}
@@ -156,22 +156,34 @@ export class CanvasAPI {
 		callback: (data: PointerEventData) => void,
 	): EngineEventConnection {
 		this.Setup(targetGameObject);
-		return this.eventInterceptor!.OnEndDragEvent((instanceId, data) => {
+		const connection = this.eventInterceptor!.OnEndDragEvent((instanceId, data) => {
+			if (!targetGameObject) {
+				Bridge.DisconnectEvent(connection);
+				return;
+			}
+
 			/* Only run callback if instance ids match. */
 			if (instanceId === targetGameObject.GetInstanceID()) {
 				callback(data);
 			}
 		});
+		return connection;
 	}
 
-	public static OnDropEvent(targetGameObject: GameObject, callback: () => void): EngineEventConnection {
+	public static OnDropEvent(targetGameObject: GameObject, callback: (pointerEventData: PointerEventData) => void): EngineEventConnection {
 		this.Setup(targetGameObject);
-		return this.eventInterceptor!.OnDropEvent((instanceId) => {
+		const connection = this.eventInterceptor!.OnDropEvent((instanceId, pointerEventData) => {
+			if (!targetGameObject) {
+				Bridge.DisconnectEvent(connection);
+				return;
+			}
+
 			/* Only run callback if instance ids match. */
 			if (instanceId === targetGameObject.GetInstanceID()) {
-				callback();
+				callback(pointerEventData);
 			}
 		});
+		return connection;
 	}
 
 	public static OnDragEvent(
@@ -179,12 +191,18 @@ export class CanvasAPI {
 		callback: (data: PointerEventData) => void,
 	): EngineEventConnection {
 		this.Setup(targetGameObject);
-		return this.eventInterceptor!.OnDragEvent((instanceId, data) => {
+		const connection = this.eventInterceptor!.OnDragEvent((instanceId, data) => {
+			if (!targetGameObject) {
+				Bridge.DisconnectEvent(connection);
+				return;
+			}
+
 			/* Only run callback if instance ids match. */
 			if (instanceId === targetGameObject.GetInstanceID()) {
 				callback(data);
 			}
 		});
+		return connection;
 	}
 
 	public static OnClickEvent(targetGameObject: GameObject, callback: () => void): EngineEventConnection {

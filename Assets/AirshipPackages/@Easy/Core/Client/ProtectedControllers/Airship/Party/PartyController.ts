@@ -3,7 +3,7 @@ import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Result } from "@Easy/Core/Shared/Types/Result";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
-import { DecodeJSON } from "@Easy/Core/Shared/json";
+import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 
 export enum PartyControllerBridgeTopics {
 	GetParty = "PartyController:GetParty",
@@ -32,6 +32,15 @@ export class ProtectedPartyController implements OnStart {
 				data: DecodeJSON(res.data) as Party,
 			};
 		});
+	}
+
+	public async InviteToParty(userId: string) {
+		InternalHttpManager.PostAsync(
+			AirshipUrl.GameCoordinator + "/parties/party/invite",
+			EncodeJSON({
+				userToAdd: userId,
+			}),
+		);
 	}
 
 	OnStart(): void {}

@@ -26,6 +26,7 @@ export class MainMenuPartyController implements OnStart {
 	public onPartyUpdated = new Signal<[newParty: Party | undefined, oldParty: Party | undefined]>();
 
 	private partyCard!: PartyCard;
+	private partyCardContents!: GameObject;
 	private emptyPartyGO!: GameObject;
 
 	private partyMemberPrefab = AssetBridge.Instance.LoadAsset<GameObject>(
@@ -96,6 +97,7 @@ export class MainMenuPartyController implements OnStart {
 	private Setup(): void {
 		this.partyCard = this.mainMenuController.refs.GetValue("Social", "PartyCard").GetAirshipComponent<PartyCard>()!;
 		this.emptyPartyGO = this.mainMenuController.refs.GetValue("Social", "EmptyPartyCard");
+		this.partyCardContents = this.mainMenuController.refs.GetValue("Social", "PartyCardContents");
 
 		this.UpdateParty();
 
@@ -126,12 +128,12 @@ export class MainMenuPartyController implements OnStart {
 	}
 
 	private UpdateParty(): void {
-		if (this.party === undefined || this.party.members.size() <= 1) {
-			this.partyCard.gameObject.SetActive(false);
+		if (this.party === undefined || (this.party.members.size() <= 1 && this.party.invited.size() === 0)) {
+			this.partyCardContents.SetActive(false);
 			this.emptyPartyGO.SetActive(true);
 			return;
 		}
-		this.partyCard.gameObject.SetActive(true);
+		this.partyCardContents.SetActive(true);
 		this.emptyPartyGO.SetActive(false);
 
 		const partyContent = this.mainMenuController.refs.GetValue("Social", "PartyContent");

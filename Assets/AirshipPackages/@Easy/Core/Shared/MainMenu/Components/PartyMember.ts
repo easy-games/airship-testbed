@@ -1,20 +1,44 @@
+import { FriendsController } from "@Easy/Core/Client/ProtectedControllers/Social/FriendsController";
+import { UserController } from "@Easy/Core/Client/ProtectedControllers/User/UserController";
 import { Airship } from "../../Airship";
 import { PublicUser } from "../../Airship/Types/Outputs/AirshipUser";
+import { Dependency } from "../../Flamework";
 import { Game } from "../../Game";
 import { Protected } from "../../Protected";
 import { Bin } from "../../Util/Bin";
+import { CanvasAPI } from "../../Util/CanvasAPI";
 
 export default class PartyMember extends AirshipBehaviour {
+	@Header("References")
 	public profileImage!: RawImage;
+	public addFriendContainer!: GameObject;
+	public addFriendButton!: GameObject;
+
+	public partyLeaderContainer!: GameObject;
 	private user!: PublicUser;
 
+	/** Holds add friend button functionality */
+	private addFriendButtonBin: Bin | undefined;
 	private bin = new Bin();
-
-	override Start(): void {}
 
 	public SetUser(user: PublicUser, asLeader: boolean): void {
 		this.bin.Clean();
 		this.user = user;
+
+		// Clear status icons when new user set
+		this.bin.Add(() => {
+			this.addFriendContainer.SetActive(false);
+			this.partyLeaderContainer.SetActive(false);
+		})
+
+		this.UpdateLeaderStatus(asLeader);
+		if (this.user.uid !== Dependency<UserController>().localUser?.uid) {
+			this.UpdateFriendButton();
+			Dependency<FriendsController>().onFetchFriends.Connect(() => {
+				this.UpdateFriendButton();
+			});
+		}
+		
 
 		// this.usernameText.text = user.username;
 
@@ -42,6 +66,36 @@ export default class PartyMember extends AirshipBehaviour {
 					this.UpdatePicture().then(() => {});
 				}),
 			);
+		}
+	}
+
+	public UpdateLeaderStatus(isLeader: boolean) {
+		this.partyLeaderContainer.SetActive(isLeader);
+	}
+
+	private UpdateFriendButton() {
+		let shouldDisplay = true;
+		if (Dependency<FriendsController>().GetFriendById(this.user.uid) !== undefined) {
+			shouldDisplay = false;
+		}
+		if (Dependency<FriendsController>().HasOutgoingFriendRequest(this.user.uid)) {
+			shouldDisplay = false;
+		}
+		this.addFriendContainer.SetActive(shouldDisplay);
+
+		if (!shouldDisplay) {
+			// Clean add friend button
+			this.addFriendButtonBin?.Clean();
+			this.addFriendButtonBin = undefined;
+		} else if (!this.addFriendButtonBin) {
+			// Setup add friend button
+			this.addFriendButtonBin = new Bin();
+			this.bin.Add(this.addFriendButtonBin);
+
+			this.addFriendButtonBin.AddEngineEventConnection(CanvasAPI.OnClickEvent(this.addFriendButton, () => {
+				Dependency<FriendsController>().SendFriendRequest(this.user.username);
+			}));
+			
 		}
 	}
 

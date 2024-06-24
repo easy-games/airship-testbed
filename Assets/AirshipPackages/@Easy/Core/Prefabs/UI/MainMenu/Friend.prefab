@@ -501,6 +501,7 @@ GameObject:
   - component: {fileID: 61588793420208117}
   - component: {fileID: 2351454665502475817}
   - component: {fileID: 4497294125863309327}
+  - component: {fileID: 6678656062570326313}
   m_Layer: 0
   m_Name: Friend
   m_TagString: Untagged
@@ -664,14 +665,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1944914621726832160}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b856634bf47543e7bd38e4fd256d3038, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Bubble: 1
   DisableEventTriggerWhileDragging: 1
-  DisableDragEvents: 1
+  DisableDragEvents: 0
 --- !u!114 &2351454665502475817
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -699,13 +700,40 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1944914621726832160}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: da4a9c662d9443bdb1d6cc66c6179573, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isDragging: 0
   redirectTarget: {fileID: 0}
+--- !u!114 &6678656062570326313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1944914621726832160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scriptFile: {fileID: -7352938463746943854, guid: e62f1a95537954889b2ecaf17f806844, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Friends/FriendCard.lua
+  m_error: 0
+  m_yielded: 0
+  m_canResume: 0
+  m_asyncYield: 0
+  m_onUpdateHandle: -1
+  m_onLateUpdateHandle: -1
+  m_shortFileName: 
+  m_metadata:
+    name: FriendCard
+    decorators: []
+    properties: []
+    displayName: 
+  contextOverwritten: 0
 --- !u!1 &2630833859914784004
 GameObject:
   m_ObjectHideFlags: 0
