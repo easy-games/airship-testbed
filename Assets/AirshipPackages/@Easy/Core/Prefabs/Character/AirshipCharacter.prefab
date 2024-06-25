@@ -1368,6 +1368,7 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 2719586711620922124}
       modified: 1
+    displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0
 --- !u!114 &7088081142443290682
@@ -1452,9 +1453,10 @@ MonoBehaviour:
       fileRef: 
       decorators: []
       nullable: 0
-      serializedValue: 
+      serializedValue: 0
       serializedObject: {fileID: 0}
       modified: 0
+    displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0
 --- !u!114 &7931457288082626079
@@ -1482,18 +1484,6 @@ MonoBehaviour:
   authorityMode: 0
   ticksUntilReconcile: 1
   observerRotationLerpMod: 10
-  disableInput: 0
-  useGravity: 1
-  useGravityWhileGrounded: 0
-  detectSlopes: 0
-  detectStepUps: 1
-  alwaysStepUp: 0
-  assistedLedgeJump: 1
-  preventWallClipping: 1
-  preventFallingWhileCrouching: 1
-  groundCollisionLayerMask:
-    serializedVersion: 2
-    m_Bits: 2305
   drawDebugGizmos: 0
   useExtraLogging: 0
   voxelWorld: {fileID: 0}
@@ -1512,7 +1502,9 @@ MonoBehaviour:
   characterHeight: 1.8
   characterRadius: 0.2
   speed: 4.666667
+  airSpeedMultiplier: 1
   sprintSpeed: 6.666667
+  onlySprintForward: 0
   autoCrouch: 1
   crouchSpeedMultiplier: 0.455
   crouchHeightMultiplier: 0.75
@@ -1523,14 +1515,25 @@ MonoBehaviour:
   jumpSpeed: 14
   jumpCoyoteTime: 0.14
   jumpUpBlockCooldown: 0.4
+  useGravity: 1
+  useGravityWhileGrounded: 0
+  gravityMultiplier: 1
+  upwardsGravityMultiplier: 1
   terminalVelocity: 50
-  gravityMod: 2
-  upwardsGravityMod: 1
   slopeForce: 45
   minSlopeDelta: 0.1
   maxSlopeDelta: 0.3
   maxStepUpHeight: 0.5
   drag: 1
+  detectSlopes: 0
+  detectStepUps: 1
+  alwaysStepUp: 0
+  assistedLedgeJump: 1
+  preventWallClipping: 1
+  preventFallingWhileCrouching: 1
+  groundCollisionLayerMask:
+    serializedVersion: 2
+    m_Bits: 2305
 --- !u!114 &903796914586745664
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1595,21 +1598,6 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 1630554268186973954, guid: 875d50be9d6291e44b473c4df0b7172b, type: 3}
       modified: 1
-    - name: flinchClipViewModel
-      type: object
-      objectType: AnimationClip
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 1630554268186973954, guid: 875d50be9d6291e44b473c4df0b7172b, type: 3}
-      modified: 1
     - name: baseFootstepVolumeScale
       type: number
       objectType: 
@@ -1648,6 +1636,22 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: -1624083086148811293}
       modified: 1
+    - name: flinchClipViewmodel
+      type: object
+      objectType: AnimationClip
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
+    displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0
 --- !u!114 &5043041770756594627
