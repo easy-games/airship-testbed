@@ -1502,8 +1502,8 @@ MonoBehaviour:
   characterHeight: 1.8
   characterRadius: 0.2
   speed: 4.666667
-  airSpeedMultiplier: 1
   sprintSpeed: 6.666667
+  airSpeedMultiplier: 1
   onlySprintForward: 0
   autoCrouch: 1
   crouchSpeedMultiplier: 0.455
@@ -1517,8 +1517,11 @@ MonoBehaviour:
   jumpUpBlockCooldown: 0.4
   useGravity: 1
   useGravityWhileGrounded: 0
-  gravityMultiplier: 1
+  gravityMultiplier: 2
   upwardsGravityMultiplier: 1
+  groundCollisionLayerMask:
+    serializedVersion: 2
+    m_Bits: 2305
   terminalVelocity: 50
   slopeForce: 45
   minSlopeDelta: 0.1
@@ -1531,9 +1534,6 @@ MonoBehaviour:
   assistedLedgeJump: 1
   preventWallClipping: 1
   preventFallingWhileCrouching: 1
-  groundCollisionLayerMask:
-    serializedVersion: 2
-    m_Bits: 2305
 --- !u!114 &903796914586745664
 MonoBehaviour:
   m_ObjectHideFlags: 0
