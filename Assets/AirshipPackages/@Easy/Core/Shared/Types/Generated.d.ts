@@ -19415,6 +19415,7 @@ interface ServerBootstrap extends MonoBehaviour {
     overrideGameBundleVersion: string;
     airshipJWT: string;
     agones: AgonesSdk;
+    agonesBeta: AgonesBetaSdk;
     gameId: string;
     serverId: string;
     organizationId: string;
@@ -19545,6 +19546,7 @@ declare const GameServerSpec: GameServerSpecConstructor;
 interface GameServerStatus {
     State: string;
     Address: string;
+    Addresses: CSArray<StatusAddresses>;
     Ports: CSArray<StatusPort>;
 
 
@@ -19554,6 +19556,26 @@ interface GameServerStatus {
     ToString(): string;
 
 }
+    
+interface StatusAddresses {
+    Address: string;
+    Type: string;
+
+
+    Equals(input: unknown): boolean;
+    Equals(input: StatusAddresses): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface StatusAddressesConstructor {
+
+    new(data: CSDictionary<string, unknown>): StatusAddresses;
+
+
+}
+declare const StatusAddresses: StatusAddressesConstructor;
     
 interface StatusPort {
     Name: string;
@@ -19615,6 +19637,33 @@ interface AgonesSdkConstructor {
 
 }
 declare const AgonesSdk: AgonesSdkConstructor;
+    
+interface AgonesBetaSdk extends AgonesSdk {
+
+
+    AppendListValue(key: string, value: string): boolean;
+    DecrementCounter(key: string, amount: number): boolean;
+    DeleteListValue(key: string, value: string): boolean;
+    GetCounterCapacity(key: string): number;
+    GetCounterCount(key: string): number;
+    GetListCapacity(key: string): number;
+    GetListLength(key: string): number;
+    GetListValues(key: string): CSArray<string>;
+    IncrementCounter(key: string, amount: number): boolean;
+    ListContains(key: string, value: string): boolean;
+    SetCounterCapacity(key: string, amount: number): boolean;
+    SetCounterCount(key: string, amount: number): boolean;
+    SetListCapacity(key: string, amount: number): boolean;
+
+}
+    
+interface AgonesBetaSdkConstructor {
+
+    new(): AgonesBetaSdk;
+
+
+}
+declare const AgonesBetaSdk: AgonesBetaSdkConstructor;
     
 interface ServerContext extends NetworkBehaviour {
     serverId: unknown;
@@ -27906,4 +27955,51 @@ interface EntryConstructor {
 
 }
 declare const Entry: EntryConstructor;
+    
+interface CharacterMovementData extends MonoBehaviour {
+    characterHeight: number;
+    characterRadius: number;
+    speed: number;
+    sprintSpeed: number;
+    airSpeedMultiplier: number;
+    onlySprintForward: boolean;
+    autoCrouch: boolean;
+    crouchSpeedMultiplier: number;
+    crouchHeightMultiplier: number;
+    slideSpeedMultiplier: number;
+    slideHeightMultiplier: number;
+    slideCooldown: number;
+    numberOfJumps: number;
+    jumpSpeed: number;
+    jumpCoyoteTime: number;
+    jumpUpBlockCooldown: number;
+    useGravity: boolean;
+    useGravityWhileGrounded: boolean;
+    gravityMultiplier: number;
+    upwardsGravityMultiplier: number;
+    groundCollisionLayerMask: LayerMask;
+    terminalVelocity: number;
+    slopeForce: number;
+    minSlopeDelta: number;
+    maxSlopeDelta: number;
+    maxStepUpHeight: number;
+    drag: number;
+    detectSlopes: boolean;
+    detectStepUps: boolean;
+    alwaysStepUp: boolean;
+    assistedLedgeJump: boolean;
+    preventWallClipping: boolean;
+    preventFallingWhileCrouching: boolean;
+
+
+
+}
+    
+interface CharacterMovementDataConstructor {
+
+    new(): CharacterMovementData;
+
+
+}
+declare const CharacterMovementData: CharacterMovementDataConstructor;
 
