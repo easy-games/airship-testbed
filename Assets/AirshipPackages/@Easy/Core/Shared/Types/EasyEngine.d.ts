@@ -118,6 +118,12 @@ interface CharacterMovement extends Component {
 	GetState(): CharacterState;
 	UpdateSyncTick(): void;
 
+	rootTransform: Transform; //The true position transform
+	networkTransform: Transform; //The interpolated network transform
+	graphicTransform: Transform; //A transform we can animate
+
+	moveData: CharacterMoveData;
+
 	groundedBlockId: number;
 	groundedBlockPos: Vector3;
 	groundedRaycastHit: RaycastHit;
@@ -131,6 +137,7 @@ interface CharacterMovement extends Component {
 	characterRadius: number;
 	characterHalfExtents: Vector3;
 	groundCollisionLayerMask: LayerMask;
+	mainCollider: BoxCollider;
 }
 
 interface Nullable<T> {
