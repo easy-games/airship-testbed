@@ -5,9 +5,13 @@ import { OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
+import { AudioManager } from "../Audio/AudioManager";
 import { AvatarUtil } from "../Avatar/AvatarUtil";
+import { CameraReferences } from "../Camera/CameraReferences";
 import { CoreContext } from "../CoreClientContext";
 import { Game } from "../Game";
+import { ItemUtil } from "../Item/ItemUtil";
+import { RandomUtil } from "../Util/RandomUtil";
 import Character from "./Character";
 import { CharacterDto } from "./CharacterDto";
 import { CustomMoveData } from "./CustomMoveData";
@@ -159,6 +163,82 @@ export class CharactersSingleton implements OnStart {
 				}
 			});
 		}
+
+		this.WatchForHeldItemAccessories();
+	}
+
+	private WatchForHeldItemAccessories() {
+		this.ObserveCharacters((character) => {
+			character.inventory.ObserveHeldItem((itemStack) => {
+				const itemDef = itemStack?.GetItemDef();
+
+				let viewmodelAccessoryBuilder: AccessoryBuilder | undefined;
+				if (character.IsLocalCharacter()) {
+					viewmodelAccessoryBuilder = CameraReferences.viewmodel?.accessoryBuilder;
+				}
+
+				// Play the equip sound
+				// TODO need to make bundles string accessible for when you dont know the exact bundle you are loading
+				if (itemDef !== undefined) {
+					// let equipPath = "Assets/AirshipPackages/@Easy/Core/Sound/Items/Equip/Equip_Generic.ogg";
+					let equipPath = "";
+					if (itemDef.holdConfig?.equipSound) {
+						equipPath = RandomUtil.FromArray(itemDef.holdConfig.equipSound);
+					}
+					if (equipPath !== "") {
+						if (character.IsLocalCharacter()) {
+							AudioManager.PlayFullPathGlobal(equipPath, {
+								volumeScale: 0.5,
+							});
+						} else {
+							AudioManager.PlayFullPathAtPosition(equipPath, character.model.transform.position, {
+								volumeScale: 0.2,
+							});
+						}
+					}
+				}
+
+				//Spawn the accessories graphics
+				let accessoryTemplates: AccessoryComponent[] = [];
+				if (itemDef) {
+					accessoryTemplates = [...ItemUtil.GetAccessoriesForItemType(itemDef.itemType)];
+				}
+
+				character.accessoryBuilder.RemoveAccessorySlot(AccessorySlot.LeftHand, false);
+				character.accessoryBuilder.RemoveAccessorySlot(AccessorySlot.RightHand, false);
+				if (viewmodelAccessoryBuilder) {
+					viewmodelAccessoryBuilder.RemoveAccessorySlot(AccessorySlot.LeftHand, false);
+					viewmodelAccessoryBuilder.RemoveAccessorySlot(AccessorySlot.RightHand, false);
+				}
+
+				// const firstPerson = this.character.animator.IsFirstPerson();
+				// let layer = firstPerson ? Layer.FIRST_PERSON : Layer.CHARACTER;
+				let i = 0;
+				// this.activeAccessoriesWorldmodel.clear();
+				// this.activeAccessoriesViewmodel.clear();
+				for (const accessoryTemplate of accessoryTemplates) {
+					character.accessoryBuilder.AddSingleAccessory(accessoryTemplate, false);
+					if (viewmodelAccessoryBuilder) {
+						viewmodelAccessoryBuilder.AddSingleAccessory(accessoryTemplate, false);
+					}
+
+					//Load the animator for the held item if one exists
+					// const go = this.activeAccessoriesWorldmodel[i].rootTransform.gameObject;
+					// this.currentItemGOs.push(go);
+					// const anim = go.GetComponent<Animator>();
+					// if (anim) {
+					// 	this.currentItemAnimations.push(anim);
+					// }
+					i++;
+				}
+
+				// this.entity.accessoryBuilder.TryCombineMeshes();
+				character.accessoryBuilder.UpdateAccessoryLayers();
+				if (viewmodelAccessoryBuilder) {
+					viewmodelAccessoryBuilder.UpdateAccessoryLayers();
+				}
+			});
+		});
 	}
 
 	/**

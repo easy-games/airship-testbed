@@ -24014,18 +24014,21 @@ interface DevConsoleConstructor {
 declare const DevConsole: DevConsoleConstructor;
     
 interface EasyShake extends MonoBehaviour {
-    duration: number;
+    shakeOnEnable: boolean;
+    shakeDuration: number;
+    movementLerpMod: number;
     movementsPerSecond: number;
-    lerpMod: number;
-    maxRadius: Vector3;
-    minRadius: Vector3;
-    positionRadiusMod: number;
-    rotationRadiusMod: number;
     minimizeShakeOverTime: boolean;
-    infinite: boolean;
-    destroyOnEnd: boolean;
+    maxPositionOffset: Vector3;
+    maxRotationOffsetAngles: Vector3;
+    destroyComponentOnEnd: boolean;
 
 
+    GetRandomVector3(maxRange: Vector3): Vector3;
+    SetStartingPosRot(localPosition: Vector3, localRotation: Quaternion): void;
+    Shake(duration: number): void;
+    ShakeForever(): void;
+    StopShake(): void;
 
 }
     
