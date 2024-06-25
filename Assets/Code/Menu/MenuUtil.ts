@@ -11,6 +11,11 @@ export class MenuUtil {
 			sceneName: "Movement",
 		},
 		{
+			title: "Movement Manipulation",
+			subtitle: "Testing changing the movement dynamically at runtime",
+			sceneName: "MovementMods",
+		},
+		{
 			title: "Client Sided",
 			subtitle: "A scene that is only loaded on your local client.",
 			sceneName: "ClientSidedScene",
