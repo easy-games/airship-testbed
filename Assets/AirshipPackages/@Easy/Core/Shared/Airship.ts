@@ -1,5 +1,6 @@
 import { AirshipPartyController } from "../Client/Controllers/Airship/Party/AirshipPartyController";
 import { AirshipPlatformInventoryController } from "../Client/Controllers/Airship/PlatformInventory/AirshipPlatformInventoryController";
+import { AirshipPurchaseController } from "../Client/Controllers/Airship/Purchase/AirshipPurchaseController";
 import { AirshipUserController } from "../Client/Controllers/Airship/User/AirshipUserController";
 import { AirshipCacheStoreService } from "../Server/Services/Airship/CacheStore/AirshipCacheStoreService";
 import { AirshipDataStoreService } from "../Server/Services/Airship/DataStore/AirshipDataStoreService";
@@ -105,6 +106,10 @@ export const Platform = {
 		 * Provides access to user information.
 		 */
 		user: undefined as unknown as Omit<AirshipUserController, "OnStart">,
+		/**
+		 * Prompt users to buy products in your game.
+		 */
+		purchase: undefined as unknown as Omit<AirshipPurchaseController, "OnStart">,
 	},
 };
 

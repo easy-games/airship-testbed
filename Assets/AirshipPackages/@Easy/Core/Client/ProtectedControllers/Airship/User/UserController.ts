@@ -57,27 +57,7 @@ export class ProtectedUserController implements OnStart {
 		);
 
 		contextbridge.callback<BridgeApiGetUserById>(UserControllerBridgeTopics.GetUserById, (_, userId) => {
-			const res = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/users/uid/${userId}`);
-
-			if (!res.success || res.statusCode > 299) {
-				warn(`Unable to get user. Status Code:  ${res.statusCode}.\n`, res.data);
-				return {
-					success: false,
-					data: undefined,
-				};
-			}
-
-			if (!res.data) {
-				return {
-					success: true,
-					data: undefined,
-				};
-			}
-
-			return {
-				success: true,
-				data: DecodeJSON(res.data) as PublicUser,
-			};
+			return this.GetUserById(userId);
 		});
 
 		contextbridge.callback<BridgeApiGetUsersById>(
@@ -166,6 +146,30 @@ export class ProtectedUserController implements OnStart {
 				data: data.areFriends,
 			};
 		});
+	}
+
+	public GetUserById(userId: string): Result<PublicUser | undefined, undefined> {
+		const res = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/users/uid/${userId}`);
+
+		if (!res.success || res.statusCode > 299) {
+			warn(`Unable to get user. Status Code:  ${res.statusCode}.\n`, res.data);
+			return {
+				success: false,
+				data: undefined,
+			};
+		}
+
+		if (!res.data) {
+			return {
+				success: true,
+				data: undefined,
+			};
+		}
+
+		return {
+			success: true,
+			data: DecodeJSON(res.data) as PublicUser,
+		};
 	}
 
 	OnStart(): void {}
