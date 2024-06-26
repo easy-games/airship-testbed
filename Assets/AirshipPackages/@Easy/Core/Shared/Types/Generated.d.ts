@@ -2276,14 +2276,6 @@ declare const enum ParticleSystemStopBehavior {
     StopEmittingAndClear = 0,
     StopEmitting = 1,
 }
-declare const enum FadeMode {
-    FixedSpeed = 0,
-    FixedDuration = 1,
-    FromStart = 2,
-    NormalizedSpeed = 3,
-    NormalizedDuration = 4,
-    NormalizedFromStart = 5,
-}
 declare const enum AvatarMaskBodyPart {
     Root = 0,
     Body = 1,
@@ -11164,70 +11156,6 @@ interface int4x4Constructor {
 }
 declare const int4x4: int4x4Constructor;
     
-interface Random {
-    state: number;
-
-
-    InitState(seed: number): void;
-    NextBool(): boolean;
-    NextBool2(): bool2;
-    NextBool3(): bool3;
-    NextBool4(): bool4;
-    NextDouble(): number;
-    NextDouble(max: number): number;
-    NextDouble(min: number, max: number): number;
-    NextDouble2(): double2;
-    NextDouble2(max: double2): double2;
-    NextDouble2(min: double2, max: double2): double2;
-    NextDouble2Direction(): double2;
-    NextDouble3(): double3;
-    NextDouble3(max: double3): double3;
-    NextDouble3(min: double3, max: double3): double3;
-    NextDouble3Direction(): double3;
-    NextDouble4(): double4;
-    NextDouble4(max: double4): double4;
-    NextDouble4(min: double4, max: double4): double4;
-    NextFloat(): number;
-    NextFloat(max: number): number;
-    NextFloat(min: number, max: number): number;
-    NextFloat2(): float2;
-    NextFloat2(max: float2): float2;
-    NextFloat2(min: float2, max: float2): float2;
-    NextFloat2Direction(): float2;
-    NextFloat3(): float3;
-    NextFloat3(max: float3): float3;
-    NextFloat3(min: float3, max: float3): float3;
-    NextFloat3Direction(): float3;
-    NextFloat4(): float4;
-    NextFloat4(max: float4): float4;
-    NextFloat4(min: float4, max: float4): float4;
-    NextInt(): number;
-    NextInt(max: number): number;
-    NextInt(min: number, max: number): number;
-    NextInt2(): int2;
-    NextInt2(max: int2): int2;
-    NextInt2(min: int2, max: int2): int2;
-    NextInt3(): int3;
-    NextInt3(max: int3): int3;
-    NextInt3(min: int3, max: int3): int3;
-    NextInt4(): int4;
-    NextInt4(max: int4): int4;
-    NextInt4(min: int4, max: int4): int4;
-    NextQuaternionRotation(): quaternion;
-    NextUInt(): number;
-    NextUInt(max: number): number;
-    NextUInt(min: number, max: number): number;
-    NextUInt2(): uint2;
-    NextUInt2(max: uint2): uint2;
-    NextUInt2(min: uint2, max: uint2): uint2;
-    NextUInt3(): uint3;
-    NextUInt3(max: uint3): uint3;
-    NextUInt3(min: uint3, max: uint3): uint3;
-    NextUInt4(): uint4;
-    NextUInt4(max: uint4): uint4;
-    NextUInt4(min: uint4, max: uint4): uint4;
-
-}
     
 interface uint2 {
     x: number;
@@ -11820,14 +11748,6 @@ interface uint2Constructor {
 }
 declare const uint2: uint2Constructor;
     
-interface RandomConstructor {
-
-    new(seed: number): Random;
-
-
-    CreateFromIndex(index: number): Random;
-}
-declare const Random: RandomConstructor;
     
 interface Ray2D {
     origin: Vector2;
@@ -16165,47 +16085,6 @@ interface InstanceFinderConstructor {
 }
 declare const InstanceFinder: InstanceFinderConstructor;
     
-interface IListItem {
-    Key: Key;
-
-
-
-}
-    
-interface Key extends IListItem {
-
-
-
-}
-    
-interface KeyConstructor {
-    NotInList: number;
-
-    new(): Key;
-
-
-    IndexOf(key: Key): number;
-    IsInList(key: Key): boolean;
-}
-declare const Key: KeyConstructor;
-    
-interface Key extends IListItem {
-
-
-
-}
-    
-interface KeyConstructor {
-    NotInList: number;
-
-    new(): Key;
-
-
-    IndexOf(key: Key): number;
-    IsInList(key: Key): boolean;
-}
-declare const Key: KeyConstructor;
-    
 interface IEventSystemHandler {
 
 
@@ -19465,6 +19344,7 @@ interface ServerBootstrap extends MonoBehaviour {
     overrideGameBundleVersion: string;
     airshipJWT: string;
     agones: AgonesSdk;
+    agonesBeta: AgonesBetaSdk;
     gameId: string;
     serverId: string;
     organizationId: string;
@@ -19595,6 +19475,7 @@ declare const GameServerSpec: GameServerSpecConstructor;
 interface GameServerStatus {
     State: string;
     Address: string;
+    Addresses: CSArray<StatusAddresses>;
     Ports: CSArray<StatusPort>;
 
 
@@ -19604,6 +19485,26 @@ interface GameServerStatus {
     ToString(): string;
 
 }
+    
+interface StatusAddresses {
+    Address: string;
+    Type: string;
+
+
+    Equals(input: unknown): boolean;
+    Equals(input: StatusAddresses): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface StatusAddressesConstructor {
+
+    new(data: CSDictionary<string, unknown>): StatusAddresses;
+
+
+}
+declare const StatusAddresses: StatusAddressesConstructor;
     
 interface StatusPort {
     Name: string;
@@ -19665,6 +19566,33 @@ interface AgonesSdkConstructor {
 
 }
 declare const AgonesSdk: AgonesSdkConstructor;
+    
+interface AgonesBetaSdk extends AgonesSdk {
+
+
+    AppendListValue(key: string, value: string): boolean;
+    DecrementCounter(key: string, amount: number): boolean;
+    DeleteListValue(key: string, value: string): boolean;
+    GetCounterCapacity(key: string): number;
+    GetCounterCount(key: string): number;
+    GetListCapacity(key: string): number;
+    GetListLength(key: string): number;
+    GetListValues(key: string): CSArray<string>;
+    IncrementCounter(key: string, amount: number): boolean;
+    ListContains(key: string, value: string): boolean;
+    SetCounterCapacity(key: string, amount: number): boolean;
+    SetCounterCount(key: string, amount: number): boolean;
+    SetListCapacity(key: string, amount: number): boolean;
+
+}
+    
+interface AgonesBetaSdkConstructor {
+
+    new(): AgonesBetaSdk;
+
+
+}
+declare const AgonesBetaSdk: AgonesBetaSdkConstructor;
     
 interface ServerContext extends NetworkBehaviour {
     serverId: unknown;
@@ -24064,18 +23992,21 @@ interface DevConsoleConstructor {
 declare const DevConsole: DevConsoleConstructor;
     
 interface EasyShake extends MonoBehaviour {
-    duration: number;
+    shakeDuration: number;
+    shakeOnEnable: boolean;
+    movementLerpMod: number;
     movementsPerSecond: number;
-    lerpMod: number;
-    maxRadius: Vector3;
-    minRadius: Vector3;
-    positionRadiusMod: number;
-    rotationRadiusMod: number;
     minimizeShakeOverTime: boolean;
-    infinite: boolean;
-    destroyOnEnd: boolean;
+    maxPositionOffset: Vector3;
+    maxRotationOffsetAngles: Vector3;
+    destroyComponentOnEnd: boolean;
 
 
+    GetRandomVector3(maxRange: Vector3): Vector3;
+    SetStartingPosRot(localPosition: Vector3, localRotation: Quaternion): void;
+    Shake(duration: number): void;
+    ShakeForever(): void;
+    StopShake(): void;
 
 }
     
@@ -27953,4 +27884,51 @@ interface EntryConstructor {
 
 }
 declare const Entry: EntryConstructor;
+    
+interface CharacterMovementData extends MonoBehaviour {
+    characterHeight: number;
+    characterRadius: number;
+    speed: number;
+    sprintSpeed: number;
+    airSpeedMultiplier: number;
+    onlySprintForward: boolean;
+    autoCrouch: boolean;
+    crouchSpeedMultiplier: number;
+    crouchHeightMultiplier: number;
+    slideSpeedMultiplier: number;
+    slideHeightMultiplier: number;
+    slideCooldown: number;
+    numberOfJumps: number;
+    jumpSpeed: number;
+    jumpCoyoteTime: number;
+    jumpUpBlockCooldown: number;
+    useGravity: boolean;
+    useGravityWhileGrounded: boolean;
+    gravityMultiplier: number;
+    upwardsGravityMultiplier: number;
+    groundCollisionLayerMask: LayerMask;
+    terminalVelocity: number;
+    slopeForce: number;
+    minSlopeDelta: number;
+    maxSlopeDelta: number;
+    maxStepUpHeight: number;
+    drag: number;
+    detectSlopes: boolean;
+    detectStepUps: boolean;
+    alwaysStepUp: boolean;
+    assistedLedgeJump: boolean;
+    preventWallClipping: boolean;
+    preventFallingWhileCrouching: boolean;
+
+
+
+}
+    
+interface CharacterMovementDataConstructor {
+
+    new(): CharacterMovementData;
+
+
+}
+declare const CharacterMovementData: CharacterMovementDataConstructor;
 

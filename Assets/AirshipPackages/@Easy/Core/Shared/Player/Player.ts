@@ -61,11 +61,6 @@ export class Player {
 	 */
 	public platform = AirshipPlatformUtil.GetLocalPlatform();
 
-	/**
-	 * The client's network connection.
-	 */
-	public readonly networkConnection: NetworkConnection;
-
 	/** @internal */
 	constructor(
 		/**
@@ -106,7 +101,6 @@ export class Player {
 
 		private playerInfo: PlayerInfo,
 	) {
-		this.networkConnection = networkObject.Owner;
 		if (playerInfo !== undefined) {
 			this.SetVoiceChatAudioSource(playerInfo.voiceChatAudioSource);
 		}
@@ -170,6 +164,13 @@ export class Player {
 		Airship.characters.RegisterCharacter(characterComponent);
 		Airship.characters.onCharacterSpawned.Fire(characterComponent);
 		return characterComponent;
+	}
+
+	/**
+	 * @returns The network connection associated with this player.
+	 */
+	public GetNetworkConnection() {
+		return NetworkCore.GetNetworkConnection(this.connectionId);
 	}
 
 	public WaitForOutfitLoaded(timeout?: number): void {
@@ -246,7 +247,7 @@ export class Player {
 	}
 
 	public IsInScene(sceneName: string): boolean {
-		const scenes = CSArrayUtil.Convert(this.networkConnection.Scenes);
+		const scenes = CSArrayUtil.Convert(this.GetNetworkConnection().Scenes);
 		if (scenes.find((s) => s.name === sceneName)) {
 			return true;
 		}
