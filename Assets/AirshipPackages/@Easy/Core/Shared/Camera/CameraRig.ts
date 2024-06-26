@@ -15,7 +15,7 @@ export default class CameraRig extends AirshipBehaviour {
 	public Awake(): void {}
 
 	public OnEnable(): void {
-		// if (!Game.IsClient()) return;
+		if (!Game.IsClient()) return;
 
 		Airship.characterCamera.StopCameraSystem();
 
