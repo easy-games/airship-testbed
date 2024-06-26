@@ -1,7 +1,7 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
-import { OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
+import { Singleton } from "@Easy/Core/Shared/Flamework";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
@@ -21,7 +21,7 @@ import { LocalCharacterSingleton } from "./LocalCharacter/LocalCharacterSingleto
 const characterPrefab = AssetCache.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/Character/AirshipCharacter.prefab");
 
 @Singleton()
-export class CharactersSingleton implements OnStart {
+export class CharactersSingleton {
 	private characters = new Set<Character>();
 
 	public onCharacterSpawned = new Signal<Character>();
@@ -63,7 +63,7 @@ export class CharactersSingleton implements OnStart {
 		Airship.characters = this;
 	}
 
-	OnStart(): void {
+	protected OnStart(): void {
 		if (Game.coreContext === CoreContext.MAIN_MENU) return;
 		if (Game.IsClient() && !Game.IsServer()) {
 			task.spawn(() => {
@@ -98,7 +98,7 @@ export class CharactersSingleton implements OnStart {
 					characters.push({
 						id: character.id,
 						objectId: character.networkObject.ObjectId,
-						ownerClientId: character.player?.clientId,
+						ownerClientId: character.player?.connectionId,
 						outfitDto: character.outfitDto,
 					});
 				}
@@ -106,7 +106,7 @@ export class CharactersSingleton implements OnStart {
 			});
 
 			// Auto disconnect
-			Airship.players.onPlayerDisconnected.Connect((player) => {
+			Airship.Players.onPlayerDisconnected.Connect((player) => {
 				if (!this.autoDespawnCharactersOnPlayerDisconnect) return;
 				player.character?.Despawn();
 			});
@@ -328,7 +328,7 @@ export class CharactersSingleton implements OnStart {
 			);
 			let player: Player | undefined;
 			if (dto.ownerClientId !== undefined) {
-				player = Airship.players.FindByClientId(dto.ownerClientId);
+				player = Airship.Players.FindByClientId(dto.ownerClientId);
 				assert(player, "Failed to find player when spawning character. clientId=" + dto.ownerClientId);
 				characterNetworkObj.gameObject.name = "Character_" + player.username;
 			}
@@ -359,7 +359,7 @@ export class CharactersSingleton implements OnStart {
 
 	public FindByClientId(clientId: number): Character | undefined {
 		for (let character of this.characters) {
-			if (character.player?.clientId === clientId) {
+			if (character.player?.connectionId === clientId) {
 				return character;
 			}
 		}
@@ -405,7 +405,7 @@ export class CharactersSingleton implements OnStart {
 			CoreNetwork.ServerToClient.Character.Spawn.server.FireAllClients({
 				id: character.id,
 				objectId: character.networkObject.ObjectId,
-				ownerClientId: character.player?.clientId,
+				ownerClientId: character.player?.connectionId,
 				outfitDto: character.outfitDto,
 			});
 		}

@@ -1,7 +1,7 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
 import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
-import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { CharacterInventorySingleton } from "@Easy/Core/Shared/Inventory/CharacterInventorySingleton";
 import Inventory from "@Easy/Core/Shared/Inventory/Inventory";
@@ -24,7 +24,7 @@ type DraggingState = {
 };
 
 @Controller({})
-export class InventoryUIController implements OnStart {
+export class InventoryUIController {
 	private hotbarSlots = 9;
 	private backpackShown = false;
 	private hotbarCanvas: Canvas;
@@ -71,7 +71,7 @@ export class InventoryUIController implements OnStart {
 		this.backpackCanvas.enabled = false;
 	}
 
-	OnStart(): void {
+	protected OnStart(): void {
 		this.SetupHotbar();
 		this.SetupBackpack();
 		Airship.input.OnDown("Inventory").Connect((event) => {
@@ -460,10 +460,7 @@ export class InventoryUIController implements OnStart {
 
 						if (this.draggingState) {
 							if (!this.draggingState.consumed) {
-								this.characterInvController.DropItemInSlot(
-									this.draggingState.slot,
-									this.draggingState.itemStack.GetAmount(),
-								);
+								// Intent may be to drop item
 							}
 
 							Object.Destroy(this.draggingState.transform.gameObject);

@@ -1,4 +1,4 @@
-import { OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
+import { Singleton } from "@Easy/Core/Shared/Flamework";
 import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 import { Airship } from "../Airship";
 import { AssetCache } from "../AssetCache/AssetCache";
@@ -29,7 +29,7 @@ export enum InputActionDirection {
 }
 
 @Singleton()
-export class AirshipInputSingleton implements OnStart {
+export class AirshipInputSingleton {
 	/**
 	 * Whether or not creating a duplicate keybind should immediately unbind matching keybinds.
 	 */
@@ -93,7 +93,7 @@ export class AirshipInputSingleton implements OnStart {
 		Airship.input = this;
 	}
 
-	OnStart(): void {
+	protected OnStart(): void {
 		if (!Game.IsClient()) return;
 
 		if (Game.coreContext === CoreContext.GAME && Game.IsGameLuauContext()) {
@@ -127,7 +127,6 @@ export class AirshipInputSingleton implements OnStart {
 				binding: Binding.MouseButton(MouseButton.RightButton),
 			},
 			{ name: "Inventory", binding: Binding.Key(Key.E) },
-			{ name: "DropItem", binding: Binding.Key(Key.Q) },
 			{ name: "Inspect", binding: Binding.Key(Key.Y) },
 			{ name: "Interact", binding: Binding.Key(Key.F) },
 			{ name: "PushToTalk", binding: Binding.Key(Key.V) },

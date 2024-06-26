@@ -1,5 +1,5 @@
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
-import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Protected } from "@Easy/Core/Shared/Protected";
@@ -10,7 +10,7 @@ import { AuthController } from "../Auth/AuthController";
 import { User } from "./User";
 
 @Controller({})
-export class UserController implements OnStart {
+export class UserController {
 	public localUser: User | undefined;
 
 	public onLocalUserUpdated = new Signal<User>();
@@ -20,7 +20,7 @@ export class UserController implements OnStart {
 		Protected.user = this;
 	}
 
-	OnStart(): void {
+	protected OnStart(): void {
 		this.authController.onAuthenticated.Connect(() => {
 			task.spawn(() => {
 				this.FetchLocalUser();

@@ -1,5 +1,5 @@
 import { PublicUser } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipUser";
-import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Result } from "@Easy/Core/Shared/Types/Result";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
@@ -23,7 +23,7 @@ export type BridgeApiGetFriends = () => Result<PublicUser[], undefined>;
 export type BrigdeApiIsFriendsWith = (userId: string) => Result<boolean, undefined>;
 
 @Controller({})
-export class ProtectedUserController implements OnStart {
+export class ProtectedUserController {
 	constructor() {
 		if (!Game.IsClient()) return;
 
@@ -172,5 +172,5 @@ export class ProtectedUserController implements OnStart {
 		};
 	}
 
-	OnStart(): void {}
+	protected OnStart(): void {}
 }

@@ -38,7 +38,7 @@ export default class DemoManager extends AirshipBehaviour {
 
 		if (Game.IsServer()) {
 			this.bin.Add(
-				Airship.players.ObservePlayers((player) => {
+				Airship.Players.ObservePlayers((player) => {
 					this.SpawnPlayer(player);
 				}),
 			);

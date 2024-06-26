@@ -1,10 +1,10 @@
 import {
-	AirshipGameTransferConfig,
-	AirshipServerConfig,
-	AirshipServerTransferConfig,
+    AirshipGameTransferConfig,
+    AirshipServerConfig,
+    AirshipServerTransferConfig,
 } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipTransfers";
 import { CreateServerResponse } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipTransfers";
-import { OnStart, Service } from "@Easy/Core/Shared/Flamework";
+import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Result } from "@Easy/Core/Shared/Types/Result";
@@ -30,7 +30,7 @@ export type ServerBridgeApiTransferGroupToServer = (
 ) => Result<undefined, undefined>;
 
 @Service({})
-export class ProtectedTransferService implements OnStart {
+export class ProtectedTransferService {
 	constructor() {
 		if (!Game.IsServer()) return;
 
@@ -120,5 +120,5 @@ export class ProtectedTransferService implements OnStart {
 		);
 	}
 
-	OnStart(): void {}
+	protected OnStart(): void {}
 }

@@ -119,7 +119,7 @@ export class ItemUtil {
 	 * @deprecated
 	 */
 	public static GetItemTypeFromBlockId(blockId: number): string | undefined {
-		const WorldAPI = import("@Easy/Core/Shared/VoxelWorld/WorldAPI").expect().WorldAPI;
+		const WorldAPI = import("@Easy/Survival/Shared/VoxelWorld/WorldAPI").expect().WorldAPI;
 		const world = WorldAPI.GetMainWorld();
 		if (!world) return undefined;
 

@@ -6,7 +6,7 @@ import { ChatCommand } from "@Easy/Core/Shared/Commands/ChatCommand";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
 import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
-import { Dependency, OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
+import { Dependency, Singleton } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { GameObjectUtil } from "@Easy/Core/Shared/GameObject/GameObjectUtil";
 import { MainMenuSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/MainMenuSingleton";
@@ -63,7 +63,7 @@ class ChatMessageElement {
 }
 
 @Singleton()
-export class ClientChatSingleton implements OnStart {
+export class ClientChatSingleton {
 	public canvas!: Canvas;
 	private content: GameObject;
 	private wrapper: RectTransform;
@@ -195,7 +195,7 @@ export class ClientChatSingleton implements OnStart {
 		this.RenderChatMessage(text, sender);
 	}
 
-	OnStart(): void {
+	protected OnStart(): void {
 		const isMainMenu = Game.coreContext === CoreContext.MAIN_MENU;
 		if (isMainMenu) return;
 
@@ -425,7 +425,7 @@ export class ClientChatSingleton implements OnStart {
 			const profileImage = refs.GetValue<RawImage>("UI", "ProfilePicture");
 			if (sender) {
 				task.spawn(async () => {
-					const texture = await Airship.players.GetProfilePictureTextureFromImageIdAsync(
+					const texture = await Airship.Players.GetProfilePictureTextureFromImageIdAsync(
 						sender.userId,
 						sender.profileImageId,
 					);

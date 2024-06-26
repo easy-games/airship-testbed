@@ -1,6 +1,6 @@
 import { AirshipProduct } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipPurchase";
 import { PublicUser } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipUser";
-import { Controller, Dependency, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Controller, Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Protected } from "@Easy/Core/Shared/Protected";
 import { Result } from "@Easy/Core/Shared/Types/Result";
@@ -19,7 +19,7 @@ export type ClientBridgeApiRequestPurchase = (
 ) => Result<undefined, undefined>;
 
 @Controller({})
-export class ProtectedPurchaseController implements OnStart {
+export class ProtectedPurchaseController {
 	constructor() {
 		if (!Game.IsClient()) return;
 
@@ -79,7 +79,7 @@ export class ProtectedPurchaseController implements OnStart {
 		);
 	}
 
-	OnStart(): void {}
+	protected OnStart(): void {}
 
 	public PerformPurchase(config: {
 		productId: string;

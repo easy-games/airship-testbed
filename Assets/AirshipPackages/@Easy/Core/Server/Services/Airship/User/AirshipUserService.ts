@@ -7,19 +7,22 @@ import {
 import { Platform } from "@Easy/Core/Shared/Airship";
 import { PublicUser } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipUser";
 import { AirshipUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
-import { OnStart, Service } from "@Easy/Core/Shared/Flamework";
+import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Result } from "@Easy/Core/Shared/Types/Result";
 
+/**
+ * Provides access to user information.
+ */
 @Service({})
-export class AirshipUserService implements OnStart {
+export class AirshipUserService {
 	constructor() {
 		if (!Game.IsServer()) return;
 
-		Platform.server.user = this;
+		Platform.Server.User = this;
 	}
 
-	OnStart(): void {}
+	protected OnStart(): void {}
 
 	/**
 	 * Gets a single user by their username.

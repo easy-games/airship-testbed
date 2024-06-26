@@ -4,7 +4,6 @@ import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { ClientChatSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/Chat/ClientChatSingleton";
-import { ProfilePictureId } from "@Easy/Core/Shared/ProfilePicture/ProfilePictureId";
 import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { Team } from "../Team/Team";
@@ -12,15 +11,20 @@ import { Bin } from "../Util/Bin";
 import { CSArrayUtil } from "../Util/CSArrayUtil";
 import { Signal } from "../Util/Signal";
 
+/** @internal */
 export interface PlayerDto {
 	nobId: number;
-	clientId: number;
+	connectionId: number;
 	userId: string;
 	username: string;
 	profileImageId: string;
 	teamId: string | undefined;
 }
 
+/**
+ * The player object represents a client connected to your Airship game server. It contains the client's id
+ * as well as 
+ */
 export class Player {
 	/**
 	 * The player controls this entity.
@@ -39,14 +43,17 @@ export class Player {
 
 	public onUsernameChanged = new Signal<[username: string]>();
 
-	private profilePicture: ProfilePictureId = ProfilePictureId.BEAR;
-
 	private bin = new Bin();
 	private connected = true;
 
 	public selectedOutfit: OutfitDto | undefined;
 	public outfitLoaded = false;
 
+	/**
+	 * Audio source for player's voice chat. Attached to a Game Object that can be reparented to
+	 * control voice chat position. By default this lives under the player's character and is
+	 * muted for the local player.
+	 */
 	public readonly voiceChatAudioSource!: AudioSource;
 
 	/**
@@ -54,55 +61,54 @@ export class Player {
 	 */
 	public platform = AirshipPlatformUtil.GetLocalPlatform();
 
+	/**
+	 * The client's network connection.
+	 */
+	public readonly networkConnection: NetworkConnection;
+
+	/** @internal */
 	constructor(
 		/**
-		 * The GameObject representing the player.
+		 * Player network object
+		 * 
+		 * @internal
 		 */
 		public readonly networkObject: NetworkObject,
 
 		/**
-		 * Unique network ID for the player in the given server. This ID
+		 * Unique network connection ID for the player in the given server. This ID
 		 * is typically given to network requests as a way to identify the
 		 * player to/from the server.
 		 *
 		 * This is not a unique identifier for the player outside of the
-		 * server. For a completely unique ID, use `BWPlayer.clientId`
-		 * instead.
+		 * server and will not persist. For a completely unique ID, use {@link userId}.
 		 */
-		public readonly clientId: number,
+		public readonly connectionId: number,
 
 		/**
 		 * The player's unique ID. This is unique and unchanging per player.
-		 *
-		 * This should _not_ be used in network requests to identify the
-		 * player. Use `clientId` for network requests.
+		 * 
+		 * String length is <= 128 characters (but will likely be far shorter --
+		 * typically 28 characters).
 		 */
 		public userId: string,
 
 		/**
-		 * The player's username. Non-unique, unless combined with `usernameTag`.
+		 * The player's username. This should be used for display. Username can
+		 * change, so to save a player's data use {@link userId}.
 		 */
 		public username: string,
 
+		/**
+		 * Image id used to fetch player's profile picture. 
+		 */
 		public profileImageId: string,
 
 		private playerInfo: PlayerInfo,
 	) {
+		this.networkConnection = networkObject.Owner;
 		if (playerInfo !== undefined) {
 			this.SetVoiceChatAudioSource(playerInfo.voiceChatAudioSource);
-		}
-	}
-
-	/**
-	 * @internal
-	 * @param audioSource
-	 */
-	public SetVoiceChatAudioSource(audioSource: AudioSource): void {
-		(this.voiceChatAudioSource as AudioSource) = audioSource;
-		if (this.IsLocalPlayer()) {
-			audioSource.volume = 0;
-		} else {
-			audioSource.volume = 1;
 		}
 	}
 
@@ -160,7 +166,7 @@ export class Player {
 
 		characterComponent.Init(this, Airship.characters.MakeNewId(), this.selectedOutfit);
 		this.SetCharacter(characterComponent);
-		NetworkUtil.SpawnWithClientOwnership(go, this.clientId);
+		NetworkUtil.SpawnWithClientOwnership(go, this.connectionId);
 		Airship.characters.RegisterCharacter(characterComponent);
 		Airship.characters.onCharacterSpawned.Fire(characterComponent);
 		return characterComponent;
@@ -177,7 +183,7 @@ export class Player {
 	}
 
 	async GetProfileImageTextureAsync(): Promise<Texture2D | undefined> {
-		return await Airship.players.GetProfilePictureTextureFromImageIdAsync(this.userId, this.profileImageId);
+		return await Airship.Players.GetProfilePictureTextureFromImageIdAsync(this.userId, this.profileImageId);
 	}
 
 	public SetTeam(team: Team): void {
@@ -188,11 +194,6 @@ export class Player {
 
 	public GetTeam(): Team | undefined {
 		return this.team;
-	}
-
-	public UpdateUsername(username: string): void {
-		this.username = username;
-		this.onUsernameChanged.Fire(username);
 	}
 
 	public SendMessage(message: string, sender?: Player): void {
@@ -206,13 +207,13 @@ export class Player {
 	}
 
 	public IsBot(): boolean {
-		return this.clientId < 0;
+		return this.connectionId < 0;
 	}
 
 	public Encode(): PlayerDto {
 		return {
 			nobId: this.networkObject.ObjectId,
-			clientId: this.clientId,
+			connectionId: this.connectionId,
 			userId: this.userId,
 			username: this.username,
 			profileImageId: this.profileImageId,
@@ -245,7 +246,7 @@ export class Player {
 	}
 
 	public IsInScene(sceneName: string): boolean {
-		const scenes = CSArrayUtil.Convert(this.networkObject.LocalConnection.Scenes);
+		const scenes = CSArrayUtil.Convert(this.networkConnection.Scenes);
 		if (scenes.find((s) => s.name === sceneName)) {
 			return true;
 		}
@@ -253,7 +254,7 @@ export class Player {
 	}
 
 	/**
-	 * Is the player connected to the server?
+	 * IsConnected will return ``true`` until a player disconnects from the server.
 	 */
 	public IsConnected(): boolean {
 		return this.connected;
@@ -264,5 +265,26 @@ export class Player {
 		this.bin.Clean();
 		this.onLeave.Fire();
 		this.onLeave.DisconnectAll();
+	}
+
+	/**
+	 * @internal
+	 */
+	public SetVoiceChatAudioSource(audioSource: AudioSource): void {
+		(this.voiceChatAudioSource as AudioSource) = audioSource;
+		if (this.IsLocalPlayer()) {
+			audioSource.volume = 0;
+		} else {
+			audioSource.volume = 1;
+		}
+	}
+	
+
+	/**
+	 * @internal
+	 */
+	public UpdateUsername(username: string): void {
+		this.username = username;
+		this.onUsernameChanged.Fire(username);
 	}
 }

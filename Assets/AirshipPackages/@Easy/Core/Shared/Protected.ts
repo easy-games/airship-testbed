@@ -6,6 +6,6 @@ import { ProtectedPlayersSingleton } from "./MainMenu/Singletons/ProtectedPlayer
  * @internal
  */
 export const Protected = {
-	user: undefined as unknown as Omit<UserController, "OnStart">,
-	protectedPlayers: undefined as unknown as Omit<ProtectedPlayersSingleton, "OnStart">,
+	user: undefined! as UserController,
+	protectedPlayers: undefined! as ProtectedPlayersSingleton,
 };

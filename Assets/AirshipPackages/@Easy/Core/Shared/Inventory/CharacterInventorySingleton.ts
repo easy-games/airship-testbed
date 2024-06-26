@@ -1,11 +1,10 @@
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
-import { OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
+import { Singleton } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Keyboard, Mouse } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
-import { Airship } from "../Airship";
 import { CanvasAPI } from "../Util/CanvasAPI";
 import Inventory from "./Inventory";
 import { ItemStack } from "./ItemStack";
@@ -15,7 +14,7 @@ import { ItemStack } from "./ItemStack";
  * the inventory attached to your local character.
  */
 @Singleton()
-export class CharacterInventorySingleton implements OnStart {
+export class CharacterInventorySingleton {
 	public localInventory?: Inventory;
 
 	private enabled = true;
@@ -28,7 +27,7 @@ export class CharacterInventorySingleton implements OnStart {
 	private lastScrollTime = 0;
 	private scrollCooldown = 0.05;
 
-	OnStart(): void {
+	protected OnStart(): void {
 		if (!RunUtil.IsClient()) return;
 
 		Game.localPlayer.ObserveCharacter((character) => {
@@ -58,11 +57,6 @@ export class CharacterInventorySingleton implements OnStart {
 				this.SetHeldSlot(hotbarIndex);
 			});
 		}
-
-		Airship.input.OnDown("DropItem").Connect((event) => {
-			if (!this.enabled || event.uiProcessed) return;
-			this.DropItemInHand();
-		});
 
 		// Scroll to select held item:
 		mouse.scrolled.Connect((event) => {
@@ -114,17 +108,6 @@ export class CharacterInventorySingleton implements OnStart {
 		this.localInventory.SetHeldSlot(slot);
 		this.heldSlotChanged.Fire(slot);
 		CoreNetwork.ClientToServer.SetHeldSlot.client.FireServer(slot);
-	}
-
-	public DropItemInHand(): void {
-		const heldItem = this.localInventory?.GetHeldItem();
-		if (heldItem) {
-			CoreNetwork.ClientToServer.DropItemInSlot.client.FireServer(this.localInventory!.GetHeldSlot(), 1);
-		}
-	}
-
-	public DropItemInSlot(slot: number, amount: number): void {
-		CoreNetwork.ClientToServer.DropItemInSlot.client.FireServer(slot, amount);
 	}
 
 	public SetLocalInventory(inventory: Inventory): void {

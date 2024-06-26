@@ -1,7 +1,7 @@
 import { ItemUtil } from "@Easy/Core/Shared/Item/ItemUtil";
-import { BlockDataAPI } from "@Easy/Core/Shared/VoxelWorld/BlockData/BlockDataAPI";
-import { PrefabBlockManager } from "@Easy/Core/Shared/VoxelWorld/PrefabBlockManager/PrefabBlockManager";
-import { World } from "@Easy/Core/Shared/VoxelWorld/World";
+import { BlockDataAPI } from "@Easy/Survival/Shared/VoxelWorld/BlockData/BlockDataAPI";
+import { PrefabBlockManager } from "@Easy/Survival/Shared/VoxelWorld/PrefabBlockManager/PrefabBlockManager";
+import { World } from "@Easy/Survival/Shared/VoxelWorld/World";
 
 /**
  * @internal

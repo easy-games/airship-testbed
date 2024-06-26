@@ -1,6 +1,6 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
-import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Team } from "@Easy/Core/Shared/Team/Team";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
@@ -8,7 +8,7 @@ import { SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { Theme } from "@Easy/Core/Shared/Util/Theme";
 
 @Controller({})
-export class NametagController implements OnStart {
+export class NametagController {
 	private readonly nameTagId = "Nametag";
 	private readonly graphicsBundleName = "Graphics";
 	private showSelfNametag = false;
@@ -16,7 +16,7 @@ export class NametagController implements OnStart {
 	// Clean to destroy nametag & related connections
 	private nametagBins = new Map<Character, Bin>();
 
-	OnStart(): void {
+	protected OnStart(): void {
 		Airship.characters.onCharacterSpawned.ConnectWithPriority(SignalPriority.HIGH, (character) => {
 			if (!this.nametagsEnabled) return;
 

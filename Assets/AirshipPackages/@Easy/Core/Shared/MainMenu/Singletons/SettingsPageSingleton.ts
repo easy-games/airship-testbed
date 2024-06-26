@@ -1,17 +1,17 @@
 import { AssetCache } from "../../AssetCache/AssetCache";
 import { CoreRefs } from "../../CoreRefs";
-import { OnStart, Singleton } from "../../Flamework";
+import { Singleton } from "../../Flamework";
 import { Keyboard } from "../../UserInput";
 import { AppManager } from "../../Util/AppManager";
 import { Bin } from "../../Util/Bin";
 
 @Singleton({})
-export class SettingsPageSingleton implements OnStart {
+export class SettingsPageSingleton {
 	public isOpen = false;
 	private openBin = new Bin();
 	private keyboard = new Keyboard();
 
-	OnStart(): void {}
+	protected OnStart(): void {}
 
 	public Open(): void {
 		if (this.isOpen) return;

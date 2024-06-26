@@ -5,18 +5,22 @@ import {
 import { Platform } from "@Easy/Core/Shared/Airship";
 import { ItemQueryParameters } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipPlatformInventory";
 import { AirshipUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
-import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 
+/**
+ * This controller allows access to the current players platform inventory. Platform inventory
+ * is managed by game servers and configured on the https://create.airship.gg website.
+ */
 @Controller({})
-export class AirshipPlatformInventoryController implements OnStart {
+export class AirshipPlatformInventoryController {
 	constructor() {
 		if (!Game.IsClient()) return;
 
-		Platform.client.inventory = this;
+		Platform.Client.Inventory = this;
 	}
 
-	OnStart(): void {}
+	protected OnStart(): void {}
 
 	/**
 	 * Gets the items in the users inventory that belong to this game or organization.

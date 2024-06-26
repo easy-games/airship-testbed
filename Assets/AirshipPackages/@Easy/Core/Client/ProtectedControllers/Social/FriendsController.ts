@@ -4,7 +4,7 @@ import { UserStatus, UserStatusData } from "@Easy/Core/Shared/Airship/Types/Outp
 import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
 import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
-import { Controller, Dependency, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Controller, Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { GameObjectUtil } from "@Easy/Core/Shared/GameObject/GameObjectUtil";
 import { CoreLogger } from "@Easy/Core/Shared/Logger/CoreLogger";
@@ -33,7 +33,7 @@ import { User } from "../User/User";
 import { DirectMessageController } from "./DirectMessages/DirectMessageController";
 
 @Controller({})
-export class FriendsController implements OnStart {
+export class FriendsController {
 	public friends: User[] = [];
 	public incomingFriendRequests: User[] = [];
 	public outgoingFriendRequests: User[] = [];
@@ -94,7 +94,7 @@ export class FriendsController implements OnStart {
 		}
 	}
 
-	OnStart(): void {
+	protected OnStart(): void {
 		const friendsContent = this.mainMenuController.refs.GetValue("Social", "FriendsContent");
 		friendsContent.ClearChildren();
 
@@ -137,7 +137,7 @@ export class FriendsController implements OnStart {
 				this.socialNotification.usernameText.text = foundUser.username;
 
 				task.spawn(async () => {
-					const sprite = await Airship.players.GetProfilePictureSpriteAsync(foundUser.uid);
+					const sprite = await Airship.Players.GetProfilePictureSpriteAsync(foundUser.uid);
 					if (sprite) {
 						this.socialNotification.userImage.sprite = sprite;
 					}
@@ -595,7 +595,7 @@ export class FriendsController implements OnStart {
 
 		if (config.loadImage) {
 			task.spawn(async () => {
-				const texture = await Airship.players.GetProfilePictureTextureFromImageIdAsync(
+				const texture = await Airship.Players.GetProfilePictureTextureFromImageIdAsync(
 					friend.userId,
 					friend.profileImageId,
 				);

@@ -23,7 +23,7 @@ export default class CharacterSpawner extends AirshipBehaviour {
 				SceneManager.onClientPresenceChangeEnd.Connect(async (clientId, sceneName, added) => {
 					if (sceneName !== this.gameObject.scene.name) return;
 
-					let player = await Airship.players.WaitForClientId(clientId);
+					let player = await Airship.Players.WaitForClientId(clientId);
 					if (!player) return;
 
 					if (added) {
@@ -67,7 +67,7 @@ export default class CharacterSpawner extends AirshipBehaviour {
 	override OnDestroy(): void {
 		this.bin.Clean();
 
-		for (let player of Airship.players.GetPlayers()) {
+		for (let player of Airship.Players.GetPlayers()) {
 			if (player.character?.gameObject.scene.name === this.gameObject.scene.name) {
 				print(`Despawning ${player.username} in scene ${this.gameObject.scene.name}`);
 				player.character.Despawn();

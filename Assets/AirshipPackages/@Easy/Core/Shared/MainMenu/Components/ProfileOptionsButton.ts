@@ -41,7 +41,7 @@ export default class ProfileOptionsButton extends AirshipBehaviour {
 		const userController = Dependency<UserController>();
 		userController.WaitForLocalUserReady();
 		if (userController.localUser) {
-			Airship.players
+			Airship.Players
 				.GetProfilePictureTextureFromImageIdAsync(
 					userController.localUser.uid,
 					userController.localUser.profileImageId,

@@ -1,7 +1,7 @@
 import { ChatCommand } from "@Easy/Core/Shared/Commands/ChatCommand";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
-import { WorldAPI } from "@Easy/Core/Shared/VoxelWorld/WorldAPI";
+import { WorldAPI } from "@Easy/Survival/Shared/VoxelWorld/WorldAPI";
 
 export class SaveWorldCommand extends ChatCommand {
 	constructor() {

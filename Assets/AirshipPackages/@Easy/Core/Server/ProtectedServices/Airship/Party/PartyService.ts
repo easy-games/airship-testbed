@@ -1,5 +1,5 @@
 import { GameServerPartyData } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipParty";
-import { OnStart, Service } from "@Easy/Core/Shared/Flamework";
+import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Result } from "@Easy/Core/Shared/Types/Result";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
@@ -14,7 +14,7 @@ export type ServerBridgeApiGetPartyForUserId = (userId: string) => Result<GameSe
 export type ServerBridgeApiGetPartyById = (partyId: string) => Result<GameServerPartyData | undefined, undefined>;
 
 @Service({})
-export class ProtectedPartyService implements OnStart {
+export class ProtectedPartyService {
 	constructor() {
 		if (!Game.IsServer()) return;
 
@@ -64,5 +64,5 @@ export class ProtectedPartyService implements OnStart {
 		});
 	}
 
-	OnStart(): void {}
+	protected OnStart(): void {}
 }

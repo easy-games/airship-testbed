@@ -18,18 +18,18 @@ import { TeamCommand } from "@Easy/Core/Server/Services/Chat/Commands/TeamComman
 import { TpAllCommand } from "@Easy/Core/Server/Services/Chat/Commands/TpAllCommand";
 import { TpCommand } from "@Easy/Core/Server/Services/Chat/Commands/TpCommand";
 import { TpsCommand } from "@Easy/Core/Server/Services/Chat/Commands/TpsCommand";
-import { Dependency, OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
+import { Dependency, Singleton } from "@Easy/Core/Shared/Flamework";
 import { Airship } from "../Airship";
 import { ChatCommand } from "../Commands/ChatCommand";
 import { Game } from "../Game";
 
 @Singleton({})
-export class AirshipChatSingleton implements OnStart {
+export class AirshipChatSingleton {
 	constructor() {
 		Airship.chat = this;
 	}
 
-	OnStart(): void {
+	protected OnStart(): void {
 		if (Game.IsInGame()) {
 			this.RegisterCoreCommands();
 		}

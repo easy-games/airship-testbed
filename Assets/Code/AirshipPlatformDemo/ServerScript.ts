@@ -33,7 +33,7 @@ export default class TestScript extends AirshipBehaviour {
 			this.sessionKillMap.set(killer, ++kills);
 		});
 
-		Airship.players.onPlayerDisconnected.Connect(async (player) => {
+		Airship.Players.onPlayerDisconnected.Connect(async (player) => {
 			await this.UpdateDatastore(player);
 			await this.UpdateLeaderboard(player);
 			this.sessionKillMap.delete(player);
@@ -41,12 +41,12 @@ export default class TestScript extends AirshipBehaviour {
 		});
 
 		this.bin.Add(
-			Airship.players.onPlayerJoined.Connect(async (player) => {
-				const res = await Platform.server.leaderboard.GetRank("TopDemoSessionKills", player.userId);
+			Airship.Players.onPlayerJoined.Connect(async (player) => {
+				const res = await Platform.Server.Leaderboard.GetRank("TopDemoSessionKills", player.userId);
 				if (!res.success) return;
-				const dataRes = await Platform.server.dataStore.GetKey<{ kills: number }>(player.userId);
+				const dataRes = await Platform.Server.DataStore.GetKey<{ kills: number }>(player.userId);
 				if (!dataRes.success) return;
-				const topRes = await Platform.server.leaderboard.GetRankRange("TopDemoSessionKills", 0, 3);
+				const topRes = await Platform.Server.Leaderboard.GetRankRange("TopDemoSessionKills", 0, 3);
 				if (!topRes.success) return;
 
 				this.totalKillMap.set(player, dataRes.data?.kills ?? 0);
@@ -97,12 +97,12 @@ export default class TestScript extends AirshipBehaviour {
 		let sessionKills = this.sessionKillMap.get(player) ?? 0;
 		if (!sessionKills) return;
 
-		await Platform.server.dataStore.SetKey(player.userId, { kills: sessionKills + totalKills });
+		await Platform.Server.DataStore.SetKey(player.userId, { kills: sessionKills + totalKills });
 	}
 
 	private async UpdateLeaderboard(player: Player) {
 		let sessionKills = this.sessionKillMap.get(player) ?? 0;
-		await Platform.server.leaderboard.Update("TopDemoSessionKills", { [player.userId]: sessionKills });
+		await Platform.Server.Leaderboard.Update("TopDemoSessionKills", { [player.userId]: sessionKills });
 	}
 
 	override OnDestroy(): void {}

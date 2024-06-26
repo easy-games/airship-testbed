@@ -19,7 +19,7 @@ export class SetTeamCommand extends ChatCommand {
 		let teamName = args[1];
 
 		/* Validate target player. */
-		const targetPlayer = Airship.players.FindByUsername(username);
+		const targetPlayer = Airship.Players.FindByUsername(username);
 		if (!targetPlayer) {
 			player.SendMessage(`Invalid username: ${username}`);
 			return;

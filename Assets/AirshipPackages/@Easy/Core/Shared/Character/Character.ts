@@ -11,6 +11,7 @@ import { CoreNetwork } from "../CoreNetwork";
 import { DamageInfo, DamageInfoCustomData } from "../Damage/DamageInfo";
 import CharacterAnimator from "./Animation/CharacterAnimator";
 
+/** TODO docs Character obj */
 export default class Character extends AirshipBehaviour {
 	@NonSerialized()
 	public player?: Player;

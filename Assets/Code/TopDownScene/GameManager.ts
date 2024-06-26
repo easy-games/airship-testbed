@@ -15,7 +15,7 @@ export default class GameManager extends AirshipBehaviour {
 
 	override Start(): void {
 		if (Game.IsServer()) {
-			Airship.players.ObservePlayers((player) => {
+			Airship.Players.ObservePlayers((player) => {
 				this.SpawnPlayer(player);
 			});
 			Airship.damage.onDeath.Connect((event) => {

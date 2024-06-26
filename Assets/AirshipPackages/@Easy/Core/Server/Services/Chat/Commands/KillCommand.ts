@@ -1,5 +1,5 @@
-import Character from "@Easy/Core/Shared/Character/Character";
 import { Airship } from "@Easy/Core/Shared/Airship";
+import Character from "@Easy/Core/Shared/Character/Character";
 import { ChatCommand } from "@Easy/Core/Shared/Commands/ChatCommand";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 
@@ -11,7 +11,7 @@ export class KillCommand extends ChatCommand {
 	public Execute(player: Player, args: string[]): void {
 		let target: Character | undefined;
 		if (args.size() > 0) {
-			let otherPlayer = Airship.players.FindByFuzzySearch(args[0]);
+			let otherPlayer = Airship.Players.FindByFuzzySearch(args[0]);
 			if (!otherPlayer) {
 				player.SendMessage("Invalid player: " + args[0]);
 				return;

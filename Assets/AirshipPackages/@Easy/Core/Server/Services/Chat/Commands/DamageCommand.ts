@@ -14,7 +14,7 @@ export class DamageCommand extends ChatCommand {
 
 		if (args.size() === 1) {
 			amount = tonumber(args[0]);
-			target = Airship.characters.FindByClientId(player.clientId);
+			target = Airship.characters.FindByClientId(player.connectionId);
 		}
 
 		if (amount === undefined) {

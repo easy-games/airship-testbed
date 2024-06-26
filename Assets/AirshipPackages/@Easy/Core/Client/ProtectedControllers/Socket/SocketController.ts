@@ -1,16 +1,15 @@
-import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Controller } from "@Easy/Core/Shared/Flamework";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
-import { Task } from "@Easy/Core/Shared/Util/Task";
 import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 import { AuthController } from "../Auth/AuthController";
 
 @Controller({})
-export class SocketController implements OnStart {
+export class SocketController {
 	private onEvent = new Signal<[eventName: string, data: string]>();
 	constructor(private readonly authController: AuthController) {}
-	OnStart(): void {
+	protected OnStart(): void {
 		SocketManager.Instance.OnEvent((eventName, data) => {
 			// print(`[${eventName}]: ${data}`);
 			this.onEvent.Fire(eventName, data);
@@ -18,12 +17,12 @@ export class SocketController implements OnStart {
 		SocketManager.SetScriptListening(true);
 
 		if (this.authController.IsAuthenticated()) {
-			Task.Spawn(() => {
+			task.spawn(() => {
 				this.Connect();
 			});
 		}
 		this.authController.onAuthenticated.Connect(() => {
-			Task.Spawn(() => {
+			task.spawn(() => {
 				this.Connect();
 			});
 			// Expires every 6 hours. So we fire every hour.
@@ -54,7 +53,7 @@ export class SocketController implements OnStart {
 		if (data === undefined) {
 			data = { _hold: "yes" };
 		}
-		Task.Spawn(() => {
+		task.spawn(() => {
 			SocketManager.EmitAsync(eventName, EncodeJSON(data));
 		});
 	}

@@ -1,4 +1,4 @@
-import { OnStart, Service } from "@Easy/Core/Shared/Flamework";
+import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Result } from "@Easy/Core/Shared/Types/Result";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
@@ -15,7 +15,7 @@ export type ServerBridgeApiCacheSetKey<T> = (key: string, data: T, expireTimeSec
 export type ServerBridgeApiCacheSetKeyTTL = (key: string, expireTimeSec: number) => Result<number, undefined>;
 
 @Service({})
-export class ProtectedCacheStoreService implements OnStart {
+export class ProtectedCacheStoreService {
 	/** Reflects backend data-store-service settings */
 	private maxExpireSec = 60 * 60 * 24; // 24h in seconds
 
@@ -99,5 +99,5 @@ export class ProtectedCacheStoreService implements OnStart {
 		);
 	}
 
-	OnStart(): void {}
+	protected OnStart(): void {}
 }

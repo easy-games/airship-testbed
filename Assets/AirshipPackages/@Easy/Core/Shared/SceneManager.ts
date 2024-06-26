@@ -93,7 +93,7 @@ export class SceneManager {
 		contextbridge.invoke(
 			"SceneManager:LoadSceneForPlayer",
 			LuauContext.Protected,
-			player.clientId,
+			player.connectionId,
 			sceneName,
 			makeActiveScene,
 		);
@@ -119,7 +119,7 @@ export class SceneManager {
 		contextbridge.invoke(
 			"SceneManager:UnloadSceneForPlayer",
 			LuauContext.Protected,
-			player.clientId,
+			player.connectionId,
 			sceneName,
 			preferredActiveScene,
 		);

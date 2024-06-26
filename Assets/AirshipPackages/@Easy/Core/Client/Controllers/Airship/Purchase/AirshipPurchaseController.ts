@@ -4,19 +4,22 @@ import {
 } from "@Easy/Core/Client/ProtectedControllers/Airship/Purchase/PurchaseController";
 import { Platform } from "@Easy/Core/Shared/Airship";
 import { AirshipUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
-import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Result } from "@Easy/Core/Shared/Types/Result";
 
+/**
+ * Prompt players to buy products in your game.
+ */
 @Controller({})
-export class AirshipPurchaseController implements OnStart {
+export class AirshipPurchaseController {
 	constructor() {
 		if (!Game.IsClient()) return;
 
-		Platform.client.purchase = this;
+		Platform.Client.Purchase = this;
 	}
 
-	OnStart(): void {}
+	protected OnStart(): void {}
 
 	/**
 	 * Opens a purchase dialog for the user. It will prompt them to confirm the purchase provided.

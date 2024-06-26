@@ -2,7 +2,7 @@ import { InventoryUIController } from "@Easy/Core/Client/Controllers/Inventory/I
 import { Airship } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
-import { Dependency, OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
+import { Dependency, Singleton } from "@Easy/Core/Shared/Flamework";
 import { RemoteFunction } from "@Easy/Core/Shared/Network/RemoteFunction";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { CharacterInventorySingleton } from "./CharacterInventorySingleton";
@@ -16,7 +16,7 @@ interface InventoryEntry {
 }
 
 @Singleton()
-export class InventorySingleton implements OnStart {
+export class InventorySingleton {
 	private inventories = new Map<number, InventoryEntry>();
 
 	public remotes = {
@@ -29,7 +29,7 @@ export class InventorySingleton implements OnStart {
 		Airship.inventory = this;
 	}
 
-	OnStart(): void {
+	protected OnStart(): void {
 		if (RunUtil.IsClient()) {
 			this.StartClient();
 		}
@@ -86,7 +86,7 @@ export class InventorySingleton implements OnStart {
 			CoreNetwork.ServerToClient.SetHeldInventorySlot.server.FireExcept(
 				player,
 				inv?.id,
-				player.clientId,
+				player.connectionId,
 				slot,
 				true,
 			);

@@ -1,4 +1,4 @@
-import { Dependency, OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
+import { Dependency, Singleton } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Keyboard } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
@@ -10,7 +10,7 @@ import { LocalCharacterInputSignal } from "./LocalCharacterInputSignal";
 @Singleton({
 	loadOrder: 10000,
 })
-export class LocalCharacterSingleton implements OnStart {
+export class LocalCharacterSingleton {
 	public readonly stateChanged = new Signal<[newState: CharacterState]>();
 
 	private customDataQueue: { key: unknown; value: unknown }[] = [];

@@ -2,7 +2,7 @@ import { UserController } from "@Easy/Core/Client/ProtectedControllers/User/User
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
-import { Controller, Dependency, OnStart, Service } from "@Easy/Core/Shared/Flamework";
+import { Controller, Dependency, Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Team } from "@Easy/Core/Shared/Team/Team";
 import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
@@ -29,7 +29,7 @@ import { Player, PlayerDto } from "./Player";
 
 @Controller({ loadOrder: -1000 })
 @Service({ loadOrder: -1000 })
-export class PlayersSingleton implements OnStart {
+export class PlayersSingleton {
 	public onPlayerJoined = new Signal<Player>();
 	public onPlayerDisconnected = new Signal<Player>();
 
@@ -50,7 +50,7 @@ export class PlayersSingleton implements OnStart {
 	private outfitFetchTime = new Map<string, number>();
 
 	constructor() {
-		Airship.players = this;
+		Airship.Players = this;
 		// const timeStart = Time.time;
 
 		const FetchLocalPlayerWithWait = () => {
@@ -61,7 +61,7 @@ export class PlayersSingleton implements OnStart {
 			}
 
 			const mutable = Game.localPlayer as Mutable<Player>;
-			mutable.clientId = localPlayerInfo.clientId.Value;
+			mutable.connectionId = localPlayerInfo.clientId.Value;
 			mutable.networkObject = localPlayerInfo.gameObject.GetComponent<NetworkObject>()!;
 			mutable.username = localPlayerInfo.username.Value;
 			mutable.userId = localPlayerInfo.userId.Value;
@@ -107,7 +107,7 @@ export class PlayersSingleton implements OnStart {
 					userId: player.userId,
 					username: player.username,
 					profileImageId: player.profileImageId,
-					clientId: player.clientId,
+					clientId: player.connectionId,
 				});
 				if (Game.IsServer() && this.joinMessagesEnabled) {
 					Game.BroadcastMessage(ChatColor.Aqua(player.username) + ChatColor.Gray(" joined the server."));
@@ -121,7 +121,7 @@ export class PlayersSingleton implements OnStart {
 						userId: player.userId,
 						username: player.username,
 						profileImageId: player.profileImageId,
-						clientId: player.clientId,
+						clientId: player.connectionId,
 					},
 				);
 				if (Game.IsServer() && this.disconnectMessagesEnabled) {
@@ -131,7 +131,7 @@ export class PlayersSingleton implements OnStart {
 		}
 	}
 
-	OnStart(): void {
+	protected OnStart(): void {
 		if (Game.IsServer() && !Game.IsEditor()) {
 			InternalHttpManager.SetAuthToken("");
 			// HttpManager.SetLoggingEnabled(true);
@@ -237,7 +237,7 @@ export class PlayersSingleton implements OnStart {
 			if (player) {
 				this.players.delete(player);
 				this.onPlayerDisconnected.Fire(player);
-				CoreNetwork.ServerToClient.RemovePlayer.server.FireAllClients(player.clientId);
+				CoreNetwork.ServerToClient.RemovePlayer.server.FireAllClients(player.connectionId);
 				player.Destroy();
 			}
 		};
@@ -265,7 +265,7 @@ export class PlayersSingleton implements OnStart {
 				return;
 			}
 
-			this.playersPendingReady.delete(player.clientId);
+			this.playersPendingReady.delete(player.connectionId);
 			this.HandlePlayerReadyServer(player);
 		});
 
@@ -348,12 +348,12 @@ export class PlayersSingleton implements OnStart {
 			team = Airship.teams.FindById(dto.teamId);
 		}
 
-		let player = this.FindByClientId(dto.clientId);
+		let player = this.FindByClientId(dto.connectionId);
 		if (!player) {
 			const nob = NetworkUtil.WaitForNetworkObject(dto.nobId);
 			nob.gameObject.name = `Player_${dto.username}`;
 			let playerInfo = nob.gameObject.GetComponent<PlayerInfo>()!;
-			player = new Player(nob, dto.clientId, dto.userId, dto.username, dto.profileImageId, playerInfo);
+			player = new Player(nob, dto.connectionId, dto.userId, dto.username, dto.profileImageId, playerInfo);
 		}
 
 		team?.AddPlayer(player);
@@ -455,7 +455,7 @@ export class PlayersSingleton implements OnStart {
 
 	public FindByClientId(clientId: number): Player | undefined {
 		for (const player of this.players) {
-			if (player.clientId === clientId) {
+			if (player.connectionId === clientId) {
 				return player;
 			}
 		}

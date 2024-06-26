@@ -12,7 +12,7 @@ export class HealCommand extends ChatCommand {
 
 	public Execute(player: Player, args: string[]): void {
 		if (!player.character) return;
-		const character = Airship.characters.FindByClientId(player.clientId);
+		const character = Airship.characters.FindByClientId(player.connectionId);
 		character?.SetHealth(character.GetMaxHealth());
 		Game.BroadcastMessage(ColorUtil.ColoredText(Theme.green, player.username + " used /heal"));
 	}

@@ -1,12 +1,12 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
-import { OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
+import { Singleton } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Mouse } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 
 @Singleton({ loadOrder: -10 })
-export class LoadingScreenSingleton implements OnStart {
+export class LoadingScreenSingleton {
 	private coreLoadingScreen?: CoreLoadingScreen;
 	private loadingBin = new Bin();
 
@@ -24,7 +24,7 @@ export class LoadingScreenSingleton implements OnStart {
 		});
 	}
 
-	OnStart(): void {}
+	protected OnStart(): void {}
 
 	/**
 	 * Sets the current fill of the progress bar.

@@ -1,4 +1,4 @@
-import { OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
+import { Singleton } from "@Easy/Core/Shared/Flamework";
 import { Game } from "../Game";
 
 interface UnitySceneManagerConstructor {
@@ -13,7 +13,7 @@ declare const SceneManager: UnitySceneManagerConstructor;
  * @protected
  */
 @Singleton()
-export class ProtectedSceneManagerSingleton implements OnStart {
+export class ProtectedSceneManagerSingleton {
 	private protectedSceneNames = ["corescene", "mainmenu", "login"];
 
 	constructor() {
@@ -38,7 +38,7 @@ export class ProtectedSceneManagerSingleton implements OnStart {
 		}
 	}
 
-	OnStart(): void {
+	protected OnStart(): void {
 		contextbridge.callback<(sceneName: string) => void>(
 			"SceneManager:LoadGlobalSceneByName",
 			(fromContext, sceneName) => {

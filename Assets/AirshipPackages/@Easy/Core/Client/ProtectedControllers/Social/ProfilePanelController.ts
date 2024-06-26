@@ -1,15 +1,15 @@
 import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
-import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Mouse } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
 
 @Controller({})
-export class ProfilePanelController implements OnStart {
+export class ProfilePanelController {
     private open = false;
     private openMenuBin = new Bin();
 
-    OnStart(): void {
+    protected OnStart(): void {
         
     }
 

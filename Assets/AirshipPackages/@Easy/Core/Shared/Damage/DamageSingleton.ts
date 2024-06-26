@@ -1,14 +1,15 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
-import { OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
+import { Singleton } from "@Easy/Core/Shared/Flamework";
 import { RemoteEvent } from "@Easy/Core/Shared/Network/RemoteEvent";
 import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { Game } from "../Game";
+import { OnUpdate } from "../Util/Timer";
 import { CanClientDamageInfo } from "./CanClientDamageInfo";
 import { DamageInfo, DamageInfoCustomData } from "./DamageInfo";
 
 @Singleton()
-export class DamageSingleton implements OnStart {
+export class DamageSingleton {
 	public readonly onDamage = new Signal<DamageInfo>();
 	public readonly onCanClientDamage = new Signal<CanClientDamageInfo>();
 	public readonly onDeath = new Signal<DamageInfo>();
@@ -35,7 +36,9 @@ export class DamageSingleton implements OnStart {
 		Airship.damage = this;
 	}
 
-	OnStart(): void {
+	protected OnStart(): void {
+		OnUpdate.Connect(() => {})
+
 		this.damageRemote.client.OnServerEvent((nobId, damage, attackerNobId, data) => {
 			if (Game.IsHosting()) return;
 			const nob = NetworkUtil.GetNetworkObject(nobId);

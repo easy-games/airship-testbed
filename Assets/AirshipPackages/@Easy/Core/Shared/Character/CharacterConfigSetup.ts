@@ -4,7 +4,13 @@ import { Game } from "../Game";
 import { Layer } from "../Util/Layer";
 import { CharacterCameraMode } from "./LocalCharacter/CharacterCameraMode";
 
+/**
+ * Use to configure basic properties of Airship character system.
+ * 
+ * Usage: add this component to any game object in your scene.
+ */
 export default class CharacterConfigSetup extends AirshipBehaviour {
+	/** Must include a Character component. Make sure this prefab is also assigned in the Resources/NetworkPrefabCollection.asset */
 	@Header("Character")
 	@Tooltip(
 		"Must include a Character component. Make sure this prefab is also assigned in the Resources/NetworkPrefabCollection.asset",

@@ -101,7 +101,7 @@ export default class PartyMember extends AirshipBehaviour {
 
 	public async UpdatePicture() {
 		if (this.user) {
-			const profileTexture = await Airship.players.GetProfilePictureTextureFromImageIdAsync(
+			const profileTexture = await Airship.Players.GetProfilePictureTextureFromImageIdAsync(
 				this.user.uid,
 				this.user.profileImageId,
 			);

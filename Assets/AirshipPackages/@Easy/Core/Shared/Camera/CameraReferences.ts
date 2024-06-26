@@ -1,5 +1,5 @@
 ﻿import { Mouse } from "@Easy/Core/Shared/UserInput";
-import { WorldAPI } from "@Easy/Core/Shared/VoxelWorld/WorldAPI";
+import { WorldAPI } from "@Easy/Survival/Shared/VoxelWorld/WorldAPI";
 import { Viewmodel } from "../Viewmodel/Viewmodel";
 
 export class CameraReferences {
