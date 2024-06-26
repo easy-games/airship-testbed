@@ -123,6 +123,16 @@ export namespace Flamework {
 	let hasFlameworkIgnited = false;
 	let startedIdentifiers = new Set<string>();
 
+	function IsInitializableDependency(dep: unknown): dep is OnInit {
+		assert(typeIs(dep, "table"));
+		return Flamework.implements<OnInit>(dep) || typeIs((dep as { OnInit: unknown }).OnInit, "function");
+	}
+
+	function IsStartableDependency(dep: unknown): dep is OnStart {
+		assert(typeIs(dep, "table"));
+		return Flamework.implements<OnStart>(dep) || typeIs((dep as { OnStart: unknown }).OnStart, "function");
+	}
+
 	/**
 	 * Initialize Flamework.
 	 *
@@ -199,8 +209,8 @@ export namespace Flamework {
 		dependencies.sort(([, a], [, b]) => (a.loadOrder ?? 1) < (b.loadOrder ?? 1));
 
 		for (const [dependency] of dependencies) {
-			if (Flamework.implements<OnInit>(dependency)) init.set(dependency, getIdentifier(dependency));
-			if (Flamework.implements<OnStart>(dependency)) start.set(dependency, getIdentifier(dependency));
+			if (IsInitializableDependency(dependency)) init.set(dependency, getIdentifier(dependency));
+			if (IsStartableDependency(dependency)) start.set(dependency, getIdentifier(dependency));
 		}
 
 		for (const [dependency, identifier] of init) {

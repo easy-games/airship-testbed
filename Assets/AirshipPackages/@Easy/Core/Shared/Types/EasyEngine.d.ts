@@ -118,6 +118,12 @@ interface CharacterMovement extends Component {
 	GetState(): CharacterState;
 	UpdateSyncTick(): void;
 
+	rootTransform: Transform; //The true position transform
+	networkTransform: Transform; //The interpolated network transform
+	graphicTransform: Transform; //A transform we can animate
+
+	moveData: CharacterMoveData;
+
 	groundedBlockId: number;
 	groundedBlockPos: Vector3;
 	groundedRaycastHit: RaycastHit;
@@ -131,6 +137,7 @@ interface CharacterMovement extends Component {
 	characterRadius: number;
 	characterHalfExtents: Vector3;
 	groundCollisionLayerMask: LayerMask;
+	mainCollider: BoxCollider;
 }
 
 interface Nullable<T> {
@@ -396,7 +403,9 @@ interface CanvasUIEvents extends Component {
 
 interface CanvasUIEventInterceptor extends Component {
 	OnPointerEvent(callback: (instanceId: number, direction: number, button: number) => void): EngineEventConnection;
-	OnHoverEvent(callback: (instanceId: number, hoverState: number, data: PointerEventData) => void): EngineEventConnection;
+	OnHoverEvent(
+		callback: (instanceId: number, hoverState: number, data: PointerEventData) => void,
+	): EngineEventConnection;
 	OnSubmitEvent(callback: (instanceId: number) => void): EngineEventConnection;
 	OnInputFieldSubmitEvent(callback: (instanceId: number, data: string) => void): EngineEventConnection;
 	OnSelectEvent(callback: (instanceId: number) => void): EngineEventConnection;
@@ -585,6 +594,9 @@ declare const enum CharacterAnimationLayer {
 	OVERRIDE_3 = 3,
 	/** Highest priority, recommended for high-priority animations */
 	OVERRIDE_4 = 4,
+
+	/** Layer with an upper body mask. */
+	UPPER_BODY_1 = 5,
 }
 
 interface AnimationClipOptions {

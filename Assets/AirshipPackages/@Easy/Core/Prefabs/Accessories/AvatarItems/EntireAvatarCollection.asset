@@ -80,6 +80,14 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9ded033deca85144b8d7f14545e01cf6, type: 2}
   - {fileID: 11400000, guid: 224ed66b89c0cc9428e14418470bfd0e, type: 2}
   - {fileID: 11400000, guid: 0ed60b58c391f4c43abf5bae26a346e5, type: 2}
+  - {fileID: 11400000, guid: d24a14263def7a548955dfad29aba781, type: 2}
+  - {fileID: 11400000, guid: fb1f146dc07c4004baa72addf8f98eb2, type: 2}
+  - {fileID: 11400000, guid: ffdf9428d91bc844cabbede0c7526119, type: 2}
+  - {fileID: 11400000, guid: f6fa63767dd2a874fb899e9386a1b465, type: 2}
+  - {fileID: 11400000, guid: fa120cfd625614d468328bf41922ba0a, type: 2}
+  - {fileID: 11400000, guid: 02ab8ea7877867a42bd43df44a107c83, type: 2}
+  - {fileID: 11400000, guid: 1c27c9d5836b5644cb792abdc06c5d96, type: 2}
+  - {fileID: 11400000, guid: 7ca73cfed604bad4cb9046b73b330ef1, type: 2}
   skinColors:
   - {r: 1, g: 0.9529412, b: 0.91764706, a: 1}
   - {r: 0.9647059, g: 0.84313726, b: 0.73333335, a: 1}
