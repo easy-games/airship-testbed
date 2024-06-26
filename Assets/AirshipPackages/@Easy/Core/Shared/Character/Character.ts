@@ -64,6 +64,7 @@ export default class Character extends AirshipBehaviour {
 	}
 
 	public OnEnable(): void {
+		print("Character ONENABLE");
 		this.despawned = false;
 		if (this.IsLocalCharacter()) {
 			task.spawn(() => {
@@ -94,6 +95,8 @@ export default class Character extends AirshipBehaviour {
 		);
 
 		{
+			
+			print("Character state change event");
 			// state change
 			const conn = this.movement.OnStateChanged((state) => {
 				if (this.state === state) return;
