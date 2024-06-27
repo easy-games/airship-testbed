@@ -4403,3 +4403,6 @@ interface MultiAimConstraintConstructor {
 	new (): MultiAimConstraint;
 }
 declare const MultiAimConstraint: MultiAimConstraintConstructor;
+
+interface RandomConstructor {}
+declare const Random: RandomConstructor;
