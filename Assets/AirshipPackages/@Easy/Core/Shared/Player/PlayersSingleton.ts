@@ -102,6 +102,7 @@ export class PlayersSingleton implements OnStart {
 		}
 
 		if (Game.IsGameLuauContext()) {
+			print("subscribing!");
 			this.onPlayerJoined.ConnectWithPriority(SignalPriority.HIGHEST, (player) => {
 				contextbridge.invoke<(bp: BridgedPlayer) => void>("Players:OnPlayerJoined", LuauContext.Protected, {
 					userId: player.userId,
@@ -110,6 +111,7 @@ export class PlayersSingleton implements OnStart {
 					clientId: player.clientId,
 				});
 				if (Game.IsServer() && this.joinMessagesEnabled) {
+					print("broadcasting");
 					Game.BroadcastMessage(ChatColor.Aqua(player.username) + ChatColor.Gray(" joined the server."));
 				}
 			});
@@ -237,7 +239,9 @@ export class PlayersSingleton implements OnStart {
 			if (player) {
 				this.players.delete(player);
 				this.onPlayerDisconnected.Fire(player);
-				CoreNetwork.ServerToClient.RemovePlayer.server.FireAllClients(player.clientId);
+				if (Game.IsGameLuauContext()) {
+					CoreNetwork.ServerToClient.RemovePlayer.server.FireAllClients(player.clientId);
+				}
 				player.Destroy();
 			}
 		};
@@ -254,33 +258,37 @@ export class PlayersSingleton implements OnStart {
 		});
 
 		// Player completes join
-		CoreNetwork.ClientToServer.Ready.server.OnClientEvent((player) => {
-			// fetch outfit
-			task.spawn(() => {
-				this.FetchEquippedOutfit(player, false);
-			});
+		if (Game.IsGameLuauContext()) {
+			CoreNetwork.ClientToServer.Ready.server.OnClientEvent((player) => {
+				// fetch outfit
+				task.spawn(() => {
+					this.FetchEquippedOutfit(player, false);
+				});
 
-			if (RunUtil.IsHosting()) {
-				this.HandlePlayerReadyServer(Game.localPlayer);
-				return;
-			}
-
-			this.playersPendingReady.delete(player.clientId);
-			this.HandlePlayerReadyServer(player);
-		});
-
-		CoreNetwork.ClientToServer.ChangedOutfit.server.OnClientEvent((player) => {
-			this.FetchEquippedOutfit(player, true).then(() => {
-				if (Airship.characters.allowMidGameOutfitChanges && player.character) {
-					const outfitDto = player.selectedOutfit;
-					player.character.outfitDto = outfitDto;
-					CoreNetwork.ServerToClient.Character.ChangeOutfit.server.FireAllClients(
-						player.character.id,
-						outfitDto,
-					);
+				if (RunUtil.IsHosting()) {
+					this.HandlePlayerReadyServer(Game.localPlayer);
+					return;
 				}
+
+				this.playersPendingReady.delete(player.clientId);
+				this.HandlePlayerReadyServer(player);
 			});
-		});
+
+			CoreNetwork.ClientToServer.ChangedOutfit.server.OnClientEvent((player) => {
+				this.FetchEquippedOutfit(player, true).then(() => {
+					if (Airship.characters.allowMidGameOutfitChanges && player.character) {
+						const outfitDto = player.selectedOutfit;
+						player.character.outfitDto = outfitDto;
+						if (Game.IsGameLuauContext()) {
+							CoreNetwork.ServerToClient.Character.ChangeOutfit.server.FireAllClients(
+								player.character.id,
+								outfitDto,
+							);
+						}
+					}
+				});
+			});
+		}
 	}
 
 	private async FetchEquippedOutfit(player: Player, ignoreCache: boolean): Promise<boolean> {
@@ -318,26 +326,32 @@ export class PlayersSingleton implements OnStart {
 	}
 
 	private HandlePlayerReadyServer(player: Player): void {
-		CoreNetwork.ServerToClient.ServerInfo.server.FireClient(
-			player,
-			Game.gameId,
-			Game.serverId,
-			Game.organizationId,
-		);
+		if (Game.IsGameLuauContext()) {
+			CoreNetwork.ServerToClient.ServerInfo.server.FireClient(
+				player,
+				Game.gameId,
+				Game.serverId,
+				Game.organizationId,
+			);
+		}
 
 		if (RunUtil.IsHosting() || player !== Game.localPlayer) {
 			this.players.add(player);
 		}
 
 		// notify all clients of the joining player
-		CoreNetwork.ServerToClient.AddPlayer.server.FireExcept(player, player.Encode());
+		if (Game.IsGameLuauContext()) {
+			CoreNetwork.ServerToClient.AddPlayer.server.FireExcept(player, player.Encode());
+		}
 
 		// send list of all connected players to the joining player
-		const playerDtos: PlayerDto[] = table.create(this.players.size());
-		for (let p of this.players) {
-			playerDtos.push(p.Encode());
+		if (Game.IsGameLuauContext()) {
+			const playerDtos: PlayerDto[] = table.create(this.players.size());
+			for (let p of this.players) {
+				playerDtos.push(p.Encode());
+			}
+			CoreNetwork.ServerToClient.AllPlayers.server.FireClient(player, playerDtos);
 		}
-		CoreNetwork.ServerToClient.AllPlayers.server.FireClient(player, playerDtos);
 
 		this.onPlayerJoined.Fire(player);
 	}

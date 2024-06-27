@@ -12,6 +12,7 @@ import { Flamework } from "@Easy/Core/Shared/Flamework";
 import { GameDto } from "../Client/Components/HomePage/API/GamesAPI";
 import { AudioManager } from "./Audio/AudioManager";
 import { CoreRefs } from "./CoreRefs";
+import { InitNet } from "./Network/NetworkAPI";
 import { RemoteFunction } from "./Network/RemoteFunction";
 import { AirshipUrl } from "./Util/AirshipUrl";
 import { AppManager } from "./Util/AppManager";
@@ -26,6 +27,7 @@ CanvasAPI.Init();
 AppManager.Init();
 AudioManager.Init();
 AvatarUtil.Initialize();
+InitNet();
 
 // Drive timer:
 gameObject.OnUpdate(() => {

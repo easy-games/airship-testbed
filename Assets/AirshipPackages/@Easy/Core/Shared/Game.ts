@@ -37,6 +37,10 @@ export class Game {
 		}
 	}
 
+	/**
+	 * Used a check if you are in-game or in the main menu scene (out of game)
+	 * @internal
+	 */
 	public static coreContext: CoreContext;
 
 	/**
