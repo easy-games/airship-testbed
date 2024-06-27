@@ -111,6 +111,8 @@ interface CharacterMovement extends Component {
 	TeleportAndLook(position: Vector3, lookVector: Vector3): void;
 	ApplyImpulse(impulse: Vector3): void;
 	ApplyImpulseInAir(impulse: Vector3, ignoreYIfInAir = false): void;
+	IgnoreGroundCollider(collider: Collider, ignore:boolean): void;
+	IsIgnoringCollider(collider: Collider): boolean;
 	SetVelocity(velocity: Vector3): void;
 	GetVelocity(): Vector3;
 	DisableMovement();

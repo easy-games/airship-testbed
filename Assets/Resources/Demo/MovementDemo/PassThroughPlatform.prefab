@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - baseColor: {r: 1, g: 1, b: 1, a: 1}
+  - baseColor: {r: 1, g: 0.6230303, b: 0.4198113, a: 1}
   addedByEditorScript: 0
 --- !u!65 &1537045997274641494
 BoxCollider:
@@ -132,6 +132,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8993669647770663400}
+  - component: {fileID: 6885163910106825961}
   m_Layer: 0
   m_Name: PassThroughPlatform
   m_TagString: Untagged
@@ -155,3 +156,31 @@ Transform:
   - {fileID: 1017988002073652452}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6885163910106825961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9190916653445559334}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scriptFile: {fileID: 2083954211131876583, guid: d3900584501ded7489325db581fa5648, type: 3}
+  m_fileFullPath: Asselua/Code/AirshipPlatformDemo/MovementModifications/OneWayPlatform.lua
+  m_error: 0
+  m_yielded: 0
+  m_canResume: 0
+  m_asyncYield: 0
+  m_onUpdateHandle: -1
+  m_onLateUpdateHandle: -1
+  m_shortFileName: 
+  m_metadata:
+    name: OneWayPlatform
+    decorators: []
+    properties: []
+    displayIcon: {fileID: 0}
+    displayName: 
+  contextOverwritten: 0

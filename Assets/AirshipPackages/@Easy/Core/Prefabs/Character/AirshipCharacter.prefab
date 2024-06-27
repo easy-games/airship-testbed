@@ -1501,7 +1501,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterHeight: 1.8
   characterRadius: 0.2
-  useAccelerationMovement: 1
+  useAccelerationMovement: 0
   speed: 4.666667
   sprintSpeed: 6.666667
   airSpeedMultiplier: 1
@@ -1528,7 +1528,7 @@ MonoBehaviour:
   minSlopeDelta: 0.1
   maxSlopeDelta: 0.3
   maxStepUpHeight: 0.5
-  drag: 1
+  drag: 0.1
   detectSlopes: 0
   detectStepUps: 1
   alwaysStepUp: 0

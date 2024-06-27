@@ -13,10 +13,8 @@ export default class CharacterForceTrigger extends AirshipBehaviour{
     }
 
     public OnTriggerEnter(collider: Collider): void {
-        print("ON TRIGGER FORCE");
         let character = collider.attachedRigidbody?.gameObject.GetAirshipComponent<Character>();
         if(character){
-            print("ON TRIGGER FORCE. Character: " + character.id);
             if(this.continuous){
                 this.currentTargets.push(character);
             }else{
@@ -24,7 +22,6 @@ export default class CharacterForceTrigger extends AirshipBehaviour{
             }
         }
     }
-    //asselua/airshippackages/@easy/core/shared/character/character.lua
 
     public OnTriggerExit(collider: Collider): void {
         let character = collider.attachedRigidbody?.gameObject.GetAirshipComponent<Character>();
@@ -36,11 +33,10 @@ export default class CharacterForceTrigger extends AirshipBehaviour{
     }
 
     private ApplyForce(character: Character){
-        
-        print("Applying force: " +character.id + " movement: " + character.movement);
         let force = this.forceSpace === Space.Self ?
-        this.transform.TransformVector(this.triggerForce) : 
-        this.triggerForce;
+            this.transform.TransformVector(this.triggerForce) : 
+            this.triggerForce;
+        
         character.movement.ApplyImpulse(force);
     }
 }

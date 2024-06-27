@@ -385,7 +385,7 @@ MonoBehaviour:
       fileRef: 
       decorators: []
       nullable: 0
-      serializedValue: '{"x":0.0,"y":0.0,"z":-1.5}'
+      serializedValue: '{"x":0.0,"y":0.0,"z":-1.25}'
       serializedObject: {fileID: 0}
       modified: 1
     - name: continuous
