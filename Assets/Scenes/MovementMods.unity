@@ -536,7 +536,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7019912198891199253, guid: c2e48abff83126543bbbfffa1e62b23e, type: 3}
       propertyPath: m_metadata.properties.Array.size
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7019912198891199253, guid: c2e48abff83126543bbbfffa1e62b23e, type: 3}
       propertyPath: m_metadata.properties.Array.data[3].name
@@ -612,6 +612,28 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8276124363508622314, guid: c2e48abff83126543bbbfffa1e62b23e, type: 3}
   m_PrefabInstance: {fileID: 360990843}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &405256254 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1025350969814147724, guid: bf66c54794f91e841a62442169c40bf1, type: 3}
+  m_PrefabInstance: {fileID: 7413703353695289435}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2836e36774ca1c4bbbee976e17b649c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &405256255 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1057389894327425489, guid: bf66c54794f91e841a62442169c40bf1, type: 3}
+  m_PrefabInstance: {fileID: 7413703353695289435}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26b716c41e9b56b4baafaf13a523ba2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &412540864
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -799,6 +821,14 @@ PrefabInstance:
     - target: {fileID: 612128252211040159, guid: b672af3cbd119f240af9433e14762742, type: 3}
       propertyPath: colorSettings.Array.data[0].baseColor.r
       value: 0.504967
+      objectReference: {fileID: 0}
+    - target: {fileID: 1850773939066842284, guid: b672af3cbd119f240af9433e14762742, type: 3}
+      propertyPath: scriptFile
+      value: 
+      objectReference: {fileID: -1395346797326882881, guid: a82008896ce7c804a9e06e3e2edd2804, type: 3}
+    - target: {fileID: 1850773939066842284, guid: b672af3cbd119f240af9433e14762742, type: 3}
+      propertyPath: m_fileFullPath
+      value: Assets/Code/AirshipPlatformDemo/MovementModifications/CharacterForceTrigger.lua
       objectReference: {fileID: 0}
     - target: {fileID: 1850773939066842284, guid: b672af3cbd119f240af9433e14762742, type: 3}
       propertyPath: m_metadata.properties.Array.data[1].serializedValue
@@ -2700,7 +2730,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7019912198891199253, guid: c2e48abff83126543bbbfffa1e62b23e, type: 3}
       propertyPath: m_metadata.properties.Array.size
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7019912198891199253, guid: c2e48abff83126543bbbfffa1e62b23e, type: 3}
       propertyPath: m_metadata.properties.Array.data[3].name
@@ -3548,7 +3578,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7019912198891199253, guid: c2e48abff83126543bbbfffa1e62b23e, type: 3}
       propertyPath: m_metadata.properties.Array.size
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7019912198891199253, guid: c2e48abff83126543bbbfffa1e62b23e, type: 3}
       propertyPath: m_metadata.properties.Array.data[3].name
@@ -3898,7 +3928,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7019912198891199253, guid: c2e48abff83126543bbbfffa1e62b23e, type: 3}
       propertyPath: m_metadata.properties.Array.size
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7019912198891199253, guid: c2e48abff83126543bbbfffa1e62b23e, type: 3}
       propertyPath: m_metadata.properties.Array.data[3].name
@@ -4314,6 +4344,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1399159106}
     m_Modifications:
+    - target: {fileID: 1025350969814147724, guid: bf66c54794f91e841a62442169c40bf1, type: 3}
+      propertyPath: _networkObjectCache
+      value: 
+      objectReference: {fileID: 405256255}
+    - target: {fileID: 1025350969814147724, guid: bf66c54794f91e841a62442169c40bf1, type: 3}
+      propertyPath: _componentIndexCache
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1057389894327425489, guid: bf66c54794f91e841a62442169c40bf1, type: 3}
+      propertyPath: _scenePathHash
+      value: 1265568880
+      objectReference: {fileID: 0}
+    - target: {fileID: 1057389894327425489, guid: bf66c54794f91e841a62442169c40bf1, type: 3}
+      propertyPath: <SceneId>k__BackingField
+      value: 5435576952565785443
+      objectReference: {fileID: 0}
+    - target: {fileID: 1057389894327425489, guid: bf66c54794f91e841a62442169c40bf1, type: 3}
+      propertyPath: _networkBehaviours.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1057389894327425489, guid: bf66c54794f91e841a62442169c40bf1, type: 3}
+      propertyPath: '_networkBehaviours.Array.data[0]'
+      value: 
+      objectReference: {fileID: 405256254}
     - target: {fileID: 1345242893089110750, guid: bf66c54794f91e841a62442169c40bf1, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

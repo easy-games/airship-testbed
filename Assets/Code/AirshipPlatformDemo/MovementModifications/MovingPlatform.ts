@@ -1,3 +1,5 @@
+import { Game } from "@Easy/Core/Shared/Game";
+
 export default class MovingPlatformController extends AirshipBehaviour{
     public rigid!:Rigidbody;
     public targets: Transform[] = [];
@@ -19,6 +21,9 @@ export default class MovingPlatformController extends AirshipBehaviour{
     }
 
     public FixedUpdate(dt: number): void {
+        if(!Game.IsServer()){
+            return;
+        }
         if(this.stopped){
             if(Time.time - this.lastHitTime > this.stopAtTargetDuration){
                 this.stopped = false;
@@ -29,10 +34,11 @@ export default class MovingPlatformController extends AirshipBehaviour{
 
         let targetPos = this.targets[this.currentTargetI].position;
         let distance = Vector3.Distance(targetPos, this.transform.position);
+        let speedMod = this.easeOut ? math.clamp(distance/this.targetDistance, 0,1) : 1;
         if(distance < this.hitTargetMargin){
             this.HitTarget();
         }else{
-            this.rigid.AddForce((targetPos.sub(this.transform.position)).normalized.mul(this.moveSpeed), ForceMode.Acceleration);
+            this.rigid.AddForce((targetPos.sub(this.transform.position)).normalized.mul(this.moveSpeed).mul(speedMod), ForceMode.Acceleration);
         }
     }
 

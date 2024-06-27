@@ -169,7 +169,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scriptFile: {fileID: 2083954211131876583, guid: d3900584501ded7489325db581fa5648, type: 3}
-  m_fileFullPath: Asselua/Code/AirshipPlatformDemo/MovementModifications/OneWayPlatform.lua
+  m_fileFullPath: Assets/Code/AirshipPlatformDemo/MovementModifications/OneWayPlatform.lua
   m_error: 0
   m_yielded: 0
   m_canResume: 0

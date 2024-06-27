@@ -346,7 +346,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scriptFile: {fileID: -1395346797326882881, guid: a82008896ce7c804a9e06e3e2edd2804, type: 3}
-  m_fileFullPath: Asselua/Code/AirshipPlatformDemo/MovementModifications/CharacterForceTrigger.lua
+  m_fileFullPath: Assets/Code/AirshipPlatformDemo/MovementModifications/CharacterForceTrigger.lua
   m_error: 0
   m_yielded: 0
   m_canResume: 0
