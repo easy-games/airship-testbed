@@ -18,7 +18,6 @@ export default class OneWayPlatform extends AirshipBehaviour{
             //Locally we want to refresh our colliders during replays
             character.movement.OnPreMove((isReplay)=>{
                 if(isReplay){
-                    print("REPLAYING")
                     this.RefreshForCharacter(character);
                 }
             });
