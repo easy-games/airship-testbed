@@ -102,6 +102,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4845036152095233570}
+  - component: {fileID: 3181282136960589965}
   m_Layer: 3
   m_Name: Airship_Rig
   m_TagString: Untagged
@@ -125,6 +126,23 @@ Transform:
   - {fileID: 7638964220878943247}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3181282136960589965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8802499123621670980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99dfe5a335b4400d888199768fd1e932, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rig: {fileID: 7139438170797187685}
+  meshCombiner: {fileID: 0}
+  firstPerson: 0
+  firstPersonLayer: 7
+  thirdPersonLayer: 3
 --- !u!1001 &7893037738798420964
 PrefabInstance:
   m_ObjectHideFlags: 0

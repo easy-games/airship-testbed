@@ -887,6 +887,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b25473de98e12c4b9fbe684210d426d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseMesh: {fileID: 0}
   sourceReferences: []
 --- !u!1 &7282857183101611409
 GameObject:
@@ -2031,6 +2032,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3906567886165901999}
     m_Modifications:
+    - target: {fileID: 1291918137899018184, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3181282136960589965, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: meshCombiner
+      value: 
+      objectReference: {fileID: 2932437047851003139}
     - target: {fileID: 4845036152095233570, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2070,6 +2079,10 @@ PrefabInstance:
     - target: {fileID: 4845036152095233570, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302691505991219084, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8802499123621670980, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
       propertyPath: m_Name
