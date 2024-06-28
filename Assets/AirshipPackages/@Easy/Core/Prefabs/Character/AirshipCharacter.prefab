@@ -771,7 +771,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6530537153970125746}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0b25473de98e12c4b9fbe684210d426d, type: 3}
   m_Name: 
@@ -1259,7 +1259,116 @@ MonoBehaviour:
   m_metadata:
     name: Character
     decorators: []
-    properties: []
+    properties:
+    - name: movement
+      type: object
+      objectType: CharacterMovement
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"References"'
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 7931457288082626079}
+      modified: 1
+    - name: animationHelper
+      type: object
+      objectType: CharacterAnimationHelper
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 903796914586745664}
+      modified: 1
+    - name: accessoryBuilder
+      type: object
+      objectType: AccessoryBuilder
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 5043041770756594627}
+      modified: 1
+    - name: model
+      type: object
+      objectType: GameObject
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 143839943706984411}
+      modified: 1
+    - name: networkObject
+      type: object
+      objectType: NetworkObject
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: -98370938496583557}
+      modified: 1
+    - name: rigRoot
+      type: object
+      objectType: GameObject
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 2828376946718566776}
+      modified: 1
+    - name: footstepAudioSource
+      type: object
+      objectType: AudioSource
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 2719586711620922124}
+      modified: 1
     displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0
@@ -1287,7 +1396,67 @@ MonoBehaviour:
   m_metadata:
     name: Inventory
     decorators: []
-    properties: []
+    properties:
+    - name: networkObject
+      type: object
+      objectType: NetworkObject
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: -98370938496583557}
+      modified: 1
+    - name: maxSlots
+      type: number
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 48
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: hotbarSlots
+      type: number
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 9
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: heldSlot
+      type: number
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 0
+      serializedObject: {fileID: 0}
+      modified: 0
     displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0
@@ -1414,7 +1583,75 @@ MonoBehaviour:
   m_metadata:
     name: CharacterAnimator
     decorators: []
-    properties: []
+    properties:
+    - name: character
+      type: AirshipBehaviour
+      objectType: Character
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"References"'
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: flinchClip
+      type: object
+      objectType: AnimationClip
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: flinchClipViewmodel
+      type: object
+      objectType: AnimationClip
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: baseFootstepVolumeScale
+      type: number
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"Variables"'
+      nullable: 0
+      serializedValue: 0.1
+      serializedObject: {fileID: 0}
+      modified: 0
     displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0
@@ -1498,7 +1735,7 @@ MonoBehaviour:
   _teleportThreshold: 5
   <PrefabId>k__BackingField: 0
   <SpawnableCollectionId>k__BackingField: 1
-  _scenePathHash: 2733764227
+  _scenePathHash: 0
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 15428013612131838016
 --- !u!114 &5420625271334097286
@@ -1746,7 +1983,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6126990775742736748, guid: 4aa6768ebfa5a5b4ebf2fb45c873c97c, type: 3}
   m_PrefabInstance: {fileID: 6135088894831720548}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 2828376946718566776}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7eb696a0152059a4896e326dc2378287, type: 3}
@@ -1777,7 +2014,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4898828769311973979, guid: 4aa6768ebfa5a5b4ebf2fb45c873c97c, type: 3}
   m_PrefabInstance: {fileID: 6135088894831720548}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 2828376946718566776}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 995b0450810b32c4aa9bedf565fa7c78, type: 3}
@@ -1806,6 +2043,11 @@ Transform:
 --- !u!4 &2330112180912753567 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8462842552435799035, guid: 4aa6768ebfa5a5b4ebf2fb45c873c97c, type: 3}
+  m_PrefabInstance: {fileID: 6135088894831720548}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2828376946718566776 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8242817677000904988, guid: 4aa6768ebfa5a5b4ebf2fb45c873c97c, type: 3}
   m_PrefabInstance: {fileID: 6135088894831720548}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &2906958842130293887 stripped
