@@ -1,6 +1,6 @@
 import Character from "@Easy/Core/Shared/Character/Character";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
-import { ControlScheme, Keyboard, Preferred } from "@Easy/Core/Shared/UserInput";
+import { ControlScheme, Preferred } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { OnUpdate } from "@Easy/Core/Shared/Util/Timer";
 import { Airship } from "../../Airship";
@@ -14,7 +14,6 @@ export class CharacterInput {
 	private disablerCounter = 1;
 
 	private enabled = true;
-	private autoSprinting = false;
 
 	/** If true holding the sprint key will not result in sprinting */
 	private blockSprint = false;
@@ -49,7 +48,7 @@ export class CharacterInput {
 
 	public IsSprinting(): boolean {
 		if (this.IsSprintBlocked()) return false;
-		return this.autoSprinting || Airship.input.IsDown("Sprint");
+		return Airship.input.IsDown("Sprint");
 	}
 
 	public AddDisabler(): () => void {
@@ -68,26 +67,7 @@ export class CharacterInput {
 	}
 
 	private InitControls() {
-		const keyboard = this.bin.Add(new Keyboard());
 		const preferred = this.bin.Add(new Preferred());
-
-		this.autoSprinting = false;
-		this.bin.Add(
-			this.character.onStateChanged.Connect((newState, oldState) => {
-				if (newState === CharacterState.Sprinting) {
-					this.autoSprinting = true;
-				} else if (newState !== CharacterState.Jumping) {
-					this.autoSprinting = false;
-				}
-			}),
-		);
-		this.bin.Add(
-			keyboard.OnKeyDown(Key.LeftShift, () => {
-				if (this.autoSprinting) {
-					this.autoSprinting = false;
-				}
-			}),
-		);
 
 		const updateMouseKeyboardControls = (dt: number) => {
 			if (!this.enabled) return;
