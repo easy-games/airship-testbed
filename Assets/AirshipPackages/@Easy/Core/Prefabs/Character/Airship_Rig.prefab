@@ -217,6 +217,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: -4396642182433536433, guid: 32b6c86e4b9e5c040818bf1ea6fe61c2, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 9b1dff1dbc3703b4595ea2ee348062ec, type: 2}
     - target: {fileID: -3814059227866369994, guid: 32b6c86e4b9e5c040818bf1ea6fe61c2, type: 3}
       propertyPath: m_Icon
       value: 
@@ -278,6 +282,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 3306451490063965843, guid: 0000000000000000d000000000000000, type: 0}
     - target: {fileID: -1243964034024361446, guid: 32b6c86e4b9e5c040818bf1ea6fe61c2, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -259972160606440404, guid: 32b6c86e4b9e5c040818bf1ea6fe61c2, type: 3}
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
@@ -479,6 +487,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -4564589634844611872, guid: 32b6c86e4b9e5c040818bf1ea6fe61c2, type: 3}
   m_PrefabInstance: {fileID: 7893037738798420964}
   m_PrefabAsset: {fileID: 0}
+--- !u!137 &3418875587636762027 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -4396642182433536433, guid: 32b6c86e4b9e5c040818bf1ea6fe61c2, type: 3}
+  m_PrefabInstance: {fileID: 7893037738798420964}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3598518746832794678 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -2559955826825992238, guid: 32b6c86e4b9e5c040818bf1ea6fe61c2, type: 3}
@@ -548,7 +561,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bodyMesh: {fileID: 8874355582159802038}
   armsMesh: {fileID: 4466944578396753522}
-  headMesh: {fileID: 0}
+  headMesh: {fileID: 3418875587636762027}
   faceMesh: {fileID: 3664559219000330965}
   rigHolder: {fileID: 3255792366681667844}
   rootMotion: {fileID: 7060538637195656572}
