@@ -102,7 +102,6 @@ export class PlayersSingleton implements OnStart {
 		}
 
 		if (Game.IsGameLuauContext()) {
-			print("subscribing!");
 			this.onPlayerJoined.ConnectWithPriority(SignalPriority.HIGHEST, (player) => {
 				contextbridge.invoke<(bp: BridgedPlayer) => void>("Players:OnPlayerJoined", LuauContext.Protected, {
 					userId: player.userId,
@@ -111,7 +110,6 @@ export class PlayersSingleton implements OnStart {
 					clientId: player.clientId,
 				});
 				if (Game.IsServer() && this.joinMessagesEnabled) {
-					print("broadcasting");
 					Game.BroadcastMessage(ChatColor.Aqua(player.username) + ChatColor.Gray(" joined the server."));
 				}
 			});
