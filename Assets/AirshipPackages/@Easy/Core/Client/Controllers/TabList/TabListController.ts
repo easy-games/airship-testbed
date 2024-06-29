@@ -8,7 +8,7 @@ import { Keyboard, Mouse } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import { Task } from "@Easy/Core/Shared/Util/Task";
-import { OnLateUpdate } from "@Easy/Core/Shared/Util/Timer";
+import { OnLateUpdate, SetInterval } from "@Easy/Core/Shared/Util/Timer";
 import { Window } from "@Easy/Core/Shared/Util/Window";
 
 @Controller({})
@@ -32,8 +32,8 @@ export class TabListController implements OnStart {
 	private init = false;
 
 	private posY = -80;
-	private tweenDistance = 12;
-	private tweenDuration = 0.1;
+	private tweenDistance = 10;
+	private tweenDuration = 0.06;
 
 	constructor() {
 		this.tablistGO = Object.Instantiate(
@@ -92,11 +92,11 @@ export class TabListController implements OnStart {
 		});
 
 		// Prevent window from staying open once tabbed out.
-		// SetInterval(0.1, () => {
-		// 	if (this.IsShown() && !Application.isFocused) {
-		// 		this.Hide();
-		// 	}
-		// });
+		SetInterval(0.1, () => {
+			if (this.IsShown() && !Application.isFocused) {
+				this.Hide();
+			}
+		});
 
 		// Application.OnFocusChanged((focused) => {
 		// 	if (!focused) {
@@ -229,8 +229,8 @@ export class TabListController implements OnStart {
 
 		this.shown = false;
 
-		if (immediate) {
-			this.canvasGroup.alpha = 0;
+		if (immediate || true) {
+			this.tablistCanvas.enabled = false;
 		} else {
 			this.wrapperRect.TweenAnchoredPositionY(this.posY - this.tweenDistance, this.tweenDuration);
 			this.canvasGroup.TweenGraphicAlpha(0, this.tweenDuration);
