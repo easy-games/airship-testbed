@@ -15,7 +15,7 @@ import { AirshipChatSingleton } from "./Chat/AirshipChatSingleton";
 import { DamageSingleton } from "./Damage/DamageSingleton";
 import { OnStart } from "./Flamework";
 import { AirshipInputSingleton } from "./Input/AirshipInputSingleton";
-import { InventorySingleton } from "./Inventory/InventorySingleton";
+import { AirshipInventorySingleton } from "./Inventory/AirshipInventorySingleton";
 import { LoadingScreenSingleton } from "./LoadingScreen/LoadingScreenSingleton";
 import { PlayersSingleton } from "./Player/PlayersSingleton";
 import { TagsSingleton } from "./Tags/TagsSingleton";
@@ -119,7 +119,7 @@ export const Airship = {
 	input: undefined as unknown as Omit<AirshipInputSingleton, "OnStart">,
 	damage: undefined as unknown as Omit<DamageSingleton, "OnStart">,
 	teams: undefined as unknown as Omit<TeamsSingleton, "OnStart">,
-	inventory: undefined as unknown as Omit<InventorySingleton, "OnStart">,
+	inventory: undefined as unknown as Omit<AirshipInventorySingleton, "OnStart">,
 	loadingScreen: undefined as unknown as Omit<LoadingScreenSingleton, "OnStart">,
 	characterCamera: undefined as unknown as Omit<AirshipCharacterCameraSingleton, "OnStart">,
 	/**

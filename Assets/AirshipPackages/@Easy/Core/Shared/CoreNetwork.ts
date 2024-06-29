@@ -14,7 +14,7 @@ import { TeamDto } from "./Team/Team";
 export const CoreNetwork = {
 	ClientToServer: {
 		Ready: new RemoteEvent<[]>("Ready"),
-		SetHeldSlot: new RemoteEvent<[slot: number]>("SetHeldSlot"),
+		SetHeldSlot: new RemoteEvent<[invId: number, slot: number]>("SetHeldSlot"),
 		PlaceBlock: new RemoteEvent<[pos: Vector3, itemType: CoreItemType, rotation?: number]>("PlaceBlock"),
 		HitBlock: new RemoteEvent<[pos: Vector3]>("HitBlock"),
 		LaunchProjectile: new RemoteEvent<
@@ -124,7 +124,7 @@ export const CoreNetwork = {
 		SyncPrefabBlocks: new RemoteEvent<[blockPositions: Vector3[]]>("SyncPrefabBlocks"),
 		/** Fired when a player is eliminated. */
 		PlayerEliminated: new RemoteEvent<[clientId: number]>("PlayerEliminated"),
-		
+
 		BlockPlace: new RemoteEvent<[pos: Vector3, voxel: number, entityId?: number]>("BlockPlace"),
 		BlockGroupPlace: new RemoteEvent<[positions: Vector3[], voxels: number[], entityId?: number]>(
 			"BlockGroupPlace",

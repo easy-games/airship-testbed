@@ -3,9 +3,8 @@ import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
 import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
 import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { CharacterInventorySingleton } from "@Easy/Core/Shared/Inventory/CharacterInventorySingleton";
+import { AirshipInventorySingleton } from "@Easy/Core/Shared/Inventory/AirshipInventorySingleton";
 import Inventory from "@Easy/Core/Shared/Inventory/Inventory";
-import { InventorySingleton } from "@Easy/Core/Shared/Inventory/InventorySingleton";
 import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
 import { CoreUI } from "@Easy/Core/Shared/UI/CoreUI";
 import { Healthbar } from "@Easy/Core/Shared/UI/Healthbar";
@@ -47,10 +46,7 @@ export class InventoryUIController implements OnStart {
 
 	private firstSpawn = true;
 
-	constructor(
-		private readonly invController: InventorySingleton,
-		private readonly characterInvController: CharacterInventorySingleton,
-	) {
+	constructor(private readonly invController: AirshipInventorySingleton) {
 		const inventoryGo = Object.Instantiate(
 			AssetCache.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/UI/Inventory/Inventory.prefab"),
 		);
@@ -148,15 +144,15 @@ export class InventoryUIController implements OnStart {
 
 	private SetupHotbar(): void {
 		for (let i = 0; i < this.hotbarSlots; i++) {
-			this.UpdateHotbarSlot(i, this.characterInvController.localInventory?.GetHeldSlot() ?? 0, undefined, true);
+			this.UpdateHotbarSlot(i, Airship.inventory.localInventory?.GetHeldSlot() ?? 0, undefined, true);
 		}
 
 		let init = false;
-		this.characterInvController.ObserveLocalInventory((inv) => {
+		Airship.inventory.ObserveLocalInventory((inv) => {
 			const invBin = new Bin();
 			const slotBinMap = new Map<number, Bin>();
 			invBin.Add(
-				inv.slotChanged.Connect((slot, itemStack) => {
+				inv.onSlotChanged.Connect((slot, itemStack) => {
 					slotBinMap.get(slot)?.Clean();
 					if (slot < this.hotbarSlots) {
 						const slotBin = new Bin();
@@ -188,7 +184,7 @@ export class InventoryUIController implements OnStart {
 			});
 
 			invBin.Add(
-				inv.heldSlotChanged.Connect((slot) => {
+				inv.onHeldSlotChanged.Connect((slot) => {
 					for (let i = 0; i < this.hotbarSlots; i++) {
 						const itemStack = inv.GetItem(i);
 						this.UpdateHotbarSlot(i, slot, itemStack);
@@ -337,11 +333,11 @@ export class InventoryUIController implements OnStart {
 
 		const invBin = new Bin();
 		let init = true;
-		this.characterInvController.ObserveLocalInventory((inv) => {
+		Airship.inventory.ObserveLocalInventory((inv) => {
 			invBin.Clean();
 			const slotBinMap = new Map<number, Bin>();
 
-			inv.slotChanged.Connect((slot, itemStack) => {
+			inv.onSlotChanged.Connect((slot, itemStack) => {
 				slotBinMap.get(slot)?.Clean();
 				const slotBin = new Bin();
 				slotBinMap.set(slot, slotBin);
@@ -379,21 +375,19 @@ export class InventoryUIController implements OnStart {
 					CoreUI.SetupButton(tile);
 					const button = tile.transform.GetChild(0).gameObject;
 					CanvasAPI.OnClickEvent(button, () => {
-						if (!this.characterInvController.localInventory) return;
-
 						if (i < this.hotbarSlots) {
 							// hotbar
 							if (this.IsBackpackShown()) {
 								if (keyboard.IsKeyDown(Key.LeftShift)) {
-									this.invController.QuickMoveSlot(this.characterInvController.localInventory, i);
+									this.invController.QuickMoveSlot(inv, i);
 								}
 							} else {
-								this.characterInvController.SetHeldSlot(i);
+								inv.SetHeldSlot(i);
 							}
 						} else {
 							// backpack
 							if (keyboard.IsKeyDown(Key.LeftShift)) {
-								this.invController.QuickMoveSlot(this.characterInvController.localInventory, i);
+								this.invController.QuickMoveSlot(inv, i);
 							}
 						}
 					});
@@ -402,8 +396,8 @@ export class InventoryUIController implements OnStart {
 						if (!this.IsBackpackShown()) return;
 						if (keyboard.IsKeyDown(Key.LeftShift)) return;
 
-						if (!this.characterInvController.localInventory) return;
-						const itemStack = this.characterInvController.localInventory.GetItem(i);
+						if (!Airship.inventory.localInventory) return;
+						const itemStack = Airship.inventory.localInventory.GetItem(i);
 						if (!itemStack) return;
 
 						const visual = button.transform.GetChild(0).gameObject;
@@ -432,7 +426,7 @@ export class InventoryUIController implements OnStart {
 						this.draggingState = {
 							slot: i,
 							itemStack,
-							inventory: this.characterInvController.localInventory,
+							inventory: Airship.inventory.localInventory,
 							transform: cloneTransform,
 							consumed: false,
 						};
@@ -442,12 +436,12 @@ export class InventoryUIController implements OnStart {
 					CanvasAPI.OnDropEvent(tile.transform.GetChild(0).gameObject, () => {
 						if (!this.IsBackpackShown()) return;
 						if (!this.draggingState) return;
-						if (!this.characterInvController.localInventory) return;
+						if (!Airship.inventory.localInventory) return;
 
 						this.invController.MoveToSlot(
 							this.draggingState.inventory,
 							this.draggingState.slot,
-							this.characterInvController.localInventory,
+							Airship.inventory.localInventory,
 							i,
 							this.draggingState.itemStack.GetAmount(),
 						);
@@ -460,10 +454,10 @@ export class InventoryUIController implements OnStart {
 
 						if (this.draggingState) {
 							if (!this.draggingState.consumed) {
-								this.characterInvController.DropItemInSlot(
-									this.draggingState.slot,
-									this.draggingState.itemStack.GetAmount(),
-								);
+								// this.characterInvController.DropItemInSlot(
+								// 	this.draggingState.slot,
+								// 	this.draggingState.itemStack.GetAmount(),
+								// );
 							}
 
 							Object.Destroy(this.draggingState.transform.gameObject);

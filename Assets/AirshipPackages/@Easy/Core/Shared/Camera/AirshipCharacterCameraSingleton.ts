@@ -359,7 +359,9 @@ export class AirshipCharacterCameraSingleton implements OnStart {
 						}
 					});
 					flyingBin.Add(Dependency<LocalCharacterSingleton>().input!.AddDisabler());
-					flyingBin.Add(Airship.inventory.localCharacterInventory.AddDisabler());
+					if (Airship.inventory.localInventory) {
+						flyingBin.Add(Airship.inventory.localInventory.AddControlsDisabler());
+					}
 				}
 			}
 		});
