@@ -1,5 +1,6 @@
 import { Airship } from "../Airship";
 import { CoreRefs } from "../CoreRefs";
+import AirshipCharacterViewmodel from "./AirshipCharacterViewmodel";
 
 export class Viewmodel {
 	public viewmodelGo!: GameObject;
@@ -15,18 +16,22 @@ export class Viewmodel {
 	}
 
 	public SetViewmodelGameObject(go: GameObject): void {
+		if (this.viewmodelGo) {
+			Object.Destroy(this.viewmodelGo);
+		}
+
 		this.viewmodelGo = go;
 		this.viewmodelTransform = this.viewmodelGo.transform;
 		this.viewmodelTransform.position = new Vector3(10_000, 0, 10_000);
 
-		const refs = this.viewmodelGo.GetComponent<GameObjectReferences>()!;
-		const rig = refs.GetValue("Refs", "Rig");
-		this.anim = rig.GetComponent<Animator>()!;
+		const characterViewmodelComponent = this.viewmodelGo.GetAirshipComponent<AirshipCharacterViewmodel>();
+		if (!characterViewmodelComponent) {
+			error("Viewmodel is missing an AirshipCharacterViewmodel component.");
+		}
 
-		this.rig = rig.GetComponent<CharacterRig>()!;
-
-		const content = this.viewmodelTransform.GetChild(0).gameObject;
-		this.accessoryBuilder = content.GetComponent<AccessoryBuilder>()!;
+		this.rig = characterViewmodelComponent.rig;
+		this.anim = characterViewmodelComponent.animator;
+		this.accessoryBuilder = characterViewmodelComponent.accessoryBuilder;
 	}
 
 	public Destroy(): void {
