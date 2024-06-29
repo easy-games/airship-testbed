@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "airship-testbed.sln"
+    "dotnet.defaultSolution": "Airship-Testbed.sln"
 }
