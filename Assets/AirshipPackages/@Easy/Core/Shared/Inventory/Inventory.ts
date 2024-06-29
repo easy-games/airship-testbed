@@ -294,7 +294,7 @@ export default class Inventory extends AirshipBehaviour {
 			);
 			this.slotConnections.set(slot, bin);
 
-			if (RunUtil.IsServer()) {
+			if (Game.IsServer()) {
 				bin.Add(
 					itemStack.amountChanged.Connect((e) => {
 						if (e.NoNetwork) return;
@@ -322,7 +322,7 @@ export default class Inventory extends AirshipBehaviour {
 		this.onSlotChanged.Fire(slot, itemStack);
 		this.onChanged.Fire();
 
-		if (RunUtil.IsServer() && this.finishedInitialReplication) {
+		if (Game.IsServer() && this.finishedInitialReplication) {
 			// todo: figure out which clients to include
 			CoreNetwork.ServerToClient.SetInventorySlot.server.FireAllClients(
 				this.id,
