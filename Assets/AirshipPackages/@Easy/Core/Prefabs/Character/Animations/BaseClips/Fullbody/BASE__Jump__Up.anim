@@ -6,11 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-<<<<<<<< HEAD:Assets/AirshipPackages/@Easy/Core/Prefabs/Character/Animations/BaseClips/Fullbody/Jump__Down.anim
-  m_Name: Jump__Down
-========
   m_Name: BASE__Jump__Up
->>>>>>>> origin/marlon/animation-setup:Assets/AirshipPackages/@Easy/Core/Prefabs/Character/Animations/BaseClips/Fullbody/BASE__Jump__Up.anim
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
