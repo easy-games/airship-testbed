@@ -36,6 +36,8 @@ gameObject.OnFixedUpdate(() => {
 });
 
 Flamework.AddPath("@easy/core/shared", "^.*singleton.ts$");
+Flamework.AddPath("@easy/core/client/controllers/airship/user/airshipusercontroller", "^.*controller.ts$");
+Flamework.AddPath("@easy/core/shared/player/playerssingleton", "^.*singleton.ts$");
 Flamework.AddPath("@easy/core/client/protectedcontrollers", "^.*controller.ts$");
 Flamework.AddPath("@easy/core/client/protectedcontrollers", "^.*singleton.ts$");
 Flamework.Ignite();
