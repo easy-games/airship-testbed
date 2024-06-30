@@ -1,32 +1,8 @@
 fileFormatVersion: 2
-guid: a0c3e7df603f8b74dbb67f6b641f5b58
+guid: 90e7bf96cd24260448bef48024725d7d
 ModelImporter:
   serializedVersion: 22200
-  internalIDToNameTable:
-  - first:
-      74: -7638199428120532151
-    second: Character_01-Default Pose
-  - first:
-      74: -284443630328104674
-    second: Character_Idle_Sword
-  - first:
-      74: -8950454082296755233
-    second: Character_Jog_Sword__Back
-  - first:
-      74: -2629102201210480002
-    second: Character_Jog_Sword__Back_Left
-  - first:
-      74: -8738556676227599779
-    second: Character_Jog_Sword__Back_Right
-  - first:
-      74: -1816207066627079974
-    second: Character_Jog_Sword__Front
-  - first:
-      74: 210401524756289960
-    second: Character_Jog_Sword__Left
-  - first:
-      74: 4635818215884505396
-    second: Character_Jog_Sword__Right
+  internalIDToNameTable: []
   externalObjects: {}
   materials:
     materialImportMode: 0
@@ -55,40 +31,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Character_01-Default Pose
-      takeName: Airship_rig|Airship_Character_01-Default Pose
-      internalID: 0
+      name: Airship_Rig|Character_Crouch__Sword_Back
+      takeName: Airship_Rig|Character_Crouch__Sword_Back
+      internalID: -8322955956150563545
       firstFrame: 0
-      lastFrame: 1
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: Character_Idle_Sword
-      takeName: Airship_rig|Airship_Character_Idle_Sword
-      internalID: 0
-      firstFrame: 0
-      lastFrame: 100
+      lastFrame: 22
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -113,15 +60,15 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Character_Jog_Sword__Back
-      takeName: Airship_rig|Airship_Character_Jog_Sword__Back
-      internalID: 0
+      name: Airship_Rig|Character_Crouch__Sword_Front
+      takeName: Airship_Rig|Character_Crouch__Sword_Front
+      internalID: 4189169318877498753
       firstFrame: 0
-      lastFrame: 16
+      lastFrame: 22
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
-      cycleOffset: 0.5
+      cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 1
@@ -142,15 +89,15 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Character_Jog_Sword__Back_Left
-      takeName: Airship_rig|Airship_Character_Jog_Sword__Back_Left
-      internalID: 0
+      name: Airship_Rig|Character_Crouch__Sword_Idle
+      takeName: Airship_Rig|Character_Crouch__Sword_Idle
+      internalID: -7059109192694762040
       firstFrame: 0
-      lastFrame: 16
+      lastFrame: 160
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
-      cycleOffset: 0.5
+      cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 1
@@ -171,9 +118,9 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Character_Jog_Sword__Back_Right
-      takeName: Airship_rig|Airship_Character_Jog_Sword__Back_Right
-      internalID: 0
+      name: Airship_Rig|Character_Jog_Sprint__Sword_Back
+      takeName: Airship_Rig|Character_Jog_Sprint__Sword_Back
+      internalID: 3603498324187347562
       firstFrame: 0
       lastFrame: 16
       wrapMode: 0
@@ -200,9 +147,9 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Character_Jog_Sword__Front
-      takeName: Airship_rig|Airship_Character_Jog_Sword__Front
-      internalID: 0
+      name: Airship_Rig|Character_Jog_Sprint__Sword_Front
+      takeName: Airship_Rig|Character_Jog_Sprint__Sword_Front
+      internalID: -6688815928117828741
       firstFrame: 0
       lastFrame: 16
       wrapMode: 0
@@ -229,40 +176,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Character_Jog_Sword__Left
-      takeName: Airship_rig|Airship_Character_Jog_Sword__Left
-      internalID: 0
+      name: Airship_Rig|Character_Jog_Sprint__Sword_Idle
+      takeName: Airship_Rig|Character_Jog_Sprint__Sword_Idle
+      internalID: 8605066453188366188
       firstFrame: 0
-      lastFrame: 16
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0.5
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: Character_Jog_Sword__Right
-      takeName: Airship_rig|Airship_Character_Jog_Sword__Right
-      internalID: 0
-      firstFrame: 0
-      lastFrame: 16
+      lastFrame: 200
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -295,7 +213,7 @@ ModelImporter:
     useSRGBMaterialColor: 1
     sortHierarchyByName: 1
     importPhysicalCameras: 1
-    importVisibility: 0
+    importVisibility: 1
     importBlendShapes: 0
     importCameras: 0
     importLights: 0
@@ -355,9 +273,9 @@ ModelImporter:
   humanoidOversampling: 1
   avatarSetup: 2
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
-  importBlendShapeDeformPercent: 0
+  importBlendShapeDeformPercent: 1
   remapMaterialsIfMaterialImportModeIsNone: 0
   additionalBone: 0
   userData: 
-  assetBundleName: '@easy/core_shared/resources'
+  assetBundleName: 
   assetBundleVariant: 
