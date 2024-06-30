@@ -25,7 +25,6 @@ export class AirshipUserController {
 	private userCache = new Map<string, { user?: PublicUser }>();
 
 	constructor() {
-		print("Init airship user controller");
 		if (!Game.IsClient()) return;
 
 		Platform.Client.User = this;

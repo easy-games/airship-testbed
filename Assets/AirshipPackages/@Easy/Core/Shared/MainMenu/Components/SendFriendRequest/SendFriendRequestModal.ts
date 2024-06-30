@@ -1,8 +1,12 @@
+import { RecommendedFriendsController } from "@Easy/Core/Client/ProtectedControllers/Social/RecommendedFriendsController";
+import FriendRecommendation from "@Easy/Core/Prefabs/UI/Modals/Components/FriendRecommendation";
+import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Keyboard } from "@Easy/Core/Shared/UserInput";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
+import inspect from "@Easy/Core/Shared/Util/Inspect";
 import { Theme } from "@Easy/Core/Shared/Util/Theme";
 import AirshipButton from "../AirshipButton";
 
@@ -11,6 +15,9 @@ export default class SendFriendRequestModal extends AirshipBehaviour {
 	public sendButton!: Button;
 	public responseText!: TMP_Text;
 	public inputOutlineGO!: GameObject;
+	public recentlyPlayedWithText!: GameObject;
+	public recommendationsContent!: GameObject;
+	public recommendationCardPrefab!: GameObject;
 
 	private bin = new Bin();
 
@@ -51,6 +58,40 @@ export default class SendFriendRequestModal extends AirshipBehaviour {
 				});
 			}),
 		);
+		this.LoadRecommendations();
+	}
+
+	private async LoadRecommendations() {
+		const sortedRecommendations = Dependency<RecommendedFriendsController>().GetSortedRecommendations();
+		this.recommendationsContent.ClearChildren();
+		
+		const hasRecommendations = sortedRecommendations.size() > 0;
+		print("TOTAL RECS: " +sortedRecommendations.size());
+		// Set "Recently played with:" and recommendation content visibility
+		this.recommendationsContent.SetActive(hasRecommendations);
+		this.recentlyPlayedWithText.SetActive(hasRecommendations);
+
+		// Instantiate recommendation cards
+		const maxDisplayRecommendations = 6;
+		for (let i = 0; i < math.min(maxDisplayRecommendations, sortedRecommendations.size()); i++) {
+			print("A1");
+			const rec = sortedRecommendations[i];
+			// Check if card is displayable before parenting
+			const cardObj = Object.Instantiate(this.recommendationCardPrefab);
+			const card = cardObj.GetAirshipComponent<FriendRecommendation>()!;
+			card.Setup(rec.uid, rec.recommendation.context).then((setupSuccess) => {
+				if (setupSuccess) {
+					cardObj.transform.parent = this.recommendationsContent.transform;
+					cardObj.transform.localScale = new Vector3(1, 1, 1); // Why is this necessary? Defaults to 0.5,0.5,0.5
+				} else {
+					print("Failed to fetch recommended user: uid=" + rec.uid + " username=" + rec.recommendation.username);
+					Object.Destroy(cardObj);
+				}
+			}).catch((err) => {
+				warn("Failed to setup recommendation card: " + inspect(err));
+				Object.Destroy(cardObj);
+			});
+		}
 	}
 
 	public SendFriendRequest(): void {
