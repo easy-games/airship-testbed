@@ -97,7 +97,7 @@ export class AvatarUtil {
 					}
 
 					if (!foundMatchingItem) {
-						print("Unpaired Server Item " + itemData.class.name + ": " + itemData.class.classId);
+						CoreLogger.Log("Unpaired Server Item " + itemData.class.name + ": " + itemData.class.classId);
 					}
 				});
 			}
@@ -117,7 +117,7 @@ export class AvatarUtil {
 	}
 
 	public static InitUserOutfits(userId: string) {
-		AvatarPlatformAPI.GetAllOutfits().then((outfits)=>{
+		AvatarPlatformAPI.GetAllOutfits().then((outfits) => {
 			const maxNumberOfOutfits = 5;
 			const numberOfOutfits = outfits ? outfits.size() : 0;
 			let name = "";
@@ -190,14 +190,14 @@ export class AvatarUtil {
 			combineMeshes?: boolean;
 		} = {},
 	) {
-		AvatarPlatformAPI.GetEquippedOutfit().then((outfitDto)=>{
+		AvatarPlatformAPI.GetEquippedOutfit().then((outfitDto) => {
 			if (!outfitDto) {
 				// warn("Unable to load users default outfit. Equipping baked default outfit");
 				this.LoadDefaultOutfit(builder);
 				return;
 			}
 			this.LoadUserOutfit(outfitDto, builder, options);
-		})
+		});
 	}
 
 	public static LoadDefaultOutfit(builder: AccessoryBuilder) {

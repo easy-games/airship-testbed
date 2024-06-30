@@ -5,7 +5,9 @@ import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
 import { Dependency, Singleton } from "@Easy/Core/Shared/Flamework";
 import { RemoteFunction } from "@Easy/Core/Shared/Network/RemoteFunction";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
-import { CharacterInventorySingleton } from "./CharacterInventorySingleton";
+import { Game } from "../Game";
+import { Bin } from "../Util/Bin";
+import { Signal } from "../Util/Signal";
 import Inventory, { InventoryDto } from "./Inventory";
 import { ItemStack } from "./ItemStack";
 
@@ -16,7 +18,10 @@ interface InventoryEntry {
 }
 
 @Singleton()
-export class InventorySingleton {
+export class AirshipInventorySingleton {
+	public localInventory?: Inventory;
+	public localInventoryChanged = new Signal<Inventory>();
+
 	private inventories = new Map<number, InventoryEntry>();
 
 	public remotes = {
@@ -25,15 +30,15 @@ export class InventorySingleton {
 		},
 	};
 
-	constructor(public readonly localCharacterInventory: CharacterInventorySingleton) {
+	constructor() {
 		Airship.Inventory = this;
 	}
 
 	protected OnStart(): void {
-		if (RunUtil.IsClient()) {
+		if (Game.IsClient()) {
 			this.StartClient();
 		}
-		if (RunUtil.IsServer()) {
+		if (Game.IsServer()) {
 			this.StartServer();
 		}
 	}
@@ -74,22 +79,6 @@ export class InventorySingleton {
 			const inv = this.GetInventory(invId);
 			inv?.StartNetworkingDiffs();
 			return inv?.Encode();
-		});
-
-		CoreNetwork.ClientToServer.SetHeldSlot.server.OnClientEvent((player, slot) => {
-			const character = Airship.Characters.FindByPlayer(player);
-			if (!character) return;
-
-			const inv = character.gameObject.GetAirshipComponent<Inventory>();
-			inv?.SetHeldSlot(slot);
-
-			CoreNetwork.ServerToClient.SetHeldInventorySlot.server.FireExcept(
-				player,
-				inv?.id,
-				player.connectionId,
-				slot,
-				true,
-			);
 		});
 
 		CoreNetwork.ClientToServer.Inventory.SwapSlots.server.OnClientEvent(
@@ -278,7 +267,7 @@ export class InventorySingleton {
 		});
 	}
 
-	public GetInvEntry(inventory: Inventory): InventoryEntry {
+	private GetInvEntry(inventory: Inventory): InventoryEntry {
 		const found = this.inventories.get(inventory.id);
 		if (found) {
 			return found;
@@ -320,8 +309,8 @@ export class InventorySingleton {
 		this.inventories.set(inventory.id, entry);
 
 		const character = inventory.gameObject.GetAirshipComponent<Character>();
-		if (RunUtil.IsClient() && character?.IsLocalCharacter()) {
-			this.localCharacterInventory.SetLocalInventory(inventory);
+		if (Game.IsClient() && character?.IsLocalCharacter()) {
+			this.SetLocalInventory(inventory);
 		}
 	}
 
@@ -500,5 +489,52 @@ export class InventorySingleton {
 
 	public SetBackpackVisible(visible: boolean) {
 		Dependency<InventoryUIController>().SetBackpackVisible(visible);
+	}
+
+	public SetLocalInventory(inventory: Inventory): void {
+		this.localInventory = inventory;
+		this.localInventoryChanged.Fire(inventory);
+	}
+
+	public ObserveLocalInventory(callback: (inv: Inventory) => CleanupFunc): Bin {
+		const bin = new Bin();
+		let cleanup: CleanupFunc;
+		if (this.localInventory) {
+			cleanup = callback(this.localInventory);
+		}
+
+		bin.Add(
+			this.localInventoryChanged.Connect((inv) => {
+				cleanup = callback(inv);
+			}),
+		);
+		bin.Add(() => {
+			cleanup?.();
+		});
+		return bin;
+	}
+
+	public ObserveLocalHeldItem(callback: (itemStack: ItemStack | undefined) => CleanupFunc): Bin {
+		const bin = new Bin();
+
+		let cleanup: CleanupFunc;
+
+		const invBin = new Bin();
+		bin.Add(
+			this.ObserveLocalInventory((inv) => {
+				invBin.Clean();
+				if (inv) {
+					invBin.Add(
+						inv.ObserveHeldItem((itemStack) => {
+							cleanup?.();
+							cleanup = callback(itemStack);
+						}),
+					);
+				} else {
+					cleanup = callback(undefined);
+				}
+			}),
+		);
+		return bin;
 	}
 }

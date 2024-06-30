@@ -994,3 +994,9 @@ interface CoreScriptingManager extends MonoBehaviour {
 		callback: (scene: Scene, connection: NetworkConnection, added: boolean) => void,
 	): EngineEventConnection;
 }
+
+interface AnimatorOverrideController extends RuntimeAnimatorController {
+	SetClip(name: string, clip: AnimationClip): void;
+	ApplyOverrides(): void;
+	overridesCount: number;
+}

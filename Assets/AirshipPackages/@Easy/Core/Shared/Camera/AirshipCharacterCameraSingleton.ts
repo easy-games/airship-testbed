@@ -359,7 +359,9 @@ export class AirshipCharacterCameraSingleton {
 						}
 					});
 					flyingBin.Add(Dependency<LocalCharacterSingleton>().input!.AddDisabler());
-					flyingBin.Add(Airship.Inventory.localCharacterInventory.AddDisabler());
+					if (Airship.Inventory.localInventory) {
+						flyingBin.Add(Airship.Inventory.localInventory.AddControlsDisabler());
+					}
 				}
 			}
 		});

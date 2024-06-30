@@ -13,7 +13,7 @@ import { CharactersSingleton } from "./Character/CharactersSingleton";
 import { AirshipChatSingleton } from "./Chat/AirshipChatSingleton";
 import { DamageSingleton } from "./Damage/DamageSingleton";
 import { AirshipInputSingleton } from "./Input/AirshipInputSingleton";
-import { InventorySingleton } from "./Inventory/InventorySingleton";
+import { AirshipInventorySingleton } from "./Inventory/AirshipInventorySingleton";
 import { LoadingScreenSingleton } from "./LoadingScreen/LoadingScreenSingleton";
 import { Player } from "./Player/Player";
 import { PlayersSingleton } from "./Player/PlayersSingleton";
@@ -139,7 +139,7 @@ export namespace Airship {
 	export let Input = undefined! as AirshipInputSingleton;
 	export let Damage = undefined! as DamageSingleton;
 	export let Teams = undefined! as TeamsSingleton;
-	export let Inventory = undefined! as InventorySingleton;
+	export let Inventory = undefined! as AirshipInventorySingleton;
 	/**
 	 * [Client only]
 	 * 

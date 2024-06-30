@@ -33,6 +33,8 @@ export class CharactersSingleton {
 	public onCharacterSpawned = new Signal<Character>();
 	public onCharacterDespawned = new Signal<Character>();
 
+	private pendingCharacterDtos = new Map<number, CharacterDto>();
+
 	/**
 	 * **SERVER ONLY**
 	 *
@@ -72,15 +74,28 @@ export class CharactersSingleton {
 	protected OnStart(): void {
 		if (Game.coreContext === CoreContext.MAIN_MENU) return;
 		if (Game.IsClient() && !Game.IsServer()) {
+			// Because the same character can come through `RequestCharacters` and `Character.Spawn`,
+			// simply enqueue the DTOs and process them sequentially.
 			task.spawn(() => {
 				const dtos = CoreNetwork.ClientToServer.Character.RequestCharacters.client.FireServer();
 				for (const dto of dtos) {
-					this.InitCharacter(dto);
+					this.pendingCharacterDtos.set(dto.id, dto);
 				}
 			});
 
 			CoreNetwork.ServerToClient.Character.Spawn.client.OnServerEvent((dto) => {
-				this.InitCharacter(dto);
+				this.pendingCharacterDtos.set(dto.id, dto);
+			});
+
+			task.spawn(() => {
+				while (true) {
+					task.wait(0.05);
+					for (const [_cid, dto] of this.pendingCharacterDtos) {
+						this.InitCharacter(dto);
+					}
+					// Flush the queue.
+					this.pendingCharacterDtos.clear();
+				}
 			});
 		}
 
