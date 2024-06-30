@@ -10,7 +10,7 @@ export default class TeleportToRoom extends AirshipBehaviour {
 	public OnTriggerEnter(collider: Collider): void {
 		if (!Game.IsServer()) return;
 		if (collider.isTrigger) return;
-		const character = Airship.characters.FindByCollider(collider);
+		const character = Airship.Characters.FindByCollider(collider);
 		if (character?.player && !character.IsDestroyed()) {
 			print("teleporting!");
 

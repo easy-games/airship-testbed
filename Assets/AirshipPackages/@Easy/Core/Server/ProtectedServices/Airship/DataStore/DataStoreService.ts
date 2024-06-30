@@ -1,10 +1,10 @@
-import { OnStart, Service } from "@Easy/Core/Shared/Flamework";
+import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Result } from "@Easy/Core/Shared/Types/Result";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 
-export enum DataStoreServiceBridgeTopics {
+export const enum DataStoreServiceBridgeTopics {
 	GetKey = "DataStore:GetKey",
 	SetKey = "DataStore:SetKey",
 	DeleteKey = "DataStore:DeleteKey",
@@ -15,7 +15,7 @@ export type ServerBridgeApiDataSetKey<T> = (key: string, data: T) => Result<T, u
 export type ServerBridgeApiDataDeleteKey<T> = (key: string) => Result<T, undefined>;
 
 @Service({})
-export class ProtectedDataStoreService implements OnStart {
+export class ProtectedDataStoreService {
 	constructor() {
 		if (!Game.IsServer()) return;
 
@@ -85,5 +85,5 @@ export class ProtectedDataStoreService implements OnStart {
 		});
 	}
 
-	OnStart(): void {}
+	protected OnStart(): void {}
 }

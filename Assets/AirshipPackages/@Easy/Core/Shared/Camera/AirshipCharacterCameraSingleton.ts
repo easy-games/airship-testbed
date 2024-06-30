@@ -1,4 +1,4 @@
-import { Dependency, OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
+import { Dependency, Singleton } from "@Easy/Core/Shared/Flamework";
 import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 import { CameraMode } from ".";
 import { Airship } from "../Airship";
@@ -33,7 +33,7 @@ interface ViewModelUpdate {
 }
 
 @Singleton({})
-export class AirshipCharacterCameraSingleton implements OnStart {
+export class AirshipCharacterCameraSingleton {
 	public canToggleFirstPerson = true;
 
 	private lookBackwards = false;
@@ -74,7 +74,7 @@ export class AirshipCharacterCameraSingleton implements OnStart {
 	private thirdPersonFOV = 70;
 
 	constructor() {
-		Airship.characterCamera = this;
+		Airship.CharacterCamera = this;
 	}
 
 	public StartNewCameraSystem(cameraRig: CameraRig): CameraSystem {
@@ -96,7 +96,7 @@ export class AirshipCharacterCameraSingleton implements OnStart {
 		this.cameraSystem = undefined;
 	}
 
-	OnStart(): void {
+	protected OnStart(): void {
 		Dependency<LocalCharacterSingleton>().stateChanged.Connect((state) => {
 			const isSprinting = Dependency<LocalCharacterSingleton>().input?.IsSprinting();
 			this.UpdateLocalCharacterState({
@@ -359,7 +359,9 @@ export class AirshipCharacterCameraSingleton implements OnStart {
 						}
 					});
 					flyingBin.Add(Dependency<LocalCharacterSingleton>().input!.AddDisabler());
-					flyingBin.Add(Airship.inventory.localCharacterInventory.AddDisabler());
+					if (Airship.Inventory.localInventory) {
+						flyingBin.Add(Airship.Inventory.localInventory.AddControlsDisabler());
+					}
 				}
 			}
 		});

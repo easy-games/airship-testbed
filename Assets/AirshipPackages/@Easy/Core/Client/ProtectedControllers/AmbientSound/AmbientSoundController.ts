@@ -1,9 +1,9 @@
-import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
 import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
+import { Controller } from "@Easy/Core/Shared/Flamework";
 import { ClientSettingsController } from "../Settings/ClientSettingsController";
 
 @Controller({})
-export class AmbientSoundController implements OnStart {
+export class AmbientSoundController {
 	public ambientSource: AudioSource;
 	public musicSource: AudioSource;
 
@@ -19,7 +19,7 @@ export class AmbientSoundController implements OnStart {
 		this.musicSource.transform.SetParent(CoreRefs.rootTransform);
 	}
 
-	OnStart(): void {
+	protected OnStart(): void {
 		this.clientSettingsController.WaitForSettingsLoaded().then(() => {
 			this.SetAmbientVolume(this.clientSettingsController.GetAmbientVolume());
 			this.SetMusicVolume(this.clientSettingsController.GetMusicVolume());

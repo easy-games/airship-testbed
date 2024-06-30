@@ -1,8 +1,8 @@
 import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
-import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Controller } from "@Easy/Core/Shared/Flamework";
 
 @Controller({})
-export class CoreUIController implements OnStart {
+export class CoreUIController {
 	public readonly coreUIGO: GameObject;
 	public readonly refs: GameObjectReferences;
 
@@ -19,5 +19,5 @@ export class CoreUIController implements OnStart {
 		});
 	}
 
-	OnStart(): void {}
+	protected OnStart(): void {}
 }

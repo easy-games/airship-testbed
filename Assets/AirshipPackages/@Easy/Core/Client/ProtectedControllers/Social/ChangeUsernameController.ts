@@ -1,5 +1,5 @@
 import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
-import { Controller, Dependency, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Controller, Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { CoreUI } from "@Easy/Core/Shared/UI/CoreUI";
 import { Keyboard } from "@Easy/Core/Shared/UserInput";
@@ -15,7 +15,7 @@ import { AuthController } from "../Auth/AuthController";
 import { UserController } from "../User/UserController";
 
 @Controller({})
-export class ChangeUsernameController implements OnStart {
+export class ChangeUsernameController {
 	private canvas: Canvas;
 	private responseText: TMP_Text;
 	private submitButton: GameObject;
@@ -106,7 +106,7 @@ export class ChangeUsernameController implements OnStart {
 		this.submitButtonDisabled.SetActive(status !== "success");
 	}
 
-	OnStart(): void {}
+	protected OnStart(): void {}
 
 	private CheckUsername(): void {
 		let username = this.inputField.text;

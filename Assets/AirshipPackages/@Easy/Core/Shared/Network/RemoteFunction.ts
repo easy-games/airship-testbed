@@ -20,11 +20,13 @@ type RemoteCallbackFromClient<T> = (player: Player, ...args: RemoteParamsToClien
 type RemoteCallbackFromServer<T> = (...args: RemoteParamsToServer<T>) => void;
 
 type RemoteFunctionReturn<RX> = RX extends [infer A] ? A : RX;
-type RemoteFunctionCallback<TX, RX> = (player: Player, ...args: RemoteParamsToServer<TX>) => RemoteFunctionReturn<RX>;
+type RemoteFunctionCallbackFromServer<TX, RX> = (player: Player, ...args: RemoteParamsToServer<TX>) => RemoteFunctionReturn<RX>;
+type RemoteFunctionCallbackFromClient<TX, RX> = (...args: RemoteParamsToServer<TX>) => RemoteFunctionReturn<RX>;
 
 const packageMap = new Map<number, number>();
 
 class RemoteFunctionClient<TX extends unknown[] | unknown, RX extends unknown[] | unknown> {
+	private disconnect: (() => void) | undefined;
 	private listening = false;
 	private sendId = 0;
 
@@ -55,14 +57,61 @@ class RemoteFunctionClient<TX extends unknown[] | unknown, RX extends unknown[] 
 			}
 		});
 	}
+
+	public SetCallback(callback: RemoteFunctionCallbackFromClient<TX, RX>) {
+		if (this.disconnect !== undefined) {
+			this.disconnect();
+		}
+		this.disconnect = NetworkAPI.connect(false, this.id, (sendId: number, ...args: unknown[]) => {
+			print("Client receive remote function: " + this.id);
+			const res = [(callback as Callback)(...args)];
+			const argsReturn = [sendId, ...res];
+			print("Client respond to remote function: " + this.id);
+			NetworkAPI.fireServer(this.id, argsReturn, NetworkChannel.Reliable);
+		});
+	}
 }
 
 class RemoteFunctionServer<TX extends unknown[] | unknown, RX extends unknown[] | unknown> {
 	private disconnect: (() => void) | undefined;
+	private listening = false;
+	private sendId = 0;
+
+	private readonly yieldingThreads = new Map<number, thread>();
 
 	constructor(private readonly id: number) {}
 
-	public SetCallback(callback: RemoteFunctionCallback<TX, RX>) {
+	public FireClient(player: Player, ...args: RemoteParamsToAllClients<TX>): RemoteFunctionReturn<RX> {
+		if (!this.listening) {
+			this.StartListening();
+		}
+		const sendId = this.sendId++;
+		const sendArgs = [sendId, ...args];
+		const thread = coroutine.running();
+		this.yieldingThreads.set(sendId, thread);
+		NetworkAPI.fireClient(this.id, player, sendArgs, NetworkChannel.Reliable);
+		print("yield co");
+		print("Start listening for remote function: " + this.id);
+		const res = coroutine.yield() as unknown as RemoteFunctionReturn<RX>;;
+		print("post yield co");
+		return res;
+	}
+
+	private StartListening() {
+		if (this.listening) return;
+		this.listening = true;
+		NetworkAPI.connect(true, this.id, (player: Player, sendId: number, ...args: unknown[]) => {
+			print("Respond to remote function");
+			const thread = this.yieldingThreads.get(sendId);
+			print("Thread exists: " + (thread !== undefined));
+			this.yieldingThreads.delete(sendId);
+			if (thread !== undefined) {
+				task.spawn(thread, ...args);
+			}
+		});
+	}
+
+	public SetCallback(callback: RemoteFunctionCallbackFromServer<TX, RX>) {
 		if (this.disconnect !== undefined) {
 			this.disconnect();
 		}

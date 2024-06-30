@@ -17,10 +17,10 @@ export default class CameraRig extends AirshipBehaviour {
 	public OnEnable(): void {
 		if (!Game.IsClient()) return;
 
-		Airship.characterCamera.StopCameraSystem();
+		Airship.CharacterCamera.StopCameraSystem();
 
 		CameraReferences.viewmodel = new Viewmodel();
-		this.systemReference = Airship.characterCamera.StartNewCameraSystem(this);
+		this.systemReference = Airship.CharacterCamera.StartNewCameraSystem(this);
 	}
 
 	override OnDestroy(): void {}
@@ -28,8 +28,8 @@ export default class CameraRig extends AirshipBehaviour {
 	public OnDisable(): void {
 		if (!Game.IsClient()) return;
 
-		if (Airship.characterCamera.cameraSystem === this.systemReference) {
-			Airship.characterCamera.StopCameraSystem();
+		if (Airship.CharacterCamera.cameraSystem === this.systemReference) {
+			Airship.CharacterCamera.StopCameraSystem();
 			CameraReferences.viewmodel?.Destroy();
 			CameraReferences.viewmodel = undefined;
 		}

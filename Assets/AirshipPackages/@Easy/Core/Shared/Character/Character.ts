@@ -10,7 +10,16 @@ import { AvatarUtil } from "../Avatar/AvatarUtil";
 import { CoreNetwork } from "../CoreNetwork";
 import { DamageInfo, DamageInfoCustomData } from "../Damage/DamageInfo";
 import CharacterAnimator from "./Animation/CharacterAnimator";
+import CharacterConfigSetup from "./CharacterConfigSetup";
 
+/**
+ * A character is a (typically human) object in the scene. It controls movement and default animation.
+ * Typically a game would spawn a character for each player. If using the default character it would
+ * be dressed with their customized outfit.
+ * 
+ * To spawn a character use {@link Player.SpawnCharacter}.
+ * To control your game's default character see {@link CharacterConfigSetup}.
+ */
 export default class Character extends AirshipBehaviour {
 	@NonSerialized()
 	public player?: Player;
@@ -72,7 +81,7 @@ export default class Character extends AirshipBehaviour {
 			});
 		}
 		this.bin.Add(
-			Airship.damage.onDamage.ConnectWithPriority(SignalPriority.MONITOR, (damageInfo) => {
+			Airship.Damage.onDamage.ConnectWithPriority(SignalPriority.MONITOR, (damageInfo) => {
 				if (damageInfo.gameObject.GetInstanceID() === this.gameObject.GetInstanceID()) {
 					if (this.IsDead()) return;
 					let newHealth = math.max(0, this.health - damageInfo.damage);
@@ -80,13 +89,13 @@ export default class Character extends AirshipBehaviour {
 					this.SetHealth(newHealth, true);
 
 					if (Game.IsServer() && newHealth <= 0) {
-						Airship.damage.BroadcastDeath(damageInfo);
+						Airship.Damage.BroadcastDeath(damageInfo);
 					}
 				}
 			}),
 		);
 		this.bin.Add(
-			Airship.damage.onDeath.ConnectWithPriority(SignalPriority.MONITOR, (damageInfo) => {
+			Airship.Damage.onDeath.ConnectWithPriority(SignalPriority.MONITOR, (damageInfo) => {
 				if (damageInfo.gameObject === this.gameObject) {
 					this.onDeath.Fire();
 				}
@@ -108,12 +117,12 @@ export default class Character extends AirshipBehaviour {
 	}
 
 	public OnDisable(): void {
-		Airship.characters.UnregisterCharacter(this);
+		Airship.Characters.UnregisterCharacter(this);
 		if (Game.IsClient() && !this.despawned) {
 			this.bin.Clean();
 			this.despawned = true;
 			this.onDespawn.Fire();
-			Airship.characters.onCharacterDespawned.Fire(this);
+			Airship.Characters.onCharacterDespawned.Fire(this);
 			if (this.player?.character === this) {
 				this.player?.SetCharacter(undefined);
 			}
@@ -161,7 +170,7 @@ export default class Character extends AirshipBehaviour {
 		this.bin.Clean();
 		this.despawned = true;
 		this.onDespawn.Fire();
-		Airship.characters.onCharacterDespawned.Fire(this);
+		Airship.Characters.onCharacterDespawned.Fire(this);
 		if (this.player?.character === this) {
 			this.player?.SetCharacter(undefined);
 		}
@@ -169,7 +178,7 @@ export default class Character extends AirshipBehaviour {
 	}
 
 	public InflictDamage(damage: number, attacker?: GameObject, data?: DamageInfoCustomData): void {
-		Airship.damage.InflictDamage(this.gameObject, damage, attacker, data);
+		Airship.Damage.InflictDamage(this.gameObject, damage, attacker, data);
 	}
 
 	public IsDestroyed(): boolean {
@@ -193,7 +202,7 @@ export default class Character extends AirshipBehaviour {
 	 *
 	 * @param health The new health value.
 	 * @param dontInflictDeath If true, a death event will not be fired if the character's new health is less than or equal to zero.
-	 * This is useful when you want to broadcast a custom death event with {@link Airship.damage.BroadcastDeath}.
+	 * This is useful when you want to broadcast a custom death event with {@link Airship.Damage.BroadcastDeath}.
 	 */
 	public SetHealth(health: number, dontInflictDeath?: boolean): void {
 		if (this.health === health) return;
@@ -207,7 +216,7 @@ export default class Character extends AirshipBehaviour {
 
 			if (this.health <= 0 && !dontInflictDeath) {
 				const damageInfo = new DamageInfo(this.gameObject, oldHealth, undefined, {});
-				Airship.damage.BroadcastDeath(damageInfo);
+				Airship.Damage.BroadcastDeath(damageInfo);
 			}
 		}
 	}

@@ -47,7 +47,7 @@ export function InitNet() {
 			const data = msg.d;
 			const callbacks = callbacksByIdServer.get(tostring(id));
 			if (callbacks === undefined) return;
-			const waitForClient = Airship.players.WaitForClientIdIncludePending(clientId);
+			const waitForClient = Airship.Players.WaitForClientIdIncludePending(clientId);
 			waitForClient.then((player) => {
 				if (!player) {
 					warn(debug.traceback(`Dropping request from client ${clientId}: Failed to find Player object`));
@@ -93,17 +93,17 @@ function fireAllClients(id: number, args: unknown[], channel: NetworkChannel) {
 
 function fireClient(id: number, player: Player, args: unknown[], channel: NetworkChannel) {
 	const msg = pack(id, args);
-	NetworkCore.Net.BroadcastToClient(player.clientId, msg, channel === NetworkChannel.Reliable ? 1 : 0);
+	NetworkCore.Net.BroadcastToClient(player.connectionId, msg, channel === NetworkChannel.Reliable ? 1 : 0);
 }
 
 function fireExcept(id: number, ignorePlayer: Player, args: unknown[], channel: NetworkChannel) {
 	const msg = pack(id, args);
-	NetworkCore.Net.BroadcastToAllExceptClient(ignorePlayer.clientId, msg, channel === NetworkChannel.Reliable ? 1 : 0);
+	NetworkCore.Net.BroadcastToAllExceptClient(ignorePlayer.connectionId, msg, channel === NetworkChannel.Reliable ? 1 : 0);
 }
 
 function fireClients(id: number, players: Player[], args: unknown[], channel: NetworkChannel) {
 	const msg = pack(id, args);
-	const clientIds = players.map((player) => player.clientId);
+	const clientIds = players.map((player) => player.connectionId);
 	NetworkCore.Net.BroadcastToClients(
 		clientIds as unknown as CSArray<number>,
 		msg,

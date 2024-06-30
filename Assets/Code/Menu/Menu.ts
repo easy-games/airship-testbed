@@ -36,7 +36,7 @@ export default class Menu extends AirshipBehaviour {
 	}
 
 	override Start(): void {
-		Airship.loadingScreen.FinishLoading();
+		Airship.LoadingScreen.FinishLoading();
 		this.Show();
 
 		this.content.gameObject.ClearChildren();

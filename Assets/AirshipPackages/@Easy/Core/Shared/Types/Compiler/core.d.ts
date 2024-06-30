@@ -21,6 +21,7 @@
  * This type only exists because TypeScript requires it!
  *
  * **Use `boolean` instead!**
+ * @hidden
  */
 interface Boolean {
 	/**
@@ -48,6 +49,7 @@ interface IArguments {}
  * This type only exists because TypeScript requires it!
  *
  * **Use `number` instead!**
+ * @hidden
  */
 interface Number {
 	/**

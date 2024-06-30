@@ -1,18 +1,17 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
 import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
-import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Keyboard, Mouse } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
-import { Task } from "@Easy/Core/Shared/Util/Task";
-import { OnLateUpdate } from "@Easy/Core/Shared/Util/Timer";
+import { OnLateUpdate, SetInterval } from "@Easy/Core/Shared/Util/Timer";
 import { Window } from "@Easy/Core/Shared/Util/Window";
 
 @Controller({})
-export class TabListController implements OnStart {
+export class TabListController {
 	private tablistGO: GameObject;
 	private tablistCanvas: Canvas;
 	private tablistRefs;
@@ -32,8 +31,8 @@ export class TabListController implements OnStart {
 	private init = false;
 
 	private posY = -80;
-	private tweenDistance = 12;
-	private tweenDuration = 0.1;
+	private tweenDistance = 10;
+	private tweenDuration = 0.06;
 
 	constructor() {
 		this.tablistGO = Object.Instantiate(
@@ -50,16 +49,16 @@ export class TabListController implements OnStart {
 		this.Hide(true, true);
 	}
 
-	OnStart(): void {
+	protected OnStart(): void {
 		this.FullUpdate();
 
-		Airship.players.onPlayerJoined.Connect((player) => {
+		Airship.Players.onPlayerJoined.Connect((player) => {
 			this.dirty = true;
 		});
-		Airship.players.onPlayerDisconnected.Connect((player) => {
+		Airship.Players.onPlayerDisconnected.Connect((player) => {
 			this.dirty = true;
 		});
-		Airship.teams.onPlayerChangeTeam.Connect((player, team, oldTeam) => {
+		Airship.Teams.onPlayerChangeTeam.Connect((player, team, oldTeam) => {
 			this.dirty = true;
 		});
 
@@ -85,18 +84,18 @@ export class TabListController implements OnStart {
 
 		Window.focusChanged.Connect((hasFocus) => {
 			if (hasFocus) {
-				Task.Delay(0, () => {
+				task.delay(0, () => {
 					this.Hide();
 				});
 			}
 		});
 
 		// Prevent window from staying open once tabbed out.
-		// SetInterval(0.1, () => {
-		// 	if (this.IsShown() && !Application.isFocused) {
-		// 		this.Hide();
-		// 	}
-		// });
+		SetInterval(0.1, () => {
+			if (this.IsShown() && !Application.isFocused) {
+				this.Hide();
+			}
+		});
 
 		// Application.OnFocusChanged((focused) => {
 		// 	if (!focused) {
@@ -106,7 +105,7 @@ export class TabListController implements OnStart {
 	}
 
 	public FullUpdate(): void {
-		let teams = Airship.teams.GetTeams();
+		let teams = Airship.Teams.GetTeams();
 		// if (teams.size() > 0) {
 		// 	teams = teams.sort((a, b) => {
 		// 		if (a.HasLocalPlayer()) {
@@ -118,7 +117,7 @@ export class TabListController implements OnStart {
 		// 		return string.byte(a.id)[0] < string.byte(b.id)[0];
 		// 	});
 		// }
-		let players = Airship.players.GetPlayers().sort((a, b) => {
+		let players = Airship.Players.GetPlayers().sort((a, b) => {
 			if (a === Game.localPlayer) return true;
 
 			let aTeamIndex = math.huge;
@@ -229,8 +228,8 @@ export class TabListController implements OnStart {
 
 		this.shown = false;
 
-		if (immediate) {
-			this.canvasGroup.alpha = 0;
+		if (immediate || true) {
+			this.tablistCanvas.enabled = false;
 		} else {
 			this.wrapperRect.TweenAnchoredPositionY(this.posY - this.tweenDistance, this.tweenDuration);
 			this.canvasGroup.TweenGraphicAlpha(0, this.tweenDuration);

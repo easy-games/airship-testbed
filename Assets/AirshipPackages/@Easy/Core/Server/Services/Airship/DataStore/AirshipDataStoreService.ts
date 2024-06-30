@@ -6,23 +6,32 @@ import {
 } from "@Easy/Core/Server/ProtectedServices/Airship/DataStore/DataStoreService";
 import { Platform } from "@Easy/Core/Shared/Airship";
 import { AirshipUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
-import { OnStart, Service } from "@Easy/Core/Shared/Flamework";
+import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Result } from "@Easy/Core/Shared/Types/Result";
 
+/**
+ * The Data Store provides simple key/value persistent storage.
+ *
+ * The data store provides durable storage that can be accessed from any game server. Data access is slower than
+ * the Cache Store, but the data will never expire.
+ *
+ * The Data Store is good for things like user profiles or unlocks. If you want to keep track of user statistics or
+ * build tradable inventory, check out the Leaderboard and PlatformInventory systems.s
+ */
 @Service({})
-export class AirshipDataStoreService implements OnStart {
+export class AirshipDataStoreService {
 	constructor() {
 		if (!Game.IsServer()) return;
 
-		Platform.server.dataStore = this;
+		Platform.Server.DataStore = this;
 	}
 
-	OnStart(): void {}
+	protected OnStart(): void {}
 
 	/**
 	 * Gets the data associated with the given key.
-	 * @param key The key to use. Keys must be alphanumeric and may include the following symbols: _.:
+	 * @param key The key to use. Keys must be alphanumeric and may include the following symbols: ``_.:``
 	 * @returns The data associated with the provided key. If no data is found, nothing is returned.
 	 */
 	public async GetKey<T extends object>(key: string): Promise<Result<T | undefined, undefined>> {
@@ -30,6 +39,7 @@ export class AirshipDataStoreService implements OnStart {
 
 		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiDataGetKey<T>>(
 			DataStoreServiceBridgeTopics.GetKey,
+			LuauContext.Protected,
 			key,
 		);
 	}
@@ -45,6 +55,7 @@ export class AirshipDataStoreService implements OnStart {
 
 		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiDataSetKey<T>>(
 			DataStoreServiceBridgeTopics.SetKey,
+			LuauContext.Protected,
 			key,
 			data,
 		);
@@ -60,6 +71,7 @@ export class AirshipDataStoreService implements OnStart {
 
 		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiDataDeleteKey<T>>(
 			DataStoreServiceBridgeTopics.DeleteKey,
+			LuauContext.Protected,
 			key,
 		);
 	}

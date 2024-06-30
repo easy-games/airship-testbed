@@ -15,10 +15,10 @@ export default class GameManager extends AirshipBehaviour {
 
 	override Start(): void {
 		if (Game.IsServer()) {
-			Airship.players.ObservePlayers((player) => {
+			Airship.Players.ObservePlayers((player) => {
 				this.SpawnPlayer(player);
 			});
-			Airship.damage.onDeath.Connect((event) => {
+			Airship.Damage.onDeath.Connect((event) => {
 				if (!this.autoRespawn) return;
 				const player = event.gameObject.GetAirshipComponent<Character>()?.player;
 				if (player) {
@@ -31,7 +31,7 @@ export default class GameManager extends AirshipBehaviour {
 			});
 		}
 		if (Game.IsClient()) {
-			Airship.loadingScreen.FinishLoading();
+			Airship.LoadingScreen.FinishLoading();
 		}
 	}
 

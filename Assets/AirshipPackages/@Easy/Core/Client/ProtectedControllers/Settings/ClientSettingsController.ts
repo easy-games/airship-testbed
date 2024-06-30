@@ -1,6 +1,5 @@
-import { Controller, Dependency, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Controller, Dependency } from "@Easy/Core/Shared/Flamework";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
-import { Task } from "@Easy/Core/Shared/Util/Task";
 import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 import { AmbientSoundController } from "../AmbientSound/AmbientSoundController";
@@ -20,7 +19,7 @@ const defaultData: ClientSettingsFile = {
 };
 
 @Controller({ loadOrder: -1 })
-export class ClientSettingsController implements OnStart {
+export class ClientSettingsController {
 	public data: ClientSettingsFile;
 	private unsavedChanges = false;
 	private settingsLoaded = false;
@@ -33,7 +32,7 @@ export class ClientSettingsController implements OnStart {
 		this.data = defaultData;
 	}
 
-	OnStart(): void {
+	protected OnStart(): void {
 		const savedContents = DiskManager.ReadFileAsync("ClientSettings.json");
 		if (savedContents && savedContents !== "") {
 			this.data = DecodeJSON(savedContents);
@@ -44,7 +43,7 @@ export class ClientSettingsController implements OnStart {
 
 		this.SetGlobalVolume(this.GetGlobalVolume());
 
-		Task.Spawn(() => {
+		task.spawn(() => {
 			this.settingsLoaded = true;
 			this.onSettingsLoaded.Fire(this.data);
 		});
