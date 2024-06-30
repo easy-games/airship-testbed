@@ -177,11 +177,7 @@ export default class CharacterAnimator extends AirshipBehaviour {
 		// Finished checks. We are playing.
 		this.lastFootstepSoundTime = os.clock();
 
-		let itemType = ItemUtil.GetItemTypeFromBlockId(blockId);
-		if (!itemType) {
-			itemType = CoreItemType.STONE;
-		}
-
+		let itemType = CoreItemType.STONE;
 		const itemMeta = ItemUtil.GetItemDef(itemType);
 
 		// fallback to stone sounds.

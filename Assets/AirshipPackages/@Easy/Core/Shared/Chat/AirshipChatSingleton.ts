@@ -11,7 +11,6 @@ import { HelpCommand } from "@Easy/Core/Server/Services/Chat/Commands/HelpComman
 import { JoinCodeCommand } from "@Easy/Core/Server/Services/Chat/Commands/JoinCodeCommand";
 import { KillCommand } from "@Easy/Core/Server/Services/Chat/Commands/KillCommand";
 import { LagCommand } from "@Easy/Core/Server/Services/Chat/Commands/LagCommand";
-import { SaveWorldCommand } from "@Easy/Core/Server/Services/Chat/Commands/SaveWorldCommand";
 import { SetTeamCommand } from "@Easy/Core/Server/Services/Chat/Commands/SetTeamCommand";
 import { TeamChatCommand } from "@Easy/Core/Server/Services/Chat/Commands/TeamChatCommand";
 import { TeamCommand } from "@Easy/Core/Server/Services/Chat/Commands/TeamCommand";
@@ -98,6 +97,5 @@ export class AirshipChatSingleton {
 		this.RegisterCommand(new FlyCommand());
 		this.RegisterCommand(new HelpCommand());
 		this.RegisterCommand(new TeamChatCommand());
-		this.RegisterCommand(new SaveWorldCommand());
 	}
 }

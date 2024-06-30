@@ -5,7 +5,6 @@
 import { AvatarUtil } from "@Easy/Core/Shared/Avatar/AvatarUtil";
 import { Flamework } from "@Easy/Core/Shared/Flamework";
 import { AudioManager } from "./Audio/AudioManager";
-import { Bootstrap } from "./Bootstrap/Bootstrap";
 import { CoreContext } from "./CoreClientContext";
 import { CoreRefs } from "./CoreRefs";
 import { Game } from "./Game";
@@ -102,7 +101,4 @@ contextbridge.subscribe<(from: LuauContext, sceneName: string, clientId: number,
 	(from, sceneName, clientId, added) => {
 		SceneManager.onClientPresenceChangeEnd.Fire(clientId, sceneName, added);
 	},
-);
-
-Bootstrap.PrepareVoxelWorld();
-Bootstrap.Prepare();
+)
