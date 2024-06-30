@@ -58,7 +58,7 @@ export class TabListController {
 		Airship.Players.onPlayerDisconnected.Connect((player) => {
 			this.dirty = true;
 		});
-		Airship.teams.onPlayerChangeTeam.Connect((player, team, oldTeam) => {
+		Airship.Teams.onPlayerChangeTeam.Connect((player, team, oldTeam) => {
 			this.dirty = true;
 		});
 
@@ -105,7 +105,7 @@ export class TabListController {
 	}
 
 	public FullUpdate(): void {
-		let teams = Airship.teams.GetTeams();
+		let teams = Airship.Teams.GetTeams();
 		// if (teams.size() > 0) {
 		// 	teams = teams.sort((a, b) => {
 		// 		if (a.HasLocalPlayer()) {

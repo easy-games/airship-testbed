@@ -18,6 +18,7 @@ export class UserController {
 
 	constructor(private readonly authController: AuthController) {
 		Protected.user = this;
+		print("Set protected.user");
 	}
 
 	protected OnStart(): void {
@@ -75,9 +76,10 @@ export class UserController {
 		}
 	}
 
-	public WaitForLocalUserReady(): void {
-		while (!this.localUserLoaded) {
+	public WaitForLocalUser(): User {
+		while (!this.localUser) {
 			task.wait();
 		}
+		return this.localUser;
 	}
 }

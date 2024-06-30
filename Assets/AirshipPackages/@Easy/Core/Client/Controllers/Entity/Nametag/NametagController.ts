@@ -17,13 +17,13 @@ export class NametagController {
 	private nametagBins = new Map<Character, Bin>();
 
 	protected OnStart(): void {
-		Airship.characters.onCharacterSpawned.ConnectWithPriority(SignalPriority.HIGH, (character) => {
+		Airship.Characters.onCharacterSpawned.ConnectWithPriority(SignalPriority.HIGH, (character) => {
 			if (!this.nametagsEnabled) return;
 
 			this.HookCharacterNametag(character);
 		});
 
-		Airship.characters.onCharacterDespawned.Connect((character) => {
+		Airship.Characters.onCharacterDespawned.Connect((character) => {
 			this.nametagBins.get(character)?.Clean();
 			this.nametagBins.delete(character);
 		});
@@ -127,7 +127,7 @@ export class NametagController {
 		this.nametagsEnabled = enabled;
 
 		// Destroy all existing nametags
-		for (const character of Airship.characters.GetCharacters()) {
+		for (const character of Airship.Characters.GetCharacters()) {
 			if (enabled) {
 				this.HookCharacterNametag(character);
 			} else {

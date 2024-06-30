@@ -46,6 +46,7 @@ export class AirshipPlatformInventoryService {
 	public async GrantItem(userId: string, classId: string): Promise<Result<ItemInstanceDto, undefined>> {
 		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiGrantItem>(
 			PlatformInventoryServiceBridgeTopics.GrantItem,
+			LuauContext.Protected,
 			userId,
 			classId,
 		);
@@ -57,6 +58,7 @@ export class AirshipPlatformInventoryService {
 	public async DeleteItem(instanceId: string): Promise<Result<ItemInstanceDto, undefined>> {
 		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiDeleteItem>(
 			PlatformInventoryServiceBridgeTopics.DeleteItem,
+			LuauContext.Protected,
 			instanceId,
 		);
 	}
@@ -67,6 +69,7 @@ export class AirshipPlatformInventoryService {
 	public async GetItems(userId: string, query?: ItemQueryParameters): Promise<Result<ItemInstanceDto[], undefined>> {
 		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiGetItems>(
 			PlatformInventoryServiceBridgeTopics.GetItems,
+			LuauContext.Protected,
 			userId,
 			query,
 		);
@@ -85,6 +88,7 @@ export class AirshipPlatformInventoryService {
 	): Promise<Result<Transaction, undefined>> {
 		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiPerformTrade>(
 			PlatformInventoryServiceBridgeTopics.PerformTrade,
+			LuauContext.Protected,
 			user1,
 			user2,
 		);

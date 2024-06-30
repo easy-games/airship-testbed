@@ -14,14 +14,6 @@ export class DamageSingleton {
 	public readonly onCanClientDamage = new Signal<CanClientDamageInfo>();
 	public readonly onDeath = new Signal<DamageInfo>();
 
-	/**
-	 * If true, knockback will be applied using the "knockback" Vector3 property in data.
-	 * Knockback is only applied to Characters.
-	 *
-	 * @deprecated
-	 */
-	public applyKnockback = true;
-
 	public autoNetwork = true;
 
 	private damageRemote = new RemoteEvent<
@@ -33,7 +25,7 @@ export class DamageSingleton {
 	>("DeathRemote");
 
 	constructor() {
-		Airship.damage = this;
+		Airship.Damage = this;
 	}
 
 	protected OnStart(): void {

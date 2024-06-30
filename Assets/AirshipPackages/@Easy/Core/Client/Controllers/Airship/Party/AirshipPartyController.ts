@@ -26,6 +26,6 @@ export class AirshipPartyController {
 	 * Gets the users current party data.
 	 */
 	public async GetParty(): Promise<Result<Party, undefined>> {
-		return await AirshipUtil.PromisifyBridgeInvoke<ClientBridgeApiGetParty>(PartyControllerBridgeTopics.GetParty);
+		return await AirshipUtil.PromisifyBridgeInvoke<ClientBridgeApiGetParty>(PartyControllerBridgeTopics.GetParty, LuauContext.Protected);
 	}
 }

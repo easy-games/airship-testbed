@@ -6,6 +6,8 @@ import type { ClassDescriptor, MethodDescriptor, PropertyDescriptor } from "./mo
 
 /**
  * Reflection/metadata API
+ * 
+ * @internal
  */
 export namespace Reflect {
 	// object -> property -> key -> value
@@ -42,6 +44,7 @@ export namespace Reflect {
 
 	/**
 	 * Apply metadata onto this object.
+	 * @internal
 	 */
 	export function defineMetadata(obj: object, key: string, value: unknown, property?: string) {
 		// 'identifier' is a special, unique ID across all metadata classes.
@@ -60,6 +63,7 @@ export namespace Reflect {
 
 	/**
 	 * Apply metadata in batch onto this object.
+	 * @internal
 	 */
 	export function defineMetadataBatch(obj: object, list: { [key: string]: unknown }, property?: string) {
 		const metadata = getObjMetadata(obj, property, true);
@@ -71,6 +75,7 @@ export namespace Reflect {
 
 	/**
 	 * Delete metadata from this object.
+	 * @internal
 	 */
 	export function deleteMetadata(obj: object, key: string, property?: string) {
 		const metadata = getObjMetadata(obj, property);
@@ -80,6 +85,7 @@ export namespace Reflect {
 	/**
 	 * Get metadata from this object.
 	 * Type parameter is an assertion.
+	 * @internal
 	 */
 	export function getOwnMetadata<T>(obj: object, key: string, property?: string): T | undefined {
 		const metadata = getObjMetadata(obj, property);
@@ -88,6 +94,7 @@ export namespace Reflect {
 
 	/**
 	 * Check if this object has the specified metadata key.
+	 * @internal
 	 */
 	export function hasOwnMetadata(obj: object, key: string, property?: string) {
 		const metadata = getObjMetadata(obj, property);
@@ -96,6 +103,7 @@ export namespace Reflect {
 
 	/**
 	 * Retrieve all metadata keys for this object.
+	 * @internal
 	 */
 	export function getOwnMetadataKeys(obj: object, property?: string) {
 		const metadata = getObjMetadata(obj, property);
@@ -107,6 +115,7 @@ export namespace Reflect {
 
 	/**
 	 * Retrieves all properties (that contain metadata) on this object.
+	 * @internal
 	 */
 	export function getOwnProperties(obj: object) {
 		const properties = metadata.get(obj);
@@ -124,6 +133,7 @@ export namespace Reflect {
 	/**
 	 * Retrieve all values for the specified key from the object and its parents.
 	 * Type parameter is an assertion.
+	 * @internal
 	 */
 	export function getMetadatas<T extends defined>(obj: object, key: string, property?: string): T[] {
 		const values = new Array<T>();
@@ -144,6 +154,7 @@ export namespace Reflect {
 	/**
 	 * Get metadata from this object or its parents.
 	 * Type parameter is an assertion.
+	 * @internal
 	 */
 	export function getMetadata<T>(obj: object, key: string, property?: string): T | undefined {
 		const value = getOwnMetadata(obj, key, property);
@@ -159,6 +170,7 @@ export namespace Reflect {
 
 	/**
 	 * Check if this object or any of its parents has the specified metadata key.
+	 * @internal
 	 */
 	export function hasMetadata(obj: object, key: string, property?: string): boolean {
 		const value = hasOwnMetadata(obj, key, property);
@@ -176,6 +188,7 @@ export namespace Reflect {
 
 	/**
 	 * Retrieve all metadata keys for this object and its parents.
+	 * @internal
 	 */
 	export function getMetadataKeys(obj: object, property?: string): string[] {
 		const keys = new Set<string>(getOwnMetadataKeys(obj, property));
@@ -190,6 +203,7 @@ export namespace Reflect {
 
 	/**
 	 * Retrieves all properties (that contain metadata) on this object and its parents.
+	 * @internal
 	 */
 	export function getProperties(obj: object) {
 		const keys = new Set<string>(getOwnProperties(obj));

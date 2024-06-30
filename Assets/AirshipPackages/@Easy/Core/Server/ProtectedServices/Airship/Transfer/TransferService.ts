@@ -1,7 +1,7 @@
 import {
-    AirshipGameTransferConfig,
-    AirshipServerConfig,
-    AirshipServerTransferConfig,
+	AirshipGameTransferConfig,
+	AirshipServerConfig,
+	AirshipServerTransferConfig,
 } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipTransfers";
 import { CreateServerResponse } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipTransfers";
 import { Service } from "@Easy/Core/Shared/Flamework";
@@ -11,7 +11,7 @@ import { Result } from "@Easy/Core/Shared/Types/Result";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 
-export enum TransferServiceBridgeTopics {
+export const enum TransferServiceBridgeTopics {
 	CreateServer = "TransferService:CreateServer",
 	TransferGroupToGame = "TransferService:TransferGroupToGame",
 	TransferGroupToServer = "TransferService:TransferGroupToServer",

@@ -8,7 +8,7 @@ import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 import { ProtectedUserController } from "../User/UserController";
 
-export enum PurchaseControllerBridgeTopics {
+export const enum PurchaseControllerBridgeTopics {
 	RequestPurchase = "PurchaseController:RequestPurchase",
 }
 
@@ -16,7 +16,7 @@ export type ClientBridgeApiRequestPurchase = (
 	productId: string,
 	quantity: number,
 	userId: string,
-) => Result<undefined, undefined>;
+) => boolean;
 
 @Controller({})
 export class ProtectedPurchaseController {
@@ -26,7 +26,8 @@ export class ProtectedPurchaseController {
 		contextbridge.callback<ClientBridgeApiRequestPurchase>(
 			PurchaseControllerBridgeTopics.RequestPurchase,
 			(_, productId, quantity, userId) => {
-				let targetUser: PublicUser | undefined = Protected.user.localUser;
+		
+				let targetUser: PublicUser | undefined = Protected.user.WaitForLocalUser(); // This shouldn't be undefined but it is
 				if (userId !== targetUser?.uid) {
 					const res = Dependency<ProtectedUserController>().GetUserById(userId);
 					targetUser = res.data;
@@ -34,10 +35,7 @@ export class ProtectedPurchaseController {
 
 				if (!targetUser) {
 					warn("Invalid target user for purchase.");
-					return {
-						success: false,
-						data: undefined,
-					};
+					return false;
 				}
 
 				const res = InternalHttpManager.PostAsync(
@@ -51,10 +49,7 @@ export class ProtectedPurchaseController {
 
 				if (!res.success || res.statusCode > 299 || !res.data) {
 					warn(`Unable to validate purchase. Status Code: ${res.statusCode}.\n`, res.data);
-					return {
-						success: false,
-						data: undefined,
-					};
+					return false;
 				}
 
 				const validationData = DecodeJSON(res.data) as {
@@ -70,11 +65,7 @@ export class ProtectedPurchaseController {
 					...validationData,
 					targetUser,
 				};
-
-				return {
-					success: true,
-					data: undefined,
-				};
+				return true;
 			},
 		);
 	}

@@ -5,7 +5,7 @@ import { Result } from "@Easy/Core/Shared/Types/Result";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { DecodeJSON } from "@Easy/Core/Shared/json";
 
-export enum PartyServiceBridgeTopics {
+export const enum PartyServiceBridgeTopics {
 	GetPartyForUserId = "PartyService:GetPartyForUserId",
 	GetPartyById = "PartyService:GetPartyById",
 }

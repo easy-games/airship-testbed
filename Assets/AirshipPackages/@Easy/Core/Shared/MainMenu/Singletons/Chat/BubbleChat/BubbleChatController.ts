@@ -18,14 +18,14 @@ export class BubbleChatController {
 
 	protected OnStart(): void {
 		// Register BubbleChat container on spawn
-		Airship.characters.onCharacterSpawned.Connect((character) => {
+		Airship.Characters.onCharacterSpawned.Connect((character) => {
 			this.GetOrCreateChatContainer(character);
 		});
 
 		CoreNetwork.ServerToClient.ChatMessage.client.OnServerEvent((rawMessage, nameWithPrefix, senderClientId) => {
 			let sender: Player | undefined;
 			if (senderClientId !== undefined) {
-				sender = Airship.Players.FindByClientId(senderClientId);
+				sender = Airship.Players.FindByConnectionId(senderClientId);
 			}
 			if (sender?.character) {
 				const messageSanitized = this.SanitizeRawChatInput(rawMessage);

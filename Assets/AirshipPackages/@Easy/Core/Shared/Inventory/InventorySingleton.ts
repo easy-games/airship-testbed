@@ -26,7 +26,7 @@ export class InventorySingleton {
 	};
 
 	constructor(public readonly localCharacterInventory: CharacterInventorySingleton) {
-		Airship.inventory = this;
+		Airship.Inventory = this;
 	}
 
 	protected OnStart(): void {
@@ -77,7 +77,7 @@ export class InventorySingleton {
 		});
 
 		CoreNetwork.ClientToServer.SetHeldSlot.server.OnClientEvent((player, slot) => {
-			const character = Airship.characters.FindByPlayer(player);
+			const character = Airship.Characters.FindByPlayer(player);
 			if (!character) return;
 
 			const inv = character.gameObject.GetAirshipComponent<Inventory>();

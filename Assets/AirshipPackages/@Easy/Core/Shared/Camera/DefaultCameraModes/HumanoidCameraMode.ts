@@ -107,9 +107,9 @@ export class HumanoidCameraMode extends CameraMode {
 						if (touchOverUI) break;
 						const deltaPosSinceStart = position.sub(touchStartPos);
 						this.rotationY =
-							(touchStartRotY - deltaPosSinceStart.x * Airship.input.GetTouchSensitivity()) % TAU;
+							(touchStartRotY - deltaPosSinceStart.x * Airship.Input.GetTouchSensitivity()) % TAU;
 						this.rotationX = math.clamp(
-							touchStartRotX + deltaPosSinceStart.y * Airship.input.GetTouchSensitivity(),
+							touchStartRotX + deltaPosSinceStart.y * Airship.Input.GetTouchSensitivity(),
 							MIN_ROT_X,
 							MAX_ROT_X,
 						);
@@ -138,7 +138,7 @@ export class HumanoidCameraMode extends CameraMode {
 		this.bin.Add(this.mouse);
 
 		this.bin.Add(
-			Airship.input.preferredControls.ObserveControlScheme((scheme) => {
+			Airship.Input.preferredControls.ObserveControlScheme((scheme) => {
 				if (scheme === ControlScheme.Touch) {
 					const lockId = this.mouse.AddUnlocker();
 					return () => {
@@ -167,7 +167,7 @@ export class HumanoidCameraMode extends CameraMode {
 		const lf = this.keyboard.IsKeyDown(Key.LeftArrow);
 		const rt = this.keyboard.IsKeyDown(Key.RightArrow);
 
-		if (Airship.input.preferredControls.GetControlScheme() === ControlScheme.MouseKeyboard) {
+		if (Airship.Input.preferredControls.GetControlScheme() === ControlScheme.MouseKeyboard) {
 			const rightClick = this.mouse.IsRightButtonDown();
 			if (rightClick && !this.rightClicking) {
 				this.rightClickPos = this.mouse.GetPosition();
@@ -191,7 +191,7 @@ export class HumanoidCameraMode extends CameraMode {
 					// 	mouseDelta = new Vector2(math.pow(math.abs(mouseDelta.x), 1.8) * math.sign(mouseDelta.x), math.pow(math.abs(mouseDelta.y), 1.8) * math.sign(mouseDelta.y));
 					// }
 
-					const smoothFactor = math.pow(1 / (1 + Airship.input.GetMouseSmoothing()), Time.deltaTime * 120);
+					const smoothFactor = math.pow(1 / (1 + Airship.Input.GetMouseSmoothing()), Time.deltaTime * 120);
 					// print(smoothFactor);
 					this.smoothVector = new Vector2(
 						Mathf.Lerp(this.smoothVector.x, mouseDelta.x, smoothFactor),
@@ -200,7 +200,7 @@ export class HumanoidCameraMode extends CameraMode {
 					moveDelta = this.smoothVector;
 				}
 
-				const mouseSensitivity = Airship.input.GetMouseSensitivity();
+				const mouseSensitivity = Airship.Input.GetMouseSensitivity();
 				if (!this.firstPerson && !this.lockView) {
 					// this.mouse.SetPosition(this.rightClickPos);
 				}

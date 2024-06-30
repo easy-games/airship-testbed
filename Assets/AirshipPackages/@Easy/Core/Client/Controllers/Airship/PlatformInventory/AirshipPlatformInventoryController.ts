@@ -30,6 +30,7 @@ export class AirshipPlatformInventoryController {
 	public async GetItems(query?: ItemQueryParameters) {
 		return await AirshipUtil.PromisifyBridgeInvoke<ClientBridgeApiGetItems>(
 			PlatformInventoryControllerBridgeTopics.GetItems,
+			LuauContext.Protected,
 			query,
 		);
 	}

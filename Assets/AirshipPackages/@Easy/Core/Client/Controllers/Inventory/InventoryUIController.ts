@@ -74,7 +74,7 @@ export class InventoryUIController {
 	protected OnStart(): void {
 		this.SetupHotbar();
 		this.SetupBackpack();
-		Airship.input.OnDown("Inventory").Connect((event) => {
+		Airship.Input.OnDown("Inventory").Connect((event) => {
 			if (event.uiProcessed || !this.enabled) return;
 			if (this.IsBackpackShown() || AppManager.IsOpen()) {
 				AppManager.Close();

@@ -39,6 +39,7 @@ export class AirshipDataStoreService {
 
 		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiDataGetKey<T>>(
 			DataStoreServiceBridgeTopics.GetKey,
+			LuauContext.Protected,
 			key,
 		);
 	}
@@ -54,6 +55,7 @@ export class AirshipDataStoreService {
 
 		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiDataSetKey<T>>(
 			DataStoreServiceBridgeTopics.SetKey,
+			LuauContext.Protected,
 			key,
 			data,
 		);
@@ -69,6 +71,7 @@ export class AirshipDataStoreService {
 
 		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiDataDeleteKey<T>>(
 			DataStoreServiceBridgeTopics.DeleteKey,
+			LuauContext.Protected,
 			key,
 		);
 	}

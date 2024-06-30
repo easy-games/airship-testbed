@@ -76,5 +76,9 @@ export const CoreNetwork = {
 			SetMaxHealth: new RemoteEvent<[characterId: number, health: number]>("SetMaxHealth"),
 			ChangeOutfit: new RemoteEvent<[characterId: number, outfitDto: OutfitDto | undefined]>("ChangeOutfit"),
 		},
+
+		Purchase: {
+			PromptPurchase: new RemoteFunction<[productId: string, quantity: number, recipientId?: string], [displayed: boolean]>("PromptPurchase"),
+		}
 	},
 };

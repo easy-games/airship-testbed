@@ -22,7 +22,7 @@ export class TeamsSingleton {
 	private teams = new Map<string, TeamEntry>();
 
 	constructor() {
-		Airship.teams = this;
+		Airship.Teams = this;
 	}
 
 	protected OnStart(): void {

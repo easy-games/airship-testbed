@@ -31,6 +31,7 @@ export class AirshipPartyService {
 	public async GetPartyForUserId(userId: string): Promise<Result<GameServerPartyData | undefined, undefined>> {
 		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiGetPartyForUserId>(
 			PartyServiceBridgeTopics.GetPartyForUserId,
+			LuauContext.Protected,
 			userId,
 		);
 	}
@@ -43,6 +44,7 @@ export class AirshipPartyService {
 	public async GetPartyById(partyId: string): Promise<Result<GameServerPartyData | undefined, undefined>> {
 		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiGetPartyById>(
 			PartyServiceBridgeTopics.GetPartyById,
+			LuauContext.Protected,
 			partyId,
 		);
 	}

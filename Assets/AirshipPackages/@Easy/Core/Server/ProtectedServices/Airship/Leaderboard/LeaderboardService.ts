@@ -6,7 +6,7 @@ import { Result } from "@Easy/Core/Shared/Types/Result";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 
-export enum LeaderboardServiceBridgeTopics {
+export const enum LeaderboardServiceBridgeTopics {
 	Update = "LeaderboardService:Update",
 	GetRank = "LeaderboardService:GetRank",
 	GetRankRange = "LeaderboardService:GetRankRange",

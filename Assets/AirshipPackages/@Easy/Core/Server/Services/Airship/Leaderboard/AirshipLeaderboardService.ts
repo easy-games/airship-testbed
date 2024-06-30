@@ -39,6 +39,7 @@ export class AirshipLeaderboardService {
 	public async Update(leaderboardName: string, update: LeaderboardUpdate): Promise<Result<undefined, undefined>> {
 		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiLeaderboardUpdate>(
 			LeaderboardServiceBridgeTopics.Update,
+			LuauContext.Protected,
 			leaderboardName,
 			update,
 		);
@@ -52,6 +53,7 @@ export class AirshipLeaderboardService {
 	public async GetRank(leaderboardName: string, id: string): Promise<Result<RankData | undefined, undefined>> {
 		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiLeaderboardGetRank>(
 			LeaderboardServiceBridgeTopics.GetRank,
+			LuauContext.Protected,
 			leaderboardName,
 			id,
 		);
@@ -74,6 +76,7 @@ export class AirshipLeaderboardService {
 	): Promise<Result<RankData[], undefined>> {
 		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiLeaderboardGetRankRange>(
 			LeaderboardServiceBridgeTopics.Update,
+			LuauContext.Protected,
 			leaderboardName,
 			startIndex,
 			count,

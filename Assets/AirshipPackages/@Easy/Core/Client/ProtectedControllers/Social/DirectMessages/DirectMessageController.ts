@@ -339,9 +339,9 @@ export class DirectMessageController {
 			const content = messageGo.transform.GetChild(0);
 			const profilePictureGo = content.GetChild(0).gameObject;
 			task.spawn(async () => {
-				const profilePicSprite = await Airship.Players.GetProfilePictureSpriteAsync(dm.sender);
-				if (profilePicSprite) {
-					profilePictureGo.GetComponent<Image>()!.sprite = profilePicSprite;
+				const profilePicTex = await Airship.Players.GetProfilePictureAsync(dm.sender);
+				if (profilePicTex) {
+					profilePictureGo.GetComponent<RawImage>()!.texture = profilePicTex;
 				}
 				profilePictureGo.SetActive(true);
 			});

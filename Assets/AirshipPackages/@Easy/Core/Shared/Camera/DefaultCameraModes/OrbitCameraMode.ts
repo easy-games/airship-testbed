@@ -117,7 +117,7 @@ export class OrbitCameraMode extends CameraMode {
 		}
 
 		this.bin.Add(
-			Airship.input.preferredControls.ObserveControlScheme((scheme) => {
+			Airship.Input.preferredControls.ObserveControlScheme((scheme) => {
 				const controlSchemeBin = new Bin();
 				if (scheme === ControlScheme.MouseKeyboard) {
 					let rightClickUnlocker = this.mouse.AddUnlocker();
@@ -172,7 +172,7 @@ export class OrbitCameraMode extends CameraMode {
 		}
 		if (this.mouse.IsLocked() && (rightClick || this.lockView)) {
 			const mouseDelta = this.mouse.GetDelta();
-			const mouseSensitivity = Airship.input.GetMouseSensitivity();
+			const mouseSensitivity = Airship.Input.GetMouseSensitivity();
 			if (!this.lockView) {
 				// this.mouse.SetPosition(this.rightClickPos);
 			}

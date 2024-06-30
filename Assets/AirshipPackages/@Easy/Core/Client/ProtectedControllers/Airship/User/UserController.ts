@@ -5,7 +5,7 @@ import { Result } from "@Easy/Core/Shared/Types/Result";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { DecodeJSON } from "@Easy/Core/Shared/json";
 
-export enum UserControllerBridgeTopics {
+export const enum UserControllerBridgeTopics {
 	GetUserByUsername = "UserController:GetUserByUsername",
 	GetUserById = "UserController:GetUserById",
 	GetUsersById = "UserController:GetUsersById",
@@ -30,29 +30,7 @@ export class ProtectedUserController {
 		contextbridge.callback<BridgeApiGetUserByUsername>(
 			UserControllerBridgeTopics.GetUserByUsername,
 			(_, username) => {
-				const res = InternalHttpManager.GetAsync(
-					`${AirshipUrl.GameCoordinator}/users/user?discriminatedUsername=${username}`,
-				);
-
-				if (!res.success || res.statusCode > 299) {
-					warn(`Unable to get user. Status Code:  ${res.statusCode}.\n`, res.data);
-					return {
-						success: false,
-						data: undefined,
-					};
-				}
-
-				if (!res.data) {
-					return {
-						success: true,
-						data: undefined,
-					};
-				}
-
-				return {
-					success: true,
-					data: DecodeJSON(res.data) as PublicUser,
-				};
+				return this.GetUserByUsername(username);
 			},
 		);
 
@@ -148,8 +126,39 @@ export class ProtectedUserController {
 		});
 	}
 
+	/**
+	 * Makes a request for user info.
+	 * 
+	 * @internal
+	 */
 	public GetUserById(userId: string): Result<PublicUser | undefined, undefined> {
 		const res = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/users/uid/${userId}`);
+
+		if (!res.success || res.statusCode > 299) {
+			warn(`Unable to get user. Status Code:  ${res.statusCode}.\n`, res.data);
+			return {
+				success: false,
+				data: undefined,
+			};
+		}
+
+		if (!res.data) {
+			return {
+				success: true,
+				data: undefined,
+			};
+		}
+
+		return {
+			success: true,
+			data: DecodeJSON(res.data) as PublicUser,
+		};
+	}
+
+	public GetUserByUsername(username: string): ReturnType<BridgeApiGetUserByUsername> {
+		const res = InternalHttpManager.GetAsync(
+			`${AirshipUrl.GameCoordinator}/users/user?discriminatedUsername=${username}`,
+		);
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to get user. Status Code:  ${res.statusCode}.\n`, res.data);

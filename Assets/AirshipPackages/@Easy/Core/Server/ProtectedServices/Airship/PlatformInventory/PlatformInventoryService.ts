@@ -7,7 +7,7 @@ import { Result } from "@Easy/Core/Shared/Types/Result";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 
-export enum PlatformInventoryServiceBridgeTopics {
+export const enum PlatformInventoryServiceBridgeTopics {
 	GrantItem = "PlatformInventoryService:GrantItem",
 	DeleteItem = "PlatformInventoryService:DeleteItem",
 	GetItems = "PlatformInventoryService:GetItems",

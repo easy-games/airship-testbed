@@ -425,9 +425,8 @@ export class ClientChatSingleton {
 			const profileImage = refs.GetValue<RawImage>("UI", "ProfilePicture");
 			if (sender) {
 				task.spawn(async () => {
-					const texture = await Airship.Players.GetProfilePictureTextureFromImageIdAsync(
+					const texture = await Airship.Players.GetProfilePictureAsync(
 						sender.userId,
-						sender.profileImageId,
 					);
 					if (texture) {
 						profileImage.texture = texture;

@@ -90,7 +90,7 @@ export default class SettingsProfilePage extends AirshipBehaviour {
 	}
 
 	public async UpdateProfilePicturePreviews(): Promise<void> {
-		const texture = await Airship.Players.GetProfilePictureTextureAsync(Game.localPlayer.userId);
+		const texture = await Airship.Players.GetProfilePictureAsync(Game.localPlayer.userId);
 		if (texture) {
 			this.profileImagePreview1.texture = texture;
 			this.profileImagePreview2.texture = texture;

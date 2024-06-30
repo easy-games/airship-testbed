@@ -49,7 +49,7 @@ export class CharacterInput {
 
 	public IsSprinting(): boolean {
 		if (this.IsSprintBlocked()) return false;
-		return this.autoSprinting || Airship.input.IsDown("Sprint");
+		return this.autoSprinting || Airship.Input.IsDown("Sprint");
 	}
 
 	public AddDisabler(): () => void {
@@ -94,10 +94,10 @@ export class CharacterInput {
 			if (EventSystem.current.currentSelectedGameObject !== undefined) return;
 
 			const [success, err] = pcall(() => {
-				const w = Airship.input.IsDown("Forward");
-				const s = Airship.input.IsDown("Back");
-				const a = Airship.input.IsDown("Left");
-				const d = Airship.input.IsDown("Right");
+				const w = Airship.Input.IsDown("Forward");
+				const s = Airship.Input.IsDown("Back");
+				const a = Airship.Input.IsDown("Left");
+				const d = Airship.Input.IsDown("Right");
 
 				const forward = w === s ? 0 : w ? 1 : -1;
 				const sideways = d === a ? 0 : d ? 1 : -1;
@@ -121,9 +121,9 @@ export class CharacterInput {
 
 				const moveSignal = new LocalCharacterInputSignal(
 					this.queuedMoveDirection,
-					this.enabled ? Airship.input.IsDown("Jump") : false,
+					this.enabled ? Airship.Input.IsDown("Jump") : false,
 					sprinting,
-					this.enabled ? Airship.input.IsDown("Crouch") : false,
+					this.enabled ? Airship.Input.IsDown("Crouch") : false,
 				);
 				localCharacterSingleton.onBeforeLocalEntityInput.Fire(moveSignal);
 

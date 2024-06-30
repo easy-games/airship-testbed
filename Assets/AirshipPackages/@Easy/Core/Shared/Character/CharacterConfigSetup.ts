@@ -38,8 +38,8 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 	public Awake(): void {
 		//Character
 		//Set the default prefab to use whenever a character is spawned
-		Airship.characters.SetDefaultCharacterPrefab(this.customCharacterPrefab);
-		Airship.characters.SetDefaultViewmodelPrefab(this.customViewmodelPrefab);
+		Airship.Characters.SetDefaultCharacterPrefab(this.customCharacterPrefab);
+		Airship.Characters.SetDefaultViewmodelPrefab(this.customViewmodelPrefab);
 		if (this.customViewmodelPrefab !== undefined && CameraReferences.viewmodel !== undefined) {
 			CameraReferences.viewmodel.SetViewmodelGameObject(Object.Instantiate(this.customViewmodelPrefab));
 		}
@@ -53,38 +53,38 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 		if (Game.IsClient()) {
 			//Movement
 			//Control how client inputs are recieved by the movement system
-			Airship.characters.localCharacterManager.SetMoveDirWorldSpace(this.movementSpace === Space.World);
+			Airship.Characters.localCharacterManager.SetMoveDirWorldSpace(this.movementSpace === Space.World);
 
 			//Camera
 			//Toggle the core camera system
-			Airship.characterCamera.SetEnabled(this.useAirshipCameraSystem);
+			Airship.CharacterCamera.SetEnabled(this.useAirshipCameraSystem);
 			if (this.useAirshipCameraSystem) {
 				//Allow clients to toggle their view model
-				Airship.characterCamera.canToggleFirstPerson = this.allowFirstPersonToggle;
+				Airship.CharacterCamera.canToggleFirstPerson = this.allowFirstPersonToggle;
 				if (this.startInFirstPerson) {
 					//Change to a new camera mode
-					Airship.characterCamera.SetCharacterCameraMode(CharacterCameraMode.Locked);
+					Airship.CharacterCamera.SetCharacterCameraMode(CharacterCameraMode.Locked);
 					//Force first person view model
-					Airship.characterCamera.SetFirstPerson(this.startInFirstPerson);
+					Airship.CharacterCamera.SetFirstPerson(this.startInFirstPerson);
 				}
 			}
 
 			//UI visual toggles
-			Airship.chat.SetUIEnabled(this.showChat);
-			Airship.inventory.SetBackpackVisible(this.showInventoryBackpack);
+			Airship.Chat.SetUIEnabled(this.showChat);
+			Airship.Inventory.SetBackpackVisible(this.showInventoryBackpack);
 			if (this.showInventoryHotbar || this.showHealthbar) {
-				Airship.inventory.SetUIEnabled(true);
-				Airship.inventory.SetHealtbarVisible(this.showHealthbar);
-				Airship.inventory.SetHotbarVisible(this.showInventoryHotbar);
+				Airship.Inventory.SetUIEnabled(true);
+				Airship.Inventory.SetHealtbarVisible(this.showHealthbar);
+				Airship.Inventory.SetHotbarVisible(this.showInventoryHotbar);
 			} else {
-				Airship.inventory.SetUIEnabled(false);
+				Airship.Inventory.SetUIEnabled(false);
 			}
 		}
 
 		//Stop any input for some movement options we don't use
 		if (!this.enableJumping || !this.enableCrouching || !this.enableSprinting) {
 			//Listen to input event
-			Airship.characters.localCharacterManager.onBeforeLocalEntityInput.Connect((event) => {
+			Airship.Characters.localCharacterManager.onBeforeLocalEntityInput.Connect((event) => {
 				//Force the event off if we don't want that feature
 				if (!this.enableJumping) {
 					event.jump = false;
@@ -98,11 +98,11 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 			});
 
 			if (!this.enableJumping) {
-				Airship.input.HideMobileButtons("Jump");
+				Airship.Input.HideMobileButtons("Jump");
 			}
 
 			if (!this.enableCrouching) {
-				Airship.input.HideMobileButtons("Crouch");
+				Airship.Input.HideMobileButtons("Crouch");
 			}
 		}
 	}

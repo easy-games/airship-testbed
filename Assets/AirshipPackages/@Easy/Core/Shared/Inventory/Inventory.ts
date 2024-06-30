@@ -47,7 +47,7 @@ export default class Inventory extends AirshipBehaviour {
 	public OnEnable(): void {
 		if (this.networkObject.IsSpawned) {
 			this.id = this.networkObject.ObjectId;
-			Airship.inventory.RegisterInventory(this);
+			Airship.Inventory.RegisterInventory(this);
 			if (RunUtil.IsClient()) {
 				task.spawn(() => {
 					this.RequestFullUpdate();
@@ -57,7 +57,7 @@ export default class Inventory extends AirshipBehaviour {
 			const conn = this.networkObject.OnStartNetwork(() => {
 				Bridge.DisconnectEvent(conn);
 				this.id = this.networkObject.ObjectId;
-				Airship.inventory.RegisterInventory(this);
+				Airship.Inventory.RegisterInventory(this);
 				if (RunUtil.IsClient()) {
 					task.spawn(() => {
 						this.RequestFullUpdate();
@@ -68,7 +68,7 @@ export default class Inventory extends AirshipBehaviour {
 	}
 
 	public OnDisable(): void {
-		Airship.inventory.UnregisterInventory(this);
+		Airship.Inventory.UnregisterInventory(this);
 		for (const bin of this.observeHeldItemBins) {
 			bin.Clean();
 		}
@@ -76,7 +76,7 @@ export default class Inventory extends AirshipBehaviour {
 	}
 
 	private RequestFullUpdate(): void {
-		const dto = Airship.inventory.remotes.clientToServer.getFullUpdate.client.FireServer(this.id);
+		const dto = Airship.Inventory.remotes.clientToServer.getFullUpdate.client.FireServer(this.id);
 		if (dto) {
 			this.ProcessDto(dto);
 		}

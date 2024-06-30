@@ -1,6 +1,6 @@
 import {
-    PlatformInventoryServiceBridgeTopics,
-    ServerBridgeApiGetItems,
+	PlatformInventoryServiceBridgeTopics,
+	ServerBridgeApiGetItems,
 } from "@Easy/Core/Server/ProtectedServices/Airship/PlatformInventory/PlatformInventoryService";
 import { ItemQueryParameters } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipPlatformInventory";
 import { ItemInstanceDto } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipPlatformInventory";
@@ -11,7 +11,7 @@ import { Result } from "@Easy/Core/Shared/Types/Result";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { DecodeJSON } from "@Easy/Core/Shared/json";
 
-export enum PlatformInventoryControllerBridgeTopics {
+export const enum PlatformInventoryControllerBridgeTopics {
 	GetItems = "PartyControllerGetInventory",
 }
 

@@ -16,14 +16,14 @@ export default class CharacterSpawner extends AirshipBehaviour {
 	private bin = new Bin();
 
 	override Start(): void {
-		Airship.loadingScreen.FinishLoading();
-		Airship.characterCamera.SetCharacterCameraMode(CharacterCameraMode.Locked);
+		Airship.LoadingScreen.FinishLoading();
+		Airship.CharacterCamera.SetCharacterCameraMode(CharacterCameraMode.Locked);
 		if (Game.IsServer()) {
 			this.bin.Add(
 				SceneManager.onClientPresenceChangeEnd.Connect(async (clientId, sceneName, added) => {
 					if (sceneName !== this.gameObject.scene.name) return;
 
-					let player = await Airship.Players.WaitForClientId(clientId);
+					let player = await Airship.Players.WaitForPlayerByConnectionId(clientId);
 					if (!player) return;
 
 					if (added) {
@@ -40,7 +40,7 @@ export default class CharacterSpawner extends AirshipBehaviour {
 			);
 
 			this.bin.Add(
-				Airship.damage.onDeath.Connect((damageInfo) => {
+				Airship.Damage.onDeath.Connect((damageInfo) => {
 					const character = damageInfo.gameObject.GetAirshipComponent<Character>();
 					if (character?.gameObject.scene !== this.gameObject.scene) return;
 

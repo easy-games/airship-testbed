@@ -45,7 +45,7 @@ export class DamageIndicatorController {
 			AssetBridge.Instance.LoadAsset("AirshipPackages/@Easy/Core/Sound/Drone_Damage_02.ogg"),
 		];
 
-		Airship.damage.onDamage.Connect((event) => {
+		Airship.Damage.onDamage.Connect((event) => {
 			if (!this.enabled) return;
 
 			const character = event.gameObject.GetAirshipComponent<Character>();

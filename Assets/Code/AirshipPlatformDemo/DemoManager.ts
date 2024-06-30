@@ -27,7 +27,7 @@ export default class DemoManager extends AirshipBehaviour {
 		// 	}
 		// })
 
-		Airship.input.CreateAction("interact", Binding.Key(Key.F));
+		Airship.Input.CreateAction("interact", Binding.Key(Key.F));
 
 		ItemUtil.RegisterItem("WoodSword", {
 			displayName: "Wood Sword",
@@ -43,7 +43,7 @@ export default class DemoManager extends AirshipBehaviour {
 				}),
 			);
 			this.bin.Add(
-				Airship.damage.onDeath.Connect((damageInfo) => {
+				Airship.Damage.onDeath.Connect((damageInfo) => {
 					const character = damageInfo.gameObject.GetAirshipComponent<Character>();
 					if (character?.player) {
 						// task.delay(2, () => {
@@ -55,11 +55,11 @@ export default class DemoManager extends AirshipBehaviour {
 		}
 		if (Game.IsClient()) {
 			// Optional: use locked camera mode for first person support
-			Airship.characterCamera.SetCharacterCameraMode(CharacterCameraMode.Locked);
-			Airship.characterCamera.SetFirstPerson(false);
+			Airship.CharacterCamera.SetCharacterCameraMode(CharacterCameraMode.Locked);
+			Airship.CharacterCamera.SetFirstPerson(false);
 			// Airship.inventory.SetUIEnabled(false);
 
-			Airship.loadingScreen.FinishLoading();
+			Airship.LoadingScreen.FinishLoading();
 
 			// Display local player deaths
 			this.bin.Add(
@@ -87,7 +87,7 @@ export default class DemoManager extends AirshipBehaviour {
 	}
 
 	public override Update(dt: number): void {
-		Airship.characters.GetCharacters().forEach((character) => {
+		Airship.Characters.GetCharacters().forEach((character) => {
 			if (character.transform.position.y < -25) {
 				character.Teleport(this.spawnPosition.transform.position);
 			}

@@ -45,6 +45,7 @@ export class AirshipCacheStoreService {
 
 		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiCacheGetKey<T>>(
 			CacheStoreServiceBridgeTopics.GetKey,
+			LuauContext.Protected,
 			key,
 			expireTimeSec,
 		);
@@ -62,6 +63,7 @@ export class AirshipCacheStoreService {
 
 		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiCacheSetKey<T>>(
 			CacheStoreServiceBridgeTopics.SetKey,
+			LuauContext.Protected,
 			key,
 			data,
 			expireTimeSec,
@@ -90,6 +92,7 @@ export class AirshipCacheStoreService {
 
 		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiCacheSetKeyTTL>(
 			CacheStoreServiceBridgeTopics.SetKeyTTL,
+			LuauContext.Protected,
 			key,
 			expireTimeSec,
 		);

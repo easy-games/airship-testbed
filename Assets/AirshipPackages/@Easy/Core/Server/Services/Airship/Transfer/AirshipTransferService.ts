@@ -39,6 +39,7 @@ export class AirshipTransferService {
 	public async CreateServer(config?: AirshipServerConfig): Promise<Result<CreateServerResponse, undefined>> {
 		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiCreateServer>(
 			TransferServiceBridgeTopics.CreateServer,
+			LuauContext.Protected,
 			config,
 		);
 	}
@@ -70,6 +71,7 @@ export class AirshipTransferService {
 	): Promise<Result<undefined, undefined>> {
 		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiTransferGroupToGame>(
 			TransferServiceBridgeTopics.TransferGroupToGame,
+			LuauContext.Protected,
 			players,
 			gameId,
 			config,
@@ -103,6 +105,7 @@ export class AirshipTransferService {
 	): Promise<Result<undefined, undefined>> {
 		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiTransferGroupToServer>(
 			TransferServiceBridgeTopics.TransferGroupToServer,
+			LuauContext.Protected,
 			players,
 			serverId,
 			config,

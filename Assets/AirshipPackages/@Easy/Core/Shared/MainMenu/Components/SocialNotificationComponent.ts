@@ -4,7 +4,7 @@ import { Signal } from "@Easy/Core/Shared/Util/Signal";
 
 export default class SocialNotificationComponent extends AirshipBehaviour {
 	public titleText!: TMP_Text;
-	public userImage!: Image;
+	public userImage!: RawImage;
 	public usernameText!: TMP_Text;
 	public acceptButton!: Button;
 	public declineButton!: Button;

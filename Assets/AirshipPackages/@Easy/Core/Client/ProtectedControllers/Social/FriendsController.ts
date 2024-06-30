@@ -137,9 +137,9 @@ export class FriendsController {
 				this.socialNotification.usernameText.text = foundUser.username;
 
 				task.spawn(async () => {
-					const sprite = await Airship.Players.GetProfilePictureSpriteAsync(foundUser.uid);
-					if (sprite) {
-						this.socialNotification.userImage.sprite = sprite;
+					const texture = await Airship.Players.GetProfilePictureAsync(foundUser.uid);
+					if (texture) {
+						this.socialNotification.userImage.texture = texture;
 					}
 				});
 
@@ -595,9 +595,8 @@ export class FriendsController {
 
 		if (config.loadImage) {
 			task.spawn(async () => {
-				const texture = await Airship.Players.GetProfilePictureTextureFromImageIdAsync(
+				const texture = await Airship.Players.GetProfilePictureAsync(
 					friend.userId,
-					friend.profileImageId,
 				);
 				if (texture) {
 					profileImage.texture = texture;

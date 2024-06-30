@@ -22,11 +22,18 @@ import { Dependency, Singleton } from "@Easy/Core/Shared/Flamework";
 import { Airship } from "../Airship";
 import { ChatCommand } from "../Commands/ChatCommand";
 import { Game } from "../Game";
+import { Player } from "../Player/Player";
 
+/**
+ * Access using {@link Airship.Chat}. Functions for configuring the chat window
+ * as well as broadcasting messages.
+ * 
+ * To send a player a message see {@link Player.SendMessage}.
+ */
 @Singleton({})
 export class AirshipChatSingleton {
 	constructor() {
-		Airship.chat = this;
+		Airship.Chat = this;
 	}
 
 	protected OnStart(): void {
@@ -36,23 +43,29 @@ export class AirshipChatSingleton {
 	}
 
 	/**
+	 * [Client only]
+	 * 
 	 * Sets chat's visibility.
 	 *
 	 * @param val Whether or not chat should be visible.
 	 */
 	public SetUIEnabled(val: boolean): void {
+		if (!Game.IsClient()) error("Cannot set chat UI enabled on server.");
+
 		contextbridge.invoke<(val: boolean) => void>("ClientChatSingleton:SetUIEnabled", LuauContext.Protected, val);
 	}
 
 	/**
+	 * [Server only]
+	 * 
 	 * Registers provided command.
 	 *
 	 * @param command A command instance.
 	 */
 	public RegisterCommand(command: ChatCommand): void {
-		if (Game.IsServer()) {
-			Dependency<ChatService>().RegisterCommand(command);
-		}
+		if (!Game.IsServer) error("Error trying to RegisterCommand " + command.commandLabel + ": Can only register command on server.");
+
+		Dependency<ChatService>().RegisterCommand(command);
 	}
 
 	/**

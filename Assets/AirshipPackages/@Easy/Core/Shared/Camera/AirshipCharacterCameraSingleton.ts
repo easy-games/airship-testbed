@@ -74,7 +74,7 @@ export class AirshipCharacterCameraSingleton {
 	private thirdPersonFOV = 70;
 
 	constructor() {
-		Airship.characterCamera = this;
+		Airship.CharacterCamera = this;
 	}
 
 	public StartNewCameraSystem(cameraRig: CameraRig): CameraSystem {
@@ -359,7 +359,7 @@ export class AirshipCharacterCameraSingleton {
 						}
 					});
 					flyingBin.Add(Dependency<LocalCharacterSingleton>().input!.AddDisabler());
-					flyingBin.Add(Airship.inventory.localCharacterInventory.AddDisabler());
+					flyingBin.Add(Airship.Inventory.localCharacterInventory.AddDisabler());
 				}
 			}
 		});

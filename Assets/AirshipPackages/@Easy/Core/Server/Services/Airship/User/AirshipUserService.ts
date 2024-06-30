@@ -29,6 +29,7 @@ export class AirshipUserService {
 	public async GetUserByUsername(username: string): Promise<Result<PublicUser | undefined, undefined>> {
 		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiGetUserByUsername>(
 			UserServiceBridgeTopics.GetUserByUsername,
+			LuauContext.Protected,
 			username,
 		);
 	}
@@ -41,6 +42,7 @@ export class AirshipUserService {
 	public async GetUserById(userId: string): Promise<Result<PublicUser | undefined, undefined>> {
 		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiGetUserById>(
 			UserServiceBridgeTopics.GetUserById,
+			LuauContext.Protected,
 			userId,
 		);
 	}
@@ -59,6 +61,7 @@ export class AirshipUserService {
 	): Promise<Result<Record<string, PublicUser | undefined>, undefined>> {
 		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiGetUsersById>(
 			UserServiceBridgeTopics.GetUsersById,
+			LuauContext.Protected,
 			userIds,
 			strict,
 		);

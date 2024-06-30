@@ -22,8 +22,7 @@ export interface PlayerDto {
 }
 
 /**
- * The player object represents a client connected to your Airship game server. It contains the client's id
- * as well as 
+ * The player object represents a client connected to your Airship game server (or a bot player if spawned).
  */
 export class Player {
 	/**
@@ -127,7 +126,7 @@ export class Player {
 		const go = Object.Instantiate(
 			config?.customCharacterTemplate
 				? config.customCharacterTemplate
-				: Airship.characters.GetDefaultCharacterTemplate(),
+				: Airship.Characters.GetDefaultCharacterTemplate(),
 			position,
 			Quaternion.identity,
 		);
@@ -158,11 +157,11 @@ export class Player {
 			});
 		}
 
-		characterComponent.Init(this, Airship.characters.MakeNewId(), this.selectedOutfit);
+		characterComponent.Init(this, Airship.Characters.MakeNewId(), this.selectedOutfit);
 		this.SetCharacter(characterComponent);
 		NetworkUtil.SpawnWithClientOwnership(go, this.connectionId);
-		Airship.characters.RegisterCharacter(characterComponent);
-		Airship.characters.onCharacterSpawned.Fire(characterComponent);
+		Airship.Characters.RegisterCharacter(characterComponent);
+		Airship.Characters.onCharacterSpawned.Fire(characterComponent);
 		return characterComponent;
 	}
 
@@ -184,7 +183,7 @@ export class Player {
 	}
 
 	async GetProfileImageTextureAsync(): Promise<Texture2D | undefined> {
-		return await Airship.Players.GetProfilePictureTextureFromImageIdAsync(this.userId, this.profileImageId);
+		return await Airship.Players.GetProfilePictureAsync(this.userId);
 	}
 
 	public SetTeam(team: Team): void {
@@ -197,13 +196,19 @@ export class Player {
 		return this.team;
 	}
 
-	public SendMessage(message: string, sender?: Player): void {
+	/**
+	 * Sends player a message in chat. If called from client this won't work on
+	 * non-local players.
+	 * 
+	 * @param message Message to send in chat.
+	 */
+	public SendMessage(message: string): void {
 		if (Game.IsServer()) {
 			CoreNetwork.ServerToClient.ChatMessage.server.FireClient(this, message, undefined, undefined);
 		} else {
-			if (Game.IsProtectedLuauContext()) {
-				Dependency<ClientChatSingleton>().RenderChatMessage(message);
-			}
+			if (this.userId !== Game.localPlayer.userId) error("Cannot SendMessage to non-local client.");
+
+			Dependency<ClientChatSingleton>().RenderChatMessage(message);
 		}
 	}
 

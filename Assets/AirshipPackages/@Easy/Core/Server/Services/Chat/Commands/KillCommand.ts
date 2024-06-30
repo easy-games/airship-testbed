@@ -22,7 +22,7 @@ export class KillCommand extends ChatCommand {
 			}
 			target = otherPlayer.character;
 		} else {
-			target = Airship.characters.FindByPlayer(player);
+			target = Airship.Characters.FindByPlayer(player);
 		}
 
 		// Handle invalid entity.
@@ -32,6 +32,6 @@ export class KillCommand extends ChatCommand {
 		}
 
 		// Kill entity.
-		Airship.damage.InflictDamage(target.gameObject, math.huge);
+		Airship.Damage.InflictDamage(target.gameObject, math.huge);
 	}
 }

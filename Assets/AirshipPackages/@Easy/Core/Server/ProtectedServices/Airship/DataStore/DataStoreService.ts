@@ -4,7 +4,7 @@ import { Result } from "@Easy/Core/Shared/Types/Result";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 
-export enum DataStoreServiceBridgeTopics {
+export const enum DataStoreServiceBridgeTopics {
 	GetKey = "DataStore:GetKey",
 	SetKey = "DataStore:SetKey",
 	DeleteKey = "DataStore:DeleteKey",

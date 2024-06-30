@@ -6,16 +6,16 @@ import { Binding } from "@Easy/Core/Shared/Input/Binding";
 import { InputAction } from "@Easy/Core/Shared/Input/InputAction";
 import { InputUtil } from "@Easy/Core/Shared/Input/InputUtil";
 import { FormatUtil } from "@Easy/Core/Shared/Util/FormatUtil";
-import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
 import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
+import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
 import { Keyboard, Mouse } from "../../../UserInput";
 import { AppManager } from "../../../Util/AppManager";
 import { Bin } from "../../../Util/Bin";
 import {
-  CanvasAPI,
-  HoverState,
-  PointerButton,
-  PointerDirection,
+    CanvasAPI,
+    HoverState,
+    PointerButton,
+    PointerDirection,
 } from "../../../Util/CanvasAPI";
 import { InputUtils } from "../../../Util/InputUtils";
 import { SignalPriority } from "../../../Util/Signal";
@@ -146,13 +146,13 @@ export default class SettingsKeybind extends AirshipBehaviour {
     this.title.text = FormatUtil.ToDisplayFormat(action.name);
     this.UpdateBindingTextFromBinding(action.binding);
 
-    Airship.input.onActionUnbound.Connect((unbound) => {
+    Airship.Input.onActionUnbound.Connect((unbound) => {
       if (unbound !== action) return;
       this.UpdateBindingTextFromBinding(unbound.binding);
       this.HighlightValueImage();
     });
 
-    Airship.input.onActionBound.Connect((bound) => {
+    Airship.Input.onActionBound.Connect((bound) => {
       if (bound !== action) return;
       this.UpdateBindingTextFromBinding(bound.binding);
     });

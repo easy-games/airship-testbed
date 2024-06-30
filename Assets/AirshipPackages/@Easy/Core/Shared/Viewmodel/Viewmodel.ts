@@ -10,7 +10,7 @@ export class Viewmodel {
 
 	constructor() {
 		this.SetViewmodelGameObject(
-			Object.Instantiate(Airship.characters.GetDefaultViewmodelPrefab(), CoreRefs.rootTransform),
+			Object.Instantiate(Airship.Characters.GetDefaultViewmodelPrefab(), CoreRefs.rootTransform),
 		);
 	}
 

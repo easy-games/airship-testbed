@@ -20,6 +20,12 @@ import { LocalCharacterSingleton } from "./LocalCharacter/LocalCharacterSingleto
 
 const characterPrefab = AssetCache.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/Character/AirshipCharacter.prefab");
 
+/**
+ * Access using {@link Airship.Characters}. Characters singleton provides utilities for working with the {@link Character}
+ * object.
+ * 
+ * To control your game's default character see {@link CharacterConfigSetup}.
+ */
 @Singleton()
 export class CharactersSingleton {
 	private characters = new Set<Character>();
@@ -60,7 +66,7 @@ export class CharactersSingleton {
 		public readonly localCharacterManager: LocalCharacterSingleton,
 		public readonly footsteps: AirshipCharacterFootstepsSingleton,
 	) {
-		Airship.characters = this;
+		Airship.Characters = this;
 	}
 
 	protected OnStart(): void {
@@ -112,17 +118,7 @@ export class CharactersSingleton {
 			});
 		}
 
-		Airship.damage.onDamage.ConnectWithPriority(SignalPriority.MONITOR, (damageInfo) => {
-			if (Game.IsServer() && Airship.damage.applyKnockback && damageInfo.data["knockback"]) {
-				const knockback = damageInfo.data["knockback"] as Vector3;
-				const character = damageInfo.gameObject.GetAirshipComponent<Character>();
-				if (character) {
-					character.movement.ApplyImpulse(knockback);
-				}
-			}
-		});
-
-		Airship.characters.ObserveCharacters((character) => {
+		Airship.Characters.ObserveCharacters((character) => {
 			character.onDeath.ConnectWithPriority(SignalPriority.MONITOR, () => {
 				if (Game.IsServer()) {
 					character.Despawn();
@@ -306,7 +302,7 @@ export class CharactersSingleton {
 		if (!characterComponent) {
 			error("Trying to spawn a character prefab without a character component on it!");
 		}
-		characterComponent.Init(undefined, Airship.characters.MakeNewId(), undefined);
+		characterComponent.Init(undefined, Airship.Characters.MakeNewId(), undefined);
 		go.transform.position = position;
 		NetworkUtil.Spawn(go);
 		this.RegisterCharacter(characterComponent);
@@ -328,14 +324,14 @@ export class CharactersSingleton {
 			);
 			let player: Player | undefined;
 			if (dto.ownerClientId !== undefined) {
-				player = Airship.Players.FindByClientId(dto.ownerClientId);
+				player = Airship.Players.FindByConnectionId(dto.ownerClientId);
 				assert(player, "Failed to find player when spawning character. clientId=" + dto.ownerClientId);
 				characterNetworkObj.gameObject.name = "Character_" + player.username;
 			}
 			character.Init(player, dto.id, dto.outfitDto);
-			Airship.characters.RegisterCharacter(character);
+			Airship.Characters.RegisterCharacter(character);
 			player?.SetCharacter(character);
-			Airship.characters.onCharacterSpawned.Fire(character);
+			Airship.Characters.onCharacterSpawned.Fire(character);
 		});
 	}
 

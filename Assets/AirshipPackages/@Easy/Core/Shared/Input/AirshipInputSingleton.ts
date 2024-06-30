@@ -28,6 +28,18 @@ export enum InputActionDirection {
 	Down,
 }
 
+/**
+ * Access using {@link Airship.Input}. Input singleton contains functions to work with
+ * player input (including mouse, keyboard, and touch screen).
+ * 
+ * Ex:
+ * ```ts
+ * Airship.Input.CreateAction("Attack", Binding.MouseButton(MouseButton.LeftButton));
+ * Airship.Input.OnDown("Attack").Connect(() => {
+ * 	print("Attacked!");
+ * });
+ * ```
+ */
 @Singleton()
 export class AirshipInputSingleton {
 	/**
@@ -90,7 +102,7 @@ export class AirshipInputSingleton {
 	public preferredControls = new PreferredControls();
 
 	constructor() {
-		Airship.input = this;
+		Airship.Input = this;
 	}
 
 	protected OnStart(): void {
@@ -100,7 +112,7 @@ export class AirshipInputSingleton {
 			this.CreateMobileControlCanvas();
 		}
 
-		Airship.input.onActionBound.Connect((action) => {
+		Airship.Input.onActionBound.Connect((action) => {
 			if (!action.binding.IsUnset()) {
 				if (this.unsetOnDuplicateKeybind) {
 					this.UnsetDuplicateBindings(action);
@@ -109,7 +121,7 @@ export class AirshipInputSingleton {
 			}
 		});
 
-		Airship.input.CreateActions([
+		Airship.Input.CreateActions([
 			{ name: "Forward", binding: Binding.Key(Key.W) },
 			{ name: "Left", binding: Binding.Key(Key.A) },
 			{ name: "Back", binding: Binding.Key(Key.S) },
@@ -133,9 +145,9 @@ export class AirshipInputSingleton {
 		]);
 
 		if (Game.coreContext === CoreContext.GAME && Game.IsGameLuauContext()) {
-			Airship.input.CreateMobileButton("Jump", new Vector2(-220, 180));
+			Airship.Input.CreateMobileButton("Jump", new Vector2(-220, 180));
 			// Airship.input.CreateMobileButton("UseItem", new Vector2(-250, 490));
-			Airship.input.CreateMobileButton("Crouch", new Vector2(-140, 340), {
+			Airship.Input.CreateMobileButton("Crouch", new Vector2(-140, 340), {
 				icon: CoreIcon.CHEVRON_DOWN,
 			});
 		}

@@ -15,7 +15,7 @@ export class TagsSingleton {
 
 	protected OnStart(): void {
 		const tagManager = TagManager.Instance;
-		Airship.tags = this;
+		Airship.Tags = this;
 		this.tagManager = tagManager;
 
 		tagManager.OnTagAdded((tag, gameObject) => {
