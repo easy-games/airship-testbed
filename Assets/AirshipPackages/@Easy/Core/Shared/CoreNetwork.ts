@@ -12,7 +12,7 @@ import { TeamDto } from "./Team/Team";
 export const CoreNetwork = {
 	ClientToServer: {
 		Ready: new RemoteEvent<[]>("Ready"),
-		SetHeldSlot: new RemoteEvent<[slot: number]>("SetHeldSlot"),
+		SetHeldSlot: new RemoteEvent<[invId: number, slot: number]>("SetHeldSlot"),
 		Inventory: {
 			SwapSlots: new RemoteEvent<[fromInvId: number, fromSlot: number, toInvId: number, toSlot: number]>(
 				"Inventory",

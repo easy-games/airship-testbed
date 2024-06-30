@@ -86,7 +86,7 @@ export default class Inventory extends AirshipBehaviour {
 			CoreNetwork.ClientToServer.SetHeldSlot.server.OnClientEvent((player, invId, slot) => {
 				if (this.id !== invId) return;
 
-				const character = Airship.characters.FindByPlayer(player);
+				const character = Airship.Characters.FindByPlayer(player);
 				if (!character || character.inventory !== this) return;
 
 				this.SetHeldSlotInternal(slot);
@@ -94,7 +94,7 @@ export default class Inventory extends AirshipBehaviour {
 				CoreNetwork.ServerToClient.SetHeldInventorySlot.server.FireExcept(
 					player,
 					this.id,
-					player.clientId,
+					player.connectionId,
 					slot,
 					true,
 				);
@@ -105,7 +105,7 @@ export default class Inventory extends AirshipBehaviour {
 		const controlsBin = new Bin();
 		this.bin.Add(controlsBin);
 		this.bin.Add(
-			Airship.inventory.ObserveLocalInventory((inv) => {
+			Airship.Inventory.ObserveLocalInventory((inv) => {
 				controlsBin.Clean();
 				if (inv !== this) return;
 
@@ -188,7 +188,7 @@ export default class Inventory extends AirshipBehaviour {
 	 * @returns True if inventory is controlled by the local player.
 	 */
 	public IsLocalInventory(): boolean {
-		return Airship.inventory.localInventory === this;
+		return Airship.Inventory.localInventory === this;
 	}
 
 	private RequestFullUpdate(): void {
