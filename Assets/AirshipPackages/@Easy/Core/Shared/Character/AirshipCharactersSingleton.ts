@@ -7,11 +7,11 @@ import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { AudioManager } from "../Audio/AudioManager";
 import { AvatarUtil } from "../Avatar/AvatarUtil";
-import { CameraReferences } from "../Camera/CameraReferences";
 import { CoreContext } from "../CoreClientContext";
 import { Game } from "../Game";
 import { ItemUtil } from "../Item/ItemUtil";
 import { RandomUtil } from "../Util/RandomUtil";
+import { Viewmodel } from "../Viewmodel/Viewmodel";
 import Character from "./Character";
 import { CharacterDto } from "./CharacterDto";
 import { CustomMoveData } from "./CustomMoveData";
@@ -23,11 +23,11 @@ const characterPrefab = AssetCache.LoadAsset("AirshipPackages/@Easy/Core/Prefabs
 /**
  * Access using {@link Airship.Characters}. Characters singleton provides utilities for working with the {@link Character}
  * object.
- * 
+ *
  * To control your game's default character see {@link CharacterConfigSetup}.
  */
 @Singleton()
-export class CharactersSingleton {
+export class AirshipCharactersSingleton {
 	private characters = new Set<Character>();
 
 	public onCharacterSpawned = new Signal<Character>();
@@ -59,6 +59,10 @@ export class CharactersSingleton {
 	 * If false, VoiceChatAudioSource will be parented to the Player instead of Character. AudioSource is configured as 2D.
 	 */
 	public autoParentVoiceChatAudioSourceToCharacter = true;
+
+	/** If true, a character viewmodel will be instantiated as a child of the ViewmodelCamera */
+	public instantiateViewmodel = true;
+	public viewmodel?: Viewmodel;
 
 	private idCounter = 0;
 	private customCharacterTemplate?: GameObject;
@@ -185,7 +189,7 @@ export class CharactersSingleton {
 
 				let viewmodelAccessoryBuilder: AccessoryBuilder | undefined;
 				if (character.IsLocalCharacter()) {
-					viewmodelAccessoryBuilder = CameraReferences.viewmodel?.accessoryBuilder;
+					viewmodelAccessoryBuilder = this.viewmodel?.accessoryBuilder;
 				}
 
 				// Play the equip sound

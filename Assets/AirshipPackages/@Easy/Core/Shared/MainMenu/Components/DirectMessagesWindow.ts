@@ -99,7 +99,10 @@ export default class DirectMessagesWindow extends AirshipBehaviour {
 			task.spawn(async () => {
 				const tex = await Airship.Players.GetProfilePictureAsync(member.uid);
 				if (tex) {
-					go.GetComponent<RawImage>()!.texture = tex;
+					const rawImage = go.GetComponent<RawImage>();
+					if (rawImage) {
+						rawImage.texture = tex;
+					}
 				}
 			});
 		}

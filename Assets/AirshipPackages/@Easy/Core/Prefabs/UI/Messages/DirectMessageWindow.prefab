@@ -1983,7 +1983,7 @@ MonoBehaviour:
     - key: StatusIndicator
       value: {fileID: 0}
     - key: ProfilePicture
-      value: {fileID: 3794198920903443496}
+      value: {fileID: 0}
     - key: JoinButton
       value: {fileID: 717568588160020171}
 --- !u!114 &4377596680786657432
@@ -3305,6 +3305,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4585739257689474129, guid: 803c74c404ff04c5c822cc0b8aba3929, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 5034983360769412108, guid: 803c74c404ff04c5c822cc0b8aba3929, type: 3}
       propertyPath: m_Name
       value: ProfilePicture
@@ -3318,17 +3322,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 803c74c404ff04c5c822cc0b8aba3929, type: 3}
---- !u!114 &3794198920903443496 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7233055887058980828, guid: 803c74c404ff04c5c822cc0b8aba3929, type: 3}
-  m_PrefabInstance: {fileID: 5820702205986737140}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &6424251105299812432 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 711796919657192356, guid: 803c74c404ff04c5c822cc0b8aba3929, type: 3}

@@ -1,12 +1,11 @@
 import { Airship } from "../Airship";
-import { CameraReferences } from "../Camera/CameraReferences";
 import { Game } from "../Game";
 import { Layer } from "../Util/Layer";
 import { CharacterCameraMode } from "./LocalCharacter/CharacterCameraMode";
 
 /**
  * Use to configure basic properties of Airship character system.
- * 
+ *
  * Usage: add this component to any game object in your scene.
  */
 export default class CharacterConfigSetup extends AirshipBehaviour {
@@ -22,6 +21,8 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 	public enableCrouching = true;
 
 	@Header("Viewmodel")
+	@Tooltip("If true, a character viewmodel will be instantiated under the ViewmodelCamera")
+	public instantiateViewmodel = true;
 	public customViewmodelPrefab?: GameObject;
 
 	@Header("Camera System")
@@ -38,10 +39,11 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 	public Awake(): void {
 		//Character
 		//Set the default prefab to use whenever a character is spawned
+		Airship.Characters.instantiateViewmodel = this.instantiateViewmodel;
 		Airship.Characters.SetDefaultCharacterPrefab(this.customCharacterPrefab);
 		Airship.Characters.SetDefaultViewmodelPrefab(this.customViewmodelPrefab);
-		if (this.customViewmodelPrefab !== undefined && CameraReferences.viewmodel !== undefined) {
-			CameraReferences.viewmodel.SetViewmodelGameObject(Object.Instantiate(this.customViewmodelPrefab));
+		if (this.customViewmodelPrefab !== undefined && Airship.Characters.viewmodel !== undefined) {
+			Airship.Characters.viewmodel.InstantiateFromPrefab(this.customViewmodelPrefab);
 		}
 	}
 

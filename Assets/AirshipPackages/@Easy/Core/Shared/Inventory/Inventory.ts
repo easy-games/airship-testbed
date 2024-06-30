@@ -109,7 +109,6 @@ export default class Inventory extends AirshipBehaviour {
 				controlsBin.Clean();
 				if (inv !== this) return;
 
-				print("Starting local controls!");
 				const keyboard = new Keyboard();
 				const mouse = new Mouse();
 

@@ -1,13 +1,10 @@
 ﻿import { Mouse } from "@Easy/Core/Shared/UserInput";
-import { Viewmodel } from "../Viewmodel/Viewmodel";
 
 export class CameraReferences {
 	private static mouse = new Mouse();
 	public static cameraHolder?: Transform;
 	public static mainCamera?: Camera;
 	public static viewmodelCamera?: Camera;
-
-	public static viewmodel?: Viewmodel;
 
 	public static RaycastPhysicsFromCamera(distance: number, layerMask?: number) {
 		const ray = this.GetRayFromCamera(distance);

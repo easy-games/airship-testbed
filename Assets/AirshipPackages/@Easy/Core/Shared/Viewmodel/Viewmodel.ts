@@ -1,4 +1,5 @@
 import { Airship } from "../Airship";
+import { CameraReferences } from "../Camera/CameraReferences";
 import { CoreRefs } from "../CoreRefs";
 import AirshipCharacterViewmodel from "./AirshipCharacterViewmodel";
 
@@ -10,9 +11,23 @@ export class Viewmodel {
 	public rig!: CharacterRig;
 
 	constructor() {
-		this.SetViewmodelGameObject(
-			Object.Instantiate(Airship.Characters.GetDefaultViewmodelPrefab(), CoreRefs.rootTransform),
-		);
+		this.InstantiateFromPrefab(Airship.Characters.GetDefaultViewmodelPrefab());
+	}
+
+	public InstantiateFromPrefab(prefab: GameObject): void {
+		let parent = CameraReferences.viewmodelCamera?.transform;
+		if (!parent) {
+			print("Missing viewmodel camera.");
+			parent = Camera.main.transform;
+		}
+		if (!parent) {
+			parent = CoreRefs.rootTransform;
+		}
+		const go = Object.Instantiate(prefab, parent);
+		go.transform.localPosition = new Vector3(3.40097417e-9, -1.541525066, -0.0108257439);
+		go.transform.localRotation = Quaternion.identity;
+		go.name = "CharacterViewmodel";
+		this.SetViewmodelGameObject(go);
 	}
 
 	public SetViewmodelGameObject(go: GameObject): void {
@@ -22,7 +37,6 @@ export class Viewmodel {
 
 		this.viewmodelGo = go;
 		this.viewmodelTransform = this.viewmodelGo.transform;
-		this.viewmodelTransform.position = new Vector3(10_000, 0, 10_000);
 
 		const characterViewmodelComponent = this.viewmodelGo.GetAirshipComponent<AirshipCharacterViewmodel>();
 		if (!characterViewmodelComponent) {

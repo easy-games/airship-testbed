@@ -8,8 +8,8 @@ import { AirshipPartyService } from "../Server/Services/Airship/Party/AirshipPar
 import { AirshipPlatformInventoryService } from "../Server/Services/Airship/PlatformInventory/AirshipPlatformInventoryService";
 import { AirshipTransferService } from "../Server/Services/Airship/Transfer/AirshipTransferService";
 import { AirshipCharacterCameraSingleton } from "./Camera/AirshipCharacterCameraSingleton";
+import { AirshipCharactersSingleton } from "./Character/AirshipCharactersSingleton";
 import CharacterConfigSetup from "./Character/CharacterConfigSetup";
-import { CharactersSingleton } from "./Character/CharactersSingleton";
 import { AirshipChatSingleton } from "./Chat/AirshipChatSingleton";
 import { DamageSingleton } from "./Damage/DamageSingleton";
 import { AirshipInputSingleton } from "./Input/AirshipInputSingleton";
@@ -108,26 +108,26 @@ export namespace Platform {
 		 */
 		export let Purchase = undefined! as AirshipPurchaseSingleton;
 	}
-};
+}
 
 /** Airship */
 export namespace Airship {
 	/**
 	 * Players allows you to work with currently connected clients (with Airship's {@link Player} object).
-	 * 
+	 *
 	 * If you are looking to get information about offline users see {@link AirshipUserController}
 	 */
 	export let Players = undefined! as PlayersSingleton;
 	/**
 	 * Characters singleton provides utilities for working with the {@link Character} object.
-	 * 
+	 *
 	 * To control your game's default character see {@link CharacterConfigSetup}.
 	 */
-	export let Characters = undefined! as CharactersSingleton;
+	export let Characters = undefined! as AirshipCharactersSingleton;
 	/**
 	 * Input singleton contains functions to work with player input (including mouse, keyboard, and touch screen).
 	 * Players can rebind their action bindings in their settings menu.
-	 * 
+	 *
 	 * Ex:
 	 * ```ts
 	 * Airship.Input.CreateAction("Attack", Binding.MouseButton(MouseButton.LeftButton));
@@ -142,7 +142,7 @@ export namespace Airship {
 	export let Inventory = undefined! as AirshipInventorySingleton;
 	/**
 	 * [Client only]
-	 * 
+	 *
 	 * Manage the player's loading screen when joining your game. This can be useful if your game requires
 	 * some work on the client before the game is ready to be played, such as spawning a map.
 	 */
@@ -156,7 +156,7 @@ export namespace Airship {
 
 	/**
 	 * Functions for configuring the chat window as well as broadcasting messages.
-	 * 
+	 *
 	 * To send a player a message see {@link Player.SendMessage}.
 	 */
 	export let Chat = undefined! as AirshipChatSingleton;
@@ -170,5 +170,5 @@ export namespace Airship {
 		while (Airship.Players === undefined) {
 			task.wait();
 		}
-	};
-};
+	}
+}
