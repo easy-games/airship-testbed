@@ -517,6 +517,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7956132108096774020}
   - component: {fileID: 2719586711620922124}
+  - component: {fileID: 1029939559812904263}
   m_Layer: 3
   m_Name: FootstepAudioSource
   m_TagString: Untagged
@@ -636,6 +637,22 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1029939559812904263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7282857183101611409}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ab5a7cea0154354db5611700f98e4d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  remappingMode: 1
+  sourceSkinnedMeshRenderer: {fileID: 0}
+  targetRootBone: {fileID: 0}
+  targetSkinnedMeshRenderers: []
 --- !u!1 &7338958489384842637
 GameObject:
   m_ObjectHideFlags: 0
@@ -1101,7 +1118,7 @@ MonoBehaviour:
   animationHelper: {fileID: 903796914586745664}
   mainCollider: {fileID: 3569249470052007930}
   slopeVisualizer: {fileID: 473010626989301856}
-  authorityMode: 0
+  authorityMode: 1
   ticksUntilReconcile: 1
   observerRotationLerpMod: 10
   drawDebugGizmos: 0
@@ -1121,6 +1138,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterHeight: 1.8
   characterRadius: 0.2
+  useAccelerationMovement: 0
   speed: 4.666667
   sprintSpeed: 6.666667
   airSpeedMultiplier: 1
@@ -1147,7 +1165,8 @@ MonoBehaviour:
   minSlopeDelta: 0.1
   maxSlopeDelta: 0.3
   maxStepUpHeight: 0.5
-  drag: 1
+  drag: 0.1
+  airDragMultiplier: 1
   detectSlopes: 0
   detectStepUps: 1
   alwaysStepUp: 0

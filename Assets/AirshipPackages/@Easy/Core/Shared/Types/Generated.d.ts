@@ -27888,6 +27888,7 @@ declare const Entry: EntryConstructor;
 interface CharacterMovementData extends MonoBehaviour {
     characterHeight: number;
     characterRadius: number;
+    useAccelerationMovement: boolean;
     speed: number;
     sprintSpeed: number;
     airSpeedMultiplier: number;
@@ -27913,6 +27914,7 @@ interface CharacterMovementData extends MonoBehaviour {
     maxSlopeDelta: number;
     maxStepUpHeight: number;
     drag: number;
+    airDragMultiplier: number;
     detectSlopes: boolean;
     detectStepUps: boolean;
     alwaysStepUp: boolean;

@@ -35,7 +35,7 @@ export default class TeleportToRoom extends AirshipBehaviour {
 
 	// public OnTriggerExit(collider: Collider): void {
 	// 	if (collider.isTrigger) return;
-	// 	const character = Airship.characters.FindByCollider(collider);
+	// 	const character = Airship.Characters.FindByCollider(collider);
 	// 	if (character?.player) {
 	// 		Airship.sceneManager.UnloadSceneForPlayer(character.player, "MultiScene_Room", "MultiScene_Base");
 	// 	}
