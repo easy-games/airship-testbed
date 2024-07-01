@@ -1,11 +1,9 @@
 ﻿import Character from "@Easy/Core/Shared/Character/Character";
-import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { OnLateUpdate } from "@Easy/Core/Shared/Util/Timer";
 import { Airship } from "../Airship";
-import { AirshipCharacterCameraSingleton } from "./AirshipCharacterCameraSingleton";
 import { CameraReferences } from "./CameraReferences";
 
 export class FirstPersonCameraSystem {
@@ -50,8 +48,7 @@ export class FirstPersonCameraSystem {
 		if (!CameraReferences.viewmodelCamera || !Airship.Characters.viewmodel) return;
 		this.currentTime += Time.deltaTime;
 
-		const spineTransform = Airship.Characters.viewmodel.rig.spine;
-		Dependency<AirshipCharacterCameraSingleton>().onViewModelUpdate.Fire(spineTransform);
+		Airship.Characters.onViewModelUpdate.Fire(Airship.Characters.viewmodel.viewmodelTransform);
 	}
 
 	public OnFirstPersonChanged(isFirstPerson: boolean) {

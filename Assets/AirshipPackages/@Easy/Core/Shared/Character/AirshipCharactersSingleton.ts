@@ -63,6 +63,12 @@ export class AirshipCharactersSingleton {
 	/** If true, a character viewmodel will be instantiated as a child of the ViewmodelCamera */
 	public instantiateViewmodel = true;
 	public viewmodel?: Viewmodel;
+	/**
+	 * Fires before view model updates with position and rotation. Change these values to adjust view model position.
+	 *
+	 * Transform is the Spine Transform.
+	 */
+	public onViewModelUpdate = new Signal<[viewmodelTransform: Transform]>();
 
 	private idCounter = 0;
 	private customCharacterTemplate?: GameObject;
