@@ -9,7 +9,10 @@ import { AuthController } from "../Auth/AuthController";
 @Controller({})
 export class SocketController {
 	private onEvent = new Signal<[eventName: string, data: string]>();
+	public onSocketConnectionChanged = new Signal<[connected: boolean]>();
+
 	constructor(private readonly authController: AuthController) {}
+
 	protected OnStart(): void {
 		SocketManager.Instance.OnEvent((eventName, data) => {
 			// print(`[${eventName}]: ${data}`);
@@ -43,6 +46,7 @@ export class SocketController {
 
 		SocketManager.Instance.OnDisconnected((reason) => {
 			CoreLogger.Warn("Disconnected from socket: " + reason);
+			this.onSocketConnectionChanged.Fire(false);
 		});
 	}
 
@@ -61,6 +65,10 @@ export class SocketController {
 		task.spawn(() => {
 			SocketManager.EmitAsync(eventName, EncodeJSON(data));
 		});
+	}
+
+	public IsConnected(): boolean {
+		return SocketManager.IsConnected();
 	}
 
 	private Connect(): void {

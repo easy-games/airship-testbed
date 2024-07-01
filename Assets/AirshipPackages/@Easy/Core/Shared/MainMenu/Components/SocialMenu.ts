@@ -8,6 +8,13 @@ export default class SocialMenu extends AirshipBehaviour {
 	public playerCountText!: TMP_Text;
 	public serverCountText!: TMP_Text;
 
+	public verticalLayout!: GameObject;
+
+	@Header("Lost Connection")
+	public lostConnectionNotice!: GameObject;
+	public reconnectButton!: Button;
+	public logoutbutton!: Button;
+
 	private bin = new Bin();
 
 	override Start(): void {
@@ -27,10 +34,13 @@ export default class SocialMenu extends AirshipBehaviour {
 			),
 		);
 
-		// if (Game.IsMobile() && Game.IsLandscape()) {
-		// 	const rect = this.gameObject.GetComponent<RectTransform>()!;
-		// 	rect.sizeDelta = rect.sizeDelta.add(new Vector2(120, 0));
-		// }
+		// const socketController = Dependency<SocketController>();
+		// this.bin.Add(
+		// 	socketController.onSocketConnectionChanged.Connect((connected) => {
+		// 		this.verticalLayout.gameObject.SetActive(connected);
+		// 		this.lostConnectionNotice.SetActive(!connected);
+		// 	}),
+		// );
 	}
 
 	private FetchLiveStats(): void {
