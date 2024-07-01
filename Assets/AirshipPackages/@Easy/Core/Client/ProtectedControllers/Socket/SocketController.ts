@@ -1,4 +1,5 @@
 import { Controller } from "@Easy/Core/Shared/Flamework";
+import { CoreLogger } from "@Easy/Core/Shared/Logger/CoreLogger";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
@@ -38,6 +39,10 @@ export class SocketController {
 				},
 				true,
 			);
+		});
+
+		SocketManager.Instance.OnDisconnected((reason) => {
+			CoreLogger.Warn("Disconnected from socket: " + reason);
 		});
 	}
 

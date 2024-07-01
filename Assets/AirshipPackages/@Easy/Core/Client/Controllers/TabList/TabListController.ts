@@ -8,7 +8,6 @@ import { Keyboard, Mouse } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import { OnLateUpdate, SetInterval } from "@Easy/Core/Shared/Util/Timer";
-import { Window } from "@Easy/Core/Shared/Util/Window";
 
 @Controller({})
 export class TabListController {
@@ -80,14 +79,6 @@ export class TabListController {
 		});
 		keyboard.OnKeyUp(Key.Tab, (e) => {
 			this.Hide();
-		});
-
-		Window.focusChanged.Connect((hasFocus) => {
-			if (hasFocus) {
-				task.delay(0, () => {
-					this.Hide();
-				});
-			}
 		});
 
 		// Prevent window from staying open once tabbed out.

@@ -671,7 +671,8 @@ interface SocketManager {
 	SetScriptListening(val: boolean): void;
 	EmitAsync(eventName: string, data: string): void;
 	Instance: {
-		OnEvent(callback: (eventName: string, data: string) => void): void;
+		OnEvent(callback: (eventName: string, data: string) => void): EngineEventConnection;
+		OnDisconnected(callback: (disconnectReason: string) => void): EngineEventConnection;
 	};
 }
 declare const SocketManager: SocketManager;
