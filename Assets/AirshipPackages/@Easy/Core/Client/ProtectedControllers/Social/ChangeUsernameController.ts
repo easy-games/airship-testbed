@@ -12,7 +12,7 @@ import { SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { OnFixedUpdate } from "@Easy/Core/Shared/Util/Timer";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 import { AuthController } from "../Auth/AuthController";
-import { UserController } from "../User/UserController";
+import { ProtectedUserController } from "../User/ProtectedUserController";
 
 @Controller({})
 export class ChangeUsernameController {
@@ -86,7 +86,7 @@ export class ChangeUsernameController {
 		if (res.success) {
 			this.SetResponseText("success", `Success! Your name has been changed to "${text}".`);
 			Game.localPlayer.UpdateUsername(text);
-			Dependency<UserController>().FetchLocalUser();
+			Dependency<ProtectedUserController>().FetchLocalUser();
 			this.submitButton.SetActive(false);
 			this.submitButtonDisabled.SetActive(true);
 		} else if (res.statusCode === 409) {

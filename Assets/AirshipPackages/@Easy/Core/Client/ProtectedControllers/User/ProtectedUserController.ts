@@ -10,7 +10,7 @@ import { AuthController } from "../Auth/AuthController";
 import { User } from "./User";
 
 @Controller({})
-export class UserController {
+export class ProtectedUserController {
 	public localUser: User | undefined;
 
 	public onLocalUserUpdated = new Signal<User>();
@@ -18,7 +18,6 @@ export class UserController {
 
 	constructor(private readonly authController: AuthController) {
 		Protected.user = this;
-		print("Set protected.user");
 	}
 
 	protected OnStart(): void {
@@ -81,5 +80,10 @@ export class UserController {
 			task.wait();
 		}
 		return this.localUser;
+	}
+
+	public Logout() {
+		AuthManager.ClearSavedAccount();
+		Bridge.LoadScene("Login", true, LoadSceneMode.Single);
 	}
 }

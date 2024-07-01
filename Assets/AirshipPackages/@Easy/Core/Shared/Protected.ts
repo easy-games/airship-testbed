@@ -1,4 +1,4 @@
-import { UserController } from "../Client/ProtectedControllers/User/UserController";
+import { ProtectedUserController } from "../Client/ProtectedControllers/User/ProtectedUserController";
 import { ProtectedPlayersSingleton } from "./MainMenu/Singletons/ProtectedPlayersSingleton";
 
 /**
@@ -6,6 +6,6 @@ import { ProtectedPlayersSingleton } from "./MainMenu/Singletons/ProtectedPlayer
  * @internal
  */
 export const Protected = {
-	user: undefined! as UserController,
+	user: undefined! as ProtectedUserController,
 	protectedPlayers: undefined! as ProtectedPlayersSingleton,
 };

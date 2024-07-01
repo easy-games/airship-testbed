@@ -9,7 +9,7 @@ import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { AuthController } from "./Auth/AuthController";
 import { MainMenuController } from "./MainMenuController";
 import { MainMenuPageType } from "./MainMenuPageName";
-import { UserController } from "./User/UserController";
+import { ProtectedUserController } from "./User/ProtectedUserController";
 
 @Controller({})
 export class MainMenuNavbarController {
@@ -17,7 +17,7 @@ export class MainMenuNavbarController {
 
 	constructor(
 		private readonly mainMenuController: MainMenuController,
-		private readonly userController: UserController,
+		private readonly userController: ProtectedUserController,
 		private readonly authController: AuthController,
 	) {}
 

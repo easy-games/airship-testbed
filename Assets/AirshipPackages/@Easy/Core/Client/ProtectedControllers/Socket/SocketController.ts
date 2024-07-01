@@ -71,7 +71,8 @@ export class SocketController {
 		return SocketManager.IsConnected();
 	}
 
-	private Connect(): void {
-		SocketManager.ConnectAsyncInternal();
+	public Connect(): void {
+		let connected = SocketManager.ConnectAsyncInternal();
+		this.onSocketConnectionChanged.Fire(connected);
 	}
 }

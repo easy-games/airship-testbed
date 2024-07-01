@@ -1,5 +1,4 @@
 import { ChangeUsernameController } from "@Easy/Core/Client/ProtectedControllers/Social/ChangeUsernameController";
-import { UserController } from "@Easy/Core/Client/ProtectedControllers/User/UserController";
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
@@ -79,7 +78,7 @@ export default class SettingsProfilePage extends AirshipBehaviour {
 					);
 					if (res.success) {
 						Airship.Players.ClearProfilePictureCache(Game.localPlayer.userId);
-						Dependency<UserController>().localUser!.profileImageId = undefined;
+						Protected.user.localUser!.profileImageId = undefined;
 						this.UpdateProfilePicturePreviews();
 					} else {
 						Debug.LogError(res.error);

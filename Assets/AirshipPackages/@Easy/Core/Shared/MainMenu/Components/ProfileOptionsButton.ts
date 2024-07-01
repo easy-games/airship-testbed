@@ -1,7 +1,7 @@
 import { MainMenuController } from "@Easy/Core/Client/ProtectedControllers/MainMenuController";
 import { RightClickMenuButton } from "@Easy/Core/Client/ProtectedControllers/UI/RightClickMenu/RightClickMenuButton";
 import { RightClickMenuController } from "@Easy/Core/Client/ProtectedControllers/UI/RightClickMenu/RightClickMenuController";
-import { UserController } from "@Easy/Core/Client/ProtectedControllers/User/UserController";
+import { ProtectedUserController } from "@Easy/Core/Client/ProtectedControllers/User/ProtectedUserController";
 import { Airship } from "../../Airship";
 import { Dependency } from "../../Flamework";
 import { Game } from "../../Game";
@@ -38,18 +38,14 @@ export default class ProfileOptionsButton extends AirshipBehaviour {
 	}
 
 	public UpdatePicture(): void {
-		const userController = Dependency<UserController>();
+		const userController = Dependency<ProtectedUserController>();
 		userController.WaitForLocalUser();
 		if (userController.localUser) {
-			Airship.Players
-				.GetProfilePictureAsync(
-					userController.localUser.uid,
-				)
-				.then((texture) => {
-					if (texture) {
-						this.gameObject.GetComponent<RawImage>()!.texture = texture;
-					}
-				});
+			Airship.Players.GetProfilePictureAsync(userController.localUser.uid).then((texture) => {
+				if (texture) {
+					this.gameObject.GetComponent<RawImage>()!.texture = texture;
+				}
+			});
 		}
 	}
 

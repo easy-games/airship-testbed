@@ -1,6 +1,11 @@
+import { SocketController } from "@Easy/Core/Client/ProtectedControllers/Socket/SocketController";
+import { Dependency } from "../../Flamework";
 import { Game } from "../../Game";
+import { Protected } from "../../Protected";
 import { AirshipUrl } from "../../Util/AirshipUrl";
 import { Bin } from "../../Util/Bin";
+import { CanvasAPI } from "../../Util/CanvasAPI";
+import { ChatColor } from "../../Util/ChatColor";
 import { SetInterval } from "../../Util/Timer";
 
 export default class SocialMenu extends AirshipBehaviour {
@@ -34,13 +39,46 @@ export default class SocialMenu extends AirshipBehaviour {
 			),
 		);
 
-		// const socketController = Dependency<SocketController>();
-		// this.bin.Add(
-		// 	socketController.onSocketConnectionChanged.Connect((connected) => {
-		// 		this.verticalLayout.gameObject.SetActive(connected);
-		// 		this.lostConnectionNotice.SetActive(!connected);
-		// 	}),
-		// );
+		const socketController = Dependency<SocketController>();
+
+		// default to connected state to prevent flicker
+		this.SetOfflineNoticeVisible(false);
+
+		task.delay(0.5, () => {
+			if (!socketController.IsConnected()) {
+				this.SetOfflineNoticeVisible(true);
+			}
+		});
+
+		this.bin.Add(
+			socketController.onSocketConnectionChanged.Connect((connected) => {
+				this.SetOfflineNoticeVisible(!connected);
+
+				if (!connected) {
+					Game.localPlayer.SendMessage(ChatColor.Red("[Airship] Lost connection to online services."));
+				}
+			}),
+		);
+		this.bin.AddEngineEventConnection(
+			CanvasAPI.OnClickEvent(this.reconnectButton.gameObject, () => {
+				print("Reconnecting...");
+				socketController.Connect();
+			}),
+		);
+		this.bin.AddEngineEventConnection(
+			CanvasAPI.OnClickEvent(this.logoutbutton.gameObject, () => {
+				Protected.user.Logout();
+			}),
+		);
+	}
+
+	public SetOfflineNoticeVisible(visible: boolean): void {
+		this.verticalLayout.gameObject.SetActive(!visible);
+		this.lostConnectionNotice.SetActive(visible);
+		if (Game.IsInGame() && !Game.IsMobile()) {
+			const rect = this.lostConnectionNotice.transform as RectTransform;
+			rect.anchoredPosition = new Vector2(rect.anchoredPosition.x, -50);
+		}
 	}
 
 	private FetchLiveStats(): void {

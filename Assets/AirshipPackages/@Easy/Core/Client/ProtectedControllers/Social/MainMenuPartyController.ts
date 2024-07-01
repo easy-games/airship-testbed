@@ -46,7 +46,7 @@ export class MainMenuPartyController {
 			this.UpdateParty();
 
 			if (this.party === undefined) {
-				this.partyCard.SetLeaderStatus(undefined);
+				this.partyCard.UpdateInfo(undefined);
 			}
 		});
 
@@ -54,7 +54,7 @@ export class MainMenuPartyController {
 			if (!this.party) return;
 
 			const partyLeader = data.find((d) => d.userId === this.party!.leader);
-			this.partyCard.SetLeaderStatus(partyLeader);
+			this.partyCard.UpdateInfo(partyLeader);
 		});
 
 		this.socketController.On<Party>("game-coordinator/party-invite", (data) => {
