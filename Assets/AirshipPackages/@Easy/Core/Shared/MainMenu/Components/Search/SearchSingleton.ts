@@ -1,5 +1,5 @@
 import { GameDto, GamesDto, MyGamesDto } from "@Easy/Core/Client/Components/HomePage/API/GamesAPI";
-import { Controller, OnStart, Service } from "@Easy/Core/Shared/Flamework/flamework";
+import { Controller, Service } from "@Easy/Core/Shared/Flamework/flamework";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 import { SetTimeout } from "@Easy/Core/Shared/Util/Timer";
@@ -8,12 +8,12 @@ import { DecodeJSON } from "@Easy/Core/Shared/json";
 @Service({ loadOrder: -1000 })
 @Controller({ loadOrder: -1000 })
 // @Singleton()
-export default class SearchSingleton implements OnStart {
+export default class SearchSingleton {
 	public games: GameDto[] = [];
 	public myGames: GameDto[] = [];
 	public myGamesIds = new Set<string>();
 
-	OnStart(): void {
+	protected OnStart(): void {
 		task.spawn(() => {
 			this.FetchPopularGames();
 		});

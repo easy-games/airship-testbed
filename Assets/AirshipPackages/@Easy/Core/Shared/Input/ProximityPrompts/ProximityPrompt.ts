@@ -145,7 +145,7 @@ export default class ProximityPrompt extends AirshipBehaviour {
 		this.backgroundImg.raycastTarget = Game.IsMobile() || this.mouseRaycastTarget;
 
 		this.shownBin.Add(
-			Airship.input.OnUp(this.actionName).Connect((event) => {
+			Airship.Input.OnUp(this.actionName).Connect((event) => {
 				if (event.uiProcessed) return;
 
 				this.KeyUp();
@@ -153,7 +153,7 @@ export default class ProximityPrompt extends AirshipBehaviour {
 			}),
 		);
 		this.shownBin.Add(
-			Airship.input.OnDown(this.actionName).Connect((event) => {
+			Airship.Input.OnDown(this.actionName).Connect((event) => {
 				this.KeyDown();
 			}),
 		);
@@ -166,7 +166,7 @@ export default class ProximityPrompt extends AirshipBehaviour {
 			} else {
 				this.keybindTextLabel.gameObject.SetActive(true);
 				this.touchIcon.gameObject.SetActive(false);
-				const action = Airship.input.GetActionByInputType(this.actionName, ActionInputType.Keyboard);
+				const action = Airship.Input.GetActionByInputType(this.actionName, ActionInputType.Keyboard);
 				if (action && action.binding.config.isKeyBinding) {
 					this.keybindTextLabel.text = InputUtils.GetStringForKeyCode(action.binding.config.key);
 				} else {

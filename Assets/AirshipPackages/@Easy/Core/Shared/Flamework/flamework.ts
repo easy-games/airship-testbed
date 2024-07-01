@@ -202,10 +202,6 @@ export namespace Flamework {
 		const start = new Map<OnStart, string>();
 		const init = new Map<OnInit, string>();
 
-		const tick = new Map<OnTick, string>();
-		const render = new Map<OnRender, string>();
-		const physics = new Map<OnPhysics, string>();
-
 		dependencies.sort(([, a], [, b]) => (a.loadOrder ?? 1) < (b.loadOrder ?? 1));
 
 		for (const [dependency] of dependencies) {
@@ -343,46 +339,4 @@ export interface OnStart {
 	 * @hideinherited
 	 */
 	OnStart(): void;
-}
-
-/**
- * Hook into the OnTick lifecycle event.
- * Equivalent to: RunCore.Heartbeat
- */
-export interface OnTick {
-	/**
-	 * Called every frame, after physics.
-	 *
-	 * @hideinherited
-	 */
-	OnTick(dt: number): void;
-}
-
-/**
- * Hook into the OnPhysics lifecycle event.
- * Equivalent to: RunCore.Stepped
- */
-export interface OnPhysics {
-	/**
-	 * Called every frame, before physics.
-	 *
-	 * @hideinherited
-	 */
-	OnPhysics(dt: number, time: number): void;
-}
-
-/**
- * Hook into the OnRender lifecycle event.
- * Equivalent to: RunCore.RenderStepped
- *
- * @client
- */
-export interface OnRender {
-	/**
-	 * Called every frame, before rendering.
-	 * Only available for controllers.
-	 *
-	 * @hideinherited
-	 */
-	OnRender(dt: number): void;
 }

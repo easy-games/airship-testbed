@@ -25,7 +25,7 @@ export class BotCommand extends ChatCommand {
 
 		player.SendMessage(`Spawning ${amount} bot${amount > 1 ? "s" : ""}...`);
 		for (let i = 0; i < amount; i++) {
-			const bot = Airship.players.AddBotPlayer();
+			const bot = Airship.Players.AddBotPlayer();
 			bot.ObserveCharacter((character) => {
 				if (character) {
 					this.StartRandomMovement(character);

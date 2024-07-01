@@ -4264,11 +4264,11 @@ interface Transform extends Component {
 	LookAt(target: Transform): void;
 	LookAt(worldPosition: Vector3, worldUp: Vector3): void;
 	LookAt(worldPosition: Vector3): void;
-	Rotate(eulers: Vector3, relativeTo: Space): void;
+	RotateRelativeTo(eulers: Vector3, relativeTo: Space): void;
+	RotateRelativeTo(xAngle: number, yAngle: number, zAngle: number, relativeTo: Space): void;
+	RotateRelativeTo(axis: Vector3, angle: number, relativeTo: Space): void;
 	Rotate(eulers: Vector3): void;
-	Rotate(xAngle: number, yAngle: number, zAngle: number, relativeTo: Space): void;
 	Rotate(xAngle: number, yAngle: number, zAngle: number): void;
-	Rotate(axis: Vector3, angle: number, relativeTo: Space): void;
 	Rotate(axis: Vector3, angle: number): void;
 	RotateAround(point: Vector3, axis: Vector3, angle: number): void;
 	RotateAround(axis: Vector3, angle: number): void;

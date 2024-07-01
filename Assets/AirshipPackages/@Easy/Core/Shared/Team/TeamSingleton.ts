@@ -1,6 +1,6 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
-import { OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
+import { Singleton } from "@Easy/Core/Shared/Flamework";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
@@ -15,17 +15,17 @@ interface TeamEntry {
 }
 
 @Singleton()
-export class TeamsSingleton implements OnStart {
+export class TeamsSingleton {
 	public readonly onPlayerChangeTeam = new Signal<[player: Player, newTeam: Team, oldTeam: Team | undefined]>();
 	public readonly onTeamAdded = new Signal<Team>();
 
 	private teams = new Map<string, TeamEntry>();
 
 	constructor() {
-		Airship.teams = this;
+		Airship.Teams = this;
 	}
 
-	OnStart(): void {
+	protected OnStart(): void {
 		if (Game.IsClient()) {
 			CoreNetwork.ServerToClient.AddTeams.client.OnServerEvent((teamDtos) => {
 				for (let dto of teamDtos) {
@@ -40,7 +40,7 @@ export class TeamsSingleton implements OnStart {
 					});
 					this.onTeamAdded.Fire(team);
 					for (let userId of dto.userIds) {
-						const player = Airship.players.FindByUserId(userId);
+						const player = Airship.Players.FindByUserId(userId);
 						if (player) {
 							team.AddPlayer(player);
 						}
@@ -61,7 +61,7 @@ export class TeamsSingleton implements OnStart {
 				const team = this.FindById(teamId);
 				if (!team) return;
 
-				const player = Airship.players.FindByUserId(userId);
+				const player = Airship.Players.FindByUserId(userId);
 				if (!player) return;
 
 				team.AddPlayer(player);
@@ -71,14 +71,14 @@ export class TeamsSingleton implements OnStart {
 				const team = this.FindById(teamId);
 				if (!team) return;
 
-				const player = Airship.players.FindByUserId(playerId);
+				const player = Airship.Players.FindByUserId(playerId);
 				if (!player) return;
 
 				team.RemovePlayer(player);
 			});
 		}
 		if (Game.IsServer()) {
-			Airship.players.onPlayerJoined.ConnectWithPriority(SignalPriority.LOWEST, (player) => {
+			Airship.Players.onPlayerJoined.ConnectWithPriority(SignalPriority.LOWEST, (player) => {
 				const teamDtos = ObjectUtils.values(this.teams).map((e) => e.team.Encode());
 				CoreNetwork.ServerToClient.AddTeams.server.FireClient(player, teamDtos);
 			});

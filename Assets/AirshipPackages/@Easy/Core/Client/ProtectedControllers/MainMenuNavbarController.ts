@@ -1,5 +1,5 @@
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
-import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import MainMenuNavButton from "@Easy/Core/Shared/MainMenu/Components/MainMenuNavButton";
 import { CoreUI } from "@Easy/Core/Shared/UI/CoreUI";
@@ -9,19 +9,19 @@ import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { AuthController } from "./Auth/AuthController";
 import { MainMenuController } from "./MainMenuController";
 import { MainMenuPageType } from "./MainMenuPageName";
-import { UserController } from "./User/UserController";
+import { ProtectedUserController } from "./User/ProtectedUserController";
 
 @Controller({})
-export class MainMenuNavbarController implements OnStart {
+export class MainMenuNavbarController {
 	private searchFocused!: GameObject;
 
 	constructor(
 		private readonly mainMenuController: MainMenuController,
-		private readonly userController: UserController,
+		private readonly userController: ProtectedUserController,
 		private readonly authController: AuthController,
 	) {}
 
-	OnStart(): void {
+	protected OnStart(): void {
 		this.Setup();
 
 		const keyboard = new Keyboard();

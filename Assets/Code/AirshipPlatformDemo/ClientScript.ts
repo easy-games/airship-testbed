@@ -20,7 +20,7 @@ export default class ClientScript extends AirshipBehaviour {
 
 		this.bin.Add(
 			Network.ServerToClient.TopScores.client.OnServerEvent(async (event) => {
-				const { data } = await Platform.client.user.GetUsersById(
+				const { data } = await Platform.Client.User.GetUsersById(
 					event.map((u) => u.id),
 					false,
 				);

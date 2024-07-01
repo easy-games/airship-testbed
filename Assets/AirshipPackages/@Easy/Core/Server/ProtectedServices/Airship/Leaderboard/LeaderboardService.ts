@@ -1,12 +1,12 @@
 import { LeaderboardUpdate } from "@Easy/Core/Server/Services/Airship/Leaderboard/AirshipLeaderboardService";
 import { RankData } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipLeaderboard";
-import { OnStart, Service } from "@Easy/Core/Shared/Flamework";
+import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Result } from "@Easy/Core/Shared/Types/Result";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 
-export enum LeaderboardServiceBridgeTopics {
+export const enum LeaderboardServiceBridgeTopics {
 	Update = "LeaderboardService:Update",
 	GetRank = "LeaderboardService:GetRank",
 	GetRankRange = "LeaderboardService:GetRankRange",
@@ -27,7 +27,7 @@ export type ServerBridgeApiLeaderboardGetRankRange = (
 ) => Result<RankData[], undefined>;
 
 @Service({})
-export class ProtectedLeaderboardService implements OnStart {
+export class ProtectedLeaderboardService {
 	constructor() {
 		if (!Game.IsServer()) return;
 
@@ -115,5 +115,5 @@ export class ProtectedLeaderboardService implements OnStart {
 		);
 	}
 
-	OnStart(): void {}
+	protected OnStart(): void {}
 }

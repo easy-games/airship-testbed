@@ -15,7 +15,7 @@ export default class SettingsKeybindPage extends AirshipBehaviour {
 	public OnEnable(): void {
 		this.list.gameObject.ClearChildren();
 
-		const bindings = Airship.input.GetBindings();
+		const bindings = Airship.Input.GetBindings();
 
 		for (const binding of bindings) {
 			const inputType = InputUtil.GetInputTypeFromBinding(binding.binding, KeyType.Primary);

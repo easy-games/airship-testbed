@@ -1,5 +1,4 @@
 ﻿import { GameObjectUtil } from "@Easy/Core/Shared/GameObject/GameObjectUtil";
-import { Task } from "../Util/Task";
 
 export interface ProgressBarOptions {
 	initialPercentDelta?: number;
@@ -74,13 +73,13 @@ export class Healthbar {
 
 		if (this.deathOnZero && percentDelta <= 0) {
 			//Wait for the change animation
-			Task.Delay(this.fillDurationInSeconds, () => {
+			task.delay(this.fillDurationInSeconds, () => {
 				if (this.transform) {
 					//Play the death animation
 					this.deathAnim.Play();
 					this.graphicsHolder.gameObject.SetActive(false);
 					this.brokenGraphicsHolder.gameObject.SetActive(true);
-					Task.Delay(1.1, () => {
+					task.delay(1.1, () => {
 						if (this.transform && this.currentDelta > 0) {
 							//Reset if the progress has filled back up (Respawn)
 							this.SetValue(this.currentDelta);
@@ -122,7 +121,7 @@ export class Healthbar {
 			this.changeFillTransform.gameObject.SetActive(true);
 
 			//Hold then animate change indicator
-			Task.Delay(this.changeDelayInSeconds, () => {
+			task.delay(this.changeDelayInSeconds, () => {
 				if (!this.enabled) return;
 				this.changeFillTransform.TweenLocalScaleX(percentDelta, this.changeDurationInSeconds);
 			});

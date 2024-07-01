@@ -115,18 +115,6 @@ export class ItemUtil {
 		this.runtimeIdCounter++;
 	}
 
-	/**
-	 * @deprecated
-	 */
-	public static GetItemTypeFromBlockId(blockId: number): string | undefined {
-		const WorldAPI = import("@Easy/Core/Shared/VoxelWorld/WorldAPI").expect().WorldAPI;
-		const world = WorldAPI.GetMainWorld();
-		if (!world) return undefined;
-
-		const stringId = world.GetIdFromVoxelId(blockId);
-		return this.GetItemTypeFromStringId(stringId);
-	}
-
 	public static GetItemTypeFromStringId(stringId: string): string | undefined {
 		return ItemUtil.blockIdToItemType.get(stringId);
 	}

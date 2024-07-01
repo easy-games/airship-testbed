@@ -1,6 +1,6 @@
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
-import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import HomePageComponent from "@Easy/Core/Shared/MainMenu/Components/HomePageComponent";
 import GameGeneralPage from "@Easy/Core/Shared/MainMenu/Components/Settings/General/GameGeneralPage";
@@ -15,7 +15,7 @@ import DevelopMenuPage from "./Develop/DevelopMenuPage";
 import { MainMenuPageType } from "./MainMenuPageName";
 
 @Controller()
-export class MainMenuController implements OnStart {
+export class MainMenuController {
 	private readonly socialTweenDuration = 0.25;
 
 	public mainMenuGo: GameObject;
@@ -157,7 +157,7 @@ export class MainMenuController implements OnStart {
 		return this.open;
 	}
 
-	OnStart(): void {
+	protected OnStart(): void {
 		if (this.currentPage === undefined) {
 			//init pages
 			for (const [key, value] of this.pageMap) {

@@ -674,7 +674,8 @@ interface SocketManager {
 	SetScriptListening(val: boolean): void;
 	EmitAsync(eventName: string, data: string): void;
 	Instance: {
-		OnEvent(callback: (eventName: string, data: string) => void): void;
+		OnEvent(callback: (eventName: string, data: string) => void): EngineEventConnection;
+		OnDisconnected(callback: (disconnectReason: string) => void): EngineEventConnection;
 	};
 }
 declare const SocketManager: SocketManager;
@@ -996,4 +997,10 @@ interface CoreScriptingManager extends MonoBehaviour {
 	OnClientPresenceChangeEnd(
 		callback: (scene: Scene, connection: NetworkConnection, added: boolean) => void,
 	): EngineEventConnection;
+}
+
+interface AnimatorOverrideController extends RuntimeAnimatorController {
+	SetClip(name: string, clip: AnimationClip): void;
+	ApplyOverrides(): void;
+	overridesCount: number;
 }

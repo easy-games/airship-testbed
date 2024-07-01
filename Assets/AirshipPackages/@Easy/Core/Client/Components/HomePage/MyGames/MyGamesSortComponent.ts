@@ -3,6 +3,7 @@ import SearchSingleton from "@Easy/Core/Shared/MainMenu/Components/Search/Search
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import SortComponent from "../Sort/SortComponent";
 
+/** @internal */
 export default class MyGamesSortComponent extends AirshipBehaviour {
 	@Tooltip("If true this sort automatically fetches games.")
 	public fetchMyGames = true;

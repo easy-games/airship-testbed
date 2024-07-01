@@ -1,4 +1,5 @@
 import { ProtectedPartyController } from "@Easy/Core/Client/ProtectedControllers/Airship/Party/PartyController";
+import { MainMenuPartyController } from "@Easy/Core/Client/ProtectedControllers/Social/MainMenuPartyController";
 import { TransferController } from "@Easy/Core/Client/ProtectedControllers/Transfer/TransferController";
 import { UserStatus, UserStatusData } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipUser";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
@@ -38,7 +39,7 @@ export default class PartyCard extends AirshipBehaviour {
 				Dependency<TransferController>().TransferToPartyLeader();
 			}),
 		);
-		
+
 		this.SetupDragFriendHooks();
 	}
 
@@ -69,14 +70,16 @@ export default class PartyCard extends AirshipBehaviour {
 		// this.defaultContents.SetActive(hovering === false);
 	}
 
-	public SetLeaderStatus(userStatus: UserStatusData | undefined) {
+	public UpdateInfo(userStatus: UserStatusData | undefined) {
+		const party = Dependency<MainMenuPartyController>().party;
+
 		if (userStatus === undefined) {
 			this.layoutElement.preferredHeight = 84;
 			this.layoutElement.gameObject.GetComponent<ImageWithRoundedCorners>()?.Refresh();
 			return;
 		}
 
-		if (userStatus.status !== UserStatus.IN_GAME) {
+		if (userStatus.status !== UserStatus.IN_GAME || !party || party.members.size() <= 1) {
 			this.layoutElement.preferredHeight = 84;
 			this.layoutElement.gameObject.GetComponent<ImageWithRoundedCorners>()?.Refresh();
 			return;

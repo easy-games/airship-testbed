@@ -1,6 +1,5 @@
 import { AirshipPartyController } from "../Client/Controllers/Airship/Party/AirshipPartyController";
 import { AirshipPlatformInventoryController } from "../Client/Controllers/Airship/PlatformInventory/AirshipPlatformInventoryController";
-import { AirshipPurchaseController } from "../Client/Controllers/Airship/Purchase/AirshipPurchaseController";
 import { AirshipUserController } from "../Client/Controllers/Airship/User/AirshipUserController";
 import { AirshipCacheStoreService } from "../Server/Services/Airship/CacheStore/AirshipCacheStoreService";
 import { AirshipDataStoreService } from "../Server/Services/Airship/DataStore/AirshipDataStoreService";
@@ -8,16 +7,17 @@ import { AirshipLeaderboardService } from "../Server/Services/Airship/Leaderboar
 import { AirshipPartyService } from "../Server/Services/Airship/Party/AirshipPartyService";
 import { AirshipPlatformInventoryService } from "../Server/Services/Airship/PlatformInventory/AirshipPlatformInventoryService";
 import { AirshipTransferService } from "../Server/Services/Airship/Transfer/AirshipTransferService";
-import { AirshipUserService } from "../Server/Services/Airship/User/AirshipUserService";
 import { AirshipCharacterCameraSingleton } from "./Camera/AirshipCharacterCameraSingleton";
-import { CharactersSingleton } from "./Character/CharactersSingleton";
+import { AirshipCharactersSingleton } from "./Character/AirshipCharactersSingleton";
+import CharacterConfigSetup from "./Character/CharacterConfigSetup";
 import { AirshipChatSingleton } from "./Chat/AirshipChatSingleton";
 import { DamageSingleton } from "./Damage/DamageSingleton";
-import { OnStart } from "./Flamework";
 import { AirshipInputSingleton } from "./Input/AirshipInputSingleton";
-import { InventorySingleton } from "./Inventory/InventorySingleton";
+import { AirshipInventorySingleton } from "./Inventory/AirshipInventorySingleton";
 import { LoadingScreenSingleton } from "./LoadingScreen/LoadingScreenSingleton";
+import { Player } from "./Player/Player";
 import { PlayersSingleton } from "./Player/PlayersSingleton";
+import { AirshipPurchaseSingleton } from "./Purchase/PurchaseSingleton";
 import { TagsSingleton } from "./Tags/TagsSingleton";
 import { TeamsSingleton } from "./Team/TeamSingleton";
 
@@ -26,11 +26,11 @@ import { TeamsSingleton } from "./Team/TeamSingleton";
  *
  * Server services will be undefined on the client. Client services will be undefined on the server.
  */
-export const Platform = {
+export namespace Platform {
 	/**
 	 * Server accessible services.
 	 */
-	server: {
+	export namespace Server {
 		/**
 		 * The Cache Store provides simple key/value cache storage.
 		 *
@@ -41,7 +41,7 @@ export const Platform = {
 		 * The Cache Store is good for things like queue cooldowns or share codes. If you want your data to be persistent, check
 		 * out the Data Store.
 		 */
-		cacheStore: undefined as unknown as Omit<AirshipCacheStoreService, "OnStart">,
+		export let CacheStore = undefined! as AirshipCacheStoreService;
 		/**
 		 * The Data Store provides simple key/value persistent storage.
 		 *
@@ -51,25 +51,21 @@ export const Platform = {
 		 * The Data Store is good for things like user profiles or unlocks. If you want to keep track of user statistics or
 		 * build tradable inventory, check out the Leaderboard and PlatformInventory systems.s
 		 */
-		dataStore: undefined as unknown as Omit<AirshipDataStoreService, "OnStart">,
+		export let DataStore = undefined! as AirshipDataStoreService;
 		/**
 		 * This service provides access to leaderboard information as well as methods for updating existing leaderboards.
 		 * Leaderboards must be created using the https://create.airship.gg website. Once a leaderboard is created, it can be
 		 * accessed using the name provided during setup.
 		 */
-		leaderboard: undefined as unknown as Omit<AirshipLeaderboardService, "OnStart">,
+		export let Leaderboard = undefined! as AirshipLeaderboardService;
 		/**
 		 * Allows access to player party information.
 		 */
-		party: undefined as unknown as Omit<AirshipPartyService, "OnStart">,
+		export let Party = undefined! as AirshipPartyService;
 		/**
 		 * The transfer service allows you to move players between servers and create new servers.
 		 */
-		transfer: undefined as unknown as Omit<AirshipTransferService, "OnStart">,
-		/**
-		 * Provides access to user information.
-		 */
-		user: undefined as unknown as Omit<AirshipUserService, "OnStart">,
+		export let Transfer = undefined! as AirshipTransferService;
 		/**
 		 * Allows management of platform inventory for a player. These functions manipluate a persistent inventory
 		 * that the player owns. Items, Accessories, and Profile Pictures are all managed by this inventory and the
@@ -87,57 +83,92 @@ export const Platform = {
 		 * - Content purchased with real money
 		 * - Content that players may want to trade or sell to other players
 		 */
-		inventory: undefined as unknown as Omit<AirshipPlatformInventoryService, "OnStart">,
-	},
+		export let Inventory = undefined! as AirshipPlatformInventoryService;
+	}
+
 	/**
 	 * Client accessible services.
 	 */
-	client: {
+	export namespace Client {
 		/**
 		 * This controller provides information about the users current party.
 		 */
-		party: undefined as unknown as Omit<AirshipPartyController, "OnStart">,
+		export let Party = undefined! as AirshipPartyController;
 		/**
 		 * This controller allows access to the current players platform inventory. Platform inventory
 		 * is managed by game servers and configured on the https://create.airship.gg website.
 		 */
-		inventory: undefined as unknown as Omit<AirshipPlatformInventoryController, "OnStart">,
+		export let Inventory = undefined! as AirshipPlatformInventoryController;
 		/**
 		 * Provides access to user information.
 		 */
-		user: undefined as unknown as Omit<AirshipUserController, "OnStart">,
+		export let User = undefined! as AirshipUserController;
 		/**
-		 * Prompt users to buy products in your game.
+		 * Prompt players to buy products in your game.
 		 */
-		purchase: undefined as unknown as Omit<AirshipPurchaseController, "OnStart">,
-	},
-};
+		export let Purchase = undefined! as AirshipPurchaseSingleton;
+	}
+}
 
-export const Airship = {
-	players: undefined as unknown as Omit<PlayersSingleton, "OnStart">,
-	characters: undefined as unknown as Omit<CharactersSingleton, "OnStart">,
-	input: undefined as unknown as Omit<AirshipInputSingleton, "OnStart">,
-	damage: undefined as unknown as Omit<DamageSingleton, "OnStart">,
-	teams: undefined as unknown as Omit<TeamsSingleton, "OnStart">,
-	inventory: undefined as unknown as Omit<InventorySingleton, "OnStart">,
-	loadingScreen: undefined as unknown as Omit<LoadingScreenSingleton, "OnStart">,
-	characterCamera: undefined as unknown as Omit<AirshipCharacterCameraSingleton, "OnStart">,
+/** Airship */
+export namespace Airship {
+	/**
+	 * Players allows you to work with currently connected clients (with Airship's {@link Player} object).
+	 *
+	 * If you are looking to get information about offline users see {@link AirshipUserController}
+	 */
+	export let Players = undefined! as PlayersSingleton;
+	/**
+	 * Characters singleton provides utilities for working with the {@link Character} object.
+	 *
+	 * To control your game's default character see {@link CharacterConfigSetup}.
+	 */
+	export let Characters = undefined! as AirshipCharactersSingleton;
+	/**
+	 * Input singleton contains functions to work with player input (including mouse, keyboard, and touch screen).
+	 * Players can rebind their action bindings in their settings menu.
+	 *
+	 * Ex:
+	 * ```ts
+	 * Airship.Input.CreateAction("Attack", Binding.MouseButton(MouseButton.LeftButton));
+	 * Airship.Input.OnDown("Attack").Connect(() => {
+	 * 	print("Attacked!");
+	 * });
+	 * ```
+	 */
+	export let Input = undefined! as AirshipInputSingleton;
+	export let Damage = undefined! as DamageSingleton;
+	export let Teams = undefined! as TeamsSingleton;
+	export let Inventory = undefined! as AirshipInventorySingleton;
+	/**
+	 * [Client only]
+	 *
+	 * Manage the player's loading screen when joining your game. This can be useful if your game requires
+	 * some work on the client before the game is ready to be played, such as spawning a map.
+	 */
+	export let LoadingScreen = undefined! as LoadingScreenSingleton;
+	export let CharacterCamera = undefined! as AirshipCharacterCameraSingleton;
 	/**
 	 * Namespace for managing and query Airship tags on game objects
 	 * @see https://docs.airship.gg/tags
 	 */
-	tags: undefined! as Omit<TagsSingleton, keyof OnStart>,
+	export let Tags = undefined! as TagsSingleton;
 
-	chat: undefined as unknown as Omit<AirshipChatSingleton, "OnStart">,
+	/**
+	 * Functions for configuring the chat window as well as broadcasting messages.
+	 *
+	 * To send a player a message see {@link Player.SendMessage}.
+	 */
+	export let Chat = undefined! as AirshipChatSingleton;
 
 	/**
 	 * Internal method used to wait until Airship singletons are ready.
 	 * This is only needed when developing inside the Core package.
 	 * @internal
 	 */
-	WaitUntilReady: () => {
-		while (Airship.players === undefined) {
+	export function WaitUntilReady() {
+		while (Airship.Players === undefined) {
 			task.wait();
 		}
-	},
-};
+	}
+}

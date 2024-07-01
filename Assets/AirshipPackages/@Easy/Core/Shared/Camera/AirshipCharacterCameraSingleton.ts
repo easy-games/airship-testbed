@@ -1,4 +1,4 @@
-import { Dependency, OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
+import { Dependency, Singleton } from "@Easy/Core/Shared/Flamework";
 import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 import { CameraMode } from ".";
 import { Airship } from "../Airship";
@@ -25,15 +25,8 @@ interface CharacterStateSnapshot {
 	firstPerson: boolean;
 }
 
-interface ViewModelUpdate {
-	/** Target position of the view model. Update to change. */
-	position: Vector3;
-	/** Target rotation of the view model. Update to change. */
-	rotation: Quaternion;
-}
-
 @Singleton({})
-export class AirshipCharacterCameraSingleton implements OnStart {
+export class AirshipCharacterCameraSingleton {
 	public canToggleFirstPerson = true;
 
 	private lookBackwards = false;
@@ -53,13 +46,6 @@ export class AirshipCharacterCameraSingleton implements OnStart {
 	/** Fires whenever the user changes their first-person state. */
 	public readonly firstPersonChanged = new Signal<[isFirstPerson: boolean]>();
 
-	/**
-	 * Fires before view model updates with position and rotation. Change these values to adjust view model position.
-	 *
-	 * Transform is the Spine Transform.
-	 */
-	public onViewModelUpdate = new Signal<[spineTransform: Transform]>();
-
 	private fps?: FirstPersonCameraSystem;
 	public humanoidCameraMode: HumanoidCameraMode | undefined;
 	private orbitCameraMode: OrbitCameraMode | undefined;
@@ -74,7 +60,7 @@ export class AirshipCharacterCameraSingleton implements OnStart {
 	private thirdPersonFOV = 70;
 
 	constructor() {
-		Airship.characterCamera = this;
+		Airship.CharacterCamera = this;
 	}
 
 	public StartNewCameraSystem(cameraRig: CameraRig): CameraSystem {
@@ -96,7 +82,7 @@ export class AirshipCharacterCameraSingleton implements OnStart {
 		this.cameraSystem = undefined;
 	}
 
-	OnStart(): void {
+	protected OnStart(): void {
 		Dependency<LocalCharacterSingleton>().stateChanged.Connect((state) => {
 			const isSprinting = Dependency<LocalCharacterSingleton>().input?.IsSprinting();
 			this.UpdateLocalCharacterState({
@@ -359,7 +345,9 @@ export class AirshipCharacterCameraSingleton implements OnStart {
 						}
 					});
 					flyingBin.Add(Dependency<LocalCharacterSingleton>().input!.AddDisabler());
-					flyingBin.Add(Airship.inventory.localCharacterInventory.AddDisabler());
+					if (Airship.Inventory.localInventory) {
+						flyingBin.Add(Airship.Inventory.localInventory.AddControlsDisabler());
+					}
 				}
 			}
 		});

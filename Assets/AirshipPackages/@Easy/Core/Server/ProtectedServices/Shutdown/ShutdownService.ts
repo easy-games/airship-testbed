@@ -1,9 +1,9 @@
-import { OnStart, Service } from "@Easy/Core/Shared/Flamework";
+import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
 
 @Service({})
-export class ShutdownService implements OnStart {
+export class ShutdownService {
 	private playerConnected = false;
 	private timeWithNoPlayers = 0;
 
@@ -12,7 +12,7 @@ export class ShutdownService implements OnStart {
 
 	constructor() {}
 
-	OnStart(): void {
+	protected OnStart(): void {
 		// Airship.players.onPlayerJoined.Connect((player) => {
 		// 	this.playerConnected = true;
 		// 	this.timeWithNoPlayers = 0;

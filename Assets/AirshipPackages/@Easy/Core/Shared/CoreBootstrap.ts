@@ -5,9 +5,7 @@
 import { AvatarUtil } from "@Easy/Core/Shared/Avatar/AvatarUtil";
 import { Flamework } from "@Easy/Core/Shared/Flamework";
 import { AudioManager } from "./Audio/AudioManager";
-import { Bootstrap } from "./Bootstrap/Bootstrap";
 import { CoreContext } from "./CoreClientContext";
-import { CoreNetwork } from "./CoreNetwork";
 import { CoreRefs } from "./CoreRefs";
 import { Game } from "./Game";
 import { InitNet } from "./Network/NetworkAPI";
@@ -84,13 +82,13 @@ if (Game.IsServer()) {
 	Game.organizationId = serverInfo.organizationId;
 }
 
-if (Game.IsClient()) {
-	CoreNetwork.ServerToClient.ChatMessage.client.OnServerEvent((message, senderPrefix, senderClientId) => {
-		contextbridge.invoke<
-			(rawText: string, nameWithPrefix: string | undefined, senderClientId: number | undefined) => void
-		>("Chat:AddMessage", LuauContext.Protected, message, senderPrefix, senderClientId);
-	});
-}
+// if (Game.IsClient()) {
+// 	CoreNetwork.ServerToClient.ChatMessage.client.OnServerEvent((message, senderPrefix, senderClientId) => {
+// 		contextbridge.invoke<
+// 			(rawText: string, nameWithPrefix: string | undefined, senderClientId: number | undefined) => void
+// 		>("Chat:AddMessage", LuauContext.Protected, message, senderPrefix, senderClientId);
+// 	});
+// }
 
 contextbridge.subscribe<(from: LuauContext, sceneName: string, clientId: number, added: boolean) => void>(
 	"SceneManager:OnClientPresenceChangeStart",
@@ -103,7 +101,4 @@ contextbridge.subscribe<(from: LuauContext, sceneName: string, clientId: number,
 	(from, sceneName, clientId, added) => {
 		SceneManager.onClientPresenceChangeEnd.Fire(clientId, sceneName, added);
 	},
-);
-
-Bootstrap.PrepareVoxelWorld();
-Bootstrap.Prepare();
+)
