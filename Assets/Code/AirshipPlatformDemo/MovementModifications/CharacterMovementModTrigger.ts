@@ -10,7 +10,7 @@ export default class CharacterMovementModTrigger extends AirshipBehaviour{
     private activeCharacters: number[] = [];
 
     public Start(): void {
-        Airship.characters.onCharacterSpawned.Connect((character)=>{
+        Airship.Characters.onCharacterSpawned.Connect((character)=>{
             character.movement.OnAdjustMove((modifier) => {
                 if(this.activeCharacters.includes(character.id)){
                     modifier.speedMultiplier *= this.speedMultiplier;

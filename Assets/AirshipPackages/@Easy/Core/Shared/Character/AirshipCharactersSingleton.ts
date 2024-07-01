@@ -272,7 +272,7 @@ export class AirshipCharactersSingleton {
 	 * function was called to stop the observation process).
 	 *
 	 * ```ts
-	 * Airship.characters.ObserveCharacters((character) => {
+	 * Airship.Characters.ObserveCharacters((character) => {
 	 *      character.SetMaxHealth(500);
 	 * });
 	 * ```

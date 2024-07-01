@@ -10,7 +10,7 @@ export default class OneWayPlatform extends AirshipBehaviour{
 
     public Awake(): void {
         this.collider = this.gameObject.GetComponentInChildren<Collider>();
-        Airship.characters.onCharacterSpawned.Connect((character)=>{
+        Airship.Characters.onCharacterSpawned.Connect((character)=>{
             if(Game.IsServer() || !character.IsLocalCharacter()){
                 return;
             }
@@ -25,7 +25,7 @@ export default class OneWayPlatform extends AirshipBehaviour{
     }
 
     public LateUpdate(dt: number): void {
-        Airship.characters.GetCharacters().forEach((character)=>{
+        Airship.Characters.GetCharacters().forEach((character)=>{
             if(!Game.IsServer() && !character.IsLocalCharacter()){
                 return;
             }

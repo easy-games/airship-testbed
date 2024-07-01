@@ -1408,6 +1408,8 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
+        fileRef: 
+        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -1432,6 +1434,8 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
+        fileRef: 
+        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -1447,6 +1451,8 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
+        fileRef: 
+        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -1462,6 +1468,8 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
+        fileRef: 
+        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -1477,6 +1485,8 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
+        fileRef: 
+        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -1492,6 +1502,8 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
+        fileRef: 
+        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -1511,6 +1523,8 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
+        fileRef: 
+        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -1526,6 +1540,8 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
+        fileRef: 
+        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -1541,6 +1557,8 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
+        fileRef: 
+        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -1560,6 +1578,8 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
+        fileRef: 
+        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -1575,6 +1595,8 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
+        fileRef: 
+        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -1590,6 +1612,8 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
+        fileRef: 
+        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -1605,6 +1629,8 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
+        fileRef: 
+        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -1617,6 +1643,32 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 0}
       modified: 1
+    - name: instantiateViewmodel
+      type: boolean
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        fileRef: 
+        refPath: 
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"Viewmodel"'
+      - name: Tooltip
+        parameters:
+        - type: string
+          serializedValue: '"If true, a character viewmodel will be instantiated
+            under the ViewmodelCamera"'
+      nullable: 0
+      serializedValue: 1
+      serializedObject: {fileID: 0}
+      modified: 0
     displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0
@@ -1937,6 +1989,8 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
+        fileRef: 
+        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -1952,6 +2006,8 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
+        fileRef: 
+        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -1967,6 +2023,8 @@ MonoBehaviour:
         type: object
         objectType: GameObject
         serializedItems: []
+        fileRef: 
+        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -1982,6 +2040,8 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
+        fileRef: 
+        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -1997,6 +2057,8 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
+        fileRef: 
+        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -2469,75 +2531,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2076370528963841758, guid: b672af3cbd119f240af9433e14762742, type: 3}
   m_PrefabInstance: {fileID: 1779768750617971782}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &1230755292
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 7512982180137165939, guid: 52fb0088414a8f943ae786eb695b40fa, type: 3}
-      propertyPath: _scenePathHash
-      value: 1265568880
-      objectReference: {fileID: 0}
-    - target: {fileID: 7512982180137165939, guid: 52fb0088414a8f943ae786eb695b40fa, type: 3}
-      propertyPath: <SceneId>k__BackingField
-      value: 5435576954355095949
-      objectReference: {fileID: 0}
-    - target: {fileID: 7512982180137165939, guid: 52fb0088414a8f943ae786eb695b40fa, type: 3}
-      propertyPath: _networkBehaviours.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8584166533509011294, guid: 52fb0088414a8f943ae786eb695b40fa, type: 3}
-      propertyPath: m_Name
-      value: CharacterDummy
-      objectReference: {fileID: 0}
-    - target: {fileID: 8965194988374298084, guid: 52fb0088414a8f943ae786eb695b40fa, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -24.360823
-      objectReference: {fileID: 0}
-    - target: {fileID: 8965194988374298084, guid: 52fb0088414a8f943ae786eb695b40fa, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8965194988374298084, guid: 52fb0088414a8f943ae786eb695b40fa, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -23.276457
-      objectReference: {fileID: 0}
-    - target: {fileID: 8965194988374298084, guid: 52fb0088414a8f943ae786eb695b40fa, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8965194988374298084, guid: 52fb0088414a8f943ae786eb695b40fa, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8965194988374298084, guid: 52fb0088414a8f943ae786eb695b40fa, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8965194988374298084, guid: 52fb0088414a8f943ae786eb695b40fa, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8965194988374298084, guid: 52fb0088414a8f943ae786eb695b40fa, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8965194988374298084, guid: 52fb0088414a8f943ae786eb695b40fa, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8965194988374298084, guid: 52fb0088414a8f943ae786eb695b40fa, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 52fb0088414a8f943ae786eb695b40fa, type: 3}
 --- !u!1001 &1271446801
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4710,4 +4703,3 @@ SceneRoots:
   - {fileID: 913210012}
   - {fileID: 1077937132}
   - {fileID: 569461823}
-  - {fileID: 1230755292}
