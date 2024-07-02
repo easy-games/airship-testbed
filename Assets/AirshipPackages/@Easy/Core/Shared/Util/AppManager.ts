@@ -298,6 +298,11 @@ export class AppManager {
 	}
 }
 
+interface EditorBridge {
+	IsMainMenuInEditorEnabled(): boolean;
+}
+declare const EditorBridge: EditorBridge;
+
 /* Listen for close key globally. */
 if (Game.IsGameLuauContext() || !Game.IsInGame()) {
 	AppManager.keyboard.OnKeyDown(
@@ -314,6 +319,9 @@ if (Game.IsGameLuauContext() || !Game.IsInGame()) {
 	AppManager.keyboard.OnKeyDown(
 		CLOSE_KEY,
 		(event) => {
+			if (Game.IsEditor() && !EditorBridge.IsMainMenuInEditorEnabled()) {
+				return;
+			}
 			event.SetCancelled(true);
 			contextbridge.invoke<() => void>("MainMenu:OpenFromGame", LuauContext.Protected);
 		},
