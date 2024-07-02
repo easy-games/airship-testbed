@@ -520,6 +520,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.Log("Selecting item: " + accTemplate.ToString());
 		let acc = this.mainMenu?.avatarView?.accessoryBuilder?.AddSingleAccessory(accTemplate, instantRefresh);
 		acc?.AccessoryComponent.SetInstanceId(instanceId);
+		this.mainMenu?.avatarView?.PlayReaction(acc?.AccessoryComponent.accessorySlot??AccessorySlot.Root);
 		this.activeAccessories.set(accTemplate.GetSlotNumber(), instanceId);
 		this.selectedAccessories.set(instanceId, true);
 		this.UpdateButtonGraphics();
@@ -559,6 +560,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private SelectSkinColor(color: Color, instantRefresh = true) {
 		this.Log("Selecting Color: " + color);
 		this.mainMenu?.avatarView?.accessoryBuilder?.SetSkinColor(color, instantRefresh);
+		this.mainMenu?.avatarView?.PlayReaction(AccessorySlot.Root);
 		this.selectedColor = ColorUtil.ColorToHex(color);
 		this.UpdateButtonGraphics();
 		this.saveBtn?.SetDisabled(false);
