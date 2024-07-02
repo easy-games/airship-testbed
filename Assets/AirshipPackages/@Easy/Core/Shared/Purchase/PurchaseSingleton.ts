@@ -2,7 +2,7 @@ import {
 	ClientBridgeApiRequestPurchase,
 	PurchaseControllerBridgeTopics,
 } from "@Easy/Core/Client/ProtectedControllers/Airship/Purchase/PurchaseController";
-import { Platform } from "@Easy/Core/Shared/Airship";
+import { Airship } from "@Easy/Core/Shared/Airship";
 import { AirshipUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
 import { Controller, Dependency, Service } from "@Easy/Core/Shared/Flamework";
@@ -10,13 +10,13 @@ import { Game } from "@Easy/Core/Shared/Game";
 import { PlayersSingleton } from "@Easy/Core/Shared/Player/PlayersSingleton";
 
 /**
- * Prompt players to buy products in your game.
+ * Access using {@link Airship.Shop}. Provides services to manage and sell products for real money.
  */
 @Service({})
 @Controller({})
 export class AirshipPurchaseSingleton {
 	constructor() {
-		Platform.Client.Purchase = this;
+		Airship.Shop = this;
 	}
 
 	protected OnStart(): void {

@@ -103,10 +103,6 @@ export namespace Platform {
 		 * Provides access to user information.
 		 */
 		export let User = undefined! as AirshipUserController;
-		/**
-		 * Prompt players to buy products in your game.
-		 */
-		export let Purchase = undefined! as AirshipPurchaseSingleton;
 	}
 }
 
@@ -160,6 +156,10 @@ export namespace Airship {
 	 * To send a player a message see {@link Player.SendMessage}.
 	 */
 	export let Chat = undefined! as AirshipChatSingleton;
+	/**
+	 * Provides services to manage and sell products for real money.
+	 */
+	export let Shop = undefined! as AirshipPurchaseSingleton;
 
 	/**
 	 * Internal method used to wait until Airship singletons are ready.
