@@ -56,10 +56,3 @@ jobs:
           STORAGE_BUCKET: ${{vars.STORAGE_BUCKET}}
         run: |
           gsutil rsync -R GeneratedReference~ gs://"$STORAGE_BUCKET"
-          DIRECTORY=$(pwd)/GeneratedReference~
-          find GeneratedReference~ -type f -name "*.html" | while read file; do
-            RELATIVE_PATH="${file#GeneratedReference~/}"
-            RELATIVE_PATH="${RELATIVE_PATH%.html}"
-            echo "Reuploading $file to gs://$STORAGE_BUCKET/$RELATIVE_PATH"
-            gsutil -h "Content-Type:text/html" cp "$file" "gs://$STORAGE_BUCKET/$RELATIVE_PATH"
-          done
