@@ -1,5 +1,6 @@
 import SteamRichPresence from "@Easy/Core/Client/Airship/Steam/SteamRichPresence";
 import { Airship } from "@Easy/Core/Shared/Airship";
+import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
 import Character from "@Easy/Core/Shared/Character/Character";
 import { CharacterCameraMode } from "@Easy/Core/Shared/Character/LocalCharacter/CharacterCameraMode";
 import { Game } from "@Easy/Core/Shared/Game";
@@ -7,6 +8,7 @@ import { Binding } from "@Easy/Core/Shared/Input/Binding";
 import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
 import { ItemUtil } from "@Easy/Core/Shared/Item/ItemUtil";
 import { Player } from "@Easy/Core/Shared/Player/Player";
+import { Keyboard } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 
 export default class DemoManager extends AirshipBehaviour {
@@ -78,6 +80,16 @@ export default class DemoManager extends AirshipBehaviour {
 					};
 				}),
 			);
+
+			const keyboard = new Keyboard();
+			keyboard.OnKeyDown(Key.O, (event) => {
+				if (event.uiProcessed) return;
+
+				const cube = Object.Instantiate(AssetCache.LoadAsset("Assets/Resources/OfflineCube.prefab"));
+				cube.transform.position = Game.localPlayer.character!.rig.head.position.add(new Vector3(0, 1, 0));
+				const rb = cube.gameObject.GetComponent<Rigidbody>()!;
+				rb.velocity = Game.localPlayer.character!.movement.GetLookVector().add(new Vector3(0, 1, 0)).mul(5);
+			});
 		}
 
 		// cleanup

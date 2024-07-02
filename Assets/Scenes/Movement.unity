@@ -4989,8 +4989,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -5015,10 +5013,8 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
-      refPath: 
+      refPath: AirshipPackages/@Easy/Core/Shared/Types/Generated.d@Space
       fileRef: 
       decorators: []
       nullable: 0
@@ -5032,8 +5028,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -5049,8 +5043,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -5066,8 +5058,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -5083,8 +5073,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -5104,8 +5092,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -5121,8 +5107,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -5138,8 +5122,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -5159,8 +5141,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -5176,8 +5156,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -5193,8 +5171,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -5210,8 +5186,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -5231,8 +5205,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -6340,8 +6312,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -6357,8 +6327,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -6374,8 +6342,6 @@ MonoBehaviour:
         type: object
         objectType: GameObject
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -6391,8 +6357,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -6408,8 +6372,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -6453,8 +6415,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -6470,8 +6430,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -13987,6 +13945,63 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.99999994, y: 1.0000001, z: 1}
   m_Center: {x: 0, y: 0.50000006, z: -0.000000029802322}
+--- !u!1001 &1052464485861052980
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 8342399774765795459, guid: 32320c5006c3b4e888e0470e00bba51e, type: 3}
+      propertyPath: m_Name
+      value: OfflineCube
+      objectReference: {fileID: 0}
+    - target: {fileID: 8911887096668645547, guid: 32320c5006c3b4e888e0470e00bba51e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.71
+      objectReference: {fileID: 0}
+    - target: {fileID: 8911887096668645547, guid: 32320c5006c3b4e888e0470e00bba51e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.61
+      objectReference: {fileID: 0}
+    - target: {fileID: 8911887096668645547, guid: 32320c5006c3b4e888e0470e00bba51e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 3.9664483
+      objectReference: {fileID: 0}
+    - target: {fileID: 8911887096668645547, guid: 32320c5006c3b4e888e0470e00bba51e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8911887096668645547, guid: 32320c5006c3b4e888e0470e00bba51e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8911887096668645547, guid: 32320c5006c3b4e888e0470e00bba51e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8911887096668645547, guid: 32320c5006c3b4e888e0470e00bba51e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8911887096668645547, guid: 32320c5006c3b4e888e0470e00bba51e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8911887096668645547, guid: 32320c5006c3b4e888e0470e00bba51e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8911887096668645547, guid: 32320c5006c3b4e888e0470e00bba51e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 32320c5006c3b4e888e0470e00bba51e, type: 3}
 --- !u!1001 &7804407231823715155
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14069,3 +14084,4 @@ SceneRoots:
   - {fileID: 758285592}
   - {fileID: 569461823}
   - {fileID: 1077937132}
+  - {fileID: 1052464485861052980}
