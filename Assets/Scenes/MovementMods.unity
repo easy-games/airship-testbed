@@ -906,7 +906,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1850773939066842284, guid: b672af3cbd119f240af9433e14762742, type: 3}
       propertyPath: m_metadata.properties.Array.data[1].serializedValue
-      value: '{"x":0.0,"y":40.0,"z":0.0}'
+      value: '{"x":0.0,"y":25.0,"z":0.0}'
       objectReference: {fileID: 0}
     - target: {fileID: 2076370528963841758, guid: b672af3cbd119f240af9433e14762742, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1408,8 +1408,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -1434,10 +1432,8 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
-      refPath: 
+      refPath: AirshipPackages/@Easy/Core/Shared/Types/Generated.d@Space
       fileRef: 
       decorators: []
       nullable: 0
@@ -1451,8 +1447,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -1468,8 +1462,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -1485,8 +1477,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -1502,8 +1492,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -1523,8 +1511,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -1540,8 +1526,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -1557,8 +1541,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -1578,8 +1560,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -1595,8 +1575,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -1612,8 +1590,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -1629,8 +1605,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -1650,8 +1624,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -1726,6 +1698,10 @@ PrefabInstance:
     - target: {fileID: 6463993016954765356, guid: c2e48abff83126543bbbfffa1e62b23e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.0000001397729
+      objectReference: {fileID: 0}
+    - target: {fileID: 7019912198891199253, guid: c2e48abff83126543bbbfffa1e62b23e, type: 3}
+      propertyPath: m_metadata.properties.Array.data[1].serializedValue
+      value: '{"x":0.0,"y":0.0,"z":-0.75}'
       objectReference: {fileID: 0}
     - target: {fileID: 8276124363508622314, guid: c2e48abff83126543bbbfffa1e62b23e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1989,8 +1965,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -2006,8 +1980,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -2023,8 +1995,6 @@ MonoBehaviour:
         type: object
         objectType: GameObject
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -2040,8 +2010,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -2057,8 +2025,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -2360,6 +2326,10 @@ PrefabInstance:
     - target: {fileID: 6463993016954765356, guid: c2e48abff83126543bbbfffa1e62b23e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.00000029802322
+      objectReference: {fileID: 0}
+    - target: {fileID: 7019912198891199253, guid: c2e48abff83126543bbbfffa1e62b23e, type: 3}
+      propertyPath: m_metadata.properties.Array.data[1].serializedValue
+      value: '{"x":0.0,"y":0.0,"z":-0.75}'
       objectReference: {fileID: 0}
     - target: {fileID: 8276124363508622314, guid: c2e48abff83126543bbbfffa1e62b23e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3115,6 +3085,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 3.439999
       objectReference: {fileID: 0}
+    - target: {fileID: 7019912198891199253, guid: c2e48abff83126543bbbfffa1e62b23e, type: 3}
+      propertyPath: m_metadata.properties.Array.data[1].serializedValue
+      value: '{"x":0.0,"y":0.0,"z":-0.75}'
+      objectReference: {fileID: 0}
     - target: {fileID: 8276124363508622314, guid: c2e48abff83126543bbbfffa1e62b23e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 15.350001
@@ -3195,7 +3169,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1850773939066842284, guid: b672af3cbd119f240af9433e14762742, type: 3}
       propertyPath: m_metadata.properties.Array.data[1].serializedValue
-      value: '{"x":0.0,"y":80.0,"z":0.0}'
+      value: '{"x":0.0,"y":40.0,"z":0.0}'
       objectReference: {fileID: 0}
     - target: {fileID: 2076370528963841758, guid: b672af3cbd119f240af9433e14762742, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4218,7 +4192,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1850773939066842284, guid: b672af3cbd119f240af9433e14762742, type: 3}
       propertyPath: m_metadata.properties.Array.data[1].serializedValue
-      value: '{"x":0.0,"y":25.0,"z":0.0}'
+      value: '{"x":0.0,"y":10.0,"z":0.0}'
       objectReference: {fileID: 0}
     - target: {fileID: 2076370528963841758, guid: b672af3cbd119f240af9433e14762742, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4292,6 +4266,10 @@ PrefabInstance:
     - target: {fileID: 5376197048130713557, guid: c2e48abff83126543bbbfffa1e62b23e, type: 3}
       propertyPath: colorSettings.Array.data[0].baseColor.r
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7019912198891199253, guid: c2e48abff83126543bbbfffa1e62b23e, type: 3}
+      propertyPath: m_metadata.properties.Array.data[1].serializedValue
+      value: '{"x":0.0,"y":0.0,"z":-0.75}'
       objectReference: {fileID: 0}
     - target: {fileID: 8276124363508622314, guid: c2e48abff83126543bbbfffa1e62b23e, type: 3}
       propertyPath: m_LocalPosition.x

@@ -1161,6 +1161,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2305
   terminalVelocity: 50
+  minimumVelocity: 3
   slopeForce: 45
   minSlopeDelta: 0.1
   maxSlopeDelta: 0.3

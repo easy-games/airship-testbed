@@ -1,5 +1,6 @@
 import Character from "@Easy/Core/Shared/Character/Character";
 import { Game } from "@Easy/Core/Shared/Game";
+import { OnTick } from "@Easy/Core/Shared/Util/Timer";
 
 export default class CharacterForceTrigger extends AirshipBehaviour{
     public forceSpace = Space.Self;
@@ -7,22 +8,24 @@ export default class CharacterForceTrigger extends AirshipBehaviour{
     public continuous = false;
 
     private currentTargets: Character[] =  [];
-    public FixedUpdate(dt: number): void {
-        if(!Game.IsServer()){
-            return;
-        }
-        if(this.continuous){
-            this.currentTargets.forEach(character => {
-                this.ApplyForce(character);
-            });
-        }
+
+    public Start(): void {
+        OnTick.Connect(()=>{
+            if(!Game.IsServer()){
+                return;
+            }
+            if(this.continuous){
+                this.currentTargets.forEach(character => {
+                    this.ApplyForce(character);
+                });
+            }
+        })
     }
 
     public OnTriggerEnter(collider: Collider): void {
         if(!Game.IsServer()){
             return;
         }
-        print("TRIGGER ENTER");
         let character = collider.attachedRigidbody?.gameObject.GetAirshipComponent<Character>();
         if(character){
             if(this.continuous){
@@ -37,7 +40,6 @@ export default class CharacterForceTrigger extends AirshipBehaviour{
         if(!Game.IsServer()){
             return;
         }
-        print("TRIGGER EXIT");
         let character = collider.attachedRigidbody?.gameObject.GetAirshipComponent<Character>();
         if(character){
             if(this.continuous){
@@ -47,7 +49,6 @@ export default class CharacterForceTrigger extends AirshipBehaviour{
     }
 
     private ApplyForce(character: Character){
-        print("Applying Force");
         let force = this.forceSpace === Space.Self ?
             this.transform.TransformVector(this.triggerForce) : 
             this.triggerForce;
