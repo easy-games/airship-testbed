@@ -49,6 +49,7 @@ jobs:
           # echo PUBLIC_CDN_URL=${{vars.CDN_URL}} >> .env
           npm i -g typedoc@0.25.13
           npm i -g -D typedoc-plugin-merge-modules@5.1.0 typedoc-plugin-rename-defaults@0.7.1
+          cd Assets
           npx typedoc
 
       - name: "Deploy"
