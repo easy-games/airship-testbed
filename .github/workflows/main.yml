@@ -18,7 +18,7 @@ env:
 
 jobs:
   build:
-    environment: ${{ inputs.environment || 'platform-staging' }}
+    environment: ${{ inputs.environment || 'platform-production' }}
     permissions:
       contents: "read"
       id-token: "write"
