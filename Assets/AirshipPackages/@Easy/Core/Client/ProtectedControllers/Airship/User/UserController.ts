@@ -1,11 +1,11 @@
 import { PublicUser } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipUser";
-import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Result } from "@Easy/Core/Shared/Types/Result";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { DecodeJSON } from "@Easy/Core/Shared/json";
 
-export enum UserControllerBridgeTopics {
+export const enum UserControllerBridgeTopics {
 	GetUserByUsername = "UserController:GetUserByUsername",
 	GetUserById = "UserController:GetUserById",
 	GetUsersById = "UserController:GetUsersById",
@@ -23,36 +23,14 @@ export type BridgeApiGetFriends = () => Result<PublicUser[], undefined>;
 export type BrigdeApiIsFriendsWith = (userId: string) => Result<boolean, undefined>;
 
 @Controller({})
-export class ProtectedUserController implements OnStart {
+export class ProtectedUserController {
 	constructor() {
 		if (!Game.IsClient()) return;
 
 		contextbridge.callback<BridgeApiGetUserByUsername>(
 			UserControllerBridgeTopics.GetUserByUsername,
 			(_, username) => {
-				const res = InternalHttpManager.GetAsync(
-					`${AirshipUrl.GameCoordinator}/users/user?discriminatedUsername=${username}`,
-				);
-
-				if (!res.success || res.statusCode > 299) {
-					warn(`Unable to get user. Status Code:  ${res.statusCode}.\n`, res.data);
-					return {
-						success: false,
-						data: undefined,
-					};
-				}
-
-				if (!res.data) {
-					return {
-						success: true,
-						data: undefined,
-					};
-				}
-
-				return {
-					success: true,
-					data: DecodeJSON(res.data) as PublicUser,
-				};
+				return this.GetUserByUsername(username);
 			},
 		);
 
@@ -148,6 +126,11 @@ export class ProtectedUserController implements OnStart {
 		});
 	}
 
+	/**
+	 * Makes a request for user info.
+	 * 
+	 * @internal
+	 */
 	public GetUserById(userId: string): Result<PublicUser | undefined, undefined> {
 		const res = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/users/uid/${userId}`);
 
@@ -172,5 +155,31 @@ export class ProtectedUserController implements OnStart {
 		};
 	}
 
-	OnStart(): void {}
+	public GetUserByUsername(username: string): ReturnType<BridgeApiGetUserByUsername> {
+		const res = InternalHttpManager.GetAsync(
+			`${AirshipUrl.GameCoordinator}/users/user?discriminatedUsername=${username}`,
+		);
+
+		if (!res.success || res.statusCode > 299) {
+			warn(`Unable to get user. Status Code:  ${res.statusCode}.\n`, res.data);
+			return {
+				success: false,
+				data: undefined,
+			};
+		}
+
+		if (!res.data) {
+			return {
+				success: true,
+				data: undefined,
+			};
+		}
+
+		return {
+			success: true,
+			data: DecodeJSON(res.data) as PublicUser,
+		};
+	}
+
+	protected OnStart(): void {}
 }

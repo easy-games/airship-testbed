@@ -5,7 +5,6 @@ import { ItemUtil } from "@Easy/Core/Shared/Item/ItemUtil";
 import StringUtils from "@Easy/Core/Shared/Types/StringUtil";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { RandomUtil } from "@Easy/Core/Shared/Util/RandomUtil";
-import { Task } from "@Easy/Core/Shared/Util/Task";
 import { Game } from "../../Game";
 
 
@@ -51,7 +50,7 @@ export default class CharacterAnimator extends AirshipBehaviour {
 			this.footstepAudioBundle = new AudioClipBundle([]);
 			this.footstepAudioBundle.volumeScale = this.baseFootstepVolumeScale;
 			this.footstepAudioBundle.soundOptions.maxDistance = 15;
-			this.footstepAudioBundle.spacialMode = this.character.IsLocalCharacter()
+			this.footstepAudioBundle.spacialMode = this.character?.IsLocalCharacter()
 				? AudioBundleSpacialMode.GLOBAL
 				: AudioBundleSpacialMode.SPACIAL;
 
@@ -123,7 +122,7 @@ export default class CharacterAnimator extends AirshipBehaviour {
 					.SetPingPong();
 			}
 		}
-		Task.Delay(duration, () => {
+		task.delay(duration, () => {
 			this.isFlashing = false;
 		});
 	}
@@ -178,11 +177,7 @@ export default class CharacterAnimator extends AirshipBehaviour {
 		// Finished checks. We are playing.
 		this.lastFootstepSoundTime = os.clock();
 
-		let itemType = ItemUtil.GetItemTypeFromBlockId(blockId);
-		if (!itemType) {
-			itemType = CoreItemType.STONE;
-		}
-
+		let itemType = CoreItemType.STONE;
 		const itemMeta = ItemUtil.GetItemDef(itemType);
 
 		// fallback to stone sounds.

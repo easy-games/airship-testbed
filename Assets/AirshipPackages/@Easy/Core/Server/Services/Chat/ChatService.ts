@@ -1,14 +1,14 @@
-import Object from "@Easy/Core/Shared/Util/ObjectUtils";
 import { ChatCommand } from "@Easy/Core/Shared/Commands/ChatCommand";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
-import { OnStart, Service } from "@Easy/Core/Shared/Flamework";
+import { Service } from "@Easy/Core/Shared/Flamework";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import StringUtils from "@Easy/Core/Shared/Types/StringUtil";
 import { ChatUtil } from "@Easy/Core/Shared/Util/ChatUtil";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
+import Object from "@Easy/Core/Shared/Util/ObjectUtils";
 
 @Service({})
-export class ChatService implements OnStart {
+export class ChatService {
   private commands = new Map<string, ChatCommand>();
 
   public readonly canUseRichText = true;
@@ -51,7 +51,7 @@ export class ChatService implements OnStart {
     return message;
   }
 
-  OnStart(): void {
+  protected OnStart(): void {
     CoreNetwork.ClientToServer.SendChatMessage.server.OnClientEvent(
       (player, text) => {
         const rawMessage = text;
@@ -79,7 +79,7 @@ export class ChatService implements OnStart {
         CoreNetwork.ServerToClient.ChatMessage.server.FireAllClients(
           rawMessage,
           nameWithPrefix,
-          player.clientId
+          player.connectionId
         );
       }
     );

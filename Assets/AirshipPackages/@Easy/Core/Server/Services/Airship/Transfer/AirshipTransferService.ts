@@ -12,20 +12,23 @@ import {
 } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipTransfers";
 import { CreateServerResponse } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipTransfers";
 import { AirshipUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
-import { OnStart, Service } from "@Easy/Core/Shared/Flamework";
+import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Result } from "@Easy/Core/Shared/Types/Result";
 
+/**
+ * The transfer service allows you to move players between servers and create new servers.
+ */
 @Service({})
-export class AirshipTransferService implements OnStart {
+export class AirshipTransferService {
 	constructor() {
 		if (!Game.IsServer()) return;
 
-		Platform.server.transfer = this;
+		Platform.Server.Transfer = this;
 	}
 
-	OnStart(): void {}
+	protected OnStart(): void {}
 
 	/**
 	 * Creates a new server and returns a server id which can be used to transfer players to the new server.
@@ -36,6 +39,7 @@ export class AirshipTransferService implements OnStart {
 	public async CreateServer(config?: AirshipServerConfig): Promise<Result<CreateServerResponse, undefined>> {
 		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiCreateServer>(
 			TransferServiceBridgeTopics.CreateServer,
+			LuauContext.Protected,
 			config,
 		);
 	}
@@ -67,6 +71,7 @@ export class AirshipTransferService implements OnStart {
 	): Promise<Result<undefined, undefined>> {
 		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiTransferGroupToGame>(
 			TransferServiceBridgeTopics.TransferGroupToGame,
+			LuauContext.Protected,
 			players,
 			gameId,
 			config,
@@ -100,6 +105,7 @@ export class AirshipTransferService implements OnStart {
 	): Promise<Result<undefined, undefined>> {
 		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiTransferGroupToServer>(
 			TransferServiceBridgeTopics.TransferGroupToServer,
+			LuauContext.Protected,
 			players,
 			serverId,
 			config,

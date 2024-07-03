@@ -6,19 +6,29 @@ import {
 } from "@Easy/Core/Server/ProtectedServices/Airship/CacheStore/CacheStoreService";
 import { Platform } from "@Easy/Core/Shared/Airship";
 import { AirshipUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
-import { OnStart, Service } from "@Easy/Core/Shared/Flamework";
+import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Result } from "@Easy/Core/Shared/Types/Result";
 
+/**
+ * The Cache Store provides simple key/value cache storage.
+ *
+ * The Cache Store provides non-durable storage that can be accessed from any game server. Data access is faster than
+ * the Data Store, but the data will expire if it is not accessed frequently enough. Cached keys can live for up to 24 hours
+ * without being accessed.
+ *
+ * The Cache Store is good for things like queue cooldowns or share codes. If you want your data to be persistent, check
+ * out the Data Store.
+ */
 @Service({})
-export class AirshipCacheStoreService implements OnStart {
+export class AirshipCacheStoreService {
 	constructor() {
 		if (!Game.IsServer()) return;
 
-		Platform.server.cacheStore = this;
+		Platform.Server.CacheStore = this;
 	}
 
-	OnStart(): void {}
+	protected OnStart(): void {}
 
 	/**
 	 * Gets the cached data for the provided key.
@@ -35,6 +45,7 @@ export class AirshipCacheStoreService implements OnStart {
 
 		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiCacheGetKey<T>>(
 			CacheStoreServiceBridgeTopics.GetKey,
+			LuauContext.Protected,
 			key,
 			expireTimeSec,
 		);
@@ -52,6 +63,7 @@ export class AirshipCacheStoreService implements OnStart {
 
 		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiCacheSetKey<T>>(
 			CacheStoreServiceBridgeTopics.SetKey,
+			LuauContext.Protected,
 			key,
 			data,
 			expireTimeSec,
@@ -80,6 +92,7 @@ export class AirshipCacheStoreService implements OnStart {
 
 		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiCacheSetKeyTTL>(
 			CacheStoreServiceBridgeTopics.SetKeyTTL,
+			LuauContext.Protected,
 			key,
 			expireTimeSec,
 		);

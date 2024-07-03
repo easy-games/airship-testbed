@@ -5,7 +5,7 @@ const coreSoundPath = "AirshipPackages/@Easy/Core/Sound/";
  *
  * Passing in "test" will return "AirshipPackages/@Easy/Core/Sound/test"
  */
-export const S = (path: string): string => {
+const S = (path: string): string => {
 	return coreSoundPath + path;
 };
 

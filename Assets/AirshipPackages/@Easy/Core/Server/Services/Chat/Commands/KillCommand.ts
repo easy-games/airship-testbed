@@ -1,5 +1,5 @@
-import Character from "@Easy/Core/Shared/Character/Character";
 import { Airship } from "@Easy/Core/Shared/Airship";
+import Character from "@Easy/Core/Shared/Character/Character";
 import { ChatCommand } from "@Easy/Core/Shared/Commands/ChatCommand";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 
@@ -11,7 +11,7 @@ export class KillCommand extends ChatCommand {
 	public Execute(player: Player, args: string[]): void {
 		let target: Character | undefined;
 		if (args.size() > 0) {
-			let otherPlayer = Airship.players.FindByFuzzySearch(args[0]);
+			let otherPlayer = Airship.Players.FindByFuzzySearch(args[0]);
 			if (!otherPlayer) {
 				player.SendMessage("Invalid player: " + args[0]);
 				return;
@@ -22,7 +22,7 @@ export class KillCommand extends ChatCommand {
 			}
 			target = otherPlayer.character;
 		} else {
-			target = Airship.characters.FindByPlayer(player);
+			target = Airship.Characters.FindByPlayer(player);
 		}
 
 		// Handle invalid entity.
@@ -32,6 +32,6 @@ export class KillCommand extends ChatCommand {
 		}
 
 		// Kill entity.
-		Airship.damage.InflictDamage(target.gameObject, math.huge);
+		Airship.Damage.InflictDamage(target.gameObject, math.huge);
 	}
 }

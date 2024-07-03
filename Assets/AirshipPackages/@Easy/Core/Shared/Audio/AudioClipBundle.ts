@@ -1,5 +1,4 @@
-import {} from "@Easy/Core/Shared/Flamework";
-import { Task } from "@Easy/Core/Shared/Util/Task";
+import { } from "@Easy/Core/Shared/Flamework";
 import { AudioManager, PlaySoundConfig } from "./AudioManager";
 
 export enum AudioBundlePlayMode {
@@ -49,7 +48,7 @@ export class AudioClipBundle {
 				this.lastAudioSource.TweenAudioSourceVolume(0, fadeOutDuration);
 				const tweeningAudio = this.lastAudioSource;
 				this.lastAudioSource = undefined;
-				Task.Delay(math.max(fadeOutDuration, 0.15), () => {
+				task.delay(math.max(fadeOutDuration, 0.15), () => {
 					//Cleanup faded out audio clip
 					if (this.tweeningStop) {
 						this.tweeningStop = false;
@@ -149,7 +148,7 @@ export class AudioClipBundle {
 			//print("Playing random before loop: " + randomIndex);
 			if (this.lastAudioSource?.clip) {
 				const delayLength = math.max(0.1, this.lastAudioSource.clip.length - 0.15);
-				Task.Delay(delayLength, () => {
+				task.delay(delayLength, () => {
 					if (this.lastAudioSource && this.lastAudioSource.isPlaying) {
 						//print("Transition to Looping Audio" + lastIndex + ": " + this.clipPaths[lastIndex]);
 						//Fade out current sound

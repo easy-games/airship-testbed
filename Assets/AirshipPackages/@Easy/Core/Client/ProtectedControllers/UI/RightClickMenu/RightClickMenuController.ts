@@ -1,5 +1,5 @@
 import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
-import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { CoreUI } from "@Easy/Core/Shared/UI/CoreUI";
 import { Mouse } from "@Easy/Core/Shared/UserInput";
@@ -10,14 +10,14 @@ import { Theme } from "@Easy/Core/Shared/Util/Theme";
 import { RightClickMenuButton } from "./RightClickMenuButton";
 
 @Controller({})
-export class RightClickMenuController implements OnStart {
+export class RightClickMenuController {
 	private opened = false;
 	private currentBin = new Bin();
 	private openedTime = 0;
 
 	constructor() {}
 
-	OnStart(): void {}
+	protected OnStart(): void {}
 
 	public OpenRightClickMenu(canvas: Canvas, position: Vector2, buttons: RightClickMenuButton[]): () => void {
 		if (this.opened) {

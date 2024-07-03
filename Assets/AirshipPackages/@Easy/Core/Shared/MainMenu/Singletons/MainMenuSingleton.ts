@@ -1,4 +1,4 @@
-import { OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
+import { Singleton } from "@Easy/Core/Shared/Flamework";
 import { Game } from "../../Game";
 import { CoreLogger } from "../../Logger/CoreLogger";
 import { Bin } from "../../Util/Bin";
@@ -8,7 +8,7 @@ import { OnUpdate } from "../../Util/Timer";
 import { ScreenSizeType } from "./ScreenSizeType";
 
 @Singleton({})
-export class MainMenuSingleton implements OnStart {
+export class MainMenuSingleton {
 	public sizeType: ScreenSizeType = "md";
 	public onSizeChanged = new Signal<[sizeType: ScreenSizeType, size: Vector2]>();
 
@@ -24,7 +24,7 @@ export class MainMenuSingleton implements OnStart {
 		this.rawScreenSize = new Vector2(Screen.width, Screen.height);
 	}
 
-	OnStart(): void {
+	protected OnStart(): void {
 		// const readOnlyCanvasGO = Object.Instantiate(
 		// 	AssetCache.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/UI/AirshipReadOnlyCanvas.prefab"),
 		// );

@@ -1,7 +1,6 @@
 import { Airship } from "../Airship";
 import { Game } from "../Game";
 import { Viewmodel } from "../Viewmodel/Viewmodel";
-import { CameraReferences } from "./CameraReferences";
 import { CameraSystem } from "./CameraSystem";
 
 export default class CameraRig extends AirshipBehaviour {
@@ -17,10 +16,13 @@ export default class CameraRig extends AirshipBehaviour {
 	public OnEnable(): void {
 		if (!Game.IsClient()) return;
 
-		Airship.characterCamera.StopCameraSystem();
+		Airship.CharacterCamera.StopCameraSystem();
 
-		CameraReferences.viewmodel = new Viewmodel();
-		this.systemReference = Airship.characterCamera.StartNewCameraSystem(this);
+		this.systemReference = Airship.CharacterCamera.StartNewCameraSystem(this);
+		// Viewmodel
+		if (Airship.Characters.instantiateViewmodel) {
+			Airship.Characters.viewmodel = new Viewmodel();
+		}
 	}
 
 	override OnDestroy(): void {}
@@ -28,10 +30,10 @@ export default class CameraRig extends AirshipBehaviour {
 	public OnDisable(): void {
 		if (!Game.IsClient()) return;
 
-		if (Airship.characterCamera.cameraSystem === this.systemReference) {
-			Airship.characterCamera.StopCameraSystem();
-			CameraReferences.viewmodel?.Destroy();
-			CameraReferences.viewmodel = undefined;
+		if (Airship.CharacterCamera.cameraSystem === this.systemReference) {
+			Airship.CharacterCamera.StopCameraSystem();
+			Airship.Characters.viewmodel?.Destroy();
+			Airship.Characters.viewmodel = undefined;
 		}
 	}
 }

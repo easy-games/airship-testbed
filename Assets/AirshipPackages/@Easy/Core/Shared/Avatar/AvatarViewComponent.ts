@@ -7,7 +7,6 @@ import { CanvasAPI } from "../Util/CanvasAPI";
 import { ColorUtil } from "../Util/ColorUtil";
 import { OnUpdate } from "../Util/Timer";
 import AvatarBackdropComponent from "./AvatarBackdropComponent";
-import { Layer } from "../Util/Layer";
 
 export default class AvatarViewComponent extends AirshipBehaviour {
 	@Header("Templates")
@@ -37,6 +36,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	public screenspaceDistance = 3;
 
 	public alignmentOffsetWorldpsace = new Vector3(0, 0, 0);
+	public oddsOfAReaction = 0.25;
 
 	@Header("Spin Big")
 	public spinBigRequiredTime = 3;
@@ -230,34 +230,35 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	}
 
 	public GetFocusTransform(slotType: AccessorySlot) {
-		if (
-			slotType === AccessorySlot.Head ||
-			slotType === AccessorySlot.Hair ||
-			slotType === AccessorySlot.Neck ||
-			slotType === AccessorySlot.Ears ||
-			slotType === AccessorySlot.Nose
-		) {
-			//return this.cameraWaypointHead;
-		} else if (
-			slotType === AccessorySlot.Feet ||
-			slotType === AccessorySlot.Waist ||
-			slotType === AccessorySlot.Legs ||
-			slotType === AccessorySlot.LegsInner ||
-			slotType === AccessorySlot.LegsOuter ||
-			slotType === AccessorySlot.LeftFoot ||
-			slotType === AccessorySlot.RightFoot ||
-			slotType === AccessorySlot.FeetInner
-		) {
-			return this.cameraWaypointFeet;
-		} else if (
-			slotType === AccessorySlot.Hands ||
-			slotType === AccessorySlot.LeftHand ||
-			slotType === AccessorySlot.RightHand ||
-			slotType === AccessorySlot.Torso ||
-			slotType === AccessorySlot.HandsOuter
-		) {
-			//return this.cameraWaypointHands;
-		} else if (slotType === AccessorySlot.Backpack) {
+		// if (
+		// 	slotType === AccessorySlot.Head ||
+		// 	slotType === AccessorySlot.Hair ||
+		// 	slotType === AccessorySlot.Neck ||
+		// 	slotType === AccessorySlot.Ears ||
+		// 	slotType === AccessorySlot.Nose
+		// ) {
+		// 	return this.cameraWaypointHead;
+		// } else if (
+		// 	slotType === AccessorySlot.Feet ||
+		// 	slotType === AccessorySlot.Waist ||
+		// 	slotType === AccessorySlot.Legs ||
+		// 	slotType === AccessorySlot.LegsInner ||
+		// 	slotType === AccessorySlot.LegsOuter ||
+		// 	slotType === AccessorySlot.LeftFoot ||
+		// 	slotType === AccessorySlot.RightFoot ||
+		// 	slotType === AccessorySlot.FeetInner
+		// ) {
+		// 	return this.cameraWaypointFeet;
+		// } else if (
+		// 	slotType === AccessorySlot.Hands ||
+		// 	slotType === AccessorySlot.LeftHand ||
+		// 	slotType === AccessorySlot.RightHand ||
+		// 	slotType === AccessorySlot.Torso ||
+		// 	slotType === AccessorySlot.HandsOuter
+		// ) {
+		// 	//return this.cameraWaypointHands;
+		// }
+		if (slotType === AccessorySlot.Backpack) {
 			return this.cameraWaypointBack;
 		}
 		return this.cameraWaypointDefault;
@@ -285,5 +286,12 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 			this.avatarRenderTemplate,
 			this.transform,
 		)?.GetAirshipComponent<AvatarRenderComponent>();
+	}
+
+	public PlayReaction(slotType: AccessorySlot) {
+		if (math.random() < this.oddsOfAReaction) {
+			this.anim.SetInteger("ReactionIndex", math.random(3) - 1);
+			this.anim.SetTrigger("React");
+		}
 	}
 }

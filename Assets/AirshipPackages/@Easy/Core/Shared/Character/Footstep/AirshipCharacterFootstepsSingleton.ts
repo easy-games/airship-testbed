@@ -1,4 +1,4 @@
-import { OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
+import { Singleton } from "@Easy/Core/Shared/Flamework";
 import { Airship } from "../../Airship";
 import { AssetCache } from "../../AssetCache/AssetCache";
 import { CameraReferences } from "../../Camera/CameraReferences";
@@ -11,7 +11,7 @@ import Character from "../Character";
 import { CharacterFootstepSignal } from "./CharacterFootstepSignal";
 
 @Singleton({})
-export class AirshipCharacterFootstepsSingleton implements OnStart {
+export class AirshipCharacterFootstepsSingleton {
 	private entityLastFootstepTime = new Map<number, number>();
 
 	public onFootstep = new Signal<CharacterFootstepSignal>();
@@ -62,7 +62,7 @@ export class AirshipCharacterFootstepsSingleton implements OnStart {
 		});
 	}
 
-	OnStart(): void {
+	protected OnStart(): void {
 		if (!Game.IsClient()) return;
 
 		task.delay(0.1, () => {
@@ -74,7 +74,7 @@ export class AirshipCharacterFootstepsSingleton implements OnStart {
 				const camPos = camTransform.position;
 				Profiler.BeginSample("Footsteps");
 				let footstepCount = 0;
-				for (const character of Airship.characters.GetCharacters()) {
+				for (const character of Airship.Characters.GetCharacters()) {
 					if (character.IsDead()) continue;
 					let cooldown = -1;
 					const state = character.state;

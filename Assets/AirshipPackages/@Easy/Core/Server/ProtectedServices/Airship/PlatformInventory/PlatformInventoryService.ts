@@ -1,13 +1,13 @@
 import { ItemQueryParameters } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipPlatformInventory";
 import { ItemInstanceDto, Transaction } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipPlatformInventory";
 import { PlatformInventoryUtil } from "@Easy/Core/Shared/Airship/Util/PlatformInventoryUtil";
-import { OnStart, Service } from "@Easy/Core/Shared/Flamework";
+import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Result } from "@Easy/Core/Shared/Types/Result";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 
-export enum PlatformInventoryServiceBridgeTopics {
+export const enum PlatformInventoryServiceBridgeTopics {
 	GrantItem = "PlatformInventoryService:GrantItem",
 	DeleteItem = "PlatformInventoryService:DeleteItem",
 	GetItems = "PlatformInventoryService:GetItems",
@@ -26,7 +26,7 @@ export type ServerBridgeApiPerformTrade = (
 ) => Result<Transaction, undefined>;
 
 @Service({})
-export class ProtectedPlatformInventoryService implements OnStart {
+export class ProtectedPlatformInventoryService {
 	constructor() {
 		if (!Game.IsServer()) return;
 
@@ -124,5 +124,5 @@ export class ProtectedPlatformInventoryService implements OnStart {
 		);
 	}
 
-	OnStart(): void {}
+	protected OnStart(): void {}
 }

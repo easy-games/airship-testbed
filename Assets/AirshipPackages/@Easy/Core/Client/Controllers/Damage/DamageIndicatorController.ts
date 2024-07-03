@@ -3,13 +3,13 @@ import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
 import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
 import Character from "@Easy/Core/Shared/Character/Character";
 import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
-import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import { SetTimeout } from "@Easy/Core/Shared/Util/Timer";
 
 @Controller({})
-export class DamageIndicatorController implements OnStart {
+export class DamageIndicatorController {
 	private combatEffectsCanvas: Canvas;
 	public hitMarkerImage: Image;
 	private hitMarkerBin = new Bin();
@@ -37,7 +37,7 @@ export class DamageIndicatorController implements OnStart {
 		// PoolManager.PreLoadPool(this.indicatorPrefab, 5);
 	}
 
-	OnStart(): void {
+	protected OnStart(): void {
 		// this.damageIndicatorObject = AssetBridge.Instance.LoadAsset("Client/Resources/Prefabs/DamageIndicator.prefab");
 		this.hitMarkerAudioClip = AssetBridge.Instance.LoadAsset("AirshipPackages/@Easy/Core/Sound/Hit_Health.ogg");
 		this.criticalHitAudioClips = [
@@ -45,7 +45,7 @@ export class DamageIndicatorController implements OnStart {
 			AssetBridge.Instance.LoadAsset("AirshipPackages/@Easy/Core/Sound/Drone_Damage_02.ogg"),
 		];
 
-		Airship.damage.onDamage.Connect((event) => {
+		Airship.Damage.onDamage.Connect((event) => {
 			if (!this.enabled) return;
 
 			const character = event.gameObject.GetAirshipComponent<Character>();

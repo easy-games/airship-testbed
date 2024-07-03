@@ -1,5 +1,5 @@
 import { Airship } from "../Airship";
-import { OnStart, Singleton } from "../Flamework";
+import { Singleton } from "../Flamework";
 import { CSArrayUtil } from "../Util/CSArrayUtil";
 import { MapUtil } from "../Util/MapUtil";
 import { Signal } from "../Util/Signal";
@@ -7,15 +7,15 @@ import { Signal } from "../Util/Signal";
 type TagSignal = Pick<Signal<[GameObject]>, "Connect" | "ConnectWithPriority" | "Once" | "Wait">;
 
 @Singleton()
-export class TagsSingleton implements OnStart {
+export class TagsSingleton {
 	private tagManager!: TagManager;
 
 	private tagAddedSignals = new Map<string, Signal<[GameObject]>>();
 	private tagRemovedSignals = new Map<string, Signal<[GameObject]>>();
 
-	OnStart(): void {
+	protected OnStart(): void {
 		const tagManager = TagManager.Instance;
-		Airship.tags = this;
+		Airship.Tags = this;
 		this.tagManager = tagManager;
 
 		tagManager.OnTagAdded((tag, gameObject) => {

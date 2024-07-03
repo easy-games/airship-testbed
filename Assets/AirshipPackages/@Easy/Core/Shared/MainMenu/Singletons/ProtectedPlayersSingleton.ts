@@ -1,4 +1,4 @@
-import { OnStart, Singleton } from "../../Flamework";
+import { Singleton } from "../../Flamework";
 import { BridgedPlayer } from "../../Player/BridgedPlayer";
 import { ProtectedPlayer } from "../../Player/ProtectedPlayer";
 import { Protected } from "../../Protected";
@@ -8,7 +8,7 @@ import { Signal } from "../../Util/Signal";
  * @internal
  */
 @Singleton()
-export class ProtectedPlayersSingleton implements OnStart {
+export class ProtectedPlayersSingleton {
 	public onPlayerJoined = new Signal<ProtectedPlayer>();
 	public onPlayerDisconnected = new Signal<ProtectedPlayer>();
 	public players: ProtectedPlayer[] = [];
@@ -43,5 +43,5 @@ export class ProtectedPlayersSingleton implements OnStart {
 		return this.players.find((p) => p.userId === userId);
 	}
 
-	OnStart(): void {}
+	protected OnStart(): void {}
 }
