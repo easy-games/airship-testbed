@@ -2,7 +2,7 @@ import { Player } from "@Easy/Core/Shared/Player/Player";
 import NetworkAPI, { NetworkChannel } from "./NetworkAPI";
 import { RemoteKeyHasher } from "./RemoteKeyHasher";
 
-type RemoteParamsToClient<T> = Parameters<
+type NetworkParamsToClient<T> = Parameters<
 	T extends unknown[]
 		? (player: Player, ...args: T) => void
 		: T extends unknown
@@ -10,64 +10,64 @@ type RemoteParamsToClient<T> = Parameters<
 			: (player: Player) => void
 >;
 
-type RemoteParamsToServer<T> = Parameters<
+type NetworkParamsToServer<T> = Parameters<
 	T extends unknown[] ? (...args: T) => void : T extends unknown ? (arg: T) => void : () => void
 >;
 
-type RemoteParamsToAllClients<T> = RemoteParamsToServer<T>;
+type NetworkParamsToAllClients<T> = NetworkParamsToServer<T>;
 
-type RemoteCallbackFromClient<T> = (...args: RemoteParamsToClient<T>) => void;
-type RemoteCallbackFromServer<T> = (...args: RemoteParamsToServer<T>) => void;
+type NetworkCallbackFromClient<T> = (...args: NetworkParamsToClient<T>) => void;
+type NetworkCallbackFromServer<T> = (...args: NetworkParamsToServer<T>) => void;
 
 let ID_COUNTER = 0;
 
 const packageMap = new Map<number, number>();
 
-class RemoteEventServer<T extends unknown[] | unknown> {
+class NetworkSignalServer<T extends unknown[] | unknown> {
 	constructor(
 		private readonly id: number,
 		private readonly channel: NetworkChannel = NetworkChannel.Reliable,
 	) {}
 
-	public FireAllClients(...args: RemoteParamsToAllClients<T>) {
+	public FireAllClients(...args: NetworkParamsToAllClients<T>) {
 		NetworkAPI.fireAllClients(this.id, args, this.channel);
 	}
 
-	public FireExcept(ignorePlayer: Player, ...args: RemoteParamsToAllClients<T>) {
+	public FireExcept(ignorePlayer: Player, ...args: NetworkParamsToAllClients<T>) {
 		NetworkAPI.fireExcept(this.id, ignorePlayer, args, this.channel);
 	}
 
-	public FireClient(player: Player, ...args: RemoteParamsToAllClients<T>) {
+	public FireClient(player: Player, ...args: NetworkParamsToAllClients<T>) {
 		NetworkAPI.fireClient(this.id, player, args, this.channel);
 	}
 
-	public FireClients(players: Player[], ...args: RemoteParamsToAllClients<T>) {
+	public FireClients(players: Player[], ...args: NetworkParamsToAllClients<T>) {
 		NetworkAPI.fireClients(this.id, players, args, this.channel);
 	}
 
-	public OnClientEvent(callback: RemoteCallbackFromClient<T>) {
+	public OnClientEvent(callback: NetworkCallbackFromClient<T>) {
 		return NetworkAPI.connect(true, this.id, callback);
 	}
 }
 
-class RemoteEventClient<T extends unknown[] | unknown> {
+class NetworkSignalClient<T extends unknown[] | unknown> {
 	constructor(
 		private readonly id: number,
 		private readonly channel: NetworkChannel = NetworkChannel.Reliable,
 	) {}
 
-	public FireServer(...args: RemoteParamsToServer<T>) {
+	public FireServer(...args: NetworkParamsToServer<T>) {
 		NetworkAPI.fireServer(this.id, args, this.channel);
 	}
 
-	public OnServerEvent(callback: RemoteCallbackFromServer<T>) {
+	public OnServerEvent(callback: NetworkCallbackFromServer<T>) {
 		return NetworkAPI.connect(false, this.id, callback);
 	}
 }
 
-export class RemoteEvent<T extends unknown[] | unknown> {
-	public readonly server: RemoteEventServer<T>;
-	public readonly client: RemoteEventClient<T>;
+export class NetworkSignal<T extends unknown[] | unknown> {
+	public readonly server: NetworkSignalServer<T>;
+	public readonly client: NetworkSignalClient<T>;
 
 	/**
 	 *
@@ -86,7 +86,7 @@ export class RemoteEvent<T extends unknown[] | unknown> {
 			);
 		}
 
-		this.server = new RemoteEventServer(id, channel);
-		this.client = new RemoteEventClient(id, channel);
+		this.server = new NetworkSignalServer(id, channel);
+		this.client = new NetworkSignalClient(id, channel);
 	}
 }

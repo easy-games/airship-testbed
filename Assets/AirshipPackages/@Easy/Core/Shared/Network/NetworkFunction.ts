@@ -2,7 +2,7 @@ import { Player } from "@Easy/Core/Shared/Player/Player";
 import NetworkAPI, { NetworkChannel } from "./NetworkAPI";
 import { RemoteKeyHasher } from "./RemoteKeyHasher";
 
-type RemoteParamsToClient<T> = Parameters<
+type NetworkParamsToClient<T> = Parameters<
 	T extends unknown[]
 		? (player: Player, ...args: T) => void
 		: T extends unknown
@@ -10,22 +10,22 @@ type RemoteParamsToClient<T> = Parameters<
 			: (player: Player) => void
 >;
 
-type RemoteParamsToServer<T> = Parameters<
+type NetworkParamsToServer<T> = Parameters<
 	T extends unknown[] ? (...args: T) => void : T extends unknown ? (arg: T) => void : () => void
 >;
 
-type RemoteParamsToAllClients<T> = RemoteParamsToServer<T>;
+type NetworkParamsToAllClients<T> = NetworkParamsToServer<T>;
 
-type RemoteCallbackFromClient<T> = (player: Player, ...args: RemoteParamsToClient<T>) => void;
-type RemoteCallbackFromServer<T> = (...args: RemoteParamsToServer<T>) => void;
+type NetworkCallbackFromClient<T> = (player: Player, ...args: NetworkParamsToClient<T>) => void;
+type NetworkCallbackFromServer<T> = (...args: NetworkParamsToServer<T>) => void;
 
-type RemoteFunctionReturn<RX> = RX extends [infer A] ? A : RX;
-type RemoteFunctionCallbackFromServer<TX, RX> = (player: Player, ...args: RemoteParamsToServer<TX>) => RemoteFunctionReturn<RX>;
-type RemoteFunctionCallbackFromClient<TX, RX> = (...args: RemoteParamsToServer<TX>) => RemoteFunctionReturn<RX>;
+type NetworkFunctionReturn<RX> = RX extends [infer A] ? A : RX;
+type NetworkFunctionCallbackFromServer<TX, RX> = (player: Player, ...args: NetworkParamsToServer<TX>) => NetworkFunctionReturn<RX>;
+type NetworkFunctionCallbackFromClient<TX, RX> = (...args: NetworkParamsToServer<TX>) => NetworkFunctionReturn<RX>;
 
 const packageMap = new Map<number, number>();
 
-class RemoteFunctionClient<TX extends unknown[] | unknown, RX extends unknown[] | unknown> {
+class NetworkFunctionClient<TX extends unknown[] | unknown, RX extends unknown[] | unknown> {
 	private disconnect: (() => void) | undefined;
 	private listening = false;
 	private sendId = 0;
@@ -34,7 +34,7 @@ class RemoteFunctionClient<TX extends unknown[] | unknown, RX extends unknown[] 
 
 	constructor(private readonly id: number) {}
 
-	public FireServer(...args: RemoteParamsToServer<TX>): RemoteFunctionReturn<RX> {
+	public FireServer(...args: NetworkParamsToServer<TX>): NetworkFunctionReturn<RX> {
 		if (!this.listening) {
 			this.StartListening();
 		}
@@ -43,7 +43,7 @@ class RemoteFunctionClient<TX extends unknown[] | unknown, RX extends unknown[] 
 		const thread = coroutine.running();
 		this.yieldingThreads.set(sendId, thread);
 		NetworkAPI.fireServer(this.id, sendArgs, NetworkChannel.Reliable);
-		return coroutine.yield() as unknown as RemoteFunctionReturn<RX>;
+		return coroutine.yield() as unknown as NetworkFunctionReturn<RX>;
 	}
 
 	private StartListening() {
@@ -58,21 +58,19 @@ class RemoteFunctionClient<TX extends unknown[] | unknown, RX extends unknown[] 
 		});
 	}
 
-	public SetCallback(callback: RemoteFunctionCallbackFromClient<TX, RX>) {
+	public SetCallback(callback: NetworkFunctionCallbackFromClient<TX, RX>) {
 		if (this.disconnect !== undefined) {
 			this.disconnect();
 		}
 		this.disconnect = NetworkAPI.connect(false, this.id, (sendId: number, ...args: unknown[]) => {
-			print("Client receive remote function: " + this.id);
 			const res = [(callback as Callback)(...args)];
 			const argsReturn = [sendId, ...res];
-			print("Client respond to remote function: " + this.id);
 			NetworkAPI.fireServer(this.id, argsReturn, NetworkChannel.Reliable);
 		});
 	}
 }
 
-class RemoteFunctionServer<TX extends unknown[] | unknown, RX extends unknown[] | unknown> {
+class NetworkFunctionServer<TX extends unknown[] | unknown, RX extends unknown[] | unknown> {
 	private disconnect: (() => void) | undefined;
 	private listening = false;
 	private sendId = 0;
@@ -81,7 +79,7 @@ class RemoteFunctionServer<TX extends unknown[] | unknown, RX extends unknown[] 
 
 	constructor(private readonly id: number) {}
 
-	public FireClient(player: Player, ...args: RemoteParamsToAllClients<TX>): RemoteFunctionReturn<RX> {
+	public FireClient(player: Player, ...args: NetworkParamsToAllClients<TX>): NetworkFunctionReturn<RX> {
 		if (!this.listening) {
 			this.StartListening();
 		}
@@ -92,7 +90,7 @@ class RemoteFunctionServer<TX extends unknown[] | unknown, RX extends unknown[] 
 		NetworkAPI.fireClient(this.id, player, sendArgs, NetworkChannel.Reliable);
 		print("yield co");
 		print("Start listening for remote function: " + this.id);
-		const res = coroutine.yield() as unknown as RemoteFunctionReturn<RX>;;
+		const res = coroutine.yield() as unknown as NetworkFunctionReturn<RX>;;
 		print("post yield co");
 		return res;
 	}
@@ -111,7 +109,7 @@ class RemoteFunctionServer<TX extends unknown[] | unknown, RX extends unknown[] 
 		});
 	}
 
-	public SetCallback(callback: RemoteFunctionCallbackFromServer<TX, RX>) {
+	public SetCallback(callback: NetworkFunctionCallbackFromServer<TX, RX>) {
 		if (this.disconnect !== undefined) {
 			this.disconnect();
 		}
@@ -123,9 +121,9 @@ class RemoteFunctionServer<TX extends unknown[] | unknown, RX extends unknown[] 
 	}
 }
 
-export class RemoteFunction<TX extends unknown[] | unknown, RX extends unknown[] | unknown> {
-	public readonly server: RemoteFunctionServer<TX, RX>;
-	public readonly client: RemoteFunctionClient<TX, RX>;
+export class NetworkFunction<TX extends unknown[] | unknown, RX extends unknown[] | unknown> {
+	public readonly server: NetworkFunctionServer<TX, RX>;
+	public readonly client: NetworkFunctionClient<TX, RX>;
 
 	constructor(remoteIdentifier: string) {
 		let id = 0;
@@ -138,7 +136,7 @@ export class RemoteFunction<TX extends unknown[] | unknown, RX extends unknown[]
 			);
 		}
 
-		this.server = new RemoteFunctionServer(id);
-		this.client = new RemoteFunctionClient(id);
+		this.server = new NetworkFunctionServer(id);
+		this.client = new NetworkFunctionClient(id);
 	}
 }
