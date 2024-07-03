@@ -1,9 +1,9 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { Singleton } from "@Easy/Core/Shared/Flamework";
-import { NetworkSignal } from "@Easy/Core/Shared/Network/RemoteEvent";
 import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { Game } from "../Game";
+import { NetworkSignal } from "../Network/NetworkSignal";
 import { OnUpdate } from "../Util/Timer";
 import { CanClientDamageInfo } from "./CanClientDamageInfo";
 import { DamageInfo, DamageInfoCustomData } from "./DamageInfo";

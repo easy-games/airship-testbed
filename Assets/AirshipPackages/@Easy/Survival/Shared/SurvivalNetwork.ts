@@ -1,4 +1,4 @@
-import { NetworkSignal } from "@Easy/Core/Shared/Network/RemoteEvent";
+import { NetworkSignal } from "@Easy/Core/Shared/Network/NetworkSignal";
 
 export const SurvivalNetwork = {
 	ClientToServer: {
