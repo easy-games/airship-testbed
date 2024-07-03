@@ -1,3 +1,4 @@
+import { Airship } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
 import { Game } from "@Easy/Core/Shared/Game";
 import { OnTick } from "@Easy/Core/Shared/Util/Timer";
@@ -7,19 +8,21 @@ export default class CharacterForceTrigger extends AirshipBehaviour{
     public triggerForce = Vector3.up;
     public continuous = false;
 
-    private currentTargets: Character[] =  [];
+    private currentTargets: Map<number, Character> = new Map();
 
-    public Start(): void {
-        OnTick.Connect(()=>{
-            if(!Game.IsServer()){
+    public Awake(): void {
+        Airship.Characters.onCharacterSpawned.Connect((character)=>{
+            if(Game.IsClient() && !character.IsLocalCharacter()){
                 return;
             }
-            if(this.continuous){
-                this.currentTargets.forEach(character => {
+
+            //Locally we want to refresh our colliders during replays
+            character.movement.OnPreMove((isReplay)=>{
+                if(this.currentTargets.has(character.id)){
                     this.ApplyForce(character);
-                });
-            }
-        })
+                }
+            });
+        });
     }
 
     public OnTriggerEnter(collider: Collider): void {
@@ -29,7 +32,7 @@ export default class CharacterForceTrigger extends AirshipBehaviour{
         let character = collider.attachedRigidbody?.gameObject.GetAirshipComponent<Character>();
         if(character){
             if(this.continuous){
-                this.currentTargets.push(character);
+                this.currentTargets.set(character.id, character);
             }else{
                 this.ApplyForce(character);
             }
@@ -43,7 +46,7 @@ export default class CharacterForceTrigger extends AirshipBehaviour{
         let character = collider.attachedRigidbody?.gameObject.GetAirshipComponent<Character>();
         if(character){
             if(this.continuous){
-                this.currentTargets.remove(this.currentTargets.indexOf(character));
+                this.currentTargets.delete(character.id);
             }
         }
     }
@@ -53,6 +56,6 @@ export default class CharacterForceTrigger extends AirshipBehaviour{
             this.transform.TransformVector(this.triggerForce) : 
             this.triggerForce;
         
-        character.movement.ApplyImpulse(force);
+        character.movement.AddImpulse(force);
     }
 }

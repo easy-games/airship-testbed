@@ -1,6 +1,5 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
-import { Bin } from "@Easy/Core/Shared/Util/Bin";
 
 export default class CharacterMovementModTrigger extends AirshipBehaviour{
     public speedMultiplier = 1;
