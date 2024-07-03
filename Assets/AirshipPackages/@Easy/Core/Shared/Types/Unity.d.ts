@@ -1909,10 +1909,14 @@ interface GameObject extends Object {
 	GetComponentsInChildren<T extends Component>(): CSArray<T>;
 	GetComponentsInChildren<T extends Component>(typeName: string): CSArray<T>;
 	GetComponentInChildren<T extends Component>(): T;
+	GetComponentInParent<T extends Component>(): T;
 
 	GetAirshipComponentInChildren<T extends AirshipBehaviour>(): T | undefined;
 	GetAirshipComponentsInChildren<T extends AirshipBehaviour>(): T[];
 	GetAirshipComponents<T extends AirshipBehaviour>(): T[];
+
+	GetAirshipComponentInParent<T extends AirshipBehaviour>(): T | undefined;
+	GetAirshipComponentsInParent<T extends AirshipBehaviour>(): T[];
 
 	/**
 	 * Returns undefined if no component is found
