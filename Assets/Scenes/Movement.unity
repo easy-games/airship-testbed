@@ -5684,6 +5684,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 837293356}
   m_Mesh: {fileID: -5495902117074765545, guid: bdf2babf7a223774cae5f80a52733f88, type: 3}
+--- !u!20 &842980625 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 7736549642688669425, guid: 241cf930257357542a77bc6d7fb552e4, type: 3}
+  m_PrefabInstance: {fileID: 569461823}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &843296926
 GameObject:
   m_ObjectHideFlags: 0
@@ -13953,6 +13958,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5893512434773817763, guid: 32320c5006c3b4e888e0470e00bba51e, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 842980625}
     - target: {fileID: 8342399774765795459, guid: 32320c5006c3b4e888e0470e00bba51e, type: 3}
       propertyPath: m_Name
       value: OfflineCube
