@@ -33,7 +33,7 @@ import { User } from "../User/User";
 import { DirectMessageController } from "./DirectMessages/DirectMessageController";
 
 @Controller({})
-export class FriendsController {
+export class ProtectedFriendsController {
 	public friends: User[] = [];
 	public incomingFriendRequests: User[] = [];
 	public outgoingFriendRequests: User[] = [];
@@ -368,6 +368,10 @@ export class FriendsController {
 
 	public HasOutgoingFriendRequest(userId: string): boolean {
 		return this.outgoingFriendRequests.find((f) => f.uid === userId) !== undefined;
+	}
+
+	public IsFriendsWith(userId: string): boolean {
+		return this.friends.some(u => u.uid === userId);
 	}
 
 	public SendFriendRequest(username: string): boolean {

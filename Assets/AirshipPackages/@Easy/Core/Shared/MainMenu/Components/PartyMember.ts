@@ -1,4 +1,4 @@
-import { FriendsController } from "@Easy/Core/Client/ProtectedControllers/Social/FriendsController";
+import { ProtectedFriendsController } from "@Easy/Core/Client/ProtectedControllers/Social/FriendsController";
 import { Airship } from "../../Airship";
 import { PublicUser } from "../../Airship/Types/Outputs/AirshipUser";
 import { Dependency } from "../../Flamework";
@@ -33,7 +33,7 @@ export default class PartyMember extends AirshipBehaviour {
 		this.UpdateLeaderStatus(asLeader);
 		if (this.user.uid !== Protected.user.localUser?.uid) {
 			this.UpdateFriendButton();
-			Dependency<FriendsController>().onFetchFriends.Connect(() => {
+			Dependency<ProtectedFriendsController>().onFetchFriends.Connect(() => {
 				this.UpdateFriendButton();
 			});
 		}
@@ -73,10 +73,10 @@ export default class PartyMember extends AirshipBehaviour {
 
 	private UpdateFriendButton() {
 		let shouldDisplay = true;
-		if (Dependency<FriendsController>().GetFriendById(this.user.uid) !== undefined) {
+		if (Dependency<ProtectedFriendsController>().GetFriendById(this.user.uid) !== undefined) {
 			shouldDisplay = false;
 		}
-		if (Dependency<FriendsController>().HasOutgoingFriendRequest(this.user.uid)) {
+		if (Dependency<ProtectedFriendsController>().HasOutgoingFriendRequest(this.user.uid)) {
 			shouldDisplay = false;
 		}
 		this.addFriendContainer.SetActive(shouldDisplay);
@@ -92,7 +92,7 @@ export default class PartyMember extends AirshipBehaviour {
 
 			this.addFriendButtonBin.AddEngineEventConnection(
 				CanvasAPI.OnClickEvent(this.addFriendButton, () => {
-					Dependency<FriendsController>().SendFriendRequest(this.user.username);
+					Dependency<ProtectedFriendsController>().SendFriendRequest(this.user.username);
 				}),
 			);
 		}

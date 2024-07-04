@@ -1,4 +1,4 @@
-import { FriendsController } from "@Easy/Core/Client/ProtectedControllers/Social/FriendsController";
+import { ProtectedFriendsController } from "@Easy/Core/Client/ProtectedControllers/Social/FriendsController";
 import { TransferController } from "@Easy/Core/Client/ProtectedControllers/Transfer/TransferController";
 import inspect from "@Easy/Core/Shared/Util/Inspect";
 import { Airship } from "../../Airship";
@@ -47,7 +47,7 @@ export default class DirectMessagesWindow extends AirshipBehaviour {
 
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnClickEvent(this.friendTeleportButton, () => {
-				const friend = Dependency<FriendsController>().GetFriendStatus(user.userId);
+				const friend = Dependency<ProtectedFriendsController>().GetFriendStatus(user.userId);
 				if (friend?.status === UserStatus.IN_GAME && friend?.serverId && friend.gameId) {
 					print("Transferring to " + user.username + " on server " + friend.serverId);
 					Dependency<TransferController>().TransferToGameAsync(friend.gameId, friend.serverId);
@@ -62,7 +62,7 @@ export default class DirectMessagesWindow extends AirshipBehaviour {
 		};
 		UpdateTeleportButton(user);
 		this.bin.Add(
-			Dependency<FriendsController>().friendStatusChanged.Connect((friend) => {
+			Dependency<ProtectedFriendsController>().friendStatusChanged.Connect((friend) => {
 				if (friend.userId === user.userId) {
 					UpdateTeleportButton(friend);
 				}

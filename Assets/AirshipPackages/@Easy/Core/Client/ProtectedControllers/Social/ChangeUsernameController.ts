@@ -11,8 +11,8 @@ import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import { SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { OnFixedUpdate } from "@Easy/Core/Shared/Util/Timer";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
+import { ProtectedUserController } from "../Airship/User/UserController";
 import { AuthController } from "../Auth/AuthController";
-import { ProtectedUserController } from "../User/ProtectedUserController";
 
 @Controller({})
 export class ChangeUsernameController {

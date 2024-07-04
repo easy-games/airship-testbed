@@ -1,4 +1,4 @@
-import { ProtectedUserController } from "../Client/ProtectedControllers/User/ProtectedUserController";
+import { ProtectedUserController } from "../Client/ProtectedControllers/Airship/User/UserController";
 import { ProtectedPlayersSingleton } from "./MainMenu/Singletons/ProtectedPlayersSingleton";
 
 /**

@@ -17,7 +17,7 @@ import { EncodeJSON } from "@Easy/Core/Shared/json";
 import { AuthController } from "../Auth/AuthController";
 import { MainMenuController } from "../MainMenuController";
 import { SocketController } from "../Socket/SocketController";
-import { FriendsController } from "./FriendsController";
+import { ProtectedFriendsController } from "./FriendsController";
 import { MainMenuAddFriendsController } from "./MainMenuAddFriendsController";
 
 @Controller({})
@@ -58,7 +58,7 @@ export class MainMenuPartyController {
 		});
 
 		this.socketController.On<Party>("game-coordinator/party-invite", (data) => {
-			Dependency<FriendsController>().AddSocialNotification(
+			Dependency<ProtectedFriendsController>().AddSocialNotification(
 				"party-invite:" + data.leader,
 				"Party Invite",
 				data.members[0].username,
@@ -71,13 +71,13 @@ export class MainMenuPartyController {
 							}),
 						);
 						if (res.success) {
-							Dependency<FriendsController>().FireNotificationKey("party-invite:" + data.leader);
+							Dependency<ProtectedFriendsController>().FireNotificationKey("party-invite:" + data.leader);
 						} else {
 							Debug.LogError(res.error);
 						}
 					} else {
 						// We don't have an endpoint for declining party invite. just close the UI.
-						Dependency<FriendsController>().FireNotificationKey("party-invite:" + data.leader);
+						Dependency<ProtectedFriendsController>().FireNotificationKey("party-invite:" + data.leader);
 					}
 				},
 			);
