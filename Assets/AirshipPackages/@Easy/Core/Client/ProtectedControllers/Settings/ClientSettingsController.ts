@@ -19,12 +19,6 @@ const defaultData: ClientSettingsFile = {
 	microphoneEnabled: false,
 };
 
-interface SessionState {
-	SetBool(key: string, val: boolean): void;
-	GetBool(key: string, defaultValue: boolean): boolean;
-}
-declare const SessionState: SessionState;
-
 @Controller({ loadOrder: -1 })
 export class ClientSettingsController {
 	public data: ClientSettingsFile;
