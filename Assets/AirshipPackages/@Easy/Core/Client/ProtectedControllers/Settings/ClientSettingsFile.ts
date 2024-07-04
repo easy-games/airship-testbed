@@ -9,4 +9,5 @@ export interface ClientSettingsFile {
 	screenshotRenderHD: boolean;
 	statusText: string;
 	micDeviceName: string | undefined;
+	microphoneEnabled: boolean;
 }
