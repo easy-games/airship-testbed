@@ -4,81 +4,81 @@ import { CharacterDto } from "./Character/CharacterDto";
 import { InventoryDto } from "./Inventory/Inventory";
 import { ItemStackDto } from "./Inventory/ItemStack";
 import { CoreItemType } from "./Item/CoreItemType";
-import { RemoteEvent } from "./Network/RemoteEvent";
-import { RemoteFunction } from "./Network/RemoteFunction";
+import { NetworkFunction } from "./Network/NetworkFunction";
+import { NetworkSignal } from "./Network/NetworkSignal";
 import { PlayerDto } from "./Player/Player";
 import { TeamDto } from "./Team/Team";
 
 export const CoreNetwork = {
 	ClientToServer: {
-		Ready: new RemoteEvent<[]>("Ready"),
-		SetHeldSlot: new RemoteEvent<[invId: number, slot: number]>("SetHeldSlot"),
+		Ready: new NetworkSignal<[]>("Ready"),
+		SetHeldSlot: new NetworkSignal<[invId: number, slot: number]>("SetHeldSlot"),
 		Inventory: {
-			SwapSlots: new RemoteEvent<[fromInvId: number, fromSlot: number, toInvId: number, toSlot: number]>(
+			SwapSlots: new NetworkSignal<[fromInvId: number, fromSlot: number, toInvId: number, toSlot: number]>(
 				"Inventory",
 			),
-			QuickMoveSlot: new RemoteEvent<[fromInvId: number, fromSlot: number, toInvId: number]>("QuickMoveSlot"),
-			MoveToSlot: new RemoteEvent<
+			QuickMoveSlot: new NetworkSignal<[fromInvId: number, fromSlot: number, toInvId: number]>("QuickMoveSlot"),
+			MoveToSlot: new NetworkSignal<
 				[fromInvId: number, fromSlot: number, toInvId: number, toSlot: number, amount: number]
 			>("MoveToSlot"),
-			CheckOutOfSync: new RemoteEvent<[invDto: InventoryDto]>("CheckOutOfSync"),
+			CheckOutOfSync: new NetworkSignal<[invDto: InventoryDto]>("CheckOutOfSync"),
 		},
 		Character: {
-			RequestCharacters: new RemoteFunction<[], CharacterDto[]>("RequestCharacters"),
+			RequestCharacters: new NetworkFunction<[], CharacterDto[]>("RequestCharacters"),
 		},
-		SendChatMessage: new RemoteEvent<[text: string]>("SendChatMessage"),
-		ChangedOutfit: new RemoteEvent<[]>("ChangedOutfit"),
+		SendChatMessage: new NetworkSignal<[text: string]>("SendChatMessage"),
+		ChangedOutfit: new NetworkSignal<[]>("ChangedOutfit"),
 	},
 	ServerToClient: {
-		ServerInfo: new RemoteEvent<[gameId: string, serverId: string, organizationId: string]>("ServerInfo"),
-		UpdateInventory: new RemoteEvent<InventoryDto>("UpdateInventory"),
+		ServerInfo: new NetworkSignal<[gameId: string, serverId: string, organizationId: string]>("ServerInfo"),
+		UpdateInventory: new NetworkSignal<InventoryDto>("UpdateInventory"),
 		/** Creates a new instance of an `ItemStack`. */
-		SetInventorySlot: new RemoteEvent<
+		SetInventorySlot: new NetworkSignal<
 			[invId: number, slot: number, itemStack: ItemStackDto | undefined, clientPredicted: boolean]
 		>("SetInventorySlot"),
 		/** Updates properties of an `ItemStack` without creating a new instance of an `ItemStack`. */
-		UpdateInventorySlot: new RemoteEvent<[invId: number, slot: number, itemType?: CoreItemType, amount?: number]>(
+		UpdateInventorySlot: new NetworkSignal<[invId: number, slot: number, itemType?: CoreItemType, amount?: number]>(
 			"UpdateInventorySlot",
 		),
-		SetHeldInventorySlot: new RemoteEvent<
+		SetHeldInventorySlot: new NetworkSignal<
 			[invId: number | undefined, clientId: number | undefined, slot: number, clientPredicted: boolean]
 		>("SetHeldInventorySlot"),
-		CharacterModelChanged: new RemoteEvent<[characterModelId: number]>("CharacterModelChanged"),
+		CharacterModelChanged: new NetworkSignal<[characterModelId: number]>("CharacterModelChanged"),
 		/** Fired when a player sends a chat message with the raw chat message */
-		ChatMessage: new RemoteEvent<[message: string, senderPrefix?: string, senderClientId?: number]>("ChatMessage"),
-		SetAccessory: new RemoteEvent<[entityId: number, slot: AccessorySlot, accessoryPath: string]>("SetAccessory"),
-		RemoveAccessory: new RemoteEvent<[entityId: number, slot: AccessorySlot]>("RemoveAccessory"),
-		AddPlayer: new RemoteEvent<[player: PlayerDto]>("AddPlayer"),
-		RemovePlayer: new RemoteEvent<[clientId: number]>("RemovePlayer"),
-		AllPlayers: new RemoteEvent<[players: PlayerDto[]]>("AllPlayers"),
+		ChatMessage: new NetworkSignal<[message: string, senderPrefix?: string, senderClientId?: number]>("ChatMessage"),
+		SetAccessory: new NetworkSignal<[entityId: number, slot: AccessorySlot, accessoryPath: string]>("SetAccessory"),
+		RemoveAccessory: new NetworkSignal<[entityId: number, slot: AccessorySlot]>("RemoveAccessory"),
+		AddPlayer: new NetworkSignal<[player: PlayerDto]>("AddPlayer"),
+		RemovePlayer: new NetworkSignal<[clientId: number]>("RemovePlayer"),
+		AllPlayers: new NetworkSignal<[players: PlayerDto[]]>("AllPlayers"),
 		//PlayEntityAnimation: new RemoteEvent<[entityId: number, animation: EntityAnimationId, layer?: number]>(),
-		PlayEntityItemAnimation: new RemoteEvent<[entityId: number, useIndex?: number, modeIndex?: number]>(
+		PlayEntityItemAnimation: new NetworkSignal<[entityId: number, useIndex?: number, modeIndex?: number]>(
 			"PlayEntityItemAnimation",
 		),
 		/** Fired when client first joins to send existing teams and when new teams are created. */
-		AddTeams: new RemoteEvent<[teams: TeamDto[]]>("AddTeams"),
-		AddPlayerToTeam: new RemoteEvent<[teamId: string, userId: string]>("AddPlayerToTeam"),
-		RemovePlayerFromTeam: new RemoteEvent<[teamId: string, userId: string]>("RemovePlayerFromTeam"),
-		RemoveTeams: new RemoteEvent<[teamIds: string[]]>("RemoveTeams"),
-		SetBlockData: new RemoteEvent<[voxelPos: Vector3, key: string, data: unknown]>("SetBlockData"),
-		SetBlockGroupCustomData: new RemoteEvent<[voxelPositions: Vector3[], key: string, data: unknown[]]>(
+		AddTeams: new NetworkSignal<[teams: TeamDto[]]>("AddTeams"),
+		AddPlayerToTeam: new NetworkSignal<[teamId: string, userId: string]>("AddPlayerToTeam"),
+		RemovePlayerFromTeam: new NetworkSignal<[teamId: string, userId: string]>("RemovePlayerFromTeam"),
+		RemoveTeams: new NetworkSignal<[teamIds: string[]]>("RemoveTeams"),
+		SetBlockData: new NetworkSignal<[voxelPos: Vector3, key: string, data: unknown]>("SetBlockData"),
+		SetBlockGroupCustomData: new NetworkSignal<[voxelPositions: Vector3[], key: string, data: unknown[]]>(
 			"SetBlockGroupCustomData",
 		),
-		SetBlockGroupSameData: new RemoteEvent<[voxelPositions: Vector3[], key: string, data: unknown]>(
+		SetBlockGroupSameData: new NetworkSignal<[voxelPositions: Vector3[], key: string, data: unknown]>(
 			"SetBlockGroupSameData",
 		),
 		/** Fired when a player is eliminated. */
-		PlayerEliminated: new RemoteEvent<[clientId: number]>("PlayerEliminated"),
+		PlayerEliminated: new NetworkSignal<[clientId: number]>("PlayerEliminated"),
 
 		Character: {
-			Spawn: new RemoteEvent<[characterDto: CharacterDto]>("Spawn"),
-			SetHealth: new RemoteEvent<[characterId: number, health: number]>("SetHealth"),
-			SetMaxHealth: new RemoteEvent<[characterId: number, health: number]>("SetMaxHealth"),
-			ChangeOutfit: new RemoteEvent<[characterId: number, outfitDto: OutfitDto | undefined]>("ChangeOutfit"),
+			Spawn: new NetworkSignal<[characterDto: CharacterDto]>("Spawn"),
+			SetHealth: new NetworkSignal<[characterId: number, health: number]>("SetHealth"),
+			SetMaxHealth: new NetworkSignal<[characterId: number, health: number]>("SetMaxHealth"),
+			ChangeOutfit: new NetworkSignal<[characterId: number, outfitDto: OutfitDto | undefined]>("ChangeOutfit"),
 		},
 
 		Purchase: {
-			PromptPurchase: new RemoteFunction<[productId: string, quantity: number, recipientId?: string], [displayed: boolean]>("PromptPurchase"),
+			PromptPurchase: new NetworkFunction<[productId: string, quantity: number, recipientId?: string], [displayed: boolean]>("PromptPurchase"),
 		}
 	},
 };

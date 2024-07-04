@@ -1,7 +1,7 @@
+import { ProtectedUserController } from "@Easy/Core/Client/ProtectedControllers/Airship/User/UserController";
 import { MainMenuController } from "@Easy/Core/Client/ProtectedControllers/MainMenuController";
 import { RightClickMenuButton } from "@Easy/Core/Client/ProtectedControllers/UI/RightClickMenu/RightClickMenuButton";
 import { RightClickMenuController } from "@Easy/Core/Client/ProtectedControllers/UI/RightClickMenu/RightClickMenuController";
-import { ProtectedUserController } from "@Easy/Core/Client/ProtectedControllers/User/ProtectedUserController";
 import { Airship } from "../../Airship";
 import { Dependency } from "../../Flamework";
 import { Game } from "../../Game";

@@ -1,5 +1,5 @@
 import { DirectMessageController } from "@Easy/Core/Client/ProtectedControllers//Social/DirectMessages/DirectMessageController";
-import { FriendsController } from "@Easy/Core/Client/ProtectedControllers//Social/FriendsController";
+import { ProtectedFriendsController } from "@Easy/Core/Client/ProtectedControllers//Social/FriendsController";
 import { ChatCommand } from "@Easy/Core/Shared/Commands/ChatCommand";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Player } from "@Easy/Core/Shared/Player/Player";
@@ -15,7 +15,7 @@ export class MessageCommand extends ChatCommand {
 			return;
 		}
 
-		const friend = Dependency<FriendsController>().GetFriendByUsername(args[0]);
+		const friend = Dependency<ProtectedFriendsController>().GetFriendByUsername(args[0]);
 		if (friend === undefined) {
 			player.SendMessage(`Unable to find friend "${args[0]}"`);
 			return;

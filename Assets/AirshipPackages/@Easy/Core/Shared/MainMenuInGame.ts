@@ -13,7 +13,7 @@ import { GameDto } from "../Client/Components/HomePage/API/GamesAPI";
 import { AudioManager } from "./Audio/AudioManager";
 import { CoreRefs } from "./CoreRefs";
 import { InitNet } from "./Network/NetworkAPI";
-import { RemoteFunction } from "./Network/RemoteFunction";
+import { NetworkFunction } from "./Network/NetworkFunction";
 import { AirshipUrl } from "./Util/AirshipUrl";
 import { AppManager } from "./Util/AppManager";
 import { CanvasAPI } from "./Util/CanvasAPI";
@@ -54,7 +54,7 @@ if (Game.IsServer()) {
 
 Flamework.Ignite();
 
-const serverInfoRemoteFunction = new RemoteFunction<[], [gameId: string, serverId: string, orgId: string]>(
+const serverInfoRemoteFunction = new NetworkFunction<[], [gameId: string, serverId: string, orgId: string]>(
 	"Protected_CoreServerInfo",
 );
 

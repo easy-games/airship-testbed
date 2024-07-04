@@ -20,7 +20,7 @@ import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { Theme } from "@Easy/Core/Shared/Util/Theme";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 import { MainMenuController } from "../../MainMenuController";
-import { FriendsController } from "../FriendsController";
+import { ProtectedFriendsController } from "../FriendsController";
 import { MainMenuPartyController } from "../MainMenuPartyController";
 import { DirectMessage } from "./DirectMessage";
 
@@ -65,7 +65,7 @@ export class DirectMessageController {
 
 	constructor(
 		private readonly mainMenuController: MainMenuController,
-		private readonly friendsController: FriendsController,
+		private readonly friendsController: ProtectedFriendsController,
 		private readonly socketController: SocketController,
 		private readonly partyController: MainMenuPartyController,
 	) {}

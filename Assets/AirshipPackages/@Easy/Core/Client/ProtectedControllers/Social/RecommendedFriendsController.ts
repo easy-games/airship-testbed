@@ -1,9 +1,9 @@
-import { Airship } from "@Easy/Core/Shared/Airship";
 import { Controller, Dependency, OnStart } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Protected } from "@Easy/Core/Shared/Protected";
 import { MapUtil } from "@Easy/Core/Shared/Util/MapUtil";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
+import { ProtectedFriendsController } from "./FriendsController";
 import { MainMenuPartyController } from "./MainMenuPartyController";
 
 interface RecommendedFriendsFile {
@@ -56,11 +56,16 @@ export class RecommendedFriendsController implements OnStart {
 
         // Monitor players in game
         if (Game.IsInGame()) {
-            Airship.Players.ObservePlayers((p) => {
+            Protected.protectedPlayers.ObservePlayers((p) => {
                 if (p.IsLocalPlayer()) return;
                 if (seenThisSession.has(p.userId)) return;
                 // If we're way over max recommendations stop adding new users. Otherwise we'll purge when saving.
                 if (this.recommendedFriends.recommendations.size() > MAX_RECOMMENDED_FRIENDS * 2) return;
+
+                // Skip if already friends
+                const friendsController = Dependency<ProtectedFriendsController>();
+                if (friendsController.IsFriendsWith(p.userId)) return;
+                if (friendsController.HasOutgoingFriendRequest(p.userId)) return;
 
                 const rf = MapUtil.GetOrCreate(this.recommendedFriends.recommendations, p.userId, this.GetDefaultRecommendedFriend(p.username));
                 rf.lastSeen = os.time();
@@ -81,9 +86,15 @@ export class RecommendedFriendsController implements OnStart {
 
         // Monitor party
         Dependency<MainMenuPartyController>().onPartyUpdated.Connect((newParty) => {
+            const localUid = Protected.user.WaitForLocalUser().uid;
+            const friendsController = Dependency<ProtectedFriendsController>();
             for (const member of newParty?.members ?? []) {
-                if (member.uid === Protected.user.localUser?.uid) continue;
+                if (member.uid === localUid) continue;
                 if (seenThisSession.has(member.uid)) continue;
+
+                // Skip if already friends
+                if (friendsController.IsFriendsWith(member.uid)) continue;
+                if (friendsController.HasOutgoingFriendRequest(member.uid)) continue;
 
                 seenThisSession.add(member.uid);
 

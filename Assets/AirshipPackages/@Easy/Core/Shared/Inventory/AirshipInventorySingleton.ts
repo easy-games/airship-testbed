@@ -3,9 +3,9 @@ import { Airship } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
 import { Dependency, Singleton } from "@Easy/Core/Shared/Flamework";
-import { RemoteFunction } from "@Easy/Core/Shared/Network/RemoteFunction";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { Game } from "../Game";
+import { NetworkFunction } from "../Network/NetworkFunction";
 import { Bin } from "../Util/Bin";
 import { Signal } from "../Util/Signal";
 import Inventory, { InventoryDto } from "./Inventory";
@@ -26,7 +26,7 @@ export class AirshipInventorySingleton {
 
 	public remotes = {
 		clientToServer: {
-			getFullUpdate: new RemoteFunction<[invId: number], InventoryDto | undefined>("GetInventoryUpdate"),
+			getFullUpdate: new NetworkFunction<[invId: number], InventoryDto | undefined>("GetInventoryUpdate"),
 		},
 	};
 

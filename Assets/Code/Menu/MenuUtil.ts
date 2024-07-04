@@ -1,4 +1,4 @@
-import { RemoteFunction } from "@Easy/Core/Shared/Network/RemoteFunction";
+import { NetworkFunction } from "@Easy/Core/Shared/Network/NetworkFunction";
 import { SceneManager } from "@Easy/Core/Shared/SceneManager";
 import Menu from "./Menu";
 import { SceneEntry } from "./SceneEntry";
@@ -28,8 +28,8 @@ export class MenuUtil {
 		},
 	];
 
-	public static loadGlobalSceneRequest = new RemoteFunction<string, boolean>("LoadGlobalScene");
-	public static unloadGlobalSceneRequest = new RemoteFunction<string, boolean>("UnloadGlobalScene");
+	public static loadGlobalSceneRequest = new NetworkFunction<string, boolean>("LoadGlobalScene");
+	public static unloadGlobalSceneRequest = new NetworkFunction<string, boolean>("UnloadGlobalScene");
 
 	public static menu: Menu;
 

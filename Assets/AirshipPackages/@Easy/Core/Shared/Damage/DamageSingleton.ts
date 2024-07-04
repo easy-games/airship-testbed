@@ -1,9 +1,9 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { Singleton } from "@Easy/Core/Shared/Flamework";
-import { RemoteEvent } from "@Easy/Core/Shared/Network/RemoteEvent";
 import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { Game } from "../Game";
+import { NetworkSignal } from "../Network/NetworkSignal";
 import { OnUpdate } from "../Util/Timer";
 import { CanClientDamageInfo } from "./CanClientDamageInfo";
 import { DamageInfo, DamageInfoCustomData } from "./DamageInfo";
@@ -16,11 +16,11 @@ export class DamageSingleton {
 
 	public autoNetwork = true;
 
-	private damageRemote = new RemoteEvent<
+	private damageRemote = new NetworkSignal<
 		[nobId: number, damage: number, attackerNobId: number | undefined, data: DamageInfoCustomData]
 	>("DamageRemote");
 
-	private deathRemote = new RemoteEvent<
+	private deathRemote = new NetworkSignal<
 		[nobId: number, damage: number, attackerNobId: number | undefined, data: DamageInfoCustomData]
 	>("DeathRemote");
 
