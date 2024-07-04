@@ -1,7 +1,6 @@
 // Declaring
 export default class TestSingleton extends AirshipSingleton {
-	// CODE:
+	PrintHelloWorld() {
+		print("Hello, World! from TestSingleton!");
+	}
 }
-
-// Getting
-const test = TestSingleton.Get();

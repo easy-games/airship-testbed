@@ -54,4 +54,9 @@ function AirshipSingletons.Find(typeName: string)
     return registry[typeName] ~= nil
 end
 
-return AirshipSingletons
+
+local exports = {
+    SingletonRegistry = AirshipSingletons
+}
+table.freeze(exports)
+return exports
