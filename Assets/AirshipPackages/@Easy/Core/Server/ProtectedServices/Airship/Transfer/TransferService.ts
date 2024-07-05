@@ -35,89 +35,130 @@ export class ProtectedTransferService {
 		if (!Game.IsServer()) return;
 
 		contextbridge.callback<ServerBridgeApiCreateServer>(TransferServiceBridgeTopics.CreateServer, (_, config) => {
-			const res = InternalHttpManager.PostAsync(
-				`${AirshipUrl.GameCoordinator}/servers/create`,
-				EncodeJSON({
-					sceneId: config?.sceneId,
-					region: config?.region,
-					accessMode: config?.accessMode,
-					allowedUids: config?.allowedUserIds,
-				}),
-			);
-
-			if (!res.success && res.statusCode > 299) {
-				warn(`Unable to create server. Status Code:  ${res.statusCode}.\n`, res.data);
-				return {
-					success: false,
-					data: undefined,
-				};
+			const [success, result] = this.CreateServer(config).await();
+			if (!success) {
+				return { success: false, data: undefined };
 			}
-
-			return {
-				success: true,
-				data: DecodeJSON<{
-					serverId: string;
-				}>(res.data),
-			};
+			return result;
 		});
 
 		contextbridge.callback<ServerBridgeApiTransferGroupToGame>(
 			TransferServiceBridgeTopics.TransferGroupToGame,
 			(_, players, gameId, config) => {
-				const res = InternalHttpManager.PostAsync(
-					`${AirshipUrl.GameCoordinator}/transfers/transfer`,
-					EncodeJSON({
-						uids: players.map((p) => (typeIs(p, "string") ? p : p.userId)),
-						gameId,
-						preferredServerId: config?.preferredServerId,
-						sceneId: config?.sceneId,
-						serverTransferData: config?.serverTransferData,
-						clientTransferData: config?.clientTransferData,
-					}),
-				);
-
-				if (!res.success || res.statusCode > 299) {
-					warn(`Unable to complete transfer request. Status Code:  ${res.statusCode}.\n`, res.data);
+				const [success, result] = this.TransferGroupToGame(players, gameId, config).await();
+				if (!success) {
 					return {
 						success: false,
 						data: undefined,
 					};
 				}
-
-				return {
-					success: true,
-					data: undefined,
-				};
+				return result;
 			},
 		);
 
 		contextbridge.callback<ServerBridgeApiTransferGroupToServer>(
 			TransferServiceBridgeTopics.TransferGroupToServer,
 			(_, players, serverId, config) => {
-				const res = InternalHttpManager.PostAsync(
-					`${AirshipUrl.GameCoordinator}/transfers/transfer`,
-					EncodeJSON({
-						uids: players.map((p) => (typeIs(p, "string") ? p : p.userId)),
-						serverId,
-						serverTransferData: config?.serverTransferData,
-						clientTransferData: config?.clientTransferData,
-					}),
-				);
-
-				if (!res.success || res.statusCode > 299) {
-					warn(`Unable to complete transfer request. Status Code:  ${res.statusCode}.\n`, res.data);
+				const [success, result] = this.TransferGroupToServer(players, serverId, config).await();
+				if (!success) {
 					return {
 						success: false,
 						data: undefined,
 					};
 				}
-
-				return {
-					success: true,
-					data: undefined,
-				};
+				return result;
 			},
 		);
+	}
+
+	public async CreateServer(config?: AirshipServerConfig): Promise<Result<CreateServerResponse, undefined>> {
+		const res = InternalHttpManager.PostAsync(
+			`${AirshipUrl.GameCoordinator}/servers/create`,
+			EncodeJSON({
+				sceneId: config?.sceneId,
+				region: config?.region,
+				accessMode: config?.accessMode,
+				allowedUids: config?.allowedUserIds,
+				maxPlayers: config?.maxPlayers,
+			}),
+		);
+
+		if (!res.success && res.statusCode > 299) {
+			warn(`Unable to create server. Status Code:  ${res.statusCode}.\n`, res.data);
+			return {
+				success: false,
+				data: undefined,
+			};
+		}
+
+		return {
+			success: true,
+			data: DecodeJSON<{
+				serverId: string;
+			}>(res.data),
+		};
+	}
+
+	public async TransferGroupToGame(
+		players: readonly (string | Player)[],
+		gameId: string,
+		config?: AirshipGameTransferConfig,
+	): Promise<Result<undefined, undefined>> {
+		const res = InternalHttpManager.PostAsync(
+			`${AirshipUrl.GameCoordinator}/transfers/transfer`,
+			EncodeJSON({
+				uids: players.map((p) => (typeIs(p, "string") ? p : p.userId)),
+				gameId,
+				preferredServerId: config?.preferredServerId,
+				sceneId: config?.sceneId,
+				maxPlayers: config?.maxPlayers,
+				region: config?.region,
+				serverTransferData: config?.serverTransferData,
+				clientTransferData: config?.clientTransferData,
+			}),
+		);
+
+		if (!res.success || res.statusCode > 299) {
+			warn(`Unable to complete transfer request. Status Code:  ${res.statusCode}.\n`, res.data);
+			return {
+				success: false,
+				data: undefined,
+			};
+		}
+
+		return {
+			success: true,
+			data: undefined,
+		};
+	}
+
+	public async TransferGroupToServer(
+		players: readonly (string | Player)[],
+		serverId: string,
+		config?: AirshipServerTransferConfig,
+	): Promise<Result<undefined, undefined>> {
+		const res = InternalHttpManager.PostAsync(
+			`${AirshipUrl.GameCoordinator}/transfers/transfer`,
+			EncodeJSON({
+				uids: players.map((p) => (typeIs(p, "string") ? p : p.userId)),
+				serverId,
+				serverTransferData: config?.serverTransferData,
+				clientTransferData: config?.clientTransferData,
+			}),
+		);
+
+		if (!res.success || res.statusCode > 299) {
+			warn(`Unable to complete transfer request. Status Code:  ${res.statusCode}.\n`, res.data);
+			return {
+				success: false,
+				data: undefined,
+			};
+		}
+
+		return {
+			success: true,
+			data: undefined,
+		};
 	}
 
 	protected OnStart(): void {}
