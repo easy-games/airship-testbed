@@ -2,7 +2,6 @@ import { Airship } from "@Easy/Core/Shared/Airship";
 import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
 import Inventory from "@Easy/Core/Shared/Inventory/Inventory";
 import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
-import { CoreUI } from "@Easy/Core/Shared/UI/CoreUI";
 import { Keyboard, Mouse } from "@Easy/Core/Shared/UserInput";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
@@ -283,7 +282,10 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		}
 
 		if (init) {
-			CoreUI.SetupButton(contentGO);
+			const tileComponent = go.GetAirshipComponent<AirshipInventoryTile>()!;
+			CanvasAPI.OnClickEvent(tileComponent.button.gameObject, () => {
+				Airship.Inventory.localInventory?.SetHeldSlot(slot);
+			});
 		}
 	}
 
@@ -358,9 +360,8 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 
 				// Prevent listening to connections multiple times
 				if (init) {
-					CoreUI.SetupButton(tile);
-					const button = tile.transform.GetChild(0).gameObject;
-					CanvasAPI.OnClickEvent(button, () => {
+					const tileComponent = tile.GetAirshipComponent<AirshipInventoryTile>()!;
+					CanvasAPI.OnClickEvent(tileComponent.button.gameObject, () => {
 						if (i < inv.hotbarSlots) {
 							// hotbar
 							if (this.IsBackpackShown()) {
@@ -377,7 +378,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 							}
 						}
 					});
-					CanvasAPI.OnBeginDragEvent(button, () => {
+					CanvasAPI.OnBeginDragEvent(tileComponent.button.gameObject, () => {
 						this.draggingBin.Clean();
 						if (!this.IsBackpackShown()) return;
 						if (keyboard.IsKeyDown(Key.LeftShift)) return;
@@ -386,7 +387,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 						const itemStack = Airship.Inventory.localInventory.GetItem(i);
 						if (!itemStack) return;
 
-						const visual = button.transform.GetChild(0).gameObject;
+						const visual = tileComponent.button.transform.GetChild(0).gameObject;
 						const clone = Object.Instantiate(visual, this.backpackCanvas.transform) as GameObject;
 						clone.transform.SetAsLastSibling();
 
@@ -435,7 +436,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 					});
 
 					// Called after drop
-					CanvasAPI.OnEndDragEvent(button, () => {
+					CanvasAPI.OnEndDragEvent(tileComponent.button.gameObject, () => {
 						this.draggingBin.Clean();
 
 						if (this.draggingState) {

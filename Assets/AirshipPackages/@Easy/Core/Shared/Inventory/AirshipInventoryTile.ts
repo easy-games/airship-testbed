@@ -3,4 +3,5 @@ export default class AirshipInventoryTile extends AirshipBehaviour {
 	public itemImage!: Image;
 	public itemAmount!: TMP_Text;
 	public itemName!: TMP_Text;
+	public button!: Button;
 }
