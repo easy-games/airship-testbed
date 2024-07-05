@@ -19270,6 +19270,7 @@ interface CoreLoadingScreen extends BundleLoadingScreen {
     spinner: GameObject;
     voiceChatCard: RectTransform;
     voiceChatToggle: InternalToggle;
+    updatedByGame: boolean;
 
 
     ClickContinueButton(): void;
