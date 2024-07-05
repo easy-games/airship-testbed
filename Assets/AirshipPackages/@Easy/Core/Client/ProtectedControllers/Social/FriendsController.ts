@@ -259,7 +259,7 @@ export class ProtectedFriendsController {
 	public GetFriendByUsername(username: string): User | undefined {
 		return this.friends.find((f) => f.username.lower() === username.lower());
 	}
-	
+
 	public GetFriendById(uid: string): User | undefined {
 		return this.friends.find((u) => u.uid === uid);
 	}
@@ -371,7 +371,7 @@ export class ProtectedFriendsController {
 	}
 
 	public IsFriendsWith(userId: string): boolean {
-		return this.friends.some(u => u.uid === userId);
+		return this.friends.some((u) => u.uid === userId);
 	}
 
 	public SendFriendRequest(username: string): boolean {
@@ -429,7 +429,7 @@ export class ProtectedFriendsController {
 				go.name = friend.userId;
 				const friendRect = go.GetComponent<RectTransform>()!;
 
-				const redirect = go.GetComponent<AirshipRedirectDrag>()!;
+				const redirect = go.GetComponent<AirshipRedirectScroll>()!;
 				redirect.redirectTarget = this.friendsScrollRect;
 
 				const refs = go.GetComponent<GameObjectReferences>()!;
@@ -599,9 +599,7 @@ export class ProtectedFriendsController {
 
 		if (config.loadImage) {
 			task.spawn(async () => {
-				const texture = await Airship.Players.GetProfilePictureAsync(
-					friend.userId,
-				);
+				const texture = await Airship.Players.GetProfilePictureAsync(friend.userId);
 				if (texture) {
 					profileImage.texture = texture;
 				}

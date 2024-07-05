@@ -1,8 +1,7 @@
-import { Controller, Dependency } from "@Easy/Core/Shared/Flamework";
+import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
-import { AmbientSoundController } from "../AmbientSound/AmbientSoundController";
 import { ClientSettingsFile } from "./ClientSettingsFile";
 
 const defaultData: ClientSettingsFile = {
@@ -164,20 +163,8 @@ export class ClientSettingsController {
 		return this.data.ambientVolume;
 	}
 
-	public SetAmbientVolume(val: number): void {
-		this.data.ambientVolume = val;
-		Dependency<AmbientSoundController>().SetAmbientVolume(val * 0.5);
-		this.unsavedChanges = true;
-	}
-
 	public GetMusicVolume(): number {
 		return this.data.musicVolume;
-	}
-
-	public SetMusicVolume(val: number): void {
-		this.data.musicVolume = val;
-		Dependency<AmbientSoundController>().SetMusicVolume(val * 0.5);
-		this.unsavedChanges = true;
 	}
 
 	public SetGlobalVolume(volume: number) {

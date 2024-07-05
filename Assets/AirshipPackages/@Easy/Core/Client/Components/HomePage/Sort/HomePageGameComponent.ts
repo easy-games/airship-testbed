@@ -29,7 +29,7 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 	public loadingOverlay!: GameObject;
 
 	@SerializeField()
-	private redirectDrag!: AirshipRedirectDrag;
+	private redirectDrag!: AirshipRedirectScroll;
 
 	private bin = new Bin();
 

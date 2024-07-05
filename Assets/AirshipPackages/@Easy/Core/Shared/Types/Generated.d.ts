@@ -603,11 +603,6 @@ declare const enum Channel {
     Reliable = 0,
     Unreliable = 1,
 }
-declare const enum AutoPackType {
-    Unpacked = 0,
-    Packed = 1,
-    PackedLess = 2,
-}
 declare const enum RotationOrder {
     XYZ = 0,
     XZY = 1,
@@ -616,6 +611,11 @@ declare const enum RotationOrder {
     ZXY = 4,
     Default = 4,
     ZYX = 5,
+}
+declare const enum DataSource {
+    Unset = 0,
+    Server = 1,
+    Client = 2,
 }
 declare const enum RemoteTimeoutType {
     Disabled = 0,
@@ -682,6 +682,10 @@ declare const enum ServerUnloadMode {
     UnloadUnused = 0,
     KeepUnused = 1,
 }
+declare const enum ReplicateStateOrder {
+    Inserted = 0,
+    Appended = 1,
+}
 declare const enum RollbackPhysicsType {
     Physics = 1,
     Physics2D = 2,
@@ -691,11 +695,6 @@ declare const enum LoggingType {
     Error = 1,
     Warning = 2,
     Common = 3,
-}
-declare const enum DataSource {
-    Unset = 0,
-    Server = 1,
-    Client = 2,
 }
 declare const enum DataOrderType {
     Default = 0,
@@ -732,6 +731,11 @@ declare const enum KickReason {
     ExcessiveData = 4,
     UnexpectedProblem = 5,
     UnusualActivity = 6,
+}
+declare const enum ObjectPoolRetrieveOption {
+    Unset = 0,
+    MakeActive = 1,
+    LocalSpace = 2,
 }
 declare const enum RenderingPath {
     VertexLit = 0,
@@ -2041,6 +2045,40 @@ declare const enum VisibilityMode {
     THIRD_PERSON = 0,
     FIRST_PERSON = 1,
     BOTH = 2,
+}
+declare const enum BodyMask {
+    NONE = 0,
+    HAIR = 1,
+    FACE = 2,
+    R_ARM_UPPER = 4,
+    L_ARM_UPPER = 8,
+    UNUSED0 = 16,
+    UNUSED1 = 32,
+    UNUSED2 = 64,
+    L_ARM_LOWER = 128,
+    L_HAND = 256,
+    R_HAND = 512,
+    R_ARM_LOWER = 1024,
+    UNUSED3 = 2048,
+    UNUSED4 = 4096,
+    UNUSED5 = 8192,
+    UNUSED6 = 16384,
+    L_LEG_UPPER = 32768,
+    HIPS = 65536,
+    TORSO = 131072,
+    R_LEG_UPPER = 262144,
+    UNUSED7 = 524288,
+    UNUSED8 = 1048576,
+    UNUSED9 = 2097152,
+    UNUSED10 = 4194304,
+    L_LEG_LOWER = 8388608,
+    L_FOOT = 16777216,
+    R_FOOT = 33554432,
+    R_LEG_LOWER = 67108864,
+    UNUSED11 = 134217728,
+    UNUSED12 = 268435456,
+    UNUSED13 = 536870912,
+    UNUSED14 = 1073741824,
 }
 declare const enum AccessoryAddMode {
     ReplaceAll = 0,
@@ -6529,13 +6567,18 @@ interface NetworkManager extends MonoBehaviour {
 
     CacheObjects(prefab: NetworkObject, count: number, asServer: boolean): void;
     GetInstance<T>(): T;
+    GetPooledInstantiated(prefab: NetworkObject, parent: Transform, asServer: boolean): NetworkObject;
     GetPooledInstantiated(prefab: NetworkObject, asServer: boolean): NetworkObject;
     GetPooledInstantiated(prefab: NetworkObject, position: Vector3, rotation: Quaternion, asServer: boolean): NetworkObject;
     GetPooledInstantiated(prefab: GameObject, asServer: boolean): NetworkObject;
+    GetPooledInstantiated(prefab: GameObject, parent: Transform, asServer: boolean): NetworkObject;
     GetPooledInstantiated(prefab: GameObject, position: Vector3, rotation: Quaternion, asServer: boolean): NetworkObject;
+    GetPooledInstantiated(prefab: NetworkObject, position: Vector3, rotation: Quaternion, parent: Transform, asServer: boolean): NetworkObject;
+    GetPooledInstantiated(prefab: GameObject, position: Vector3, rotation: Quaternion, parent: Transform, asServer: boolean): NetworkObject;
     GetPooledInstantiated(prefabId: number, collectionId: number, asServer: boolean): NetworkObject;
     GetPooledInstantiated(prefabId: number, collectionId: number, position: Vector3, rotation: Quaternion, asServer: boolean): NetworkObject;
     GetPooledInstantiated(prefabId: number, collectionId: number, parent: Transform, position: unknown, rotation: unknown, scale: unknown, makeActive: boolean, asServer: boolean): NetworkObject;
+    GetPooledInstantiated(prefabId: number, collectionId: number, options: ObjectPoolRetrieveOption, parent: Transform, position: unknown, rotation: unknown, scale: unknown, asServer: boolean): NetworkObject;
     GetPrefab(prefabId: number, asServer: boolean): NetworkObject;
     GetPrefabIndex(prefab: GameObject, asServer: boolean): number;
     GetPrefabObjects<T>(spawnableCollectionId: number, createIfMissing: boolean): PrefabObjects;
@@ -6723,6 +6766,7 @@ interface NetworkBehaviour extends MonoBehaviour {
     Despawn(go: GameObject, despawnType: unknown): void;
     Despawn(nob: NetworkObject, despawnType: unknown): void;
     Despawn(despawnType: unknown): void;
+    EmptyReplicatesQueueIntoHistory<T>(replicatesQueue: unknown, replicatesHistory: CSArray<T>): void;
     GetInstance<T>(): T;
     GiveOwnership(newOwner: NetworkConnection): void;
     NetworkInitializeIfDisabled(): void;
@@ -6739,6 +6783,7 @@ interface NetworkBehaviour extends MonoBehaviour {
     OwnerMatches(connection: NetworkConnection): boolean;
     ReadPayload(connection: NetworkConnection, reader: Reader): void;
     Reconcile_Client<T, T2>(reconcileDel: unknown, replicatesHistory: CSArray<T2>, data: T): void;
+    Reconcile_Client_Start(): void;
     Reconcile_Reader<T>(reader: PooledReader, data: unknown, channel: Channel): void;
     Reconcile_Server<T>(methodHash: number, data: T, channel: Channel): void;
     RegisterInstance<T>(component: T, replace: boolean): void;
@@ -6824,7 +6869,7 @@ interface Writer {
 
     EnsureBufferCapacity(count: number): void;
     EnsureBufferLength(count: number): void;
-    FastInsertByte(value: number, index: number): void;
+    FastInsertUInt8Unpacked(value: number, index: number): void;
     GetArraySegment(): CSArray<number>;
     GetBuffer(): CSArray<number>;
     Reserve(count: number): void;
@@ -6855,10 +6900,24 @@ interface Writer {
     WriteBytesAndSize(value: CSArray<number>): void;
     WriteChannel(channel: Channel): void;
     WriteChar(value: string): void;
-    WriteColor(value: Color, packType: AutoPackType): void;
+    WriteColor(value: Color): void;
     WriteColor32(value: Color32): void;
+    WriteColorUnpacked(value: Color): void;
     WriteDateTime(dt: string): void;
     WriteDecimal(value: number): void;
+    WriteDecimalUnpacked(value: number): void;
+    WriteDeltaBoolean(valueA: boolean, valueB: boolean): boolean;
+    WriteDeltaDecimal(valueA: number, valueB: number): boolean;
+    WriteDeltaDouble(valueA: number, valueB: number): boolean;
+    WriteDeltaInt16(valueA: number, valueB: number): boolean;
+    WriteDeltaInt32(valueA: number, valueB: number): boolean;
+    WriteDeltaInt64(valueA: number, valueB: number): boolean;
+    WriteDeltaInt8(valueA: number, valueB: number): boolean;
+    WriteDeltaSingle(valueA: number, valueB: number): boolean;
+    WriteDeltaUInt16(valueA: number, valueB: number): boolean;
+    WriteDeltaUInt32(valueA: number, valueB: number): boolean;
+    WriteDeltaUInt64(valueA: number, valueB: number): boolean;
+    WriteDeltaUInt8(valueA: number, valueB: number): boolean;
     WriteDictionary<TKey, TValue>(dict: CSDictionary<TKey, TValue>): void;
     WriteDouble(value: number): void;
     Writedouble2(value: double2): void;
@@ -6873,6 +6932,7 @@ interface Writer {
     Writedouble4x2(value: double4x2): void;
     Writedouble4x3(value: double4x3): void;
     Writedouble4x4(value: double4x4): void;
+    WriteDoubleUnpacked(value: number): void;
     Writefloat2(value: float2): void;
     Writefloat2x2(value: float2x2): void;
     Writefloat2x3(value: float2x3): void;
@@ -6891,13 +6951,15 @@ interface Writer {
     Writehalf2(value: half2): void;
     Writehalf3(value: half3): void;
     Writehalf4(value: half4): void;
-    WriteInt16(value: number, packType: AutoPackType): void;
+    WriteInt16(value: number): void;
+    WriteInt16Unpacked(value: number): void;
     Writeint2(value: int2): void;
     Writeint2x2(value: int2x2): void;
     Writeint2x3(value: int2x3): void;
     Writeint2x4(value: int2x4): void;
     Writeint3(value: int3): void;
-    WriteInt32(value: number, packType: AutoPackType): void;
+    WriteInt32(value: number): void;
+    WriteInt32Unpacked(value: number): void;
     Writeint3x2(value: int3x2): void;
     Writeint3x3(value: int3x3): void;
     Writeint3x4(value: int3x4): void;
@@ -6905,12 +6967,15 @@ interface Writer {
     Writeint4x2(value: int4x2): void;
     Writeint4x3(value: int4x3): void;
     Writeint4x4(value: int4x4): void;
-    WriteInt64(value: number, packType: AutoPackType): void;
+    WriteInt64(value: number): void;
+    WriteInt64Unpacked(value: number): void;
+    WriteInt8Unpacked(value: number): void;
     WriteLayerMask(value: LayerMask): void;
     WriteList<T>(value: CSArray<T>): void;
     WriteList<T>(value: CSArray<T>, offset: number, count: number): void;
     WriteList<T>(value: CSArray<T>, offset: number): void;
     WriteMatrix4x4(value: Matrix4x4): void;
+    WriteMatrix4x4Unpacked(value: Matrix4x4): void;
     WriteNetworkBehaviour(nb: NetworkBehaviour): void;
     WriteNetworkBehaviourId(nb: NetworkBehaviour): void;
     WriteNetworkConnection(connection: NetworkConnection): void;
@@ -6918,27 +6983,37 @@ interface Writer {
     WriteNetworkObject(nob: NetworkObject): void;
     WriteNetworkObjectId(nob: NetworkObject): void;
     WriteNetworkObjectId(objectId: number): void;
-    WritePackedWhole(value: number): void;
     WritePlane(value: Plane): void;
+    WritePlaneUnpacked(value: Plane): void;
     Writequaternion(value: quaternion): void;
-    WriteQuaternion(value: Quaternion, packType: AutoPackType): void;
+    WriteQuaternion32(value: Quaternion): void;
+    WriteQuaternion64(value: Quaternion): void;
+    WriteQuaternionUnpacked(value: Quaternion): void;
     Writerandom(random: Random): void;
     WriteRay(value: Ray): void;
     WriteRay2D(value: Ray2D): void;
+    WriteRay2DUnpacked(value: Ray2D): void;
+    WriteRayUnpacked(value: Ray): void;
     WriteRect(value: Rect): void;
+    WriteRectUnpacked(value: Rect): void;
     WriteRigidTransform(value: RigidTransform): void;
     WriteSByte(value: number): void;
-    WriteSingle(value: number, packType: AutoPackType): void;
+    WriteSignedPackedWhole(value: number): void;
+    WriteSingle(value: number): void;
+    WriteSingleUnpacked(value: number): void;
     WriteString(value: string): void;
+    WriteSubStream(value: SubStream): void;
     WriteTickUnpacked(value: number): void;
     WriteTransform(t: Transform): void;
-    WriteUInt16(value: number, packType: AutoPackType): void;
+    WriteUInt16(value: number): void;
+    WriteUInt16Unpacked(value: number): void;
     Writeuint2(value: uint2): void;
     Writeuint2x2(value: uint2x2): void;
     Writeuint2x3(value: uint2x3): void;
     Writeuint2x4(value: uint2x4): void;
     Writeuint3(value: uint3): void;
-    WriteUInt32(value: number, packType: AutoPackType): void;
+    WriteUInt32(value: number): void;
+    WriteUInt32Unpacked(value: number): void;
     Writeuint3x2(value: uint3x2): void;
     Writeuint3x3(value: uint3x3): void;
     Writeuint3x4(value: uint3x4): void;
@@ -6946,13 +7021,23 @@ interface Writer {
     Writeuint4x2(value: uint4x2): void;
     Writeuint4x3(value: uint4x3): void;
     Writeuint4x4(value: uint4x4): void;
-    WriteUInt64(value: number, packType: AutoPackType): void;
-    WriteUnpacked<T>(value: T): void;
+    WriteUInt64(value: number): void;
+    WriteUInt64Unpacked(value: number): void;
+    WriteUInt8Array(value: CSArray<number>, offset: number, count: number): void;
+    WriteUInt8ArrayAndSize(value: CSArray<number>, offset: number, count: number): void;
+    WriteUInt8ArrayAndSize(value: CSArray<number>): void;
+    WriteUInt8Unpacked(value: number): void;
+    WriteUnsignedPackedWhole(value: number): void;
     WriteVector2(value: Vector2): void;
-    WriteVector2Int(value: Vector2Int, packType: AutoPackType): void;
+    WriteVector2Int(value: Vector2Int): void;
+    WriteVector2IntUnpacked(value: Vector2Int): void;
+    WriteVector2Unpacked(value: Vector2): void;
     WriteVector3(value: Vector3): void;
-    WriteVector3Int(value: unknown, packType: AutoPackType): void;
+    WriteVector3Int(value: unknown): void;
+    WriteVector3IntUnpacked(value: unknown): void;
+    WriteVector3Unpacked(value: Vector3): void;
     WriteVector4(value: Vector4): void;
+    WriteVector4Unpacked(value: Vector4): void;
     ZigZagEncode(value: number): number;
 
 }
@@ -11816,6 +11901,206 @@ interface RigidTransformConstructor {
 }
 declare const RigidTransform: RigidTransformConstructor;
     
+interface SubStream extends IResettable {
+    Initialized: boolean;
+    Length: number;
+    Remaining: number;
+    NetworkManager: NetworkManager;
+
+
+    InitializeState(): void;
+    ResetReaderToStartPosition(): void;
+    ResetState(): void;
+    StartReading(reader: unknown): boolean;
+
+}
+    
+interface Reader {
+    Source: DataSource;
+    NetworkManager: NetworkManager;
+    Position: number;
+    Capacity: number;
+    Offset: number;
+    Length: number;
+    Remaining: number;
+    NetworkConnection: NetworkConnection;
+
+
+    BlockCopy(target: CSArray<number>, targetOffset: number, count: number): void;
+    Clear(): void;
+    GetArraySegmentBuffer(): CSArray<number>;
+    GetByteBuffer(): CSArray<number>;
+    GetByteBufferAllocated(): CSArray<number>;
+    GetRemainingData(): CSArray<number>;
+    Read<T>(): T;
+    ReadArray<T>(collection: CSArray<T>): number;
+    ReadArrayAllocated<T>(): CSArray<T>;
+    ReadArraySegment(count: number): CSArray<number>;
+    ReadArraySegmentAndSize(): CSArray<number>;
+    Readbool2(): bool2;
+    Readbool2x2(): bool2x2;
+    Readbool2x3(): bool2x3;
+    Readbool2x4(): bool2x4;
+    Readbool3(): bool3;
+    Readbool3x2(): bool3x2;
+    Readbool3x3(): bool3x3;
+    Readbool3x4(): bool3x4;
+    Readbool4(): bool4;
+    Readbool4x2(): bool4x2;
+    Readbool4x3(): bool4x3;
+    Readbool4x4(): bool4x4;
+    ReadBoolean(): boolean;
+    ReadByte(): number;
+    ReadBytes(buffer: CSArray<number>, count: number): void;
+    ReadBytesAndSize(target: CSArray<number>): number;
+    ReadBytesAndSizeAllocated(): CSArray<number>;
+    ReadChannel(): Channel;
+    ReadChar(): string;
+    ReadColor(): Color;
+    ReadColor32(): Color32;
+    ReadColorUnpacked(): Color;
+    ReadDateTime(): string;
+    ReadDecimal(): number;
+    ReadDecimalUnpacked(): number;
+    ReadDeltaBoolean(valueA: boolean): boolean;
+    ReadDeltaDecimal(valueA: number): number;
+    ReadDeltaDouble(valueA: number): number;
+    ReadDeltaInt16(valueA: number): number;
+    ReadDeltaInt32(valueA: number): number;
+    ReadDeltaInt64(valueA: number): number;
+    ReadDeltaInt8(valueA: number): number;
+    ReadDeltaSingle(valueA: number): number;
+    ReadDeltaUInt16(valueA: number): number;
+    ReadDeltaUInt32(valueA: number): number;
+    ReadDeltaUInt64(valueA: number): number;
+    ReadDeltaUInt8(valueA: number): number;
+    ReadDictionaryAllocated<TKey, TValue>(): CSDictionary<TKey, TValue>;
+    ReadDouble(): number;
+    Readdouble2(): double2;
+    Readdouble2x2(): double2x2;
+    Readdouble2x3(): double2x3;
+    Readdouble2x4(): double2x4;
+    Readdouble3(): double3;
+    Readdouble3x2(): double3x2;
+    Readdouble3x3(): double3x3;
+    Readdouble3x4(): double3x4;
+    Readdouble4(): double4;
+    Readdouble4x2(): double4x2;
+    Readdouble4x3(): double4x3;
+    Readdouble4x4(): double4x4;
+    ReadDoubleUnpacked(): number;
+    Readfloat2(): float2;
+    Readfloat2x2(): float2x2;
+    Readfloat2x3(): float2x3;
+    Readfloat2x4(): float2x4;
+    Readfloat3(): float3;
+    Readfloat3x2(): float3x2;
+    Readfloat3x3(): float3x3;
+    Readfloat3x4(): float3x4;
+    Readfloat4(): float4;
+    Readfloat4x2(): float4x2;
+    Readfloat4x3(): float4x3;
+    Readfloat4x4(): float4x4;
+    ReadGameObject(): GameObject;
+    ReadGuid(): unknown;
+    Readhalf(): half;
+    Readhalf2(): half2;
+    Readhalf3(): half3;
+    Readhalf4(): half4;
+    ReadInt16(): number;
+    ReadInt16Unpacked(): number;
+    Readint2(): int2;
+    Readint2x2(): int2x2;
+    Readint2x3(): int2x3;
+    Readint2x4(): int2x4;
+    Readint3(): int3;
+    ReadInt32(): number;
+    ReadInt32Unpacked(): number;
+    Readint3x2(): int3x2;
+    Readint3x3(): int3x3;
+    Readint3x4(): int3x4;
+    Readint4(): int4;
+    Readint4x2(): int4x2;
+    Readint4x3(): int4x3;
+    Readint4x4(): int4x4;
+    ReadInt64(): number;
+    ReadInt64Unpacked(): number;
+    ReadInt8Unpacked(): number;
+    ReadLayerMask(): LayerMask;
+    ReadList<T>(collection: CSArray<T>, allowNullification: boolean): number;
+    ReadListAllocated<T>(): CSArray<T>;
+    ReadMatrix4x4(): Matrix4x4;
+    ReadMatrix4x4Unpacked(): Matrix4x4;
+    ReadNetworkBehaviour(objectId: unknown, componentIndex: unknown, readSpawningObjects: CSArray<number>): NetworkBehaviour;
+    ReadNetworkBehaviour(): NetworkBehaviour;
+    ReadNetworkConnection(): NetworkConnection;
+    ReadNetworkConnectionId(): number;
+    ReadNetworkObject(): NetworkObject;
+    ReadNetworkObject(objectOrPrefabId: unknown, readSpawningObjects: CSArray<number>): NetworkObject;
+    ReadNetworkObjectId(): number;
+    ReadPlane(): Plane;
+    ReadPlaneUnpacked(): Plane;
+    Readquaternion(): quaternion;
+    ReadQuaternion32(): Quaternion;
+    ReadQuaternion64(): Quaternion;
+    ReadQuaternionUnpacked(): Quaternion;
+    Readrandom(): Random;
+    ReadRay(): Ray;
+    ReadRay2D(): Ray2D;
+    ReadRay2DUnpacked(): Ray2D;
+    ReadRayUnpacked(): Ray;
+    ReadRect(): Rect;
+    ReadRectUnpacked(): Rect;
+    ReadRigidTransform(): RigidTransform;
+    ReadSByte(): number;
+    ReadSignedPackedWhole(): number;
+    ReadSingle(): number;
+    ReadSingleUnpacked(): number;
+    ReadString(): string;
+    ReadSubStream(): SubStream;
+    ReadTickUnpacked(): number;
+    ReadTransform(): Transform;
+    ReadUInt16(): number;
+    ReadUInt16Unpacked(): number;
+    Readuint2(): uint2;
+    Readuint2x2(): uint2x2;
+    Readuint2x3(): uint2x3;
+    Readuint2x4(): uint2x4;
+    Readuint3(): uint3;
+    ReadUInt32(): number;
+    ReadUInt32Unpacked(): number;
+    Readuint3x2(): uint3x2;
+    Readuint3x3(): uint3x3;
+    Readuint3x4(): uint3x4;
+    Readuint4(): uint4;
+    Readuint4x2(): uint4x2;
+    Readuint4x3(): uint4x3;
+    Readuint4x4(): uint4x4;
+    ReadUInt64(): number;
+    ReadUInt64Unpacked(): number;
+    ReadUInt8Array(buffer: CSArray<number>, count: number): void;
+    ReadUInt8ArrayAllocated(count: number): CSArray<number>;
+    ReadUInt8ArrayAndSize(target: CSArray<number>): number;
+    ReadUInt8ArrayAndSizeAllocated(): CSArray<number>;
+    ReadUInt8Unpacked(): number;
+    ReadUnsignedPackedWhole(): number;
+    ReadVector2(): Vector2;
+    ReadVector2Int(): Vector2Int;
+    ReadVector2IntUnpacked(): Vector2Int;
+    ReadVector2Unpacked(): Vector2;
+    ReadVector3(): Vector3;
+    ReadVector3Int(): unknown;
+    ReadVector3IntUnpacked(): unknown;
+    ReadVector3Unpacked(): Vector3;
+    ReadVector4(): Vector4;
+    ReadVector4Unpacked(): Vector4;
+    RemainingToString(): string;
+    Skip(value: number): void;
+    ToString(): string;
+    ZigZagDecode(value: number): number;
+
+}
+    
 interface uint2x2 {
     c0: uint2;
     c1: uint2;
@@ -12127,6 +12412,27 @@ declare const uint4x4: uint4x4Constructor;
     
     
     
+interface ReaderConstructor {
+    LastNetworkObject: NetworkObject;
+    LastNetworkBehaviour: NetworkBehaviour;
+
+    new(bytes: CSArray<number>, networkManager: NetworkManager, networkConnection: NetworkConnection, source: DataSource): Reader;
+    new(segment: CSArray<number>, networkManager: NetworkManager, networkConnection: NetworkConnection, source: DataSource): Reader;
+
+
+}
+declare const Reader: ReaderConstructor;
+    
+interface SubStreamConstructor {
+    UNINITIALIZED_LENGTH: number;
+
+
+
+    CreateFromReader(originalReader: Reader, subStreamLength: number): SubStream;
+    StartWriting(manager: NetworkManager, writer: unknown, minimumLength: number): SubStream;
+}
+declare const SubStream: SubStreamConstructor;
+    
 interface WriterConstructor {
     UNSET_COLLECTION_SIZE_VALUE: number;
 
@@ -12177,7 +12483,7 @@ interface TransportManager extends MonoBehaviour {
     GetMTUReserve(): number;
     GetTransport(index: number): Transport;
     GetTransport<T>(): T;
-    IsLocalTransport(connectionId: number): boolean;
+    IsLocalTransport(transportId: number, connectionId: number): boolean;
     SetMTUReserve(value: number): void;
 
 }
@@ -12719,10 +13025,12 @@ interface PredictionManager extends MonoBehaviour {
     ServerReplayTick: number;
     ClientStateTick: number;
     ServerStateTick: number;
+    StateOrder: ReplicateStateOrder;
 
 
     GetMaximumServerReplicates(): number;
     SetMaximumServerReplicates(value: number): void;
+    SetStateOrder(stateOrder: ReplicateStateOrder): void;
 
 }
     
@@ -12758,163 +13066,6 @@ interface RollbackManagerConstructor {
 
 }
 declare const RollbackManager: RollbackManagerConstructor;
-    
-interface Reader {
-    Source: DataSource;
-    NetworkManager: NetworkManager;
-    Position: number;
-    Capacity: number;
-    Offset: number;
-    Length: number;
-    Remaining: number;
-    NetworkConnection: NetworkConnection;
-
-
-    BlockCopy(target: CSArray<number>, targetOffset: number, count: number): void;
-    Clear(): void;
-    GetArraySegmentBuffer(): CSArray<number>;
-    GetByteBuffer(): CSArray<number>;
-    GetByteBufferAllocated(): CSArray<number>;
-    GetRemainingData(): CSArray<number>;
-    Read<T>(): T;
-    ReadArray<T>(collection: CSArray<T>): number;
-    ReadArrayAllocated<T>(): CSArray<T>;
-    ReadArraySegment(count: number): CSArray<number>;
-    ReadArraySegmentAndSize(): CSArray<number>;
-    Readbool2(): bool2;
-    Readbool2x2(): bool2x2;
-    Readbool2x3(): bool2x3;
-    Readbool2x4(): bool2x4;
-    Readbool3(): bool3;
-    Readbool3x2(): bool3x2;
-    Readbool3x3(): bool3x3;
-    Readbool3x4(): bool3x4;
-    Readbool4(): bool4;
-    Readbool4x2(): bool4x2;
-    Readbool4x3(): bool4x3;
-    Readbool4x4(): bool4x4;
-    ReadBoolean(): boolean;
-    ReadByte(): number;
-    ReadBytes(buffer: CSArray<number>, count: number): void;
-    ReadBytesAllocated(count: number): CSArray<number>;
-    ReadBytesAndSize(target: CSArray<number>): number;
-    ReadBytesAndSizeAllocated(): CSArray<number>;
-    ReadChannel(): Channel;
-    ReadChar(): string;
-    ReadColor(packType: AutoPackType): Color;
-    ReadColor32(): Color32;
-    ReadDateTime(): string;
-    ReadDecimal(): number;
-    ReadDictionaryAllocated<TKey, TValue>(): CSDictionary<TKey, TValue>;
-    ReadDouble(): number;
-    Readdouble2(): double2;
-    Readdouble2x2(): double2x2;
-    Readdouble2x3(): double2x3;
-    Readdouble2x4(): double2x4;
-    Readdouble3(): double3;
-    Readdouble3x2(): double3x2;
-    Readdouble3x3(): double3x3;
-    Readdouble3x4(): double3x4;
-    Readdouble4(): double4;
-    Readdouble4x2(): double4x2;
-    Readdouble4x3(): double4x3;
-    Readdouble4x4(): double4x4;
-    Readfloat2(): float2;
-    Readfloat2x2(): float2x2;
-    Readfloat2x3(): float2x3;
-    Readfloat2x4(): float2x4;
-    Readfloat3(): float3;
-    Readfloat3x2(): float3x2;
-    Readfloat3x3(): float3x3;
-    Readfloat3x4(): float3x4;
-    Readfloat4(): float4;
-    Readfloat4x2(): float4x2;
-    Readfloat4x3(): float4x3;
-    Readfloat4x4(): float4x4;
-    ReadGameObject(): GameObject;
-    ReadGuid(): unknown;
-    Readhalf(): half;
-    Readhalf2(): half2;
-    Readhalf3(): half3;
-    Readhalf4(): half4;
-    ReadInt16(packType: AutoPackType): number;
-    Readint2(): int2;
-    Readint2x2(): int2x2;
-    Readint2x3(): int2x3;
-    Readint2x4(): int2x4;
-    Readint3(): int3;
-    ReadInt32(packType: AutoPackType): number;
-    Readint3x2(): int3x2;
-    Readint3x3(): int3x3;
-    Readint3x4(): int3x4;
-    Readint4(): int4;
-    Readint4x2(): int4x2;
-    Readint4x3(): int4x3;
-    Readint4x4(): int4x4;
-    ReadInt64(packType: AutoPackType): number;
-    ReadLayerMask(): LayerMask;
-    ReadList<T>(collection: CSArray<T>, allowNullification: boolean): number;
-    ReadListAllocated<T>(): CSArray<T>;
-    ReadMatrix4x4(): Matrix4x4;
-    ReadNetworkBehaviour(objectId: unknown, componentIndex: unknown, readSpawningObjects: CSArray<number>): NetworkBehaviour;
-    ReadNetworkBehaviour(): NetworkBehaviour;
-    ReadNetworkConnection(): NetworkConnection;
-    ReadNetworkConnectionId(): number;
-    ReadNetworkObject(): NetworkObject;
-    ReadNetworkObject(objectOrPrefabId: unknown, readSpawningObjects: CSArray<number>): NetworkObject;
-    ReadNetworkObjectId(): number;
-    ReadPackedWhole(): number;
-    ReadPlane(): Plane;
-    Readquaternion(): quaternion;
-    ReadQuaternion(packType: AutoPackType): Quaternion;
-    Readrandom(): Random;
-    ReadRay(): Ray;
-    ReadRay2D(): Ray2D;
-    ReadRect(): Rect;
-    ReadRigidTransform(): RigidTransform;
-    ReadSByte(): number;
-    ReadSingle(packType: AutoPackType): number;
-    ReadString(): string;
-    ReadTickUnpacked(): number;
-    ReadTransform(): Transform;
-    ReadUInt16(packType: AutoPackType): number;
-    Readuint2(): uint2;
-    Readuint2x2(): uint2x2;
-    Readuint2x3(): uint2x3;
-    Readuint2x4(): uint2x4;
-    Readuint3(): uint3;
-    ReadUInt32(packType: AutoPackType): number;
-    Readuint3x2(): uint3x2;
-    Readuint3x3(): uint3x3;
-    Readuint3x4(): uint3x4;
-    Readuint4(): uint4;
-    Readuint4x2(): uint4x2;
-    Readuint4x3(): uint4x3;
-    Readuint4x4(): uint4x4;
-    ReadUInt64(packType: AutoPackType): number;
-    ReadUnpacked<T>(): T;
-    ReadVector2(): Vector2;
-    ReadVector2Int(packType: AutoPackType): Vector2Int;
-    ReadVector3(): Vector3;
-    ReadVector3Int(packType: AutoPackType): unknown;
-    ReadVector4(): Vector4;
-    RemainingToString(): string;
-    Skip(value: number): void;
-    ToString(): string;
-    ZigZagDecode(value: number): number;
-
-}
-    
-interface ReaderConstructor {
-    LastNetworkObject: NetworkObject;
-    LastNetworkBehaviour: NetworkBehaviour;
-
-    new(bytes: CSArray<number>, networkManager: NetworkManager, networkConnection: NetworkConnection, source: DataSource): Reader;
-    new(segment: CSArray<number>, networkManager: NetworkManager, networkConnection: NetworkConnection, source: DataSource): Reader;
-
-
-}
-declare const Reader: ReaderConstructor;
     
 interface PooledReader extends Reader {
 
@@ -13016,6 +13167,14 @@ interface PooledWriterConstructor {
 }
 declare const PooledWriter: PooledWriterConstructor;
     
+interface NetworkBehaviourConstructor {
+    MAXIMUM_NETWORKBEHAVIOURS: number;
+
+
+
+}
+declare const NetworkBehaviour: NetworkBehaviourConstructor;
+    
 interface PredictedSpawn extends NetworkBehaviour {
 
 
@@ -13025,8 +13184,8 @@ interface PredictedSpawn extends NetworkBehaviour {
     NetworkInitialize___Early(): void;
     NetworkInitialize__Late(): void;
     NetworkInitializeIfDisabled(): void;
-    OnTryDepawnServer(despawner: NetworkConnection): boolean;
     OnTryDespawnClient(): boolean;
+    OnTryDespawnServer(despawner: NetworkConnection): boolean;
     OnTrySpawnClient(owner: NetworkConnection): boolean;
     OnTrySpawnServer(spawner: NetworkConnection, owner: NetworkConnection): boolean;
     SetAllowDespawning(value: boolean): void;
@@ -13056,10 +13215,12 @@ interface ChildTransformTickSmoother extends IResettable {
     SetAdaptiveInterpolation(adaptiveInterpolation: AdaptiveInterpolationType): void;
     SetSmoothedProperties(value: TransformPropertiesFlag, forSpectator: boolean): void;
     SetSpectatorInterpolation(value: number, disableAdaptiveInterpolation: boolean): void;
+    Teleport(): void;
 
 }
     
 interface ChildTransformTickSmootherConstructor {
+    PositionOutcomes: CSDictionary<number, number>;
 
     new(): ChildTransformTickSmoother;
 
@@ -13221,6 +13382,7 @@ interface ObjectPool extends MonoBehaviour {
     InitializeOnce(nm: NetworkManager): void;
     LateUpdate(): void;
     RetrieveObject(prefabId: number, collectionId: number, parent: Transform, position: unknown, rotation: unknown, scale: unknown, makeActive: boolean, asServer: boolean): NetworkObject;
+    RetrieveObject(prefabId: number, collectionId: number, options: ObjectPoolRetrieveOption, parent: Transform, position: unknown, rotation: unknown, scale: unknown, asServer: boolean): NetworkObject;
     StoreObject(instantiated: NetworkObject, asServer: boolean): void;
 
 }
@@ -19106,6 +19268,8 @@ interface CoreLoadingScreen extends BundleLoadingScreen {
     disconnectButton: Button;
     continueButton: Button;
     spinner: GameObject;
+    voiceChatCard: RectTransform;
+    voiceChatToggle: InternalToggle;
 
 
     ClickContinueButton(): void;
@@ -19114,6 +19278,28 @@ interface CoreLoadingScreen extends BundleLoadingScreen {
     SetTotalDownloadSize(sizeBytes: number): void;
 
 }
+    
+interface InternalToggle extends MonoBehaviour {
+    onValueChanged: unknown;
+    bgImage: Image;
+    handle: RectTransform;
+    activeColor: Color;
+    inactiveColor: Color;
+
+
+    Button_OnClick(): void;
+    SetValue(val: boolean): void;
+    Start(): void;
+
+}
+    
+interface InternalToggleConstructor {
+
+    new(): InternalToggle;
+
+
+}
+declare const InternalToggle: InternalToggleConstructor;
     
 interface CoreLoadingScreenConstructor {
 
@@ -19343,8 +19529,7 @@ interface ServerBootstrap extends MonoBehaviour {
     overrideGameBundleId: string;
     overrideGameBundleVersion: string;
     airshipJWT: string;
-    agones: AgonesSdk;
-    agonesBeta: AgonesBetaSdk;
+    agones: AgonesBetaSdk;
     gameId: string;
     serverId: string;
     organizationId: string;
@@ -19690,6 +19875,7 @@ interface AccessoryBuilder extends MonoBehaviour {
     
 interface CharacterRig extends MonoBehaviour {
     bodyMesh: SkinnedMeshRenderer;
+    armsMesh: SkinnedMeshRenderer;
     headMesh: Renderer;
     faceMesh: Renderer;
     rigHolder: Transform;
@@ -19783,6 +19969,7 @@ interface AccessoryComponent extends MonoBehaviour {
     accessorySlot: AccessorySlot;
     visibilityMode: VisibilityMode;
     skinnedToCharacter: boolean;
+    bodyMask: number;
     localPosition: Vector3;
     localRotation: Quaternion;
     localScale: Vector3;
@@ -19791,11 +19978,29 @@ interface AccessoryComponent extends MonoBehaviour {
     Copy(other: AccessoryComponent): void;
     GetServerInstanceId(): string;
     GetSlotNumber(): number;
+    HasFlag(flag: BodyMask): boolean;
     SetInstanceId(id: string): void;
 
 }
     
+interface BodyMaskInspectorData {
+    name: string;
+    bodyMask: BodyMask;
+
+
+
+}
+    
+interface BodyMaskInspectorDataConstructor {
+
+    new(mask: BodyMask, name: string): BodyMaskInspectorData;
+
+
+}
+declare const BodyMaskInspectorData: BodyMaskInspectorDataConstructor;
+    
 interface AccessoryComponentConstructor {
+    BodyMaskInspectorDatas: CSArray<BodyMaskInspectorData>;
 
     new(): AccessoryComponent;
 
@@ -22821,7 +23026,8 @@ interface DefaultObjectPool extends ObjectPool {
     ClearPool(collectionId: number): void;
     GetOrCreateCache(collectionId: number, prefabId: number): CSArray<NetworkObject>;
     GetPrefab(prefabId: number, collectionId: number, asServer: boolean): NetworkObject;
-    RetrieveObject(prefabId: number, collectionId: number, parent: Transform, nullableLocalPosition: unknown, nullableLocalRotation: unknown, nullableLocalScale: unknown, makeActive: boolean, asServer: boolean): NetworkObject;
+    RetrieveObject(prefabId: number, collectionId: number, parent: Transform, nullablePosition: unknown, nullableRotation: unknown, nullableScale: unknown, makeActive: boolean, asServer: boolean): NetworkObject;
+    RetrieveObject(prefabId: number, collectionId: number, options: ObjectPoolRetrieveOption, parent: Transform, nullablePosition: unknown, nullableRotation: unknown, nullableScale: unknown, asServer: boolean): NetworkObject;
     StoreObject(instantiated: NetworkObject, asServer: boolean): void;
 
 }
@@ -23785,6 +23991,7 @@ interface NetworkTransform extends NetworkBehaviour {
     SetSynchronizePosition(value: boolean): void;
     SetSynchronizeRotation(value: boolean): void;
     SetSynchronizeScale(value: boolean): void;
+    Teleport(): void;
 
 }
     
@@ -24163,7 +24370,7 @@ interface LineRendererConstructor {
 }
 declare const LineRenderer: LineRendererConstructor;
     
-interface AirshipRedirectDrag extends MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler {
+interface AirshipRedirectScroll extends MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler {
     isDragging: boolean;
     redirectTarget: ScrollRect;
 
@@ -24176,13 +24383,13 @@ interface AirshipRedirectDrag extends MonoBehaviour, IBeginDragHandler, IDragHan
 
 }
     
-interface AirshipRedirectDragConstructor {
+interface AirshipRedirectScrollConstructor {
 
-    new(): AirshipRedirectDrag;
+    new(): AirshipRedirectScroll;
 
 
 }
-declare const AirshipRedirectDrag: AirshipRedirectDragConstructor;
+declare const AirshipRedirectScroll: AirshipRedirectScrollConstructor;
     
 interface IMeshModifier {
 
@@ -27909,6 +28116,7 @@ interface CharacterMovementData extends MonoBehaviour {
     upwardsGravityMultiplier: number;
     groundCollisionLayerMask: LayerMask;
     terminalVelocity: number;
+    minimumVelocity: number;
     slopeForce: number;
     minSlopeDelta: number;
     maxSlopeDelta: number;
