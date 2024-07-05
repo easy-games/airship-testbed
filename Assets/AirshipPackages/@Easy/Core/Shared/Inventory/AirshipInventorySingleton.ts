@@ -1,9 +1,9 @@
-import { InventoryUIController } from "@Easy/Core/Client/Controllers/Inventory/InventoryUIController";
 import { Airship } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
-import { Dependency, Singleton } from "@Easy/Core/Shared/Flamework";
+import { Singleton } from "@Easy/Core/Shared/Flamework";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
+import { AssetCache } from "../AssetCache/AssetCache";
 import { Game } from "../Game";
 import { NetworkFunction } from "../Network/NetworkFunction";
 import { Bin } from "../Util/Bin";
@@ -21,6 +21,19 @@ interface InventoryEntry {
 export class AirshipInventorySingleton {
 	public localInventory?: Inventory;
 	public localInventoryChanged = new Signal<Inventory>();
+
+	/**
+	 * If `true`, the Inventory UI will immediately be enabled for the player.
+	 *
+	 * If `false`, Inventory UI is only shown once receiving an item.
+	 *
+	 * Defaults to `false`.
+	 */
+	public alwaysEnableInventoryUI = false;
+
+	private isUISetup = false;
+
+	private inventoryUIPrefab: GameObject | undefined;
 
 	private inventories = new Map<number, InventoryEntry>();
 
@@ -41,6 +54,36 @@ export class AirshipInventorySingleton {
 		if (Game.IsServer()) {
 			this.StartServer();
 		}
+
+		if (Game.IsClient()) {
+			Game.localPlayer.ObserveCharacter((character) => {
+				if (!character || this.isUISetup) return;
+
+				if (character.inventory.GetAllItems().size() > 0 || Airship.Inventory.alwaysEnableInventoryUI) {
+					this.isUISetup = true;
+					this.CreateUI();
+					return;
+				}
+				character.inventory.onChanged.Connect(() => {
+					if (!this.isUISetup) {
+						this.isUISetup = true;
+						this.CreateUI();
+					}
+				});
+			});
+		}
+	}
+
+	private CreateUI(): void {
+		let prefab: GameObject;
+		if (this.inventoryUIPrefab) {
+			prefab = this.inventoryUIPrefab;
+		} else {
+			prefab = AssetCache.LoadAsset(
+				"Assets/AirshipPackages/@Easy/Core/Prefabs/Inventory/AirshipInventoryUI.prefab",
+			);
+		}
+		const go = Object.Instantiate(prefab);
 	}
 
 	private StartClient(): void {
@@ -138,21 +181,6 @@ export class AirshipInventorySingleton {
 
 					let completed = false;
 
-					// armor
-					const itemMeta = itemStack.GetMeta();
-					if (!completed) {
-						if (itemMeta.armor) {
-							const armorSlot = fromInv.armorSlots[itemMeta.armor.armorType];
-							const existingArmor = fromInv.GetItem(armorSlot);
-							if (existingArmor === undefined) {
-								this.SwapSlots(fromInv, fromSlot, toInv, armorSlot, {
-									clientPredicted: true,
-								});
-								completed = true;
-							}
-						}
-					}
-
 					// find slots to merge
 					for (let i = fromInv.GetHotbarSlotCount(); i < fromInv.GetMaxSlots(); i++) {
 						const otherItemStack = fromInv.GetItem(i);
@@ -193,19 +221,6 @@ export class AirshipInventorySingleton {
 
 					let completed = false;
 					const itemMeta = itemStack.GetMeta();
-
-					if (!completed) {
-						if (itemMeta.armor) {
-							const armorSlot = fromInv.armorSlots[itemMeta.armor.armorType];
-							const existingArmor = fromInv.GetItem(armorSlot);
-							if (existingArmor === undefined) {
-								this.SwapSlots(fromInv, fromSlot, toInv, armorSlot, {
-									clientPredicted: true,
-								});
-								completed = true;
-							}
-						}
-					}
 
 					// find slots to merge
 					for (let i = 0; i < fromInv.GetHotbarSlotCount(); i++) {
@@ -327,21 +342,6 @@ export class AirshipInventorySingleton {
 
 			let completed = false;
 
-			// armor
-			const itemMeta = itemStack.GetMeta();
-			if (!completed) {
-				if (itemMeta.armor) {
-					const armorSlot = inv.armorSlots[itemMeta.armor.armorType];
-					const existingArmor = inv.GetItem(armorSlot);
-					if (existingArmor === undefined) {
-						this.SwapSlots(inv, slot, inv, armorSlot, {
-							clientPredicted: RunUtil.IsClient(),
-						});
-						completed = true;
-					}
-				}
-			}
-
 			// find slots to merge
 			if (!completed) {
 				for (let i = inv.GetHotbarSlotCount(); i < inv.GetMaxSlots(); i++) {
@@ -380,20 +380,6 @@ export class AirshipInventorySingleton {
 
 			let completed = false;
 			const itemMeta = itemStack.GetMeta();
-
-			// armor
-			if (!completed) {
-				if (itemMeta.armor) {
-					const armorSlot = inv.armorSlots[itemMeta.armor.armorType];
-					const existingArmor = inv.GetItem(armorSlot);
-					if (existingArmor === undefined) {
-						this.SwapSlots(inv, slot, inv, armorSlot, {
-							clientPredicted: RunUtil.IsClient(),
-						});
-						completed = true;
-					}
-				}
-			}
 
 			// find slots to merge
 			if (!completed) {
@@ -476,19 +462,23 @@ export class AirshipInventorySingleton {
 	}
 
 	public SetUIEnabled(enabled: boolean): void {
-		Dependency<InventoryUIController>().SetEnabled(enabled);
+		// Dependency<InventoryUIController>().SetEnabled(enabled);
 	}
 
 	public SetHealtbarVisible(visible: boolean) {
-		Dependency<InventoryUIController>().SetHealtbarVisible(visible);
+		// Dependency<InventoryUIController>().SetHealtbarVisible(visible);
 	}
 
 	public SetHotbarVisible(visible: boolean) {
-		Dependency<InventoryUIController>().SetHotbarVisible(visible);
+		// Dependency<InventoryUIController>().SetHotbarVisible(visible);
 	}
 
 	public SetBackpackVisible(visible: boolean) {
-		Dependency<InventoryUIController>().SetBackpackVisible(visible);
+		// Dependency<InventoryUIController>().SetBackpackVisible(visible);
+	}
+
+	public SetInventoryUIPrefab(prefab: GameObject): void {
+		this.inventoryUIPrefab = prefab;
 	}
 
 	public SetLocalInventory(inventory: Inventory): void {

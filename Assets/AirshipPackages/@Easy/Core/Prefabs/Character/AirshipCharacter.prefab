@@ -1048,9 +1048,9 @@ MonoBehaviour:
       fileRef: 
       decorators: []
       nullable: 0
-      serializedValue: 48
+      serializedValue: 45
       serializedObject: {fileID: 0}
-      modified: 0
+      modified: 1
     - name: hotbarSlots
       type: number
       objectType: 
@@ -1254,7 +1254,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
-      fileRef: AirshipPackages/@Easy\Core\Shared\Character\Character.ts
+      fileRef: AirshipPackages/@Easy/Core/Shared/Character/Character.ts
       decorators:
       - name: Header
         parameters:
