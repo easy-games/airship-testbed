@@ -4,15 +4,22 @@ local registry = {}
 
 function AirshipSingletons.Resolve(typeName: string, timeout: number): AirshipSingleton
     -- required to ensure singletons run before resolve is ran
-    task.wait()
-
     local dependencyObject = registry[typeName]
+
+    if not dependencyObject then
+        -- delay a frame just in case it's in the midst of loading (unfortunately doing this for now)
+        task.wait()
+        dependencyObject = registry[typeName]
+    else
+        return dependencyObject
+    end
     
-    -- If the dependency doesn't exist, create it
-    if dependencyObject ~= nil then
+    -- If it exists after the frame wait, then return it
+    if dependencyObject then
         return dependencyObject
     end
 
+    -- If still not found, we're creating it...
     -- Get or create the Singletons GameObject
     local singletonsGo = GameObject:Find("Singletons")
     if not singletonsGo then
