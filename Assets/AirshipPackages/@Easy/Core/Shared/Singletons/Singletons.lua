@@ -1,16 +1,11 @@
---[[
-    Why hello you pesky peeker - this is the registry for AirshipSingletons!
-
-    :-)
-]]
 local AirshipSingletons = {}
+
 local registry = {}
 
-type AirshipSingleton = {}
-type AirshipBehaviour = {}
+function AirshipSingletons.Resolve(typeName: string, timeout: number): AirshipSingleton
+    -- required to ensure singletons run before resolve is ran
+    task.wait()
 
-
-function AirshipSingletons.Resolve(typeName: string): AirshipSingleton
     local dependencyObject = registry[typeName]
     
     -- If the dependency doesn't exist, create it
