@@ -19,12 +19,16 @@ Material:
   - NUM_LIGHTS_LIGHTS2
   - POINT_FILTER_ON
   - SLIDER_OVERRIDE_ON
+  - _DSTBLEND_ZERO
+  - _SRCBLEND_ONE
+  - _SURFACETYPE_OPAQUE
   - _ZWRITE_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
+  m_CustomRenderQueue: 2000
+  stringTagMap:
+    RenderType: Opaque
   disabledShaderPasses: []
   m_LockedProperties: 
   m_SavedProperties:
@@ -103,6 +107,7 @@ Material:
     - DOUBLE_SIDED_NORMALS: 2
     - EMISSIVE: 0
     - EXPLICIT_MAPS: 1
+    - EXTRA_FEATURES: 0
     - INSTANCE_DATA: 0
     - NUM_LIGHTS: 0
     - POINT_FILTER: 1
@@ -118,6 +123,7 @@ Material:
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
+    - _EmissiveLevel: 0
     - _EmissiveMix: 1
     - _GlossMapScale: 1
     - _Glossiness: 0.5
@@ -139,6 +145,7 @@ Material:
     - _Specular: 1
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _SurfaceType: 0
     - _TriplanarScale: 0
     - _UVSec: 0
     - _ZWrite: 1
