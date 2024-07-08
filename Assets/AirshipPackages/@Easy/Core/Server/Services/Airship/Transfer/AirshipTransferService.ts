@@ -22,6 +22,11 @@ import { Signal } from "@Easy/Core/Shared/Util/Signal";
  */
 @Service({})
 export class AirshipTransferService {
+	/**
+	 * Fired when the server begins shutting down.
+	 *
+	 * You can yield for up to 30 seconds to perform shutdown logic.
+	 */
 	public onShutdown = new Signal();
 
 	constructor() {
