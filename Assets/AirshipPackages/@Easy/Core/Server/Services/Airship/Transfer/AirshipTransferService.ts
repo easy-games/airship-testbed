@@ -27,7 +27,7 @@ export class AirshipTransferService {
 	 *
 	 * You can yield for up to 30 seconds to perform shutdown logic.
 	 */
-	public onShutdown = new Signal();
+	public onShutdown = new Signal().WithYieldTracking(false);
 
 	constructor() {
 		Platform.Server.Transfer = this;
