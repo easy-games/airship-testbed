@@ -7,39 +7,62 @@ export default class CharacterMoveSlide extends AirshipBehaviour{
     private readonly SlideKey = "Slide";
 
     private character!:Character;
-    private isSlideing = false;
+    private slideStartTime = 0;
 
     public slideForce = 10;
+    public slideDurationInSeconds = .5;
+    
 
     public Awake(): void {
         this.character = this.gameObject.GetAirshipComponent<Character>()!;
-
-        while(this.character.id === undefined || this.character.id < 0){
-            task.wait();
-        }
-
-        print("Slide Character awake: "+ this.character.id);
+        this.character.WaitForInit();
 
         //Locally listen to actions
         if(this.character.IsLocalCharacter()) {
-            print("Creating slide action");
             Airship.Input.CreateAction(this.SlideKey, Binding.Key(Key.Q));
-            Airship.Input.OnDown(this.SlideKey).Connect((event) => {
-                print("setting slide to true");
-                this.character.AddCustomMoveData(this.SlideKey, true);
-            });
         }
 
         if(this.character.IsLocalCharacter() || Game.IsServer()) {
             //Listen to custom data and modify movement based on values
-            this.character.OnBeginMove.Connect((customMoveData, tick, isReplay) => {
+            this.character.OnBeginMove.Connect((customMoveData, inputData, tick, isReplay) => {
                 if(customMoveData.get(this.SlideKey)) {
-                    //SLIDEING
-                    print("SLIDE");
-                    this.character.movement.AddImpulse(
-                        this.character.movement.networkTransform.forward.mul(this.slideForce));
+                    this.Slide(inputData.moveDir);
+                }else{
+                    this.StopSlide()
                 }
             });
+        }
+    }
+
+    public Update(dt: number): void {
+        if(this.character.IsLocalCharacter()) {
+            if(Airship.Input.IsDown(this.SlideKey)){
+                this.character.AddCustomMoveData(this.SlideKey, true);
+            }
+        }
+    }
+
+    private Slide(dir: Vector3){
+        let characterState = this.character.movement.GetState();
+        
+        if(this.slideStartTime <= 0){
+            //Starting Slide
+            print("Starting Slide");
+            this.slideStartTime = Time.time;
+        }        
+        
+        if((Time.time - this.slideStartTime) <= this.slideDurationInSeconds &&
+            (characterState === CharacterState.Running || characterState === CharacterState.Sprinting)){
+            //Slide
+            this.character.movement.AddImpulse(dir.mul(this.slideForce));
+        }
+
+    }
+
+    private StopSlide(){
+        if(this.slideStartTime > 0){
+            print("Stopping Slide");
+            this.slideStartTime = -1;
         }
     }
 }

@@ -49112,4 +49112,37 @@ interface FixedJointConstructor {
 
 }
 declare const FixedJoint: FixedJointConstructor;
+    
+interface IReplicateData {
+
+
+    Dispose(): void;
+    GetTick(): number;
+    SetTick(value: number): void;
+
+}
+    
+interface MoveInputData extends IReplicateData {
+    moveDir: Vector3;
+    jump: boolean;
+    crouchOrSlide: boolean;
+    sprint: boolean;
+    lookVector: Vector3;
+    customData: BinaryBlob;
+
+
+    Dispose(): void;
+    GetTick(): number;
+    SetTick(value: number): void;
+
+}
+    
+interface MoveInputDataConstructor {
+
+    new(moveDir: Vector3, jump: boolean, crouchOrSlide: boolean, sprint: boolean, lookVector: Vector3, customData: BinaryBlob): MoveInputData;
+
+
+    CompareBinaryBlobs(a: BinaryBlob, b: BinaryBlob): boolean;
+}
+declare const MoveInputData: MoveInputDataConstructor;
 
