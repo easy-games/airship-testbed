@@ -3,7 +3,6 @@ import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
 import { CoreItemType } from "@Easy/Core/Shared/Item/CoreItemType";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import Object from "@Easy/Core/Shared/Util/ObjectUtils";
-import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import Character from "../Character/Character";
 import { Game } from "../Game";
@@ -56,7 +55,7 @@ export default class Inventory extends AirshipBehaviour {
 		if (this.networkObject.IsSpawned) {
 			this.id = this.networkObject.ObjectId;
 			Airship.Inventory.RegisterInventory(this);
-			if (RunUtil.IsClient()) {
+			if (Game.IsClient()) {
 				task.spawn(() => {
 					this.RequestFullUpdate();
 				});
@@ -66,7 +65,7 @@ export default class Inventory extends AirshipBehaviour {
 				Bridge.DisconnectEvent(conn);
 				this.id = this.networkObject.ObjectId;
 				Airship.Inventory.RegisterInventory(this);
-				if (RunUtil.IsClient()) {
+				if (Game.IsClient()) {
 					task.spawn(() => {
 						this.RequestFullUpdate();
 					});

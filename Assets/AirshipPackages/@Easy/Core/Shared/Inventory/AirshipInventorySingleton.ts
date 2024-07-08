@@ -71,6 +71,14 @@ export class AirshipInventorySingleton {
 					}
 				});
 			});
+
+			Game.localPlayer.ObserveCharacter((character) => {
+				if (character) {
+					if (this.localInventory !== character.inventory) {
+						this.SetLocalInventory(character.inventory);
+					}
+				}
+			});
 		}
 	}
 
