@@ -112,7 +112,7 @@ interface CharacterMovement extends Component {
 	TeleportAndLook(position: Vector3, lookVector: Vector3): void;
 	AddImpulse(impulse: Vector3): void;
 	SetImpulse(impulse: Vector3): void;
-	IgnoreGroundCollider(collider: Collider, ignore:boolean): void;
+	IgnoreGroundCollider(collider: Collider, ignore: boolean): void;
 	IsIgnoringCollider(collider: Collider): boolean;
 	SetVelocity(velocity: Vector3): void;
 	GetVelocity(): Vector3;
@@ -1003,4 +1003,8 @@ interface AnimatorOverrideController extends RuntimeAnimatorController {
 	SetClip(name: string, clip: AnimationClip): void;
 	ApplyOverrides(): void;
 	overridesCount: number;
+}
+
+interface ServerBootstrap {
+	onProcessExit(callback: () => void): void;
 }

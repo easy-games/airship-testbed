@@ -3,7 +3,7 @@ import {
 	ServerBridgeApiTransferGroupToGame,
 	ServerBridgeApiTransferGroupToServer,
 	TransferServiceBridgeTopics,
-} from "@Easy/Core/Server/ProtectedServices/Airship/Transfer/TransferService";
+} from "@Easy/Core/Server/ProtectedServices/Airship/Transfer/ProtectedTransferService";
 import { Platform } from "@Easy/Core/Shared/Airship";
 import {
 	AirshipGameTransferConfig,
@@ -13,22 +13,26 @@ import {
 import { CreateServerResponse } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipTransfers";
 import { AirshipUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
 import { Service } from "@Easy/Core/Shared/Flamework";
-import { Game } from "@Easy/Core/Shared/Game";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Result } from "@Easy/Core/Shared/Types/Result";
+import { Signal } from "@Easy/Core/Shared/Util/Signal";
 
 /**
  * The transfer service allows you to move players between servers and create new servers.
  */
 @Service({})
 export class AirshipTransferService {
-	constructor() {
-		if (!Game.IsServer()) return;
+	public onShutdown = new Signal();
 
+	constructor() {
 		Platform.Server.Transfer = this;
 	}
 
-	protected OnStart(): void {}
+	protected OnStart(): void {
+		contextbridge.callback("ServerShutdown", (from) => {
+			this.onShutdown.Fire();
+		});
+	}
 
 	/**
 	 * Creates a new server and returns a server id which can be used to transfer players to the new server.

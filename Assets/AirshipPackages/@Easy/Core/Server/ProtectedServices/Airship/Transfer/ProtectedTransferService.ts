@@ -5,7 +5,6 @@ import {
 } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipTransfers";
 import { CreateServerResponse } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipTransfers";
 import { Service } from "@Easy/Core/Shared/Flamework";
-import { Game } from "@Easy/Core/Shared/Game";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Result } from "@Easy/Core/Shared/Types/Result";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
@@ -31,8 +30,10 @@ export type ServerBridgeApiTransferGroupToServer = (
 
 @Service({})
 export class ProtectedTransferService {
+	private serverBootstrap: ServerBootstrap;
+
 	constructor() {
-		if (!Game.IsServer()) return;
+		this.serverBootstrap = GameObject.Find("ServerBootstrap").GetComponent<ServerBootstrap>()!;
 
 		contextbridge.callback<ServerBridgeApiCreateServer>(TransferServiceBridgeTopics.CreateServer, (_, config) => {
 			const [success, result] = this.CreateServer(config).await();
@@ -161,5 +162,30 @@ export class ProtectedTransferService {
 		};
 	}
 
-	protected OnStart(): void {}
+	private FireOnShutdown(): void {
+		print("FireOnShutdown");
+		let done = false;
+
+		const Done = () => {
+			if (done) return;
+			done = true;
+
+			const serverBootstrap = GameObject.FindAnyObjectByType<ServerBootstrap>();
+			serverBootstrap.Shutdown();
+		};
+
+		task.delay(30, () => {
+			Done();
+		});
+		task.spawn(() => {
+			contextbridge.invoke("ServerShutdown", LuauContext.Game);
+			Done();
+		});
+	}
+
+	protected OnStart(): void {
+		this.serverBootstrap.onProcessExit(() => {
+			this.FireOnShutdown();
+		});
+	}
 }
