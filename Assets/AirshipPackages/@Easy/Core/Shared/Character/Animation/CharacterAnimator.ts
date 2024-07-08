@@ -39,6 +39,7 @@ export default class CharacterAnimator extends AirshipBehaviour {
 			this.footstepAudioBundle = new AudioClipBundle([]);
 			this.footstepAudioBundle.volumeScale = this.baseFootstepVolumeScale;
 			this.footstepAudioBundle.soundOptions.maxDistance = 15;
+			this.character.WaitForInit();
 			this.footstepAudioBundle.spacialMode = this.character?.IsLocalCharacter()
 				? AudioBundleSpacialMode.GLOBAL
 				: AudioBundleSpacialMode.SPACIAL;
