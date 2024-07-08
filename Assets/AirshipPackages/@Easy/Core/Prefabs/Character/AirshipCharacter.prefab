@@ -882,6 +882,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: Character
+    singleton: 0
     decorators: []
     properties:
     - name: animationHelper
@@ -1019,6 +1020,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: Inventory
+    singleton: 0
     decorators: []
     properties:
     - name: networkObject
@@ -1048,9 +1050,9 @@ MonoBehaviour:
       fileRef: 
       decorators: []
       nullable: 0
-      serializedValue: 48
+      serializedValue: 45
       serializedObject: {fileID: 0}
-      modified: 0
+      modified: 1
     - name: hotbarSlots
       type: number
       objectType: 
@@ -1209,6 +1211,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: CharacterAnimator
+    singleton: 0
     decorators: []
     properties:
     - name: flinchClip

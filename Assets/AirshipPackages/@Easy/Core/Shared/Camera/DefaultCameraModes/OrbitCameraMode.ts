@@ -34,6 +34,9 @@ export class OrbitCameraMode extends CameraMode {
 
 	private readonly entityDriver?: CharacterMovement;
 
+	private mouseLocked = false;
+	private mouseLockSwapped = false;
+
 	private readonly preferred = this.bin.Add(new Preferred());
 	private readonly keyboard = this.bin.Add(new Keyboard());
 	private readonly touchscreen = this.bin.Add(new Touchscreen());
@@ -171,7 +174,13 @@ export class OrbitCameraMode extends CameraMode {
 			this.rotationY += (lf ? 1 : -1) * TimeUtil.GetDeltaTime() * 4;
 		}
 		if (this.mouse.IsLocked() && (rightClick || this.lockView)) {
-			const mouseDelta = this.mouse.GetDelta();
+			let mouseDelta = this.mouse.GetDelta();
+			// This is to prevent large jump on first movement (happens always on mac)
+			if (this.mouseLockSwapped && mouseDelta.magnitude > 0) {
+				this.mouseLockSwapped = false;
+				mouseDelta = new Vector2(0, 0);
+			}
+
 			const mouseSensitivity = Airship.Input.GetMouseSensitivity();
 			if (!this.lockView) {
 				// this.mouse.SetPosition(this.rightClickPos);
@@ -182,6 +191,12 @@ export class OrbitCameraMode extends CameraMode {
 				MIN_ROT_X,
 				MAX_ROT_X,
 			);
+		}
+
+		// Update mouse locked state. This will make the next frame's delta be 0.
+		if (this.mouseLocked !== this.mouse.IsLocked()) {
+			this.mouseLocked = !this.mouseLocked;
+			this.mouseLockSwapped = true;
 		}
 	}
 

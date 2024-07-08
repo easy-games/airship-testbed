@@ -6,10 +6,10 @@ import { CoreUI } from "@Easy/Core/Shared/UI/CoreUI";
 import { Keyboard } from "@Easy/Core/Shared/UserInput";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
+import { ProtectedUserController } from "./Airship/User/UserController";
 import { AuthController } from "./Auth/AuthController";
 import { MainMenuController } from "./MainMenuController";
 import { MainMenuPageType } from "./MainMenuPageName";
-import { ProtectedUserController } from "./User/ProtectedUserController";
 
 @Controller({})
 export class MainMenuNavbarController {

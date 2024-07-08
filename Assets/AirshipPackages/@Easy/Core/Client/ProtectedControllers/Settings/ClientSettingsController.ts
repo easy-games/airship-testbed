@@ -1,8 +1,7 @@
-import { Controller, Dependency } from "@Easy/Core/Shared/Flamework";
+import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
-import { AmbientSoundController } from "../AmbientSound/AmbientSoundController";
 import { ClientSettingsFile } from "./ClientSettingsFile";
 
 const defaultData: ClientSettingsFile = {
@@ -16,6 +15,7 @@ const defaultData: ClientSettingsFile = {
 	screenshotShowUI: false,
 	statusText: "",
 	micDeviceName: undefined,
+	microphoneEnabled: false,
 };
 
 @Controller({ loadOrder: -1 })
@@ -69,29 +69,48 @@ export class ClientSettingsController {
 
 		// Microphone
 		task.spawn(() => {
-			if (!Bridge.HasMicrophonePermission()) {
-				Bridge.RequestMicrophonePermissionAsync();
+			if (!this.data.microphoneEnabled) {
+				return;
 			}
+			if (!Bridge.HasMicrophonePermission()) {
+				return;
+			}
+			this.PickMicAndStartRecording();
+		});
+	}
 
-			const micDevices = Bridge.GetMicDevices();
-			if (this.data.micDeviceName !== undefined) {
-				// const currentDeviceIndex = Bridge.GetCurrentMicDeviceIndex();
-				for (let i = 0; i < micDevices.Length; i++) {
-					const deviceName = micDevices.GetValue(i);
-					if (deviceName === this.data.micDeviceName) {
-						Bridge.SetMicDeviceIndex(i);
-						Bridge.StartMicRecording(this.micFrequency, this.micSampleLength);
-						return;
-					}
+	public PickMicAndStartRecording(): void {
+		const micDevices = Bridge.GetMicDevices();
+		if (this.data.micDeviceName !== undefined) {
+			// const currentDeviceIndex = Bridge.GetCurrentMicDeviceIndex();
+			for (let i = 0; i < micDevices.Length; i++) {
+				const deviceName = micDevices.GetValue(i);
+				if (deviceName === this.data.micDeviceName) {
+					Bridge.SetMicDeviceIndex(i);
+					this.StartMicRecording();
+					return;
 				}
 			}
+		}
 
-			// fallback
-			if (micDevices.Length > 0) {
-				Bridge.SetMicDeviceIndex(0);
-				Bridge.StartMicRecording(this.micFrequency, this.micSampleLength);
-			}
-		});
+		// fallback
+		if (micDevices.Length > 0) {
+			Bridge.SetMicDeviceIndex(0);
+			this.StartMicRecording();
+		}
+	}
+
+	public SetMicrophoneEnabled(val: boolean): void {
+		this.data.microphoneEnabled = val;
+		if (val) {
+			this.PickMicAndStartRecording();
+		} else {
+			Bridge.StopMicRecording();
+		}
+	}
+
+	public StartMicRecording(): void {
+		Bridge.StartMicRecording(this.micFrequency, this.micSampleLength);
 	}
 
 	public MarkAsDirty(): void {
@@ -144,20 +163,8 @@ export class ClientSettingsController {
 		return this.data.ambientVolume;
 	}
 
-	public SetAmbientVolume(val: number): void {
-		this.data.ambientVolume = val;
-		Dependency<AmbientSoundController>().SetAmbientVolume(val * 0.5);
-		this.unsavedChanges = true;
-	}
-
 	public GetMusicVolume(): number {
 		return this.data.musicVolume;
-	}
-
-	public SetMusicVolume(val: number): void {
-		this.data.musicVolume = val;
-		Dependency<AmbientSoundController>().SetMusicVolume(val * 0.5);
-		this.unsavedChanges = true;
 	}
 
 	public SetGlobalVolume(volume: number) {

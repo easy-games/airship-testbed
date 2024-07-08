@@ -1,8 +1,5 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { ChatCommand } from "@Easy/Core/Shared/Commands/ChatCommand";
-import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
-import { ArmorType } from "@Easy/Core/Shared/Item/ArmorType";
-import { CoreItemType } from "@Easy/Core/Shared/Item/CoreItemType";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 
 export class EntityCommand extends ChatCommand {
@@ -14,11 +11,6 @@ export class EntityCommand extends ChatCommand {
 		if (!player.character) return;
 		const pos = player.character.gameObject.transform.position;
 		const character = Airship.Characters.SpawnNonPlayerCharacter(pos);
-		// character.AddHealthbar();
-		character.inventory.SetItem(
-			character.inventory.armorSlots[ArmorType.HELMET],
-			new ItemStack(CoreItemType.LEATHER_HELMET),
-		);
 		if (args.size() >= 1) {
 			const health = tonumber(args[0]);
 			if (health !== undefined) {

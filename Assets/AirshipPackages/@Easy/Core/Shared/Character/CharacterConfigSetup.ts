@@ -35,6 +35,7 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 	public showHealthbar = true;
 	public showInventoryHotbar = true;
 	public showInventoryBackpack = true;
+	public inventoryUIPrefab?: GameObject;
 
 	public Awake(): void {
 		//Character
@@ -44,6 +45,9 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 		Airship.Characters.SetDefaultViewmodelPrefab(this.customViewmodelPrefab);
 		if (this.customViewmodelPrefab !== undefined && Airship.Characters.viewmodel !== undefined) {
 			Airship.Characters.viewmodel.InstantiateFromPrefab(this.customViewmodelPrefab);
+		}
+		if (this.inventoryUIPrefab !== undefined) {
+			Airship.Inventory.SetInventoryUIPrefab(this.inventoryUIPrefab);
 		}
 	}
 

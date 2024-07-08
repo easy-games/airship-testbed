@@ -1,7 +1,6 @@
 import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
 import { Keyboard, Mouse } from "@Easy/Core/Shared/UserInput";
 import { AssetCache } from "../AssetCache/AssetCache";
-import { AudioManager } from "../Audio/AudioManager";
 import { Game } from "../Game";
 import { Bin } from "./Bin";
 import { CanvasAPI, PointerDirection } from "./CanvasAPI";
@@ -86,7 +85,7 @@ export class AppManager {
 		},
 	): void {
 		if (!config?.addToStack) {
-			this.Close({ noCloseSound: true });
+			this.Close();
 		}
 
 		this.opened = true;
@@ -165,7 +164,6 @@ export class AppManager {
 	public static OpenCanvas(
 		canvas: Canvas,
 		config?: {
-			noOpenSound?: boolean;
 			onClose?: () => void;
 			noDarkBackground?: boolean;
 			addToStack?: boolean;
@@ -174,15 +172,7 @@ export class AppManager {
 	): void {
 		/* Close open `Canvas` if applicable. */
 		if (!config?.addToStack) {
-			this.Close({
-				noCloseSound: config?.noOpenSound ?? false,
-			});
-		}
-
-		if (!config?.noOpenSound) {
-			AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/UI_Open.wav", {
-				volumeScale: 0.4,
-			});
+			this.Close();
 		}
 
 		/*
@@ -243,7 +233,7 @@ export class AppManager {
 		);
 	}
 
-	public static Close(config?: { noCloseSound?: boolean }): void {
+	public static Close(): void {
 		if (Game.IsGameLuauContext()) {
 			if (contextbridge.invoke<() => boolean>("AppManager:EscapePressedFromGame", LuauContext.Protected)) {
 				return;

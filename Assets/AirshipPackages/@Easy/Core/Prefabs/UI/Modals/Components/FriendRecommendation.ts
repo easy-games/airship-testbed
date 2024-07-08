@@ -1,5 +1,5 @@
 import { ProtectedUserController } from "@Easy/Core/Client/ProtectedControllers/Airship/User/UserController";
-import { FriendsController } from "@Easy/Core/Client/ProtectedControllers/Social/FriendsController";
+import { ProtectedFriendsController } from "@Easy/Core/Client/ProtectedControllers/Social/FriendsController";
 import { RecommendationContext } from "@Easy/Core/Client/ProtectedControllers/Social/RecommendedFriendsController";
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { PublicUser } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipUser";
@@ -73,7 +73,7 @@ export default class FriendRecommendation extends AirshipBehaviour {
 
 	private GetRecommendationString(recommendationContext: RecommendationContext): string {
 		if (recommendationContext.partyEncounter) return "Partied together";
-		if (recommendationContext.gameEncounters.size() > 0) return `From ${RandomUtil.FromArray(recommendationContext.gameEncounters)}`;
+		if (recommendationContext.gameEncounters.size() > 0) return `From ${RandomUtil.FromArray(recommendationContext.gameEncounters).cachedName}`;
 		return "";
 	}
 
@@ -109,6 +109,6 @@ export default class FriendRecommendation extends AirshipBehaviour {
 		this.addButton.SetActive(false);
 		this.buttons.SetActive(true);
 
-		Dependency<FriendsController>().SendFriendRequest(this.user.username);
+		Dependency<ProtectedFriendsController>().SendFriendRequest(this.user.username);
 	}
 }

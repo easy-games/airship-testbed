@@ -11,7 +11,6 @@
     "com.unity.inputsystem": "1.7.0",
     "com.unity.memoryprofiler": "1.1.0",
     "com.unity.nuget.newtonsoft-json": "3.2.1",
-    "com.unity.scriptablebuildpipeline": "2.1.0",
     "com.unity.test-framework": "1.4.2",
     "com.unity.timeline": "1.8.6",
     "com.unity.toolchain.macos-arm64-linux-x86_64": "2.0.0",

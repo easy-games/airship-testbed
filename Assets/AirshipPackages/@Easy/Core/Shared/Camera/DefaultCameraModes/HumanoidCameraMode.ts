@@ -178,6 +178,7 @@ export class HumanoidCameraMode extends CameraMode {
 			}
 			if (this.mouse.IsLocked() && (rightClick || this.firstPerson || this.lockView)) {
 				let mouseDelta = this.mouse.GetDelta();
+				// This is to prevent large jump on first movement (happens always on mac)
 				if (this.mouseLockSwapped && mouseDelta.magnitude > 0) {
 					this.mouseLockSwapped = false;
 					mouseDelta = new Vector2(0, 0);

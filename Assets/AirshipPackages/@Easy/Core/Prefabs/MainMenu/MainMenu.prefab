@@ -450,8 +450,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -467,8 +465,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -484,8 +480,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -501,8 +495,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -518,8 +510,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -535,8 +525,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -552,8 +540,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -569,8 +555,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -586,8 +570,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -603,8 +585,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -624,8 +604,6 @@ MonoBehaviour:
         - 
         - 
         - 
-        fileRef: 
-        refPath: 
         objectRefs:
         - {fileID: 3819881326395191404}
         - {fileID: 8101148451709903328}
@@ -645,8 +623,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -662,8 +638,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -679,8 +653,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -2075,11 +2047,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 910699707915383116, guid: 89b108c7d8d2942eb84e170a2ca26e87, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 910699707915383116, guid: 89b108c7d8d2942eb84e170a2ca26e87, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 910699707915383116, guid: 89b108c7d8d2942eb84e170a2ca26e87, type: 3}
       propertyPath: m_SizeDelta.x

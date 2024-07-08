@@ -6,7 +6,6 @@ import { CharacterCameraMode } from "@Easy/Core/Shared/Character/LocalCharacter/
 import { Game } from "@Easy/Core/Shared/Game";
 import { Binding } from "@Easy/Core/Shared/Input/Binding";
 import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
-import { ItemUtil } from "@Easy/Core/Shared/Item/ItemUtil";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Keyboard } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
@@ -31,7 +30,7 @@ export default class DemoManager extends AirshipBehaviour {
 
 		Airship.Input.CreateAction("interact", Binding.Key(Key.F));
 
-		ItemUtil.RegisterItem("WoodSword", {
+		Airship.Inventory.RegisterItem("WoodSword", {
 			displayName: "Wood Sword",
 			maxStackSize: 1,
 			accessoryPaths: ["Assets/Resources/Accessories/Weapons/Swords/WoodSword/wood_sword.prefab"],
@@ -57,11 +56,9 @@ export default class DemoManager extends AirshipBehaviour {
 		}
 		if (Game.IsClient()) {
 			// Optional: use locked camera mode for first person support
-			Airship.CharacterCamera.SetCharacterCameraMode(CharacterCameraMode.Locked);
-			Airship.CharacterCamera.SetFirstPerson(false);
+			Airship.CharacterCamera.SetCharacterCameraMode(CharacterCameraMode.Orbit);
+			// Airship.CharacterCamera.SetFirstPerson(false);
 			// Airship.inventory.SetUIEnabled(false);
-
-			Airship.LoadingScreen.FinishLoading();
 
 			// Display local player deaths
 			this.bin.Add(

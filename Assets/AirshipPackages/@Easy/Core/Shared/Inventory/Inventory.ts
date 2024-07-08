@@ -1,10 +1,8 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
-import { ArmorType } from "@Easy/Core/Shared/Item/ArmorType";
 import { CoreItemType } from "@Easy/Core/Shared/Item/CoreItemType";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import Object from "@Easy/Core/Shared/Util/ObjectUtils";
-import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import Character from "../Character/Character";
 import { Game } from "../Game";
@@ -22,16 +20,9 @@ export interface InventoryDto {
 export default class Inventory extends AirshipBehaviour {
 	public networkObject!: NetworkObject;
 	@NonSerialized() public id!: number;
-	public maxSlots = 48;
+	public maxSlots = 45;
 	public hotbarSlots = 9;
 	public heldSlot = 0;
-	@NonSerialized() public armorSlots: {
-		[key in ArmorType]: number;
-	} = {
-		[ArmorType.HELMET]: 45,
-		[ArmorType.CHESTPLATE]: 46,
-		[ArmorType.BOOTS]: 47,
-	};
 
 	@NonSerialized() private items = new Map<number, ItemStack>();
 
@@ -64,7 +55,7 @@ export default class Inventory extends AirshipBehaviour {
 		if (this.networkObject.IsSpawned) {
 			this.id = this.networkObject.ObjectId;
 			Airship.Inventory.RegisterInventory(this);
-			if (RunUtil.IsClient()) {
+			if (Game.IsClient()) {
 				task.spawn(() => {
 					this.RequestFullUpdate();
 				});
@@ -74,7 +65,7 @@ export default class Inventory extends AirshipBehaviour {
 				Bridge.DisconnectEvent(conn);
 				this.id = this.networkObject.ObjectId;
 				Airship.Inventory.RegisterInventory(this);
-				if (RunUtil.IsClient()) {
+				if (Game.IsClient()) {
 					task.spawn(() => {
 						this.RequestFullUpdate();
 					});
@@ -448,10 +439,6 @@ export default class Inventory extends AirshipBehaviour {
 
 	public GetMaxSlots(): number {
 		return this.maxSlots;
-	}
-
-	public GetBackpackTileCount(): number {
-		return this.maxSlots - 9;
 	}
 
 	public GetHotbarSlotCount(): number {
