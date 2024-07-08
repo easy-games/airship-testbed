@@ -170,8 +170,7 @@ export class ProtectedTransferService {
 			if (done) return;
 			done = true;
 
-			const serverBootstrap = GameObject.FindAnyObjectByType<ServerBootstrap>();
-			serverBootstrap.Shutdown();
+			this.serverBootstrap.Shutdown();
 		};
 
 		task.delay(30, () => {
