@@ -4,7 +4,7 @@ import {
 	ServerBridgeApiTransferGroupToServer,
 	TransferServiceBridgeTopics,
 } from "@Easy/Core/Server/ProtectedServices/Airship/Transfer/ProtectedTransferService";
-import { Platform } from "@Easy/Core/Shared/Airship";
+import { Airship, Platform } from "@Easy/Core/Shared/Airship";
 import {
 	AirshipGameTransferConfig,
 	AirshipServerConfig,
@@ -13,6 +13,7 @@ import {
 import { CreateServerResponse } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipTransfers";
 import { AirshipUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
 import { Service } from "@Easy/Core/Shared/Flamework";
+import { Game } from "@Easy/Core/Shared/Game";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Result } from "@Easy/Core/Shared/Types/Result";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
@@ -29,6 +30,13 @@ export class AirshipTransferService {
 	 */
 	public onShutdown = new Signal().WithYieldTracking(false);
 
+	/**
+	 * If true, players are automatically transfer into a new server.
+	 *
+	 * We try to transfer all players to the same server so they stay together.
+	 */
+	public transferPlayersOnShutdown = true;
+
 	constructor() {
 		Platform.Server.Transfer = this;
 	}
@@ -36,6 +44,10 @@ export class AirshipTransferService {
 	protected OnStart(): void {
 		contextbridge.callback("ServerShutdown", (from) => {
 			this.onShutdown.Fire();
+
+			if (this.transferPlayersOnShutdown) {
+				this.TransferGroupToGame(Airship.Players.GetPlayers(), Game.gameId);
+			}
 		});
 	}
 
