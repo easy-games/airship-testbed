@@ -11,7 +11,6 @@ import { CoreNetwork } from "../CoreNetwork";
 import { DamageInfo, DamageInfoCustomData } from "../Damage/DamageInfo";
 import CharacterAnimator from "./Animation/CharacterAnimator";
 import CharacterConfigSetup from "./CharacterConfigSetup";
-import { KeyValue } from "./CustomMoveData";
 
 /**
  * A character is a (typically human) object in the scene. It controls movement and default animation.
@@ -91,6 +90,7 @@ export default class Character extends AirshipBehaviour {
 			});
 
 			//Apply the queued custom data to movement
+			print("Listening to set custom data event");
 			const customDataFlushedConn = this.movement.OnSetCustomData(() => {
 				this.ProccessCustomMoveData();
 			});
@@ -176,29 +176,33 @@ export default class Character extends AirshipBehaviour {
 	private queuedMoveData = new Map<string, unknown>();
 	/** Add custom data to the move data command stream. */
 	public AddCustomMoveData(key: string, value: unknown) {
+		print("setting custom move queue: " + key + ", " + value);
 		this.queuedMoveData.set(key, value);
 	}
 
 	private ProccessCustomMoveData(){
-		let customDataQueue: KeyValue[] = [];
+		print("ProccessCustomMoveData");
+		let customDataQueue: { key: string; value: unknown }[] = [];
 		this.queuedMoveData.forEach((value, key)=>{
 			print("processing custom move data: " + key + ", " + value);
-			customDataQueue.push(new KeyValue(key, value));
+			customDataQueue.push({key: key, value: value});
 		});
 		this.movement?.SetCustomData(new BinaryBlob(customDataQueue));
 	}
 
 	private BeginMove(isReplay: boolean, tick: number, customData: BinaryBlob){
-		//Do we actually want to ignore AI characters???
+		//TODO: Do we actually want to ignore AI characters???
 		const player = this.player;
 		if (!player) return;
 
 		//Decode binary block into usable key value array
-		const allData = customData.Decode() as KeyValue[];
+		const allData = customData ? customData.Decode() as { key: string; value: unknown }[] : undefined;
 		const allMoveData: Map<string, unknown> = new Map();
-		for (const data of allData) {
-			print("Found custom data " + data.key + " with value: " + data.value)
-			allMoveData.set(data.key, data.value);
+		if(allData){
+			for (const data of allData) {
+				print("Found custom data " + data.key + " with value: " + data.value)
+				allMoveData.set(data.key, data.value);
+			}
 		}
 
 		//Local signal for parsing the key value pairs

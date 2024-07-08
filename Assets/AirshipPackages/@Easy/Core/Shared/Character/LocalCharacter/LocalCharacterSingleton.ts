@@ -6,8 +6,6 @@ import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { AirshipCharacterCameraSingleton } from "../../Camera/AirshipCharacterCameraSingleton";
 import { CharacterInput } from "./CharacterInput";
 import { LocalCharacterInputSignal } from "./LocalCharacterInputSignal";
-import { KeyValue } from "../CustomMoveData";
-
 @Singleton({
 	loadOrder: 10000,
 })
