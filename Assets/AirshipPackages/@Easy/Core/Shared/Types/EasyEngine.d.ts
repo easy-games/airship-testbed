@@ -83,10 +83,11 @@ interface MoveModifier {
 
 interface CharacterMovement extends Component {
 	OnStateChanged(callback: (state: CharacterState) => void): EngineEventConnection;
-	OnCustomDataFlushed(callback: () => void): EngineEventConnection;
+	OnSetCustomData(callback: ()=> void): EngineEventConnection;
+	OnBeginMove(callback: (isReplay: boolean, tick: number, customData: BinaryBlob) => void): EngineEventConnection;
+	OnEndMove(callback: (isReplay: boolean, tick: number, customData: BinaryBlob) => void): EngineEventConnection;
 	OnDispatchCustomData(callback: (tick: number, customData: BinaryBlob) => void): EngineEventConnection;
 	OnImpactWithGround(callback: (velocity: Vector3) => void): EngineEventConnection;
-	OnPreMove(callback: (isReplay: boolean) => void): EngineEventConnection;
 	OnAdjustMove(callback: (modifier: MoveModifier) => void): EngineEventConnection;
 	OnMoveDirectionChanged(callback: (direction: Vector3) => void): EngineEventConnection;
 

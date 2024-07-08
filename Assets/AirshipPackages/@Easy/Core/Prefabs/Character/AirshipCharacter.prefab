@@ -1254,7 +1254,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
-      fileRef: AirshipPackages/@Easy\Core\Shared\Character\Character.ts
+      fileRef: AirshipPackages/@Easy/Core/Shared/Character/Character.ts
       decorators:
       - name: Header
         parameters:
@@ -1347,7 +1347,7 @@ MonoBehaviour:
   _initializeOrder: 0
   _defaultDespawnType: 0
   NetworkObserver: {fileID: 0}
-  _enablePrediction: 0
+  _enablePrediction: 1
   _predictionType: 1
   _graphicalObject: {fileID: 7911948219130051474}
   _detachGraphicalObject: 0

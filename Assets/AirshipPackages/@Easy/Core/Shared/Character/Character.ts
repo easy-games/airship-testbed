@@ -11,6 +11,7 @@ import { CoreNetwork } from "../CoreNetwork";
 import { DamageInfo, DamageInfoCustomData } from "../Damage/DamageInfo";
 import CharacterAnimator from "./Animation/CharacterAnimator";
 import CharacterConfigSetup from "./CharacterConfigSetup";
+import { KeyValue } from "./CustomMoveData";
 
 /**
  * A character is a (typically human) object in the scene. It controls movement and default animation.
@@ -56,6 +57,14 @@ export default class Character extends AirshipBehaviour {
 
 	private despawned = false;
 
+	/*
+	 * [Advanced]
+	 *
+	 * Custom data that the client sends in their move packet.
+	 * Map<id, dataBlob>, tick, isReplay
+	 */
+	public OnBeginMove = new Signal<[Map<string,unknown>, number, boolean]>();
+
 	public Awake(): void {
 		this.inventory = this.gameObject.GetAirshipComponent<Inventory>()!;
 		this.rig = this.rigRoot.GetComponent<CharacterRig>()!;
@@ -80,6 +89,14 @@ export default class Character extends AirshipBehaviour {
 				Game.WaitForLocalPlayerLoaded();
 				this.gameObject.name = "Character_" + Game.localPlayer.username;
 			});
+
+			//Apply the queued custom data to movement
+			const customDataFlushedConn = this.movement.OnSetCustomData(() => {
+				this.ProccessCustomMoveData();
+			});
+			this.bin.Add(() => {
+				Bridge.DisconnectEvent(customDataFlushedConn);
+			});
 		}
 		this.bin.Add(
 			Airship.Damage.onDamage.ConnectWithPriority(SignalPriority.MONITOR, (damageInfo) => {
@@ -102,6 +119,14 @@ export default class Character extends AirshipBehaviour {
 				}
 			}),
 		);
+
+		// Custom move command data handling:
+		const customDataConn = this.movement.OnBeginMove((isReplay, tick, customData) => {
+			this.BeginMove(isReplay, tick, customData);
+		});
+		this.bin.Add(() => {
+			Bridge.DisconnectEvent(customDataConn);
+		});
 
 		{
 			
@@ -146,6 +171,38 @@ export default class Character extends AirshipBehaviour {
 				removeOldClothingAccessories: true,
 			});
 		}
+	}
+
+	private queuedMoveData = new Map<string, unknown>();
+	/** Add custom data to the move data command stream. */
+	public AddCustomMoveData(key: string, value: unknown) {
+		this.queuedMoveData.set(key, value);
+	}
+
+	private ProccessCustomMoveData(){
+		let customDataQueue: KeyValue[] = [];
+		this.queuedMoveData.forEach((value, key)=>{
+			print("processing custom move data: " + key + ", " + value);
+			customDataQueue.push(new KeyValue(key, value));
+		});
+		this.movement?.SetCustomData(new BinaryBlob(customDataQueue));
+	}
+
+	private BeginMove(isReplay: boolean, tick: number, customData: BinaryBlob){
+		//Do we actually want to ignore AI characters???
+		const player = this.player;
+		if (!player) return;
+
+		//Decode binary block into usable key value array
+		const allData = customData.Decode() as KeyValue[];
+		const allMoveData: Map<string, unknown> = new Map();
+		for (const data of allData) {
+			print("Found custom data " + data.key + " with value: " + data.value)
+			allMoveData.set(data.key, data.value);
+		}
+
+		//Local signal for parsing the key value pairs
+		this.OnBeginMove.Fire(allMoveData, tick, isReplay);
 	}
 
 	/**
