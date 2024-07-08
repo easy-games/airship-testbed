@@ -5,6 +5,7 @@ import { Singleton } from "@Easy/Core/Shared/Flamework";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { AssetCache } from "../AssetCache/AssetCache";
 import { Game } from "../Game";
+import { ItemDef } from "../Item/ItemDefinitionTypes";
 import { NetworkFunction } from "../Network/NetworkFunction";
 import { Bin } from "../Util/Bin";
 import { Signal } from "../Util/Signal";
@@ -16,6 +17,14 @@ interface InventoryEntry {
 	Viewers: Set<number>;
 	Owners: Set<number>;
 }
+
+type ItemDefRegistration = Omit<ItemDef, "internalId" | "itemType"> & {
+	[x: string | number | symbol]: any;
+};
+
+const itemDefinitions: {
+	[key: string]: Omit<ItemDef, "internalId" | "itemType">;
+} = {};
 
 @Singleton()
 export class AirshipInventorySingleton {
@@ -37,6 +46,13 @@ export class AirshipInventorySingleton {
 
 	private inventories = new Map<number, InventoryEntry>();
 
+	private itemTypes: string[] = [];
+	private readonly itemAccessories = new Map<string, AccessoryComponent[]>();
+	private readonly internalIdToItemType = new Map<number, string>();
+	private internalIdCounter = 0;
+
+	public missingItemAccessory!: AccessoryComponent;
+
 	public remotes = {
 		clientToServer: {
 			getFullUpdate: new NetworkFunction<[invId: number], InventoryDto | undefined>("GetInventoryUpdate"),
@@ -48,6 +64,10 @@ export class AirshipInventorySingleton {
 	}
 
 	protected OnStart(): void {
+		this.missingItemAccessory = AssetCache.LoadAsset<AccessoryComponent>(
+			"AirshipPackages/@Easy/Core/Prefabs/Accessories/missing_item.prefab",
+		);
+
 		if (Game.IsClient()) {
 			this.StartClient();
 		}
@@ -534,5 +554,106 @@ export class AirshipInventorySingleton {
 			}),
 		);
 		return bin;
+	}
+
+	/**********************************/
+	/**********************************/
+	/**********************************/
+	/**********************************/
+	/**********************************/
+	/**********************************/
+	/**********************************/
+	/**********************************/
+
+	public RegisterItem(itemType: string, itemDefinition: ItemDefRegistration) {
+		itemDefinitions[itemType] = itemDefinition;
+
+		/*********************/
+
+		this.itemTypes.push(itemType);
+
+		const itemMeta = this.GetItemDef(itemType);
+
+		// Assign ID to each ItemType
+		itemMeta.itemType = itemType;
+		itemMeta.internalId = this.internalIdCounter;
+		this.internalIdToItemType.set(this.internalIdCounter, itemType);
+
+		// Map items to accessories
+		let accessoryPaths: string[] = [];
+		if (itemMeta.accessoryPaths) {
+			accessoryPaths = itemMeta.accessoryPaths;
+		}
+
+		if (accessoryPaths.size() > 0) {
+			const accessories: AccessoryComponent[] = [];
+			this.itemAccessories.set(itemType, accessories);
+
+			for (const accessoryName of accessoryPaths) {
+				let accessory = AssetBridge.Instance.LoadAssetIfExists<GameObject>(accessoryName);
+				if (!accessory) {
+					continue;
+				}
+
+				const accessoryComponent = accessory.GetComponent<AccessoryComponent>();
+				if (!accessoryComponent) {
+					error("Missing AccessoryComponent on game object prefab");
+				}
+				accessories.push(accessoryComponent);
+			}
+		}
+		this.internalIdCounter++;
+	}
+
+	public GetItemTypeFromInternalId(internalId: number): string | undefined {
+		return this.internalIdToItemType.get(internalId);
+	}
+
+	public GetItemDef(itemType: string): ItemDef {
+		const val = itemDefinitions[itemType] as ItemDef;
+		if (val === undefined) {
+			error("FATAL: ItemType had no ItemMeta: " + itemType);
+		}
+		return val;
+	}
+
+	public GetFirstAccessoryForItemType(itemType: string): AccessoryComponent {
+		let accessories = this.itemAccessories.get(itemType);
+		if (accessories) return accessories[0];
+
+		return this.missingItemAccessory;
+	}
+
+	public GetAccessoriesForItemType(itemType: string): Readonly<AccessoryComponent[]> {
+		let accessories = this.itemAccessories.get(itemType);
+		if (accessories) return accessories;
+
+		return [this.missingItemAccessory];
+	}
+
+	public IsItemType(s: string): boolean {
+		return itemDefinitions[s as string] !== undefined;
+	}
+
+	public GetItemTypes(): string[] {
+		return this.itemTypes;
+	}
+
+	/**
+	 * Find an `ItemType` from the given string, first trying direct then case-insensitive searching the items
+	 * @param expression The string expression to search for
+	 * @returns The `ItemType` (if found) - otherwise `undefined`.
+	 */
+	public FindItemTypeFromExpression(expression: string): string | undefined {
+		if (itemDefinitions[expression] !== undefined) return expression as string;
+
+		// 	Explicit find
+		for (const [key] of pairs(itemDefinitions)) {
+			if ((key as string).lower() === expression.lower()) {
+				return key as string;
+			}
+		}
+
+		return undefined;
 	}
 }
