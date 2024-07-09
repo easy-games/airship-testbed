@@ -443,7 +443,7 @@ export class ClientChatSingleton {
 			const element = new ChatMessageElement(chatMessage, os.clock());
 			this.chatMessageElements.push(element);
 
-			if (Time.time > this.lastChatMessageRenderedTime && this.canvas.gameObject.active) {
+			if (Time.time > this.lastChatMessageRenderedTime && this.canvas.gameObject.activeInHierarchy) {
 				AudioManager.PlayGlobal(CoreSound.chatMessageReceived, {
 					volumeScale: 0.24,
 				});

@@ -52,7 +52,7 @@ export class Healthbar {
 	}
 
 	public SetActive(visible: boolean) {
-		this.transform.gameObject.active = visible;
+		this.transform.gameObject.SetActive(visible);
 	}
 
 	public SetColor(newColor: Color) {
