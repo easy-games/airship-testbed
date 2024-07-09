@@ -26,7 +26,8 @@ export class AirshipTransferService {
 	/**
 	 * Fired when the server begins shutting down.
 	 *
-	 * You can yield for up to 30 seconds to perform shutdown logic.
+	 * You can yield for up to 30 minutes to perform shutdown logic.
+	 * You can also yield to ensure an in-progress match is completed.
 	 */
 	public onShutdown = new Signal().WithYieldTracking(false);
 
