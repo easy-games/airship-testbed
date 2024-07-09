@@ -18,12 +18,12 @@ export const enum TransferServiceBridgeTopics {
 
 export type ServerBridgeApiCreateServer = (config?: AirshipServerConfig) => Result<CreateServerResponse, undefined>;
 export type ServerBridgeApiTransferGroupToGame = (
-	players: readonly (Player | string)[],
+	userIds: string[],
 	gameId: string,
 	config?: AirshipGameTransferConfig,
 ) => Result<undefined, undefined>;
 export type ServerBridgeApiTransferGroupToServer = (
-	players: readonly (Player | string)[],
+	userIds: string[],
 	serverId: string,
 	config?: AirshipServerTransferConfig,
 ) => Result<undefined, undefined>;
