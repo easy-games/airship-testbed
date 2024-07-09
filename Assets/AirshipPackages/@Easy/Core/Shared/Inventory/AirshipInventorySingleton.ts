@@ -51,7 +51,7 @@ export class AirshipInventorySingleton {
 	private readonly internalIdToItemType = new Map<number, string>();
 	private internalIdCounter = 0;
 
-	public missingItemAccessory!: AccessoryComponent;
+	// public missingItemAccessory!: AccessoryComponent;
 
 	public remotes = {
 		clientToServer: {
@@ -64,9 +64,9 @@ export class AirshipInventorySingleton {
 	}
 
 	protected OnStart(): void {
-		this.missingItemAccessory = AssetCache.LoadAsset<AccessoryComponent>(
-			"Assets/AirshipPackages/@Easy/Core/Prefabs/Accessories/missing_item.prefab",
-		);
+		// this.missingItemAccessory = AssetCache.LoadAsset<AccessoryComponent>(
+		// 	"Assets/AirshipPackages/@Easy/Core/Prefabs/Accessories/missing_item.prefab",
+		// );
 
 		if (Game.IsClient()) {
 			this.StartClient();
@@ -617,18 +617,18 @@ export class AirshipInventorySingleton {
 		return val;
 	}
 
-	public GetFirstAccessoryForItemType(itemType: string): AccessoryComponent {
+	public GetFirstAccessoryForItemType(itemType: string): AccessoryComponent | undefined {
 		let accessories = this.itemAccessories.get(itemType);
 		if (accessories) return accessories[0];
 
-		return this.missingItemAccessory;
+		return undefined;
 	}
 
 	public GetAccessoriesForItemType(itemType: string): Readonly<AccessoryComponent[]> {
 		let accessories = this.itemAccessories.get(itemType);
 		if (accessories) return accessories;
 
-		return [this.missingItemAccessory];
+		return [];
 	}
 
 	public IsItemType(s: string): boolean {
