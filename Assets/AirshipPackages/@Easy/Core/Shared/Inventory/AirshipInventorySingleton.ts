@@ -65,7 +65,7 @@ export class AirshipInventorySingleton {
 
 	protected OnStart(): void {
 		this.missingItemAccessory = AssetCache.LoadAsset<AccessoryComponent>(
-			"AirshipPackages/@Easy/Core/Prefabs/Accessories/missing_item.prefab",
+			"Assets/AirshipPackages/@Easy/Core/Prefabs/Accessories/missing_item.prefab",
 		);
 
 		if (Game.IsClient()) {
