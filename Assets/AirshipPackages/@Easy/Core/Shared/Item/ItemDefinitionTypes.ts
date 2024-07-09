@@ -37,5 +37,7 @@ export interface ItemDef {
 
 	maxStackSize?: number;
 
-	[x: string | number | symbol]: any;
+	data?: {
+		[x: string | number | symbol]: any;
+	};
 }

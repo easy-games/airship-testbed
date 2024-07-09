@@ -18,9 +18,7 @@ interface InventoryEntry {
 	Owners: Set<number>;
 }
 
-type ItemDefRegistration = Omit<ItemDef, "internalId" | "itemType"> & {
-	[x: string | number | symbol]: any;
-};
+type ItemDefRegistration = Omit<ItemDef, "internalId" | "itemType">;
 
 const itemDefinitions: {
 	[key: string]: Omit<ItemDef, "internalId" | "itemType">;
