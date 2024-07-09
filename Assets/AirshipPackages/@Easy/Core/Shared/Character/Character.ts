@@ -16,7 +16,7 @@ import CharacterConfigSetup from "./CharacterConfigSetup";
  * A character is a (typically human) object in the scene. It controls movement and default animation.
  * Typically a game would spawn a character for each player. If using the default character it would
  * be dressed with their customized outfit.
- * 
+ *
  * To spawn a character use {@link Player.SpawnCharacter}.
  * To control your game's default character see {@link CharacterConfigSetup}.
  */
@@ -54,6 +54,7 @@ export default class Character extends AirshipBehaviour {
 	@NonSerialized() public onStateChanged = new Signal<[newState: CharacterState, oldState: CharacterState]>();
 	@NonSerialized() public onHealthChanged = new Signal<[newHealth: number, oldHealth: number]>();
 
+	private initialized = false;
 	private despawned = false;
 
 	public Awake(): void {
@@ -73,14 +74,7 @@ export default class Character extends AirshipBehaviour {
 	}
 
 	public OnEnable(): void {
-		print("Character ONENABLE");
 		this.despawned = false;
-		if (this.IsLocalCharacter()) {
-			task.spawn(() => {
-				Game.WaitForLocalPlayerLoaded();
-				this.gameObject.name = "Character_" + Game.localPlayer.username;
-			});
-		}
 		this.bin.Add(
 			Airship.Damage.onDamage.ConnectWithPriority(SignalPriority.MONITOR, (damageInfo) => {
 				if (damageInfo.gameObject.GetInstanceID() === this.gameObject.GetInstanceID()) {
@@ -104,8 +98,6 @@ export default class Character extends AirshipBehaviour {
 		);
 
 		{
-			
-			print("Character state change event");
 			// state change
 			const conn = this.movement.OnStateChanged((state) => {
 				if (this.state === state) return;
@@ -140,11 +132,25 @@ export default class Character extends AirshipBehaviour {
 		this.health = 100;
 		this.maxHealth = 100;
 		this.despawned = false;
+		this.initialized = true;
 
 		if (outfitDto) {
 			AvatarUtil.LoadUserOutfit(outfitDto, this.accessoryBuilder, {
 				removeOldClothingAccessories: true,
 			});
+		}
+	}
+
+	public IsInitialized() {
+		return this.initialized;
+	}
+
+	/**
+	 * Yields thread until the character has been initialized.
+	 */
+	public WaitForInit(): void {
+		while (!this.initialized) {
+			task.wait(0);
 		}
 	}
 
@@ -232,7 +238,19 @@ export default class Character extends AirshipBehaviour {
 		this.maxHealth = maxHealth;
 	}
 
+	/**
+	 * Used to check if the character is owned by the `Game.localPlayer`
+	 *
+	 * Must be called after the character has finished initializing.
+	 * You can use {@link WaitForInit()} to wait for initialized.
+	 *
+	 * @returns true if the character is owned by the `Game.localPlayer`
+	 */
 	public IsLocalCharacter(): boolean {
+		if (!this.initialized) {
+			print(debug.traceback());
+			error("Tried to call IsLocalCharacter() before character was initialized. Please use WaitForInit()");
+		}
 		return Game.IsClient() && this.player?.userId === Game.localPlayer?.userId;
 	}
 }

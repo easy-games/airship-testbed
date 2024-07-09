@@ -3,8 +3,8 @@ import {
 	ServerBridgeApiTransferGroupToGame,
 	ServerBridgeApiTransferGroupToServer,
 	TransferServiceBridgeTopics,
-} from "@Easy/Core/Server/ProtectedServices/Airship/Transfer/TransferService";
-import { Platform } from "@Easy/Core/Shared/Airship";
+} from "@Easy/Core/Server/ProtectedServices/Airship/Transfer/ProtectedTransferService";
+import { Airship, Platform } from "@Easy/Core/Shared/Airship";
 import {
 	AirshipGameTransferConfig,
 	AirshipServerConfig,
@@ -16,19 +16,40 @@ import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Result } from "@Easy/Core/Shared/Types/Result";
+import { Signal } from "@Easy/Core/Shared/Util/Signal";
 
 /**
  * The transfer service allows you to move players between servers and create new servers.
  */
 @Service({})
 export class AirshipTransferService {
-	constructor() {
-		if (!Game.IsServer()) return;
+	/**
+	 * Fired when the server begins shutting down.
+	 *
+	 * You can yield for up to 30 seconds to perform shutdown logic.
+	 */
+	public onShutdown = new Signal().WithYieldTracking(false);
 
+	/**
+	 * If true, players are automatically transfer into a new server.
+	 *
+	 * We try to transfer all players to the same server so they stay together.
+	 */
+	public transferPlayersOnShutdown = true;
+
+	constructor() {
 		Platform.Server.Transfer = this;
 	}
 
-	protected OnStart(): void {}
+	protected OnStart(): void {
+		contextbridge.callback("ServerShutdown", (from) => {
+			this.onShutdown.Fire();
+
+			if (this.transferPlayersOnShutdown) {
+				this.TransferGroupToGame(Airship.Players.GetPlayers(), Game.gameId);
+			}
+		});
+	}
 
 	/**
 	 * Creates a new server and returns a server id which can be used to transfer players to the new server.
@@ -69,10 +90,16 @@ export class AirshipTransferService {
 		gameId: string,
 		config?: AirshipGameTransferConfig,
 	): Promise<Result<undefined, undefined>> {
+		let userIds: string[];
+		if (typeIs(players, "table")) {
+			userIds = (players as Player[]).map((p) => p.userId);
+		} else {
+			userIds = players;
+		}
 		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiTransferGroupToGame>(
 			TransferServiceBridgeTopics.TransferGroupToGame,
 			LuauContext.Protected,
-			players,
+			userIds,
 			gameId,
 			config,
 		);
@@ -89,7 +116,13 @@ export class AirshipTransferService {
 		serverId: string,
 		config?: AirshipServerTransferConfig,
 	): Promise<Result<undefined, undefined>> {
-		return await this.TransferGroupToServer([player], serverId, config);
+		let userId: string;
+		if (typeIs(player, "table")) {
+			userId = player.username;
+		} else {
+			userId = player;
+		}
+		return await this.TransferGroupToServer([userId], serverId, config);
 	}
 
 	/**
@@ -99,14 +132,14 @@ export class AirshipTransferService {
 	 * @param config The configuration to be used for this transfer {@link AirshipGameTransferConfig}
 	 */
 	public async TransferGroupToServer(
-		players: readonly (Player | string)[],
+		userIds: string[],
 		serverId: string,
 		config?: AirshipServerTransferConfig,
 	): Promise<Result<undefined, undefined>> {
 		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiTransferGroupToServer>(
 			TransferServiceBridgeTopics.TransferGroupToServer,
 			LuauContext.Protected,
-			players,
+			userIds,
 			serverId,
 			config,
 		);

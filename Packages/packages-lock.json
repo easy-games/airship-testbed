@@ -193,13 +193,6 @@
         "com.unity.render-pipelines.core": "16.0.1"
       }
     },
-    "com.unity.scriptablebuildpipeline": {
-      "version": "2.1.0",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {},
-      "url": "https://packages.unity.com"
-    },
     "com.unity.searcher": {
       "version": "4.9.2",
       "depth": 3,

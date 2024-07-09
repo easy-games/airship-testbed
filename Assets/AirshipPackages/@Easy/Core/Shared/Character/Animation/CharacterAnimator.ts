@@ -1,12 +1,7 @@
 ﻿﻿import { AudioBundleSpacialMode, AudioClipBundle } from "@Easy/Core/Shared/Audio/AudioClipBundle";
 import Character from "@Easy/Core/Shared/Character/Character";
-import { CoreItemType } from "@Easy/Core/Shared/Item/CoreItemType";
-import { ItemUtil } from "@Easy/Core/Shared/Item/ItemUtil";
-import StringUtils from "@Easy/Core/Shared/Types/StringUtil";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
-import { RandomUtil } from "@Easy/Core/Shared/Util/RandomUtil";
 import { Game } from "../../Game";
-
 
 export default class CharacterAnimator extends AirshipBehaviour {
 	@Header("References")
@@ -24,18 +19,12 @@ export default class CharacterAnimator extends AirshipBehaviour {
 	public readonly defaultTransitionTime: number = 0.15;
 
 	protected bin = new Bin();
-	private damageEffectTemplate?: GameObject;
-	private deathEffectTemplate?: GameObject;
-	private deathEffectVoidTemplate?: GameObject;
 	private isFlashing = false;
 	protected isFirstPerson = false;
 
 	protected viewModelEnabled = false;
 
 	private footstepAudioBundle: AudioClipBundle | undefined;
-	private slideAudioBundle: AudioClipBundle | undefined;
-	private steppedOnBlockType = 0;
-	private lastFootstepSoundTime = 0;
 
 	private Log(message: string) {
 		// print("Animator " + this.character.id + ": " + message);
@@ -50,6 +39,7 @@ export default class CharacterAnimator extends AirshipBehaviour {
 			this.footstepAudioBundle = new AudioClipBundle([]);
 			this.footstepAudioBundle.volumeScale = this.baseFootstepVolumeScale;
 			this.footstepAudioBundle.soundOptions.maxDistance = 15;
+			this.character.WaitForInit();
 			this.footstepAudioBundle.spacialMode = this.character?.IsLocalCharacter()
 				? AudioBundleSpacialMode.GLOBAL
 				: AudioBundleSpacialMode.SPACIAL;
@@ -150,92 +140,6 @@ export default class CharacterAnimator extends AirshipBehaviour {
 		// 		}
 		// 	}
 		// });
-	}
-
-	/**
-	 *
-	 * @param volumeScale
-	 * @param cameraPos Pass in cached camera position if playing lots of sounds to improve performance.
-	 * @returns
-	 */
-	public PlayFootstepSound(volumeScale: number, cameraPos?: Vector3): void {
-		// Check if we should play
-		if (os.clock() - this.lastFootstepSoundTime < 0.18) {
-			return;
-		}
-		const blockId = this.character.movement.groundedBlockId;
-		if (blockId === 0) return;
-
-		if (!cameraPos) {
-			cameraPos = Camera.main.transform.position;
-		}
-		if (cameraPos.sub(this.character.model.transform.position).magnitude > 20) {
-			return;
-		}
-
-		// Finished checks. We are playing.
-		this.lastFootstepSoundTime = os.clock();
-
-		let itemType = CoreItemType.STONE;
-		const itemMeta = ItemUtil.GetItemDef(itemType);
-
-		// fallback to stone sounds.
-		let stepSounds = itemMeta.block?.stepSound ?? ItemUtil.GetItemDef(CoreItemType.STONE).block?.stepSound;
-		if (stepSounds === undefined) {
-			stepSounds = [];
-		}
-
-		if (stepSounds.size() > 0 && this.footstepAudioBundle) {
-			let soundPath = RandomUtil.FromArray(stepSounds);
-			if (!StringUtils.includes(soundPath, ".")) {
-				soundPath += ".ogg";
-			}
-			// let audioClip = AssetCache.LoadAsset<AudioClip>(soundPath);
-			// let volume = this.baseFootstepVolumeScale * volumeScale;
-			// this.refs.footstepAudioSource.PlayOneShot(audioClip, volume);
-		}
-	}
-
-	private OnAnimationEvent(key: EntityAnimationEventKey) {
-		switch (key) {
-			case EntityAnimationEventKey.SLIDE_START:
-				if (this.slideAudioBundle) {
-					this.slideAudioBundle.spacialPosition = this.character.model.transform.position;
-					this.slideAudioBundle.Stop();
-					this.slideAudioBundle.PlayNext();
-				}
-				break;
-			case EntityAnimationEventKey.SLIDE_END:
-				this.slideAudioBundle?.Stop(1);
-				break;
-			case EntityAnimationEventKey.JUMP:
-				// if (this.refs.jumpSound) {
-				// 	if (this.character.IsLocalCharacter()) {
-				// 		AudioManager.PlayClipGlobal(this.refs.jumpSound, {
-				// 			volumeScale: 0.2,
-				// 		});
-				// 	} else {
-				// 		AudioManager.PlayClipAtPosition(this.refs.jumpSound, this.character.model.transform.position, {
-				// 			volumeScale: 0.2,
-				// 		});
-				// 	}
-				// }
-				break;
-			case EntityAnimationEventKey.LAND:
-				this.PlayFootstepSound(1.4);
-				// if (this.refs.landSound) {
-				// 	if (this.character.IsLocalCharacter()) {
-				// 		AudioManager.PlayClipGlobal(this.refs.landSound, {
-				// 			volumeScale: 0.2,
-				// 		});
-				// 	} else {
-				// 		AudioManager.PlayClipAtPosition(this.refs.landSound, this.character.model.transform.position, {
-				// 			volumeScale: 0.2,
-				// 		});
-				// 	}
-				// }
-				break;
-		}
 	}
 
 	public IsFirstPerson(): boolean {

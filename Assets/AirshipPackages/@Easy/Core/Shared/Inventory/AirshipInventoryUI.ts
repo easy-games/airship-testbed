@@ -213,10 +213,20 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		// });
 	}
 
-	private UpdateTile(tile: GameObject, itemStack: ItemStack | undefined): void {
+	private UpdateTile(tile: GameObject, slot: number, itemStack: ItemStack | undefined): void {
+		const inv = Airship.Inventory.localInventory;
+
 		const tileComponent = tile.GetAirshipComponent<AirshipInventoryTile>();
 		if (!tileComponent) {
 			error("Missing AirshipInventoryTile component when updating inventory tile: " + tile.name);
+		}
+
+		if (tileComponent.slotNumberText !== undefined) {
+			if (slot !== undefined && slot < inv!.hotbarSlots) {
+				tileComponent.slotNumberText.text = `${slot + 1}`;
+			} else {
+				tileComponent.slotNumberText.text = "";
+			}
 		}
 
 		if (!itemStack) {
@@ -271,7 +281,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			go = this.hotbarContent.GetChild(slot).gameObject;
 		}
 
-		this.UpdateTile(go, itemStack);
+		this.UpdateTile(go, slot, itemStack);
 
 		const contentGO = go.transform.GetChild(0).gameObject;
 		const contentRect = contentGO.GetComponent<RectTransform>()!;
@@ -331,17 +341,17 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 				slotBinMap.set(slot, slotBin);
 
 				const tile = this.slotToBackpackTileMap.get(slot)!;
-				this.UpdateTile(tile, itemStack);
+				this.UpdateTile(tile, slot, itemStack);
 
 				if (itemStack) {
 					slotBin.Add(
 						itemStack.amountChanged.Connect((e) => {
-							this.UpdateTile(tile, itemStack);
+							this.UpdateTile(tile, slot, itemStack);
 						}),
 					);
 					slotBin.Add(
 						itemStack.itemTypeChanged.Connect((e) => {
-							this.UpdateTile(tile, itemStack);
+							this.UpdateTile(tile, slot, itemStack);
 						}),
 					);
 				}
@@ -356,7 +366,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			// Setup connections
 			for (let i = 0; i < inv.GetMaxSlots(); i++) {
 				const tile = this.slotToBackpackTileMap.get(i)!;
-				this.UpdateTile(tile, inv.GetItem(i));
+				this.UpdateTile(tile, i, inv.GetItem(i));
 
 				// Prevent listening to connections multiple times
 				if (init) {
