@@ -208,7 +208,7 @@ export class AppManager {
 
 	public static OpenDarkBackground(sortOrder: number) {
 		this.darkBackgroundTransitionBin.Clean();
-		const t = this.backgroundCanvasGroup.TweenCanvasGroupAlpha(1, 0.25);
+		const t = NativeTween.CanvasGroupAlpha(this.backgroundCanvasGroup, 1, 0.25);
 		this.darkBackgroundTransitionBin.Add(() => {
 			if (t.IsDestroyed()) return;
 			t.Cancel();
@@ -221,7 +221,7 @@ export class AppManager {
 	public static CloseDarkBackground(): void {
 		this.darkBackgroundTransitionBin.Clean();
 		this.backgroundImage.raycastTarget = false;
-		const t = this.backgroundCanvasGroup.TweenCanvasGroupAlpha(0, 0.25);
+		const t = NativeTween.CanvasGroupAlpha(this.backgroundCanvasGroup, 0, 0.25);
 		this.darkBackgroundTransitionBin.Add(() => {
 			if (t.IsDestroyed()) return;
 			t.Cancel();

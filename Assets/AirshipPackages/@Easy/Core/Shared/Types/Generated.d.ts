@@ -696,6 +696,15 @@ declare const enum LoggingType {
     Warning = 2,
     Common = 3,
 }
+declare const enum ReplicateState {
+    Invalid = 0,
+    CurrentCreated = 1,
+    CurrentPredicted = 2,
+    ReplayedPredicted = 3,
+    ReplayedCreated = 4,
+    CurrentFuture = 5,
+    ReplayedFuture = 6,
+}
 declare const enum DataOrderType {
     Default = 0,
     Last = 1,
@@ -1563,6 +1572,11 @@ declare const enum StandaloneRenderResize {
     Enabled = 0,
     Disabled = 1,
 }
+declare const enum UnityEventCallState {
+    Off = 0,
+    EditorAndRuntime = 1,
+    RuntimeOnly = 2,
+}
 declare const enum Type {
     Simple = 0,
     Sliced = 1,
@@ -1704,11 +1718,6 @@ declare const enum AvatarTarget {
     RightFoot = 3,
     LeftHand = 4,
     RightHand = 5,
-}
-declare const enum UnityEventCallState {
-    Off = 0,
-    EditorAndRuntime = 1,
-    RuntimeOnly = 2,
 }
 declare const enum ReceiveGI {
     Lightmaps = 1,
@@ -1911,6 +1920,383 @@ declare const enum AnimationPlayMode {
     Queue = 1,
     Mix = 2,
 }
+declare const enum Status {
+    Visible = 0,
+    Done = 1,
+    Canceled = 2,
+    LostFocus = 3,
+}
+declare const enum TouchScreenKeyboardType {
+    Default = 0,
+    ASCIICapable = 1,
+    NumbersAndPunctuation = 2,
+    URL = 3,
+    NumberPad = 4,
+    PhonePad = 5,
+    NamePhonePad = 6,
+    EmailAddress = 7,
+    NintendoNetworkAccount = 8,
+    Social = 9,
+    Search = 10,
+    DecimalPad = 11,
+    OneTimeCode = 12,
+}
+declare const enum StylePropertyId {
+    Unknown = 0,
+    Color = 65536,
+    FontSize = 65537,
+    LetterSpacing = 65538,
+    TextShadow = 65539,
+    UnityFont = 65540,
+    UnityFontDefinition = 65541,
+    UnityFontStyleAndWeight = 65542,
+    UnityParagraphSpacing = 65543,
+    UnityTextAlign = 65544,
+    UnityTextOutlineColor = 65545,
+    UnityTextOutlineWidth = 65546,
+    Visibility = 65547,
+    WhiteSpace = 65548,
+    WordSpacing = 65549,
+    AlignContent = 131072,
+    AlignItems = 131073,
+    AlignSelf = 131074,
+    BorderBottomWidth = 131075,
+    BorderLeftWidth = 131076,
+    BorderRightWidth = 131077,
+    BorderTopWidth = 131078,
+    Bottom = 131079,
+    Display = 131080,
+    FlexBasis = 131081,
+    FlexDirection = 131082,
+    FlexGrow = 131083,
+    FlexShrink = 131084,
+    FlexWrap = 131085,
+    Height = 131086,
+    JustifyContent = 131087,
+    Left = 131088,
+    MarginBottom = 131089,
+    MarginLeft = 131090,
+    MarginRight = 131091,
+    MarginTop = 131092,
+    MaxHeight = 131093,
+    MaxWidth = 131094,
+    MinHeight = 131095,
+    MinWidth = 131096,
+    PaddingBottom = 131097,
+    PaddingLeft = 131098,
+    PaddingRight = 131099,
+    PaddingTop = 131100,
+    Position = 131101,
+    Right = 131102,
+    Top = 131103,
+    Width = 131104,
+    Cursor = 196608,
+    TextOverflow = 196609,
+    UnityBackgroundImageTintColor = 196610,
+    UnityOverflowClipBox = 196611,
+    UnitySliceBottom = 196612,
+    UnitySliceLeft = 196613,
+    UnitySliceRight = 196614,
+    UnitySliceScale = 196615,
+    UnitySliceTop = 196616,
+    UnityTextOverflowPosition = 196617,
+    All = 262144,
+    BackgroundPosition = 262145,
+    BorderColor = 262146,
+    BorderRadius = 262147,
+    BorderWidth = 262148,
+    Flex = 262149,
+    Margin = 262150,
+    Padding = 262151,
+    Transition = 262152,
+    UnityBackgroundScaleMode = 262153,
+    UnityTextOutline = 262154,
+    Rotate = 327680,
+    Scale = 327681,
+    TransformOrigin = 327682,
+    Translate = 327683,
+    TransitionDelay = 393216,
+    TransitionDuration = 393217,
+    TransitionProperty = 393218,
+    TransitionTimingFunction = 393219,
+    BackgroundColor = 458752,
+    BackgroundImage = 458753,
+    BackgroundPositionX = 458754,
+    BackgroundPositionY = 458755,
+    BackgroundRepeat = 458756,
+    BackgroundSize = 458757,
+    BorderBottomColor = 458758,
+    BorderBottomLeftRadius = 458759,
+    BorderBottomRightRadius = 458760,
+    BorderLeftColor = 458761,
+    BorderRightColor = 458762,
+    BorderTopColor = 458763,
+    BorderTopLeftRadius = 458764,
+    BorderTopRightRadius = 458765,
+    Opacity = 458766,
+    Overflow = 458767,
+    Custom = -1,
+}
+declare const enum LengthUnit {
+    Pixel = 0,
+    Percent = 1,
+}
+declare const enum AtlasPopulationMode {
+    Static = 0,
+    Dynamic = 1,
+    DynamicOS = 2,
+}
+declare const enum TextElementType {
+    Character = 1,
+    Sprite = 2,
+}
+declare const enum AngleUnit {
+    Degree = 0,
+    Gradian = 1,
+    Radian = 2,
+    Turn = 3,
+}
+declare const enum BackgroundPositionKeyword {
+    Center = 0,
+    Top = 1,
+    Bottom = 2,
+    Left = 3,
+    Right = 4,
+}
+declare const enum Repeat {
+    NoRepeat = 0,
+    Space = 1,
+    Round = 2,
+    Repeat = 3,
+}
+declare const enum BackgroundSizeType {
+    Length = 0,
+    Cover = 1,
+    Contain = 2,
+}
+declare const enum Align {
+    Auto = 0,
+    FlexStart = 1,
+    Center = 2,
+    FlexEnd = 3,
+    Stretch = 4,
+}
+declare const enum DisplayStyle {
+    Flex = 0,
+    None = 1,
+}
+declare const enum StyleKeyword {
+    Undefined = 0,
+    Null = 1,
+    Auto = 2,
+    None = 3,
+    Initial = 4,
+}
+declare const enum FlexDirection {
+    Column = 0,
+    ColumnReverse = 1,
+    Row = 2,
+    RowReverse = 3,
+}
+declare const enum Wrap {
+    NoWrap = 0,
+    Wrap = 1,
+    WrapReverse = 2,
+}
+declare const enum Justify {
+    FlexStart = 0,
+    Center = 1,
+    FlexEnd = 2,
+    SpaceBetween = 3,
+    SpaceAround = 4,
+    SpaceEvenly = 5,
+}
+declare const enum Position {
+    Relative = 0,
+    Absolute = 1,
+}
+declare const enum TextOverflow {
+    Clip = 0,
+    Ellipsis = 1,
+}
+declare const enum TimeUnit {
+    Second = 0,
+    Millisecond = 1,
+}
+declare const enum EasingMode {
+    Ease = 0,
+    EaseIn = 1,
+    EaseOut = 2,
+    EaseInOut = 3,
+    Linear = 4,
+    EaseInSine = 5,
+    EaseOutSine = 6,
+    EaseInOutSine = 7,
+    EaseInCubic = 8,
+    EaseOutCubic = 9,
+    EaseInOutCubic = 10,
+    EaseInCirc = 11,
+    EaseOutCirc = 12,
+    EaseInOutCirc = 13,
+    EaseInElastic = 14,
+    EaseOutElastic = 15,
+    EaseInOutElastic = 16,
+    EaseInBack = 17,
+    EaseOutBack = 18,
+    EaseInOutBack = 19,
+    EaseInBounce = 20,
+    EaseOutBounce = 21,
+    EaseInOutBounce = 22,
+}
+declare const enum TextAnchor {
+    UpperLeft = 0,
+    UpperCenter = 1,
+    UpperRight = 2,
+    MiddleLeft = 3,
+    MiddleCenter = 4,
+    MiddleRight = 5,
+    LowerLeft = 6,
+    LowerCenter = 7,
+    LowerRight = 8,
+}
+declare const enum TextOverflowPosition {
+    End = 0,
+    Start = 1,
+    Middle = 2,
+}
+declare const enum Visibility {
+    Visible = 0,
+    Hidden = 1,
+}
+declare const enum WhiteSpace {
+    Normal = 0,
+    NoWrap = 1,
+}
+declare const enum ScaleMode {
+    StretchToFill = 0,
+    ScaleAndCrop = 1,
+    ScaleToFit = 2,
+}
+declare const enum PropagationPhase {
+    None = 0,
+    TrickleDown = 1,
+    AtTarget = 2,
+    BubbleUp = 3,
+    DefaultAction = 4,
+    DefaultActionAtTarget = 5,
+}
+declare const enum EventType {
+    MouseDown = 0,
+    mouseDown = 0,
+    MouseUp = 1,
+    mouseUp = 1,
+    MouseMove = 2,
+    mouseMove = 2,
+    mouseDrag = 3,
+    MouseDrag = 3,
+    KeyDown = 4,
+    keyDown = 4,
+    keyUp = 5,
+    KeyUp = 5,
+    ScrollWheel = 6,
+    scrollWheel = 6,
+    Repaint = 7,
+    repaint = 7,
+    Layout = 8,
+    layout = 8,
+    DragUpdated = 9,
+    dragUpdated = 9,
+    dragPerform = 10,
+    DragPerform = 10,
+    ignore = 11,
+    Ignore = 11,
+    used = 12,
+    Used = 12,
+    ValidateCommand = 13,
+    ExecuteCommand = 14,
+    DragExited = 15,
+    ContextClick = 16,
+    MouseEnterWindow = 20,
+    MouseLeaveWindow = 21,
+    TouchDown = 30,
+    TouchUp = 31,
+    TouchMove = 32,
+    TouchEnter = 33,
+    TouchLeave = 34,
+    TouchStationary = 35,
+}
+declare const enum PointerType {
+    Mouse = 0,
+    Touch = 1,
+    Pen = 2,
+}
+declare const enum EventModifiers {
+    None = 0,
+    Shift = 1,
+    Control = 2,
+    Alt = 4,
+    Command = 8,
+    Numeric = 16,
+    CapsLock = 32,
+    FunctionKey = 64,
+}
+declare const enum TrickleDown {
+    NoTrickleDown = 0,
+    TrickleDown = 1,
+}
+declare const enum UsageHints {
+    None = 0,
+    DynamicTransform = 1,
+    GroupTransform = 2,
+    MaskContainer = 4,
+    DynamicColor = 8,
+}
+declare const enum PickingMode {
+    Position = 0,
+    Ignore = 1,
+}
+declare const enum LanguageDirection {
+    Inherit = 0,
+    LTR = 1,
+    RTL = 2,
+}
+declare const enum PropertyPathPartKind {
+    Name = 0,
+    Index = 1,
+    Key = 2,
+}
+declare const enum ContextType {
+    Player = 0,
+    Editor = 1,
+}
+declare const enum Overflow {
+    Visible = 0,
+    Hidden = 1,
+}
+declare const enum OverflowClipBox {
+    PaddingBox = 0,
+    ContentBox = 1,
+}
+declare const enum BindingUpdateTrigger {
+    WhenDirty = 0,
+    OnSourceChanged = 1,
+    EveryUpdate = 2,
+}
+declare const enum BindingLogLevel {
+    None = 0,
+    Once = 1,
+    All = 2,
+}
+declare const enum MeasureMode {
+    Undefined = 0,
+    Exactly = 1,
+    AtMost = 2,
+}
+declare const enum ScrollerVisibility {
+    Auto = 0,
+    AlwaysVisible = 1,
+    Hidden = 2,
+}
 declare const enum FogMode {
     Linear = 1,
     Exponential = 2,
@@ -2003,6 +2389,15 @@ declare const enum ShadowMapPass {
 declare const enum DefaultReflectionMode {
     Skybox = 0,
     Custom = 1,
+}
+declare const enum WritePermission {
+    ServerOnly = 0,
+    ClientUnsynchronized = 1,
+}
+declare const enum ReadPermission {
+    Observers = 0,
+    OwnerOnly = 1,
+    ExcludeOwner = 2,
 }
 declare const enum UnloadSceneOptions {
     None = 0,
@@ -2624,27 +3019,6 @@ declare const enum InputType {
     AutoCorrect = 1,
     Password = 2,
 }
-declare const enum Status {
-    Visible = 0,
-    Done = 1,
-    Canceled = 2,
-    LostFocus = 3,
-}
-declare const enum TouchScreenKeyboardType {
-    Default = 0,
-    ASCIICapable = 1,
-    NumbersAndPunctuation = 2,
-    URL = 3,
-    NumberPad = 4,
-    PhonePad = 5,
-    NamePhonePad = 6,
-    EmailAddress = 7,
-    NintendoNetworkAccount = 8,
-    Social = 9,
-    Search = 10,
-    DecimalPad = 11,
-    OneTimeCode = 12,
-}
 declare const enum CharacterValidation {
     None = 0,
     Digit = 1,
@@ -2655,61 +3029,6 @@ declare const enum CharacterValidation {
     Regex = 6,
     EmailAddress = 7,
     CustomValidator = 8,
-}
-declare const enum EventType {
-    MouseDown = 0,
-    mouseDown = 0,
-    MouseUp = 1,
-    mouseUp = 1,
-    MouseMove = 2,
-    mouseMove = 2,
-    mouseDrag = 3,
-    MouseDrag = 3,
-    KeyDown = 4,
-    keyDown = 4,
-    keyUp = 5,
-    KeyUp = 5,
-    ScrollWheel = 6,
-    scrollWheel = 6,
-    Repaint = 7,
-    repaint = 7,
-    Layout = 8,
-    layout = 8,
-    DragUpdated = 9,
-    dragUpdated = 9,
-    dragPerform = 10,
-    DragPerform = 10,
-    ignore = 11,
-    Ignore = 11,
-    used = 12,
-    Used = 12,
-    ValidateCommand = 13,
-    ExecuteCommand = 14,
-    DragExited = 15,
-    ContextClick = 16,
-    MouseEnterWindow = 20,
-    MouseLeaveWindow = 21,
-    TouchDown = 30,
-    TouchUp = 31,
-    TouchMove = 32,
-    TouchEnter = 33,
-    TouchLeave = 34,
-    TouchStationary = 35,
-}
-declare const enum PointerType {
-    Mouse = 0,
-    Touch = 1,
-    Pen = 2,
-}
-declare const enum EventModifiers {
-    None = 0,
-    Shift = 1,
-    Control = 2,
-    Alt = 4,
-    Command = 8,
-    Numeric = 16,
-    CapsLock = 32,
-    FunctionKey = 64,
 }
 declare const enum Direction {
     LeftToRight = 0,
@@ -2869,17 +3188,6 @@ declare const enum AudioType {
 declare const enum ToggleTransition {
     None = 0,
     Fade = 1,
-}
-declare const enum TextAnchor {
-    UpperLeft = 0,
-    UpperCenter = 1,
-    UpperRight = 2,
-    MiddleLeft = 3,
-    MiddleCenter = 4,
-    MiddleRight = 5,
-    LowerLeft = 6,
-    LowerCenter = 7,
-    LowerRight = 8,
 }
 declare const enum FitMode {
     Unconstrained = 0,
@@ -3296,278 +3604,6 @@ declare const enum NavMeshObstacleShape {
     Capsule = 0,
     Box = 1,
 }
-declare const enum StylePropertyId {
-    Unknown = 0,
-    Color = 65536,
-    FontSize = 65537,
-    LetterSpacing = 65538,
-    TextShadow = 65539,
-    UnityFont = 65540,
-    UnityFontDefinition = 65541,
-    UnityFontStyleAndWeight = 65542,
-    UnityParagraphSpacing = 65543,
-    UnityTextAlign = 65544,
-    UnityTextOutlineColor = 65545,
-    UnityTextOutlineWidth = 65546,
-    Visibility = 65547,
-    WhiteSpace = 65548,
-    WordSpacing = 65549,
-    AlignContent = 131072,
-    AlignItems = 131073,
-    AlignSelf = 131074,
-    BorderBottomWidth = 131075,
-    BorderLeftWidth = 131076,
-    BorderRightWidth = 131077,
-    BorderTopWidth = 131078,
-    Bottom = 131079,
-    Display = 131080,
-    FlexBasis = 131081,
-    FlexDirection = 131082,
-    FlexGrow = 131083,
-    FlexShrink = 131084,
-    FlexWrap = 131085,
-    Height = 131086,
-    JustifyContent = 131087,
-    Left = 131088,
-    MarginBottom = 131089,
-    MarginLeft = 131090,
-    MarginRight = 131091,
-    MarginTop = 131092,
-    MaxHeight = 131093,
-    MaxWidth = 131094,
-    MinHeight = 131095,
-    MinWidth = 131096,
-    PaddingBottom = 131097,
-    PaddingLeft = 131098,
-    PaddingRight = 131099,
-    PaddingTop = 131100,
-    Position = 131101,
-    Right = 131102,
-    Top = 131103,
-    Width = 131104,
-    Cursor = 196608,
-    TextOverflow = 196609,
-    UnityBackgroundImageTintColor = 196610,
-    UnityOverflowClipBox = 196611,
-    UnitySliceBottom = 196612,
-    UnitySliceLeft = 196613,
-    UnitySliceRight = 196614,
-    UnitySliceScale = 196615,
-    UnitySliceTop = 196616,
-    UnityTextOverflowPosition = 196617,
-    All = 262144,
-    BackgroundPosition = 262145,
-    BorderColor = 262146,
-    BorderRadius = 262147,
-    BorderWidth = 262148,
-    Flex = 262149,
-    Margin = 262150,
-    Padding = 262151,
-    Transition = 262152,
-    UnityBackgroundScaleMode = 262153,
-    UnityTextOutline = 262154,
-    Rotate = 327680,
-    Scale = 327681,
-    TransformOrigin = 327682,
-    Translate = 327683,
-    TransitionDelay = 393216,
-    TransitionDuration = 393217,
-    TransitionProperty = 393218,
-    TransitionTimingFunction = 393219,
-    BackgroundColor = 458752,
-    BackgroundImage = 458753,
-    BackgroundPositionX = 458754,
-    BackgroundPositionY = 458755,
-    BackgroundRepeat = 458756,
-    BackgroundSize = 458757,
-    BorderBottomColor = 458758,
-    BorderBottomLeftRadius = 458759,
-    BorderBottomRightRadius = 458760,
-    BorderLeftColor = 458761,
-    BorderRightColor = 458762,
-    BorderTopColor = 458763,
-    BorderTopLeftRadius = 458764,
-    BorderTopRightRadius = 458765,
-    Opacity = 458766,
-    Overflow = 458767,
-    Custom = -1,
-}
-declare const enum LengthUnit {
-    Pixel = 0,
-    Percent = 1,
-}
-declare const enum AtlasPopulationMode {
-    Static = 0,
-    Dynamic = 1,
-    DynamicOS = 2,
-}
-declare const enum TextElementType {
-    Character = 1,
-    Sprite = 2,
-}
-declare const enum AngleUnit {
-    Degree = 0,
-    Gradian = 1,
-    Radian = 2,
-    Turn = 3,
-}
-declare const enum BackgroundPositionKeyword {
-    Center = 0,
-    Top = 1,
-    Bottom = 2,
-    Left = 3,
-    Right = 4,
-}
-declare const enum Repeat {
-    NoRepeat = 0,
-    Space = 1,
-    Round = 2,
-    Repeat = 3,
-}
-declare const enum BackgroundSizeType {
-    Length = 0,
-    Cover = 1,
-    Contain = 2,
-}
-declare const enum Align {
-    Auto = 0,
-    FlexStart = 1,
-    Center = 2,
-    FlexEnd = 3,
-    Stretch = 4,
-}
-declare const enum DisplayStyle {
-    Flex = 0,
-    None = 1,
-}
-declare const enum StyleKeyword {
-    Undefined = 0,
-    Null = 1,
-    Auto = 2,
-    None = 3,
-    Initial = 4,
-}
-declare const enum FlexDirection {
-    Column = 0,
-    ColumnReverse = 1,
-    Row = 2,
-    RowReverse = 3,
-}
-declare const enum Wrap {
-    NoWrap = 0,
-    Wrap = 1,
-    WrapReverse = 2,
-}
-declare const enum Justify {
-    FlexStart = 0,
-    Center = 1,
-    FlexEnd = 2,
-    SpaceBetween = 3,
-    SpaceAround = 4,
-    SpaceEvenly = 5,
-}
-declare const enum Position {
-    Relative = 0,
-    Absolute = 1,
-}
-declare const enum TextOverflow {
-    Clip = 0,
-    Ellipsis = 1,
-}
-declare const enum TimeUnit {
-    Second = 0,
-    Millisecond = 1,
-}
-declare const enum EasingMode {
-    Ease = 0,
-    EaseIn = 1,
-    EaseOut = 2,
-    EaseInOut = 3,
-    Linear = 4,
-    EaseInSine = 5,
-    EaseOutSine = 6,
-    EaseInOutSine = 7,
-    EaseInCubic = 8,
-    EaseOutCubic = 9,
-    EaseInOutCubic = 10,
-    EaseInCirc = 11,
-    EaseOutCirc = 12,
-    EaseInOutCirc = 13,
-    EaseInElastic = 14,
-    EaseOutElastic = 15,
-    EaseInOutElastic = 16,
-    EaseInBack = 17,
-    EaseOutBack = 18,
-    EaseInOutBack = 19,
-    EaseInBounce = 20,
-    EaseOutBounce = 21,
-    EaseInOutBounce = 22,
-}
-declare const enum TextOverflowPosition {
-    End = 0,
-    Start = 1,
-    Middle = 2,
-}
-declare const enum Visibility {
-    Visible = 0,
-    Hidden = 1,
-}
-declare const enum WhiteSpace {
-    Normal = 0,
-    NoWrap = 1,
-}
-declare const enum PropagationPhase {
-    None = 0,
-    TrickleDown = 1,
-    AtTarget = 2,
-    BubbleUp = 3,
-    DefaultAction = 4,
-    DefaultActionAtTarget = 5,
-}
-declare const enum TrickleDown {
-    NoTrickleDown = 0,
-    TrickleDown = 1,
-}
-declare const enum UsageHints {
-    None = 0,
-    DynamicTransform = 1,
-    GroupTransform = 2,
-    MaskContainer = 4,
-    DynamicColor = 8,
-}
-declare const enum PickingMode {
-    Position = 0,
-    Ignore = 1,
-}
-declare const enum LanguageDirection {
-    Inherit = 0,
-    LTR = 1,
-    RTL = 2,
-}
-declare const enum PropertyPathPartKind {
-    Name = 0,
-    Index = 1,
-    Key = 2,
-}
-declare const enum ContextType {
-    Player = 0,
-    Editor = 1,
-}
-declare const enum BindingUpdateTrigger {
-    WhenDirty = 0,
-    OnSourceChanged = 1,
-    EveryUpdate = 2,
-}
-declare const enum BindingLogLevel {
-    None = 0,
-    Once = 1,
-    All = 2,
-}
-declare const enum ScrollerVisibility {
-    Auto = 0,
-    AlwaysVisible = 1,
-    Hidden = 2,
-}
 declare const enum TouchScrollBehavior {
     Unrestricted = 0,
     Elastic = 1,
@@ -3582,11 +3618,6 @@ declare const enum DeltaSpeed {
     Fast = 0,
     Normal = 1,
     Slow = 2,
-}
-declare const enum MeasureMode {
-    Undefined = 0,
-    Exactly = 1,
-    AtMost = 2,
 }
 declare const enum SliderDirection {
     Horizontal = 0,
@@ -11616,12 +11647,12 @@ interface NetworkBehaviour extends MonoBehaviour {
     CanLog(loggingType: LoggingType): boolean;
     ClearBuffedRpcs(): void;
     ClearReplicateCache(): void;
-    ClearReplicateCache_Internal<T>(replicatesQueue: unknown, replicatesHistory: CSArray<T>): void;
+    ClearReplicateCache_Internal<T>(replicatesQueue: BasicQueue<T>, replicatesHistory: CSArray<T>): void;
     CreateReconcile(): void;
     Despawn(go: GameObject, despawnType: unknown): void;
     Despawn(nob: NetworkObject, despawnType: unknown): void;
     Despawn(despawnType: unknown): void;
-    EmptyReplicatesQueueIntoHistory<T>(replicatesQueue: unknown, replicatesHistory: CSArray<T>): void;
+    EmptyReplicatesQueueIntoHistory<T>(replicatesQueue: BasicQueue<T>, replicatesHistory: CSArray<T>): void;
     GetInstance<T>(): T;
     GiveOwnership(newOwner: NetworkConnection): void;
     NetworkInitializeIfDisabled(): void;
@@ -11637,7 +11668,7 @@ interface NetworkBehaviour extends MonoBehaviour {
     OnStopServer(): void;
     OwnerMatches(connection: NetworkConnection): boolean;
     ReadPayload(connection: NetworkConnection, reader: Reader): void;
-    Reconcile_Client<T, T2>(reconcileDel: unknown, replicatesHistory: CSArray<T2>, data: T): void;
+    Reconcile_Client<T, T2>(reconcileDel: ReconcileUserLogicDelegate<T>, replicatesHistory: CSArray<T2>, data: T): void;
     Reconcile_Client_Start(): void;
     Reconcile_Reader<T>(reader: PooledReader, data: unknown, channel: Channel): void;
     Reconcile_Server<T>(methodHash: number, data: T, channel: Channel): void;
@@ -11649,10 +11680,10 @@ interface NetworkBehaviour extends MonoBehaviour {
     RegisterServerRpc(hash: number, del: ServerRpcDelegate): void;
     RegisterTargetRpc(hash: number, del: ClientRpcDelegate): void;
     RemoveOwnership(): void;
-    Replicate_Authoritative<T>(del: unknown, methodHash: number, replicatesQueue: unknown, replicatesHistory: CSArray<T>, data: T, channel: Channel): void;
-    Replicate_NonAuthoritative<T>(del: unknown, replicatesQueue: unknown, replicatesHistory: CSArray<T>, channel: Channel): void;
-    Replicate_Reader<T>(hash: number, reader: PooledReader, sender: NetworkConnection, arrBuffer: CSArray<T>, replicatesQueue: unknown, replicatesHistory: CSArray<T>, channel: Channel): void;
-    Replicate_SendNonAuthoritative<T>(hash: number, replicatesQueue: unknown, channel: Channel): void;
+    Replicate_Authoritative<T>(del: ReplicateUserLogicDelegate<T>, methodHash: number, replicatesQueue: BasicQueue<T>, replicatesHistory: CSArray<T>, data: T, channel: Channel): void;
+    Replicate_NonAuthoritative<T>(del: ReplicateUserLogicDelegate<T>, replicatesQueue: BasicQueue<T>, replicatesHistory: CSArray<T>, channel: Channel): void;
+    Replicate_Reader<T>(hash: number, reader: PooledReader, sender: NetworkConnection, arrBuffer: CSArray<T>, replicatesQueue: BasicQueue<T>, replicatesHistory: CSArray<T>, channel: Channel): void;
+    Replicate_SendNonAuthoritative<T>(hash: number, replicatesQueue: BasicQueue<T>, channel: Channel): void;
     ResetState(asServer: boolean): void;
     ResetSyncVarFields(): void;
     SendObserversRpc(hash: number, methodWriter: PooledWriter, channel: Channel, orderType: DataOrderType, bufferLast: boolean, excludeServer: boolean, excludeOwner: boolean): void;
@@ -17962,6 +17993,47 @@ interface RollbackManagerConstructor {
 }
 declare const RollbackManager: RollbackManagerConstructor;
     
+interface BasicQueue<T> {
+    Capacity: number;
+    Count: number;
+    WriteIndex: number;
+    Item: T;
+
+
+    Clear(): void;
+    Dequeue(): T;
+    Enqueue(data: T): void;
+    Peek(): T;
+    TryDequeue(result: unknown): boolean;
+    TryPeek(result: unknown): boolean;
+
+}
+    
+interface BasicQueueConstructor {
+
+    new(): BasicQueue<T>;
+
+
+}
+declare const BasicQueue: BasicQueueConstructor;
+    
+interface ReconcileUserLogicDelegate<T> {
+
+
+    BeginInvoke(data: T, channel: Channel, callback: unknown, object: unknown): unknown;
+    EndInvoke(result: unknown): void;
+    Invoke(data: T, channel: Channel): void;
+
+}
+    
+interface ReconcileUserLogicDelegateConstructor {
+
+    new(object: unknown, method: unknown): ReconcileUserLogicDelegate<T>;
+
+
+}
+declare const ReconcileUserLogicDelegate: ReconcileUserLogicDelegateConstructor;
+    
 interface PooledReader extends Reader {
 
 
@@ -18045,6 +18117,23 @@ interface ServerRpcDelegateConstructor {
 
 }
 declare const ServerRpcDelegate: ServerRpcDelegateConstructor;
+    
+interface ReplicateUserLogicDelegate<T> {
+
+
+    BeginInvoke(data: T, state: ReplicateState, channel: Channel, callback: unknown, object: unknown): unknown;
+    EndInvoke(result: unknown): void;
+    Invoke(data: T, state: ReplicateState, channel: Channel): void;
+
+}
+    
+interface ReplicateUserLogicDelegateConstructor {
+
+    new(object: unknown, method: unknown): ReplicateUserLogicDelegate<T>;
+
+
+}
+declare const ReplicateUserLogicDelegate: ReplicateUserLogicDelegateConstructor;
     
 interface PooledWriter extends Writer {
 
@@ -28095,7 +28184,98 @@ interface MaskableGraphic extends Graphic, IClippable, IMaterialModifier, IMaska
 
 }
     
-interface CullStateChangedEvent {
+interface UnityEventBase extends ISerializationCallbackReceiver {
+
+
+    /**
+     * Get the number of registered persistent listeners.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Events.UnityEventBase.GetPersistentEventCount.html | Events.UnityEventBase.GetPersistentEventCount}
+     */
+    GetPersistentEventCount(): number;
+    /**
+     * Returns the execution state of a persistent listener.
+     * @param index Index of the listener to query.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Events.UnityEventBase.GetPersistentListenerState.html | Events.UnityEventBase.GetPersistentListenerState}
+     */
+    GetPersistentListenerState(index: number): UnityEventCallState;
+    /**
+     * Get the target method name of the listener at index index.
+     * @param index Index of the listener to query.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Events.UnityEventBase.GetPersistentMethodName.html | Events.UnityEventBase.GetPersistentMethodName}
+     */
+    GetPersistentMethodName(index: number): string;
+    /**
+     * Get the target component of the listener at index index.
+     * @param index Index of the listener to query.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Events.UnityEventBase.GetPersistentTarget.html | Events.UnityEventBase.GetPersistentTarget}
+     */
+    GetPersistentTarget(index: number): Object;
+    /**
+     * Remove all non-persistent (ie created from script) listeners  from the event.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Events.UnityEventBase.RemoveAllListeners.html | Events.UnityEventBase.RemoveAllListeners}
+     */
+    RemoveAllListeners(): void;
+    /**
+     * Modify the execution state of a persistent listener.
+     * @param index Index of the listener to query.
+     * @param state State to set.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Events.UnityEventBase.SetPersistentListenerState.html | Events.UnityEventBase.SetPersistentListenerState}
+     */
+    SetPersistentListenerState(index: number, state: UnityEventCallState): void;
+    ToString(): string;
+
+}
+    
+interface UnityEventBaseConstructor {
+
+
+
+    GetValidMethodInfo(obj: unknown, functionName: string, argumentTypes: CSArray<unknown>): unknown;
+    GetValidMethodInfo(objectType: unknown, functionName: string, argumentTypes: CSArray<unknown>): unknown;
+}
+declare const UnityEventBase: UnityEventBaseConstructor;
+    
+interface UnityEvent<T0> extends UnityEventBase {
+
+
+    AddListener(call: UnityAction<T0>): void;
+    Invoke(arg0: T0): void;
+    RemoveListener(call: UnityAction<T0>): void;
+
+}
+    
+interface UnityAction<T0> {
+
+
+    BeginInvoke(arg0: T0, callback: unknown, object: unknown): unknown;
+    EndInvoke(result: unknown): void;
+    Invoke(arg0: T0): void;
+
+}
+    
+interface UnityActionConstructor {
+
+    new(object: unknown, method: unknown): UnityAction<T0>;
+
+
+}
+declare const UnityAction: UnityActionConstructor;
+    
+interface UnityEventConstructor {
+
+    new(): UnityEvent<T0>;
+
+
+}
+declare const UnityEvent: UnityEventConstructor;
+    
+interface CullStateChangedEvent extends UnityEvent<boolean> {
 
 
 
@@ -30730,63 +30910,6 @@ interface Button extends Selectable, ISubmitHandler, IPointerClickHandler {
 
 }
     
-interface UnityEventBase extends ISerializationCallbackReceiver {
-
-
-    /**
-     * Get the number of registered persistent listeners.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Events.UnityEventBase.GetPersistentEventCount.html | Events.UnityEventBase.GetPersistentEventCount}
-     */
-    GetPersistentEventCount(): number;
-    /**
-     * Returns the execution state of a persistent listener.
-     * @param index Index of the listener to query.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Events.UnityEventBase.GetPersistentListenerState.html | Events.UnityEventBase.GetPersistentListenerState}
-     */
-    GetPersistentListenerState(index: number): UnityEventCallState;
-    /**
-     * Get the target method name of the listener at index index.
-     * @param index Index of the listener to query.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Events.UnityEventBase.GetPersistentMethodName.html | Events.UnityEventBase.GetPersistentMethodName}
-     */
-    GetPersistentMethodName(index: number): string;
-    /**
-     * Get the target component of the listener at index index.
-     * @param index Index of the listener to query.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Events.UnityEventBase.GetPersistentTarget.html | Events.UnityEventBase.GetPersistentTarget}
-     */
-    GetPersistentTarget(index: number): Object;
-    /**
-     * Remove all non-persistent (ie created from script) listeners  from the event.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Events.UnityEventBase.RemoveAllListeners.html | Events.UnityEventBase.RemoveAllListeners}
-     */
-    RemoveAllListeners(): void;
-    /**
-     * Modify the execution state of a persistent listener.
-     * @param index Index of the listener to query.
-     * @param state State to set.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Events.UnityEventBase.SetPersistentListenerState.html | Events.UnityEventBase.SetPersistentListenerState}
-     */
-    SetPersistentListenerState(index: number, state: UnityEventCallState): void;
-    ToString(): string;
-
-}
-    
-interface UnityEventBaseConstructor {
-
-
-
-    GetValidMethodInfo(obj: unknown, functionName: string, argumentTypes: CSArray<unknown>): unknown;
-    GetValidMethodInfo(objectType: unknown, functionName: string, argumentTypes: CSArray<unknown>): unknown;
-}
-declare const UnityEventBase: UnityEventBaseConstructor;
-    
 interface UnityEvent extends UnityEventBase {
 
 
@@ -32716,7 +32839,3755 @@ interface CoreLoadingScreenConstructor {
 }
 declare const CoreLoadingScreen: CoreLoadingScreenConstructor;
     
-interface TextField {
+interface IDelayedField {
+    isDelayed: boolean;
+
+
+
+}
+    
+interface IMixedValueSupport {
+    /**
+     * Indicates whether to enable the mixed value state on the value field.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IMixedValueSupport-showMixedValue.html | UIElements.IMixedValueSupport.showMixedValue}
+     */
+    showMixedValue: boolean;
+
+
+
+}
+    
+interface INotifyValueChanged<T> {
+    value: T;
+
+
+    SetValueWithoutNotify(newValue: T): void;
+
+}
+    
+interface IPrefixLabel {
+    label: string;
+    labelElement: Label;
+
+
+
+}
+    
+interface ITextElement {
+    text: string;
+
+
+
+}
+    
+interface ITextEdition {
+    /**
+     * Returns true if the element is read only.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextEdition-isReadOnly.html | UIElements.ITextEdition.isReadOnly}
+     */
+    isReadOnly: boolean;
+    /**
+     * Maximum number of characters for that element
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextEdition-maxLength.html | UIElements.ITextEdition.maxLength}
+     */
+    maxLength: number;
+    /**
+     * The placeholder property represents a short hint intended to aid the users with data entry when the control has no value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextEdition-placeholder.html | UIElements.ITextEdition.placeholder}
+     */
+    placeholder: string;
+    /**
+     * If set to true, the value property isn't updated until either the user presses Enter or the element loses focus.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextEdition-isDelayed.html | UIElements.ITextEdition.isDelayed}
+     */
+    isDelayed: boolean;
+    /**
+     * The character used for masking when in password mode.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextEdition-maskChar.html | UIElements.ITextEdition.maskChar}
+     */
+    maskChar: string;
+    /**
+     * Returns true if the field is used to edit a password.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextEdition-isPassword.html | UIElements.ITextEdition.isPassword}
+     */
+    isPassword: boolean;
+    /**
+     * Hides the placeholder on focus.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextEdition-hidePlaceholderOnFocus.html | UIElements.ITextEdition.hidePlaceholderOnFocus}
+     */
+    hidePlaceholderOnFocus: boolean;
+    /**
+     * Determines if the soft keyboard auto correction is turned on or off.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextEdition-autoCorrection.html | UIElements.ITextEdition.autoCorrection}
+     */
+    autoCorrection: boolean;
+    /**
+     * Hides or shows the mobile input field.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextEdition-hideMobileInput.html | UIElements.ITextEdition.hideMobileInput}
+     */
+    hideMobileInput: boolean;
+    /**
+     * The TouchScreenKeyboard being used to edit the Input Field.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextEdition-touchScreenKeyboard.html | UIElements.ITextEdition.touchScreenKeyboard}
+     */
+    touchScreenKeyboard: TouchScreenKeyboard;
+    /**
+     * The type of mobile keyboard that will be used.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextEdition-keyboardType.html | UIElements.ITextEdition.keyboardType}
+     */
+    keyboardType: TouchScreenKeyboardType;
+
+
+
+}
+    
+interface TouchScreenKeyboard {
+    /**
+     * Returns the text displayed by the input field of the keyboard.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/TouchScreenKeyboard-text.html | TouchScreenKeyboard.text}
+     */
+    text: string;
+    /**
+     * Is the keyboard visible or sliding into the position on the screen?
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/TouchScreenKeyboard-active.html | TouchScreenKeyboard.active}
+     */
+    active: boolean;
+    /**
+     * Specifies if input process was finished. (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/TouchScreenKeyboard-done.html | TouchScreenKeyboard.done}
+     */
+    done: boolean;
+    /**
+     * Specifies if input process was canceled. (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/TouchScreenKeyboard-wasCanceled.html | TouchScreenKeyboard.wasCanceled}
+     */
+    wasCanceled: boolean;
+    /**
+     * Returns the status of the on-screen keyboard. (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/TouchScreenKeyboard-status.html | TouchScreenKeyboard.status}
+     */
+    status: Status;
+    /**
+     * How many characters the keyboard input field is limited to. 0 = infinite.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/TouchScreenKeyboard-characterLimit.html | TouchScreenKeyboard.characterLimit}
+     */
+    characterLimit: number;
+    /**
+     * Specifies whether the TouchScreenKeyboard supports the selection property. (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/TouchScreenKeyboard-canGetSelection.html | TouchScreenKeyboard.canGetSelection}
+     */
+    canGetSelection: boolean;
+    /**
+     * Specifies whether the TouchScreenKeyboard supports the selection property. (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/TouchScreenKeyboard-canSetSelection.html | TouchScreenKeyboard.canSetSelection}
+     */
+    canSetSelection: boolean;
+    /**
+     * Gets or sets the character range of the selected text within the string currently being edited.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/TouchScreenKeyboard-selection.html | TouchScreenKeyboard.selection}
+     */
+    selection: RangeInt;
+    /**
+     * Returns the TouchScreenKeyboardType of the keyboard.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/TouchScreenKeyboard-type.html | TouchScreenKeyboard.type}
+     */
+    type: TouchScreenKeyboardType;
+    /**
+     * Specified on which display the on-screen keyboard will appear.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/TouchScreenKeyboard-targetDisplay.html | TouchScreenKeyboard.targetDisplay}
+     */
+    targetDisplay: number;
+
+
+
+}
+    
+interface RangeInt {
+    start: number;
+    length: number;
+    /**
+     * The end index of the range (not inclusive).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/RangeInt-end.html | RangeInt.end}
+     */
+    end: number;
+
+
+
+}
+    
+interface RangeIntConstructor {
+
+    new(start: number, length: number): RangeInt;
+
+
+}
+declare const RangeInt: RangeIntConstructor;
+    
+interface TouchScreenKeyboardConstructor {
+    /**
+     * Is touch screen keyboard supported.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/TouchScreenKeyboard-isSupported.html | TouchScreenKeyboard.isSupported}
+     */
+    isSupported: boolean;
+    /**
+     * Checks if the text within an input field can be selected and modified while TouchScreenKeyboard is open.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/TouchScreenKeyboard-isInPlaceEditingAllowed.html | TouchScreenKeyboard.isInPlaceEditingAllowed}
+     */
+    isInPlaceEditingAllowed: boolean;
+    /**
+     * Will text input field above the keyboard be hidden when the keyboard is on screen?
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/TouchScreenKeyboard-hideInput.html | TouchScreenKeyboard.hideInput}
+     */
+    hideInput: boolean;
+    /**
+     * Returns portion of the screen which is covered by the keyboard.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/TouchScreenKeyboard-area.html | TouchScreenKeyboard.area}
+     */
+    area: Rect;
+    /**
+     * Returns true whenever any keyboard is visible on the screen.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/TouchScreenKeyboard-visible.html | TouchScreenKeyboard.visible}
+     */
+    visible: boolean;
+
+    new(text: string, keyboardType: TouchScreenKeyboardType, autocorrection: boolean, multiline: boolean, secure: boolean, alert: boolean, textPlaceholder: string, characterLimit: number): TouchScreenKeyboard;
+
+
+    Open(text: string, keyboardType: TouchScreenKeyboardType, autocorrection: boolean, multiline: boolean, secure: boolean, alert: boolean, textPlaceholder: string, characterLimit: number): TouchScreenKeyboard;
+    Open(text: string, keyboardType: TouchScreenKeyboardType, autocorrection: boolean, multiline: boolean, secure: boolean, alert: boolean, textPlaceholder: string): TouchScreenKeyboard;
+    Open(text: string, keyboardType: TouchScreenKeyboardType, autocorrection: boolean, multiline: boolean, secure: boolean, alert: boolean): TouchScreenKeyboard;
+    Open(text: string, keyboardType: TouchScreenKeyboardType, autocorrection: boolean, multiline: boolean, secure: boolean): TouchScreenKeyboard;
+    Open(text: string, keyboardType: TouchScreenKeyboardType, autocorrection: boolean, multiline: boolean): TouchScreenKeyboard;
+    Open(text: string, keyboardType: TouchScreenKeyboardType, autocorrection: boolean): TouchScreenKeyboard;
+    Open(text: string, keyboardType: TouchScreenKeyboardType): TouchScreenKeyboard;
+    Open(text: string): TouchScreenKeyboard;
+}
+declare const TouchScreenKeyboard: TouchScreenKeyboardConstructor;
+    
+interface IExperimentalFeatures {
+    /**
+     * Returns the animation experimental interface.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IExperimentalFeatures-animation.html | UIElements.IExperimentalFeatures.animation}
+     */
+    animation: ITransitionAnimations;
+
+
+
+}
+    
+interface ITransitionAnimations {
+
+
+    /**
+     * Triggers an animation changing this element's layout style values.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.ITransitionAnimations.Layout.html | UIElements.Experimental.ITransitionAnimations.Layout}
+     */
+    Layout(to: Rect, durationMs: number): ValueAnimation<Rect>;
+    /**
+     * Triggers an animation changing this element's transform position.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.ITransitionAnimations.Position.html | UIElements.Experimental.ITransitionAnimations.Position}
+     */
+    Position(to: Vector3, duration: number): ValueAnimation<Vector3>;
+    /**
+     * Triggers an animation changing this element's transform rotation.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.ITransitionAnimations.Rotation.html | UIElements.Experimental.ITransitionAnimations.Rotation}
+     */
+    Rotation(to: Quaternion, duration: number): ValueAnimation<Quaternion>;
+    /**
+     * Triggers an animation changing this element's transform scale.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.ITransitionAnimations.Scale.html | UIElements.Experimental.ITransitionAnimations.Scale}
+     */
+    Scale(to: number, duration: number): ValueAnimation<number>;
+    /**
+     * Triggers an animation changing this element's size style values.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.ITransitionAnimations.Size.html | UIElements.Experimental.ITransitionAnimations.Size}
+     */
+    Size(to: Vector2, durationMs: number): ValueAnimation<Vector2>;
+    Start(from: number, to: number, durationMs: number, onValueChanged: unknown): ValueAnimation<number>;
+    Start(from: Rect, to: Rect, durationMs: number, onValueChanged: unknown): ValueAnimation<Rect>;
+    Start(from: Color, to: Color, durationMs: number, onValueChanged: unknown): ValueAnimation<Color>;
+    Start(from: Vector3, to: Vector3, durationMs: number, onValueChanged: unknown): ValueAnimation<Vector3>;
+    Start(from: Vector2, to: Vector2, durationMs: number, onValueChanged: unknown): ValueAnimation<Vector2>;
+    Start(from: Quaternion, to: Quaternion, durationMs: number, onValueChanged: unknown): ValueAnimation<Quaternion>;
+    /**
+     * Starts a transition animation on this VisualElement.
+     * @param from Start value.
+     * @param to End value.
+     * @param durationMs Duration of the transition in milliseconds.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.ITransitionAnimations.Start.html | UIElements.Experimental.ITransitionAnimations.Start}
+     */
+    Start(from: StyleValues, to: StyleValues, durationMs: number): ValueAnimation<StyleValues>;
+    /**
+     * Starts a transition animation on this VisualElement.
+     * @param to End value.
+     * @param durationMs Duration of the transition in milliseconds.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.ITransitionAnimations.Start.html | UIElements.Experimental.ITransitionAnimations.Start}
+     */
+    Start(to: StyleValues, durationMs: number): ValueAnimation<StyleValues>;
+    Start(fromValueGetter: unknown, to: number, durationMs: number, onValueChanged: unknown): ValueAnimation<number>;
+    Start(fromValueGetter: unknown, to: Rect, durationMs: number, onValueChanged: unknown): ValueAnimation<Rect>;
+    Start(fromValueGetter: unknown, to: Color, durationMs: number, onValueChanged: unknown): ValueAnimation<Color>;
+    Start(fromValueGetter: unknown, to: Vector3, durationMs: number, onValueChanged: unknown): ValueAnimation<Vector3>;
+    Start(fromValueGetter: unknown, to: Vector2, durationMs: number, onValueChanged: unknown): ValueAnimation<Vector2>;
+    Start(fromValueGetter: unknown, to: Quaternion, durationMs: number, onValueChanged: unknown): ValueAnimation<Quaternion>;
+    /**
+     * Triggers an animation changing this element's positioning style values.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.ITransitionAnimations.TopLeft.html | UIElements.Experimental.ITransitionAnimations.TopLeft}
+     */
+    TopLeft(to: Vector2, durationMs: number): ValueAnimation<Vector2>;
+
+}
+    
+interface IValueAnimationUpdate {
+
+
+    Tick(currentTimeMs: number): void;
+
+}
+    
+interface IValueAnimation {
+    /**
+     * Tells if the animation is currently active.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.IValueAnimation-isRunning.html | UIElements.Experimental.IValueAnimation.isRunning}
+     */
+    isRunning: boolean;
+    /**
+     * Duration of the transition in milliseconds.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.IValueAnimation-durationMs.html | UIElements.Experimental.IValueAnimation.durationMs}
+     */
+    durationMs: number;
+
+
+    /**
+     * Returns this animation object into its object pool.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.IValueAnimation.Recycle.html | UIElements.Experimental.IValueAnimation.Recycle}
+     */
+    Recycle(): void;
+    /**
+     * Starts the animation using this object's values.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.IValueAnimation.Start.html | UIElements.Experimental.IValueAnimation.Start}
+     */
+    Start(): void;
+    /**
+     * Stops this animation.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.IValueAnimation.Stop.html | UIElements.Experimental.IValueAnimation.Stop}
+     */
+    Stop(): void;
+
+}
+    
+    
+interface IStylePropertyAnimations {
+    runningAnimationCount: number;
+    completedAnimationCount: number;
+
+
+    CancelAllAnimations(): void;
+    CancelAnimation(id: StylePropertyId): void;
+    GetAllAnimations(outPropertyIds: CSArray<StylePropertyId>): void;
+    HasRunningAnimation(id: StylePropertyId): boolean;
+    Start(id: StylePropertyId, from: number, to: number, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: number, to: number, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: Length, to: Length, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: Color, to: Color, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: Background, to: Background, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: FontDefinition, to: FontDefinition, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: Font, to: Font, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: TextShadow, to: TextShadow, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: Scale, to: Scale, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: Translate, to: Translate, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: Rotate, to: Rotate, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: TransformOrigin, to: TransformOrigin, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: BackgroundPosition, to: BackgroundPosition, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: BackgroundRepeat, to: BackgroundRepeat, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: BackgroundSize, to: BackgroundSize, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    StartEnum(id: StylePropertyId, from: number, to: number, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    UpdateAnimation(id: StylePropertyId): void;
+
+}
+    
+interface Length {
+    /**
+     * The length value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Length-value.html | UIElements.Length.value}
+     */
+    value: number;
+    /**
+     * The unit of the value property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Length-unit.html | UIElements.Length.unit}
+     */
+    unit: LengthUnit;
+
+
+    Equals(other: Length): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    /**
+     * Check if Length is Auto.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Length.IsAuto.html | UIElements.Length.IsAuto}
+     */
+    IsAuto(): boolean;
+    /**
+     * Check if Length is None.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Length.IsNone.html | UIElements.Length.IsNone}
+     */
+    IsNone(): boolean;
+    ToString(): string;
+
+}
+    
+interface LengthConstructor {
+
+    new(value: number): Length;
+    new(value: number, unit: LengthUnit): Length;
+
+
+    Auto(): Length;
+    None(): Length;
+    Percent(value: number): Length;
+}
+declare const Length: LengthConstructor;
+    
+interface Background {
+    /**
+     * The texture to display as a background.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Background-texture.html | UIElements.Background.texture}
+     */
+    texture: Texture2D;
+    /**
+     * The sprite to display as a background.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Background-sprite.html | UIElements.Background.sprite}
+     */
+    sprite: Sprite;
+    /**
+     * The RenderTexture to display as a background.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Background-renderTexture.html | UIElements.Background.renderTexture}
+     */
+    renderTexture: RenderTexture;
+    /**
+     * The VectorImage to display as a background.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Background-vectorImage.html | UIElements.Background.vectorImage}
+     */
+    vectorImage: VectorImage;
+
+
+    Equals(other: Background): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    /**
+     * Retrieves the selected asset which can be of a type of Texture, Sprite, RenderTexture or VectorImage.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Background.GetSelectedImage.html | UIElements.Background.GetSelectedImage}
+     */
+    GetSelectedImage(): Object;
+    /**
+     * Help verify whether an asset has been assigned or not.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Background.IsEmpty.html | UIElements.Background.IsEmpty}
+     */
+    IsEmpty(): boolean;
+    ToString(): string;
+
+}
+    
+interface VectorImage extends ScriptableObject {
+    /**
+     * The width of the vector image.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.VectorImage-width.html | UIElements.VectorImage.width}
+     */
+    width: number;
+    /**
+     * The height of the vector image.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.VectorImage-height.html | UIElements.VectorImage.height}
+     */
+    height: number;
+
+
+
+}
+    
+interface VectorImageConstructor {
+
+    new(): VectorImage;
+
+
+}
+declare const VectorImage: VectorImageConstructor;
+    
+interface BackgroundConstructor {
+
+    new(t: Texture2D): Background;
+
+
+    FromRenderTexture(rt: RenderTexture): Background;
+    FromSprite(s: Sprite): Background;
+    FromTexture2D(t: Texture2D): Background;
+    FromVectorImage(vi: VectorImage): Background;
+}
+declare const Background: BackgroundConstructor;
+    
+interface FontDefinition {
+    /**
+     * Font to use to display text. You cannot set this and FontDefinition.fontAsset at the same time.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.FontDefinition-font.html | UIElements.FontDefinition.font}
+     */
+    font: Font;
+    /**
+     * SDF font to use to display text. You cannot set this and FontDefinition.font at the same time.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.FontDefinition-fontAsset.html | UIElements.FontDefinition.fontAsset}
+     */
+    fontAsset: FontAsset;
+
+
+    Equals(other: FontDefinition): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface TextAsset extends ScriptableObject {
+    version: string;
+    instanceID: number;
+    hashCode: number;
+    material: Material;
+    materialHashCode: number;
+
+
+
+}
+    
+interface FontAsset extends TextAsset {
+    fontAssetCreationEditorSettings: FontAssetCreationEditorSettings;
+    sourceFontFile: Font;
+    atlasPopulationMode: AtlasPopulationMode;
+    faceInfo: FaceInfo;
+    glyphTable: CSArray<Glyph>;
+    glyphLookupTable: CSDictionary<number, Glyph>;
+    characterTable: CSArray<Character>;
+    characterLookupTable: CSDictionary<number, Character>;
+    atlasTexture: Texture2D;
+    atlasTextures: CSArray<Texture2D>;
+    atlasTextureCount: number;
+    isMultiAtlasTexturesEnabled: boolean;
+    getFontFeatures: boolean;
+    atlasWidth: number;
+    atlasHeight: number;
+    atlasPadding: number;
+    atlasRenderMode: GlyphRenderMode;
+    fontFeatureTable: FontFeatureTable;
+    fallbackFontAssetTable: CSArray<FontAsset>;
+    fontWeightTable: CSArray<FontWeightPair>;
+    regularStyleWeight: number;
+    regularStyleSpacing: number;
+    boldStyleWeight: number;
+    boldStyleSpacing: number;
+    italicStyleSlant: number;
+    tabMultiple: number;
+
+
+    ClearFontAssetData(setAtlasSizeToZero: boolean): void;
+    HasCharacter(character: number): boolean;
+    HasCharacter(character: string, searchFallbacks: boolean, tryAddCharacter: boolean): boolean;
+    HasCharacter(character: number, searchFallbacks: boolean, tryAddCharacter: boolean): boolean;
+    HasCharacters(text: string, missingCharacters: CSArray<string>): boolean;
+    HasCharacters(text: string, missingCharacters: CSArray<number>, searchFallbacks: boolean, tryAddCharacter: boolean): boolean;
+    HasCharacters(text: string): boolean;
+    ReadFontAssetDefinition(): void;
+    TryAddCharacters(unicodes: CSArray<number>, includeFontFeatures: boolean): boolean;
+    TryAddCharacters(unicodes: CSArray<number>, missingUnicodes: CSArray<number>, includeFontFeatures: boolean): boolean;
+    TryAddCharacters(characters: string, includeFontFeatures: boolean): boolean;
+    TryAddCharacters(characters: string, missingCharacters: CSArray<string>, includeFontFeatures: boolean): boolean;
+
+}
+    
+interface FontAssetCreationEditorSettings {
+    sourceFontFileGUID: string;
+    faceIndex: number;
+    pointSizeSamplingMode: number;
+    pointSize: number;
+    padding: number;
+    paddingMode: number;
+    packingMode: number;
+    atlasWidth: number;
+    atlasHeight: number;
+    characterSetSelectionMode: number;
+    characterSequence: string;
+    referencedFontAssetGUID: string;
+    referencedTextAssetGUID: string;
+    fontStyle: number;
+    fontStyleModifier: number;
+    renderMode: number;
+    includeFontFeatures: boolean;
+
+
+
+}
+    
+interface TextElement {
+    elementType: TextElementType;
+    unicode: number;
+    textAsset: TextAsset;
+    glyph: Glyph;
+    glyphIndex: number;
+    scale: number;
+
+
+
+}
+    
+interface Character extends TextElement {
+
+
+
+}
+    
+interface CharacterConstructor {
+
+    new(): Character;
+    new(unicode: number, glyph: Glyph): Character;
+    new(unicode: number, fontAsset: FontAsset, glyph: Glyph): Character;
+
+
+}
+declare const Character: CharacterConstructor;
+    
+interface FontFeatureTable {
+
+
+    /**
+     * Sorts the glyph pair adjustment records by glyph index.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/TextCore.Text.FontFeatureTable.SortGlyphPairAdjustmentRecords.html | TextCore.Text.FontFeatureTable.SortGlyphPairAdjustmentRecords}
+     */
+    SortGlyphPairAdjustmentRecords(): void;
+    /**
+     * Sorts the Mark-to-Base Adjustment Table records.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/TextCore.Text.FontFeatureTable.SortMarkToBaseAdjustmentRecords.html | TextCore.Text.FontFeatureTable.SortMarkToBaseAdjustmentRecords}
+     */
+    SortMarkToBaseAdjustmentRecords(): void;
+    /**
+     * Sorts the Mark-to-Mark Adjustment Table records.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/TextCore.Text.FontFeatureTable.SortMarkToMarkAdjustmentRecords.html | TextCore.Text.FontFeatureTable.SortMarkToMarkAdjustmentRecords}
+     */
+    SortMarkToMarkAdjustmentRecords(): void;
+
+}
+    
+interface FontWeightPair {
+    regularTypeface: FontAsset;
+    italicTypeface: FontAsset;
+
+
+
+}
+    
+interface FontAssetConstructor {
+
+    new(): FontAsset;
+
+
+    CreateFontAsset(familyName: string, styleName: string, pointSize: number): FontAsset;
+    CreateFontAsset(fontFilePath: string, faceIndex: number, samplingPointSize: number, atlasPadding: number, renderMode: GlyphRenderMode, atlasWidth: number, atlasHeight: number): FontAsset;
+    CreateFontAsset(font: Font): FontAsset;
+    CreateFontAsset(font: Font, samplingPointSize: number, atlasPadding: number, renderMode: GlyphRenderMode, atlasWidth: number, atlasHeight: number, atlasPopulationMode: AtlasPopulationMode, enableMultiAtlasSupport: boolean): FontAsset;
+    GetCharacters(fontAsset: FontAsset): string;
+    GetCharactersArray(fontAsset: FontAsset): CSArray<number>;
+}
+declare const FontAsset: FontAssetConstructor;
+    
+interface FontDefinitionConstructor {
+
+
+
+    FromFont(f: Font): FontDefinition;
+    FromSDFFont(f: FontAsset): FontDefinition;
+}
+declare const FontDefinition: FontDefinitionConstructor;
+    
+interface TextShadow {
+    offset: Vector2;
+    blurRadius: number;
+    color: Color;
+
+
+    Equals(obj: unknown): boolean;
+    Equals(other: TextShadow): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface Scale {
+    value: Vector3;
+
+
+    Equals(other: Scale): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface ScaleConstructor {
+
+    new(scale: Vector2): Scale;
+    new(scale: Vector3): Scale;
+
+
+    None(): Scale;
+}
+declare const Scale: ScaleConstructor;
+    
+interface Translate {
+    x: Length;
+    y: Length;
+    z: number;
+
+
+    Equals(other: Translate): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface TranslateConstructor {
+
+    new(x: Length, y: Length, z: number): Translate;
+    new(x: Length, y: Length): Translate;
+
+
+    None(): Translate;
+}
+declare const Translate: TranslateConstructor;
+    
+interface Rotate {
+    /**
+     * The angle applied by the rotation. Positive values represent clockwise rotation and negative values represent counterclockwise rotation.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Rotate-angle.html | UIElements.Rotate.angle}
+     */
+    angle: Angle;
+
+
+    Equals(other: Rotate): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface Angle {
+    /**
+     * The angle value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Angle-value.html | UIElements.Angle.value}
+     */
+    value: number;
+    /**
+     * The unit of the value property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Angle-unit.html | UIElements.Angle.unit}
+     */
+    unit: AngleUnit;
+
+
+    Equals(other: Angle): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    /**
+     * Returns the value of the angle, expressed in degrees.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Angle.ToDegrees.html | UIElements.Angle.ToDegrees}
+     */
+    ToDegrees(): number;
+    /**
+     * Returns the value of the angle, expressed in gradians.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Angle.ToGradians.html | UIElements.Angle.ToGradians}
+     */
+    ToGradians(): number;
+    /**
+     * Returns the value of the angle, expressed in radians.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Angle.ToRadians.html | UIElements.Angle.ToRadians}
+     */
+    ToRadians(): number;
+    ToString(): string;
+    /**
+     * Returns the value of the angle, expressed in turns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Angle.ToTurns.html | UIElements.Angle.ToTurns}
+     */
+    ToTurns(): number;
+
+}
+    
+interface AngleConstructor {
+
+    new(value: number): Angle;
+    new(value: number, unit: AngleUnit): Angle;
+
+
+    Degrees(value: number): Angle;
+    Gradians(value: number): Angle;
+    Radians(value: number): Angle;
+    Turns(value: number): Angle;
+}
+declare const Angle: AngleConstructor;
+    
+interface RotateConstructor {
+
+    new(angle: Angle): Rotate;
+
+
+    None(): Rotate;
+}
+declare const Rotate: RotateConstructor;
+    
+interface TransformOrigin {
+    x: Length;
+    y: Length;
+    z: number;
+
+
+    Equals(other: TransformOrigin): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface TransformOriginConstructor {
+
+    new(x: Length, y: Length, z: number): TransformOrigin;
+    new(x: Length, y: Length): TransformOrigin;
+
+
+    Initial(): TransformOrigin;
+}
+declare const TransformOrigin: TransformOriginConstructor;
+    
+interface BackgroundPosition {
+    keyword: BackgroundPositionKeyword;
+    offset: Length;
+
+
+    Equals(obj: unknown): boolean;
+    Equals(other: BackgroundPosition): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface BackgroundPositionConstructor {
+
+    new(keyword: BackgroundPositionKeyword): BackgroundPosition;
+    new(keyword: BackgroundPositionKeyword, offset: Length): BackgroundPosition;
+
+
+}
+declare const BackgroundPosition: BackgroundPositionConstructor;
+    
+interface BackgroundRepeat {
+    x: Repeat;
+    y: Repeat;
+
+
+    Equals(obj: unknown): boolean;
+    Equals(other: BackgroundRepeat): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface BackgroundRepeatConstructor {
+
+    new(repeatX: Repeat, repeatY: Repeat): BackgroundRepeat;
+
+
+}
+declare const BackgroundRepeat: BackgroundRepeatConstructor;
+    
+interface BackgroundSize {
+    /**
+     * Background size type
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.BackgroundSize-sizeType.html | UIElements.BackgroundSize.sizeType}
+     */
+    sizeType: BackgroundSizeType;
+    /**
+     * Background size x
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.BackgroundSize-x.html | UIElements.BackgroundSize.x}
+     */
+    x: Length;
+    /**
+     * Background size y
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.BackgroundSize-y.html | UIElements.BackgroundSize.y}
+     */
+    y: Length;
+
+
+    Equals(obj: unknown): boolean;
+    Equals(other: BackgroundSize): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface BackgroundSizeConstructor {
+
+    new(sizeX: Length, sizeY: Length): BackgroundSize;
+    new(sizeType: BackgroundSizeType): BackgroundSize;
+
+
+}
+declare const BackgroundSize: BackgroundSizeConstructor;
+    
+interface IVisualElementScheduler {
+
+
+    Execute(timerUpdateEvent: unknown): IVisualElementScheduledItem;
+    /**
+     * Schedule this action to be executed later.
+     * @param updateEvent The action to be executed.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IVisualElementScheduler.Execute.html | UIElements.IVisualElementScheduler.Execute}
+     */
+    Execute(updateEvent: unknown): IVisualElementScheduledItem;
+
+}
+    
+interface IVisualElementScheduledItem {
+    /**
+     * Returns the VisualElement this object is associated with.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IVisualElementScheduledItem-element.html | UIElements.IVisualElementScheduledItem.element}
+     */
+    element: VisualElement;
+    /**
+     * Will be true when this item is scheduled. Note that an item's callback will only be executed when it's VisualElement is attached to a panel.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IVisualElementScheduledItem-isActive.html | UIElements.IVisualElementScheduledItem.isActive}
+     */
+    isActive: boolean;
+
+
+    /**
+     * Repeats this action after a specified time.
+     * @param intervalMs Minimum amount of time in milliseconds between each action execution.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IVisualElementScheduledItem.Every.html | UIElements.IVisualElementScheduledItem.Every}
+     */
+    Every(intervalMs: number): IVisualElementScheduledItem;
+    /**
+     * Cancels any previously scheduled execution of this item and re-schedules the item.
+     * @param delayMs Minimum time in milliseconds before this item will be executed.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IVisualElementScheduledItem.ExecuteLater.html | UIElements.IVisualElementScheduledItem.ExecuteLater}
+     */
+    ExecuteLater(delayMs: number): void;
+    /**
+     * After specified duration, the item will be automatically unscheduled.
+     * @param durationMs The total duration in milliseconds where this item will be active.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IVisualElementScheduledItem.ForDuration.html | UIElements.IVisualElementScheduledItem.ForDuration}
+     */
+    ForDuration(durationMs: number): IVisualElementScheduledItem;
+    /**
+     * Removes this item from its VisualElement's scheduler.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IVisualElementScheduledItem.Pause.html | UIElements.IVisualElementScheduledItem.Pause}
+     */
+    Pause(): void;
+    /**
+     * If not already active, will schedule this item on its VisualElement's scheduler.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IVisualElementScheduledItem.Resume.html | UIElements.IVisualElementScheduledItem.Resume}
+     */
+    Resume(): void;
+    /**
+     * Adds a delay to the first invokation.
+     * @param delayMs The minimum number of milliseconds after activation where this item's action will be executed.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IVisualElementScheduledItem.StartingIn.html | UIElements.IVisualElementScheduledItem.StartingIn}
+     */
+    StartingIn(delayMs: number): IVisualElementScheduledItem;
+    Until(stopCondition: unknown): IVisualElementScheduledItem;
+
+}
+    
+interface IResolvedStyle {
+    /**
+     * Alignment of the whole area of children on the cross axis if they span over multiple lines in this container.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-alignContent.html | UIElements.IResolvedStyle.alignContent}
+     */
+    alignContent: Align;
+    /**
+     * Alignment of children on the cross axis of this container.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-alignItems.html | UIElements.IResolvedStyle.alignItems}
+     */
+    alignItems: Align;
+    /**
+     * Similar to align-items, but only for this specific element.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-alignSelf.html | UIElements.IResolvedStyle.alignSelf}
+     */
+    alignSelf: Align;
+    /**
+     * Background color to paint in the element's box.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-backgroundColor.html | UIElements.IResolvedStyle.backgroundColor}
+     */
+    backgroundColor: Color;
+    /**
+     * Background image to paint in the element's box.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-backgroundImage.html | UIElements.IResolvedStyle.backgroundImage}
+     */
+    backgroundImage: Background;
+    /**
+     * Background image x position value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-backgroundPositionX.html | UIElements.IResolvedStyle.backgroundPositionX}
+     */
+    backgroundPositionX: BackgroundPosition;
+    /**
+     * Background image y position value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-backgroundPositionY.html | UIElements.IResolvedStyle.backgroundPositionY}
+     */
+    backgroundPositionY: BackgroundPosition;
+    /**
+     * Background image repeat value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-backgroundRepeat.html | UIElements.IResolvedStyle.backgroundRepeat}
+     */
+    backgroundRepeat: BackgroundRepeat;
+    /**
+     * Background image size value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-backgroundSize.html | UIElements.IResolvedStyle.backgroundSize}
+     */
+    backgroundSize: BackgroundSize;
+    /**
+     * Color of the element's bottom border.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-borderBottomColor.html | UIElements.IResolvedStyle.borderBottomColor}
+     */
+    borderBottomColor: Color;
+    /**
+     * The radius of the bottom-left corner when a rounded rectangle is drawn in the element's box.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-borderBottomLeftRadius.html | UIElements.IResolvedStyle.borderBottomLeftRadius}
+     */
+    borderBottomLeftRadius: number;
+    /**
+     * The radius of the bottom-right corner when a rounded rectangle is drawn in the element's box.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-borderBottomRightRadius.html | UIElements.IResolvedStyle.borderBottomRightRadius}
+     */
+    borderBottomRightRadius: number;
+    /**
+     * Space reserved for the bottom edge of the border during the layout phase.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-borderBottomWidth.html | UIElements.IResolvedStyle.borderBottomWidth}
+     */
+    borderBottomWidth: number;
+    /**
+     * Color of the element's left border.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-borderLeftColor.html | UIElements.IResolvedStyle.borderLeftColor}
+     */
+    borderLeftColor: Color;
+    /**
+     * Space reserved for the left edge of the border during the layout phase.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-borderLeftWidth.html | UIElements.IResolvedStyle.borderLeftWidth}
+     */
+    borderLeftWidth: number;
+    /**
+     * Color of the element's right border.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-borderRightColor.html | UIElements.IResolvedStyle.borderRightColor}
+     */
+    borderRightColor: Color;
+    /**
+     * Space reserved for the right edge of the border during the layout phase.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-borderRightWidth.html | UIElements.IResolvedStyle.borderRightWidth}
+     */
+    borderRightWidth: number;
+    /**
+     * Color of the element's top border.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-borderTopColor.html | UIElements.IResolvedStyle.borderTopColor}
+     */
+    borderTopColor: Color;
+    /**
+     * The radius of the top-left corner when a rounded rectangle is drawn in the element's box.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-borderTopLeftRadius.html | UIElements.IResolvedStyle.borderTopLeftRadius}
+     */
+    borderTopLeftRadius: number;
+    /**
+     * The radius of the top-right corner when a rounded rectangle is drawn in the element's box.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-borderTopRightRadius.html | UIElements.IResolvedStyle.borderTopRightRadius}
+     */
+    borderTopRightRadius: number;
+    /**
+     * Space reserved for the top edge of the border during the layout phase.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-borderTopWidth.html | UIElements.IResolvedStyle.borderTopWidth}
+     */
+    borderTopWidth: number;
+    /**
+     * Bottom distance from the element's box during layout.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-bottom.html | UIElements.IResolvedStyle.bottom}
+     */
+    bottom: number;
+    /**
+     * Color to use when drawing the text of an element.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-color.html | UIElements.IResolvedStyle.color}
+     */
+    color: Color;
+    /**
+     * Defines how an element is displayed in the layout.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-display.html | UIElements.IResolvedStyle.display}
+     */
+    display: DisplayStyle;
+    /**
+     * Initial main size of a flex item, on the main flex axis. The final layout might be smaller or larger, according to the flex shrinking and growing determined by the other flex properties.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-flexBasis.html | UIElements.IResolvedStyle.flexBasis}
+     */
+    flexBasis: StyleFloat;
+    /**
+     * Direction of the main axis to layout children in a container.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-flexDirection.html | UIElements.IResolvedStyle.flexDirection}
+     */
+    flexDirection: FlexDirection;
+    /**
+     * Specifies how the item will grow relative to the rest of the flexible items inside the same container.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-flexGrow.html | UIElements.IResolvedStyle.flexGrow}
+     */
+    flexGrow: number;
+    /**
+     * Specifies how the item will shrink relative to the rest of the flexible items inside the same container.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-flexShrink.html | UIElements.IResolvedStyle.flexShrink}
+     */
+    flexShrink: number;
+    /**
+     * Placement of children over multiple lines if not enough space is available in this container.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-flexWrap.html | UIElements.IResolvedStyle.flexWrap}
+     */
+    flexWrap: Wrap;
+    /**
+     * Font size to draw the element's text.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-fontSize.html | UIElements.IResolvedStyle.fontSize}
+     */
+    fontSize: number;
+    /**
+     * Fixed height of an element for the layout.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-height.html | UIElements.IResolvedStyle.height}
+     */
+    height: number;
+    /**
+     * Justification of children on the main axis of this container.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-justifyContent.html | UIElements.IResolvedStyle.justifyContent}
+     */
+    justifyContent: Justify;
+    /**
+     * Left distance from the element's box during layout.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-left.html | UIElements.IResolvedStyle.left}
+     */
+    left: number;
+    /**
+     * Increases or decreases the space between characters.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-letterSpacing.html | UIElements.IResolvedStyle.letterSpacing}
+     */
+    letterSpacing: number;
+    /**
+     * Space reserved for the bottom edge of the margin during the layout phase.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-marginBottom.html | UIElements.IResolvedStyle.marginBottom}
+     */
+    marginBottom: number;
+    /**
+     * Space reserved for the left edge of the margin during the layout phase.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-marginLeft.html | UIElements.IResolvedStyle.marginLeft}
+     */
+    marginLeft: number;
+    /**
+     * Space reserved for the right edge of the margin during the layout phase.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-marginRight.html | UIElements.IResolvedStyle.marginRight}
+     */
+    marginRight: number;
+    /**
+     * Space reserved for the top edge of the margin during the layout phase.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-marginTop.html | UIElements.IResolvedStyle.marginTop}
+     */
+    marginTop: number;
+    /**
+     * Maximum height for an element, when it is flexible or measures its own size.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-maxHeight.html | UIElements.IResolvedStyle.maxHeight}
+     */
+    maxHeight: StyleFloat;
+    /**
+     * Maximum width for an element, when it is flexible or measures its own size.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-maxWidth.html | UIElements.IResolvedStyle.maxWidth}
+     */
+    maxWidth: StyleFloat;
+    /**
+     * Minimum height for an element, when it is flexible or measures its own size.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-minHeight.html | UIElements.IResolvedStyle.minHeight}
+     */
+    minHeight: StyleFloat;
+    /**
+     * Minimum width for an element, when it is flexible or measures its own size.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-minWidth.html | UIElements.IResolvedStyle.minWidth}
+     */
+    minWidth: StyleFloat;
+    /**
+     * Specifies the transparency of an element and of its children.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-opacity.html | UIElements.IResolvedStyle.opacity}
+     */
+    opacity: number;
+    /**
+     * Space reserved for the bottom edge of the padding during the layout phase.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-paddingBottom.html | UIElements.IResolvedStyle.paddingBottom}
+     */
+    paddingBottom: number;
+    /**
+     * Space reserved for the left edge of the padding during the layout phase.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-paddingLeft.html | UIElements.IResolvedStyle.paddingLeft}
+     */
+    paddingLeft: number;
+    /**
+     * Space reserved for the right edge of the padding during the layout phase.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-paddingRight.html | UIElements.IResolvedStyle.paddingRight}
+     */
+    paddingRight: number;
+    /**
+     * Space reserved for the top edge of the padding during the layout phase.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-paddingTop.html | UIElements.IResolvedStyle.paddingTop}
+     */
+    paddingTop: number;
+    /**
+     * Element's positioning in its parent container.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-position.html | UIElements.IResolvedStyle.position}
+     */
+    position: Position;
+    /**
+     * Right distance from the element's box during layout.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-right.html | UIElements.IResolvedStyle.right}
+     */
+    right: number;
+    /**
+     * A rotation transformation.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-rotate.html | UIElements.IResolvedStyle.rotate}
+     */
+    rotate: Rotate;
+    /**
+     * A scaling transformation.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-scale.html | UIElements.IResolvedStyle.scale}
+     */
+    scale: Scale;
+    /**
+     * The element's text overflow mode.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-textOverflow.html | UIElements.IResolvedStyle.textOverflow}
+     */
+    textOverflow: TextOverflow;
+    /**
+     * Top distance from the element's box during layout.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-top.html | UIElements.IResolvedStyle.top}
+     */
+    top: number;
+    /**
+     * The transformation origin is the point around which a transformation is applied.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-transformOrigin.html | UIElements.IResolvedStyle.transformOrigin}
+     */
+    transformOrigin: Vector3;
+    /**
+     * Duration to wait before starting a property's transition effect when its value changes.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-transitionDelay.html | UIElements.IResolvedStyle.transitionDelay}
+     */
+    transitionDelay: CSArray<TimeValue>;
+    /**
+     * Time a transition animation should take to complete.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-transitionDuration.html | UIElements.IResolvedStyle.transitionDuration}
+     */
+    transitionDuration: CSArray<TimeValue>;
+    /**
+     * Properties to which a transition effect should be applied.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-transitionProperty.html | UIElements.IResolvedStyle.transitionProperty}
+     */
+    transitionProperty: CSArray<StylePropertyName>;
+    /**
+     * Determines how intermediate values are calculated for properties modified by a transition effect.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-transitionTimingFunction.html | UIElements.IResolvedStyle.transitionTimingFunction}
+     */
+    transitionTimingFunction: CSArray<EasingFunction>;
+    /**
+     * A translate transformation.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-translate.html | UIElements.IResolvedStyle.translate}
+     */
+    translate: Vector3;
+    /**
+     * Tinting color for the element's backgroundImage.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-unityBackgroundImageTintColor.html | UIElements.IResolvedStyle.unityBackgroundImageTintColor}
+     */
+    unityBackgroundImageTintColor: Color;
+    /**
+     * Font to draw the element's text, defined as a Font object.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-unityFont.html | UIElements.IResolvedStyle.unityFont}
+     */
+    unityFont: Font;
+    /**
+     * Font to draw the element's text, defined as a FontDefinition structure. It takes precedence over -unity-font.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-unityFontDefinition.html | UIElements.IResolvedStyle.unityFontDefinition}
+     */
+    unityFontDefinition: FontDefinition;
+    /**
+     * Font style and weight (normal, bold, italic) to draw the element's text.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-unityFontStyleAndWeight.html | UIElements.IResolvedStyle.unityFontStyleAndWeight}
+     */
+    unityFontStyleAndWeight: FontStyle;
+    /**
+     * Increases or decreases the space between paragraphs.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-unityParagraphSpacing.html | UIElements.IResolvedStyle.unityParagraphSpacing}
+     */
+    unityParagraphSpacing: number;
+    /**
+     * Size of the 9-slice's bottom edge when painting an element's background image.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-unitySliceBottom.html | UIElements.IResolvedStyle.unitySliceBottom}
+     */
+    unitySliceBottom: number;
+    /**
+     * Size of the 9-slice's left edge when painting an element's background image.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-unitySliceLeft.html | UIElements.IResolvedStyle.unitySliceLeft}
+     */
+    unitySliceLeft: number;
+    /**
+     * Size of the 9-slice's right edge when painting an element's background image.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-unitySliceRight.html | UIElements.IResolvedStyle.unitySliceRight}
+     */
+    unitySliceRight: number;
+    /**
+     * Scale applied to an element's slices.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-unitySliceScale.html | UIElements.IResolvedStyle.unitySliceScale}
+     */
+    unitySliceScale: number;
+    /**
+     * Size of the 9-slice's top edge when painting an element's background image.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-unitySliceTop.html | UIElements.IResolvedStyle.unitySliceTop}
+     */
+    unitySliceTop: number;
+    /**
+     * Horizontal and vertical text alignment in the element's box.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-unityTextAlign.html | UIElements.IResolvedStyle.unityTextAlign}
+     */
+    unityTextAlign: TextAnchor;
+    /**
+     * Outline color of the text.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-unityTextOutlineColor.html | UIElements.IResolvedStyle.unityTextOutlineColor}
+     */
+    unityTextOutlineColor: Color;
+    /**
+     * Outline width of the text.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-unityTextOutlineWidth.html | UIElements.IResolvedStyle.unityTextOutlineWidth}
+     */
+    unityTextOutlineWidth: number;
+    /**
+     * The element's text overflow position.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-unityTextOverflowPosition.html | UIElements.IResolvedStyle.unityTextOverflowPosition}
+     */
+    unityTextOverflowPosition: TextOverflowPosition;
+    /**
+     * Specifies whether or not an element is visible.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-visibility.html | UIElements.IResolvedStyle.visibility}
+     */
+    visibility: Visibility;
+    /**
+     * Word wrap over multiple lines if not enough space is available to draw the text of an element.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-whiteSpace.html | UIElements.IResolvedStyle.whiteSpace}
+     */
+    whiteSpace: WhiteSpace;
+    /**
+     * Fixed width of an element for the layout.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-width.html | UIElements.IResolvedStyle.width}
+     */
+    width: number;
+    /**
+     * Increases or decreases the space between words.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-wordSpacing.html | UIElements.IResolvedStyle.wordSpacing}
+     */
+    wordSpacing: number;
+    /**
+     * Background image scaling in the element's box.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-unityBackgroundScaleMode.html | UIElements.IResolvedStyle.unityBackgroundScaleMode}
+     */
+    unityBackgroundScaleMode: StyleEnum<ScaleMode>;
+
+
+
+}
+    
+interface IStyleValue<T> {
+    value: T;
+    keyword: StyleKeyword;
+
+
+
+}
+    
+interface StyleFloat extends IStyleValue<number> {
+    /**
+     * The float value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleFloat-value.html | UIElements.StyleFloat.value}
+     */
+    value: number;
+    /**
+     * The style keyword.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleFloat-keyword.html | UIElements.StyleFloat.keyword}
+     */
+    keyword: StyleKeyword;
+
+
+    Equals(other: StyleFloat): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface StyleFloatConstructor {
+
+    new(v: number): StyleFloat;
+    new(keyword: StyleKeyword): StyleFloat;
+
+
+}
+declare const StyleFloat: StyleFloatConstructor;
+    
+interface TimeValue {
+    /**
+     * The time value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.TimeValue-value.html | UIElements.TimeValue.value}
+     */
+    value: number;
+    /**
+     * The unit of the value property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.TimeValue-unit.html | UIElements.TimeValue.unit}
+     */
+    unit: TimeUnit;
+
+
+    Equals(other: TimeValue): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface TimeValueConstructor {
+
+    new(value: number): TimeValue;
+    new(value: number, unit: TimeUnit): TimeValue;
+
+
+}
+declare const TimeValue: TimeValueConstructor;
+    
+interface StylePropertyName {
+
+
+    Equals(other: unknown): boolean;
+    Equals(other: StylePropertyName): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface StylePropertyNameConstructor {
+
+    new(name: string): StylePropertyName;
+
+
+    IsNullOrEmpty(propertyName: StylePropertyName): boolean;
+}
+declare const StylePropertyName: StylePropertyNameConstructor;
+    
+interface EasingFunction {
+    /**
+     * The value of the EasingMode.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.EasingFunction-mode.html | UIElements.EasingFunction.mode}
+     */
+    mode: EasingMode;
+
+
+    Equals(other: EasingFunction): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface EasingFunctionConstructor {
+
+    new(mode: EasingMode): EasingFunction;
+
+
+}
+declare const EasingFunction: EasingFunctionConstructor;
+    
+interface StyleEnum<T> extends IStyleValue<T> {
+    value: T;
+    keyword: StyleKeyword;
+
+
+    Equals(other: StyleEnum<T>): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface StyleEnumConstructor {
+
+    new(v: T): StyleEnum<T>;
+    new(keyword: StyleKeyword): StyleEnum<T>;
+
+
+}
+declare const StyleEnum: StyleEnumConstructor;
+    
+interface ITransform {
+    /**
+     * The position of the VisualElement transform.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITransform-position.html | UIElements.ITransform.position}
+     */
+    position: Vector3;
+    /**
+     * The rotation of the VisualElement transform stored as a Quaternion.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITransform-rotation.html | UIElements.ITransform.rotation}
+     */
+    rotation: Quaternion;
+    /**
+     * The scale of the VisualElement transform.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITransform-scale.html | UIElements.ITransform.scale}
+     */
+    scale: Vector3;
+    /**
+     * Transformation matrix calculated from the position, rotation and scale of the transform (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITransform-matrix.html | UIElements.ITransform.matrix}
+     */
+    matrix: Matrix4x4;
+
+
+
+}
+    
+interface IEventHandler {
+
+
+    /**
+     * Handles an event according to its propagation phase and current target, by executing the element's
+ default action or callbacks associated with the event.
+     * @param evt The event to handle.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IEventHandler.HandleEvent.html | UIElements.IEventHandler.HandleEvent}
+     */
+    HandleEvent(evt: EventBase): void;
+    /**
+     * Returns true if event handlers for the event propagation BubbleUp phase, have been attached on this object.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IEventHandler.HasBubbleUpHandlers.html | UIElements.IEventHandler.HasBubbleUpHandlers}
+     */
+    HasBubbleUpHandlers(): boolean;
+    /**
+     * Returns true if event handlers, for the event propagation TrickleDown phase, are attached to this object.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IEventHandler.HasTrickleDownHandlers.html | UIElements.IEventHandler.HasTrickleDownHandlers}
+     */
+    HasTrickleDownHandlers(): boolean;
+    /**
+     * Sends an event to the event handler.
+     * @param e The event to send.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IEventHandler.SendEvent.html | UIElements.IEventHandler.SendEvent}
+     */
+    SendEvent(e: EventBase): void;
+
+}
+    
+interface EventBase {
+    /**
+     * Retrieves the type ID for this event instance.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.EventBase-eventTypeId.html | UIElements.EventBase.eventTypeId}
+     */
+    eventTypeId: number;
+    /**
+     * The time when the event was created, in milliseconds.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.EventBase-timestamp.html | UIElements.EventBase.timestamp}
+     */
+    timestamp: number;
+    /**
+     * Returns whether this event type bubbles up in the event propagation path.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.EventBase-bubbles.html | UIElements.EventBase.bubbles}
+     */
+    bubbles: boolean;
+    /**
+     * Returns whether this event is sent down the event propagation path during the TrickleDown phase.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.EventBase-tricklesDown.html | UIElements.EventBase.tricklesDown}
+     */
+    tricklesDown: boolean;
+    /**
+     * The target visual element that received this event. Unlike currentTarget, this target does not change when
+ the event is sent to other elements along the propagation path.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.EventBase-target.html | UIElements.EventBase.target}
+     */
+    target: IEventHandler;
+    /**
+     * Whether StopPropagation() was called for this event.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.EventBase-isPropagationStopped.html | UIElements.EventBase.isPropagationStopped}
+     */
+    isPropagationStopped: boolean;
+    /**
+     * Indicates whether StopImmediatePropagation() was called for this event.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.EventBase-isImmediatePropagationStopped.html | UIElements.EventBase.isImmediatePropagationStopped}
+     */
+    isImmediatePropagationStopped: boolean;
+    /**
+     * Returns true if the default actions should not be executed for this event.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.EventBase-isDefaultPrevented.html | UIElements.EventBase.isDefaultPrevented}
+     */
+    isDefaultPrevented: boolean;
+    /**
+     * The current propagation phase for this event.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.EventBase-propagationPhase.html | UIElements.EventBase.propagationPhase}
+     */
+    propagationPhase: PropagationPhase;
+    /**
+     * The current target of the event. This is the VisualElement, in the propagation path, for which event handlers are currently being executed.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.EventBase-currentTarget.html | UIElements.EventBase.currentTarget}
+     */
+    currentTarget: IEventHandler;
+    /**
+     * Indicates whether the event is being dispatched to a visual element. An event cannot be redispatched while it being dispatched. If you need to recursively dispatch an event, it is recommended that you use a copy of the event.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.EventBase-dispatch.html | UIElements.EventBase.dispatch}
+     */
+    dispatch: boolean;
+    /**
+     * The IMGUIEvent at the source of this event. The source can be null since not all events are generated by IMGUI.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.EventBase-imguiEvent.html | UIElements.EventBase.imguiEvent}
+     */
+    imguiEvent: Event;
+    /**
+     * The original mouse position of the IMGUI event, before it is transformed to the current target local coordinates.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.EventBase-originalMousePosition.html | UIElements.EventBase.originalMousePosition}
+     */
+    originalMousePosition: Vector2;
+
+
+    /**
+     * Implementation of IDisposable.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.EventBase.Dispose.html | UIElements.EventBase.Dispose}
+     */
+    Dispose(): void;
+    /**
+     * Indicates whether the default actions are prevented from being executed for this event.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.EventBase.PreventDefault.html | UIElements.EventBase.PreventDefault}
+     */
+    PreventDefault(): void;
+    /**
+     * Immediately stops the propagation of the event. The event isn't sent to other elements along the propagation path. This method prevents other event handlers from executing on the current target.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.EventBase.StopImmediatePropagation.html | UIElements.EventBase.StopImmediatePropagation}
+     */
+    StopImmediatePropagation(): void;
+    /**
+     * Stops propagating this event. The event is not sent to other elements along the propagation path.
+ This method does not prevent other event handlers from executing on the current target.
+ If this method is called during the TrickleDown propagation phase, it will prevent default actions
+ to be processed, such as an element getting focused as a result of a PointerDownEvent.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.EventBase.StopPropagation.html | UIElements.EventBase.StopPropagation}
+     */
+    StopPropagation(): void;
+
+}
+    
+interface Event {
+    rawType: EventType;
+    /**
+     * The mouse position.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-mousePosition.html | Event.mousePosition}
+     */
+    mousePosition: Vector2;
+    /**
+     * The relative movement of the mouse compared to last event.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-delta.html | Event.delta}
+     */
+    delta: Vector2;
+    /**
+     * The type of pointer that created this event (for example, mouse, touch screen, pen).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-pointerType.html | Event.pointerType}
+     */
+    pointerType: PointerType;
+    /**
+     * Which mouse button was pressed.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-button.html | Event.button}
+     */
+    button: number;
+    /**
+     * Which modifier keys are held down.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-modifiers.html | Event.modifiers}
+     */
+    modifiers: EventModifiers;
+    /**
+     * How hard pen pressure is applied, normalized between 0 (no pressure) and 1 (maximum pressure).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-pressure.html | Event.pressure}
+     */
+    pressure: number;
+    /**
+     * Specifies the rotation of the pen around its axis, expressed in radians. The default value is 0.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-twist.html | Event.twist}
+     */
+    twist: number;
+    /**
+     * Specifies the angle of the pen relative to the X and Y axes, expressed in radians.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-tilt.html | Event.tilt}
+     */
+    tilt: Vector2;
+    /**
+     * Specifies the state of the pen. For example, whether the pen is in contact with the screen or tablet, whether the pen is inverted, and whether buttons are pressed.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-penStatus.html | Event.penStatus}
+     */
+    penStatus: PenStatus;
+    /**
+     * How many consecutive mouse clicks have we received.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-clickCount.html | Event.clickCount}
+     */
+    clickCount: number;
+    /**
+     * The character typed.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-character.html | Event.character}
+     */
+    character: string;
+    /**
+     * The raw key code for keyboard events.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-keyCode.html | Event.keyCode}
+     */
+    keyCode: KeyCode;
+    /**
+     * Index of display that the event belongs to.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-displayIndex.html | Event.displayIndex}
+     */
+    displayIndex: number;
+    /**
+     * The type of event.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-type.html | Event.type}
+     */
+    type: EventType;
+    /**
+     * The name of an ExecuteCommand or ValidateCommand Event.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-commandName.html | Event.commandName}
+     */
+    commandName: string;
+    mouseRay: Ray;
+    /**
+     * Is Shift held down? (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-shift.html | Event.shift}
+     */
+    shift: boolean;
+    /**
+     * Is Control key held down? (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-control.html | Event.control}
+     */
+    control: boolean;
+    /**
+     * Is Alt/Option key held down? (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-alt.html | Event.alt}
+     */
+    alt: boolean;
+    /**
+     * Is Command/Windows key held down? (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-command.html | Event.command}
+     */
+    command: boolean;
+    /**
+     * Is Caps Lock on? (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-capsLock.html | Event.capsLock}
+     */
+    capsLock: boolean;
+    /**
+     * Is the current keypress on the numeric keyboard? (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-numeric.html | Event.numeric}
+     */
+    numeric: boolean;
+    /**
+     * Is the current keypress a function key? (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-functionKey.html | Event.functionKey}
+     */
+    functionKey: boolean;
+    /**
+     * Is this event a keyboard event? (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-isKey.html | Event.isKey}
+     */
+    isKey: boolean;
+    /**
+     * Is this event a mouse event? (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-isMouse.html | Event.isMouse}
+     */
+    isMouse: boolean;
+    isScrollWheel: boolean;
+
+
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    /**
+     * Get a filtered event type for a given control ID.
+     * @param controlID The ID of the control you are querying from.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Event.GetTypeForControl.html | Event.GetTypeForControl}
+     */
+    GetTypeForControl(controlID: number): EventType;
+    ToString(): string;
+    /**
+     * Use this event.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Event.Use.html | Event.Use}
+     */
+    Use(): void;
+
+}
+    
+interface EventConstructor {
+    /**
+     * The current event that's being processed right now.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-current.html | Event.current}
+     */
+    current: Event;
+
+    new(): Event;
+    new(displayIndex: number): Event;
+    new(other: Event): Event;
+
+
+    GetEventCount(): number;
+    KeyboardEvent(key: string): Event;
+    PopEvent(outEvent: Event): boolean;
+}
+declare const Event: EventConstructor;
+    
+interface CallbackEventHandler extends IEventHandler {
+
+
+    /**
+     * Return true if event handlers for the event propagation BubbleUp phase have been attached on this object.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.CallbackEventHandler.HasBubbleUpHandlers.html | UIElements.CallbackEventHandler.HasBubbleUpHandlers}
+     */
+    HasBubbleUpHandlers(): boolean;
+    /**
+     * Returns true if event handlers, for the event propagation TrickleDown phase, are attached to this object.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.CallbackEventHandler.HasTrickleDownHandlers.html | UIElements.CallbackEventHandler.HasTrickleDownHandlers}
+     */
+    HasTrickleDownHandlers(): boolean;
+    RegisterCallback<TEventType>(callback: EventCallback<TEventType>, useTrickleDown: TrickleDown): void;
+    RegisterCallback<TEventType, TUserArgsType>(callback: EventCallback<TEventType, TUserArgsType>, userArgs: TUserArgsType, useTrickleDown: TrickleDown): void;
+    RegisterCallbackOnce<TEventType>(callback: EventCallback<TEventType>, useTrickleDown: TrickleDown): void;
+    RegisterCallbackOnce<TEventType, TUserArgsType>(callback: EventCallback<TEventType, TUserArgsType>, userArgs: TUserArgsType, useTrickleDown: TrickleDown): void;
+    /**
+     * Sends an event to the event handler.
+     * @param e The event to send.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.CallbackEventHandler.SendEvent.html | UIElements.CallbackEventHandler.SendEvent}
+     */
+    SendEvent(e: EventBase): void;
+    UnregisterCallback<TEventType>(callback: EventCallback<TEventType>, useTrickleDown: TrickleDown): void;
+    UnregisterCallback<TEventType, TUserArgsType>(callback: EventCallback<TEventType, TUserArgsType>, useTrickleDown: TrickleDown): void;
+
+}
+    
+interface EventCallback<TEventType> {
+
+
+    BeginInvoke(evt: TEventType, callback: unknown, object: unknown): unknown;
+    EndInvoke(result: unknown): void;
+    Invoke(evt: TEventType): void;
+
+}
+    
+interface EventCallbackConstructor {
+
+    new(object: unknown, method: unknown): EventCallback<TEventType>;
+
+
+}
+declare const EventCallback: EventCallbackConstructor;
+    
+interface EventCallback<TEventType, TCallbackArgs> {
+
+
+    BeginInvoke(evt: TEventType, userArgs: TCallbackArgs, callback: unknown, object: unknown): unknown;
+    EndInvoke(result: unknown): void;
+    Invoke(evt: TEventType, userArgs: TCallbackArgs): void;
+
+}
+    
+interface EventCallbackConstructor {
+
+    new(object: unknown, method: unknown): EventCallback<TEventType, TCallbackArgs>;
+
+
+}
+declare const EventCallback: EventCallbackConstructor;
+    
+interface Focusable extends CallbackEventHandler {
+    /**
+     * Return the focus controller for this element.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Focusable-focusController.html | UIElements.Focusable.focusController}
+     */
+    focusController: FocusController;
+    /**
+     * True if the element can be focused.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Focusable-focusable.html | UIElements.Focusable.focusable}
+     */
+    focusable: boolean;
+    /**
+     * An integer used to sort focusables in the focus ring. Must be greater than or equal to zero.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Focusable-tabIndex.html | UIElements.Focusable.tabIndex}
+     */
+    tabIndex: number;
+    /**
+     * Whether the element should delegate the focus to its children.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Focusable-delegatesFocus.html | UIElements.Focusable.delegatesFocus}
+     */
+    delegatesFocus: boolean;
+    /**
+     * Return true if the element can be focused.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Focusable-canGrabFocus.html | UIElements.Focusable.canGrabFocus}
+     */
+    canGrabFocus: boolean;
+
+
+    /**
+     * Tell the element to release the focus.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Focusable.Blur.html | UIElements.Focusable.Blur}
+     */
+    Blur(): void;
+    /**
+     * Attempt to give the focus to this element.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Focusable.Focus.html | UIElements.Focusable.Focus}
+     */
+    Focus(): void;
+
+}
+    
+interface FocusController {
+    /**
+     * The currently focused VisualElement.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.FocusController-focusedElement.html | UIElements.FocusController.focusedElement}
+     */
+    focusedElement: Focusable;
+
+
+    /**
+     * Instructs the FocusController to ignore the given event.
+ This will prevent the event from changing the current focused VisualElement or triggering focus events.
+     * @param evt The event to be ignored.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.FocusController.IgnoreEvent.html | UIElements.FocusController.IgnoreEvent}
+     */
+    IgnoreEvent(evt: EventBase): void;
+
+}
+    
+interface FocusControllerConstructor {
+
+    new(focusRing: IFocusRing): FocusController;
+
+
+}
+declare const FocusController: FocusControllerConstructor;
+    
+    
+interface PropertyPath {
+    /**
+     * Gets the number of parts contained in the PropertyPath.
+     */
+    Length: number;
+    /**
+     * Gets if there is any part contained in the PropertyPath.
+     */
+    IsEmpty: boolean;
+    Item: PropertyPathPart;
+
+
+    /**
+     * Indicates whether this instance and a specified object are equal.
+     * @param other The object to compare with the current instance.
+     */
+    Equals(other: PropertyPath): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface PropertyPathPart {
+    /**
+     * Returns true if the part is PropertyPathPartKind.Name.
+     */
+    IsName: boolean;
+    /**
+     * Returns true if the part is PropertyPathPartKind.Index.
+     */
+    IsIndex: boolean;
+    /**
+     * Returns true if the part is PropertyPathPartKind.Key.
+     */
+    IsKey: boolean;
+    /**
+     * The PropertyPathPartKind for this path. This determines how algorithms will resolve the path.
+     */
+    Kind: PropertyPathPartKind;
+    /**
+     * The Name of the part. This will only be set when using PropertyPathPartKind.Name
+     */
+    Name: string;
+    /**
+     * The Index of the part. This will only be set when using PropertyPathPartKind.Index
+     */
+    Index: number;
+    /**
+     * The Key of the part. This will only be set when using PropertyPathPartKind.Key
+     */
+    Key: unknown;
+
+
+    /**
+     * Indicates whether this instance and a specified object are equal.
+     * @param other The object to compare with the current instance.
+     */
+    Equals(other: PropertyPathPart): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface PropertyPathPartConstructor {
+
+    new(name: string): PropertyPathPart;
+    new(index: number): PropertyPathPart;
+    new(key: unknown): PropertyPathPart;
+
+
+}
+declare const PropertyPathPart: PropertyPathPartConstructor;
+    
+interface IProperty {
+    /**
+     * Gets the name of the property.
+     */
+    Name: string;
+    /**
+     * Gets a value indicating whether the property is read-only or not.
+     */
+    IsReadOnly: boolean;
+
+
+    /**
+     * Returns the declared value type of the property.
+     */
+    DeclaredValueType(): unknown;
+    /**
+     * Returns the first attribute of the given type.
+     */
+    GetAttribute<TAttribute>(): TAttribute;
+    /**
+     * Returns all attribute of the given type.
+     */
+    GetAttributes<TAttribute>(): CSArray<TAttribute>;
+    /**
+     * Returns all attribute of the given type.
+     */
+    GetAttributes(): CSArray<unknown>;
+    /**
+     * Returns true if the property has any attributes of the given type.
+     */
+    HasAttribute<TAttribute>(): boolean;
+
+}
+    
+interface PropertyPathConstructor {
+
+    new(path: string): PropertyPath;
+
+
+    AppendIndex(path: unknown, index: number): PropertyPath;
+    AppendKey(path: unknown, key: unknown): PropertyPath;
+    AppendName(path: unknown, name: string): PropertyPath;
+    AppendPart(path: unknown, part: unknown): PropertyPath;
+    AppendProperty(path: unknown, property: IProperty): PropertyPath;
+    Combine(path: unknown, pathToAppend: unknown): PropertyPath;
+    Combine(path: unknown, pathToAppend: string): PropertyPath;
+    FromIndex(index: number): PropertyPath;
+    FromKey(key: unknown): PropertyPath;
+    FromName(name: string): PropertyPath;
+    FromPart(part: unknown): PropertyPath;
+    Pop(path: unknown): PropertyPath;
+    SubPath(path: unknown, startIndex: number): PropertyPath;
+    SubPath(path: unknown, startIndex: number, length: number): PropertyPath;
+}
+declare const PropertyPath: PropertyPathConstructor;
+    
+interface Hierarchy {
+    parent: VisualElement;
+    childCount: number;
+    Item: VisualElement;
+
+
+    Add(child: VisualElement): void;
+    Children(): CSArray<VisualElement>;
+    Clear(): void;
+    ElementAt(index: number): VisualElement;
+    Equals(other: Hierarchy): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    IndexOf(element: VisualElement): number;
+    Insert(index: number, child: VisualElement): void;
+    Remove(child: VisualElement): void;
+    RemoveAt(index: number): void;
+    Sort(comp: unknown): void;
+
+}
+    
+interface IPanel {
+    /**
+     * Root of the VisualElement hierarchy.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IPanel-visualTree.html | UIElements.IPanel.visualTree}
+     */
+    visualTree: VisualElement;
+    /**
+     * This Panel EventDispatcher.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IPanel-dispatcher.html | UIElements.IPanel.dispatcher}
+     */
+    dispatcher: EventDispatcher;
+    /**
+     * Describes in which context a VisualElement hierarchy is being ran.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IPanel-contextType.html | UIElements.IPanel.contextType}
+     */
+    contextType: ContextType;
+    /**
+     * Return the focus controller for this panel.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IPanel-focusController.html | UIElements.IPanel.focusController}
+     */
+    focusController: FocusController;
+    /**
+     * The Contextual menu manager for the panel.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IPanel-contextualMenuManager.html | UIElements.IPanel.contextualMenuManager}
+     */
+    contextualMenuManager: ContextualMenuManager;
+    /**
+     * Checks whether any element within the panel has had any changes to its state since the panel was last rendered.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IPanel-isDirty.html | UIElements.IPanel.isDirty}
+     */
+    isDirty: boolean;
+
+
+    /**
+     * Returns the top element at this position. Will not return elements with pickingMode set to PickingMode.Ignore.
+     * @param point World coordinates.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IPanel.Pick.html | UIElements.IPanel.Pick}
+     */
+    Pick(point: Vector2): VisualElement;
+    PickAll(point: Vector2, picked: CSArray<VisualElement>): VisualElement;
+
+}
+    
+interface EventDispatcher {
+
+
+
+}
+    
+interface ContextualMenuManager {
+
+
+    /**
+     * Displays the contextual menu.
+     * @param triggerEvent The event that triggered the display of the menu.
+     * @param target The element for which the menu is displayed.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ContextualMenuManager.DisplayMenu.html | UIElements.ContextualMenuManager.DisplayMenu}
+     */
+    DisplayMenu(triggerEvent: EventBase, target: IEventHandler): void;
+    /**
+     * Checks if the event triggers the display of the contextual menu. This method also displays the menu.
+     * @param evt The event to inspect.
+     * @param eventHandler The element for which the menu is displayed.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ContextualMenuManager.DisplayMenuIfEventMatches.html | UIElements.ContextualMenuManager.DisplayMenuIfEventMatches}
+     */
+    DisplayMenuIfEventMatches(evt: EventBase, eventHandler: IEventHandler): void;
+
+}
+    
+interface VisualTreeAsset extends ScriptableObject {
+    /**
+     * Whether there were errors encountered while importing the UXML File
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.VisualTreeAsset-importedWithErrors.html | UIElements.VisualTreeAsset.importedWithErrors}
+     */
+    importedWithErrors: boolean;
+    /**
+     * Whether there were warnings encountered while importing the UXML File
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.VisualTreeAsset-importedWithWarnings.html | UIElements.VisualTreeAsset.importedWithWarnings}
+     */
+    importedWithWarnings: boolean;
+    /**
+     * The UXML templates used by this VisualTreeAsset.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.VisualTreeAsset-templateDependencies.html | UIElements.VisualTreeAsset.templateDependencies}
+     */
+    templateDependencies: CSArray<VisualTreeAsset>;
+    /**
+     * The stylesheets used by this VisualTreeAsset.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.VisualTreeAsset-stylesheets.html | UIElements.VisualTreeAsset.stylesheets}
+     */
+    stylesheets: CSArray<StyleSheet>;
+    /**
+     * A hash value computed from the template content.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.VisualTreeAsset-contentHash.html | UIElements.VisualTreeAsset.contentHash}
+     */
+    contentHash: number;
+
+
+    /**
+     * Build a tree of VisualElements from the asset.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.VisualTreeAsset.CloneTree.html | UIElements.VisualTreeAsset.CloneTree}
+     */
+    CloneTree(): TemplateContainer;
+    /**
+     * Build a tree of VisualElements from the asset.
+     * @param bindingPath The path to the property that you want to bind to the root of the cloned tree.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.VisualTreeAsset.CloneTree.html | UIElements.VisualTreeAsset.CloneTree}
+     */
+    CloneTree(bindingPath: string): TemplateContainer;
+    /**
+     * Builds a tree of VisualElements from the asset.
+     * @param target A VisualElement that will act as the root of the cloned tree.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.VisualTreeAsset.CloneTree.html | UIElements.VisualTreeAsset.CloneTree}
+     */
+    CloneTree(target: VisualElement): void;
+    CloneTree(target: VisualElement, firstElementIndex: unknown, elementAddedCount: unknown): void;
+    /**
+     * Build a tree of VisualElements from the asset.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.VisualTreeAsset.Instantiate.html | UIElements.VisualTreeAsset.Instantiate}
+     */
+    Instantiate(): TemplateContainer;
+    /**
+     * Build a tree of VisualElements from the asset.
+     * @param bindingPath The path to the property that you want to bind to the root of the cloned tree.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.VisualTreeAsset.Instantiate.html | UIElements.VisualTreeAsset.Instantiate}
+     */
+    Instantiate(bindingPath: string): TemplateContainer;
+
+}
+    
+interface StyleSheet extends ScriptableObject {
+    /**
+     * Whether there were errors encountered while importing the StyleSheet
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleSheet-importedWithErrors.html | UIElements.StyleSheet.importedWithErrors}
+     */
+    importedWithErrors: boolean;
+    /**
+     * Whether there were warnings encountered while importing the StyleSheet
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleSheet-importedWithWarnings.html | UIElements.StyleSheet.importedWithWarnings}
+     */
+    importedWithWarnings: boolean;
+    /**
+     * A hash value computed from the stylesheet content.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleSheet-contentHash.html | UIElements.StyleSheet.contentHash}
+     */
+    contentHash: number;
+
+
+
+}
+    
+interface StyleSheetConstructor {
+
+    new(): StyleSheet;
+
+
+}
+declare const StyleSheet: StyleSheetConstructor;
+    
+interface IBindable {
+    /**
+     * Binding object that will be updated.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IBindable-binding.html | UIElements.IBindable.binding}
+     */
+    binding: IBinding;
+    /**
+     * Path of the target property to be bound.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IBindable-bindingPath.html | UIElements.IBindable.bindingPath}
+     */
+    bindingPath: string;
+
+
+
+}
+    
+interface IBinding {
+
+
+    /**
+     * Called at regular intervals to synchronize bound properties to their IBindable counterparts. Called before the Update() method.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IBinding.PreUpdate.html | UIElements.IBinding.PreUpdate}
+     */
+    PreUpdate(): void;
+    /**
+     * Disconnects the field from its bound property
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IBinding.Release.html | UIElements.IBinding.Release}
+     */
+    Release(): void;
+    /**
+     * Called at regular intervals to synchronize bound properties to their IBindable counterparts. Called before the Update() method.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IBinding.Update.html | UIElements.IBinding.Update}
+     */
+    Update(): void;
+
+}
+    
+interface BindableElement extends VisualElement, IBindable {
+    /**
+     * Binding object that will be updated.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.BindableElement-binding.html | UIElements.BindableElement.binding}
+     */
+    binding: IBinding;
+    /**
+     * Path of the target property to be bound.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.BindableElement-bindingPath.html | UIElements.BindableElement.bindingPath}
+     */
+    bindingPath: string;
+
+
+
+}
+    
+interface BindableElementConstructor {
+
+    new(): BindableElement;
+
+
+}
+declare const BindableElement: BindableElementConstructor;
+    
+interface TemplateContainer extends BindableElement {
+    /**
+     * The local ID of the template in the parent UXML file (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.TemplateContainer-templateId.html | UIElements.TemplateContainer.templateId}
+     */
+    templateId: string;
+    /**
+     * Stores the template asset reference, if the generated element is cloned from a VisualTreeAsset as a
+ Template declaration inside another VisualTreeAsset.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.TemplateContainer-templateSource.html | UIElements.TemplateContainer.templateSource}
+     */
+    templateSource: VisualTreeAsset;
+    contentContainer: VisualElement;
+
+
+
+}
+    
+interface TemplateContainerConstructor {
+
+    new(): TemplateContainer;
+    new(templateId: string): TemplateContainer;
+
+
+}
+declare const TemplateContainer: TemplateContainerConstructor;
+    
+interface VisualTreeAssetConstructor {
+
+    new(): VisualTreeAsset;
+
+
+}
+declare const VisualTreeAsset: VisualTreeAssetConstructor;
+    
+    
+interface StyleColor extends IStyleValue<Color> {
+    /**
+     * The Color value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleColor-value.html | UIElements.StyleColor.value}
+     */
+    value: Color;
+    /**
+     * The style keyword.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleColor-keyword.html | UIElements.StyleColor.keyword}
+     */
+    keyword: StyleKeyword;
+
+
+    Equals(other: StyleColor): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface StyleColorConstructor {
+
+    new(v: Color): StyleColor;
+    new(keyword: StyleKeyword): StyleColor;
+
+
+}
+declare const StyleColor: StyleColorConstructor;
+    
+interface StyleBackground extends IStyleValue<Background> {
+    /**
+     * The Background value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleBackground-value.html | UIElements.StyleBackground.value}
+     */
+    value: Background;
+    /**
+     * The style keyword.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleBackground-keyword.html | UIElements.StyleBackground.keyword}
+     */
+    keyword: StyleKeyword;
+
+
+    Equals(other: StyleBackground): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface StyleBackgroundConstructor {
+
+    new(v: Background): StyleBackground;
+    new(v: Texture2D): StyleBackground;
+    new(v: Sprite): StyleBackground;
+    new(v: VectorImage): StyleBackground;
+    new(keyword: StyleKeyword): StyleBackground;
+
+
+}
+declare const StyleBackground: StyleBackgroundConstructor;
+    
+interface StyleBackgroundPosition extends IStyleValue<BackgroundPosition> {
+    /**
+     * The BackgroundPosition value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleBackgroundPosition-value.html | UIElements.StyleBackgroundPosition.value}
+     */
+    value: BackgroundPosition;
+    /**
+     * The style keyword.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleBackgroundPosition-keyword.html | UIElements.StyleBackgroundPosition.keyword}
+     */
+    keyword: StyleKeyword;
+
+
+    Equals(other: StyleBackgroundPosition): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface StyleBackgroundPositionConstructor {
+
+    new(v: BackgroundPosition): StyleBackgroundPosition;
+    new(keyword: StyleKeyword): StyleBackgroundPosition;
+
+
+}
+declare const StyleBackgroundPosition: StyleBackgroundPositionConstructor;
+    
+interface StyleBackgroundRepeat extends IStyleValue<BackgroundRepeat> {
+    /**
+     * The BackgroundRepeat value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleBackgroundRepeat-value.html | UIElements.StyleBackgroundRepeat.value}
+     */
+    value: BackgroundRepeat;
+    /**
+     * The style keyword.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleBackgroundRepeat-keyword.html | UIElements.StyleBackgroundRepeat.keyword}
+     */
+    keyword: StyleKeyword;
+
+
+    Equals(other: StyleBackgroundRepeat): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface StyleBackgroundRepeatConstructor {
+
+    new(v: BackgroundRepeat): StyleBackgroundRepeat;
+    new(keyword: StyleKeyword): StyleBackgroundRepeat;
+
+
+}
+declare const StyleBackgroundRepeat: StyleBackgroundRepeatConstructor;
+    
+interface StyleBackgroundSize extends IStyleValue<BackgroundSize> {
+    /**
+     * The BackgroundSize value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleBackgroundSize-value.html | UIElements.StyleBackgroundSize.value}
+     */
+    value: BackgroundSize;
+    /**
+     * The style keyword.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleBackgroundSize-keyword.html | UIElements.StyleBackgroundSize.keyword}
+     */
+    keyword: StyleKeyword;
+
+
+    Equals(other: StyleBackgroundSize): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface StyleBackgroundSizeConstructor {
+
+    new(v: BackgroundSize): StyleBackgroundSize;
+    new(keyword: StyleKeyword): StyleBackgroundSize;
+
+
+}
+declare const StyleBackgroundSize: StyleBackgroundSizeConstructor;
+    
+interface StyleLength extends IStyleValue<Length> {
+    /**
+     * The Length value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleLength-value.html | UIElements.StyleLength.value}
+     */
+    value: Length;
+    /**
+     * The style keyword.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleLength-keyword.html | UIElements.StyleLength.keyword}
+     */
+    keyword: StyleKeyword;
+
+
+    Equals(other: StyleLength): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface StyleLengthConstructor {
+
+    new(v: number): StyleLength;
+    new(v: Length): StyleLength;
+    new(keyword: StyleKeyword): StyleLength;
+
+
+}
+declare const StyleLength: StyleLengthConstructor;
+    
+interface Cursor {
+    /**
+     * The texture to use for the cursor style. To use a texture as a cursor, import the texture with &quot;Read/Write enabled&quot; in the texture importer (or using the &quot;Cursor&quot; defaults).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Cursor-texture.html | UIElements.Cursor.texture}
+     */
+    texture: Texture2D;
+    /**
+     * The offset from the top left of the texture to use as the target point (must be within the bounds of the cursor).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Cursor-hotspot.html | UIElements.Cursor.hotspot}
+     */
+    hotspot: Vector2;
+
+
+    Equals(obj: unknown): boolean;
+    Equals(other: Cursor): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface StyleCursor extends IStyleValue<Cursor> {
+    /**
+     * The Cursor value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleCursor-value.html | UIElements.StyleCursor.value}
+     */
+    value: Cursor;
+    /**
+     * The style keyword.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleCursor-keyword.html | UIElements.StyleCursor.keyword}
+     */
+    keyword: StyleKeyword;
+
+
+    Equals(other: StyleCursor): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface StyleCursorConstructor {
+
+    new(v: Cursor): StyleCursor;
+    new(keyword: StyleKeyword): StyleCursor;
+
+
+}
+declare const StyleCursor: StyleCursorConstructor;
+    
+interface StyleRotate extends IStyleValue<Rotate> {
+    /**
+     * The Rotate value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleRotate-value.html | UIElements.StyleRotate.value}
+     */
+    value: Rotate;
+    /**
+     * The style keyword.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleRotate-keyword.html | UIElements.StyleRotate.keyword}
+     */
+    keyword: StyleKeyword;
+
+
+    Equals(other: StyleRotate): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface StyleRotateConstructor {
+
+    new(v: Rotate): StyleRotate;
+    new(keyword: StyleKeyword): StyleRotate;
+
+
+}
+declare const StyleRotate: StyleRotateConstructor;
+    
+interface StyleScale extends IStyleValue<Scale> {
+    /**
+     * The Scale value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleScale-value.html | UIElements.StyleScale.value}
+     */
+    value: Scale;
+    /**
+     * The style keyword.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleScale-keyword.html | UIElements.StyleScale.keyword}
+     */
+    keyword: StyleKeyword;
+
+
+    Equals(other: StyleScale): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface StyleScaleConstructor {
+
+    new(v: Scale): StyleScale;
+    new(keyword: StyleKeyword): StyleScale;
+    new(scale: Vector2): StyleScale;
+
+
+}
+declare const StyleScale: StyleScaleConstructor;
+    
+interface StyleTextShadow extends IStyleValue<TextShadow> {
+    /**
+     * The TextShadow value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleTextShadow-value.html | UIElements.StyleTextShadow.value}
+     */
+    value: TextShadow;
+    /**
+     * The style keyword.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleTextShadow-keyword.html | UIElements.StyleTextShadow.keyword}
+     */
+    keyword: StyleKeyword;
+
+
+    Equals(other: StyleTextShadow): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface StyleTextShadowConstructor {
+
+    new(v: TextShadow): StyleTextShadow;
+    new(keyword: StyleKeyword): StyleTextShadow;
+
+
+}
+declare const StyleTextShadow: StyleTextShadowConstructor;
+    
+interface StyleTransformOrigin extends IStyleValue<TransformOrigin> {
+    /**
+     * The TransformOrigin value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleTransformOrigin-value.html | UIElements.StyleTransformOrigin.value}
+     */
+    value: TransformOrigin;
+    /**
+     * The style keyword.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleTransformOrigin-keyword.html | UIElements.StyleTransformOrigin.keyword}
+     */
+    keyword: StyleKeyword;
+
+
+    Equals(other: StyleTransformOrigin): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface StyleTransformOriginConstructor {
+
+    new(v: TransformOrigin): StyleTransformOrigin;
+    new(keyword: StyleKeyword): StyleTransformOrigin;
+
+
+}
+declare const StyleTransformOrigin: StyleTransformOriginConstructor;
+    
+interface StyleList<T> extends IStyleValue<CSArray<T>> {
+    value: CSArray<T>;
+    keyword: StyleKeyword;
+
+
+    Equals(other: StyleList<T>): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface StyleListConstructor {
+
+    new(v: CSArray<T>): StyleList<T>;
+    new(keyword: StyleKeyword): StyleList<T>;
+
+
+}
+declare const StyleList: StyleListConstructor;
+    
+interface StyleTranslate extends IStyleValue<Translate> {
+    /**
+     * The Translate value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleTranslate-value.html | UIElements.StyleTranslate.value}
+     */
+    value: Translate;
+    /**
+     * The style keyword.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleTranslate-keyword.html | UIElements.StyleTranslate.keyword}
+     */
+    keyword: StyleKeyword;
+
+
+    Equals(other: StyleTranslate): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface StyleTranslateConstructor {
+
+    new(v: Translate): StyleTranslate;
+    new(keyword: StyleKeyword): StyleTranslate;
+
+
+}
+declare const StyleTranslate: StyleTranslateConstructor;
+    
+interface StyleFont extends IStyleValue<Font> {
+    /**
+     * The Font value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleFont-value.html | UIElements.StyleFont.value}
+     */
+    value: Font;
+    /**
+     * The style keyword.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleFont-keyword.html | UIElements.StyleFont.keyword}
+     */
+    keyword: StyleKeyword;
+
+
+    Equals(other: StyleFont): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface StyleFontConstructor {
+
+    new(v: Font): StyleFont;
+    new(keyword: StyleKeyword): StyleFont;
+
+
+}
+declare const StyleFont: StyleFontConstructor;
+    
+interface StyleFontDefinition extends IStyleValue<FontDefinition> {
+    /**
+     * The actual value of the definition.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleFontDefinition-value.html | UIElements.StyleFontDefinition.value}
+     */
+    value: FontDefinition;
+    /**
+     * The style keyword.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleFontDefinition-keyword.html | UIElements.StyleFontDefinition.keyword}
+     */
+    keyword: StyleKeyword;
+
+
+    Equals(other: StyleFontDefinition): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+
+}
+    
+interface StyleFontDefinitionConstructor {
+
+    new(f: FontDefinition): StyleFontDefinition;
+    new(f: FontAsset): StyleFontDefinition;
+    new(f: Font): StyleFontDefinition;
+    new(keyword: StyleKeyword): StyleFontDefinition;
+
+
+}
+declare const StyleFontDefinition: StyleFontDefinitionConstructor;
+    
+interface StyleInt extends IStyleValue<number> {
+    /**
+     * The integer value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleInt-value.html | UIElements.StyleInt.value}
+     */
+    value: number;
+    /**
+     * The style keyword.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleInt-keyword.html | UIElements.StyleInt.keyword}
+     */
+    keyword: StyleKeyword;
+
+
+    Equals(other: StyleInt): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+}
+    
+interface StyleIntConstructor {
+
+    new(v: number): StyleInt;
+    new(keyword: StyleKeyword): StyleInt;
+
+
+}
+declare const StyleInt: StyleIntConstructor;
+    
+interface ICustomStyle {
+
+
+    TryGetValue(property: CustomStyleProperty<number>, value: unknown): boolean;
+    TryGetValue(property: CustomStyleProperty<number>, value: unknown): boolean;
+    TryGetValue(property: CustomStyleProperty<boolean>, value: unknown): boolean;
+    TryGetValue(property: CustomStyleProperty<Color>, value: unknown): boolean;
+    TryGetValue(property: CustomStyleProperty<Texture2D>, value: unknown): boolean;
+    TryGetValue(property: CustomStyleProperty<Sprite>, value: unknown): boolean;
+    TryGetValue(property: CustomStyleProperty<VectorImage>, value: unknown): boolean;
+    TryGetValue<T>(property: CustomStyleProperty<T>, value: unknown): boolean;
+    TryGetValue(property: CustomStyleProperty<string>, value: CSArray<string>): boolean;
+
+}
+    
+interface CustomStyleProperty<T> {
+    name: string;
+
+
+    Equals(obj: unknown): boolean;
+    Equals(other: CustomStyleProperty<T>): boolean;
+    GetHashCode(): number;
+
+}
+    
+interface CustomStylePropertyConstructor {
+
+    new(propertyName: string): CustomStyleProperty<T>;
+
+
+}
+declare const CustomStyleProperty: CustomStylePropertyConstructor;
+    
+interface VisualElementStyleSheetSet {
+    /**
+     * Number of style sheets attached to the owner element.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.VisualElementStyleSheetSet-count.html | UIElements.VisualElementStyleSheetSet.count}
+     */
+    count: number;
+    Item: StyleSheet;
+
+
+    /**
+     * Adds a style sheet for the owner element.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.VisualElementStyleSheetSet.Add.html | UIElements.VisualElementStyleSheetSet.Add}
+     */
+    Add(styleSheet: StyleSheet): void;
+    /**
+     * Removes all style sheets for the owner element.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.VisualElementStyleSheetSet.Clear.html | UIElements.VisualElementStyleSheetSet.Clear}
+     */
+    Clear(): void;
+    /**
+     * Looks for the specified StyleSheet
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.VisualElementStyleSheetSet.Contains.html | UIElements.VisualElementStyleSheetSet.Contains}
+     */
+    Contains(styleSheet: StyleSheet): boolean;
+    /**
+     * Compares instances of the VisualElementStyleSheetSet struct for equality.
+     * @param other The structure to compare with.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.VisualElementStyleSheetSet.Equals.html | UIElements.VisualElementStyleSheetSet.Equals}
+     */
+    Equals(other: VisualElementStyleSheetSet): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    /**
+     * Removes a style sheet for the owner element.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.VisualElementStyleSheetSet.Remove.html | UIElements.VisualElementStyleSheetSet.Remove}
+     */
+    Remove(styleSheet: StyleSheet): boolean;
+
+}
+    
+interface BindingId {
+
+
+    /**
+     * Indicates whether two binding properties are equal.
+     * @param other The object to compare with the current instance.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.BindingId.Equals.html | UIElements.BindingId.Equals}
+     */
+    Equals(other: BindingId): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    /**
+     * Returns the binding property as a string.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.BindingId.ToString.html | UIElements.BindingId.ToString}
+     */
+    ToString(): string;
+
+}
+    
+interface BindingIdConstructor {
+    Invalid: BindingId;
+
+    new(path: string): BindingId;
+    new(path: unknown): BindingId;
+
+
+}
+declare const BindingId: BindingIdConstructor;
+    
+interface Binding {
+    /**
+     * When set to true, the binding instance updates during the next update cycle.
+ When set to false, the binding instance updates only if a change is detected.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Binding-isDirty.html | UIElements.Binding.isDirty}
+     */
+    isDirty: boolean;
+    /**
+     * When set to BindingUpdateTrigger.EveryUpdate, the binding instance updates in every update, regardless of the
+ data source version.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Binding-updateTrigger.html | UIElements.Binding.updateTrigger}
+     */
+    updateTrigger: BindingUpdateTrigger;
+
+
+    /**
+     * Notifies the binding system to process this binding.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Binding.MarkDirty.html | UIElements.Binding.MarkDirty}
+     */
+    MarkDirty(): void;
+
+}
+    
+interface BindingConstructor {
+
+
+
+    ResetPanelLogLevel(panel: IPanel): void;
+    SetGlobalLogLevel(logLevel: BindingLogLevel): void;
+    SetPanelLogLevel(panel: IPanel, logLevel: BindingLogLevel): void;
+}
+declare const Binding: BindingConstructor;
+    
+interface BindingInfo {
+    /**
+     * The visual element targeted by the binding.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.BindingInfo-targetElement.html | UIElements.BindingInfo.targetElement}
+     */
+    targetElement: VisualElement;
+    /**
+     * The binding id.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.BindingInfo-bindingId.html | UIElements.BindingInfo.bindingId}
+     */
+    bindingId: BindingId;
+    /**
+     * The binding matching this information.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.BindingInfo-binding.html | UIElements.BindingInfo.binding}
+     */
+    binding: Binding;
+
+
+
+}
+    
+interface DataSourceContext {
+    /**
+     * The resolved data source.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.DataSourceContext-dataSource.html | UIElements.DataSourceContext.dataSource}
+     */
+    dataSource: unknown;
+    /**
+     * The resolved data source path.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.DataSourceContext-dataSourcePath.html | UIElements.DataSourceContext.dataSourcePath}
+     */
+    dataSourcePath: PropertyPath;
+
+
+
+}
+    
+interface DataSourceContextConstructor {
+
+    new(dataSource: unknown, dataSourcePath: unknown): DataSourceContext;
+
+
+}
+declare const DataSourceContext: DataSourceContextConstructor;
+    
+    
+    
+    
+    
+interface StyleValues {
+    /**
+     * Top distance from the element's box during layout.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-top.html | UIElements.Experimental.StyleValues.top}
+     */
+    top: number;
+    /**
+     * Left distance from the element's box during layout.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-left.html | UIElements.Experimental.StyleValues.left}
+     */
+    left: number;
+    /**
+     * Fixed width of an element for the layout.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-width.html | UIElements.Experimental.StyleValues.width}
+     */
+    width: number;
+    /**
+     * Fixed height of an element for the layout.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-height.html | UIElements.Experimental.StyleValues.height}
+     */
+    height: number;
+    /**
+     * Right distance from the element's box during layout.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-right.html | UIElements.Experimental.StyleValues.right}
+     */
+    right: number;
+    /**
+     * Bottom distance from the element's box during layout.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-bottom.html | UIElements.Experimental.StyleValues.bottom}
+     */
+    bottom: number;
+    /**
+     * Color to use when drawing the text of an element.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-color.html | UIElements.Experimental.StyleValues.color}
+     */
+    color: Color;
+    /**
+     * Background color to paint in the element's box.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-backgroundColor.html | UIElements.Experimental.StyleValues.backgroundColor}
+     */
+    backgroundColor: Color;
+    /**
+     * Tinting color for the element's backgroundImage.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-unityBackgroundImageTintColor.html | UIElements.Experimental.StyleValues.unityBackgroundImageTintColor}
+     */
+    unityBackgroundImageTintColor: Color;
+    /**
+     * Color of the border to paint inside the element's box.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-borderColor.html | UIElements.Experimental.StyleValues.borderColor}
+     */
+    borderColor: Color;
+    /**
+     * Space reserved for the left edge of the margin during the layout phase.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-marginLeft.html | UIElements.Experimental.StyleValues.marginLeft}
+     */
+    marginLeft: number;
+    /**
+     * Space reserved for the top edge of the margin during the layout phase.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-marginTop.html | UIElements.Experimental.StyleValues.marginTop}
+     */
+    marginTop: number;
+    /**
+     * Space reserved for the right edge of the margin during the layout phase.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-marginRight.html | UIElements.Experimental.StyleValues.marginRight}
+     */
+    marginRight: number;
+    /**
+     * Space reserved for the bottom edge of the margin during the layout phase.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-marginBottom.html | UIElements.Experimental.StyleValues.marginBottom}
+     */
+    marginBottom: number;
+    /**
+     * Space reserved for the left edge of the padding during the layout phase.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-paddingLeft.html | UIElements.Experimental.StyleValues.paddingLeft}
+     */
+    paddingLeft: number;
+    /**
+     * Space reserved for the top edge of the padding during the layout phase.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-paddingTop.html | UIElements.Experimental.StyleValues.paddingTop}
+     */
+    paddingTop: number;
+    /**
+     * Space reserved for the right edge of the padding during the layout phase.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-paddingRight.html | UIElements.Experimental.StyleValues.paddingRight}
+     */
+    paddingRight: number;
+    /**
+     * Space reserved for the bottom edge of the padding during the layout phase.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-paddingBottom.html | UIElements.Experimental.StyleValues.paddingBottom}
+     */
+    paddingBottom: number;
+    /**
+     * Space reserved for the left edge of the border during the layout phase.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-borderLeftWidth.html | UIElements.Experimental.StyleValues.borderLeftWidth}
+     */
+    borderLeftWidth: number;
+    /**
+     * Space reserved for the right edge of the border during the layout phase.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-borderRightWidth.html | UIElements.Experimental.StyleValues.borderRightWidth}
+     */
+    borderRightWidth: number;
+    /**
+     * Space reserved for the top edge of the border during the layout phase.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-borderTopWidth.html | UIElements.Experimental.StyleValues.borderTopWidth}
+     */
+    borderTopWidth: number;
+    /**
+     * Space reserved for the bottom edge of the border during the layout phase.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-borderBottomWidth.html | UIElements.Experimental.StyleValues.borderBottomWidth}
+     */
+    borderBottomWidth: number;
+    /**
+     * The radius of the top-left corner when a rounded rectangle is drawn in the element's box.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-borderTopLeftRadius.html | UIElements.Experimental.StyleValues.borderTopLeftRadius}
+     */
+    borderTopLeftRadius: number;
+    /**
+     * The radius of the top-right corner when a rounded rectangle is drawn in the element's box.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-borderTopRightRadius.html | UIElements.Experimental.StyleValues.borderTopRightRadius}
+     */
+    borderTopRightRadius: number;
+    /**
+     * The radius of the bottom-left corner when a rounded rectangle is drawn in the element's box.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-borderBottomLeftRadius.html | UIElements.Experimental.StyleValues.borderBottomLeftRadius}
+     */
+    borderBottomLeftRadius: number;
+    /**
+     * The radius of the bottom-right corner when a rounded rectangle is drawn in the element's box.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-borderBottomRightRadius.html | UIElements.Experimental.StyleValues.borderBottomRightRadius}
+     */
+    borderBottomRightRadius: number;
+    /**
+     * Specifies the transparency of an element.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-opacity.html | UIElements.Experimental.StyleValues.opacity}
+     */
+    opacity: number;
+    /**
+     * Specifies how much the item will grow relative to the rest of the flexible items inside the same container.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-flexGrow.html | UIElements.Experimental.StyleValues.flexGrow}
+     */
+    flexGrow: number;
+    /**
+     * Specifies how the item will shrink relative to the rest of the flexible items inside the same container.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-flexShrink.html | UIElements.Experimental.StyleValues.flexShrink}
+     */
+    flexShrink: number;
+
+
+
+}
+    
+interface ITextElementExperimentalFeatures extends IExperimentalFeatures {
+
+
+    /**
+     * Setting this property will override the displayed text while preserving the original text value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextElementExperimentalFeatures.SetRenderedText.html | UIElements.ITextElementExperimentalFeatures.SetRenderedText}
+     */
+    SetRenderedText(renderedText: string): void;
+
+}
+    
+interface ITextSelection {
+    /**
+     * Returns true if the field is selectable.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextSelection-isSelectable.html | UIElements.ITextSelection.isSelectable}
+     */
+    isSelectable: boolean;
+    /**
+     * Color of the cursor.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextSelection-cursorColor.html | UIElements.ITextSelection.cursorColor}
+     */
+    cursorColor: Color;
+    /**
+     * Background color of selected text.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextSelection-selectionColor.html | UIElements.ITextSelection.selectionColor}
+     */
+    selectionColor: Color;
+    /**
+     * This is the cursor index in the text presented.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextSelection-cursorIndex.html | UIElements.ITextSelection.cursorIndex}
+     */
+    cursorIndex: number;
+    /**
+     * Controls whether double clicking selects the word under the mouse pointer or not.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextSelection-doubleClickSelectsWord.html | UIElements.ITextSelection.doubleClickSelectsWord}
+     */
+    doubleClickSelectsWord: boolean;
+    /**
+     * This is the selection index in the text presented.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextSelection-selectIndex.html | UIElements.ITextSelection.selectIndex}
+     */
+    selectIndex: number;
+    /**
+     * Controls whether triple clicking selects the entire line under the mouse pointer or not.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextSelection-tripleClickSelectsLine.html | UIElements.ITextSelection.tripleClickSelectsLine}
+     */
+    tripleClickSelectsLine: boolean;
+    /**
+     * Controls whether the element's content is selected upon receiving focus.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextSelection-selectAllOnFocus.html | UIElements.ITextSelection.selectAllOnFocus}
+     */
+    selectAllOnFocus: boolean;
+    /**
+     * Controls whether the element's content is selected when you mouse up for the first time.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextSelection-selectAllOnMouseUp.html | UIElements.ITextSelection.selectAllOnMouseUp}
+     */
+    selectAllOnMouseUp: boolean;
+    /**
+     * The position of the text cursor inside the element.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextSelection-cursorPosition.html | UIElements.ITextSelection.cursorPosition}
+     */
+    cursorPosition: Vector2;
+
+
+    /**
+     * Return true is the TextElement has a selection.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextSelection.HasSelection.html | UIElements.ITextSelection.HasSelection}
+     */
+    HasSelection(): boolean;
+    /**
+     * Selects all the text contained in the field.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextSelection.SelectAll.html | UIElements.ITextSelection.SelectAll}
+     */
+    SelectAll(): void;
+    /**
+     * Remove selection
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextSelection.SelectNone.html | UIElements.ITextSelection.SelectNone}
+     */
+    SelectNone(): void;
+    /**
+     * Select text between cursorIndex and selectIndex.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextSelection.SelectRange.html | UIElements.ITextSelection.SelectRange}
+     */
+    SelectRange(cursorIndex: number, selectionIndex: number): void;
+
+}
+    
+interface TextElement extends BindableElement, ITextElement, INotifyValueChanged<string>, ITextEdition, ITextElementExperimentalFeatures, ITextSelection {
+    /**
+     * The text to be displayed.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.TextElement-text.html | UIElements.TextElement.text}
+     */
+    text: string;
+    /**
+     * When false, rich text tags will not be parsed.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.TextElement-enableRichText.html | UIElements.TextElement.enableRichText}
+     */
+    enableRichText: boolean;
+    /**
+     * Specifies the order in which the system should look for Emoji characters when rendering text.
+ If this setting is enabled, the global Emoji Fallback list will be searched first for characters defined as
+ Emoji in the Unicode 14.0 standard.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.TextElement-emojiFallbackSupport.html | UIElements.TextElement.emojiFallbackSupport}
+     */
+    emojiFallbackSupport: boolean;
+    /**
+     * Specifies whether escape sequences are displayed as is or if they are replaced by the character they represent.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.TextElement-parseEscapeSequences.html | UIElements.TextElement.parseEscapeSequences}
+     */
+    parseEscapeSequences: boolean;
+    /**
+     * When true, a tooltip displays the full version of elided text, and also if a tooltip had been previously
+ provided, it will be overwritten.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.TextElement-displayTooltipWhenElided.html | UIElements.TextElement.displayTooltipWhenElided}
+     */
+    displayTooltipWhenElided: boolean;
+    /**
+     * Returns true if text is elided, false otherwise.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.TextElement-isElided.html | UIElements.TextElement.isElided}
+     */
+    isElided: boolean;
+    /**
+     * Returns the TextElement experimental interface.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.TextElement-experimental.html | UIElements.TextElement.experimental}
+     */
+    experimental: ITextElementExperimentalFeatures;
+    /**
+     * Retrieves this TextElement's ITextSelection
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.TextElement-selection.html | UIElements.TextElement.selection}
+     */
+    selection: ITextSelection;
+
+
+    MeasureTextSize(textToMeasure: string, width: number, widthMode: MeasureMode, height: number, heightMode: MeasureMode): Vector2;
+
+}
+    
+interface TextElementConstructor {
+    ussClassName: string;
+    selectableUssClassName: string;
+
+    new(): TextElement;
+
+
+}
+declare const TextElement: TextElementConstructor;
+    
+interface Label extends TextElement {
+
+
+
+}
+    
+interface LabelConstructor {
+    ussClassName: string;
+
+    new(): Label;
+    new(text: string): Label;
+
+
+}
+declare const Label: LabelConstructor;
+    
+interface IEditableElement {
+
+
+
+}
+    
+interface BaseField<TValueType> extends BindableElement, IMixedValueSupport, INotifyValueChanged<TValueType>, IPrefixLabel, IEditableElement {
+    value: TValueType;
+    labelElement: Label;
+    label: string;
+    showMixedValue: boolean;
+
+
+    SetValueWithoutNotify(newValue: TValueType): void;
+
+}
+    
+interface BaseFieldConstructor {
+    ussClassName: string;
+    labelUssClassName: string;
+    inputUssClassName: string;
+    noLabelVariantUssClassName: string;
+    labelDraggerVariantUssClassName: string;
+    mixedValueLabelUssClassName: string;
+    alignedFieldUssClassName: string;
+
+
+
+}
+declare const BaseField: BaseFieldConstructor;
+    
+interface TextInputBaseField<TValueType> extends BaseField<TValueType>, IDelayedField {
+    textSelection: ITextSelection;
+    textEdition: ITextEdition;
+    isReadOnly: boolean;
+    isPasswordField: boolean;
+    autoCorrection: boolean;
+    hideMobileInput: boolean;
+    keyboardType: TouchScreenKeyboardType;
+    touchScreenKeyboard: TouchScreenKeyboard;
+    maxLength: number;
+    isDelayed: boolean;
+    maskChar: string;
+    selectionColor: Color;
+    cursorColor: Color;
+    cursorIndex: number;
+    cursorPosition: Vector2;
+    selectIndex: number;
+    selectAllOnFocus: boolean;
+    selectAllOnMouseUp: boolean;
+    doubleClickSelectsWord: boolean;
+    tripleClickSelectsLine: boolean;
+    text: string;
+    emojiFallbackSupport: boolean;
+    verticalScrollerVisibility: ScrollerVisibility;
+
+
+    MeasureTextSize(textToMeasure: string, width: number, widthMode: MeasureMode, height: number, heightMode: MeasureMode): Vector2;
+    SelectAll(): void;
+    SelectNone(): void;
+    SelectRange(cursorIndex: number, selectionIndex: number): void;
+    SetVerticalScrollerVisibility(sv: ScrollerVisibility): boolean;
+
+}
+    
+interface TextInputBaseFieldConstructor {
+    ussClassName: string;
+    labelUssClassName: string;
+    inputUssClassName: string;
+    singleLineInputUssClassName: string;
+    multilineInputUssClassName: string;
+    placeholderUssClassName: string;
+    textInputUssName: string;
+
+
+
+}
+declare const TextInputBaseField: TextInputBaseFieldConstructor;
+    
+interface TextField extends TextInputBaseField<string> {
     /**
      * Set this to true to allow multiple lines in the textfield and false if otherwise.
      * 
@@ -33570,9 +37441,9 @@ interface AgonesBetaSdkConstructor {
 declare const AgonesBetaSdk: AgonesBetaSdkConstructor;
     
 interface ServerContext extends NetworkBehaviour {
-    serverId: unknown;
-    gameId: unknown;
-    organizationId: unknown;
+    serverId: SyncVar<string>;
+    gameId: SyncVar<string>;
+    organizationId: SyncVar<string>;
 
 
     Awake(): void;
@@ -33581,6 +37452,97 @@ interface ServerContext extends NetworkBehaviour {
     NetworkInitializeIfDisabled(): void;
 
 }
+    
+interface ISyncVar {
+
+
+
+}
+    
+interface SyncBase {
+    IsInitialized: boolean;
+    IsNetworkInitialized: boolean;
+    IsSyncObject: boolean;
+    IsDirty: boolean;
+    OnStartServerCalled: boolean;
+    OnStartClientCalled: boolean;
+    SyncIndex: number;
+
+
+    InitializeEarly(nb: NetworkBehaviour, syncIndex: number, isSyncObject: boolean): void;
+    InitializeLate(): void;
+    OnStartCallback(asServer: boolean): void;
+    OnStopCallback(asServer: boolean): void;
+    PreInitialize(networkManager: NetworkManager): void;
+    Read(reader: PooledReader, asServer: boolean): void;
+    ResetState(asServer: boolean): void;
+    UpdatePermissions(writePermissions: WritePermission, readPermissions: ReadPermission): void;
+    UpdatePermissions(writePermissions: WritePermission): void;
+    UpdatePermissions(readPermissions: ReadPermission): void;
+    UpdateSendRate(sendRate: number): void;
+    UpdateSettings(settings: SyncTypeSettings): void;
+    UpdateSettings(channel: Channel): void;
+    UpdateSettings(writePermissions: WritePermission, readPermissions: ReadPermission, sendRate: number, channel: Channel): void;
+    WriteDelta(writer: PooledWriter, resetSyncTick: boolean): void;
+    WriteFull(writer: PooledWriter): void;
+
+}
+    
+interface SyncTypeSettings {
+    WritePermission: WritePermission;
+    ReadPermission: ReadPermission;
+    SendRate: number;
+    Channel: Channel;
+
+
+
+}
+    
+interface SyncTypeSettingsConstructor {
+
+    new(sendRate: number): SyncTypeSettings;
+    new(sendRate: number, channel: Channel): SyncTypeSettings;
+    new(channel: Channel): SyncTypeSettings;
+    new(writePermissions: WritePermission): SyncTypeSettings;
+    new(readPermissions: ReadPermission): SyncTypeSettings;
+    new(writePermissions: WritePermission, readPermissions: ReadPermission): SyncTypeSettings;
+    new(writePermissions: WritePermission, readPermissions: ReadPermission, sendRate: number, channel: Channel): SyncTypeSettings;
+
+
+}
+declare const SyncTypeSettings: SyncTypeSettingsConstructor;
+    
+interface SyncBaseConstructor {
+
+    new(): SyncBase;
+    new(settings: SyncTypeSettings): SyncBase;
+
+
+}
+declare const SyncBase: SyncBaseConstructor;
+    
+interface SyncVar<T> extends SyncBase, ISyncVar {
+    Value: T;
+
+
+    DirtyAll(): void;
+    InterpolatedValue(useCurrentValue: boolean): T;
+    OnStartCallback(asServer: boolean): void;
+    ResetState(asServer: boolean): void;
+    SetInitialValues(value: T): void;
+    WriteDelta(writer: PooledWriter, resetSyncTick: boolean): void;
+    WriteFull(obj0: PooledWriter): void;
+
+}
+    
+interface SyncVarConstructor {
+
+    new(settings: SyncTypeSettings): SyncVar<T>;
+    new(initialValue: T, settings: SyncTypeSettings): SyncVar<T>;
+
+
+}
+declare const SyncVar: SyncVarConstructor;
     
 interface ServerContextConstructor {
 
@@ -34778,8 +38740,8 @@ interface SpriteRenderer extends Renderer {
     spriteSortPoint: SpriteSortPoint;
 
 
-    RegisterSpriteChangeCallback(callback: unknown): void;
-    UnregisterSpriteChangeCallback(callback: unknown): void;
+    RegisterSpriteChangeCallback(callback: UnityAction<SpriteRenderer>): void;
+    UnregisterSpriteChangeCallback(callback: UnityAction<SpriteRenderer>): void;
 
 }
     
@@ -36845,7 +40807,7 @@ interface Scrollbar extends Selectable, IBeginDragHandler, IInitializePotentialD
 
 }
     
-interface ScrollEvent {
+interface ScrollEvent extends UnityEvent<number> {
 
 
 
@@ -36859,7 +40821,7 @@ interface ScrollEventConstructor {
 }
 declare const ScrollEvent: ScrollEventConstructor;
     
-interface SubmitEvent {
+interface SubmitEvent extends UnityEvent<string> {
 
 
 
@@ -36873,7 +40835,7 @@ interface SubmitEventConstructor {
 }
 declare const SubmitEvent: SubmitEventConstructor;
     
-interface SelectionEvent {
+interface SelectionEvent extends UnityEvent<string> {
 
 
 
@@ -36887,7 +40849,41 @@ interface SelectionEventConstructor {
 }
 declare const SelectionEvent: SelectionEventConstructor;
     
-interface TextSelectionEvent {
+interface UnityEvent<T0, T1, T2> extends UnityEventBase {
+
+
+    AddListener(call: UnityAction<T0, T1, T2>): void;
+    Invoke(arg0: T0, arg1: T1, arg2: T2): void;
+    RemoveListener(call: UnityAction<T0, T1, T2>): void;
+
+}
+    
+interface UnityAction<T0, T1, T2> {
+
+
+    BeginInvoke(arg0: T0, arg1: T1, arg2: T2, callback: unknown, object: unknown): unknown;
+    EndInvoke(result: unknown): void;
+    Invoke(arg0: T0, arg1: T1, arg2: T2): void;
+
+}
+    
+interface UnityActionConstructor {
+
+    new(object: unknown, method: unknown): UnityAction<T0, T1, T2>;
+
+
+}
+declare const UnityAction: UnityActionConstructor;
+    
+interface UnityEventConstructor {
+
+    new(): UnityEvent<T0, T1, T2>;
+
+
+}
+declare const UnityEvent: UnityEventConstructor;
+    
+interface TextSelectionEvent extends UnityEvent<string, number, number> {
 
 
 
@@ -36901,7 +40897,7 @@ interface TextSelectionEventConstructor {
 }
 declare const TextSelectionEvent: TextSelectionEventConstructor;
     
-interface OnChangeEvent {
+interface OnChangeEvent extends UnityEvent<string> {
 
 
 
@@ -36915,7 +40911,7 @@ interface OnChangeEventConstructor {
 }
 declare const OnChangeEvent: OnChangeEventConstructor;
     
-interface TouchScreenKeyboardEvent {
+interface TouchScreenKeyboardEvent extends UnityEvent<Status> {
 
 
 
@@ -36946,340 +40942,12 @@ interface OnValidateInputConstructor {
 }
 declare const OnValidateInput: OnValidateInputConstructor;
     
-interface TouchScreenKeyboard {
-    /**
-     * Returns the text displayed by the input field of the keyboard.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/TouchScreenKeyboard-text.html | TouchScreenKeyboard.text}
-     */
-    text: string;
-    /**
-     * Is the keyboard visible or sliding into the position on the screen?
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/TouchScreenKeyboard-active.html | TouchScreenKeyboard.active}
-     */
-    active: boolean;
-    /**
-     * Specifies if input process was finished. (Read Only)
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/TouchScreenKeyboard-done.html | TouchScreenKeyboard.done}
-     */
-    done: boolean;
-    /**
-     * Specifies if input process was canceled. (Read Only)
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/TouchScreenKeyboard-wasCanceled.html | TouchScreenKeyboard.wasCanceled}
-     */
-    wasCanceled: boolean;
-    /**
-     * Returns the status of the on-screen keyboard. (Read Only)
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/TouchScreenKeyboard-status.html | TouchScreenKeyboard.status}
-     */
-    status: Status;
-    /**
-     * How many characters the keyboard input field is limited to. 0 = infinite.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/TouchScreenKeyboard-characterLimit.html | TouchScreenKeyboard.characterLimit}
-     */
-    characterLimit: number;
-    /**
-     * Specifies whether the TouchScreenKeyboard supports the selection property. (Read Only)
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/TouchScreenKeyboard-canGetSelection.html | TouchScreenKeyboard.canGetSelection}
-     */
-    canGetSelection: boolean;
-    /**
-     * Specifies whether the TouchScreenKeyboard supports the selection property. (Read Only)
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/TouchScreenKeyboard-canSetSelection.html | TouchScreenKeyboard.canSetSelection}
-     */
-    canSetSelection: boolean;
-    /**
-     * Gets or sets the character range of the selected text within the string currently being edited.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/TouchScreenKeyboard-selection.html | TouchScreenKeyboard.selection}
-     */
-    selection: RangeInt;
-    /**
-     * Returns the TouchScreenKeyboardType of the keyboard.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/TouchScreenKeyboard-type.html | TouchScreenKeyboard.type}
-     */
-    type: TouchScreenKeyboardType;
-    /**
-     * Specified on which display the on-screen keyboard will appear.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/TouchScreenKeyboard-targetDisplay.html | TouchScreenKeyboard.targetDisplay}
-     */
-    targetDisplay: number;
-
-
-
-}
-    
-interface RangeInt {
-    start: number;
-    length: number;
-    /**
-     * The end index of the range (not inclusive).
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/RangeInt-end.html | RangeInt.end}
-     */
-    end: number;
-
-
-
-}
-    
-interface RangeIntConstructor {
-
-    new(start: number, length: number): RangeInt;
-
-
-}
-declare const RangeInt: RangeIntConstructor;
-    
-interface TouchScreenKeyboardConstructor {
-    /**
-     * Is touch screen keyboard supported.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/TouchScreenKeyboard-isSupported.html | TouchScreenKeyboard.isSupported}
-     */
-    isSupported: boolean;
-    /**
-     * Checks if the text within an input field can be selected and modified while TouchScreenKeyboard is open.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/TouchScreenKeyboard-isInPlaceEditingAllowed.html | TouchScreenKeyboard.isInPlaceEditingAllowed}
-     */
-    isInPlaceEditingAllowed: boolean;
-    /**
-     * Will text input field above the keyboard be hidden when the keyboard is on screen?
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/TouchScreenKeyboard-hideInput.html | TouchScreenKeyboard.hideInput}
-     */
-    hideInput: boolean;
-    /**
-     * Returns portion of the screen which is covered by the keyboard.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/TouchScreenKeyboard-area.html | TouchScreenKeyboard.area}
-     */
-    area: Rect;
-    /**
-     * Returns true whenever any keyboard is visible on the screen.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/TouchScreenKeyboard-visible.html | TouchScreenKeyboard.visible}
-     */
-    visible: boolean;
-
-    new(text: string, keyboardType: TouchScreenKeyboardType, autocorrection: boolean, multiline: boolean, secure: boolean, alert: boolean, textPlaceholder: string, characterLimit: number): TouchScreenKeyboard;
-
-
-    Open(text: string, keyboardType: TouchScreenKeyboardType, autocorrection: boolean, multiline: boolean, secure: boolean, alert: boolean, textPlaceholder: string, characterLimit: number): TouchScreenKeyboard;
-    Open(text: string, keyboardType: TouchScreenKeyboardType, autocorrection: boolean, multiline: boolean, secure: boolean, alert: boolean, textPlaceholder: string): TouchScreenKeyboard;
-    Open(text: string, keyboardType: TouchScreenKeyboardType, autocorrection: boolean, multiline: boolean, secure: boolean, alert: boolean): TouchScreenKeyboard;
-    Open(text: string, keyboardType: TouchScreenKeyboardType, autocorrection: boolean, multiline: boolean, secure: boolean): TouchScreenKeyboard;
-    Open(text: string, keyboardType: TouchScreenKeyboardType, autocorrection: boolean, multiline: boolean): TouchScreenKeyboard;
-    Open(text: string, keyboardType: TouchScreenKeyboardType, autocorrection: boolean): TouchScreenKeyboard;
-    Open(text: string, keyboardType: TouchScreenKeyboardType): TouchScreenKeyboard;
-    Open(text: string): TouchScreenKeyboard;
-}
-declare const TouchScreenKeyboard: TouchScreenKeyboardConstructor;
-    
 interface TMP_InputValidator extends ScriptableObject {
 
 
     Validate(text: CSArray<string>, pos: unknown, ch: string): string;
 
 }
-    
-interface Event {
-    rawType: EventType;
-    /**
-     * The mouse position.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-mousePosition.html | Event.mousePosition}
-     */
-    mousePosition: Vector2;
-    /**
-     * The relative movement of the mouse compared to last event.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-delta.html | Event.delta}
-     */
-    delta: Vector2;
-    /**
-     * The type of pointer that created this event (for example, mouse, touch screen, pen).
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-pointerType.html | Event.pointerType}
-     */
-    pointerType: PointerType;
-    /**
-     * Which mouse button was pressed.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-button.html | Event.button}
-     */
-    button: number;
-    /**
-     * Which modifier keys are held down.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-modifiers.html | Event.modifiers}
-     */
-    modifiers: EventModifiers;
-    /**
-     * How hard pen pressure is applied, normalized between 0 (no pressure) and 1 (maximum pressure).
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-pressure.html | Event.pressure}
-     */
-    pressure: number;
-    /**
-     * Specifies the rotation of the pen around its axis, expressed in radians. The default value is 0.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-twist.html | Event.twist}
-     */
-    twist: number;
-    /**
-     * Specifies the angle of the pen relative to the X and Y axes, expressed in radians.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-tilt.html | Event.tilt}
-     */
-    tilt: Vector2;
-    /**
-     * Specifies the state of the pen. For example, whether the pen is in contact with the screen or tablet, whether the pen is inverted, and whether buttons are pressed.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-penStatus.html | Event.penStatus}
-     */
-    penStatus: PenStatus;
-    /**
-     * How many consecutive mouse clicks have we received.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-clickCount.html | Event.clickCount}
-     */
-    clickCount: number;
-    /**
-     * The character typed.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-character.html | Event.character}
-     */
-    character: string;
-    /**
-     * The raw key code for keyboard events.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-keyCode.html | Event.keyCode}
-     */
-    keyCode: KeyCode;
-    /**
-     * Index of display that the event belongs to.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-displayIndex.html | Event.displayIndex}
-     */
-    displayIndex: number;
-    /**
-     * The type of event.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-type.html | Event.type}
-     */
-    type: EventType;
-    /**
-     * The name of an ExecuteCommand or ValidateCommand Event.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-commandName.html | Event.commandName}
-     */
-    commandName: string;
-    mouseRay: Ray;
-    /**
-     * Is Shift held down? (Read Only)
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-shift.html | Event.shift}
-     */
-    shift: boolean;
-    /**
-     * Is Control key held down? (Read Only)
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-control.html | Event.control}
-     */
-    control: boolean;
-    /**
-     * Is Alt/Option key held down? (Read Only)
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-alt.html | Event.alt}
-     */
-    alt: boolean;
-    /**
-     * Is Command/Windows key held down? (Read Only)
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-command.html | Event.command}
-     */
-    command: boolean;
-    /**
-     * Is Caps Lock on? (Read Only)
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-capsLock.html | Event.capsLock}
-     */
-    capsLock: boolean;
-    /**
-     * Is the current keypress on the numeric keyboard? (Read Only)
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-numeric.html | Event.numeric}
-     */
-    numeric: boolean;
-    /**
-     * Is the current keypress a function key? (Read Only)
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-functionKey.html | Event.functionKey}
-     */
-    functionKey: boolean;
-    /**
-     * Is this event a keyboard event? (Read Only)
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-isKey.html | Event.isKey}
-     */
-    isKey: boolean;
-    /**
-     * Is this event a mouse event? (Read Only)
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-isMouse.html | Event.isMouse}
-     */
-    isMouse: boolean;
-    isScrollWheel: boolean;
-
-
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    /**
-     * Get a filtered event type for a given control ID.
-     * @param controlID The ID of the control you are querying from.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Event.GetTypeForControl.html | Event.GetTypeForControl}
-     */
-    GetTypeForControl(controlID: number): EventType;
-    ToString(): string;
-    /**
-     * Use this event.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Event.Use.html | Event.Use}
-     */
-    Use(): void;
-
-}
-    
-interface EventConstructor {
-    /**
-     * The current event that's being processed right now.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Event-current.html | Event.current}
-     */
-    current: Event;
-
-    new(): Event;
-    new(displayIndex: number): Event;
-    new(other: Event): Event;
-
-
-    GetEventCount(): number;
-    KeyboardEvent(key: string): Event;
-    PopEvent(outEvent: Event): boolean;
-}
-declare const Event: EventConstructor;
     
 interface Slider extends Selectable, IInitializePotentialDragHandler, IDragHandler, ICanvasElement {
     fillRect: RectTransform;
@@ -37309,7 +40977,7 @@ interface Slider extends Selectable, IInitializePotentialDragHandler, IDragHandl
 
 }
     
-interface SliderEvent {
+interface SliderEvent extends UnityEvent<number> {
 
 
 
@@ -38951,9 +42619,9 @@ declare const CharacterMoveModifier: CharacterMoveModifierConstructor;
     
 interface DynamicVariables extends ScriptableObject {
     collectionId: string;
-    strings: CSArray<unknown>;
-    numbers: CSArray<unknown>;
-    vectors: CSArray<unknown>;
+    strings: CSArray<KeyValueReference<string>>;
+    numbers: CSArray<KeyValueReference<number>>;
+    vectors: CSArray<KeyValueReference<Vector3>>;
 
 
     GetAsString(key: string): string;
@@ -38970,6 +42638,22 @@ interface DynamicVariables extends ScriptableObject {
     SetVector3(key: string, val: Vector3): void;
 
 }
+    
+interface KeyValueReference<T> {
+    key: string;
+    value: T;
+
+
+
+}
+    
+interface KeyValueReferenceConstructor {
+
+    new(): KeyValueReference<T>;
+
+
+}
+declare const KeyValueReference: KeyValueReferenceConstructor;
     
 interface DynamicVariablesConstructor {
 
@@ -39097,6 +42781,98 @@ interface MainMenuSceneManager extends MonoBehaviour {
 
 }
     
+interface PackageLatestVersionResponse {
+    package: PackageResponse;
+
+
+
+}
+    
+interface PackageResponse {
+    assetVersionNumber: number;
+    codeVersionNumber: number;
+
+
+
+}
+    
+interface PackageResponseConstructor {
+
+    new(): PackageResponse;
+
+
+}
+declare const PackageResponse: PackageResponseConstructor;
+    
+interface PackageLatestVersionResponseConstructor {
+
+    new(): PackageLatestVersionResponse;
+
+
+}
+declare const PackageLatestVersionResponse: PackageLatestVersionResponseConstructor;
+    
+interface IPromise<PromisedT> {
+    Id: number;
+
+
+    Catch(onRejected: unknown): IPromise;
+    Catch(onRejected: unknown): IPromise<PromisedT>;
+    ContinueWith(onResolved: unknown): IPromise;
+    ContinueWith<ConvertedT>(onComplete: unknown): IPromise<ConvertedT>;
+    Done(onResolved: unknown, onRejected: unknown): void;
+    Done(onResolved: unknown): void;
+    Done(): void;
+    Finally(onComplete: unknown): IPromise<PromisedT>;
+    Progress(onProgress: unknown): IPromise<PromisedT>;
+    Then<ConvertedT>(onResolved: unknown): IPromise<ConvertedT>;
+    Then(onResolved: unknown): IPromise;
+    Then(onResolved: unknown): IPromise;
+    Then<ConvertedT>(onResolved: unknown, onRejected: unknown): IPromise<ConvertedT>;
+    Then(onResolved: unknown, onRejected: unknown): IPromise;
+    Then(onResolved: unknown, onRejected: unknown): IPromise;
+    Then<ConvertedT>(onResolved: unknown, onRejected: unknown, onProgress: unknown): IPromise<ConvertedT>;
+    Then(onResolved: unknown, onRejected: unknown, onProgress: unknown): IPromise;
+    Then(onResolved: unknown, onRejected: unknown, onProgress: unknown): IPromise;
+    Then<ConvertedT>(transform: unknown): IPromise<ConvertedT>;
+    ThenAll<ConvertedT>(chain: unknown): IPromise<CSArray<ConvertedT>>;
+    ThenAll(chain: unknown): IPromise;
+    ThenRace<ConvertedT>(chain: unknown): IPromise<ConvertedT>;
+    ThenRace(chain: unknown): IPromise;
+    WithName(name: string): IPromise<PromisedT>;
+
+}
+    
+interface IPromise {
+    Id: number;
+
+
+    Catch(onRejected: unknown): IPromise;
+    ContinueWith(onResolved: unknown): IPromise;
+    ContinueWith<ConvertedT>(onComplete: unknown): IPromise<ConvertedT>;
+    Done(onResolved: unknown, onRejected: unknown): void;
+    Done(onResolved: unknown): void;
+    Done(): void;
+    Finally(onComplete: unknown): IPromise;
+    Progress(onProgress: unknown): IPromise;
+    Then<ConvertedT>(onResolved: unknown): IPromise<ConvertedT>;
+    Then(onResolved: unknown): IPromise;
+    Then(onResolved: unknown): IPromise;
+    Then<ConvertedT>(onResolved: unknown, onRejected: unknown): IPromise<ConvertedT>;
+    Then(onResolved: unknown, onRejected: unknown): IPromise;
+    Then(onResolved: unknown, onRejected: unknown): IPromise;
+    Then<ConvertedT>(onResolved: unknown, onRejected: unknown, onProgress: unknown): IPromise<ConvertedT>;
+    Then(onResolved: unknown, onRejected: unknown, onProgress: unknown): IPromise;
+    Then(onResolved: unknown, onRejected: unknown, onProgress: unknown): IPromise;
+    ThenAll(chain: unknown): IPromise;
+    ThenAll<ConvertedT>(chain: unknown): IPromise<CSArray<ConvertedT>>;
+    ThenRace(chain: unknown): IPromise;
+    ThenRace<ConvertedT>(chain: unknown): IPromise<ConvertedT>;
+    ThenSequence(chain: unknown): IPromise;
+    WithName(name: string): IPromise;
+
+}
+    
 interface MainMenuSceneManagerConstructor {
     cdnUrl: string;
     deploymentUrl: string;
@@ -39104,7 +42880,7 @@ interface MainMenuSceneManagerConstructor {
     new(): MainMenuSceneManager;
 
 
-    GetLatestPackageVersion(packageId: string): unknown;
+    GetLatestPackageVersion(packageId: string): IPromise<PackageLatestVersionResponse>;
 }
 declare const MainMenuSceneManager: MainMenuSceneManagerConstructor;
     
@@ -39998,7 +43774,7 @@ interface Toggle extends Selectable, ISubmitHandler, IPointerClickHandler, ICanv
 
 }
     
-interface ToggleEvent {
+interface ToggleEvent extends UnityEvent<boolean> {
 
 
 
@@ -40291,7 +44067,7 @@ interface ScrollRect extends UIBehaviour, ILayoutGroup, IBeginDragHandler, IInit
 
 }
     
-interface ScrollRectEvent {
+interface ScrollRectEvent extends UnityEvent<Vector2> {
 
 
 
@@ -43047,2900 +46823,6 @@ interface NavMeshObstacleConstructor {
 }
 declare const NavMeshObstacle: NavMeshObstacleConstructor;
     
-interface IStylePropertyAnimations {
-    runningAnimationCount: number;
-    completedAnimationCount: number;
-
-
-    CancelAllAnimations(): void;
-    CancelAnimation(id: StylePropertyId): void;
-    GetAllAnimations(outPropertyIds: CSArray<StylePropertyId>): void;
-    HasRunningAnimation(id: StylePropertyId): boolean;
-    Start(id: StylePropertyId, from: number, to: number, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: number, to: number, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: Length, to: Length, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: Color, to: Color, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: Background, to: Background, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: FontDefinition, to: FontDefinition, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: Font, to: Font, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: TextShadow, to: TextShadow, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: Scale, to: Scale, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: Translate, to: Translate, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: Rotate, to: Rotate, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: TransformOrigin, to: TransformOrigin, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: BackgroundPosition, to: BackgroundPosition, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: BackgroundRepeat, to: BackgroundRepeat, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: BackgroundSize, to: BackgroundSize, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    StartEnum(id: StylePropertyId, from: number, to: number, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    UpdateAnimation(id: StylePropertyId): void;
-
-}
-    
-interface Length {
-    /**
-     * The length value.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Length-value.html | UIElements.Length.value}
-     */
-    value: number;
-    /**
-     * The unit of the value property.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Length-unit.html | UIElements.Length.unit}
-     */
-    unit: LengthUnit;
-
-
-    Equals(other: Length): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    /**
-     * Check if Length is Auto.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Length.IsAuto.html | UIElements.Length.IsAuto}
-     */
-    IsAuto(): boolean;
-    /**
-     * Check if Length is None.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Length.IsNone.html | UIElements.Length.IsNone}
-     */
-    IsNone(): boolean;
-    ToString(): string;
-
-}
-    
-interface LengthConstructor {
-
-    new(value: number): Length;
-    new(value: number, unit: LengthUnit): Length;
-
-
-    Auto(): Length;
-    None(): Length;
-    Percent(value: number): Length;
-}
-declare const Length: LengthConstructor;
-    
-interface Background {
-    /**
-     * The texture to display as a background.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Background-texture.html | UIElements.Background.texture}
-     */
-    texture: Texture2D;
-    /**
-     * The sprite to display as a background.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Background-sprite.html | UIElements.Background.sprite}
-     */
-    sprite: Sprite;
-    /**
-     * The RenderTexture to display as a background.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Background-renderTexture.html | UIElements.Background.renderTexture}
-     */
-    renderTexture: RenderTexture;
-    /**
-     * The VectorImage to display as a background.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Background-vectorImage.html | UIElements.Background.vectorImage}
-     */
-    vectorImage: VectorImage;
-
-
-    Equals(other: Background): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    /**
-     * Retrieves the selected asset which can be of a type of Texture, Sprite, RenderTexture or VectorImage.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Background.GetSelectedImage.html | UIElements.Background.GetSelectedImage}
-     */
-    GetSelectedImage(): Object;
-    /**
-     * Help verify whether an asset has been assigned or not.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Background.IsEmpty.html | UIElements.Background.IsEmpty}
-     */
-    IsEmpty(): boolean;
-    ToString(): string;
-
-}
-    
-interface VectorImage extends ScriptableObject {
-    /**
-     * The width of the vector image.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.VectorImage-width.html | UIElements.VectorImage.width}
-     */
-    width: number;
-    /**
-     * The height of the vector image.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.VectorImage-height.html | UIElements.VectorImage.height}
-     */
-    height: number;
-
-
-
-}
-    
-interface VectorImageConstructor {
-
-    new(): VectorImage;
-
-
-}
-declare const VectorImage: VectorImageConstructor;
-    
-interface BackgroundConstructor {
-
-    new(t: Texture2D): Background;
-
-
-    FromRenderTexture(rt: RenderTexture): Background;
-    FromSprite(s: Sprite): Background;
-    FromTexture2D(t: Texture2D): Background;
-    FromVectorImage(vi: VectorImage): Background;
-}
-declare const Background: BackgroundConstructor;
-    
-interface FontDefinition {
-    /**
-     * Font to use to display text. You cannot set this and FontDefinition.fontAsset at the same time.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.FontDefinition-font.html | UIElements.FontDefinition.font}
-     */
-    font: Font;
-    /**
-     * SDF font to use to display text. You cannot set this and FontDefinition.font at the same time.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.FontDefinition-fontAsset.html | UIElements.FontDefinition.fontAsset}
-     */
-    fontAsset: FontAsset;
-
-
-    Equals(other: FontDefinition): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-}
-    
-interface TextAsset extends ScriptableObject {
-    version: string;
-    instanceID: number;
-    hashCode: number;
-    material: Material;
-    materialHashCode: number;
-
-
-
-}
-    
-interface FontAsset extends TextAsset {
-    fontAssetCreationEditorSettings: FontAssetCreationEditorSettings;
-    sourceFontFile: Font;
-    atlasPopulationMode: AtlasPopulationMode;
-    faceInfo: FaceInfo;
-    glyphTable: CSArray<Glyph>;
-    glyphLookupTable: CSDictionary<number, Glyph>;
-    characterTable: CSArray<Character>;
-    characterLookupTable: CSDictionary<number, Character>;
-    atlasTexture: Texture2D;
-    atlasTextures: CSArray<Texture2D>;
-    atlasTextureCount: number;
-    isMultiAtlasTexturesEnabled: boolean;
-    getFontFeatures: boolean;
-    atlasWidth: number;
-    atlasHeight: number;
-    atlasPadding: number;
-    atlasRenderMode: GlyphRenderMode;
-    fontFeatureTable: FontFeatureTable;
-    fallbackFontAssetTable: CSArray<FontAsset>;
-    fontWeightTable: CSArray<FontWeightPair>;
-    regularStyleWeight: number;
-    regularStyleSpacing: number;
-    boldStyleWeight: number;
-    boldStyleSpacing: number;
-    italicStyleSlant: number;
-    tabMultiple: number;
-
-
-    ClearFontAssetData(setAtlasSizeToZero: boolean): void;
-    HasCharacter(character: number): boolean;
-    HasCharacter(character: string, searchFallbacks: boolean, tryAddCharacter: boolean): boolean;
-    HasCharacter(character: number, searchFallbacks: boolean, tryAddCharacter: boolean): boolean;
-    HasCharacters(text: string, missingCharacters: CSArray<string>): boolean;
-    HasCharacters(text: string, missingCharacters: CSArray<number>, searchFallbacks: boolean, tryAddCharacter: boolean): boolean;
-    HasCharacters(text: string): boolean;
-    ReadFontAssetDefinition(): void;
-    TryAddCharacters(unicodes: CSArray<number>, includeFontFeatures: boolean): boolean;
-    TryAddCharacters(unicodes: CSArray<number>, missingUnicodes: CSArray<number>, includeFontFeatures: boolean): boolean;
-    TryAddCharacters(characters: string, includeFontFeatures: boolean): boolean;
-    TryAddCharacters(characters: string, missingCharacters: CSArray<string>, includeFontFeatures: boolean): boolean;
-
-}
-    
-interface FontAssetCreationEditorSettings {
-    sourceFontFileGUID: string;
-    faceIndex: number;
-    pointSizeSamplingMode: number;
-    pointSize: number;
-    padding: number;
-    paddingMode: number;
-    packingMode: number;
-    atlasWidth: number;
-    atlasHeight: number;
-    characterSetSelectionMode: number;
-    characterSequence: string;
-    referencedFontAssetGUID: string;
-    referencedTextAssetGUID: string;
-    fontStyle: number;
-    fontStyleModifier: number;
-    renderMode: number;
-    includeFontFeatures: boolean;
-
-
-
-}
-    
-interface TextElement {
-    elementType: TextElementType;
-    unicode: number;
-    textAsset: TextAsset;
-    glyph: Glyph;
-    glyphIndex: number;
-    scale: number;
-
-
-
-}
-    
-interface Character extends TextElement {
-
-
-
-}
-    
-interface CharacterConstructor {
-
-    new(): Character;
-    new(unicode: number, glyph: Glyph): Character;
-    new(unicode: number, fontAsset: FontAsset, glyph: Glyph): Character;
-
-
-}
-declare const Character: CharacterConstructor;
-    
-interface FontFeatureTable {
-
-
-    /**
-     * Sorts the glyph pair adjustment records by glyph index.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/TextCore.Text.FontFeatureTable.SortGlyphPairAdjustmentRecords.html | TextCore.Text.FontFeatureTable.SortGlyphPairAdjustmentRecords}
-     */
-    SortGlyphPairAdjustmentRecords(): void;
-    /**
-     * Sorts the Mark-to-Base Adjustment Table records.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/TextCore.Text.FontFeatureTable.SortMarkToBaseAdjustmentRecords.html | TextCore.Text.FontFeatureTable.SortMarkToBaseAdjustmentRecords}
-     */
-    SortMarkToBaseAdjustmentRecords(): void;
-    /**
-     * Sorts the Mark-to-Mark Adjustment Table records.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/TextCore.Text.FontFeatureTable.SortMarkToMarkAdjustmentRecords.html | TextCore.Text.FontFeatureTable.SortMarkToMarkAdjustmentRecords}
-     */
-    SortMarkToMarkAdjustmentRecords(): void;
-
-}
-    
-interface FontWeightPair {
-    regularTypeface: FontAsset;
-    italicTypeface: FontAsset;
-
-
-
-}
-    
-interface FontAssetConstructor {
-
-    new(): FontAsset;
-
-
-    CreateFontAsset(familyName: string, styleName: string, pointSize: number): FontAsset;
-    CreateFontAsset(fontFilePath: string, faceIndex: number, samplingPointSize: number, atlasPadding: number, renderMode: GlyphRenderMode, atlasWidth: number, atlasHeight: number): FontAsset;
-    CreateFontAsset(font: Font): FontAsset;
-    CreateFontAsset(font: Font, samplingPointSize: number, atlasPadding: number, renderMode: GlyphRenderMode, atlasWidth: number, atlasHeight: number, atlasPopulationMode: AtlasPopulationMode, enableMultiAtlasSupport: boolean): FontAsset;
-    GetCharacters(fontAsset: FontAsset): string;
-    GetCharactersArray(fontAsset: FontAsset): CSArray<number>;
-}
-declare const FontAsset: FontAssetConstructor;
-    
-interface FontDefinitionConstructor {
-
-
-
-    FromFont(f: Font): FontDefinition;
-    FromSDFFont(f: FontAsset): FontDefinition;
-}
-declare const FontDefinition: FontDefinitionConstructor;
-    
-interface TextShadow {
-    offset: Vector2;
-    blurRadius: number;
-    color: Color;
-
-
-    Equals(obj: unknown): boolean;
-    Equals(other: TextShadow): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-}
-    
-interface Scale {
-    value: Vector3;
-
-
-    Equals(other: Scale): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-}
-    
-interface ScaleConstructor {
-
-    new(scale: Vector2): Scale;
-    new(scale: Vector3): Scale;
-
-
-    None(): Scale;
-}
-declare const Scale: ScaleConstructor;
-    
-interface Translate {
-    x: Length;
-    y: Length;
-    z: number;
-
-
-    Equals(other: Translate): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-}
-    
-interface TranslateConstructor {
-
-    new(x: Length, y: Length, z: number): Translate;
-    new(x: Length, y: Length): Translate;
-
-
-    None(): Translate;
-}
-declare const Translate: TranslateConstructor;
-    
-interface Rotate {
-    /**
-     * The angle applied by the rotation. Positive values represent clockwise rotation and negative values represent counterclockwise rotation.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Rotate-angle.html | UIElements.Rotate.angle}
-     */
-    angle: Angle;
-
-
-    Equals(other: Rotate): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-}
-    
-interface Angle {
-    /**
-     * The angle value.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Angle-value.html | UIElements.Angle.value}
-     */
-    value: number;
-    /**
-     * The unit of the value property.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Angle-unit.html | UIElements.Angle.unit}
-     */
-    unit: AngleUnit;
-
-
-    Equals(other: Angle): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    /**
-     * Returns the value of the angle, expressed in degrees.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Angle.ToDegrees.html | UIElements.Angle.ToDegrees}
-     */
-    ToDegrees(): number;
-    /**
-     * Returns the value of the angle, expressed in gradians.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Angle.ToGradians.html | UIElements.Angle.ToGradians}
-     */
-    ToGradians(): number;
-    /**
-     * Returns the value of the angle, expressed in radians.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Angle.ToRadians.html | UIElements.Angle.ToRadians}
-     */
-    ToRadians(): number;
-    ToString(): string;
-    /**
-     * Returns the value of the angle, expressed in turns.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Angle.ToTurns.html | UIElements.Angle.ToTurns}
-     */
-    ToTurns(): number;
-
-}
-    
-interface AngleConstructor {
-
-    new(value: number): Angle;
-    new(value: number, unit: AngleUnit): Angle;
-
-
-    Degrees(value: number): Angle;
-    Gradians(value: number): Angle;
-    Radians(value: number): Angle;
-    Turns(value: number): Angle;
-}
-declare const Angle: AngleConstructor;
-    
-interface RotateConstructor {
-
-    new(angle: Angle): Rotate;
-
-
-    None(): Rotate;
-}
-declare const Rotate: RotateConstructor;
-    
-interface TransformOrigin {
-    x: Length;
-    y: Length;
-    z: number;
-
-
-    Equals(other: TransformOrigin): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-}
-    
-interface TransformOriginConstructor {
-
-    new(x: Length, y: Length, z: number): TransformOrigin;
-    new(x: Length, y: Length): TransformOrigin;
-
-
-    Initial(): TransformOrigin;
-}
-declare const TransformOrigin: TransformOriginConstructor;
-    
-interface BackgroundPosition {
-    keyword: BackgroundPositionKeyword;
-    offset: Length;
-
-
-    Equals(obj: unknown): boolean;
-    Equals(other: BackgroundPosition): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-}
-    
-interface BackgroundPositionConstructor {
-
-    new(keyword: BackgroundPositionKeyword): BackgroundPosition;
-    new(keyword: BackgroundPositionKeyword, offset: Length): BackgroundPosition;
-
-
-}
-declare const BackgroundPosition: BackgroundPositionConstructor;
-    
-interface BackgroundRepeat {
-    x: Repeat;
-    y: Repeat;
-
-
-    Equals(obj: unknown): boolean;
-    Equals(other: BackgroundRepeat): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-}
-    
-interface BackgroundRepeatConstructor {
-
-    new(repeatX: Repeat, repeatY: Repeat): BackgroundRepeat;
-
-
-}
-declare const BackgroundRepeat: BackgroundRepeatConstructor;
-    
-interface BackgroundSize {
-    /**
-     * Background size type
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.BackgroundSize-sizeType.html | UIElements.BackgroundSize.sizeType}
-     */
-    sizeType: BackgroundSizeType;
-    /**
-     * Background size x
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.BackgroundSize-x.html | UIElements.BackgroundSize.x}
-     */
-    x: Length;
-    /**
-     * Background size y
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.BackgroundSize-y.html | UIElements.BackgroundSize.y}
-     */
-    y: Length;
-
-
-    Equals(obj: unknown): boolean;
-    Equals(other: BackgroundSize): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-}
-    
-interface BackgroundSizeConstructor {
-
-    new(sizeX: Length, sizeY: Length): BackgroundSize;
-    new(sizeType: BackgroundSizeType): BackgroundSize;
-
-
-}
-declare const BackgroundSize: BackgroundSizeConstructor;
-    
-interface IVisualElementScheduler {
-
-
-    Execute(timerUpdateEvent: unknown): IVisualElementScheduledItem;
-    /**
-     * Schedule this action to be executed later.
-     * @param updateEvent The action to be executed.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IVisualElementScheduler.Execute.html | UIElements.IVisualElementScheduler.Execute}
-     */
-    Execute(updateEvent: unknown): IVisualElementScheduledItem;
-
-}
-    
-interface IVisualElementScheduledItem {
-    /**
-     * Returns the VisualElement this object is associated with.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IVisualElementScheduledItem-element.html | UIElements.IVisualElementScheduledItem.element}
-     */
-    element: VisualElement;
-    /**
-     * Will be true when this item is scheduled. Note that an item's callback will only be executed when it's VisualElement is attached to a panel.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IVisualElementScheduledItem-isActive.html | UIElements.IVisualElementScheduledItem.isActive}
-     */
-    isActive: boolean;
-
-
-    /**
-     * Repeats this action after a specified time.
-     * @param intervalMs Minimum amount of time in milliseconds between each action execution.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IVisualElementScheduledItem.Every.html | UIElements.IVisualElementScheduledItem.Every}
-     */
-    Every(intervalMs: number): IVisualElementScheduledItem;
-    /**
-     * Cancels any previously scheduled execution of this item and re-schedules the item.
-     * @param delayMs Minimum time in milliseconds before this item will be executed.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IVisualElementScheduledItem.ExecuteLater.html | UIElements.IVisualElementScheduledItem.ExecuteLater}
-     */
-    ExecuteLater(delayMs: number): void;
-    /**
-     * After specified duration, the item will be automatically unscheduled.
-     * @param durationMs The total duration in milliseconds where this item will be active.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IVisualElementScheduledItem.ForDuration.html | UIElements.IVisualElementScheduledItem.ForDuration}
-     */
-    ForDuration(durationMs: number): IVisualElementScheduledItem;
-    /**
-     * Removes this item from its VisualElement's scheduler.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IVisualElementScheduledItem.Pause.html | UIElements.IVisualElementScheduledItem.Pause}
-     */
-    Pause(): void;
-    /**
-     * If not already active, will schedule this item on its VisualElement's scheduler.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IVisualElementScheduledItem.Resume.html | UIElements.IVisualElementScheduledItem.Resume}
-     */
-    Resume(): void;
-    /**
-     * Adds a delay to the first invokation.
-     * @param delayMs The minimum number of milliseconds after activation where this item's action will be executed.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IVisualElementScheduledItem.StartingIn.html | UIElements.IVisualElementScheduledItem.StartingIn}
-     */
-    StartingIn(delayMs: number): IVisualElementScheduledItem;
-    Until(stopCondition: unknown): IVisualElementScheduledItem;
-
-}
-    
-interface ITransitionAnimations {
-
-
-    /**
-     * Triggers an animation changing this element's layout style values.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.ITransitionAnimations.Layout.html | UIElements.Experimental.ITransitionAnimations.Layout}
-     */
-    Layout(to: Rect, durationMs: number): unknown;
-    /**
-     * Triggers an animation changing this element's transform position.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.ITransitionAnimations.Position.html | UIElements.Experimental.ITransitionAnimations.Position}
-     */
-    Position(to: Vector3, duration: number): unknown;
-    /**
-     * Triggers an animation changing this element's transform rotation.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.ITransitionAnimations.Rotation.html | UIElements.Experimental.ITransitionAnimations.Rotation}
-     */
-    Rotation(to: Quaternion, duration: number): unknown;
-    /**
-     * Triggers an animation changing this element's transform scale.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.ITransitionAnimations.Scale.html | UIElements.Experimental.ITransitionAnimations.Scale}
-     */
-    Scale(to: number, duration: number): unknown;
-    /**
-     * Triggers an animation changing this element's size style values.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.ITransitionAnimations.Size.html | UIElements.Experimental.ITransitionAnimations.Size}
-     */
-    Size(to: Vector2, durationMs: number): unknown;
-    Start(from: number, to: number, durationMs: number, onValueChanged: unknown): unknown;
-    Start(from: Rect, to: Rect, durationMs: number, onValueChanged: unknown): unknown;
-    Start(from: Color, to: Color, durationMs: number, onValueChanged: unknown): unknown;
-    Start(from: Vector3, to: Vector3, durationMs: number, onValueChanged: unknown): unknown;
-    Start(from: Vector2, to: Vector2, durationMs: number, onValueChanged: unknown): unknown;
-    Start(from: Quaternion, to: Quaternion, durationMs: number, onValueChanged: unknown): unknown;
-    /**
-     * Starts a transition animation on this VisualElement.
-     * @param from Start value.
-     * @param to End value.
-     * @param durationMs Duration of the transition in milliseconds.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.ITransitionAnimations.Start.html | UIElements.Experimental.ITransitionAnimations.Start}
-     */
-    Start(from: StyleValues, to: StyleValues, durationMs: number): unknown;
-    /**
-     * Starts a transition animation on this VisualElement.
-     * @param to End value.
-     * @param durationMs Duration of the transition in milliseconds.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.ITransitionAnimations.Start.html | UIElements.Experimental.ITransitionAnimations.Start}
-     */
-    Start(to: StyleValues, durationMs: number): unknown;
-    Start(fromValueGetter: unknown, to: number, durationMs: number, onValueChanged: unknown): unknown;
-    Start(fromValueGetter: unknown, to: Rect, durationMs: number, onValueChanged: unknown): unknown;
-    Start(fromValueGetter: unknown, to: Color, durationMs: number, onValueChanged: unknown): unknown;
-    Start(fromValueGetter: unknown, to: Vector3, durationMs: number, onValueChanged: unknown): unknown;
-    Start(fromValueGetter: unknown, to: Vector2, durationMs: number, onValueChanged: unknown): unknown;
-    Start(fromValueGetter: unknown, to: Quaternion, durationMs: number, onValueChanged: unknown): unknown;
-    /**
-     * Triggers an animation changing this element's positioning style values.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.ITransitionAnimations.TopLeft.html | UIElements.Experimental.ITransitionAnimations.TopLeft}
-     */
-    TopLeft(to: Vector2, durationMs: number): unknown;
-
-}
-    
-interface StyleValues {
-    /**
-     * Top distance from the element's box during layout.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-top.html | UIElements.Experimental.StyleValues.top}
-     */
-    top: number;
-    /**
-     * Left distance from the element's box during layout.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-left.html | UIElements.Experimental.StyleValues.left}
-     */
-    left: number;
-    /**
-     * Fixed width of an element for the layout.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-width.html | UIElements.Experimental.StyleValues.width}
-     */
-    width: number;
-    /**
-     * Fixed height of an element for the layout.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-height.html | UIElements.Experimental.StyleValues.height}
-     */
-    height: number;
-    /**
-     * Right distance from the element's box during layout.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-right.html | UIElements.Experimental.StyleValues.right}
-     */
-    right: number;
-    /**
-     * Bottom distance from the element's box during layout.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-bottom.html | UIElements.Experimental.StyleValues.bottom}
-     */
-    bottom: number;
-    /**
-     * Color to use when drawing the text of an element.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-color.html | UIElements.Experimental.StyleValues.color}
-     */
-    color: Color;
-    /**
-     * Background color to paint in the element's box.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-backgroundColor.html | UIElements.Experimental.StyleValues.backgroundColor}
-     */
-    backgroundColor: Color;
-    /**
-     * Tinting color for the element's backgroundImage.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-unityBackgroundImageTintColor.html | UIElements.Experimental.StyleValues.unityBackgroundImageTintColor}
-     */
-    unityBackgroundImageTintColor: Color;
-    /**
-     * Color of the border to paint inside the element's box.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-borderColor.html | UIElements.Experimental.StyleValues.borderColor}
-     */
-    borderColor: Color;
-    /**
-     * Space reserved for the left edge of the margin during the layout phase.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-marginLeft.html | UIElements.Experimental.StyleValues.marginLeft}
-     */
-    marginLeft: number;
-    /**
-     * Space reserved for the top edge of the margin during the layout phase.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-marginTop.html | UIElements.Experimental.StyleValues.marginTop}
-     */
-    marginTop: number;
-    /**
-     * Space reserved for the right edge of the margin during the layout phase.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-marginRight.html | UIElements.Experimental.StyleValues.marginRight}
-     */
-    marginRight: number;
-    /**
-     * Space reserved for the bottom edge of the margin during the layout phase.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-marginBottom.html | UIElements.Experimental.StyleValues.marginBottom}
-     */
-    marginBottom: number;
-    /**
-     * Space reserved for the left edge of the padding during the layout phase.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-paddingLeft.html | UIElements.Experimental.StyleValues.paddingLeft}
-     */
-    paddingLeft: number;
-    /**
-     * Space reserved for the top edge of the padding during the layout phase.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-paddingTop.html | UIElements.Experimental.StyleValues.paddingTop}
-     */
-    paddingTop: number;
-    /**
-     * Space reserved for the right edge of the padding during the layout phase.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-paddingRight.html | UIElements.Experimental.StyleValues.paddingRight}
-     */
-    paddingRight: number;
-    /**
-     * Space reserved for the bottom edge of the padding during the layout phase.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-paddingBottom.html | UIElements.Experimental.StyleValues.paddingBottom}
-     */
-    paddingBottom: number;
-    /**
-     * Space reserved for the left edge of the border during the layout phase.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-borderLeftWidth.html | UIElements.Experimental.StyleValues.borderLeftWidth}
-     */
-    borderLeftWidth: number;
-    /**
-     * Space reserved for the right edge of the border during the layout phase.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-borderRightWidth.html | UIElements.Experimental.StyleValues.borderRightWidth}
-     */
-    borderRightWidth: number;
-    /**
-     * Space reserved for the top edge of the border during the layout phase.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-borderTopWidth.html | UIElements.Experimental.StyleValues.borderTopWidth}
-     */
-    borderTopWidth: number;
-    /**
-     * Space reserved for the bottom edge of the border during the layout phase.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-borderBottomWidth.html | UIElements.Experimental.StyleValues.borderBottomWidth}
-     */
-    borderBottomWidth: number;
-    /**
-     * The radius of the top-left corner when a rounded rectangle is drawn in the element's box.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-borderTopLeftRadius.html | UIElements.Experimental.StyleValues.borderTopLeftRadius}
-     */
-    borderTopLeftRadius: number;
-    /**
-     * The radius of the top-right corner when a rounded rectangle is drawn in the element's box.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-borderTopRightRadius.html | UIElements.Experimental.StyleValues.borderTopRightRadius}
-     */
-    borderTopRightRadius: number;
-    /**
-     * The radius of the bottom-left corner when a rounded rectangle is drawn in the element's box.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-borderBottomLeftRadius.html | UIElements.Experimental.StyleValues.borderBottomLeftRadius}
-     */
-    borderBottomLeftRadius: number;
-    /**
-     * The radius of the bottom-right corner when a rounded rectangle is drawn in the element's box.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-borderBottomRightRadius.html | UIElements.Experimental.StyleValues.borderBottomRightRadius}
-     */
-    borderBottomRightRadius: number;
-    /**
-     * Specifies the transparency of an element.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-opacity.html | UIElements.Experimental.StyleValues.opacity}
-     */
-    opacity: number;
-    /**
-     * Specifies how much the item will grow relative to the rest of the flexible items inside the same container.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-flexGrow.html | UIElements.Experimental.StyleValues.flexGrow}
-     */
-    flexGrow: number;
-    /**
-     * Specifies how the item will shrink relative to the rest of the flexible items inside the same container.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.StyleValues-flexShrink.html | UIElements.Experimental.StyleValues.flexShrink}
-     */
-    flexShrink: number;
-
-
-
-}
-    
-interface IResolvedStyle {
-    /**
-     * Alignment of the whole area of children on the cross axis if they span over multiple lines in this container.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-alignContent.html | UIElements.IResolvedStyle.alignContent}
-     */
-    alignContent: Align;
-    /**
-     * Alignment of children on the cross axis of this container.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-alignItems.html | UIElements.IResolvedStyle.alignItems}
-     */
-    alignItems: Align;
-    /**
-     * Similar to align-items, but only for this specific element.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-alignSelf.html | UIElements.IResolvedStyle.alignSelf}
-     */
-    alignSelf: Align;
-    /**
-     * Background color to paint in the element's box.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-backgroundColor.html | UIElements.IResolvedStyle.backgroundColor}
-     */
-    backgroundColor: Color;
-    /**
-     * Background image to paint in the element's box.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-backgroundImage.html | UIElements.IResolvedStyle.backgroundImage}
-     */
-    backgroundImage: Background;
-    /**
-     * Background image x position value.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-backgroundPositionX.html | UIElements.IResolvedStyle.backgroundPositionX}
-     */
-    backgroundPositionX: BackgroundPosition;
-    /**
-     * Background image y position value.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-backgroundPositionY.html | UIElements.IResolvedStyle.backgroundPositionY}
-     */
-    backgroundPositionY: BackgroundPosition;
-    /**
-     * Background image repeat value.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-backgroundRepeat.html | UIElements.IResolvedStyle.backgroundRepeat}
-     */
-    backgroundRepeat: BackgroundRepeat;
-    /**
-     * Background image size value.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-backgroundSize.html | UIElements.IResolvedStyle.backgroundSize}
-     */
-    backgroundSize: BackgroundSize;
-    /**
-     * Color of the element's bottom border.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-borderBottomColor.html | UIElements.IResolvedStyle.borderBottomColor}
-     */
-    borderBottomColor: Color;
-    /**
-     * The radius of the bottom-left corner when a rounded rectangle is drawn in the element's box.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-borderBottomLeftRadius.html | UIElements.IResolvedStyle.borderBottomLeftRadius}
-     */
-    borderBottomLeftRadius: number;
-    /**
-     * The radius of the bottom-right corner when a rounded rectangle is drawn in the element's box.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-borderBottomRightRadius.html | UIElements.IResolvedStyle.borderBottomRightRadius}
-     */
-    borderBottomRightRadius: number;
-    /**
-     * Space reserved for the bottom edge of the border during the layout phase.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-borderBottomWidth.html | UIElements.IResolvedStyle.borderBottomWidth}
-     */
-    borderBottomWidth: number;
-    /**
-     * Color of the element's left border.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-borderLeftColor.html | UIElements.IResolvedStyle.borderLeftColor}
-     */
-    borderLeftColor: Color;
-    /**
-     * Space reserved for the left edge of the border during the layout phase.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-borderLeftWidth.html | UIElements.IResolvedStyle.borderLeftWidth}
-     */
-    borderLeftWidth: number;
-    /**
-     * Color of the element's right border.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-borderRightColor.html | UIElements.IResolvedStyle.borderRightColor}
-     */
-    borderRightColor: Color;
-    /**
-     * Space reserved for the right edge of the border during the layout phase.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-borderRightWidth.html | UIElements.IResolvedStyle.borderRightWidth}
-     */
-    borderRightWidth: number;
-    /**
-     * Color of the element's top border.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-borderTopColor.html | UIElements.IResolvedStyle.borderTopColor}
-     */
-    borderTopColor: Color;
-    /**
-     * The radius of the top-left corner when a rounded rectangle is drawn in the element's box.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-borderTopLeftRadius.html | UIElements.IResolvedStyle.borderTopLeftRadius}
-     */
-    borderTopLeftRadius: number;
-    /**
-     * The radius of the top-right corner when a rounded rectangle is drawn in the element's box.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-borderTopRightRadius.html | UIElements.IResolvedStyle.borderTopRightRadius}
-     */
-    borderTopRightRadius: number;
-    /**
-     * Space reserved for the top edge of the border during the layout phase.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-borderTopWidth.html | UIElements.IResolvedStyle.borderTopWidth}
-     */
-    borderTopWidth: number;
-    /**
-     * Bottom distance from the element's box during layout.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-bottom.html | UIElements.IResolvedStyle.bottom}
-     */
-    bottom: number;
-    /**
-     * Color to use when drawing the text of an element.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-color.html | UIElements.IResolvedStyle.color}
-     */
-    color: Color;
-    /**
-     * Defines how an element is displayed in the layout.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-display.html | UIElements.IResolvedStyle.display}
-     */
-    display: DisplayStyle;
-    /**
-     * Initial main size of a flex item, on the main flex axis. The final layout might be smaller or larger, according to the flex shrinking and growing determined by the other flex properties.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-flexBasis.html | UIElements.IResolvedStyle.flexBasis}
-     */
-    flexBasis: StyleFloat;
-    /**
-     * Direction of the main axis to layout children in a container.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-flexDirection.html | UIElements.IResolvedStyle.flexDirection}
-     */
-    flexDirection: FlexDirection;
-    /**
-     * Specifies how the item will grow relative to the rest of the flexible items inside the same container.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-flexGrow.html | UIElements.IResolvedStyle.flexGrow}
-     */
-    flexGrow: number;
-    /**
-     * Specifies how the item will shrink relative to the rest of the flexible items inside the same container.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-flexShrink.html | UIElements.IResolvedStyle.flexShrink}
-     */
-    flexShrink: number;
-    /**
-     * Placement of children over multiple lines if not enough space is available in this container.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-flexWrap.html | UIElements.IResolvedStyle.flexWrap}
-     */
-    flexWrap: Wrap;
-    /**
-     * Font size to draw the element's text.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-fontSize.html | UIElements.IResolvedStyle.fontSize}
-     */
-    fontSize: number;
-    /**
-     * Fixed height of an element for the layout.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-height.html | UIElements.IResolvedStyle.height}
-     */
-    height: number;
-    /**
-     * Justification of children on the main axis of this container.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-justifyContent.html | UIElements.IResolvedStyle.justifyContent}
-     */
-    justifyContent: Justify;
-    /**
-     * Left distance from the element's box during layout.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-left.html | UIElements.IResolvedStyle.left}
-     */
-    left: number;
-    /**
-     * Increases or decreases the space between characters.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-letterSpacing.html | UIElements.IResolvedStyle.letterSpacing}
-     */
-    letterSpacing: number;
-    /**
-     * Space reserved for the bottom edge of the margin during the layout phase.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-marginBottom.html | UIElements.IResolvedStyle.marginBottom}
-     */
-    marginBottom: number;
-    /**
-     * Space reserved for the left edge of the margin during the layout phase.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-marginLeft.html | UIElements.IResolvedStyle.marginLeft}
-     */
-    marginLeft: number;
-    /**
-     * Space reserved for the right edge of the margin during the layout phase.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-marginRight.html | UIElements.IResolvedStyle.marginRight}
-     */
-    marginRight: number;
-    /**
-     * Space reserved for the top edge of the margin during the layout phase.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-marginTop.html | UIElements.IResolvedStyle.marginTop}
-     */
-    marginTop: number;
-    /**
-     * Maximum height for an element, when it is flexible or measures its own size.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-maxHeight.html | UIElements.IResolvedStyle.maxHeight}
-     */
-    maxHeight: StyleFloat;
-    /**
-     * Maximum width for an element, when it is flexible or measures its own size.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-maxWidth.html | UIElements.IResolvedStyle.maxWidth}
-     */
-    maxWidth: StyleFloat;
-    /**
-     * Minimum height for an element, when it is flexible or measures its own size.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-minHeight.html | UIElements.IResolvedStyle.minHeight}
-     */
-    minHeight: StyleFloat;
-    /**
-     * Minimum width for an element, when it is flexible or measures its own size.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-minWidth.html | UIElements.IResolvedStyle.minWidth}
-     */
-    minWidth: StyleFloat;
-    /**
-     * Specifies the transparency of an element and of its children.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-opacity.html | UIElements.IResolvedStyle.opacity}
-     */
-    opacity: number;
-    /**
-     * Space reserved for the bottom edge of the padding during the layout phase.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-paddingBottom.html | UIElements.IResolvedStyle.paddingBottom}
-     */
-    paddingBottom: number;
-    /**
-     * Space reserved for the left edge of the padding during the layout phase.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-paddingLeft.html | UIElements.IResolvedStyle.paddingLeft}
-     */
-    paddingLeft: number;
-    /**
-     * Space reserved for the right edge of the padding during the layout phase.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-paddingRight.html | UIElements.IResolvedStyle.paddingRight}
-     */
-    paddingRight: number;
-    /**
-     * Space reserved for the top edge of the padding during the layout phase.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-paddingTop.html | UIElements.IResolvedStyle.paddingTop}
-     */
-    paddingTop: number;
-    /**
-     * Element's positioning in its parent container.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-position.html | UIElements.IResolvedStyle.position}
-     */
-    position: Position;
-    /**
-     * Right distance from the element's box during layout.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-right.html | UIElements.IResolvedStyle.right}
-     */
-    right: number;
-    /**
-     * A rotation transformation.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-rotate.html | UIElements.IResolvedStyle.rotate}
-     */
-    rotate: Rotate;
-    /**
-     * A scaling transformation.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-scale.html | UIElements.IResolvedStyle.scale}
-     */
-    scale: Scale;
-    /**
-     * The element's text overflow mode.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-textOverflow.html | UIElements.IResolvedStyle.textOverflow}
-     */
-    textOverflow: TextOverflow;
-    /**
-     * Top distance from the element's box during layout.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-top.html | UIElements.IResolvedStyle.top}
-     */
-    top: number;
-    /**
-     * The transformation origin is the point around which a transformation is applied.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-transformOrigin.html | UIElements.IResolvedStyle.transformOrigin}
-     */
-    transformOrigin: Vector3;
-    /**
-     * Duration to wait before starting a property's transition effect when its value changes.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-transitionDelay.html | UIElements.IResolvedStyle.transitionDelay}
-     */
-    transitionDelay: CSArray<TimeValue>;
-    /**
-     * Time a transition animation should take to complete.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-transitionDuration.html | UIElements.IResolvedStyle.transitionDuration}
-     */
-    transitionDuration: CSArray<TimeValue>;
-    /**
-     * Properties to which a transition effect should be applied.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-transitionProperty.html | UIElements.IResolvedStyle.transitionProperty}
-     */
-    transitionProperty: CSArray<StylePropertyName>;
-    /**
-     * Determines how intermediate values are calculated for properties modified by a transition effect.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-transitionTimingFunction.html | UIElements.IResolvedStyle.transitionTimingFunction}
-     */
-    transitionTimingFunction: CSArray<EasingFunction>;
-    /**
-     * A translate transformation.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-translate.html | UIElements.IResolvedStyle.translate}
-     */
-    translate: Vector3;
-    /**
-     * Tinting color for the element's backgroundImage.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-unityBackgroundImageTintColor.html | UIElements.IResolvedStyle.unityBackgroundImageTintColor}
-     */
-    unityBackgroundImageTintColor: Color;
-    /**
-     * Font to draw the element's text, defined as a Font object.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-unityFont.html | UIElements.IResolvedStyle.unityFont}
-     */
-    unityFont: Font;
-    /**
-     * Font to draw the element's text, defined as a FontDefinition structure. It takes precedence over -unity-font.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-unityFontDefinition.html | UIElements.IResolvedStyle.unityFontDefinition}
-     */
-    unityFontDefinition: FontDefinition;
-    /**
-     * Font style and weight (normal, bold, italic) to draw the element's text.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-unityFontStyleAndWeight.html | UIElements.IResolvedStyle.unityFontStyleAndWeight}
-     */
-    unityFontStyleAndWeight: FontStyle;
-    /**
-     * Increases or decreases the space between paragraphs.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-unityParagraphSpacing.html | UIElements.IResolvedStyle.unityParagraphSpacing}
-     */
-    unityParagraphSpacing: number;
-    /**
-     * Size of the 9-slice's bottom edge when painting an element's background image.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-unitySliceBottom.html | UIElements.IResolvedStyle.unitySliceBottom}
-     */
-    unitySliceBottom: number;
-    /**
-     * Size of the 9-slice's left edge when painting an element's background image.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-unitySliceLeft.html | UIElements.IResolvedStyle.unitySliceLeft}
-     */
-    unitySliceLeft: number;
-    /**
-     * Size of the 9-slice's right edge when painting an element's background image.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-unitySliceRight.html | UIElements.IResolvedStyle.unitySliceRight}
-     */
-    unitySliceRight: number;
-    /**
-     * Scale applied to an element's slices.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-unitySliceScale.html | UIElements.IResolvedStyle.unitySliceScale}
-     */
-    unitySliceScale: number;
-    /**
-     * Size of the 9-slice's top edge when painting an element's background image.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-unitySliceTop.html | UIElements.IResolvedStyle.unitySliceTop}
-     */
-    unitySliceTop: number;
-    /**
-     * Horizontal and vertical text alignment in the element's box.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-unityTextAlign.html | UIElements.IResolvedStyle.unityTextAlign}
-     */
-    unityTextAlign: TextAnchor;
-    /**
-     * Outline color of the text.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-unityTextOutlineColor.html | UIElements.IResolvedStyle.unityTextOutlineColor}
-     */
-    unityTextOutlineColor: Color;
-    /**
-     * Outline width of the text.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-unityTextOutlineWidth.html | UIElements.IResolvedStyle.unityTextOutlineWidth}
-     */
-    unityTextOutlineWidth: number;
-    /**
-     * The element's text overflow position.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-unityTextOverflowPosition.html | UIElements.IResolvedStyle.unityTextOverflowPosition}
-     */
-    unityTextOverflowPosition: TextOverflowPosition;
-    /**
-     * Specifies whether or not an element is visible.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-visibility.html | UIElements.IResolvedStyle.visibility}
-     */
-    visibility: Visibility;
-    /**
-     * Word wrap over multiple lines if not enough space is available to draw the text of an element.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-whiteSpace.html | UIElements.IResolvedStyle.whiteSpace}
-     */
-    whiteSpace: WhiteSpace;
-    /**
-     * Fixed width of an element for the layout.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-width.html | UIElements.IResolvedStyle.width}
-     */
-    width: number;
-    /**
-     * Increases or decreases the space between words.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-wordSpacing.html | UIElements.IResolvedStyle.wordSpacing}
-     */
-    wordSpacing: number;
-    /**
-     * Background image scaling in the element's box.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-unityBackgroundScaleMode.html | UIElements.IResolvedStyle.unityBackgroundScaleMode}
-     */
-    unityBackgroundScaleMode: unknown;
-
-
-
-}
-    
-interface StyleFloat {
-    /**
-     * The float value.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleFloat-value.html | UIElements.StyleFloat.value}
-     */
-    value: number;
-    /**
-     * The style keyword.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleFloat-keyword.html | UIElements.StyleFloat.keyword}
-     */
-    keyword: StyleKeyword;
-
-
-    Equals(other: StyleFloat): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-}
-    
-interface StyleFloatConstructor {
-
-    new(v: number): StyleFloat;
-    new(keyword: StyleKeyword): StyleFloat;
-
-
-}
-declare const StyleFloat: StyleFloatConstructor;
-    
-interface TimeValue {
-    /**
-     * The time value.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.TimeValue-value.html | UIElements.TimeValue.value}
-     */
-    value: number;
-    /**
-     * The unit of the value property.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.TimeValue-unit.html | UIElements.TimeValue.unit}
-     */
-    unit: TimeUnit;
-
-
-    Equals(other: TimeValue): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-}
-    
-interface TimeValueConstructor {
-
-    new(value: number): TimeValue;
-    new(value: number, unit: TimeUnit): TimeValue;
-
-
-}
-declare const TimeValue: TimeValueConstructor;
-    
-interface StylePropertyName {
-
-
-    Equals(other: unknown): boolean;
-    Equals(other: StylePropertyName): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-}
-    
-interface StylePropertyNameConstructor {
-
-    new(name: string): StylePropertyName;
-
-
-    IsNullOrEmpty(propertyName: StylePropertyName): boolean;
-}
-declare const StylePropertyName: StylePropertyNameConstructor;
-    
-interface EasingFunction {
-    /**
-     * The value of the EasingMode.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.EasingFunction-mode.html | UIElements.EasingFunction.mode}
-     */
-    mode: EasingMode;
-
-
-    Equals(other: EasingFunction): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-}
-    
-interface EasingFunctionConstructor {
-
-    new(mode: EasingMode): EasingFunction;
-
-
-}
-declare const EasingFunction: EasingFunctionConstructor;
-    
-interface IExperimentalFeatures {
-    /**
-     * Returns the animation experimental interface.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IExperimentalFeatures-animation.html | UIElements.IExperimentalFeatures.animation}
-     */
-    animation: ITransitionAnimations;
-
-
-
-}
-    
-interface ITransform {
-    /**
-     * The position of the VisualElement transform.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITransform-position.html | UIElements.ITransform.position}
-     */
-    position: Vector3;
-    /**
-     * The rotation of the VisualElement transform stored as a Quaternion.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITransform-rotation.html | UIElements.ITransform.rotation}
-     */
-    rotation: Quaternion;
-    /**
-     * The scale of the VisualElement transform.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITransform-scale.html | UIElements.ITransform.scale}
-     */
-    scale: Vector3;
-    /**
-     * Transformation matrix calculated from the position, rotation and scale of the transform (Read Only).
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITransform-matrix.html | UIElements.ITransform.matrix}
-     */
-    matrix: Matrix4x4;
-
-
-
-}
-    
-interface IEventHandler {
-
-
-    /**
-     * Handles an event according to its propagation phase and current target, by executing the element's
- default action or callbacks associated with the event.
-     * @param evt The event to handle.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IEventHandler.HandleEvent.html | UIElements.IEventHandler.HandleEvent}
-     */
-    HandleEvent(evt: EventBase): void;
-    /**
-     * Returns true if event handlers for the event propagation BubbleUp phase, have been attached on this object.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IEventHandler.HasBubbleUpHandlers.html | UIElements.IEventHandler.HasBubbleUpHandlers}
-     */
-    HasBubbleUpHandlers(): boolean;
-    /**
-     * Returns true if event handlers, for the event propagation TrickleDown phase, are attached to this object.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IEventHandler.HasTrickleDownHandlers.html | UIElements.IEventHandler.HasTrickleDownHandlers}
-     */
-    HasTrickleDownHandlers(): boolean;
-    /**
-     * Sends an event to the event handler.
-     * @param e The event to send.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IEventHandler.SendEvent.html | UIElements.IEventHandler.SendEvent}
-     */
-    SendEvent(e: EventBase): void;
-
-}
-    
-interface EventBase {
-    /**
-     * Retrieves the type ID for this event instance.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.EventBase-eventTypeId.html | UIElements.EventBase.eventTypeId}
-     */
-    eventTypeId: number;
-    /**
-     * The time when the event was created, in milliseconds.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.EventBase-timestamp.html | UIElements.EventBase.timestamp}
-     */
-    timestamp: number;
-    /**
-     * Returns whether this event type bubbles up in the event propagation path.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.EventBase-bubbles.html | UIElements.EventBase.bubbles}
-     */
-    bubbles: boolean;
-    /**
-     * Returns whether this event is sent down the event propagation path during the TrickleDown phase.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.EventBase-tricklesDown.html | UIElements.EventBase.tricklesDown}
-     */
-    tricklesDown: boolean;
-    /**
-     * The target visual element that received this event. Unlike currentTarget, this target does not change when
- the event is sent to other elements along the propagation path.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.EventBase-target.html | UIElements.EventBase.target}
-     */
-    target: IEventHandler;
-    /**
-     * Whether StopPropagation() was called for this event.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.EventBase-isPropagationStopped.html | UIElements.EventBase.isPropagationStopped}
-     */
-    isPropagationStopped: boolean;
-    /**
-     * Indicates whether StopImmediatePropagation() was called for this event.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.EventBase-isImmediatePropagationStopped.html | UIElements.EventBase.isImmediatePropagationStopped}
-     */
-    isImmediatePropagationStopped: boolean;
-    /**
-     * Returns true if the default actions should not be executed for this event.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.EventBase-isDefaultPrevented.html | UIElements.EventBase.isDefaultPrevented}
-     */
-    isDefaultPrevented: boolean;
-    /**
-     * The current propagation phase for this event.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.EventBase-propagationPhase.html | UIElements.EventBase.propagationPhase}
-     */
-    propagationPhase: PropagationPhase;
-    /**
-     * The current target of the event. This is the VisualElement, in the propagation path, for which event handlers are currently being executed.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.EventBase-currentTarget.html | UIElements.EventBase.currentTarget}
-     */
-    currentTarget: IEventHandler;
-    /**
-     * Indicates whether the event is being dispatched to a visual element. An event cannot be redispatched while it being dispatched. If you need to recursively dispatch an event, it is recommended that you use a copy of the event.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.EventBase-dispatch.html | UIElements.EventBase.dispatch}
-     */
-    dispatch: boolean;
-    /**
-     * The IMGUIEvent at the source of this event. The source can be null since not all events are generated by IMGUI.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.EventBase-imguiEvent.html | UIElements.EventBase.imguiEvent}
-     */
-    imguiEvent: Event;
-    /**
-     * The original mouse position of the IMGUI event, before it is transformed to the current target local coordinates.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.EventBase-originalMousePosition.html | UIElements.EventBase.originalMousePosition}
-     */
-    originalMousePosition: Vector2;
-
-
-    /**
-     * Implementation of IDisposable.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.EventBase.Dispose.html | UIElements.EventBase.Dispose}
-     */
-    Dispose(): void;
-    /**
-     * Indicates whether the default actions are prevented from being executed for this event.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.EventBase.PreventDefault.html | UIElements.EventBase.PreventDefault}
-     */
-    PreventDefault(): void;
-    /**
-     * Immediately stops the propagation of the event. The event isn't sent to other elements along the propagation path. This method prevents other event handlers from executing on the current target.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.EventBase.StopImmediatePropagation.html | UIElements.EventBase.StopImmediatePropagation}
-     */
-    StopImmediatePropagation(): void;
-    /**
-     * Stops propagating this event. The event is not sent to other elements along the propagation path.
- This method does not prevent other event handlers from executing on the current target.
- If this method is called during the TrickleDown propagation phase, it will prevent default actions
- to be processed, such as an element getting focused as a result of a PointerDownEvent.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.EventBase.StopPropagation.html | UIElements.EventBase.StopPropagation}
-     */
-    StopPropagation(): void;
-
-}
-    
-interface CallbackEventHandler extends IEventHandler {
-
-
-    /**
-     * Return true if event handlers for the event propagation BubbleUp phase have been attached on this object.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.CallbackEventHandler.HasBubbleUpHandlers.html | UIElements.CallbackEventHandler.HasBubbleUpHandlers}
-     */
-    HasBubbleUpHandlers(): boolean;
-    /**
-     * Returns true if event handlers, for the event propagation TrickleDown phase, are attached to this object.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.CallbackEventHandler.HasTrickleDownHandlers.html | UIElements.CallbackEventHandler.HasTrickleDownHandlers}
-     */
-    HasTrickleDownHandlers(): boolean;
-    RegisterCallback<TEventType>(callback: unknown, useTrickleDown: TrickleDown): void;
-    RegisterCallback<TEventType, TUserArgsType>(callback: unknown, userArgs: TUserArgsType, useTrickleDown: TrickleDown): void;
-    RegisterCallbackOnce<TEventType>(callback: unknown, useTrickleDown: TrickleDown): void;
-    RegisterCallbackOnce<TEventType, TUserArgsType>(callback: unknown, userArgs: TUserArgsType, useTrickleDown: TrickleDown): void;
-    /**
-     * Sends an event to the event handler.
-     * @param e The event to send.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.CallbackEventHandler.SendEvent.html | UIElements.CallbackEventHandler.SendEvent}
-     */
-    SendEvent(e: EventBase): void;
-    UnregisterCallback<TEventType>(callback: unknown, useTrickleDown: TrickleDown): void;
-    UnregisterCallback<TEventType, TUserArgsType>(callback: unknown, useTrickleDown: TrickleDown): void;
-
-}
-    
-interface Focusable extends CallbackEventHandler {
-    /**
-     * Return the focus controller for this element.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Focusable-focusController.html | UIElements.Focusable.focusController}
-     */
-    focusController: FocusController;
-    /**
-     * True if the element can be focused.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Focusable-focusable.html | UIElements.Focusable.focusable}
-     */
-    focusable: boolean;
-    /**
-     * An integer used to sort focusables in the focus ring. Must be greater than or equal to zero.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Focusable-tabIndex.html | UIElements.Focusable.tabIndex}
-     */
-    tabIndex: number;
-    /**
-     * Whether the element should delegate the focus to its children.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Focusable-delegatesFocus.html | UIElements.Focusable.delegatesFocus}
-     */
-    delegatesFocus: boolean;
-    /**
-     * Return true if the element can be focused.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Focusable-canGrabFocus.html | UIElements.Focusable.canGrabFocus}
-     */
-    canGrabFocus: boolean;
-
-
-    /**
-     * Tell the element to release the focus.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Focusable.Blur.html | UIElements.Focusable.Blur}
-     */
-    Blur(): void;
-    /**
-     * Attempt to give the focus to this element.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Focusable.Focus.html | UIElements.Focusable.Focus}
-     */
-    Focus(): void;
-
-}
-    
-interface FocusController {
-    /**
-     * The currently focused VisualElement.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.FocusController-focusedElement.html | UIElements.FocusController.focusedElement}
-     */
-    focusedElement: Focusable;
-
-
-    /**
-     * Instructs the FocusController to ignore the given event.
- This will prevent the event from changing the current focused VisualElement or triggering focus events.
-     * @param evt The event to be ignored.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.FocusController.IgnoreEvent.html | UIElements.FocusController.IgnoreEvent}
-     */
-    IgnoreEvent(evt: EventBase): void;
-
-}
-    
-interface FocusControllerConstructor {
-
-    new(focusRing: IFocusRing): FocusController;
-
-
-}
-declare const FocusController: FocusControllerConstructor;
-    
-    
-interface PropertyPath {
-    /**
-     * Gets the number of parts contained in the PropertyPath.
-     */
-    Length: number;
-    /**
-     * Gets if there is any part contained in the PropertyPath.
-     */
-    IsEmpty: boolean;
-    Item: PropertyPathPart;
-
-
-    /**
-     * Indicates whether this instance and a specified object are equal.
-     * @param other The object to compare with the current instance.
-     */
-    Equals(other: PropertyPath): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-}
-    
-interface PropertyPathPart {
-    /**
-     * Returns true if the part is PropertyPathPartKind.Name.
-     */
-    IsName: boolean;
-    /**
-     * Returns true if the part is PropertyPathPartKind.Index.
-     */
-    IsIndex: boolean;
-    /**
-     * Returns true if the part is PropertyPathPartKind.Key.
-     */
-    IsKey: boolean;
-    /**
-     * The PropertyPathPartKind for this path. This determines how algorithms will resolve the path.
-     */
-    Kind: PropertyPathPartKind;
-    /**
-     * The Name of the part. This will only be set when using PropertyPathPartKind.Name
-     */
-    Name: string;
-    /**
-     * The Index of the part. This will only be set when using PropertyPathPartKind.Index
-     */
-    Index: number;
-    /**
-     * The Key of the part. This will only be set when using PropertyPathPartKind.Key
-     */
-    Key: unknown;
-
-
-    /**
-     * Indicates whether this instance and a specified object are equal.
-     * @param other The object to compare with the current instance.
-     */
-    Equals(other: PropertyPathPart): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-}
-    
-interface PropertyPathPartConstructor {
-
-    new(name: string): PropertyPathPart;
-    new(index: number): PropertyPathPart;
-    new(key: unknown): PropertyPathPart;
-
-
-}
-declare const PropertyPathPart: PropertyPathPartConstructor;
-    
-interface IProperty {
-    /**
-     * Gets the name of the property.
-     */
-    Name: string;
-    /**
-     * Gets a value indicating whether the property is read-only or not.
-     */
-    IsReadOnly: boolean;
-
-
-    /**
-     * Returns the declared value type of the property.
-     */
-    DeclaredValueType(): unknown;
-    /**
-     * Returns the first attribute of the given type.
-     */
-    GetAttribute<TAttribute>(): TAttribute;
-    /**
-     * Returns all attribute of the given type.
-     */
-    GetAttributes<TAttribute>(): CSArray<TAttribute>;
-    /**
-     * Returns all attribute of the given type.
-     */
-    GetAttributes(): CSArray<unknown>;
-    /**
-     * Returns true if the property has any attributes of the given type.
-     */
-    HasAttribute<TAttribute>(): boolean;
-
-}
-    
-interface PropertyPathConstructor {
-
-    new(path: string): PropertyPath;
-
-
-    AppendIndex(path: unknown, index: number): PropertyPath;
-    AppendKey(path: unknown, key: unknown): PropertyPath;
-    AppendName(path: unknown, name: string): PropertyPath;
-    AppendPart(path: unknown, part: unknown): PropertyPath;
-    AppendProperty(path: unknown, property: IProperty): PropertyPath;
-    Combine(path: unknown, pathToAppend: unknown): PropertyPath;
-    Combine(path: unknown, pathToAppend: string): PropertyPath;
-    FromIndex(index: number): PropertyPath;
-    FromKey(key: unknown): PropertyPath;
-    FromName(name: string): PropertyPath;
-    FromPart(part: unknown): PropertyPath;
-    Pop(path: unknown): PropertyPath;
-    SubPath(path: unknown, startIndex: number): PropertyPath;
-    SubPath(path: unknown, startIndex: number, length: number): PropertyPath;
-}
-declare const PropertyPath: PropertyPathConstructor;
-    
-interface Hierarchy {
-    parent: VisualElement;
-    childCount: number;
-    Item: VisualElement;
-
-
-    Add(child: VisualElement): void;
-    Children(): CSArray<VisualElement>;
-    Clear(): void;
-    ElementAt(index: number): VisualElement;
-    Equals(other: Hierarchy): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    IndexOf(element: VisualElement): number;
-    Insert(index: number, child: VisualElement): void;
-    Remove(child: VisualElement): void;
-    RemoveAt(index: number): void;
-    Sort(comp: unknown): void;
-
-}
-    
-interface IPanel {
-    /**
-     * Root of the VisualElement hierarchy.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IPanel-visualTree.html | UIElements.IPanel.visualTree}
-     */
-    visualTree: VisualElement;
-    /**
-     * This Panel EventDispatcher.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IPanel-dispatcher.html | UIElements.IPanel.dispatcher}
-     */
-    dispatcher: EventDispatcher;
-    /**
-     * Describes in which context a VisualElement hierarchy is being ran.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IPanel-contextType.html | UIElements.IPanel.contextType}
-     */
-    contextType: ContextType;
-    /**
-     * Return the focus controller for this panel.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IPanel-focusController.html | UIElements.IPanel.focusController}
-     */
-    focusController: FocusController;
-    /**
-     * The Contextual menu manager for the panel.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IPanel-contextualMenuManager.html | UIElements.IPanel.contextualMenuManager}
-     */
-    contextualMenuManager: ContextualMenuManager;
-    /**
-     * Checks whether any element within the panel has had any changes to its state since the panel was last rendered.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IPanel-isDirty.html | UIElements.IPanel.isDirty}
-     */
-    isDirty: boolean;
-
-
-    /**
-     * Returns the top element at this position. Will not return elements with pickingMode set to PickingMode.Ignore.
-     * @param point World coordinates.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IPanel.Pick.html | UIElements.IPanel.Pick}
-     */
-    Pick(point: Vector2): VisualElement;
-    PickAll(point: Vector2, picked: CSArray<VisualElement>): VisualElement;
-
-}
-    
-interface EventDispatcher {
-
-
-
-}
-    
-interface ContextualMenuManager {
-
-
-    /**
-     * Displays the contextual menu.
-     * @param triggerEvent The event that triggered the display of the menu.
-     * @param target The element for which the menu is displayed.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ContextualMenuManager.DisplayMenu.html | UIElements.ContextualMenuManager.DisplayMenu}
-     */
-    DisplayMenu(triggerEvent: EventBase, target: IEventHandler): void;
-    /**
-     * Checks if the event triggers the display of the contextual menu. This method also displays the menu.
-     * @param evt The event to inspect.
-     * @param eventHandler The element for which the menu is displayed.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ContextualMenuManager.DisplayMenuIfEventMatches.html | UIElements.ContextualMenuManager.DisplayMenuIfEventMatches}
-     */
-    DisplayMenuIfEventMatches(evt: EventBase, eventHandler: IEventHandler): void;
-
-}
-    
-interface VisualTreeAsset extends ScriptableObject {
-    /**
-     * Whether there were errors encountered while importing the UXML File
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.VisualTreeAsset-importedWithErrors.html | UIElements.VisualTreeAsset.importedWithErrors}
-     */
-    importedWithErrors: boolean;
-    /**
-     * Whether there were warnings encountered while importing the UXML File
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.VisualTreeAsset-importedWithWarnings.html | UIElements.VisualTreeAsset.importedWithWarnings}
-     */
-    importedWithWarnings: boolean;
-    /**
-     * The UXML templates used by this VisualTreeAsset.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.VisualTreeAsset-templateDependencies.html | UIElements.VisualTreeAsset.templateDependencies}
-     */
-    templateDependencies: CSArray<VisualTreeAsset>;
-    /**
-     * The stylesheets used by this VisualTreeAsset.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.VisualTreeAsset-stylesheets.html | UIElements.VisualTreeAsset.stylesheets}
-     */
-    stylesheets: CSArray<StyleSheet>;
-    /**
-     * A hash value computed from the template content.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.VisualTreeAsset-contentHash.html | UIElements.VisualTreeAsset.contentHash}
-     */
-    contentHash: number;
-
-
-    /**
-     * Build a tree of VisualElements from the asset.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.VisualTreeAsset.CloneTree.html | UIElements.VisualTreeAsset.CloneTree}
-     */
-    CloneTree(): TemplateContainer;
-    /**
-     * Build a tree of VisualElements from the asset.
-     * @param bindingPath The path to the property that you want to bind to the root of the cloned tree.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.VisualTreeAsset.CloneTree.html | UIElements.VisualTreeAsset.CloneTree}
-     */
-    CloneTree(bindingPath: string): TemplateContainer;
-    /**
-     * Builds a tree of VisualElements from the asset.
-     * @param target A VisualElement that will act as the root of the cloned tree.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.VisualTreeAsset.CloneTree.html | UIElements.VisualTreeAsset.CloneTree}
-     */
-    CloneTree(target: VisualElement): void;
-    CloneTree(target: VisualElement, firstElementIndex: unknown, elementAddedCount: unknown): void;
-    /**
-     * Build a tree of VisualElements from the asset.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.VisualTreeAsset.Instantiate.html | UIElements.VisualTreeAsset.Instantiate}
-     */
-    Instantiate(): TemplateContainer;
-    /**
-     * Build a tree of VisualElements from the asset.
-     * @param bindingPath The path to the property that you want to bind to the root of the cloned tree.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.VisualTreeAsset.Instantiate.html | UIElements.VisualTreeAsset.Instantiate}
-     */
-    Instantiate(bindingPath: string): TemplateContainer;
-
-}
-    
-interface StyleSheet extends ScriptableObject {
-    /**
-     * Whether there were errors encountered while importing the StyleSheet
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleSheet-importedWithErrors.html | UIElements.StyleSheet.importedWithErrors}
-     */
-    importedWithErrors: boolean;
-    /**
-     * Whether there were warnings encountered while importing the StyleSheet
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleSheet-importedWithWarnings.html | UIElements.StyleSheet.importedWithWarnings}
-     */
-    importedWithWarnings: boolean;
-    /**
-     * A hash value computed from the stylesheet content.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleSheet-contentHash.html | UIElements.StyleSheet.contentHash}
-     */
-    contentHash: number;
-
-
-
-}
-    
-interface StyleSheetConstructor {
-
-    new(): StyleSheet;
-
-
-}
-declare const StyleSheet: StyleSheetConstructor;
-    
-interface IBindable {
-    /**
-     * Binding object that will be updated.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IBindable-binding.html | UIElements.IBindable.binding}
-     */
-    binding: IBinding;
-    /**
-     * Path of the target property to be bound.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IBindable-bindingPath.html | UIElements.IBindable.bindingPath}
-     */
-    bindingPath: string;
-
-
-
-}
-    
-interface IBinding {
-
-
-    /**
-     * Called at regular intervals to synchronize bound properties to their IBindable counterparts. Called before the Update() method.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IBinding.PreUpdate.html | UIElements.IBinding.PreUpdate}
-     */
-    PreUpdate(): void;
-    /**
-     * Disconnects the field from its bound property
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IBinding.Release.html | UIElements.IBinding.Release}
-     */
-    Release(): void;
-    /**
-     * Called at regular intervals to synchronize bound properties to their IBindable counterparts. Called before the Update() method.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IBinding.Update.html | UIElements.IBinding.Update}
-     */
-    Update(): void;
-
-}
-    
-interface BindableElement extends VisualElement, IBindable {
-    /**
-     * Binding object that will be updated.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.BindableElement-binding.html | UIElements.BindableElement.binding}
-     */
-    binding: IBinding;
-    /**
-     * Path of the target property to be bound.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.BindableElement-bindingPath.html | UIElements.BindableElement.bindingPath}
-     */
-    bindingPath: string;
-
-
-
-}
-    
-interface BindableElementConstructor {
-
-    new(): BindableElement;
-
-
-}
-declare const BindableElement: BindableElementConstructor;
-    
-interface TemplateContainer extends BindableElement {
-    /**
-     * The local ID of the template in the parent UXML file (Read Only).
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.TemplateContainer-templateId.html | UIElements.TemplateContainer.templateId}
-     */
-    templateId: string;
-    /**
-     * Stores the template asset reference, if the generated element is cloned from a VisualTreeAsset as a
- Template declaration inside another VisualTreeAsset.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.TemplateContainer-templateSource.html | UIElements.TemplateContainer.templateSource}
-     */
-    templateSource: VisualTreeAsset;
-    contentContainer: VisualElement;
-
-
-
-}
-    
-interface TemplateContainerConstructor {
-
-    new(): TemplateContainer;
-    new(templateId: string): TemplateContainer;
-
-
-}
-declare const TemplateContainer: TemplateContainerConstructor;
-    
-interface VisualTreeAssetConstructor {
-
-    new(): VisualTreeAsset;
-
-
-}
-declare const VisualTreeAsset: VisualTreeAssetConstructor;
-    
-    
-interface StyleColor {
-    /**
-     * The Color value.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleColor-value.html | UIElements.StyleColor.value}
-     */
-    value: Color;
-    /**
-     * The style keyword.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleColor-keyword.html | UIElements.StyleColor.keyword}
-     */
-    keyword: StyleKeyword;
-
-
-    Equals(other: StyleColor): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-}
-    
-interface StyleColorConstructor {
-
-    new(v: Color): StyleColor;
-    new(keyword: StyleKeyword): StyleColor;
-
-
-}
-declare const StyleColor: StyleColorConstructor;
-    
-interface StyleBackground {
-    /**
-     * The Background value.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleBackground-value.html | UIElements.StyleBackground.value}
-     */
-    value: Background;
-    /**
-     * The style keyword.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleBackground-keyword.html | UIElements.StyleBackground.keyword}
-     */
-    keyword: StyleKeyword;
-
-
-    Equals(other: StyleBackground): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-}
-    
-interface StyleBackgroundConstructor {
-
-    new(v: Background): StyleBackground;
-    new(v: Texture2D): StyleBackground;
-    new(v: Sprite): StyleBackground;
-    new(v: VectorImage): StyleBackground;
-    new(keyword: StyleKeyword): StyleBackground;
-
-
-}
-declare const StyleBackground: StyleBackgroundConstructor;
-    
-interface StyleBackgroundPosition {
-    /**
-     * The BackgroundPosition value.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleBackgroundPosition-value.html | UIElements.StyleBackgroundPosition.value}
-     */
-    value: BackgroundPosition;
-    /**
-     * The style keyword.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleBackgroundPosition-keyword.html | UIElements.StyleBackgroundPosition.keyword}
-     */
-    keyword: StyleKeyword;
-
-
-    Equals(other: StyleBackgroundPosition): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-}
-    
-interface StyleBackgroundPositionConstructor {
-
-    new(v: BackgroundPosition): StyleBackgroundPosition;
-    new(keyword: StyleKeyword): StyleBackgroundPosition;
-
-
-}
-declare const StyleBackgroundPosition: StyleBackgroundPositionConstructor;
-    
-interface StyleBackgroundRepeat {
-    /**
-     * The BackgroundRepeat value.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleBackgroundRepeat-value.html | UIElements.StyleBackgroundRepeat.value}
-     */
-    value: BackgroundRepeat;
-    /**
-     * The style keyword.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleBackgroundRepeat-keyword.html | UIElements.StyleBackgroundRepeat.keyword}
-     */
-    keyword: StyleKeyword;
-
-
-    Equals(other: StyleBackgroundRepeat): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-}
-    
-interface StyleBackgroundRepeatConstructor {
-
-    new(v: BackgroundRepeat): StyleBackgroundRepeat;
-    new(keyword: StyleKeyword): StyleBackgroundRepeat;
-
-
-}
-declare const StyleBackgroundRepeat: StyleBackgroundRepeatConstructor;
-    
-interface StyleBackgroundSize {
-    /**
-     * The BackgroundSize value.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleBackgroundSize-value.html | UIElements.StyleBackgroundSize.value}
-     */
-    value: BackgroundSize;
-    /**
-     * The style keyword.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleBackgroundSize-keyword.html | UIElements.StyleBackgroundSize.keyword}
-     */
-    keyword: StyleKeyword;
-
-
-    Equals(other: StyleBackgroundSize): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-}
-    
-interface StyleBackgroundSizeConstructor {
-
-    new(v: BackgroundSize): StyleBackgroundSize;
-    new(keyword: StyleKeyword): StyleBackgroundSize;
-
-
-}
-declare const StyleBackgroundSize: StyleBackgroundSizeConstructor;
-    
-interface StyleLength {
-    /**
-     * The Length value.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleLength-value.html | UIElements.StyleLength.value}
-     */
-    value: Length;
-    /**
-     * The style keyword.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleLength-keyword.html | UIElements.StyleLength.keyword}
-     */
-    keyword: StyleKeyword;
-
-
-    Equals(other: StyleLength): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-}
-    
-interface StyleLengthConstructor {
-
-    new(v: number): StyleLength;
-    new(v: Length): StyleLength;
-    new(keyword: StyleKeyword): StyleLength;
-
-
-}
-declare const StyleLength: StyleLengthConstructor;
-    
-interface StyleCursor {
-    /**
-     * The Cursor value.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleCursor-value.html | UIElements.StyleCursor.value}
-     */
-    value: Cursor;
-    /**
-     * The style keyword.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleCursor-keyword.html | UIElements.StyleCursor.keyword}
-     */
-    keyword: StyleKeyword;
-
-
-    Equals(other: StyleCursor): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-}
-    
-interface Cursor {
-    /**
-     * The texture to use for the cursor style. To use a texture as a cursor, import the texture with &quot;Read/Write enabled&quot; in the texture importer (or using the &quot;Cursor&quot; defaults).
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Cursor-texture.html | UIElements.Cursor.texture}
-     */
-    texture: Texture2D;
-    /**
-     * The offset from the top left of the texture to use as the target point (must be within the bounds of the cursor).
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Cursor-hotspot.html | UIElements.Cursor.hotspot}
-     */
-    hotspot: Vector2;
-
-
-    Equals(obj: unknown): boolean;
-    Equals(other: Cursor): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-}
-    
-interface StyleCursorConstructor {
-
-    new(v: Cursor): StyleCursor;
-    new(keyword: StyleKeyword): StyleCursor;
-
-
-}
-declare const StyleCursor: StyleCursorConstructor;
-    
-interface StyleRotate {
-    /**
-     * The Rotate value.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleRotate-value.html | UIElements.StyleRotate.value}
-     */
-    value: Rotate;
-    /**
-     * The style keyword.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleRotate-keyword.html | UIElements.StyleRotate.keyword}
-     */
-    keyword: StyleKeyword;
-
-
-    Equals(other: StyleRotate): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-}
-    
-interface StyleRotateConstructor {
-
-    new(v: Rotate): StyleRotate;
-    new(keyword: StyleKeyword): StyleRotate;
-
-
-}
-declare const StyleRotate: StyleRotateConstructor;
-    
-interface StyleScale {
-    /**
-     * The Scale value.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleScale-value.html | UIElements.StyleScale.value}
-     */
-    value: Scale;
-    /**
-     * The style keyword.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleScale-keyword.html | UIElements.StyleScale.keyword}
-     */
-    keyword: StyleKeyword;
-
-
-    Equals(other: StyleScale): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-}
-    
-interface StyleScaleConstructor {
-
-    new(v: Scale): StyleScale;
-    new(keyword: StyleKeyword): StyleScale;
-    new(scale: Vector2): StyleScale;
-
-
-}
-declare const StyleScale: StyleScaleConstructor;
-    
-interface StyleTextShadow {
-    /**
-     * The TextShadow value.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleTextShadow-value.html | UIElements.StyleTextShadow.value}
-     */
-    value: TextShadow;
-    /**
-     * The style keyword.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleTextShadow-keyword.html | UIElements.StyleTextShadow.keyword}
-     */
-    keyword: StyleKeyword;
-
-
-    Equals(other: StyleTextShadow): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-}
-    
-interface StyleTextShadowConstructor {
-
-    new(v: TextShadow): StyleTextShadow;
-    new(keyword: StyleKeyword): StyleTextShadow;
-
-
-}
-declare const StyleTextShadow: StyleTextShadowConstructor;
-    
-interface StyleTransformOrigin {
-    /**
-     * The TransformOrigin value.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleTransformOrigin-value.html | UIElements.StyleTransformOrigin.value}
-     */
-    value: TransformOrigin;
-    /**
-     * The style keyword.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleTransformOrigin-keyword.html | UIElements.StyleTransformOrigin.keyword}
-     */
-    keyword: StyleKeyword;
-
-
-    Equals(other: StyleTransformOrigin): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-}
-    
-interface StyleTransformOriginConstructor {
-
-    new(v: TransformOrigin): StyleTransformOrigin;
-    new(keyword: StyleKeyword): StyleTransformOrigin;
-
-
-}
-declare const StyleTransformOrigin: StyleTransformOriginConstructor;
-    
-interface StyleTranslate {
-    /**
-     * The Translate value.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleTranslate-value.html | UIElements.StyleTranslate.value}
-     */
-    value: Translate;
-    /**
-     * The style keyword.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleTranslate-keyword.html | UIElements.StyleTranslate.keyword}
-     */
-    keyword: StyleKeyword;
-
-
-    Equals(other: StyleTranslate): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-}
-    
-interface StyleTranslateConstructor {
-
-    new(v: Translate): StyleTranslate;
-    new(keyword: StyleKeyword): StyleTranslate;
-
-
-}
-declare const StyleTranslate: StyleTranslateConstructor;
-    
-interface StyleFont {
-    /**
-     * The Font value.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleFont-value.html | UIElements.StyleFont.value}
-     */
-    value: Font;
-    /**
-     * The style keyword.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleFont-keyword.html | UIElements.StyleFont.keyword}
-     */
-    keyword: StyleKeyword;
-
-
-    Equals(other: StyleFont): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-}
-    
-interface StyleFontConstructor {
-
-    new(v: Font): StyleFont;
-    new(keyword: StyleKeyword): StyleFont;
-
-
-}
-declare const StyleFont: StyleFontConstructor;
-    
-interface StyleFontDefinition {
-    /**
-     * The actual value of the definition.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleFontDefinition-value.html | UIElements.StyleFontDefinition.value}
-     */
-    value: FontDefinition;
-    /**
-     * The style keyword.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleFontDefinition-keyword.html | UIElements.StyleFontDefinition.keyword}
-     */
-    keyword: StyleKeyword;
-
-
-    Equals(other: StyleFontDefinition): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-
-}
-    
-interface StyleFontDefinitionConstructor {
-
-    new(f: FontDefinition): StyleFontDefinition;
-    new(f: FontAsset): StyleFontDefinition;
-    new(f: Font): StyleFontDefinition;
-    new(keyword: StyleKeyword): StyleFontDefinition;
-
-
-}
-declare const StyleFontDefinition: StyleFontDefinitionConstructor;
-    
-interface StyleInt {
-    /**
-     * The integer value.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleInt-value.html | UIElements.StyleInt.value}
-     */
-    value: number;
-    /**
-     * The style keyword.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.StyleInt-keyword.html | UIElements.StyleInt.keyword}
-     */
-    keyword: StyleKeyword;
-
-
-    Equals(other: StyleInt): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-}
-    
-interface StyleIntConstructor {
-
-    new(v: number): StyleInt;
-    new(keyword: StyleKeyword): StyleInt;
-
-
-}
-declare const StyleInt: StyleIntConstructor;
-    
-interface ICustomStyle {
-
-
-    TryGetValue(property: unknown, value: unknown): boolean;
-    TryGetValue(property: unknown, value: unknown): boolean;
-    TryGetValue(property: unknown, value: unknown): boolean;
-    TryGetValue(property: unknown, value: unknown): boolean;
-    TryGetValue(property: unknown, value: unknown): boolean;
-    TryGetValue(property: unknown, value: unknown): boolean;
-    TryGetValue(property: unknown, value: unknown): boolean;
-    TryGetValue<T>(property: unknown, value: unknown): boolean;
-    TryGetValue(property: unknown, value: CSArray<string>): boolean;
-
-}
-    
-interface VisualElementStyleSheetSet {
-    /**
-     * Number of style sheets attached to the owner element.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.VisualElementStyleSheetSet-count.html | UIElements.VisualElementStyleSheetSet.count}
-     */
-    count: number;
-    Item: StyleSheet;
-
-
-    /**
-     * Adds a style sheet for the owner element.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.VisualElementStyleSheetSet.Add.html | UIElements.VisualElementStyleSheetSet.Add}
-     */
-    Add(styleSheet: StyleSheet): void;
-    /**
-     * Removes all style sheets for the owner element.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.VisualElementStyleSheetSet.Clear.html | UIElements.VisualElementStyleSheetSet.Clear}
-     */
-    Clear(): void;
-    /**
-     * Looks for the specified StyleSheet
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.VisualElementStyleSheetSet.Contains.html | UIElements.VisualElementStyleSheetSet.Contains}
-     */
-    Contains(styleSheet: StyleSheet): boolean;
-    /**
-     * Compares instances of the VisualElementStyleSheetSet struct for equality.
-     * @param other The structure to compare with.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.VisualElementStyleSheetSet.Equals.html | UIElements.VisualElementStyleSheetSet.Equals}
-     */
-    Equals(other: VisualElementStyleSheetSet): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    /**
-     * Removes a style sheet for the owner element.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.VisualElementStyleSheetSet.Remove.html | UIElements.VisualElementStyleSheetSet.Remove}
-     */
-    Remove(styleSheet: StyleSheet): boolean;
-
-}
-    
-interface BindingId {
-
-
-    /**
-     * Indicates whether two binding properties are equal.
-     * @param other The object to compare with the current instance.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.BindingId.Equals.html | UIElements.BindingId.Equals}
-     */
-    Equals(other: BindingId): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    /**
-     * Returns the binding property as a string.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.BindingId.ToString.html | UIElements.BindingId.ToString}
-     */
-    ToString(): string;
-
-}
-    
-interface BindingIdConstructor {
-    Invalid: BindingId;
-
-    new(path: string): BindingId;
-    new(path: unknown): BindingId;
-
-
-}
-declare const BindingId: BindingIdConstructor;
-    
-interface Binding {
-    /**
-     * When set to true, the binding instance updates during the next update cycle.
- When set to false, the binding instance updates only if a change is detected.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Binding-isDirty.html | UIElements.Binding.isDirty}
-     */
-    isDirty: boolean;
-    /**
-     * When set to BindingUpdateTrigger.EveryUpdate, the binding instance updates in every update, regardless of the
- data source version.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Binding-updateTrigger.html | UIElements.Binding.updateTrigger}
-     */
-    updateTrigger: BindingUpdateTrigger;
-
-
-    /**
-     * Notifies the binding system to process this binding.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Binding.MarkDirty.html | UIElements.Binding.MarkDirty}
-     */
-    MarkDirty(): void;
-
-}
-    
-interface BindingConstructor {
-
-
-
-    ResetPanelLogLevel(panel: IPanel): void;
-    SetGlobalLogLevel(logLevel: BindingLogLevel): void;
-    SetPanelLogLevel(panel: IPanel, logLevel: BindingLogLevel): void;
-}
-declare const Binding: BindingConstructor;
-    
-interface BindingInfo {
-    /**
-     * The visual element targeted by the binding.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.BindingInfo-targetElement.html | UIElements.BindingInfo.targetElement}
-     */
-    targetElement: VisualElement;
-    /**
-     * The binding id.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.BindingInfo-bindingId.html | UIElements.BindingInfo.bindingId}
-     */
-    bindingId: BindingId;
-    /**
-     * The binding matching this information.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.BindingInfo-binding.html | UIElements.BindingInfo.binding}
-     */
-    binding: Binding;
-
-
-
-}
-    
-interface DataSourceContext {
-    /**
-     * The resolved data source.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.DataSourceContext-dataSource.html | UIElements.DataSourceContext.dataSource}
-     */
-    dataSource: unknown;
-    /**
-     * The resolved data source path.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.DataSourceContext-dataSourcePath.html | UIElements.DataSourceContext.dataSourcePath}
-     */
-    dataSourcePath: PropertyPath;
-
-
-
-}
-    
-interface DataSourceContextConstructor {
-
-    new(dataSource: unknown, dataSourcePath: unknown): DataSourceContext;
-
-
-}
-declare const DataSourceContext: DataSourceContextConstructor;
-    
-    
-    
-    
 interface ScrollView extends VisualElement {
     /**
      * Specifies whether the horizontal scroll bar is visible.
@@ -46142,7 +47024,51 @@ interface Scroller extends VisualElement {
 
 }
     
-interface Slider {
+interface IValueField<T> {
+    value: T;
+
+
+    ApplyInputDeviceDelta(delta: Vector3, speed: DeltaSpeed, startValue: T): void;
+    StartDragging(): void;
+    StopDragging(): void;
+
+}
+    
+interface BaseSlider<TValueType> extends BaseField<TValueType>, IValueField<TValueType> {
+    lowValue: TValueType;
+    highValue: TValueType;
+    range: TValueType;
+    pageSize: number;
+    showInputField: boolean;
+    value: TValueType;
+    direction: SliderDirection;
+    inverted: boolean;
+
+
+    AdjustDragElement(factor: number): void;
+    ApplyInputDeviceDelta(delta: Vector3, speed: DeltaSpeed, startValue: TValueType): void;
+    SetValueWithoutNotify(newValue: TValueType): void;
+
+}
+    
+interface BaseSliderConstructor {
+    ussClassName: string;
+    labelUssClassName: string;
+    inputUssClassName: string;
+    horizontalVariantUssClassName: string;
+    verticalVariantUssClassName: string;
+    dragContainerUssClassName: string;
+    trackerUssClassName: string;
+    draggerUssClassName: string;
+    draggerBorderUssClassName: string;
+    textFieldClassName: string;
+
+
+
+}
+declare const BaseSlider: BaseSliderConstructor;
+    
+interface Slider extends BaseSlider<number> {
 
 
     ApplyInputDeviceDelta(delta: Vector3, speed: DeltaSpeed, startValue: number): void;
@@ -46161,255 +47087,6 @@ interface SliderConstructor {
 
 }
 declare const Slider: SliderConstructor;
-    
-interface ITextElement {
-    text: string;
-
-
-
-}
-    
-interface ITextEdition {
-    /**
-     * Returns true if the element is read only.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextEdition-isReadOnly.html | UIElements.ITextEdition.isReadOnly}
-     */
-    isReadOnly: boolean;
-    /**
-     * Maximum number of characters for that element
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextEdition-maxLength.html | UIElements.ITextEdition.maxLength}
-     */
-    maxLength: number;
-    /**
-     * The placeholder property represents a short hint intended to aid the users with data entry when the control has no value.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextEdition-placeholder.html | UIElements.ITextEdition.placeholder}
-     */
-    placeholder: string;
-    /**
-     * If set to true, the value property isn't updated until either the user presses Enter or the element loses focus.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextEdition-isDelayed.html | UIElements.ITextEdition.isDelayed}
-     */
-    isDelayed: boolean;
-    /**
-     * The character used for masking when in password mode.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextEdition-maskChar.html | UIElements.ITextEdition.maskChar}
-     */
-    maskChar: string;
-    /**
-     * Returns true if the field is used to edit a password.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextEdition-isPassword.html | UIElements.ITextEdition.isPassword}
-     */
-    isPassword: boolean;
-    /**
-     * Hides the placeholder on focus.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextEdition-hidePlaceholderOnFocus.html | UIElements.ITextEdition.hidePlaceholderOnFocus}
-     */
-    hidePlaceholderOnFocus: boolean;
-    /**
-     * Determines if the soft keyboard auto correction is turned on or off.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextEdition-autoCorrection.html | UIElements.ITextEdition.autoCorrection}
-     */
-    autoCorrection: boolean;
-    /**
-     * Hides or shows the mobile input field.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextEdition-hideMobileInput.html | UIElements.ITextEdition.hideMobileInput}
-     */
-    hideMobileInput: boolean;
-    /**
-     * The TouchScreenKeyboard being used to edit the Input Field.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextEdition-touchScreenKeyboard.html | UIElements.ITextEdition.touchScreenKeyboard}
-     */
-    touchScreenKeyboard: TouchScreenKeyboard;
-    /**
-     * The type of mobile keyboard that will be used.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextEdition-keyboardType.html | UIElements.ITextEdition.keyboardType}
-     */
-    keyboardType: TouchScreenKeyboardType;
-
-
-
-}
-    
-interface ITextElementExperimentalFeatures extends IExperimentalFeatures {
-
-
-    /**
-     * Setting this property will override the displayed text while preserving the original text value.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextElementExperimentalFeatures.SetRenderedText.html | UIElements.ITextElementExperimentalFeatures.SetRenderedText}
-     */
-    SetRenderedText(renderedText: string): void;
-
-}
-    
-interface ITextSelection {
-    /**
-     * Returns true if the field is selectable.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextSelection-isSelectable.html | UIElements.ITextSelection.isSelectable}
-     */
-    isSelectable: boolean;
-    /**
-     * Color of the cursor.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextSelection-cursorColor.html | UIElements.ITextSelection.cursorColor}
-     */
-    cursorColor: Color;
-    /**
-     * Background color of selected text.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextSelection-selectionColor.html | UIElements.ITextSelection.selectionColor}
-     */
-    selectionColor: Color;
-    /**
-     * This is the cursor index in the text presented.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextSelection-cursorIndex.html | UIElements.ITextSelection.cursorIndex}
-     */
-    cursorIndex: number;
-    /**
-     * Controls whether double clicking selects the word under the mouse pointer or not.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextSelection-doubleClickSelectsWord.html | UIElements.ITextSelection.doubleClickSelectsWord}
-     */
-    doubleClickSelectsWord: boolean;
-    /**
-     * This is the selection index in the text presented.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextSelection-selectIndex.html | UIElements.ITextSelection.selectIndex}
-     */
-    selectIndex: number;
-    /**
-     * Controls whether triple clicking selects the entire line under the mouse pointer or not.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextSelection-tripleClickSelectsLine.html | UIElements.ITextSelection.tripleClickSelectsLine}
-     */
-    tripleClickSelectsLine: boolean;
-    /**
-     * Controls whether the element's content is selected upon receiving focus.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextSelection-selectAllOnFocus.html | UIElements.ITextSelection.selectAllOnFocus}
-     */
-    selectAllOnFocus: boolean;
-    /**
-     * Controls whether the element's content is selected when you mouse up for the first time.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextSelection-selectAllOnMouseUp.html | UIElements.ITextSelection.selectAllOnMouseUp}
-     */
-    selectAllOnMouseUp: boolean;
-    /**
-     * The position of the text cursor inside the element.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextSelection-cursorPosition.html | UIElements.ITextSelection.cursorPosition}
-     */
-    cursorPosition: Vector2;
-
-
-    /**
-     * Return true is the TextElement has a selection.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextSelection.HasSelection.html | UIElements.ITextSelection.HasSelection}
-     */
-    HasSelection(): boolean;
-    /**
-     * Selects all the text contained in the field.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextSelection.SelectAll.html | UIElements.ITextSelection.SelectAll}
-     */
-    SelectAll(): void;
-    /**
-     * Remove selection
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextSelection.SelectNone.html | UIElements.ITextSelection.SelectNone}
-     */
-    SelectNone(): void;
-    /**
-     * Select text between cursorIndex and selectIndex.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextSelection.SelectRange.html | UIElements.ITextSelection.SelectRange}
-     */
-    SelectRange(cursorIndex: number, selectionIndex: number): void;
-
-}
-    
-interface TextElement extends BindableElement, ITextElement, ITextEdition, ITextElementExperimentalFeatures, ITextSelection {
-    /**
-     * The text to be displayed.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.TextElement-text.html | UIElements.TextElement.text}
-     */
-    text: string;
-    /**
-     * When false, rich text tags will not be parsed.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.TextElement-enableRichText.html | UIElements.TextElement.enableRichText}
-     */
-    enableRichText: boolean;
-    /**
-     * Specifies the order in which the system should look for Emoji characters when rendering text.
- If this setting is enabled, the global Emoji Fallback list will be searched first for characters defined as
- Emoji in the Unicode 14.0 standard.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.TextElement-emojiFallbackSupport.html | UIElements.TextElement.emojiFallbackSupport}
-     */
-    emojiFallbackSupport: boolean;
-    /**
-     * Specifies whether escape sequences are displayed as is or if they are replaced by the character they represent.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.TextElement-parseEscapeSequences.html | UIElements.TextElement.parseEscapeSequences}
-     */
-    parseEscapeSequences: boolean;
-    /**
-     * When true, a tooltip displays the full version of elided text, and also if a tooltip had been previously
- provided, it will be overwritten.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.TextElement-displayTooltipWhenElided.html | UIElements.TextElement.displayTooltipWhenElided}
-     */
-    displayTooltipWhenElided: boolean;
-    /**
-     * Returns true if text is elided, false otherwise.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.TextElement-isElided.html | UIElements.TextElement.isElided}
-     */
-    isElided: boolean;
-    /**
-     * Returns the TextElement experimental interface.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.TextElement-experimental.html | UIElements.TextElement.experimental}
-     */
-    experimental: ITextElementExperimentalFeatures;
-    /**
-     * Retrieves this TextElement's ITextSelection
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.TextElement-selection.html | UIElements.TextElement.selection}
-     */
-    selection: ITextSelection;
-
-
-    MeasureTextSize(textToMeasure: string, width: number, widthMode: MeasureMode, height: number, heightMode: MeasureMode): Vector2;
-
-}
-    
-interface TextElementConstructor {
-    ussClassName: string;
-    selectableUssClassName: string;
-
-    new(): TextElement;
-
-
-}
-declare const TextElement: TextElementConstructor;
     
 interface RepeatButton extends TextElement {
 
@@ -48845,7 +49522,7 @@ interface Entry {
 
 }
     
-interface TriggerEvent {
+interface TriggerEvent extends UnityEvent<BaseEventData> {
 
 
 
@@ -48916,4 +49593,144 @@ interface CharacterMovementDataConstructor {
 
 }
 declare const CharacterMovementData: CharacterMovementDataConstructor;
+    
+interface NativeTween {
+
+
+
+}
+    
+interface NativeTweenConstructor {
+
+
+
+    AnchoredPosition(self: Component, to: Vector2, duration: number): Tween<Vector2>;
+    AnchoredPosition(self: GameObject, to: Vector2, duration: number): Tween<Vector2>;
+    AnchoredPositionX(self: Component, to: number, duration: number): Tween<number>;
+    AnchoredPositionX(self: GameObject, to: number, duration: number): Tween<number>;
+    AnchoredPositionY(self: Component, to: number, duration: number): Tween<number>;
+    AnchoredPositionY(self: GameObject, to: number, duration: number): Tween<number>;
+    AnchorMax(self: Component, to: Vector2, duration: number): Tween<Vector2>;
+    AnchorMax(self: GameObject, to: Vector2, duration: number): Tween<Vector2>;
+    AnchorMin(self: Component, to: Vector2, duration: number): Tween<Vector2>;
+    AnchorMin(self: GameObject, to: Vector2, duration: number): Tween<Vector2>;
+    AudioSourcePitch(self: Component, to: number, duration: number): Tween<number>;
+    AudioSourcePitch(self: GameObject, to: number, duration: number): Tween<number>;
+    AudioSourcePriority(self: Component, to: number, duration: number): Tween<number>;
+    AudioSourcePriority(self: GameObject, to: number, duration: number): Tween<number>;
+    AudioSourceReverbZoneMix(self: Component, to: number, duration: number): Tween<number>;
+    AudioSourceReverbZoneMix(self: GameObject, to: number, duration: number): Tween<number>;
+    AudioSourceSpatialBlend(self: Component, to: number, duration: number): Tween<number>;
+    AudioSourceSpatialBlend(self: GameObject, to: number, duration: number): Tween<number>;
+    AudioSourceStereoPan(self: Component, to: number, duration: number): Tween<number>;
+    AudioSourceStereoPan(self: GameObject, to: number, duration: number): Tween<number>;
+    AudioSourceVolume(self: Component, to: number, duration: number): Tween<number>;
+    AudioSourceVolume(self: GameObject, to: number, duration: number): Tween<number>;
+    CameraFieldOfView(self: Component, to: number, duration: number): Tween<number>;
+    CameraFieldOfView(self: GameObject, to: number, duration: number): Tween<number>;
+    CameraOrthographicSize(self: Component, to: number, duration: number): Tween<number>;
+    CameraOrthographicSize(self: GameObject, to: number, duration: number): Tween<number>;
+    CancelAll(self: Component, includeChildren: boolean, includeInactive: boolean): void;
+    CancelAll(self: GameObject, includeChildren: boolean, includeInactive: boolean): void;
+    CanvasGroupAlpha(self: Component, to: number, duration: number): Tween<number>;
+    CanvasGroupAlpha(self: GameObject, to: number, duration: number): Tween<number>;
+    GraphicAlpha(self: Component, to: number, duration: number): Tween<number>;
+    GraphicAlpha(self: GameObject, to: number, duration: number): Tween<number>;
+    GraphicColor(self: Component, to: Color, duration: number): Tween<Color>;
+    GraphicColor(self: GameObject, to: Color, duration: number): Tween<Color>;
+    ImageFillAmount(self: Component, to: number, duration: number): Tween<number>;
+    ImageFillAmount(self: GameObject, to: number, duration: number): Tween<number>;
+    LightColor(self: Component, to: Color, duration: number): Tween<Color>;
+    LightColor(self: GameObject, to: Color, duration: number): Tween<Color>;
+    LightIntensity(self: Component, to: number, duration: number): Tween<number>;
+    LightIntensity(self: GameObject, to: number, duration: number): Tween<number>;
+    LightRange(self: Component, to: number, duration: number): Tween<number>;
+    LightRange(self: GameObject, to: number, duration: number): Tween<number>;
+    LightSpotAngle(self: Component, to: number, duration: number): Tween<number>;
+    LightSpotAngle(self: GameObject, to: number, duration: number): Tween<number>;
+    LocalPosition(self: Component, to: Vector3, duration: number): Tween<Vector3>;
+    LocalPosition(self: GameObject, to: Vector3, duration: number): Tween<Vector3>;
+    LocalPositionX(self: Component, to: number, duration: number): Tween<number>;
+    LocalPositionX(self: GameObject, to: number, duration: number): Tween<number>;
+    LocalPositionY(self: Component, to: number, duration: number): Tween<number>;
+    LocalPositionY(self: GameObject, to: number, duration: number): Tween<number>;
+    LocalPositionZ(self: Component, to: number, duration: number): Tween<number>;
+    LocalPositionZ(self: GameObject, to: number, duration: number): Tween<number>;
+    LocalRotation(self: Component, to: Vector3, duration: number): Tween<Vector3>;
+    LocalRotation(self: GameObject, to: Vector3, duration: number): Tween<Vector3>;
+    LocalRotationX(self: Component, to: number, duration: number): Tween<number>;
+    LocalRotationX(self: GameObject, to: number, duration: number): Tween<number>;
+    LocalRotationY(self: Component, to: number, duration: number): Tween<number>;
+    LocalRotationY(self: GameObject, to: number, duration: number): Tween<number>;
+    LocalScale(self: Component, to: Vector3, duration: number): Tween<Vector3>;
+    LocalScale(self: GameObject, to: Vector3, duration: number): Tween<Vector3>;
+    LocalScaleX(self: Component, to: number, duration: number): Tween<number>;
+    LocalScaleX(self: GameObject, to: number, duration: number): Tween<number>;
+    LocalScaleY(self: Component, to: number, duration: number): Tween<number>;
+    LocalScaleY(self: GameObject, to: number, duration: number): Tween<number>;
+    LocalScaleZ(self: Component, to: number, duration: number): Tween<number>;
+    LocalScaleZ(self: GameObject, to: number, duration: number): Tween<number>;
+    MaterialAlpha(self: Component, to: number, duration: number): Tween<number>;
+    MaterialAlpha(self: GameObject, to: number, duration: number): Tween<number>;
+    MaterialColor(self: Component, to: Color, duration: number): Tween<Color>;
+    MaterialColor(self: GameObject, to: Color, duration: number): Tween<Color>;
+    MaterialsColorProperty(self: Component, propertyName: string, from: Color, to: Color, duration: number): Tween<number>;
+    MaterialsFloatProperty(self: Component, propertyName: string, from: number, to: number, duration: number): Tween<number>;
+    OffsetMax(self: Component, to: Vector2, duration: number): Tween<Vector2>;
+    OffsetMax(self: GameObject, to: Vector2, duration: number): Tween<Vector2>;
+    OffsetMin(self: Component, to: Vector2, duration: number): Tween<Vector2>;
+    OffsetMin(self: GameObject, to: Vector2, duration: number): Tween<Vector2>;
+    Position(self: Component, to: Vector3, duration: number): Tween<Vector3>;
+    Position(self: GameObject, to: Vector3, duration: number): Tween<Vector3>;
+    PositionX(self: Component, to: number, duration: number): Tween<number>;
+    PositionX(self: GameObject, to: number, duration: number): Tween<number>;
+    PositionY(self: Component, to: number, duration: number): Tween<number>;
+    PositionY(self: GameObject, to: number, duration: number): Tween<number>;
+    PositionZ(self: Component, to: number, duration: number): Tween<number>;
+    PositionZ(self: GameObject, to: number, duration: number): Tween<number>;
+    RendererColor(self: Component, from: Color, to: Color, duration: number): Tween<Color>;
+    RendererColor(self: GameObject, from: Color, to: Color, duration: number): Tween<Color>;
+    Rotation(self: Component, to: Vector3, duration: number): Tween<Vector3>;
+    Rotation(self: GameObject, to: Vector3, duration: number): Tween<Vector3>;
+    RotationX(self: Component, to: number, duration: number): Tween<number>;
+    RotationX(self: GameObject, to: number, duration: number): Tween<number>;
+    RotationY(self: Component, to: number, duration: number): Tween<number>;
+    RotationY(self: GameObject, to: number, duration: number): Tween<number>;
+    RotationZ(self: Component, to: number, duration: number): Tween<number>;
+    RotationZ(self: GameObject, to: number, duration: number): Tween<number>;
+    SizeDelta(self: Component, to: Vector2, duration: number): Tween<Vector2>;
+    SizeDelta(self: GameObject, to: Vector2, duration: number): Tween<Vector2>;
+    SpriteRendererAlpha(self: Component, to: number, duration: number): Tween<number>;
+    SpriteRendererAlpha(self: GameObject, to: number, duration: number): Tween<number>;
+    SpriteRendererColor(self: Component, to: Color, duration: number): Tween<Color>;
+    SpriteRendererColor(self: GameObject, to: Color, duration: number): Tween<Color>;
+    TextMeshAlpha(self: Component, to: number, duration: number): Tween<number>;
+    TextMeshAlpha(self: GameObject, to: number, duration: number): Tween<number>;
+    TextMeshColor(self: Component, to: Color, duration: number): Tween<Color>;
+    TextMeshColor(self: GameObject, to: Color, duration: number): Tween<Color>;
+    TextMeshProAlpha(self: Component, to: number, duration: number): Tween<number>;
+    TextMeshProAlpha(self: GameObject, to: number, duration: number): Tween<number>;
+    TextMeshProColor(self: Component, to: Color, duration: number): Tween<Color>;
+    TextMeshProColor(self: GameObject, to: Color, duration: number): Tween<Color>;
+    TweenLocalRotationZ(self: Component, to: number, duration: number): Tween<number>;
+    TweenLocalRotationZ(self: GameObject, to: number, duration: number): Tween<number>;
+    ValueColor(self: Component, to: Color, duration: number, onUpdate: unknown): Tween<Color>;
+    ValueColor(self: GameObject, to: Color, duration: number, onUpdate: unknown): Tween<Color>;
+    ValueFloat(self: Component, to: number, duration: number, onUpdate: unknown): Tween<number>;
+    ValueFloat(self: GameObject, to: number, duration: number, onUpdate: unknown): Tween<number>;
+    ValueVector2(self: Component, to: Vector2, duration: number, onUpdate: unknown): Tween<Vector2>;
+    ValueVector2(self: GameObject, to: Vector2, duration: number, onUpdate: unknown): Tween<Vector2>;
+    ValueVector3(self: Component, to: Vector3, duration: number, onUpdate: unknown): Tween<Vector3>;
+    ValueVector3(self: GameObject, to: Vector3, duration: number, onUpdate: unknown): Tween<Vector3>;
+    VolumeWeight(self: Component, to: number, duration: number): Tween<number>;
+    VolumeWeight(self: GameObject, to: number, duration: number): Tween<number>;
+}
+declare const NativeTween: NativeTweenConstructor;
+    
+interface TweenComponent<DriverValueType, ComponentType extends Component> extends Tween<DriverValueType> {
+
+
+    OnInitialize(): boolean;
+
+}
 

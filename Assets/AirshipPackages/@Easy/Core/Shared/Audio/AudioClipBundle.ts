@@ -45,7 +45,7 @@ export class AudioClipBundle {
 			if (fadeOutDuration > 0) {
 				//FADE OUT
 				this.tweeningStop = true;
-				this.lastAudioSource.TweenAudioSourceVolume(0, fadeOutDuration);
+				NativeTween.AudioSourceVolume(this.lastAudioSource, 0, fadeOutDuration);
 				const tweeningAudio = this.lastAudioSource;
 				this.lastAudioSource = undefined;
 				task.delay(math.max(fadeOutDuration, 0.15), () => {
@@ -98,7 +98,7 @@ export class AudioClipBundle {
 		if (fadeInDuration > 0 && this.lastAudioSource) {
 			const volume = this.lastAudioSource.volume;
 			this.lastAudioSource.volume = 0;
-			this.lastAudioSource.TweenAudioSourceVolume(volume, fadeInDuration);
+			NativeTween.AudioSourceVolume(this.lastAudioSource, volume, fadeInDuration);
 		}
 	}
 

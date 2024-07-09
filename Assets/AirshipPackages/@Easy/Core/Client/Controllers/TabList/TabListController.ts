@@ -206,9 +206,9 @@ export class TabListController {
 		this.shown = true;
 		this.tablistCanvas.enabled = true;
 		this.wrapperRect.anchoredPosition = new Vector2(0, this.posY - this.tweenDistance);
-		this.wrapperRect.TweenAnchoredPositionY(this.posY, this.tweenDuration);
+		NativeTween.AnchoredPositionY(this.wrapperRect, this.posY, this.tweenDuration);
 		this.canvasGroup.alpha = 0;
-		this.canvasGroup.TweenCanvasGroupAlpha(1, this.tweenDuration);
+		NativeTween.CanvasGroupAlpha(this.canvasGroup, 1, this.tweenDuration);
 	}
 
 	public Hide(force = false, immediate = false): void {
@@ -222,8 +222,8 @@ export class TabListController {
 		if (immediate || true) {
 			this.tablistCanvas.enabled = false;
 		} else {
-			this.wrapperRect.TweenAnchoredPositionY(this.posY - this.tweenDistance, this.tweenDuration);
-			this.canvasGroup.TweenGraphicAlpha(0, this.tweenDuration);
+			NativeTween.AnchoredPositionY(this.wrapperRect, this.posY - this.tweenDistance, this.tweenDuration);
+			NativeTween.GraphicAlpha(this.canvasGroup, 0, this.tweenDuration);
 			task.delay(0.12, () => {
 				if (!this.shown) {
 					this.tablistCanvas.enabled = false;

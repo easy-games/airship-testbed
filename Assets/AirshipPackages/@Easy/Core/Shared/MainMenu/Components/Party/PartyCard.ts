@@ -25,8 +25,7 @@ export default class PartyCard extends AirshipBehaviour {
 		this.layoutElement.preferredHeight = 84;
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnHoverEvent(this.gameButton.gameObject, (hov) => {
-				this.gameArrow.transform
-					.TweenAnchoredPositionX(hov === HoverState.ENTER ? -10 : -20, 0.5)
+				NativeTween.AnchoredPositionX(this.gameArrow.transform, hov === HoverState.ENTER ? -10 : -20, 0.5)
 					.SetEaseBounceOut();
 				this.gameArrow.color = hov === HoverState.ENTER ? Theme.primary : Theme.white;
 				this.gameText.color = hov === HoverState.ENTER ? Theme.primary : Theme.white;

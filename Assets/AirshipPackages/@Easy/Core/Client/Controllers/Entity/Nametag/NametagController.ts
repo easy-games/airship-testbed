@@ -39,7 +39,7 @@ export class NametagController {
 			const nameTag = character.model.transform.FindChild(this.nameTagId);
 			if (nameTag) {
 				const canvasGroup = nameTag.GetChild(0).GetComponent<CanvasGroup>()!;
-				canvasGroup.TweenCanvasGroupAlpha(alpha, 0.1);
+				NativeTween.CanvasGroupAlpha(canvasGroup, alpha, 0.1);
 			}
 		};
 		bin.Add(

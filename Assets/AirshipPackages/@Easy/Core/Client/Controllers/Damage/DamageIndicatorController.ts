@@ -136,16 +136,16 @@ export class DamageIndicatorController {
 
 		// pop in
 		const popInScale = 2.5;
-		rect.TweenLocalScale(baseScale.mul(new Vector3(popInScale, popInScale, popInScale)), 0.11).SetPingPong();
+		NativeTween.LocalScale(rect, baseScale.mul(new Vector3(popInScale, popInScale, popInScale)), 0.11).SetPingPong();
 
 		const DoFadeOut = (bumpUp: boolean) => {
 			if (bumpUp) {
 				rect.anchoredPosition = rect.anchoredPosition.add(new Vector2(0, 30));
-				rect.TweenAnchoredPositionY(this.indicatorPos.y + 40 + (bumpUp ? 30 : 0), 0.68).SetEase(
+				NativeTween.AnchoredPositionY(rect, this.indicatorPos.y + 40 + (bumpUp ? 30 : 0), 0.68).SetEase(
 					EaseType.QuadIn,
 				);
 			}
-			text.TweenGraphicAlpha(0, 0.8).SetEase(EaseType.QuadIn);
+			NativeTween.GraphicAlpha(text, 0, 0.8).SetEase(EaseType.QuadIn);
 			startedFadeOut = true;
 
 			let completed = false;

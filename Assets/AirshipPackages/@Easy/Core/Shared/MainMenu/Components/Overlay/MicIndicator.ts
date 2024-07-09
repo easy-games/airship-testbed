@@ -37,8 +37,8 @@ export default class MicIndicator extends AirshipBehaviour {
 
 		if (state === "talking") {
 			this.canvasGroup.alpha = 1;
-			const t1 = this.transform
-				.TweenLocalScale(new Vector3(1.14, 1.14, 1), 0.38)
+			const t1 = NativeTween.LocalScale(this.transform,
+				new Vector3(1.14, 1.14, 1), 0.38)
 				.SetPingPong()
 				.SetEase(EaseType.QuadOut)
 				.SetLoopCount(100);

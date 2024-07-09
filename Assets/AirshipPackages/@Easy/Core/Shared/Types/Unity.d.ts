@@ -1808,62 +1808,6 @@ interface Component extends Object {
 	SendMessageUpwards(methodName: string): void;
 	SendMessageUpwards(methodName: string, options: SendMessageOptions): void;
 
-	TweenPosition(to: Vector3, duration: number): Tween<Vector3>;
-	TweenPositionX(to: number, duration: number): Tween<number>;
-	TweenPositionY(to: number, duration: number): Tween<number>;
-	TweenPositionZ(to: number, duration: number): Tween<number>;
-
-	TweenLocalPosition(to: Vector3, duration: number): Tween<Vector3>;
-	TweenLocalPositionX(to: number, duration: number): Tween<number>;
-	TweenLocalPositionY(to: number, duration: number): Tween<number>;
-	TweenLocalPositionZ(to: number, duration: number): Tween<number>;
-
-	TweenAnchoredPosition(to: Vector2, duration: number): Tween<Vector2>;
-	TweenAnchoredPositionX(to: number, duration: number): Tween<number>;
-	TweenAnchoredPositionY(to: number, duration: number): Tween<number>;
-
-	TweenAnchorMin(to: Vector2, duration: number): Tween<Vector2>;
-	TweenAnchorMax(to: Vector2, duration: number): Tween<Vector2>;
-
-	TweenSizeDelta(to: Vector2, duration: number): Tween<Vector2>;
-
-	TweenRotation(to: Vector3, duration: number): Tween<Vector3>;
-	TweenRotationX(to: number, duration: number): Tween<number>;
-	TweenRotationY(to: number, duration: number): Tween<number>;
-	TweenRotationZ(to: number, duration: number): Tween<number>;
-
-	TweenLocalRotation(to: Vector3, duration: number): Tween<Vector3>;
-	TweenLocalRotationX(to: number, duration: number): Tween<number>;
-	TweenLocalRotationY(to: number, duration: number): Tween<number>;
-	TweenLocalRotationZ(to: number, duration: number): Tween<number>;
-
-	TweenLocalScale(to: Vector3, duration: number): Tween<Vector3>;
-	TweenLocalScaleX(to: number, duration: number): Tween<number>;
-	TweenLocalScaleY(to: number, duration: number): Tween<number>;
-	TweenLocalScaleZ(to: number, duration: number): Tween<number>;
-
-	TweenImageFillAmount(to: number, duration: number): Tween<number>;
-	TweenGraphicAlpha(to: number, duration: number): Tween<number>;
-	TweenGraphicColor(to: Color, duration: number): Tween<Color>;
-	TweenSpriteRendererAlpha(to: number, duration: number): Tween<number>;
-	TweenSpriteRendererColor(to: Color, duration: number): Tween<Color>;
-	TweenMaterialColor(to: Color, duration: number): Tween<Color>;
-
-	TweenRendererColor(from: Color, to: Color, duration: number): Tween<number>;
-	TweenMaterialsColorProperty(propertyName: string, from: Color, to: Color, duration: number): Tween<number>;
-	TweenMaterialsFloatProperty(propertyName: string, from: number, to: number, duration: number): Tween<number>;
-
-	TweenTextMeshAlpha(to: number, duration: number): Tween<number>;
-	TweenTextMeshColor(to: Color, duration: number): Tween<Color>;
-	TweenTextMeshProColor(to: Color, duration: number): Tween<Color>;
-	TweenTextMeshProAlpha(to: number, duration: number): Tween<number>;
-	TweenCanvasGroupAlpha(to: number, duration: number): Tween<number>;
-
-	TweenAudioSourceVolume(to: number, duration: number): Tween<number>;
-	TweenAudioSourcePitch(to: number, duration: number): Tween<number>;
-
-	TweenCancelAll(includeChildren: boolean, includeInactive: boolean): void;
-
 	IsDestroyed(): boolean;
 }
 
@@ -1947,55 +1891,6 @@ interface GameObject extends Object {
 	SendMessageUpwards(methodName: string, value: unknown): void;
 	SendMessageUpwards(methodName: string): void;
 	SendMessageUpwards(methodName: string, options: SendMessageOptions): void;
-
-	TweenPosition(to: Vector3, duration: number): Tween<Vector3>;
-	TweenPositionX(to: number, duration: number): Tween<number>;
-	TweenPositionY(to: number, duration: number): Tween<number>;
-	TweenPositionZ(to: number, duration: number): Tween<number>;
-
-	TweenLocalPosition(to: Vector3, duration: number): Tween<Vector3>;
-	TweenLocalPositionX(to: number, duration: number): Tween<number>;
-	TweenLocalPositionY(to: number, duration: number): Tween<number>;
-	TweenLocalPositionZ(to: number, duration: number): Tween<number>;
-
-	TweenAnchoredPosition(to: Vector2, duration: number): Tween<Vector2>;
-	TweenAnchoredPositionX(to: number, duration: number): Tween<number>;
-	TweenAnchoredPositionY(to: number, duration: number): Tween<number>;
-
-	TweenAnchorMin(to: Vector2, duration: number): Tween<Vector2>;
-	TweenAnchorMax(to: Vector2, duration: number): Tween<Vector2>;
-
-	TweenSizeDelta(to: Vector2, duration: number): Tween<Vector2>;
-
-	TweenRotation(to: Vector3, duration: number): Tween<Vector3>;
-	TweenRotationX(to: number, duration: number): Tween<number>;
-	TweenRotationY(to: number, duration: number): Tween<number>;
-	TweenRotationZ(to: number, duration: number): Tween<number>;
-
-	TweenLocalRotation(to: Vector3, duration: number): Tween<Vector3>;
-	TweenLocalRotationX(to: number, duration: number): Tween<number>;
-	TweenLocalRotationY(to: number, duration: number): Tween<number>;
-	TweenLocalRotationZ(to: number, duration: number): Tween<number>;
-
-	TweenLocalScale(to: Vector3, duration: number): Tween<Vector3>;
-	TweenLocalScaleX(to: number, duration: number): Tween<number>;
-	TweenLocalScaleY(to: number, duration: number): Tween<number>;
-	TweenLocalScaleZ(to: number, duration: number): Tween<number>;
-
-	TweenImageFillAmount(to: number, duration: number): Tween<number>;
-	TweenGraphicAlpha(to: number, duration: number): Tween<number>;
-	TweenGraphicColor(to: Color, duration: number): Tween<Color>;
-	TweenSpriteRendererAlpha(to: number, duration: number): Tween<number>;
-	TweenSpriteRendererColor(to: Color, duration: number): Tween<Color>;
-	TweenMaterialColor(to: Color, duration: number): Tween<Color>;
-
-	TweenTextMeshAlpha(to: number, duration: number): Tween<number>;
-	TweenTextMeshColor(to: Color, duration: number): Tween<Color>;
-	TweenTextMeshProColor(to: Color, duration: number): Tween<Color>;
-	TweenTextMeshProAlpha(to: number, duration: number): Tween<number>;
-	TweenCanvasGroupAlpha(to: number, duration: number): Tween<number>;
-
-	TweenCancelAll(includeChildren: boolean, includeInactive: boolean): void;
 
 	IsDestroyed(): boolean;
 

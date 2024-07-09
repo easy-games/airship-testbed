@@ -50,11 +50,11 @@ export default class MainMenuPageComponent extends AirshipBehaviour {
 		} else {
 			const rect = this.transform as RectTransform;
 			rect.anchoredPosition = new Vector2(0, targetY - 20);
-			const tween = rect.TweenAnchoredPositionY(targetY, this.animateInDuration);
+			const tween = NativeTween.AnchoredPositionY(rect, targetY, this.animateInDuration);
 			tween.SetEase(EaseType.QuadOut);
 
 			canvasGroup.alpha = 0;
-			canvasGroup.TweenCanvasGroupAlpha(1, this.animateInDuration);
+			NativeTween.CanvasGroupAlpha(canvasGroup, 1, this.animateInDuration);
 		}
 	}
 
@@ -71,7 +71,7 @@ export default class MainMenuPageComponent extends AirshipBehaviour {
 
 		// gameObject.GetComponent<RectTransform>()!.TweenLocalPosition(new Vector3(-20, 0, 0), 0.1);
 		const canvasGroup = this.gameObject.GetComponent<CanvasGroup>()!;
-		canvasGroup?.TweenCanvasGroupAlpha(0, this.animateOutDuration);
+		if (canvasGroup) NativeTween.CanvasGroupAlpha(canvasGroup, 0, this.animateOutDuration);
 		SetTimeout(instant ? 0 : this.animateOutDuration, () => {
 			if (!this.activePage) {
 				this.gameObject.SetActive(false);

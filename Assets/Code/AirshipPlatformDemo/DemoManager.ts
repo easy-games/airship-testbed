@@ -29,6 +29,14 @@ export default class DemoManager extends AirshipBehaviour {
 		// 	}
 		// })
 
+		// const a: CharacterMovement = undefined!;
+		// a.OnAdjustMove()
+		
+		// Tween.ValueFloat(this.gameObject, 1, 1, (a: unknown, b: unknown) => {
+		// 	print("Obj a: " + a);
+		// 	print("Obj b: " + b);
+		// });
+
 		Airship.Input.CreateAction("interact", Binding.Key(Key.F));
 
 		ItemUtil.RegisterItem("WoodSword", {
@@ -58,7 +66,7 @@ export default class DemoManager extends AirshipBehaviour {
 		if (Game.IsClient()) {
 			// Optional: use locked camera mode for first person support
 			Airship.CharacterCamera.SetCharacterCameraMode(CharacterCameraMode.Orbit);
-			Airship.CharacterCamera.SetFirstPerson(false);
+			// Airship.CharacterCamera.SetFirstPerson(false);
 			// Airship.inventory.SetUIEnabled(false);
 
 			// Display local player deaths

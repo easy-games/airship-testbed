@@ -98,7 +98,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 
 		const wrapper = this.backpackCanvas.transform.GetChild(0).GetComponent<RectTransform>()!;
 		wrapper.anchoredPosition = new Vector2(0, -20);
-		wrapper.TweenAnchoredPositionY(0, 0.12);
+		NativeTween.AnchoredPositionY(wrapper, 0, 0.12);
 
 		this.hotbarCanvas.enabled = false;
 
@@ -276,9 +276,9 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		const contentGO = go.transform.GetChild(0).gameObject;
 		const contentRect = contentGO.GetComponent<RectTransform>()!;
 		if (selectedSlot === slot && (this.prevHeldSlot !== slot || reset)) {
-			contentRect.TweenAnchoredPositionY(10, 0.1);
+			NativeTween.AnchoredPositionY(contentRect, 10, 0.1);
 		} else if (selectedSlot !== slot && (this.prevHeldSlot === slot || reset)) {
-			contentRect.TweenAnchoredPositionY(0, 0.1);
+			NativeTween.AnchoredPositionY(contentRect, 0, 0.1);
 		}
 
 		if (init) {

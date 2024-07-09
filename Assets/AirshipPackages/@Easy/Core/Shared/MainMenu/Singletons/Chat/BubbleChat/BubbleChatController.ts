@@ -118,7 +118,7 @@ export class BubbleChatController {
 		chatMessageObject.transform.SetParent(canvas.transform, false);
 
 		chatMessageObject.transform.localScale = new Vector3(0.6, 0.6, 0.6);
-		chatMessageObject.transform.TweenLocalScale(new Vector3(1, 1, 1), 0.2).SetEase(EaseType.QuadInOut);
+		NativeTween.LocalScale(chatMessageObject.transform, new Vector3(1, 1, 1), 0.2).SetEase(EaseType.QuadInOut);
 
 		// Purge if child count is too high
 		if (canvas.transform.GetChildCount() > BubbleChatController.maxDisplayedMessages) {
@@ -133,14 +133,14 @@ export class BubbleChatController {
 		task.delay(8, () => {
 			if (chatMessageObject === undefined) return;
 
-			messageBackgroundImage.TweenGraphicAlpha(0.4, 2);
+			NativeTween.GraphicAlpha(messageBackgroundImage, 0.4, 2);
 		});
 
 		// Destroy
 		task.delay(20, () => {
 			if (!chatMessageObject) return;
 
-			messageCanvasGroup.TweenCanvasGroupAlpha(0, 0.3);
+			NativeTween.CanvasGroupAlpha(messageCanvasGroup, 0, 0.3);
 			GameObjectUtil.Destroy(chatMessageObject, 2);
 		});
 	}

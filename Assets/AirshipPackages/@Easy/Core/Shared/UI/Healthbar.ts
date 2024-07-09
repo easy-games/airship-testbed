@@ -94,7 +94,7 @@ export class Healthbar {
 		}
 
 		//Animate fill down
-		this.fillTransform.TweenLocalScaleX(percentDelta, this.fillDurationInSeconds);
+		NativeTween.LocalScaleX(this.fillTransform, percentDelta, this.fillDurationInSeconds);
 
 		if (percentDelta > this.currentDelta) {
 			//Growth
@@ -110,8 +110,9 @@ export class Healthbar {
 				this.growthFillTransform.anchoredPosition.y,
 			);
 
-			this.growthFillTransform.TweenLocalScaleX(0, this.fillDurationInSeconds);
-			this.growthFillTransform.TweenAnchoredPositionX(
+			NativeTween.LocalScaleX(this.growthFillTransform, 0, this.fillDurationInSeconds);
+			NativeTween.AnchoredPositionX(
+				this.growthFillTransform,
 				this.transform.rect.width * percentDelta,
 				this.changeDurationInSeconds,
 			);
@@ -123,7 +124,7 @@ export class Healthbar {
 			//Hold then animate change indicator
 			task.delay(this.changeDelayInSeconds, () => {
 				if (!this.enabled) return;
-				this.changeFillTransform.TweenLocalScaleX(percentDelta, this.changeDurationInSeconds);
+				NativeTween.LocalScaleX(this.changeFillTransform, percentDelta, this.changeDurationInSeconds);
 			});
 		}
 
@@ -131,8 +132,8 @@ export class Healthbar {
 	}
 
 	public Destroy(): void {
-		this.fillTransform.TweenCancelAll(false, true);
-		this.changeFillTransform.TweenCancelAll(false, true);
+		NativeTween.CancelAll(this.fillTransform, false, true);
+		NativeTween.CancelAll(this.changeFillTransform, false, true);
 		this.enabled = false;
 		GameObjectUtil.Destroy(this.refs.gameObject);
 	}
