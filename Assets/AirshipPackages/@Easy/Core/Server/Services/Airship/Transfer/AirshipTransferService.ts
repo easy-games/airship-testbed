@@ -31,7 +31,7 @@ export class AirshipTransferService {
 	public onShutdown = new Signal().WithYieldTracking(false);
 
 	/**
-	 * If true, players are automatically transfer into a new server.
+	 * If true, players are automatically transfered into a new server when the server shuts down.
 	 *
 	 * We try to transfer all players to the same server so they stay together.
 	 */
