@@ -38,6 +38,6 @@ export interface ItemDef {
 	maxStackSize?: number;
 
 	data?: {
-		[x: string | number | symbol]: any;
+		[x: string | number]: any;
 	};
 }
