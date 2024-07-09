@@ -3594,6 +3594,22 @@ declare const enum EventTriggerType {
     Submit = 15,
     Cancel = 16,
 }
+declare const enum TerrainRenderFlags {
+    heightmap = 1,
+    Heightmap = 1,
+    trees = 2,
+    Trees = 2,
+    details = 4,
+    Details = 4,
+    all = 7,
+    All = 7,
+}
+declare const enum TreeMotionVectorModeOverride {
+    CameraMotionOnly = 0,
+    PerObjectMotion = 1,
+    ForceNoMotion = 2,
+    InheritFromPrototype = 3,
+}
 
     
 interface RaycastHit {
@@ -3680,37 +3696,6 @@ interface RaycastHit {
 
 }
     
-interface Object {
-    /**
-     * The name of the object.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Object-name.html | Object.name}
-     */
-    name: string;
-    /**
-     * Should the object be hidden, saved with the Scene or modifiable by the user?
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Object-hideFlags.html | Object.hideFlags}
-     */
-    hideFlags: HideFlags;
-
-
-    Equals(other: unknown): boolean;
-    GetHashCode(): number;
-    /**
-     * Gets  the instance ID of the object.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Object.GetInstanceID.html | Object.GetInstanceID}
-     */
-    GetInstanceID(): number;
-    /**
-     * Returns the name of the object.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Object.ToString.html | Object.ToString}
-     */
-    ToString(): string;
-
-}
     
     
     
@@ -3914,40 +3899,6 @@ declare const TagHandle: TagHandleConstructor;
     
     
     
-interface ObjectConstructor {
-
-    new(): Object;
-
-
-    Destroy(obj: Object, t: number): void;
-    Destroy(obj: Object): void;
-    DestroyImmediate(obj: Object, allowDestroyingAssets: boolean): void;
-    DestroyImmediate(obj: Object): void;
-    DontDestroyOnLoad(target: Object): void;
-    FindAnyObjectByType<T>(): T;
-    FindAnyObjectByType<T>(findObjectsInactive: FindObjectsInactive): T;
-    FindAnyObjectByType(type: unknown): Object;
-    FindAnyObjectByType(type: unknown, findObjectsInactive: FindObjectsInactive): Object;
-    FindFirstObjectByType<T>(): T;
-    FindFirstObjectByType<T>(findObjectsInactive: FindObjectsInactive): T;
-    FindFirstObjectByType(type: unknown): Object;
-    FindFirstObjectByType(type: unknown, findObjectsInactive: FindObjectsInactive): Object;
-    FindObjectsByType(type: unknown, sortMode: FindObjectsSortMode): CSArray<Object>;
-    FindObjectsByType(type: unknown, findObjectsInactive: FindObjectsInactive, sortMode: FindObjectsSortMode): CSArray<Object>;
-    FindObjectsByType<T>(sortMode: FindObjectsSortMode): CSArray<T>;
-    FindObjectsByType<T>(findObjectsInactive: FindObjectsInactive, sortMode: FindObjectsSortMode): CSArray<T>;
-    Instantiate(original: Object, position: Vector3, rotation: Quaternion): Object;
-    Instantiate(original: Object, position: Vector3, rotation: Quaternion, parent: Transform): Object;
-    Instantiate(original: Object): Object;
-    Instantiate(original: Object, parent: Transform): Object;
-    Instantiate(original: Object, parent: Transform, instantiateInWorldSpace: boolean): Object;
-    Instantiate<T>(original: T): T;
-    Instantiate<T>(original: T, position: Vector3, rotation: Quaternion): T;
-    Instantiate<T>(original: T, position: Vector3, rotation: Quaternion, parent: Transform): T;
-    Instantiate<T>(original: T, parent: Transform): T;
-    Instantiate<T>(original: T, parent: Transform, worldPositionStays: boolean): T;
-}
-declare const Object: ObjectConstructor;
     
     
     
@@ -48057,6 +48008,385 @@ interface CharacterMovementDataConstructor {
 
 }
 declare const CharacterMovementData: CharacterMovementDataConstructor;
+    
+interface Terrain extends Behaviour {
+    /**
+     * The Terrain Data that stores heightmaps, terrain textures, detail meshes and trees.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-terrainData.html | Terrain.terrainData}
+     */
+    terrainData: TerrainData;
+    /**
+     * The maximum distance at which trees are rendered.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-treeDistance.html | Terrain.treeDistance}
+     */
+    treeDistance: number;
+    /**
+     * Distance from the camera where trees will be rendered as billboards only.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-treeBillboardDistance.html | Terrain.treeBillboardDistance}
+     */
+    treeBillboardDistance: number;
+    /**
+     * Total distance delta that trees will use to transition from billboard orientation to mesh orientation.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-treeCrossFadeLength.html | Terrain.treeCrossFadeLength}
+     */
+    treeCrossFadeLength: number;
+    /**
+     * Maximum number of trees rendered at full LOD.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-treeMaximumFullLODCount.html | Terrain.treeMaximumFullLODCount}
+     */
+    treeMaximumFullLODCount: number;
+    /**
+     * Detail objects will be displayed up to this distance.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-detailObjectDistance.html | Terrain.detailObjectDistance}
+     */
+    detailObjectDistance: number;
+    /**
+     * Density of detail objects.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-detailObjectDensity.html | Terrain.detailObjectDensity}
+     */
+    detailObjectDensity: number;
+    /**
+     * An approximation of how many pixels the terrain will pop in the worst case when switching lod.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-heightmapPixelError.html | Terrain.heightmapPixelError}
+     */
+    heightmapPixelError: number;
+    /**
+     * Limits the Terrain's maximum rendering resolution.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-heightmapMaximumLOD.html | Terrain.heightmapMaximumLOD}
+     */
+    heightmapMaximumLOD: number;
+    /**
+     * Limits how simplified the rendered terrain can be.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-heightmapMinimumLODSimplification.html | Terrain.heightmapMinimumLODSimplification}
+     */
+    heightmapMinimumLODSimplification: number;
+    /**
+     * Heightmap patches beyond basemap distance will use a precomputed low res basemap.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-basemapDistance.html | Terrain.basemapDistance}
+     */
+    basemapDistance: number;
+    /**
+     * The index of the baked lightmap applied to this terrain.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-lightmapIndex.html | Terrain.lightmapIndex}
+     */
+    lightmapIndex: number;
+    /**
+     * The index of the realtime lightmap applied to this terrain.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-realtimeLightmapIndex.html | Terrain.realtimeLightmapIndex}
+     */
+    realtimeLightmapIndex: number;
+    /**
+     * The UV scale &amp; offset used for a baked lightmap.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-lightmapScaleOffset.html | Terrain.lightmapScaleOffset}
+     */
+    lightmapScaleOffset: Vector4;
+    /**
+     * The UV scale &amp; offset used for a realtime lightmap.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-realtimeLightmapScaleOffset.html | Terrain.realtimeLightmapScaleOffset}
+     */
+    realtimeLightmapScaleOffset: Vector4;
+    /**
+     * Defines whether Unity frees per-Camera rendering resources for the Terrain when those resources aren't in use after a certain number of frames.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-keepUnusedRenderingResources.html | Terrain.keepUnusedRenderingResources}
+     */
+    keepUnusedRenderingResources: boolean;
+    /**
+     * Allows you to set the shadow casting mode for the terrain.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-shadowCastingMode.html | Terrain.shadowCastingMode}
+     */
+    shadowCastingMode: ShadowCastingMode;
+    /**
+     * How reflection probes are used for terrain. See Rendering.ReflectionProbeUsage.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-reflectionProbeUsage.html | Terrain.reflectionProbeUsage}
+     */
+    reflectionProbeUsage: ReflectionProbeUsage;
+    /**
+     * The custom material Unity uses to render the Terrain.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-materialTemplate.html | Terrain.materialTemplate}
+     */
+    materialTemplate: Material;
+    /**
+     * Indicates whether Unity draws the Terrain geometry itself.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-drawHeightmap.html | Terrain.drawHeightmap}
+     */
+    drawHeightmap: boolean;
+    /**
+     * Specifies if the terrain tile will be automatically connected to adjacent tiles.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-allowAutoConnect.html | Terrain.allowAutoConnect}
+     */
+    allowAutoConnect: boolean;
+    /**
+     * Grouping ID for auto connect.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-groupingID.html | Terrain.groupingID}
+     */
+    groupingID: number;
+    /**
+     * Set to true to enable the terrain instance renderer. The default value is false.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-drawInstanced.html | Terrain.drawInstanced}
+     */
+    drawInstanced: boolean;
+    /**
+     * When this options is enabled, Terrain heightmap geometries will be added in acceleration structures used for Ray Tracing.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-enableHeightmapRayTracing.html | Terrain.enableHeightmapRayTracing}
+     */
+    enableHeightmapRayTracing: boolean;
+    /**
+     * Returns the normal map texture computed from sampling the heightmap. It is only used when terrain is rendered using instancing.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-normalmapTexture.html | Terrain.normalmapTexture}
+     */
+    readonly normalmapTexture: RenderTexture;
+    /**
+     * Specify if terrain trees and details should be drawn.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-drawTreesAndFoliage.html | Terrain.drawTreesAndFoliage}
+     */
+    drawTreesAndFoliage: boolean;
+    /**
+     * Set the terrain bounding box scale.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-patchBoundsMultiplier.html | Terrain.patchBoundsMultiplier}
+     */
+    patchBoundsMultiplier: Vector3;
+    /**
+     * The multiplier to the current LOD bias used for rendering LOD trees (i.e. SpeedTree trees).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-treeLODBiasMultiplier.html | Terrain.treeLODBiasMultiplier}
+     */
+    treeLODBiasMultiplier: number;
+    /**
+     * Collect detail patches from memory.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-collectDetailPatches.html | Terrain.collectDetailPatches}
+     */
+    collectDetailPatches: boolean;
+    /**
+     * When enabled, the terrain ignores the terrain overrides set in the QualitySettings.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-ignoreQualitySettings.html | Terrain.ignoreQualitySettings}
+     */
+    ignoreQualitySettings: boolean;
+    /**
+     * Controls what part of the terrain should be rendered.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-editorRenderFlags.html | Terrain.editorRenderFlags}
+     */
+    editorRenderFlags: TerrainRenderFlags;
+    /**
+     * Whether to bake an array of internal light probes for Tree Editor trees (Editor only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-bakeLightProbesForTrees.html | Terrain.bakeLightProbesForTrees}
+     */
+    bakeLightProbesForTrees: boolean;
+    /**
+     * Removes ringing from light probes on Tree Editor trees (Editor only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-deringLightProbesForTrees.html | Terrain.deringLightProbesForTrees}
+     */
+    deringLightProbesForTrees: boolean;
+    /**
+     * The motion vector rendering mode for all SpeedTree models painted on the terrain.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-treeMotionVectorModeOverride.html | Terrain.treeMotionVectorModeOverride}
+     */
+    treeMotionVectorModeOverride: TreeMotionVectorModeOverride;
+    /**
+     * Allows you to specify how Unity chooses the for tree instances.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-preserveTreePrototypeLayers.html | Terrain.preserveTreePrototypeLayers}
+     */
+    preserveTreePrototypeLayers: boolean;
+    /**
+     * The Terrain tile to the left, which is in the negative X direction.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-leftNeighbor.html | Terrain.leftNeighbor}
+     */
+    readonly leftNeighbor: Terrain;
+    /**
+     * The Terrain tile to the left, which is in the positive X direction.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-rightNeighbor.html | Terrain.rightNeighbor}
+     */
+    readonly rightNeighbor: Terrain;
+    /**
+     * Terrain top neighbor.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-topNeighbor.html | Terrain.topNeighbor}
+     */
+    readonly topNeighbor: Terrain;
+    /**
+     * Terrain bottom neighbor.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-bottomNeighbor.html | Terrain.bottomNeighbor}
+     */
+    readonly bottomNeighbor: Terrain;
+    /**
+     * Determines which rendering layers the Terrain renderer lives on.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-renderingLayerMask.html | Terrain.renderingLayerMask}
+     */
+    renderingLayerMask: number;
+
+
+    /**
+     * Adds a tree instance to the terrain.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain.AddTreeInstance.html | Terrain.AddTreeInstance}
+     */
+    AddTreeInstance(instance: TreeInstance): void;
+    /**
+     * Flushes any change done in the terrain so it takes effect.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain.Flush.html | Terrain.Flush}
+     */
+    Flush(): void;
+    GetClosestReflectionProbes(result: CSArray<ReflectionProbeBlendInfo>): void;
+    GetKeepUnusedCameraRenderingResources(cameraInstanceID: number): boolean;
+    /**
+     * Get the position of the terrain.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain.GetPosition.html | Terrain.GetPosition}
+     */
+    GetPosition(): Vector3;
+    /**
+     * Get the previously set splat material properties by copying to the dest MaterialPropertyBlock object.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain.GetSplatMaterialPropertyBlock.html | Terrain.GetSplatMaterialPropertyBlock}
+     */
+    GetSplatMaterialPropertyBlock(dest: MaterialPropertyBlock): void;
+    /**
+     * Samples the height at the given position defined in world space, relative to the Terrain space.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain.SampleHeight.html | Terrain.SampleHeight}
+     */
+    SampleHeight(worldPosition: Vector3): number;
+    /**
+     * Defines whether Unity cleans up rendering resources for a given Camera during garbage collection.
+     * @param cameraInstanceID The InstanceID of the camera for which freeUnusedRenderingResources is being set. See Object.GetInstanceID.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain.SetKeepUnusedCameraRenderingResources.html | Terrain.SetKeepUnusedCameraRenderingResources}
+     */
+    SetKeepUnusedCameraRenderingResources(cameraInstanceID: number, keepUnused: boolean): void;
+    /**
+     * Lets you set up the connection between neighboring Terrain tiles. This ensures LOD matches up on neighboring Terrain tiles.
+     * @param left The Terrain tile to the left is in the negative X direction.
+     * @param top The Terrain tile to the top is in the positive Z direction.
+     * @param right The Terrain tile to the right is in the positive X direction.
+     * @param bottom The Terrain tile to the bottom is in the negative Z direction.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain.SetNeighbors.html | Terrain.SetNeighbors}
+     */
+    SetNeighbors(left: Terrain, top: Terrain, right: Terrain, bottom: Terrain): void;
+    /**
+     * Set the additional material properties when rendering the terrain heightmap using the splat material.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain.SetSplatMaterialPropertyBlock.html | Terrain.SetSplatMaterialPropertyBlock}
+     */
+    SetSplatMaterialPropertyBlock(properties: MaterialPropertyBlock): void;
+
+}
+    
+interface TerrainConstructor {
+    /**
+     * Graphics format of the Terrain heightmap.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-heightmapFormat.html | Terrain.heightmapFormat}
+     */
+    readonly heightmapFormat: GraphicsFormat;
+    readonly heightmapTextureFormat: TextureFormat;
+    /**
+     * RenderTextureFormat of the terrain heightmap.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-heightmapRenderTextureFormat.html | Terrain.heightmapRenderTextureFormat}
+     */
+    readonly heightmapRenderTextureFormat: RenderTextureFormat;
+    /**
+     * Graphics format of the Terrain normal map texture.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-normalmapFormat.html | Terrain.normalmapFormat}
+     */
+    readonly normalmapFormat: GraphicsFormat;
+    /**
+     * Texture format of the Terrain normal map texture.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-normalmapTextureFormat.html | Terrain.normalmapTextureFormat}
+     */
+    readonly normalmapTextureFormat: TextureFormat;
+    /**
+     * Render texture format of the Terrain normal map texture.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-normalmapRenderTextureFormat.html | Terrain.normalmapRenderTextureFormat}
+     */
+    readonly normalmapRenderTextureFormat: RenderTextureFormat;
+    /**
+     * Graphics format of the Terrain holes Texture when it is not compressed.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-holesFormat.html | Terrain.holesFormat}
+     */
+    readonly holesFormat: GraphicsFormat;
+    /**
+     * Render texture format of the Terrain holes Texture.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-holesRenderTextureFormat.html | Terrain.holesRenderTextureFormat}
+     */
+    readonly holesRenderTextureFormat: RenderTextureFormat;
+    /**
+     * Graphics format of the Terrain holes Texture when it is compressed.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-compressedHolesFormat.html | Terrain.compressedHolesFormat}
+     */
+    readonly compressedHolesFormat: GraphicsFormat;
+    /**
+     * Texture format of the Terrain holes Texture when it is compressed.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-compressedHolesTextureFormat.html | Terrain.compressedHolesTextureFormat}
+     */
+    readonly compressedHolesTextureFormat: TextureFormat;
+    /**
+     * The active Terrain. This is a convenient function to get to the main Terrain in the Scene.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-activeTerrain.html | Terrain.activeTerrain}
+     */
+    readonly activeTerrain: Terrain;
+    /**
+     * The active terrains in the Scene.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-activeTerrains.html | Terrain.activeTerrains}
+     */
+    readonly activeTerrains: CSArray<Terrain>;
+
+    new(): Terrain;
+
+
+    CreateTerrainGameObject(assignTerrain: TerrainData): GameObject;
+    GetActiveTerrains(terrainList: CSArray<Terrain>): void;
+    SetConnectivityDirty(): void;
+}
+declare const Terrain: TerrainConstructor;
     
 interface NativeTween {
 
