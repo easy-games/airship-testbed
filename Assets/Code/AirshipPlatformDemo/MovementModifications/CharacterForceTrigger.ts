@@ -12,9 +12,11 @@ export default class CharacterForceTrigger extends AirshipBehaviour{
 
     public Awake(): void {
         Airship.Characters.onCharacterSpawned.Connect((character)=>{
+            print("FORCE TRIGGER");
             if(Game.IsClient() && !character.IsLocalCharacter()){
                 return;
             }
+            print("FORCE TRIGGER 2");
 
             //Locally we want to refresh our colliders during replays
             character.movement.OnBeginMove((isReplay)=>{

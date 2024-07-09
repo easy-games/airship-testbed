@@ -61,9 +61,9 @@ export default class Character extends AirshipBehaviour {
 	 * [Advanced]
 	 *
 	 * Custom data that the client sends in their move packet.
-	 * Map<id, dataBlob>, inputData, tick, isReplay
+	 * Map<id, dataBlob>, inputData, isReplay
 	 */
-	public OnBeginMove = new Signal<[Map<string,unknown>, MoveInputData, number, boolean]>();
+	public OnBeginMove = new Signal<[Map<string, unknown>, MoveInputData, boolean]>();
 
 	public Awake(): void {
 		this.inventory = this.gameObject.GetAirshipComponent<Inventory>()!;
@@ -106,8 +106,8 @@ export default class Character extends AirshipBehaviour {
 		);
 
 		// Custom move command data handling:
-		const customDataConn = this.movement.OnBeginMove((isReplay, tick, moveData) => {
-			this.BeginMove(isReplay, tick, moveData);
+		const customDataConn = this.movement.OnBeginMove((isReplay, moveData) => {
+			this.BeginMove(isReplay, moveData);
 		});
 		this.bin.Add(() => {
 			Bridge.DisconnectEvent(customDataConn);
@@ -157,7 +157,6 @@ export default class Character extends AirshipBehaviour {
 		}
 
 		//Apply the queued custom data to movement
-		print("Listening to set custom data event");
 		const customDataFlushedConn = this.movement.OnSetCustomData(() => {
 			this.ProccessCustomMoveData();
 		});
@@ -172,33 +171,35 @@ export default class Character extends AirshipBehaviour {
 		this.queuedMoveData.set(key, value);
 	}
 
-	private ProccessCustomMoveData(){
+	private ProccessCustomMoveData() {
 		let customDataQueue: { key: string; value: unknown }[] = [];
-		this.queuedMoveData.forEach((value, key)=>{
-			//print("processing custom move data: " + key + ", " + value);
-			customDataQueue.push({key: key, value: value});
+		this.queuedMoveData.forEach((value, key) => {
+			customDataQueue.push({ key: key, value: value });
 		});
 		this.queuedMoveData.clear();
 		this.movement?.SetCustomData(new BinaryBlob(customDataQueue));
 	}
 
-	private BeginMove(isReplay: boolean, tick: number, moveData: MoveInputData){
+	private BeginMove(isReplay: boolean, moveData: MoveInputData) {
+		//print("BEGIN MOVE: " + moveData.GetTick());
 		//TODO: Do we actually want to ignore AI characters???
 		const player = this.player;
 		if (!player) return;
 
 		//Decode binary block into usable key value array
-		const allData = moveData.customData ? moveData.customData.Decode() as { key: string; value: unknown }[] : undefined;
+		const allData = moveData.customData
+			? (moveData.customData.Decode() as { key: string; value: unknown }[])
+			: undefined;
 		const allMoveData: Map<string, unknown> = new Map();
-		if(allData){
+		if (allData) {
 			for (const data of allData) {
-				//print("Found custom data " + data.key + " with value: " + data.value)
+				print("Found custom data " + data.key + " with value: " + data.value);
 				allMoveData.set(data.key, data.value);
 			}
 		}
 
 		//Local signal for parsing the key value pairs
-		this.OnBeginMove.Fire(allMoveData, moveData, tick, isReplay);
+		this.OnBeginMove.Fire(allMoveData, moveData, isReplay);
 	}
 
 	public IsInitialized() {

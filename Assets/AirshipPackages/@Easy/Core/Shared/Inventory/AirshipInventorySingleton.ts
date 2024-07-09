@@ -352,6 +352,7 @@ export class AirshipInventorySingleton {
 		this.inventories.set(inventory.id, entry);
 
 		const character = inventory.gameObject.GetAirshipComponent<Character>();
+		character?.WaitForInit();
 		if (Game.IsClient() && character?.IsLocalCharacter()) {
 			this.SetLocalInventory(inventory);
 		}

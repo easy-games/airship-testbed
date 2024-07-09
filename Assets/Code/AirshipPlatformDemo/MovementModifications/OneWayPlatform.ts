@@ -26,7 +26,7 @@ export default class OneWayPlatform extends AirshipBehaviour{
 
     public LateUpdate(dt: number): void {
         Airship.Characters.GetCharacters().forEach((character)=>{
-            if(!Game.IsServer() && !character.IsLocalCharacter()){
+            if(!Game.IsServer() && character.IsInitialized() && !character.IsLocalCharacter()){
                 return;
             }
             this.RefreshForCharacter(character);

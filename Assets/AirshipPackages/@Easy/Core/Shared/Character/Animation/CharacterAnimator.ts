@@ -31,8 +31,10 @@ export default class CharacterAnimator extends AirshipBehaviour {
 	}
 
 	public Start() {
-		this.character = this.gameObject.GetAirshipComponent<Character>()!;
 		this.isFlashing = false;
+		
+		this.character = this.gameObject.GetAirshipComponent<Character>()!;
+		this.character.WaitForInit();
 
 		if (Game.IsClient()) {
 			//AUDIO
