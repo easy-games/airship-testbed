@@ -37202,6 +37202,7 @@ interface ServerBootstrap extends MonoBehaviour {
 
     FinishedSetup(): void;
     GetJoinCode(): string;
+    InvokeOnProcessExit(): void;
     IsAgonesEnvironment(): boolean;
     Shutdown(): void;
 
@@ -49733,4 +49734,200 @@ interface TweenComponent<DriverValueType, ComponentType extends Component> exten
     OnInitialize(): boolean;
 
 }
+    
+interface ConstantForce extends Behaviour {
+    /**
+     * The force applied to the rigidbody every frame.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/ConstantForce-force.html | ConstantForce.force}
+     */
+    force: Vector3;
+    /**
+     * The force - relative to the rigid bodies coordinate system - applied every frame.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/ConstantForce-relativeForce.html | ConstantForce.relativeForce}
+     */
+    relativeForce: Vector3;
+    /**
+     * The torque applied to the rigidbody every frame.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/ConstantForce-torque.html | ConstantForce.torque}
+     */
+    torque: Vector3;
+    /**
+     * The torque - relative to the rigid bodies coordinate system - applied every frame.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/ConstantForce-relativeTorque.html | ConstantForce.relativeTorque}
+     */
+    relativeTorque: Vector3;
+
+
+
+}
+    
+interface ConstantForceConstructor {
+
+    new(): ConstantForce;
+
+
+}
+declare const ConstantForce: ConstantForceConstructor;
+    
+interface PhysicsUpdateBehaviour2D extends Behaviour {
+
+
+
+}
+    
+interface PhysicsUpdateBehaviour2DConstructor {
+
+    new(): PhysicsUpdateBehaviour2D;
+
+
+}
+declare const PhysicsUpdateBehaviour2D: PhysicsUpdateBehaviour2DConstructor;
+    
+interface ConstantForce2D extends PhysicsUpdateBehaviour2D {
+    /**
+     * The linear force applied to the rigidbody each physics update.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/ConstantForce2D-force.html | ConstantForce2D.force}
+     */
+    force: Vector2;
+    /**
+     * The linear force, relative to the rigid-body coordinate system, applied each physics update.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/ConstantForce2D-relativeForce.html | ConstantForce2D.relativeForce}
+     */
+    relativeForce: Vector2;
+    /**
+     * The torque applied to the rigidbody each physics update.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/ConstantForce2D-torque.html | ConstantForce2D.torque}
+     */
+    torque: number;
+
+
+
+}
+    
+interface ConstantForce2DConstructor {
+
+    new(): ConstantForce2D;
+
+
+}
+declare const ConstantForce2D: ConstantForce2DConstructor;
+    
+interface Joint extends Component {
+    /**
+     * A reference to another rigidbody this joint connects to.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-connectedBody.html | Joint.connectedBody}
+     */
+    connectedBody: Rigidbody;
+    /**
+     * A reference to an articulation body this joint connects to.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-connectedArticulationBody.html | Joint.connectedArticulationBody}
+     */
+    connectedArticulationBody: ArticulationBody;
+    /**
+     * The Direction of the axis around which the body is constrained.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-axis.html | Joint.axis}
+     */
+    axis: Vector3;
+    /**
+     * The Position of the anchor around which the joints motion is constrained.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-anchor.html | Joint.anchor}
+     */
+    anchor: Vector3;
+    /**
+     * Position of the anchor relative to the connected Rigidbody.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-connectedAnchor.html | Joint.connectedAnchor}
+     */
+    connectedAnchor: Vector3;
+    /**
+     * Should the connectedAnchor be calculated automatically?
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-autoConfigureConnectedAnchor.html | Joint.autoConfigureConnectedAnchor}
+     */
+    autoConfigureConnectedAnchor: boolean;
+    /**
+     * The force that needs to be applied for this joint to break.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-breakForce.html | Joint.breakForce}
+     */
+    breakForce: number;
+    /**
+     * The torque that needs to be applied for this joint to break. To be able to break, a joint must be _Locked_ or _Limited_ on the axis of rotation where the torque is being applied. This means that some joints cannot break, such as an unconstrained Configurable Joint.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-breakTorque.html | Joint.breakTorque}
+     */
+    breakTorque: number;
+    /**
+     * Enable collision between bodies connected with the joint.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-enableCollision.html | Joint.enableCollision}
+     */
+    enableCollision: boolean;
+    /**
+     * Toggle preprocessing for this joint.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-enablePreprocessing.html | Joint.enablePreprocessing}
+     */
+    enablePreprocessing: boolean;
+    /**
+     * The scale to apply to the inverse mass and inertia tensor of the body prior to solving the constraints.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-massScale.html | Joint.massScale}
+     */
+    massScale: number;
+    /**
+     * The scale to apply to the inverse mass and inertia tensor of the connected body prior to solving the constraints.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-connectedMassScale.html | Joint.connectedMassScale}
+     */
+    connectedMassScale: number;
+    /**
+     * The force applied by the solver to satisfy all constraints.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-currentForce.html | Joint.currentForce}
+     */
+    currentForce: Vector3;
+    /**
+     * The torque applied by the solver to satisfy all constraints.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-currentTorque.html | Joint.currentTorque}
+     */
+    currentTorque: Vector3;
+
+
+
+}
+    
+interface JointConstructor {
+
+    new(): Joint;
+
+
+}
+declare const Joint: JointConstructor;
+    
+interface FixedJoint extends Joint {
+
+
+
+}
+    
+interface FixedJointConstructor {
+
+    new(): FixedJoint;
+
+
+}
+declare const FixedJoint: FixedJointConstructor;
 
