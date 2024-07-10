@@ -164,8 +164,6 @@ export class MainMenuPartyController {
 			Object.Destroy(go);
 		}
 
-		let isLocalPartyLeader = Game.localPlayer.userId === this.party.leader;
-
 		// Add new & update existing
 		for (const member of this.party.members) {
 			let go: GameObject;
@@ -178,7 +176,7 @@ export class MainMenuPartyController {
 			}
 
 			const partyMemberComponent = go.GetAirshipComponent<PartyMember>()!;
-			partyMemberComponent.SetUser(member, isLocalPartyLeader);
+			partyMemberComponent.SetUser(member, member.uid === this.party.leader);
 		}
 
 		CanvasAPI.OnClickEvent(leaveButton, () => {

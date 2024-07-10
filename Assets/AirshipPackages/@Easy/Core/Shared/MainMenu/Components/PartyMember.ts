@@ -12,6 +12,7 @@ export default class PartyMember extends AirshipBehaviour {
 	public profileImage!: RawImage;
 	public addFriendContainer!: GameObject;
 	public addFriendButton!: GameObject;
+	private layoutElement!: LayoutElement;
 
 	public partyLeaderContainer!: GameObject;
 	private user!: PublicUser;
@@ -20,7 +21,13 @@ export default class PartyMember extends AirshipBehaviour {
 	private addFriendButtonBin: Bin | undefined;
 	private bin = new Bin();
 
+	public Start(): void {
+		this.layoutElement = this.gameObject.GetComponent<LayoutElement>();
+	}
+
 	public SetUser(user: PublicUser, asLeader: boolean): void {
+		this.layoutElement.layoutPriority = asLeader ? 2 : 1;
+
 		this.bin.Clean();
 		this.user = user;
 
@@ -75,10 +82,11 @@ export default class PartyMember extends AirshipBehaviour {
 		let shouldDisplay = true;
 		if (Dependency<ProtectedFriendsController>().GetFriendById(this.user.uid) !== undefined) {
 			shouldDisplay = false;
-		}
-		if (Dependency<ProtectedFriendsController>().HasOutgoingFriendRequest(this.user.uid)) {
+		} else if (Dependency<ProtectedFriendsController>().HasOutgoingFriendRequest(this.user.uid)) {
 			shouldDisplay = false;
 		}
+		this.addFriendContainer.SetActive(true);
+
 		this.addFriendContainer.SetActive(shouldDisplay);
 
 		if (!shouldDisplay) {
