@@ -121,6 +121,8 @@ interface CharacterMovement extends Component {
 	EnableMovement();
 	GetState(): CharacterState;
 	UpdateSyncTick(): void;
+	GetNextTick(): number;
+	GetPrevTick(): number;
 
 	rootTransform: Transform; //The true position transform
 	networkTransform: Transform; //The interpolated network transform

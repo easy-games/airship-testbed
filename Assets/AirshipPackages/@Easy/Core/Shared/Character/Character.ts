@@ -193,7 +193,7 @@ export default class Character extends AirshipBehaviour {
 		const allCustomData: Map<string, unknown> = new Map();
 		if (allData) {
 			for (const data of allData) {
-				print("Found custom data " + data.key + " with value: " + data.value);
+				//print("Found custom data " + data.key + " with value: " + data.value);
 				allCustomData.set(data.key, data.value);
 			}
 		}
