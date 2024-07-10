@@ -1,4 +1,4 @@
-import { FriendsController } from "@Easy/Core/Client/ProtectedControllers//Social/FriendsController";
+import { ProtectedFriendsController } from "@Easy/Core/Client/ProtectedControllers//Social/FriendsController";
 import { User } from "@Easy/Core/Client/ProtectedControllers//User/User";
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
@@ -21,7 +21,7 @@ export default class IncomingFriendRequestCard extends AirshipBehaviour {
 		this.usernameText.text = user.username;
 
 		task.spawn(async () => {
-			let texture = await Airship.players.GetProfilePictureTextureFromImageIdAsync(user.uid, user.profileImageId);
+			let texture = await Airship.Players.GetProfilePictureAsync(user.uid);
 			if (texture) {
 				this.profileImage.texture = texture;
 			}
@@ -45,7 +45,7 @@ export default class IncomingFriendRequestCard extends AirshipBehaviour {
 	}
 
 	private HandleResult(result: boolean) {
-		const friendsController = Dependency<FriendsController>();
+		const friendsController = Dependency<ProtectedFriendsController>();
 		if (result) {
 			friendsController.AcceptFriendRequestAsync(this.user.username, this.user.uid);
 		} else {

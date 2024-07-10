@@ -1,5 +1,5 @@
 import { MainMenuBlockSingleton } from "@Easy/Core/Client/ProtectedControllers/Settings/MainMenuBlockSingleton";
-import { FriendsController } from "@Easy/Core/Client/ProtectedControllers/Social/FriendsController";
+import { ProtectedFriendsController } from "@Easy/Core/Client/ProtectedControllers/Social/FriendsController";
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { ProtectedPlayer } from "@Easy/Core/Shared/Player/ProtectedPlayer";
@@ -19,9 +19,8 @@ export default class PlayerEntry extends AirshipBehaviour {
 
 	public Init(player: ProtectedPlayer): void {
 		task.spawn(async () => {
-			const texture = await Airship.players.GetProfilePictureTextureFromImageIdAsync(
+			const texture = await Airship.Players.GetProfilePictureAsync(
 				player.userId,
-				player.profileImageId,
 			);
 			if (texture) {
 				this.profileImage.texture = texture;
@@ -34,7 +33,7 @@ export default class PlayerEntry extends AirshipBehaviour {
 			if (showAddFriend) {
 				this.bin.AddEngineEventConnection(
 					CanvasAPI.OnClickEvent(this.addFriendBtn, () => {
-						const res = Dependency<FriendsController>().SendFriendRequest(player.username);
+						const res = Dependency<ProtectedFriendsController>().SendFriendRequest(player.username);
 						if (res) {
 							this.addFriendBtn.SetActive(false);
 						}

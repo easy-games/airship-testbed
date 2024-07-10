@@ -13,7 +13,7 @@ import { GameDto } from "../Client/Components/HomePage/API/GamesAPI";
 import { AudioManager } from "./Audio/AudioManager";
 import { CoreRefs } from "./CoreRefs";
 import { InitNet } from "./Network/NetworkAPI";
-import { RemoteFunction } from "./Network/RemoteFunction";
+import { NetworkFunction } from "./Network/NetworkFunction";
 import { AirshipUrl } from "./Util/AirshipUrl";
 import { AppManager } from "./Util/AppManager";
 import { CanvasAPI } from "./Util/CanvasAPI";
@@ -30,19 +30,25 @@ AvatarUtil.Initialize();
 InitNet();
 
 // Drive timer:
-gameObject.OnUpdate(() => {
+const fullGo = gameObject as GameObject & {
+	OnUpdate(callback: () => void): void;
+	OnLateUpdate(callback: () => void): void;
+	OnFixedUpdate(callback: () => void): void;
+};
+fullGo.OnUpdate(() => {
 	OnUpdate.Fire(TimeUtil.GetDeltaTime());
 });
-gameObject.OnLateUpdate(() => {
+fullGo.OnLateUpdate(() => {
 	OnLateUpdate.Fire(TimeUtil.GetDeltaTime());
 });
-gameObject.OnFixedUpdate(() => {
+fullGo.OnFixedUpdate(() => {
 	OnFixedUpdate.Fire(TimeUtil.GetFixedDeltaTime());
 });
 
 Flamework.AddPath("@easy/core/shared/mainmenu", "^.*singleton.ts$");
 Flamework.AddPath("@easy/core/client/protectedcontrollers", "^.*controller.ts$");
 Flamework.AddPath("@easy/core/client/protectedcontrollers", "^.*singleton.ts$");
+Flamework.AddPath("@easy/core/client/controllers/airship/user/airshipusercontroller", "^.*controller.ts$");
 Flamework.AddPath("@easy/core/shared/player/playerssingleton", "^.*singleton.ts$");
 Flamework.AddPath("@easy/core/shared/input/airshipinputsingleton", "^.*singleton.ts$");
 Flamework.AddPath("@easy/core/shared/protected", "^.*singleton.ts");
@@ -53,7 +59,7 @@ if (Game.IsServer()) {
 
 Flamework.Ignite();
 
-const serverInfoRemoteFunction = new RemoteFunction<[], [gameId: string, serverId: string, orgId: string]>(
+const serverInfoRemoteFunction = new NetworkFunction<[], [gameId: string, serverId: string, orgId: string]>(
 	"Protected_CoreServerInfo",
 );
 

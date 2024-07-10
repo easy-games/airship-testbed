@@ -1,6 +1,6 @@
+import { Airship } from "@Easy/Core/Shared/Airship";
 import { ChatCommand } from "@Easy/Core/Shared/Commands/ChatCommand";
 import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
-import { ItemUtil } from "@Easy/Core/Shared/Item/ItemUtil";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 
 export class AddInventoryCommand extends ChatCommand {
@@ -16,7 +16,7 @@ export class AddInventoryCommand extends ChatCommand {
 
 		let itemTypeExpression = args[0];
 
-		const itemType = ItemUtil.FindItemTypeFromExpression(itemTypeExpression);
+		const itemType = Airship.Inventory.FindItemTypeFromExpression(itemTypeExpression);
 		if (!itemType) {
 			player.SendMessage("Invalid item type: " + itemTypeExpression.lower());
 			return;

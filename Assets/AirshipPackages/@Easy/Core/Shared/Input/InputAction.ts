@@ -106,7 +106,7 @@ export class InputAction {
    */
   public UpdateBinding(newBinding: Binding): void {
     this.binding.Update(newBinding);
-    Airship.input.onActionBound.Fire(this);
+    Airship.Input.onActionBound.Fire(this);
   }
 
   /**
@@ -114,7 +114,7 @@ export class InputAction {
    */
   public UnsetBinding(): void {
     this.binding.Unset();
-    Airship.input.onActionUnbound.Fire(this);
+    Airship.Input.onActionUnbound.Fire(this);
   }
 
   /**
@@ -122,7 +122,7 @@ export class InputAction {
    */
   public ResetBinding(): void {
     this.binding.Update(this.defaultBinding);
-    Airship.input.onActionBound.Fire(this);
+    Airship.Input.onActionBound.Fire(this);
   }
 
   /**

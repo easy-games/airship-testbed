@@ -13,6 +13,5 @@ MonoBehaviour:
   m_Name: NetworkPrefabCollection
   m_EditorClassIdentifier: 
   networkPrefabs:
-  - {fileID: 7996787048906898585, guid: 3d745f9e2e9de41b79d3143029b8f82d, type: 3}
   - {fileID: 3659927884800523514, guid: c2681cdc092144c4389c2276c084e434, type: 3}
   - {fileID: 2748669429789584642, guid: 9cd09b32e10194976b43f4c363815292, type: 3}

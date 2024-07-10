@@ -75,29 +75,25 @@ export default class AirshipButton extends AirshipBehaviour {
 	}
 
 	public PlayMouseUpEffect(): void {
+		const rect = this.gameObject.GetComponent<RectTransform>()!;
 		if (this.clickEffect === AirshipButtonClickEffect.Squish) {
-			this.gameObject.GetComponent<RectTransform>()!.TweenLocalScale(this.startingScale, 0.1);
+			NativeTween.LocalScale(rect, this.startingScale, 0.1);
 		} else if (this.clickEffect === AirshipButtonClickEffect.ShiftDown) {
-			this.gameObject.GetComponent<RectTransform>()!.TweenAnchoredPosition(this.startPos, 0.05);
+			NativeTween.AnchoredPosition(rect, this.startPos, 0.05);
 		}
 	}
 
 	public PlayMouseDownEffect(): void {
 		if (this.clickEffect === AirshipButtonClickEffect.Squish) {
-			this.gameObject.GetComponent<RectTransform>()!.TweenLocalScale(this.startingScale.mul(0.9), 0.1);
+			NativeTween.LocalScale(this.gameObject.GetComponent<RectTransform>()!, this.startingScale.mul(0.9), 0.1);
 		} else if (this.clickEffect === AirshipButtonClickEffect.ShiftDown) {
-			this.gameObject
-				.GetComponent<RectTransform>()!
-				.TweenAnchoredPosition(this.startPos.add(new Vector2(0, -2)), 0.05);
+			NativeTween.AnchoredPosition(this.gameObject.GetComponent<RectTransform>()!, this.startPos.add(new Vector2(0, -2)), 0.05);
 		}
 	}
 
 	public PlayClickEffect(): void {
 		if (this.clickEffect === AirshipButtonClickEffect.Squish) {
-			this.gameObject
-				.GetComponent<RectTransform>()!
-				.TweenLocalScale(this.gameObject.GetComponent<RectTransform>()!.localScale.mul(0.9), 0.1)
-				.SetPingPong();
+			NativeTween.LocalScale(this.gameObject.GetComponent<RectTransform>()!, this.gameObject.GetComponent<RectTransform>()!.localScale.mul(0.9), 0.1).SetPingPong();
 		}
 	}
 

@@ -1,11 +1,11 @@
 import { PublicUser } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipUser";
-import { OnStart, Service } from "@Easy/Core/Shared/Flamework";
+import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Result } from "@Easy/Core/Shared/Types/Result";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { DecodeJSON } from "@Easy/Core/Shared/json";
 
-export enum UserServiceBridgeTopics {
+export const enum UserServiceBridgeTopics {
 	GetUserByUsername = "UserService:GetUserByUsername",
 	GetUserById = "UserService:GetUserById",
 	GetUsersById = "UserService:GetUsersById",
@@ -19,7 +19,7 @@ export type ServerBridgeApiGetUsersById = (
 ) => Result<Record<string, PublicUser>, undefined>;
 
 @Service({})
-export class ProtectedUserService implements OnStart {
+export class ProtectedUserService {
 	constructor() {
 		if (!Game.IsServer()) return;
 
@@ -31,7 +31,7 @@ export class ProtectedUserService implements OnStart {
 				);
 
 				if (!res.success || res.statusCode > 299) {
-					warn(`Unable to get user. Status Code:  ${res.statusCode}.\n`, res.data);
+					warn(`Unable to get user. Status Code:  ${res.statusCode}.\n`, res.error);
 					return {
 						success: false,
 						data: undefined,
@@ -56,7 +56,7 @@ export class ProtectedUserService implements OnStart {
 			const res = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/users/uid/${userId}`);
 
 			if (!res.success || res.statusCode > 299) {
-				warn(`Unable to get user. Status Code:  ${res.statusCode}.\n`, res.data);
+				warn(`Unable to get user. Status Code:  ${res.statusCode}.\n`, res.error);
 				return {
 					success: false,
 					data: undefined,
@@ -93,7 +93,7 @@ export class ProtectedUserService implements OnStart {
 				);
 
 				if (!res.success || res.statusCode > 299) {
-					warn(`Unable to get user. Status Code:  ${res.statusCode}.\n`, res.data);
+					warn(`Unable to get user. Status Code:  ${res.statusCode}.\n`, res.error);
 					return {
 						success: false,
 						data: undefined,
@@ -119,5 +119,5 @@ export class ProtectedUserService implements OnStart {
 		);
 	}
 
-	OnStart(): void {}
+	protected OnStart(): void {}
 }

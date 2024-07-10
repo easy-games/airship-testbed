@@ -1,5 +1,5 @@
+import { Singleton } from "@Easy/Core/Shared/Flamework";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
-import { OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
 
 interface BlockedGame {
 	id: string;
@@ -17,14 +17,14 @@ interface BlockListFile {
 }
 
 @Singleton({})
-export class MainMenuBlockSingleton implements OnStart {
+export class MainMenuBlockSingleton {
 	public blockedGameIds = new Set<string>();
 	public blockedGames: BlockedGame[] = [];
 
 	public blockedUserIds = new Set<string>();
 	public blockedUsers: BlockedUser[] = [];
 
-	OnStart(): void {
+	protected OnStart(): void {
 		const blockListContents = DiskManager.ReadFileAsync("BlockList.json");
 		if (blockListContents && blockListContents !== "") {
 			const data = DecodeJSON<BlockListFile>(blockListContents);

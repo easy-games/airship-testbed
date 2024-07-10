@@ -1,5 +1,5 @@
 import { AirshipGameServer } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipTransfers";
-import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Result } from "@Easy/Core/Shared/Types/Result";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import inspect from "@Easy/Core/Shared/Util/Inspect";
@@ -7,10 +7,10 @@ import { EncodeJSON } from "@Easy/Core/Shared/json";
 import { SocketController } from "../Socket/SocketController";
 
 @Controller({})
-export class TransferController implements OnStart {
+export class TransferController {
 	constructor(private readonly socketController: SocketController) {}
 
-	OnStart(): void {
+	protected OnStart(): void {
 		this.socketController.On<{
 			gameServer: AirshipGameServer;
 			gameId: string;
@@ -44,7 +44,7 @@ export class TransferController implements OnStart {
 		);
 
 		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to complete transfer request. Status Code:  ${res.statusCode}.\n`, res.data);
+			warn(`Unable to complete transfer request. Status Code:  ${res.statusCode}.\n`, res.error);
 			return {
 				success: false,
 				data: undefined,
@@ -65,7 +65,7 @@ export class TransferController implements OnStart {
 		const res = InternalHttpManager.PostAsync(AirshipUrl.GameCoordinator + "/transfers/transfer/self/party", "");
 
 		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to complete transfer request. Status Code:  ${res.statusCode}.\n`, res.data);
+			warn(`Unable to complete transfer request. Status Code:  ${res.statusCode}.\n`, res.error);
 			return {
 				success: false,
 				data: undefined,

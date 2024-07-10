@@ -2,7 +2,7 @@ import { Party } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipParty";
 import { UserStatusData } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipUser";
 import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
-import { Controller, Dependency, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Controller, Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { CoreLogger } from "@Easy/Core/Shared/Logger/CoreLogger";
 import PartyCard from "@Easy/Core/Shared/MainMenu/Components/Party/PartyCard";
@@ -17,11 +17,11 @@ import { EncodeJSON } from "@Easy/Core/Shared/json";
 import { AuthController } from "../Auth/AuthController";
 import { MainMenuController } from "../MainMenuController";
 import { SocketController } from "../Socket/SocketController";
-import { FriendsController } from "./FriendsController";
+import { ProtectedFriendsController } from "./FriendsController";
 import { MainMenuAddFriendsController } from "./MainMenuAddFriendsController";
 
 @Controller({})
-export class MainMenuPartyController implements OnStart {
+export class MainMenuPartyController {
 	public party: Party | undefined;
 	public onPartyUpdated = new Signal<[newParty: Party | undefined, oldParty: Party | undefined]>();
 
@@ -38,7 +38,7 @@ export class MainMenuPartyController implements OnStart {
 		private readonly socketController: SocketController,
 	) {}
 
-	OnStart(): void {
+	protected OnStart(): void {
 		this.socketController.On<Party>("game-coordinator/party-update", (data) => {
 			let oldParty = this.party;
 			this.party = data;
@@ -46,7 +46,7 @@ export class MainMenuPartyController implements OnStart {
 			this.UpdateParty();
 
 			if (this.party === undefined) {
-				this.partyCard.SetLeaderStatus(undefined);
+				this.partyCard.UpdateInfo(undefined);
 			}
 		});
 
@@ -54,11 +54,11 @@ export class MainMenuPartyController implements OnStart {
 			if (!this.party) return;
 
 			const partyLeader = data.find((d) => d.userId === this.party!.leader);
-			this.partyCard.SetLeaderStatus(partyLeader);
+			this.partyCard.UpdateInfo(partyLeader);
 		});
 
 		this.socketController.On<Party>("game-coordinator/party-invite", (data) => {
-			Dependency<FriendsController>().AddSocialNotification(
+			Dependency<ProtectedFriendsController>().AddSocialNotification(
 				"party-invite:" + data.leader,
 				"Party Invite",
 				data.members[0].username,
@@ -71,13 +71,13 @@ export class MainMenuPartyController implements OnStart {
 							}),
 						);
 						if (res.success) {
-							Dependency<FriendsController>().FireNotificationKey("party-invite:" + data.leader);
+							Dependency<ProtectedFriendsController>().FireNotificationKey("party-invite:" + data.leader);
 						} else {
 							Debug.LogError(res.error);
 						}
 					} else {
 						// We don't have an endpoint for declining party invite. just close the UI.
-						Dependency<FriendsController>().FireNotificationKey("party-invite:" + data.leader);
+						Dependency<ProtectedFriendsController>().FireNotificationKey("party-invite:" + data.leader);
 					}
 				},
 			);
@@ -202,7 +202,7 @@ export class MainMenuPartyController implements OnStart {
 		);
 
 		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to invite user to party. Status Code: ${res.statusCode}\n`, res.data);
+			warn(`Unable to invite user to party. Status Code: ${res.statusCode}\n`, res.error);
 			return {
 				success: false,
 				data: undefined,
@@ -224,7 +224,7 @@ export class MainMenuPartyController implements OnStart {
 		);
 
 		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to remove user from party. Status Code: ${res.statusCode}\n`, res.data);
+			warn(`Unable to remove user from party. Status Code: ${res.statusCode}\n`, res.error);
 			return {
 				success: false,
 				data: undefined,
@@ -245,7 +245,7 @@ export class MainMenuPartyController implements OnStart {
 		);
 
 		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to join party. Status Code: ${res.statusCode}\n`, res.data);
+			warn(`Unable to join party. Status Code: ${res.statusCode}\n`, res.error);
 			return {
 				success: false,
 				data: undefined,

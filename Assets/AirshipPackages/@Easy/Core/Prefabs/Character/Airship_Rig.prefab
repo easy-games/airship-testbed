@@ -610,7 +610,7 @@ PrefabInstance:
     - target: {fileID: 5866666021909216657, guid: 32b6c86e4b9e5c040818bf1ea6fe61c2, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 4720bed45a7b7d242be13d2a55b889e3, type: 2}
+      objectReference: {fileID: 22100000, guid: ae8227d224bf7e749945db609efd9d24, type: 2}
     - target: {fileID: 6141796999198570092, guid: 32b6c86e4b9e5c040818bf1ea6fe61c2, type: 3}
       propertyPath: m_Icon
       value: 

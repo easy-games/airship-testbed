@@ -3,7 +3,7 @@ import { Airship } from "@Easy/Core/Shared/Airship";
 import { UserStatusData } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipUser";
 import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
-import { Controller, Dependency, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Controller, Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { GameObjectUtil } from "@Easy/Core/Shared/GameObject/GameObjectUtil";
 import DirectMessagesWindow from "@Easy/Core/Shared/MainMenu/Components/DirectMessagesWindow";
@@ -20,12 +20,12 @@ import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { Theme } from "@Easy/Core/Shared/Util/Theme";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 import { MainMenuController } from "../../MainMenuController";
-import { FriendsController } from "../FriendsController";
+import { ProtectedFriendsController } from "../FriendsController";
 import { MainMenuPartyController } from "../MainMenuPartyController";
 import { DirectMessage } from "./DirectMessage";
 
 @Controller({})
-export class DirectMessageController implements OnStart {
+export class DirectMessageController {
 	private incomingMessagePrefab = AssetBridge.Instance.LoadAsset(
 		"AirshipPackages/@Easy/Core/Prefabs/UI/Messages/IncomingMessage.prefab",
 	) as GameObject;
@@ -65,12 +65,12 @@ export class DirectMessageController implements OnStart {
 
 	constructor(
 		private readonly mainMenuController: MainMenuController,
-		private readonly friendsController: FriendsController,
+		private readonly friendsController: ProtectedFriendsController,
 		private readonly socketController: SocketController,
 		private readonly partyController: MainMenuPartyController,
 	) {}
 
-	OnStart(): void {
+	protected OnStart(): void {
 		this.Setup();
 
 		this.socketController.On<DirectMessage>("game-coordinator/direct-message", (data) => {
@@ -339,9 +339,9 @@ export class DirectMessageController implements OnStart {
 			const content = messageGo.transform.GetChild(0);
 			const profilePictureGo = content.GetChild(0).gameObject;
 			task.spawn(async () => {
-				const profilePicSprite = await Airship.players.GetProfilePictureSpriteAsync(dm.sender);
-				if (profilePicSprite) {
-					profilePictureGo.GetComponent<Image>()!.sprite = profilePicSprite;
+				const profilePicTex = await Airship.Players.GetProfilePictureAsync(dm.sender);
+				if (profilePicTex) {
+					profilePictureGo.GetComponent<RawImage>()!.texture = profilePicTex;
 				}
 				profilePictureGo.SetActive(true);
 			});
@@ -472,7 +472,7 @@ export class DirectMessageController implements OnStart {
 	}
 
 	public Close(): void {
-		this.windowGo?.transform.TweenAnchoredPositionY(this.yPos, 0.1);
+		if (this.windowGo) NativeTween.AnchoredPositionY(this.windowGo.transform, this.yPos, 0.1);
 		this.openedWindowTarget = undefined;
 	}
 }

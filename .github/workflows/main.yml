@@ -1,0 +1,59 @@
+name: Deploy Docs
+
+on:
+  push:
+    branches:
+      - main
+
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: GCP Project
+        type: environment
+        default: platform-staging
+        required: true
+
+env:
+  SERVICE_NAME: "airship-ref"
+
+jobs:
+  build:
+    environment: ${{ inputs.environment || 'platform-production' }}
+    permissions:
+      contents: "read"
+      id-token: "write"
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      # Auth to GCP
+      - id: "auth"
+        uses: "google-github-actions/auth@v2"
+        with:
+          workload_identity_provider: "${{ vars.GCP_WIP }}"
+          service_account: "${{ vars.GCP_SA }}"
+
+      - name: "Set up Cloud SDK"
+        uses: "google-github-actions/setup-gcloud@v2"
+
+      - name: "Build Website"
+        env:
+          EASY_AUTH_TOKEN: ${{secrets.PULL_PACKAGE_PAT}}
+        run: |
+          touch .env
+          # echo PUBLIC_CDN_URL=${{vars.CDN_URL}} >> .env
+          npm i -g typedoc@0.25.13
+          npm i -g -D typedoc-plugin-merge-modules@5.1.0 typedoc-plugin-rename-defaults@0.7.1
+          cd Assets
+          npx typedoc
+
+      - name: "Deploy"
+        env:
+          STORAGE_BUCKET: ${{vars.STORAGE_BUCKET}}
+        run: |
+          gsutil rsync -R GeneratedReference~ gs://"$STORAGE_BUCKET"

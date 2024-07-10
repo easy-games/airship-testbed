@@ -1,16 +1,19 @@
-import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Controller } from "@Easy/Core/Shared/Flamework";
+import { CoreLogger } from "@Easy/Core/Shared/Logger/CoreLogger";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
-import { Task } from "@Easy/Core/Shared/Util/Task";
 import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 import { AuthController } from "../Auth/AuthController";
 
 @Controller({})
-export class SocketController implements OnStart {
+export class SocketController {
 	private onEvent = new Signal<[eventName: string, data: string]>();
+	public onSocketConnectionChanged = new Signal<[connected: boolean]>();
+
 	constructor(private readonly authController: AuthController) {}
-	OnStart(): void {
+
+	protected OnStart(): void {
 		SocketManager.Instance.OnEvent((eventName, data) => {
 			// print(`[${eventName}]: ${data}`);
 			this.onEvent.Fire(eventName, data);
@@ -18,12 +21,12 @@ export class SocketController implements OnStart {
 		SocketManager.SetScriptListening(true);
 
 		if (this.authController.IsAuthenticated()) {
-			Task.Spawn(() => {
+			task.spawn(() => {
 				this.Connect();
 			});
 		}
 		this.authController.onAuthenticated.Connect(() => {
-			Task.Spawn(() => {
+			task.spawn(() => {
 				this.Connect();
 			});
 			// Expires every 6 hours. So we fire every hour.
@@ -40,6 +43,11 @@ export class SocketController implements OnStart {
 				true,
 			);
 		});
+
+		SocketManager.Instance.OnDisconnected((reason) => {
+			CoreLogger.Warn("Disconnected from socket: " + reason);
+			this.onSocketConnectionChanged.Fire(false);
+		});
 	}
 
 	public On<T = unknown>(eventName: string, callback: (data: T) => void): void {
@@ -54,12 +62,17 @@ export class SocketController implements OnStart {
 		if (data === undefined) {
 			data = { _hold: "yes" };
 		}
-		Task.Spawn(() => {
+		task.spawn(() => {
 			SocketManager.EmitAsync(eventName, EncodeJSON(data));
 		});
 	}
 
-	private Connect(): void {
-		SocketManager.ConnectAsyncInternal();
+	public IsConnected(): boolean {
+		return SocketManager.IsConnected();
+	}
+
+	public Connect(): void {
+		let connected = SocketManager.ConnectAsyncInternal();
+		this.onSocketConnectionChanged.Fire(connected);
 	}
 }

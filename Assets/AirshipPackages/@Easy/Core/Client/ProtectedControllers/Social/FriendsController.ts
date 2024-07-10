@@ -4,7 +4,7 @@ import { UserStatus, UserStatusData } from "@Easy/Core/Shared/Airship/Types/Outp
 import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
 import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
-import { Controller, Dependency, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Controller, Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { GameObjectUtil } from "@Easy/Core/Shared/GameObject/GameObjectUtil";
 import { CoreLogger } from "@Easy/Core/Shared/Logger/CoreLogger";
@@ -33,7 +33,7 @@ import { User } from "../User/User";
 import { DirectMessageController } from "./DirectMessages/DirectMessageController";
 
 @Controller({})
-export class FriendsController implements OnStart {
+export class ProtectedFriendsController {
 	public friends: User[] = [];
 	public incomingFriendRequests: User[] = [];
 	public outgoingFriendRequests: User[] = [];
@@ -94,7 +94,7 @@ export class FriendsController implements OnStart {
 		}
 	}
 
-	OnStart(): void {
+	protected OnStart(): void {
 		const friendsContent = this.mainMenuController.refs.GetValue("Social", "FriendsContent");
 		friendsContent.ClearChildren();
 
@@ -137,9 +137,9 @@ export class FriendsController implements OnStart {
 				this.socialNotification.usernameText.text = foundUser.username;
 
 				task.spawn(async () => {
-					const sprite = await Airship.players.GetProfilePictureSpriteAsync(foundUser.uid);
-					if (sprite) {
-						this.socialNotification.userImage.sprite = sprite;
+					const texture = await Airship.Players.GetProfilePictureAsync(foundUser.uid);
+					if (texture) {
+						this.socialNotification.userImage.texture = texture;
 					}
 				});
 
@@ -259,7 +259,7 @@ export class FriendsController implements OnStart {
 	public GetFriendByUsername(username: string): User | undefined {
 		return this.friends.find((f) => f.username.lower() === username.lower());
 	}
-	
+
 	public GetFriendById(uid: string): User | undefined {
 		return this.friends.find((u) => u.uid === uid);
 	}
@@ -370,6 +370,10 @@ export class FriendsController implements OnStart {
 		return this.outgoingFriendRequests.find((f) => f.uid === userId) !== undefined;
 	}
 
+	public IsFriendsWith(userId: string): boolean {
+		return this.friends.some((u) => u.uid === userId);
+	}
+
 	public SendFriendRequest(username: string): boolean {
 		print('adding friend: "' + username + '"');
 		const res = InternalHttpManager.PostAsync(
@@ -425,7 +429,7 @@ export class FriendsController implements OnStart {
 				go.name = friend.userId;
 				const friendRect = go.GetComponent<RectTransform>()!;
 
-				const redirect = go.GetComponent<AirshipRedirectDrag>()!;
+				const redirect = go.GetComponent<AirshipRedirectScroll>()!;
 				redirect.redirectTarget = this.friendsScrollRect;
 
 				const refs = go.GetComponent<GameObjectReferences>()!;
@@ -595,10 +599,7 @@ export class FriendsController implements OnStart {
 
 		if (config.loadImage) {
 			task.spawn(async () => {
-				const texture = await Airship.players.GetProfilePictureTextureFromImageIdAsync(
-					friend.userId,
-					friend.profileImageId,
-				);
+				const texture = await Airship.Players.GetProfilePictureAsync(friend.userId);
 				if (texture) {
 					profileImage.texture = texture;
 				}

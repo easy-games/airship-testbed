@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 3666750116909101902}
   - component: {fileID: 1514931877955094404}
   - component: {fileID: 5030420737997381236}
-  - component: {fileID: 6857474154071645847}
   m_Layer: 0
   m_Name: CliffTest (0)
   m_TagString: Untagged
@@ -109,23 +108,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 2298213860806583902, guid: 28bd76cc7b3684ee6976c888511a89f2, type: 3}
---- !u!114 &6857474154071645847
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1010744704171664977}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colorSettings:
-  - materialColor: {r: 0.5566038, g: 0.30643633, b: 0.20741367, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-  addedByEditorScript: 0
 --- !u!1 &1261833186284829171
 GameObject:
   m_ObjectHideFlags: 0
@@ -251,6 +233,7 @@ MonoBehaviour:
   - materialColor: {r: 0.5566038, g: 0.30643633, b: 0.20741367, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
+    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!1 &2561371865697221036
 GameObject:
@@ -411,4 +394,5 @@ MonoBehaviour:
   - materialColor: {r: 0.5566038, g: 0.30643633, b: 0.20741367, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
+    emissiveLevel: 0
   addedByEditorScript: 0

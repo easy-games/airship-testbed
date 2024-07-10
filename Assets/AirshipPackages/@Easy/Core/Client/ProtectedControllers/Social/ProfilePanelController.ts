@@ -1,15 +1,15 @@
 import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
-import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Mouse } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
 
 @Controller({})
-export class ProfilePanelController implements OnStart {
+export class ProfilePanelController {
     private open = false;
     private openMenuBin = new Bin();
 
-    OnStart(): void {
+    protected OnStart(): void {
         
     }
 
@@ -60,11 +60,11 @@ export class ProfilePanelController implements OnStart {
 		// animate
         const originalPosition = menuRect.localPosition;
         menuRect.localPosition = menuRect.localPosition.add(new Vector3(10, 0, 0));
-        menuRect.TweenLocalPosition(originalPosition, 0.1);
+        NativeTween.LocalPosition(menuRect, originalPosition, 0.1);
 
 
 		menuRect.localScale = new Vector3(0.95, 0.95, 0.95);
-		menuRect.TweenLocalScale(new Vector3(1, 1, 1), 0.1);
+		NativeTween.LocalScale(menuRect, new Vector3(1, 1, 1), 0.1);
 
 		let cleaned = false;
 		return () => {

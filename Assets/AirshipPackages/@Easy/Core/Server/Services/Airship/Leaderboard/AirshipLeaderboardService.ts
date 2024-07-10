@@ -7,7 +7,7 @@ import {
 import { Platform } from "@Easy/Core/Shared/Airship";
 import { RankData } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipLeaderboard";
 import { AirshipUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
-import { OnStart, Service } from "@Easy/Core/Shared/Flamework";
+import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Result } from "@Easy/Core/Shared/Types/Result";
 
@@ -15,15 +15,20 @@ export interface LeaderboardUpdate {
 	[id: string]: number;
 }
 
+/**
+ * This service provides access to leaderboard information as well as methods for updating existing leaderboards.
+ * Leaderboards must be created using the https://create.airship.gg website. Once a leaderboard is created, it can be
+ * accessed using the name provided during setup.
+ */
 @Service({})
-export class AirshipLeaderboardService implements OnStart {
+export class AirshipLeaderboardService {
 	constructor() {
 		if (!Game.IsServer()) return;
 
-		Platform.server.leaderboard = this;
+		Platform.Server.Leaderboard = this;
 	}
 
-	OnStart(): void {}
+	protected OnStart(): void {}
 
 	/**
 	 * Sends an update to the provided leaderboard. The scores provided are added to, subtracted from, or replace the existing
@@ -34,6 +39,7 @@ export class AirshipLeaderboardService implements OnStart {
 	public async Update(leaderboardName: string, update: LeaderboardUpdate): Promise<Result<undefined, undefined>> {
 		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiLeaderboardUpdate>(
 			LeaderboardServiceBridgeTopics.Update,
+			LuauContext.Protected,
 			leaderboardName,
 			update,
 		);
@@ -47,6 +53,7 @@ export class AirshipLeaderboardService implements OnStart {
 	public async GetRank(leaderboardName: string, id: string): Promise<Result<RankData | undefined, undefined>> {
 		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiLeaderboardGetRank>(
 			LeaderboardServiceBridgeTopics.GetRank,
+			LuauContext.Protected,
 			leaderboardName,
 			id,
 		);
@@ -69,6 +76,7 @@ export class AirshipLeaderboardService implements OnStart {
 	): Promise<Result<RankData[], undefined>> {
 		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiLeaderboardGetRankRange>(
 			LeaderboardServiceBridgeTopics.Update,
+			LuauContext.Protected,
 			leaderboardName,
 			startIndex,
 			count,

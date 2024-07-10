@@ -1,4 +1,4 @@
-export default class CharacterMovementTrigger extends AirshipBehaviour{
+export default class CharacterMovementDataTrigger extends AirshipBehaviour{
     private moveData?: CharacterMovementData;
 
     public Start(): void {
@@ -6,9 +6,7 @@ export default class CharacterMovementTrigger extends AirshipBehaviour{
     }
     
     public OnTriggerEnter(collider: Collider): void {
-        print("ON TRIGGER ENTER");
         if(!this.moveData){
-            print("No move data");
             return;
         }
         
@@ -16,7 +14,6 @@ export default class CharacterMovementTrigger extends AirshipBehaviour{
         
         print("movement: " + characterMovement);
         if(characterMovement){
-            print("Setting character movement to " + this.gameObject.name);
             characterMovement.moveData = this.moveData;
         }
     }

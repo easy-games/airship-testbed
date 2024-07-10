@@ -25,5 +25,33 @@
 		"runtimePath": "AirshipPackages/@Easy/Core/Shared/Runtime"
 	},
 	"include": ["**/*.ts", "**/*.tsx"],
-	"exclude": ["Typescript~/node_modules"]
+	"exclude": ["Typescript~/node_modules"],
+	"typedocOptions": {
+        "entryPoints": ["AirshipPackages/@Easy/Core"],
+		"entryPointStrategy": "Expand",
+		"hideGenerator": true,
+        "out": "../GeneratedReference~",
+		"navigation": {
+			"includeCategories": true,
+			"includeGroups": false,
+			"includeFolders": true
+		},
+		"excludeInternal": true,
+		"sort": "alphabetical",
+		"visibilityFilters": {
+			"protected": false,
+			"private": false,
+			"inherited": false,
+			"external": false
+		},
+		"useTsLinkResolution": true,
+		"mergeModulesRenameDefaults": true,
+		"mergeModulesMergeMode": "project",
+		"excludeNotDocumented": true,
+		"exclude": ["**/Protected*/**", "**/MainMenu*/**", "**/Protected/**", "AirshipPackages/@Easy/Core/Shared/Flamework/flamework.ts:OnStart", "OnStart"],
+		"disableSources": true,
+		"plugin": ["typedoc-plugin-rename-defaults", "typedoc-plugin-merge-modules"],
+		// "themeColor": "#584fff",
+		"name": "Airship Core",
+    }
 }

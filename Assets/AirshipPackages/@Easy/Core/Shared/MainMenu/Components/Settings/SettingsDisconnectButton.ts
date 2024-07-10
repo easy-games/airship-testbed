@@ -10,11 +10,11 @@ export default class SettingsDisconnectButton extends AirshipBehaviour {
 	private bin = new Bin();
 
 	public OnEnable(): void {
-		const primaryColor = new Color(209 / 255, 93 / 255, 93 / 255, 1);
+		const primaryColor = this.bgImage.color;
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnHoverEvent(this.gameObject, (hoverState) => {
 				if (hoverState === HoverState.ENTER) {
-					this.bgImage.color = ColorUtil.HexToColor("#E37777");
+					this.bgImage.color = ColorUtil.HexToColor("#D46161");
 					// this.text.color = primaryColor;
 					// this.icon.color = primaryColor;
 				} else {

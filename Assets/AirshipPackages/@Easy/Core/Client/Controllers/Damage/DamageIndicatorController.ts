@@ -3,13 +3,13 @@ import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
 import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
 import Character from "@Easy/Core/Shared/Character/Character";
 import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
-import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import { SetTimeout } from "@Easy/Core/Shared/Util/Timer";
 
 @Controller({})
-export class DamageIndicatorController implements OnStart {
+export class DamageIndicatorController {
 	private combatEffectsCanvas: Canvas;
 	public hitMarkerImage: Image;
 	private hitMarkerBin = new Bin();
@@ -37,7 +37,7 @@ export class DamageIndicatorController implements OnStart {
 		// PoolManager.PreLoadPool(this.indicatorPrefab, 5);
 	}
 
-	OnStart(): void {
+	protected OnStart(): void {
 		// this.damageIndicatorObject = AssetBridge.Instance.LoadAsset("Client/Resources/Prefabs/DamageIndicator.prefab");
 		this.hitMarkerAudioClip = AssetBridge.Instance.LoadAsset("AirshipPackages/@Easy/Core/Sound/Hit_Health.ogg");
 		this.criticalHitAudioClips = [
@@ -45,7 +45,7 @@ export class DamageIndicatorController implements OnStart {
 			AssetBridge.Instance.LoadAsset("AirshipPackages/@Easy/Core/Sound/Drone_Damage_02.ogg"),
 		];
 
-		Airship.damage.onDamage.Connect((event) => {
+		Airship.Damage.onDamage.Connect((event) => {
 			if (!this.enabled) return;
 
 			const character = event.gameObject.GetAirshipComponent<Character>();
@@ -136,16 +136,16 @@ export class DamageIndicatorController implements OnStart {
 
 		// pop in
 		const popInScale = 2.5;
-		rect.TweenLocalScale(baseScale.mul(new Vector3(popInScale, popInScale, popInScale)), 0.11).SetPingPong();
+		NativeTween.LocalScale(rect, baseScale.mul(new Vector3(popInScale, popInScale, popInScale)), 0.11).SetPingPong();
 
 		const DoFadeOut = (bumpUp: boolean) => {
 			if (bumpUp) {
 				rect.anchoredPosition = rect.anchoredPosition.add(new Vector2(0, 30));
-				rect.TweenAnchoredPositionY(this.indicatorPos.y + 40 + (bumpUp ? 30 : 0), 0.68).SetEase(
+				NativeTween.AnchoredPositionY(rect, this.indicatorPos.y + 40 + (bumpUp ? 30 : 0), 0.68).SetEase(
 					EaseType.QuadIn,
 				);
 			}
-			text.TweenGraphicAlpha(0, 0.8).SetEase(EaseType.QuadIn);
+			NativeTween.GraphicAlpha(text, 0, 0.8).SetEase(EaseType.QuadIn);
 			startedFadeOut = true;
 
 			let completed = false;

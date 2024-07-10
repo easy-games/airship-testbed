@@ -1,10 +1,10 @@
-import { OnStart, Service } from "@Easy/Core/Shared/Flamework";
+import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Result } from "@Easy/Core/Shared/Types/Result";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 
-export enum DataStoreServiceBridgeTopics {
+export const enum DataStoreServiceBridgeTopics {
 	GetKey = "DataStore:GetKey",
 	SetKey = "DataStore:SetKey",
 	DeleteKey = "DataStore:DeleteKey",
@@ -15,14 +15,14 @@ export type ServerBridgeApiDataSetKey<T> = (key: string, data: T) => Result<T, u
 export type ServerBridgeApiDataDeleteKey<T> = (key: string) => Result<T, undefined>;
 
 @Service({})
-export class ProtectedDataStoreService implements OnStart {
+export class ProtectedDataStoreService {
 	constructor() {
 		if (!Game.IsServer()) return;
 
 		contextbridge.callback<ServerBridgeApiDataGetKey<unknown>>("DataStore:GetKey", (_, key) => {
 			const result = InternalHttpManager.GetAsync(`${AirshipUrl.DataStoreService}/data/key/${key}`);
 			if (!result.success || result.statusCode > 299) {
-				warn(`Unable to get data key. Status Code: ${result.statusCode}.\n`, result.data);
+				warn(`Unable to get data key. Status Code: ${result.statusCode}.\n`, result.error);
 				return {
 					success: false,
 					data: undefined,
@@ -48,7 +48,7 @@ export class ProtectedDataStoreService implements OnStart {
 				EncodeJSON(data),
 			);
 			if (!result.success || result.statusCode > 299) {
-				warn(`Unable to set data key. Status Code: ${result.statusCode}.\n`, result.data);
+				warn(`Unable to set data key. Status Code: ${result.statusCode}.\n`, result.error);
 				return {
 					success: false,
 					data: undefined,
@@ -64,7 +64,7 @@ export class ProtectedDataStoreService implements OnStart {
 		contextbridge.callback<ServerBridgeApiDataDeleteKey<unknown>>("DataStore:DeleteKey", (_, key) => {
 			const result = InternalHttpManager.DeleteAsync(`${AirshipUrl.DataStoreService}/data/key/${key}`);
 			if (!result.success || result.statusCode > 299) {
-				warn(`Unable to delete data key. Status Code: ${result.statusCode}.\n`, result.data);
+				warn(`Unable to delete data key. Status Code: ${result.statusCode}.\n`, result.error);
 				return {
 					success: false,
 					data: undefined,
@@ -85,5 +85,5 @@ export class ProtectedDataStoreService implements OnStart {
 		});
 	}
 
-	OnStart(): void {}
+	protected OnStart(): void {}
 }

@@ -1,7 +1,7 @@
 import { CoreItemType } from "@Easy/Core/Shared/Item/CoreItemType";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
+import { Airship } from "../Airship";
 import { ItemDef } from "../Item/ItemDefinitionTypes";
-import { ItemUtil } from "../Item/ItemUtil";
 
 export interface ItemStackDto {
 	/** ItemType */
@@ -42,7 +42,7 @@ export class ItemStack {
 	}
 
 	public GetItemDef(): ItemDef {
-		return ItemUtil.GetItemDef(this.itemType);
+		return Airship.Inventory.GetItemDef(this.itemType);
 	}
 
 	public SetItemType(itemType: CoreItemType): void {
@@ -90,7 +90,7 @@ export class ItemStack {
 	}
 
 	public GetMeta(): ItemDef {
-		return ItemUtil.GetItemDef(this.itemType);
+		return Airship.Inventory.GetItemDef(this.itemType);
 	}
 
 	public Decrement(

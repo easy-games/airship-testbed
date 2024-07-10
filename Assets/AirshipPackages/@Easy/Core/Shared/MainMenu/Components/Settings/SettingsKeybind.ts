@@ -11,7 +11,12 @@ import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
 import { Keyboard, Mouse } from "../../../UserInput";
 import { AppManager } from "../../../Util/AppManager";
 import { Bin } from "../../../Util/Bin";
-import { CanvasAPI, HoverState, PointerButton, PointerDirection } from "../../../Util/CanvasAPI";
+import {
+    CanvasAPI,
+    HoverState,
+    PointerButton,
+    PointerDirection,
+} from "../../../Util/CanvasAPI";
 import { InputUtils } from "../../../Util/InputUtils";
 import { SignalPriority } from "../../../Util/Signal";
 import { Theme } from "../../../Util/Theme";
@@ -141,13 +146,13 @@ export default class SettingsKeybind extends AirshipBehaviour {
 		this.title.text = FormatUtil.ToDisplayFormat(action.name);
 		this.UpdateBindingTextFromBinding(action.binding);
 
-		Airship.input.onActionUnbound.Connect((unbound) => {
+		Airship.Input.onActionUnbound.Connect((unbound) => {
 			if (unbound !== action) return;
 			this.UpdateBindingTextFromBinding(unbound.binding);
 			this.HighlightValueImage();
 		});
 
-		Airship.input.onActionBound.Connect((bound) => {
+		Airship.Input.onActionBound.Connect((bound) => {
 			if (bound !== action) return;
 			this.UpdateBindingTextFromBinding(bound.binding);
 		});
@@ -160,7 +165,7 @@ export default class SettingsKeybind extends AirshipBehaviour {
 	 *
 	 */
 	private HighlightValueImage(): void {
-		this.valueImageBG.TweenGraphicColor(new Color(1, 1, 1, 0.5), 0.25).SetPingPong();
+		NativeTween.GraphicColor(this.valueImageBG, new Color(1, 1, 1, 0.5), 0.25).SetPingPong();
 	}
 
 	private StartKeyListener(): void {

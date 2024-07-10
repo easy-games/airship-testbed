@@ -1,13 +1,15 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
-import { ArmorType } from "@Easy/Core/Shared/Item/ArmorType";
 import { CoreItemType } from "@Easy/Core/Shared/Item/CoreItemType";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import Object from "@Easy/Core/Shared/Util/ObjectUtils";
-import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import Character from "../Character/Character";
+import { Game } from "../Game";
+import { Keyboard, Mouse } from "../UserInput";
+import { CanvasAPI } from "../Util/CanvasAPI";
 import { ItemStack, ItemStackDto } from "./ItemStack";
+import { BeforeLocalInventoryHeldSlotChanged } from "./Signal/BeforeLocalInventoryHeldSlotChanged";
 
 export interface InventoryDto {
 	id: number;
@@ -18,37 +20,42 @@ export interface InventoryDto {
 export default class Inventory extends AirshipBehaviour {
 	public networkObject!: NetworkObject;
 	@NonSerialized() public id!: number;
-	public maxSlots = 48;
+	public maxSlots = 45;
 	public hotbarSlots = 9;
 	public heldSlot = 0;
-	@NonSerialized() public armorSlots: {
-		[key in ArmorType]: number;
-	} = {
-		[ArmorType.HELMET]: 45,
-		[ArmorType.CHESTPLATE]: 46,
-		[ArmorType.BOOTS]: 47,
-	};
 
 	@NonSerialized() private items = new Map<number, ItemStack>();
 
+	/** Used to cancel changing held item slots. */
+	@NonSerialized() public readonly onBeforeLocalHeldSlotChanged = new Signal<BeforeLocalInventoryHeldSlotChanged>();
 	/** Fired when a `slot` points to a new `ItemStack`. Changes to the same ItemStack will **not** fire this event. */
-	@NonSerialized() public readonly slotChanged = new Signal<[slot: number, itemStack: ItemStack | undefined]>();
-	@NonSerialized() public readonly heldSlotChanged = new Signal<number>();
+	@NonSerialized() public readonly onSlotChanged = new Signal<[slot: number, itemStack: ItemStack | undefined]>();
+	@NonSerialized() public readonly onHeldSlotChanged = new Signal<number>();
 	/**
 	 * Fired whenever any change happens.
 	 * This includes changes to ItemStacks.
 	 **/
-	@NonSerialized() public readonly changed = new Signal<void>();
+	@NonSerialized() public readonly onChanged = new Signal<void>();
 	@NonSerialized() private finishedInitialReplication = false;
 	@NonSerialized() private slotConnections = new Map<number, Bin>();
+
+	private bin = new Bin();
+
+	// Controls
+	private controlsEnabled = true;
+	private lastScrollTime = 0;
+	private scrollCooldown = 0.05;
+	private disablers = new Set<number>();
+	private disablerCounter = 1;
 
 	private observeHeldItemBins: Bin[] = [];
 
 	public OnEnable(): void {
+		// Networking
 		if (this.networkObject.IsSpawned) {
 			this.id = this.networkObject.ObjectId;
-			Airship.inventory.RegisterInventory(this);
-			if (RunUtil.IsClient()) {
+			Airship.Inventory.RegisterInventory(this);
+			if (Game.IsClient()) {
 				task.spawn(() => {
 					this.RequestFullUpdate();
 				});
@@ -57,26 +64,125 @@ export default class Inventory extends AirshipBehaviour {
 			const conn = this.networkObject.OnStartNetwork(() => {
 				Bridge.DisconnectEvent(conn);
 				this.id = this.networkObject.ObjectId;
-				Airship.inventory.RegisterInventory(this);
-				if (RunUtil.IsClient()) {
+				Airship.Inventory.RegisterInventory(this);
+				if (Game.IsClient()) {
 					task.spawn(() => {
 						this.RequestFullUpdate();
 					});
 				}
 			});
 		}
+
+		if (Game.IsServer()) {
+			CoreNetwork.ClientToServer.SetHeldSlot.server.OnClientEvent((player, invId, slot) => {
+				if (this.id !== invId) return;
+
+				const character = Airship.Characters.FindByPlayer(player);
+				if (!character || character.inventory !== this) return;
+
+				this.SetHeldSlotInternal(slot);
+
+				CoreNetwork.ServerToClient.SetHeldInventorySlot.server.FireExcept(
+					player,
+					this.id,
+					player.connectionId,
+					slot,
+					true,
+				);
+			});
+		}
+
+		// Controls
+		const controlsBin = new Bin();
+		this.bin.Add(controlsBin);
+		this.bin.Add(
+			Airship.Inventory.ObserveLocalInventory((inv) => {
+				controlsBin.Clean();
+				if (inv !== this) return;
+
+				const keyboard = new Keyboard();
+				const mouse = new Mouse();
+
+				const hotbarKeys = [
+					Key.Digit1,
+					Key.Digit2,
+					Key.Digit3,
+					Key.Digit4,
+					Key.Digit5,
+					Key.Digit6,
+					Key.Digit7,
+					Key.Digit8,
+					Key.Digit9,
+				];
+
+				for (const hotbarIndex of $range(0, hotbarKeys.size() - 1)) {
+					keyboard.OnKeyDown(hotbarKeys[hotbarIndex], (event) => {
+						// if (!this.enabled || event.uiProcessed) return;
+						this.SetHeldSlot(hotbarIndex);
+					});
+				}
+
+				// Scroll to select held item:
+				mouse.scrolled.Connect((event) => {
+					if (!this.controlsEnabled || event.uiProcessed) return;
+					if (CanvasAPI.IsPointerOverUI()) return;
+					// print("scroll: " + delta);
+					if (math.abs(event.delta) < 0.05) return;
+
+					const now = Time.time;
+					if (now - this.lastScrollTime < this.scrollCooldown) {
+						return;
+					}
+
+					this.lastScrollTime = now;
+
+					const selectedSlot = this.GetHeldSlot();
+					if (selectedSlot === undefined) return;
+
+					const inc = event.delta < 0 ? 1 : -1;
+					let trySlot = selectedSlot;
+
+					// Find the next available item in the hotbar:
+					for (const _ of $range(1, hotbarKeys.size())) {
+						trySlot += inc;
+
+						// Clamp index to hotbar items:
+						if (inc === 1 && trySlot >= hotbarKeys.size()) {
+							trySlot = 0;
+						} else if (inc === -1 && trySlot < 0) {
+							trySlot = hotbarKeys.size() - 1;
+						}
+
+						// If the item at the given `trySlot` index exists, set it as the held item:
+						const itemAtSlot = this.GetItem(trySlot);
+						if (itemAtSlot !== undefined) {
+							this.SetHeldSlot(trySlot);
+							break;
+						}
+					}
+				});
+			}),
+		);
 	}
 
 	public OnDisable(): void {
-		Airship.inventory.UnregisterInventory(this);
+		Airship.Inventory.UnregisterInventory(this);
 		for (const bin of this.observeHeldItemBins) {
 			bin.Clean();
 		}
 		this.observeHeldItemBins.clear();
+		this.bin.Clean();
+	}
+
+	/**
+	 * @returns True if inventory is controlled by the local player.
+	 */
+	public IsLocalInventory(): boolean {
+		return Airship.Inventory.localInventory === this;
 	}
 
 	private RequestFullUpdate(): void {
-		const dto = Airship.inventory.remotes.clientToServer.getFullUpdate.client.FireServer(this.id);
+		const dto = Airship.Inventory.remotes.clientToServer.getFullUpdate.client.FireServer(this.id);
 		if (dto) {
 			this.ProcessDto(dto);
 		}
@@ -103,7 +209,7 @@ export default class Inventory extends AirshipBehaviour {
 
 		bin.Add(
 			CoreNetwork.ServerToClient.SetHeldInventorySlot.client.OnServerEvent((invId, clientId, slot) => {
-				const inventoryClientId = this.gameObject.GetAirshipComponent<Character>()?.player?.clientId;
+				const inventoryClientId = this.gameObject.GetAirshipComponent<Character>()?.player?.connectionId;
 				if (invId === this.id && clientId === inventoryClientId) {
 					const selected = this.items.get(slot);
 					if (selected?.GetItemType() === currentItemStack?.GetItemType()) return;
@@ -118,7 +224,7 @@ export default class Inventory extends AirshipBehaviour {
 		);
 
 		bin.Add(
-			this.heldSlotChanged.Connect((newSlot) => {
+			this.onHeldSlotChanged.Connect((newSlot) => {
 				const selected = this.items.get(newSlot);
 				if (selected?.GetItemType() === currentItemStack?.GetItemType()) return;
 
@@ -130,7 +236,7 @@ export default class Inventory extends AirshipBehaviour {
 			}),
 		);
 		bin.Add(
-			this.slotChanged.Connect((slot, itemStack) => {
+			this.onSlotChanged.Connect((slot, itemStack) => {
 				if (slot === this.heldSlot) {
 					if (itemStack?.GetItemType() === currentItemStack?.GetItemType()) return;
 					if (cleanup !== undefined) {
@@ -168,17 +274,17 @@ export default class Inventory extends AirshipBehaviour {
 			bin.Add(
 				itemStack.destroyed.Connect(() => {
 					this.SetItem(slot, undefined);
-					this.changed.Fire();
+					this.onChanged.Fire();
 				}),
 			);
 			bin.Add(
 				itemStack.changed.Connect(() => {
-					this.changed.Fire();
+					this.onChanged.Fire();
 				}),
 			);
 			this.slotConnections.set(slot, bin);
 
-			if (RunUtil.IsServer()) {
+			if (Game.IsServer()) {
 				bin.Add(
 					itemStack.amountChanged.Connect((e) => {
 						if (e.NoNetwork) return;
@@ -203,10 +309,10 @@ export default class Inventory extends AirshipBehaviour {
 				);
 			}
 		}
-		this.slotChanged.Fire(slot, itemStack);
-		this.changed.Fire();
+		this.onSlotChanged.Fire(slot, itemStack);
+		this.onChanged.Fire();
 
-		if (RunUtil.IsServer() && this.finishedInitialReplication) {
+		if (Game.IsServer() && this.finishedInitialReplication) {
 			// todo: figure out which clients to include
 			CoreNetwork.ServerToClient.SetInventorySlot.server.FireAllClients(
 				this.id,
@@ -277,8 +383,24 @@ export default class Inventory extends AirshipBehaviour {
 	}
 
 	public SetHeldSlot(slot: number): void {
+		let isLocal = this.IsLocalInventory();
+		if (isLocal) {
+			const before = this.onBeforeLocalHeldSlotChanged.Fire(
+				new BeforeLocalInventoryHeldSlotChanged(slot, this.heldSlot),
+			);
+			if (before.IsCancelled()) return;
+		}
+
+		this.SetHeldSlotInternal(slot);
+
+		if (isLocal) {
+			CoreNetwork.ClientToServer.SetHeldSlot.client.FireServer(this.id, slot);
+		}
+	}
+
+	private SetHeldSlotInternal(slot: number): void {
 		this.heldSlot = slot;
-		this.heldSlotChanged.Fire(slot);
+		this.onHeldSlotChanged.Fire(slot);
 	}
 
 	public Encode(): InventoryDto {
@@ -319,10 +441,6 @@ export default class Inventory extends AirshipBehaviour {
 		return this.maxSlots;
 	}
 
-	public GetBackpackTileCount(): number {
-		return this.maxSlots - 9;
-	}
-
 	public GetHotbarSlotCount(): number {
 		return this.hotbarSlots;
 	}
@@ -339,5 +457,20 @@ export default class Inventory extends AirshipBehaviour {
 
 	public GetAllItems(): ItemStack[] {
 		return Object.values(this.items);
+	}
+
+	public AddControlsDisabler(): () => void {
+		const id = this.disablerCounter;
+		this.disablerCounter++;
+		this.disablers.add(id);
+		this.controlsEnabled = false;
+		return () => {
+			this.disablers.delete(id);
+			if (this.disablers.size() === 0) {
+				this.controlsEnabled = true;
+			} else {
+				this.controlsEnabled = false;
+			}
+		};
 	}
 }

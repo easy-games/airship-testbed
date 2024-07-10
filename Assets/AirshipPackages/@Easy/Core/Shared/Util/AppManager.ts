@@ -1,7 +1,6 @@
 import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
 import { Keyboard, Mouse } from "@Easy/Core/Shared/UserInput";
 import { AssetCache } from "../AssetCache/AssetCache";
-import { AudioManager } from "../Audio/AudioManager";
 import { Game } from "../Game";
 import { Bin } from "./Bin";
 import { CanvasAPI, PointerDirection } from "./CanvasAPI";
@@ -86,7 +85,7 @@ export class AppManager {
 		},
 	): void {
 		if (!config?.addToStack) {
-			this.Close({ noCloseSound: true });
+			this.Close();
 		}
 
 		this.opened = true;
@@ -165,7 +164,6 @@ export class AppManager {
 	public static OpenCanvas(
 		canvas: Canvas,
 		config?: {
-			noOpenSound?: boolean;
 			onClose?: () => void;
 			noDarkBackground?: boolean;
 			addToStack?: boolean;
@@ -174,15 +172,7 @@ export class AppManager {
 	): void {
 		/* Close open `Canvas` if applicable. */
 		if (!config?.addToStack) {
-			this.Close({
-				noCloseSound: config?.noOpenSound ?? false,
-			});
-		}
-
-		if (!config?.noOpenSound) {
-			AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/UI_Open.wav", {
-				volumeScale: 0.4,
-			});
+			this.Close();
 		}
 
 		/*
@@ -218,7 +208,7 @@ export class AppManager {
 
 	public static OpenDarkBackground(sortOrder: number) {
 		this.darkBackgroundTransitionBin.Clean();
-		const t = this.backgroundCanvasGroup.TweenCanvasGroupAlpha(1, 0.25);
+		const t = NativeTween.CanvasGroupAlpha(this.backgroundCanvasGroup, 1, 0.25);
 		this.darkBackgroundTransitionBin.Add(() => {
 			if (t.IsDestroyed()) return;
 			t.Cancel();
@@ -231,7 +221,7 @@ export class AppManager {
 	public static CloseDarkBackground(): void {
 		this.darkBackgroundTransitionBin.Clean();
 		this.backgroundImage.raycastTarget = false;
-		const t = this.backgroundCanvasGroup.TweenCanvasGroupAlpha(0, 0.25);
+		const t = NativeTween.CanvasGroupAlpha(this.backgroundCanvasGroup, 0, 0.25);
 		this.darkBackgroundTransitionBin.Add(() => {
 			if (t.IsDestroyed()) return;
 			t.Cancel();
@@ -243,7 +233,7 @@ export class AppManager {
 		);
 	}
 
-	public static Close(config?: { noCloseSound?: boolean }): void {
+	public static Close(): void {
 		if (Game.IsGameLuauContext()) {
 			if (contextbridge.invoke<() => boolean>("AppManager:EscapePressedFromGame", LuauContext.Protected)) {
 				return;
@@ -298,6 +288,11 @@ export class AppManager {
 	}
 }
 
+interface EditorBridge {
+	IsMainMenuInEditorEnabled(): boolean;
+}
+declare const EditorBridge: EditorBridge;
+
 /* Listen for close key globally. */
 if (Game.IsGameLuauContext() || !Game.IsInGame()) {
 	AppManager.keyboard.OnKeyDown(
@@ -314,6 +309,9 @@ if (Game.IsGameLuauContext() || !Game.IsInGame()) {
 	AppManager.keyboard.OnKeyDown(
 		CLOSE_KEY,
 		(event) => {
+			if (Game.IsEditor() && !EditorBridge.IsMainMenuInEditorEnabled()) {
+				return;
+			}
 			event.SetCancelled(true);
 			contextbridge.invoke<() => void>("MainMenu:OpenFromGame", LuauContext.Protected);
 		},

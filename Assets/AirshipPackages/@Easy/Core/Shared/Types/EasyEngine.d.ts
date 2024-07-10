@@ -86,6 +86,7 @@ interface CharacterMovement extends Component {
 	OnCustomDataFlushed(callback: () => void): EngineEventConnection;
 	OnDispatchCustomData(callback: (tick: number, customData: BinaryBlob) => void): EngineEventConnection;
 	OnImpactWithGround(callback: (velocity: Vector3) => void): EngineEventConnection;
+	OnPreMove(callback: (isReplay: boolean) => void): EngineEventConnection;
 	OnAdjustMove(callback: (modifier: MoveModifier) => void): EngineEventConnection;
 	OnMoveDirectionChanged(callback: (direction: Vector3) => void): EngineEventConnection;
 
@@ -109,8 +110,10 @@ interface CharacterMovement extends Component {
 	IsAllowFlight(): boolean;
 	Teleport(position: Vector3): void;
 	TeleportAndLook(position: Vector3, lookVector: Vector3): void;
-	ApplyImpulse(impulse: Vector3): void;
-	ApplyImpulseInAir(impulse: Vector3, ignoreYIfInAir = false): void;
+	AddImpulse(impulse: Vector3): void;
+	SetImpulse(impulse: Vector3): void;
+	IgnoreGroundCollider(collider: Collider, ignore: boolean): void;
+	IsIgnoringCollider(collider: Collider): boolean;
 	SetVelocity(velocity: Vector3): void;
 	GetVelocity(): Vector3;
 	DisableMovement();
@@ -671,7 +674,8 @@ interface SocketManager {
 	SetScriptListening(val: boolean): void;
 	EmitAsync(eventName: string, data: string): void;
 	Instance: {
-		OnEvent(callback: (eventName: string, data: string) => void): void;
+		OnEvent(callback: (eventName: string, data: string) => void): EngineEventConnection;
+		OnDisconnected(callback: (disconnectReason: string) => void): EngineEventConnection;
 	};
 }
 declare const SocketManager: SocketManager;
@@ -999,4 +1003,12 @@ interface AnimatorOverrideController extends RuntimeAnimatorController {
 	SetClip(name: string, clip: AnimationClip): void;
 	ApplyOverrides(): void;
 	overridesCount: number;
+}
+
+interface ServerBootstrap {
+	onProcessExit(callback: () => void): void;
+}
+
+interface TerrainData {
+	RemoveTree(treeIndex: number): void;
 }

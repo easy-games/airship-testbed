@@ -1,5 +1,5 @@
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
-import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
@@ -7,7 +7,7 @@ import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 import { FirebaseSignUpResponse, FirebaseTokenResponse } from "./API/FirebaseAPI";
 
 @Controller({ loadOrder: -1 })
-export class AuthController implements OnStart {
+export class AuthController {
 	private apiKey = "AIzaSyB04k_2lvM2VxcJqLKD6bfwdqelh6Juj2o";
 	private appId = "1:987279961241:web:944327bc9353f4f1f15c08";
 	private idToken = "";
@@ -21,7 +21,7 @@ export class AuthController implements OnStart {
 		});
 	}
 
-	OnStart(): void {
+	protected OnStart(): void {
 		const loginResult = this.TryAutoLogin();
 		if (!loginResult) {
 			let ignore = false;

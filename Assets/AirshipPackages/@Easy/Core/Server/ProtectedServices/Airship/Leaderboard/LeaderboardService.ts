@@ -1,12 +1,12 @@
 import { LeaderboardUpdate } from "@Easy/Core/Server/Services/Airship/Leaderboard/AirshipLeaderboardService";
 import { RankData } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipLeaderboard";
-import { OnStart, Service } from "@Easy/Core/Shared/Flamework";
+import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Result } from "@Easy/Core/Shared/Types/Result";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 
-export enum LeaderboardServiceBridgeTopics {
+export const enum LeaderboardServiceBridgeTopics {
 	Update = "LeaderboardService:Update",
 	GetRank = "LeaderboardService:GetRank",
 	GetRankRange = "LeaderboardService:GetRankRange",
@@ -27,7 +27,7 @@ export type ServerBridgeApiLeaderboardGetRankRange = (
 ) => Result<RankData[], undefined>;
 
 @Service({})
-export class ProtectedLeaderboardService implements OnStart {
+export class ProtectedLeaderboardService {
 	constructor() {
 		if (!Game.IsServer()) return;
 
@@ -42,7 +42,7 @@ export class ProtectedLeaderboardService implements OnStart {
 				);
 
 				if (!result.success || result.statusCode > 299) {
-					warn(`Unable to update leaderboard. Status Code: ${result.statusCode}.\n`, result.data);
+					warn(`Unable to update leaderboard. Status Code: ${result.statusCode}.\n`, result.error);
 					return {
 						success: false,
 						data: undefined,
@@ -63,7 +63,7 @@ export class ProtectedLeaderboardService implements OnStart {
 					`${AirshipUrl.DataStoreService}/leaderboards/leaderboard-id/${leaderboardName}/id/${id}/ranking`,
 				);
 				if (!result.success || result.statusCode > 299) {
-					warn(`Unable to get leaderboard rank. Status Code: ${result.statusCode}.\n`, result.data);
+					warn(`Unable to get leaderboard rank. Status Code: ${result.statusCode}.\n`, result.error);
 					return {
 						success: false,
 						data: undefined,
@@ -93,7 +93,7 @@ export class ProtectedLeaderboardService implements OnStart {
 					`${AirshipUrl.DataStoreService}/loaderboards/leaderboard-id/${leaderboardName}/rankings?skip=${startIndex}&limit=${count}`,
 				);
 				if (!result.success || result.statusCode > 299) {
-					warn(`Unable to get leaderboard rankings. Status Code: ${result.statusCode}.\n`, result.data);
+					warn(`Unable to get leaderboard rankings. Status Code: ${result.statusCode}.\n`, result.error);
 					return {
 						success: false,
 						data: undefined,
@@ -115,5 +115,5 @@ export class ProtectedLeaderboardService implements OnStart {
 		);
 	}
 
-	OnStart(): void {}
+	protected OnStart(): void {}
 }

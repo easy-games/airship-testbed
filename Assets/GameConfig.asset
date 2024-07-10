@@ -15,16 +15,16 @@ MonoBehaviour:
   gameId: 66158b436197f84bec646cff
   startingSceneName: Menu
   gameScenes:
-  - {fileID: 102900000, guid: 7adf34f37f4884c5ab92c16c58f38874, type: 3}
   - {fileID: 102900000, guid: 3c9ae368a8ce5be42a0926c8ff129454, type: 3}
   - {fileID: 102900000, guid: 497a63aec7ca045bab13a5e25c5d7bba, type: 3}
   - {fileID: 102900000, guid: 2a62ab5d3234b46098d8876bc6fa2271, type: 3}
   - {fileID: 102900000, guid: 54812eb57ead64c33ac7034860038994, type: 3}
   - {fileID: 102900000, guid: 348dce646eda54d87abe568e1b9ca22c, type: 3}
+  - {fileID: 102900000, guid: 7adf34f37f4884c5ab92c16c58f38874, type: 3}
   packages:
   - id: '@Easy/Core'
-    assetVersion: 533
-    codeVersion: 479
+    assetVersion: 553
+    codeVersion: 531
     game: 0
     localSource: 1
     disabled: 0
@@ -39,8 +39,8 @@ MonoBehaviour:
     defaultPackage: 0
     forceLatestVersion: 1
   - id: '@Easy/CoreMaterials'
-    assetVersion: 55
-    codeVersion: 39
+    assetVersion: 62
+    codeVersion: 46
     game: 0
     localSource: 1
     disabled: 0

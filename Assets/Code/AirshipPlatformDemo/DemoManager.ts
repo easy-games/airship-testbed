@@ -1,12 +1,13 @@
 import SteamRichPresence from "@Easy/Core/Client/Airship/Steam/SteamRichPresence";
 import { Airship } from "@Easy/Core/Shared/Airship";
+import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
 import Character from "@Easy/Core/Shared/Character/Character";
 import { CharacterCameraMode } from "@Easy/Core/Shared/Character/LocalCharacter/CharacterCameraMode";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Binding } from "@Easy/Core/Shared/Input/Binding";
 import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
-import { ItemUtil } from "@Easy/Core/Shared/Item/ItemUtil";
 import { Player } from "@Easy/Core/Shared/Player/Player";
+import { Keyboard } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 
 export default class DemoManager extends AirshipBehaviour {
@@ -27,9 +28,17 @@ export default class DemoManager extends AirshipBehaviour {
 		// 	}
 		// })
 
-		Airship.input.CreateAction("interact", Binding.Key(Key.F));
+		// const a: CharacterMovement = undefined!;
+		// a.OnAdjustMove()
+		
+		// Tween.ValueFloat(this.gameObject, 1, 1, (a: unknown, b: unknown) => {
+		// 	print("Obj a: " + a);
+		// 	print("Obj b: " + b);
+		// });
 
-		ItemUtil.RegisterItem("WoodSword", {
+		Airship.Input.CreateAction("interact", Binding.Key(Key.F));
+
+		Airship.Inventory.RegisterItem("WoodSword", {
 			displayName: "Wood Sword",
 			maxStackSize: 1,
 			accessoryPaths: ["Assets/Resources/Accessories/Weapons/Swords/WoodSword/wood_sword.prefab"],
@@ -38,12 +47,12 @@ export default class DemoManager extends AirshipBehaviour {
 
 		if (Game.IsServer()) {
 			this.bin.Add(
-				Airship.players.ObservePlayers((player) => {
+				Airship.Players.ObservePlayers((player) => {
 					this.SpawnPlayer(player);
 				}),
 			);
 			this.bin.Add(
-				Airship.damage.onDeath.Connect((damageInfo) => {
+				Airship.Damage.onDeath.Connect((damageInfo) => {
 					const character = damageInfo.gameObject.GetAirshipComponent<Character>();
 					if (character?.player) {
 						// task.delay(2, () => {
@@ -55,11 +64,9 @@ export default class DemoManager extends AirshipBehaviour {
 		}
 		if (Game.IsClient()) {
 			// Optional: use locked camera mode for first person support
-			Airship.characterCamera.SetCharacterCameraMode(CharacterCameraMode.Locked);
-			Airship.characterCamera.SetFirstPerson(false);
+			Airship.CharacterCamera.SetCharacterCameraMode(CharacterCameraMode.Orbit);
+			// Airship.CharacterCamera.SetFirstPerson(false);
 			// Airship.inventory.SetUIEnabled(false);
-
-			Airship.loadingScreen.FinishLoading();
 
 			// Display local player deaths
 			this.bin.Add(
@@ -78,6 +85,16 @@ export default class DemoManager extends AirshipBehaviour {
 					};
 				}),
 			);
+
+			const keyboard = new Keyboard();
+			keyboard.OnKeyDown(Key.O, (event) => {
+				if (event.uiProcessed) return;
+
+				const cube = Object.Instantiate(AssetCache.LoadAsset("Assets/Resources/OfflineCube.prefab"));
+				cube.transform.position = Game.localPlayer.character!.rig.head.position.add(new Vector3(0, 1, 0));
+				const rb = cube.gameObject.GetComponent<Rigidbody>()!;
+				rb.velocity = Game.localPlayer.character!.movement.GetLookVector().add(new Vector3(0, 1, 0)).mul(5);
+			});
 		}
 
 		// cleanup
@@ -87,7 +104,7 @@ export default class DemoManager extends AirshipBehaviour {
 	}
 
 	public override Update(dt: number): void {
-		Airship.characters.GetCharacters().forEach((character) => {
+		Airship.Characters.GetCharacters().forEach((character) => {
 			if (character.transform.position.y < -25) {
 				character.Teleport(this.spawnPosition.transform.position);
 			}

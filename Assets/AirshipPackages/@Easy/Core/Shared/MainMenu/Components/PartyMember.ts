@@ -1,5 +1,4 @@
-import { FriendsController } from "@Easy/Core/Client/ProtectedControllers/Social/FriendsController";
-import { UserController } from "@Easy/Core/Client/ProtectedControllers/User/UserController";
+import { ProtectedFriendsController } from "@Easy/Core/Client/ProtectedControllers/Social/FriendsController";
 import { Airship } from "../../Airship";
 import { PublicUser } from "../../Airship/Types/Outputs/AirshipUser";
 import { Dependency } from "../../Flamework";
@@ -29,16 +28,15 @@ export default class PartyMember extends AirshipBehaviour {
 		this.bin.Add(() => {
 			this.addFriendContainer.SetActive(false);
 			this.partyLeaderContainer.SetActive(false);
-		})
+		});
 
 		this.UpdateLeaderStatus(asLeader);
-		if (this.user.uid !== Dependency<UserController>().localUser?.uid) {
+		if (this.user.uid !== Protected.user.localUser?.uid) {
 			this.UpdateFriendButton();
-			Dependency<FriendsController>().onFetchFriends.Connect(() => {
+			Dependency<ProtectedFriendsController>().onFetchFriends.Connect(() => {
 				this.UpdateFriendButton();
 			});
 		}
-		
 
 		// this.usernameText.text = user.username;
 
@@ -75,10 +73,10 @@ export default class PartyMember extends AirshipBehaviour {
 
 	private UpdateFriendButton() {
 		let shouldDisplay = true;
-		if (Dependency<FriendsController>().GetFriendById(this.user.uid) !== undefined) {
+		if (Dependency<ProtectedFriendsController>().GetFriendById(this.user.uid) !== undefined) {
 			shouldDisplay = false;
 		}
-		if (Dependency<FriendsController>().HasOutgoingFriendRequest(this.user.uid)) {
+		if (Dependency<ProtectedFriendsController>().HasOutgoingFriendRequest(this.user.uid)) {
 			shouldDisplay = false;
 		}
 		this.addFriendContainer.SetActive(shouldDisplay);
@@ -92,19 +90,17 @@ export default class PartyMember extends AirshipBehaviour {
 			this.addFriendButtonBin = new Bin();
 			this.bin.Add(this.addFriendButtonBin);
 
-			this.addFriendButtonBin.AddEngineEventConnection(CanvasAPI.OnClickEvent(this.addFriendButton, () => {
-				Dependency<FriendsController>().SendFriendRequest(this.user.username);
-			}));
-			
+			this.addFriendButtonBin.AddEngineEventConnection(
+				CanvasAPI.OnClickEvent(this.addFriendButton, () => {
+					Dependency<ProtectedFriendsController>().SendFriendRequest(this.user.username);
+				}),
+			);
 		}
 	}
 
 	public async UpdatePicture() {
 		if (this.user) {
-			const profileTexture = await Airship.players.GetProfilePictureTextureFromImageIdAsync(
-				this.user.uid,
-				this.user.profileImageId,
-			);
+			const profileTexture = await Airship.Players.GetProfilePictureAsync(this.user.uid);
 			if (profileTexture) {
 				this.profileImage.texture = profileTexture;
 			}

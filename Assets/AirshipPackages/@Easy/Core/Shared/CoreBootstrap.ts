@@ -5,7 +5,6 @@
 import { AvatarUtil } from "@Easy/Core/Shared/Avatar/AvatarUtil";
 import { Flamework } from "@Easy/Core/Shared/Flamework";
 import { AudioManager } from "./Audio/AudioManager";
-import { Bootstrap } from "./Bootstrap/Bootstrap";
 import { CoreContext } from "./CoreClientContext";
 import { CoreRefs } from "./CoreRefs";
 import { Game } from "./Game";
@@ -41,14 +40,19 @@ AudioManager.Init();
 AvatarUtil.Initialize();
 InitNet();
 
+const fullGo = gameObject as GameObject & {
+	OnUpdate(callback: () => void): void;
+	OnLateUpdate(callback: () => void): void;
+	OnFixedUpdate(callback: () => void): void;
+};
 // Drive timer:
-gameObject.OnUpdate(() => {
+fullGo.OnUpdate(() => {
 	OnUpdate.Fire(TimeUtil.GetDeltaTime());
 });
-gameObject.OnLateUpdate(() => {
+fullGo.OnLateUpdate(() => {
 	OnLateUpdate.Fire(TimeUtil.GetDeltaTime());
 });
-gameObject.OnFixedUpdate(() => {
+fullGo.OnFixedUpdate(() => {
 	OnFixedUpdate.Fire(TimeUtil.GetFixedDeltaTime());
 });
 if (InstanceFinder.TimeManager !== undefined) {
@@ -102,7 +106,4 @@ contextbridge.subscribe<(from: LuauContext, sceneName: string, clientId: number,
 	(from, sceneName, clientId, added) => {
 		SceneManager.onClientPresenceChangeEnd.Fire(clientId, sceneName, added);
 	},
-);
-
-Bootstrap.PrepareVoxelWorld();
-Bootstrap.Prepare();
+)

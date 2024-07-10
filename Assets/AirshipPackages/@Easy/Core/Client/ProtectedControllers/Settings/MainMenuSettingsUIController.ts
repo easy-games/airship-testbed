@@ -1,15 +1,15 @@
 import { ClientSettingsController } from "@Easy/Core/Client/ProtectedControllers//Settings/ClientSettingsController";
-import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Controller } from "@Easy/Core/Shared/Flamework";
 import { MainMenuController } from "../MainMenuController";
 
 @Controller({})
-export class MainMenuSettingsUIController implements OnStart {
+export class MainMenuSettingsUIController {
 	constructor(
 		private readonly clientSettingsController: ClientSettingsController,
 		private readonly mainMenuController: MainMenuController,
 	) {}
 
-	OnStart(): void {
+	protected OnStart(): void {
 		this.clientSettingsController.WaitForSettingsLoaded().then(() => {
 			this.Setup();
 		});

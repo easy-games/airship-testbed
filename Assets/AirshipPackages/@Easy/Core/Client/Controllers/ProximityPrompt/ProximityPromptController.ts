@@ -1,9 +1,8 @@
 import { CameraReferences } from "@Easy/Core/Shared/Camera/CameraReferences";
 import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
-import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import ProximityPrompt from "@Easy/Core/Shared/Input/ProximityPrompts/ProximityPrompt";
-import { Task } from "@Easy/Core/Shared/Util/Task";
 
 /** Prompt poll rate, how frequently we update `activatableProximityPrompts`. */
 const PROMPT_POLL_RATE = 0.1;
@@ -12,7 +11,7 @@ const PROMPT_POLL_RATE = 0.1;
  * @internal
  */
 @Controller({})
-export class ProximityPromptController implements OnStart {
+export class ProximityPromptController {
 	/** All active proximity prompts in world. */
 	private allPrompts: ProximityPrompt[] = [];
 	/** Proximity prompts in activation range. */
@@ -28,7 +27,7 @@ export class ProximityPromptController implements OnStart {
 		this.promptFolder.SetParent(CoreRefs.rootTransform);
 	}
 
-	OnStart(): void {
+	protected OnStart(): void {
 		this.StartPromptTicker();
 	}
 
@@ -65,7 +64,7 @@ export class ProximityPromptController implements OnStart {
 			let promptActionMap = new Map<string, ProximityPrompt[]>();
 			let distanceMap = new Map<ProximityPrompt, number>();
 
-			Task.Repeat(PROMPT_POLL_RATE, () => {
+			while (task.wait(PROMPT_POLL_RATE)) {
 				for (let prompt of this.allPrompts) {
 					if (promptActionMap.has(prompt.actionName)) {
 						promptActionMap.get(prompt.actionName)!.push(prompt);
@@ -109,10 +108,11 @@ export class ProximityPromptController implements OnStart {
 					this.shownPrompts.delete(prompt);
 					prompt.Hide();
 				});
+				
 
 				distanceMap.clear();
 				promptActionMap.clear();
-			});
+			}
 		});
 	}
 }

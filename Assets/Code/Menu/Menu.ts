@@ -1,4 +1,3 @@
-import { Airship } from "@Easy/Core/Shared/Airship";
 import { Game } from "@Easy/Core/Shared/Game";
 import { SceneManager } from "@Easy/Core/Shared/SceneManager";
 import { Keyboard, Mouse } from "@Easy/Core/Shared/UserInput";
@@ -36,7 +35,6 @@ export default class Menu extends AirshipBehaviour {
 	}
 
 	override Start(): void {
-		Airship.loadingScreen.FinishLoading();
 		this.Show();
 
 		this.content.gameObject.ClearChildren();

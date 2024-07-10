@@ -43,6 +43,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	public avatarToolbar!: RectTransform;
 	public avatarOptionsHolder!: RectTransform;
 	public avatar3DHolder!: RectTransform;
+	public contentScrollRect!: ScrollRect;
 
 	@Header("Button Holders")
 	public outfitButtonHolder!: Transform;
@@ -441,6 +442,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			});
 			let accessoryBtn = newButton.GetAirshipComponent<AvatarAccessoryBtn>();
 			if (accessoryBtn) {
+				accessoryBtn.scrollRedirect.redirectTarget = this.contentScrollRect;
 				accessoryBtn.SetBGColor(color);
 				accessoryBtn.noColorChanges = true;
 				// accessoryBtn.iconImage.color = color;
@@ -465,6 +467,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 			let accessoryBtn = newButton.GetAirshipComponent<AvatarAccessoryBtn>();
 			if (accessoryBtn) {
+				accessoryBtn.scrollRedirect.redirectTarget = this.contentScrollRect;
 				accessoryBtn.classId = classId;
 				accessoryBtn.instanceId = instanceId;
 				accessoryBtn.SetText(itemName);
@@ -520,6 +523,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.Log("Selecting item: " + accTemplate.ToString());
 		let acc = this.mainMenu?.avatarView?.accessoryBuilder?.AddSingleAccessory(accTemplate, instantRefresh);
 		acc?.AccessoryComponent.SetInstanceId(instanceId);
+		this.mainMenu?.avatarView?.PlayReaction(acc?.AccessoryComponent.accessorySlot ?? AccessorySlot.Root);
 		this.activeAccessories.set(accTemplate.GetSlotNumber(), instanceId);
 		this.selectedAccessories.set(instanceId, true);
 		this.UpdateButtonGraphics();
@@ -559,6 +563,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private SelectSkinColor(color: Color, instantRefresh = true) {
 		this.Log("Selecting Color: " + color);
 		this.mainMenu?.avatarView?.accessoryBuilder?.SetSkinColor(color, instantRefresh);
+		this.mainMenu?.avatarView?.PlayReaction(AccessorySlot.Root);
 		this.selectedColor = ColorUtil.ColorToHex(color);
 		this.UpdateButtonGraphics();
 		this.saveBtn?.SetDisabled(false);

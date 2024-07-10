@@ -1,17 +1,17 @@
 import { AssetCache } from "../../AssetCache/AssetCache";
 import { CoreRefs } from "../../CoreRefs";
-import { OnStart, Singleton } from "../../Flamework";
+import { Singleton } from "../../Flamework";
 import { Keyboard } from "../../UserInput";
 import { AppManager } from "../../Util/AppManager";
 import { Bin } from "../../Util/Bin";
 
 @Singleton({})
-export class SettingsPageSingleton implements OnStart {
+export class SettingsPageSingleton {
 	public isOpen = false;
 	private openBin = new Bin();
 	private keyboard = new Keyboard();
 
-	OnStart(): void {}
+	protected OnStart(): void {}
 
 	public Open(): void {
 		if (this.isOpen) return;
@@ -24,7 +24,7 @@ export class SettingsPageSingleton implements OnStart {
 		const canvasGroup = settingsPage.GetComponent<CanvasGroup>();
 		const wrapper = settingsPage.transform.GetChild(0);
 		wrapper.localScale = Vector3.one.mul(1.1);
-		wrapper.TweenLocalScale(Vector3.one, 0.07).SetEaseQuadIn();
+		NativeTween.LocalScale(wrapper, Vector3.one, 0.07).SetEaseQuadIn();
 
 		AppManager.OpenCustom(
 			() => {
@@ -36,8 +36,8 @@ export class SettingsPageSingleton implements OnStart {
 		);
 
 		this.openBin.Add(() => {
-			wrapper.TweenLocalScale(Vector3.one.mul(1.1), 0.07).SetEaseQuadOut();
-			canvasGroup?.TweenCanvasGroupAlpha(0, 0.07).SetEaseQuadOut();
+			NativeTween.LocalScale(wrapper, Vector3.one.mul(1.1), 0.07).SetEaseQuadOut();
+			if (canvasGroup) NativeTween.CanvasGroupAlpha(canvasGroup, 0, 0.07).SetEaseQuadOut();
 			task.delay(0.07, () => {
 				Object.Destroy(settingsPage);
 			});

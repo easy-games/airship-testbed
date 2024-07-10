@@ -4,12 +4,10 @@ export {
 	External,
 	Flamework,
 	OnInit,
-	OnPhysics,
-	OnRender,
 	OnStart,
-	OnTick,
 	Service,
-	Singleton,
+	Singleton
 } from "./flamework";
 export { Modding } from "./modding";
 export { Reflect } from "./reflect";
+

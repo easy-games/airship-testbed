@@ -15,7 +15,7 @@ export default class PlayerList extends AirshipBehaviour {
 	public OnEnable(): void {
 		task.spawn(() => {
 			const protectedPlayers = Dependency<ProtectedPlayersSingleton>();
-			if (this.gameObject.active) {
+			if (this.gameObject.activeInHierarchy) {
 				this.RenderAll();
 				this.bin.Add(
 					protectedPlayers.onPlayerJoined.Connect(() => {
