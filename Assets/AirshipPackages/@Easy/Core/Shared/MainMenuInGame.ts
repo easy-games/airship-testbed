@@ -30,13 +30,18 @@ AvatarUtil.Initialize();
 InitNet();
 
 // Drive timer:
-gameObject.OnUpdate(() => {
+const fullGo = gameObject as GameObject & {
+	OnUpdate(callback: () => void): void;
+	OnLateUpdate(callback: () => void): void;
+	OnFixedUpdate(callback: () => void): void;
+};
+fullGo.OnUpdate(() => {
 	OnUpdate.Fire(TimeUtil.GetDeltaTime());
 });
-gameObject.OnLateUpdate(() => {
+fullGo.OnLateUpdate(() => {
 	OnLateUpdate.Fire(TimeUtil.GetDeltaTime());
 });
-gameObject.OnFixedUpdate(() => {
+fullGo.OnFixedUpdate(() => {
 	OnFixedUpdate.Fire(TimeUtil.GetFixedDeltaTime());
 });
 

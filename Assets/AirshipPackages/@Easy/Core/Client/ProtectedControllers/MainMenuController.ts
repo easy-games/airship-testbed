@@ -125,9 +125,9 @@ export class MainMenuController {
 		this.open = true;
 		const duration = 0.06;
 		this.wrapperRect.localScale = new Vector3(1.1, 1.1, 1.1);
-		this.wrapperRect.TweenLocalScale(new Vector3(1, 1, 1), duration);
+		NativeTween.LocalScale(this.wrapperRect, new Vector3(1, 1, 1), duration);
 		this.mainContentCanvas.enabled = true;
-		this.rootCanvasGroup.TweenCanvasGroupAlpha(1, duration);
+		NativeTween.CanvasGroupAlpha(this.rootCanvasGroup, 1, duration);
 
 		if (this.currentPage) {
 			this.RouteToPage(this.currentPage.pageType, true, true);
@@ -144,8 +144,8 @@ export class MainMenuController {
 		EventSystem.current.ClearSelected();
 
 		const duration = 0.06;
-		this.wrapperRect.TweenLocalScale(new Vector3(1.1, 1.1, 1.1), duration);
-		this.rootCanvasGroup.TweenCanvasGroupAlpha(0, duration);
+		NativeTween.LocalScale(this.wrapperRect, new Vector3(1.1, 1.1, 1.1), duration);
+		NativeTween.CanvasGroupAlpha(this.rootCanvasGroup, 0, duration);
 		SetTimeout(duration, () => {
 			if (!this.open) {
 				this.mainContentCanvas.enabled = false;

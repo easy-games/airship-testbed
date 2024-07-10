@@ -91,9 +91,9 @@ export class MainMenuHomeController {
 
 		CoreUI.SetupButton(joinCodeButton);
 		CanvasAPI.OnClickEvent(joinCodeButton, () => {
-			joinCodeWrapper.SetActive(!joinCodeWrapper.active);
+			joinCodeWrapper.SetActive(!joinCodeWrapper.activeInHierarchy);
 
-			if (!joinCodeButton.active) {
+			if (!joinCodeButton.activeInHierarchy) {
 				joinCodeTextInput.text = "";
 			}
 		});

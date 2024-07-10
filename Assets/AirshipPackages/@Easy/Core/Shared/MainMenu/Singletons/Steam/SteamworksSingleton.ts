@@ -14,14 +14,19 @@ interface SteamConnectPacket {
 export class SteamworksSingleton {
 	protected OnStart(): void {
 		SteamLuauAPI.OnRichPresenceGameJoinRequest((connectionStr, steamId) => {
-			const connectInfo = DecodeJSON<SteamConnectPacket>(connectionStr);
-			if (!connectInfo || !connectInfo.gameId || !connectInfo.serverId) {
+			const connectInfo = DecodeJSON<Partial<SteamConnectPacket>>(connectionStr);
+			if (!connectInfo || !connectInfo.gameId) {
 				print("[SteamworksSingleton] Invalid connect info on steam join request: " + inspect(connectInfo));
 				print("[SteamworksSingleton] Connection string: " + connectionStr);
 				return;
 			}
+
 			print("[SteamworksSingleton] Transfer to game: " + inspect(connectionStr));
 			Dependency<TransferController>().TransferToGameAsync(connectInfo.gameId, connectInfo.serverId);
+		});
+		SteamLuauAPI.OnNewLaunchParams((gameId, serverId, custom) => {
+			print("New launch params: gameId=" + gameId + " serverId=" + serverId + " custom=" + custom);
+			Dependency<TransferController>().TransferToGameAsync(gameId, serverId.size() > 0 ? serverId : undefined);
 		});
 		SteamLuauAPI.ProcessPendingJoinRequests();
 

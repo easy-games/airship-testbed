@@ -1774,142 +1774,384 @@ interface Rigidbody {
 }
 
 interface Component extends Object {
-	transform: Transform;
-	gameObject: GameObject;
+	/**
+	 * The Transform attached to this GameObject.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Component-transform.html | Component.transform}
+	 */
+	readonly transform: Transform;
+	/**
+	 * The game object this component is attached to. A component is always attached to a game object.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Component-gameObject.html | Component.gameObject}
+	 */
+	readonly gameObject: GameObject;
+	/**
+	 * The tag of this game object.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Component-tag.html | Component.tag}
+	 */
 	tag: string;
 
-	constructor(): Component;
-
+	/**
+	 * Calls the method named methodName on every MonoBehaviour in this game object or any of its children.
+	 * @param methodName Name of the method to call.
+	 * @param parameter Optional parameter to pass to the method (can be any value).
+	 * @param options Should an error be raised if the method does not exist for a given target object?
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Component.BroadcastMessage.html | Component.BroadcastMessage}
+	 */
+	BroadcastMessage(methodName: string, parameter: unknown, options: SendMessageOptions): void;
+	/**
+	 * Calls the method named methodName on every MonoBehaviour in this game object or any of its children.
+	 * @param methodName Name of the method to call.
+	 * @param parameter Optional parameter to pass to the method (can be any value).
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Component.BroadcastMessage.html | Component.BroadcastMessage}
+	 */
+	BroadcastMessage(methodName: string, parameter: unknown): void;
+	/**
+	 * Calls the method named methodName on every MonoBehaviour in this game object or any of its children.
+	 * @param methodName Name of the method to call.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Component.BroadcastMessage.html | Component.BroadcastMessage}
+	 */
 	BroadcastMessage(methodName: string): void;
+	/**
+	 * Calls the method named methodName on every MonoBehaviour in this game object or any of its children.
+	 * @param methodName Name of the method to call.
+	 * @param options Should an error be raised if the method does not exist for a given target object?
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Component.BroadcastMessage.html | Component.BroadcastMessage}
+	 */
 	BroadcastMessage(methodName: string, options: SendMessageOptions): void;
+	/**
+	 * Checks the GameObject's tag against the defined tag.
+	 * @param tag The tag to compare.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Component.CompareTag.html | Component.CompareTag}
+	 */
 	CompareTag(tag: string): boolean;
+	/**
+	 * Checks the GameObject's tag against the defined tag.
+	 * @param tag A TagHandle representing the tag to compare.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Component.CompareTag.html | Component.CompareTag}
+	 */
+	CompareTag(tag: TagHandle): boolean;
+	/**
+	 * Calls the method named methodName on every MonoBehaviour in this game object.
+	 * @param methodName Name of the method to call.
+	 * @param value Optional parameter for the method.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Component.SendMessage.html | Component.SendMessage}
+	 */
+	SendMessage(methodName: string, value: unknown): void;
+	/**
+	 * Calls the method named methodName on every MonoBehaviour in this game object.
+	 * @param methodName Name of the method to call.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Component.SendMessage.html | Component.SendMessage}
+	 */
+	SendMessage(methodName: string): void;
+	/**
+	 * Calls the method named methodName on every MonoBehaviour in this game object.
+	 * @param methodName Name of the method to call.
+	 * @param value Optional parameter for the method.
+	 * @param options Should an error be raised if the target object doesn't implement the method for the message?
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Component.SendMessage.html | Component.SendMessage}
+	 */
+	SendMessage(methodName: string, value: unknown, options: SendMessageOptions): void;
+	/**
+	 * Calls the method named methodName on every MonoBehaviour in this game object.
+	 * @param methodName Name of the method to call.
+	 * @param options Should an error be raised if the target object doesn't implement the method for the message?
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Component.SendMessage.html | Component.SendMessage}
+	 */
+	SendMessage(methodName: string, options: SendMessageOptions): void;
+	/**
+	 * Calls the method named methodName on every MonoBehaviour in this game object and on every ancestor of the behaviour.
+	 * @param methodName Name of method to call.
+	 * @param value Optional parameter value for the method.
+	 * @param options Should an error be raised if the method does not exist on the target object?
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Component.SendMessageUpwards.html | Component.SendMessageUpwards}
+	 */
+	SendMessageUpwards(methodName: string, value: unknown, options: SendMessageOptions): void;
+	/**
+	 * Calls the method named methodName on every MonoBehaviour in this game object and on every ancestor of the behaviour.
+	 * @param methodName Name of method to call.
+	 * @param value Optional parameter value for the method.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Component.SendMessageUpwards.html | Component.SendMessageUpwards}
+	 */
+	SendMessageUpwards(methodName: string, value: unknown): void;
+	/**
+	 * Calls the method named methodName on every MonoBehaviour in this game object and on every ancestor of the behaviour.
+	 * @param methodName Name of method to call.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Component.SendMessageUpwards.html | Component.SendMessageUpwards}
+	 */
+	SendMessageUpwards(methodName: string): void;
+	/**
+	 * Calls the method named methodName on every MonoBehaviour in this game object and on every ancestor of the behaviour.
+	 * @param methodName Name of method to call.
+	 * @param options Should an error be raised if the method does not exist on the target object?
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Component.SendMessageUpwards.html | Component.SendMessageUpwards}
+	 */
+	SendMessageUpwards(methodName: string, options: SendMessageOptions): void;
+
+	/**
+	 * Gets a reference to a component of type T on the same GameObject as the component specified.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Component.GetComponent.html | Component.GetComponent}
+	 */
 	GetComponent<T extends Component | AirshipBehaviour>(): T;
 	/**
-	 * Throws error if no component found.
+	 * The string-based version of this method.
+	 * @param type The name of the type of Component to get.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Component.GetComponent.html | Component.GetComponent}
 	 */
 	GetComponent<T extends Component | AirshipBehaviour>(name: string): T;
 
 	/**
-	 * Throws error if no component found.
+	 * Gets references to all components of type T on the same GameObject as the component specified.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Component.GetComponents.html | Component.GetComponents}
 	 */
 	GetComponents<T extends Component | AirshipBehaviour>(): CSArray<T>;
 	/**
-	 * Throws error if no component found.
+	 * Gets references to all components of type T on the same GameObject as the component specified.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Component.GetComponents.html | Component.GetComponents}
 	 */
 	GetComponents<T extends Component | AirshipBehaviour>(name: string): CSArray<T>;
-
-	AddComponent(componentName: string): Component;
-	SendMessage(methodName: string, value: unknown): void;
-	SendMessage(methodName: string): void;
-	SendMessage(methodName: string, value: unknown, options: SendMessageOptions): void;
-	SendMessage(methodName: string, options: SendMessageOptions): void;
-	SendMessageUpwards(methodName: string, value: unknown, options: SendMessageOptions): void;
-	SendMessageUpwards(methodName: string, value: unknown): void;
-	SendMessageUpwards(methodName: string): void;
-	SendMessageUpwards(methodName: string, options: SendMessageOptions): void;
-
-	TweenPosition(to: Vector3, duration: number): Tween<Vector3>;
-	TweenPositionX(to: number, duration: number): Tween<number>;
-	TweenPositionY(to: number, duration: number): Tween<number>;
-	TweenPositionZ(to: number, duration: number): Tween<number>;
-
-	TweenLocalPosition(to: Vector3, duration: number): Tween<Vector3>;
-	TweenLocalPositionX(to: number, duration: number): Tween<number>;
-	TweenLocalPositionY(to: number, duration: number): Tween<number>;
-	TweenLocalPositionZ(to: number, duration: number): Tween<number>;
-
-	TweenAnchoredPosition(to: Vector2, duration: number): Tween<Vector2>;
-	TweenAnchoredPositionX(to: number, duration: number): Tween<number>;
-	TweenAnchoredPositionY(to: number, duration: number): Tween<number>;
-
-	TweenAnchorMin(to: Vector2, duration: number): Tween<Vector2>;
-	TweenAnchorMax(to: Vector2, duration: number): Tween<Vector2>;
-
-	TweenSizeDelta(to: Vector2, duration: number): Tween<Vector2>;
-
-	TweenRotation(to: Vector3, duration: number): Tween<Vector3>;
-	TweenRotationX(to: number, duration: number): Tween<number>;
-	TweenRotationY(to: number, duration: number): Tween<number>;
-	TweenRotationZ(to: number, duration: number): Tween<number>;
-
-	TweenLocalRotation(to: Vector3, duration: number): Tween<Vector3>;
-	TweenLocalRotationX(to: number, duration: number): Tween<number>;
-	TweenLocalRotationY(to: number, duration: number): Tween<number>;
-	TweenLocalRotationZ(to: number, duration: number): Tween<number>;
-
-	TweenLocalScale(to: Vector3, duration: number): Tween<Vector3>;
-	TweenLocalScaleX(to: number, duration: number): Tween<number>;
-	TweenLocalScaleY(to: number, duration: number): Tween<number>;
-	TweenLocalScaleZ(to: number, duration: number): Tween<number>;
-
-	TweenImageFillAmount(to: number, duration: number): Tween<number>;
-	TweenGraphicAlpha(to: number, duration: number): Tween<number>;
-	TweenGraphicColor(to: Color, duration: number): Tween<Color>;
-	TweenSpriteRendererAlpha(to: number, duration: number): Tween<number>;
-	TweenSpriteRendererColor(to: Color, duration: number): Tween<Color>;
-	TweenMaterialColor(to: Color, duration: number): Tween<Color>;
-
-	TweenRendererColor(from: Color, to: Color, duration: number): Tween<number>;
-	TweenMaterialsColorProperty(propertyName: string, from: Color, to: Color, duration: number): Tween<number>;
-	TweenMaterialsFloatProperty(propertyName: string, from: number, to: number, duration: number): Tween<number>;
-
-	TweenTextMeshAlpha(to: number, duration: number): Tween<number>;
-	TweenTextMeshColor(to: Color, duration: number): Tween<Color>;
-	TweenTextMeshProColor(to: Color, duration: number): Tween<Color>;
-	TweenTextMeshProAlpha(to: number, duration: number): Tween<number>;
-	TweenCanvasGroupAlpha(to: number, duration: number): Tween<number>;
-
-	TweenAudioSourceVolume(to: number, duration: number): Tween<number>;
-	TweenAudioSourcePitch(to: number, duration: number): Tween<number>;
-
-	TweenCancelAll(includeChildren: boolean, includeInactive: boolean): void;
 
 	IsDestroyed(): boolean;
 }
 
 interface GameObject extends Object {
-	rigidbody: Component;
-	rigidbody2D: Component;
-	camera: Component;
-	light: Component;
-	animation: Component;
-	constantForce: Component;
-	renderer: Component;
-	audio: Component;
-	networkView: Component;
-	collider: Component;
-	collider2D: Component;
-	hingeJoint: Component;
-	particleSystem: Component;
-	transform: Transform;
+	/**
+	 * The Transform attached to this GameObject.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/GameObject-transform.html | GameObject.transform}
+	 */
+	readonly transform: Transform;
+	/**
+	 * The layer the GameObject is in.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/GameObject-layer.html | GameObject.layer}
+	 */
 	layer: number;
-	active: boolean;
-	activeSelf: boolean;
-	activeInHierarchy: boolean;
+	/**
+	 * The local active state of this GameObject. (Read Only)
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/GameObject-activeSelf.html | GameObject.activeSelf}
+	 */
+	readonly activeSelf: boolean;
+	/**
+	 * Defines whether the GameObject is active in the Scene.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/GameObject-activeInHierarchy.html | GameObject.activeInHierarchy}
+	 */
+	readonly activeInHierarchy: boolean;
+	/**
+	 * Gets and sets the GameObject's StaticEditorFlags.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/GameObject-isStatic.html | GameObject.isStatic}
+	 */
 	isStatic: boolean;
+	/**
+	 * The tag of this GameObject.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/GameObject-tag.html | GameObject.tag}
+	 */
 	tag: string;
-	scene: Scene;
-	sceneCullingMask: number;
-	gameObject: GameObject;
+	/**
+	 * Scene that the GameObject is part of.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/GameObject-scene.html | GameObject.scene}
+	 */
+	readonly scene: Scene;
+	/**
+	 * Scene culling mask Unity uses to determine which scene to render the GameObject in.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/GameObject-sceneCullingMask.html | GameObject.sceneCullingMask}
+	 */
+	readonly sceneCullingMask: number;
+	readonly gameObject: GameObject;
 
-	OnUpdate(callback: () => void): void;
-	OnLateUpdate(callback: () => void): void;
-	OnFixedUpdate(callback: () => void): void;
-
-	// constructor(name: string): GameObject;
-	// constructor(): GameObject;
-	CompareTag(tag: string): boolean;
-	PlayAnimation(animation: Object): void;
-	SampleAnimation(clip: Object, time: number): void;
-	SetActive(value: boolean): void;
-	SetActiveRecursively(state: boolean): void;
-	StopAnimation(): void;
-	BroadcastMessage(methodName: string): void;
+	/**
+	 * Adds a component class of type componentType to the GameObject. C# Users can use a generic version.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/GameObject.AddComponent.html | GameObject.AddComponent}
+	 */
+	AddComponent(componentType: unknown): Component;
+	/**
+	 * Generic version of this method.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/GameObject.AddComponent.html | GameObject.AddComponent}
+	 */
+	AddComponent<T>(): T;
 	BroadcastMessage(methodName: string, options: SendMessageOptions): void;
-	GetComponentsInChildren<T extends Component>(): CSArray<T>;
-	GetComponentsInChildren<T extends Component>(typeName: string): CSArray<T>;
+	/**
+	 * Calls the method named methodName on every MonoBehaviour in this GameObject or any of its children.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/GameObject.BroadcastMessage.html | GameObject.BroadcastMessage}
+	 */
+	BroadcastMessage(methodName: string, parameter: unknown, options: SendMessageOptions): void;
+	/**
+	 * Calls the method named methodName on every MonoBehaviour in this GameObject or any of its children.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/GameObject.BroadcastMessage.html | GameObject.BroadcastMessage}
+	 */
+	BroadcastMessage(methodName: string, parameter: unknown): void;
+	/**
+	 * Calls the method named methodName on every MonoBehaviour in this GameObject or any of its children.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/GameObject.BroadcastMessage.html | GameObject.BroadcastMessage}
+	 */
+	BroadcastMessage(methodName: string): void;
+	/**
+	 * Is this GameObject tagged with tag ?
+	 * @param tag The tag to compare.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/GameObject.CompareTag.html | GameObject.CompareTag}
+	 */
+	CompareTag(tag: string): boolean;
+	/**
+	 * Is this GameObject tagged with tag?
+	 * @param tag A TagHandle representing the tag to compare.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/GameObject.CompareTag.html | GameObject.CompareTag}
+	 */
+	CompareTag(tag: TagHandle): boolean;
+	SendMessage(methodName: string, options: SendMessageOptions): void;
+	/**
+	 * Calls the method named methodName on every MonoBehaviour in this GameObject.
+	 * @param methodName The name of the method to call.
+	 * @param value An optional parameter value to pass to the called method.
+	 * @param options Should an error be raised if the method doesn't exist on the target object?
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/GameObject.SendMessage.html | GameObject.SendMessage}
+	 */
+	SendMessage(methodName: string, value: unknown, options: SendMessageOptions): void;
+	/**
+	 * Calls the method named methodName on every MonoBehaviour in this GameObject.
+	 * @param methodName The name of the method to call.
+	 * @param value An optional parameter value to pass to the called method.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/GameObject.SendMessage.html | GameObject.SendMessage}
+	 */
+	SendMessage(methodName: string, value: unknown): void;
+	/**
+	 * Calls the method named methodName on every MonoBehaviour in this GameObject.
+	 * @param methodName The name of the method to call.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/GameObject.SendMessage.html | GameObject.SendMessage}
+	 */
+	SendMessage(methodName: string): void;
+	SendMessageUpwards(methodName: string, options: SendMessageOptions): void;
+	/**
+	 * Calls the method named methodName on every MonoBehaviour in this GameObject and on every ancestor of the behaviour.
+	 * @param methodName The name of the method to call.
+	 * @param value An optional parameter value to pass to the called method.
+	 * @param options Should an error be raised if the method doesn't exist on the target object?
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/GameObject.SendMessageUpwards.html | GameObject.SendMessageUpwards}
+	 */
+	SendMessageUpwards(methodName: string, value: unknown, options: SendMessageOptions): void;
+	/**
+	 * Calls the method named methodName on every MonoBehaviour in this GameObject and on every ancestor of the behaviour.
+	 * @param methodName The name of the method to call.
+	 * @param value An optional parameter value to pass to the called method.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/GameObject.SendMessageUpwards.html | GameObject.SendMessageUpwards}
+	 */
+	SendMessageUpwards(methodName: string, value: unknown): void;
+	/**
+	 * Calls the method named methodName on every MonoBehaviour in this GameObject and on every ancestor of the behaviour.
+	 * @param methodName The name of the method to call.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/GameObject.SendMessageUpwards.html | GameObject.SendMessageUpwards}
+	 */
+	SendMessageUpwards(methodName: string): void;
+	/**
+	 * ActivatesDeactivates the GameObject, depending on the given true or false/ value.
+	 * @param value Activate or deactivate the object, where true activates the GameObject and false deactivates the GameObject.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/GameObject.SetActive.html | GameObject.SetActive}
+	 */
+	SetActive(value: boolean): void;
+
+	/**
+	 * Gets a reference to a component of type T on the specified GameObject.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/GameObject.GetComponent.html | GameObject.GetComponent}
+	 */
+	GetComponent<T extends Component | AirshipBehaviour>(): T;
+	/**
+	 * Gets a reference to a component of type T on the specified GameObject, or any child of the GameObject.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/GameObject.GetComponentInChildren.html | GameObject.GetComponentInChildren}
+	 */
 	GetComponentInChildren<T extends Component>(): T;
+	/**
+	 * Gets a reference to a component of type T on the specified GameObject, or any child of the GameObject.
+	 * @param includeInactive Whether to include inactive child GameObjects in the search.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/GameObject.GetComponentInChildren.html | GameObject.GetComponentInChildren}
+	 */
+	GetComponentInChildren<T extends Component>(includeInactive: boolean): T;
+	/**
+	 * Gets a reference to a component of type T on the specified GameObject, or any parent of the GameObject.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/GameObject.GetComponentInParent.html | GameObject.GetComponentInParent}
+	 */
 	GetComponentInParent<T extends Component>(): T;
+	/**
+	 * Gets a reference to a component of type T on the specified GameObject, or any parent of the GameObject.
+	 * @param includeInactive Whether to include inactive parent GameObjects in the search.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/GameObject.GetComponentInParent.html | GameObject.GetComponentInParent}
+	 */
+	GetComponentInParent<T extends Component>(includeInactive: boolean): T;
+	/**
+	 * Gets references to all components of type T on the specified GameObject.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/GameObject.GetComponents.html | GameObject.GetComponents}
+	 */
+	GetComponents<T>(): CSArray<T>;
+	/**
+	 * Gets references to all components of type T on the specified GameObject, and any child of the GameObject.
+	 * @param includeInactive Whether to include inactive child GameObjects in the search.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/GameObject.GetComponentsInChildren.html | GameObject.GetComponentsInChildren}
+	 */
+	GetComponentsInChildren<T extends Component>(includeInactive: boolean): CSArray<T>;
+	/**
+	 * Gets references to all components of type T on the specified GameObject, and any child of the GameObject.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/GameObject.GetComponentsInChildren.html | GameObject.GetComponentsInChildren}
+	 */
+	GetComponentsInChildren<T extends Component>(): CSArray<T>;
+	/**
+	 * Gets references to all components of type T on the specified GameObject, and any parent of the GameObject.
+	 * @param includeInactive Whether to include inactive parent GameObjects in the search.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/GameObject.GetComponentsInParent.html | GameObject.GetComponentsInParent}
+	 */
+	GetComponentsInParent<T extends Component>(includeInactive: boolean): CSArray<T>;
+	/**
+	 * Gets references to all components of type T on the specified GameObject, and any parent of the GameObject.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/GameObject.GetComponentsInParent.html | GameObject.GetComponentsInParent}
+	 */
+	GetComponentsInParent<T>(): CSArray<T>;
 
 	GetAirshipComponentInChildren<T extends AirshipBehaviour>(): T | undefined;
 	GetAirshipComponentsInChildren<T extends AirshipBehaviour>(): T[];
@@ -1918,84 +2160,12 @@ interface GameObject extends Object {
 	GetAirshipComponentInParent<T extends AirshipBehaviour>(): T | undefined;
 	GetAirshipComponentsInParent<T extends AirshipBehaviour>(): T[];
 
-	/**
-	 * Returns undefined if no component is found
-	 */
-	GetComponent<T extends Component>(): T | undefined;
-	/**
-	 * Returns undefined if no component is found
-	 */
-	GetComponent<T extends Component = Component>(type: string): T | undefined;
-
 	GetAirshipComponent<T extends AirshipBehaviour>(): T | undefined;
 	/**
 	 * Throws error if no component found.
 	 */
 	GetAirshipComponent<T extends AirshipBehaviour>(name: string): T | undefined;
-
-	GetComponents<T extends AirshipBehaviour | Component>(): CSArray<T>;
-	GetComponents<T extends Component | AirshipBehaviour = Component>(type: string): CSArray<T>;
-
-	AddComponent<T>(): T;
-	AddComponent<T extends Component = Component>(componentName: string): T;
 	AddAirshipComponent<T extends AirshipBehaviour>(): T;
-	SendMessage(methodName: string, value: unknown): void;
-	SendMessage(methodName: string): void;
-	SendMessage(methodName: string, value: unknown, options: SendMessageOptions): void;
-	SendMessage(methodName: string, options: SendMessageOptions): void;
-	SendMessageUpwards(methodName: string, value: unknown, options: SendMessageOptions): void;
-	SendMessageUpwards(methodName: string, value: unknown): void;
-	SendMessageUpwards(methodName: string): void;
-	SendMessageUpwards(methodName: string, options: SendMessageOptions): void;
-
-	TweenPosition(to: Vector3, duration: number): Tween<Vector3>;
-	TweenPositionX(to: number, duration: number): Tween<number>;
-	TweenPositionY(to: number, duration: number): Tween<number>;
-	TweenPositionZ(to: number, duration: number): Tween<number>;
-
-	TweenLocalPosition(to: Vector3, duration: number): Tween<Vector3>;
-	TweenLocalPositionX(to: number, duration: number): Tween<number>;
-	TweenLocalPositionY(to: number, duration: number): Tween<number>;
-	TweenLocalPositionZ(to: number, duration: number): Tween<number>;
-
-	TweenAnchoredPosition(to: Vector2, duration: number): Tween<Vector2>;
-	TweenAnchoredPositionX(to: number, duration: number): Tween<number>;
-	TweenAnchoredPositionY(to: number, duration: number): Tween<number>;
-
-	TweenAnchorMin(to: Vector2, duration: number): Tween<Vector2>;
-	TweenAnchorMax(to: Vector2, duration: number): Tween<Vector2>;
-
-	TweenSizeDelta(to: Vector2, duration: number): Tween<Vector2>;
-
-	TweenRotation(to: Vector3, duration: number): Tween<Vector3>;
-	TweenRotationX(to: number, duration: number): Tween<number>;
-	TweenRotationY(to: number, duration: number): Tween<number>;
-	TweenRotationZ(to: number, duration: number): Tween<number>;
-
-	TweenLocalRotation(to: Vector3, duration: number): Tween<Vector3>;
-	TweenLocalRotationX(to: number, duration: number): Tween<number>;
-	TweenLocalRotationY(to: number, duration: number): Tween<number>;
-	TweenLocalRotationZ(to: number, duration: number): Tween<number>;
-
-	TweenLocalScale(to: Vector3, duration: number): Tween<Vector3>;
-	TweenLocalScaleX(to: number, duration: number): Tween<number>;
-	TweenLocalScaleY(to: number, duration: number): Tween<number>;
-	TweenLocalScaleZ(to: number, duration: number): Tween<number>;
-
-	TweenImageFillAmount(to: number, duration: number): Tween<number>;
-	TweenGraphicAlpha(to: number, duration: number): Tween<number>;
-	TweenGraphicColor(to: Color, duration: number): Tween<Color>;
-	TweenSpriteRendererAlpha(to: number, duration: number): Tween<number>;
-	TweenSpriteRendererColor(to: Color, duration: number): Tween<Color>;
-	TweenMaterialColor(to: Color, duration: number): Tween<Color>;
-
-	TweenTextMeshAlpha(to: number, duration: number): Tween<number>;
-	TweenTextMeshColor(to: Color, duration: number): Tween<Color>;
-	TweenTextMeshProColor(to: Color, duration: number): Tween<Color>;
-	TweenTextMeshProAlpha(to: number, duration: number): Tween<number>;
-	TweenCanvasGroupAlpha(to: number, duration: number): Tween<number>;
-
-	TweenCancelAll(includeChildren: boolean, includeInactive: boolean): void;
 
 	IsDestroyed(): boolean;
 
@@ -4230,74 +4400,422 @@ interface Matrix4x4Constructor {
 declare const Matrix4x4: Matrix4x4Constructor;
 
 interface Transform extends Component {
+	/**
+	 * The world space position of the Transform.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform-position.html | Transform.position}
+	 */
 	position: Vector3;
+	/**
+	 * Position of the transform relative to the parent transform.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform-localPosition.html | Transform.localPosition}
+	 */
 	localPosition: Vector3;
+	/**
+	 * The rotation as Euler angles in degrees.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform-eulerAngles.html | Transform.eulerAngles}
+	 */
 	eulerAngles: Vector3;
+	/**
+	 * The rotation as Euler angles in degrees relative to the parent transform's rotation.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform-localEulerAngles.html | Transform.localEulerAngles}
+	 */
 	localEulerAngles: Vector3;
+	/**
+	 * The red axis of the transform in world space.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform-right.html | Transform.right}
+	 */
 	right: Vector3;
+	/**
+	 * The green axis of the transform in world space.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform-up.html | Transform.up}
+	 */
 	up: Vector3;
+	/**
+	 * Returns a normalized vector representing the blue axis of the transform in world space.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform-forward.html | Transform.forward}
+	 */
 	forward: Vector3;
+	/**
+	 * A Quaternion that stores the rotation of the Transform in world space.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform-rotation.html | Transform.rotation}
+	 */
 	rotation: Quaternion;
+	/**
+	 * The rotation of the transform relative to the transform rotation of the parent.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform-localRotation.html | Transform.localRotation}
+	 */
 	localRotation: Quaternion;
+	/**
+	 * The scale of the transform relative to the GameObjects parent.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform-localScale.html | Transform.localScale}
+	 */
 	localScale: Vector3;
-	parent: Transform | undefined;
-	worldToLocalMatrix: Matrix4x4;
-	localToWorldMatrix: Matrix4x4;
-	root: Transform;
-	childCount: number;
-	lossyScale: Vector3;
+	/**
+	 * The parent of the transform.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform-parent.html | Transform.parent}
+	 */
+	parent: Transform;
+	/**
+	 * Matrix that transforms a point from world space into local space (Read Only).
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform-worldToLocalMatrix.html | Transform.worldToLocalMatrix}
+	 */
+	readonly worldToLocalMatrix: Matrix4x4;
+	/**
+	 * Matrix that transforms a point from local space into world space (Read Only).
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform-localToWorldMatrix.html | Transform.localToWorldMatrix}
+	 */
+	readonly localToWorldMatrix: Matrix4x4;
+	/**
+	 * Returns the topmost transform in the hierarchy.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform-root.html | Transform.root}
+	 */
+	readonly root: Transform;
+	/**
+	 * The number of children the parent Transform has.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform-childCount.html | Transform.childCount}
+	 */
+	readonly childCount: number;
+	/**
+	 * The global scale of the object (Read Only).
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform-lossyScale.html | Transform.lossyScale}
+	 */
+	readonly lossyScale: Vector3;
+	/**
+	 * Has the transform changed since the last time the flag was set to 'false'?
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform-hasChanged.html | Transform.hasChanged}
+	 */
 	hasChanged: boolean;
+	/**
+	 * The transform capacity of the transform's hierarchy data structure.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform-hierarchyCapacity.html | Transform.hierarchyCapacity}
+	 */
 	hierarchyCapacity: number;
-	hierarchyCount: number;
+	/**
+	 * The number of transforms in the transform's hierarchy data structure.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform-hierarchyCount.html | Transform.hierarchyCount}
+	 */
+	readonly hierarchyCount: number;
 
+	/**
+	 * Unparents all children.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform.DetachChildren.html | Transform.DetachChildren}
+	 */
 	DetachChildren(): void;
-	Find(n: string): Transform | undefined;
-	FindChild(n: string): Transform | undefined;
+	/**
+	 * Finds a child by name n and returns it.
+	 * @param n The search string, either the name of an immediate child or a hierarchy path for finding a descendent.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform.Find.html | Transform.Find}
+	 */
+	Find(n: string): Transform;
+	FindChild(n: string): Transform;
+	/**
+	 * Returns a transform child by index.
+	 * @param index Index of the child transform to return. Must be smaller than Transform.childCount.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform.GetChild.html | Transform.GetChild}
+	 */
 	GetChild(index: number): Transform;
 	GetChildCount(): number;
 	GetEnumerator(): unknown;
+	/**
+	 * Gets the position and rotation of the Transform component in local space (that is, relative to its parent transform).
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform.GetLocalPositionAndRotation.html | Transform.GetLocalPositionAndRotation}
+	 */
+	GetLocalPositionAndRotation(localPosition: unknown, localRotation: unknown): void;
+	/**
+	 * Gets the position and rotation of the Transform component in world space.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform.GetPositionAndRotation.html | Transform.GetPositionAndRotation}
+	 */
+	GetPositionAndRotation(position: unknown, rotation: unknown): void;
+	/**
+	 * Gets the sibling index.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform.GetSiblingIndex.html | Transform.GetSiblingIndex}
+	 */
 	GetSiblingIndex(): number;
+	/**
+	 * Transforms a direction from world space to local space. The opposite of Transform.TransformDirection.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform.InverseTransformDirection.html | Transform.InverseTransformDirection}
+	 */
 	InverseTransformDirection(direction: Vector3): Vector3;
+	/**
+	 * Transforms the direction x, y, z from world space to local space. The opposite of Transform.TransformDirection.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform.InverseTransformDirection.html | Transform.InverseTransformDirection}
+	 */
 	InverseTransformDirection(x: number, y: number, z: number): Vector3;
+	InverseTransformDirections(directions: unknown, transformedDirections: unknown): void;
+	InverseTransformDirections(directions: unknown): void;
+	/**
+	 * Transforms position from world space to local space.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform.InverseTransformPoint.html | Transform.InverseTransformPoint}
+	 */
 	InverseTransformPoint(position: Vector3): Vector3;
+	/**
+	 * Transforms the position x, y, z from world space to local space.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform.InverseTransformPoint.html | Transform.InverseTransformPoint}
+	 */
 	InverseTransformPoint(x: number, y: number, z: number): Vector3;
+	InverseTransformPoints(positions: unknown, transformedPositions: unknown): void;
+	InverseTransformPoints(positions: unknown): void;
+	/**
+	 * Transforms a vector from world space to local space. The opposite of Transform.TransformVector.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform.InverseTransformVector.html | Transform.InverseTransformVector}
+	 */
 	InverseTransformVector(vector: Vector3): Vector3;
+	/**
+	 * Transforms the vector x, y, z from world space to local space. The opposite of Transform.TransformVector.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform.InverseTransformVector.html | Transform.InverseTransformVector}
+	 */
 	InverseTransformVector(x: number, y: number, z: number): Vector3;
+	InverseTransformVectors(vectors: unknown, transformedVectors: unknown): void;
+	InverseTransformVectors(vectors: unknown): void;
+	/**
+	 * Is this transform a child of parent?
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform.IsChildOf.html | Transform.IsChildOf}
+	 */
 	IsChildOf(parent: Transform): boolean;
+	/**
+	 * Rotates the transform so the forward vector points at target's current position.
+	 * @param target Object to point towards.
+	 * @param worldUp Vector specifying the upward direction.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform.LookAt.html | Transform.LookAt}
+	 */
 	LookAt(target: Transform, worldUp: Vector3): void;
+	/**
+	 * Rotates the transform so the forward vector points at target's current position.
+	 * @param target Object to point towards.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform.LookAt.html | Transform.LookAt}
+	 */
 	LookAt(target: Transform): void;
+	/**
+	 * Rotates the transform so the forward vector points at worldPosition.
+	 * @param worldPosition Point to look at.
+	 * @param worldUp Vector specifying the upward direction.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform.LookAt.html | Transform.LookAt}
+	 */
 	LookAt(worldPosition: Vector3, worldUp: Vector3): void;
+	/**
+	 * Rotates the transform so the forward vector points at worldPosition.
+	 * @param worldPosition Point to look at.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform.LookAt.html | Transform.LookAt}
+	 */
 	LookAt(worldPosition: Vector3): void;
-	RotateRelativeTo(eulers: Vector3, relativeTo: Space): void;
-	RotateRelativeTo(xAngle: number, yAngle: number, zAngle: number, relativeTo: Space): void;
-	RotateRelativeTo(axis: Vector3, angle: number, relativeTo: Space): void;
+	/**
+	 * Applies a rotation of eulerAngles.z degrees around the z-axis, eulerAngles.x degrees around the x-axis, and eulerAngles.y degrees around the y-axis (in that order).
+	 * @param eulers The rotation to apply in euler angles.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform.Rotate.html | Transform.Rotate}
+	 */
 	Rotate(eulers: Vector3): void;
+	/**
+	 * The implementation of this method applies a rotation of zAngle degrees around the z axis, xAngle degrees around the x axis, and yAngle degrees around the y axis (in that order).
+	 * @param xAngle Degrees to rotate the GameObject around the X axis.
+	 * @param yAngle Degrees to rotate the GameObject around the Y axis.
+	 * @param zAngle Degrees to rotate the GameObject around the Z axis.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform.Rotate.html | Transform.Rotate}
+	 */
 	Rotate(xAngle: number, yAngle: number, zAngle: number): void;
+	/**
+	 * Rotates the object around the given axis by the number of degrees defined by the given angle.
+	 * @param axis The axis to apply rotation to.
+	 * @param angle The degrees of rotation to apply.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform.Rotate.html | Transform.Rotate}
+	 */
 	Rotate(axis: Vector3, angle: number): void;
+	/**
+	 * Rotates the transform about axis passing through point in world coordinates by angle degrees.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform.RotateAround.html | Transform.RotateAround}
+	 */
 	RotateAround(point: Vector3, axis: Vector3, angle: number): void;
 	RotateAround(axis: Vector3, angle: number): void;
 	RotateAroundLocal(axis: Vector3, angle: number): void;
+	/**
+	 * Applies a rotation of eulerAngles.z degrees around the z-axis, eulerAngles.x degrees around the x-axis, and eulerAngles.y degrees around the y-axis (in that order).
+	 * @param eulers The rotation to apply in euler angles.
+	 * @param relativeTo Determines whether to rotate the GameObject either locally to  the GameObject or relative to the Scene in world space.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform.Rotate.html | Transform.Rotate}
+	 */
+	RotateRelativeTo(eulers: Vector3, relativeTo: Space): void;
+	/**
+	 * The implementation of this method applies a rotation of zAngle degrees around the z axis, xAngle degrees around the x axis, and yAngle degrees around the y axis (in that order).
+	 * @param xAngle Degrees to rotate the GameObject around the X axis.
+	 * @param yAngle Degrees to rotate the GameObject around the Y axis.
+	 * @param zAngle Degrees to rotate the GameObject around the Z axis.
+	 * @param relativeTo Determines whether to rotate the GameObject either locally to the GameObject or relative to the Scene in world space.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform.Rotate.html | Transform.Rotate}
+	 */
+	RotateRelativeTo(xAngle: number, yAngle: number, zAngle: number, relativeTo: Space): void;
+	/**
+	 * Rotates the object around the given axis by the number of degrees defined by the given angle.
+	 * @param axis The axis to apply rotation to.
+	 * @param angle The degrees of rotation to apply.
+	 * @param relativeTo Determines whether to rotate the GameObject either locally to the GameObject or relative to the Scene in world space.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform.Rotate.html | Transform.Rotate}
+	 */
+	RotateRelativeTo(axis: Vector3, angle: number, relativeTo: Space): void;
+	/**
+	 * Move the transform to the start of the local transform list.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform.SetAsFirstSibling.html | Transform.SetAsFirstSibling}
+	 */
 	SetAsFirstSibling(): void;
+	/**
+	 * Move the transform to the end of the local transform list.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform.SetAsLastSibling.html | Transform.SetAsLastSibling}
+	 */
 	SetAsLastSibling(): void;
+	/**
+	 * Sets the position and rotation of the Transform component in local space (i.e. relative to its parent transform).
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform.SetLocalPositionAndRotation.html | Transform.SetLocalPositionAndRotation}
+	 */
 	SetLocalPositionAndRotation(localPosition: Vector3, localRotation: Quaternion): void;
-	SetParent(p: Transform | undefined): void;
+	/**
+	 * Set the parent of the transform.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform.SetParent.html | Transform.SetParent}
+	 */
+	SetParent(p: Transform): void;
+	/**
+	 * Set the parent of the transform.
+	 * @param parent The parent Transform to use.
+	 * @param worldPositionStays If true, the parent-relative position, scale and rotation are modified such that the object keeps the same world space position, rotation and scale as before.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform.SetParent.html | Transform.SetParent}
+	 */
 	SetParent(parent: Transform, worldPositionStays: boolean): void;
+	/**
+	 * Sets the world space position and rotation of the Transform component.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform.SetPositionAndRotation.html | Transform.SetPositionAndRotation}
+	 */
 	SetPositionAndRotation(position: Vector3, rotation: Quaternion): void;
+	/**
+	 * Sets the sibling index.
+	 * @param index Index to set.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform.SetSiblingIndex.html | Transform.SetSiblingIndex}
+	 */
 	SetSiblingIndex(index: number): void;
+	/**
+	 * Transforms direction from local space to world space.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform.TransformDirection.html | Transform.TransformDirection}
+	 */
 	TransformDirection(direction: Vector3): Vector3;
+	/**
+	 * Transforms direction x, y, z from local space to world space.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform.TransformDirection.html | Transform.TransformDirection}
+	 */
 	TransformDirection(x: number, y: number, z: number): Vector3;
+	TransformDirections(directions: unknown, transformedDirections: unknown): void;
+	TransformDirections(directions: unknown): void;
+	/**
+	 * Transforms position from local space to world space.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform.TransformPoint.html | Transform.TransformPoint}
+	 */
 	TransformPoint(position: Vector3): Vector3;
+	/**
+	 * Transforms the position x, y, z from local space to world space.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform.TransformPoint.html | Transform.TransformPoint}
+	 */
 	TransformPoint(x: number, y: number, z: number): Vector3;
+	TransformPoints(positions: unknown, transformedPositions: unknown): void;
+	TransformPoints(positions: unknown): void;
+	/**
+	 * Transforms vector from local space to world space.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform.TransformVector.html | Transform.TransformVector}
+	 */
 	TransformVector(vector: Vector3): Vector3;
+	/**
+	 * Transforms vector x, y, z from local space to world space.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform.TransformVector.html | Transform.TransformVector}
+	 */
 	TransformVector(x: number, y: number, z: number): Vector3;
+	TransformVectors(vectors: unknown, transformedVectors: unknown): void;
+	TransformVectors(vectors: unknown): void;
+	/**
+	 * Moves the transform in the direction and distance of translation.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform.Translate.html | Transform.Translate}
+	 */
 	Translate(translation: Vector3, relativeTo: Space): void;
+	/**
+	 * Moves the transform in the direction and distance of translation.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform.Translate.html | Transform.Translate}
+	 */
 	Translate(translation: Vector3): void;
+	/**
+	 * Moves the transform by x along the x axis, y along the y axis, and z along the z axis.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform.Translate.html | Transform.Translate}
+	 */
 	Translate(x: number, y: number, z: number, relativeTo: Space): void;
+	/**
+	 * Moves the transform by x along the x axis, y along the y axis, and z along the z axis.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform.Translate.html | Transform.Translate}
+	 */
 	Translate(x: number, y: number, z: number): void;
+	/**
+	 * Moves the transform in the direction and distance of translation.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform.Translate.html | Transform.Translate}
+	 */
 	Translate(translation: Vector3, relativeTo: Transform): void;
+	/**
+	 * Moves the transform by x along the x axis, y along the y axis, and z along the z axis.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform.Translate.html | Transform.Translate}
+	 */
 	Translate(x: number, y: number, z: number, relativeTo: Transform): void;
-
-	ClampRotationY(targetValue: number, maxAngle: number): void;
 }
 
 interface Collider extends Component {

@@ -1,5 +1,5 @@
 import AvatarRenderComponent from "@Easy/Core/Client/ProtectedControllers//AvatarMenu/AvatarRenderComponent";
-import {} from "@Easy/Core/Shared/Flamework";
+import { } from "@Easy/Core/Shared/Flamework";
 import { Mouse } from "@Easy/Core/Shared/UserInput";
 import { Game } from "../Game";
 import { Bin } from "../Util/Bin";
@@ -271,11 +271,9 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 				this.avatarCamera.transform.position = this.targetTransform.position;
 				this.avatarCamera.transform.rotation = this.targetTransform.rotation;
 			} else {
-				this.avatarCamera.transform
-					.TweenPosition(this.targetTransform.position, this.cameraTransitionDuration)
+				NativeTween.Position(this.avatarCamera.transform, this.targetTransform.position, this.cameraTransitionDuration)
 					.SetEaseQuadInOut();
-				this.avatarCamera.transform
-					.TweenRotation(this.targetTransform.rotation.eulerAngles, this.cameraTransitionDuration)
+				NativeTween.Rotation(this.avatarCamera.transform, this.targetTransform.rotation.eulerAngles, this.cameraTransitionDuration)
 					.SetEaseQuadInOut();
 			}
 		}
@@ -286,7 +284,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 			this.avatarRenderTemplate,
 			this.transform,
 		)?.GetAirshipComponent<AvatarRenderComponent>();
-	}
+}
 
 	public PlayReaction(slotType: AccessorySlot) {
 		if (math.random() < this.oddsOfAReaction) {

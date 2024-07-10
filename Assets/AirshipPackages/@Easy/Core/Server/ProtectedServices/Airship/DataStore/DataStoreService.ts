@@ -22,7 +22,7 @@ export class ProtectedDataStoreService {
 		contextbridge.callback<ServerBridgeApiDataGetKey<unknown>>("DataStore:GetKey", (_, key) => {
 			const result = InternalHttpManager.GetAsync(`${AirshipUrl.DataStoreService}/data/key/${key}`);
 			if (!result.success || result.statusCode > 299) {
-				warn(`Unable to get data key. Status Code: ${result.statusCode}.\n`, result.data);
+				warn(`Unable to get data key. Status Code: ${result.statusCode}.\n`, result.error);
 				return {
 					success: false,
 					data: undefined,
@@ -48,7 +48,7 @@ export class ProtectedDataStoreService {
 				EncodeJSON(data),
 			);
 			if (!result.success || result.statusCode > 299) {
-				warn(`Unable to set data key. Status Code: ${result.statusCode}.\n`, result.data);
+				warn(`Unable to set data key. Status Code: ${result.statusCode}.\n`, result.error);
 				return {
 					success: false,
 					data: undefined,
@@ -64,7 +64,7 @@ export class ProtectedDataStoreService {
 		contextbridge.callback<ServerBridgeApiDataDeleteKey<unknown>>("DataStore:DeleteKey", (_, key) => {
 			const result = InternalHttpManager.DeleteAsync(`${AirshipUrl.DataStoreService}/data/key/${key}`);
 			if (!result.success || result.statusCode > 299) {
-				warn(`Unable to delete data key. Status Code: ${result.statusCode}.\n`, result.data);
+				warn(`Unable to delete data key. Status Code: ${result.statusCode}.\n`, result.error);
 				return {
 					success: false,
 					data: undefined,

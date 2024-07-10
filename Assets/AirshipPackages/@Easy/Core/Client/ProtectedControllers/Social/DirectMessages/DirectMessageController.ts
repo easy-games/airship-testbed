@@ -472,7 +472,7 @@ export class DirectMessageController {
 	}
 
 	public Close(): void {
-		this.windowGo?.transform.TweenAnchoredPositionY(this.yPos, 0.1);
+		if (this.windowGo) NativeTween.AnchoredPositionY(this.windowGo.transform, this.yPos, 0.1);
 		this.openedWindowTarget = undefined;
 	}
 }

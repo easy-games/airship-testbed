@@ -12,9 +12,9 @@ export default class OutfitRenameButtonComponent extends AirshipBehaviour {
     public Start(): void {
         CanvasAPI.OnHoverEvent(this.gameObject, (hoverState) => {
             if (hoverState === HoverState.ENTER) {
-                this.image.TweenGraphicColor(this.hoveredColor, 0.1);
+                NativeTween.GraphicColor(this.image, this.hoveredColor, 0.1);
             } else {
-                this.image.TweenGraphicColor(this.inactiveColor, 0.1);
+                NativeTween.GraphicColor(this.image, this.inactiveColor, 0.1);
             }
         });
 

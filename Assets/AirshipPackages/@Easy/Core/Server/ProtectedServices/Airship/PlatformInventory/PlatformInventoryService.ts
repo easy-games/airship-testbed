@@ -39,7 +39,7 @@ export class ProtectedPlatformInventoryService {
 				);
 
 				if (!res.success || res.statusCode > 299) {
-					warn(`Unable to complete request. Status Code:  ${res.statusCode}.\n`, res.data);
+					warn(`Unable to complete request. Status Code:  ${res.statusCode}.\n`, res.error);
 					return {
 						success: false,
 						data: undefined,
@@ -59,7 +59,7 @@ export class ProtectedPlatformInventoryService {
 				const res = InternalHttpManager.DeleteAsync(`${AirshipUrl.ContentService}/items/item-id/${instanceId}`);
 
 				if (!res.success || res.statusCode > 299) {
-					warn(`Unable to complete request. Status Code:  ${res.statusCode}.\n`, res.data);
+					warn(`Unable to complete request. Status Code:  ${res.statusCode}.\n`, res.error);
 					return {
 						success: false,
 						data: undefined,
@@ -83,7 +83,7 @@ export class ProtectedPlatformInventoryService {
 				);
 
 				if (!res.success || res.statusCode > 299) {
-					warn(`Unable to complete request. Status Code:  ${res.statusCode}.\n`, res.data);
+					warn(`Unable to complete request. Status Code:  ${res.statusCode}.\n`, res.error);
 					return {
 						success: false,
 						data: undefined,
@@ -109,7 +109,7 @@ export class ProtectedPlatformInventoryService {
 				);
 
 				if (!res.success || res.statusCode > 299) {
-					warn(`Unable to complete request. Status Code:  ${res.statusCode}.\n`, res.data);
+					warn(`Unable to complete request. Status Code:  ${res.statusCode}.\n`, res.error);
 					return {
 						success: false,
 						data: undefined,

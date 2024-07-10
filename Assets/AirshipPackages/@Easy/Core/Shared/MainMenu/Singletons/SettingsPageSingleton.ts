@@ -24,7 +24,7 @@ export class SettingsPageSingleton {
 		const canvasGroup = settingsPage.GetComponent<CanvasGroup>();
 		const wrapper = settingsPage.transform.GetChild(0);
 		wrapper.localScale = Vector3.one.mul(1.1);
-		wrapper.TweenLocalScale(Vector3.one, 0.07).SetEaseQuadIn();
+		NativeTween.LocalScale(wrapper, Vector3.one, 0.07).SetEaseQuadIn();
 
 		AppManager.OpenCustom(
 			() => {
@@ -36,8 +36,8 @@ export class SettingsPageSingleton {
 		);
 
 		this.openBin.Add(() => {
-			wrapper.TweenLocalScale(Vector3.one.mul(1.1), 0.07).SetEaseQuadOut();
-			canvasGroup?.TweenCanvasGroupAlpha(0, 0.07).SetEaseQuadOut();
+			NativeTween.LocalScale(wrapper, Vector3.one.mul(1.1), 0.07).SetEaseQuadOut();
+			if (canvasGroup) NativeTween.CanvasGroupAlpha(canvasGroup, 0, 0.07).SetEaseQuadOut();
 			task.delay(0.07, () => {
 				Object.Destroy(settingsPage);
 			});

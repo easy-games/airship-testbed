@@ -28,6 +28,14 @@ export default class DemoManager extends AirshipBehaviour {
 		// 	}
 		// })
 
+		// const a: CharacterMovement = undefined!;
+		// a.OnAdjustMove()
+		
+		// Tween.ValueFloat(this.gameObject, 1, 1, (a: unknown, b: unknown) => {
+		// 	print("Obj a: " + a);
+		// 	print("Obj b: " + b);
+		// });
+
 		Airship.Input.CreateAction("interact", Binding.Key(Key.F));
 
 		Airship.Inventory.RegisterItem("WoodSword", {

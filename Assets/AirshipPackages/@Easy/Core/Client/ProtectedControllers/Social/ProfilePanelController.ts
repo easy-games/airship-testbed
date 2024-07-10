@@ -60,11 +60,11 @@ export class ProfilePanelController {
 		// animate
         const originalPosition = menuRect.localPosition;
         menuRect.localPosition = menuRect.localPosition.add(new Vector3(10, 0, 0));
-        menuRect.TweenLocalPosition(originalPosition, 0.1);
+        NativeTween.LocalPosition(menuRect, originalPosition, 0.1);
 
 
 		menuRect.localScale = new Vector3(0.95, 0.95, 0.95);
-		menuRect.TweenLocalScale(new Vector3(1, 1, 1), 0.1);
+		NativeTween.LocalScale(menuRect, new Vector3(1, 1, 1), 0.1);
 
 		let cleaned = false;
 		return () => {

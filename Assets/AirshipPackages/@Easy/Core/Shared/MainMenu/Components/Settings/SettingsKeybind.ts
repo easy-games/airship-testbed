@@ -12,10 +12,10 @@ import { Keyboard, Mouse } from "../../../UserInput";
 import { AppManager } from "../../../Util/AppManager";
 import { Bin } from "../../../Util/Bin";
 import {
-	CanvasAPI,
-	HoverState,
-	PointerButton,
-	PointerDirection,
+    CanvasAPI,
+    HoverState,
+    PointerButton,
+    PointerDirection,
 } from "../../../Util/CanvasAPI";
 import { InputUtils } from "../../../Util/InputUtils";
 import { SignalPriority } from "../../../Util/Signal";
@@ -165,7 +165,7 @@ export default class SettingsKeybind extends AirshipBehaviour {
 	 *
 	 */
 	private HighlightValueImage(): void {
-		this.valueImageBG.TweenGraphicColor(new Color(1, 1, 1, 0.5), 0.25).SetPingPong();
+		NativeTween.GraphicColor(this.valueImageBG, new Color(1, 1, 1, 0.5), 0.25).SetPingPong();
 	}
 
 	private StartKeyListener(): void {

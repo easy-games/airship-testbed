@@ -44,7 +44,7 @@ export class TransferController {
 		);
 
 		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to complete transfer request. Status Code:  ${res.statusCode}.\n`, res.data);
+			warn(`Unable to complete transfer request. Status Code:  ${res.statusCode}.\n`, res.error);
 			return {
 				success: false,
 				data: undefined,
@@ -65,7 +65,7 @@ export class TransferController {
 		const res = InternalHttpManager.PostAsync(AirshipUrl.GameCoordinator + "/transfers/transfer/self/party", "");
 
 		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to complete transfer request. Status Code:  ${res.statusCode}.\n`, res.data);
+			warn(`Unable to complete transfer request. Status Code:  ${res.statusCode}.\n`, res.error);
 			return {
 				success: false,
 				data: undefined,

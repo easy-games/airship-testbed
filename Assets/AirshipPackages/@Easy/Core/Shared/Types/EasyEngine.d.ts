@@ -956,6 +956,7 @@ interface SteamLuauAPIConstructor {
 	SetRichPresence(key: string, tag: string): boolean;
 
 	OnRichPresenceGameJoinRequest(callback: (connectStr: string, steamId: number) => void): EngineEventConnection;
+	OnNewLaunchParams(callback: (gameId: string, serverId: string, customData: string) => void): EngineEventConnection;
 	ProcessPendingJoinRequests(): void;
 }
 declare const SteamLuauAPI: SteamLuauAPIConstructor;
@@ -1004,4 +1005,12 @@ interface AnimatorOverrideController extends RuntimeAnimatorController {
 	SetClip(name: string, clip: AnimationClip): void;
 	ApplyOverrides(): void;
 	overridesCount: number;
+}
+
+interface ServerBootstrap {
+	onProcessExit(callback: () => void): void;
+}
+
+interface TerrainData {
+	RemoveTree(treeIndex: number): void;
 }

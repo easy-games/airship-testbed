@@ -24,14 +24,19 @@ AppManager.Init();
 AudioManager.Init();
 AvatarUtil.Initialize();
 
+const fullGo = gameObject as GameObject & {
+	OnUpdate(callback: () => void): void;
+	OnLateUpdate(callback: () => void): void;
+	OnFixedUpdate(callback: () => void): void;
+};
 // Drive timer:
-gameObject.OnUpdate(() => {
+fullGo.OnUpdate(() => {
 	OnUpdate.Fire(TimeUtil.GetDeltaTime());
 });
-gameObject.OnLateUpdate(() => {
+fullGo.OnLateUpdate(() => {
 	OnLateUpdate.Fire(TimeUtil.GetDeltaTime());
 });
-gameObject.OnFixedUpdate(() => {
+fullGo.OnFixedUpdate(() => {
 	OnFixedUpdate.Fire(TimeUtil.GetFixedDeltaTime());
 });
 

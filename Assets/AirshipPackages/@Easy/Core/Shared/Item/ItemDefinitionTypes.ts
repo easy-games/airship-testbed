@@ -16,6 +16,10 @@ export type SoundDef = { path: string } & PlaySoundConfig;
 // 	equipSound?: string[];
 // }
 
+export interface ItemDefExtraData {
+	[x: string | number]: any;
+}
+
 export interface ItemDef {
 	//Identification
 	displayName: string;
@@ -37,5 +41,5 @@ export interface ItemDef {
 
 	maxStackSize?: number;
 
-	[x: string | number | symbol]: any;
+	data?: ItemDefExtraData;
 }

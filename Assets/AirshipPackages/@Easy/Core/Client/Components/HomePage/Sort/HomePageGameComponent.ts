@@ -82,9 +82,9 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 			this.gameImage.image.color = new Color(0, 0, 0, 1);
 			const downloadConn = this.gameImage.OnFinishedLoading((success) => {
 				if (success) {
-					this.gameImage.image.TweenGraphicColor(new Color(1, 1, 1, 1), 0.2);
+					NativeTween.GraphicColor(this.gameImage.image, new Color(1, 1, 1, 1), 0.2);
 				} else {
-					this.gameImage.image.TweenGraphicColor(new Color(0, 0, 0, 1), 0.2);
+					NativeTween.GraphicColor(this.gameImage.image, new Color(0, 0, 0, 1), 0.2);
 				}
 			});
 			this.gameImage.StartDownload();
@@ -107,9 +107,9 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 			this.orgImage.image.color = new Color(0, 0, 0, 0.3);
 			const downloadConn = this.orgImage.OnFinishedLoading((success) => {
 				if (success) {
-					this.orgImage.image.TweenGraphicColor(new Color(1, 1, 1, 1), 0.2);
+					NativeTween.GraphicColor(this.orgImage.image, new Color(1, 1, 1, 1), 0.2);
 				} else {
-					this.orgImage.image.TweenGraphicColor(new Color(0, 0, 0, 0.3), 0.2);
+					NativeTween.GraphicColor(this.orgImage.image, new Color(0, 0, 0, 0.3), 0.2);
 				}
 			});
 			this.orgImage.StartDownload();

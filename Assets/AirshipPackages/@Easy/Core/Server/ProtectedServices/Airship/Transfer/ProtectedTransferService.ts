@@ -5,7 +5,6 @@ import {
 } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipTransfers";
 import { CreateServerResponse } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipTransfers";
 import { Service } from "@Easy/Core/Shared/Flamework";
-import { Game } from "@Easy/Core/Shared/Game";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Result } from "@Easy/Core/Shared/Types/Result";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
@@ -19,20 +18,22 @@ export const enum TransferServiceBridgeTopics {
 
 export type ServerBridgeApiCreateServer = (config?: AirshipServerConfig) => Result<CreateServerResponse, undefined>;
 export type ServerBridgeApiTransferGroupToGame = (
-	players: readonly (Player | string)[],
+	userIds: string[],
 	gameId: string,
 	config?: AirshipGameTransferConfig,
 ) => Result<undefined, undefined>;
 export type ServerBridgeApiTransferGroupToServer = (
-	players: readonly (Player | string)[],
+	userIds: string[],
 	serverId: string,
 	config?: AirshipServerTransferConfig,
 ) => Result<undefined, undefined>;
 
 @Service({})
 export class ProtectedTransferService {
+	private serverBootstrap: ServerBootstrap;
+
 	constructor() {
-		if (!Game.IsServer()) return;
+		this.serverBootstrap = GameObject.Find("ServerBootstrap").GetComponent<ServerBootstrap>()!;
 
 		contextbridge.callback<ServerBridgeApiCreateServer>(TransferServiceBridgeTopics.CreateServer, (_, config) => {
 			const [success, result] = this.CreateServer(config).await();
@@ -119,7 +120,7 @@ export class ProtectedTransferService {
 		);
 
 		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to complete transfer request. Status Code:  ${res.statusCode}.\n`, res.data);
+			warn(`Unable to complete transfer request. Status Code:  ${res.statusCode}.\n`, res.error);
 			return {
 				success: false,
 				data: undefined,
@@ -148,7 +149,7 @@ export class ProtectedTransferService {
 		);
 
 		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to complete transfer request. Status Code:  ${res.statusCode}.\n`, res.data);
+			warn(`Unable to complete transfer request. Status Code:  ${res.statusCode}.\n`, res.error);
 			return {
 				success: false,
 				data: undefined,
@@ -161,5 +162,29 @@ export class ProtectedTransferService {
 		};
 	}
 
-	protected OnStart(): void {}
+	private FireOnShutdown(): void {
+		print("FireOnShutdown");
+		let done = false;
+
+		const Done = () => {
+			if (done) return;
+			done = true;
+
+			this.serverBootstrap.Shutdown();
+		};
+
+		task.delay(30, () => {
+			Done();
+		});
+		task.spawn(() => {
+			contextbridge.invoke("ServerShutdown", LuauContext.Game);
+			Done();
+		});
+	}
+
+	protected OnStart(): void {
+		this.serverBootstrap.onProcessExit(() => {
+			this.FireOnShutdown();
+		});
+	}
 }

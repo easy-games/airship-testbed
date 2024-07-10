@@ -38,7 +38,7 @@ class ChatMessageElement {
 	public Hide(): void {
 		if (!this.shown) return;
 		this.shown = false;
-		const t = this.canvasGroup.TweenCanvasGroupAlpha(0, 0.2);
+		const t = NativeTween.CanvasGroupAlpha(this.canvasGroup, 0, 0.2);
 		this.hideBin.Add(() => {
 			if (!t.IsDestroyed()) {
 				t.Cancel();
@@ -339,7 +339,7 @@ export class ClientChatSingleton {
 	}
 
 	private ShowChatInput(): void {
-		const t = this.inputTransform.TweenSizeDelta(new Vector2(this.inputTransform.sizeDelta.x, 40), 0.04);
+		const t = NativeTween.SizeDelta(this.inputTransform, new Vector2(this.inputTransform.sizeDelta.x, 40), 0.04);
 		// this.chatInputBin.Add(() => {
 		// 	t.Cancel();
 		// });
@@ -348,7 +348,7 @@ export class ClientChatSingleton {
 	}
 
 	private HideChatInput(): void {
-		const t = this.inputTransform.TweenSizeDelta(new Vector2(this.inputTransform.sizeDelta.x, 0), 0.04);
+		const t = NativeTween.SizeDelta(this.inputTransform, new Vector2(this.inputTransform.sizeDelta.x, 0), 0.04);
 		this.selected = false;
 		// this.chatInputBin.Add(() => {
 		// 	t.Cancel();
@@ -443,7 +443,7 @@ export class ClientChatSingleton {
 			const element = new ChatMessageElement(chatMessage, os.clock());
 			this.chatMessageElements.push(element);
 
-			if (Time.time > this.lastChatMessageRenderedTime && this.canvas.gameObject.active) {
+			if (Time.time > this.lastChatMessageRenderedTime && this.canvas.gameObject.activeInHierarchy) {
 				AudioManager.PlayGlobal(CoreSound.chatMessageReceived, {
 					volumeScale: 0.24,
 				});

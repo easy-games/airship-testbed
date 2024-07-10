@@ -109,8 +109,7 @@ export default class CharacterAnimator extends AirshipBehaviour {
 		for (let i = 0; i < allMeshes.Length; i++) {
 			const renderer = allMeshes.GetValue(i);
 			if (renderer && renderer.enabled) {
-				renderer
-					.TweenMaterialsFloatProperty("_OverrideStrength", 0, 1, this.flashTransitionDuration)
+				NativeTween.MaterialsFloatProperty(renderer, "_OverrideStrength", 0, 1, this.flashTransitionDuration)
 					.SetPingPong();
 			}
 		}

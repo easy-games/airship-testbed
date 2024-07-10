@@ -70,7 +70,7 @@ export class ProtectedUserController {
 				);
 
 				if (!res.success || res.statusCode > 299) {
-					warn(`Unable to get user. Status Code:  ${res.statusCode}.\n`, res.data);
+					warn(`Unable to get user. Status Code:  ${res.statusCode}.\n`, res.error);
 					return {
 						success: false,
 						data: undefined,
@@ -105,7 +105,7 @@ export class ProtectedUserController {
 			const res = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/friends/self`);
 
 			if (!res.success || res.statusCode > 299) {
-				warn(`Unable to get friends. Status Code ${res.statusCode}.\n`, res.data);
+				warn(`Unable to get friends. Status Code ${res.statusCode}.\n`, res.error);
 				return {
 					success: false,
 					data: undefined,
@@ -127,16 +127,16 @@ export class ProtectedUserController {
 
 	/**
 	 * Fetch to see if friends with other userId
-	 * 
+	 *
 	 * Faster: {@link ProtectedFriendsController.IsFriendsWith}
-	 * 
+	 *
 	 * @internal
 	 */
 	public async IsFriendsWith(userId: string): Promise<ReturnType<BrigdeApiIsFriendsWith>> {
 		const res = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/friends/uid/${userId}/status`);
 
 		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to get friends. Status Code ${res.statusCode}.\n`, res.data);
+			warn(`Unable to get friends. Status Code ${res.statusCode}.\n`, res.error);
 			return {
 				success: false,
 				data: undefined,
@@ -153,14 +153,14 @@ export class ProtectedUserController {
 
 	/**
 	 * Makes a request for user info.
-	 * 
+	 *
 	 * @internal
 	 */
 	public GetUserById(userId: string): Result<PublicUser | undefined, undefined> {
 		const res = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/users/uid/${userId}`);
 
 		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to get user. Status Code:  ${res.statusCode}.\n`, res.data);
+			warn(`Unable to get user. Status Code:  ${res.statusCode}.\n`, res.error);
 			return {
 				success: false,
 				data: undefined,
@@ -186,7 +186,7 @@ export class ProtectedUserController {
 		);
 
 		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to get user. Status Code:  ${res.statusCode}.\n`, res.data);
+			warn(`Unable to get user. Status Code:  ${res.statusCode}.\n`, res.error);
 			return {
 				success: false,
 				data: undefined,
@@ -217,7 +217,6 @@ export class ProtectedUserController {
 			this.localUser = undefined;
 		});
 	}
-
 
 	public FetchLocalUser(): void {
 		const res = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/users/self`);
