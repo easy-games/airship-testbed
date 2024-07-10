@@ -955,6 +955,7 @@ interface SteamLuauAPIConstructor {
 	SetRichPresence(key: string, tag: string): boolean;
 
 	OnRichPresenceGameJoinRequest(callback: (connectStr: string, steamId: number) => void): EngineEventConnection;
+	OnNewLaunchParams(callback: (gameId: string, serverId: string, customData: string) => void): EngineEventConnection;
 	ProcessPendingJoinRequests(): void;
 }
 declare const SteamLuauAPI: SteamLuauAPIConstructor;

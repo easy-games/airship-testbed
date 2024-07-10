@@ -24,6 +24,10 @@ export class SteamworksSingleton {
 			print("[SteamworksSingleton] Transfer to game: " + inspect(connectionStr));
 			Dependency<TransferController>().TransferToGameAsync(connectInfo.gameId, connectInfo.serverId);
 		});
+		SteamLuauAPI.OnNewLaunchParams((gameId, serverId, custom) => {
+			print("New launch params: gameId=" + gameId + " serverId=" + serverId + " custom=" + custom);
+			Dependency<TransferController>().TransferToGameAsync(gameId, serverId);
+		});
 		SteamLuauAPI.ProcessPendingJoinRequests();
 
 		task.spawn(() => {
