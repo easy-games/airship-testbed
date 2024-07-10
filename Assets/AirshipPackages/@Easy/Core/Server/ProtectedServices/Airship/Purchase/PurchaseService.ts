@@ -22,7 +22,7 @@ export class ProtectedPurchaseService {
 		);
 
 		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to claim receipt. Status Code: ${res.statusCode}.\n`, res.data);
+			warn(`Unable to claim receipt. Status Code: ${res.statusCode}.\n`, res.error);
 			return {
 				success: false,
 				data: undefined,

@@ -30,7 +30,7 @@ export class ProtectedCacheStoreService {
 				const query = expireTime !== undefined ? `?expiry=${expireTime}` : "";
 				const result = InternalHttpManager.GetAsync(`${AirshipUrl.DataStoreService}/cache/key/${key}${query}`);
 				if (!result.success) {
-					warn(`Unable to get cache key. Status Code: ${result.statusCode}.\n`, result.data);
+					warn(`Unable to get cache key. Status Code: ${result.statusCode}.\n`, result.error);
 					return {
 						success: false,
 						data: undefined,
@@ -59,7 +59,7 @@ export class ProtectedCacheStoreService {
 					EncodeJSON(data),
 				);
 				if (!result.success || result.statusCode > 299) {
-					warn(`Unable to set cache key. Status Code: ${result.statusCode}.\n`, result.data);
+					warn(`Unable to set cache key. Status Code: ${result.statusCode}.\n`, result.error);
 					return {
 						success: false,
 						data: undefined,
@@ -84,7 +84,7 @@ export class ProtectedCacheStoreService {
 					)}`,
 				);
 				if (!result.success || result.statusCode > 299) {
-					warn(`Unable to set cache key ttl. Status Code: ${result.statusCode}.\n`, result.data);
+					warn(`Unable to set cache key ttl. Status Code: ${result.statusCode}.\n`, result.error);
 					return {
 						success: false,
 						data: undefined,

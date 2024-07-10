@@ -35,7 +35,7 @@ export class ProtectedPlatformInventoryController {
 				);
 
 				if (!res.success || res.statusCode > 299) {
-					warn(`Unable to complete request. Status Code:  ${res.statusCode}.\n`, res.data);
+					warn(`Unable to complete request. Status Code:  ${res.statusCode}.\n`, res.error);
 					return {
 						success: false,
 						data: undefined,

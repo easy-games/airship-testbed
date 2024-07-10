@@ -202,7 +202,7 @@ export class MainMenuPartyController {
 		);
 
 		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to invite user to party. Status Code: ${res.statusCode}\n`, res.data);
+			warn(`Unable to invite user to party. Status Code: ${res.statusCode}\n`, res.error);
 			return {
 				success: false,
 				data: undefined,
@@ -224,7 +224,7 @@ export class MainMenuPartyController {
 		);
 
 		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to remove user from party. Status Code: ${res.statusCode}\n`, res.data);
+			warn(`Unable to remove user from party. Status Code: ${res.statusCode}\n`, res.error);
 			return {
 				success: false,
 				data: undefined,
@@ -245,7 +245,7 @@ export class MainMenuPartyController {
 		);
 
 		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to join party. Status Code: ${res.statusCode}\n`, res.data);
+			warn(`Unable to join party. Status Code: ${res.statusCode}\n`, res.error);
 			return {
 				success: false,
 				data: undefined,
