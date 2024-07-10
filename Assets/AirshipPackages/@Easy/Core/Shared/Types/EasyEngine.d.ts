@@ -1008,3 +1008,7 @@ interface AnimatorOverrideController extends RuntimeAnimatorController {
 interface ServerBootstrap {
 	onProcessExit(callback: () => void): void;
 }
+
+interface TerrainData {
+	RemoveTree(treeIndex: number): void;
+}
