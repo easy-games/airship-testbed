@@ -106,8 +106,8 @@ export default class Character extends AirshipBehaviour {
 		);
 
 		// Custom move command data handling:
-		const customDataConn = this.movement.OnBeginMove((isReplay, moveData) => {
-			this.BeginMove(isReplay, moveData);
+		const customDataConn = this.movement.OnBeginMove((moveData, isReplay) => {
+			this.BeginMove(moveData, isReplay);
 		});
 		this.bin.Add(() => {
 			Bridge.DisconnectEvent(customDataConn);
@@ -180,7 +180,7 @@ export default class Character extends AirshipBehaviour {
 		this.movement?.SetCustomData(new BinaryBlob(customDataQueue));
 	}
 
-	private BeginMove(isReplay: boolean, moveData: MoveInputData) {
+	private BeginMove(moveData: MoveInputData, isReplay: boolean) {
 		//print("BEGIN MOVE: " + moveData.GetTick());
 		//TODO: Do we actually want to ignore AI characters???
 		const player = this.player;
@@ -190,16 +190,16 @@ export default class Character extends AirshipBehaviour {
 		const allData = moveData.customData
 			? (moveData.customData.Decode() as { key: string; value: unknown }[])
 			: undefined;
-		const allMoveData: Map<string, unknown> = new Map();
+		const allCustomData: Map<string, unknown> = new Map();
 		if (allData) {
 			for (const data of allData) {
 				print("Found custom data " + data.key + " with value: " + data.value);
-				allMoveData.set(data.key, data.value);
+				allCustomData.set(data.key, data.value);
 			}
 		}
 
 		//Local signal for parsing the key value pairs
-		this.OnBeginMove.Fire(allMoveData, moveData, isReplay);
+		this.OnBeginMove.Fire(allCustomData, moveData, isReplay);
 	}
 
 	public IsInitialized() {

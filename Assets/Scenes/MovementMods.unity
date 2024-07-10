@@ -4182,7 +4182,7 @@ GameObject:
   - component: {fileID: 1747192551}
   - component: {fileID: 1747192553}
   - component: {fileID: 1747192552}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: Terrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5104,6 +5104,10 @@ PrefabInstance:
     - target: {fileID: 2584278489585870005, guid: b672af3cbd119f240af9433e14762742, type: 3}
       propertyPath: m_Name
       value: JumpPad
+      objectReference: {fileID: 0}
+    - target: {fileID: 2987259677804363232, guid: b672af3cbd119f240af9433e14762742, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

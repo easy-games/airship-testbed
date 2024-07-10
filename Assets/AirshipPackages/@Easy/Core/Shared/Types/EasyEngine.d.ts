@@ -83,9 +83,9 @@ interface MoveModifier {
 
 interface CharacterMovement extends Component {
 	OnStateChanged(callback: (state: CharacterState) => void): EngineEventConnection;
-	OnSetCustomData(callback: ()=> void): EngineEventConnection;
-	OnBeginMove(callback: (isReplay: boolean, inputData: MoveInputData) => void): EngineEventConnection;
-	OnEndMove(callback: (isReplay: boolean, inputData: MoveInputData) => void): EngineEventConnection;
+	OnSetCustomData(callback: () => void): EngineEventConnection;
+	OnBeginMove(callback: (inputData: MoveInputData, isReplay: boolean) => void): EngineEventConnection;
+	OnEndMove(callback: (inputData: MoveInputData, isReplay: boolean) => void): EngineEventConnection;
 	OnDispatchCustomData(callback: (tick: number, customData: BinaryBlob) => void): EngineEventConnection;
 	OnImpactWithGround(callback: (velocity: Vector3) => void): EngineEventConnection;
 	OnAdjustMove(callback: (modifier: MoveModifier) => void): EngineEventConnection;
@@ -113,7 +113,7 @@ interface CharacterMovement extends Component {
 	TeleportAndLook(position: Vector3, lookVector: Vector3): void;
 	AddImpulse(impulse: Vector3): void;
 	SetImpulse(impulse: Vector3): void;
-	IgnoreGroundCollider(collider: Collider, ignore:boolean): void;
+	IgnoreGroundCollider(collider: Collider, ignore: boolean): void;
 	IsIgnoringCollider(collider: Collider): boolean;
 	SetVelocity(velocity: Vector3): void;
 	GetVelocity(): Vector3;
