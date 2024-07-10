@@ -17300,10 +17300,10 @@ interface TimeManager extends MonoBehaviour {
     SetPhysicsMode(mode: PhysicsMode): void;
     SetPhysicsTimeScale(value: number): void;
     SetTickRate(value: number): void;
-    TicksToTime(tickType: TickType): number;
     TicksToTime(pt: PreciseTick): number;
     TicksToTime(ticks: number): number;
     TickToLocalTick(tick: number): number;
+    TickTypeToTime(tickType: TickType): number;
     TimePassed(currentTick: number, previousTick: number): number;
     TimePassed(preciseTick: PreciseTick, allowNegative: boolean): number;
     TimePassed(previousTick: number, allowNegative: boolean): number;
@@ -47733,8 +47733,11 @@ interface MaterialColorURP extends MonoBehaviour {
     addedByEditorScript: boolean;
 
 
+    Clear(): void;
     DoUpdate(): void;
     EditorFirstTimeSetup(): void;
+    GetColorSettingByMaterial(mat: Material): ColorSetting;
+    InitializeColorsFromCurrentMaterials(): void;
 
 }
     
