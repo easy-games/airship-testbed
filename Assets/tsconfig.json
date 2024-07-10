@@ -10,6 +10,7 @@
 		"module": "commonjs",
 		"moduleResolution": "Node",
 		"noLib": true,
+		"declaration": true,
 		"resolveJsonModule": true,
 		"experimentalDecorators": true,
 		"forceConsistentCasingInFileNames": true,
@@ -22,10 +23,11 @@
 	"airship": {
 		"type": "game",
 		"package": "Typescript~",
-		"runtimePath": "AirshipPackages/@Easy/Core/Shared/Runtime"
+		"runtimePath": "AirshipPackages/@Easy/Core/Shared/Runtime",
+		"precompiled": ["@Easy/Core"],
 	},
 	"include": ["**/*.ts", "**/*.tsx"],
-	"exclude": ["Typescript~/node_modules"],
+	"exclude": ["Typescript~"],
 	"typedocOptions": {
         "entryPoints": ["AirshipPackages/@Easy/Core"],
 		"entryPointStrategy": "Expand",
