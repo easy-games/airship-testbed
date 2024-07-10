@@ -42,7 +42,7 @@ export class ProtectedLeaderboardService {
 				);
 
 				if (!result.success || result.statusCode > 299) {
-					warn(`Unable to update leaderboard. Status Code: ${result.statusCode}.\n`, result.data);
+					warn(`Unable to update leaderboard. Status Code: ${result.statusCode}.\n`, result.error);
 					return {
 						success: false,
 						data: undefined,
@@ -63,7 +63,7 @@ export class ProtectedLeaderboardService {
 					`${AirshipUrl.DataStoreService}/leaderboards/leaderboard-id/${leaderboardName}/id/${id}/ranking`,
 				);
 				if (!result.success || result.statusCode > 299) {
-					warn(`Unable to get leaderboard rank. Status Code: ${result.statusCode}.\n`, result.data);
+					warn(`Unable to get leaderboard rank. Status Code: ${result.statusCode}.\n`, result.error);
 					return {
 						success: false,
 						data: undefined,
@@ -93,7 +93,7 @@ export class ProtectedLeaderboardService {
 					`${AirshipUrl.DataStoreService}/loaderboards/leaderboard-id/${leaderboardName}/rankings?skip=${startIndex}&limit=${count}`,
 				);
 				if (!result.success || result.statusCode > 299) {
-					warn(`Unable to get leaderboard rankings. Status Code: ${result.statusCode}.\n`, result.data);
+					warn(`Unable to get leaderboard rankings. Status Code: ${result.statusCode}.\n`, result.error);
 					return {
 						success: false,
 						data: undefined,

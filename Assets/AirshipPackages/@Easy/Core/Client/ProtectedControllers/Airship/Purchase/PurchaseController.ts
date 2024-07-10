@@ -12,11 +12,7 @@ export const enum PurchaseControllerBridgeTopics {
 	RequestPurchase = "PurchaseController:RequestPurchase",
 }
 
-export type ClientBridgeApiRequestPurchase = (
-	productId: string,
-	quantity: number,
-	userId: string,
-) => boolean;
+export type ClientBridgeApiRequestPurchase = (productId: string, quantity: number, userId: string) => boolean;
 
 @Controller({})
 export class ProtectedPurchaseController {
@@ -26,7 +22,6 @@ export class ProtectedPurchaseController {
 		contextbridge.callback<ClientBridgeApiRequestPurchase>(
 			PurchaseControllerBridgeTopics.RequestPurchase,
 			(_, productId, quantity, userId) => {
-		
 				let targetUser: PublicUser | undefined = Protected.user.WaitForLocalUser(); // This shouldn't be undefined but it is
 				if (userId !== targetUser?.uid) {
 					const res = Dependency<ProtectedUserController>().GetUserById(userId);
@@ -48,7 +43,7 @@ export class ProtectedPurchaseController {
 				);
 
 				if (!res.success || res.statusCode > 299 || !res.data) {
-					warn(`Unable to validate purchase. Status Code: ${res.statusCode}.\n`, res.data);
+					warn(`Unable to validate purchase. Status Code: ${res.statusCode}.\n`, res.error);
 					return false;
 				}
 
@@ -81,7 +76,7 @@ export class ProtectedPurchaseController {
 		const res = InternalHttpManager.PostAsync(`${AirshipUrl.ContentService}/shop/purchase`, EncodeJSON(config));
 
 		if (!res.success || res.statusCode > 299) {
-			warn(`Purchase failed. Status Code: ${res.statusCode}.\n`, res.data);
+			warn(`Purchase failed. Status Code: ${res.statusCode}.\n`, res.error);
 			return {
 				success: false,
 				data: undefined,

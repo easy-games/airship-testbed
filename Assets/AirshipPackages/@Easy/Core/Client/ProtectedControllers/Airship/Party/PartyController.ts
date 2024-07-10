@@ -20,7 +20,7 @@ export class ProtectedPartyController {
 			const res = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/parties/party/self`);
 
 			if (!res.success || res.statusCode > 299) {
-				warn(`Unable to get user pary. Status Code: ${res.statusCode}.\n`, res.data);
+				warn(`Unable to get user pary. Status Code: ${res.statusCode}.\n`, res.error);
 				return {
 					success: false,
 					data: undefined,

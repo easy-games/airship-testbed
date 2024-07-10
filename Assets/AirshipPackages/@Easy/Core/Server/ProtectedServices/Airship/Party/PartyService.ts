@@ -24,7 +24,7 @@ export class ProtectedPartyService {
 				const res = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/parties/uid/${userId}`);
 
 				if (!res.success || res.statusCode > 299) {
-					warn(`Unable to get party for user. Status Code:  ${res.statusCode}.\n`, res.data);
+					warn(`Unable to get party for user. Status Code:  ${res.statusCode}.\n`, res.error);
 					return {
 						success: false,
 						data: undefined,
@@ -46,7 +46,7 @@ export class ProtectedPartyService {
 			const res = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/parties/party-id/${partyId}`);
 
 			if (!res.success || res.statusCode > 299) {
-				warn(`Unable to get party for user. Status Code:  ${res.statusCode}.\n`, res.data);
+				warn(`Unable to get party for user. Status Code:  ${res.statusCode}.\n`, res.error);
 				return {
 					success: false,
 					data: undefined,
