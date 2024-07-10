@@ -11,7 +11,6 @@ import { Game } from "../Game";
 import { Viewmodel } from "../Viewmodel/Viewmodel";
 import Character from "./Character";
 import { CharacterDto } from "./CharacterDto";
-import { CustomMoveData } from "./CustomMoveData";
 import { AirshipCharacterFootstepsSingleton } from "./Footstep/AirshipCharacterFootstepsSingleton";
 import { LocalCharacterSingleton } from "./LocalCharacter/LocalCharacterSingleton";
 
@@ -31,15 +30,6 @@ export class AirshipCharactersSingleton {
 	public onCharacterDespawned = new Signal<Character>();
 
 	private pendingCharacterDtos = new Map<number, CharacterDto>();
-
-	/**
-	 * **SERVER ONLY**
-	 *
-	 * [Advanced]
-	 *
-	 * Custom data that the client sends in their move packet.
-	 */
-	public onServerCustomMoveCommand = new Signal<CustomMoveData>();
 
 	/**
 	 * If true, when a player disconnects their character will automatically be despawned.
@@ -381,22 +371,6 @@ export class AirshipCharactersSingleton {
 	 */
 	public RegisterCharacter(character: Character): void {
 		this.characters.add(character);
-
-		if (Game.IsServer() && character.player) {
-			// Custom move command data handling:
-			const customDataConn = character.movement.OnDispatchCustomData((tick, customData) => {
-				const allData = customData.Decode() as { key: string; value: unknown }[];
-				for (const data of allData) {
-					const player = character.player;
-					if (!player) continue;
-					const moveEvent = new CustomMoveData(player, tick, data.key, data.value);
-					this.onServerCustomMoveCommand.Fire(moveEvent);
-				}
-			});
-			character.bin.Add(() => {
-				Bridge.DisconnectEvent(customDataConn);
-			});
-		}
 
 		if (Game.IsServer()) {
 			CoreNetwork.ServerToClient.Character.Spawn.server.FireAllClients({

@@ -83,10 +83,11 @@ interface MoveModifier {
 
 interface CharacterMovement extends Component {
 	OnStateChanged(callback: (state: CharacterState) => void): EngineEventConnection;
-	OnCustomDataFlushed(callback: () => void): EngineEventConnection;
+	OnSetCustomData(callback: () => void): EngineEventConnection;
+	OnBeginMove(callback: (inputData: MoveInputData, isReplay: boolean) => void): EngineEventConnection;
+	OnEndMove(callback: (inputData: MoveInputData, isReplay: boolean) => void): EngineEventConnection;
 	OnDispatchCustomData(callback: (tick: number, customData: BinaryBlob) => void): EngineEventConnection;
 	OnImpactWithGround(callback: (velocity: Vector3) => void): EngineEventConnection;
-	OnPreMove(callback: (isReplay: boolean) => void): EngineEventConnection;
 	OnAdjustMove(callback: (modifier: MoveModifier) => void): EngineEventConnection;
 	OnMoveDirectionChanged(callback: (direction: Vector3) => void): EngineEventConnection;
 
@@ -120,6 +121,8 @@ interface CharacterMovement extends Component {
 	EnableMovement();
 	GetState(): CharacterState;
 	UpdateSyncTick(): void;
+	GetNextTick(): number;
+	GetPrevTick(): number;
 
 	rootTransform: Transform; //The true position transform
 	networkTransform: Transform; //The interpolated network transform
@@ -955,6 +958,7 @@ interface SteamLuauAPIConstructor {
 	SetRichPresence(key: string, tag: string): boolean;
 
 	OnRichPresenceGameJoinRequest(callback: (connectStr: string, steamId: number) => void): EngineEventConnection;
+	OnNewLaunchParams(callback: (gameId: string, serverId: string, customData: string) => void): EngineEventConnection;
 	ProcessPendingJoinRequests(): void;
 }
 declare const SteamLuauAPI: SteamLuauAPIConstructor;

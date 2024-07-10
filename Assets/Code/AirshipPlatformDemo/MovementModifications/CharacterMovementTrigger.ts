@@ -12,7 +12,6 @@ export default class CharacterMovementDataTrigger extends AirshipBehaviour{
         
         let characterMovement = collider.attachedRigidbody?.gameObject.GetComponent<CharacterMovement>();
         
-        print("movement: " + characterMovement);
         if(characterMovement){
             characterMovement.moveData = this.moveData;
         }

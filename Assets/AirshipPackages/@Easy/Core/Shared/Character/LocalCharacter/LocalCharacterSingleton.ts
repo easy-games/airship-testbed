@@ -6,16 +6,13 @@ import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { AirshipCharacterCameraSingleton } from "../../Camera/AirshipCharacterCameraSingleton";
 import { CharacterInput } from "./CharacterInput";
 import { LocalCharacterInputSignal } from "./LocalCharacterInputSignal";
-
 @Singleton({
 	loadOrder: 10000,
 })
 export class LocalCharacterSingleton {
 	public readonly stateChanged = new Signal<[newState: CharacterState]>();
 
-	private customDataQueue: { key: unknown; value: unknown }[] = [];
-
-	private entityDriver: CharacterMovement | undefined;
+	private characterMovement: CharacterMovement | undefined;
 	private screenshot: CameraScreenshotRecorder | undefined;
 	public input: CharacterInput | undefined;
 	private prevState: CharacterState = CharacterState.Idle;
@@ -26,31 +23,10 @@ export class LocalCharacterSingleton {
 
 	private moveDirWorldSpace = false;
 
-	public readonly onCustomMoveDataProcessed = new Signal<void>();
-
 	/**
 	 * This can be used to change input before it's processed by the entity system.
 	 */
 	public readonly onBeforeLocalEntityInput = new Signal<LocalCharacterInputSignal>();
-
-	/** Add custom data to the move data command stream. */
-	public AddToMoveData(
-		key: string,
-		value: unknown,
-		/**
-		 * Fired when the move data has been processed during the tick loop.
-		 * This will be fired **before** movement is calculated.
-		 **/
-		onProcessedCallback?: () => void,
-	) {
-		this.customDataQueue.push({ key, value });
-		const blob = new BinaryBlob(this.customDataQueue);
-		this.entityDriver?.SetCustomData(blob);
-
-		if (onProcessedCallback !== undefined) {
-			this.onCustomMoveDataProcessed.Once(onProcessedCallback);
-		}
-	}
 
 	private TakeScreenshot() {
 		// if (!this.screenshot) {
@@ -85,25 +61,17 @@ export class LocalCharacterSingleton {
 			const bin = new Bin();
 			const keyboard = bin.Add(new Keyboard());
 
-			this.entityDriver = character.gameObject.GetComponent<CharacterMovement>()!;
+			this.characterMovement = character.gameObject.GetComponent<CharacterMovement>()!;
 			this.input = new CharacterInput(character);
 
 			this.screenshot = character.gameObject.AddComponent<CameraScreenshotRecorder>();
-
-			const customDataFlushedConn = this.entityDriver.OnCustomDataFlushed(() => {
-				this.customDataQueue.clear();
-				this.onCustomMoveDataProcessed.Fire();
-			});
-			bin.Add(() => {
-				Bridge.DisconnectEvent(customDataFlushedConn);
-			});
 
 			// Set up camera
 			const cameraController = Dependency<AirshipCharacterCameraSingleton>();
 			cameraController.SetupCamera(character);
 			cameraController.SetupCameraControls(keyboard);
 
-			const stateChangedConn = this.entityDriver.OnStateChanged((state) => {
+			const stateChangedConn = this.characterMovement.OnStateChanged((state) => {
 				if (state !== this.currentState) {
 					this.prevState = this.currentState;
 					this.currentState = state;
@@ -140,8 +108,8 @@ export class LocalCharacterSingleton {
 				const dt = now - lastSpace;
 				if (dt < 0.3) {
 					lastSpace = 0;
-					if (this.entityDriver?.IsAllowFlight()) {
-						this.entityDriver?.SetFlying(!this.entityDriver.IsFlying());
+					if (this.characterMovement?.IsAllowFlight()) {
+						this.characterMovement?.SetFlying(!this.characterMovement.IsFlying());
 					}
 				} else {
 					lastSpace = now;
@@ -240,6 +208,6 @@ export class LocalCharacterSingleton {
 	 * @internal
 	 */
 	public GetEntityDriver() {
-		return this.entityDriver;
+		return this.characterMovement;
 	}
 }

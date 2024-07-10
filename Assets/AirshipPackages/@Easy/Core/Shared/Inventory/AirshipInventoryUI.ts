@@ -398,7 +398,11 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 						if (!itemStack) return;
 
 						const visual = tileComponent.button.transform.GetChild(0).gameObject;
-						const clone = Object.Instantiate(visual, this.backpackCanvas.transform) as GameObject;
+						const clone = Object.Instantiate(visual, this.backpackCanvas.transform);
+
+						const slotNumber = clone.transform.Find("SlotNumber");
+						slotNumber?.gameObject.SetActive(false);
+
 						clone.transform.SetAsLastSibling();
 
 						const cloneRect = clone.GetComponent<RectTransform>()!;
@@ -430,7 +434,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 					});
 
 					// Called before end
-					CanvasAPI.OnDropEvent(tile.transform.GetChild(0).gameObject, () => {
+					CanvasAPI.OnDropEvent(tileComponent.button.gameObject, () => {
 						if (!this.IsBackpackShown()) return;
 						if (!this.draggingState) return;
 						if (!Airship.Inventory.localInventory) return;

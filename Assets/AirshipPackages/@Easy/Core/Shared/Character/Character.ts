@@ -57,6 +57,14 @@ export default class Character extends AirshipBehaviour {
 	private initialized = false;
 	private despawned = false;
 
+	/*
+	 * [Advanced]
+	 *
+	 * Custom data that the client sends in their move packet.
+	 * Map<id, dataBlob>, inputData, isReplay
+	 */
+	public OnBeginMove = new Signal<[Map<string, unknown>, MoveInputData, boolean]>();
+
 	public Awake(): void {
 		this.inventory = this.gameObject.GetAirshipComponent<Inventory>()!;
 		this.rig = this.rigRoot.GetComponent<CharacterRig>()!;
@@ -96,6 +104,14 @@ export default class Character extends AirshipBehaviour {
 				}
 			}),
 		);
+
+		// Custom move command data handling:
+		const customDataConn = this.movement.OnBeginMove((moveData, isReplay) => {
+			this.BeginMove(moveData, isReplay);
+		});
+		this.bin.Add(() => {
+			Bridge.DisconnectEvent(customDataConn);
+		});
 
 		{
 			// state change
@@ -139,6 +155,51 @@ export default class Character extends AirshipBehaviour {
 				removeOldClothingAccessories: true,
 			});
 		}
+
+		//Apply the queued custom data to movement
+		const customDataFlushedConn = this.movement.OnSetCustomData(() => {
+			this.ProccessCustomMoveData();
+		});
+		this.bin.Add(() => {
+			Bridge.DisconnectEvent(customDataFlushedConn);
+		});
+	}
+
+	private queuedMoveData = new Map<string, unknown>();
+	/** Add custom data to the move data command stream. */
+	public AddCustomMoveData(key: string, value: unknown) {
+		this.queuedMoveData.set(key, value);
+	}
+
+	private ProccessCustomMoveData() {
+		let customDataQueue: { key: string; value: unknown }[] = [];
+		this.queuedMoveData.forEach((value, key) => {
+			customDataQueue.push({ key: key, value: value });
+		});
+		this.queuedMoveData.clear();
+		this.movement?.SetCustomData(new BinaryBlob(customDataQueue));
+	}
+
+	private BeginMove(moveData: MoveInputData, isReplay: boolean) {
+		//print("BEGIN MOVE: " + moveData.GetTick());
+		//TODO: Do we actually want to ignore AI characters???
+		const player = this.player;
+		if (!player) return;
+
+		//Decode binary block into usable key value array
+		const allData = moveData.customData
+			? (moveData.customData.Decode() as { key: string; value: unknown }[])
+			: undefined;
+		const allCustomData: Map<string, unknown> = new Map();
+		if (allData) {
+			for (const data of allData) {
+				//print("Found custom data " + data.key + " with value: " + data.value);
+				allCustomData.set(data.key, data.value);
+			}
+		}
+
+		//Local signal for parsing the key value pairs
+		this.OnBeginMove.Fire(allCustomData, moveData, isReplay);
 	}
 
 	public IsInitialized() {
