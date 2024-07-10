@@ -16,17 +16,17 @@ export const enum TransferServiceBridgeTopics {
 	TransferGroupToServer = "TransferService:TransferGroupToServer",
 }
 
-export type ServerBridgeApiCreateServer = (config?: AirshipServerConfig) => Result<CreateServerResponse, undefined>;
+export type ServerBridgeApiCreateServer = (config?: AirshipServerConfig) => Result<CreateServerResponse, string>;
 export type ServerBridgeApiTransferGroupToGame = (
 	userIds: string[],
 	gameId: string,
 	config?: AirshipGameTransferConfig,
-) => Result<undefined, undefined>;
+) => Result<undefined, string>;
 export type ServerBridgeApiTransferGroupToServer = (
 	userIds: string[],
 	serverId: string,
 	config?: AirshipServerTransferConfig,
-) => Result<undefined, undefined>;
+) => Result<undefined, string>;
 
 @Service({})
 export class ProtectedTransferService {
@@ -38,7 +38,7 @@ export class ProtectedTransferService {
 		contextbridge.callback<ServerBridgeApiCreateServer>(TransferServiceBridgeTopics.CreateServer, (_, config) => {
 			const [success, result] = this.CreateServer(config).await();
 			if (!success) {
-				return { success: false, data: undefined };
+				return { success: false, error: "Unable to complete request." };
 			}
 			return result;
 		});
@@ -50,7 +50,7 @@ export class ProtectedTransferService {
 				if (!success) {
 					return {
 						success: false,
-						data: undefined,
+						error: "Unable to complete request.",
 					};
 				}
 				return result;
@@ -64,7 +64,7 @@ export class ProtectedTransferService {
 				if (!success) {
 					return {
 						success: false,
-						data: undefined,
+						error: "Unable to complete request.",
 					};
 				}
 				return result;
@@ -72,7 +72,7 @@ export class ProtectedTransferService {
 		);
 	}
 
-	public async CreateServer(config?: AirshipServerConfig): Promise<Result<CreateServerResponse, undefined>> {
+	public async CreateServer(config?: AirshipServerConfig): Promise<ReturnType<ServerBridgeApiCreateServer>> {
 		const res = InternalHttpManager.PostAsync(
 			`${AirshipUrl.GameCoordinator}/servers/create`,
 			EncodeJSON({
@@ -88,7 +88,7 @@ export class ProtectedTransferService {
 			warn(`Unable to create server. Status Code:  ${res.statusCode}.\n`, res.data);
 			return {
 				success: false,
-				data: undefined,
+				error: res.error,
 			};
 		}
 
@@ -104,7 +104,7 @@ export class ProtectedTransferService {
 		players: readonly (string | Player)[],
 		gameId: string,
 		config?: AirshipGameTransferConfig,
-	): Promise<Result<undefined, undefined>> {
+	): Promise<ReturnType<ServerBridgeApiTransferGroupToGame>> {
 		const res = InternalHttpManager.PostAsync(
 			`${AirshipUrl.GameCoordinator}/transfers/transfer`,
 			EncodeJSON({
@@ -123,7 +123,7 @@ export class ProtectedTransferService {
 			warn(`Unable to complete transfer request. Status Code:  ${res.statusCode}.\n`, res.error);
 			return {
 				success: false,
-				data: undefined,
+				error: res.error,
 			};
 		}
 
@@ -137,7 +137,7 @@ export class ProtectedTransferService {
 		players: readonly (string | Player)[],
 		serverId: string,
 		config?: AirshipServerTransferConfig,
-	): Promise<Result<undefined, undefined>> {
+	): Promise<ReturnType<ServerBridgeApiTransferGroupToServer>> {
 		const res = InternalHttpManager.PostAsync(
 			`${AirshipUrl.GameCoordinator}/transfers/transfer`,
 			EncodeJSON({
@@ -152,7 +152,7 @@ export class ProtectedTransferService {
 			warn(`Unable to complete transfer request. Status Code:  ${res.statusCode}.\n`, res.error);
 			return {
 				success: false,
-				data: undefined,
+				error: res.error,
 			};
 		}
 

@@ -8,7 +8,6 @@ import { Platform } from "@Easy/Core/Shared/Airship";
 import { AirshipUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { Result } from "@Easy/Core/Shared/Types/Result";
 
 /**
  * The Data Store provides simple key/value persistent storage.
@@ -34,7 +33,7 @@ export class AirshipDataStoreService {
 	 * @param key The key to use. Keys must be alphanumeric and may include the following symbols: ``_.:``
 	 * @returns The data associated with the provided key. If no data is found, nothing is returned.
 	 */
-	public async GetKey<T extends object>(key: string): Promise<Result<T | undefined, undefined>> {
+	public async GetKey<T extends object>(key: string): Promise<ReturnType<ServerBridgeApiDataGetKey<T>>> {
 		this.checkKey(key);
 
 		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiDataGetKey<T>>(
@@ -50,7 +49,7 @@ export class AirshipDataStoreService {
 	 * @param data The data to associate with the provided key.
 	 * @returns The data that was associated with the provided key.
 	 */
-	public async SetKey<T extends object>(key: string, data: T): Promise<Result<T, undefined>> {
+	public async SetKey<T extends object>(key: string, data: T): Promise<ReturnType<ServerBridgeApiDataSetKey<T>>> {
 		this.checkKey(key);
 
 		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiDataSetKey<T>>(
@@ -66,7 +65,7 @@ export class AirshipDataStoreService {
 	 * @param key The key to use. Keys must be alphanumeric and may include the following symbols: _.:
 	 * @returns The data that was deleted. If no data was deleted, nothing will be returned.
 	 */
-	public async DeleteKey<T extends object>(key: string): Promise<Result<T | undefined, undefined>> {
+	public async DeleteKey<T extends object>(key: string): Promise<ReturnType<ServerBridgeApiDataDeleteKey<T>>> {
 		this.checkKey(key);
 
 		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiDataDeleteKey<T>>(

@@ -1,16 +1,17 @@
-interface ResultBase<T extends boolean, R> {
+interface ResultBase<T extends boolean> {
 	success: T;
-	data: R;
+	error?: undefined;
+	data?: undefined;
 }
 
-export interface SuccessResult<T> extends ResultBase<true, T> {
+export interface SuccessResult<T> extends ResultBase<true> {
 	success: true;
 	data: T;
 }
 
-export interface FailureResult<E> extends ResultBase<false, E> {
+export interface FailureResult<E> extends ResultBase<false> {
 	success: false;
-	data: E;
+	error: E;
 }
 
 export type Result<S, E> = SuccessResult<S> | FailureResult<E>;

@@ -47,7 +47,7 @@ export class TransferController {
 			warn(`Unable to complete transfer request. Status Code:  ${res.statusCode}.\n`, res.error);
 			return {
 				success: false,
-				data: undefined,
+				error: undefined,
 			};
 		}
 
@@ -68,7 +68,7 @@ export class TransferController {
 			warn(`Unable to complete transfer request. Status Code:  ${res.statusCode}.\n`, res.error);
 			return {
 				success: false,
-				data: undefined,
+				error: undefined,
 			};
 		}
 

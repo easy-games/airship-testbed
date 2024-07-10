@@ -20,14 +20,14 @@ export const enum UserControllerBridgeTopics {
 	IsFriendsWith = "UserController:IsFriendsWith",
 }
 
-export type BridgeApiGetUserByUsername = (username: string) => Result<PublicUser | undefined, undefined>;
-export type BridgeApiGetUserById = (userId: string) => Result<PublicUser | undefined, undefined>;
+export type BridgeApiGetUserByUsername = (username: string) => Result<PublicUser | undefined, string>;
+export type BridgeApiGetUserById = (userId: string) => Result<PublicUser | undefined, string>;
 export type BridgeApiGetUsersById = (
 	userIds: string[],
 	strict?: boolean,
-) => Result<{ map: Record<string, PublicUser>; array: PublicUser[] }, undefined>;
-export type BridgeApiGetFriends = () => Result<PublicUser[], undefined>;
-export type BrigdeApiIsFriendsWith = (userId: string) => Result<boolean, undefined>;
+) => Result<{ map: Record<string, PublicUser>; array: PublicUser[] }, string>;
+export type BridgeApiGetFriends = () => Result<PublicUser[], string>;
+export type BrigdeApiIsFriendsWith = (userId: string) => Result<boolean, string>;
 
 @Controller({})
 export class ProtectedUserController {
@@ -42,85 +42,42 @@ export class ProtectedUserController {
 		contextbridge.callback<BridgeApiGetUserByUsername>(
 			UserControllerBridgeTopics.GetUserByUsername,
 			(_, username) => {
-				return this.GetUserByUsername(username);
+				const [success, result] = this.GetUserByUsername(username).await();
+				if (!success) {
+					return { success: false, error: "Unable to complete request." };
+				}
+				return result;
 			},
 		);
 
 		contextbridge.callback<BridgeApiGetUserById>(UserControllerBridgeTopics.GetUserById, (_, userId) => {
-			return this.GetUserById(userId);
+			const [success, result] = this.GetUserById(userId).await();
+			if (!success) {
+				return { success: false, error: "Unable to complete request." };
+			}
+			return result;
 		});
 
 		contextbridge.callback<BridgeApiGetUsersById>(
 			UserControllerBridgeTopics.GetUsersById,
 			(_, userIds, strict = true) => {
-				if (userIds.size() === 0) {
-					return {
-						success: true,
-						data: {
-							map: {},
-							array: [],
-						},
-					};
+				const [success, result] = this.GetUsersById(userIds, strict).await();
+				if (!success) {
+					return { success: false, error: "Unable to complete request." };
 				}
-
-				const res = InternalHttpManager.GetAsync(
-					`${AirshipUrl.GameCoordinator}/users?users[]=${userIds.join("&users[]=")}&strict=${
-						strict ? "true" : "false"
-					}`,
-				);
-
-				if (!res.success || res.statusCode > 299) {
-					warn(`Unable to get user. Status Code:  ${res.statusCode}.\n`, res.error);
-					return {
-						success: false,
-						data: undefined,
-					};
-				}
-
-				if (!res.data) {
-					return {
-						success: true,
-						data: {
-							map: {},
-							array: [],
-						},
-					};
-				}
-
-				const array = DecodeJSON(res.data) as PublicUser[];
-				const map: Record<string, PublicUser> = {};
-				array.forEach((u) => (map[u.uid] = u));
-
-				return {
-					success: true,
-					data: {
-						map,
-						array,
-					},
-				};
+				return result;
 			},
 		);
 
 		contextbridge.callback<BridgeApiGetFriends>(UserControllerBridgeTopics.GetFriends, (_) => {
-			const res = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/friends/self`);
-
-			if (!res.success || res.statusCode > 299) {
-				warn(`Unable to get friends. Status Code ${res.statusCode}.\n`, res.error);
-				return {
-					success: false,
-					data: undefined,
-				};
-			}
-
-			return {
-				success: true,
-				data: DecodeJSON(res.data) as PublicUser[],
-			};
+			const [success, result] = this.GetFriends().await();
+			if (!success) return { success: false, error: "Unable to complete request." };
+			return result;
 		});
 
 		contextbridge.callback<BrigdeApiIsFriendsWith>(UserControllerBridgeTopics.IsFriendsWith, (_, userId) => {
 			const [success, result] = this.IsFriendsWith(userId).await();
-			if (!success) return { success: false, data: undefined };
+			if (!success) return { success: false, error: "Unable to complete request." };
 			return result;
 		});
 	}
@@ -139,7 +96,7 @@ export class ProtectedUserController {
 			warn(`Unable to get friends. Status Code ${res.statusCode}.\n`, res.error);
 			return {
 				success: false,
-				data: undefined,
+				error: res.error,
 			};
 		}
 
@@ -156,14 +113,14 @@ export class ProtectedUserController {
 	 *
 	 * @internal
 	 */
-	public GetUserById(userId: string): Result<PublicUser | undefined, undefined> {
+	public async GetUserById(userId: string): Promise<ReturnType<BridgeApiGetUserById>> {
 		const res = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/users/uid/${userId}`);
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to get user. Status Code:  ${res.statusCode}.\n`, res.error);
 			return {
 				success: false,
-				data: undefined,
+				error: res.error,
 			};
 		}
 
@@ -180,7 +137,7 @@ export class ProtectedUserController {
 		};
 	}
 
-	public GetUserByUsername(username: string): ReturnType<BridgeApiGetUserByUsername> {
+	public async GetUserByUsername(username: string): Promise<ReturnType<BridgeApiGetUserByUsername>> {
 		const res = InternalHttpManager.GetAsync(
 			`${AirshipUrl.GameCoordinator}/users/user?discriminatedUsername=${username}`,
 		);
@@ -189,7 +146,7 @@ export class ProtectedUserController {
 			warn(`Unable to get user. Status Code:  ${res.statusCode}.\n`, res.error);
 			return {
 				success: false,
-				data: undefined,
+				error: res.error,
 			};
 		}
 
@@ -203,6 +160,71 @@ export class ProtectedUserController {
 		return {
 			success: true,
 			data: DecodeJSON(res.data) as PublicUser,
+		};
+	}
+
+	public async GetUsersById(userIds: string[], strict = true): Promise<ReturnType<BridgeApiGetUsersById>> {
+		if (userIds.size() === 0) {
+			return {
+				success: true,
+				data: {
+					map: {},
+					array: [],
+				},
+			};
+		}
+
+		const res = InternalHttpManager.GetAsync(
+			`${AirshipUrl.GameCoordinator}/users?users[]=${userIds.join("&users[]=")}&strict=${
+				strict ? "true" : "false"
+			}`,
+		);
+
+		if (!res.success || res.statusCode > 299) {
+			warn(`Unable to get user. Status Code:  ${res.statusCode}.\n`, res.error);
+			return {
+				success: false,
+				error: res.error,
+			};
+		}
+
+		if (!res.data) {
+			return {
+				success: true,
+				data: {
+					map: {},
+					array: [],
+				},
+			};
+		}
+
+		const array = DecodeJSON(res.data) as PublicUser[];
+		const map: Record<string, PublicUser> = {};
+		array.forEach((u) => (map[u.uid] = u));
+
+		return {
+			success: true,
+			data: {
+				map,
+				array,
+			},
+		};
+	}
+
+	public async GetFriends(): Promise<ReturnType<BridgeApiGetFriends>> {
+		const res = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/friends/self`);
+
+		if (!res.success || res.statusCode > 299) {
+			warn(`Unable to get friends. Status Code ${res.statusCode}.\n`, res.error);
+			return {
+				success: false,
+				error: res.error,
+			};
+		}
+
+		return {
+			success: true,
+			data: DecodeJSON(res.data) as PublicUser[],
 		};
 	}
 

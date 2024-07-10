@@ -5,11 +5,9 @@ import {
 	ServerBridgeApiLeaderboardUpdate,
 } from "@Easy/Core/Server/ProtectedServices/Airship/Leaderboard/LeaderboardService";
 import { Platform } from "@Easy/Core/Shared/Airship";
-import { RankData } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipLeaderboard";
 import { AirshipUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { Result } from "@Easy/Core/Shared/Types/Result";
 
 export interface LeaderboardUpdate {
 	[id: string]: number;
@@ -36,7 +34,10 @@ export class AirshipLeaderboardService {
 	 * @param leaderboardName The name of the leaderboard that should be updated with the given scores
 	 * @param update An object containing a map of ids and scores.
 	 */
-	public async Update(leaderboardName: string, update: LeaderboardUpdate): Promise<Result<undefined, undefined>> {
+	public async Update(
+		leaderboardName: string,
+		update: LeaderboardUpdate,
+	): Promise<ReturnType<ServerBridgeApiLeaderboardUpdate>> {
 		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiLeaderboardUpdate>(
 			LeaderboardServiceBridgeTopics.Update,
 			LuauContext.Protected,
@@ -50,7 +51,7 @@ export class AirshipLeaderboardService {
 	 * @param leaderboardName The name of the leaderboard
 	 * @param id The id
 	 */
-	public async GetRank(leaderboardName: string, id: string): Promise<Result<RankData | undefined, undefined>> {
+	public async GetRank(leaderboardName: string, id: string): Promise<ReturnType<ServerBridgeApiLeaderboardGetRank>> {
 		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiLeaderboardGetRank>(
 			LeaderboardServiceBridgeTopics.GetRank,
 			LuauContext.Protected,
@@ -73,7 +74,7 @@ export class AirshipLeaderboardService {
 		leaderboardName: string,
 		startIndex = 0,
 		count = 100,
-	): Promise<Result<RankData[], undefined>> {
+	): Promise<ReturnType<ServerBridgeApiLeaderboardGetRankRange>> {
 		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiLeaderboardGetRankRange>(
 			LeaderboardServiceBridgeTopics.Update,
 			LuauContext.Protected,

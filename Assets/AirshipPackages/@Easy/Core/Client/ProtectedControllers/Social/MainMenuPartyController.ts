@@ -205,7 +205,7 @@ export class MainMenuPartyController {
 			warn(`Unable to invite user to party. Status Code: ${res.statusCode}\n`, res.error);
 			return {
 				success: false,
-				data: undefined,
+				error: undefined,
 			};
 		}
 
@@ -227,7 +227,7 @@ export class MainMenuPartyController {
 			warn(`Unable to remove user from party. Status Code: ${res.statusCode}\n`, res.error);
 			return {
 				success: false,
-				data: undefined,
+				error: undefined,
 			};
 		}
 
@@ -248,7 +248,7 @@ export class MainMenuPartyController {
 			warn(`Unable to join party. Status Code: ${res.statusCode}\n`, res.error);
 			return {
 				success: false,
-				data: undefined,
+				error: undefined,
 			};
 		}
 

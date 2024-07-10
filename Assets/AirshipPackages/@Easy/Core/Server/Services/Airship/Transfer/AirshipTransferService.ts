@@ -10,12 +10,10 @@ import {
 	AirshipServerConfig,
 	AirshipServerTransferConfig,
 } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipTransfers";
-import { CreateServerResponse } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipTransfers";
 import { AirshipUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Player } from "@Easy/Core/Shared/Player/Player";
-import { Result } from "@Easy/Core/Shared/Types/Result";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 
 /**
@@ -58,7 +56,7 @@ export class AirshipTransferService {
 	 * provided during deployment.
 	 * @returns The id of the new server. Undefined if the server was not able to be created.
 	 */
-	public async CreateServer(config?: AirshipServerConfig): Promise<Result<CreateServerResponse, undefined>> {
+	public async CreateServer(config?: AirshipServerConfig): Promise<ReturnType<ServerBridgeApiCreateServer>> {
 		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiCreateServer>(
 			TransferServiceBridgeTopics.CreateServer,
 			LuauContext.Protected,
@@ -76,7 +74,7 @@ export class AirshipTransferService {
 		player: Player | string,
 		gameId: string,
 		config?: AirshipGameTransferConfig,
-	): Promise<Result<undefined, undefined>> {
+	): Promise<ReturnType<ServerBridgeApiTransferGroupToGame>> {
 		return await this.TransferGroupToGame([player], gameId, config);
 	}
 
@@ -90,7 +88,7 @@ export class AirshipTransferService {
 		players: readonly (Player | string)[],
 		gameId: string,
 		config?: AirshipGameTransferConfig,
-	): Promise<Result<undefined, undefined>> {
+	): Promise<ReturnType<ServerBridgeApiTransferGroupToGame>> {
 		let userIds: string[];
 		if (typeIs(players, "table")) {
 			userIds = (players as Player[]).map((p) => p.userId);
@@ -116,7 +114,7 @@ export class AirshipTransferService {
 		player: Player | string,
 		serverId: string,
 		config?: AirshipServerTransferConfig,
-	): Promise<Result<undefined, undefined>> {
+	): Promise<ReturnType<ServerBridgeApiTransferGroupToServer>> {
 		let userId: string;
 		if (typeIs(player, "table")) {
 			userId = player.username;
@@ -136,7 +134,7 @@ export class AirshipTransferService {
 		userIds: string[],
 		serverId: string,
 		config?: AirshipServerTransferConfig,
-	): Promise<Result<undefined, undefined>> {
+	): Promise<ReturnType<ServerBridgeApiTransferGroupToServer>> {
 		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiTransferGroupToServer>(
 			TransferServiceBridgeTopics.TransferGroupToServer,
 			LuauContext.Protected,

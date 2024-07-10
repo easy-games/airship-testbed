@@ -9,7 +9,7 @@ export const enum PartyControllerBridgeTopics {
 	GetParty = "PartyController:GetParty",
 }
 
-export type ClientBridgeApiGetParty = () => Result<Party, undefined>;
+export type ClientBridgeApiGetParty = () => Result<Party, string>;
 
 @Controller({})
 export class ProtectedPartyController {
@@ -17,21 +17,29 @@ export class ProtectedPartyController {
 		if (!Game.IsClient()) return;
 
 		contextbridge.callback<ClientBridgeApiGetParty>(PartyControllerBridgeTopics.GetParty, (_) => {
-			const res = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/parties/party/self`);
-
-			if (!res.success || res.statusCode > 299) {
-				warn(`Unable to get user pary. Status Code: ${res.statusCode}.\n`, res.error);
-				return {
-					success: false,
-					data: undefined,
-				};
+			const [success, result] = this.GetParty().await();
+			if (!success) {
+				return { success: false, error: "Unable to complete request." };
 			}
-
-			return {
-				success: true,
-				data: DecodeJSON(res.data) as Party,
-			};
+			return result;
 		});
+	}
+
+	public async GetParty(): Promise<ReturnType<ClientBridgeApiGetParty>> {
+		const res = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/parties/party/self`);
+
+		if (!res.success || res.statusCode > 299) {
+			warn(`Unable to get user pary. Status Code: ${res.statusCode}.\n`, res.error);
+			return {
+				success: false,
+				error: res.error,
+			};
+		}
+
+		return {
+			success: true,
+			data: DecodeJSON(res.data) as Party,
+		};
 	}
 
 	public async InviteToParty(userId: string) {

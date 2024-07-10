@@ -10,9 +10,9 @@ export const enum CacheStoreServiceBridgeTopics {
 	SetKeyTTL = "CacheStore:SetKeyTTL",
 }
 
-export type ServerBridgeApiCacheGetKey<T> = (key: string, expireTimeSec?: number) => Result<T | undefined, undefined>;
-export type ServerBridgeApiCacheSetKey<T> = (key: string, data: T, expireTimeSec: number) => Result<T, undefined>;
-export type ServerBridgeApiCacheSetKeyTTL = (key: string, expireTimeSec: number) => Result<number, undefined>;
+export type ServerBridgeApiCacheGetKey<T> = (key: string, expireTimeSec?: number) => Result<T | undefined, string>;
+export type ServerBridgeApiCacheSetKey<T> = (key: string, data: T, expireTimeSec: number) => Result<T, string>;
+export type ServerBridgeApiCacheSetKeyTTL = (key: string, expireTimeSec: number) => Result<number, string>;
 
 @Service({})
 export class ProtectedCacheStoreService {
@@ -25,78 +25,114 @@ export class ProtectedCacheStoreService {
 		contextbridge.callback<ServerBridgeApiCacheGetKey<unknown>>(
 			CacheStoreServiceBridgeTopics.GetKey,
 			(_, key, expireTimeSec) => {
-				const expireTime =
-					expireTimeSec !== undefined ? math.clamp(expireTimeSec, 0, this.maxExpireSec) : undefined;
-				const query = expireTime !== undefined ? `?expiry=${expireTime}` : "";
-				const result = InternalHttpManager.GetAsync(`${AirshipUrl.DataStoreService}/cache/key/${key}${query}`);
-				if (!result.success) {
-					warn(`Unable to get cache key. Status Code: ${result.statusCode}.\n`, result.error);
+				const [success, result] = this.GetKey(key, expireTimeSec).await();
+				if (!success) {
 					return {
 						success: false,
-						data: undefined,
+						error: "Unable to complete request.",
 					};
 				}
-
-				if (!result.data) {
-					return {
-						success: false,
-						data: undefined,
-					};
-				}
-				return {
-					success: true,
-					data: DecodeJSON(result.data),
-				};
+				return result;
 			},
 		);
 
 		contextbridge.callback<ServerBridgeApiCacheSetKey<unknown>>(
 			CacheStoreServiceBridgeTopics.SetKey,
 			(_, key, data, expireTimeSec) => {
-				const expireTime = math.clamp(expireTimeSec, 0, this.maxExpireSec);
-				const result = InternalHttpManager.PostAsync(
-					`${AirshipUrl.DataStoreService}/cache/key/${key}?expiry=${expireTime}`,
-					EncodeJSON(data),
-				);
-				if (!result.success || result.statusCode > 299) {
-					warn(`Unable to set cache key. Status Code: ${result.statusCode}.\n`, result.error);
+				const [success, result] = this.SetKey(key, data, expireTimeSec).await();
+				if (!success) {
 					return {
 						success: false,
-						data: undefined,
+						error: "Unable to complete request.",
 					};
 				}
-
-				return {
-					success: true,
-					data: DecodeJSON(result.data),
-				};
+				return result;
 			},
 		);
 
 		contextbridge.callback<ServerBridgeApiCacheSetKeyTTL>(
 			CacheStoreServiceBridgeTopics.SetKeyTTL,
 			(_, key, expireTimeSec) => {
-				const result = InternalHttpManager.GetAsync(
-					`${AirshipUrl.DataStoreService}/cache/key/${key}/ttl?expiry=${math.clamp(
-						expireTimeSec,
-						0,
-						this.maxExpireSec,
-					)}`,
-				);
-				if (!result.success || result.statusCode > 299) {
-					warn(`Unable to set cache key ttl. Status Code: ${result.statusCode}.\n`, result.error);
+				const [success, result] = this.SetKeyTTL(key, expireTimeSec).await();
+				if (!success) {
 					return {
 						success: false,
-						data: undefined,
+						error: "Unable to complete request.",
 					};
 				}
-
-				return {
-					success: true,
-					data: (DecodeJSON(result.data) as { ttl: number }).ttl,
-				};
+				return result;
 			},
 		);
+	}
+
+	public async GetKey<T>(key: string, expireTimeSec?: number): Promise<ReturnType<ServerBridgeApiCacheGetKey<T>>> {
+		const expireTime = expireTimeSec !== undefined ? math.clamp(expireTimeSec, 0, this.maxExpireSec) : undefined;
+		const query = expireTime !== undefined ? `?expiry=${expireTime}` : "";
+		const result = InternalHttpManager.GetAsync(`${AirshipUrl.DataStoreService}/cache/key/${key}${query}`);
+		if (!result.success) {
+			warn(`Unable to get cache key. Status Code: ${result.statusCode}.\n`, result.error);
+			return {
+				success: false,
+				error: result.error,
+			};
+		}
+
+		if (!result.data) {
+			return {
+				success: false,
+				error: result.error,
+			};
+		}
+		return {
+			success: true,
+			data: DecodeJSON(result.data),
+		};
+	}
+
+	public async SetKey<T>(
+		key: string,
+		data: T,
+		expireTimeSec: number,
+	): Promise<ReturnType<ServerBridgeApiCacheSetKey<T>>> {
+		const expireTime = math.clamp(expireTimeSec, 0, this.maxExpireSec);
+		const result = InternalHttpManager.PostAsync(
+			`${AirshipUrl.DataStoreService}/cache/key/${key}?expiry=${expireTime}`,
+			EncodeJSON(data),
+		);
+		if (!result.success || result.statusCode > 299) {
+			warn(`Unable to set cache key. Status Code: ${result.statusCode}.\n`, result.error);
+			return {
+				success: false,
+				error: result.error,
+			};
+		}
+
+		return {
+			success: true,
+			data: DecodeJSON(result.data),
+		};
+	}
+
+	public async SetKeyTTL(key: string, expireTimeSec: number): Promise<ReturnType<ServerBridgeApiCacheSetKeyTTL>> {
+		const result = InternalHttpManager.GetAsync(
+			`${AirshipUrl.DataStoreService}/cache/key/${key}/ttl?expiry=${math.clamp(
+				expireTimeSec,
+				0,
+				this.maxExpireSec,
+			)}`,
+		);
+		if (!result.success || result.statusCode > 299) {
+			warn(`Unable to set cache key ttl. Status Code: ${result.statusCode}.\n`, result.error);
+			return {
+				success: false,
+				error: result.error,
+			};
+		}
+
+		return {
+			success: true,
+			data: (DecodeJSON(result.data) as { ttl: number }).ttl,
+		};
 	}
 
 	protected OnStart(): void {}

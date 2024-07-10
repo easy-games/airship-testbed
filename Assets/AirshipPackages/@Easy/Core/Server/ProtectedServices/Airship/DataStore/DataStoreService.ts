@@ -10,9 +10,9 @@ export const enum DataStoreServiceBridgeTopics {
 	DeleteKey = "DataStore:DeleteKey",
 }
 
-export type ServerBridgeApiDataGetKey<T> = (key: string) => Result<T | undefined, undefined>;
-export type ServerBridgeApiDataSetKey<T> = (key: string, data: T) => Result<T, undefined>;
-export type ServerBridgeApiDataDeleteKey<T> = (key: string) => Result<T, undefined>;
+export type ServerBridgeApiDataGetKey<T> = (key: string) => Result<T | undefined, string>;
+export type ServerBridgeApiDataSetKey<T> = (key: string, data: T) => Result<T, string>;
+export type ServerBridgeApiDataDeleteKey<T> = (key: string) => Result<T | undefined, string>;
 
 @Service({})
 export class ProtectedDataStoreService {
@@ -20,69 +20,102 @@ export class ProtectedDataStoreService {
 		if (!Game.IsServer()) return;
 
 		contextbridge.callback<ServerBridgeApiDataGetKey<unknown>>("DataStore:GetKey", (_, key) => {
-			const result = InternalHttpManager.GetAsync(`${AirshipUrl.DataStoreService}/data/key/${key}`);
-			if (!result.success || result.statusCode > 299) {
-				warn(`Unable to get data key. Status Code: ${result.statusCode}.\n`, result.error);
+			const [success, result] = this.GetKey(key).await();
+			if (!success) {
 				return {
 					success: false,
-					data: undefined,
+					error: "Unable to complete request.",
 				};
 			}
-
-			if (!result.data) {
-				return {
-					success: false,
-					data: undefined,
-				};
-			}
-
-			return {
-				success: true,
-				data: DecodeJSON(result.data),
-			};
+			return result;
 		});
 
 		contextbridge.callback<ServerBridgeApiDataSetKey<unknown>>("DataStore:SetKey", (_, key, data) => {
-			const result = InternalHttpManager.PostAsync(
-				`${AirshipUrl.DataStoreService}/data/key/${key}`,
-				EncodeJSON(data),
-			);
-			if (!result.success || result.statusCode > 299) {
-				warn(`Unable to set data key. Status Code: ${result.statusCode}.\n`, result.error);
+			const [success, result] = this.SetKey(key, data).await();
+			if (!success) {
 				return {
 					success: false,
-					data: undefined,
+					error: "Unable to complete request.",
 				};
 			}
-
-			return {
-				success: true,
-				data: DecodeJSON(result.data),
-			};
+			return result;
 		});
 
 		contextbridge.callback<ServerBridgeApiDataDeleteKey<unknown>>("DataStore:DeleteKey", (_, key) => {
-			const result = InternalHttpManager.DeleteAsync(`${AirshipUrl.DataStoreService}/data/key/${key}`);
-			if (!result.success || result.statusCode > 299) {
-				warn(`Unable to delete data key. Status Code: ${result.statusCode}.\n`, result.error);
+			const [success, result] = this.DeleteKey(key).await();
+			if (!success) {
 				return {
 					success: false,
-					data: undefined,
+					error: "Unable to complete request.",
 				};
 			}
+			return result;
+		});
+	}
 
-			if (!result.data) {
-				return {
-					success: true,
-					data: undefined,
-				};
-			}
+	public async GetKey<T>(key: string): Promise<ReturnType<ServerBridgeApiDataGetKey<T>>> {
+		const result = InternalHttpManager.GetAsync(`${AirshipUrl.DataStoreService}/data/key/${key}`);
+		if (!result.success || result.statusCode > 299) {
+			warn(`Unable to get data key. Status Code: ${result.statusCode}.\n`, result.error);
+			return {
+				success: false,
+				error: result.error,
+			};
+		}
 
+		if (!result.data) {
+			return {
+				success: false,
+				error: result.error,
+			};
+		}
+
+		return {
+			success: true,
+			data: DecodeJSON(result.data),
+		};
+	}
+
+	public async SetKey<T>(key: string, data: T): Promise<ReturnType<ServerBridgeApiDataSetKey<T>>> {
+		const result = InternalHttpManager.PostAsync(
+			`${AirshipUrl.DataStoreService}/data/key/${key}`,
+			EncodeJSON(data),
+		);
+		if (!result.success || result.statusCode > 299) {
+			warn(`Unable to set data key. Status Code: ${result.statusCode}.\n`, result.error);
+			return {
+				success: false,
+				error: result.error,
+			};
+		}
+
+		return {
+			success: true,
+			data: DecodeJSON(result.data),
+		};
+	}
+
+	public async DeleteKey<T>(key: string): Promise<ReturnType<ServerBridgeApiDataDeleteKey<T>>> {
+		const result = InternalHttpManager.DeleteAsync(`${AirshipUrl.DataStoreService}/data/key/${key}`);
+		if (!result.success || result.statusCode > 299) {
+			warn(`Unable to delete data key. Status Code: ${result.statusCode}.\n`, result.error);
+			return {
+				success: false,
+				error: result.error,
+			};
+		}
+
+		if (!result.data) {
 			return {
 				success: true,
-				data: DecodeJSON(result.data),
+				data: undefined,
 			};
-		});
+		}
+
+		return {
+			success: true,
+			data: DecodeJSON(result.data),
+		};
 	}
 
 	protected OnStart(): void {}

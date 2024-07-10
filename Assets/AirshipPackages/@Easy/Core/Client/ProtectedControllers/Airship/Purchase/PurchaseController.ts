@@ -24,8 +24,8 @@ export class ProtectedPurchaseController {
 			(_, productId, quantity, userId) => {
 				let targetUser: PublicUser | undefined = Protected.user.WaitForLocalUser(); // This shouldn't be undefined but it is
 				if (userId !== targetUser?.uid) {
-					const res = Dependency<ProtectedUserController>().GetUserById(userId);
-					targetUser = res.data;
+					const [success, res] = Dependency<ProtectedUserController>().GetUserById(userId).await();
+					targetUser = success && res.success ? res.data : undefined;
 				}
 
 				if (!targetUser) {
@@ -72,14 +72,14 @@ export class ProtectedPurchaseController {
 		receiverUid: string;
 		quantity: number;
 		total: number;
-	}): Result<undefined, undefined> {
+	}): Result<undefined, string> {
 		const res = InternalHttpManager.PostAsync(`${AirshipUrl.ContentService}/shop/purchase`, EncodeJSON(config));
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Purchase failed. Status Code: ${res.statusCode}.\n`, res.error);
 			return {
 				success: false,
-				data: undefined,
+				error: res.error,
 			};
 		}
 
