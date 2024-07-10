@@ -890,7 +890,7 @@ MonoBehaviour:
   mainCollider: {fileID: 3569249470052007930}
   slopeVisualizer: {fileID: 473010626989301856}
   authorityMode: 0
-  ticksUntilReconcile: 1
+  ticksUntilReconcile: 3
   observerRotationLerpMod: 10
   drawDebugGizmos: 0
   useExtraLogging: 0
