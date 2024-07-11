@@ -1,4 +1,4 @@
-import { FriendsController } from "@Easy/Core/Client/ProtectedControllers/Social/FriendsController";
+import { ProtectedFriendsController } from "@Easy/Core/Client/ProtectedControllers/Social/FriendsController";
 import { TransferController } from "@Easy/Core/Client/ProtectedControllers/Transfer/TransferController";
 import inspect from "@Easy/Core/Shared/Util/Inspect";
 import { Airship } from "../../Airship";
@@ -29,7 +29,7 @@ export default class DirectMessagesWindow extends AirshipBehaviour {
 		this.bin.Clean();
 		this.messagesParent.ClearChildren();
 
-		this.gameObject.GetComponent<RectTransform>()!.TweenAnchoredPositionY(75, 0.1);
+		NativeTween.AnchoredPositionY(this.gameObject.GetComponent<RectTransform>()!, 5, 0.1);
 
 		Bridge.UpdateLayout(this.messagesContent.transform, false);
 		this.scrollRect.velocity = new Vector2(0, 0);
@@ -47,7 +47,7 @@ export default class DirectMessagesWindow extends AirshipBehaviour {
 
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnClickEvent(this.friendTeleportButton, () => {
-				const friend = Dependency<FriendsController>().GetFriendStatus(user.userId);
+				const friend = Dependency<ProtectedFriendsController>().GetFriendStatus(user.userId);
 				if (friend?.status === UserStatus.IN_GAME && friend?.serverId && friend.gameId) {
 					print("Transferring to " + user.username + " on server " + friend.serverId);
 					Dependency<TransferController>().TransferToGameAsync(friend.gameId, friend.serverId);
@@ -62,7 +62,7 @@ export default class DirectMessagesWindow extends AirshipBehaviour {
 		};
 		UpdateTeleportButton(user);
 		this.bin.Add(
-			Dependency<FriendsController>().friendStatusChanged.Connect((friend) => {
+			Dependency<ProtectedFriendsController>().friendStatusChanged.Connect((friend) => {
 				if (friend.userId === user.userId) {
 					UpdateTeleportButton(friend);
 				}
@@ -96,10 +96,15 @@ export default class DirectMessagesWindow extends AirshipBehaviour {
 		for (let i = members.size() - 1; i >= 0; i--) {
 			const member = members[i];
 			const go = Object.Instantiate(this.profilePicturePrefab, parentTransform);
-			const sprite = Airship.players.GetProfilePictureSpriteAsync(member.uid);
-			if (sprite) {
-				go.GetComponent<Image>()!.sprite = sprite;
-			}
+			task.spawn(async () => {
+				const tex = await Airship.Players.GetProfilePictureAsync(member.uid);
+				if (tex && !go.IsDestroyed()) {
+					const rawImage = go.GetComponent<RawImage>();
+					if (rawImage) {
+						rawImage.texture = tex;
+					}
+				}
+			});
 		}
 	}
 

@@ -1,5 +1,4 @@
 ﻿import { GameObjectUtil } from "@Easy/Core/Shared/GameObject/GameObjectUtil";
-import { Task } from "../Util/Task";
 
 export interface ProgressBarOptions {
 	initialPercentDelta?: number;
@@ -53,7 +52,7 @@ export class Healthbar {
 	}
 
 	public SetActive(visible: boolean) {
-		this.transform.gameObject.active = visible;
+		this.transform.gameObject.SetActive(visible);
 	}
 
 	public SetColor(newColor: Color) {
@@ -74,13 +73,13 @@ export class Healthbar {
 
 		if (this.deathOnZero && percentDelta <= 0) {
 			//Wait for the change animation
-			Task.Delay(this.fillDurationInSeconds, () => {
+			task.delay(this.fillDurationInSeconds, () => {
 				if (this.transform) {
 					//Play the death animation
 					this.deathAnim.Play();
 					this.graphicsHolder.gameObject.SetActive(false);
 					this.brokenGraphicsHolder.gameObject.SetActive(true);
-					Task.Delay(1.1, () => {
+					task.delay(1.1, () => {
 						if (this.transform && this.currentDelta > 0) {
 							//Reset if the progress has filled back up (Respawn)
 							this.SetValue(this.currentDelta);
@@ -95,7 +94,7 @@ export class Healthbar {
 		}
 
 		//Animate fill down
-		this.fillTransform.TweenLocalScaleX(percentDelta, this.fillDurationInSeconds);
+		NativeTween.LocalScaleX(this.fillTransform, percentDelta, this.fillDurationInSeconds);
 
 		if (percentDelta > this.currentDelta) {
 			//Growth
@@ -111,8 +110,9 @@ export class Healthbar {
 				this.growthFillTransform.anchoredPosition.y,
 			);
 
-			this.growthFillTransform.TweenLocalScaleX(0, this.fillDurationInSeconds);
-			this.growthFillTransform.TweenAnchoredPositionX(
+			NativeTween.LocalScaleX(this.growthFillTransform, 0, this.fillDurationInSeconds);
+			NativeTween.AnchoredPositionX(
+				this.growthFillTransform,
 				this.transform.rect.width * percentDelta,
 				this.changeDurationInSeconds,
 			);
@@ -122,9 +122,9 @@ export class Healthbar {
 			this.changeFillTransform.gameObject.SetActive(true);
 
 			//Hold then animate change indicator
-			Task.Delay(this.changeDelayInSeconds, () => {
+			task.delay(this.changeDelayInSeconds, () => {
 				if (!this.enabled) return;
-				this.changeFillTransform.TweenLocalScaleX(percentDelta, this.changeDurationInSeconds);
+				NativeTween.LocalScaleX(this.changeFillTransform, percentDelta, this.changeDurationInSeconds);
 			});
 		}
 
@@ -132,8 +132,8 @@ export class Healthbar {
 	}
 
 	public Destroy(): void {
-		this.fillTransform.TweenCancelAll(false, true);
-		this.changeFillTransform.TweenCancelAll(false, true);
+		NativeTween.CancelAll(this.fillTransform, false, true);
+		NativeTween.CancelAll(this.changeFillTransform, false, true);
 		this.enabled = false;
 		GameObjectUtil.Destroy(this.refs.gameObject);
 	}

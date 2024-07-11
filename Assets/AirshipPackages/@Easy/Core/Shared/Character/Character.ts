@@ -1,16 +1,25 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
-import { CharacterAnimator } from "@Easy/Core/Shared/Character/Animation/CharacterAnimator";
 import { Game } from "@Easy/Core/Shared/Game";
 import Inventory from "@Easy/Core/Shared/Inventory/Inventory";
-import { HeldItemManager } from "@Easy/Core/Shared/Item/HeldItems/HeldItemManager";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
-import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { AvatarUtil } from "../Avatar/AvatarUtil";
+import { CoreNetwork } from "../CoreNetwork";
+import { DamageInfo, DamageInfoCustomData } from "../Damage/DamageInfo";
+import CharacterAnimator from "./Animation/CharacterAnimator";
+import CharacterConfigSetup from "./CharacterConfigSetup";
 
+/**
+ * A character is a (typically human) object in the scene. It controls movement and default animation.
+ * Typically a game would spawn a character for each player. If using the default character it would
+ * be dressed with their customized outfit.
+ *
+ * To spawn a character use {@link Player.SpawnCharacter}.
+ * To control your game's default character see {@link CharacterConfigSetup}.
+ */
 export default class Character extends AirshipBehaviour {
 	@NonSerialized()
 	public player?: Player;
@@ -37,10 +46,7 @@ export default class Character extends AirshipBehaviour {
 	/** A bin that is cleaned when the entity despawns. */
 	@NonSerialized() public readonly bin = new Bin();
 	@NonSerialized() public inventory!: Inventory;
-	@NonSerialized() public heldItems!: HeldItemManager;
 	@NonSerialized() public outfitDto: OutfitDto | undefined;
-	public spineBone!: Transform;
-	public headBone!: Transform;
 
 	// Signals
 	@NonSerialized() public onDeath = new Signal<void>();
@@ -48,12 +54,21 @@ export default class Character extends AirshipBehaviour {
 	@NonSerialized() public onStateChanged = new Signal<[newState: CharacterState, oldState: CharacterState]>();
 	@NonSerialized() public onHealthChanged = new Signal<[newHealth: number, oldHealth: number]>();
 
+	private initialized = false;
 	private despawned = false;
+
+	/*
+	 * [Advanced]
+	 *
+	 * Custom data that the client sends in their move packet.
+	 * Map<id, dataBlob>, inputData, isReplay
+	 */
+	public OnBeginMove = new Signal<[Map<string, unknown>, MoveInputData, boolean]>();
 
 	public Awake(): void {
 		this.inventory = this.gameObject.GetAirshipComponent<Inventory>()!;
-		this.animator = new CharacterAnimator(this);
 		this.rig = this.rigRoot.GetComponent<CharacterRig>()!;
+		this.animator = this.gameObject.GetAirshipComponent<CharacterAnimator>()!;
 	}
 
 	public LateUpdate(dt: number): void {
@@ -68,36 +83,35 @@ export default class Character extends AirshipBehaviour {
 
 	public OnEnable(): void {
 		this.despawned = false;
-
-		this.spineBone = this.rig.spine;
-		this.headBone = this.rig.head;
-		if (this.IsLocalCharacter()) {
-			task.spawn(() => {
-				Game.WaitForLocalPlayerLoaded();
-				this.gameObject.name = "Character_" + Game.localPlayer.username;
-			});
-		}
 		this.bin.Add(
-			Airship.damage.onDamage.ConnectWithPriority(SignalPriority.MONITOR, (damageInfo) => {
+			Airship.Damage.onDamage.ConnectWithPriority(SignalPriority.MONITOR, (damageInfo) => {
 				if (damageInfo.gameObject.GetInstanceID() === this.gameObject.GetInstanceID()) {
 					if (this.IsDead()) return;
 					let newHealth = math.max(0, this.health - damageInfo.damage);
 
-					this.SetHealth(newHealth);
+					this.SetHealth(newHealth, true);
 
-					if (RunUtil.IsServer() && newHealth <= 0) {
-						Airship.damage.BroadcastDeath(damageInfo);
+					if (Game.IsServer() && newHealth <= 0) {
+						Airship.Damage.BroadcastDeath(damageInfo);
 					}
 				}
 			}),
 		);
 		this.bin.Add(
-			Airship.damage.onDeath.ConnectWithPriority(SignalPriority.MONITOR, (damageInfo) => {
+			Airship.Damage.onDeath.ConnectWithPriority(SignalPriority.MONITOR, (damageInfo) => {
 				if (damageInfo.gameObject === this.gameObject) {
 					this.onDeath.Fire();
 				}
 			}),
 		);
+
+		// Custom move command data handling:
+		const customDataConn = this.movement.OnBeginMove((moveData, isReplay) => {
+			this.BeginMove(moveData, isReplay);
+		});
+		this.bin.Add(() => {
+			Bridge.DisconnectEvent(customDataConn);
+		});
 
 		{
 			// state change
@@ -114,13 +128,15 @@ export default class Character extends AirshipBehaviour {
 	}
 
 	public OnDisable(): void {
-		Airship.characters.UnregisterCharacter(this);
+		Airship.Characters.UnregisterCharacter(this);
 		if (Game.IsClient() && !this.despawned) {
 			this.bin.Clean();
 			this.despawned = true;
 			this.onDespawn.Fire();
-			Airship.characters.onCharacterDespawned.Fire(this);
-			this.player?.SetCharacter(undefined);
+			Airship.Characters.onCharacterDespawned.Fire(this);
+			if (this.player?.character === this) {
+				this.player?.SetCharacter(undefined);
+			}
 		}
 	}
 
@@ -132,11 +148,70 @@ export default class Character extends AirshipBehaviour {
 		this.health = 100;
 		this.maxHealth = 100;
 		this.despawned = false;
+		this.initialized = true;
 
 		if (outfitDto) {
 			AvatarUtil.LoadUserOutfit(outfitDto, this.accessoryBuilder, {
 				removeOldClothingAccessories: true,
 			});
+		}
+
+		//Apply the queued custom data to movement
+		const customDataFlushedConn = this.movement.OnSetCustomData(() => {
+			this.ProccessCustomMoveData();
+		});
+		this.bin.Add(() => {
+			Bridge.DisconnectEvent(customDataFlushedConn);
+		});
+	}
+
+	private queuedMoveData = new Map<string, unknown>();
+	/** Add custom data to the move data command stream. */
+	public AddCustomMoveData(key: string, value: unknown) {
+		this.queuedMoveData.set(key, value);
+	}
+
+	private ProccessCustomMoveData() {
+		let customDataQueue: { key: string; value: unknown }[] = [];
+		this.queuedMoveData.forEach((value, key) => {
+			customDataQueue.push({ key: key, value: value });
+		});
+		this.queuedMoveData.clear();
+		this.movement?.SetCustomData(new BinaryBlob(customDataQueue));
+	}
+
+	private BeginMove(moveData: MoveInputData, isReplay: boolean) {
+		//print("BEGIN MOVE: " + moveData.GetTick());
+		//TODO: Do we actually want to ignore AI characters???
+		const player = this.player;
+		if (!player) return;
+
+		//Decode binary block into usable key value array
+		const allData = moveData.customData
+			? (moveData.customData.Decode() as { key: string; value: unknown }[])
+			: undefined;
+		const allCustomData: Map<string, unknown> = new Map();
+		if (allData) {
+			for (const data of allData) {
+				//print("Found custom data " + data.key + " with value: " + data.value);
+				allCustomData.set(data.key, data.value);
+			}
+		}
+
+		//Local signal for parsing the key value pairs
+		this.OnBeginMove.Fire(allCustomData, moveData, isReplay);
+	}
+
+	public IsInitialized() {
+		return this.initialized;
+	}
+
+	/**
+	 * Yields thread until the character has been initialized.
+	 */
+	public WaitForInit(): void {
+		while (!this.initialized) {
+			task.wait(0);
 		}
 	}
 
@@ -159,15 +234,21 @@ export default class Character extends AirshipBehaviour {
 	 * **SERVER ONLY METHOD**
 	 */
 	public Despawn(): void {
-		assert(RunUtil.IsServer(), "You can only call Character.Despawn() on the server.");
+		assert(Game.IsServer(), "You can only call Character.Despawn() on the server.");
 		assert(!this.despawned, "Character has already been despawned");
 
 		this.bin.Clean();
 		this.despawned = true;
 		this.onDespawn.Fire();
-		Airship.characters.onCharacterDespawned.Fire(this);
-		this.player?.SetCharacter(undefined);
+		Airship.Characters.onCharacterDespawned.Fire(this);
+		if (this.player?.character === this) {
+			this.player?.SetCharacter(undefined);
+		}
 		NetworkUtil.Despawn(this.gameObject);
+	}
+
+	public InflictDamage(damage: number, attacker?: GameObject, data?: DamageInfoCustomData): void {
+		Airship.Damage.InflictDamage(this.gameObject, damage, attacker, data);
 	}
 
 	public IsDestroyed(): boolean {
@@ -186,10 +267,28 @@ export default class Character extends AirshipBehaviour {
 		return this.health;
 	}
 
-	public SetHealth(health: number): void {
+	/**
+	 * Sets a characters health to a certain value. If the health is <= 0, the character will die.
+	 *
+	 * @param health The new health value.
+	 * @param dontInflictDeath If true, a death event will not be fired if the character's new health is less than or equal to zero.
+	 * This is useful when you want to broadcast a custom death event with {@link Airship.Damage.BroadcastDeath}.
+	 */
+	public SetHealth(health: number, dontInflictDeath?: boolean): void {
+		if (this.health === health) return;
+
 		const oldHealth = this.health;
 		this.health = health;
 		this.onHealthChanged.Fire(health, oldHealth);
+
+		if (Game.IsServer()) {
+			CoreNetwork.ServerToClient.Character.SetHealth.server.FireAllClients(this.id, health);
+
+			if (this.health <= 0 && !dontInflictDeath) {
+				const damageInfo = new DamageInfo(this.gameObject, oldHealth, undefined, {});
+				Airship.Damage.BroadcastDeath(damageInfo);
+			}
+		}
 	}
 
 	public GetMaxHealth(): number {
@@ -200,7 +299,19 @@ export default class Character extends AirshipBehaviour {
 		this.maxHealth = maxHealth;
 	}
 
+	/**
+	 * Used to check if the character is owned by the `Game.localPlayer`
+	 *
+	 * Must be called after the character has finished initializing.
+	 * You can use {@link WaitForInit()} to wait for initialized.
+	 *
+	 * @returns true if the character is owned by the `Game.localPlayer`
+	 */
 	public IsLocalCharacter(): boolean {
+		if (!this.initialized) {
+			print(debug.traceback());
+			error("Tried to call IsLocalCharacter() before character was initialized. Please use WaitForInit()");
+		}
 		return Game.IsClient() && this.player?.userId === Game.localPlayer?.userId;
 	}
 }

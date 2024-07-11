@@ -1,12 +1,18 @@
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI, HoverState } from "@Easy/Core/Shared/Util/CanvasAPI";
+import OutfitButtonNameComponent from "./Outfit/OutfitButtonNameComponent";
 
 export default class AvatarAccessoryBtn extends AirshipBehaviour {
+	@Header("References")
 	public iconImage!: Image;
 	public button!: Button;
 	public labelText!: TextMeshProUGUI;
+	public outfitNameGo!: GameObject;
 	public bgImage!: Image;
 	public equippedBadge!: GameObject;
+	public scrollRedirect!: AirshipRedirectScroll;
+
+	@Header("Data")
 	public classId = "";
 	public instanceId = "";
 
@@ -14,6 +20,7 @@ export default class AvatarAccessoryBtn extends AirshipBehaviour {
 
 	private bin = new Bin();
 	private selected = false;
+	private outfitNameComponent: OutfitButtonNameComponent | undefined;
 
 	override Start(): void {}
 
@@ -29,6 +36,13 @@ export default class AvatarAccessoryBtn extends AirshipBehaviour {
 				}
 			}),
 		);
+	}
+
+	public StartRename() {
+		if (!this.outfitNameComponent) {
+			this.outfitNameComponent = this.outfitNameGo.GetAirshipComponent<OutfitButtonNameComponent>();
+		}
+		this.outfitNameComponent?.StartRename();
 	}
 
 	public SetText(label: string) {

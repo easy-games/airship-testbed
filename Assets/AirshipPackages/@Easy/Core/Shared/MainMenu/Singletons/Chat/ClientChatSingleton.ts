@@ -3,18 +3,21 @@ import { Airship } from "@Easy/Core/Shared/Airship";
 import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
 import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
 import { ChatCommand } from "@Easy/Core/Shared/Commands/ChatCommand";
+import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
 import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
-import { Dependency, OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
+import { Dependency, Singleton } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { GameObjectUtil } from "@Easy/Core/Shared/GameObject/GameObjectUtil";
 import { MainMenuSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/MainMenuSingleton";
-import { Player } from "@Easy/Core/Shared/Player/Player";
+import { ProtectedPlayer } from "@Easy/Core/Shared/Player/ProtectedPlayer";
+import { Protected } from "@Easy/Core/Shared/Protected";
 import { CoreSound } from "@Easy/Core/Shared/Sound/CoreSound";
 import { Keyboard, Mouse } from "@Easy/Core/Shared/UserInput";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
+import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
 import { ChatUtil } from "@Easy/Core/Shared/Util/ChatUtil";
 import { SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { SetInterval, SetTimeout } from "@Easy/Core/Shared/Util/Timer";
@@ -35,7 +38,7 @@ class ChatMessageElement {
 	public Hide(): void {
 		if (!this.shown) return;
 		this.shown = false;
-		const t = this.canvasGroup.TweenCanvasGroupAlpha(0, 0.2);
+		const t = NativeTween.CanvasGroupAlpha(this.canvasGroup, 0, 0.2);
 		this.hideBin.Add(() => {
 			if (!t.IsDestroyed()) {
 				t.Cancel();
@@ -60,13 +63,14 @@ class ChatMessageElement {
 }
 
 @Singleton()
-export class ClientChatSingleton implements OnStart {
+export class ClientChatSingleton {
 	public canvas!: Canvas;
 	private content: GameObject;
-	private wrapper: GameObject;
+	private wrapper: RectTransform;
 	private chatMessagePrefab: Object;
 	private inputField: TMP_InputField;
 	private inputWrapperImage: Image;
+	private inputTransform!: RectTransform;
 
 	private selected = false;
 	private selectedBin = new Bin();
@@ -86,7 +90,8 @@ export class ClientChatSingleton implements OnStart {
 		this.wrapper = refs.GetValue("UI", "Wrapper");
 		this.chatMessagePrefab = refs.GetValue("UI", "ChatMessagePrefab");
 		this.inputField = refs.GetValue("UI", "InputField");
-		this.inputWrapperImage = refs.GetValue("UI", "Input").GetComponent<Image>()!;
+		this.inputTransform = refs.GetValue("UI", "Input");
+		this.inputWrapperImage = this.inputTransform.GetComponent<Image>()!;
 		this.content.gameObject.ClearChildren();
 
 		Dependency<MainMenuSingleton>().ObserveScreenSize((st, size) => {
@@ -174,9 +179,9 @@ export class ClientChatSingleton implements OnStart {
 	}
 
 	public AddMessage(rawText: string, nameWithPrefix: string | undefined, senderClientId: number | undefined): void {
-		let sender: Player | undefined;
+		let sender: ProtectedPlayer | undefined;
 		if (senderClientId !== undefined) {
-			sender = Airship.players.FindByClientId(senderClientId);
+			sender = Protected.protectedPlayers.FindByClientId(senderClientId);
 			if (sender) {
 				if (Dependency<MainMenuBlockSingleton>().IsUserIdBlocked(sender.userId)) {
 					return;
@@ -185,12 +190,15 @@ export class ClientChatSingleton implements OnStart {
 		}
 		let text = rawText;
 		if (nameWithPrefix) {
-			text = nameWithPrefix + rawText;
+			text = ChatColor.White(nameWithPrefix) + ChatColor.White(rawText);
 		}
 		this.RenderChatMessage(text, sender);
 	}
 
-	OnStart(): void {
+	protected OnStart(): void {
+		const isMainMenu = Game.coreContext === CoreContext.MAIN_MENU;
+		if (isMainMenu) return;
+
 		contextbridge.callback<
 			(rawText: string, nameWithPrefix: string | undefined, senderClientId: number | undefined) => void
 		>("Chat:AddMessage", (fromContext, rawText, nameWithPrefix, senderClientId) => {
@@ -207,6 +215,7 @@ export class ClientChatSingleton implements OnStart {
 		CanvasAPI.OnInputFieldSubmit(this.inputField.gameObject, (data) => {
 			this.SubmitInputField();
 		});
+		this.HideChatInput();
 
 		// Submitting on desktop.
 		// We cancel the form submit so the input field doesn't auto deselect.
@@ -215,10 +224,6 @@ export class ClientChatSingleton implements OnStart {
 			(event) => {
 				if (EventSystem.current.currentSelectedGameObject && !this.selected) return;
 				if (this.selected) {
-					if (this.inputField.text === "") {
-						EventSystem.current.ClearSelected();
-						return;
-					}
 					this.SubmitInputField();
 					event.SetCancelled(true);
 				} else {
@@ -296,7 +301,7 @@ export class ClientChatSingleton implements OnStart {
 			this.selected = true;
 			this.historyIndex = -1;
 			if (!Game.IsMobile()) {
-				this.inputWrapperImage.color = new Color(0, 0, 0, 0.4);
+				this.ShowChatInput();
 			}
 			// todo: movement disabler
 			const disableId = contextbridge.invoke<() => number | undefined>(
@@ -323,7 +328,7 @@ export class ClientChatSingleton implements OnStart {
 			this.selectedBin.Clean();
 			this.selected = false;
 			if (!Game.IsMobile()) {
-				this.inputWrapperImage.color = new Color(0, 0, 0, 0);
+				this.HideChatInput();
 			}
 			this.CheckIfShouldHide();
 		});
@@ -331,6 +336,25 @@ export class ClientChatSingleton implements OnStart {
 		SetInterval(0.5, () => {
 			this.CheckIfShouldHide();
 		});
+	}
+
+	private ShowChatInput(): void {
+		const t = NativeTween.SizeDelta(this.inputTransform, new Vector2(this.inputTransform.sizeDelta.x, 40), 0.04);
+		// this.chatInputBin.Add(() => {
+		// 	t.Cancel();
+		// });
+		// this.inputWrapperImage.color = new Color(0, 0, 0, 0.8);
+		// this.inputField.textComponent.alpha = 1;
+	}
+
+	private HideChatInput(): void {
+		const t = NativeTween.SizeDelta(this.inputTransform, new Vector2(this.inputTransform.sizeDelta.x, 0), 0.04);
+		this.selected = false;
+		// this.chatInputBin.Add(() => {
+		// 	t.Cancel();
+		// });
+		// this.inputWrapperImage.color = new Color(0, 0, 0, 0);
+		// this.inputField.textComponent.alpha = 0;
 	}
 
 	private CheckIfShouldHide(): void {
@@ -356,6 +380,11 @@ export class ClientChatSingleton implements OnStart {
 
 	public SubmitInputField(): void {
 		let text = this.inputField.text;
+		if (text === "") {
+			EventSystem.current.ClearSelected();
+			return;
+		}
+
 		this.SendChatMessage(text);
 		this.inputField.SetTextWithoutNotify("");
 		EventSystem.current.ClearSelected();
@@ -384,27 +413,37 @@ export class ClientChatSingleton implements OnStart {
 		}
 	}
 
-	public RenderChatMessage(message: string, sender?: Player): void {
+	public RenderChatMessage(message: string, sender?: ProtectedPlayer): void {
 		print(message);
 		try {
 			const chatMessage = GameObjectUtil.InstantiateIn(this.chatMessagePrefab, this.content.transform);
 			const refs = chatMessage.GetComponent<GameObjectReferences>()!;
 
-			const textGui = refs.GetValue<TextMeshProUGUI>("UI", "Text");
+			const textGui = refs.GetValue<TMP_Text>("UI", "Text");
 			textGui.text = message;
 
-			const profileImage = refs.GetValue<Image>("UI", "ProfilePicture");
-			const playerProfilePic = sender?.GetProfilePicture();
-			if (playerProfilePic) {
-				profileImage.sprite = Bridge.MakeSprite(AssetBridge.Instance.LoadAsset(playerProfilePic.path));
+			const profileImage = refs.GetValue<RawImage>("UI", "ProfilePicture");
+			if (sender) {
+				task.spawn(async () => {
+					const texture = await Airship.Players.GetProfilePictureAsync(
+						sender.userId,
+					);
+					if (texture) {
+						profileImage.texture = texture;
+					} else {
+						profileImage.gameObject.SetActive(false);
+					}
+				});
 			} else {
+				// system message
+				textGui.margin = new Vector4(0, 8, 8, 8);
 				profileImage.gameObject.SetActive(false);
 			}
 
 			const element = new ChatMessageElement(chatMessage, os.clock());
 			this.chatMessageElements.push(element);
 
-			if (Time.time > this.lastChatMessageRenderedTime && this.canvas.gameObject.active) {
+			if (Time.time > this.lastChatMessageRenderedTime && this.canvas.gameObject.activeInHierarchy) {
 				AudioManager.PlayGlobal(CoreSound.chatMessageReceived, {
 					volumeScale: 0.24,
 				});

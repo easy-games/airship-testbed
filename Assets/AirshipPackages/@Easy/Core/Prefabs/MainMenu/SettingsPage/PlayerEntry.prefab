@@ -34,8 +34,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 44, y: -0.00001312}
-  m_SizeDelta: {x: 177.4232, y: 18}
+  m_AnchoredPosition: {x: 50, y: -0.00001312}
+  m_SizeDelta: {x: 208.744, y: 18}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &4160587552722983390
 CanvasRenderer:
@@ -172,7 +172,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -24.099998, y: 0}
+  m_AnchoredPosition: {x: -40, y: 0}
   m_SizeDelta: {x: 22.2965, y: 17.838}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4405980646951952329
@@ -205,7 +205,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 028bf5635613d4a86bacda3c335e8b8a, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -273,7 +273,6 @@ MonoBehaviour:
   m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipButton.lua
   m_error: 0
   m_yielded: 0
-  m_assetPath: 
   m_canResume: 0
   m_asyncYield: 0
   m_onUpdateHandle: -1
@@ -292,6 +291,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators:
       - name: Header
         parameters:
@@ -310,6 +310,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators:
       - name: Header
         parameters:
@@ -328,6 +329,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators:
       - name: Header
         parameters:
@@ -337,6 +339,26 @@ MonoBehaviour:
       serializedValue: 1
       serializedObject: {fileID: 0}
       modified: 0
+    - name: underlineOnHover
+      type: boolean
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators:
+      - name: Tooltip
+        parameters:
+        - type: string
+          serializedValue: '"Sets child text to underline on mouse hover."'
+      nullable: 0
+      serializedValue: 0
+      serializedObject: {fileID: 0}
+      modified: 0
+    displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0
 --- !u!1 &5599986350978140070
@@ -403,7 +425,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.30588236}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.5803922}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -436,7 +458,6 @@ MonoBehaviour:
   m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/General/PlayerEntry.lua
   m_error: 0
   m_yielded: 0
-  m_assetPath: 
   m_canResume: 0
   m_asyncYield: 0
   m_onUpdateHandle: -1
@@ -455,6 +476,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -462,17 +484,18 @@ MonoBehaviour:
       modified: 1
     - name: profileImage
       type: object
-      objectType: Image
+      objectType: RawImage
       items:
         type: 
         objectType: 
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 5560443906974812478}
+      serializedObject: {fileID: 8306662636693728402}
       modified: 1
     - name: usernameText
       type: object
@@ -483,6 +506,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -497,6 +521,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -511,11 +536,13 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
       serializedObject: {fileID: 5766575235956911370}
       modified: 1
+    displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0
 --- !u!114 &7095176159351931456
@@ -548,8 +575,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7907643530509965414}
   - component: {fileID: 4383426945358229862}
-  - component: {fileID: 5560443906974812478}
   - component: {fileID: 8128049440188053641}
+  - component: {fileID: 8306662636693728402}
   m_Layer: 5
   m_Name: ProfileImg
   m_TagString: Untagged
@@ -573,7 +600,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 7.300003, y: 0}
+  m_AnchoredPosition: {x: 10, y: 0}
   m_SizeDelta: {x: 30, y: 30}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &4383426945358229862
@@ -584,36 +611,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5655116614734197267}
   m_CullTransparentMesh: 1
---- !u!114 &5560443906974812478
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5655116614734197267}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 0
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
 --- !u!114 &8128049440188053641
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -627,7 +624,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 15
-  image: {fileID: 5560443906974812478}
+  image: {fileID: 8306662636693728402}
+--- !u!114 &8306662636693728402
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5655116614734197267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 0
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Texture: {fileID: 0}
+  m_UVRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
 --- !u!1 &5766575235956911370
 GameObject:
   m_ObjectHideFlags: 0
@@ -664,7 +688,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -52.34, y: 0.080933}
+  m_AnchoredPosition: {x: -80, y: 0.080933}
   m_SizeDelta: {x: 13.5825, y: 15.2803}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8949330085487449124
@@ -697,7 +721,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: bc5cf2447591e40c38412195b50f77f3, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -765,7 +789,6 @@ MonoBehaviour:
   m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipButton.lua
   m_error: 0
   m_yielded: 0
-  m_assetPath: 
   m_canResume: 0
   m_asyncYield: 0
   m_onUpdateHandle: -1
@@ -784,6 +807,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators:
       - name: Header
         parameters:
@@ -802,6 +826,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators:
       - name: Header
         parameters:
@@ -820,6 +845,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators:
       - name: Header
         parameters:
@@ -829,5 +855,25 @@ MonoBehaviour:
       serializedValue: 1
       serializedObject: {fileID: 0}
       modified: 0
+    - name: underlineOnHover
+      type: boolean
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators:
+      - name: Tooltip
+        parameters:
+        - type: string
+          serializedValue: '"Sets child text to underline on mouse hover."'
+      nullable: 0
+      serializedValue: 0
+      serializedObject: {fileID: 0}
+      modified: 0
+    displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0

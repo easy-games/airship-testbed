@@ -1,4 +1,4 @@
-import { OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
+import { Singleton } from "@Easy/Core/Shared/Flamework";
 import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 import { Airship } from "../Airship";
 import { AssetCache } from "../AssetCache/AssetCache";
@@ -17,26 +17,51 @@ import { MobileButtonConfig } from "./Mobile/MobileButton";
 import ProximityPrompt from "./ProximityPrompts/ProximityPrompt";
 import { CoreIcon } from "./UI/CoreIcon";
 
+export enum InputActionDirection {
+	/**
+	 * Action is triggered by an up event.
+	 */
+	Up,
+	/**
+	 * Action is triggered by a down event.
+	 */
+	Down,
+}
+
+/**
+ * Access using {@link Airship.Input}. Input singleton contains functions to work with
+ * player input (including mouse, keyboard, and touch screen).
+ * 
+ * Ex:
+ * ```ts
+ * Airship.Input.CreateAction("Attack", Binding.MouseButton(MouseButton.LeftButton));
+ * Airship.Input.OnDown("Attack").Connect(() => {
+ * 	print("Attacked!");
+ * });
+ * ```
+ */
 @Singleton()
-export class AirshipInputSingleton implements OnStart {
+export class AirshipInputSingleton {
 	/**
 	 * Whether or not creating a duplicate keybind should immediately unbind matching keybinds.
 	 */
 	public unsetOnDuplicateKeybind = false;
 	/**
-	 *
+	 * This signal fires when an action is bound, either through code or through the
+	 * keybind menu.
 	 */
 	public onActionBound = new Signal<InputAction>();
 	/**
-	 *
+	 * This signal fires when an action is unbound, either through code or through the
+	 * keybind menu.
 	 */
 	public onActionUnbound = new Signal<InputAction>();
 	/**
-	 *
+	 * Input singleton keyboard instance.
 	 */
 	private keyboard = new Keyboard();
 	/**
-	 *
+	 * Input singleton mouse instance.
 	 */
 	private mouse = new Mouse();
 	/**
@@ -48,48 +73,50 @@ export class AirshipInputSingleton implements OnStart {
 	 */
 	private actionTable = new Map<string, InputAction[]>();
 	/**
-	 *
+	 * Mapping of action name to down signal listeners.
 	 */
 	private actionDownSignals = new Map<string, Signal<[event: InputActionEvent]>[]>();
 	/**
-	 *
+	 * Mapping of action name to up signal listeners.
 	 */
 	private actionUpSignals = new Map<string, Signal<[event: InputActionEvent]>[]>();
 	/**
-	 *
+	 * All actions that are **currently** down.
 	 */
 	private actionDownState = new Set<string>();
 	/**
-	 *
+	 * Container that holds mobile control buttons.
 	 */
 	private mobileControlsContainer!: GameObject;
 	/**
-	 *
+	 * The default mobile button prefab.
 	 */
 	private mobileButtonPrefab = AssetCache.LoadAsset(
 		"AirshipPackages/@Easy/Core/Prefabs/UI/MobileControls/MobileButton.prefab",
 	);
 	/**
-	 *
+	 * Mapping of action names to associated mobile buttons.
 	 */
 	private actionToMobileButtonTable = new Map<string, GameObject[]>();
-	/** Sensitivty multiplier maintained by game */
+	/**
+	 * Sensitivty multiplier maintained by game.
+	 */
 	private gameSensitivityMultiplier = 1;
 
 	public preferredControls = new PreferredControls();
 
 	constructor() {
-		Airship.input = this;
+		Airship.Input = this;
 	}
 
-	OnStart(): void {
+	protected OnStart(): void {
 		if (!Game.IsClient()) return;
 
 		if (Game.coreContext === CoreContext.GAME && Game.IsGameLuauContext()) {
 			this.CreateMobileControlCanvas();
 		}
 
-		Airship.input.onActionBound.Connect((action) => {
+		Airship.Input.onActionBound.Connect((action) => {
 			if (!action.binding.IsUnset()) {
 				if (this.unsetOnDuplicateKeybind) {
 					this.UnsetDuplicateBindings(action);
@@ -98,7 +125,7 @@ export class AirshipInputSingleton implements OnStart {
 			}
 		});
 
-		Airship.input.CreateActions([
+		Airship.Input.CreateActions([
 			{ name: "Forward", binding: Binding.Key(Key.W) },
 			{ name: "Left", binding: Binding.Key(Key.A) },
 			{ name: "Back", binding: Binding.Key(Key.S) },
@@ -116,27 +143,29 @@ export class AirshipInputSingleton implements OnStart {
 				binding: Binding.MouseButton(MouseButton.RightButton),
 			},
 			{ name: "Inventory", binding: Binding.Key(Key.E) },
-			{ name: "DropItem", binding: Binding.Key(Key.Q) },
 			{ name: "Inspect", binding: Binding.Key(Key.Y) },
 			{ name: "Interact", binding: Binding.Key(Key.F) },
 			{ name: "PushToTalk", binding: Binding.Key(Key.V) },
 		]);
 
 		if (Game.coreContext === CoreContext.GAME && Game.IsGameLuauContext()) {
-			Airship.input.CreateMobileButton("Jump", new Vector2(-220, 180));
+			Airship.Input.CreateMobileButton("Jump", new Vector2(-220, 180));
 			// Airship.input.CreateMobileButton("UseItem", new Vector2(-250, 490));
-			Airship.input.CreateMobileButton("Crouch", new Vector2(-140, 340), {
+			Airship.Input.CreateMobileButton("Crouch", new Vector2(-140, 340), {
 				icon: CoreIcon.CHEVRON_DOWN,
 			});
 		}
 	}
 
 	/**
+	 * Creates a `ProximityPrompt` that fires action events when interacted with. Pressing the prompt's
+	 * activation key while in range will fire the `InputActionDirection.Up` event, and releasing it will
+	 * fire the `InputActionDirection.Down` event.
 	 *
-	 * @param actionName
-	 * @param parent
-	 * @param config
-	 * @returns
+	 * @param actionName The action name associated with _this_ prompt.
+	 * @param parent An optional parent `Transform` that this prompt will live underneath.
+	 * @param config A `ProximityPrompt` configuration. Describes prompt text and distance required to activate.
+	 * @returns The created `ProximityPrompt`.
 	 */
 	public CreateProximityPrompt(
 		actionName: string,
@@ -173,8 +202,9 @@ export class AirshipInputSingleton implements OnStart {
 	}
 
 	/**
+	 * Creates an action for each provided schema.
 	 *
-	 * @param actions
+	 * @param actions A collection of `InputActionSchema`s.
 	 */
 	public CreateActions(actions: InputActionSchema[]): void {
 		for (const action of actions) {
@@ -186,10 +216,14 @@ export class AirshipInputSingleton implements OnStart {
 	}
 
 	/**
+	 * Creates an action with respect to the provided name and binding. After this action is created,
+	 * it will immediately start firing up and down events. This action's binding can be updated through Airship's
+	 * keybind menu.
 	 *
-	 * @param name
-	 * @param keybind
-	 * @param category
+	 * @param name The name of this action.
+	 * @param binding The `Binding` associated with this action. Use `Binding.Key` to bind this action to
+	 * a keyboard key, use `Binding.MouseButton` to bind this action to a mouse button.
+	 * @param category The category this action belongs to.
 	 */
 	public CreateAction(name: string, binding: Binding, config?: InputActionConfig): void {
 		const action = new InputAction(name.lower(), binding, false, config?.category ?? "General");
@@ -198,7 +232,7 @@ export class AirshipInputSingleton implements OnStart {
 	}
 
 	/**
-	 *
+	 * Creates mobile UI canvas container.
 	 */
 	private CreateMobileControlCanvas(): void {
 		const mobileControlsCanvas = Object.Instantiate(
@@ -224,15 +258,16 @@ export class AirshipInputSingleton implements OnStart {
 	}
 
 	/**
+	 * Creates a mobile button that triggers the provided action.
 	 *
-	 * @param name
-	 * @param anchoredPosition
-	 * @param config
+	 * @param actionName The name of the action this button is associated with.
+	 * @param anchoredPosition The anchored position of this button.
+	 * @param config A `MobileButtonConfig` that describes the look and feel of this button.
 	 */
-	public CreateMobileButton(name: string, anchoredPosition: Vector2, config?: MobileButtonConfig): void {
+	public CreateMobileButton(actionName: string, anchoredPosition: Vector2, config?: MobileButtonConfig): void {
 		const mobileButton = Object.Instantiate(this.mobileButtonPrefab);
 		mobileButton.transform.SetParent(this.mobileControlsContainer.transform);
-		const lowerName = name.lower();
+		const lowerName = actionName.lower();
 
 		const rect = mobileButton.GetComponent<RectTransform>()!;
 		rect.localScale = new Vector3(config?.scale?.x ?? 1, config?.scale?.y ?? 1, 1);
@@ -266,7 +301,12 @@ export class AirshipInputSingleton implements OnStart {
 					}
 					signalIndex++;
 				}
-				this.ClearInactiveSignals(inactiveSignalIndices, actionDownSignals);
+				this.ClearDestroyedSignals(
+					lowerName,
+					InputActionDirection.Down,
+					inactiveSignalIndices,
+					actionDownSignals,
+				);
 			} else if (dir === PointerDirection.UP) {
 				this.actionDownState.delete(lowerName);
 				const actionUpSignals = this.actionUpSignals.get(lowerName);
@@ -281,7 +321,7 @@ export class AirshipInputSingleton implements OnStart {
 					}
 					signalIndex++;
 				}
-				this.ClearInactiveSignals(inactiveSignalIndices, actionUpSignals);
+				this.ClearDestroyedSignals(lowerName, InputActionDirection.Up, inactiveSignalIndices, actionUpSignals);
 			}
 		});
 
@@ -291,8 +331,9 @@ export class AirshipInputSingleton implements OnStart {
 	}
 
 	/**
+	 * Hides all mobile buttons that trigger the action `name`.
 	 *
-	 * @param name
+	 * @param name An action name.
 	 */
 	public HideMobileButtons(name: string): void {
 		const lowerName = name.lower();
@@ -309,9 +350,11 @@ export class AirshipInputSingleton implements OnStart {
 			this.actionDownState.delete(lowerName);
 		}
 	}
+
 	/**
+	 * Hides all mobile buttons that trigger the action `name`.
 	 *
-	 * @param name
+	 * @param name An action name.
 	 */
 	public ShowMobileButtons(name: string): void {
 		const mobileButtonsForAction = this.actionToMobileButtonTable.get(name.lower()) ?? [];
@@ -321,19 +364,23 @@ export class AirshipInputSingleton implements OnStart {
 	}
 
 	/**
+	 * Returns all `InputAction`s associated with the provided name. Use the
+	 * returned `InputAction`s to unset and modify action bindings.
 	 *
-	 * @param name
-	 * @returns
+	 * @param name An action name.
+	 * @returns All `InputAction`s associated with the provided name.
 	 */
 	public GetActions(name: string): InputAction[] {
 		return this.actionTable.get(name.lower()) ?? [];
 	}
 
 	/**
+	 * Returns the `InputAction` that matches the provided name and type. This function is useful
+	 * when an action has multiple bindings of different types associated with it.
 	 *
-	 * @param name
-	 * @param inputType
-	 * @returns
+	 * @param name An action name.
+	 * @param inputType An `ActionInputType`.
+	 * @returns The `InputAction` that matches the provided name and type, if it exists, otherwise `undefined`.
 	 */
 	public GetActionByInputType(name: string, inputType: ActionInputType): InputAction | undefined {
 		const actions = this.actionTable.get(name.lower());
@@ -344,9 +391,11 @@ export class AirshipInputSingleton implements OnStart {
 	}
 
 	/**
+	 * Creates and returns a new `Signal` that is fired when the provided action enters the
+	 * down state.
 	 *
-	 * @param name
-	 * @returns
+	 * @param name An action name.
+	 * @returns A `Signal` that can be connected to, to listen for action down events.
 	 */
 	public OnDown(name: string): Signal<[event: InputActionEvent]> {
 		const downSignal = new Signal<[event: InputActionEvent]>();
@@ -360,9 +409,12 @@ export class AirshipInputSingleton implements OnStart {
 	}
 
 	/**
+	 * Creates and returns a new `Signal` that is fired when the provided action enters the
+	 * up state. If an action is in the down state and it is unset or rebound, the up event
+	 * **will** fire.
 	 *
-	 * @param name
-	 * @returns
+	 * @param name An action name.
+	 * @returns A `Signal` that can be connected to, to listen for action down events.
 	 */
 	public OnUp(name: string): Signal<[event: InputActionEvent]> {
 		const upSignal = new Signal<[event: InputActionEvent]>();
@@ -376,25 +428,28 @@ export class AirshipInputSingleton implements OnStart {
 	}
 
 	/**
+	 * Returns whether or not the provided action is in the down state.
 	 *
-	 * @param name
-	 * @returns
+	 * @param name An action name.
+	 * @returns Whether or not the provided action is the down state.
 	 */
 	public IsDown(name: string): boolean {
 		return this.actionDownState.has(name.lower());
 	}
 
 	/**
+	 * Returns whether or not the provided action is in the up state.
 	 *
-	 * @param name
+	 * @param name An action name.
 	 */
 	public IsUp(name: string) {
 		return !this.IsDown(name.lower());
 	}
 
 	/**
+	 * Returns all active `InputAction`s.
 	 *
-	 * @returns
+	 * @returns All active `InputAction`s.
 	 */
 	public GetBindings(): InputAction[] {
 		const flatActions: InputAction[] = [];
@@ -408,8 +463,9 @@ export class AirshipInputSingleton implements OnStart {
 	}
 
 	/**
+	 * Adds the provided `InputAction` to the internal action table.
 	 *
-	 * @param action
+	 * @param action An `InputAction`.
 	 */
 	private AddActionToTable(action: InputAction): void {
 		let existingActions = this.actionTable.get(action.name) ?? [];
@@ -421,8 +477,9 @@ export class AirshipInputSingleton implements OnStart {
 		this.actionTable.set(action.name, existingActions);
 	}
 	/**
+	 * Creates listeners for provided `InputAction` based on it's binding.
 	 *
-	 * @param action
+	 * @param action An `InputAction`.
 	 */
 	private CreateActionListeners(action: InputAction): void {
 		const signalCleanup = new Bin();
@@ -471,12 +528,17 @@ export class AirshipInputSingleton implements OnStart {
 						for (const signal of actionDownSignals) {
 							if (signal.HasConnections()) {
 								signal.Fire(new InputActionEvent(action.name, event.uiProcessed));
-							} else {
+							} else if (signal.isDestroyed) {
 								inactiveSignalIndices.push(signalIndex);
 							}
 							signalIndex++;
 						}
-						this.ClearInactiveSignals(inactiveSignalIndices, actionDownSignals);
+						this.ClearDestroyedSignals(
+							action.name,
+							InputActionDirection.Down,
+							inactiveSignalIndices,
+							actionDownSignals,
+						);
 					}),
 				);
 				signalCleanup.Add(
@@ -491,12 +553,17 @@ export class AirshipInputSingleton implements OnStart {
 						for (const signal of actionUpSignals) {
 							if (signal.HasConnections()) {
 								signal.Fire(new InputActionEvent(action.name, event.uiProcessed));
-							} else {
+							} else if (signal.isDestroyed) {
 								inactiveSignalIndices.push(signalIndex);
 							}
 							signalIndex++;
 						}
-						this.ClearInactiveSignals(inactiveSignalIndices, actionUpSignals);
+						this.ClearDestroyedSignals(
+							action.name,
+							InputActionDirection.Up,
+							inactiveSignalIndices,
+							actionUpSignals,
+						);
 					}),
 				);
 				signalCleanup.Add(
@@ -511,12 +578,17 @@ export class AirshipInputSingleton implements OnStart {
 						for (const signal of actionUpSignals) {
 							if (signal.HasConnections()) {
 								signal.Fire(new InputActionEvent(action.name, event.uiProcessed));
-							} else {
+							} else if (signal.isDestroyed) {
 								inactiveSignalIndices.push(signalIndex);
 							}
 							signalIndex++;
 						}
-						this.ClearInactiveSignals(inactiveSignalIndices, actionUpSignals);
+						this.ClearDestroyedSignals(
+							action.name,
+							InputActionDirection.Up,
+							inactiveSignalIndices,
+							actionUpSignals,
+						);
 					}),
 				);
 			} else {
@@ -532,12 +604,17 @@ export class AirshipInputSingleton implements OnStart {
 						for (const signal of actionDownSignals) {
 							if (signal.HasConnections()) {
 								signal.Fire(new InputActionEvent(action.name, event.uiProcessed));
-							} else {
+							} else if (signal.isDestroyed) {
 								inactiveSignalIndices.push(signalIndex);
 							}
 							signalIndex++;
 						}
-						this.ClearInactiveSignals(inactiveSignalIndices, actionDownSignals);
+						this.ClearDestroyedSignals(
+							action.name,
+							InputActionDirection.Down,
+							inactiveSignalIndices,
+							actionDownSignals,
+						);
 					}),
 				);
 				signalCleanup.Add(
@@ -552,12 +629,17 @@ export class AirshipInputSingleton implements OnStart {
 						for (const signal of actionUpSignals) {
 							if (signal.HasConnections()) {
 								signal.Fire(new InputActionEvent(action.name, event.uiProcessed));
-							} else {
+							} else if (signal.isDestroyed) {
 								inactiveSignalIndices.push(signalIndex);
 							}
 							signalIndex++;
 						}
-						this.ClearInactiveSignals(inactiveSignalIndices, actionUpSignals);
+						this.ClearDestroyedSignals(
+							action.name,
+							InputActionDirection.Up,
+							inactiveSignalIndices,
+							actionUpSignals,
+						);
 					}),
 				);
 				signalCleanup.Add(
@@ -572,12 +654,17 @@ export class AirshipInputSingleton implements OnStart {
 						for (const signal of actionUpSignals) {
 							if (signal.HasConnections()) {
 								signal.Fire(new InputActionEvent(action.name, event.uiProcessed));
-							} else {
+							} else if (signal.isDestroyed) {
 								inactiveSignalIndices.push(signalIndex);
 							}
 							signalIndex++;
 						}
-						this.ClearInactiveSignals(inactiveSignalIndices, actionUpSignals);
+						this.ClearDestroyedSignals(
+							action.name,
+							InputActionDirection.Up,
+							inactiveSignalIndices,
+							actionUpSignals,
+						);
 					}),
 				);
 			}
@@ -604,12 +691,17 @@ export class AirshipInputSingleton implements OnStart {
 						for (const signal of actionDownSignals) {
 							if (signal.HasConnections()) {
 								signal.Fire(new InputActionEvent(action.name, event.uiProcessed));
-							} else {
+							} else if (signal.isDestroyed) {
 								inactiveSignalIndices.push(signalIndex);
 							}
 							signalIndex++;
 						}
-						this.ClearInactiveSignals(inactiveSignalIndices, actionDownSignals);
+						this.ClearDestroyedSignals(
+							action.name,
+							InputActionDirection.Down,
+							inactiveSignalIndices,
+							actionDownSignals,
+						);
 					}),
 				);
 				signalCleanup.Add(
@@ -624,12 +716,17 @@ export class AirshipInputSingleton implements OnStart {
 						for (const signal of actionUpSignals) {
 							if (signal.HasConnections()) {
 								signal.Fire(new InputActionEvent(action.name, event.uiProcessed));
-							} else {
+							} else if (signal.isDestroyed) {
 								inactiveSignalIndices.push(signalIndex);
 							}
 							signalIndex++;
 						}
-						this.ClearInactiveSignals(inactiveSignalIndices, actionUpSignals);
+						this.ClearDestroyedSignals(
+							action.name,
+							InputActionDirection.Up,
+							inactiveSignalIndices,
+							actionUpSignals,
+						);
 					}),
 				);
 			} else {
@@ -653,12 +750,17 @@ export class AirshipInputSingleton implements OnStart {
 						for (const signal of actionDownSignals) {
 							if (signal.HasConnections()) {
 								signal.Fire(new InputActionEvent(action.name, event.uiProcessed));
-							} else {
+							} else if (signal.isDestroyed) {
 								inactiveSignalIndices.push(signalIndex);
 							}
 							signalIndex++;
 						}
-						this.ClearInactiveSignals(inactiveSignalIndices, actionDownSignals);
+						this.ClearDestroyedSignals(
+							action.name,
+							InputActionDirection.Down,
+							inactiveSignalIndices,
+							actionDownSignals,
+						);
 					}),
 				);
 				signalCleanup.Add(
@@ -673,12 +775,17 @@ export class AirshipInputSingleton implements OnStart {
 						for (const signal of actionUpSignals) {
 							if (signal.HasConnections()) {
 								signal.Fire(new InputActionEvent(action.name, event.uiProcessed));
-							} else {
+							} else if (signal.isDestroyed) {
 								inactiveSignalIndices.push(signalIndex);
 							}
 							signalIndex++;
 						}
-						this.ClearInactiveSignals(inactiveSignalIndices, actionUpSignals);
+						this.ClearDestroyedSignals(
+							action.name,
+							InputActionDirection.Up,
+							inactiveSignalIndices,
+							actionUpSignals,
+						);
 					}),
 				);
 			}
@@ -686,8 +793,9 @@ export class AirshipInputSingleton implements OnStart {
 	}
 
 	/**
+	 * Unsets all actions who share the same binding as the provided `InputAction`.
 	 *
-	 * @param action
+	 * @param action An `InputAction`.
 	 */
 	private UnsetDuplicateBindings(action: InputAction): void {
 		const duplicateBinding = this.GetBindings().find((binding) => {
@@ -698,26 +806,58 @@ export class AirshipInputSingleton implements OnStart {
 	}
 
 	/**
+	 * Clears all signals that have been destroyed.
 	 *
-	 * @param signalIndices
-	 * @param signals
+	 * @param actionName An action name.
+	 * @param actionDirection The input direction of signals being cleared.
+	 * @param signalIndices The indices of signals that are ready to be cleared.
+	 * @param signals The signal set that is being modified.
 	 */
-	private ClearInactiveSignals(signalIndices: number[], signals: Signal<[event: InputActionEvent]>[]): void {
-		for (const index of signalIndices) {
-			signals.remove(index);
+	private ClearDestroyedSignals(
+		actionName: string,
+		actionDirection: InputActionDirection,
+		signalIndices: number[],
+		signals: Signal<[event: InputActionEvent]>[],
+	): void {
+		const targetSignals =
+			actionDirection === InputActionDirection.Up ? this.actionUpSignals : this.actionDownSignals;
+		const newSignals: Signal<[event: InputActionEvent]>[] = [];
+		for (let i = 0; i < signals.size(); i++) {
+			if (!signalIndices.includes(i)) {
+				const signal = signals[i];
+				newSignals.push(signal);
+			}
 		}
+		targetSignals.set(actionName, newSignals);
 	}
 
-	/** Returns mouse sensitivity based on player's setting & game's sensitivity multiplier. */
-	public GetMouseSensitivity() {
+	/**
+	 * Returns mouse sensitivity based on player's setting & game's sensitivity multiplier.
+	 *
+	 * @returns Mouse sensitivity based on player's setting & game's sensitivity multiplier.
+	 */
+	public GetMouseSensitivity(): number {
 		return (
 			this.gameSensitivityMultiplier *
 			contextbridge.invoke<() => number>("ClientSettings:GetMouseSensitivity", LuauContext.Protected)
 		);
 	}
 
-	/** Returns touch sensitivity based on player's setting & game's sensitivity multiplier. */
-	public GetTouchSensitivity() {
+	/**
+	 * Returns mouse smoothing (0 is no smoothing).
+	 *
+	 * @returns Mouse smoothing (0 is no smoothing).
+	 */
+	public GetMouseSmoothing(): number {
+		return contextbridge.invoke<() => number>("ClientSettings:GetMouseSmoothing", LuauContext.Protected);
+	}
+
+	/**
+	 * Returns touch sensitivity based on player's setting & game's sensitivity multiplier.
+	 *
+	 * @returns Touch sensitivity based on player's setting & game's sensitivity multiplier.
+	 */
+	public GetTouchSensitivity(): number {
 		return (
 			this.gameSensitivityMultiplier *
 			contextbridge.invoke<() => number>("ClientSettings:GetTouchSensitivity", LuauContext.Protected)
@@ -729,7 +869,7 @@ export class AirshipInputSingleton implements OnStart {
 	 *
 	 * @param sensitivity Set to 1 for no effect, >1 for increased sensitivty.
 	 */
-	public SetSensitivityMultiplier(sensitivity: number) {
+	public SetSensitivityMultiplier(sensitivity: number): void {
 		this.gameSensitivityMultiplier = sensitivity;
 	}
 }

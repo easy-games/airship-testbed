@@ -79,11 +79,11 @@ export default class ProximityPrompt extends AirshipBehaviour {
 	}
 
 	public KeyDown(): void {
-		this.canvas.transform.TweenLocalScale(Vector3.one.mul(0.8), 0.08).SetEaseQuadOut();
+		NativeTween.LocalScale(this.canvas.transform, Vector3.one.mul(0.8), 0.08).SetEaseQuadOut();
 	}
 
 	public KeyUp(): void {
-		this.canvas.transform.TweenLocalScale(new Vector3(1, 1, 1), 0.08).SetEaseQuadOut();
+		NativeTween.LocalScale(this.canvas.transform, new Vector3(1, 1, 1), 0.08).SetEaseQuadOut();
 	}
 
 	public SetPrimaryText(val: string): void {
@@ -115,7 +115,7 @@ export default class ProximityPrompt extends AirshipBehaviour {
 			this.canvas.transform.localScale = Vector3.zero;
 			this.canvas.enabled = false;
 		} else {
-			const tween = this.canvas.transform.TweenLocalScale(Vector3.zero, 0.18).SetEaseQuadOut();
+			const tween = NativeTween.LocalScale(this.canvas.transform, Vector3.zero, 0.18).SetEaseQuadOut();
 			let interupt = false;
 			this.shownBin.Add(() => {
 				interupt = true;
@@ -139,13 +139,13 @@ export default class ProximityPrompt extends AirshipBehaviour {
 
 		this.canvas.enabled = true;
 		this.canvas.transform.localScale = Vector3.zero;
-		this.canvas.transform.TweenLocalScale(Vector3.one, 0.18).SetEaseQuadOut();
+		NativeTween.LocalScale(this.canvas.transform, Vector3.one, 0.18).SetEaseQuadOut();
 
 		// for button
 		this.backgroundImg.raycastTarget = Game.IsMobile() || this.mouseRaycastTarget;
 
 		this.shownBin.Add(
-			Airship.input.OnUp(this.actionName).Connect((event) => {
+			Airship.Input.OnUp(this.actionName).Connect((event) => {
 				if (event.uiProcessed) return;
 
 				this.KeyUp();
@@ -153,7 +153,7 @@ export default class ProximityPrompt extends AirshipBehaviour {
 			}),
 		);
 		this.shownBin.Add(
-			Airship.input.OnDown(this.actionName).Connect((event) => {
+			Airship.Input.OnDown(this.actionName).Connect((event) => {
 				this.KeyDown();
 			}),
 		);
@@ -166,7 +166,7 @@ export default class ProximityPrompt extends AirshipBehaviour {
 			} else {
 				this.keybindTextLabel.gameObject.SetActive(true);
 				this.touchIcon.gameObject.SetActive(false);
-				const action = Airship.input.GetActionByInputType(this.actionName, ActionInputType.Keyboard);
+				const action = Airship.Input.GetActionByInputType(this.actionName, ActionInputType.Keyboard);
 				if (action && action.binding.config.isKeyBinding) {
 					this.keybindTextLabel.text = InputUtils.GetStringForKeyCode(action.binding.config.key);
 				} else {

@@ -1,5 +1,5 @@
 import AvatarRenderComponent from "@Easy/Core/Client/ProtectedControllers//AvatarMenu/AvatarRenderComponent";
-import {} from "@Easy/Core/Shared/Flamework";
+import { } from "@Easy/Core/Shared/Flamework";
 import { Mouse } from "@Easy/Core/Shared/UserInput";
 import { Game } from "../Game";
 import { Bin } from "../Util/Bin";
@@ -15,7 +15,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	@Header("References")
 	public humanEntityGo?: GameObject;
 	public avatarHolder?: Transform;
-	public anim?: CharacterAnimationHelper;
+	public anim!: Animator;
 	public accessoryBuilder?: AccessoryBuilder;
 	public cameraRigTransform?: Transform;
 	public avatarCamera?: Camera;
@@ -36,11 +36,9 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	public screenspaceDistance = 3;
 
 	public alignmentOffsetWorldpsace = new Vector3(0, 0, 0);
+	public oddsOfAReaction = 0.25;
 
 	@Header("Spin Big")
-	public idleAnim!: AnimationClip;
-	public spinAnimLoop!: AnimationClip;
-	public spinAnimStop!: AnimationClip;
 	public spinBigRequiredTime = 3;
 	public spinBigRequiredSpeed = 10;
 
@@ -83,7 +81,6 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 				this.accessoryBuilder.firstPersonLayer = this.gameObject.layer;
 				this.accessoryBuilder.UpdateAccessoryLayers();
 			}
-			this.anim = this.humanEntityGo.GetComponent<CharacterAnimationHelper>()!;
 		}
 
 		this.mouse = new Mouse();
@@ -120,6 +117,18 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 				}
 			}),
 		);
+
+		//Make sure no lights effect this scene
+		// let lights = GameObject.FindObjectsByType<Light>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+		// if(!lights){
+		// 	error("Unable to find lights in scene");
+		// }
+		// for(let i=0; i<lights.Length; i++){
+		// 	let light = lights.GetValue(i);
+		// 	if(light){
+		// 		light.cullingMask &= ~(1 << Layer.AVATAR_EDITOR);
+		// 	}
+		// }
 	}
 
 	private UpdateSpinAnimation() {
@@ -130,30 +139,21 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 				//Stop spinning big
 				this.spinningBig = false;
 				this.spinBigStartTime = 0;
-
-				if (this.spinAnimationTriggered) {
-					//Stumble animation
-					this.spinAnimationTriggered = false;
-					let options = new AnimationClipOptions();
-					options.fadeOutToClip = this.idleAnim;
-					this.anim?.Play(this.spinAnimStop, 0, options);
-				} else {
-					//Go to idle
-					let options = new AnimationClipOptions();
-					options.autoFadeOut = false;
-					this.anim?.Play(this.idleAnim, 0, options);
-				}
+				this.spinAnimationTriggered = false;
+				this.anim.SetBool("Spinning", false);
 			} else if (!this.spinAnimationTriggered) {
 				if (Time.time - this.spinBigStartTime > this.spinBigRequiredTime) {
 					//We will stumble at the end
 					this.spinAnimationTriggered = true;
+					this.anim.SetBool("Dizzy", true);
 				}
 			}
 		} else if (speed > this.spinBigRequiredSpeed) {
 			//Start spinning big
 			this.spinningBig = true;
 			this.spinBigStartTime = Time.time;
-			this.anim?.PlayOneShot(this.spinAnimLoop, 0);
+			this.anim.SetBool("Spinning", true);
+			this.anim.SetBool("Dizzy", false);
 		}
 	}
 
@@ -190,7 +190,6 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 
 	public ShowAvatar() {
 		this.gameObject.SetActive(true);
-		//this.anim?.SetState(CharacterState.Idle, true);
 	}
 
 	public HideAvatar() {
@@ -231,34 +230,35 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	}
 
 	public GetFocusTransform(slotType: AccessorySlot) {
-		if (
-			slotType === AccessorySlot.Head ||
-			slotType === AccessorySlot.Hair ||
-			slotType === AccessorySlot.Neck ||
-			slotType === AccessorySlot.Ears ||
-			slotType === AccessorySlot.Nose
-		) {
-			//return this.cameraWaypointHead;
-		} else if (
-			slotType === AccessorySlot.Feet ||
-			slotType === AccessorySlot.Waist ||
-			slotType === AccessorySlot.Legs ||
-			slotType === AccessorySlot.LegsInner ||
-			slotType === AccessorySlot.LegsOuter ||
-			slotType === AccessorySlot.LeftFoot ||
-			slotType === AccessorySlot.RightFoot ||
-			slotType === AccessorySlot.FeetInner
-		) {
-			return this.cameraWaypointFeet;
-		} else if (
-			slotType === AccessorySlot.Hands ||
-			slotType === AccessorySlot.LeftHand ||
-			slotType === AccessorySlot.RightHand ||
-			slotType === AccessorySlot.Torso ||
-			slotType === AccessorySlot.HandsOuter
-		) {
-			//return this.cameraWaypointHands;
-		} else if (slotType === AccessorySlot.Backpack) {
+		// if (
+		// 	slotType === AccessorySlot.Head ||
+		// 	slotType === AccessorySlot.Hair ||
+		// 	slotType === AccessorySlot.Neck ||
+		// 	slotType === AccessorySlot.Ears ||
+		// 	slotType === AccessorySlot.Nose
+		// ) {
+		// 	return this.cameraWaypointHead;
+		// } else if (
+		// 	slotType === AccessorySlot.Feet ||
+		// 	slotType === AccessorySlot.Waist ||
+		// 	slotType === AccessorySlot.Legs ||
+		// 	slotType === AccessorySlot.LegsInner ||
+		// 	slotType === AccessorySlot.LegsOuter ||
+		// 	slotType === AccessorySlot.LeftFoot ||
+		// 	slotType === AccessorySlot.RightFoot ||
+		// 	slotType === AccessorySlot.FeetInner
+		// ) {
+		// 	return this.cameraWaypointFeet;
+		// } else if (
+		// 	slotType === AccessorySlot.Hands ||
+		// 	slotType === AccessorySlot.LeftHand ||
+		// 	slotType === AccessorySlot.RightHand ||
+		// 	slotType === AccessorySlot.Torso ||
+		// 	slotType === AccessorySlot.HandsOuter
+		// ) {
+		// 	//return this.cameraWaypointHands;
+		// }
+		if (slotType === AccessorySlot.Backpack) {
 			return this.cameraWaypointBack;
 		}
 		return this.cameraWaypointDefault;
@@ -271,11 +271,9 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 				this.avatarCamera.transform.position = this.targetTransform.position;
 				this.avatarCamera.transform.rotation = this.targetTransform.rotation;
 			} else {
-				this.avatarCamera.transform
-					.TweenPosition(this.targetTransform.position, this.cameraTransitionDuration)
+				NativeTween.Position(this.avatarCamera.transform, this.targetTransform.position, this.cameraTransitionDuration)
 					.SetEaseQuadInOut();
-				this.avatarCamera.transform
-					.TweenRotation(this.targetTransform.rotation.eulerAngles, this.cameraTransitionDuration)
+				NativeTween.Rotation(this.avatarCamera.transform, this.targetTransform.rotation.eulerAngles, this.cameraTransitionDuration)
 					.SetEaseQuadInOut();
 			}
 		}
@@ -286,5 +284,12 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 			this.avatarRenderTemplate,
 			this.transform,
 		)?.GetAirshipComponent<AvatarRenderComponent>();
+}
+
+	public PlayReaction(slotType: AccessorySlot) {
+		if (math.random() < this.oddsOfAReaction) {
+			this.anim.SetInteger("ReactionIndex", math.random(3) - 1);
+			this.anim.SetTrigger("React");
+		}
 	}
 }

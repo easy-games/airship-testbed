@@ -13,7 +13,7 @@
 // import { CoreUIController } from "../../ProtectedControllers//CoreUIController";
 
 // @Controller({})
-// export class TabListController implements OnStart {
+// export class TabListController {
 // 	private tablistGO: GameObject;
 // 	private tablistCanvas;
 // 	private tablistRefs;
@@ -45,7 +45,7 @@
 // 		);
 // 	}
 
-// 	OnStart(): void {
+// 	protected OnStart(): void {
 // 		this.FullUpdate();
 
 // 		Airship.players.onPlayerJoined.Connect((player) => {

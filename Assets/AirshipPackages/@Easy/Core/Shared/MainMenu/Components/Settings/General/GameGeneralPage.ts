@@ -31,7 +31,7 @@ export default class GameGeneralPage extends MainMenuPageComponent {
 			this.gameDescription.text = gameData.description;
 			Bridge.UpdateLayout(this.gameDescription.transform.parent!, false);
 
-			let gameImageUrl = AirshipUrl.CDN + "/images/" + gameData.iconImageId + ".png";
+			let gameImageUrl = AirshipUrl.CDN + "/images/" + gameData.iconImageId;
 			const cloudImage = this.gameImage.GetComponent<CloudImage>()!;
 			cloudImage.url = gameImageUrl;
 			this.bin.AddEngineEventConnection(
@@ -41,6 +41,7 @@ export default class GameGeneralPage extends MainMenuPageComponent {
 					}
 				}),
 			);
+			cloudImage.hideErrors = true;
 			cloudImage.StartDownload();
 		});
 	}

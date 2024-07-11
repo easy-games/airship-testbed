@@ -1,5 +1,5 @@
 import { AirshipGameServer } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipTransfers";
-import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Controller } from "@Easy/Core/Shared/Flamework";
 import { CoreUI } from "@Easy/Core/Shared/UI/CoreUI";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
@@ -7,7 +7,7 @@ import { DecodeJSON } from "@Easy/Core/Shared/json";
 import { MainMenuController } from "./MainMenuController";
 
 @Controller({})
-export class MainMenuHomeController implements OnStart {
+export class MainMenuHomeController {
 	public gameCoordinatorUrl = AirshipUrl.GameCoordinator;
 	private errorMessageText: TMP_Text;
 	private errorMessageWrapper: GameObject;
@@ -32,7 +32,7 @@ export class MainMenuHomeController implements OnStart {
 		this.localBundlesToggle = this.mainMenuController.refs.GetValue("UI", "LocalBundlesToggle");
 	}
 
-	OnStart(): void {
+	protected OnStart(): void {
 		this.Setup();
 	}
 
@@ -91,9 +91,9 @@ export class MainMenuHomeController implements OnStart {
 
 		CoreUI.SetupButton(joinCodeButton);
 		CanvasAPI.OnClickEvent(joinCodeButton, () => {
-			joinCodeWrapper.SetActive(!joinCodeWrapper.active);
+			joinCodeWrapper.SetActive(!joinCodeWrapper.activeInHierarchy);
 
-			if (!joinCodeButton.active) {
+			if (!joinCodeButton.activeInHierarchy) {
 				joinCodeTextInput.text = "";
 			}
 		});

@@ -7,47 +7,52 @@ export default class AirshipButton extends AirshipBehaviour {
 	private bin = new Bin();
 
 	private disabled = false;
-	private image!: Image;
+	private image: Image | undefined;
 	private button!: Button;
-	private startingColor!: Color;
+	private startingColor: Color | undefined;
 	private loading = false;
+
+	private startingScale!: Vector3;
+	private startPos!: Vector2;
 
 	@Header("Variables")
 	public clickEffect = AirshipButtonClickEffect.Squish;
+	@Tooltip("Sets child text to underline on mouse hover.")
+	public underlineOnHover = false;
 
 	@Header("Optional Variables")
 	public disabledColorHex = "#2E3035";
 	public loadingIndicator?: GameObject;
 
 	public Awake(): void {
-		this.image = this.gameObject.GetComponent<Image>()!;
-		this.startingColor = this.image.color;
+		this.image = this.gameObject.GetComponent<Image>();
+		this.startingColor = this.image?.color;
 		this.button = this.gameObject.GetComponent<Button>()!;
 	}
 
 	override Start(): void {
 		const rect = this.gameObject.GetComponent<RectTransform>()!;
-		const startPos = rect.anchoredPosition;
-		let startingScale = rect.localScale;
+		this.startPos = rect.anchoredPosition;
+		this.startingScale = rect.localScale;
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnPointerEvent(this.gameObject, (dir, button) => {
 				if (button !== PointerButton.LEFT) return;
 				if (this.disabled) return;
 
-				if (this.clickEffect === AirshipButtonClickEffect.Squish) {
-					this.gameObject
-						.GetComponent<RectTransform>()!
-						.TweenLocalScale(dir === PointerDirection.DOWN ? startingScale.mul(0.9) : startingScale, 0.1);
-				} else if (this.clickEffect === AirshipButtonClickEffect.ShiftDown) {
-					this.gameObject
-						.GetComponent<RectTransform>()!
-						.TweenAnchoredPosition(
-							dir === PointerDirection.DOWN ? startPos.add(new Vector2(0, -2)) : startPos,
-							0.05,
-						);
-				}
+				dir === PointerDirection.DOWN ? this.PlayMouseDownEffect() : this.PlayMouseUpEffect();
 			}),
 		);
+
+		// if (this.underlineOnHover) {
+		// 	const text = this.gameObject.GetComponentInChildren<TMP_Text>();
+		// 	if (text) {
+		// 		this.bin.AddEngineEventConnection(
+		// 			CanvasAPI.OnHoverEvent(this.gameObject, (hov) => {
+		// 				text.fontStyle = hov === HoverState.ENTER ? FontStyles.Underline : FontStyles.Normal;
+		// 			}),
+		// 		);
+		// 	}
+		// }
 	}
 
 	public SetLoading(loading: boolean) {
@@ -59,20 +64,36 @@ export default class AirshipButton extends AirshipBehaviour {
 
 	public SetDisabled(disabled: boolean) {
 		this.disabled = disabled;
-		if (disabled) {
-			this.image.color = ColorUtil.HexToColor(this.disabledColorHex);
-		} else {
-			this.image.color = this.startingColor;
+		if (this.image && this.startingColor) {
+			if (disabled) {
+				this.image.color = ColorUtil.HexToColor(this.disabledColorHex);
+			} else {
+				this.image.color = this.startingColor;
+			}
 		}
 		this.button.enabled = !disabled;
 	}
 
+	public PlayMouseUpEffect(): void {
+		const rect = this.gameObject.GetComponent<RectTransform>()!;
+		if (this.clickEffect === AirshipButtonClickEffect.Squish) {
+			NativeTween.LocalScale(rect, this.startingScale, 0.1);
+		} else if (this.clickEffect === AirshipButtonClickEffect.ShiftDown) {
+			NativeTween.AnchoredPosition(rect, this.startPos, 0.05);
+		}
+	}
+
+	public PlayMouseDownEffect(): void {
+		if (this.clickEffect === AirshipButtonClickEffect.Squish) {
+			NativeTween.LocalScale(this.gameObject.GetComponent<RectTransform>()!, this.startingScale.mul(0.9), 0.1);
+		} else if (this.clickEffect === AirshipButtonClickEffect.ShiftDown) {
+			NativeTween.AnchoredPosition(this.gameObject.GetComponent<RectTransform>()!, this.startPos.add(new Vector2(0, -2)), 0.05);
+		}
+	}
+
 	public PlayClickEffect(): void {
 		if (this.clickEffect === AirshipButtonClickEffect.Squish) {
-			this.gameObject
-				.GetComponent<RectTransform>()!
-				.TweenLocalScale(this.gameObject.GetComponent<RectTransform>()!.localScale.mul(0.9), 0.1)
-				.SetPingPong();
+			NativeTween.LocalScale(this.gameObject.GetComponent<RectTransform>()!, this.gameObject.GetComponent<RectTransform>()!.localScale.mul(0.9), 0.1).SetPingPong();
 		}
 	}
 

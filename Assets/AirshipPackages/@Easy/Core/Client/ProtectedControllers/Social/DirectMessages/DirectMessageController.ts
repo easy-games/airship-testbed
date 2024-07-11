@@ -3,7 +3,7 @@ import { Airship } from "@Easy/Core/Shared/Airship";
 import { UserStatusData } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipUser";
 import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
-import { Controller, Dependency, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Controller, Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { GameObjectUtil } from "@Easy/Core/Shared/GameObject/GameObjectUtil";
 import DirectMessagesWindow from "@Easy/Core/Shared/MainMenu/Components/DirectMessagesWindow";
@@ -20,12 +20,12 @@ import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { Theme } from "@Easy/Core/Shared/Util/Theme";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 import { MainMenuController } from "../../MainMenuController";
-import { FriendsController } from "../FriendsController";
+import { ProtectedFriendsController } from "../FriendsController";
 import { MainMenuPartyController } from "../MainMenuPartyController";
 import { DirectMessage } from "./DirectMessage";
 
 @Controller({})
-export class DirectMessageController implements OnStart {
+export class DirectMessageController {
 	private incomingMessagePrefab = AssetBridge.Instance.LoadAsset(
 		"AirshipPackages/@Easy/Core/Prefabs/UI/Messages/IncomingMessage.prefab",
 	) as GameObject;
@@ -58,19 +58,19 @@ export class DirectMessageController implements OnStart {
 	public onPartyMessageReceived = new Signal<DirectMessage>();
 	private partyUnreadMessageCount = 0;
 
-	private xPos = -320;
+	private xPos = 0;
 	private yPos = -479;
 
 	private loadedMessagesFromUserIdFromDisk = new Set<string>();
 
 	constructor(
 		private readonly mainMenuController: MainMenuController,
-		private readonly friendsController: FriendsController,
+		private readonly friendsController: ProtectedFriendsController,
 		private readonly socketController: SocketController,
 		private readonly partyController: MainMenuPartyController,
 	) {}
 
-	OnStart(): void {
+	protected OnStart(): void {
 		this.Setup();
 
 		this.socketController.On<DirectMessage>("game-coordinator/direct-message", (data) => {
@@ -237,6 +237,18 @@ export class DirectMessageController implements OnStart {
 			}
 			this.inputField!.ActivateInputField();
 		});
+
+		const directMessagesWindow = this.windowGo!.GetAirshipComponent<DirectMessagesWindow>()!;
+		this.partyController.onPartyUpdated.Connect((party, oldParty) => {
+			directMessagesWindow.UpdatePartyMembers(party?.members ?? []);
+			if (!party || party.members.size() <= 1) {
+				this.Close();
+				return;
+			}
+			if (party?.partyId !== oldParty?.partyId) {
+				this.OpenParty();
+			}
+		});
 	}
 
 	public GetFriendLastMessaged(): UserStatusData | undefined {
@@ -247,7 +259,7 @@ export class DirectMessageController implements OnStart {
 		const status = this.friendsController.GetFriendStatus(uid);
 		if (status === undefined) return;
 		if (status.status === "offline") {
-			AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/UI_Error.wav");
+			AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/UI_Error.ogg");
 			return;
 		}
 
@@ -326,11 +338,13 @@ export class DirectMessageController implements OnStart {
 		if (isParty && !outgoing) {
 			const content = messageGo.transform.GetChild(0);
 			const profilePictureGo = content.GetChild(0).gameObject;
-			const profilePicSprite = Airship.players.GetProfilePictureSpriteAsync(dm.sender);
-			if (profilePicSprite) {
-				profilePictureGo.GetComponent<Image>()!.sprite = profilePicSprite;
-			}
-			profilePictureGo.SetActive(true);
+			task.spawn(async () => {
+				const profilePicTex = await Airship.Players.GetProfilePictureAsync(dm.sender);
+				if (profilePicTex) {
+					profilePictureGo.GetComponent<RawImage>()!.texture = profilePicTex;
+				}
+				profilePictureGo.SetActive(true);
+			});
 			content.GetChild(1).gameObject.SetActive(true);
 
 			const member = this.partyController.party?.members.find((u) => u.uid === dm.sender);
@@ -433,15 +447,6 @@ export class DirectMessageController implements OnStart {
 			this.RenderChatMessage(msg, false, true);
 		}
 
-		this.openWindowBin.Add(
-			this.partyController.onPartyUpdated.Connect((party, oldParty) => {
-				directMessagesWindow.UpdatePartyMembers(party?.members ?? []);
-				if (party?.partyId !== oldParty?.partyId) {
-					this.OpenParty();
-				}
-			}),
-		);
-
 		this.partyChatButton.SetUnreadCount(0);
 	}
 
@@ -467,7 +472,7 @@ export class DirectMessageController implements OnStart {
 	}
 
 	public Close(): void {
-		this.windowGo?.transform.TweenAnchoredPositionY(this.yPos, 0.1);
+		if (this.windowGo) NativeTween.AnchoredPositionY(this.windowGo.transform, this.yPos, 0.1);
 		this.openedWindowTarget = undefined;
 	}
 }

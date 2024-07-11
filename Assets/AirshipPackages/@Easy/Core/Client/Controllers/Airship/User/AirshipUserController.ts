@@ -4,47 +4,107 @@ import {
 	BridgeApiGetUserByUsername,
 	BridgeApiGetUsersById,
 	BrigdeApiIsFriendsWith,
+	ProtectedUserController,
 	UserControllerBridgeTopics,
 } from "@Easy/Core/Client/ProtectedControllers/Airship/User/UserController";
 import { Platform } from "@Easy/Core/Shared/Airship";
 import { PublicUser } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipUser";
 import { AirshipUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
-import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Controller, Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { Result } from "@Easy/Core/Shared/Types/Result";
 
+/**
+ * Provides access to user information.
+ */
 @Controller({})
-export class AirshipUserController implements OnStart {
+export class AirshipUserController {
+	// Local cache of username (lowercase) -> user id
+	private usernameToUidCache = new Map<string, string>();
+	// Local cache of user id -> public user (if they exist)
+	private userCache = new Map<string, { user?: PublicUser }>();
+
 	constructor() {
 		if (!Game.IsClient()) return;
 
-		Platform.client.user = this;
+		Platform.Client.User = this;
 	}
 
-	OnStart(): void {}
+	protected OnStart(): void {}
 
 	/**
-	 * Gets a single user by their username.
+	 * Gets a single user by their username (case insensitive).
 	 * @param username The username of the user.
-	 * @returns A user object
+	 * @param useLocalCache If true this function will return values cached locally. This is usually preferable
+	 * unless you need to guarantee the most up-to-date results. Defaults to ``true``.
+	 * @returns A result with a user object. If success is true but data is undefined that means the request succeeded
+	 * but no user exists with the given id.
 	 */
-	public async GetUserByUsername(username: string): Promise<Result<PublicUser | undefined, undefined>> {
-		return await AirshipUtil.PromisifyBridgeInvoke<BridgeApiGetUserByUsername>(
-			UserControllerBridgeTopics.GetUserByUsername,
-			username,
-		);
+	public async GetUserByUsername(
+		username: string,
+		useLocalCache = true,
+	): Promise<ReturnType<BridgeApiGetUserByUsername>> {
+		// First check local cache for user
+		if (useLocalCache) {
+			const uid = this.usernameToUidCache.get(username.lower());
+			if (uid) {
+				// Local cache says no user exists with this username
+				if (uid.size() === 0) return { success: true, data: undefined };
+
+				const user = this.userCache.get(uid);
+				if (user) return { success: true, data: user.user };
+			}
+		}
+
+		let result: ReturnType<BridgeApiGetUserByUsername>;
+		if (contextbridge.current() !== LuauContext.Protected) {
+			result = await AirshipUtil.PromisifyBridgeInvoke<BridgeApiGetUserByUsername>(
+				UserControllerBridgeTopics.GetUserByUsername,
+				LuauContext.Protected,
+				username,
+			);
+		} else {
+			result = await Dependency<ProtectedUserController>().GetUserByUsername(username);
+		}
+
+		if (result.success) {
+			if (result.data) {
+				this.AddUserToCache(result.data.uid, result.data);
+			} else {
+				this.usernameToUidCache.set(username, "");
+			}
+		}
+		return result;
 	}
 
 	/**
 	 * Gets a single user by their ID.
 	 * @param userId The users ID
-	 * @returns A user object
+	 * @param useLocalCache If true this function will return values cached locally. This is usually preferable
+	 * unless you need to guarantee the most up-to-date results. Defaults to ``true``.
+	 * @returns A result with a user object. If success is true but data is undefined that means the request succeeded
+	 * but no user exists with the given id.
 	 */
-	public async GetUserById(userId: string): Promise<Result<PublicUser | undefined, undefined>> {
-		return await AirshipUtil.PromisifyBridgeInvoke<BridgeApiGetUserById>(
-			UserControllerBridgeTopics.GetUserById,
-			userId,
-		);
+	public async GetUserById(userId: string, useLocalCache = true): Promise<ReturnType<BridgeApiGetUserById>> {
+		// First check local cache for user
+		if (useLocalCache) {
+			const existing = this.userCache.get(userId);
+			if (existing) return { success: true, data: existing.user };
+		}
+
+		let result: ReturnType<BridgeApiGetUserById>;
+		if (contextbridge.current() !== LuauContext.Protected) {
+			result = await AirshipUtil.PromisifyBridgeInvoke<BridgeApiGetUserById>(
+				UserControllerBridgeTopics.GetUserById,
+				LuauContext.Protected,
+				userId,
+			);
+		} else {
+			result = await Dependency<ProtectedUserController>().GetUserById(userId);
+		}
+		if (result.success) {
+			this.AddUserToCache(userId, result.data);
+		}
+		return result;
 	}
 
 	/**
@@ -55,12 +115,10 @@ export class AirshipUserController implements OnStart {
 	 * succeed even if not all userIds resolve to a user.
 	 * @returns An array of user objects.
 	 */
-	public async GetUsersById(
-		userIds: string[],
-		strict = true,
-	): Promise<Result<{ map: Record<string, PublicUser>; array: PublicUser[] }, undefined>> {
+	public async GetUsersById(userIds: string[], strict = true): Promise<ReturnType<BridgeApiGetUsersById>> {
 		return await AirshipUtil.PromisifyBridgeInvoke<BridgeApiGetUsersById>(
 			UserControllerBridgeTopics.GetUsersById,
+			LuauContext.Protected,
 			userIds,
 			strict,
 		);
@@ -70,8 +128,11 @@ export class AirshipUserController implements OnStart {
 	 * Gets the users friends list.
 	 * @returns A list of friends.
 	 */
-	public async GetFriends(): Promise<Result<PublicUser[], undefined>> {
-		return await AirshipUtil.PromisifyBridgeInvoke<BridgeApiGetFriends>(UserControllerBridgeTopics.GetFriends);
+	public async GetFriends(): Promise<ReturnType<BridgeApiGetFriends>> {
+		return await AirshipUtil.PromisifyBridgeInvoke<BridgeApiGetFriends>(
+			UserControllerBridgeTopics.GetFriends,
+			LuauContext.Protected,
+		);
 	}
 
 	/**
@@ -79,10 +140,18 @@ export class AirshipUserController implements OnStart {
 	 * @param userId The user id to check friend status with.
 	 * @returns True if friends, false otherwise.
 	 */
-	public async IsFriendsWith(userId: string): Promise<Result<boolean, undefined>> {
+	public async IsFriendsWith(userId: string): Promise<ReturnType<BrigdeApiIsFriendsWith>> {
 		return await AirshipUtil.PromisifyBridgeInvoke<BrigdeApiIsFriendsWith>(
 			UserControllerBridgeTopics.IsFriendsWith,
+			LuauContext.Protected,
 			userId,
 		);
+	}
+
+	private AddUserToCache(userId: string, user?: PublicUser) {
+		if (user) {
+			this.usernameToUidCache.set(user.username.lower(), user.uid);
+		}
+		this.userCache.set(userId, { user: user });
 	}
 }

@@ -1,5 +1,5 @@
 import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
-import { Controller, Dependency, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Controller, Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { CoreUI } from "@Easy/Core/Shared/UI/CoreUI";
 import { Keyboard } from "@Easy/Core/Shared/UserInput";
@@ -11,11 +11,11 @@ import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import { SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { OnFixedUpdate } from "@Easy/Core/Shared/Util/Timer";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
+import { ProtectedUserController } from "../Airship/User/UserController";
 import { AuthController } from "../Auth/AuthController";
-import { UserController } from "../User/UserController";
 
 @Controller({})
-export class ChangeUsernameController implements OnStart {
+export class ChangeUsernameController {
 	private canvas: Canvas;
 	private responseText: TMP_Text;
 	private submitButton: GameObject;
@@ -86,7 +86,7 @@ export class ChangeUsernameController implements OnStart {
 		if (res.success) {
 			this.SetResponseText("success", `Success! Your name has been changed to "${text}".`);
 			Game.localPlayer.UpdateUsername(text);
-			Dependency<UserController>().FetchLocalUser();
+			Dependency<ProtectedUserController>().FetchLocalUser();
 			this.submitButton.SetActive(false);
 			this.submitButtonDisabled.SetActive(true);
 		} else if (res.statusCode === 409) {
@@ -106,7 +106,7 @@ export class ChangeUsernameController implements OnStart {
 		this.submitButtonDisabled.SetActive(status !== "success");
 	}
 
-	OnStart(): void {}
+	protected OnStart(): void {}
 
 	private CheckUsername(): void {
 		let username = this.inputField.text;
@@ -157,7 +157,7 @@ export class ChangeUsernameController implements OnStart {
 			}),
 		);
 
-		AppManager.Open(this.canvas, {
+		AppManager.OpenCanvas(this.canvas, {
 			addToStack: true,
 			sortingOrderOffset: 100,
 			onClose: () => {

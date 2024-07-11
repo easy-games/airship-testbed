@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 7232349971031519510}
   - component: {fileID: 9170097889985094434}
-  - component: {fileID: 1110320361578094022}
   - component: {fileID: 1787192140756256256}
   - component: {fileID: 7995778048984575291}
   - component: {fileID: 777416871304308037}
+  - component: {fileID: 762500848306596416}
   m_Layer: 0
   m_Name: Face - Balaclava
   m_TagString: Untagged
@@ -114,23 +114,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.000000029802322, y: 0.002150774, z: 1.5397066}
     m_Extent: {x: 0.27645493, y: 0.23874648, z: 0.2774912}
   m_DirtyAABB: 0
---- !u!114 &1110320361578094022
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6784807641170959428}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colorSettings:
-  - materialColor: {r: 0.6469767, g: 0.5049855, b: 0.59492916, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-  addedByEditorScript: 0
 --- !u!114 &1787192140756256256
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -207,7 +190,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   materialColors:
-  - {fileID: 1110320361578094022}
+  - {fileID: 0}
   materialIndexes: 
   possibleColors:
     serializedVersion: 2
@@ -236,6 +219,22 @@ MonoBehaviour:
     atime6: 0
     atime7: 0
     m_Mode: 0
-    m_ColorSpace: 0
+    m_ColorSpace: -1
     m_NumColorKeys: 8
     m_NumAlphaKeys: 2
+  SetEmmisive: 0
+--- !u!114 &762500848306596416
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6784807641170959428}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - baseColor: {r: 0.64705884, g: 0.5058824, b: 0.59607846, a: 1}
+  addedByEditorScript: 0

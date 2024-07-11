@@ -1,9 +1,12 @@
 import { ClientSettingsController } from "@Easy/Core/Client/ProtectedControllers/Settings/ClientSettingsController";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
+import AirshipToggle from "../../AirshipToggle";
 import MicDevice from "./MicDevice";
 
 export default class MicrophoneSettingsPage extends AirshipBehaviour {
+	@Header("References")
 	public content!: RectTransform;
+	public voiceChatToggle!: AirshipToggle;
 
 	override OnEnable(): void {
 		this.content.gameObject.ClearChildren();
@@ -13,7 +16,9 @@ export default class MicrophoneSettingsPage extends AirshipBehaviour {
 		for (let i = 0; i < deviceNames.Length; i++) {
 			const deviceName = deviceNames.GetValue(i);
 			const btnGo = Object.Instantiate(
-				AssetBridge.Instance.LoadAsset("@Easy/Core/Client/Resources/MainMenu/SettingsPage/MicDevice.prefab"),
+				AssetBridge.Instance.LoadAsset(
+					"Assets/AirshipPackages/@Easy/Core/Prefabs/MainMenu/SettingsPage/MicDevice.prefab",
+				),
 				this.content,
 			);
 			const micDeviceComponent = btnGo.GetAirshipComponent<MicDevice>()!;
@@ -22,6 +27,32 @@ export default class MicrophoneSettingsPage extends AirshipBehaviour {
 			});
 			micDeviceComponent.SetSelected(currentDeviceIndex === i);
 		}
+
+		const clientSettings = Dependency<ClientSettingsController>();
+		task.spawn(() => {
+			const permission = Bridge.HasMicrophonePermission() && clientSettings.data.microphoneEnabled;
+			this.voiceChatToggle.SetValue(permission, true);
+		});
+		this.voiceChatToggle.onValueChanged.Connect((val) => {
+			task.spawn(() => {
+				if (val) {
+					if (Bridge.HasMicrophonePermission()) {
+						clientSettings.PickMicAndStartRecording();
+					} else {
+						Bridge.RequestMicrophonePermissionAsync();
+						if (!Bridge.HasMicrophonePermission()) {
+							// we prompted and user selected "no"
+							this.voiceChatToggle.SetValue(false);
+							return;
+						}
+					}
+				} else {
+					clientSettings.SetMicrophoneEnabled(false);
+				}
+				clientSettings.SetMicrophoneEnabled(val);
+				clientSettings.MarkAsDirty();
+			});
+		});
 	}
 
 	public SelectMicIndex(deviceIndex: number, deviceName: string): void {
@@ -37,8 +68,7 @@ export default class MicrophoneSettingsPage extends AirshipBehaviour {
 		clientSettings.MarkAsDirty();
 
 		if (!Bridge.IsMicRecording()) {
-			const clientSettings = Dependency<ClientSettingsController>();
-			Bridge.StartMicRecording(clientSettings.micFrequency, clientSettings.micSampleLength);
+			clientSettings.StartMicRecording();
 		}
 		for (let i = 0; i < this.content.childCount; i++) {
 			const go = this.content.GetChild(i);

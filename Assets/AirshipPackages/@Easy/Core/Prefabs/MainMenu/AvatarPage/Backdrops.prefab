@@ -102,6 +102,7 @@ MonoBehaviour:
   - materialColor: {r: 0.09433961, g: 0.09433961, b: 0.09433961, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
+    emissiveLevel: 0
   addedByEditorScript: 1
 --- !u!1 &2244517475585344556
 GameObject:
@@ -227,6 +228,7 @@ MonoBehaviour:
   - materialColor: {r: 0.3018868, g: 0.3018868, b: 0.3018868, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
+    emissiveLevel: 0
   addedByEditorScript: 1
 --- !u!1 &2469016564985137203
 GameObject:
@@ -272,7 +274,7 @@ GameObject:
   - component: {fileID: 2249239066178979530}
   - component: {fileID: 750004383182344272}
   - component: {fileID: 6223739880470785922}
-  - component: {fileID: 6060956515339416224}
+  - component: {fileID: 8822444304704193862}
   m_Layer: 10
   m_Name: Floor
   m_TagString: Untagged
@@ -325,7 +327,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cc67fd491fd3eea48854c27e28e0367b, type: 2}
+  - {fileID: 2100000, guid: 16c9aa28b6820e4458962092cb733832, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -347,7 +349,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &6060956515339416224
+--- !u!114 &8822444304704193862
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -356,14 +358,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2775051466701291960}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.063056245, g: 0.07734512, b: 0.122641504, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-  addedByEditorScript: 1
+  - baseColor: {r: 0.0627451, g: 0.078431375, b: 0.121568635, a: 1}
+  addedByEditorScript: 0
 --- !u!1 &4416185602589540384
 GameObject:
   m_ObjectHideFlags: 0
@@ -375,7 +375,7 @@ GameObject:
   - component: {fileID: 5949515978130097765}
   - component: {fileID: 5920093512288980396}
   - component: {fileID: 1824898605922239835}
-  - component: {fileID: 3271256478194827109}
+  - component: {fileID: 1204113646243484721}
   m_Layer: 10
   m_Name: AirshipCube
   m_TagString: Untagged
@@ -428,7 +428,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cff4c76274bce2a4b9306323f60277c8, type: 2}
+  - {fileID: 2100000, guid: 1b71e5229f07c724492c482b791f8c11, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -450,7 +450,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &3271256478194827109
+--- !u!114 &1204113646243484721
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -459,13 +459,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 4416185602589540384}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
+  - baseColor: {r: 1, g: 1, b: 1, a: 1}
   addedByEditorScript: 0
 --- !u!1 &6649159205681001234
 GameObject:
@@ -509,7 +507,7 @@ GameObject:
   - component: {fileID: 1542220635686180924}
   - component: {fileID: 6415714085522885813}
   - component: {fileID: 2028531943881720681}
-  - component: {fileID: 4895421615174414910}
+  - component: {fileID: 7144475135038308208}
   m_Layer: 10
   m_Name: BackWall
   m_TagString: Untagged
@@ -562,7 +560,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 8c2c130c625d02c46a40f1f7993e493c, type: 2}
+  - {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -584,7 +582,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &4895421615174414910
+--- !u!114 &7144475135038308208
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -593,14 +591,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 7496648647133020179}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.24705882, g: 0.24705882, b: 0.24705882, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 0
-  addedByEditorScript: 1
+  - baseColor: {r: 0.1792453, g: 0.1792453, b: 0.1792453, a: 1}
+  addedByEditorScript: 0
 --- !u!1 &8233227735595886384
 GameObject:
   m_ObjectHideFlags: 0
@@ -719,7 +715,6 @@ MonoBehaviour:
   m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/Avatar/AvatarBackdropComponent.lua
   m_error: 0
   m_yielded: 0
-  m_assetPath: 
   m_canResume: 0
   m_asyncYield: 0
   m_onUpdateHandle: -1
@@ -731,7 +726,7 @@ MonoBehaviour:
     properties:
     - name: solidColor
       type: object
-      objectType: MaterialColor
+      objectType: MaterialColorURP
       items:
         type: 
         objectType: 
@@ -741,8 +736,8 @@ MonoBehaviour:
       decorators: []
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 3271256478194827109}
-      modified: 1
+      serializedObject: {fileID: 0}
+      modified: 0
     displayName: 
   contextOverwritten: 0
 --- !u!1 &8864547050094139047
@@ -847,4 +842,5 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
+    emissiveLevel: 0
   addedByEditorScript: 0

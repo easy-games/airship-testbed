@@ -4,7 +4,7 @@ import { Signal } from "@Easy/Core/Shared/Util/Signal";
 
 export default class SocialNotificationComponent extends AirshipBehaviour {
 	public titleText!: TMP_Text;
-	public userImage!: Image;
+	public userImage!: RawImage;
 	public usernameText!: TMP_Text;
 	public acceptButton!: Button;
 	public declineButton!: Button;
@@ -31,6 +31,11 @@ export default class SocialNotificationComponent extends AirshipBehaviour {
 			});
 			this.bin.Add(() => Bridge.DisconnectEvent(conn));
 		}
+
+		// animation
+		let inner = this.transform.GetChild(0) as RectTransform;
+		inner.anchoredPosition = new Vector2(-20, 0);
+		NativeTween.AnchoredPositionX(inner, 0, 0.15).SetEaseBounceOut();
 	}
 
 	public OnDisable(): void {

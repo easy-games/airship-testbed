@@ -1,6 +1,6 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
-import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Team } from "@Easy/Core/Shared/Team/Team";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
@@ -8,7 +8,7 @@ import { SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { Theme } from "@Easy/Core/Shared/Util/Theme";
 
 @Controller({})
-export class NametagController implements OnStart {
+export class NametagController {
 	private readonly nameTagId = "Nametag";
 	private readonly graphicsBundleName = "Graphics";
 	private showSelfNametag = false;
@@ -16,14 +16,14 @@ export class NametagController implements OnStart {
 	// Clean to destroy nametag & related connections
 	private nametagBins = new Map<Character, Bin>();
 
-	OnStart(): void {
-		Airship.characters.onCharacterSpawned.ConnectWithPriority(SignalPriority.HIGH, (character) => {
+	protected OnStart(): void {
+		Airship.Characters.onCharacterSpawned.ConnectWithPriority(SignalPriority.HIGH, (character) => {
 			if (!this.nametagsEnabled) return;
 
 			this.HookCharacterNametag(character);
 		});
 
-		Airship.characters.onCharacterDespawned.Connect((character) => {
+		Airship.Characters.onCharacterDespawned.Connect((character) => {
 			this.nametagBins.get(character)?.Clean();
 			this.nametagBins.delete(character);
 		});
@@ -39,7 +39,7 @@ export class NametagController implements OnStart {
 			const nameTag = character.model.transform.FindChild(this.nameTagId);
 			if (nameTag) {
 				const canvasGroup = nameTag.GetChild(0).GetComponent<CanvasGroup>()!;
-				canvasGroup.TweenCanvasGroupAlpha(alpha, 0.1);
+				NativeTween.CanvasGroupAlpha(canvasGroup, alpha, 0.1);
 			}
 		};
 		bin.Add(
@@ -62,7 +62,7 @@ export class NametagController implements OnStart {
 		const nametagPrefab = AssetBridge.Instance.LoadAsset(
 			"Assets/AirshipPackages/@Easy/Core/Prefabs/Nametag.prefab",
 		) as GameObject;
-		const nametag = Object.Instantiate(nametagPrefab, character.headBone);
+		const nametag = Object.Instantiate(nametagPrefab, character.rig.head);
 		nametag.name = this.nameTagId;
 
 		this.UpdateNametag(character);
@@ -76,7 +76,7 @@ export class NametagController implements OnStart {
 		const team: Team | undefined = character.player?.GetTeam();
 		const localTeam = Game.localPlayer.GetTeam();
 
-		const nameTag = character.headBone.transform.FindChild(this.nameTagId);
+		const nameTag = character.rig.head.FindChild(this.nameTagId);
 		if (nameTag === undefined) {
 			this.CreateNametag(character);
 			return;
@@ -127,7 +127,7 @@ export class NametagController implements OnStart {
 		this.nametagsEnabled = enabled;
 
 		// Destroy all existing nametags
-		for (const character of Airship.characters.GetCharacters()) {
+		for (const character of Airship.Characters.GetCharacters()) {
 			if (enabled) {
 				this.HookCharacterNametag(character);
 			} else {

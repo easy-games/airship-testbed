@@ -1,5 +1,6 @@
-import { OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
+import { Singleton } from "@Easy/Core/Shared/Flamework";
 import { Game } from "../../Game";
+import { CoreLogger } from "../../Logger/CoreLogger";
 import { Bin } from "../../Util/Bin";
 import { Modifier } from "../../Util/Modifier";
 import { Signal } from "../../Util/Signal";
@@ -7,11 +8,12 @@ import { OnUpdate } from "../../Util/Timer";
 import { ScreenSizeType } from "./ScreenSizeType";
 
 @Singleton({})
-export class MainMenuSingleton implements OnStart {
+export class MainMenuSingleton {
 	public sizeType: ScreenSizeType = "md";
 	public onSizeChanged = new Signal<[sizeType: ScreenSizeType, size: Vector2]>();
 
 	public screenSize!: Vector2;
+	public rawScreenSize!: Vector2;
 	private firstRun = true;
 
 	public navbarModifier = new Modifier<{ hidden: boolean }>();
@@ -19,9 +21,10 @@ export class MainMenuSingleton implements OnStart {
 
 	constructor() {
 		this.screenSize = new Vector2(Screen.width, Screen.height);
+		this.rawScreenSize = new Vector2(Screen.width, Screen.height);
 	}
 
-	OnStart(): void {
+	protected OnStart(): void {
 		// const readOnlyCanvasGO = Object.Instantiate(
 		// 	AssetCache.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/UI/AirshipReadOnlyCanvas.prefab"),
 		// );
@@ -30,13 +33,13 @@ export class MainMenuSingleton implements OnStart {
 
 		let lastTime = 0;
 		OnUpdate.Connect((dt) => {
-			if (this.screenSize.x !== Screen.width || this.screenSize.y !== Screen.height || this.firstRun) {
+			if (this.rawScreenSize.x !== Screen.width || this.rawScreenSize.y !== Screen.height || this.firstRun) {
 				this.firstRun = false;
 				lastTime = Time.time;
-				this.screenSize = new Vector2(Screen.width, Screen.height);
+				this.rawScreenSize = new Vector2(Screen.width, Screen.height);
 
 				const scaleFactor = Game.GetScaleFactor();
-				this.screenSize = this.screenSize.div(scaleFactor);
+				this.screenSize = this.rawScreenSize.div(scaleFactor);
 
 				let sizeType: ScreenSizeType = "md";
 				if (Game.IsPortrait()) {
@@ -50,6 +53,9 @@ export class MainMenuSingleton implements OnStart {
 						sizeType = "lg";
 					}
 				}
+
+				CoreLogger.Log(`sizeType: ${sizeType} size: ${this.screenSize}`);
+
 				this.sizeType = sizeType;
 				this.onSizeChanged.Fire(this.sizeType, this.screenSize);
 			}

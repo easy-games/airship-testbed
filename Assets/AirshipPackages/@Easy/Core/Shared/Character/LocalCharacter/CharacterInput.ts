@@ -1,6 +1,6 @@
 import Character from "@Easy/Core/Shared/Character/Character";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
-import { ControlScheme, Keyboard, Preferred } from "@Easy/Core/Shared/UserInput";
+import { ControlScheme, Preferred } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { OnUpdate } from "@Easy/Core/Shared/Util/Timer";
 import { Airship } from "../../Airship";
@@ -14,7 +14,6 @@ export class CharacterInput {
 	private disablerCounter = 1;
 
 	private enabled = true;
-	private autoSprinting = false;
 
 	/** If true holding the sprint key will not result in sprinting */
 	private blockSprint = false;
@@ -49,7 +48,7 @@ export class CharacterInput {
 
 	public IsSprinting(): boolean {
 		if (this.IsSprintBlocked()) return false;
-		return this.autoSprinting || Airship.input.IsDown("Sprint");
+		return Airship.Input.IsDown("Sprint");
 	}
 
 	public AddDisabler(): () => void {
@@ -68,36 +67,17 @@ export class CharacterInput {
 	}
 
 	private InitControls() {
-		const keyboard = this.bin.Add(new Keyboard());
 		const preferred = this.bin.Add(new Preferred());
-
-		this.autoSprinting = false;
-		this.bin.Add(
-			this.character.onStateChanged.Connect((newState, oldState) => {
-				if (newState === CharacterState.Sprinting) {
-					this.autoSprinting = true;
-				} else if (newState !== CharacterState.Jumping) {
-					this.autoSprinting = false;
-				}
-			}),
-		);
-		this.bin.Add(
-			keyboard.OnKeyDown(Key.LeftShift, () => {
-				if (this.autoSprinting) {
-					this.autoSprinting = false;
-				}
-			}),
-		);
 
 		const updateMouseKeyboardControls = (dt: number) => {
 			if (!this.enabled) return;
 			if (EventSystem.current.currentSelectedGameObject !== undefined) return;
 
 			const [success, err] = pcall(() => {
-				const w = Airship.input.IsDown("Forward");
-				const s = Airship.input.IsDown("Back");
-				const a = Airship.input.IsDown("Left");
-				const d = Airship.input.IsDown("Right");
+				const w = Airship.Input.IsDown("Forward");
+				const s = Airship.Input.IsDown("Back");
+				const a = Airship.Input.IsDown("Left");
+				const d = Airship.Input.IsDown("Right");
 
 				const forward = w === s ? 0 : w ? 1 : -1;
 				const sideways = d === a ? 0 : d ? 1 : -1;
@@ -121,9 +101,9 @@ export class CharacterInput {
 
 				const moveSignal = new LocalCharacterInputSignal(
 					this.queuedMoveDirection,
-					this.enabled ? Airship.input.IsDown("Jump") : false,
+					this.enabled ? Airship.Input.IsDown("Jump") : false,
 					sprinting,
-					this.enabled ? Airship.input.IsDown("Crouch") : false,
+					this.enabled ? Airship.Input.IsDown("Crouch") : false,
 				);
 				localCharacterSingleton.onBeforeLocalEntityInput.Fire(moveSignal);
 

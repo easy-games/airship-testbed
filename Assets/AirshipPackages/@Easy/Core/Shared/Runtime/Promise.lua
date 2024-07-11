@@ -292,13 +292,13 @@ function Promise._new(traceback, callback, parent)
 		return self._status == Promise.Status.Cancelled
 	end
 
-	coroutine.wrap(function()
+	task.spawn(function()
 		local ok, _, result = runExecutor(self._source, callback, resolve, reject, onCancel)
 
 		if not ok then
 			reject(result[1])
 		end
-	end)()
+	end)
 
 	return self
 end
@@ -1606,10 +1606,7 @@ function Promise.prototype:awaitStatus()
 		local thread = coroutine.running()
 
 		self:finally(function()
-			local success, err = coroutine.resume(thread)
-			if not success then
-				warn(err)
-			end
+			task.spawn(thread)
 		end)
 
 		coroutine.yield()
@@ -1775,7 +1772,6 @@ function Promise.prototype:_resolve(...)
 
 	-- We assume that these callbacks will not throw errors.
 	for _, callback in ipairs(self._queuedResolve) do
-		-- coroutine.wrap(callback)(...)
 		task.spawn(callback, ...)
 	end
 
@@ -1794,7 +1790,6 @@ function Promise.prototype:_reject(...)
 	if not isEmpty(self._queuedReject) then
 		-- We assume that these callbacks will not throw errors.
 		for _, callback in ipairs(self._queuedReject) do
-			-- coroutine.wrap(callback)(...)
 			task.spawn(callback, ...)
 		end
 	else
@@ -1805,7 +1800,6 @@ function Promise.prototype:_reject(...)
 
 		local err = tostring((...))
 
-		-- coroutine.wrap(function()
 		task.spawn(function()
 			-- Promise._timeEvent:Wait()
 			task.wait()
@@ -1828,7 +1822,7 @@ function Promise.prototype:_reject(...)
 			end
 
 			warn(message)
-		end)--()
+		end)
 	end
 
 	self:_finalize()
@@ -1845,7 +1839,6 @@ function Promise.prototype:_finalize()
 		-- resolved values, or rejected errors. If the developer needs the values,
 		-- they should use :andThen or :catch explicitly.
 
-		-- coroutine.wrap(callback)(self._status)
 		task.spawn(callback, self._status)
 	end
 

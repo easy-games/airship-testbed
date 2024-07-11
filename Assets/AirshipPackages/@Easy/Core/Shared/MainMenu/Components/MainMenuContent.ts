@@ -117,7 +117,7 @@ export default class MainMenuContent extends AirshipBehaviour {
 			this.socialMenu.anchorMin = new Vector2(0, 1);
 			this.socialMenu.anchorMax = new Vector2(0, 1);
 			this.socialMenu.pivot = new Vector2(0, 1);
-			this.socialMenu.sizeDelta = new Vector2(301, screenSize.y - 50);
+			this.socialMenu.sizeDelta = new Vector2(301, screenSize.y - 110);
 			this.socialMenu.SetParent(this.gameObject.transform);
 
 			let socialMenuHidden = Dependency<MainMenuSingleton>()

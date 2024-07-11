@@ -14,7 +14,7 @@ export class DamageCommand extends ChatCommand {
 
 		if (args.size() === 1) {
 			amount = tonumber(args[0]);
-			target = Airship.characters.FindByClientId(player.clientId);
+			target = Airship.Characters.FindByClientId(player.connectionId);
 		}
 
 		if (amount === undefined) {
@@ -26,7 +26,7 @@ export class DamageCommand extends ChatCommand {
 			player.SendMessage("invalid target");
 			return;
 		}
-		Airship.damage.InflictDamage(target.gameObject, amount);
+		Airship.Damage.InflictDamage(target.gameObject, amount);
 		player.SendMessage(`Inflicted ${amount} damage to ${target.id}`);
 	}
 }

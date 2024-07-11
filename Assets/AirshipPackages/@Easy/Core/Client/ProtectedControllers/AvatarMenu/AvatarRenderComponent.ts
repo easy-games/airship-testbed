@@ -46,7 +46,6 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 
 		this.SetCameraTransform(0);
 		this.Render("ProfilePics/ProfilePicture");
-		this.backdrops.SetBackgdrop(AvatarBackdropType.NONE);
 	}
 
 	/**
@@ -66,7 +65,7 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 		//this.builder.rig.faceMesh?.gameObject.SetActive(false);
 		//this.builder.rig.head?.gameObject.SetActive(false);
 
-		this.backdrops.SetBackgdrop(AvatarBackdropType.NONE);
+		this.backdrops.SetBackgdrop(AvatarBackdropType.WHITE_FLAT);
 
 		this.captureCamera.targetTexture = this.renderTexture;
 		this.captureCamera.enabled = false;

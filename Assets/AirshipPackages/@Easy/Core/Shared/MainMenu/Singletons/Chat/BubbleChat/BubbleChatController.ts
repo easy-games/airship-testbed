@@ -3,30 +3,29 @@ import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
 import { AirshipCharacterCameraSingleton } from "@Easy/Core/Shared/Camera/AirshipCharacterCameraSingleton";
 import Character from "@Easy/Core/Shared/Character/Character";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
-import { Dependency, OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
+import { Dependency, Singleton } from "@Easy/Core/Shared/Flamework";
 import { GameObjectUtil } from "@Easy/Core/Shared/GameObject/GameObjectUtil";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import StringUtils from "@Easy/Core/Shared/Types/StringUtil";
-import { Task } from "@Easy/Core/Shared/Util/Task";
 
 @Singleton()
-export class BubbleChatController implements OnStart {
+export class BubbleChatController {
 	private static maxDisplayedMessages = 3;
 	/** Map from transform to minimized status (true = minimized) */
 	private chatContainerMinimized = new Map<Transform, boolean>();
 	/** Map from chat message to original text */
 	private bubbleChatContents = new Map<TextMeshProUGUI, string>();
 
-	OnStart(): void {
+	protected OnStart(): void {
 		// Register BubbleChat container on spawn
-		Airship.characters.onCharacterSpawned.Connect((character) => {
+		Airship.Characters.onCharacterSpawned.Connect((character) => {
 			this.GetOrCreateChatContainer(character);
 		});
 
 		CoreNetwork.ServerToClient.ChatMessage.client.OnServerEvent((rawMessage, nameWithPrefix, senderClientId) => {
 			let sender: Player | undefined;
 			if (senderClientId !== undefined) {
-				sender = Airship.players.FindByClientId(senderClientId);
+				sender = Airship.Players.FindByConnectionId(senderClientId);
 			}
 			if (sender?.character) {
 				const messageSanitized = this.SanitizeRawChatInput(rawMessage);
@@ -72,7 +71,7 @@ export class BubbleChatController implements OnStart {
 	}
 
 	private startSendingRandomMessages(character: Character, i = 0) {
-		Task.Delay(10, () => {
+		task.delay(10, () => {
 			const messageList = [
 				"Hi",
 				"How is it going",
@@ -119,7 +118,7 @@ export class BubbleChatController implements OnStart {
 		chatMessageObject.transform.SetParent(canvas.transform, false);
 
 		chatMessageObject.transform.localScale = new Vector3(0.6, 0.6, 0.6);
-		chatMessageObject.transform.TweenLocalScale(new Vector3(1, 1, 1), 0.2).SetEase(EaseType.QuadInOut);
+		NativeTween.LocalScale(chatMessageObject.transform, new Vector3(1, 1, 1), 0.2).SetEase(EaseType.QuadInOut);
 
 		// Purge if child count is too high
 		if (canvas.transform.GetChildCount() > BubbleChatController.maxDisplayedMessages) {
@@ -134,14 +133,14 @@ export class BubbleChatController implements OnStart {
 		task.delay(8, () => {
 			if (chatMessageObject === undefined) return;
 
-			messageBackgroundImage.TweenGraphicAlpha(0.4, 2);
+			NativeTween.GraphicAlpha(messageBackgroundImage, 0.4, 2);
 		});
 
 		// Destroy
 		task.delay(20, () => {
 			if (!chatMessageObject) return;
 
-			messageCanvasGroup.TweenCanvasGroupAlpha(0, 0.3);
+			NativeTween.CanvasGroupAlpha(messageCanvasGroup, 0, 0.3);
 			GameObjectUtil.Destroy(chatMessageObject, 2);
 		});
 	}

@@ -398,7 +398,6 @@ MonoBehaviour:
   m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/AvatarMenuComponent.lua
   m_error: 0
   m_yielded: 0
-  m_assetPath: Assets/Bundles/@Easy/Core/Client/Resources/TS/MainMenuControllers/AvatarMenu/AvatarMenuComponent.lua
   m_canResume: 0
   m_asyncYield: 0
   m_onUpdateHandle: -1
@@ -416,7 +415,8 @@ MonoBehaviour:
         objectType: 
         serializedItems: []
         objectRefs: []
-      refPath: 
+      refPath: AirshipPackages/@Easy/Core/Client/ProtectedControllers/MainMenuPageName@MainMenuPageType
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: Avatar
@@ -431,6 +431,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators:
       - name: Header
         parameters:
@@ -449,6 +450,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators:
       - name: Header
         parameters:
@@ -467,6 +469,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -481,6 +484,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -495,6 +499,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -509,6 +514,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -523,6 +529,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -537,6 +544,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -551,6 +559,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -565,6 +574,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators:
       - name: Header
         parameters:
@@ -583,6 +593,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -597,6 +608,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -611,11 +623,28 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
       serializedObject: {fileID: 6760938698788942309}
       modified: 1
+    - name: contentScrollRect
+      type: object
+      objectType: ScrollRect
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 2947813019238970325}
+      modified: 1
+    displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0
 --- !u!114 &7489676922720409085
@@ -956,7 +985,6 @@ MonoBehaviour:
   m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipButton.lua
   m_error: 0
   m_yielded: 0
-  m_assetPath: 
   m_canResume: 0
   m_asyncYield: 0
   m_onUpdateHandle: -1
@@ -966,24 +994,6 @@ MonoBehaviour:
     name: AirshipButton
     decorators: []
     properties:
-    - name: clickType
-      type: number
-      objectType: 
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators:
-      - name: Header
-        parameters:
-        - type: string
-          serializedValue: '"Variables"'
-      nullable: 0
-      serializedValue: 1
-      serializedObject: {fileID: 0}
-      modified: 1
     - name: loadingIndicator
       type: object
       objectType: GameObject
@@ -993,6 +1003,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -1007,6 +1018,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators:
       - name: Header
         parameters:
@@ -1016,6 +1028,45 @@ MonoBehaviour:
       serializedValue: '#2E3035'
       serializedObject: {fileID: 0}
       modified: 0
+    - name: clickEffect
+      type: IntEnum
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipButtonClickEffect@AirshipButtonClickEffect
+      fileRef: 
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"Variables"'
+      nullable: 0
+      serializedValue: 1
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: underlineOnHover
+      type: boolean
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators:
+      - name: Tooltip
+        parameters:
+        - type: string
+          serializedValue: '"Sets child text to underline on mouse hover."'
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
+    displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0
 --- !u!114 &2348695858848215157
@@ -1043,7 +1094,7 @@ GameObject:
   - component: {fileID: 4027954863298425143}
   - component: {fileID: 7650363738120591585}
   - component: {fileID: 6019442636811068512}
-  - component: {fileID: 2738596435800790211}
+  - component: {fileID: 2947813019238970325}
   m_Layer: 0
   m_Name: AvatarItemsScrollView
   m_TagString: Untagged
@@ -1110,7 +1161,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &2738596435800790211
+--- !u!114 &2947813019238970325
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1119,7 +1170,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1513828584801634756}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1aa08ab6e0800fa44ae55d278d1423e3, type: 3}
+  m_Script: {fileID: 11500000, guid: 8d54055edd8e40ab8778b1e55d6e0ebe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Content: {fileID: 5478668999766834506}
@@ -1129,17 +1180,18 @@ MonoBehaviour:
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 1
+  m_ScrollSensitivity: 12
   m_Viewport: {fileID: 5192296071644676234}
   m_HorizontalScrollbar: {fileID: 0}
   m_VerticalScrollbar: {fileID: 0}
-  m_HorizontalScrollbarVisibility: 2
-  m_VerticalScrollbarVisibility: 2
-  m_HorizontalScrollbarSpacing: -3
-  m_VerticalScrollbarSpacing: -3
+  m_HorizontalScrollbarVisibility: 0
+  m_VerticalScrollbarVisibility: 0
+  m_HorizontalScrollbarSpacing: 0
+  m_VerticalScrollbarSpacing: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+  scrollDecelerationRate: 5
 --- !u!1 &1650326724406391253
 GameObject:
   m_ObjectHideFlags: 0
@@ -1526,7 +1578,6 @@ MonoBehaviour:
   m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipButton.lua
   m_error: 0
   m_yielded: 0
-  m_assetPath: 
   m_canResume: 0
   m_asyncYield: 0
   m_onUpdateHandle: -1
@@ -1536,24 +1587,6 @@ MonoBehaviour:
     name: AirshipButton
     decorators: []
     properties:
-    - name: clickType
-      type: number
-      objectType: 
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators:
-      - name: Header
-        parameters:
-        - type: string
-          serializedValue: '"Variables"'
-      nullable: 0
-      serializedValue: 1
-      serializedObject: {fileID: 0}
-      modified: 1
     - name: loadingIndicator
       type: object
       objectType: GameObject
@@ -1563,6 +1596,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -1577,6 +1611,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators:
       - name: Header
         parameters:
@@ -1586,6 +1621,45 @@ MonoBehaviour:
       serializedValue: '#2E3035'
       serializedObject: {fileID: 0}
       modified: 0
+    - name: clickEffect
+      type: IntEnum
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipButtonClickEffect@AirshipButtonClickEffect
+      fileRef: 
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"Variables"'
+      nullable: 0
+      serializedValue: 1
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: underlineOnHover
+      type: boolean
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators:
+      - name: Tooltip
+        parameters:
+        - type: string
+          serializedValue: '"Sets child text to underline on mouse hover."'
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
+    displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0
 --- !u!114 &5877901390576900711
@@ -2747,7 +2821,7 @@ MonoBehaviour:
     m_Left: 0
     m_Right: 0
     m_Top: 0
-    m_Bottom: 0
+    m_Bottom: 50
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
@@ -2927,7 +3001,6 @@ MonoBehaviour:
   m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/AvatarMenuProfileComponent.lua
   m_error: 0
   m_yielded: 0
-  m_assetPath: 
   m_canResume: 0
   m_asyncYield: 0
   m_onUpdateHandle: -1
@@ -2946,6 +3019,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -2960,6 +3034,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -2974,11 +3049,13 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
       serializedObject: {fileID: 8633402009502342705}
       modified: 1
+    displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0
 --- !u!1 &5206208421496188203
@@ -5522,7 +5599,7 @@ PrefabInstance:
       objectReference: {fileID: 300966915287506605}
     - target: {fileID: 5887675340776634180, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
       propertyPath: m_text
-      value: Outfit 5
+      value: "Outfit 1\u200B"
       objectReference: {fileID: 0}
     - target: {fileID: 6002481594607549612, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
       propertyPath: m_Name
@@ -6183,7 +6260,7 @@ PrefabInstance:
       objectReference: {fileID: 951057039681615018}
     - target: {fileID: 5887675340776634180, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
       propertyPath: m_text
-      value: Outfit 4
+      value: "Outfit 1\u200B"
       objectReference: {fileID: 0}
     - target: {fileID: 6002481594607549612, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
       propertyPath: m_Name
@@ -6941,7 +7018,7 @@ PrefabInstance:
       objectReference: {fileID: 786484508648410916}
     - target: {fileID: 5887675340776634180, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
       propertyPath: m_text
-      value: Outfit 3
+      value: "Outfit 1\u200B"
       objectReference: {fileID: 0}
     - target: {fileID: 6002481594607549612, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
       propertyPath: m_Name
@@ -8824,6 +8901,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4775447045803972303}
     m_Modifications:
+    - target: {fileID: 192098170603919343, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+      propertyPath: m_CustomCaretColor
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 192098170603919343, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+      propertyPath: m_SelectionColor.a
+      value: 0.6392157
+      objectReference: {fileID: 0}
+    - target: {fileID: 192098170603919343, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+      propertyPath: m_SelectionColor.b
+      value: 0.43454072
+      objectReference: {fileID: 0}
+    - target: {fileID: 192098170603919343, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+      propertyPath: m_SelectionColor.g
+      value: 0.704059
+      objectReference: {fileID: 0}
+    - target: {fileID: 192098170603919343, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+      propertyPath: m_SelectionColor.r
+      value: 0.990566
+      objectReference: {fileID: 0}
     - target: {fileID: 323223754123094385, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -8930,7 +9027,7 @@ PrefabInstance:
       objectReference: {fileID: 2901106012505215480}
     - target: {fileID: 5887675340776634180, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
       propertyPath: m_text
-      value: Outfit 2
+      value: "Outfit 1\u200B"
       objectReference: {fileID: 0}
     - target: {fileID: 6002481594607549612, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
       propertyPath: m_Name
@@ -10157,10 +10254,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: AvatarAccessoryBtn
       objectReference: {fileID: 0}
-    - target: {fileID: 8676552503231614206, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -11097,18 +11190,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1476760744204482235, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
-      propertyPath: m_Maskable
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3416049645295338797, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
-      propertyPath: m_metadata.properties.Array.data[3].modified
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3416049645295338797, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
-      propertyPath: m_metadata.properties.Array.data[3].serializedObject
-      value: 
-      objectReference: {fileID: 5360382975707604610}
     - target: {fileID: 6002481594607549612, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
       propertyPath: m_Name
       value: OutfitBtn_Slot0
@@ -11118,17 +11199,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
---- !u!114 &5360382975707604610 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1476760744204482235, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
-  m_PrefabInstance: {fileID: 6781688733735768121}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &6512547775290243400 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 323223754123094385, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
@@ -12252,6 +12322,10 @@ PrefabInstance:
     - target: {fileID: 5040413862591958478, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_Name
       value: AvatarAccessoryBtn (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8568139002785842731, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
+      propertyPath: m_metadata.properties.Array.data[5].serializedValue
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8676552503231614206, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchoredPosition.y

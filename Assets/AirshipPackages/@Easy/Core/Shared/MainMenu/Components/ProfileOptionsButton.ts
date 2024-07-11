@@ -1,50 +1,26 @@
+import { ProtectedUserController } from "@Easy/Core/Client/ProtectedControllers/Airship/User/UserController";
 import { MainMenuController } from "@Easy/Core/Client/ProtectedControllers/MainMenuController";
-import { MainMenuPageType } from "@Easy/Core/Client/ProtectedControllers/MainMenuPageName";
-import { ChangeUsernameController } from "@Easy/Core/Client/ProtectedControllers/Social/ChangeUsernameController";
 import { RightClickMenuButton } from "@Easy/Core/Client/ProtectedControllers/UI/RightClickMenu/RightClickMenuButton";
 import { RightClickMenuController } from "@Easy/Core/Client/ProtectedControllers/UI/RightClickMenu/RightClickMenuController";
 import { Airship } from "../../Airship";
 import { Dependency } from "../../Flamework";
 import { Game } from "../../Game";
+import { Protected } from "../../Protected";
 import { CanvasAPI } from "../../Util/CanvasAPI";
 
 export default class ProfileOptionsButton extends AirshipBehaviour {
 	override Start(): void {
 		task.spawn(() => {
-			Game.WaitForLocalPlayerLoaded();
-			const sprite = Airship.players.GetProfilePictureSpriteAsync(Game.localPlayer.userId);
-			if (sprite) {
-				this.gameObject.GetComponent<Image>()!.sprite = sprite;
-			}
+			this.UpdatePicture();
+		});
+		Protected.user.onLocalUserUpdated.Connect(() => {
+			task.spawn(() => {
+				this.UpdatePicture();
+			});
 		});
 
 		CanvasAPI.OnClickEvent(this.gameObject, () => {
 			const options: RightClickMenuButton[] = [];
-			if (!Game.IsPortrait()) {
-				options.push({
-					text: "Settings",
-					onClick: () => {
-						Dependency<MainMenuController>().RouteToPage(MainMenuPageType.Settings);
-					},
-				});
-			}
-			// options.push({
-			// 	text: "Change Profile Picture",
-			// 	onClick: () => {},
-			// });
-			options.push({
-				text: "Change Username",
-				onClick: () => {
-					Dependency<ChangeUsernameController>().Open();
-				},
-			});
-			options.push({
-				text: "Logout",
-				onClick: () => {
-					AuthManager.ClearSavedAccount();
-					Bridge.LoadScene("Login", true, LoadSceneMode.Single);
-				},
-			});
 			if (!Game.IsMobile()) {
 				options.push({
 					text: "Quit",
@@ -59,6 +35,18 @@ export default class ProfileOptionsButton extends AirshipBehaviour {
 				options,
 			);
 		});
+	}
+
+	public UpdatePicture(): void {
+		const userController = Dependency<ProtectedUserController>();
+		userController.WaitForLocalUser();
+		if (userController.localUser) {
+			Airship.Players.GetProfilePictureAsync(userController.localUser.uid).then((texture) => {
+				if (texture) {
+					this.gameObject.GetComponent<RawImage>()!.texture = texture;
+				}
+			});
+		}
 	}
 
 	override OnDestroy(): void {}

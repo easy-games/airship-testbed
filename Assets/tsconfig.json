@@ -1,41 +1,57 @@
 {
-  "compilerOptions": {
-    "baseUrl": ".",
-    "outDir": "Typescript~/out",
-    "paths": {
-      "@*": [
-        "AirshipPackages/@*"
-      ],
-      "@easy-games/*": [
-        "Typescript~/node_modules/@easy-games/*"
-      ]
-    },
-    "allowSyntheticDefaultImports": true,
-    "downlevelIteration": true,
-    "module": "commonjs",
-    "moduleResolution": "Node",
-    "noLib": true,
-    "resolveJsonModule": true,
-    "experimentalDecorators": true,
-    "forceConsistentCasingInFileNames": true,
-    "moduleDetection": "force",
-    "strict": true,
-    "target": "ESNext",
-    "typeRoots": [
-      "Typescript~/node_modules/@easy-games"
-    ],
-    "skipLibCheck": true
-  },
-  "airship": {
-    "type": "game",
-    "package": "Typescript~",
-    "runtimePath": "AirshipPackages/@Easy/Core/Shared/Runtime"
-  },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx"
-  ],
-  "exclude": [
-    "Typescript~/node_modules"
-  ]
+	"compilerOptions": {
+		"baseUrl": ".",
+		"outDir": "Typescript~/out",
+		"paths": {
+			"@*": ["AirshipPackages/@*"]
+		},
+		"allowSyntheticDefaultImports": true,
+		"downlevelIteration": true,
+		"module": "commonjs",
+		"moduleResolution": "Node",
+		"noLib": true,
+		"resolveJsonModule": true,
+		"experimentalDecorators": true,
+		"forceConsistentCasingInFileNames": true,
+		"moduleDetection": "force",
+		"strict": true,
+		"target": "ESNext",
+		"typeRoots": ["AirshipPackages/@Easy/Core/Shared/Types"],
+		"skipLibCheck": true
+	},
+	"airship": {
+		"type": "game",
+		"package": "Typescript~",
+		"runtimePath": "AirshipPackages/@Easy/Core/Shared/Runtime"
+	},
+	"include": ["**/*.ts", "**/*.tsx"],
+	"exclude": ["Typescript~/node_modules"],
+	"typedocOptions": {
+        "entryPoints": ["AirshipPackages/@Easy/Core"],
+		"entryPointStrategy": "Expand",
+		"hideGenerator": true,
+        "out": "../GeneratedReference~",
+		"navigation": {
+			"includeCategories": true,
+			"includeGroups": false,
+			"includeFolders": true
+		},
+		"excludeInternal": true,
+		"sort": "alphabetical",
+		"visibilityFilters": {
+			"protected": false,
+			"private": false,
+			"inherited": false,
+			"external": false
+		},
+		"useTsLinkResolution": true,
+		"mergeModulesRenameDefaults": true,
+		"mergeModulesMergeMode": "project",
+		"excludeNotDocumented": true,
+		"exclude": ["**/Protected*/**", "**/MainMenu*/**", "**/Protected/**", "AirshipPackages/@Easy/Core/Shared/Flamework/flamework.ts:OnStart", "OnStart"],
+		"disableSources": true,
+		"plugin": ["typedoc-plugin-rename-defaults", "typedoc-plugin-merge-modules"],
+		// "themeColor": "#584fff",
+		"name": "Airship Core",
+    }
 }

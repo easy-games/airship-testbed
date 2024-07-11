@@ -1,7 +1,7 @@
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
-import { AccessoryInstanceDto, OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
+import { AccessoryInstanceDto, OutfitDto, OutfitPatch } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { CoreLogger } from "../Logger/CoreLogger";
 
 // TODO this needs to be moved to the main menu lua sandbox
@@ -20,7 +20,7 @@ export class AvatarPlatformAPI {
 		return `${AirshipUrl.CDN}/images/${imageId}.png`;
 	}
 
-	public static GetAllOutfits(): OutfitDto[] | undefined {
+	public static async GetAllOutfits(): Promise<OutfitDto[] | undefined> {
 		this.Log("GetAllOutfits");
 		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits`));
 		if (res.success) {
@@ -28,21 +28,23 @@ export class AvatarPlatformAPI {
 		}
 	}
 
-	public static GetEquippedOutfit(): OutfitDto | undefined {
+	public static async GetEquippedOutfit(): Promise<OutfitDto | undefined> {
 		this.Log("GetEquippedOutfit");
 		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/equipped/self`));
 		if (res.success && res.data && res.data !== "") {
 			return DecodeJSON(res.data) as OutfitDto;
+		} else {
+			CoreLogger.Error("failed to load user equipped outfit: " + (res.error ?? "Empty Data"));
 		}
 	}
 
 	public static async GetPlayerEquippedOutfit(playerId: string): Promise<OutfitDto | undefined> {
-		const res = InternalHttpManager.GetAsync(this.GetHttpUrl(`/outfits/uid/${playerId}/equipped`));
+		const res = InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/uid/${playerId}/equipped`));
 		if (res.success && res.data && res.data !== "") {
-			Debug.LogError("failed to load user outfit: " + res.error);
-			return;
+			return DecodeJSON<OutfitDto>(res.data);
+		} else {
+			CoreLogger.Error("failed to load player equipped outfit: " + (res.error ?? "Empty Data"));
 		}
-		return DecodeJSON<OutfitDto>(res.data);
 	}
 
 	public static async GetAvatarOutfit(outfitId: string): Promise<OutfitDto | undefined> {
@@ -50,6 +52,8 @@ export class AvatarPlatformAPI {
 		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/outfit-id/${outfitId}`));
 		if (res.success && res.data && res.data !== "") {
 			return DecodeJSON(res.data) as OutfitDto;
+		} else {
+			CoreLogger.Error("failed to load user outfit: " + (res.error ?? "Empty Data"));
 		}
 	}
 
@@ -98,28 +102,30 @@ export class AvatarPlatformAPI {
 		return outfit;
 	}
 
-	public static async SaveOutfitAccessories(outfitId: string, skinColor: string, instanceIds: string[]) {
-		this.Log("SaveOutfitAccessories");
-		let res = InternalHttpManager.PatchAsync(
-			this.GetHttpUrl(`outfits/outfit-id/${outfitId}`),
-			EncodeJSON({
-				accessories: instanceIds,
-				skinColor: skinColor,
-			}),
-		);
-		if (res.success) {
-			// print("Outfit Saved: " + res.data);
-			return DecodeJSON<OutfitDto>(res.data);
-		} else {
-			CoreLogger.Error("Error Saving: " + res.error);
-		}
+	public static async RenameOutfit(outfitId: string, newName: string) {
+		this.Log("RenameOutfitAccessories");
+		return this.UpdateOutfit(outfitId, {
+			name: newName,
+		});
 	}
 
-	/*public static SaveAvatarOutfit(outfit: OutfitDto) {
-		this.Log("SaveAvatarOutfit");
-		//TODO: Save Outfit to server
-		//InternalHttpManager.PatchAsync(this.GetHttpUrl(`outfits/outfit-id/${outfit.outfitId}`), EncodeJSON(outfit));
-	}*/
+	public static async SaveOutfitAccessories(outfitId: string, skinColor: string, instanceIds: string[]) {
+		this.Log("SaveOutfitAccessories");
+		return this.UpdateOutfit(outfitId, {
+			accessories: instanceIds,
+			skinColor: skinColor,
+		});
+	}
+
+	private static UpdateOutfit(outfitId: string, update: Partial<OutfitPatch>) {
+		let res = InternalHttpManager.PatchAsync(this.GetHttpUrl(`outfits/outfit-id/${outfitId}`), EncodeJSON(update));
+		if (res.success) {
+			const decodedResult = DecodeJSON<OutfitDto>(res.data);
+			return decodedResult;
+		} else {
+			CoreLogger.Error("Error Updating Outfit: " + res.error);
+		}
+	}
 
 	public static async LoadImage(fileId: string) {
 		let res = InternalHttpManager.GetAsync(this.GetImageUrl(fileId));

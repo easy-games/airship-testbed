@@ -2,6 +2,7 @@ export interface PublicUser {
 	uid: string;
 	username: string;
 	statusText?: string;
+	profileImageId?: string;
 }
 
 export const enum UserStatus {
@@ -31,6 +32,7 @@ interface UserInGameStatus extends BaseUserStatus<UserStatus.IN_GAME> {
 	game: { name: string; icon: string };
 	gameId: string;
 	serverId?: string;
+	profileImageId?: string;
 }
 
 export type UserStatusData = UserOfflineStatus | UserOnlineStatus | UserInGameStatus;

@@ -4,31 +4,30 @@ import {
 	ServerBridgeApiGetUsersById,
 	UserServiceBridgeTopics,
 } from "@Easy/Core/Server/ProtectedServices/Airship/User/UserService";
-import { Platform } from "@Easy/Core/Shared/Airship";
-import { PublicUser } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipUser";
 import { AirshipUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
-import { OnStart, Service } from "@Easy/Core/Shared/Flamework";
+import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { Result } from "@Easy/Core/Shared/Types/Result";
 
+/**
+ * Provides access to user information.
+ */
 @Service({})
-export class AirshipUserService implements OnStart {
+export class AirshipUserService {
 	constructor() {
 		if (!Game.IsServer()) return;
-
-		Platform.server.user = this;
 	}
 
-	OnStart(): void {}
+	protected OnStart(): void {}
 
 	/**
 	 * Gets a single user by their username.
 	 * @param username The username of the user.
 	 * @returns A user object
 	 */
-	public async GetUserByUsername(username: string): Promise<Result<PublicUser | undefined, undefined>> {
+	public async GetUserByUsername(username: string): Promise<ReturnType<ServerBridgeApiGetUserByUsername>> {
 		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiGetUserByUsername>(
 			UserServiceBridgeTopics.GetUserByUsername,
+			LuauContext.Protected,
 			username,
 		);
 	}
@@ -38,9 +37,10 @@ export class AirshipUserService implements OnStart {
 	 * @param userId The users ID
 	 * @returns A user object
 	 */
-	public async GetUserById(userId: string): Promise<Result<PublicUser | undefined, undefined>> {
+	public async GetUserById(userId: string): Promise<ReturnType<ServerBridgeApiGetUserById>> {
 		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiGetUserById>(
 			UserServiceBridgeTopics.GetUserById,
+			LuauContext.Protected,
 			userId,
 		);
 	}
@@ -56,9 +56,10 @@ export class AirshipUserService implements OnStart {
 	public async GetUsersById(
 		userIds: string[],
 		strict: boolean = false,
-	): Promise<Result<Record<string, PublicUser | undefined>, undefined>> {
+	): Promise<ReturnType<ServerBridgeApiGetUsersById>> {
 		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiGetUsersById>(
 			UserServiceBridgeTopics.GetUsersById,
+			LuauContext.Protected,
 			userIds,
 			strict,
 		);

@@ -1,4 +1,5 @@
-import { OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
+import { Singleton } from "@Easy/Core/Shared/Flamework";
+import { Game } from "../Game";
 
 interface UnitySceneManagerConstructor {
 	new (): UnitySceneManagerConstructor;
@@ -12,10 +13,32 @@ declare const SceneManager: UnitySceneManagerConstructor;
  * @protected
  */
 @Singleton()
-export class ProtectedSceneManagerSingleton implements OnStart {
+export class ProtectedSceneManagerSingleton {
 	private protectedSceneNames = ["corescene", "mainmenu", "login"];
 
-	OnStart(): void {
+	constructor() {
+		if (Game.IsInGame()) {
+			const scriptingManager = GameObject.Find("CoreScriptingManager").GetComponent<CoreScriptingManager>()!;
+			scriptingManager.OnClientPresenceChangeStart((scene, connection, added) => {
+				contextbridge.broadcast(
+					"SceneManager:OnClientPresenceChangeStart",
+					scene.name,
+					connection.ClientId,
+					added,
+				);
+			});
+			scriptingManager.OnClientPresenceChangeStart((scene, connection, added) => {
+				contextbridge.broadcast(
+					"SceneManager:OnClientPresenceChangeEnd",
+					scene.name,
+					connection.ClientId,
+					added,
+				);
+			});
+		}
+	}
+
+	protected OnStart(): void {
 		contextbridge.callback<(sceneName: string) => void>(
 			"SceneManager:LoadGlobalSceneByName",
 			(fromContext, sceneName) => {
@@ -52,7 +75,7 @@ export class ProtectedSceneManagerSingleton implements OnStart {
 					return;
 				}
 
-				Bridge.LoadScene(sceneName, false, LoadSceneMode.Additive);
+				Bridge.LoadSceneFromAssetBundle(sceneName, LoadSceneMode.Additive);
 			},
 		);
 

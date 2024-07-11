@@ -1,8 +1,9 @@
-import { Airship } from "@Easy/Core/Shared/Airship";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import { Protected } from "@Easy/Core/Shared/Protected";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { MainMenuSingleton } from "../../../Singletons/MainMenuSingleton";
+import { ProtectedPlayersSingleton } from "../../../Singletons/ProtectedPlayersSingleton";
 import PlayerEntry from "./PlayerEntry";
 
 export default class PlayerList extends AirshipBehaviour {
@@ -13,16 +14,16 @@ export default class PlayerList extends AirshipBehaviour {
 
 	public OnEnable(): void {
 		task.spawn(() => {
-			Airship.WaitUntilReady();
-			if (this.gameObject.active) {
+			const protectedPlayers = Dependency<ProtectedPlayersSingleton>();
+			if (this.gameObject.activeInHierarchy) {
 				this.RenderAll();
 				this.bin.Add(
-					Airship.players.onPlayerJoined.Connect(() => {
+					protectedPlayers.onPlayerJoined.Connect(() => {
 						this.RenderAll();
 					}),
 				);
 				this.bin.Add(
-					Airship.players.onPlayerDisconnected.Connect(() => {
+					protectedPlayers.onPlayerDisconnected.Connect(() => {
 						this.RenderAll();
 					}),
 				);
@@ -42,7 +43,7 @@ export default class PlayerList extends AirshipBehaviour {
 		this.content.gameObject.ClearChildren();
 
 		let i = 0;
-		for (let player of Airship.players.GetPlayers()) {
+		for (let player of Protected.protectedPlayers.players) {
 			const go = Object.Instantiate(this.playerEntryPrefab, this.content);
 			const entry = go.GetAirshipComponent<PlayerEntry>()!;
 

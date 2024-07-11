@@ -1,14 +1,14 @@
 import { MainMenuBlockSingleton } from "@Easy/Core/Client/ProtectedControllers/Settings/MainMenuBlockSingleton";
-import { FriendsController } from "@Easy/Core/Client/ProtectedControllers/Social/FriendsController";
+import { ProtectedFriendsController } from "@Easy/Core/Client/ProtectedControllers/Social/FriendsController";
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
-import { Player } from "@Easy/Core/Shared/Player/Player";
+import { ProtectedPlayer } from "@Easy/Core/Shared/Player/ProtectedPlayer";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
 
 export default class PlayerEntry extends AirshipBehaviour {
 	public bgImage!: Image;
-	public profileImage!: Image;
+	public profileImage!: RawImage;
 	public usernameText!: TMP_Text;
 	public addFriendBtn!: GameObject;
 	public reportBtn!: GameObject;
@@ -17,11 +17,13 @@ export default class PlayerEntry extends AirshipBehaviour {
 
 	public OnEnable(): void {}
 
-	public Init(player: Player): void {
-		task.spawn(() => {
-			const profileSprite = Airship.players.GetProfilePictureSpriteAsync(player.userId);
-			if (profileSprite) {
-				this.profileImage.sprite = profileSprite;
+	public Init(player: ProtectedPlayer): void {
+		task.spawn(async () => {
+			const texture = await Airship.Players.GetProfilePictureAsync(
+				player.userId,
+			);
+			if (texture) {
+				this.profileImage.texture = texture;
 			}
 
 			this.usernameText.text = player.username;
@@ -31,7 +33,7 @@ export default class PlayerEntry extends AirshipBehaviour {
 			if (showAddFriend) {
 				this.bin.AddEngineEventConnection(
 					CanvasAPI.OnClickEvent(this.addFriendBtn, () => {
-						const res = Dependency<FriendsController>().SendFriendRequest(player.username);
+						const res = Dependency<ProtectedFriendsController>().SendFriendRequest(player.username);
 						if (res) {
 							this.addFriendBtn.SetActive(false);
 						}
@@ -43,19 +45,19 @@ export default class PlayerEntry extends AirshipBehaviour {
 			if (Dependency<MainMenuBlockSingleton>().IsUserIdBlocked(player.userId)) {
 				this.reportBtn.GetComponent<Image>()!.color = new Color(1, 1, 1, 0.2);
 			}
-			this.bin.AddEngineEventConnection(
-				CanvasAPI.OnClickEvent(this.reportBtn, () => {
-					task.spawn(() => {
-						if (Dependency<MainMenuBlockSingleton>().IsUserIdBlocked(player.userId)) {
-							Dependency<MainMenuBlockSingleton>().UnblockUserAsync(player.userId);
-							this.reportBtn.GetComponent<Image>()!.color = new Color(1, 1, 1, 1);
-						} else {
-							Dependency<MainMenuBlockSingleton>().BlockUserAsync(player.userId, player.username);
-							this.reportBtn.GetComponent<Image>()!.color = new Color(1, 1, 1, 0.2);
-						}
-					});
-				}),
-			);
+			// this.bin.AddEngineEventConnection(
+			// 	CanvasAPI.OnClickEvent(this.reportBtn, () => {
+			// 		task.spawn(() => {
+			// 			if (Dependency<MainMenuBlockSingleton>().IsUserIdBlocked(player.userId)) {
+			// 				Dependency<MainMenuBlockSingleton>().UnblockUserAsync(player.userId);
+			// 				this.reportBtn.GetComponent<Image>()!.color = new Color(1, 1, 1, 1);
+			// 			} else {
+			// 				Dependency<MainMenuBlockSingleton>().BlockUserAsync(player.userId, player.username);
+			// 				this.reportBtn.GetComponent<Image>()!.color = new Color(1, 1, 1, 0.2);
+			// 			}
+			// 		});
+			// 	}),
+			// );
 		});
 	}
 

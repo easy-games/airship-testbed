@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2966892404887356708}
   - component: {fileID: 5662048739917201897}
-  - component: {fileID: 5652156723295741656}
   - component: {fileID: 4159762357120403140}
+  - component: {fileID: 6446976047074416891}
   m_Layer: 0
   m_Name: Torso - Combat Fatigue
   m_TagString: Untagged
@@ -61,7 +61,7 @@ SkinnedMeshRenderer:
   - {fileID: 2100000, guid: b008afacb21fd2d4d8ac1b6189bd10e6, type: 2}
   - {fileID: 2100000, guid: b008afacb21fd2d4d8ac1b6189bd10e6, type: 2}
   - {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
-  - {fileID: 2100000, guid: 2601eaeb27952db4eb36caec40012388, type: 2}
+  - {fileID: 2100000, guid: a2d7327811c038f4e963df292a5969c9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -117,38 +117,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.00000011920929, y: 0.0036201775, z: 1.0998771}
     m_Extent: {x: 0.6027287, y: 0.23655283, z: 0.30092323}
   m_DirtyAABB: 0
---- !u!114 &5652156723295741656
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3942347132550620076}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colorSettings:
-  - materialColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 0.07058824}
-    emissiveMix: 0
-  - materialColor: {r: 1, g: 0.9088848, b: 0.8160377, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-  - materialColor: {r: 0.45122823, g: 0.5660378, b: 0.5434859, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-  - materialColor: {r: 0.5471698, g: 0.5471698, b: 0.5471698, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-  - materialColor: {r: 0.16981131, g: 0.16941081, b: 0.16901031, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-  - materialColor: {r: 1, g: 0.98011935, b: 0.6179246, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-  addedByEditorScript: 0
 --- !u!114 &4159762357120403140
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -165,3 +133,23 @@ MonoBehaviour:
   accessorySlot: 5
   visibilityMode: 0
   skinnedToCharacter: 1
+--- !u!114 &6446976047074416891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3942347132550620076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - baseColor: {r: 1, g: 1, b: 1, a: 1}
+  - baseColor: {r: 1, g: 0.909804, b: 0.81568635, a: 1}
+  - baseColor: {r: 0.45098042, g: 0.5647059, b: 0.54509807, a: 1}
+  - baseColor: {r: 0.54901963, g: 0.54901963, b: 0.54901963, a: 1}
+  - baseColor: {r: 0.16862746, g: 0.16862746, b: 0.16862746, a: 1}
+  - baseColor: {r: 1, g: 0.9803922, b: 0.61960787, a: 1}
+  addedByEditorScript: 0

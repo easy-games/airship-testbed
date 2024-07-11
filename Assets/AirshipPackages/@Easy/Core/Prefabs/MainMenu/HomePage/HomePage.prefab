@@ -533,8 +533,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 667.5, y: 0}
-  m_SizeDelta: {x: 1335, y: 0}
+  m_AnchoredPosition: {x: 641, y: 0}
+  m_SizeDelta: {x: 1282, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &8364502986475131111
 MonoBehaviour:
@@ -3960,7 +3960,6 @@ MonoBehaviour:
   m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/HomePageComponent.lua
   m_error: 0
   m_yielded: 0
-  m_assetPath: 
   m_canResume: 0
   m_asyncYield: 0
   m_onUpdateHandle: -1
@@ -3979,6 +3978,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -3993,6 +3993,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -4007,6 +4008,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -4021,6 +4023,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -4034,12 +4037,14 @@ MonoBehaviour:
         objectType: 
         serializedItems: []
         objectRefs: []
-      refPath: 
+      refPath: AirshipPackages/@Easy/Core/Client/ProtectedControllers/MainMenuPageName@MainMenuPageType
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: Home
       serializedObject: {fileID: 0}
       modified: 0
+    displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0
 --- !u!1 &9165046556870726425

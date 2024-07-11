@@ -6,7 +6,7 @@ let startTime = os.time();
  * Time synced between server and client.
  */
 export function SharedTime() {
-	return InstanceFinder.TimeManager.TicksToTime(TickType.Tick);
+	return InstanceFinder.TimeManager.TickTypeToTime(TickType.Tick);
 }
 
 export function WaitFrame() {

@@ -1,5 +1,6 @@
 export interface ClientSettingsFile {
 	mouseSensitivity: number;
+	mouseSmoothing: number;
 	touchSensitivity: number;
 	globalVolume: number;
 	ambientVolume: number;
@@ -8,4 +9,5 @@ export interface ClientSettingsFile {
 	screenshotRenderHD: boolean;
 	statusText: string;
 	micDeviceName: string | undefined;
+	microphoneEnabled: boolean;
 }

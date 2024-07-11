@@ -1,43 +1,51 @@
+import { Airship } from "../Airship";
+import { CameraReferences } from "../Camera/CameraReferences";
 import { CoreRefs } from "../CoreRefs";
+import AirshipCharacterViewmodel from "./AirshipCharacterViewmodel";
 
 export class Viewmodel {
-	public viewmodelGo: GameObject;
-	public viewmodelTransform: Transform;
-	public animancer: AnimancerComponent;
-	public accessoryBuilder: AccessoryBuilder;
+	public viewmodelGo!: GameObject;
+	public viewmodelTransform!: Transform;
+	public anim!: Animator;
+	public accessoryBuilder!: AccessoryBuilder;
 	public rig!: CharacterRig;
 
 	constructor() {
-		this.viewmodelGo = Object.Instantiate(
-			AssetBridge.Instance.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/Character/CharacterViewmodel.prefab"),
-			CoreRefs.rootTransform,
-		);
-		this.viewmodelTransform = this.viewmodelGo.transform;
-		this.viewmodelTransform.position = new Vector3(10_000, 0, 10_000);
+		this.InstantiateFromPrefab(Airship.Characters.GetDefaultViewmodelPrefab());
+	}
 
-		const refs = this.viewmodelGo.GetComponent<GameObjectReferences>()!;
-		const rig = refs.GetValue("Refs", "Rig");
-		this.animancer = rig.GetComponent<AnimancerComponent>()!;
+	public InstantiateFromPrefab(prefab: GameObject): void {
+		let parent = CameraReferences.viewmodelCamera?.transform;
+		if (!parent) {
+			print("Missing viewmodel camera.");
+			parent = Camera.main.transform;
+		}
+		if (!parent) {
+			parent = CoreRefs.rootTransform;
+		}
+		const go = Object.Instantiate(prefab, parent);
+		go.transform.localPosition = new Vector3(3.40097417e-9, -1.541525066, -0.0108257439);
+		go.transform.localRotation = Quaternion.identity;
+		go.name = "CharacterViewmodel";
+		this.SetViewmodelGameObject(go);
+	}
 
-		const mask = AssetBridge.Instance.LoadAsset<AvatarMask>(
-			"AirshipPackages/@Easy/Core/Prefabs/Character/Animations/AvatarMask_Viewmodel.mask",
-		);
-		for (let i = 0; i <= 4; i++) {
-			this.animancer.Layers.SetMask(i, mask);
+	public SetViewmodelGameObject(go: GameObject): void {
+		if (this.viewmodelGo) {
+			Object.Destroy(this.viewmodelGo);
 		}
 
-		this.rig = rig.GetComponent<CharacterRig>()!;
+		this.viewmodelGo = go;
+		this.viewmodelTransform = this.viewmodelGo.transform;
 
-		const content = this.viewmodelTransform.GetChild(0).gameObject;
-		this.accessoryBuilder = content.GetComponent<AccessoryBuilder>()!;
+		const characterViewmodelComponent = this.viewmodelGo.GetAirshipComponent<AirshipCharacterViewmodel>();
+		if (!characterViewmodelComponent) {
+			error("Viewmodel is missing an AirshipCharacterViewmodel component.");
+		}
 
-		// this.rootLayer = this.animancer.Layers.GetLayer(0);
-		// this.rootLayer.SetDebugName("Root");
-
-		// this.layer1 = this.animancer.Layers.GetLayer(1);
-		// this.layer2 = this.animancer.Layers.GetLayer(2);
-		// this.layer3 = this.animancer.Layers.GetLayer(3);
-		// this.layer4 = this.animancer.Layers.GetLayer(4);
+		this.rig = characterViewmodelComponent.rig;
+		this.anim = characterViewmodelComponent.animator;
+		this.accessoryBuilder = characterViewmodelComponent.accessoryBuilder;
 	}
 
 	public Destroy(): void {

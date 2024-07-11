@@ -55,7 +55,7 @@ export default class GameImageButton extends AirshipBehaviour {
 				if (btn === PointerButton.LEFT) {
 					if (dir === PointerDirection.DOWN) {
 						startPos = rect.localPosition;
-						rect.TweenLocalPosition(startPos.sub(new Vector3(0, 2, 0)), 0.05);
+						NativeTween.LocalPosition(rect, startPos.sub(new Vector3(0, 2, 0)), 0.05);
 					} else if (startPos) {
 						rect.localPosition = startPos;
 						startPos = undefined;

@@ -33,6 +33,9 @@ interface Time {
 	time: number;
 	deltaTime: number;
 	fixedDeltaTime: number;
+	frameCount: number;
+	timeScale: number;
+	unscaledTime: number;
 }
 
 declare const Time: Time;
@@ -55,6 +58,7 @@ interface PlayerInfo extends Component {
 	userId: SyncVar<string>;
 	username: SyncVar<string>;
 	usernameTag: SyncVar<string>;
+	profileImageId: SyncVar<string>;
 	voiceChatAudioSource: AudioSource;
 }
 
@@ -66,6 +70,7 @@ interface PlayerInfoDto {
 	clientId: number;
 	userId: string;
 	username: string;
+	profileImageId: string;
 	gameObject: GameObject;
 }
 
@@ -78,7 +83,9 @@ interface MoveModifier {
 
 interface CharacterMovement extends Component {
 	OnStateChanged(callback: (state: CharacterState) => void): EngineEventConnection;
-	OnCustomDataFlushed(callback: () => void): EngineEventConnection;
+	OnSetCustomData(callback: () => void): EngineEventConnection;
+	OnBeginMove(callback: (inputData: MoveInputData, isReplay: boolean) => void): EngineEventConnection;
+	OnEndMove(callback: (inputData: MoveInputData, isReplay: boolean) => void): EngineEventConnection;
 	OnDispatchCustomData(callback: (tick: number, customData: BinaryBlob) => void): EngineEventConnection;
 	OnImpactWithGround(callback: (velocity: Vector3) => void): EngineEventConnection;
 	OnAdjustMove(callback: (modifier: MoveModifier) => void): EngineEventConnection;
@@ -104,14 +111,24 @@ interface CharacterMovement extends Component {
 	IsAllowFlight(): boolean;
 	Teleport(position: Vector3): void;
 	TeleportAndLook(position: Vector3, lookVector: Vector3): void;
-	ApplyImpulse(impulse: Vector3): void;
-	ApplyImpulseInAir(impulse: Vector3, ignoreYIfInAir = false): void;
+	AddImpulse(impulse: Vector3): void;
+	SetImpulse(impulse: Vector3): void;
+	IgnoreGroundCollider(collider: Collider, ignore: boolean): void;
+	IsIgnoringCollider(collider: Collider): boolean;
 	SetVelocity(velocity: Vector3): void;
 	GetVelocity(): Vector3;
 	DisableMovement();
 	EnableMovement();
 	GetState(): CharacterState;
 	UpdateSyncTick(): void;
+	GetNextTick(): number;
+	GetPrevTick(): number;
+
+	rootTransform: Transform; //The true position transform
+	networkTransform: Transform; //The interpolated network transform
+	graphicTransform: Transform; //A transform we can animate
+
+	moveData: CharacterMoveData;
 
 	groundedBlockId: number;
 	groundedBlockPos: Vector3;
@@ -120,6 +137,13 @@ interface CharacterMovement extends Component {
 	disableInput: boolean;
 
 	animationHelper: CharacterAnimationHelper;
+
+	standingCharacterHeight: number;
+	currentCharacterHeight: number;
+	characterRadius: number;
+	characterHalfExtents: Vector3;
+	groundCollisionLayerMask: LayerMask;
+	mainCollider: BoxCollider;
 }
 
 interface Nullable<T> {
@@ -385,7 +409,9 @@ interface CanvasUIEvents extends Component {
 
 interface CanvasUIEventInterceptor extends Component {
 	OnPointerEvent(callback: (instanceId: number, direction: number, button: number) => void): EngineEventConnection;
-	OnHoverEvent(callback: (instanceId: number, hoverState: number) => void): EngineEventConnection;
+	OnHoverEvent(
+		callback: (instanceId: number, hoverState: number, data: PointerEventData) => void,
+	): EngineEventConnection;
 	OnSubmitEvent(callback: (instanceId: number) => void): EngineEventConnection;
 	OnInputFieldSubmitEvent(callback: (instanceId: number, data: string) => void): EngineEventConnection;
 	OnSelectEvent(callback: (instanceId: number) => void): EngineEventConnection;
@@ -405,7 +431,7 @@ interface CanvasUIEventInterceptor extends Component {
 	/**
 	 * Sent to the dropped upon target.
 	 */
-	OnDropEvent(callback: (instanceId: number) => void): EngineEventConnection;
+	OnDropEvent(callback: (instanceId: number, data: PointerEventData) => void): EngineEventConnection;
 }
 
 interface CanvasUIBridgeConstructor {
@@ -427,28 +453,28 @@ declare namespace debug {
 	): T extends `${infer A}${infer B}${infer C}${infer D}${infer E}${infer _}`
 		? LuaTuple<TS.InfoFlags<[A, B, C, D, E]>>
 		: T extends `${infer A}${infer B}${infer C}${infer D}${infer _}`
-			? LuaTuple<TS.InfoFlags<[A, B, C, D]>>
-			: T extends `${infer A}${infer B}${infer C}${infer _}`
-				? LuaTuple<TS.InfoFlags<[A, B, C]>>
-				: T extends `${infer A}${infer B}${infer _}`
-					? LuaTuple<TS.InfoFlags<[A, B]>>
-					: T extends `${infer A}${infer _}`
-						? LuaTuple<TS.InfoFlags<[A]>>
-						: LuaTuple<[unknown, unknown, unknown, unknown, unknown]>;
+		? LuaTuple<TS.InfoFlags<[A, B, C, D]>>
+		: T extends `${infer A}${infer B}${infer C}${infer _}`
+		? LuaTuple<TS.InfoFlags<[A, B, C]>>
+		: T extends `${infer A}${infer B}${infer _}`
+		? LuaTuple<TS.InfoFlags<[A, B]>>
+		: T extends `${infer A}${infer _}`
+		? LuaTuple<TS.InfoFlags<[A]>>
+		: LuaTuple<[unknown, unknown, unknown, unknown, unknown]>;
 	function info<T extends string>(
 		functionOrLevel: Callback | number,
 		options: T,
 	): T extends `${infer A}${infer B}${infer C}${infer D}${infer E}${infer _}`
 		? LuaTuple<TS.InfoFlags<[A, B, C, D, E]>>
 		: T extends `${infer A}${infer B}${infer C}${infer D}${infer _}`
-			? LuaTuple<TS.InfoFlags<[A, B, C, D]>>
-			: T extends `${infer A}${infer B}${infer C}${infer _}`
-				? LuaTuple<TS.InfoFlags<[A, B, C]>>
-				: T extends `${infer A}${infer B}${infer _}`
-					? LuaTuple<TS.InfoFlags<[A, B]>>
-					: T extends `${infer A}${infer _}`
-						? LuaTuple<TS.InfoFlags<[A]>>
-						: LuaTuple<[unknown, unknown, unknown, unknown, unknown]>;
+		? LuaTuple<TS.InfoFlags<[A, B, C, D]>>
+		: T extends `${infer A}${infer B}${infer C}${infer _}`
+		? LuaTuple<TS.InfoFlags<[A, B, C]>>
+		: T extends `${infer A}${infer B}${infer _}`
+		? LuaTuple<TS.InfoFlags<[A, B]>>
+		: T extends `${infer A}${infer _}`
+		? LuaTuple<TS.InfoFlags<[A]>>
+		: LuaTuple<[unknown, unknown, unknown, unknown, unknown]>;
 }
 
 interface TimeManager {
@@ -464,6 +490,7 @@ interface LayerMask {
 	NameToLayer(layerName: string): number;
 	LayerToName(layer: number): string;
 	InvertMask(mask: number): number;
+	value: number;
 }
 declare const LayerMask: LayerMask;
 
@@ -551,29 +578,31 @@ interface MeshProcessorConstructor {
 }
 declare const MeshProcessor: MeshProcessorConstructor;
 
-declare const enum CharacterState {
-	Idle = 0,
-	Running = 1,
-	Jumping = 2,
-	Sprinting = 3,
-	Sliding = 4,
-	Crouching = 5,
-}
-
 interface CharacterAnimationHelper extends Component {
-	viewmodelAnimancer: AnimancerComponent;
-	worldmodelAnimancer: AnimancerComponent;
+	animator: Animator;
 	SetForceLookForward(forceLookForward: boolean): void;
 	SetFirstPerson(firstPerson: boolean): void;
 	SetRootMovementLayer(itemInHand: boolean): void;
 	ClearStatesOnNonRootLayers(): void;
 	SetState(newState: CharacterState, force = false, noRootLayerFade = false);
-	PlayRoot(clip: AnimationClip, options: AnimationClipOptions): AnimancerState | undefined;
-	PlayRootOneShot(clip: AnimationClip): AnimancerState | undefined;
-	PlayOneShot(clip: AnimationClip, layer: number): AnimancerState | undefined;
-	Play(clip: AnimationClip, layerIndex: number, options: AnimationClipOptions): AnimancerState | undefined;
-	GetPlayingState(layerIndex: number): AnimancerState | undefined;
 	SetVelocity(vel: Vector3);
+	SetGrounded(grounded: boolean);
+	PlayAnimation(clip: AnimationClip, layer: CharacterAnimationLayer);
+	StopAnimation(layer: CharacterAnimationLayer);
+}
+
+declare const enum CharacterAnimationLayer {
+	/** Recommended layer for item idle animations  */
+	OVERRIDE_1 = 1,
+	/** Recommended layer for low-priority animations  */
+	OVERRIDE_2 = 2,
+	/** Recommended layer for medium-priority animations */
+	OVERRIDE_3 = 3,
+	/** Highest priority, recommended for high-priority animations */
+	OVERRIDE_4 = 4,
+
+	/** Layer with an upper body mask. */
+	UPPER_BODY_1 = 5,
 }
 
 interface AnimationClipOptions {
@@ -648,7 +677,8 @@ interface SocketManager {
 	SetScriptListening(val: boolean): void;
 	EmitAsync(eventName: string, data: string): void;
 	Instance: {
-		OnEvent(callback: (eventName: string, data: string) => void): void;
+		OnEvent(callback: (eventName: string, data: string) => void): EngineEventConnection;
+		OnDisconnected(callback: (disconnectReason: string) => void): EngineEventConnection;
 	};
 }
 declare const SocketManager: SocketManager;
@@ -928,6 +958,7 @@ interface SteamLuauAPIConstructor {
 	SetRichPresence(key: string, tag: string): boolean;
 
 	OnRichPresenceGameJoinRequest(callback: (connectStr: string, steamId: number) => void): EngineEventConnection;
+	OnNewLaunchParams(callback: (gameId: string, serverId: string, customData: string) => void): EngineEventConnection;
 	ProcessPendingJoinRequests(): void;
 }
 declare const SteamLuauAPI: SteamLuauAPIConstructor;
@@ -961,4 +992,27 @@ interface AirshipLongPress extends MonoBehaviour {
 interface RectTransform {
 	IsVisibleFrom(camera: Camera): boolean;
 	IsFullyVisibleFrom(camera: Camera): boolean;
+}
+
+interface CoreScriptingManager extends MonoBehaviour {
+	OnClientPresenceChangeStart(
+		callback: (scene: Scene, connection: NetworkConnection, added: boolean) => void,
+	): EngineEventConnection;
+	OnClientPresenceChangeEnd(
+		callback: (scene: Scene, connection: NetworkConnection, added: boolean) => void,
+	): EngineEventConnection;
+}
+
+interface AnimatorOverrideController extends RuntimeAnimatorController {
+	SetClip(name: string, clip: AnimationClip): void;
+	ApplyOverrides(): void;
+	overridesCount: number;
+}
+
+interface ServerBootstrap {
+	onProcessExit(callback: () => void): void;
+}
+
+interface TerrainData {
+	RemoveTree(treeIndex: number): void;
 }

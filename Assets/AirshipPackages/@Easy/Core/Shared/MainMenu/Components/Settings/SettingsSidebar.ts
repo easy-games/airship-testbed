@@ -21,6 +21,7 @@ export default class SettingsSidebar extends AirshipBehaviour {
 
 	public SetSelectedTab(tab: SettingsTabButton): void {
 		for (let other of this.tabBtns) {
+			if (other.tab === undefined) continue;
 			if (other.gameObject === tab.gameObject) {
 				other.SetSelected(true);
 				other.tab.SetActive(true);

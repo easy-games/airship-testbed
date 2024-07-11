@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 3851061513389562022}
   - component: {fileID: 412951758622717665}
   - component: {fileID: 8799250001577924300}
-  - component: {fileID: 6108384125851767288}
   - component: {fileID: 2752578049309831962}
+  - component: {fileID: 1128166523642080220}
   m_Layer: 0
   m_Name: Shroom
   m_TagString: Untagged
@@ -29,8 +29,8 @@ Transform:
   m_GameObject: {fileID: 6922455638208800686}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: 2, y: -1, z: -2}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -0, y: -1.48, z: 0.03}
+  m_LocalScale: {x: 0.65, y: 0.65, z: 0.65}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -88,26 +88,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &6108384125851767288
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6922455638208800686}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colorSettings:
-  - materialColor: {r: 1, g: 0.88113207, b: 0.7028302, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-  - materialColor: {r: 1, g: 0.2688679, b: 0.32910088, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-  addedByEditorScript: 0
 --- !u!114 &2752578049309831962
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -120,7 +100,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b74917b00f1d374c9a7136917a61ddf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serverClassId: 
-  accessorySlot: 0
+  serverClassId: 546fb29a-ccd2-4fe3-8416-d926a12a56e1
+  accessorySlot: 1
   visibilityMode: 0
   skinnedToCharacter: 0
+--- !u!114 &1128166523642080220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6922455638208800686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - baseColor: {r: 1, g: 0.882353, b: 0.7019608, a: 1}
+  - baseColor: {r: 1, g: 0.27058825, b: 0.32941177, a: 1}
+  addedByEditorScript: 0

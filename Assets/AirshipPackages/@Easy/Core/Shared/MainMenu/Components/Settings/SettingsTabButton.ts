@@ -1,13 +1,14 @@
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI, HoverState } from "@Easy/Core/Shared/Util/CanvasAPI";
-import { Theme } from "@Easy/Core/Shared/Util/Theme";
+import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import SettingsSidebar from "./SettingsSidebar";
 
 export default class SettingsTabButton extends AirshipBehaviour {
-	public tab!: GameObject;
+	public tab?: GameObject;
 	public bgImage!: Image;
 	public text!: TMP_Text;
 	public iconImage!: Image;
+	public dangerBtn = false;
 
 	private bin = new Bin();
 	private sidebar!: SettingsSidebar;
@@ -24,10 +25,19 @@ export default class SettingsTabButton extends AirshipBehaviour {
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnHoverEvent(this.gameObject, (hoverState) => {
 				if (this.selected) return;
+
+				let color = this.bgImage.color;
 				if (hoverState === HoverState.ENTER) {
-					this.bgImage.color = new Color(1, 1, 1, 0.02);
+					color.a = 0.5;
 				} else {
-					this.bgImage.color = new Color(1, 1, 1, 0);
+					color.a = 0;
+				}
+				this.bgImage.color = color;
+				if (this.dangerBtn) {
+					this.text.color =
+						hoverState === HoverState.ENTER ? ColorUtil.HexToColor("#FF6D6D") : new Color(1, 1, 1, 0.8);
+					this.iconImage.color =
+						hoverState === HoverState.ENTER ? ColorUtil.HexToColor("#FF6D6D") : new Color(1, 1, 1, 0.8);
 				}
 			}),
 		);
@@ -39,14 +49,20 @@ export default class SettingsTabButton extends AirshipBehaviour {
 
 	public SetSelected(val: boolean) {
 		this.selected = val;
+		let color = this.bgImage.color;
 		if (val) {
-			this.bgImage.color = Theme.primary;
-			this.text.color = new Color(1, 1, 1, 1);
-			this.iconImage.color = new Color(1, 1, 1, 1);
+			color.a = 1;
+			// this.text.color = new Color(1, 1, 1, 1);
+			// this.iconImage.color = new Color(1, 1, 1, 1);
 		} else {
-			this.bgImage.color = new Color(0, 0, 0, 0);
-			this.text.color = new Color(1, 1, 1, 0.8);
-			this.iconImage.color = new Color(1, 1, 1, 0.8);
+			color.a = 0;
+			// this.text.color = new Color(1, 1, 1, 0.8);
+			// this.iconImage.color = new Color(1, 1, 1, 0.8);
+		}
+		this.bgImage.color = color;
+		if (this.dangerBtn) {
+			this.text.color = val ? ColorUtil.HexToColor("#FF6D6D") : new Color(1, 1, 1, 0.8);
+			this.iconImage.color = val ? ColorUtil.HexToColor("#FF6D6D") : new Color(1, 1, 1, 0.8);
 		}
 	}
 }

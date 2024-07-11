@@ -3,6 +3,7 @@ import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 import { SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { Spring } from "@Easy/Core/Shared/Util/Spring";
 import { OnLateUpdate, OnUpdate } from "@Easy/Core/Shared/Util/Timer";
+import { Airship } from "../Airship";
 import { CameraMode } from "./CameraMode";
 import { CameraReferences } from "./CameraReferences";
 import { CameraTransform } from "./CameraTransform";
@@ -28,8 +29,6 @@ export class CameraSystem {
 
 	private enabled = true;
 	private readonly enabledBin = new Bin();
-
-	private fovEnabled = true;
 
 	public GetActiveCamera(): Camera {
 		return CameraReferences.mainCamera!;
@@ -75,7 +74,7 @@ export class CameraSystem {
 
 			CameraReferences.cameraHolder!.SetPositionAndRotation(camTransform.position, camTransform.rotation);
 			this.currentMode.OnPostUpdate(CameraReferences.mainCamera!);
-			if (this.fovEnabled) {
+			if (Airship.CharacterCamera.IsFOVManaged()) {
 				for (const [cameraType, fovState] of this.fovStateMap) {
 					if (!fovState.fovSpringMoving) continue;
 					this.UpdateFOVSpring(cameraType, fovState, dt);
@@ -119,11 +118,6 @@ export class CameraSystem {
 		} else {
 			this.OnDisabled();
 		}
-	}
-
-	public SetFOVUpdateEnabled(enabled: boolean) {
-		if (this.fovEnabled === enabled) return;
-		this.fovEnabled = enabled;
 	}
 
 	/**
@@ -228,7 +222,7 @@ export class CameraSystem {
 				break;
 			case CharacterCameraType.FIRST_PERSON:
 			case CharacterCameraType.THIRD_PERSON:
-				relevantCameras = [CameraReferences.mainCamera!, CameraReferences.uiCamera!];
+				relevantCameras = [CameraReferences.mainCamera!];
 				break;
 		}
 		return relevantCameras;

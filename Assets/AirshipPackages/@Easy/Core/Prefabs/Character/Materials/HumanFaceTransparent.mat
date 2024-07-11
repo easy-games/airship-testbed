@@ -8,33 +8,33 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: HumanFaceTransparent
-  m_Shader: {fileID: 4800000, guid: 6330d0f14dc3c884ea990fa91a7bd441, type: 3}
+  m_Shader: {fileID: 4800000, guid: 650dd9526735d5b46b79224bc6e94025, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords:
-  - EXPLICIT_MAPS
-  - EXPLICIT_MAPS_ON
-  - METAL_ON_ON
-  - NUM_LIGHTS_LIGHTS2
-  - SLIDER_OVERRIDE
-  - TRIPLANAR_STYLE_OFF
-  - _LIGHTS_LIGHTS0
-  - _TRIPLANAR_LOCAL
-  - _TRIPLANAR_TRIPLANAR_LOCAL
-  - _ZWRITE_ON
+  m_ValidKeywords:
+  - _ALPHATEST_ON
+  - _SURFACE_TYPE_TRANSPARENT
+  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  m_CustomRenderQueue: 3000
+  stringTagMap:
+    RenderType: Transparent
+  disabledShaderPasses:
+  - SHADOWCASTER
+  - DepthOnly
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
     - _AOTex:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BaseMap:
+        m_Texture: {fileID: 2800000, guid: 9ab32f72de7079043ae501b34d0427e5, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -111,15 +111,32 @@ Material:
     - SLIDER_OVERRIDE: 0
     - TRIPLANAR_STYLE: 0
     - VERTEX_LIGHT: 0
+    - _AddPrecomputedVelocity: 0
     - _Alpha: 1
+    - _AlphaClip: 1
     - _AlphaCutoff: 0.1
+    - _AlphaToMask: 0
+    - _Blend: 0
+    - _BlendOp: 0
     - _BumpScale: 1
-    - _Cutoff: 0.5
+    - _CameraFadingEnabled: 0
+    - _CameraFarFadeDistance: 2
+    - _CameraNearFadeDistance: 1
+    - _ColorMode: 3
+    - _Cull: 2
+    - _Cutoff: 0.05
     - _DetailNormalMapScale: 1
-    - _DstBlend: 0
+    - _DistortionBlend: 0.5
+    - _DistortionEnabled: 0
+    - _DistortionStrength: 1
+    - _DistortionStrengthScaled: 0.1
+    - _DstBlend: 10
+    - _DstBlendAlpha: 10
     - _EXPLICIT_MAPS: 1
     - _Emissive: 0
     - _EmissiveMix: 0
+    - _FlipbookBlending: 0
+    - _FlipbookMode: 0
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -131,21 +148,31 @@ Material:
     - _OverrideStrength: 0
     - _POINT_FILTER: 1
     - _Parallax: 0.02
+    - _QueueOffset: 0
     - _RimIntensity: 0
     - _RimPower: 3
     - _RoughOverride: 0.77
     - _SLIDER_OVERRIDE: 1
+    - _SampleGI: 0
     - _SkyShineStrength: 0
     - _SmoothnessTextureChannel: 0
+    - _SoftParticlesEnabled: 0
+    - _SoftParticlesFarFadeDistance: 1
+    - _SoftParticlesNearFadeDistance: 0
     - _SpecularHighlights: 1
-    - _SrcBlend: 1
+    - _SrcBlend: 5
+    - _SrcBlendAlpha: 1
     - _SunScale: 1
+    - _Surface: 1
     - _Triplanar: 1
     - _TriplanarScale: 1.5
     - _UVSec: 0
     - _VERTEX_LIGHT: 0
-    - _ZWrite: 1
+    - _ZWrite: 0
     m_Colors:
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _BaseColorAddSubDiff: {r: -1, g: 0, b: 0, a: 0}
+    - _CameraFadeParams: {r: 0, g: Infinity, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColor: {r: 1, g: 1, b: 1, a: 0.1764706}
@@ -153,6 +180,20 @@ Material:
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
     - _ShadowTint: {r: 1, g: 1, b: 1, a: 1}
     - _SkyShine: {r: 0.4, g: 0.75, b: 1, a: 1}
+    - _SoftParticleFadeParams: {r: 0, g: 0, b: 0, a: 0}
     - _SpecularColor: {r: 0.8301887, g: 0.8301887, b: 0.8301887, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
+--- !u!114 &1295866875953245361
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 9

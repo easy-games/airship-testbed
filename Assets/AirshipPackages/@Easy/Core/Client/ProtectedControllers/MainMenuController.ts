@@ -1,10 +1,9 @@
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
-import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import HomePageComponent from "@Easy/Core/Shared/MainMenu/Components/HomePageComponent";
 import GameGeneralPage from "@Easy/Core/Shared/MainMenu/Components/Settings/General/GameGeneralPage";
-import SettingsPage from "@Easy/Core/Shared/MainMenu/Components/Settings/SettingsPage";
 import { Mouse } from "@Easy/Core/Shared/UserInput";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
@@ -12,10 +11,11 @@ import { SetTimeout } from "@Easy/Core/Shared/Util/Timer";
 import AvatarViewComponent from "../../Shared/Avatar/AvatarViewComponent";
 import MainMenuPageComponent from "../../Shared/MainMenu/Components/MainMenuPageComponent";
 import AvatarMenuComponent from "./AvatarMenu/AvatarMenuComponent";
+import DevelopMenuPage from "./Develop/DevelopMenuPage";
 import { MainMenuPageType } from "./MainMenuPageName";
 
 @Controller()
-export class MainMenuController implements OnStart {
+export class MainMenuController {
 	private readonly socialTweenDuration = 0.25;
 
 	public mainMenuGo: GameObject;
@@ -50,15 +50,12 @@ export class MainMenuController implements OnStart {
 		this.socialMenuGroup = this.refs.GetValue<CanvasGroup>("UI", "SocialGroup");
 		CloudImage.ClearCache();
 
-		const mouse = new Mouse();
-
 		this.pageMap = new Map<MainMenuPageType, MainMenuPageComponent>([
 			[MainMenuPageType.Home, this.refs.GetValue("Pages", "Home").GetAirshipComponent<HomePageComponent>()!],
 			[
-				MainMenuPageType.MyGames,
-				this.refs.GetValue("Pages", "MyGames").GetAirshipComponent<MainMenuPageComponent>()!,
+				MainMenuPageType.Develop,
+				this.refs.GetValue("Pages", "Develop").GetAirshipComponent<DevelopMenuPage>()!,
 			],
-			[MainMenuPageType.Settings, this.refs.GetValue("Pages", "Settings").GetAirshipComponent<SettingsPage>()!],
 			[
 				MainMenuPageType.Avatar,
 				this.refs.GetValue("Pages", "Avatar").GetAirshipComponent<AvatarMenuComponent>()!,
@@ -128,9 +125,9 @@ export class MainMenuController implements OnStart {
 		this.open = true;
 		const duration = 0.06;
 		this.wrapperRect.localScale = new Vector3(1.1, 1.1, 1.1);
-		this.wrapperRect.TweenLocalScale(new Vector3(1, 1, 1), duration);
+		NativeTween.LocalScale(this.wrapperRect, new Vector3(1, 1, 1), duration);
 		this.mainContentCanvas.enabled = true;
-		this.rootCanvasGroup.TweenCanvasGroupAlpha(1, duration);
+		NativeTween.CanvasGroupAlpha(this.rootCanvasGroup, 1, duration);
 
 		if (this.currentPage) {
 			this.RouteToPage(this.currentPage.pageType, true, true);
@@ -147,8 +144,8 @@ export class MainMenuController implements OnStart {
 		EventSystem.current.ClearSelected();
 
 		const duration = 0.06;
-		this.wrapperRect.TweenLocalScale(new Vector3(1.1, 1.1, 1.1), duration);
-		this.rootCanvasGroup.TweenCanvasGroupAlpha(0, duration);
+		NativeTween.LocalScale(this.wrapperRect, new Vector3(1.1, 1.1, 1.1), duration);
+		NativeTween.CanvasGroupAlpha(this.rootCanvasGroup, 0, duration);
 		SetTimeout(duration, () => {
 			if (!this.open) {
 				this.mainContentCanvas.enabled = false;
@@ -160,7 +157,7 @@ export class MainMenuController implements OnStart {
 		return this.open;
 	}
 
-	OnStart(): void {
+	protected OnStart(): void {
 		if (this.currentPage === undefined) {
 			//init pages
 			for (const [key, value] of this.pageMap) {

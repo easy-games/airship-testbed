@@ -24,7 +24,7 @@ const Y_LOCKED_ROTATION = 0;
 const TAU = math.pi * 2;
 
 let MOUSE_SENS_SCALAR = 15;
-let MOUSE_SMOOTHING = 1.35;
+let MOUSE_SMOOTHING = 1.6;
 
 export class HumanoidCameraMode extends CameraMode {
 	private readonly bin = new Bin();
@@ -56,6 +56,10 @@ export class HumanoidCameraMode extends CameraMode {
 
 	private mouseSmoothingEnabled = true;
 	private smoothVector = new Vector2(0, 0);
+
+	/** Keep track of mouse lock state (to prevent huge delta when locking mouse) */
+	private mouseLocked = this.mouse.IsLocked();
+	private mouseLockSwapped = false;
 
 	constructor(private character: Character, private graphicalCharacterGO: GameObject, initialFirstPerson: boolean) {
 		super();
@@ -103,9 +107,9 @@ export class HumanoidCameraMode extends CameraMode {
 						if (touchOverUI) break;
 						const deltaPosSinceStart = position.sub(touchStartPos);
 						this.rotationY =
-							(touchStartRotY - deltaPosSinceStart.x * Airship.input.GetTouchSensitivity()) % TAU;
+							(touchStartRotY - deltaPosSinceStart.x * Airship.Input.GetTouchSensitivity()) % TAU;
 						this.rotationX = math.clamp(
-							touchStartRotX + deltaPosSinceStart.y * Airship.input.GetTouchSensitivity(),
+							touchStartRotX + deltaPosSinceStart.y * Airship.Input.GetTouchSensitivity(),
 							MIN_ROT_X,
 							MAX_ROT_X,
 						);
@@ -134,7 +138,7 @@ export class HumanoidCameraMode extends CameraMode {
 		this.bin.Add(this.mouse);
 
 		this.bin.Add(
-			Airship.input.preferredControls.ObserveControlScheme((scheme) => {
+			Airship.Input.preferredControls.ObserveControlScheme((scheme) => {
 				if (scheme === ControlScheme.Touch) {
 					const lockId = this.mouse.AddUnlocker();
 					return () => {
@@ -163,7 +167,7 @@ export class HumanoidCameraMode extends CameraMode {
 		const lf = this.keyboard.IsKeyDown(Key.LeftArrow);
 		const rt = this.keyboard.IsKeyDown(Key.RightArrow);
 
-		if (Airship.input.preferredControls.GetControlScheme() === ControlScheme.MouseKeyboard) {
+		if (Airship.Input.preferredControls.GetControlScheme() === ControlScheme.MouseKeyboard) {
 			const rightClick = this.mouse.IsRightButtonDown();
 			if (rightClick && !this.rightClicking) {
 				this.rightClickPos = this.mouse.GetPosition();
@@ -174,6 +178,11 @@ export class HumanoidCameraMode extends CameraMode {
 			}
 			if (this.mouse.IsLocked() && (rightClick || this.firstPerson || this.lockView)) {
 				let mouseDelta = this.mouse.GetDelta();
+				// This is to prevent large jump on first movement (happens always on mac)
+				if (this.mouseLockSwapped && mouseDelta.magnitude > 0) {
+					this.mouseLockSwapped = false;
+					mouseDelta = new Vector2(0, 0);
+				}
 				let moveDelta = mouseDelta;
 
 				// Trying to do 1/MOUSE_SMOOTHING every 1/120th of a second (while supporting variable dt). Not sure if this math checks out.
@@ -183,7 +192,8 @@ export class HumanoidCameraMode extends CameraMode {
 					// 	mouseDelta = new Vector2(math.pow(math.abs(mouseDelta.x), 1.8) * math.sign(mouseDelta.x), math.pow(math.abs(mouseDelta.y), 1.8) * math.sign(mouseDelta.y));
 					// }
 
-					const smoothFactor = math.pow(1 / MOUSE_SMOOTHING, Time.deltaTime * 120);
+					const smoothFactor = math.pow(1 / (1 + Airship.Input.GetMouseSmoothing()), Time.deltaTime * 120);
+					// print(smoothFactor);
 					this.smoothVector = new Vector2(
 						Mathf.Lerp(this.smoothVector.x, mouseDelta.x, smoothFactor),
 						Mathf.Lerp(this.smoothVector.y, mouseDelta.y, smoothFactor),
@@ -191,7 +201,7 @@ export class HumanoidCameraMode extends CameraMode {
 					moveDelta = this.smoothVector;
 				}
 
-				const mouseSensitivity = Airship.input.GetMouseSensitivity();
+				const mouseSensitivity = Airship.Input.GetMouseSensitivity();
 				if (!this.firstPerson && !this.lockView) {
 					// this.mouse.SetPosition(this.rightClickPos);
 				}
@@ -204,6 +214,12 @@ export class HumanoidCameraMode extends CameraMode {
 					MIN_ROT_X,
 					MAX_ROT_X,
 				);
+			}
+
+			// Update mouse locked state. This will make the next frame's delta be 0.
+			if (this.mouseLocked !== this.mouse.IsLocked()) {
+				this.mouseLocked = !this.mouseLocked;
+				this.mouseLockSwapped = true;
 			}
 		}
 	}

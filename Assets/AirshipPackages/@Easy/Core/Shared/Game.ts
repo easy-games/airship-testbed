@@ -8,6 +8,9 @@ import { Signal } from "./Util/Signal";
 const platform = Application.platform;
 // const simulateMobile = EditorSessionState.GetBoolean("AirshipSimulateMobile");
 
+/**
+ * Access core properties of the currently running game instance.
+ */
 export class Game {
 	/**
 	 * The local client's player.
@@ -37,6 +40,10 @@ export class Game {
 		}
 	}
 
+	/**
+	 * Used a check if you are in-game or in the main menu scene (out of game)
+	 * @internal
+	 */
 	public static coreContext: CoreContext;
 
 	/**
@@ -58,6 +65,10 @@ export class Game {
 
 	public static gameData: GameDto | undefined;
 	public static onGameDataLoaded = new Signal<GameDto>();
+
+	/**
+	 * Yields until {@link Game.gameData} has been loaded.
+	 */
 	public static WaitForGameData(): GameDto {
 		if (this.gameData) return this.gameData;
 		return this.onGameDataLoaded.Wait();
@@ -84,10 +95,20 @@ export class Game {
 		return this.platform === AirshipPlatform.iOS || this.platform === AirshipPlatform.Android;
 	}
 
+	/**
+	 * @returns True if this game instance is acting as a player client. When published this will
+	 * be true for all players. In local development in {@link https://docs.airship.gg/multiplayer-and-networking/local-server-mode#shared | Shared Server Mode} 
+	 * this will also be true (because the client is operating as both server and client).
+	 */
 	public static IsClient(): boolean {
 		return RunUtil.IsClient();
 	}
 
+	/**
+	 * @returns True if this game instance is acting as the server. When published this will only
+	 * be true on the game server. In local development in {@link https://docs.airship.gg/multiplayer-and-networking/local-server-mode#shared | Shared Server Mode} 
+	 * this will also be true (because the client is operating as both server and client).
+	 */
 	public static IsServer(): boolean {
 		return RunUtil.IsServer();
 	}

@@ -29,12 +29,13 @@ export const enum SignalPriority {
 }
 
 let idCounter = 1;
-export class Signal<T extends unknown[] | unknown> {
+export class Signal<T extends unknown[] | unknown = void> {
 	private debugLogging = false;
 	private trackYielding = true;
 	private readonly connections: Map<number, Array<CallbackItem<T>>> = new Map();
 	public debugGameObject = false;
 	// private readonly connections: Array<CallbackItem<T>> = [];
+	public isDestroyed = false;
 
 	/**
 	 * Connect a callback function to the signal.
@@ -198,6 +199,7 @@ export class Signal<T extends unknown[] | unknown> {
 	 */
 	public Destroy() {
 		this.DisconnectAll();
+		this.isDestroyed = true;
 	}
 
 	public SetDebug(value: boolean): Signal<T> {

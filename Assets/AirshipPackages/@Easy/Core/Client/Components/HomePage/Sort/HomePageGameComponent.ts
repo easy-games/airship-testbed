@@ -1,8 +1,8 @@
 import { TransferController } from "@Easy/Core/Client/ProtectedControllers//Transfer/TransferController";
-import SearchSingleton from "@Easy/Core/Shared/MainMenu/Components/Search/SearchSingleton";
-import { MainMenuSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/MainMenuSingleton";
 import DateParser from "@Easy/Core/Shared/DateParser";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
+import SearchSingleton from "@Easy/Core/Shared/MainMenu/Components/Search/SearchSingleton";
+import { MainMenuSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/MainMenuSingleton";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
@@ -29,7 +29,7 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 	public loadingOverlay!: GameObject;
 
 	@SerializeField()
-	private redirectDrag!: AirshipRedirectDrag;
+	private redirectDrag!: AirshipRedirectScroll;
 
 	private bin = new Bin();
 
@@ -74,13 +74,17 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 		{
 			// Game image
 			let url = AirshipUrl.CDN + "/images/" + gameDto.iconImageId + ".png";
+			if (!this.gameImage) {
+				print("game image not found.");
+				Debug.Break();
+			}
 			this.gameImage.url = url;
 			this.gameImage.image.color = new Color(0, 0, 0, 1);
 			const downloadConn = this.gameImage.OnFinishedLoading((success) => {
 				if (success) {
-					this.gameImage.image.TweenGraphicColor(new Color(1, 1, 1, 1), 0.2);
+					NativeTween.GraphicColor(this.gameImage.image, new Color(1, 1, 1, 1), 0.2);
 				} else {
-					this.gameImage.image.TweenGraphicColor(new Color(0, 0, 0, 1), 0.2);
+					NativeTween.GraphicColor(this.gameImage.image, new Color(0, 0, 0, 1), 0.2);
 				}
 			});
 			this.gameImage.StartDownload();
@@ -103,9 +107,9 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 			this.orgImage.image.color = new Color(0, 0, 0, 0.3);
 			const downloadConn = this.orgImage.OnFinishedLoading((success) => {
 				if (success) {
-					this.orgImage.image.TweenGraphicColor(new Color(1, 1, 1, 1), 0.2);
+					NativeTween.GraphicColor(this.orgImage.image, new Color(1, 1, 1, 1), 0.2);
 				} else {
-					this.orgImage.image.TweenGraphicColor(new Color(0, 0, 0, 0.3), 0.2);
+					NativeTween.GraphicColor(this.orgImage.image, new Color(0, 0, 0, 0.3), 0.2);
 				}
 			});
 			this.orgImage.StartDownload();

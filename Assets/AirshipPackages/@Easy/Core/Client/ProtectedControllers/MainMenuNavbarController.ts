@@ -1,27 +1,27 @@
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
-import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import MainMenuNavButton from "@Easy/Core/Shared/MainMenu/Components/MainMenuNavButton";
 import { CoreUI } from "@Easy/Core/Shared/UI/CoreUI";
 import { Keyboard } from "@Easy/Core/Shared/UserInput";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
+import { ProtectedUserController } from "./Airship/User/UserController";
 import { AuthController } from "./Auth/AuthController";
 import { MainMenuController } from "./MainMenuController";
 import { MainMenuPageType } from "./MainMenuPageName";
-import { UserController } from "./User/UserController";
 
 @Controller({})
-export class MainMenuNavbarController implements OnStart {
+export class MainMenuNavbarController {
 	private searchFocused!: GameObject;
 
 	constructor(
 		private readonly mainMenuController: MainMenuController,
-		private readonly userController: UserController,
+		private readonly userController: ProtectedUserController,
 		private readonly authController: AuthController,
 	) {}
 
-	OnStart(): void {
+	protected OnStart(): void {
 		this.Setup();
 
 		const keyboard = new Keyboard();
@@ -44,7 +44,6 @@ export class MainMenuNavbarController implements OnStart {
 		const homeButton = refs.GetValue("UI", "NavbarHomeButton");
 		const avatarButton = refs.GetValue("UI", "NavbarAvatarButton");
 		const myGamesButton = refs.GetValue("UI", "NavbarMyGamesButton");
-		const settingsButton = refs.GetValue("UI", "NavbarSettingsButton");
 		const runningGameButton = refs.GetValue("UI", "NavbarRunningGameButton");
 		const disconnectButton = refs.GetValue("UI", "DisconnectButton");
 
@@ -74,12 +73,7 @@ export class MainMenuNavbarController implements OnStart {
 
 		CoreUI.SetupButton(myGamesButton, { noHoverSound: true });
 		CanvasAPI.OnClickEvent(myGamesButton, () => {
-			this.mainMenuController.RouteToPage(MainMenuPageType.MyGames);
-		});
-
-		CoreUI.SetupButton(settingsButton, { noHoverSound: true });
-		CanvasAPI.OnClickEvent(settingsButton, () => {
-			this.mainMenuController.RouteToPage(MainMenuPageType.Settings);
+			this.mainMenuController.RouteToPage(MainMenuPageType.Develop);
 		});
 
 		// CoreUI.SetupButton(myServersButton, { noHoverSound: true });
@@ -103,13 +97,11 @@ export class MainMenuNavbarController implements OnStart {
 			}
 			if (page === MainMenuPageType.Home) {
 				currentSelectedNavbarButton = homeButton;
-			} else if (page === MainMenuPageType.Settings) {
-				currentSelectedNavbarButton = settingsButton;
 			} else if (page === MainMenuPageType.Game) {
 				currentSelectedNavbarButton = runningGameButton;
 			} else if (page === MainMenuPageType.Avatar) {
 				currentSelectedNavbarButton = avatarButton;
-			} else if (page === MainMenuPageType.MyGames) {
+			} else if (page === MainMenuPageType.Develop) {
 				currentSelectedNavbarButton = myGamesButton;
 			}
 			if (currentSelectedNavbarButton) {

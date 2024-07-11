@@ -1,8 +1,11 @@
 import { Party } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipParty";
+import { UserStatusData } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipUser";
 import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
-import { Controller, Dependency, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Controller, Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import { CoreLogger } from "@Easy/Core/Shared/Logger/CoreLogger";
+import PartyCard from "@Easy/Core/Shared/MainMenu/Components/Party/PartyCard";
 import PartyMember from "@Easy/Core/Shared/MainMenu/Components/PartyMember";
 import { Result } from "@Easy/Core/Shared/Types/Result";
 import { CoreUI } from "@Easy/Core/Shared/UI/CoreUI";
@@ -14,13 +17,17 @@ import { EncodeJSON } from "@Easy/Core/Shared/json";
 import { AuthController } from "../Auth/AuthController";
 import { MainMenuController } from "../MainMenuController";
 import { SocketController } from "../Socket/SocketController";
-import { FriendsController } from "./FriendsController";
+import { ProtectedFriendsController } from "./FriendsController";
 import { MainMenuAddFriendsController } from "./MainMenuAddFriendsController";
 
 @Controller({})
-export class MainMenuPartyController implements OnStart {
+export class MainMenuPartyController {
 	public party: Party | undefined;
 	public onPartyUpdated = new Signal<[newParty: Party | undefined, oldParty: Party | undefined]>();
+
+	private partyCard!: PartyCard;
+	private partyCardContents!: GameObject;
+	private emptyPartyGO!: GameObject;
 
 	private partyMemberPrefab = AssetBridge.Instance.LoadAsset<GameObject>(
 		"AirshipPackages/@Easy/Core/Prefabs/UI/MainMenu/PartyMember.prefab",
@@ -31,16 +38,27 @@ export class MainMenuPartyController implements OnStart {
 		private readonly socketController: SocketController,
 	) {}
 
-	OnStart(): void {
+	protected OnStart(): void {
 		this.socketController.On<Party>("game-coordinator/party-update", (data) => {
 			let oldParty = this.party;
 			this.party = data;
 			this.onPartyUpdated.Fire(data, oldParty);
 			this.UpdateParty();
+
+			if (this.party === undefined) {
+				this.partyCard.UpdateInfo(undefined);
+			}
+		});
+
+		this.socketController.On<UserStatusData[]>("game-coordinator/party-member-status-update-multi", (data) => {
+			if (!this.party) return;
+
+			const partyLeader = data.find((d) => d.userId === this.party!.leader);
+			this.partyCard.UpdateInfo(partyLeader);
 		});
 
 		this.socketController.On<Party>("game-coordinator/party-invite", (data) => {
-			Dependency<FriendsController>().AddSocialNotification(
+			Dependency<ProtectedFriendsController>().AddSocialNotification(
 				"party-invite:" + data.leader,
 				"Party Invite",
 				data.members[0].username,
@@ -53,17 +71,19 @@ export class MainMenuPartyController implements OnStart {
 							}),
 						);
 						if (res.success) {
-							Dependency<FriendsController>().FireNotificationKey("party-invite:" + data.leader);
+							Dependency<ProtectedFriendsController>().FireNotificationKey("party-invite:" + data.leader);
 						} else {
 							Debug.LogError(res.error);
 						}
 					} else {
 						// We don't have an endpoint for declining party invite. just close the UI.
-						Dependency<FriendsController>().FireNotificationKey("party-invite:" + data.leader);
+						Dependency<ProtectedFriendsController>().FireNotificationKey("party-invite:" + data.leader);
 					}
 				},
 			);
-			AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/FriendRequest.wav");
+			AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/FriendRequest.wav", {
+				volumeScale: 0.3,
+			});
 			if (Game.coreContext === CoreContext.GAME) {
 				Game.localPlayer.SendMessage(
 					ChatColor.Yellow(data.members[0].username) + ChatColor.Gray(" invited you to their party."),
@@ -75,6 +95,10 @@ export class MainMenuPartyController implements OnStart {
 	}
 
 	private Setup(): void {
+		this.partyCard = this.mainMenuController.refs.GetValue("Social", "PartyCard").GetAirshipComponent<PartyCard>()!;
+		this.emptyPartyGO = this.mainMenuController.refs.GetValue("Social", "EmptyPartyCard");
+		this.partyCardContents = this.mainMenuController.refs.GetValue("Social", "PartyCardContents");
+
 		this.UpdateParty();
 
 		Dependency<AuthController>()
@@ -104,18 +128,13 @@ export class MainMenuPartyController implements OnStart {
 	}
 
 	private UpdateParty(): void {
-		if (this.party === undefined) {
-			const partyContent = this.mainMenuController.refs.GetValue("Social", "PartyContent");
-			partyContent.ClearChildren();
-
-			const partyTitle = this.mainMenuController.refs.GetValue("Social", "PartyTitle") as TMP_Text;
-			partyTitle.text = `(0/8)`;
-
-			const leaveButton = this.mainMenuController.refs.GetValue("Social", "LeavePartyButton");
-			leaveButton.SetActive(false);
-
+		if (this.party === undefined || (this.party.members.size() <= 1 && this.party.invited.size() === 0)) {
+			this.partyCardContents.SetActive(false);
+			this.emptyPartyGO.SetActive(true);
 			return;
 		}
+		this.partyCardContents.SetActive(true);
+		this.emptyPartyGO.SetActive(false);
 
 		const partyContent = this.mainMenuController.refs.GetValue("Social", "PartyContent");
 		const partyMemberUids = this.party.members.map((m) => m.uid);
@@ -126,6 +145,8 @@ export class MainMenuPartyController implements OnStart {
 		} else {
 			leaveButton.SetActive(true);
 		}
+
+		CoreLogger.Log("party: " + json.encode(this.party));
 
 		// Remove old
 		let membersToRemove: GameObject[] = [];
@@ -143,8 +164,6 @@ export class MainMenuPartyController implements OnStart {
 			Object.Destroy(go);
 		}
 
-		let isLocalPartyLeader = Game.localPlayer.userId === this.party.leader;
-
 		// Add new & update existing
 		for (const member of this.party.members) {
 			let go: GameObject;
@@ -157,7 +176,7 @@ export class MainMenuPartyController implements OnStart {
 			}
 
 			const partyMemberComponent = go.GetAirshipComponent<PartyMember>()!;
-			partyMemberComponent.SetUser(member, isLocalPartyLeader);
+			partyMemberComponent.SetUser(member, member.uid === this.party.leader);
 		}
 
 		CanvasAPI.OnClickEvent(leaveButton, () => {
@@ -181,10 +200,10 @@ export class MainMenuPartyController implements OnStart {
 		);
 
 		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to invite user to party. Status Code: ${res.statusCode}\n`, res.data);
+			warn(`Unable to invite user to party. Status Code: ${res.statusCode}\n`, res.error);
 			return {
 				success: false,
-				data: undefined,
+				error: undefined,
 			};
 		}
 
@@ -203,10 +222,10 @@ export class MainMenuPartyController implements OnStart {
 		);
 
 		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to remove user from party. Status Code: ${res.statusCode}\n`, res.data);
+			warn(`Unable to remove user from party. Status Code: ${res.statusCode}\n`, res.error);
 			return {
 				success: false,
-				data: undefined,
+				error: undefined,
 			};
 		}
 
@@ -224,10 +243,10 @@ export class MainMenuPartyController implements OnStart {
 		);
 
 		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to join party. Status Code: ${res.statusCode}\n`, res.data);
+			warn(`Unable to join party. Status Code: ${res.statusCode}\n`, res.error);
 			return {
 				success: false,
-				data: undefined,
+				error: undefined,
 			};
 		}
 

@@ -1521,7 +1521,6 @@ MonoBehaviour:
   m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/DirectMessagesWindow.lua
   m_error: 0
   m_yielded: 0
-  m_assetPath: 
   m_canResume: 0
   m_asyncYield: 0
   m_onUpdateHandle: -1
@@ -1540,6 +1539,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -1554,6 +1554,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -1568,6 +1569,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -1582,6 +1584,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -1596,6 +1599,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -1610,6 +1614,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -1624,6 +1629,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -1638,6 +1644,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -1652,6 +1659,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -1666,6 +1674,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -1680,11 +1689,13 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
       serializedObject: {fileID: 6316544518262189848}
       modified: 1
+    displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0
 --- !u!1 &5679000718547327867
@@ -1972,7 +1983,7 @@ MonoBehaviour:
     - key: StatusIndicator
       value: {fileID: 0}
     - key: ProfilePicture
-      value: {fileID: 3794198920903443496}
+      value: {fileID: 0}
     - key: JoinButton
       value: {fileID: 717568588160020171}
 --- !u!114 &4377596680786657432
@@ -2986,6 +2997,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6546706110253849395, guid: 52584e96aaab146a08c15d805ade15a7, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7619552700445121168, guid: 52584e96aaab146a08c15d805ade15a7, type: 3}
       propertyPath: m_Color.a
       value: 0.23529412
@@ -3049,10 +3064,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 6355550016075450093}
     m_Modifications:
     - target: {fileID: 1230187047497112255, guid: c2e02c9b6586c490eb10bdab0b067663, type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1276071651756920775, guid: c2e02c9b6586c490eb10bdab0b067663, type: 3}
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 0}
@@ -3140,10 +3151,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: FriendTeleportButton
       objectReference: {fileID: 0}
+    - target: {fileID: 6091327394017951777, guid: c2e02c9b6586c490eb10bdab0b067663, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 6886587796065662318, guid: c2e02c9b6586c490eb10bdab0b067663, type: 3}
       propertyPath: bundledReferences.Array.data[0].keyValuePairs.Array.data[4].value
       value: 
       objectReference: {fileID: 717568588160020171}
+    - target: {fileID: 7288447554843899270, guid: c2e02c9b6586c490eb10bdab0b067663, type: 3}
+      propertyPath: image
+      value: 
+      objectReference: {fileID: 1963388914506178819}
     - target: {fileID: 8686357906761830804, guid: c2e02c9b6586c490eb10bdab0b067663, type: 3}
       propertyPath: m_Name
       value: HeaderUser
@@ -3170,6 +3189,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1e87e0668ae7abb47800944852d422c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1963388914506178819 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6091327394017951777, guid: c2e02c9b6586c490eb10bdab0b067663, type: 3}
+  m_PrefabInstance: {fileID: 5744312932529824034}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &3979988357960609974 stripped
@@ -3275,6 +3305,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4585739257689474129, guid: 803c74c404ff04c5c822cc0b8aba3929, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 5034983360769412108, guid: 803c74c404ff04c5c822cc0b8aba3929, type: 3}
       propertyPath: m_Name
       value: ProfilePicture
@@ -3288,17 +3322,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 803c74c404ff04c5c822cc0b8aba3929, type: 3}
---- !u!114 &3794198920903443496 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7233055887058980828, guid: 803c74c404ff04c5c822cc0b8aba3929, type: 3}
-  m_PrefabInstance: {fileID: 5820702205986737140}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &6424251105299812432 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 711796919657192356, guid: 803c74c404ff04c5c822cc0b8aba3929, type: 3}

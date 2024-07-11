@@ -1,4 +1,4 @@
-import { Dependency, OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
+import { Dependency, Singleton } from "@Easy/Core/Shared/Flamework";
 import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 import { CameraMode } from ".";
 import { Airship } from "../Airship";
@@ -25,15 +25,8 @@ interface CharacterStateSnapshot {
 	firstPerson: boolean;
 }
 
-interface ViewModelUpdate {
-	/** Target position of the view model. Update to change. */
-	position: Vector3;
-	/** Target rotation of the view model. Update to change. */
-	rotation: Quaternion;
-}
-
 @Singleton({})
-export class AirshipCharacterCameraSingleton implements OnStart {
+export class AirshipCharacterCameraSingleton {
 	public canToggleFirstPerson = true;
 
 	private lookBackwards = false;
@@ -53,29 +46,27 @@ export class AirshipCharacterCameraSingleton implements OnStart {
 	/** Fires whenever the user changes their first-person state. */
 	public readonly firstPersonChanged = new Signal<[isFirstPerson: boolean]>();
 
-	/** Fires before view model updates with position and rotation. Change these values to adjust view model position. */
-	public onViewModelUpdate = new Signal<[data: ViewModelUpdate]>();
-
 	private fps?: FirstPersonCameraSystem;
 	public humanoidCameraMode: HumanoidCameraMode | undefined;
 	private orbitCameraMode: OrbitCameraMode | undefined;
 
-	private characterCameraMode: CharacterCameraMode = CharacterCameraMode.Orbit;
+	private characterCameraMode: CharacterCameraMode = CharacterCameraMode.Locked;
 
+	private sprintFOVEnabled = true;
+	private manageFOV = true;
 	private overrideFOV = new Map<CharacterCameraType, number>();
 
 	private firstPersonFOV = 80;
 	private thirdPersonFOV = 70;
 
 	constructor() {
-		Airship.characterCamera = this;
+		Airship.CharacterCamera = this;
 	}
 
 	public StartNewCameraSystem(cameraRig: CameraRig): CameraSystem {
 		CameraReferences.cameraHolder = cameraRig.transform;
 		CameraReferences.mainCamera = cameraRig.mainCamera;
 		CameraReferences.viewmodelCamera = cameraRig.viewmodelCamera;
-		CameraReferences.uiCamera = cameraRig.uiCamera;
 
 		this.cameraSystem = new CameraSystem();
 		this.SetCharacterCameraMode(this.characterCameraMode);
@@ -86,13 +77,12 @@ export class AirshipCharacterCameraSingleton implements OnStart {
 		CameraReferences.cameraHolder = undefined;
 		CameraReferences.mainCamera = undefined;
 		CameraReferences.viewmodelCamera = undefined;
-		CameraReferences.uiCamera = undefined;
 
 		this.cameraSystem?.SetEnabled(false);
 		this.cameraSystem = undefined;
 	}
 
-	OnStart(): void {
+	protected OnStart(): void {
 		Dependency<LocalCharacterSingleton>().stateChanged.Connect((state) => {
 			const isSprinting = Dependency<LocalCharacterSingleton>().input?.IsSprinting();
 			this.UpdateLocalCharacterState({
@@ -107,6 +97,34 @@ export class AirshipCharacterCameraSingleton implements OnStart {
 	 */
 	public SetEnabled(enabled: boolean) {
 		this.cameraSystem?.SetEnabled(enabled);
+	}
+
+	public SetSprintFOVEnabled(enabled: boolean): void {
+		this.sprintFOVEnabled = enabled;
+	}
+
+	public IsSprintFOVEnabled(): boolean {
+		return this.sprintFOVEnabled;
+	}
+
+	/**
+	 * Sets if camera FOVs should be tweened.
+	 * @param shouldManage True if camera FOVs should be tweened by this class.
+	 */
+	public SetFOVManaged(shouldManage: boolean): void {
+		this.manageFOV = shouldManage;
+	}
+
+	/**
+	 * If FOV is managed, camera fov will be updated by tweens.
+	 * You must control the FOV by calling {@link SetFOV}
+	 *
+	 * It's useful to turn this off when you want to manage FOV entirely yourself.
+	 *
+	 * @returns true if FOV is being managed by the CharacterCamera system.
+	 */
+	public IsFOVManaged(): boolean {
+		return this.manageFOV;
 	}
 
 	/**
@@ -182,6 +200,8 @@ export class AirshipCharacterCameraSingleton implements OnStart {
 	/** Updates FOV to reflect the current character state object */
 	private MakeFOVReflectCharacterState(): void {
 		if (!this.IsEnabled()) return;
+		if (!this.IsSprintFOVEnabled()) return;
+		if (!this.IsFOVManaged()) return;
 
 		// first person
 		{
@@ -325,7 +345,9 @@ export class AirshipCharacterCameraSingleton implements OnStart {
 						}
 					});
 					flyingBin.Add(Dependency<LocalCharacterSingleton>().input!.AddDisabler());
-					flyingBin.Add(Airship.inventory.localCharacterInventory.AddDisabler());
+					if (Airship.Inventory.localInventory) {
+						flyingBin.Add(Airship.Inventory.localInventory.AddControlsDisabler());
+					}
 				}
 			}
 		});

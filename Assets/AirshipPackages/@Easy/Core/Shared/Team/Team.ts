@@ -28,7 +28,7 @@ export class Team {
 		player.SetTeam(this);
 		this.onPlayerAdded.Fire(player);
 
-		Airship.teams.onPlayerChangeTeam.Fire(player, this, oldTeam);
+		Airship.Teams.onPlayerChangeTeam.Fire(player, this, oldTeam);
 	}
 
 	public RemovePlayer(player: Player): void {

@@ -97,7 +97,7 @@ export class AvatarUtil {
 					}
 
 					if (!foundMatchingItem) {
-						print("Unpaired Server Item " + itemData.class.name + ": " + itemData.class.classId);
+						CoreLogger.Log("Unpaired Server Item " + itemData.class.name + ": " + itemData.class.classId);
 					}
 				});
 			}
@@ -117,28 +117,29 @@ export class AvatarUtil {
 	}
 
 	public static InitUserOutfits(userId: string) {
-		const maxNumberOfOutfits = 5;
-		let outfits = AvatarPlatformAPI.GetAllOutfits();
-		const numberOfOutfits = outfits ? outfits.size() : 0;
-		let name = "";
-		//Create missing outfits up to 5
-		for (let i = numberOfOutfits; i < maxNumberOfOutfits; i++) {
-			name = "Default" + i;
-			print("Creating missing outfit: " + name);
-			let outfit = AvatarPlatformAPI.CreateDefaultAvatarOutfit(
-				userId,
-				name,
-				name,
-				RandomUtil.FromArray(this.skinColors),
-			);
-			if (!outfit) {
-				error("Unable to make a new outfit :(");
+		AvatarPlatformAPI.GetAllOutfits().then((outfits) => {
+			const maxNumberOfOutfits = 5;
+			const numberOfOutfits = outfits ? outfits.size() : 0;
+			let name = "";
+			//Create missing outfits up to 5
+			for (let i = numberOfOutfits; i < maxNumberOfOutfits; i++) {
+				name = "Default" + i;
+				print("Creating missing outfit: " + name);
+				let outfit = AvatarPlatformAPI.CreateDefaultAvatarOutfit(
+					userId,
+					name,
+					name,
+					RandomUtil.FromArray(this.skinColors),
+				);
+				if (!outfit) {
+					error("Unable to make a new outfit :(");
+				}
 			}
-		}
-		//Make sure an outfit is equipped
-		if (!outfits || outfits.size() === 0 || AvatarPlatformAPI.GetEquippedOutfit() === undefined) {
-			AvatarPlatformAPI.EquipAvatarOutfit(name);
-		}
+			//Make sure an outfit is equipped
+			if (!outfits || outfits.size() === 0 || AvatarPlatformAPI.GetEquippedOutfit() === undefined) {
+				AvatarPlatformAPI.EquipAvatarOutfit(name);
+			}
+		});
 	}
 
 	public static AddAvailableAvatarItem(instanceId: string, item: AccessoryComponent) {
@@ -189,13 +190,14 @@ export class AvatarUtil {
 			combineMeshes?: boolean;
 		} = {},
 	) {
-		const outfitDto = AvatarPlatformAPI.GetEquippedOutfit();
-		if (!outfitDto) {
-			// warn("Unable to load users default outfit. Equipping baked default outfit");
-			this.LoadDefaultOutfit(builder);
-			return;
-		}
-		this.LoadUserOutfit(outfitDto, builder, options);
+		AvatarPlatformAPI.GetEquippedOutfit().then((outfitDto) => {
+			if (!outfitDto) {
+				// warn("Unable to load users default outfit. Equipping baked default outfit");
+				this.LoadDefaultOutfit(builder);
+				return;
+			}
+			this.LoadUserOutfit(outfitDto, builder, options);
+		});
 	}
 
 	public static LoadDefaultOutfit(builder: AccessoryBuilder) {

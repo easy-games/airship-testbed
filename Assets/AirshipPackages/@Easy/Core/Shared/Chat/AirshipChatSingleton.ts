@@ -11,48 +11,60 @@ import { HelpCommand } from "@Easy/Core/Server/Services/Chat/Commands/HelpComman
 import { JoinCodeCommand } from "@Easy/Core/Server/Services/Chat/Commands/JoinCodeCommand";
 import { KillCommand } from "@Easy/Core/Server/Services/Chat/Commands/KillCommand";
 import { LagCommand } from "@Easy/Core/Server/Services/Chat/Commands/LagCommand";
-import { SaveWorldCommand } from "@Easy/Core/Server/Services/Chat/Commands/SaveWorldCommand";
 import { SetTeamCommand } from "@Easy/Core/Server/Services/Chat/Commands/SetTeamCommand";
 import { TeamChatCommand } from "@Easy/Core/Server/Services/Chat/Commands/TeamChatCommand";
 import { TeamCommand } from "@Easy/Core/Server/Services/Chat/Commands/TeamCommand";
 import { TpAllCommand } from "@Easy/Core/Server/Services/Chat/Commands/TpAllCommand";
 import { TpCommand } from "@Easy/Core/Server/Services/Chat/Commands/TpCommand";
 import { TpsCommand } from "@Easy/Core/Server/Services/Chat/Commands/TpsCommand";
-import { Dependency, OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
+import { Dependency, Singleton } from "@Easy/Core/Shared/Flamework";
 import { Airship } from "../Airship";
 import { ChatCommand } from "../Commands/ChatCommand";
 import { Game } from "../Game";
+import { Player } from "../Player/Player";
 
+/**
+ * Access using {@link Airship.Chat}. Functions for configuring the chat window
+ * as well as broadcasting messages.
+ * 
+ * To send a player a message see {@link Player.SendMessage}.
+ */
 @Singleton({})
-export class AirshipChatSingleton implements OnStart {
+export class AirshipChatSingleton {
 	constructor() {
-		Airship.chat = this;
+		Airship.Chat = this;
 	}
 
-	OnStart(): void {
+	protected OnStart(): void {
 		if (Game.IsInGame()) {
 			this.RegisterCoreCommands();
 		}
 	}
 
 	/**
+	 * [Client only]
+	 * 
 	 * Sets chat's visibility.
 	 *
 	 * @param val Whether or not chat should be visible.
 	 */
 	public SetUIEnabled(val: boolean): void {
+		if (!Game.IsClient()) error("Cannot set chat UI enabled on server.");
+
 		contextbridge.invoke<(val: boolean) => void>("ClientChatSingleton:SetUIEnabled", LuauContext.Protected, val);
 	}
 
 	/**
+	 * [Server only]
+	 * 
 	 * Registers provided command.
 	 *
 	 * @param command A command instance.
 	 */
 	public RegisterCommand(command: ChatCommand): void {
-		if (Game.IsServer()) {
-			Dependency<ChatService>().RegisterCommand(command);
-		}
+		if (!Game.IsServer) error("Error trying to RegisterCommand " + command.commandLabel + ": Can only register command on server.");
+
+		Dependency<ChatService>().RegisterCommand(command);
 	}
 
 	/**
@@ -85,6 +97,5 @@ export class AirshipChatSingleton implements OnStart {
 		this.RegisterCommand(new FlyCommand());
 		this.RegisterCommand(new HelpCommand());
 		this.RegisterCommand(new TeamChatCommand());
-		this.RegisterCommand(new SaveWorldCommand());
 	}
 }

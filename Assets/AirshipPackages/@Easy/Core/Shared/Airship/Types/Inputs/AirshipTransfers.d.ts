@@ -16,6 +16,8 @@ export interface AirshipServerConfig {
 	accessMode?: AirshipServerAccessMode;
 	/** The region the game server should be started in. Defaults to the same region as the server that makes the create request. */
 	region?: string;
+	/** The max players setting for the server. If not set, the default for the game is used. You can change the default for your game on https://create.airship.gg */
+	maxPlayers?: string;
 	/** Only allow the players in this list to join the server. Forces accessMode to CLOSED. */
 	allowedUserIds?: string[];
 }
@@ -29,6 +31,16 @@ export interface AirshipGameTransferConfig {
 	 * This parameter is ignored if the gameId being transfered to does not match the calling server gameId.
 	 */
 	sceneId?: string;
+	/**
+	 * The server max players. If this field is present, a game server with this max players value will be selected or a new game
+	 * server with this max players value will be created if one does not exist.
+	 */
+	maxPlayers?: number;
+	/**
+	 * The region to find or create a game server in. If this field is not present, the best region will be selected based on
+	 * the players being transfered.
+	 */
+	region?: string;
 	/**
 	 * The preferred server to transfer to. If transfering to this server is not possible or it does not match the other
 	 * requested parameters, a different server will be selected.

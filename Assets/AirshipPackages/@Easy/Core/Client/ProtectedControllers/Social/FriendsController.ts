@@ -4,9 +4,11 @@ import { UserStatus, UserStatusData } from "@Easy/Core/Shared/Airship/Types/Outp
 import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
 import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
-import { Controller, Dependency, OnStart } from "@Easy/Core/Shared/Flamework";
+import { Controller, Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { GameObjectUtil } from "@Easy/Core/Shared/GameObject/GameObjectUtil";
+import { CoreLogger } from "@Easy/Core/Shared/Logger/CoreLogger";
+import FriendCard from "@Easy/Core/Shared/MainMenu/Components/Friends/FriendCard";
 import SocialFriendRequestsButtonComponent from "@Easy/Core/Shared/MainMenu/Components/SocialFriendRequestsButtonComponent";
 import SocialNotificationComponent from "@Easy/Core/Shared/MainMenu/Components/SocialNotificationComponent";
 import { CoreUI } from "@Easy/Core/Shared/UI/CoreUI";
@@ -20,6 +22,7 @@ import inspect from "@Easy/Core/Shared/Util/Inspect";
 import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
+import { ProtectedPartyController } from "../Airship/Party/PartyController";
 import { AuthController } from "../Auth/AuthController";
 import { MainMenuController } from "../MainMenuController";
 import { ClientSettingsController } from "../Settings/ClientSettingsController";
@@ -30,7 +33,7 @@ import { User } from "../User/User";
 import { DirectMessageController } from "./DirectMessages/DirectMessageController";
 
 @Controller({})
-export class FriendsController implements OnStart {
+export class ProtectedFriendsController {
 	public friends: User[] = [];
 	public incomingFriendRequests: User[] = [];
 	public outgoingFriendRequests: User[] = [];
@@ -47,6 +50,7 @@ export class FriendsController implements OnStart {
 	private socialNotificationKey = "";
 
 	public onIncomingFriendRequestsChanged = new Signal<void>();
+	public onFetchFriends = new Signal<void>();
 
 	private friendsScrollRect!: ScrollRect;
 
@@ -58,7 +62,7 @@ export class FriendsController implements OnStart {
 		private readonly clientSettingsController: ClientSettingsController,
 	) {
 		contextbridge.callback("FriendsController:SendStatusUpdate", (from) => {
-			this.SendStatusUpdate();
+			this.SendStatusUpdateYielding();
 		});
 	}
 
@@ -73,7 +77,7 @@ export class FriendsController implements OnStart {
 		this.socialNotification.gameObject.SetActive(false);
 		this.socialNotification.gameObject.SetActive(true);
 
-		this.socialNotification.titleText.text = title;
+		this.socialNotification.titleText.text = title.upper();
 		this.socialNotification.usernameText.text = username;
 		this.socialNotification.onResult.Connect(onResult);
 	}
@@ -90,7 +94,7 @@ export class FriendsController implements OnStart {
 		}
 	}
 
-	OnStart(): void {
+	protected OnStart(): void {
 		const friendsContent = this.mainMenuController.refs.GetValue("Social", "FriendsContent");
 		friendsContent.ClearChildren();
 
@@ -117,7 +121,7 @@ export class FriendsController implements OnStart {
 		this.authController.WaitForAuthed().then(() => {
 			// Game context will send status update when client receives server info.
 			if (Game.coreContext === CoreContext.MAIN_MENU) {
-				this.SendStatusUpdate();
+				this.SendStatusUpdateYielding();
 			}
 			this.FetchFriends();
 		});
@@ -132,10 +136,12 @@ export class FriendsController implements OnStart {
 
 				this.socialNotification.usernameText.text = foundUser.username;
 
-				const sprite = Airship.players.GetProfilePictureSpriteAsync(foundUser.uid);
-				if (sprite) {
-					this.socialNotification.userImage.sprite = sprite;
-				}
+				task.spawn(async () => {
+					const texture = await Airship.Players.GetProfilePictureAsync(foundUser.uid);
+					if (texture) {
+						this.socialNotification.userImage.texture = texture;
+					}
+				});
 
 				this.AddSocialNotification(
 					"friend-request:" + data.initiatorId,
@@ -171,7 +177,9 @@ export class FriendsController implements OnStart {
 				// 	}),
 				// );
 
-				AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/FriendRequest.wav");
+				AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/FriendRequest.wav", {
+					volumeScale: 0.3,
+				});
 				if (Game.coreContext === CoreContext.GAME) {
 					Game.localPlayer.SendMessage(
 						ChatColor.Yellow(foundUser.username) + ChatColor.Gray(" sent you a friend request."),
@@ -185,7 +193,12 @@ export class FriendsController implements OnStart {
 		});
 
 		this.socketController.On<UserStatusData[]>("game-coordinator/friend-status-update-multi", (data) => {
-			// print("status updates: " + inspect(data));
+			// print("status updates: " + json.encode(data));
+			let lukeOnSteam = data.find((d) => d.usernameLower === "luke_on_steam");
+			if (lukeOnSteam) {
+				CoreLogger.Log("luke: " + json.encode(lukeOnSteam));
+			}
+
 			for (const newFriend of data) {
 				const existing = this.friendStatuses.find((f) => f.userId === newFriend.userId);
 				if (existing) {
@@ -203,7 +216,7 @@ export class FriendsController implements OnStart {
 		});
 
 		this.socketController.On("game-coordinator/status-update-request", (data) => {
-			this.SendStatusUpdate();
+			this.SendStatusUpdateYielding();
 		});
 
 		this.Setup();
@@ -247,19 +260,24 @@ export class FriendsController implements OnStart {
 		return this.friends.find((f) => f.username.lower() === username.lower());
 	}
 
+	public GetFriendById(uid: string): User | undefined {
+		return this.friends.find((u) => u.uid === uid);
+	}
+
 	public SetStatusText(text: string): void {
 		this.statusText = text;
 		StateManager.SetString("social:status-text", text);
 		this.clientSettingsController.data.statusText = text;
 		this.clientSettingsController.MarkAsDirty();
-		this.SendStatusUpdate();
+		this.SendStatusUpdateYielding();
 	}
 
 	public GetStatusText(): string {
 		return this.statusText;
 	}
 
-	public SendStatusUpdate(): void {
+	public SendStatusUpdateYielding(): void {
+		Game.WaitForLocalPlayerLoaded();
 		const status: Partial<UserStatusData> = {
 			userId: Game.localPlayer.userId,
 			status: Game.coreContext === CoreContext.GAME ? UserStatus.IN_GAME : UserStatus.ONLINE,
@@ -270,7 +288,8 @@ export class FriendsController implements OnStart {
 				customGameTitle: Game.gameData?.name,
 			},
 		};
-		InternalHttpManager.PutAsync(AirshipUrl.GameCoordinator + "/user-status/self", EncodeJSON(status));
+		CoreLogger.Log("send status update: " + json.encode(status));
+		InternalHttpManager.PutAsync(AirshipUrl.GameCoordinator + "/user-status/self", json.encode(status));
 	}
 
 	public FetchFriends(): void {
@@ -286,6 +305,7 @@ export class FriendsController implements OnStart {
 		this.friends = data.friends;
 		this.SetIncomingFriendRequests(data.incomingRequests);
 		this.outgoingFriendRequests = data.outgoingRequests;
+		this.onFetchFriends.Fire();
 
 		// print("friends: " + inspect(data));
 
@@ -350,6 +370,10 @@ export class FriendsController implements OnStart {
 		return this.outgoingFriendRequests.find((f) => f.uid === userId) !== undefined;
 	}
 
+	public IsFriendsWith(userId: string): boolean {
+		return this.friends.some((u) => u.uid === userId);
+	}
+
 	public SendFriendRequest(username: string): boolean {
 		print('adding friend: "' + username + '"');
 		const res = InternalHttpManager.PostAsync(
@@ -383,6 +407,7 @@ export class FriendsController implements OnStart {
 		onlineCountText.text = `(${onlineCount}/${this.friendStatuses.size()})`;
 
 		const mouse = new Mouse();
+		const mainCanvasRect = this.mainMenuController.mainContentCanvas.GetComponent<RectTransform>();
 
 		// Add & update
 		const friendsContent = this.mainMenuController.refs.GetValue("Social", "FriendsContent");
@@ -397,9 +422,14 @@ export class FriendsController implements OnStart {
 					AssetCache.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/UI/MainMenu/Friend.prefab"),
 					friendsContent.transform,
 				) as GameObject;
-				go.name = friend.userId;
 
-				const redirect = go.GetComponent<AirshipRedirectDrag>()!;
+				const friendCard = go.GetAirshipComponent<FriendCard>()!;
+				friendCard.friendId = friend.userId;
+
+				go.name = friend.userId;
+				const friendRect = go.GetComponent<RectTransform>()!;
+
+				const redirect = go.GetComponent<AirshipRedirectScroll>()!;
 				redirect.redirectTarget = this.friendsScrollRect;
 
 				const refs = go.GetComponent<GameObjectReferences>()!;
@@ -461,14 +491,7 @@ export class FriendsController implements OnStart {
 							{
 								text: "Invite to Party",
 								onClick: () => {
-									task.spawn(() => {
-										InternalHttpManager.PostAsync(
-											AirshipUrl.GameCoordinator + "/parties/party/invite",
-											EncodeJSON({
-												userToAdd: friend.userId,
-											}),
-										);
-									});
+									Dependency<ProtectedPartyController>().InviteToParty(friend.userId);
 								},
 							},
 						);
@@ -491,6 +514,13 @@ export class FriendsController implements OnStart {
 							});
 						},
 					});
+
+					// let profilePanelPos = Bridge.ScreenPointToLocalPointInRectangle(
+					// 	mainCanvasRect,
+					// 	new Vector2(go!.transform.position.x - 5, go!.transform.position.y),
+					// );
+					// profilePanelPos = profilePanelPos.add(new Vector2(-friendRect.rect.width / 2, friendRect.rect.height / 2));
+					// Dependency(ProfilePanelController).OpenProfilePanel(this.mainMenuController.mainContentCanvas, profilePanelPos);
 					this.rightClickMenuController.OpenRightClickMenu(
 						this.mainMenuController.mainContentCanvas,
 						Game.IsMobile()
@@ -563,22 +593,17 @@ export class FriendsController implements OnStart {
 		const username = refs.GetValue("UI", "Username") as TMP_Text;
 		const status = refs.GetValue("UI", "Status") as TMP_Text;
 		const statusIndicator = refs.GetValue("UI", "StatusIndicator") as Image;
-		const profileImage = refs.GetValue("UI", "ProfilePicture") as Image;
+		const profileImage = refs.GetValue("UI", "ProfilePicture") as RawImage;
 		const canvasGroup = refs.gameObject.GetComponent<CanvasGroup>()!;
 		const joinButton = refs.GetValue("UI", "JoinButton");
 
 		if (config.loadImage) {
-			const texture = AssetBridge.Instance.LoadAssetIfExists<Texture2D>(
-				"AirshipPackages/@Easy/Core/Images/ProfilePictures/Dom.png",
-			);
-			if (texture !== undefined) {
-				task.spawn(() => {
-					const sprite = Airship.players.GetProfilePictureSpriteAsync(friend.userId);
-					if (sprite) {
-						profileImage.sprite = sprite;
-					}
-				});
-			}
+			task.spawn(async () => {
+				const texture = await Airship.Players.GetProfilePictureAsync(friend.userId);
+				if (texture) {
+					profileImage.texture = texture;
+				}
+			});
 		}
 
 		let displayName = friend.username;

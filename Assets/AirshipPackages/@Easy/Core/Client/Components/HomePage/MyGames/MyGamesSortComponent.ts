@@ -3,8 +3,12 @@ import SearchSingleton from "@Easy/Core/Shared/MainMenu/Components/Search/Search
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import SortComponent from "../Sort/SortComponent";
 
+/** @internal */
 export default class MyGamesSortComponent extends AirshipBehaviour {
-	private sort!: SortComponent;
+	@Tooltip("If true this sort automatically fetches games.")
+	public fetchMyGames = true;
+	@HideInInspector()
+	public sort!: SortComponent;
 	private bin = new Bin();
 
 	public override Awake(): void {
@@ -14,14 +18,12 @@ export default class MyGamesSortComponent extends AirshipBehaviour {
 	public override OnEnable(): void {
 		this.sort.Clear();
 		task.spawn(() => {
-			this.FetchGames();
+			const search = Dependency<SearchSingleton>();
+			if (this.fetchMyGames) {
+				search.FetchMyGames();
+			}
+			this.sort.SetGames(search.myGames);
 		});
-	}
-
-	public FetchGames(): void {
-		const search = Dependency<SearchSingleton>();
-		search.FetchMyGames();
-		this.sort.SetGames(search.myGames);
 	}
 
 	override Start(): void {
