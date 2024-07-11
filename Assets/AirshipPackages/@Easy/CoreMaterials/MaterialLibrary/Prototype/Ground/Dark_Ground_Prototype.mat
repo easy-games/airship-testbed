@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: DarkPrototypeGrid
+  m_Name: Dark_Ground_Prototype
   m_Shader: {fileID: -6465566751694194690, guid: 74686ab863fe0dc4598560e65eb847eb, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
