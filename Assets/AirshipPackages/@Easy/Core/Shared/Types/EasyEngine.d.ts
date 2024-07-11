@@ -123,6 +123,8 @@ interface CharacterMovement extends Component {
 	UpdateSyncTick(): void;
 	GetNextTick(): number;
 	GetPrevTick(): number;
+	GetTimeSinceWasGrounded(): number;
+	GetTimeSinceBecameGrounded(): number;
 
 	rootTransform: Transform; //The true position transform
 	networkTransform: Transform; //The interpolated network transform
