@@ -163,7 +163,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <IsNested>k__BackingField: 0
   <ComponentIndex>k__BackingField: 0
-  airshipGUID: 
+  airshipGUID: c2681cdc092144c4389c2276c084e434
   <PredictedSpawn>k__BackingField: {fileID: 0}
   _networkBehaviours:
   - {fileID: 8120107824103280230}
@@ -195,7 +195,6 @@ MonoBehaviour:
   _teleportThreshold: 1
   <PrefabId>k__BackingField: 4
   <SpawnableCollectionId>k__BackingField: 1
-  _scenePathHash: 0
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 12069361917781442781
 --- !u!114 &3641629332060154460
@@ -459,7 +458,6 @@ MonoBehaviour:
   m_fileFullPath: Assets/Code/AirshipPlatformDemo/PromptAboveBall.lua
   m_error: 0
   m_yielded: 0
-  m_assetPath: 
   m_canResume: 0
   m_asyncYield: 0
   m_onUpdateHandle: -1
@@ -467,6 +465,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: PromptAboveBall
+    singleton: 0
     decorators: []
     properties:
     - name: rb
@@ -478,10 +477,12 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
       serializedObject: {fileID: 3682544928945854770}
       modified: 1
+    displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0
