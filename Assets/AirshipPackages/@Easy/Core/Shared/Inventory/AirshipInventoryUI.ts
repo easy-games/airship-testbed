@@ -238,15 +238,14 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			return;
 		}
 
-		const itemMeta = itemStack.GetItemDef();
-		const itemType = itemStack.GetItemType();
-		let imageSrc = itemMeta.image;
+		const itemType = itemStack.itemType;
+		let imageSrc = itemStack.itemDef.image;
 		let texture2d: Texture2D | undefined;
 		if (imageSrc) {
 			texture2d = AssetCache.LoadAssetIfExists<Texture2D>(imageSrc);
 		}
 		if (texture2d) {
-			let cachedSprite = this.spriteCacheForItemType.get(itemMeta.itemType);
+			let cachedSprite = this.spriteCacheForItemType.get(itemStack.itemDef.itemType);
 			if (!cachedSprite) {
 				cachedSprite = Bridge.MakeSprite(texture2d);
 				this.spriteCacheForItemType.set(itemType, cachedSprite);
@@ -255,14 +254,14 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			tileComponent.itemImage.enabled = true;
 			tileComponent.itemName.enabled = false;
 		} else {
-			tileComponent.itemName.text = itemMeta.displayName;
+			tileComponent.itemName.text = itemStack.itemDef.displayName;
 			tileComponent.itemName.enabled = true;
 			tileComponent.itemImage.enabled = false;
 		}
 
 		tileComponent.itemAmount.enabled = true;
-		if (itemStack.GetAmount() > 1) {
-			tileComponent.itemAmount.text = itemStack.GetAmount() + "";
+		if (itemStack.amount > 1) {
+			tileComponent.itemAmount.text = itemStack.amount + "";
 		} else {
 			tileComponent.itemAmount.text = "";
 		}
@@ -446,7 +445,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 							this.draggingState.slot,
 							Airship.Inventory.localInventory,
 							i,
-							this.draggingState.itemStack.GetAmount(),
+							this.draggingState.itemStack.amount,
 						);
 						this.draggingState.consumed = true;
 					});
@@ -460,7 +459,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 								// Intent may be to drop item
 								// this.characterInvController.DropItemInSlot(
 								// 	this.draggingState.slot,
-								// 	this.draggingState.itemStack.GetAmount(),
+								// 	this.draggingState.itemStack.amount,
 								// );
 							}
 

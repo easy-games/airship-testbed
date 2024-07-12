@@ -168,8 +168,8 @@ export class AirshipInventorySingleton {
 				const toItemStack = toInv.GetItem(toSlot);
 				if (toItemStack !== undefined) {
 					if (toItemStack.CanMerge(fromItemStack)) {
-						if (toItemStack.GetAmount() + amount <= toItemStack.GetMaxStackSize()) {
-							toItemStack.SetAmount(toItemStack.GetAmount() + amount);
+						if (toItemStack.amount + amount <= toItemStack.GetMaxStackSize()) {
+							toItemStack.SetAmount(toItemStack.amount + amount);
 							fromItemStack.Decrement(amount);
 							CoreNetwork.ClientToServer.Inventory.MoveToSlot.client.FireServer(
 								fromInv.id,
@@ -211,12 +211,12 @@ export class AirshipInventorySingleton {
 					for (let i = fromInv.GetHotbarSlotCount(); i < fromInv.GetMaxSlots(); i++) {
 						const otherItemStack = fromInv.GetItem(i);
 						if (otherItemStack?.CanMerge(itemStack)) {
-							if (otherItemStack.GetAmount() < otherItemStack.GetMaxStackSize()) {
+							if (otherItemStack.amount < otherItemStack.GetMaxStackSize()) {
 								let delta = math.min(
-									itemStack.GetAmount(),
-									otherItemStack.GetMaxStackSize() - otherItemStack.GetAmount(), // amount free in stack
+									itemStack.amount,
+									otherItemStack.GetMaxStackSize() - otherItemStack.amount, // amount free in stack
 								);
-								otherItemStack.SetAmount(otherItemStack.GetAmount() + delta, {
+								otherItemStack.SetAmount(otherItemStack.amount + delta, {
 									noNetwork: true,
 								});
 								itemStack.Decrement(delta, {
@@ -252,12 +252,12 @@ export class AirshipInventorySingleton {
 					for (let i = 0; i < fromInv.GetHotbarSlotCount(); i++) {
 						const otherItemStack = fromInv.GetItem(i);
 						if (otherItemStack?.CanMerge(itemStack)) {
-							if (otherItemStack.GetAmount() < otherItemStack.GetMaxStackSize()) {
+							if (otherItemStack.amount < otherItemStack.GetMaxStackSize()) {
 								let delta = math.max(
-									otherItemStack.GetMaxStackSize() - itemStack.GetAmount(),
-									otherItemStack.GetMaxStackSize() - otherItemStack.GetAmount(),
+									otherItemStack.GetMaxStackSize() - itemStack.amount,
+									otherItemStack.GetMaxStackSize() - otherItemStack.amount,
 								);
-								otherItemStack.SetAmount(otherItemStack.GetAmount() + delta, {
+								otherItemStack.SetAmount(otherItemStack.amount + delta, {
 									noNetwork: true,
 								});
 								itemStack.Decrement(delta, {
@@ -373,12 +373,12 @@ export class AirshipInventorySingleton {
 				for (let i = inv.GetHotbarSlotCount(); i < inv.GetMaxSlots(); i++) {
 					const otherItemStack = inv.GetItem(i);
 					if (otherItemStack?.CanMerge(itemStack)) {
-						if (otherItemStack.GetAmount() < otherItemStack.GetMaxStackSize()) {
+						if (otherItemStack.amount < otherItemStack.GetMaxStackSize()) {
 							let delta = math.min(
-								itemStack.GetAmount(),
-								otherItemStack.GetMaxStackSize() - otherItemStack.GetAmount(),
+								itemStack.amount,
+								otherItemStack.GetMaxStackSize() - otherItemStack.amount,
 							);
-							otherItemStack.SetAmount(otherItemStack.GetAmount() + delta);
+							otherItemStack.SetAmount(otherItemStack.amount + delta);
 							itemStack.Decrement(delta);
 							if (itemStack.IsDestroyed()) {
 								completed = true;
@@ -412,12 +412,12 @@ export class AirshipInventorySingleton {
 				for (let i = 0; i < inv.GetHotbarSlotCount(); i++) {
 					const otherItemStack = inv.GetItem(i);
 					if (otherItemStack?.CanMerge(itemStack)) {
-						if (otherItemStack.GetAmount() < otherItemStack.GetMaxStackSize()) {
+						if (otherItemStack.amount < otherItemStack.GetMaxStackSize()) {
 							let delta = math.max(
-								otherItemStack.GetMaxStackSize() - itemStack.GetAmount(),
-								otherItemStack.GetMaxStackSize() - otherItemStack.GetAmount(),
+								otherItemStack.GetMaxStackSize() - itemStack.amount,
+								otherItemStack.GetMaxStackSize() - otherItemStack.amount,
 							);
-							otherItemStack.SetAmount(otherItemStack.GetAmount() + delta);
+							otherItemStack.SetAmount(otherItemStack.amount + delta);
 							itemStack.Decrement(delta);
 							if (itemStack.IsDestroyed()) {
 								completed = true;
@@ -458,8 +458,8 @@ export class AirshipInventorySingleton {
 		const toItemStack = toInv.GetItem(toSlot);
 		if (toItemStack !== undefined) {
 			if (toItemStack.CanMerge(fromItemStack)) {
-				if (toItemStack.GetAmount() + amount <= toItemStack.GetMaxStackSize()) {
-					toItemStack.SetAmount(toItemStack.GetAmount() + amount);
+				if (toItemStack.amount + amount <= toItemStack.GetMaxStackSize()) {
+					toItemStack.SetAmount(toItemStack.amount + amount);
 					fromItemStack.Decrement(amount);
 					CoreNetwork.ClientToServer.Inventory.MoveToSlot.client.FireServer(
 						fromInv.id,

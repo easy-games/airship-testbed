@@ -212,7 +212,7 @@ export default class Inventory extends AirshipBehaviour {
 				const inventoryClientId = this.gameObject.GetAirshipComponent<Character>()?.player?.connectionId;
 				if (invId === this.id && clientId === inventoryClientId) {
 					const selected = this.items.get(slot);
-					if (selected?.GetItemType() === currentItemStack?.GetItemType()) return;
+					if (selected?.itemType === currentItemStack?.itemType) return;
 
 					if (cleanup !== undefined) {
 						cleanup();
@@ -226,7 +226,7 @@ export default class Inventory extends AirshipBehaviour {
 		bin.Add(
 			this.onHeldSlotChanged.Connect((newSlot) => {
 				const selected = this.items.get(newSlot);
-				if (selected?.GetItemType() === currentItemStack?.GetItemType()) return;
+				if (selected?.itemType === currentItemStack?.itemType) return;
 
 				if (cleanup !== undefined) {
 					cleanup();
@@ -238,7 +238,7 @@ export default class Inventory extends AirshipBehaviour {
 		bin.Add(
 			this.onSlotChanged.Connect((slot, itemStack) => {
 				if (slot === this.heldSlot) {
-					if (itemStack?.GetItemType() === currentItemStack?.GetItemType()) return;
+					if (itemStack?.itemType === currentItemStack?.itemType) return;
 					if (cleanup !== undefined) {
 						cleanup();
 					}
@@ -326,15 +326,15 @@ export default class Inventory extends AirshipBehaviour {
 	public Decrement(itemType: string, amount: number): void {
 		let counter = 0;
 		for (let [slot, itemStack] of this.items) {
-			if (itemStack.GetItemType() === itemType) {
+			if (itemStack.itemType === itemType) {
 				let remaining = amount - counter;
-				if (itemStack.GetAmount() > remaining) {
-					itemStack.SetAmount(itemStack.GetAmount() - remaining, {
+				if (itemStack.amount > remaining) {
+					itemStack.SetAmount(itemStack.amount - remaining, {
 						noNetwork: Game.IsHosting() && Airship.Inventory.localInventory === this,
 					});
 					break;
 				} else {
-					counter += itemStack.GetAmount();
+					counter += itemStack.amount;
 					itemStack.Destroy();
 				}
 			}
@@ -349,7 +349,7 @@ export default class Inventory extends AirshipBehaviour {
 		// Merge with existing
 		for (let [otherId, otherItem] of this.items) {
 			if (itemStack.CanMerge(otherItem)) {
-				otherItem.SetAmount(otherItem.GetAmount() + itemStack.GetAmount(), {
+				otherItem.SetAmount(otherItem.amount + itemStack.amount, {
 					noNetwork: Game.IsHosting() && Airship.Inventory.localInventory === this,
 				});
 				itemStack.Destroy();
@@ -430,8 +430,8 @@ export default class Inventory extends AirshipBehaviour {
 	public HasEnough(itemType: CoreItemType, amount: number): boolean {
 		let total = 0;
 		for (let itemStack of Object.values(this.items)) {
-			if (itemStack.GetItemType() === itemType) {
-				total += itemStack.GetAmount();
+			if (itemStack.itemType === itemType) {
+				total += itemStack.amount;
 			}
 		}
 		return total >= amount;
@@ -452,7 +452,7 @@ export default class Inventory extends AirshipBehaviour {
 	public FindSlotWithItemType(itemType: CoreItemType): number | undefined {
 		for (let i = 0; i < this.maxSlots; i++) {
 			const itemStack = this.GetItem(i);
-			if (itemStack?.GetItemType() === itemType) {
+			if (itemStack?.itemType === itemType) {
 				return i;
 			}
 		}

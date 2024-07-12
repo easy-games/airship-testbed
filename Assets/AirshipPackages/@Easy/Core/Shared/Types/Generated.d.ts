@@ -36395,7 +36395,6 @@ interface ServerBootstrap extends MonoBehaviour {
     serverId: string;
     organizationId: string;
     serverContext: ServerContext;
-    editorConfig: AirshipEditorConfig;
     serverReady: boolean;
     isStartupConfigReady: boolean;
 
@@ -36752,24 +36751,6 @@ interface ServerContextConstructor {
 
 }
 declare const ServerContext: ServerContextConstructor;
-    
-interface AirshipEditorConfig extends ScriptableObject {
-    useBundlesInEditor: boolean;
-    buildBundlesOnPlay: boolean;
-    downloadPackages: boolean;
-
-
-
-}
-    
-interface AirshipEditorConfigConstructor {
-
-    new(): AirshipEditorConfig;
-
-
-    Load(): AirshipEditorConfig;
-}
-declare const AirshipEditorConfig: AirshipEditorConfigConstructor;
     
 interface ServerBootstrapConstructor {
     editorStartingSceneIntent: string;
@@ -41618,7 +41599,6 @@ interface MainMenuLoadingScreen extends BundleLoadingScreen {
 }
     
 interface MainMenuSceneManager extends MonoBehaviour {
-    editorConfig: AirshipEditorConfig;
     loadingScreen: MainMenuLoadingScreen;
 
 
@@ -48759,4 +48739,25 @@ interface MoveInputDataConstructor {
     CompareBinaryBlobs(a: BinaryBlob, b: BinaryBlob): boolean;
 }
 declare const MoveInputData: MoveInputDataConstructor;
+    
+interface NetworkTickSmoother extends NetworkBehaviour {
+    graphicalObject: Transform;
+
+
+    Awake(): void;
+    NetworkInitialize___Early(): void;
+    NetworkInitialize__Late(): void;
+    NetworkInitializeIfDisabled(): void;
+    OnStartClient(): void;
+    SetTimeManager(tm: TimeManager): void;
+
+}
+    
+interface NetworkTickSmootherConstructor {
+
+    new(): NetworkTickSmoother;
+
+
+}
+declare const NetworkTickSmoother: NetworkTickSmootherConstructor;
 
