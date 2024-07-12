@@ -33,6 +33,8 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	public backpackHotbarContent!: RectTransform;
 	public backpackHotbarTileTemplate!: GameObject;
 
+	// public onDropOutsideInventory = new Signal<[slot: number, itemStack: ItemStack]>();
+
 	// private hotbarSlots = 9;
 	private backpackShown = false;
 
@@ -45,7 +47,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	private visible = false;
 	private backpackEnabled = true;
 
-	private draggingState: DraggingState | undefined;
+	@NonSerialized() public draggingState: DraggingState | undefined;
 	private draggingBin = new Bin();
 	private spriteCacheForItemType = new Map<string, Sprite>();
 
