@@ -104,6 +104,7 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 0.7066075, b: 0.36320752, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
+    emissiveLevel: 0
   addedByEditorScript: 0
 --- !u!114 &7975605164963870365
 MonoBehaviour:
@@ -119,8 +120,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <IsNested>k__BackingField: 0
   <ComponentIndex>k__BackingField: 0
+  airshipGUID: 9cd09b32e10194976b43f4c363815292
   <PredictedSpawn>k__BackingField: {fileID: 0}
-  airshipGUID: 
   _networkBehaviours:
   - {fileID: 2287207495856839054}
   <SerializedRootNetworkBehaviour>k__BackingField: {fileID: 0}
@@ -138,14 +139,18 @@ MonoBehaviour:
   _enablePrediction: 0
   _predictionType: 0
   _graphicalObject: {fileID: 0}
+  _detachGraphicalObject: 0
   _enableStateForwarding: 1
   _networkTransform: {fileID: 0}
   _ownerInterpolation: 1
+  _ownerSmoothedProperties: 255
+  _adaptiveInterpolation: 3
+  _spectatorSmoothedProperties: 255
+  _spectatorInterpolation: 2
   _enableTeleport: 0
   _teleportThreshold: 1
   <PrefabId>k__BackingField: 0
   <SpawnableCollectionId>k__BackingField: 0
-  _scenePathHash: 0
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 10488280551293086193
 --- !u!114 &2287207495856839054

@@ -123,6 +123,9 @@ interface CharacterMovement extends Component {
 	UpdateSyncTick(): void;
 	GetNextTick(): number;
 	GetPrevTick(): number;
+	GetTimeSinceWasGrounded(): number;
+	GetTimeSinceBecameGrounded(): number;
+	GetCurrentMoveInputData(): MoveInputData;
 
 	rootTransform: Transform; //The true position transform
 	networkTransform: Transform; //The interpolated network transform
@@ -142,7 +145,6 @@ interface CharacterMovement extends Component {
 	currentCharacterHeight: number;
 	characterRadius: number;
 	characterHalfExtents: Vector3;
-	groundCollisionLayerMask: LayerMask;
 	mainCollider: BoxCollider;
 }
 

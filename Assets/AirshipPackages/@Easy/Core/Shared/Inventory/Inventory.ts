@@ -329,7 +329,9 @@ export default class Inventory extends AirshipBehaviour {
 			if (itemStack.GetItemType() === itemType) {
 				let remaining = amount - counter;
 				if (itemStack.GetAmount() > remaining) {
-					itemStack.SetAmount(itemStack.GetAmount() - remaining);
+					itemStack.SetAmount(itemStack.GetAmount() - remaining, {
+						noNetwork: Game.IsHosting() && Airship.Inventory.localInventory === this,
+					});
 					break;
 				} else {
 					counter += itemStack.GetAmount();
@@ -347,7 +349,9 @@ export default class Inventory extends AirshipBehaviour {
 		// Merge with existing
 		for (let [otherId, otherItem] of this.items) {
 			if (itemStack.CanMerge(otherItem)) {
-				otherItem.SetAmount(otherItem.GetAmount() + itemStack.GetAmount());
+				otherItem.SetAmount(otherItem.GetAmount() + itemStack.GetAmount(), {
+					noNetwork: Game.IsHosting() && Airship.Inventory.localInventory === this,
+				});
 				itemStack.Destroy();
 				return true;
 			}
