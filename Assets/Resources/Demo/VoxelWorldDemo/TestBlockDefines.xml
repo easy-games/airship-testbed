@@ -1,0 +1,56 @@
+
+<!-- There are special maps available -->
+<!-- texture_n  Normal map  -->
+<!-- texture_s  Smoothness map, 0 fully rough (matte), 0.5 big specular circle, 0.75 has a small specular circle, 1 is glossy/reflective  -->
+<!-- texture_m  Metal map, 0 is non metallic, 1 is metallic.  Metal has colored anodized specular and shine -->
+<!-- texture_e  Emissive map, 1 is emissive/fullbright. If you want it to bloom, the underlaying diffuse color needs to be relatively bright -->
+<!-- if you do not supply the maps, you can specify a constant value directly using <Metallic>0</<Metallic> or <Smoothness>0</Smoothness> or <Emissive>1</Emissive> etc -->
+
+<Blocks>
+  <RootAssetPath>Assets/Resources/Demo/VoxelWorldDemo</RootAssetPath>
+  <Scope>VoxelWorldDemo</Scope>
+
+  <Block>
+    <Id>GRASS</Id>
+    <Name>Grass</Name>
+    <TopTexture>grass_block_top</TopTexture>
+    <BottomTexture>grass_block_top</BottomTexture>
+    <SideTexture>grass_block_side</SideTexture>
+    <Solid>true</Solid>
+ 
+    <Metallic>0</Metallic>
+    <Smoothness>0</Smoothness>
+    <Minecraft>2</Minecraft>
+    <Brightness>3</Brightness>
+    
+  </Block> 
+
+  <Block>
+    <Id>DIRT</Id>
+    <Name>Dirt</Name>
+    <TopTexture>grass_block_side</TopTexture>
+    <SideTexture>grass_block_side</SideTexture>
+    <Solid>true</Solid>
+    <Metallic>0</Metallic>
+    <Smoothness>0.25</Smoothness>
+    <Minecraft>3</Minecraft>
+    <Brightness>3</Brightness>
+  </Block>
+  
+
+  <Block>
+    <Id>COBBLESTONE</Id>
+    <Name>Cobblestone</Name>
+    <Material>StylizedStoneLight</Material>
+ 
+    <Solid>false</Solid>
+    <Collision>Solid</Collision>
+    <TileSet>TileSets/BevelQuarter/</TileSet>
+    <Metallic>0</Metallic>
+    <Smoothness>0</Smoothness>
+    <Minecraft>4</Minecraft>
+    <Brightness>1.8</Brightness>
+  </Block>
+
+</Blocks>
+
