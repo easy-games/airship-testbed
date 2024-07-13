@@ -29,7 +29,7 @@ export class DamageSingleton {
 	}
 
 	protected OnStart(): void {
-		OnUpdate.Connect(() => {})
+		OnUpdate.Connect(() => {});
 
 		this.damageRemote.client.OnServerEvent((nobId, damage, attackerNobId, data) => {
 			if (Game.IsHosting()) return;
@@ -72,8 +72,8 @@ export class DamageSingleton {
 
 		const damageInfo = new DamageInfo(gameObject, damage, attacker, data ?? {});
 		if (Game.IsServer() && this.autoNetwork) {
-			const nob = damageInfo.gameObject.GetComponent<NetworkObject>();
-			const attackerNob = damageInfo.attacker?.GetComponent<NetworkObject>();
+			const nob = damageInfo.gameObject.GetComponentInParent<NetworkObject>();
+			const attackerNob = damageInfo.attacker?.GetComponentInParent<NetworkObject>();
 			if (nob) {
 				this.damageRemote.server.FireAllClients(
 					nob.ObjectId,
@@ -92,8 +92,8 @@ export class DamageSingleton {
 	 */
 	public BroadcastDeath(damageInfo: DamageInfo): void {
 		if (Game.IsServer() && this.autoNetwork) {
-			const nob = damageInfo.gameObject.GetComponent<NetworkObject>();
-			const attackerNob = damageInfo.attacker?.GetComponent<NetworkObject>();
+			const nob = damageInfo.gameObject.GetComponentInParent<NetworkObject>();
+			const attackerNob = damageInfo.attacker?.GetComponentInParent<NetworkObject>();
 			if (nob) {
 				this.deathRemote.server.FireAllClients(
 					nob.ObjectId,
