@@ -24,35 +24,28 @@ export type ItemStackAmountChangeSignal = {
 };
 
 export class ItemStack {
-	private itemType: string;
-	private amount: number;
-	public changed = new Signal<void>();
-	public itemTypeChanged = new Signal<ItemStackTypeChangeSignal>();
-	public amountChanged = new Signal<ItemStackAmountChangeSignal>();
-	public destroyed = new Signal<ItemStack>();
+	public readonly itemType: string;
+	/**
+	 * The Item Definition for this ItemStack. This contains metadata related to the itemType.
+	 */
+	public readonly itemDef: ItemDef;
+	public readonly amount: number;
+	public readonly changed = new Signal<void>();
+	public readonly itemTypeChanged = new Signal<ItemStackTypeChangeSignal>();
+	public readonly amountChanged = new Signal<ItemStackAmountChangeSignal>();
+	public readonly destroyed = new Signal<ItemStack>();
 	private hasBeenDestroyed = false;
 
 	constructor(itemType: string, amount = 1) {
 		this.itemType = itemType;
 		this.amount = amount;
-	}
-
-	public GetItemType(): string {
-		return this.itemType;
-	}
-
-	public GetItemDef(): ItemDef {
-		return Airship.Inventory.GetItemDef(this.itemType);
+		this.itemDef = Airship.Inventory.GetItemDef(itemType);
 	}
 
 	public SetItemType(itemType: CoreItemType): void {
-		this.itemType = itemType;
+		(this.itemType as string) = itemType;
 		this.itemTypeChanged.Fire({ ItemStack: this, ItemType: itemType, NoNetwork: false });
 		this.changed.Fire();
-	}
-
-	public GetAmount(): number {
-		return this.amount;
 	}
 
 	public SetAmount(
@@ -61,7 +54,7 @@ export class ItemStack {
 			noNetwork?: boolean;
 		},
 	): void {
-		this.amount = val;
+		(this.amount as number) = val;
 		this.amountChanged.Fire({ ItemStack: this, NoNetwork: config?.noNetwork ?? false, Amount: val });
 		this.changed.Fire();
 
@@ -71,8 +64,8 @@ export class ItemStack {
 	}
 
 	public CanMerge(other: ItemStack): boolean {
-		if (other.GetItemType() !== this.GetItemType()) return false;
-		if (other.GetAmount() + this.GetAmount() > this.GetMaxStackSize()) return false;
+		if (other.itemType !== this.itemType) return false;
+		if (other.amount + this.amount > this.GetMaxStackSize()) return false;
 
 		return true;
 	}
@@ -117,7 +110,7 @@ export class ItemStack {
 	}
 
 	public GetMaxStackSize(): number {
-		return this.GetItemDef()?.maxStackSize ?? 999;
+		return this.itemDef.maxStackSize ?? 999;
 	}
 
 	public Clone(): ItemStack {

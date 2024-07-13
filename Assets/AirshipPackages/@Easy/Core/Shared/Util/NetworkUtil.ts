@@ -15,7 +15,11 @@ if (Game.coreContext === CoreContext.GAME) {
 	managed.OnAddedToSpawnedEvent((nob) => {
 		NetworkObjectAdded.debugGameObject = true;
 		NetworkObjectAdded.Fire(nob);
-		waitingByName.set(nob.gameObject.name, nob);
+		try {
+			waitingByName.set(nob.gameObject.name, nob);
+		} catch (err) {
+			warn("error in OnAddedToSpawnedEvent: " + err);
+		}
 	});
 }
 
