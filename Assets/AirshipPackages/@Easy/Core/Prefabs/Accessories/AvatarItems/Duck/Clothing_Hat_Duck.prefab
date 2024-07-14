@@ -314,7 +314,6 @@ GameObject:
   - component: {fileID: 7963069163968697910}
   - component: {fileID: 5145020488295238459}
   - component: {fileID: 2053762248318763362}
-  - component: {fileID: 4716631693873931407}
   - component: {fileID: 5325039783427216725}
   m_Layer: 0
   m_Name: Hat_Duck.026 (1)
@@ -390,24 +389,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &4716631693873931407
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3847009063365743925}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colorSettings:
-  - materialColor: {r: 0.68743074, g: 1, b: 0.6619437, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 0.39607844}
-    emissiveMix: 0.128
-    emissiveLevel: 0
-  addedByEditorScript: 0
 --- !u!114 &5325039783427216725
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -784,6 +765,7 @@ MonoBehaviour:
   accessorySlot: 1
   visibilityMode: 0
   skinnedToCharacter: 0
+  bodyMask: 0
 --- !u!114 &4907743349709968466
 MonoBehaviour:
   m_ObjectHideFlags: 0

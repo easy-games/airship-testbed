@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5729593965126532945}
   - component: {fileID: 7230444496329118508}
-  - component: {fileID: 2912173375104565290}
   - component: {fileID: 210703450389781417}
   m_Layer: 0
   m_Name: Beach - Hair
@@ -112,24 +111,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.00000008940697, y: 0.16815186, z: 1.423699}
     m_Extent: {x: 0.24656177, y: 0.46303445, z: 0.42845353}
   m_DirtyAABB: 0
---- !u!114 &2912173375104565290
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2114429579933394246}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colorSettings:
-  - materialColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-    emissiveLevel: 0
-  addedByEditorScript: 0
 --- !u!114 &210703450389781417
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -146,3 +127,4 @@ MonoBehaviour:
   accessorySlot: 2
   visibilityMode: 0
   skinnedToCharacter: 1
+  bodyMask: 0

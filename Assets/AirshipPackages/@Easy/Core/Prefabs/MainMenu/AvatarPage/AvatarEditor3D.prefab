@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 6381677642294990276}
   - component: {fileID: 5929983199297505080}
   - component: {fileID: 8958624697938240073}
-  - component: {fileID: 2459421076608503115}
   m_Layer: 10
   m_Name: Pillar
   m_TagString: Untagged
@@ -86,24 +85,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &2459421076608503115
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 579506995158809535}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colorSettings:
-  - materialColor: {r: 0.20754719, g: 0.20754719, b: 0.20754719, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-    emissiveLevel: 0
-  addedByEditorScript: 0
 --- !u!1 &1317145230636633611
 GameObject:
   m_ObjectHideFlags: 0
@@ -180,7 +161,6 @@ GameObject:
   - component: {fileID: 2077388227170953706}
   - component: {fileID: 7738321815076555239}
   - component: {fileID: 4597503097450194847}
-  - component: {fileID: 3399480589228119450}
   m_Layer: 10
   m_Name: Pedestal
   m_TagString: Untagged
@@ -255,24 +235,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &3399480589228119450
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2434452893682144161}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colorSettings:
-  - materialColor: {r: 0.20754719, g: 0.20754719, b: 0.20754719, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-    emissiveLevel: 0
-  addedByEditorScript: 0
 --- !u!1 &2443094208048193346
 GameObject:
   m_ObjectHideFlags: 0
@@ -595,6 +557,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: AvatarViewComponent
+    singleton: 0
     decorators: []
     properties:
     - name: humanEntityGo
@@ -931,6 +894,21 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 387939359092445338}
       modified: 1
+    - name: oddsOfAReaction
+      type: number
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 0.25
+      serializedObject: {fileID: 0}
+      modified: 0
     displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0

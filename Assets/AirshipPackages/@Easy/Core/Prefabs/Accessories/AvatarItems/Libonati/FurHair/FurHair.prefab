@@ -54,6 +54,7 @@ MonoBehaviour:
   accessorySlot: 2
   visibilityMode: 0
   skinnedToCharacter: 0
+  bodyMask: 0
 --- !u!1 &1513318743141021560
 GameObject:
   m_ObjectHideFlags: 0
@@ -10273,6 +10274,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4592498930415200361}
     m_Modifications:
+    - target: {fileID: 1116923348239259154, guid: a80db8faf3c207d4a9bbff13e0d02936, type: 3}
+      propertyPath: 'materialColors.Array.data[0]'
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3037162197794562736, guid: a80db8faf3c207d4a9bbff13e0d02936, type: 3}
+      propertyPath: 'materialColors.Array.data[0]'
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 4683343359440265070, guid: a80db8faf3c207d4a9bbff13e0d02936, type: 3}
       propertyPath: m_Name
       value: WolfPelt
@@ -10337,7 +10346,8 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[5]'
       value: 
       objectReference: {fileID: 2100000, guid: 32e7668be30492447b1c3d65d308e666, type: 2}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7230561598875578802, guid: a80db8faf3c207d4a9bbff13e0d02936, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -10355,6 +10365,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4592498930415200361}
     m_Modifications:
+    - target: {fileID: 1116923348239259154, guid: a80db8faf3c207d4a9bbff13e0d02936, type: 3}
+      propertyPath: 'materialColors.Array.data[0]'
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3037162197794562736, guid: a80db8faf3c207d4a9bbff13e0d02936, type: 3}
+      propertyPath: 'materialColors.Array.data[0]'
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 4683343359440265070, guid: a80db8faf3c207d4a9bbff13e0d02936, type: 3}
       propertyPath: m_Name
       value: WolfPelt (2)
@@ -10419,7 +10437,8 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[5]'
       value: 
       objectReference: {fileID: 2100000, guid: 32e7668be30492447b1c3d65d308e666, type: 2}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7230561598875578802, guid: a80db8faf3c207d4a9bbff13e0d02936, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -10437,6 +10456,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4592498930415200361}
     m_Modifications:
+    - target: {fileID: 1116923348239259154, guid: a80db8faf3c207d4a9bbff13e0d02936, type: 3}
+      propertyPath: 'materialColors.Array.data[0]'
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3037162197794562736, guid: a80db8faf3c207d4a9bbff13e0d02936, type: 3}
+      propertyPath: 'materialColors.Array.data[0]'
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 4683343359440265070, guid: a80db8faf3c207d4a9bbff13e0d02936, type: 3}
       propertyPath: m_Name
       value: WolfPelt (1)
@@ -10501,7 +10528,8 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[5]'
       value: 
       objectReference: {fileID: 2100000, guid: 32e7668be30492447b1c3d65d308e666, type: 2}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7230561598875578802, guid: a80db8faf3c207d4a9bbff13e0d02936, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
