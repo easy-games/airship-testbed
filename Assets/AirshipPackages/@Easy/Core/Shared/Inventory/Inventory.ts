@@ -1,6 +1,5 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
-import { CoreItemType } from "@Easy/Core/Shared/Item/CoreItemType";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import Object from "@Easy/Core/Shared/Util/ObjectUtils";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
@@ -287,22 +286,22 @@ export default class Inventory extends AirshipBehaviour {
 			if (Game.IsServer()) {
 				bin.Add(
 					itemStack.amountChanged.Connect((e) => {
-						if (e.NoNetwork) return;
+						if (e.noNetwork) return;
 						CoreNetwork.ServerToClient.UpdateInventorySlot.server.FireAllClients(
 							this.id,
 							slot,
 							undefined,
-							e.Amount,
+							e.amount,
 						);
 					}),
 				);
 				bin.Add(
 					itemStack.itemTypeChanged.Connect((e) => {
-						if (e.NoNetwork) return;
+						if (e.noNetwork) return;
 						CoreNetwork.ServerToClient.UpdateInventorySlot.server.FireAllClients(
 							this.id,
 							slot,
-							e.ItemType,
+							e.itemType,
 							undefined,
 						);
 					}),
@@ -427,7 +426,7 @@ export default class Inventory extends AirshipBehaviour {
 		this.SetHeldSlot(dto.heldSlot);
 	}
 
-	public HasEnough(itemType: CoreItemType, amount: number): boolean {
+	public HasEnough(itemType: string, amount: number): boolean {
 		let total = 0;
 		for (let itemStack of Object.values(this.items)) {
 			if (itemStack.itemType === itemType) {
@@ -437,7 +436,7 @@ export default class Inventory extends AirshipBehaviour {
 		return total >= amount;
 	}
 
-	public HasItemType(itemType: CoreItemType): boolean {
+	public HasItemType(itemType: string): boolean {
 		return this.HasEnough(itemType, 1);
 	}
 
@@ -449,7 +448,7 @@ export default class Inventory extends AirshipBehaviour {
 		return this.hotbarSlots;
 	}
 
-	public FindSlotWithItemType(itemType: CoreItemType): number | undefined {
+	public FindSlotWithItemType(itemType: string): number | undefined {
 		for (let i = 0; i < this.maxSlots; i++) {
 			const itemStack = this.GetItem(i);
 			if (itemStack?.itemType === itemType) {
