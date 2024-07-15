@@ -4,6 +4,8 @@ import { ClientBehaviourListeners } from "./ObserversRpc";
 import { ServerBehaviourListeners } from "./ServerRpc";
 import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 import { ClientTargetedBehaviourListeners } from "./TargetRpc";
+import { NetworkedFields } from "./NetworkedField";
+import AirshipNetworkFieldReplicator from "./AirshipNetworkFieldReplicator";
 
 /**
  * A TypeScript parallel to the C# `NetworkBehaviour` for Airship.
@@ -24,10 +26,29 @@ import { ClientTargetedBehaviourListeners } from "./TargetRpc";
  * ```
  */
 export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
+	private static airshipNetworkIds = 0;
+
+	/**
+	 * An ID used by Airship for networking (not guaranteed to be ordered)
+	 */
+	public readonly AirshipNetworkId = AirshipNetworkBehaviour.airshipNetworkIds++;
+
 	private bin = new Bin();
 
 	@NonSerialized()
 	public networkObject!: NetworkObject;
+
+	private InitNetworkedFields() {
+		const networkedFields = NetworkedFields.get(getmetatable(this) as AirshipNetworkBehaviour);
+		if (networkedFields) {
+			// Awaken networked fields
+			const replicator =
+				this.gameObject.GetAirshipComponent<AirshipNetworkFieldReplicator>() ??
+				this.gameObject.AddAirshipComponent<AirshipNetworkFieldReplicator>();
+
+			replicator.BindPropertiesToBehaviour(this, networkedFields);
+		}
+	}
 
 	private InitClientRpc() {
 		const nob = this.networkObject;
@@ -66,6 +87,8 @@ export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
 				);
 			}
 		}
+
+		this.InitNetworkedFields();
 	}
 
 	private InitServerRpc() {
@@ -107,6 +130,8 @@ export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
 				listenerSet.add(listener.Id);
 			}
 		}
+
+		this.InitNetworkedFields();
 	}
 
 	/**
