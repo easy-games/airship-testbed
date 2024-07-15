@@ -10,7 +10,7 @@ import { TeamDto } from "./Team/Team";
 
 export const CoreNetwork = {
 	ClientToServer: {
-		Ready: new NetworkSignal<[]>("Ready"),
+		Ready: new NetworkSignal("Ready"),
 		SetHeldSlot: new NetworkSignal<[invId: number, slot: number]>("SetHeldSlot"),
 		Inventory: {
 			SwapSlots: new NetworkSignal<[fromInvId: number, fromSlot: number, toInvId: number, toSlot: number]>(
@@ -26,7 +26,7 @@ export const CoreNetwork = {
 			RequestCharacters: new NetworkFunction<[], CharacterDto[]>("RequestCharacters"),
 		},
 		SendChatMessage: new NetworkSignal<[text: string]>("SendChatMessage"),
-		ChangedOutfit: new NetworkSignal<[]>("ChangedOutfit"),
+		ChangedOutfit: new NetworkSignal("ChangedOutfit"),
 	},
 	ServerToClient: {
 		ServerInfo: new NetworkSignal<[gameId: string, serverId: string, organizationId: string]>("ServerInfo"),
