@@ -4840,8 +4840,8 @@ MonoBehaviour:
             is also assigned in the NetworkPrefabCollection in Shared/Resources"'
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 0
+      serializedObject: {fileID: 764153238441627882, guid: 484ce41b321b44268ab82a896654b502, type: 3}
+      modified: 1
     - name: movementSpace
       type: IntEnum
       objectType: 
