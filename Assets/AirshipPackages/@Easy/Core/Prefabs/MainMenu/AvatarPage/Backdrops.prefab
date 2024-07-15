@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 3224898365678209934}
   - component: {fileID: 1831239834057010740}
   - component: {fileID: 2562627221048045697}
-  - component: {fileID: 4355422554456015599}
   m_Layer: 10
   m_Name: Floor
   m_TagString: Untagged
@@ -86,24 +85,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &4355422554456015599
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1643963326078336709}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colorSettings:
-  - materialColor: {r: 0.09433961, g: 0.09433961, b: 0.09433961, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-    emissiveLevel: 0
-  addedByEditorScript: 1
 --- !u!1 &2244517475585344556
 GameObject:
   m_ObjectHideFlags: 0
@@ -116,7 +97,6 @@ GameObject:
   - component: {fileID: 7513887519926037316}
   - component: {fileID: 8084560898619532611}
   - component: {fileID: 5426444765486961730}
-  - component: {fileID: 6382082730612336869}
   m_Layer: 10
   m_Name: FrontWall
   m_TagString: Untagged
@@ -212,24 +192,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6382082730612336869
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2244517475585344556}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colorSettings:
-  - materialColor: {r: 0.3018868, g: 0.3018868, b: 0.3018868, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-    emissiveLevel: 0
-  addedByEditorScript: 1
 --- !u!1 &2469016564985137203
 GameObject:
   m_ObjectHideFlags: 0
@@ -722,6 +684,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: AvatarBackdropComponent
+    singleton: 0
     decorators: []
     properties:
     - name: solidColor
@@ -733,11 +696,13 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
       serializedObject: {fileID: 0}
       modified: 0
+    displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0
 --- !u!1 &8864547050094139047
@@ -751,7 +716,6 @@ GameObject:
   - component: {fileID: 5394189056475368761}
   - component: {fileID: 7613534715788088039}
   - component: {fileID: 5200362428456187981}
-  - component: {fileID: 7362368501992508746}
   m_Layer: 10
   m_Name: AirshipCube
   m_TagString: Untagged
@@ -826,21 +790,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &7362368501992508746
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8864547050094139047}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colorSettings:
-  - materialColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-    emissiveLevel: 0
-  addedByEditorScript: 0

@@ -1,4 +1,3 @@
-import { CoreItemType } from "@Easy/Core/Shared/Item/CoreItemType";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { Airship } from "../Airship";
 import { ItemDef } from "../Item/ItemDefinitionTypes";
@@ -12,15 +11,15 @@ export interface ItemStackDto {
 }
 
 export type ItemStackTypeChangeSignal = {
-	readonly ItemStack: ItemStack;
-	readonly NoNetwork: boolean;
-	readonly ItemType: CoreItemType;
+	readonly itemStack: ItemStack;
+	readonly noNetwork: boolean;
+	readonly itemType: string;
 };
 
 export type ItemStackAmountChangeSignal = {
-	readonly ItemStack: ItemStack;
-	readonly NoNetwork: boolean;
-	readonly Amount: number;
+	readonly itemStack: ItemStack;
+	readonly noNetwork: boolean;
+	readonly amount: number;
 };
 
 export class ItemStack {
@@ -42,9 +41,9 @@ export class ItemStack {
 		this.itemDef = Airship.Inventory.GetItemDef(itemType);
 	}
 
-	public SetItemType(itemType: CoreItemType): void {
+	public SetItemType(itemType: string): void {
 		(this.itemType as string) = itemType;
-		this.itemTypeChanged.Fire({ ItemStack: this, ItemType: itemType, NoNetwork: false });
+		this.itemTypeChanged.Fire({ itemStack: this, itemType: itemType, noNetwork: false });
 		this.changed.Fire();
 	}
 
@@ -55,7 +54,7 @@ export class ItemStack {
 		},
 	): void {
 		(this.amount as number) = val;
-		this.amountChanged.Fire({ ItemStack: this, NoNetwork: config?.noNetwork ?? false, Amount: val });
+		this.amountChanged.Fire({ itemStack: this, noNetwork: config?.noNetwork ?? false, amount: val });
 		this.changed.Fire();
 
 		if (this.amount <= 0) {

@@ -268,9 +268,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b74917b00f1d374c9a7136917a61ddf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serverClassId: 
   accessorySlot: 9
   visibilityMode: 0
   skinnedToCharacter: 1
+  bodyMask: 0
 --- !u!1 &1835532737569707131
 GameObject:
   m_ObjectHideFlags: 0
@@ -1498,7 +1500,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1058931232302411828}
   - component: {fileID: 3826094995074523590}
-  - component: {fileID: 1048843678958424076}
   m_Layer: 0
   m_Name: CLOTHING_Pants_Fashion_A
   m_TagString: Untagged
@@ -1609,24 +1610,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.00065116584, y: -0.30140024, z: 0.08128115}
     m_Extent: {x: 0.23570769, y: 0.532319, z: 0.23658535}
   m_DirtyAABB: 0
---- !u!114 &1048843678958424076
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8437527482332650949}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colorSettings:
-  - materialColor: {r: 0.41571736, g: 0.48966208, b: 0.509434, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-    reference: Clay
-  addedByEditorScript: 0
 --- !u!1 &8675513502289649890
 GameObject:
   m_ObjectHideFlags: 0

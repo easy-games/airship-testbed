@@ -3,7 +3,6 @@ import { AccessorySlot } from "./Character/Accessory/AccessorySlot";
 import { CharacterDto } from "./Character/CharacterDto";
 import { InventoryDto } from "./Inventory/Inventory";
 import { ItemStackDto } from "./Inventory/ItemStack";
-import { CoreItemType } from "./Item/CoreItemType";
 import { NetworkFunction } from "./Network/NetworkFunction";
 import { NetworkSignal } from "./Network/NetworkSignal";
 import { PlayerDto } from "./Player/Player";
@@ -11,7 +10,7 @@ import { TeamDto } from "./Team/Team";
 
 export const CoreNetwork = {
 	ClientToServer: {
-		Ready: new NetworkSignal<[]>("Ready"),
+		Ready: new NetworkSignal("Ready"),
 		SetHeldSlot: new NetworkSignal<[invId: number, slot: number]>("SetHeldSlot"),
 		Inventory: {
 			SwapSlots: new NetworkSignal<[fromInvId: number, fromSlot: number, toInvId: number, toSlot: number]>(
@@ -27,7 +26,7 @@ export const CoreNetwork = {
 			RequestCharacters: new NetworkFunction<[], CharacterDto[]>("RequestCharacters"),
 		},
 		SendChatMessage: new NetworkSignal<[text: string]>("SendChatMessage"),
-		ChangedOutfit: new NetworkSignal<[]>("ChangedOutfit"),
+		ChangedOutfit: new NetworkSignal("ChangedOutfit"),
 	},
 	ServerToClient: {
 		ServerInfo: new NetworkSignal<[gameId: string, serverId: string, organizationId: string]>("ServerInfo"),
@@ -37,7 +36,7 @@ export const CoreNetwork = {
 			[invId: number, slot: number, itemStack: ItemStackDto | undefined, clientPredicted: boolean]
 		>("SetInventorySlot"),
 		/** Updates properties of an `ItemStack` without creating a new instance of an `ItemStack`. */
-		UpdateInventorySlot: new NetworkSignal<[invId: number, slot: number, itemType?: CoreItemType, amount?: number]>(
+		UpdateInventorySlot: new NetworkSignal<[invId: number, slot: number, itemType?: string, amount?: number]>(
 			"UpdateInventorySlot",
 		),
 		SetHeldInventorySlot: new NetworkSignal<
@@ -45,7 +44,9 @@ export const CoreNetwork = {
 		>("SetHeldInventorySlot"),
 		CharacterModelChanged: new NetworkSignal<[characterModelId: number]>("CharacterModelChanged"),
 		/** Fired when a player sends a chat message with the raw chat message */
-		ChatMessage: new NetworkSignal<[message: string, senderPrefix?: string, senderClientId?: number]>("ChatMessage"),
+		ChatMessage: new NetworkSignal<[message: string, senderPrefix?: string, senderClientId?: number]>(
+			"ChatMessage",
+		),
 		SetAccessory: new NetworkSignal<[entityId: number, slot: AccessorySlot, accessoryPath: string]>("SetAccessory"),
 		RemoveAccessory: new NetworkSignal<[entityId: number, slot: AccessorySlot]>("RemoveAccessory"),
 		AddPlayer: new NetworkSignal<[player: PlayerDto]>("AddPlayer"),
@@ -78,7 +79,10 @@ export const CoreNetwork = {
 		},
 
 		Purchase: {
-			PromptPurchase: new NetworkFunction<[productId: string, quantity: number, recipientId?: string], [displayed: boolean]>("PromptPurchase"),
-		}
+			PromptPurchase: new NetworkFunction<
+				[productId: string, quantity: number, recipientId?: string],
+				[displayed: boolean]
+			>("PromptPurchase"),
+		},
 	},
 };

@@ -1528,6 +1528,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: DirectMessagesWindow
+    singleton: 0
     decorators: []
     properties:
     - name: offlineNotice

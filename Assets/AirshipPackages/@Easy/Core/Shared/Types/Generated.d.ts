@@ -17969,6 +17969,7 @@ interface ServerObjects extends ManagedObjects {
 
 
     AddTimedNetworkObserver(networkObject: NetworkObject): void;
+    PreSpawnCheckNetworkObject(networkObject: NetworkObject): void;
     RebuildObservers(timedOnly: boolean): void;
     RebuildObservers(nob: NetworkObject, timedOnly: boolean): void;
     RebuildObservers(connection: NetworkConnection, timedOnly: boolean): void;
@@ -40692,10 +40693,13 @@ interface BridgeConstructor {
     LoadScene(sceneName: string, restartLuau: boolean, loadSceneMode: LoadSceneMode): void;
     LoadSceneForConnection(conn: NetworkConnection, sceneName: string, makeActiveScene: boolean): void;
     LoadSceneFromAssetBundle(sceneName: string, loadSceneMode: LoadSceneMode): void;
+    MakeColorArray(size: number): CSArray<Color>;
+    MakeFloatArray(size: number): CSArray<number>;
     MakeMaterialPropertyBlock(): MaterialPropertyBlock;
     MakeMesh(): Mesh;
     MakeSprite(texture2D: Texture2D): Sprite;
     MakeVector2(x: number, y: number): Vector2;
+    MakeVector3Array(size: number): CSArray<Vector3>;
     MoveGameObjectToScene(gameObject: GameObject, scene: Scene): void;
     OpenDevConsole(): void;
     RemoveRichText(input: string): string;
@@ -40812,6 +40816,7 @@ interface VoxelBlocks {
     GetBlockIdFromStringId(stringId: string): number;
     GetStringIdFromBlockId(blockVoxelId: number): string;
     Load(contentsOfBlockDefines: CSArray<string>, loadTexturesDirectlyFromDisk: boolean): void;
+    SearchForBlockIdByString(stringId: string): number;
     UpdateVoxelBlockId(voxelValue: number, blockId: number): number;
 
 }
@@ -40831,10 +40836,10 @@ interface TexturePacker {
 interface TextureSet {
     diffuse: Texture2D;
     normals: Texture2D;
-    roughTexture: Texture2D;
+    smoothTexture: Texture2D;
     metalTexture: Texture2D;
     emissiveTexture: Texture2D;
-    roughness: number;
+    smoothness: number;
     metallic: number;
     normalScale: number;
     emissive: number;
@@ -40846,7 +40851,7 @@ interface TextureSet {
     
 interface TextureSetConstructor {
 
-    new(diffuse: Texture2D, normals: Texture2D, roughTex: Texture2D, metalTex: Texture2D, emissiveTex: Texture2D, roughness: number, metallic: number, normalScale: number, emissive: number, brightness: number): TextureSet;
+    new(diffuse: Texture2D, normals: Texture2D, smoothTex: Texture2D, metalTex: Texture2D, emissiveTex: Texture2D, smoothness: number, metallic: number, normalScale: number, emissive: number, brightness: number): TextureSet;
 
 
 }
@@ -40865,7 +40870,7 @@ declare const TexturePacker: TexturePackerConstructor;
 interface BlockDefinition {
     prefab: boolean;
     metallic: number;
-    roughness: number;
+    smoothness: number;
     normalScale: number;
     emissive: number;
     brightness: number;
@@ -41497,26 +41502,21 @@ interface ProjectileHitEvent {
 
 }
     
-interface MaterialColor extends MonoBehaviour {
+interface MaterialColorURP extends MonoBehaviour {
     colorSettings: CSArray<ColorSetting>;
     addedByEditorScript: boolean;
 
 
+    Clear(): void;
     DoUpdate(): void;
     EditorFirstTimeSetup(): void;
-    GetColorSettings(materialIndex: number): ColorSetting;
-    SetAllColors(diffuseColor: Color, multiplyColor: boolean): void;
-    SetAllEmissive(emissiveColor: Color, emissiveMix: number): void;
-    SetColorSettings(materialIndex: number, settings: ColorSetting): boolean;
-    SetMaterialColor(index: number, color: Color): void;
+    GetColorSettingByMaterial(mat: Material): ColorSetting;
+    InitializeColorsFromCurrentMaterials(): void;
 
 }
     
 interface ColorSetting {
-    materialColor: Color;
-    emissiveColor: Color;
-    emissiveMix: number;
-    emissiveLevel: number;
+    baseColor: Color;
     reference: string;
 
 
@@ -41526,19 +41526,19 @@ interface ColorSetting {
     
 interface ColorSettingConstructor {
 
-    new(materialColor: Color, emissiveColor: Color, emissiveMix: number, emissiveLevel: number): ColorSetting;
+    new(baseColor: Color): ColorSetting;
 
 
 }
 declare const ColorSetting: ColorSettingConstructor;
     
-interface MaterialColorConstructor {
+interface MaterialColorURPConstructor {
 
-    new(): MaterialColor;
+    new(): MaterialColorURP;
 
 
 }
-declare const MaterialColor: MaterialColorConstructor;
+declare const MaterialColorURP: MaterialColorURPConstructor;
     
 interface DefaultObjectPool extends ObjectPool {
     readonly Cache: CSArray<CSDictionary<number, CSArray<NetworkObject>>>;
@@ -47707,44 +47707,6 @@ interface StandaloneFileBrowserConstructor {
     SaveFilePanelAsync(title: string, directory: string, defaultName: string, extensions: CSArray<ExtensionFilter>, cb: unknown): void;
 }
 declare const StandaloneFileBrowser: StandaloneFileBrowserConstructor;
-    
-interface MaterialColorURP extends MonoBehaviour {
-    colorSettings: CSArray<ColorSetting>;
-    addedByEditorScript: boolean;
-
-
-    Clear(): void;
-    DoUpdate(): void;
-    EditorFirstTimeSetup(): void;
-    GetColorSettingByMaterial(mat: Material): ColorSetting;
-    InitializeColorsFromCurrentMaterials(): void;
-
-}
-    
-interface ColorSetting {
-    baseColor: Color;
-    reference: string;
-
-
-    CopyFrom(otherSettings: ColorSetting): void;
-
-}
-    
-interface ColorSettingConstructor {
-
-    new(baseColor: Color): ColorSetting;
-
-
-}
-declare const ColorSetting: ColorSettingConstructor;
-    
-interface MaterialColorURPConstructor {
-
-    new(): MaterialColorURP;
-
-
-}
-declare const MaterialColorURP: MaterialColorURPConstructor;
     
 interface Mathf {
 

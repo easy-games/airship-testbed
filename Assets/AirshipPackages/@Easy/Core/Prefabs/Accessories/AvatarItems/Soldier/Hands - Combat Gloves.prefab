@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 149566444613061633}
   - component: {fileID: 1463647868973042896}
-  - component: {fileID: 8215120126335006911}
   - component: {fileID: 6820435399738181908}
   - component: {fileID: 5816367262109491270}
   m_Layer: 0
@@ -114,28 +113,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.00000014901161, y: -0.060555346, z: 0.8327302}
     m_Extent: {x: 0.70171475, y: 0.17140394, z: 0.19566682}
   m_DirtyAABB: 0
---- !u!114 &8215120126335006911
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8151099504743578051}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colorSettings:
-  - materialColor: {r: 0.33861232, g: 0.3773585, b: 0.29725882, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-    emissiveLevel: 0
-  - materialColor: {r: 0.509434, g: 0.509434, b: 0.509434, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-    emissiveLevel: 0
-  addedByEditorScript: 0
 --- !u!114 &6820435399738181908
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -152,6 +129,7 @@ MonoBehaviour:
   accessorySlot: 16
   visibilityMode: 0
   skinnedToCharacter: 1
+  bodyMask: 0
 --- !u!114 &5816367262109491270
 MonoBehaviour:
   m_ObjectHideFlags: 0

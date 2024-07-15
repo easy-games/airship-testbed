@@ -65,7 +65,7 @@ class NetworkSignalClient<T extends unknown[] | unknown> {
 	}
 }
 
-export class NetworkSignal<T extends unknown[] | unknown> {
+export class NetworkSignal<T extends unknown[] | unknown = []> {
 	public readonly server: NetworkSignalServer<T>;
 	public readonly client: NetworkSignalClient<T>;
 

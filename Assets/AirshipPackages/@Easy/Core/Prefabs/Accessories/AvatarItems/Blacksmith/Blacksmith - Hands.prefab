@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2796524525006458096}
   - component: {fileID: 5450435218356065531}
-  - component: {fileID: 2702485716978752361}
   - component: {fileID: 1558137181335917498}
   m_Layer: 0
   m_Name: Blacksmith - Hands
@@ -110,23 +109,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.00000014901161, y: -0.051661953, z: 0.8717041}
     m_Extent: {x: 0.6567, y: 0.16491495, z: 0.17004633}
   m_DirtyAABB: 0
---- !u!114 &2702485716978752361
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6212853193009175248}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colorSettings:
-  - materialColor: {r: 0.8018868, g: 0.7073247, b: 0.7073247, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-  addedByEditorScript: 1
 --- !u!114 &1558137181335917498
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -140,7 +122,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serverClassId: e04b2157-323c-41c2-937b-f9256a828c41
-  serverInstanceId: 
   accessorySlot: 16
   visibilityMode: 2
   skinnedToCharacter: 1
+  bodyMask: 0

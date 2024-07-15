@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Materials/cargo_container.obj.meta
+guid: 2b5d006908e5ced40805fea4463d40d7
+========
 guid: c92761da74ae534448fdfca184248a60
+>>>>>>>> main:Assets/Yos/Yos 1/fbx/fbx_Sword_Diamond.fbx.meta
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -65,7 +69,7 @@ ModelImporter:
     secondaryUVMinLightmapResolution: 40
     secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
-    useFileScale: 0
+    useFileScale: 1
     strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 60
@@ -99,7 +103,7 @@ ModelImporter:
   humanoidOversampling: 1
   avatarSetup: 0
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
-  importBlendShapeDeformPercent: 0
+  importBlendShapeDeformPercent: 1
   remapMaterialsIfMaterialImportModeIsNone: 0
   additionalBone: 0
   userData: 

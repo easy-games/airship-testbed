@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 7736549642688669424}
   - component: {fileID: 7736549642688669425}
   - component: {fileID: 2123547695}
-  - component: {fileID: 1593605304899748994}
   - component: {fileID: 7579694504982098206}
   m_Layer: 1
   m_Name: MainCamera
@@ -94,19 +93,6 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7736549642688669431}
   m_Enabled: 1
---- !u!114 &1593605304899748994
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7736549642688669431}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0ed727e50420484594a1d527959e9ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  airshipRenderSettings: {fileID: 0}
 --- !u!114 &7579694504982098206
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -337,6 +323,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: CameraRig
+    singleton: 0
     decorators: []
     properties:
     - name: mainCamera
@@ -348,6 +335,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators:
       - name: Header
         parameters:
@@ -366,6 +354,7 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -380,10 +369,12 @@ MonoBehaviour:
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: 
       decorators: []
       nullable: 0
       serializedValue: 
       serializedObject: {fileID: 5211942566301910163}
       modified: 1
+    displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0

@@ -499,7 +499,6 @@ GameObject:
   - component: {fileID: 9043218167714766384}
   - component: {fileID: 8186130447556373362}
   - component: {fileID: 5983483085768287125}
-  - component: {fileID: 1966683603395526997}
   m_Layer: 3
   m_Name: ColliderVisualizer
   m_TagString: Untagged
@@ -574,24 +573,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1966683603395526997
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8449093044472759531}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colorSettings:
-  - materialColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-    emissiveLevel: 0
-  addedByEditorScript: 1
 --- !u!1 &8616685848737228372
 GameObject:
   m_ObjectHideFlags: 0
