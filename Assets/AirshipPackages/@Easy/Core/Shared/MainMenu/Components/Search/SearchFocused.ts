@@ -105,18 +105,21 @@ export default class SearchFocused extends AirshipBehaviour {
 			}),
 		);
 
-		const keyboard = new Keyboard();
-		this.bin.Add(keyboard);
-
-		keyboard.OnKeyDown(Key.UpArrow, () => {
-			this.SetIndex(this.index - 1);
-		});
-		keyboard.OnKeyDown(Key.DownArrow, (event) => {
-			this.SetIndex(this.index + 1);
-		});
-		keyboard.OnKeyDown(Key.Enter, () => {
-			this.activeResult?.OnSubmit();
-		});
+		this.bin.Add(
+			Keyboard.OnKeyDown(Key.UpArrow, () => {
+				this.SetIndex(this.index - 1);
+			}),
+		);
+		this.bin.Add(
+			Keyboard.OnKeyDown(Key.DownArrow, (event) => {
+				this.SetIndex(this.index + 1);
+			}),
+		);
+		this.bin.Add(
+			Keyboard.OnKeyDown(Key.Enter, () => {
+				this.activeResult?.OnSubmit();
+			}),
+		);
 
 		task.spawn(() => {
 			this.Query();

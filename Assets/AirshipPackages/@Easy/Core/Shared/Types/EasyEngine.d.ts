@@ -10,6 +10,10 @@
 /** Used as a return type in observer patterns. */
 type CleanupFunc = void | (() => void);
 
+// type AirshipConnection = {
+// 	Destroy(): void;
+// };
+
 type Mutable<T> = {
 	-readonly [k in keyof T]: T[k];
 };
@@ -191,7 +195,7 @@ interface InputBridge {
 	IsLeftMouseButtonDown(): boolean;
 	IsRightMouseButtonDown(): boolean;
 	IsMiddleMouseButtonDown(): boolean;
-	ToggleMouseVisibility(isVisible: boolean): void;
+	SetCursorVisible(isVisible: boolean): void;
 	GetMousePosition(): Vector2;
 	GetMouseDelta(): Vector2;
 	SetMouseLocked(locked: boolean): void;

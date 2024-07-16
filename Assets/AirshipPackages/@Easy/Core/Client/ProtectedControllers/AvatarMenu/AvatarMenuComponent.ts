@@ -194,9 +194,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.InitializeAutherizedAccessories();
 
 		if (Game.IsEditor()) {
-			let keyboard = new Keyboard();
-			keyboard.OnKeyDown(Key.PrintScreen, (event) => {
-				if (keyboard.IsKeyDown(Key.LeftShift)) {
+			Keyboard.OnKeyDown(Key.PrintScreen, (event) => {
+				if (Keyboard.IsKeyDown(Key.LeftShift)) {
 					if (this.inThumbnailMode) {
 						this.LeaveThumbnailMode();
 					} else {
@@ -241,8 +240,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 		//"Enter" should allow you to rename currently selected outfit button
 		const keyboard = new Keyboard();
-		this.bin.Add(keyboard);
-		keyboard.OnKeyDown(Key.Enter, (event) => {
+		Keyboard.OnKeyDown(Key.Enter, (event) => {
 			if (event.uiProcessed) return;
 
 			const currentButton = this.outfitBtns[this.currentUserOutfitIndex];
@@ -280,8 +278,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.SelectMainNav(0);
 		this.SelectSubNav(0);
 
-		this.mouse = this.bin.Add(new Mouse());
-		this.bin.Connect(this.mouse.scrolled, (event) => {
+		this.bin.Connect(Mouse.onScrolled, (event) => {
 			if (event.delta < -1) {
 				this.mainMenu?.avatarView?.CameraFocusSlot(AccessorySlot.Root);
 			} else if (event.delta > 1) {

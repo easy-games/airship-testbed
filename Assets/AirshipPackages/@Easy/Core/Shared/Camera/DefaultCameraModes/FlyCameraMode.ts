@@ -55,9 +55,6 @@ export class FlyCameraMode extends CameraMode {
 		this.originalFov = camera.fieldOfView;
 		this.currentFov = this.originalFov;
 
-		this.keyboard = this.bin.Add(new Keyboard());
-		this.mouse = this.bin.Add(new Mouse());
-
 		// Sink keys:
 		const sinkKeys = new Set<Key>();
 		sinkKeys.add(Key.W);
@@ -73,7 +70,7 @@ export class FlyCameraMode extends CameraMode {
 
 		for (const key of sinkKeys) {
 			this.bin.Add(
-				this.keyboard.OnKeyDown(
+				Keyboard.OnKeyDown(
 					key,
 					(event) => {
 						this.keysDown.add(event.key);
@@ -83,7 +80,7 @@ export class FlyCameraMode extends CameraMode {
 				),
 			);
 			this.bin.Add(
-				this.keyboard.OnKeyUp(
+				Keyboard.OnKeyUp(
 					key,
 					(event) => {
 						this.keysDown.delete(event.key);
@@ -94,7 +91,7 @@ export class FlyCameraMode extends CameraMode {
 			);
 		}
 
-		this.bin.Connect(this.mouse.scrolled, (event) => {
+		this.bin.Connect(Mouse.onScrolled, (event) => {
 			const delta = -event.delta * FOV_SCROLL_SENSITIVITY;
 			this.fovSpring.goal = new Vector3(0, 0, math.clamp(this.fovSpring.goal.z + delta, MIN_FOV, MAX_FOV));
 		});
@@ -140,10 +137,10 @@ export class FlyCameraMode extends CameraMode {
 		}
 
 		// Handle camera rotation when right-clicking:
-		const rightClick = this.mouse.IsRightButtonDown();
+		const rightClick = Mouse.onRightDown;
 		if (rightClick) {
 			const sensFovScalar = MathUtil.Map(this.currentFov, MIN_FOV, MAX_FOV, 0.2, 1);
-			const mouseDelta = this.mouse.GetDelta();
+			const mouseDelta = Mouse.GetDelta();
 			const sensitivity = Airship.Input.GetMouseSensitivity() * MOUSE_SENS_SCALAR * sensFovScalar;
 			this.xRotSpring.goal = new Vector3(
 				math.clamp(this.xRotSpring.goal.x + mouseDelta.y * sensitivity, MIN_ROT_X, MAX_ROT_X),

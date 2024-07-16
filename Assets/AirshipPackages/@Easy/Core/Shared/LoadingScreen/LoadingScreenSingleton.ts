@@ -28,12 +28,7 @@ export class LoadingScreenSingleton {
 		if (Game.coreContext === CoreContext.MAIN_MENU) return;
 		this.coreLoadingScreen = GameObject.Find("CoreLoadingScreen")?.GetComponent<CoreLoadingScreen>()!;
 		this.coreLoadingScreen.SetProgress("Building the World", 10);
-
-		const mouse = new Mouse();
-		const unlocker = mouse.AddUnlocker();
-		this.loadingBin.Add(() => {
-			mouse.RemoveUnlocker(unlocker);
-		});
+		this.loadingBin.Add(Mouse.AddUnlocker());
 
 		task.delay(0, () => {
 			if (!this.hasUsed) {

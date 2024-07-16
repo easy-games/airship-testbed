@@ -301,9 +301,6 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	}
 
 	private SetupBackpack(): void {
-		const mouse = new Mouse();
-		const keyboard = new Keyboard();
-
 		const inv = Airship.Inventory.localInventory!;
 
 		// backpack hotbar slots
@@ -376,7 +373,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 						if (i < inv.hotbarSlots) {
 							// hotbar
 							if (this.IsBackpackShown()) {
-								if (keyboard.IsKeyDown(Key.LeftShift)) {
+								if (Keyboard.IsKeyDown(Key.LeftShift)) {
 									Airship.Inventory.QuickMoveSlot(inv, i);
 								}
 							} else {
@@ -384,7 +381,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 							}
 						} else {
 							// backpack
-							if (keyboard.IsKeyDown(Key.LeftShift)) {
+							if (Keyboard.IsKeyDown(Key.LeftShift)) {
 								Airship.Inventory.QuickMoveSlot(inv, i);
 							}
 						}
@@ -392,7 +389,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 					CanvasAPI.OnBeginDragEvent(tileComponent.button.gameObject, () => {
 						this.draggingBin.Clean();
 						if (!this.IsBackpackShown()) return;
-						if (keyboard.IsKeyDown(Key.LeftShift)) return;
+						if (Keyboard.IsKeyDown(Key.LeftShift)) return;
 
 						if (!Airship.Inventory.localInventory) return;
 						const itemStack = Airship.Inventory.localInventory.GetItem(i);
@@ -414,11 +411,11 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 						visual.SetActive(false);
 
 						const cloneTransform = clone.GetComponent<RectTransform>()!;
-						cloneTransform.position = mouse.GetPositionV3();
+						cloneTransform.position = Mouse.GetPositionVector3();
 
 						this.draggingBin.Add(
 							OnUpdate.Connect((dt) => {
-								cloneTransform.position = mouse.GetPositionV3();
+								cloneTransform.position = Mouse.GetPositionVector3();
 							}),
 						);
 						this.draggingBin.Add(() => {
