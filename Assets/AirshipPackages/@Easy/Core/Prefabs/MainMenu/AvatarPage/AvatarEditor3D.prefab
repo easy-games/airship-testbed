@@ -1653,6 +1653,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CharacterDummy
       objectReference: {fileID: 0}
+    - target: {fileID: 2679506801701540495, guid: 6354d1c2926319242ba9081c0c3dd934, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2877730525593779106, guid: 6354d1c2926319242ba9081c0c3dd934, type: 3}
       propertyPath: m_Layer
       value: 10

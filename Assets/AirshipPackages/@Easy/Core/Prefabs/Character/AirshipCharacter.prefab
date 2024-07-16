@@ -444,7 +444,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7911948219130051474}
-  - component: {fileID: 1675991760270218002}
   m_Layer: 3
   m_Name: NetworkedGraphicsHolder
   m_TagString: Untagged
@@ -469,25 +468,6 @@ Transform:
   - {fileID: 2528350621025029902}
   m_Father: {fileID: 8997996947095583982}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1675991760270218002
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7387929036933538088}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2dc93b0aa2fdd745ba42c9905c27203, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  logLateUpdate: 0
-  logTickUpdate: 0
-  logVel: 0
-  logPosition: 0
-  logLocalPosition: 0
-  continuousForce: {x: 0, y: 0, z: 0}
-  rigid: {fileID: 5519949438957097557}
 --- !u!1 &8449093044472759531
 GameObject:
   m_ObjectHideFlags: 0
@@ -1351,10 +1331,6 @@ PrefabInstance:
     - target: {fileID: 4845036152095233570, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8712362769775679849, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
-      propertyPath: m_Enabled
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8802499123621670980, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
       propertyPath: m_Name
