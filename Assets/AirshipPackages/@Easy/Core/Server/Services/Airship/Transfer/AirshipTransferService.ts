@@ -27,7 +27,7 @@ export class AirshipTransferService {
 	 * You can yield for up to 30 minutes to perform shutdown logic.
 	 * You can also yield to ensure an in-progress match is completed.
 	 */
-	public onShutdown = new Signal().WithYieldTracking(false);
+	public onShutdown = new Signal().WithAllowYield(true);
 
 	/**
 	 * If true, players are automatically transfered into a new server when the server shuts down.

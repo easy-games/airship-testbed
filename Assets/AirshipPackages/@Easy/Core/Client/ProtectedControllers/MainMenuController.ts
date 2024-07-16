@@ -12,6 +12,8 @@ import AvatarViewComponent from "../../Shared/Avatar/AvatarViewComponent";
 import MainMenuPageComponent from "../../Shared/MainMenu/Components/MainMenuPageComponent";
 import AvatarMenuComponent from "./AvatarMenu/AvatarMenuComponent";
 import DevelopMenuPage from "./Develop/DevelopMenuPage";
+import { MainMenuBeforePageChangeSignal } from "./MainMenuBeforePageChangeSignal";
+import { MainMenuPageChangeSignal } from "./MainMenuPageChangeSignal";
 import { MainMenuPageType } from "./MainMenuPageName";
 
 @Controller()
@@ -22,7 +24,8 @@ export class MainMenuController {
 	public refs: GameObjectReferences;
 	public currentPage?: MainMenuPageComponent;
 	public avatarView?: AvatarViewComponent;
-	public onCurrentPageChanged = new Signal<[page: MainMenuPageType, oldPage: MainMenuPageType | undefined]>();
+	public onBeforePageChange = new Signal<MainMenuBeforePageChangeSignal>().WithAllowYield(true);
+	public onPageChange = new Signal<MainMenuPageChangeSignal>();
 	private pageMap: Map<MainMenuPageType, MainMenuPageComponent>;
 	private wrapperRect: RectTransform;
 
@@ -52,10 +55,7 @@ export class MainMenuController {
 
 		this.pageMap = new Map<MainMenuPageType, MainMenuPageComponent>([
 			[MainMenuPageType.Home, this.refs.GetValue("Pages", "Home").GetAirshipComponent<HomePageComponent>()!],
-			[
-				MainMenuPageType.Develop,
-				this.refs.GetValue("Pages", "Develop").GetAirshipComponent<DevelopMenuPage>()!,
-			],
+			[MainMenuPageType.Develop, this.refs.GetValue("Pages", "Develop").GetAirshipComponent<DevelopMenuPage>()!],
 			[
 				MainMenuPageType.Avatar,
 				this.refs.GetValue("Pages", "Avatar").GetAirshipComponent<AvatarMenuComponent>()!,
@@ -190,19 +190,27 @@ export class MainMenuController {
 		}
 
 		const oldPage = this.currentPage;
-		this.currentPage = this.pageMap.get(pageType);
 
-		// Remove old page
-		if (oldPage) {
-			oldPage.ClosePage();
-		}
+		task.spawn(() => {
+			const beforeEvent = this.onBeforePageChange.Fire(
+				new MainMenuBeforePageChangeSignal(pageType, oldPage?.pageType),
+			);
+			if (beforeEvent.IsCancelled()) return;
 
-		if (this.currentPage) {
-			this.currentPage.OpenPage(params);
-		} else {
-			error("Trying to route to undefined page: " + pageType);
-		}
+			this.currentPage = this.pageMap.get(pageType);
 
-		this.onCurrentPageChanged.Fire(pageType, oldPage?.pageType);
+			// Remove old page
+			if (oldPage) {
+				oldPage.ClosePage();
+			}
+
+			if (this.currentPage) {
+				this.currentPage.OpenPage(params);
+			} else {
+				error("Trying to route to undefined page: " + pageType);
+			}
+
+			this.onPageChange.Fire(new MainMenuBeforePageChangeSignal(pageType, oldPage?.pageType));
+		});
 	}
 }

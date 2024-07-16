@@ -91,10 +91,11 @@ export class MainMenuNavbarController {
 			currentSelectedNavbarButton = runningGameButton;
 		}
 		this.UpdateNavButton(currentSelectedNavbarButton, true);
-		this.mainMenuController.onCurrentPageChanged.Connect((page, oldPage) => {
+		this.mainMenuController.onPageChange.Connect((event) => {
 			if (currentSelectedNavbarButton) {
 				this.UpdateNavButton(currentSelectedNavbarButton, false);
 			}
+			const page = event.newPage;
 			if (page === MainMenuPageType.Home) {
 				currentSelectedNavbarButton = homeButton;
 			} else if (page === MainMenuPageType.Game) {

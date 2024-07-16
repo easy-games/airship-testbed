@@ -1,10 +1,14 @@
-import { Singleton } from "@Easy/Core/Shared/Flamework";
+import { MainMenuController } from "@Easy/Core/Client/ProtectedControllers/MainMenuController";
+import { Dependency, Singleton } from "@Easy/Core/Shared/Flamework";
+import { AssetCache } from "../../AssetCache/AssetCache";
 import { Game } from "../../Game";
 import { CoreLogger } from "../../Logger/CoreLogger";
+import { AppManager } from "../../Util/AppManager";
 import { Bin } from "../../Util/Bin";
 import { Modifier } from "../../Util/Modifier";
 import { Signal } from "../../Util/Signal";
 import { OnUpdate } from "../../Util/Timer";
+import ConfirmModal from "../Components/Modal/ConfirmModal";
 import { ScreenSizeType } from "./ScreenSizeType";
 
 @Singleton({})
@@ -74,5 +78,22 @@ export class MainMenuSingleton {
 		);
 
 		return bin;
+	}
+
+	public async ShowConfirmModal(title: string, message: string): Promise<boolean> {
+		const go = Object.Instantiate(
+			AssetCache.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/UI/Modals/AirshipConfirmModal.prefab"),
+			Dependency<MainMenuController>().mainContentCanvas.transform,
+		);
+		const confirmModal = go.GetAirshipComponent<ConfirmModal>()!;
+		confirmModal.title.text = title;
+		confirmModal.message.text = message;
+
+		AppManager.OpenModal(go, {
+			sortingOrderOffset: 100,
+		});
+
+		const result = confirmModal.onResult.Wait();
+		return result;
 	}
 }

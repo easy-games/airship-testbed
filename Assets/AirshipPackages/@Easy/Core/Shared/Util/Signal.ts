@@ -31,7 +31,7 @@ export const enum SignalPriority {
 let idCounter = 1;
 export class Signal<T extends unknown[] | unknown = void> {
 	private debugLogging = false;
-	private trackYielding = true;
+	private allowYielding = false;
 	private readonly connections: Map<number, Array<CallbackItem<T>>> = new Map();
 	public debugGameObject = false;
 	// private readonly connections: Array<CallbackItem<T>> = [];
@@ -129,10 +129,14 @@ export class Signal<T extends unknown[] | unknown = void> {
 			for (let entry of entries) {
 				fireCount++;
 
-				const thread = task.spawn(entry.callback, ...args);
+				if (this.allowYielding) {
+					entry.callback(...args);
+				} else {
+					const thread = task.spawn(entry.callback, ...args);
 
-				if (this.trackYielding && isCancellable && coroutine.status(thread) !== "dead") {
-					warn(debug.traceback(thread, "Signal callback yielded. This might be an error.") + "\n--\n");
+					if (this.allowYielding && isCancellable && coroutine.status(thread) !== "dead") {
+						warn(debug.traceback(thread, "Signal callback yielded. This might be an error.") + "\n--\n");
+					}
 				}
 
 				if (isCancellable) {
@@ -207,8 +211,8 @@ export class Signal<T extends unknown[] | unknown = void> {
 		return this;
 	}
 
-	public WithYieldTracking(value: boolean): Signal<T> {
-		this.trackYielding = value;
+	public WithAllowYield(value: boolean): Signal<T> {
+		this.allowYielding = value;
 		return this;
 	}
 

@@ -15,7 +15,7 @@ MonoBehaviour:
   autoAddMaterialColor: 1
   autoConvertMaterials: 1
   autoUpdatePackages: 1
-  enableMainMenu: 0
+  enableMainMenu: 1
   manageTypescriptProject: 0
   safeguardBundleModification: 1
   promptIfLuauPluginChanged: 1

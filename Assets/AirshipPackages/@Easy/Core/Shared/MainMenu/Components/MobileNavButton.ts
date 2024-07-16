@@ -34,8 +34,8 @@ export default class MobileNavButton extends AirshipBehaviour {
 			} else {
 				this.SetSelected(false);
 			}
-			mainMenuController.onCurrentPageChanged.Connect((page) => {
-				this.SetSelected(page === this.pageName);
+			mainMenuController.onPageChange.Connect((event) => {
+				this.SetSelected(event.newPage === this.pageName);
 			});
 		});
 

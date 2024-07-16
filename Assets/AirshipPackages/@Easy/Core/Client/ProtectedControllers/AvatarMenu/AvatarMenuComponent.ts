@@ -73,6 +73,10 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private saveBtn?: AirshipButton;
 	private currentFocusedSlot: AccessorySlot = AccessorySlot.Root;
 	private avatarProfileMenu?: AvatarMenuProfileComponent;
+	private dirty = false;
+
+	private discardTitle = "Discarding Changes!";
+	private discardMessage = "Are you sure you want to discard changes to your outfit?";
 
 	private Log(message: string) {
 		// print("Avatar Editor: " + message + " (" + Time.time + ")");
@@ -131,7 +135,19 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 			CoreUI.SetupButton(go, { noHoverSound: true });
 			CanvasAPI.OnClickEvent(go, () => {
-				this.SelectOutfit(outfitI);
+				task.spawn(async () => {
+					if (this.dirty) {
+						const res = await Dependency<MainMenuSingleton>().ShowConfirmModal(
+							this.discardTitle,
+							this.discardMessage,
+						);
+						if (!res) {
+							return;
+						}
+					}
+
+					this.SelectOutfit(outfitI);
+				});
 			});
 		}
 
@@ -204,8 +220,24 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	override OpenPage(params?: unknown): void {
 		super.OpenPage(params);
+		this.SetDirty(false);
 
 		this.bin.Add(Dependency<MainMenuSingleton>().socialMenuModifier.Add({ hidden: true }));
+
+		this.bin.Add(
+			Dependency<MainMenuController>().onBeforePageChange.Connect((event) => {
+				if (this.dirty && event.oldPage === MainMenuPageType.Avatar) {
+					print("showing confirm..");
+					const [success, res] = Dependency<MainMenuSingleton>()
+						.ShowConfirmModal(this.discardTitle, this.discardMessage)
+						.await();
+					print(`[${success}, ${res}]`);
+					if (success && !res) {
+						event.SetCancelled(true);
+					}
+				}
+			}),
+		);
 
 		//"Enter" should allow you to rename currently selected outfit button
 		const keyboard = new Keyboard();
@@ -509,6 +541,11 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 	}
 
+	private SetDirty(val: boolean): void {
+		this.dirty = val;
+		this.saveBtn?.SetDisabled(!val);
+	}
+
 	private SelectItem(instanceId: string, accTemplate?: AccessoryComponent, instantRefresh = true) {
 		if (!accTemplate) {
 			return;
@@ -527,7 +564,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.activeAccessories.set(accTemplate.GetSlotNumber(), instanceId);
 		this.selectedAccessories.set(instanceId, true);
 		this.UpdateButtonGraphics();
-		this.saveBtn?.SetDisabled(false);
+		this.SetDirty(true);
 
 		//Make these objects not use baked lighting settings
 		if (acc) {
@@ -548,7 +585,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.mainMenu?.avatarView?.accessoryBuilder?.SetFaceTexture(face.decalTexture);
 		this.selectedFaceId = face.serverInstanceId;
 		this.UpdateButtonGraphics();
-		this.saveBtn?.SetDisabled(false);
+		this.SetDirty(true);
 	}
 
 	private SelectSkinItem(acc: AccessorySkin, instantRefresh = true) {
@@ -557,7 +594,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 		this.Log("Selecting skin item: " + acc.ToString());
 		this.mainMenu?.avatarView?.accessoryBuilder?.AddSkinAccessory(acc, instantRefresh);
-		this.saveBtn?.SetDisabled(false);
+		this.SetDirty(true);
 	}
 
 	private SelectSkinColor(color: Color, instantRefresh = true) {
@@ -566,7 +603,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.mainMenu?.avatarView?.PlayReaction(AccessorySlot.Root);
 		this.selectedColor = ColorUtil.ColorToHex(color);
 		this.UpdateButtonGraphics();
-		this.saveBtn?.SetDisabled(false);
+		this.SetDirty(true);
 	}
 
 	private RemoveItem(slot: AccessorySlot, instantRefresh = true) {
@@ -653,6 +690,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	private SelectOutfit(index: number) {
 		this.Log("SelectOutfit: " + index);
+
 		if (!this.outfits || index < 0 || index >= this.outfits.size() || this.inThumbnailMode) {
 			error(`Index ${index} out of range of outfits`);
 		}
@@ -713,7 +751,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.SelectSkinColor(ColorUtil.HexToColor(this.currentUserOutfit.skinColor), true);
 
 		this.UpdateButtonGraphics();
-		this.saveBtn?.SetDisabled(true);
+		this.SetDirty(false);
 		//builder.TryCombineMeshes();
 	}
 
@@ -768,7 +806,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			},
 		);
 
-		this.saveBtn?.SetDisabled(true);
+		this.SetDirty(false);
 		this.saveBtn?.SetLoading(false);
 	}
 
@@ -791,7 +829,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 		this.mainMenu?.avatarView?.backdropHolder?.gameObject.SetActive(false);
 		this.inThumbnailMode = true;
-		this.saveBtn?.SetDisabled(false);
+		this.SetDirty(false);
 		this.ClearItembuttons();
 		this.ClearAllAccessories();
 		print("Entering Thumbnail Mode");

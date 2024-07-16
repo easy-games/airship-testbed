@@ -309,6 +309,7 @@ if (Game.IsGameLuauContext() || !Game.IsInGame()) {
 	AppManager.keyboard.OnKeyDown(
 		CLOSE_KEY,
 		(event) => {
+			if (event.IsCancelled()) return;
 			if (Game.IsEditor() && !EditorBridge.IsMainMenuInEditorEnabled()) {
 				return;
 			}
