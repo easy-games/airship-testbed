@@ -11,12 +11,7 @@ import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
 import { Keyboard, Mouse } from "../../../UserInput";
 import { AppManager } from "../../../Util/AppManager";
 import { Bin } from "../../../Util/Bin";
-import {
-    CanvasAPI,
-    HoverState,
-    PointerButton,
-    PointerDirection,
-} from "../../../Util/CanvasAPI";
+import { CanvasAPI, HoverState, PointerButton, PointerDirection } from "../../../Util/CanvasAPI";
 import { InputUtils } from "../../../Util/InputUtils";
 import { SignalPriority } from "../../../Util/Signal";
 import { Theme } from "../../../Util/Theme";
@@ -90,16 +85,12 @@ export default class SettingsKeybind extends AirshipBehaviour {
 				SignalPriority.HIGHEST,
 			),
 		);
-
-		const mouse = new Mouse();
-		this.bin.Add(mouse);
 	}
 
 	private OpenRightClick(): void {
-		const mouse = new Mouse();
 		Dependency<RightClickMenuController>().OpenRightClickMenu(
 			Dependency<MainMenuController>().mainContentCanvas,
-			mouse.GetPosition(),
+			Mouse.position,
 			[
 				{
 					text: "Reset",
@@ -177,12 +168,12 @@ export default class SettingsKeybind extends AirshipBehaviour {
 				this.SetListening(false);
 			}
 
-			if (Mouse.global.IsLeftButtonDown()) {
+			if (Mouse.isLeftDown) {
 				this.UpdateBinding(Binding.MouseButton(MouseButton.LeftButton));
 				this.SetListening(false);
 			}
 
-			if (Mouse.global.IsRightButtonDown()) {
+			if (Mouse.isRightDown) {
 				this.UpdateBinding(Binding.MouseButton(MouseButton.RightButton));
 				this.SetListening(false);
 			}

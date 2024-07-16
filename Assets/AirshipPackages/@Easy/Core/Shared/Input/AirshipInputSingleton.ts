@@ -31,7 +31,7 @@ export enum InputActionDirection {
 /**
  * Access using {@link Airship.Input}. Input singleton contains functions to work with
  * player input (including mouse, keyboard, and touch screen).
- * 
+ *
  * Ex:
  * ```ts
  * Airship.Input.CreateAction("Attack", Binding.MouseButton(MouseButton.LeftButton));
@@ -60,10 +60,6 @@ export class AirshipInputSingleton {
 	 * Input singleton keyboard instance.
 	 */
 	private keyboard = new Keyboard();
-	/**
-	 * Input singleton mouse instance.
-	 */
-	private mouse = new Mouse();
 	/**
 	 *
 	 */
@@ -593,7 +589,7 @@ export class AirshipInputSingleton {
 				);
 			} else {
 				signalCleanup.Add(
-					this.mouse.OnButtonDown(action.binding.config.mouseButton, (event) => {
+					Mouse.OnButtonDown(action.binding.config.mouseButton, (event) => {
 						const isModifierKeyDown = this.keyboard.IsKeyDown(action.binding.GetModifierKey());
 						if (!isModifierKeyDown) return;
 						this.actionDownState.add(action.name);
@@ -618,7 +614,7 @@ export class AirshipInputSingleton {
 					}),
 				);
 				signalCleanup.Add(
-					this.mouse.OnButtonUp(action.binding.config.mouseButton, (event) => {
+					Mouse.OnButtonUp(action.binding.config.mouseButton, (event) => {
 						const isDown = this.actionDownState.has(action.name);
 						if (!isDown) return;
 						this.actionDownState.delete(action.name);
@@ -731,7 +727,7 @@ export class AirshipInputSingleton {
 				);
 			} else {
 				signalCleanup.Add(
-					this.mouse.OnButtonDown(action.binding.config.mouseButton, (event) => {
+					Mouse.OnButtonDown(action.binding.config.mouseButton, (event) => {
 						if (
 							CanvasAPI.IsPointerOverUI() ||
 							this.controlManager.GetControlScheme() === ControlScheme.Touch
@@ -764,7 +760,7 @@ export class AirshipInputSingleton {
 					}),
 				);
 				signalCleanup.Add(
-					this.mouse.OnButtonUp(action.binding.config.mouseButton, (event) => {
+					Mouse.OnButtonUp(action.binding.config.mouseButton, (event) => {
 						const wasDown = this.actionDownState.has(action.name);
 						if (!wasDown) return;
 						this.actionDownState.delete(action.name);

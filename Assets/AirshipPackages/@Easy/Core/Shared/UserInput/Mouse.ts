@@ -1,157 +1,108 @@
-import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { Game } from "../Game";
-import { MouseDriver } from "./Drivers/MouseDriver";
+import { CanvasAPI } from "../Util/CanvasAPI";
 import { PointerButtonSignal } from "./Drivers/Signals/PointerButtonSignal";
 import { ScrollSignal } from "./Drivers/Signals/ScrollSignal";
+
+const inputBridge = InputBridge.Instance;
 
 const mouseUnlockerKeys = new Set<number>();
 let mouseUnlockerIdCounter = 1;
 
+if (Game.IsGameLuauContext()) {
+	inputBridge.SetMouseLocked(true);
+}
+
+export interface MouseUnlocker {
+	Destroy(): void;
+}
+
 export class Mouse {
-	public static readonly global = new Mouse();
-
-	private readonly bin = new Bin();
-	private readonly mouseDriver = MouseDriver.Instance();
-
-	public readonly leftDown = new Signal<[event: PointerButtonSignal]>();
-	public readonly leftUp = new Signal<[event: PointerButtonSignal]>();
-	public readonly rightDown = new Signal<[event: PointerButtonSignal]>();
-	public readonly rightUp = new Signal<[event: PointerButtonSignal]>();
-	public readonly middleDown = new Signal<[event: PointerButtonSignal]>();
-	public readonly middleUp = new Signal<[event: PointerButtonSignal]>();
-	public readonly scrolled = new Signal<[event: ScrollSignal]>();
-	public readonly moved = new Signal<[position: Vector2]>();
+	public static readonly leftDown = new Signal<[event: PointerButtonSignal]>();
+	public static readonly leftUp = new Signal<[event: PointerButtonSignal]>();
+	public static readonly rightDown = new Signal<[event: PointerButtonSignal]>();
+	public static readonly rightUp = new Signal<[event: PointerButtonSignal]>();
+	public static readonly middleDown = new Signal<[event: PointerButtonSignal]>();
+	public static readonly middleUp = new Signal<[event: PointerButtonSignal]>();
+	public static readonly scrolled = new Signal<[event: ScrollSignal]>();
+	public static readonly moved = new Signal<[position: Vector2]>();
 	// public readonly Delta = new Signal<[delta: Vector2]>();
 
-	private isLeftDown = false;
-	private isRightDown = false;
-	private isMiddleDown = false;
-	private position = Vector2.zero;
+	public static readonly isLeftDown = inputBridge.IsLeftMouseButtonDown();
+	public static readonly isRightDown = inputBridge.IsRightMouseButtonDown();
+	public static readonly isMiddleDown = inputBridge.IsMiddleMouseButtonDown();
+	public static readonly position = inputBridge.GetMousePosition();
 
 	constructor() {
-		// Track signals in bin:
-		this.bin.Add(this.leftDown);
-		this.bin.Add(this.leftUp);
-		this.bin.Add(this.rightDown);
-		this.bin.Add(this.rightUp);
-		this.bin.Add(this.middleDown);
-		this.bin.Add(this.middleUp);
-		this.bin.Add(this.scrolled);
-		this.bin.Add(this.moved);
-		// this.bin.Add(this.Delta);
-
-		// Initial states:
-		this.isLeftDown = this.mouseDriver.IsLeftDown();
-		this.isRightDown = this.mouseDriver.IsRightDown();
-		this.isMiddleDown = this.mouseDriver.IsMiddleDown();
-		this.position = this.mouseDriver.GetPosition();
-
-		if (mouseUnlockerKeys.size() === 0 && Game.IsGameLuauContext()) {
-			this.mouseDriver.SetLocked(true);
-		}
-
-		// Connect to mouse driver:
-
-		this.bin.Connect(this.mouseDriver.leftButtonChanged, (event) => {
-			this.isLeftDown = event.isDown;
-			if (event.isDown) {
-				this.leftDown.Fire(event);
-			} else {
-				this.leftUp.Fire(event);
-			}
-		});
-
-		this.bin.Connect(this.mouseDriver.rightButtonChanged, (event) => {
-			this.isRightDown = event.isDown;
-			if (event.isDown) {
-				this.rightDown.Fire(event);
-			} else {
-				this.rightUp.Fire(event);
-			}
-		});
-
-		this.bin.Connect(this.mouseDriver.middleButtonChanged, (event) => {
-			this.isMiddleDown = event.isDown;
-			if (event.isDown) {
-				this.middleDown.Fire(event);
-			} else {
-				this.middleUp.Fire(event);
-			}
-		});
-
-		this.bin.Connect(this.mouseDriver.moved, (position) => {
-			this.position = position;
-			this.moved.Fire(position);
-		});
-
-		// this.bin.Connect(this.mouseDriver.Delta, (delta) => {
-		// 	this.Delta.Fire(delta);
-		// });
-
-		this.bin.Connect(this.mouseDriver.scrolled, (delta) => {
-			this.scrolled.Fire(delta);
-		});
+		error(
+			"Invalid usage of Mouse API. Do not use Mouse constructor. Instead, use static properties. Example: Mouse.isLeftDown",
+		);
 	}
 
-	public OnButtonDown(button: MouseButton, callback: (event: PointerButtonSignal) => void) {
+	public static OnButtonDown(button: MouseButton, callback: (event: PointerButtonSignal) => void) {
 		switch (button) {
 			case MouseButton.LeftButton:
-				return this.leftDown.Connect(callback);
+				return Mouse.leftDown.Connect(callback);
 			case MouseButton.MiddleButton:
-				return this.middleDown.Connect(callback);
+				return Mouse.middleDown.Connect(callback);
 			case MouseButton.RightButton:
-				return this.rightDown.Connect(callback);
+				return Mouse.rightDown.Connect(callback);
 		}
 	}
 
-	public OnButtonUp(button: MouseButton, callback: (event: PointerButtonSignal) => void) {
+	public static OnButtonUp(button: MouseButton, callback: (event: PointerButtonSignal) => void) {
 		switch (button) {
 			case MouseButton.LeftButton:
-				return this.leftUp.Connect(callback);
+				return Mouse.leftUp.Connect(callback);
 			case MouseButton.MiddleButton:
-				return this.middleUp.Connect(callback);
+				return Mouse.middleUp.Connect(callback);
 			case MouseButton.RightButton:
-				return this.rightUp.Connect(callback);
+				return Mouse.rightUp.Connect(callback);
 		}
-	}
-
-	/** Returns `true` if the left mouse button is down. */
-	public IsLeftButtonDown() {
-		return this.isLeftDown;
-	}
-
-	/** Returns `true` if the right mouse button is down. */
-	public IsRightButtonDown() {
-		return this.isRightDown;
-	}
-
-	/** Returns `true` if the middle mouse button is down. */
-	public IsMiddleButtonDown() {
-		return this.isMiddleDown;
-	}
-
-	/** Gets the position of the mouse on-screen. */
-	public GetPosition() {
-		return this.position;
 	}
 
 	/** Gets the position of the mouse on-screen as a Vector3, with the Z axis set to 0. */
-	public GetPositionV3() {
-		const pos = this.position;
+	public static GetPositionVector3() {
+		const pos = Mouse.position;
 		return new Vector3(pos.x, pos.y, 0);
 	}
 
 	/** Gets the mouse's change in position on-screen over the last frame. */
-	public GetDelta() {
-		return this.mouseDriver.GetDelta();
+	public static GetDelta() {
+		return inputBridge.GetMouseDelta();
 	}
 
 	/**
 	 * Locks the mouse.
-	 * Returns an ID that can be used to unlock the mouse.
+	 * Returns an cleanup function that can be called to unlock the mouse.
+	 *
+	 * Example:
+	 * ```
+	 * const cleanupUnlocker = Mouse.AddUnlocker();
+	 * // ... some time later when we want to "re-lock" the mouse.
+	 * cleanupUnlocker();
+	 * ```
 	 */
-	public AddUnlocker(): number {
+	public static AddUnlocker(): () => void {
+		if (contextbridge.current() === LuauContext.Protected && Game.IsInGame()) {
+			let id = Mouse.AddUnlockerInternal();
+			return () => {
+				contextbridge.invoke<(id: number) => void>("Mouse:RemoveUnlocker", LuauContext.Game, id);
+			};
+		}
+
+		const id = this.AddUnlockerInternal();
+		mouseUnlockerIdCounter++;
+		mouseUnlockerKeys.add(id);
+
+		inputBridge.SetMouseLocked(false);
+
+		return () => {
+			this.RemoveUnlocker(id);
+		};
+	}
+
+	private static AddUnlockerInternal(): number {
 		if (contextbridge.current() === LuauContext.Protected && Game.IsInGame()) {
 			let id = contextbridge.invoke<() => number>("Mouse:AddUnlocker", LuauContext.Game);
 			return id;
@@ -161,52 +112,94 @@ export class Mouse {
 		mouseUnlockerIdCounter++;
 		mouseUnlockerKeys.add(id);
 
-		this.mouseDriver.SetLocked(false);
+		inputBridge.SetMouseLocked(false);
 
 		return id;
 	}
 
-	public RemoveUnlocker(id: number): void {
+	private static RemoveUnlocker(id: number): void {
 		if (contextbridge.current() === LuauContext.Protected && Game.IsInGame()) {
 			contextbridge.invoke<(id: number) => void>("Mouse:RemoveUnlocker", LuauContext.Game, id);
 			return;
 		}
 		mouseUnlockerKeys.delete(id);
 		if (mouseUnlockerKeys.size() === 0) {
-			this.mouseDriver.SetLocked(true);
+			inputBridge.SetMouseLocked(true);
 		}
 	}
 
-	public ClearAllUnlockers(): void {
+	public static ClearAllUnlockers(): void {
 		mouseUnlockerKeys.clear();
-		this.mouseDriver.SetLocked(true);
+		inputBridge.SetMouseLocked(true);
 	}
 
 	/** Check if the mouse is locked. */
-	public IsLocked() {
-		return this.mouseDriver.IsLocked();
+	public static IsLocked() {
+		return inputBridge.IsMouseLocked();
 	}
 
-	/** Cleans up the mouse. */
-	public Destroy() {
-		this.bin.Clean();
-	}
-
-	public ToggleMouseVisibility(isVisible: boolean) {
-		this.mouseDriver.ToggleMouseVisibility(isVisible);
+	public static SetCursorVisible(isVisible: boolean) {
+		inputBridge.SetCursorVisible(isVisible);
 	}
 
 	public HideCursor() {}
 }
 
 if (Game.IsGameLuauContext()) {
-	const mouse = new Mouse();
+	const mouse = Mouse;
+	// cast as "any" so we can use private methods
+	let mouseUntyped = mouse as any;
+
 	contextbridge.callback<() => number>("Mouse:AddUnlocker", () => {
-		let id = mouse.AddUnlocker();
+		let id = mouseUntyped.AddUnlockerInternal();
 		return id;
 	});
 
 	contextbridge.callback<(from: LuauContext, id: number) => void>("Mouse:RemoveUnlocker", (from, id) => {
-		mouse.RemoveUnlocker(id);
+		mouseUntyped.RemoveUnlocker(id);
 	});
 }
+
+inputBridge.OnLeftMouseButtonPressEvent((isDown) => {
+	const uiProcessed = CanvasAPI.IsPointerOverUI();
+	const event = new PointerButtonSignal(isDown, uiProcessed);
+	isDown ? Mouse.leftDown.Fire(event) : Mouse.leftUp.Fire(event);
+	if (isDown) {
+		(Mouse.isLeftDown as boolean) = true;
+		Mouse.leftDown.Fire(event);
+	} else {
+		(Mouse.isLeftDown as boolean) = false;
+		Mouse.leftUp.Fire(event);
+	}
+});
+inputBridge.OnRightMouseButtonPressEvent((isDown) => {
+	const uiProcessed = CanvasAPI.IsPointerOverUI();
+	const event = new PointerButtonSignal(isDown, uiProcessed);
+	if (isDown) {
+		(Mouse.isRightDown as boolean) = true;
+		Mouse.rightDown.Fire(event);
+	} else {
+		(Mouse.isRightDown as boolean) = false;
+		Mouse.rightUp.Fire(event);
+	}
+});
+inputBridge.OnMiddleMouseButtonPressEvent((isDown) => {
+	const uiProcessed = CanvasAPI.IsPointerOverUI();
+	const event = new PointerButtonSignal(isDown, uiProcessed);
+	if (isDown) {
+		(Mouse.isMiddleDown as boolean) = true;
+		Mouse.middleDown.Fire(event);
+	} else {
+		(Mouse.isMiddleDown as boolean) = false;
+		Mouse.middleUp.Fire(event);
+	}
+});
+inputBridge.OnMouseScrollEvent((scrollAmount) => {
+	const uiProcessed = CanvasAPI.IsPointerOverUI();
+	const event = new ScrollSignal(scrollAmount, uiProcessed);
+	Mouse.scrolled.Fire(event);
+});
+inputBridge.OnMouseMoveEvent((pos) => {
+	(Mouse.position as Vector2) = pos;
+	Mouse.moved.Fire(pos);
+});

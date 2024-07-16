@@ -1,7 +1,6 @@
 ﻿import { Mouse } from "@Easy/Core/Shared/UserInput";
 
 export class CameraReferences {
-	private static mouse = new Mouse();
 	public static cameraHolder?: Transform;
 	public static mainCamera?: Camera;
 	public static viewmodelCamera?: Camera;
@@ -12,7 +11,7 @@ export class CameraReferences {
 	}
 
 	public static GetRayFromCamera(distance: number) {
-		const ray = Camera.main.ScreenPointToRay(this.mouse.GetPositionV3());
+		const ray = Camera.main.ScreenPointToRay(Mouse.GetPositionVector3());
 		ray.direction = ray.direction.mul(distance);
 		return ray;
 	}

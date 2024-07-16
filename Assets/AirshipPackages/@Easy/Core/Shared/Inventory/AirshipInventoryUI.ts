@@ -301,7 +301,6 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	}
 
 	private SetupBackpack(): void {
-		const mouse = new Mouse();
 		const keyboard = new Keyboard();
 
 		const inv = Airship.Inventory.localInventory!;
@@ -414,11 +413,11 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 						visual.SetActive(false);
 
 						const cloneTransform = clone.GetComponent<RectTransform>()!;
-						cloneTransform.position = mouse.GetPositionV3();
+						cloneTransform.position = Mouse.GetPositionVector3();
 
 						this.draggingBin.Add(
 							OnUpdate.Connect((dt) => {
-								cloneTransform.position = mouse.GetPositionV3();
+								cloneTransform.position = Mouse.GetPositionVector3();
 							}),
 						);
 						this.draggingBin.Add(() => {

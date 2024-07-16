@@ -17,6 +17,8 @@ import { TimeUtil } from "./Util/TimeUtil";
 import { OnFixedUpdate, OnLateUpdate, OnUpdate } from "./Util/Timer";
 
 CoreRefs.Init();
+InputBridge.Instance.SetMouseLocked(false);
+InputBridge.Instance.SetCursorVisible(true);
 
 TimeUtil.GetLifetimeSeconds();
 CanvasAPI.Init();

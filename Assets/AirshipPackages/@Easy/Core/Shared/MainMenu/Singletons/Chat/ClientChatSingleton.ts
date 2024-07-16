@@ -296,7 +296,6 @@ export class ClientChatSingleton {
 			}
 		});
 
-		const mouse = new Mouse();
 		CanvasAPI.OnSelectEvent(this.inputField.gameObject, () => {
 			this.selected = true;
 			this.historyIndex = -1;
@@ -317,10 +316,7 @@ export class ClientChatSingleton {
 					);
 				});
 			}
-			const mouseLocker = mouse.AddUnlocker();
-			this.selectedBin.Add(() => {
-				mouse.RemoveUnlocker(mouseLocker);
-			});
+			this.selectedBin.Add(Mouse.AddUnlocker());
 			this.CheckIfShouldHide();
 		});
 
@@ -425,9 +421,7 @@ export class ClientChatSingleton {
 			const profileImage = refs.GetValue<RawImage>("UI", "ProfilePicture");
 			if (sender) {
 				task.spawn(async () => {
-					const texture = await Airship.Players.GetProfilePictureAsync(
-						sender.userId,
-					);
+					const texture = await Airship.Players.GetProfilePictureAsync(sender.userId);
 					if (texture) {
 						profileImage.texture = texture;
 					} else {

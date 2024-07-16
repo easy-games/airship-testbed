@@ -280,8 +280,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.SelectMainNav(0);
 		this.SelectSubNav(0);
 
-		this.mouse = this.bin.Add(new Mouse());
-		this.bin.Connect(this.mouse.scrolled, (event) => {
+		this.bin.Connect(Mouse.scrolled, (event) => {
 			if (event.delta < -1) {
 				this.mainMenu?.avatarView?.CameraFocusSlot(AccessorySlot.Root);
 			} else if (event.delta > 1) {

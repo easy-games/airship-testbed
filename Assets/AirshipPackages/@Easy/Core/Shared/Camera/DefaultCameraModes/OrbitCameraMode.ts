@@ -40,13 +40,8 @@ export class OrbitCameraMode extends CameraMode {
 	private readonly preferred = this.bin.Add(new Preferred());
 	private readonly keyboard = this.bin.Add(new Keyboard());
 	private readonly touchscreen = this.bin.Add(new Touchscreen());
-	private readonly mouse = this.bin.Add(new Mouse());
 
-	constructor(
-		private readonly distance: number,
-		private transform: Transform,
-		graphicalCharacter?: Transform,
-	) {
+	constructor(private readonly distance: number, private transform: Transform, graphicalCharacter?: Transform) {
 		super();
 		if (graphicalCharacter !== undefined) {
 			this.entityDriver = transform.GetComponent<CharacterMovement>()!;
@@ -107,49 +102,42 @@ export class OrbitCameraMode extends CameraMode {
 		this.bin.Add(this.preferred);
 		this.bin.Add(this.keyboard);
 		this.bin.Add(this.touchscreen);
-		this.bin.Add(this.mouse);
 
 		// const mouseUnlocker = this.mouse.AddUnlocker();
 		// this.bin.Add(() => this.mouse.RemoveUnlocker(mouseUnlocker));
 
 		if (!this.lockView) {
-			const unlockerId = this.mouse.AddUnlocker();
-			this.bin.Add(() => {
-				this.mouse.RemoveUnlocker(unlockerId);
-			});
+			this.bin.Add(Mouse.AddUnlocker());
 		}
 
 		this.bin.Add(
 			Airship.Input.preferredControls.ObserveControlScheme((scheme) => {
 				const controlSchemeBin = new Bin();
 				if (scheme === ControlScheme.MouseKeyboard) {
-					let rightClickUnlocker = this.mouse.AddUnlocker();
+					let rightClickUnlockerCleanup: (() => void) | undefined = Mouse.AddUnlocker();
 
 					controlSchemeBin.Add(
-						this.mouse.rightDown.Connect(() => {
-							if (rightClickUnlocker === -1) return;
-							this.mouse.RemoveUnlocker(rightClickUnlocker);
-							rightClickUnlocker = -1;
+						Mouse.rightDown.Connect(() => {
+							if (rightClickUnlockerCleanup === undefined) return;
+							rightClickUnlockerCleanup();
+							rightClickUnlockerCleanup = undefined;
 						}),
 					);
 
 					controlSchemeBin.Add(
-						this.mouse.rightUp.Connect(() => {
-							if (rightClickUnlocker !== -1) return;
-							rightClickUnlocker = this.mouse.AddUnlocker();
+						Mouse.rightUp.Connect(() => {
+							if (rightClickUnlockerCleanup !== undefined) return;
+							rightClickUnlockerCleanup = Mouse.AddUnlocker();
 						}),
 					);
 
 					controlSchemeBin.Add(() => {
-						if (rightClickUnlocker === -1) return;
-						this.mouse.RemoveUnlocker(rightClickUnlocker);
-						rightClickUnlocker = -1;
+						if (rightClickUnlockerCleanup === undefined) return;
+						rightClickUnlockerCleanup();
+						rightClickUnlockerCleanup = undefined;
 					});
 				} else if (scheme === ControlScheme.Touch) {
-					let lockId = this.mouse.AddUnlocker();
-					controlSchemeBin.Add(() => {
-						this.mouse.RemoveUnlocker(lockId);
-					});
+					controlSchemeBin.Add(Mouse.AddUnlocker());
 				}
 				return () => {
 					controlSchemeBin.Clean();
@@ -165,16 +153,16 @@ export class OrbitCameraMode extends CameraMode {
 	OnUpdate(dt: number) {
 		const lf = this.keyboard.IsKeyDown(Key.LeftArrow);
 		const rt = this.keyboard.IsKeyDown(Key.RightArrow);
-		const rightClick = this.mouse.IsRightButtonDown();
+		const rightClick = Mouse.isRightDown;
 		if (rightClick && !this.rightClicking) {
-			this.rightClickPos = this.mouse.GetPosition();
+			this.rightClickPos = Mouse.position;
 		}
 		this.rightClicking = rightClick;
 		if (lf !== rt) {
 			this.rotationY += (lf ? 1 : -1) * TimeUtil.GetDeltaTime() * 4;
 		}
-		if (this.mouse.IsLocked() && (rightClick || this.lockView)) {
-			let mouseDelta = this.mouse.GetDelta();
+		if (Mouse.IsLocked() && (rightClick || this.lockView)) {
+			let mouseDelta = Mouse.GetDelta();
 			// This is to prevent large jump on first movement (happens always on mac)
 			if (this.mouseLockSwapped && mouseDelta.magnitude > 0) {
 				this.mouseLockSwapped = false;
@@ -194,7 +182,7 @@ export class OrbitCameraMode extends CameraMode {
 		}
 
 		// Update mouse locked state. This will make the next frame's delta be 0.
-		if (this.mouseLocked !== this.mouse.IsLocked()) {
+		if (this.mouseLocked !== Mouse.IsLocked()) {
 			this.mouseLocked = !this.mouseLocked;
 			this.mouseLockSwapped = true;
 		}

@@ -100,7 +100,6 @@ export default class Inventory extends AirshipBehaviour {
 				if (inv !== this) return;
 
 				const keyboard = new Keyboard();
-				const mouse = new Mouse();
 
 				const hotbarKeys = [
 					Key.Digit1,
@@ -122,7 +121,7 @@ export default class Inventory extends AirshipBehaviour {
 				}
 
 				// Scroll to select held item:
-				mouse.scrolled.Connect((event) => {
+				Mouse.scrolled.Connect((event) => {
 					if (!this.controlsEnabled || event.uiProcessed) return;
 					if (CanvasAPI.IsPointerOverUI()) return;
 					// print("scroll: " + delta);

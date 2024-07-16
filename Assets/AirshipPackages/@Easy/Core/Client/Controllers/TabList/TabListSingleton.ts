@@ -23,7 +23,6 @@
 // 	private rowCount = 13;
 // 	private maxSlots = this.cellsPerRow * this.rowCount;
 // 	private shown = false;
-// 	private mouse = new Mouse();
 // 	private showBin = new Bin();
 
 // 	private dirty = false;

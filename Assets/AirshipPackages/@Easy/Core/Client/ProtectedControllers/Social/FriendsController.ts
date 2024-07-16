@@ -406,7 +406,6 @@ export class ProtectedFriendsController {
 		const onlineCountText = this.mainMenuController.refs.GetValue("Social", "FriendsOnlineCounter") as TMP_Text;
 		onlineCountText.text = `(${onlineCount}/${this.friendStatuses.size()})`;
 
-		const mouse = new Mouse();
 		const mainCanvasRect = this.mainMenuController.mainContentCanvas.GetComponent<RectTransform>();
 
 		// Add & update
@@ -525,7 +524,7 @@ export class ProtectedFriendsController {
 						this.mainMenuController.mainContentCanvas,
 						Game.IsMobile()
 							? new Vector2(go!.transform.position.x, go!.transform.position.y)
-							: mouse.GetPosition(),
+							: Mouse.position,
 						options,
 					);
 				};

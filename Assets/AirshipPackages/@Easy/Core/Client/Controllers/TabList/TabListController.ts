@@ -4,7 +4,7 @@ import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
 import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Player } from "@Easy/Core/Shared/Player/Player";
-import { Keyboard, Mouse } from "@Easy/Core/Shared/UserInput";
+import { Keyboard } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import { OnLateUpdate, SetInterval } from "@Easy/Core/Shared/Util/Timer";
@@ -23,7 +23,6 @@ export class TabListController {
 	private rowCount = 13;
 	private maxSlots = this.cellsPerRow * this.rowCount;
 	private shown = false;
-	private mouse = new Mouse();
 	private showBin = new Bin();
 
 	private dirty = false;

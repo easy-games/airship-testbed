@@ -17,8 +17,6 @@ interface OpenedApp {
 }
 
 export class AppManager {
-	/** Global mouse instance. */
-	private static mouse = new Mouse();
 	/** Global keyboard instance. */
 	public static keyboard = new Keyboard();
 
@@ -95,13 +93,12 @@ export class AppManager {
 		}
 
 		/* Handle mouse locking. */
-		const lockId = this.mouse.AddUnlocker();
 		const bin = new Bin();
+		bin.Add(Mouse.AddUnlocker());
 		this.stack.push({
 			bin: bin,
 			darkBackground: false,
 		});
-		bin.Add(() => this.mouse.RemoveUnlocker(lockId));
 		bin.Add(onClose);
 	}
 
@@ -152,8 +149,7 @@ export class AppManager {
 		}
 
 		/* Handle mouse locking. */
-		const lockId = this.mouse.AddUnlocker();
-		bin.Add(() => this.mouse.RemoveUnlocker(lockId));
+		bin.Add(Mouse.AddUnlocker());
 	}
 
 	/**
@@ -202,8 +198,7 @@ export class AppManager {
 		}
 
 		/* Handle mouse locking. */
-		const lockId = this.mouse.AddUnlocker();
-		bin.Add(() => this.mouse.RemoveUnlocker(lockId));
+		bin.Add(Mouse.AddUnlocker());
 	}
 
 	public static OpenDarkBackground(sortOrder: number) {
