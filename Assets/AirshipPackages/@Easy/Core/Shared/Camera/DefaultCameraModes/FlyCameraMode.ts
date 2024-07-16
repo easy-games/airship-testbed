@@ -28,6 +28,9 @@ if (!Game.IsEditor()) {
 }
 
 export class FlyCameraMode extends CameraMode {
+	GetFriendlyName(): string {
+		return "Fly Camera Mode";
+	}
 	private bin = new Bin();
 
 	private positionSpring!: Spring;

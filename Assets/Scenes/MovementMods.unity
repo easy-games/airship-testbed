@@ -542,10 +542,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   logLateUpdate: 1
-  logFixedUpdate: 0
   logTickUpdate: 0
   logVel: 0
   logPosition: 0
+  logLocalPosition: 0
   continuousForce: {x: 0, y: 0, z: 1}
   rigid: {fileID: 0}
 --- !u!54 &285934353
@@ -1677,7 +1677,7 @@ MonoBehaviour:
       fileRef: 
       decorators: []
       nullable: 0
-      serializedValue: 1
+      serializedValue: 0
       serializedObject: {fileID: 0}
       modified: 1
     - name: allowFirstPersonToggle

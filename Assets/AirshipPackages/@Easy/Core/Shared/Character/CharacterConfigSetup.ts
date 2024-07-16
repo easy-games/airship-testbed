@@ -52,9 +52,6 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 	}
 
 	public OnEnable() {
-		Physics.IgnoreLayerCollision(17, 18, false);
-		Layer.CHARACTER;
-
 		//Local Character Configs
 		if (Game.IsClient()) {
 			//Movement

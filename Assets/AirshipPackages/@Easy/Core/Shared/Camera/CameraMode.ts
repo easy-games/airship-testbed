@@ -7,6 +7,8 @@ export abstract class CameraMode {
 	public rotationX = math.rad(90);
 	public rotationY = math.rad(0);
 
+	abstract GetFriendlyName(): string;
+
 	/** Called when the camera mode starts. */
 	abstract OnStart(camera: Camera, rootTransform: Transform): void;
 

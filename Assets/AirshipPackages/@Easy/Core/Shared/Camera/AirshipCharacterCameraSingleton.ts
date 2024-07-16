@@ -242,13 +242,12 @@ export class AirshipCharacterCameraSingleton {
 
 	/** Observes the current first-person state. */
 	public ObserveFirstPerson(observer: (isFirstPerson: boolean) => CleanupFunc): () => void {
-		const cameraSingleton = Dependency<AirshipCharacterCameraSingleton>();
 		let currentCleanup: CleanupFunc;
 
 		const onChanged = (isFirstPerson: boolean) => {
 			currentCleanup?.();
 			currentCleanup = observer(isFirstPerson);
-			cameraSingleton.UpdateLocalCharacterState({ firstPerson: true });
+			this.UpdateLocalCharacterState({ firstPerson: true });
 		};
 
 		const disconnect = this.firstPersonChanged.Connect(onChanged);
@@ -382,7 +381,7 @@ export class AirshipCharacterCameraSingleton {
 		this.lookBackwards = lookBackwards;
 		this.lookBackwardsChanged.Fire(this.lookBackwards);
 
-		if (Dependency<AirshipCharacterCameraSingleton>().cameraSystem?.GetMode() === this.humanoidCameraMode) {
+		if (this.cameraSystem?.GetMode() === this.humanoidCameraMode) {
 			this.humanoidCameraMode?.SetLookBackwards(this.lookBackwards);
 		}
 	}

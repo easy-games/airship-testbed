@@ -27,6 +27,9 @@ let MOUSE_SENS_SCALAR = 15;
 let MOUSE_SMOOTHING = 1.6;
 
 export class HumanoidCameraMode extends CameraMode {
+	GetFriendlyName(): string {
+		return "Humanoid Camera Mode";
+	}
 	private readonly bin = new Bin();
 
 	private lookVector = Vector3.zero;

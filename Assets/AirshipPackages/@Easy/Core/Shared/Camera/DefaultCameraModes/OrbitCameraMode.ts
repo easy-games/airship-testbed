@@ -21,6 +21,9 @@ const Y_LOCKED_ROTATION = math.rad(15);
 const Y_OFFSET = 1.85;
 
 export class OrbitCameraMode extends CameraMode {
+	GetFriendlyName(): string {
+		return "Orbit Camera Mode";
+	}
 	private readonly bin = new Bin();
 
 	private occlusionCam!: OcclusionCam;

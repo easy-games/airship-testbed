@@ -63,11 +63,6 @@ export default class DemoManager extends AirshipBehaviour {
 			);
 		}
 		if (Game.IsClient()) {
-			// Optional: use locked camera mode for first person support
-			Airship.CharacterCamera.SetCharacterCameraMode(CharacterCameraMode.Orbit);
-			// Airship.CharacterCamera.SetFirstPerson(false);
-			// Airship.inventory.SetUIEnabled(false);
-
 			// Display local player deaths
 			this.bin.Add(
 				Game.localPlayer.ObserveCharacter((character) => {
