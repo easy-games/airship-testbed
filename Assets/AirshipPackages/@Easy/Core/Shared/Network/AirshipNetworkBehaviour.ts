@@ -50,21 +50,7 @@ export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
 				this.gameObject.GetAirshipComponent<AirshipNetworkFieldReplicator>() ??
 				this.gameObject.AddAirshipComponent<AirshipNetworkFieldReplicator>();
 
-			replicator.BindPropertiesToBehaviour(this, networkedFields);
-			this.networkBin.Add(
-				replicator.PropertyChanged.Connect((id, propertyName, newValue, oldValue) => {
-					if (id !== this.AirshipNetworkId) return;
-
-					const networkedField = networkedFields.get(propertyName);
-					if (!networkedField) {
-						warn("no NetworkField", propertyName);
-						return;
-					}
-
-					this[propertyName as keyof this] = newValue as this[keyof this];
-					networkedField.OnChanged?.(this, newValue, oldValue);
-				}),
-			);
+			this.networkBin.Add(replicator.ObserveNetworkProperties(this, networkedFields));
 		}
 	}
 

@@ -1,5 +1,6 @@
 import { Game } from "../Game";
 import { Player } from "../Player/Player";
+import { Bin } from "../Util/Bin";
 import inspect from "../Util/Inspect";
 import { MapUtil } from "../Util/MapUtil";
 import { Signal } from "../Util/Signal";
@@ -52,6 +53,8 @@ function isShallowEqual(a: unknown, b: unknown) {
  */
 @AirshipComponentMenu("") // hidden
 export default class AirshipNetworkFieldReplicator extends AirshipNetworkBehaviour {
+	private replicatorBin = new Bin();
+
 	public readonly PropertyChanged = new Signal<
 		[objectId: number, field: string, newValue: unknown, oldValue: unknown]
 	>();
@@ -62,12 +65,12 @@ export default class AirshipNetworkFieldReplicator extends AirshipNetworkBehavio
 	private fieldStates: NetworkSnapshot = new Map(); // Local store of the field values
 
 	@TargetRpc({})
-	private SendSnapshotToClient(_: Player, snapshot: NetworkPropertiesSnapshot) {
-		this.ReplicateProperties(snapshot); // Handle it like a broadcast would
+	private ServerSendSnapshotToClient(_: Player, snapshot: NetworkPropertiesSnapshot) {
+		this.ServerReplicateProperties(snapshot); // Handle it like a broadcast would
 	}
 
 	@ObserversRpc({ RunOnServer: false })
-	private ReplicateProperties(snapshot: NetworkPropertiesSnapshot) {
+	private ServerReplicateProperties(snapshot: NetworkPropertiesSnapshot) {
 		for (const [id, properties] of snapshot) {
 			const behaviour = this.idToBehaviour.get(id);
 			if (!behaviour) continue;
@@ -90,11 +93,16 @@ export default class AirshipNetworkFieldReplicator extends AirshipNetworkBehavio
 		}
 	}
 
+	@ServerRpc({ RequiresOwnership: true })
+	public ClientOwnerSetProperties(snapshot: NetworkPropertiesSnapshot) {
+		// TODO:
+	}
+
 	/**
 	 * Request the latest snapshot of the fields on this network behaviour
 	 */
 	@ServerRpc({ RunLocally: false })
-	private RequestStateSnapshot(player?: Player) {
+	private ClientRequestStateSnapshot(player?: Player) {
 		const snapshot: NetworkPropertiesSnapshot = new Map();
 
 		for (const [id, properties] of this.fieldStates) {
@@ -111,10 +119,10 @@ export default class AirshipNetworkFieldReplicator extends AirshipNetworkBehavio
 			}
 		}
 
-		this.SendSnapshotToClient(player!, snapshot);
+		this.ServerSendSnapshotToClient(player!, snapshot);
 	}
 
-	public BindPropertiesToBehaviour(behaviour: AirshipNetworkBehaviour, properties: NetworkedFieldsList) {
+	public ObserveNetworkProperties(behaviour: AirshipNetworkBehaviour, properties: NetworkedFieldsList) {
 		const componentBinding = MapUtil.GetOrCreate(
 			this.fieldStates,
 			behaviour.AirshipNetworkId,
@@ -133,7 +141,7 @@ export default class AirshipNetworkFieldReplicator extends AirshipNetworkBehavio
 					getmetatable(behaviour),
 					" - cannot replicate objects with metatables",
 				);
-				return;
+				continue;
 			}
 
 			if (typeIs(propertyValue, "userdata")) {
@@ -144,7 +152,7 @@ export default class AirshipNetworkFieldReplicator extends AirshipNetworkBehavio
 					getmetatable(behaviour),
 					" - cannot replicate userdata",
 				);
-				return;
+				continue;
 			}
 
 			componentBinding.set(propertyName, {
@@ -153,49 +161,73 @@ export default class AirshipNetworkFieldReplicator extends AirshipNetworkBehavio
 			});
 		}
 
+		const connectBin = new Bin();
+		connectBin.Add(
+			this.PropertyChanged.Connect((id, propertyName, newValue, oldValue) => {
+				if (id !== this.AirshipNetworkId) return;
+
+				const networkedField = componentBinding.get(propertyName);
+				if (!networkedField) {
+					return;
+				}
+
+				this[propertyName as keyof this] = newValue as this[keyof this];
+				networkedField.OnChanged?.(this, newValue, oldValue);
+			}),
+		);
+
 		if (Game.IsClient()) {
-			this.RequestStateSnapshot();
+			this.ClientRequestStateSnapshot();
 		}
+
+		return () => {
+			connectBin.Clean();
+		};
 	}
 
 	public OnStartServer(): void {
-		SetInterval(
-			1 / 5, // 5 hz
-			() => {
-				for (const [id, properties] of this.fieldStates) {
-					const behaviour = this.idToBehaviour.get(id);
-					if (!behaviour) {
-						continue;
-					}
+		this.replicatorBin.Add(
+			SetInterval(
+				1 / 20, // 20 hz
+				() => {
+					for (const [id, properties] of this.fieldStates) {
+						const behaviour = this.idToBehaviour.get(id);
+						if (!behaviour) {
+							continue;
+						}
 
-					for (const [propertyName, propertyMetadata] of properties) {
-						const newValue = behaviour[propertyName as never] as unknown;
-						const oldValue = propertyMetadata.Value;
+						for (const [propertyName, propertyMetadata] of properties) {
+							const newValue = behaviour[propertyName as never] as unknown;
+							const oldValue = propertyMetadata.Value;
 
-						if (!isShallowEqual(oldValue, newValue)) {
-							const queuedUpdates = MapUtil.GetOrCreate(this.propertyUpdateQueue, id, []);
-							queuedUpdates.push({
-								name: propertyName,
-								value: newValue,
-							});
+							if (!isShallowEqual(oldValue, newValue)) {
+								const queuedUpdates = MapUtil.GetOrCreate(this.propertyUpdateQueue, id, []);
+								queuedUpdates.push({
+									name: propertyName,
+									value: newValue,
+								});
 
-							const prop = properties.get(propertyName);
-							if (!prop) {
-								continue;
+								const prop = properties.get(propertyName);
+								if (!prop) {
+									continue;
+								}
+
+								prop.Value = typeIs(newValue, "table") ? table.clone(newValue) : newValue;
+								this.PropertyChanged.Fire(id, propertyName, newValue, oldValue);
 							}
-
-							prop.Value = typeIs(newValue, "table") ? table.clone(newValue) : newValue;
-							this.PropertyChanged.Fire(id, propertyName, newValue, oldValue);
 						}
 					}
-				}
 
-				if (this.propertyUpdateQueue.size() > 0) {
-					this.ReplicateProperties(this.propertyUpdateQueue);
-					this.propertyUpdateQueue.clear();
-				}
-			},
-			true,
+					if (this.propertyUpdateQueue.size() > 0) {
+						this.ServerReplicateProperties(this.propertyUpdateQueue);
+						this.propertyUpdateQueue.clear();
+					}
+				},
+			),
 		);
+	}
+
+	public OnDestroy(): void {
+		this.replicatorBin.Clean();
 	}
 }

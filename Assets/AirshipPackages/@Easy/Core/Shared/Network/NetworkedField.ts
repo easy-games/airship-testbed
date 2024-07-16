@@ -1,20 +1,38 @@
-import { Reflect } from "@Easy/Core/Shared/Flamework";
 import { AirshipNetworkBehaviour } from "./AirshipNetworkBehaviour";
 import { MapUtil } from "../Util/MapUtil";
 
-interface SyncSerializer<T, U> {
-	Serialize(value: T): U;
-	Deserialize(value: U): T;
+export const enum NetworkedFieldPermissions {
+	/**
+	 * The field can be only changed by the server
+	 */
+	Server,
+	/**
+	 * The field can only be changed by the server _or_ owner
+	 */
+	Owner,
 }
 
 export interface NetworkedFieldConfiguration<
-	U extends AirshipNetworkBehaviour,
-	K extends keyof ExtractMembers<U, ValidNetworkTypes>,
+	TBehaviour extends AirshipNetworkBehaviour,
+	TBehaviourPropertyKey extends keyof ExtractMembers<TBehaviour, ValidNetworkTypes>,
 > {
 	/**
 	 * The name of the function to call when this field is changed
 	 */
-	Hook?: keyof ExtractMembers<U, (this: U, value: U[K], oldValue: U[K]) => void>;
+	readonly Hook?: keyof ExtractMembers<
+		TBehaviour,
+		(
+			this: TBehaviour,
+			value: TBehaviour[TBehaviourPropertyKey],
+			oldValue: TBehaviour[TBehaviourPropertyKey],
+		) => void
+	>;
+
+	/**
+	 * The permissions of this network field
+	 * @deprecated Not yet implemented - will be implemented soon
+	 */
+	readonly Permissions?: NetworkedFieldPermissions;
 }
 
 type ValidNetworkTypes = boolean | string | number | object;
