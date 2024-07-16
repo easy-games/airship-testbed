@@ -19,13 +19,16 @@ export interface NetworkedFieldConfiguration<
 	/**
 	 * The name of the function to call when this field is changed
 	 */
-	readonly Hook?: keyof ExtractMembers<
-		TBehaviour,
-		(
-			this: TBehaviour,
-			value: TBehaviour[TBehaviourPropertyKey],
-			oldValue: TBehaviour[TBehaviourPropertyKey],
-		) => void
+	readonly Hook?: Exclude<
+		keyof ExtractMembers<
+			TBehaviour,
+			(
+				this: TBehaviour,
+				value: TBehaviour[TBehaviourPropertyKey],
+				oldValue: TBehaviour[TBehaviourPropertyKey],
+			) => void
+		>,
+		keyof AirshipNetworkBehaviour
 	>;
 
 	/**
