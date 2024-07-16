@@ -52,7 +52,9 @@ function isShallowEqual(a: unknown, b: unknown) {
  */
 @AirshipComponentMenu("") // hidden
 export default class AirshipNetworkFieldReplicator extends AirshipNetworkBehaviour {
-	public readonly PropertyChanged = new Signal<[objectId: number, field: string, value: unknown]>();
+	public readonly PropertyChanged = new Signal<
+		[objectId: number, field: string, newValue: unknown, oldValue: unknown]
+	>();
 
 	private idToBehaviour = new Map<number, AirshipNetworkBehaviour>();
 	private propertyUpdateQueue = new Map<number, QueuedPropertyUpdate[]>();
@@ -70,8 +72,20 @@ export default class AirshipNetworkFieldReplicator extends AirshipNetworkBehavio
 			const behaviour = this.idToBehaviour.get(id);
 			if (!behaviour) continue;
 
+			const componentBinding = MapUtil.GetOrCreate(
+				this.fieldStates,
+				behaviour.AirshipNetworkId,
+				(): NetworkProperties => new Map(),
+			);
+
 			for (const property of properties) {
-				this.PropertyChanged.Fire(id, property.name, property.value);
+				const bindingProperty = componentBinding.get(property.name);
+				if (!bindingProperty) continue;
+
+				const oldValue = bindingProperty?.Value;
+				bindingProperty.Value = property.value;
+
+				this.PropertyChanged.Fire(id, property.name, property.value, oldValue);
 			}
 		}
 	}
@@ -108,37 +122,35 @@ export default class AirshipNetworkFieldReplicator extends AirshipNetworkBehavio
 		);
 		this.idToBehaviour.set(behaviour.AirshipNetworkId, behaviour);
 
-		if (Game.IsServer()) {
-			for (const [, property] of properties) {
-				const propertyName = property.Name;
-				const propertyValue = behaviour[propertyName as never] as unknown;
-				if (typeIs(propertyValue, "table") && getmetatable(propertyValue)) {
-					warn(
-						"Will not replicate property",
-						propertyName,
-						"from",
-						getmetatable(behaviour),
-						" - cannot replicate objects with metatables",
-					);
-					return;
-				}
-
-				if (typeIs(propertyValue, "userdata")) {
-					warn(
-						"Will not replicate property",
-						propertyName,
-						"from",
-						getmetatable(behaviour),
-						" - cannot replicate userdata",
-					);
-					return;
-				}
-
-				componentBinding.set(propertyName, {
-					...property,
-					Value: typeIs(propertyValue, "table") ? table.clone(propertyValue) : propertyValue,
-				});
+		for (const [, property] of properties) {
+			const propertyName = property.Name;
+			const propertyValue = behaviour[propertyName as never] as unknown;
+			if (typeIs(propertyValue, "table") && getmetatable(propertyValue)) {
+				warn(
+					"Will not replicate property",
+					propertyName,
+					"from",
+					getmetatable(behaviour),
+					" - cannot replicate objects with metatables",
+				);
+				return;
 			}
+
+			if (typeIs(propertyValue, "userdata")) {
+				warn(
+					"Will not replicate property",
+					propertyName,
+					"from",
+					getmetatable(behaviour),
+					" - cannot replicate userdata",
+				);
+				return;
+			}
+
+			componentBinding.set(propertyName, {
+				...property,
+				Value: typeIs(propertyValue, "table") ? table.clone(propertyValue) : propertyValue,
+			});
 		}
 
 		if (Game.IsClient()) {
@@ -173,7 +185,7 @@ export default class AirshipNetworkFieldReplicator extends AirshipNetworkBehavio
 							}
 
 							prop.Value = typeIs(newValue, "table") ? table.clone(newValue) : newValue;
-							this.PropertyChanged.Fire(id, propertyName, newValue);
+							this.PropertyChanged.Fire(id, propertyName, newValue, oldValue);
 						}
 					}
 				}

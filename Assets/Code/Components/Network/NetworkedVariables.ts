@@ -6,24 +6,14 @@ import inspect from "@Easy/Core/Shared/Util/Inspect";
 
 export default class NetworkedVariables extends AirshipNetworkBehaviour {
 	@NetworkedField({
-		OnChanged(value) {
-			print("testNumber changed to", value);
-		},
+		Hook: "SetNumber",
 	})
 	public testNumber = 10;
 
-	@NetworkedField({
-		OnChanged(value) {
-			print("string value changed to", inspect(value));
-		},
-	})
+	@NetworkedField()
 	public stringValue = "";
 
-	@NetworkedField({
-		OnChanged(value) {
-			print("objectTest changed to", inspect(value));
-		},
-	})
+	@NetworkedField()
 	public objectTest = { name: "vorlias" };
 
 	@ServerRpc()
@@ -31,7 +21,10 @@ export default class NetworkedVariables extends AirshipNetworkBehaviour {
 		this.testNumber += 1;
 		this.stringValue = string.format("%.6x", this.testNumber);
 		this.objectTest.name = "hi there " + this.stringValue;
-		print("number is now", this.testNumber);
+	}
+
+	public SetNumber(value: number, value2: number) {
+		print("testNumber changed to", value, "from", value2);
 	}
 
 	public Start(): void {

@@ -52,7 +52,7 @@ export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
 
 			replicator.BindPropertiesToBehaviour(this, networkedFields);
 			this.networkBin.Add(
-				replicator.PropertyChanged.Connect((id, propertyName, propertyValue) => {
+				replicator.PropertyChanged.Connect((id, propertyName, newValue, oldValue) => {
 					if (id !== this.AirshipNetworkId) return;
 
 					const networkedField = networkedFields.get(propertyName);
@@ -61,8 +61,8 @@ export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
 						return;
 					}
 
-					this[propertyName as keyof this] = propertyValue as this[keyof this];
-					networkedField.OnChanged?.(this, propertyValue);
+					this[propertyName as keyof this] = newValue as this[keyof this];
+					networkedField.OnChanged?.(this, newValue, oldValue);
 				}),
 			);
 		}

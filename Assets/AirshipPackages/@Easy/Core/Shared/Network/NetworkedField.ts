@@ -11,7 +11,10 @@ export interface NetworkedFieldConfiguration<
 	U extends AirshipNetworkBehaviour,
 	K extends keyof ExtractMembers<U, ValidNetworkTypes>,
 > {
-	OnChanged?(this: U, value: U[K]): void;
+	/**
+	 * The name of the function to call when this field is changed
+	 */
+	Hook?: keyof ExtractMembers<U, (this: U, value: U[K], oldValue: U[K]) => void>;
 }
 
 type ValidNetworkTypes = boolean | string | number | object;
@@ -25,7 +28,7 @@ export type NetworkedFieldsList = Map<string, NetworkedField>;
 
 export const NetworkedFields = new Map<AirshipNetworkBehaviour, NetworkedFieldsList>();
 
-type ChangedListener = (obj: AirshipNetworkBehaviour, value: unknown) => void;
+type ChangedListener = (obj: AirshipNetworkBehaviour, value: unknown, oldValue: unknown) => void;
 
 /**
  * This is an experimental feature
@@ -36,14 +39,11 @@ export function NetworkedField<
 >(config: NetworkedFieldConfiguration<U, K> = {}) {
 	return (ctor: U, propertyKey: K) => {
 		const fields = MapUtil.GetOrCreate(NetworkedFields, ctor, (): NetworkedFieldsList => new Map());
-		const rpcId = `${ctor}::${propertyKey}`;
-
-		const changedListener = config.OnChanged as ChangedListener | undefined;
 
 		// Set metadata for this NetworkedField
 		fields.set(propertyKey, {
 			Name: propertyKey,
-			OnChanged: changedListener,
+			OnChanged: config.Hook ? (ctor[config.Hook] as ChangedListener) : undefined,
 		});
 	};
 }
