@@ -251,14 +251,13 @@ export class ProtectedUserController {
 				}
 				if (!ignore) {
 					Bridge.LoadScene("Login", true, LoadSceneMode.Single);
-					return;
 				}
+				return;
 			}
 			try {
 				const data = DecodeJSON(res.data) as User;
 				this.localUser = data;
 				this.localUserLoaded = true;
-				// print("self: " + res.data);
 
 				if (Game.coreContext === CoreContext.MAIN_MENU || true) {
 					const writeUser = Game.localPlayer as Player;
