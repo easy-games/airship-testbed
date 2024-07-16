@@ -209,8 +209,6 @@ export class ClientChatSingleton {
 			this.AddMessage(rawText, nameWithPrefix, senderClientId);
 		});
 
-		const keyboard = new Keyboard();
-
 		// Submitting on mobile.
 		CanvasAPI.OnInputFieldSubmit(this.inputField.gameObject, (data) => {
 			this.SubmitInputField();
@@ -219,7 +217,7 @@ export class ClientChatSingleton {
 
 		// Submitting on desktop.
 		// We cancel the form submit so the input field doesn't auto deselect.
-		keyboard.OnKeyDown(
+		Keyboard.OnKeyDown(
 			Key.Enter,
 			(event) => {
 				if (EventSystem.current.currentSelectedGameObject && !this.selected) return;
@@ -233,7 +231,7 @@ export class ClientChatSingleton {
 			},
 			SignalPriority.HIGH,
 		);
-		keyboard.OnKeyDown(
+		Keyboard.OnKeyDown(
 			Key.Escape,
 			(event) => {
 				if (this.selected) {
@@ -244,7 +242,7 @@ export class ClientChatSingleton {
 			},
 			SignalPriority.HIGHEST,
 		);
-		keyboard.OnKeyDown(
+		Keyboard.OnKeyDown(
 			Key.Slash,
 			(event) => {
 				if (EventSystem.current.currentSelectedGameObject && !this.selected) return;
@@ -256,7 +254,7 @@ export class ClientChatSingleton {
 			},
 			SignalPriority.HIGH,
 		);
-		keyboard.OnKeyDown(Key.UpArrow, (event) => {
+		Keyboard.OnKeyDown(Key.UpArrow, (event) => {
 			if (this.IsChatFocused()) {
 				if (this.historyIndex + 1 < this.prevSentMessages.size()) {
 					this.historyIndex++;
@@ -266,7 +264,7 @@ export class ClientChatSingleton {
 				}
 			}
 		});
-		keyboard.OnKeyDown(Key.DownArrow, (event) => {
+		Keyboard.OnKeyDown(Key.DownArrow, (event) => {
 			if (this.IsChatFocused()) {
 				if (this.historyIndex - 1 >= -1) {
 					this.historyIndex--;
@@ -283,7 +281,7 @@ export class ClientChatSingleton {
 		});
 
 		// Sink key events when selected:
-		keyboard.keyDown.ConnectWithPriority(SignalPriority.HIGH, (event) => {
+		Keyboard.onKeyDownSignal.ConnectWithPriority(SignalPriority.HIGH, (event) => {
 			if (this.selected) {
 				if (
 					event.key !== Key.Enter &&

@@ -30,7 +30,7 @@ export default class DemoManager extends AirshipBehaviour {
 
 		// const a: CharacterMovement = undefined!;
 		// a.OnAdjustMove()
-		
+
 		// Tween.ValueFloat(this.gameObject, 1, 1, (a: unknown, b: unknown) => {
 		// 	print("Obj a: " + a);
 		// 	print("Obj b: " + b);
@@ -86,15 +86,16 @@ export default class DemoManager extends AirshipBehaviour {
 				}),
 			);
 
-			const keyboard = new Keyboard();
-			keyboard.OnKeyDown(Key.O, (event) => {
-				if (event.uiProcessed) return;
+			this.bin.Add(
+				Keyboard.OnKeyDown(Key.O, (event) => {
+					if (event.uiProcessed) return;
 
-				const cube = Object.Instantiate(AssetCache.LoadAsset("Assets/Resources/OfflineCube.prefab"));
-				cube.transform.position = Game.localPlayer.character!.rig.head.position.add(new Vector3(0, 1, 0));
-				const rb = cube.gameObject.GetComponent<Rigidbody>()!;
-				rb.velocity = Game.localPlayer.character!.movement.GetLookVector().add(new Vector3(0, 1, 0)).mul(5);
-			});
+					const cube = Object.Instantiate(AssetCache.LoadAsset("Assets/Resources/OfflineCube.prefab"));
+					cube.transform.position = Game.localPlayer.character!.rig.head.position.add(new Vector3(0, 1, 0));
+					const rb = cube.gameObject.GetComponent<Rigidbody>()!;
+					rb.velocity = Game.localPlayer.character!.movement.GetLookVector().add(new Vector3(0, 1, 0)).mul(5);
+				}),
+			);
 		}
 
 		// cleanup

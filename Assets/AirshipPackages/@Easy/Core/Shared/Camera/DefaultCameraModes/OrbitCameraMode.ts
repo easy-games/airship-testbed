@@ -38,7 +38,6 @@ export class OrbitCameraMode extends CameraMode {
 	private mouseLockSwapped = false;
 
 	private readonly preferred = this.bin.Add(new Preferred());
-	private readonly keyboard = this.bin.Add(new Keyboard());
 	private readonly touchscreen = this.bin.Add(new Touchscreen());
 
 	constructor(private readonly distance: number, private transform: Transform, graphicalCharacter?: Transform) {
@@ -100,7 +99,6 @@ export class OrbitCameraMode extends CameraMode {
 		this.occlusionCam.Init(camera);
 
 		this.bin.Add(this.preferred);
-		this.bin.Add(this.keyboard);
 		this.bin.Add(this.touchscreen);
 
 		// const mouseUnlocker = this.mouse.AddUnlocker();
@@ -117,7 +115,7 @@ export class OrbitCameraMode extends CameraMode {
 					let rightClickUnlockerCleanup: (() => void) | undefined = Mouse.AddUnlocker();
 
 					controlSchemeBin.Add(
-						Mouse.rightDown.Connect(() => {
+						Mouse.onRightDown.Connect(() => {
 							if (rightClickUnlockerCleanup === undefined) return;
 							rightClickUnlockerCleanup();
 							rightClickUnlockerCleanup = undefined;
@@ -125,7 +123,7 @@ export class OrbitCameraMode extends CameraMode {
 					);
 
 					controlSchemeBin.Add(
-						Mouse.rightUp.Connect(() => {
+						Mouse.onRightUp.Connect(() => {
 							if (rightClickUnlockerCleanup !== undefined) return;
 							rightClickUnlockerCleanup = Mouse.AddUnlocker();
 						}),
@@ -151,8 +149,8 @@ export class OrbitCameraMode extends CameraMode {
 	}
 
 	OnUpdate(dt: number) {
-		const lf = this.keyboard.IsKeyDown(Key.LeftArrow);
-		const rt = this.keyboard.IsKeyDown(Key.RightArrow);
+		const lf = Keyboard.IsKeyDown(Key.LeftArrow);
+		const rt = Keyboard.IsKeyDown(Key.RightArrow);
 		const rightClick = Mouse.isRightDown;
 		if (rightClick && !this.rightClicking) {
 			this.rightClickPos = Mouse.position;

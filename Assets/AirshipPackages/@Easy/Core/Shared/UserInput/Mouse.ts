@@ -18,14 +18,14 @@ export interface MouseUnlocker {
 }
 
 export class Mouse {
-	public static readonly leftDown = new Signal<[event: PointerButtonSignal]>();
-	public static readonly leftUp = new Signal<[event: PointerButtonSignal]>();
-	public static readonly rightDown = new Signal<[event: PointerButtonSignal]>();
-	public static readonly rightUp = new Signal<[event: PointerButtonSignal]>();
-	public static readonly middleDown = new Signal<[event: PointerButtonSignal]>();
-	public static readonly middleUp = new Signal<[event: PointerButtonSignal]>();
-	public static readonly scrolled = new Signal<[event: ScrollSignal]>();
-	public static readonly moved = new Signal<[position: Vector2]>();
+	public static readonly onLeftDown = new Signal<[event: PointerButtonSignal]>();
+	public static readonly onLeftUp = new Signal<[event: PointerButtonSignal]>();
+	public static readonly onRightDown = new Signal<[event: PointerButtonSignal]>();
+	public static readonly onRightUp = new Signal<[event: PointerButtonSignal]>();
+	public static readonly onMiddleDown = new Signal<[event: PointerButtonSignal]>();
+	public static readonly onMiddleUp = new Signal<[event: PointerButtonSignal]>();
+	public static readonly onScrolled = new Signal<[event: ScrollSignal]>();
+	public static readonly onMoved = new Signal<[position: Vector2]>();
 	// public readonly Delta = new Signal<[delta: Vector2]>();
 
 	public static readonly isLeftDown = inputBridge.IsLeftMouseButtonDown();
@@ -39,25 +39,37 @@ export class Mouse {
 		);
 	}
 
+	/**
+	 * @deprecated
+	 * @param button
+	 * @param callback
+	 * @returns
+	 */
 	public static OnButtonDown(button: MouseButton, callback: (event: PointerButtonSignal) => void) {
 		switch (button) {
 			case MouseButton.LeftButton:
-				return Mouse.leftDown.Connect(callback);
+				return Mouse.onLeftDown.Connect(callback);
 			case MouseButton.MiddleButton:
-				return Mouse.middleDown.Connect(callback);
+				return Mouse.onMiddleDown.Connect(callback);
 			case MouseButton.RightButton:
-				return Mouse.rightDown.Connect(callback);
+				return Mouse.onRightDown.Connect(callback);
 		}
 	}
 
+	/**
+	 * @deprecated
+	 * @param button
+	 * @param callback
+	 * @returns
+	 */
 	public static OnButtonUp(button: MouseButton, callback: (event: PointerButtonSignal) => void) {
 		switch (button) {
 			case MouseButton.LeftButton:
-				return Mouse.leftUp.Connect(callback);
+				return Mouse.onLeftUp.Connect(callback);
 			case MouseButton.MiddleButton:
-				return Mouse.middleUp.Connect(callback);
+				return Mouse.onMiddleUp.Connect(callback);
 			case MouseButton.RightButton:
-				return Mouse.rightUp.Connect(callback);
+				return Mouse.onRightUp.Connect(callback);
 		}
 	}
 
@@ -146,9 +158,11 @@ export class Mouse {
 }
 
 if (Game.IsGameLuauContext()) {
-	const mouse = Mouse;
 	// cast as "any" so we can use private methods
-	let mouseUntyped = mouse as any;
+	let mouseUntyped = Mouse as unknown as {
+		AddUnlockerInternal(): number;
+		RemoveUnlocker(id: number): void;
+	};
 
 	contextbridge.callback<() => number>("Mouse:AddUnlocker", () => {
 		let id = mouseUntyped.AddUnlockerInternal();
@@ -163,13 +177,13 @@ if (Game.IsGameLuauContext()) {
 inputBridge.OnLeftMouseButtonPressEvent((isDown) => {
 	const uiProcessed = CanvasAPI.IsPointerOverUI();
 	const event = new PointerButtonSignal(isDown, uiProcessed);
-	isDown ? Mouse.leftDown.Fire(event) : Mouse.leftUp.Fire(event);
+	isDown ? Mouse.onLeftDown.Fire(event) : Mouse.onLeftUp.Fire(event);
 	if (isDown) {
 		(Mouse.isLeftDown as boolean) = true;
-		Mouse.leftDown.Fire(event);
+		Mouse.onLeftDown.Fire(event);
 	} else {
 		(Mouse.isLeftDown as boolean) = false;
-		Mouse.leftUp.Fire(event);
+		Mouse.onLeftUp.Fire(event);
 	}
 });
 inputBridge.OnRightMouseButtonPressEvent((isDown) => {
@@ -177,10 +191,10 @@ inputBridge.OnRightMouseButtonPressEvent((isDown) => {
 	const event = new PointerButtonSignal(isDown, uiProcessed);
 	if (isDown) {
 		(Mouse.isRightDown as boolean) = true;
-		Mouse.rightDown.Fire(event);
+		Mouse.onRightDown.Fire(event);
 	} else {
 		(Mouse.isRightDown as boolean) = false;
-		Mouse.rightUp.Fire(event);
+		Mouse.onRightUp.Fire(event);
 	}
 });
 inputBridge.OnMiddleMouseButtonPressEvent((isDown) => {
@@ -188,18 +202,18 @@ inputBridge.OnMiddleMouseButtonPressEvent((isDown) => {
 	const event = new PointerButtonSignal(isDown, uiProcessed);
 	if (isDown) {
 		(Mouse.isMiddleDown as boolean) = true;
-		Mouse.middleDown.Fire(event);
+		Mouse.onMiddleDown.Fire(event);
 	} else {
 		(Mouse.isMiddleDown as boolean) = false;
-		Mouse.middleUp.Fire(event);
+		Mouse.onMiddleUp.Fire(event);
 	}
 });
 inputBridge.OnMouseScrollEvent((scrollAmount) => {
 	const uiProcessed = CanvasAPI.IsPointerOverUI();
 	const event = new ScrollSignal(scrollAmount, uiProcessed);
-	Mouse.scrolled.Fire(event);
+	Mouse.onScrolled.Fire(event);
 });
 inputBridge.OnMouseMoveEvent((pos) => {
 	(Mouse.position as Vector2) = pos;
-	Mouse.moved.Fire(pos);
+	Mouse.onMoved.Fire(pos);
 });

@@ -213,8 +213,7 @@ export class DirectMessageController {
 		CanvasAPI.OnDeselectEvent(this.inputField!.gameObject, () => {
 			this.inputFieldSelected = false;
 		});
-		const keyboard = new Keyboard();
-		keyboard.keyDown.ConnectWithPriority(SignalPriority.HIGHEST, (event) => {
+		Keyboard.onKeyDownSignal.ConnectWithPriority(SignalPriority.HIGHEST, (event) => {
 			if (this.inputFieldSelected) {
 				if (
 					event.key !== Key.Enter &&

@@ -37,14 +37,14 @@ export class ProfilePanelController {
 		menuRect.localPosition = new Vector3(mousePosInCanvas.x, mousePosInCanvas.y, 0);
 
 		this.openMenuBin.Add(
-			Mouse.leftDown.Connect(() => {
+			Mouse.onLeftDown.Connect(() => {
 				if (!CanvasAPI.IsPointerOverTarget(menuGo)) {
 					this.openMenuBin.Clean();
 				}
 			}),
 		);
 		this.openMenuBin.Add(
-			Mouse.rightDown.Connect(() => {
+			Mouse.onRightDown.Connect(() => {
 				if (!CanvasAPI.IsPointerOverTarget(menuGo)) {
 					this.openMenuBin.Clean();
 				}

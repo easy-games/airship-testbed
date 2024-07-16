@@ -59,7 +59,6 @@ export class LocalCharacterSingleton {
 			this.firstSpawn = false;
 
 			const bin = new Bin();
-			const keyboard = bin.Add(new Keyboard());
 
 			this.characterMovement = character.gameObject.GetComponent<CharacterMovement>()!;
 			this.input = new CharacterInput(character);
@@ -69,7 +68,7 @@ export class LocalCharacterSingleton {
 			// Set up camera
 			const cameraController = Dependency<AirshipCharacterCameraSingleton>();
 			cameraController.SetupCamera(character);
-			cameraController.SetupCameraControls(keyboard);
+			cameraController.SetupCameraControls(bin);
 
 			const stateChangedConn = this.characterMovement.OnStateChanged((state) => {
 				if (state !== this.currentState) {
@@ -87,40 +86,46 @@ export class LocalCharacterSingleton {
 			});
 
 			// Pause Editor
-			keyboard.OnKeyDown(Key.F1, (event) => {
+			bin.Add(
+				Keyboard.OnKeyDown(Key.F1, (event) => {
+					if (event.uiProcessed) return;
+					if (Keyboard.IsKeyDown(Key.LeftShift)) {
+						GizmoUtils.TogglePauseEngine();
+					}
+				}),
+			);
+			Keyboard.OnKeyDown(Key.Backquote, (event) => {
 				if (event.uiProcessed) return;
-				if (keyboard.IsKeyDown(Key.LeftShift)) {
-					GizmoUtils.TogglePauseEngine();
-				}
-			});
-			keyboard.OnKeyDown(Key.Backquote, (event) => {
-				if (event.uiProcessed) return;
-				if (keyboard.IsKeyDown(Key.LeftShift)) {
+				if (Keyboard.IsKeyDown(Key.LeftShift)) {
 					GizmoUtils.TogglePauseEngine();
 				}
 			});
 
 			// Toggle fly mode (like mc creative):
 			let lastSpace = 0;
-			keyboard.OnKeyDown(Key.Space, (event) => {
-				if (event.uiProcessed) return;
-				const now = Time.time;
-				const dt = now - lastSpace;
-				if (dt < 0.3) {
-					lastSpace = 0;
-					if (this.characterMovement?.IsAllowFlight()) {
-						this.characterMovement?.SetFlying(!this.characterMovement.IsFlying());
+			bin.Add(
+				Keyboard.OnKeyDown(Key.Space, (event) => {
+					if (event.uiProcessed) return;
+					const now = Time.time;
+					const dt = now - lastSpace;
+					if (dt < 0.3) {
+						lastSpace = 0;
+						if (this.characterMovement?.IsAllowFlight()) {
+							this.characterMovement?.SetFlying(!this.characterMovement.IsFlying());
+						}
+					} else {
+						lastSpace = now;
 					}
-				} else {
-					lastSpace = now;
-				}
-			});
+				}),
+			);
 
 			// Screenshot:
-			keyboard.OnKeyDown(Key.F2, (event) => {
-				if (event.uiProcessed) return;
-				this.TakeScreenshot();
-			});
+			bin.Add(
+				Keyboard.OnKeyDown(Key.F2, (event) => {
+					if (event.uiProcessed) return;
+					this.TakeScreenshot();
+				}),
+			);
 
 			// keyboard.OnKeyDown(KeyCode.Semicolon, (event) => {
 			// 	CoreNetwork.ClientToServer.TestKnockback2.client.FireServer();

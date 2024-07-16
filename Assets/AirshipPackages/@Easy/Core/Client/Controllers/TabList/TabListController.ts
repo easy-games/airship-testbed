@@ -69,14 +69,13 @@ export class TabListController {
 			}
 		});
 
-		const keyboard = new Keyboard();
-		keyboard.OnKeyDown(Key.Tab, (e) => {
+		Keyboard.OnKeyDown(Key.Tab, (e) => {
 			if (e.uiProcessed) return;
-			if (!keyboard.IsEitherKeyDown(Key.LeftAlt, Key.LeftCommand)) {
+			if (!Keyboard.IsEitherKeyDown(Key.LeftAlt, Key.LeftCommand)) {
 				this.Show();
 			}
 		});
-		keyboard.OnKeyUp(Key.Tab, (e) => {
+		Keyboard.OnKeyUp(Key.Tab, (e) => {
 			this.Hide();
 		});
 

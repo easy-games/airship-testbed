@@ -513,8 +513,8 @@ export class AirshipInputSingleton {
 		if (action.IsComplexBinding()) {
 			if (action.binding.config.isKeyBinding) {
 				signalCleanup.Add(
-					this.keyboard.OnKeyDown(action.binding.config.key, (event) => {
-						const isModifierKeyDown = this.keyboard.IsKeyDown(action.binding.GetModifierKey());
+					Keyboard.OnKeyDown(action.binding.config.key, (event) => {
+						const isModifierKeyDown = Keyboard.IsKeyDown(action.binding.GetModifierKey());
 						if (!isModifierKeyDown) return;
 						this.actionDownState.add(action.name);
 						const actionDownSignals = this.actionDownSignals.get(action.name);
@@ -538,7 +538,7 @@ export class AirshipInputSingleton {
 					}),
 				);
 				signalCleanup.Add(
-					this.keyboard.OnKeyUp(action.binding.config.key, (event) => {
+					Keyboard.OnKeyUp(action.binding.config.key, (event) => {
 						const isDown = this.actionDownState.has(action.name);
 						if (!isDown) return;
 						this.actionDownState.delete(action.name);
@@ -563,7 +563,7 @@ export class AirshipInputSingleton {
 					}),
 				);
 				signalCleanup.Add(
-					this.keyboard.OnKeyUp(action.binding.GetModifierKey(), (event) => {
+					Keyboard.OnKeyUp(action.binding.GetModifierKey(), (event) => {
 						const isDown = this.actionDownState.has(action.name);
 						if (!isDown) return;
 						this.actionDownState.delete(action.name);
@@ -590,7 +590,7 @@ export class AirshipInputSingleton {
 			} else {
 				signalCleanup.Add(
 					Mouse.OnButtonDown(action.binding.config.mouseButton, (event) => {
-						const isModifierKeyDown = this.keyboard.IsKeyDown(action.binding.GetModifierKey());
+						const isModifierKeyDown = Keyboard.IsKeyDown(action.binding.GetModifierKey());
 						if (!isModifierKeyDown) return;
 						this.actionDownState.add(action.name);
 						const actionDownSignals = this.actionDownSignals.get(action.name);
@@ -639,7 +639,7 @@ export class AirshipInputSingleton {
 					}),
 				);
 				signalCleanup.Add(
-					this.keyboard.OnKeyUp(action.binding.GetModifierKey(), (event) => {
+					Keyboard.OnKeyUp(action.binding.GetModifierKey(), (event) => {
 						const isDown = this.actionDownState.has(action.name);
 						if (!isDown) return;
 						this.actionDownState.delete(action.name);
@@ -667,7 +667,7 @@ export class AirshipInputSingleton {
 		} else {
 			if (action.binding.config.isKeyBinding) {
 				signalCleanup.Add(
-					this.keyboard.OnKeyDown(action.binding.config.key, (event) => {
+					Keyboard.OnKeyDown(action.binding.config.key, (event) => {
 						if (
 							action.binding.GetInputType() === ActionInputType.Mouse &&
 							(CanvasAPI.IsPointerOverUI() ||
@@ -701,7 +701,7 @@ export class AirshipInputSingleton {
 					}),
 				);
 				signalCleanup.Add(
-					this.keyboard.OnKeyUp(action.binding.config.key, (event) => {
+					Keyboard.OnKeyUp(action.binding.config.key, (event) => {
 						const wasDown = this.actionDownState.has(action.name);
 						if (!wasDown) return;
 						this.actionDownState.delete(action.name);

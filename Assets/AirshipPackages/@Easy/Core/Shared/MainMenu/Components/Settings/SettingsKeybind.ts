@@ -9,7 +9,6 @@ import { FormatUtil } from "@Easy/Core/Shared/Util/FormatUtil";
 import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
 import { Keyboard, Mouse } from "../../../UserInput";
-import { AppManager } from "../../../Util/AppManager";
 import { Bin } from "../../../Util/Bin";
 import { CanvasAPI, HoverState, PointerButton, PointerDirection } from "../../../Util/CanvasAPI";
 import { InputUtils } from "../../../Util/InputUtils";
@@ -74,7 +73,7 @@ export default class SettingsKeybind extends AirshipBehaviour {
 		);
 
 		this.bin.Add(
-			AppManager.keyboard.OnKeyDown(
+			Keyboard.OnKeyDown(
 				Key.Escape,
 				(event) => {
 					if (this.isListening) {
@@ -163,7 +162,7 @@ export default class SettingsKeybind extends AirshipBehaviour {
 		SetInterval(InputPollRate, () => {
 			if (!this.isListening) return;
 
-			if (this.downModifierKey !== Key.None && !Keyboard.global.IsKeyDown(this.downModifierKey)) {
+			if (this.downModifierKey !== Key.None && !Keyboard.IsKeyDown(this.downModifierKey)) {
 				this.UpdateBinding(Binding.Key(this.downModifierKey));
 				this.SetListening(false);
 			}
@@ -180,7 +179,7 @@ export default class SettingsKeybind extends AirshipBehaviour {
 
 			for (let key of ObjectUtils.keys(InputUtils.keyCodeMap) as Key[]) {
 				if (key === Key.None) continue;
-				if (Keyboard.global.IsKeyDown(key) && this.isListening) {
+				if (Keyboard.IsKeyDown(key) && this.isListening) {
 					const modifierKey = InputUtil.GetModifierFromKey(key);
 					if (modifierKey) {
 						this.downModifierKey = key;

@@ -48,7 +48,6 @@ export class HumanoidCameraMode extends CameraMode {
 	private yOffsetSpring: SpringTween | undefined;
 
 	private readonly preferred = this.bin.Add(new Preferred());
-	private readonly keyboard = this.bin.Add(new Keyboard());
 	private readonly touchscreen = this.bin.Add(new Touchscreen());
 
 	private spineBone: Transform;
@@ -132,7 +131,6 @@ export class HumanoidCameraMode extends CameraMode {
 		this.occlusionCam.Init(camera);
 
 		this.bin.Add(this.preferred);
-		this.bin.Add(this.keyboard);
 		this.bin.Add(this.touchscreen);
 
 		this.bin.Add(
@@ -160,8 +158,8 @@ export class HumanoidCameraMode extends CameraMode {
 	}
 
 	OnUpdate(dt: number) {
-		const lf = this.keyboard.IsKeyDown(Key.LeftArrow);
-		const rt = this.keyboard.IsKeyDown(Key.RightArrow);
+		const lf = Keyboard.IsKeyDown(Key.LeftArrow);
+		const rt = Keyboard.IsKeyDown(Key.RightArrow);
 
 		if (Airship.Input.preferredControls.GetControlScheme() === ControlScheme.MouseKeyboard) {
 			const rightClick = Mouse.isRightDown;

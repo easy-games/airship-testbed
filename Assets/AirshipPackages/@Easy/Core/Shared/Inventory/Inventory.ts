@@ -99,8 +99,6 @@ export default class Inventory extends AirshipBehaviour {
 				controlsBin.Clean();
 				if (inv !== this) return;
 
-				const keyboard = new Keyboard();
-
 				const hotbarKeys = [
 					Key.Digit1,
 					Key.Digit2,
@@ -112,16 +110,15 @@ export default class Inventory extends AirshipBehaviour {
 					Key.Digit8,
 					Key.Digit9,
 				];
-
 				for (const hotbarIndex of $range(0, hotbarKeys.size() - 1)) {
-					keyboard.OnKeyDown(hotbarKeys[hotbarIndex], (event) => {
+					Keyboard.OnKeyDown(hotbarKeys[hotbarIndex], (event) => {
 						// if (!this.enabled || event.uiProcessed) return;
 						this.SetHeldSlot(hotbarIndex);
 					});
 				}
 
 				// Scroll to select held item:
-				Mouse.scrolled.Connect((event) => {
+				Mouse.onScrolled.Connect((event) => {
 					if (!this.controlsEnabled || event.uiProcessed) return;
 					if (CanvasAPI.IsPointerOverUI()) return;
 					// print("scroll: " + delta);

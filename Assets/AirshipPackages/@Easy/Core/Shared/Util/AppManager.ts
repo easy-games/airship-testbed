@@ -7,9 +7,6 @@ import { CanvasAPI, PointerDirection } from "./CanvasAPI";
 import { SignalPriority } from "./Signal";
 import { SetTimeout } from "./Timer";
 
-/** Global close key for hiding interfaces. */
-const CLOSE_KEY = Key.Escape;
-
 interface OpenedApp {
 	canvas?: Canvas;
 	bin: Bin;
@@ -288,10 +285,13 @@ interface EditorBridge {
 }
 declare const EditorBridge: EditorBridge;
 
+/** Global close key for hiding interfaces. */
+const EscapeKey = Key.Escape;
+
 /* Listen for close key globally. */
 if (Game.IsGameLuauContext() || !Game.IsInGame()) {
-	AppManager.keyboard.OnKeyDown(
-		CLOSE_KEY,
+	Keyboard.OnKeyDown(
+		EscapeKey,
 		(event) => {
 			if (event.IsCancelled()) return;
 			if (AppManager.IsOpen()) {
@@ -301,8 +301,8 @@ if (Game.IsGameLuauContext() || !Game.IsInGame()) {
 		},
 		SignalPriority.HIGH,
 	);
-	AppManager.keyboard.OnKeyDown(
-		CLOSE_KEY,
+	Keyboard.OnKeyDown(
+		EscapeKey,
 		(event) => {
 			if (event.IsCancelled()) return;
 			if (Game.IsEditor() && !EditorBridge.IsMainMenuInEditorEnabled()) {
@@ -313,7 +313,7 @@ if (Game.IsGameLuauContext() || !Game.IsInGame()) {
 		},
 		SignalPriority.LOW,
 	);
-	AppManager.keyboard.OnKeyDown(
+	Keyboard.OnKeyDown(
 		Key.F,
 		(event) => {
 			if (event.uiProcessed) return;

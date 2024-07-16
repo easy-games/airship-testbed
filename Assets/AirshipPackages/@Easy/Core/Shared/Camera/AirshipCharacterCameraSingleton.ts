@@ -301,56 +301,62 @@ export class AirshipCharacterCameraSingleton {
 	/**
 	 * @internal
 	 */
-	public SetupCameraControls(keyboard: Keyboard) {
+	public SetupCameraControls(bin: Bin) {
 		// Toggle first person:
-		keyboard.OnKeyDown(Key.T, (event) => {
-			if (!this.IsEnabled()) return;
-			if (event.uiProcessed) return;
-			if (!this.canToggleFirstPerson) return;
-			if (this.cameraSystem?.GetMode() === this.humanoidCameraMode) {
-				this.ToggleFirstPerson();
-			}
-		});
+		bin.Add(
+			Keyboard.OnKeyDown(Key.T, (event) => {
+				if (!this.IsEnabled()) return;
+				if (event.uiProcessed) return;
+				if (!this.canToggleFirstPerson) return;
+				if (this.cameraSystem?.GetMode() === this.humanoidCameraMode) {
+					this.ToggleFirstPerson();
+				}
+			}),
+		);
 
 		// Toggle look backwards:
-		keyboard.OnKeyDown(Key.H, (event) => {
-			if (!this.IsEnabled()) return;
-			if (event.uiProcessed) return;
-			if (this.cameraSystem?.GetMode() === this.humanoidCameraMode) {
-				this.SetLookBackwards(!this.lookBackwards);
-			}
-		});
+		bin.Add(
+			Keyboard.OnKeyDown(Key.H, (event) => {
+				if (!this.IsEnabled()) return;
+				if (event.uiProcessed) return;
+				if (this.cameraSystem?.GetMode() === this.humanoidCameraMode) {
+					this.SetLookBackwards(!this.lookBackwards);
+				}
+			}),
+		);
 
 		let flyCam = false;
 		const flyingBin = new Bin();
 
 		// Toggle fly cam:
-		keyboard.OnKeyDown(Key.P, (event) => {
-			if (event.uiProcessed) return;
-			if (keyboard.IsKeyDown(Key.LeftShift)) {
-				if (flyCam) {
-					flyCam = false;
-					flyingBin.Clean();
-				} else {
-					flyCam = true;
-					let backToFirstPerson = this.firstPerson;
-					if (backToFirstPerson) {
-						this.SetFirstPerson(false);
-					}
-					this.SetMode(new FlyCameraMode());
-					flyingBin.Add(() => {
-						this.ClearMode();
+		bin.Add(
+			Keyboard.OnKeyDown(Key.P, (event) => {
+				if (event.uiProcessed) return;
+				if (Keyboard.IsKeyDown(Key.LeftShift)) {
+					if (flyCam) {
+						flyCam = false;
+						flyingBin.Clean();
+					} else {
+						flyCam = true;
+						let backToFirstPerson = this.firstPerson;
 						if (backToFirstPerson) {
-							this.SetFirstPerson(true);
+							this.SetFirstPerson(false);
 						}
-					});
-					flyingBin.Add(Dependency<LocalCharacterSingleton>().input!.AddDisabler());
-					if (Airship.Inventory.localInventory) {
-						flyingBin.Add(Airship.Inventory.localInventory.AddControlsDisabler());
+						this.SetMode(new FlyCameraMode());
+						flyingBin.Add(() => {
+							this.ClearMode();
+							if (backToFirstPerson) {
+								this.SetFirstPerson(true);
+							}
+						});
+						flyingBin.Add(Dependency<LocalCharacterSingleton>().input!.AddDisabler());
+						if (Airship.Inventory.localInventory) {
+							flyingBin.Add(Airship.Inventory.localInventory.AddControlsDisabler());
+						}
 					}
 				}
-			}
-		});
+			}),
+		);
 	}
 
 	public SetCharacterCameraMode(mode: CharacterCameraMode): void {
