@@ -605,10 +605,12 @@ export class PlayersSingleton {
 	}
 
 	/**
+	 * Same logic should also be at EditorAuthManager.cs
+	 * 
 	 * @internal
 	 */
 	public GetDefaultProfilePictureFromUserId(userId: string): Texture2D {
-		const [num] = string.byte(userId);
+		const [num] = string.byte(userId, userId.size());
 		let files = [
 			"Assets/AirshipPackages/@Easy/Core/Prefabs/Images/ProfilePictures/BlueDefaultProfilePicture.png",
 			"Assets/AirshipPackages/@Easy/Core/Prefabs/Images/ProfilePictures/RedDefaultProfilePicture.png",

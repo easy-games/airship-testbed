@@ -21,7 +21,6 @@ export default class GameImageButton extends AirshipBehaviour {
 
 		const gameComponent = this.gameComponentGO?.GetAirshipComponent<HomePageGameComponent>();
 
-		const mouse = new Mouse();
 		if (Game.IsMobile()) {
 			const longPress = this.gameObject.GetComponent<AirshipLongPress>()!;
 			if (longPress) {
@@ -97,7 +96,7 @@ export default class GameImageButton extends AirshipBehaviour {
 					}
 					Dependency<RightClickMenuController>().OpenRightClickMenu(
 						Dependency<MainMenuController>().mainContentCanvas,
-						Mouse.global.GetPosition(),
+						Mouse.position,
 						actions,
 					);
 				}

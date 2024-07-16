@@ -63,8 +63,7 @@ export class ChangeUsernameController {
 			CanvasAPI.OnDeselectEvent(this.inputField.gameObject, () => {
 				this.inputFieldSelected = false;
 			});
-			const keyboard = new Keyboard();
-			keyboard.keyDown.ConnectWithPriority(SignalPriority.HIGH, (e) => {
+			Keyboard.onKeyDownSignal.ConnectWithPriority(SignalPriority.HIGH, (e) => {
 				if (this.inputFieldSelected) {
 					if (e.key !== Key.Enter && e.key !== Key.Escape) {
 						e.SetCancelled(true);

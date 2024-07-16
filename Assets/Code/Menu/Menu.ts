@@ -21,11 +21,7 @@ export default class Menu extends AirshipBehaviour {
 		this.canvas.gameObject.SetActive(true);
 		this.camera.gameObject.SetActive(true);
 
-		const mouse = new Mouse();
-		const unlockId = mouse.AddUnlocker();
-		this.showBin.Add(() => {
-			mouse.RemoveUnlocker(unlockId);
-		});
+		this.showBin.Add(Mouse.AddUnlocker());
 	}
 
 	public Hide(): void {
@@ -55,8 +51,7 @@ export default class Menu extends AirshipBehaviour {
 			});
 		}
 
-		const keyboard = new Keyboard();
-		keyboard.OnKeyDown(Key.P, (event) => {
+		Keyboard.OnKeyDown(Key.P, (event) => {
 			task.spawn(() => {
 				MenuUtil.BackToMenu();
 			});

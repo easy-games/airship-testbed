@@ -48,9 +48,7 @@ export class HumanoidCameraMode extends CameraMode {
 	private yOffsetSpring: SpringTween | undefined;
 
 	private readonly preferred = this.bin.Add(new Preferred());
-	private readonly keyboard = this.bin.Add(new Keyboard());
 	private readonly touchscreen = this.bin.Add(new Touchscreen());
-	private readonly mouse = this.bin.Add(new Mouse());
 
 	private spineBone: Transform;
 
@@ -58,7 +56,7 @@ export class HumanoidCameraMode extends CameraMode {
 	private smoothVector = new Vector2(0, 0);
 
 	/** Keep track of mouse lock state (to prevent huge delta when locking mouse) */
-	private mouseLocked = this.mouse.IsLocked();
+	private mouseLocked = Mouse.IsLocked();
 	private mouseLockSwapped = false;
 
 	constructor(private character: Character, private graphicalCharacterGO: GameObject, initialFirstPerson: boolean) {
@@ -133,26 +131,22 @@ export class HumanoidCameraMode extends CameraMode {
 		this.occlusionCam.Init(camera);
 
 		this.bin.Add(this.preferred);
-		this.bin.Add(this.keyboard);
 		this.bin.Add(this.touchscreen);
-		this.bin.Add(this.mouse);
 
 		this.bin.Add(
 			Airship.Input.preferredControls.ObserveControlScheme((scheme) => {
 				if (scheme === ControlScheme.Touch) {
-					const lockId = this.mouse.AddUnlocker();
+					const unlocker = Mouse.AddUnlocker();
+					this.bin.Add(unlocker);
 					return () => {
-						this.mouse.RemoveUnlocker(lockId);
+						unlocker();
 					};
 				}
 			}),
 		);
 
 		if (!this.lockView) {
-			const unlockerId = this.mouse.AddUnlocker();
-			this.bin.Add(() => {
-				this.mouse.RemoveUnlocker(unlockerId);
-			});
+			this.bin.Add(Mouse.AddUnlocker());
 		}
 
 		this.SetFirstPerson(this.firstPerson);
@@ -164,20 +158,20 @@ export class HumanoidCameraMode extends CameraMode {
 	}
 
 	OnUpdate(dt: number) {
-		const lf = this.keyboard.IsKeyDown(Key.LeftArrow);
-		const rt = this.keyboard.IsKeyDown(Key.RightArrow);
+		const lf = Keyboard.IsKeyDown(Key.LeftArrow);
+		const rt = Keyboard.IsKeyDown(Key.RightArrow);
 
 		if (Airship.Input.preferredControls.GetControlScheme() === ControlScheme.MouseKeyboard) {
-			const rightClick = this.mouse.IsRightButtonDown();
+			const rightClick = Mouse.isRightDown;
 			if (rightClick && !this.rightClicking) {
-				this.rightClickPos = this.mouse.GetPosition();
+				this.rightClickPos = Mouse.position;
 			}
 			this.rightClicking = rightClick;
 			if (lf !== rt) {
 				this.rotationY += (lf ? 1 : -1) * TimeUtil.GetDeltaTime() * 4;
 			}
-			if (this.mouse.IsLocked() && (rightClick || this.firstPerson || this.lockView)) {
-				let mouseDelta = this.mouse.GetDelta();
+			if (Mouse.IsLocked() && (rightClick || this.firstPerson || this.lockView)) {
+				let mouseDelta = Mouse.GetDelta();
 				// This is to prevent large jump on first movement (happens always on mac)
 				if (this.mouseLockSwapped && mouseDelta.magnitude > 0) {
 					this.mouseLockSwapped = false;
@@ -217,7 +211,7 @@ export class HumanoidCameraMode extends CameraMode {
 			}
 
 			// Update mouse locked state. This will make the next frame's delta be 0.
-			if (this.mouseLocked !== this.mouse.IsLocked()) {
+			if (this.mouseLocked !== Mouse.IsLocked()) {
 				this.mouseLocked = !this.mouseLocked;
 				this.mouseLockSwapped = true;
 			}

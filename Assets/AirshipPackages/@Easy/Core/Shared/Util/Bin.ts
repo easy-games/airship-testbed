@@ -9,6 +9,7 @@ interface SignalLike<T extends Callback = Callback> {
 type Trackable =
 	| GameObject
 	| ConnectionLike
+	// | AirshipConnection
 	| Promise<unknown>
 	| thread
 	| ((...args: unknown[]) => unknown)

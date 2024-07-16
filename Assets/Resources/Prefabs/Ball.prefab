@@ -193,7 +193,7 @@ MonoBehaviour:
   _componentIndexCache: 1
   _addedNetworkObject: {fileID: 2184284543791561103}
   _networkObjectCache: {fileID: 2184284543791561103}
-  graphicalObject: {fileID: 7488941359542960790}
+  graphicalObject: {fileID: 0}
   _enableTeleport: 0
   _teleportThreshold: 0
 --- !u!1 &5350287513901391075

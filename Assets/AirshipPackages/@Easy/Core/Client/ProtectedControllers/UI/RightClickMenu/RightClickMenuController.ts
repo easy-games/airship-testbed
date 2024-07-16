@@ -101,16 +101,15 @@ export class RightClickMenuController {
 			}
 		}
 
-		const mouse = new Mouse();
 		this.currentBin.Add(
-			mouse.leftDown.Connect(() => {
+			Mouse.onLeftDown.Connect(() => {
 				if (!CanvasAPI.IsPointerOverTarget(menuGo)) {
 					this.currentBin.Clean();
 				}
 			}),
 		);
 		this.currentBin.Add(
-			mouse.rightDown.Connect(() => {
+			Mouse.onRightDown.Connect(() => {
 				if (Time.time !== this.openedTime) {
 					this.currentBin.Clean();
 				}

@@ -39,6 +39,8 @@ export class MainMenuController {
 	private open = false;
 	private socialIsVisible = true;
 
+	private gameCursorLocked = false;
+
 	constructor() {
 		const mainMenuPrefab = AssetBridge.Instance.LoadAsset(
 			"Assets/AirshipPackages/@Easy/Core/Prefabs/MainMenu/MainMenu.prefab",
@@ -87,8 +89,7 @@ export class MainMenuController {
 		this.ToggleGameBG(true);
 
 		if (Game.coreContext === CoreContext.MAIN_MENU) {
-			const mouse = new Mouse();
-			mouse.AddUnlocker();
+			Mouse.AddUnlocker();
 		}
 
 		contextbridge.callback<() => void>("MainMenu:OpenFromGame", (from) => {
@@ -119,6 +120,8 @@ export class MainMenuController {
 	public OpenFromGameInProtectedContext(): void {
 		if (this.IsOpen()) return;
 
+		this.gameCursorLocked = InputBridge.Instance.IsMouseLocked();
+
 		AppManager.OpenCustom(() => {
 			this.CloseFromGame();
 		});
@@ -139,6 +142,8 @@ export class MainMenuController {
 	public CloseFromGame(): void {
 		if (!this.IsOpen()) return;
 		this.open = false;
+
+		InputBridge.Instance.SetMouseLocked(this.gameCursorLocked);
 
 		this.avatarView?.HideAvatar();
 		EventSystem.current.ClearSelected();

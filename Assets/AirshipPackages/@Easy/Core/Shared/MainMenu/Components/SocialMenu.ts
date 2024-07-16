@@ -54,7 +54,7 @@ export default class SocialMenu extends AirshipBehaviour {
 			socketController.onSocketConnectionChanged.Connect((connected) => {
 				this.SetOfflineNoticeVisible(!connected);
 
-				if (!connected) {
+				if (!connected && !Game.IsEditor()) {
 					Game.localPlayer.SendMessage(ChatColor.Red("[Airship] Lost connection to online services."));
 				}
 			}),

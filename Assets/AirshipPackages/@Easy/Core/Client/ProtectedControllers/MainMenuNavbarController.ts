@@ -24,9 +24,8 @@ export class MainMenuNavbarController {
 	protected OnStart(): void {
 		this.Setup();
 
-		const keyboard = new Keyboard();
-		keyboard.OnKeyDown(Key.R, (event) => {
-			if (keyboard.IsEitherKeyDown(Key.LeftCommand, Key.LeftCtrl)) {
+		Keyboard.OnKeyDown(Key.R, (event) => {
+			if (Keyboard.IsEitherKeyDown(Key.LeftCommand, Key.LeftCtrl)) {
 				this.DoRefresh();
 			}
 		});
@@ -138,9 +137,8 @@ export class MainMenuNavbarController {
 			this.FocusSearchbar();
 		});
 
-		const keyboard = new Keyboard();
-		keyboard.OnKeyDown(Key.K, () => {
-			if (keyboard.IsEitherKeyDown(Key.LeftCommand, Key.LeftCtrl)) {
+		Keyboard.OnKeyDown(Key.K, () => {
+			if (Keyboard.IsEitherKeyDown(Key.LeftCommand, Key.LeftCtrl)) {
 				this.FocusSearchbar();
 			}
 		});

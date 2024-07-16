@@ -24,11 +24,8 @@ export default class SendFriendRequestModal extends AirshipBehaviour {
 	override Start(): void {
 		this.responseText.text = "";
 
-		const keyboard = new Keyboard();
-		this.bin.Add(keyboard);
-
 		const sendButtonComp = this.sendButton.gameObject.GetAirshipComponent<AirshipButton>()!;
-		keyboard.OnKeyDown(Key.Enter, (event) => {
+		Keyboard.OnKeyDown(Key.Enter, (event) => {
 			sendButtonComp.PlayMouseDownEffect();
 			if (EventSystem.current.currentSelectedGameObject === this.inputField.gameObject) {
 				task.spawn(() => {
@@ -36,7 +33,7 @@ export default class SendFriendRequestModal extends AirshipBehaviour {
 				});
 			}
 		});
-		keyboard.OnKeyUp(Key.Enter, (event) => {
+		Keyboard.OnKeyUp(Key.Enter, (event) => {
 			sendButtonComp.PlayMouseUpEffect();
 		});
 
@@ -64,9 +61,9 @@ export default class SendFriendRequestModal extends AirshipBehaviour {
 	private async LoadRecommendations() {
 		const sortedRecommendations = Dependency<RecommendedFriendsController>().GetSortedRecommendations();
 		this.recommendationsContent.ClearChildren();
-		
+
 		const hasRecommendations = sortedRecommendations.size() > 0;
-		print("TOTAL RECS: " +sortedRecommendations.size());
+		print("TOTAL RECS: " + sortedRecommendations.size());
 		// Set "Recently played with:" and recommendation content visibility
 		this.recommendationsContent.SetActive(hasRecommendations);
 		this.recentlyPlayedWithText.SetActive(hasRecommendations);
@@ -79,18 +76,25 @@ export default class SendFriendRequestModal extends AirshipBehaviour {
 			// Check if card is displayable before parenting
 			const cardObj = Object.Instantiate(this.recommendationCardPrefab);
 			const card = cardObj.GetAirshipComponent<FriendRecommendation>()!;
-			card.Setup(rec.uid, rec.recommendation.context).then((setupSuccess) => {
-				if (setupSuccess) {
-					cardObj.transform.parent = this.recommendationsContent.transform;
-					cardObj.transform.localScale = new Vector3(1, 1, 1); // Why is this necessary? Defaults to 0.5,0.5,0.5
-				} else {
-					print("Failed to fetch recommended user: uid=" + rec.uid + " username=" + rec.recommendation.username);
+			card.Setup(rec.uid, rec.recommendation.context)
+				.then((setupSuccess) => {
+					if (setupSuccess) {
+						cardObj.transform.parent = this.recommendationsContent.transform;
+						cardObj.transform.localScale = new Vector3(1, 1, 1); // Why is this necessary? Defaults to 0.5,0.5,0.5
+					} else {
+						print(
+							"Failed to fetch recommended user: uid=" +
+								rec.uid +
+								" username=" +
+								rec.recommendation.username,
+						);
+						Object.Destroy(cardObj);
+					}
+				})
+				.catch((err) => {
+					warn("Failed to setup recommendation card: " + inspect(err));
 					Object.Destroy(cardObj);
-				}
-			}).catch((err) => {
-				warn("Failed to setup recommendation card: " + inspect(err));
-				Object.Destroy(cardObj);
-			});
+				});
 		}
 	}
 
