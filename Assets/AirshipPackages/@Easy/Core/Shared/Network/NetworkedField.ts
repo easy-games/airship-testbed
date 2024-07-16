@@ -14,16 +14,22 @@ export interface NetworkedFieldConfiguration<
 	OnChanged?(this: U, value: U[K]): void;
 }
 
-type ValidNetworkTypes = boolean | string | number;
+type ValidNetworkTypes = boolean | string | number | object;
 
 export interface NetworkedField {
 	readonly Name: string;
+	readonly OnChanged?: ChangedListener;
 	// readonly Configuration: NetworkedFieldConfiguration<AirshipNetworkBehaviour, any>;
 }
 export type NetworkedFieldsList = Map<string, NetworkedField>;
 
 export const NetworkedFields = new Map<AirshipNetworkBehaviour, NetworkedFieldsList>();
 
+type ChangedListener = (obj: AirshipNetworkBehaviour, value: unknown) => void;
+
+/**
+ * This is an experimental feature
+ */
 export function NetworkedField<
 	U extends AirshipNetworkBehaviour,
 	K extends keyof ExtractMembers<U, ValidNetworkTypes> & string,
@@ -32,66 +38,12 @@ export function NetworkedField<
 		const fields = MapUtil.GetOrCreate(NetworkedFields, ctor, (): NetworkedFieldsList => new Map());
 		const rpcId = `${ctor}::${propertyKey}`;
 
+		const changedListener = config.OnChanged as ChangedListener | undefined;
+
 		// Set metadata for this NetworkedField
-		fields.set(rpcId, {
+		fields.set(propertyKey, {
 			Name: propertyKey,
+			OnChanged: changedListener,
 		});
 	};
 }
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-function test() {}
-
-//
-//
-//
-//
-//
-//
-//
-//
-//

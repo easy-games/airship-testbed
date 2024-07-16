@@ -6,6 +6,7 @@ import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 import { ClientTargetedBehaviourListeners } from "./TargetRpc";
 import { NetworkedFields } from "./NetworkedField";
 import AirshipNetworkFieldReplicator from "./AirshipNetworkFieldReplicator";
+import inspect from "../Util/Inspect";
 
 /**
  * A TypeScript parallel to the C# `NetworkBehaviour` for Airship.
@@ -25,6 +26,9 @@ import AirshipNetworkFieldReplicator from "./AirshipNetworkFieldReplicator";
  * 	}
  * ```
  */
+export interface AirshipNetworkBehaviour {
+	readonly NetworkObject: NetworkObject;
+}
 export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
 	private static airshipNetworkIds = 0;
 
@@ -33,7 +37,7 @@ export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
 	 */
 	public readonly AirshipNetworkId = AirshipNetworkBehaviour.airshipNetworkIds++;
 
-	private bin = new Bin();
+	private networkBin = new Bin();
 
 	@NonSerialized()
 	public networkObject!: NetworkObject;
@@ -47,6 +51,20 @@ export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
 				this.gameObject.AddAirshipComponent<AirshipNetworkFieldReplicator>();
 
 			replicator.BindPropertiesToBehaviour(this, networkedFields);
+			this.networkBin.Add(
+				replicator.PropertyChanged.Connect((id, propertyName, propertyValue) => {
+					if (id !== this.AirshipNetworkId) return;
+
+					const networkedField = networkedFields.get(propertyName);
+					if (!networkedField) {
+						warn("no NetworkField", propertyName);
+						return;
+					}
+
+					this[propertyName as keyof this] = propertyValue as this[keyof this];
+					networkedField.OnChanged?.(this, propertyValue);
+				}),
+			);
 		}
 	}
 
@@ -61,7 +79,7 @@ export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
 			for (const listener of broadcastListeners) {
 				if (listenerSet.has(listener.Id)) continue;
 
-				this.bin.Add(
+				this.networkBin.Add(
 					listener.Event.client.OnServerEvent((objId, ...params: unknown[]) => {
 						const allowRequest =
 							!listener.IgnoreOwner || this.networkObject.OwnerId !== Game.localPlayer.connectionId;
@@ -78,7 +96,7 @@ export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
 
 		if (targetedListeners) {
 			for (const listener of targetedListeners) {
-				this.bin.Add(
+				this.networkBin.Add(
 					listener.Event.client.OnServerEvent((objId, ...params) => {
 						if (objId === nob.ObjectId) {
 							listener.Callback(this, Game.localPlayer, ...(params as unknown[]));
@@ -111,7 +129,7 @@ export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
 			for (const listener of listeners) {
 				if (listenerSet.has(listener.Id)) continue;
 
-				this.bin.Add(
+				this.networkBin.Add(
 					listener.Event.server.OnClientEvent((player, objId, ...params) => {
 						const hasPermission =
 							!listener.RequiresOwner || this.networkObject.OwnerId === player.connectionId;
@@ -148,7 +166,7 @@ export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
 		const nob = this.networkObject;
 		if (Game.IsServer()) {
 			let startedServer = false;
-			this.bin.AddEngineEventConnection(
+			this.networkBin.AddEngineEventConnection(
 				nob.OnStartServer(() => {
 					// 	print("OnStartServer", this.gameObject.name);
 					if (startedServer) return;
@@ -159,7 +177,7 @@ export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
 				}),
 			);
 
-			this.bin.AddEngineEventConnection(
+			this.networkBin.AddEngineEventConnection(
 				nob.OnStopServer(() => {
 					if (!startedServer) return;
 					startedServer = false;
@@ -169,7 +187,7 @@ export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
 			);
 		}
 
-		this.bin.AddEngineEventConnection(
+		this.networkBin.AddEngineEventConnection(
 			nob.OnStartNetwork(() => {
 				if (startedNetwork) return;
 				startedNetwork = true;
@@ -178,7 +196,7 @@ export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
 			}),
 		);
 
-		this.bin.AddEngineEventConnection(
+		this.networkBin.AddEngineEventConnection(
 			nob.OnStopNetwork(() => {
 				if (!startedNetwork) return;
 				startedNetwork = false;
@@ -188,7 +206,7 @@ export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
 
 		if (Game.IsClient()) {
 			let startedClient = false;
-			this.bin.AddEngineEventConnection(
+			this.networkBin.AddEngineEventConnection(
 				nob.OnStartClient(() => {
 					if (startedClient) return;
 					startedClient = true;
@@ -198,7 +216,7 @@ export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
 				}),
 			);
 
-			this.bin.AddEngineEventConnection(
+			this.networkBin.AddEngineEventConnection(
 				nob.OnStopClient(() => {
 					if (!startedClient) return;
 					startedClient = false;
@@ -208,8 +226,8 @@ export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
 			);
 		}
 
-		this.bin.AddEngineEventConnection(nob.OnStopNetwork(() => this.OnStopNetwork()));
-		this.bin.AddEngineEventConnection(nob.OnDespawnServer((conn) => this.OnServerDespawn()));
+		this.networkBin.AddEngineEventConnection(nob.OnStopNetwork(() => this.OnStopNetwork()));
+		this.networkBin.AddEngineEventConnection(nob.OnDespawnServer((conn) => this.OnServerDespawn()));
 	}
 
 	public OnStartNetwork() {}
@@ -237,6 +255,6 @@ export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
 	}
 
 	public OnDestroy(): void {
-		this.bin.Clean();
+		this.networkBin.Clean();
 	}
 }
