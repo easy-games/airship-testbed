@@ -6,7 +6,7 @@ import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 import { ClientTargetedBehaviourListeners } from "./TargetRpc";
 import { NetworkedFields } from "./NetworkedField";
 import AirshipNetworkFieldReplicator from "./AirshipNetworkFieldReplicator";
-import inspect from "../Util/Inspect";
+import { Airship } from "../Airship";
 
 /**
  * A TypeScript parallel to the C# `NetworkBehaviour` for Airship.
@@ -26,19 +26,19 @@ import inspect from "../Util/Inspect";
  * 	}
  * ```
  */
-export interface AirshipNetworkBehaviour {
-	readonly NetworkObject: NetworkObject;
-}
 export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
 	private static airshipNetworkIds = 0;
 
 	/**
-	 * An ID used by Airship for networking (not guaranteed to be ordered)
+	 * This is an identifier for the Airship component through the network
 	 */
-	public readonly AirshipNetworkId = AirshipNetworkBehaviour.airshipNetworkIds++;
+	protected readonly airshipNetworkId = AirshipNetworkBehaviour.airshipNetworkIds++;
 
 	private networkBin = new Bin();
 
+	/**
+	 * The NetworkObject this behaviour is attached to
+	 */
 	@NonSerialized()
 	public networkObject!: NetworkObject;
 
@@ -154,7 +154,6 @@ export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
 			let startedServer = false;
 			this.networkBin.AddEngineEventConnection(
 				nob.OnStartServer(() => {
-					// 	print("OnStartServer", this.gameObject.name);
 					if (startedServer) return;
 					startedServer = true;
 
@@ -227,17 +226,40 @@ export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
 
 	public OnServerDespawn() {}
 
+	/**
+	 * Returns true if this object is owned by the server
+	 */
 	public IsServerOwned() {
 		const networkObject = this.gameObject.GetComponent<NetworkObject>()!;
 		return networkObject.OwnerId === -1;
 	}
 
+	/**
+	 * Despawns this object
+	 */
 	public ServerDespawn() {
 		if (Game.IsServer()) NetworkUtil.Despawn(this.gameObject);
 	}
 
+	/**
+	 * Returns true if the caller is the owner of this object
+	 */
 	public IsOwner() {
-		return this.networkObject.IsOwner || this.networkObject.OwnerId === (Game.localPlayer?.connectionId ?? -1);
+		if (Game.IsClient()) {
+			return this.networkObject.IsOwner || this.networkObject.OwnerId === (Game.localPlayer?.connectionId ?? -1);
+		}
+
+		return this.networkObject.OwnerId === -1;
+	}
+
+	/**
+	 * Gets the player who owns this object (if applicable)
+	 *
+	 * - Will return `undefined` if the object is server-owned or the owner is no longer in the server
+	 * - If you want to verify the owner isn't the server, use {@link IsServerOwned}. or if the caller is the owner {@link IsOwner}
+	 */
+	public GetPlayerOwner() {
+		return Airship.Players.FindByConnectionId(this.networkObject.OwnerId);
 	}
 
 	public OnDestroy(): void {

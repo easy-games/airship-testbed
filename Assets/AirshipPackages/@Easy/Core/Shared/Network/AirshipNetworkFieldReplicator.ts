@@ -77,7 +77,7 @@ export default class AirshipNetworkFieldReplicator extends AirshipNetworkBehavio
 
 			const componentBinding = MapUtil.GetOrCreate(
 				this.fieldStates,
-				behaviour.AirshipNetworkId,
+				behaviour["airshipNetworkId"], // this is nutty
 				(): NetworkProperties => new Map(),
 			);
 
@@ -125,10 +125,10 @@ export default class AirshipNetworkFieldReplicator extends AirshipNetworkBehavio
 	public ObserveNetworkProperties(behaviour: AirshipNetworkBehaviour, properties: NetworkedFieldsList) {
 		const componentBinding = MapUtil.GetOrCreate(
 			this.fieldStates,
-			behaviour.AirshipNetworkId,
+			behaviour["airshipNetworkId"],
 			(): NetworkProperties => new Map(),
 		);
-		this.idToBehaviour.set(behaviour.AirshipNetworkId, behaviour);
+		this.idToBehaviour.set(behaviour["airshipNetworkId"], behaviour);
 
 		for (const [, property] of properties) {
 			const propertyName = property.Name;
@@ -164,7 +164,7 @@ export default class AirshipNetworkFieldReplicator extends AirshipNetworkBehavio
 		const connectBin = new Bin();
 		connectBin.Add(
 			this.PropertyChanged.Connect((id, propertyName, newValue, oldValue) => {
-				if (id !== this.AirshipNetworkId) return;
+				if (id !== this.airshipNetworkId) return;
 
 				const networkedField = componentBinding.get(propertyName);
 				if (!networkedField) {
