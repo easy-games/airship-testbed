@@ -34,13 +34,14 @@ function getObjCleanupFn<T extends Trackable>(obj: T, cleanupMethod?: string): s
 		return FN_MARKER;
 	} else if (t === "thread") {
 		return THREAD_MARKER;
-	} else if ((t as unknown) === "MonoSignalConnection") {
-		return MONO_SIGNAL_CONN_MARKER;
 	}
 	if (cleanupMethod !== undefined) {
 		return cleanupMethod;
 	}
 	if (t === "userdata") {
+		if (tostring(obj) === "MonoSignalConnection") {
+			return MONO_SIGNAL_CONN_MARKER;
+		}
 		return "Destroy";
 	} else if (t === "table") {
 		if ("Destroy" in obj) {
