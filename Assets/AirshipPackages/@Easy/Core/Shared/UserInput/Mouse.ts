@@ -86,7 +86,7 @@ export class Mouse {
 
 	/**
 	 * Unlocks the mouse.
-	 * Returns an cleanup function that can be called to lock the mouse.
+	 * Returns a cleanup function that can be called to lock the mouse.
 	 *
 	 * This pattern is used to allow many different systems unlock the mouse without stomping on each other.
 	 *
