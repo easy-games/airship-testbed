@@ -10,6 +10,11 @@ export default class SettingsPage extends AirshipBehaviour {
 	public sidebar!: RectTransform;
 	public tabs!: RectTransform;
 	public scrollView!: RectTransform;
+	public canvasScalar: CanvasScaler;
+	public verticalLayoutGroup: VerticalLayoutGroup;
+	public rightSection: RectTransform;
+	public mobileHeader: RectTransform;
+	public desktopCloseButtonWrapper: RectTransform;
 
 	@Header("Sliders")
 	public mouseSensitivityGO!: GameObject;
@@ -30,34 +35,40 @@ export default class SettingsPage extends AirshipBehaviour {
 			mainMenu.ObserveScreenSize((size) => {
 				if (size === "sm" && Game.IsMobile()) {
 					this.sidebar.gameObject.SetActive(false);
-					this.scrollView.offsetMax = new Vector2(-5, -7);
-					this.scrollView.offsetMin = new Vector2(5, 0);
-					// rect.offsetMax = new Vector2(rect.offsetMax.x, 40);
-					// rect.offsetMin = new Vector2(rect.offsetMin.x, 0);
+					// this.scrollView.offsetMax = new Vector2(-5, -7);
+					// this.scrollView.offsetMin = new Vector2(5, 0);
+					// this.scrollView.anchoredPosition = new Vector2(0, -96);
+					this.scrollView.offsetMin = new Vector2(0, 0);
+					this.scrollView.offsetMax = new Vector2(0, -96);
 
-					// for (let page of this.mobilePages) {
-					// 	page.gameObject.SetActive(true);
-					// }
-
-					// const navbarDisc = mainMenu.navbarModifier.Add({ hidden: true });
-					// this.bin.Add(navbarDisc);
-					// return () => {
-					// 	navbarDisc();
-					// };
+					this.mobileHeader.gameObject.SetActive(true);
+					this.desktopCloseButtonWrapper.gameObject.SetActive(false);
+					this.canvasScalar.matchWidthOrHeight = 1;
+					this.rightSection.anchorMin = new Vector2(0, 0);
+					this.rightSection.anchoredPosition = new Vector2(0, 0);
+					this.verticalLayoutGroup.spacing = 60;
+					this.verticalLayoutGroup.padding.left = 15;
+					this.verticalLayoutGroup.padding.top = 20;
+					this.verticalLayoutGroup.padding.bottom = 80;
 
 					if (Game.deviceType === AirshipDeviceType.Phone) {
-						this.tabs.GetChild(0).gameObject.SetActive(true); // Input
-						this.tabs.GetChild(1).gameObject.SetActive(true); // Sound
-						// this.tabs.GetChild(2).gameObject.SetActive(true); // Microphone
-						this.tabs.GetChild(4).gameObject.SetActive(true); // Blocked
-						this.tabs.GetChild(5).gameObject.SetActive(true); // Developer
-						this.tabs.GetChild(6).gameObject.SetActive(true); // Other
+						this.tabs.GetChild(0).gameObject.SetActive(true); // Profile
+						this.tabs.GetChild(1).gameObject.SetActive(true); // Input
+						this.tabs.GetChild(2).gameObject.SetActive(true); // Sound
+
+						this.tabs.GetChild(6).gameObject.SetActive(true); // Blocked
+						this.tabs.GetChild(7).gameObject.SetActive(true); // Developer
+						this.tabs.GetChild(8).gameObject.SetActive(true); // Other
 					}
 				} else {
-					// rect.offsetMax = new Vector2(rect.offsetMax.x, 0);
-					// this.sidebar.gameObject.SetActive(true);
-					// this.tabs.offsetMax = new Vector2(-41, -49);
-					// this.tabs.offsetMin = new Vector2(270, -mainMenu.screenSize.y);
+					this.tabs.anchorMax = new Vector2(0, 1);
+					this.tabs.offsetMax = new Vector2(800, 0);
+					// this.tabs.anchoredPosition = new Vector2(800, 0);
+					this.mobileHeader.gameObject.SetActive(false);
+					this.desktopCloseButtonWrapper.gameObject.SetActive(true);
+					for (let child of this.tabs) {
+						child.gameObject.SetActive(true);
+					}
 				}
 			}),
 		);
