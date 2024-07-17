@@ -101,6 +101,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: BlockedGame
+    singleton: 0
     decorators: []
     properties:
     - name: gameName
@@ -564,10 +565,10 @@ RectTransform:
   - {fileID: 516845084359482319}
   m_Father: {fileID: 165726581181498081}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 40}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 400, y: -60}
+  m_SizeDelta: {x: 800, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8412801364947714336
 CanvasRenderer:
@@ -630,6 +631,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: MicDevice
+    singleton: 0
     decorators: []
     properties:
     - name: bgImage
@@ -688,6 +690,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: AirshipButton
+    singleton: 0
     decorators: []
     properties:
     - name: disabledColorHex
@@ -1281,9 +1284,9 @@ RectTransform:
   - {fileID: 2434185147092440002}
   m_Father: {fileID: 5006278316903496431}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 64.48365, y: -23.4769}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 128.9673, y: 36.9538}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1143401507821578941
@@ -1361,6 +1364,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: AirshipButton
+    singleton: 0
     decorators: []
     properties:
     - name: clickEffect
@@ -1891,10 +1895,10 @@ RectTransform:
   - {fileID: 3662903528581350022}
   m_Father: {fileID: 2461285813980403769}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 400, y: -179.7775}
-  m_SizeDelta: {x: 800, y: 53.253}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 53.253}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &980648507046121782
 MonoBehaviour:
@@ -2092,10 +2096,10 @@ RectTransform:
   - {fileID: 6915615849670043162}
   m_Father: {fileID: 2461285813980403769}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 400, y: -266.404}
-  m_SizeDelta: {x: 800, y: 100}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &172255801477898787
 MonoBehaviour:
@@ -2292,9 +2296,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 991712329888607027}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 45.015648, y: -50}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 30.0313, y: 30.0313}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8865354096401555997
@@ -2378,10 +2382,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2461285813980403769}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 400, y: -211.40399}
-  m_SizeDelta: {x: 800, y: 10}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1733575482383136298
 GameObject:
@@ -3105,6 +3109,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: BlockedGame
+    singleton: 0
     decorators: []
     properties:
     - name: gameName
@@ -3447,6 +3452,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: SettingsPage
+    singleton: 0
     decorators: []
     properties:
     - name: sidebar
@@ -3875,10 +3881,10 @@ RectTransform:
   - {fileID: 8764149246677875822}
   m_Father: {fileID: 3527320348890606545}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 48.6}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 400, y: -50.3}
+  m_SizeDelta: {x: 800, y: 48.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &3095103296422767818
 GameObject:
@@ -4059,6 +4065,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: SettingsSidebar
+    singleton: 0
     decorators: []
     properties:
     - name: tabs
@@ -4422,6 +4429,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: SettingsSidebar
+    singleton: 0
     decorators: []
     properties:
     - name: tabs
@@ -4505,6 +4513,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: SettingsKeybind
+    singleton: 0
     decorators: []
     properties:
     - name: title
@@ -4668,6 +4677,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: SettingsKeybind
+    singleton: 0
     decorators: []
     properties:
     - name: title
@@ -4873,10 +4883,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 3527320348890606545}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 18.8}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 400, y: -84}
+  m_SizeDelta: {x: 800, y: 18.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &3520576005108347267
 GameObject:
@@ -5390,6 +5400,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: SettingsBlockPage
+    singleton: 0
     decorators: []
     properties:
     - name: blockedGamePrefab
@@ -6147,10 +6158,10 @@ RectTransform:
   - {fileID: 8013347063948595027}
   m_Father: {fileID: 2461285813980403769}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 400, y: -49.9355}
-  m_SizeDelta: {x: 800, y: 99.871}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 99.871}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7215319800767861138
 CanvasRenderer:
@@ -7145,6 +7156,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: AirshipButton
+    singleton: 0
     decorators: []
     properties:
     - name: clickEffect
@@ -7791,6 +7803,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: AirshipButton
+    singleton: 0
     decorators: []
     properties:
     - name: clickEffect
@@ -7858,7 +7871,7 @@ MonoBehaviour:
       fileRef: 
       decorators: []
       nullable: 0
-      serializedValue: 
+      serializedValue: 0
       serializedObject: {fileID: 0}
       modified: 0
     displayIcon: {fileID: 0}
@@ -7887,6 +7900,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: SettingsCloseButton
+    singleton: 0
     decorators: []
     properties: []
     displayIcon: {fileID: 0}
@@ -8284,6 +8298,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: SettingsKeybind
+    singleton: 0
     decorators: []
     properties:
     - name: title
@@ -8414,10 +8429,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2461285813980403769}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 400, y: -113.511}
-  m_SizeDelta: {x: 800, y: 27.28}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 27.28}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &5840797287448399641
 GameObject:
@@ -8723,10 +8738,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 3527320348890606545}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 26}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 400, y: -106.399994}
+  m_SizeDelta: {x: 800, y: 26}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7269538591059452100
 CanvasRenderer:
@@ -8848,7 +8863,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2461285813980403769
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8870,10 +8885,10 @@ RectTransform:
   - {fileID: 991712329888607027}
   m_Father: {fileID: 2885323753851354642}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 400, y: 0}
-  m_SizeDelta: {x: 800, y: 416.404}
+  m_SizeDelta: {x: 800, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &6539025659946921682
 CanvasRenderer:
@@ -8990,6 +9005,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: SettingsProfilePage
+    singleton: 0
     decorators: []
     properties:
     - name: editUsernameBtn
@@ -9310,10 +9326,10 @@ RectTransform:
   - {fileID: 9052471724632343878}
   m_Father: {fileID: 165726581181498081}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 40}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 400, y: -100}
+  m_SizeDelta: {x: 800, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2205432619176312862
 CanvasRenderer:
@@ -9376,6 +9392,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: MicDevice
+    singleton: 0
     decorators: []
     properties:
     - name: bgImage
@@ -9434,6 +9451,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: AirshipButton
+    singleton: 0
     decorators: []
     properties:
     - name: disabledColorHex
@@ -9716,10 +9734,10 @@ RectTransform:
   - {fileID: 2063215743029095236}
   m_Father: {fileID: 3527320348890606545}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 400, y: 0}
-  m_SizeDelta: {x: 800, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 400, y: -119.399994}
+  m_SizeDelta: {x: 800, y: 120}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &5741386937936449230
 MonoBehaviour:
@@ -10143,6 +10161,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: AirshipButton
+    singleton: 0
     decorators: []
     properties:
     - name: disabledColorHex
@@ -10287,6 +10306,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: DevConsoleButton
+    singleton: 0
     decorators: []
     properties: []
     displayIcon: {fileID: 0}
@@ -10393,6 +10413,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: BlockedUser
+    singleton: 0
     decorators: []
     properties:
     - name: unblockButton
@@ -10681,6 +10702,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: DeleteAccountButton
+    singleton: 0
     decorators: []
     properties: []
     displayIcon: {fileID: 0}
@@ -10709,6 +10731,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: AirshipButton
+    singleton: 0
     decorators: []
     properties:
     - name: disabledColorHex
@@ -11052,6 +11075,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: BlockedGame
+    singleton: 0
     decorators: []
     properties:
     - name: gameName
@@ -11123,9 +11147,9 @@ RectTransform:
   - {fileID: 1472206426061241504}
   m_Father: {fileID: 5006278316903496431}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 203.45096, y: -23.4769}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 128.9673, y: 36.9538}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5277762070369687353
@@ -11203,6 +11227,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: AirshipButton
+    singleton: 0
     decorators: []
     properties:
     - name: clickEffect
@@ -11584,7 +11609,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3527320348890606545
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11604,10 +11629,10 @@ RectTransform:
   - {fileID: 165726581181498081}
   m_Father: {fileID: 2885323753851354642}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 400, y: 0}
-  m_SizeDelta: {x: 800, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 400, y: -556.104}
+  m_SizeDelta: {x: 800, y: 239.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &642745066133410698
 MonoBehaviour:
@@ -11672,6 +11697,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: MicrophoneSettingsPage
+    singleton: 0
     decorators: []
     properties:
     - name: content
@@ -11889,6 +11915,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: AirshipButton
+    singleton: 0
     decorators: []
     properties:
     - name: loadingIndicator
@@ -12126,6 +12153,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: SettingsKeybind
+    singleton: 0
     decorators: []
     properties:
     - name: title
@@ -12327,6 +12355,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: BlockedGame
+    singleton: 0
     decorators: []
     properties:
     - name: gameName
@@ -12465,6 +12494,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: SettingsKeybindPage
+    singleton: 0
     decorators: []
     properties:
     - name: keybindPrefab
@@ -12547,10 +12577,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2461285813980403769}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: -140.151}
-  m_SizeDelta: {x: 800, y: 26}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 26}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &1895323070760978798
 CanvasRenderer:
@@ -12918,9 +12948,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 6530621638265286432}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 196, y: -50}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 32, y: 32}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5549096735070857529
@@ -13126,9 +13156,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 6530621638265286432}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 50, y: -50}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9178244431380475740
@@ -13216,10 +13246,10 @@ RectTransform:
   - {fileID: 8043123199035757277}
   m_Father: {fileID: 165726581181498081}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 40}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 400, y: -20}
+  m_SizeDelta: {x: 800, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3208924586211826149
 CanvasRenderer:
@@ -13282,6 +13312,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: MicDevice
+    singleton: 0
     decorators: []
     properties:
     - name: bgImage
@@ -13340,6 +13371,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: AirshipButton
+    singleton: 0
     decorators: []
     properties:
     - name: disabledColorHex
@@ -13498,10 +13530,10 @@ RectTransform:
   - {fileID: 97180363859454896}
   m_Father: {fileID: 2461285813980403769}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 400, y: -366.404}
-  m_SizeDelta: {x: 800, y: 100}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1457291245837214479
 MonoBehaviour:
@@ -13768,9 +13800,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 6530621638265286432}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 140, y: -50}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 60, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5016390392979322685
@@ -14262,10 +14294,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 3527320348890606545}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 26}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 400, y: -13}
+  m_SizeDelta: {x: 800, y: 26}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8686684821821488515
 CanvasRenderer:
@@ -17001,6 +17033,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: SettingsLogoutButton
+    singleton: 0
     decorators: []
     properties: []
     displayIcon: {fileID: 0}

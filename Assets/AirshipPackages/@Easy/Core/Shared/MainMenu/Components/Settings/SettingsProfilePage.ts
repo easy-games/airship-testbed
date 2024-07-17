@@ -60,7 +60,7 @@ export default class SettingsProfilePage extends AirshipBehaviour {
 					if (result) {
 						Airship.Players.ClearProfilePictureCache(Game.localPlayer.userId);
 						Protected.user.FetchLocalUser();
-						await this.UpdateProfilePicturePreviews();
+						await this.UpdateProfilePicturePreviews(false);
 					}
 					this.SetProfilePictureLoading(false);
 				});
@@ -79,7 +79,7 @@ export default class SettingsProfilePage extends AirshipBehaviour {
 					if (res.success) {
 						Airship.Players.ClearProfilePictureCache(Game.localPlayer.userId);
 						Protected.user.localUser!.profileImageId = undefined;
-						this.UpdateProfilePicturePreviews();
+						this.UpdateProfilePicturePreviews(false);
 					} else {
 						Debug.LogError(res.error);
 					}
@@ -88,8 +88,9 @@ export default class SettingsProfilePage extends AirshipBehaviour {
 		);
 	}
 
-	public async UpdateProfilePicturePreviews(): Promise<void> {
-		const texture = await Airship.Players.GetProfilePictureAsync(Game.localPlayer.userId);
+	/** Shouldn't use local cache if updating after a change */
+	public async UpdateProfilePicturePreviews(useLocalCache = true): Promise<void> {
+		const texture = await Airship.Players.GetProfilePictureAsync(Game.localPlayer.userId, useLocalCache);
 		if (texture) {
 			this.profileImagePreview1.texture = texture;
 			this.profileImagePreview2.texture = texture;

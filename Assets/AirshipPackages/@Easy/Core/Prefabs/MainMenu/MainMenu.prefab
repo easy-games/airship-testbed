@@ -3463,6 +3463,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7842850344388037707, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].serializedValue
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7920938654082165397, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
