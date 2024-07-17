@@ -4,8 +4,6 @@ import { ClientBehaviourListeners } from "./ObserversRpc";
 import { ServerBehaviourListeners } from "./ServerRpc";
 import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 import { ClientTargetedBehaviourListeners } from "./TargetRpc";
-import { NetworkedFields } from "./NetworkedField";
-import AirshipNetworkFieldReplicator from "./AirshipNetworkFieldReplicator";
 import { Airship } from "../Airship";
 
 /**
@@ -27,13 +25,6 @@ import { Airship } from "../Airship";
  * ```
  */
 export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
-	private static airshipNetworkIds = 0;
-
-	/**
-	 * This is an identifier for the Airship component through the network
-	 */
-	protected readonly airshipNetworkId = AirshipNetworkBehaviour.airshipNetworkIds++;
-
 	private networkBin = new Bin();
 
 	/**
@@ -41,18 +32,6 @@ export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
 	 */
 	@NonSerialized()
 	public networkObject!: NetworkObject;
-
-	private InitNetworkedFields() {
-		const networkedFields = NetworkedFields.get(getmetatable(this) as AirshipNetworkBehaviour);
-		if (networkedFields) {
-			// Awaken networked fields
-			const replicator =
-				this.gameObject.GetAirshipComponent<AirshipNetworkFieldReplicator>() ??
-				this.gameObject.AddAirshipComponent<AirshipNetworkFieldReplicator>();
-
-			this.networkBin.Add(replicator.ObserveNetworkProperties(this, networkedFields));
-		}
-	}
 
 	private InitClientRpc() {
 		const nob = this.networkObject;
@@ -91,8 +70,6 @@ export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
 				);
 			}
 		}
-
-		this.InitNetworkedFields();
 	}
 
 	private InitServerRpc() {
@@ -134,8 +111,6 @@ export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
 				listenerSet.add(listener.Id);
 			}
 		}
-
-		this.InitNetworkedFields();
 	}
 
 	/**
@@ -148,6 +123,13 @@ export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
 		assert(this.networkObject, "Missing NetworkObject on GameObject or parent of '" + this.gameObject.name + "'");
 
 		let startedNetwork = false;
+		print(
+			"awake for",
+			getmetatable(this),
+			this.gameObject.name,
+			this.networkObject.name,
+			this.networkObject.IsSpawned,
+		);
 
 		const nob = this.networkObject;
 		if (Game.IsServer()) {
