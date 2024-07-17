@@ -177,7 +177,6 @@ if (Game.IsGameLuauContext()) {
 inputBridge.OnLeftMouseButtonPressEvent((isDown) => {
 	const uiProcessed = CanvasAPI.IsPointerOverUI();
 	const event = new PointerButtonSignal(isDown, uiProcessed);
-	isDown ? Mouse.onLeftDown.Fire(event) : Mouse.onLeftUp.Fire(event);
 	if (isDown) {
 		(Mouse.isLeftDown as boolean) = true;
 		Mouse.onLeftDown.Fire(event);

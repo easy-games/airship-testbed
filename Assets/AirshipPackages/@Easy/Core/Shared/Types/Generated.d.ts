@@ -3610,6 +3610,20 @@ declare const enum TreeMotionVectorModeOverride {
     ForceNoMotion = 2,
     InheritFromPrototype = 3,
 }
+declare const enum CellLayout {
+    Rectangle = 0,
+    Hexagon = 1,
+    Isometric = 2,
+    IsometricZAsY = 3,
+}
+declare const enum CellSwizzle {
+    XYZ = 0,
+    XZY = 1,
+    YXZ = 2,
+    YZX = 3,
+    ZXY = 4,
+    ZYX = 5,
+}
 
     
 interface RaycastHit {
@@ -42234,9 +42248,10 @@ interface InternalHttpManager {
 }
     
 interface InternalHttpManagerConstructor {
+    editorUserId: string;
+    editorAuthToken: string;
     authToken: string;
 
-    new(): InternalHttpManager;
 
 
     DeleteAsync(url: string): HttpResponse;
@@ -42248,6 +42263,7 @@ interface InternalHttpManagerConstructor {
     PutAsync(url: string, data: string): HttpResponse;
     PutImageAsync(url: string, filePath: string): HttpResponse;
     SetAuthToken(authToken: string): void;
+    SetEditorAuthToken(authToken: string): void;
 }
 declare const InternalHttpManager: InternalHttpManagerConstructor;
     
@@ -48722,4 +48738,173 @@ interface NetworkTickSmootherConstructor {
 
 }
 declare const NetworkTickSmoother: NetworkTickSmootherConstructor;
+    
+interface GridLayout extends Behaviour {
+    /**
+     * The size of each cell in the layout.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/GridLayout-cellSize.html | GridLayout.cellSize}
+     */
+    readonly cellSize: Vector3;
+    /**
+     * The size of the gap between each cell in the layout.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/GridLayout-cellGap.html | GridLayout.cellGap}
+     */
+    readonly cellGap: Vector3;
+    /**
+     * The layout of the cells.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/GridLayout-cellLayout.html | GridLayout.cellLayout}
+     */
+    readonly cellLayout: CellLayout;
+    /**
+     * The cell swizzle for the layout.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/GridLayout-cellSwizzle.html | GridLayout.cellSwizzle}
+     */
+    readonly cellSwizzle: CellSwizzle;
+
+
+    /**
+     * Converts a cell position to local position space.
+     * @param cellPosition Cell position to convert.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/GridLayout.CellToLocal.html | GridLayout.CellToLocal}
+     */
+    CellToLocal(cellPosition: unknown): Vector3;
+    /**
+     * Converts an interpolated cell position in floats to local position space.
+     * @param cellPosition Interpolated cell position to convert.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/GridLayout.CellToLocalInterpolated.html | GridLayout.CellToLocalInterpolated}
+     */
+    CellToLocalInterpolated(cellPosition: Vector3): Vector3;
+    /**
+     * Converts a cell position to world position space.
+     * @param cellPosition Cell position to convert.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/GridLayout.CellToWorld.html | GridLayout.CellToWorld}
+     */
+    CellToWorld(cellPosition: unknown): Vector3;
+    /**
+     * Returns the local bounds for a cell at the location.
+     * @param cellPosition Location of the cell.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/GridLayout.GetBoundsLocal.html | GridLayout.GetBoundsLocal}
+     */
+    GetBoundsLocal(cellPosition: unknown): Bounds;
+    /**
+     * Returns the local bounds for the groups of cells at the location.
+     * @param origin Origin of the group of cells.
+     * @param size Size of the group of cells.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/GridLayout.GetBoundsLocal.html | GridLayout.GetBoundsLocal}
+     */
+    GetBoundsLocal(origin: Vector3, size: Vector3): Bounds;
+    /**
+     * Get the default center coordinate of a cell for the set layout of the Grid.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/GridLayout.GetLayoutCellCenter.html | GridLayout.GetLayoutCellCenter}
+     */
+    GetLayoutCellCenter(): Vector3;
+    /**
+     * Converts a local position to cell position.
+     * @param localPosition Local Position to convert.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/GridLayout.LocalToCell.html | GridLayout.LocalToCell}
+     */
+    LocalToCell(localPosition: Vector3): unknown;
+    /**
+     * Converts a local position to cell position.
+     * @param localPosition Local Position to convert.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/GridLayout.LocalToCellInterpolated.html | GridLayout.LocalToCellInterpolated}
+     */
+    LocalToCellInterpolated(localPosition: Vector3): Vector3;
+    /**
+     * Converts a local position to world position.
+     * @param localPosition Local Position to convert.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/GridLayout.LocalToWorld.html | GridLayout.LocalToWorld}
+     */
+    LocalToWorld(localPosition: Vector3): Vector3;
+    /**
+     * Converts a world position to cell position.
+     * @param worldPosition World Position to convert.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/GridLayout.WorldToCell.html | GridLayout.WorldToCell}
+     */
+    WorldToCell(worldPosition: Vector3): unknown;
+    /**
+     * Converts a world position to local position.
+     * @param worldPosition World Position to convert.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/GridLayout.WorldToLocal.html | GridLayout.WorldToLocal}
+     */
+    WorldToLocal(worldPosition: Vector3): Vector3;
+
+}
+    
+interface GridLayoutConstructor {
+
+    new(): GridLayout;
+
+
+}
+declare const GridLayout: GridLayoutConstructor;
+    
+interface Grid extends GridLayout {
+    /**
+     * The size of each cell in the Grid.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Grid-cellSize.html | Grid.cellSize}
+     */
+    cellSize: Vector3;
+    /**
+     * The size of the gap between each cell in the Grid.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Grid-cellGap.html | Grid.cellGap}
+     */
+    cellGap: Vector3;
+    /**
+     * The layout of the cells in the Grid.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Grid-cellLayout.html | Grid.cellLayout}
+     */
+    cellLayout: CellLayout;
+    /**
+     * The cell swizzle for the Grid.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Grid-cellSwizzle.html | Grid.cellSwizzle}
+     */
+    cellSwizzle: CellSwizzle;
+
+
+    /**
+     * Get the logical center coordinate of a grid cell in local space.
+     * @param position Grid cell position.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Grid.GetCellCenterLocal.html | Grid.GetCellCenterLocal}
+     */
+    GetCellCenterLocal(position: unknown): Vector3;
+    /**
+     * Get the logical center coordinate of a grid cell in world space.
+     * @param position Grid cell position.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Grid.GetCellCenterWorld.html | Grid.GetCellCenterWorld}
+     */
+    GetCellCenterWorld(position: unknown): Vector3;
+
+}
+    
+interface GridConstructor {
+
+    new(): Grid;
+
+
+    InverseSwizzle(swizzle: CellSwizzle, position: Vector3): Vector3;
+    Swizzle(swizzle: CellSwizzle, position: Vector3): Vector3;
+}
+declare const Grid: GridConstructor;
 
