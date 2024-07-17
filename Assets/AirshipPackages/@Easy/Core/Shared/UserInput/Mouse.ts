@@ -85,14 +85,25 @@ export class Mouse {
 	}
 
 	/**
-	 * Locks the mouse.
-	 * Returns an cleanup function that can be called to unlock the mouse.
+	 * Unlocks the mouse.
+	 * Returns an cleanup function that can be called to lock the mouse.
+	 *
+	 * This pattern is used to allow many different systems unlock the mouse without stomping on each other.
 	 *
 	 * Example:
 	 * ```
 	 * const cleanupUnlocker = Mouse.AddUnlocker();
 	 * // ... some time later when we want to "re-lock" the mouse.
 	 * cleanupUnlocker();
+	 * ```
+	 * ------
+	 * You can also add the unlocker to a bin for even easier cleanup!
+	 * ```
+	 * const bin = new Bin();
+	 * bin.Add(Mouse.AddUnlocker());
+	 *
+	 * // some time later
+	 * bin.Clean();
 	 * ```
 	 */
 	public static AddUnlocker(): () => void {

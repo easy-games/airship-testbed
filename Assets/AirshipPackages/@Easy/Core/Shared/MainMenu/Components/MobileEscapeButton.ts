@@ -23,5 +23,7 @@ export default class MobileEscapeButton extends AirshipBehaviour {
 		);
 	}
 
-	override OnDisable(): void {}
+	override OnDisable(): void {
+		this.bin.Clean();
+	}
 }

@@ -23,9 +23,17 @@ export class MainMenuSingleton {
 	public navbarModifier = new Modifier<{ hidden: boolean }>();
 	public socialMenuModifier = new Modifier<{ hidden: boolean }>();
 
+	public readonly hideMobileEscapeButton = false;
+	public onHideMobileEscapeButtonChanged = new Signal<boolean>();
+
 	constructor() {
 		this.screenSize = new Vector2(Screen.width, Screen.height);
 		this.rawScreenSize = new Vector2(Screen.width, Screen.height);
+	}
+
+	public SetHideMobileEscapeButton(val: boolean) {
+		(this.hideMobileEscapeButton as boolean) = val;
+		this.onHideMobileEscapeButtonChanged.Fire(val);
 	}
 
 	protected OnStart(): void {

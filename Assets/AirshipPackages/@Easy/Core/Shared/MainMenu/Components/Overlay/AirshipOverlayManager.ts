@@ -1,10 +1,14 @@
+import { Dependency } from "@Easy/Core/Shared/Flamework";
+import { Game } from "@Easy/Core/Shared/Game";
 import { ControlScheme, Preferred } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "../../../Util/Bin";
+import { MainMenuSingleton } from "../../Singletons/MainMenuSingleton";
 
 export default class AirshipOverlayManager extends AirshipBehaviour {
 	@Header("References")
 	public escapeButton!: RectTransform;
 	public chatButton!: RectTransform;
+	public canvasScalar: CanvasScaler;
 
 	private bin = new Bin();
 
@@ -21,6 +25,19 @@ export default class AirshipOverlayManager extends AirshipBehaviour {
 				}
 			}),
 		);
+
+		const mainMenu = Dependency<MainMenuSingleton>();
+		mainMenu.ObserveScreenSize((st, size) => {
+			if (Game.IsMobile() && st === "sm") {
+				this.canvasScalar.scaleFactor = 2.5;
+			} else {
+				this.canvasScalar.scaleFactor = 1;
+			}
+		});
+		mainMenu.onHideMobileEscapeButtonChanged.Connect((hide) => {
+			if (!Game.IsMobile()) return;
+			this.escapeButton.gameObject.SetActive(!hide);
+		});
 	}
 
 	override OnDestroy(): void {

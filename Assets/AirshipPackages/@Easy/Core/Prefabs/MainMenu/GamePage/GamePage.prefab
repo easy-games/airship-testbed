@@ -147,6 +147,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: GameFavoriteButton
+    singleton: 0
     decorators: []
     properties:
     - name: image
@@ -284,6 +285,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: AirshipButton
+    singleton: 0
     decorators: []
     properties:
     - name: loadingIndicator
@@ -328,7 +330,7 @@ MonoBehaviour:
         objectType: 
         serializedItems: []
         objectRefs: []
-      refPath: 
+      refPath: AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipButtonClickEffect@AirshipButtonClickEffect
       fileRef: 
       decorators:
       - name: Header
@@ -565,8 +567,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 1720, y: 0}
-  m_SizeDelta: {x: 3410, y: 0}
+  m_AnchoredPosition: {x: 1066, y: 0}
+  m_SizeDelta: {x: 2102, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8628237622791518396
 CanvasRenderer:
@@ -1727,6 +1729,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: GameGeneralPage
+    singleton: 0
     decorators: []
     properties:
     - name: pageType
@@ -1737,7 +1740,7 @@ MonoBehaviour:
         objectType: 
         serializedItems: []
         objectRefs: []
-      refPath: 
+      refPath: AirshipPackages/@Easy/Core/Client/ProtectedControllers/MainMenuPageName@MainMenuPageType
       fileRef: 
       decorators: []
       nullable: 0
@@ -1803,6 +1806,66 @@ MonoBehaviour:
       nullable: 0
       serializedValue: 
       serializedObject: {fileID: 601158996001789955}
+      modified: 1
+    - name: general
+      type: object
+      objectType: RectTransform
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 8748921693023868901}
+      modified: 1
+    - name: playerList
+      type: object
+      objectType: RectTransform
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 2197451744312396597}
+      modified: 1
+    - name: gameDesc
+      type: object
+      objectType: RectTransform
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 9146228336299739466}
+      modified: 1
+    - name: gameHeader
+      type: object
+      objectType: RectTransform
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 8243009705754182425}
       modified: 1
     displayIcon: {fileID: 0}
     displayName: 
@@ -1955,6 +2018,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: PlayerList
+    singleton: 0
     decorators: []
     properties:
     - name: content

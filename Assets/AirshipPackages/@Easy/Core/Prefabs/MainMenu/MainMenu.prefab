@@ -3447,6 +3447,14 @@ PrefabInstance:
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 6268649245737772660, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
+      propertyPath: m_metadata.properties.Array.data[11].modified
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6268649245737772660, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
+      propertyPath: m_metadata.properties.Array.data[11].serializedObject
+      value: 
+      objectReference: {fileID: 1105939659911676130}
     - target: {fileID: 6320577966021138971, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -3576,6 +3584,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
+--- !u!224 &1105939659911676130 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 6320577966021138971, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
+  m_PrefabInstance: {fileID: 6408097179056249593}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &1977069492478399150 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4864402532744251479, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}

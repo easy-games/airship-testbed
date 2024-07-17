@@ -15,6 +15,7 @@ export default class SettingsPage extends AirshipBehaviour {
 	public rightSection: RectTransform;
 	public mobileHeader: RectTransform;
 	public desktopCloseButtonWrapper: RectTransform;
+	public mobileCloseButtonWrapper: RectTransform;
 
 	@Header("Sliders")
 	public mouseSensitivityGO!: GameObject;
@@ -31,6 +32,11 @@ export default class SettingsPage extends AirshipBehaviour {
 
 		const rect = this.gameObject.transform as RectTransform;
 		const mainMenu = Dependency<MainMenuSingleton>();
+		this.bin.Add(() => {
+			mainMenu.SetHideMobileEscapeButton(false);
+		});
+
+		mainMenu.SetHideMobileEscapeButton(true);
 		this.bin.Add(
 			mainMenu.ObserveScreenSize((size) => {
 				if (size === "sm" && Game.IsMobile()) {
@@ -50,6 +56,16 @@ export default class SettingsPage extends AirshipBehaviour {
 					this.verticalLayoutGroup.padding.left = 15;
 					this.verticalLayoutGroup.padding.top = 20;
 					this.verticalLayoutGroup.padding.bottom = 80;
+
+					if (Game.IsLandscape()) {
+						this.verticalLayoutGroup.padding.left = 120;
+						this.verticalLayoutGroup.padding.right = 20;
+						this.canvasScalar.matchWidthOrHeight = 0;
+						this.mobileCloseButtonWrapper.anchoredPosition = new Vector2(
+							120,
+							this.mobileCloseButtonWrapper.anchoredPosition.y,
+						);
+					}
 
 					if (Game.deviceType === AirshipDeviceType.Phone) {
 						this.tabs.GetChild(0).gameObject.SetActive(true); // Profile

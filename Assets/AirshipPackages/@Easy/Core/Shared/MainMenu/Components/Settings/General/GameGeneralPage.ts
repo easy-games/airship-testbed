@@ -1,6 +1,8 @@
+import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { MainMenuSingleton } from "../../../Singletons/MainMenuSingleton";
 import MainMenuPageComponent from "../../MainMenuPageComponent";
 
 export default class GameGeneralPage extends MainMenuPageComponent {
@@ -8,9 +10,26 @@ export default class GameGeneralPage extends MainMenuPageComponent {
 	public gameDeveloper!: TMP_Text;
 	public gameDescription!: TMP_Text;
 	public gameImage!: Image;
+
+	public general: RectTransform;
+	public playerList: RectTransform;
+	public gameDesc: RectTransform;
+	public gameHeader: RectTransform;
+
 	private bin = new Bin();
 
-	public OnEnable(): void {}
+	public OnEnable(): void {
+		this.bin.Add(
+			Dependency<MainMenuSingleton>().ObserveScreenSize((st, size) => {
+				if (st === "sm") {
+					this.general.offsetMax = new Vector2(-10, 0);
+					// this.playerList.offsetMax = new Vector2(250, 0);
+					// this.general.offsetMax = new Vector2(270, 0);
+					// this.gameHeader.offsetMax = new Vector2(270, 0);
+				}
+			}),
+		);
+	}
 
 	override GetTargetAnchoredPositionY(): number {
 		if (Game.deviceType === AirshipDeviceType.Phone) {

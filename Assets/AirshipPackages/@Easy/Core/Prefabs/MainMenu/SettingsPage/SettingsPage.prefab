@@ -2583,7 +2583,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 23.6, y: -21.5}
+  m_AnchoredPosition: {x: 23.599976, y: -21.5}
   m_SizeDelta: {x: 0, y: 31.32}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &696274707366520935
@@ -3714,6 +3714,21 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 3315962362849146464}
       modified: 1
+    - name: mobileCloseButtonWrapper
+      type: object
+      objectType: RectTransform
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 2910082954845357074}
+      modified: 1
     displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0
@@ -4269,7 +4284,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -21.9, y: 0}
+  m_AnchoredPosition: {x: -21.900024, y: 0}
   m_SizeDelta: {x: 94.28992, y: 36.0495}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!1 &3205127041955165696
@@ -9364,8 +9379,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 314.10333, y: 0}
-  m_SizeDelta: {x: 628.20667, y: 0}
+  m_AnchoredPosition: {x: 712.9288, y: 0}
+  m_SizeDelta: {x: 1425.8575, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &6539025659946921682
 CanvasRenderer:

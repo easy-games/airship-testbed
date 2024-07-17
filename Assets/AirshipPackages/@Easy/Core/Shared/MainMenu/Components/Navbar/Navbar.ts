@@ -16,6 +16,7 @@ export default class Navbar extends AirshipBehaviour {
 	public creditsWrapper!: GameObject;
 	public left!: RectTransform;
 	public quitGameBtn!: RectTransform;
+	public searchWrapper: RectTransform;
 
 	private bin = new Bin();
 
@@ -45,6 +46,9 @@ export default class Navbar extends AirshipBehaviour {
 
 				if (Game.IsInGame() && st === "sm") {
 					this.myGamesBtn.gameObject.SetActive(false);
+					this.searchWrapper.gameObject.SetActive(false);
+					this.homeBtn.gameObject.SetActive(false);
+					this.runningGameBtn.gameObject.SetActive(false);
 				} else {
 					this.myGamesBtn.gameObject.SetActive(true);
 				}
