@@ -1,7 +1,10 @@
 import {
 	LeaderboardServiceBridgeTopics,
+	ServerBridgeApiLeaderboardDeleteEntries,
+	ServerBridgeApiLeaderboardDeleteEntry,
 	ServerBridgeApiLeaderboardGetRank,
 	ServerBridgeApiLeaderboardGetRankRange,
+	ServerBridgeApiLeaderboardResetLeaderboard,
 	ServerBridgeApiLeaderboardUpdate,
 } from "@Easy/Core/Server/ProtectedServices/Airship/Leaderboard/LeaderboardService";
 import { Platform } from "@Easy/Core/Shared/Airship";
@@ -57,6 +60,46 @@ export class AirshipLeaderboardService {
 			LuauContext.Protected,
 			leaderboardName,
 			id,
+		);
+	}
+
+	/**
+	 * Deletes an entry on the leaderboard if it exists.
+	 * @param leaderboardName
+	 * @param id
+	 */
+	public async DeleteEntry(leaderboardName: string, id: string) {
+		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiLeaderboardDeleteEntry>(
+			LeaderboardServiceBridgeTopics.DeleteEntry,
+			LuauContext.Protected,
+			leaderboardName,
+			id,
+		);
+	}
+
+	/**
+	 * Deletes a set of entries from the leaderboard if they exist.
+	 * @param leaderboardName
+	 * @param ids
+	 */
+	public async DeleteEntries(leaderboardName: string, ids: string[]) {
+		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiLeaderboardDeleteEntries>(
+			LeaderboardServiceBridgeTopics.DeleteEntries,
+			LuauContext.Protected,
+			leaderboardName,
+			ids,
+		);
+	}
+
+	/**
+	 * Clears all entries from the leaderboard. You can also reset a leaderboard using the https://create.airship.gg website.
+	 * @param leaderboardName
+	 */
+	public async ResetLeaderboard(leaderboardName: string) {
+		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiLeaderboardResetLeaderboard>(
+			LeaderboardServiceBridgeTopics.ResetLeaderboard,
+			LuauContext.Protected,
+			leaderboardName,
 		);
 	}
 
