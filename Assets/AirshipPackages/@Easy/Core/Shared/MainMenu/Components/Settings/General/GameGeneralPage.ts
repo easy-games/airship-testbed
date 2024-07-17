@@ -34,8 +34,8 @@ export default class GameGeneralPage extends MainMenuPageComponent {
 			let gameImageUrl = AirshipUrl.CDN + "/images/" + gameData.iconImageId;
 			const cloudImage = this.gameImage.GetComponent<CloudImage>()!;
 			cloudImage.url = gameImageUrl;
-			this.bin.AddEngineEventConnection(
-				cloudImage.OnFinishedLoading((success) => {
+			this.bin.Add(
+				cloudImage.OnFinishedLoading.Connect((success) => {
 					if (success) {
 						this.gameImage.color = new Color(1, 1, 1, 1);
 					}

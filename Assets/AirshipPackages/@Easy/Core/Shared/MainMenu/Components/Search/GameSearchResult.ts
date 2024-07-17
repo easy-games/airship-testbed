@@ -45,8 +45,8 @@ export default class GameSearchResult extends SearchResult {
 			let url = AirshipUrl.CDN + "/images/" + gameDto.iconImageId + ".png";
 			let cloudImage = this.gameObject.transform.GetChild(0).GetComponent<CloudImage>()!;
 			cloudImage.url = url;
-			this.bin.AddEngineEventConnection(
-				cloudImage.OnFinishedLoading((success) => {
+			this.bin.Add(
+				cloudImage.OnFinishedLoading.Connect((success) => {
 					if (success) {
 						NativeTween.GraphicColor(cloudImage.image, new Color(1, 1, 1, 1), 0.1);
 					} else {

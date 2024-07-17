@@ -514,7 +514,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 				cloudImage.image = accessoryBtn.iconImage;
 				cloudImage.url = AvatarUtil.GetClassThumbnailUrl(classId);
 
-				const downloadConn = cloudImage.OnFinishedLoading((success) => {
+				const downloadConn = cloudImage.OnFinishedLoading.Connect((success) => {
 					if (success) {
 						cloudImage.image.enabled = true;
 						cloudImage.image.color = new Color(1, 1, 1, 1);
@@ -524,7 +524,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 					}
 				});
 				this.bin.Add(() => {
-					Bridge.DisconnectEvent(downloadConn);
+					downloadConn.Disconnect();
 				});
 
 				//print("Downloading: " + cloudImage.url);

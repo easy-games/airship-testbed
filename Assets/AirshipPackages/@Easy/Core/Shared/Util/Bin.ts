@@ -10,6 +10,7 @@ type Trackable =
 	| GameObject
 	| ConnectionLike
 	// | AirshipConnection
+	| MonoSignalConnection
 	| Promise<unknown>
 	| thread
 	| ((...args: unknown[]) => unknown)
@@ -20,6 +21,7 @@ type Trackable =
 
 const FN_MARKER = "__bin_fn_marker__";
 const THREAD_MARKER = "__bin_thread_marker__";
+const MONO_SIGNAL_CONN_MARKER = "__bin_mono_conn_marker__";
 
 interface Track {
 	obj: Trackable;
@@ -32,6 +34,8 @@ function getObjCleanupFn<T extends Trackable>(obj: T, cleanupMethod?: string): s
 		return FN_MARKER;
 	} else if (t === "thread") {
 		return THREAD_MARKER;
+	} else if ((t as unknown) === "MonoSignalConnection") {
+		return MONO_SIGNAL_CONN_MARKER;
 	}
 	if (cleanupMethod !== undefined) {
 		return cleanupMethod;
@@ -125,6 +129,8 @@ export class Bin {
 			(track.obj as () => void)();
 		} else if (track.cleanup === THREAD_MARKER) {
 			coroutine.close(track.obj as thread);
+		} else if (track.cleanup === MONO_SIGNAL_CONN_MARKER) {
+			(track.obj as MonoSignalConnection).Disconnect();
 		} else {
 			(track.obj as Record<string, (self: unknown) => void>)[track.cleanup](track.obj);
 		}
