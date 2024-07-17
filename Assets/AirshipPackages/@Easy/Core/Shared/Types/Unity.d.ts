@@ -1031,67 +1031,6 @@ interface PhysicsConstructor {
 	clothGravity: Vector3;
 
 	BakeMesh(meshID: number, convex: boolean): void;
-	BoxCast(
-		center: Vector3,
-		halfExtents: Vector3,
-		direction: Vector3,
-		orientation: Quaternion,
-		maxDistance: number,
-		layerMask: number,
-		queryTriggerInteraction: QueryTriggerInteraction,
-	): boolean;
-	BoxCast(
-		center: Vector3,
-		halfExtents: Vector3,
-		direction: Vector3,
-		orientation: Quaternion,
-		maxDistance: number,
-		layerMask: number,
-	): boolean;
-	BoxCast(
-		center: Vector3,
-		halfExtents: Vector3,
-		direction: Vector3,
-		orientation: Quaternion,
-		maxDistance: number,
-	): boolean;
-	BoxCast(center: Vector3, halfExtents: Vector3, direction: Vector3, orientation: Quaternion): boolean;
-	BoxCast(center: Vector3, halfExtents: Vector3, direction: Vector3): boolean;
-	BoxCast(
-		center: Vector3,
-		halfExtents: Vector3,
-		direction: Vector3,
-		hitInfo: unknown,
-		orientation: Quaternion,
-		maxDistance: number,
-		layerMask: number,
-		queryTriggerInteraction: QueryTriggerInteraction,
-	): boolean;
-	BoxCast(
-		center: Vector3,
-		halfExtents: Vector3,
-		direction: Vector3,
-		hitInfo: unknown,
-		orientation: Quaternion,
-		maxDistance: number,
-		layerMask: number,
-	): LuaTuple<[true, RaycastHit] | [false, undefined]>;
-	BoxCast(
-		center: Vector3,
-		halfExtents: Vector3,
-		direction: Vector3,
-		hitInfo: unknown,
-		orientation: Quaternion,
-		maxDistance: number,
-	): boolean;
-	BoxCast(
-		center: Vector3,
-		halfExtents: Vector3,
-		direction: Vector3,
-		hitInfo: unknown,
-		orientation: Quaternion,
-	): boolean;
-	BoxCast(center: Vector3, halfExtents: Vector3, direction: Vector3, hitInfo: unknown): boolean;
 	BoxCastAll(
 		center: Vector3,
 		halfExtents: Vector3,
@@ -1431,6 +1370,61 @@ interface PhysicsConstructor {
 		origin: Vector3,
 		direction: Vector3,
 		maxDistance: number,
+	): LuaTuple<
+		| [hit: true, point: Vector3, normal: Vector3, collider: Collider]
+		| [hit: false, point: undefined, normal: undefined, collider: undefined]
+	>;
+
+	BoxCast(
+		center: Vector3,
+		halfExtents: Vector3,
+		direction: Vector3,
+	): LuaTuple<
+		| [hit: true, point: Vector3, normal: Vector3, collider: Collider]
+		| [hit: false, point: undefined, normal: undefined, collider: undefined]
+	>;
+
+	BoxCast(
+		center: Vector3,
+		halfExtents: Vector3,
+		direction: Vector3,
+		orientation: Quaternion,
+	): LuaTuple<
+		| [hit: true, point: Vector3, normal: Vector3, collider: Collider]
+		| [hit: false, point: undefined, normal: undefined, collider: undefined]
+	>;
+
+	BoxCast(
+		center: Vector3,
+		halfExtents: Vector3,
+		direction: Vector3,
+		orientation: Quaternion,
+		maxDistance: number,
+	): LuaTuple<
+		| [hit: true, point: Vector3, normal: Vector3, collider: Collider]
+		| [hit: false, point: undefined, normal: undefined, collider: undefined]
+	>;
+
+	BoxCast(
+		center: Vector3,
+		halfExtents: Vector3,
+		direction: Vector3,
+		orientation: Quaternion,
+		maxDistance: number,
+		layerMask: number,
+	): LuaTuple<
+		| [hit: true, point: Vector3, normal: Vector3, collider: Collider]
+		| [hit: false, point: undefined, normal: undefined, collider: undefined]
+	>;
+
+	BoxCast(
+		center: Vector3,
+		halfExtents: Vector3,
+		direction: Vector3,
+		orientation: Quaternion,
+		maxDistance: number,
+		layerMask: number,
+		queryTriggerInteraction: QueryTriggerInteraction,
 	): LuaTuple<
 		| [hit: true, point: Vector3, normal: Vector3, collider: Collider]
 		| [hit: false, point: undefined, normal: undefined, collider: undefined]
