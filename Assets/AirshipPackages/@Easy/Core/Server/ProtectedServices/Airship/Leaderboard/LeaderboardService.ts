@@ -9,6 +9,9 @@ import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 export const enum LeaderboardServiceBridgeTopics {
 	Update = "LeaderboardService:Update",
 	GetRank = "LeaderboardService:GetRank",
+	DeleteEntry = "LeaderboardService:DeleteEntry",
+	DeleteEntries = "LeaderboardService:DeleteEntries",
+	ResetLeaderboard = "LeaderboardService:ResetLeaderboard",
 	GetRankRange = "LeaderboardService:GetRankRange",
 }
 
@@ -20,6 +23,12 @@ export type ServerBridgeApiLeaderboardGetRank = (
 	leaderboardName: string,
 	id: string,
 ) => Result<RankData | undefined, string>;
+export type ServerBridgeApiLeaderboardDeleteEntry = (leaderboardName: string, id: string) => Result<undefined, string>;
+export type ServerBridgeApiLeaderboardDeleteEntries = (
+	leaderboardName: string,
+	ids: string[],
+) => Result<undefined, string>;
+export type ServerBridgeApiLeaderboardResetLeaderboard = (leaderboardName: string) => Result<undefined, string>;
 export type ServerBridgeApiLeaderboardGetRankRange = (
 	leaderboardName: string,
 	startIndex?: number,
@@ -57,6 +66,39 @@ export class ProtectedLeaderboardService {
 			LeaderboardServiceBridgeTopics.GetRankRange,
 			(_, leaderboardName, startIndex = 0, count = 100) => {
 				const [success, result] = this.GetRankRange(leaderboardName, startIndex, count).await();
+				if (!success) {
+					return { success: false, error: "Unable to complete request." };
+				}
+				return result;
+			},
+		);
+
+		contextbridge.callback<ServerBridgeApiLeaderboardDeleteEntry>(
+			LeaderboardServiceBridgeTopics.DeleteEntry,
+			(_, leaderboardName, id) => {
+				const [success, result] = this.DeleteEntry(leaderboardName, id).await();
+				if (!success) {
+					return { success: false, error: "Unable to complete request." };
+				}
+				return result;
+			},
+		);
+
+		contextbridge.callback<ServerBridgeApiLeaderboardDeleteEntries>(
+			LeaderboardServiceBridgeTopics.DeleteEntries,
+			(_, leaderboardName, ids) => {
+				const [success, result] = this.DeleteEntries(leaderboardName, ids).await();
+				if (!success) {
+					return { success: false, error: "Unable to complete request." };
+				}
+				return result;
+			},
+		);
+
+		contextbridge.callback<ServerBridgeApiLeaderboardResetLeaderboard>(
+			LeaderboardServiceBridgeTopics.ResetLeaderboard,
+			(_, leaderboardName) => {
+				const [success, result] = this.ResetLeaderboard(leaderboardName).await();
 				if (!success) {
 					return { success: false, error: "Unable to complete request." };
 				}
@@ -112,6 +154,69 @@ export class ProtectedLeaderboardService {
 		return {
 			success: true,
 			data: DecodeJSON(result.data) as RankData,
+		};
+	}
+
+	public async DeleteEntry(name: string, id: string): Promise<ReturnType<ServerBridgeApiLeaderboardDeleteEntry>> {
+		const result = InternalHttpManager.DeleteAsync(
+			`${AirshipUrl.DataStoreService}/leaderboards/leaderboard-id/${name}/id/${id}/stats`,
+		);
+
+		if (!result.success || result.statusCode > 299) {
+			warn(`Unable to update leaderboard. Status Code: ${result.statusCode}.\n`, result.error);
+			return {
+				success: false,
+				error: result.error,
+			};
+		}
+
+		return {
+			success: true,
+			data: undefined,
+		};
+	}
+
+	public async DeleteEntries(
+		name: string,
+		ids: string[],
+	): Promise<ReturnType<ServerBridgeApiLeaderboardDeleteEntries>> {
+		const result = InternalHttpManager.PostAsync(
+			`${AirshipUrl.DataStoreService}/leaderboards/leaderboard-id/${name}/stats/batch-delete`,
+			EncodeJSON({
+				ids,
+			}),
+		);
+
+		if (!result.success || result.statusCode > 299) {
+			warn(`Unable to update leaderboard. Status Code: ${result.statusCode}.\n`, result.error);
+			return {
+				success: false,
+				error: result.error,
+			};
+		}
+
+		return {
+			success: true,
+			data: undefined,
+		};
+	}
+
+	public async ResetLeaderboard(name: string): Promise<ReturnType<ServerBridgeApiLeaderboardResetLeaderboard>> {
+		const result = InternalHttpManager.PostAsync(
+			`${AirshipUrl.DataStoreService}/leaderboards/game-id/${Game.gameId}/leaderboard-id/${name}/reset`,
+		);
+
+		if (!result.success || result.statusCode > 299) {
+			warn(`Unable to reset leaderboard. Status Code: ${result.statusCode}.\n`, result.error);
+			return {
+				success: false,
+				error: result.error,
+			};
+		}
+
+		return {
+			success: true,
+			data: undefined,
 		};
 	}
 
