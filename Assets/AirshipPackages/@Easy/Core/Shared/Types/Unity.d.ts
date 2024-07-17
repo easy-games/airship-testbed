@@ -4393,7 +4393,7 @@ interface Matrix4x4Constructor {
 }
 declare const Matrix4x4: Matrix4x4Constructor;
 
-interface Transform extends Component {
+interface Transform extends Component, Iterable<Transform> {
 	/**
 	 * The world space position of the Transform.
 	 *
