@@ -139,7 +139,7 @@ export class ProtectedUserController {
 
 	public async GetUserByUsername(username: string): Promise<ReturnType<BridgeApiGetUserByUsername>> {
 		const res = InternalHttpManager.GetAsync(
-			`${AirshipUrl.GameCoordinator}/users/user?discriminatedUsername=${username}`,
+			`${AirshipUrl.GameCoordinator}/users/user?username=${username}`,
 		);
 
 		if (!res.success || res.statusCode > 299) {

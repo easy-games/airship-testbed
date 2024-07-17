@@ -63,7 +63,6 @@ export default class SendFriendRequestModal extends AirshipBehaviour {
 		this.recommendationsContent.ClearChildren();
 
 		const hasRecommendations = sortedRecommendations.size() > 0;
-		print("TOTAL RECS: " + sortedRecommendations.size());
 		// Set "Recently played with:" and recommendation content visibility
 		this.recommendationsContent.SetActive(hasRecommendations);
 		this.recentlyPlayedWithText.SetActive(hasRecommendations);
@@ -71,7 +70,6 @@ export default class SendFriendRequestModal extends AirshipBehaviour {
 		// Instantiate recommendation cards
 		const maxDisplayRecommendations = 6;
 		for (let i = 0; i < math.min(maxDisplayRecommendations, sortedRecommendations.size()); i++) {
-			print("A1");
 			const rec = sortedRecommendations[i];
 			// Check if card is displayable before parenting
 			const cardObj = Object.Instantiate(this.recommendationCardPrefab);
