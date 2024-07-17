@@ -123,13 +123,6 @@ export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
 		assert(this.networkObject, "Missing NetworkObject on GameObject or parent of '" + this.gameObject.name + "'");
 
 		let startedNetwork = false;
-		print(
-			"awake for",
-			getmetatable(this),
-			this.gameObject.name,
-			this.networkObject.name,
-			this.networkObject.IsSpawned,
-		);
 
 		const nob = this.networkObject;
 		if (Game.IsServer()) {
