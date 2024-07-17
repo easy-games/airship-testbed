@@ -12127,8 +12127,8 @@ interface Writer {
     WriteVector2IntUnpacked(value: Vector2Int): void;
     WriteVector2Unpacked(value: Vector2): void;
     WriteVector3(value: Vector3): void;
-    WriteVector3Int(value: unknown): void;
-    WriteVector3IntUnpacked(value: unknown): void;
+    WriteVector3Int(value: Vector3): void;
+    WriteVector3IntUnpacked(value: Vector3): void;
     WriteVector3Unpacked(value: Vector3): void;
     WriteVector4(value: Vector4): void;
     WriteVector4Unpacked(value: Vector4): void;
@@ -17444,8 +17444,8 @@ interface Reader {
     ReadVector2IntUnpacked(): Vector2Int;
     ReadVector2Unpacked(): Vector2;
     ReadVector3(): Vector3;
-    ReadVector3Int(): unknown;
-    ReadVector3IntUnpacked(): unknown;
+    ReadVector3Int(): Vector3;
+    ReadVector3IntUnpacked(): Vector3;
     ReadVector3Unpacked(): Vector3;
     ReadVector4(): Vector4;
     ReadVector4Unpacked(): Vector4;
@@ -17801,6 +17801,8 @@ interface uint4x4Constructor {
 
 }
 declare const uint4x4: uint4x4Constructor;
+    
+    
     
     
     
@@ -43183,7 +43185,7 @@ declare const BlockDefinition: BlockDefinitionConstructor;
     
 interface VoxelBlocksConstructor {
     meshTileOffsets: CSDictionary<number, Vector3>;
-    meshTileSizes: CSDictionary<number, unknown>;
+    meshTileSizes: CSDictionary<number, Vector3>;
     TileSizeNames: CSArray<string>;
     ContextBlockNames: CSArray<string>;
     QuarterBlockNames: CSArray<string>;
@@ -51524,7 +51526,7 @@ interface GridLayout extends Behaviour {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/GridLayout.CellToLocal.html | GridLayout.CellToLocal}
      */
-    CellToLocal(cellPosition: unknown): Vector3;
+    CellToLocal(cellPosition: Vector3): Vector3;
     /**
      * Converts an interpolated cell position in floats to local position space.
      * @param cellPosition Interpolated cell position to convert.
@@ -51538,14 +51540,14 @@ interface GridLayout extends Behaviour {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/GridLayout.CellToWorld.html | GridLayout.CellToWorld}
      */
-    CellToWorld(cellPosition: unknown): Vector3;
+    CellToWorld(cellPosition: Vector3): Vector3;
     /**
      * Returns the local bounds for a cell at the location.
      * @param cellPosition Location of the cell.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/GridLayout.GetBoundsLocal.html | GridLayout.GetBoundsLocal}
      */
-    GetBoundsLocal(cellPosition: unknown): Bounds;
+    GetBoundsLocal(cellPosition: Vector3): Bounds;
     /**
      * Returns the local bounds for the groups of cells at the location.
      * @param origin Origin of the group of cells.
@@ -51566,7 +51568,7 @@ interface GridLayout extends Behaviour {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/GridLayout.LocalToCell.html | GridLayout.LocalToCell}
      */
-    LocalToCell(localPosition: Vector3): unknown;
+    LocalToCell(localPosition: Vector3): Vector3;
     /**
      * Converts a local position to cell position.
      * @param localPosition Local Position to convert.
@@ -51587,7 +51589,7 @@ interface GridLayout extends Behaviour {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/GridLayout.WorldToCell.html | GridLayout.WorldToCell}
      */
-    WorldToCell(worldPosition: Vector3): unknown;
+    WorldToCell(worldPosition: Vector3): Vector3;
     /**
      * Converts a world position to local position.
      * @param worldPosition World Position to convert.
@@ -51643,14 +51645,14 @@ interface Grid extends GridLayout {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Grid.GetCellCenterLocal.html | Grid.GetCellCenterLocal}
      */
-    GetCellCenterLocal(position: unknown): Vector3;
+    GetCellCenterLocal(position: Vector3): Vector3;
     /**
      * Get the logical center coordinate of a grid cell in world space.
      * @param position Grid cell position.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Grid.GetCellCenterWorld.html | Grid.GetCellCenterWorld}
      */
-    GetCellCenterWorld(position: unknown): Vector3;
+    GetCellCenterWorld(position: Vector3): Vector3;
 
 
 }
