@@ -146,7 +146,7 @@ export default class MainMenuContent extends AirshipBehaviour {
 				this.contentWrapper.anchorMin = new Vector2(0, 1);
 				this.contentWrapper.anchorMax = new Vector2(0, 1);
 				this.contentWrapper.pivot = new Vector2(0, 1);
-				this.contentWrapper.anchoredPosition = new Vector2(Game.GetNotchHeight(), -67);
+				this.contentWrapper.anchoredPosition = new Vector2(math.max(Game.GetNotchHeight(), 25), -67);
 				this.contentWrapper.sizeDelta = new Vector2(
 					screenSize.x + (socialMenuHidden ? -100 : -360) - Game.GetNotchHeight(),
 					screenSize.y - 67,
