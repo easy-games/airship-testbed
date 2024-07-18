@@ -5,7 +5,7 @@ import {
 	ServerBridgeApiCacheSetKeyTTL,
 } from "@Easy/Core/Server/ProtectedServices/Airship/CacheStore/CacheStoreService";
 import { Platform } from "@Easy/Core/Shared/Airship";
-import { AirshipUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
+import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 
@@ -42,7 +42,7 @@ export class AirshipCacheStoreService {
 	): Promise<ReturnType<ServerBridgeApiCacheGetKey<T>>> {
 		this.CheckKey(key);
 
-		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiCacheGetKey<T>>(
+		return await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiCacheGetKey<T>>(
 			CacheStoreServiceBridgeTopics.GetKey,
 			LuauContext.Protected,
 			key,
@@ -64,7 +64,7 @@ export class AirshipCacheStoreService {
 	): Promise<ReturnType<ServerBridgeApiCacheSetKey<T>>> {
 		this.CheckKey(key);
 
-		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiCacheSetKey<T>>(
+		return await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiCacheSetKey<T>>(
 			CacheStoreServiceBridgeTopics.SetKey,
 			LuauContext.Protected,
 			key,
@@ -93,7 +93,7 @@ export class AirshipCacheStoreService {
 	public async SetKeyTTL(key: string, expireTimeSec: number): Promise<ReturnType<ServerBridgeApiCacheSetKeyTTL>> {
 		this.CheckKey(key);
 
-		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiCacheSetKeyTTL>(
+		return await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiCacheSetKeyTTL>(
 			CacheStoreServiceBridgeTopics.SetKeyTTL,
 			LuauContext.Protected,
 			key,

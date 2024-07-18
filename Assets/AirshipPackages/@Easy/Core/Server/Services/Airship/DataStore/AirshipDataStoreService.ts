@@ -5,7 +5,7 @@ import {
 	ServerBridgeApiDataSetKey,
 } from "@Easy/Core/Server/ProtectedServices/Airship/DataStore/DataStoreService";
 import { Platform } from "@Easy/Core/Shared/Airship";
-import { AirshipUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
+import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 
@@ -36,7 +36,7 @@ export class AirshipDataStoreService {
 	public async GetKey<T extends object>(key: string): Promise<ReturnType<ServerBridgeApiDataGetKey<T>>> {
 		this.checkKey(key);
 
-		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiDataGetKey<T>>(
+		return await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiDataGetKey<T>>(
 			DataStoreServiceBridgeTopics.GetKey,
 			LuauContext.Protected,
 			key,
@@ -52,7 +52,7 @@ export class AirshipDataStoreService {
 	public async SetKey<T extends object>(key: string, data: T): Promise<ReturnType<ServerBridgeApiDataSetKey<T>>> {
 		this.checkKey(key);
 
-		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiDataSetKey<T>>(
+		return await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiDataSetKey<T>>(
 			DataStoreServiceBridgeTopics.SetKey,
 			LuauContext.Protected,
 			key,
@@ -68,7 +68,7 @@ export class AirshipDataStoreService {
 	public async DeleteKey<T extends object>(key: string): Promise<ReturnType<ServerBridgeApiDataDeleteKey<T>>> {
 		this.checkKey(key);
 
-		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiDataDeleteKey<T>>(
+		return await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiDataDeleteKey<T>>(
 			DataStoreServiceBridgeTopics.DeleteKey,
 			LuauContext.Protected,
 			key,

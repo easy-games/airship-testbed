@@ -4,7 +4,7 @@ import {
 } from "@Easy/Core/Client/ProtectedControllers/Airship/PlatformInventory/PlatformInventoryController";
 import { Platform } from "@Easy/Core/Shared/Airship";
 import { ItemQueryParameters } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipPlatformInventory";
-import { AirshipUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
+import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
 import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 
@@ -28,7 +28,7 @@ export class AirshipPlatformInventoryController {
 	 * @returns
 	 */
 	public async GetItems(query?: ItemQueryParameters) {
-		return await AirshipUtil.PromisifyBridgeInvoke<ClientBridgeApiGetItems>(
+		return await ContextBridgeUtil.PromisifyBridgeInvoke<ClientBridgeApiGetItems>(
 			PlatformInventoryControllerBridgeTopics.GetItems,
 			LuauContext.Protected,
 			query,

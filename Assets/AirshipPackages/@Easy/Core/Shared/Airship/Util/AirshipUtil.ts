@@ -1,4 +1,4 @@
-export class AirshipUtil {
+export class ContextBridgeUtil {
 	/**
 	 * Implements `contextbridge.invoke()` as an async function.
 	 * @param topic The topic for the .invoke call

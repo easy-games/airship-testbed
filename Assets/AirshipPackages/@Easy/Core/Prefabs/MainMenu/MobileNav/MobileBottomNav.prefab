@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8917078297401953226}
   - component: {fileID: 7823761516707335870}
   - component: {fileID: 7688857695854178531}
+  - component: {fileID: 7078163363823001277}
   m_Layer: 5
   m_Name: MobileBottomNav
   m_TagString: Untagged
@@ -77,6 +78,35 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &7078163363823001277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 115055440662208778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scriptFile: {fileID: -2739856260552626177, guid: cf627add2252c4aa68e919a5eb63da96, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/MobileNavbar.lua
+  m_error: 0
+  m_yielded: 0
+  m_canResume: 0
+  m_asyncYield: 0
+  m_onUpdateHandle: -1
+  m_onLateUpdateHandle: -1
+  m_shortFileName: 
+  m_metadata:
+    name: MobileNavbar
+    singleton: 0
+    decorators: []
+    properties: []
+    displayIcon: {fileID: 0}
+    displayName: 
+  contextOverwritten: 0
 --- !u!1 &4525214502547631868
 GameObject:
   m_ObjectHideFlags: 0
@@ -446,7 +476,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6166404988525573142, guid: 4245e93ed87754d2196fa82fcc505590, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 438.75
+      value: 720
       objectReference: {fileID: 0}
     - target: {fileID: 6166404988525573142, guid: 4245e93ed87754d2196fa82fcc505590, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -706,7 +736,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6166404988525573142, guid: 4245e93ed87754d2196fa82fcc505590, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 974.99994
+      value: 1342.5
       objectReference: {fileID: 0}
     - target: {fileID: 6166404988525573142, guid: 4245e93ed87754d2196fa82fcc505590, type: 3}
       propertyPath: m_AnchoredPosition.y

@@ -9,7 +9,7 @@ import {
 } from "@Easy/Core/Client/ProtectedControllers/Airship/User/UserController";
 import { Platform } from "@Easy/Core/Shared/Airship";
 import { PublicUser } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipUser";
-import { AirshipUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
+import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
 import { Controller, Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 
@@ -57,7 +57,7 @@ export class AirshipUserController {
 
 		let result: ReturnType<BridgeApiGetUserByUsername>;
 		if (contextbridge.current() !== LuauContext.Protected) {
-			result = await AirshipUtil.PromisifyBridgeInvoke<BridgeApiGetUserByUsername>(
+			result = await ContextBridgeUtil.PromisifyBridgeInvoke<BridgeApiGetUserByUsername>(
 				UserControllerBridgeTopics.GetUserByUsername,
 				LuauContext.Protected,
 				username,
@@ -93,7 +93,7 @@ export class AirshipUserController {
 
 		let result: ReturnType<BridgeApiGetUserById>;
 		if (contextbridge.current() !== LuauContext.Protected) {
-			result = await AirshipUtil.PromisifyBridgeInvoke<BridgeApiGetUserById>(
+			result = await ContextBridgeUtil.PromisifyBridgeInvoke<BridgeApiGetUserById>(
 				UserControllerBridgeTopics.GetUserById,
 				LuauContext.Protected,
 				userId,
@@ -116,7 +116,7 @@ export class AirshipUserController {
 	 * @returns An array of user objects.
 	 */
 	public async GetUsersById(userIds: string[], strict = true): Promise<ReturnType<BridgeApiGetUsersById>> {
-		return await AirshipUtil.PromisifyBridgeInvoke<BridgeApiGetUsersById>(
+		return await ContextBridgeUtil.PromisifyBridgeInvoke<BridgeApiGetUsersById>(
 			UserControllerBridgeTopics.GetUsersById,
 			LuauContext.Protected,
 			userIds,
@@ -129,7 +129,7 @@ export class AirshipUserController {
 	 * @returns A list of friends.
 	 */
 	public async GetFriends(): Promise<ReturnType<BridgeApiGetFriends>> {
-		return await AirshipUtil.PromisifyBridgeInvoke<BridgeApiGetFriends>(
+		return await ContextBridgeUtil.PromisifyBridgeInvoke<BridgeApiGetFriends>(
 			UserControllerBridgeTopics.GetFriends,
 			LuauContext.Protected,
 		);
@@ -141,7 +141,7 @@ export class AirshipUserController {
 	 * @returns True if friends, false otherwise.
 	 */
 	public async IsFriendsWith(userId: string): Promise<ReturnType<BrigdeApiIsFriendsWith>> {
-		return await AirshipUtil.PromisifyBridgeInvoke<BrigdeApiIsFriendsWith>(
+		return await ContextBridgeUtil.PromisifyBridgeInvoke<BrigdeApiIsFriendsWith>(
 			UserControllerBridgeTopics.IsFriendsWith,
 			LuauContext.Protected,
 			userId,

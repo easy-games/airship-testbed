@@ -3,7 +3,7 @@ import {
 	PurchaseControllerBridgeTopics,
 } from "@Easy/Core/Client/ProtectedControllers/Airship/Purchase/PurchaseController";
 import { Airship } from "@Easy/Core/Shared/Airship";
-import { AirshipUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
+import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
 import { Controller, Dependency, Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
@@ -22,17 +22,24 @@ export class AirshipPurchaseSingleton {
 	protected OnStart(): void {
 		// Hook into server requests to prompt purchase
 		if (RunCore.IsClient()) {
-			CoreNetwork.ServerToClient.Purchase.PromptPurchase.client.SetCallback((productId, quantity, recipientId) => {
-				const [success, promptDisplayed] = this.PromptPurchase(productId, quantity, Game.localPlayer.userId, recipientId).await();
-				return success && promptDisplayed;
-			});
+			CoreNetwork.ServerToClient.Purchase.PromptPurchase.client.SetCallback(
+				(productId, quantity, recipientId) => {
+					const [success, promptDisplayed] = this.PromptPurchase(
+						productId,
+						quantity,
+						Game.localPlayer.userId,
+						recipientId,
+					).await();
+					return success && promptDisplayed;
+				},
+			);
 		}
 	}
 
 	/**
 	 * Opens a purchase dialog for the user. It will prompt them to confirm the purchase provided.
 	 * If the user completes the purchase, a receipt fulfillment event will be fired on the server.
-	 * 
+	 *
 	 * @param productId The product to be purchased. You can find the ID in the create dashboard.
 	 * @param quantity The amount of this product to purchase.
 	 * @param purchaserUserId The user that will purchase the product. If called on client this defaults to the local player id.
@@ -48,7 +55,9 @@ export class AirshipPurchaseSingleton {
 		// Handle calling on server
 		if (!RunCore.IsClient()) {
 			if (!purchaserUserId) {
-				warn("Failed to prompt purchase: Must specify a purchaserUserId when prompting purchase from the server.");
+				warn(
+					"Failed to prompt purchase: Must specify a purchaserUserId when prompting purchase from the server.",
+				);
 				return false;
 			}
 
@@ -59,7 +68,12 @@ export class AirshipPurchaseSingleton {
 			}
 
 			// Send remote to client to display purchase prompt
-			const result = CoreNetwork.ServerToClient.Purchase.PromptPurchase.server.FireClient(purchaserPlayer, productId, quantity, recipientUserId);
+			const result = CoreNetwork.ServerToClient.Purchase.PromptPurchase.server.FireClient(
+				purchaserPlayer,
+				productId,
+				quantity,
+				recipientUserId,
+			);
 			return result;
 		} else {
 			// Set purchaser user id if undefined
@@ -75,7 +89,7 @@ export class AirshipPurchaseSingleton {
 			recipientUserId = purchaserUserId;
 		}
 
-		return await AirshipUtil.PromisifyBridgeInvoke<ClientBridgeApiRequestPurchase>(
+		return await ContextBridgeUtil.PromisifyBridgeInvoke<ClientBridgeApiRequestPurchase>(
 			PurchaseControllerBridgeTopics.RequestPurchase,
 			LuauContext.Protected,
 			productId,

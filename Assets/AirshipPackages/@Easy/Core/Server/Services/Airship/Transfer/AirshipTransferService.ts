@@ -10,7 +10,7 @@ import {
 	AirshipServerConfig,
 	AirshipServerTransferConfig,
 } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipTransfers";
-import { AirshipUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
+import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Player } from "@Easy/Core/Shared/Player/Player";
@@ -57,7 +57,7 @@ export class AirshipTransferService {
 	 * @returns The id of the new server. Undefined if the server was not able to be created.
 	 */
 	public async CreateServer(config?: AirshipServerConfig): Promise<ReturnType<ServerBridgeApiCreateServer>> {
-		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiCreateServer>(
+		return await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiCreateServer>(
 			TransferServiceBridgeTopics.CreateServer,
 			LuauContext.Protected,
 			config,
@@ -95,7 +95,7 @@ export class AirshipTransferService {
 		} else {
 			userIds = players;
 		}
-		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiTransferGroupToGame>(
+		return await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiTransferGroupToGame>(
 			TransferServiceBridgeTopics.TransferGroupToGame,
 			LuauContext.Protected,
 			userIds,
@@ -135,7 +135,7 @@ export class AirshipTransferService {
 		serverId: string,
 		config?: AirshipServerTransferConfig,
 	): Promise<ReturnType<ServerBridgeApiTransferGroupToServer>> {
-		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiTransferGroupToServer>(
+		return await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiTransferGroupToServer>(
 			TransferServiceBridgeTopics.TransferGroupToServer,
 			LuauContext.Protected,
 			userIds,
