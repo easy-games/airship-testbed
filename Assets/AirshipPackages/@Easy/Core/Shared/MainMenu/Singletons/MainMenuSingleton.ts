@@ -55,7 +55,7 @@ export class MainMenuSingleton {
 
 				let sizeType: ScreenSizeType = "md";
 				if (Game.IsPortrait()) {
-					if (this.screenSize.x < 500) {
+					if (this.screenSize.x < 510) {
 						sizeType = "sm";
 					}
 				} else {
