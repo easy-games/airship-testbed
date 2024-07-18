@@ -246,20 +246,57 @@ export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
 		);
 	}
 
+	/**
+	 * Called when this `AirshipNetworkBehaviour` starts networking
+	 *
+	 * This is useful for code that needs to run on the start on both server and client
+	 * - If you want a server or client only start, use {@link OnStartServer} or {@link OnStartClient}
+	 */
 	public OnStartNetwork?(): void;
+	/**
+	 * Called when this `AirshipNetworkBehaviour` stops networking
+	 */
 	public OnStopNetwork?(): void;
 
+	/**
+	 * Called on the server when this `AirshipNetworkBehaviour` starts networking
+	 */
 	public OnStartServer?(): void;
+	/**
+	 * Called when the ownership of this object is changed on the server
+	 */
 	public OnOwnershipServer?(ownership: AirshipNetworkOwnership): void;
 
+	/**
+	 * Called on the client when this `AirshipNetworkBehaviour` starts networking
+	 */
 	public OnStartClient?(): void;
+	/**
+	 * Called when the ownership of this object is changed on the client
+	 */
 	public OnOwnershipClient?(ownership: AirshipNetworkOwnership): void;
 
+	/**
+	 * Called when this `AirshipNetworkBehaviour` stops being networked on the server
+	 */
 	public OnStopServer?(): void;
+	/**
+	 * Called when this `AirshipNetworkBehaviour` stops being networked on the client
+	 */
 	public OnStopClient?(): void;
 
+	/**
+	 * Called when this `AirshipNetworkBehaviour` is spawned on the server
+	 */
 	public OnSpawnServer?(): void;
+	/**
+	 * Called when this `AirshipNetworkBehaviour` is despawned on the server
+	 */
 	public OnDespawnServer?(): void;
+
+	/**
+	 * Called when this object is destroyed locally
+	 */
 	public OnNetworkDestroy?(): void;
 
 	/**
