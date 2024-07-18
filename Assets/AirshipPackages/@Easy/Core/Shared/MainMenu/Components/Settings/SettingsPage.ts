@@ -41,7 +41,6 @@ export default class SettingsPage extends AirshipBehaviour {
 			mainMenu.ObserveScreenSize((size) => {
 				if (size === "sm" && Game.IsMobile()) {
 					const notchHeight = Game.GetNotchHeight();
-					print("notch height: " + notchHeight);
 
 					this.sidebar.gameObject.SetActive(false);
 					// this.scrollView.offsetMax = new Vector2(-5, -7);
