@@ -28,6 +28,8 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 	public cameraTransforms!: Transform[];
 
 	@Header("Variables")
+	public itemSkinColor = Color.black;
+	public faceSkinColor = Color.white;
 	public cameraDistanceBase = 2;
 	public cameraDistanceMod = 1;
 	public uploadThumbnails = false;
@@ -90,6 +92,7 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 	 */
 	public RenderAllItems() {
 		this.CreateItemCamera();
+		this.SetupForRenders(false);
 
 		let allItems = AvatarUtil.GetAllPossibleAvatarItems();
 
@@ -103,6 +106,10 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 			}
 			i++;
 		}
+	}
+
+	public SetupForRenders(renderingFaces: boolean) {
+		this.builder.SetSkinColor(renderingFaces ? this.faceSkinColor : this.itemSkinColor, true);
 	}
 
 	/**
