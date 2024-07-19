@@ -111,7 +111,7 @@ export class CharacterInput {
 					moveSignal.moveDirection,
 					moveSignal.jump,
 					moveSignal.sprinting,
-					moveSignal.crouchOrSlide,
+					moveSignal.crouch,
 					localCharacterSingleton.IsMoveDirWorldSpace(),
 				);
 			}),

@@ -717,11 +717,12 @@ declare const enum TransformPropertiesFlag {
 }
 declare const enum AdaptiveInterpolationType {
     Off = 0,
-    VeryLow = 1,
-    Low = 2,
-    Medium = 3,
-    High = 4,
-    VeryHigh = 5,
+    ExtremelyLow = 1,
+    VeryLow = 2,
+    Low = 3,
+    Moderate = 4,
+    High = 5,
+    VeryHigh = 6,
 }
 declare const enum RigidbodyType {
     Rigidbody = 0,
@@ -18561,6 +18562,7 @@ interface RollbackManager extends MonoBehaviour {
     Rollback(pt: PreciseTick, physicsType: RollbackPhysicsType, asOwnerAndClientHost: boolean): void;
     Rollback(scene: Scene, pt: PreciseTick, physicsType: RollbackPhysicsType, asOwnerAndClientHost: boolean): void;
     Rollback(sceneHandle: number, pt: PreciseTick, physicsType: RollbackPhysicsType, asOwnerAndClientHost: boolean): void;
+    Rollback(origin: Vector3, normalizedDirection: Vector3, distance: number, pt: PreciseTick, physicsType: RollbackPhysicsType, asOwnerAndClientHost: boolean): void;
     Rollback(scene: Scene, origin: Vector3, normalizedDirection: Vector3, distance: number, pt: PreciseTick, physicsType: RollbackPhysicsType, asOwnerAndClientHost: boolean): void;
     Rollback(sceneHandle: number, origin: Vector3, normalizedDirection: Vector3, distance: number, pt: PreciseTick, physicsType: RollbackPhysicsType, asOwnerAndClientHost: boolean): void;
 
@@ -18823,7 +18825,6 @@ interface ChildTransformTickSmoother extends IResettable {
 }
     
 interface ChildTransformTickSmootherConstructor {
-    PositionOutcomes: CSDictionary<number, number>;
 
 
     new(): ChildTransformTickSmoother;
@@ -50487,9 +50488,6 @@ interface CharacterMovementData extends MonoBehaviour {
     autoCrouch: boolean;
     crouchSpeedMultiplier: number;
     crouchHeightMultiplier: number;
-    slideSpeedMultiplier: number;
-    slideHeightMultiplier: number;
-    slideCooldown: number;
     numberOfJumps: number;
     jumpSpeed: number;
     jumpCoyoteTime: number;
@@ -51289,7 +51287,7 @@ interface IReplicateData {
 interface MoveInputData extends IReplicateData {
     moveDir: Vector3;
     jump: boolean;
-    crouchOrSlide: boolean;
+    crouch: boolean;
     sprint: boolean;
     lookVector: Vector3;
     customData: BinaryBlob;
@@ -51306,7 +51304,7 @@ interface MoveInputData extends IReplicateData {
 interface MoveInputDataConstructor {
 
 
-    new(moveDir: Vector3, jump: boolean, crouchOrSlide: boolean, sprint: boolean, lookVector: Vector3, customData: BinaryBlob): MoveInputData;
+    new(moveDir: Vector3, jump: boolean, crouch: boolean, sprint: boolean, lookVector: Vector3, customData: BinaryBlob): MoveInputData;
 
 
     CompareBinaryBlobs(a: BinaryBlob, b: BinaryBlob): boolean;

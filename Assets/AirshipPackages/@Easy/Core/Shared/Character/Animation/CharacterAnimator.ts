@@ -32,7 +32,7 @@ export default class CharacterAnimator extends AirshipBehaviour {
 
 	public Start() {
 		this.isFlashing = false;
-		
+
 		this.character = this.gameObject.GetAirshipComponent<Character>()!;
 		this.character.WaitForInit();
 
@@ -45,14 +45,6 @@ export default class CharacterAnimator extends AirshipBehaviour {
 			this.footstepAudioBundle.spacialMode = this.character?.IsLocalCharacter()
 				? AudioBundleSpacialMode.GLOBAL
 				: AudioBundleSpacialMode.SPACIAL;
-
-			// this.slideAudioBundle = new AudioClipBundle(this.refs.slideSoundPaths);
-			// this.slideAudioBundle.volumeScale = 0.2;
-			// this.slideAudioBundle.useFullPath = true;
-			// this.slideAudioBundle.playMode = AudioBundlePlayMode.RANDOM_TO_LOOP;
-			// this.slideAudioBundle.spacialMode = character.IsLocalCharacter()
-			// 	? AudioBundleSpacialMode.GLOBAL
-			// 	: AudioBundleSpacialMode.SPACIAL;
 
 			//ANIMATIONS
 			this.bin.Add(
@@ -109,8 +101,13 @@ export default class CharacterAnimator extends AirshipBehaviour {
 		for (let i = 0; i < allMeshes.Length; i++) {
 			const renderer = allMeshes.GetValue(i);
 			if (renderer && renderer.enabled) {
-				NativeTween.MaterialsFloatProperty(renderer, "_OverrideStrength", 0, 1, this.flashTransitionDuration)
-					.SetPingPong();
+				NativeTween.MaterialsFloatProperty(
+					renderer,
+					"_OverrideStrength",
+					0,
+					1,
+					this.flashTransitionDuration,
+				).SetPingPong();
 			}
 		}
 		task.delay(duration, () => {
