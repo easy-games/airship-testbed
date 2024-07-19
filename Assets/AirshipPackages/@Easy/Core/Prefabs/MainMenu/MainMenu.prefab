@@ -1397,7 +1397,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6136699804409668924, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
       propertyPath: m_Size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6313874641373235251, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
       propertyPath: m_metadata.properties.Array.data[3].serializedValue
@@ -1510,6 +1510,10 @@ PrefabInstance:
     - target: {fileID: 8704029679076033836, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8857956941427694516, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
+      propertyPath: m_Material
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 9112005660504207897, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
       propertyPath: m_SizeDelta.x
