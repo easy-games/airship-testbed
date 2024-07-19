@@ -12,6 +12,7 @@ export enum AvatarRenderSlot {
 	HANDS,
 	LEGS,
 	FEET,
+	EARS,
 }
 
 export default class AvatarRenderComponent extends AirshipBehaviour {
@@ -212,9 +213,12 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 				break;
 			case AccessorySlot.Head:
 			case AccessorySlot.Neck:
-			case AccessorySlot.Ears:
 			case AccessorySlot.Nose:
 				renderSlot = AvatarRenderSlot.HEAD;
+				break;
+
+			case AccessorySlot.Ears:
+				renderSlot = AvatarRenderSlot.EARS;
 				break;
 			case AccessorySlot.Waist:
 			case AccessorySlot.TorsoInner:
