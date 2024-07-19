@@ -104,7 +104,7 @@ interface CharacterMovement extends Component {
 		direction: Vector3,
 		jump: boolean,
 		sprinting: boolean,
-		crouchOrSlide: boolean,
+		crouch: boolean,
 		moveDirWorldSpace: boolean,
 	): void;
 	SetLookVector(lookVector: Vector3): void;

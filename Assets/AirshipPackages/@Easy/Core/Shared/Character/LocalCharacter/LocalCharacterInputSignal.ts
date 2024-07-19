@@ -3,6 +3,6 @@ export class LocalCharacterInputSignal {
 		public moveDirection: Vector3,
 		public jump: boolean,
 		public sprinting: boolean,
-		public crouchOrSlide: boolean,
+		public crouch: boolean,
 	) {}
 }
