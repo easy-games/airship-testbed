@@ -3412,8 +3412,24 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6268649245737772660, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
+      propertyPath: m_metadata.properties.Array.size
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 6268649245737772660, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
+      propertyPath: m_metadata.properties.Array.data[11].name
+      value: searchWrapper
+      objectReference: {fileID: 0}
+    - target: {fileID: 6268649245737772660, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
+      propertyPath: m_metadata.properties.Array.data[11].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 6268649245737772660, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
       propertyPath: m_metadata.properties.Array.data[11].modified
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6268649245737772660, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
+      propertyPath: m_metadata.properties.Array.data[11].objectType
+      value: RectTransform
       objectReference: {fileID: 0}
     - target: {fileID: 6268649245737772660, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
       propertyPath: m_metadata.properties.Array.data[11].serializedObject
