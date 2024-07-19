@@ -6,7 +6,7 @@ const DefaultCameraMask = LayerMask.InvertMask(
 		"Water",
 		"UI",
 		"WorldUI",
-		"ViewModel",
+		"Viewmodel",
 		"VisuallyHidden",
 		"IgnoreCollision",
 		"AvatarEditor",

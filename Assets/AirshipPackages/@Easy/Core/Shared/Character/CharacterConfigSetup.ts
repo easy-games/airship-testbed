@@ -1,6 +1,5 @@
 import { Airship } from "../Airship";
 import { Game } from "../Game";
-import { Layer } from "../Util/Layer";
 import { CharacterCameraMode } from "./LocalCharacter/CharacterCameraMode";
 
 /**
