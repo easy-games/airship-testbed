@@ -10,9 +10,16 @@ export const enum DataStoreServiceBridgeTopics {
 	DeleteKey = "DataStore:DeleteKey",
 }
 
-export type ServerBridgeApiDataGetKey<T> = (key: string) => Result<T | undefined, string>;
-export type ServerBridgeApiDataSetKey<T> = (key: string, data: T) => Result<T, string>;
-export type ServerBridgeApiDataDeleteKey<T> = (key: string) => Result<T | undefined, string>;
+export type ServerBridgeApiDataGetKey<T> = (key: string) => Result<DataStoreRecord<T> | undefined, string>;
+export type ServerBridgeApiDataSetKey<T> = (key: string, data: T, etag?: string) => Result<DataStoreRecord<T>, string>;
+export type ServerBridgeApiDataDeleteKey<T> = (key: string) => Result<DataStoreRecord<T> | undefined, string>;
+
+export interface DataStoreRecord<T> {
+	data: T;
+	metadata: {
+		etag: string;
+	};
+}
 
 @Service({})
 export class ProtectedDataStoreService {
@@ -30,8 +37,8 @@ export class ProtectedDataStoreService {
 			return result;
 		});
 
-		contextbridge.callback<ServerBridgeApiDataSetKey<unknown>>("DataStore:SetKey", (_, key, data) => {
-			const [success, result] = this.SetKey(key, data).await();
+		contextbridge.callback<ServerBridgeApiDataSetKey<unknown>>("DataStore:SetKey", (_, key, data, etag) => {
+			const [success, result] = this.SetKey(key, data, etag).await();
 			if (!success) {
 				return {
 					success: false,
@@ -76,9 +83,10 @@ export class ProtectedDataStoreService {
 		};
 	}
 
-	public async SetKey<T>(key: string, data: T): Promise<ReturnType<ServerBridgeApiDataSetKey<T>>> {
+	public async SetKey<T>(key: string, data: T, etag?: string): Promise<ReturnType<ServerBridgeApiDataSetKey<T>>> {
+		const query = etag ? `?etag=${etag}` : "";
 		const result = InternalHttpManager.PostAsync(
-			`${AirshipUrl.DataStoreService}/data/key/${key}`,
+			`${AirshipUrl.DataStoreService}/data/key/${key}${query}`,
 			EncodeJSON(data),
 		);
 		if (!result.success || result.statusCode > 299) {
