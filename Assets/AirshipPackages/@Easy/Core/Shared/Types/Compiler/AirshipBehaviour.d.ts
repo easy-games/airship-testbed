@@ -45,119 +45,119 @@ declare abstract class AirshipBehaviour {
 	/**
 	 * Awake is called when an enabled script instance is being loaded.
 	 */
-	public Awake(): void;
+	protected Awake?(): void;
 	/**
 	 * This function is called when the object becomes enabled and active.
 	 */
-	public OnEnable(): void;
+	protected OnEnable?(): void;
 	/**
 	 * This function is called when the behaviour becomes disabled.
 	 */
-	public OnDisable(): void;
+	protected OnDisable?(): void;
 	/**
 	 * OnStart is called on the frame when a script is enabled just before any of the Update methods are called the first time.
 	 */
-	public Start(): void;
+	protected Start?(): void;
 	/**
 	 * Destroying the attached Behaviour will result in the game or Scene receiving OnDestroy.
 	 */
-	public OnDestroy(): void;
+	protected OnDestroy?(): void;
 	/**
 	 * Update is called every frame, if the AirshipBehaviour is enabled.
 	 */
-	public Update(dt: number): void;
+	protected Update?(dt: number): void;
 	/**
 	 * LateUpdate is called every frame, if the AirshipBehaviour is enabled.
 	 */
-	public LateUpdate(dt: number): void;
+	protected LateUpdate?(dt: number): void;
 	/**
 	 * Frame-rate independent AirshipBehaviour.FixedUpdate message for physics calculations.
 	 */
-	public FixedUpdate(dt: number): void;
+	protected FixedUpdate?(dt: number): void;
 
 	/**
 	 * Called when this collider/rigidbody starts touching another collider/rigidbody.
 	 * @param collision Collision data.
 	 * @see https://docs.unity3d.com/ScriptReference/Collider.OnCollisionEnter.html
 	 */
-	public OnCollisionEnter(collision: Collision): void;
+	protected OnCollisionEnter?(collision: Collision): void;
 
 	/**
 	 * Called once per frame while this collider/rigidbody is touching another collider/rigidbody.
 	 * @param collision Collision data.
 	 * @see https://docs.unity3d.com/ScriptReference/Collider.OnCollisionStay.html
 	 */
-	public OnCollisionStay(collision: Collision): void;
+	protected OnCollisionStay?(collision: Collision): void;
 
 	/**
 	 * Called when this collider/rigidbody stops touching another collider/rigidbody.
 	 * @param collision Collision data.
 	 * @see https://docs.unity3d.com/ScriptReference/Collider.OnCollisionExit.html
 	 */
-	public OnCollisionExit(collision: Collision): void;
+	protected OnCollisionExit?(collision: Collision): void;
 
 	/**
 	 * Called when this collider/rigidbody starts touching another collider/rigidbody.
 	 * @param collision Collision data.
 	 * @see https://docs.unity3d.com/ScriptReference/Collider.OnCollisionEnter2D.html
 	 */
-	public OnCollisionEnter2D(collision2D: Collision2D): void;
+	protected OnCollisionEnter2D?(collision2D: Collision2D): void;
 
 	/**
 	 * Called once per frame while this collider/rigidbody is touching another collider/rigidbody.
 	 * @param collision Collision data.
 	 * @see https://docs.unity3d.com/ScriptReference/Collider.OnCollisionStay2D.html
 	 */
-	public OnCollisionStay2D(collision2D: Collision2D): void;
+	protected OnCollisionStay2D?(collision2D: Collision2D): void;
 
 	/**
 	 * Called when this collider/rigidbody stops touching another collider/rigidbody.
 	 * @param collision Collision data.
 	 * @see https://docs.unity3d.com/ScriptReference/Collider.OnCollisionExit2D.html
 	 */
-	public OnCollisionExit2D(collision2D: Collision2D): void;
+	protected OnCollisionExit2D?(collision2D: Collision2D): void;
 
 	/**
 	 * Called when this collider/rigidbody starts touching another collider/rigidbody.
 	 * @param collider Collider.
 	 * @see https://docs.unity3d.com/ScriptReference/Collider.OnTriggerEnter.html
 	 */
-	public OnTriggerEnter(collider: Collider): void;
+	protected OnTriggerEnter?(collider: Collider): void;
 
 	/**
 	 * Called once per frame while this collider/rigidbody is touching another collider/rigidbody.
 	 * @param collider Collider.
 	 * @see https://docs.unity3d.com/ScriptReference/Collider.OnTriggerStay.html
 	 */
-	public OnTriggerStay(collider: Collider): void;
+	protected OnTriggerStay?(collider: Collider): void;
 
 	/**
 	 * Called when this collider/rigidbody stops touching another collider/rigidbody.
 	 * @param collider Collider.
 	 * @see https://docs.unity3d.com/ScriptReference/Collider.OnTriggerExit.html
 	 */
-	public OnTriggerExit(collider: Collider): void;
+	protected OnTriggerExit?(collider: Collider): void;
 
 	/**
 	 * Called when this collider/rigidbody starts touching another collider/rigidbody.
 	 * @param collider Collider.
 	 * @see https://docs.unity3d.com/ScriptReference/Collider.OnTriggerEnter2D.html
 	 */
-	public OnTriggerEnter2D(collider2D: Collider2D): void;
+	protected OnTriggerEnter2D?(collider2D: Collider2D): void;
 
 	/**
 	 * Called once per frame while this collider/rigidbody is touching another collider/rigidbody.
 	 * @param collider Collider.
 	 * @see https://docs.unity3d.com/ScriptReference/Collider.OnTriggerStay2D.html
 	 */
-	public OnTriggerStay2D(collider2D: Collider2D): void;
+	protected OnTriggerStay2D?(collider2D: Collider2D): void;
 
 	/**
 	 * Called when this collider/rigidbody stops touching another collider/rigidbody.
 	 * @param collider Collider.
 	 * @see https://docs.unity3d.com/ScriptReference/Collider.OnTriggerExit2D.html
 	 */
-	public OnTriggerExit2D(collider2D: Collider2D): void;
+	protected OnTriggerExit2D?(collider2D: Collider2D): void;
 }
 
 type AirshipDecorator<T> = T & {
