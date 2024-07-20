@@ -77,4 +77,19 @@ export class TransferController {
 			data: undefined,
 		};
 	}
+
+	/**
+	 * Submits a request to transfer party members to the party leader.
+	 * Only the party leader can send this request.
+	 */
+	public async TransferPartyMembersToLeader(): Promise<boolean> {
+		const res = InternalHttpManager.PostAsync(AirshipUrl.GameCoordinator + "/transfers/transfer/party", "");
+
+		if (!res.success || res.statusCode > 299) {
+			warn(`Unable to complete transfer request. Status Code:  ${res.statusCode}.\n`, res.error);
+			return false;
+		}
+
+		return true;
+	}
 }

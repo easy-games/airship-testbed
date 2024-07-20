@@ -826,7 +826,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 		this.mainMenu?.avatarView?.backdropHolder?.gameObject.SetActive(false);
 		this.inThumbnailMode = true;
-		this.SetDirty(false);
+		this.SetDirty(true);
 		this.ClearItembuttons();
 		this.ClearAllAccessories();
 		print("Entering Thumbnail Mode");
@@ -891,12 +891,14 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			return;
 		}
 		this.renderSetup.CreateItemCamera();
+		this.renderSetup?.SetupForRenders(false);
 		this.renderSetup.uploadThumbnails = true;
 		for (let [key, value] of this.thumbnailRenderList) {
 			if (value && value.button.GetSelected()) {
 				this.renderSetup?.RenderItem(value.accesory);
 			}
 		}
+		this.renderSetup?.SetupForRenders(true);
 		for (let [key, value] of this.thumbnailFaceRenderList) {
 			if (value && value.button.GetSelected()) {
 				this.renderSetup?.RenderFace(value.accesory);

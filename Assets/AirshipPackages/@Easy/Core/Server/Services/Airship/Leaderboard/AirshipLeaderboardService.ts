@@ -8,7 +8,7 @@ import {
 	ServerBridgeApiLeaderboardUpdate,
 } from "@Easy/Core/Server/ProtectedServices/Airship/Leaderboard/LeaderboardService";
 import { Platform } from "@Easy/Core/Shared/Airship";
-import { AirshipUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
+import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 
@@ -41,7 +41,7 @@ export class AirshipLeaderboardService {
 		leaderboardName: string,
 		update: LeaderboardUpdate,
 	): Promise<ReturnType<ServerBridgeApiLeaderboardUpdate>> {
-		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiLeaderboardUpdate>(
+		return await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiLeaderboardUpdate>(
 			LeaderboardServiceBridgeTopics.Update,
 			LuauContext.Protected,
 			leaderboardName,
@@ -55,7 +55,7 @@ export class AirshipLeaderboardService {
 	 * @param id The id
 	 */
 	public async GetRank(leaderboardName: string, id: string): Promise<ReturnType<ServerBridgeApiLeaderboardGetRank>> {
-		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiLeaderboardGetRank>(
+		return await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiLeaderboardGetRank>(
 			LeaderboardServiceBridgeTopics.GetRank,
 			LuauContext.Protected,
 			leaderboardName,
@@ -69,7 +69,7 @@ export class AirshipLeaderboardService {
 	 * @param id
 	 */
 	public async DeleteEntry(leaderboardName: string, id: string) {
-		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiLeaderboardDeleteEntry>(
+		return await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiLeaderboardDeleteEntry>(
 			LeaderboardServiceBridgeTopics.DeleteEntry,
 			LuauContext.Protected,
 			leaderboardName,
@@ -83,7 +83,7 @@ export class AirshipLeaderboardService {
 	 * @param ids
 	 */
 	public async DeleteEntries(leaderboardName: string, ids: string[]) {
-		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiLeaderboardDeleteEntries>(
+		return await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiLeaderboardDeleteEntries>(
 			LeaderboardServiceBridgeTopics.DeleteEntries,
 			LuauContext.Protected,
 			leaderboardName,
@@ -96,7 +96,7 @@ export class AirshipLeaderboardService {
 	 * @param leaderboardName
 	 */
 	public async ResetLeaderboard(leaderboardName: string) {
-		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiLeaderboardResetLeaderboard>(
+		return await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiLeaderboardResetLeaderboard>(
 			LeaderboardServiceBridgeTopics.ResetLeaderboard,
 			LuauContext.Protected,
 			leaderboardName,
@@ -118,7 +118,7 @@ export class AirshipLeaderboardService {
 		startIndex = 0,
 		count = 100,
 	): Promise<ReturnType<ServerBridgeApiLeaderboardGetRankRange>> {
-		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiLeaderboardGetRankRange>(
+		return await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiLeaderboardGetRankRange>(
 			LeaderboardServiceBridgeTopics.Update,
 			LuauContext.Protected,
 			leaderboardName,

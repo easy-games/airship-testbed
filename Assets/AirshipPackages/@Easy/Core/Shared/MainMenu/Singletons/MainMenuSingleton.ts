@@ -55,7 +55,7 @@ export class MainMenuSingleton {
 
 				let sizeType: ScreenSizeType = "md";
 				if (Game.IsPortrait()) {
-					if (this.screenSize.x < 500) {
+					if (this.screenSize.x < 510 || Game.deviceType === AirshipDeviceType.Phone) {
 						sizeType = "sm";
 					}
 				} else {
@@ -66,7 +66,7 @@ export class MainMenuSingleton {
 					}
 				}
 
-				CoreLogger.Log(`sizeType: ${sizeType} size: ${this.screenSize}`);
+				CoreLogger.Log(`sizeType: ${sizeType}, size: ${this.screenSize}, dpi: ${Screen.dpi}`);
 
 				this.sizeType = sizeType;
 				this.onSizeChanged.Fire(this.sizeType, this.screenSize);

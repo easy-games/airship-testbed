@@ -97,7 +97,7 @@ export class Game {
 
 	/**
 	 * @returns True if this game instance is acting as a player client. When published this will
-	 * be true for all players. In local development in {@link https://docs.airship.gg/multiplayer-and-networking/local-server-mode#shared | Shared Server Mode} 
+	 * be true for all players. In local development in {@link https://docs.airship.gg/multiplayer-and-networking/local-server-mode#shared | Shared Server Mode}
 	 * this will also be true (because the client is operating as both server and client).
 	 */
 	public static IsClient(): boolean {
@@ -106,7 +106,7 @@ export class Game {
 
 	/**
 	 * @returns True if this game instance is acting as the server. When published this will only
-	 * be true on the game server. In local development in {@link https://docs.airship.gg/multiplayer-and-networking/local-server-mode#shared | Shared Server Mode} 
+	 * be true on the game server. In local development in {@link https://docs.airship.gg/multiplayer-and-networking/local-server-mode#shared | Shared Server Mode}
 	 * this will also be true (because the client is operating as both server and client).
 	 */
 	public static IsServer(): boolean {
@@ -152,10 +152,11 @@ export class Game {
 	}
 
 	public static GetNotchHeight(): number {
-		if (Game.IsMobile()) {
-			return 35;
+		if (Game.IsPortrait()) {
+			let notchHeight = (Screen.height - Screen.safeArea.yMax) / 2;
+			return notchHeight;
 		}
-		return 0;
+		return (Screen.width - Screen.safeArea.xMax) / 2;
 	}
 
 	/**

@@ -114,7 +114,7 @@ export class ClientChatSingleton {
 					// wrapperRect.offsetMax = new Vector2(0, 0);
 					// wrapperRect.offsetMin = new Vector2(0, 0);
 				}
-				wrapperRect.anchoredPosition = new Vector2(121, -14);
+				wrapperRect.anchoredPosition = new Vector2(Game.GetNotchHeight() + 190, -14);
 			} else {
 				const wrapperRect = this.wrapper.GetComponent<RectTransform>()!;
 				const wrapperImg = wrapperRect.GetComponent<Image>()!;
@@ -213,7 +213,11 @@ export class ClientChatSingleton {
 		CanvasAPI.OnInputFieldSubmit(this.inputField.gameObject, (data) => {
 			this.SubmitInputField();
 		});
-		this.HideChatInput();
+		if (Game.IsMobile()) {
+			this.ShowChatInput();
+		} else {
+			this.HideChatInput();
+		}
 
 		// Submitting on desktop.
 		// We cancel the form submit so the input field doesn't auto deselect.

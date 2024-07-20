@@ -3,6 +3,7 @@ import { MainMenuPartyController } from "@Easy/Core/Client/ProtectedControllers/
 import { TransferController } from "@Easy/Core/Client/ProtectedControllers/Transfer/TransferController";
 import { UserStatus, UserStatusData } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipUser";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
+import { Protected } from "@Easy/Core/Shared/Protected";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI, HoverState } from "@Easy/Core/Shared/Util/CanvasAPI";
@@ -17,6 +18,7 @@ export default class PartyCard extends AirshipBehaviour {
 	public gameArrow!: Image;
 	public gameButton!: Button;
 	public dropFriendHover!: GameObject;
+	public warpButton!: Button;
 
 	private loadedGameImageId: string | undefined;
 	private bin = new Bin();
@@ -25,8 +27,11 @@ export default class PartyCard extends AirshipBehaviour {
 		this.layoutElement.preferredHeight = 84;
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnHoverEvent(this.gameButton.gameObject, (hov) => {
-				NativeTween.AnchoredPositionX(this.gameArrow.transform, hov === HoverState.ENTER ? -10 : -20, 0.5)
-					.SetEaseBounceOut();
+				NativeTween.AnchoredPositionX(
+					this.gameArrow.transform,
+					hov === HoverState.ENTER ? -10 : -20,
+					0.5,
+				).SetEaseBounceOut();
 				this.gameArrow.color = hov === HoverState.ENTER ? Theme.primary : Theme.white;
 				this.gameText.color = hov === HoverState.ENTER ? Theme.primary : Theme.white;
 				this.gameButton.GetComponent<Image>()!.color =
@@ -36,6 +41,13 @@ export default class PartyCard extends AirshipBehaviour {
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnClickEvent(this.gameButton.gameObject, () => {
 				Dependency<TransferController>().TransferToPartyLeader();
+			}),
+		);
+		this.bin.Add(
+			this.gameButton.onClick.Connect((event) => {
+				task.spawn(async () => {
+					await Dependency<TransferController>().TransferPartyMembersToLeader();
+				});
 			}),
 		);
 
@@ -71,6 +83,9 @@ export default class PartyCard extends AirshipBehaviour {
 
 	public UpdateInfo(userStatus: UserStatusData | undefined) {
 		const party = Dependency<MainMenuPartyController>().party;
+		const isLeader = party?.leader === Protected.user.localUser?.uid;
+
+		this.warpButton.gameObject.SetActive(isLeader);
 
 		if (userStatus === undefined) {
 			this.layoutElement.preferredHeight = 84;

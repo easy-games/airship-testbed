@@ -7,7 +7,7 @@ import {
 } from "@Easy/Core/Server/ProtectedServices/Airship/PlatformInventory/PlatformInventoryService";
 import { Platform } from "@Easy/Core/Shared/Airship";
 import { ItemQueryParameters } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipPlatformInventory";
-import { AirshipUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
+import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 
@@ -42,7 +42,7 @@ export class AirshipPlatformInventoryService {
 	 * Grants a user the provided item.
 	 */
 	public async GrantItem(userId: string, classId: string): Promise<ReturnType<ServerBridgeApiGrantItem>> {
-		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiGrantItem>(
+		return await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiGrantItem>(
 			PlatformInventoryServiceBridgeTopics.GrantItem,
 			LuauContext.Protected,
 			userId,
@@ -54,7 +54,7 @@ export class AirshipPlatformInventoryService {
 	 * Deletes the given item instance from the users inventory.
 	 */
 	public async DeleteItem(instanceId: string): Promise<ReturnType<ServerBridgeApiDeleteItem>> {
-		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiDeleteItem>(
+		return await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiDeleteItem>(
 			PlatformInventoryServiceBridgeTopics.DeleteItem,
 			LuauContext.Protected,
 			instanceId,
@@ -65,7 +65,7 @@ export class AirshipPlatformInventoryService {
 	 * Gets all items in a users inventory.
 	 */
 	public async GetItems(userId: string, query?: ItemQueryParameters): Promise<ReturnType<ServerBridgeApiGetItems>> {
-		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiGetItems>(
+		return await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiGetItems>(
 			PlatformInventoryServiceBridgeTopics.GetItems,
 			LuauContext.Protected,
 			userId,
@@ -84,7 +84,7 @@ export class AirshipPlatformInventoryService {
 		user1: { uid: string; itemInstanceIds: string[] },
 		user2: { uid: string; itemInstanceIds: string[] },
 	): Promise<ReturnType<ServerBridgeApiPerformTrade>> {
-		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiPerformTrade>(
+		return await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiPerformTrade>(
 			PlatformInventoryServiceBridgeTopics.PerformTrade,
 			LuauContext.Protected,
 			user1,

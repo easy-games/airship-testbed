@@ -28,11 +28,12 @@ export default class AirshipOverlayManager extends AirshipBehaviour {
 
 		const mainMenu = Dependency<MainMenuSingleton>();
 		mainMenu.ObserveScreenSize((st, size) => {
-			if (Game.IsMobile() && st === "sm") {
-				this.canvasScalar.scaleFactor = 2.5;
-			} else {
-				this.canvasScalar.scaleFactor = 1;
-			}
+			// if (Game.IsMobile() && st === "sm") {
+			// 	this.canvasScalar.scaleFactor = 2.5;
+			// } else {
+			// 	this.canvasScalar.scaleFactor = 1;
+			// }
+			this.canvasScalar.scaleFactor = Game.GetScaleFactor();
 		});
 		mainMenu.onHideMobileEscapeButtonChanged.Connect((hide) => {
 			if (!Game.IsMobile()) return;

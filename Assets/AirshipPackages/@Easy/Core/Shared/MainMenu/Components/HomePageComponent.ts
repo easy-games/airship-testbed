@@ -1,9 +1,7 @@
 import { Dependency } from "@Easy/Core/Shared/Flamework";
-import { Game } from "@Easy/Core/Shared/Game";
 import SearchSingleton from "@Easy/Core/Shared/MainMenu/Components/Search/SearchSingleton";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
-import { MobileGameList } from "@Easy/Core/Shared/Util/MobileGameList";
 import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 import { SetTimeout } from "@Easy/Core/Shared/Util/Timer";
 import { DecodeJSON } from "@Easy/Core/Shared/json";
@@ -93,9 +91,9 @@ export default class HomePageComponent extends MainMenuPageComponent {
 				(g) => g.lastVersionUpdate !== undefined && !blockSingleton.IsGameIdBlocked(g.id),
 			);
 			// Temp: only show "The Campfire" on mobile for now.
-			if (!Game.IsEditor() && Game.IsMobile()) {
-				games = data[sortId].filter((g) => MobileGameList.includes(g.id));
-			}
+			// if (!Game.IsEditor() && Game.IsMobile()) {
+			// 	games = data[sortId].filter((g) => MobileGameList.includes(g.id));
+			// }
 			sortComponent.SetGames(games);
 			// this.loadedGameComponents = [...this.loadedGameComponents, ...sortComponent.SetGames(games)];
 		}

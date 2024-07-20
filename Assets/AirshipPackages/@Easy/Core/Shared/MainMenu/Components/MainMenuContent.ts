@@ -146,20 +146,20 @@ export default class MainMenuContent extends AirshipBehaviour {
 				this.contentWrapper.anchorMin = new Vector2(0, 1);
 				this.contentWrapper.anchorMax = new Vector2(0, 1);
 				this.contentWrapper.pivot = new Vector2(0, 1);
-				this.contentWrapper.anchoredPosition = new Vector2(25, -67);
+				this.contentWrapper.anchoredPosition = new Vector2(math.max(Game.GetNotchHeight(), 25), -67);
 				this.contentWrapper.sizeDelta = new Vector2(
-					screenSize.x + (socialMenuHidden ? -100 : -360),
+					screenSize.x + (socialMenuHidden ? -100 : -360) - Game.GetNotchHeight(),
 					screenSize.y - 67,
 				);
 
 				this.navbarContentWrapper.sizeDelta = new Vector2(
-					this.contentWrapper.sizeDelta.x + (socialMenuHidden ? 81 : 341) - 40,
+					this.contentWrapper.sizeDelta.x + (socialMenuHidden ? 81 : 341) - 110,
 					this.navbarContentWrapper.sizeDelta.y,
 				);
 				this.navbarContentWrapper.anchorMin = new Vector2(0, 1);
 				this.navbarContentWrapper.anchorMax = new Vector2(0, 1);
 				this.navbarContentWrapper.pivot = new Vector2(0, 1);
-				this.navbarContentWrapper.anchoredPosition = new Vector2(25, 0);
+				this.navbarContentWrapper.anchoredPosition = new Vector2(102, 0);
 			}
 			// this.navbar.anchoredPosition = new Vector2(0, 0);
 

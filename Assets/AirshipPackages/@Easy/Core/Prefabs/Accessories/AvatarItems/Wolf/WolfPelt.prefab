@@ -98,9 +98,6 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 50bf628099f0f644f9ebed1da07f9da6, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 7230561598875578802}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 50bf628099f0f644f9ebed1da07f9da6, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 8539257135083228966}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 50bf628099f0f644f9ebed1da07f9da6, type: 3}
       insertIndex: -1
@@ -123,44 +120,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 50bf628099f0f644f9ebed1da07f9da6, type: 3}
   m_PrefabInstance: {fileID: 5494385125230780991}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7230561598875578802
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4683343359440265070}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colorSettings:
-  - materialColor: {r: 0.2762401, g: 0.24817553, b: 0.31132078, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-    emissiveLevel: 0
-  - materialColor: {r: 0.0754717, g: 0.06301175, b: 0.06301175, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-    emissiveLevel: 0
-  - materialColor: {r: 0.7735849, g: 0.5488335, b: 0, a: 1}
-    emissiveColor: {r: 0.6218606, g: 0.6218606, b: 0.6218606, a: 1}
-    emissiveMix: 0.209
-    emissiveLevel: 0
-  - materialColor: {r: 0.6509434, g: 0.39609292, b: 0.443507, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-    emissiveLevel: 0
-  - materialColor: {r: 0.8867924, g: 0.807734, b: 0.6232645, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 0.2627451}
-    emissiveMix: 0
-    emissiveLevel: 0
-  - materialColor: {r: 0.4245283, g: 0.30848223, b: 0.22227661, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-    emissiveLevel: 0
-  addedByEditorScript: 0
 --- !u!114 &8539257135083228966
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,6 +136,7 @@ MonoBehaviour:
   accessorySlot: 13
   visibilityMode: 0
   skinnedToCharacter: 0
+  bodyMask: 0
 --- !u!114 &204140868525197457
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -236,7 +196,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   materialColors:
-  - {fileID: 7230561598875578802}
+  - {fileID: 0}
   materialIndexes: 02000000
   possibleColors:
     serializedVersion: 2
@@ -386,7 +346,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   materialColors:
-  - {fileID: 7230561598875578802}
+  - {fileID: 0}
   materialIndexes: 00000000
   possibleColors:
     serializedVersion: 2

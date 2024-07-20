@@ -1,6 +1,5 @@
 import { Airship } from "../Airship";
 import { Game } from "../Game";
-import { Layer } from "../Util/Layer";
 import { CharacterCameraMode } from "./LocalCharacter/CharacterCameraMode";
 
 /**
@@ -93,7 +92,7 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 					event.jump = false;
 				}
 				if (!this.enableCrouching) {
-					event.crouchOrSlide = false;
+					event.crouch = false;
 				}
 				if (!this.enableSprinting) {
 					event.sprinting = false;

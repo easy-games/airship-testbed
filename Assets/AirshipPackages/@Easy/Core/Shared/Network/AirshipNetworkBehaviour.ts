@@ -5,6 +5,32 @@ import { ServerBehaviourListeners } from "./ServerRpc";
 import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 import { ClientTargetedBehaviourListeners } from "./TargetRpc";
 import { Airship } from "../Airship";
+import { Player } from "../Player/Player";
+
+export interface AirshipNetworkOwnership {
+	/**
+	 * The player who owns the object
+	 */
+	readonly Player: Player | undefined;
+	/**
+	 * The connection underlying the ownership event
+	 */
+	readonly Connection: NetworkConnection;
+	/**
+	 * The client id of the owner
+	 */
+	readonly ClientId: number;
+
+	/**
+	 * Whether or not the current client is the owner of this object
+	 */
+	readonly IsOwner: boolean;
+
+	/**
+	 * Whether or not the owner is the server
+	 */
+	readonly IsServerOwned: boolean;
+}
 
 /**
  * A TypeScript parallel to the C# `NetworkBehaviour` for Airship.
@@ -117,7 +143,7 @@ export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
 	 * # DO NOT OVERRIDE - USE {@link OnStartNetwork} or {@link Start}
 	 * @deprecated
 	 */
-	public Awake(): void {
+	protected Awake(): void {
 		this.networkObject =
 			this.gameObject.GetComponent<NetworkObject>() ?? this.gameObject.GetComponentInParent<NetworkObject>()!;
 		assert(this.networkObject, "Missing NetworkObject on GameObject or parent of '" + this.gameObject.name + "'");
@@ -133,7 +159,7 @@ export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
 					startedServer = true;
 
 					this.InitServerRpc();
-					this.OnStartServer();
+					this.OnStartServer?.();
 				}),
 			);
 
@@ -142,7 +168,7 @@ export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
 					if (!startedServer) return;
 					startedServer = false;
 
-					this.OnStopServer();
+					this.OnStopServer?.();
 				}),
 			);
 		}
@@ -152,7 +178,7 @@ export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
 				if (startedNetwork) return;
 				startedNetwork = true;
 
-				this.OnStartNetwork();
+				this.OnStartNetwork?.();
 			}),
 		);
 
@@ -160,7 +186,7 @@ export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
 			nob.OnStopNetwork(() => {
 				if (!startedNetwork) return;
 				startedNetwork = false;
-				this.OnStopNetwork();
+				this.OnStopNetwork?.();
 			}),
 		);
 
@@ -172,7 +198,7 @@ export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
 					startedClient = true;
 
 					this.InitClientRpc();
-					this.OnStartClient();
+					this.OnStartClient?.();
 				}),
 			);
 
@@ -181,25 +207,97 @@ export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
 					if (!startedClient) return;
 					startedClient = false;
 
-					this.OnStopClient();
+					this.OnStopClient?.();
 				}),
 			);
 		}
 
-		this.networkBin.AddEngineEventConnection(nob.OnStopNetwork(() => this.OnStopNetwork()));
-		this.networkBin.AddEngineEventConnection(nob.OnDespawnServer((conn) => this.OnServerDespawn()));
+		this.networkBin.AddEngineEventConnection(nob.OnStopNetwork(() => this.OnStopNetwork?.()));
+		this.networkBin.AddEngineEventConnection(nob.OnDespawnServer((conn) => this.OnDespawnServer?.()));
+
+		this.networkBin.AddEngineEventConnection(
+			nob.OnOwnershipServer((conn) => {
+				const nob = this.networkObject;
+				const player = Airship.Players.FindByConnectionId(nob.OwnerId);
+				this.OnOwnershipServer?.({
+					Player: player,
+					Connection: conn,
+					ClientId: nob.OwnerId,
+					IsOwner: nob.IsOwner,
+					IsServerOwned: nob.OwnerId === -1,
+				});
+			}),
+		);
+
+		this.networkBin.AddEngineEventConnection(nob.OnSpawnServer(() => this.OnSpawnServer?.()));
+
+		this.networkBin.AddEngineEventConnection(
+			nob.OnOwnershipClient((conn) => {
+				const nob = this.networkObject;
+				const player = Airship.Players.FindByConnectionId(nob.OwnerId);
+				this.OnOwnershipClient?.({
+					Player: player,
+					Connection: conn,
+					ClientId: nob.OwnerId,
+					IsOwner: nob.IsOwner,
+					IsServerOwned: nob.OwnerId === -1,
+				});
+			}),
+		);
 	}
 
-	public OnStartNetwork() {}
-	public OnStopNetwork() {}
+	/**
+	 * Called when this `AirshipNetworkBehaviour` starts networking
+	 *
+	 * This is useful for code that needs to run on the start on both server and client
+	 * - If you want a server or client only start, use {@link OnStartServer} or {@link OnStartClient}
+	 */
+	protected OnStartNetwork?(): void;
+	/**
+	 * Called when this `AirshipNetworkBehaviour` stops networking
+	 */
+	protected OnStopNetwork?(): void;
 
-	public OnStartServer() {}
-	public OnStartClient() {}
+	/**
+	 * Called on the server when this `AirshipNetworkBehaviour` starts networking
+	 */
+	protected OnStartServer?(): void;
+	/**
+	 * Called when the ownership of this object is changed on the server
+	 */
+	protected OnOwnershipServer?(ownership: AirshipNetworkOwnership): void;
 
-	public OnStopServer() {}
-	public OnStopClient() {}
+	/**
+	 * Called on the client when this `AirshipNetworkBehaviour` starts networking
+	 */
+	protected OnStartClient?(): void;
+	/**
+	 * Called when the ownership of this object is changed on the client
+	 */
+	protected OnOwnershipClient?(ownership: AirshipNetworkOwnership): void;
 
-	public OnServerDespawn() {}
+	/**
+	 * Called when this `AirshipNetworkBehaviour` stops being networked on the server
+	 */
+	protected OnStopServer?(): void;
+	/**
+	 * Called when this `AirshipNetworkBehaviour` stops being networked on the client
+	 */
+	protected OnStopClient?(): void;
+
+	/**
+	 * Called when this `AirshipNetworkBehaviour` is spawned on the server
+	 */
+	protected OnSpawnServer?(): void;
+	/**
+	 * Called when this `AirshipNetworkBehaviour` is despawned on the server
+	 */
+	protected OnDespawnServer?(): void;
+
+	/**
+	 * Called when this object is destroyed locally
+	 */
+	protected OnNetworkDestroy?(): void;
 
 	/**
 	 * Returns true if this object is owned by the server
@@ -237,7 +335,11 @@ export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
 		return Airship.Players.FindByConnectionId(this.networkObject.OwnerId);
 	}
 
-	public OnDestroy(): void {
+	/**
+	 * @deprecated This method is used by `AirshipNetworkBehaviour` - please see {@link OnNetworkDestroy}
+	 */
+	protected OnDestroy(): void {
 		this.networkBin.Clean();
+		this.OnNetworkDestroy?.();
 	}
 }

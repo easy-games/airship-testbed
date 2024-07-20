@@ -4,7 +4,7 @@ import {
 	ServerBridgeApiGetUsersById,
 	UserServiceBridgeTopics,
 } from "@Easy/Core/Server/ProtectedServices/Airship/User/UserService";
-import { AirshipUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
+import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 
@@ -25,7 +25,7 @@ export class AirshipUserService {
 	 * @returns A user object
 	 */
 	public async GetUserByUsername(username: string): Promise<ReturnType<ServerBridgeApiGetUserByUsername>> {
-		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiGetUserByUsername>(
+		return await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiGetUserByUsername>(
 			UserServiceBridgeTopics.GetUserByUsername,
 			LuauContext.Protected,
 			username,
@@ -38,7 +38,7 @@ export class AirshipUserService {
 	 * @returns A user object
 	 */
 	public async GetUserById(userId: string): Promise<ReturnType<ServerBridgeApiGetUserById>> {
-		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiGetUserById>(
+		return await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiGetUserById>(
 			UserServiceBridgeTopics.GetUserById,
 			LuauContext.Protected,
 			userId,
@@ -57,7 +57,7 @@ export class AirshipUserService {
 		userIds: string[],
 		strict: boolean = false,
 	): Promise<ReturnType<ServerBridgeApiGetUsersById>> {
-		return await AirshipUtil.PromisifyBridgeInvoke<ServerBridgeApiGetUsersById>(
+		return await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiGetUsersById>(
 			UserServiceBridgeTopics.GetUsersById,
 			LuauContext.Protected,
 			userIds,

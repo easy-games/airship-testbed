@@ -3,7 +3,7 @@ import {
 	PartyControllerBridgeTopics,
 } from "@Easy/Core/Client/ProtectedControllers/Airship/Party/PartyController";
 import { Platform } from "@Easy/Core/Shared/Airship";
-import { AirshipUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
+import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
 import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 
@@ -24,7 +24,7 @@ export class AirshipPartyController {
 	 * Gets the users current party data.
 	 */
 	public async GetParty(): Promise<ReturnType<ClientBridgeApiGetParty>> {
-		return await AirshipUtil.PromisifyBridgeInvoke<ClientBridgeApiGetParty>(
+		return await ContextBridgeUtil.PromisifyBridgeInvoke<ClientBridgeApiGetParty>(
 			PartyControllerBridgeTopics.GetParty,
 			LuauContext.Protected,
 		);
