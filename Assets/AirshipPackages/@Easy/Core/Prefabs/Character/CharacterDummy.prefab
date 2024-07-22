@@ -223,7 +223,7 @@ PrefabInstance:
     - target: {fileID: 5043041770756594627, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       propertyPath: currentOutfit
       value: 
-      objectReference: {fileID: 11400000, guid: 6323cf9d085ec184084bc935cf900196, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 5043041770756594627, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       propertyPath: firstPersonLayer
       value: -1
