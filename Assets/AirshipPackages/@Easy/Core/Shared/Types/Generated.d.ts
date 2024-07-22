@@ -51314,6 +51314,7 @@ declare const MoveInputData: MoveInputDataConstructor;
     
 interface NetworkTickSmoother extends NetworkBehaviour {
     graphicalObject: Transform;
+    interpolation: number;
 
 
 
@@ -51513,4 +51514,31 @@ interface GridConstructor {
 
 }
 declare const Grid: GridConstructor;
+    
+interface UIScrollRectEventBubbler extends MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IScrollHandler {
+    Bubble: boolean;
+    DisableEventTriggerWhileDragging: boolean;
+    DisableDragEvents: boolean;
+    readonly EventTrigger: EventTrigger;
+
+
+
+    OnBeginDrag(eventData: PointerEventData): void;
+    OnDisable(): void;
+    OnDrag(eventData: PointerEventData): void;
+    OnEndDrag(eventData: PointerEventData): void;
+    OnScroll(eventData: PointerEventData): void;
+
+
+}
+    
+interface UIScrollRectEventBubblerConstructor {
+
+
+    new(): UIScrollRectEventBubbler;
+
+
+
+}
+declare const UIScrollRectEventBubbler: UIScrollRectEventBubblerConstructor;
 
