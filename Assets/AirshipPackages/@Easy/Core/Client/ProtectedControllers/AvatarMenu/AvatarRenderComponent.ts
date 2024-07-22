@@ -253,5 +253,10 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 		const transform = this.cameraTransforms[renderSlot];
 		this.captureCamera.transform.position = transform.position;
 		this.captureCamera.transform.rotation = transform.rotation;
+
+		let showBody = renderSlot !== AvatarRenderSlot.EARS;
+		this.builder.rig.headMesh?.gameObject.SetActive(showBody);
+		this.builder.rig.bodyMesh?.gameObject.SetActive(showBody);
+		this.builder.rig.armsMesh?.gameObject.SetActive(showBody);
 	}
 }

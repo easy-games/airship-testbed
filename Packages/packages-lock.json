@@ -202,7 +202,7 @@
     },
     "com.unity.searcher": {
       "version": "4.9.2",
-      "depth": 3,
+      "depth": 2,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
@@ -216,7 +216,7 @@
     },
     "com.unity.shadergraph": {
       "version": "16.0.4",
-      "depth": 2,
+      "depth": 1,
       "source": "builtin",
       "dependencies": {
         "com.unity.render-pipelines.core": "16.0.4",
@@ -311,6 +311,15 @@
         "com.unity.modules.imgui": "1.0.0"
       }
     },
+    "com.unity.visualeffectgraph": {
+      "version": "16.0.4",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.shadergraph": "16.0.4",
+        "com.unity.render-pipelines.core": "16.0.4"
+      }
+    },
     "com.unity.visualscripting": {
       "version": "1.9.1",
       "depth": 1,
@@ -334,7 +343,8 @@
         "com.unity.multiplayer.playmode": "1.0.0-pre.2",
         "com.unity.ugui": "2.0.0",
         "com.unity.visualscripting": "1.9.1",
-        "com.unity.inputsystem": "1.7.0"
+        "com.unity.inputsystem": "1.7.0",
+        "com.unity.visualeffectgraph": "16.0.4"
       }
     },
     "com.unity.modules.ai": {
