@@ -8,21 +8,23 @@ export default class DeleteAccountButton extends AirshipBehaviour {
 	private bin = new Bin();
 
 	override OnEnable(): void {
-		CanvasAPI.OnClickEvent(this.gameObject, () => {
-			task.spawn(async () => {
-				const confirmed = await Dependency<MainMenuSingleton>().ShowConfirmModal(
-					"Delete Account",
-					"Are you sure you want to delete your account? This cannot be undone.",
-				);
-				if (!confirmed) return;
-				const res = InternalHttpManager.DeleteAsync(AirshipUrl.GameCoordinator + "/users/self");
-				if (res.error) {
-					error(res.error);
-				}
-				AuthManager.ClearSavedAccount();
-				Bridge.LoadScene("Login", true, LoadSceneMode.Single);
-			});
-		});
+		this.bin.AddEngineEventConnection(
+			CanvasAPI.OnClickEvent(this.gameObject, () => {
+				task.spawn(async () => {
+					const confirmed = await Dependency<MainMenuSingleton>().ShowConfirmModal(
+						"Delete Account",
+						"Are you sure you want to delete your account? This cannot be undone.",
+					);
+					if (!confirmed) return;
+					const res = InternalHttpManager.DeleteAsync(AirshipUrl.GameCoordinator + "/users/self");
+					if (res.error) {
+						error(res.error);
+					}
+					AuthManager.ClearSavedAccount();
+					Bridge.LoadScene("Login", true, LoadSceneMode.Single);
+				});
+			}),
+		);
 	}
 
 	override OnDisable(): void {
