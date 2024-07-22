@@ -143,7 +143,7 @@ export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
 	 * # DO NOT OVERRIDE - USE {@link OnStartNetwork} or {@link Start}
 	 * @deprecated
 	 */
-	public Awake(): void {
+	protected Awake(): void {
 		this.networkObject =
 			this.gameObject.GetComponent<NetworkObject>() ?? this.gameObject.GetComponentInParent<NetworkObject>()!;
 		assert(this.networkObject, "Missing NetworkObject on GameObject or parent of '" + this.gameObject.name + "'");
@@ -252,52 +252,52 @@ export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
 	 * This is useful for code that needs to run on the start on both server and client
 	 * - If you want a server or client only start, use {@link OnStartServer} or {@link OnStartClient}
 	 */
-	public OnStartNetwork?(): void;
+	protected OnStartNetwork?(): void;
 	/**
 	 * Called when this `AirshipNetworkBehaviour` stops networking
 	 */
-	public OnStopNetwork?(): void;
+	protected OnStopNetwork?(): void;
 
 	/**
 	 * Called on the server when this `AirshipNetworkBehaviour` starts networking
 	 */
-	public OnStartServer?(): void;
+	protected OnStartServer?(): void;
 	/**
 	 * Called when the ownership of this object is changed on the server
 	 */
-	public OnOwnershipServer?(ownership: AirshipNetworkOwnership): void;
+	protected OnOwnershipServer?(ownership: AirshipNetworkOwnership): void;
 
 	/**
 	 * Called on the client when this `AirshipNetworkBehaviour` starts networking
 	 */
-	public OnStartClient?(): void;
+	protected OnStartClient?(): void;
 	/**
 	 * Called when the ownership of this object is changed on the client
 	 */
-	public OnOwnershipClient?(ownership: AirshipNetworkOwnership): void;
+	protected OnOwnershipClient?(ownership: AirshipNetworkOwnership): void;
 
 	/**
 	 * Called when this `AirshipNetworkBehaviour` stops being networked on the server
 	 */
-	public OnStopServer?(): void;
+	protected OnStopServer?(): void;
 	/**
 	 * Called when this `AirshipNetworkBehaviour` stops being networked on the client
 	 */
-	public OnStopClient?(): void;
+	protected OnStopClient?(): void;
 
 	/**
 	 * Called when this `AirshipNetworkBehaviour` is spawned on the server
 	 */
-	public OnSpawnServer?(): void;
+	protected OnSpawnServer?(): void;
 	/**
 	 * Called when this `AirshipNetworkBehaviour` is despawned on the server
 	 */
-	public OnDespawnServer?(): void;
+	protected OnDespawnServer?(): void;
 
 	/**
 	 * Called when this object is destroyed locally
 	 */
-	public OnNetworkDestroy?(): void;
+	protected OnNetworkDestroy?(): void;
 
 	/**
 	 * Returns true if this object is owned by the server
@@ -338,7 +338,7 @@ export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
 	/**
 	 * @deprecated This method is used by `AirshipNetworkBehaviour` - please see {@link OnNetworkDestroy}
 	 */
-	public OnDestroy(): void {
+	protected OnDestroy(): void {
 		this.networkBin.Clean();
 		this.OnNetworkDestroy?.();
 	}

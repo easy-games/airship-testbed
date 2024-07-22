@@ -46,11 +46,11 @@ export default class SettingsPage extends AirshipBehaviour {
 					// this.scrollView.offsetMax = new Vector2(-5, -7);
 					// this.scrollView.offsetMin = new Vector2(5, 0);
 					// this.scrollView.anchoredPosition = new Vector2(0, -96);
-					this.scrollView.offsetMax = new Vector2(0, -notchHeight - 70);
+					this.scrollView.offsetMax = new Vector2(0, -notchHeight - 40);
 					this.scrollView.offsetMin = new Vector2(0, 0);
 
 					this.mobileHeader.gameObject.SetActive(true);
-					this.mobileHeader.sizeDelta = new Vector2(this.mobileHeader.sizeDelta.x, notchHeight + 70);
+					this.mobileHeader.sizeDelta = new Vector2(this.mobileHeader.sizeDelta.x, notchHeight + 40);
 
 					this.desktopCloseButtonWrapper.gameObject.SetActive(false);
 					this.canvasScalar.matchWidthOrHeight = 1;

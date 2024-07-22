@@ -12,6 +12,7 @@ export enum AvatarRenderSlot {
 	HANDS,
 	LEGS,
 	FEET,
+	EARS,
 }
 
 export default class AvatarRenderComponent extends AirshipBehaviour {
@@ -28,6 +29,8 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 	public cameraTransforms!: Transform[];
 
 	@Header("Variables")
+	public itemSkinColor = Color.black;
+	public faceSkinColor = Color.white;
 	public cameraDistanceBase = 2;
 	public cameraDistanceMod = 1;
 	public uploadThumbnails = false;
@@ -90,6 +93,7 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 	 */
 	public RenderAllItems() {
 		this.CreateItemCamera();
+		this.SetupForRenders(false);
 
 		let allItems = AvatarUtil.GetAllPossibleAvatarItems();
 
@@ -103,6 +107,10 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 			}
 			i++;
 		}
+	}
+
+	public SetupForRenders(renderingFaces: boolean) {
+		this.builder.SetSkinColor(renderingFaces ? this.faceSkinColor : this.itemSkinColor, true);
 	}
 
 	/**
@@ -205,9 +213,12 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 				break;
 			case AccessorySlot.Head:
 			case AccessorySlot.Neck:
-			case AccessorySlot.Ears:
 			case AccessorySlot.Nose:
 				renderSlot = AvatarRenderSlot.HEAD;
+				break;
+
+			case AccessorySlot.Ears:
+				renderSlot = AvatarRenderSlot.EARS;
 				break;
 			case AccessorySlot.Waist:
 			case AccessorySlot.TorsoInner:
@@ -242,5 +253,10 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 		const transform = this.cameraTransforms[renderSlot];
 		this.captureCamera.transform.position = transform.position;
 		this.captureCamera.transform.rotation = transform.rotation;
+
+		let showBody = renderSlot !== AvatarRenderSlot.EARS;
+		this.builder.rig.headMesh?.gameObject.SetActive(showBody);
+		this.builder.rig.bodyMesh?.gameObject.SetActive(showBody);
+		this.builder.rig.armsMesh?.gameObject.SetActive(showBody);
 	}
 }
