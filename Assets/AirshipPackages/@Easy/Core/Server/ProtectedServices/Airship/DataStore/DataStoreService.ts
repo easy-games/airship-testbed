@@ -12,7 +12,10 @@ export const enum DataStoreServiceBridgeTopics {
 
 export type ServerBridgeApiDataGetKey<T> = (key: string) => Result<DataStoreRecord<T> | undefined, string>;
 export type ServerBridgeApiDataSetKey<T> = (key: string, data: T, etag?: string) => Result<DataStoreRecord<T>, string>;
-export type ServerBridgeApiDataDeleteKey<T> = (key: string) => Result<DataStoreRecord<T> | undefined, string>;
+export type ServerBridgeApiDataDeleteKey<T> = (
+	key: string,
+	etag?: string,
+) => Result<DataStoreRecord<T> | undefined, string>;
 
 export interface DataStoreRecord<T> {
 	data: T;
@@ -103,8 +106,9 @@ export class ProtectedDataStoreService {
 		};
 	}
 
-	public async DeleteKey<T>(key: string): Promise<ReturnType<ServerBridgeApiDataDeleteKey<T>>> {
-		const result = InternalHttpManager.DeleteAsync(`${AirshipUrl.DataStoreService}/data/key/${key}`);
+	public async DeleteKey<T>(key: string, etag?: string): Promise<ReturnType<ServerBridgeApiDataDeleteKey<T>>> {
+		const query = etag ? `?etag=${etag}` : "";
+		const result = InternalHttpManager.DeleteAsync(`${AirshipUrl.DataStoreService}/data/key/${key}${query}`);
 		if (!result.success || result.statusCode > 299) {
 			warn(`Unable to delete data key. Status Code: ${result.statusCode}.\n`, result.error);
 			return {

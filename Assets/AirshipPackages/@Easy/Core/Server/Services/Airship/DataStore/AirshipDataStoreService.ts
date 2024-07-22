@@ -79,11 +79,13 @@ export class AirshipDataStoreService {
 	 * @param callback The function that will be called to retrieve the new data value.
 	 * @returns The data that was associated with the provided key.
 	 */
-	public async GetAndSet<R extends object>(
+	public async GetAndSet<T extends object>(
 		key: string,
-		callback: (record?: DataStoreRecord<R>) => R,
-	): Promise<ReturnType<ServerBridgeApiDataSetKey<R>>> {
-		const currentData = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiDataGetKey<R>>(
+		callback: (record?: DataStoreRecord<T>) => T,
+	): Promise<ReturnType<ServerBridgeApiDataSetKey<T>>> {
+		this.checkKey(key);
+
+		const currentData = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiDataGetKey<T>>(
 			DataStoreServiceBridgeTopics.GetKey,
 			LuauContext.Protected,
 			key,
@@ -92,7 +94,7 @@ export class AirshipDataStoreService {
 
 		try {
 			const newData = callback(currentData.data);
-			const setResult = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiDataSetKey<R>>(
+			const setResult = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiDataSetKey<T>>(
 				DataStoreServiceBridgeTopics.SetKey,
 				LuauContext.Protected,
 				key,
@@ -123,6 +125,59 @@ export class AirshipDataStoreService {
 			LuauContext.Protected,
 			key,
 		);
+	}
+
+	/**
+	 * Works similarly to GetAndSet, but allows you to delete a key based on the key's data. If the callback
+	 * returns true, the key will be deleted only if it has not changed. If the callback returns false, this
+	 * function will return the current data value of the key. If the key is already unset, the function will
+	 * return success with no data.
+	 *
+	 * The callback function will not be called if the key has no associated data.
+	 *
+	 * @param key The key to use. Keys must be alphanumeric and may include the following symbols: _.:
+	 * @param callback The function that will be called to determine if the value should be deleted. Returning
+	 * true will delete the key.
+	 * @returns The data that was deleted. If no data was deleted, nothing will be returned.
+	 */
+	public async GetAndDelete<T extends object>(
+		key: string,
+		callback: (record: DataStoreRecord<T>) => boolean,
+	): Promise<ReturnType<ServerBridgeApiDataDeleteKey<T>>> {
+		this.checkKey(key);
+
+		const currentData = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiDataGetKey<T>>(
+			DataStoreServiceBridgeTopics.GetKey,
+			LuauContext.Protected,
+			key,
+		);
+		if (!currentData.success) return currentData;
+		if (!currentData.data?.data) return currentData;
+
+		try {
+			const shouldDelete = callback(currentData.data);
+			if (!shouldDelete) {
+				return {
+					success: true,
+					data: currentData.data,
+				};
+			}
+
+			const deleteResult = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiDataDeleteKey<T>>(
+				DataStoreServiceBridgeTopics.DeleteKey,
+				LuauContext.Protected,
+				key,
+				currentData.data.metadata.etag,
+			);
+			if (!deleteResult.success) return deleteResult;
+			return deleteResult;
+		} catch (err) {
+			warn("Error retrieving updated value.", err);
+			return {
+				success: false,
+				error: "Error retrieving updated value.",
+			};
+		}
 	}
 
 	/**
