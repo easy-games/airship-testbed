@@ -192,7 +192,7 @@ export default class MainMenuContent extends AirshipBehaviour {
 
 			// this.navbar.sizeDelta = new Vector2(this.navbar.sizeDelta.x, 67);
 			this.pages.offsetMax = new Vector2(0, 0);
-			if (Game.IsLandscape() && this.mainMenu.sizeType === "sm") {
+			if (Game.IsLandscape() && this.mainMenu.sizeType === "sm" && false) {
 				this.pages.offsetMin = new Vector2(Game.GetNotchHeight(), this.pages.offsetMin.y);
 			} else {
 				this.pages.offsetMin = new Vector2(0, this.pages.offsetMin.y);
