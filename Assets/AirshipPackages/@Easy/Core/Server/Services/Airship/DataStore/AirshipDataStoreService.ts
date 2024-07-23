@@ -1,5 +1,4 @@
 import {
-	DataStoreRecord,
 	DataStoreServiceBridgeTopics,
 	ServerBridgeApiDataDeleteKey,
 	ServerBridgeApiDataGetKey,
@@ -9,6 +8,7 @@ import { Platform } from "@Easy/Core/Shared/Airship";
 import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import { Result } from "@Easy/Core/Shared/Types/Result";
 
 /**
  * The Data Store provides simple key/value persistent storage.
@@ -34,14 +34,20 @@ export class AirshipDataStoreService {
 	 * @param key The key to use. Keys must be alphanumeric and may include the following symbols: ``_.:``
 	 * @returns The data associated with the provided key. If no data is found, nothing is returned.
 	 */
-	public async GetKey<T extends object>(key: string): Promise<ReturnType<ServerBridgeApiDataGetKey<T>>> {
+	public async GetKey<T extends object>(key: string): Promise<Result<T | undefined, string>> {
 		this.checkKey(key);
 
-		return await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiDataGetKey<T>>(
+		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiDataGetKey<T>>(
 			DataStoreServiceBridgeTopics.GetKey,
 			LuauContext.Protected,
 			key,
 		);
+
+		if (!result.success) return result;
+		return {
+			...result,
+			data: result.data?.value,
+		};
 	}
 
 	/**
@@ -50,15 +56,21 @@ export class AirshipDataStoreService {
 	 * @param data The data to associate with the provided key.
 	 * @returns The data that was associated with the provided key.
 	 */
-	public async SetKey<T extends object>(key: string, data: T): Promise<ReturnType<ServerBridgeApiDataSetKey<T>>> {
+	public async SetKey<T extends object>(key: string, data: T): Promise<Result<T, string>> {
 		this.checkKey(key);
 
-		return await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiDataSetKey<T>>(
+		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiDataSetKey<T>>(
 			DataStoreServiceBridgeTopics.SetKey,
 			LuauContext.Protected,
 			key,
 			data,
 		);
+
+		if (!result.success) return result;
+		return {
+			...result,
+			data: result.data?.value,
+		};
 	}
 
 	/**
@@ -79,10 +91,7 @@ export class AirshipDataStoreService {
 	 * @param callback The function that will be called to retrieve the new data value.
 	 * @returns The data that was associated with the provided key.
 	 */
-	public async GetAndSet<T extends object>(
-		key: string,
-		callback: (record?: DataStoreRecord<T>) => T,
-	): Promise<ReturnType<ServerBridgeApiDataSetKey<T>>> {
+	public async GetAndSet<T extends object>(key: string, callback: (record?: T) => T): Promise<Result<T, string>> {
 		this.checkKey(key);
 
 		const currentData = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiDataGetKey<T>>(
@@ -93,7 +102,7 @@ export class AirshipDataStoreService {
 		if (!currentData.success) return currentData;
 
 		try {
-			const newData = callback(currentData.data);
+			const newData = callback(currentData.data?.value);
 			const setResult = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiDataSetKey<T>>(
 				DataStoreServiceBridgeTopics.SetKey,
 				LuauContext.Protected,
@@ -102,7 +111,10 @@ export class AirshipDataStoreService {
 				currentData.data?.metadata.etag ?? "CREATE",
 			);
 			if (!setResult.success) return setResult;
-			return setResult;
+			return {
+				...setResult,
+				data: setResult.data.value,
+			};
 		} catch (err) {
 			warn("Error retrieving updated value.", err);
 			return {
@@ -117,14 +129,20 @@ export class AirshipDataStoreService {
 	 * @param key The key to use. Keys must be alphanumeric and may include the following symbols: _.:
 	 * @returns The data that was deleted. If no data was deleted, nothing will be returned.
 	 */
-	public async DeleteKey<T extends object>(key: string): Promise<ReturnType<ServerBridgeApiDataDeleteKey<T>>> {
+	public async DeleteKey<T extends object>(key: string): Promise<Result<T | undefined, string>> {
 		this.checkKey(key);
 
-		return await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiDataDeleteKey<T>>(
+		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiDataDeleteKey<T>>(
 			DataStoreServiceBridgeTopics.DeleteKey,
 			LuauContext.Protected,
 			key,
 		);
+
+		if (!result.success) return result;
+		return {
+			...result,
+			data: result.data?.value,
+		};
 	}
 
 	/**
@@ -142,8 +160,8 @@ export class AirshipDataStoreService {
 	 */
 	public async GetAndDelete<T extends object>(
 		key: string,
-		callback: (record: DataStoreRecord<T>) => boolean,
-	): Promise<ReturnType<ServerBridgeApiDataDeleteKey<T>>> {
+		callback: (record: T) => boolean,
+	): Promise<Result<T | undefined, string>> {
 		this.checkKey(key);
 
 		const currentData = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiDataGetKey<T>>(
@@ -152,14 +170,19 @@ export class AirshipDataStoreService {
 			key,
 		);
 		if (!currentData.success) return currentData;
-		if (!currentData.data?.data) return currentData;
+		if (!currentData.data?.value) {
+			return {
+				...currentData,
+				data: undefined,
+			};
+		}
 
 		try {
-			const shouldDelete = callback(currentData.data);
+			const shouldDelete = callback(currentData.data.value);
 			if (!shouldDelete) {
 				return {
 					success: true,
-					data: currentData.data,
+					data: currentData.data.value,
 				};
 			}
 
@@ -170,7 +193,10 @@ export class AirshipDataStoreService {
 				currentData.data.metadata.etag,
 			);
 			if (!deleteResult.success) return deleteResult;
-			return deleteResult;
+			return {
+				...deleteResult,
+				data: deleteResult.data?.value,
+			};
 		} catch (err) {
 			warn("Error retrieving updated value.", err);
 			return {

@@ -8,6 +8,7 @@ import { Platform } from "@Easy/Core/Shared/Airship";
 import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import { Result } from "@Easy/Core/Shared/Types/Result";
 
 /**
  * The Cache Store provides simple key/value cache storage.
@@ -36,18 +37,20 @@ export class AirshipCacheStoreService {
 	 * be unchanged. The maximum expire time is 24 hours.
 	 * @returns The data associated with the provided key. If no data is associated with the provided key, then nothing will be returned.
 	 */
-	public async GetKey<T extends object>(
-		key: string,
-		expireTimeSec?: number,
-	): Promise<ReturnType<ServerBridgeApiCacheGetKey<T>>> {
+	public async GetKey<T extends object>(key: string, expireTimeSec?: number): Promise<Result<T | undefined, string>> {
 		this.CheckKey(key);
 
-		return await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiCacheGetKey<T>>(
+		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiCacheGetKey<T>>(
 			CacheStoreServiceBridgeTopics.GetKey,
 			LuauContext.Protected,
 			key,
 			expireTimeSec,
 		);
+		if (!result.success) return result;
+		return {
+			...result,
+			data: result.data?.value,
+		};
 	}
 
 	/**
@@ -57,20 +60,21 @@ export class AirshipCacheStoreService {
 	 * @param expireTimeSec The duration this key should live after being set in seconds. The maximum duration is 24 hours.
 	 * @returns The data that was associated with the provided key.
 	 */
-	public async SetKey<T extends object>(
-		key: string,
-		data: T,
-		expireTimeSec: number,
-	): Promise<ReturnType<ServerBridgeApiCacheSetKey<T>>> {
+	public async SetKey<T extends object>(key: string, data: T, expireTimeSec: number): Promise<Result<T, string>> {
 		this.CheckKey(key);
 
-		return await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiCacheSetKey<T>>(
+		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiCacheSetKey<T>>(
 			CacheStoreServiceBridgeTopics.SetKey,
 			LuauContext.Protected,
 			key,
 			data,
 			expireTimeSec,
 		);
+		if (!result.success) return result;
+		return {
+			...result,
+			data: result.data.value,
+		};
 	}
 
 	/**

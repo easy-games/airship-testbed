@@ -18,7 +18,7 @@ export type ServerBridgeApiDataDeleteKey<T> = (
 ) => Result<DataStoreRecord<T> | undefined, string>;
 
 export interface DataStoreRecord<T> {
-	data: T;
+	value: T;
 	metadata: {
 		etag: string;
 	};
