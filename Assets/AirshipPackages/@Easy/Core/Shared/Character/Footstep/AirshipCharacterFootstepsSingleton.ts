@@ -149,16 +149,17 @@ export class AirshipCharacterFootstepsSingleton {
 			if (!foundPaths) {
 				foundPaths = this.materialMap.get("Stone_Clean");
 			}
-			if (foundPaths) {
-				for (let path of foundPaths) {
-					const clip = AssetCache.LoadAssetIfExists<AudioClip>(path);
-					if (clip) {
-						clips.push(clip);
-					}
-				}
-			}
 		} else {
 			foundPaths = this.materialMap.get("Grass");
+		}
+
+		if (foundPaths) {
+			for (let path of foundPaths) {
+				const clip = AssetCache.LoadAssetIfExists<AudioClip>(path);
+				if (clip) {
+					clips.push(clip);
+				}
+			}
 		}
 
 		const signal = new CharacterFootstepSignal(
