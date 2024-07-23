@@ -118,19 +118,26 @@ export class AirshipCharacterFootstepsSingleton {
 	private PlayFootstepSound(character: Character, camPos: Vector3): void {
 		const raycastHit = character.movement.groundedRaycastHit;
 		const renderer = raycastHit.collider.GetComponent<Renderer>()!;
+
+		let materialName = "grass";
+		let material: Material | undefined;
+		let clips: AudioClip[] = [];
+		let crouching = character.state === CharacterState.Crouching;
+		let volumeScale = crouching ? 0.3 : 1;
+		if (!character.IsLocalCharacter()) {
+			volumeScale *= 2;
+		}
+		let volume = this.baseFootstepVolumeScale * volumeScale;
+		let foundPaths: string[] | undefined = [];
+
 		if (renderer) {
 			const material = renderer.material;
-			let [materialName] = material.name.gsub("%s*%([^)]+%)", "");
-			let materialNameLower = materialName.lower();
-			// print("footstep material: " + material.name + ', shortened: "' + materialName + '"');
-			let volumeScale = character.state === CharacterState.Crouching ? 0.3 : 1;
-			if (!character.IsLocalCharacter()) {
-				volumeScale *= 2;
-			}
-			let volume = this.baseFootstepVolumeScale * volumeScale;
+			let [matName] = material.name.gsub("%s*%([^)]+%)", "");
+			let materialNameLower = matName.lower();
 
-			let clips: AudioClip[] = [];
-			let foundPaths = this.materialMap.get(materialName);
+			// print("footstep material: " + material.name + ', shortened: "' + materialName + '"');
+
+			foundPaths = this.materialMap.get(materialName);
 			if (!foundPaths) {
 				if (
 					StringUtils.includes(materialNameLower, "dirt") ||
@@ -150,16 +157,25 @@ export class AirshipCharacterFootstepsSingleton {
 					}
 				}
 			}
-
-			const signal = new CharacterFootstepSignal(character, material, raycastHit, clips, camPos, volume);
-			this.onFootstep.Fire(signal);
-			if (signal.IsCancelled()) return;
-			if (signal.audioClips.size() === 0) return;
-
-			const audioClip = RandomUtil.FromArray(signal.audioClips);
-
-			// print("playing footstep sound: " + audioClip.name);
-			character.footstepAudioSource.PlayOneShot(audioClip, signal.volume);
+		} else {
+			foundPaths = this.materialMap.get("Grass");
 		}
+
+		const signal = new CharacterFootstepSignal(
+			character,
+			raycastHit,
+			material,
+			RandomUtil.FromArray(clips),
+			camPos,
+			volume,
+			crouching,
+		);
+		this.onFootstep.Fire(signal);
+		if (signal.IsCancelled()) return;
+
+		const audioClip = signal.audioClip;
+
+		// print("playing footstep sound: " + audioClip.name);
+		character.footstepAudioSource.PlayOneShot(audioClip, signal.volume);
 	}
 }
