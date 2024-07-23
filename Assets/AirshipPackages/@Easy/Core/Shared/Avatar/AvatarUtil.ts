@@ -211,7 +211,7 @@ export class AvatarUtil {
 		builder: AccessoryBuilder,
 		options: { removeOldClothingAccessories?: boolean } = {},
 	) {
-		AvatarPlatformAPI.GetPlayerEquippedOutfit(playerId).then((outfit) => {
+		AvatarPlatformAPI.GetUserEquippedOutfit(playerId).then((outfit) => {
 			if (outfit) {
 				this.LoadUserOutfit(outfit, builder, options);
 			}

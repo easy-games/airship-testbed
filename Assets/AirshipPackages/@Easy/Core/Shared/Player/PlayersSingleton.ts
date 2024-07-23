@@ -28,10 +28,10 @@ import { Player, PlayerDto } from "./Player";
  */
 
 /**
-* Access using {@link Airship.Players}. Players singleton allows you to work with currently connected clients (with Airship's {@link Player} object).
-* 
-* If you are looking to get information about offline users see {@link AirshipUserController}
-*/
+ * Access using {@link Airship.Players}. Players singleton allows you to work with currently connected clients (with Airship's {@link Player} object).
+ *
+ * If you are looking to get information about offline users see {@link AirshipUserController}
+ */
 @Controller({ loadOrder: -1000 })
 @Service({ loadOrder: -1000 })
 export class PlayersSingleton {
@@ -324,7 +324,7 @@ export class PlayersSingleton {
 			await AvatarPlatformAPI.GetEquippedOutfit().then(SetOutfit);
 		} else {
 			print("loading outfit from server for player: " + player.userId);
-			await AvatarPlatformAPI.GetPlayerEquippedOutfit(player.userId).then(SetOutfit);
+			await AvatarPlatformAPI.GetUserEquippedOutfit(player.userId).then(SetOutfit);
 		}
 		return true;
 	}
@@ -424,7 +424,7 @@ export class PlayersSingleton {
 	 * 	};
 	 * });
 	 * ```
-	 * 
+	 *
 	 * @returns Disconnect function -- call to stop observing players and call the
 	 * cleanup function on each.
 	 */
@@ -494,7 +494,7 @@ export class PlayersSingleton {
 
 	/**
 	 * Search for an online player by connection id.
-	 * 
+	 *
 	 * @param connectionId The connection id to match.
 	 * @returns The player with target connectionId if one exists.
 	 */
@@ -547,7 +547,7 @@ export class PlayersSingleton {
 	 * Waits for player by connectionId. This is only useful if you are working with a connection id
 	 * before a player has been added. A player is added when the client loads the starting scene. On
 	 * client your local player will exist immediately.
-	 * 
+	 *
 	 * @param connectionId The connection id to wait for
 	 * @param timeoutSec How long (in seconds) to stop waiting for this player.
 	 * @returns Player with connectionId if found, otherwise undefined after timeout.
@@ -574,7 +574,7 @@ export class PlayersSingleton {
 
 	/**
 	 * Searches for online player by userId.
-	 * 
+	 *
 	 * @param userId Target user id to match.
 	 * @returns Player with user id if one exists, otherwise undefined.
 	 */
@@ -591,7 +591,7 @@ export class PlayersSingleton {
 	/**
 	 * Searches for online player by username. This is case sensitive. For a more lenient
 	 * username search see {@link FindByFuzzySearch}.
-	 * 
+	 *
 	 * @param name Target username -- this must match the player's username exactly.
 	 * @returns An online player with matching username if one exists, otherwise undefined.
 	 */
@@ -606,7 +606,7 @@ export class PlayersSingleton {
 
 	/**
 	 * Same logic should also be at EditorAuthManager.cs
-	 * 
+	 *
 	 * @internal
 	 */
 	public GetDefaultProfilePictureFromUserId(userId: string): Texture2D {
@@ -623,25 +623,22 @@ export class PlayersSingleton {
 	}
 
 	/**
-	 * Gets a user's profile picture as Texture2D. 
-	 * 
+	 * Gets a user's profile picture as Texture2D.
+	 *
 	 * @param userId Id of user you want to get profile picture of. This player doesn't need to be online.
 	 * @param useLocalCache If true this function will return values cached locally. This is usually preferable
 	 * unless you need to guarantee the most up-to-date profile picture. Defaults to ``true``.
 	 * @returns A Texture2D of the profile picture. If this function fails to fetch the profile picture or it doesn't
 	 * exist it will return the default profile picture for the user.
 	 */
-	public async GetProfilePictureAsync(
-		userId: string,
-		useLocalCache = true,
-	): Promise<Texture2D> {
+	public async GetProfilePictureAsync(userId: string, useLocalCache = true): Promise<Texture2D> {
 		const cachedByUserId = this.cachedProfilePictureTextures.get(userId);
 		if (useLocalCache && cachedByUserId) {
 			return cachedByUserId;
 		}
 
 		const user = await Dependency<AirshipUserController>().GetUserById(userId, useLocalCache);
-		if (!user.success || user.data?.profileImageId === undefined)  {
+		if (!user.success || user.data?.profileImageId === undefined) {
 			return this.GetDefaultProfilePictureFromUserId(userId);
 		}
 
@@ -655,13 +652,10 @@ export class PlayersSingleton {
 	}
 
 	/**
-     * @returns Profile picture from image id (with caching)
-     * @internal
-     */
-	private async GetProfilePictureFromImageId(
-		imageId: string,
-		useLocalCache = true,
-	): Promise<Texture2D | undefined> {
+	 * @returns Profile picture from image id (with caching)
+	 * @internal
+	 */
+	private async GetProfilePictureFromImageId(imageId: string, useLocalCache = true): Promise<Texture2D | undefined> {
 		// First check cache for image
 		if (useLocalCache) {
 			const existing = this.profilePictureByImageIdCache.get(imageId);
@@ -669,7 +663,7 @@ export class PlayersSingleton {
 				return existing;
 			}
 		}
-		
+
 		// Download image if not found locally (or useLocalCache = false)
 		const texture = Bridge.DownloadTexture2DYielding(`${AirshipUrl.CDN}/images/${imageId}`);
 		if (texture) {
