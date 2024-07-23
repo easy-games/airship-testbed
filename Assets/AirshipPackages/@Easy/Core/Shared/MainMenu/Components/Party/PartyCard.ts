@@ -3,6 +3,7 @@ import { MainMenuPartyController } from "@Easy/Core/Client/ProtectedControllers/
 import { TransferController } from "@Easy/Core/Client/ProtectedControllers/Transfer/TransferController";
 import { UserStatus, UserStatusData } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipUser";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
+import { Game } from "@Easy/Core/Shared/Game";
 import { Protected } from "@Easy/Core/Shared/Protected";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
@@ -25,19 +26,22 @@ export default class PartyCard extends AirshipBehaviour {
 
 	override Start(): void {
 		this.layoutElement.preferredHeight = 84;
-		this.bin.AddEngineEventConnection(
-			CanvasAPI.OnHoverEvent(this.gameButton.gameObject, (hov) => {
-				NativeTween.AnchoredPositionX(
-					this.gameArrow.transform,
-					hov === HoverState.ENTER ? -10 : -20,
-					0.5,
-				).SetEaseBounceOut();
-				this.gameArrow.color = hov === HoverState.ENTER ? Theme.primary : Theme.white;
-				this.gameText.color = hov === HoverState.ENTER ? Theme.primary : Theme.white;
-				this.gameButton.GetComponent<Image>()!.color =
-					hov === HoverState.ENTER ? Theme.white : ColorUtil.HexToColor("24242E");
-			}),
-		);
+
+		if (!Game.IsMobile()) {
+			this.bin.AddEngineEventConnection(
+				CanvasAPI.OnHoverEvent(this.gameButton.gameObject, (hov) => {
+					NativeTween.AnchoredPositionX(
+						this.gameArrow.transform,
+						hov === HoverState.ENTER ? -10 : -20,
+						0.5,
+					).SetEaseBounceOut();
+					this.gameArrow.color = hov === HoverState.ENTER ? Theme.primary : Theme.white;
+					this.gameText.color = hov === HoverState.ENTER ? Theme.primary : Theme.white;
+					this.gameButton.GetComponent<Image>()!.color =
+						hov === HoverState.ENTER ? Theme.white : ColorUtil.HexToColor("24242E");
+				}),
+			);
+		}
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnClickEvent(this.gameButton.gameObject, () => {
 				Dependency<TransferController>().TransferToPartyLeader();
@@ -51,7 +55,9 @@ export default class PartyCard extends AirshipBehaviour {
 			}),
 		);
 
-		this.SetupDragFriendHooks();
+		if (!Game.IsMobile()) {
+			this.SetupDragFriendHooks();
+		}
 	}
 
 	private SetupDragFriendHooks() {

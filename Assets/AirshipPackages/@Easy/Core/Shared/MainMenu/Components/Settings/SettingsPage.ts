@@ -40,17 +40,18 @@ export default class SettingsPage extends AirshipBehaviour {
 		this.bin.Add(
 			mainMenu.ObserveScreenSize((size) => {
 				if (size === "sm" && Game.IsMobile()) {
-					const notchHeight = Game.GetNotchHeight();
+					const notchHeight = math.max(Game.GetNotchHeight(), 40);
 
 					this.sidebar.gameObject.SetActive(false);
 					// this.scrollView.offsetMax = new Vector2(-5, -7);
 					// this.scrollView.offsetMin = new Vector2(5, 0);
 					// this.scrollView.anchoredPosition = new Vector2(0, -96);
-					this.scrollView.offsetMax = new Vector2(0, -notchHeight - 70);
+
+					this.scrollView.offsetMax = new Vector2(0, -notchHeight - 40);
 					this.scrollView.offsetMin = new Vector2(0, 0);
 
 					this.mobileHeader.gameObject.SetActive(true);
-					this.mobileHeader.sizeDelta = new Vector2(this.mobileHeader.sizeDelta.x, notchHeight + 70);
+					this.mobileHeader.sizeDelta = new Vector2(this.mobileHeader.sizeDelta.x, notchHeight + 40);
 
 					this.desktopCloseButtonWrapper.gameObject.SetActive(false);
 					this.canvasScalar.matchWidthOrHeight = 1;
@@ -62,8 +63,8 @@ export default class SettingsPage extends AirshipBehaviour {
 					this.verticalLayoutGroup.padding.bottom = 80;
 
 					if (Game.IsLandscape()) {
-						this.verticalLayoutGroup.padding.left = 120;
-						this.verticalLayoutGroup.padding.right = 20;
+						this.verticalLayoutGroup.padding.left = 220;
+						this.verticalLayoutGroup.padding.right = 120;
 						this.canvasScalar.matchWidthOrHeight = 0;
 						this.mobileCloseButtonWrapper.anchoredPosition = new Vector2(
 							120,

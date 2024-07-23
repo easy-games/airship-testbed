@@ -1041,6 +1041,7 @@ MonoBehaviour:
   firstPerson: 0
   firstPersonLayer: 7
   thirdPersonLayer: 3
+  currentOutfit: {fileID: 0}
 --- !u!114 &5838268274975822121
 MonoBehaviour:
   m_ObjectHideFlags: 0

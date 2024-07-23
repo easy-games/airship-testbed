@@ -71,6 +71,7 @@ export class TabListController {
 
 		Keyboard.OnKeyDown(Key.Tab, (e) => {
 			if (e.uiProcessed) return;
+			if (!Application.isFocused) return;
 			if (!Keyboard.IsEitherKeyDown(Key.LeftAlt, Key.LeftCommand)) {
 				this.Show();
 			}
@@ -86,11 +87,12 @@ export class TabListController {
 			}
 		});
 
-		// Application.OnFocusChanged((focused) => {
-		// 	if (!focused) {
-		// 		this.Hide();
-		// 	}
-		// });
+		Application.focusChanged.Connect((focused) => {
+			this.Hide(true, true);
+			task.delay(0, () => {
+				this.Hide(true, true);
+			});
+		});
 	}
 
 	public FullUpdate(): void {

@@ -12,6 +12,7 @@ export default class SocialMenu extends AirshipBehaviour {
 	public liveStats!: GameObject;
 	public playerCountText!: TMP_Text;
 	public serverCountText!: TMP_Text;
+	public scrollRect: ScrollRect;
 
 	public verticalLayout!: GameObject;
 
@@ -25,6 +26,9 @@ export default class SocialMenu extends AirshipBehaviour {
 	override Start(): void {
 		if (Game.deviceType === AirshipDeviceType.Phone) {
 			this.liveStats.gameObject.SetActive(false);
+		}
+		if (Game.IsMobile()) {
+			this.scrollRect.movementType = MovementType.Elastic;
 		}
 
 		this.bin.Add(

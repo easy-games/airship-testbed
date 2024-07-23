@@ -166,7 +166,10 @@ export class Game {
 		let dpi = Screen.dpi;
 
 		if (Game.IsMobile()) {
-			return dpi / 180;
+			if (Game.deviceType === AirshipDeviceType.Tablet) {
+				return dpi / 180;
+			}
+			return math.max(2.5555, dpi / 180);
 		} else if (dpi >= 255) {
 			return 1.75;
 		} else {

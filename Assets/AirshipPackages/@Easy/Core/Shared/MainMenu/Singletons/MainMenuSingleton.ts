@@ -66,7 +66,11 @@ export class MainMenuSingleton {
 					}
 				}
 
-				CoreLogger.Log(`sizeType: ${sizeType}, size: ${this.screenSize}, dpi: ${Screen.dpi}`);
+				CoreLogger.Log(
+					`sizeType: ${sizeType}, size: ${this.screenSize}, dpi: ${
+						Screen.dpi
+					}, scaleFactor: ${Game.GetScaleFactor()}`,
+				);
 
 				this.sizeType = sizeType;
 				this.onSizeChanged.Fire(this.sizeType, this.screenSize);

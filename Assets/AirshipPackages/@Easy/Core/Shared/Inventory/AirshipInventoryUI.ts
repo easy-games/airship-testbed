@@ -18,6 +18,9 @@ type DraggingState = {
 };
 
 export default class AirshipInventoryUI extends AirshipBehaviour {
+	@Header("Variables")
+	public darkBackground = true;
+
 	@Header("Hotbar")
 	public hotbarCanvas!: Canvas;
 	public hotbarContent!: RectTransform;
@@ -109,6 +112,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 				this.backpackShown = false;
 				this.hotbarCanvas.enabled = true;
 			},
+			noDarkBackground: this.darkBackground === false,
 		});
 	}
 

@@ -18,7 +18,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -98370938496583557, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       propertyPath: <PrefabId>k__BackingField
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7931457288082626079, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       propertyPath: authorityMode

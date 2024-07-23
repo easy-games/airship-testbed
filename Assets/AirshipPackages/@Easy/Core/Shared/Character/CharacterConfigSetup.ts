@@ -18,6 +18,7 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 	public enableJumping = true;
 	public enableSprinting = true;
 	public enableCrouching = true;
+	public footstepSounds = true;
 
 	@Header("Viewmodel")
 	@Tooltip("If true, a character viewmodel will be instantiated under the ViewmodelCamera")
@@ -48,6 +49,7 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 		if (this.inventoryUIPrefab !== undefined) {
 			Airship.Inventory.SetInventoryUIPrefab(this.inventoryUIPrefab);
 		}
+		Airship.Characters.footsteps.foostepSoundsEnabled = this.footstepSounds;
 	}
 
 	public OnEnable() {

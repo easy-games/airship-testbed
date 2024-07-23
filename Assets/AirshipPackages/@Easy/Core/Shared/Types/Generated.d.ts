@@ -3629,6 +3629,17 @@ declare const enum CellSwizzle {
     ZXY = 4,
     ZYX = 5,
 }
+declare const enum VFXSpace {
+    Local = 0,
+    World = 1,
+    None = -1,
+}
+declare const enum VFXSpawnerLoopState {
+    Finished = 0,
+    DelayingBeforeLoop = 1,
+    Looping = 2,
+    DelayingAfterLoop = 3,
+}
 
     
 interface RaycastHit {
@@ -38585,6 +38596,7 @@ interface AccessoryBuilder extends MonoBehaviour {
     firstPerson: boolean;
     firstPersonLayer: number;
     thirdPersonLayer: number;
+    currentOutfit: AccessoryOutfit;
 
 
 
@@ -38765,11 +38777,11 @@ interface CharacterRigConstructor {
 }
 declare const CharacterRig: CharacterRigConstructor;
     
-interface ActiveAccessory {
-    AccessoryComponent: AccessoryComponent;
-    rootTransform: Transform;
-    gameObjects: CSArray<GameObject>;
-    renderers: CSArray<Renderer>;
+interface AccessoryOutfit extends ScriptableObject {
+    accessories: CSArray<AccessoryComponent>;
+    faceDecal: AccessoryFace;
+    forceSkinColor: boolean;
+    skinColor: Color;
 
 
 
@@ -38829,42 +38841,6 @@ interface AccessoryComponentConstructor {
 }
 declare const AccessoryComponent: AccessoryComponentConstructor;
     
-interface AccessorySkin extends ScriptableObject {
-    skinTextureDiffuse: Texture2D;
-    skinTextureNormal: Texture2D;
-    skinTextureORM: Texture2D;
-    faceTextureDiffuse: Texture2D;
-
-
-
-    ToString(): string;
-
-
-}
-    
-interface AccessorySkinConstructor {
-
-
-    new(): AccessorySkin;
-
-
-
-}
-declare const AccessorySkin: AccessorySkinConstructor;
-    
-interface AccessoryOutfit extends ScriptableObject {
-    accessories: CSArray<AccessoryComponent>;
-    faceDecal: AccessoryFace;
-    customSkin: AccessorySkin;
-    forceSkinColor: boolean;
-    skinColor: Color;
-
-
-
-
-
-}
-    
 interface AccessoryFace extends ScriptableObject {
     serverClassId: string;
     serverInstanceId: string;
@@ -38895,6 +38871,41 @@ interface AccessoryOutfitConstructor {
 
 }
 declare const AccessoryOutfit: AccessoryOutfitConstructor;
+    
+interface ActiveAccessory {
+    AccessoryComponent: AccessoryComponent;
+    rootTransform: Transform;
+    gameObjects: CSArray<GameObject>;
+    renderers: CSArray<Renderer>;
+
+
+
+
+
+}
+    
+interface AccessorySkin extends ScriptableObject {
+    skinTextureDiffuse: Texture2D;
+    skinTextureNormal: Texture2D;
+    skinTextureORM: Texture2D;
+    faceTextureDiffuse: Texture2D;
+
+
+
+    ToString(): string;
+
+
+}
+    
+interface AccessorySkinConstructor {
+
+
+    new(): AccessorySkin;
+
+
+
+}
+declare const AccessorySkin: AccessorySkinConstructor;
     
 interface ParticleSystem extends Component {
     /**
@@ -51314,6 +51325,7 @@ declare const MoveInputData: MoveInputDataConstructor;
     
 interface NetworkTickSmoother extends NetworkBehaviour {
     graphicalObject: Transform;
+    interpolation: number;
 
 
 
@@ -51513,4 +51525,1430 @@ interface GridConstructor {
 
 }
 declare const Grid: GridConstructor;
+    
+interface UIScrollRectEventBubbler extends MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IScrollHandler {
+    Bubble: boolean;
+    DisableEventTriggerWhileDragging: boolean;
+    DisableDragEvents: boolean;
+    readonly EventTrigger: EventTrigger;
+
+
+
+    OnBeginDrag(eventData: PointerEventData): void;
+    OnDisable(): void;
+    OnDrag(eventData: PointerEventData): void;
+    OnEndDrag(eventData: PointerEventData): void;
+    OnScroll(eventData: PointerEventData): void;
+
+
+}
+    
+interface UIScrollRectEventBubblerConstructor {
+
+
+    new(): UIScrollRectEventBubbler;
+
+
+
+}
+declare const UIScrollRectEventBubbler: UIScrollRectEventBubblerConstructor;
+    
+interface VisualEffect extends Behaviour {
+    outputEventReceived: unknown;
+    /**
+     * Use this property to set the pause state of the visual effect.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect-pause.html | VFX.VisualEffect.pause}
+     */
+    pause: boolean;
+    /**
+     * A multiplier that Unity applies to the delta time when it updates the VisualEffect. The default value is 1.0f.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect-playRate.html | VFX.VisualEffect.playRate}
+     */
+    playRate: number;
+    /**
+     * The initial seed used for internal random number generator.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect-startSeed.html | VFX.VisualEffect.startSeed}
+     */
+    startSeed: number;
+    /**
+     * This property controls whether the visual effect generates a new seed for the random number generator with each call to VFX.VisualEffect.Play function.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect-resetSeedOnPlay.html | VFX.VisualEffect.resetSeedOnPlay}
+     */
+    resetSeedOnPlay: boolean;
+    /**
+     * The default event name ID. To retrieve this value, use the Shader.PropertyID after VisualEffect has awakened or after you've invoked VFX.VisualEffect.Reinit.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect-initialEventID.html | VFX.VisualEffect.initialEventID}
+     */
+    initialEventID: number;
+    /**
+     * The default event name. Unity calls this event when the VisualEffect awakes, or when you call VisualEffect.Reinit.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect-initialEventName.html | VFX.VisualEffect.initialEventName}
+     */
+    initialEventName: string;
+    /**
+     * Use this property to determine if this visual effect is not visible from any Camera. (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect-culled.html | VFX.VisualEffect.culled}
+     */
+    readonly culled: boolean;
+    /**
+     * The VisualEffectAsset that the VisualEffect uses.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect-visualEffectAsset.html | VFX.VisualEffect.visualEffectAsset}
+     */
+    visualEffectAsset: VisualEffectAsset;
+    /**
+     * Returns the sum of all alive particles within the visual effect.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect-aliveParticleCount.html | VFX.VisualEffect.aliveParticleCount}
+     */
+    readonly aliveParticleCount: number;
+
+
+
+    /**
+     * If VFX.VisualEffect._pause is true, this method processes the next visual effect update for exactly one frame with the current delta time.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.AdvanceOneFrame.html | VFX.VisualEffect.AdvanceOneFrame}
+     */
+    AdvanceOneFrame(): void;
+    /**
+     * Use this method to create a new VFXEventAttribute.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.CreateVFXEventAttribute.html | VFX.VisualEffect.CreateVFXEventAttribute}
+     */
+    CreateVFXEventAttribute(): VFXEventAttribute;
+    /**
+     * Gets the value of a named Animation Curve property.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.GetAnimationCurve.html | VFX.VisualEffect.GetAnimationCurve}
+     */
+    GetAnimationCurve(nameID: number): AnimationCurve;
+    /**
+     * Gets the value of a named Animation Curve property.
+     * @param name The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.GetAnimationCurve.html | VFX.VisualEffect.GetAnimationCurve}
+     */
+    GetAnimationCurve(name: string): AnimationCurve;
+    /**
+     * Gets the value of a named bool property.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.GetBool.html | VFX.VisualEffect.GetBool}
+     */
+    GetBool(nameID: number): boolean;
+    /**
+     * Gets the value of a named bool property.
+     * @param name The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.GetBool.html | VFX.VisualEffect.GetBool}
+     */
+    GetBool(name: string): boolean;
+    /**
+     * Gets the value of a named float property.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.GetFloat.html | VFX.VisualEffect.GetFloat}
+     */
+    GetFloat(nameID: number): number;
+    /**
+     * Gets the value of a named float property.
+     * @param name The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.GetFloat.html | VFX.VisualEffect.GetFloat}
+     */
+    GetFloat(name: string): number;
+    /**
+     * Gets the value of a named Gradient property.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.GetGradient.html | VFX.VisualEffect.GetGradient}
+     */
+    GetGradient(nameID: number): Gradient;
+    /**
+     * Gets the value of a named Gradient property.
+     * @param name The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.GetGradient.html | VFX.VisualEffect.GetGradient}
+     */
+    GetGradient(name: string): Gradient;
+    /**
+     * Get a named exposed integer.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.GetInt.html | VFX.VisualEffect.GetInt}
+     */
+    GetInt(nameID: number): number;
+    /**
+     * Get a named exposed integer.
+     * @param name The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.GetInt.html | VFX.VisualEffect.GetInt}
+     */
+    GetInt(name: string): number;
+    /**
+     * Gets the value of a named Matrix4x4 property.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.GetMatrix4x4.html | VFX.VisualEffect.GetMatrix4x4}
+     */
+    GetMatrix4x4(nameID: number): Matrix4x4;
+    /**
+     * Gets the value of a named Matrix4x4 property.
+     * @param name The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.GetMatrix4x4.html | VFX.VisualEffect.GetMatrix4x4}
+     */
+    GetMatrix4x4(name: string): Matrix4x4;
+    /**
+     * Gets the value of a named Mesh property.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.GetMesh.html | VFX.VisualEffect.GetMesh}
+     */
+    GetMesh(nameID: number): Mesh;
+    /**
+     * Gets the value of a named Mesh property.
+     * @param name The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.GetMesh.html | VFX.VisualEffect.GetMesh}
+     */
+    GetMesh(name: string): Mesh;
+    GetOutputEventNames(names: CSArray<string>): void;
+    /**
+     * Gets information on a particle system.
+     * @param nameID The system ID. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.GetParticleSystemInfo.html | VFX.VisualEffect.GetParticleSystemInfo}
+     */
+    GetParticleSystemInfo(nameID: number): VFXParticleSystemInfo;
+    /**
+     * Gets information on a particle system.
+     * @param name The name of the particle system.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.GetParticleSystemInfo.html | VFX.VisualEffect.GetParticleSystemInfo}
+     */
+    GetParticleSystemInfo(name: string): VFXParticleSystemInfo;
+    GetParticleSystemNames(names: CSArray<string>): void;
+    /**
+     * Gets the value of a named Skinned Mesh Renderer property.
+     * @param nameID The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.GetSkinnedMeshRenderer.html | VFX.VisualEffect.GetSkinnedMeshRenderer}
+     */
+    GetSkinnedMeshRenderer(nameID: number): SkinnedMeshRenderer;
+    /**
+     * Gets the value of a named Skinned Mesh Renderer property.
+     * @param name The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.GetSkinnedMeshRenderer.html | VFX.VisualEffect.GetSkinnedMeshRenderer}
+     */
+    GetSkinnedMeshRenderer(name: string): SkinnedMeshRenderer;
+    /**
+     * Gets state on a spawn system.
+     * @param nameID The system ID. This is the same ID that Shader.PropertyToID returns.
+     * @param spawnState A modified  VFXSpawnerState instance.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.GetSpawnSystemInfo.html | VFX.VisualEffect.GetSpawnSystemInfo}
+     */
+    GetSpawnSystemInfo(nameID: number, spawnState: VFXSpawnerState): void;
+    GetSpawnSystemInfo(nameID: number): VFXSpawnerState;
+    /**
+     * Gets state on a spawn system.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.GetSpawnSystemInfo.html | VFX.VisualEffect.GetSpawnSystemInfo}
+     */
+    GetSpawnSystemInfo(name: string): VFXSpawnerState;
+    GetSpawnSystemNames(names: CSArray<string>): void;
+    GetSystemNames(names: CSArray<string>): void;
+    /**
+     * Gets the value of a named texture property.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.GetTexture.html | VFX.VisualEffect.GetTexture}
+     */
+    GetTexture(nameID: number): Texture;
+    /**
+     * Gets the value of a named texture property.
+     * @param name The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.GetTexture.html | VFX.VisualEffect.GetTexture}
+     */
+    GetTexture(name: string): Texture;
+    /**
+     * Gets expected texture dimension for a named exposed texture.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.GetTextureDimension.html | VFX.VisualEffect.GetTextureDimension}
+     */
+    GetTextureDimension(nameID: number): TextureDimension;
+    /**
+     * Gets expected texture dimension for a named exposed texture.
+     * @param name The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.GetTextureDimension.html | VFX.VisualEffect.GetTextureDimension}
+     */
+    GetTextureDimension(name: string): TextureDimension;
+    /**
+     * Gets the value of a named unsigned integer property.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.GetUInt.html | VFX.VisualEffect.GetUInt}
+     */
+    GetUInt(nameID: number): number;
+    /**
+     * Gets the value of a named unsigned integer property.
+     * @param name The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.GetUInt.html | VFX.VisualEffect.GetUInt}
+     */
+    GetUInt(name: string): number;
+    /**
+     * Gets the value of a named Vector2 property.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.GetVector2.html | VFX.VisualEffect.GetVector2}
+     */
+    GetVector2(nameID: number): Vector2;
+    /**
+     * Gets the value of a named Vector2 property.
+     * @param name The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.GetVector2.html | VFX.VisualEffect.GetVector2}
+     */
+    GetVector2(name: string): Vector2;
+    /**
+     * Gets the value of a named Vector3 property.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.GetVector3.html | VFX.VisualEffect.GetVector3}
+     */
+    GetVector3(nameID: number): Vector3;
+    /**
+     * Gets the value of a named Vector3 property.
+     * @param name The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.GetVector3.html | VFX.VisualEffect.GetVector3}
+     */
+    GetVector3(name: string): Vector3;
+    /**
+     * Gets the value of a named Vector4 or Color property.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.GetVector4.html | VFX.VisualEffect.GetVector4}
+     */
+    GetVector4(nameID: number): Vector4;
+    /**
+     * Gets the value of a named Vector4 or Color property.
+     * @param name The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.GetVector4.html | VFX.VisualEffect.GetVector4}
+     */
+    GetVector4(name: string): Vector4;
+    /**
+     * Checks if the Visual Effect can override an Animation Curve with the name you pass in.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.HasAnimationCurve.html | VFX.VisualEffect.HasAnimationCurve}
+     */
+    HasAnimationCurve(nameID: number): boolean;
+    /**
+     * Checks if the Visual Effect can override an Animation Curve with the name you pass in.
+     * @param name The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.HasAnimationCurve.html | VFX.VisualEffect.HasAnimationCurve}
+     */
+    HasAnimationCurve(name: string): boolean;
+    /**
+     * Checks if any particle system in the effect is awake.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.HasAnySystemAwake.html | VFX.VisualEffect.HasAnySystemAwake}
+     */
+    HasAnySystemAwake(): boolean;
+    /**
+     * Checks if the Visual Effect can override a bool with the name you pass in.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.HasBool.html | VFX.VisualEffect.HasBool}
+     */
+    HasBool(nameID: number): boolean;
+    /**
+     * Checks if the Visual Effect can override a bool with the name you pass in.
+     * @param name The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.HasBool.html | VFX.VisualEffect.HasBool}
+     */
+    HasBool(name: string): boolean;
+    /**
+     * Checks if the Visual Effect can override a float with the name you pass in.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.HasFloat.html | VFX.VisualEffect.HasFloat}
+     */
+    HasFloat(nameID: number): boolean;
+    /**
+     * Checks if the Visual Effect can override a float with the name you pass in.
+     * @param name The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.HasFloat.html | VFX.VisualEffect.HasFloat}
+     */
+    HasFloat(name: string): boolean;
+    /**
+     * Checks if the Visual Effect can override a Gradient with the name you pass in.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.HasGradient.html | VFX.VisualEffect.HasGradient}
+     */
+    HasGradient(nameID: number): boolean;
+    /**
+     * Checks if the Visual Effect can override a Gradient with the name you pass in.
+     * @param name The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.HasGradient.html | VFX.VisualEffect.HasGradient}
+     */
+    HasGradient(name: string): boolean;
+    /**
+     * Checks if the Visual Effect can override a GraphicsBuffer with the name you pass in.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.HasGraphicsBuffer.html | VFX.VisualEffect.HasGraphicsBuffer}
+     */
+    HasGraphicsBuffer(nameID: number): boolean;
+    /**
+     * Checks if the Visual Effect can override a GraphicsBuffer with the name you pass in.
+     * @param name The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.HasGraphicsBuffer.html | VFX.VisualEffect.HasGraphicsBuffer}
+     */
+    HasGraphicsBuffer(name: string): boolean;
+    /**
+     * Checks if the Visual Effect can override an integer with the name you pass in.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.HasInt.html | VFX.VisualEffect.HasInt}
+     */
+    HasInt(nameID: number): boolean;
+    /**
+     * Checks if the Visual Effect can override an integer with the name you pass in.
+     * @param name The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.HasInt.html | VFX.VisualEffect.HasInt}
+     */
+    HasInt(name: string): boolean;
+    /**
+     * Checks if the Visual Effect can override a Matrix4x4 with the name you pass in.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.HasMatrix4x4.html | VFX.VisualEffect.HasMatrix4x4}
+     */
+    HasMatrix4x4(nameID: number): boolean;
+    /**
+     * Checks if the Visual Effect can override a Matrix4x4 with the name you pass in.
+     * @param name The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.HasMatrix4x4.html | VFX.VisualEffect.HasMatrix4x4}
+     */
+    HasMatrix4x4(name: string): boolean;
+    /**
+     * Checks if the Visual Effect can override a Mesh with the name you pass in.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.HasMesh.html | VFX.VisualEffect.HasMesh}
+     */
+    HasMesh(nameID: number): boolean;
+    /**
+     * Checks if the Visual Effect can override a Mesh with the name you pass in.
+     * @param name The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.HasMesh.html | VFX.VisualEffect.HasMesh}
+     */
+    HasMesh(name: string): boolean;
+    /**
+     * Checks if the Visual Effect can override a Skinned Mesh Renderer with the name you pass in.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.HasSkinnedMeshRenderer.html | VFX.VisualEffect.HasSkinnedMeshRenderer}
+     */
+    HasSkinnedMeshRenderer(nameID: number): boolean;
+    /**
+     * Checks if the Visual Effect can override a Skinned Mesh Renderer with the name you pass in.
+     * @param name The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.HasSkinnedMeshRenderer.html | VFX.VisualEffect.HasSkinnedMeshRenderer}
+     */
+    HasSkinnedMeshRenderer(name: string): boolean;
+    /**
+     * Use this function to determine if the VisualEffect has the system you pass in.
+     * @param nameID The system ID. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.HasSystem.html | VFX.VisualEffect.HasSystem}
+     */
+    HasSystem(nameID: number): boolean;
+    /**
+     * Use this function to determine if the VisualEffect has the system you pass in.
+     * @param name The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.HasSystem.html | VFX.VisualEffect.HasSystem}
+     */
+    HasSystem(name: string): boolean;
+    /**
+     * Checks if the Visual Effect can override a texture with the name you pass in.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.HasTexture.html | VFX.VisualEffect.HasTexture}
+     */
+    HasTexture(nameID: number): boolean;
+    /**
+     * Checks if the Visual Effect can override a texture with the name you pass in.
+     * @param name The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.HasTexture.html | VFX.VisualEffect.HasTexture}
+     */
+    HasTexture(name: string): boolean;
+    /**
+     * Checks if the Visual Effect can override an unsigned integer with the name you pass in.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.HasUInt.html | VFX.VisualEffect.HasUInt}
+     */
+    HasUInt(nameID: number): boolean;
+    /**
+     * Checks if the Visual Effect can override an unsigned integer with the name you pass in.
+     * @param name The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.HasUInt.html | VFX.VisualEffect.HasUInt}
+     */
+    HasUInt(name: string): boolean;
+    /**
+     * Checks if the Visual Effect can override a Vector2 with the name you pass in.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.HasVector2.html | VFX.VisualEffect.HasVector2}
+     */
+    HasVector2(nameID: number): boolean;
+    /**
+     * Checks if the Visual Effect can override a Vector2 with the name you pass in.
+     * @param name The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.HasVector2.html | VFX.VisualEffect.HasVector2}
+     */
+    HasVector2(name: string): boolean;
+    /**
+     * Checks if the Visual Effect can override a Vector3 with the name you pass in.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.HasVector3.html | VFX.VisualEffect.HasVector3}
+     */
+    HasVector3(nameID: number): boolean;
+    /**
+     * Checks if the Visual Effect can override a Vector3 with the name you pass in.
+     * @param name The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.HasVector3.html | VFX.VisualEffect.HasVector3}
+     */
+    HasVector3(name: string): boolean;
+    /**
+     * Checks if the Visual Effect can override a Vector4 or Color with the name you pass in.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.HasVector4.html | VFX.VisualEffect.HasVector4}
+     */
+    HasVector4(nameID: number): boolean;
+    /**
+     * Checks if the Visual Effect can override a Vector4 or Color with the name you pass in.
+     * @param name The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.HasVector4.html | VFX.VisualEffect.HasVector4}
+     */
+    HasVector4(name: string): boolean;
+    /**
+     * Use this method to send a play event to every Spawn system.
+     * @param eventAttribute Can be null or a VFXEventAttribute. To create a VFXEventAttribute, use VFX.VisualEffect.CreateVFXEventAttribute.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.Play.html | VFX.VisualEffect.Play}
+     */
+    Play(eventAttribute: VFXEventAttribute): void;
+    /**
+     * Use this method to send a play event to every Spawn system.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.Play.html | VFX.VisualEffect.Play}
+     */
+    Play(): void;
+    /**
+     * Reintialize visual effect.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.Reinit.html | VFX.VisualEffect.Reinit}
+     */
+    Reinit(): void;
+    /**
+     * Use this method to set the overridden state to false. This restores the default value that the Visual Effect Asset specifies.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.ResetOverride.html | VFX.VisualEffect.ResetOverride}
+     */
+    ResetOverride(nameID: number): void;
+    /**
+     * Use this method to set the overridden state to false. This restores the default value that the Visual Effect Asset specifies.
+     * @param name The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.ResetOverride.html | VFX.VisualEffect.ResetOverride}
+     */
+    ResetOverride(name: string): void;
+    /**
+     * Use this method to send a custom named event.
+     * @param eventNameID The ID of the event. This is the same ID that Shader.PropertyToID returns.
+     * @param eventAttribute Can be null or a VFXEventAttribute. To create a VFXEventAttribute, use VFX.VisualEffect.CreateVFXEventAttribute.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.SendEvent.html | VFX.VisualEffect.SendEvent}
+     */
+    SendEvent(eventNameID: number, eventAttribute: VFXEventAttribute): void;
+    /**
+     * Use this method to send a custom named event.
+     * @param eventName The name of the event.
+     * @param eventAttribute Can be null or a VFXEventAttribute. To create a VFXEventAttribute, use VFX.VisualEffect.CreateVFXEventAttribute.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.SendEvent.html | VFX.VisualEffect.SendEvent}
+     */
+    SendEvent(eventName: string, eventAttribute: VFXEventAttribute): void;
+    /**
+     * Use this method to send a custom named event.
+     * @param eventNameID The ID of the event. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.SendEvent.html | VFX.VisualEffect.SendEvent}
+     */
+    SendEvent(eventNameID: number): void;
+    /**
+     * Use this method to send a custom named event.
+     * @param eventName The name of the event.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.SendEvent.html | VFX.VisualEffect.SendEvent}
+     */
+    SendEvent(eventName: string): void;
+    /**
+     * Sets the value of a named Animation Curve property.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * @param c The new Animation Curve.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.SetAnimationCurve.html | VFX.VisualEffect.SetAnimationCurve}
+     */
+    SetAnimationCurve(nameID: number, c: AnimationCurve): void;
+    /**
+     * Sets the value of a named Animation Curve property.
+     * @param name The name of the property.
+     * @param c The new Animation Curve.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.SetAnimationCurve.html | VFX.VisualEffect.SetAnimationCurve}
+     */
+    SetAnimationCurve(name: string, c: AnimationCurve): void;
+    /**
+     * Sets the value of a named bool property.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * @param b The new boolean value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.SetBool.html | VFX.VisualEffect.SetBool}
+     */
+    SetBool(nameID: number, b: boolean): void;
+    /**
+     * Sets the value of a named bool property.
+     * @param name The name of the property.
+     * @param b The new boolean value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.SetBool.html | VFX.VisualEffect.SetBool}
+     */
+    SetBool(name: string, b: boolean): void;
+    /**
+     * Sets the value of a named float property.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * @param f The new float value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.SetFloat.html | VFX.VisualEffect.SetFloat}
+     */
+    SetFloat(nameID: number, f: number): void;
+    /**
+     * Sets the value of a named float property.
+     * @param name The name of the property.
+     * @param f The new float value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.SetFloat.html | VFX.VisualEffect.SetFloat}
+     */
+    SetFloat(name: string, f: number): void;
+    /**
+     * Sets the value of a named Gradient property.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * @param g The new Gradient value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.SetGradient.html | VFX.VisualEffect.SetGradient}
+     */
+    SetGradient(nameID: number, g: Gradient): void;
+    /**
+     * Sets the value of a named Gradient property.
+     * @param name The name of the property.
+     * @param g The new Gradient value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.SetGradient.html | VFX.VisualEffect.SetGradient}
+     */
+    SetGradient(name: string, g: Gradient): void;
+    /**
+     * Sets the value of a named GraphicsBuffer property.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * @param g The new GraphicsBuffer value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.SetGraphicsBuffer.html | VFX.VisualEffect.SetGraphicsBuffer}
+     */
+    SetGraphicsBuffer(nameID: number, g: GraphicsBuffer): void;
+    /**
+     * Sets the value of a named GraphicsBuffer property.
+     * @param name The name of the property.
+     * @param g The new GraphicsBuffer value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.SetGraphicsBuffer.html | VFX.VisualEffect.SetGraphicsBuffer}
+     */
+    SetGraphicsBuffer(name: string, g: GraphicsBuffer): void;
+    /**
+     * Sets the value of a named integer property.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * @param i The new integer value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.SetInt.html | VFX.VisualEffect.SetInt}
+     */
+    SetInt(nameID: number, i: number): void;
+    /**
+     * Sets the value of a named integer property.
+     * @param name The name of the property.
+     * @param i The new integer value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.SetInt.html | VFX.VisualEffect.SetInt}
+     */
+    SetInt(name: string, i: number): void;
+    /**
+     * Sets the value of a named Matrix4x4 property.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * @param v The new Matrix4x4 value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.SetMatrix4x4.html | VFX.VisualEffect.SetMatrix4x4}
+     */
+    SetMatrix4x4(nameID: number, v: Matrix4x4): void;
+    /**
+     * Sets the value of a named Matrix4x4 property.
+     * @param name The name of the property.
+     * @param v The new Matrix4x4 value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.SetMatrix4x4.html | VFX.VisualEffect.SetMatrix4x4}
+     */
+    SetMatrix4x4(name: string, v: Matrix4x4): void;
+    /**
+     * Sets the value of a named Mesh property.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * @param m The new Mesh value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.SetMesh.html | VFX.VisualEffect.SetMesh}
+     */
+    SetMesh(nameID: number, m: Mesh): void;
+    /**
+     * Sets the value of a named Mesh property.
+     * @param name The name of the property.
+     * @param m The new Mesh value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.SetMesh.html | VFX.VisualEffect.SetMesh}
+     */
+    SetMesh(name: string, m: Mesh): void;
+    /**
+     * Sets the value of a named Skinned Mesh Renderer property.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * @param m The new Skinned Mesh Renderer value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.SetSkinnedMeshRenderer.html | VFX.VisualEffect.SetSkinnedMeshRenderer}
+     */
+    SetSkinnedMeshRenderer(nameID: number, m: SkinnedMeshRenderer): void;
+    /**
+     * Sets the value of a named Skinned Mesh Renderer property.
+     * @param name The name of the property.
+     * @param m The new Skinned Mesh Renderer value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.SetSkinnedMeshRenderer.html | VFX.VisualEffect.SetSkinnedMeshRenderer}
+     */
+    SetSkinnedMeshRenderer(name: string, m: SkinnedMeshRenderer): void;
+    /**
+     * Sets the value of a named texture property.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * @param t The new texture value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.SetTexture.html | VFX.VisualEffect.SetTexture}
+     */
+    SetTexture(nameID: number, t: Texture): void;
+    /**
+     * Sets the value of a named texture property.
+     * @param name The name of the property.
+     * @param t The new texture value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.SetTexture.html | VFX.VisualEffect.SetTexture}
+     */
+    SetTexture(name: string, t: Texture): void;
+    /**
+     * Sets the value of a named unsigned integer property.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * @param i The new unsigned integer value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.SetUInt.html | VFX.VisualEffect.SetUInt}
+     */
+    SetUInt(nameID: number, i: number): void;
+    /**
+     * Sets the value of a named unsigned integer property.
+     * @param name The name of the property.
+     * @param i The new unsigned integer value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.SetUInt.html | VFX.VisualEffect.SetUInt}
+     */
+    SetUInt(name: string, i: number): void;
+    /**
+     * Sets the value of a named Vector2 property.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * @param v The new Vector2 value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.SetVector2.html | VFX.VisualEffect.SetVector2}
+     */
+    SetVector2(nameID: number, v: Vector2): void;
+    /**
+     * Sets the value of a named Vector2 property.
+     * @param name The name of the property.
+     * @param v The new Vector2 value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.SetVector2.html | VFX.VisualEffect.SetVector2}
+     */
+    SetVector2(name: string, v: Vector2): void;
+    /**
+     * Sets the value of a named Vector3 property.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * @param v The new Vector3 value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.SetVector3.html | VFX.VisualEffect.SetVector3}
+     */
+    SetVector3(nameID: number, v: Vector3): void;
+    /**
+     * Sets the value of a named Vector3 property.
+     * @param name The name of the property.
+     * @param v The new Vector3 value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.SetVector3.html | VFX.VisualEffect.SetVector3}
+     */
+    SetVector3(name: string, v: Vector3): void;
+    /**
+     * Sets the value of a named Vector4 or Color property.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * @param v The new Vector4 value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.SetVector4.html | VFX.VisualEffect.SetVector4}
+     */
+    SetVector4(nameID: number, v: Vector4): void;
+    /**
+     * Sets the value of a named Vector4 or Color property.
+     * @param name The name of the property.
+     * @param v The new Vector4 value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.SetVector4.html | VFX.VisualEffect.SetVector4}
+     */
+    SetVector4(name: string, v: Vector4): void;
+    /**
+     * Use this method to fast-forward the visual effect by simulating all systems for several step counts using the specified delta time.
+     * @param stepDeltaTime The delta time, in seconds, the simulation applies to each step.
+     * @param stepCount Number of steps to proceed.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.Simulate.html | VFX.VisualEffect.Simulate}
+     */
+    Simulate(stepDeltaTime: number, stepCount: number): void;
+    /**
+     * Use this method to send a stop event to all Spawn systems.
+     * @param eventAttribute Can be null or a VFXEventAttribute. To create a VFXEventAttribute, use VFX.VisualEffect.CreateVFXEventAttribute.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.Stop.html | VFX.VisualEffect.Stop}
+     */
+    Stop(eventAttribute: VFXEventAttribute): void;
+    /**
+     * Use this method to send a stop event to all Spawn systems.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.Stop.html | VFX.VisualEffect.Stop}
+     */
+    Stop(): void;
+
+
+}
+    
+interface VisualEffectObject extends Object {
+
+
+
+
+
+}
+    
+interface VisualEffectAsset extends VisualEffectObject {
+
+
+
+    GetEvents(names: CSArray<string>): void;
+    GetExposedProperties(exposedProperties: CSArray<VFXExposedProperty>): void;
+    /**
+     * Provides the configured space of an exposed property in VisualEffectAsset.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffectAsset.GetExposedSpace.html | VFX.VisualEffectAsset.GetExposedSpace}
+     */
+    GetExposedSpace(nameID: number): VFXSpace;
+    /**
+     * Provides the configured space of an exposed property in VisualEffectAsset.
+     * @param name The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffectAsset.GetExposedSpace.html | VFX.VisualEffectAsset.GetExposedSpace}
+     */
+    GetExposedSpace(name: string): VFXSpace;
+    /**
+     * Gets the TextureDimension of a named exposed Texture.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffectAsset.GetTextureDimension.html | VFX.VisualEffectAsset.GetTextureDimension}
+     */
+    GetTextureDimension(nameID: number): TextureDimension;
+    /**
+     * Gets the TextureDimension of a named exposed Texture.
+     * @param name The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffectAsset.GetTextureDimension.html | VFX.VisualEffectAsset.GetTextureDimension}
+     */
+    GetTextureDimension(name: string): TextureDimension;
+
+
+}
+    
+interface VFXExposedProperty {
+    name: string;
+    type: unknown;
+
+
+
+
+
+}
+    
+interface VisualEffectAssetConstructor {
+    PlayEventName: string;
+    StopEventName: string;
+    readonly PlayEventID: number;
+    readonly StopEventID: number;
+
+
+    new(): VisualEffectAsset;
+
+
+
+}
+declare const VisualEffectAsset: VisualEffectAssetConstructor;
+    
+interface VFXEventAttribute {
+
+
+
+    /**
+     * Copies the values from a VFXEventAttribute to the one you call this function from.
+     * @param eventAttibute The source event attribute.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXEventAttribute.CopyValuesFrom.html | VFX.VFXEventAttribute.CopyValuesFrom}
+     */
+    CopyValuesFrom(eventAttibute: VFXEventAttribute): void;
+    Dispose(): void;
+    /**
+     * Use this method to get the value of a named bool property from the VFXEventAttribute.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXEventAttribute.GetBool.html | VFX.VFXEventAttribute.GetBool}
+     */
+    GetBool(nameID: number): boolean;
+    /**
+     * Use this method to get the value of a named bool property from the VFXEventAttribute.
+     * @param name The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXEventAttribute.GetBool.html | VFX.VFXEventAttribute.GetBool}
+     */
+    GetBool(name: string): boolean;
+    /**
+     * Use this method to get the value of a named float property from the VFXEventAttribute.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXEventAttribute.GetFloat.html | VFX.VFXEventAttribute.GetFloat}
+     */
+    GetFloat(nameID: number): number;
+    /**
+     * Use this method to get the value of a named float property from the VFXEventAttribute.
+     * @param name The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXEventAttribute.GetFloat.html | VFX.VFXEventAttribute.GetFloat}
+     */
+    GetFloat(name: string): number;
+    /**
+     * Use this method to get the value of a named integer property from the VFXEventAttribute.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXEventAttribute.GetInt.html | VFX.VFXEventAttribute.GetInt}
+     */
+    GetInt(nameID: number): number;
+    /**
+     * Use this method to get the value of a named integer property from the VFXEventAttribute.
+     * @param name The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXEventAttribute.GetInt.html | VFX.VFXEventAttribute.GetInt}
+     */
+    GetInt(name: string): number;
+    /**
+     * Use this method to get the value of a named Matrix4x4 property from the VFXEventAttribute.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXEventAttribute.GetMatrix4x4.html | VFX.VFXEventAttribute.GetMatrix4x4}
+     */
+    GetMatrix4x4(nameID: number): Matrix4x4;
+    /**
+     * Use this method to get the value of a named Matrix4x4 property from the VFXEventAttribute.
+     * @param name The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXEventAttribute.GetMatrix4x4.html | VFX.VFXEventAttribute.GetMatrix4x4}
+     */
+    GetMatrix4x4(name: string): Matrix4x4;
+    /**
+     * Use this method to get the value of a named unsigned integer property from the VFXEventAttribute.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXEventAttribute.GetUint.html | VFX.VFXEventAttribute.GetUint}
+     */
+    GetUint(nameID: number): number;
+    /**
+     * Use this method to get the value of a named unsigned integer property from the VFXEventAttribute.
+     * @param name The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXEventAttribute.GetUint.html | VFX.VFXEventAttribute.GetUint}
+     */
+    GetUint(name: string): number;
+    /**
+     * Use this method to get the value of a named Vector2 property from the VFXEventAttribute.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXEventAttribute.GetVector2.html | VFX.VFXEventAttribute.GetVector2}
+     */
+    GetVector2(nameID: number): Vector2;
+    /**
+     * Use this method to get the value of a named Vector2 property from the VFXEventAttribute.
+     * @param name The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXEventAttribute.GetVector2.html | VFX.VFXEventAttribute.GetVector2}
+     */
+    GetVector2(name: string): Vector2;
+    /**
+     * Use this method to get the value of a named Vector3 property from the VFXEventAttribute.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXEventAttribute.GetVector3.html | VFX.VFXEventAttribute.GetVector3}
+     */
+    GetVector3(nameID: number): Vector3;
+    /**
+     * Use this method to get the value of a named Vector3 property from the VFXEventAttribute.
+     * @param name The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXEventAttribute.GetVector3.html | VFX.VFXEventAttribute.GetVector3}
+     */
+    GetVector3(name: string): Vector3;
+    /**
+     * Use this method to get the value of a named Vector4 property from the VFXEventAttribute.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXEventAttribute.GetVector4.html | VFX.VFXEventAttribute.GetVector4}
+     */
+    GetVector4(nameID: number): Vector4;
+    /**
+     * Use this method to get the value of a named Vector4 property from the VFXEventAttribute.
+     * @param name The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXEventAttribute.GetVector4.html | VFX.VFXEventAttribute.GetVector4}
+     */
+    GetVector4(name: string): Vector4;
+    /**
+     * Use this method to check if the VFXEventAttribute stores a bool with the name you pass in.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXEventAttribute.HasBool.html | VFX.VFXEventAttribute.HasBool}
+     */
+    HasBool(nameID: number): boolean;
+    /**
+     * Use this method to check if the VFXEventAttribute stores a bool with the name you pass in.
+     * @param name The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXEventAttribute.HasBool.html | VFX.VFXEventAttribute.HasBool}
+     */
+    HasBool(name: string): boolean;
+    /**
+     * Use this method to check if the VFXEventAttribute stores a float with the name you pass in.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXEventAttribute.HasFloat.html | VFX.VFXEventAttribute.HasFloat}
+     */
+    HasFloat(nameID: number): boolean;
+    /**
+     * Use this method to check if the VFXEventAttribute stores a float with the name you pass in.
+     * @param name The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXEventAttribute.HasFloat.html | VFX.VFXEventAttribute.HasFloat}
+     */
+    HasFloat(name: string): boolean;
+    /**
+     * Use this method to check if the VFXEventAttribute stores a integer with the name you pass in.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXEventAttribute.HasInt.html | VFX.VFXEventAttribute.HasInt}
+     */
+    HasInt(nameID: number): boolean;
+    /**
+     * Use this method to check if the VFXEventAttribute stores a integer with the name you pass in.
+     * @param name The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXEventAttribute.HasInt.html | VFX.VFXEventAttribute.HasInt}
+     */
+    HasInt(name: string): boolean;
+    /**
+     * Use this method to check if the VFXEventAttribute stores a Matrix4x4 with the name you pass in.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXEventAttribute.HasMatrix4x4.html | VFX.VFXEventAttribute.HasMatrix4x4}
+     */
+    HasMatrix4x4(nameID: number): boolean;
+    /**
+     * Use this method to check if the VFXEventAttribute stores a Matrix4x4 with the name you pass in.
+     * @param name The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXEventAttribute.HasMatrix4x4.html | VFX.VFXEventAttribute.HasMatrix4x4}
+     */
+    HasMatrix4x4(name: string): boolean;
+    /**
+     * Use this method to check if the VFXEventAttribute stores a unsigned integer with the name you pass in.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXEventAttribute.HasUint.html | VFX.VFXEventAttribute.HasUint}
+     */
+    HasUint(nameID: number): boolean;
+    /**
+     * Use this method to check if the VFXEventAttribute stores a unsigned integer with the name you pass in.
+     * @param name The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXEventAttribute.HasUint.html | VFX.VFXEventAttribute.HasUint}
+     */
+    HasUint(name: string): boolean;
+    /**
+     * Use this method to check if the VFXEventAttribute stores a Vector2 with the name you pass in.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXEventAttribute.HasVector2.html | VFX.VFXEventAttribute.HasVector2}
+     */
+    HasVector2(nameID: number): boolean;
+    /**
+     * Use this method to check if the VFXEventAttribute stores a Vector2 with the name you pass in.
+     * @param name The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXEventAttribute.HasVector2.html | VFX.VFXEventAttribute.HasVector2}
+     */
+    HasVector2(name: string): boolean;
+    /**
+     * Use this method to check if the VFXEventAttribute stores a Vector3 with the name you pass in.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXEventAttribute.HasVector3.html | VFX.VFXEventAttribute.HasVector3}
+     */
+    HasVector3(nameID: number): boolean;
+    /**
+     * Use this method to check if the VFXEventAttribute stores a Vector3 with the name you pass in.
+     * @param name The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXEventAttribute.HasVector3.html | VFX.VFXEventAttribute.HasVector3}
+     */
+    HasVector3(name: string): boolean;
+    /**
+     * Use this method to check if the VFXEventAttribute stores a Vector4 with the name you pass in.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXEventAttribute.HasVector4.html | VFX.VFXEventAttribute.HasVector4}
+     */
+    HasVector4(nameID: number): boolean;
+    /**
+     * Use this method to check if the VFXEventAttribute stores a Vector4 with the name you pass in.
+     * @param name The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXEventAttribute.HasVector4.html | VFX.VFXEventAttribute.HasVector4}
+     */
+    HasVector4(name: string): boolean;
+    /**
+     * Use this method to set the value of a bool with the name you pass in.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * @param b The new bool value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXEventAttribute.SetBool.html | VFX.VFXEventAttribute.SetBool}
+     */
+    SetBool(nameID: number, b: boolean): void;
+    /**
+     * Use this method to set the value of a bool with the name you pass in.
+     * @param name The name of the property.
+     * @param b The new bool value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXEventAttribute.SetBool.html | VFX.VFXEventAttribute.SetBool}
+     */
+    SetBool(name: string, b: boolean): void;
+    /**
+     * Use this method to set the value of a float with the name you pass in.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * @param f The new float value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXEventAttribute.SetFloat.html | VFX.VFXEventAttribute.SetFloat}
+     */
+    SetFloat(nameID: number, f: number): void;
+    /**
+     * Use this method to set the value of a float with the name you pass in.
+     * @param name The name of the property.
+     * @param f The new float value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXEventAttribute.SetFloat.html | VFX.VFXEventAttribute.SetFloat}
+     */
+    SetFloat(name: string, f: number): void;
+    /**
+     * Use this method to set the value of an integer with the name you pass in.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * @param i The new integer value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXEventAttribute.SetInt.html | VFX.VFXEventAttribute.SetInt}
+     */
+    SetInt(nameID: number, i: number): void;
+    /**
+     * Use this method to set the value of an integer with the name you pass in.
+     * @param name The name of the property.
+     * @param i The new integer value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXEventAttribute.SetInt.html | VFX.VFXEventAttribute.SetInt}
+     */
+    SetInt(name: string, i: number): void;
+    /**
+     * Use this method to set the value of a Matrix4x4 with the name you pass in.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * @param v The new Matrix4x4 value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXEventAttribute.SetMatrix4x4.html | VFX.VFXEventAttribute.SetMatrix4x4}
+     */
+    SetMatrix4x4(nameID: number, v: Matrix4x4): void;
+    /**
+     * Use this method to set the value of a Matrix4x4 with the name you pass in.
+     * @param name The name of the property.
+     * @param v The new Matrix4x4 value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXEventAttribute.SetMatrix4x4.html | VFX.VFXEventAttribute.SetMatrix4x4}
+     */
+    SetMatrix4x4(name: string, v: Matrix4x4): void;
+    /**
+     * Use this method to set the value of an unsigned integer with the name you pass in.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * @param i The new unsigned integer value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXEventAttribute.SetUint.html | VFX.VFXEventAttribute.SetUint}
+     */
+    SetUint(nameID: number, i: number): void;
+    /**
+     * Use this method to set the value of an unsigned integer with the name you pass in.
+     * @param name The name of the property.
+     * @param i The new unsigned integer value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXEventAttribute.SetUint.html | VFX.VFXEventAttribute.SetUint}
+     */
+    SetUint(name: string, i: number): void;
+    /**
+     * Use this method to set the value of a Vector2 with the name you pass in.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * @param v The new Vector2 value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXEventAttribute.SetVector2.html | VFX.VFXEventAttribute.SetVector2}
+     */
+    SetVector2(nameID: number, v: Vector2): void;
+    /**
+     * Use this method to set the value of a Vector2 with the name you pass in.
+     * @param name The name of the property.
+     * @param v The new Vector2 value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXEventAttribute.SetVector2.html | VFX.VFXEventAttribute.SetVector2}
+     */
+    SetVector2(name: string, v: Vector2): void;
+    /**
+     * Use this method to set the value of a Vector3 with the name you pass in.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * @param v The new Vector3 value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXEventAttribute.SetVector3.html | VFX.VFXEventAttribute.SetVector3}
+     */
+    SetVector3(nameID: number, v: Vector3): void;
+    /**
+     * Use this method to set the value of a Vector3 with the name you pass in.
+     * @param name The name of the property.
+     * @param v The new Vector3 value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXEventAttribute.SetVector3.html | VFX.VFXEventAttribute.SetVector3}
+     */
+    SetVector3(name: string, v: Vector3): void;
+    /**
+     * Use this method to set the value of a Vector4 with the name you pass in.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * @param v The new Vector4 value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXEventAttribute.SetVector4.html | VFX.VFXEventAttribute.SetVector4}
+     */
+    SetVector4(nameID: number, v: Vector4): void;
+    /**
+     * Use this method to set the value of a Vector4 with the name you pass in.
+     * @param name The name of the property.
+     * @param v The new Vector4 value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXEventAttribute.SetVector4.html | VFX.VFXEventAttribute.SetVector4}
+     */
+    SetVector4(name: string, v: Vector4): void;
+
+
+}
+    
+interface VFXEventAttributeConstructor {
+
+
+    new(original: VFXEventAttribute): VFXEventAttribute;
+
+
+
+}
+declare const VFXEventAttribute: VFXEventAttributeConstructor;
+    
+interface VFXParticleSystemInfo {
+    aliveCount: number;
+    capacity: number;
+    sleeping: boolean;
+    bounds: Bounds;
+
+
+
+
+
+}
+    
+interface VFXParticleSystemInfoConstructor {
+
+
+    new(aliveCount: number, capacity: number, sleeping: boolean, bounds: Bounds): VFXParticleSystemInfo;
+
+
+
+}
+declare const VFXParticleSystemInfo: VFXParticleSystemInfoConstructor;
+    
+interface VFXSpawnerState {
+    /**
+     * The current playing state.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXSpawnerState-playing.html | VFX.VFXSpawnerState.playing}
+     */
+    playing: boolean;
+    /**
+     * This boolean indicates if a new loop has just started.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXSpawnerState-newLoop.html | VFX.VFXSpawnerState.newLoop}
+     */
+    readonly newLoop: boolean;
+    /**
+     * The current state of VFXSpawnerState.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXSpawnerState-loopState.html | VFX.VFXSpawnerState.loopState}
+     */
+    loopState: VFXSpawnerLoopState;
+    /**
+     * The current Spawn count.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXSpawnerState-spawnCount.html | VFX.VFXSpawnerState.spawnCount}
+     */
+    spawnCount: number;
+    /**
+     * The current delta time.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXSpawnerState-deltaTime.html | VFX.VFXSpawnerState.deltaTime}
+     */
+    deltaTime: number;
+    /**
+     * The accumulated delta time since the last Play event.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXSpawnerState-totalTime.html | VFX.VFXSpawnerState.totalTime}
+     */
+    totalTime: number;
+    /**
+     * The current delay time that the VFXSpawner waits for before it starts a loop.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXSpawnerState-delayBeforeLoop.html | VFX.VFXSpawnerState.delayBeforeLoop}
+     */
+    delayBeforeLoop: number;
+    /**
+     * The duration of the looping state.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXSpawnerState-loopDuration.html | VFX.VFXSpawnerState.loopDuration}
+     */
+    loopDuration: number;
+    /**
+     * The current delay time that the VFXSpawner waits for after it finishes a loop.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXSpawnerState-delayAfterLoop.html | VFX.VFXSpawnerState.delayAfterLoop}
+     */
+    delayAfterLoop: number;
+    /**
+     * The current index of loop.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXSpawnerState-loopIndex.html | VFX.VFXSpawnerState.loopIndex}
+     */
+    loopIndex: number;
+    /**
+     * The current loop count.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXSpawnerState-loopCount.html | VFX.VFXSpawnerState.loopCount}
+     */
+    loopCount: number;
+    /**
+     * Gets the modifiable current event attribute (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXSpawnerState-vfxEventAttribute.html | VFX.VFXSpawnerState.vfxEventAttribute}
+     */
+    readonly vfxEventAttribute: VFXEventAttribute;
+
+
+
+    Dispose(): void;
+
+
+}
+    
+interface VFXSpawnerStateConstructor {
+
+
+    new(): VFXSpawnerState;
+
+
+
+}
+declare const VFXSpawnerState: VFXSpawnerStateConstructor;
+    
+interface VisualEffectConstructor {
+
+
+    new(): VisualEffect;
+
+
+
+}
+declare const VisualEffect: VisualEffectConstructor;
 

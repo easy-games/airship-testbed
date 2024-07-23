@@ -705,7 +705,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da4a9c662d9443bdb1d6cc66c6179573, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isDragging: 0
   redirectTarget: {fileID: 0}
 --- !u!114 &6678656062570326313
 MonoBehaviour:
@@ -730,8 +729,57 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: FriendCard
+    singleton: 0
     decorators: []
-    properties: []
+    properties:
+    - name: friendId
+      type: string
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators:
+      - name: HideInInspector
+        parameters: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: redirectScroll
+      type: object
+      objectType: AirshipRedirectScroll
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 4497294125863309327}
+      modified: 1
+    - name: bubbler
+      type: object
+      objectType: UIScrollRectEventBubbler
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 61588793420208117}
+      modified: 1
+    displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0
 --- !u!1 &2630833859914784004
