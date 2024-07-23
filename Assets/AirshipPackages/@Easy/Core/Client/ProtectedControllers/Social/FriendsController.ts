@@ -278,6 +278,11 @@ export class ProtectedFriendsController {
 
 	public SendStatusUpdateYielding(): void {
 		Game.WaitForLocalPlayerLoaded();
+
+		if (Game.IsEditor() && !Game.IsInternal()) {
+			return;
+		}
+
 		const status: Partial<UserStatusData> = {
 			userId: Game.localPlayer.userId,
 			status: Game.coreContext === CoreContext.GAME ? UserStatus.IN_GAME : UserStatus.ONLINE,
