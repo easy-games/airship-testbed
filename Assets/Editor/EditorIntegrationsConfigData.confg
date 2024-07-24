@@ -21,7 +21,7 @@ MonoBehaviour:
   promptIfLuauPluginChanged: 1
   luauScriptTimeout: 10
   typescriptVerbose: 0
-  typescriptIncremental_EXPERIMENTAL: 0
+  typescriptIncremental: 0
   typescriptWriteOnlyChanged: 0
   typescriptUseDevBuild: 0
   typescriptPreventPlayOnError: 1
