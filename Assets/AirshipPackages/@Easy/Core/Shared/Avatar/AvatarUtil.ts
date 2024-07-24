@@ -22,6 +22,9 @@ export class AvatarUtil {
 
 	public static readonly skinColors: Color[] = [];
 
+	/**
+	 * @internal
+	 */
 	public static Initialize() {
 		// AvatarUtil.defaultOutfit = AssetCache.LoadAsset<AccessoryOutfit>(
 		// 	AvatarUtil.defaultAccessoryOutfitPath,
@@ -76,6 +79,9 @@ export class AvatarUtil {
 		// }
 	}
 
+	/**
+	 * @internal
+	 */
 	public static DownloadOwnedAccessories() {
 		AvatarPlatformAPI.GetAccessories().then((acc) => {
 			if (acc) {
@@ -104,10 +110,16 @@ export class AvatarUtil {
 		});
 	}
 
+	/**
+	 * @internal
+	 */
 	public static GetClass(classId: string) {
 		return this.allAvatarClasses.get(classId);
 	}
 
+	/**
+	 * @internal
+	 */
 	public static GetClassThumbnailUrl(classId: string) {
 		const classData = AvatarUtil.GetClass(classId);
 		if (classData) {
@@ -116,6 +128,9 @@ export class AvatarUtil {
 		return "";
 	}
 
+	/**
+	 * @internal
+	 */
 	public static InitUserOutfits(userId: string) {
 		AvatarPlatformAPI.GetAllOutfits().then((outfits) => {
 			const maxNumberOfOutfits = 5;
@@ -142,6 +157,9 @@ export class AvatarUtil {
 		});
 	}
 
+	/**
+	 * @internal
+	 */
 	public static AddAvailableAvatarItem(instanceId: string, item: AccessoryComponent) {
 		const slotNumber: number = item.GetSlotNumber();
 		let items = this.ownedAvatarAccessories.get(slotNumber);
@@ -154,35 +172,61 @@ export class AvatarUtil {
 		this.ownedAvatarAccessories.set(slotNumber, items);
 	}
 
+	/**
+	 * @internal
+	 */
 	public static AddAvailableFaceItem(item: AccessoryFace) {
 		this.ownedAvatarFaces.push(item);
 	}
 
+	/**
+	 * @internal
+	 */
 	public static GetAllAvatarItems(slotType: AccessorySlot) {
 		//print("Getting slot " + tostring(slotType) + " size: " + this.avatarAccessories.get(slotType)?.size());
 		return this.ownedAvatarAccessories.get(slotType);
 	}
 
+	/**
+	 * @internal
+	 */
 	public static GetAllAvatarFaceItems() {
 		return this.ownedAvatarFaces;
 	}
 
+	/**
+	 * @internal
+	 */
 	public static GetAllAvatarSkins() {
 		return this.avatarSkinAccessories;
 	}
 
+	/**
+	 * @internal
+	 */
 	public static GetAllPossibleAvatarItems() {
 		return this.allAvatarAccessories;
 	}
 
+	/**
+	 * @internal
+	 */
 	public static GetAccessoryFromClassId(classId: string) {
 		return this.allAvatarAccessories.get(classId);
 	}
 
+	/**
+	 * @internal
+	 */
 	public static GetAccessoryFaceFromClassId(classId: string) {
 		return this.allAvatarFaces.get(classId);
 	}
 
+	/**
+	 * Gets the equipped outfit for your local logged in character
+	 * @param builder accessory builder for character
+	 * @param options optional params
+	 */
 	public static LoadEquippedUserOutfit(
 		builder: AccessoryBuilder,
 		options: {
@@ -200,12 +244,22 @@ export class AvatarUtil {
 		});
 	}
 
+	/**
+	 * Load a default outfit onto the character so they aren't nakey
+	 * @param builder accessory builder for character
+	 */
 	public static LoadDefaultOutfit(builder: AccessoryBuilder) {
 		if (this.defaultOutfit) {
 			builder.AddAccessoryOutfit(this.defaultOutfit, true);
 		}
 	}
 
+	/**
+	 * Load the equipped outfit of a user into the accessory builder
+	 * @param userId target userId
+	 * @param builder accessory builder for character
+	 * @param options optional params
+	 */
 	public static LoadUsersEquippedOutfit(
 		userId: string,
 		builder: AccessoryBuilder,
@@ -218,6 +272,12 @@ export class AvatarUtil {
 		});
 	}
 
+	/**
+	 * Load an outfit into the accessory builder
+	 * @param outfit  outfit from server
+	 * @param builder accessory builder for character
+	 * @param options optional params
+	 */
 	public static LoadUserOutfit(
 		outfit: OutfitDto,
 		builder: AccessoryBuilder,
