@@ -94,6 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3544194686419381052}
   - component: {fileID: 7632988572412039259}
+  - component: {fileID: 3891664184431752562}
   m_Layer: 7
   m_Name: CharacterViewmodel
   m_TagString: Untagged
@@ -140,6 +141,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: AirshipCharacterViewmodel
+    singleton: 0
     decorators: []
     properties:
     - name: animator
@@ -185,11 +187,29 @@ MonoBehaviour:
       decorators: []
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 4218552764163729247}
+      serializedObject: {fileID: 3891664184431752562}
       modified: 1
     displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0
+--- !u!114 &3891664184431752562
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3544194686419381055}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99dfe5a335b4400d888199768fd1e932, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rig: {fileID: 8482812938306414007}
+  meshCombiner: {fileID: 6202152778573744635}
+  firstPerson: 1
+  currentOutfit: {fileID: 0}
+  currentUserId: 
+  cancelPendingDownload: 0
 --- !u!1 &7172678626230927459
 GameObject:
   m_ObjectHideFlags: 0
@@ -323,6 +343,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseMesh: {fileID: 0}
+  rootBone: {fileID: 0}
+  executeOnLoad: 0
   sourceReferences: []
 --- !u!1001 &1634068191446321106
 PrefabInstance:
@@ -567,17 +589,6 @@ SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: 3418875587636762027, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
   m_PrefabInstance: {fileID: 1634068191446321106}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4218552764163729247 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3181282136960589965, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
-  m_PrefabInstance: {fileID: 1634068191446321106}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99dfe5a335b4400d888199768fd1e932, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &6165541041192800752 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4845036152095233570, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}

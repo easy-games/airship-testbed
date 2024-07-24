@@ -76,11 +76,6 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 
 		if (this.humanEntityGo) {
 			this.accessoryBuilder = this.humanEntityGo.GetComponent<AccessoryBuilder>()!;
-			if (this.accessoryBuilder) {
-				this.accessoryBuilder.thirdPersonLayer = this.gameObject.layer;
-				this.accessoryBuilder.firstPersonLayer = this.gameObject.layer;
-				this.accessoryBuilder.UpdateAccessoryLayers();
-			}
 		}
 
 		Mouse.onMoved.Connect((pos: Vector2) => {

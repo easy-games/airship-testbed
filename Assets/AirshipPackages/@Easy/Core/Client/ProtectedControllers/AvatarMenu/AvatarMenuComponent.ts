@@ -721,7 +721,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private ClearAllAccessories() {
-		this.mainMenu?.avatarView?.accessoryBuilder?.RemoveAccessories();
+		this.mainMenu?.avatarView?.accessoryBuilder?.RemoveAllAccessories();
 		this.selectedAccessories.clear();
 		this.activeAccessories.clear();
 	}

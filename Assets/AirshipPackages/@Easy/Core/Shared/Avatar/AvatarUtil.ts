@@ -202,16 +202,16 @@ export class AvatarUtil {
 
 	public static LoadDefaultOutfit(builder: AccessoryBuilder) {
 		if (this.defaultOutfit) {
-			builder.EquipAccessoryOutfit(this.defaultOutfit, true);
+			builder.AddAccessoryOutfit(this.defaultOutfit, true);
 		}
 	}
 
-	public static LoadPlayersEquippedOutfit(
-		playerId: string,
+	public static LoadUsersEquippedOutfit(
+		userId: string,
 		builder: AccessoryBuilder,
 		options: { removeOldClothingAccessories?: boolean } = {},
 	) {
-		AvatarPlatformAPI.GetUserEquippedOutfit(playerId).then((outfit) => {
+		AvatarPlatformAPI.GetUserEquippedOutfit(userId).then((outfit) => {
 			if (outfit) {
 				this.LoadUserOutfit(outfit, builder, options);
 			}

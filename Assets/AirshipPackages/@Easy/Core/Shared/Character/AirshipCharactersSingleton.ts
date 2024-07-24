@@ -219,11 +219,8 @@ export class AirshipCharactersSingleton {
 					i++;
 				}
 
+				//We aren't combineing held items
 				// this.entity.accessoryBuilder.TryCombineMeshes();
-				character.accessoryBuilder.UpdateAccessoryLayers();
-				if (viewmodelAccessoryBuilder) {
-					viewmodelAccessoryBuilder.UpdateAccessoryLayers();
-				}
 			});
 		});
 	}

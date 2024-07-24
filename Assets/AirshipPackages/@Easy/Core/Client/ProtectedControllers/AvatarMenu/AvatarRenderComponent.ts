@@ -79,11 +79,6 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 			return;
 		}
 		this.backdrops = this.backdropHolder.GetAirshipComponent<AvatarBackdropComponent>()!;
-		if (this.builder) {
-			this.builder.thirdPersonLayer = this.gameObject.layer;
-			this.builder.firstPersonLayer = this.gameObject.layer;
-			this.builder.UpdateAccessoryLayers();
-		}
 	}
 
 	/**
@@ -121,7 +116,7 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 	public RenderItem(accessoryTemplate: AccessoryComponent) {
 		print("Rending item: " + accessoryTemplate.name);
 		//Clear the outfit
-		this.builder.RemoveAccessories();
+		this.builder.RemoveAllAccessories();
 		this.builder.rig.faceMesh.gameObject.SetActive(false);
 		//Load the accessory onto the avatar
 		let acc = this.builder.AddSingleAccessory(accessoryTemplate, true);
@@ -135,7 +130,7 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 	public RenderFace(face: AccessoryFace) {
 		print("Rending Face: " + face.name);
 		//Clear the outfit
-		this.builder.RemoveAccessories();
+		this.builder.RemoveAllAccessories();
 		//Load the accessory onto the avatar
 		this.builder.rig.faceMesh.gameObject.SetActive(true);
 		this.builder.SetFaceTexture(face.decalTexture);
