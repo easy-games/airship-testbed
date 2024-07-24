@@ -1039,9 +1039,9 @@ MonoBehaviour:
   rig: {fileID: 6008602028440058378}
   meshCombiner: {fileID: 5232673978488062214}
   firstPerson: 0
-  firstPersonLayer: 7
-  thirdPersonLayer: 3
   currentOutfit: {fileID: 0}
+  currentUserId: 
+  cancelPendingDownload: 0
 --- !u!114 &5838268274975822121
 MonoBehaviour:
   m_ObjectHideFlags: 0
