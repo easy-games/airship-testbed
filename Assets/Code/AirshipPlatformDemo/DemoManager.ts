@@ -110,13 +110,7 @@ export default class DemoManager extends AirshipBehaviour {
 		}
 	}
 
-	public override Update(dt: number): void {
-		Airship.Characters.GetCharacters().forEach((character) => {
-			if (character.transform.position.y < -25) {
-				character.Teleport(this.spawnPosition.transform.position);
-			}
-		});
-	}
+	public override Update(dt: number): void {}
 
 	public SpawnPlayer(player: Player): void {
 		if (!this.spawnCharacter) return;

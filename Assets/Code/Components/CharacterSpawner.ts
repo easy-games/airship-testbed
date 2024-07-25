@@ -43,7 +43,7 @@ export default class CharacterSpawner extends AirshipBehaviour {
 					const character = damageInfo.gameObject.GetAirshipComponent<Character>();
 					if (character?.gameObject.scene !== this.gameObject.scene) return;
 
-					task.delay(1.5, () => {
+					task.delay(this.delay, () => {
 						if (
 							character?.player?.IsConnected() &&
 							character.player.IsInScene(this.gameObject.scene.name)
@@ -54,6 +54,14 @@ export default class CharacterSpawner extends AirshipBehaviour {
 				}),
 			);
 		}
+	}
+
+	protected Update(dt: number): void {
+		Airship.Characters.GetCharacters().forEach((character) => {
+			if (character.transform.position.y < -25) {
+				character.Teleport(this.spawnPoint.transform.position);
+			}
+		});
 	}
 
 	public SpawnCharacter(player: Player): void {

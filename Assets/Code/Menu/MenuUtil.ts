@@ -26,6 +26,11 @@ export class MenuUtil {
 			subtitle: "Loading multiple networked scenes per player.",
 			sceneName: "MultiScene_Base",
 		},
+		{
+			title: "NavMesh",
+			subtitle: "Unity NavMesh API",
+			sceneName: "NavMesh",
+		},
 	];
 
 	public static loadGlobalSceneRequest = new NetworkFunction<string, boolean>("LoadGlobalScene");

@@ -444,6 +444,10 @@
 		"Code/Components/TestCharacter@TestCharacter": {
 			"assetPath": "Code/Components/TestCharacter.ts",
 			"name": "TestCharacter"
+		},
+		"Code/NavMesh/CubeAgent@CubeAgent": {
+			"assetPath": "Code/NavMesh/CubeAgent.ts",
+			"name": "CubeAgent"
 		}
 	},
 	"enum": {
