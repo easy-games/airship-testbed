@@ -320,6 +320,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2245620844483191104, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: scriptFile
+      value: 
+      objectReference: {fileID: 183749498165355873, guid: 9851b2a991bb1c24c82f8213eb177e5b, type: 3}
+    - target: {fileID: 2245620844483191104, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
       propertyPath: m_metadata.properties.Array.data[4].serializedValue
       value: 0
       objectReference: {fileID: 0}

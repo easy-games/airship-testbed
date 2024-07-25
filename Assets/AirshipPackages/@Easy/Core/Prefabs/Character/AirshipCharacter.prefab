@@ -1041,6 +1041,7 @@ MonoBehaviour:
   firstPerson: 0
   currentOutfit: {fileID: 0}
   currentUserId: 
+  currentUserName: 
   cancelPendingDownload: 0
 --- !u!114 &5838268274975822121
 MonoBehaviour:
