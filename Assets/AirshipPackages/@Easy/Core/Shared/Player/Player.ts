@@ -48,6 +48,8 @@ export class Player {
 	public selectedOutfit: OutfitDto | undefined;
 	public outfitLoaded = false;
 
+	private hasDevPermissions = false;
+
 	/**
 	 * Audio source for player's voice chat. Attached to a Game Object that can be reparented to
 	 * control voice chat position. By default this lives under the player's character and is
@@ -103,6 +105,15 @@ export class Player {
 		if (playerInfo !== undefined) {
 			this.SetVoiceChatAudioSource(playerInfo.voiceChatAudioSource);
 		}
+	}
+
+	/**
+	 * Returns true if this player is part of the group which owns the game.
+	 *
+	 * This is used to grant permissions to things like `/kick`
+	 */
+	public IsGameDeveloper(): boolean {
+		return this.hasDevPermissions;
 	}
 
 	/**
