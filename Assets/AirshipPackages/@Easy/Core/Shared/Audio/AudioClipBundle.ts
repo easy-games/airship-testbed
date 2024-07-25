@@ -1,4 +1,4 @@
-import { } from "@Easy/Core/Shared/Flamework";
+import {} from "@Easy/Core/Shared/Flamework";
 import { AudioManager, PlaySoundConfig } from "./AudioManager";
 
 export enum AudioBundlePlayMode {

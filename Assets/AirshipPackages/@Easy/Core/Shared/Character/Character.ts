@@ -210,7 +210,7 @@ export default class Character extends AirshipBehaviour {
 	 */
 	public WaitForInit(): void {
 		while (!this.initialized) {
-			task.wait(0);
+			task.unscaledWait();
 		}
 	}
 

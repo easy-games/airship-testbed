@@ -48,9 +48,11 @@ export default class GameSearchResult extends SearchResult {
 			this.bin.Add(
 				cloudImage.OnFinishedLoading.Connect((success) => {
 					if (success) {
-						NativeTween.GraphicColor(cloudImage.image, new Color(1, 1, 1, 1), 0.1);
+						NativeTween.GraphicColor(cloudImage.image, new Color(1, 1, 1, 1), 0.1).SetUseUnscaledTime(true);
 					} else {
-						NativeTween.GraphicColor(cloudImage.image, new Color(0, 0, 0, 0.3), 0.1);
+						NativeTween.GraphicColor(cloudImage.image, new Color(0, 0, 0, 0.3), 0.1).SetUseUnscaledTime(
+							true,
+						);
 					}
 				}),
 			);

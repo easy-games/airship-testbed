@@ -85,7 +85,7 @@ export class AirshipCharactersSingleton {
 
 			task.spawn(() => {
 				while (true) {
-					task.wait(0.05);
+					task.unscaledWait(0.05);
 					for (const [_cid, dto] of this.pendingCharacterDtos) {
 						this.InitCharacter(dto);
 					}

@@ -269,12 +269,16 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 					this.avatarCamera.transform,
 					this.targetTransform.position,
 					this.cameraTransitionDuration,
-				).SetEaseQuadInOut();
+				)
+					.SetEaseQuadInOut()
+					.SetUseUnscaledTime(true);
 				NativeTween.Rotation(
 					this.avatarCamera.transform,
 					this.targetTransform.rotation.eulerAngles,
 					this.cameraTransitionDuration,
-				).SetEaseQuadInOut();
+				)
+					.SetEaseQuadInOut()
+					.SetUseUnscaledTime(true);
 			}
 		}
 	}

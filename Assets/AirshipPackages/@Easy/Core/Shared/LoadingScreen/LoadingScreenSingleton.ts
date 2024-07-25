@@ -30,7 +30,7 @@ export class LoadingScreenSingleton {
 		this.coreLoadingScreen.SetProgress("Building the World", 10);
 		this.loadingBin.Add(Mouse.AddUnlocker());
 
-		task.delay(0, () => {
+		task.unscaledDelay(0, () => {
 			if (!this.hasUsed) {
 				this.FinishLoading();
 			}

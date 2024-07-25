@@ -29,7 +29,7 @@ export default class DirectMessagesWindow extends AirshipBehaviour {
 		this.bin.Clean();
 		this.messagesParent.ClearChildren();
 
-		NativeTween.AnchoredPositionY(this.gameObject.GetComponent<RectTransform>()!, 5, 0.1);
+		NativeTween.AnchoredPositionY(this.gameObject.GetComponent<RectTransform>()!, 5, 0.1).SetUseUnscaledTime(true);
 
 		Bridge.UpdateLayout(this.messagesContent.transform, false);
 		this.scrollRect.velocity = new Vector2(0, 0);

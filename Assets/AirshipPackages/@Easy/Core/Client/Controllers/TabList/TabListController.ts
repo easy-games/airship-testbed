@@ -89,7 +89,7 @@ export class TabListController {
 
 		Application.focusChanged.Connect((focused) => {
 			this.Hide(true, true);
-			task.delay(0, () => {
+			task.unscaledDelay(0, () => {
 				this.Hide(true, true);
 			});
 		});
@@ -206,9 +206,9 @@ export class TabListController {
 		this.shown = true;
 		this.tablistCanvas.enabled = true;
 		this.wrapperRect.anchoredPosition = new Vector2(0, this.posY - this.tweenDistance);
-		NativeTween.AnchoredPositionY(this.wrapperRect, this.posY, this.tweenDuration);
+		NativeTween.AnchoredPositionY(this.wrapperRect, this.posY, this.tweenDuration).SetUseUnscaledTime(true);
 		this.canvasGroup.alpha = 0;
-		NativeTween.CanvasGroupAlpha(this.canvasGroup, 1, this.tweenDuration);
+		NativeTween.CanvasGroupAlpha(this.canvasGroup, 1, this.tweenDuration).SetUseUnscaledTime(true);
 	}
 
 	public Hide(force = false, immediate = false): void {
@@ -222,8 +222,12 @@ export class TabListController {
 		if (immediate || true) {
 			this.tablistCanvas.enabled = false;
 		} else {
-			NativeTween.AnchoredPositionY(this.wrapperRect, this.posY - this.tweenDistance, this.tweenDuration);
-			NativeTween.GraphicAlpha(this.canvasGroup, 0, this.tweenDuration);
+			NativeTween.AnchoredPositionY(
+				this.wrapperRect,
+				this.posY - this.tweenDistance,
+				this.tweenDuration,
+			).SetUseUnscaledTime(true);
+			NativeTween.GraphicAlpha(this.canvasGroup, 0, this.tweenDuration).SetUseUnscaledTime(true);
 			task.delay(0.12, () => {
 				if (!this.shown) {
 					this.tablistCanvas.enabled = false;

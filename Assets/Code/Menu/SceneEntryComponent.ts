@@ -23,7 +23,11 @@ export default class SceneEntryComponent extends AirshipBehaviour {
 			this.bgImage.color = hovered ? Theme.primary : ColorUtil.HexToColor("444A4D");
 			return;
 		}
-		NativeTween.GraphicColor(this.bgImage, hovered ? Theme.primary : ColorUtil.HexToColor("444A4D"), 0.12)
+		NativeTween.GraphicColor(
+			this.bgImage,
+			hovered ? Theme.primary : ColorUtil.HexToColor("444A4D"),
+			0.12,
+		).SetUseUnscaledTime(true);
 	}
 
 	override Start(): void {

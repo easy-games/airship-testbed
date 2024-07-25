@@ -128,9 +128,9 @@ export class MainMenuController {
 		this.open = true;
 		const duration = 0.06;
 		this.wrapperRect.localScale = new Vector3(1.1, 1.1, 1.1);
-		NativeTween.LocalScale(this.wrapperRect, new Vector3(1, 1, 1), duration);
+		NativeTween.LocalScale(this.wrapperRect, new Vector3(1, 1, 1), duration).SetUseUnscaledTime(true);
 		this.mainContentCanvas.enabled = true;
-		NativeTween.CanvasGroupAlpha(this.rootCanvasGroup, 1, duration);
+		NativeTween.CanvasGroupAlpha(this.rootCanvasGroup, 1, duration).SetUseUnscaledTime(true);
 
 		if (this.currentPage) {
 			this.RouteToPage(this.currentPage.pageType, true, true);
@@ -149,8 +149,8 @@ export class MainMenuController {
 		EventSystem.current.ClearSelected();
 
 		const duration = 0.06;
-		NativeTween.LocalScale(this.wrapperRect, new Vector3(1.1, 1.1, 1.1), duration);
-		NativeTween.CanvasGroupAlpha(this.rootCanvasGroup, 0, duration);
+		NativeTween.LocalScale(this.wrapperRect, new Vector3(1.1, 1.1, 1.1), duration).SetUseUnscaledTime(true);
+		NativeTween.CanvasGroupAlpha(this.rootCanvasGroup, 0, duration).SetUseUnscaledTime(true);
 		SetTimeout(duration, () => {
 			if (!this.open) {
 				this.mainContentCanvas.enabled = false;
