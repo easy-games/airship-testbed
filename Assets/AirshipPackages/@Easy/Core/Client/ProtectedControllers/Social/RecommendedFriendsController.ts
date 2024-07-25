@@ -120,7 +120,7 @@ export class RecommendedFriendsController implements OnStart {
 	/** Will write recommended friends to file every 30s (if changed) */
 	private StartSavingLoop() {
 		task.spawn(() => {
-			while (task.wait(30)) {
+			while (task.unscaledWait(30)) {
 				if (!this.fileRequiresSave) continue;
 
 				this.SaveFile();

@@ -84,7 +84,7 @@ export class NetworkUtil {
 		// Return when exists or timeout after `timeout`.
 		let elapsed = 0;
 		while (true) {
-			task.wait();
+			task.unscaledWait();
 			nob = NetworkUtil.GetNetworkObject(objectId);
 			elapsed += TimeUtil.GetDeltaTime();
 			if (nob) return nob;
@@ -109,7 +109,7 @@ export class NetworkUtil {
 		/* Return when exists or timeout after `timeout`. */
 		let elapsed = 0;
 		while (true) {
-			task.wait();
+			task.unscaledWait();
 			elapsed += TimeUtil.GetDeltaTime();
 			if (waitingByName.has(name)) return waitingByName.get(name)!;
 			if (elapsed >= timeout) return undefined;
@@ -131,7 +131,7 @@ export class NetworkUtil {
 			return nob;
 		}
 		while (true) {
-			task.wait();
+			task.unscaledWait();
 			if (waitingByName.has(name)) {
 				return waitingByName.get(name)!;
 			}
@@ -150,7 +150,7 @@ export class NetworkUtil {
 		}
 		while (true) {
 			nob = NetworkUtil.GetNetworkObject(objectId);
-			task.wait();
+			task.unscaledWait();
 			if (nob) {
 				return nob;
 			}

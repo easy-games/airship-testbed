@@ -36,7 +36,7 @@ class ChatMessageElement {
 	public Hide(): void {
 		if (!this.shown) return;
 		this.shown = false;
-		const t = NativeTween.CanvasGroupAlpha(this.canvasGroup, 0, 0.2);
+		const t = NativeTween.CanvasGroupAlpha(this.canvasGroup, 0, 0.2)?.SetUseUnscaledTime(true);
 		this.hideBin.Add(() => {
 			if (!t.IsDestroyed()) {
 				t.Cancel();
@@ -134,7 +134,7 @@ export class ClientChatSingleton {
 		});
 
 		if (Game.IsInGame()) {
-			task.delay(0, () => {
+			task.unscaledDelay(0, () => {
 				const overlayCanvas = Object.Instantiate(
 					AssetCache.LoadAsset(
 						"AirshipPackages/@Easy/Core/Prefabs/UI/MobileControls/AirshipOverlayCanvas.prefab",
@@ -335,7 +335,11 @@ export class ClientChatSingleton {
 	}
 
 	private ShowChatInput(): void {
-		const t = NativeTween.SizeDelta(this.inputTransform, new Vector2(this.inputTransform.sizeDelta.x, 40), 0.04);
+		const t = NativeTween.SizeDelta(
+			this.inputTransform,
+			new Vector2(this.inputTransform.sizeDelta.x, 40),
+			0.04,
+		).SetUseUnscaledTime(true);
 		// this.chatInputBin.Add(() => {
 		// 	t.Cancel();
 		// });
@@ -344,7 +348,11 @@ export class ClientChatSingleton {
 	}
 
 	private HideChatInput(): void {
-		const t = NativeTween.SizeDelta(this.inputTransform, new Vector2(this.inputTransform.sizeDelta.x, 0), 0.04);
+		const t = NativeTween.SizeDelta(
+			this.inputTransform,
+			new Vector2(this.inputTransform.sizeDelta.x, 0),
+			0.04,
+		).SetUseUnscaledTime(true);
 		this.selected = false;
 		// this.chatInputBin.Add(() => {
 		// 	t.Cancel();

@@ -8,7 +8,7 @@ function AirshipSingletons.Resolve(typeName: string, timeout: number): AirshipSi
 
     if not dependencyObject then
         -- delay a frame just in case it's in the midst of loading (unfortunately doing this for now)
-        task.wait()
+        task.unscaledWait()
         dependencyObject = registry[typeName]
     else
         return dependencyObject

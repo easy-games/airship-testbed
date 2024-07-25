@@ -30,11 +30,9 @@ export default class PartyCard extends AirshipBehaviour {
 		if (!Game.IsMobile()) {
 			this.bin.AddEngineEventConnection(
 				CanvasAPI.OnHoverEvent(this.gameButton.gameObject, (hov) => {
-					NativeTween.AnchoredPositionX(
-						this.gameArrow.transform,
-						hov === HoverState.ENTER ? -10 : -20,
-						0.5,
-					).SetEaseBounceOut();
+					NativeTween.AnchoredPositionX(this.gameArrow.transform, hov === HoverState.ENTER ? -10 : -20, 0.5)
+						.SetEaseBounceOut()
+						.SetUseUnscaledTime(true);
 					this.gameArrow.color = hov === HoverState.ENTER ? Theme.primary : Theme.white;
 					this.gameText.color = hov === HoverState.ENTER ? Theme.primary : Theme.white;
 					this.gameButton.GetComponent<Image>()!.color =

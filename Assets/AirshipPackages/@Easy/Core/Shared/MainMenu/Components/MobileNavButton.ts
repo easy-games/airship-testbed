@@ -27,7 +27,7 @@ export default class MobileNavButton extends AirshipBehaviour {
 
 	public OnEnable(): void {
 		if (!(Game.IsMobile() && Game.IsPortrait())) return;
-		task.delay(0, () => {
+		task.unscaledDelay(0, () => {
 			const mainMenuController = Dependency<MainMenuController>();
 			if (mainMenuController.currentPage?.pageType === this.pageName) {
 				this.SetSelected(true);

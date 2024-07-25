@@ -36,7 +36,7 @@ export class AuthController {
 		// auto login every 30 mins
 		task.spawn(() => {
 			while (true) {
-				task.wait(30 * 60);
+				task.unscaledWait(30 * 60);
 				const refreshToken = StateManager.GetString("firebase_refreshToken");
 				if (refreshToken) {
 					task.spawn(() => {

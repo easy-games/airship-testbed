@@ -62,7 +62,7 @@ export class PlayersSingleton {
 		const FetchLocalPlayerWithWait = () => {
 			let localPlayerInfo: PlayerInfo | undefined = this.playerManagerBridge.localPlayer;
 			while (localPlayerInfo === undefined) {
-				task.wait();
+				task.unscaledWait();
 				localPlayerInfo = this.playerManagerBridge.localPlayer;
 			}
 

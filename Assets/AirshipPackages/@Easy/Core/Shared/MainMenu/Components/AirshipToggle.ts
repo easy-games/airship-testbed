@@ -38,8 +38,14 @@ export default class AirshipToggle extends AirshipBehaviour {
 	}
 
 	private UpdateVisualValue(val: boolean, instant?: boolean): void {
-		NativeTween.GraphicColor(this.bgImage,val ? Theme.primary : ColorUtil.HexToColor("BDC0C5"), instant ? 0 : 0.18 )
-		NativeTween.AnchoredPositionX(this.handle, val ? 11 : -11, instant ? 0 : 0.18).SetEaseBounceOut();
+		NativeTween.GraphicColor(
+			this.bgImage,
+			val ? Theme.primary : ColorUtil.HexToColor("BDC0C5"),
+			instant ? 0 : 0.18,
+		).SetUseUnscaledTime(true);
+		NativeTween.AnchoredPositionX(this.handle, val ? 11 : -11, instant ? 0 : 0.18)
+			.SetEaseBounceOut()
+			.SetUseUnscaledTime(true);
 	}
 
 	public OnDisable(): void {

@@ -122,7 +122,7 @@ export class RightClickMenuController {
 
 		// animate
 		menuRect.localScale = new Vector3(0, 0, 0);
-		NativeTween.LocalScale(menuRect, new Vector3(1, 1, 1), 0.1);
+		NativeTween.LocalScale(menuRect, new Vector3(1, 1, 1), 0.1).SetUseUnscaledTime(true);
 
 		let cleaned = false;
 		return () => {
