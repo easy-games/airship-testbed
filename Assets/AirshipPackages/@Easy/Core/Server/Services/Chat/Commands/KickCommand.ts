@@ -34,6 +34,6 @@ export class KickCommand extends ChatCommand {
 			}
 		}
 		target.Kick(message);
-		Game.BroadcastMessage(player.username + " was kicked.");
+		Game.BroadcastMessage(target.username + " was kicked.");
 	}
 }
