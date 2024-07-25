@@ -294,6 +294,9 @@ export class Player {
 	}
 
 	public Kick(message: string): void {
+		if (Game.IsHosting()) {
+			error("Unable to kick host.");
+		}
 		if (Game.IsGameLuauContext()) {
 			contextbridge.invoke("player.kick", LuauContext.Protected, this.connectionId, message);
 		} else {

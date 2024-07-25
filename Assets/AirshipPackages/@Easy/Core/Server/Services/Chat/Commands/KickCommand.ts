@@ -20,6 +20,12 @@ export class KickCommand extends ChatCommand {
 			player.SendMessage(ChatColor.Red("Player not found: " + args[0]));
 			return;
 		}
+
+		if (Game.IsHosting() && target === Game.localPlayer) {
+			player.SendMessage(ChatColor.Red("Unable to kick host."));
+			return;
+		}
+
 		let message = "";
 		for (let i = 1; i < args.size(); i++) {
 			message += args[i];
