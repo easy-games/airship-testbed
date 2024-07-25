@@ -1,7 +1,7 @@
 import SteamRichPresence from "@Easy/Core/Client/Airship/Steam/SteamRichPresence";
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
-import { AvatarUtil } from "@Easy/Core/Shared/Avatar/AvatarUtil";
+
 import Character from "@Easy/Core/Shared/Character/Character";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Binding } from "@Easy/Core/Shared/Input/Binding";
@@ -41,7 +41,7 @@ export default class DemoManager extends AirshipBehaviour {
 			let builder = this.testCharacterBuilders[i];
 			let userId = this.testUserIds[i];
 			if (builder && userId !== "") {
-				AvatarUtil.LoadUsersEquippedOutfit(userId, builder, {
+				Airship.Avatar.LoadUsersEquippedOutfit(userId, builder, {
 					removeOldClothingAccessories: true,
 				});
 			}

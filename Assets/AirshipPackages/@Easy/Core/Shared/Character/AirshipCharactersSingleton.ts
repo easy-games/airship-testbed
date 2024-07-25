@@ -5,7 +5,6 @@ import { Singleton } from "@Easy/Core/Shared/Flamework";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
-import { AvatarUtil } from "../Avatar/AvatarUtil";
 import { CoreContext } from "../CoreClientContext";
 import { Game } from "../Game";
 import { Viewmodel } from "../Viewmodel/Viewmodel";
@@ -102,7 +101,7 @@ export class AirshipCharactersSingleton {
 				if (!character) return;
 
 				if (outfitDto) {
-					AvatarUtil.LoadUserOutfit(outfitDto, character.accessoryBuilder, {
+					Airship.Avatar.LoadUserOutfit(outfitDto, character.accessoryBuilder, {
 						removeOldClothingAccessories: true,
 					});
 				}

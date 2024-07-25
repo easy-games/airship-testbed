@@ -2,7 +2,6 @@
  * This is the entrypoint of Core.
  */
 
-import { AvatarUtil } from "@Easy/Core/Shared/Avatar/AvatarUtil";
 import { Flamework } from "@Easy/Core/Shared/Flamework";
 import { AudioManager } from "./Audio/AudioManager";
 import { CoreContext } from "./CoreClientContext";
@@ -37,7 +36,6 @@ TimeUtil.GetLifetimeSeconds();
 CanvasAPI.Init();
 AppManager.Init();
 AudioManager.Init();
-AvatarUtil.Initialize();
 InitNet();
 
 const fullGo = gameObject as GameObject & {
@@ -106,4 +104,4 @@ contextbridge.subscribe<(from: LuauContext, sceneName: string, clientId: number,
 	(from, sceneName, clientId, added) => {
 		SceneManager.onClientPresenceChangeEnd.Fire(clientId, sceneName, added);
 	},
-)
+);

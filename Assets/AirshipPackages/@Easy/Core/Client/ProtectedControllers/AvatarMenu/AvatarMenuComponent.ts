@@ -1,6 +1,5 @@
 import { OutfitDto } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipPlatformInventory";
 import { AvatarPlatformAPI } from "@Easy/Core/Shared/Avatar/AvatarPlatformAPI";
-import { AvatarUtil } from "@Easy/Core/Shared/Avatar/AvatarUtil";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
@@ -24,6 +23,7 @@ import AvatarMenuProfileComponent from "./AvatarMenuProfileComponent";
 import AvatarRenderComponent from "./AvatarRenderComponent";
 import OutfitButton from "./Outfit/OutfitButtonComponent";
 import OutfitButtonNameComponent from "./Outfit/OutfitButtonNameComponent";
+import { Airship } from "@Easy/Core/Shared/Airship";
 
 export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private readonly generalHookupKey = "General";
@@ -390,7 +390,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		//this.currentSlot = slot;
 
 		//Accessories
-		let foundItems = AvatarUtil.GetAllAvatarItems(slot);
+		let foundItems = Airship.Avatar.GetAllAvatarItems(slot);
 		if (foundItems) {
 			this.DisplayItems(foundItems);
 		}
@@ -412,7 +412,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private DisplayFaceItems() {
-		let faceItems = AvatarUtil.GetAllAvatarFaceItems();
+		let faceItems = Airship.Avatar.GetAllAvatarFaceItems();
 		if (faceItems) {
 			faceItems.forEach((value) => {
 				this.AddItemButton(value.serverClassId, value.serverInstanceId, value.name, () => {
@@ -437,15 +437,17 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private DisplayColorScheme() {
-		for (let i = 0; i < AvatarUtil.skinColors.size(); i++) {
-			this.AddColorButton(AvatarUtil.skinColors[i]);
+		print("Avatar color: "+ Airship.Avatar);
+		print("Avatar colors: "+ Airship.Avatar.skinColors);
+		for (let i = 0; i < Airship.Avatar.skinColors.size(); i++) {
+			this.AddColorButton(Airship.Avatar.skinColors[i]);
 		}
 		this.UpdateButtonGraphics();
 		this.mainMenu?.avatarView?.CameraFocusSlot(AccessorySlot.Root);
 	}
 
 	private DisplaySkinTextures() {
-		let items = AvatarUtil.GetAllAvatarSkins();
+		let items = Airship.Avatar.GetAllAvatarSkins();
 		if (items && items.size() > 0) {
 			items.forEach((value) => {
 				this.AddItemButton(value.ToString(), "", value.ToString(), () => {
@@ -512,7 +514,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 				}
 				cloudImage.downloadOnStart = false;
 				cloudImage.image = accessoryBtn.iconImage;
-				cloudImage.url = AvatarUtil.GetClassThumbnailUrl(classId);
+				cloudImage.url = Airship.Avatar.GetClassThumbnailUrl(classId);
 
 				const downloadConn = cloudImage.OnFinishedLoading.Connect((success) => {
 					if (success) {
@@ -623,8 +625,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			.WaitForAuthed()
 			.then(() => {
 				//Get all owned accessories and map them to usable values
-				AvatarUtil.DownloadOwnedAccessories();
-				AvatarUtil.InitUserOutfits(Game.localPlayer.userId);
+				Airship.Avatar.DownloadOwnedAccessories();
+				Airship.Avatar.InitUserOutfits(Game.localPlayer.userId);
 				this.LoadAllOutfits();
 			});
 	}
@@ -641,7 +643,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 						"9999",
 						"Default0",
 						"Default0",
-						RandomUtil.FromArray(AvatarUtil.skinColors),
+						RandomUtil.FromArray(Airship.Avatar.skinColors),
 					),
 				];
 			}
@@ -734,11 +736,11 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.Log("Loading outfit: " + this.currentUserOutfit.name);
 		this.currentUserOutfit.accessories.forEach((acc, index) => {
 			this.Log("Outfit acc: " + acc.class.name + ": " + acc.class.classId);
-			let accComponent = AvatarUtil.GetAccessoryFromClassId(acc.class.classId);
+			let accComponent = Airship.Avatar.GetAccessoryFromClassId(acc.class.classId);
 			if (accComponent) {
 				this.SelectItem(acc.instanceId, accComponent, false);
 			} else {
-				let face = AvatarUtil.GetAccessoryFaceFromClassId(acc.class.classId);
+				let face = Airship.Avatar.GetAccessoryFaceFromClassId(acc.class.classId);
 				if (face) {
 					this.SelectFaceItem(face, false);
 				}
@@ -831,8 +833,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.ClearAllAccessories();
 		print("Entering Thumbnail Mode");
 		//Accessories
-		let foundItems = AvatarUtil.GetAllPossibleAvatarItems();
-		let foundFaces = AvatarUtil.GetAllAvatarFaceItems();
+		let foundItems = Airship.Avatar.GetAllPossibleAvatarItems();
+		let foundFaces = Airship.Avatar.GetAllAvatarFaceItems();
 		if (foundItems) {
 			let allItems: { instanceId: string; item: AccessoryComponent }[] = [];
 			for (let [key, value] of foundItems) {

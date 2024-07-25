@@ -1,6 +1,6 @@
+import { Airship } from "@Easy/Core/Shared/Airship";
 import AvatarBackdropComponent, { AvatarBackdropType } from "@Easy/Core/Shared/Avatar/AvatarBackdropComponent";
 import { AvatarPlatformAPI } from "@Easy/Core/Shared/Avatar/AvatarPlatformAPI";
-import { AvatarUtil } from "@Easy/Core/Shared/Avatar/AvatarUtil";
 
 export enum AvatarRenderSlot {
 	BODY,
@@ -90,7 +90,7 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 		this.CreateItemCamera();
 		this.SetupForRenders(false);
 
-		let allItems = AvatarUtil.GetAllPossibleAvatarItems();
+		let allItems = Airship.Avatar.GetAllPossibleAvatarItems();
 
 		let i = 0;
 		const maxI = 9999;
@@ -146,7 +146,7 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 		let renderData = this.Render("AccessoryThumbnails/AccThumbnail_" + name);
 		//Upload
 		if (this.uploadThumbnails) {
-			let classData = AvatarUtil.GetClass(serverClassId);
+			let classData = Airship.Avatar.GetClass(serverClassId);
 			if (classData) {
 				print("uploading accessory render");
 				AvatarPlatformAPI.UploadItemImage(

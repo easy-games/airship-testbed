@@ -7,7 +7,6 @@ import { CoreContext } from "./CoreClientContext";
 import { Game } from "./Game";
 Game.coreContext = CoreContext.GAME;
 
-import { AvatarUtil } from "@Easy/Core/Shared/Avatar/AvatarUtil";
 import { Flamework } from "@Easy/Core/Shared/Flamework";
 import { GameDto } from "../Client/Components/HomePage/API/GamesAPI";
 import { AudioManager } from "./Audio/AudioManager";
@@ -26,7 +25,6 @@ TimeUtil.GetLifetimeSeconds();
 CanvasAPI.Init();
 AppManager.Init();
 AudioManager.Init();
-AvatarUtil.Initialize();
 InitNet();
 
 // Drive timer:
@@ -50,6 +48,7 @@ Flamework.AddPath("@easy/core/client/protectedcontrollers", "^.*controller.ts$")
 Flamework.AddPath("@easy/core/client/protectedcontrollers", "^.*singleton.ts$");
 Flamework.AddPath("@easy/core/client/controllers/airship/user/airshipusercontroller", "^.*controller.ts$");
 Flamework.AddPath("@easy/core/shared/player/playerssingleton", "^.*singleton.ts$");
+Flamework.AddPath("@easy/core/shared/avatar/airshipavatarsingleton", "^.*singleton.ts$");
 Flamework.AddPath("@easy/core/shared/input/airshipinputsingleton", "^.*singleton.ts$");
 Flamework.AddPath("@easy/core/shared/protected", "^.*singleton.ts");
 

@@ -1,50 +1,45 @@
-import { RandomUtil } from "@Easy/Core/Shared/Util/RandomUtil";
+import { Airship } from "../Airship";
 import { AccessoryClass, OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
+import { AvatarPlatformAPI } from "./AvatarPlatformAPI";
+import { Singleton } from "../Flamework";
 import { CoreLogger } from "../Logger/CoreLogger";
 import { ColorUtil } from "../Util/ColorUtil";
-import { AvatarPlatformAPI } from "./AvatarPlatformAPI";
+import { RandomUtil } from "../Util/RandomUtil";
 
-export class AvatarUtil {
-	// public static readonly defaultAccessoryOutfitPath =
-	// 	"AirshipPackages/@Easy/Core/Accessories/AvatarItems/GothGirl/Kit_GothGirl_Collection.asset";
-	//AirshipPackages/@Easy/Core/Accessories/AvatarItems/GothGirl/Kit_GothGirl_Collection.asset
-	private static readonly allAvatarAccessories = new Map<string, AccessoryComponent>();
-	private static readonly allAvatarFaces = new Map<string, AccessoryFace>();
-	private static readonly allAvatarClasses = new Map<string, AccessoryClass>();
-	private static readonly ownedAvatarAccessories = new Map<
+/**
+ * Access using {@link Airship.Avatar}. Avatar singleton provides utilities for working with visual elements of a character
+ *
+ * Can be used to load outfits from the server
+ */
+@Singleton()
+export class AirshipAvatarSingleton {
+	private readonly allAvatarAccessories = new Map<string, AccessoryComponent>();
+	private readonly allAvatarFaces = new Map<string, AccessoryFace>();
+	private readonly allAvatarClasses = new Map<string, AccessoryClass>();
+	private readonly ownedAvatarAccessories = new Map<
 		AccessorySlot,
 		{ instanceId: string; item: AccessoryComponent }[]
 	>();
-	private static readonly ownedAvatarFaces: AccessoryFace[] = [];
-	private static readonly avatarSkinAccessories: AccessorySkin[] = [];
+	private readonly ownedAvatarFaces: AccessoryFace[] = [];
+	private readonly avatarSkinAccessories: AccessorySkin[] = [];
 
-	public static defaultOutfit: AccessoryOutfit | undefined;
+	public defaultOutfit: AccessoryOutfit | undefined;
 
-	public static readonly skinColors: Color[] = [];
+	public readonly skinColors: Color[] = [];
 
-	/**
-	 * @internal
-	 */
-	public static Initialize() {
-		// AvatarUtil.defaultOutfit = AssetCache.LoadAsset<AccessoryOutfit>(
-		// 	AvatarUtil.defaultAccessoryOutfitPath,
+	constructor() {
+		Airship.Avatar = this;
+
+		// Airship.Avatar.defaultOutfit = AssetCache.LoadAsset<AccessoryOutfit>(
+		// 	Airship.Avatar.defaultAccessoryOutfitPath,
 		// );
-		//print("Init kit: " + AvatarUtil.defaultKitAccessory?.name);
+		//print("Init kit: " + Airship.Avatar.defaultKitAccessory?.name);
 
 		let i = 0;
 		//Load avatar accessories
 		let avatarCollection = AssetBridge.Instance.LoadAsset<AvatarAccessoryCollection>(
 			"AirshipPackages/@Easy/Core/Prefabs/Accessories/AvatarItems/EntireAvatarCollection.asset",
 		);
-		/*for (let i = 0; i < avatarCollection.skinAccessories.Length; i++) {
-			const element = avatarCollection.skinAccessories.GetValue(i);
-			if (!element) {
-				warn("Empty element in avatar skinAccessories collection: " + i);
-				continue;
-			}
-			//print("Found avatar skin item: " + element.ToString());
-			this.avatarSkinAccessories.push(element);
-		}*/
 		// print("Found avatar collection: " + avatarCollection);
 		for (let i = 0; i < avatarCollection.accessories.Length; i++) {
 			const element = avatarCollection.accessories.GetValue(i);
@@ -82,7 +77,7 @@ export class AvatarUtil {
 	/**
 	 * @internal
 	 */
-	public static DownloadOwnedAccessories() {
+	public DownloadOwnedAccessories() {
 		AvatarPlatformAPI.GetAccessories().then((acc) => {
 			if (acc) {
 				acc.forEach((itemData) => {
@@ -113,15 +108,15 @@ export class AvatarUtil {
 	/**
 	 * @internal
 	 */
-	public static GetClass(classId: string) {
+	public GetClass(classId: string) {
 		return this.allAvatarClasses.get(classId);
 	}
 
 	/**
 	 * @internal
 	 */
-	public static GetClassThumbnailUrl(classId: string) {
-		const classData = AvatarUtil.GetClass(classId);
+	public GetClassThumbnailUrl(classId: string) {
+		const classData = this.GetClass(classId);
 		if (classData) {
 			return AvatarPlatformAPI.GetImageUrl(classData.imageId);
 		}
@@ -131,7 +126,7 @@ export class AvatarUtil {
 	/**
 	 * @internal
 	 */
-	public static InitUserOutfits(userId: string) {
+	public InitUserOutfits(userId: string) {
 		AvatarPlatformAPI.GetAllOutfits().then((outfits) => {
 			const maxNumberOfOutfits = 5;
 			const numberOfOutfits = outfits ? outfits.size() : 0;
@@ -160,7 +155,7 @@ export class AvatarUtil {
 	/**
 	 * @internal
 	 */
-	public static AddAvailableAvatarItem(instanceId: string, item: AccessoryComponent) {
+	public AddAvailableAvatarItem(instanceId: string, item: AccessoryComponent) {
 		const slotNumber: number = item.GetSlotNumber();
 		let items = this.ownedAvatarAccessories.get(slotNumber);
 		if (!items) {
@@ -175,14 +170,14 @@ export class AvatarUtil {
 	/**
 	 * @internal
 	 */
-	public static AddAvailableFaceItem(item: AccessoryFace) {
+	public AddAvailableFaceItem(item: AccessoryFace) {
 		this.ownedAvatarFaces.push(item);
 	}
 
 	/**
 	 * @internal
 	 */
-	public static GetAllAvatarItems(slotType: AccessorySlot) {
+	public GetAllAvatarItems(slotType: AccessorySlot) {
 		//print("Getting slot " + tostring(slotType) + " size: " + this.avatarAccessories.get(slotType)?.size());
 		return this.ownedAvatarAccessories.get(slotType);
 	}
@@ -190,35 +185,35 @@ export class AvatarUtil {
 	/**
 	 * @internal
 	 */
-	public static GetAllAvatarFaceItems() {
+	public GetAllAvatarFaceItems() {
 		return this.ownedAvatarFaces;
 	}
 
 	/**
 	 * @internal
 	 */
-	public static GetAllAvatarSkins() {
+	public GetAllAvatarSkins() {
 		return this.avatarSkinAccessories;
 	}
 
 	/**
 	 * @internal
 	 */
-	public static GetAllPossibleAvatarItems() {
+	public GetAllPossibleAvatarItems() {
 		return this.allAvatarAccessories;
 	}
 
 	/**
 	 * @internal
 	 */
-	public static GetAccessoryFromClassId(classId: string) {
+	public GetAccessoryFromClassId(classId: string) {
 		return this.allAvatarAccessories.get(classId);
 	}
 
 	/**
 	 * @internal
 	 */
-	public static GetAccessoryFaceFromClassId(classId: string) {
+	public GetAccessoryFaceFromClassId(classId: string) {
 		return this.allAvatarFaces.get(classId);
 	}
 
@@ -227,7 +222,7 @@ export class AvatarUtil {
 	 * @param builder accessory builder for character
 	 * @param options optional params
 	 */
-	public static LoadEquippedUserOutfit(
+	public LoadEquippedUserOutfit(
 		builder: AccessoryBuilder,
 		options: {
 			removeOldClothingAccessories?: boolean;
@@ -248,7 +243,7 @@ export class AvatarUtil {
 	 * Load a default outfit onto the character so they aren't nakey
 	 * @param builder accessory builder for character
 	 */
-	public static LoadDefaultOutfit(builder: AccessoryBuilder) {
+	public LoadDefaultOutfit(builder: AccessoryBuilder) {
 		if (this.defaultOutfit) {
 			builder.AddAccessoryOutfit(this.defaultOutfit, true);
 		}
@@ -260,7 +255,7 @@ export class AvatarUtil {
 	 * @param builder accessory builder for character
 	 * @param options optional params
 	 */
-	public static LoadUsersEquippedOutfit(
+	public LoadUsersEquippedOutfit(
 		userId: string,
 		builder: AccessoryBuilder,
 		options: { removeOldClothingAccessories?: boolean } = {},
@@ -278,7 +273,7 @@ export class AvatarUtil {
 	 * @param builder accessory builder for character
 	 * @param options optional params
 	 */
-	public static LoadUserOutfit(
+	public LoadUserOutfit(
 		outfit: OutfitDto,
 		builder: AccessoryBuilder,
 		options: { removeOldClothingAccessories?: boolean } = {},
@@ -290,10 +285,14 @@ export class AvatarUtil {
 			const accComponentTemplate = this.GetAccessoryFromClassId(acc.class.classId);
 			if (accComponentTemplate) {
 				let accComponent = builder.AddSingleAccessory(accComponentTemplate, false);
-				accComponent.AccessoryComponent.SetInstanceId(acc.instanceId);
+				if (accComponent?.AccessoryComponent) {
+					accComponent.AccessoryComponent.SetInstanceId(acc.instanceId);
+				} else {
+					warn("Unable to find accessory with class ID: " + acc.class.classId);
+				}
 			} else {
 				const face = this.GetAccessoryFaceFromClassId(acc.class.classId);
-				if (face) {
+				if (face?.decalTexture) {
 					builder.SetFaceTexture(face.decalTexture);
 				} else {
 					warn("Unable to find accessory with class ID: " + acc.class.classId);
