@@ -293,6 +293,10 @@
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/General/PlayerEntry.ts",
 			"name": "PlayerEntry"
 		},
+		"Code/NavMesh/CubeAgent@CubeAgent": {
+			"assetPath": "Code/NavMesh/CubeAgent.ts",
+			"name": "CubeAgent"
+		},
 		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsLogoutButton@SettingsLogoutButton": {
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsLogoutButton.ts",
 			"name": "SettingsLogoutButton"

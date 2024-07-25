@@ -308,6 +308,13 @@ interface Vector3 {
 		deltaTime: number,
 		maxSpeed?: number,
 	): LuaTuple<[newCurrent: Vector3, newVelocity: Vector3]>;
+
+	/** Returns vector with provided x value */
+	WithX(x: number): Vector3;
+	/** Returns vector with provided y value */
+	WithY(y: number): Vector3;
+	/** Returns vector with provided z value */
+	WithZ(z: number): Vector3;
 }
 
 interface Vector3Constructor {

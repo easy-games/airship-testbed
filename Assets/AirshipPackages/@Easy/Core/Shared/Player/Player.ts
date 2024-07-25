@@ -48,6 +48,8 @@ export class Player {
 	public selectedOutfit: OutfitDto | undefined;
 	public outfitLoaded = false;
 
+	private hasDevPermissions = false;
+
 	/**
 	 * Audio source for player's voice chat. Attached to a Game Object that can be reparented to
 	 * control voice chat position. By default this lives under the player's character and is
@@ -64,7 +66,7 @@ export class Player {
 	constructor(
 		/**
 		 * Player network object
-		 * 
+		 *
 		 * @internal
 		 */
 		public readonly networkObject: NetworkObject,
@@ -81,7 +83,7 @@ export class Player {
 
 		/**
 		 * The player's unique ID. This is unique and unchanging per player.
-		 * 
+		 *
 		 * String length is <= 128 characters (but will likely be far shorter --
 		 * typically 28 characters).
 		 */
@@ -94,7 +96,7 @@ export class Player {
 		public username: string,
 
 		/**
-		 * Image id used to fetch player's profile picture. 
+		 * Image id used to fetch player's profile picture.
 		 */
 		public profileImageId: string,
 
@@ -103,6 +105,15 @@ export class Player {
 		if (playerInfo !== undefined) {
 			this.SetVoiceChatAudioSource(playerInfo.voiceChatAudioSource);
 		}
+	}
+
+	/**
+	 * Returns true if this player is part of the group which owns the game.
+	 *
+	 * This is used to grant permissions to things like `/kick`
+	 */
+	public IsGameDeveloper(): boolean {
+		return this.hasDevPermissions;
 	}
 
 	/**
@@ -199,7 +210,7 @@ export class Player {
 	/**
 	 * Sends player a message in chat. If called from client this won't work on
 	 * non-local players.
-	 * 
+	 *
 	 * @param message Message to send in chat.
 	 */
 	public SendMessage(message: string): void {
@@ -284,7 +295,6 @@ export class Player {
 			audioSource.volume = 1;
 		}
 	}
-	
 
 	/**
 	 * @internal
@@ -292,5 +302,16 @@ export class Player {
 	public UpdateUsername(username: string): void {
 		this.username = username;
 		this.onUsernameChanged.Fire(username);
+	}
+
+	public Kick(message: string): void {
+		if (Game.IsHosting()) {
+			error("Unable to kick host.");
+		}
+		if (Game.IsGameLuauContext()) {
+			contextbridge.invoke("player.kick", LuauContext.Protected, this.connectionId, message);
+		} else {
+			error("Player.Kick() must be called from game context.");
+		}
 	}
 }

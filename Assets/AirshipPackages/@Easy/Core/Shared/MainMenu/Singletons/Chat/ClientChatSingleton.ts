@@ -1,7 +1,6 @@
 import { CoreUIController } from "@Easy/Core/Client/ProtectedControllers/CoreUIController";
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
-import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
 import { ChatCommand } from "@Easy/Core/Shared/Commands/ChatCommand";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
@@ -12,7 +11,6 @@ import { GameObjectUtil } from "@Easy/Core/Shared/GameObject/GameObjectUtil";
 import { MainMenuSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/MainMenuSingleton";
 import { ProtectedPlayer } from "@Easy/Core/Shared/Player/ProtectedPlayer";
 import { Protected } from "@Easy/Core/Shared/Protected";
-import { CoreSound } from "@Easy/Core/Shared/Sound/CoreSound";
 import { Keyboard, Mouse } from "@Easy/Core/Shared/UserInput";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
@@ -439,11 +437,11 @@ export class ClientChatSingleton {
 			const element = new ChatMessageElement(chatMessage, os.clock());
 			this.chatMessageElements.push(element);
 
-			if (Time.time > this.lastChatMessageRenderedTime && this.canvas.gameObject.activeInHierarchy) {
-				AudioManager.PlayGlobal(CoreSound.chatMessageReceived, {
-					volumeScale: 0.24,
-				});
-			}
+			// if (Time.time > this.lastChatMessageRenderedTime && this.canvas.gameObject.activeInHierarchy) {
+			// 	AudioManager.PlayGlobal(CoreSound.chatMessageReceived, {
+			// 		volumeScale: 0.24,
+			// 	});
+			// }
 			this.lastChatMessageRenderedTime = Time.time;
 		} catch (err) {
 			Debug.LogError("chat error:");

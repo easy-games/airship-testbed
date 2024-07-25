@@ -643,6 +643,8 @@ interface TransferManager {
 	 * Disconnects from server and returns to Main Menu.
 	 */
 	Disconnect(): void;
+
+	KickClient(clientId: number, message: string): void;
 }
 
 interface TransferManagerConstructor {
