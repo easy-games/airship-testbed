@@ -31,6 +31,11 @@ export class MenuUtil {
 			subtitle: "Unity NavMesh API",
 			sceneName: "NavMesh",
 		},
+		{
+			title: "Post Processing",
+			subtitle: "Post processing volumes",
+			sceneName: "PostProcessing",
+		},
 	];
 
 	public static loadGlobalSceneRequest = new NetworkFunction<string, boolean>("LoadGlobalScene");
