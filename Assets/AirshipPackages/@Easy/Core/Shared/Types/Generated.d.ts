@@ -3035,10 +3035,41 @@ declare const enum StereoScreenCaptureMode {
     BothEyes = 3,
 }
 declare const enum ContextStyle {
-    None = 0,
+    Block = 0,
     GreedyMeshingTiles = 1,
     ContextBlocks = 2,
     QuarterTiles = 3,
+}
+declare const enum QuarterBlockTypes {
+    UA = 0,
+    UB = 1,
+    UC = 2,
+    UD = 3,
+    UE = 4,
+    UF = 5,
+    UG = 6,
+    UH = 7,
+    UI = 8,
+    UJ = 9,
+    UK = 10,
+    UL = 11,
+    UM = 12,
+    UN = 13,
+    DA = 14,
+    DB = 15,
+    DC = 16,
+    DD = 17,
+    DE = 18,
+    DF = 19,
+    DG = 20,
+    DH = 21,
+    DI = 22,
+    DJ = 23,
+    DK = 24,
+    DL = 25,
+    DM = 26,
+    DN = 27,
+    MAX = 28,
 }
 declare const enum CollisionType {
     None = 0,
@@ -38595,12 +38626,14 @@ interface AccessoryBuilder extends MonoBehaviour {
     firstPerson: boolean;
     currentOutfit: AccessoryOutfit;
     currentUserId: string;
+    currentUserName: string;
     cancelPendingDownload: boolean;
 
 
 
     AddAccessories(accessoryTemplates: CSArray<AccessoryComponent>, addMode: AccessoryAddMode, rebuildMeshImmediately: boolean): CSArray<ActiveAccessory>;
     AddAccessoryOutfit(outfit: AccessoryOutfit, rebuildMeshImmediately: boolean): CSArray<ActiveAccessory>;
+    AddOutfirFromUsername(username: string): CSArray<ActiveAccessory>;
     AddOutfitFromUserId(userId: string): CSArray<ActiveAccessory>;
     AddSingleAccessory(accessoryTemplate: AccessoryComponent, rebuildMeshImmediately: boolean): ActiveAccessory;
     AddSkinAccessory(skin: AccessorySkin, rebuildMeshImmediately: boolean): void;
@@ -42969,8 +43002,8 @@ interface VoxelBlockDefinition extends ScriptableObject {
     topTexture: TextureSet;
     sideTexture: TextureSet;
     bottomTexture: TextureSet;
-    meshTexture: string;
-    meshPath: string;
+    meshMaterial: Material;
+    quarterBlockMesh: VoxelQuarterBlockMeshDefinition;
     meshPathLod: string;
     metallic: number;
     smoothness: number;
@@ -43011,6 +43044,53 @@ interface TextureSetConstructor {
 
 }
 declare const TextureSet: TextureSetConstructor;
+    
+interface VoxelQuarterBlockMeshDefinition extends ScriptableObject {
+    UA: GameObject;
+    UB: GameObject;
+    UC: GameObject;
+    UD: GameObject;
+    UE: GameObject;
+    UF: GameObject;
+    UG: GameObject;
+    UH: GameObject;
+    UI: GameObject;
+    UJ: GameObject;
+    UK: GameObject;
+    UL: GameObject;
+    UM: GameObject;
+    UN: GameObject;
+    DA: GameObject;
+    DB: GameObject;
+    DC: GameObject;
+    DD: GameObject;
+    DE: GameObject;
+    DF: GameObject;
+    DG: GameObject;
+    DH: GameObject;
+    DI: GameObject;
+    DJ: GameObject;
+    DK: GameObject;
+    DL: GameObject;
+    DM: GameObject;
+    DN: GameObject;
+
+
+
+    GetQuarterBlockMesh(block: QuarterBlockTypes): GameObject;
+
+
+}
+    
+interface VoxelQuarterBlockMeshDefinitionConstructor {
+
+
+    new(): VoxelQuarterBlockMeshDefinition;
+
+
+
+}
+declare const VoxelQuarterBlockMeshDefinition: VoxelQuarterBlockMeshDefinitionConstructor;
     
 interface VoxelBlockDefinitionConstructor {
 
@@ -44840,6 +44920,8 @@ declare const ServerTransferData: ServerTransferDataConstructor;
 interface CrossSceneStateConstructor {
     ServerTransferData: ServerTransferData;
     UseLocalBundles: boolean;
+    kickMessage: string;
+    disconnectKicked: boolean;
 
 
 
@@ -45482,8 +45564,8 @@ interface DevConsoleConstructor {
 
     readonly OnConsoleEnabled: MonoSignal<void>;
     readonly OnConsoleDisabled: MonoSignal<void>;
-    readonly OnConsoleOpened: MonoSignal<void>;
-    readonly OnConsoleClosed: MonoSignal<void>;
+    readonly OnConsoleOpened: MonoSignal<boolean>;
+    readonly OnConsoleClosed: MonoSignal<boolean>;
     readonly OnConsoleFocused: MonoSignal<void>;
     readonly OnConsoleFocusLost: MonoSignal<void>;
 }

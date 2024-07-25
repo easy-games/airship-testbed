@@ -40,8 +40,8 @@ MonoBehaviour:
     defaultPackage: 0
     forceLatestVersion: 1
   - id: '@Easy/CoreMaterials'
-    assetVersion: 83
-    codeVersion: 67
+    assetVersion: 84
+    codeVersion: 68
     game: 0
     localSource: 1
     disabled: 0

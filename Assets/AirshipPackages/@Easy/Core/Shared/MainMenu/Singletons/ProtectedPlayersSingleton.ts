@@ -33,6 +33,12 @@ export class ProtectedPlayersSingleton {
 				this.onPlayerDisconnected.Fire(protectedPlayer);
 			}
 		});
+
+		contextbridge.callback("player.kick", (from, connectionId: number, message: string) => {
+			task.spawn(() => {
+				TransferManager.Instance.KickClient(connectionId, message);
+			});
+		});
 	}
 
 	public FindByClientId(clientId: number): ProtectedPlayer | undefined {

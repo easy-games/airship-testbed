@@ -64,7 +64,7 @@ export class Player {
 	constructor(
 		/**
 		 * Player network object
-		 * 
+		 *
 		 * @internal
 		 */
 		public readonly networkObject: NetworkObject,
@@ -81,7 +81,7 @@ export class Player {
 
 		/**
 		 * The player's unique ID. This is unique and unchanging per player.
-		 * 
+		 *
 		 * String length is <= 128 characters (but will likely be far shorter --
 		 * typically 28 characters).
 		 */
@@ -94,7 +94,7 @@ export class Player {
 		public username: string,
 
 		/**
-		 * Image id used to fetch player's profile picture. 
+		 * Image id used to fetch player's profile picture.
 		 */
 		public profileImageId: string,
 
@@ -199,7 +199,7 @@ export class Player {
 	/**
 	 * Sends player a message in chat. If called from client this won't work on
 	 * non-local players.
-	 * 
+	 *
 	 * @param message Message to send in chat.
 	 */
 	public SendMessage(message: string): void {
@@ -284,7 +284,6 @@ export class Player {
 			audioSource.volume = 1;
 		}
 	}
-	
 
 	/**
 	 * @internal
@@ -292,5 +291,13 @@ export class Player {
 	public UpdateUsername(username: string): void {
 		this.username = username;
 		this.onUsernameChanged.Fire(username);
+	}
+
+	public Kick(message: string): void {
+		if (Game.IsGameLuauContext()) {
+			contextbridge.invoke("player.kick", LuauContext.Protected, this.connectionId, message);
+		} else {
+			error("Player.Kick() must be called from game context.");
+		}
 	}
 }
