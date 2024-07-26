@@ -1,7 +1,7 @@
 import { OnUpdate } from "@Easy/Core/Shared/Util/Timer";
 import { Duration } from "../Util/Duration";
 import { Signal } from "../Util/Signal";
-import { LuauEasingFunction } from "./EasingFunctions";
+import { TweenEasingFunction } from "./EasingFunctions";
 
 type LerpFunction<T> = (value: number) => T;
 
@@ -32,7 +32,7 @@ export interface LuauTween<T> {
 	Cancel(): LuauTween<T>;
 	Pause(): LuauTween<T>;
 	Play(): LuauTween<T>;
-	SetEasingFunction(easingFunction: LuauEasingFunction): LuauTween<T>;
+	SetEasingFunction(easingFunction: TweenEasingFunction): LuauTween<T>;
 	SetUseUnscaledTime(useUnscaledTime: boolean): LuauTween<T>;
 	IsPlaying(): boolean;
 	Destroy(): void;
@@ -58,7 +58,7 @@ export class Tween<T> implements LuauTween<T> {
 
 	protected constructor(
 		duration: number,
-		easingFunction: LuauEasingFunction,
+		easingFunction: TweenEasingFunction,
 		lerpFunction: LerpFunction<T>,
 		callback: (value: T) => void,
 		endValue: T,
@@ -76,7 +76,7 @@ export class Tween<T> implements LuauTween<T> {
 		return this;
 	}
 
-	public SetEasingFunction(easingFunction: LuauEasingFunction) {
+	public SetEasingFunction(easingFunction: TweenEasingFunction) {
 		const lerpFunction = this.lerpFunction;
 		const duration = this.duration;
 		const callback = this.callback;
@@ -133,7 +133,7 @@ export class Tween<T> implements LuauTween<T> {
 	}
 
 	public static Number(
-		easingFunction: LuauEasingFunction,
+		easingFunction: TweenEasingFunction,
 		durationSeconds: number,
 		callback: (delta: number) => void,
 		from: number = 0,
@@ -143,7 +143,7 @@ export class Tween<T> implements LuauTween<T> {
 	}
 
 	public static Vector3(
-		easingFunction: LuauEasingFunction,
+		easingFunction: TweenEasingFunction,
 		durationSeconds: number,
 		callback: TweenCallback<Vector3>,
 		from: Vector3 = Vector3.zero,
@@ -153,7 +153,7 @@ export class Tween<T> implements LuauTween<T> {
 	}
 
 	public static Vector2(
-		easingFunction: LuauEasingFunction,
+		easingFunction: TweenEasingFunction,
 		durationSeconds: number,
 		callback: TweenCallback<Vector2>,
 		from: Vector2 = Vector2.zero,
@@ -163,7 +163,7 @@ export class Tween<T> implements LuauTween<T> {
 	}
 
 	public static Color(
-		easingFunction: LuauEasingFunction,
+		easingFunction: TweenEasingFunction,
 		durationSeconds: number,
 		callback: TweenCallback<Color>,
 		from: Color = Color.black,

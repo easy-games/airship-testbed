@@ -51,9 +51,9 @@ type OvershootEasingFunction = (
 	overshoot: number,
 ) => number;
 
-export type LuauEasingFunction = BasicEasingFunction | PeriodicEasingFunction | OvershootEasingFunction;
+export type TweenEasingFunction = BasicEasingFunction | PeriodicEasingFunction | OvershootEasingFunction;
 
-export namespace LuauEasingFunction {
+export namespace TweenEasingFunction {
 	export const Linear: BasicEasingFunction;
 	export const Smooth: BasicEasingFunction;
 	export const Smoother: BasicEasingFunction;

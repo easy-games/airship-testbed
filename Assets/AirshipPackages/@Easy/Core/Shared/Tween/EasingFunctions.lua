@@ -500,7 +500,7 @@ local function OutInBounce(t, b, c, d)
 end
 
 return {
-	LuauEasingFunction = {
+	TweenEasingFunction = {
         Linear = Linear;
 
         InSine = InSine;
