@@ -132,42 +132,6 @@ export class Tween<T> implements LuauTween<T> {
 		return this.running;
 	}
 
-	/**
-	 * @deprecated Use `Tween.number` with the tween set to `EasingFunction.InElastic`
-	 */
-	public static InElastic(
-		totalDuration: number,
-		callback: (delta: number) => void,
-		initialValue: number = 0,
-		endValue: number = 1,
-	): LuauTween<number> {
-		return new Tween(
-			totalDuration,
-			LuauEasingFunction.InElastic,
-			NumberLerp(initialValue, endValue),
-			callback,
-			endValue,
-		);
-	}
-
-	/**
-	 * @deprecated Use `Tween.number` with the tween set to `EasingFunction.Linear`
-	 */
-	public static Linear(
-		totalDuration: number,
-		callback: (delta: number) => void,
-		initialValue: number = 0,
-		endValue: number = 1,
-	): LuauTween<number> {
-		return new Tween(
-			totalDuration,
-			LuauEasingFunction.Linear,
-			NumberLerp(initialValue, endValue),
-			callback,
-			endValue,
-		);
-	}
-
 	public static Number(
 		easingFunction: LuauEasingFunction,
 		from: number,
