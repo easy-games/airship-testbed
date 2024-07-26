@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 386bf32d3c5413243ac0ba141748a33a, type: 3}
-  m_Name: Dirt
+  m_Name: WoolRed
   m_EditorClassIdentifier: 
-  blockName: Dirt
+  blockName: Wool
   description: 
   contextStyle: 0
   topTexture:
     material: {fileID: 0}
-    diffuse: {fileID: 2800000, guid: 2df3bfbc1f210ba438d26e9d2ddccb9c, type: 3}
-    normal: {fileID: 2800000, guid: 15303d969da939849bc2c5ad9bf3c29c, type: 3}
+    diffuse: {fileID: 2800000, guid: bdcf1054bd90eb045b5253743e931b10, type: 3}
+    normal: {fileID: 0}
     smooth: {fileID: 0}
     metallic: {fileID: 0}
     emissive: {fileID: 0}
@@ -43,7 +43,7 @@ MonoBehaviour:
   smoothness: 0
   normalScale: 1
   emissive: 0
-  brightness: 3
+  brightness: 1
   solid: 1
   collisionType: 1
   randomRotation: 0
