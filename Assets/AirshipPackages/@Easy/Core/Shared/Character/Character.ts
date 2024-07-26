@@ -10,6 +10,7 @@ import { CoreNetwork } from "../CoreNetwork";
 import { DamageInfo, DamageInfoCustomData } from "../Damage/DamageInfo";
 import CharacterAnimator from "./Animation/CharacterAnimator";
 import CharacterConfigSetup from "./CharacterConfigSetup";
+import inspect from "../Util/Inspect";
 
 /**
  * A character is a (typically human) object in the scene. It controls movement and default animation.
@@ -171,26 +172,28 @@ export default class Character extends AirshipBehaviour {
 	}
 
 	private ProccessCustomMoveData() {
+		//Don't process if we have nothing queued
+		if (this.queuedMoveData.size() === 0) {
+			return;
+		}
+		//Convert queued data into binary blob
 		let customDataQueue: { key: string; value: unknown }[] = [];
 		this.queuedMoveData.forEach((value, key) => {
 			customDataQueue.push({ key: key, value: value });
 		});
 		this.queuedMoveData.clear();
+		//Pass to C#
 		this.movement?.SetCustomData(new BinaryBlob(customDataQueue));
 	}
 
 	private BeginMove(moveData: MoveInputData, isReplay: boolean) {
-		//print("BEGIN MOVE: " + moveData.GetTick());
-		//TODO: Do we actually want to ignore AI characters???
-		const player = this.player;
-		if (!player) return;
-
 		//Decode binary block into usable key value array
 		const allData = moveData.customData
 			? (moveData.customData.Decode() as { key: string; value: unknown }[])
 			: undefined;
 		const allCustomData: Map<string, unknown> = new Map();
 		if (allData) {
+			//print("ALLDATA: " + inspect(allData));
 			for (const data of allData) {
 				//print("Found custom data " + data.key + " with value: " + data.value);
 				allCustomData.set(data.key, data.value);

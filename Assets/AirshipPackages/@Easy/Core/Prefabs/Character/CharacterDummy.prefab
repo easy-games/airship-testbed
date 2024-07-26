@@ -17,7 +17,19 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -98370938496583557, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
+      propertyPath: _enablePrediction
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -98370938496583557, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
+      propertyPath: _networkTransform
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: -98370938496583557, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       propertyPath: <SceneId>k__BackingField
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -98370938496583557, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
+      propertyPath: _networkBehaviours.Array.size
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 220825048938412297, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
@@ -264,6 +276,14 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 5519949438957097557, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5519949438957097557, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5572260395049890946, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       propertyPath: m_Layer
       value: 3
@@ -340,14 +360,6 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 7931457288082626079, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
-      propertyPath: _addedNetworkObject
-      value: 
-      objectReference: {fileID: 559545806849642856}
-    - target: {fileID: 7931457288082626079, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
-      propertyPath: _networkObjectCache
-      value: 
-      objectReference: {fileID: 559545806849642856}
     - target: {fileID: 8397083915104796872, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       propertyPath: m_Layer
       value: 3
@@ -416,20 +428,16 @@ PrefabInstance:
     - {fileID: -1624083086148811293, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
     - {fileID: 7088081142443290682, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
     - {fileID: 5838268274975822121, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
-    - {fileID: -98370938496583557, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
     - {fileID: 5420625271334097286, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
     - {fileID: -6219229748269268009, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
     - {fileID: 1279903852990399244, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
     - {fileID: 7931457288082626079, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
     - {fileID: 1645000729044007242, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
     - {fileID: 7124091312930647041, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
-    - {fileID: 1966683603395526997, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
+    - {fileID: 0}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8616685848737228372, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 559545806849642856}
     - targetCorrespondingSourceObject: {fileID: 2619739460046039987, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7440227839079970739}
@@ -449,57 +457,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7047559035807332088, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
   m_PrefabInstance: {fileID: 7904297279129899913}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1883958608555800029 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8616685848737228372, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
-  m_PrefabInstance: {fileID: 7904297279129899913}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &559545806849642856
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1883958608555800029}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26b716c41e9b56b4baafaf13a523ba2e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <IsNested>k__BackingField: 0
-  <ComponentIndex>k__BackingField: 0
-  airshipGUID: 6354d1c2926319242ba9081c0c3dd934
-  <PredictedSpawn>k__BackingField: {fileID: 0}
-  _networkBehaviours: []
-  <SerializedRootNetworkBehaviour>k__BackingField: {fileID: 0}
-  <NestedRootNetworkBehaviours>k__BackingField: []
-  SerializedTransformProperties:
-    Position: {x: 0, y: 0, z: 0}
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
-    LocalScale: {x: 1, y: 1, z: 1}
-  _isNetworked: 1
-  _isSpawnable: 1
-  _isGlobal: 0
-  _initializeOrder: 0
-  _defaultDespawnType: 0
-  NetworkObserver: {fileID: 0}
-  _enablePrediction: 0
-  _predictionType: 0
-  _graphicalObject: {fileID: 0}
-  _detachGraphicalObject: 0
-  _enableStateForwarding: 1
-  _networkTransform: {fileID: 0}
-  _ownerInterpolation: 1
-  _ownerSmoothedProperties: 255
-  _adaptiveInterpolation: 3
-  _spectatorSmoothedProperties: 255
-  _spectatorInterpolation: 2
-  _enableTeleport: 0
-  _teleportThreshold: 1
-  <PrefabId>k__BackingField: 1
-  <SpawnableCollectionId>k__BackingField: 1
-  <SceneId>k__BackingField: 0
-  <AssetPathHash>k__BackingField: 0
 --- !u!4 &2411951898990122146 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5533038306360379179, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
