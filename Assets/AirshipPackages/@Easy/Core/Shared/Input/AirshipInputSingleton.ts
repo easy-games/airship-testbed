@@ -14,6 +14,7 @@ import { InputAction, InputActionConfig, InputActionSchema } from "./InputAction
 import { InputActionEvent } from "./InputActionEvent";
 import { ActionInputType, InputUtil, KeyType } from "./InputUtil";
 import { MobileButtonConfig } from "./Mobile/MobileButton";
+import TouchJoystick from "./Mobile/TouchJoystick";
 import ProximityPrompt from "./ProximityPrompts/ProximityPrompt";
 import { CoreIcon } from "./UI/CoreIcon";
 
@@ -151,6 +152,24 @@ export class AirshipInputSingleton {
 				icon: CoreIcon.CHEVRON_DOWN,
 			});
 		}
+	}
+
+	/**
+	 * Creates a touch joystick.
+	 *
+	 * Alternatively, you can place a `TouchJoystick.prefab` in your scene and reference that directly.
+	 *
+	 * @param parent This should be a parent transform that you have positioned in your canvas. The joystick will be instiated as a child at (0,0,0).
+	 *
+	 * @returns The created TouchJoystick. TouchJoystick contains `input` and `dragging` properties you can read every frame. TouchJoystick is an AirshipBehaviour.
+	 */
+	public CreateTouchJoystick(parent: Transform): TouchJoystick {
+		const go = Object.Instantiate(
+			AssetCache.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/UI/MobileControls/TouchJoystick.prefab"),
+			parent,
+		);
+		const joystick = go.GetAirshipComponent<TouchJoystick>()!;
+		return joystick;
 	}
 
 	/**

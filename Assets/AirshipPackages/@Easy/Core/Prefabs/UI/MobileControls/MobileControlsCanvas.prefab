@@ -1,80 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &387412876070700119
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 9186178352915137677}
-  - component: {fileID: 2840551530644634583}
-  - component: {fileID: 1692770826790934487}
-  m_Layer: 8
-  m_Name: Handle
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &9186178352915137677
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 387412876070700119}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7854711655785950041}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 66.3734, y: 66.3734}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &2840551530644634583
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 387412876070700119}
-  m_CullTransparentMesh: 1
---- !u!114 &1692770826790934487
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 387412876070700119}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 0
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 0
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: b3ca71b317594c7499a1a416560b439a, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &4199493251419207205
 GameObject:
   m_ObjectHideFlags: 0
@@ -167,7 +92,6 @@ MonoBehaviour:
   m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Overlay/MobileCameraMovement.lua
   m_error: 0
   m_yielded: 0
-  m_assetPath: 
   m_canResume: 0
   m_asyncYield: 0
   m_onUpdateHandle: -1
@@ -175,10 +99,48 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: MobileCameraMovement
+    singleton: 0
     decorators: []
     properties: []
+    displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0
+--- !u!1 &5884413480130355966
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9038067902904019132}
+  m_Layer: 8
+  m_Name: MovementJoystickContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &9038067902904019132
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5884413480130355966}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2663720885248173309}
+  m_Father: {fileID: 279624506939109690}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 289, y: 191}
+  m_SizeDelta: {x: 179.9729, y: 179.9729}
+  m_Pivot: {x: 0, y: 0}
 --- !u!1 &7090916502956745191
 GameObject:
   m_ObjectHideFlags: 0
@@ -191,6 +153,7 @@ GameObject:
   - component: {fileID: 3698838489364257686}
   - component: {fileID: 5231142010838910841}
   - component: {fileID: 8010347601195754013}
+  - component: {fileID: 294958722685006519}
   m_Layer: 8
   m_Name: MobileControlsCanvas
   m_TagString: Untagged
@@ -211,7 +174,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6330314882020966801}
-  - {fileID: 7854711655785950041}
+  - {fileID: 9038067902904019132}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -283,164 +246,188 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   SortOrder: -100
---- !u!1 &9086183524998565299
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7854711655785950041}
-  - component: {fileID: 3621341821076120221}
-  - component: {fileID: 8518539271470560489}
-  - component: {fileID: 3288377050970800545}
-  m_Layer: 8
-  m_Name: MobileJoystick
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &7854711655785950041
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9086183524998565299}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 9186178352915137677}
-  m_Father: {fileID: 279624506939109690}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 254, y: 203}
-  m_SizeDelta: {x: 179.9729, y: 179.9729}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &3621341821076120221
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9086183524998565299}
-  m_CullTransparentMesh: 1
---- !u!114 &8518539271470560489
+--- !u!114 &294958722685006519
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9086183524998565299}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: -400, y: -400, z: -200, w: -500}
-  m_Maskable: 0
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 201d951d5acb07849afe4c069d5699bf, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!114 &3288377050970800545
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9086183524998565299}
+  m_GameObject: {fileID: 7090916502956745191}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptFile: {fileID: 5902611829797176272, guid: 1f239a6bd9dacd24588233a026cf3e1b, type: 3}
-  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Overlay/MobileJoystick.lua
+  scriptFile: {fileID: 8055013979776776172, guid: bb73ad1bd27be4f90b53f430c880e071, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/Input/Mobile/MobileControlsCanvas.lua
   m_error: 0
   m_yielded: 0
-  m_assetPath: 
   m_canResume: 0
   m_asyncYield: 0
   m_onUpdateHandle: -1
   m_onLateUpdateHandle: -1
   m_shortFileName: 
   m_metadata:
-    name: MobileJoystick
+    name: MobileControlsCanvas
+    singleton: 0
     decorators: []
     properties:
-    - name: handle
-      type: object
-      objectType: RectTransform
+    - name: movementJoystick
+      type: AirshipBehaviour
+      objectType: TouchJoystick
       items:
         type: 
         objectType: 
         serializedItems: []
         objectRefs: []
       refPath: 
+      fileRef: AirshipPackages/@Easy/Core/Shared/Input/Mobile/TouchJoystick.ts
       decorators: []
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 9186178352915137677}
+      serializedObject: {fileID: 6521433103037033046}
       modified: 1
-    - name: handleRange
-      type: number
-      objectType: 
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators: []
-      nullable: 0
-      serializedValue: 1
-      serializedObject: {fileID: 0}
-      modified: 0
-    - name: deadZone
-      type: number
-      objectType: 
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 0
-    - name: tweenToCenterSensitivity
-      type: number
-      objectType: 
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators: []
-      nullable: 0
-      serializedValue: 50
-      serializedObject: {fileID: 0}
-      modified: 0
+    displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0
+--- !u!1001 &7596473989274979551
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 9038067902904019132}
+    m_Modifications:
+    - target: {fileID: 3741594099606890121, guid: e7cab0f199086491d962a6f60684d6ed, type: 3}
+      propertyPath: m_metadata.properties.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3741594099606890121, guid: e7cab0f199086491d962a6f60684d6ed, type: 3}
+      propertyPath: m_metadata.properties.Array.data[5].name
+      value: input
+      objectReference: {fileID: 0}
+    - target: {fileID: 3741594099606890121, guid: e7cab0f199086491d962a6f60684d6ed, type: 3}
+      propertyPath: m_metadata.properties.Array.data[5].type
+      value: Vector2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3741594099606890121, guid: e7cab0f199086491d962a6f60684d6ed, type: 3}
+      propertyPath: m_metadata.properties.Array.data[6].name
+      value: dragging
+      objectReference: {fileID: 0}
+    - target: {fileID: 3741594099606890121, guid: e7cab0f199086491d962a6f60684d6ed, type: 3}
+      propertyPath: m_metadata.properties.Array.data[6].type
+      value: boolean
+      objectReference: {fileID: 0}
+    - target: {fileID: 3741594099606890121, guid: e7cab0f199086491d962a6f60684d6ed, type: 3}
+      propertyPath: m_metadata.properties.Array.data[5].serializedValue
+      value: '{"x":0.0,"y":0.0}'
+      objectReference: {fileID: 0}
+    - target: {fileID: 3741594099606890121, guid: e7cab0f199086491d962a6f60684d6ed, type: 3}
+      propertyPath: m_metadata.properties.Array.data[6].serializedValue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5592178606319822882, guid: e7cab0f199086491d962a6f60684d6ed, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5592178606319822882, guid: e7cab0f199086491d962a6f60684d6ed, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5592178606319822882, guid: e7cab0f199086491d962a6f60684d6ed, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5592178606319822882, guid: e7cab0f199086491d962a6f60684d6ed, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5592178606319822882, guid: e7cab0f199086491d962a6f60684d6ed, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5592178606319822882, guid: e7cab0f199086491d962a6f60684d6ed, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5592178606319822882, guid: e7cab0f199086491d962a6f60684d6ed, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 179.9729
+      objectReference: {fileID: 0}
+    - target: {fileID: 5592178606319822882, guid: e7cab0f199086491d962a6f60684d6ed, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 179.9729
+      objectReference: {fileID: 0}
+    - target: {fileID: 5592178606319822882, guid: e7cab0f199086491d962a6f60684d6ed, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5592178606319822882, guid: e7cab0f199086491d962a6f60684d6ed, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5592178606319822882, guid: e7cab0f199086491d962a6f60684d6ed, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5592178606319822882, guid: e7cab0f199086491d962a6f60684d6ed, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5592178606319822882, guid: e7cab0f199086491d962a6f60684d6ed, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5592178606319822882, guid: e7cab0f199086491d962a6f60684d6ed, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5592178606319822882, guid: e7cab0f199086491d962a6f60684d6ed, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5592178606319822882, guid: e7cab0f199086491d962a6f60684d6ed, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5592178606319822882, guid: e7cab0f199086491d962a6f60684d6ed, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5592178606319822882, guid: e7cab0f199086491d962a6f60684d6ed, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5592178606319822882, guid: e7cab0f199086491d962a6f60684d6ed, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5592178606319822882, guid: e7cab0f199086491d962a6f60684d6ed, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6546501974795897467, guid: e7cab0f199086491d962a6f60684d6ed, type: 3}
+      propertyPath: m_Name
+      value: TouchJoystick
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e7cab0f199086491d962a6f60684d6ed, type: 3}
+--- !u!224 &2663720885248173309 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5592178606319822882, guid: e7cab0f199086491d962a6f60684d6ed, type: 3}
+  m_PrefabInstance: {fileID: 7596473989274979551}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6521433103037033046 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3741594099606890121, guid: e7cab0f199086491d962a6f60684d6ed, type: 3}
+  m_PrefabInstance: {fileID: 7596473989274979551}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

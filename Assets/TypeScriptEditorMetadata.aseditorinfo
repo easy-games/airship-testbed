@@ -189,6 +189,10 @@
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Friends/FriendCard.ts",
 			"name": "FriendCard"
 		},
+		"AirshipPackages/@Easy/Core/Shared/Input/Mobile/MobileControlsCanvas@MobileControlsCanvas": {
+			"assetPath": "AirshipPackages/@Easy/Core/Shared/Input/Mobile/MobileControlsCanvas.ts",
+			"name": "MobileControlsCanvas"
+		},
 		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/MainMenuContent@MainMenuContent": {
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/MainMenuContent.ts",
 			"name": "MainMenuContent"
@@ -277,6 +281,10 @@
 			"assetPath": "AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/AvatarRenderComponent.ts",
 			"name": "AvatarRenderComponent"
 		},
+		"AirshipPackages/@Easy/Core/Shared/Input/Mobile/TouchJoystick@TouchJoystick": {
+			"assetPath": "AirshipPackages/@Easy/Core/Shared/Input/Mobile/TouchJoystick.ts",
+			"name": "TouchJoystick"
+		},
 		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/FriendRequest/IncomingFriendRequestCard@IncomingFriendRequestCard": {
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/FriendRequest/IncomingFriendRequestCard.ts",
 			"name": "IncomingFriendRequestCard"
@@ -288,10 +296,6 @@
 		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Overlay/MicIndicator@MicIndicator": {
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Overlay/MicIndicator.ts",
 			"name": "MicIndicator"
-		},
-		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Overlay/MobileJoystick@MobileJoystick": {
-			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Overlay/MobileJoystick.ts",
-			"name": "MobileJoystick"
 		},
 		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/General/PlayerEntry@PlayerEntry": {
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/General/PlayerEntry.ts",

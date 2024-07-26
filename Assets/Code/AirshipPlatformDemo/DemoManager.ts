@@ -18,6 +18,7 @@ export default class DemoManager extends AirshipBehaviour {
 	public TestSound!: AudioClip;
 	public testUserIds: string[] = [];
 	public testCharacterBuilders: AccessoryBuilder[] = [];
+	public joystickContainer: RectTransform;
 
 	public spawnCharacter = false;
 

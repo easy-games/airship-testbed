@@ -1,15 +1,22 @@
-import { Airship } from "../../../Airship";
-import { Bin } from "../../../Util/Bin";
-import { CanvasAPI } from "../../../Util/CanvasAPI";
+import { Bin } from "../../Util/Bin";
+import { CanvasAPI } from "../../Util/CanvasAPI";
 
-export default class MobileJoystick extends AirshipBehaviour {
-	public handle!: RectTransform;
+export default class TouchJoystick extends AirshipBehaviour {
+	public dragTarget: RectTransform;
+	public handle: RectTransform;
 	public handleRange = 1;
 	public deadZone = 0;
 	public tweenToCenterSensitivity = 50;
 
-	private input = new Vector2(0, 0);
-	private dragging = false;
+	/**
+	 * Normalized input vector.
+	 */
+	public input = new Vector2(0, 0);
+
+	/**
+	 * True if currently being dragged.
+	 */
+	public dragging = false;
 
 	private rectTransform!: RectTransform;
 	private canvas!: Canvas;
@@ -19,41 +26,41 @@ export default class MobileJoystick extends AirshipBehaviour {
 
 	public Awake(): void {
 		this.rectTransform = this.gameObject.GetComponent<RectTransform>()!;
-		this.canvas = this.gameObject.transform.parent!.GetComponent<Canvas>()!;
+		this.canvas = this.gameObject.GetComponentInParent<Canvas>();
+		if (this.canvas === undefined) {
+			error("TouchJoystick must be placed inside of a canvas.");
+		}
 	}
 
 	override Start(): void {
 		this.bin.AddEngineEventConnection(
-			CanvasAPI.OnBeginDragEvent(this.gameObject, (data) => {
+			CanvasAPI.OnBeginDragEvent(this.dragTarget.gameObject, (data) => {
 				this.tweenBin.Clean();
 				this.dragging = true;
 				this.HandleDrag(data.position, "begin");
 			}),
 		);
 		this.bin.AddEngineEventConnection(
-			CanvasAPI.OnDragEvent(this.gameObject, (data) => {
+			CanvasAPI.OnDragEvent(this.dragTarget.gameObject, (data) => {
 				if (!this.dragging) return;
 				this.HandleDrag(data.position, "move");
 			}),
 		);
 
 		this.bin.AddEngineEventConnection(
-			CanvasAPI.OnEndDragEvent(this.gameObject, (data) => {
+			CanvasAPI.OnEndDragEvent(this.dragTarget.gameObject, (data) => {
 				this.input = Vector2.zero;
 				this.dragging = false;
-				Airship.Characters.localCharacterManager.input?.SetQueuedMoveDirection(
-					new Vector3(this.input.x, 0, this.input.y),
-				);
 
 				// todo: adjust speed by distance
 				NativeTween.AnchoredPosition(this.handle, Vector2.zero, 0.09).SetUseUnscaledTime(true);
-				// this.tweenBin.Add(() => {
-				// 	if (tween) {
-				// 		tween.Cancel();
-				// 	}
-				// });
 			}),
 		);
+	}
+
+	public SetRaycastPadding(padding: Vector4): void {
+		const img = this.dragTarget.GetComponent<Image>()!;
+		img.raycastPadding = padding;
 	}
 
 	private HandleDrag(dragPosition: Vector2, phase: "begin" | "end" | "move") {
@@ -64,9 +71,6 @@ export default class MobileJoystick extends AirshipBehaviour {
 		let newPos = this.input.mul(radius);
 		newPos = newPos.mul(this.handleRange);
 		this.handle.anchoredPosition = newPos;
-		Airship.Characters.localCharacterManager.input?.SetQueuedMoveDirection(
-			new Vector3(this.input.x, 0, this.input.y),
-		);
 	}
 
 	private ApplyDeadZoneToInput(input: Vector2, deadZone: number): Vector2 {
