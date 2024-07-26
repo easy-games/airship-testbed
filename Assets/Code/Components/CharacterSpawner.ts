@@ -16,7 +16,7 @@ export default class CharacterSpawner extends AirshipBehaviour {
 	private bin = new Bin();
 
 	override Start(): void {
-		Airship.CharacterCamera.SetCharacterCameraMode(CharacterCameraMode.Locked);
+		Airship.Camera.SetMode(CharacterCameraMode.Locked);
 		if (Game.IsServer()) {
 			this.bin.Add(
 				SceneManager.onClientPresenceChangeEnd.Connect(async (clientId, sceneName, added) => {

@@ -194,7 +194,6 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 2184284543791561103}
   _networkObjectCache: {fileID: 2184284543791561103}
   graphicalObject: {fileID: 0}
-  interpolation: 1
   _enableTeleport: 0
   _teleportThreshold: 0
 --- !u!1 &5350287513901391075
