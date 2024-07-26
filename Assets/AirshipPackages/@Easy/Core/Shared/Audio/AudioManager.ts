@@ -70,7 +70,7 @@ export class AudioManager {
 		//audioSource.PlayOneShot(clip, );
 		this.globalAudioSources.set(audioSource.gameObject.GetInstanceID(), audioSource);
 		if (!audioSource.loop) {
-			task.delay(clip.length + 1, () => {
+			task.unscaledDelay(clip.length + 1, () => {
 				if (audioSource.IsDestroyed()) return;
 				audioSource.Stop();
 				this.globalAudioSources.delete(audioSource.gameObject.GetInstanceID());
@@ -128,7 +128,7 @@ export class AudioManager {
 		audioSource.volume = config?.volumeScale ?? 1;
 		audioSource.PlayOneShot(clip);
 		if (!audioSource.loop) {
-			task.delay(clip.length + 1, () => {
+			task.unscaledDelay(clip.length + 1, () => {
 				audioSource.Stop();
 				PoolManager.ReleaseObject(audioSource.gameObject);
 				// Object.Destroy(audioSource.gameObject);

@@ -21,10 +21,12 @@ MonoBehaviour:
   - {fileID: 102900000, guid: 54812eb57ead64c33ac7034860038994, type: 3}
   - {fileID: 102900000, guid: 348dce646eda54d87abe568e1b9ca22c, type: 3}
   - {fileID: 102900000, guid: 7adf34f37f4884c5ab92c16c58f38874, type: 3}
+  - {fileID: 102900000, guid: 1238e9b787beb4b8a90653059aa3a55e, type: 3}
+  - {fileID: 102900000, guid: 5d96c9b0b43c34ac299ad4e1c5a2af41, type: 3}
   packages:
   - id: '@Easy/Core'
-    assetVersion: 581
-    codeVersion: 599
+    assetVersion: 588
+    codeVersion: 615
     game: 0
     localSource: 1
     disabled: 0
@@ -39,8 +41,8 @@ MonoBehaviour:
     defaultPackage: 0
     forceLatestVersion: 1
   - id: '@Easy/CoreMaterials'
-    assetVersion: 74
-    codeVersion: 58
+    assetVersion: 84
+    codeVersion: 68
     game: 0
     localSource: 1
     disabled: 0
@@ -49,4 +51,35 @@ MonoBehaviour:
   tags:
   - GameTagTest
   - This/Subfolder
-  gameLayers: []
+  gameLayers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - Character
+  - Water
+  - UI
+  - WorldUI
+  - Viewmodel
+  - VisuallyHidden
+  - IgnoreCollision
+  - AvatarEditor
+  - VoxelWorld
+  - 
+  - 
+  - 
+  - 
+  - 
+  - TestLayer
+  - GameLayer1
+  - GameLayer2
+  - GameLayer3
+  - GameLayer4
+  - GameLayer5
+  - GameLayer6
+  - GameLayer7
+  - GameLayer8
+  - GameLayer9
+  - GameLayer10
+  - GameLayer11
+  - GameLayer12
+  - GameLayer13

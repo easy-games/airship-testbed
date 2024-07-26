@@ -8,6 +8,7 @@ import { AirshipPartyService } from "../Server/Services/Airship/Party/AirshipPar
 import { AirshipPlatformInventoryService } from "../Server/Services/Airship/PlatformInventory/AirshipPlatformInventoryService";
 import { AirshipTransferService } from "../Server/Services/Airship/Transfer/AirshipTransferService";
 import { AirshipCharacterCameraSingleton } from "./Camera/AirshipCharacterCameraSingleton";
+import { AirshipAvatarSingleton } from "./Avatar/AirshipAvatarSingleton";
 import { AirshipCharactersSingleton } from "./Character/AirshipCharactersSingleton";
 import CharacterConfigSetup from "./Character/CharacterConfigSetup";
 import { AirshipChatSingleton } from "./Chat/AirshipChatSingleton";
@@ -120,6 +121,13 @@ export namespace Airship {
 	 * To control your game's default character see {@link CharacterConfigSetup}.
 	 */
 	export let Characters = undefined! as AirshipCharactersSingleton;
+
+	/**
+	 * Avatar singleton provides utilities for working with visual elements of a character
+	 *
+	 * Can be used to load outfits from the server
+	 */
+	export let Avatar = undefined! as AirshipAvatarSingleton;
 	/**
 	 * Input singleton contains functions to work with player input (including mouse, keyboard, and touch screen).
 	 * Players can rebind their action bindings in their settings menu.
@@ -168,7 +176,7 @@ export namespace Airship {
 	 */
 	export function WaitUntilReady() {
 		while (Airship.Players === undefined) {
-			task.wait();
+			task.unscaledWait();
 		}
 	}
 }

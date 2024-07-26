@@ -62,7 +62,7 @@ export class PlayersSingleton {
 		const FetchLocalPlayerWithWait = () => {
 			let localPlayerInfo: PlayerInfo | undefined = this.playerManagerBridge.localPlayer;
 			while (localPlayerInfo === undefined) {
-				task.wait();
+				task.unscaledWait();
 				localPlayerInfo = this.playerManagerBridge.localPlayer;
 			}
 
@@ -230,6 +230,13 @@ export class PlayersSingleton {
 			}
 			dto.gameObject.name = `Player_${dto.username}`;
 			this.playersPendingReady.set(dto.clientId, player);
+
+			// check for existing player with matching userId
+			for (let player of this.players) {
+				if (player.userId === dto.userId) {
+					player.Kick("Kicked: You logged in from a different device.");
+				}
+			}
 
 			// Ready bots immediately
 			if (dto.clientId < 0) {

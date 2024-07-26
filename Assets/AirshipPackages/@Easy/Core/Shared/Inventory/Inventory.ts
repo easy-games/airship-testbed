@@ -6,7 +6,6 @@ import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import Character from "../Character/Character";
 import { Game } from "../Game";
 import { Keyboard, Mouse } from "../UserInput";
-import { CanvasAPI } from "../Util/CanvasAPI";
 import { ItemStack, ItemStackDto } from "./ItemStack";
 import { BeforeLocalInventoryHeldSlotChanged } from "./Signal/BeforeLocalInventoryHeldSlotChanged";
 
@@ -120,7 +119,7 @@ export default class Inventory extends AirshipBehaviour {
 				// Scroll to select held item:
 				Mouse.onScrolled.Connect((event) => {
 					if (!this.controlsEnabled || event.uiProcessed) return;
-					if (CanvasAPI.IsPointerOverUI()) return;
+					if (Mouse.IsOverUI()) return;
 					// print("scroll: " + delta);
 					if (math.abs(event.delta) < 0.05) return;
 

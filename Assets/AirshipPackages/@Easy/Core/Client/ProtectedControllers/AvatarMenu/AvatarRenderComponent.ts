@@ -1,6 +1,6 @@
+import { Airship } from "@Easy/Core/Shared/Airship";
 import AvatarBackdropComponent, { AvatarBackdropType } from "@Easy/Core/Shared/Avatar/AvatarBackdropComponent";
 import { AvatarPlatformAPI } from "@Easy/Core/Shared/Avatar/AvatarPlatformAPI";
-import { AvatarUtil } from "@Easy/Core/Shared/Avatar/AvatarUtil";
 
 export enum AvatarRenderSlot {
 	BODY,
@@ -79,11 +79,6 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 			return;
 		}
 		this.backdrops = this.backdropHolder.GetAirshipComponent<AvatarBackdropComponent>()!;
-		if (this.builder) {
-			this.builder.thirdPersonLayer = this.gameObject.layer;
-			this.builder.firstPersonLayer = this.gameObject.layer;
-			this.builder.UpdateAccessoryLayers();
-		}
 	}
 
 	/**
@@ -95,7 +90,7 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 		this.CreateItemCamera();
 		this.SetupForRenders(false);
 
-		let allItems = AvatarUtil.GetAllPossibleAvatarItems();
+		let allItems = Airship.Avatar.GetAllPossibleAvatarItems();
 
 		let i = 0;
 		const maxI = 9999;
@@ -121,7 +116,7 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 	public RenderItem(accessoryTemplate: AccessoryComponent) {
 		print("Rending item: " + accessoryTemplate.name);
 		//Clear the outfit
-		this.builder.RemoveAccessories();
+		this.builder.RemoveAllAccessories();
 		this.builder.rig.faceMesh.gameObject.SetActive(false);
 		//Load the accessory onto the avatar
 		let acc = this.builder.AddSingleAccessory(accessoryTemplate, true);
@@ -135,7 +130,7 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 	public RenderFace(face: AccessoryFace) {
 		print("Rending Face: " + face.name);
 		//Clear the outfit
-		this.builder.RemoveAccessories();
+		this.builder.RemoveAllAccessories();
 		//Load the accessory onto the avatar
 		this.builder.rig.faceMesh.gameObject.SetActive(true);
 		this.builder.SetFaceTexture(face.decalTexture);
@@ -143,7 +138,7 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 	}
 
 	private RenderClass(name: string, serverClassId: string, slot: AccessorySlot) {
-		task.wait();
+		task.unscaledWait();
 		//Align camera
 		//this.AlignCamera(acc.renderers);
 		this.SetCameraAccessory(slot);
@@ -151,7 +146,7 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 		let renderData = this.Render("AccessoryThumbnails/AccThumbnail_" + name);
 		//Upload
 		if (this.uploadThumbnails) {
-			let classData = AvatarUtil.GetClass(serverClassId);
+			let classData = Airship.Avatar.GetClass(serverClassId);
 			if (classData) {
 				print("uploading accessory render");
 				AvatarPlatformAPI.UploadItemImage(
@@ -166,7 +161,7 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 
 	private Render(fileName: string) {
 		//Wait a frame so the camera can render
-		task.wait();
+		task.unscaledWait();
 		//Render Camera
 		this.captureCamera.Render();
 

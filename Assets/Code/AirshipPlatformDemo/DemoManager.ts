@@ -1,6 +1,7 @@
 import SteamRichPresence from "@Easy/Core/Client/Airship/Steam/SteamRichPresence";
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
+
 import Character from "@Easy/Core/Shared/Character/Character";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Binding } from "@Easy/Core/Shared/Input/Binding";
@@ -15,6 +16,8 @@ export default class DemoManager extends AirshipBehaviour {
 	private deathCount = 0;
 	public cleanupOnStart!: GameObject[];
 	public TestSound!: AudioClip;
+	public testUserIds: string[] = [];
+	public testCharacterBuilders: AccessoryBuilder[] = [];
 
 	public spawnCharacter = false;
 
@@ -34,6 +37,15 @@ export default class DemoManager extends AirshipBehaviour {
 		// 	print("Obj a: " + a);
 		// 	print("Obj b: " + b);
 		// });
+		for (let i = 0; i < this.testUserIds.size(); i++) {
+			let builder = this.testCharacterBuilders[i];
+			let userId = this.testUserIds[i];
+			if (builder && userId !== "") {
+				Airship.Avatar.LoadUsersEquippedOutfit(userId, builder, {
+					removeOldClothingAccessories: true,
+				});
+			}
+		}
 
 		Airship.Input.CreateAction("interact", Binding.Key(Key.F));
 
@@ -98,13 +110,7 @@ export default class DemoManager extends AirshipBehaviour {
 		}
 	}
 
-	public override Update(dt: number): void {
-		Airship.Characters.GetCharacters().forEach((character) => {
-			if (character.transform.position.y < -25) {
-				character.Teleport(this.spawnPosition.transform.position);
-			}
-		});
-	}
+	public override Update(dt: number): void {}
 
 	public SpawnPlayer(player: Player): void {
 		if (!this.spawnCharacter) return;

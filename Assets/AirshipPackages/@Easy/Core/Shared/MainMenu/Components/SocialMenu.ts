@@ -48,7 +48,7 @@ export default class SocialMenu extends AirshipBehaviour {
 		// default to connected state to prevent flicker
 		this.SetOfflineNoticeVisible(false);
 
-		task.delay(2, () => {
+		task.unscaledDelay(2, () => {
 			if (!socketController.IsConnected()) {
 				this.SetOfflineNoticeVisible(true);
 			}

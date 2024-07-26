@@ -2412,8 +2412,7 @@ declare const enum BodyMask {
 declare const enum AccessoryAddMode {
     ReplaceAll = 0,
     Replace = 1,
-    Additive = 2,
-    AddIfNone = 3,
+    AddIfNone = 2,
 }
 declare const enum ParticleSystemCurveMode {
     Constant = 0,
@@ -3035,16 +3034,47 @@ declare const enum StereoScreenCaptureMode {
     RightEye = 2,
     BothEyes = 3,
 }
+declare const enum ContextStyle {
+    Block = 0,
+    GreedyMeshingTiles = 1,
+    ContextBlocks = 2,
+    QuarterTiles = 3,
+}
+declare const enum QuarterBlockTypes {
+    UA = 0,
+    UB = 1,
+    UC = 2,
+    UD = 3,
+    UE = 4,
+    UF = 5,
+    UG = 6,
+    UH = 7,
+    UI = 8,
+    UJ = 9,
+    UK = 10,
+    UL = 11,
+    UM = 12,
+    UN = 13,
+    DA = 14,
+    DB = 15,
+    DC = 16,
+    DD = 17,
+    DE = 18,
+    DF = 19,
+    DG = 20,
+    DH = 21,
+    DI = 22,
+    DJ = 23,
+    DK = 24,
+    DL = 25,
+    DM = 26,
+    DN = 27,
+    MAX = 28,
+}
 declare const enum CollisionType {
     None = 0,
     Solid = 1,
     Slope = 2,
-}
-declare const enum ContextStyle {
-    None = 0,
-    GreedyMeshingTiles = 1,
-    ContextBlocks = 2,
-    QuarterTiles = 3,
 }
 declare const enum CollisionFlags {
     None = 0,
@@ -38594,31 +38624,33 @@ declare const CreateSceneParameters: CreateSceneParametersConstructor;
 interface AccessoryBuilder extends MonoBehaviour {
     rig: CharacterRig;
     firstPerson: boolean;
-    firstPersonLayer: number;
-    thirdPersonLayer: number;
     currentOutfit: AccessoryOutfit;
+    currentUserId: string;
+    currentUserName: string;
+    cancelPendingDownload: boolean;
 
 
 
     AddAccessories(accessoryTemplates: CSArray<AccessoryComponent>, addMode: AccessoryAddMode, rebuildMeshImmediately: boolean): CSArray<ActiveAccessory>;
+    AddAccessoryOutfit(outfit: AccessoryOutfit, rebuildMeshImmediately: boolean): CSArray<ActiveAccessory>;
+    AddOutfirFromUsername(username: string): CSArray<ActiveAccessory>;
+    AddOutfitFromUserId(userId: string): CSArray<ActiveAccessory>;
     AddSingleAccessory(accessoryTemplate: AccessoryComponent, rebuildMeshImmediately: boolean): ActiveAccessory;
     AddSkinAccessory(skin: AccessorySkin, rebuildMeshImmediately: boolean): void;
-    EquipAccessoryOutfit(outfit: AccessoryOutfit, rebuildMeshImmediately: boolean): CSArray<ActiveAccessory>;
     GetAccessoryMeshes(slot: AccessorySlot): CSArray<Renderer>;
     GetAccessoryParticles(slot: AccessorySlot): CSArray<ParticleSystem>;
     GetActiveAccessories(): CSArray<ActiveAccessory>;
-    GetActiveAccessoriesBySlot(target: AccessorySlot): CSArray<ActiveAccessory>;
+    GetActiveAccessoryBySlot(target: AccessorySlot): ActiveAccessory;
     GetAllAccessoryMeshes(): CSArray<Renderer>;
     GetCombinedSkinnedMesh(): SkinnedMeshRenderer;
     GetCombinedStaticMesh(): MeshRenderer;
-    RemoveAccessories(): void;
     RemoveAccessorySlot(slot: AccessorySlot, rebuildMeshImmediately: boolean): void;
+    RemoveAllAccessories(): void;
     RemoveClothingAccessories(): void;
     SetAccessoryColor(slot: AccessorySlot, color: Color, rebuildMeshImmediately: boolean): void;
     SetFaceTexture(texture: Texture2D): void;
     SetSkinColor(color: Color, rebuildMeshImmediately: boolean): void;
     TryCombineMeshes(): void;
-    UpdateAccessoryLayers(): void;
 
 
 }
@@ -42857,15 +42889,16 @@ interface ScreenCaptureConstructor {
 }
 declare const ScreenCapture: ScreenCaptureConstructor;
     
-interface VoxelBlocks {
+interface VoxelBlocks extends MonoBehaviour {
     maxResolution: number;
     atlasSize: number;
     pointFiltering: boolean;
+    atlasMaterial: Material;
     atlas: TexturePacker;
-    materials: CSDictionary<string, Material>;
     loadedBlocks: CSDictionary<number, BlockDefinition>;
     rootAssetPath: string;
     m_bundlePaths: CSArray<string>;
+    blockDefinionLists: CSArray<VoxelBlockDefinionList>;
 
 
 
@@ -42875,7 +42908,8 @@ interface VoxelBlocks {
     GetBlockDefinitionFromIndex(index: number): BlockDefinition;
     GetBlockIdFromStringId(stringId: string): number;
     GetStringIdFromBlockId(blockVoxelId: number): string;
-    Load(contentsOfBlockDefines: CSArray<string>, loadTexturesDirectlyFromDisk: boolean): void;
+    Load(loadTexturesDirectlyFromDisk: boolean): void;
+    Reload(useTexturesDirectlyFromDisk: boolean): void;
     SearchForBlockIdByString(stringId: string): number;
     UpdateVoxelBlockId(voxelValue: number, blockId: number): number;
 
@@ -42889,9 +42923,8 @@ interface TexturePacker {
 
 
     Dispose(): void;
-    GetColor(texture: string): Color;
-    GetUVs(texture: string): Rect;
-    PackTextures(textures: CSDictionary<string, TextureSet>, desiredPadding: number, width: number, height: number, numMips: number, normalizedSize: number): void;
+    GetUVs(sourceTexture: Texture2D): Rect;
+    PackTextures(textures: CSDictionary<number, TextureSet>, desiredPadding: number, width: number, height: number, numMips: number, normalizedSize: number): void;
 
 
 }
@@ -42937,7 +42970,41 @@ interface TexturePackerConstructor {
 declare const TexturePacker: TexturePackerConstructor;
     
 interface BlockDefinition {
-    prefab: boolean;
+    definition: VoxelBlockDefinition;
+    detail: boolean;
+    doOcclusion: boolean;
+    mesh: VoxelMeshCopy;
+    meshLod: VoxelMeshCopy;
+    meshTiles: CSDictionary<number, LodSet>;
+    meshTileProcessingOrder: CSArray<number>;
+    meshContexts: CSDictionary<number, VoxelMeshCopy>;
+    editorTexture: Texture2D;
+    topUvs: Rect;
+    bottomUvs: Rect;
+    sideUvs: Rect;
+    materials: CSArray<Material>;
+    meshMaterial: Material;
+    minecraftConversions: CSArray<string>;
+    blockId: number;
+    blockTypeId: string;
+
+
+
+    GetUvsForFace(i: number): Rect;
+
+
+}
+    
+interface VoxelBlockDefinition extends ScriptableObject {
+    blockName: string;
+    description: string;
+    contextStyle: ContextStyle;
+    topTexture: TextureSet;
+    sideTexture: TextureSet;
+    bottomTexture: TextureSet;
+    meshMaterial: Material;
+    quarterBlockMesh: VoxelQuarterBlockMeshDefinition;
+    meshPathLod: string;
     metallic: number;
     smoothness: number;
     normalScale: number;
@@ -42946,46 +43013,94 @@ interface BlockDefinition {
     solid: boolean;
     collisionType: CollisionType;
     randomRotation: boolean;
-    mesh: VoxelMeshCopy;
-    meshLod: VoxelMeshCopy;
-    meshTiles: CSDictionary<number, LodSet>;
-    meshTileProcessingOrder: CSArray<number>;
-    contextStyle: ContextStyle;
-    meshContexts: CSDictionary<number, VoxelMeshCopy>;
-    detail: boolean;
-    meshTexturePath: string;
-    topTexturePath: string;
-    sideTexturePath: string;
-    bottomTexturePath: string;
-    editorTexture: Texture2D;
-    topUvs: Rect;
-    bottomUvs: Rect;
-    sideUvs: Rect;
-    doOcclusion: boolean;
-    materials: CSArray<string>;
-    meshMaterialName: string;
-    averageColor: CSArray<Color>;
-    minecraftConversions: CSArray<string>;
-    blockId: number;
-    blockTypeId: string;
-    name: string;
-    material: string;
-    topMaterial: string;
-    sideMaterial: string;
-    bottomMaterial: string;
-    topTexture: string;
-    sideTexture: string;
-    bottomTexture: string;
-    meshTexture: string;
-    meshPath: string;
-    meshPathLod: string;
+    minecraftIds: string;
 
 
 
-    GetUvsForFace(i: number): Rect;
 
 
 }
+    
+interface TextureSet {
+    material: Material;
+    diffuse: Texture2D;
+    normal: Texture2D;
+    smooth: Texture2D;
+    metallic: Texture2D;
+    emissive: Texture2D;
+
+
+
+
+
+}
+    
+interface TextureSetConstructor {
+
+
+    new(): TextureSet;
+
+
+
+}
+declare const TextureSet: TextureSetConstructor;
+    
+interface VoxelQuarterBlockMeshDefinition extends ScriptableObject {
+    UA: GameObject;
+    UB: GameObject;
+    UC: GameObject;
+    UD: GameObject;
+    UE: GameObject;
+    UF: GameObject;
+    UG: GameObject;
+    UH: GameObject;
+    UI: GameObject;
+    UJ: GameObject;
+    UK: GameObject;
+    UL: GameObject;
+    UM: GameObject;
+    UN: GameObject;
+    DA: GameObject;
+    DB: GameObject;
+    DC: GameObject;
+    DD: GameObject;
+    DE: GameObject;
+    DF: GameObject;
+    DG: GameObject;
+    DH: GameObject;
+    DI: GameObject;
+    DJ: GameObject;
+    DK: GameObject;
+    DL: GameObject;
+    DM: GameObject;
+    DN: GameObject;
+
+
+
+    GetQuarterBlockMesh(block: QuarterBlockTypes): GameObject;
+
+
+}
+    
+interface VoxelQuarterBlockMeshDefinitionConstructor {
+
+
+    new(): VoxelQuarterBlockMeshDefinition;
+
+
+
+}
+declare const VoxelQuarterBlockMeshDefinition: VoxelQuarterBlockMeshDefinitionConstructor;
+    
+interface VoxelBlockDefinitionConstructor {
+
+
+    new(): VoxelBlockDefinition;
+
+
+
+}
+declare const VoxelBlockDefinition: VoxelBlockDefinitionConstructor;
     
 interface VoxelMeshCopy {
     quaternions: CSArray<unknown>;
@@ -43088,6 +43203,26 @@ interface BlockDefinitionConstructor {
 
 }
 declare const BlockDefinition: BlockDefinitionConstructor;
+    
+interface VoxelBlockDefinionList extends ScriptableObject {
+    scope: string;
+    blockDefinitions: CSArray<VoxelBlockDefinition>;
+
+
+
+
+
+}
+    
+interface VoxelBlockDefinionListConstructor {
+
+
+    new(): VoxelBlockDefinionList;
+
+
+
+}
+declare const VoxelBlockDefinionList: VoxelBlockDefinionListConstructor;
     
 interface VoxelBlocksConstructor {
     meshTileOffsets: CSDictionary<number, Vector3>;
@@ -44785,6 +44920,8 @@ declare const ServerTransferData: ServerTransferDataConstructor;
 interface CrossSceneStateConstructor {
     ServerTransferData: ServerTransferData;
     UseLocalBundles: boolean;
+    kickMessage: string;
+    disconnectKicked: boolean;
 
 
 
@@ -45427,8 +45564,8 @@ interface DevConsoleConstructor {
 
     readonly OnConsoleEnabled: MonoSignal<void>;
     readonly OnConsoleDisabled: MonoSignal<void>;
-    readonly OnConsoleOpened: MonoSignal<void>;
-    readonly OnConsoleClosed: MonoSignal<void>;
+    readonly OnConsoleOpened: MonoSignal<boolean>;
+    readonly OnConsoleClosed: MonoSignal<boolean>;
     readonly OnConsoleFocused: MonoSignal<void>;
     readonly OnConsoleFocusLost: MonoSignal<void>;
 }

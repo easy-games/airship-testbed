@@ -46,7 +46,7 @@ export default class MobileJoystick extends AirshipBehaviour {
 				);
 
 				// todo: adjust speed by distance
-				NativeTween.AnchoredPosition(this.handle, Vector2.zero, 0.09);
+				NativeTween.AnchoredPosition(this.handle, Vector2.zero, 0.09).SetUseUnscaledTime(true);
 				// this.tweenBin.Add(() => {
 				// 	if (tween) {
 				// 		tween.Cancel();

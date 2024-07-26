@@ -273,6 +273,10 @@
 			"assetPath": "Code/AirshipPlatformDemo/MovementModifications/CharacterMovementModTrigger.ts",
 			"name": "CharacterMovementModTrigger"
 		},
+		"AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/AvatarRenderComponent@AvatarRenderComponent": {
+			"assetPath": "AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/AvatarRenderComponent.ts",
+			"name": "AvatarRenderComponent"
+		},
 		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/FriendRequest/IncomingFriendRequestCard@IncomingFriendRequestCard": {
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/FriendRequest/IncomingFriendRequestCard.ts",
 			"name": "IncomingFriendRequestCard"
@@ -292,6 +296,10 @@
 		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/General/PlayerEntry@PlayerEntry": {
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/General/PlayerEntry.ts",
 			"name": "PlayerEntry"
+		},
+		"Code/NavMesh/CubeAgent@CubeAgent": {
+			"assetPath": "Code/NavMesh/CubeAgent.ts",
+			"name": "CubeAgent"
 		},
 		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsLogoutButton@SettingsLogoutButton": {
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsLogoutButton.ts",
@@ -316,10 +324,6 @@
 		"AirshipPackages/@Easy/Core/Client/Components/HomePage/MyGames/MyGamesSortComponent@MyGamesSortComponent": {
 			"assetPath": "AirshipPackages/@Easy/Core/Client/Components/HomePage/MyGames/MyGamesSortComponent.ts",
 			"name": "MyGamesSortComponent"
-		},
-		"AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/AvatarRenderComponent@AvatarRenderComponent": {
-			"assetPath": "AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/AvatarRenderComponent.ts",
-			"name": "AvatarRenderComponent"
 		},
 		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/BlockedGame@BlockedGame": {
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/BlockedGame.ts",

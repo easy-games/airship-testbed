@@ -173,7 +173,7 @@ export class ProtectedTransferService {
 			this.serverBootstrap.Shutdown();
 		};
 
-		task.delay(30, () => {
+		task.unscaledDelay(30, () => {
 			Done();
 		});
 		task.spawn(() => {

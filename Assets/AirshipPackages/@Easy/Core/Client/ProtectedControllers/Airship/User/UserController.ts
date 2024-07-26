@@ -138,9 +138,7 @@ export class ProtectedUserController {
 	}
 
 	public async GetUserByUsername(username: string): Promise<ReturnType<BridgeApiGetUserByUsername>> {
-		const res = InternalHttpManager.GetAsync(
-			`${AirshipUrl.GameCoordinator}/users/user?username=${username}`,
-		);
+		const res = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/users/user?username=${username}`);
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to get user. Status Code:  ${res.statusCode}.\n`, res.error);
@@ -276,7 +274,7 @@ export class ProtectedUserController {
 
 		// retry
 		if (!success) {
-			task.delay(1, () => {
+			task.unscaledDelay(1, () => {
 				this.FetchLocalUser();
 			});
 		}
@@ -284,7 +282,7 @@ export class ProtectedUserController {
 
 	public WaitForLocalUser(): User {
 		while (!this.localUser) {
-			task.wait();
+			task.unscaledWait();
 		}
 		return this.localUser;
 	}

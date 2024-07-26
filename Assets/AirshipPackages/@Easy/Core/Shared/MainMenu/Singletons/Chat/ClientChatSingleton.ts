@@ -1,7 +1,6 @@
 import { CoreUIController } from "@Easy/Core/Client/ProtectedControllers/CoreUIController";
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
-import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
 import { ChatCommand } from "@Easy/Core/Shared/Commands/ChatCommand";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
@@ -12,7 +11,6 @@ import { GameObjectUtil } from "@Easy/Core/Shared/GameObject/GameObjectUtil";
 import { MainMenuSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/MainMenuSingleton";
 import { ProtectedPlayer } from "@Easy/Core/Shared/Player/ProtectedPlayer";
 import { Protected } from "@Easy/Core/Shared/Protected";
-import { CoreSound } from "@Easy/Core/Shared/Sound/CoreSound";
 import { Keyboard, Mouse } from "@Easy/Core/Shared/UserInput";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
@@ -38,7 +36,7 @@ class ChatMessageElement {
 	public Hide(): void {
 		if (!this.shown) return;
 		this.shown = false;
-		const t = NativeTween.CanvasGroupAlpha(this.canvasGroup, 0, 0.2);
+		const t = NativeTween.CanvasGroupAlpha(this.canvasGroup, 0, 0.2)?.SetUseUnscaledTime(true);
 		this.hideBin.Add(() => {
 			if (!t.IsDestroyed()) {
 				t.Cancel();
@@ -136,7 +134,7 @@ export class ClientChatSingleton {
 		});
 
 		if (Game.IsInGame()) {
-			task.delay(0, () => {
+			task.unscaledDelay(0, () => {
 				const overlayCanvas = Object.Instantiate(
 					AssetCache.LoadAsset(
 						"AirshipPackages/@Easy/Core/Prefabs/UI/MobileControls/AirshipOverlayCanvas.prefab",
@@ -337,7 +335,11 @@ export class ClientChatSingleton {
 	}
 
 	private ShowChatInput(): void {
-		const t = NativeTween.SizeDelta(this.inputTransform, new Vector2(this.inputTransform.sizeDelta.x, 40), 0.04);
+		const t = NativeTween.SizeDelta(
+			this.inputTransform,
+			new Vector2(this.inputTransform.sizeDelta.x, 40),
+			0.04,
+		).SetUseUnscaledTime(true);
 		// this.chatInputBin.Add(() => {
 		// 	t.Cancel();
 		// });
@@ -346,7 +348,11 @@ export class ClientChatSingleton {
 	}
 
 	private HideChatInput(): void {
-		const t = NativeTween.SizeDelta(this.inputTransform, new Vector2(this.inputTransform.sizeDelta.x, 0), 0.04);
+		const t = NativeTween.SizeDelta(
+			this.inputTransform,
+			new Vector2(this.inputTransform.sizeDelta.x, 0),
+			0.04,
+		).SetUseUnscaledTime(true);
 		this.selected = false;
 		// this.chatInputBin.Add(() => {
 		// 	t.Cancel();
@@ -439,11 +445,11 @@ export class ClientChatSingleton {
 			const element = new ChatMessageElement(chatMessage, os.clock());
 			this.chatMessageElements.push(element);
 
-			if (Time.time > this.lastChatMessageRenderedTime && this.canvas.gameObject.activeInHierarchy) {
-				AudioManager.PlayGlobal(CoreSound.chatMessageReceived, {
-					volumeScale: 0.24,
-				});
-			}
+			// if (Time.time > this.lastChatMessageRenderedTime && this.canvas.gameObject.activeInHierarchy) {
+			// 	AudioManager.PlayGlobal(CoreSound.chatMessageReceived, {
+			// 		volumeScale: 0.24,
+			// 	});
+			// }
 			this.lastChatMessageRenderedTime = Time.time;
 		} catch (err) {
 			Debug.LogError("chat error:");

@@ -153,15 +153,35 @@ export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
 		const nob = this.networkObject;
 		if (Game.IsServer()) {
 			let startedServer = false;
-			this.networkBin.AddEngineEventConnection(
-				nob.OnStartServer(() => {
-					if (startedServer) return;
-					startedServer = true;
 
-					this.InitServerRpc();
-					this.OnStartServer?.();
-				}),
-			);
+			if (this.networkObject.IsServerInitialized) {
+				startedServer = true;
+				this.OnStartNetwork?.();
+				this.InitServerRpc();
+				this.OnStartServer?.();
+
+				if (typeIs(this.OnOwnershipServer, "function")) {
+					const nob = this.networkObject;
+					const player = Airship.Players.FindByConnectionId(nob.OwnerId);
+					this.OnOwnershipServer({
+						Player: player,
+						Connection: this.networkObject.LocalConnection,
+						ClientId: nob.OwnerId,
+						IsOwner: nob.IsOwner,
+						IsServerOwned: nob.OwnerId === -1,
+					});
+				}
+			} else {
+				this.networkBin.AddEngineEventConnection(
+					nob.OnStartServer(() => {
+						if (startedServer) return;
+						startedServer = true;
+
+						this.InitServerRpc();
+						this.OnStartServer?.();
+					}),
+				);
+			}
 
 			this.networkBin.AddEngineEventConnection(
 				nob.OnStopServer(() => {
@@ -192,15 +212,35 @@ export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
 
 		if (Game.IsClient()) {
 			let startedClient = false;
-			this.networkBin.AddEngineEventConnection(
-				nob.OnStartClient(() => {
-					if (startedClient) return;
-					startedClient = true;
+			if (this.networkObject.IsClientInitialized) {
+				startedClient = true;
 
-					this.InitClientRpc();
-					this.OnStartClient?.();
-				}),
-			);
+				if (!this.networkObject.IsClientOnly) this.OnStartNetwork?.();
+				this.InitClientRpc();
+				this.OnStartClient?.();
+
+				if (typeIs(this.OnOwnershipClient, "function")) {
+					const nob = this.networkObject;
+					const player = Airship.Players.FindByConnectionId(nob.OwnerId);
+					this.OnOwnershipClient({
+						Player: player,
+						Connection: this.networkObject.LocalConnection,
+						ClientId: nob.OwnerId,
+						IsOwner: nob.IsOwner,
+						IsServerOwned: nob.OwnerId === -1,
+					});
+				}
+			} else {
+				this.networkBin.AddEngineEventConnection(
+					nob.OnStartClient(() => {
+						if (startedClient) return;
+						startedClient = true;
+
+						this.InitClientRpc();
+						this.OnStartClient?.();
+					}),
+				);
+			}
 
 			this.networkBin.AddEngineEventConnection(
 				nob.OnStopClient(() => {

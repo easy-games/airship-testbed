@@ -37,7 +37,7 @@ export default class SendFriendRequestModal extends AirshipBehaviour {
 			sendButtonComp.PlayMouseUpEffect();
 		});
 
-		task.delay(0, () => {
+		task.unscaledDelay(0, () => {
 			this.inputField.Select();
 		});
 
@@ -116,7 +116,7 @@ export default class SendFriendRequestModal extends AirshipBehaviour {
 				this.responseText.text = "Failed to send friend requst. Please try again later.";
 			}
 			this.responseText.color = Theme.red;
-			task.delay(0, () => {
+			task.unscaledDelay(0, () => {
 				this.inputField.Select();
 			});
 			return;

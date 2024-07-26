@@ -7,7 +7,6 @@ import { CoreContext } from "./CoreClientContext";
 import { Game } from "./Game";
 Game.coreContext = CoreContext.MAIN_MENU;
 
-import { AvatarUtil } from "@Easy/Core/Shared/Avatar/AvatarUtil";
 import { Flamework } from "@Easy/Core/Shared/Flamework";
 import { AudioManager } from "./Audio/AudioManager";
 import { CoreRefs } from "./CoreRefs";
@@ -24,7 +23,6 @@ TimeUtil.GetLifetimeSeconds();
 CanvasAPI.Init();
 AppManager.Init();
 AudioManager.Init();
-AvatarUtil.Initialize();
 
 const fullGo = gameObject as GameObject & {
 	OnUpdate(callback: () => void): void;
@@ -45,6 +43,7 @@ fullGo.OnFixedUpdate(() => {
 Flamework.AddPath("@easy/core/shared", "^.*singleton.ts$");
 Flamework.AddPath("@easy/core/client/controllers/airship/user/airshipusercontroller", "^.*controller.ts$");
 Flamework.AddPath("@easy/core/shared/player/playerssingleton", "^.*singleton.ts$");
+Flamework.AddPath("@easy/core/shared/avatar/airshipavatarsingleton", "^.*singleton.ts$");
 Flamework.AddPath("@easy/core/client/protectedcontrollers", "^.*controller.ts$");
 Flamework.AddPath("@easy/core/client/protectedcontrollers", "^.*singleton.ts$");
 Flamework.Ignite();

@@ -72,7 +72,7 @@ export default class SearchFocused extends AirshipBehaviour {
 			}),
 		);
 		this.inputField.text = "";
-		task.delay(0, () => {
+		task.unscaledDelay(0, () => {
 			this.inputField.Select();
 		});
 

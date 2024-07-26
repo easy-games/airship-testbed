@@ -6,7 +6,6 @@ import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
-import { AvatarUtil } from "../Avatar/AvatarUtil";
 import { CoreNetwork } from "../CoreNetwork";
 import { DamageInfo, DamageInfoCustomData } from "../Damage/DamageInfo";
 import CharacterAnimator from "./Animation/CharacterAnimator";
@@ -151,7 +150,7 @@ export default class Character extends AirshipBehaviour {
 		this.initialized = true;
 
 		if (outfitDto) {
-			AvatarUtil.LoadUserOutfit(outfitDto, this.accessoryBuilder, {
+			Airship.Avatar.LoadUserOutfit(outfitDto, this.accessoryBuilder, {
 				removeOldClothingAccessories: true,
 			});
 		}
@@ -211,7 +210,7 @@ export default class Character extends AirshipBehaviour {
 	 */
 	public WaitForInit(): void {
 		while (!this.initialized) {
-			task.wait(0);
+			task.unscaledWait();
 		}
 	}
 
