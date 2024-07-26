@@ -3077,7 +3077,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5851182451793476457}
   m_HandleRect: {fileID: 6796106799109526970}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -9379,8 +9379,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 314.09158, y: 0}
-  m_SizeDelta: {x: 628.18317, y: 0}
+  m_AnchoredPosition: {x: 643.5, y: 0}
+  m_SizeDelta: {x: 1287, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &6539025659946921682
 CanvasRenderer:
@@ -16108,7 +16108,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5665327964020600282, guid: 91e45031359dd4e63aad8dd2a9796057, type: 3}
       propertyPath: m_metadata.properties.Array.data[4].serializedValue
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5665327964020600282, guid: 91e45031359dd4e63aad8dd2a9796057, type: 3}
       propertyPath: m_metadata.properties.Array.data[0].serializedObject
@@ -17643,7 +17643,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5989612226464469659, guid: 91e45031359dd4e63aad8dd2a9796057, type: 3}
       propertyPath: m_text
-      value: Log Out
+      value: Sign out
       objectReference: {fileID: 0}
     - target: {fileID: 5989612226464469659, guid: 91e45031359dd4e63aad8dd2a9796057, type: 3}
       propertyPath: m_sharedMaterial
