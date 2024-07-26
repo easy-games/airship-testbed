@@ -130,6 +130,9 @@ export class Mouse {
 	 *
 	 * This is useful to prevent actions when interacting with UI (like a sword swing).
 	 *
+	 * **This will only check for raycast targets on the "UI" layer.**
+	 * Make sure your UI is set to the UI layer to work with this method.
+	 *
 	 * @returns True if mouse is hovering above a ui raycast target.
 	 */
 	public static IsOverUI(): boolean {
