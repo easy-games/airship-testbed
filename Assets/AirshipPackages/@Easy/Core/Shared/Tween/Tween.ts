@@ -134,40 +134,40 @@ export class Tween<T> implements LuauTween<T> {
 
 	public static Number(
 		easingFunction: LuauEasingFunction,
-		from: number,
-		to: number,
-		callback: (delta: number) => void,
 		durationSeconds: number,
+		callback: (delta: number) => void,
+		from: number = 0,
+		to: number = 1,
 	): LuauTween<number> {
 		return new Tween<number>(durationSeconds, easingFunction, NumberLerp(from, to), callback, to);
 	}
 
 	public static Vector3(
 		easingFunction: LuauEasingFunction,
-		from: Vector3,
-		to: Vector3,
-		callback: TweenCallback<Vector3>,
 		durationSeconds: number,
+		callback: TweenCallback<Vector3>,
+		from: Vector3 = Vector3.zero,
+		to: Vector3 = Vector3.one,
 	): LuauTween<Vector3> {
 		return new Tween(durationSeconds, easingFunction, VectorLerp(from, to), callback, to);
 	}
 
 	public static Vector2(
 		easingFunction: LuauEasingFunction,
-		from: Vector2,
-		to: Vector2,
-		callback: TweenCallback<Vector2>,
 		durationSeconds: number,
+		callback: TweenCallback<Vector2>,
+		from: Vector2 = Vector2.zero,
+		to: Vector2 = Vector2.one,
 	): LuauTween<Vector2> {
 		return new Tween(durationSeconds, easingFunction, Vector2Lerp(from, to), callback, to);
 	}
 
 	public static Color(
 		easingFunction: LuauEasingFunction,
-		from: Color,
-		to: Color,
-		callback: TweenCallback<Color>,
 		durationSeconds: number,
+		callback: TweenCallback<Color>,
+		from: Color = Color.black,
+		to: Color = Color.white,
 	): LuauTween<Color> {
 		return new Tween(durationSeconds, easingFunction, ColorLerp(from, to), callback, to);
 	}

@@ -48,49 +48,31 @@ type ExcludeKeys<T, U> = {
 type ExcludeMembers<T, U> = Pick<T, ExcludeKeys<T, U>>;
 
 /** Exclude null and undefined from T */
-type NonNullable<T> = unknown extends T
-	? defined
-	: T extends null | undefined
-	? never
-	: T;
+type NonNullable<T> = unknown extends T ? defined : T extends null | undefined ? never : T;
 
 /** Obtain the parameters of a function type in a `tuple | never`. */
 type Parameters<T> = T extends (...args: infer P) => any ? P : never;
 
 /** Obtain the parameters of a constructor function type in a `tuple | never` */
-type ConstructorParameters<T extends new (...args: any) => any> =
-	T extends new (...args: infer P) => any ? P : never;
+type ConstructorParameters<T extends new (...args: any) => any> = T extends new (...args: infer P) => any ? P : never;
 
 /** Obtain the return type of a function type */
 type ReturnType<T> = T extends (...args: Array<any>) => infer R ? R : never;
 
 /** Returns the type of `this` for a given function type */
-type InferThis<T> = T extends (this: infer U, ...parameters: Array<any>) => any
-	? U
-	: never;
+type InferThis<T> = T extends (this: infer U, ...parameters: Array<any>) => any ? U : never;
 
 /** Obtain the return type of a constructor function type */
-type InstanceType<T> = T extends new (...args: Array<any>) => infer R
-	? R
-	: never;
+type InstanceType<T> = T extends new (...args: Array<any>) => infer R ? R : never;
 
 /** Combines a series of intersections into one object, e.g. { x: number } & { y: number } becomes { x: number, y: number } */
 type Reconstruct<T> = _<{ [K in keyof T]: T[K] }>;
 
 /** Converts a series of object unions to a series of intersections, e.g. A | B becomes A & B */
-type UnionToIntersection<T> = (
-	T extends object ? (k: T) => void : never
-) extends (k: infer U) => void
-	? U
-	: never;
+type UnionToIntersection<T> = (T extends object ? (k: T) => void : never) extends (k: infer U) => void ? U : never;
 
 /** Extracts the type of the 'this' parameter of a function type, or 'unknown' if the function type has no 'this' parameter. */
-type ThisParameterType<T> = T extends (
-	this: infer U,
-	...args: Array<any>
-) => any
-	? U
-	: unknown;
+type ThisParameterType<T> = T extends (this: infer U, ...args: Array<any>) => any ? U : unknown;
 
 /** Removes the 'this' parameter from a function type. */
 type OmitThisParameter<T> = unknown extends ThisParameterType<T>
@@ -103,9 +85,7 @@ type OmitThisParameter<T> = unknown extends ThisParameterType<T>
 type WritablePropertyNames<T> = {
 	[K in keyof T]-?: T[K] extends Callback
 		? never
-		: (<F>() => F extends { [Q in K]: T[K] } ? 1 : 2) extends <
-				F
-		  >() => F extends {
+		: (<F>() => F extends { [Q in K]: T[K] } ? 1 : 2) extends <F>() => F extends {
 				-readonly [Q in K]: T[K];
 		  }
 				? 1
@@ -126,4 +106,4 @@ type ExcludeNominalKeys<T> = {
 type ExcludeNominalMembers<T> = Pick<T, ExcludeNominalKeys<T>>;
 
 /** Unwraps a Promise<T> */
-type Awaited<T> = T extends PromiseLike<infer U> ? U : T;
+type Awaited<T> = T extends PromiseLike<infer F> ? (F extends Promise<infer V> ? Awaited<V> : never) : T;
