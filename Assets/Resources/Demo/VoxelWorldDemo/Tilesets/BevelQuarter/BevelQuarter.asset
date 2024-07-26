@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15c21c7e9d385784a9225365bfa61cec, type: 3}
+  m_Name: BevelQuarter
+  m_EditorClassIdentifier: 
+  UA: {fileID: 9177888303599600945, guid: 1a52356b3aa0af04190b94e0a463e863, type: 3}
+  UB: {fileID: 0}
+  UC: {fileID: 3011530382210313785, guid: e5b9198ddc2554749bee0985b031f90a, type: 3}
+  UD: {fileID: 7460572731019056914, guid: 89dbdb439999d8e478615ed60229e50c, type: 3}
+  UE: {fileID: 2896883661963703328, guid: 6f4a839b969d70340b72de725bf160e8, type: 3}
+  UF: {fileID: 0}
+  UG: {fileID: 1963217961137538432, guid: 175d0c2693649374ab0d833e5c88791d, type: 3}
+  UH: {fileID: 5772357763673616508, guid: 2c2a3192223f13d4c8a877030a9f1363, type: 3}
+  UI: {fileID: 461921908621749106, guid: 80e0b6ccb25a4784fb3ddf3445e76f81, type: 3}
+  UJ: {fileID: 0}
+  UK: {fileID: 9088967283493262611, guid: 7fe65ac6fbe04ff4ea64c46420729555, type: 3}
+  UL: {fileID: 7977413132687025920, guid: 013c27ed435cd2744a2d77bebf253837, type: 3}
+  UM: {fileID: 4929930743881662840, guid: 4d4278bde3036e646bb90f1e41d22cb5, type: 3}
+  UN: {fileID: 0}
+  DA: {fileID: 0}
+  DB: {fileID: 0}
+  DC: {fileID: 0}
+  DD: {fileID: 0}
+  DE: {fileID: 0}
+  DF: {fileID: 0}
+  DG: {fileID: 0}
+  DH: {fileID: 0}
+  DI: {fileID: 0}
+  DJ: {fileID: 0}
+  DK: {fileID: 0}
+  DL: {fileID: 0}
+  DM: {fileID: 0}
+  DN: {fileID: 0}

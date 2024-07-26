@@ -14,34 +14,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blockName: Stone
   description: 
-  contextStyle: 0
+  contextStyle: 3
   topTexture:
     material: {fileID: 2100000, guid: 2d62184f914b6f4409bce5a59e221fe4, type: 2}
     diffuse: {fileID: 0}
     normal: {fileID: 0}
     smooth: {fileID: 0}
     metallic: {fileID: 0}
+    emissive: {fileID: 0}
   sideTexture:
     material: {fileID: 0}
     diffuse: {fileID: 0}
     normal: {fileID: 0}
     smooth: {fileID: 0}
     metallic: {fileID: 0}
+    emissive: {fileID: 0}
   bottomTexture:
     material: {fileID: 0}
     diffuse: {fileID: 0}
     normal: {fileID: 0}
     smooth: {fileID: 0}
     metallic: {fileID: 0}
-  meshTexture: 
-  meshPath: 
+    emissive: {fileID: 0}
+  meshMaterial: {fileID: 2100000, guid: 2d62184f914b6f4409bce5a59e221fe4, type: 2}
+  quarterBlockMesh: {fileID: 11400000, guid: a2ff2d4c10754a742a8a0d6797f0e788, type: 2}
   meshPathLod: 
   metallic: 0
   smoothness: 0
   normalScale: 1
   emissive: 0
   brightness: 1
-  solid: 1
+  solid: 0
   collisionType: 1
   randomRotation: 0
   minecraftIds: 
