@@ -10,7 +10,7 @@ import {
 	AirshipServerConfig,
 	AirshipServerTransferConfig,
 } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipTransfers";
-import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
+import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/ContextBridgeUtil";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Player } from "@Easy/Core/Shared/Player/Player";

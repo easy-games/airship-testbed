@@ -5,7 +5,7 @@ import {
 	ServerBridgeApiDataSetKey,
 } from "@Easy/Core/Server/ProtectedServices/Airship/DataStore/DataStoreService";
 import { Platform } from "@Easy/Core/Shared/Airship";
-import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
+import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/ContextBridgeUtil";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Result } from "@Easy/Core/Shared/Types/Result";
@@ -75,8 +75,8 @@ export class AirshipDataStoreService {
 
 	/**
 	 * Allows you to update data for a key only if the data has not been changed since it was retrieved. This is good for
-	 * keys which may be modified across diffrerent servers and you want to make sure that you are always operating on
-	 * the most up to date data. This funciton is also useful when multiple servers may attempt to set the initial data for a key.
+	 * keys which may be modified across different servers and you want to make sure that you are always operating on
+	 * the most up to date data. This function is also useful when multiple servers may attempt to set the initial data for a key.
 	 * It will ensure that only one set operation succeeds in writing the intial data.
 	 *
 	 * This function works by first retrieving the data associated with a key, then passing that data to the provided callback.

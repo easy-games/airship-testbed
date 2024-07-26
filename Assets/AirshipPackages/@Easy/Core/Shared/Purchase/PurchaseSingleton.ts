@@ -3,7 +3,7 @@ import {
 	PurchaseControllerBridgeTopics,
 } from "@Easy/Core/Client/ProtectedControllers/Airship/Purchase/PurchaseController";
 import { Airship } from "@Easy/Core/Shared/Airship";
-import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
+import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/ContextBridgeUtil";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
 import { Controller, Dependency, Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";

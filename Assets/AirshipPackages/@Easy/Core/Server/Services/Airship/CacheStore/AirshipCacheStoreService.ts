@@ -5,7 +5,7 @@ import {
 	ServerBridgeApiCacheSetKeyTTL,
 } from "@Easy/Core/Server/ProtectedServices/Airship/CacheStore/CacheStoreService";
 import { Platform } from "@Easy/Core/Shared/Airship";
-import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
+import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/ContextBridgeUtil";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Result } from "@Easy/Core/Shared/Types/Result";
