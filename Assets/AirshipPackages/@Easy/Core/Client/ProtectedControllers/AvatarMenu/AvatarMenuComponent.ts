@@ -1,3 +1,4 @@
+import { Airship } from "@Easy/Core/Shared/Airship";
 import { OutfitDto } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipPlatformInventory";
 import { AvatarPlatformAPI } from "@Easy/Core/Shared/Avatar/AvatarPlatformAPI";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
@@ -23,7 +24,6 @@ import AvatarMenuProfileComponent from "./AvatarMenuProfileComponent";
 import AvatarRenderComponent from "./AvatarRenderComponent";
 import OutfitButton from "./Outfit/OutfitButtonComponent";
 import OutfitButtonNameComponent from "./Outfit/OutfitButtonNameComponent";
-import { Airship } from "@Easy/Core/Shared/Airship";
 
 export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private readonly generalHookupKey = "General";
@@ -239,9 +239,9 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		);
 
 		//"Enter" should allow you to rename currently selected outfit button
-		const keyboard = new Keyboard();
 		Keyboard.OnKeyDown(Key.Enter, (event) => {
 			if (event.uiProcessed) return;
+			if (!Dependency<MainMenuController>().IsOpen()) return;
 
 			const currentButton = this.outfitBtns[this.currentUserOutfitIndex];
 			if (!currentButton) return;
@@ -437,8 +437,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private DisplayColorScheme() {
-		print("Avatar color: "+ Airship.Avatar);
-		print("Avatar colors: "+ Airship.Avatar.skinColors);
+		print("Avatar color: " + Airship.Avatar);
+		print("Avatar colors: " + Airship.Avatar.skinColors);
 		for (let i = 0; i < Airship.Avatar.skinColors.size(); i++) {
 			this.AddColorButton(Airship.Avatar.skinColors[i]);
 		}
