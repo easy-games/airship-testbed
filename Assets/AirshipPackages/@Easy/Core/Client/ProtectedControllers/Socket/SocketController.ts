@@ -15,7 +15,7 @@ export class SocketController {
 
 	protected OnStart(): void {
 		SocketManager.Instance.OnEvent((eventName, data) => {
-			// print(`[${eventName}]: ${data}`);
+			CoreLogger.Log(`Socket [${eventName}]: ${data}`);
 			this.onEvent.Fire(eventName, data);
 		});
 		SocketManager.SetScriptListening(true);

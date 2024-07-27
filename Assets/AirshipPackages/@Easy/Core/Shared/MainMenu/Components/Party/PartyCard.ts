@@ -59,6 +59,9 @@ export default class PartyCard extends AirshipBehaviour {
 		if (!Game.IsMobile()) {
 			this.SetupDragFriendHooks();
 		}
+
+		this.warpButton.gameObject.SetActive(false);
+		this.partyChatButton.gameObject.SetActive(false);
 	}
 
 	private SetupDragFriendHooks() {

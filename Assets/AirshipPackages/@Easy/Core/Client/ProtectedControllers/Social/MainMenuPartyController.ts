@@ -125,6 +125,7 @@ export class MainMenuPartyController {
 		this.partyCard = this.mainMenuController.refs.GetValue("Social", "PartyCard").GetAirshipComponent<PartyCard>()!;
 		this.emptyPartyGO = this.mainMenuController.refs.GetValue("Social", "EmptyPartyCard");
 		this.partyCardContents = this.mainMenuController.refs.GetValue("Social", "PartyCardContents");
+		this.partyCardContents.SetActive(false);
 
 		task.spawn(() => {
 			Game.WaitForLocalPlayerLoaded();
