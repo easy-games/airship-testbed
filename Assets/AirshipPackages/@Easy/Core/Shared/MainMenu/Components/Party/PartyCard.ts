@@ -89,7 +89,7 @@ export default class PartyCard extends AirshipBehaviour {
 		const party = Dependency<MainMenuPartyController>().party;
 		const isLeader = party?.leader === Protected.user.localUser?.uid;
 
-		this.warpButton.gameObject.SetActive(isLeader);
+		this.warpButton.gameObject.SetActive(isLeader && Game.IsInGame());
 
 		if (userStatus === undefined) {
 			this.layoutElement.preferredHeight = 84;
