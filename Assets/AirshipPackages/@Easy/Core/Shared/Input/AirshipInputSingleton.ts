@@ -151,6 +151,8 @@ export class AirshipInputSingleton {
 	 *
 	 * Alternatively, you can place a `TouchJoystick.prefab` in your scene and reference that directly.
 	 *
+	 * Note: touch joysticks will not work when the mouse is locked.
+	 *
 	 * @param parent This should be a parent transform that you have positioned in your canvas. The joystick will be instiated as a child at (0,0,0).
 	 *
 	 * @returns The created TouchJoystick. TouchJoystick contains `input` and `dragging` properties you can read every frame. TouchJoystick is an AirshipBehaviour.
