@@ -3040,37 +3040,6 @@ declare const enum ContextStyle {
     ContextBlocks = 2,
     QuarterTiles = 3,
 }
-declare const enum QuarterBlockTypes {
-    UA = 0,
-    UB = 1,
-    UC = 2,
-    UD = 3,
-    UE = 4,
-    UF = 5,
-    UG = 6,
-    UH = 7,
-    UI = 8,
-    UJ = 9,
-    UK = 10,
-    UL = 11,
-    UM = 12,
-    UN = 13,
-    DA = 14,
-    DB = 15,
-    DC = 16,
-    DD = 17,
-    DE = 18,
-    DF = 19,
-    DG = 20,
-    DH = 21,
-    DI = 22,
-    DJ = 23,
-    DK = 24,
-    DL = 25,
-    DM = 26,
-    DN = 27,
-    MAX = 28,
-}
 declare const enum CollisionType {
     None = 0,
     Solid = 1,
@@ -42773,6 +42742,7 @@ interface BridgeConstructor {
     LoadSceneFromAssetBundle(sceneName: string, loadSceneMode: LoadSceneMode): void;
     MakeColorArray(size: number): CSArray<Color>;
     MakeFloatArray(size: number): CSArray<number>;
+    MakeIntArray(size: number): CSArray<number>;
     MakeMaterialPropertyBlock(): MaterialPropertyBlock;
     MakeMesh(): Mesh;
     MakeSprite(texture2D: Texture2D): Sprite;
@@ -42977,7 +42947,7 @@ interface BlockDefinition {
     meshLod: VoxelMeshCopy;
     meshTiles: CSDictionary<number, LodSet>;
     meshTileProcessingOrder: CSArray<number>;
-    meshContexts: CSDictionary<number, VoxelMeshCopy>;
+    meshContexts: CSArray<VoxelMeshCopy>;
     editorTexture: Texture2D;
     topUvs: Rect;
     bottomUvs: Rect;
@@ -43077,7 +43047,7 @@ interface VoxelQuarterBlockMeshDefinition extends ScriptableObject {
 
 
 
-    GetQuarterBlockMesh(block: QuarterBlockTypes): GameObject;
+    GetQuarterBlockMesh(blockName: string): GameObject;
 
 
 }
@@ -43164,7 +43134,7 @@ declare const Surface: SurfaceConstructor;
 interface VoxelMeshCopyConstructor {
 
 
-    new(mesh: Mesh): VoxelMeshCopy;
+    new(obj: GameObject): VoxelMeshCopy;
     new(src: VoxelMeshCopy): VoxelMeshCopy;
     new(assetPath: string, showError: boolean): VoxelMeshCopy;
 
@@ -51462,7 +51432,6 @@ declare const MoveInputData: MoveInputDataConstructor;
     
 interface NetworkTickSmoother extends NetworkBehaviour {
     graphicalObject: Transform;
-    interpolation: number;
 
 
 

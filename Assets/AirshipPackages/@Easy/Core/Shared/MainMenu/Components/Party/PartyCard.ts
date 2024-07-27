@@ -91,13 +91,13 @@ export default class PartyCard extends AirshipBehaviour {
 
 		this.warpButton.gameObject.SetActive(isLeader && Game.IsInGame());
 
-		if (userStatus === undefined) {
+		if (party === undefined || party.members.size() <= 1) {
 			this.layoutElement.preferredHeight = 84;
 			this.layoutElement.gameObject.GetComponent<ImageWithRoundedCorners>()?.Refresh();
 			return;
 		}
 
-		if (userStatus.status !== UserStatus.IN_GAME || !party || party.members.size() <= 1) {
+		if (!userStatus || userStatus.status !== UserStatus.IN_GAME) {
 			this.layoutElement.preferredHeight = 84;
 			this.layoutElement.gameObject.GetComponent<ImageWithRoundedCorners>()?.Refresh();
 			return;
