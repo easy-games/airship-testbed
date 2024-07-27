@@ -47,6 +47,7 @@ export class SocketController {
 		SocketManager.Instance.OnDisconnected((reason) => {
 			CoreLogger.Warn("Disconnected from socket: " + reason);
 			this.onSocketConnectionChanged.Fire(false);
+			this.Connect();
 		});
 	}
 
