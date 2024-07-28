@@ -1,3 +1,4 @@
+import { Game } from "@Easy/Core/Shared/Game";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI, HoverState } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { Theme } from "@Easy/Core/Shared/Util/Theme";
@@ -10,11 +11,14 @@ export default class AvatarMenuBtn extends AirshipBehaviour {
 	public button!: Button;
 	public labelText!: TextMeshProUGUI;
 	public bgImage?: Image;
+	@NonSerialized() public redirectScroll?: AirshipRedirectScroll;
 
 	private bin = new Bin();
 	private selected = false;
 
-	override Start(): void {}
+	override Start(): void {
+		this.redirectScroll = this.gameObject.GetComponent<AirshipRedirectScroll>();
+	}
 
 	public OnEnable(): void {
 		this.bin.AddEngineEventConnection(CanvasAPI.OnClickEvent(this.gameObject, () => {}));
@@ -22,6 +26,7 @@ export default class AvatarMenuBtn extends AirshipBehaviour {
 		if (this.bgImage) {
 			this.bin.AddEngineEventConnection(
 				CanvasAPI.OnHoverEvent(this.gameObject, (hoverState) => {
+					if (Game.IsMobile()) return;
 					if (this.selected || !this.bgImage) return;
 					if (hoverState === HoverState.ENTER) {
 						this.bgImage.color = new Color(1, 1, 1, 0.02);

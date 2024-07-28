@@ -88,7 +88,7 @@ export default class MainMenuContent extends AirshipBehaviour {
 			this.socialMenu.offsetMax = new Vector2(0, 0);
 			this.socialMenu.gameObject.SetActive(true);
 
-			this.contentWrapper.sizeDelta = new Vector2(screenSize.x * 0.98, screenSize.y);
+			this.contentWrapper.sizeDelta = new Vector2(screenSize.x, screenSize.y);
 			this.contentWrapper.anchorMin = new Vector2(0.5, 1);
 			this.contentWrapper.anchorMax = new Vector2(0.5, 1);
 			this.contentWrapper.pivot = new Vector2(0.5, 1);
