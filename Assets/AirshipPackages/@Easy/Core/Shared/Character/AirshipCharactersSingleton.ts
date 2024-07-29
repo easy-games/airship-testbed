@@ -114,7 +114,7 @@ export class AirshipCharactersSingleton {
 				for (const character of this.characters) {
 					characters.push({
 						id: character.id,
-						netId: character.networkObject.netId,
+						netId: character.networkIdentity.netId,
 						ownerClientId: character.player?.connectionId,
 						outfitDto: character.outfitDto,
 					});
@@ -371,7 +371,7 @@ export class AirshipCharactersSingleton {
 		if (Game.IsServer()) {
 			CoreNetwork.ServerToClient.Character.Spawn.server.FireAllClients({
 				id: character.id,
-				netId: character.networkObject.netId,
+				netId: character.networkIdentity.netId,
 				ownerClientId: character.player?.connectionId,
 				outfitDto: character.outfitDto,
 			});

@@ -4875,7 +4875,7 @@ MonoBehaviour:
             is also assigned in the NetworkPrefabCollection in Shared/Resources"'
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 764153238441627882, guid: 484ce41b321b44268ab82a896654b502, type: 3}
+      serializedObject: {fileID: 0}
       modified: 1
     - name: movementSpace
       type: IntEnum
@@ -6158,7 +6158,6 @@ GameObject:
   m_Component:
   - component: {fileID: 913210012}
   - component: {fileID: 913210013}
-  - component: {fileID: 913210014}
   m_Layer: 0
   m_Name: DemoManager
   m_TagString: Untagged
@@ -6327,65 +6326,6 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 20775692}
       modified: 1
-    displayIcon: {fileID: 0}
-    displayName: 
-  contextOverwritten: 0
---- !u!114 &913210014
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 913210011}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  scriptFile: {fileID: 3874102147928444048, guid: d7cc5f546129a45968eb53cc5ac77acb, type: 3}
-  m_fileFullPath: Assets/Code/Components/CharacterSpawner.lua
-  m_error: 0
-  m_yielded: 0
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
-    name: CharacterSpawner
-    singleton: 0
-    decorators: []
-    properties:
-    - name: spawnPoint
-      type: object
-      objectType: Transform
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 131862466}
-      modified: 1
-    - name: delay
-      type: number
-      objectType: 
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      decorators: []
-      nullable: 0
-      serializedValue: 0
-      serializedObject: {fileID: 0}
-      modified: 0
     displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0

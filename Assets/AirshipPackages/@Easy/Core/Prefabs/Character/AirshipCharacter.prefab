@@ -975,21 +975,6 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 7387929036933538088}
       modified: 1
-    - name: networkObject
-      type: object
-      objectType: NetworkIdentity
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 0
     - name: rigRoot
       type: object
       objectType: GameObject
@@ -1019,6 +1004,21 @@ MonoBehaviour:
       nullable: 0
       serializedValue: 
       serializedObject: {fileID: 2719586711620922124}
+      modified: 1
+    - name: networkIdentity
+      type: object
+      objectType: NetworkIdentity
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 8440015110078338219}
       modified: 1
     displayIcon: {fileID: 0}
     displayName: 
@@ -1137,6 +1137,7 @@ MonoBehaviour:
   drawDebugGizmos: 0
   useExtraLogging: 0
   observerRotationLerpMod: 10
+  rigidbody: {fileID: 5519949438957097557}
 --- !u!114 &1645000729044007242
 MonoBehaviour:
   m_ObjectHideFlags: 0

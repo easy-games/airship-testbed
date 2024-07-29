@@ -30,7 +30,7 @@ export default class Character extends AirshipBehaviour {
 	public animationHelper!: CharacterAnimationHelper;
 	public accessoryBuilder!: AccessoryBuilder;
 	public model!: GameObject;
-	public networkObject!: NetworkIdentity;
+	public networkIdentity!: NetworkIdentity;
 	public rigRoot!: GameObject;
 	public footstepAudioSource!: AudioSource;
 	@NonSerialized() public rig!: CharacterRig;
