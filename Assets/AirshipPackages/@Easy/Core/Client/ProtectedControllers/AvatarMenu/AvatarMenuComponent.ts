@@ -101,16 +101,6 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 
 		let i = 0;
-		this.mainMenu?.avatarView?.OnNewRenderTexture((texture) => {
-			let image = this.avatarRenderHolder?.GetComponent<RawImage>();
-			if (image) {
-				image.texture = texture;
-			} else {
-				error("Missing raw image on avatarrenderholder");
-			}
-			this.RefreshAvatar();
-		});
-
 		//Hookup Nav buttons
 		if (!this.mainNavBtns) {
 			warn("Unable to find main nav btns on Avatar Editor Page");
@@ -227,7 +217,21 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		super.OpenPage(params);
 		this.SetDirty(false);
 
-		this.bin.Add(Dependency<MainMenuSingleton>().socialMenuModifier.Add({ hidden: true }));
+		const mainMenuSingleton = Dependency<MainMenuSingleton>();
+
+		this.bin.Add(mainMenuSingleton.socialMenuModifier.Add({ hidden: true }));
+
+		let rawImage = this.avatarRenderHolder?.GetComponent<RawImage>();
+		if (rawImage) {
+			rawImage.texture = mainMenuSingleton.avatarEditorRenderTexture;
+			this.RefreshAvatar();
+			this.bin.Add(
+				mainMenuSingleton.onAvatarEditorRenderTextureUpdated.Connect((texture) => {
+					rawImage.texture = texture;
+					this.RefreshAvatar();
+				}),
+			);
+		}
 
 		if (!Game.IsMobile()) {
 			this.bin.Add(

@@ -1,7 +1,8 @@
 import AvatarRenderComponent from "@Easy/Core/Client/ProtectedControllers//AvatarMenu/AvatarRenderComponent";
-import {} from "@Easy/Core/Shared/Flamework";
+import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Mouse } from "@Easy/Core/Shared/UserInput";
 import { Game } from "../Game";
+import { MainMenuSingleton } from "../MainMenu/Singletons/MainMenuSingleton";
 import { Bin } from "../Util/Bin";
 import { CanvasAPI } from "../Util/CanvasAPI";
 import { ColorUtil } from "../Util/ColorUtil";
@@ -61,6 +62,8 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	private spinAnimationTriggered = false;
 	private freeSpinning = false;
 
+	private mainMenuSingleton: MainMenuSingleton;
+
 	private bin = new Bin();
 
 	public override Awake(): void {
@@ -71,6 +74,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	}
 
 	public override Start(): void {
+		this.mainMenuSingleton = Dependency<MainMenuSingleton>();
 		let backdrop = this.backdropHolder?.GetAirshipComponent<AvatarBackdropComponent>();
 		backdrop?.SetSolidColorBackdrop(ColorUtil.HexToColor("#202122"));
 
@@ -169,17 +173,8 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 		this.renderTexture = RenderUtils.CreateDefaultRenderTexture(width, height);
 		this.avatarCamera.targetTexture = this.renderTexture;
 		this.avatarCamera.enabled = true;
-		for (let i = 0; i < this.onNewRenderTexture.size(); i++) {
-			this.onNewRenderTexture[i](this.renderTexture);
-		}
-	}
-
-	private onNewRenderTexture: ((texture: RenderTexture) => void)[] = [];
-	public OnNewRenderTexture(callback: (texture: RenderTexture) => void) {
-		this.onNewRenderTexture.push(callback);
-		if (this.renderTexture) {
-			callback(this.renderTexture);
-		}
+		this.mainMenuSingleton.avatarEditorRenderTexture = this.renderTexture;
+		this.mainMenuSingleton.onAvatarEditorRenderTextureUpdated.Fire(this.renderTexture);
 	}
 
 	public ShowAvatar() {
