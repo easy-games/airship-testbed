@@ -34,7 +34,7 @@ import { Player, PlayerDto } from "./Player";
  */
 @Controller({ loadOrder: -1000 })
 @Service({ loadOrder: -1000 })
-export class PlayersSingleton {
+export class AirshipPlayersSingleton {
 	public onPlayerJoined = new Signal<Player>();
 	public onPlayerDisconnected = new Signal<Player>();
 
@@ -68,7 +68,7 @@ export class PlayersSingleton {
 
 			const mutable = Game.localPlayer as Mutable<Player>;
 			mutable.connectionId = localPlayerInfo.clientId.Value;
-			mutable.networkObject = localPlayerInfo.gameObject.GetComponent<NetworkObject>()!;
+			mutable.networkIdentity = localPlayerInfo.gameObject.GetComponent<NetworkIdentity>()!;
 			mutable.username = localPlayerInfo.username.Value;
 			mutable.userId = localPlayerInfo.userId.Value;
 			mutable.SetVoiceChatAudioSource(localPlayerInfo.voiceChatAudioSource);
@@ -81,7 +81,7 @@ export class PlayersSingleton {
 
 		if (Game.IsClient()) {
 			Game.localPlayer = new Player(
-				undefined as unknown as NetworkObject,
+				undefined as unknown as NetworkIdentity,
 				0,
 				"loading",
 				"loading",
@@ -220,7 +220,7 @@ export class PlayersSingleton {
 			} else {
 				let playerInfo = dto.gameObject.GetComponent<PlayerInfo>()!;
 				player = new Player(
-					dto.gameObject.GetComponent<NetworkObject>()!,
+					dto.gameObject.GetComponent<NetworkIdentity>()!,
 					dto.clientId,
 					dto.userId,
 					dto.username,
@@ -375,7 +375,7 @@ export class PlayersSingleton {
 
 		let player = this.FindByConnectionId(dto.connectionId);
 		if (!player) {
-			const nob = NetworkUtil.WaitForNetworkObject(dto.nobId);
+			const nob = NetworkUtil.WaitForNetworkIdentity(dto.netId);
 			nob.gameObject.name = `Player_${dto.username}`;
 			let playerInfo = nob.gameObject.GetComponent<PlayerInfo>()!;
 			player = new Player(nob, dto.connectionId, dto.userId, dto.username, dto.profileImageId, playerInfo);

@@ -3,14 +3,12 @@ import { Game } from "@Easy/Core/Shared/Game";
 import Inventory from "@Easy/Core/Shared/Inventory/Inventory";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
-import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { CoreNetwork } from "../CoreNetwork";
 import { DamageInfo, DamageInfoCustomData } from "../Damage/DamageInfo";
 import CharacterAnimator from "./Animation/CharacterAnimator";
 import CharacterConfigSetup from "./CharacterConfigSetup";
-import inspect from "../Util/Inspect";
 
 /**
  * A character is a (typically human) object in the scene. It controls movement and default animation.
@@ -32,7 +30,7 @@ export default class Character extends AirshipBehaviour {
 	public animationHelper!: CharacterAnimationHelper;
 	public accessoryBuilder!: AccessoryBuilder;
 	public model!: GameObject;
-	public networkObject!: NetworkObject;
+	public networkObject!: NetworkIdentity;
 	public rigRoot!: GameObject;
 	public footstepAudioSource!: AudioSource;
 	@NonSerialized() public rig!: CharacterRig;
@@ -246,7 +244,7 @@ export default class Character extends AirshipBehaviour {
 		if (this.player?.character === this) {
 			this.player?.SetCharacter(undefined);
 		}
-		NetworkUtil.Despawn(this.gameObject);
+		NetworkServer.Destroy(this.gameObject);
 	}
 
 	public InflictDamage(damage: number, attacker?: GameObject, data?: DamageInfoCustomData): void {

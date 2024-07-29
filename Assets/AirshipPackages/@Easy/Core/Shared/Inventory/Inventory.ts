@@ -16,7 +16,7 @@ export interface InventoryDto {
 }
 
 export default class Inventory extends AirshipBehaviour {
-	public networkObject!: NetworkObject;
+	public networkIdentity!: NetworkIdentity;
 	@NonSerialized() public id!: number;
 	public maxSlots = 45;
 	public hotbarSlots = 9;
@@ -50,24 +50,31 @@ export default class Inventory extends AirshipBehaviour {
 
 	public OnEnable(): void {
 		// Networking
-		if (this.networkObject.IsSpawned) {
-			this.id = this.networkObject.ObjectId;
-			Airship.Inventory.RegisterInventory(this);
-			if (Game.IsClient()) {
-				task.spawn(() => {
-					this.RequestFullUpdate();
-				});
-			}
-		} else {
-			const conn = this.networkObject.OnStartNetwork(() => {
-				Bridge.DisconnectEvent(conn);
-				this.id = this.networkObject.ObjectId;
-				Airship.Inventory.RegisterInventory(this);
-				if (Game.IsClient()) {
-					task.spawn(() => {
-						this.RequestFullUpdate();
-					});
-				}
+		// if (this.networkIdentity.IsSpawned) {
+		// 	this.id = this.networkIdentity.ObjectId;
+		// 	Airship.Inventory.RegisterInventory(this);
+		// 	if (Game.IsClient()) {
+		// 		task.spawn(() => {
+		// 			this.RequestFullUpdate();
+		// 		});
+		// 	}
+		// } else {
+		// 	const conn = this.networkIdentity.OnStartNetwork(() => {
+		// 		Bridge.DisconnectEvent(conn);
+		// 		this.id = this.networkIdentity.ObjectId;
+		// 		Airship.Inventory.RegisterInventory(this);
+		// 		if (Game.IsClient()) {
+		// 			task.spawn(() => {
+		// 				this.RequestFullUpdate();
+		// 			});
+		// 		}
+		// 	});
+		// }
+		this.id = this.networkIdentity.netId;
+		Airship.Inventory.RegisterInventory(this);
+		if (Game.IsClient()) {
+			task.spawn(() => {
+				this.RequestFullUpdate();
 			});
 		}
 

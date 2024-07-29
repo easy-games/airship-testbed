@@ -12,14 +12,12 @@ import { AudioManager } from "./Audio/AudioManager";
 import { CoreRefs } from "./CoreRefs";
 import { AppManager } from "./Util/AppManager";
 import { CanvasAPI } from "./Util/CanvasAPI";
-import { TimeUtil } from "./Util/TimeUtil";
 import { OnFixedUpdate, OnLateUpdate, OnUpdate } from "./Util/Timer";
 
 CoreRefs.Init();
 InputBridge.Instance.SetMouseLocked(false);
 InputBridge.Instance.SetCursorVisible(true);
 
-TimeUtil.GetLifetimeSeconds();
 CanvasAPI.Init();
 AppManager.Init();
 AudioManager.Init();
@@ -31,18 +29,18 @@ const fullGo = gameObject as GameObject & {
 };
 // Drive timer:
 fullGo.OnUpdate(() => {
-	OnUpdate.Fire(TimeUtil.GetDeltaTime());
+	OnUpdate.Fire(Time.deltaTime);
 });
 fullGo.OnLateUpdate(() => {
-	OnLateUpdate.Fire(TimeUtil.GetDeltaTime());
+	OnLateUpdate.Fire(Time.deltaTime);
 });
 fullGo.OnFixedUpdate(() => {
-	OnFixedUpdate.Fire(TimeUtil.GetFixedDeltaTime());
+	OnFixedUpdate.Fire(Time.fixedDeltaTime);
 });
 
 Flamework.AddPath("@easy/core/shared", "^.*singleton.ts$");
 Flamework.AddPath("@easy/core/client/controllers/airship/user/airshipusercontroller", "^.*controller.ts$");
-Flamework.AddPath("@easy/core/shared/player/playerssingleton", "^.*singleton.ts$");
+Flamework.AddPath("@easy/core/shared/player/airshipplayerssingleton", "^.*singleton.ts$");
 Flamework.AddPath("@easy/core/shared/avatar/airshipavatarsingleton", "^.*singleton.ts$");
 Flamework.AddPath("@easy/core/client/protectedcontrollers", "^.*controller.ts$");
 Flamework.AddPath("@easy/core/client/protectedcontrollers", "^.*singleton.ts$");

@@ -4,16 +4,14 @@ import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { ClientChatSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/Chat/ClientChatSingleton";
-import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { Team } from "../Team/Team";
 import { Bin } from "../Util/Bin";
-import { CSArrayUtil } from "../Util/CSArrayUtil";
 import { Signal } from "../Util/Signal";
 
 /** @internal */
 export interface PlayerDto {
-	nobId: number;
+	netId: number;
 	connectionId: number;
 	userId: string;
 	username: string;
@@ -69,7 +67,7 @@ export class Player {
 		 *
 		 * @internal
 		 */
-		public readonly networkObject: NetworkObject,
+		public readonly networkIdentity: NetworkIdentity,
 
 		/**
 		 * Unique network connection ID for the player in the given server. This ID
@@ -170,17 +168,10 @@ export class Player {
 
 		characterComponent.Init(this, Airship.Characters.MakeNewId(), this.selectedOutfit);
 		this.SetCharacter(characterComponent);
-		NetworkUtil.SpawnWithClientOwnership(go, this.connectionId);
+		NetworkServer.Spawn(go, this.networkIdentity.connectionToClient);
 		Airship.Characters.RegisterCharacter(characterComponent);
 		Airship.Characters.onCharacterSpawned.Fire(characterComponent);
 		return characterComponent;
-	}
-
-	/**
-	 * @returns The network connection associated with this player.
-	 */
-	public GetNetworkConnection() {
-		return NetworkCore.GetNetworkConnection(this.connectionId);
 	}
 
 	public WaitForOutfitLoaded(timeout?: number): void {
@@ -229,7 +220,7 @@ export class Player {
 
 	public Encode(): PlayerDto {
 		return {
-			nobId: this.networkObject.ObjectId,
+			netId: this.networkIdentity.netId,
 			connectionId: this.connectionId,
 			userId: this.userId,
 			username: this.username,
@@ -263,11 +254,12 @@ export class Player {
 	}
 
 	public IsInScene(sceneName: string): boolean {
-		const scenes = CSArrayUtil.Convert(this.GetNetworkConnection().Scenes);
-		if (scenes.find((s) => s.name === sceneName)) {
-			return true;
-		}
-		return false;
+		return true;
+		// const scenes = CSArrayUtil.Convert(this.GetNetworkConnection().Scenes);
+		// if (scenes.find((s) => s.name === sceneName)) {
+		// 	return true;
+		// }
+		// return false;
 	}
 
 	/**

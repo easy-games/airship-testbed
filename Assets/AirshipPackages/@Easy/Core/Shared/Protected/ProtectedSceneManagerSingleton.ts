@@ -23,7 +23,7 @@ export class ProtectedSceneManagerSingleton {
 				contextbridge.broadcast(
 					"SceneManager:OnClientPresenceChangeStart",
 					scene.name,
-					connection.ClientId,
+					connection.connectionId,
 					added,
 				);
 			});
@@ -31,7 +31,7 @@ export class ProtectedSceneManagerSingleton {
 				contextbridge.broadcast(
 					"SceneManager:OnClientPresenceChangeEnd",
 					scene.name,
-					connection.ClientId,
+					connection.connectionId,
 					added,
 				);
 			});
@@ -91,7 +91,7 @@ export class ProtectedSceneManagerSingleton {
 			},
 		);
 
-		contextbridge.callback<(clientId: number, sceneName: string, makeActiveScene: boolean) => void>(
+		contextbridge.callback<(connectionId: number, sceneName: string, makeActiveScene: boolean) => void>(
 			"SceneManager:LoadSceneForPlayer",
 			(fromContext, clientId, sceneName, makeActiveScene) => {
 				if (this.IsProtectedSceneName(sceneName)) {
@@ -99,7 +99,7 @@ export class ProtectedSceneManagerSingleton {
 					return;
 				}
 
-				const connection = InstanceFinder.ServerManager.Clients.Get(clientId);
+				const connection = NetworkServer.connections.Get(clientId);
 				if (!connection) {
 					error("Failed to load scene for player. Unable to find player with clientId: " + clientId);
 				}
@@ -107,23 +107,22 @@ export class ProtectedSceneManagerSingleton {
 			},
 		);
 
-		contextbridge.callback<(clientId: number, sceneName: string, preferredActiveScene: string | undefined) => void>(
-			"SceneManager:UnloadSceneForPlayer",
-			(fromContext, clientId, sceneName, preferredActiveScene) => {
-				if (this.IsProtectedSceneName(sceneName)) {
-					error("Not allowed to load protected scene: " + sceneName);
-				}
-				if (preferredActiveScene && this.IsProtectedSceneName(preferredActiveScene)) {
-					error("Not allowed to set active scene to a protected scene: " + preferredActiveScene);
-				}
+		contextbridge.callback<
+			(connectionId: number, sceneName: string, preferredActiveScene: string | undefined) => void
+		>("SceneManager:UnloadSceneForPlayer", (fromContext, connectionId, sceneName, preferredActiveScene) => {
+			if (this.IsProtectedSceneName(sceneName)) {
+				error("Not allowed to load protected scene: " + sceneName);
+			}
+			if (preferredActiveScene && this.IsProtectedSceneName(preferredActiveScene)) {
+				error("Not allowed to set active scene to a protected scene: " + preferredActiveScene);
+			}
 
-				const connection = InstanceFinder.ServerManager.Clients.Get(clientId);
-				if (!connection) {
-					error("Failed to load scene for player. Unable to find player with clientId: " + clientId);
-				}
-				Bridge.UnloadSceneForConnection(connection, sceneName, preferredActiveScene ?? "");
-			},
-		);
+			const connection = NetworkServer.connections.Get(connectionId);
+			if (!connection) {
+				error("Failed to load scene for player. Unable to find player with clientId: " + connectionId);
+			}
+			Bridge.UnloadSceneForConnection(connection, sceneName, preferredActiveScene ?? "");
+		});
 
 		contextbridge.callback<(sceneName: string) => void>("SceneManager:SetActiveScene", (fromContext, sceneName) => {
 			if (this.IsProtectedSceneName(sceneName)) {

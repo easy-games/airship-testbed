@@ -1,10 +1,9 @@
 import { Game } from "@Easy/Core/Shared/Game";
 import { NetworkSignal } from "@Easy/Core/Shared/Network/NetworkSignal";
+import { Player } from "@Easy/Core/Shared/Player/Player";
 import { MapUtil } from "@Easy/Core/Shared/Util/MapUtil";
 import { AirshipNetworkBehaviour } from "./AirshipNetworkBehaviour";
 import { NetworkRpc } from "./NetworkRpc";
-import { Player } from "@Easy/Core/Shared/Player/Player";
-import inspect from "../Util/Inspect";
 
 export type ServerRpcArgs<T extends ReadonlyArray<unknown>> = [objectId: number, ...args: T];
 
@@ -78,10 +77,10 @@ export function ServerRpc<TMethodArguments extends ReadonlyArray<unknown>, TRequ
 				}
 
 				if (requiresOwnership) {
-					event!.client.FireServer(object.networkObject.ObjectId, ...params);
+					event!.client.FireServer(object.networkObject.netId, ...params);
 				} else {
 					const args = select(2, ...params);
-					event!.client.FireServer(object.networkObject.ObjectId, ...args);
+					event!.client.FireServer(object.networkObject.netId, ...args);
 				}
 
 				return undefined as ReturnType<ServerRpcMethodSignature<TMethodArguments, TRequiresOwnership>>;

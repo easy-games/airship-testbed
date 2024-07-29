@@ -589,163 +589,6 @@ declare const enum TextureCreationFlags {
     DontUploadUponCreate = 1024,
     IgnoreMipmapLimit = 2048,
 }
-declare const enum ConditionOverrideType {
-    AddMissing = 1,
-    UseManager = 2,
-    IgnoreManager = 3,
-}
-declare const enum ObserverConditionType {
-    Normal = 1,
-    Timed = 2,
-}
-declare const enum Channel {
-    Reliable = 0,
-    Unreliable = 1,
-}
-declare const enum RotationOrder {
-    XYZ = 0,
-    XZY = 1,
-    YXZ = 2,
-    YZX = 3,
-    ZXY = 4,
-    Default = 4,
-    ZYX = 5,
-}
-declare const enum DataSource {
-    Unset = 0,
-    Server = 1,
-    Client = 2,
-}
-declare const enum RemoteTimeoutType {
-    Disabled = 0,
-    Release = 1,
-    Development = 2,
-}
-declare const enum LocalConnectionState {
-    Stopped = 0,
-    Starting = 1,
-    Started = 2,
-    Stopping = 3,
-}
-declare const enum RemoteConnectionState {
-    Stopped = 0,
-    Started = 2,
-}
-declare const enum HostVisibilityUpdateTypes {
-    Manager = 1,
-    Spawned = 2,
-}
-declare const enum IPAddressType {
-    IPv4 = 0,
-    IPv6 = 1,
-}
-declare const enum OldTickOption {
-    Discard = 0,
-    SetLastRemoteTick = 1,
-    SetRemoteTick = 2,
-}
-declare const enum PhysicsMode {
-    Unity = 0,
-    TimeManager = 1,
-    Disabled = 2,
-}
-declare const enum TickType {
-    Tick = 0,
-    LocalTick = 1,
-    LastPacketTick = 2,
-}
-declare const enum TickRounding {
-    RoundUp = 0,
-    RoundDown = 1,
-    RoundNearest = 2,
-}
-declare const enum LoadSceneMode {
-    Single = 0,
-    Additive = 1,
-}
-declare const enum LocalPhysicsMode {
-    None = 0,
-    Physics2D = 1,
-    Physics3D = 2,
-}
-declare const enum SceneScopeType {
-    Global = 0,
-    Connections = 1,
-}
-declare const enum ReplaceOption {
-    All = 0,
-    OnlineOnly = 1,
-    None = 2,
-}
-declare const enum ServerUnloadMode {
-    UnloadUnused = 0,
-    KeepUnused = 1,
-}
-declare const enum ReplicateStateOrder {
-    Inserted = 0,
-    Appended = 1,
-}
-declare const enum RollbackPhysicsType {
-    Physics = 1,
-    Physics2D = 2,
-}
-declare const enum LoggingType {
-    Off = 0,
-    Error = 1,
-    Warning = 2,
-    Common = 3,
-}
-declare const enum ReplicateState {
-    Invalid = 0,
-    CurrentCreated = 1,
-    CurrentPredicted = 2,
-    ReplayedPredicted = 3,
-    ReplayedCreated = 4,
-    CurrentFuture = 5,
-    ReplayedFuture = 6,
-}
-declare const enum DataOrderType {
-    Default = 0,
-    Last = 1,
-}
-declare const enum TransformPropertiesFlag {
-    Unset = 0,
-    Position = 1,
-    Rotation = 2,
-    LocalScale = 4,
-    Everything = 255,
-}
-declare const enum AdaptiveInterpolationType {
-    Off = 0,
-    ExtremelyLow = 1,
-    VeryLow = 2,
-    Low = 3,
-    Moderate = 4,
-    High = 5,
-    VeryHigh = 6,
-}
-declare const enum RigidbodyType {
-    Rigidbody = 0,
-    Rigidbody2D = 1,
-}
-declare const enum DespawnType {
-    Destroy = 0,
-    Pool = 1,
-}
-declare const enum KickReason {
-    Unset = 0,
-    ExploitAttempt = 1,
-    MalformedData = 2,
-    ExploitExcessiveData = 3,
-    ExcessiveData = 4,
-    UnexpectedProblem = 5,
-    UnusualActivity = 6,
-}
-declare const enum ObjectPoolRetrieveOption {
-    Unset = 0,
-    MakeActive = 1,
-    LocalSpace = 2,
-}
 declare const enum RenderingPath {
     VertexLit = 0,
     Forward = 1,
@@ -2324,14 +2167,27 @@ declare const enum DefaultReflectionMode {
     Skybox = 0,
     Custom = 1,
 }
-declare const enum WritePermission {
-    ServerOnly = 0,
-    ClientUnsynchronized = 1,
+declare const enum SyncDirection {
+    ServerToClient = 0,
+    ClientToServer = 1,
 }
-declare const enum ReadPermission {
+declare const enum SyncMode {
     Observers = 0,
-    OwnerOnly = 1,
-    ExcludeOwner = 2,
+    Owner = 1,
+}
+declare const enum Visibility {
+    Default = 0,
+    ForceHidden = 1,
+    ForceShown = 2,
+}
+declare const enum LocalPhysicsMode {
+    None = 0,
+    Physics2D = 1,
+    Physics3D = 2,
+}
+declare const enum LoadSceneMode {
+    Single = 0,
+    Additive = 1,
 }
 declare const enum UnloadSceneOptions {
     None = 0,
@@ -3100,18 +2956,6 @@ declare const enum ScrollbarVisibility {
     AutoHide = 1,
     AutoHideAndExpandViewport = 2,
 }
-declare const enum SynchronizedProperty {
-    None = 0,
-    Parent = 1,
-    Position = 2,
-    Rotation = 4,
-    Scale = 8,
-}
-declare const enum ExtrapolateState {
-    Disabled = 0,
-    Available = 1,
-    Active = 2,
-}
 declare const enum SaveFolder {
     ApplicationData = 0,
     PicturesFolder = 1,
@@ -3613,6 +3457,26 @@ declare const enum TreeMotionVectorModeOverride {
     PerObjectMotion = 1,
     ForceNoMotion = 2,
     InheritFromPrototype = 3,
+}
+declare const enum RemovePlayerOptions {
+    KeepActive = 0,
+    Unspawn = 1,
+    Destroy = 2,
+}
+declare const enum ConnectionQuality {
+    ESTIMATING = 0,
+    POOR = 1,
+    FAIR = 2,
+    GOOD = 3,
+    EXCELLENT = 4,
+}
+declare const enum ConnectionQualityMethod {
+    Simple = 0,
+    Pragmatic = 1,
+}
+declare const enum CoordinateSpace {
+    Local = 0,
+    World = 1,
 }
 declare const enum CellLayout {
     Rectangle = 0,
@@ -11623,7496 +11487,14 @@ interface NetConstructor {
 }
 declare const Net: NetConstructor;
     
-interface NetworkManager extends MonoBehaviour {
-    readonly Initialized: boolean;
-    readonly ServerManager: ServerManager;
-    readonly ClientManager: ClientManager;
-    readonly TransportManager: TransportManager;
-    readonly TimeManager: TimeManager;
-    readonly SceneManager: SceneManager;
-    readonly ObserverManager: ObserverManager;
-    readonly DebugManager: DebugManager;
-    readonly StatisticsManager: StatisticsManager;
-    readonly ObjectPool: ObjectPool;
-    readonly RollbackManager: RollbackManager;
-    readonly IsServerStarted: boolean;
-    readonly IsServerOnlyStarted: boolean;
-    readonly IsClientStarted: boolean;
-    readonly IsClientOnlyStarted: boolean;
-    readonly IsHostStarted: boolean;
-    readonly IsOffline: boolean;
-    SpawnablePrefabs: PrefabObjects;
-    readonly RuntimeSpawnablePrefabs: CSDictionary<number, PrefabObjects>;
-
-
-
-    CacheObjects(prefab: NetworkObject, count: number, asServer: boolean): void;
-    GetInstance<T>(): T;
-    GetPooledInstantiated(prefab: NetworkObject, parent: Transform, asServer: boolean): NetworkObject;
-    GetPooledInstantiated(prefab: NetworkObject, asServer: boolean): NetworkObject;
-    GetPooledInstantiated(prefab: NetworkObject, position: Vector3, rotation: Quaternion, asServer: boolean): NetworkObject;
-    GetPooledInstantiated(prefab: GameObject, asServer: boolean): NetworkObject;
-    GetPooledInstantiated(prefab: GameObject, parent: Transform, asServer: boolean): NetworkObject;
-    GetPooledInstantiated(prefab: GameObject, position: Vector3, rotation: Quaternion, asServer: boolean): NetworkObject;
-    GetPooledInstantiated(prefab: NetworkObject, position: Vector3, rotation: Quaternion, parent: Transform, asServer: boolean): NetworkObject;
-    GetPooledInstantiated(prefab: GameObject, position: Vector3, rotation: Quaternion, parent: Transform, asServer: boolean): NetworkObject;
-    GetPooledInstantiated(prefabId: number, collectionId: number, asServer: boolean): NetworkObject;
-    GetPooledInstantiated(prefabId: number, collectionId: number, position: Vector3, rotation: Quaternion, asServer: boolean): NetworkObject;
-    GetPooledInstantiated(prefabId: number, collectionId: number, options: ObjectPoolRetrieveOption, parent: Transform, position: unknown, rotation: unknown, scale: unknown, asServer: boolean): NetworkObject;
-    GetPrefab(prefabId: number, asServer: boolean): NetworkObject;
-    GetPrefabIndex(prefab: GameObject, asServer: boolean): number;
-    GetPrefabObjects<T>(spawnableCollectionId: number, createIfMissing: boolean): PrefabObjects;
-    HasInstance<T>(): boolean;
-    RegisterInstance<T>(component: T, replace: boolean): void;
-    RegisterInvokeOnInstance<T>(handler: unknown): void;
-    RemoveSpawnableCollection(spawnableCollectionId: number): boolean;
-    StorePooledInstantiated(instantiated: NetworkObject, asServer: boolean): void;
-    TryGetInstance<T>(result: unknown): boolean;
-    TryRegisterInstance<T>(component: T): boolean;
-    UnregisterInstance<T>(): void;
-    UnregisterInvokeOnInstance<T>(handler: unknown): void;
-
-
-}
-    
-interface ServerManager extends MonoBehaviour {
-    Clients: CSDictionary<number, NetworkConnection>;
-    readonly Started: boolean;
-    readonly Objects: ServerObjects;
-    readonly NetworkManager: NetworkManager;
-    readonly ShareIds: boolean;
-
-    readonly OnServerConnectionState: MonoSignal<ServerConnectionStateArgs>;
-    readonly OnAuthenticationResult: MonoSignal<NetworkConnection, boolean>;
-    readonly OnRemoteConnectionState: MonoSignal<NetworkConnection, RemoteConnectionStateArgs>;
-    readonly OnClientKick: MonoSignal<NetworkConnection, number, KickReason>;
-
-
-    AnyServerStarted(excludedIndex: unknown): boolean;
-    Broadcast<T>(connection: NetworkConnection, message: T, requireAuthenticated: boolean, channel: Channel): void;
-    Broadcast<T>(connections: CSArray<NetworkConnection>, message: T, requireAuthenticated: boolean, channel: Channel): void;
-    Broadcast<T>(networkObject: NetworkObject, message: T, requireAuthenticated: boolean, channel: Channel): void;
-    Broadcast<T>(message: T, requireAuthenticated: boolean, channel: Channel): void;
-    BroadcastExcept<T>(connections: CSArray<NetworkConnection>, excludedConnection: NetworkConnection, message: T, requireAuthenticated: boolean, channel: Channel): void;
-    BroadcastExcept<T>(connections: CSArray<NetworkConnection>, excludedConnections: CSArray<NetworkConnection>, message: T, requireAuthenticated: boolean, channel: Channel): void;
-    BroadcastExcept<T>(excludedConnection: NetworkConnection, message: T, requireAuthenticated: boolean, channel: Channel): void;
-    BroadcastExcept<T>(excludedConnections: CSArray<NetworkConnection>, message: T, requireAuthenticated: boolean, channel: Channel): void;
-    Despawn(go: GameObject, despawnType: unknown): void;
-    Despawn(networkObject: NetworkObject, despawnType: unknown): void;
-    GetAuthenticator(): Authenticator;
-    GetStartOnHeadless(): boolean;
-    Kick(conn: NetworkConnection, kickReason: KickReason, loggingType: LoggingType, log: string): void;
-    Kick(clientId: number, kickReason: KickReason, loggingType: LoggingType, log: string): void;
-    Kick(conn: NetworkConnection, reader: Reader, kickReason: KickReason, loggingType: LoggingType, log: string): void;
-    OneServerStarted(): boolean;
-    RegisterBroadcast<T>(handler: unknown, requireAuthentication: boolean): void;
-    SetAuthenticator(value: Authenticator): void;
-    SetFrameRate(value: number): void;
-    SetRemoteClientTimeout(timeoutType: RemoteTimeoutType, duration: number): void;
-    SetStartOnHeadless(value: boolean): void;
-    Spawn(go: GameObject, ownerConnection: NetworkConnection, scene: Scene): void;
-    Spawn(nob: NetworkObject, ownerConnection: NetworkConnection, scene: Scene): void;
-    StartConnection(): boolean;
-    StartConnection(port: number): boolean;
-    StopConnection(sendDisconnectMessage: boolean): boolean;
-    UnregisterBroadcast<T>(handler: unknown): void;
-
-
-}
-    
-interface IResettable {
-
-
-
-    InitializeState(): void;
-    ResetState(): void;
-
-
-}
-    
-interface NetworkConnection extends IResettable {
-    ClientId: number;
-    Objects: CSArray<NetworkObject>;
-    CustomData: unknown;
-    LevelOfDetails: CSDictionary<NetworkObject, LevelOfDetailData>;
-    readonly NetworkManager: NetworkManager;
-    readonly TransportIndex: number;
-    readonly IsAuthenticated: boolean;
-    readonly IsActive: boolean;
-    readonly IsValid: boolean;
-    readonly FirstObject: NetworkObject;
-    readonly Scenes: CSArray<Scene>;
-    readonly Disconnecting: boolean;
-    readonly PacketTick: EstimatedTick;
-    readonly LocalTick: EstimatedTick;
-    readonly ReplicateTick: EstimatedTick;
-    readonly IsHost: boolean;
-    readonly IsLocalClient: boolean;
-
-    readonly OnLoadedStartScenes: MonoSignal<NetworkConnection, boolean>;
-    readonly OnObjectAdded: MonoSignal<NetworkObject>;
-    readonly OnObjectRemoved: MonoSignal<NetworkObject>;
-
-
-    Broadcast<T>(message: T, requireAuthenticated: boolean, channel: Channel): void;
-    Disconnect(immediately: boolean): void;
-    Equals(obj: unknown): boolean;
-    Equals(nc: NetworkConnection): boolean;
-    GetAddress(): string;
-    GetHashCode(): number;
-    InitializeState(): void;
-    Kick(kickReason: KickReason, loggingType: LoggingType, log: string): void;
-    Kick(reader: Reader, kickReason: KickReason, loggingType: LoggingType, log: string): void;
-    LoadedStartScenes(): boolean;
-    LoadedStartScenes(asServer: boolean): boolean;
-    ResetState(): void;
-    SetFirstObject(nob: NetworkObject): void;
-    ToString(): string;
-
-
-}
-    
-    
-interface NetworkObserver extends MonoBehaviour {
-    readonly OverrideType: ConditionOverrideType;
-    readonly UpdateHostVisibility: boolean;
-    readonly ObserverConditions: CSArray<ObserverCondition>;
-
-
-
-    GetObserverCondition<T>(): ObserverCondition;
-    SetUpdateHostVisibility(value: boolean): void;
-
-
-}
-    
-interface ObserverCondition extends ScriptableObject {
-    NetworkObject: NetworkObject;
-
-
-
-    ConditionMet(connection: NetworkConnection, currentlyAdded: boolean, notProcessed: unknown): boolean;
-    Deinitialize(destroyed: boolean): void;
-    GetConditionType(): ObserverConditionType;
-    GetIsEnabled(): boolean;
-    Initialize(networkObject: NetworkObject): void;
-    SetIsEnabled(value: boolean): void;
-
-
-}
-    
-interface NetworkObserverConstructor {
-
-
-    new(): NetworkObserver;
-
-
-
-}
-declare const NetworkObserver: NetworkObserverConstructor;
-    
-    
-interface ClientManager extends MonoBehaviour {
-    Connection: NetworkConnection;
-    Clients: CSDictionary<number, NetworkConnection>;
-    readonly IsServerDevelopment: boolean;
-    readonly Started: boolean;
-    readonly Objects: ClientObjects;
-    readonly NetworkManager: NetworkManager;
-    readonly LevelOfDetailInterval: number;
-
-    readonly OnAuthenticated: MonoSignal<void>;
-    readonly OnClientTimeOut: MonoSignal<void>;
-    readonly OnClientConnectionState: MonoSignal<ClientConnectionStateArgs>;
-    readonly OnRemoteConnectionState: MonoSignal<RemoteConnectionStateArgs>;
-    readonly OnConnectedClients: MonoSignal<ConnectedClientsArgs>;
-
-
-    Broadcast<T>(message: T, channel: Channel): void;
-    GetTransportIndex(): number;
-    RegisterBroadcast<T>(handler: unknown): void;
-    SetFrameRate(value: number): void;
-    SetRemoteServerTimeout(timeoutType: RemoteTimeoutType, duration: number): void;
-    StartConnection(): boolean;
-    StartConnection(address: string): boolean;
-    StartConnection(address: string, port: number): boolean;
-    StopConnection(): boolean;
-    UnregisterBroadcast<T>(handler: unknown): void;
-
-
-}
-    
-interface ManagedObjects {
-    Spawned: CSDictionary<number, NetworkObject>;
-    readonly SceneObjects: CSDictionary<number, NetworkObject>;
-
-    readonly addedToSpawnedEvent: MonoSignal<void>;
-
-
-
-
-}
-    
-interface ManagedObjectsConstructor {
-
-
-
-
-    InitializePrefab(prefab: NetworkObject, index: number, collectionId: unknown): void;
-
-}
-declare const ManagedObjects: ManagedObjectsConstructor;
-    
-interface ClientObjects extends ManagedObjects {
-
-
-
-    WriteDepawn(nob: NetworkObject, writer: Writer): void;
-
-
-}
-    
-interface Writer {
-    Position: number;
-    Length: number;
-    NetworkManager: NetworkManager;
-    readonly Capacity: number;
-
-
-
-    EnsureBufferCapacity(count: number): void;
-    EnsureBufferLength(count: number): void;
-    FastInsertUInt8Unpacked(value: number, index: number): void;
-    GetArraySegment(): CSArray<number>;
-    GetBuffer(): CSArray<number>;
-    Reserve(count: number): void;
-    Reset(manager: NetworkManager): void;
-    ToString(): string;
-    Write<T>(value: T): void;
-    WriteArray<T>(value: CSArray<T>, offset: number, count: number): void;
-    WriteArray<T>(value: CSArray<T>, offset: number): void;
-    WriteArray<T>(value: CSArray<T>): void;
-    WriteArraySegment(value: CSArray<number>): void;
-    WriteArraySegmentAndSize(value: CSArray<number>): void;
-    Writebool2(value: bool2): void;
-    Writebool2x2(value: bool2x2): void;
-    Writebool2x3(value: bool2x3): void;
-    Writebool2x4(value: bool2x4): void;
-    Writebool3(value: bool3): void;
-    Writebool3x2(value: bool3x2): void;
-    Writebool3x3(value: bool3x3): void;
-    Writebool3x4(value: bool3x4): void;
-    Writebool4(value: bool4): void;
-    Writebool4x2(value: bool4x2): void;
-    Writebool4x3(value: bool4x3): void;
-    Writebool4x4(value: bool4x4): void;
-    WriteBoolean(value: boolean): void;
-    WriteChannel(channel: Channel): void;
-    WriteChar(value: string): void;
-    WriteColor(value: Color): void;
-    WriteColor32(value: Color32): void;
-    WriteColorUnpacked(value: Color): void;
-    WriteDateTime(dt: string): void;
-    WriteDecimal(value: number): void;
-    WriteDecimalUnpacked(value: number): void;
-    WriteDeltaBoolean(valueA: boolean, valueB: boolean): boolean;
-    WriteDeltaDecimal(valueA: number, valueB: number): boolean;
-    WriteDeltaDouble(valueA: number, valueB: number): boolean;
-    WriteDeltaInt16(valueA: number, valueB: number): boolean;
-    WriteDeltaInt32(valueA: number, valueB: number): boolean;
-    WriteDeltaInt64(valueA: number, valueB: number): boolean;
-    WriteDeltaInt8(valueA: number, valueB: number): boolean;
-    WriteDeltaSingle(valueA: number, valueB: number): boolean;
-    WriteDeltaUInt16(valueA: number, valueB: number): boolean;
-    WriteDeltaUInt32(valueA: number, valueB: number): boolean;
-    WriteDeltaUInt64(valueA: number, valueB: number): boolean;
-    WriteDeltaUInt8(valueA: number, valueB: number): boolean;
-    WriteDictionary<TKey, TValue>(dict: CSDictionary<TKey, TValue>): void;
-    WriteDouble(value: number): void;
-    Writedouble2(value: double2): void;
-    Writedouble2x2(value: double2x2): void;
-    Writedouble2x3(value: double2x3): void;
-    Writedouble2x4(value: double2x4): void;
-    Writedouble3(value: double3): void;
-    Writedouble3x2(value: double3x2): void;
-    Writedouble3x3(value: double3x3): void;
-    Writedouble3x4(value: double3x4): void;
-    Writedouble4(value: double4): void;
-    Writedouble4x2(value: double4x2): void;
-    Writedouble4x3(value: double4x3): void;
-    Writedouble4x4(value: double4x4): void;
-    WriteDoubleUnpacked(value: number): void;
-    Writefloat2(value: float2): void;
-    Writefloat2x2(value: float2x2): void;
-    Writefloat2x3(value: float2x3): void;
-    Writefloat2x4(value: float2x4): void;
-    Writefloat3(value: float3): void;
-    Writefloat3x2(value: float3x2): void;
-    Writefloat3x3(value: float3x3): void;
-    Writefloat3x4(value: float3x4): void;
-    Writefloat4(value: float4): void;
-    Writefloat4x2(value: float4x2): void;
-    Writefloat4x3(value: float4x3): void;
-    Writefloat4x4(value: float4x4): void;
-    WriteGameObject(go: GameObject): void;
-    WriteGuidAllocated(value: unknown): void;
-    Writehalf(value: half): void;
-    Writehalf2(value: half2): void;
-    Writehalf3(value: half3): void;
-    Writehalf4(value: half4): void;
-    WriteInt16(value: number): void;
-    WriteInt16Unpacked(value: number): void;
-    Writeint2(value: int2): void;
-    Writeint2x2(value: int2x2): void;
-    Writeint2x3(value: int2x3): void;
-    Writeint2x4(value: int2x4): void;
-    Writeint3(value: int3): void;
-    WriteInt32(value: number): void;
-    WriteInt32Unpacked(value: number): void;
-    Writeint3x2(value: int3x2): void;
-    Writeint3x3(value: int3x3): void;
-    Writeint3x4(value: int3x4): void;
-    Writeint4(value: int4): void;
-    Writeint4x2(value: int4x2): void;
-    Writeint4x3(value: int4x3): void;
-    Writeint4x4(value: int4x4): void;
-    WriteInt64(value: number): void;
-    WriteInt64Unpacked(value: number): void;
-    WriteInt8Unpacked(value: number): void;
-    WriteLayerMask(value: LayerMask): void;
-    WriteList<T>(value: CSArray<T>): void;
-    WriteList<T>(value: CSArray<T>, offset: number, count: number): void;
-    WriteList<T>(value: CSArray<T>, offset: number): void;
-    WriteMatrix4x4(value: Matrix4x4): void;
-    WriteMatrix4x4Unpacked(value: Matrix4x4): void;
-    WriteNetworkBehaviour(nb: NetworkBehaviour): void;
-    WriteNetworkBehaviourId(nb: NetworkBehaviour): void;
-    WriteNetworkConnection(connection: NetworkConnection): void;
-    WriteNetworkConnectionId(id: number): void;
-    WriteNetworkObject(nob: NetworkObject): void;
-    WriteNetworkObjectId(nob: NetworkObject): void;
-    WriteNetworkObjectId(objectId: number): void;
-    WritePlane(value: Plane): void;
-    WritePlaneUnpacked(value: Plane): void;
-    Writequaternion(value: quaternion): void;
-    WriteQuaternion32(value: Quaternion): void;
-    WriteQuaternion64(value: Quaternion): void;
-    WriteQuaternionUnpacked(value: Quaternion): void;
-    Writerandom(random: Random): void;
-    WriteRay(value: Ray): void;
-    WriteRay2D(value: Ray2D): void;
-    WriteRay2DUnpacked(value: Ray2D): void;
-    WriteRayUnpacked(value: Ray): void;
-    WriteRect(value: Rect): void;
-    WriteRectUnpacked(value: Rect): void;
-    WriteRigidTransform(value: RigidTransform): void;
-    WriteSignedPackedWhole(value: number): void;
-    WriteSingle(value: number): void;
-    WriteSingleUnpacked(value: number): void;
-    WriteString(value: string): void;
-    WriteSubStream(value: SubStream): void;
-    WriteTickUnpacked(value: number): void;
-    WriteTransform(t: Transform): void;
-    WriteUInt16(value: number): void;
-    WriteUInt16Unpacked(value: number): void;
-    Writeuint2(value: uint2): void;
-    Writeuint2x2(value: uint2x2): void;
-    Writeuint2x3(value: uint2x3): void;
-    Writeuint2x4(value: uint2x4): void;
-    Writeuint3(value: uint3): void;
-    WriteUInt32(value: number): void;
-    WriteUInt32Unpacked(value: number): void;
-    Writeuint3x2(value: uint3x2): void;
-    Writeuint3x3(value: uint3x3): void;
-    Writeuint3x4(value: uint3x4): void;
-    Writeuint4(value: uint4): void;
-    Writeuint4x2(value: uint4x2): void;
-    Writeuint4x3(value: uint4x3): void;
-    Writeuint4x4(value: uint4x4): void;
-    WriteUInt64(value: number): void;
-    WriteUInt64Unpacked(value: number): void;
-    WriteUInt8Array(value: CSArray<number>, offset: number, count: number): void;
-    WriteUInt8ArrayAndSize(value: CSArray<number>, offset: number, count: number): void;
-    WriteUInt8ArrayAndSize(value: CSArray<number>): void;
-    WriteUInt8Unpacked(value: number): void;
-    WriteUnsignedPackedWhole(value: number): void;
-    WriteVector2(value: Vector2): void;
-    WriteVector2Int(value: Vector2Int): void;
-    WriteVector2IntUnpacked(value: Vector2Int): void;
-    WriteVector2Unpacked(value: Vector2): void;
-    WriteVector3(value: Vector3): void;
-    WriteVector3Int(value: Vector3): void;
-    WriteVector3IntUnpacked(value: Vector3): void;
-    WriteVector3Unpacked(value: Vector3): void;
-    WriteVector4(value: Vector4): void;
-    WriteVector4Unpacked(value: Vector4): void;
-    ZigZagEncode(value: number): number;
-
-
-}
-    
-interface bool2 {
-    x: boolean;
-    y: boolean;
-    readonly xxxx: bool4;
-    readonly xxxy: bool4;
-    readonly xxyx: bool4;
-    readonly xxyy: bool4;
-    readonly xyxx: bool4;
-    readonly xyxy: bool4;
-    readonly xyyx: bool4;
-    readonly xyyy: bool4;
-    readonly yxxx: bool4;
-    readonly yxxy: bool4;
-    readonly yxyx: bool4;
-    readonly yxyy: bool4;
-    readonly yyxx: bool4;
-    readonly yyxy: bool4;
-    readonly yyyx: bool4;
-    readonly yyyy: bool4;
-    readonly xxx: bool3;
-    readonly xxy: bool3;
-    readonly xyx: bool3;
-    readonly xyy: bool3;
-    readonly yxx: bool3;
-    readonly yxy: bool3;
-    readonly yyx: bool3;
-    readonly yyy: bool3;
-    readonly xx: bool2;
-    xy: bool2;
-    yx: bool2;
-    readonly yy: bool2;
-    Item: boolean;
-
-
-
-    Equals(rhs: bool2): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-
-}
-    
-interface bool4 {
-    x: boolean;
-    y: boolean;
-    z: boolean;
-    w: boolean;
-    readonly xxxx: bool4;
-    readonly xxxy: bool4;
-    readonly xxxz: bool4;
-    readonly xxxw: bool4;
-    readonly xxyx: bool4;
-    readonly xxyy: bool4;
-    readonly xxyz: bool4;
-    readonly xxyw: bool4;
-    readonly xxzx: bool4;
-    readonly xxzy: bool4;
-    readonly xxzz: bool4;
-    readonly xxzw: bool4;
-    readonly xxwx: bool4;
-    readonly xxwy: bool4;
-    readonly xxwz: bool4;
-    readonly xxww: bool4;
-    readonly xyxx: bool4;
-    readonly xyxy: bool4;
-    readonly xyxz: bool4;
-    readonly xyxw: bool4;
-    readonly xyyx: bool4;
-    readonly xyyy: bool4;
-    readonly xyyz: bool4;
-    readonly xyyw: bool4;
-    readonly xyzx: bool4;
-    readonly xyzy: bool4;
-    readonly xyzz: bool4;
-    xyzw: bool4;
-    readonly xywx: bool4;
-    readonly xywy: bool4;
-    xywz: bool4;
-    readonly xyww: bool4;
-    readonly xzxx: bool4;
-    readonly xzxy: bool4;
-    readonly xzxz: bool4;
-    readonly xzxw: bool4;
-    readonly xzyx: bool4;
-    readonly xzyy: bool4;
-    readonly xzyz: bool4;
-    xzyw: bool4;
-    readonly xzzx: bool4;
-    readonly xzzy: bool4;
-    readonly xzzz: bool4;
-    readonly xzzw: bool4;
-    readonly xzwx: bool4;
-    xzwy: bool4;
-    readonly xzwz: bool4;
-    readonly xzww: bool4;
-    readonly xwxx: bool4;
-    readonly xwxy: bool4;
-    readonly xwxz: bool4;
-    readonly xwxw: bool4;
-    readonly xwyx: bool4;
-    readonly xwyy: bool4;
-    xwyz: bool4;
-    readonly xwyw: bool4;
-    readonly xwzx: bool4;
-    xwzy: bool4;
-    readonly xwzz: bool4;
-    readonly xwzw: bool4;
-    readonly xwwx: bool4;
-    readonly xwwy: bool4;
-    readonly xwwz: bool4;
-    readonly xwww: bool4;
-    readonly yxxx: bool4;
-    readonly yxxy: bool4;
-    readonly yxxz: bool4;
-    readonly yxxw: bool4;
-    readonly yxyx: bool4;
-    readonly yxyy: bool4;
-    readonly yxyz: bool4;
-    readonly yxyw: bool4;
-    readonly yxzx: bool4;
-    readonly yxzy: bool4;
-    readonly yxzz: bool4;
-    yxzw: bool4;
-    readonly yxwx: bool4;
-    readonly yxwy: bool4;
-    yxwz: bool4;
-    readonly yxww: bool4;
-    readonly yyxx: bool4;
-    readonly yyxy: bool4;
-    readonly yyxz: bool4;
-    readonly yyxw: bool4;
-    readonly yyyx: bool4;
-    readonly yyyy: bool4;
-    readonly yyyz: bool4;
-    readonly yyyw: bool4;
-    readonly yyzx: bool4;
-    readonly yyzy: bool4;
-    readonly yyzz: bool4;
-    readonly yyzw: bool4;
-    readonly yywx: bool4;
-    readonly yywy: bool4;
-    readonly yywz: bool4;
-    readonly yyww: bool4;
-    readonly yzxx: bool4;
-    readonly yzxy: bool4;
-    readonly yzxz: bool4;
-    yzxw: bool4;
-    readonly yzyx: bool4;
-    readonly yzyy: bool4;
-    readonly yzyz: bool4;
-    readonly yzyw: bool4;
-    readonly yzzx: bool4;
-    readonly yzzy: bool4;
-    readonly yzzz: bool4;
-    readonly yzzw: bool4;
-    yzwx: bool4;
-    readonly yzwy: bool4;
-    readonly yzwz: bool4;
-    readonly yzww: bool4;
-    readonly ywxx: bool4;
-    readonly ywxy: bool4;
-    ywxz: bool4;
-    readonly ywxw: bool4;
-    readonly ywyx: bool4;
-    readonly ywyy: bool4;
-    readonly ywyz: bool4;
-    readonly ywyw: bool4;
-    ywzx: bool4;
-    readonly ywzy: bool4;
-    readonly ywzz: bool4;
-    readonly ywzw: bool4;
-    readonly ywwx: bool4;
-    readonly ywwy: bool4;
-    readonly ywwz: bool4;
-    readonly ywww: bool4;
-    readonly zxxx: bool4;
-    readonly zxxy: bool4;
-    readonly zxxz: bool4;
-    readonly zxxw: bool4;
-    readonly zxyx: bool4;
-    readonly zxyy: bool4;
-    readonly zxyz: bool4;
-    zxyw: bool4;
-    readonly zxzx: bool4;
-    readonly zxzy: bool4;
-    readonly zxzz: bool4;
-    readonly zxzw: bool4;
-    readonly zxwx: bool4;
-    zxwy: bool4;
-    readonly zxwz: bool4;
-    readonly zxww: bool4;
-    readonly zyxx: bool4;
-    readonly zyxy: bool4;
-    readonly zyxz: bool4;
-    zyxw: bool4;
-    readonly zyyx: bool4;
-    readonly zyyy: bool4;
-    readonly zyyz: bool4;
-    readonly zyyw: bool4;
-    readonly zyzx: bool4;
-    readonly zyzy: bool4;
-    readonly zyzz: bool4;
-    readonly zyzw: bool4;
-    zywx: bool4;
-    readonly zywy: bool4;
-    readonly zywz: bool4;
-    readonly zyww: bool4;
-    readonly zzxx: bool4;
-    readonly zzxy: bool4;
-    readonly zzxz: bool4;
-    readonly zzxw: bool4;
-    readonly zzyx: bool4;
-    readonly zzyy: bool4;
-    readonly zzyz: bool4;
-    readonly zzyw: bool4;
-    readonly zzzx: bool4;
-    readonly zzzy: bool4;
-    readonly zzzz: bool4;
-    readonly zzzw: bool4;
-    readonly zzwx: bool4;
-    readonly zzwy: bool4;
-    readonly zzwz: bool4;
-    readonly zzww: bool4;
-    readonly zwxx: bool4;
-    zwxy: bool4;
-    readonly zwxz: bool4;
-    readonly zwxw: bool4;
-    zwyx: bool4;
-    readonly zwyy: bool4;
-    readonly zwyz: bool4;
-    readonly zwyw: bool4;
-    readonly zwzx: bool4;
-    readonly zwzy: bool4;
-    readonly zwzz: bool4;
-    readonly zwzw: bool4;
-    readonly zwwx: bool4;
-    readonly zwwy: bool4;
-    readonly zwwz: bool4;
-    readonly zwww: bool4;
-    readonly wxxx: bool4;
-    readonly wxxy: bool4;
-    readonly wxxz: bool4;
-    readonly wxxw: bool4;
-    readonly wxyx: bool4;
-    readonly wxyy: bool4;
-    wxyz: bool4;
-    readonly wxyw: bool4;
-    readonly wxzx: bool4;
-    wxzy: bool4;
-    readonly wxzz: bool4;
-    readonly wxzw: bool4;
-    readonly wxwx: bool4;
-    readonly wxwy: bool4;
-    readonly wxwz: bool4;
-    readonly wxww: bool4;
-    readonly wyxx: bool4;
-    readonly wyxy: bool4;
-    wyxz: bool4;
-    readonly wyxw: bool4;
-    readonly wyyx: bool4;
-    readonly wyyy: bool4;
-    readonly wyyz: bool4;
-    readonly wyyw: bool4;
-    wyzx: bool4;
-    readonly wyzy: bool4;
-    readonly wyzz: bool4;
-    readonly wyzw: bool4;
-    readonly wywx: bool4;
-    readonly wywy: bool4;
-    readonly wywz: bool4;
-    readonly wyww: bool4;
-    readonly wzxx: bool4;
-    wzxy: bool4;
-    readonly wzxz: bool4;
-    readonly wzxw: bool4;
-    wzyx: bool4;
-    readonly wzyy: bool4;
-    readonly wzyz: bool4;
-    readonly wzyw: bool4;
-    readonly wzzx: bool4;
-    readonly wzzy: bool4;
-    readonly wzzz: bool4;
-    readonly wzzw: bool4;
-    readonly wzwx: bool4;
-    readonly wzwy: bool4;
-    readonly wzwz: bool4;
-    readonly wzww: bool4;
-    readonly wwxx: bool4;
-    readonly wwxy: bool4;
-    readonly wwxz: bool4;
-    readonly wwxw: bool4;
-    readonly wwyx: bool4;
-    readonly wwyy: bool4;
-    readonly wwyz: bool4;
-    readonly wwyw: bool4;
-    readonly wwzx: bool4;
-    readonly wwzy: bool4;
-    readonly wwzz: bool4;
-    readonly wwzw: bool4;
-    readonly wwwx: bool4;
-    readonly wwwy: bool4;
-    readonly wwwz: bool4;
-    readonly wwww: bool4;
-    readonly xxx: bool3;
-    readonly xxy: bool3;
-    readonly xxz: bool3;
-    readonly xxw: bool3;
-    readonly xyx: bool3;
-    readonly xyy: bool3;
-    xyz: bool3;
-    xyw: bool3;
-    readonly xzx: bool3;
-    xzy: bool3;
-    readonly xzz: bool3;
-    xzw: bool3;
-    readonly xwx: bool3;
-    xwy: bool3;
-    xwz: bool3;
-    readonly xww: bool3;
-    readonly yxx: bool3;
-    readonly yxy: bool3;
-    yxz: bool3;
-    yxw: bool3;
-    readonly yyx: bool3;
-    readonly yyy: bool3;
-    readonly yyz: bool3;
-    readonly yyw: bool3;
-    yzx: bool3;
-    readonly yzy: bool3;
-    readonly yzz: bool3;
-    yzw: bool3;
-    ywx: bool3;
-    readonly ywy: bool3;
-    ywz: bool3;
-    readonly yww: bool3;
-    readonly zxx: bool3;
-    zxy: bool3;
-    readonly zxz: bool3;
-    zxw: bool3;
-    zyx: bool3;
-    readonly zyy: bool3;
-    readonly zyz: bool3;
-    zyw: bool3;
-    readonly zzx: bool3;
-    readonly zzy: bool3;
-    readonly zzz: bool3;
-    readonly zzw: bool3;
-    zwx: bool3;
-    zwy: bool3;
-    readonly zwz: bool3;
-    readonly zww: bool3;
-    readonly wxx: bool3;
-    wxy: bool3;
-    wxz: bool3;
-    readonly wxw: bool3;
-    wyx: bool3;
-    readonly wyy: bool3;
-    wyz: bool3;
-    readonly wyw: bool3;
-    wzx: bool3;
-    wzy: bool3;
-    readonly wzz: bool3;
-    readonly wzw: bool3;
-    readonly wwx: bool3;
-    readonly wwy: bool3;
-    readonly wwz: bool3;
-    readonly www: bool3;
-    readonly xx: bool2;
-    xy: bool2;
-    xz: bool2;
-    xw: bool2;
-    yx: bool2;
-    readonly yy: bool2;
-    yz: bool2;
-    yw: bool2;
-    zx: bool2;
-    zy: bool2;
-    readonly zz: bool2;
-    zw: bool2;
-    wx: bool2;
-    wy: bool2;
-    wz: bool2;
-    readonly ww: bool2;
-    Item: boolean;
-
-
-
-    Equals(rhs: bool4): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-
-}
-    
-interface bool3 {
-    x: boolean;
-    y: boolean;
-    z: boolean;
-    readonly xxxx: bool4;
-    readonly xxxy: bool4;
-    readonly xxxz: bool4;
-    readonly xxyx: bool4;
-    readonly xxyy: bool4;
-    readonly xxyz: bool4;
-    readonly xxzx: bool4;
-    readonly xxzy: bool4;
-    readonly xxzz: bool4;
-    readonly xyxx: bool4;
-    readonly xyxy: bool4;
-    readonly xyxz: bool4;
-    readonly xyyx: bool4;
-    readonly xyyy: bool4;
-    readonly xyyz: bool4;
-    readonly xyzx: bool4;
-    readonly xyzy: bool4;
-    readonly xyzz: bool4;
-    readonly xzxx: bool4;
-    readonly xzxy: bool4;
-    readonly xzxz: bool4;
-    readonly xzyx: bool4;
-    readonly xzyy: bool4;
-    readonly xzyz: bool4;
-    readonly xzzx: bool4;
-    readonly xzzy: bool4;
-    readonly xzzz: bool4;
-    readonly yxxx: bool4;
-    readonly yxxy: bool4;
-    readonly yxxz: bool4;
-    readonly yxyx: bool4;
-    readonly yxyy: bool4;
-    readonly yxyz: bool4;
-    readonly yxzx: bool4;
-    readonly yxzy: bool4;
-    readonly yxzz: bool4;
-    readonly yyxx: bool4;
-    readonly yyxy: bool4;
-    readonly yyxz: bool4;
-    readonly yyyx: bool4;
-    readonly yyyy: bool4;
-    readonly yyyz: bool4;
-    readonly yyzx: bool4;
-    readonly yyzy: bool4;
-    readonly yyzz: bool4;
-    readonly yzxx: bool4;
-    readonly yzxy: bool4;
-    readonly yzxz: bool4;
-    readonly yzyx: bool4;
-    readonly yzyy: bool4;
-    readonly yzyz: bool4;
-    readonly yzzx: bool4;
-    readonly yzzy: bool4;
-    readonly yzzz: bool4;
-    readonly zxxx: bool4;
-    readonly zxxy: bool4;
-    readonly zxxz: bool4;
-    readonly zxyx: bool4;
-    readonly zxyy: bool4;
-    readonly zxyz: bool4;
-    readonly zxzx: bool4;
-    readonly zxzy: bool4;
-    readonly zxzz: bool4;
-    readonly zyxx: bool4;
-    readonly zyxy: bool4;
-    readonly zyxz: bool4;
-    readonly zyyx: bool4;
-    readonly zyyy: bool4;
-    readonly zyyz: bool4;
-    readonly zyzx: bool4;
-    readonly zyzy: bool4;
-    readonly zyzz: bool4;
-    readonly zzxx: bool4;
-    readonly zzxy: bool4;
-    readonly zzxz: bool4;
-    readonly zzyx: bool4;
-    readonly zzyy: bool4;
-    readonly zzyz: bool4;
-    readonly zzzx: bool4;
-    readonly zzzy: bool4;
-    readonly zzzz: bool4;
-    readonly xxx: bool3;
-    readonly xxy: bool3;
-    readonly xxz: bool3;
-    readonly xyx: bool3;
-    readonly xyy: bool3;
-    xyz: bool3;
-    readonly xzx: bool3;
-    xzy: bool3;
-    readonly xzz: bool3;
-    readonly yxx: bool3;
-    readonly yxy: bool3;
-    yxz: bool3;
-    readonly yyx: bool3;
-    readonly yyy: bool3;
-    readonly yyz: bool3;
-    yzx: bool3;
-    readonly yzy: bool3;
-    readonly yzz: bool3;
-    readonly zxx: bool3;
-    zxy: bool3;
-    readonly zxz: bool3;
-    zyx: bool3;
-    readonly zyy: bool3;
-    readonly zyz: bool3;
-    readonly zzx: bool3;
-    readonly zzy: bool3;
-    readonly zzz: bool3;
-    readonly xx: bool2;
-    xy: bool2;
-    xz: bool2;
-    yx: bool2;
-    readonly yy: bool2;
-    yz: bool2;
-    zx: bool2;
-    zy: bool2;
-    readonly zz: bool2;
-    Item: boolean;
-
-
-
-    Equals(rhs: bool3): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-
-}
-    
-interface bool3Constructor {
-
-
-    new(x: boolean, y: boolean, z: boolean): bool3;
-    new(x: boolean, yz: bool2): bool3;
-    new(xy: bool2, z: boolean): bool3;
-    new(xyz: bool3): bool3;
-    new(v: boolean): bool3;
-
-
-
-}
-declare const bool3: bool3Constructor;
-    
-interface bool4Constructor {
-
-
-    new(x: boolean, y: boolean, z: boolean, w: boolean): bool4;
-    new(x: boolean, y: boolean, zw: bool2): bool4;
-    new(x: boolean, yz: bool2, w: boolean): bool4;
-    new(x: boolean, yzw: bool3): bool4;
-    new(xy: bool2, z: boolean, w: boolean): bool4;
-    new(xy: bool2, zw: bool2): bool4;
-    new(xyz: bool3, w: boolean): bool4;
-    new(xyzw: bool4): bool4;
-    new(v: boolean): bool4;
-
-
-
-}
-declare const bool4: bool4Constructor;
-    
-interface bool2Constructor {
-
-
-    new(x: boolean, y: boolean): bool2;
-    new(xy: bool2): bool2;
-    new(v: boolean): bool2;
-
-
-
-}
-declare const bool2: bool2Constructor;
-    
-interface bool2x2 {
-    c0: bool2;
-    c1: bool2;
-    readonly Item: unknown;
-
-
-
-    Equals(rhs: bool2x2): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-
-}
-    
-interface bool2x2Constructor {
-
-
-    new(c0: bool2, c1: bool2): bool2x2;
-    new(m00: boolean, m01: boolean, m10: boolean, m11: boolean): bool2x2;
-    new(v: boolean): bool2x2;
-
-
-
-}
-declare const bool2x2: bool2x2Constructor;
-    
-interface bool2x3 {
-    c0: bool2;
-    c1: bool2;
-    c2: bool2;
-    readonly Item: unknown;
-
-
-
-    Equals(rhs: bool2x3): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-
-}
-    
-interface bool2x3Constructor {
-
-
-    new(c0: bool2, c1: bool2, c2: bool2): bool2x3;
-    new(m00: boolean, m01: boolean, m02: boolean, m10: boolean, m11: boolean, m12: boolean): bool2x3;
-    new(v: boolean): bool2x3;
-
-
-
-}
-declare const bool2x3: bool2x3Constructor;
-    
-interface bool2x4 {
-    c0: bool2;
-    c1: bool2;
-    c2: bool2;
-    c3: bool2;
-    readonly Item: unknown;
-
-
-
-    Equals(rhs: bool2x4): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-
-}
-    
-interface bool2x4Constructor {
-
-
-    new(c0: bool2, c1: bool2, c2: bool2, c3: bool2): bool2x4;
-    new(m00: boolean, m01: boolean, m02: boolean, m03: boolean, m10: boolean, m11: boolean, m12: boolean, m13: boolean): bool2x4;
-    new(v: boolean): bool2x4;
-
-
-
-}
-declare const bool2x4: bool2x4Constructor;
-    
-interface bool3x2 {
-    c0: bool3;
-    c1: bool3;
-    readonly Item: unknown;
-
-
-
-    Equals(rhs: bool3x2): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-
-}
-    
-interface bool3x2Constructor {
-
-
-    new(c0: bool3, c1: bool3): bool3x2;
-    new(m00: boolean, m01: boolean, m10: boolean, m11: boolean, m20: boolean, m21: boolean): bool3x2;
-    new(v: boolean): bool3x2;
-
-
-
-}
-declare const bool3x2: bool3x2Constructor;
-    
-interface bool3x3 {
-    c0: bool3;
-    c1: bool3;
-    c2: bool3;
-    readonly Item: unknown;
-
-
-
-    Equals(rhs: bool3x3): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-
-}
-    
-interface bool3x3Constructor {
-
-
-    new(c0: bool3, c1: bool3, c2: bool3): bool3x3;
-    new(m00: boolean, m01: boolean, m02: boolean, m10: boolean, m11: boolean, m12: boolean, m20: boolean, m21: boolean, m22: boolean): bool3x3;
-    new(v: boolean): bool3x3;
-
-
-
-}
-declare const bool3x3: bool3x3Constructor;
-    
-interface bool3x4 {
-    c0: bool3;
-    c1: bool3;
-    c2: bool3;
-    c3: bool3;
-    readonly Item: unknown;
-
-
-
-    Equals(rhs: bool3x4): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-
-}
-    
-interface bool3x4Constructor {
-
-
-    new(c0: bool3, c1: bool3, c2: bool3, c3: bool3): bool3x4;
-    new(m00: boolean, m01: boolean, m02: boolean, m03: boolean, m10: boolean, m11: boolean, m12: boolean, m13: boolean, m20: boolean, m21: boolean, m22: boolean, m23: boolean): bool3x4;
-    new(v: boolean): bool3x4;
-
-
-
-}
-declare const bool3x4: bool3x4Constructor;
-    
-interface bool4x2 {
-    c0: bool4;
-    c1: bool4;
-    readonly Item: unknown;
-
-
-
-    Equals(rhs: bool4x2): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-
-}
-    
-interface bool4x2Constructor {
-
-
-    new(c0: bool4, c1: bool4): bool4x2;
-    new(m00: boolean, m01: boolean, m10: boolean, m11: boolean, m20: boolean, m21: boolean, m30: boolean, m31: boolean): bool4x2;
-    new(v: boolean): bool4x2;
-
-
-
-}
-declare const bool4x2: bool4x2Constructor;
-    
-interface bool4x3 {
-    c0: bool4;
-    c1: bool4;
-    c2: bool4;
-    readonly Item: unknown;
-
-
-
-    Equals(rhs: bool4x3): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-
-}
-    
-interface bool4x3Constructor {
-
-
-    new(c0: bool4, c1: bool4, c2: bool4): bool4x3;
-    new(m00: boolean, m01: boolean, m02: boolean, m10: boolean, m11: boolean, m12: boolean, m20: boolean, m21: boolean, m22: boolean, m30: boolean, m31: boolean, m32: boolean): bool4x3;
-    new(v: boolean): bool4x3;
-
-
-
-}
-declare const bool4x3: bool4x3Constructor;
-    
-interface bool4x4 {
-    c0: bool4;
-    c1: bool4;
-    c2: bool4;
-    c3: bool4;
-    readonly Item: unknown;
-
-
-
-    Equals(rhs: bool4x4): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-
-}
-    
-interface bool4x4Constructor {
-
-
-    new(c0: bool4, c1: bool4, c2: bool4, c3: bool4): bool4x4;
-    new(m00: boolean, m01: boolean, m02: boolean, m03: boolean, m10: boolean, m11: boolean, m12: boolean, m13: boolean, m20: boolean, m21: boolean, m22: boolean, m23: boolean, m30: boolean, m31: boolean, m32: boolean, m33: boolean): bool4x4;
-    new(v: boolean): bool4x4;
-
-
-
-}
-declare const bool4x4: bool4x4Constructor;
-    
-interface double2 {
-    x: number;
-    y: number;
-    readonly xxxx: double4;
-    readonly xxxy: double4;
-    readonly xxyx: double4;
-    readonly xxyy: double4;
-    readonly xyxx: double4;
-    readonly xyxy: double4;
-    readonly xyyx: double4;
-    readonly xyyy: double4;
-    readonly yxxx: double4;
-    readonly yxxy: double4;
-    readonly yxyx: double4;
-    readonly yxyy: double4;
-    readonly yyxx: double4;
-    readonly yyxy: double4;
-    readonly yyyx: double4;
-    readonly yyyy: double4;
-    readonly xxx: double3;
-    readonly xxy: double3;
-    readonly xyx: double3;
-    readonly xyy: double3;
-    readonly yxx: double3;
-    readonly yxy: double3;
-    readonly yyx: double3;
-    readonly yyy: double3;
-    readonly xx: double2;
-    xy: double2;
-    yx: double2;
-    readonly yy: double2;
-    Item: number;
-
-
-
-    Equals(rhs: double2): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface double4 {
-    x: number;
-    y: number;
-    z: number;
-    w: number;
-    readonly xxxx: double4;
-    readonly xxxy: double4;
-    readonly xxxz: double4;
-    readonly xxxw: double4;
-    readonly xxyx: double4;
-    readonly xxyy: double4;
-    readonly xxyz: double4;
-    readonly xxyw: double4;
-    readonly xxzx: double4;
-    readonly xxzy: double4;
-    readonly xxzz: double4;
-    readonly xxzw: double4;
-    readonly xxwx: double4;
-    readonly xxwy: double4;
-    readonly xxwz: double4;
-    readonly xxww: double4;
-    readonly xyxx: double4;
-    readonly xyxy: double4;
-    readonly xyxz: double4;
-    readonly xyxw: double4;
-    readonly xyyx: double4;
-    readonly xyyy: double4;
-    readonly xyyz: double4;
-    readonly xyyw: double4;
-    readonly xyzx: double4;
-    readonly xyzy: double4;
-    readonly xyzz: double4;
-    xyzw: double4;
-    readonly xywx: double4;
-    readonly xywy: double4;
-    xywz: double4;
-    readonly xyww: double4;
-    readonly xzxx: double4;
-    readonly xzxy: double4;
-    readonly xzxz: double4;
-    readonly xzxw: double4;
-    readonly xzyx: double4;
-    readonly xzyy: double4;
-    readonly xzyz: double4;
-    xzyw: double4;
-    readonly xzzx: double4;
-    readonly xzzy: double4;
-    readonly xzzz: double4;
-    readonly xzzw: double4;
-    readonly xzwx: double4;
-    xzwy: double4;
-    readonly xzwz: double4;
-    readonly xzww: double4;
-    readonly xwxx: double4;
-    readonly xwxy: double4;
-    readonly xwxz: double4;
-    readonly xwxw: double4;
-    readonly xwyx: double4;
-    readonly xwyy: double4;
-    xwyz: double4;
-    readonly xwyw: double4;
-    readonly xwzx: double4;
-    xwzy: double4;
-    readonly xwzz: double4;
-    readonly xwzw: double4;
-    readonly xwwx: double4;
-    readonly xwwy: double4;
-    readonly xwwz: double4;
-    readonly xwww: double4;
-    readonly yxxx: double4;
-    readonly yxxy: double4;
-    readonly yxxz: double4;
-    readonly yxxw: double4;
-    readonly yxyx: double4;
-    readonly yxyy: double4;
-    readonly yxyz: double4;
-    readonly yxyw: double4;
-    readonly yxzx: double4;
-    readonly yxzy: double4;
-    readonly yxzz: double4;
-    yxzw: double4;
-    readonly yxwx: double4;
-    readonly yxwy: double4;
-    yxwz: double4;
-    readonly yxww: double4;
-    readonly yyxx: double4;
-    readonly yyxy: double4;
-    readonly yyxz: double4;
-    readonly yyxw: double4;
-    readonly yyyx: double4;
-    readonly yyyy: double4;
-    readonly yyyz: double4;
-    readonly yyyw: double4;
-    readonly yyzx: double4;
-    readonly yyzy: double4;
-    readonly yyzz: double4;
-    readonly yyzw: double4;
-    readonly yywx: double4;
-    readonly yywy: double4;
-    readonly yywz: double4;
-    readonly yyww: double4;
-    readonly yzxx: double4;
-    readonly yzxy: double4;
-    readonly yzxz: double4;
-    yzxw: double4;
-    readonly yzyx: double4;
-    readonly yzyy: double4;
-    readonly yzyz: double4;
-    readonly yzyw: double4;
-    readonly yzzx: double4;
-    readonly yzzy: double4;
-    readonly yzzz: double4;
-    readonly yzzw: double4;
-    yzwx: double4;
-    readonly yzwy: double4;
-    readonly yzwz: double4;
-    readonly yzww: double4;
-    readonly ywxx: double4;
-    readonly ywxy: double4;
-    ywxz: double4;
-    readonly ywxw: double4;
-    readonly ywyx: double4;
-    readonly ywyy: double4;
-    readonly ywyz: double4;
-    readonly ywyw: double4;
-    ywzx: double4;
-    readonly ywzy: double4;
-    readonly ywzz: double4;
-    readonly ywzw: double4;
-    readonly ywwx: double4;
-    readonly ywwy: double4;
-    readonly ywwz: double4;
-    readonly ywww: double4;
-    readonly zxxx: double4;
-    readonly zxxy: double4;
-    readonly zxxz: double4;
-    readonly zxxw: double4;
-    readonly zxyx: double4;
-    readonly zxyy: double4;
-    readonly zxyz: double4;
-    zxyw: double4;
-    readonly zxzx: double4;
-    readonly zxzy: double4;
-    readonly zxzz: double4;
-    readonly zxzw: double4;
-    readonly zxwx: double4;
-    zxwy: double4;
-    readonly zxwz: double4;
-    readonly zxww: double4;
-    readonly zyxx: double4;
-    readonly zyxy: double4;
-    readonly zyxz: double4;
-    zyxw: double4;
-    readonly zyyx: double4;
-    readonly zyyy: double4;
-    readonly zyyz: double4;
-    readonly zyyw: double4;
-    readonly zyzx: double4;
-    readonly zyzy: double4;
-    readonly zyzz: double4;
-    readonly zyzw: double4;
-    zywx: double4;
-    readonly zywy: double4;
-    readonly zywz: double4;
-    readonly zyww: double4;
-    readonly zzxx: double4;
-    readonly zzxy: double4;
-    readonly zzxz: double4;
-    readonly zzxw: double4;
-    readonly zzyx: double4;
-    readonly zzyy: double4;
-    readonly zzyz: double4;
-    readonly zzyw: double4;
-    readonly zzzx: double4;
-    readonly zzzy: double4;
-    readonly zzzz: double4;
-    readonly zzzw: double4;
-    readonly zzwx: double4;
-    readonly zzwy: double4;
-    readonly zzwz: double4;
-    readonly zzww: double4;
-    readonly zwxx: double4;
-    zwxy: double4;
-    readonly zwxz: double4;
-    readonly zwxw: double4;
-    zwyx: double4;
-    readonly zwyy: double4;
-    readonly zwyz: double4;
-    readonly zwyw: double4;
-    readonly zwzx: double4;
-    readonly zwzy: double4;
-    readonly zwzz: double4;
-    readonly zwzw: double4;
-    readonly zwwx: double4;
-    readonly zwwy: double4;
-    readonly zwwz: double4;
-    readonly zwww: double4;
-    readonly wxxx: double4;
-    readonly wxxy: double4;
-    readonly wxxz: double4;
-    readonly wxxw: double4;
-    readonly wxyx: double4;
-    readonly wxyy: double4;
-    wxyz: double4;
-    readonly wxyw: double4;
-    readonly wxzx: double4;
-    wxzy: double4;
-    readonly wxzz: double4;
-    readonly wxzw: double4;
-    readonly wxwx: double4;
-    readonly wxwy: double4;
-    readonly wxwz: double4;
-    readonly wxww: double4;
-    readonly wyxx: double4;
-    readonly wyxy: double4;
-    wyxz: double4;
-    readonly wyxw: double4;
-    readonly wyyx: double4;
-    readonly wyyy: double4;
-    readonly wyyz: double4;
-    readonly wyyw: double4;
-    wyzx: double4;
-    readonly wyzy: double4;
-    readonly wyzz: double4;
-    readonly wyzw: double4;
-    readonly wywx: double4;
-    readonly wywy: double4;
-    readonly wywz: double4;
-    readonly wyww: double4;
-    readonly wzxx: double4;
-    wzxy: double4;
-    readonly wzxz: double4;
-    readonly wzxw: double4;
-    wzyx: double4;
-    readonly wzyy: double4;
-    readonly wzyz: double4;
-    readonly wzyw: double4;
-    readonly wzzx: double4;
-    readonly wzzy: double4;
-    readonly wzzz: double4;
-    readonly wzzw: double4;
-    readonly wzwx: double4;
-    readonly wzwy: double4;
-    readonly wzwz: double4;
-    readonly wzww: double4;
-    readonly wwxx: double4;
-    readonly wwxy: double4;
-    readonly wwxz: double4;
-    readonly wwxw: double4;
-    readonly wwyx: double4;
-    readonly wwyy: double4;
-    readonly wwyz: double4;
-    readonly wwyw: double4;
-    readonly wwzx: double4;
-    readonly wwzy: double4;
-    readonly wwzz: double4;
-    readonly wwzw: double4;
-    readonly wwwx: double4;
-    readonly wwwy: double4;
-    readonly wwwz: double4;
-    readonly wwww: double4;
-    readonly xxx: double3;
-    readonly xxy: double3;
-    readonly xxz: double3;
-    readonly xxw: double3;
-    readonly xyx: double3;
-    readonly xyy: double3;
-    xyz: double3;
-    xyw: double3;
-    readonly xzx: double3;
-    xzy: double3;
-    readonly xzz: double3;
-    xzw: double3;
-    readonly xwx: double3;
-    xwy: double3;
-    xwz: double3;
-    readonly xww: double3;
-    readonly yxx: double3;
-    readonly yxy: double3;
-    yxz: double3;
-    yxw: double3;
-    readonly yyx: double3;
-    readonly yyy: double3;
-    readonly yyz: double3;
-    readonly yyw: double3;
-    yzx: double3;
-    readonly yzy: double3;
-    readonly yzz: double3;
-    yzw: double3;
-    ywx: double3;
-    readonly ywy: double3;
-    ywz: double3;
-    readonly yww: double3;
-    readonly zxx: double3;
-    zxy: double3;
-    readonly zxz: double3;
-    zxw: double3;
-    zyx: double3;
-    readonly zyy: double3;
-    readonly zyz: double3;
-    zyw: double3;
-    readonly zzx: double3;
-    readonly zzy: double3;
-    readonly zzz: double3;
-    readonly zzw: double3;
-    zwx: double3;
-    zwy: double3;
-    readonly zwz: double3;
-    readonly zww: double3;
-    readonly wxx: double3;
-    wxy: double3;
-    wxz: double3;
-    readonly wxw: double3;
-    wyx: double3;
-    readonly wyy: double3;
-    wyz: double3;
-    readonly wyw: double3;
-    wzx: double3;
-    wzy: double3;
-    readonly wzz: double3;
-    readonly wzw: double3;
-    readonly wwx: double3;
-    readonly wwy: double3;
-    readonly wwz: double3;
-    readonly www: double3;
-    readonly xx: double2;
-    xy: double2;
-    xz: double2;
-    xw: double2;
-    yx: double2;
-    readonly yy: double2;
-    yz: double2;
-    yw: double2;
-    zx: double2;
-    zy: double2;
-    readonly zz: double2;
-    zw: double2;
-    wx: double2;
-    wy: double2;
-    wz: double2;
-    readonly ww: double2;
-    Item: number;
-
-
-
-    Equals(rhs: double4): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface double3 {
-    x: number;
-    y: number;
-    z: number;
-    readonly xxxx: double4;
-    readonly xxxy: double4;
-    readonly xxxz: double4;
-    readonly xxyx: double4;
-    readonly xxyy: double4;
-    readonly xxyz: double4;
-    readonly xxzx: double4;
-    readonly xxzy: double4;
-    readonly xxzz: double4;
-    readonly xyxx: double4;
-    readonly xyxy: double4;
-    readonly xyxz: double4;
-    readonly xyyx: double4;
-    readonly xyyy: double4;
-    readonly xyyz: double4;
-    readonly xyzx: double4;
-    readonly xyzy: double4;
-    readonly xyzz: double4;
-    readonly xzxx: double4;
-    readonly xzxy: double4;
-    readonly xzxz: double4;
-    readonly xzyx: double4;
-    readonly xzyy: double4;
-    readonly xzyz: double4;
-    readonly xzzx: double4;
-    readonly xzzy: double4;
-    readonly xzzz: double4;
-    readonly yxxx: double4;
-    readonly yxxy: double4;
-    readonly yxxz: double4;
-    readonly yxyx: double4;
-    readonly yxyy: double4;
-    readonly yxyz: double4;
-    readonly yxzx: double4;
-    readonly yxzy: double4;
-    readonly yxzz: double4;
-    readonly yyxx: double4;
-    readonly yyxy: double4;
-    readonly yyxz: double4;
-    readonly yyyx: double4;
-    readonly yyyy: double4;
-    readonly yyyz: double4;
-    readonly yyzx: double4;
-    readonly yyzy: double4;
-    readonly yyzz: double4;
-    readonly yzxx: double4;
-    readonly yzxy: double4;
-    readonly yzxz: double4;
-    readonly yzyx: double4;
-    readonly yzyy: double4;
-    readonly yzyz: double4;
-    readonly yzzx: double4;
-    readonly yzzy: double4;
-    readonly yzzz: double4;
-    readonly zxxx: double4;
-    readonly zxxy: double4;
-    readonly zxxz: double4;
-    readonly zxyx: double4;
-    readonly zxyy: double4;
-    readonly zxyz: double4;
-    readonly zxzx: double4;
-    readonly zxzy: double4;
-    readonly zxzz: double4;
-    readonly zyxx: double4;
-    readonly zyxy: double4;
-    readonly zyxz: double4;
-    readonly zyyx: double4;
-    readonly zyyy: double4;
-    readonly zyyz: double4;
-    readonly zyzx: double4;
-    readonly zyzy: double4;
-    readonly zyzz: double4;
-    readonly zzxx: double4;
-    readonly zzxy: double4;
-    readonly zzxz: double4;
-    readonly zzyx: double4;
-    readonly zzyy: double4;
-    readonly zzyz: double4;
-    readonly zzzx: double4;
-    readonly zzzy: double4;
-    readonly zzzz: double4;
-    readonly xxx: double3;
-    readonly xxy: double3;
-    readonly xxz: double3;
-    readonly xyx: double3;
-    readonly xyy: double3;
-    xyz: double3;
-    readonly xzx: double3;
-    xzy: double3;
-    readonly xzz: double3;
-    readonly yxx: double3;
-    readonly yxy: double3;
-    yxz: double3;
-    readonly yyx: double3;
-    readonly yyy: double3;
-    readonly yyz: double3;
-    yzx: double3;
-    readonly yzy: double3;
-    readonly yzz: double3;
-    readonly zxx: double3;
-    zxy: double3;
-    readonly zxz: double3;
-    zyx: double3;
-    readonly zyy: double3;
-    readonly zyz: double3;
-    readonly zzx: double3;
-    readonly zzy: double3;
-    readonly zzz: double3;
-    readonly xx: double2;
-    xy: double2;
-    xz: double2;
-    yx: double2;
-    readonly yy: double2;
-    yz: double2;
-    zx: double2;
-    zy: double2;
-    readonly zz: double2;
-    Item: number;
-
-
-
-    Equals(rhs: double3): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface double3Constructor {
-    readonly zero: double3;
-
-
-    new(x: number, y: number, z: number): double3;
-    new(x: number, yz: double2): double3;
-    new(xy: double2, z: number): double3;
-    new(xyz: double3): double3;
-    new(v: number): double3;
-    new(v: boolean): double3;
-    new(v: bool3): double3;
-    new(v: number): double3;
-    new(v: int3): double3;
-    new(v: number): double3;
-    new(v: uint3): double3;
-    new(v: half): double3;
-    new(v: half3): double3;
-    new(v: number): double3;
-    new(v: float3): double3;
-
-
-
-}
-declare const double3: double3Constructor;
-    
-interface double4Constructor {
-    readonly zero: double4;
-
-
-    new(x: number, y: number, z: number, w: number): double4;
-    new(x: number, y: number, zw: double2): double4;
-    new(x: number, yz: double2, w: number): double4;
-    new(x: number, yzw: double3): double4;
-    new(xy: double2, z: number, w: number): double4;
-    new(xy: double2, zw: double2): double4;
-    new(xyz: double3, w: number): double4;
-    new(xyzw: double4): double4;
-    new(v: number): double4;
-    new(v: boolean): double4;
-    new(v: bool4): double4;
-    new(v: number): double4;
-    new(v: int4): double4;
-    new(v: number): double4;
-    new(v: uint4): double4;
-    new(v: half): double4;
-    new(v: half4): double4;
-    new(v: number): double4;
-    new(v: float4): double4;
-
-
-
-}
-declare const double4: double4Constructor;
-    
-interface double2Constructor {
-    readonly zero: double2;
-
-
-    new(x: number, y: number): double2;
-    new(xy: double2): double2;
-    new(v: number): double2;
-    new(v: boolean): double2;
-    new(v: bool2): double2;
-    new(v: number): double2;
-    new(v: int2): double2;
-    new(v: number): double2;
-    new(v: uint2): double2;
-    new(v: half): double2;
-    new(v: half2): double2;
-    new(v: number): double2;
-    new(v: float2): double2;
-
-
-
-}
-declare const double2: double2Constructor;
-    
-interface double2x2 {
-    c0: double2;
-    c1: double2;
-    readonly Item: unknown;
-
-
-
-    Equals(rhs: double2x2): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface double2x2Constructor {
-    readonly identity: double2x2;
-    readonly zero: double2x2;
-
-
-    new(c0: double2, c1: double2): double2x2;
-    new(m00: number, m01: number, m10: number, m11: number): double2x2;
-    new(v: number): double2x2;
-    new(v: boolean): double2x2;
-    new(v: bool2x2): double2x2;
-    new(v: number): double2x2;
-    new(v: int2x2): double2x2;
-    new(v: number): double2x2;
-    new(v: uint2x2): double2x2;
-    new(v: number): double2x2;
-    new(v: float2x2): double2x2;
-
-
-
-}
-declare const double2x2: double2x2Constructor;
-    
-interface double2x3 {
-    c0: double2;
-    c1: double2;
-    c2: double2;
-    readonly Item: unknown;
-
-
-
-    Equals(rhs: double2x3): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface double2x3Constructor {
-    readonly zero: double2x3;
-
-
-    new(c0: double2, c1: double2, c2: double2): double2x3;
-    new(m00: number, m01: number, m02: number, m10: number, m11: number, m12: number): double2x3;
-    new(v: number): double2x3;
-    new(v: boolean): double2x3;
-    new(v: bool2x3): double2x3;
-    new(v: number): double2x3;
-    new(v: int2x3): double2x3;
-    new(v: number): double2x3;
-    new(v: uint2x3): double2x3;
-    new(v: number): double2x3;
-    new(v: float2x3): double2x3;
-
-
-
-}
-declare const double2x3: double2x3Constructor;
-    
-interface double2x4 {
-    c0: double2;
-    c1: double2;
-    c2: double2;
-    c3: double2;
-    readonly Item: unknown;
-
-
-
-    Equals(rhs: double2x4): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface double2x4Constructor {
-    readonly zero: double2x4;
-
-
-    new(c0: double2, c1: double2, c2: double2, c3: double2): double2x4;
-    new(m00: number, m01: number, m02: number, m03: number, m10: number, m11: number, m12: number, m13: number): double2x4;
-    new(v: number): double2x4;
-    new(v: boolean): double2x4;
-    new(v: bool2x4): double2x4;
-    new(v: number): double2x4;
-    new(v: int2x4): double2x4;
-    new(v: number): double2x4;
-    new(v: uint2x4): double2x4;
-    new(v: number): double2x4;
-    new(v: float2x4): double2x4;
-
-
-
-}
-declare const double2x4: double2x4Constructor;
-    
-interface double3x2 {
-    c0: double3;
-    c1: double3;
-    readonly Item: unknown;
-
-
-
-    Equals(rhs: double3x2): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface double3x2Constructor {
-    readonly zero: double3x2;
-
-
-    new(c0: double3, c1: double3): double3x2;
-    new(m00: number, m01: number, m10: number, m11: number, m20: number, m21: number): double3x2;
-    new(v: number): double3x2;
-    new(v: boolean): double3x2;
-    new(v: bool3x2): double3x2;
-    new(v: number): double3x2;
-    new(v: int3x2): double3x2;
-    new(v: number): double3x2;
-    new(v: uint3x2): double3x2;
-    new(v: number): double3x2;
-    new(v: float3x2): double3x2;
-
-
-
-}
-declare const double3x2: double3x2Constructor;
-    
-interface double3x3 {
-    c0: double3;
-    c1: double3;
-    c2: double3;
-    readonly Item: unknown;
-
-
-
-    Equals(rhs: double3x3): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface double3x3Constructor {
-    readonly identity: double3x3;
-    readonly zero: double3x3;
-
-
-    new(c0: double3, c1: double3, c2: double3): double3x3;
-    new(m00: number, m01: number, m02: number, m10: number, m11: number, m12: number, m20: number, m21: number, m22: number): double3x3;
-    new(v: number): double3x3;
-    new(v: boolean): double3x3;
-    new(v: bool3x3): double3x3;
-    new(v: number): double3x3;
-    new(v: int3x3): double3x3;
-    new(v: number): double3x3;
-    new(v: uint3x3): double3x3;
-    new(v: number): double3x3;
-    new(v: float3x3): double3x3;
-
-
-
-}
-declare const double3x3: double3x3Constructor;
-    
-interface double3x4 {
-    c0: double3;
-    c1: double3;
-    c2: double3;
-    c3: double3;
-    readonly Item: unknown;
-
-
-
-    Equals(rhs: double3x4): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface double3x4Constructor {
-    readonly zero: double3x4;
-
-
-    new(c0: double3, c1: double3, c2: double3, c3: double3): double3x4;
-    new(m00: number, m01: number, m02: number, m03: number, m10: number, m11: number, m12: number, m13: number, m20: number, m21: number, m22: number, m23: number): double3x4;
-    new(v: number): double3x4;
-    new(v: boolean): double3x4;
-    new(v: bool3x4): double3x4;
-    new(v: number): double3x4;
-    new(v: int3x4): double3x4;
-    new(v: number): double3x4;
-    new(v: uint3x4): double3x4;
-    new(v: number): double3x4;
-    new(v: float3x4): double3x4;
-
-
-
-}
-declare const double3x4: double3x4Constructor;
-    
-interface double4x2 {
-    c0: double4;
-    c1: double4;
-    readonly Item: unknown;
-
-
-
-    Equals(rhs: double4x2): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface double4x2Constructor {
-    readonly zero: double4x2;
-
-
-    new(c0: double4, c1: double4): double4x2;
-    new(m00: number, m01: number, m10: number, m11: number, m20: number, m21: number, m30: number, m31: number): double4x2;
-    new(v: number): double4x2;
-    new(v: boolean): double4x2;
-    new(v: bool4x2): double4x2;
-    new(v: number): double4x2;
-    new(v: int4x2): double4x2;
-    new(v: number): double4x2;
-    new(v: uint4x2): double4x2;
-    new(v: number): double4x2;
-    new(v: float4x2): double4x2;
-
-
-
-}
-declare const double4x2: double4x2Constructor;
-    
-interface double4x3 {
-    c0: double4;
-    c1: double4;
-    c2: double4;
-    readonly Item: unknown;
-
-
-
-    Equals(rhs: double4x3): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface double4x3Constructor {
-    readonly zero: double4x3;
-
-
-    new(c0: double4, c1: double4, c2: double4): double4x3;
-    new(m00: number, m01: number, m02: number, m10: number, m11: number, m12: number, m20: number, m21: number, m22: number, m30: number, m31: number, m32: number): double4x3;
-    new(v: number): double4x3;
-    new(v: boolean): double4x3;
-    new(v: bool4x3): double4x3;
-    new(v: number): double4x3;
-    new(v: int4x3): double4x3;
-    new(v: number): double4x3;
-    new(v: uint4x3): double4x3;
-    new(v: number): double4x3;
-    new(v: float4x3): double4x3;
-
-
-
-}
-declare const double4x3: double4x3Constructor;
-    
-interface double4x4 {
-    c0: double4;
-    c1: double4;
-    c2: double4;
-    c3: double4;
-    readonly Item: unknown;
-
-
-
-    Equals(rhs: double4x4): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface double4x4Constructor {
-    readonly identity: double4x4;
-    readonly zero: double4x4;
-
-
-    new(c0: double4, c1: double4, c2: double4, c3: double4): double4x4;
-    new(m00: number, m01: number, m02: number, m03: number, m10: number, m11: number, m12: number, m13: number, m20: number, m21: number, m22: number, m23: number, m30: number, m31: number, m32: number, m33: number): double4x4;
-    new(v: number): double4x4;
-    new(v: boolean): double4x4;
-    new(v: bool4x4): double4x4;
-    new(v: number): double4x4;
-    new(v: int4x4): double4x4;
-    new(v: number): double4x4;
-    new(v: uint4x4): double4x4;
-    new(v: number): double4x4;
-    new(v: float4x4): double4x4;
-
-
-
-}
-declare const double4x4: double4x4Constructor;
-    
-interface float2 {
-    x: number;
-    y: number;
-    readonly xxxx: float4;
-    readonly xxxy: float4;
-    readonly xxyx: float4;
-    readonly xxyy: float4;
-    readonly xyxx: float4;
-    readonly xyxy: float4;
-    readonly xyyx: float4;
-    readonly xyyy: float4;
-    readonly yxxx: float4;
-    readonly yxxy: float4;
-    readonly yxyx: float4;
-    readonly yxyy: float4;
-    readonly yyxx: float4;
-    readonly yyxy: float4;
-    readonly yyyx: float4;
-    readonly yyyy: float4;
-    readonly xxx: float3;
-    readonly xxy: float3;
-    readonly xyx: float3;
-    readonly xyy: float3;
-    readonly yxx: float3;
-    readonly yxy: float3;
-    readonly yyx: float3;
-    readonly yyy: float3;
-    readonly xx: float2;
-    xy: float2;
-    yx: float2;
-    readonly yy: float2;
-    Item: number;
-
-
-
-    Equals(rhs: float2): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface float4 {
-    x: number;
-    y: number;
-    z: number;
-    w: number;
-    readonly xxxx: float4;
-    readonly xxxy: float4;
-    readonly xxxz: float4;
-    readonly xxxw: float4;
-    readonly xxyx: float4;
-    readonly xxyy: float4;
-    readonly xxyz: float4;
-    readonly xxyw: float4;
-    readonly xxzx: float4;
-    readonly xxzy: float4;
-    readonly xxzz: float4;
-    readonly xxzw: float4;
-    readonly xxwx: float4;
-    readonly xxwy: float4;
-    readonly xxwz: float4;
-    readonly xxww: float4;
-    readonly xyxx: float4;
-    readonly xyxy: float4;
-    readonly xyxz: float4;
-    readonly xyxw: float4;
-    readonly xyyx: float4;
-    readonly xyyy: float4;
-    readonly xyyz: float4;
-    readonly xyyw: float4;
-    readonly xyzx: float4;
-    readonly xyzy: float4;
-    readonly xyzz: float4;
-    xyzw: float4;
-    readonly xywx: float4;
-    readonly xywy: float4;
-    xywz: float4;
-    readonly xyww: float4;
-    readonly xzxx: float4;
-    readonly xzxy: float4;
-    readonly xzxz: float4;
-    readonly xzxw: float4;
-    readonly xzyx: float4;
-    readonly xzyy: float4;
-    readonly xzyz: float4;
-    xzyw: float4;
-    readonly xzzx: float4;
-    readonly xzzy: float4;
-    readonly xzzz: float4;
-    readonly xzzw: float4;
-    readonly xzwx: float4;
-    xzwy: float4;
-    readonly xzwz: float4;
-    readonly xzww: float4;
-    readonly xwxx: float4;
-    readonly xwxy: float4;
-    readonly xwxz: float4;
-    readonly xwxw: float4;
-    readonly xwyx: float4;
-    readonly xwyy: float4;
-    xwyz: float4;
-    readonly xwyw: float4;
-    readonly xwzx: float4;
-    xwzy: float4;
-    readonly xwzz: float4;
-    readonly xwzw: float4;
-    readonly xwwx: float4;
-    readonly xwwy: float4;
-    readonly xwwz: float4;
-    readonly xwww: float4;
-    readonly yxxx: float4;
-    readonly yxxy: float4;
-    readonly yxxz: float4;
-    readonly yxxw: float4;
-    readonly yxyx: float4;
-    readonly yxyy: float4;
-    readonly yxyz: float4;
-    readonly yxyw: float4;
-    readonly yxzx: float4;
-    readonly yxzy: float4;
-    readonly yxzz: float4;
-    yxzw: float4;
-    readonly yxwx: float4;
-    readonly yxwy: float4;
-    yxwz: float4;
-    readonly yxww: float4;
-    readonly yyxx: float4;
-    readonly yyxy: float4;
-    readonly yyxz: float4;
-    readonly yyxw: float4;
-    readonly yyyx: float4;
-    readonly yyyy: float4;
-    readonly yyyz: float4;
-    readonly yyyw: float4;
-    readonly yyzx: float4;
-    readonly yyzy: float4;
-    readonly yyzz: float4;
-    readonly yyzw: float4;
-    readonly yywx: float4;
-    readonly yywy: float4;
-    readonly yywz: float4;
-    readonly yyww: float4;
-    readonly yzxx: float4;
-    readonly yzxy: float4;
-    readonly yzxz: float4;
-    yzxw: float4;
-    readonly yzyx: float4;
-    readonly yzyy: float4;
-    readonly yzyz: float4;
-    readonly yzyw: float4;
-    readonly yzzx: float4;
-    readonly yzzy: float4;
-    readonly yzzz: float4;
-    readonly yzzw: float4;
-    yzwx: float4;
-    readonly yzwy: float4;
-    readonly yzwz: float4;
-    readonly yzww: float4;
-    readonly ywxx: float4;
-    readonly ywxy: float4;
-    ywxz: float4;
-    readonly ywxw: float4;
-    readonly ywyx: float4;
-    readonly ywyy: float4;
-    readonly ywyz: float4;
-    readonly ywyw: float4;
-    ywzx: float4;
-    readonly ywzy: float4;
-    readonly ywzz: float4;
-    readonly ywzw: float4;
-    readonly ywwx: float4;
-    readonly ywwy: float4;
-    readonly ywwz: float4;
-    readonly ywww: float4;
-    readonly zxxx: float4;
-    readonly zxxy: float4;
-    readonly zxxz: float4;
-    readonly zxxw: float4;
-    readonly zxyx: float4;
-    readonly zxyy: float4;
-    readonly zxyz: float4;
-    zxyw: float4;
-    readonly zxzx: float4;
-    readonly zxzy: float4;
-    readonly zxzz: float4;
-    readonly zxzw: float4;
-    readonly zxwx: float4;
-    zxwy: float4;
-    readonly zxwz: float4;
-    readonly zxww: float4;
-    readonly zyxx: float4;
-    readonly zyxy: float4;
-    readonly zyxz: float4;
-    zyxw: float4;
-    readonly zyyx: float4;
-    readonly zyyy: float4;
-    readonly zyyz: float4;
-    readonly zyyw: float4;
-    readonly zyzx: float4;
-    readonly zyzy: float4;
-    readonly zyzz: float4;
-    readonly zyzw: float4;
-    zywx: float4;
-    readonly zywy: float4;
-    readonly zywz: float4;
-    readonly zyww: float4;
-    readonly zzxx: float4;
-    readonly zzxy: float4;
-    readonly zzxz: float4;
-    readonly zzxw: float4;
-    readonly zzyx: float4;
-    readonly zzyy: float4;
-    readonly zzyz: float4;
-    readonly zzyw: float4;
-    readonly zzzx: float4;
-    readonly zzzy: float4;
-    readonly zzzz: float4;
-    readonly zzzw: float4;
-    readonly zzwx: float4;
-    readonly zzwy: float4;
-    readonly zzwz: float4;
-    readonly zzww: float4;
-    readonly zwxx: float4;
-    zwxy: float4;
-    readonly zwxz: float4;
-    readonly zwxw: float4;
-    zwyx: float4;
-    readonly zwyy: float4;
-    readonly zwyz: float4;
-    readonly zwyw: float4;
-    readonly zwzx: float4;
-    readonly zwzy: float4;
-    readonly zwzz: float4;
-    readonly zwzw: float4;
-    readonly zwwx: float4;
-    readonly zwwy: float4;
-    readonly zwwz: float4;
-    readonly zwww: float4;
-    readonly wxxx: float4;
-    readonly wxxy: float4;
-    readonly wxxz: float4;
-    readonly wxxw: float4;
-    readonly wxyx: float4;
-    readonly wxyy: float4;
-    wxyz: float4;
-    readonly wxyw: float4;
-    readonly wxzx: float4;
-    wxzy: float4;
-    readonly wxzz: float4;
-    readonly wxzw: float4;
-    readonly wxwx: float4;
-    readonly wxwy: float4;
-    readonly wxwz: float4;
-    readonly wxww: float4;
-    readonly wyxx: float4;
-    readonly wyxy: float4;
-    wyxz: float4;
-    readonly wyxw: float4;
-    readonly wyyx: float4;
-    readonly wyyy: float4;
-    readonly wyyz: float4;
-    readonly wyyw: float4;
-    wyzx: float4;
-    readonly wyzy: float4;
-    readonly wyzz: float4;
-    readonly wyzw: float4;
-    readonly wywx: float4;
-    readonly wywy: float4;
-    readonly wywz: float4;
-    readonly wyww: float4;
-    readonly wzxx: float4;
-    wzxy: float4;
-    readonly wzxz: float4;
-    readonly wzxw: float4;
-    wzyx: float4;
-    readonly wzyy: float4;
-    readonly wzyz: float4;
-    readonly wzyw: float4;
-    readonly wzzx: float4;
-    readonly wzzy: float4;
-    readonly wzzz: float4;
-    readonly wzzw: float4;
-    readonly wzwx: float4;
-    readonly wzwy: float4;
-    readonly wzwz: float4;
-    readonly wzww: float4;
-    readonly wwxx: float4;
-    readonly wwxy: float4;
-    readonly wwxz: float4;
-    readonly wwxw: float4;
-    readonly wwyx: float4;
-    readonly wwyy: float4;
-    readonly wwyz: float4;
-    readonly wwyw: float4;
-    readonly wwzx: float4;
-    readonly wwzy: float4;
-    readonly wwzz: float4;
-    readonly wwzw: float4;
-    readonly wwwx: float4;
-    readonly wwwy: float4;
-    readonly wwwz: float4;
-    readonly wwww: float4;
-    readonly xxx: float3;
-    readonly xxy: float3;
-    readonly xxz: float3;
-    readonly xxw: float3;
-    readonly xyx: float3;
-    readonly xyy: float3;
-    xyz: float3;
-    xyw: float3;
-    readonly xzx: float3;
-    xzy: float3;
-    readonly xzz: float3;
-    xzw: float3;
-    readonly xwx: float3;
-    xwy: float3;
-    xwz: float3;
-    readonly xww: float3;
-    readonly yxx: float3;
-    readonly yxy: float3;
-    yxz: float3;
-    yxw: float3;
-    readonly yyx: float3;
-    readonly yyy: float3;
-    readonly yyz: float3;
-    readonly yyw: float3;
-    yzx: float3;
-    readonly yzy: float3;
-    readonly yzz: float3;
-    yzw: float3;
-    ywx: float3;
-    readonly ywy: float3;
-    ywz: float3;
-    readonly yww: float3;
-    readonly zxx: float3;
-    zxy: float3;
-    readonly zxz: float3;
-    zxw: float3;
-    zyx: float3;
-    readonly zyy: float3;
-    readonly zyz: float3;
-    zyw: float3;
-    readonly zzx: float3;
-    readonly zzy: float3;
-    readonly zzz: float3;
-    readonly zzw: float3;
-    zwx: float3;
-    zwy: float3;
-    readonly zwz: float3;
-    readonly zww: float3;
-    readonly wxx: float3;
-    wxy: float3;
-    wxz: float3;
-    readonly wxw: float3;
-    wyx: float3;
-    readonly wyy: float3;
-    wyz: float3;
-    readonly wyw: float3;
-    wzx: float3;
-    wzy: float3;
-    readonly wzz: float3;
-    readonly wzw: float3;
-    readonly wwx: float3;
-    readonly wwy: float3;
-    readonly wwz: float3;
-    readonly www: float3;
-    readonly xx: float2;
-    xy: float2;
-    xz: float2;
-    xw: float2;
-    yx: float2;
-    readonly yy: float2;
-    yz: float2;
-    yw: float2;
-    zx: float2;
-    zy: float2;
-    readonly zz: float2;
-    zw: float2;
-    wx: float2;
-    wy: float2;
-    wz: float2;
-    readonly ww: float2;
-    Item: number;
-
-
-
-    Equals(rhs: float4): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface float3 {
-    x: number;
-    y: number;
-    z: number;
-    readonly xxxx: float4;
-    readonly xxxy: float4;
-    readonly xxxz: float4;
-    readonly xxyx: float4;
-    readonly xxyy: float4;
-    readonly xxyz: float4;
-    readonly xxzx: float4;
-    readonly xxzy: float4;
-    readonly xxzz: float4;
-    readonly xyxx: float4;
-    readonly xyxy: float4;
-    readonly xyxz: float4;
-    readonly xyyx: float4;
-    readonly xyyy: float4;
-    readonly xyyz: float4;
-    readonly xyzx: float4;
-    readonly xyzy: float4;
-    readonly xyzz: float4;
-    readonly xzxx: float4;
-    readonly xzxy: float4;
-    readonly xzxz: float4;
-    readonly xzyx: float4;
-    readonly xzyy: float4;
-    readonly xzyz: float4;
-    readonly xzzx: float4;
-    readonly xzzy: float4;
-    readonly xzzz: float4;
-    readonly yxxx: float4;
-    readonly yxxy: float4;
-    readonly yxxz: float4;
-    readonly yxyx: float4;
-    readonly yxyy: float4;
-    readonly yxyz: float4;
-    readonly yxzx: float4;
-    readonly yxzy: float4;
-    readonly yxzz: float4;
-    readonly yyxx: float4;
-    readonly yyxy: float4;
-    readonly yyxz: float4;
-    readonly yyyx: float4;
-    readonly yyyy: float4;
-    readonly yyyz: float4;
-    readonly yyzx: float4;
-    readonly yyzy: float4;
-    readonly yyzz: float4;
-    readonly yzxx: float4;
-    readonly yzxy: float4;
-    readonly yzxz: float4;
-    readonly yzyx: float4;
-    readonly yzyy: float4;
-    readonly yzyz: float4;
-    readonly yzzx: float4;
-    readonly yzzy: float4;
-    readonly yzzz: float4;
-    readonly zxxx: float4;
-    readonly zxxy: float4;
-    readonly zxxz: float4;
-    readonly zxyx: float4;
-    readonly zxyy: float4;
-    readonly zxyz: float4;
-    readonly zxzx: float4;
-    readonly zxzy: float4;
-    readonly zxzz: float4;
-    readonly zyxx: float4;
-    readonly zyxy: float4;
-    readonly zyxz: float4;
-    readonly zyyx: float4;
-    readonly zyyy: float4;
-    readonly zyyz: float4;
-    readonly zyzx: float4;
-    readonly zyzy: float4;
-    readonly zyzz: float4;
-    readonly zzxx: float4;
-    readonly zzxy: float4;
-    readonly zzxz: float4;
-    readonly zzyx: float4;
-    readonly zzyy: float4;
-    readonly zzyz: float4;
-    readonly zzzx: float4;
-    readonly zzzy: float4;
-    readonly zzzz: float4;
-    readonly xxx: float3;
-    readonly xxy: float3;
-    readonly xxz: float3;
-    readonly xyx: float3;
-    readonly xyy: float3;
-    xyz: float3;
-    readonly xzx: float3;
-    xzy: float3;
-    readonly xzz: float3;
-    readonly yxx: float3;
-    readonly yxy: float3;
-    yxz: float3;
-    readonly yyx: float3;
-    readonly yyy: float3;
-    readonly yyz: float3;
-    yzx: float3;
-    readonly yzy: float3;
-    readonly yzz: float3;
-    readonly zxx: float3;
-    zxy: float3;
-    readonly zxz: float3;
-    zyx: float3;
-    readonly zyy: float3;
-    readonly zyz: float3;
-    readonly zzx: float3;
-    readonly zzy: float3;
-    readonly zzz: float3;
-    readonly xx: float2;
-    xy: float2;
-    xz: float2;
-    yx: float2;
-    readonly yy: float2;
-    yz: float2;
-    zx: float2;
-    zy: float2;
-    readonly zz: float2;
-    Item: number;
-
-
-
-    Equals(rhs: float3): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface float3Constructor {
-    readonly zero: float3;
-
-
-    new(x: number, y: number, z: number): float3;
-    new(x: number, yz: float2): float3;
-    new(xy: float2, z: number): float3;
-    new(xyz: float3): float3;
-    new(v: number): float3;
-    new(v: boolean): float3;
-    new(v: bool3): float3;
-    new(v: number): float3;
-    new(v: int3): float3;
-    new(v: number): float3;
-    new(v: uint3): float3;
-    new(v: half): float3;
-    new(v: half3): float3;
-    new(v: number): float3;
-    new(v: double3): float3;
-
-
-
-}
-declare const float3: float3Constructor;
-    
-interface float4Constructor {
-    readonly zero: float4;
-
-
-    new(x: number, y: number, z: number, w: number): float4;
-    new(x: number, y: number, zw: float2): float4;
-    new(x: number, yz: float2, w: number): float4;
-    new(x: number, yzw: float3): float4;
-    new(xy: float2, z: number, w: number): float4;
-    new(xy: float2, zw: float2): float4;
-    new(xyz: float3, w: number): float4;
-    new(xyzw: float4): float4;
-    new(v: number): float4;
-    new(v: boolean): float4;
-    new(v: bool4): float4;
-    new(v: number): float4;
-    new(v: int4): float4;
-    new(v: number): float4;
-    new(v: uint4): float4;
-    new(v: half): float4;
-    new(v: half4): float4;
-    new(v: number): float4;
-    new(v: double4): float4;
-
-
-
-}
-declare const float4: float4Constructor;
-    
-interface float2Constructor {
-    readonly zero: float2;
-
-
-    new(x: number, y: number): float2;
-    new(xy: float2): float2;
-    new(v: number): float2;
-    new(v: boolean): float2;
-    new(v: bool2): float2;
-    new(v: number): float2;
-    new(v: int2): float2;
-    new(v: number): float2;
-    new(v: uint2): float2;
-    new(v: half): float2;
-    new(v: half2): float2;
-    new(v: number): float2;
-    new(v: double2): float2;
-
-
-
-}
-declare const float2: float2Constructor;
-    
-interface float2x2 {
-    c0: float2;
-    c1: float2;
-    readonly Item: unknown;
-
-
-
-    Equals(rhs: float2x2): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface float2x2Constructor {
-    readonly identity: float2x2;
-    readonly zero: float2x2;
-
-
-    new(c0: float2, c1: float2): float2x2;
-    new(m00: number, m01: number, m10: number, m11: number): float2x2;
-    new(v: number): float2x2;
-    new(v: boolean): float2x2;
-    new(v: bool2x2): float2x2;
-    new(v: number): float2x2;
-    new(v: int2x2): float2x2;
-    new(v: number): float2x2;
-    new(v: uint2x2): float2x2;
-    new(v: number): float2x2;
-    new(v: double2x2): float2x2;
-
-
-    Rotate(angle: number): float2x2;
-    Scale(s: number): float2x2;
-    Scale(x: number, y: number): float2x2;
-    Scale(v: float2): float2x2;
-
-}
-declare const float2x2: float2x2Constructor;
-    
-interface float2x3 {
-    c0: float2;
-    c1: float2;
-    c2: float2;
-    readonly Item: unknown;
-
-
-
-    Equals(rhs: float2x3): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface float2x3Constructor {
-    readonly zero: float2x3;
-
-
-    new(c0: float2, c1: float2, c2: float2): float2x3;
-    new(m00: number, m01: number, m02: number, m10: number, m11: number, m12: number): float2x3;
-    new(v: number): float2x3;
-    new(v: boolean): float2x3;
-    new(v: bool2x3): float2x3;
-    new(v: number): float2x3;
-    new(v: int2x3): float2x3;
-    new(v: number): float2x3;
-    new(v: uint2x3): float2x3;
-    new(v: number): float2x3;
-    new(v: double2x3): float2x3;
-
-
-
-}
-declare const float2x3: float2x3Constructor;
-    
-interface float2x4 {
-    c0: float2;
-    c1: float2;
-    c2: float2;
-    c3: float2;
-    readonly Item: unknown;
-
-
-
-    Equals(rhs: float2x4): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface float2x4Constructor {
-    readonly zero: float2x4;
-
-
-    new(c0: float2, c1: float2, c2: float2, c3: float2): float2x4;
-    new(m00: number, m01: number, m02: number, m03: number, m10: number, m11: number, m12: number, m13: number): float2x4;
-    new(v: number): float2x4;
-    new(v: boolean): float2x4;
-    new(v: bool2x4): float2x4;
-    new(v: number): float2x4;
-    new(v: int2x4): float2x4;
-    new(v: number): float2x4;
-    new(v: uint2x4): float2x4;
-    new(v: number): float2x4;
-    new(v: double2x4): float2x4;
-
-
-
-}
-declare const float2x4: float2x4Constructor;
-    
-interface float3x2 {
-    c0: float3;
-    c1: float3;
-    readonly Item: unknown;
-
-
-
-    Equals(rhs: float3x2): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface float3x2Constructor {
-    readonly zero: float3x2;
-
-
-    new(c0: float3, c1: float3): float3x2;
-    new(m00: number, m01: number, m10: number, m11: number, m20: number, m21: number): float3x2;
-    new(v: number): float3x2;
-    new(v: boolean): float3x2;
-    new(v: bool3x2): float3x2;
-    new(v: number): float3x2;
-    new(v: int3x2): float3x2;
-    new(v: number): float3x2;
-    new(v: uint3x2): float3x2;
-    new(v: number): float3x2;
-    new(v: double3x2): float3x2;
-
-
-
-}
-declare const float3x2: float3x2Constructor;
-    
-interface float3x3 {
-    c0: float3;
-    c1: float3;
-    c2: float3;
-    readonly Item: unknown;
-
-
-
-    Equals(rhs: float3x3): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface float3x3Constructor {
-    readonly identity: float3x3;
-    readonly zero: float3x3;
-
-
-    new(c0: float3, c1: float3, c2: float3): float3x3;
-    new(m00: number, m01: number, m02: number, m10: number, m11: number, m12: number, m20: number, m21: number, m22: number): float3x3;
-    new(v: number): float3x3;
-    new(v: boolean): float3x3;
-    new(v: bool3x3): float3x3;
-    new(v: number): float3x3;
-    new(v: int3x3): float3x3;
-    new(v: number): float3x3;
-    new(v: uint3x3): float3x3;
-    new(v: number): float3x3;
-    new(v: double3x3): float3x3;
-    new(f4x4: float4x4): float3x3;
-    new(q: quaternion): float3x3;
-
-
-    AxisAngle(axis: float3, angle: number): float3x3;
-    Euler(xyz: float3, order: RotationOrder): float3x3;
-    Euler(x: number, y: number, z: number, order: RotationOrder): float3x3;
-    EulerXYZ(xyz: float3): float3x3;
-    EulerXYZ(x: number, y: number, z: number): float3x3;
-    EulerXZY(xyz: float3): float3x3;
-    EulerXZY(x: number, y: number, z: number): float3x3;
-    EulerYXZ(xyz: float3): float3x3;
-    EulerYXZ(x: number, y: number, z: number): float3x3;
-    EulerYZX(xyz: float3): float3x3;
-    EulerYZX(x: number, y: number, z: number): float3x3;
-    EulerZXY(xyz: float3): float3x3;
-    EulerZXY(x: number, y: number, z: number): float3x3;
-    EulerZYX(xyz: float3): float3x3;
-    EulerZYX(x: number, y: number, z: number): float3x3;
-    LookRotation(forward: float3, up: float3): float3x3;
-    LookRotationSafe(forward: float3, up: float3): float3x3;
-    RotateX(angle: number): float3x3;
-    RotateY(angle: number): float3x3;
-    RotateZ(angle: number): float3x3;
-    Scale(s: number): float3x3;
-    Scale(x: number, y: number, z: number): float3x3;
-    Scale(v: float3): float3x3;
-
-}
-declare const float3x3: float3x3Constructor;
-    
-interface float3x4 {
-    c0: float3;
-    c1: float3;
-    c2: float3;
-    c3: float3;
-    readonly Item: unknown;
-
-
-
-    Equals(rhs: float3x4): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface float3x4Constructor {
-    readonly zero: float3x4;
-
-
-    new(c0: float3, c1: float3, c2: float3, c3: float3): float3x4;
-    new(m00: number, m01: number, m02: number, m03: number, m10: number, m11: number, m12: number, m13: number, m20: number, m21: number, m22: number, m23: number): float3x4;
-    new(v: number): float3x4;
-    new(v: boolean): float3x4;
-    new(v: bool3x4): float3x4;
-    new(v: number): float3x4;
-    new(v: int3x4): float3x4;
-    new(v: number): float3x4;
-    new(v: uint3x4): float3x4;
-    new(v: number): float3x4;
-    new(v: double3x4): float3x4;
-
-
-
-}
-declare const float3x4: float3x4Constructor;
-    
-interface float4x2 {
-    c0: float4;
-    c1: float4;
-    readonly Item: unknown;
-
-
-
-    Equals(rhs: float4x2): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface float4x2Constructor {
-    readonly zero: float4x2;
-
-
-    new(c0: float4, c1: float4): float4x2;
-    new(m00: number, m01: number, m10: number, m11: number, m20: number, m21: number, m30: number, m31: number): float4x2;
-    new(v: number): float4x2;
-    new(v: boolean): float4x2;
-    new(v: bool4x2): float4x2;
-    new(v: number): float4x2;
-    new(v: int4x2): float4x2;
-    new(v: number): float4x2;
-    new(v: uint4x2): float4x2;
-    new(v: number): float4x2;
-    new(v: double4x2): float4x2;
-
-
-
-}
-declare const float4x2: float4x2Constructor;
-    
-interface float4x3 {
-    c0: float4;
-    c1: float4;
-    c2: float4;
-    readonly Item: unknown;
-
-
-
-    Equals(rhs: float4x3): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface float4x3Constructor {
-    readonly zero: float4x3;
-
-
-    new(c0: float4, c1: float4, c2: float4): float4x3;
-    new(m00: number, m01: number, m02: number, m10: number, m11: number, m12: number, m20: number, m21: number, m22: number, m30: number, m31: number, m32: number): float4x3;
-    new(v: number): float4x3;
-    new(v: boolean): float4x3;
-    new(v: bool4x3): float4x3;
-    new(v: number): float4x3;
-    new(v: int4x3): float4x3;
-    new(v: number): float4x3;
-    new(v: uint4x3): float4x3;
-    new(v: number): float4x3;
-    new(v: double4x3): float4x3;
-
-
-
-}
-declare const float4x3: float4x3Constructor;
-    
-interface float4x4 {
-    c0: float4;
-    c1: float4;
-    c2: float4;
-    c3: float4;
-    readonly Item: unknown;
-
-
-
-    Equals(rhs: float4x4): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface quaternion {
-    value: float4;
-
-
-
-    Equals(x: quaternion): boolean;
-    Equals(x: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface quaternionConstructor {
-    readonly identity: quaternion;
-
-
-    new(x: number, y: number, z: number, w: number): quaternion;
-    new(value: float4): quaternion;
-    new(m: float3x3): quaternion;
-    new(m: float4x4): quaternion;
-
-
-    AxisAngle(axis: float3, angle: number): quaternion;
-    Euler(xyz: float3, order: RotationOrder): quaternion;
-    Euler(x: number, y: number, z: number, order: RotationOrder): quaternion;
-    EulerXYZ(xyz: float3): quaternion;
-    EulerXYZ(x: number, y: number, z: number): quaternion;
-    EulerXZY(xyz: float3): quaternion;
-    EulerXZY(x: number, y: number, z: number): quaternion;
-    EulerYXZ(xyz: float3): quaternion;
-    EulerYXZ(x: number, y: number, z: number): quaternion;
-    EulerYZX(xyz: float3): quaternion;
-    EulerYZX(x: number, y: number, z: number): quaternion;
-    EulerZXY(xyz: float3): quaternion;
-    EulerZXY(x: number, y: number, z: number): quaternion;
-    EulerZYX(xyz: float3): quaternion;
-    EulerZYX(x: number, y: number, z: number): quaternion;
-    LookRotation(forward: float3, up: float3): quaternion;
-    LookRotationSafe(forward: float3, up: float3): quaternion;
-    RotateX(angle: number): quaternion;
-    RotateY(angle: number): quaternion;
-    RotateZ(angle: number): quaternion;
-
-}
-declare const quaternion: quaternionConstructor;
-    
-interface float4x4Constructor {
-    readonly identity: float4x4;
-    readonly zero: float4x4;
-
-
-    new(c0: float4, c1: float4, c2: float4, c3: float4): float4x4;
-    new(m00: number, m01: number, m02: number, m03: number, m10: number, m11: number, m12: number, m13: number, m20: number, m21: number, m22: number, m23: number, m30: number, m31: number, m32: number, m33: number): float4x4;
-    new(v: number): float4x4;
-    new(v: boolean): float4x4;
-    new(v: bool4x4): float4x4;
-    new(v: number): float4x4;
-    new(v: int4x4): float4x4;
-    new(v: number): float4x4;
-    new(v: uint4x4): float4x4;
-    new(v: number): float4x4;
-    new(v: double4x4): float4x4;
-    new(rotation: float3x3, translation: float3): float4x4;
-    new(rotation: quaternion, translation: float3): float4x4;
-    new(transform: RigidTransform): float4x4;
-
-
-    AxisAngle(axis: float3, angle: number): float4x4;
-    Euler(xyz: float3, order: RotationOrder): float4x4;
-    Euler(x: number, y: number, z: number, order: RotationOrder): float4x4;
-    EulerXYZ(xyz: float3): float4x4;
-    EulerXYZ(x: number, y: number, z: number): float4x4;
-    EulerXZY(xyz: float3): float4x4;
-    EulerXZY(x: number, y: number, z: number): float4x4;
-    EulerYXZ(xyz: float3): float4x4;
-    EulerYXZ(x: number, y: number, z: number): float4x4;
-    EulerYZX(xyz: float3): float4x4;
-    EulerYZX(x: number, y: number, z: number): float4x4;
-    EulerZXY(xyz: float3): float4x4;
-    EulerZXY(x: number, y: number, z: number): float4x4;
-    EulerZYX(xyz: float3): float4x4;
-    EulerZYX(x: number, y: number, z: number): float4x4;
-    LookAt(eye: float3, target: float3, up: float3): float4x4;
-    Ortho(width: number, height: number, near: number, far: number): float4x4;
-    OrthoOffCenter(left: number, right: number, bottom: number, top: number, near: number, far: number): float4x4;
-    PerspectiveFov(verticalFov: number, aspect: number, near: number, far: number): float4x4;
-    PerspectiveOffCenter(left: number, right: number, bottom: number, top: number, near: number, far: number): float4x4;
-    RotateX(angle: number): float4x4;
-    RotateY(angle: number): float4x4;
-    RotateZ(angle: number): float4x4;
-    Scale(s: number): float4x4;
-    Scale(x: number, y: number, z: number): float4x4;
-    Scale(scales: float3): float4x4;
-    Translate(vector: float3): float4x4;
-    TRS(translation: float3, rotation: quaternion, scale: float3): float4x4;
-
-}
-declare const float4x4: float4x4Constructor;
-    
-interface half {
-    value: number;
-
-
-
-    Equals(rhs: half): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface halfConstructor {
-    readonly zero: half;
-    readonly MaxValue: number;
-    readonly MinValue: number;
-    readonly MaxValueAsHalf: half;
-    readonly MinValueAsHalf: half;
-
-
-    new(x: half): half;
-    new(v: number): half;
-    new(v: number): half;
-
-
-
-}
-declare const half: halfConstructor;
-    
-interface half2 {
-    x: half;
-    y: half;
-    readonly xxxx: half4;
-    readonly xxxy: half4;
-    readonly xxyx: half4;
-    readonly xxyy: half4;
-    readonly xyxx: half4;
-    readonly xyxy: half4;
-    readonly xyyx: half4;
-    readonly xyyy: half4;
-    readonly yxxx: half4;
-    readonly yxxy: half4;
-    readonly yxyx: half4;
-    readonly yxyy: half4;
-    readonly yyxx: half4;
-    readonly yyxy: half4;
-    readonly yyyx: half4;
-    readonly yyyy: half4;
-    readonly xxx: half3;
-    readonly xxy: half3;
-    readonly xyx: half3;
-    readonly xyy: half3;
-    readonly yxx: half3;
-    readonly yxy: half3;
-    readonly yyx: half3;
-    readonly yyy: half3;
-    readonly xx: half2;
-    xy: half2;
-    yx: half2;
-    readonly yy: half2;
-    Item: half;
-
-
-
-    Equals(rhs: half2): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface half4 {
-    x: half;
-    y: half;
-    z: half;
-    w: half;
-    readonly xxxx: half4;
-    readonly xxxy: half4;
-    readonly xxxz: half4;
-    readonly xxxw: half4;
-    readonly xxyx: half4;
-    readonly xxyy: half4;
-    readonly xxyz: half4;
-    readonly xxyw: half4;
-    readonly xxzx: half4;
-    readonly xxzy: half4;
-    readonly xxzz: half4;
-    readonly xxzw: half4;
-    readonly xxwx: half4;
-    readonly xxwy: half4;
-    readonly xxwz: half4;
-    readonly xxww: half4;
-    readonly xyxx: half4;
-    readonly xyxy: half4;
-    readonly xyxz: half4;
-    readonly xyxw: half4;
-    readonly xyyx: half4;
-    readonly xyyy: half4;
-    readonly xyyz: half4;
-    readonly xyyw: half4;
-    readonly xyzx: half4;
-    readonly xyzy: half4;
-    readonly xyzz: half4;
-    xyzw: half4;
-    readonly xywx: half4;
-    readonly xywy: half4;
-    xywz: half4;
-    readonly xyww: half4;
-    readonly xzxx: half4;
-    readonly xzxy: half4;
-    readonly xzxz: half4;
-    readonly xzxw: half4;
-    readonly xzyx: half4;
-    readonly xzyy: half4;
-    readonly xzyz: half4;
-    xzyw: half4;
-    readonly xzzx: half4;
-    readonly xzzy: half4;
-    readonly xzzz: half4;
-    readonly xzzw: half4;
-    readonly xzwx: half4;
-    xzwy: half4;
-    readonly xzwz: half4;
-    readonly xzww: half4;
-    readonly xwxx: half4;
-    readonly xwxy: half4;
-    readonly xwxz: half4;
-    readonly xwxw: half4;
-    readonly xwyx: half4;
-    readonly xwyy: half4;
-    xwyz: half4;
-    readonly xwyw: half4;
-    readonly xwzx: half4;
-    xwzy: half4;
-    readonly xwzz: half4;
-    readonly xwzw: half4;
-    readonly xwwx: half4;
-    readonly xwwy: half4;
-    readonly xwwz: half4;
-    readonly xwww: half4;
-    readonly yxxx: half4;
-    readonly yxxy: half4;
-    readonly yxxz: half4;
-    readonly yxxw: half4;
-    readonly yxyx: half4;
-    readonly yxyy: half4;
-    readonly yxyz: half4;
-    readonly yxyw: half4;
-    readonly yxzx: half4;
-    readonly yxzy: half4;
-    readonly yxzz: half4;
-    yxzw: half4;
-    readonly yxwx: half4;
-    readonly yxwy: half4;
-    yxwz: half4;
-    readonly yxww: half4;
-    readonly yyxx: half4;
-    readonly yyxy: half4;
-    readonly yyxz: half4;
-    readonly yyxw: half4;
-    readonly yyyx: half4;
-    readonly yyyy: half4;
-    readonly yyyz: half4;
-    readonly yyyw: half4;
-    readonly yyzx: half4;
-    readonly yyzy: half4;
-    readonly yyzz: half4;
-    readonly yyzw: half4;
-    readonly yywx: half4;
-    readonly yywy: half4;
-    readonly yywz: half4;
-    readonly yyww: half4;
-    readonly yzxx: half4;
-    readonly yzxy: half4;
-    readonly yzxz: half4;
-    yzxw: half4;
-    readonly yzyx: half4;
-    readonly yzyy: half4;
-    readonly yzyz: half4;
-    readonly yzyw: half4;
-    readonly yzzx: half4;
-    readonly yzzy: half4;
-    readonly yzzz: half4;
-    readonly yzzw: half4;
-    yzwx: half4;
-    readonly yzwy: half4;
-    readonly yzwz: half4;
-    readonly yzww: half4;
-    readonly ywxx: half4;
-    readonly ywxy: half4;
-    ywxz: half4;
-    readonly ywxw: half4;
-    readonly ywyx: half4;
-    readonly ywyy: half4;
-    readonly ywyz: half4;
-    readonly ywyw: half4;
-    ywzx: half4;
-    readonly ywzy: half4;
-    readonly ywzz: half4;
-    readonly ywzw: half4;
-    readonly ywwx: half4;
-    readonly ywwy: half4;
-    readonly ywwz: half4;
-    readonly ywww: half4;
-    readonly zxxx: half4;
-    readonly zxxy: half4;
-    readonly zxxz: half4;
-    readonly zxxw: half4;
-    readonly zxyx: half4;
-    readonly zxyy: half4;
-    readonly zxyz: half4;
-    zxyw: half4;
-    readonly zxzx: half4;
-    readonly zxzy: half4;
-    readonly zxzz: half4;
-    readonly zxzw: half4;
-    readonly zxwx: half4;
-    zxwy: half4;
-    readonly zxwz: half4;
-    readonly zxww: half4;
-    readonly zyxx: half4;
-    readonly zyxy: half4;
-    readonly zyxz: half4;
-    zyxw: half4;
-    readonly zyyx: half4;
-    readonly zyyy: half4;
-    readonly zyyz: half4;
-    readonly zyyw: half4;
-    readonly zyzx: half4;
-    readonly zyzy: half4;
-    readonly zyzz: half4;
-    readonly zyzw: half4;
-    zywx: half4;
-    readonly zywy: half4;
-    readonly zywz: half4;
-    readonly zyww: half4;
-    readonly zzxx: half4;
-    readonly zzxy: half4;
-    readonly zzxz: half4;
-    readonly zzxw: half4;
-    readonly zzyx: half4;
-    readonly zzyy: half4;
-    readonly zzyz: half4;
-    readonly zzyw: half4;
-    readonly zzzx: half4;
-    readonly zzzy: half4;
-    readonly zzzz: half4;
-    readonly zzzw: half4;
-    readonly zzwx: half4;
-    readonly zzwy: half4;
-    readonly zzwz: half4;
-    readonly zzww: half4;
-    readonly zwxx: half4;
-    zwxy: half4;
-    readonly zwxz: half4;
-    readonly zwxw: half4;
-    zwyx: half4;
-    readonly zwyy: half4;
-    readonly zwyz: half4;
-    readonly zwyw: half4;
-    readonly zwzx: half4;
-    readonly zwzy: half4;
-    readonly zwzz: half4;
-    readonly zwzw: half4;
-    readonly zwwx: half4;
-    readonly zwwy: half4;
-    readonly zwwz: half4;
-    readonly zwww: half4;
-    readonly wxxx: half4;
-    readonly wxxy: half4;
-    readonly wxxz: half4;
-    readonly wxxw: half4;
-    readonly wxyx: half4;
-    readonly wxyy: half4;
-    wxyz: half4;
-    readonly wxyw: half4;
-    readonly wxzx: half4;
-    wxzy: half4;
-    readonly wxzz: half4;
-    readonly wxzw: half4;
-    readonly wxwx: half4;
-    readonly wxwy: half4;
-    readonly wxwz: half4;
-    readonly wxww: half4;
-    readonly wyxx: half4;
-    readonly wyxy: half4;
-    wyxz: half4;
-    readonly wyxw: half4;
-    readonly wyyx: half4;
-    readonly wyyy: half4;
-    readonly wyyz: half4;
-    readonly wyyw: half4;
-    wyzx: half4;
-    readonly wyzy: half4;
-    readonly wyzz: half4;
-    readonly wyzw: half4;
-    readonly wywx: half4;
-    readonly wywy: half4;
-    readonly wywz: half4;
-    readonly wyww: half4;
-    readonly wzxx: half4;
-    wzxy: half4;
-    readonly wzxz: half4;
-    readonly wzxw: half4;
-    wzyx: half4;
-    readonly wzyy: half4;
-    readonly wzyz: half4;
-    readonly wzyw: half4;
-    readonly wzzx: half4;
-    readonly wzzy: half4;
-    readonly wzzz: half4;
-    readonly wzzw: half4;
-    readonly wzwx: half4;
-    readonly wzwy: half4;
-    readonly wzwz: half4;
-    readonly wzww: half4;
-    readonly wwxx: half4;
-    readonly wwxy: half4;
-    readonly wwxz: half4;
-    readonly wwxw: half4;
-    readonly wwyx: half4;
-    readonly wwyy: half4;
-    readonly wwyz: half4;
-    readonly wwyw: half4;
-    readonly wwzx: half4;
-    readonly wwzy: half4;
-    readonly wwzz: half4;
-    readonly wwzw: half4;
-    readonly wwwx: half4;
-    readonly wwwy: half4;
-    readonly wwwz: half4;
-    readonly wwww: half4;
-    readonly xxx: half3;
-    readonly xxy: half3;
-    readonly xxz: half3;
-    readonly xxw: half3;
-    readonly xyx: half3;
-    readonly xyy: half3;
-    xyz: half3;
-    xyw: half3;
-    readonly xzx: half3;
-    xzy: half3;
-    readonly xzz: half3;
-    xzw: half3;
-    readonly xwx: half3;
-    xwy: half3;
-    xwz: half3;
-    readonly xww: half3;
-    readonly yxx: half3;
-    readonly yxy: half3;
-    yxz: half3;
-    yxw: half3;
-    readonly yyx: half3;
-    readonly yyy: half3;
-    readonly yyz: half3;
-    readonly yyw: half3;
-    yzx: half3;
-    readonly yzy: half3;
-    readonly yzz: half3;
-    yzw: half3;
-    ywx: half3;
-    readonly ywy: half3;
-    ywz: half3;
-    readonly yww: half3;
-    readonly zxx: half3;
-    zxy: half3;
-    readonly zxz: half3;
-    zxw: half3;
-    zyx: half3;
-    readonly zyy: half3;
-    readonly zyz: half3;
-    zyw: half3;
-    readonly zzx: half3;
-    readonly zzy: half3;
-    readonly zzz: half3;
-    readonly zzw: half3;
-    zwx: half3;
-    zwy: half3;
-    readonly zwz: half3;
-    readonly zww: half3;
-    readonly wxx: half3;
-    wxy: half3;
-    wxz: half3;
-    readonly wxw: half3;
-    wyx: half3;
-    readonly wyy: half3;
-    wyz: half3;
-    readonly wyw: half3;
-    wzx: half3;
-    wzy: half3;
-    readonly wzz: half3;
-    readonly wzw: half3;
-    readonly wwx: half3;
-    readonly wwy: half3;
-    readonly wwz: half3;
-    readonly www: half3;
-    readonly xx: half2;
-    xy: half2;
-    xz: half2;
-    xw: half2;
-    yx: half2;
-    readonly yy: half2;
-    yz: half2;
-    yw: half2;
-    zx: half2;
-    zy: half2;
-    readonly zz: half2;
-    zw: half2;
-    wx: half2;
-    wy: half2;
-    wz: half2;
-    readonly ww: half2;
-    Item: half;
-
-
-
-    Equals(rhs: half4): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface half3 {
-    x: half;
-    y: half;
-    z: half;
-    readonly xxxx: half4;
-    readonly xxxy: half4;
-    readonly xxxz: half4;
-    readonly xxyx: half4;
-    readonly xxyy: half4;
-    readonly xxyz: half4;
-    readonly xxzx: half4;
-    readonly xxzy: half4;
-    readonly xxzz: half4;
-    readonly xyxx: half4;
-    readonly xyxy: half4;
-    readonly xyxz: half4;
-    readonly xyyx: half4;
-    readonly xyyy: half4;
-    readonly xyyz: half4;
-    readonly xyzx: half4;
-    readonly xyzy: half4;
-    readonly xyzz: half4;
-    readonly xzxx: half4;
-    readonly xzxy: half4;
-    readonly xzxz: half4;
-    readonly xzyx: half4;
-    readonly xzyy: half4;
-    readonly xzyz: half4;
-    readonly xzzx: half4;
-    readonly xzzy: half4;
-    readonly xzzz: half4;
-    readonly yxxx: half4;
-    readonly yxxy: half4;
-    readonly yxxz: half4;
-    readonly yxyx: half4;
-    readonly yxyy: half4;
-    readonly yxyz: half4;
-    readonly yxzx: half4;
-    readonly yxzy: half4;
-    readonly yxzz: half4;
-    readonly yyxx: half4;
-    readonly yyxy: half4;
-    readonly yyxz: half4;
-    readonly yyyx: half4;
-    readonly yyyy: half4;
-    readonly yyyz: half4;
-    readonly yyzx: half4;
-    readonly yyzy: half4;
-    readonly yyzz: half4;
-    readonly yzxx: half4;
-    readonly yzxy: half4;
-    readonly yzxz: half4;
-    readonly yzyx: half4;
-    readonly yzyy: half4;
-    readonly yzyz: half4;
-    readonly yzzx: half4;
-    readonly yzzy: half4;
-    readonly yzzz: half4;
-    readonly zxxx: half4;
-    readonly zxxy: half4;
-    readonly zxxz: half4;
-    readonly zxyx: half4;
-    readonly zxyy: half4;
-    readonly zxyz: half4;
-    readonly zxzx: half4;
-    readonly zxzy: half4;
-    readonly zxzz: half4;
-    readonly zyxx: half4;
-    readonly zyxy: half4;
-    readonly zyxz: half4;
-    readonly zyyx: half4;
-    readonly zyyy: half4;
-    readonly zyyz: half4;
-    readonly zyzx: half4;
-    readonly zyzy: half4;
-    readonly zyzz: half4;
-    readonly zzxx: half4;
-    readonly zzxy: half4;
-    readonly zzxz: half4;
-    readonly zzyx: half4;
-    readonly zzyy: half4;
-    readonly zzyz: half4;
-    readonly zzzx: half4;
-    readonly zzzy: half4;
-    readonly zzzz: half4;
-    readonly xxx: half3;
-    readonly xxy: half3;
-    readonly xxz: half3;
-    readonly xyx: half3;
-    readonly xyy: half3;
-    xyz: half3;
-    readonly xzx: half3;
-    xzy: half3;
-    readonly xzz: half3;
-    readonly yxx: half3;
-    readonly yxy: half3;
-    yxz: half3;
-    readonly yyx: half3;
-    readonly yyy: half3;
-    readonly yyz: half3;
-    yzx: half3;
-    readonly yzy: half3;
-    readonly yzz: half3;
-    readonly zxx: half3;
-    zxy: half3;
-    readonly zxz: half3;
-    zyx: half3;
-    readonly zyy: half3;
-    readonly zyz: half3;
-    readonly zzx: half3;
-    readonly zzy: half3;
-    readonly zzz: half3;
-    readonly xx: half2;
-    xy: half2;
-    xz: half2;
-    yx: half2;
-    readonly yy: half2;
-    yz: half2;
-    zx: half2;
-    zy: half2;
-    readonly zz: half2;
-    Item: half;
-
-
-
-    Equals(rhs: half3): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface half3Constructor {
-    readonly zero: half3;
-
-
-    new(x: half, y: half, z: half): half3;
-    new(x: half, yz: half2): half3;
-    new(xy: half2, z: half): half3;
-    new(xyz: half3): half3;
-    new(v: half): half3;
-    new(v: number): half3;
-    new(v: float3): half3;
-    new(v: number): half3;
-    new(v: double3): half3;
-
-
-
-}
-declare const half3: half3Constructor;
-    
-interface half4Constructor {
-    readonly zero: half4;
-
-
-    new(x: half, y: half, z: half, w: half): half4;
-    new(x: half, y: half, zw: half2): half4;
-    new(x: half, yz: half2, w: half): half4;
-    new(x: half, yzw: half3): half4;
-    new(xy: half2, z: half, w: half): half4;
-    new(xy: half2, zw: half2): half4;
-    new(xyz: half3, w: half): half4;
-    new(xyzw: half4): half4;
-    new(v: half): half4;
-    new(v: number): half4;
-    new(v: float4): half4;
-    new(v: number): half4;
-    new(v: double4): half4;
-
-
-
-}
-declare const half4: half4Constructor;
-    
-interface half2Constructor {
-    readonly zero: half2;
-
-
-    new(x: half, y: half): half2;
-    new(xy: half2): half2;
-    new(v: half): half2;
-    new(v: number): half2;
-    new(v: float2): half2;
-    new(v: number): half2;
-    new(v: double2): half2;
-
-
-
-}
-declare const half2: half2Constructor;
-    
-interface int2 {
-    x: number;
-    y: number;
-    readonly xxxx: int4;
-    readonly xxxy: int4;
-    readonly xxyx: int4;
-    readonly xxyy: int4;
-    readonly xyxx: int4;
-    readonly xyxy: int4;
-    readonly xyyx: int4;
-    readonly xyyy: int4;
-    readonly yxxx: int4;
-    readonly yxxy: int4;
-    readonly yxyx: int4;
-    readonly yxyy: int4;
-    readonly yyxx: int4;
-    readonly yyxy: int4;
-    readonly yyyx: int4;
-    readonly yyyy: int4;
-    readonly xxx: int3;
-    readonly xxy: int3;
-    readonly xyx: int3;
-    readonly xyy: int3;
-    readonly yxx: int3;
-    readonly yxy: int3;
-    readonly yyx: int3;
-    readonly yyy: int3;
-    readonly xx: int2;
-    xy: int2;
-    yx: int2;
-    readonly yy: int2;
-    Item: number;
-
-
-
-    Equals(rhs: int2): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface int4 {
-    x: number;
-    y: number;
-    z: number;
-    w: number;
-    readonly xxxx: int4;
-    readonly xxxy: int4;
-    readonly xxxz: int4;
-    readonly xxxw: int4;
-    readonly xxyx: int4;
-    readonly xxyy: int4;
-    readonly xxyz: int4;
-    readonly xxyw: int4;
-    readonly xxzx: int4;
-    readonly xxzy: int4;
-    readonly xxzz: int4;
-    readonly xxzw: int4;
-    readonly xxwx: int4;
-    readonly xxwy: int4;
-    readonly xxwz: int4;
-    readonly xxww: int4;
-    readonly xyxx: int4;
-    readonly xyxy: int4;
-    readonly xyxz: int4;
-    readonly xyxw: int4;
-    readonly xyyx: int4;
-    readonly xyyy: int4;
-    readonly xyyz: int4;
-    readonly xyyw: int4;
-    readonly xyzx: int4;
-    readonly xyzy: int4;
-    readonly xyzz: int4;
-    xyzw: int4;
-    readonly xywx: int4;
-    readonly xywy: int4;
-    xywz: int4;
-    readonly xyww: int4;
-    readonly xzxx: int4;
-    readonly xzxy: int4;
-    readonly xzxz: int4;
-    readonly xzxw: int4;
-    readonly xzyx: int4;
-    readonly xzyy: int4;
-    readonly xzyz: int4;
-    xzyw: int4;
-    readonly xzzx: int4;
-    readonly xzzy: int4;
-    readonly xzzz: int4;
-    readonly xzzw: int4;
-    readonly xzwx: int4;
-    xzwy: int4;
-    readonly xzwz: int4;
-    readonly xzww: int4;
-    readonly xwxx: int4;
-    readonly xwxy: int4;
-    readonly xwxz: int4;
-    readonly xwxw: int4;
-    readonly xwyx: int4;
-    readonly xwyy: int4;
-    xwyz: int4;
-    readonly xwyw: int4;
-    readonly xwzx: int4;
-    xwzy: int4;
-    readonly xwzz: int4;
-    readonly xwzw: int4;
-    readonly xwwx: int4;
-    readonly xwwy: int4;
-    readonly xwwz: int4;
-    readonly xwww: int4;
-    readonly yxxx: int4;
-    readonly yxxy: int4;
-    readonly yxxz: int4;
-    readonly yxxw: int4;
-    readonly yxyx: int4;
-    readonly yxyy: int4;
-    readonly yxyz: int4;
-    readonly yxyw: int4;
-    readonly yxzx: int4;
-    readonly yxzy: int4;
-    readonly yxzz: int4;
-    yxzw: int4;
-    readonly yxwx: int4;
-    readonly yxwy: int4;
-    yxwz: int4;
-    readonly yxww: int4;
-    readonly yyxx: int4;
-    readonly yyxy: int4;
-    readonly yyxz: int4;
-    readonly yyxw: int4;
-    readonly yyyx: int4;
-    readonly yyyy: int4;
-    readonly yyyz: int4;
-    readonly yyyw: int4;
-    readonly yyzx: int4;
-    readonly yyzy: int4;
-    readonly yyzz: int4;
-    readonly yyzw: int4;
-    readonly yywx: int4;
-    readonly yywy: int4;
-    readonly yywz: int4;
-    readonly yyww: int4;
-    readonly yzxx: int4;
-    readonly yzxy: int4;
-    readonly yzxz: int4;
-    yzxw: int4;
-    readonly yzyx: int4;
-    readonly yzyy: int4;
-    readonly yzyz: int4;
-    readonly yzyw: int4;
-    readonly yzzx: int4;
-    readonly yzzy: int4;
-    readonly yzzz: int4;
-    readonly yzzw: int4;
-    yzwx: int4;
-    readonly yzwy: int4;
-    readonly yzwz: int4;
-    readonly yzww: int4;
-    readonly ywxx: int4;
-    readonly ywxy: int4;
-    ywxz: int4;
-    readonly ywxw: int4;
-    readonly ywyx: int4;
-    readonly ywyy: int4;
-    readonly ywyz: int4;
-    readonly ywyw: int4;
-    ywzx: int4;
-    readonly ywzy: int4;
-    readonly ywzz: int4;
-    readonly ywzw: int4;
-    readonly ywwx: int4;
-    readonly ywwy: int4;
-    readonly ywwz: int4;
-    readonly ywww: int4;
-    readonly zxxx: int4;
-    readonly zxxy: int4;
-    readonly zxxz: int4;
-    readonly zxxw: int4;
-    readonly zxyx: int4;
-    readonly zxyy: int4;
-    readonly zxyz: int4;
-    zxyw: int4;
-    readonly zxzx: int4;
-    readonly zxzy: int4;
-    readonly zxzz: int4;
-    readonly zxzw: int4;
-    readonly zxwx: int4;
-    zxwy: int4;
-    readonly zxwz: int4;
-    readonly zxww: int4;
-    readonly zyxx: int4;
-    readonly zyxy: int4;
-    readonly zyxz: int4;
-    zyxw: int4;
-    readonly zyyx: int4;
-    readonly zyyy: int4;
-    readonly zyyz: int4;
-    readonly zyyw: int4;
-    readonly zyzx: int4;
-    readonly zyzy: int4;
-    readonly zyzz: int4;
-    readonly zyzw: int4;
-    zywx: int4;
-    readonly zywy: int4;
-    readonly zywz: int4;
-    readonly zyww: int4;
-    readonly zzxx: int4;
-    readonly zzxy: int4;
-    readonly zzxz: int4;
-    readonly zzxw: int4;
-    readonly zzyx: int4;
-    readonly zzyy: int4;
-    readonly zzyz: int4;
-    readonly zzyw: int4;
-    readonly zzzx: int4;
-    readonly zzzy: int4;
-    readonly zzzz: int4;
-    readonly zzzw: int4;
-    readonly zzwx: int4;
-    readonly zzwy: int4;
-    readonly zzwz: int4;
-    readonly zzww: int4;
-    readonly zwxx: int4;
-    zwxy: int4;
-    readonly zwxz: int4;
-    readonly zwxw: int4;
-    zwyx: int4;
-    readonly zwyy: int4;
-    readonly zwyz: int4;
-    readonly zwyw: int4;
-    readonly zwzx: int4;
-    readonly zwzy: int4;
-    readonly zwzz: int4;
-    readonly zwzw: int4;
-    readonly zwwx: int4;
-    readonly zwwy: int4;
-    readonly zwwz: int4;
-    readonly zwww: int4;
-    readonly wxxx: int4;
-    readonly wxxy: int4;
-    readonly wxxz: int4;
-    readonly wxxw: int4;
-    readonly wxyx: int4;
-    readonly wxyy: int4;
-    wxyz: int4;
-    readonly wxyw: int4;
-    readonly wxzx: int4;
-    wxzy: int4;
-    readonly wxzz: int4;
-    readonly wxzw: int4;
-    readonly wxwx: int4;
-    readonly wxwy: int4;
-    readonly wxwz: int4;
-    readonly wxww: int4;
-    readonly wyxx: int4;
-    readonly wyxy: int4;
-    wyxz: int4;
-    readonly wyxw: int4;
-    readonly wyyx: int4;
-    readonly wyyy: int4;
-    readonly wyyz: int4;
-    readonly wyyw: int4;
-    wyzx: int4;
-    readonly wyzy: int4;
-    readonly wyzz: int4;
-    readonly wyzw: int4;
-    readonly wywx: int4;
-    readonly wywy: int4;
-    readonly wywz: int4;
-    readonly wyww: int4;
-    readonly wzxx: int4;
-    wzxy: int4;
-    readonly wzxz: int4;
-    readonly wzxw: int4;
-    wzyx: int4;
-    readonly wzyy: int4;
-    readonly wzyz: int4;
-    readonly wzyw: int4;
-    readonly wzzx: int4;
-    readonly wzzy: int4;
-    readonly wzzz: int4;
-    readonly wzzw: int4;
-    readonly wzwx: int4;
-    readonly wzwy: int4;
-    readonly wzwz: int4;
-    readonly wzww: int4;
-    readonly wwxx: int4;
-    readonly wwxy: int4;
-    readonly wwxz: int4;
-    readonly wwxw: int4;
-    readonly wwyx: int4;
-    readonly wwyy: int4;
-    readonly wwyz: int4;
-    readonly wwyw: int4;
-    readonly wwzx: int4;
-    readonly wwzy: int4;
-    readonly wwzz: int4;
-    readonly wwzw: int4;
-    readonly wwwx: int4;
-    readonly wwwy: int4;
-    readonly wwwz: int4;
-    readonly wwww: int4;
-    readonly xxx: int3;
-    readonly xxy: int3;
-    readonly xxz: int3;
-    readonly xxw: int3;
-    readonly xyx: int3;
-    readonly xyy: int3;
-    xyz: int3;
-    xyw: int3;
-    readonly xzx: int3;
-    xzy: int3;
-    readonly xzz: int3;
-    xzw: int3;
-    readonly xwx: int3;
-    xwy: int3;
-    xwz: int3;
-    readonly xww: int3;
-    readonly yxx: int3;
-    readonly yxy: int3;
-    yxz: int3;
-    yxw: int3;
-    readonly yyx: int3;
-    readonly yyy: int3;
-    readonly yyz: int3;
-    readonly yyw: int3;
-    yzx: int3;
-    readonly yzy: int3;
-    readonly yzz: int3;
-    yzw: int3;
-    ywx: int3;
-    readonly ywy: int3;
-    ywz: int3;
-    readonly yww: int3;
-    readonly zxx: int3;
-    zxy: int3;
-    readonly zxz: int3;
-    zxw: int3;
-    zyx: int3;
-    readonly zyy: int3;
-    readonly zyz: int3;
-    zyw: int3;
-    readonly zzx: int3;
-    readonly zzy: int3;
-    readonly zzz: int3;
-    readonly zzw: int3;
-    zwx: int3;
-    zwy: int3;
-    readonly zwz: int3;
-    readonly zww: int3;
-    readonly wxx: int3;
-    wxy: int3;
-    wxz: int3;
-    readonly wxw: int3;
-    wyx: int3;
-    readonly wyy: int3;
-    wyz: int3;
-    readonly wyw: int3;
-    wzx: int3;
-    wzy: int3;
-    readonly wzz: int3;
-    readonly wzw: int3;
-    readonly wwx: int3;
-    readonly wwy: int3;
-    readonly wwz: int3;
-    readonly www: int3;
-    readonly xx: int2;
-    xy: int2;
-    xz: int2;
-    xw: int2;
-    yx: int2;
-    readonly yy: int2;
-    yz: int2;
-    yw: int2;
-    zx: int2;
-    zy: int2;
-    readonly zz: int2;
-    zw: int2;
-    wx: int2;
-    wy: int2;
-    wz: int2;
-    readonly ww: int2;
-    Item: number;
-
-
-
-    Equals(rhs: int4): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface int3 {
-    x: number;
-    y: number;
-    z: number;
-    readonly xxxx: int4;
-    readonly xxxy: int4;
-    readonly xxxz: int4;
-    readonly xxyx: int4;
-    readonly xxyy: int4;
-    readonly xxyz: int4;
-    readonly xxzx: int4;
-    readonly xxzy: int4;
-    readonly xxzz: int4;
-    readonly xyxx: int4;
-    readonly xyxy: int4;
-    readonly xyxz: int4;
-    readonly xyyx: int4;
-    readonly xyyy: int4;
-    readonly xyyz: int4;
-    readonly xyzx: int4;
-    readonly xyzy: int4;
-    readonly xyzz: int4;
-    readonly xzxx: int4;
-    readonly xzxy: int4;
-    readonly xzxz: int4;
-    readonly xzyx: int4;
-    readonly xzyy: int4;
-    readonly xzyz: int4;
-    readonly xzzx: int4;
-    readonly xzzy: int4;
-    readonly xzzz: int4;
-    readonly yxxx: int4;
-    readonly yxxy: int4;
-    readonly yxxz: int4;
-    readonly yxyx: int4;
-    readonly yxyy: int4;
-    readonly yxyz: int4;
-    readonly yxzx: int4;
-    readonly yxzy: int4;
-    readonly yxzz: int4;
-    readonly yyxx: int4;
-    readonly yyxy: int4;
-    readonly yyxz: int4;
-    readonly yyyx: int4;
-    readonly yyyy: int4;
-    readonly yyyz: int4;
-    readonly yyzx: int4;
-    readonly yyzy: int4;
-    readonly yyzz: int4;
-    readonly yzxx: int4;
-    readonly yzxy: int4;
-    readonly yzxz: int4;
-    readonly yzyx: int4;
-    readonly yzyy: int4;
-    readonly yzyz: int4;
-    readonly yzzx: int4;
-    readonly yzzy: int4;
-    readonly yzzz: int4;
-    readonly zxxx: int4;
-    readonly zxxy: int4;
-    readonly zxxz: int4;
-    readonly zxyx: int4;
-    readonly zxyy: int4;
-    readonly zxyz: int4;
-    readonly zxzx: int4;
-    readonly zxzy: int4;
-    readonly zxzz: int4;
-    readonly zyxx: int4;
-    readonly zyxy: int4;
-    readonly zyxz: int4;
-    readonly zyyx: int4;
-    readonly zyyy: int4;
-    readonly zyyz: int4;
-    readonly zyzx: int4;
-    readonly zyzy: int4;
-    readonly zyzz: int4;
-    readonly zzxx: int4;
-    readonly zzxy: int4;
-    readonly zzxz: int4;
-    readonly zzyx: int4;
-    readonly zzyy: int4;
-    readonly zzyz: int4;
-    readonly zzzx: int4;
-    readonly zzzy: int4;
-    readonly zzzz: int4;
-    readonly xxx: int3;
-    readonly xxy: int3;
-    readonly xxz: int3;
-    readonly xyx: int3;
-    readonly xyy: int3;
-    xyz: int3;
-    readonly xzx: int3;
-    xzy: int3;
-    readonly xzz: int3;
-    readonly yxx: int3;
-    readonly yxy: int3;
-    yxz: int3;
-    readonly yyx: int3;
-    readonly yyy: int3;
-    readonly yyz: int3;
-    yzx: int3;
-    readonly yzy: int3;
-    readonly yzz: int3;
-    readonly zxx: int3;
-    zxy: int3;
-    readonly zxz: int3;
-    zyx: int3;
-    readonly zyy: int3;
-    readonly zyz: int3;
-    readonly zzx: int3;
-    readonly zzy: int3;
-    readonly zzz: int3;
-    readonly xx: int2;
-    xy: int2;
-    xz: int2;
-    yx: int2;
-    readonly yy: int2;
-    yz: int2;
-    zx: int2;
-    zy: int2;
-    readonly zz: int2;
-    Item: number;
-
-
-
-    Equals(rhs: int3): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface int3Constructor {
-    readonly zero: int3;
-
-
-    new(x: number, y: number, z: number): int3;
-    new(x: number, yz: int2): int3;
-    new(xy: int2, z: number): int3;
-    new(xyz: int3): int3;
-    new(v: number): int3;
-    new(v: boolean): int3;
-    new(v: bool3): int3;
-    new(v: number): int3;
-    new(v: uint3): int3;
-    new(v: number): int3;
-    new(v: float3): int3;
-    new(v: number): int3;
-    new(v: double3): int3;
-
-
-
-}
-declare const int3: int3Constructor;
-    
-interface int4Constructor {
-    readonly zero: int4;
-
-
-    new(x: number, y: number, z: number, w: number): int4;
-    new(x: number, y: number, zw: int2): int4;
-    new(x: number, yz: int2, w: number): int4;
-    new(x: number, yzw: int3): int4;
-    new(xy: int2, z: number, w: number): int4;
-    new(xy: int2, zw: int2): int4;
-    new(xyz: int3, w: number): int4;
-    new(xyzw: int4): int4;
-    new(v: number): int4;
-    new(v: boolean): int4;
-    new(v: bool4): int4;
-    new(v: number): int4;
-    new(v: uint4): int4;
-    new(v: number): int4;
-    new(v: float4): int4;
-    new(v: number): int4;
-    new(v: double4): int4;
-
-
-
-}
-declare const int4: int4Constructor;
-    
-interface int2Constructor {
-    readonly zero: int2;
-
-
-    new(x: number, y: number): int2;
-    new(xy: int2): int2;
-    new(v: number): int2;
-    new(v: boolean): int2;
-    new(v: bool2): int2;
-    new(v: number): int2;
-    new(v: uint2): int2;
-    new(v: number): int2;
-    new(v: float2): int2;
-    new(v: number): int2;
-    new(v: double2): int2;
-
-
-
-}
-declare const int2: int2Constructor;
-    
-interface int2x2 {
-    c0: int2;
-    c1: int2;
-    readonly Item: unknown;
-
-
-
-    Equals(rhs: int2x2): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface int2x2Constructor {
-    readonly identity: int2x2;
-    readonly zero: int2x2;
-
-
-    new(c0: int2, c1: int2): int2x2;
-    new(m00: number, m01: number, m10: number, m11: number): int2x2;
-    new(v: number): int2x2;
-    new(v: boolean): int2x2;
-    new(v: bool2x2): int2x2;
-    new(v: number): int2x2;
-    new(v: uint2x2): int2x2;
-    new(v: number): int2x2;
-    new(v: float2x2): int2x2;
-    new(v: number): int2x2;
-    new(v: double2x2): int2x2;
-
-
-
-}
-declare const int2x2: int2x2Constructor;
-    
-interface int2x3 {
-    c0: int2;
-    c1: int2;
-    c2: int2;
-    readonly Item: unknown;
-
-
-
-    Equals(rhs: int2x3): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface int2x3Constructor {
-    readonly zero: int2x3;
-
-
-    new(c0: int2, c1: int2, c2: int2): int2x3;
-    new(m00: number, m01: number, m02: number, m10: number, m11: number, m12: number): int2x3;
-    new(v: number): int2x3;
-    new(v: boolean): int2x3;
-    new(v: bool2x3): int2x3;
-    new(v: number): int2x3;
-    new(v: uint2x3): int2x3;
-    new(v: number): int2x3;
-    new(v: float2x3): int2x3;
-    new(v: number): int2x3;
-    new(v: double2x3): int2x3;
-
-
-
-}
-declare const int2x3: int2x3Constructor;
-    
-interface int2x4 {
-    c0: int2;
-    c1: int2;
-    c2: int2;
-    c3: int2;
-    readonly Item: unknown;
-
-
-
-    Equals(rhs: int2x4): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface int2x4Constructor {
-    readonly zero: int2x4;
-
-
-    new(c0: int2, c1: int2, c2: int2, c3: int2): int2x4;
-    new(m00: number, m01: number, m02: number, m03: number, m10: number, m11: number, m12: number, m13: number): int2x4;
-    new(v: number): int2x4;
-    new(v: boolean): int2x4;
-    new(v: bool2x4): int2x4;
-    new(v: number): int2x4;
-    new(v: uint2x4): int2x4;
-    new(v: number): int2x4;
-    new(v: float2x4): int2x4;
-    new(v: number): int2x4;
-    new(v: double2x4): int2x4;
-
-
-
-}
-declare const int2x4: int2x4Constructor;
-    
-interface int3x2 {
-    c0: int3;
-    c1: int3;
-    readonly Item: unknown;
-
-
-
-    Equals(rhs: int3x2): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface int3x2Constructor {
-    readonly zero: int3x2;
-
-
-    new(c0: int3, c1: int3): int3x2;
-    new(m00: number, m01: number, m10: number, m11: number, m20: number, m21: number): int3x2;
-    new(v: number): int3x2;
-    new(v: boolean): int3x2;
-    new(v: bool3x2): int3x2;
-    new(v: number): int3x2;
-    new(v: uint3x2): int3x2;
-    new(v: number): int3x2;
-    new(v: float3x2): int3x2;
-    new(v: number): int3x2;
-    new(v: double3x2): int3x2;
-
-
-
-}
-declare const int3x2: int3x2Constructor;
-    
-interface int3x3 {
-    c0: int3;
-    c1: int3;
-    c2: int3;
-    readonly Item: unknown;
-
-
-
-    Equals(rhs: int3x3): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface int3x3Constructor {
-    readonly identity: int3x3;
-    readonly zero: int3x3;
-
-
-    new(c0: int3, c1: int3, c2: int3): int3x3;
-    new(m00: number, m01: number, m02: number, m10: number, m11: number, m12: number, m20: number, m21: number, m22: number): int3x3;
-    new(v: number): int3x3;
-    new(v: boolean): int3x3;
-    new(v: bool3x3): int3x3;
-    new(v: number): int3x3;
-    new(v: uint3x3): int3x3;
-    new(v: number): int3x3;
-    new(v: float3x3): int3x3;
-    new(v: number): int3x3;
-    new(v: double3x3): int3x3;
-
-
-
-}
-declare const int3x3: int3x3Constructor;
-    
-interface int3x4 {
-    c0: int3;
-    c1: int3;
-    c2: int3;
-    c3: int3;
-    readonly Item: unknown;
-
-
-
-    Equals(rhs: int3x4): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface int3x4Constructor {
-    readonly zero: int3x4;
-
-
-    new(c0: int3, c1: int3, c2: int3, c3: int3): int3x4;
-    new(m00: number, m01: number, m02: number, m03: number, m10: number, m11: number, m12: number, m13: number, m20: number, m21: number, m22: number, m23: number): int3x4;
-    new(v: number): int3x4;
-    new(v: boolean): int3x4;
-    new(v: bool3x4): int3x4;
-    new(v: number): int3x4;
-    new(v: uint3x4): int3x4;
-    new(v: number): int3x4;
-    new(v: float3x4): int3x4;
-    new(v: number): int3x4;
-    new(v: double3x4): int3x4;
-
-
-
-}
-declare const int3x4: int3x4Constructor;
-    
-interface int4x2 {
-    c0: int4;
-    c1: int4;
-    readonly Item: unknown;
-
-
-
-    Equals(rhs: int4x2): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface int4x2Constructor {
-    readonly zero: int4x2;
-
-
-    new(c0: int4, c1: int4): int4x2;
-    new(m00: number, m01: number, m10: number, m11: number, m20: number, m21: number, m30: number, m31: number): int4x2;
-    new(v: number): int4x2;
-    new(v: boolean): int4x2;
-    new(v: bool4x2): int4x2;
-    new(v: number): int4x2;
-    new(v: uint4x2): int4x2;
-    new(v: number): int4x2;
-    new(v: float4x2): int4x2;
-    new(v: number): int4x2;
-    new(v: double4x2): int4x2;
-
-
-
-}
-declare const int4x2: int4x2Constructor;
-    
-interface int4x3 {
-    c0: int4;
-    c1: int4;
-    c2: int4;
-    readonly Item: unknown;
-
-
-
-    Equals(rhs: int4x3): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface int4x3Constructor {
-    readonly zero: int4x3;
-
-
-    new(c0: int4, c1: int4, c2: int4): int4x3;
-    new(m00: number, m01: number, m02: number, m10: number, m11: number, m12: number, m20: number, m21: number, m22: number, m30: number, m31: number, m32: number): int4x3;
-    new(v: number): int4x3;
-    new(v: boolean): int4x3;
-    new(v: bool4x3): int4x3;
-    new(v: number): int4x3;
-    new(v: uint4x3): int4x3;
-    new(v: number): int4x3;
-    new(v: float4x3): int4x3;
-    new(v: number): int4x3;
-    new(v: double4x3): int4x3;
-
-
-
-}
-declare const int4x3: int4x3Constructor;
-    
-interface int4x4 {
-    c0: int4;
-    c1: int4;
-    c2: int4;
-    c3: int4;
-    readonly Item: unknown;
-
-
-
-    Equals(rhs: int4x4): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface int4x4Constructor {
-    readonly identity: int4x4;
-    readonly zero: int4x4;
-
-
-    new(c0: int4, c1: int4, c2: int4, c3: int4): int4x4;
-    new(m00: number, m01: number, m02: number, m03: number, m10: number, m11: number, m12: number, m13: number, m20: number, m21: number, m22: number, m23: number, m30: number, m31: number, m32: number, m33: number): int4x4;
-    new(v: number): int4x4;
-    new(v: boolean): int4x4;
-    new(v: bool4x4): int4x4;
-    new(v: number): int4x4;
-    new(v: uint4x4): int4x4;
-    new(v: number): int4x4;
-    new(v: float4x4): int4x4;
-    new(v: number): int4x4;
-    new(v: double4x4): int4x4;
-
-
-
-}
-declare const int4x4: int4x4Constructor;
-    
-    
-interface uint2 {
-    x: number;
-    y: number;
-    readonly xxxx: uint4;
-    readonly xxxy: uint4;
-    readonly xxyx: uint4;
-    readonly xxyy: uint4;
-    readonly xyxx: uint4;
-    readonly xyxy: uint4;
-    readonly xyyx: uint4;
-    readonly xyyy: uint4;
-    readonly yxxx: uint4;
-    readonly yxxy: uint4;
-    readonly yxyx: uint4;
-    readonly yxyy: uint4;
-    readonly yyxx: uint4;
-    readonly yyxy: uint4;
-    readonly yyyx: uint4;
-    readonly yyyy: uint4;
-    readonly xxx: uint3;
-    readonly xxy: uint3;
-    readonly xyx: uint3;
-    readonly xyy: uint3;
-    readonly yxx: uint3;
-    readonly yxy: uint3;
-    readonly yyx: uint3;
-    readonly yyy: uint3;
-    readonly xx: uint2;
-    xy: uint2;
-    yx: uint2;
-    readonly yy: uint2;
-    Item: number;
-
-
-
-    Equals(rhs: uint2): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface uint4 {
-    x: number;
-    y: number;
-    z: number;
-    w: number;
-    readonly xxxx: uint4;
-    readonly xxxy: uint4;
-    readonly xxxz: uint4;
-    readonly xxxw: uint4;
-    readonly xxyx: uint4;
-    readonly xxyy: uint4;
-    readonly xxyz: uint4;
-    readonly xxyw: uint4;
-    readonly xxzx: uint4;
-    readonly xxzy: uint4;
-    readonly xxzz: uint4;
-    readonly xxzw: uint4;
-    readonly xxwx: uint4;
-    readonly xxwy: uint4;
-    readonly xxwz: uint4;
-    readonly xxww: uint4;
-    readonly xyxx: uint4;
-    readonly xyxy: uint4;
-    readonly xyxz: uint4;
-    readonly xyxw: uint4;
-    readonly xyyx: uint4;
-    readonly xyyy: uint4;
-    readonly xyyz: uint4;
-    readonly xyyw: uint4;
-    readonly xyzx: uint4;
-    readonly xyzy: uint4;
-    readonly xyzz: uint4;
-    xyzw: uint4;
-    readonly xywx: uint4;
-    readonly xywy: uint4;
-    xywz: uint4;
-    readonly xyww: uint4;
-    readonly xzxx: uint4;
-    readonly xzxy: uint4;
-    readonly xzxz: uint4;
-    readonly xzxw: uint4;
-    readonly xzyx: uint4;
-    readonly xzyy: uint4;
-    readonly xzyz: uint4;
-    xzyw: uint4;
-    readonly xzzx: uint4;
-    readonly xzzy: uint4;
-    readonly xzzz: uint4;
-    readonly xzzw: uint4;
-    readonly xzwx: uint4;
-    xzwy: uint4;
-    readonly xzwz: uint4;
-    readonly xzww: uint4;
-    readonly xwxx: uint4;
-    readonly xwxy: uint4;
-    readonly xwxz: uint4;
-    readonly xwxw: uint4;
-    readonly xwyx: uint4;
-    readonly xwyy: uint4;
-    xwyz: uint4;
-    readonly xwyw: uint4;
-    readonly xwzx: uint4;
-    xwzy: uint4;
-    readonly xwzz: uint4;
-    readonly xwzw: uint4;
-    readonly xwwx: uint4;
-    readonly xwwy: uint4;
-    readonly xwwz: uint4;
-    readonly xwww: uint4;
-    readonly yxxx: uint4;
-    readonly yxxy: uint4;
-    readonly yxxz: uint4;
-    readonly yxxw: uint4;
-    readonly yxyx: uint4;
-    readonly yxyy: uint4;
-    readonly yxyz: uint4;
-    readonly yxyw: uint4;
-    readonly yxzx: uint4;
-    readonly yxzy: uint4;
-    readonly yxzz: uint4;
-    yxzw: uint4;
-    readonly yxwx: uint4;
-    readonly yxwy: uint4;
-    yxwz: uint4;
-    readonly yxww: uint4;
-    readonly yyxx: uint4;
-    readonly yyxy: uint4;
-    readonly yyxz: uint4;
-    readonly yyxw: uint4;
-    readonly yyyx: uint4;
-    readonly yyyy: uint4;
-    readonly yyyz: uint4;
-    readonly yyyw: uint4;
-    readonly yyzx: uint4;
-    readonly yyzy: uint4;
-    readonly yyzz: uint4;
-    readonly yyzw: uint4;
-    readonly yywx: uint4;
-    readonly yywy: uint4;
-    readonly yywz: uint4;
-    readonly yyww: uint4;
-    readonly yzxx: uint4;
-    readonly yzxy: uint4;
-    readonly yzxz: uint4;
-    yzxw: uint4;
-    readonly yzyx: uint4;
-    readonly yzyy: uint4;
-    readonly yzyz: uint4;
-    readonly yzyw: uint4;
-    readonly yzzx: uint4;
-    readonly yzzy: uint4;
-    readonly yzzz: uint4;
-    readonly yzzw: uint4;
-    yzwx: uint4;
-    readonly yzwy: uint4;
-    readonly yzwz: uint4;
-    readonly yzww: uint4;
-    readonly ywxx: uint4;
-    readonly ywxy: uint4;
-    ywxz: uint4;
-    readonly ywxw: uint4;
-    readonly ywyx: uint4;
-    readonly ywyy: uint4;
-    readonly ywyz: uint4;
-    readonly ywyw: uint4;
-    ywzx: uint4;
-    readonly ywzy: uint4;
-    readonly ywzz: uint4;
-    readonly ywzw: uint4;
-    readonly ywwx: uint4;
-    readonly ywwy: uint4;
-    readonly ywwz: uint4;
-    readonly ywww: uint4;
-    readonly zxxx: uint4;
-    readonly zxxy: uint4;
-    readonly zxxz: uint4;
-    readonly zxxw: uint4;
-    readonly zxyx: uint4;
-    readonly zxyy: uint4;
-    readonly zxyz: uint4;
-    zxyw: uint4;
-    readonly zxzx: uint4;
-    readonly zxzy: uint4;
-    readonly zxzz: uint4;
-    readonly zxzw: uint4;
-    readonly zxwx: uint4;
-    zxwy: uint4;
-    readonly zxwz: uint4;
-    readonly zxww: uint4;
-    readonly zyxx: uint4;
-    readonly zyxy: uint4;
-    readonly zyxz: uint4;
-    zyxw: uint4;
-    readonly zyyx: uint4;
-    readonly zyyy: uint4;
-    readonly zyyz: uint4;
-    readonly zyyw: uint4;
-    readonly zyzx: uint4;
-    readonly zyzy: uint4;
-    readonly zyzz: uint4;
-    readonly zyzw: uint4;
-    zywx: uint4;
-    readonly zywy: uint4;
-    readonly zywz: uint4;
-    readonly zyww: uint4;
-    readonly zzxx: uint4;
-    readonly zzxy: uint4;
-    readonly zzxz: uint4;
-    readonly zzxw: uint4;
-    readonly zzyx: uint4;
-    readonly zzyy: uint4;
-    readonly zzyz: uint4;
-    readonly zzyw: uint4;
-    readonly zzzx: uint4;
-    readonly zzzy: uint4;
-    readonly zzzz: uint4;
-    readonly zzzw: uint4;
-    readonly zzwx: uint4;
-    readonly zzwy: uint4;
-    readonly zzwz: uint4;
-    readonly zzww: uint4;
-    readonly zwxx: uint4;
-    zwxy: uint4;
-    readonly zwxz: uint4;
-    readonly zwxw: uint4;
-    zwyx: uint4;
-    readonly zwyy: uint4;
-    readonly zwyz: uint4;
-    readonly zwyw: uint4;
-    readonly zwzx: uint4;
-    readonly zwzy: uint4;
-    readonly zwzz: uint4;
-    readonly zwzw: uint4;
-    readonly zwwx: uint4;
-    readonly zwwy: uint4;
-    readonly zwwz: uint4;
-    readonly zwww: uint4;
-    readonly wxxx: uint4;
-    readonly wxxy: uint4;
-    readonly wxxz: uint4;
-    readonly wxxw: uint4;
-    readonly wxyx: uint4;
-    readonly wxyy: uint4;
-    wxyz: uint4;
-    readonly wxyw: uint4;
-    readonly wxzx: uint4;
-    wxzy: uint4;
-    readonly wxzz: uint4;
-    readonly wxzw: uint4;
-    readonly wxwx: uint4;
-    readonly wxwy: uint4;
-    readonly wxwz: uint4;
-    readonly wxww: uint4;
-    readonly wyxx: uint4;
-    readonly wyxy: uint4;
-    wyxz: uint4;
-    readonly wyxw: uint4;
-    readonly wyyx: uint4;
-    readonly wyyy: uint4;
-    readonly wyyz: uint4;
-    readonly wyyw: uint4;
-    wyzx: uint4;
-    readonly wyzy: uint4;
-    readonly wyzz: uint4;
-    readonly wyzw: uint4;
-    readonly wywx: uint4;
-    readonly wywy: uint4;
-    readonly wywz: uint4;
-    readonly wyww: uint4;
-    readonly wzxx: uint4;
-    wzxy: uint4;
-    readonly wzxz: uint4;
-    readonly wzxw: uint4;
-    wzyx: uint4;
-    readonly wzyy: uint4;
-    readonly wzyz: uint4;
-    readonly wzyw: uint4;
-    readonly wzzx: uint4;
-    readonly wzzy: uint4;
-    readonly wzzz: uint4;
-    readonly wzzw: uint4;
-    readonly wzwx: uint4;
-    readonly wzwy: uint4;
-    readonly wzwz: uint4;
-    readonly wzww: uint4;
-    readonly wwxx: uint4;
-    readonly wwxy: uint4;
-    readonly wwxz: uint4;
-    readonly wwxw: uint4;
-    readonly wwyx: uint4;
-    readonly wwyy: uint4;
-    readonly wwyz: uint4;
-    readonly wwyw: uint4;
-    readonly wwzx: uint4;
-    readonly wwzy: uint4;
-    readonly wwzz: uint4;
-    readonly wwzw: uint4;
-    readonly wwwx: uint4;
-    readonly wwwy: uint4;
-    readonly wwwz: uint4;
-    readonly wwww: uint4;
-    readonly xxx: uint3;
-    readonly xxy: uint3;
-    readonly xxz: uint3;
-    readonly xxw: uint3;
-    readonly xyx: uint3;
-    readonly xyy: uint3;
-    xyz: uint3;
-    xyw: uint3;
-    readonly xzx: uint3;
-    xzy: uint3;
-    readonly xzz: uint3;
-    xzw: uint3;
-    readonly xwx: uint3;
-    xwy: uint3;
-    xwz: uint3;
-    readonly xww: uint3;
-    readonly yxx: uint3;
-    readonly yxy: uint3;
-    yxz: uint3;
-    yxw: uint3;
-    readonly yyx: uint3;
-    readonly yyy: uint3;
-    readonly yyz: uint3;
-    readonly yyw: uint3;
-    yzx: uint3;
-    readonly yzy: uint3;
-    readonly yzz: uint3;
-    yzw: uint3;
-    ywx: uint3;
-    readonly ywy: uint3;
-    ywz: uint3;
-    readonly yww: uint3;
-    readonly zxx: uint3;
-    zxy: uint3;
-    readonly zxz: uint3;
-    zxw: uint3;
-    zyx: uint3;
-    readonly zyy: uint3;
-    readonly zyz: uint3;
-    zyw: uint3;
-    readonly zzx: uint3;
-    readonly zzy: uint3;
-    readonly zzz: uint3;
-    readonly zzw: uint3;
-    zwx: uint3;
-    zwy: uint3;
-    readonly zwz: uint3;
-    readonly zww: uint3;
-    readonly wxx: uint3;
-    wxy: uint3;
-    wxz: uint3;
-    readonly wxw: uint3;
-    wyx: uint3;
-    readonly wyy: uint3;
-    wyz: uint3;
-    readonly wyw: uint3;
-    wzx: uint3;
-    wzy: uint3;
-    readonly wzz: uint3;
-    readonly wzw: uint3;
-    readonly wwx: uint3;
-    readonly wwy: uint3;
-    readonly wwz: uint3;
-    readonly www: uint3;
-    readonly xx: uint2;
-    xy: uint2;
-    xz: uint2;
-    xw: uint2;
-    yx: uint2;
-    readonly yy: uint2;
-    yz: uint2;
-    yw: uint2;
-    zx: uint2;
-    zy: uint2;
-    readonly zz: uint2;
-    zw: uint2;
-    wx: uint2;
-    wy: uint2;
-    wz: uint2;
-    readonly ww: uint2;
-    Item: number;
-
-
-
-    Equals(rhs: uint4): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface uint3 {
-    x: number;
-    y: number;
-    z: number;
-    readonly xxxx: uint4;
-    readonly xxxy: uint4;
-    readonly xxxz: uint4;
-    readonly xxyx: uint4;
-    readonly xxyy: uint4;
-    readonly xxyz: uint4;
-    readonly xxzx: uint4;
-    readonly xxzy: uint4;
-    readonly xxzz: uint4;
-    readonly xyxx: uint4;
-    readonly xyxy: uint4;
-    readonly xyxz: uint4;
-    readonly xyyx: uint4;
-    readonly xyyy: uint4;
-    readonly xyyz: uint4;
-    readonly xyzx: uint4;
-    readonly xyzy: uint4;
-    readonly xyzz: uint4;
-    readonly xzxx: uint4;
-    readonly xzxy: uint4;
-    readonly xzxz: uint4;
-    readonly xzyx: uint4;
-    readonly xzyy: uint4;
-    readonly xzyz: uint4;
-    readonly xzzx: uint4;
-    readonly xzzy: uint4;
-    readonly xzzz: uint4;
-    readonly yxxx: uint4;
-    readonly yxxy: uint4;
-    readonly yxxz: uint4;
-    readonly yxyx: uint4;
-    readonly yxyy: uint4;
-    readonly yxyz: uint4;
-    readonly yxzx: uint4;
-    readonly yxzy: uint4;
-    readonly yxzz: uint4;
-    readonly yyxx: uint4;
-    readonly yyxy: uint4;
-    readonly yyxz: uint4;
-    readonly yyyx: uint4;
-    readonly yyyy: uint4;
-    readonly yyyz: uint4;
-    readonly yyzx: uint4;
-    readonly yyzy: uint4;
-    readonly yyzz: uint4;
-    readonly yzxx: uint4;
-    readonly yzxy: uint4;
-    readonly yzxz: uint4;
-    readonly yzyx: uint4;
-    readonly yzyy: uint4;
-    readonly yzyz: uint4;
-    readonly yzzx: uint4;
-    readonly yzzy: uint4;
-    readonly yzzz: uint4;
-    readonly zxxx: uint4;
-    readonly zxxy: uint4;
-    readonly zxxz: uint4;
-    readonly zxyx: uint4;
-    readonly zxyy: uint4;
-    readonly zxyz: uint4;
-    readonly zxzx: uint4;
-    readonly zxzy: uint4;
-    readonly zxzz: uint4;
-    readonly zyxx: uint4;
-    readonly zyxy: uint4;
-    readonly zyxz: uint4;
-    readonly zyyx: uint4;
-    readonly zyyy: uint4;
-    readonly zyyz: uint4;
-    readonly zyzx: uint4;
-    readonly zyzy: uint4;
-    readonly zyzz: uint4;
-    readonly zzxx: uint4;
-    readonly zzxy: uint4;
-    readonly zzxz: uint4;
-    readonly zzyx: uint4;
-    readonly zzyy: uint4;
-    readonly zzyz: uint4;
-    readonly zzzx: uint4;
-    readonly zzzy: uint4;
-    readonly zzzz: uint4;
-    readonly xxx: uint3;
-    readonly xxy: uint3;
-    readonly xxz: uint3;
-    readonly xyx: uint3;
-    readonly xyy: uint3;
-    xyz: uint3;
-    readonly xzx: uint3;
-    xzy: uint3;
-    readonly xzz: uint3;
-    readonly yxx: uint3;
-    readonly yxy: uint3;
-    yxz: uint3;
-    readonly yyx: uint3;
-    readonly yyy: uint3;
-    readonly yyz: uint3;
-    yzx: uint3;
-    readonly yzy: uint3;
-    readonly yzz: uint3;
-    readonly zxx: uint3;
-    zxy: uint3;
-    readonly zxz: uint3;
-    zyx: uint3;
-    readonly zyy: uint3;
-    readonly zyz: uint3;
-    readonly zzx: uint3;
-    readonly zzy: uint3;
-    readonly zzz: uint3;
-    readonly xx: uint2;
-    xy: uint2;
-    xz: uint2;
-    yx: uint2;
-    readonly yy: uint2;
-    yz: uint2;
-    zx: uint2;
-    zy: uint2;
-    readonly zz: uint2;
-    Item: number;
-
-
-
-    Equals(rhs: uint3): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface uint3Constructor {
-    readonly zero: uint3;
-
-
-    new(x: number, y: number, z: number): uint3;
-    new(x: number, yz: uint2): uint3;
-    new(xy: uint2, z: number): uint3;
-    new(xyz: uint3): uint3;
-    new(v: number): uint3;
-    new(v: boolean): uint3;
-    new(v: bool3): uint3;
-    new(v: number): uint3;
-    new(v: int3): uint3;
-    new(v: number): uint3;
-    new(v: float3): uint3;
-    new(v: number): uint3;
-    new(v: double3): uint3;
-
-
-
-}
-declare const uint3: uint3Constructor;
-    
-interface uint4Constructor {
-    readonly zero: uint4;
-
-
-    new(x: number, y: number, z: number, w: number): uint4;
-    new(x: number, y: number, zw: uint2): uint4;
-    new(x: number, yz: uint2, w: number): uint4;
-    new(x: number, yzw: uint3): uint4;
-    new(xy: uint2, z: number, w: number): uint4;
-    new(xy: uint2, zw: uint2): uint4;
-    new(xyz: uint3, w: number): uint4;
-    new(xyzw: uint4): uint4;
-    new(v: number): uint4;
-    new(v: boolean): uint4;
-    new(v: bool4): uint4;
-    new(v: number): uint4;
-    new(v: int4): uint4;
-    new(v: number): uint4;
-    new(v: float4): uint4;
-    new(v: number): uint4;
-    new(v: double4): uint4;
-
-
-
-}
-declare const uint4: uint4Constructor;
-    
-interface uint2Constructor {
-    readonly zero: uint2;
-
-
-    new(x: number, y: number): uint2;
-    new(xy: uint2): uint2;
-    new(v: number): uint2;
-    new(v: boolean): uint2;
-    new(v: bool2): uint2;
-    new(v: number): uint2;
-    new(v: int2): uint2;
-    new(v: number): uint2;
-    new(v: float2): uint2;
-    new(v: number): uint2;
-    new(v: double2): uint2;
-
-
-
-}
-declare const uint2: uint2Constructor;
-    
-    
-interface Ray2D {
-    /**
-     * The starting point of the ray in world space.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Ray2D-origin.html | Ray2D.origin}
-     */
-    origin: Vector2;
-    /**
-     * The direction of the ray in world space.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Ray2D-direction.html | Ray2D.direction}
-     */
-    direction: Vector2;
-
-
-
-    /**
-     * Get a point that lies a given distance along a ray.
-     * @param distance Distance of the desired point along the path of the ray.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Ray2D.GetPoint.html | Ray2D.GetPoint}
-     */
-    GetPoint(distance: number): Vector2;
-    /**
-     * Returns a formatted string for this 2D ray.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Ray2D.ToString.html | Ray2D.ToString}
-     */
-    ToString(): string;
-    /**
-     * Returns a formatted string for this 2D ray.
-     * @param format A numeric format string.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Ray2D.ToString.html | Ray2D.ToString}
-     */
-    ToString(format: string): string;
-    /**
-     * Returns a formatted string for this 2D ray.
-     * @param format A numeric format string.
-     * @param formatProvider An object that specifies culture-specific formatting.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Ray2D.ToString.html | Ray2D.ToString}
-     */
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface Ray2DConstructor {
-
-
-    new(origin: Vector2, direction: Vector2): Ray2D;
-
-
-
-}
-declare const Ray2D: Ray2DConstructor;
-    
-interface RigidTransform {
-    rot: quaternion;
-    pos: float3;
-
-
-
-    Equals(x: RigidTransform): boolean;
-    Equals(x: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface RigidTransformConstructor {
-    readonly identity: RigidTransform;
-
-
-    new(rotation: quaternion, translation: float3): RigidTransform;
-    new(rotation: float3x3, translation: float3): RigidTransform;
-    new(transform: float4x4): RigidTransform;
-
-
-    AxisAngle(axis: float3, angle: number): RigidTransform;
-    Euler(xyz: float3, order: RotationOrder): RigidTransform;
-    Euler(x: number, y: number, z: number, order: RotationOrder): RigidTransform;
-    EulerXYZ(xyz: float3): RigidTransform;
-    EulerXYZ(x: number, y: number, z: number): RigidTransform;
-    EulerXZY(xyz: float3): RigidTransform;
-    EulerXZY(x: number, y: number, z: number): RigidTransform;
-    EulerYXZ(xyz: float3): RigidTransform;
-    EulerYXZ(x: number, y: number, z: number): RigidTransform;
-    EulerYZX(xyz: float3): RigidTransform;
-    EulerYZX(x: number, y: number, z: number): RigidTransform;
-    EulerZXY(xyz: float3): RigidTransform;
-    EulerZXY(x: number, y: number, z: number): RigidTransform;
-    EulerZYX(xyz: float3): RigidTransform;
-    EulerZYX(x: number, y: number, z: number): RigidTransform;
-    RotateX(angle: number): RigidTransform;
-    RotateY(angle: number): RigidTransform;
-    RotateZ(angle: number): RigidTransform;
-    Translate(vector: float3): RigidTransform;
-
-}
-declare const RigidTransform: RigidTransformConstructor;
-    
-interface SubStream extends IResettable {
-    readonly Initialized: boolean;
-    readonly Length: number;
-    readonly Remaining: number;
-    readonly NetworkManager: NetworkManager;
-
-
-
-    InitializeState(): void;
-    ResetReaderToStartPosition(): void;
-    ResetState(): void;
-    StartReading(reader: unknown): boolean;
-
-
-}
-    
-interface Reader {
-    Source: DataSource;
-    NetworkManager: NetworkManager;
-    Position: number;
-    readonly Capacity: number;
-    readonly Offset: number;
-    readonly Length: number;
-    readonly Remaining: number;
-    readonly NetworkConnection: NetworkConnection;
-
-
-
-    BlockCopy(target: CSArray<number>, targetOffset: number, count: number): void;
-    Clear(): void;
-    GetArraySegmentBuffer(): CSArray<number>;
-    GetByteBuffer(): CSArray<number>;
-    GetByteBufferAllocated(): CSArray<number>;
-    GetRemainingData(): CSArray<number>;
-    Read<T>(): T;
-    ReadArray<T>(collection: CSArray<T>): number;
-    ReadArrayAllocated<T>(): CSArray<T>;
-    ReadArraySegment(count: number): CSArray<number>;
-    ReadArraySegmentAndSize(): CSArray<number>;
-    Readbool2(): bool2;
-    Readbool2x2(): bool2x2;
-    Readbool2x3(): bool2x3;
-    Readbool2x4(): bool2x4;
-    Readbool3(): bool3;
-    Readbool3x2(): bool3x2;
-    Readbool3x3(): bool3x3;
-    Readbool3x4(): bool3x4;
-    Readbool4(): bool4;
-    Readbool4x2(): bool4x2;
-    Readbool4x3(): bool4x3;
-    Readbool4x4(): bool4x4;
-    ReadBoolean(): boolean;
-    ReadChannel(): Channel;
-    ReadChar(): string;
-    ReadColor(): Color;
-    ReadColor32(): Color32;
-    ReadColorUnpacked(): Color;
-    ReadDateTime(): string;
-    ReadDecimal(): number;
-    ReadDecimalUnpacked(): number;
-    ReadDeltaBoolean(valueA: boolean): boolean;
-    ReadDeltaDecimal(valueA: number): number;
-    ReadDeltaDouble(valueA: number): number;
-    ReadDeltaInt16(valueA: number): number;
-    ReadDeltaInt32(valueA: number): number;
-    ReadDeltaInt64(valueA: number): number;
-    ReadDeltaInt8(valueA: number): number;
-    ReadDeltaSingle(valueA: number): number;
-    ReadDeltaUInt16(valueA: number): number;
-    ReadDeltaUInt32(valueA: number): number;
-    ReadDeltaUInt64(valueA: number): number;
-    ReadDeltaUInt8(valueA: number): number;
-    ReadDictionaryAllocated<TKey, TValue>(): CSDictionary<TKey, TValue>;
-    ReadDouble(): number;
-    Readdouble2(): double2;
-    Readdouble2x2(): double2x2;
-    Readdouble2x3(): double2x3;
-    Readdouble2x4(): double2x4;
-    Readdouble3(): double3;
-    Readdouble3x2(): double3x2;
-    Readdouble3x3(): double3x3;
-    Readdouble3x4(): double3x4;
-    Readdouble4(): double4;
-    Readdouble4x2(): double4x2;
-    Readdouble4x3(): double4x3;
-    Readdouble4x4(): double4x4;
-    ReadDoubleUnpacked(): number;
-    Readfloat2(): float2;
-    Readfloat2x2(): float2x2;
-    Readfloat2x3(): float2x3;
-    Readfloat2x4(): float2x4;
-    Readfloat3(): float3;
-    Readfloat3x2(): float3x2;
-    Readfloat3x3(): float3x3;
-    Readfloat3x4(): float3x4;
-    Readfloat4(): float4;
-    Readfloat4x2(): float4x2;
-    Readfloat4x3(): float4x3;
-    Readfloat4x4(): float4x4;
-    ReadGameObject(): GameObject;
-    ReadGuid(): unknown;
-    Readhalf(): half;
-    Readhalf2(): half2;
-    Readhalf3(): half3;
-    Readhalf4(): half4;
-    ReadInt16(): number;
-    ReadInt16Unpacked(): number;
-    Readint2(): int2;
-    Readint2x2(): int2x2;
-    Readint2x3(): int2x3;
-    Readint2x4(): int2x4;
-    Readint3(): int3;
-    ReadInt32(): number;
-    ReadInt32Unpacked(): number;
-    Readint3x2(): int3x2;
-    Readint3x3(): int3x3;
-    Readint3x4(): int3x4;
-    Readint4(): int4;
-    Readint4x2(): int4x2;
-    Readint4x3(): int4x3;
-    Readint4x4(): int4x4;
-    ReadInt64(): number;
-    ReadInt64Unpacked(): number;
-    ReadInt8Unpacked(): number;
-    ReadLayerMask(): LayerMask;
-    ReadList<T>(collection: CSArray<T>, allowNullification: boolean): number;
-    ReadListAllocated<T>(): CSArray<T>;
-    ReadMatrix4x4(): Matrix4x4;
-    ReadMatrix4x4Unpacked(): Matrix4x4;
-    ReadNetworkBehaviour(objectId: unknown, componentIndex: unknown, readSpawningObjects: CSArray<number>): NetworkBehaviour;
-    ReadNetworkBehaviour(): NetworkBehaviour;
-    ReadNetworkConnection(): NetworkConnection;
-    ReadNetworkConnectionId(): number;
-    ReadNetworkObject(): NetworkObject;
-    ReadNetworkObject(objectOrPrefabId: unknown, readSpawningObjects: CSArray<number>): NetworkObject;
-    ReadNetworkObjectId(): number;
-    ReadPlane(): Plane;
-    ReadPlaneUnpacked(): Plane;
-    Readquaternion(): quaternion;
-    ReadQuaternion32(): Quaternion;
-    ReadQuaternion64(): Quaternion;
-    ReadQuaternionUnpacked(): Quaternion;
-    Readrandom(): Random;
-    ReadRay(): Ray;
-    ReadRay2D(): Ray2D;
-    ReadRay2DUnpacked(): Ray2D;
-    ReadRayUnpacked(): Ray;
-    ReadRect(): Rect;
-    ReadRectUnpacked(): Rect;
-    ReadRigidTransform(): RigidTransform;
-    ReadSignedPackedWhole(): number;
-    ReadSingle(): number;
-    ReadSingleUnpacked(): number;
-    ReadString(): string;
-    ReadSubStream(): SubStream;
-    ReadTickUnpacked(): number;
-    ReadTransform(): Transform;
-    ReadUInt16(): number;
-    ReadUInt16Unpacked(): number;
-    Readuint2(): uint2;
-    Readuint2x2(): uint2x2;
-    Readuint2x3(): uint2x3;
-    Readuint2x4(): uint2x4;
-    Readuint3(): uint3;
-    ReadUInt32(): number;
-    ReadUInt32Unpacked(): number;
-    Readuint3x2(): uint3x2;
-    Readuint3x3(): uint3x3;
-    Readuint3x4(): uint3x4;
-    Readuint4(): uint4;
-    Readuint4x2(): uint4x2;
-    Readuint4x3(): uint4x3;
-    Readuint4x4(): uint4x4;
-    ReadUInt64(): number;
-    ReadUInt64Unpacked(): number;
-    ReadUInt8Array(buffer: CSArray<number>, count: number): void;
-    ReadUInt8ArrayAllocated(count: number): CSArray<number>;
-    ReadUInt8ArrayAndSize(target: CSArray<number>): number;
-    ReadUInt8ArrayAndSizeAllocated(): CSArray<number>;
-    ReadUInt8Unpacked(): number;
-    ReadUnsignedPackedWhole(): number;
-    ReadVector2(): Vector2;
-    ReadVector2Int(): Vector2Int;
-    ReadVector2IntUnpacked(): Vector2Int;
-    ReadVector2Unpacked(): Vector2;
-    ReadVector3(): Vector3;
-    ReadVector3Int(): Vector3;
-    ReadVector3IntUnpacked(): Vector3;
-    ReadVector3Unpacked(): Vector3;
-    ReadVector4(): Vector4;
-    ReadVector4Unpacked(): Vector4;
-    RemainingToString(): string;
-    Skip(value: number): void;
-    ToString(): string;
-    ZigZagDecode(value: number): number;
-
-
-}
-    
-interface uint2x2 {
-    c0: uint2;
-    c1: uint2;
-    readonly Item: unknown;
-
-
-
-    Equals(rhs: uint2x2): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface uint2x2Constructor {
-    readonly identity: uint2x2;
-    readonly zero: uint2x2;
-
-
-    new(c0: uint2, c1: uint2): uint2x2;
-    new(m00: number, m01: number, m10: number, m11: number): uint2x2;
-    new(v: number): uint2x2;
-    new(v: boolean): uint2x2;
-    new(v: bool2x2): uint2x2;
-    new(v: number): uint2x2;
-    new(v: int2x2): uint2x2;
-    new(v: number): uint2x2;
-    new(v: float2x2): uint2x2;
-    new(v: number): uint2x2;
-    new(v: double2x2): uint2x2;
-
-
-
-}
-declare const uint2x2: uint2x2Constructor;
-    
-interface uint2x3 {
-    c0: uint2;
-    c1: uint2;
-    c2: uint2;
-    readonly Item: unknown;
-
-
-
-    Equals(rhs: uint2x3): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface uint2x3Constructor {
-    readonly zero: uint2x3;
-
-
-    new(c0: uint2, c1: uint2, c2: uint2): uint2x3;
-    new(m00: number, m01: number, m02: number, m10: number, m11: number, m12: number): uint2x3;
-    new(v: number): uint2x3;
-    new(v: boolean): uint2x3;
-    new(v: bool2x3): uint2x3;
-    new(v: number): uint2x3;
-    new(v: int2x3): uint2x3;
-    new(v: number): uint2x3;
-    new(v: float2x3): uint2x3;
-    new(v: number): uint2x3;
-    new(v: double2x3): uint2x3;
-
-
-
-}
-declare const uint2x3: uint2x3Constructor;
-    
-interface uint2x4 {
-    c0: uint2;
-    c1: uint2;
-    c2: uint2;
-    c3: uint2;
-    readonly Item: unknown;
-
-
-
-    Equals(rhs: uint2x4): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface uint2x4Constructor {
-    readonly zero: uint2x4;
-
-
-    new(c0: uint2, c1: uint2, c2: uint2, c3: uint2): uint2x4;
-    new(m00: number, m01: number, m02: number, m03: number, m10: number, m11: number, m12: number, m13: number): uint2x4;
-    new(v: number): uint2x4;
-    new(v: boolean): uint2x4;
-    new(v: bool2x4): uint2x4;
-    new(v: number): uint2x4;
-    new(v: int2x4): uint2x4;
-    new(v: number): uint2x4;
-    new(v: float2x4): uint2x4;
-    new(v: number): uint2x4;
-    new(v: double2x4): uint2x4;
-
-
-
-}
-declare const uint2x4: uint2x4Constructor;
-    
-interface uint3x2 {
-    c0: uint3;
-    c1: uint3;
-    readonly Item: unknown;
-
-
-
-    Equals(rhs: uint3x2): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface uint3x2Constructor {
-    readonly zero: uint3x2;
-
-
-    new(c0: uint3, c1: uint3): uint3x2;
-    new(m00: number, m01: number, m10: number, m11: number, m20: number, m21: number): uint3x2;
-    new(v: number): uint3x2;
-    new(v: boolean): uint3x2;
-    new(v: bool3x2): uint3x2;
-    new(v: number): uint3x2;
-    new(v: int3x2): uint3x2;
-    new(v: number): uint3x2;
-    new(v: float3x2): uint3x2;
-    new(v: number): uint3x2;
-    new(v: double3x2): uint3x2;
-
-
-
-}
-declare const uint3x2: uint3x2Constructor;
-    
-interface uint3x3 {
-    c0: uint3;
-    c1: uint3;
-    c2: uint3;
-    readonly Item: unknown;
-
-
-
-    Equals(rhs: uint3x3): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface uint3x3Constructor {
-    readonly identity: uint3x3;
-    readonly zero: uint3x3;
-
-
-    new(c0: uint3, c1: uint3, c2: uint3): uint3x3;
-    new(m00: number, m01: number, m02: number, m10: number, m11: number, m12: number, m20: number, m21: number, m22: number): uint3x3;
-    new(v: number): uint3x3;
-    new(v: boolean): uint3x3;
-    new(v: bool3x3): uint3x3;
-    new(v: number): uint3x3;
-    new(v: int3x3): uint3x3;
-    new(v: number): uint3x3;
-    new(v: float3x3): uint3x3;
-    new(v: number): uint3x3;
-    new(v: double3x3): uint3x3;
-
-
-
-}
-declare const uint3x3: uint3x3Constructor;
-    
-interface uint3x4 {
-    c0: uint3;
-    c1: uint3;
-    c2: uint3;
-    c3: uint3;
-    readonly Item: unknown;
-
-
-
-    Equals(rhs: uint3x4): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface uint3x4Constructor {
-    readonly zero: uint3x4;
-
-
-    new(c0: uint3, c1: uint3, c2: uint3, c3: uint3): uint3x4;
-    new(m00: number, m01: number, m02: number, m03: number, m10: number, m11: number, m12: number, m13: number, m20: number, m21: number, m22: number, m23: number): uint3x4;
-    new(v: number): uint3x4;
-    new(v: boolean): uint3x4;
-    new(v: bool3x4): uint3x4;
-    new(v: number): uint3x4;
-    new(v: int3x4): uint3x4;
-    new(v: number): uint3x4;
-    new(v: float3x4): uint3x4;
-    new(v: number): uint3x4;
-    new(v: double3x4): uint3x4;
-
-
-
-}
-declare const uint3x4: uint3x4Constructor;
-    
-interface uint4x2 {
-    c0: uint4;
-    c1: uint4;
-    readonly Item: unknown;
-
-
-
-    Equals(rhs: uint4x2): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface uint4x2Constructor {
-    readonly zero: uint4x2;
-
-
-    new(c0: uint4, c1: uint4): uint4x2;
-    new(m00: number, m01: number, m10: number, m11: number, m20: number, m21: number, m30: number, m31: number): uint4x2;
-    new(v: number): uint4x2;
-    new(v: boolean): uint4x2;
-    new(v: bool4x2): uint4x2;
-    new(v: number): uint4x2;
-    new(v: int4x2): uint4x2;
-    new(v: number): uint4x2;
-    new(v: float4x2): uint4x2;
-    new(v: number): uint4x2;
-    new(v: double4x2): uint4x2;
-
-
-
-}
-declare const uint4x2: uint4x2Constructor;
-    
-interface uint4x3 {
-    c0: uint4;
-    c1: uint4;
-    c2: uint4;
-    readonly Item: unknown;
-
-
-
-    Equals(rhs: uint4x3): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface uint4x3Constructor {
-    readonly zero: uint4x3;
-
-
-    new(c0: uint4, c1: uint4, c2: uint4): uint4x3;
-    new(m00: number, m01: number, m02: number, m10: number, m11: number, m12: number, m20: number, m21: number, m22: number, m30: number, m31: number, m32: number): uint4x3;
-    new(v: number): uint4x3;
-    new(v: boolean): uint4x3;
-    new(v: bool4x3): uint4x3;
-    new(v: number): uint4x3;
-    new(v: int4x3): uint4x3;
-    new(v: number): uint4x3;
-    new(v: float4x3): uint4x3;
-    new(v: number): uint4x3;
-    new(v: double4x3): uint4x3;
-
-
-
-}
-declare const uint4x3: uint4x3Constructor;
-    
-interface uint4x4 {
-    c0: uint4;
-    c1: uint4;
-    c2: uint4;
-    c3: uint4;
-    readonly Item: unknown;
-
-
-
-    Equals(rhs: uint4x4): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-
-
-}
-    
-interface uint4x4Constructor {
-    readonly identity: uint4x4;
-    readonly zero: uint4x4;
-
-
-    new(c0: uint4, c1: uint4, c2: uint4, c3: uint4): uint4x4;
-    new(m00: number, m01: number, m02: number, m03: number, m10: number, m11: number, m12: number, m13: number, m20: number, m21: number, m22: number, m23: number, m30: number, m31: number, m32: number, m33: number): uint4x4;
-    new(v: number): uint4x4;
-    new(v: boolean): uint4x4;
-    new(v: bool4x4): uint4x4;
-    new(v: number): uint4x4;
-    new(v: int4x4): uint4x4;
-    new(v: number): uint4x4;
-    new(v: float4x4): uint4x4;
-    new(v: number): uint4x4;
-    new(v: double4x4): uint4x4;
-
-
-
-}
-declare const uint4x4: uint4x4Constructor;
-    
-    
-    
-    
-    
-interface ReaderConstructor {
-    readonly LastNetworkObject: NetworkObject;
-    readonly LastNetworkBehaviour: NetworkBehaviour;
-
-
-    new(bytes: CSArray<number>, networkManager: NetworkManager, networkConnection: NetworkConnection, source: DataSource): Reader;
-    new(segment: CSArray<number>, networkManager: NetworkManager, networkConnection: NetworkConnection, source: DataSource): Reader;
-
-
-
-}
-declare const Reader: ReaderConstructor;
-    
-interface SubStreamConstructor {
-    UNINITIALIZED_LENGTH: number;
-
-
-
-
-    CreateFromReader(originalReader: Reader, subStreamLength: number): SubStream;
-    StartWriting(manager: NetworkManager, writer: unknown, minimumLength: number): SubStream;
-
-}
-declare const SubStream: SubStreamConstructor;
-    
-interface WriterConstructor {
-    UNSET_COLLECTION_SIZE_VALUE: number;
-
-
-    new(): Writer;
-
-
-
-}
-declare const Writer: WriterConstructor;
-    
-interface ClientConnectionStateArgs {
-    ConnectionState: LocalConnectionState;
-    TransportIndex: number;
-
-
-
-
-
-}
-    
-interface ClientConnectionStateArgsConstructor {
-
-
-    new(connectionState: LocalConnectionState, transportIndex: number): ClientConnectionStateArgs;
-
-
-
-}
-declare const ClientConnectionStateArgs: ClientConnectionStateArgsConstructor;
-    
-interface RemoteConnectionStateArgs {
-    TransportIndex: number;
-    ConnectionState: RemoteConnectionState;
-    ConnectionId: number;
-
-
-
-
-
-}
-    
-interface RemoteConnectionStateArgsConstructor {
-
-
-    new(connectionState: RemoteConnectionState, connectionId: number, transportIndex: number): RemoteConnectionStateArgs;
-
-
-
-}
-declare const RemoteConnectionStateArgs: RemoteConnectionStateArgsConstructor;
-    
-interface ConnectedClientsArgs {
-    readonly ClientIds: CSArray<number>;
-
-
-
-
-
-}
-    
-interface ConnectedClientsArgsConstructor {
-
-
-    new(clientIds: CSArray<number>): ConnectedClientsArgs;
-
-
-
-}
-declare const ConnectedClientsArgs: ConnectedClientsArgsConstructor;
-    
-interface ClientManagerConstructor {
-
-
-    new(): ClientManager;
-
-
-
-}
-declare const ClientManager: ClientManagerConstructor;
-    
-interface ObserverManager extends MonoBehaviour {
-    readonly UpdateHostVisibility: boolean;
-    readonly MaximumTimedObserversDuration: number;
-
-
-
-    SetMaximumTimedObserversDuration(value: number): void;
-    SetUpdateHostVisibility(value: boolean, updateType: HostVisibilityUpdateTypes): void;
-
-
-}
-    
-interface ObserverManagerConstructor {
-
-
-    new(): ObserverManager;
-
-
-    GetLevelOfDetailInterval(lodIndex: number): number;
-
-}
-declare const ObserverManager: ObserverManagerConstructor;
-    
-interface TransportManager extends MonoBehaviour {
-    Transport: Transport;
-    readonly HasIntermediateLayer: boolean;
-    readonly LatencySimulator: LatencySimulator;
-
-
-
-    GetLowestMTU(): number;
-    GetLowestMTU(channel: number): number;
-    GetMTU(channel: number): number;
-    GetMTU(transportIndex: number, channel: number): number;
-    GetMTU<T>(channel: number): number;
-    GetMTUReserve(): number;
-    GetTransport(index: number): Transport;
-    GetTransport<T>(): T;
-    IsLocalTransport(transportId: number, connectionId: number): boolean;
-    SetMTUReserve(value: number): void;
-
-
-}
-    
-interface Transport extends MonoBehaviour {
-    readonly NetworkManager: NetworkManager;
-    readonly Index: number;
-
-    readonly OnClientConnectionState: MonoSignal<ClientConnectionStateArgs>;
-    readonly OnServerConnectionState: MonoSignal<ServerConnectionStateArgs>;
-    readonly OnRemoteConnectionState: MonoSignal<RemoteConnectionStateArgs>;
-    readonly OnClientReceivedData: MonoSignal<ClientReceivedDataArgs>;
-    readonly OnServerReceivedData: MonoSignal<ServerReceivedDataArgs>;
-
-
-    GetClientAddress(): string;
-    GetConnectionAddress(connectionId: number): string;
-    GetConnectionState(server: boolean): LocalConnectionState;
-    GetConnectionState(connectionId: number): RemoteConnectionState;
-    GetMaximumClients(): number;
-    GetMTU(channel: number): number;
-    GetPort(): number;
-    GetServerBindAddress(addressType: IPAddressType): string;
-    GetTimeout(asServer: boolean): number;
-    HandleClientConnectionState(connectionStateArgs: ClientConnectionStateArgs): void;
-    HandleClientReceivedDataArgs(receivedDataArgs: ClientReceivedDataArgs): void;
-    HandleRemoteConnectionState(connectionStateArgs: RemoteConnectionStateArgs): void;
-    HandleServerConnectionState(connectionStateArgs: ServerConnectionStateArgs): void;
-    HandleServerReceivedDataArgs(receivedDataArgs: ServerReceivedDataArgs): void;
-    Initialize(networkManager: NetworkManager, transportIndex: number): void;
-    IsLocalTransport(connectionid: number): boolean;
-    IterateIncoming(server: boolean): void;
-    IterateOutgoing(server: boolean): void;
-    SendToClient(channelId: number, segment: CSArray<number>, connectionId: number): void;
-    SendToServer(channelId: number, segment: CSArray<number>): void;
-    SetClientAddress(address: string): void;
-    SetMaximumClients(value: number): void;
-    SetPort(port: number): void;
-    SetServerBindAddress(address: string, addressType: IPAddressType): void;
-    SetTimeout(value: number, asServer: boolean): void;
-    Shutdown(): void;
-    StartConnection(server: boolean): boolean;
-    StopConnection(server: boolean): boolean;
-    StopConnection(connectionId: number, immediately: boolean): boolean;
-
-
-}
-    
-interface ClientReceivedDataArgs {
-    Data: CSArray<number>;
-    Channel: Channel;
-    TransportIndex: number;
-
-
-
-
-
-}
-    
-interface ClientReceivedDataArgsConstructor {
-
-
-    new(data: CSArray<number>, channel: Channel, transportIndex: number): ClientReceivedDataArgs;
-
-
-
-}
-declare const ClientReceivedDataArgs: ClientReceivedDataArgsConstructor;
-    
-interface ServerConnectionStateArgs {
-    TransportIndex: number;
-    ConnectionState: LocalConnectionState;
-
-
-
-
-
-}
-    
-interface ServerConnectionStateArgsConstructor {
-
-
-    new(connectionState: LocalConnectionState, transportIndex: number): ServerConnectionStateArgs;
-
-
-
-}
-declare const ServerConnectionStateArgs: ServerConnectionStateArgsConstructor;
-    
-interface ServerReceivedDataArgs {
-    Data: CSArray<number>;
-    Channel: Channel;
-    ConnectionId: number;
-    TransportIndex: number;
-    FinalizeMethod: unknown;
-
-
-
-
-
-}
-    
-interface ServerReceivedDataArgsConstructor {
-
-
-    new(data: CSArray<number>, channel: Channel, connectionId: number, transportIndex: number): ServerReceivedDataArgs;
-    new(data: CSArray<number>, channel: Channel, connectionId: number, transportIndex: number, finalizeMethod: unknown): ServerReceivedDataArgs;
-
-
-
-}
-declare const ServerReceivedDataArgs: ServerReceivedDataArgsConstructor;
-    
-interface LatencySimulator {
-
-
-
-    AddOutgoing(channelId: number, segment: CSArray<number>, toServer: boolean, connectionId: number): void;
-    GetEnabled(): boolean;
-    GetLatency(): number;
-    GetOutOfOrder(): number;
-    GetPacketLost(): number;
-    Initialize(manager: NetworkManager, transport: Transport): void;
-    IterateOutgoing(toServer: boolean): void;
-    RemovePendingForConnection(connectionId: number): void;
-    Reset(): void;
-    SetEnabled(value: boolean): void;
-    SetLatency(value: number): void;
-    SetOutOfOrder(value: number): void;
-    SetPacketLoss(value: number): void;
-
-
-}
-    
-interface LatencySimulatorConstructor {
-
-
-    new(): LatencySimulator;
-
-
-
-}
-declare const LatencySimulator: LatencySimulatorConstructor;
-    
-interface TransportManagerConstructor {
-    PACKETID_LENGTH: number;
-    OBJECT_ID_LENGTH: number;
-    COMPONENT_INDEX_LENGTH: number;
-    UNPACKED_TICK_LENGTH: number;
-    UNPACKED_SIZE_LENGTH: number;
-    SPLIT_INDICATOR_LENGTH: number;
-    CHANNEL_COUNT: number;
-    MINIMUM_MTU_RESERVE: number;
-    INVALID_MTU: number;
-
-
-    new(): TransportManager;
-
-
-
-}
-declare const TransportManager: TransportManagerConstructor;
-    
-interface TimeManager extends MonoBehaviour {
-    readonly NetworkManager: NetworkManager;
-    readonly RoundTripTime: number;
-    readonly LastPacketTick: EstimatedTick;
-    readonly Tick: number;
-    readonly TickDelta: number;
-    readonly FrameTicked: boolean;
-    readonly ServerUptime: number;
-    readonly ClientUptime: number;
-    readonly TickRate: number;
-    readonly PingInterval: number;
-    readonly PhysicsMode: PhysicsMode;
-    readonly LocalTick: number;
-
-    readonly OnRoundTripTimeUpdated: MonoSignal<number>;
-    readonly OnPreTick: MonoSignal<void>;
-    readonly OnTick: MonoSignal<void>;
-    readonly OnPrePhysicsSimulation: MonoSignal<number>;
-    readonly OnPostPhysicsSimulation: MonoSignal<number>;
-    readonly OnPostTick: MonoSignal<void>;
-    readonly OnUpdate: MonoSignal<void>;
-    readonly OnLateUpdate: MonoSignal<void>;
-    readonly OnFixedUpdate: MonoSignal<void>;
-
-
-    GetPhysicsTimeScale(): number;
-    GetPreciseTick(tick: number): PreciseTick;
-    GetPreciseTick(tickType: TickType): PreciseTick;
-    GetTickPercentAsByte(): number;
-    GetTickPercentAsDouble(): number;
-    LocalTickToTick(localTick: number): number;
-    SetPhysicsMode(mode: PhysicsMode): void;
-    SetPhysicsTimeScale(value: number): void;
-    SetTickRate(value: number): void;
-    TicksToTime(pt: PreciseTick): number;
-    TicksToTime(ticks: number): number;
-    TickToLocalTick(tick: number): number;
-    TickTypeToTime(tickType: TickType): number;
-    TimePassed(currentTick: number, previousTick: number): number;
-    TimePassed(preciseTick: PreciseTick, allowNegative: boolean): number;
-    TimePassed(previousTick: number, allowNegative: boolean): number;
-    TimeToTicks(time: number, rounding: TickRounding): number;
-
-
-}
-    
-interface EstimatedTick {
-    readonly LocalTick: number;
-    readonly RemoteTick: number;
-    readonly LastRemoteTick: number;
-    readonly IsLastRemoteTickOrdered: boolean;
-    readonly IsUnset: boolean;
-
-
-
-    Initialize(tm: TimeManager, remoteTick: number, lastRemoteTick: number, localTick: number): void;
-    IsCurrent(tm: TimeManager): boolean;
-    LocalTickDifference(tm: TimeManager): number;
-    Reset(): void;
-    Update(tm: TimeManager, remoteTick: number, oldTickOption: OldTickOption, resetValue: boolean): boolean;
-    Update(remoteTick: number, oldTickOption: OldTickOption, resetValue: boolean): boolean;
-    UpdateValue(): void;
-    Value(tm: TimeManager): number;
-    Value(isCurrent: unknown, tm: TimeManager): number;
-
-
-}
-    
-interface EstimatedTickConstructor {
-
-
-    new(): EstimatedTick;
-
-
-
-}
-declare const EstimatedTick: EstimatedTickConstructor;
-    
-interface PreciseTick {
-    Tick: number;
-    PercentAsDouble: number;
-    PercentAsByte: number;
-
-
-
-    ToString(): string;
-
-
-}
-    
-interface PreciseTickConstructor {
-
-
-    new(tick: number, percentAsByte: number): PreciseTick;
-    new(tick: number, percent: number): PreciseTick;
-
-
-    AsDouble(tick: number, percent: number): PreciseTick;
-
-}
-declare const PreciseTick: PreciseTickConstructor;
-    
-interface TimeManagerConstructor {
-    UNSET_TICK: number;
-
-
-    new(): TimeManager;
-
-
-    GetTickPercentAsDouble(value: number): number;
-
-}
-declare const TimeManager: TimeManagerConstructor;
-    
-    
-interface SceneProcessorBase extends MonoBehaviour {
-
-
-
-    ActivateLoadedScenes(): void;
-    AddLoadedScene(scene: Scene): void;
-    AsyncsIsDone(): unknown;
-    BeginLoadAsync(sceneName: string, parameters: LoadSceneParameters): void;
-    BeginUnloadAsync(scene: Scene): void;
-    FindOrCreateScene(name: string): Scene;
-    GetDelayedDestroyScene(): Scene;
-    GetFallbackActiveScene(): Scene;
-    GetLoadedScenes(): CSArray<Scene>;
-    GetMovedObjectsScene(): Scene;
-    GetPercentComplete(): number;
-    Initialize(manager: SceneManager): void;
-    IsPercentComplete(): boolean;
-    LoadEnd(queueData: LoadQueueData): void;
-    LoadStart(queueData: LoadQueueData): void;
-    UnloadEnd(queueData: LoadQueueData): void;
-    UnloadEnd(queueData: UnloadQueueData): void;
-    UnloadStart(queueData: LoadQueueData): void;
-    UnloadStart(queueData: UnloadQueueData): void;
-
-
-}
-    
-interface LoadSceneParameters {
-    /**
-     * See LoadSceneMode.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/SceneManagement.LoadSceneParameters-loadSceneMode.html | SceneManagement.LoadSceneParameters.loadSceneMode}
-     */
-    loadSceneMode: LoadSceneMode;
-    /**
-     * See SceneManagement.LocalPhysicsMode.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/SceneManagement.LoadSceneParameters-localPhysicsMode.html | SceneManagement.LoadSceneParameters.localPhysicsMode}
-     */
-    localPhysicsMode: LocalPhysicsMode;
-
-
-
-
-
-}
-    
-interface LoadSceneParametersConstructor {
-
-
-    new(mode: LoadSceneMode): LoadSceneParameters;
-    new(mode: LoadSceneMode, physicsMode: LocalPhysicsMode): LoadSceneParameters;
-
-
-
-}
-declare const LoadSceneParameters: LoadSceneParametersConstructor;
-    
-interface LoadQueueData {
-    ScopeType: SceneScopeType;
-    Connections: CSArray<NetworkConnection>;
-    SceneLoadData: SceneLoadData;
-    GlobalScenes: CSArray<string>;
-    readonly AsServer: boolean;
-
-
-
-
-
-}
-    
-interface SceneLoadData {
-    PreferredActiveScene: PreferredScene;
-    SceneLookupDatas: CSArray<SceneLookupData>;
-    MovedNetworkObjects: CSArray<NetworkObject>;
-    ReplaceScenes: ReplaceOption;
-    Params: LoadParams;
-    Options: LoadOptions;
-
-
-
-    GetFirstLookupScene(): Scene;
-
-
-}
-    
-interface PreferredScene {
-    Client: SceneLookupData;
-    Server: SceneLookupData;
-
-
-
-
-
-}
-    
-interface SceneLookupData {
-    Handle: number;
-    Name: string;
-    readonly NameOnly: string;
-    readonly IsValid: boolean;
-
-
-
-    Equals(sld: SceneLookupData): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    GetScene(foundByHandle: unknown, warnIfDuplicates: boolean): Scene;
-    ToString(): string;
-
-
-}
-    
-interface SceneLookupDataConstructor {
-
-
-    new(): SceneLookupData;
-    new(scene: Scene): SceneLookupData;
-    new(name: string): SceneLookupData;
-    new(handle: number): SceneLookupData;
-    new(handle: number, name: string): SceneLookupData;
-
-
-    CreateData(scene: Scene): SceneLookupData;
-    CreateData(name: string): SceneLookupData;
-    CreateData(handle: number): SceneLookupData;
-    CreateData(scenes: CSArray<Scene>): CSArray<SceneLookupData>;
-    CreateData(names: CSArray<string>): CSArray<SceneLookupData>;
-    CreateData(handles: CSArray<number>): CSArray<SceneLookupData>;
-    CreateData(scenes: CSArray<Scene>): CSArray<SceneLookupData>;
-    CreateData(names: CSArray<string>): CSArray<SceneLookupData>;
-    CreateData(handles: CSArray<number>): CSArray<SceneLookupData>;
-    ValidateData(data: SceneLookupData): CSArray<SceneLookupData>;
-    ValidateData(datas: CSArray<SceneLookupData>): CSArray<SceneLookupData>;
-
-}
-declare const SceneLookupData: SceneLookupDataConstructor;
-    
-interface PreferredSceneConstructor {
-
-
-    new(client: SceneLookupData, server: SceneLookupData): PreferredScene;
-    new(sld: SceneLookupData): PreferredScene;
-
-
-
-}
-declare const PreferredScene: PreferredSceneConstructor;
-    
-interface LoadParams {
-    ServerParams: CSArray<unknown>;
-    ClientParams: CSArray<number>;
-
-
-
-
-
-}
-    
-interface LoadParamsConstructor {
-
-
-    new(): LoadParams;
-
-
-
-}
-declare const LoadParams: LoadParamsConstructor;
-    
-interface LoadOptions {
-    AutomaticallyUnload: boolean;
-    AllowStacking: boolean;
-    LocalPhysics: LocalPhysicsMode;
-    Addressables: boolean;
-
-
-
-
-
-}
-    
-interface LoadOptionsConstructor {
-
-
-    new(): LoadOptions;
-
-
-
-}
-declare const LoadOptions: LoadOptionsConstructor;
-    
-interface SceneLoadDataConstructor {
-
-
-    new(): SceneLoadData;
-    new(scene: Scene): SceneLoadData;
-    new(sceneName: string): SceneLoadData;
-    new(sceneHandle: number): SceneLoadData;
-    new(sceneHandle: number, sceneName: string): SceneLoadData;
-    new(sceneLookupData: SceneLookupData): SceneLoadData;
-    new(scenes: CSArray<Scene>): SceneLoadData;
-    new(sceneNames: CSArray<string>): SceneLoadData;
-    new(sceneHandles: CSArray<number>): SceneLoadData;
-    new(scenes: CSArray<Scene>): SceneLoadData;
-    new(sceneNames: CSArray<string>): SceneLoadData;
-    new(sceneHandles: CSArray<number>): SceneLoadData;
-    new(sceneLookupDatas: CSArray<SceneLookupData>): SceneLoadData;
-    new(scene: Scene, movedNetworkObjects: CSArray<NetworkObject>): SceneLoadData;
-    new(scenes: CSArray<Scene>, movedNetworkObjects: CSArray<NetworkObject>): SceneLoadData;
-    new(sceneNames: CSArray<string>, movedNetworkObjects: CSArray<NetworkObject>): SceneLoadData;
-    new(sceneHandles: CSArray<number>, movedNetworkObjects: CSArray<NetworkObject>): SceneLoadData;
-    new(sceneLookupDatas: CSArray<SceneLookupData>, movedNetworkObjects: CSArray<NetworkObject>): SceneLoadData;
-
-
-
-}
-declare const SceneLoadData: SceneLoadDataConstructor;
-    
-interface LoadQueueDataConstructor {
-
-
-    new(): LoadQueueData;
-
-
-
-}
-declare const LoadQueueData: LoadQueueDataConstructor;
-    
-interface UnloadQueueData {
-    readonly ScopeType: SceneScopeType;
-    Connections: CSArray<NetworkConnection>;
-    SceneUnloadData: SceneUnloadData;
-    GlobalScenes: CSArray<string>;
-    readonly AsServer: boolean;
-
-
-
-
-
-}
-    
-interface SceneUnloadData {
-    PreferredActiveScene: PreferredScene;
-    SceneLookupDatas: CSArray<SceneLookupData>;
-    Params: UnloadParams;
-    Options: UnloadOptions;
-
-
-
-
-
-}
-    
-interface UnloadParams {
-    ServerParams: CSArray<unknown>;
-    ClientParams: CSArray<number>;
-
-
-
-
-
-}
-    
-interface UnloadParamsConstructor {
-
-
-    new(): UnloadParams;
-
-
-
-}
-declare const UnloadParams: UnloadParamsConstructor;
-    
-interface UnloadOptions {
-    Mode: ServerUnloadMode;
-    Addressables: boolean;
-
-
-
-
-
-}
-    
-interface UnloadOptionsConstructor {
-
-
-    new(): UnloadOptions;
-
-
-
-}
-declare const UnloadOptions: UnloadOptionsConstructor;
-    
-interface SceneUnloadDataConstructor {
-
-
-    new(): SceneUnloadData;
-    new(scene: Scene): SceneUnloadData;
-    new(sceneName: string): SceneUnloadData;
-    new(sceneHandle: number): SceneUnloadData;
-    new(sceneLookupData: SceneLookupData): SceneUnloadData;
-    new(scenes: CSArray<Scene>): SceneUnloadData;
-    new(sceneNames: CSArray<string>): SceneUnloadData;
-    new(sceneHandles: CSArray<number>): SceneUnloadData;
-    new(scenes: CSArray<Scene>): SceneUnloadData;
-    new(sceneNames: CSArray<string>): SceneUnloadData;
-    new(sceneHandles: CSArray<number>): SceneUnloadData;
-    new(sceneLookupDatas: CSArray<SceneLookupData>): SceneUnloadData;
-
-
-
-}
-declare const SceneUnloadData: SceneUnloadDataConstructor;
-    
-interface UnloadQueueDataConstructor {
-
-
-    new(): UnloadQueueData;
-
-
-
-}
-declare const UnloadQueueData: UnloadQueueDataConstructor;
-    
-interface SceneLoadStartEventArgs {
-    readonly QueueData: LoadQueueData;
-
-
-
-
-
-}
-    
-interface SceneLoadPercentEventArgs {
-    readonly QueueData: LoadQueueData;
-    readonly Percent: number;
-
-
-
-
-
-}
-    
-interface SceneLoadEndEventArgs {
-    readonly QueueData: LoadQueueData;
-    readonly LoadedScenes: CSArray<Scene>;
-    readonly SkippedSceneNames: CSArray<string>;
-    readonly UnloadedSceneNames: CSArray<string>;
-
-
-
-
-
-}
-    
-interface SceneUnloadStartEventArgs {
-    readonly QueueData: UnloadQueueData;
-
-
-
-
-
-}
-    
-interface SceneUnloadEndEventArgs {
-    readonly QueueData: UnloadQueueData;
-    UnloadedScenes: CSArray<Scene>;
-
-
-
-
-
-}
-    
-interface ClientPresenceChangeEventArgs {
-    Scene: Scene;
-    Connection: NetworkConnection;
-    Added: boolean;
-
-
-
-
-
-}
-    
-    
-interface PredictionManager extends MonoBehaviour {
-    readonly IsReconciling: boolean;
-    readonly ClientReplayTick: number;
-    readonly ServerReplayTick: number;
-    readonly ClientStateTick: number;
-    readonly ServerStateTick: number;
-    readonly StateOrder: ReplicateStateOrder;
-
-    readonly OnPreReconcile: MonoSignal<void>;
-    readonly OnReconcile: MonoSignal<void>;
-    readonly OnPostReconcile: MonoSignal<void>;
-    readonly OnPrePhysicsTransformSync: MonoSignal<void>;
-    readonly OnPostPhysicsTransformSync: MonoSignal<void>;
-    readonly OnPreReplicateReplay: MonoSignal<void>;
-    readonly OnPostReplicateReplay: MonoSignal<void>;
-
-
-    GetMaximumServerReplicates(): number;
-    SetMaximumServerReplicates(value: number): void;
-    SetStateOrder(stateOrder: ReplicateStateOrder): void;
-
-
-}
-    
-interface PredictionManagerConstructor {
-
-
-    new(): PredictionManager;
-
-
-
-}
-declare const PredictionManager: PredictionManagerConstructor;
-    
-interface RollbackManager extends MonoBehaviour {
-
-
-
-    Return(): void;
-    Rollback(pt: PreciseTick, physicsType: RollbackPhysicsType, asOwnerAndClientHost: boolean): void;
-    Rollback(scene: Scene, pt: PreciseTick, physicsType: RollbackPhysicsType, asOwnerAndClientHost: boolean): void;
-    Rollback(sceneHandle: number, pt: PreciseTick, physicsType: RollbackPhysicsType, asOwnerAndClientHost: boolean): void;
-    Rollback(origin: Vector3, normalizedDirection: Vector3, distance: number, pt: PreciseTick, physicsType: RollbackPhysicsType, asOwnerAndClientHost: boolean): void;
-    Rollback(scene: Scene, origin: Vector3, normalizedDirection: Vector3, distance: number, pt: PreciseTick, physicsType: RollbackPhysicsType, asOwnerAndClientHost: boolean): void;
-    Rollback(sceneHandle: number, origin: Vector3, normalizedDirection: Vector3, distance: number, pt: PreciseTick, physicsType: RollbackPhysicsType, asOwnerAndClientHost: boolean): void;
-
-
-}
-    
-interface RollbackManagerConstructor {
-
-
-    new(): RollbackManager;
-
-
-
-}
-declare const RollbackManager: RollbackManagerConstructor;
-    
-interface BasicQueue<T> {
-    readonly Capacity: number;
-    readonly Count: number;
-    readonly WriteIndex: number;
-    Item: T;
-
-
-
-    Clear(): void;
-    Dequeue(): T;
-    Enqueue(data: T): void;
-    Peek(): T;
-    TryDequeue(result: unknown): boolean;
-    TryPeek(result: unknown): boolean;
-
-
-}
-    
-interface BasicQueueConstructor {
-
-
-    new(): BasicQueue<T>;
-
-
-
-}
-declare const BasicQueue: BasicQueueConstructor;
-    
-interface ReconcileUserLogicDelegate<T> {
-
-
-
-    BeginInvoke(data: T, channel: Channel, callback: unknown, object: unknown): unknown;
-    EndInvoke(result: unknown): void;
-    Invoke(data: T, channel: Channel): void;
-
-
-}
-    
-interface ReconcileUserLogicDelegateConstructor {
-
-
-    new(object: unknown, method: unknown): ReconcileUserLogicDelegate<T>;
-
-
-
-}
-declare const ReconcileUserLogicDelegate: ReconcileUserLogicDelegateConstructor;
-    
-interface PooledReader extends Reader {
-
-
-
-    Store(): void;
-
-
-}
-    
-interface IReconcileData {
-
-
-
-    Dispose(): void;
-    GetTick(): number;
-    SetTick(value: number): void;
-
-
-}
-    
-interface ClientRpcDelegate {
-
-
-
-    BeginInvoke(reader: PooledReader, channel: Channel, callback: unknown, object: unknown): unknown;
-    EndInvoke(result: unknown): void;
-    Invoke(reader: PooledReader, channel: Channel): void;
-
-
-}
-    
-interface ClientRpcDelegateConstructor {
-
-
-    new(object: unknown, method: unknown): ClientRpcDelegate;
-
-
-
-}
-declare const ClientRpcDelegate: ClientRpcDelegateConstructor;
-    
-interface ReconcileRpcDelegate {
-
-
-
-    BeginInvoke(reader: PooledReader, channel: Channel, callback: unknown, object: unknown): unknown;
-    EndInvoke(result: unknown): void;
-    Invoke(reader: PooledReader, channel: Channel): void;
-
-
-}
-    
-interface ReconcileRpcDelegateConstructor {
-
-
-    new(object: unknown, method: unknown): ReconcileRpcDelegate;
-
-
-
-}
-declare const ReconcileRpcDelegate: ReconcileRpcDelegateConstructor;
-    
-interface ReplicateRpcDelegate {
-
-
-
-    BeginInvoke(reader: PooledReader, sender: NetworkConnection, channel: Channel, callback: unknown, object: unknown): unknown;
-    EndInvoke(result: unknown): void;
-    Invoke(reader: PooledReader, sender: NetworkConnection, channel: Channel): void;
-
-
-}
-    
-interface ReplicateRpcDelegateConstructor {
-
-
-    new(object: unknown, method: unknown): ReplicateRpcDelegate;
-
-
-
-}
-declare const ReplicateRpcDelegate: ReplicateRpcDelegateConstructor;
-    
-interface ServerRpcDelegate {
-
-
-
-    BeginInvoke(reader: PooledReader, channel: Channel, sender: NetworkConnection, callback: unknown, object: unknown): unknown;
-    EndInvoke(result: unknown): void;
-    Invoke(reader: PooledReader, channel: Channel, sender: NetworkConnection): void;
-
-
-}
-    
-interface ServerRpcDelegateConstructor {
-
-
-    new(object: unknown, method: unknown): ServerRpcDelegate;
-
-
-
-}
-declare const ServerRpcDelegate: ServerRpcDelegateConstructor;
-    
-interface ReplicateUserLogicDelegate<T> {
-
-
-
-    BeginInvoke(data: T, state: ReplicateState, channel: Channel, callback: unknown, object: unknown): unknown;
-    EndInvoke(result: unknown): void;
-    Invoke(data: T, state: ReplicateState, channel: Channel): void;
-
-
-}
-    
-interface ReplicateUserLogicDelegateConstructor {
-
-
-    new(object: unknown, method: unknown): ReplicateUserLogicDelegate<T>;
-
-
-
-}
-declare const ReplicateUserLogicDelegate: ReplicateUserLogicDelegateConstructor;
-    
-interface PooledWriter extends Writer {
-
-
-
-    Store(): void;
-    StoreLength(): void;
-
-
-}
-    
-interface PooledWriterConstructor {
-
-
-    new(): PooledWriter;
-
-
-
-}
-declare const PooledWriter: PooledWriterConstructor;
-    
-    
-interface PredictedSpawn extends NetworkBehaviour {
-
-
-
-    Awake(): void;
-    GetAllowDespawning(): boolean;
-    GetAllowSpawning(): boolean;
-    NetworkInitialize___Early(): void;
-    NetworkInitialize__Late(): void;
-    NetworkInitializeIfDisabled(): void;
-    OnTryDespawnClient(): boolean;
-    OnTryDespawnServer(despawner: NetworkConnection): boolean;
-    OnTrySpawnClient(owner: NetworkConnection): boolean;
-    OnTrySpawnServer(spawner: NetworkConnection, owner: NetworkConnection): boolean;
-    SetAllowDespawning(value: boolean): void;
-    SetAllowSpawning(value: boolean): void;
-
-
-}
-    
-interface PredictedSpawnConstructor {
-
-
-    new(): PredictedSpawn;
-
-
-
-}
-declare const PredictedSpawn: PredictedSpawnConstructor;
-    
-interface ChildTransformTickSmoother extends IResettable {
-
-
-
-    Deinitialize(): void;
-    Initialize(nob: NetworkObject, graphicalObject: Transform, detach: boolean, teleportDistance: number, tickDelta: number, ownerInterpolation: number, ownerSmoothedProperties: TransformPropertiesFlag, spectatorInterpolation: number, specatorSmoothedProperties: TransformPropertiesFlag, adaptiveInterpolation: AdaptiveInterpolationType): void;
-    InitializeState(): void;
-    OnPostReplay(clientTick: number): void;
-    OnPostTick(clientTick: number): void;
-    OnPreReconcile(): void;
-    OnPreTick(): void;
-    ResetState(): void;
-    SetAdaptiveInterpolation(adaptiveInterpolation: AdaptiveInterpolationType): void;
-    SetSmoothedProperties(value: TransformPropertiesFlag, forSpectator: boolean): void;
-    SetSpectatorInterpolation(value: number, disableAdaptiveInterpolation: boolean): void;
-    Teleport(): void;
-
-
-}
-    
-interface ChildTransformTickSmootherConstructor {
-
-
-    new(): ChildTransformTickSmoother;
-
-
-
-}
-declare const ChildTransformTickSmoother: ChildTransformTickSmootherConstructor;
-    
-interface RigidbodyPauser extends IResettable {
-    readonly Paused: boolean;
-
-
-
-    InitializeState(): void;
-    Pause(): void;
-    ResetState(): void;
-    Unpause(): void;
-    UpdateRigidbodies(): void;
-    UpdateRigidbodies(t: Transform, rbType: RigidbodyType, getInChildren: boolean): void;
-
-
-}
-    
-interface RigidbodyPauserConstructor {
-
-
-    new(): RigidbodyPauser;
-
-
-
-}
-declare const RigidbodyPauser: RigidbodyPauserConstructor;
-    
-    
-interface LevelOfDetailData extends IResettable {
-    CurrentLevelOfDetail: number;
-    PreviousLevelOfDetail: number;
-
-
-
-    InitializeState(): void;
-    ResetState(): void;
-
-
-}
-    
-interface LevelOfDetailDataConstructor {
-
-
-    new(): LevelOfDetailData;
-
-
-
-}
-declare const LevelOfDetailData: LevelOfDetailDataConstructor;
-    
-interface NetworkConnectionConstructor {
-    UNSET_CLIENTID_VALUE: number;
-    MAXIMUM_CLIENTID_VALUE: number;
-    MAXIMUM_CLIENTID_WITHOUT_SIMULATED_VALUE: number;
-    SIMULATED_CLIENTID_VALUE: number;
-    CLIENTID_UNCOMPRESSED_RESERVE_LENGTH: number;
-
-
-    new(): NetworkConnection;
-    new(manager: NetworkManager, clientId: number, transportIndex: number, asServer: boolean): NetworkConnection;
-
-
-
-}
-declare const NetworkConnection: NetworkConnectionConstructor;
-    
-interface ServerObjects extends ManagedObjects {
-
-    readonly OnPreDestroyClientObjects: MonoSignal<NetworkConnection>;
-
-
-    AddTimedNetworkObserver(networkObject: NetworkObject): void;
-    PreSpawnCheckNetworkObject(networkObject: NetworkObject): void;
-    RebuildObservers(timedOnly: boolean): void;
-    RebuildObservers(nob: NetworkObject, timedOnly: boolean): void;
-    RebuildObservers(connection: NetworkConnection, timedOnly: boolean): void;
-    RebuildObservers(nobs: CSArray<NetworkObject>, timedOnly: boolean): void;
-    RebuildObservers(connections: CSArray<NetworkConnection>, timedOnly: boolean): void;
-    RebuildObservers(nobs: CSArray<NetworkObject>, conn: NetworkConnection, timedOnly: boolean): void;
-    RebuildObservers(networkObject: NetworkObject, connections: CSArray<NetworkConnection>, timedOnly: boolean): void;
-    RebuildObservers(nobs: CSArray<NetworkObject>, conns: CSArray<NetworkConnection>, timedOnly: boolean): void;
-    RebuildObservers(nob: NetworkObject, conn: NetworkConnection, timedOnly: boolean): void;
-    RecentlyDespawned(objectId: number, ticks: number): boolean;
-    RemoveTimedNetworkObserver(networkObject: NetworkObject): void;
-
-
-}
-    
-interface Authenticator extends MonoBehaviour {
-    readonly Initialized: boolean;
-
-    readonly OnAuthenticationResult: MonoSignal<NetworkConnection, boolean>;
-
-
-    InitializeOnce(networkManager: NetworkManager): void;
-    OnRemoteConnection(connection: NetworkConnection): void;
-
-
-}
-    
-interface ServerManagerConstructor {
-    MAXIMUM_REMOTE_CLIENT_TIMEOUT_DURATION: number;
-
-
-    new(): ServerManager;
-
-
-
-}
-declare const ServerManager: ServerManagerConstructor;
-    
-interface DebugManager extends MonoBehaviour {
-    WriteSceneObjectDetails: boolean;
-    ObserverRpcLinks: boolean;
-    TargetRpcLinks: boolean;
-    ReplicateRpcLinks: boolean;
-    ReconcileRpcLinks: boolean;
-    ServerRpcLinks: boolean;
-
-
-
-
-
-}
-    
-interface DebugManagerConstructor {
-
-
-    new(): DebugManager;
-
-
-
-}
-declare const DebugManager: DebugManagerConstructor;
-    
-interface StatisticsManager extends MonoBehaviour {
-    NetworkTraffic: NetworkTraficStatistics;
-
-
-
-
-
-}
-    
-interface NetworkTraficStatistics {
-    readonly UpdateClient: boolean;
-    readonly UpdateServer: boolean;
-
-    readonly OnClientNetworkTraffic: MonoSignal<NetworkTrafficArgs>;
-    readonly OnServerNetworkTraffic: MonoSignal<NetworkTrafficArgs>;
-
-
-    LocalClientReceivedData(dataLength: number): void;
-    LocalServerReceivedData(dataLength: number): void;
-    SetUpdateClient(update: boolean): void;
-    SetUpdateServer(update: boolean): void;
-
-
-}
-    
-interface NetworkTrafficArgs {
-    readonly ToServerBytes: number;
-    readonly FromServerBytes: number;
-
-
-
-
-
-}
-    
-interface NetworkTrafficArgsConstructor {
-
-
-    new(toServerBytes: number, fromServerBytes: number): NetworkTrafficArgs;
-
-
-
-}
-declare const NetworkTrafficArgs: NetworkTrafficArgsConstructor;
-    
-interface NetworkTraficStatisticsConstructor {
-
-
-    new(): NetworkTraficStatistics;
-
-
-    FormatBytesToLargest(bytes: number): string;
-
-}
-declare const NetworkTraficStatistics: NetworkTraficStatisticsConstructor;
-    
-interface StatisticsManagerConstructor {
-
-
-    new(): StatisticsManager;
-
-
-
-}
-declare const StatisticsManager: StatisticsManagerConstructor;
-    
-interface ObjectPool extends MonoBehaviour {
-
-
-
-    CacheObjects(prefab: NetworkObject, count: number, asServer: boolean): void;
-    GetPrefab(prefabId: number, collectionId: number, asServer: boolean): NetworkObject;
-    InitializeOnce(nm: NetworkManager): void;
-    LateUpdate(): void;
-    RetrieveObject(prefabId: number, collectionId: number, options: ObjectPoolRetrieveOption, parent: Transform, position: unknown, rotation: unknown, scale: unknown, asServer: boolean): NetworkObject;
-    StoreObject(instantiated: NetworkObject, asServer: boolean): void;
-
-
-}
-    
-interface PrefabObjects extends ScriptableObject {
-    readonly CollectionId: number;
-
-
-
-    AddObject(networkObject: NetworkObject, checkForDuplicates: boolean): void;
-    AddObject(dualPrefab: DualPrefab, checkForDuplicates: boolean): void;
-    AddObjects(networkObjects: CSArray<NetworkObject>, checkForDuplicates: boolean): void;
-    AddObjects(networkObjects: CSArray<NetworkObject>, checkForDuplicates: boolean): void;
-    AddObjects(dualPrefab: CSArray<DualPrefab>, checkForDuplicates: boolean): void;
-    AddObjects(dualPrefab: CSArray<DualPrefab>, checkForDuplicates: boolean): void;
-    Clear(): void;
-    GetObject(asServer: boolean, id: number): NetworkObject;
-    GetObjectCount(): number;
-    InitializePrefabRange(startIndex: number): void;
-    RemoveNull(): void;
-
-
-}
-    
-interface DualPrefab {
-    Server: NetworkObject;
-    Client: NetworkObject;
-
-
-
-
-
-}
-    
-interface NetworkManagerConstructor {
-    FISHNET_VERSION: string;
-    readonly Instances: CSArray<NetworkManager>;
-    readonly EmptyConnection: NetworkConnection;
-
-
-    new(): NetworkManager;
-
-
-
-}
-declare const NetworkManager: NetworkManagerConstructor;
-    
 interface NetworkCoreConstructor {
     Net: Net;
-    readonly NetworkManager: NetworkManager;
 
 
     new(): NetworkCore;
 
 
-    Despawn(obj: GameObject): void;
-    GetNetworkConnection(clientId: number): NetworkConnection;
     SetNet(net: Net): void;
-    Spawn(obj: GameObject, clientId: number): void;
-    Spawn(obj: GameObject): void;
 
 }
 declare const NetworkCore: NetworkCoreConstructor;
@@ -26822,6 +19204,8 @@ interface RectInt {
 
 }
     
+    
+    
 interface PositionEnumerator {
     readonly Current: Vector2Int;
 
@@ -27785,46 +20169,6 @@ Only usable on Android, Windows Phone or Windows Tablets.
 
 }
 declare const Input: InputConstructor;
-    
-interface InstanceFinder {
-
-
-
-
-
-}
-    
-interface InstanceFinderConstructor {
-    readonly NetworkManager: NetworkManager;
-    readonly ServerManager: ServerManager;
-    readonly ClientManager: ClientManager;
-    readonly TransportManager: TransportManager;
-    readonly TimeManager: TimeManager;
-    readonly SceneManager: SceneManager;
-    readonly RollbackManager: RollbackManager;
-    readonly PredictionManager: PredictionManager;
-    readonly StatisticsManager: StatisticsManager;
-    readonly IsServerStarted: boolean;
-    readonly IsServerOnlyStarted: boolean;
-    readonly IsClientStarted: boolean;
-    readonly IsClientOnlyStarted: boolean;
-    readonly IsHostStarted: boolean;
-    readonly IsOffline: boolean;
-
-
-
-
-    GetInstance<T>(): T;
-    HasInstance<T>(): boolean;
-    RegisterInstance<T>(component: T, replace: boolean): void;
-    RegisterInvokeOnInstance<T>(handler: unknown): void;
-    TryGetInstance<T>(component: unknown): boolean;
-    TryRegisterInstance<T>(component: T): boolean;
-    UnregisterInstance<T>(): void;
-    UnregisterInvokeOnInstance<T>(handler: unknown): void;
-
-}
-declare const InstanceFinder: InstanceFinderConstructor;
     
 interface IEventSystemHandler {
 
@@ -38422,126 +30766,232 @@ interface AgonesBetaSdkConstructor {
 }
 declare const AgonesBetaSdk: AgonesBetaSdkConstructor;
     
+    
+interface NetworkConnection {
+    readonly connectionId: number;
+    isAuthenticated: boolean;
+    authenticationData: unknown;
+    isReady: boolean;
+    lastMessageTime: number;
+    readonly owned: CSArray<NetworkIdentity>;
+    readonly identity: NetworkIdentity;
+    readonly remoteTimeStamp: number;
+
+
+
+    Cleanup(): void;
+    Disconnect(): void;
+    Send<T>(message: T, channelId: number): void;
+    ToString(): string;
+
+
+}
+    
+interface NetworkIdentity extends MonoBehaviour {
+    readonly observers: CSDictionary<number, NetworkConnectionToClient>;
+    sceneId: number;
+    serverOnly: boolean;
+    visibility: Visibility;
+    readonly isClient: boolean;
+    readonly isServer: boolean;
+    readonly isLocalPlayer: boolean;
+    readonly isServerOnly: boolean;
+    readonly isClientOnly: boolean;
+    readonly isOwned: boolean;
+    readonly netId: number;
+    readonly assetId: number;
+    readonly connectionToServer: NetworkConnection;
+    readonly connectionToClient: NetworkConnectionToClient;
+    readonly NetworkBehaviours: CSArray<NetworkBehaviour>;
+    readonly SpawnedFromInstantiate: boolean;
+
+
+
+    AssignClientAuthority(conn: NetworkConnectionToClient): boolean;
+    RemoveClientAuthority(): void;
+    SetSceneIdSceneHashPartInternal(): void;
+
+
+}
+    
+interface NetworkConnectionToClient extends NetworkConnection {
+    readonly observing: CSArray<NetworkIdentity>;
+    unbatcher: Unbatcher;
+    remoteTimeline: number;
+    remoteTimescale: number;
+    snapshotBufferSizeLimit: number;
+    readonly address: string;
+    readonly rtt: number;
+
+
+
+    Disconnect(): void;
+    OnTimeSnapshot(snapshot: TimeSnapshot): void;
+    UpdateTimeInterpolation(): void;
+
+
+}
+    
+interface Unbatcher {
+    readonly BatchesCount: number;
+
+
+
+    AddBatch(batch: CSArray<number>): boolean;
+    GetNextMessage(message: CSArray<number>, remoteTimeStamp: unknown): boolean;
+
+
+}
+    
+interface UnbatcherConstructor {
+
+
+    new(): Unbatcher;
+
+
+
+}
+declare const Unbatcher: UnbatcherConstructor;
+    
+interface Snapshot {
+    remoteTime: number;
+    localTime: number;
+
+
+
+
+
+}
+    
+interface TimeSnapshot extends Snapshot {
+    remoteTime: number;
+    localTime: number;
+
+
+
+
+
+}
+    
+interface TimeSnapshotConstructor {
+
+
+    new(remoteTime: number, localTime: number): TimeSnapshot;
+
+
+
+}
+declare const TimeSnapshot: TimeSnapshotConstructor;
+    
+interface NetworkConnectionToClientConstructor {
+
+
+    new(networkConnectionId: number, clientAddress: string): NetworkConnectionToClient;
+
+
+
+}
+declare const NetworkConnectionToClient: NetworkConnectionToClientConstructor;
+    
+interface NetworkIdentityConstructor {
+
+
+    new(): NetworkIdentity;
+
+
+    AssetGuidToUint(guid: unknown): number;
+    GetSceneIdentity(id: number): NetworkIdentity;
+    ResetNextNetworkId(): void;
+
+    readonly clientAuthorityCallback: MonoSignal<void>;
+}
+declare const NetworkIdentity: NetworkIdentityConstructor;
+    
+interface NetworkConnectionConstructor {
+    LocalConnectionId: number;
+
+
+
+
+
+}
+declare const NetworkConnection: NetworkConnectionConstructor;
+    
+interface NetworkReader {
+    Position: number;
+    readonly Remaining: number;
+    readonly Capacity: number;
+
+
+
+    Read<T>(): T;
+    ReadByte(): number;
+    ReadBytes(bytes: CSArray<number>, count: number): CSArray<number>;
+    ReadBytesSegment(count: number): CSArray<number>;
+    SetBuffer(segment: CSArray<number>): void;
+    ToString(): string;
+
+
+}
+    
+interface NetworkReaderConstructor {
+    AllocationLimit: number;
+
+
+    new(segment: CSArray<number>): NetworkReader;
+
+
+
+}
+declare const NetworkReader: NetworkReaderConstructor;
+    
+interface NetworkWriter {
+    Position: number;
+    readonly Capacity: number;
+
+
+
+    Reset(): void;
+    ToArray(): CSArray<number>;
+    ToArraySegment(): CSArray<number>;
+    ToString(): string;
+    Write<T>(value: T): void;
+    WriteByte(value: number): void;
+    WriteBytes(array: CSArray<number>, offset: number, count: number): void;
+    WriteBytes(ptr: unknown, offset: number, size: number): boolean;
+
+
+}
+    
+interface NetworkWriterConstructor {
+    MaxStringLength: number;
+    DefaultCapacity: number;
+
+
+    new(): NetworkWriter;
+
+
+
+}
+declare const NetworkWriter: NetworkWriterConstructor;
+    
+    
 interface ServerContext extends NetworkBehaviour {
-    readonly serverId: SyncVar<string>;
-    readonly gameId: SyncVar<string>;
-    readonly organizationId: SyncVar<string>;
+    serverId: string;
+    gameId: string;
+    organizationId: string;
+    NetworkserverId: string;
+    NetworkgameId: string;
+    NetworkorganizationId: string;
 
 
 
-    Awake(): void;
-    NetworkInitialize___Early(): void;
-    NetworkInitialize__Late(): void;
-    NetworkInitializeIfDisabled(): void;
-
-
-}
-    
-interface ISyncVar {
-
-
-
+    DeserializeSyncVars(reader: NetworkReader, initialState: boolean): void;
+    SerializeSyncVars(writer: NetworkWriter, forceAll: boolean): void;
+    Weaved(): boolean;
 
 
 }
-    
-interface SyncBase {
-    readonly IsInitialized: boolean;
-    readonly IsNetworkInitialized: boolean;
-    readonly IsSyncObject: boolean;
-    readonly IsDirty: boolean;
-    readonly OnStartServerCalled: boolean;
-    readonly OnStartClientCalled: boolean;
-    readonly SyncIndex: number;
-
-
-
-    InitializeEarly(nb: NetworkBehaviour, syncIndex: number, isSyncObject: boolean): void;
-    InitializeLate(): void;
-    OnStartCallback(asServer: boolean): void;
-    OnStopCallback(asServer: boolean): void;
-    PreInitialize(networkManager: NetworkManager): void;
-    Read(reader: PooledReader, asServer: boolean): void;
-    ResetState(asServer: boolean): void;
-    UpdatePermissions(writePermissions: WritePermission, readPermissions: ReadPermission): void;
-    UpdatePermissions(writePermissions: WritePermission): void;
-    UpdatePermissions(readPermissions: ReadPermission): void;
-    UpdateSendRate(sendRate: number): void;
-    UpdateSettings(settings: SyncTypeSettings): void;
-    UpdateSettings(channel: Channel): void;
-    UpdateSettings(writePermissions: WritePermission, readPermissions: ReadPermission, sendRate: number, channel: Channel): void;
-    WriteDelta(writer: PooledWriter, resetSyncTick: boolean): void;
-    WriteFull(writer: PooledWriter): void;
-
-
-}
-    
-interface SyncTypeSettings {
-    WritePermission: WritePermission;
-    ReadPermission: ReadPermission;
-    SendRate: number;
-    Channel: Channel;
-
-
-
-
-
-}
-    
-interface SyncTypeSettingsConstructor {
-
-
-    new(sendRate: number): SyncTypeSettings;
-    new(sendRate: number, channel: Channel): SyncTypeSettings;
-    new(channel: Channel): SyncTypeSettings;
-    new(writePermissions: WritePermission): SyncTypeSettings;
-    new(readPermissions: ReadPermission): SyncTypeSettings;
-    new(writePermissions: WritePermission, readPermissions: ReadPermission): SyncTypeSettings;
-    new(writePermissions: WritePermission, readPermissions: ReadPermission, sendRate: number, channel: Channel): SyncTypeSettings;
-
-
-
-}
-declare const SyncTypeSettings: SyncTypeSettingsConstructor;
-    
-interface SyncBaseConstructor {
-
-
-    new(): SyncBase;
-    new(settings: SyncTypeSettings): SyncBase;
-
-
-
-}
-declare const SyncBase: SyncBaseConstructor;
-    
-interface SyncVar<T> extends SyncBase, ISyncVar {
-    Value: T;
-
-    readonly OnChange: MonoSignal<T>;
-
-
-    DirtyAll(): void;
-    InterpolatedValue(useCurrentValue: boolean): T;
-    OnStartCallback(asServer: boolean): void;
-    ResetState(asServer: boolean): void;
-    SetInitialValues(value: T): void;
-    WriteDelta(writer: PooledWriter, resetSyncTick: boolean): void;
-    WriteFull(obj0: PooledWriter): void;
-
-
-}
-    
-interface SyncVarConstructor {
-
-
-    new(settings: SyncTypeSettings): SyncVar<T>;
-    new(initialValue: T, settings: SyncTypeSettings): SyncVar<T>;
-
-
-
-}
-declare const SyncVar: SyncVarConstructor;
     
 interface ServerContextConstructor {
 
@@ -38588,6 +31038,37 @@ interface CreateSceneParametersConstructor {
 
 }
 declare const CreateSceneParameters: CreateSceneParametersConstructor;
+    
+interface LoadSceneParameters {
+    /**
+     * See LoadSceneMode.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/SceneManagement.LoadSceneParameters-loadSceneMode.html | SceneManagement.LoadSceneParameters.loadSceneMode}
+     */
+    loadSceneMode: LoadSceneMode;
+    /**
+     * See SceneManagement.LocalPhysicsMode.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/SceneManagement.LoadSceneParameters-localPhysicsMode.html | SceneManagement.LoadSceneParameters.localPhysicsMode}
+     */
+    localPhysicsMode: LocalPhysicsMode;
+
+
+
+
+
+}
+    
+interface LoadSceneParametersConstructor {
+
+
+    new(mode: LoadSceneMode): LoadSceneParameters;
+    new(mode: LoadSceneMode, physicsMode: LocalPhysicsMode): LoadSceneParameters;
+
+
+
+}
+declare const LoadSceneParameters: LoadSceneParametersConstructor;
     
     
 interface AccessoryBuilder extends MonoBehaviour {
@@ -42602,7 +35083,6 @@ interface AirshipUniVoiceNetwork extends NetworkBehaviour, IChatroomNetwork {
     readonly OnAudioBroadcasted: MonoSignal<ChatroomAudioSegment>;
 
 
-    Awake(): void;
     BroadcastAudioSegment(data: ChatroomAudioSegment): void;
     CloseChatroom(data: unknown): void;
     Dispose(): void;
@@ -42610,15 +35090,11 @@ interface AirshipUniVoiceNetwork extends NetworkBehaviour, IChatroomNetwork {
     HostChatroom(data: unknown): void;
     JoinChatroom(data: unknown): void;
     LeaveChatroom(data: unknown): void;
-    NetworkInitialize___Early(): void;
-    NetworkInitialize__Late(): void;
-    NetworkInitializeIfDisabled(): void;
-    OnDespawnServer(connection: NetworkConnection): void;
-    OnSpawnServer(conn: NetworkConnection): void;
-    OnStartNetwork(): void;
+    NetworkServer_OnDisconnected(connection: NetworkConnectionToClient): void;
+    OnReadyCommand(conn: NetworkConnectionToClient): void;
     OnStartServer(): void;
-    OnStopNetwork(): void;
     ToByteArray<T>(obj: T): CSArray<number>;
+    Weaved(): boolean;
 
 
 }
@@ -43194,6 +35670,8 @@ interface VoxelBlockDefinionListConstructor {
 }
 declare const VoxelBlockDefinionList: VoxelBlockDefinionListConstructor;
     
+    
+    
 interface VoxelBlocksConstructor {
     meshTileOffsets: CSDictionary<number, Vector3>;
     meshTileSizes: CSDictionary<number, Vector3>;
@@ -43312,92 +35790,6 @@ interface CharacterControllerConstructor {
 
 }
 declare const CharacterController: CharacterControllerConstructor;
-    
-interface ProjectileTrajectoryRenderer extends MonoBehaviour {
-    maxIterations: number;
-    maxSegmentCount: number;
-    segmentStepModulo: number;
-
-
-
-    SetDrawingEnabled(enabled: boolean): void;
-    UpdateInfo(startingPoint: Vector3, velocity: Vector3, drag: number, gravity: number): void;
-
-
-}
-    
-interface ProjectileTrajectoryRendererConstructor {
-
-
-    new(): ProjectileTrajectoryRenderer;
-
-
-
-}
-declare const ProjectileTrajectoryRenderer: ProjectileTrajectoryRendererConstructor;
-    
-interface ProjectileLauncher extends NetworkBehaviour {
-
-
-
-    Awake(): void;
-    ClientFire(projectilePath: string, launcherItemTypeId: number, itemTypeId: number, position: Vector3, velocity: Vector3, gravity: number, drag: number): AirshipProjectile;
-    NetworkInitialize___Early(): void;
-    NetworkInitialize__Late(): void;
-    NetworkInitializeIfDisabled(): void;
-
-
-}
-    
-interface AirshipProjectile extends MonoBehaviour {
-    gravity: number;
-    drag: number;
-    launcherItemTypeId: number;
-    itemTypeId: number;
-
-    readonly OnHit: MonoSignal<unknown>;
-
-
-    Initialize(startingVelocity: Vector3, gravity: number, drag: number, passedTime: number, itemTypeId: number, launcherItemTypeId: number): void;
-
-
-}
-    
-interface AirshipProjectileConstructor {
-
-
-    new(): AirshipProjectile;
-
-
-
-}
-declare const AirshipProjectile: AirshipProjectileConstructor;
-    
-interface ProjectileLauncherConstructor {
-
-
-    new(): ProjectileLauncher;
-
-
-
-}
-declare const ProjectileLauncher: ProjectileLauncherConstructor;
-    
-interface ProjectileValidateEvent {
-    shooter: GameObject;
-    validated: boolean;
-    projectilePath: string;
-    position: Vector3;
-    velocity: Vector3;
-    gravity: number;
-    drag: number;
-    itemTypeId: number;
-
-
-
-
-
-}
     
 interface TrailRenderer extends Renderer {
     /**
@@ -43680,70 +36072,6 @@ interface CharacterMoveModifierConstructor {
 }
 declare const CharacterMoveModifier: CharacterMoveModifierConstructor;
     
-interface DynamicVariables extends ScriptableObject {
-    collectionId: string;
-    strings: CSArray<KeyValueReference<string>>;
-    numbers: CSArray<KeyValueReference<number>>;
-    vectors: CSArray<KeyValueReference<Vector3>>;
-
-
-
-    GetAsString(key: string): string;
-    GetNumber(key: string): number;
-    GetString(key: string): string;
-    GetVector3(key: string): Vector3;
-    Register(): void;
-    ReplicateAll(): void;
-    ReplicateNumber(key: string): void;
-    ReplicateString(key: string): void;
-    ReplicateVector3(key: string): void;
-    SetNumber(key: string, val: number): void;
-    SetString(key: string, val: string): void;
-    SetVector3(key: string, val: Vector3): void;
-
-
-}
-    
-interface KeyValueReference<T> {
-    key: string;
-    value: T;
-
-
-
-
-
-}
-    
-interface KeyValueReferenceConstructor {
-
-
-    new(): KeyValueReference<T>;
-
-
-
-}
-declare const KeyValueReference: KeyValueReferenceConstructor;
-    
-interface DynamicVariablesConstructor {
-
-
-    new(): DynamicVariables;
-
-
-
-}
-declare const DynamicVariables: DynamicVariablesConstructor;
-    
-interface ProjectileHitEvent {
-    raycastHit: RaycastHit;
-    velocity: Vector3;
-
-
-
-
-
-}
-    
 interface MaterialColorURP extends MonoBehaviour {
     colorSettings: CSArray<ColorSetting>;
     addedByEditorScript: boolean;
@@ -43789,53 +36117,6 @@ interface MaterialColorURPConstructor {
 
 }
 declare const MaterialColorURP: MaterialColorURPConstructor;
-    
-interface DefaultObjectPool extends ObjectPool {
-    readonly Cache: CSArray<CSDictionary<number, CSArray<NetworkObject>>>;
-
-
-
-    CacheObjects(prefab: NetworkObject, count: number, asServer: boolean): void;
-    ClearPool(): void;
-    ClearPool(collectionId: number): void;
-    GetOrCreateCache(collectionId: number, prefabId: number): CSArray<NetworkObject>;
-    GetPrefab(prefabId: number, collectionId: number, asServer: boolean): NetworkObject;
-    RetrieveObject(prefabId: number, collectionId: number, parent: Transform, nullablePosition: unknown, nullableRotation: unknown, nullableScale: unknown, makeActive: boolean, asServer: boolean): NetworkObject;
-    RetrieveObject(prefabId: number, collectionId: number, options: ObjectPoolRetrieveOption, parent: Transform, nullablePosition: unknown, nullableRotation: unknown, nullableScale: unknown, asServer: boolean): NetworkObject;
-    StoreObject(instantiated: NetworkObject, asServer: boolean): void;
-
-
-}
-    
-interface DefaultObjectPoolConstructor {
-
-
-    new(): DefaultObjectPool;
-
-
-
-}
-declare const DefaultObjectPool: DefaultObjectPoolConstructor;
-    
-interface AirshipObjectPool extends DefaultObjectPool {
-    maxSpawnPerFrame: number;
-
-
-
-    SlowlyCacheObjects(prefab: NetworkObject, count: number): void;
-
-
-}
-    
-interface AirshipObjectPoolConstructor {
-
-
-    new(): AirshipObjectPool;
-
-
-
-}
-declare const AirshipObjectPool: AirshipObjectPoolConstructor;
     
 interface MainMenuLoadingScreen extends BundleLoadingScreen {
     canvas: Canvas;
@@ -45230,98 +37511,6 @@ interface ScrollRect extends UIBehaviour, ILayoutGroup, IBeginDragHandler, IInit
 
 }
     
-    
-interface SnappedAxes {
-    X: boolean;
-    Y: boolean;
-    Z: boolean;
-
-
-
-
-
-}
-    
-interface GoalData extends IResettable {
-    ReceivedTick: number;
-    Rates: RateData;
-    Transforms: TransformData;
-
-
-
-    InitializeState(): void;
-    ResetState(): void;
-
-
-}
-    
-interface RateData extends IResettable {
-    Position: number;
-    Rotation: number;
-    Scale: number;
-    LastUnalteredPositionRate: number;
-    TickSpan: number;
-
-
-
-    InitializeState(): void;
-    ResetState(): void;
-    Update(rd: RateData): void;
-    Update(position: number, rotation: number, scale: number, unalteredPositionRate: number, tickSpan: number, abnormalRateDetected: boolean, timeRemaining: number): void;
-
-
-}
-    
-interface RateDataConstructor {
-
-
-    new(): RateData;
-
-
-
-}
-declare const RateData: RateDataConstructor;
-    
-interface TransformData extends IResettable {
-    Tick: number;
-    SnappingChecked: boolean;
-    Position: Vector3;
-    Rotation: Quaternion;
-    Scale: Vector3;
-    ExtrapolatedPosition: Vector3;
-    ExtrapolationState: ExtrapolateState;
-    ParentBehaviour: NetworkBehaviour;
-    readonly IsDefault: boolean;
-
-
-
-    InitializeState(): void;
-    ResetState(): void;
-
-
-}
-    
-interface TransformDataConstructor {
-
-
-    new(): TransformData;
-
-
-
-}
-declare const TransformData: TransformDataConstructor;
-    
-interface GoalDataConstructor {
-
-
-    new(): GoalData;
-
-
-
-}
-declare const GoalData: GoalDataConstructor;
-    
-    
 interface CameraScreenshotRecorder extends MonoBehaviour {
     saveFolder: SaveFolder;
     shouldSaveCaptures: boolean;
@@ -46046,30 +38235,6 @@ interface AirshipPlatformUtilConstructor {
 
 }
 declare const AirshipPlatformUtil: AirshipPlatformUtilConstructor;
-    
-interface ColliderRollback extends NetworkBehaviour {
-
-
-
-    Awake(): void;
-    NetworkInitialize___Early(): void;
-    NetworkInitialize__Late(): void;
-    NetworkInitializeIfDisabled(): void;
-    OnStartServer(): void;
-    OnStopServer(): void;
-
-
-}
-    
-interface ColliderRollbackConstructor {
-
-
-    new(): ColliderRollback;
-
-
-
-}
-declare const ColliderRollback: ColliderRollbackConstructor;
     
 interface AvatarAccessoryCollection extends ScriptableObject {
     accessories: CSArray<AccessoryComponent>;
@@ -51029,6 +43194,517 @@ interface TerrainConstructor {
 }
 declare const Terrain: TerrainConstructor;
     
+interface NetworkServer {
+
+
+
+
+
+}
+    
+interface InterestManagementBase extends MonoBehaviour {
+
+
+
+    OnCheckObserver(identity: NetworkIdentity, newObserver: NetworkConnectionToClient): boolean;
+    OnDestroyed(identity: NetworkIdentity): void;
+    OnSpawned(identity: NetworkIdentity): void;
+    Rebuild(identity: NetworkIdentity, initialize: boolean): void;
+    ResetState(): void;
+    SetHostVisibility(identity: NetworkIdentity, visible: boolean): void;
+
+
+}
+    
+interface TimeSample {
+    average: number;
+
+
+
+    Begin(): void;
+    End(): void;
+
+
+}
+    
+interface TimeSampleConstructor {
+
+
+    new(n: number): TimeSample;
+
+
+
+}
+declare const TimeSample: TimeSampleConstructor;
+    
+interface LocalConnectionToClient extends NetworkConnectionToClient {
+
+
+
+    Disconnect(): void;
+
+
+}
+    
+interface LocalConnectionToClientConstructor {
+
+
+    new(): LocalConnectionToClient;
+
+
+
+}
+declare const LocalConnectionToClient: LocalConnectionToClientConstructor;
+    
+interface NetworkServerConstructor {
+    maxConnections: number;
+    tickRate: number;
+    connections: CSDictionary<number, NetworkConnectionToClient>;
+    readonly spawned: CSDictionary<number, NetworkIdentity>;
+    dontListen: boolean;
+    isLoadingScene: boolean;
+    aoi: InterestManagementBase;
+    exceptionsDisconnect: boolean;
+    disconnectInactiveConnections: boolean;
+    disconnectInactiveTimeout: number;
+    OnConnectedEvent: unknown;
+    OnDisconnectedEvent: unknown;
+    OnErrorEvent: unknown;
+    OnTransportExceptionEvent: unknown;
+    actualTickRate: number;
+    earlyUpdateDuration: TimeSample;
+    lateUpdateDuration: TimeSample;
+    fullUpdateDuration: TimeSample;
+    readonly tickInterval: number;
+    readonly sendRate: number;
+    readonly sendInterval: number;
+    readonly localConnection: LocalConnectionToClient;
+    readonly active: boolean;
+    readonly activeHost: boolean;
+
+
+
+
+    AddConnection(conn: NetworkConnectionToClient): boolean;
+    AddPlayerForConnection(conn: NetworkConnectionToClient, player: GameObject, assetId: number): boolean;
+    AddPlayerForConnection(conn: NetworkConnectionToClient, player: GameObject): boolean;
+    ClearHandlers(): void;
+    Destroy(obj: GameObject): void;
+    DestroyPlayerForConnection(conn: NetworkConnectionToClient): void;
+    DisconnectAll(): void;
+    HasExternalConnections(): boolean;
+    Listen(maxConns: number): void;
+    RebuildObservers(identity: NetworkIdentity, initialize: boolean): void;
+    RegisterHandler<T>(handler: unknown, requireAuthentication: boolean): void;
+    RegisterHandler<T>(handler: unknown, requireAuthentication: boolean): void;
+    RemoveConnection(connectionId: number): boolean;
+    RemovePlayerForConnection(conn: NetworkConnectionToClient, removeOptions: RemovePlayerOptions): void;
+    ReplaceHandler<T>(handler: unknown, requireAuthentication: boolean): void;
+    ReplaceHandler<T>(handler: unknown, requireAuthentication: boolean): void;
+    ReplaceHandler<T>(handler: unknown, requireAuthentication: boolean): void;
+    ReplacePlayerForConnection(conn: NetworkConnectionToClient, player: GameObject, keepAuthority: boolean): boolean;
+    ReplacePlayerForConnection(conn: NetworkConnectionToClient, player: GameObject, assetId: number, keepAuthority: boolean): boolean;
+    SendToAll<T>(message: T, channelId: number, sendToReadyOnly: boolean): void;
+    SendToReady<T>(message: T, channelId: number): void;
+    SendToReadyObservers<T>(identity: NetworkIdentity, message: T, includeOwner: boolean, channelId: number): void;
+    SendToReadyObservers<T>(identity: NetworkIdentity, message: T, channelId: number): void;
+    SetAllClientsNotReady(): void;
+    SetClientNotReady(conn: NetworkConnectionToClient): void;
+    SetClientReady(conn: NetworkConnectionToClient): void;
+    Shutdown(): void;
+    Spawn(obj: GameObject, ownerPlayer: GameObject): void;
+    Spawn(obj: GameObject, ownerConnection: NetworkConnection): void;
+    Spawn(obj: GameObject): void;
+    Spawn(obj: GameObject, assetId: number, ownerConnection: NetworkConnection): void;
+    SpawnObjects(): boolean;
+    UnregisterHandler<T>(): void;
+    UnSpawn(obj: GameObject): void;
+
+}
+declare const NetworkServer: NetworkServerConstructor;
+    
+interface NetworkClient {
+
+
+
+
+
+}
+    
+interface SnapshotInterpolationSettings {
+    bufferTimeMultiplier: number;
+    bufferLimit: number;
+    catchupNegativeThreshold: number;
+    catchupPositiveThreshold: number;
+    catchupSpeed: number;
+    slowdownSpeed: number;
+    driftEmaDuration: number;
+    dynamicAdjustment: boolean;
+    dynamicAdjustmentTolerance: number;
+    deliveryTimeEmaDuration: number;
+
+
+
+
+
+}
+    
+interface SnapshotInterpolationSettingsConstructor {
+
+
+    new(): SnapshotInterpolationSettings;
+
+
+
+}
+declare const SnapshotInterpolationSettings: SnapshotInterpolationSettingsConstructor;
+    
+interface SpawnDelegate {
+
+
+
+    BeginInvoke(position: Vector3, assetId: number, callback: unknown, object: unknown): unknown;
+    EndInvoke(result: unknown): GameObject;
+    Invoke(position: Vector3, assetId: number): GameObject;
+
+
+}
+    
+interface SpawnDelegateConstructor {
+
+
+    new(object: unknown, method: unknown): SpawnDelegate;
+
+
+
+}
+declare const SpawnDelegate: SpawnDelegateConstructor;
+    
+interface UnSpawnDelegate {
+
+
+
+    BeginInvoke(spawned: GameObject, callback: unknown, object: unknown): unknown;
+    EndInvoke(result: unknown): void;
+    Invoke(spawned: GameObject): void;
+
+
+}
+    
+interface UnSpawnDelegateConstructor {
+
+
+    new(object: unknown, method: unknown): UnSpawnDelegate;
+
+
+
+}
+declare const UnSpawnDelegate: UnSpawnDelegateConstructor;
+    
+interface SpawnHandlerDelegate {
+
+
+
+    BeginInvoke(msg: SpawnMessage, callback: unknown, object: unknown): unknown;
+    EndInvoke(result: unknown): GameObject;
+    Invoke(msg: SpawnMessage): GameObject;
+
+
+}
+    
+interface NetworkMessage {
+
+
+
+
+
+}
+    
+interface SpawnMessage extends NetworkMessage {
+    netId: number;
+    isLocalPlayer: boolean;
+    isOwner: boolean;
+    sceneId: number;
+    assetId: number;
+    position: Vector3;
+    rotation: Quaternion;
+    scale: Vector3;
+    payload: CSArray<number>;
+
+
+
+
+
+}
+    
+interface SpawnHandlerDelegateConstructor {
+
+
+    new(object: unknown, method: unknown): SpawnHandlerDelegate;
+
+
+
+}
+declare const SpawnHandlerDelegate: SpawnHandlerDelegateConstructor;
+    
+interface NetworkClientConstructor {
+    exceptionsDisconnect: boolean;
+    readonly spawned: CSDictionary<number, NetworkIdentity>;
+    ready: boolean;
+    OnConnectedEvent: unknown;
+    OnDisconnectedEvent: unknown;
+    OnErrorEvent: unknown;
+    OnTransportExceptionEvent: unknown;
+    readonly prefabs: CSDictionary<number, GameObject>;
+    aoi: InterestManagementBase;
+    isLoadingScene: boolean;
+    connectionQuality: ConnectionQuality;
+    lastConnectionQuality: ConnectionQuality;
+    connectionQualityMethod: ConnectionQualityMethod;
+    connectionQualityInterval: number;
+    snapshotSettings: SnapshotInterpolationSettings;
+    bufferTimeMultiplier: number;
+    snapshots: CSDictionary<number, TimeSnapshot>;
+    dynamicAdjustment: boolean;
+    dynamicAdjustmentTolerance: number;
+    deliveryTimeEmaDuration: number;
+    readonly sendRate: number;
+    readonly sendInterval: number;
+    readonly connection: NetworkConnection;
+    readonly localPlayer: NetworkIdentity;
+    readonly active: boolean;
+    readonly activeHost: boolean;
+    readonly isConnecting: boolean;
+    readonly isConnected: boolean;
+    readonly initialBufferTime: number;
+    readonly bufferTime: number;
+
+
+
+
+    AddPlayer(): boolean;
+    ClearSpawners(): void;
+    Connect(address: string): void;
+    Connect(uri: unknown): void;
+    ConnectHost(): void;
+    DestroyAllClientObjects(): void;
+    Disconnect(): void;
+    GetPrefab(assetId: number, prefab: unknown): boolean;
+    OnGUI(): void;
+    OnTimeSnapshot(snap: TimeSnapshot): void;
+    PrepareToSpawnSceneObjects(): void;
+    Ready(): boolean;
+    RegisterHandler<T>(handler: unknown, requireAuthentication: boolean): void;
+    RegisterHandler<T>(handler: unknown, requireAuthentication: boolean): void;
+    RegisterPrefab(prefab: GameObject, newAssetId: number): void;
+    RegisterPrefab(prefab: GameObject): void;
+    RegisterPrefab(prefab: GameObject, newAssetId: number, spawnHandler: SpawnDelegate, unspawnHandler: UnSpawnDelegate): void;
+    RegisterPrefab(prefab: GameObject, spawnHandler: SpawnDelegate, unspawnHandler: UnSpawnDelegate): void;
+    RegisterPrefab(prefab: GameObject, newAssetId: number, spawnHandler: SpawnHandlerDelegate, unspawnHandler: UnSpawnDelegate): void;
+    RegisterPrefab(prefab: GameObject, spawnHandler: SpawnHandlerDelegate, unspawnHandler: UnSpawnDelegate): void;
+    RegisterSpawnHandler(assetId: number, spawnHandler: SpawnDelegate, unspawnHandler: UnSpawnDelegate): void;
+    RegisterSpawnHandler(assetId: number, spawnHandler: SpawnHandlerDelegate, unspawnHandler: UnSpawnDelegate): void;
+    ReplaceHandler<T>(handler: unknown, requireAuthentication: boolean): void;
+    ReplaceHandler<T>(handler: unknown, requireAuthentication: boolean): void;
+    Send<T>(message: T, channelId: number): void;
+    Shutdown(): void;
+    UnregisterHandler<T>(): boolean;
+    UnregisterPrefab(prefab: GameObject): void;
+    UnregisterSpawnHandler(assetId: number): void;
+
+    readonly onConnectionQualityChanged: MonoSignal<ConnectionQuality, ConnectionQuality>;
+}
+declare const NetworkClient: NetworkClientConstructor;
+    
+interface NetworkTransformBase extends NetworkBehaviour {
+    target: Transform;
+    readonly clientSnapshots: CSDictionary<number, TransformSnapshot>;
+    readonly serverSnapshots: CSDictionary<number, TransformSnapshot>;
+    syncPosition: boolean;
+    syncRotation: boolean;
+    syncScale: boolean;
+    onlySyncOnChange: boolean;
+    compressRotation: boolean;
+    interpolatePosition: boolean;
+    interpolateRotation: boolean;
+    interpolateScale: boolean;
+    coordinateSpace: CoordinateSpace;
+    sendIntervalMultiplier: number;
+    timelineOffset: boolean;
+    showGizmos: boolean;
+    showOverlay: boolean;
+    overlayColor: Color;
+
+
+
+    CmdTeleport(destination: Vector3): void;
+    CmdTeleport(destination: Vector3, rotation: Quaternion): void;
+    Reset(): void;
+    ResetState(): void;
+    RpcTeleport(destination: Vector3): void;
+    RpcTeleport(destination: Vector3, rotation: Quaternion): void;
+    Weaved(): boolean;
+
+
+}
+    
+interface TransformSnapshot extends Snapshot {
+    position: Vector3;
+    rotation: Quaternion;
+    scale: Vector3;
+    remoteTime: number;
+    localTime: number;
+
+
+
+    ToString(): string;
+
+
+}
+    
+interface TransformSnapshotConstructor {
+
+
+    new(remoteTime: number, localTime: number, position: Vector3, rotation: Quaternion, scale: Vector3): TransformSnapshot;
+
+
+    Interpolate(from: TransformSnapshot, to: TransformSnapshot, t: number): TransformSnapshot;
+
+}
+declare const TransformSnapshot: TransformSnapshotConstructor;
+    
+interface NetworkTransformUnreliable extends NetworkTransformBase {
+    bufferResetMultiplier: number;
+    positionSensitivity: number;
+    rotationSensitivity: number;
+    scaleSensitivity: number;
+
+
+
+    OnDeserialize(reader: NetworkReader, initialState: boolean): void;
+    OnSerialize(writer: NetworkWriter, initialState: boolean): void;
+    Weaved(): boolean;
+
+
+}
+    
+interface NetworkTransformUnreliableConstructor {
+
+
+    new(): NetworkTransformUnreliable;
+
+
+
+}
+declare const NetworkTransformUnreliable: NetworkTransformUnreliableConstructor;
+    
+    
+    
+interface NetworkTransformReliable extends NetworkTransformBase {
+    onlySyncOnChangeCorrectionMultiplier: number;
+    rotationSensitivity: number;
+    positionPrecision: number;
+    scalePrecision: number;
+
+
+
+    OnDeserialize(reader: NetworkReader, initialState: boolean): void;
+    OnSerialize(writer: NetworkWriter, initialState: boolean): void;
+    ResetState(): void;
+    Weaved(): boolean;
+
+
+}
+    
+interface NetworkTransformReliableConstructor {
+
+
+    new(): NetworkTransformReliable;
+
+
+
+}
+declare const NetworkTransformReliable: NetworkTransformReliableConstructor;
+    
+interface NetworkAnimator extends NetworkBehaviour {
+    clientAuthority: boolean;
+    animator: Animator;
+    _Mirror_SyncVarHookDelegate_animatorSpeed: unknown;
+    NetworkanimatorSpeed: number;
+
+
+
+    DeserializeSyncVars(reader: NetworkReader, initialState: boolean): void;
+    OnDeserialize(reader: NetworkReader, initialState: boolean): void;
+    OnSerialize(writer: NetworkWriter, initialState: boolean): void;
+    Reset(): void;
+    ResetTrigger(triggerName: string): void;
+    ResetTrigger(hash: number): void;
+    SerializeSyncVars(writer: NetworkWriter, forceAll: boolean): void;
+    SetTrigger(triggerName: string): void;
+    SetTrigger(hash: number): void;
+    Weaved(): boolean;
+
+
+}
+    
+interface NetworkAnimatorConstructor {
+
+
+    new(): NetworkAnimator;
+
+
+
+}
+declare const NetworkAnimator: NetworkAnimatorConstructor;
+    
+interface NetworkConnectionToServer extends NetworkConnection {
+
+
+
+    Disconnect(): void;
+
+
+}
+    
+interface NetworkConnectionToServerConstructor {
+
+
+    new(): NetworkConnectionToServer;
+
+
+
+}
+declare const NetworkConnectionToServer: NetworkConnectionToServerConstructor;
+    
+interface NetworkTime {
+
+
+
+
+
+}
+    
+interface NetworkTimeConstructor {
+    PingInterval: number;
+    PingWindowSize: number;
+    readonly localTime: number;
+    readonly time: number;
+    readonly predictionErrorUnadjusted: number;
+    readonly predictionErrorAdjusted: number;
+    readonly predictedTime: number;
+    readonly offset: number;
+    readonly rtt: number;
+    readonly rttVariance: number;
+
+
+
+
+    ResetStatics(): void;
+
+}
+declare const NetworkTime: NetworkTimeConstructor;
+    
 interface NativeTween {
 
 
@@ -51391,18 +44067,7 @@ interface FixedJointConstructor {
 }
 declare const FixedJoint: FixedJointConstructor;
     
-interface IReplicateData {
-
-
-
-    Dispose(): void;
-    GetTick(): number;
-    SetTick(value: number): void;
-
-
-}
-    
-interface MoveInputData extends IReplicateData {
+interface MoveInputData {
     moveDir: Vector3;
     jump: boolean;
     crouch: boolean;
@@ -51429,31 +44094,6 @@ interface MoveInputDataConstructor {
 
 }
 declare const MoveInputData: MoveInputDataConstructor;
-    
-interface NetworkTickSmoother extends NetworkBehaviour {
-    graphicalObject: Transform;
-
-
-
-    Awake(): void;
-    NetworkInitialize___Early(): void;
-    NetworkInitialize__Late(): void;
-    NetworkInitializeIfDisabled(): void;
-    OnStartClient(): void;
-    SetTimeManager(tm: TimeManager): void;
-
-
-}
-    
-interface NetworkTickSmootherConstructor {
-
-
-    new(): NetworkTickSmoother;
-
-
-
-}
-declare const NetworkTickSmoother: NetworkTickSmootherConstructor;
     
 interface GridLayout extends Behaviour {
     /**

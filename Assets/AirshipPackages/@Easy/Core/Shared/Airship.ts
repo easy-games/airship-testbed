@@ -16,8 +16,8 @@ import { DamageSingleton } from "./Damage/DamageSingleton";
 import { AirshipInputSingleton } from "./Input/AirshipInputSingleton";
 import { AirshipInventorySingleton } from "./Inventory/AirshipInventorySingleton";
 import { LoadingScreenSingleton } from "./LoadingScreen/LoadingScreenSingleton";
+import { AirshipPlayersSingleton } from "./Player/AirshipPlayersSingleton";
 import { Player } from "./Player/Player";
-import { PlayersSingleton } from "./Player/PlayersSingleton";
 import { AirshipPurchaseSingleton } from "./Purchase/PurchaseSingleton";
 import { TagsSingleton } from "./Tags/TagsSingleton";
 import { TeamsSingleton } from "./Team/TeamSingleton";
@@ -114,7 +114,7 @@ export namespace Airship {
 	 *
 	 * If you are looking to get information about offline users see {@link AirshipUserController}
 	 */
-	export let Players = undefined! as PlayersSingleton;
+	export let Players = undefined! as AirshipPlayersSingleton;
 	/**
 	 * Characters singleton provides utilities for working with the {@link Character} object.
 	 *
