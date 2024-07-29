@@ -3,7 +3,6 @@ import Character from "@Easy/Core/Shared/Character/Character";
 import { CharacterCameraMode } from "@Easy/Core/Shared/Character/LocalCharacter/CharacterCameraMode";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Player } from "@Easy/Core/Shared/Player/Player";
-import { SceneManager } from "@Easy/Core/Shared/SceneManager";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 
 /**
@@ -19,24 +18,30 @@ export default class CharacterSpawner extends AirshipBehaviour {
 		Airship.Camera.SetMode(CharacterCameraMode.Locked);
 		if (Game.IsServer()) {
 			this.bin.Add(
-				SceneManager.onClientPresenceChangeEnd.Connect(async (clientId, sceneName, added) => {
-					if (sceneName !== this.gameObject.scene.name) return;
-
-					let player = await Airship.Players.WaitForPlayerByConnectionId(clientId);
-					if (!player) return;
-
-					if (added) {
-						// Added to scene
-						this.SpawnCharacter(player);
-					} else {
-						// Removed from scene
-						if (player.character) {
-							print(`Despawning ${player.username} in scene ${this.gameObject.scene.name}`);
-							player.character.Despawn();
-						}
-					}
+				Airship.Players.onPlayerJoined.Connect((player) => {
+					this.SpawnCharacter(player);
 				}),
 			);
+
+			// this.bin.Add(
+			// 	SceneManager.onClientPresenceChangeEnd.Connect(async (clientId, sceneName, added) => {
+			// 		if (sceneName !== this.gameObject.scene.name) return;
+
+			// 		let player = await Airship.Players.WaitForPlayerByConnectionId(clientId);
+			// 		if (!player) return;
+
+			// 		if (added) {
+			// 			// Added to scene
+			// 			this.SpawnCharacter(player);
+			// 		} else {
+			// 			// Removed from scene
+			// 			if (player.character) {
+			// 				print(`Despawning ${player.username} in scene ${this.gameObject.scene.name}`);
+			// 				player.character.Despawn();
+			// 			}
+			// 		}
+			// 	}),
+			// );
 
 			this.bin.Add(
 				Airship.Damage.onDeath.Connect((damageInfo) => {

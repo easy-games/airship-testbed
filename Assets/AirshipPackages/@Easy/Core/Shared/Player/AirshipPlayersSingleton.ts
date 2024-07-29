@@ -67,10 +67,10 @@ export class AirshipPlayersSingleton {
 			}
 
 			const mutable = Game.localPlayer as Mutable<Player>;
-			mutable.connectionId = localPlayerInfo.clientId.Value;
+			mutable.connectionId = localPlayerInfo.connectionId;
 			mutable.networkIdentity = localPlayerInfo.gameObject.GetComponent<NetworkIdentity>()!;
-			mutable.username = localPlayerInfo.username.Value;
-			mutable.userId = localPlayerInfo.userId.Value;
+			mutable.username = localPlayerInfo.username;
+			mutable.userId = localPlayerInfo.userId;
 			mutable.SetVoiceChatAudioSource(localPlayerInfo.voiceChatAudioSource);
 			Game.localPlayerLoaded = true;
 			Game.onLocalPlayerLoaded.Fire();
@@ -113,7 +113,7 @@ export class AirshipPlayersSingleton {
 					userId: player.userId,
 					username: player.username,
 					profileImageId: player.profileImageId,
-					clientId: player.connectionId,
+					connectionId: player.connectionId,
 				});
 				if (Game.IsServer() && this.joinMessagesEnabled) {
 					Game.BroadcastMessage(ChatColor.Aqua(player.username) + ChatColor.Gray(" joined the server."));
@@ -127,7 +127,7 @@ export class AirshipPlayersSingleton {
 						userId: player.userId,
 						username: player.username,
 						profileImageId: player.profileImageId,
-						clientId: player.connectionId,
+						connectionId: player.connectionId,
 					},
 				);
 				if (Game.IsServer() && this.disconnectMessagesEnabled) {
@@ -215,13 +215,13 @@ export class AirshipPlayersSingleton {
 		const onPlayerPreJoin = (dto: PlayerInfoDto) => {
 			// LocalPlayer is hardcoded, so we check if this client should be treated as local player.
 			let player: Player;
-			if (RunUtil.IsHosting() && dto.clientId === 0) {
+			if (RunUtil.IsHosting() && dto.connectionId === 0) {
 				player = Game.localPlayer;
 			} else {
 				let playerInfo = dto.gameObject.GetComponent<PlayerInfo>()!;
 				player = new Player(
 					dto.gameObject.GetComponent<NetworkIdentity>()!,
-					dto.clientId,
+					dto.connectionId,
 					dto.userId,
 					dto.username,
 					dto.profileImageId,
@@ -229,7 +229,7 @@ export class AirshipPlayersSingleton {
 				);
 			}
 			dto.gameObject.name = `Player_${dto.username}`;
-			this.playersPendingReady.set(dto.clientId, player);
+			this.playersPendingReady.set(dto.connectionId, player);
 
 			// check for existing player with matching userId
 			for (let player of this.players) {
@@ -239,13 +239,13 @@ export class AirshipPlayersSingleton {
 			}
 
 			// Ready bots immediately
-			if (dto.clientId < 0) {
-				this.playersPendingReady.delete(dto.clientId);
+			if (dto.connectionId < 0) {
+				this.playersPendingReady.delete(dto.connectionId);
 				this.HandlePlayerReadyServer(player);
 			}
 		};
 		const onPlayerRemoved = (clientInfo: PlayerInfoDto) => {
-			const clientId = clientInfo.clientId;
+			const clientId = clientInfo.connectionId;
 			const player = this.FindByConnectionId(clientId);
 			if (player) {
 				this.players.delete(player);
@@ -259,9 +259,11 @@ export class AirshipPlayersSingleton {
 		const players = this.playerManagerBridge.GetPlayers();
 		for (let i = 0; i < players.Length; i++) {
 			const clientInfo = players.GetValue(i);
+			print("existing player: " + clientInfo.connectionId);
 			onPlayerPreJoin(clientInfo);
 		}
 		this.playerManagerBridge.OnPlayerAdded((clientInfo) => {
+			print("player added: " + clientInfo.connectionId);
 			onPlayerPreJoin(clientInfo);
 		});
 		this.playerManagerBridge.OnPlayerRemoved((clientInfo) => {

@@ -58,11 +58,11 @@ interface PlayerManagerConstructor {
 declare const PlayerManagerBridge: PlayerManagerConstructor;
 
 interface PlayerInfo extends Component {
-	clientId: SyncVar<number>;
-	userId: SyncVar<string>;
-	username: SyncVar<string>;
-	usernameTag: SyncVar<string>;
-	profileImageId: SyncVar<string>;
+	connectionId: number;
+	userId: string;
+	username: string;
+	usernameTag: string;
+	profileImageId: string;
 	voiceChatAudioSource: AudioSource;
 }
 
@@ -71,7 +71,7 @@ interface SyncVar<T> {
 }
 
 interface PlayerInfoDto {
-	clientId: number;
+	connectionId: number;
 	userId: string;
 	username: string;
 	profileImageId: string;
