@@ -63,16 +63,27 @@ export class MainMenuController {
 				this.refs.GetValue("Pages", "Avatar").GetAirshipComponent<AvatarMenuComponent>()!,
 			],
 			[
+				MainMenuPageType.AvatarMobile,
+				this.refs.GetValue("Pages", "AvatarMobile").GetAirshipComponent<AvatarMenuComponent>()!,
+			],
+			[
 				MainMenuPageType.Friends,
 				this.refs.GetValue("Pages", "Friends").GetAirshipComponent<MainMenuPageComponent>()!,
 			],
 			[MainMenuPageType.Game, this.refs.GetValue("Pages", "Game").GetAirshipComponent<GameGeneralPage>()!],
 		]);
 
-		this.avatarView = Object.Instantiate(
-			this.refs.GetValue<GameObject>("Avatar", "Avatar3DSceneTemplate"),
-			CoreRefs.protectedTransform,
-		).GetAirshipComponent<AvatarViewComponent>()!;
+		if (Game.IsMobile()) {
+			this.avatarView = Object.Instantiate(
+				this.refs.GetValue<GameObject>("AvatarMobile", "Avatar3DSceneTemplate"),
+				CoreRefs.protectedTransform,
+			).GetAirshipComponent<AvatarViewComponent>()!;
+		} else {
+			this.avatarView = Object.Instantiate(
+				this.refs.GetValue<GameObject>("Avatar", "Avatar3DSceneTemplate"),
+				CoreRefs.protectedTransform,
+			).GetAirshipComponent<AvatarViewComponent>()!;
+		}
 
 		if (Game.coreContext === CoreContext.GAME) {
 			this.avatarView.HideAvatar();

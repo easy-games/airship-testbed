@@ -1,3 +1,4 @@
+import { Airship } from "@Easy/Core/Shared/Airship";
 import { OutfitDto } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipPlatformInventory";
 import { AvatarPlatformAPI } from "@Easy/Core/Shared/Avatar/AvatarPlatformAPI";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
@@ -23,7 +24,6 @@ import AvatarMenuProfileComponent from "./AvatarMenuProfileComponent";
 import AvatarRenderComponent from "./AvatarRenderComponent";
 import OutfitButton from "./Outfit/OutfitButtonComponent";
 import OutfitButtonNameComponent from "./Outfit/OutfitButtonNameComponent";
-import { Airship } from "@Easy/Core/Shared/Airship";
 
 export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private readonly generalHookupKey = "General";
@@ -33,7 +33,6 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	public itemButtonTemplate?: GameObject;
 
 	@Header("References")
-	public canvas?: Canvas;
 	public mainCanvasGroup!: CanvasGroup;
 	public avatarRenderHolder?: GameObject;
 	public avatarCenterRect?: RectTransform;
@@ -44,6 +43,11 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	public avatarOptionsHolder!: RectTransform;
 	public avatar3DHolder!: RectTransform;
 	public contentScrollRect!: ScrollRect;
+
+	public grid: GridLayoutGroup;
+
+	@Header("Mobile Only References")
+	public mobileTopBarScrollRect: ScrollRect;
 
 	@Header("Button Holders")
 	public outfitButtonHolder!: Transform;
@@ -87,7 +91,6 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.clientId = 9999; //Dependency<PlayerController>().clientId;
 
 		this.mainNavBtns = this.mainNavButtonHolder.gameObject.GetAirshipComponentsInChildren<AvatarMenuBtn>();
-		//this.subNavBtns = this.subNavBarButtonHolder.gameObject.GetComponentsInChildren<AvatarMenuBtn>();
 		this.outfitBtns = this.outfitButtonHolder.gameObject.GetAirshipComponentsInChildren<AvatarMenuBtn>();
 		this.avatarProfileMenu = this.avatarProfileMenuGo?.GetAirshipComponent<AvatarMenuProfileComponent>();
 		this.avatarProfileMenu?.Init(mainMenu);
@@ -98,16 +101,6 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 
 		let i = 0;
-		this.mainMenu?.avatarView?.OnNewRenderTexture((texture) => {
-			let image = this.avatarRenderHolder?.GetComponent<RawImage>();
-			if (image) {
-				image.texture = texture;
-			} else {
-				error("Missing raw image on avatarrenderholder");
-			}
-			this.RefreshAvatar();
-		});
-
 		//Hookup Nav buttons
 		if (!this.mainNavBtns) {
 			warn("Unable to find main nav btns on Avatar Editor Page");
@@ -115,40 +108,43 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 		for (i = 0; i < this.mainNavBtns.size(); i++) {
 			const navI = i;
-			CoreUI.SetupButton(this.mainNavBtns[i].gameObject, { noHoverSound: true });
+			const navBtn = this.mainNavBtns[i];
 			CanvasAPI.OnClickEvent(this.mainNavBtns[i].gameObject, () => {
+				if (this.mainNavBtns[navI].redirectScroll?.isDragging) return;
 				this.SelectMainNav(navI);
 			});
 		}
 
 		//Hookup outfit buttons
-		if (!this.outfitBtns) {
-			warn("Unable to find outfit btns on Avatar Editor Page");
-			return;
-		}
-		for (i = 0; i < this.outfitBtns.size(); i++) {
-			const outfitI = i;
-			const go = this.outfitBtns[i].gameObject;
+		if (!Game.IsMobile()) {
+			if (!this.outfitBtns) {
+				error("Unable to find outfit btns on Avatar Editor Page");
+			}
+			for (i = 0; i < this.outfitBtns.size(); i++) {
+				const outfitI = i;
+				const go = this.outfitBtns[i].gameObject;
 
-			const outfitButton = go.GetAirshipComponent<OutfitButton>();
-			if (outfitButton) outfitButton.outfitIdx = i;
+				const outfitButton = go.GetAirshipComponent<OutfitButton>();
+				if (outfitButton) outfitButton.outfitIdx = i;
 
-			CoreUI.SetupButton(go, { noHoverSound: true });
-			CanvasAPI.OnClickEvent(go, () => {
-				task.spawn(async () => {
-					if (this.dirty) {
-						const res = await Dependency<MainMenuSingleton>().ShowConfirmModal(
-							this.discardTitle,
-							this.discardMessage,
-						);
-						if (!res) {
-							return;
-						}
-					}
+				if (!Game.IsMobile()) {
+					CanvasAPI.OnClickEvent(go, () => {
+						task.spawn(async () => {
+							if (this.dirty) {
+								const res = await Dependency<MainMenuSingleton>().ShowConfirmModal(
+									this.discardTitle,
+									this.discardMessage,
+								);
+								if (!res) {
+									return;
+								}
+							}
 
-					this.SelectOutfit(outfitI);
-				});
-			});
+							this.SelectOutfit(outfitI);
+						});
+					});
+				}
+			}
 		}
 
 		//Hookup general buttons
@@ -221,27 +217,43 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		super.OpenPage(params);
 		this.SetDirty(false);
 
-		this.bin.Add(Dependency<MainMenuSingleton>().socialMenuModifier.Add({ hidden: true }));
+		const mainMenuSingleton = Dependency<MainMenuSingleton>();
 
-		this.bin.Add(
-			Dependency<MainMenuController>().onBeforePageChange.Connect((event) => {
-				if (this.dirty && event.oldPage === MainMenuPageType.Avatar) {
-					print("showing confirm..");
-					const [success, res] = Dependency<MainMenuSingleton>()
-						.ShowConfirmModal(this.discardTitle, this.discardMessage)
-						.await();
-					print(`[${success}, ${res}]`);
-					if (success && !res) {
-						event.SetCancelled(true);
+		this.bin.Add(mainMenuSingleton.socialMenuModifier.Add({ hidden: true }));
+
+		let rawImage = this.avatarRenderHolder?.GetComponent<RawImage>();
+		if (rawImage) {
+			rawImage.texture = mainMenuSingleton.avatarEditorRenderTexture;
+			this.RefreshAvatar();
+			this.bin.Add(
+				mainMenuSingleton.onAvatarEditorRenderTextureUpdated.Connect((texture) => {
+					rawImage.texture = texture;
+					this.RefreshAvatar();
+				}),
+			);
+		}
+
+		if (!Game.IsMobile()) {
+			this.bin.Add(
+				Dependency<MainMenuController>().onBeforePageChange.Connect((event) => {
+					if (this.dirty && event.oldPage === MainMenuPageType.Avatar) {
+						print("showing confirm..");
+						const [success, res] = Dependency<MainMenuSingleton>()
+							.ShowConfirmModal(this.discardTitle, this.discardMessage)
+							.await();
+						print(`[${success}, ${res}]`);
+						if (success && !res) {
+							event.SetCancelled(true);
+						}
 					}
-				}
-			}),
-		);
+				}),
+			);
+		}
 
 		//"Enter" should allow you to rename currently selected outfit button
-		const keyboard = new Keyboard();
 		Keyboard.OnKeyDown(Key.Enter, (event) => {
 			if (event.uiProcessed) return;
+			if (!Dependency<MainMenuController>().IsOpen()) return;
 
 			const currentButton = this.outfitBtns[this.currentUserOutfitIndex];
 			if (!currentButton) return;
@@ -250,18 +262,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			name?.StartRename();
 		});
 
-		if (Game.IsPortrait()) {
-			this.bin.Add(Dependency<MainMenuSingleton>().navbarModifier.Add({ hidden: true }));
-			this.avatarOptionsHolder.gameObject.SetActive(false);
-			this.avatarToolbar.gameObject.SetActive(false);
-
-			this.avatar3DHolder.anchorMin = new Vector2(0, 0.3);
-			this.avatar3DHolder.anchorMax = new Vector2(1, 1);
-			this.avatar3DHolder.anchoredPosition = new Vector2(0, 0);
-		} else {
-			this.avatarOptionsHolder.gameObject.SetActive(true);
-			this.avatarToolbar.gameObject.SetActive(true);
-		}
+		this.avatarOptionsHolder.gameObject.SetActive(true);
 
 		this.Log("Open AVATAR");
 		if (this.avatarRenderHolder) {
@@ -303,6 +304,15 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private SelectMainNav(index: number) {
 		if (this.activeMainIndex === index || !this.mainNavBtns || this.inThumbnailMode) {
 			return;
+		}
+
+		if (Game.IsMobile()) {
+			if (index === 0) {
+				// Skin color
+				this.grid.cellSize = new Vector2(120, 120);
+			} else {
+				this.grid.cellSize = new Vector2(120, 150);
+			}
 		}
 
 		this.Log("Selecting MAIN nav: " + index);
@@ -437,8 +447,6 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private DisplayColorScheme() {
-		print("Avatar color: "+ Airship.Avatar);
-		print("Avatar colors: "+ Airship.Avatar.skinColors);
 		for (let i = 0; i < Airship.Avatar.skinColors.size(); i++) {
 			this.AddColorButton(Airship.Avatar.skinColors[i]);
 		}
@@ -541,6 +549,14 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private SetDirty(val: boolean): void {
+		if (Game.IsMobile()) {
+			if (val) {
+				task.delay(0, () => {
+					this.Save();
+				});
+			}
+			return;
+		}
 		this.dirty = val;
 		this.saveBtn?.SetDisabled(!val);
 	}

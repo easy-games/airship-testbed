@@ -185,6 +185,10 @@
 			"assetPath": "Code/Menu/SceneEntryComponent.ts",
 			"name": "SceneEntryComponent"
 		},
+		"AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/AvatarMenuBtn@AvatarMenuBtn": {
+			"assetPath": "AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/AvatarMenuBtn.ts",
+			"name": "AvatarMenuBtn"
+		},
 		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Friends/FriendCard@FriendCard": {
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Friends/FriendCard.ts",
 			"name": "FriendCard"
@@ -349,10 +353,6 @@
 			"assetPath": "AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/Outfit/OutfitButtonComponent.ts",
 			"name": "OutfitButton"
 		},
-		"AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/AvatarMenuBtn@AvatarMenuBtn": {
-			"assetPath": "AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/AvatarMenuBtn.ts",
-			"name": "AvatarMenuBtn"
-		},
 		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/SocialNotificationComponent@SocialNotificationComponent": {
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/SocialNotificationComponent.ts",
 			"name": "SocialNotificationComponent"
@@ -461,6 +461,7 @@
 			"Settings": "Settings",
 			"Game": "Game",
 			"Avatar": "Avatar",
+			"AvatarMobile": "AvatarMobile",
 			"Shop": "Shop",
 			"Friends": "Friends"
 		},

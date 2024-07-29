@@ -14,9 +14,9 @@ import { InputAction, InputActionConfig, InputActionSchema } from "./InputAction
 import { InputActionEvent } from "./InputActionEvent";
 import { ActionInputType, InputUtil, KeyType } from "./InputUtil";
 import { MobileButtonConfig } from "./Mobile/MobileButton";
+import MobileControlsCanvas from "./Mobile/MobileControlsCanvas";
 import TouchJoystick from "./Mobile/TouchJoystick";
 import ProximityPrompt from "./ProximityPrompts/ProximityPrompt";
-import { CoreIcon } from "./UI/CoreIcon";
 
 export enum InputActionDirection {
 	/**
@@ -144,20 +144,14 @@ export class AirshipInputSingleton {
 			{ name: "Interact", binding: Binding.Key(Key.F) },
 			{ name: "PushToTalk", binding: Binding.Key(Key.V) },
 		]);
-
-		if (Game.coreContext === CoreContext.GAME && Game.IsGameLuauContext()) {
-			Airship.Input.CreateMobileButton("Jump", new Vector2(-220, 180));
-			// Airship.input.CreateMobileButton("UseItem", new Vector2(-250, 490));
-			Airship.Input.CreateMobileButton("Crouch", new Vector2(-140, 340), {
-				icon: CoreIcon.CHEVRON_DOWN,
-			});
-		}
 	}
 
 	/**
 	 * Creates a touch joystick.
 	 *
 	 * Alternatively, you can place a `TouchJoystick.prefab` in your scene and reference that directly.
+	 *
+	 * Note: touch joysticks will not work when the mouse is locked.
 	 *
 	 * @param parent This should be a parent transform that you have positioned in your canvas. The joystick will be instiated as a child at (0,0,0).
 	 *
@@ -255,6 +249,7 @@ export class AirshipInputSingleton {
 			CoreRefs.rootTransform,
 		);
 		this.mobileControlsContainer = mobileControlsCanvas;
+		const controls = this.mobileControlsContainer.GetAirshipComponent<MobileControlsCanvas>()!;
 
 		this.controlManager.ObserveControlScheme((controlScheme) => {
 			if (controlScheme === ControlScheme.Touch) {
@@ -270,6 +265,8 @@ export class AirshipInputSingleton {
 				}
 			}
 		});
+
+		controls.Init();
 	}
 
 	/**
@@ -281,6 +278,7 @@ export class AirshipInputSingleton {
 	 */
 	public CreateMobileButton(actionName: string, anchoredPosition: Vector2, config?: MobileButtonConfig): void {
 		const mobileButton = Object.Instantiate(this.mobileButtonPrefab);
+		mobileButton.name = "Mobile Button (" + actionName + ")";
 		mobileButton.transform.SetParent(this.mobileControlsContainer.transform);
 		const lowerName = actionName.lower();
 

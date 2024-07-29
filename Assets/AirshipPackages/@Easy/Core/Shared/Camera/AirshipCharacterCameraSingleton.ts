@@ -92,9 +92,12 @@ export class AirshipCharacterCameraSingleton {
 
 	protected OnStart(): void {
 		Dependency<LocalCharacterSingleton>().stateChanged.Connect((state) => {
-			const isSprinting = Dependency<LocalCharacterSingleton>().input?.IsSprinting();
+			// const isSprinting = Dependency<LocalCharacterSingleton>().input?.IsSprinting();
 			this.UpdateLocalCharacterState({
-				sprinting: isSprinting || state === CharacterState.Sliding,
+				sprinting:
+					state === CharacterState.Sprinting ||
+					state === CharacterState.Sliding ||
+					(state === CharacterState.Jumping && Airship.Input.IsDown("Sprint")),
 			});
 		});
 	}
@@ -179,7 +182,7 @@ export class AirshipCharacterCameraSingleton {
 	/**
 	 * @internal
 	 */
-	public UpdateLocalCharacterState(stateUpdate: Partial<CharacterStateSnapshot>) {
+	private UpdateLocalCharacterState(stateUpdate: Partial<CharacterStateSnapshot>) {
 		let didUpdate = false;
 		if (!this.characterState) {
 			this.characterState = { sprinting: false, firstPerson: false };

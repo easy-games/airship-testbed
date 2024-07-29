@@ -26,6 +26,9 @@ export class MainMenuSingleton {
 	public readonly hideMobileEscapeButton = false;
 	public onHideMobileEscapeButtonChanged = new Signal<boolean>();
 
+	public avatarEditorRenderTexture: RenderTexture;
+	public onAvatarEditorRenderTextureUpdated = new Signal<RenderTexture>();
+
 	constructor() {
 		this.screenSize = new Vector2(Screen.width, Screen.height);
 		this.rawScreenSize = new Vector2(Screen.width, Screen.height);

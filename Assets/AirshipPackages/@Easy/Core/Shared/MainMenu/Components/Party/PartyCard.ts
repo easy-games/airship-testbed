@@ -20,6 +20,7 @@ export default class PartyCard extends AirshipBehaviour {
 	public gameButton!: Button;
 	public dropFriendHover!: GameObject;
 	public warpButton!: Button;
+	public partyChatButton: Button;
 
 	private loadedGameImageId: string | undefined;
 	private bin = new Bin();
@@ -42,11 +43,13 @@ export default class PartyCard extends AirshipBehaviour {
 		}
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnClickEvent(this.gameButton.gameObject, () => {
-				Dependency<TransferController>().TransferToPartyLeader();
+				task.spawn(() => {
+					Dependency<TransferController>().TransferToPartyLeader();
+				});
 			}),
 		);
 		this.bin.Add(
-			this.gameButton.onClick.Connect((event) => {
+			this.warpButton.onClick.Connect((event) => {
 				task.spawn(async () => {
 					await Dependency<TransferController>().TransferPartyMembersToLeader();
 				});
@@ -56,6 +59,9 @@ export default class PartyCard extends AirshipBehaviour {
 		if (!Game.IsMobile()) {
 			this.SetupDragFriendHooks();
 		}
+
+		this.warpButton.gameObject.SetActive(false);
+		this.partyChatButton.gameObject.SetActive(false);
 	}
 
 	private SetupDragFriendHooks() {
@@ -89,18 +95,31 @@ export default class PartyCard extends AirshipBehaviour {
 		const party = Dependency<MainMenuPartyController>().party;
 		const isLeader = party?.leader === Protected.user.localUser?.uid;
 
-		this.warpButton.gameObject.SetActive(isLeader);
+		if (userStatus) {
+			StateManager.SetString("airship:party-leader-status", json.encode(userStatus));
+		} else {
+			StateManager.RemoveString("airship:party-leader-status");
+		}
 
-		if (userStatus === undefined) {
+		this.warpButton.gameObject.SetActive(isLeader && Game.IsInGame());
+
+		if (party === undefined || party.members.size() <= 1) {
 			this.layoutElement.preferredHeight = 84;
 			this.layoutElement.gameObject.GetComponent<ImageWithRoundedCorners>()?.Refresh();
+			this.partyChatButton.gameObject.SetActive(false);
 			return;
 		}
 
-		if (userStatus.status !== UserStatus.IN_GAME || !party || party.members.size() <= 1) {
+		if (!userStatus || userStatus.status !== UserStatus.IN_GAME) {
 			this.layoutElement.preferredHeight = 84;
 			this.layoutElement.gameObject.GetComponent<ImageWithRoundedCorners>()?.Refresh();
+			this.partyChatButton.gameObject.SetActive(false);
 			return;
+		}
+		if (Game.IsMobile()) {
+			this.partyChatButton.gameObject.SetActive(false);
+		} else {
+			this.partyChatButton.gameObject.SetActive(true);
 		}
 
 		this.layoutElement.preferredHeight = 124;
