@@ -2,7 +2,6 @@ import { MainMenuController } from "@Easy/Core/Client/ProtectedControllers/MainM
 import { Dependency, Singleton } from "@Easy/Core/Shared/Flamework";
 import { AssetCache } from "../../AssetCache/AssetCache";
 import { Game } from "../../Game";
-import { CoreLogger } from "../../Logger/CoreLogger";
 import { AppManager } from "../../Util/AppManager";
 import { Bin } from "../../Util/Bin";
 import { Modifier } from "../../Util/Modifier";
@@ -69,11 +68,11 @@ export class MainMenuSingleton {
 					}
 				}
 
-				CoreLogger.Log(
-					`sizeType: ${sizeType}, size: ${this.screenSize}, dpi: ${
-						Screen.dpi
-					}, scaleFactor: ${Game.GetScaleFactor()}`,
-				);
+				// CoreLogger.Log(
+				// 	`sizeType: ${sizeType}, size: ${this.screenSize}, dpi: ${
+				// 		Screen.dpi
+				// 	}, scaleFactor: ${Game.GetScaleFactor()}`,
+				// );
 
 				this.sizeType = sizeType;
 				this.onSizeChanged.Fire(this.sizeType, this.screenSize);

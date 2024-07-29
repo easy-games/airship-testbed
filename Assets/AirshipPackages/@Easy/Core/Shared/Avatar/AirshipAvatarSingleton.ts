@@ -1,10 +1,10 @@
 import { Airship } from "../Airship";
 import { AccessoryClass, OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
-import { AvatarPlatformAPI } from "./AvatarPlatformAPI";
 import { Singleton } from "../Flamework";
 import { CoreLogger } from "../Logger/CoreLogger";
 import { ColorUtil } from "../Util/ColorUtil";
 import { RandomUtil } from "../Util/RandomUtil";
+import { AvatarPlatformAPI } from "./AvatarPlatformAPI";
 
 /**
  * Access using {@link Airship.Avatar}. Avatar singleton provides utilities for working with visual elements of a character
@@ -98,7 +98,7 @@ export class AirshipAvatarSingleton {
 					}
 
 					if (!foundMatchingItem) {
-						CoreLogger.Log("Unpaired Server Item " + itemData.class.name + ": " + itemData.class.classId);
+						// CoreLogger.Log("Unpaired Server Item " + itemData.class.name + ": " + itemData.class.classId);
 					}
 				});
 			}
