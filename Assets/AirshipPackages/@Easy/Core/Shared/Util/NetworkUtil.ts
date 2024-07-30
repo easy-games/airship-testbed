@@ -14,6 +14,7 @@ export class NetworkUtil {
 			if (NetworkClient.spawned.ContainsKey(netId)) {
 				return NetworkClient.spawned.Get(netId);
 			}
+
 			return undefined;
 		}
 	}
@@ -47,15 +48,15 @@ export class NetworkUtil {
 	 * @returns `NetworkObject` that corresponds to `objectId`.
 	 */
 	public static WaitForNetworkIdentity(netId: number): NetworkIdentity {
-		let nob = NetworkUtil.GetNetworkIdentity(netId);
-		if (nob) {
-			return nob;
+		let networkIdentity = NetworkUtil.GetNetworkIdentity(netId);
+		if (networkIdentity) {
+			return networkIdentity;
 		}
 		while (true) {
-			nob = NetworkUtil.GetNetworkIdentity(netId);
 			task.unscaledWait();
-			if (nob) {
-				return nob;
+			networkIdentity = NetworkUtil.GetNetworkIdentity(netId);
+			if (networkIdentity) {
+				return networkIdentity;
 			}
 		}
 	}

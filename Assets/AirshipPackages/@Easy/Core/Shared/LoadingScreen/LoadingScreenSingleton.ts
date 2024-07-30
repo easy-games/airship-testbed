@@ -4,6 +4,7 @@ import { Singleton } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Mouse } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { OnUpdate } from "../Util/Timer";
 
 /**
  * [Client only]
@@ -24,17 +25,22 @@ export class LoadingScreenSingleton {
 
 	constructor() {
 		Airship.LoadingScreen = this;
+		print("loading.1");
 
 		if (Game.coreContext === CoreContext.MAIN_MENU) return;
 		this.coreLoadingScreen = GameObject.Find("CoreLoadingScreen")?.GetComponent<CoreLoadingScreen>()!;
 		this.coreLoadingScreen.SetProgress("Building the World", 10);
 		this.loadingBin.Add(Mouse.AddUnlocker());
 
-		task.unscaledDelay(0, () => {
+		print("loading.2");
+		OnUpdate.Once(() => {
+			print("loading.3");
 			if (!this.hasUsed) {
+				print("loading.4");
 				this.FinishLoading();
 			}
 		});
+		task.unscaledDelay(0, () => {});
 	}
 
 	protected OnStart(): void {}

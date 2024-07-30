@@ -215,7 +215,7 @@ export class AirshipPlayersSingleton {
 		const onPlayerPreJoin = (dto: PlayerInfoDto) => {
 			// LocalPlayer is hardcoded, so we check if this client should be treated as local player.
 			let player: Player;
-			if (RunUtil.IsHosting() && dto.connectionId === 0) {
+			if (Game.IsHosting() && dto.connectionId === 0) {
 				player = Game.localPlayer;
 			} else {
 				let playerInfo = dto.gameObject.GetComponent<PlayerInfo>()!;
@@ -243,6 +243,8 @@ export class AirshipPlayersSingleton {
 				this.playersPendingReady.delete(dto.connectionId);
 				this.HandlePlayerReadyServer(player);
 			}
+
+			// Next, the client will send a ready request which we handle in HandlePlayerReadyServer()
 		};
 		const onPlayerRemoved = (clientInfo: PlayerInfoDto) => {
 			const clientId = clientInfo.connectionId;
@@ -389,7 +391,7 @@ export class AirshipPlayersSingleton {
 			this.players.add(player);
 		}
 
-		if (!RunUtil.IsHosting()) {
+		if (!Game.IsHosting()) {
 			this.onPlayerJoined.Fire(player);
 		}
 	}
