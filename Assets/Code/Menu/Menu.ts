@@ -46,7 +46,7 @@ export default class Menu extends AirshipBehaviour {
 				return true;
 			});
 			MenuUtil.unloadGlobalSceneRequest.server.SetCallback((player, sceneName) => {
-				SceneManager.UnloadSceneForPlayer(player, sceneName, "Menu");
+				SceneManager.UnloadSceneForPlayer(player, sceneName);
 				return true;
 			});
 		}

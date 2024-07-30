@@ -37,7 +37,7 @@ export default class SceneEntryComponent extends AirshipBehaviour {
 		});
 		CanvasAPI.OnClickEvent(this.button.gameObject, () => {
 			if (this.entry.clientSided) {
-				SceneManager.LoadOfflineScene(this.entry.sceneName);
+				SceneManager.LoadScene(this.entry.sceneName);
 				return;
 			}
 

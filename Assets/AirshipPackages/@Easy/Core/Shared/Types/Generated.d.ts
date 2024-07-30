@@ -35214,8 +35214,8 @@ interface BridgeConstructor {
     Lerp(start: Vector3, goal: Vector3, alpha: number): Vector3;
     LoadGlobalSceneByName(sceneName: string): void;
     LoadScene(sceneName: string, restartLuau: boolean, loadSceneMode: LoadSceneMode): void;
+    LoadSceneAsyncFromAssetBundle(sceneName: string, loadSceneMode: LoadSceneMode): void;
     LoadSceneForConnection(conn: NetworkConnection, sceneName: string, makeActiveScene: boolean): void;
-    LoadSceneFromAssetBundle(sceneName: string, loadSceneMode: LoadSceneMode): void;
     MakeColorArray(size: number): CSArray<Color>;
     MakeFloatArray(size: number): CSArray<number>;
     MakeIntArray(size: number): CSArray<number>;
@@ -35238,7 +35238,7 @@ interface BridgeConstructor {
     StopMicRecording(): void;
     UnloadGlobalSceneByName(sceneName: string): void;
     UnloadScene(sceneName: string): void;
-    UnloadSceneForConnection(conn: NetworkConnection, sceneName: string, preferredActiveScene: string): void;
+    UnloadSceneForConnection(conn: NetworkConnection, sceneName: string): void;
     UpdateLayout(xform: Transform, recursive: boolean): void;
 
 }

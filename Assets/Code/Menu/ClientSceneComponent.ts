@@ -6,7 +6,7 @@ export default class ClientSceneComponent extends AirshipBehaviour {
 
 	override Start(): void {
 		CanvasAPI.OnClickEvent(this.closeButton.gameObject, () => {
-			SceneManager.UnloadOfflineScene("ClientSidedScene");
+			SceneManager.UnloadScene("ClientSidedScene");
 		});
 	}
 

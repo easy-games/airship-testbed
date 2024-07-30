@@ -253,15 +253,6 @@ export class Player {
 		return Game.IsClient() && Game.localPlayer === this;
 	}
 
-	public IsInScene(sceneName: string): boolean {
-		return true;
-		// const scenes = CSArrayUtil.Convert(this.GetNetworkConnection().Scenes);
-		// if (scenes.find((s) => s.name === sceneName)) {
-		// 	return true;
-		// }
-		// return false;
-	}
-
 	/**
 	 * IsConnected will return ``true`` until a player disconnects from the server.
 	 */

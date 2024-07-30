@@ -1,5 +1,4 @@
 import { Singleton } from "@Easy/Core/Shared/Flamework";
-import { Game } from "../Game";
 
 interface UnitySceneManagerConstructor {
 	new (): UnitySceneManagerConstructor;
@@ -17,25 +16,25 @@ export class ProtectedSceneManagerSingleton {
 	private protectedSceneNames = ["corescene", "mainmenu", "login"];
 
 	constructor() {
-		if (Game.IsInGame()) {
-			const scriptingManager = GameObject.Find("CoreScriptingManager").GetComponent<CoreScriptingManager>()!;
-			scriptingManager.OnClientPresenceChangeStart((scene, connection, added) => {
-				contextbridge.broadcast(
-					"SceneManager:OnClientPresenceChangeStart",
-					scene.name,
-					connection.connectionId,
-					added,
-				);
-			});
-			scriptingManager.OnClientPresenceChangeStart((scene, connection, added) => {
-				contextbridge.broadcast(
-					"SceneManager:OnClientPresenceChangeEnd",
-					scene.name,
-					connection.connectionId,
-					added,
-				);
-			});
-		}
+		// if (Game.IsInGame()) {
+		// 	const scriptingManager = GameObject.Find("CoreScriptingManager").GetComponent<CoreScriptingManager>()!;
+		// 	scriptingManager.OnClientPresenceChangeStart((scene, connection, added) => {
+		// 		contextbridge.broadcast(
+		// 			"SceneManager:OnClientPresenceChangeStart",
+		// 			scene.name,
+		// 			connection.connectionId,
+		// 			added,
+		// 		);
+		// 	});
+		// 	scriptingManager.OnClientPresenceChangeStart((scene, connection, added) => {
+		// 		contextbridge.broadcast(
+		// 			"SceneManager:OnClientPresenceChangeEnd",
+		// 			scene.name,
+		// 			connection.connectionId,
+		// 			added,
+		// 		);
+		// 	});
+		// }
 	}
 
 	protected OnStart(): void {
@@ -75,7 +74,7 @@ export class ProtectedSceneManagerSingleton {
 					return;
 				}
 
-				Bridge.LoadSceneFromAssetBundle(sceneName, LoadSceneMode.Additive);
+				Bridge.LoadSceneAsyncFromAssetBundle(sceneName, LoadSceneMode.Additive);
 			},
 		);
 
@@ -121,7 +120,7 @@ export class ProtectedSceneManagerSingleton {
 			if (!connection) {
 				error("Failed to load scene for player. Unable to find player with clientId: " + connectionId);
 			}
-			Bridge.UnloadSceneForConnection(connection, sceneName, preferredActiveScene ?? "");
+			Bridge.UnloadSceneForConnection(connection, sceneName);
 		});
 
 		contextbridge.callback<(sceneName: string) => void>("SceneManager:SetActiveScene", (fromContext, sceneName) => {

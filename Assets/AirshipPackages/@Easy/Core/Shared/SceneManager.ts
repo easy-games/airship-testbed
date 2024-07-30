@@ -1,7 +1,6 @@
 import { Game } from "./Game";
 import { Player } from "./Player/Player";
 import { CSArrayUtil } from "./Util/CSArrayUtil";
-import { Signal } from "./Util/Signal";
 
 /**
  * Scene management at run-time.
@@ -10,18 +9,18 @@ export class SceneManager {
 	/**
 	 * Called when a client presence changes within a scene, before the server rebuilds observers.
 	 */
-	public static readonly onClientPresenceChangeStart = new Signal<
-		[clientId: number, sceneName: string, added: boolean]
-	>();
+	// public static readonly onClientPresenceChangeStart = new Signal<
+	// 	[clientId: number, sceneName: string, added: boolean]
+	// >();
 
-	/**
-	 * Called when a client presence changes within a scene, after the server rebuilds observers.
-	 *
-	 * When this is called, the client has fully loaded the scene.
-	 */
-	public static readonly onClientPresenceChangeEnd = new Signal<
-		[clientId: number, sceneName: string, added: boolean]
-	>();
+	// /**
+	//  * Called when a client presence changes within a scene, after the server rebuilds observers.
+	//  *
+	//  * When this is called, the client has fully loaded the scene.
+	//  */
+	// public static readonly onClientPresenceChangeEnd = new Signal<
+	// 	[clientId: number, sceneName: string, added: boolean]
+	// >();
 
 	/**
 	 * Sets the scene to be active.
@@ -62,7 +61,7 @@ export class SceneManager {
 	 *
 	 * @param sceneName Name of scene to be loaded.
 	 */
-	public static LoadOfflineScene(sceneName: string): void {
+	public static LoadScene(sceneName: string): void {
 		assert(Game.IsClient(), "LoadClientSidedScene can only be called from the client.");
 
 		contextbridge.invoke("SceneManager:LoadClientSidedSceneByName", LuauContext.Protected, sceneName);
@@ -73,7 +72,7 @@ export class SceneManager {
 	 *
 	 * @param sceneName Name of scene to be unloaded.
 	 */
-	public static UnloadOfflineScene(sceneName: string): void {
+	public static UnloadScene(sceneName: string): void {
 		assert(Game.IsClient(), "UnloadClientSidedScene can only be called from the client.");
 
 		contextbridge.invoke("SceneManager:UnloadClientSidedSceneByName", LuauContext.Protected, sceneName);
@@ -89,6 +88,14 @@ export class SceneManager {
 	 */
 	public static LoadSceneForPlayer(player: Player, sceneName: string, makeActiveScene = false): void {
 		assert(Game.IsServer(), "LoadSceneForPlayer() can only be called from the server.");
+
+		if (Game.IsHosting() && player.IsLocalPlayer()) {
+			this.LoadScene(sceneName);
+			if (makeActiveScene) {
+				SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneName)!);
+			}
+			return;
+		}
 
 		contextbridge.invoke(
 			"SceneManager:LoadSceneForPlayer",
@@ -107,21 +114,20 @@ export class SceneManager {
 	 * **Must be called from server.**
 	 * @param player The player that will have the scene unloaded.
 	 * @param sceneName The name of scene to be unloaded. Do not include ".unity"
-	 * @param preferredActiveScene Name of scene to be made the new active scene.
 	 */
-	public static UnloadSceneForPlayer(
-		player: Player,
-		sceneName: string,
-		preferredActiveScene: string | undefined = undefined,
-	): void {
+	public static UnloadSceneForPlayer(player: Player, sceneName: string): void {
 		assert(Game.IsServer(), "UnloadSceneForPlayer() can only be called from the server.");
+
+		if (Game.IsHosting() && player.IsLocalPlayer()) {
+			this.UnloadScene(sceneName);
+			return;
+		}
 
 		contextbridge.invoke(
 			"SceneManager:UnloadSceneForPlayer",
 			LuauContext.Protected,
 			player.connectionId,
 			sceneName,
-			preferredActiveScene,
 		);
 	}
 

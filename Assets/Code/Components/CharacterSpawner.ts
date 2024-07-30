@@ -18,7 +18,7 @@ export default class CharacterSpawner extends AirshipBehaviour {
 		Airship.Camera.SetMode(CharacterCameraMode.Locked);
 		if (Game.IsServer()) {
 			this.bin.Add(
-				Airship.Players.onPlayerJoined.Connect((player) => {
+				Airship.Players.ObservePlayers((player) => {
 					this.SpawnCharacter(player);
 				}),
 			);
@@ -49,10 +49,7 @@ export default class CharacterSpawner extends AirshipBehaviour {
 					if (character?.gameObject.scene !== this.gameObject.scene) return;
 
 					task.delay(this.delay, () => {
-						if (
-							character?.player?.IsConnected() &&
-							character.player.IsInScene(this.gameObject.scene.name)
-						) {
+						if (character?.player?.IsConnected()) {
 							this.SpawnCharacter(character.player!);
 						}
 					});
