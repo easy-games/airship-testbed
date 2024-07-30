@@ -25,18 +25,14 @@ export class LoadingScreenSingleton {
 
 	constructor() {
 		Airship.LoadingScreen = this;
-		print("loading.1");
 
 		if (Game.coreContext === CoreContext.MAIN_MENU) return;
 		this.coreLoadingScreen = GameObject.Find("CoreLoadingScreen")?.GetComponent<CoreLoadingScreen>()!;
 		this.coreLoadingScreen.SetProgress("Building the World", 10);
 		this.loadingBin.Add(Mouse.AddUnlocker());
 
-		print("loading.2");
 		OnUpdate.Once(() => {
-			print("loading.3");
 			if (!this.hasUsed) {
-				print("loading.4");
 				this.FinishLoading();
 			}
 		});

@@ -61,7 +61,6 @@ interface PlayerInfo extends Component {
 	connectionId: number;
 	userId: string;
 	username: string;
-	usernameTag: string;
 	profileImageId: string;
 	voiceChatAudioSource: AudioSource;
 }
