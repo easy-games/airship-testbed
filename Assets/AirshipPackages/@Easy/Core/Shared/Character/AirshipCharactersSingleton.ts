@@ -85,7 +85,7 @@ export class AirshipCharactersSingleton {
 
 			task.spawn(() => {
 				while (true) {
-					task.unscaledWait(0.05);
+					task.wait(0.05);
 					for (const [_cid, dto] of this.pendingCharacterDtos) {
 						this.InitCharacter(dto);
 					}
@@ -115,7 +115,7 @@ export class AirshipCharactersSingleton {
 					characters.push({
 						id: character.id,
 						netId: character.networkIdentity.netId,
-						ownerClientId: character.player?.connectionId,
+						ownerConnectionId: character.player?.connectionId,
 						outfitDto: character.outfitDto,
 					});
 				}
@@ -310,9 +310,12 @@ export class AirshipCharactersSingleton {
 					characterNetworkObj.gameObject.name,
 			);
 			let player: Player | undefined;
-			if (dto.ownerClientId !== undefined) {
-				player = Airship.Players.FindByConnectionId(dto.ownerClientId);
-				assert(player, "Failed to find player when spawning character. clientId=" + dto.ownerClientId);
+			if (dto.ownerConnectionId !== undefined) {
+				player = Airship.Players.FindByConnectionId(dto.ownerConnectionId);
+				assert(
+					player,
+					"Failed to find player when spawning character. ownerConnectionId=" + dto.ownerConnectionId,
+				);
 				characterNetworkObj.gameObject.name = "Character_" + player.username;
 			}
 			character.Init(player, dto.id, dto.outfitDto);
@@ -372,7 +375,7 @@ export class AirshipCharactersSingleton {
 			CoreNetwork.ServerToClient.Character.Spawn.server.FireAllClients({
 				id: character.id,
 				netId: character.networkIdentity.netId,
-				ownerClientId: character.player?.connectionId,
+				ownerConnectionId: character.player?.connectionId,
 				outfitDto: character.outfitDto,
 			});
 		}

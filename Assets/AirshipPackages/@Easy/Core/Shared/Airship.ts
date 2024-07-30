@@ -184,7 +184,7 @@ export namespace Airship {
 	 */
 	export function WaitUntilReady() {
 		while (Airship.Players === undefined) {
-			task.unscaledWait();
+			task.wait();
 		}
 	}
 }

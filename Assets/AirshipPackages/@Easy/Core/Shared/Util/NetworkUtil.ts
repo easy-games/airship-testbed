@@ -32,7 +32,7 @@ export class NetworkUtil {
 		// Return when exists or timeout after `timeout`.
 		let elapsed = 0;
 		while (true) {
-			task.unscaledWait();
+			task.wait();
 			nob = NetworkUtil.GetNetworkIdentity(netId);
 			elapsed += Time.deltaTime;
 			if (nob) return nob;
@@ -53,7 +53,7 @@ export class NetworkUtil {
 			return networkIdentity;
 		}
 		while (true) {
-			task.unscaledWait();
+			task.wait();
 			networkIdentity = NetworkUtil.GetNetworkIdentity(netId);
 			if (networkIdentity) {
 				return networkIdentity;

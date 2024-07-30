@@ -138,7 +138,7 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 	}
 
 	private RenderClass(name: string, serverClassId: string, slot: AccessorySlot) {
-		task.unscaledWait();
+		task.wait();
 		//Align camera
 		//this.AlignCamera(acc.renderers);
 		this.SetCameraAccessory(slot);
@@ -161,7 +161,7 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 
 	private Render(fileName: string) {
 		//Wait a frame so the camera can render
-		task.unscaledWait();
+		task.wait();
 		//Render Camera
 		this.captureCamera.Render();
 

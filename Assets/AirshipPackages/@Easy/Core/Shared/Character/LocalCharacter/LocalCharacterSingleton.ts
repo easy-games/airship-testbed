@@ -54,6 +54,7 @@ export class LocalCharacterSingleton {
 	OnStart() {
 		if (!Game.IsClient()) return;
 		Game.localPlayer.ObserveCharacter((character) => {
+			print("observe character: " + character?.id + " localOwned=" + (character?.IsLocalCharacter() ?? false));
 			if (!character) return;
 
 			this.firstSpawn = false;

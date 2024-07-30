@@ -62,7 +62,7 @@ export class AirshipPlayersSingleton {
 		const FetchLocalPlayerWithWait = () => {
 			let localPlayerInfo: PlayerInfo | undefined = this.playerManagerBridge.localPlayer;
 			while (localPlayerInfo === undefined) {
-				task.unscaledWait();
+				task.wait();
 				localPlayerInfo = this.playerManagerBridge.localPlayer;
 			}
 

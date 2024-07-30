@@ -180,7 +180,7 @@ export class Player {
 			if (this.outfitLoaded || (timeout !== undefined && Time.time - startTime >= timeout)) {
 				break;
 			}
-			task.unscaledWait();
+			task.wait();
 		}
 	}
 

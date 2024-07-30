@@ -40,7 +40,6 @@ export class LoadingScreenSingleton {
 				this.FinishLoading();
 			}
 		});
-		task.unscaledDelay(0, () => {});
 	}
 
 	protected OnStart(): void {}
