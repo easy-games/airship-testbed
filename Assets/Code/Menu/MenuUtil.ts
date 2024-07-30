@@ -17,7 +17,7 @@ export class MenuUtil {
 		},
 		{
 			title: "Rigidbodies",
-			subtitle: "Rigidbodies!",
+			subtitle: "Cubes with physics!",
 			sceneName: "RigidBodies",
 		},
 		{
