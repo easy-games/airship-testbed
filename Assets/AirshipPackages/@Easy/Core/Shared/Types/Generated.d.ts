@@ -43313,8 +43313,8 @@ interface NetworkServerConstructor {
     SetClientReady(conn: NetworkConnectionToClient): void;
     Shutdown(): void;
     Spawn(obj: GameObject, ownerPlayer: GameObject): void;
-    Spawn(obj: GameObject, ownerConnection: NetworkConnection): void;
     Spawn(obj: GameObject): void;
+    Spawn(obj: GameObject, ownerConnection: NetworkConnection): void;
     Spawn(obj: GameObject, assetId: number, ownerConnection: NetworkConnection): void;
     SpawnObjects(): boolean;
     UnregisterHandler<T>(): void;

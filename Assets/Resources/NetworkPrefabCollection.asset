@@ -15,3 +15,4 @@ MonoBehaviour:
   networkPrefabs:
   - {fileID: 4570016071436346973, guid: 706b8026d267cee4d86da4c1e10879a9, type: 3}
   - {fileID: 764153238441627882, guid: 484ce41b321b44268ab82a896654b502, type: 3}
+  - {fileID: 77600733223579446, guid: ec8a1a04bf364450b86d1edc561eb049, type: 3}

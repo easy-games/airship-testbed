@@ -16,6 +16,11 @@ export class MenuUtil {
 			sceneName: "MovementMods",
 		},
 		{
+			title: "Rigidbodies",
+			subtitle: "Rigidbodies!",
+			sceneName: "RigidBodies",
+		},
+		{
 			title: "Client Sided",
 			subtitle: "A scene that is only loaded on your local client.",
 			sceneName: "ClientSidedScene",

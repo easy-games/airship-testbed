@@ -169,6 +169,10 @@
 			"assetPath": "Code/AirshipPlatformDemo/DemoManager.ts",
 			"name": "DemoManager"
 		},
+		"Code/Components/CubeSpawner@CubeSpawner": {
+			"assetPath": "Code/Components/CubeSpawner.ts",
+			"name": "CubeSpawner"
+		},
 		"Code/Menu/Menu@Menu": {
 			"assetPath": "Code/Menu/Menu.ts",
 			"name": "Menu"
