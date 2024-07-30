@@ -7,7 +7,6 @@ import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { CoreContext } from "../CoreClientContext";
 import { Game } from "../Game";
-import inspect from "../Util/Inspect";
 import { Viewmodel } from "../Viewmodel/Viewmodel";
 import Character from "./Character";
 import { CharacterDto } from "./CharacterDto";
@@ -319,15 +318,6 @@ export class AirshipCharactersSingleton {
 				);
 				characterNetworkObj.gameObject.name = "Character_" + player.username;
 			}
-			print("Adding character with player=" + player?.username + ". dto: " + inspect(dto));
-			print(
-				"localPlayer: " +
-					Game.localPlayer.username +
-					", character.player: " +
-					player?.username +
-					", same: " +
-					(Game.localPlayer === player),
-			);
 			character.Init(player, dto.id, dto.outfitDto);
 			Airship.Characters.RegisterCharacter(character);
 			player?.SetCharacter(character);
