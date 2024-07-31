@@ -98,7 +98,11 @@ function fireClient(id: number, player: Player, args: unknown[], channel: Networ
 
 function fireExcept(id: number, ignorePlayer: Player, args: unknown[], channel: NetworkChannel) {
 	const msg = pack(id, args);
-	NetworkCore.Net.BroadcastToAllExceptClient(ignorePlayer.connectionId, msg, channel === NetworkChannel.Reliable ? 1 : 0);
+	NetworkCore.Net.BroadcastToAllExceptClient(
+		ignorePlayer.connectionId,
+		msg,
+		channel === NetworkChannel.Reliable ? 1 : 0,
+	);
 }
 
 function fireClients(id: number, players: Player[], args: unknown[], channel: NetworkChannel) {

@@ -7,7 +7,7 @@ import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
 import { Controller, Dependency, Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { PlayersSingleton } from "@Easy/Core/Shared/Player/PlayersSingleton";
+import { AirshipPlayersSingleton } from "../Player/AirshipPlayersSingleton";
 
 /**
  * Access using {@link Airship.Shop}. Provides services to manage and sell products for real money.
@@ -61,7 +61,7 @@ export class AirshipPurchaseSingleton {
 				return false;
 			}
 
-			const purchaserPlayer = Dependency<PlayersSingleton>().FindByUserId(purchaserUserId);
+			const purchaserPlayer = Dependency<AirshipPlayersSingleton>().FindByUserId(purchaserUserId);
 			if (!purchaserPlayer) {
 				warn("Failed to prompt purchase: Purchaser player is not online.");
 				return false;

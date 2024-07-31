@@ -1673,6 +1673,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 1770268119277356834, guid: 6354d1c2926319242ba9081c0c3dd934, type: 3}
+      propertyPath: _assetId
+      value: 2011245980
+      objectReference: {fileID: 0}
     - target: {fileID: 1797078247093704546, guid: 6354d1c2926319242ba9081c0c3dd934, type: 3}
       propertyPath: m_Layer
       value: 10
@@ -1881,6 +1885,8 @@ PrefabInstance:
     - {fileID: 559545806849642856, guid: 6354d1c2926319242ba9081c0c3dd934, type: 3}
     - {fileID: 7006293694329825481, guid: 6354d1c2926319242ba9081c0c3dd934, type: 3}
     - {fileID: 1374495466652150770, guid: 6354d1c2926319242ba9081c0c3dd934, type: 3}
+    - {fileID: 5683490581230757931, guid: 6354d1c2926319242ba9081c0c3dd934, type: 3}
+    - {fileID: 1770268119277356834, guid: 6354d1c2926319242ba9081c0c3dd934, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

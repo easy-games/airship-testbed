@@ -16,15 +16,15 @@ export class MenuUtil {
 			sceneName: "MovementMods",
 		},
 		{
+			title: "Rigidbodies",
+			subtitle: "Cubes with physics!",
+			sceneName: "RigidBodies",
+		},
+		{
 			title: "Client Sided",
 			subtitle: "A scene that is only loaded on your local client.",
 			sceneName: "ClientSidedScene",
 			clientSided: true,
-		},
-		{
-			title: "Multi Networked Scenes",
-			subtitle: "Loading multiple networked scenes per player.",
-			sceneName: "MultiScene_Base",
 		},
 		{
 			title: "NavMesh",

@@ -132,6 +132,7 @@ GameObject:
   - component: {fileID: 36613657}
   - component: {fileID: 36613656}
   - component: {fileID: 36613659}
+  - component: {fileID: 36613660}
   m_Layer: 5
   m_Name: Scroll View
   m_TagString: Untagged
@@ -229,6 +230,18 @@ CanvasRenderer:
   m_GameObject: {fileID: 36613654}
   m_CullTransparentMesh: 1
 --- !u!114 &36613659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 36613654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34c42c9104644b4694f9b2e77752e21b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &36613660
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -538,6 +551,21 @@ MonoBehaviour:
       nullable: 0
       serializedValue: 
       serializedObject: {fileID: 876247856}
+      modified: 1
+    - name: scrollRect
+      type: object
+      objectType: ScrollRect
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 36613656}
       modified: 1
     displayIcon: {fileID: 0}
     displayName: 
@@ -1720,6 +1748,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SceneEntry
       objectReference: {fileID: 0}
+    - target: {fileID: 7671969959455761097, guid: 076702caf5c47453caae7ff62bdbabcf, type: 3}
+      propertyPath: redirectTarget
+      value: 
+      objectReference: {fileID: 36613656}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

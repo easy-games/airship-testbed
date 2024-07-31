@@ -8,11 +8,9 @@ import { CoreContext } from "./CoreClientContext";
 import { CoreRefs } from "./CoreRefs";
 import { Game } from "./Game";
 import { InitNet } from "./Network/NetworkAPI";
-import { SceneManager } from "./SceneManager";
 import { AppManager } from "./Util/AppManager";
 import { CanvasAPI } from "./Util/CanvasAPI";
-import { TimeUtil } from "./Util/TimeUtil";
-import { OnFixedUpdate, OnLateUpdate, OnTick, OnUpdate } from "./Util/Timer";
+import { OnFixedUpdate, OnLateUpdate, OnUpdate } from "./Util/Timer";
 
 Game.coreContext = CoreContext.GAME;
 CoreRefs.Init();
@@ -32,7 +30,6 @@ task.spawn(() => {
 // }
 
 // Force import of TimeUtil
-TimeUtil.GetLifetimeSeconds();
 CanvasAPI.Init();
 AppManager.Init();
 AudioManager.Init();
@@ -45,19 +42,14 @@ const fullGo = gameObject as GameObject & {
 };
 // Drive timer:
 fullGo.OnUpdate(() => {
-	OnUpdate.Fire(TimeUtil.GetDeltaTime());
+	OnUpdate.Fire(Time.deltaTime);
 });
 fullGo.OnLateUpdate(() => {
-	OnLateUpdate.Fire(TimeUtil.GetDeltaTime());
+	OnLateUpdate.Fire(Time.deltaTime);
 });
 fullGo.OnFixedUpdate(() => {
-	OnFixedUpdate.Fire(TimeUtil.GetFixedDeltaTime());
+	OnFixedUpdate.Fire(Time.fixedDeltaTime);
 });
-if (InstanceFinder.TimeManager !== undefined) {
-	InstanceFinder.TimeManager.OnOnTick(() => {
-		OnTick.Fire();
-	});
-}
 
 const COREPATH = "@easy/core";
 
@@ -93,15 +85,15 @@ if (Game.IsServer()) {
 // 	});
 // }
 
-contextbridge.subscribe<(from: LuauContext, sceneName: string, clientId: number, added: boolean) => void>(
-	"SceneManager:OnClientPresenceChangeStart",
-	(from, sceneName, clientId, added) => {
-		SceneManager.onClientPresenceChangeStart.Fire(clientId, sceneName, added);
-	},
-);
-contextbridge.subscribe<(from: LuauContext, sceneName: string, clientId: number, added: boolean) => void>(
-	"SceneManager:OnClientPresenceChangeEnd",
-	(from, sceneName, clientId, added) => {
-		SceneManager.onClientPresenceChangeEnd.Fire(clientId, sceneName, added);
-	},
-);
+// contextbridge.subscribe<(from: LuauContext, sceneName: string, clientId: number, added: boolean) => void>(
+// 	"SceneManager:OnClientPresenceChangeStart",
+// 	(from, sceneName, clientId, added) => {
+// 		SceneManager.onClientPresenceChangeStart.Fire(clientId, sceneName, added);
+// 	},
+// );
+// contextbridge.subscribe<(from: LuauContext, sceneName: string, clientId: number, added: boolean) => void>(
+// 	"SceneManager:OnClientPresenceChangeEnd",
+// 	(from, sceneName, clientId, added) => {
+// 		SceneManager.onClientPresenceChangeEnd.Fire(clientId, sceneName, added);
+// 	},
+// );

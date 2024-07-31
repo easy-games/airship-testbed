@@ -58,11 +58,10 @@ interface PlayerManagerConstructor {
 declare const PlayerManagerBridge: PlayerManagerConstructor;
 
 interface PlayerInfo extends Component {
-	clientId: SyncVar<number>;
-	userId: SyncVar<string>;
-	username: SyncVar<string>;
-	usernameTag: SyncVar<string>;
-	profileImageId: SyncVar<string>;
+	connectionId: number;
+	userId: string;
+	username: string;
+	profileImageId: string;
 	voiceChatAudioSource: AudioSource;
 }
 
@@ -71,7 +70,7 @@ interface SyncVar<T> {
 }
 
 interface PlayerInfoDto {
-	clientId: number;
+	connectionId: number;
 	userId: string;
 	username: string;
 	profileImageId: string;
@@ -864,103 +863,6 @@ interface VoxelWorldConstructor {
 }
 declare const VoxelWorld: VoxelWorldConstructor;
 
-interface NetworkObjectConstructor {
-	UNSET_OBJECTID_VALUE: number;
-	UNSET_PREFABID_VALUE: number;
-}
-declare const NetworkObject: NetworkObjectConstructor;
-
-interface NetworkObject extends MonoBehaviour {
-	NetworkObserver: NetworkObserver;
-	Observers: CSArray<NetworkConnection>;
-	IsNested: boolean;
-	PredictedSpawner: NetworkConnection;
-	IsSceneObject: boolean;
-	ComponentIndex: number;
-	ObjectId: number;
-	PredictedSpawn: PredictedSpawn;
-	NetworkBehaviours: CSArray<NetworkBehaviour>;
-	ParentNetworkObject: NetworkObject;
-	ChildNetworkObjects: CSArray<NetworkObject>;
-	RuntimeParentNetworkObject: NetworkObject;
-	RuntimeParentTransform: Transform;
-	RuntimeChildNetworkObjects: CSArray<NetworkObject>;
-	IsNetworked: boolean;
-	IsGlobal: boolean;
-	IsClientInitialized: boolean;
-	ClientInitialized: boolean;
-	IsClient: boolean;
-	IsClientOnly: boolean;
-	IsServerInitialized: boolean;
-	IsServer: boolean;
-	IsServerOnly: boolean;
-	IsHost: boolean;
-	IsOffline: boolean;
-	IsOwner: boolean;
-	Owner: NetworkConnection;
-	OwnerId: number;
-	IsSpawned: boolean;
-	LocalConnection: NetworkConnection;
-	NetworkManager: NetworkManager;
-	ServerManager: ServerManager;
-	ClientManager: ClientManager;
-	ObserverManager: ObserverManager;
-	TransportManager: TransportManager;
-	TimeManager: TimeManager;
-	SceneManager: SceneManager;
-	PredictionManager: PredictionManager;
-	RollbackManager: RollbackManager;
-	PrefabId: number;
-	SpawnableCollectionId: number;
-	AssetPathHash: number;
-
-	Broadcast<T>(message: T, requireAuthenticated: boolean, channel: Channel): void;
-	Despawn(go: GameObject, despawnType: unknown): void;
-	Despawn(nob: NetworkObject, despawnType: unknown): void;
-	Despawn(despawnType: unknown): void;
-	GetDefaultDespawnType(): DespawnType;
-	GetInitializeOrder(): number;
-	GetInstance<T>(): T;
-	GetNetworkBehaviour(componentIndex: number, error: boolean): NetworkBehaviour;
-	GiveOwnership(newOwner: NetworkConnection): void;
-	HasInstance<T>(): boolean;
-	RegisterInstance<T>(component: T, replace: boolean): void;
-	RegisterInvokeOnInstance<T>(handler: unknown): void;
-	RemoveOwnership(): void;
-	ResetForObjectPool(): void;
-	ResetState(): void;
-	SetAssetPathHash(value: number): void;
-	SetDefaultDespawnType(despawnType: DespawnType): void;
-	SetIsGlobal(value: boolean): void;
-	SetIsNetworked(value: boolean): void;
-	SetLocalOwnership(caller: NetworkConnection): void;
-	SetParent(nb: NetworkBehaviour): void;
-	SetParent(nob: NetworkObject): void;
-	SetRenderersVisible(visible: boolean, force: boolean): void;
-	Spawn(go: GameObject, ownerConnection: NetworkConnection, scene: Scene): void;
-	Spawn(nob: NetworkObject, ownerConnection: NetworkConnection, scene: Scene): void;
-	ToString(): string;
-	TryGetInstance<T>(component: unknown): boolean;
-	TryRegisterInstance<T>(component: T): boolean;
-	UnregisterInstance<T>(): void;
-	UnregisterInvokeOnInstance<T>(handler: unknown): void;
-	UnsetParent(): void;
-	UpdateRenderers(updateVisibility: boolean): void;
-
-	OnStartNetwork(callback: () => void): EngineEventConnection;
-	OnStopNetwork(callback: () => void): EngineEventConnection;
-
-	OnStartServer(callback: () => void): EngineEventConnection;
-	OnOwnershipServer(callback: (conn: NetworkConnection) => void): EngineEventConnection;
-	OnStopServer(callback: () => void): EngineEventConnection;
-	OnSpawnServer(callback: (conn: NetworkConnection) => void): EngineEventConnection;
-	OnDespawnServer(callback: (conn: NetworkConnection) => void): EngineEventConnection;
-
-	OnStartClient(callback: () => void): EngineEventConnection;
-	OnOwnershipClient(callback: (conn: NetworkConnection) => void): EngineEventConnection;
-	OnStopClient(callback: () => void): EngineEventConnection;
-}
-
 interface SteamLuauAPIConstructor {
 	SetGameRichPresence(gameName: string, status: string): boolean;
 	SetRichPresence(key: string, tag: string): boolean;
@@ -1025,156 +927,74 @@ interface TerrainData {
 	RemoveTree(treeIndex: number): void;
 }
 
-interface NetworkTransform extends NetworkBehaviour {
-	_clientAuthoritative: boolean;
-	readonly TakenOwnership: boolean;
-	readonly ParentBehaviour: NetworkBehaviour;
+interface NetworkIdentity extends MonoBehaviour {
+	readonly observers: CSDictionary<number, NetworkConnectionToClient>;
+	sceneId: number;
+	serverOnly: boolean;
+	visibility: Visibility;
+	readonly isClient: boolean;
+	readonly isServer: boolean;
+	readonly isLocalPlayer: boolean;
+	readonly isServerOnly: boolean;
+	readonly isClientOnly: boolean;
+	readonly isOwned: boolean;
+	readonly netId: number;
+	readonly assetId: number;
+	readonly connectionToServer: NetworkConnection;
+	readonly connectionToClient: NetworkConnectionToClient;
+	readonly NetworkBehaviours: CSArray<NetworkBehaviour>;
+	readonly SpawnedFromInstantiate: boolean;
 
-	readonly OnDataReceived: MonoSignal<void>;
-	readonly OnNextGoal: MonoSignal<GoalData>;
-	readonly OnInterpolationComplete: MonoSignal<void>;
+	AssignClientAuthority(conn: NetworkConnectionToClient): boolean;
+	RemoveClientAuthority(): void;
 
-	Awake(): void;
-	ForceSend(ticks: number): void;
-	ForceSend(): void;
-	// GetSendToOwner(): boolean;
-	// NetworkInitialize___Early(): void;
-	// NetworkInitialize__Late(): void;
-	// NetworkInitializeIfDisabled(): void;
-	SetInterval(value: number): void;
-	SetPositionSnapping(axes: SnappedAxes): void;
-	SetRotationSnapping(axes: SnappedAxes): void;
-	SetScaleSnapping(axes: SnappedAxes): void;
-	SetSendToOwner(value: boolean): void;
-	SetSynchronizedProperties(value: SynchronizedProperty): void;
-	SetSynchronizePosition(value: boolean): void;
-	SetSynchronizeRotation(value: boolean): void;
-	SetSynchronizeScale(value: boolean): void;
-	Teleport(): void;
+	readonly onStartClient: MonoSignal<void>;
+	readonly onStartAuthority: MonoSignal<void>;
+	readonly onStopClient: MonoSignal<void>;
+	readonly onStopAuthority: MonoSignal<void>;
+	readonly onStartServer: MonoSignal<void>;
+	readonly onStopServer: MonoSignal<void>;
 }
 
-interface NetworkTransformConstructor {
-	MAX_INTERPOLATION: number;
-	new (): NetworkTransform;
-}
-declare const NetworkTransform: NetworkTransformConstructor;
+interface NetworkTime {}
 
-interface NetworkBehaviour extends MonoBehaviour {
-	readonly OnStartServerCalled: boolean;
-	readonly OnStartClientCalled: boolean;
-	readonly IsSpawned: boolean;
-	readonly ComponentIndex: number;
-	readonly NetworkObject: NetworkObject;
-	readonly IsBehaviourReconciling: boolean;
-	readonly IsDeinitializing: boolean;
-	readonly NetworkManager: NetworkManager;
-	readonly ServerManager: ServerManager;
-	readonly ClientManager: ClientManager;
-	readonly ObserverManager: ObserverManager;
-	readonly TransportManager: TransportManager;
-	readonly TimeManager: TimeManager;
-	readonly SceneManager: SceneManager;
-	readonly PredictionManager: PredictionManager;
-	readonly RollbackManager: RollbackManager;
-	readonly NetworkObserver: NetworkObserver;
-	readonly IsClientInitialized: boolean;
-	readonly IsClientStarted: boolean;
-	readonly IsClientOnlyInitialized: boolean;
-	readonly IsClientOnlyStarted: boolean;
-	readonly IsServerInitialized: boolean;
-	readonly IsServerStarted: boolean;
-	readonly IsServerOnlyInitialized: boolean;
-	readonly IsServerOnlyStarted: boolean;
-	readonly IsHostInitialized: boolean;
-	readonly IsHostStarted: boolean;
-	readonly IsOffline: boolean;
-	readonly IsNetworked: boolean;
-	readonly IsManagerReconciling: boolean;
-	readonly Observers: CSArray<NetworkConnection>;
-	readonly IsOwner: boolean;
-	readonly HasAuthority: boolean;
-	readonly Owner: NetworkConnection;
-	readonly OwnerId: number;
-	readonly ObjectId: number;
-	readonly LocalConnection: NetworkConnection;
+interface NetworkTimeConstructor {
+	// PingInterval: number;
+	// PingWindowSize: number;
 
-	// CanLog(loggingType: LoggingType): boolean;
-	// ClearBuffedRpcs(): void;
-	// ClearReplicateCache(): void;
-	// ClearReplicateCache_Internal<T>(replicatesQueue: BasicQueue<T>, replicatesHistory: CSArray<T>): void;
-	CreateReconcile(): void;
-	// Despawn(go: GameObject, despawnType: unknown): void;
-	// Despawn(nob: NetworkObject, despawnType: unknown): void;
-	// Despawn(despawnType: unknown): void;
-	// EmptyReplicatesQueueIntoHistory<T>(replicatesQueue: BasicQueue<T>, replicatesHistory: CSArray<T>): void;
-	// GetInstance<T>(): T;
-	GiveOwnership(newOwner: NetworkConnection): void;
-	// NetworkInitializeIfDisabled(): void;
-	OwnerMatches(connection: NetworkConnection): boolean;
-	// ReadPayload(connection: NetworkConnection, reader: Reader): void;
-	// Reconcile_Client<T, T2>(reconcileDel: ReconcileUserLogicDelegate<T>, replicatesHistory: CSArray<T2>, data: T): void;
-	// Reconcile_Client_Start(): void;
-	// Reconcile_Reader<T>(reader: PooledReader, data: unknown, channel: Channel): void;
-	// Reconcile_Server<T>(methodHash: number, data: T, channel: Channel): void;
-	// RegisterInstance<T>(component: T, replace: boolean): void;
-	// RegisterInvokeOnInstance<T>(handler: unknown): void;
-	// RegisterObserversRpc(hash: number, del: ClientRpcDelegate): void;
-	// RegisterReconcileRpc(hash: number, del: ReconcileRpcDelegate): void;
-	// RegisterReplicateRpc(hash: number, del: ReplicateRpcDelegate): void;
-	// RegisterServerRpc(hash: number, del: ServerRpcDelegate): void;
-	// RegisterTargetRpc(hash: number, del: ClientRpcDelegate): void;
-	RemoveOwnership(): void;
-	// Replicate_Authoritative<T>(
-	// 	del: ReplicateUserLogicDelegate<T>,
-	// 	methodHash: number,
-	// 	replicatesQueue: BasicQueue<T>,
-	// 	replicatesHistory: CSArray<T>,
-	// 	data: T,
-	// 	channel: Channel,
-	// ): void;
-	// Replicate_NonAuthoritative<T>(
-	// 	del: ReplicateUserLogicDelegate<T>,
-	// 	replicatesQueue: BasicQueue<T>,
-	// 	replicatesHistory: CSArray<T>,
-	// 	channel: Channel,
-	// ): void;
-	// Replicate_Reader<T>(
-	// 	hash: number,
-	// 	reader: PooledReader,
-	// 	sender: NetworkConnection,
-	// 	arrBuffer: CSArray<T>,
-	// 	replicatesQueue: BasicQueue<T>,
-	// 	replicatesHistory: CSArray<T>,
-	// 	channel: Channel,
-	// ): void;
-	// Replicate_SendNonAuthoritative<T>(hash: number, replicatesQueue: BasicQueue<T>, channel: Channel): void;
-	// ResetState(asServer: boolean): void;
-	// ResetSyncVarFields(): void;
-	// SendObserversRpc(
-	// 	hash: number,
-	// 	methodWriter: PooledWriter,
-	// 	channel: Channel,
-	// 	orderType: DataOrderType,
-	// 	bufferLast: boolean,
-	// 	excludeServer: boolean,
-	// 	excludeOwner: boolean,
-	// ): void;
-	// SendServerRpc(hash: number, methodWriter: PooledWriter, channel: Channel, orderType: DataOrderType): void;
-	// SendTargetRpc(
-	// 	hash: number,
-	// 	methodWriter: PooledWriter,
-	// 	channel: Channel,
-	// 	orderType: DataOrderType,
-	// 	target: NetworkConnection,
-	// 	excludeServer: boolean,
-	// 	validateTarget: boolean,
-	// ): void;
-	// Server_SendReconcileRpc<T>(hash: number, reconcileData: T, channel: Channel): void;
-	// Spawn(go: GameObject, ownerConnection: NetworkConnection, scene: Scene): void;
-	// Spawn(nob: NetworkObject, ownerConnection: NetworkConnection, scene: Scene): void;
-	// ToString(): string;
-	// TryRegisterInstance<T>(component: T): boolean;
-	// UnregisterInstance<T>(): void;
-	// UnregisterInvokeOnInstance<T>(handler: unknown): void;
-	// WritePayload(connection: NetworkConnection, writer: Writer): void;
+	/**
+	 * Returns double precision clock time _in this system_, unaffected by the network
+	 */
+	readonly localTime: number;
+	/**
+	 * The time in seconds since the server started.
+	 */
+	readonly time: number;
+	// readonly predictionErrorUnadjusted: number;
+	// readonly predictionErrorAdjusted: number;
+
+	/**
+	 * Predicted timeline in order for client inputs to be timestamped with the exact time when they will most likely arrive on the server. This is the basis for all prediction like PredictedRigidbody.
+	 */
+	readonly predictedTime: number;
+	/**
+	 * Clock difference in seconds between the client and the server. Always 0 on server.
+	 */
+	readonly offset: number;
+
+	/**
+	 * Round trip time (in seconds) that it takes a message to go client->server->client.
+	 */
+	readonly rtt: number;
+
+	/**
+	 * Round trip time variance aka jitter, in seconds.
+	 */
+	readonly rttVariance: number;
+
+	// ResetStatics(): void;
 }
+/**
+ * Synchronizes server time to clients.
+ */
+declare const NetworkTime: NetworkTimeConstructor;

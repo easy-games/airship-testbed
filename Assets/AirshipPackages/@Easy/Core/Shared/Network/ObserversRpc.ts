@@ -69,9 +69,9 @@ export function ObserversRpc<T extends ReadonlyArray<unknown>>(
 				}
 
 				if (isHost) {
-					event!.server.FireExcept(Game.localPlayer, object.networkObject.ObjectId, ...(params as never));
+					event!.server.FireExcept(Game.localPlayer, object.networkIdentity.netId, ...(params as never));
 				} else {
-					event!.server.FireAllClients(object.networkObject.ObjectId, ...(params as never));
+					event!.server.FireAllClients(object.networkIdentity.netId, ...(params as never));
 				}
 
 				if (runOnServer) {

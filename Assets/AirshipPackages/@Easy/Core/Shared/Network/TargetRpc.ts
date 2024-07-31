@@ -1,9 +1,9 @@
-import { NetworkSignal } from "@Easy/Core/Shared/Network/NetworkSignal";
-import { AirshipNetworkBehaviour } from "./AirshipNetworkBehaviour";
-import { Player } from "@Easy/Core/Shared/Player/Player";
-import { NetworkRpc } from "./NetworkRpc";
 import { Game } from "@Easy/Core/Shared/Game";
+import { NetworkSignal } from "@Easy/Core/Shared/Network/NetworkSignal";
+import { Player } from "@Easy/Core/Shared/Player/Player";
 import { MapUtil } from "@Easy/Core/Shared/Util/MapUtil";
+import { AirshipNetworkBehaviour } from "./AirshipNetworkBehaviour";
+import { NetworkRpc } from "./NetworkRpc";
 
 export interface ClientBroadcastOptions<T extends ReadonlyArray<unknown>> {}
 
@@ -49,7 +49,7 @@ export function TargetRpc<T extends ReadonlyArray<unknown>>(
 
 		if (Game.IsServer()) {
 			descriptor.value = (object, player, ...params: T) => {
-				event.server.FireClient(player!, object.networkObject.ObjectId, ...(params as never));
+				event.server.FireClient(player!, object.networkIdentity.netId, ...(params as never));
 				return undefined as ReturnType<TypedPropertyFunction<T>>;
 			};
 			return descriptor;
