@@ -18,16 +18,14 @@ MonoBehaviour:
   - {fileID: 102900000, guid: 3c9ae368a8ce5be42a0926c8ff129454, type: 3}
   - {fileID: 102900000, guid: 497a63aec7ca045bab13a5e25c5d7bba, type: 3}
   - {fileID: 102900000, guid: 2a62ab5d3234b46098d8876bc6fa2271, type: 3}
-  - {fileID: 102900000, guid: 54812eb57ead64c33ac7034860038994, type: 3}
-  - {fileID: 102900000, guid: 348dce646eda54d87abe568e1b9ca22c, type: 3}
   - {fileID: 102900000, guid: 7adf34f37f4884c5ab92c16c58f38874, type: 3}
   - {fileID: 102900000, guid: 1238e9b787beb4b8a90653059aa3a55e, type: 3}
   - {fileID: 102900000, guid: 5d96c9b0b43c34ac299ad4e1c5a2af41, type: 3}
   - {fileID: 102900000, guid: faa9a8b52642d40e6b1fa10fc412bc07, type: 3}
   packages:
   - id: '@Easy/Core'
-    assetVersion: 595
-    codeVersion: 640
+    assetVersion: 597
+    codeVersion: 642
     game: 0
     localSource: 1
     disabled: 0
