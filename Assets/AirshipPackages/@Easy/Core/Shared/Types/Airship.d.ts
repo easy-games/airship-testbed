@@ -927,122 +927,31 @@ interface TerrainData {
 	RemoveTree(treeIndex: number): void;
 }
 
-// interface NetworkBehaviour extends MonoBehaviour {
-// 	readonly OnStartServerCalled: boolean;
-// 	readonly OnStartClientCalled: boolean;
-// 	readonly IsSpawned: boolean;
-// 	readonly ComponentIndex: number;
-// 	readonly NetworkObject: NetworkObject;
-// 	readonly IsBehaviourReconciling: boolean;
-// 	readonly IsDeinitializing: boolean;
-// 	readonly NetworkManager: NetworkManager;
-// 	readonly ServerManager: ServerManager;
-// 	readonly ClientManager: ClientManager;
-// 	readonly ObserverManager: ObserverManager;
-// 	readonly TransportManager: TransportManager;
-// 	readonly TimeManager: TimeManager;
-// 	readonly SceneManager: SceneManager;
-// 	readonly PredictionManager: PredictionManager;
-// 	readonly RollbackManager: RollbackManager;
-// 	readonly NetworkObserver: NetworkObserver;
-// 	readonly IsClientInitialized: boolean;
-// 	readonly IsClientStarted: boolean;
-// 	readonly IsClientOnlyInitialized: boolean;
-// 	readonly IsClientOnlyStarted: boolean;
-// 	readonly IsServerInitialized: boolean;
-// 	readonly IsServerStarted: boolean;
-// 	readonly IsServerOnlyInitialized: boolean;
-// 	readonly IsServerOnlyStarted: boolean;
-// 	readonly IsHostInitialized: boolean;
-// 	readonly IsHostStarted: boolean;
-// 	readonly IsOffline: boolean;
-// 	readonly IsNetworked: boolean;
-// 	readonly IsManagerReconciling: boolean;
-// 	readonly Observers: CSArray<NetworkConnection>;
-// 	readonly IsOwner: boolean;
-// 	readonly HasAuthority: boolean;
-// 	readonly Owner: NetworkConnection;
-// 	readonly OwnerId: number;
-// 	readonly ObjectId: number;
-// 	readonly LocalConnection: NetworkConnection;
+interface NetworkIdentity extends MonoBehaviour {
+	readonly observers: CSDictionary<number, NetworkConnectionToClient>;
+	sceneId: number;
+	serverOnly: boolean;
+	visibility: Visibility;
+	readonly isClient: boolean;
+	readonly isServer: boolean;
+	readonly isLocalPlayer: boolean;
+	readonly isServerOnly: boolean;
+	readonly isClientOnly: boolean;
+	readonly isOwned: boolean;
+	readonly netId: number;
+	readonly assetId: number;
+	readonly connectionToServer: NetworkConnection;
+	readonly connectionToClient: NetworkConnectionToClient;
+	readonly NetworkBehaviours: CSArray<NetworkBehaviour>;
+	readonly SpawnedFromInstantiate: boolean;
 
-// 	// CanLog(loggingType: LoggingType): boolean;
-// 	// ClearBuffedRpcs(): void;
-// 	// ClearReplicateCache(): void;
-// 	// ClearReplicateCache_Internal<T>(replicatesQueue: BasicQueue<T>, replicatesHistory: CSArray<T>): void;
-// 	CreateReconcile(): void;
-// 	// Despawn(go: GameObject, despawnType: unknown): void;
-// 	// Despawn(nob: NetworkObject, despawnType: unknown): void;
-// 	// Despawn(despawnType: unknown): void;
-// 	// EmptyReplicatesQueueIntoHistory<T>(replicatesQueue: BasicQueue<T>, replicatesHistory: CSArray<T>): void;
-// 	// GetInstance<T>(): T;
-// 	GiveOwnership(newOwner: NetworkConnection): void;
-// 	// NetworkInitializeIfDisabled(): void;
-// 	OwnerMatches(connection: NetworkConnection): boolean;
-// 	// ReadPayload(connection: NetworkConnection, reader: Reader): void;
-// 	// Reconcile_Client<T, T2>(reconcileDel: ReconcileUserLogicDelegate<T>, replicatesHistory: CSArray<T2>, data: T): void;
-// 	// Reconcile_Client_Start(): void;
-// 	// Reconcile_Reader<T>(reader: PooledReader, data: unknown, channel: Channel): void;
-// 	// Reconcile_Server<T>(methodHash: number, data: T, channel: Channel): void;
-// 	// RegisterInstance<T>(component: T, replace: boolean): void;
-// 	// RegisterInvokeOnInstance<T>(handler: unknown): void;
-// 	// RegisterObserversRpc(hash: number, del: ClientRpcDelegate): void;
-// 	// RegisterReconcileRpc(hash: number, del: ReconcileRpcDelegate): void;
-// 	// RegisterReplicateRpc(hash: number, del: ReplicateRpcDelegate): void;
-// 	// RegisterServerRpc(hash: number, del: ServerRpcDelegate): void;
-// 	// RegisterTargetRpc(hash: number, del: ClientRpcDelegate): void;
-// 	RemoveOwnership(): void;
-// 	// Replicate_Authoritative<T>(
-// 	// 	del: ReplicateUserLogicDelegate<T>,
-// 	// 	methodHash: number,
-// 	// 	replicatesQueue: BasicQueue<T>,
-// 	// 	replicatesHistory: CSArray<T>,
-// 	// 	data: T,
-// 	// 	channel: Channel,
-// 	// ): void;
-// 	// Replicate_NonAuthoritative<T>(
-// 	// 	del: ReplicateUserLogicDelegate<T>,
-// 	// 	replicatesQueue: BasicQueue<T>,
-// 	// 	replicatesHistory: CSArray<T>,
-// 	// 	channel: Channel,
-// 	// ): void;
-// 	// Replicate_Reader<T>(
-// 	// 	hash: number,
-// 	// 	reader: PooledReader,
-// 	// 	sender: NetworkConnection,
-// 	// 	arrBuffer: CSArray<T>,
-// 	// 	replicatesQueue: BasicQueue<T>,
-// 	// 	replicatesHistory: CSArray<T>,
-// 	// 	channel: Channel,
-// 	// ): void;
-// 	// Replicate_SendNonAuthoritative<T>(hash: number, replicatesQueue: BasicQueue<T>, channel: Channel): void;
-// 	// ResetState(asServer: boolean): void;
-// 	// ResetSyncVarFields(): void;
-// 	// SendObserversRpc(
-// 	// 	hash: number,
-// 	// 	methodWriter: PooledWriter,
-// 	// 	channel: Channel,
-// 	// 	orderType: DataOrderType,
-// 	// 	bufferLast: boolean,
-// 	// 	excludeServer: boolean,
-// 	// 	excludeOwner: boolean,
-// 	// ): void;
-// 	// SendServerRpc(hash: number, methodWriter: PooledWriter, channel: Channel, orderType: DataOrderType): void;
-// 	// SendTargetRpc(
-// 	// 	hash: number,
-// 	// 	methodWriter: PooledWriter,
-// 	// 	channel: Channel,
-// 	// 	orderType: DataOrderType,
-// 	// 	target: NetworkConnection,
-// 	// 	excludeServer: boolean,
-// 	// 	validateTarget: boolean,
-// 	// ): void;
-// 	// Server_SendReconcileRpc<T>(hash: number, reconcileData: T, channel: Channel): void;
-// 	// Spawn(go: GameObject, ownerConnection: NetworkConnection, scene: Scene): void;
-// 	// Spawn(nob: NetworkObject, ownerConnection: NetworkConnection, scene: Scene): void;
-// 	// ToString(): string;
-// 	// TryRegisterInstance<T>(component: T): boolean;
-// 	// UnregisterInstance<T>(): void;
-// 	// UnregisterInvokeOnInstance<T>(handler: unknown): void;
-// 	// WritePayload(connection: NetworkConnection, writer: Writer): void;
-// }
+	AssignClientAuthority(conn: NetworkConnectionToClient): boolean;
+	RemoveClientAuthority(): void;
+
+	readonly onStartClient: MonoSignal<void>;
+	readonly onStartAuthority: MonoSignal<void>;
+	readonly onStopClient: MonoSignal<void>;
+	readonly onStopAuthority: MonoSignal<void>;
+	readonly onStartServer: MonoSignal<void>;
+	readonly onStopServer: MonoSignal<void>;
+}

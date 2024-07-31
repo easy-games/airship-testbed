@@ -49,7 +49,7 @@ export function TargetRpc<T extends ReadonlyArray<unknown>>(
 
 		if (Game.IsServer()) {
 			descriptor.value = (object, player, ...params: T) => {
-				event.server.FireClient(player!, object.networkObject.netId, ...(params as never));
+				event.server.FireClient(player!, object.networkIdentity.netId, ...(params as never));
 				return undefined as ReturnType<TypedPropertyFunction<T>>;
 			};
 			return descriptor;

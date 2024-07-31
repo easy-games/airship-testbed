@@ -77,10 +77,10 @@ export function ServerRpc<TMethodArguments extends ReadonlyArray<unknown>, TRequ
 				}
 
 				if (requiresOwnership) {
-					event!.client.FireServer(object.networkObject.netId, ...params);
+					event!.client.FireServer(object.networkIdentity.netId, ...params);
 				} else {
 					const args = select(2, ...params);
-					event!.client.FireServer(object.networkObject.netId, ...args);
+					event!.client.FireServer(object.networkIdentity.netId, ...args);
 				}
 
 				return undefined as ReturnType<ServerRpcMethodSignature<TMethodArguments, TRequiresOwnership>>;

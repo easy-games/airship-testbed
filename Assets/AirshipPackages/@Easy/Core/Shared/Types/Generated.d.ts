@@ -30787,33 +30787,6 @@ interface NetworkConnection {
 
 }
     
-interface NetworkIdentity extends MonoBehaviour {
-    readonly observers: CSDictionary<number, NetworkConnectionToClient>;
-    sceneId: number;
-    serverOnly: boolean;
-    visibility: Visibility;
-    readonly isClient: boolean;
-    readonly isServer: boolean;
-    readonly isLocalPlayer: boolean;
-    readonly isServerOnly: boolean;
-    readonly isClientOnly: boolean;
-    readonly isOwned: boolean;
-    readonly netId: number;
-    readonly assetId: number;
-    readonly connectionToServer: NetworkConnection;
-    readonly connectionToClient: NetworkConnectionToClient;
-    readonly NetworkBehaviours: CSArray<NetworkBehaviour>;
-    readonly SpawnedFromInstantiate: boolean;
-
-
-
-    AssignClientAuthority(conn: NetworkConnectionToClient): boolean;
-    RemoveClientAuthority(): void;
-    SetSceneIdSceneHashPartInternal(): void;
-
-
-}
-    
 interface NetworkConnectionToClient extends NetworkConnection {
     readonly observing: CSArray<NetworkIdentity>;
     unbatcher: Unbatcher;
