@@ -55,26 +55,26 @@ export class SceneManager {
 	// }
 
 	/**
-	 * Loads a scene only on the local environment. The scene will not have any networking.
+	 * Loads a scene by name.
 	 *
 	 * Loading is done additively which means this scene will be stacked on any existing scenes.
+	 *
+	 * Note that this method is not replicated. If called on the server, it will not load scenes for clients.
 	 *
 	 * @param sceneName Name of scene to be loaded.
 	 */
 	public static LoadScene(sceneName: string): void {
-		assert(Game.IsClient(), "LoadClientSidedScene can only be called from the client.");
-
 		contextbridge.invoke("SceneManager:LoadClientSidedSceneByName", LuauContext.Protected, sceneName);
 	}
 
 	/**
-	 * Unloads a scene only on the local environment.
+	 * Unloads a scene by name.
+	 *
+	 * Note that this method is not replicated. If called on the server, it will not load scenes for clients.
 	 *
 	 * @param sceneName Name of scene to be unloaded.
 	 */
 	public static UnloadScene(sceneName: string): void {
-		assert(Game.IsClient(), "UnloadClientSidedScene can only be called from the client.");
-
 		contextbridge.invoke("SceneManager:UnloadClientSidedSceneByName", LuauContext.Protected, sceneName);
 	}
 
