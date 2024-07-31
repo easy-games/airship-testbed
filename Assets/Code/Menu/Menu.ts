@@ -10,6 +10,7 @@ export default class Menu extends AirshipBehaviour {
 	public content!: RectTransform;
 	public canvas!: Canvas;
 	public camera!: Camera;
+	public scrollRect: ScrollRect;
 
 	private showBin = new Bin();
 
@@ -38,6 +39,8 @@ export default class Menu extends AirshipBehaviour {
 				const go = Object.Instantiate(this.sceneEntryPrefab, this.content);
 				const sceneEntryComp = go.GetAirshipComponent<SceneEntryComponent>();
 				sceneEntryComp?.Init(entry);
+				const redirectScroll = go.GetComponent<AirshipRedirectScroll>();
+				redirectScroll.redirectTarget = this.scrollRect;
 			}
 		} else {
 			this.Hide();
