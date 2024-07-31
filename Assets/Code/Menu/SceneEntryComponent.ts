@@ -43,9 +43,7 @@ export default class SceneEntryComponent extends AirshipBehaviour {
 				}
 
 				this.SetColorState(false, true);
-				print("request.1");
 				const result = MenuUtil.loadGlobalSceneRequest.client.FireServer(this.entry.sceneName);
-				print("request.2 " + result);
 				if (result) {
 					MenuUtil.menu.Hide();
 				}
