@@ -27,11 +27,6 @@ export class MenuUtil {
 			clientSided: true,
 		},
 		{
-			title: "Multi Networked Scenes",
-			subtitle: "Loading multiple networked scenes per player.",
-			sceneName: "MultiScene_Base",
-		},
-		{
 			title: "NavMesh",
 			subtitle: "Unity NavMesh API",
 			sceneName: "NavMesh",
