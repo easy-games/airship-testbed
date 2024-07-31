@@ -955,3 +955,46 @@ interface NetworkIdentity extends MonoBehaviour {
 	readonly onStartServer: MonoSignal<void>;
 	readonly onStopServer: MonoSignal<void>;
 }
+
+interface NetworkTime {}
+
+interface NetworkTimeConstructor {
+	// PingInterval: number;
+	// PingWindowSize: number;
+
+	/**
+	 * Returns double precision clock time _in this system_, unaffected by the network
+	 */
+	readonly localTime: number;
+	/**
+	 * The time in seconds since the server started.
+	 */
+	readonly time: number;
+	// readonly predictionErrorUnadjusted: number;
+	// readonly predictionErrorAdjusted: number;
+
+	/**
+	 * Predicted timeline in order for client inputs to be timestamped with the exact time when they will most likely arrive on the server. This is the basis for all prediction like PredictedRigidbody.
+	 */
+	readonly predictedTime: number;
+	/**
+	 * Clock difference in seconds between the client and the server. Always 0 on server.
+	 */
+	readonly offset: number;
+
+	/**
+	 * Round trip time (in seconds) that it takes a message to go client->server->client.
+	 */
+	readonly rtt: number;
+
+	/**
+	 * Round trip time variance aka jitter, in seconds.
+	 */
+	readonly rttVariance: number;
+
+	// ResetStatics(): void;
+}
+/**
+ * Synchronizes server time to clients.
+ */
+declare const NetworkTime: NetworkTimeConstructor;
