@@ -10,7 +10,6 @@ import { Game } from "./Game";
 import { InitNet } from "./Network/NetworkAPI";
 import { AppManager } from "./Util/AppManager";
 import { CanvasAPI } from "./Util/CanvasAPI";
-import { OnFixedUpdate, OnLateUpdate, OnUpdate } from "./Util/Timer";
 
 Game.coreContext = CoreContext.GAME;
 CoreRefs.Init();
@@ -34,22 +33,6 @@ CanvasAPI.Init();
 AppManager.Init();
 AudioManager.Init();
 InitNet();
-
-const fullGo = gameObject as GameObject & {
-	OnUpdate(callback: () => void): void;
-	OnLateUpdate(callback: () => void): void;
-	OnFixedUpdate(callback: () => void): void;
-};
-// Drive timer:
-fullGo.OnUpdate(() => {
-	OnUpdate.Fire(Time.deltaTime);
-});
-fullGo.OnLateUpdate(() => {
-	OnLateUpdate.Fire(Time.deltaTime);
-});
-fullGo.OnFixedUpdate(() => {
-	OnFixedUpdate.Fire(Time.fixedDeltaTime);
-});
 
 const COREPATH = "@easy/core";
 
