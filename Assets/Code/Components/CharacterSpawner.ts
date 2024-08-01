@@ -15,10 +15,12 @@ export default class CharacterSpawner extends AirshipBehaviour {
 	private bin = new Bin();
 
 	override Start(): void {
+		print("CharacterSpawner.Start");
 		Airship.Camera.SetMode(CharacterCameraMode.Locked);
 		if (Game.IsServer()) {
 			this.bin.Add(
 				Airship.Players.ObservePlayers((player) => {
+					print("observe player: " + player.username);
 					this.SpawnCharacter(player);
 				}),
 			);

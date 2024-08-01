@@ -239,10 +239,10 @@ export class AirshipPlayersSingleton {
 			}
 
 			// Ready bots immediately
-			if (dto.connectionId < 0) {
-				this.playersPendingReady.delete(dto.connectionId);
-				this.HandlePlayerReadyServer(player);
-			}
+			// if (dto.connectionId < 0) {
+			// 	this.playersPendingReady.delete(dto.connectionId);
+			// 	this.HandlePlayerReadyServer(player);
+			// }
 
 			// Next, the client will send a ready request which we handle in HandlePlayerReadyServer()
 		};
