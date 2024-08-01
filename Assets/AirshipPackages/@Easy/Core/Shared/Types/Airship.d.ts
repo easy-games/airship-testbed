@@ -1075,3 +1075,24 @@ interface NetworkTimeConstructor {
  * Synchronizes server time to clients.
  */
 declare const NetworkTime: NetworkTimeConstructor;
+
+interface VolumeProfile extends ScriptableObject {}
+
+interface Volume extends MonoBehaviour {
+	/**
+	 * A value which determines which Volume is being used when Volumes have an equal amount of influence on the Scene.
+	 * Volumes with a higher priority will override lower ones.
+	 */
+	priority: number;
+	/**
+	 * The total weight of this volume in the Scene. 0 means no effect and 1 means full effect.
+	 */
+	weight: number;
+	/**
+	 * Specifies whether to apply the Volume to the entire Scene or not.
+	 */
+	isGlobal: boolean;
+
+	profile: VolumeProfile;
+	sharedProfile: VolumeProfile;
+}
