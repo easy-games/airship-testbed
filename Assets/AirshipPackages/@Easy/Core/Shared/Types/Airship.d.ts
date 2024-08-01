@@ -1096,3 +1096,5 @@ interface Volume extends MonoBehaviour {
 	profile: VolumeProfile;
 	sharedProfile: VolumeProfile;
 }
+
+interface NetworkBehaviour extends MonoBehaviour {}
