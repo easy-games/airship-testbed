@@ -21,7 +21,7 @@ function connectRpcMethods(networkBehaviour: AirshipNetworkBehaviour) {
 
 		for (const command of commands) {
 			rpcBin.Add(
-				command.Event.server.OnClientEvent((player, netId, ...args) => {
+				command.Event.server.OnClientEvent((player, netId, ...args: unknown[]) => {
 					if (netId !== networkIdentity.netId) return;
 					if (
 						command.RequiresOwner &&
@@ -37,7 +37,7 @@ function connectRpcMethods(networkBehaviour: AirshipNetworkBehaviour) {
 	if (Game.IsClient()) {
 		const clientRpcs = ClientRpcs.get(metatable) ?? [];
 		for (const clientRpc of clientRpcs) {
-			clientRpc.Event.client.OnServerEvent((netId, ...args) => {
+			clientRpc.Event.client.OnServerEvent((netId, ...args: unknown[]) => {
 				if (netId !== networkIdentity.netId) return;
 				clientRpc.Callback(networkBehaviour, ...args);
 			});
@@ -45,7 +45,7 @@ function connectRpcMethods(networkBehaviour: AirshipNetworkBehaviour) {
 
 		const targetRpcs = TargetRpcs.get(metatable) ?? [];
 		for (const targetRpc of targetRpcs) {
-			targetRpc.Event.client.OnServerEvent((netId, ...args) => {
+			targetRpc.Event.client.OnServerEvent((netId, ...args: unknown[]) => {
 				if (netId !== networkIdentity.netId) return;
 				targetRpc.Callback(networkBehaviour, Game.localPlayer, ...args);
 			});
