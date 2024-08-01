@@ -399,6 +399,7 @@ export class AirshipPlayersSingleton {
 	 * to a real player.
 	 */
 	public AddBotPlayer(): Player {
+		error("AddBotPlayer hasn't been implemented in Mirror yet. If you need this, ping Luke.");
 		if (!Game.IsServer()) {
 			error("AddBotPlayer() must be called on the server.");
 		}
