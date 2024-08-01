@@ -2,6 +2,7 @@ import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { Airship } from "../Airship";
 import { Game } from "../Game";
 import { Player } from "../Player/Player";
+import { NetworkRpc } from "./NetworkRpc";
 
 /**
  * A TypeScript parallel to the C# `NetworkBehaviour` for Airship.
@@ -41,6 +42,9 @@ export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
 			this.networkIdentity,
 			"Missing NetworkIdentity on GameObject or parent of '" + this.gameObject.name + "'",
 		);
+
+		// Initialize the RPCs
+		this.networkBin.Add(NetworkRpc.Connect(this));
 
 		const id = this.networkIdentity;
 		if (Game.IsServer()) {
