@@ -2,6 +2,66 @@ import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { Airship } from "../Airship";
 import { Game } from "../Game";
 import { Player } from "../Player/Player";
+import { ClientRpcs } from "./ObserversRpc";
+import { CommandRpcs } from "./ServerRpc";
+import { TargetRpcs } from "./TargetRpc";
+
+const networked = new Set<AirshipNetworkBehaviour>();
+function connectRpcMethods(networkBehaviour: AirshipNetworkBehaviour) {
+	if (networked.has(networkBehaviour)) {
+		error("The AirshipNetworkBehaviour's RPC methods have already been connected!");
+	}
+
+	const networkIdentity = networkBehaviour.networkIdentity;
+	const metatable = getmetatable(networkBehaviour) as AirshipNetworkBehaviour;
+	const rpcBin = new Bin();
+
+	if (Game.IsServer()) {
+		const commands = CommandRpcs.get(metatable) ?? [];
+
+		for (const command of commands) {
+			rpcBin.Add(
+				command.Event.server.OnClientEvent((player, netId, ...args: unknown[]) => {
+					if (netId !== networkIdentity.netId) return;
+					if (
+						command.RequiresOwner &&
+						player.connectionId !== networkIdentity.connectionToClient?.connectionId
+					)
+						return;
+					command.Callback(networkBehaviour, ...args);
+				}),
+			);
+		}
+	}
+
+	if (Game.IsClient()) {
+		const clientRpcs = ClientRpcs.get(metatable) ?? [];
+		for (const clientRpc of clientRpcs) {
+			rpcBin.Add(
+				clientRpc.Event.client.OnServerEvent((netId, ...args: unknown[]) => {
+					if (netId !== networkIdentity.netId) return;
+					clientRpc.Callback(networkBehaviour, ...args);
+				}),
+			);
+		}
+
+		const targetRpcs = TargetRpcs.get(metatable) ?? [];
+		for (const targetRpc of targetRpcs) {
+			rpcBin.Add(
+				targetRpc.Event.client.OnServerEvent((netId, ...args: unknown[]) => {
+					if (netId !== networkIdentity.netId) return;
+					targetRpc.Callback(networkBehaviour, Game.localPlayer, ...args);
+				}),
+			);
+		}
+	}
+
+	networked.add(networkBehaviour);
+	return () => {
+		networked.delete(networkBehaviour);
+		rpcBin.Clean();
+	};
+}
 
 /**
  * A TypeScript parallel to the C# `NetworkBehaviour` for Airship.
@@ -41,6 +101,9 @@ export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
 			this.networkIdentity,
 			"Missing NetworkIdentity on GameObject or parent of '" + this.gameObject.name + "'",
 		);
+
+		// Initialize the RPCs
+		this.networkBin.Add(connectRpcMethods(this));
 
 		const id = this.networkIdentity;
 		if (Game.IsServer()) {
@@ -121,7 +184,12 @@ export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
 	 * - If you want to verify the owner isn't the server, use {@link IsServerOwned}. or if the caller is the owner {@link IsOwned}
 	 */
 	public GetPlayerOwner(): Player | undefined {
-		return Airship.Players.FindByConnectionId(this.networkIdentity.connectionToClient.connectionId);
+		const networkIdentity = this.networkIdentity;
+		if (networkIdentity.connectionToClient) {
+			return Airship.Players.FindByConnectionId(networkIdentity.connectionToClient.connectionId);
+		}
+
+		return undefined;
 	}
 
 	/**

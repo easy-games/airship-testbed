@@ -11,14 +11,21 @@ export default class MicIndicator extends AirshipBehaviour {
 	private bin = new Bin();
 	private stateBin = new Bin();
 
-	override OnEnable(): void {
+	override OnEnable(): void {}
+
+	protected Start(): void {
 		const voiceChat = Bridge.GetAirshipVoiceChatNetwork();
-		voiceChat.agent.MuteSelf = true;
-		Airship.Input.OnDown("PushToTalk").Connect((event) => {
-			voiceChat.agent.MuteSelf = false;
-		});
-		Airship.Input.OnUp("PushToTalk").Connect((event) => {
+		task.spawn(() => {
+			while (!voiceChat.gameObject.activeInHierarchy) {
+				task.unscaledWait();
+			}
 			voiceChat.agent.MuteSelf = true;
+			Airship.Input.OnDown("PushToTalk").Connect((event) => {
+				voiceChat.agent.MuteSelf = false;
+			});
+			Airship.Input.OnUp("PushToTalk").Connect((event) => {
+				voiceChat.agent.MuteSelf = true;
+			});
 		});
 		this.canvasGroup.alpha = 0;
 	}
