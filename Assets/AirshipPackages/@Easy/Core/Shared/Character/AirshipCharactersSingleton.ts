@@ -7,6 +7,7 @@ import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { CoreContext } from "../CoreClientContext";
 import { Game } from "../Game";
+import inspect from "../Util/Inspect";
 import { Viewmodel } from "../Viewmodel/Viewmodel";
 import Character from "./Character";
 import { CharacterDto } from "./CharacterDto";
@@ -300,6 +301,8 @@ export class AirshipCharactersSingleton {
 	private InitCharacter(dto: CharacterDto): void {
 		// This can happen when client receives spawn character packet before client retrieves list of all existing characters.
 		if (this.FindById(dto.id)) return;
+
+		print("InitCharacter " + inspect(dto));
 
 		task.spawn(() => {
 			const characterNetworkObj = NetworkUtil.WaitForNetworkIdentity(dto.netId);

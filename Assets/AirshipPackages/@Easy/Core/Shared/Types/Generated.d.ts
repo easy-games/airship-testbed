@@ -34547,7 +34547,7 @@ interface ChatroomAudioSegment {
 	samples: CSArray<number>;
 }
 
-interface AirshipUniVoiceNetwork extends NetworkBehaviour, IChatroomNetwork {
+interface AirshipUniVoiceNetwork extends MonoBehaviour, IChatroomNetwork {
 	agent: ChatroomAgent;
 	readonly OwnID: number;
 	readonly PeerIDs: CSArray<number>;
