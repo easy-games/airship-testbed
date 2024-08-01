@@ -168,7 +168,7 @@ export class Player {
 
 		characterComponent.Init(this, Airship.Characters.MakeNewId(), this.selectedOutfit);
 		this.SetCharacter(characterComponent);
-		NetworkServer.Spawn(go, this.networkIdentity.connectionToClient);
+		NetworkServer.Spawn(go, this.networkIdentity.connectionToClient!);
 		Airship.Characters.RegisterCharacter(characterComponent);
 		Airship.Characters.onCharacterSpawned.Fire(characterComponent);
 		return characterComponent;
