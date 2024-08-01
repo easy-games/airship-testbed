@@ -35,6 +35,9 @@ export default class Character extends AirshipBehaviour {
 	public footstepAudioSource!: AudioSource;
 	@NonSerialized() public rig!: CharacterRig;
 
+	@Header("Variables")
+	public autoLoadAvatarOutfit = true;
+
 	// State
 	@NonSerialized() public id!: number;
 	@NonSerialized() public state!: CharacterState;
@@ -148,11 +151,7 @@ export default class Character extends AirshipBehaviour {
 		this.despawned = false;
 		this.initialized = true;
 
-		if (outfitDto) {
-			Airship.Avatar.LoadUserOutfit(outfitDto, this.accessoryBuilder, {
-				removeOldClothingAccessories: true,
-			});
-		}
+		this.LoadUserOutfit(outfitDto);
 
 		//Apply the queued custom data to movement
 		const customDataFlushedConn = this.movement.OnSetCustomData(() => {
@@ -161,6 +160,16 @@ export default class Character extends AirshipBehaviour {
 		this.bin.Add(() => {
 			Bridge.DisconnectEvent(customDataFlushedConn);
 		});
+	}
+
+	public LoadUserOutfit(outfitDto: OutfitDto | undefined) {
+		this.outfitDto = outfitDto;
+		//print("using outfit: " + outfitDto?.name);
+		if (Game.IsClient() && outfitDto && this.autoLoadAvatarOutfit) {
+			Airship.Avatar.LoadUserOutfit(outfitDto, this.accessoryBuilder, {
+				removeOldClothingAccessories: true,
+			});
+		}
 	}
 
 	private queuedMoveData = new Map<string, unknown>();

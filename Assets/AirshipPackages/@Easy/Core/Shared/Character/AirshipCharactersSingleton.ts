@@ -101,9 +101,7 @@ export class AirshipCharactersSingleton {
 				if (!character) return;
 
 				if (outfitDto) {
-					Airship.Avatar.LoadUserOutfit(outfitDto, character.accessoryBuilder, {
-						removeOldClothingAccessories: true,
-					});
+					character.LoadUserOutfit(outfitDto);
 				}
 			});
 		}

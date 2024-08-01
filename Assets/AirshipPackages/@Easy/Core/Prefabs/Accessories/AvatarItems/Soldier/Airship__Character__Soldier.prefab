@@ -913,6 +913,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Feet - Combat Boots(Clone)
       objectReference: {fileID: 0}
+    - target: {fileID: 4446343513799409475, guid: 9f0218a7789bb634a95d9b69966c564b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5355020228438675530, guid: 9f0218a7789bb634a95d9b69966c564b, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.2222476e-10
@@ -1331,6 +1335,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Torso - Combat Fatigue(Clone)
       objectReference: {fileID: 0}
+    - target: {fileID: 3942347132550620076, guid: ca353e0ec6325014eac3b72f72bc5660, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5662048739917201897, guid: ca353e0ec6325014eac3b72f72bc5660, type: 3}
       propertyPath: m_RootBone
       value: 
@@ -1742,6 +1750,10 @@ PrefabInstance:
     - target: {fileID: 7194820202470860766, guid: 08417015f355d5b40bcb6ad6bb67606a, type: 3}
       propertyPath: m_Name
       value: Head - Combat Helmet(Clone)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7194820202470860766, guid: 08417015f355d5b40bcb6ad6bb67606a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -690,7 +690,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 						if (outfit.outfitId === equippedOutfit.outfitId) {
 							//Select equipped outfit
 							this.Log("Found default outfit index: " + i);
-							this.SelectOutfit(i);
+							this.SelectOutfit(i, false);
 							return;
 						}
 						i++;
@@ -698,12 +698,12 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 				}
 
 				//Select the first outfit if no outfit was found
-				this.SelectOutfit(0);
+				this.SelectOutfit(0, false);
 			});
 		});
 	}
 
-	private SelectOutfit(index: number) {
+	private SelectOutfit(index: number, notifyServer: boolean = true) {
 		this.Log("SelectOutfit: " + index);
 
 		if (!this.outfits || index < 0 || index >= this.outfits.size() || this.inThumbnailMode) {
@@ -714,11 +714,13 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			this.outfitBtns[i].SetSelected(i === index);
 		}
 		this.currentUserOutfit = this.outfits[index];
-		AvatarPlatformAPI.EquipAvatarOutfit(this.currentUserOutfit.outfitId).then(() => {
-			if (Game.coreContext === CoreContext.GAME) {
-				CoreNetwork.ClientToServer.ChangedOutfit.client.FireServer();
-			}
-		});
+		if (notifyServer) {
+			AvatarPlatformAPI.EquipAvatarOutfit(this.currentUserOutfit.outfitId).then(() => {
+				if (Game.coreContext === CoreContext.GAME) {
+					CoreNetwork.ClientToServer.ChangedOutfit.client.FireServer();
+				}
+			});
+		}
 
 		this.LoadCurrentOutfit();
 	}
@@ -739,7 +741,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private ClearAllAccessories() {
-		this.mainMenu?.avatarView?.accessoryBuilder?.RemoveAllAccessories();
+		this.mainMenu?.avatarView?.accessoryBuilder?.RemoveAllAccessories(true);
 		this.selectedAccessories.clear();
 		this.activeAccessories.clear();
 	}
@@ -748,8 +750,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		if (!this.currentUserOutfit) {
 			return;
 		}
-		this.ClearAllAccessories();
 		this.Log("Loading outfit: " + this.currentUserOutfit.name);
+		this.ClearAllAccessories();
 		this.currentUserOutfit.accessories.forEach((acc, index) => {
 			this.Log("Outfit acc: " + acc.class.name + ": " + acc.class.classId);
 			let accComponent = Airship.Avatar.GetAccessoryFromClassId(acc.class.classId);
@@ -842,12 +844,12 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		if (!this.renderSetup) {
 			this.renderSetup = this.mainMenu?.avatarView?.CreateRenderScene();
 		}
+		print("Entering Thumbnail Mode");
 		this.mainMenu?.avatarView?.backdropHolder?.gameObject.SetActive(false);
 		this.inThumbnailMode = true;
 		this.SetDirty(true);
 		this.ClearItembuttons();
 		this.ClearAllAccessories();
-		print("Entering Thumbnail Mode");
 		//Accessories
 		let foundItems = Airship.Avatar.GetAllPossibleAvatarItems();
 		let foundFaces = Airship.Avatar.GetAllAvatarFaceItems();

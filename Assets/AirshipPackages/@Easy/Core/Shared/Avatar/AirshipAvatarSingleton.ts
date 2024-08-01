@@ -279,7 +279,7 @@ export class AirshipAvatarSingleton {
 		options: { removeOldClothingAccessories?: boolean } = {},
 	) {
 		if (options.removeOldClothingAccessories) {
-			builder.RemoveClothingAccessories();
+			builder.RemoveClothingAccessories(false);
 		}
 		outfit.accessories.forEach((acc) => {
 			const accComponentTemplate = this.GetAccessoryFromClassId(acc.class.classId);
@@ -299,7 +299,7 @@ export class AirshipAvatarSingleton {
 				}
 			}
 		});
-		builder.SetSkinColor(ColorUtil.HexToColor(outfit.skinColor), true);
+		builder.SetSkinColor(ColorUtil.HexToColor(outfit.skinColor), false);
 		builder.TryCombineMeshes();
 	}
 }
