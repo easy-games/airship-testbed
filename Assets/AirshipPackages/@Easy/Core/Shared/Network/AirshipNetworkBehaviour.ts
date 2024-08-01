@@ -2,7 +2,62 @@ import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { Airship } from "../Airship";
 import { Game } from "../Game";
 import { Player } from "../Player/Player";
-import { NetworkRpc } from "./NetworkRpc";
+import { ClientRpcs } from "./ObserversRpc";
+import { CommandRpcs } from "./ServerRpc";
+import { TargetRpcs } from "./TargetRpc";
+
+const networked = new Set<AirshipNetworkBehaviour>();
+function connectRpcMethods(networkBehaviour: AirshipNetworkBehaviour) {
+	if (networked.has(networkBehaviour)) {
+		error("The AirshipNetworkBehaviour's RPC methods have already been connected!");
+	}
+
+	const networkIdentity = networkBehaviour.networkIdentity;
+	const metatable = getmetatable(networkBehaviour) as AirshipNetworkBehaviour;
+	const rpcBin = new Bin();
+
+	if (Game.IsServer()) {
+		const commands = CommandRpcs.get(metatable) ?? [];
+
+		for (const command of commands) {
+			rpcBin.Add(
+				command.Event.server.OnClientEvent((player, netId, ...args) => {
+					if (netId !== networkIdentity.netId) return;
+					if (
+						command.RequiresOwner &&
+						player.connectionId !== networkIdentity.connectionToClient.connectionId
+					)
+						return;
+					command.Callback(networkBehaviour, ...args);
+				}),
+			);
+		}
+	}
+
+	if (Game.IsClient()) {
+		const clientRpcs = ClientRpcs.get(metatable) ?? [];
+		for (const clientRpc of clientRpcs) {
+			clientRpc.Event.client.OnServerEvent((netId, ...args) => {
+				if (netId !== networkIdentity.netId) return;
+				clientRpc.Callback(networkBehaviour, ...args);
+			});
+		}
+
+		const targetRpcs = TargetRpcs.get(metatable) ?? [];
+		for (const targetRpc of targetRpcs) {
+			targetRpc.Event.client.OnServerEvent((netId, ...args) => {
+				if (netId !== networkIdentity.netId) return;
+				targetRpc.Callback(networkBehaviour, Game.localPlayer, ...args);
+			});
+		}
+	}
+
+	networked.add(networkBehaviour);
+	return () => {
+		networked.delete(networkBehaviour);
+		rpcBin.Clean();
+	};
+}
 
 /**
  * A TypeScript parallel to the C# `NetworkBehaviour` for Airship.
@@ -44,7 +99,7 @@ export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
 		);
 
 		// Initialize the RPCs
-		this.networkBin.Add(NetworkRpc.Connect(this));
+		this.networkBin.Add(connectRpcMethods(this));
 
 		const id = this.networkIdentity;
 		if (Game.IsServer()) {
