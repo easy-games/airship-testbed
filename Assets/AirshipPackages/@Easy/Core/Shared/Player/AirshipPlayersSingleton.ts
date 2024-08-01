@@ -331,7 +331,7 @@ export class AirshipPlayersSingleton {
 		// }
 		// this.outfitFetchTime.set(player.userId, os.time());
 
-		if (player.IsLocalPlayer()) {
+		if (player.IsLocalPlayer() || Game.IsEditor()) {
 			//print("loading local outfit");
 			await AvatarPlatformAPI.GetEquippedOutfit().then(SetOutfit);
 		} else {
