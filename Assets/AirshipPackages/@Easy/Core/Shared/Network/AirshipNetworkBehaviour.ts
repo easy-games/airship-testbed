@@ -25,7 +25,7 @@ function connectRpcMethods(networkBehaviour: AirshipNetworkBehaviour) {
 					if (netId !== networkIdentity.netId) return;
 					if (
 						command.RequiresOwner &&
-						player.connectionId !== networkIdentity.connectionToClient.connectionId
+						player.connectionId !== networkIdentity.connectionToClient?.connectionId
 					)
 						return;
 					command.Callback(networkBehaviour, ...args);
@@ -180,7 +180,12 @@ export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
 	 * - If you want to verify the owner isn't the server, use {@link IsServerOwned}. or if the caller is the owner {@link IsOwned}
 	 */
 	public GetPlayerOwner(): Player | undefined {
-		return Airship.Players.FindByConnectionId(this.networkIdentity.connectionToClient.connectionId);
+		const networkIdentity = this.networkIdentity;
+		if (networkIdentity.connectionToClient) {
+			return Airship.Players.FindByConnectionId(networkIdentity.connectionToClient.connectionId);
+		}
+
+		return undefined;
 	}
 
 	/**

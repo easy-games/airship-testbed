@@ -928,31 +928,108 @@ interface TerrainData {
 }
 
 interface NetworkIdentity extends MonoBehaviour {
+	/**
+	 * The set of network connections (players) that can see this object.
+	 */
 	readonly observers: CSDictionary<number, NetworkConnectionToClient>;
+	/**
+	 * Unique identifier for NetworkIdentity objects within a scene, used for spawning scene objects.
+	 */
 	sceneId: number;
+	/**
+	 * Make this object only exist when the game is running as a server (or host).
+	 */
 	serverOnly: boolean;
+	/**
+	 * Visibility can overwrite interest management. ForceHidden can be useful to hide monsters while they respawn.
+	 *
+	 * ForceShown can be useful for score NetworkIdentities that should always broadcast to everyone in the world.
+	 */
 	visibility: Visibility;
+	/**
+	 * Returns true if running as a client and this object was spawned by a server.
+	 */
 	readonly isClient: boolean;
+	/**
+	 * Returns true if NetworkServer.active and server is not stopped.
+	 */
 	readonly isServer: boolean;
+	/**
+	 * Return true if this object represents the player on the local machine.
+	 */
 	readonly isLocalPlayer: boolean;
+	/**
+	 * True if this object only exists on the server
+	 */
 	readonly isServerOnly: boolean;
+	/**
+	 * True if this object exists on a client that is not also acting as a server.
+	 */
 	readonly isClientOnly: boolean;
+	/**
+	 * isOwned is true on the client if this NetworkIdentity is one of the .owned entities of our connection on the server.
+	 */
 	readonly isOwned: boolean;
+	/**
+	 * The unique network Id of this object (unique at runtime).
+	 */
 	readonly netId: number;
 	readonly assetId: number;
+	/**
+	 * Client's network connection to the server. This is only valid for player objects on the client.
+	 */
 	readonly connectionToServer: NetworkConnection;
-	readonly connectionToClient: NetworkConnectionToClient;
+	/**
+	 * Server's network connection to the client. This is only valid for client-owned objects (including the Player object) on the server.
+	 */
+	readonly connectionToClient: NetworkConnectionToClient | undefined;
 	readonly NetworkBehaviours: CSArray<NetworkBehaviour>;
 	readonly SpawnedFromInstantiate: boolean;
 
+	/**
+	 * **Assign control of an object to a client via the client's NetworkConnection.**
+	 *
+	 * This causes `isOwned` to be set on the client that owns the object,
+	 * and `NetworkBehaviour.OnStartAuthority` will be called on that client.
+	 * This object then will be in the `NetworkConnection.clientOwnedObjects`
+	 * list for the connection.
+	 * Authority can be removed with `RemoveClientAuthority`. Only one client
+	 * can own an object at any time. This does not need to be called for
+	 * player objects, as their authority is setup automatically.
+	 */
 	AssignClientAuthority(conn: NetworkConnectionToClient): boolean;
+	/**
+	 * **Removes ownership for an object.**
+	 *
+	 * Applies to objects that had authority set by `AssignClientAuthority`,
+	 * or `NetworkServer.Spawn` with a NetworkConnection parameter included.
+	 * Authority cannot be removed for player objects.
+	 */
 	RemoveClientAuthority(): void;
 
+	/**
+	 * Called when this `NetworkIdentity` is started on the client
+	 */
 	readonly onStartClient: MonoSignal<void>;
+	/**
+	 * Called when this `NetworkIdentity` is given ownership, to the client who owns it
+	 */
 	readonly onStartAuthority: MonoSignal<void>;
+	/**
+	 * Called when this `NetworkIdentity` is stopped on the client
+	 */
 	readonly onStopClient: MonoSignal<void>;
+	/**
+	 * Called when this `NetworkIdentity` loses ownership, to the client who owned it
+	 */
 	readonly onStopAuthority: MonoSignal<void>;
+	/**
+	 * Called when this `NetworkIdentity` is started on the server
+	 */
 	readonly onStartServer: MonoSignal<void>;
+	/**
+	 * Called when this `NetworkIdentity` is stopped on the server
+	 */
 	readonly onStopServer: MonoSignal<void>;
 }
 
