@@ -57,9 +57,13 @@ export function ClientRpc<T extends ReadonlyArray<unknown>>(
 		if (Game.IsServer()) {
 			if (ignoreOwner) {
 				descriptor.value = (object, ...params) => {
-					const owner = Airship.Players.FindByConnectionId(
-						object.networkIdentity.connectionToClient.connectionId,
-					);
+					const networkIdentity = object.networkIdentity;
+					const connection = networkIdentity.connectionToClient;
+
+					const owner =
+						connection !== undefined
+							? Airship.Players.FindByConnectionId(connection.connectionId)
+							: undefined;
 					if (owner) {
 						event!.server.FireExcept(owner, object.networkIdentity.netId, ...(params as never));
 					} else {
