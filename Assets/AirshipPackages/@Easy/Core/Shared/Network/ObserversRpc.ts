@@ -37,7 +37,7 @@ export function ClientRpc<T extends ReadonlyArray<unknown>>(
 	property: string,
 	descriptor: TypedPropertyDescriptor<TypedPropertyFunction<T>>,
 ) => void {
-	let ignoreOwner = !options.includeOwner ?? false;
+	let includeOwner = options.includeOwner ?? true;
 
 	let isHost = Game.IsHosting();
 
@@ -50,12 +50,12 @@ export function ClientRpc<T extends ReadonlyArray<unknown>>(
 		listeners.push({
 			Callback: callback,
 			Id: id,
-			IgnoreOwner: ignoreOwner,
+			IgnoreOwner: includeOwner,
 			Event: event,
 		});
 
 		if (Game.IsServer()) {
-			if (ignoreOwner) {
+			if (!includeOwner) {
 				descriptor.value = (object, ...params) => {
 					const networkIdentity = object.networkIdentity;
 					const connection = networkIdentity.connectionToClient;
