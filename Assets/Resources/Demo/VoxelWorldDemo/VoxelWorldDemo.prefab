@@ -127,7 +127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9eaf1e487c24d9996d515cda0275b9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  voxelWorld: {fileID: 0}
+  voxelWorld: {fileID: 3149565320392745183}
 --- !u!114 &3149565320392745183
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -147,5 +147,5 @@ MonoBehaviour:
   lightsFolder: {fileID: 0}
   finishedReplicatingChunksFromServer: 0
   voxelBlocks: {fileID: 7874847048934386813}
-  selectedBlockIndex: 3
+  selectedBlockIndex: 9
   renderingDisabled: 0
