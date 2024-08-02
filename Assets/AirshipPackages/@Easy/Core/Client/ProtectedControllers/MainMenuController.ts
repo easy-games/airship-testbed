@@ -58,32 +58,39 @@ export class MainMenuController {
 		this.pageMap = new Map<MainMenuPageType, MainMenuPageComponent>([
 			[MainMenuPageType.Home, this.refs.GetValue("Pages", "Home").GetAirshipComponent<HomePageComponent>()!],
 			[MainMenuPageType.Develop, this.refs.GetValue("Pages", "Develop").GetAirshipComponent<DevelopMenuPage>()!],
-			[
-				MainMenuPageType.Avatar,
-				this.refs.GetValue("Pages", "Avatar").GetAirshipComponent<AvatarMenuComponent>()!,
-			],
-			[
-				MainMenuPageType.AvatarMobile,
-				this.refs.GetValue("Pages", "AvatarMobile").GetAirshipComponent<AvatarMenuComponent>()!,
-			],
-			[
-				MainMenuPageType.Friends,
-				this.refs.GetValue("Pages", "Friends").GetAirshipComponent<MainMenuPageComponent>()!,
-			],
-			[MainMenuPageType.Game, this.refs.GetValue("Pages", "Game").GetAirshipComponent<GameGeneralPage>()!],
 		]);
 
+		//Mobile specific pages
 		if (Game.IsMobile()) {
+			this.pageMap.set(
+				MainMenuPageType.AvatarMobile,
+				this.refs.GetValue("Pages", "AvatarMobile").GetAirshipComponent<AvatarMenuComponent>()!,
+			);
 			this.avatarView = Object.Instantiate(
 				this.refs.GetValue<GameObject>("AvatarMobile", "Avatar3DSceneTemplate"),
 				CoreRefs.protectedTransform,
 			).GetAirshipComponent<AvatarViewComponent>()!;
+			this.refs.GetValue("Pages", "Avatar").SetActive(false);
 		} else {
+			this.pageMap.set(
+				MainMenuPageType.Avatar,
+				this.refs.GetValue("Pages", "Avatar").GetAirshipComponent<AvatarMenuComponent>()!,
+			);
 			this.avatarView = Object.Instantiate(
 				this.refs.GetValue<GameObject>("Avatar", "Avatar3DSceneTemplate"),
 				CoreRefs.protectedTransform,
 			).GetAirshipComponent<AvatarViewComponent>()!;
+			this.refs.GetValue("Pages", "AvatarMobile").SetActive(false);
 		}
+
+		this.pageMap.set(
+			MainMenuPageType.Friends,
+			this.refs.GetValue("Pages", "Friends").GetAirshipComponent<MainMenuPageComponent>()!,
+		);
+		this.pageMap.set(
+			MainMenuPageType.Game,
+			this.refs.GetValue("Pages", "Game").GetAirshipComponent<GameGeneralPage>()!,
+		);
 
 		if (Game.coreContext === CoreContext.GAME) {
 			this.avatarView.HideAvatar();
