@@ -36,14 +36,14 @@ MonoBehaviour:
     smooth: {fileID: 0}
     metallic: {fileID: 0}
     emissive: {fileID: 0}
-  meshTexture: 
-  meshPath: 
+  meshMaterial: {fileID: 0}
+  quarterBlockMesh: {fileID: 0}
   meshPathLod: 
   metallic: 0
   smoothness: 0
   normalScale: 1
   emissive: 0
-  brightness: 3
+  brightness: 4
   solid: 1
   collisionType: 1
   randomRotation: 0
