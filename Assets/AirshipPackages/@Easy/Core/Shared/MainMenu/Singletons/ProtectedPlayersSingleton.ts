@@ -21,7 +21,7 @@ export class ProtectedPlayersSingleton {
 				player.username,
 				player.userId,
 				player.profileImageId,
-				player.clientId,
+				player.connectionId,
 			);
 			this.players.push(protectedPlayer);
 			this.onPlayerJoined.Fire(protectedPlayer);
@@ -42,7 +42,7 @@ export class ProtectedPlayersSingleton {
 	}
 
 	public FindByClientId(clientId: number): ProtectedPlayer | undefined {
-		return this.players.find((p) => p.clientId === clientId);
+		return this.players.find((p) => p.connectionId === clientId);
 	}
 
 	public FindByUserId(userId: string): ProtectedPlayer | undefined {

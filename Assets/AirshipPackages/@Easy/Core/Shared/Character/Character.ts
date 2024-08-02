@@ -3,14 +3,12 @@ import { Game } from "@Easy/Core/Shared/Game";
 import Inventory from "@Easy/Core/Shared/Inventory/Inventory";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
-import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { CoreNetwork } from "../CoreNetwork";
 import { DamageInfo, DamageInfoCustomData } from "../Damage/DamageInfo";
 import CharacterAnimator from "./Animation/CharacterAnimator";
 import CharacterConfigSetup from "./CharacterConfigSetup";
-import inspect from "../Util/Inspect";
 
 /**
  * A character is a (typically human) object in the scene. It controls movement and default animation.
@@ -32,10 +30,13 @@ export default class Character extends AirshipBehaviour {
 	public animationHelper!: CharacterAnimationHelper;
 	public accessoryBuilder!: AccessoryBuilder;
 	public model!: GameObject;
-	public networkObject!: NetworkObject;
+	public networkIdentity!: NetworkIdentity;
 	public rigRoot!: GameObject;
 	public footstepAudioSource!: AudioSource;
 	@NonSerialized() public rig!: CharacterRig;
+
+	@Header("Variables")
+	public autoLoadAvatarOutfit = true;
 
 	// State
 	@NonSerialized() public id!: number;
@@ -150,11 +151,7 @@ export default class Character extends AirshipBehaviour {
 		this.despawned = false;
 		this.initialized = true;
 
-		if (outfitDto) {
-			Airship.Avatar.LoadUserOutfit(outfitDto, this.accessoryBuilder, {
-				removeOldClothingAccessories: true,
-			});
-		}
+		this.LoadUserOutfit(outfitDto);
 
 		//Apply the queued custom data to movement
 		const customDataFlushedConn = this.movement.OnSetCustomData(() => {
@@ -163,6 +160,16 @@ export default class Character extends AirshipBehaviour {
 		this.bin.Add(() => {
 			Bridge.DisconnectEvent(customDataFlushedConn);
 		});
+	}
+
+	public LoadUserOutfit(outfitDto: OutfitDto | undefined) {
+		this.outfitDto = outfitDto;
+		//print("using outfit: " + outfitDto?.name);
+		if (Game.IsClient() && outfitDto && this.autoLoadAvatarOutfit) {
+			Airship.Avatar.LoadUserOutfit(outfitDto, this.accessoryBuilder, {
+				removeOldClothingAccessories: true,
+			});
+		}
 	}
 
 	private queuedMoveData = new Map<string, unknown>();
@@ -213,7 +220,7 @@ export default class Character extends AirshipBehaviour {
 	 */
 	public WaitForInit(): void {
 		while (!this.initialized) {
-			task.unscaledWait();
+			task.wait();
 		}
 	}
 
@@ -246,7 +253,7 @@ export default class Character extends AirshipBehaviour {
 		if (this.player?.character === this) {
 			this.player?.SetCharacter(undefined);
 		}
-		NetworkUtil.Despawn(this.gameObject);
+		NetworkServer.Destroy(this.gameObject);
 	}
 
 	public InflictDamage(damage: number, attacker?: GameObject, data?: DamageInfoCustomData): void {

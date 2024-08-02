@@ -36,6 +36,10 @@ PrefabInstance:
       propertyPath: authorityMode
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8440015110078338219, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
+      propertyPath: _assetId
+      value: 3595712376
+      objectReference: {fileID: 0}
     - target: {fileID: 8616685848737228372, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       propertyPath: m_Name
       value: AirshipCharacter_MovementOptions

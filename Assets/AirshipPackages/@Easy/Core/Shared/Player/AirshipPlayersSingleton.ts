@@ -34,7 +34,7 @@ import { Player, PlayerDto } from "./Player";
  */
 @Controller({ loadOrder: -1000 })
 @Service({ loadOrder: -1000 })
-export class PlayersSingleton {
+export class AirshipPlayersSingleton {
 	public onPlayerJoined = new Signal<Player>();
 	public onPlayerDisconnected = new Signal<Player>();
 
@@ -62,15 +62,15 @@ export class PlayersSingleton {
 		const FetchLocalPlayerWithWait = () => {
 			let localPlayerInfo: PlayerInfo | undefined = this.playerManagerBridge.localPlayer;
 			while (localPlayerInfo === undefined) {
-				task.unscaledWait();
+				task.wait();
 				localPlayerInfo = this.playerManagerBridge.localPlayer;
 			}
 
 			const mutable = Game.localPlayer as Mutable<Player>;
-			mutable.connectionId = localPlayerInfo.clientId.Value;
-			mutable.networkObject = localPlayerInfo.gameObject.GetComponent<NetworkObject>()!;
-			mutable.username = localPlayerInfo.username.Value;
-			mutable.userId = localPlayerInfo.userId.Value;
+			mutable.connectionId = localPlayerInfo.connectionId;
+			mutable.networkIdentity = localPlayerInfo.gameObject.GetComponent<NetworkIdentity>()!;
+			mutable.username = localPlayerInfo.username;
+			mutable.userId = localPlayerInfo.userId;
 			mutable.SetVoiceChatAudioSource(localPlayerInfo.voiceChatAudioSource);
 			Game.localPlayerLoaded = true;
 			Game.onLocalPlayerLoaded.Fire();
@@ -81,7 +81,7 @@ export class PlayersSingleton {
 
 		if (Game.IsClient()) {
 			Game.localPlayer = new Player(
-				undefined as unknown as NetworkObject,
+				undefined as unknown as NetworkIdentity,
 				0,
 				"loading",
 				"loading",
@@ -113,7 +113,7 @@ export class PlayersSingleton {
 					userId: player.userId,
 					username: player.username,
 					profileImageId: player.profileImageId,
-					clientId: player.connectionId,
+					connectionId: player.connectionId,
 				});
 				if (Game.IsServer() && this.joinMessagesEnabled) {
 					Game.BroadcastMessage(ChatColor.Aqua(player.username) + ChatColor.Gray(" joined the server."));
@@ -127,7 +127,7 @@ export class PlayersSingleton {
 						userId: player.userId,
 						username: player.username,
 						profileImageId: player.profileImageId,
-						clientId: player.connectionId,
+						connectionId: player.connectionId,
 					},
 				);
 				if (Game.IsServer() && this.disconnectMessagesEnabled) {
@@ -215,13 +215,13 @@ export class PlayersSingleton {
 		const onPlayerPreJoin = (dto: PlayerInfoDto) => {
 			// LocalPlayer is hardcoded, so we check if this client should be treated as local player.
 			let player: Player;
-			if (RunUtil.IsHosting() && dto.clientId === 0) {
+			if (Game.IsHosting() && dto.connectionId === 0) {
 				player = Game.localPlayer;
 			} else {
 				let playerInfo = dto.gameObject.GetComponent<PlayerInfo>()!;
 				player = new Player(
-					dto.gameObject.GetComponent<NetworkObject>()!,
-					dto.clientId,
+					dto.gameObject.GetComponent<NetworkIdentity>()!,
+					dto.connectionId,
 					dto.userId,
 					dto.username,
 					dto.profileImageId,
@@ -229,7 +229,7 @@ export class PlayersSingleton {
 				);
 			}
 			dto.gameObject.name = `Player_${dto.username}`;
-			this.playersPendingReady.set(dto.clientId, player);
+			this.playersPendingReady.set(dto.connectionId, player);
 
 			// check for existing player with matching userId
 			for (let player of this.players) {
@@ -239,13 +239,15 @@ export class PlayersSingleton {
 			}
 
 			// Ready bots immediately
-			if (dto.clientId < 0) {
-				this.playersPendingReady.delete(dto.clientId);
-				this.HandlePlayerReadyServer(player);
-			}
+			// if (dto.connectionId < 0) {
+			// 	this.playersPendingReady.delete(dto.connectionId);
+			// 	this.HandlePlayerReadyServer(player);
+			// }
+
+			// Next, the client will send a ready request which we handle in HandlePlayerReadyServer()
 		};
 		const onPlayerRemoved = (clientInfo: PlayerInfoDto) => {
-			const clientId = clientInfo.clientId;
+			const clientId = clientInfo.connectionId;
 			const player = this.FindByConnectionId(clientId);
 			if (player) {
 				this.players.delete(player);
@@ -312,11 +314,13 @@ export class PlayersSingleton {
 		};
 
 		if (Game.IsEditor() && !ignoreCache) {
+			//print("Using editor cache: " + player.userId);
 			const data = EditorSessionState.GetString("player_" + player.userId + "_outfit");
 			if (data) {
 				const outfitDto = DecodeJSON<OutfitDto>(data);
 				if (outfitDto) {
 					SetOutfit(outfitDto);
+					return true;
 				}
 			}
 		}
@@ -327,10 +331,11 @@ export class PlayersSingleton {
 		// }
 		// this.outfitFetchTime.set(player.userId, os.time());
 
-		if (player.IsLocalPlayer()) {
+		if (player.IsLocalPlayer() || Game.IsEditor()) {
+			//print("loading local outfit");
 			await AvatarPlatformAPI.GetEquippedOutfit().then(SetOutfit);
 		} else {
-			print("loading outfit from server for player: " + player.userId);
+			//print("loading outfit from server for player: " + player.userId);
 			await AvatarPlatformAPI.GetUserEquippedOutfit(player.userId).then(SetOutfit);
 		}
 		return true;
@@ -375,7 +380,7 @@ export class PlayersSingleton {
 
 		let player = this.FindByConnectionId(dto.connectionId);
 		if (!player) {
-			const nob = NetworkUtil.WaitForNetworkObject(dto.nobId);
+			const nob = NetworkUtil.WaitForNetworkIdentity(dto.netId);
 			nob.gameObject.name = `Player_${dto.username}`;
 			let playerInfo = nob.gameObject.GetComponent<PlayerInfo>()!;
 			player = new Player(nob, dto.connectionId, dto.userId, dto.username, dto.profileImageId, playerInfo);
@@ -387,7 +392,7 @@ export class PlayersSingleton {
 			this.players.add(player);
 		}
 
-		if (!RunUtil.IsHosting()) {
+		if (!Game.IsHosting()) {
 			this.onPlayerJoined.Fire(player);
 		}
 	}
@@ -397,6 +402,7 @@ export class PlayersSingleton {
 	 * to a real player.
 	 */
 	public AddBotPlayer(): Player {
+		error("AddBotPlayer hasn't been implemented in Mirror yet. If you need this, ping Luke.");
 		if (!Game.IsServer()) {
 			error("AddBotPlayer() must be called on the server.");
 		}

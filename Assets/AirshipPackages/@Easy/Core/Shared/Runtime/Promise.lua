@@ -1802,7 +1802,7 @@ function Promise.prototype:_reject(...)
 
 		task.spawn(function()
 			-- Promise._timeEvent:Wait()
-			task.unscaledWait()
+			task.wait()
 
 			-- Someone observed the error, hooray!
 			if not self._unhandledRejection then

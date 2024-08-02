@@ -257,16 +257,6 @@ export class AppManager {
 	}
 
 	/**
-	 * @internal
-	 */
-	// public static OpenMainMenu(): void {
-	// 	contextbridge.invoke<() => void>("MainMenu:OpenFromGame", LuauContext.Protected);
-	// 	this.OpenCustom(() => {
-	// 		contextbridge.invoke<() => void>("MainMenu:CloseFromGame", LuauContext.Protected);
-	// 	});
-	// }
-
-	/**
 	 * Check whether not an `CanvasAppManager` owned canvas is open.
 	 * @returns Whether or not an `CanvasAppManager` owned canvas is open.
 	 */
@@ -309,6 +299,10 @@ if (Game.IsGameLuauContext() || !Game.IsInGame()) {
 				return;
 			}
 			event.SetCancelled(true);
+			if (!Game.IsClient()) {
+				Mouse.AddUnlocker();
+				return;
+			}
 			contextbridge.invoke<() => void>("MainMenu:OpenFromGame", LuauContext.Protected);
 		},
 		SignalPriority.LOW,

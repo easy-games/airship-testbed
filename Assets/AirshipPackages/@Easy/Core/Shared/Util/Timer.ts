@@ -3,7 +3,6 @@ import { Signal } from "./Signal";
 export const OnUpdate = new Signal<[deltaTime: number]>().WithAllowYield(false);
 export const OnLateUpdate = new Signal<[deltaTime: number]>().WithAllowYield(false);
 export const OnFixedUpdate = new Signal<[fixedDeltaTime: number]>().WithAllowYield(false);
-export const OnTick = new Signal<void>().WithAllowYield(false);
 
 export function SetTimeout<T extends unknown[]>(duration: number, callback: (...args: T) => void, ...args: T) {
 	const triggerTime = Time.time + duration;

@@ -2,8 +2,6 @@ import { ChatService } from "@Easy/Core/Server/Services/Chat/ChatService";
 import { AddInventoryCommand } from "@Easy/Core/Server/Services/Chat/Commands/AddInventoryCommand";
 import { BotCommand } from "@Easy/Core/Server/Services/Chat/Commands/BotCommand";
 import { DamageCommand } from "@Easy/Core/Server/Services/Chat/Commands/DamageCommand";
-import { GetVarCommand } from "@Easy/Core/Server/Services/Chat/Commands/DynamicVariables/GetVarCommand";
-import { SetVarCommand } from "@Easy/Core/Server/Services/Chat/Commands/DynamicVariables/SetVarCommand";
 import { EntityCommand } from "@Easy/Core/Server/Services/Chat/Commands/EntityCommand";
 import { FlyCommand } from "@Easy/Core/Server/Services/Chat/Commands/FlyCommand";
 import { HealCommand } from "@Easy/Core/Server/Services/Chat/Commands/HealCommand";
@@ -92,8 +90,6 @@ export class AirshipChatSingleton {
 		this.RegisterCommand(new TpCommand());
 		this.RegisterCommand(new TpsCommand());
 		this.RegisterCommand(new LagCommand());
-		this.RegisterCommand(new SetVarCommand());
-		this.RegisterCommand(new GetVarCommand());
 		this.RegisterCommand(new HealCommand());
 		this.RegisterCommand(new BotCommand());
 		this.RegisterCommand(new FlyCommand());

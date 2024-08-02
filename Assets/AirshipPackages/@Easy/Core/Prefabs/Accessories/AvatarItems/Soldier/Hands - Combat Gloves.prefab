@@ -129,7 +129,7 @@ MonoBehaviour:
   accessorySlot: 16
   visibilityMode: 0
   skinnedToCharacter: 1
-  bodyMask: 0
+  bodyMask: 768
 --- !u!114 &5816367262109491270
 MonoBehaviour:
   m_ObjectHideFlags: 0

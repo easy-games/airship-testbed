@@ -96,7 +96,7 @@ export default class HomePageComponent extends MainMenuPageComponent {
 				let timeUpdatedSeconds = DateParser.FromISO(g.lastVersionUpdate) as number;
 
 				// Jul 16, 2024
-				if (timeUpdatedSeconds <= 1721116517) {
+				if (timeUpdatedSeconds <= 1722442457) {
 					return false;
 				}
 

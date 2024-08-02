@@ -36,16 +36,18 @@ export default class SceneEntryComponent extends AirshipBehaviour {
 			this.SetColorState(state === HoverState.ENTER);
 		});
 		CanvasAPI.OnClickEvent(this.button.gameObject, () => {
-			if (this.entry.clientSided) {
-				SceneManager.LoadOfflineScene(this.entry.sceneName);
-				return;
-			}
+			task.spawn(() => {
+				if (this.entry.clientSided) {
+					SceneManager.LoadScene(this.entry.sceneName);
+					return;
+				}
 
-			this.SetColorState(false, true);
-			const result = MenuUtil.loadGlobalSceneRequest.client.FireServer(this.entry.sceneName);
-			if (result) {
-				MenuUtil.menu.Hide();
-			}
+				this.SetColorState(false, true);
+				const result = MenuUtil.loadGlobalSceneRequest.client.FireServer(this.entry.sceneName);
+				if (result) {
+					MenuUtil.menu.Hide();
+				}
+			});
 		});
 	}
 

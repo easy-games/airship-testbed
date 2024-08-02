@@ -282,7 +282,7 @@ export class ProtectedUserController {
 
 	public WaitForLocalUser(): User {
 		while (!this.localUser) {
-			task.unscaledWait();
+			task.wait();
 		}
 		return this.localUser;
 	}

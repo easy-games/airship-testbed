@@ -5,7 +5,6 @@ import { ControlScheme, Keyboard, Mouse, Preferred, Touchscreen } from "@Easy/Co
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { MathUtil } from "@Easy/Core/Shared/Util/MathUtil";
 import { SpringTween } from "@Easy/Core/Shared/Util/SpringTween";
-import { TimeUtil } from "@Easy/Core/Shared/Util/TimeUtil";
 import { CameraMode, CameraTransform } from "..";
 import { LocalCharacterSingleton } from "../../Character/LocalCharacter/LocalCharacterSingleton";
 import { AirshipCharacterCameraSingleton } from "../AirshipCharacterCameraSingleton";
@@ -171,7 +170,7 @@ export class HumanoidCameraMode extends CameraMode {
 			}
 			this.rightClicking = rightClick;
 			if (lf !== rt) {
-				this.rotationY += (lf ? 1 : -1) * TimeUtil.GetDeltaTime() * 4;
+				this.rotationY += (lf ? 1 : -1) * Time.deltaTime * 4;
 			}
 			if (Mouse.IsLocked() && (rightClick || this.firstPerson || this.lockView)) {
 				let mouseDelta = Mouse.GetDelta();

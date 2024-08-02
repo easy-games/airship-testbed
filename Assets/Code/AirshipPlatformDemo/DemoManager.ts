@@ -115,7 +115,7 @@ export default class DemoManager extends AirshipBehaviour {
 	public SpawnPlayer(player: Player): void {
 		if (!this.spawnCharacter) return;
 
-		print("[demo] spawning player");
+		// print("[demo] spawning player");
 		// const character = player.SpawnCharacter(this.spawnPosition.transform.position, {
 		// 	lookDirection: this.spawnPosition.transform.forward,
 		// 	// customCharacterTemplate: AssetCache.LoadAsset("Shared/Resources/CharacterWithLight Variant.prefab"),
