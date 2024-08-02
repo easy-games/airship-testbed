@@ -36,7 +36,6 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	public cameraTransitionDuration = 1;
 	public screenspaceDistance = 3;
 
-	public alignmentOffsetWorldpsace = new Vector3(0, 0, 0);
 	public oddsOfAReaction = 0.25;
 
 	@Header("Spin Big")
@@ -68,9 +67,6 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 
 	public override Awake(): void {
 		this.dragging = false;
-		if (Game.IsPortrait()) {
-			this.alignmentOffsetWorldpsace = new Vector3(0, 1.1, 0);
-		}
 	}
 
 	public override Start(): void {
@@ -191,7 +187,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 		}
 	}
 
-	public AlignCamera(screenPos: Vector3) {
+	public AlignCamera(screenPos: Vector3, alignmentOffsetWorldSpace: Vector3) {
 		if (!this.cameraRigTransform || !this.avatarCamera || !this.avatarHolder) {
 			return;
 		}
@@ -209,7 +205,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 		let diff = this.cameraRigTransform.position.sub(worldspace);
 		this.cameraRigTransform.position = this.cameraRigTransform.position
 			.add(new Vector3(diff.x, diff.y, 0))
-			.add(this.alignmentOffsetWorldpsace);
+			.add(alignmentOffsetWorldSpace);
 		this.CameraFocusTransform(this.targetTransform, true);
 	}
 
@@ -257,19 +253,19 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 		this.targetTransform = transform;
 		if (this.avatarCamera?.transform && this.targetTransform) {
 			if (instant) {
-				this.avatarCamera.transform.position = this.targetTransform.position;
-				this.avatarCamera.transform.rotation = this.targetTransform.rotation;
+				this.avatarCamera.transform.localPosition = this.targetTransform.localPosition;
+				this.avatarCamera.transform.localRotation = this.targetTransform.localRotation;
 			} else {
-				NativeTween.Position(
+				NativeTween.LocalPosition(
 					this.avatarCamera.transform,
-					this.targetTransform.position,
+					this.targetTransform.localPosition,
 					this.cameraTransitionDuration,
 				)
 					.SetEaseQuadInOut()
 					.SetUseUnscaledTime(true);
-				NativeTween.Rotation(
+				NativeTween.LocalRotation(
 					this.avatarCamera.transform,
-					this.targetTransform.rotation.eulerAngles,
+					this.targetTransform.localRotation.eulerAngles,
 					this.cameraTransitionDuration,
 				)
 					.SetEaseQuadInOut()

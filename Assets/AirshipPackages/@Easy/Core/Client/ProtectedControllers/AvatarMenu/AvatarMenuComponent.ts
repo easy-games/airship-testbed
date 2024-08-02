@@ -57,6 +57,9 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	public saveBtn: Button;
 	public avatarInteractionBtn!: Button;
 
+	@Header("Variables")
+	public avatarCameraOffset = new Vector3(0, 0, 0);
+
 	private outfitBtns: AvatarMenuBtn[] = [];
 	private mainNavBtns: AvatarMenuBtn[] = [];
 	//private subNavBtns: AvatarMenuBtn[] = [];
@@ -191,7 +194,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		let avatarView = this.mainMenu?.avatarView;
 		if (avatarView) {
 			if (this.avatarCenterRect) {
-				avatarView.AlignCamera(this.avatarCenterRect.position);
+				avatarView.AlignCamera(this.avatarCenterRect.position, this.avatarCameraOffset);
 			}
 		} else {
 			error("no 3D avatar to render in avatar editor");
