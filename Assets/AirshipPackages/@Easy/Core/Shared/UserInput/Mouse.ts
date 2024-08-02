@@ -141,8 +141,20 @@ export class Mouse {
 
 	private static AddUnlockerInternal(): number {
 		if (contextbridge.current() === LuauContext.Protected && Game.IsInGame()) {
-			let id = contextbridge.invoke<() => number>("Mouse:AddUnlocker", LuauContext.Game);
-			return id;
+			let id: number;
+
+			// This method is sometimes called before the contextbridge callback is setup.
+			// So we keep trying until success.
+			let success = false;
+			while (!success) {
+				try {
+					id = contextbridge.invoke<() => number>("Mouse:AddUnlocker", LuauContext.Game);
+					success = true;
+				} catch (err) {
+					task.unscaledWait();
+				}
+			}
+			return id!;
 		}
 
 		const id = mouseUnlockerIdCounter;
