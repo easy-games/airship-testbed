@@ -41,6 +41,16 @@ export class MainMenuPartyController {
 		private readonly socketController: SocketController,
 	) {}
 
+	/**
+	 * @returns True if both a party leader and party has more than 1 player.
+	 */
+	public IsPartyLeader(): boolean {
+		if (!this.party) return false;
+		if (!Protected.user.localUser) return false;
+
+		return this.party.leader === Protected.user.localUser.uid && this.party.members.size() > 1;
+	}
+
 	protected OnStart(): void {
 		this.socketController.On<Party>("game-coordinator/party-update", (data) => {
 			this.partyUpdateReceived = true;

@@ -1,9 +1,10 @@
 import { AirshipGameServer } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipTransfers";
-import { Controller } from "@Easy/Core/Shared/Flamework";
+import { Controller, Dependency } from "@Easy/Core/Shared/Flamework";
 import { Result } from "@Easy/Core/Shared/Types/Result";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import inspect from "@Easy/Core/Shared/Util/Inspect";
 import { EncodeJSON } from "@Easy/Core/Shared/json";
+import { MainMenuPartyController } from "../Social/MainMenuPartyController";
 import { SocketController } from "../Socket/SocketController";
 
 @Controller({})
@@ -35,11 +36,13 @@ export class TransferController {
 		gameId: string,
 		preferredServerId?: string,
 	): Promise<Result<undefined, undefined>> {
+		let isPartyLeader = Dependency<MainMenuPartyController>().IsPartyLeader();
 		const res = InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/transfers/transfer/self",
 			EncodeJSON({
 				gameId: gameId,
 				preferredServerId,
+				withParty: isPartyLeader,
 			}),
 		);
 
