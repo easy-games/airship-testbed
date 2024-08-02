@@ -1,10 +1,10 @@
 import { OutfitDto } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipPlatformInventory";
+import { AvatarCollectionManager } from "@Easy/Core/Shared/Avatar/AvatarCollectionManager";
 import { AvatarPlatformAPI } from "@Easy/Core/Shared/Avatar/AvatarPlatformAPI";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import AirshipButton from "@Easy/Core/Shared/MainMenu/Components/AirshipButton";
 import { MainMenuSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/MainMenuSingleton";
 import { Keyboard } from "@Easy/Core/Shared/UserInput";
 import { Mouse } from "@Easy/Core/Shared/UserInput/Mouse";
@@ -21,7 +21,6 @@ import AvatarMenuProfileComponent from "./AvatarMenuProfileComponent";
 import AvatarRenderComponent from "./AvatarRenderComponent";
 import OutfitButton from "./Outfit/OutfitButtonComponent";
 import OutfitButtonNameComponent from "./Outfit/OutfitButtonNameComponent";
-import { AvatarCollectionManager } from "@Easy/Core/Shared/Avatar/AvatarCollectionManager";
 
 export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private readonly generalHookupKey = "General";
@@ -55,7 +54,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	@Header("Buttons")
 	public revertBtn!: Button;
-	public saveBtn!: Button;
+	public saveBtn: Button;
 	public avatarInteractionBtn!: Button;
 
 	private outfitBtns: AvatarMenuBtn[] = [];
@@ -157,13 +156,17 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			this.OnDragAvatar(false);
 		});
 
-		this.saveBtn.onClick.Connect(() => {
-			this.Save();
-		});
+		if (this.saveBtn) {
+			this.saveBtn.onClick.Connect(() => {
+				this.Save();
+			});
+		}
 
-		this.revertBtn.onClick.Connect(() => {
-			this.Revert();
-		});
+		if (this.revertBtn) {
+			this.revertBtn.onClick.Connect(() => {
+				this.Revert();
+			});
+		}
 
 		this.ClearItembuttons();
 
@@ -257,7 +260,9 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.RefreshAvatar();
 		this.mainMenu?.avatarView?.CameraFocusTransform(this.mainMenu?.avatarView?.cameraWaypointDefault, true);
 
-		this.saveBtn.interactable = true;
+		if (this.saveBtn) {
+			this.saveBtn.interactable = true;
+		}
 		this.SelectMainNav(0);
 		this.SelectSubNav(0);
 
@@ -540,7 +545,9 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			return;
 		}
 		this.dirty = val;
-		this.saveBtn.interactable = !val;
+		if (this.saveBtn) {
+			this.saveBtn.interactable = !val;
+		}
 	}
 
 	private SelectItem(instanceId: string, accTemplate?: AccessoryComponent, instantRefresh = true) {
@@ -767,7 +774,9 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			warn("Trying to save with no outfit selected!");
 			return;
 		}
-		this.saveBtn.interactable = false;
+		if (this.saveBtn) {
+			this.saveBtn.interactable = false;
+		}
 		let accBuilder = this.mainMenu?.avatarView?.accessoryBuilder;
 		let accessoryIds: string[] = [];
 		if (accBuilder) {
