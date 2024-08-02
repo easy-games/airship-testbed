@@ -99,7 +99,7 @@ export class MainMenuNavbarController {
 				currentSelectedNavbarButton = homeButton;
 			} else if (page === MainMenuPageType.Game) {
 				currentSelectedNavbarButton = runningGameButton;
-			} else if (page === MainMenuPageType.Avatar) {
+			} else if (page === MainMenuPageType.Avatar || page === MainMenuPageType.AvatarMobile) {
 				currentSelectedNavbarButton = avatarButton;
 			} else if (page === MainMenuPageType.Develop) {
 				currentSelectedNavbarButton = myGamesButton;
