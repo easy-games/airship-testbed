@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Stone
   m_EditorClassIdentifier: 
   blockName: Stone
-  description: 
+  description: Beveled stone
   contextStyle: 3
   topTexture:
     material: {fileID: 2100000, guid: 2d62184f914b6f4409bce5a59e221fe4, type: 2}
