@@ -152,12 +152,14 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 
 		//Hookup general buttons
-		CanvasAPI.OnBeginDragEvent(this.avatarInteractionBtn.gameObject, () => {
-			this.OnDragAvatar(true);
-		});
-		CanvasAPI.OnEndDragEvent(this.avatarInteractionBtn.gameObject, () => {
-			this.OnDragAvatar(false);
-		});
+		if (this.avatarInteractionBtn) {
+			CanvasAPI.OnBeginDragEvent(this.avatarInteractionBtn.gameObject, () => {
+				this.OnDragAvatar(true);
+			});
+			CanvasAPI.OnEndDragEvent(this.avatarInteractionBtn.gameObject, () => {
+				this.OnDragAvatar(false);
+			});
+		}
 
 		if (this.saveBtn) {
 			this.saveBtn.onClick.Connect(() => {
