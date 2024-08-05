@@ -1,11 +1,10 @@
 import { AuthController } from "@Easy/Core/Client/ProtectedControllers/Auth/AuthController";
 import { AccessoryClass } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { Dependency } from "../Flamework";
-import { CoreLogger } from "../Logger/CoreLogger";
-import { Airship } from "../Airship";
 import { Game } from "../Game";
-import { AvatarPlatformAPI } from "./AvatarPlatformAPI";
+import { CoreLogger } from "../Logger/CoreLogger";
 import { RandomUtil } from "../Util/RandomUtil";
+import { AvatarPlatformAPI } from "./AvatarPlatformAPI";
 
 export class AvatarCollectionManager {
 	private readonly allAvatarAccessories = new Map<string, AccessoryComponent>();
@@ -75,7 +74,7 @@ export class AvatarCollectionManager {
 	}
 
 	private DownloadOwnedAccessories() {
-		print("Downloading owned accessories");
+		CoreLogger.Log("Downloading owned accessories");
 		AvatarPlatformAPI.GetAccessories().then((acc) => {
 			if (acc) {
 				acc.forEach((itemData) => {

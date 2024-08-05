@@ -2,6 +2,7 @@ import { Airship } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
 import { CharacterCameraMode } from "@Easy/Core/Shared/Character/LocalCharacter/CharacterCameraMode";
 import { Game } from "@Easy/Core/Shared/Game";
+import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 
@@ -68,9 +69,10 @@ export default class CharacterSpawner extends AirshipBehaviour {
 
 	public SpawnCharacter(player: Player): void {
 		print(`Spawning ${player.username} in scene ${this.gameObject.scene.name}`);
-		player.SpawnCharacter(this.spawnPoint.position, {
+		const character = player.SpawnCharacter(this.spawnPoint.position, {
 			lookDirection: this.spawnPoint.forward,
 		});
+		character.inventory.AddItem(new ItemStack("WoodSword"));
 	}
 
 	override OnDestroy(): void {
