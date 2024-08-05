@@ -8,6 +8,7 @@ import { CanvasAPI } from "../Util/CanvasAPI";
 import { ColorUtil } from "../Util/ColorUtil";
 import { OnUpdate } from "../Util/Timer";
 import AvatarBackdropComponent from "./AvatarBackdropComponent";
+import { Layer } from "../Util/Layer";
 
 export default class AvatarViewComponent extends AirshipBehaviour {
 	@Header("Templates")
@@ -113,16 +114,16 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 		);
 
 		//Make sure no lights effect this scene
-		// let lights = GameObject.FindObjectsByType<Light>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-		// if(!lights){
-		// 	error("Unable to find lights in scene");
-		// }
-		// for(let i=0; i<lights.Length; i++){
-		// 	let light = lights.GetValue(i);
-		// 	if(light){
-		// 		light.cullingMask &= ~(1 << Layer.AVATAR_EDITOR);
-		// 	}
-		// }
+		let lights = GameObject.FindObjectsByType<Light>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+		if (!lights) {
+			error("Unable to find lights in scene");
+		}
+		for (let i = 0; i < lights.Length; i++) {
+			let light = lights.GetValue(i);
+			if (light && light.gameObject.scene.name !== "CoreScene") {
+				light.cullingMask &= ~(1 << Layer.AVATAR_EDITOR);
+			}
+		}
 	}
 
 	private UpdateSpinAnimation() {
