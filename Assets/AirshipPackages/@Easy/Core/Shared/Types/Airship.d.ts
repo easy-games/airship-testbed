@@ -93,6 +93,7 @@ interface CharacterMovement extends Component {
 	OnImpactWithGround(callback: (velocity: Vector3) => void): EngineEventConnection;
 	OnAdjustMove(callback: (modifier: MoveModifier) => void): EngineEventConnection;
 	OnMoveDirectionChanged(callback: (direction: Vector3) => void): EngineEventConnection;
+	OnJumped(callback: (velocity: Vector3) => void): EngineEventConnection;
 
 	GetLookVector(): Vector3;
 	IsSprinting(): boolean;
