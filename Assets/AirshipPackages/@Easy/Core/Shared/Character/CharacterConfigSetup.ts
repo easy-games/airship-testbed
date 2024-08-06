@@ -1,5 +1,6 @@
 import { Airship } from "../Airship";
 import { Game } from "../Game";
+import { InventoryUIVisibility } from "../Inventory/InventoryUIVisibility";
 import { CharacterCameraMode } from "./LocalCharacter/CharacterCameraMode";
 
 /**
@@ -30,11 +31,9 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 	public startInFirstPerson = false;
 	public allowFirstPersonToggle = true;
 
-	@Header("UI Displays")
+	@Header("UI")
 	public showChat = true;
-	public showHealthbar = true;
-	public showInventoryHotbar = true;
-	public showInventoryBackpack = true;
+	public inventoryVisibility = InventoryUIVisibility.WhenHasItems;
 	public inventoryUIPrefab?: GameObject;
 
 	public Awake(): void {
@@ -75,14 +74,7 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 
 			//UI visual toggles
 			Airship.Chat.SetUIEnabled(this.showChat);
-			Airship.Inventory.SetBackpackVisible(this.showInventoryBackpack);
-			if (this.showInventoryHotbar || this.showHealthbar) {
-				Airship.Inventory.SetUIEnabled(true);
-				Airship.Inventory.SetHealtbarVisible(this.showHealthbar);
-				Airship.Inventory.SetHotbarVisible(this.showInventoryHotbar);
-			} else {
-				Airship.Inventory.SetUIEnabled(false);
-			}
+			Airship.Inventory.SetUIVisibility(this.inventoryVisibility);
 		}
 
 		//Stop any input for some movement options we don't use

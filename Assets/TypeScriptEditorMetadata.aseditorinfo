@@ -473,6 +473,11 @@
 			"None": 0,
 			"Squish": 1,
 			"ShiftDown": 2
+		},
+		"AirshipPackages/@Easy/Core/Shared/Inventory/InventoryUIVisibility@InventoryUIVisibility": {
+			"Always": 0,
+			"WhenHasItems": 1,
+			"Never": 2
 		}
 	}
 }
