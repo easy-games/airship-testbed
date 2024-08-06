@@ -825,6 +825,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Belt Croptop
       objectReference: {fileID: 0}
+    - target: {fileID: 990486062653883498, guid: 9957c85de05b99540ac3aaf4fa2943a0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3777506147344019521, guid: 9957c85de05b99540ac3aaf4fa2943a0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1131,6 +1135,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Long Shirt
       objectReference: {fileID: 0}
+    - target: {fileID: 6574704277693418820, guid: f701b961563b624499f804f1335c986b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1249,6 +1257,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Long Sleeve
       objectReference: {fileID: 0}
+    - target: {fileID: 5590757831242196915, guid: ccbe446fe2cfe4641bf960a92a5c4ef2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6496325290612020256, guid: ccbe446fe2cfe4641bf960a92a5c4ef2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1310,6 +1322,10 @@ PrefabInstance:
     - target: {fileID: 1129621367826831922, guid: 595697ef2a080494ab0332a834898afc, type: 3}
       propertyPath: m_Name
       value: Tanktop
+      objectReference: {fileID: 0}
+    - target: {fileID: 1129621367826831922, guid: 595697ef2a080494ab0332a834898afc, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3692447059650258011, guid: 595697ef2a080494ab0332a834898afc, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1605,6 +1621,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hoodie
       objectReference: {fileID: 0}
+    - target: {fileID: 5363355619741815830, guid: b59b31c78a8154c44aa7dc59f6093299, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1626,6 +1646,10 @@ PrefabInstance:
     - target: {fileID: 3028747334803546161, guid: baec2a8c0dd11b04ca5151d7800a19fe, type: 3}
       propertyPath: m_Name
       value: Cool Sneaks
+      objectReference: {fileID: 0}
+    - target: {fileID: 3028747334803546161, guid: baec2a8c0dd11b04ca5151d7800a19fe, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6194095594235587507, guid: baec2a8c0dd11b04ca5151d7800a19fe, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1784,6 +1808,10 @@ PrefabInstance:
     - target: {fileID: 1443180847444210414, guid: b97f23d0fa1757d4dbf83ec6591e671e, type: 3}
       propertyPath: m_Name
       value: Goth Combat Boots
+      objectReference: {fileID: 0}
+    - target: {fileID: 1443180847444210414, guid: b97f23d0fa1757d4dbf83ec6591e671e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5712706917721755624, guid: b97f23d0fa1757d4dbf83ec6591e671e, type: 3}
       propertyPath: m_RootBone
@@ -2039,6 +2067,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Jacket
       objectReference: {fileID: 0}
+    - target: {fileID: 6250179834199809542, guid: e5a4ee8c59413d1419e8f73dedc70205, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8771708704321612851, guid: e5a4ee8c59413d1419e8f73dedc70205, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2140,6 +2172,10 @@ PrefabInstance:
     - target: {fileID: 1857483203071462736, guid: 17233a7a734d43d438f7fa1c18b36458, type: 3}
       propertyPath: m_Name
       value: Busted Shorts_legs
+      objectReference: {fileID: 0}
+    - target: {fileID: 1857483203071462736, guid: 17233a7a734d43d438f7fa1c18b36458, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5661955299950502935, guid: 17233a7a734d43d438f7fa1c18b36458, type: 3}
       propertyPath: m_RootBone
@@ -2258,6 +2294,10 @@ PrefabInstance:
     - target: {fileID: 2850903096163219873, guid: 2b19c2e1bba9fd24e877e2822bcd7a27, type: 3}
       propertyPath: m_Name
       value: Jeans Shorts_legs
+      objectReference: {fileID: 0}
+    - target: {fileID: 2850903096163219873, guid: 2b19c2e1bba9fd24e877e2822bcd7a27, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4227960757020304261, guid: 2b19c2e1bba9fd24e877e2822bcd7a27, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2513,6 +2553,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Torn Baggy Pants
       objectReference: {fileID: 0}
+    - target: {fileID: 6987551408267953030, guid: cd030f5c6a7388e47be69ea2f7a2a385, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8097532860626808894, guid: cd030f5c6a7388e47be69ea2f7a2a385, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2574,6 +2618,10 @@ PrefabInstance:
     - target: {fileID: 3791838984489931270, guid: 45e73ed449980994dab18daba4350c78, type: 3}
       propertyPath: m_Name
       value: Cropped
+      objectReference: {fileID: 0}
+    - target: {fileID: 3791838984489931270, guid: 45e73ed449980994dab18daba4350c78, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5182113987288733077, guid: 45e73ed449980994dab18daba4350c78, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2829,6 +2877,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Jeans Pants
       objectReference: {fileID: 0}
+    - target: {fileID: 6882973092073411828, guid: af8174c1a2fc0e2459e0780547e1f558, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7481266704977078286, guid: af8174c1a2fc0e2459e0780547e1f558, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2930,6 +2982,10 @@ PrefabInstance:
     - target: {fileID: 5145058968658969698, guid: 744780fb5d4bffc43918eccc84e64215, type: 3}
       propertyPath: m_Name
       value: Simple Shirt
+      objectReference: {fileID: 0}
+    - target: {fileID: 5145058968658969698, guid: 744780fb5d4bffc43918eccc84e64215, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7953920469454647612, guid: 744780fb5d4bffc43918eccc84e64215, type: 3}
       propertyPath: m_RootBone
