@@ -341,6 +341,10 @@
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/SocialNotificationComponent.ts",
 			"name": "SocialNotificationComponent"
 		},
+		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipButton@AirshipButton": {
+			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipButton.ts",
+			"name": "AirshipButton"
+		},
 		"AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/Outfit/OutfitButtonComponent@OutfitButton": {
 			"assetPath": "AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/Outfit/OutfitButtonComponent.ts",
 			"name": "OutfitButton"
@@ -348,10 +352,6 @@
 		"AirshipPackages/@Easy/Core/Shared/Input/Mobile/TouchJoystick@TouchJoystick": {
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/Input/Mobile/TouchJoystick.ts",
 			"name": "TouchJoystick"
-		},
-		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipButton@AirshipButton": {
-			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipButton.ts",
-			"name": "AirshipButton"
 		},
 		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipToggle@AirshipToggle": {
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipToggle.ts",
