@@ -24,8 +24,8 @@ MonoBehaviour:
   - {fileID: 102900000, guid: faa9a8b52642d40e6b1fa10fc412bc07, type: 3}
   packages:
   - id: '@Easy/Core'
-    assetVersion: 604
-    codeVersion: 668
+    assetVersion: 1
+    codeVersion: 1
     game: 0
     localSource: 1
     disabled: 0
@@ -40,8 +40,8 @@ MonoBehaviour:
     defaultPackage: 0
     forceLatestVersion: 1
   - id: '@Easy/CoreMaterials'
-    assetVersion: 91
-    codeVersion: 75
+    assetVersion: 1
+    codeVersion: 1
     game: 0
     localSource: 1
     disabled: 0

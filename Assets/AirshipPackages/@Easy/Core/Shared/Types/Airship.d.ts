@@ -1089,3 +1089,13 @@ interface Volume extends MonoBehaviour {
 }
 
 interface NetworkBehaviour extends MonoBehaviour {}
+
+interface LagCompensator extends NetworkBehaviour {
+	RaycastCheck(
+		viewer: NetworkConnectionToClient,
+		originPoint: Vector3,
+		hitPoint: Vector3,
+		tolerancePercent = 0,
+		layerMask = -1,
+	): RaycastHit | undefined;
+}
