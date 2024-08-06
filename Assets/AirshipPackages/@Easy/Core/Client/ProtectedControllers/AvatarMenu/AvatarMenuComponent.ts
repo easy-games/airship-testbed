@@ -5,6 +5,7 @@ import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import AirshipButton from "@Easy/Core/Shared/MainMenu/Components/AirshipButton";
 import { MainMenuSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/MainMenuSingleton";
 import { Keyboard } from "@Easy/Core/Shared/UserInput";
 import { Mouse } from "@Easy/Core/Shared/UserInput/Mouse";
@@ -53,8 +54,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	//public subBarHolders: Transform[] = [];
 
 	@Header("Buttons")
-	public revertBtn!: Button;
-	public saveBtn: Button;
+	public revertBtn!: AirshipButton;
+	public saveBtn: AirshipButton;
 	public avatarInteractionBtn!: Button;
 
 	@Header("Variables")
@@ -162,13 +163,13 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 
 		if (this.saveBtn) {
-			this.saveBtn.onClick.Connect(() => {
+			this.saveBtn.button.onClick.Connect(() => {
 				this.Save();
 			});
 		}
 
 		if (this.revertBtn) {
-			this.revertBtn.onClick.Connect(() => {
+			this.revertBtn.button.onClick.Connect(() => {
 				this.Revert();
 			});
 		}
@@ -265,9 +266,6 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.RefreshAvatar();
 		this.mainMenu?.avatarView?.CameraFocusTransform(this.mainMenu?.avatarView?.cameraWaypointDefault, true);
 
-		if (this.saveBtn) {
-			this.saveBtn.interactable = true;
-		}
 		this.SelectMainNav(0);
 		this.SelectSubNav(0);
 
@@ -551,7 +549,10 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 		this.dirty = val;
 		if (this.saveBtn) {
-			this.saveBtn.interactable = !val;
+			this.saveBtn.SetDisabled(!val);
+		}
+		if (this.revertBtn) {
+			this.revertBtn.SetDisabled(!val);
 		}
 	}
 
@@ -770,6 +771,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private Save() {
+		print("save!");
 		if (this.inThumbnailMode) {
 			this.RenderThumbnails();
 			return;
@@ -779,9 +781,9 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			warn("Trying to save with no outfit selected!");
 			return;
 		}
-		if (this.saveBtn) {
-			this.saveBtn.interactable = false;
-		}
+		// if (this.saveBtn) {
+		// 	this.saveBtn.interactable = false;
+		// }
 		let accBuilder = this.mainMenu?.avatarView?.accessoryBuilder;
 		let accessoryIds: string[] = [];
 		if (accBuilder) {

@@ -8,7 +8,7 @@ export default class AirshipButton extends AirshipBehaviour {
 
 	private disabled = false;
 	private image: Image | undefined;
-	private button!: Button;
+	public button!: Button;
 	private startingColor: Color | undefined;
 	private loading = false;
 
