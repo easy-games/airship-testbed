@@ -6437,7 +6437,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2330992413050427376}
   m_HandleRect: {fileID: 7363531328088842990}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -8888,6 +8888,21 @@ MonoBehaviour:
       nullable: 0
       serializedValue: 
       serializedObject: {fileID: 5518887267779553407}
+      modified: 1
+    - name: partyChatButton
+      type: object
+      objectType: Button
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 5345190412980260448}
       modified: 1
     displayIcon: {fileID: 0}
     displayName: 

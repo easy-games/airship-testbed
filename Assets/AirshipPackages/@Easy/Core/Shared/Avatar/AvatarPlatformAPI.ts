@@ -38,12 +38,12 @@ export class AvatarPlatformAPI {
 		}
 	}
 
-	public static async GetPlayerEquippedOutfit(playerId: string): Promise<OutfitDto | undefined> {
-		const res = InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/uid/${playerId}/equipped`));
+	public static async GetUserEquippedOutfit(userId: string): Promise<OutfitDto | undefined> {
+		const res = InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/uid/${userId}/equipped`));
 		if (res.success && res.data && res.data !== "") {
 			return DecodeJSON<OutfitDto>(res.data);
 		} else {
-			CoreLogger.Error("failed to load player equipped outfit: " + (res.error ?? "Empty Data"));
+			CoreLogger.Error("failed to load users equipped outfit: " + (res.error ?? "Empty Data"));
 		}
 	}
 

@@ -92,8 +92,10 @@ export default class GameFavoriteButton extends AirshipBehaviour {
 		});
 		bin.Add(() => {
 			const img = go.GetComponent<Image>()!;
-			NativeTween.GraphicAlpha(img, 0, math.random() * 0.3 + 0.2).SetEase(EaseType.QuadOut);
-			task.delay(0.5, () => {
+			NativeTween.GraphicAlpha(img, 0, math.random() * 0.3 + 0.2)
+				.SetEase(EaseType.QuadOut)
+				.SetUseUnscaledTime(true);
+			task.unscaledDelay(0.5, () => {
 				updateConn();
 				Object.Destroy(go);
 			});

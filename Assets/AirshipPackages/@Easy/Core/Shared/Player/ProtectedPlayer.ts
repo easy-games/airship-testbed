@@ -10,7 +10,7 @@ export class ProtectedPlayer {
 		public username: string,
 		public userId: string,
 		public profileImageId: string,
-		public clientId: number,
+		public connectionId: number,
 	) {}
 
 	/** Is player friends with the local player? */

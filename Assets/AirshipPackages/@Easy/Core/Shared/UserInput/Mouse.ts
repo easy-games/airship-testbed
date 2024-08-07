@@ -125,10 +125,36 @@ export class Mouse {
 		};
 	}
 
+	/**
+	 * Used to detect if pointer is over a UI raycast target.
+	 *
+	 * This is useful to prevent actions when interacting with UI (like a sword swing).
+	 *
+	 * **This will only check for raycast targets on the "UI" layer.**
+	 * Make sure your UI is set to the UI layer to work with this method.
+	 *
+	 * @returns True if mouse is hovering above a ui raycast target.
+	 */
+	public static IsOverUI(): boolean {
+		return CanvasAPI.IsPointerOverUI();
+	}
+
 	private static AddUnlockerInternal(): number {
 		if (contextbridge.current() === LuauContext.Protected && Game.IsInGame()) {
-			let id = contextbridge.invoke<() => number>("Mouse:AddUnlocker", LuauContext.Game);
-			return id;
+			let id: number;
+
+			// This method is sometimes called before the contextbridge callback is setup.
+			// So we keep trying until success.
+			let success = false;
+			while (!success) {
+				try {
+					id = contextbridge.invoke<() => number>("Mouse:AddUnlocker", LuauContext.Game);
+					success = true;
+				} catch (err) {
+					task.unscaledWait();
+				}
+			}
+			return id!;
 		}
 
 		const id = mouseUnlockerIdCounter;

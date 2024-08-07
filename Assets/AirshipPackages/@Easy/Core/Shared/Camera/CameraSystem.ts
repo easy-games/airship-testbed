@@ -74,7 +74,7 @@ export class CameraSystem {
 
 			CameraReferences.cameraHolder!.SetPositionAndRotation(camTransform.position, camTransform.rotation);
 			this.currentMode.OnPostUpdate(CameraReferences.mainCamera!);
-			if (Airship.CharacterCamera.IsFOVManaged()) {
+			if (Airship.Camera.IsFOVManaged()) {
 				for (const [cameraType, fovState] of this.fovStateMap) {
 					if (!fovState.fovSpringMoving) continue;
 					this.UpdateFOVSpring(cameraType, fovState, dt);

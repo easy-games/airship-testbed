@@ -13,11 +13,13 @@ MonoBehaviour:
   m_Name: OutfitPackTest
   m_EditorClassIdentifier: 
   accessories:
-  - {fileID: 6607801588035700596, guid: b59b31c78a8154c44aa7dc59f6093299, type: 3}
-  - {fileID: 6261813539419311019, guid: af8174c1a2fc0e2459e0780547e1f558, type: 3}
-  - {fileID: 8122943930244843942, guid: baec2a8c0dd11b04ca5151d7800a19fe, type: 3}
-  - {fileID: 210703450389781417, guid: 4a4a375480a29b245aaea1d6543296ee, type: 3}
+  - {fileID: 1812480944318735502, guid: e5a4ee8c59413d1419e8f73dedc70205, type: 3}
+  - {fileID: 6917948673111891309, guid: 2b19c2e1bba9fd24e877e2822bcd7a27, type: 3}
+  - {fileID: 7753452265518702293, guid: b97f23d0fa1757d4dbf83ec6591e671e, type: 3}
+  - {fileID: 7081786640612886898, guid: d863d3c883256f9489f5253a41d96921, type: 3}
   - {fileID: 6820435399738181908, guid: d013f0724622fb04c98dd453e29c6b52, type: 3}
-  faceDecal: {fileID: 11400000, guid: ed1e9a37a5dda0847b0d216d26052c9c, type: 2}
+  - {fileID: 6820435399738181908, guid: d013f0724622fb04c98dd453e29c6b52, type: 3}
+  - {fileID: 6888921468087521848, guid: 8e454da57dd890d4d9832745d0cb7231, type: 3}
+  faceDecal: {fileID: 11400000, guid: 9ded033deca85144b8d7f14545e01cf6, type: 2}
   forceSkinColor: 1
   skinColor: {r: 0.8114802, g: 0.5424528, b: 1, a: 1}

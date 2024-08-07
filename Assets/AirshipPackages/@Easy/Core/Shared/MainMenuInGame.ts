@@ -7,7 +7,6 @@ import { CoreContext } from "./CoreClientContext";
 import { Game } from "./Game";
 Game.coreContext = CoreContext.GAME;
 
-import { AvatarUtil } from "@Easy/Core/Shared/Avatar/AvatarUtil";
 import { Flamework } from "@Easy/Core/Shared/Flamework";
 import { GameDto } from "../Client/Components/HomePage/API/GamesAPI";
 import { AudioManager } from "./Audio/AudioManager";
@@ -17,16 +16,13 @@ import { NetworkFunction } from "./Network/NetworkFunction";
 import { AirshipUrl } from "./Util/AirshipUrl";
 import { AppManager } from "./Util/AppManager";
 import { CanvasAPI } from "./Util/CanvasAPI";
-import { TimeUtil } from "./Util/TimeUtil";
 import { OnFixedUpdate, OnLateUpdate, OnUpdate } from "./Util/Timer";
 
 CoreRefs.Init();
 
-TimeUtil.GetLifetimeSeconds();
 CanvasAPI.Init();
 AppManager.Init();
 AudioManager.Init();
-AvatarUtil.Initialize();
 InitNet();
 
 // Drive timer:
@@ -36,20 +32,21 @@ const fullGo = gameObject as GameObject & {
 	OnFixedUpdate(callback: () => void): void;
 };
 fullGo.OnUpdate(() => {
-	OnUpdate.Fire(TimeUtil.GetDeltaTime());
+	OnUpdate.Fire(Time.deltaTime);
 });
 fullGo.OnLateUpdate(() => {
-	OnLateUpdate.Fire(TimeUtil.GetDeltaTime());
+	OnLateUpdate.Fire(Time.deltaTime);
 });
 fullGo.OnFixedUpdate(() => {
-	OnFixedUpdate.Fire(TimeUtil.GetFixedDeltaTime());
+	OnFixedUpdate.Fire(Time.fixedDeltaTime);
 });
 
 Flamework.AddPath("@easy/core/shared/mainmenu", "^.*singleton.ts$");
 Flamework.AddPath("@easy/core/client/protectedcontrollers", "^.*controller.ts$");
 Flamework.AddPath("@easy/core/client/protectedcontrollers", "^.*singleton.ts$");
 Flamework.AddPath("@easy/core/client/controllers/airship/user/airshipusercontroller", "^.*controller.ts$");
-Flamework.AddPath("@easy/core/shared/player/playerssingleton", "^.*singleton.ts$");
+Flamework.AddPath("@easy/core/shared/player/airshipplayerssingleton", "^.*singleton.ts$");
+Flamework.AddPath("@easy/core/shared/avatar/airshipavatarsingleton", "^.*singleton.ts$");
 Flamework.AddPath("@easy/core/shared/input/airshipinputsingleton", "^.*singleton.ts$");
 Flamework.AddPath("@easy/core/shared/protected", "^.*singleton.ts");
 

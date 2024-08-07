@@ -6,7 +6,6 @@ import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import Character from "../Character/Character";
 import { Game } from "../Game";
 import { Keyboard, Mouse } from "../UserInput";
-import { CanvasAPI } from "../Util/CanvasAPI";
 import { ItemStack, ItemStackDto } from "./ItemStack";
 import { BeforeLocalInventoryHeldSlotChanged } from "./Signal/BeforeLocalInventoryHeldSlotChanged";
 
@@ -17,7 +16,7 @@ export interface InventoryDto {
 }
 
 export default class Inventory extends AirshipBehaviour {
-	public networkObject!: NetworkObject;
+	public networkIdentity!: NetworkIdentity;
 	@NonSerialized() public id!: number;
 	public maxSlots = 45;
 	public hotbarSlots = 9;
@@ -51,24 +50,31 @@ export default class Inventory extends AirshipBehaviour {
 
 	public OnEnable(): void {
 		// Networking
-		if (this.networkObject.IsSpawned) {
-			this.id = this.networkObject.ObjectId;
-			Airship.Inventory.RegisterInventory(this);
-			if (Game.IsClient()) {
-				task.spawn(() => {
-					this.RequestFullUpdate();
-				});
-			}
-		} else {
-			const conn = this.networkObject.OnStartNetwork(() => {
-				Bridge.DisconnectEvent(conn);
-				this.id = this.networkObject.ObjectId;
-				Airship.Inventory.RegisterInventory(this);
-				if (Game.IsClient()) {
-					task.spawn(() => {
-						this.RequestFullUpdate();
-					});
-				}
+		// if (this.networkIdentity.IsSpawned) {
+		// 	this.id = this.networkIdentity.ObjectId;
+		// 	Airship.Inventory.RegisterInventory(this);
+		// 	if (Game.IsClient()) {
+		// 		task.spawn(() => {
+		// 			this.RequestFullUpdate();
+		// 		});
+		// 	}
+		// } else {
+		// 	const conn = this.networkIdentity.OnStartNetwork(() => {
+		// 		Bridge.DisconnectEvent(conn);
+		// 		this.id = this.networkIdentity.ObjectId;
+		// 		Airship.Inventory.RegisterInventory(this);
+		// 		if (Game.IsClient()) {
+		// 			task.spawn(() => {
+		// 				this.RequestFullUpdate();
+		// 			});
+		// 		}
+		// 	});
+		// }
+		this.id = this.networkIdentity.netId;
+		Airship.Inventory.RegisterInventory(this);
+		if (Game.IsClient()) {
+			task.spawn(() => {
+				this.RequestFullUpdate();
 			});
 		}
 
@@ -120,7 +126,7 @@ export default class Inventory extends AirshipBehaviour {
 				// Scroll to select held item:
 				Mouse.onScrolled.Connect((event) => {
 					if (!this.controlsEnabled || event.uiProcessed) return;
-					if (CanvasAPI.IsPointerOverUI()) return;
+					if (Mouse.IsOverUI()) return;
 					// print("scroll: " + delta);
 					if (math.abs(event.delta) < 0.05) return;
 

@@ -7,6 +7,7 @@ import { Game } from "@Easy/Core/Shared/Game";
 import { CoreLogger } from "@Easy/Core/Shared/Logger/CoreLogger";
 import PartyCard from "@Easy/Core/Shared/MainMenu/Components/Party/PartyCard";
 import PartyMember from "@Easy/Core/Shared/MainMenu/Components/PartyMember";
+import { Protected } from "@Easy/Core/Shared/Protected";
 import { Result } from "@Easy/Core/Shared/Types/Result";
 import { CoreUI } from "@Easy/Core/Shared/UI/CoreUI";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
@@ -14,7 +15,6 @@ import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { EncodeJSON } from "@Easy/Core/Shared/json";
-import { AuthController } from "../Auth/AuthController";
 import { MainMenuController } from "../MainMenuController";
 import { SocketController } from "../Socket/SocketController";
 import { ProtectedFriendsController } from "./FriendsController";
@@ -33,13 +33,27 @@ export class MainMenuPartyController {
 		"AirshipPackages/@Easy/Core/Prefabs/UI/MainMenu/PartyMember.prefab",
 	);
 
+	private partyUpdateReceived = false;
+	private partyLeaderStatusReceived = false;
+
 	constructor(
 		private readonly mainMenuController: MainMenuController,
 		private readonly socketController: SocketController,
 	) {}
 
+	/**
+	 * @returns True if both a party leader and party has more than 1 player.
+	 */
+	public IsPartyLeader(): boolean {
+		if (!this.party) return false;
+		if (!Protected.user.localUser) return false;
+
+		return this.party.leader === Protected.user.localUser.uid && this.party.members.size() > 1;
+	}
+
 	protected OnStart(): void {
 		this.socketController.On<Party>("game-coordinator/party-update", (data) => {
+			this.partyUpdateReceived = true;
 			let oldParty = this.party;
 			this.party = data;
 			this.onPartyUpdated.Fire(data, oldParty);
@@ -53,6 +67,7 @@ export class MainMenuPartyController {
 		this.socketController.On<UserStatusData[]>("game-coordinator/party-member-status-update-multi", (data) => {
 			if (!this.party) return;
 
+			this.partyLeaderStatusReceived = true;
 			const partyLeader = data.find((d) => d.userId === this.party!.leader);
 			this.partyCard.UpdateInfo(partyLeader);
 		});
@@ -91,21 +106,36 @@ export class MainMenuPartyController {
 			}
 		});
 
-		this.Setup();
+		// load from cache
+		this.SetupReferences();
+
+		task.spawn(() => {
+			Protected.user.WaitForLocalUser();
+			if (!this.partyUpdateReceived) {
+				const partyString = StateManager.GetString("airship:party");
+				if (partyString) {
+					this.party = json.decode(partyString);
+				}
+			}
+
+			// Note: we should merge UpdateParty() with partyCard.UpdateInfo().
+			// For now, we need to call this first.
+			this.UpdateParty();
+
+			if (!this.partyLeaderStatusReceived) {
+				const partyLeaderStatusString = StateManager.GetString("airship:party-leader-status");
+				if (partyLeaderStatusString) {
+					this.partyCard.UpdateInfo(json.decode(partyLeaderStatusString));
+				}
+			}
+		});
 	}
 
-	private Setup(): void {
+	private SetupReferences(): void {
 		this.partyCard = this.mainMenuController.refs.GetValue("Social", "PartyCard").GetAirshipComponent<PartyCard>()!;
 		this.emptyPartyGO = this.mainMenuController.refs.GetValue("Social", "EmptyPartyCard");
 		this.partyCardContents = this.mainMenuController.refs.GetValue("Social", "PartyCardContents");
-
-		this.UpdateParty();
-
-		Dependency<AuthController>()
-			.WaitForAuthed()
-			.then(() => {
-				this.UpdateParty();
-			});
+		this.partyCardContents.SetActive(false);
 
 		task.spawn(() => {
 			Game.WaitForLocalPlayerLoaded();
@@ -119,15 +149,17 @@ export class MainMenuPartyController {
 		CanvasAPI.OnClickEvent(addFriendsButton, () => {
 			Dependency<MainMenuAddFriendsController>().Open();
 		});
-
-		// const profilePictureButton = this.mainMenuController.refs.GetValue("UI", "ProfilePictureButton");
-		// CoreUI.SetupButton(profilePictureButton);
-		// CanvasAPI.OnClickEvent(profilePictureButton, () => {
-		// 	Dependency<ChangeUsernameController>().Open();
-		// });
 	}
 
-	private UpdateParty(): void {
+	private UpdateParty(dontUpdateCache = false): void {
+		if (!dontUpdateCache) {
+			if (this.party) {
+				StateManager.SetString("airship:party", json.encode(this.party));
+			} else {
+				StateManager.RemoveString("airship:party");
+			}
+		}
+
 		if (this.party === undefined || (this.party.members.size() <= 1 && this.party.invited.size() === 0)) {
 			this.partyCardContents.SetActive(false);
 			this.emptyPartyGO.SetActive(true);

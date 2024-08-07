@@ -1,12 +1,14 @@
 import AvatarRenderComponent from "@Easy/Core/Client/ProtectedControllers//AvatarMenu/AvatarRenderComponent";
-import {} from "@Easy/Core/Shared/Flamework";
+import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Mouse } from "@Easy/Core/Shared/UserInput";
 import { Game } from "../Game";
+import { MainMenuSingleton } from "../MainMenu/Singletons/MainMenuSingleton";
 import { Bin } from "../Util/Bin";
 import { CanvasAPI } from "../Util/CanvasAPI";
 import { ColorUtil } from "../Util/ColorUtil";
 import { OnUpdate } from "../Util/Timer";
 import AvatarBackdropComponent from "./AvatarBackdropComponent";
+import { Layer } from "../Util/Layer";
 
 export default class AvatarViewComponent extends AirshipBehaviour {
 	@Header("Templates")
@@ -35,7 +37,6 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	public cameraTransitionDuration = 1;
 	public screenspaceDistance = 3;
 
-	public alignmentOffsetWorldpsace = new Vector3(0, 0, 0);
 	public oddsOfAReaction = 0.25;
 
 	@Header("Spin Big")
@@ -61,26 +62,21 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	private spinAnimationTriggered = false;
 	private freeSpinning = false;
 
+	private mainMenuSingleton: MainMenuSingleton;
+
 	private bin = new Bin();
 
 	public override Awake(): void {
 		this.dragging = false;
-		if (Game.IsPortrait()) {
-			this.alignmentOffsetWorldpsace = new Vector3(0, 1.1, 0);
-		}
 	}
 
 	public override Start(): void {
+		this.mainMenuSingleton = Dependency<MainMenuSingleton>();
 		let backdrop = this.backdropHolder?.GetAirshipComponent<AvatarBackdropComponent>();
 		backdrop?.SetSolidColorBackdrop(ColorUtil.HexToColor("#202122"));
 
 		if (this.humanEntityGo) {
 			this.accessoryBuilder = this.humanEntityGo.GetComponent<AccessoryBuilder>()!;
-			if (this.accessoryBuilder) {
-				this.accessoryBuilder.thirdPersonLayer = this.gameObject.layer;
-				this.accessoryBuilder.firstPersonLayer = this.gameObject.layer;
-				this.accessoryBuilder.UpdateAccessoryLayers();
-			}
 		}
 
 		Mouse.onMoved.Connect((pos: Vector2) => {
@@ -118,16 +114,16 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 		);
 
 		//Make sure no lights effect this scene
-		// let lights = GameObject.FindObjectsByType<Light>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-		// if(!lights){
-		// 	error("Unable to find lights in scene");
-		// }
-		// for(let i=0; i<lights.Length; i++){
-		// 	let light = lights.GetValue(i);
-		// 	if(light){
-		// 		light.cullingMask &= ~(1 << Layer.AVATAR_EDITOR);
-		// 	}
-		// }
+		let lights = GameObject.FindObjectsByType<Light>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+		if (!lights) {
+			error("Unable to find lights in scene");
+		}
+		for (let i = 0; i < lights.Length; i++) {
+			let light = lights.GetValue(i);
+			if (light && light.gameObject.scene.name !== "CoreScene") {
+				light.cullingMask &= ~(1 << Layer.AVATAR_EDITOR);
+			}
+		}
 	}
 
 	private UpdateSpinAnimation() {
@@ -174,17 +170,8 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 		this.renderTexture = RenderUtils.CreateDefaultRenderTexture(width, height);
 		this.avatarCamera.targetTexture = this.renderTexture;
 		this.avatarCamera.enabled = true;
-		for (let i = 0; i < this.onNewRenderTexture.size(); i++) {
-			this.onNewRenderTexture[i](this.renderTexture);
-		}
-	}
-
-	private onNewRenderTexture: ((texture: RenderTexture) => void)[] = [];
-	public OnNewRenderTexture(callback: (texture: RenderTexture) => void) {
-		this.onNewRenderTexture.push(callback);
-		if (this.renderTexture) {
-			callback(this.renderTexture);
-		}
+		this.mainMenuSingleton.avatarEditorRenderTexture = this.renderTexture;
+		this.mainMenuSingleton.onAvatarEditorRenderTextureUpdated.Fire(this.renderTexture);
 	}
 
 	public ShowAvatar() {
@@ -201,7 +188,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 		}
 	}
 
-	public AlignCamera(screenPos: Vector3) {
+	public AlignCamera(screenPos: Vector3, alignmentOffsetWorldSpace: Vector3) {
 		if (!this.cameraRigTransform || !this.avatarCamera || !this.avatarHolder) {
 			return;
 		}
@@ -219,7 +206,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 		let diff = this.cameraRigTransform.position.sub(worldspace);
 		this.cameraRigTransform.position = this.cameraRigTransform.position
 			.add(new Vector3(diff.x, diff.y, 0))
-			.add(this.alignmentOffsetWorldpsace);
+			.add(alignmentOffsetWorldSpace);
 		this.CameraFocusTransform(this.targetTransform, true);
 	}
 
@@ -267,19 +254,23 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 		this.targetTransform = transform;
 		if (this.avatarCamera?.transform && this.targetTransform) {
 			if (instant) {
-				this.avatarCamera.transform.position = this.targetTransform.position;
-				this.avatarCamera.transform.rotation = this.targetTransform.rotation;
+				this.avatarCamera.transform.localPosition = this.targetTransform.localPosition;
+				this.avatarCamera.transform.localRotation = this.targetTransform.localRotation;
 			} else {
-				NativeTween.Position(
+				NativeTween.LocalPosition(
 					this.avatarCamera.transform,
-					this.targetTransform.position,
+					this.targetTransform.localPosition,
 					this.cameraTransitionDuration,
-				).SetEaseQuadInOut();
-				NativeTween.Rotation(
+				)
+					.SetEaseQuadInOut()
+					.SetUseUnscaledTime(true);
+				NativeTween.LocalRotation(
 					this.avatarCamera.transform,
-					this.targetTransform.rotation.eulerAngles,
+					this.targetTransform.localRotation.eulerAngles,
 					this.cameraTransitionDuration,
-				).SetEaseQuadInOut();
+				)
+					.SetEaseQuadInOut()
+					.SetUseUnscaledTime(true);
 			}
 		}
 	}

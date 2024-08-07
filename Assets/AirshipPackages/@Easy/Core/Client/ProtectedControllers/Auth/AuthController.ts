@@ -6,10 +6,13 @@ import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 import { FirebaseSignUpResponse, FirebaseTokenResponse } from "./API/FirebaseAPI";
 
+declare const AirshipPlatformUrl: {
+	firebaseApiKey: string;
+};
+
 @Controller({ loadOrder: -1 })
 export class AuthController {
-	private apiKey = "AIzaSyB04k_2lvM2VxcJqLKD6bfwdqelh6Juj2o";
-	private appId = "1:987279961241:web:944327bc9353f4f1f15c08";
+	private apiKey = AirshipPlatformUrl.firebaseApiKey;
 	private idToken = "";
 	private authenticated = false;
 	public readonly onAuthenticated = new Signal<void>();

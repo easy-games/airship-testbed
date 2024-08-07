@@ -9,6 +9,7 @@ import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
 
 interface ProfileManager {
 	UploadProfilePictureYielding(previewImage: RawImage | undefined, ownerId: string): boolean;
+	UploadProfilePictureMobileYielding(previewImage: RawImage | undefined, ownerId: string): boolean;
 }
 declare const ProfileManager: ProfileManager;
 
@@ -53,10 +54,18 @@ export default class SettingsProfilePage extends AirshipBehaviour {
 			CanvasAPI.OnClickEvent(this.uploadProfileImageBtn.gameObject, () => {
 				task.spawn(async () => {
 					this.SetProfilePictureLoading(true);
-					const result = ProfileManager.UploadProfilePictureYielding(
-						this.profileImagePreview1,
-						Game.localPlayer.userId,
-					);
+					let result: boolean;
+					if (Game.IsMobile()) {
+						result = ProfileManager.UploadProfilePictureMobileYielding(
+							this.profileImagePreview1,
+							Game.localPlayer.userId,
+						);
+					} else {
+						result = ProfileManager.UploadProfilePictureYielding(
+							this.profileImagePreview1,
+							Game.localPlayer.userId,
+						);
+					}
 					if (result) {
 						Airship.Players.ClearProfilePictureCache(Game.localPlayer.userId);
 						Protected.user.FetchLocalUser();

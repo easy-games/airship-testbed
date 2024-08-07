@@ -2,13 +2,12 @@ import { ChatService } from "@Easy/Core/Server/Services/Chat/ChatService";
 import { AddInventoryCommand } from "@Easy/Core/Server/Services/Chat/Commands/AddInventoryCommand";
 import { BotCommand } from "@Easy/Core/Server/Services/Chat/Commands/BotCommand";
 import { DamageCommand } from "@Easy/Core/Server/Services/Chat/Commands/DamageCommand";
-import { GetVarCommand } from "@Easy/Core/Server/Services/Chat/Commands/DynamicVariables/GetVarCommand";
-import { SetVarCommand } from "@Easy/Core/Server/Services/Chat/Commands/DynamicVariables/SetVarCommand";
 import { EntityCommand } from "@Easy/Core/Server/Services/Chat/Commands/EntityCommand";
 import { FlyCommand } from "@Easy/Core/Server/Services/Chat/Commands/FlyCommand";
 import { HealCommand } from "@Easy/Core/Server/Services/Chat/Commands/HealCommand";
 import { HelpCommand } from "@Easy/Core/Server/Services/Chat/Commands/HelpCommand";
 import { JoinCodeCommand } from "@Easy/Core/Server/Services/Chat/Commands/JoinCodeCommand";
+import { KickCommand } from "@Easy/Core/Server/Services/Chat/Commands/KickCommand";
 import { KillCommand } from "@Easy/Core/Server/Services/Chat/Commands/KillCommand";
 import { LagCommand } from "@Easy/Core/Server/Services/Chat/Commands/LagCommand";
 import { SetTeamCommand } from "@Easy/Core/Server/Services/Chat/Commands/SetTeamCommand";
@@ -26,7 +25,7 @@ import { Player } from "../Player/Player";
 /**
  * Access using {@link Airship.Chat}. Functions for configuring the chat window
  * as well as broadcasting messages.
- * 
+ *
  * To send a player a message see {@link Player.SendMessage}.
  */
 @Singleton({})
@@ -43,7 +42,7 @@ export class AirshipChatSingleton {
 
 	/**
 	 * [Client only]
-	 * 
+	 *
 	 * Sets chat's visibility.
 	 *
 	 * @param val Whether or not chat should be visible.
@@ -56,13 +55,19 @@ export class AirshipChatSingleton {
 
 	/**
 	 * [Server only]
-	 * 
+	 *
 	 * Registers provided command.
 	 *
 	 * @param command A command instance.
 	 */
 	public RegisterCommand(command: ChatCommand): void {
-		if (!Game.IsServer) error("Error trying to RegisterCommand " + command.commandLabel + ": Can only register command on server.");
+		if (!Game.IsServer()) {
+			error(
+				"Error trying to call RegisterCommand " +
+					command.commandLabel +
+					": Can only register command on server.",
+			);
+		}
 
 		Dependency<ChatService>().RegisterCommand(command);
 	}
@@ -90,12 +95,11 @@ export class AirshipChatSingleton {
 		this.RegisterCommand(new TpCommand());
 		this.RegisterCommand(new TpsCommand());
 		this.RegisterCommand(new LagCommand());
-		this.RegisterCommand(new SetVarCommand());
-		this.RegisterCommand(new GetVarCommand());
 		this.RegisterCommand(new HealCommand());
 		this.RegisterCommand(new BotCommand());
 		this.RegisterCommand(new FlyCommand());
 		this.RegisterCommand(new HelpCommand());
 		this.RegisterCommand(new TeamChatCommand());
+		this.RegisterCommand(new KickCommand());
 	}
 }

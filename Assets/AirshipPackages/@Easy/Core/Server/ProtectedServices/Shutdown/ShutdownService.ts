@@ -29,7 +29,7 @@ export class ShutdownService {
 			// filter bots
 			for (let i = 0; i < players.Length; i++) {
 				const p = players.GetValue(i);
-				if (p.clientId >= 0) {
+				if (p.connectionId >= 0) {
 					playerCount++;
 				}
 			}

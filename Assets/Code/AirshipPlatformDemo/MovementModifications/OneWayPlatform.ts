@@ -7,27 +7,31 @@ export default class OneWayPlatform extends AirshipBehaviour {
 	public inactiveGo!: GameObject;
 
 	private collider!: Collider;
+	private characterBelow = false;
 
 	public Awake(): void {
 		this.collider = this.gameObject.GetComponentInChildren<Collider>();
 		Airship.Characters.onCharacterSpawned.Connect((character) => {
-			if (Game.IsServer() || !character.IsLocalCharacter()) {
+			if (Game.IsClient() && !character.IsLocalCharacter()) {
 				return;
 			}
 
 			//Locally we want to refresh our colliders during replays
 			character.OnBeginMove.Connect(() => {
-				//this.RefreshForCharacter(character);
+				this.RefreshForCharacter(character);
 			});
 		});
 	}
 
 	private RefreshForCharacter(character: Character) {
 		let characterIsBelow = character.transform.position.y < this.transform.position.y;
-		this.activeGo.SetActive(!characterIsBelow);
-		this.inactiveGo.SetActive(characterIsBelow);
-		//print("Characer Y:  "+ character.transform.position.y + " platform Y: " + this.transform.position.y + " characterIsBelow: " + characterIsBelow);
-		character.movement.IgnoreGroundCollider(this.collider, characterIsBelow);
-		Physics.IgnoreCollision(this.collider, character.movement.mainCollider, characterIsBelow);
+		if (characterIsBelow !== this.characterBelow) {
+			this.characterBelow = characterIsBelow;
+			this.activeGo.SetActive(!characterIsBelow);
+			this.inactiveGo.SetActive(characterIsBelow);
+			//print("Characer Y:  "+ character.transform.position.y + " platform Y: " + this.transform.position.y + " characterIsBelow: " + characterIsBelow);
+			character.movement.IgnoreGroundCollider(this.collider, characterIsBelow);
+			Physics.IgnoreCollision(this.collider, character.movement.mainCollider, characterIsBelow);
+		}
 	}
 }

@@ -9,6 +9,7 @@ import { GamesDto } from "../../../Client/Components/HomePage/API/GamesAPI";
 import SortComponent from "../../../Client/Components/HomePage/Sort/SortComponent";
 import { SortId } from "../../../Client/Components/HomePage/Sort/SortId";
 import { MainMenuBlockSingleton } from "../../../Client/ProtectedControllers//Settings/MainMenuBlockSingleton";
+import DateParser from "../../DateParser";
 import MainMenuPageComponent from "./MainMenuPageComponent";
 
 export default class HomePageComponent extends MainMenuPageComponent {
@@ -90,12 +91,19 @@ export default class HomePageComponent extends MainMenuPageComponent {
 			let games = data[sortId].filter(
 				(g) => g.lastVersionUpdate !== undefined && !blockSingleton.IsGameIdBlocked(g.id),
 			);
-			// Temp: only show "The Campfire" on mobile for now.
-			// if (!Game.IsEditor() && Game.IsMobile()) {
-			// 	games = data[sortId].filter((g) => MobileGameList.includes(g.id));
-			// }
+			games = games.filter((g) => {
+				if (g.lastVersionUpdate === undefined) return false;
+				let timeUpdatedSeconds = DateParser.FromISO(g.lastVersionUpdate) as number;
+
+				// Jul 16, 2024
+				if (timeUpdatedSeconds <= 1722442457) {
+					return false;
+				}
+
+				return true;
+			});
+
 			sortComponent.SetGames(games);
-			// this.loadedGameComponents = [...this.loadedGameComponents, ...sortComponent.SetGames(games)];
 		}
 
 		task.spawn(() => {

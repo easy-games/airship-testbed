@@ -2,7 +2,6 @@ import { Airship } from "@Easy/Core/Shared/Airship";
 import { Game } from "@Easy/Core/Shared/Game";
 import { ControlScheme, Keyboard, Mouse, Preferred, Touchscreen } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
-import { TimeUtil } from "@Easy/Core/Shared/Util/TimeUtil";
 import { CameraMode } from "../CameraMode";
 import { CameraTransform } from "../CameraTransform";
 import DefaultCameraMask from "../DefaultCameraMask";
@@ -160,7 +159,7 @@ export class OrbitCameraMode extends CameraMode {
 		}
 		this.rightClicking = rightClick;
 		if (lf !== rt) {
-			this.rotationY += (lf ? 1 : -1) * TimeUtil.GetDeltaTime() * 4;
+			this.rotationY += (lf ? 1 : -1) * Time.deltaTime * 4;
 		}
 		if (Mouse.IsLocked() && (rightClick || this.lockView)) {
 			let mouseDelta = Mouse.GetDelta();

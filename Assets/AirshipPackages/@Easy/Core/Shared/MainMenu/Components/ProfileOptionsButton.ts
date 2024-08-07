@@ -22,6 +22,27 @@ export default class ProfileOptionsButton extends AirshipBehaviour {
 		CanvasAPI.OnClickEvent(this.gameObject, () => {
 			const options: RightClickMenuButton[] = [];
 			if (!Game.IsMobile()) {
+				if (!Screen.fullScreen) {
+					options.push({
+						text: "Go Fullscreen",
+						onClick: () => {
+							Screen.fullScreen = true;
+						},
+					});
+				} else {
+					options.push({
+						text: "Exit Fullscreen",
+						onClick: () => {
+							Screen.fullScreen = false;
+						},
+					});
+				}
+				options.push({
+					text: "Sign out",
+					onClick: () => {
+						Protected.user.Logout();
+					},
+				});
 				options.push({
 					text: "Quit",
 					onClick: () => {

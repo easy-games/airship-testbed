@@ -1,5 +1,6 @@
 import { Airship } from "../Airship";
 import { Game } from "../Game";
+import { InventoryUIVisibility } from "../Inventory/InventoryUIVisibility";
 import { CharacterCameraMode } from "./LocalCharacter/CharacterCameraMode";
 
 /**
@@ -18,6 +19,7 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 	public enableJumping = true;
 	public enableSprinting = true;
 	public enableCrouching = true;
+	public footstepSounds = true;
 
 	@Header("Viewmodel")
 	@Tooltip("If true, a character viewmodel will be instantiated under the ViewmodelCamera")
@@ -29,11 +31,9 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 	public startInFirstPerson = false;
 	public allowFirstPersonToggle = true;
 
-	@Header("UI Displays")
+	@Header("UI")
 	public showChat = true;
-	public showHealthbar = true;
-	public showInventoryHotbar = true;
-	public showInventoryBackpack = true;
+	public inventoryVisibility = InventoryUIVisibility.WhenHasItems;
 	public inventoryUIPrefab?: GameObject;
 
 	public Awake(): void {
@@ -48,6 +48,7 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 		if (this.inventoryUIPrefab !== undefined) {
 			Airship.Inventory.SetInventoryUIPrefab(this.inventoryUIPrefab);
 		}
+		Airship.Characters.footsteps.foostepSoundsEnabled = this.footstepSounds;
 	}
 
 	public OnEnable() {
@@ -59,28 +60,21 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 
 			//Camera
 			//Toggle the core camera system
-			Airship.CharacterCamera.SetEnabled(this.useAirshipCameraSystem);
+			Airship.Camera.SetEnabled(this.useAirshipCameraSystem);
 			if (this.useAirshipCameraSystem) {
 				//Allow clients to toggle their view model
-				Airship.CharacterCamera.canToggleFirstPerson = this.allowFirstPersonToggle;
+				Airship.Camera.canToggleFirstPerson = this.allowFirstPersonToggle;
 				if (this.startInFirstPerson) {
 					//Change to a new camera mode
-					Airship.CharacterCamera.SetCharacterCameraMode(CharacterCameraMode.Locked);
+					Airship.Camera.SetMode(CharacterCameraMode.Locked);
 					//Force first person view model
-					Airship.CharacterCamera.SetFirstPerson(this.startInFirstPerson);
+					Airship.Camera.SetFirstPerson(this.startInFirstPerson);
 				}
 			}
 
 			//UI visual toggles
 			Airship.Chat.SetUIEnabled(this.showChat);
-			Airship.Inventory.SetBackpackVisible(this.showInventoryBackpack);
-			if (this.showInventoryHotbar || this.showHealthbar) {
-				Airship.Inventory.SetUIEnabled(true);
-				Airship.Inventory.SetHealtbarVisible(this.showHealthbar);
-				Airship.Inventory.SetHotbarVisible(this.showInventoryHotbar);
-			} else {
-				Airship.Inventory.SetUIEnabled(false);
-			}
+			Airship.Inventory.SetUIVisibility(this.inventoryVisibility);
 		}
 
 		//Stop any input for some movement options we don't use

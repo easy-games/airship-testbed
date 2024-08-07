@@ -1,8 +1,19 @@
+// Manual typings for the C# "AirshipPlatformURL" class.
+// This means we are getting all routes straight from C#.
+declare const AirshipPlatformUrl: {
+	gameCoordinator: string;
+	contentService: string;
+	dataStoreService: string;
+	deploymentService: string;
+	cdn: string;
+	gameCdn: string;
+};
+
 export const AirshipUrl = {
-	GameCoordinatorSocket: "https://gc-edge-staging.easy.gg",
-	GameCoordinator: "https://game-coordinator-fxy2zritya-uc.a.run.app",
-	ContentService: "https://content-service-fxy2zritya-uc.a.run.app",
-	DataStoreService: "https://data-store-service-fxy2zritya-uc.a.run.app",
-	DeploymentService: "https://deployment-service-fxy2zritya-uc.a.run.app",
-	CDN: "https://cdn-staging.easy.gg",
+	GameCoordinator: AirshipPlatformUrl.gameCoordinator,
+	ContentService: AirshipPlatformUrl.contentService,
+	DataStoreService: AirshipPlatformUrl.dataStoreService,
+	DeploymentService: AirshipPlatformUrl.deploymentService,
+	CDN: AirshipPlatformUrl.cdn,
+	GameCDN: AirshipPlatformUrl.gameCdn,
 };

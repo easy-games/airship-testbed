@@ -1,89 +1,106 @@
 import { OnUpdate } from "@Easy/Core/Shared/Util/Timer";
+import { Duration } from "../Util/Duration";
+import { Signal } from "../Util/Signal";
+import { TweenEasingFunction } from "./EasingFunctions";
 
-/* eslint-disable @typescript-eslint/no-loss-of-precision */
-type BasicEasingFunction = (
-	elapsedTime: number,
-	initialValue: number,
-	changeInValue: number,
-	totalDuration: number,
-) => number;
+type LerpFunction<T> = (value: number) => T;
 
-type PeriodicEasingFunction = (
-	elapsedTime: number,
-	initialValue: number,
-	changeInValue: number,
-	totalDuration: number,
-	amplitude: number,
-	period: number,
-) => number;
-
-export const LinearEase: BasicEasingFunction = (t, b, c, d) => {
-	return (c * t) / d + b;
-};
-
-export const InElastic: PeriodicEasingFunction = (t, b, c, d, a, p) => {
-	t = t / d - 1;
-	if (t === -1) {
-		return b;
-	} else {
-		if (t === 0) {
-			return b + c;
-		} else {
-			p ??= d * 0.3;
-			let abs_c: number;
-
-			if (c < 0) {
-				abs_c = -c;
-			} else {
-				abs_c = c;
-			}
-
-			if (a === undefined || a < abs_c) {
-				// eslint-disable-next-line prettier/prettier
-				return -(c * 1024 ** t * math.sin((t * d - p * 0.25) * 6.2831853071795864 / p)) + b;
-			} else {
-				// eslint-disable-next-line prettier/prettier
-				return -(a * 1024 ** t * math.sin((t * d - p / 6.2831853071795864 * math.asin(c/a)) * 6.2831853071795864 / p)) + b;
-			}
-		}
-	}
-};
-
-function numberLerp(v0: number, v1: number) {
+function NumberLerp(v0: number, v1: number): LerpFunction<number> {
 	const dv = v1 - v0;
 	return (t: number) => {
 		return v0 + dv * t;
 	};
 }
 
-export class Tween {
+function VectorLerp(v0: Vector3, v1: Vector3): LerpFunction<Vector3> {
+	return (t: number) => Vector3.Lerp(v0, v1, t);
+}
+
+function Vector2Lerp(v0: Vector2, v1: Vector2): LerpFunction<Vector2> {
+	return (t: number) => Vector2.Lerp(v0, v1, t);
+}
+
+function ColorLerp(v0: Color, v1: Color): LerpFunction<Color> {
+	return (t: number) => Color.Lerp(v0, v1, t);
+}
+
+type TweenSignal<T> = Pick<
+	Signal<T>,
+	"Connect" | "ConnectWithPriority" | "Once" | "Wait" | "HasConnections" | "GetConnectionCount"
+>;
+export interface LuauTween<T> {
+	Cancel(): LuauTween<T>;
+	Pause(): LuauTween<T>;
+	Play(): LuauTween<T>;
+	SetEasingFunction(easingFunction: TweenEasingFunction): LuauTween<T>;
+	SetUseUnscaledTime(useUnscaledTime: boolean): LuauTween<T>;
+	IsPlaying(): boolean;
+	Destroy(): void;
+
+	readonly OnCompleted: TweenSignal<void>;
+}
+
+export type TweenCallback<T> = (value: T) => void;
+
+export class Tween<T> implements LuauTween<T> {
 	private running = false;
+	private elapsedTime = 0;
 	private disconnect: (() => void) | undefined;
+
+	private duration: number;
 	private interpolator: (step: number) => void;
+	private lerpFunction: LerpFunction<T>;
+	private callback: (value: T) => void;
+	private endValue: T;
+	private useUnscaledTime = false;
+
+	public readonly OnCompleted = new Signal<void>();
 
 	protected constructor(
 		duration: number,
-		easingFunction: BasicEasingFunction | PeriodicEasingFunction,
-		callback: (value: number) => void,
-		initialValue = 0,
-		endValue = 1,
-		v1?: number,
-		v2?: number,
+		easingFunction: TweenEasingFunction,
+		lerpFunction: LerpFunction<T>,
+		callback: (value: T) => void,
+		endValue: T,
 	) {
-		const lerpFn = numberLerp(initialValue, endValue);
+		this.duration = duration;
+		this.callback = callback;
+		this.lerpFunction = lerpFunction;
+		this.endValue = endValue;
+
+		this.SetEasingFunction(easingFunction);
+	}
+
+	public SetUseUnscaledTime(useUnscaledTime: boolean) {
+		this.useUnscaledTime = useUnscaledTime;
+		return this;
+	}
+
+	public SetEasingFunction(easingFunction: TweenEasingFunction) {
+		const lerpFunction = this.lerpFunction;
+		const duration = this.duration;
+		const callback = this.callback;
+		const endValue = this.endValue;
+
+		const wasPlaying = this.IsPlaying();
+		if (wasPlaying) this.Pause();
 
 		this.interpolator = (step: number) => {
-			const elapsedTime = this.elapsedTime + step;
+			const elapsedTime = this.elapsedTime + (this.useUnscaledTime ? Time.unscaledTime : step);
 			this.elapsedTime = elapsedTime;
 
 			if (duration > elapsedTime) {
-				const v = lerpFn(easingFunction(elapsedTime, 0, 1, duration, v1!, v2!));
+				const v = lerpFunction(easingFunction(elapsedTime, 0, 1, duration, undefined!, undefined!));
 				callback(v);
 			} else {
 				callback(endValue);
+				this.OnCompleted.Fire();
 				this.Pause();
 			}
 		};
+
+		if (wasPlaying) this.Play();
+		return this;
 	}
 
 	public Cancel() {
@@ -115,24 +132,48 @@ export class Tween {
 		return this.running;
 	}
 
-	private elapsedTime = 0;
-
-	// Can't get this working right. lol
-	public static InElastic(
-		totalDuration: number,
+	public static Number(
+		easingFunction: TweenEasingFunction,
+		durationSeconds: number,
 		callback: (delta: number) => void,
-		initialValue?: number,
-		endValue?: number,
-	) {
-		return new Tween(totalDuration, InElastic, callback, initialValue, endValue);
+		from: number = 0,
+		to: number = 1,
+	): LuauTween<number> {
+		return new Tween<number>(durationSeconds, easingFunction, NumberLerp(from, to), callback, to);
 	}
 
-	public static Linear(
-		totalDuration: number,
-		callback: (delta: number) => void,
-		initialValue?: number,
-		endValue?: number,
-	) {
-		return new Tween(totalDuration, LinearEase, callback, initialValue, endValue);
+	public static Vector3(
+		easingFunction: TweenEasingFunction,
+		durationSeconds: number,
+		callback: TweenCallback<Vector3>,
+		from: Vector3 = Vector3.zero,
+		to: Vector3 = Vector3.one,
+	): LuauTween<Vector3> {
+		return new Tween(durationSeconds, easingFunction, VectorLerp(from, to), callback, to);
+	}
+
+	public static Vector2(
+		easingFunction: TweenEasingFunction,
+		durationSeconds: number,
+		callback: TweenCallback<Vector2>,
+		from: Vector2 = Vector2.zero,
+		to: Vector2 = Vector2.one,
+	): LuauTween<Vector2> {
+		return new Tween(durationSeconds, easingFunction, Vector2Lerp(from, to), callback, to);
+	}
+
+	public static Color(
+		easingFunction: TweenEasingFunction,
+		durationSeconds: number,
+		callback: TweenCallback<Color>,
+		from: Color = Color.black,
+		to: Color = Color.white,
+	): LuauTween<Color> {
+		return new Tween(durationSeconds, easingFunction, ColorLerp(from, to), callback, to);
+	}
+
+	public Destroy() {
+		this.disconnect?.();
+		this.OnCompleted.Destroy();
 	}
 }

@@ -10,6 +10,7 @@ export default class Menu extends AirshipBehaviour {
 	public content!: RectTransform;
 	public canvas!: Canvas;
 	public camera!: Camera;
+	public scrollRect: ScrollRect;
 
 	private showBin = new Bin();
 
@@ -31,22 +32,34 @@ export default class Menu extends AirshipBehaviour {
 	}
 
 	override Start(): void {
-		this.Show();
-
-		this.content.gameObject.ClearChildren();
-		for (let entry of MenuUtil.scenes) {
-			const go = Object.Instantiate(this.sceneEntryPrefab, this.content);
-			const sceneEntryComp = go.GetAirshipComponent<SceneEntryComponent>();
-			sceneEntryComp?.Init(entry);
+		if (Game.IsClient()) {
+			this.Show();
+			this.content.gameObject.ClearChildren();
+			for (let entry of MenuUtil.scenes) {
+				const go = Object.Instantiate(this.sceneEntryPrefab, this.content);
+				const sceneEntryComp = go.GetAirshipComponent<SceneEntryComponent>();
+				sceneEntryComp?.Init(entry);
+				const redirectScroll = go.GetComponent<AirshipRedirectScroll>();
+				redirectScroll.redirectTarget = this.scrollRect;
+			}
+		} else {
+			this.Hide();
 		}
 
 		if (Game.IsServer()) {
 			MenuUtil.loadGlobalSceneRequest.server.SetCallback((player, sceneName) => {
+				if (Game.IsServer() && !Game.IsClient() && !this.IsSceneLoaded(sceneName)) {
+					SceneManager.LoadScene(sceneName);
+					SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneName)!);
+				}
 				SceneManager.LoadSceneForPlayer(player, sceneName, true);
 				return true;
 			});
 			MenuUtil.unloadGlobalSceneRequest.server.SetCallback((player, sceneName) => {
-				SceneManager.UnloadSceneForPlayer(player, sceneName, "Menu");
+				SceneManager.UnloadSceneForPlayer(player, sceneName);
+				if (Game.IsServer() && !Game.IsClient() && this.IsSceneLoaded(sceneName)) {
+					SceneManager.UnloadScene(sceneName);
+				}
 				return true;
 			});
 		}
@@ -56,6 +69,10 @@ export default class Menu extends AirshipBehaviour {
 				MenuUtil.BackToMenu();
 			});
 		});
+	}
+
+	private IsSceneLoaded(sceneName: string): boolean {
+		return SceneManager.GetScenes().find((s) => s.name === sceneName) !== undefined;
 	}
 
 	override OnDestroy(): void {

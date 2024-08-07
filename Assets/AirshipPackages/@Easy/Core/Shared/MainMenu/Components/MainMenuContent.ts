@@ -88,7 +88,7 @@ export default class MainMenuContent extends AirshipBehaviour {
 			this.socialMenu.offsetMax = new Vector2(0, 0);
 			this.socialMenu.gameObject.SetActive(true);
 
-			this.contentWrapper.sizeDelta = new Vector2(screenSize.x * 0.98, screenSize.y);
+			this.contentWrapper.sizeDelta = new Vector2(screenSize.x, screenSize.y);
 			this.contentWrapper.anchorMin = new Vector2(0.5, 1);
 			this.contentWrapper.anchorMax = new Vector2(0.5, 1);
 			this.contentWrapper.pivot = new Vector2(0.5, 1);
@@ -192,7 +192,7 @@ export default class MainMenuContent extends AirshipBehaviour {
 
 			// this.navbar.sizeDelta = new Vector2(this.navbar.sizeDelta.x, 67);
 			this.pages.offsetMax = new Vector2(0, 0);
-			if (Game.IsLandscape() && this.mainMenu.sizeType === "sm") {
+			if (Game.IsLandscape() && this.mainMenu.sizeType === "sm" && false) {
 				this.pages.offsetMin = new Vector2(Game.GetNotchHeight(), this.pages.offsetMin.y);
 			} else {
 				this.pages.offsetMin = new Vector2(0, this.pages.offsetMin.y);

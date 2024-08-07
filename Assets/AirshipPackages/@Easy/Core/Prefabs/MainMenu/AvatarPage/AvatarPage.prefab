@@ -442,25 +442,6 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 5040413862591958478, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       modified: 1
-    - name: canvas
-      type: object
-      objectType: Canvas
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      decorators:
-      - name: Header
-        parameters:
-        - type: string
-          serializedValue: '"References"'
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 0
     - name: mainCanvasGroup
       type: object
       objectType: CanvasGroup
@@ -644,6 +625,108 @@ MonoBehaviour:
       nullable: 0
       serializedValue: 
       serializedObject: {fileID: 2947813019238970325}
+      modified: 1
+    - name: grid
+      type: object
+      objectType: GridLayoutGroup
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: mobileTopBarScrollRect
+      type: object
+      objectType: ScrollRect
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"Mobile Only References"'
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: revertBtn
+      type: AirshipBehaviour
+      objectType: AirshipButton
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipButton.ts
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"Buttons"'
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 7766247766556660180}
+      modified: 1
+    - name: saveBtn
+      type: AirshipBehaviour
+      objectType: AirshipButton
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipButton.ts
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 3727790220078578400}
+      modified: 1
+    - name: avatarInteractionBtn
+      type: object
+      objectType: Button
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 2484990433611330565}
+      modified: 1
+    - name: avatarCameraOffset
+      type: Vector3
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"Variables"'
+      nullable: 0
+      serializedValue: '{"x":0.33000001311302187,"y":0.699999988079071,"z":0.10000000149011612}'
+      serializedObject: {fileID: 0}
       modified: 1
     displayIcon: {fileID: 0}
     displayName: 
@@ -1068,6 +1151,21 @@ MonoBehaviour:
       serializedValue: 0
       serializedObject: {fileID: 0}
       modified: 0
+    - name: button
+      type: object
+      objectType: Button
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
     displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0
@@ -1359,7 +1457,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: -815.66}
+  m_SizeDelta: {x: 0, y: -471}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &4869946947964995935
 MonoBehaviour:
@@ -1660,6 +1758,21 @@ MonoBehaviour:
           serializedValue: '"Sets child text to underline on mouse hover."'
       nullable: 0
       serializedValue: 0
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: button
+      type: object
+      objectType: Button
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
       serializedObject: {fileID: 0}
       modified: 0
     displayIcon: {fileID: 0}
@@ -5573,6 +5686,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 863566417572704422, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+      propertyPath: m_metadata.properties.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 863566417572704422, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+      propertyPath: m_metadata.properties.Array.data[4].name
+      value: button
+      objectReference: {fileID: 0}
+    - target: {fileID: 863566417572704422, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+      propertyPath: m_metadata.properties.Array.data[4].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 863566417572704422, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+      propertyPath: m_metadata.properties.Array.data[4].objectType
+      value: Button
+      objectReference: {fileID: 0}
     - target: {fileID: 1476760744204482235, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
       propertyPath: m_Maskable
       value: 1
@@ -6237,6 +6366,22 @@ PrefabInstance:
     - target: {fileID: 323223754123094385, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 863566417572704422, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+      propertyPath: m_metadata.properties.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 863566417572704422, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+      propertyPath: m_metadata.properties.Array.data[4].name
+      value: button
+      objectReference: {fileID: 0}
+    - target: {fileID: 863566417572704422, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+      propertyPath: m_metadata.properties.Array.data[4].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 863566417572704422, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+      propertyPath: m_metadata.properties.Array.data[4].objectType
+      value: Button
       objectReference: {fileID: 0}
     - target: {fileID: 3416049645295338797, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
       propertyPath: m_metadata.properties.Array.size
@@ -6995,6 +7140,22 @@ PrefabInstance:
     - target: {fileID: 323223754123094385, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 863566417572704422, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+      propertyPath: m_metadata.properties.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 863566417572704422, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+      propertyPath: m_metadata.properties.Array.data[4].name
+      value: button
+      objectReference: {fileID: 0}
+    - target: {fileID: 863566417572704422, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+      propertyPath: m_metadata.properties.Array.data[4].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 863566417572704422, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+      propertyPath: m_metadata.properties.Array.data[4].objectType
+      value: Button
       objectReference: {fileID: 0}
     - target: {fileID: 3416049645295338797, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
       propertyPath: m_metadata.properties.Array.size
@@ -9004,6 +9165,22 @@ PrefabInstance:
     - target: {fileID: 323223754123094385, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 863566417572704422, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+      propertyPath: m_metadata.properties.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 863566417572704422, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+      propertyPath: m_metadata.properties.Array.data[4].name
+      value: button
+      objectReference: {fileID: 0}
+    - target: {fileID: 863566417572704422, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+      propertyPath: m_metadata.properties.Array.data[4].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 863566417572704422, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+      propertyPath: m_metadata.properties.Array.data[4].objectType
+      value: Button
       objectReference: {fileID: 0}
     - target: {fileID: 3416049645295338797, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
       propertyPath: m_metadata.properties.Array.size
@@ -11193,6 +11370,22 @@ PrefabInstance:
     - target: {fileID: 323223754123094385, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 863566417572704422, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+      propertyPath: m_metadata.properties.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 863566417572704422, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+      propertyPath: m_metadata.properties.Array.data[4].name
+      value: button
+      objectReference: {fileID: 0}
+    - target: {fileID: 863566417572704422, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+      propertyPath: m_metadata.properties.Array.data[4].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 863566417572704422, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+      propertyPath: m_metadata.properties.Array.data[4].objectType
+      value: Button
       objectReference: {fileID: 0}
     - target: {fileID: 6002481594607549612, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
       propertyPath: m_Name

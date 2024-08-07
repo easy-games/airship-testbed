@@ -1,5 +1,6 @@
 import { Airship } from "../Airship";
 import { Singleton } from "../Flamework";
+import { Game } from "../Game";
 import { CSArrayUtil } from "../Util/CSArrayUtil";
 import { MapUtil } from "../Util/MapUtil";
 import { Signal } from "../Util/Signal";
@@ -14,6 +15,8 @@ export class TagsSingleton {
 	private tagRemovedSignals = new Map<string, Signal<[GameObject]>>();
 
 	protected OnStart(): void {
+		if (!Game.IsInGame()) return;
+
 		const tagManager = TagManager.Instance;
 		Airship.Tags = this;
 		this.tagManager = tagManager;

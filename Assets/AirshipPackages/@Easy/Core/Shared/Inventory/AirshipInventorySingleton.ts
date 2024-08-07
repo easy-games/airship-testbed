@@ -9,7 +9,9 @@ import { ItemDef } from "../Item/ItemDefinitionTypes";
 import { NetworkFunction } from "../Network/NetworkFunction";
 import { Bin } from "../Util/Bin";
 import { Signal } from "../Util/Signal";
+import AirshipInventoryUI from "./AirshipInventoryUI";
 import Inventory, { InventoryDto } from "./Inventory";
+import { InventoryUIVisibility } from "./InventoryUIVisibility";
 import { ItemStack } from "./ItemStack";
 
 interface InventoryEntry {
@@ -36,7 +38,7 @@ export class AirshipInventorySingleton {
 	 *
 	 * Defaults to `false`.
 	 */
-	public alwaysEnableInventoryUI = false;
+	public uiVisibility = InventoryUIVisibility.WhenHasItems;
 
 	private isUISetup = false;
 
@@ -48,6 +50,8 @@ export class AirshipInventorySingleton {
 	private readonly itemAccessories = new Map<string, AccessoryComponent[]>();
 	private readonly internalIdToItemType = new Map<number, string>();
 	private internalIdCounter = 0;
+
+	public readonly ui: AirshipInventoryUI | undefined;
 
 	// public missingItemAccessory!: AccessoryComponent;
 
@@ -77,14 +81,16 @@ export class AirshipInventorySingleton {
 			Game.localPlayer.ObserveCharacter((character) => {
 				if (!character || this.isUISetup) return;
 
-				if (character.inventory.GetAllItems().size() > 0 || Airship.Inventory.alwaysEnableInventoryUI) {
-					this.isUISetup = true;
+				if (
+					this.uiVisibility === InventoryUIVisibility.Always ||
+					(this.uiVisibility === InventoryUIVisibility.WhenHasItems &&
+						character.inventory.GetAllItems().size() > 0)
+				) {
 					this.CreateUI();
 					return;
 				}
 				character.inventory.onChanged.Connect(() => {
-					if (!this.isUISetup) {
-						this.isUISetup = true;
+					if (!this.isUISetup && this.uiVisibility === InventoryUIVisibility.WhenHasItems) {
 						this.CreateUI();
 					}
 				});
@@ -100,7 +106,25 @@ export class AirshipInventorySingleton {
 		}
 	}
 
+	public SetUIVisibility(visibility: InventoryUIVisibility): void {
+		this.uiVisibility = visibility;
+
+		// Try to create ui
+		if (this.isUISetup) return;
+		if (visibility === InventoryUIVisibility.Always) {
+			this.CreateUI();
+		} else if (visibility === InventoryUIVisibility.WhenHasItems) {
+			const inv = Game.localPlayer?.character?.inventory;
+			if (inv && inv.GetAllItems().size() > 0) {
+				this.CreateUI();
+			}
+		}
+	}
+
 	private CreateUI(): void {
+		if (this.isUISetup) return;
+		this.isUISetup = true;
+
 		let prefab: GameObject;
 		if (this.inventoryUIPrefab) {
 			prefab = this.inventoryUIPrefab;
@@ -110,6 +134,11 @@ export class AirshipInventorySingleton {
 			);
 		}
 		const go = Object.Instantiate(prefab);
+		const uiComp = go.GetAirshipComponent<AirshipInventoryUI>();
+		if (uiComp === undefined) {
+			error("Inventory UI was missing an AirshipInventoryUI component.");
+		}
+		(this.ui as AirshipInventoryUI) = uiComp;
 	}
 
 	private StartClient(): void {
@@ -119,7 +148,7 @@ export class AirshipInventorySingleton {
 		});
 		CoreNetwork.ServerToClient.SetInventorySlot.client.OnServerEvent(
 			(invId, slot, itemStackDto, clientPredicted) => {
-				if (RunUtil.IsHosting()) return;
+				if (Game.IsHosting()) return;
 				const inv = this.GetInventory(invId);
 				if (!inv) return;
 
@@ -335,7 +364,7 @@ export class AirshipInventorySingleton {
 		}
 	}
 
-	public Unsubscribe(clientId: number, inventory: Inventory): void {
+	private Unsubscribe(clientId: number, inventory: Inventory): void {
 		const entry = this.GetInvEntry(inventory);
 		entry.Owners.delete(clientId);
 		entry.Viewers.delete(clientId);
@@ -442,7 +471,7 @@ export class AirshipInventorySingleton {
 			}
 		}
 
-		if (RunUtil.IsClient()) {
+		if (Game.IsClient()) {
 			CoreNetwork.ClientToServer.Inventory.QuickMoveSlot.client.FireServer(inv.id, slot, inv.id);
 		}
 
@@ -485,22 +514,6 @@ export class AirshipInventorySingleton {
 			toSlot,
 			amount,
 		);
-	}
-
-	public SetUIEnabled(enabled: boolean): void {
-		// Dependency<InventoryUIController>().SetEnabled(enabled);
-	}
-
-	public SetHealtbarVisible(visible: boolean) {
-		// Dependency<InventoryUIController>().SetHealtbarVisible(visible);
-	}
-
-	public SetHotbarVisible(visible: boolean) {
-		// Dependency<InventoryUIController>().SetHotbarVisible(visible);
-	}
-
-	public SetBackpackVisible(visible: boolean) {
-		// Dependency<InventoryUIController>().SetBackpackVisible(visible);
 	}
 
 	public SetInventoryUIPrefab(prefab: GameObject): void {

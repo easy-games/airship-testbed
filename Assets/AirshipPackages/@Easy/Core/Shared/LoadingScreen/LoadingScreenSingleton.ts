@@ -4,6 +4,7 @@ import { Singleton } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Mouse } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { OnUpdate } from "../Util/Timer";
 
 /**
  * [Client only]
@@ -30,7 +31,7 @@ export class LoadingScreenSingleton {
 		this.coreLoadingScreen.SetProgress("Building the World", 10);
 		this.loadingBin.Add(Mouse.AddUnlocker());
 
-		task.delay(0, () => {
+		OnUpdate.Once(() => {
 			if (!this.hasUsed) {
 				this.FinishLoading();
 			}

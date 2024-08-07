@@ -200,7 +200,7 @@ export class AppManager {
 
 	public static OpenDarkBackground(sortOrder: number) {
 		this.darkBackgroundTransitionBin.Clean();
-		const t = NativeTween.CanvasGroupAlpha(this.backgroundCanvasGroup, 1, 0.25);
+		const t = NativeTween.CanvasGroupAlpha(this.backgroundCanvasGroup, 1, 0.25).SetUseUnscaledTime(true);
 		this.darkBackgroundTransitionBin.Add(() => {
 			if (t.IsDestroyed()) return;
 			t.Cancel();
@@ -213,7 +213,7 @@ export class AppManager {
 	public static CloseDarkBackground(): void {
 		this.darkBackgroundTransitionBin.Clean();
 		this.backgroundImage.raycastTarget = false;
-		const t = NativeTween.CanvasGroupAlpha(this.backgroundCanvasGroup, 0, 0.25);
+		const t = NativeTween.CanvasGroupAlpha(this.backgroundCanvasGroup, 0, 0.25).SetUseUnscaledTime(true);
 		this.darkBackgroundTransitionBin.Add(() => {
 			if (t.IsDestroyed()) return;
 			t.Cancel();
@@ -255,16 +255,6 @@ export class AppManager {
 			}
 		}
 	}
-
-	/**
-	 * @internal
-	 */
-	// public static OpenMainMenu(): void {
-	// 	contextbridge.invoke<() => void>("MainMenu:OpenFromGame", LuauContext.Protected);
-	// 	this.OpenCustom(() => {
-	// 		contextbridge.invoke<() => void>("MainMenu:CloseFromGame", LuauContext.Protected);
-	// 	});
-	// }
 
 	/**
 	 * Check whether not an `CanvasAppManager` owned canvas is open.
@@ -309,6 +299,10 @@ if (Game.IsGameLuauContext() || !Game.IsInGame()) {
 				return;
 			}
 			event.SetCancelled(true);
+			if (!Game.IsClient()) {
+				Mouse.AddUnlocker();
+				return;
+			}
 			contextbridge.invoke<() => void>("MainMenu:OpenFromGame", LuauContext.Protected);
 		},
 		SignalPriority.LOW,

@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 386bf32d3c5413243ac0ba141748a33a, type: 3}
+  m_Name: StoneBrick
+  m_EditorClassIdentifier: 
+  blockName: StoneBrick
+  description: 
+  contextStyle: 0
+  topTexture:
+    material: {fileID: 0}
+    diffuse: {fileID: 2800000, guid: 3b54ef3ec2b33ec4cb8c75cea22614a8, type: 3}
+    normal: {fileID: 2800000, guid: b6d780f9026e1de4aa9f125ebc16ed49, type: 3}
+    smooth: {fileID: 0}
+    metallic: {fileID: 0}
+    emissive: {fileID: 0}
+  sideTexture:
+    material: {fileID: 0}
+    diffuse: {fileID: 0}
+    normal: {fileID: 0}
+    smooth: {fileID: 0}
+    metallic: {fileID: 0}
+    emissive: {fileID: 0}
+  bottomTexture:
+    material: {fileID: 0}
+    diffuse: {fileID: 0}
+    normal: {fileID: 0}
+    smooth: {fileID: 0}
+    metallic: {fileID: 0}
+    emissive: {fileID: 0}
+  meshTexture: 
+  meshPath: 
+  meshPathLod: 
+  metallic: 0
+  smoothness: 0
+  normalScale: 1
+  emissive: 0
+  brightness: 1
+  solid: 1
+  collisionType: 1
+  randomRotation: 0
+  minecraftIds: 

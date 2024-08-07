@@ -21,7 +21,7 @@ export class ProtectedPlayersSingleton {
 				player.username,
 				player.userId,
 				player.profileImageId,
-				player.clientId,
+				player.connectionId,
 			);
 			this.players.push(protectedPlayer);
 			this.onPlayerJoined.Fire(protectedPlayer);
@@ -33,10 +33,16 @@ export class ProtectedPlayersSingleton {
 				this.onPlayerDisconnected.Fire(protectedPlayer);
 			}
 		});
+
+		contextbridge.callback("player.kick", (from, connectionId: number, message: string) => {
+			task.spawn(() => {
+				TransferManager.Instance.KickClient(connectionId, message);
+			});
+		});
 	}
 
 	public FindByClientId(clientId: number): ProtectedPlayer | undefined {
-		return this.players.find((p) => p.clientId === clientId);
+		return this.players.find((p) => p.connectionId === clientId);
 	}
 
 	public FindByUserId(userId: string): ProtectedPlayer | undefined {

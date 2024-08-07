@@ -58,21 +58,39 @@ export class MainMenuController {
 		this.pageMap = new Map<MainMenuPageType, MainMenuPageComponent>([
 			[MainMenuPageType.Home, this.refs.GetValue("Pages", "Home").GetAirshipComponent<HomePageComponent>()!],
 			[MainMenuPageType.Develop, this.refs.GetValue("Pages", "Develop").GetAirshipComponent<DevelopMenuPage>()!],
-			[
-				MainMenuPageType.Avatar,
-				this.refs.GetValue("Pages", "Avatar").GetAirshipComponent<AvatarMenuComponent>()!,
-			],
-			[
-				MainMenuPageType.Friends,
-				this.refs.GetValue("Pages", "Friends").GetAirshipComponent<MainMenuPageComponent>()!,
-			],
-			[MainMenuPageType.Game, this.refs.GetValue("Pages", "Game").GetAirshipComponent<GameGeneralPage>()!],
 		]);
 
-		this.avatarView = Object.Instantiate(
-			this.refs.GetValue<GameObject>("Avatar", "Avatar3DSceneTemplate"),
-			CoreRefs.protectedTransform,
-		).GetAirshipComponent<AvatarViewComponent>()!;
+		//Mobile specific pages
+		if (Game.IsMobile()) {
+			this.pageMap.set(
+				MainMenuPageType.AvatarMobile,
+				this.refs.GetValue("Pages", "AvatarMobile").GetAirshipComponent<AvatarMenuComponent>()!,
+			);
+			this.avatarView = Object.Instantiate(
+				this.refs.GetValue<GameObject>("AvatarMobile", "Avatar3DSceneTemplate"),
+				CoreRefs.protectedTransform,
+			).GetAirshipComponent<AvatarViewComponent>()!;
+			this.refs.GetValue("Pages", "Avatar").SetActive(false);
+		} else {
+			this.pageMap.set(
+				MainMenuPageType.Avatar,
+				this.refs.GetValue("Pages", "Avatar").GetAirshipComponent<AvatarMenuComponent>()!,
+			);
+			this.avatarView = Object.Instantiate(
+				this.refs.GetValue<GameObject>("Avatar", "Avatar3DSceneTemplate"),
+				CoreRefs.protectedTransform,
+			).GetAirshipComponent<AvatarViewComponent>()!;
+			this.refs.GetValue("Pages", "AvatarMobile").SetActive(false);
+		}
+
+		this.pageMap.set(
+			MainMenuPageType.Friends,
+			this.refs.GetValue("Pages", "Friends").GetAirshipComponent<MainMenuPageComponent>()!,
+		);
+		this.pageMap.set(
+			MainMenuPageType.Game,
+			this.refs.GetValue("Pages", "Game").GetAirshipComponent<GameGeneralPage>()!,
+		);
 
 		if (Game.coreContext === CoreContext.GAME) {
 			this.avatarView.HideAvatar();
@@ -128,9 +146,9 @@ export class MainMenuController {
 		this.open = true;
 		const duration = 0.06;
 		this.wrapperRect.localScale = new Vector3(1.1, 1.1, 1.1);
-		NativeTween.LocalScale(this.wrapperRect, new Vector3(1, 1, 1), duration);
+		NativeTween.LocalScale(this.wrapperRect, new Vector3(1, 1, 1), duration).SetUseUnscaledTime(true);
 		this.mainContentCanvas.enabled = true;
-		NativeTween.CanvasGroupAlpha(this.rootCanvasGroup, 1, duration);
+		NativeTween.CanvasGroupAlpha(this.rootCanvasGroup, 1, duration).SetUseUnscaledTime(true);
 
 		if (this.currentPage) {
 			this.RouteToPage(this.currentPage.pageType, true, true);
@@ -149,8 +167,8 @@ export class MainMenuController {
 		EventSystem.current.ClearSelected();
 
 		const duration = 0.06;
-		NativeTween.LocalScale(this.wrapperRect, new Vector3(1.1, 1.1, 1.1), duration);
-		NativeTween.CanvasGroupAlpha(this.rootCanvasGroup, 0, duration);
+		NativeTween.LocalScale(this.wrapperRect, new Vector3(1.1, 1.1, 1.1), duration).SetUseUnscaledTime(true);
+		NativeTween.CanvasGroupAlpha(this.rootCanvasGroup, 0, duration).SetUseUnscaledTime(true);
 		SetTimeout(duration, () => {
 			if (!this.open) {
 				this.mainContentCanvas.enabled = false;

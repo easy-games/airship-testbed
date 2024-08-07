@@ -32,7 +32,7 @@ export default class CharacterMoveSlide extends AirshipBehaviour {
 				if (customMoveData.has(this.SlideKey)) {
 					let startTick = customMoveData.get(this.SlideKey) as number;
 					//print("Start Slide. Tick: " + startTick + ", isReplay: " + isReplay);
-					this.Slide(inputData.moveDir, startTick, inputData.GetTick());
+					// this.Slide(inputData.moveDir, startTick, inputData.GetTick());
 				} else {
 					if (this.slideStartTime > 0) {
 						//print("Stop Slide. Tick: " + inputData.GetTick() + ", isReplay: " + isReplay);
@@ -54,24 +54,24 @@ export default class CharacterMoveSlide extends AirshipBehaviour {
 		}
 	}
 
-	private Slide(dir: Vector3, startTick: number, currentTick: number) {
-		let characterState = this.character.movement.GetState();
-		this.slideStartTime = InstanceFinder.TimeManager.TicksToTime(startTick);
-		// print(
-		// 	"SLIDE: StartTick: " +
-		// 		startTick +
-		// 		" StartTime: " +
-		// 		this.slideStartTime +
-		// 		" Remaining Time: " +
-		// 		(InstanceFinder.TimeManager.TicksToTime(currentTick) - this.slideStartTime) +
-		// 		" TickDelta: " +
-		// 		InstanceFinder.TimeManager.TickDelta,
-		// );
-		if (InstanceFinder.TimeManager.TicksToTime(currentTick) - this.slideStartTime <= this.slideDurationInSeconds) {
-			//Slide
-			this.character.movement.AddImpulse(dir.mul(this.slideForce));
-		}
-	}
+	// private Slide(dir: Vector3, startTick: number, currentTick: number) {
+	// 	let characterState = this.character.movement.GetState();
+	// 	this.slideStartTime = InstanceFinder.TimeManager.TicksToTime(startTick);
+	// 	// print(
+	// 	// 	"SLIDE: StartTick: " +
+	// 	// 		startTick +
+	// 	// 		" StartTime: " +
+	// 	// 		this.slideStartTime +
+	// 	// 		" Remaining Time: " +
+	// 	// 		(InstanceFinder.TimeManager.TicksToTime(currentTick) - this.slideStartTime) +
+	// 	// 		" TickDelta: " +
+	// 	// 		InstanceFinder.TimeManager.TickDelta,
+	// 	// );
+	// 	if (InstanceFinder.TimeManager.TicksToTime(currentTick) - this.slideStartTime <= this.slideDurationInSeconds) {
+	// 		//Slide
+	// 		this.character.movement.AddImpulse(dir.mul(this.slideForce));
+	// 	}
+	// }
 
 	private StopSlide() {
 		this.slideStartTime = -1;

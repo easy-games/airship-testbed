@@ -60,19 +60,27 @@ export class AirshipCharacterCameraSingleton {
 	private thirdPersonFOV = 70;
 
 	constructor() {
-		Airship.CharacterCamera = this;
+		Airship.Camera = this;
 	}
 
+	/**
+	 * @internal
+	 */
 	public StartNewCameraSystem(cameraRig: CameraRig): CameraSystem {
 		CameraReferences.cameraHolder = cameraRig.transform;
 		CameraReferences.mainCamera = cameraRig.mainCamera;
 		CameraReferences.viewmodelCamera = cameraRig.viewmodelCamera;
 
 		this.cameraSystem = new CameraSystem();
-		this.SetCharacterCameraMode(this.characterCameraMode);
+		this.SetMode(this.characterCameraMode);
 		return this.cameraSystem;
 	}
 
+	/**
+	 * Shutdown the whole Airship.Character camera system.
+	 *
+	 * This will cause the CameraRig to stop being controlled in any way.
+	 */
 	public StopCameraSystem() {
 		CameraReferences.cameraHolder = undefined;
 		CameraReferences.mainCamera = undefined;
@@ -84,9 +92,12 @@ export class AirshipCharacterCameraSingleton {
 
 	protected OnStart(): void {
 		Dependency<LocalCharacterSingleton>().stateChanged.Connect((state) => {
-			const isSprinting = Dependency<LocalCharacterSingleton>().input?.IsSprinting();
+			// const isSprinting = Dependency<LocalCharacterSingleton>().input?.IsSprinting();
 			this.UpdateLocalCharacterState({
-				sprinting: isSprinting || state === CharacterState.Sliding,
+				sprinting:
+					state === CharacterState.Sprinting ||
+					state === CharacterState.Sliding ||
+					(state === CharacterState.Jumping && Airship.Input.IsDown("Sprint")),
 			});
 		});
 	}
@@ -139,7 +150,7 @@ export class AirshipCharacterCameraSingleton {
 	 *
 	 * @param mode New mode.
 	 */
-	public SetMode(mode: CameraMode) {
+	private SetModeInternal(mode: CameraMode) {
 		this.cameraSystem?.SetMode(mode);
 	}
 
@@ -171,7 +182,7 @@ export class AirshipCharacterCameraSingleton {
 	/**
 	 * @internal
 	 */
-	public UpdateLocalCharacterState(stateUpdate: Partial<CharacterStateSnapshot>) {
+	private UpdateLocalCharacterState(stateUpdate: Partial<CharacterStateSnapshot>) {
 		let didUpdate = false;
 		if (!this.characterState) {
 			this.characterState = { sprinting: false, firstPerson: false };
@@ -275,10 +286,10 @@ export class AirshipCharacterCameraSingleton {
 	 */
 	public SetupCamera(character: Character) {
 		if (this.characterCameraMode === CharacterCameraMode.Locked) {
-			this.SetMode(this.CreateHumanoidCameraMode(character));
+			this.SetModeInternal(this.CreateHumanoidCameraMode(character));
 			this.cameraSystem?.SetOnClearCallback(() => this.CreateHumanoidCameraMode(character));
 		} else if (this.characterCameraMode === CharacterCameraMode.Orbit) {
-			this.SetMode(this.CreateOrbitCameraMode(character));
+			this.SetModeInternal(this.CreateOrbitCameraMode(character));
 			this.cameraSystem?.SetOnClearCallback(() => this.CreateOrbitCameraMode(character));
 		}
 
@@ -341,7 +352,7 @@ export class AirshipCharacterCameraSingleton {
 						if (backToFirstPerson) {
 							this.SetFirstPerson(false);
 						}
-						this.SetMode(new FlyCameraMode());
+						this.SetModeInternal(new FlyCameraMode());
 						flyingBin.Add(() => {
 							this.ClearMode();
 							if (backToFirstPerson) {
@@ -358,16 +369,16 @@ export class AirshipCharacterCameraSingleton {
 		);
 	}
 
-	public SetCharacterCameraMode(mode: CharacterCameraMode): void {
+	public SetMode(mode: CharacterCameraMode): void {
 		if (!Game.IsClient()) return;
 		this.characterCameraMode = mode;
 
 		if (Game.localPlayer.character) {
 			const character = Game.localPlayer.character;
 			if (mode === CharacterCameraMode.Locked) {
-				this.SetMode(this.CreateHumanoidCameraMode(character));
+				this.SetModeInternal(this.CreateHumanoidCameraMode(character));
 			} else if (mode === CharacterCameraMode.Orbit) {
-				this.SetMode(this.CreateOrbitCameraMode(character));
+				this.SetModeInternal(this.CreateOrbitCameraMode(character));
 			}
 		}
 
@@ -393,7 +404,7 @@ export class AirshipCharacterCameraSingleton {
 	/**
 	 * Changes the preferred perspective for the local character.
 	 *
-	 * This will only work if using {@link CharacterCameraMode.Locked}. You can set this with {@link SetCharacterCameraMode()}
+	 * This will only work if using {@link CharacterCameraMode.Locked}. You can set this with {@link SetMode()}
 	 */
 	public SetFirstPerson(value: boolean) {
 		assert(

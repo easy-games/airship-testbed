@@ -1,46 +1,43 @@
 import { Game } from "@Easy/Core/Shared/Game";
 import { NetworkSignal } from "@Easy/Core/Shared/Network/NetworkSignal";
+import { Player } from "@Easy/Core/Shared/Player/Player";
 import { MapUtil } from "@Easy/Core/Shared/Util/MapUtil";
 import { AirshipNetworkBehaviour } from "./AirshipNetworkBehaviour";
 import { NetworkRpc } from "./NetworkRpc";
-import { Player } from "@Easy/Core/Shared/Player/Player";
-import inspect from "../Util/Inspect";
+import { NetworkChannel } from "./NetworkAPI";
 
 export type ServerRpcArgs<T extends ReadonlyArray<unknown>> = [objectId: number, ...args: T];
 
 type ServerNetworkFunction<T extends ReadonlyArray<unknown>> = (object: AirshipNetworkBehaviour, ...args: T) => void;
 
-type ServerRpcMethodSignature<
-	TArguments extends ReadonlyArray<unknown>,
-	TRequiresOwner extends boolean,
-> = TRequiresOwner extends true
-	? (this: AirshipNetworkBehaviour, ...args: TArguments) => void
-	: (this: AirshipNetworkBehaviour, player: Player | undefined, ...args: TArguments) => void;
-export interface ServerRpcOptions<_T extends ReadonlyArray<unknown>, TRequiresOwner extends boolean = false> {
-	RequiresOwnership?: TRequiresOwner;
-	RunLocally?: boolean;
-	NetworkConnectionAsLastArgument?: boolean;
+export interface CommandAttribute<_T extends ReadonlyArray<unknown>> {
+	/**
+	 * @default true
+	 */
+	requiresAuthority?: boolean;
+	/**
+	 * @default NetworkChannel.Reliable
+	 */
+	channel?: NetworkChannel;
 }
 
-export interface ConnectedFunction<T extends ReadonlyArray<unknown>> {
+export interface CommandRpcInfo<T extends ReadonlyArray<unknown>> {
 	readonly Callback: ServerNetworkFunction<T>;
 	readonly Id: string;
 	readonly RequiresOwner: boolean;
-	readonly PassCallerAsFirstArgument: boolean;
 	readonly Event: NetworkSignal<ServerRpcArgs<T>>;
 }
 
-export const ServerBehaviourListeners = new Map<AirshipNetworkBehaviour, ConnectedFunction<any>[]>();
+export const CommandRpcs = new Map<AirshipNetworkBehaviour, CommandRpcInfo<any>[]>();
 
-export function ServerRpc<TMethodArguments extends ReadonlyArray<unknown>, TRequiresOwnership extends boolean = false>(
-	options: ServerRpcOptions<TMethodArguments, TRequiresOwnership> = {},
+export function Command<TMethodArguments extends ReadonlyArray<unknown>>(
+	options: CommandAttribute<TMethodArguments> = {},
 ): (
 	target: AirshipNetworkBehaviour,
 	property: string,
-	descriptor: TypedPropertyDescriptor<ServerRpcMethodSignature<TMethodArguments, TRequiresOwnership>>,
+	descriptor: TypedPropertyDescriptor<(this: AirshipNetworkBehaviour, ...args: TMethodArguments) => void>,
 ) => void {
-	const requiresOwnership = options.RequiresOwnership ?? false;
-	const runLocally = options.RunLocally ?? false;
+	const requiresOwnership = options.requiresAuthority ?? true;
 
 	return (ctor, property, descriptor) => {
 		if (Game.IsHosting()) {
@@ -50,10 +47,10 @@ export function ServerRpc<TMethodArguments extends ReadonlyArray<unknown>, TRequ
 		const callback = (ctor as unknown as Record<string, unknown>)[
 			property
 		] as ServerNetworkFunction<TMethodArguments>;
-		const listeners = MapUtil.GetOrCreate(ServerBehaviourListeners, ctor, []);
+		const listeners = MapUtil.GetOrCreate(CommandRpcs, ctor, []);
 
-		const rpcId = `${ctor}::${property}(ServerRpc)`;
-		const event: NetworkSignal<any> = NetworkRpc.GetOrCreateObserversRpcRemote(rpcId);
+		const rpcId = `${ctor}::${property}(Command)`;
+		const event: NetworkSignal<any> = NetworkRpc.GetOrCreateClientRpcRemote(rpcId);
 
 		const existingListener = listeners.find((f) => f.Id === rpcId);
 		assert(!existingListener, "Existing listener at id: " + rpcId);
@@ -61,31 +58,25 @@ export function ServerRpc<TMethodArguments extends ReadonlyArray<unknown>, TRequ
 		listeners.push({
 			Callback: callback,
 			Id: rpcId,
-			PassCallerAsFirstArgument: !requiresOwnership,
 			RequiresOwner: requiresOwnership,
 			Event: event,
 		});
 
 		if (Game.IsClient()) {
-			descriptor.value = (object, ...params) => {
-				if (runLocally) {
-					if (requiresOwnership) {
-						callback(object, ...(params as never));
-					} else {
-						const args = select(2, ...params);
-						callback(object, Game.localPlayer, ...(args as never));
-					}
-				}
+			if (requiresOwnership) {
+				descriptor.value = (object, ...params) => {
+					if (!object.networkIdentity.isOwned) return undefined!;
+					event.client.FireServer(object.networkIdentity.netId, ...params);
 
-				if (requiresOwnership) {
-					event!.client.FireServer(object.networkObject.ObjectId, ...params);
-				} else {
-					const args = select(2, ...params);
-					event!.client.FireServer(object.networkObject.ObjectId, ...args);
-				}
+					return undefined!;
+				};
+			} else {
+				descriptor.value = (object, ...params) => {
+					event.client.FireServer(object.networkIdentity.netId, ...params);
+					return undefined!;
+				};
+			}
 
-				return undefined as ReturnType<ServerRpcMethodSignature<TMethodArguments, TRequiresOwnership>>;
-			};
 			return descriptor;
 		}
 

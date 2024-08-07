@@ -26,10 +26,10 @@ export default class TeleportToRoom extends AirshipBehaviour {
 			// });
 
 			character.Despawn();
-			task.wait(0);
+			task.wait();
 			const existingScene = SceneManager.GetActiveScene().name;
 			SceneManager.LoadSceneForPlayer(character.player, this.targetScene, true);
-			SceneManager.UnloadSceneForPlayer(character.player, existingScene, this.targetScene);
+			SceneManager.UnloadSceneForPlayer(character.player, existingScene);
 		}
 	}
 

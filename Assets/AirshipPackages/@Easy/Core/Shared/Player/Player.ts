@@ -4,16 +4,14 @@ import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { ClientChatSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/Chat/ClientChatSingleton";
-import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { Team } from "../Team/Team";
 import { Bin } from "../Util/Bin";
-import { CSArrayUtil } from "../Util/CSArrayUtil";
 import { Signal } from "../Util/Signal";
 
 /** @internal */
 export interface PlayerDto {
-	nobId: number;
+	netId: number;
 	connectionId: number;
 	userId: string;
 	username: string;
@@ -48,6 +46,8 @@ export class Player {
 	public selectedOutfit: OutfitDto | undefined;
 	public outfitLoaded = false;
 
+	private hasDevPermissions = false;
+
 	/**
 	 * Audio source for player's voice chat. Attached to a Game Object that can be reparented to
 	 * control voice chat position. By default this lives under the player's character and is
@@ -64,10 +64,10 @@ export class Player {
 	constructor(
 		/**
 		 * Player network object
-		 * 
+		 *
 		 * @internal
 		 */
-		public readonly networkObject: NetworkObject,
+		public readonly networkIdentity: NetworkIdentity,
 
 		/**
 		 * Unique network connection ID for the player in the given server. This ID
@@ -81,7 +81,7 @@ export class Player {
 
 		/**
 		 * The player's unique ID. This is unique and unchanging per player.
-		 * 
+		 *
 		 * String length is <= 128 characters (but will likely be far shorter --
 		 * typically 28 characters).
 		 */
@@ -94,7 +94,7 @@ export class Player {
 		public username: string,
 
 		/**
-		 * Image id used to fetch player's profile picture. 
+		 * Image id used to fetch player's profile picture.
 		 */
 		public profileImageId: string,
 
@@ -103,6 +103,15 @@ export class Player {
 		if (playerInfo !== undefined) {
 			this.SetVoiceChatAudioSource(playerInfo.voiceChatAudioSource);
 		}
+	}
+
+	/**
+	 * Returns true if this player is part of the group which owns the game.
+	 *
+	 * This is used to grant permissions to things like `/kick`
+	 */
+	public IsGameDeveloper(): boolean {
+		return this.hasDevPermissions;
 	}
 
 	/**
@@ -157,19 +166,14 @@ export class Player {
 			});
 		}
 
+		//Server initalizes character.
 		characterComponent.Init(this, Airship.Characters.MakeNewId(), this.selectedOutfit);
 		this.SetCharacter(characterComponent);
-		NetworkUtil.SpawnWithClientOwnership(go, this.connectionId);
+		NetworkServer.Spawn(go, this.networkIdentity.connectionToClient!);
 		Airship.Characters.RegisterCharacter(characterComponent);
 		Airship.Characters.onCharacterSpawned.Fire(characterComponent);
-		return characterComponent;
-	}
 
-	/**
-	 * @returns The network connection associated with this player.
-	 */
-	public GetNetworkConnection() {
-		return NetworkCore.GetNetworkConnection(this.connectionId);
+		return characterComponent;
 	}
 
 	public WaitForOutfitLoaded(timeout?: number): void {
@@ -199,7 +203,7 @@ export class Player {
 	/**
 	 * Sends player a message in chat. If called from client this won't work on
 	 * non-local players.
-	 * 
+	 *
 	 * @param message Message to send in chat.
 	 */
 	public SendMessage(message: string): void {
@@ -218,7 +222,7 @@ export class Player {
 
 	public Encode(): PlayerDto {
 		return {
-			nobId: this.networkObject.ObjectId,
+			netId: this.networkIdentity.netId,
 			connectionId: this.connectionId,
 			userId: this.userId,
 			username: this.username,
@@ -251,14 +255,6 @@ export class Player {
 		return Game.IsClient() && Game.localPlayer === this;
 	}
 
-	public IsInScene(sceneName: string): boolean {
-		const scenes = CSArrayUtil.Convert(this.GetNetworkConnection().Scenes);
-		if (scenes.find((s) => s.name === sceneName)) {
-			return true;
-		}
-		return false;
-	}
-
 	/**
 	 * IsConnected will return ``true`` until a player disconnects from the server.
 	 */
@@ -284,7 +280,6 @@ export class Player {
 			audioSource.volume = 1;
 		}
 	}
-	
 
 	/**
 	 * @internal
@@ -292,5 +287,16 @@ export class Player {
 	public UpdateUsername(username: string): void {
 		this.username = username;
 		this.onUsernameChanged.Fire(username);
+	}
+
+	public Kick(message: string): void {
+		if (Game.IsHosting()) {
+			error("Unable to kick host.");
+		}
+		if (Game.IsGameLuauContext()) {
+			contextbridge.invoke("player.kick", LuauContext.Protected, this.connectionId, message);
+		} else {
+			error("Player.Kick() must be called from game context.");
+		}
 	}
 }

@@ -11,7 +11,7 @@ export default class MobileNavButton extends AirshipBehaviour {
 	public selectedSprite!: Sprite;
 	public text!: TMP_Text;
 	public button!: Button;
-	public pageName!: string;
+	public page: MainMenuPageType;
 
 	private startingSprite!: Sprite;
 
@@ -27,23 +27,22 @@ export default class MobileNavButton extends AirshipBehaviour {
 
 	public OnEnable(): void {
 		if (!(Game.IsMobile() && Game.IsPortrait())) return;
-		task.delay(0, () => {
+		task.unscaledDelay(0, () => {
 			const mainMenuController = Dependency<MainMenuController>();
-			if (mainMenuController.currentPage?.pageType === this.pageName) {
+			if (mainMenuController.currentPage?.pageType === this.page) {
 				this.SetSelected(true);
 			} else {
 				this.SetSelected(false);
 			}
 			mainMenuController.onPageChange.Connect((event) => {
-				this.SetSelected(event.newPage === this.pageName);
+				this.SetSelected(event.newPage === this.page);
 			});
 		});
 
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnClickEvent(this.button.gameObject, () => {
-				print("clicked " + this.pageName);
 				this.SetSelected(true);
-				Dependency<MainMenuController>().RouteToPage(this.pageName as MainMenuPageType);
+				Dependency<MainMenuController>().RouteToPage(this.page);
 			}),
 		);
 	}

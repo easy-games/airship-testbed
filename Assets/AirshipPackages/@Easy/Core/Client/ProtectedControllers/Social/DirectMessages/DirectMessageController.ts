@@ -180,12 +180,6 @@ export class DirectMessageController {
 			.GetValue("Social", "PartyChatButton")
 			.GetAirshipComponent<PartyChatButton>()!;
 		this.partyChatButton.SetUnreadCount(0);
-		if ((this.partyController.party?.members.size() ?? 0) <= 1) {
-			this.partyChatButton.gameObject.SetActive(false);
-		}
-		this.partyController.onPartyUpdated.Connect((party) => {
-			this.partyChatButton.gameObject.SetActive((party?.members.size() ?? 0) > 1);
-		});
 
 		const closeButton = this.windowGoRefs.GetValue("UI", "CloseButton");
 		CoreUI.SetupButton(closeButton);
@@ -471,7 +465,8 @@ export class DirectMessageController {
 	}
 
 	public Close(): void {
-		if (this.windowGo) NativeTween.AnchoredPositionY(this.windowGo.transform, this.yPos, 0.1);
+		if (this.windowGo)
+			NativeTween.AnchoredPositionY(this.windowGo.transform, this.yPos, 0.1).SetUseUnscaledTime(true);
 		this.openedWindowTarget = undefined;
 	}
 }

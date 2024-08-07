@@ -3,10 +3,8 @@ import { Game } from "@Easy/Core/Shared/Game";
 import Inventory from "@Easy/Core/Shared/Inventory/Inventory";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
-import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
-import { AvatarUtil } from "../Avatar/AvatarUtil";
 import { CoreNetwork } from "../CoreNetwork";
 import { DamageInfo, DamageInfoCustomData } from "../Damage/DamageInfo";
 import CharacterAnimator from "./Animation/CharacterAnimator";
@@ -32,10 +30,13 @@ export default class Character extends AirshipBehaviour {
 	public animationHelper!: CharacterAnimationHelper;
 	public accessoryBuilder!: AccessoryBuilder;
 	public model!: GameObject;
-	public networkObject!: NetworkObject;
+	public networkIdentity!: NetworkIdentity;
 	public rigRoot!: GameObject;
 	public footstepAudioSource!: AudioSource;
 	@NonSerialized() public rig!: CharacterRig;
+
+	@Header("Variables")
+	public autoLoadAvatarOutfit = true;
 
 	// State
 	@NonSerialized() public id!: number;
@@ -150,11 +151,7 @@ export default class Character extends AirshipBehaviour {
 		this.despawned = false;
 		this.initialized = true;
 
-		if (outfitDto) {
-			AvatarUtil.LoadUserOutfit(outfitDto, this.accessoryBuilder, {
-				removeOldClothingAccessories: true,
-			});
-		}
+		this.LoadUserOutfit(outfitDto);
 
 		//Apply the queued custom data to movement
 		const customDataFlushedConn = this.movement.OnSetCustomData(() => {
@@ -165,6 +162,16 @@ export default class Character extends AirshipBehaviour {
 		});
 	}
 
+	public LoadUserOutfit(outfitDto: OutfitDto | undefined) {
+		this.outfitDto = outfitDto;
+		//print("using outfit: " + outfitDto?.name);
+		if (Game.IsClient() && outfitDto && this.autoLoadAvatarOutfit) {
+			Airship.Avatar.LoadUserOutfit(outfitDto, this.accessoryBuilder, {
+				removeOldClothingAccessories: true,
+			});
+		}
+	}
+
 	private queuedMoveData = new Map<string, unknown>();
 	/** Add custom data to the move data command stream. */
 	public AddCustomMoveData(key: string, value: unknown) {
@@ -172,26 +179,28 @@ export default class Character extends AirshipBehaviour {
 	}
 
 	private ProccessCustomMoveData() {
+		//Don't process if we have nothing queued
+		if (this.queuedMoveData.size() === 0) {
+			return;
+		}
+		//Convert queued data into binary blob
 		let customDataQueue: { key: string; value: unknown }[] = [];
 		this.queuedMoveData.forEach((value, key) => {
 			customDataQueue.push({ key: key, value: value });
 		});
 		this.queuedMoveData.clear();
+		//Pass to C#
 		this.movement?.SetCustomData(new BinaryBlob(customDataQueue));
 	}
 
 	private BeginMove(moveData: MoveInputData, isReplay: boolean) {
-		//print("BEGIN MOVE: " + moveData.GetTick());
-		//TODO: Do we actually want to ignore AI characters???
-		const player = this.player;
-		if (!player) return;
-
 		//Decode binary block into usable key value array
 		const allData = moveData.customData
 			? (moveData.customData.Decode() as { key: string; value: unknown }[])
 			: undefined;
 		const allCustomData: Map<string, unknown> = new Map();
 		if (allData) {
+			//print("ALLDATA: " + inspect(allData));
 			for (const data of allData) {
 				//print("Found custom data " + data.key + " with value: " + data.value);
 				allCustomData.set(data.key, data.value);
@@ -211,7 +220,7 @@ export default class Character extends AirshipBehaviour {
 	 */
 	public WaitForInit(): void {
 		while (!this.initialized) {
-			task.wait(0);
+			task.wait();
 		}
 	}
 
@@ -244,7 +253,7 @@ export default class Character extends AirshipBehaviour {
 		if (this.player?.character === this) {
 			this.player?.SetCharacter(undefined);
 		}
-		NetworkUtil.Despawn(this.gameObject);
+		NetworkServer.Destroy(this.gameObject);
 	}
 
 	public InflictDamage(damage: number, attacker?: GameObject, data?: DamageInfoCustomData): void {

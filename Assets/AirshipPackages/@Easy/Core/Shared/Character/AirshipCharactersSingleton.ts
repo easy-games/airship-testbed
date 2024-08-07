@@ -5,9 +5,9 @@ import { Singleton } from "@Easy/Core/Shared/Flamework";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
-import { AvatarUtil } from "../Avatar/AvatarUtil";
 import { CoreContext } from "../CoreClientContext";
 import { Game } from "../Game";
+import inspect from "../Util/Inspect";
 import { Viewmodel } from "../Viewmodel/Viewmodel";
 import Character from "./Character";
 import { CharacterDto } from "./CharacterDto";
@@ -102,9 +102,7 @@ export class AirshipCharactersSingleton {
 				if (!character) return;
 
 				if (outfitDto) {
-					AvatarUtil.LoadUserOutfit(outfitDto, character.accessoryBuilder, {
-						removeOldClothingAccessories: true,
-					});
+					character.LoadUserOutfit(outfitDto);
 				}
 			});
 		}
@@ -115,8 +113,8 @@ export class AirshipCharactersSingleton {
 				for (const character of this.characters) {
 					characters.push({
 						id: character.id,
-						objectId: character.networkObject.ObjectId,
-						ownerClientId: character.player?.connectionId,
+						netId: character.networkIdentity.netId,
+						ownerConnectionId: character.player?.connectionId,
 						outfitDto: character.outfitDto,
 					});
 				}
@@ -165,7 +163,7 @@ export class AirshipCharactersSingleton {
 				if (character.player) {
 					if (character.player.voiceChatAudioSource.transform.IsChildOf(character.transform)) {
 						character.player.voiceChatAudioSource.transform.SetParent(
-							character.player.networkObject.transform,
+							character.player.networkIdentity.transform,
 						);
 					}
 				}
@@ -219,11 +217,8 @@ export class AirshipCharactersSingleton {
 					i++;
 				}
 
+				//We aren't combineing held items
 				// this.entity.accessoryBuilder.TryCombineMeshes();
-				character.accessoryBuilder.UpdateAccessoryLayers();
-				if (viewmodelAccessoryBuilder) {
-					viewmodelAccessoryBuilder.UpdateAccessoryLayers();
-				}
 			});
 		});
 	}
@@ -295,7 +290,7 @@ export class AirshipCharactersSingleton {
 		}
 		characterComponent.Init(undefined, Airship.Characters.MakeNewId(), undefined);
 		go.transform.position = position;
-		NetworkUtil.Spawn(go);
+		NetworkServer.Spawn(go);
 		this.RegisterCharacter(characterComponent);
 		this.onCharacterSpawned.Fire(characterComponent);
 		return characterComponent;
@@ -305,8 +300,10 @@ export class AirshipCharactersSingleton {
 		// This can happen when client receives spawn character packet before client retrieves list of all existing characters.
 		if (this.FindById(dto.id)) return;
 
+		print("InitCharacter " + inspect(dto));
+
 		task.spawn(() => {
-			const characterNetworkObj = NetworkUtil.WaitForNetworkObject(dto.objectId);
+			const characterNetworkObj = NetworkUtil.WaitForNetworkIdentity(dto.netId);
 			const character = characterNetworkObj.gameObject.GetAirshipComponent<Character>();
 			assert(
 				character,
@@ -314,10 +311,17 @@ export class AirshipCharactersSingleton {
 					characterNetworkObj.gameObject.name,
 			);
 			let player: Player | undefined;
-			if (dto.ownerClientId !== undefined) {
-				player = Airship.Players.FindByConnectionId(dto.ownerClientId);
-				assert(player, "Failed to find player when spawning character. clientId=" + dto.ownerClientId);
+			if (dto.ownerConnectionId !== undefined) {
+				player = Airship.Players.FindByConnectionId(dto.ownerConnectionId);
+				assert(
+					player,
+					"Failed to find player when spawning character. ownerConnectionId=" + dto.ownerConnectionId,
+				);
 				characterNetworkObj.gameObject.name = "Character_" + player.username;
+			}
+			if (Game.IsEditor() && !Game.IsHosting()) {
+				//Hack to load your own outfit in dedicated mode
+				Airship.Avatar.LoadEquippedUserOutfit(character.accessoryBuilder);
 			}
 			character.Init(player, dto.id, dto.outfitDto);
 			Airship.Characters.RegisterCharacter(character);
@@ -375,8 +379,8 @@ export class AirshipCharactersSingleton {
 		if (Game.IsServer()) {
 			CoreNetwork.ServerToClient.Character.Spawn.server.FireAllClients({
 				id: character.id,
-				objectId: character.networkObject.ObjectId,
-				ownerClientId: character.player?.connectionId,
+				netId: character.networkIdentity.netId,
+				ownerConnectionId: character.player?.connectionId,
 				outfitDto: character.outfitDto,
 			});
 		}

@@ -35,7 +35,7 @@ export default class SocialNotificationComponent extends AirshipBehaviour {
 		// animation
 		let inner = this.transform.GetChild(0) as RectTransform;
 		inner.anchoredPosition = new Vector2(-20, 0);
-		NativeTween.AnchoredPositionX(inner, 0, 0.15).SetEaseBounceOut();
+		NativeTween.AnchoredPositionX(inner, 0, 0.15).SetEaseBounceOut().SetUseUnscaledTime(true);
 	}
 
 	public OnDisable(): void {

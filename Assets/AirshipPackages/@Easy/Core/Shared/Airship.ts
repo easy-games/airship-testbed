@@ -7,6 +7,7 @@ import { AirshipLeaderboardService } from "../Server/Services/Airship/Leaderboar
 import { AirshipPartyService } from "../Server/Services/Airship/Party/AirshipPartyService";
 import { AirshipPlatformInventoryService } from "../Server/Services/Airship/PlatformInventory/AirshipPlatformInventoryService";
 import { AirshipTransferService } from "../Server/Services/Airship/Transfer/AirshipTransferService";
+import { AirshipAvatarSingleton } from "./Avatar/AirshipAvatarSingleton";
 import { AirshipCharacterCameraSingleton } from "./Camera/AirshipCharacterCameraSingleton";
 import { AirshipCharactersSingleton } from "./Character/AirshipCharactersSingleton";
 import CharacterConfigSetup from "./Character/CharacterConfigSetup";
@@ -15,8 +16,8 @@ import { DamageSingleton } from "./Damage/DamageSingleton";
 import { AirshipInputSingleton } from "./Input/AirshipInputSingleton";
 import { AirshipInventorySingleton } from "./Inventory/AirshipInventorySingleton";
 import { LoadingScreenSingleton } from "./LoadingScreen/LoadingScreenSingleton";
+import { AirshipPlayersSingleton } from "./Player/AirshipPlayersSingleton";
 import { Player } from "./Player/Player";
-import { PlayersSingleton } from "./Player/PlayersSingleton";
 import { AirshipPurchaseSingleton } from "./Purchase/PurchaseSingleton";
 import { TagsSingleton } from "./Tags/TagsSingleton";
 import { TeamsSingleton } from "./Team/TeamSingleton";
@@ -113,13 +114,20 @@ export namespace Airship {
 	 *
 	 * If you are looking to get information about offline users see {@link AirshipUserController}
 	 */
-	export let Players = undefined! as PlayersSingleton;
+	export let Players = undefined! as AirshipPlayersSingleton;
 	/**
 	 * Characters singleton provides utilities for working with the {@link Character} object.
 	 *
 	 * To control your game's default character see {@link CharacterConfigSetup}.
 	 */
 	export let Characters = undefined! as AirshipCharactersSingleton;
+
+	/**
+	 * Provides utilities for working with visual elements of a character
+	 *
+	 * Can be used to load outfits from the server.
+	 */
+	export let Avatar = undefined! as AirshipAvatarSingleton;
 	/**
 	 * Input singleton contains functions to work with player input (including mouse, keyboard, and touch screen).
 	 * Players can rebind their action bindings in their settings menu.
@@ -137,13 +145,21 @@ export namespace Airship {
 	export let Teams = undefined! as TeamsSingleton;
 	export let Inventory = undefined! as AirshipInventorySingleton;
 	/**
-	 * [Client only]
+	 * **[Client only]**
 	 *
 	 * Manage the player's loading screen when joining your game. This can be useful if your game requires
 	 * some work on the client before the game is ready to be played, such as spawning a map.
 	 */
 	export let LoadingScreen = undefined! as LoadingScreenSingleton;
-	export let CharacterCamera = undefined! as AirshipCharacterCameraSingleton;
+
+	/**
+	 * **[Client only]**
+	 *
+	 * API to control various features in the character camera sytem.
+	 *
+	 * `Airship.Camera` is only functional when a CameraRig.prefab is placed in your scene.
+	 */
+	export let Camera = undefined! as AirshipCharacterCameraSingleton;
 	/**
 	 * Namespace for managing and query Airship tags on game objects
 	 * @see https://docs.airship.gg/tags

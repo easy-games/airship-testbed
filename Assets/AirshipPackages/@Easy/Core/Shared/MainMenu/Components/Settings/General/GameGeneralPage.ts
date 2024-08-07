@@ -23,9 +23,13 @@ export default class GameGeneralPage extends MainMenuPageComponent {
 			Dependency<MainMenuSingleton>().ObserveScreenSize((st, size) => {
 				if (st === "sm") {
 					this.general.offsetMax = new Vector2(-10, 0);
-					// this.playerList.offsetMax = new Vector2(250, 0);
-					// this.general.offsetMax = new Vector2(270, 0);
-					// this.gameHeader.offsetMax = new Vector2(270, 0);
+
+					this.playerList.anchorMin = new Vector2(0, 0);
+					this.playerList.anchorMax = new Vector2(0.5, 1);
+					this.playerList.offsetMin = new Vector2(0, 20);
+
+					this.gameHeader.gameObject.SetActive(false);
+					this.gameDesc.gameObject.SetActive(false);
 				}
 			}),
 		);

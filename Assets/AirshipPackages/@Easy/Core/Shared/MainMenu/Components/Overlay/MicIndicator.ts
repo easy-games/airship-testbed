@@ -11,14 +11,21 @@ export default class MicIndicator extends AirshipBehaviour {
 	private bin = new Bin();
 	private stateBin = new Bin();
 
-	override OnEnable(): void {
+	override OnEnable(): void {}
+
+	protected Start(): void {
 		const voiceChat = Bridge.GetAirshipVoiceChatNetwork();
-		voiceChat.agent.MuteSelf = true;
-		Airship.Input.OnDown("PushToTalk").Connect((event) => {
-			voiceChat.agent.MuteSelf = false;
-		});
-		Airship.Input.OnUp("PushToTalk").Connect((event) => {
+		task.spawn(() => {
+			while (!voiceChat.gameObject.activeInHierarchy) {
+				task.unscaledWait();
+			}
 			voiceChat.agent.MuteSelf = true;
+			Airship.Input.OnDown("PushToTalk").Connect((event) => {
+				voiceChat.agent.MuteSelf = false;
+			});
+			Airship.Input.OnUp("PushToTalk").Connect((event) => {
+				voiceChat.agent.MuteSelf = true;
+			});
 		});
 		this.canvasGroup.alpha = 0;
 	}
@@ -37,11 +44,11 @@ export default class MicIndicator extends AirshipBehaviour {
 
 		if (state === "talking") {
 			this.canvasGroup.alpha = 1;
-			const t1 = NativeTween.LocalScale(this.transform,
-				new Vector3(1.14, 1.14, 1), 0.38)
+			const t1 = NativeTween.LocalScale(this.transform, new Vector3(1.14, 1.14, 1), 0.38)
 				.SetPingPong()
 				.SetEase(EaseType.QuadOut)
-				.SetLoopCount(100);
+				.SetLoopCount(100)
+				.SetUseUnscaledTime(true);
 			this.stateBin.Add(() => {
 				t1.Cancel();
 				this.transform.localScale = Vector3.one;

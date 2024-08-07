@@ -155,7 +155,9 @@ export default class SettingsKeybind extends AirshipBehaviour {
 	 *
 	 */
 	private HighlightValueImage(): void {
-		NativeTween.GraphicColor(this.valueImageBG, new Color(1, 1, 1, 0.5), 0.25).SetPingPong();
+		NativeTween.GraphicColor(this.valueImageBG, new Color(1, 1, 1, 0.5), 0.25)
+			.SetPingPong()
+			.SetUseUnscaledTime(true);
 	}
 
 	private StartKeyListener(): void {
