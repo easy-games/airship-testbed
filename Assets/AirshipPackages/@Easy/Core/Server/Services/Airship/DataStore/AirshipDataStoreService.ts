@@ -91,7 +91,10 @@ export class AirshipDataStoreService {
 	 * @param callback The function that will be called to retrieve the new data value.
 	 * @returns The data that was associated with the provided key.
 	 */
-	public async GetAndSet<T extends object>(key: string, callback: (record?: T) => T): Promise<Result<T, string>> {
+	public async GetAndSet<T extends object>(
+		key: string,
+		callback: (record?: T) => Promise<T> | T,
+	): Promise<Result<T, string>> {
 		this.checkKey(key);
 
 		const currentData = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiDataGetKey<T>>(
@@ -102,7 +105,7 @@ export class AirshipDataStoreService {
 		if (!currentData.success) return currentData;
 
 		try {
-			const newData = callback(currentData.data?.value);
+			const newData = await callback(currentData.data?.value);
 			const setResult = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiDataSetKey<T>>(
 				DataStoreServiceBridgeTopics.SetKey,
 				LuauContext.Protected,
@@ -160,7 +163,7 @@ export class AirshipDataStoreService {
 	 */
 	public async GetAndDelete<T extends object>(
 		key: string,
-		callback: (record: T) => boolean,
+		callback: (record: T) => Promise<boolean> | boolean,
 	): Promise<Result<T | undefined, string>> {
 		this.checkKey(key);
 
@@ -178,7 +181,7 @@ export class AirshipDataStoreService {
 		}
 
 		try {
-			const shouldDelete = callback(currentData.data.value);
+			const shouldDelete = await callback(currentData.data.value);
 			if (!shouldDelete) {
 				return {
 					success: true,
