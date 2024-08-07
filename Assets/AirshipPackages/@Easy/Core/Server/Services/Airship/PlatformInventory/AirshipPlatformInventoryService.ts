@@ -7,7 +7,7 @@ import {
 } from "@Easy/Core/Server/ProtectedServices/Airship/PlatformInventory/PlatformInventoryService";
 import { Platform } from "@Easy/Core/Shared/Airship";
 import { ItemQueryParameters } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipPlatformInventory";
-import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
+import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/ContextBridgeUtil";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 

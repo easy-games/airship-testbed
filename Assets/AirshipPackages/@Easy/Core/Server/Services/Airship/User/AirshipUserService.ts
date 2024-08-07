@@ -4,7 +4,7 @@ import {
 	ServerBridgeApiGetUsersById,
 	UserServiceBridgeTopics,
 } from "@Easy/Core/Server/ProtectedServices/Airship/User/UserService";
-import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
+import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/ContextBridgeUtil";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 

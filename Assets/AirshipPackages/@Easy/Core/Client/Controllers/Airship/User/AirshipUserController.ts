@@ -9,7 +9,7 @@ import {
 } from "@Easy/Core/Client/ProtectedControllers/Airship/User/UserController";
 import { Platform } from "@Easy/Core/Shared/Airship";
 import { PublicUser } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipUser";
-import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
+import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/ContextBridgeUtil";
 import { Controller, Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 
