@@ -397,6 +397,10 @@
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/MainMenuNavButton.ts",
 			"name": "MainMenuNavButton"
 		},
+		"AirshipPackages/@Easy/Core/Shared/Character/Accessory/DynamicColor@DynamicColor": {
+			"assetPath": "AirshipPackages/@Easy/Core/Shared/Character/Accessory/DynamicColor.ts",
+			"name": "DynamicColor"
+		},
 		"AirshipPackages/@Easy/Core/Client/ProtectedControllers/Develop/AirshipCreateLink@AirshipCreateLink": {
 			"assetPath": "AirshipPackages/@Easy/Core/Client/ProtectedControllers/Develop/AirshipCreateLink.ts",
 			"name": "AirshipCreateLink"

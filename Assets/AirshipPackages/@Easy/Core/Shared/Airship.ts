@@ -19,7 +19,6 @@ import { LoadingScreenSingleton } from "./LoadingScreen/LoadingScreenSingleton";
 import { AirshipPlayersSingleton } from "./Player/AirshipPlayersSingleton";
 import { Player } from "./Player/Player";
 import { AirshipPurchaseSingleton } from "./Purchase/PurchaseSingleton";
-import { TagsSingleton } from "./Tags/TagsSingleton";
 import { TeamsSingleton } from "./Team/TeamSingleton";
 
 /**
@@ -160,11 +159,6 @@ export namespace Airship {
 	 * `Airship.Camera` is only functional when a CameraRig.prefab is placed in your scene.
 	 */
 	export let Camera = undefined! as AirshipCharacterCameraSingleton;
-	/**
-	 * Namespace for managing and query Airship tags on game objects
-	 * @see https://docs.airship.gg/tags
-	 */
-	export let Tags = undefined! as TagsSingleton;
 
 	/**
 	 * Functions for configuring the chat window as well as broadcasting messages.

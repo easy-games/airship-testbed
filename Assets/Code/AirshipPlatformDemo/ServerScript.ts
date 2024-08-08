@@ -42,22 +42,22 @@ export default class TestScript extends AirshipBehaviour {
 
 		this.bin.Add(
 			Airship.Players.onPlayerJoined.Connect(async (player) => {
-				const res = await Platform.Server.Leaderboard.GetRank("TopDemoSessionKills", player.userId);
-				if (!res.success) return;
+				const rankData = await Platform.Server.Leaderboard.GetRank("TopDemoSessionKills", player.userId);
+				if (!rankData) return;
 				const dataRes = await Platform.Server.DataStore.GetKey<{ kills: number }>(player.userId);
-				if (!dataRes.success) return;
+				if (!dataRes) return;
 				const topRes = await Platform.Server.Leaderboard.GetRankRange("TopDemoSessionKills", 0, 3);
-				if (!topRes.success) return;
+				if (!topRes) return;
 
-				this.totalKillMap.set(player, dataRes.data?.kills ?? 0);
+				this.totalKillMap.set(player, dataRes?.kills ?? 0);
 
 				Network.ServerToClient.KillData.server.FireClient(
 					player,
-					res.data?.rank !== undefined ? `${res.data.rank}` : "No Rank",
-					dataRes.data?.kills ?? 0,
+					rankData?.rank !== undefined ? `${rankData.rank}` : "No Rank",
+					dataRes?.kills ?? 0,
 				);
 
-				Network.ServerToClient.TopScores.server.FireAllClients(topRes.data);
+				Network.ServerToClient.TopScores.server.FireAllClients(topRes);
 			}),
 		);
 

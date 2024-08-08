@@ -10,6 +10,7 @@ import {
 	AirshipServerConfig,
 	AirshipServerTransferConfig,
 } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipTransfers";
+import { CreateServerResponse } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipTransfers";
 import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/ContextBridgeUtil";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
@@ -56,12 +57,14 @@ export class AirshipTransferService {
 	 * provided during deployment.
 	 * @returns The id of the new server. Undefined if the server was not able to be created.
 	 */
-	public async CreateServer(config?: AirshipServerConfig): Promise<ReturnType<ServerBridgeApiCreateServer>> {
-		return await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiCreateServer>(
+	public async CreateServer(config?: AirshipServerConfig): Promise<CreateServerResponse> {
+		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiCreateServer>(
 			TransferServiceBridgeTopics.CreateServer,
 			LuauContext.Protected,
 			config,
 		);
+		if (!result.success) throw result.error;
+		return result.data;
 	}
 
 	/**
@@ -74,7 +77,7 @@ export class AirshipTransferService {
 		player: Player | string,
 		gameId: string,
 		config?: AirshipGameTransferConfig,
-	): Promise<ReturnType<ServerBridgeApiTransferGroupToGame>> {
+	): Promise<void> {
 		return await this.TransferGroupToGame([player], gameId, config);
 	}
 
@@ -88,20 +91,22 @@ export class AirshipTransferService {
 		players: readonly (Player | string)[],
 		gameId: string,
 		config?: AirshipGameTransferConfig,
-	): Promise<ReturnType<ServerBridgeApiTransferGroupToGame>> {
+	): Promise<void> {
 		let userIds: string[];
 		if (typeIs(players, "table")) {
 			userIds = (players as Player[]).map((p) => p.userId);
 		} else {
 			userIds = players;
 		}
-		return await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiTransferGroupToGame>(
+		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiTransferGroupToGame>(
 			TransferServiceBridgeTopics.TransferGroupToGame,
 			LuauContext.Protected,
 			userIds,
 			gameId,
 			config,
 		);
+		if (!result.success) throw result.error;
+		return result.data;
 	}
 
 	/**
@@ -114,7 +119,7 @@ export class AirshipTransferService {
 		player: Player | string,
 		serverId: string,
 		config?: AirshipServerTransferConfig,
-	): Promise<ReturnType<ServerBridgeApiTransferGroupToServer>> {
+	): Promise<void> {
 		let userId: string;
 		if (typeIs(player, "table")) {
 			userId = player.username;
@@ -134,13 +139,15 @@ export class AirshipTransferService {
 		userIds: string[],
 		serverId: string,
 		config?: AirshipServerTransferConfig,
-	): Promise<ReturnType<ServerBridgeApiTransferGroupToServer>> {
-		return await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiTransferGroupToServer>(
+	): Promise<void> {
+		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiTransferGroupToServer>(
 			TransferServiceBridgeTopics.TransferGroupToServer,
 			LuauContext.Protected,
 			userIds,
 			serverId,
 			config,
 		);
+		if (!result.success) throw result.error;
+		return result.data;
 	}
 }
