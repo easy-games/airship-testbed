@@ -26544,25 +26544,7 @@ interface TextElement {
 
 }
     
-interface Character extends TextElement {
-
-
-
-
-
-}
     
-interface CharacterConstructor {
-
-
-    new(): Character;
-    new(unicode: number, glyph: Glyph): Character;
-    new(unicode: number, fontAsset: FontAsset, glyph: Glyph): Character;
-
-
-
-}
-declare const Character: CharacterConstructor;
     
 interface FontFeatureTable {
 
@@ -31239,6 +31221,7 @@ interface AccessoryComponent extends MonoBehaviour {
     accessorySlot: AccessorySlot;
     visibilityMode: VisibilityMode;
     skinnedToCharacter: boolean;
+    canMeshCombine: boolean;
     bodyMask: number;
     localPosition: Vector3;
     localRotation: Quaternion;
