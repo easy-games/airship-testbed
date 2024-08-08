@@ -468,8 +468,8 @@ export class AirshipInputSingleton {
 	 * @param name An action name.
 	 */
 	public SetUp(name: string): void {
-		if (!this.actionDownState.has(name)) return;
 		const lowerName = name.lower();
+		if (!this.actionDownState.has(lowerName)) return;
 		this.actionDownState.delete(lowerName);
 		const signals = this.actionUpSignals.get(lowerName);
 		if (!signals) return;
