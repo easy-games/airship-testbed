@@ -4213,29 +4213,6 @@ interface Animator {
 	SetInteger(id: number, value: number): void;
 }
 
-interface Collision {
-	relativeVelocity: Vector3;
-	rigidbody: Rigidbody | undefined;
-	articulationBody: ArticulationBody;
-	body: Component;
-	collider: Collider;
-	transform: Transform;
-	gameObject: GameObject;
-	contactCount: number;
-	contacts: CSArray<ContactPoint>;
-	impulse: Vector3;
-	impactForceSum: Vector3;
-	frictionForceSum: Vector3;
-	other: Component;
-
-	constructor(): Collision;
-
-	GetContact(index: number): ContactPoint;
-	GetContacts(contacts: CSArray<ContactPoint>): number;
-	GetContacts(contacts: CSArray<ContactPoint>): number;
-	GetEnumerator(): unknown;
-}
-
 interface Matrix4x4 {
 	m00: number;
 	m10: number;
