@@ -35,7 +35,7 @@ export default class MobileControlsCanvas extends AirshipBehaviour {
 			this.crouchImg = this.crouchGO.GetComponent<Image>();
 
 			this.sprintGO = Airship.Input.CreateMobileButton("SprintToggle", new Vector2(-140, 520), {
-				icon: CoreIcon.Bolt,
+				icon: CoreIcon.SprintPose,
 			});
 			this.sprintImg = this.sprintGO.GetComponent<Image>();
 		}
@@ -71,6 +71,8 @@ export default class MobileControlsCanvas extends AirshipBehaviour {
 	}
 
 	public UpdateButtonVisuals(): void {
+		if (!Game.IsMobile()) return;
+
 		const character = Game.localPlayer.character;
 		if (!character) return;
 

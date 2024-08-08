@@ -19,9 +19,7 @@ export default class PlayerEntry extends AirshipBehaviour {
 
 	public Init(player: ProtectedPlayer): void {
 		task.spawn(async () => {
-			const texture = await Airship.Players.GetProfilePictureAsync(
-				player.userId,
-			);
+			const texture = await Airship.Players.GetProfilePictureAsync(player.userId);
 			if (texture) {
 				this.profileImage.texture = texture;
 			}
@@ -62,7 +60,7 @@ export default class PlayerEntry extends AirshipBehaviour {
 	}
 
 	public SetEven(): void {
-		this.bgImage.color = new Color(0, 0, 0, 0.3);
+		// this.bgImage.color = new Color(0, 0, 0, 0.3);
 	}
 
 	public OnDisable(): void {

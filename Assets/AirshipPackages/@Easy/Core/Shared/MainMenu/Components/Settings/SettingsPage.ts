@@ -5,6 +5,8 @@ import { Game } from "@Easy/Core/Shared/Game";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI, PointerDirection } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { MainMenuSingleton } from "../../Singletons/MainMenuSingleton";
+import { SettingsTab } from "./SettingsPageName";
+import SettingsSidebar from "./SettingsSidebar";
 
 export default class SettingsPage extends AirshipBehaviour {
 	public sidebar!: RectTransform;
@@ -108,6 +110,19 @@ export default class SettingsPage extends AirshipBehaviour {
 		this.SetupSlider(this.volumeGO, clientSettingsController.GetGlobalVolume(), (val) => {
 			clientSettingsController.SetGlobalVolume(val);
 		});
+	}
+
+	public SetTab(settingsTab: SettingsTab): void {
+		if (Game.IsMobile()) return;
+
+		const sidebar = this.sidebar.gameObject.GetAirshipComponent<SettingsSidebar>()!;
+		for (let tabBtn of sidebar.tabBtns) {
+			let name = tabBtn.gameObject.name;
+			if (name === settingsTab) {
+				sidebar.SetSelectedTab(tabBtn);
+				continue;
+			}
+		}
 	}
 
 	private SetupSlider(go: GameObject, startingValue: number, onChange: (val: number) => void): void {

@@ -21,4 +21,5 @@ export enum CoreIcon {
 	HandBackPointUpSolid = "hand-back-point-up-solid",
 	CrouchPose = "crouch-pose",
 	JumpPose = "jump-pose",
+	SprintPose = "sprint-pose",
 }

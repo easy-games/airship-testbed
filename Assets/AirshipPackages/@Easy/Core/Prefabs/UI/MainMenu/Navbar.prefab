@@ -470,6 +470,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: SettingsDisconnectButton
+    singleton: 0
     decorators: []
     properties:
     - name: text
@@ -479,8 +480,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -496,8 +495,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -513,8 +510,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -549,6 +544,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: AirshipButton
+    singleton: 0
     decorators: []
     properties:
     - name: loadingIndicator
@@ -558,8 +554,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -575,8 +569,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -596,10 +588,8 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
-      refPath: 
+      refPath: AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipButtonClickEffect@AirshipButtonClickEffect
       fileRef: 
       decorators:
       - name: Header
@@ -617,8 +607,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -638,8 +626,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -650,6 +636,21 @@ MonoBehaviour:
           serializedValue: '"Sets child text to underline on mouse hover."'
       nullable: 0
       serializedValue: 0
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: button
+      type: object
+      objectType: Button
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
       serializedObject: {fileID: 0}
       modified: 0
     displayIcon: {fileID: 0}
@@ -822,6 +823,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: AirshipButton
+    singleton: 0
     decorators: []
     properties:
     - name: disabledColorHex
@@ -831,8 +833,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -852,8 +852,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -869,10 +867,8 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
-      refPath: 
+      refPath: AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipButtonClickEffect@AirshipButtonClickEffect
       fileRef: 
       decorators:
       - name: Header
@@ -890,8 +886,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -900,6 +894,21 @@ MonoBehaviour:
         parameters:
         - type: string
           serializedValue: '"Sets child text to underline on mouse hover."'
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: button
+      type: object
+      objectType: Button
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
       nullable: 0
       serializedValue: 
       serializedObject: {fileID: 0}
@@ -944,6 +953,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: NavbarSettingsButton
+    singleton: 0
     decorators: []
     properties:
     - name: bgImage
@@ -953,8 +963,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -1240,7 +1248,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da4a9c662d9443bdb1d6cc66c6179573, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isDragging: 0
   redirectTarget: {fileID: 7989854690407011383}
 --- !u!1 &2013596142469564572
 GameObject:
@@ -1724,6 +1731,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: Navbar
+    singleton: 0
     decorators: []
     properties:
     - name: leftContent
@@ -1733,8 +1741,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -1754,8 +1760,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -1771,8 +1775,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -1788,8 +1790,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -1805,8 +1805,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -1822,8 +1820,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -1839,8 +1835,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -1856,8 +1850,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -1873,8 +1865,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -1890,8 +1880,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -1907,8 +1895,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -1917,6 +1903,21 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 4682252407630246274}
       modified: 1
+    - name: searchWrapper
+      type: object
+      objectType: RectTransform
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
     displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0
@@ -2066,6 +2067,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: AirshipButton
+    singleton: 0
     decorators: []
     properties:
     - name: disabledColorHex
@@ -2075,8 +2077,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -2096,8 +2096,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -2113,10 +2111,8 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
-      refPath: 
+      refPath: AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipButtonClickEffect@AirshipButtonClickEffect
       fileRef: 
       decorators:
       - name: Header
@@ -2134,8 +2130,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -2144,6 +2138,21 @@ MonoBehaviour:
         parameters:
         - type: string
           serializedValue: '"Sets child text to underline on mouse hover."'
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: button
+      type: object
+      objectType: Button
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
       nullable: 0
       serializedValue: 
       serializedObject: {fileID: 0}
@@ -3421,7 +3430,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da4a9c662d9443bdb1d6cc66c6179573, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isDragging: 0
   redirectTarget: {fileID: 7989854690407011383}
 --- !u!1 &6845232589604446719
 GameObject:
@@ -3615,6 +3623,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: AirshipButton
+    singleton: 0
     decorators: []
     properties:
     - name: disabledColorHex
@@ -3624,8 +3633,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -3645,8 +3652,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -3662,10 +3667,8 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
-      refPath: 
+      refPath: AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipButtonClickEffect@AirshipButtonClickEffect
       fileRef: 
       decorators:
       - name: Header
@@ -3683,8 +3686,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -3704,8 +3705,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -3714,6 +3713,21 @@ MonoBehaviour:
         parameters:
         - type: string
           serializedValue: '"Sets child text to underline on mouse hover."'
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: button
+      type: object
+      objectType: Button
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
       nullable: 0
       serializedValue: 
       serializedObject: {fileID: 0}
@@ -3744,6 +3758,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: ProfileOptionsButton
+    singleton: 0
     decorators: []
     properties: []
     displayIcon: {fileID: 0}
@@ -3876,6 +3891,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: AirshipButton
+    singleton: 0
     decorators: []
     properties:
     - name: disabledColorHex
@@ -3885,8 +3901,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -3906,8 +3920,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -3923,10 +3935,8 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
-      refPath: 
+      refPath: AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipButtonClickEffect@AirshipButtonClickEffect
       fileRef: 
       decorators:
       - name: Header
@@ -3944,8 +3954,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -3965,8 +3973,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -3975,6 +3981,21 @@ MonoBehaviour:
         parameters:
         - type: string
           serializedValue: '"Sets child text to underline on mouse hover."'
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: button
+      type: object
+      objectType: Button
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
       nullable: 0
       serializedValue: 
       serializedObject: {fileID: 0}
@@ -3994,7 +4015,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da4a9c662d9443bdb1d6cc66c6179573, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isDragging: 0
   redirectTarget: {fileID: 7989854690407011383}
 --- !u!1 &7273082658926437955
 GameObject:
@@ -4397,6 +4417,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: MyCreditsButton
+    singleton: 0
     decorators: []
     properties: []
     displayIcon: {fileID: 0}
@@ -4469,6 +4490,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: AirshipButton
+    singleton: 0
     decorators: []
     properties:
     - name: clickEffect
@@ -4478,10 +4500,8 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
-      refPath: 
+      refPath: AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipButtonClickEffect@AirshipButtonClickEffect
       fileRef: 
       decorators:
       - name: Header
@@ -4499,8 +4519,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -4520,8 +4538,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -4537,8 +4553,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -4547,6 +4561,21 @@ MonoBehaviour:
         parameters:
         - type: string
           serializedValue: '"Sets child text to underline on mouse hover."'
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: button
+      type: object
+      objectType: Button
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
       nullable: 0
       serializedValue: 
       serializedObject: {fileID: 0}
@@ -4928,6 +4957,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: Searchbar
+    singleton: 0
     decorators: []
     properties:
     - name: urlText
@@ -4937,8 +4967,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -4958,8 +4986,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -4975,8 +5001,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -4992,8 +5016,6 @@ MonoBehaviour:
         type: 
         objectType: 
         serializedItems: []
-        fileRef: 
-        refPath: 
         objectRefs: []
       refPath: 
       fileRef: 
@@ -5016,6 +5038,10 @@ PrefabInstance:
     - target: {fileID: 796442997445727840, guid: 4514957bfbd4d4f759b9d6725dad80ff, type: 3}
       propertyPath: m_Material
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1280279425529899753, guid: 4514957bfbd4d4f759b9d6725dad80ff, type: 3}
+      propertyPath: m_text
+      value: Game
       objectReference: {fileID: 0}
     - target: {fileID: 2502674997862047475, guid: 4514957bfbd4d4f759b9d6725dad80ff, type: 3}
       propertyPath: m_Pivot.x
@@ -5043,7 +5069,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2502674997862047475, guid: 4514957bfbd4d4f759b9d6725dad80ff, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 130.5211
+      value: 104.491104
       objectReference: {fileID: 0}
     - target: {fileID: 2502674997862047475, guid: 4514957bfbd4d4f759b9d6725dad80ff, type: 3}
       propertyPath: m_SizeDelta.y
@@ -5079,7 +5105,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2502674997862047475, guid: 4514957bfbd4d4f759b9d6725dad80ff, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 1027.4604
+      value: 754.1877
       objectReference: {fileID: 0}
     - target: {fileID: 2502674997862047475, guid: 4514957bfbd4d4f759b9d6725dad80ff, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -5097,6 +5123,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2795742209447633606, guid: 4514957bfbd4d4f759b9d6725dad80ff, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2795742209447633606, guid: 4514957bfbd4d4f759b9d6725dad80ff, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2795742209447633606, guid: 4514957bfbd4d4f759b9d6725dad80ff, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 2795742209447633606, guid: 4514957bfbd4d4f759b9d6725dad80ff, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 34.4911
+      objectReference: {fileID: 0}
+    - target: {fileID: 2795742209447633606, guid: 4514957bfbd4d4f759b9d6725dad80ff, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -17
+      objectReference: {fileID: 0}
     - target: {fileID: 4410497421000403933, guid: 4514957bfbd4d4f759b9d6725dad80ff, type: 3}
       propertyPath: redirectTarget
       value: 
@@ -5113,6 +5159,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: RunningGameBtn
       objectReference: {fileID: 0}
+    - target: {fileID: 6613187467811068450, guid: 4514957bfbd4d4f759b9d6725dad80ff, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7635400125467391033, guid: 4514957bfbd4d4f759b9d6725dad80ff, type: 3}
+      propertyPath: m_metadata.properties.Array.data[0].serializedValue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8398150900973757619, guid: 4514957bfbd4d4f759b9d6725dad80ff, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8398150900973757619, guid: 4514957bfbd4d4f759b9d6725dad80ff, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8398150900973757619, guid: 4514957bfbd4d4f759b9d6725dad80ff, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 8398150900973757619, guid: 4514957bfbd4d4f759b9d6725dad80ff, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -17
+      objectReference: {fileID: 0}
     - target: {fileID: 9212432925443380967, guid: 4514957bfbd4d4f759b9d6725dad80ff, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -5120,13 +5190,35 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6613187467811068450, guid: 4514957bfbd4d4f759b9d6725dad80ff, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 892844684999847890}
   m_SourcePrefab: {fileID: 100100000, guid: 4514957bfbd4d4f759b9d6725dad80ff, type: 3}
 --- !u!224 &1011633751868494420 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2502674997862047475, guid: 4514957bfbd4d4f759b9d6725dad80ff, type: 3}
   m_PrefabInstance: {fileID: 3220427978399501479}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &8608490885304997509 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6613187467811068450, guid: 4514957bfbd4d4f759b9d6725dad80ff, type: 3}
+  m_PrefabInstance: {fileID: 3220427978399501479}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &892844684999847890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608490885304997509}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 2
+  m_VerticalFit: 0
 --- !u!1001 &4447136580067700034
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5598,6 +5690,10 @@ PrefabInstance:
     - target: {fileID: 3685865388546015712, guid: f60dcb59f1eee46f98baa4965e6b6407, type: 3}
       propertyPath: m_metadata.properties.Array.data[6].objectType
       value: Image
+      objectReference: {fileID: 0}
+    - target: {fileID: 3685865388546015712, guid: f60dcb59f1eee46f98baa4965e6b6407, type: 3}
+      propertyPath: m_metadata.properties.Array.data[0].serializedValue
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3685865388546015712, guid: f60dcb59f1eee46f98baa4965e6b6407, type: 3}
       propertyPath: m_metadata.properties.Array.data[2].serializedValue

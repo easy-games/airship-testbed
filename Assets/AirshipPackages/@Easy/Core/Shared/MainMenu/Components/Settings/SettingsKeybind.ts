@@ -264,7 +264,7 @@ export default class SettingsKeybind extends AirshipBehaviour {
 			this.valueImageBG.color = Theme.primary;
 			this.overlay.SetActive(true);
 		} else {
-			EventSystem.current.SetSelectedGameObject(undefined);
+			// EventSystem.current.SetSelectedGameObject(undefined);
 			this.downModifierKey = Key.None;
 			this.downPrimaryKeyCode = Key.None;
 			this.overlay.SetActive(false);

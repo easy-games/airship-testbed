@@ -3,7 +3,7 @@ import SettingsTabButton from "./SettingsTabButton";
 export default class SettingsSidebar extends AirshipBehaviour {
 	public tabs!: RectTransform;
 
-	private tabBtns: SettingsTabButton[] = [];
+	public tabBtns: SettingsTabButton[] = [];
 
 	public OnEnable(): void {
 		let childCount = this.gameObject.transform.childCount;

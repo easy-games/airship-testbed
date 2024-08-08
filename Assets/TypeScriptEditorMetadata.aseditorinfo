@@ -117,10 +117,6 @@
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Modal/ConfirmModal.ts",
 			"name": "ConfirmModal"
 		},
-		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/General/GameGeneralPage@GameGeneralPage": {
-			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/General/GameGeneralPage.ts",
-			"name": "GameGeneralPage"
-		},
 		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/MainMenuContent@MainMenuContent": {
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/MainMenuContent.ts",
 			"name": "MainMenuContent"
@@ -212,6 +208,10 @@
 		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/MainMenuPageComponent@MainMenuPageComponent": {
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/MainMenuPageComponent.ts",
 			"name": "MainMenuPageComponent"
+		},
+		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/General/GameGeneralPage@GameGeneralPage": {
+			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/General/GameGeneralPage.ts",
+			"name": "GameGeneralPage"
 		},
 		"AirshipPackages/@Easy/Core/Client/ProtectedControllers/Develop/DevelopMenuPage@DevelopMenuPage": {
 			"assetPath": "AirshipPackages/@Easy/Core/Client/ProtectedControllers/Develop/DevelopMenuPage.ts",

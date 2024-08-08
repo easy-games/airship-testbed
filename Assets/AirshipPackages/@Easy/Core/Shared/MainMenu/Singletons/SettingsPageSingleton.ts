@@ -4,6 +4,8 @@ import { Singleton } from "../../Flamework";
 import { Keyboard } from "../../UserInput";
 import { AppManager } from "../../Util/AppManager";
 import { Bin } from "../../Util/Bin";
+import SettingsPage from "../Components/Settings/SettingsPage";
+import { SettingsTab } from "../Components/Settings/SettingsPageName";
 
 @Singleton({})
 export class SettingsPageSingleton {
@@ -13,7 +15,7 @@ export class SettingsPageSingleton {
 
 	protected OnStart(): void {}
 
-	public Open(): void {
+	public Open(tab?: SettingsTab): void {
 		if (this.isOpen) return;
 		this.isOpen = true;
 
@@ -25,6 +27,11 @@ export class SettingsPageSingleton {
 		const wrapper = settingsPage.transform.GetChild(0);
 		wrapper.localScale = Vector3.one.mul(1.1);
 		NativeTween.LocalScale(wrapper, Vector3.one, 0.07).SetEaseQuadIn().SetUseUnscaledTime(true);
+
+		if (tab) {
+			const settingsPageComp = settingsPage.GetAirshipComponent<SettingsPage>()!;
+			settingsPageComp.SetTab(tab);
+		}
 
 		AppManager.OpenCustom(
 			() => {
