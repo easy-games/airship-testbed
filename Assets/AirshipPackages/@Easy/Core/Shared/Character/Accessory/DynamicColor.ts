@@ -66,11 +66,10 @@ export default class DynamicColor extends AirshipBehaviour {
 		this.lastChangeTime = Time.time;
 		this.currentColor = newColor;
 		this.colorSetters.forEach((colorSetter) => {
-			let colorSetting = colorSetter.colorSettings;
-			for (let i = 0; i < colorSetting.Length; i++) {
-				colorSetting.GetValue(i).baseColor = newColor;
+			if (!colorSetter) {
+				return;
 			}
-			colorSetter.colorSettings = colorSetting;
+			colorSetter.SetColorOnAll(newColor);
 		});
 	}
 }

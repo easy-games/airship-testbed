@@ -289,6 +289,8 @@ export class AirshipCharactersSingleton {
 			error("Trying to spawn a character prefab without a character component on it!");
 		}
 		characterComponent.Init(undefined, Airship.Characters.MakeNewId(), undefined);
+		const rb = go.GetComponent<Rigidbody>();
+		if (rb) rb.position = position;
 		go.transform.position = position;
 		NetworkServer.Spawn(go);
 		this.RegisterCharacter(characterComponent);

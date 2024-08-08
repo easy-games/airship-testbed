@@ -120,7 +120,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 		}
 		for (let i = 0; i < lights.Length; i++) {
 			let light = lights.GetValue(i);
-			if (light && light.gameObject.scene.name !== "CoreScene") {
+			if (light && light.gameObject.scene.name !== "CoreScene" && light.gameObject.scene.name !== "MainMenu") {
 				light.cullingMask &= ~(1 << Layer.AVATAR_EDITOR);
 			}
 		}

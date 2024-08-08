@@ -276,7 +276,7 @@ export class AirshipInputSingleton {
 	 * @param anchoredPosition The anchored position of this button.
 	 * @param config A `MobileButtonConfig` that describes the look and feel of this button.
 	 */
-	public CreateMobileButton(actionName: string, anchoredPosition: Vector2, config?: MobileButtonConfig): void {
+	public CreateMobileButton(actionName: string, anchoredPosition: Vector2, config?: MobileButtonConfig): GameObject {
 		const mobileButton = Object.Instantiate(this.mobileButtonPrefab);
 		mobileButton.name = "Mobile Button (" + actionName + ")";
 		mobileButton.transform.SetParent(this.mobileControlsContainer.transform);
@@ -290,9 +290,11 @@ export class AirshipInputSingleton {
 		rect.anchoredPosition = anchoredPosition;
 
 		if (config?.icon) {
+			// Assets/AirshipPackages/@Easy/Core/Prefabs/Images/crouch-pose.png
 			const iconTexture = AssetCache.LoadAssetIfExists<Texture2D>(
-				`AirshipPackages/@Easy/Core/Images/CoreIcons/${config.icon}.png`,
+				`Assets/AirshipPackages/@Easy/Core/Prefabs/Images/CoreIcons/${config.icon}.png`,
 			);
+			print("icon: " + iconTexture);
 			if (iconTexture) {
 				const img = mobileButton.transform.GetChild(0).GetComponent<Image>()!;
 				img.sprite = Bridge.MakeSprite(iconTexture);
@@ -341,6 +343,8 @@ export class AirshipInputSingleton {
 		const mobileButtonsForAction = this.actionToMobileButtonTable.get(lowerName) ?? [];
 		mobileButtonsForAction.push(mobileButton);
 		this.actionToMobileButtonTable.set(lowerName, mobileButtonsForAction);
+
+		return mobileButton;
 	}
 
 	/**
@@ -422,6 +426,23 @@ export class AirshipInputSingleton {
 	}
 
 	/**
+	 * Sets the provided action to the down state and fires **all** active `OnDown` signals. If the
+	 * action is already in the down state, active `OnDown` signals are **not** fired.
+	 *
+	 * @param name An action name.
+	 */
+	public SetDown(name: string): void {
+		if (this.actionDownState.has(name)) return;
+		const lowerName = name.lower();
+		this.actionDownState.add(lowerName);
+		const signals = this.actionDownSignals.get(lowerName);
+		if (!signals) return;
+		for (const signal of signals) {
+			signal.Fire(new InputActionEvent(lowerName, false));
+		}
+	}
+
+	/**
 	 * Creates and returns a new `Signal` that is fired when the provided action enters the
 	 * up state. If an action is in the down state and it is unset or rebound, the up event
 	 * **will** fire.
@@ -438,6 +459,23 @@ export class AirshipInputSingleton {
 			existingSignals.push(upSignal);
 		}
 		return upSignal;
+	}
+
+	/**
+	 * Sets the provided action to the up state and fires **all** active `OnUp` signals. If the
+	 * action is not in the down state, active `OnUp` signals are **not** fired.
+	 *
+	 * @param name An action name.
+	 */
+	public SetUp(name: string): void {
+		const lowerName = name.lower();
+		if (!this.actionDownState.has(lowerName)) return;
+		this.actionDownState.delete(lowerName);
+		const signals = this.actionUpSignals.get(lowerName);
+		if (!signals) return;
+		for (const signal of signals) {
+			signal.Fire(new InputActionEvent(lowerName, false));
+		}
 	}
 
 	/**

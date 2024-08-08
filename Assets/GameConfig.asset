@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GameConfig
   m_EditorClassIdentifier: 
   gameId: 319a92cb-c8b5-4559-8cff-0d1be7d230f3
-  startingSceneName: Menu
+  startingSceneName: RigidBodies
   gameScenes:
   - {fileID: 102900000, guid: 3c9ae368a8ce5be42a0926c8ff129454, type: 3}
   - {fileID: 102900000, guid: 497a63aec7ca045bab13a5e25c5d7bba, type: 3}
@@ -24,8 +24,8 @@ MonoBehaviour:
   - {fileID: 102900000, guid: faa9a8b52642d40e6b1fa10fc412bc07, type: 3}
   packages:
   - id: '@Easy/Core'
-    assetVersion: 2
-    codeVersion: 5
+    assetVersion: 3
+    codeVersion: 6
     game: 0
     localSource: 1
     disabled: 0

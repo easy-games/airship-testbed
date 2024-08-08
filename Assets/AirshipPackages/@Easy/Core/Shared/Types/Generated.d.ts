@@ -36050,6 +36050,7 @@ interface MaterialColorURP extends MonoBehaviour {
     EditorFirstTimeSetup(): void;
     GetColorSettingByMaterial(mat: Material): ColorSetting;
     InitializeColorsFromCurrentMaterials(): void;
+    SetColorOnAll(newColor: Color): void;
 
 
 }
@@ -36221,8 +36222,6 @@ interface IPromise {
 }
     
 interface MainMenuSceneManagerConstructor {
-    cdnUrl: string;
-    deploymentUrl: string;
 
 
     new(): MainMenuSceneManager;
@@ -42741,6 +42740,8 @@ interface CharacterMovementData extends MonoBehaviour {
     numberOfJumps: number;
     jumpSpeed: number;
     jumpCoyoteTime: number;
+    flySpeedMultiplier: number;
+    verticalFlySpeed: number;
     jumpUpBlockCooldown: number;
     useGravity: boolean;
     useGravityWhileGrounded: boolean;
@@ -42753,6 +42754,7 @@ interface CharacterMovementData extends MonoBehaviour {
     minSlopeDelta: number;
     maxSlopeDelta: number;
     maxStepUpHeight: number;
+    stepUpRampDistance: number;
     drag: number;
     airDragMultiplier: number;
     detectSlopes: boolean;

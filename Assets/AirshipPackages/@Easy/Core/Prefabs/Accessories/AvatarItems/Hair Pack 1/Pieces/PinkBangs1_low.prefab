@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 4329531249397933411}
   - component: {fileID: 8413973194247257824}
   - component: {fileID: 1183561657903451741}
-  - component: {fileID: 5334788449354050891}
   m_Layer: 0
   m_Name: PinkBangs1_low
   m_TagString: Untagged
@@ -102,20 +101,3 @@ MonoBehaviour:
   colorSettings:
   - baseColor: {r: 1, g: 1, b: 1, a: 1}
   addedByEditorScript: 0
---- !u!114 &5334788449354050891
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2046901841469428609}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b74917b00f1d374c9a7136917a61ddf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serverClassId: 
-  accessorySlot: 2
-  visibilityMode: 2
-  skinnedToCharacter: 0
-  bodyMask: 0

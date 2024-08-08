@@ -14,7 +14,7 @@ export class ColorUtil {
 		);
 	}
 
-	public static HexToColor(hex: string): Color {
+	public static HexToColor(hex: string, alpha = 1): Color {
 		if (StringUtils.startsWith(hex, "0x")) {
 			hex = hex.sub(2, hex.size());
 		}
@@ -23,10 +23,10 @@ export class ColorUtil {
 		}
 		const [r, g, b] = string.match(hex, "^#?(%w%w)(%w%w)(%w%w)$");
 		if (r !== undefined && g !== undefined && b !== undefined) {
-			return new Color(tonumber(r, 16)! / 255, tonumber(g, 16)! / 255, tonumber(b, 16)! / 255, 1);
+			return new Color(tonumber(r, 16)! / 255, tonumber(g, 16)! / 255, tonumber(b, 16)! / 255, alpha);
 		}
 		warn("Invalid color hex: " + hex);
-		return new Color(1, 1, 1, 1);
+		return new Color(1, 1, 1, alpha);
 	}
 
 	public static ColoredText(color: Color, text: string): string {
