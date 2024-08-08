@@ -623,7 +623,11 @@ export class AirshipInventorySingleton {
 	public GetItemDef(itemType: string): ItemDef {
 		const val = itemDefinitions[itemType] as ItemDef;
 		if (val === undefined) {
-			error("FATAL: ItemType had no ItemMeta: " + itemType);
+			error(
+				'ItemType "' +
+					itemType +
+					'" was missing an ItemDefinition. Please register the ItemType with Airship.Inventory.RegisterItem()',
+			);
 		}
 		return val;
 	}
