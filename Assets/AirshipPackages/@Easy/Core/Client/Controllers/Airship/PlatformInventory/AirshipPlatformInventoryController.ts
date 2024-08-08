@@ -4,6 +4,7 @@ import {
 } from "@Easy/Core/Client/ProtectedControllers/Airship/PlatformInventory/PlatformInventoryController";
 import { Platform } from "@Easy/Core/Shared/Airship";
 import { ItemQueryParameters } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipPlatformInventory";
+import { ItemInstanceDto } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipPlatformInventory";
 import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/ContextBridgeUtil";
 import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
@@ -27,11 +28,13 @@ export class AirshipPlatformInventoryController {
 	 * @param query Additional filter parameters for retrieving a subset of items.
 	 * @returns
 	 */
-	public async GetItems(query?: ItemQueryParameters) {
-		return await ContextBridgeUtil.PromisifyBridgeInvoke<ClientBridgeApiGetItems>(
+	public async GetItems(query?: ItemQueryParameters): Promise<ItemInstanceDto[]> {
+		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ClientBridgeApiGetItems>(
 			PlatformInventoryControllerBridgeTopics.GetItems,
 			LuauContext.Protected,
 			query,
 		);
+		if (!result.success) throw result.error;
+		return result.data;
 	}
 }

@@ -20,11 +20,10 @@ export default class ClientScript extends AirshipBehaviour {
 
 		this.bin.Add(
 			Network.ServerToClient.TopScores.client.OnServerEvent(async (event) => {
-				const { data } = await Platform.Client.User.GetUsersById(
+				const data = await Platform.Client.User.GetUsersById(
 					event.map((u) => u.id),
 					false,
 				);
-				if (!data) return;
 				this.scoreboard.leaderList.text = event.reduce((text, value, index) => {
 					text += `${value.rank}: ${data.map[value.id].username} (${value.value})\n`;
 					return text;
