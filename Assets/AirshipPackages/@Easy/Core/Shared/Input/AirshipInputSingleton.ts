@@ -276,7 +276,7 @@ export class AirshipInputSingleton {
 	 * @param anchoredPosition The anchored position of this button.
 	 * @param config A `MobileButtonConfig` that describes the look and feel of this button.
 	 */
-	public CreateMobileButton(actionName: string, anchoredPosition: Vector2, config?: MobileButtonConfig): void {
+	public CreateMobileButton(actionName: string, anchoredPosition: Vector2, config?: MobileButtonConfig): GameObject {
 		const mobileButton = Object.Instantiate(this.mobileButtonPrefab);
 		mobileButton.name = "Mobile Button (" + actionName + ")";
 		mobileButton.transform.SetParent(this.mobileControlsContainer.transform);
@@ -290,9 +290,11 @@ export class AirshipInputSingleton {
 		rect.anchoredPosition = anchoredPosition;
 
 		if (config?.icon) {
+			// Assets/AirshipPackages/@Easy/Core/Prefabs/Images/crouch-pose.png
 			const iconTexture = AssetCache.LoadAssetIfExists<Texture2D>(
-				`AirshipPackages/@Easy/Core/Images/CoreIcons/${config.icon}.png`,
+				`Assets/AirshipPackages/@Easy/Core/Prefabs/Images/CoreIcons/${config.icon}.png`,
 			);
+			print("icon: " + iconTexture);
 			if (iconTexture) {
 				const img = mobileButton.transform.GetChild(0).GetComponent<Image>()!;
 				img.sprite = Bridge.MakeSprite(iconTexture);
@@ -341,6 +343,8 @@ export class AirshipInputSingleton {
 		const mobileButtonsForAction = this.actionToMobileButtonTable.get(lowerName) ?? [];
 		mobileButtonsForAction.push(mobileButton);
 		this.actionToMobileButtonTable.set(lowerName, mobileButtonsForAction);
+
+		return mobileButton;
 	}
 
 	/**
