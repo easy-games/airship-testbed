@@ -1037,7 +1037,7 @@ interface PhysicsConstructor {
 	interCollisionSettingsToggle: boolean;
 	clothGravity: Vector3;
 
-	// BakeMesh(meshID: number, convex: boolean): void;
+	BakeMesh(meshID: number, convex: boolean): void;
 	BoxCastAll(
 		center: Vector3,
 		halfExtents: Vector3,
