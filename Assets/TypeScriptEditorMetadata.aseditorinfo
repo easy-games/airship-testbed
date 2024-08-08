@@ -113,9 +113,21 @@
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsKeybindPage.ts",
 			"name": "SettingsKeybindPage"
 		},
+		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/General/GameGeneralPage@GameGeneralPage": {
+			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/General/GameGeneralPage.ts",
+			"name": "GameGeneralPage"
+		},
+		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Navbar/NavbarSettingsButton@NavbarSettingsButton": {
+			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Navbar/NavbarSettingsButton.ts",
+			"name": "NavbarSettingsButton"
+		},
 		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Modal/ConfirmModal@ConfirmModal": {
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Modal/ConfirmModal.ts",
 			"name": "ConfirmModal"
+		},
+		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsPage@SettingsPage": {
+			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsPage.ts",
+			"name": "SettingsPage"
 		},
 		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/MainMenuContent@MainMenuContent": {
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/MainMenuContent.ts",
@@ -141,14 +153,6 @@
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/DeleteAccountButton.ts",
 			"name": "DeleteAccountButton"
 		},
-		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsPage@SettingsPage": {
-			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsPage.ts",
-			"name": "SettingsPage"
-		},
-		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/General/PlayerList@PlayerList": {
-			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/General/PlayerList.ts",
-			"name": "PlayerList"
-		},
 		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsProfilePage@SettingsProfilePage": {
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsProfilePage.ts",
 			"name": "SettingsProfilePage"
@@ -156,10 +160,6 @@
 		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Modal/ModalCloseButton@ModalCloseButton": {
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Modal/ModalCloseButton.ts",
 			"name": "ModalCloseButton"
-		},
-		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Navbar/NavbarSettingsButton@NavbarSettingsButton": {
-			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Navbar/NavbarSettingsButton.ts",
-			"name": "NavbarSettingsButton"
 		},
 		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsCloseButton@SettingsCloseButton": {
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsCloseButton.ts",
@@ -197,6 +197,10 @@
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/SocialMenu.ts",
 			"name": "SocialMenu"
 		},
+		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/General/PlayerList@PlayerList": {
+			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/General/PlayerList.ts",
+			"name": "PlayerList"
+		},
 		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsLogoutButton@SettingsLogoutButton": {
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsLogoutButton.ts",
 			"name": "SettingsLogoutButton"
@@ -208,10 +212,6 @@
 		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/MainMenuPageComponent@MainMenuPageComponent": {
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/MainMenuPageComponent.ts",
 			"name": "MainMenuPageComponent"
-		},
-		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/General/GameGeneralPage@GameGeneralPage": {
-			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/General/GameGeneralPage.ts",
-			"name": "GameGeneralPage"
 		},
 		"AirshipPackages/@Easy/Core/Client/ProtectedControllers/Develop/DevelopMenuPage@DevelopMenuPage": {
 			"assetPath": "AirshipPackages/@Easy/Core/Client/ProtectedControllers/Develop/DevelopMenuPage.ts",
@@ -341,6 +341,14 @@
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/SocialNotificationComponent.ts",
 			"name": "SocialNotificationComponent"
 		},
+		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsTabButton@SettingsTabButton": {
+			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsTabButton.ts",
+			"name": "SettingsTabButton"
+		},
+		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsSidebar@SettingsSidebar": {
+			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsSidebar.ts",
+			"name": "SettingsSidebar"
+		},
 		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipButton@AirshipButton": {
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipButton.ts",
 			"name": "AirshipButton"
@@ -364,14 +372,6 @@
 		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsDisconnectButton@SettingsDisconnectButton": {
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsDisconnectButton.ts",
 			"name": "SettingsDisconnectButton"
-		},
-		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsTabButton@SettingsTabButton": {
-			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsTabButton.ts",
-			"name": "SettingsTabButton"
-		},
-		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsSidebar@SettingsSidebar": {
-			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsSidebar.ts",
-			"name": "SettingsSidebar"
 		},
 		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/General/GameFavoriteButton@GameFavoriteButton": {
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/General/GameFavoriteButton.ts",

@@ -294,7 +294,6 @@ export class AirshipInputSingleton {
 			const iconTexture = AssetCache.LoadAssetIfExists<Texture2D>(
 				`Assets/AirshipPackages/@Easy/Core/Prefabs/Images/CoreIcons/${config.icon}.png`,
 			);
-			print("icon: " + iconTexture);
 			if (iconTexture) {
 				const img = mobileButton.transform.GetChild(0).GetComponent<Image>()!;
 				img.sprite = Bridge.MakeSprite(iconTexture);

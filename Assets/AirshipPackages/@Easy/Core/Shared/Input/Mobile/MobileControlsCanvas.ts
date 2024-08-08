@@ -42,13 +42,20 @@ export default class MobileControlsCanvas extends AirshipBehaviour {
 		this.bin.Add(
 			Airship.Input.OnDown("CrouchToggle").Connect((event) => {
 				this.crouchToggle = !this.crouchToggle;
-				this.UpdateButtonVisuals();
+				if (this.crouchToggle && this.sprintToggle) {
+					this.sprintToggle = false;
+				}
+
+				this.UpdateButtonState();
 			}),
 		);
 		this.bin.Add(
 			Airship.Input.OnDown("SprintToggle").Connect((event) => {
 				this.sprintToggle = !this.sprintToggle;
-				this.UpdateButtonVisuals();
+				if (this.sprintToggle && this.crouchToggle) {
+					this.crouchToggle = false;
+				}
+				this.UpdateButtonState();
 			}),
 		);
 		this.bin.Add(
@@ -58,10 +65,10 @@ export default class MobileControlsCanvas extends AirshipBehaviour {
 					return;
 				}
 				this.ShowCharacterControls();
-				this.UpdateButtonVisuals();
+				this.UpdateButtonState();
 
 				character.onStateChanged.Connect(() => {
-					this.UpdateButtonVisuals();
+					this.UpdateButtonState();
 				});
 			}),
 		);
@@ -70,11 +77,20 @@ export default class MobileControlsCanvas extends AirshipBehaviour {
 		});
 	}
 
-	public UpdateButtonVisuals(): void {
+	public UpdateButtonState(): void {
 		if (!Game.IsMobile()) return;
 
-		const character = Game.localPlayer.character;
-		if (!character) return;
+		if (this.sprintToggle) {
+			Airship.Input.SetDown("Sprint");
+		} else {
+			Airship.Input.SetUp("Sprint");
+		}
+
+		if (this.crouchToggle) {
+			Airship.Input.SetDown("Crouch");
+		} else {
+			Airship.Input.SetUp("Crouch");
+		}
 
 		// Crouch
 		if (this.crouchToggle) {
