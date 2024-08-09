@@ -1,7 +1,7 @@
 interface ResultBase<T extends boolean> {
 	success: T;
-	error?: undefined;
 	data?: undefined;
+	error?: undefined;
 }
 
 export interface SuccessResult<T> extends ResultBase<true> {

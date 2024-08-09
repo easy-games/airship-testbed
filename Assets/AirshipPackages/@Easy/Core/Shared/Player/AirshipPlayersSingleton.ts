@@ -650,12 +650,12 @@ export class AirshipPlayersSingleton {
 			return cachedByUserId;
 		}
 
-		const user = await Dependency<AirshipUserController>().GetUserById(userId, useLocalCache);
-		if (!user.success || user.data?.profileImageId === undefined) {
+		const [success, user] = Dependency<AirshipUserController>().GetUserById(userId, useLocalCache).await();
+		if (!success || user?.profileImageId === undefined) {
 			return this.GetDefaultProfilePictureFromUserId(userId);
 		}
 
-		const imageId = user.data.profileImageId;
+		const imageId = user.profileImageId;
 		const texture = await this.GetProfilePictureFromImageId(imageId, useLocalCache);
 		if (texture) {
 			this.cachedProfilePictureTextures.set(userId, texture);

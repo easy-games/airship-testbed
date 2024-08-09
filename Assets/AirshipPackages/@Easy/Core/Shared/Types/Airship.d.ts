@@ -93,6 +93,7 @@ interface CharacterMovement extends Component {
 	OnImpactWithGround(callback: (velocity: Vector3) => void): EngineEventConnection;
 	OnAdjustMove(callback: (modifier: MoveModifier) => void): EngineEventConnection;
 	OnMoveDirectionChanged(callback: (direction: Vector3) => void): EngineEventConnection;
+	OnJumped(callback: (velocity: Vector3) => void): EngineEventConnection;
 
 	GetLookVector(): Vector3;
 	IsSprinting(): boolean;
@@ -564,15 +565,6 @@ interface OnCompleteHook {
 	OnCompleteEvent(callback: (operationResult: OperationResult) => void): void;
 }
 
-interface DynamicVariablesManager {
-	GetVars(collectionId: string): DynamicVariables | undefined;
-	RegisterCollection(collection: DynamicVariables): void;
-}
-interface DynamicVariablesManagerConstructor {
-	Instance: DynamicVariablesManager;
-}
-declare const DynamicVariablesManager: DynamicVariablesManagerConstructor;
-
 interface MeshProcessorConstructor {
 	ProduceSingleBlock(
 		blockIndex: number,
@@ -873,28 +865,6 @@ interface SteamLuauAPIConstructor {
 }
 declare const SteamLuauAPI: SteamLuauAPIConstructor;
 
-interface TagManager {
-	AddTag(gameObject: GameObject, tag: string): void;
-	RemoveTag(gameObject: GameObject, tag: string): void;
-	HasTag(gameObject: GameObject, tag: string): boolean;
-	GetTagged(tag: string): CSArray<GameObject>;
-	GetAllTags(): CSArray<string>;
-	GetAllTagsForGameObject(gameObject: GameObject): CSArray<string>;
-
-	OnTagAdded(callback: (tag: string, gameObject: GameObject) => void): EngineEventConnection;
-	OnTagRemoved(callback: (tag: string, gameObject: GameObject) => void): EngineEventConnection;
-}
-interface TagManagerConstructor {
-	readonly Instance: TagManager;
-}
-declare const TagManager: TagManagerConstructor;
-
-interface AirshipTags extends MonoBehaviour {
-	AddTag(tag: string): void;
-	HasTag(tag: string): boolean;
-	RemoveTag(tag: string): void;
-}
-
 interface AirshipLongPress extends MonoBehaviour {
 	OnLongPress(callback: (pressPosition: Vector2) => void): EngineEventConnection;
 }
@@ -1098,3 +1068,13 @@ interface Volume extends MonoBehaviour {
 }
 
 interface NetworkBehaviour extends MonoBehaviour {}
+
+interface LagCompensator extends NetworkBehaviour {
+	RaycastCheck(
+		viewer: NetworkConnectionToClient,
+		originPoint: Vector3,
+		hitPoint: Vector3,
+		tolerancePercent = 0,
+		layerMask = -1,
+	): RaycastHit | undefined;
+}

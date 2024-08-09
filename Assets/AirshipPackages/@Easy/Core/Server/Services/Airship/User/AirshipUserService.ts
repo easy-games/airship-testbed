@@ -4,7 +4,8 @@ import {
 	ServerBridgeApiGetUsersById,
 	UserServiceBridgeTopics,
 } from "@Easy/Core/Server/ProtectedServices/Airship/User/UserService";
-import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
+import { PublicUser } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipUser";
+import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/ContextBridgeUtil";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 
@@ -24,12 +25,14 @@ export class AirshipUserService {
 	 * @param username The username of the user.
 	 * @returns A user object
 	 */
-	public async GetUserByUsername(username: string): Promise<ReturnType<ServerBridgeApiGetUserByUsername>> {
-		return await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiGetUserByUsername>(
+	public async GetUserByUsername(username: string): Promise<PublicUser | undefined> {
+		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiGetUserByUsername>(
 			UserServiceBridgeTopics.GetUserByUsername,
 			LuauContext.Protected,
 			username,
 		);
+		if (!result.success) throw result.error;
+		return result.data;
 	}
 
 	/**
@@ -37,12 +40,14 @@ export class AirshipUserService {
 	 * @param userId The users ID
 	 * @returns A user object
 	 */
-	public async GetUserById(userId: string): Promise<ReturnType<ServerBridgeApiGetUserById>> {
-		return await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiGetUserById>(
+	public async GetUserById(userId: string): Promise<PublicUser | undefined> {
+		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiGetUserById>(
 			UserServiceBridgeTopics.GetUserById,
 			LuauContext.Protected,
 			userId,
 		);
+		if (!result.success) throw result.error;
+		return result.data;
 	}
 
 	/**
@@ -53,15 +58,14 @@ export class AirshipUserService {
 	 * succeed even if not all userIds resolve to a user.
 	 * @returns An array of user objects.
 	 */
-	public async GetUsersById(
-		userIds: string[],
-		strict: boolean = false,
-	): Promise<ReturnType<ServerBridgeApiGetUsersById>> {
-		return await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiGetUsersById>(
+	public async GetUsersById(userIds: string[], strict: boolean = false): Promise<Record<string, PublicUser>> {
+		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiGetUsersById>(
 			UserServiceBridgeTopics.GetUsersById,
 			LuauContext.Protected,
 			userIds,
 			strict,
 		);
+		if (!result.success) throw result.error;
+		return result.data;
 	}
 }

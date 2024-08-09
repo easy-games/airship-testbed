@@ -1,5 +1,5 @@
-import { Airship } from "@Easy/Core/Shared/Airship";
 import { OutfitDto } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipPlatformInventory";
+import { AvatarCollectionManager } from "@Easy/Core/Shared/Avatar/AvatarCollectionManager";
 import { AvatarPlatformAPI } from "@Easy/Core/Shared/Avatar/AvatarPlatformAPI";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
@@ -7,7 +7,6 @@ import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import AirshipButton from "@Easy/Core/Shared/MainMenu/Components/AirshipButton";
 import { MainMenuSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/MainMenuSingleton";
-import { CoreUI } from "@Easy/Core/Shared/UI/CoreUI";
 import { Keyboard } from "@Easy/Core/Shared/UserInput";
 import { Mouse } from "@Easy/Core/Shared/UserInput/Mouse";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
@@ -15,7 +14,6 @@ import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import { RandomUtil } from "@Easy/Core/Shared/Util/RandomUtil";
 import MainMenuPageComponent from "../../../Shared/MainMenu/Components/MainMenuPageComponent";
-import { AuthController } from "../Auth/AuthController";
 import { MainMenuController } from "../MainMenuController";
 import { MainMenuPageType } from "../MainMenuPageName";
 import AvatarAccessoryBtn from "./AvatarAccessoryBtn";
@@ -55,6 +53,14 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	//public subNavBarButtonHolder!: Transform;
 	//public subBarHolders: Transform[] = [];
 
+	@Header("Buttons")
+	public revertBtn!: AirshipButton;
+	public saveBtn: AirshipButton;
+	public avatarInteractionBtn!: Button;
+
+	@Header("Variables")
+	public avatarCameraOffset = new Vector3(0, 0, 0);
+
 	private outfitBtns: AvatarMenuBtn[] = [];
 	private mainNavBtns: AvatarMenuBtn[] = [];
 	//private subNavBtns: AvatarMenuBtn[] = [];
@@ -73,8 +79,6 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private selectedColor = "";
 	private selectedFaceId = "";
 	private bin: Bin = new Bin();
-	private mouse!: Mouse;
-	private saveBtn?: AirshipButton;
 	private currentFocusedSlot: AccessorySlot = AccessorySlot.Root;
 	private avatarProfileMenu?: AvatarMenuProfileComponent;
 	private dirty = false;
@@ -88,6 +92,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	override Init(mainMenu: MainMenuController, pageType: MainMenuPageType): void {
 		super.Init(mainMenu, pageType);
+		// print("Initializing Avatar Menu");
 		this.clientId = 9999; //Dependency<PlayerController>().clientId;
 
 		this.mainNavBtns = this.mainNavButtonHolder.gameObject.GetAirshipComponentsInChildren<AvatarMenuBtn>();
@@ -148,46 +153,32 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 
 		//Hookup general buttons
-		let button = this.refs?.GetValue<RectTransform>(this.generalHookupKey, "AvatarInteractionBtn").gameObject;
-		if (button) {
-			CoreUI.SetupButton(button, { noHoverSound: true });
-			CanvasAPI.OnBeginDragEvent(button, () => {
+		if (this.avatarInteractionBtn) {
+			CanvasAPI.OnBeginDragEvent(this.avatarInteractionBtn.gameObject, () => {
 				this.OnDragAvatar(true);
 			});
-			CanvasAPI.OnEndDragEvent(button, () => {
+			CanvasAPI.OnEndDragEvent(this.avatarInteractionBtn.gameObject, () => {
 				this.OnDragAvatar(false);
 			});
 		}
 
-		button = this.refs?.GetValue<RectTransform>(this.generalHookupKey, "ResetCameraBtn").gameObject;
-		if (button) {
-			CoreUI.SetupButton(button, { noHoverSound: true });
-			CanvasAPI.OnClickEvent(button, () => {
-				//this.mainMenu?.avatarView?.CameraFocusSlot(AccessorySlot.Root);
-				print("Showing avatar profil pic: " + this.avatarProfileMenu);
-				this.avatarProfileMenu?.OpenPage(this.mainCanvasGroup);
-			});
-		}
-
-		button = this.refs?.GetValue<RectTransform>(this.generalHookupKey, "SaveBtn").gameObject;
-		if (button) {
-			CoreUI.SetupButton(button, { noHoverSound: true });
-			CanvasAPI.OnClickEvent(button, () => {
+		if (this.saveBtn) {
+			this.saveBtn.button.onClick.Connect(() => {
 				this.Save();
 			});
 		}
-		this.saveBtn = button?.GetAirshipComponent<AirshipButton>();
 
-		button = this.refs?.GetValue<RectTransform>(this.generalHookupKey, "RevertBtn").gameObject;
-		if (button) {
-			CoreUI.SetupButton(button, { noHoverSound: true });
-			CanvasAPI.OnClickEvent(button, () => {
+		if (this.revertBtn) {
+			this.revertBtn.button.onClick.Connect(() => {
 				this.Revert();
 			});
 		}
 
 		this.ClearItembuttons();
-		this.InitializeAutherizedAccessories();
+
+		AvatarCollectionManager.instance.DownloadAllAccessories(() => {
+			this.LoadAllOutfits();
+		});
 
 		if (Game.IsEditor()) {
 			Keyboard.OnKeyDown(Key.PrintScreen, (event) => {
@@ -206,7 +197,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		let avatarView = this.mainMenu?.avatarView;
 		if (avatarView) {
 			if (this.avatarCenterRect) {
-				avatarView.AlignCamera(this.avatarCenterRect.position);
+				avatarView.AlignCamera(this.avatarCenterRect.position, this.avatarCameraOffset);
 			}
 		} else {
 			error("no 3D avatar to render in avatar editor");
@@ -275,7 +266,6 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.RefreshAvatar();
 		this.mainMenu?.avatarView?.CameraFocusTransform(this.mainMenu?.avatarView?.cameraWaypointDefault, true);
 
-		this.saveBtn?.SetDisabled(true);
 		this.SelectMainNav(0);
 		this.SelectSubNav(0);
 
@@ -400,7 +390,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		//this.currentSlot = slot;
 
 		//Accessories
-		let foundItems = Airship.Avatar.GetAllAvatarItems(slot);
+		let foundItems = AvatarCollectionManager.instance.GetAllAvatarItems(slot);
 		if (foundItems) {
 			this.DisplayItems(foundItems);
 		}
@@ -422,7 +412,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private DisplayFaceItems() {
-		let faceItems = Airship.Avatar.GetAllAvatarFaceItems();
+		let faceItems = AvatarCollectionManager.instance.GetAllAvatarFaceItems();
 		if (faceItems) {
 			faceItems.forEach((value) => {
 				this.AddItemButton(value.serverClassId, value.serverInstanceId, value.name, () => {
@@ -447,15 +437,15 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private DisplayColorScheme() {
-		for (let i = 0; i < Airship.Avatar.skinColors.size(); i++) {
-			this.AddColorButton(Airship.Avatar.skinColors[i]);
+		for (let i = 0; i < AvatarCollectionManager.instance.skinColors.size(); i++) {
+			this.AddColorButton(AvatarCollectionManager.instance.skinColors[i]);
 		}
 		this.UpdateButtonGraphics();
 		this.mainMenu?.avatarView?.CameraFocusSlot(AccessorySlot.Root);
 	}
 
 	private DisplaySkinTextures() {
-		let items = Airship.Avatar.GetAllAvatarSkins();
+		let items = AvatarCollectionManager.instance.GetAllAvatarSkins();
 		if (items && items.size() > 0) {
 			items.forEach((value) => {
 				this.AddItemButton(value.ToString(), "", value.ToString(), () => {
@@ -522,7 +512,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 				}
 				cloudImage.downloadOnStart = false;
 				cloudImage.image = accessoryBtn.iconImage;
-				cloudImage.url = Airship.Avatar.GetClassThumbnailUrl(classId);
+				cloudImage.url = AvatarCollectionManager.instance.GetClassThumbnailUrl(classId);
 
 				const downloadConn = cloudImage.OnFinishedLoading.Connect((success) => {
 					if (success) {
@@ -558,7 +548,12 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			return;
 		}
 		this.dirty = val;
-		this.saveBtn?.SetDisabled(!val);
+		if (this.saveBtn) {
+			this.saveBtn.SetDisabled(!val);
+		}
+		if (this.revertBtn) {
+			this.revertBtn.SetDisabled(!val);
+		}
 	}
 
 	private SelectItem(instanceId: string, accTemplate?: AccessoryComponent, instantRefresh = true) {
@@ -636,17 +631,6 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 	}
 
-	private InitializeAutherizedAccessories() {
-		Dependency<AuthController>()
-			.WaitForAuthed()
-			.then(() => {
-				//Get all owned accessories and map them to usable values
-				Airship.Avatar.DownloadOwnedAccessories();
-				Airship.Avatar.InitUserOutfits(Game.localPlayer.userId);
-				this.LoadAllOutfits();
-			});
-	}
-
 	private LoadAllOutfits() {
 		this.Log("LoadAllOutfits");
 		AvatarPlatformAPI.GetAllOutfits().then((outfits) => {
@@ -659,7 +643,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 						"9999",
 						"Default0",
 						"Default0",
-						RandomUtil.FromArray(Airship.Avatar.skinColors),
+						RandomUtil.FromArray(AvatarCollectionManager.instance.skinColors),
 					),
 				];
 			}
@@ -754,11 +738,11 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.ClearAllAccessories();
 		this.currentUserOutfit.accessories.forEach((acc, index) => {
 			this.Log("Outfit acc: " + acc.class.name + ": " + acc.class.classId);
-			let accComponent = Airship.Avatar.GetAccessoryFromClassId(acc.class.classId);
+			let accComponent = AvatarCollectionManager.instance.GetAccessoryFromClassId(acc.class.classId);
 			if (accComponent) {
 				this.SelectItem(acc.instanceId, accComponent, false);
 			} else {
-				let face = Airship.Avatar.GetAccessoryFaceFromClassId(acc.class.classId);
+				let face = AvatarCollectionManager.instance.GetAccessoryFaceFromClassId(acc.class.classId);
 				if (face) {
 					this.SelectFaceItem(face, false);
 				}
@@ -787,6 +771,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private Save() {
+		print("save!");
 		if (this.inThumbnailMode) {
 			this.RenderThumbnails();
 			return;
@@ -796,7 +781,9 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			warn("Trying to save with no outfit selected!");
 			return;
 		}
-		this.saveBtn?.SetLoading(true);
+		// if (this.saveBtn) {
+		// 	this.saveBtn.interactable = false;
+		// }
 		let accBuilder = this.mainMenu?.avatarView?.accessoryBuilder;
 		let accessoryIds: string[] = [];
 		if (accBuilder) {
@@ -824,7 +811,6 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		);
 
 		this.SetDirty(false);
-		this.saveBtn?.SetLoading(false);
 	}
 
 	private Revert() {
@@ -851,8 +837,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.ClearItembuttons();
 		this.ClearAllAccessories();
 		//Accessories
-		let foundItems = Airship.Avatar.GetAllPossibleAvatarItems();
-		let foundFaces = Airship.Avatar.GetAllAvatarFaceItems();
+		let foundItems = AvatarCollectionManager.instance.GetAllPossibleAvatarItems();
+		let foundFaces = AvatarCollectionManager.instance.GetAllAvatarFaceItems();
 		if (foundItems) {
 			let allItems: { instanceId: string; item: AccessoryComponent }[] = [];
 			for (let [key, value] of foundItems) {

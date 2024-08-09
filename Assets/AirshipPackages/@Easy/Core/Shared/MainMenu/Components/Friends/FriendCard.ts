@@ -22,7 +22,9 @@ export default class FriendCard extends AirshipBehaviour {
 		this.rectTransform = this.transform.GetComponent<RectTransform>();
 
 		if (Game.IsMobile()) {
-			this.redirectScroll.enabled = true;
+			if (this.redirectScroll) {
+				this.redirectScroll.enabled = true;
+			}
 			this.bubbler.enabled = true;
 		}
 

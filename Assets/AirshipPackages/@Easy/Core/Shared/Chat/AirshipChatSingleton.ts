@@ -61,8 +61,13 @@ export class AirshipChatSingleton {
 	 * @param command A command instance.
 	 */
 	public RegisterCommand(command: ChatCommand): void {
-		if (!Game.IsServer)
-			error("Error trying to RegisterCommand " + command.commandLabel + ": Can only register command on server.");
+		if (!Game.IsServer()) {
+			error(
+				"Error trying to call RegisterCommand " +
+					command.commandLabel +
+					": Can only register command on server.",
+			);
+		}
 
 		Dependency<ChatService>().RegisterCommand(command);
 	}

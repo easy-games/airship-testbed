@@ -1,8 +1,6 @@
 import { Dependency } from "@Easy/Core/Shared/Flamework";
-import { Game } from "@Easy/Core/Shared/Game";
 import { Protected } from "@Easy/Core/Shared/Protected";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
-import { MainMenuSingleton } from "../../../Singletons/MainMenuSingleton";
 import { ProtectedPlayersSingleton } from "../../../Singletons/ProtectedPlayersSingleton";
 import PlayerEntry from "./PlayerEntry";
 
@@ -28,14 +26,6 @@ export default class PlayerList extends AirshipBehaviour {
 					}),
 				);
 			}
-
-			Dependency<MainMenuSingleton>().ObserveScreenSize((st, size) => {
-				if (Game.deviceType !== AirshipDeviceType.Phone) {
-					const rect = this.transform as RectTransform;
-					rect.anchorMin = new Vector2(1, 0);
-					rect.offsetMin = new Vector2(rect.offsetMin.x, 500);
-				}
-			});
 		});
 	}
 

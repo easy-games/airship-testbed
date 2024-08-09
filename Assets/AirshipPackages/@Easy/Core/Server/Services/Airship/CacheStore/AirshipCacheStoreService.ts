@@ -5,7 +5,7 @@ import {
 	ServerBridgeApiCacheSetKeyTTL,
 } from "@Easy/Core/Server/ProtectedServices/Airship/CacheStore/CacheStoreService";
 import { Platform } from "@Easy/Core/Shared/Airship";
-import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/AirshipUtil";
+import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/ContextBridgeUtil";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 
@@ -36,18 +36,17 @@ export class AirshipCacheStoreService {
 	 * be unchanged. The maximum expire time is 24 hours.
 	 * @returns The data associated with the provided key. If no data is associated with the provided key, then nothing will be returned.
 	 */
-	public async GetKey<T extends object>(
-		key: string,
-		expireTimeSec?: number,
-	): Promise<ReturnType<ServerBridgeApiCacheGetKey<T>>> {
+	public async GetKey<T extends object>(key: string, expireTimeSec?: number): Promise<T | undefined> {
 		this.CheckKey(key);
 
-		return await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiCacheGetKey<T>>(
+		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiCacheGetKey<T>>(
 			CacheStoreServiceBridgeTopics.GetKey,
 			LuauContext.Protected,
 			key,
 			expireTimeSec,
 		);
+		if (!result.success) throw result.error;
+		return result.data?.value;
 	}
 
 	/**
@@ -57,27 +56,25 @@ export class AirshipCacheStoreService {
 	 * @param expireTimeSec The duration this key should live after being set in seconds. The maximum duration is 24 hours.
 	 * @returns The data that was associated with the provided key.
 	 */
-	public async SetKey<T extends object>(
-		key: string,
-		data: T,
-		expireTimeSec: number,
-	): Promise<ReturnType<ServerBridgeApiCacheSetKey<T>>> {
+	public async SetKey<T extends object>(key: string, data: T, expireTimeSec: number): Promise<T> {
 		this.CheckKey(key);
 
-		return await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiCacheSetKey<T>>(
+		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiCacheSetKey<T>>(
 			CacheStoreServiceBridgeTopics.SetKey,
 			LuauContext.Protected,
 			key,
 			data,
 			expireTimeSec,
 		);
+		if (!result.success) throw result.error;
+		return result.data.value;
 	}
 
 	/**
 	 * Deletes the data associated with the provided key.
 	 * @param key The key to use. Keys must be alphanumeric and may include the following symbols: _.:
 	 */
-	public async DeleteKey(key: string): Promise<ReturnType<ServerBridgeApiCacheSetKeyTTL>> {
+	public async DeleteKey(key: string): Promise<number> {
 		this.CheckKey(key);
 
 		const res = await this.SetKeyTTL(key, 0);
@@ -90,15 +87,17 @@ export class AirshipCacheStoreService {
 	 * @param expireTimeSec The duration this key should live in seconds. The maximum duration is 24 hours.
 	 * @returns The new lifetime of the key.
 	 */
-	public async SetKeyTTL(key: string, expireTimeSec: number): Promise<ReturnType<ServerBridgeApiCacheSetKeyTTL>> {
+	public async SetKeyTTL(key: string, expireTimeSec: number): Promise<number> {
 		this.CheckKey(key);
 
-		return await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiCacheSetKeyTTL>(
+		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiCacheSetKeyTTL>(
 			CacheStoreServiceBridgeTopics.SetKeyTTL,
 			LuauContext.Protected,
 			key,
 			expireTimeSec,
 		);
+		if (!result.success) throw result.error;
+		return result.data;
 	}
 
 	/**

@@ -10,16 +10,26 @@ export const enum DataStoreServiceBridgeTopics {
 	DeleteKey = "DataStore:DeleteKey",
 }
 
-export type ServerBridgeApiDataGetKey<T> = (key: string) => Result<T | undefined, string>;
-export type ServerBridgeApiDataSetKey<T> = (key: string, data: T) => Result<T, string>;
-export type ServerBridgeApiDataDeleteKey<T> = (key: string) => Result<T | undefined, string>;
+export type ServerBridgeApiDataGetKey<T> = (key: string) => Result<DataStoreRecord<T> | undefined, string>;
+export type ServerBridgeApiDataSetKey<T> = (key: string, data: T, etag?: string) => Result<DataStoreRecord<T>, string>;
+export type ServerBridgeApiDataDeleteKey<T> = (
+	key: string,
+	etag?: string,
+) => Result<DataStoreRecord<T> | undefined, string>;
+
+export interface DataStoreRecord<T> {
+	value: T;
+	metadata: {
+		etag: string;
+	};
+}
 
 @Service({})
 export class ProtectedDataStoreService {
 	constructor() {
 		if (!Game.IsServer()) return;
 
-		contextbridge.callback<ServerBridgeApiDataGetKey<unknown>>("DataStore:GetKey", (_, key) => {
+		contextbridge.callback<ServerBridgeApiDataGetKey<unknown>>(DataStoreServiceBridgeTopics.GetKey, (_, key) => {
 			const [success, result] = this.GetKey(key).await();
 			if (!success) {
 				return {
@@ -30,27 +40,33 @@ export class ProtectedDataStoreService {
 			return result;
 		});
 
-		contextbridge.callback<ServerBridgeApiDataSetKey<unknown>>("DataStore:SetKey", (_, key, data) => {
-			const [success, result] = this.SetKey(key, data).await();
-			if (!success) {
-				return {
-					success: false,
-					error: "Unable to complete request.",
-				};
-			}
-			return result;
-		});
+		contextbridge.callback<ServerBridgeApiDataSetKey<unknown>>(
+			DataStoreServiceBridgeTopics.SetKey,
+			(_, key, data, etag) => {
+				const [success, result] = this.SetKey(key, data, etag).await();
+				if (!success) {
+					return {
+						success: false,
+						error: "Unable to complete request.",
+					};
+				}
+				return result;
+			},
+		);
 
-		contextbridge.callback<ServerBridgeApiDataDeleteKey<unknown>>("DataStore:DeleteKey", (_, key) => {
-			const [success, result] = this.DeleteKey(key).await();
-			if (!success) {
-				return {
-					success: false,
-					error: "Unable to complete request.",
-				};
-			}
-			return result;
-		});
+		contextbridge.callback<ServerBridgeApiDataDeleteKey<unknown>>(
+			DataStoreServiceBridgeTopics.DeleteKey,
+			(_, key) => {
+				const [success, result] = this.DeleteKey(key).await();
+				if (!success) {
+					return {
+						success: false,
+						error: "Unable to complete request.",
+					};
+				}
+				return result;
+			},
+		);
 	}
 
 	public async GetKey<T>(key: string): Promise<ReturnType<ServerBridgeApiDataGetKey<T>>> {
@@ -76,9 +92,10 @@ export class ProtectedDataStoreService {
 		};
 	}
 
-	public async SetKey<T>(key: string, data: T): Promise<ReturnType<ServerBridgeApiDataSetKey<T>>> {
+	public async SetKey<T>(key: string, data: T, etag?: string): Promise<ReturnType<ServerBridgeApiDataSetKey<T>>> {
+		const query = etag ? `?etag=${etag}` : "";
 		const result = InternalHttpManager.PostAsync(
-			`${AirshipUrl.DataStoreService}/data/key/${key}`,
+			`${AirshipUrl.DataStoreService}/data/key/${key}${query}`,
 			EncodeJSON(data),
 		);
 		if (!result.success || result.statusCode > 299) {
@@ -95,8 +112,9 @@ export class ProtectedDataStoreService {
 		};
 	}
 
-	public async DeleteKey<T>(key: string): Promise<ReturnType<ServerBridgeApiDataDeleteKey<T>>> {
-		const result = InternalHttpManager.DeleteAsync(`${AirshipUrl.DataStoreService}/data/key/${key}`);
+	public async DeleteKey<T>(key: string, etag?: string): Promise<ReturnType<ServerBridgeApiDataDeleteKey<T>>> {
+		const query = etag ? `?etag=${etag}` : "";
+		const result = InternalHttpManager.DeleteAsync(`${AirshipUrl.DataStoreService}/data/key/${key}${query}`);
 		if (!result.success || result.statusCode > 299) {
 			warn(`Unable to delete data key. Status Code: ${result.statusCode}.\n`, result.error);
 			return {

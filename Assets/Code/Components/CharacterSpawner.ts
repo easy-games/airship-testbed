@@ -68,9 +68,10 @@ export default class CharacterSpawner extends AirshipBehaviour {
 
 	public SpawnCharacter(player: Player): void {
 		print(`Spawning ${player.username} in scene ${this.gameObject.scene.name}`);
-		player.SpawnCharacter(this.spawnPoint.position, {
+		const character = player.SpawnCharacter(this.spawnPoint.position, {
 			lookDirection: this.spawnPoint.forward,
 		});
+		// character.inventory.AddItem(new ItemStack("WoodSword"));
 	}
 
 	override OnDestroy(): void {

@@ -10,9 +10,21 @@ export const enum CacheStoreServiceBridgeTopics {
 	SetKeyTTL = "CacheStore:SetKeyTTL",
 }
 
-export type ServerBridgeApiCacheGetKey<T> = (key: string, expireTimeSec?: number) => Result<T | undefined, string>;
-export type ServerBridgeApiCacheSetKey<T> = (key: string, data: T, expireTimeSec: number) => Result<T, string>;
+export type ServerBridgeApiCacheGetKey<T> = (
+	key: string,
+	expireTimeSec?: number,
+) => Result<CacheStoreRecord<T> | undefined, string>;
+export type ServerBridgeApiCacheSetKey<T> = (
+	key: string,
+	data: T,
+	expireTimeSec: number,
+) => Result<CacheStoreRecord<T>, string>;
 export type ServerBridgeApiCacheSetKeyTTL = (key: string, expireTimeSec: number) => Result<number, string>;
+
+export interface CacheStoreRecord<T> {
+	value: T;
+	metadata: {};
+}
 
 @Service({})
 export class ProtectedCacheStoreService {

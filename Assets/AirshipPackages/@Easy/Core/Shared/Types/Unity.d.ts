@@ -1064,41 +1064,41 @@ interface PhysicsConstructor {
 	): CSArray<RaycastHit>;
 	BoxCastAll(center: Vector3, halfExtents: Vector3, direction: Vector3, orientation: Quaternion): CSArray<RaycastHit>;
 	BoxCastAll(center: Vector3, halfExtents: Vector3, direction: Vector3): CSArray<RaycastHit>;
-	BoxCastNonAlloc(
-		center: Vector3,
-		halfExtents: Vector3,
-		direction: Vector3,
-		results: Array<RaycastHit>,
-		orientation: Quaternion,
-		maxDistance: number,
-		layerMask: number,
-		queryTriggerInteraction: QueryTriggerInteraction,
-	): number;
-	BoxCastNonAlloc(
-		center: Vector3,
-		halfExtents: Vector3,
-		direction: Vector3,
-		results: Array<RaycastHit>,
-		orientation: Quaternion,
-	): number;
-	BoxCastNonAlloc(
-		center: Vector3,
-		halfExtents: Vector3,
-		direction: Vector3,
-		results: Array<RaycastHit>,
-		orientation: Quaternion,
-		maxDistance: number,
-	): number;
-	BoxCastNonAlloc(
-		center: Vector3,
-		halfExtents: Vector3,
-		direction: Vector3,
-		results: Array<RaycastHit>,
-		orientation: Quaternion,
-		maxDistance: number,
-		layerMask: number,
-	): number;
-	BoxCastNonAlloc(center: Vector3, halfExtents: Vector3, direction: Vector3, results: Array<RaycastHit>): number;
+	// BoxCastNonAlloc(
+	// 	center: Vector3,
+	// 	halfExtents: Vector3,
+	// 	direction: Vector3,
+	// 	results: Array<RaycastHit>,
+	// 	orientation: Quaternion,
+	// 	maxDistance: number,
+	// 	layerMask: number,
+	// 	queryTriggerInteraction: QueryTriggerInteraction,
+	// ): number;
+	// BoxCastNonAlloc(
+	// 	center: Vector3,
+	// 	halfExtents: Vector3,
+	// 	direction: Vector3,
+	// 	results: Array<RaycastHit>,
+	// 	orientation: Quaternion,
+	// ): number;
+	// BoxCastNonAlloc(
+	// 	center: Vector3,
+	// 	halfExtents: Vector3,
+	// 	direction: Vector3,
+	// 	results: Array<RaycastHit>,
+	// 	orientation: Quaternion,
+	// 	maxDistance: number,
+	// ): number;
+	// BoxCastNonAlloc(
+	// 	center: Vector3,
+	// 	halfExtents: Vector3,
+	// 	direction: Vector3,
+	// 	results: Array<RaycastHit>,
+	// 	orientation: Quaternion,
+	// 	maxDistance: number,
+	// 	layerMask: number,
+	// ): number;
+	// BoxCastNonAlloc(center: Vector3, halfExtents: Vector3, direction: Vector3, results: Array<RaycastHit>): number;
 	CapsuleCast(
 		point1: Vector3,
 		point2: Vector3,
@@ -1118,34 +1118,34 @@ interface PhysicsConstructor {
 	): boolean;
 	CapsuleCast(point1: Vector3, point2: Vector3, radius: number, direction: Vector3, maxDistance: number): boolean;
 	CapsuleCast(point1: Vector3, point2: Vector3, radius: number, direction: Vector3): boolean;
-	CapsuleCast(
-		point1: Vector3,
-		point2: Vector3,
-		radius: number,
-		direction: Vector3,
-		hitInfo: unknown,
-		maxDistance: number,
-		layerMask: number,
-		queryTriggerInteraction: QueryTriggerInteraction,
-	): boolean;
-	CapsuleCast(
-		point1: Vector3,
-		point2: Vector3,
-		radius: number,
-		direction: Vector3,
-		hitInfo: unknown,
-		maxDistance: number,
-		layerMask: number,
-	): boolean;
-	CapsuleCast(
-		point1: Vector3,
-		point2: Vector3,
-		radius: number,
-		direction: Vector3,
-		hitInfo: unknown,
-		maxDistance: number,
-	): boolean;
-	CapsuleCast(point1: Vector3, point2: Vector3, radius: number, direction: Vector3, hitInfo: unknown): boolean;
+	// CapsuleCast(
+	// 	point1: Vector3,
+	// 	point2: Vector3,
+	// 	radius: number,
+	// 	direction: Vector3,
+	// 	hitInfo: unknown,
+	// 	maxDistance: number,
+	// 	layerMask: number,
+	// 	queryTriggerInteraction: QueryTriggerInteraction,
+	// ): boolean;
+	// CapsuleCast(
+	// 	point1: Vector3,
+	// 	point2: Vector3,
+	// 	radius: number,
+	// 	direction: Vector3,
+	// 	hitInfo: unknown,
+	// 	maxDistance: number,
+	// 	layerMask: number,
+	// ): boolean;
+	// CapsuleCast(
+	// 	point1: Vector3,
+	// 	point2: Vector3,
+	// 	radius: number,
+	// 	direction: Vector3,
+	// 	hitInfo: unknown,
+	// 	maxDistance: number,
+	// ): boolean;
+	// CapsuleCast(point1: Vector3, point2: Vector3, radius: number, direction: Vector3, hitInfo: unknown): boolean;
 	CapsuleCastAll(
 		point1: Vector3,
 		point2: Vector3,
@@ -1171,40 +1171,40 @@ interface PhysicsConstructor {
 		maxDistance: number,
 	): CSArray<RaycastHit>;
 	CapsuleCastAll(point1: Vector3, point2: Vector3, radius: number, direction: Vector3): CSArray<RaycastHit>;
-	CapsuleCastNonAlloc(
-		point1: Vector3,
-		point2: Vector3,
-		radius: number,
-		direction: Vector3,
-		results: Array<RaycastHit>,
-		maxDistance: number,
-		layerMask: number,
-		queryTriggerInteraction: QueryTriggerInteraction,
-	): number;
-	CapsuleCastNonAlloc(
-		point1: Vector3,
-		point2: Vector3,
-		radius: number,
-		direction: Vector3,
-		results: Array<RaycastHit>,
-		maxDistance: number,
-		layerMask: number,
-	): number;
-	CapsuleCastNonAlloc(
-		point1: Vector3,
-		point2: Vector3,
-		radius: number,
-		direction: Vector3,
-		results: Array<RaycastHit>,
-		maxDistance: number,
-	): number;
-	CapsuleCastNonAlloc(
-		point1: Vector3,
-		point2: Vector3,
-		radius: number,
-		direction: Vector3,
-		results: Array<RaycastHit>,
-	): number;
+	// CapsuleCastNonAlloc(
+	// 	point1: Vector3,
+	// 	point2: Vector3,
+	// 	radius: number,
+	// 	direction: Vector3,
+	// 	results: Array<RaycastHit>,
+	// 	maxDistance: number,
+	// 	layerMask: number,
+	// 	queryTriggerInteraction: QueryTriggerInteraction,
+	// ): number;
+	// CapsuleCastNonAlloc(
+	// 	point1: Vector3,
+	// 	point2: Vector3,
+	// 	radius: number,
+	// 	direction: Vector3,
+	// 	results: Array<RaycastHit>,
+	// 	maxDistance: number,
+	// 	layerMask: number,
+	// ): number;
+	// CapsuleCastNonAlloc(
+	// 	point1: Vector3,
+	// 	point2: Vector3,
+	// 	radius: number,
+	// 	direction: Vector3,
+	// 	results: Array<RaycastHit>,
+	// 	maxDistance: number,
+	// ): number;
+	// CapsuleCastNonAlloc(
+	// 	point1: Vector3,
+	// 	point2: Vector3,
+	// 	radius: number,
+	// 	direction: Vector3,
+	// 	results: Array<RaycastHit>,
+	// ): number;
 	CheckBox(
 		center: Vector3,
 		halfExtents: Vector3,
@@ -1233,16 +1233,6 @@ interface PhysicsConstructor {
 	CheckSphere(position: Vector3, radius: number, layerMask: number): boolean;
 	CheckSphere(position: Vector3, radius: number): boolean;
 	ClosestPoint(point: Vector3, collider: Collider, position: Vector3, rotation: Quaternion): Vector3;
-	ComputePenetration(
-		colliderA: Collider,
-		positionA: Vector3,
-		rotationA: Quaternion,
-		colliderB: Collider,
-		positionB: Vector3,
-		rotationB: Quaternion,
-		direction: unknown,
-		distance: unknown,
-	): boolean;
 	GetIgnoreCollision(collider1: Collider, collider2: Collider): boolean;
 	GetIgnoreLayerCollision(layer1: number, layer2: number): boolean;
 	IgnoreCollision(collider1: Collider, collider2: Collider, ignore: boolean): void;
@@ -1257,15 +1247,6 @@ interface PhysicsConstructor {
 	): boolean;
 	Linecast(start: Vector3, end: Vector3, layerMask: number): boolean;
 	Linecast(start: Vector3, end: Vector3): boolean;
-	Linecast(
-		start: Vector3,
-		end: Vector3,
-		hitInfo: unknown,
-		layerMask: number,
-		queryTriggerInteraction: QueryTriggerInteraction,
-	): boolean;
-	Linecast(start: Vector3, end: Vector3, hitInfo: unknown, layerMask: number): boolean;
-	Linecast(start: Vector3, end: Vector3, hitInfo: unknown): boolean;
 	OverlapBox(
 		center: Vector3,
 		halfExtents: Vector3,
@@ -1276,28 +1257,28 @@ interface PhysicsConstructor {
 	OverlapBox(center: Vector3, halfExtents: Vector3, orientation: Quaternion, layerMask: number): CSArray<Collider>;
 	OverlapBox(center: Vector3, halfExtents: Vector3, orientation: Quaternion): CSArray<Collider>;
 	OverlapBox(center: Vector3, halfExtents: Vector3): CSArray<Collider>;
-	OverlapBoxNonAlloc(
-		center: Vector3,
-		halfExtents: Vector3,
-		results: Array<Collider>,
-		orientation: Quaternion,
-		mask: number,
-		queryTriggerInteraction: QueryTriggerInteraction,
-	): number;
-	OverlapBoxNonAlloc(
-		center: Vector3,
-		halfExtents: Vector3,
-		results: Array<Collider>,
-		orientation: Quaternion,
-		mask: number,
-	): number;
-	OverlapBoxNonAlloc(
-		center: Vector3,
-		halfExtents: Vector3,
-		results: Array<Collider>,
-		orientation: Quaternion,
-	): number;
-	OverlapBoxNonAlloc(center: Vector3, halfExtents: Vector3, results: Array<Collider>): number;
+	// OverlapBoxNonAlloc(
+	// 	center: Vector3,
+	// 	halfExtents: Vector3,
+	// 	results: Array<Collider>,
+	// 	orientation: Quaternion,
+	// 	mask: number,
+	// 	queryTriggerInteraction: QueryTriggerInteraction,
+	// ): number;
+	// OverlapBoxNonAlloc(
+	// 	center: Vector3,
+	// 	halfExtents: Vector3,
+	// 	results: Array<Collider>,
+	// 	orientation: Quaternion,
+	// 	mask: number,
+	// ): number;
+	// OverlapBoxNonAlloc(
+	// 	center: Vector3,
+	// 	halfExtents: Vector3,
+	// 	results: Array<Collider>,
+	// 	orientation: Quaternion,
+	// ): number;
+	// OverlapBoxNonAlloc(center: Vector3, halfExtents: Vector3, results: Array<Collider>): number;
 	OverlapCapsule(
 		point0: Vector3,
 		point1: Vector3,
@@ -1307,22 +1288,22 @@ interface PhysicsConstructor {
 	): Array<Collider>;
 	OverlapCapsule(point0: Vector3, point1: Vector3, radius: number, layerMask: number): CSArray<Collider>;
 	OverlapCapsule(point0: Vector3, point1: Vector3, radius: number): CSArray<Collider>;
-	OverlapCapsuleNonAlloc(
-		point0: Vector3,
-		point1: Vector3,
-		radius: number,
-		results: Array<Collider>,
-		layerMask: number,
-		queryTriggerInteraction: QueryTriggerInteraction,
-	): number;
-	OverlapCapsuleNonAlloc(
-		point0: Vector3,
-		point1: Vector3,
-		radius: number,
-		results: Array<Collider>,
-		layerMask: number,
-	): number;
-	OverlapCapsuleNonAlloc(point0: Vector3, point1: Vector3, radius: number, results: Array<Collider>): number;
+	// OverlapCapsuleNonAlloc(
+	// 	point0: Vector3,
+	// 	point1: Vector3,
+	// 	radius: number,
+	// 	results: Array<Collider>,
+	// 	layerMask: number,
+	// 	queryTriggerInteraction: QueryTriggerInteraction,
+	// ): number;
+	// OverlapCapsuleNonAlloc(
+	// 	point0: Vector3,
+	// 	point1: Vector3,
+	// 	radius: number,
+	// 	results: Array<Collider>,
+	// 	layerMask: number,
+	// ): number;
+	// OverlapCapsuleNonAlloc(point0: Vector3, point1: Vector3, radius: number, results: Array<Collider>): number;
 	OverlapSphere(
 		position: Vector3,
 		radius: number,
@@ -1331,22 +1312,15 @@ interface PhysicsConstructor {
 	): CSArray<Collider>;
 	OverlapSphere(position: Vector3, radius: number, layerMask: number): CSArray<Collider>;
 	OverlapSphere(position: Vector3, radius: number): CSArray<Collider>;
-	OverlapSphereNonAlloc(
-		position: Vector3,
-		radius: number,
-		results: Array<Collider>,
-		layerMask: number,
-		queryTriggerInteraction: QueryTriggerInteraction,
-	): number;
-	OverlapSphereNonAlloc(position: Vector3, radius: number, results: Array<Collider>, layerMask: number): number;
-	OverlapSphereNonAlloc(position: Vector3, radius: number, results: Array<Collider>): number;
-	// Raycast(
-	// 	origin: Vector3,
-	// 	direction: Vector3,
-	// 	maxDistance: number,
+	// OverlapSphereNonAlloc(
+	// 	position: Vector3,
+	// 	radius: number,
+	// 	results: Array<Collider>,
 	// 	layerMask: number,
 	// 	queryTriggerInteraction: QueryTriggerInteraction,
-	// ): LuaTuple<[true, RaycastHit] | [false, undefined]>;
+	// ): number;
+	// OverlapSphereNonAlloc(position: Vector3, radius: number, results: Array<Collider>, layerMask: number): number;
+	// OverlapSphereNonAlloc(position: Vector3, radius: number, results: Array<Collider>): number;
 
 	/**
 	 * @deprecated Use {@link Physics.Raycast} instead
@@ -1440,53 +1414,6 @@ interface PhysicsConstructor {
 	RaycastLegacy(origin: Vector3, direction: Vector3, maxDistance: number, layerMask: number): RaycastHit | undefined;
 	RaycastLegacy(origin: Vector3, direction: Vector3, maxDistance: number): RaycastHit | undefined;
 
-	// Raycast(origin: Vector3, direction: Vector3): LuaTuple<[true, RaycastHit] | [false, undefined]>;
-	// Raycast(
-	// 	origin: Vector3,
-	// 	direction: Vector3,
-	// 	hitInfo: unknown,
-	// 	maxDistance: number,
-	// 	layerMask: number,
-	// 	queryTriggerInteraction: QueryTriggerInteraction,
-	// ): LuaTuple<[true, RaycastHit] | [false, undefined]>;
-	// Raycast(
-	// 	origin: Vector3,
-	// 	direction: Vector3,
-	// 	hitInfo: unknown,
-	// 	maxDistance: number,
-	// 	layerMask: number,
-	// ): LuaTuple<[true, RaycastHit] | [false, undefined]>;
-	// Raycast(
-	// 	origin: Vector3,
-	// 	direction: Vector3,
-	// 	hitInfo: unknown,
-	// 	maxDistance: number,
-	// ): LuaTuple<[true, RaycastHit] | [false, undefined]>;
-	// Raycast(origin: Vector3, direction: Vector3, hitInfo: unknown): LuaTuple<[true, RaycastHit] | [false, undefined]>;
-	// Raycast(
-	// 	ray: Ray,
-	// 	maxDistance: number,
-	// 	layerMask: number,
-	// 	queryTriggerInteraction: QueryTriggerInteraction,
-	// ): LuaTuple<[true, RaycastHit] | [false, undefined]>;
-	// Raycast(ray: Ray, maxDistance: number, layerMask: number): LuaTuple<[true, RaycastHit] | [false, undefined]>;
-	// Raycast(ray: Ray, maxDistance: number): LuaTuple<[true, RaycastHit] | [false, undefined]>;
-	// Raycast(ray: Ray): LuaTuple<[true, RaycastHit] | [false, undefined]>;
-	// Raycast(
-	// 	ray: Ray,
-	// 	hitInfo: unknown,
-	// 	maxDistance: number,
-	// 	layerMask: number,
-	// 	queryTriggerInteraction: QueryTriggerInteraction,
-	// ): LuaTuple<[true, RaycastHit] | [false, undefined]>;
-	// Raycast(
-	// 	ray: Ray,
-	// 	hitInfo: unknown,
-	// 	maxDistance: number,
-	// 	layerMask: number,
-	// ): LuaTuple<[true, RaycastHit] | [false, undefined]>;
-	// Raycast(ray: Ray, hitInfo: unknown, maxDistance: number): LuaTuple<[true, RaycastHit] | [false, undefined]>;
-	// Raycast(ray: Ray, hitInfo: unknown): LuaTuple<[true, RaycastHit] | [false, undefined]>;
 	RaycastAll(
 		origin: Vector3,
 		direction: Vector3,
@@ -1506,27 +1433,8 @@ interface PhysicsConstructor {
 	RaycastAll(ray: Ray, maxDistance: number, layerMask: number): CSArray<RaycastHit>;
 	RaycastAll(ray: Ray, maxDistance: number): CSArray<RaycastHit>;
 	RaycastAll(ray: Ray): CSArray<RaycastHit>;
-	RebuildBroadphaseRegions(worldBounds: Bounds, subdivisions: number): void;
+
 	Simulate(step: number): void;
-	SphereCast(
-		origin: Vector3,
-		radius: number,
-		direction: Vector3,
-		hitInfo: unknown,
-		maxDistance: number,
-		layerMask: number,
-		queryTriggerInteraction: QueryTriggerInteraction,
-	): boolean;
-	SphereCast(
-		origin: Vector3,
-		radius: number,
-		direction: Vector3,
-		hitInfo: unknown,
-		maxDistance: number,
-		layerMask: number,
-	): boolean;
-	SphereCast(origin: Vector3, radius: number, direction: Vector3, hitInfo: unknown, maxDistance: number): boolean;
-	SphereCast(origin: Vector3, radius: number, direction: Vector3, hitInfo: unknown): boolean;
 	SphereCast(
 		ray: Ray,
 		radius: number,
@@ -1537,17 +1445,6 @@ interface PhysicsConstructor {
 	SphereCast(ray: Ray, radius: number, maxDistance: number, layerMask: number): boolean;
 	SphereCast(ray: Ray, radius: number, maxDistance: number): boolean;
 	SphereCast(ray: Ray, radius: number): boolean;
-	SphereCast(
-		ray: Ray,
-		radius: number,
-		hitInfo: unknown,
-		maxDistance: number,
-		layerMask: number,
-		queryTriggerInteraction: QueryTriggerInteraction,
-	): boolean;
-	SphereCast(ray: Ray, radius: number, hitInfo: unknown, maxDistance: number, layerMask: number): boolean;
-	SphereCast(ray: Ray, radius: number, hitInfo: unknown, maxDistance: number): boolean;
-	SphereCast(ray: Ray, radius: number, hitInfo: unknown): boolean;
 	SphereCastAll(
 		origin: Vector3,
 		radius: number,
@@ -1575,48 +1472,48 @@ interface PhysicsConstructor {
 	SphereCastAll(ray: Ray, radius: number, maxDistance: number, layerMask: number): CSArray<RaycastHit>;
 	SphereCastAll(ray: Ray, radius: number, maxDistance: number): CSArray<RaycastHit>;
 	SphereCastAll(ray: Ray, radius: number): CSArray<RaycastHit>;
-	SphereCastNonAlloc(
-		origin: Vector3,
-		radius: number,
-		direction: Vector3,
-		results: Array<RaycastHit>,
-		maxDistance: number,
-		layerMask: number,
-		queryTriggerInteraction: QueryTriggerInteraction,
-	): number;
-	SphereCastNonAlloc(
-		origin: Vector3,
-		radius: number,
-		direction: Vector3,
-		results: Array<RaycastHit>,
-		maxDistance: number,
-		layerMask: number,
-	): number;
-	SphereCastNonAlloc(
-		origin: Vector3,
-		radius: number,
-		direction: Vector3,
-		results: Array<RaycastHit>,
-		maxDistance: number,
-	): number;
-	SphereCastNonAlloc(origin: Vector3, radius: number, direction: Vector3, results: CSArray<RaycastHit>): number;
-	SphereCastNonAlloc(
-		ray: Ray,
-		radius: number,
-		results: Array<RaycastHit>,
-		maxDistance: number,
-		layerMask: number,
-		queryTriggerInteraction: QueryTriggerInteraction,
-	): number;
-	SphereCastNonAlloc(
-		ray: Ray,
-		radius: number,
-		results: Array<RaycastHit>,
-		maxDistance: number,
-		layerMask: number,
-	): number;
-	SphereCastNonAlloc(ray: Ray, radius: number, results: Array<RaycastHit>, maxDistance: number): number;
-	SphereCastNonAlloc(ray: Ray, radius: number, results: Array<RaycastHit>): number;
+	// SphereCastNonAlloc(
+	// 	origin: Vector3,
+	// 	radius: number,
+	// 	direction: Vector3,
+	// 	results: Array<RaycastHit>,
+	// 	maxDistance: number,
+	// 	layerMask: number,
+	// 	queryTriggerInteraction: QueryTriggerInteraction,
+	// ): number;
+	// SphereCastNonAlloc(
+	// 	origin: Vector3,
+	// 	radius: number,
+	// 	direction: Vector3,
+	// 	results: Array<RaycastHit>,
+	// 	maxDistance: number,
+	// 	layerMask: number,
+	// ): number;
+	// SphereCastNonAlloc(
+	// 	origin: Vector3,
+	// 	radius: number,
+	// 	direction: Vector3,
+	// 	results: Array<RaycastHit>,
+	// 	maxDistance: number,
+	// ): number;
+	// SphereCastNonAlloc(origin: Vector3, radius: number, direction: Vector3, results: CSArray<RaycastHit>): number;
+	// SphereCastNonAlloc(
+	// 	ray: Ray,
+	// 	radius: number,
+	// 	results: Array<RaycastHit>,
+	// 	maxDistance: number,
+	// 	layerMask: number,
+	// 	queryTriggerInteraction: QueryTriggerInteraction,
+	// ): number;
+	// SphereCastNonAlloc(
+	// 	ray: Ray,
+	// 	radius: number,
+	// 	results: Array<RaycastHit>,
+	// 	maxDistance: number,
+	// 	layerMask: number,
+	// ): number;
+	// SphereCastNonAlloc(ray: Ray, radius: number, results: Array<RaycastHit>, maxDistance: number): number;
+	// SphereCastNonAlloc(ray: Ray, radius: number, results: Array<RaycastHit>): number;
 	SyncTransforms(): void;
 }
 declare const Physics: PhysicsConstructor;
@@ -2195,6 +2092,22 @@ interface GameObjectConstructor {
 	new (): GameObject;
 	/** @deprecated Use `GameObject.Create()` instead */
 	new (name: string): GameObject;
+
+	Instantiate<T extends Object = GameObject>(original: T, position: Vector3, rotation: Quaternion): T;
+	Instantiate<T extends Object = GameObject>(
+		original: T,
+		position: Vector3,
+		rotation: Quaternion,
+		parent: Transform,
+	): T;
+	Instantiate<T extends Object = GameObject>(original: T): T;
+	Instantiate<T extends Object = GameObject>(original: T, parent: Transform): T;
+	Instantiate<T extends Object = GameObject>(original: T, parent: Transform, instantiateInWorldSpace: boolean): T;
+	Instantiate<T>(original: T): T;
+	Instantiate<T>(original: T, position: Vector3, rotation: Quaternion): T;
+	Instantiate<T>(original: T, position: Vector3, rotation: Quaternion, parent: Transform): T;
+	Instantiate<T>(original: T, parent: Transform): T;
+	Instantiate<T>(original: T, parent: Transform, worldPositionStays: boolean): T;
 }
 declare const GameObject: GameObjectConstructor;
 
@@ -4314,29 +4227,6 @@ interface EntityAnimationEvents {
 interface Animator {
 	SetInteger(name: string, value: number): void;
 	SetInteger(id: number, value: number): void;
-}
-
-interface Collision {
-	relativeVelocity: Vector3;
-	rigidbody: Rigidbody | undefined;
-	articulationBody: ArticulationBody;
-	body: Component;
-	collider: Collider;
-	transform: Transform;
-	gameObject: GameObject;
-	contactCount: number;
-	contacts: CSArray<ContactPoint>;
-	impulse: Vector3;
-	impactForceSum: Vector3;
-	frictionForceSum: Vector3;
-	other: Component;
-
-	constructor(): Collision;
-
-	GetContact(index: number): ContactPoint;
-	GetContacts(contacts: CSArray<ContactPoint>): number;
-	GetContacts(contacts: CSArray<ContactPoint>): number;
-	GetEnumerator(): unknown;
 }
 
 interface Matrix4x4 {
