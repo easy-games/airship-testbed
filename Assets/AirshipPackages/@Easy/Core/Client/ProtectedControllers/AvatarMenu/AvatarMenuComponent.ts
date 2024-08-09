@@ -771,7 +771,6 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private Save() {
-		print("save!");
 		if (this.inThumbnailMode) {
 			this.RenderThumbnails();
 			return;
