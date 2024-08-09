@@ -42824,6 +42824,7 @@ interface CharacterMovementData extends MonoBehaviour {
     groundCollisionLayerMask: LayerMask;
     terminalVelocity: number;
     minimumVelocity: number;
+    useMinimumVelocityInAir: boolean;
     slopeForce: number;
     minSlopeDelta: number;
     maxSlopeDelta: number;
