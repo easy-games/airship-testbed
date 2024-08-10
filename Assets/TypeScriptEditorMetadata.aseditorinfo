@@ -61,14 +61,6 @@
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/SendFriendRequest/SendFriendRequestModal.ts",
 			"name": "SendFriendRequestModal"
 		},
-		"AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/AvatarRenderComponent@AvatarRenderComponent": {
-			"assetPath": "AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/AvatarRenderComponent.ts",
-			"name": "AvatarRenderComponent"
-		},
-		"AirshipPackages/@Easy/Core/Shared/Avatar/AvatarViewComponent@AvatarViewComponent": {
-			"assetPath": "AirshipPackages/@Easy/Core/Shared/Avatar/AvatarViewComponent.ts",
-			"name": "AvatarViewComponent"
-		},
 		"AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/AvatarMenuComponent@AvatarMenuComponent": {
 			"assetPath": "AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/AvatarMenuComponent.ts",
 			"name": "AvatarMenuComponent"
@@ -128,6 +120,10 @@
 		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsPage@SettingsPage": {
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsPage.ts",
 			"name": "SettingsPage"
+		},
+		"AirshipPackages/@Easy/Core/Shared/Avatar/AvatarViewComponent@AvatarViewComponent": {
+			"assetPath": "AirshipPackages/@Easy/Core/Shared/Avatar/AvatarViewComponent.ts",
+			"name": "AvatarViewComponent"
 		},
 		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/MainMenuContent@MainMenuContent": {
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/MainMenuContent.ts",
@@ -196,6 +192,10 @@
 		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/SocialMenu@SocialMenu": {
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/SocialMenu.ts",
 			"name": "SocialMenu"
+		},
+		"AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/AvatarRenderComponent@AvatarRenderComponent": {
+			"assetPath": "AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/AvatarRenderComponent.ts",
+			"name": "AvatarRenderComponent"
 		},
 		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/General/PlayerList@PlayerList": {
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/General/PlayerList.ts",

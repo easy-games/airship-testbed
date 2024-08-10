@@ -1078,3 +1078,20 @@ interface LagCompensator extends NetworkBehaviour {
 		layerMask = -1,
 	): RaycastHit | undefined;
 }
+
+interface AccessoryComponent extends MonoBehaviour {
+	accessorySlot: AccessorySlot;
+	visibilityMode: VisibilityMode;
+	skinnedToCharacter: boolean;
+	canMeshCombine: boolean;
+	bodyMask: number;
+	localPosition: Vector3;
+	localRotation: Quaternion;
+	localScale: Vector3;
+
+	Copy(other: AccessoryComponent): void;
+	GetServerInstanceId(): string;
+	GetServerClassId(): string;
+	GetSlotNumber(): number;
+	HasFlag(flag: BodyMask): boolean;
+}

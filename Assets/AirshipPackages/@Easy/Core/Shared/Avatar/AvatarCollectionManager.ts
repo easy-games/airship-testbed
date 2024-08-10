@@ -44,7 +44,7 @@ export class AvatarCollectionManager {
 				continue;
 			}
 			//print("Found avatar item: " + element.ToString());
-			this.allAvatarAccessories.set(element.serverClassId, element);
+			this.allAvatarAccessories.set(element.GetServerClassId(), element);
 		}
 
 		if (this.allAvatarFaces.size() === 0) {
@@ -55,7 +55,7 @@ export class AvatarCollectionManager {
 					continue;
 				}
 				//print("Found avatar item: " + element.ToString());
-				this.allAvatarFaces.set(element.serverClassId, element);
+				this.allAvatarFaces.set(element.GetServerClassId(), element);
 			}
 		}
 
