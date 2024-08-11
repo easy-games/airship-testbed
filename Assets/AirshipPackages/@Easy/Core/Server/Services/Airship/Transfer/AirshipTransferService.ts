@@ -1,12 +1,16 @@
 import {
 	ServerBridgeApiCreateServer,
 	ServerBridgeApiTransferGroupToGame,
+	ServerBridgeApiTransferGroupToMatchingServer,
+	ServerBridgeApiTransferGroupToPlayer,
 	ServerBridgeApiTransferGroupToServer,
 	TransferServiceBridgeTopics,
 } from "@Easy/Core/Server/ProtectedServices/Airship/Transfer/ProtectedTransferService";
 import { Airship, Platform } from "@Easy/Core/Shared/Airship";
 import {
 	AirshipGameTransferConfig,
+	AirshipMatchingServerTransferConfig,
+	AirshipPlayerTransferConfig,
 	AirshipServerConfig,
 	AirshipServerTransferConfig,
 } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipTransfers";
@@ -130,8 +134,8 @@ export class AirshipTransferService {
 	}
 
 	/**
-	 * Transfers a group of players to the provided server. The server can be in any scene, but must be part of the current servers game.
-	 * @param player The players to transfer, either userIds or Player objects
+	 * Transfers a group of players to the provided server. The target server must be part of the same game.
+	 * @param player The players to transfer.
 	 * @param serverId The server to transfer the players to
 	 * @param config The configuration to be used for this transfer {@link AirshipGameTransferConfig}
 	 */
@@ -145,6 +149,41 @@ export class AirshipTransferService {
 			LuauContext.Protected,
 			userIds,
 			serverId,
+			config,
+		);
+		if (!result.success) throw result.error;
+		return result.data;
+	}
+
+	/**
+	 * Transfers a group of players to a server that matches the provided configuration. If any of the configuration
+	 * parameters are missing, they will be ignored when selecting a server.
+	 * @param userIds The players to tranfer.
+	 * @param selectors The configuration for selecting a server. {@link AirshipMatchingServerTransferConfig}
+	 */
+	public async TransferGroupToMatchingServer(userIds: string[], selectors: AirshipMatchingServerTransferConfig) {
+		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiTransferGroupToMatchingServer>(
+			TransferServiceBridgeTopics.TransferGroupToServer,
+			LuauContext.Protected,
+			userIds,
+			selectors,
+		);
+		if (!result.success) throw result.error;
+		return result.data;
+	}
+
+	/**
+	 * Transfers a group of players to another player. The target player must be in the current game.
+	 * @param userIds The userIds to transfer.
+	 * @param targetUserId The userId of the target player.
+	 * @param config The configuration for the transfer {@link}
+	 */
+	public async TransferGroupToPlayer(userIds: string[], targetUserId: string, config?: AirshipPlayerTransferConfig) {
+		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiTransferGroupToPlayer>(
+			TransferServiceBridgeTopics.TransferGroupToServer,
+			LuauContext.Protected,
+			userIds,
+			targetUserId,
 			config,
 		);
 		if (!result.success) throw result.error;
