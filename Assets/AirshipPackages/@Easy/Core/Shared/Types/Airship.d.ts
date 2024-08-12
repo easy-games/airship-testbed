@@ -585,6 +585,7 @@ interface CharacterAnimationHelper extends Component {
 	SetVelocity(vel: Vector3);
 	SetGrounded(grounded: boolean);
 	PlayAnimation(clip: AnimationClip, layer: CharacterAnimationLayer);
+	PlayAnimationWithWeight(clip: AnimationClip, layer: CharacterAnimationLayer, eight: number);
 	StopAnimation(layer: CharacterAnimationLayer);
 }
 
