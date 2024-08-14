@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e7e988a1fa245d40abc74de0b80620b, type: 3}
   m_Name: FaceAnime07
   m_EditorClassIdentifier: 
-  serverClassId: 
+  serverClassId: 8a925be2-cd78-4a7d-a2d6-102c850f4f5c
   serverClassIdStaging: 4a03e80d-e79f-4cc9-9f4c-c7e26c1534f8
   serverInstanceId: bd2ee78f-c456-463b-afcf-cb6734134dad
   decalTexture: {fileID: 2800000, guid: 8827e7ba2cf6a8c48a4710e0313eb8e6, type: 3}

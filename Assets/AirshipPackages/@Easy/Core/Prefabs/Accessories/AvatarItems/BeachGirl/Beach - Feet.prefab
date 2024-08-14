@@ -123,7 +123,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b74917b00f1d374c9a7136917a61ddf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serverClassId: 
+  serverClassId: 1f29a748-63de-470c-8f01-d26e6afd2f4d
   serverClassIdStaging: 8ac82737-794c-4372-946b-ad98a59f87b6
   accessorySlot: 10
   visibilityMode: 0
