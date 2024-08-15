@@ -182,6 +182,10 @@ export class Mouse {
 		inputBridge.SetMouseLocked(true);
 	}
 
+	public static WarpCursorPosition(position: Vector2): void {
+		inputBridge.WarpCursorPosition(position);
+	}
+
 	/** Check if the mouse is locked. */
 	public static IsLocked() {
 		return inputBridge.IsMouseLocked();

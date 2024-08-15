@@ -199,6 +199,7 @@ interface InputBridge {
 	GetMousePosition(): Vector2;
 	GetMouseDelta(): Vector2;
 	SetMouseLocked(locked: boolean): void;
+	WarpCursorPosition(pos: Vector2): void;
 	IsMouseLocked(): boolean;
 	GetScheme(): string;
 	IsPointerOverUI(): boolean;
