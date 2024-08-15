@@ -10,13 +10,21 @@ export class ShutdownService {
 	private static shutdownTimeNobodyConnected = 10 * 60;
 	private static shutdownTimeAllPlayersLeft = 1 * 60;
 
-	constructor() {}
+	private serverBootstrap: ServerBootstrap;
+
+	constructor() {
+		this.serverBootstrap = GameObject.Find("ServerBootstrap").GetComponent<ServerBootstrap>()!;
+	}
 
 	protected OnStart(): void {
 		// Airship.players.onPlayerJoined.Connect((player) => {
 		// 	this.playerConnected = true;
 		// 	this.timeWithNoPlayers = 0;
 		// });
+
+		this.serverBootstrap.onProcessExit(() => {
+			this.FireOnShutdown();
+		});
 
 		const intervalTime = 10;
 		SetInterval(intervalTime, () => {
@@ -58,5 +66,25 @@ export class ShutdownService {
 	public Shutdown(): void {
 		const serverBootstrap = GameObject.Find("ServerBootstrap").GetComponent<ServerBootstrap>()!;
 		serverBootstrap.Shutdown();
+	}
+
+	private FireOnShutdown(): void {
+		print("FireOnShutdown");
+		let done = false;
+
+		const Done = () => {
+			if (done) return;
+			done = true;
+
+			this.serverBootstrap.Shutdown();
+		};
+
+		task.unscaledDelay(30, () => {
+			Done();
+		});
+		task.spawn(() => {
+			contextbridge.invoke("ServerShutdown", LuauContext.Game);
+			Done();
+		});
 	}
 }

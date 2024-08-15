@@ -1,12 +1,16 @@
 import {
 	ServerBridgeApiCreateServer,
 	ServerBridgeApiTransferGroupToGame,
+	ServerBridgeApiTransferGroupToMatchingServer,
+	ServerBridgeApiTransferGroupToPlayer,
 	ServerBridgeApiTransferGroupToServer,
 	TransferServiceBridgeTopics,
 } from "@Easy/Core/Server/ProtectedServices/Airship/Transfer/ProtectedTransferService";
 import { Airship, Platform } from "@Easy/Core/Shared/Airship";
 import {
 	AirshipGameTransferConfig,
+	AirshipMatchingServerTransferConfig,
+	AirshipPlayerTransferConfig,
 	AirshipServerConfig,
 	AirshipServerTransferConfig,
 } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipTransfers";
@@ -92,12 +96,7 @@ export class AirshipTransferService {
 		gameId: string,
 		config?: AirshipGameTransferConfig,
 	): Promise<void> {
-		let userIds: string[];
-		if (typeIs(players, "table")) {
-			userIds = (players as Player[]).map((p) => p.userId);
-		} else {
-			userIds = players;
-		}
+		let userIds: string[] = players.map((player) => (typeIs(player, "table") ? player.userId : player));
 		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiTransferGroupToGame>(
 			TransferServiceBridgeTopics.TransferGroupToGame,
 			LuauContext.Protected,
@@ -111,7 +110,7 @@ export class AirshipTransferService {
 
 	/**
 	 * Transfers a player to the provided server. The server can be in any scene, but must be part of the current servers game.
-	 * @param player The player to transfer, either userId or Player object
+	 * @param player The player to transfer, either userIds or Player objects
 	 * @param serverId The server to transfer the player to
 	 * @param config The configuration to be used for this transfer {@link AirshipGameTransferConfig}
 	 */
@@ -120,31 +119,90 @@ export class AirshipTransferService {
 		serverId: string,
 		config?: AirshipServerTransferConfig,
 	): Promise<void> {
-		let userId: string;
-		if (typeIs(player, "table")) {
-			userId = player.username;
-		} else {
-			userId = player;
-		}
-		return await this.TransferGroupToServer([userId], serverId, config);
+		return await this.TransferGroupToServer([player], serverId, config);
 	}
 
 	/**
-	 * Transfers a group of players to the provided server. The server can be in any scene, but must be part of the current servers game.
+	 * Transfers a group of players to the provided server. The target server must be part of the same game.
 	 * @param player The players to transfer, either userIds or Player objects
 	 * @param serverId The server to transfer the players to
 	 * @param config The configuration to be used for this transfer {@link AirshipGameTransferConfig}
 	 */
 	public async TransferGroupToServer(
-		userIds: string[],
+		players: readonly (Player | string)[],
 		serverId: string,
 		config?: AirshipServerTransferConfig,
 	): Promise<void> {
+		let userIds: string[] = players.map((player) => (typeIs(player, "table") ? player.userId : player));
 		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiTransferGroupToServer>(
 			TransferServiceBridgeTopics.TransferGroupToServer,
 			LuauContext.Protected,
 			userIds,
 			serverId,
+			config,
+		);
+		if (!result.success) throw result.error;
+		return result.data;
+	}
+
+	/**
+	 * Transfers a player to a server that matches the provided configuration. If any of the configuration
+	 * parameters are missing, they will be ignored when selecting a server.
+	 * @param players The player to transfer, either userId or Player object
+	 * @param selectors The configuration for selecting a server. {@link AirshipMatchingServerTransferConfig}
+	 */
+	public async TransferToMatchingServer(player: Player | string, selectors: AirshipMatchingServerTransferConfig) {
+		return await this.TransferGroupToMatchingServer([player], selectors);
+	}
+
+	/**
+	 * Transfers a group of players to a server that matches the provided configuration. If any of the configuration
+	 * parameters are missing, they will be ignored when selecting a server.
+	 * @param players The players to transfer, either userIds or Player objects
+	 * @param selectors The configuration for selecting a server. {@link AirshipMatchingServerTransferConfig}
+	 */
+	public async TransferGroupToMatchingServer(
+		players: readonly (Player | string)[],
+		selectors: AirshipMatchingServerTransferConfig,
+	) {
+		let userIds: string[] = players.map((player) => (typeIs(player, "table") ? player.userId : player));
+		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiTransferGroupToMatchingServer>(
+			TransferServiceBridgeTopics.TransferGroupToServer,
+			LuauContext.Protected,
+			userIds,
+			selectors,
+		);
+		if (!result.success) throw result.error;
+		return result.data;
+	}
+
+	/**
+	 * Transfers a group of players to another player. The target player must be in the current game.
+	 * @param player The player to transfer, either userId or Player object
+	 * @param targetUserId The userId of the target player.
+	 * @param config The configuration for the transfer {@link AirshipPlayerTransferConfig}
+	 */
+	public async TransferToPlayer(player: Player | string, targetUserId: string, config?: AirshipPlayerTransferConfig) {
+		return await this.TransferGroupToPlayer([player], targetUserId, config);
+	}
+
+	/**
+	 * Transfers a group of players to another player. The target player must be in the current game.
+	 * @param players The players to transfer, either userIds or Player objects
+	 * @param targetUserId The userId of the target player.
+	 * @param config The configuration for the transfer {@link AirshipPlayerTransferConfig}
+	 */
+	public async TransferGroupToPlayer(
+		players: (Player | string)[],
+		targetUserId: string,
+		config?: AirshipPlayerTransferConfig,
+	) {
+		let userIds: string[] = players.map((player) => (typeIs(player, "table") ? player.userId : player));
+		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiTransferGroupToPlayer>(
+			TransferServiceBridgeTopics.TransferGroupToServer,
+			LuauContext.Protected,
+			userIds,
+			targetUserId,
 			config,
 		);
 		if (!result.success) throw result.error;
