@@ -16,7 +16,7 @@ export default class MicIndicator extends AirshipBehaviour {
 	protected Start(): void {
 		const voiceChat = Bridge.GetAirshipVoiceChatNetwork();
 		task.spawn(() => {
-			while (!voiceChat.gameObject.activeInHierarchy) {
+			while (!voiceChat.gameObject.activeInHierarchy || !voiceChat.agent) {
 				task.unscaledWait();
 			}
 			voiceChat.agent.MuteSelf = true;
