@@ -1213,7 +1213,7 @@ MonoBehaviour:
   alwaysStepUp: 0
   assistedLedgeJump: 1
   preventWallClipping: 1
-  preventFallingWhileCrouching: 1
+  preventFallingWhileCrouching: 0
 --- !u!114 &903796914586745664
 MonoBehaviour:
   m_ObjectHideFlags: 0
