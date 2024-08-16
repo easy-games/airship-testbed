@@ -1,4 +1,5 @@
 import { Controller } from "@Easy/Core/Shared/Flamework";
+import { Game } from "@Easy/Core/Shared/Game";
 import { CoreLogger } from "@Easy/Core/Shared/Logger/CoreLogger";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
@@ -73,6 +74,7 @@ export class SocketController {
 	}
 
 	public Connect(): void {
+		if (Game.IsEditor() && !Game.IsInternal()) return;
 		let connected = SocketManager.ConnectAsyncInternal();
 		this.onSocketConnectionChanged.Fire(connected);
 	}
