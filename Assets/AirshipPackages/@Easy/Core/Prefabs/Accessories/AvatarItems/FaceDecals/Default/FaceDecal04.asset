@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e7e988a1fa245d40abc74de0b80620b, type: 3}
   m_Name: FaceDecal04
   m_EditorClassIdentifier: 
-  serverClassId: 45f0b695-e672-4b15-b18e-7a7003ca1785
+  serverClassId: 8994fafd-6b2c-419f-b7d3-eb5305f3e4a5
+  serverClassIdStaging: 45f0b695-e672-4b15-b18e-7a7003ca1785
   serverInstanceId: 
   decalTexture: {fileID: 2800000, guid: 60657f1653bbcac42b295018be42437f, type: 3}

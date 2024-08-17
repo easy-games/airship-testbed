@@ -339,7 +339,7 @@ export class ClientChatSingleton {
 			this.inputTransform,
 			new Vector2(this.inputTransform.sizeDelta.x, 40),
 			0.04,
-		).SetUseUnscaledTime(true);
+		)?.SetUseUnscaledTime(true);
 		// this.chatInputBin.Add(() => {
 		// 	t.Cancel();
 		// });
@@ -352,7 +352,7 @@ export class ClientChatSingleton {
 			this.inputTransform,
 			new Vector2(this.inputTransform.sizeDelta.x, 0),
 			0.04,
-		).SetUseUnscaledTime(true);
+		)?.SetUseUnscaledTime(true);
 		this.selected = false;
 		// this.chatInputBin.Add(() => {
 		// 	t.Cancel();

@@ -392,6 +392,14 @@ PrefabInstance:
       propertyPath: m_metadata.properties.Array.data[4].refPath
       value: AirshipPackages/@Easy/Core/Client/ProtectedControllers/MainMenuPageName@MainMenuPageType
       objectReference: {fileID: 0}
+    - target: {fileID: 6768730929660228639, guid: 4245e93ed87754d2196fa82fcc505590, type: 3}
+      propertyPath: m_metadata.properties.Array.data[4].modified
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6768730929660228639, guid: 4245e93ed87754d2196fa82fcc505590, type: 3}
+      propertyPath: m_metadata.properties.Array.data[4].serializedValue
+      value: Home
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

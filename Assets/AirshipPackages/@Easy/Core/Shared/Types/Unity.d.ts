@@ -1343,6 +1343,16 @@ interface PhysicsConstructor {
 		direction: Vector3,
 		maxDistance: number,
 		layerMask: number,
+		queryTriggerInteraction: QueryTriggerInteraction,
+	): LuaTuple<
+		| [hit: true, point: Vector3, normal: Vector3, collider: Collider]
+		| [hit: false, point: undefined, normal: undefined, collider: undefined]
+	>;
+	Raycast(
+		origin: Vector3,
+		direction: Vector3,
+		maxDistance: number,
+		layerMask: number,
 	): LuaTuple<
 		| [hit: true, point: Vector3, normal: Vector3, collider: Collider]
 		| [hit: false, point: undefined, normal: undefined, collider: undefined]

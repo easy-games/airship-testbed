@@ -45,10 +45,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b74917b00f1d374c9a7136917a61ddf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serverClassId: f718acb1-6e26-4923-998d-e0a8bd321800
+  serverClassId: 9d52f626-ee5c-4adb-a5bd-c0ee73e34924
+  serverClassIdStaging: f718acb1-6e26-4923-998d-e0a8bd321800
   accessorySlot: 2
   visibilityMode: 2
   skinnedToCharacter: 0
+  canMeshCombine: 1
   bodyMask: 0
 --- !u!1001 &5443328445201169373
 PrefabInstance:

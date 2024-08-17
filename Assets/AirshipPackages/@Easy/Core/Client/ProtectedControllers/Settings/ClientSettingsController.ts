@@ -6,7 +6,7 @@ import { ClientSettingsFile } from "./ClientSettingsFile";
 
 const defaultData: ClientSettingsFile = {
 	mouseSensitivity: 2,
-	mouseSmoothing: 0.5,
+	mouseSmoothing: 0,
 	touchSensitivity: 0.5,
 	globalVolume: 1,
 	ambientVolume: 0.1,

@@ -46,12 +46,16 @@ export default class AvatarAccessoryBtn extends AirshipBehaviour {
 	}
 
 	public SetText(label: string) {
-		this.labelText.enabled = true;
-		this.labelText.text = label;
+		if (this.labelText) {
+			this.labelText.enabled = true;
+			this.labelText.text = label ?? "";
+		}
 	}
 
 	public SetBGColor(newColor: Color) {
-		this.bgImage.color = newColor;
+		if (this.bgImage) {
+			this.bgImage.color = newColor;
+		}
 	}
 
 	public SetSelected(val: boolean) {

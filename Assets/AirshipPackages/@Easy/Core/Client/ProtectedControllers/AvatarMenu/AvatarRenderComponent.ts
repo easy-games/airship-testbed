@@ -1,4 +1,3 @@
-import { Airship } from "@Easy/Core/Shared/Airship";
 import AvatarBackdropComponent, { AvatarBackdropType } from "@Easy/Core/Shared/Avatar/AvatarBackdropComponent";
 import { AvatarCollectionManager } from "@Easy/Core/Shared/Avatar/AvatarCollectionManager";
 import { AvatarPlatformAPI } from "@Easy/Core/Shared/Avatar/AvatarPlatformAPI";
@@ -121,7 +120,7 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 		this.builder.rig.faceMesh.gameObject.SetActive(false);
 		//Load the accessory onto the avatar
 		let acc = this.builder.AddSingleAccessory(accessoryTemplate, true);
-		this.RenderClass(accessoryTemplate.name, accessoryTemplate.serverClassId, accessoryTemplate.accessorySlot);
+		this.RenderClass(accessoryTemplate.name, accessoryTemplate.GetServerClassId(), accessoryTemplate.accessorySlot);
 	}
 	/**
 	 * Internal use only`.
@@ -135,7 +134,7 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 		//Load the accessory onto the avatar
 		this.builder.rig.faceMesh.gameObject.SetActive(true);
 		this.builder.SetFaceTexture(face.decalTexture);
-		this.RenderClass(face.name, face.serverClassId, AccessorySlot.Face);
+		this.RenderClass(face.name, face.GetServerClassId(), AccessorySlot.Face);
 	}
 
 	private RenderClass(name: string, serverClassId: string, slot: AccessorySlot) {

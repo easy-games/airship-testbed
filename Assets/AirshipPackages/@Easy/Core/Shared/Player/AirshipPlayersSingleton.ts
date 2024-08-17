@@ -13,6 +13,7 @@ import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { AssetCache } from "../AssetCache/AssetCache";
 import { AvatarPlatformAPI } from "../Avatar/AvatarPlatformAPI";
+import { CoreLogger } from "../Logger/CoreLogger";
 import { AirshipUrl } from "../Util/AirshipUrl";
 import { Levenshtein } from "../Util/Strings/Levenshtein";
 import { OnUpdate } from "../Util/Timer";
@@ -342,6 +343,13 @@ export class AirshipPlayersSingleton {
 	}
 
 	private HandlePlayerReadyServer(player: Player): void {
+		const conn = player.networkIdentity.connectionToClient;
+		if (!conn?.isReady) {
+			CoreLogger.Log("Player " + player.username + "'s connection was not ready. Waiting for ready.");
+			while (!conn?.isReady) {
+				task.unscaledWait();
+			}
+		}
 		if (Game.IsGameLuauContext()) {
 			CoreNetwork.ServerToClient.ServerInfo.server.FireClient(
 				player,
@@ -351,7 +359,7 @@ export class AirshipPlayersSingleton {
 			);
 		}
 
-		if (RunUtil.IsHosting() || player !== Game.localPlayer) {
+		if (Game.IsHosting() || player !== Game.localPlayer) {
 			this.players.add(player);
 		}
 

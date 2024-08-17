@@ -77,7 +77,11 @@ export default class CharacterAnimator extends AirshipBehaviour {
 		//Animate flinch
 		let foundFlinchClip = this.isFirstPerson ? this.flinchClipViewmodel : this.flinchClip;
 		if (foundFlinchClip) {
-			this.character.animationHelper.PlayAnimation(foundFlinchClip, CharacterAnimationLayer.OVERRIDE_1);
+			this.character.animationHelper.PlayAnimationWithWeight(
+				foundFlinchClip,
+				CharacterAnimationLayer.OVERRIDE_4,
+				0.5,
+			);
 		}
 	}
 

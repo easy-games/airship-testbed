@@ -30,7 +30,6 @@ export class AvatarCollectionManager {
 		}
 		AvatarCollectionManager.instance = this;
 
-		let i = 0;
 		//Load avatar accessories
 		let avatarCollection = AssetBridge.Instance.LoadAsset<AvatarAccessoryCollection>(
 			"AirshipPackages/@Easy/Core/Prefabs/Accessories/AvatarItems/EntireAvatarCollection.asset",
@@ -43,8 +42,10 @@ export class AvatarCollectionManager {
 				CoreLogger.Warn("Empty element in avatar generalAccessories collection: " + i);
 				continue;
 			}
+			const classId = element.GetServerClassId();
+			if (!classId) continue;
 			//print("Found avatar item: " + element.ToString());
-			this.allAvatarAccessories.set(element.serverClassId, element);
+			this.allAvatarAccessories.set(element.GetServerClassId(), element);
 		}
 
 		if (this.allAvatarFaces.size() === 0) {
@@ -54,8 +55,10 @@ export class AvatarCollectionManager {
 					CoreLogger.Warn("Empty element in avatar generalAccessories collection: " + i);
 					continue;
 				}
+				const classId = element.GetServerClassId();
+				if (!classId) continue;
 				//print("Found avatar item: " + element.ToString());
-				this.allAvatarFaces.set(element.serverClassId, element);
+				this.allAvatarFaces.set(element.GetServerClassId(), element);
 			}
 		}
 

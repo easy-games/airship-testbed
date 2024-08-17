@@ -196,7 +196,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3027810235059869620, guid: b4133d9ff571e4eecaee0729b5a769e7, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 3027810235059869620, guid: b4133d9ff571e4eecaee0729b5a769e7, type: 3}
       propertyPath: m_SizeDelta.y
@@ -204,7 +204,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3027810235059869620, guid: b4133d9ff571e4eecaee0729b5a769e7, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 3027810235059869620, guid: b4133d9ff571e4eecaee0729b5a769e7, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -388,6 +388,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: FriendRequestModal
+    singleton: 0
     decorators: []
     properties:
     - name: content

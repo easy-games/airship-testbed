@@ -1,5 +1,6 @@
 import { GameDto, GamesDto, MyGamesDto } from "@Easy/Core/Client/Components/HomePage/API/GamesAPI";
 import { Controller, Service } from "@Easy/Core/Shared/Flamework/flamework";
+import { Game } from "@Easy/Core/Shared/Game";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 import { SetTimeout } from "@Easy/Core/Shared/Util/Timer";
@@ -14,12 +15,14 @@ export default class SearchSingleton {
 	public myGamesIds = new Set<string>();
 
 	protected OnStart(): void {
-		task.spawn(() => {
-			this.FetchPopularGames();
-		});
-		task.spawn(() => {
-			this.FetchMyGames();
-		});
+		if (Game.IsClient()) {
+			task.spawn(() => {
+				this.FetchPopularGames();
+			});
+			task.spawn(() => {
+				this.FetchMyGames();
+			});
+		}
 	}
 
 	public AddGames(dtos: GameDto[]): void {
@@ -36,11 +39,16 @@ export default class SearchSingleton {
 		}
 	}
 
-	public FetchMyGames(): void {
+	public FetchMyGames(retryDelay = 1): void {
 		const res = InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/memberships/games/self?liveStats=true");
 		if (!res.success) {
+			if (400 <= res.statusCode && res.statusCode < 500) {
+				warn("Failed to fetch my games: " + res.error);
+				return;
+			}
+
 			// warn("Failed to fetch my games. Retrying in 1s..");
-			SetTimeout(1, () => {
+			SetTimeout(math.min(retryDelay * 2, 30), () => {
 				this.FetchMyGames();
 			});
 			return;

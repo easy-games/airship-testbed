@@ -401,7 +401,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private DisplayItems(items: { instanceId: string; item: AccessoryComponent }[]) {
 		if (items && items.size() > 0) {
 			items.forEach((value) => {
-				this.AddItemButton(value.item.serverClassId, value.instanceId, value.name, () => {
+				this.AddItemButton(value.item.GetServerClassId(), value.instanceId, value.name, () => {
 					//Accessory
 					this.SelectItem(value.instanceId, value.item);
 				});
@@ -415,7 +415,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		let faceItems = AvatarCollectionManager.instance.GetAllAvatarFaceItems();
 		if (faceItems) {
 			faceItems.forEach((value) => {
-				this.AddItemButton(value.serverClassId, value.serverInstanceId, value.name, () => {
+				this.AddItemButton(value.GetServerClassId(), value.serverInstanceId, value.name, () => {
 					//Accessory
 					this.SelectFaceItem(value);
 				});
@@ -771,7 +771,6 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private Save() {
-		print("save!");
 		if (this.inThumbnailMode) {
 			this.RenderThumbnails();
 			return;
@@ -842,27 +841,43 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		if (foundItems) {
 			let allItems: { instanceId: string; item: AccessoryComponent }[] = [];
 			for (let [key, value] of foundItems) {
-				if (value && value.serverClassId !== undefined && value.serverClassId !== "") {
-					let button = this.AddItemButton(value.serverClassId, value.serverClassId, value.name, () => {
-						const alreadySelected = this.thumbnailRenderList.get(value.serverClassId)?.button.GetSelected();
-						this.Log("Selecting item: " + value.ToString() + ": " + alreadySelected);
-						this.thumbnailRenderList.get(value.serverClassId)?.button.SetSelected(!alreadySelected);
-					});
+				if (value && value.GetServerClassId() !== undefined && value.GetServerClassId() !== "") {
+					let button = this.AddItemButton(
+						value.GetServerClassId(),
+						value.GetServerClassId(),
+						value.name,
+						() => {
+							const alreadySelected = this.thumbnailRenderList
+								.get(value.GetServerClassId())
+								?.button.GetSelected();
+							this.Log("Selecting item: " + value.ToString() + ": " + alreadySelected);
+							this.thumbnailRenderList
+								.get(value.GetServerClassId())
+								?.button.SetSelected(!alreadySelected);
+						},
+					);
 					button.SetSelected(false);
-					this.thumbnailRenderList.set(value.serverClassId, { accesory: value, button: button });
+					this.thumbnailRenderList.set(value.GetServerClassId(), { accesory: value, button: button });
 				}
 			}
 			for (let value of foundFaces) {
-				if (value && value.serverClassId !== undefined && value.serverClassId !== "") {
-					let button = this.AddItemButton(value.serverClassId, value.serverClassId, value.name, () => {
-						const alreadySelected = this.thumbnailFaceRenderList
-							.get(value.serverClassId)
-							?.button.GetSelected();
-						this.Log("Selecting face: " + value.ToString() + ": " + alreadySelected);
-						this.thumbnailFaceRenderList.get(value.serverClassId)?.button.SetSelected(!alreadySelected);
-					});
+				if (value && value.GetServerClassId() !== undefined && value.GetServerClassId() !== "") {
+					let button = this.AddItemButton(
+						value.GetServerClassId(),
+						value.GetServerClassId(),
+						value.name,
+						() => {
+							const alreadySelected = this.thumbnailFaceRenderList
+								.get(value.GetServerClassId())
+								?.button.GetSelected();
+							this.Log("Selecting face: " + value.ToString() + ": " + alreadySelected);
+							this.thumbnailFaceRenderList
+								.get(value.GetServerClassId())
+								?.button.SetSelected(!alreadySelected);
+						},
+					);
 					button.SetSelected(false);
-					this.thumbnailFaceRenderList.set(value.serverClassId, { accesory: value, button: button });
+					this.thumbnailFaceRenderList.set(value.GetServerClassId(), { accesory: value, button: button });
 				}
 			}
 			this.DisplayItems(allItems);

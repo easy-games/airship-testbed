@@ -136,7 +136,7 @@ export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
 			);
 			this.networkBin.Add(
 				id.onStopAuthority.Connect(() => {
-					this.OnStartClient?.();
+					this.OnStopAuthority?.();
 				}),
 			);
 		}

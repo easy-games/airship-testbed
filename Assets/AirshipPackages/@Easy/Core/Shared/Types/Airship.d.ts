@@ -199,6 +199,7 @@ interface InputBridge {
 	GetMousePosition(): Vector2;
 	GetMouseDelta(): Vector2;
 	SetMouseLocked(locked: boolean): void;
+	WarpCursorPosition(pos: Vector2): void;
 	IsMouseLocked(): boolean;
 	GetScheme(): string;
 	IsPointerOverUI(): boolean;
@@ -585,6 +586,7 @@ interface CharacterAnimationHelper extends Component {
 	SetVelocity(vel: Vector3);
 	SetGrounded(grounded: boolean);
 	PlayAnimation(clip: AnimationClip, layer: CharacterAnimationLayer);
+	PlayAnimationWithWeight(clip: AnimationClip, layer: CharacterAnimationLayer, eight: number);
 	StopAnimation(layer: CharacterAnimationLayer);
 }
 
@@ -1077,4 +1079,21 @@ interface LagCompensator extends NetworkBehaviour {
 		tolerancePercent = 0,
 		layerMask = -1,
 	): RaycastHit | undefined;
+}
+
+interface AccessoryComponent extends MonoBehaviour {
+	accessorySlot: AccessorySlot;
+	visibilityMode: VisibilityMode;
+	skinnedToCharacter: boolean;
+	canMeshCombine: boolean;
+	bodyMask: number;
+	localPosition: Vector3;
+	localRotation: Quaternion;
+	localScale: Vector3;
+
+	Copy(other: AccessoryComponent): void;
+	GetServerInstanceId(): string;
+	GetServerClassId(): string;
+	GetSlotNumber(): number;
+	HasFlag(flag: BodyMask): boolean;
 }

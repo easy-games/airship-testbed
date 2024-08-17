@@ -46,10 +46,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b74917b00f1d374c9a7136917a61ddf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serverClassId: 2057d42b-8e26-43bd-a050-6629d85d5886
+  serverClassId: afa18c2d-2836-46d9-8f69-5a4e1e045837
+  serverClassIdStaging: 2057d42b-8e26-43bd-a050-6629d85d5886
   accessorySlot: 2
   visibilityMode: 2
   skinnedToCharacter: 0
+  canMeshCombine: 1
   bodyMask: 0
 --- !u!1001 &6850067611769934202
 PrefabInstance:
@@ -148,6 +150,10 @@ PrefabInstance:
     - target: {fileID: 4668442726366096521, guid: a492e3b1166836a4388525825d0a5b61, type: 3}
       propertyPath: colorSettings.Array.data[0].baseColor.r
       value: 0.96772593
+      objectReference: {fileID: 0}
+    - target: {fileID: 5607906113974638952, guid: a492e3b1166836a4388525825d0a5b61, type: 3}
+      propertyPath: serverClassId
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 5857168321168286071, guid: a492e3b1166836a4388525825d0a5b61, type: 3}
       propertyPath: m_LocalPosition.x

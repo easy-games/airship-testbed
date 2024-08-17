@@ -1,5 +1,7 @@
 import {
 	AirshipGameTransferConfig,
+	AirshipMatchingServerTransferConfig,
+	AirshipPlayerTransferConfig,
 	AirshipServerConfig,
 	AirshipServerTransferConfig,
 } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipTransfers";
@@ -14,6 +16,8 @@ export const enum TransferServiceBridgeTopics {
 	CreateServer = "TransferService:CreateServer",
 	TransferGroupToGame = "TransferService:TransferGroupToGame",
 	TransferGroupToServer = "TransferService:TransferGroupToServer",
+	TransferGroupToMatchingServer = "TransferService:TransferGroupToMatchingServer",
+	TransferGroupToPlayer = "TransferService:TransferGroupToPlayer",
 }
 
 export type ServerBridgeApiCreateServer = (config?: AirshipServerConfig) => Result<CreateServerResponse, string>;
@@ -27,14 +31,19 @@ export type ServerBridgeApiTransferGroupToServer = (
 	serverId: string,
 	config?: AirshipServerTransferConfig,
 ) => Result<undefined, string>;
+export type ServerBridgeApiTransferGroupToMatchingServer = (
+	userIds: string[],
+	config: AirshipMatchingServerTransferConfig,
+) => Result<undefined, string>;
+export type ServerBridgeApiTransferGroupToPlayer = (
+	userIds: string[],
+	targetUserId: string,
+	config?: AirshipPlayerTransferConfig,
+) => Result<undefined, string>;
 
 @Service({})
 export class ProtectedTransferService {
-	private serverBootstrap: ServerBootstrap;
-
 	constructor() {
-		this.serverBootstrap = GameObject.Find("ServerBootstrap").GetComponent<ServerBootstrap>()!;
-
 		contextbridge.callback<ServerBridgeApiCreateServer>(TransferServiceBridgeTopics.CreateServer, (_, config) => {
 			const [success, result] = this.CreateServer(config).await();
 			if (!success) {
@@ -70,6 +79,34 @@ export class ProtectedTransferService {
 				return result;
 			},
 		);
+
+		contextbridge.callback<ServerBridgeApiTransferGroupToMatchingServer>(
+			TransferServiceBridgeTopics.TransferGroupToMatchingServer,
+			(_, players, config) => {
+				const [success, result] = this.TransferGroupToMatchingServer(players, config).await();
+				if (!success) {
+					return {
+						success: false,
+						error: "Unable to complete request.",
+					};
+				}
+				return result;
+			},
+		);
+
+		contextbridge.callback<ServerBridgeApiTransferGroupToPlayer>(
+			TransferServiceBridgeTopics.TransferGroupToPlayer,
+			(_, players, targetUserId, config) => {
+				const [success, result] = this.TransferGroupToPlayer(players, targetUserId, config).await();
+				if (!success) {
+					return {
+						success: false,
+						error: "Unable to complete request.",
+					};
+				}
+				return result;
+			},
+		);
 	}
 
 	public async CreateServer(config?: AirshipServerConfig): Promise<ReturnType<ServerBridgeApiCreateServer>> {
@@ -81,6 +118,7 @@ export class ProtectedTransferService {
 				accessMode: config?.accessMode,
 				allowedUids: config?.allowedUserIds,
 				maxPlayers: config?.maxPlayers,
+				tags: config?.tags,
 			}),
 		);
 
@@ -106,14 +144,11 @@ export class ProtectedTransferService {
 		config?: AirshipGameTransferConfig,
 	): Promise<ReturnType<ServerBridgeApiTransferGroupToGame>> {
 		const res = InternalHttpManager.PostAsync(
-			`${AirshipUrl.GameCoordinator}/transfers/transfer`,
+			`${AirshipUrl.GameCoordinator}/transfers/transfer/target/game`,
 			EncodeJSON({
 				uids: players.map((p) => (typeIs(p, "string") ? p : p.userId)),
 				gameId,
 				preferredServerId: config?.preferredServerId,
-				sceneId: config?.sceneId,
-				maxPlayers: config?.maxPlayers,
-				region: config?.region,
 				serverTransferData: config?.serverTransferData,
 				clientTransferData: config?.clientTransferData,
 			}),
@@ -139,7 +174,7 @@ export class ProtectedTransferService {
 		config?: AirshipServerTransferConfig,
 	): Promise<ReturnType<ServerBridgeApiTransferGroupToServer>> {
 		const res = InternalHttpManager.PostAsync(
-			`${AirshipUrl.GameCoordinator}/transfers/transfer`,
+			`${AirshipUrl.GameCoordinator}/transfers/transfer/target/server`,
 			EncodeJSON({
 				uids: players.map((p) => (typeIs(p, "string") ? p : p.userId)),
 				serverId,
@@ -162,29 +197,64 @@ export class ProtectedTransferService {
 		};
 	}
 
-	private FireOnShutdown(): void {
-		print("FireOnShutdown");
-		let done = false;
+	public async TransferGroupToMatchingServer(
+		players: readonly (string | Player)[],
+		config: AirshipMatchingServerTransferConfig,
+	): Promise<ReturnType<ServerBridgeApiTransferGroupToMatchingServer>> {
+		const res = InternalHttpManager.PostAsync(
+			`${AirshipUrl.GameCoordinator}/transfers/transfer/target/matching`,
+			EncodeJSON({
+				uids: players.map((p) => (typeIs(p, "string") ? p : p.userId)),
+				sceneId: config.sceneId,
+				maxPlayers: config.maxPlayers,
+				regions: config.regions,
+				tag: config.tag,
+				accessMode: config.accessMode,
+				serverTransferData: config.serverTransferData,
+				clientTransferData: config.clientTransferData,
+			}),
+		);
 
-		const Done = () => {
-			if (done) return;
-			done = true;
+		if (!res.success || res.statusCode > 299) {
+			warn(`Unable to complete transfer request. Status Code:  ${res.statusCode}.\n`, res.error);
+			return {
+				success: false,
+				error: res.error,
+			};
+		}
 
-			this.serverBootstrap.Shutdown();
+		return {
+			success: true,
+			data: undefined,
 		};
-
-		task.unscaledDelay(30, () => {
-			Done();
-		});
-		task.spawn(() => {
-			contextbridge.invoke("ServerShutdown", LuauContext.Game);
-			Done();
-		});
 	}
 
-	protected OnStart(): void {
-		this.serverBootstrap.onProcessExit(() => {
-			this.FireOnShutdown();
-		});
+	public async TransferGroupToPlayer(
+		players: readonly (string | Player)[],
+		targetUserId: string,
+		config?: AirshipPlayerTransferConfig,
+	): Promise<ReturnType<ServerBridgeApiTransferGroupToPlayer>> {
+		const res = InternalHttpManager.PostAsync(
+			`${AirshipUrl.GameCoordinator}/transfers/transfer/target/player`,
+			EncodeJSON({
+				uids: players.map((p) => (typeIs(p, "string") ? p : p.userId)),
+				targetUserId,
+				serverTransferData: config?.serverTransferData,
+				clientTransferData: config?.clientTransferData,
+			}),
+		);
+
+		if (!res.success || res.statusCode > 299) {
+			warn(`Unable to complete transfer request. Status Code:  ${res.statusCode}.\n`, res.error);
+			return {
+				success: false,
+				error: res.error,
+			};
+		}
+
+		return {
+			success: true,
+			data: undefined,
+		};
 	}
 }

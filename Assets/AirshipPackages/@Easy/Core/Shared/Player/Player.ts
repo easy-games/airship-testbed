@@ -149,7 +149,7 @@ export class Player {
 			// Load in outfit after spawn if it's not already downloaded
 			task.spawn(() => {
 				let startTime = Time.time;
-				this.WaitForOutfitLoaded();
+				this.WaitForOutfitLoaded(10);
 				if (characterComponent.IsAlive()) {
 					if (Game.IsInternal()) {
 						let diff = Time.time - startTime;

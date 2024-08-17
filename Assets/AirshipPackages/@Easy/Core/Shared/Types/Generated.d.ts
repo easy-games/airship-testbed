@@ -31218,6 +31218,7 @@ interface AccessoryOutfit extends ScriptableObject {
     
 interface AccessoryComponent extends MonoBehaviour {
     serverClassId: string;
+    serverClassIdStaging: string;
     accessorySlot: AccessorySlot;
     visibilityMode: VisibilityMode;
     skinnedToCharacter: boolean;
@@ -31230,6 +31231,7 @@ interface AccessoryComponent extends MonoBehaviour {
 
 
     Copy(other: AccessoryComponent): void;
+    GetServerClassId(): string;
     GetServerInstanceId(): string;
     GetSlotNumber(): number;
     HasFlag(flag: BodyMask): boolean;
@@ -31272,11 +31274,13 @@ declare const AccessoryComponent: AccessoryComponentConstructor;
     
 interface AccessoryFace extends ScriptableObject {
     serverClassId: string;
+    serverClassIdStaging: string;
     serverInstanceId: string;
     decalTexture: Texture2D;
 
 
 
+    GetServerClassId(): string;
 
 
 }
@@ -42824,6 +42828,7 @@ interface CharacterMovementData extends MonoBehaviour {
     groundCollisionLayerMask: LayerMask;
     terminalVelocity: number;
     minimumVelocity: number;
+    useMinimumVelocityInAir: boolean;
     slopeForce: number;
     minSlopeDelta: number;
     maxSlopeDelta: number;

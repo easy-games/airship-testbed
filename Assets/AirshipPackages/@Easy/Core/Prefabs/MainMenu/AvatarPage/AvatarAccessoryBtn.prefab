@@ -434,6 +434,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: AvatarAccessoryBtn
+    singleton: 0
     decorators: []
     properties:
     - name: iconImage
