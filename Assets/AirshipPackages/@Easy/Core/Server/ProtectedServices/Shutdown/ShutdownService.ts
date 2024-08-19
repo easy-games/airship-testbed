@@ -32,15 +32,9 @@ export class ShutdownService {
 				return;
 			}
 
-			let playerCount = 0;
 			const players = PlayerManagerBridge.Instance.GetPlayers();
-			// filter bots
-			for (let i = 0; i < players.Length; i++) {
-				const p = players.GetValue(i);
-				if (p.connectionId >= 0) {
-					playerCount++;
-				}
-			}
+			let playerCount = players.Length;
+
 			if (playerCount > 0) {
 				this.playerConnected = true;
 				this.timeWithNoPlayers = 0;
