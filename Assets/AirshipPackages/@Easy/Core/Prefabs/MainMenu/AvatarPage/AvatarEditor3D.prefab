@@ -782,9 +782,9 @@ MonoBehaviour:
       fileRef: 
       decorators: []
       nullable: 0
-      serializedValue: 3
+      serializedValue: 2
       serializedObject: {fileID: 0}
-      modified: 0
+      modified: 1
     - name: screenspaceDistance
       type: number
       objectType: 
@@ -842,7 +842,7 @@ MonoBehaviour:
       fileRef: 
       decorators: []
       nullable: 0
-      serializedValue: 21
+      serializedValue: 60
       serializedObject: {fileID: 0}
       modified: 1
     - name: avatarRenderTemplate
@@ -891,9 +891,9 @@ MonoBehaviour:
       fileRef: 
       decorators: []
       nullable: 0
-      serializedValue: 0.25
+      serializedValue: 0.2
       serializedObject: {fileID: 0}
-      modified: 0
+      modified: 1
     displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0
