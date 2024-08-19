@@ -291,12 +291,12 @@ export class AirshipInputSingleton {
 
 		if (config?.icon) {
 			// Assets/AirshipPackages/@Easy/Core/Prefabs/Images/crouch-pose.png
-			const iconTexture = AssetCache.LoadAssetIfExists<Texture2D>(
-				`Assets/AirshipPackages/@Easy/Core/Prefabs/Images/CoreIcons/${config.icon}.png`,
-			);
+			const iconTexture = AssetCache.LoadAssetIfExists<Texture2D>(config.icon);
 			if (iconTexture) {
 				const img = mobileButton.transform.GetChild(0).GetComponent<Image>()!;
 				img.sprite = Bridge.MakeSprite(iconTexture);
+			} else {
+				warn(`Unable to create icon for mobile button (${actionName}). Invalid icon path: ${config.icon}`);
 			}
 		}
 
