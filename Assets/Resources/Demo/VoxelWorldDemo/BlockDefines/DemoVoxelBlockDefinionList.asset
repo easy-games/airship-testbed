@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b6bb3c020ba07904f93cf9126147e068, type: 3}
-  m_Name: DefaultVoxelBlockDefinionList
+  m_Name: DemoVoxelBlockDefinionList
   m_EditorClassIdentifier: 
-  scope: '@Easy/Default'
+  scope: '@Easy/DemoBlocks'
   blockDefinitions:
   - {fileID: 11400000, guid: d70cbd71b18a38741a60d88adbe9723f, type: 2}
   - {fileID: 11400000, guid: 4bdbaed430df6614481b6a8ef9aa738d, type: 2}
