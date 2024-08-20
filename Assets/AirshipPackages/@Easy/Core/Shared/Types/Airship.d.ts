@@ -34,9 +34,30 @@ interface BinaryBlobConstructor {
 declare const BinaryBlob: BinaryBlobConstructor;
 
 interface Time {
+	/**
+	 * The time at the beginning of the current frame in seconds since the start of the application (Read Only).
+	 *
+	 * This is the time in seconds since the start of the application, which Time.timeScale scales and Time.maximumDeltaTime adjusts. When called from inside AirshipBehaviour.FixedUpdate, it returns Time.fixedTime.
+	 *
+	 * This value is undefined during Awake messages and starts after all of these messages are finished. This value does not update if the Editor is paused. See Time.realtimeSinceStartup for a time value that is unaffected by pausing.
+	 */
 	time: number;
+
+	/**
+	 * The interval in seconds from the last frame to the current one (Read Only).
+	 *
+	 * When this is called from inside AirshipBehaviour.FixedUpdate, it returns Time.fixedDeltaTime. The maximum value for deltaTime is defined by Time.maximumDeltaTime.
+	 */
 	deltaTime: number;
 	fixedDeltaTime: number;
+
+	/**
+	 * The total number of frames since the start of the game (Read Only).
+	 *
+	 * This value starts at 0 and increases by 1 on each Update phase.
+	 *
+	 * Internally, Unity uses a 64 bit integer which it downcasts to 32 bits when this is called, and discards the most significant (i.e. top) 32 bits.
+	 */
 	frameCount: number;
 	timeScale: number;
 	unscaledTime: number;
@@ -1096,4 +1117,5 @@ interface AccessoryComponent extends MonoBehaviour {
 	GetServerClassId(): string;
 	GetSlotNumber(): number;
 	HasFlag(flag: BodyMask): boolean;
+	SetInstanceId(id: string): void;
 }

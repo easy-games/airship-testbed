@@ -1,9 +1,7 @@
 import { Airship } from "../Airship";
-import { AccessoryClass, OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
+import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { Singleton } from "../Flamework";
-import { CoreLogger } from "../Logger/CoreLogger";
 import { ColorUtil } from "../Util/ColorUtil";
-import { RandomUtil } from "../Util/RandomUtil";
 import { AvatarCollectionManager } from "./AvatarCollectionManager";
 import { AvatarPlatformAPI } from "./AvatarPlatformAPI";
 

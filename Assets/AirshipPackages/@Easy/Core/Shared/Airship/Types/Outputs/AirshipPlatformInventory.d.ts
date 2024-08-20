@@ -74,6 +74,18 @@ export interface OutfitPatch {
 	name: string;
 }
 
+export interface OutfitCreateDto{
+	outfitId: string;
+	owner: string;
+
+	name: string;
+	/** Hex string */
+	skinColor: string;
+	accessories: Array<string>;
+
+	equipped: boolean;
+}
+
 export interface OutfitDto {
 	outfitId: string;
 	owner: string;

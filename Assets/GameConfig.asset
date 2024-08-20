@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GameConfig
   m_EditorClassIdentifier: 
   gameId: 319a92cb-c8b5-4559-8cff-0d1be7d230f3
-  startingSceneName: Movement
+  startingScene: {fileID: 102900000, guid: 7adf34f37f4884c5ab92c16c58f38874, type: 3}
   gameScenes:
   - {fileID: 102900000, guid: 3c9ae368a8ce5be42a0926c8ff129454, type: 3}
   - {fileID: 102900000, guid: 497a63aec7ca045bab13a5e25c5d7bba, type: 3}
@@ -25,7 +25,7 @@ MonoBehaviour:
   packages:
   - id: '@Easy/Core'
     assetVersion: 15
-    codeVersion: 22
+    codeVersion: 21
     game: 0
     localSource: 1
     disabled: 0

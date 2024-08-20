@@ -1,5 +1,5 @@
 import { AuthController } from "@Easy/Core/Client/ProtectedControllers/Auth/AuthController";
-import { AccessoryClass } from "../Airship/Types/Outputs/AirshipPlatformInventory";
+import { AccessoryClass, AccessoryInstanceDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { Dependency } from "../Flamework";
 import { Game } from "../Game";
 import { CoreLogger } from "../Logger/CoreLogger";
@@ -76,89 +76,97 @@ export class AvatarCollectionManager {
 		// }
 	}
 
-	private DownloadOwnedAccessories() {
-		CoreLogger.Log("Downloading owned accessories");
-		AvatarPlatformAPI.GetAccessories().then((acc) => {
-			if (acc) {
-				acc.forEach((itemData) => {
-					this.allAvatarClasses.set(itemData.class.classId, itemData.class);
-					//print("Possible item " + itemData.class.name + ": " + itemData.class.classId);
-					let item = this.allAvatarAccessories.get(itemData.class.classId);
-					let foundMatchingItem = false;
-					if (item) {
-						this.AddAvailableAvatarItem(itemData.instanceId, item);
-						foundMatchingItem = true;
-					} else {
-						let faceItem = this.allAvatarFaces.get(itemData.class.classId);
-						if (faceItem) {
-							faceItem.serverInstanceId = itemData.instanceId;
-							this.AddAvailableFaceItem(faceItem);
-							foundMatchingItem = true;
-						}
-					}
-
-					if (!foundMatchingItem) {
-						// CoreLogger.Log("Unpaired Server Item " + itemData.class.name + ": " + itemData.class.classId);
-					}
-				});
-			}
-		});
-	}
-
-	private InitUserOutfits(userId: string) {
-		AvatarPlatformAPI.GetAllOutfits().then((outfits) => {
-			const maxNumberOfOutfits = 5;
-			const numberOfOutfits = outfits ? outfits.size() : 0;
-			let name = "";
-			//Create missing outfits up to 5
-			for (let i = numberOfOutfits; i < maxNumberOfOutfits; i++) {
-				name = "Default" + i;
-				print("Creating missing outfit: " + name);
-				let outfit = AvatarPlatformAPI.CreateDefaultAvatarOutfit(
-					userId,
-					name,
-					name,
-					RandomUtil.FromArray(this.skinColors),
-				);
-				if (!outfit) {
-					error("Unable to make a new outfit :(");
-				}
-			}
-			//Make sure an outfit is equipped
-			if (!outfits || outfits.size() === 0 || AvatarPlatformAPI.GetEquippedOutfit() === undefined) {
-				AvatarPlatformAPI.EquipAvatarOutfit(name);
-			}
-		});
-	}
-
-	private AddAvailableAvatarItem(instanceId: string, item: AccessoryComponent) {
+	private AddAvailableAvatarItem(itemDto: AccessoryInstanceDto, item: AccessoryComponent) {
+		//print("Adding item: " + itemDto.class.name + " test: " + item.name);
 		const slotNumber: number = item.GetSlotNumber();
 		let items = this.ownedAvatarAccessories.get(slotNumber);
 		if (!items) {
 			//print("making new items for slot: " + slotNumber);
 			items = [];
 		}
-		items.push({ instanceId: instanceId, item: item });
+		items.push({ instanceId: itemDto.instanceId, item: item });
+
+		if (itemDto.class.name === "Tanktop") {
+			AvatarPlatformAPI.defaultShirt = itemDto;
+		} else if (itemDto.class.name === "Jeans Shorts_legs") {
+			AvatarPlatformAPI.defaultPants = itemDto;
+		} else if (itemDto.class.name === "Cool Sneaks") {
+			AvatarPlatformAPI.defaultShoes = itemDto;
+		}
 		//print("setting item slot " + slotNumber + " to: " + item.ToString());
 		this.ownedAvatarAccessories.set(slotNumber, items);
 	}
 
-	private AddAvailableFaceItem(item: AccessoryFace) {
+	private AddAvailableFaceItem(itemDto: AccessoryInstanceDto, item: AccessoryFace) {
+		//print("Adding face: " + itemDto.class.name + " test: " + item.name);
+		if (itemDto.class.name === "Face Simple 01" || itemDto.class.name === "FaceDecalSimple01") {
+			AvatarPlatformAPI.defaultFace = itemDto;
+		}
 		this.ownedAvatarFaces.push(item);
 	}
 
 	/**
 	 * @internal
 	 */
-	public DownloadAllAccessories(onComplete: () => void) {
-		Dependency<AuthController>()
-			.WaitForAuthed()
-			.then(() => {
-				//Get all owned accessories and map them to usable values
-				this.DownloadOwnedAccessories();
-				this.InitUserOutfits(Game.localPlayer.userId);
-				onComplete();
+	public async DownloadAllAccessories() {
+		await Dependency<AuthController>().WaitForAuthed();
+
+		//Get all owned accessories and map them to usable values
+		CoreLogger.Log("Downloading owned accessories");
+		let acc = await AvatarPlatformAPI.GetAccessories();
+		if (acc) {
+			acc.forEach((itemData) => {
+				this.allAvatarClasses.set(itemData.class.classId, itemData.class);
+				//print("Possible item " + itemData.class.name + ": " + itemData.class.classId);
+				let item = this.allAvatarAccessories.get(itemData.class.classId);
+				let foundMatchingItem = false;
+				if (item) {
+					this.AddAvailableAvatarItem(itemData, item);
+					foundMatchingItem = true;
+				} else {
+					let faceItem = this.allAvatarFaces.get(itemData.class.classId);
+					if (faceItem) {
+						faceItem.serverInstanceId = itemData.instanceId;
+						this.AddAvailableFaceItem(itemData, faceItem);
+						foundMatchingItem = true;
+					}
+				}
+
+				if (!foundMatchingItem) {
+					// CoreLogger.Log("Unpaired Server Item " + itemData.class.name + ": " + itemData.class.classId);
+				}
 			});
+		}
+
+		//Load the outfits
+		let outfits = await AvatarPlatformAPI.GetAllOutfits();
+		const maxNumberOfOutfits = 5;
+		const numberOfOutfits = outfits ? outfits.size() : 0;
+		let name = "";
+		let equippedOutfitId = "";
+		let firstOutfit = true;
+		//Create missing outfits up to 5
+		for (let i = numberOfOutfits; i < maxNumberOfOutfits; i++) {
+			name = "Default" + i;
+			print("Creating missing outfit: " + name);
+			let outfit = await AvatarPlatformAPI.CreateDefaultAvatarOutfit(
+				firstOutfit,
+				name,
+				name,
+				RandomUtil.FromArray(this.skinColors),
+			);
+			if (!outfit) {
+				error("Unable to make a new outfit :(");
+			}else if(firstOutfit){
+				firstOutfit = false;
+				equippedOutfitId = outfit.outfitId;
+			}
+		}
+		//Make sure an outfit is equipped
+		if (equippedOutfitId !== "" && (await AvatarPlatformAPI.GetEquippedOutfit()) === undefined) {
+			print("Setting equipped outfit: " + equippedOutfitId);
+			await AvatarPlatformAPI.EquipAvatarOutfit(equippedOutfitId);
+		}
 	}
 
 	/**
