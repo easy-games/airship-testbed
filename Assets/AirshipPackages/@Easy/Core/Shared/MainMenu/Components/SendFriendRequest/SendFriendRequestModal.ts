@@ -71,6 +71,7 @@ export default class SendFriendRequestModal extends AirshipBehaviour {
 		const maxDisplayRecommendations = 6;
 		for (let i = 0; i < math.min(maxDisplayRecommendations, sortedRecommendations.size()); i++) {
 			const rec = sortedRecommendations[i];
+			
 			// Check if card is displayable before parenting
 			const cardObj = Object.Instantiate(this.recommendationCardPrefab);
 			const card = cardObj.GetAirshipComponent<FriendRecommendation>()!;

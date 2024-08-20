@@ -57,6 +57,8 @@ export class RecommendedFriendsController implements OnStart {
 		// Monitor players in game
 		if (Game.IsInGame()) {
 			Protected.protectedPlayers.ObservePlayers((p) => {
+				const gameData = Game.WaitForGameData();
+
 				if (p.IsLocalPlayer()) return;
 				if (seenThisSession.has(p.userId)) return;
 				// If we're way over max recommendations stop adding new users. Otherwise we'll purge when saving.
@@ -74,8 +76,7 @@ export class RecommendedFriendsController implements OnStart {
 				);
 				rf.lastSeen = os.time();
 
-				const gameData = Game.gameData;
-				if (gameData && !rf.context.gameEncounters.some((g) => g.id === gameData.id)) {
+				if (!rf.context.gameEncounters.some((g) => g.id === gameData.id)) {
 					rf.context.gameEncounters.push({
 						cachedName: gameData.name,
 						id: gameData.id,
