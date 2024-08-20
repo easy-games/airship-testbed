@@ -5,6 +5,7 @@ import { AssetCache } from "../AssetCache/AssetCache";
 import { CoreContext } from "../CoreClientContext";
 import { CoreRefs } from "../CoreRefs";
 import { Game } from "../Game";
+import AirshipButton from "../MainMenu/Components/AirshipButton";
 import { ControlScheme, Keyboard, Mouse, Preferred as PreferredControls } from "../UserInput";
 import { Bin } from "../Util/Bin";
 import { CanvasAPI, PointerDirection } from "../Util/CanvasAPI";
@@ -280,6 +281,9 @@ export class AirshipInputSingleton {
 		const mobileButton = Object.Instantiate(this.mobileButtonPrefab);
 		mobileButton.name = "Mobile Button (" + actionName + ")";
 		mobileButton.transform.SetParent(this.mobileControlsContainer.transform);
+		mobileButton
+			.GetAirshipComponent<AirshipButton>()
+			?.SetStartingScale(config?.scale ? new Vector3(config.scale.x, config.scale.y, 1) : Vector3.one);
 		const lowerName = actionName.lower();
 
 		const rect = mobileButton.GetComponent<RectTransform>()!;

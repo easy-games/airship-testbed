@@ -111,6 +111,10 @@ export default class AirshipButton extends AirshipBehaviour {
 		}
 	}
 
+	public SetStartingScale(scale: Vector3): void {
+		this.startingScale = scale;
+	}
+
 	override OnDestroy(): void {
 		this.bin.Clean();
 	}
