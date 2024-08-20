@@ -6,8 +6,13 @@ import { CoreLogger } from "../Logger/CoreLogger";
 
 // TODO this needs to be moved to the main menu lua sandbox
 export class AvatarPlatformAPI {
+	public static defaultFace?: AccessoryInstanceDto;
+	public static defaultShirt?: AccessoryInstanceDto;
+	public static defaultPants?: AccessoryInstanceDto;
+	public static defaultShoes?: AccessoryInstanceDto;
+
 	private static Log(message: string) {
-		//print("AvatarAPI: " + message);
+		print("AvatarAPI: " + message);
 	}
 
 	public static GetHttpUrl(path: string) {
@@ -41,6 +46,7 @@ export class AvatarPlatformAPI {
 	public static async GetUserEquippedOutfit(userId: string): Promise<OutfitDto | undefined> {
 		const res = InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/uid/${userId}/equipped`));
 		if (res.success && res.data && res.data !== "") {
+			print("LOADED OUTFIT: " + res.data);
 			return DecodeJSON<OutfitDto>(res.data);
 		} else {
 			CoreLogger.Error("failed to load users equipped outfit: " + (res.error ?? "Empty Data"));
@@ -51,6 +57,7 @@ export class AvatarPlatformAPI {
 		this.Log("GetAvatarOutfit");
 		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/outfit-id/${outfitId}`));
 		if (res.success && res.data && res.data !== "") {
+			print("LOADED OUTFIT: " + res.data);
 			return DecodeJSON(res.data) as OutfitDto;
 		} else {
 			CoreLogger.Error("failed to load user outfit: " + (res.error ?? "Empty Data"));
@@ -58,7 +65,7 @@ export class AvatarPlatformAPI {
 	}
 
 	public static async CreateAvatarOutfit(outfit: OutfitDto) {
-		this.Log("CreateAvatarOutfit");
+		this.Log("CreateAvatarOutfit: " + EncodeJSON(outfit));
 		let res = InternalHttpManager.PostAsync(this.GetHttpUrl(`outfits`), EncodeJSON(outfit));
 		if (res.success) {
 			print("CREATED OUTFIT: " + res.data);
@@ -69,7 +76,7 @@ export class AvatarPlatformAPI {
 		this.Log("EquipAvatarOutfit");
 		let res = InternalHttpManager.PostAsync(this.GetHttpUrl(`outfits/outfit-id/${outfitId}/equip`));
 		if (res.success) {
-			// print("EQUIPPED OUTFIT: " + DecodeJSON<OutfitDto>(res.data).name);
+			print("EQUIPPED OUTFIT: " + res.data);
 		} else {
 			CoreLogger.Warn("Failed to equip outfit: " + res.error);
 		}
@@ -79,7 +86,10 @@ export class AvatarPlatformAPI {
 		this.Log("GetAccessories");
 		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`accessories/self`));
 		if (res.success) {
+			print("Got acc: " + res.data);
 			return DecodeJSON<AccessoryInstanceDto[]>(res.data);
+		} else {
+			error("Unable to load avatar items for user");
 		}
 	}
 
@@ -90,10 +100,25 @@ export class AvatarPlatformAPI {
 		skinColor: Color,
 	): OutfitDto {
 		this.Log("CreateDefaultAvatarOutfit");
-		let outfit = {
+		let accessories: AccessoryInstanceDto[] = [];
+
+		if (this.defaultFace) {
+			accessories.push(this.defaultFace);
+		}
+		if (this.defaultShirt) {
+			accessories.push(this.defaultShirt);
+		}
+		if (this.defaultPants) {
+			accessories.push(this.defaultPants);
+		}
+		if (this.defaultShoes) {
+			accessories.push(this.defaultShoes);
+		}
+
+		let outfit: OutfitDto = {
 			name: name,
 			outfitId: outfitId,
-			accessories: [],
+			accessories: accessories,
 			equipped: true,
 			owner: entityId,
 			skinColor: ColorUtil.ColorToHex(skinColor),

@@ -87,7 +87,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private discardMessage = "Are you sure you want to discard changes to your outfit?";
 
 	private Log(message: string) {
-		// print("Avatar Editor: " + message + " (" + Time.time + ")");
+		print("Avatar Editor: " + message + " (" + Time.time + ")");
 	}
 
 	override Init(mainMenu: MainMenuController, pageType: MainMenuPageType): void {
@@ -176,7 +176,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 		this.ClearItembuttons();
 
-		AvatarCollectionManager.instance.DownloadAllAccessories(() => {
+		AvatarCollectionManager.instance.DownloadAllAccessories().then(() => {
 			this.LoadAllOutfits();
 		});
 
@@ -207,6 +207,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	override OpenPage(params?: unknown): void {
 		super.OpenPage(params);
 		this.SetDirty(false);
+		this.LoadAllOutfits();
 
 		const mainMenuSingleton = Dependency<MainMenuSingleton>();
 
@@ -242,16 +243,18 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 
 		//"Enter" should allow you to rename currently selected outfit button
-		Keyboard.OnKeyDown(Key.Enter, (event) => {
-			if (event.uiProcessed) return;
-			if (!Dependency<MainMenuController>().IsOpen()) return;
+		this.bin.Add(
+			Keyboard.OnKeyDown(Key.Enter, (event) => {
+				if (event.uiProcessed) return;
+				if (!Dependency<MainMenuController>().IsOpen()) return;
 
-			const currentButton = this.outfitBtns[this.currentUserOutfitIndex];
-			if (!currentButton) return;
+				const currentButton = this.outfitBtns[this.currentUserOutfitIndex];
+				if (!currentButton) return;
 
-			const name = currentButton.gameObject.GetAirshipComponentInChildren<OutfitButtonNameComponent>();
-			name?.StartRename();
-		});
+				const name = currentButton.gameObject.GetAirshipComponentInChildren<OutfitButtonNameComponent>();
+				name?.StartRename();
+			}),
+		);
 
 		this.avatarOptionsHolder.gameObject.SetActive(true);
 
@@ -637,15 +640,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			this.outfits = outfits;
 			const outfitSize = this.outfits ? this.outfits.size() : 0;
 			if (outfitSize <= 0) {
-				warn("No outfits exist on user. Making initial default one");
-				this.outfits = [
-					AvatarPlatformAPI.CreateDefaultAvatarOutfit(
-						"9999",
-						"Default0",
-						"Default0",
-						RandomUtil.FromArray(AvatarCollectionManager.instance.skinColors),
-					),
-				];
+				error("No outfits exist on user");
 			}
 
 			if (this.outfitBtns) {
