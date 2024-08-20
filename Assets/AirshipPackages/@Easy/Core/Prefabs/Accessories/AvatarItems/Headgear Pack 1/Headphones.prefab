@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   m_LocalPosition: {x: -0, y: -1.48, z: 0.03}
-  m_LocalScale: {x: 0.65, y: 0.65, z: 0.65}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -42,7 +42,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8774837467697957978}
-  m_Mesh: {fileID: -139748086361850688, guid: 30237600a7c9fe849bbf896f953949e0, type: 3}
+  m_Mesh: {fileID: -139748086361850688, guid: ab53fade744c6404a900ba2dcc3c5a66, type: 3}
 --- !u!23 &2816994424537566463
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -65,9 +65,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7e082b6c7bf6bea4db51e4996a7878fb, type: 2}
-  - {fileID: 2100000, guid: 73bb5ed0ab4b2e84fa84f01a35c048b2, type: 2}
-  - {fileID: 2100000, guid: a61c499d0eb278d4ea32d4394d9d1eb6, type: 2}
+  - {fileID: 2100000, guid: e9559e67ce5e10b4eb775db75471bebe, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -121,7 +119,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - baseColor: {r: 0.25490198, g: 0.23137257, b: 0.21960786, a: 1}
-  - baseColor: {r: 0.7372549, g: 0.16078432, b: 0.14117648, a: 1}
   - baseColor: {r: 1, g: 1, b: 1, a: 1}
   addedByEditorScript: 0

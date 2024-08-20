@@ -42,7 +42,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7134873490874720588}
-  m_Mesh: {fileID: 4076001475100336573, guid: d2c63382808548a41a5bd0311d861b50, type: 3}
+  m_Mesh: {fileID: 4076001475100336573, guid: e2a74fff5be2b0e4f8ade80875bddb61, type: 3}
 --- !u!23 &4622391248800077142
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -65,9 +65,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 73bb5ed0ab4b2e84fa84f01a35c048b2, type: 2}
-  - {fileID: 2100000, guid: 7e082b6c7bf6bea4db51e4996a7878fb, type: 2}
-  - {fileID: 2100000, guid: a61c499d0eb278d4ea32d4394d9d1eb6, type: 2}
+  - {fileID: 2100000, guid: ca7f277049f545a4dbb2fa12c27a7055, type: 2}
   - {fileID: 2100000, guid: fb84abc0b5f1ea54ca1551c9ad731561, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -122,8 +120,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - baseColor: {r: 0.09411766, g: 0.058823533, b: 0.058823533, a: 1}
-  - baseColor: {r: 1, g: 0.9215687, b: 0.7137255, a: 1}
   - baseColor: {r: 1, g: 1, b: 1, a: 1}
-  - baseColor: {r: 0, g: 0.627451, b: 1, a: 0.12941177}
+  - baseColor: {r: 0, g: 0.66610146, b: 1, a: 1}
   addedByEditorScript: 0
