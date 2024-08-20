@@ -592,7 +592,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			print("Missing face item: " + face);
 			return;
 		}
-		this.mainMenu?.avatarView?.accessoryBuilder?.SetFaceTexture(face.decalTexture);
+		const accBuilder = this.mainMenu?.avatarView?.accessoryBuilder;
+		this.mainMenu?.avatarView?.accessoryBuilder?.SetFaceTexture(face.decalTexture, true);
 		this.selectedFaceId = face.serverInstanceId;
 		this.UpdateButtonGraphics();
 		this.SetDirty(true);
