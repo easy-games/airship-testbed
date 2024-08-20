@@ -1,9 +1,7 @@
 import { Airship } from "../Airship";
-import { AccessoryClass, OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
+import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { Singleton } from "../Flamework";
-import { CoreLogger } from "../Logger/CoreLogger";
 import { ColorUtil } from "../Util/ColorUtil";
-import { RandomUtil } from "../Util/RandomUtil";
 import { AvatarCollectionManager } from "./AvatarCollectionManager";
 import { AvatarPlatformAPI } from "./AvatarPlatformAPI";
 
@@ -95,7 +93,7 @@ export class AirshipAvatarSingleton {
 			} else {
 				const face = AvatarCollectionManager.instance.GetAccessoryFaceFromClassId(acc.class.classId);
 				if (face?.decalTexture) {
-					builder.SetFaceTexture(face.decalTexture);
+					builder.SetFaceTexture(face.decalTexture, false);
 				} else {
 					warn("Unable to find accessory with class ID: " + acc.class.classId);
 				}

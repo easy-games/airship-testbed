@@ -109,6 +109,10 @@ export default class FriendRecommendation extends AirshipBehaviour {
 		this.addButton.SetActive(false);
 		this.buttons.SetActive(true);
 
-		Dependency<ProtectedFriendsController>().SendFriendRequest(this.user.username);
+		Dependency<ProtectedUserController>().GetUserById(this.user.uid).andThen((res) => {
+			if (!res.data) return;
+
+			Dependency<ProtectedFriendsController>().SendFriendRequest(res.data.username);
+		});
 	}
 }
