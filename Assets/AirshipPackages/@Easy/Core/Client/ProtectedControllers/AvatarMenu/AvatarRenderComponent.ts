@@ -133,7 +133,7 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 		this.builder.RemoveAllAccessories(true);
 		//Load the accessory onto the avatar
 		this.builder.rig.faceMesh.gameObject.SetActive(true);
-		this.builder.SetFaceTexture(face.decalTexture);
+		this.builder.SetFaceTexture(face.decalTexture, true);
 		this.RenderClass(face.name, face.GetServerClassId(), AccessorySlot.Face);
 	}
 

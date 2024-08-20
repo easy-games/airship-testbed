@@ -1096,4 +1096,5 @@ interface AccessoryComponent extends MonoBehaviour {
 	GetServerClassId(): string;
 	GetSlotNumber(): number;
 	HasFlag(flag: BodyMask): boolean;
+	SetInstanceId(id: string): void;
 }

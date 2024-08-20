@@ -2893,8 +2893,9 @@ declare const enum StereoScreenCaptureMode {
 declare const enum ContextStyle {
     Block = 0,
     GreedyMeshingTiles = 1,
-    ContextBlocks = 2,
+    PipeBlocks = 2,
     QuarterTiles = 3,
+    Mesh = 4,
 }
 declare const enum CollisionType {
     None = 0,
@@ -29891,7 +29892,7 @@ declare const TextField: TextFieldConstructor;
     
 interface GameConfig extends ScriptableObject {
     gameId: string;
-    startingSceneName: string;
+    startingScene: SceneAsset;
     gameScenes: CSArray<Object>;
     packages: CSArray<AirshipPackageDocument>;
     tags: CSArray<string>;
@@ -29900,6 +29901,14 @@ interface GameConfig extends ScriptableObject {
 
 
     ToJson(): string;
+
+
+}
+    
+interface SceneAsset extends Object {
+
+
+
 
 
 }
@@ -30453,6 +30462,7 @@ interface ServerBootstrap extends MonoBehaviour {
     overrideGameBundleVersion: string;
     airshipJWT: string;
     agones: AgonesBetaSdk;
+    allocatedByAgones: boolean;
     gameId: string;
     serverId: string;
     organizationId: string;
@@ -30470,6 +30480,7 @@ interface ServerBootstrap extends MonoBehaviour {
     GetJoinCode(): string;
     InvokeOnProcessExit(): void;
     IsAgonesEnvironment(): boolean;
+    OnGameServerChange(server: GameServer): void;
     Shutdown(): void;
 
 
@@ -31043,7 +31054,7 @@ interface AccessoryBuilder extends MonoBehaviour {
     RemoveAllAccessories(rebuildMeshImmediately: boolean): void;
     RemoveClothingAccessories(rebuildMeshImmediately: boolean): void;
     SetAccessoryColor(slot: AccessorySlot, color: Color, rebuildMeshImmediately: boolean): void;
-    SetFaceTexture(texture: Texture2D): void;
+    SetFaceTexture(texture: Texture2D, rebuildMeshImmediately: boolean): void;
     SetSkinColor(color: Color, rebuildMeshImmediately: boolean): void;
     TryCombineMeshes(): void;
 
@@ -31216,29 +31227,6 @@ interface AccessoryOutfit extends ScriptableObject {
 
 }
     
-interface AccessoryComponent extends MonoBehaviour {
-    serverClassId: string;
-    serverClassIdStaging: string;
-    accessorySlot: AccessorySlot;
-    visibilityMode: VisibilityMode;
-    skinnedToCharacter: boolean;
-    canMeshCombine: boolean;
-    bodyMask: number;
-    localPosition: Vector3;
-    localRotation: Quaternion;
-    localScale: Vector3;
-
-
-
-    Copy(other: AccessoryComponent): void;
-    GetServerClassId(): string;
-    GetServerInstanceId(): string;
-    GetSlotNumber(): number;
-    HasFlag(flag: BodyMask): boolean;
-    SetInstanceId(id: string): void;
-
-
-}
     
 interface BodyMaskInspectorData {
     name: string;
@@ -31260,17 +31248,6 @@ interface BodyMaskInspectorDataConstructor {
 }
 declare const BodyMaskInspectorData: BodyMaskInspectorDataConstructor;
     
-interface AccessoryComponentConstructor {
-    BodyMaskInspectorDatas: CSArray<BodyMaskInspectorData>;
-
-
-    new(): AccessoryComponent;
-
-
-    GetBodyMaskName(bit: number): string;
-
-}
-declare const AccessoryComponent: AccessoryComponentConstructor;
     
 interface AccessoryFace extends ScriptableObject {
     serverClassId: string;
@@ -37141,12 +37118,56 @@ interface AirshipInventoryServiceBackend {
 
 }
     
+interface ItemClassInput {
+    name: string;
+    imageId: string;
+    tags: CSArray<string>;
+    description: string;
+    default: boolean;
+    tradable: boolean;
+    marketable: boolean;
+
+
+
+
+
+}
+    
+interface ItemClassInputConstructor {
+
+
+    new(): ItemClassInput;
+
+
+
+}
+declare const ItemClassInput: ItemClassInputConstructor;
+    
+interface AccessoryClassInput extends ItemClassInput {
+
+
+
+
+
+}
+    
+interface AccessoryClassInputConstructor {
+
+
+    new(): AccessoryClassInput;
+
+
+
+}
+declare const AccessoryClassInput: AccessoryClassInputConstructor;
+    
 interface AirshipInventoryServiceBackendConstructor {
 
 
     new(): AirshipInventoryServiceBackend;
 
 
+    CreateItem(ownerResourceId: string, data: AccessoryClassInput): HttpResponse;
     DeleteAccessory(itemId: string): HttpResponse;
     DeleteItem(itemId: string): HttpResponse;
     DeleteProfilePicture(itemId: string): HttpResponse;
