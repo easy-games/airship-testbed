@@ -31054,7 +31054,7 @@ interface AccessoryBuilder extends MonoBehaviour {
     RemoveAllAccessories(rebuildMeshImmediately: boolean): void;
     RemoveClothingAccessories(rebuildMeshImmediately: boolean): void;
     SetAccessoryColor(slot: AccessorySlot, color: Color, rebuildMeshImmediately: boolean): void;
-    SetFaceTexture(texture: Texture2D, rebuildMeshImmediately: boolean): void;
+    SetFaceTexture(texture: Texture2D): void;
     SetSkinColor(color: Color, rebuildMeshImmediately: boolean): void;
     TryCombineMeshes(): void;
 

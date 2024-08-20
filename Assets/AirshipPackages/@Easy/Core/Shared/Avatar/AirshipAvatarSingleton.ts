@@ -93,7 +93,7 @@ export class AirshipAvatarSingleton {
 			} else {
 				const face = AvatarCollectionManager.instance.GetAccessoryFaceFromClassId(acc.class.classId);
 				if (face?.decalTexture) {
-					builder.SetFaceTexture(face.decalTexture, false);
+					builder.SetFaceTexture(face.decalTexture);
 				} else {
 					warn("Unable to find accessory with class ID: " + acc.class.classId);
 				}

@@ -596,7 +596,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			return;
 		}
 		const accBuilder = this.mainMenu?.avatarView?.accessoryBuilder;
-		this.mainMenu?.avatarView?.accessoryBuilder?.SetFaceTexture(face.decalTexture, true);
+		this.mainMenu?.avatarView?.accessoryBuilder?.SetFaceTexture(face.decalTexture);
 		this.selectedFaceId = face.serverInstanceId;
 		this.UpdateButtonGraphics();
 		this.SetDirty(true);
@@ -641,7 +641,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			this.outfits = outfits;
 			const outfitSize = this.outfits ? this.outfits.size() : 0;
 			if (outfitSize <= 0) {
-				error("No outfits exist on user");
+				warn("No outfits exist on user");
 			}
 
 			if (this.outfitBtns) {

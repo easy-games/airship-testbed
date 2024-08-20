@@ -1,7 +1,7 @@
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
-import { AccessoryInstanceDto, OutfitDto, OutfitPatch } from "../Airship/Types/Outputs/AirshipPlatformInventory";
+import { AccessoryInstanceDto, OutfitCreateDto, OutfitDto, OutfitPatch } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { CoreLogger } from "../Logger/CoreLogger";
 
 // TODO this needs to be moved to the main menu lua sandbox
@@ -64,11 +64,13 @@ export class AvatarPlatformAPI {
 		}
 	}
 
-	public static async CreateAvatarOutfit(outfit: OutfitDto) {
-		this.Log("CreateAvatarOutfit: " + EncodeJSON(outfit));
+	public static async CreateAvatarOutfit(outfit: OutfitCreateDto) {
+		this.Log("CreateAvatarOutfit: " + this.GetHttpUrl(`outfits`) + " data: " + EncodeJSON(outfit));
 		let res = InternalHttpManager.PostAsync(this.GetHttpUrl(`outfits`), EncodeJSON(outfit));
 		if (res.success) {
 			print("CREATED OUTFIT: " + res.data);
+		}else{
+			CoreLogger.Error("Error creating outfit: " +res.error);
 		}
 	}
 
@@ -78,7 +80,7 @@ export class AvatarPlatformAPI {
 		if (res.success) {
 			print("EQUIPPED OUTFIT: " + res.data);
 		} else {
-			CoreLogger.Warn("Failed to equip outfit: " + res.error);
+			CoreLogger.Error("Failed to equip outfit: " + res.error);
 		}
 	}
 
@@ -89,7 +91,7 @@ export class AvatarPlatformAPI {
 			print("Got acc: " + res.data);
 			return DecodeJSON<AccessoryInstanceDto[]>(res.data);
 		} else {
-			error("Unable to load avatar items for user");
+			CoreLogger.Error("Unable to load avatar items for user");
 		}
 	}
 
@@ -98,29 +100,34 @@ export class AvatarPlatformAPI {
 		outfitId: string,
 		name: string,
 		skinColor: Color,
-	): OutfitDto {
+	): OutfitCreateDto {
 		this.Log("CreateDefaultAvatarOutfit");
-		let accessories: AccessoryInstanceDto[] = [];
+		let accessorUUIDs: string[] = [];
 
+		let ownerId = "";
 		if (this.defaultFace) {
-			accessories.push(this.defaultFace);
+			ownerId = this.defaultFace.ownerId;
+			accessorUUIDs.push(this.defaultFace.instanceId);
 		}
 		if (this.defaultShirt) {
-			accessories.push(this.defaultShirt);
+			ownerId = this.defaultShirt.ownerId;
+			accessorUUIDs.push(this.defaultShirt.instanceId);
 		}
 		if (this.defaultPants) {
-			accessories.push(this.defaultPants);
+			ownerId = this.defaultPants.ownerId;
+			accessorUUIDs.push(this.defaultPants.instanceId);
 		}
 		if (this.defaultShoes) {
-			accessories.push(this.defaultShoes);
+			ownerId = this.defaultShoes.ownerId;
+			accessorUUIDs.push(this.defaultShoes.instanceId);
 		}
 
-		let outfit: OutfitDto = {
+		let outfit: OutfitCreateDto = {
 			name: name,
 			outfitId: outfitId,
-			accessories: accessories,
-			equipped: true,
-			owner: entityId,
+			accessories: accessorUUIDs,
+			equipped: false,
+			owner: ownerId,
 			skinColor: ColorUtil.ColorToHex(skinColor),
 		};
 		this.CreateAvatarOutfit(outfit);
@@ -157,7 +164,7 @@ export class AvatarPlatformAPI {
 		if (res.success) {
 			return DecodeJSON<AccessoryInstanceDto[]>(res.data);
 		} else {
-			error("Error loading image: " + res.error);
+			CoreLogger.Error("Error loading image: " + res.error);
 		}
 	}
 
@@ -177,7 +184,7 @@ export class AvatarPlatformAPI {
 		if (res.success) {
 			print("Finished updating item");
 		} else {
-			error("Unable to update item " + classId + " with new image: " + imageId);
+			CoreLogger.Error("Unable to update item " + classId + " with new image: " + imageId);
 		}
 	}
 
@@ -199,7 +206,7 @@ export class AvatarPlatformAPI {
 			if (uploadRes.success) {
 				print("UPLOAD COMPLETE: " + url);
 			} else {
-				error("Error Uploading item image: " + uploadRes.error);
+				CoreLogger.Error("Error Uploading item image: " + uploadRes.error);
 			}
 
 			return imageId;
@@ -212,7 +219,8 @@ export class AvatarPlatformAPI {
 			// 	},
 			// });
 		} else {
-			error("Error Gettin item image resource: " + res.error);
+			CoreLogger.Error("Error Gettin item image resource: " + res.error);
+			return "";
 		}
 	}
 }
