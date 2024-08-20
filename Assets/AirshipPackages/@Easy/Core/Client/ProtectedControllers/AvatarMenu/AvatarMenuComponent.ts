@@ -87,12 +87,12 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private discardMessage = "Are you sure you want to discard changes to your outfit?";
 
 	private Log(message: string) {
-		print("Avatar Editor: " + message + " (" + Time.time + ")");
+		//print("Avatar Editor: " + message + " (" + Time.time + ")");
 	}
 
 	override Init(mainMenu: MainMenuController, pageType: MainMenuPageType): void {
 		super.Init(mainMenu, pageType);
-		// print("Initializing Avatar Menu");
+		this.Log("Initializing Avatar Menu");
 		this.clientId = 9999; //Dependency<PlayerController>().clientId;
 
 		this.mainNavBtns = this.mainNavButtonHolder.gameObject.GetAirshipComponentsInChildren<AvatarMenuBtn>();

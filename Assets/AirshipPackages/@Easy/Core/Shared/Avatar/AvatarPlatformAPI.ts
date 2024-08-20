@@ -12,7 +12,7 @@ export class AvatarPlatformAPI {
 	public static defaultShoes?: AccessoryInstanceDto;
 
 	private static Log(message: string) {
-		print("AvatarAPI: " + message);
+		//print("AvatarAPI: " + message);
 	}
 
 	public static GetHttpUrl(path: string) {
@@ -46,7 +46,7 @@ export class AvatarPlatformAPI {
 	public static async GetUserEquippedOutfit(userId: string): Promise<OutfitDto | undefined> {
 		const res = InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/uid/${userId}/equipped`));
 		if (res.success && res.data && res.data !== "") {
-			print("LOADED OUTFIT: " + res.data);
+			this.Log("LOADED OUTFIT: " + res.data);
 			return DecodeJSON<OutfitDto>(res.data);
 		} else {
 			CoreLogger.Error("failed to load users equipped outfit: " + (res.error ?? "Empty Data"));
@@ -57,7 +57,7 @@ export class AvatarPlatformAPI {
 		this.Log("GetAvatarOutfit");
 		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/outfit-id/${outfitId}`));
 		if (res.success && res.data && res.data !== "") {
-			print("LOADED OUTFIT: " + res.data);
+			this.Log("LOADED OUTFIT: " + res.data);
 			return DecodeJSON(res.data) as OutfitDto;
 		} else {
 			CoreLogger.Error("failed to load user outfit: " + (res.error ?? "Empty Data"));
@@ -68,7 +68,8 @@ export class AvatarPlatformAPI {
 		this.Log("CreateAvatarOutfit: " + this.GetHttpUrl(`outfits`) + " data: " + EncodeJSON(outfit));
 		let res = InternalHttpManager.PostAsync(this.GetHttpUrl(`outfits`), EncodeJSON(outfit));
 		if (res.success) {
-			print("CREATED OUTFIT: " + res.data);
+			this.Log("CREATED OUTFIT: " + res.data);
+			return DecodeJSON<OutfitDto>(res.data);
 		}else{
 			CoreLogger.Error("Error creating outfit: " +res.error);
 		}
@@ -78,7 +79,7 @@ export class AvatarPlatformAPI {
 		this.Log("EquipAvatarOutfit");
 		let res = InternalHttpManager.PostAsync(this.GetHttpUrl(`outfits/outfit-id/${outfitId}/equip`));
 		if (res.success) {
-			print("EQUIPPED OUTFIT: " + res.data);
+			this.Log("EQUIPPED OUTFIT: " + res.data);
 		} else {
 			CoreLogger.Error("Failed to equip outfit: " + res.error);
 		}
@@ -88,19 +89,19 @@ export class AvatarPlatformAPI {
 		this.Log("GetAccessories");
 		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`accessories/self`));
 		if (res.success) {
-			print("Got acc: " + res.data);
+			//this.Log("Got acc: " + res.data);
 			return DecodeJSON<AccessoryInstanceDto[]>(res.data);
 		} else {
 			CoreLogger.Error("Unable to load avatar items for user");
 		}
 	}
 
-	public static CreateDefaultAvatarOutfit(
-		entityId: string,
+	public static async CreateDefaultAvatarOutfit(
+		equipped: boolean,
 		outfitId: string,
 		name: string,
 		skinColor: Color,
-	): OutfitCreateDto {
+	) {
 		this.Log("CreateDefaultAvatarOutfit");
 		let accessorUUIDs: string[] = [];
 
@@ -126,12 +127,11 @@ export class AvatarPlatformAPI {
 			name: name,
 			outfitId: outfitId,
 			accessories: accessorUUIDs,
-			equipped: false,
+			equipped: equipped,
 			owner: ownerId,
 			skinColor: ColorUtil.ColorToHex(skinColor),
 		};
-		this.CreateAvatarOutfit(outfit);
-		return outfit;
+		return this.CreateAvatarOutfit(outfit);
 	}
 
 	public static async RenameOutfit(outfitId: string, newName: string) {
@@ -173,7 +173,7 @@ export class AvatarPlatformAPI {
 		if (imageId === "" || imageId === undefined) {
 			return;
 		}
-		print("Updating item with new image");
+		this.Log("Updating item with new image");
 		let res = InternalHttpManager.PatchAsync(
 			this.GetHttpUrl(`accessories/class-id/${classId}`),
 			EncodeJSON({
@@ -182,17 +182,17 @@ export class AvatarPlatformAPI {
 			}),
 		);
 		if (res.success) {
-			print("Finished updating item");
+			this.Log("Finished updating item");
 		} else {
 			CoreLogger.Error("Unable to update item " + classId + " with new image: " + imageId);
 		}
 	}
 
 	public static async UploadImage(resourceId: string, filePath: string, fileSize: number): Promise<string> {
-		print("Requesting image url: " + resourceId);
+		this.Log("Requesting image url: " + resourceId);
 
 		let getPath = `${AirshipUrl.ContentService}/item-classes/images/resource-id/${resourceId}/signed-url?contentType=image%2Fpng&contentLength=${fileSize}`;
-		print("get path: " + getPath);
+		this.Log("get path: " + getPath);
 		const res = InternalHttpManager.GetAsync(getPath);
 
 		//GET /item-classes/images/resource-id/6536df9f3843ac629cf3b8b1/signed-url?contentType=image%2Fpng&contentLength=1128045 HTTP/3
@@ -201,10 +201,10 @@ export class AvatarPlatformAPI {
 			const data = DecodeJSON<{ url: string; imageId: string }>(res.data);
 			const url = data.url;
 			const imageId = data.imageId;
-			print("Got image url: " + url);
+			this.Log("Got image url: " + url);
 			const uploadRes = InternalHttpManager.PutImageAsync(url, filePath);
 			if (uploadRes.success) {
-				print("UPLOAD COMPLETE: " + url);
+				this.Log("UPLOAD COMPLETE: " + url);
 			} else {
 				CoreLogger.Error("Error Uploading item image: " + uploadRes.error);
 			}

@@ -77,7 +77,7 @@ export class AvatarCollectionManager {
 	}
 
 	private AddAvailableAvatarItem(itemDto: AccessoryInstanceDto, item: AccessoryComponent) {
-		print("Adding item: " + itemDto.class.name + " test: " + item.name);
+		//print("Adding item: " + itemDto.class.name + " test: " + item.name);
 		const slotNumber: number = item.GetSlotNumber();
 		let items = this.ownedAvatarAccessories.get(slotNumber);
 		if (!items) {
@@ -98,8 +98,8 @@ export class AvatarCollectionManager {
 	}
 
 	private AddAvailableFaceItem(itemDto: AccessoryInstanceDto, item: AccessoryFace) {
-		print("Adding face: " + itemDto.class.name + " test: " + item.name);
-		if (itemDto.class.name === "Face 13" || itemDto.class.name === "FaceDecal13") {
+		//print("Adding face: " + itemDto.class.name + " test: " + item.name);
+		if (itemDto.class.name === "Face Simple 01" || itemDto.class.name === "FaceDecalSimple01") {
 			AvatarPlatformAPI.defaultFace = itemDto;
 		}
 		this.ownedAvatarFaces.push(item);
@@ -143,24 +143,29 @@ export class AvatarCollectionManager {
 		const maxNumberOfOutfits = 5;
 		const numberOfOutfits = outfits ? outfits.size() : 0;
 		let name = "";
+		let equippedOutfitId = "";
+		let firstOutfit = true;
 		//Create missing outfits up to 5
 		for (let i = numberOfOutfits; i < maxNumberOfOutfits; i++) {
 			name = "Default" + i;
 			print("Creating missing outfit: " + name);
 			let outfit = await AvatarPlatformAPI.CreateDefaultAvatarOutfit(
-				Game.localPlayer.userId,
+				firstOutfit,
 				name,
 				name,
 				RandomUtil.FromArray(this.skinColors),
 			);
 			if (!outfit) {
 				error("Unable to make a new outfit :(");
+			}else if(firstOutfit){
+				firstOutfit = false;
+				equippedOutfitId = outfit.outfitId;
 			}
 		}
 		//Make sure an outfit is equipped
-		if (!outfits || outfits.size() === 0 || (await AvatarPlatformAPI.GetEquippedOutfit()) === undefined) {
-			print("Forcing equipped outfit: " + name);
-			await AvatarPlatformAPI.EquipAvatarOutfit(name);
+		if (equippedOutfitId !== "" && (await AvatarPlatformAPI.GetEquippedOutfit()) === undefined) {
+			print("Setting equipped outfit: " + equippedOutfitId);
+			await AvatarPlatformAPI.EquipAvatarOutfit(equippedOutfitId);
 		}
 	}
 
