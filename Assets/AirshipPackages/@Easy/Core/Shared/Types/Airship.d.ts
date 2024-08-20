@@ -885,6 +885,8 @@ interface SteamLuauAPIConstructor {
 	OnRichPresenceGameJoinRequest(callback: (connectStr: string, steamId: number) => void): EngineEventConnection;
 	OnNewLaunchParams(callback: (gameId: string, serverId: string, customData: string) => void): EngineEventConnection;
 	ProcessPendingJoinRequests(): void;
+	GetSteamFriends(): CSArray<AirshipSteamFriendInfo>;
+	IsSteamInitialized(): boolean;
 }
 declare const SteamLuauAPI: SteamLuauAPIConstructor;
 

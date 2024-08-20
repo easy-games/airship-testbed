@@ -26,6 +26,8 @@ export class SteamworksSingleton {
 		});
 		SteamLuauAPI.OnNewLaunchParams((gameId, serverId, custom) => {
 			print("New launch params: gameId=" + gameId + " serverId=" + serverId + " custom=" + custom);
+			if (gameId.size() === 0) return;
+			
 			Dependency<TransferController>().TransferToGameAsync(gameId, serverId.size() > 0 ? serverId : undefined);
 		});
 		SteamLuauAPI.ProcessPendingJoinRequests();

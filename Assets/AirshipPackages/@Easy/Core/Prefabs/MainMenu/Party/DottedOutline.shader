@@ -48,7 +48,7 @@ Shader "Unlit/DottedOutline"
             half4 frag (v2f i) : SV_Target
             {
                 float offset = i.uv.x - _Time.x * _BorderSpeed;
-                float a = pow(sin(offset * 100), 8) * 1000;
+                float a = min(pow(sin(offset * 100), 8) * 1000, 1);
                 return half4(_BorderColor.rgb, _BorderColor.a * a);
             }
             ENDHLSL

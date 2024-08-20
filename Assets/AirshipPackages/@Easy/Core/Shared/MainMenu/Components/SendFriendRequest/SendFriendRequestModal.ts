@@ -68,12 +68,12 @@ export default class SendFriendRequestModal extends AirshipBehaviour {
 		this.recentlyPlayedWithText.SetActive(hasRecommendations);
 
 		// Instantiate recommendation cards
-		const maxDisplayRecommendations = 6;
-		for (let i = 0; i < math.min(maxDisplayRecommendations, sortedRecommendations.size()); i++) {
+		let remainingRecommendations = 8;
+		for (let i = 0; i < sortedRecommendations.size() && remainingRecommendations > 0; i++) {
 			const rec = sortedRecommendations[i];
-			
+
 			// Check if card is displayable before parenting
-			const cardObj = Object.Instantiate(this.recommendationCardPrefab);
+			const cardObj = Object.Instantiate(this.recommendationCardPrefab, this.recommendationsContent.transform);
 			const card = cardObj.GetAirshipComponent<FriendRecommendation>()!;
 			card.Setup(rec.uid, rec.recommendation.context)
 				.then((setupSuccess) => {
@@ -94,6 +94,7 @@ export default class SendFriendRequestModal extends AirshipBehaviour {
 					warn("Failed to setup recommendation card: " + inspect(err));
 					Object.Destroy(cardObj);
 				});
+			remainingRecommendations--;
 		}
 	}
 

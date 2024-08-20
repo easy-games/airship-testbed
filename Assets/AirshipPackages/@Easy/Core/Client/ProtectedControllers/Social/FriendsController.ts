@@ -415,6 +415,12 @@ export class ProtectedFriendsController {
 
 		// Add & update
 		const friendsContent = this.mainMenuController.refs.GetValue("Social", "FriendsContent");
+		// If no friends display no friends prefab
+		if (sorted.size() === 0) {
+			const noFriendsPrefab = this.mainMenuController.refs.GetValue("Social", "NoFriendsPrefab");	
+			Object.Instantiate(noFriendsPrefab, friendsContent.transform);
+		}
+
 		let i = 0;
 		for (const friend of sorted) {
 			const friendBin = new Bin();
