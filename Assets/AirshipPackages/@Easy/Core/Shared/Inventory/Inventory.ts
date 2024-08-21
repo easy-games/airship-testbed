@@ -3,7 +3,6 @@ import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import Object from "@Easy/Core/Shared/Util/ObjectUtils";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
-import Character from "../Character/Character";
 import { Game } from "../Game";
 import { Keyboard, Mouse } from "../UserInput";
 import { ItemStack, ItemStackDto } from "./ItemStack";
@@ -70,15 +69,21 @@ export default class Inventory extends AirshipBehaviour {
 		// 		}
 		// 	});
 		// }
-		this.id = this.networkIdentity.netId;
-		Airship.Inventory.RegisterInventory(this);
-		if (Game.IsClient()) {
+
+		const StartClient = () => {
+			// print("NetID (OnStartClient): " + this.networkIdentity.netId);
+			this.id = this.networkIdentity.netId;
 			task.spawn(() => {
 				this.RequestFullUpdate();
 			});
-		}
+			if (!Game.IsServer()) {
+				Airship.Inventory.RegisterInventory(this);
+			}
+		};
 
-		if (Game.IsServer()) {
+		const StartServer = () => {
+			// print("NetID (OnStartServer): " + this.networkIdentity.netId);
+			this.id = this.networkIdentity.netId;
 			CoreNetwork.ClientToServer.SetHeldSlot.server.OnClientEvent((player, invId, slot) => {
 				if (this.id !== invId) return;
 
@@ -87,14 +92,29 @@ export default class Inventory extends AirshipBehaviour {
 
 				this.SetHeldSlotInternal(slot);
 
-				CoreNetwork.ServerToClient.SetHeldInventorySlot.server.FireExcept(
-					player,
-					this.id,
-					player.connectionId,
-					slot,
-					true,
-				);
+				CoreNetwork.ServerToClient.SetHeldInventorySlot.server.FireExcept(player, this.id, slot, true);
 			});
+			Airship.Inventory.RegisterInventory(this);
+		};
+
+		if (this.networkIdentity.netId === 0) {
+			this.bin.Add(
+				this.networkIdentity.onStartClient.Connect(() => {
+					StartClient();
+				}),
+			);
+			this.bin.Add(
+				this.networkIdentity.onStartServer.Connect(() => {
+					StartServer();
+				}),
+			);
+		} else {
+			if (Game.IsServer()) {
+				StartServer();
+			}
+			if (Game.IsClient()) {
+				StartClient();
+			}
 		}
 
 		// Controls
@@ -209,9 +229,9 @@ export default class Inventory extends AirshipBehaviour {
 		let cleanup = callback(currentItemStack);
 
 		bin.Add(
-			CoreNetwork.ServerToClient.SetHeldInventorySlot.client.OnServerEvent((invId, clientId, slot) => {
-				const inventoryClientId = this.gameObject.GetAirshipComponent<Character>()?.player?.connectionId;
-				if (invId === this.id && clientId === inventoryClientId) {
+			CoreNetwork.ServerToClient.SetHeldInventorySlot.client.OnServerEvent((invId, slot) => {
+				if (invId === this.id) {
+					// print("SetHeldInventorySlot invId: " + invId + ", slot: " + slot);
 					const selected = this.items.get(slot);
 					if (selected?.itemType === currentItemStack?.itemType) return;
 
@@ -400,6 +420,8 @@ export default class Inventory extends AirshipBehaviour {
 
 		if (isLocal) {
 			CoreNetwork.ClientToServer.SetHeldSlot.client.FireServer(this.id, slot);
+		} else if (Game.IsServer()) {
+			CoreNetwork.ServerToClient.SetHeldInventorySlot.server.FireAllClients(this.id, slot, true);
 		}
 	}
 

@@ -46,9 +46,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serverClassId: 
+  serverClassIdStaging: 
   accessorySlot: 6
   visibilityMode: 2
   skinnedToCharacter: 0
+  canMeshCombine: 0
+  bodyMask: 0
 --- !u!1001 &4199545017435931190
 PrefabInstance:
   m_ObjectHideFlags: 0
