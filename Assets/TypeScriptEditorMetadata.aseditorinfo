@@ -269,6 +269,10 @@
 			"assetPath": "Code/Components/CharacterSpawner.ts",
 			"name": "CharacterSpawner"
 		},
+		"Code/Components/NPCSpawner@NPCSpawner": {
+			"assetPath": "Code/Components/NPCSpawner.ts",
+			"name": "NPCSpawner"
+		},
 		"Code/MultiScene/TeleportToRoom@TeleportToRoom": {
 			"assetPath": "Code/MultiScene/TeleportToRoom.ts",
 			"name": "TeleportToRoom"

@@ -967,6 +967,8 @@ interface NetworkIdentity extends MonoBehaviour {
 	readonly isOwned: boolean;
 	/**
 	 * The unique network Id of this object (unique at runtime).
+	 *
+	 * This will be `0` if the NetworkIdentity hasn't been initialized on the network yet. This means you can check for zero to see if `onStartClient` or `onStartServer` has fired yet.
 	 */
 	readonly netId: number;
 	readonly assetId: number;

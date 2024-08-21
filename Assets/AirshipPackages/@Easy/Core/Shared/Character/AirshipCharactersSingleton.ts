@@ -7,7 +7,6 @@ import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { CoreContext } from "../CoreClientContext";
 import { Game } from "../Game";
-import inspect from "../Util/Inspect";
 import { Viewmodel } from "../Viewmodel/Viewmodel";
 import Character from "./Character";
 import { CharacterDto } from "./CharacterDto";
@@ -206,7 +205,7 @@ export class AirshipCharactersSingleton {
 				// this.activeAccessoriesWorldmodel.clear();
 				// this.activeAccessoriesViewmodel.clear();
 				for (const accessoryTemplate of accessoryTemplates) {
-					character.accessoryBuilder.AddSingleAccessory(accessoryTemplate, false);
+					character.accessoryBuilder.AddSingleAccessory(accessoryTemplate, true);
 					if (viewmodelAccessoryBuilder) {
 						viewmodelAccessoryBuilder.AddSingleAccessory(accessoryTemplate, false);
 					}
@@ -306,7 +305,7 @@ export class AirshipCharactersSingleton {
 		// This can happen when client receives spawn character packet before client retrieves list of all existing characters.
 		if (this.FindById(dto.id)) return;
 
-		print("InitCharacter " + inspect(dto));
+		// print("InitCharacter " + inspect(dto));
 
 		task.spawn(() => {
 			const characterNetworkObj = NetworkUtil.WaitForNetworkIdentity(dto.netId);

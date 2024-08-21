@@ -39,9 +39,9 @@ export const CoreNetwork = {
 		UpdateInventorySlot: new NetworkSignal<[invId: number, slot: number, itemType?: string, amount?: number]>(
 			"UpdateInventorySlot",
 		),
-		SetHeldInventorySlot: new NetworkSignal<
-			[invId: number | undefined, clientId: number | undefined, slot: number, clientPredicted: boolean]
-		>("SetHeldInventorySlot"),
+		SetHeldInventorySlot: new NetworkSignal<[invId: number | undefined, slot: number, clientPredicted: boolean]>(
+			"SetHeldInventorySlot",
+		),
 		CharacterModelChanged: new NetworkSignal<[characterModelId: number]>("CharacterModelChanged"),
 		/** Fired when a player sends a chat message with the raw chat message */
 		ChatMessage: new NetworkSignal<[message: string, senderPrefix?: string, senderClientId?: number]>(
