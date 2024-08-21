@@ -314,7 +314,7 @@ export class AirshipCharactersSingleton {
 			);
 			let player: Player | undefined;
 			if (dto.ownerConnectionId !== undefined) {
-				player = Airship.Players.FindByConnectionId(dto.ownerConnectionId);
+				player = Airship.Players.WaitForPlayerByConnectionId(dto.ownerConnectionId).expect();
 				assert(
 					player,
 					"Failed to find player when spawning character. ownerConnectionId=" + dto.ownerConnectionId,
