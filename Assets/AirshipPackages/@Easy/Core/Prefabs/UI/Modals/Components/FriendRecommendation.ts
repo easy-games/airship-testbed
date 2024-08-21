@@ -72,6 +72,7 @@ export default class FriendRecommendation extends AirshipBehaviour {
 	}
 
 	private GetRecommendationString(recommendationContext: RecommendationContext): string {
+		if (recommendationContext.steamFriend) return "Steam friend (" + recommendationContext.steamFriend + ")";
 		if (recommendationContext.partyEncounter) return "Partied together";
 		if (recommendationContext.gameEncounters.size() > 0) return `From ${RandomUtil.FromArray(recommendationContext.gameEncounters).cachedName}`;
 		return "";

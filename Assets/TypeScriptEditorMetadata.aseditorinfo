@@ -105,6 +105,10 @@
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsKeybindPage.ts",
 			"name": "SettingsKeybindPage"
 		},
+		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Friends/NoFriendsCardComponent@NoFriendsCardComponent": {
+			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Friends/NoFriendsCardComponent.ts",
+			"name": "NoFriendsCardComponent"
+		},
 		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/General/GameGeneralPage@GameGeneralPage": {
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/General/GameGeneralPage.ts",
 			"name": "GameGeneralPage"

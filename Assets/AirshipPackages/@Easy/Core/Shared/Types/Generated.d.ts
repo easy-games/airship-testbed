@@ -45740,4 +45740,15 @@ interface VisualEffectConstructor {
 
 }
 declare const VisualEffect: VisualEffectConstructor;
+    
+interface AirshipSteamFriendInfo {
+    playingAirship: boolean;
+    steamId: number;
+    steamName: string;
+
+
+
+
+
+}
 

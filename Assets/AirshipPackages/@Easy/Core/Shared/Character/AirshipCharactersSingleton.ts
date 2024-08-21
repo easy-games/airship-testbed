@@ -87,11 +87,15 @@ export class AirshipCharactersSingleton {
 			task.spawn(() => {
 				while (true) {
 					task.wait(0.05);
-					for (const [_cid, dto] of this.pendingCharacterDtos) {
+					const toFlush = [];
+					for (const [cid, dto] of this.pendingCharacterDtos) {
 						this.InitCharacter(dto);
+						toFlush.push(cid);
 					}
 					// Flush the queue.
-					this.pendingCharacterDtos.clear();
+					for (const cid of toFlush) {
+						this.pendingCharacterDtos.delete(cid);
+					}
 				}
 			});
 		}
@@ -314,7 +318,7 @@ export class AirshipCharactersSingleton {
 			);
 			let player: Player | undefined;
 			if (dto.ownerConnectionId !== undefined) {
-				player = Airship.Players.FindByConnectionId(dto.ownerConnectionId);
+				player = Airship.Players.WaitForPlayerByConnectionId(dto.ownerConnectionId).expect();
 				assert(
 					player,
 					"Failed to find player when spawning character. ownerConnectionId=" + dto.ownerConnectionId,

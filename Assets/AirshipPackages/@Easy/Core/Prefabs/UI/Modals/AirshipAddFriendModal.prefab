@@ -845,6 +845,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: AirshipButton
+    singleton: 0
     decorators: []
     properties:
     - name: clickEffect
@@ -855,7 +856,7 @@ MonoBehaviour:
         objectType: 
         serializedItems: []
         objectRefs: []
-      refPath: 
+      refPath: AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipButtonClickEffect@AirshipButtonClickEffect
       fileRef: 
       decorators:
       - name: Header
@@ -907,6 +908,21 @@ MonoBehaviour:
     - name: loadingIndicator
       type: object
       objectType: GameObject
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: button
+      type: object
+      objectType: Button
       items:
         type: 
         objectType: 
@@ -1143,7 +1159,7 @@ GameObject:
   - component: {fileID: 4723850429292150095}
   - component: {fileID: 4801804150831772970}
   m_Layer: 5
-  m_Name: Recently Played W/
+  m_Name: Recommendation Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1196,7 +1212,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Recently played with:'
+  m_text: 'You might know:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 39fc97816df3344858585cf3cbaec56e, type: 2}
   m_sharedMaterial: {fileID: -1186578902683691609, guid: 39fc97816df3344858585cf3cbaec56e, type: 2}
@@ -1715,6 +1731,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: ModalCloseButton
+    singleton: 0
     decorators: []
     properties: []
     displayIcon: {fileID: 0}
@@ -1748,6 +1765,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: SendFriendRequestModal
+    singleton: 0
     decorators: []
     properties:
     - name: inputField

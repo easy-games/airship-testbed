@@ -573,23 +573,25 @@ export class AirshipPlayersSingleton {
 	 * @param timeoutSec How long (in seconds) to stop waiting for this player.
 	 * @returns Player with connectionId if found, otherwise undefined after timeout.
 	 */
-	public async WaitForPlayerByConnectionId(connectionId: number, timeoutSec = 5): Promise<Player | undefined> {
-		let readyOrPending = this.FindByConnectionId(connectionId);
-		if (readyOrPending) {
-			return readyOrPending;
-		}
-		let acc = 0;
-		const disconnect = OnUpdate.Connect((dt) => {
-			acc += dt;
-			readyOrPending = this.FindByConnectionId(connectionId);
+	public WaitForPlayerByConnectionId(connectionId: number, timeoutSec = 5): Promise<Player | undefined> {
+		return new Promise((resolve) => {
+			let readyOrPending = this.FindByConnectionId(connectionId);
 			if (readyOrPending) {
-				disconnect();
-				return readyOrPending;
+				resolve(readyOrPending);
 			}
-			if (acc >= timeoutSec) {
-				disconnect();
-				return undefined;
-			}
+			let acc = 0;
+			const disconnect = OnUpdate.Connect((dt) => {
+				acc += dt;
+				readyOrPending = this.FindByConnectionId(connectionId);
+				if (readyOrPending) {
+					disconnect();
+					resolve(readyOrPending);
+				}
+				if (acc >= timeoutSec) {
+					disconnect();
+					resolve(undefined);
+				}
+			});
 		});
 	}
 

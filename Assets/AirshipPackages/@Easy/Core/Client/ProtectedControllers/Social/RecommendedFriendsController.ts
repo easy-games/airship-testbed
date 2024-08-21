@@ -5,6 +5,7 @@ import { MapUtil } from "@Easy/Core/Shared/Util/MapUtil";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 import { ProtectedFriendsController } from "./FriendsController";
 import { MainMenuPartyController } from "./MainMenuPartyController";
+import { SteamFriendsProtectedController } from "./SteamFriendsProtectedController";
 
 interface RecommendedFriendsFile {
 	recommendations: Map<string, RecommendedFriend>;
@@ -19,6 +20,8 @@ interface GameInfo {
 export interface RecommendationContext {
 	/** How many times you've seen this player */
 	totalRecentEncounters: number;
+	/** Exists if this is a steam friend (with their steam name) */
+	steamFriend?: string;
 	/** True if players have been in a party together */
 	partyEncounter: boolean;
 	/** List of games you've seen eachother in */
@@ -175,9 +178,26 @@ export class RecommendedFriendsController implements OnStart {
 					};
 				},
 			);
+			
+			const steamFriendsWithAirship = Dependency<SteamFriendsProtectedController>().GetSteamFriendsWithAirship();
+			if (steamFriendsWithAirship) {
+				for (const [uid, data] of steamFriendsWithAirship) {
+					const rec = this.GetDefaultRecommendedFriend(data.username);
+					rec.context.steamFriend = data.steamName;
+
+					this.sortedRecommendations.push({
+						recommendation: rec,
+						uid: uid,
+					})
+				}
+			}
 			this.sortedRecommendations.sort((a, b) => {
 				const aScore = this.GetRecommendationScore(a.recommendation);
 				const bScore = this.GetRecommendationScore(b.recommendation);
+				if (aScore === bScore) {
+					// Go to alphabetical if scores are the same
+					return a.recommendation.username < b.recommendation.username;
+				}
 				return aScore > bScore;
 			});
 			this.sortOutdated = false;
@@ -186,6 +206,10 @@ export class RecommendedFriendsController implements OnStart {
 	}
 
 	private GetRecommendationScore(r: RecommendedFriend): number {
+		if (r.context.steamFriend) {
+			return math.huge;
+		}
+		
 		// 300,000 means a party encounter will be stronger than a game encounter for a few days (because score is based on lastSeen in seconds)
 		let score = r.context.partyEncounter ? 300_000 : 10_000;
 		score *= r.context.totalRecentEncounters;
