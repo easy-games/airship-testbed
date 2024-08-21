@@ -87,11 +87,15 @@ export class AirshipCharactersSingleton {
 			task.spawn(() => {
 				while (true) {
 					task.wait(0.05);
-					for (const [_cid, dto] of this.pendingCharacterDtos) {
+					const toFlush = [];
+					for (const [cid, dto] of this.pendingCharacterDtos) {
 						this.InitCharacter(dto);
+						toFlush.push(cid);
 					}
 					// Flush the queue.
-					this.pendingCharacterDtos.clear();
+					for (const cid of toFlush) {
+						this.pendingCharacterDtos.delete(cid);
+					}
 				}
 			});
 		}
