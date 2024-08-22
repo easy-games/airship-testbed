@@ -96,8 +96,7 @@ export class AirshipCharacterCameraSingleton {
 			this.UpdateLocalCharacterState({
 				sprinting:
 					state === CharacterState.Sprinting ||
-					state === CharacterState.Sliding ||
-					(state === CharacterState.Jumping && Airship.Input.IsDown("Sprint")),
+					(state === CharacterState.Airborne && Airship.Input.IsDown("Sprint")),
 			});
 		});
 	}

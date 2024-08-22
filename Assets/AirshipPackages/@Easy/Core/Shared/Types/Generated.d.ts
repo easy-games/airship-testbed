@@ -42831,9 +42831,10 @@ interface CharacterMovementData extends MonoBehaviour {
     useAccelerationMovement: boolean;
     speed: number;
     sprintSpeed: number;
-    airSpeedMultiplier: number;
     onlySprintForward: boolean;
     autoCrouch: boolean;
+    preventFallingWhileCrouching: boolean;
+    preventStepUpWhileCrouching: boolean;
     crouchSpeedMultiplier: number;
     crouchHeightMultiplier: number;
     numberOfJumps: number;
@@ -42846,23 +42847,23 @@ interface CharacterMovementData extends MonoBehaviour {
     useGravityWhileGrounded: boolean;
     gravityMultiplier: number;
     upwardsGravityMultiplier: number;
+    preventWallClipping: boolean;
     groundCollisionLayerMask: LayerMask;
     terminalVelocity: number;
     minimumVelocity: number;
     useMinimumVelocityInAir: boolean;
-    slopeForce: number;
-    minSlopeDelta: number;
-    maxSlopeDelta: number;
     maxStepUpHeight: number;
     stepUpRampDistance: number;
     drag: number;
     airDragMultiplier: number;
-    detectSlopes: boolean;
+    airSpeedMultiplier: number;
     detectStepUps: boolean;
     alwaysStepUp: boolean;
     assistedLedgeJump: boolean;
-    preventWallClipping: boolean;
-    preventFallingWhileCrouching: boolean;
+    detectSlopes: boolean;
+    slopeForce: number;
+    minSlopeDelta: number;
+    maxSlopeDelta: number;
 
 
 
