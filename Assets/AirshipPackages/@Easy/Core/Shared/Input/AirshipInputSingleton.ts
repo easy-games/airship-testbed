@@ -30,6 +30,11 @@ export enum InputActionDirection {
 	Down,
 }
 
+interface ContextKeybindUpdate {
+	action: string;
+	id: number;
+}
+
 /**
  * Access using {@link Airship.Input}. Input singleton contains functions to work with
  * player input (including mouse, keyboard, and touch screen).
@@ -112,6 +117,14 @@ export class AirshipInputSingleton {
 
 		if (Game.coreContext === CoreContext.GAME && Game.IsGameLuauContext()) {
 			this.CreateMobileControlCanvas();
+			contextbridge.callback(
+				"ProtectedKeybind:Updated",
+				(from: LuauContext, name: string, id: number, protectedBinding: Binding) => {
+					const matchingGameAction = this.GetActions(name).find((a) => a.id === id);
+					if (!matchingGameAction) return;
+					matchingGameAction.UpdateBinding(protectedBinding);
+				},
+			);
 		}
 
 		Airship.Input.onActionBound.Connect((action) => {
@@ -120,6 +133,17 @@ export class AirshipInputSingleton {
 					this.UnsetDuplicateBindings(action);
 				}
 				this.CreateActionListeners(action);
+				// Action was bound in the protected context (IE: The keybind menu)
+				// We must tell the game context about this so it can also rebind.
+				if (Game.IsProtectedLuauContext()) {
+					contextbridge.invoke(
+						"ProtectedKeybind:Updated",
+						LuauContext.Game,
+						action.name,
+						action.id,
+						action.binding,
+					);
+				}
 			}
 		});
 
