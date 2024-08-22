@@ -449,6 +449,10 @@
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Modal/Modal.ts",
 			"name": "Modal"
 		},
+		"Code/TestComp@TestComp": {
+			"assetPath": "Code/TestComp.ts",
+			"name": "TestComp"
+		},
 		"Code/AirshipPlatformDemo/MovementModifications/CharacterMovementTrigger@CharacterMovementDataTrigger": {
 			"assetPath": "Code/AirshipPlatformDemo/MovementModifications/CharacterMovementTrigger.ts",
 			"name": "CharacterMovementDataTrigger"
