@@ -117,9 +117,10 @@ export class AirshipInputSingleton {
 
 		if (Game.coreContext === CoreContext.GAME && Game.IsGameLuauContext()) {
 			this.CreateMobileControlCanvas();
-			contextbridge.callback(
+			contextbridge.subscribe(
 				"ProtectedKeybind:Updated",
 				(from: LuauContext, name: string, id: number, protectedBinding: Binding) => {
+					if (from !== LuauContext.Protected) return;
 					const matchingGameAction = this.GetActions(name).find((a) => a.id === id);
 					if (!matchingGameAction) return;
 					matchingGameAction.UpdateBinding(protectedBinding);
@@ -136,13 +137,7 @@ export class AirshipInputSingleton {
 				// Action was bound in the protected context (IE: The keybind menu)
 				// We must tell the game context about this so it can also rebind.
 				if (Game.IsProtectedLuauContext()) {
-					contextbridge.invoke(
-						"ProtectedKeybind:Updated",
-						LuauContext.Game,
-						action.name,
-						action.id,
-						action.binding,
-					);
+					contextbridge.broadcast("ProtectedKeybind:Updated", action.name, action.id, action.binding);
 				}
 			}
 		});
