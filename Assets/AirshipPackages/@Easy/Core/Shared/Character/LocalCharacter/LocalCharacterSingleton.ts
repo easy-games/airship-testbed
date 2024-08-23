@@ -109,7 +109,7 @@ export class LocalCharacterSingleton {
 					const dt = now - lastSpace;
 					if (dt < 0.3) {
 						lastSpace = 0;
-						// this.characterMovement?.SetDebugFlying(!this.characterMovement.IsFlying());
+						this.characterMovement?.SetDebugFlying(!this.characterMovement.IsFlying());
 					} else {
 						lastSpace = now;
 					}
