@@ -47,5 +47,5 @@ MonoBehaviour:
   brightness: 1
   solid: 0
   collisionType: 0
-  randomRotation: 0
+  randomRotation: 1
   minecraftIds: 
