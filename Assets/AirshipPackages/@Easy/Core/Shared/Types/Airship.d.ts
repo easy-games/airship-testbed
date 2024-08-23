@@ -131,9 +131,8 @@ interface CharacterMovement extends Component {
 	SetLookVector(lookVector: Vector3): void;
 	SetCustomData(customData: BinaryBlob): void;
 	SetFlying(enabled: boolean): void;
+	SetDebugFlying(enabled: boolean): void;
 	IsFlying(): boolean;
-	SetAllowFlight(allowed: boolean): void;
-	IsAllowFlight(): boolean;
 	Teleport(position: Vector3): void;
 	TeleportAndLook(position: Vector3, lookVector: Vector3): void;
 	AddImpulse(impulse: Vector3): void;
