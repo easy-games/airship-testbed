@@ -205,7 +205,10 @@ export class OrbitCameraMode extends CameraMode {
 		let newPosition = attachToPos.add(posOffset);
 		let rotation: Quaternion;
 
-		const lv = posOffset.mul(-1).normalized;
+		let lv = posOffset.mul(-1).normalized;
+		if(lv === Vector3.zero){
+			lv = new Vector3(0,0,.01);
+		}
 		rotation = Quaternion.LookRotation(lv, Vector3.up);
 
 		return new CameraTransform(newPosition, rotation);
