@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1462182949230319444}
   - component: {fileID: 7300183047962651220}
   - component: {fileID: 5496988734558904719}
+  - component: {fileID: 2076129375828652443}
   m_Layer: 0
   m_Name: AirshipTorus
   m_TagString: Untagged
@@ -64,7 +65,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
+  - {fileID: 2100000, guid: 7750aaed72d61314ca449d8a9123da8f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -101,6 +102,25 @@ MonoBehaviour:
   colorSettings:
   - baseColor: {r: 1, g: 0.6933962, b: 0.93554157, a: 1}
   addedByEditorScript: 0
+--- !u!205 &2076129375828652443
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 221775313959302344}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: 0, y: 0.09999946, z: 0}
+  m_Size: 1
+  m_FadeMode: 1
+  m_AnimateCrossFading: 1
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.047736626
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 7300183047962651220}
+  m_Enabled: 1
 --- !u!1 &5049303985662668026
 GameObject:
   m_ObjectHideFlags: 0
