@@ -1192,7 +1192,7 @@ MonoBehaviour:
   numberOfJumps: 1
   jumpSpeed: 14
   jumpCoyoteTime: 0.14
-  allowFlyingFromConsole: 0
+  allowDebugFlying: 0
   flySpeedMultiplier: 3.5
   verticalFlySpeed: 10
   jumpUpBlockCooldown: 0.4
