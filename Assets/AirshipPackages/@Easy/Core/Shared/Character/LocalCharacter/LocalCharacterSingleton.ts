@@ -78,7 +78,7 @@ export class LocalCharacterSingleton {
 				}
 				if (this.sprintOverlayEmission) {
 					this.sprintOverlayEmission.enabled =
-						state === CharacterState.Sprinting || state === CharacterState.Sliding;
+						state === CharacterState.Sprinting;
 				}
 			});
 			bin.Add(() => {

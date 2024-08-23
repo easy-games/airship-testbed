@@ -322,7 +322,7 @@ export class HumanoidCameraMode extends CameraMode {
 	private GetCamYOffset(isFirstPerson: boolean) {
 		const state = Dependency<LocalCharacterSingleton>().GetEntityDriver()?.GetState() ?? CharacterState.Idle;
 		const yOffset =
-			state === CharacterState.Crouching || state === CharacterState.Sliding
+			state === CharacterState.Crouching
 				? isFirstPerson
 					? CAM_Y_OFFSET_CROUCH_1ST_PERSON
 					: CAM_Y_OFFSET_CROUCH_3RD_PERSON

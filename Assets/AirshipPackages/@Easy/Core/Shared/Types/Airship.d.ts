@@ -421,10 +421,9 @@ interface PredictedObject extends GameObject {
 declare const enum CharacterState {
 	Idle = 0,
 	Running = 1,
-	Jumping = 2,
+	Airborne = 2,
 	Sprinting = 3,
-	Sliding = 4,
-	Crouching = 5,
+	Crouching = 4,
 }
 
 interface AccessoryHelper extends MonoBehaviour {
