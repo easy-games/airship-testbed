@@ -1817,27 +1817,27 @@ interface Component extends Object {
 	 *
 	 * More info: {@link https://docs.unity3d.com/ScriptReference/Component.GetComponent.html | Component.GetComponent}
 	 */
-	GetComponent<T extends Component | AirshipBehaviour>(): T;
+	GetComponent<T extends Component>(): T;
 	/**
 	 * The string-based version of this method.
 	 * @param type The name of the type of Component to get.
 	 *
 	 * More info: {@link https://docs.unity3d.com/ScriptReference/Component.GetComponent.html | Component.GetComponent}
 	 */
-	GetComponent<T extends Component | AirshipBehaviour>(name: string): T;
+	GetComponent<T extends Component>(name: string): T;
 
 	/**
 	 * Gets references to all components of type T on the same GameObject as the component specified.
 	 *
 	 * More info: {@link https://docs.unity3d.com/ScriptReference/Component.GetComponents.html | Component.GetComponents}
 	 */
-	GetComponents<T extends Component | AirshipBehaviour>(): CSArray<T>;
+	GetComponents<T extends Component>(): CSArray<T>;
 	/**
 	 * Gets references to all components of type T on the same GameObject as the component specified.
 	 *
 	 * More info: {@link https://docs.unity3d.com/ScriptReference/Component.GetComponents.html | Component.GetComponents}
 	 */
-	GetComponents<T extends Component | AirshipBehaviour>(name: string): CSArray<T>;
+	GetComponents<T extends Component>(name: string): CSArray<T>;
 
 	IsDestroyed(): boolean;
 }
@@ -2001,7 +2001,7 @@ interface GameObject extends Object {
 	 *
 	 * More info: {@link https://docs.unity3d.com/ScriptReference/GameObject.GetComponent.html | GameObject.GetComponent}
 	 */
-	GetComponent<T extends Component | AirshipBehaviour>(): T;
+	GetComponent<T extends Component>(): T;
 	/**
 	 * Gets a reference to a component of type T on the specified GameObject, or any child of the GameObject.
 	 *

@@ -42840,6 +42840,7 @@ interface CharacterMovementData extends MonoBehaviour {
     numberOfJumps: number;
     jumpSpeed: number;
     jumpCoyoteTime: number;
+    allowFlyingFromConsole: boolean;
     flySpeedMultiplier: number;
     verticalFlySpeed: number;
     jumpUpBlockCooldown: number;

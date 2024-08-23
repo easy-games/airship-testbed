@@ -77,8 +77,7 @@ export class LocalCharacterSingleton {
 					this.stateChanged.Fire(state);
 				}
 				if (this.sprintOverlayEmission) {
-					this.sprintOverlayEmission.enabled =
-						state === CharacterState.Sprinting;
+					this.sprintOverlayEmission.enabled = state === CharacterState.Sprinting;
 				}
 			});
 			bin.Add(() => {
@@ -110,9 +109,7 @@ export class LocalCharacterSingleton {
 					const dt = now - lastSpace;
 					if (dt < 0.3) {
 						lastSpace = 0;
-						if (this.characterMovement?.IsAllowFlight()) {
-							this.characterMovement?.SetFlying(!this.characterMovement.IsFlying());
-						}
+						this.characterMovement?.SetDebugFlying(!this.characterMovement.IsFlying());
 					} else {
 						lastSpace = now;
 					}
