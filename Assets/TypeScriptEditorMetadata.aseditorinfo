@@ -269,6 +269,10 @@
 			"assetPath": "Code/Components/CharacterSpawner.ts",
 			"name": "CharacterSpawner"
 		},
+		"Code/Components/HandsUp@HandsUp": {
+			"assetPath": "Code/Components/HandsUp.ts",
+			"name": "HandsUp"
+		},
 		"Code/Components/NPCSpawner@NPCSpawner": {
 			"assetPath": "Code/Components/NPCSpawner.ts",
 			"name": "NPCSpawner"

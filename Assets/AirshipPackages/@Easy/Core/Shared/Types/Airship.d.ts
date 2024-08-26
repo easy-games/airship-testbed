@@ -604,13 +604,26 @@ interface CharacterAnimationHelper extends Component {
 	SetState(newState: CharacterState, force = false, noRootLayerFade = false);
 	SetVelocity(vel: Vector3);
 	SetGrounded(grounded: boolean);
-	PlayAnimation(clip: AnimationClip, layer: CharacterAnimationLayer);
-	PlayAnimationWithWeight(clip: AnimationClip, layer: CharacterAnimationLayer, eight: number);
-	StopAnimation(layer: CharacterAnimationLayer);
+	/**
+	 * Under the hood, we call `animator.CrossFadeInFixedTime()`
+	 *
+	 * @param clip If the clip is looping, it will play looped.
+	 * @param layer
+	 * @param fixedTransitionDuration The duration of the transition (in seconds).
+	 */
+	PlayAnimation(clip: AnimationClip, layer: CharacterAnimationLayer, fixedTransitionDuration: number);
+
+	/**
+	 * Under the hood, we call `animator.CrossFadeInFixedTime()`
+	 *
+	 * @param layer
+	 * @param fixedTransitionDuration The duration of the transition (in seconds).
+	 */
+	StopAnimation(layer: CharacterAnimationLayer, fixedTransitionDuration: number);
 }
 
 declare const enum CharacterAnimationLayer {
-	/** Recommended layer for item idle animations  */
+	/** Recommended layer for idle animations  */
 	OVERRIDE_1 = 1,
 	/** Recommended layer for low-priority animations  */
 	OVERRIDE_2 = 2,
@@ -621,6 +634,9 @@ declare const enum CharacterAnimationLayer {
 
 	/** Layer with an upper body mask. */
 	UPPER_BODY_1 = 5,
+
+	/** Layer with an upper body mask. */
+	UPPER_BODY_2 = 6,
 }
 
 interface AnimationClipOptions {
