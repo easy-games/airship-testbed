@@ -326,7 +326,7 @@ export class AirshipCharactersSingleton {
 			}
 			if (Game.IsEditor() && !Game.IsHosting()) {
 				//Hack to load your own outfit in dedicated mode
-				Airship.Avatar.LoadLocalUsersEquippedOutfit(character.accessoryBuilder);
+				Airship.Avatar.LoadOutfitFromLocalUser(character.accessoryBuilder);
 			}
 			character.Init(player, dto.id, dto.outfitDto);
 			Airship.Characters.RegisterCharacter(character);
