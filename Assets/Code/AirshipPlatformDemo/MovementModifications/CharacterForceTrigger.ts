@@ -6,6 +6,8 @@ export default class CharacterForceTrigger extends AirshipBehaviour {
 	public forceSpace = Space.Self;
 	public triggerForce = Vector3.up;
 
+	private characterInCollider = false;
+
 	public Awake(): void {
 		if (!this.collider) {
 			this.collider = this.gameObject.GetComponent<BoxCollider>();
@@ -23,11 +25,16 @@ export default class CharacterForceTrigger extends AirshipBehaviour {
 			//Locally we want to refresh our colliders during replays
 			character.OnBeginMove.Connect((customData, inputData, isReplay) => {
 				if (bounds.Contains(characterTransform.position)) {
-					character.movement.AddImpulse(
-						this.forceSpace === Space.Self
-							? this.transform.TransformVector(this.triggerForce)
-							: this.triggerForce,
-					);
+					if(!this.characterInCollider){
+						this.characterInCollider = true;
+						character.movement.AddImpulse(
+							this.forceSpace === Space.Self
+								? this.transform.TransformVector(this.triggerForce)
+								: this.triggerForce,
+						);
+					}
+				}else{
+					this.characterInCollider = false;
 				}
 			});
 		});
