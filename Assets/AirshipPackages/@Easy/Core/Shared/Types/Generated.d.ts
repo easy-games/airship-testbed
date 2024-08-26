@@ -2892,10 +2892,11 @@ declare const enum StereoScreenCaptureMode {
 }
 declare const enum ContextStyle {
     Block = 0,
-    GreedyMeshingTiles = 1,
-    PipeBlocks = 2,
-    QuarterTiles = 3,
-    Mesh = 4,
+    Prefab = 1,
+    GreedyMeshingTiles = 2,
+    PipeBlocks = 3,
+    QuarterBlocks = 4,
+    StaticMesh = 5,
 }
 declare const enum CollisionType {
     None = 0,
@@ -3478,6 +3479,10 @@ declare const enum ConnectionQualityMethod {
 declare const enum CoordinateSpace {
     Local = 0,
     World = 1,
+}
+declare const enum PredictionMode {
+    Smooth = 0,
+    Fast = 1,
 }
 declare const enum CellLayout {
     Rectangle = 0,
@@ -31038,11 +31043,9 @@ interface AccessoryBuilder extends MonoBehaviour {
 
 
     AddAccessories(accessoryTemplates: CSArray<AccessoryComponent>, addMode: AccessoryAddMode, rebuildMeshImmediately: boolean): CSArray<ActiveAccessory>;
-    AddAccessoryOutfit(outfit: AccessoryOutfit, rebuildMeshImmediately: boolean): CSArray<ActiveAccessory>;
-    AddOutfirFromUsername(username: string): CSArray<ActiveAccessory>;
-    AddOutfitFromUserId(userId: string): CSArray<ActiveAccessory>;
     AddSingleAccessory(accessoryTemplate: AccessoryComponent, rebuildMeshImmediately: boolean): ActiveAccessory;
     AddSkinAccessory(skin: AccessorySkin, rebuildMeshImmediately: boolean): void;
+    EquipAccessoryOutfit(outfit: AccessoryOutfit, rebuildMeshImmediately: boolean): CSArray<ActiveAccessory>;
     GetAccessoryMeshes(slot: AccessorySlot): CSArray<Renderer>;
     GetAccessoryParticles(slot: AccessorySlot): CSArray<ParticleSystem>;
     GetActiveAccessories(): CSArray<ActiveAccessory>;
@@ -35373,7 +35376,7 @@ interface VoxelBlocks extends MonoBehaviour {
     AddSolidMaskToVoxelValue(voxelValue: number): number;
     GetBlock(index: number): BlockDefinition;
     GetBlockDefinitionByStringId(blockTypeId: string): BlockDefinition;
-    GetBlockDefinitionFromIndex(index: number): BlockDefinition;
+    GetBlockDefinitionFromBlockId(index: number): BlockDefinition;
     GetBlockIdFromStringId(stringId: string): number;
     GetStringIdFromBlockId(blockVoxelId: number): string;
     Load(loadTexturesDirectlyFromDisk: boolean): void;
@@ -35473,6 +35476,7 @@ interface VoxelBlockDefinition extends ScriptableObject {
     meshMaterial: Material;
     quarterBlockMesh: VoxelQuarterBlockMeshDefinition;
     meshPathLod: string;
+    prefab: GameObject;
     metallic: number;
     smoothness: number;
     normalScale: number;
@@ -37745,6 +37749,7 @@ declare const Command: CommandConstructor;
     
 interface DevConsoleConstructor {
     console: DevConsoleMono;
+    clearConsoleOnServerConnect: boolean;
     IsEnabled: boolean;
     IsOpen: boolean;
     readonly IsOpenAndFocused: boolean;
@@ -42840,7 +42845,7 @@ interface CharacterMovementData extends MonoBehaviour {
     numberOfJumps: number;
     jumpSpeed: number;
     jumpCoyoteTime: number;
-    allowFlyingFromConsole: boolean;
+    allowDebugFlying: boolean;
     flySpeedMultiplier: number;
     verticalFlySpeed: number;
     jumpUpBlockCooldown: number;
@@ -43749,6 +43754,69 @@ interface NetworkConnectionToServerConstructor {
 declare const NetworkConnectionToServer: NetworkConnectionToServerConstructor;
     
     
+    
+interface PredictedRigidbody extends NetworkBehaviour {
+    predictedRigidbody: Rigidbody;
+    mode: PredictionMode;
+    motionSmoothingVelocityThreshold: number;
+    motionSmoothingAngularVelocityThreshold: number;
+    motionSmoothingTimeTolerance: number;
+    stateHistoryLimit: number;
+    recordInterval: number;
+    onlyRecordChanges: boolean;
+    compareLastFirst: boolean;
+    positionCorrectionThreshold: number;
+    rotationCorrectionThreshold: number;
+    oneFrameAhead: boolean;
+    snapThreshold: number;
+    showGhost: boolean;
+    ghostVelocityThreshold: number;
+    localGhostMaterial: Material;
+    remoteGhostMaterial: Material;
+    checkGhostsEveryNthFrame: number;
+    positionInterpolationSpeed: number;
+    rotationInterpolationSpeed: number;
+    teleportDistanceMultiplier: number;
+    reduceSendsWhileIdle: boolean;
+
+
+
+    OnDeserialize(reader: NetworkReader, initialState: boolean): void;
+    OnSerialize(writer: NetworkWriter, initialState: boolean): void;
+    OnStopClient(): void;
+    Weaved(): boolean;
+
+
+}
+    
+interface PredictedRigidbodyConstructor {
+
+
+    new(): PredictedRigidbody;
+
+
+    IsPredicted(rb: Rigidbody, predictedRigidbody: unknown): boolean;
+    IsPredicted(co: Collider, predictedRigidbody: unknown): boolean;
+
+}
+declare const PredictedRigidbody: PredictedRigidbodyConstructor;
+    
+interface PredictedState {
+    readonly timestamp: number;
+    position: Vector3;
+    positionDelta: Vector3;
+    rotation: Quaternion;
+    rotationDelta: Quaternion;
+    velocity: Vector3;
+    velocityDelta: Vector3;
+    angularVelocity: Vector3;
+    angularVelocityDelta: Vector3;
+
+
+
+
+
+}
     
 interface NativeTween {
 
