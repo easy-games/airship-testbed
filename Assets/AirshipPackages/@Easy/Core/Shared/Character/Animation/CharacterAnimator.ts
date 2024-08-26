@@ -89,7 +89,7 @@ export default class CharacterAnimator extends AirshipBehaviour {
 		}
 		const deathClip = this.isFirstPerson ? this.deathClipViewmodel : this.deathClip;
 		if (deathClip) {
-			this.character.animationHelper.PlayAnimation(deathClip, CharacterAnimationLayer.Override1, 0.05);
+			this.character.animationHelper.PlayAnimation(deathClip, CharacterAnimationLayer.OVERRIDE_1, 0.05);
 		}
 	}
 

@@ -14,12 +14,12 @@ export default class HandsUp extends AirshipBehaviour {
 
 			if (this.playing) {
 				this.playing = false;
-				Game.localPlayer.character.animationHelper.StopAnimation(CharacterAnimationLayer.Override1, 0.15);
+				Game.localPlayer.character.animationHelper.StopAnimation(CharacterAnimationLayer.OVERRIDE_1, 0.15);
 			} else {
 				this.playing = true;
 				Game.localPlayer.character.animationHelper.PlayAnimation(
 					this.handsUpAnim,
-					CharacterAnimationLayer.Override1,
+					CharacterAnimationLayer.OVERRIDE_1,
 					0.15,
 				);
 			}
