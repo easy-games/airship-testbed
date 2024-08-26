@@ -45,7 +45,7 @@ export class AirshipAvatarSingleton {
 	 */
 	public LoadDefaultOutfit(builder: AccessoryBuilder) {
 		if (AvatarCollectionManager.instance.defaultOutfit) {
-			builder.AddAccessoryOutfit(AvatarCollectionManager.instance.defaultOutfit, true);
+			builder.EquipAccessoryOutfit(AvatarCollectionManager.instance.defaultOutfit, true);
 		}
 	}
 
