@@ -155,7 +155,7 @@ interface CharacterMovement extends Component {
 	networkTransform: Transform; //The interpolated network transform
 	graphicTransform: Transform; //A transform we can animate
 
-	moveData: CharacterMoveData;
+	moveData: CharacterMovementData;
 
 	groundedBlockId: number;
 	groundedBlockPos: Vector3;
