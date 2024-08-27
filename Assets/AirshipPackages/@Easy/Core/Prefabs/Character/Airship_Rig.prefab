@@ -594,6 +594,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 5234374422240836336, guid: 32b6c86e4b9e5c040818bf1ea6fe61c2, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 9b1dff1dbc3703b4595ea2ee348062ec, type: 2}
     - target: {fileID: 5797384429611982230, guid: 32b6c86e4b9e5c040818bf1ea6fe61c2, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -660,6 +664,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 32b6c86e4b9e5c040818bf1ea6fe61c2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7233710194765161957}
+    - targetCorrespondingSourceObject: {fileID: 946375464448580291, guid: 32b6c86e4b9e5c040818bf1ea6fe61c2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3913082273266881461}
     - targetCorrespondingSourceObject: {fileID: 635547659545568360, guid: 32b6c86e4b9e5c040818bf1ea6fe61c2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4230453897974672422}
@@ -815,6 +822,26 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3596835998558396597, guid: 32b6c86e4b9e5c040818bf1ea6fe61c2, type: 3}
   m_PrefabInstance: {fileID: 7893037738798420964}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &6965810205058615591 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 946375464448580291, guid: 32b6c86e4b9e5c040818bf1ea6fe61c2, type: 3}
+  m_PrefabInstance: {fileID: 7893037738798420964}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3913082273266881461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6965810205058615591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - baseColor: {r: 0.7169812, g: 0.5064722, b: 0.3754005, a: 1}
+  addedByEditorScript: 0
 --- !u!1 &7010096709717470901 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 32b6c86e4b9e5c040818bf1ea6fe61c2, type: 3}
