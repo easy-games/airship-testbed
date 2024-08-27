@@ -165,6 +165,10 @@
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsCloseButton.ts",
 			"name": "SettingsCloseButton"
 		},
+		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Overlay/MobileCameraMovement@MobileCameraMovement": {
+			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Overlay/MobileCameraMovement.ts",
+			"name": "MobileCameraMovement"
+		},
 		"AirshipPackages/@Easy/Core/Shared/Camera/CameraRig@CameraRig": {
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/Camera/CameraRig.ts",
 			"name": "CameraRig"
@@ -304,10 +308,6 @@
 		"Code/NavMesh/CubeAgent@CubeAgent": {
 			"assetPath": "Code/NavMesh/CubeAgent.ts",
 			"name": "CubeAgent"
-		},
-		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Overlay/MobileCameraMovement@MobileCameraMovement": {
-			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Overlay/MobileCameraMovement.ts",
-			"name": "MobileCameraMovement"
 		},
 		"Code/TestLocalCharacter@TestLocalCharacter": {
 			"assetPath": "Code/TestLocalCharacter.ts",
