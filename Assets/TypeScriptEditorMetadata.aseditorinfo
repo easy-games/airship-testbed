@@ -13,9 +13,9 @@
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/HomePageComponent.ts",
 			"name": "HomePageComponent"
 		},
-		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/SocialFriendRequestsButtonComponent@SocialFriendRequestsButtonComponent": {
-			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/SocialFriendRequestsButtonComponent.ts",
-			"name": "SocialFriendRequestsButtonComponent"
+		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Friends/NoFriendsCardComponent@NoFriendsCardComponent": {
+			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Friends/NoFriendsCardComponent.ts",
+			"name": "NoFriendsCardComponent"
 		},
 		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/DirectMessagesWindow@DirectMessagesWindow": {
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/DirectMessagesWindow.ts",
@@ -105,9 +105,9 @@
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsKeybindPage.ts",
 			"name": "SettingsKeybindPage"
 		},
-		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Friends/NoFriendsCardComponent@NoFriendsCardComponent": {
-			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Friends/NoFriendsCardComponent.ts",
-			"name": "NoFriendsCardComponent"
+		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/SocialFriendRequestsButtonComponent@SocialFriendRequestsButtonComponent": {
+			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/SocialFriendRequestsButtonComponent.ts",
+			"name": "SocialFriendRequestsButtonComponent"
 		},
 		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/General/GameGeneralPage@GameGeneralPage": {
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/General/GameGeneralPage.ts",
@@ -468,6 +468,10 @@
 		"Code/Components/TestCharacter@TestCharacter": {
 			"assetPath": "Code/Components/TestCharacter.ts",
 			"name": "TestCharacter"
+		},
+		"Code/Components/LaunchButton@LaunchButton": {
+			"assetPath": "Code/Components/LaunchButton.ts",
+			"name": "LaunchButton"
 		}
 	},
 	"enum": {
