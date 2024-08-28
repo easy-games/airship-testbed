@@ -9,6 +9,7 @@ import { CameraMode, CameraTransform } from "..";
 import { LocalCharacterSingleton } from "../../Character/LocalCharacter/LocalCharacterSingleton";
 import { AirshipCharacterCameraSingleton } from "../AirshipCharacterCameraSingleton";
 import DefaultCameraMask from "../DefaultCameraMask";
+import { Binding } from "../../Input/Binding";
 
 const CAM_Y_OFFSET = 1.7;
 const CAM_Y_OFFSET_CROUCH_1ST_PERSON = CAM_Y_OFFSET / 1.5;
@@ -82,6 +83,11 @@ export class HumanoidCameraMode extends CameraMode {
 		this.firstPerson = initialFirstPerson;
 		this.spineBone = character.rig.spine;
 		this.SetupMobileControls();
+
+		Airship.Input.CreateAction("TEST", Binding.Key(Key.F));
+		Airship.Input.OnDown("TEST").Connect(()=>{
+			this.OnLookVectorSet(new Vector3(math.random(),math.random(),math.random()));
+		});
 	}
 
 	private SetupMobileControls() {
@@ -281,6 +287,17 @@ export class HumanoidCameraMode extends CameraMode {
 		}
 	}
 
+	private OnLookVectorSet(newLookVector: Vector3){
+		print("RECIEVED LOOK VECTOR: " + newLookVector);
+		this.lookVector = newLookVector;
+		//Claculate X and Y rotation vector from spherical point (look vector) in radians
+		let rot = Quaternion.LookRotation(newLookVector, Vector3.up);
+		;
+		//const point = this.PolarToCartesian(newLookVector.normalized);
+		this.rotationX = math.rad(rot.eulerAngles.x);
+		this.rotationY = math.rad(rot.eulerAngles.y);
+	}
+
 	public SetFirstPerson(firstPerson: boolean) {
 		this.firstPerson = firstPerson;
 	}
@@ -338,5 +355,11 @@ export class HumanoidCameraMode extends CameraMode {
 	 */
 	public SetMouseSmoothingEnabled(enabled: boolean) {
 		this.mouseSmoothingEnabled = enabled;
+	}
+
+	private PolarToCartesian(cartPoint: Vector3): Vector2{
+		let longitude = math.acos(cartPoint.x / math.sqrt(cartPoint.x * cartPoint.x + cartPoint.y * cartPoint.y)) * (cartPoint.y < 0 ? -1 : 1);
+		let latitude = math.acos(cartPoint.z) * (cartPoint.z < 0 ? -1 : 1);
+		return new Vector2(longitude, latitude);
 	}
 }
