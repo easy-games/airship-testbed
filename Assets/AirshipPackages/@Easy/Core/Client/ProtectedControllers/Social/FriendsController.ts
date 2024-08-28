@@ -9,6 +9,7 @@ import { Game } from "@Easy/Core/Shared/Game";
 import { GameObjectUtil } from "@Easy/Core/Shared/GameObject/GameObjectUtil";
 import { CoreLogger } from "@Easy/Core/Shared/Logger/CoreLogger";
 import FriendCard from "@Easy/Core/Shared/MainMenu/Components/Friends/FriendCard";
+import NoFriendsCardComponent from "@Easy/Core/Shared/MainMenu/Components/Friends/NoFriendsCardComponent";
 import SocialFriendRequestsButtonComponent from "@Easy/Core/Shared/MainMenu/Components/SocialFriendRequestsButtonComponent";
 import SocialNotificationComponent from "@Easy/Core/Shared/MainMenu/Components/SocialNotificationComponent";
 import { CoreUI } from "@Easy/Core/Shared/UI/CoreUI";
@@ -48,6 +49,7 @@ export class ProtectedFriendsController {
 	private socialNotificationBin = new Bin();
 	private friendRequestsButton!: SocialFriendRequestsButtonComponent;
 	private socialNotificationKey = "";
+	public noFriendsCard: NoFriendsCardComponent;
 
 	public onIncomingFriendRequestsChanged = new Signal<void>();
 	public onFetchFriends = new Signal<void>();
@@ -111,6 +113,11 @@ export class ProtectedFriendsController {
 			.GetValue("Social", "FriendRequestsButton")
 			.GetAirshipComponent<SocialFriendRequestsButtonComponent>()!;
 		this.friendRequestsButton.gameObject.SetActive(false);
+
+		this.noFriendsCard = this.mainMenuController.refs
+			.GetValue("Social", "NoFriends")
+			.GetAirshipComponent<NoFriendsCardComponent>()!;
+		this.noFriendsCard.gameObject.SetActive(false);
 
 		const cachedStatusesRaw = StateManager.GetString("main-menu:friend-statuses");
 		if (cachedStatusesRaw) {
@@ -413,14 +420,17 @@ export class ProtectedFriendsController {
 
 		const mainCanvasRect = this.mainMenuController.mainContentCanvas.GetComponent<RectTransform>();
 
-		// Add & update
-		const friendsContent = this.mainMenuController.refs.GetValue("Social", "FriendsContent");
+		sorted = [];
+
 		// If no friends display no friends prefab
 		if (sorted.size() === 0) {
-			const noFriendsPrefab = this.mainMenuController.refs.GetValue("Social", "NoFriendsPrefab");	
-			Object.Instantiate(noFriendsPrefab, friendsContent.transform);
+			this.noFriendsCard.gameObject.SetActive(true);
+		} else {
+			this.noFriendsCard.gameObject.SetActive(false);
 		}
 
+		// Add & update
+		const friendsContent = this.mainMenuController.refs.GetValue("Social", "FriendsContent");
 		let i = 0;
 		for (const friend of sorted) {
 			const friendBin = new Bin();
