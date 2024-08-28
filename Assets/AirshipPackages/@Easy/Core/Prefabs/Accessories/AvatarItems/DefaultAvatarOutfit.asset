@@ -16,4 +16,4 @@ MonoBehaviour:
   - {fileID: 6917948673111891309, guid: 2b19c2e1bba9fd24e877e2822bcd7a27, type: 3}
   faceDecal: {fileID: 11400000, guid: 0dfdcf3a1119a4d4eb80f879dfddfd5d, type: 2}
   forceSkinColor: 0
-  skinColor: {r: 0.77647066, g: 0.5372549, b: 0.3254902, a: 1}
+  skinColor: {r: 0.9254902, g: 0.7254902, b: 0.54901963, a: 1}

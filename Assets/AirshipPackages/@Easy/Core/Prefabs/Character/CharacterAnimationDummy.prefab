@@ -803,7 +803,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - baseColor: {r: 0.7169812, g: 0.5064722, b: 0.3754005, a: 1}
+  - baseColor: {r: 0.9254902, g: 0.7254902, b: 0.54901963, a: 1}
   addedByEditorScript: 0
 --- !u!4 &1471104454595091503 stripped
 Transform:
@@ -863,7 +863,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - baseColor: {r: 0.7169812, g: 0.5064722, b: 0.3754005, a: 1}
+  - baseColor: {r: 0.9254902, g: 0.7254902, b: 0.54901963, a: 1}
   addedByEditorScript: 0
 --- !u!4 &3608781088197255917 stripped
 Transform:
@@ -913,7 +913,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - baseColor: {r: 0.7169812, g: 0.5064722, b: 0.3754005, a: 1}
+  - baseColor: {r: 0.9254902, g: 0.7254902, b: 0.54901963, a: 1}
   addedByEditorScript: 0
 --- !u!4 &6380005668619256908 stripped
 Transform:
