@@ -15,6 +15,7 @@ MonoBehaviour:
   scope: '@Easy/DemoBlocks'
   blockDefinitions:
   - {fileID: 11400000, guid: d70cbd71b18a38741a60d88adbe9723f, type: 2}
+  - {fileID: 11400000, guid: deb308fb8ba8d4d45bdf06ee89fa92ba, type: 2}
   - {fileID: 11400000, guid: 4bdbaed430df6614481b6a8ef9aa738d, type: 2}
   - {fileID: 11400000, guid: 793333a93a53e4e4ca81a1708f2ea69d, type: 2}
   - {fileID: 11400000, guid: 28a4dabbec2a51b4e800dfbc463b87ef, type: 2}
