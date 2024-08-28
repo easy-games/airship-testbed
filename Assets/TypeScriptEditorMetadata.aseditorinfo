@@ -177,6 +177,10 @@
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/Input/ProximityPrompts/ProximityPrompt.ts",
 			"name": "ProximityPrompt"
 		},
+		"Code/Components/LaunchButton@LaunchButton": {
+			"assetPath": "Code/Components/LaunchButton.ts",
+			"name": "LaunchButton"
+		},
 		"Code/AirshipPlatformDemo/DemoManager@DemoManager": {
 			"assetPath": "Code/AirshipPlatformDemo/DemoManager.ts",
 			"name": "DemoManager"
@@ -468,10 +472,6 @@
 		"Code/Components/TestCharacter@TestCharacter": {
 			"assetPath": "Code/Components/TestCharacter.ts",
 			"name": "TestCharacter"
-		},
-		"Code/Components/LaunchButton@LaunchButton": {
-			"assetPath": "Code/Components/LaunchButton.ts",
-			"name": "LaunchButton"
 		}
 	},
 	"enum": {

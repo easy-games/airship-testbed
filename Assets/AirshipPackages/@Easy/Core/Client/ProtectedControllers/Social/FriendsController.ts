@@ -420,7 +420,8 @@ export class ProtectedFriendsController {
 
 		const mainCanvasRect = this.mainMenuController.mainContentCanvas.GetComponent<RectTransform>();
 
-		sorted = [];
+		// uncomment to test with no friends.
+		// sorted = [];
 
 		// If no friends display no friends prefab
 		if (sorted.size() === 0) {
