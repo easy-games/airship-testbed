@@ -629,6 +629,9 @@ declare namespace math {
 
 	/** Interpolates `current` toward `target` with smoothing. */
 	function smoothStep(current: number, target: number, t: number): number;
+
+	/** Checks if `value` is NaN. */
+	function isNaN(value: number | Vector2 | Vector3 | Vector4): boolean;
 }
 
 /**
