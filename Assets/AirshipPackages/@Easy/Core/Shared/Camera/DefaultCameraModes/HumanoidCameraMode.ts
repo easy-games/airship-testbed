@@ -20,11 +20,13 @@ const MAX_ROT_X = math.rad(179);
 
 const XZ_LOCKED_OFFSET = new Vector3(0.45, 0, 3.5);
 const Y_LOCKED_ROTATION = 0;
+const POLAR_RADIAN_CONST = 1.57079633;
 
 const TAU = math.pi * 2;
 
 let MOUSE_SENS_SCALAR = 15;
 let MOUSE_SMOOTHING = 1.6;
+
 
 export class HumanoidCameraMode extends CameraMode {
 	GetFriendlyName(): string {
@@ -61,6 +63,8 @@ export class HumanoidCameraMode extends CameraMode {
 	/** Keep track of mouse lock state (to prevent huge delta when locking mouse) */
 	private mouseLocked = Mouse.IsLocked();
 	private mouseLockSwapped = false;
+	private polarRadius = 1;
+
 
 	constructor(private character: Character, private graphicalCharacterGO: GameObject, initialFirstPerson: boolean) {
 		super();
@@ -86,7 +90,14 @@ export class HumanoidCameraMode extends CameraMode {
 
 		Airship.Input.CreateAction("TEST", Binding.Key(Key.F));
 		Airship.Input.OnDown("TEST").Connect(()=>{
-			this.OnLookVectorSet(new Vector3(math.random(),math.random(),math.random()));
+			if(true){
+				print("should see reults: 1.7240859455811672, 3.8036155123183524");
+				this.OnLookVectorSet(new Vector3(0.6075055599212646, 0.15269000828266144, -0.7795016169548035));
+			}else{
+				this.OnLookVectorSet(new Vector3(
+					math.random() * 2 - 1,math.random() * 2 - 1,math.random() * 2 - 1).normalized);
+			}
+			
 		});
 	}
 
@@ -234,16 +245,16 @@ export class HumanoidCameraMode extends CameraMode {
 			}
 		}
 		const zOffset = XZ_LOCKED_OFFSET.z;
-		const radius = this.firstPerson ? 1 : zOffset;
+		this.polarRadius = this.firstPerson ? 1 : zOffset;
 		const yRotOffset = this.lockView
 			? Y_LOCKED_ROTATION + (this.lookBackwards && !this.firstPerson ? math.pi : 0)
 			: 0;
 
 		// Polar to cartesian conversion (i.e. the 3D point around the sphere of the character):
 		const rotY = this.rotationY + yRotOffset - math.pi / 2;
-		const xPos = radius * math.cos(rotY) * math.sin(this.rotationX);
-		const zPos = radius * math.sin(rotY) * math.sin(this.rotationX);
-		const yPos = radius * math.cos(this.rotationX);
+		const xPos = this.polarRadius * math.cos(rotY) * math.sin(this.rotationX);
+		const zPos = this.polarRadius * math.sin(rotY) * math.sin(this.rotationX);
+		const yPos = this.polarRadius * math.cos(this.rotationX);
 
 		const posOffset = new Vector3(xPos, yPos, zPos);
 
@@ -282,20 +293,29 @@ export class HumanoidCameraMode extends CameraMode {
 		const newLookVector = this.lookBackwards && !this.firstPerson ? transform.forward.mul(-1) : transform.forward;
 		const diff = this.lookVector.sub(newLookVector).magnitude;
 		if (diff > 0.01) {
+			print("look: " + newLookVector + " rot: " + this.rotationX + ", " + this.rotationY);
 			this.movement.SetLookVector(newLookVector);
 			this.lookVector = newLookVector;
+			//this.OnLookVectorSet(newLookVector);
 		}
 	}
 
 	private OnLookVectorSet(newLookVector: Vector3){
-		print("RECIEVED LOOK VECTOR: " + newLookVector);
 		this.lookVector = newLookVector;
 		//Claculate X and Y rotation vector from spherical point (look vector) in radians
-		let rot = Quaternion.LookRotation(newLookVector, Vector3.up);
-		;
-		//const point = this.PolarToCartesian(newLookVector.normalized);
-		this.rotationX = math.rad(rot.eulerAngles.x);
-		this.rotationY = math.rad(rot.eulerAngles.y);
+		
+		const point = this.PolarToCartesian(newLookVector.normalized);
+		if(false){
+			this.rotationX = point.x + POLAR_RADIAN_CONST;
+			this.rotationY = point.y;// - POLAR_RADIAN_CONST;
+		}else{
+			let rot = Quaternion.LookRotation(newLookVector, Vector3.forward).mul(Quaternion.Euler(0, -90, 0));
+			this.rotationX = math.rad(rot.eulerAngles.x);
+			this.rotationY = math.rad(rot.eulerAngles.y);
+		}
+		print("Recieved look vector: " + newLookVector + " rotation: " + this.rotationX + ", " + this.rotationY);
+
+
 	}
 
 	public SetFirstPerson(firstPerson: boolean) {
@@ -358,8 +378,8 @@ export class HumanoidCameraMode extends CameraMode {
 	}
 
 	private PolarToCartesian(cartPoint: Vector3): Vector2{
-		let longitude = math.acos(cartPoint.x / math.sqrt(cartPoint.x * cartPoint.x + cartPoint.y * cartPoint.y)) * (cartPoint.y < 0 ? -1 : 1);
-		let latitude = math.acos(cartPoint.z) * (cartPoint.z < 0 ? -1 : 1);
+		let longitude = cartPoint.x === 0 && cartPoint.y === 0 ? POLAR_RADIAN_CONST : math.acos(cartPoint.x / math.sqrt(cartPoint.x * cartPoint.x + cartPoint.y * cartPoint.y)) * (cartPoint.y < 0 ? -1 : 1);
+		let latitude = cartPoint.z === 0 ? POLAR_RADIAN_CONST : math.acos(cartPoint.z / this.polarRadius) * (cartPoint.z < 0 ? -1 : 1);
 		return new Vector2(longitude, latitude);
 	}
 }
