@@ -22,10 +22,12 @@ export class Team {
 	}
 
 	public AddPlayer(player: Player): void {
-		const oldTeam = player.GetTeam();
+		const oldTeam = player.team;
 
 		this.players.add(player);
-		player.SetTeam(this);
+
+		(player.team as Team) = this;
+		player.onChangeTeam.Fire(this, oldTeam);
 		this.onPlayerAdded.Fire(player);
 
 		Airship.Teams.onPlayerChangeTeam.Fire(player, this, oldTeam);

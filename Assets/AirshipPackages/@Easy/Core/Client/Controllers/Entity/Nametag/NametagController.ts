@@ -73,8 +73,8 @@ export class NametagController {
 	public UpdateNametag(character: Character): void {
 		if (character.IsLocalCharacter() && !this.showSelfNametag) return;
 
-		const team: Team | undefined = character.player?.GetTeam();
-		const localTeam = Game.localPlayer.GetTeam();
+		const team: Team | undefined = character.player?.team;
+		const localTeam = Game.localPlayer.team;
 
 		const nameTag = character.rig.head.FindChild(this.nameTagId);
 		if (nameTag === undefined) {

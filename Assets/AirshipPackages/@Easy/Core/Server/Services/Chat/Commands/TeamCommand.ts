@@ -6,12 +6,11 @@ export class TeamCommand extends ChatCommand {
 		super("team");
 	}
 	public Execute(player: Player, args: string[]): void {
-		const team = player.GetTeam();
-		if (!team) {
+		if (!player.team) {
 			player.SendMessage("You are not on a team.");
 			return;
 		}
 
-		player.SendMessage(`You are on Team [${team.id}]`);
+		player.SendMessage(`You are on Team [${player.team.id}]`);
 	}
 }

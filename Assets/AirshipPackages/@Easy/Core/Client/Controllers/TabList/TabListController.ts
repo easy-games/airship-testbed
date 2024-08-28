@@ -114,8 +114,8 @@ export class TabListController {
 			let aTeamIndex = math.huge;
 			let bTeamIndex = math.huge;
 
-			let aTeam = a.GetTeam();
-			let bTeam = b.GetTeam();
+			let aTeam = a.team;
+			let bTeam = b.team;
 
 			if (aTeam) {
 				aTeamIndex = teams.indexOf(aTeam);
@@ -160,7 +160,7 @@ export class TabListController {
 		if (player === Game.localPlayer) {
 			username = "<b>" + username + "</b>";
 		}
-		const team = player.GetTeam();
+		const team = player.team;
 		if (team) {
 			const hex = ColorUtil.ColorToHex(team.color);
 			username = `<color=${hex}>${username}</color>`;

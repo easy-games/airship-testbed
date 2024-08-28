@@ -35,7 +35,18 @@ export class Player {
 	 */
 	public readonly onLeave = new Signal<void>();
 
-	private team: Team | undefined;
+	/**
+	 * The player's current team.
+	 *
+	 * You can add players to teams by using `team.AddPlayer(player)`
+	 *
+	 * Use {@link Airship.Teams} to get references to a team.
+	 */
+	public readonly team: Team | undefined;
+
+	/**
+	 * Fired on both client and server when player changes team.
+	 */
 	public readonly onChangeTeam = new Signal<[team: Team | undefined, oldTeam: Team | undefined]>();
 
 	public onUsernameChanged = new Signal<[username: string]>();
@@ -190,13 +201,14 @@ export class Player {
 		return await Airship.Players.GetProfilePictureAsync(this.userId);
 	}
 
-	public SetTeam(team: Team): void {
-		const oldTeam = this.team;
-		this.team = team;
-		this.onChangeTeam.Fire(team, oldTeam);
-	}
+	// public SetTeam(team: Team): void {
+	// 	const oldTeam = this.team;
+	// 	this.team = team;
+	// 	this.onChangeTeam.Fire(team, oldTeam);
+	// }
 
-	public GetTeam(): Team | undefined {
+	// Keeping private so we don't break old games
+	private GetTeam(): Team | undefined {
 		return this.team;
 	}
 
@@ -284,7 +296,7 @@ export class Player {
 	/**
 	 * @internal
 	 */
-	public UpdateUsername(username: string): void {
+	private UpdateUsername(username: string): void {
 		this.username = username;
 		this.onUsernameChanged.Fire(username);
 	}
