@@ -375,18 +375,6 @@ declare const enum InputActionPhase {
 // 	Stationary = 5,
 // }
 
-interface AgonesServiceConstructor {
-	Agones: AgonesProxy;
-}
-
-interface AgonesProxy {
-	OnConnected(callback: () => void): void;
-	OnReady(callback: () => void): void;
-	Connect(): void;
-	Ready(): void;
-	Shutdown(): void;
-}
-
 interface WindowProxy {
 	OnWindowFocus(callback: (hasFocus: boolean) => void): void;
 }

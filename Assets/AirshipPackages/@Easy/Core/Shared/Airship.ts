@@ -1,11 +1,13 @@
 import { AirshipPartyController } from "../Client/Controllers/Airship/Party/AirshipPartyController";
 import { AirshipPlatformInventoryController } from "../Client/Controllers/Airship/PlatformInventory/AirshipPlatformInventoryController";
+import { AirshipServerListController } from "../Client/Controllers/Airship/ServerList/AirshipServerListController";
 import { AirshipUserController } from "../Client/Controllers/Airship/User/AirshipUserController";
 import { AirshipCacheStoreService } from "../Server/Services/Airship/CacheStore/AirshipCacheStoreService";
 import { AirshipDataStoreService } from "../Server/Services/Airship/DataStore/AirshipDataStoreService";
 import { AirshipLeaderboardService } from "../Server/Services/Airship/Leaderboard/AirshipLeaderboardService";
 import { AirshipPartyService } from "../Server/Services/Airship/Party/AirshipPartyService";
 import { AirshipPlatformInventoryService } from "../Server/Services/Airship/PlatformInventory/AirshipPlatformInventoryService";
+import { AirshipServerListService } from "../Server/Services/Airship/ServerList/AirshipServerListService";
 import { AirshipTransferService } from "../Server/Services/Airship/Transfer/AirshipTransferService";
 import { AirshipAvatarSingleton } from "./Avatar/AirshipAvatarSingleton";
 import { AirshipCharacterCameraSingleton } from "./Camera/AirshipCharacterCameraSingleton";
@@ -84,6 +86,7 @@ export namespace Platform {
 		 * - Content that players may want to trade or sell to other players
 		 */
 		export let Inventory = undefined! as AirshipPlatformInventoryService;
+		export let ServerList = undefined! as AirshipServerListService;
 	}
 
 	/**
@@ -103,6 +106,10 @@ export namespace Platform {
 		 * Provides access to user information.
 		 */
 		export let User = undefined! as AirshipUserController;
+		/**
+		 * Provides access to a games server list.
+		 */
+		export let ServerList = undefined! as AirshipServerListController;
 	}
 }
 
