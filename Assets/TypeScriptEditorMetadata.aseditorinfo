@@ -13,9 +13,9 @@
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/HomePageComponent.ts",
 			"name": "HomePageComponent"
 		},
-		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/SocialFriendRequestsButtonComponent@SocialFriendRequestsButtonComponent": {
-			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/SocialFriendRequestsButtonComponent.ts",
-			"name": "SocialFriendRequestsButtonComponent"
+		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Friends/NoFriendsCardComponent@NoFriendsCardComponent": {
+			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Friends/NoFriendsCardComponent.ts",
+			"name": "NoFriendsCardComponent"
 		},
 		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/DirectMessagesWindow@DirectMessagesWindow": {
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/DirectMessagesWindow.ts",
@@ -105,9 +105,9 @@
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsKeybindPage.ts",
 			"name": "SettingsKeybindPage"
 		},
-		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Friends/NoFriendsCardComponent@NoFriendsCardComponent": {
-			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Friends/NoFriendsCardComponent.ts",
-			"name": "NoFriendsCardComponent"
+		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/SocialFriendRequestsButtonComponent@SocialFriendRequestsButtonComponent": {
+			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/SocialFriendRequestsButtonComponent.ts",
+			"name": "SocialFriendRequestsButtonComponent"
 		},
 		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/General/GameGeneralPage@GameGeneralPage": {
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/General/GameGeneralPage.ts",
@@ -165,6 +165,10 @@
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsCloseButton.ts",
 			"name": "SettingsCloseButton"
 		},
+		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Overlay/MobileCameraMovement@MobileCameraMovement": {
+			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Overlay/MobileCameraMovement.ts",
+			"name": "MobileCameraMovement"
+		},
 		"AirshipPackages/@Easy/Core/Shared/Camera/CameraRig@CameraRig": {
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/Camera/CameraRig.ts",
 			"name": "CameraRig"
@@ -172,6 +176,10 @@
 		"AirshipPackages/@Easy/Core/Shared/Input/ProximityPrompts/ProximityPrompt@ProximityPrompt": {
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/Input/ProximityPrompts/ProximityPrompt.ts",
 			"name": "ProximityPrompt"
+		},
+		"Code/Components/LaunchButton@LaunchButton": {
+			"assetPath": "Code/Components/LaunchButton.ts",
+			"name": "LaunchButton"
 		},
 		"Code/AirshipPlatformDemo/DemoManager@DemoManager": {
 			"assetPath": "Code/AirshipPlatformDemo/DemoManager.ts",
@@ -269,6 +277,10 @@
 			"assetPath": "Code/Components/CharacterSpawner.ts",
 			"name": "CharacterSpawner"
 		},
+		"Code/Components/HandsUp@HandsUp": {
+			"assetPath": "Code/Components/HandsUp.ts",
+			"name": "HandsUp"
+		},
 		"Code/Components/NPCSpawner@NPCSpawner": {
 			"assetPath": "Code/Components/NPCSpawner.ts",
 			"name": "NPCSpawner"
@@ -300,10 +312,6 @@
 		"Code/NavMesh/CubeAgent@CubeAgent": {
 			"assetPath": "Code/NavMesh/CubeAgent.ts",
 			"name": "CubeAgent"
-		},
-		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Overlay/MobileCameraMovement@MobileCameraMovement": {
-			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Overlay/MobileCameraMovement.ts",
-			"name": "MobileCameraMovement"
 		},
 		"Code/TestLocalCharacter@TestLocalCharacter": {
 			"assetPath": "Code/TestLocalCharacter.ts",

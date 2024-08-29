@@ -77,11 +77,7 @@ export default class CharacterAnimator extends AirshipBehaviour {
 		//Animate flinch
 		let foundFlinchClip = this.isFirstPerson ? this.flinchClipViewmodel : this.flinchClip;
 		if (foundFlinchClip) {
-			this.character.animationHelper.PlayAnimationWithWeight(
-				foundFlinchClip,
-				CharacterAnimationLayer.OVERRIDE_4,
-				0.5,
-			);
+			this.character.animationHelper.PlayAnimation(foundFlinchClip, CharacterAnimationLayer.OVERRIDE_4, 0.05);
 		}
 	}
 
@@ -93,7 +89,7 @@ export default class CharacterAnimator extends AirshipBehaviour {
 		}
 		const deathClip = this.isFirstPerson ? this.deathClipViewmodel : this.deathClip;
 		if (deathClip) {
-			this.character.animationHelper.PlayAnimation(deathClip, CharacterAnimationLayer.OVERRIDE_1);
+			this.character.animationHelper.PlayAnimation(deathClip, CharacterAnimationLayer.OVERRIDE_1, 0.05);
 		}
 	}
 

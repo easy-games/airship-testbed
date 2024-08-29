@@ -1,6 +1,8 @@
 import { Airship } from "../Airship";
 import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
+import Character from "../Character/Character";
 import { Singleton } from "../Flamework";
+import { Player } from "../Player/Player";
 import { ColorUtil } from "../Util/ColorUtil";
 import { AvatarCollectionManager } from "./AvatarCollectionManager";
 import { AvatarPlatformAPI } from "./AvatarPlatformAPI";
@@ -18,11 +20,74 @@ export class AirshipAvatarSingleton {
 	}
 
 	/**
+	 * Load a default outfit onto the character so they aren't nakey
+	 * @param builder accessory builder for character
+	 */
+	public LoadDefaultOutfit(builder: AccessoryBuilder) {
+		if (AvatarCollectionManager.instance.defaultOutfit) {
+			builder.EquipAccessoryOutfit(AvatarCollectionManager.instance.defaultOutfit, true);
+		}
+	}
+
+	/**
+	 * Load the equipped outfit of a user into the accessory builder
+	 * @param userId target userId
+	 * @param builder accessory builder for character
+	 * @param options optional params
+	 */
+	public LoadOutfitByUserId(
+		userId: string,
+		builder: AccessoryBuilder,
+		options: { removeOldClothingAccessories?: boolean } = {},
+	) {
+		AvatarPlatformAPI.GetUserEquippedOutfit(userId).then((outfit) => {
+			if (outfit) {
+				this.LoadUserOutfitDto(outfit, builder, options);
+			}
+		});
+	}
+
+	/**
+	 * If this character has a Player it will load that players equipped outfit
+	 * @param character character with an accessory builder on it
+	 * @param builder accessory builder for character
+	 * @param options optional params
+	 */
+	public LoadOutfitByPlayer(
+		player: Player,
+		builder: AccessoryBuilder,
+		options: {
+			removeOldClothingAccessories?: boolean;
+			combineMeshes?: boolean;
+		},
+	) {
+		this.LoadOutfitByUserId(player.userId, builder, options);
+	}
+
+	/**
+	 * If this character has a Player it will load that players equipped outfit
+	 * @param character character with an accessory builder on it
+	 * @param options optional params
+	 */
+	public LoadOutfitByCharacter(
+		character: Character,
+		options: {
+			removeOldClothingAccessories?: boolean;
+			combineMeshes?: boolean;
+		},
+	) {
+		if (!character.player) {
+			return;
+		}
+		this.LoadOutfitByUserId(character.player.userId, character.accessoryBuilder, options);
+	}
+
+	/**
 	 * Gets the equipped outfit for your local logged in character
 	 * @param builder accessory builder for character
 	 * @param options optional params
 	 */
-	public LoadEquippedUserOutfit(
+	public LoadOutfitFromLocalUser(
 		builder: AccessoryBuilder,
 		options: {
 			removeOldClothingAccessories?: boolean;
@@ -35,35 +100,7 @@ export class AirshipAvatarSingleton {
 				this.LoadDefaultOutfit(builder);
 				return;
 			}
-			this.LoadUserOutfit(outfitDto, builder, options);
-		});
-	}
-
-	/**
-	 * Load a default outfit onto the character so they aren't nakey
-	 * @param builder accessory builder for character
-	 */
-	public LoadDefaultOutfit(builder: AccessoryBuilder) {
-		if (AvatarCollectionManager.instance.defaultOutfit) {
-			builder.AddAccessoryOutfit(AvatarCollectionManager.instance.defaultOutfit, true);
-		}
-	}
-
-	/**
-	 * Load the equipped outfit of a user into the accessory builder
-	 * @param userId target userId
-	 * @param builder accessory builder for character
-	 * @param options optional params
-	 */
-	public LoadUsersEquippedOutfit(
-		userId: string,
-		builder: AccessoryBuilder,
-		options: { removeOldClothingAccessories?: boolean } = {},
-	) {
-		AvatarPlatformAPI.GetUserEquippedOutfit(userId).then((outfit) => {
-			if (outfit) {
-				this.LoadUserOutfit(outfit, builder, options);
-			}
+			this.LoadUserOutfitDto(outfitDto, builder, options);
 		});
 	}
 
@@ -73,7 +110,12 @@ export class AirshipAvatarSingleton {
 	 * @param builder accessory builder for character
 	 * @param options optional params
 	 */
-	public LoadUserOutfit(
+	/**
+	 * Internal use only`.
+	 *
+	 * @internal
+	 */
+	public LoadUserOutfitDto(
 		outfit: OutfitDto,
 		builder: AccessoryBuilder,
 		options: { removeOldClothingAccessories?: boolean } = {},

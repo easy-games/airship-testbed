@@ -256,7 +256,10 @@ export class HumanoidCameraMode extends CameraMode {
 		if (this.firstPerson) {
 			newPosition = newPosition.add(new Vector3(0, -0.13, 0));
 		}
-		const lv = posOffset.mul(-1).normalized;
+		let lv = posOffset.mul(-1).normalized;
+		if(lv === Vector3.zero){
+			lv = new Vector3(0,0,.01);
+		}
 		const rotation = Quaternion.LookRotation(lv, Vector3.up);
 
 		return new CameraTransform(newPosition, rotation);

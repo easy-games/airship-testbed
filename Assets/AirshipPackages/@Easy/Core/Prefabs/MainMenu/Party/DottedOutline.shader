@@ -4,6 +4,7 @@ Shader "Unlit/DottedOutline"
     {
         _BorderColor ("Border Color", Color) = (1,1,1,1)
         _BorderSpeed ("Border Speed", float) = 1
+        _BorderSegmentLength ("Border Segment Length", float) = 1
     }
     SubShader
     {
@@ -36,6 +37,7 @@ Shader "Unlit/DottedOutline"
 
             half4 _BorderColor;
             float _BorderSpeed;
+            float _BorderSegmentLength;
 
             v2f vert (appdata v)
             {
@@ -48,7 +50,7 @@ Shader "Unlit/DottedOutline"
             half4 frag (v2f i) : SV_Target
             {
                 float offset = i.uv.x - _Time.x * _BorderSpeed;
-                float a = min(pow(sin(offset * 100), 8) * 1000, 1);
+                float a = min(pow(sin(offset * 100 / _BorderSegmentLength), 8) * 1000, 1);
                 return half4(_BorderColor.rgb, _BorderColor.a * a);
             }
             ENDHLSL

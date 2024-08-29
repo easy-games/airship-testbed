@@ -20,6 +20,9 @@ import { Game } from "@Easy/Core/Shared/Game";
  */
 @Service({})
 export class AirshipDataStoreService {
+	// Used in editor where we can't make calls to the platform APIs. This is for basic Get/Set only.
+	private internalDB: Record<string, any> = {};
+
 	constructor() {
 		if (!Game.IsServer()) return;
 
@@ -35,6 +38,10 @@ export class AirshipDataStoreService {
 	 */
 	public async GetKey<T extends object>(key: string): Promise<T | undefined> {
 		this.checkKey(key);
+
+		if (Game.IsEditor()) {
+			return this.internalDB[key];
+		}
 
 		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiDataGetKey<T>>(
 			DataStoreServiceBridgeTopics.GetKey,
@@ -54,6 +61,11 @@ export class AirshipDataStoreService {
 	 */
 	public async SetKey<T extends object>(key: string, data: T): Promise<T> {
 		this.checkKey(key);
+
+		if (Game.IsEditor()) {
+			this.internalDB[key] = data;
+			return data;
+		}
 
 		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiDataSetKey<T>>(
 			DataStoreServiceBridgeTopics.SetKey,
@@ -80,12 +92,22 @@ export class AirshipDataStoreService {
 	 * associated with the provided key. If data was associated with the key between the get operation and the set operation,
 	 * this function will fail with a conflict error.
 	 *
+	 * Returning no data from the callback (undefined) will abort the update and no data will be changed.
+	 *
 	 * @param key The key to use. Keys must be alphanumeric and may include the following symbols: _.:
 	 * @param callback The function that will be called to retrieve the new data value.
 	 * @returns The data that was associated with the provided key.
 	 */
-	public async GetAndSet<T extends object>(key: string, callback: (record?: T) => Promise<T> | T): Promise<T> {
+	public async GetAndSet<T extends object>(
+		key: string,
+		callback: (record?: T) => Promise<T | undefined> | T | undefined,
+	): Promise<T | undefined> {
 		this.checkKey(key);
+
+		if (Game.IsEditor()) {
+			warn("[Data Store] GetAndSet() is unavailable in editor.");
+			return undefined as unknown as T;
+		}
 
 		const currentData = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiDataGetKey<T>>(
 			DataStoreServiceBridgeTopics.GetKey,
@@ -96,6 +118,7 @@ export class AirshipDataStoreService {
 
 		try {
 			const newData = await callback(currentData.data?.value);
+			if (newData === undefined) return currentData.data?.value;
 			const setResult = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiDataSetKey<T>>(
 				DataStoreServiceBridgeTopics.SetKey,
 				LuauContext.Protected,
@@ -118,6 +141,12 @@ export class AirshipDataStoreService {
 	 */
 	public async DeleteKey<T extends object>(key: string): Promise<T | undefined> {
 		this.checkKey(key);
+
+		if (Game.IsEditor()) {
+			const data = this.internalDB[key];
+			delete this.internalDB[key];
+			return data;
+		}
 
 		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiDataDeleteKey<T>>(
 			DataStoreServiceBridgeTopics.DeleteKey,
@@ -147,6 +176,11 @@ export class AirshipDataStoreService {
 		callback: (record: T) => Promise<boolean> | boolean,
 	): Promise<T | undefined> {
 		this.checkKey(key);
+
+		if (Game.IsEditor()) {
+			warn("[Data Store] GetAndDelete is unavailable in editor.");
+			return undefined as unknown as T;
+		}
 
 		const currentData = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiDataGetKey<T>>(
 			DataStoreServiceBridgeTopics.GetKey,

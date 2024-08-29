@@ -84,7 +84,11 @@ export class ChangeUsernameController {
 		);
 		if (res.success) {
 			this.SetResponseText("success", `Success! Your name has been changed to "${text}".`);
-			Game.localPlayer.UpdateUsername(text);
+			(
+				Game.localPlayer as unknown as {
+					UpdateUsername(text: string): void;
+				}
+			).UpdateUsername(text);
 			Dependency<ProtectedUserController>().FetchLocalUser();
 			this.submitButton.SetActive(false);
 			this.submitButtonDisabled.SetActive(true);

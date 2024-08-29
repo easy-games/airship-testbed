@@ -41,7 +41,7 @@ export default class DemoManager extends AirshipBehaviour {
 			let builder = this.testCharacterBuilders[i];
 			let userId = this.testUserIds[i];
 			if (builder && userId !== "") {
-				Airship.Avatar.LoadUsersEquippedOutfit(userId, builder, {
+				Airship.Avatar.LoadOutfitByUserId(userId, builder, {
 					removeOldClothingAccessories: true,
 				});
 			}

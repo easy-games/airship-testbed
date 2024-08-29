@@ -2892,10 +2892,11 @@ declare const enum StereoScreenCaptureMode {
 }
 declare const enum ContextStyle {
     Block = 0,
-    GreedyMeshingTiles = 1,
-    PipeBlocks = 2,
-    QuarterTiles = 3,
-    Mesh = 4,
+    Prefab = 1,
+    GreedyMeshingTiles = 2,
+    PipeBlocks = 3,
+    QuarterBlocks = 4,
+    StaticMesh = 5,
 }
 declare const enum CollisionType {
     None = 0,
@@ -3478,6 +3479,10 @@ declare const enum ConnectionQualityMethod {
 declare const enum CoordinateSpace {
     Local = 0,
     World = 1,
+}
+declare const enum PredictionMode {
+    Smooth = 0,
+    Fast = 1,
 }
 declare const enum CellLayout {
     Rectangle = 0,
@@ -29897,10 +29902,13 @@ interface GameConfig extends ScriptableObject {
     packages: CSArray<AirshipPackageDocument>;
     tags: CSArray<string>;
     gameLayers: CSArray<string>;
+    gameTags: CSArray<string>;
 
 
 
     ToJson(): string;
+    TryGetRuntimeTag(userTag: string, runtimeTag: CSArray<string>): boolean;
+    TryGetUserTag(runtimeTag: string, userTag: CSArray<string>): boolean;
 
 
 }
@@ -29942,6 +29950,7 @@ interface AirshipPackageDocumentConstructor {
 declare const AirshipPackageDocument: AirshipPackageDocumentConstructor;
     
 interface GameConfigConstructor {
+    MaximumTags: number;
 
 
     new(): GameConfig;
@@ -31038,11 +31047,9 @@ interface AccessoryBuilder extends MonoBehaviour {
 
 
     AddAccessories(accessoryTemplates: CSArray<AccessoryComponent>, addMode: AccessoryAddMode, rebuildMeshImmediately: boolean): CSArray<ActiveAccessory>;
-    AddAccessoryOutfit(outfit: AccessoryOutfit, rebuildMeshImmediately: boolean): CSArray<ActiveAccessory>;
-    AddOutfirFromUsername(username: string): CSArray<ActiveAccessory>;
-    AddOutfitFromUserId(userId: string): CSArray<ActiveAccessory>;
     AddSingleAccessory(accessoryTemplate: AccessoryComponent, rebuildMeshImmediately: boolean): ActiveAccessory;
     AddSkinAccessory(skin: AccessorySkin, rebuildMeshImmediately: boolean): void;
+    EquipAccessoryOutfit(outfit: AccessoryOutfit, rebuildMeshImmediately: boolean): CSArray<ActiveAccessory>;
     GetAccessoryMeshes(slot: AccessorySlot): CSArray<Renderer>;
     GetAccessoryParticles(slot: AccessorySlot): CSArray<ParticleSystem>;
     GetActiveAccessories(): CSArray<ActiveAccessory>;
@@ -33281,6 +33288,232 @@ interface PhysicsExtConstructor {
 }
 declare const PhysicsExt: PhysicsExtConstructor;
     
+interface Joint extends Component {
+    /**
+     * A reference to another rigidbody this joint connects to.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-connectedBody.html | Joint.connectedBody}
+     */
+    connectedBody: Rigidbody;
+    /**
+     * A reference to an articulation body this joint connects to.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-connectedArticulationBody.html | Joint.connectedArticulationBody}
+     */
+    connectedArticulationBody: ArticulationBody;
+    /**
+     * The Direction of the axis around which the body is constrained.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-axis.html | Joint.axis}
+     */
+    axis: Vector3;
+    /**
+     * The Position of the anchor around which the joints motion is constrained.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-anchor.html | Joint.anchor}
+     */
+    anchor: Vector3;
+    /**
+     * Position of the anchor relative to the connected Rigidbody.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-connectedAnchor.html | Joint.connectedAnchor}
+     */
+    connectedAnchor: Vector3;
+    /**
+     * Should the connectedAnchor be calculated automatically?
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-autoConfigureConnectedAnchor.html | Joint.autoConfigureConnectedAnchor}
+     */
+    autoConfigureConnectedAnchor: boolean;
+    /**
+     * The force that needs to be applied for this joint to break.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-breakForce.html | Joint.breakForce}
+     */
+    breakForce: number;
+    /**
+     * The torque that needs to be applied for this joint to break. To be able to break, a joint must be _Locked_ or _Limited_ on the axis of rotation where the torque is being applied. This means that some joints cannot break, such as an unconstrained Configurable Joint.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-breakTorque.html | Joint.breakTorque}
+     */
+    breakTorque: number;
+    /**
+     * Enable collision between bodies connected with the joint.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-enableCollision.html | Joint.enableCollision}
+     */
+    enableCollision: boolean;
+    /**
+     * Toggle preprocessing for this joint.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-enablePreprocessing.html | Joint.enablePreprocessing}
+     */
+    enablePreprocessing: boolean;
+    /**
+     * The scale to apply to the inverse mass and inertia tensor of the body prior to solving the constraints.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-massScale.html | Joint.massScale}
+     */
+    massScale: number;
+    /**
+     * The scale to apply to the inverse mass and inertia tensor of the connected body prior to solving the constraints.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-connectedMassScale.html | Joint.connectedMassScale}
+     */
+    connectedMassScale: number;
+    /**
+     * The force applied by the solver to satisfy all constraints.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-currentForce.html | Joint.currentForce}
+     */
+    readonly currentForce: Vector3;
+    /**
+     * The torque applied by the solver to satisfy all constraints.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-currentTorque.html | Joint.currentTorque}
+     */
+    readonly currentTorque: Vector3;
+
+
+
+
+
+}
+    
+interface JointConstructor {
+
+
+    new(): Joint;
+
+
+
+}
+declare const Joint: JointConstructor;
+    
+interface CharacterJoint extends Joint {
+    /**
+     * The secondary axis around which the joint can rotate.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/CharacterJoint-swingAxis.html | CharacterJoint.swingAxis}
+     */
+    swingAxis: Vector3;
+    /**
+     * The configuration of the spring attached to the twist limits of the joint.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/CharacterJoint-twistLimitSpring.html | CharacterJoint.twistLimitSpring}
+     */
+    twistLimitSpring: SoftJointLimitSpring;
+    /**
+     * The configuration of the spring attached to the swing limits of the joint.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/CharacterJoint-swingLimitSpring.html | CharacterJoint.swingLimitSpring}
+     */
+    swingLimitSpring: SoftJointLimitSpring;
+    /**
+     * The lower limit around the primary axis of the character joint.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/CharacterJoint-lowTwistLimit.html | CharacterJoint.lowTwistLimit}
+     */
+    lowTwistLimit: SoftJointLimit;
+    /**
+     * The upper limit around the primary axis of the character joint.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/CharacterJoint-highTwistLimit.html | CharacterJoint.highTwistLimit}
+     */
+    highTwistLimit: SoftJointLimit;
+    /**
+     * The angular limit of rotation (in degrees) around the primary axis of the character joint.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/CharacterJoint-swing1Limit.html | CharacterJoint.swing1Limit}
+     */
+    swing1Limit: SoftJointLimit;
+    /**
+     * The angular limit of rotation (in degrees) around the primary axis of the character joint.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/CharacterJoint-swing2Limit.html | CharacterJoint.swing2Limit}
+     */
+    swing2Limit: SoftJointLimit;
+    /**
+     * Brings violated constraints back into alignment even when the solver fails.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/CharacterJoint-enableProjection.html | CharacterJoint.enableProjection}
+     */
+    enableProjection: boolean;
+    /**
+     * Set the linear tolerance threshold for projection.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/CharacterJoint-projectionDistance.html | CharacterJoint.projectionDistance}
+     */
+    projectionDistance: number;
+    /**
+     * Set the angular tolerance threshold (in degrees) for projection.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/CharacterJoint-projectionAngle.html | CharacterJoint.projectionAngle}
+     */
+    projectionAngle: number;
+
+
+
+
+
+}
+    
+interface SoftJointLimitSpring {
+    /**
+     * The stiffness of the spring limit. When stiffness is zero the limit is hard, otherwise soft.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/SoftJointLimitSpring-spring.html | SoftJointLimitSpring.spring}
+     */
+    spring: number;
+    /**
+     * The damping of the spring limit. In effect when the stiffness of the sprint limit is not zero.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/SoftJointLimitSpring-damper.html | SoftJointLimitSpring.damper}
+     */
+    damper: number;
+
+
+
+
+
+}
+    
+interface SoftJointLimit {
+    /**
+     * The limit position/angle of the joint (in degrees).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/SoftJointLimit-limit.html | SoftJointLimit.limit}
+     */
+    limit: number;
+    /**
+     * When the joint hits the limit, it can be made to bounce off it.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/SoftJointLimit-bounciness.html | SoftJointLimit.bounciness}
+     */
+    bounciness: number;
+    /**
+     * Determines how far ahead in space the solver can &quot;see&quot; the joint limit.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/SoftJointLimit-contactDistance.html | SoftJointLimit.contactDistance}
+     */
+    contactDistance: number;
+
+
+
+
+
+}
+    
+interface CharacterJointConstructor {
+
+
+    new(): CharacterJoint;
+
+
+
+}
+declare const CharacterJoint: CharacterJointConstructor;
+    
 interface ServerConsole extends MonoBehaviour {
     RemoteLogging: boolean;
 
@@ -35373,7 +35606,7 @@ interface VoxelBlocks extends MonoBehaviour {
     AddSolidMaskToVoxelValue(voxelValue: number): number;
     GetBlock(index: number): BlockDefinition;
     GetBlockDefinitionByStringId(blockTypeId: string): BlockDefinition;
-    GetBlockDefinitionFromIndex(index: number): BlockDefinition;
+    GetBlockDefinitionFromBlockId(index: number): BlockDefinition;
     GetBlockIdFromStringId(stringId: string): number;
     GetStringIdFromBlockId(blockVoxelId: number): string;
     Load(loadTexturesDirectlyFromDisk: boolean): void;
@@ -35473,6 +35706,7 @@ interface VoxelBlockDefinition extends ScriptableObject {
     meshMaterial: Material;
     quarterBlockMesh: VoxelQuarterBlockMeshDefinition;
     meshPathLod: string;
+    prefab: GameObject;
     metallic: number;
     smoothness: number;
     normalScale: number;
@@ -37745,6 +37979,7 @@ declare const Command: CommandConstructor;
     
 interface DevConsoleConstructor {
     console: DevConsoleMono;
+    clearConsoleOnServerConnect: boolean;
     IsEnabled: boolean;
     IsOpen: boolean;
     readonly IsOpenAndFocused: boolean;
@@ -42840,7 +43075,7 @@ interface CharacterMovementData extends MonoBehaviour {
     numberOfJumps: number;
     jumpSpeed: number;
     jumpCoyoteTime: number;
-    allowFlyingFromConsole: boolean;
+    allowDebugFlying: boolean;
     flySpeedMultiplier: number;
     verticalFlySpeed: number;
     jumpUpBlockCooldown: number;
@@ -43750,6 +43985,69 @@ declare const NetworkConnectionToServer: NetworkConnectionToServerConstructor;
     
     
     
+interface PredictedRigidbody extends NetworkBehaviour {
+    predictedRigidbody: Rigidbody;
+    mode: PredictionMode;
+    motionSmoothingVelocityThreshold: number;
+    motionSmoothingAngularVelocityThreshold: number;
+    motionSmoothingTimeTolerance: number;
+    stateHistoryLimit: number;
+    recordInterval: number;
+    onlyRecordChanges: boolean;
+    compareLastFirst: boolean;
+    positionCorrectionThreshold: number;
+    rotationCorrectionThreshold: number;
+    oneFrameAhead: boolean;
+    snapThreshold: number;
+    showGhost: boolean;
+    ghostVelocityThreshold: number;
+    localGhostMaterial: Material;
+    remoteGhostMaterial: Material;
+    checkGhostsEveryNthFrame: number;
+    positionInterpolationSpeed: number;
+    rotationInterpolationSpeed: number;
+    teleportDistanceMultiplier: number;
+    reduceSendsWhileIdle: boolean;
+
+
+
+    OnDeserialize(reader: NetworkReader, initialState: boolean): void;
+    OnSerialize(writer: NetworkWriter, initialState: boolean): void;
+    OnStopClient(): void;
+    Weaved(): boolean;
+
+
+}
+    
+interface PredictedRigidbodyConstructor {
+
+
+    new(): PredictedRigidbody;
+
+
+    IsPredicted(rb: Rigidbody, predictedRigidbody: unknown): boolean;
+    IsPredicted(co: Collider, predictedRigidbody: unknown): boolean;
+
+}
+declare const PredictedRigidbody: PredictedRigidbodyConstructor;
+    
+interface PredictedState {
+    readonly timestamp: number;
+    position: Vector3;
+    positionDelta: Vector3;
+    rotation: Quaternion;
+    rotationDelta: Quaternion;
+    velocity: Vector3;
+    velocityDelta: Vector3;
+    angularVelocity: Vector3;
+    angularVelocityDelta: Vector3;
+
+
+
+
+
+}
+    
 interface NativeTween {
 
 
@@ -43991,108 +44289,6 @@ interface ConstantForce2DConstructor {
 
 }
 declare const ConstantForce2D: ConstantForce2DConstructor;
-    
-interface Joint extends Component {
-    /**
-     * A reference to another rigidbody this joint connects to.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-connectedBody.html | Joint.connectedBody}
-     */
-    connectedBody: Rigidbody;
-    /**
-     * A reference to an articulation body this joint connects to.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-connectedArticulationBody.html | Joint.connectedArticulationBody}
-     */
-    connectedArticulationBody: ArticulationBody;
-    /**
-     * The Direction of the axis around which the body is constrained.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-axis.html | Joint.axis}
-     */
-    axis: Vector3;
-    /**
-     * The Position of the anchor around which the joints motion is constrained.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-anchor.html | Joint.anchor}
-     */
-    anchor: Vector3;
-    /**
-     * Position of the anchor relative to the connected Rigidbody.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-connectedAnchor.html | Joint.connectedAnchor}
-     */
-    connectedAnchor: Vector3;
-    /**
-     * Should the connectedAnchor be calculated automatically?
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-autoConfigureConnectedAnchor.html | Joint.autoConfigureConnectedAnchor}
-     */
-    autoConfigureConnectedAnchor: boolean;
-    /**
-     * The force that needs to be applied for this joint to break.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-breakForce.html | Joint.breakForce}
-     */
-    breakForce: number;
-    /**
-     * The torque that needs to be applied for this joint to break. To be able to break, a joint must be _Locked_ or _Limited_ on the axis of rotation where the torque is being applied. This means that some joints cannot break, such as an unconstrained Configurable Joint.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-breakTorque.html | Joint.breakTorque}
-     */
-    breakTorque: number;
-    /**
-     * Enable collision between bodies connected with the joint.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-enableCollision.html | Joint.enableCollision}
-     */
-    enableCollision: boolean;
-    /**
-     * Toggle preprocessing for this joint.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-enablePreprocessing.html | Joint.enablePreprocessing}
-     */
-    enablePreprocessing: boolean;
-    /**
-     * The scale to apply to the inverse mass and inertia tensor of the body prior to solving the constraints.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-massScale.html | Joint.massScale}
-     */
-    massScale: number;
-    /**
-     * The scale to apply to the inverse mass and inertia tensor of the connected body prior to solving the constraints.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-connectedMassScale.html | Joint.connectedMassScale}
-     */
-    connectedMassScale: number;
-    /**
-     * The force applied by the solver to satisfy all constraints.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-currentForce.html | Joint.currentForce}
-     */
-    readonly currentForce: Vector3;
-    /**
-     * The torque applied by the solver to satisfy all constraints.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-currentTorque.html | Joint.currentTorque}
-     */
-    readonly currentTorque: Vector3;
-
-
-
-
-
-}
-    
-interface JointConstructor {
-
-
-    new(): Joint;
-
-
-
-}
-declare const Joint: JointConstructor;
     
 interface FixedJoint extends Joint {
 

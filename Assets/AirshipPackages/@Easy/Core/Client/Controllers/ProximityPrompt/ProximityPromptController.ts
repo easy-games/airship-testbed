@@ -64,7 +64,7 @@ export class ProximityPromptController {
 			let promptActionMap = new Map<string, ProximityPrompt[]>();
 			let distanceMap = new Map<ProximityPrompt, number>();
 
-			while (task.wait(PROMPT_POLL_RATE)) {
+			while (task.unscaledWait(PROMPT_POLL_RATE)) {
 				for (let prompt of this.allPrompts) {
 					if (promptActionMap.has(prompt.actionName)) {
 						promptActionMap.get(prompt.actionName)!.push(prompt);
@@ -76,7 +76,7 @@ export class ProximityPromptController {
 					const distToPrompt = this.GetDistanceToPrompt(prompt);
 					distanceMap.set(prompt, distToPrompt);
 					if (this.promptDistanceLogging) {
-						print(prompt.gameObject.name + " distance: " + distToPrompt);
+						print("[Proximity Prompt]: " + prompt.gameObject.name + " distance: " + distToPrompt);
 					}
 				}
 
@@ -108,7 +108,6 @@ export class ProximityPromptController {
 					this.shownPrompts.delete(prompt);
 					prompt.Hide();
 				});
-				
 
 				distanceMap.clear();
 				promptActionMap.clear();
