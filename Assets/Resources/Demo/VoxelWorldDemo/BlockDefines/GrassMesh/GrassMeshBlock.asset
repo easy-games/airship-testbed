@@ -40,7 +40,7 @@ MonoBehaviour:
   quarterBlockMesh: {fileID: 0}
   prefab: {fileID: 5049303985662668026, guid: f1fef696102be154ab53413091c30963, type: 3}
   staticMeshLOD0: {fileID: 916786107800872944, guid: 3c1fd04c8b545044099d19b4ea529946, type: 3}
-  staticMeshLOD1: {fileID: 0}
+  staticMeshLOD1: {fileID: 3790093382422742427, guid: 64a2eb87d6c16404caa77923b033f529, type: 3}
   staticMeshLOD2: {fileID: 0}
   metallic: 0
   smoothness: 0
