@@ -1056,6 +1056,8 @@ MonoBehaviour:
   useAccelerationMovement: 0
   speed: 4.666667
   sprintSpeed: 6.666667
+  accelerationForce: 0.6
+  sprintAccelerationForce: 0.85
   onlySprintForward: 0
   autoCrouch: 1
   preventFallingWhileCrouching: 0
