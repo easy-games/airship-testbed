@@ -237,6 +237,10 @@
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/Input/Mobile/MobileControlsCanvas.ts",
 			"name": "MobileControlsCanvas"
 		},
+		"AirshipPackages/@Easy/Core/Shared/Character/Animation/CharacterRagdoll@CharacterRagdoll": {
+			"assetPath": "AirshipPackages/@Easy/Core/Shared/Character/Animation/CharacterRagdoll.ts",
+			"name": "CharacterRagdoll"
+		},
 		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/MobileNavButton@MobileNavButton": {
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/MobileNavButton.ts",
 			"name": "MobileNavButton"
