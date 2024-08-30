@@ -1,5 +1,4 @@
-import { ServerBridgeApiGetServerList } from "@Easy/Core/Server/ProtectedServices/Airship/ServerList/ProtectedServerListService";
-import { ServerListEntry } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipServerList";
+import { ServerListEntry, ServerListEntryWithFriends } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipServerList";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { DecodeJSON } from "@Easy/Core/Shared/json";
@@ -11,29 +10,26 @@ export const enum ServerListControllerBridgeTopics {
 	GetFriendServers = "ServerListController:GetFriendServers",
 }
 
-export type ControllerBridgeApiGetServerList = (page?: number) => Result<{ entries: ServerListEntry[] }, string>;
-export type ControllerBridgeApiGetFriendServers = () => Result<{ entries: ServerListEntry[] }, string>;
+export type ClientBridgeApiGetServerList = (page?: number) => Result<{ entries: ServerListEntry[] }, string>;
+export type ClientBridgeApiGetFriendServers = () => Result<{ entries: ServerListEntryWithFriends[] }, string>;
 
 @Service({})
 export class ProtectedTransferService {
 	constructor() {
 		if (!Game.IsServer()) return;
 
-		contextbridge.callback<ControllerBridgeApiGetServerList>(
-			ServerListControllerBridgeTopics.GetServerList,
-			(_) => {
-				const [success, result] = this.GetServerList().await();
-				if (!success) {
-					return { success: false, error: "Unable to complete request." };
-				}
-				return result;
-			},
-		);
+		contextbridge.callback<ClientBridgeApiGetServerList>(ServerListControllerBridgeTopics.GetServerList, (_) => {
+			const [success, result] = this.GetServerList().await();
+			if (!success) {
+				return { success: false, error: "Unable to complete request." };
+			}
+			return result;
+		});
 
-		contextbridge.callback<ControllerBridgeApiGetFriendServers>(
-			ServerListControllerBridgeTopics.GetServerList,
+		contextbridge.callback<ClientBridgeApiGetFriendServers>(
+			ServerListControllerBridgeTopics.GetFriendServers,
 			(_) => {
-				const [success, result] = this.GetServerList().await();
+				const [success, result] = this.GetFriendServers().await();
 				if (!success) {
 					return { success: false, error: "Unable to complete request." };
 				}
@@ -42,7 +38,7 @@ export class ProtectedTransferService {
 		);
 	}
 
-	public async GetServerList(page: number = 0): Promise<ReturnType<ServerBridgeApiGetServerList>> {
+	public async GetServerList(page: number = 0): Promise<ReturnType<ClientBridgeApiGetServerList>> {
 		const res = InternalHttpManager.GetAsync(
 			`${AirshipUrl.GameCoordinator}/servers/game-id/${Game.gameId}/list?page=${page}`,
 		);
@@ -61,7 +57,7 @@ export class ProtectedTransferService {
 		};
 	}
 
-	public async GetFriendServers(): Promise<ReturnType<ServerBridgeApiGetServerList>> {
+	public async GetFriendServers(): Promise<ReturnType<ClientBridgeApiGetFriendServers>> {
 		const res = InternalHttpManager.GetAsync(
 			`${AirshipUrl.GameCoordinator}/servers/game-id/${Game.gameId}/list/friends`,
 		);
@@ -76,7 +72,7 @@ export class ProtectedTransferService {
 
 		return {
 			success: true,
-			data: DecodeJSON(res.data) as { entries: ServerListEntry[] },
+			data: DecodeJSON(res.data) as { entries: ServerListEntryWithFriends[] },
 		};
 	}
 
