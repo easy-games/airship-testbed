@@ -13,8 +13,6 @@ import { CharacterDto } from "./CharacterDto";
 import { AirshipCharacterFootstepsSingleton } from "./Footstep/AirshipCharacterFootstepsSingleton";
 import { LocalCharacterSingleton } from "./LocalCharacter/LocalCharacterSingleton";
 
-const characterPrefab = AssetCache.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/Character/AirshipCharacter.prefab");
-
 /**
  * Access using {@link Airship.Characters}. Characters singleton provides utilities for working with the {@link Character}
  * object.
@@ -409,7 +407,9 @@ export class AirshipCharactersSingleton {
 	}
 
 	public GetDefaultCharacterTemplate() {
-		return this.customCharacterTemplate === undefined ? characterPrefab : this.customCharacterTemplate;
+		return this.customCharacterTemplate === undefined
+			? AssetCache.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/Character/AirshipCharacter.prefab")
+			: this.customCharacterTemplate;
 	}
 
 	public SetDefaultViewmodelPrefab(prefab: GameObject | undefined) {

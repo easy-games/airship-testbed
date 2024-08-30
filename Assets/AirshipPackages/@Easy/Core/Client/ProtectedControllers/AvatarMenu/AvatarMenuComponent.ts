@@ -177,10 +177,6 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 		this.ClearItembuttons();
 
-		AvatarCollectionManager.instance.DownloadAllAccessories().then(() => {
-			this.LoadAllOutfits();
-		});
-
 		if (Game.IsEditor()) {
 			Keyboard.OnKeyDown(Key.PrintScreen, (event) => {
 				if (Keyboard.IsKeyDown(Key.LeftShift)) {
@@ -205,14 +201,26 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 	}
 
+	private downloadedAccessories = false;
+
 	override OpenPage(params?: unknown): void {
 		super.OpenPage(params);
+
+		AvatarCollectionManager.instance.Setup();
+
 		this.SetDirty(false);
 		this.LoadAllOutfits();
 
 		const mainMenuSingleton = Dependency<MainMenuSingleton>();
 
 		this.bin.Add(mainMenuSingleton.socialMenuModifier.Add({ hidden: true }));
+
+		if (!this.downloadedAccessories) {
+			this.downloadedAccessories = true;
+			AvatarCollectionManager.instance.DownloadAllAccessories().then(() => {
+				this.LoadAllOutfits();
+			});
+		}
 
 		// Load the character
 		if (this.mainMenu.avatarView === undefined) {
