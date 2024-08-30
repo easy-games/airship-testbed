@@ -12,7 +12,7 @@ export default class MainMenuPageComponent extends AirshipBehaviour {
 	protected refs?: GameObjectReferences;
 
 	private activePage = false;
-	protected mainMenu?: MainMenuController;
+	protected mainMenu: MainMenuController;
 
 	/**
 	 * **DO NOT YIELD INSIDE THIS METHOD.**
