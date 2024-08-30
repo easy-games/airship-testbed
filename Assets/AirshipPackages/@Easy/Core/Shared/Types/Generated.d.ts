@@ -11384,8 +11384,13 @@ interface AgonesProxy extends MonoBehaviour {
     readonly test: MonoSignal<void>;
 
 
+    AppendListValue(list: string, value: string): boolean;
     Connect(): void;
+    DeleteListValue(list: string, value: string): boolean;
+    GetListValues(list: string): CSArray<string>;
     Ready(): void;
+    SetAnnotation(key: string, value: string): boolean;
+    SetLabel(key: string, value: string): boolean;
     Shutdown(): void;
 
 
