@@ -118,7 +118,9 @@ export namespace Airship {
 	/**
 	 * Players allows you to work with currently connected clients (with Airship's {@link Player} object).
 	 *
-	 * If you are looking to get information about offline users see {@link AirshipUserController}
+	 * The local player is defined as `Game.localPlayer`
+	 *
+	 * If you are looking to get information about offline users see {@link Platform.Client.User}
 	 */
 	export let Players = undefined! as AirshipPlayersSingleton;
 	/**

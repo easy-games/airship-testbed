@@ -30,8 +30,6 @@ import { Player, PlayerDto } from "./Player";
 
 /**
  * Access using {@link Airship.Players}. Players singleton allows you to work with currently connected clients (with Airship's {@link Player} object).
- *
- * If you are looking to get information about offline users see {@link AirshipUserController}
  */
 @Controller({ loadOrder: -1000 })
 @Service({ loadOrder: -1000 })
