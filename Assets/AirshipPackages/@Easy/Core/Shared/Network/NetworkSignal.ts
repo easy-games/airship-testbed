@@ -6,8 +6,8 @@ type NetworkParamsToClient<T> = Parameters<
 	T extends unknown[]
 		? (player: Player, ...args: T) => void
 		: T extends unknown
-			? (player: Player, arg: T) => void
-			: (player: Player) => void
+		? (player: Player, arg: T) => void
+		: (player: Player) => void
 >;
 
 type NetworkParamsToServer<T> = Parameters<
@@ -24,10 +24,7 @@ let ID_COUNTER = 0;
 const packageMap = new Map<number, number>();
 
 class NetworkSignalServer<T extends unknown[] | unknown> {
-	constructor(
-		private readonly id: number,
-		private readonly channel: NetworkChannel = NetworkChannel.Reliable,
-	) {}
+	constructor(private readonly id: number, private readonly channel: NetworkChannel = NetworkChannel.Reliable) {}
 
 	public FireAllClients(...args: NetworkParamsToAllClients<T>) {
 		NetworkAPI.fireAllClients(this.id, args, this.channel);
@@ -51,10 +48,7 @@ class NetworkSignalServer<T extends unknown[] | unknown> {
 }
 
 class NetworkSignalClient<T extends unknown[] | unknown> {
-	constructor(
-		private readonly id: number,
-		private readonly channel: NetworkChannel = NetworkChannel.Reliable,
-	) {}
+	constructor(private readonly id: number, private readonly channel: NetworkChannel = NetworkChannel.Reliable) {}
 
 	public FireServer(...args: NetworkParamsToServer<T>) {
 		NetworkAPI.fireServer(this.id, args, this.channel);
@@ -71,8 +65,8 @@ export class NetworkSignal<T extends unknown[] | unknown = []> {
 
 	/**
 	 *
-	 * @param channel
-	 * @param packageOffset Temporary workaround param.
+	 * @param remoteIdentifier Unique identifier for this remote event.
+	 * @param channel The type of networking channel to use. Reliable = TCP. Unreliable = UDP. Defaults to Reliable.
 	 */
 	constructor(remoteIdentifier: string, channel: NetworkChannel = NetworkChannel.Reliable) {
 		let id = 0;
