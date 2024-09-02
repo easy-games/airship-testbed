@@ -1,6 +1,5 @@
 import { AirshipServerConfig } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipTransfers";
-import { ServerListEntry } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipServerList";
-import { CreateServerResponse } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipTransfers";
+import { CreateServerResponse, PublicServerData } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipServerManager";
 import { Dependency, Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
@@ -20,7 +19,7 @@ export type ServerBridgeApiCreateServer = (config?: AirshipServerConfig) => Resu
 export type ServerBridgeApiShutdownServer = () => Result<undefined, string>;
 export type ServerBridgeApiListServer = (config?: { name?: string; description?: string }) => Result<boolean, string>;
 export type ServerBridgeApiDelistServer = () => Result<boolean, string>;
-export type ServerBridgeApiGetServerList = (page?: number) => Result<{ entries: ServerListEntry[] }, string>;
+export type ServerBridgeApiGetServerList = (page?: number) => Result<{ entries: PublicServerData[] }, string>;
 
 @Service({})
 export class ProtectedServerManagerService {
@@ -134,7 +133,7 @@ export class ProtectedServerManagerService {
 
 		return {
 			success: true,
-			data: DecodeJSON(res.data) as { entries: ServerListEntry[] },
+			data: DecodeJSON(res.data) as { entries: PublicServerData[] },
 		};
 	}
 

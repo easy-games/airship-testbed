@@ -7,8 +7,7 @@ import {
 } from "@Easy/Core/Server/ProtectedServices/Airship/ServerManager/ProtectedServerManagerService";
 import { Platform } from "@Easy/Core/Shared/Airship";
 import { AirshipServerConfig } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipTransfers";
-import { ServerListEntry } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipServerList";
-import { CreateServerResponse } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipTransfers";
+import { CreateServerResponse, PublicServerData } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipServerManager";
 import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/ContextBridgeUtil";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
@@ -81,7 +80,7 @@ export class AirshipServerManagerService {
 	 * Gets a page of the server list.
 	 * @param page The page to retrieve. Starts at 0.
 	 */
-	public async GetServerList(page: number = 0): Promise<{ entries: ServerListEntry[] }> {
+	public async GetServerList(page: number = 0): Promise<{ entries: PublicServerData[] }> {
 		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiGetServerList>(
 			ServerManagerServiceBridgeTopics.GetServerList,
 			LuauContext.Protected,

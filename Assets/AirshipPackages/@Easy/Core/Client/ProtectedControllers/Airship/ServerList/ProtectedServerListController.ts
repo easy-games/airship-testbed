@@ -1,4 +1,7 @@
-import { ServerListEntry, ServerListEntryWithFriends } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipServerList";
+import {
+	PublicServerData,
+	ServerListEntryWithFriends,
+} from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipServerManager";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { DecodeJSON } from "@Easy/Core/Shared/json";
@@ -10,7 +13,7 @@ export const enum ServerListControllerBridgeTopics {
 	GetFriendServers = "ServerListController:GetFriendServers",
 }
 
-export type ClientBridgeApiGetServerList = (page?: number) => Result<{ entries: ServerListEntry[] }, string>;
+export type ClientBridgeApiGetServerList = (page?: number) => Result<{ entries: PublicServerData[] }, string>;
 export type ClientBridgeApiGetFriendServers = () => Result<{ entries: ServerListEntryWithFriends[] }, string>;
 
 @Service({})
@@ -53,7 +56,7 @@ export class ProtectedTransferService {
 
 		return {
 			success: true,
-			data: DecodeJSON(res.data) as { entries: ServerListEntry[] },
+			data: DecodeJSON(res.data) as { entries: PublicServerData[] },
 		};
 	}
 

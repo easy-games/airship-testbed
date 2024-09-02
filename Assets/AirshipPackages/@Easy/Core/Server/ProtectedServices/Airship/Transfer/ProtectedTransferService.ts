@@ -4,11 +4,12 @@ import {
 	AirshipPlayerTransferConfig,
 	AirshipServerTransferConfig,
 } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipTransfers";
+import { TransferResult } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipTransfers";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Result } from "@Easy/Core/Shared/Types/Result";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
-import { EncodeJSON } from "@Easy/Core/Shared/json";
+import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 
 export const enum TransferServiceBridgeTopics {
 	TransferGroupToGame = "TransferService:TransferGroupToGame",
@@ -21,21 +22,21 @@ export type ServerBridgeApiTransferGroupToGame = (
 	userIds: string[],
 	gameId: string,
 	config?: AirshipGameTransferConfig,
-) => Result<undefined, string>;
+) => Result<TransferResult, string>;
 export type ServerBridgeApiTransferGroupToServer = (
 	userIds: string[],
 	serverId: string,
 	config?: AirshipServerTransferConfig,
-) => Result<undefined, string>;
+) => Result<TransferResult, string>;
 export type ServerBridgeApiTransferGroupToMatchingServer = (
 	userIds: string[],
 	config: AirshipMatchingServerTransferConfig,
-) => Result<undefined, string>;
+) => Result<TransferResult, string>;
 export type ServerBridgeApiTransferGroupToPlayer = (
 	userIds: string[],
 	targetUserId: string,
 	config?: AirshipPlayerTransferConfig,
-) => Result<undefined, string>;
+) => Result<TransferResult, string>;
 
 @Service({})
 export class ProtectedTransferService {
@@ -123,7 +124,7 @@ export class ProtectedTransferService {
 
 		return {
 			success: true,
-			data: undefined,
+			data: DecodeJSON(res.data),
 		};
 	}
 
@@ -152,7 +153,7 @@ export class ProtectedTransferService {
 
 		return {
 			success: true,
-			data: undefined,
+			data: DecodeJSON(res.data),
 		};
 	}
 
@@ -184,7 +185,7 @@ export class ProtectedTransferService {
 
 		return {
 			success: true,
-			data: undefined,
+			data: DecodeJSON(res.data),
 		};
 	}
 
@@ -213,7 +214,7 @@ export class ProtectedTransferService {
 
 		return {
 			success: true,
-			data: undefined,
+			data: DecodeJSON(res.data),
 		};
 	}
 }
