@@ -1,5 +1,4 @@
 import {
-	ServerBridgeApiCreateServer,
 	ServerBridgeApiTransferGroupToGame,
 	ServerBridgeApiTransferGroupToMatchingServer,
 	ServerBridgeApiTransferGroupToPlayer,
@@ -11,10 +10,8 @@ import {
 	AirshipGameTransferConfig,
 	AirshipMatchingServerTransferConfig,
 	AirshipPlayerTransferConfig,
-	AirshipServerConfig,
 	AirshipServerTransferConfig,
 } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipTransfers";
-import { CreateServerResponse } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipTransfers";
 import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/ContextBridgeUtil";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
@@ -53,22 +50,6 @@ export class AirshipTransferService {
 				this.TransferGroupToGame(Airship.Players.GetPlayers(), Game.gameId);
 			}
 		});
-	}
-
-	/**
-	 * Creates a new server and returns a server id which can be used to transfer players to the new server.
-	 * @param config The configuration the server should start with. If not provided, the server will use the defaults
-	 * provided during deployment.
-	 * @returns The id of the new server. Undefined if the server was not able to be created.
-	 */
-	public async CreateServer(config?: AirshipServerConfig): Promise<CreateServerResponse> {
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiCreateServer>(
-			TransferServiceBridgeTopics.CreateServer,
-			LuauContext.Protected,
-			config,
-		);
-		if (!result.success) throw result.error;
-		return result.data;
 	}
 
 	/**

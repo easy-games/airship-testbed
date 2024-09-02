@@ -10,7 +10,7 @@ import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 
 /**
- * Allows access to player party information.
+ * Allows access to the game server list.
  */
 @Service({})
 export class AirshipServerListController {

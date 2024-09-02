@@ -2,25 +2,21 @@ import {
 	AirshipGameTransferConfig,
 	AirshipMatchingServerTransferConfig,
 	AirshipPlayerTransferConfig,
-	AirshipServerConfig,
 	AirshipServerTransferConfig,
 } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipTransfers";
-import { CreateServerResponse } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipTransfers";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Result } from "@Easy/Core/Shared/Types/Result";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
-import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
+import { EncodeJSON } from "@Easy/Core/Shared/json";
 
 export const enum TransferServiceBridgeTopics {
-	CreateServer = "TransferService:CreateServer",
 	TransferGroupToGame = "TransferService:TransferGroupToGame",
 	TransferGroupToServer = "TransferService:TransferGroupToServer",
 	TransferGroupToMatchingServer = "TransferService:TransferGroupToMatchingServer",
 	TransferGroupToPlayer = "TransferService:TransferGroupToPlayer",
 }
 
-export type ServerBridgeApiCreateServer = (config?: AirshipServerConfig) => Result<CreateServerResponse, string>;
 export type ServerBridgeApiTransferGroupToGame = (
 	userIds: string[],
 	gameId: string,
@@ -44,14 +40,6 @@ export type ServerBridgeApiTransferGroupToPlayer = (
 @Service({})
 export class ProtectedTransferService {
 	constructor() {
-		contextbridge.callback<ServerBridgeApiCreateServer>(TransferServiceBridgeTopics.CreateServer, (_, config) => {
-			const [success, result] = this.CreateServer(config).await();
-			if (!success) {
-				return { success: false, error: "Unable to complete request." };
-			}
-			return result;
-		});
-
 		contextbridge.callback<ServerBridgeApiTransferGroupToGame>(
 			TransferServiceBridgeTopics.TransferGroupToGame,
 			(_, players, gameId, config) => {
@@ -107,35 +95,6 @@ export class ProtectedTransferService {
 				return result;
 			},
 		);
-	}
-
-	public async CreateServer(config?: AirshipServerConfig): Promise<ReturnType<ServerBridgeApiCreateServer>> {
-		const res = InternalHttpManager.PostAsync(
-			`${AirshipUrl.GameCoordinator}/servers/create`,
-			EncodeJSON({
-				sceneId: config?.sceneId,
-				region: config?.region,
-				accessMode: config?.accessMode,
-				allowedUids: config?.allowedUserIds,
-				maxPlayers: config?.maxPlayers,
-				tags: config?.tags,
-			}),
-		);
-
-		if (!res.success && res.statusCode > 299) {
-			warn(`Unable to create server. Status Code:  ${res.statusCode}.\n`, res.data);
-			return {
-				success: false,
-				error: res.error,
-			};
-		}
-
-		return {
-			success: true,
-			data: DecodeJSON<{
-				serverId: string;
-			}>(res.data),
-		};
 	}
 
 	public async TransferGroupToGame(
