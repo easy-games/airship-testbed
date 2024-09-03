@@ -25813,6 +25813,8 @@ interface CoreLoadingScreen extends BundleLoadingScreen {
     disconnectButton: Button;
     continueButton: Button;
     spinner: GameObject;
+    gameImage: Image;
+    editorGameImageColor: Color;
     voiceChatCard: RectTransform;
     voiceChatToggle: InternalToggle;
     updatedByGame: boolean;
@@ -33803,9 +33805,12 @@ declare const Application: ApplicationConstructor;
     
 interface ClientNetworkConnector extends MonoBehaviour {
     expectingDisconnect: boolean;
+    reconnectAttempt: number;
 
 
 
+    NetworkClient_OnConnected(): void;
+    NetworkClient_OnDisconnected(): void;
 
 
 }
@@ -35679,8 +35684,7 @@ interface BlockDefinition {
     definition: VoxelBlockDefinition;
     detail: boolean;
     doOcclusion: boolean;
-    mesh: VoxelMeshCopy;
-    meshLod: VoxelMeshCopy;
+    mesh: LodSet;
     meshTiles: CSDictionary<number, LodSet>;
     meshTileProcessingOrder: CSArray<number>;
     meshContexts: CSArray<VoxelMeshCopy>;
@@ -35705,13 +35709,15 @@ interface VoxelBlockDefinition extends ScriptableObject {
     blockName: string;
     description: string;
     contextStyle: ContextStyle;
+    meshMaterial: Material;
     topTexture: TextureSet;
     sideTexture: TextureSet;
     bottomTexture: TextureSet;
-    meshMaterial: Material;
     quarterBlockMesh: VoxelQuarterBlockMeshDefinition;
-    meshPathLod: string;
     prefab: GameObject;
+    staticMeshLOD0: GameObject;
+    staticMeshLOD1: GameObject;
+    staticMeshLOD2: GameObject;
     metallic: number;
     smoothness: number;
     normalScale: number;
@@ -35809,6 +35815,17 @@ interface VoxelBlockDefinitionConstructor {
 }
 declare const VoxelBlockDefinition: VoxelBlockDefinitionConstructor;
     
+interface LodSet {
+    lod0: VoxelMeshCopy;
+    lod1: VoxelMeshCopy;
+    lod2: VoxelMeshCopy;
+
+
+
+
+
+}
+    
 interface VoxelMeshCopy {
     quaternions: CSArray<unknown>;
     rotation: CSDictionary<number, PrecalculatedRotation>;
@@ -35821,6 +35838,7 @@ interface VoxelMeshCopy {
 
 
     AdjustUVs(uvs: Rect): void;
+    ApplyMaterial(meshMaterial: Material): void;
 
 
 }
@@ -35879,17 +35897,6 @@ interface VoxelMeshCopyConstructor {
 
 }
 declare const VoxelMeshCopy: VoxelMeshCopyConstructor;
-    
-interface LodSet {
-    lod0: VoxelMeshCopy;
-    lod1: VoxelMeshCopy;
-    lod2: VoxelMeshCopy;
-
-
-
-
-
-}
     
 interface LodSetConstructor {
 
@@ -37455,6 +37462,7 @@ interface CrossSceneState {
 interface ServerTransferData {
     address: string;
     port: number;
+    gameId: string;
 
 
 
@@ -43071,6 +43079,8 @@ interface CharacterMovementData extends MonoBehaviour {
     useAccelerationMovement: boolean;
     speed: number;
     sprintSpeed: number;
+    accelerationForce: number;
+    sprintAccelerationForce: number;
     onlySprintForward: boolean;
     autoCrouch: boolean;
     preventFallingWhileCrouching: boolean;
