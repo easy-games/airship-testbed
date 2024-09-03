@@ -89,6 +89,7 @@ export default class HomePageComponent extends MainMenuPageComponent {
 		sorts = ObjectUtils.keys(this.sorts);
 
 		const blockSingleton = Dependency<MainMenuBlockSingleton>();
+		let indexCounter = 0;
 		for (let sortId of sorts) {
 			const sortComponent = this.sorts.get(sortId)!;
 
@@ -107,7 +108,8 @@ export default class HomePageComponent extends MainMenuPageComponent {
 				return true;
 			});
 
-			sortComponent.SetGames(games);
+			sortComponent.SetGames(games, indexCounter);
+			indexCounter += games.size();
 		}
 
 		task.spawn(() => {
