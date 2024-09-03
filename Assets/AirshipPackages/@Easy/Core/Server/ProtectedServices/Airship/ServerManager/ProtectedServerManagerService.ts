@@ -1,5 +1,5 @@
 import { AirshipServerConfig } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipTransfers";
-import { AirshipServerData, CreateServerResponse } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipServerManager";
+import { AirshipServerData } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipServerManager";
 import { Dependency, Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
@@ -16,7 +16,7 @@ export const enum ServerManagerServiceBridgeTopics {
 	GetServerList = "ServerManagerService:GetServerList",
 }
 
-export type ServerBridgeApiCreateServer = (config?: AirshipServerConfig) => Result<CreateServerResponse, string>;
+export type ServerBridgeApiCreateServer = (config?: AirshipServerConfig) => Result<AirshipServerData, string>;
 export type ServerBridgeApiGetServers = (
 	serverIds: string[],
 ) => Result<{ [serverId: string]: AirshipServerData | undefined }, string>;
@@ -105,9 +105,7 @@ export class ProtectedServerManagerService {
 
 		return {
 			success: true,
-			data: DecodeJSON<{
-				serverId: string;
-			}>(res.data),
+			data: DecodeJSON<AirshipServerData>(res.data),
 		};
 	}
 

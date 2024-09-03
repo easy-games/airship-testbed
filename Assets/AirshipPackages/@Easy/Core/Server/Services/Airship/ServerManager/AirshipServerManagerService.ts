@@ -8,7 +8,7 @@ import {
 } from "@Easy/Core/Server/ProtectedServices/Airship/ServerManager/ProtectedServerManagerService";
 import { Platform } from "@Easy/Core/Shared/Airship";
 import { AirshipServerConfig } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipTransfers";
-import { AirshipServerData, CreateServerResponse } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipServerManager";
+import { AirshipServerData } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipServerManager";
 import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/ContextBridgeUtil";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
@@ -32,7 +32,7 @@ export class AirshipServerManagerService {
 	 * provided during deployment.
 	 * @returns The id of the new server. Undefined if the server was not able to be created.
 	 */
-	public async CreateServer(config?: AirshipServerConfig): Promise<CreateServerResponse> {
+	public async CreateServer(config?: AirshipServerConfig): Promise<AirshipServerData> {
 		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiCreateServer>(
 			ServerManagerServiceBridgeTopics.CreateServer,
 			LuauContext.Protected,
