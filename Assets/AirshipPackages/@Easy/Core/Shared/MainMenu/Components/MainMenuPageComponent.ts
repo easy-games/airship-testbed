@@ -6,7 +6,7 @@ import { MainMenuPageType } from "../../../Client/ProtectedControllers//MainMenu
 
 export default class MainMenuPageComponent extends AirshipBehaviour {
 	private animateOutDuration = 0.1;
-	private animateInDuration = 0.1;
+	public animateInDuration = 0.1;
 
 	public pageType: MainMenuPageType = MainMenuPageType.Home;
 	protected refs?: GameObjectReferences;

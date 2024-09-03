@@ -21,6 +21,10 @@ export default class HomePageComponent extends MainMenuPageComponent {
 	private sorts = new Map<SortId, SortComponent>();
 	// private loadedGameComponents: HomePageGameComponent[] = [];
 
+	protected Awake(): void {
+		this.animateInDuration = 0;
+	}
+
 	override OpenPage(params?: unknown): void {
 		super.OpenPage(params);
 		this.ClearSorts();

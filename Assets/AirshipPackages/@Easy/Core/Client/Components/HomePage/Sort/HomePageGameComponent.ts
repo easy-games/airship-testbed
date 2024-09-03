@@ -22,6 +22,7 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 	public gameImage!: CloudImage;
 	public orgImage!: CloudImage;
 	public authorText!: TMP_Text;
+	public canvasGroup: CanvasGroup;
 
 	public shadow!: TrueShadow;
 
@@ -30,6 +31,8 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 
 	@SerializeField()
 	private redirectDrag!: AirshipRedirectScroll;
+
+	private index = -1;
 
 	private bin = new Bin();
 
@@ -48,6 +51,22 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 		);
 	}
 
+	protected OnEnable(): void {
+		this.canvasGroup.alpha = 0;
+		// if (this.index !== -1) {
+		// 	this.FadeIn();
+		// }
+	}
+
+	private FadeIn(): void {
+		task.delay(this.index * 0.04, () => {
+			// if (this.canvasGroup) return;
+			NativeTween.CanvasGroupAlpha(this.canvasGroup, 1, 0.22).SetEaseQuadOut();
+			this.transform.localScale = Vector3.one.mul(0.7);
+			NativeTween.LocalScale(this.transform, Vector3.one, 0.22).SetEaseQuadOut();
+		});
+	}
+
 	override OnDestroy(): void {}
 
 	override OnDisable(): void {
@@ -58,8 +77,9 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 		this.redirectDrag.redirectTarget = target;
 	}
 
-	public Init(gameDto: GameDto) {
+	public Init(gameDto: GameDto, index: number) {
 		this.gameDto = gameDto;
+		this.index = index;
 		this.titleText.text = gameDto.name;
 		if (gameDto.liveStats?.playerCount !== undefined && gameDto.liveStats.playerCount > 0) {
 			this.playerCountText.text = gameDto.liveStats.playerCount + "";
@@ -79,13 +99,13 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 				Debug.Break();
 			}
 			this.gameImage.url = url;
-			this.gameImage.image.color = new Color(0, 0, 0, 1);
+			// this.gameImage.image.color = new Color(0, 0, 0, 1);
 			const downloadConn = this.gameImage.OnFinishedLoading.Connect((success) => {
-				if (success) {
-					NativeTween.GraphicColor(this.gameImage.image, new Color(1, 1, 1, 1), 0.2).SetUseUnscaledTime(true);
-				} else {
-					NativeTween.GraphicColor(this.gameImage.image, new Color(0, 0, 0, 1), 0.2).SetUseUnscaledTime(true);
-				}
+				// if (success) {
+				// 	NativeTween.GraphicColor(this.gameImage.image, new Color(1, 1, 1, 1), 0.2).SetUseUnscaledTime(true);
+				// } else {
+				// 	NativeTween.GraphicColor(this.gameImage.image, new Color(0, 0, 0, 1), 0.2).SetUseUnscaledTime(true);
+				// }
 			});
 			this.gameImage.StartDownload();
 			this.bin.Add(() => {
@@ -132,6 +152,8 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 		this.bin.Add(() => {
 			Bridge.DisconnectEvent(clickConn);
 		});
+
+		this.FadeIn();
 	}
 
 	public HasAdminPermissions(): boolean {
