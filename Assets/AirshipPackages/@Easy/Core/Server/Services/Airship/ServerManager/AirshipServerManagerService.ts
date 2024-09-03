@@ -2,12 +2,13 @@ import {
 	ServerBridgeApiCreateServer,
 	ServerBridgeApiDelistServer,
 	ServerBridgeApiGetServerList,
+	ServerBridgeApiGetServers,
 	ServerBridgeApiListServer,
 	ServerManagerServiceBridgeTopics,
 } from "@Easy/Core/Server/ProtectedServices/Airship/ServerManager/ProtectedServerManagerService";
 import { Platform } from "@Easy/Core/Shared/Airship";
 import { AirshipServerConfig } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipTransfers";
-import { CreateServerResponse, PublicServerData } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipServerManager";
+import { AirshipServerData, CreateServerResponse } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipServerManager";
 import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/ContextBridgeUtil";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
@@ -36,6 +37,31 @@ export class AirshipServerManagerService {
 			ServerManagerServiceBridgeTopics.CreateServer,
 			LuauContext.Protected,
 			config,
+		);
+		if (!result.success) throw result.error;
+		return result.data;
+	}
+
+	/**
+	 * Gets data about a given server ID.
+	 * @param serverId The server ID to retrieve
+	 * @returns The server data if it exists. Returns undefined if the server could not be found.
+	 */
+	public async GetServer(serverId: string): Promise<AirshipServerData | undefined> {
+		const result = await this.GetServers([serverId]);
+		return result[serverId];
+	}
+
+	/**
+	 * Gets data about the given server IDs.
+	 * @param serverIds An array of server IDs to retrieve
+	 * @returns A map of server ID to server data. If the server could not be found, it will not be included in the map.
+	 */
+	public async GetServers(serverIds: string[]): Promise<{ [serverId: string]: AirshipServerData | undefined }> {
+		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiGetServers>(
+			ServerManagerServiceBridgeTopics.GetServers,
+			LuauContext.Protected,
+			serverIds,
 		);
 		if (!result.success) throw result.error;
 		return result.data;
@@ -80,7 +106,7 @@ export class AirshipServerManagerService {
 	 * Gets a page of the server list.
 	 * @param page The page to retrieve. Starts at 0.
 	 */
-	public async GetServerList(page: number = 0): Promise<{ entries: PublicServerData[] }> {
+	public async GetServerList(page: number = 0): Promise<{ entries: AirshipServerData[] }> {
 		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiGetServerList>(
 			ServerManagerServiceBridgeTopics.GetServerList,
 			LuauContext.Protected,

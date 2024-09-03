@@ -1,5 +1,5 @@
 import { AirshipServerConfig } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipTransfers";
-import { CreateServerResponse, PublicServerData } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipServerManager";
+import { AirshipServerData, CreateServerResponse } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipServerManager";
 import { Dependency, Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
@@ -9,6 +9,7 @@ import { ShutdownService } from "../../Shutdown/ShutdownService";
 
 export const enum ServerManagerServiceBridgeTopics {
 	CreateServer = "ServerManagerService:CreateServer",
+	GetServers = "ServerManagerService:GetServers",
 	ShutdownServer = "ServerManagerService:ShutdownServer",
 	ListServer = "ServerManagerService:ListServer",
 	DelistServer = "ServerManagerService:UnlistServer",
@@ -16,10 +17,13 @@ export const enum ServerManagerServiceBridgeTopics {
 }
 
 export type ServerBridgeApiCreateServer = (config?: AirshipServerConfig) => Result<CreateServerResponse, string>;
+export type ServerBridgeApiGetServers = (
+	serverIds: string[],
+) => Result<{ [serverId: string]: AirshipServerData | undefined }, string>;
 export type ServerBridgeApiShutdownServer = () => Result<undefined, string>;
 export type ServerBridgeApiListServer = (config?: { name?: string; description?: string }) => Result<boolean, string>;
 export type ServerBridgeApiDelistServer = () => Result<boolean, string>;
-export type ServerBridgeApiGetServerList = (page?: number) => Result<{ entries: PublicServerData[] }, string>;
+export type ServerBridgeApiGetServerList = (page?: number) => Result<{ entries: AirshipServerData[] }, string>;
 
 @Service({})
 export class ProtectedServerManagerService {
@@ -30,6 +34,17 @@ export class ProtectedServerManagerService {
 			ServerManagerServiceBridgeTopics.CreateServer,
 			(_, config) => {
 				const [success, result] = this.CreateServer(config).await();
+				if (!success) {
+					return { success: false, error: "Unable to complete request." };
+				}
+				return result;
+			},
+		);
+
+		contextbridge.callback<ServerBridgeApiGetServers>(
+			ServerManagerServiceBridgeTopics.GetServers,
+			(_, serverIds) => {
+				const [success, result] = this.GetServers(serverIds).await();
 				if (!success) {
 					return { success: false, error: "Unable to complete request." };
 				}
@@ -96,6 +111,39 @@ export class ProtectedServerManagerService {
 		};
 	}
 
+	public async GetServers(serverIds: string[]): Promise<ReturnType<ServerBridgeApiGetServers>> {
+		if (serverIds.size() === 0) {
+			return {
+				success: true,
+				data: {},
+			};
+		}
+
+		const res = InternalHttpManager.GetAsync(
+			`${AirshipUrl.GameCoordinator}/servers?serverIds[]=${serverIds.join("&serverIds[]=")}`,
+		);
+
+		if (!res.success || res.statusCode > 299) {
+			warn(`Unable to get servers. Status Code:  ${res.statusCode}.\n`, res.error);
+			return {
+				success: false,
+				error: res.error,
+			};
+		}
+
+		if (!res.data) {
+			return {
+				success: true,
+				data: {},
+			};
+		}
+
+		return {
+			success: true,
+			data: DecodeJSON(res.data),
+		};
+	}
+
 	public async ListServer(config?: {
 		name?: string;
 		description?: string;
@@ -133,7 +181,7 @@ export class ProtectedServerManagerService {
 
 		return {
 			success: true,
-			data: DecodeJSON(res.data) as { entries: PublicServerData[] },
+			data: DecodeJSON(res.data) as { entries: AirshipServerData[] },
 		};
 	}
 

@@ -1,7 +1,7 @@
 import { AirshipServerAccessMode } from "../Inputs/AirshipTransfers";
 import { PublicUser } from "./AirshipUser";
 
-export interface PublicServerData {
+export interface AirshipServerData {
 	serverId: string;
 	playerCount: number;
 	maxPlayers: number;
@@ -12,7 +12,7 @@ export interface PublicServerData {
 	tags: string[];
 }
 
-export interface ServerListEntryWithFriends extends PublicServerData {
+export interface ServerListEntryWithFriends extends AirshipServerData {
 	friends: PublicUser[];
 }
 

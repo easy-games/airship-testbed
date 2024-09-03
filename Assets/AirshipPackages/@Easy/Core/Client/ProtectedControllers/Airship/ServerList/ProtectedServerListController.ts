@@ -1,5 +1,5 @@
 import {
-	PublicServerData,
+	AirshipServerData,
 	ServerListEntryWithFriends,
 } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipServerManager";
 import { Service } from "@Easy/Core/Shared/Flamework";
@@ -13,7 +13,7 @@ export const enum ServerListControllerBridgeTopics {
 	GetFriendServers = "ServerListController:GetFriendServers",
 }
 
-export type ClientBridgeApiGetServerList = (page?: number) => Result<{ entries: PublicServerData[] }, string>;
+export type ClientBridgeApiGetServerList = (page?: number) => Result<{ entries: AirshipServerData[] }, string>;
 export type ClientBridgeApiGetFriendServers = () => Result<{ entries: ServerListEntryWithFriends[] }, string>;
 
 @Service({})
@@ -56,7 +56,7 @@ export class ProtectedTransferService {
 
 		return {
 			success: true,
-			data: DecodeJSON(res.data) as { entries: PublicServerData[] },
+			data: DecodeJSON(res.data) as { entries: AirshipServerData[] },
 		};
 	}
 
