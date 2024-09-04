@@ -9,6 +9,7 @@ import { Game } from "../Game";
 import { Keyboard } from "../UserInput";
 import { Bin } from "../Util/Bin";
 import { Signal } from "../Util/Signal";
+import { OnUpdate } from "../Util/Timer";
 import { CameraReferences } from "./CameraReferences";
 import CameraRig from "./CameraRig";
 import { CameraSystem } from "./CameraSystem";
@@ -25,6 +26,12 @@ interface CharacterStateSnapshot {
 	firstPerson: boolean;
 }
 
+/**
+ * This class is responsible for:
+ * - Changing field of view when swapping to and from first person (they use different fov values)
+ * - Increasing field of view when sprinting
+ * - Allow toggling to and from first person by toggling the ViewmodelCamera
+ */
 @Singleton({})
 export class AirshipCharacterCameraSingleton {
 	public canToggleFirstPerson = true;
@@ -53,11 +60,13 @@ export class AirshipCharacterCameraSingleton {
 	private characterCameraMode: CharacterCameraMode = CharacterCameraMode.Locked;
 
 	private sprintFOVEnabled = true;
-	private manageFOV = true;
+	private isFOVManaged = true;
 	private overrideFOV = new Map<CharacterCameraType, number>();
 
 	private firstPersonFOV = 80;
 	private thirdPersonFOV = 70;
+
+	private lastSprintTime = 0;
 
 	constructor() {
 		Airship.Camera = this;
@@ -99,6 +108,14 @@ export class AirshipCharacterCameraSingleton {
 					(state === CharacterState.Airborne && Airship.Input.IsDown("Sprint")),
 			});
 		});
+
+		const p = Game.localPlayer;
+		OnUpdate.Connect(() => {
+			if (p.character?.movement.IsSprinting()) {
+				this.lastSprintTime = Time.unscaledTime;
+			}
+			this.MakeFOVReflectCharacterState();
+		});
 	}
 
 	/**
@@ -122,11 +139,11 @@ export class AirshipCharacterCameraSingleton {
 	 * @param shouldManage True if camera FOVs should be tweened by this class.
 	 */
 	public SetFOVManaged(shouldManage: boolean): void {
-		this.manageFOV = shouldManage;
+		this.isFOVManaged = shouldManage;
 	}
 
 	/**
-	 * If FOV is managed, camera fov will be updated by tweens.
+	 * If Field of View is managed, camera fov will be updated by tweens.
 	 * You must control the FOV by calling {@link SetFOV}
 	 *
 	 * It's useful to turn this off when you want to manage FOV entirely yourself.
@@ -134,7 +151,7 @@ export class AirshipCharacterCameraSingleton {
 	 * @returns true if FOV is being managed by the CharacterCamera system.
 	 */
 	public IsFOVManaged(): boolean {
-		return this.manageFOV;
+		return this.isFOVManaged;
 	}
 
 	/**
@@ -203,8 +220,6 @@ export class AirshipCharacterCameraSingleton {
 			this.characterState,
 			stateUpdate,
 		);
-
-		if (didUpdate) this.MakeFOVReflectCharacterState();
 	}
 
 	/** Updates FOV to reflect the current character state object */
@@ -213,20 +228,24 @@ export class AirshipCharacterCameraSingleton {
 		if (!this.IsSprintFOVEnabled()) return;
 		if (!this.IsFOVManaged()) return;
 
+		let hasSprintFov = false;
+		if (Time.unscaledTime - this.lastSprintTime < 0.1) {
+			hasSprintFov = true;
+		}
+
 		// first person
 		{
 			let fov = this.overrideFOV.get(CharacterCameraType.FIRST_PERSON) ?? this.firstPersonFOV;
-			if (this.characterState?.sprinting) {
+			if (hasSprintFov) {
 				fov *= this.sprintFovMultiplier;
 			}
-			// this.SetFOV(CharacterCameraType.FIRST_PERSON, fov, true);
 			this.cameraSystem?.SetFOV(CharacterCameraType.FIRST_PERSON, fov, false);
 		}
 
 		// third person
 		{
 			let fov = this.overrideFOV.get(CharacterCameraType.THIRD_PERSON) ?? this.thirdPersonFOV;
-			if (this.characterState?.sprinting) {
+			if (hasSprintFov) {
 				fov *= this.sprintFovMultiplier;
 			}
 			this.cameraSystem?.SetFOV(CharacterCameraType.THIRD_PERSON, fov, false);

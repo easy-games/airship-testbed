@@ -14,6 +14,7 @@ interface FovState {
 	readonly fovSpring: Spring;
 	fovSpringMoving: boolean;
 	fovSpringMovingStart: number;
+	goalFov: number;
 }
 
 /**
@@ -36,11 +37,13 @@ export class CameraSystem {
 
 	constructor() {
 		// Register FOV state
+		let goal = CameraReferences.mainCamera!.fieldOfView;
 		for (const cameraType of ObjectUtils.values(CharacterCameraType)) {
 			this.fovStateMap.set(cameraType, {
-				fovSpring: new Spring(new Vector3(CameraReferences.mainCamera!.fieldOfView, 0, 0), 5),
+				fovSpring: new Spring(new Vector3(goal, 0, 0), 3.5),
 				fovSpringMoving: false,
 				fovSpringMovingStart: 0,
+				goalFov: goal,
 			});
 		}
 		this.currentMode = new StaticCameraMode(
@@ -188,11 +191,17 @@ export class CameraSystem {
 		const fovState = this.fovStateMap.get(cameraType);
 		if (!fovState) error("Could not set FOV, unknown camera type.");
 
+		if (fieldOfView === fovState.goalFov) return;
+
+		let reduction = fieldOfView < fovState.goalFov;
+
 		if (immediate) {
+			fovState.goalFov = fieldOfView;
 			fovState.fovSpring.ResetTo(new Vector3(fieldOfView, 0, 0));
 			this.UpdateFOV(cameraType, fieldOfView);
 			fovState.fovSpringMoving = false;
 		} else {
+			fovState.goalFov = fieldOfView;
 			fovState.fovSpring.goal = new Vector3(fieldOfView, 0, 0);
 			fovState.fovSpringMoving = true;
 			fovState.fovSpringMovingStart = Time.time;
