@@ -84,7 +84,7 @@ export class ProtectedServerManagerService {
 		});
 
 		contextbridge.callback<ServerBridgeApiSetAccessMode>(
-			ServerManagerServiceBridgeTopics.GetServerList,
+			ServerManagerServiceBridgeTopics.SetAccessMode,
 			(_, mode) => {
 				const [success, result] = this.SetAccessMode(mode).await();
 				if (!success) {
@@ -108,7 +108,7 @@ export class ProtectedServerManagerService {
 			}),
 		);
 
-		if (!res.success && res.statusCode > 299) {
+		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to create server. Status Code:  ${res.statusCode}.\n`, res.data);
 			return {
 				success: false,
