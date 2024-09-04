@@ -29,21 +29,23 @@ export default class CharacterRagdoll extends AirshipBehaviour {
 			}
 		}
 
-		Airship.Input.CreateAction("TEST", Binding.Key(Key.F));
-		Airship.Input.OnDown("TEST").Connect(() => {
-			this.ToggleRagdoll(!this.ragdollEnabled);
-			this.AddGlobalForce(
-				Game.localPlayer.character?.movement.GetVelocity().mul(2) ?? Vector3.zero,
-				ForceMode.Impulse,
-			);
-			this.AddExplosiveForce(
-				30,
-				Game.localPlayer.character?.transform.position ?? Vector3.zero,
-				2,
-				1.5,
-				ForceMode.Impulse,
-			);
-		});
+		// Airship.Input.CreateAction("TEST", Binding.Key(Key.F));
+		// Airship.Input.OnDown("TEST").Connect(() => {
+		// 	this.ToggleRagdoll(!this.ragdollEnabled);
+		// 	this.AddGlobalForce(
+		// 		Game.localPlayer.character?.movement.GetVelocity().mul(3) ?? Vector3.zero,
+		// 		ForceMode.Impulse,
+		// 	);
+		// 	this.AddExplosiveForce(
+		// 		math.random(20, 40),
+		// 		new Vector3(math.random() - 0.5, math.random() - 0.5, math.random() - 0.5).add(
+		// 			Game.localPlayer.character?.transform.position ?? Vector3.zero,
+		// 		),
+		// 		2,
+		// 		1 + math.random() * 2,
+		// 		ForceMode.Impulse,
+		// 	);
+		// });
 	}
 
 	protected Start(): void {
