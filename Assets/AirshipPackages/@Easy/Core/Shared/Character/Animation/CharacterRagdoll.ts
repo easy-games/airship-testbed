@@ -1,6 +1,7 @@
 import { Airship } from "../../Airship";
 import { Game } from "../../Game";
 import { Binding } from "../../Input/Binding";
+import Character from "../Character";
 
 export default class CharacterRagdoll extends AirshipBehaviour {
 	public startOn = false;
@@ -50,10 +51,10 @@ export default class CharacterRagdoll extends AirshipBehaviour {
 
 	protected Start(): void {
 		this.ragdollEnabled = !this.startOn;
-		this.ToggleRagdoll(this.startOn);
+		this.SetRagdoll(this.startOn);
 	}
 
-	public ToggleRagdoll(ragdollOn: boolean) {
+	public SetRagdoll(ragdollOn: boolean) {
 		if (this.ragdollEnabled === ragdollOn) {
 			return;
 		}
