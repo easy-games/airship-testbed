@@ -109,13 +109,15 @@ export class AirshipCharacterCameraSingleton {
 			});
 		});
 
-		const p = Game.localPlayer;
-		OnUpdate.Connect(() => {
-			if (p.character?.movement.IsSprinting()) {
-				this.lastSprintTime = Time.unscaledTime;
-			}
-			this.MakeFOVReflectCharacterState();
-		});
+		if (Game.IsClient()) {
+			const p = Game.localPlayer;
+			OnUpdate.Connect(() => {
+				if (p.character?.movement.IsSprinting()) {
+					this.lastSprintTime = Time.unscaledTime;
+				}
+				this.MakeFOVReflectCharacterState();
+			});
+		}
 	}
 
 	/**
