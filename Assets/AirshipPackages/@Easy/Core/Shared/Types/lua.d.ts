@@ -212,14 +212,14 @@ declare namespace TS {
 		[K in keyof T]: T[K] extends "s"
 			? string
 			: T[K] extends "l"
-				? number
-				: T[K] extends "n"
-					? string | undefined
-					: T[K] extends "a"
-						? [number, boolean]
-						: T[K] extends "f"
-							? Callback
-							: never;
+			? number
+			: T[K] extends "n"
+			? string | undefined
+			: T[K] extends "a"
+			? [number, boolean]
+			: T[K] extends "f"
+			? Callback
+			: never;
 	}>;
 }
 
@@ -925,36 +925,36 @@ declare function next<T extends ReadonlyArray<any>>(
 ): T extends readonly [infer A]
 	? LuaTuple<[number, A]>
 	: T extends readonly [infer A, infer B]
-		? LuaTuple<[number, A | B]>
-		: T extends readonly [infer A, infer B, infer C]
-			? LuaTuple<[number, A | B | C]>
-			: T extends readonly [infer A, infer B, infer C, infer D]
-				? LuaTuple<[number, A | B | C | D]>
-				: T extends readonly [infer A, infer B, infer C, infer D, infer E]
-					? LuaTuple<[number, A | B | C | D | E]>
-					: T extends readonly [infer A, infer B, infer C, infer D, infer E, infer F]
-						? LuaTuple<[number, A | B | C | D | E | F]>
-						: T extends ReadonlyArray<infer U>
-							? LuaTuple<[number, U]>
-							: LuaTuple<[unknown, unknown]>;
+	? LuaTuple<[number, A | B]>
+	: T extends readonly [infer A, infer B, infer C]
+	? LuaTuple<[number, A | B | C]>
+	: T extends readonly [infer A, infer B, infer C, infer D]
+	? LuaTuple<[number, A | B | C | D]>
+	: T extends readonly [infer A, infer B, infer C, infer D, infer E]
+	? LuaTuple<[number, A | B | C | D | E]>
+	: T extends readonly [infer A, infer B, infer C, infer D, infer E, infer F]
+	? LuaTuple<[number, A | B | C | D | E | F]>
+	: T extends ReadonlyArray<infer U>
+	? LuaTuple<[number, U]>
+	: LuaTuple<[unknown, unknown]>;
 declare function next<T extends ReadonlyArray<any>>(
 	object: T,
 	index?: number,
 ): T extends [infer A]
 	? LuaTuple<[number, A]>
 	: T extends [infer A, infer B]
-		? LuaTuple<[number, A | B]>
-		: T extends [infer A, infer B, infer C]
-			? LuaTuple<[number, A | B | C]>
-			: T extends [infer A, infer B, infer C, infer D]
-				? LuaTuple<[number, A | B | C | D]>
-				: T extends [infer A, infer B, infer C, infer D, infer E]
-					? LuaTuple<[number, A | B | C | D | E]>
-					: T extends [infer A, infer B, infer C, infer D, infer E, infer F]
-						? LuaTuple<[number, A | B | C | D | E | F]>
-						: T extends ReadonlyArray<infer U>
-							? LuaTuple<[number, U]>
-							: LuaTuple<[unknown, unknown]>;
+	? LuaTuple<[number, A | B]>
+	: T extends [infer A, infer B, infer C]
+	? LuaTuple<[number, A | B | C]>
+	: T extends [infer A, infer B, infer C, infer D]
+	? LuaTuple<[number, A | B | C | D]>
+	: T extends [infer A, infer B, infer C, infer D, infer E]
+	? LuaTuple<[number, A | B | C | D | E]>
+	: T extends [infer A, infer B, infer C, infer D, infer E, infer F]
+	? LuaTuple<[number, A | B | C | D | E | F]>
+	: T extends ReadonlyArray<infer U>
+	? LuaTuple<[number, U]>
+	: LuaTuple<[unknown, unknown]>;
 declare function next<T>(object: ReadonlyArray<T>, index?: number): LuaTuple<[number, T]>;
 declare function next<T>(object: ReadonlySet<T>, index?: T): LuaTuple<[T, true]>;
 declare function next<K, V>(object: ReadonlyMap<K, V>, index?: K): LuaTuple<[K, V]>;
@@ -973,3 +973,88 @@ declare function pairs<T extends object>(
 	: IterableFunction<LuaTuple<[keyof T, Exclude<T[keyof T], undefined>]>>;
 
 declare function ipairs<T>(object: ReadonlyArray<T>): IterableFunction<LuaTuple<[number, Exclude<T, undefined>]>>;
+
+interface buffer {
+	/**
+	 * **DO NOT USE!**
+	 *
+	 * This field exists to force TypeScript to recognize this as a nominal type
+	 * @hidden
+	 * @deprecated
+	 */
+	readonly _nominal_buffer: unique symbol;
+}
+
+declare namespace buffer {
+	/** Creates a buffer. */
+	function create(size: number): buffer;
+
+	/** Creates a buffer from a string. */
+	function fromstring(str: string): buffer;
+
+	/** Converts a buffer to a string. */
+	function tostring(b: buffer): string;
+
+	/** Returns the size of the buffer in bytes. */
+	function len(b: buffer): number;
+
+	/** Reads an 8-bit signed integer from the buffer. */
+	function readi8(b: buffer, offset: number): number;
+
+	/** Reads an 8-bit unsigned integer from the buffer. */
+	function readu8(b: buffer, offset: number): number;
+
+	/** Reads a 16-bit signed integer from the buffer. */
+	function readi16(b: buffer, offset: number): number;
+
+	/** Reads a 16-bit unsigned integer from the buffer. */
+	function readu16(b: buffer, offset: number): number;
+
+	/** Reads a 32-bit signed integer from the buffer. */
+	function readi32(b: buffer, offset: number): number;
+
+	/** Reads a 32-bit unsigned integer from the buffer. */
+	function readu32(b: buffer, offset: number): number;
+
+	/** Reads a 32-bit floating-point value from the buffer. */
+	function readf32(b: buffer, offset: number): number;
+
+	/** Reads a 64-bit floating-point value from the buffer. */
+	function readf64(b: buffer, offset: number): number;
+
+	/** Writes an 8-bit signed integer to the buffer. */
+	function writei8(b: buffer, offset: number, value: number): void;
+
+	/** Writes an 8-bit unsigned integer to the buffer. */
+	function writeu8(b: buffer, offset: number, value: number): void;
+
+	/** Writes a 16-bit signed integer to the buffer. */
+	function writei16(b: buffer, offset: number, value: number): void;
+
+	/** Writes a 16-bit unsigned integer to the buffer. */
+	function writeu16(b: buffer, offset: number, value: number): void;
+
+	/** Writes a 32-bit signed integer to the buffer. */
+	function writei32(b: buffer, offset: number, value: number): void;
+
+	/** Writes a 32-bit unsigned integer to the buffer. */
+	function writeu32(b: buffer, offset: number, value: number): void;
+
+	/** Writes a 32-bit floating-point value to the buffer. */
+	function writef32(b: buffer, offset: number, value: number): void;
+
+	/** Writes a 64-bit floating-point value to the buffer. */
+	function writef64(b: buffer, offset: number, value: number): void;
+
+	/** Reads a string from the buffer. */
+	function readstring(b: buffer, offset: number, count: number): string;
+
+	/** Writes a string to the buffer. */
+	function writestring(b: buffer, offset: number, value: string, count?: number): void;
+
+	/** Copies bytes between buffers. */
+	function copy(target: buffer, targetOffset: number, source: buffer, sourceOffset?: number, count?: number): void;
+
+	/** Sets a region of the buffer memory to some 8-bit unsigned integer value. */
+	function fill(b: buffer, offset: number, value: number, count?: number): void;
+}

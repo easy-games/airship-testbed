@@ -167,6 +167,7 @@ interface CheckablePrimitives {
 	function: Callback;
 	thread: thread;
 	vector: Vector3;
+	buffer: buffer;
 }
 
 /**
