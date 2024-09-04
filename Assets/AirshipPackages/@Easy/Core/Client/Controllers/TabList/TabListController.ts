@@ -1,5 +1,5 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
-import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
+import { Asset } from "@Easy/Core/Shared/Asset";
 import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
 import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
@@ -34,7 +34,7 @@ export class TabListController {
 
 	constructor() {
 		this.tablistGO = Object.Instantiate(
-			AssetCache.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/UI/TabList.prefab"),
+			Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/UI/TabList.prefab"),
 			CoreRefs.rootTransform,
 		);
 		this.tablistCanvas = this.tablistGO.GetComponent<Canvas>()!;

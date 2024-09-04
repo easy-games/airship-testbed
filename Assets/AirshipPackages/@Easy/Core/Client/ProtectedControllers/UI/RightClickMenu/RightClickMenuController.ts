@@ -1,4 +1,4 @@
-import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
+import { Asset } from "@Easy/Core/Shared/Asset";
 import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { CoreUI } from "@Easy/Core/Shared/UI/CoreUI";
@@ -31,7 +31,7 @@ export class RightClickMenuController {
 		this.openedTime = Time.time;
 
 		const parentGo = Object.Instantiate(
-			AssetCache.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/UI/RightClickMenu/RightClickMenu.prefab"),
+			Asset.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/UI/RightClickMenu/RightClickMenu.prefab"),
 			canvas.transform,
 		);
 		const bgGo = parentGo.transform.GetChild(0).gameObject;

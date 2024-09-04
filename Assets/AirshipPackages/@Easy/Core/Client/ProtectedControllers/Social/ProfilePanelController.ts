@@ -1,4 +1,4 @@
-import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
+import { Asset } from "@Easy/Core/Shared/Asset";
 import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Mouse } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
@@ -17,7 +17,7 @@ export class ProfilePanelController {
 		}
 		this.open = true;
 
-		const asset = AssetCache.LoadAsset(
+		const asset = Asset.LoadAsset(
 			"Assets/AirshipPackages/@Easy/Core/Prefabs/UI/PlayerProfilePanel/PlayerProfilePanel.prefab",
 		);
 		const menuGo = Object.Instantiate(asset, canvas.transform);

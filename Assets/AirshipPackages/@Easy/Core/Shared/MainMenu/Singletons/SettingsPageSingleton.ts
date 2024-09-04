@@ -1,4 +1,4 @@
-import { AssetCache } from "../../AssetCache/AssetCache";
+import { Asset } from "../../Asset";
 import { CoreRefs } from "../../CoreRefs";
 import { Singleton } from "../../Flamework";
 import { Keyboard } from "../../UserInput";
@@ -20,7 +20,7 @@ export class SettingsPageSingleton {
 		this.isOpen = true;
 
 		const settingsPage = Object.Instantiate(
-			AssetCache.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/MainMenu/SettingsPage/SettingsPage.prefab"),
+			Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/MainMenu/SettingsPage/SettingsPage.prefab"),
 			CoreRefs.protectedTransform,
 		);
 		const canvasGroup = settingsPage.GetComponent<CanvasGroup>();

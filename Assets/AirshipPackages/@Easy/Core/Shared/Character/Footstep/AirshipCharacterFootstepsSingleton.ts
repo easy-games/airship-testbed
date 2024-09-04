@@ -1,6 +1,6 @@
 import { Singleton } from "@Easy/Core/Shared/Flamework";
 import { Airship } from "../../Airship";
-import { AssetCache } from "../../AssetCache/AssetCache";
+import { Asset } from "../../Asset";
 import { CameraReferences } from "../../Camera/CameraReferences";
 import { Game } from "../../Game";
 import StringUtils from "../../Types/StringUtil";
@@ -155,7 +155,7 @@ export class AirshipCharacterFootstepsSingleton {
 
 		if (foundPaths) {
 			for (let path of foundPaths) {
-				const clip = AssetCache.LoadAssetIfExists<AudioClip>(path);
+				const clip = Asset.LoadAssetIfExists<AudioClip>(path);
 				if (clip) {
 					clips.push(clip);
 				}

@@ -1,10 +1,8 @@
 import { CoreUIController } from "@Easy/Core/Client/ProtectedControllers/CoreUIController";
 import { Airship } from "@Easy/Core/Shared/Airship";
-import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
 import { ChatCommand } from "@Easy/Core/Shared/Commands/ChatCommand";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
-import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
 import { Dependency, Singleton } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { GameObjectUtil } from "@Easy/Core/Shared/GameObject/GameObjectUtil";
@@ -135,12 +133,10 @@ export class ClientChatSingleton {
 
 		if (Game.IsInGame()) {
 			task.unscaledDelay(0, () => {
-				const overlayCanvas = Object.Instantiate(
-					AssetCache.LoadAsset(
-						"AirshipPackages/@Easy/Core/Prefabs/UI/MobileControls/AirshipOverlayCanvas.prefab",
-					),
-					CoreRefs.protectedTransform,
-				);
+				// const overlayCanvas = Object.Instantiate(
+				// 	Asset.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/UI/MobileControls/AirshipOverlayCanvas.prefab"),
+				// 	CoreRefs.protectedTransform,
+				// );
 				// const controls = new Preferred();
 				// controls.ObserveControlScheme((scheme) => {
 				// 	if (scheme === ControlScheme.Touch) {

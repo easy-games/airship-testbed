@@ -1,5 +1,4 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
-import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
 import Inventory from "@Easy/Core/Shared/Inventory/Inventory";
 import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
 import { Keyboard, Mouse } from "@Easy/Core/Shared/UserInput";
@@ -7,6 +6,7 @@ import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { OnUpdate } from "@Easy/Core/Shared/Util/Timer";
+import { Asset } from "../Asset";
 import AirshipInventoryTile from "./AirshipInventoryTile";
 
 type DraggingState = {
@@ -246,7 +246,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		let imageSrc = itemStack.itemDef.image;
 		let texture2d: Texture2D | undefined;
 		if (imageSrc) {
-			texture2d = AssetCache.LoadAssetIfExists<Texture2D>(imageSrc);
+			texture2d = Asset.LoadAssetIfExists<Texture2D>(imageSrc);
 		}
 		if (texture2d) {
 			let cachedSprite = this.spriteCacheForItemType.get(itemStack.itemDef.itemType);

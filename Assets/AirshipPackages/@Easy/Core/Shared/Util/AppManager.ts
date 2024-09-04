@@ -1,6 +1,6 @@
 import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
 import { Keyboard, Mouse } from "@Easy/Core/Shared/UserInput";
-import { AssetCache } from "../AssetCache/AssetCache";
+import { Asset } from "../Asset";
 import { Game } from "../Game";
 import { Bin } from "./Bin";
 import { CanvasAPI, PointerDirection } from "./CanvasAPI";
@@ -117,7 +117,7 @@ export class AppManager {
 		 */
 		// CanvasUIBridge.InitializeCanvas(canvas, true);
 		const canvas = Object.Instantiate(
-			AssetCache.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/UI/Modals/AirshipModalCanvas.prefab"),
+			Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/UI/Modals/AirshipModalCanvas.prefab"),
 			Game.IsProtectedLuauContext() ? CoreRefs.protectedTransform : CoreRefs.rootTransform,
 		).GetComponent<Canvas>()!;
 		go.transform.SetParent(canvas.transform);

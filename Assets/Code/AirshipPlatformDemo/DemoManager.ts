@@ -1,6 +1,6 @@
 import SteamRichPresence from "@Easy/Core/Client/Airship/Steam/SteamRichPresence";
 import { Airship } from "@Easy/Core/Shared/Airship";
-import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
+import { Asset } from "@Easy/Core/Shared/Asset";
 
 import Character from "@Easy/Core/Shared/Character/Character";
 import { Game } from "@Easy/Core/Shared/Game";
@@ -96,7 +96,7 @@ export default class DemoManager extends AirshipBehaviour {
 				Keyboard.OnKeyDown(Key.O, (event) => {
 					if (event.uiProcessed) return;
 
-					const cube = Object.Instantiate(AssetCache.LoadAsset("Assets/Resources/OfflineCube.prefab"));
+					const cube = Object.Instantiate(Asset.LoadAsset("Assets/Resources/OfflineCube.prefab"));
 					cube.transform.position = Game.localPlayer.character!.rig.head.position.add(new Vector3(0, 1, 0));
 					const rb = cube.gameObject.GetComponent<Rigidbody>()!;
 					rb.velocity = Game.localPlayer.character!.movement.GetLookVector().add(new Vector3(0, 1, 0)).mul(5);
@@ -118,7 +118,7 @@ export default class DemoManager extends AirshipBehaviour {
 		// print("[demo] spawning player");
 		// const character = player.SpawnCharacter(this.spawnPosition.transform.position, {
 		// 	lookDirection: this.spawnPosition.transform.forward,
-		// 	// customCharacterTemplate: AssetCache.LoadAsset("Shared/Resources/CharacterWithLight Variant.prefab"),
+		// 	// customCharacterTemplate: Asset.LoadAsset("Shared/Resources/CharacterWithLight Variant.prefab"),
 		// });
 
 		// character.inventory.AddItem(new ItemStack("WoodSword"));

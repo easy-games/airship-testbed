@@ -1,10 +1,10 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
-import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
 import { Singleton } from "@Easy/Core/Shared/Flamework";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
+import { Asset } from "../Asset";
 import { CoreContext } from "../CoreClientContext";
 import { Game } from "../Game";
 import { Viewmodel } from "../Viewmodel/Viewmodel";
@@ -408,7 +408,7 @@ export class AirshipCharactersSingleton {
 
 	public GetDefaultCharacterTemplate() {
 		return this.customCharacterTemplate === undefined
-			? AssetCache.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/Character/AirshipCharacter.prefab")
+			? Asset.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/Character/AirshipCharacter.prefab")
 			: this.customCharacterTemplate;
 	}
 
@@ -420,6 +420,6 @@ export class AirshipCharactersSingleton {
 		if (this.customViewmodelTemplate !== undefined) {
 			return this.customViewmodelTemplate;
 		}
-		return AssetCache.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/Character/CharacterViewmodel.prefab");
+		return Asset.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/Character/CharacterViewmodel.prefab");
 	}
 }
