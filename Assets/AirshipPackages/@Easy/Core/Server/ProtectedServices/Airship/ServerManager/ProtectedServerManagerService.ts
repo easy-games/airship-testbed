@@ -1,4 +1,4 @@
-import { AirshipServerConfig } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipTransfers";
+import { AirshipServerAccessMode, AirshipServerConfig } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipTransfers";
 import { AirshipServerData } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipServerManager";
 import { Dependency, Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
@@ -14,6 +14,7 @@ export const enum ServerManagerServiceBridgeTopics {
 	ListServer = "ServerManagerService:ListServer",
 	DelistServer = "ServerManagerService:UnlistServer",
 	GetServerList = "ServerManagerService:GetServerList",
+	SetAccessMode = "ServerManagerService:SetAccessMode",
 }
 
 export type ServerBridgeApiCreateServer = (config?: AirshipServerConfig) => Result<AirshipServerData, string>;
@@ -24,6 +25,7 @@ export type ServerBridgeApiShutdownServer = () => Result<undefined, string>;
 export type ServerBridgeApiListServer = (config?: { name?: string; description?: string }) => Result<boolean, string>;
 export type ServerBridgeApiDelistServer = () => Result<boolean, string>;
 export type ServerBridgeApiGetServerList = (page?: number) => Result<{ entries: AirshipServerData[] }, string>;
+export type ServerBridgeApiSetAccessMode = (mode: AirshipServerAccessMode) => Result<boolean, string>;
 
 @Service({})
 export class ProtectedServerManagerService {
@@ -80,6 +82,17 @@ export class ProtectedServerManagerService {
 			}
 			return result;
 		});
+
+		contextbridge.callback<ServerBridgeApiSetAccessMode>(
+			ServerManagerServiceBridgeTopics.GetServerList,
+			(_, mode) => {
+				const [success, result] = this.SetAccessMode(mode).await();
+				if (!success) {
+					return { success: false, error: "Unable to complete request." };
+				}
+				return result;
+			},
+		);
 	}
 
 	public async CreateServer(config?: AirshipServerConfig): Promise<ReturnType<ServerBridgeApiCreateServer>> {
@@ -181,6 +194,11 @@ export class ProtectedServerManagerService {
 			success: true,
 			data: DecodeJSON(res.data) as { entries: AirshipServerData[] },
 		};
+	}
+
+	public async SetAccessMode(mode: AirshipServerAccessMode): Promise<ReturnType<ServerBridgeApiSetAccessMode>> {
+		const res = await AgonesCore.Agones.SetLabel("AccessMode", mode);
+		return { success: true, data: res };
 	}
 
 	protected OnStart(): void {}

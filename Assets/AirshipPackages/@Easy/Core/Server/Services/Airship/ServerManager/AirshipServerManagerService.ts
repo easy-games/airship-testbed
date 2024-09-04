@@ -4,10 +4,11 @@ import {
 	ServerBridgeApiGetServerList,
 	ServerBridgeApiGetServers,
 	ServerBridgeApiListServer,
+	ServerBridgeApiSetAccessMode,
 	ServerManagerServiceBridgeTopics,
 } from "@Easy/Core/Server/ProtectedServices/Airship/ServerManager/ProtectedServerManagerService";
 import { Platform } from "@Easy/Core/Shared/Airship";
-import { AirshipServerConfig } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipTransfers";
+import { AirshipServerAccessMode, AirshipServerConfig } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipTransfers";
 import { AirshipServerData } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipServerManager";
 import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/ContextBridgeUtil";
 import { Service } from "@Easy/Core/Shared/Flamework";
@@ -93,7 +94,7 @@ export class AirshipServerManagerService {
 	/**
 	 * Unlists the server if it has been listed. No change is made if the server is not listed.
 	 */
-	public async DelistServer() {
+	public async DelistServer(): Promise<boolean> {
 		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiDelistServer>(
 			ServerManagerServiceBridgeTopics.DelistServer,
 			LuauContext.Protected,
@@ -110,6 +111,19 @@ export class AirshipServerManagerService {
 		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiGetServerList>(
 			ServerManagerServiceBridgeTopics.GetServerList,
 			LuauContext.Protected,
+		);
+		if (!result.success) throw result.error;
+		return result.data;
+	}
+
+	/**
+	 * Unlists the server if it has been listed. No change is made if the server is not listed.
+	 */
+	public async SetAccessMode(mode: AirshipServerAccessMode): Promise<boolean> {
+		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiSetAccessMode>(
+			ServerManagerServiceBridgeTopics.SetAccessMode,
+			LuauContext.Protected,
+			mode,
 		);
 		if (!result.success) throw result.error;
 		return result.data;
