@@ -123,7 +123,7 @@ export class AirshipLeaderboardService {
 	 */
 	public async GetRankRange(leaderboardName: string, startIndex = 0, count = 100): Promise<RankData[]> {
 		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiLeaderboardGetRankRange>(
-			LeaderboardServiceBridgeTopics.Update,
+			LeaderboardServiceBridgeTopics.GetRankRange,
 			LuauContext.Protected,
 			leaderboardName,
 			startIndex,
