@@ -4,6 +4,7 @@ import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Result } from "@Easy/Core/Shared/Types/Result";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
+import inspect from "@Easy/Core/Shared/Util/Inspect";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 
 export const enum LeaderboardServiceBridgeTopics {
@@ -111,6 +112,14 @@ export class ProtectedLeaderboardService {
 		name: string,
 		update: LeaderboardUpdate,
 	): Promise<ReturnType<ServerBridgeApiLeaderboardUpdate>> {
+		print(
+			"Got update",
+			inspect(update),
+			"sending",
+			EncodeJSON({
+				stats: update,
+			}),
+		);
 		const result = InternalHttpManager.PostAsync(
 			`${AirshipUrl.DataStoreService}/leaderboards/leaderboard-id/${name}/stats`,
 			EncodeJSON({
