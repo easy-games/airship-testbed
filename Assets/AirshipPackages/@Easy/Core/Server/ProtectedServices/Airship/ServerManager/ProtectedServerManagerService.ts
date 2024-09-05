@@ -1,4 +1,7 @@
-import { AirshipServerAccessMode, AirshipServerConfig } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipTransfers";
+import {
+	AirshipServerAccessMode,
+	AirshipServerConfig,
+} from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipServerManager";
 import { AirshipServerData } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipServerManager";
 import { Dependency, Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
