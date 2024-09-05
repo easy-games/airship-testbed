@@ -37,9 +37,7 @@ export default class FriendRecommendation extends AirshipBehaviour {
 	private state = RecommendationState.NONE;
 	private bin = new Bin();
 
-	public OnEnable(): void {
-		
-	}
+	public OnEnable(): void {}
 
 	public OnDisable(): void {
 		this.bin.Clean();
@@ -47,10 +45,10 @@ export default class FriendRecommendation extends AirshipBehaviour {
 
 	/**
 	 * Sets up recommendation card.
-	 * 
+	 *
 	 * @param userId User to recommend.
 	 * @returns True if card was setup successfully.
-	 * 
+	 *
 	 * @internal
 	 */
 	public async Setup(userId: string, context: RecommendationContext): Promise<boolean> {
@@ -74,29 +72,34 @@ export default class FriendRecommendation extends AirshipBehaviour {
 	private GetRecommendationString(recommendationContext: RecommendationContext): string {
 		if (recommendationContext.steamFriend) return "Steam friend (" + recommendationContext.steamFriend + ")";
 		if (recommendationContext.partyEncounter) return "Partied together";
-		if (recommendationContext.gameEncounters.size() > 0) return `From ${RandomUtil.FromArray(recommendationContext.gameEncounters).cachedName}`;
+		if (recommendationContext.gameEncounters.size() > 0)
+			return `From ${RandomUtil.FromArray(recommendationContext.gameEncounters).cachedName}`;
 		return "";
 	}
 
 	private StartEventListeners() {
-		this.bin.AddEngineEventConnection(CanvasAPI.OnHoverEvent(this.gameObject, (hoverState) => {			
-			if (this.state === RecommendationState.NONE) {
-				// Enable/disable add button
-				this.buttons.SetActive(hoverState === HoverState.ENTER);
+		this.bin.AddEngineEventConnection(
+			CanvasAPI.OnHoverEvent(this.gameObject, (hoverState) => {
+				if (this.state === RecommendationState.NONE) {
+					// Enable/disable add button
+					this.buttons.SetActive(hoverState === HoverState.ENTER);
 
-				// Outline hover effect
-				if (hoverState === HoverState.ENTER) {
-					this.outline.color = this.outlineHoverColor;
-					this.outline.gameObject.SetActive(true);
-				} else {
-					this.outline.gameObject.SetActive(false);
+					// Outline hover effect
+					if (hoverState === HoverState.ENTER) {
+						this.outline.color = this.outlineHoverColor;
+						this.outline.gameObject.SetActive(true);
+					} else {
+						this.outline.gameObject.SetActive(false);
+					}
 				}
-			}
-		}));
+			}),
+		);
 
-		this.bin.AddEngineEventConnection(CanvasAPI.OnClickEvent(this.gameObject, () => {
-			this.AcceptRequest();
-		}));
+		this.bin.AddEngineEventConnection(
+			CanvasAPI.OnClickEvent(this.gameObject, () => {
+				this.AcceptRequest();
+			}),
+		);
 	}
 
 	private AcceptRequest() {
@@ -110,10 +113,12 @@ export default class FriendRecommendation extends AirshipBehaviour {
 		this.addButton.SetActive(false);
 		this.buttons.SetActive(true);
 
-		Dependency<ProtectedUserController>().GetUserById(this.user.uid).andThen((res) => {
-			if (!res.data) return;
+		Dependency<ProtectedUserController>()
+			.GetUserById(this.user.uid)
+			.andThen((res) => {
+				if (!res.data) return;
 
-			Dependency<ProtectedFriendsController>().SendFriendRequest(res.data.username);
-		});
+				Dependency<ProtectedFriendsController>().SendFriendRequest(res.data.username);
+			});
 	}
 }
