@@ -11,7 +11,7 @@ import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
-import { AssetCache } from "../AssetCache/AssetCache";
+import { Asset } from "../Asset";
 import { AvatarPlatformAPI } from "../Avatar/AvatarPlatformAPI";
 import { CoreLogger } from "../Logger/CoreLogger";
 import { AirshipUrl } from "../Util/AirshipUrl";
@@ -640,7 +640,7 @@ export class AirshipPlayersSingleton {
 		];
 		let index = num % files.size();
 		let path = files[index];
-		return AssetCache.LoadAsset(path);
+		return Asset.LoadAsset(path);
 	}
 
 	/**

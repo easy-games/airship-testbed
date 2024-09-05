@@ -6,8 +6,6 @@ import { MainMenuSingleton } from "../Singletons/MainMenuSingleton";
 export default class Searchbar extends AirshipBehaviour {
 	@Header("References")
 	public urlText!: TMP_Text;
-	public copyButton!: GameObject;
-	public divider!: GameObject;
 	public layoutElement!: LayoutElement;
 
 	private bin = new Bin();
@@ -18,8 +16,6 @@ export default class Searchbar extends AirshipBehaviour {
 			mainMenu.ObserveScreenSize((sizeType, size) => {
 				if (sizeType === "sm") {
 					this.urlText.gameObject.SetActive(false);
-					this.copyButton.SetActive(false);
-					this.divider.SetActive(false);
 					if (Game.IsMobile()) {
 						this.layoutElement.preferredWidth = Game.IsLandscape() ? 185 : 280;
 					} else {
@@ -27,8 +23,6 @@ export default class Searchbar extends AirshipBehaviour {
 					}
 				} else {
 					this.urlText.gameObject.SetActive(true);
-					this.copyButton.SetActive(true);
-					this.divider.SetActive(true);
 					this.layoutElement.preferredWidth = 392;
 				}
 			}),

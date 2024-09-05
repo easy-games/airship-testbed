@@ -21,6 +21,11 @@ export class TransferController {
 		}>("game-coordinator/server-transfer", (data) => {
 			print("Received transfer event: " + inspect(data));
 			TransferManager.Instance.ConnectToServer(data.gameServer.ip, data.gameServer.port);
+
+			try {
+				// avoiding version bump
+				CrossSceneState.ServerTransferData.gameId = data.gameId;
+			} catch (err) {}
 		});
 	}
 

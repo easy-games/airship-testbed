@@ -70,11 +70,12 @@ export default class SortComponent extends AirshipBehaviour {
 		}
 	}
 
-	public SetGames(games: GameDto[]): HomePageGameComponent[] {
+	public SetGames(games: GameDto[], indexOffset: number): HomePageGameComponent[] {
 		this.titleText.gameObject.SetActive(games.size() > 0);
 
 		this.content.gameObject.ClearChildren();
 		let gameComponents: HomePageGameComponent[] = [];
+		let i = indexOffset;
 		for (const gameDto of games) {
 			// const gameGo = PoolManager.SpawnObject(
 			// 	this.gamePrefab,
@@ -86,12 +87,13 @@ export default class SortComponent extends AirshipBehaviour {
 			const gameGo = Object.Instantiate(this.gamePrefab, this.content) as GameObject;
 			const gameComponent = gameGo.GetAirshipComponent<HomePageGameComponent>();
 			if (gameComponent) {
-				gameComponent.Init(gameDto);
+				gameComponent.Init(gameDto, i);
 				if (this.pageScrollRect) {
 					gameComponent.SetDragRedirectTarget(this.pageScrollRect);
 				}
 				gameComponents.push(gameComponent);
 			}
+			i++;
 		}
 		this.UpdatePreferredHeight();
 		return gameComponents;

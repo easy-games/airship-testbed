@@ -1068,8 +1068,8 @@ MonoBehaviour:
   jumpSpeed: 14
   jumpCoyoteTime: 0.14
   allowDebugFlying: 0
-  flySpeedMultiplier: 3.5
-  verticalFlySpeed: 10
+  flySpeedMultiplier: 3
+  verticalFlySpeed: 4
   jumpUpBlockCooldown: 0.4
   useGravity: 1
   useGravityWhileGrounded: 0

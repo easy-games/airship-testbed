@@ -1666,6 +1666,10 @@ interface AssetBridge {
 interface AssetBridgeConstructor {
 	Instance: AssetBridge;
 }
+/**
+ * @internal
+ * @deprecated Use `Asset` instead.
+ */
 declare const AssetBridge: AssetBridgeConstructor;
 
 interface Ray {

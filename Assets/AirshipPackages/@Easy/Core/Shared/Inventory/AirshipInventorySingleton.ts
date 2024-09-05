@@ -3,7 +3,7 @@ import Character from "@Easy/Core/Shared/Character/Character";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
 import { Singleton } from "@Easy/Core/Shared/Flamework";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
-import { AssetCache } from "../AssetCache/AssetCache";
+import { Asset } from "../Asset";
 import { Game } from "../Game";
 import { ItemDef } from "../Item/ItemDefinitionTypes";
 import { NetworkFunction } from "../Network/NetworkFunction";
@@ -66,7 +66,7 @@ export class AirshipInventorySingleton {
 	}
 
 	protected OnStart(): void {
-		// this.missingItemAccessory = AssetCache.LoadAsset<AccessoryComponent>(
+		// this.missingItemAccessory = Asset.LoadAsset<AccessoryComponent>(
 		// 	"Assets/AirshipPackages/@Easy/Core/Prefabs/Accessories/missing_item.prefab",
 		// );
 
@@ -129,9 +129,7 @@ export class AirshipInventorySingleton {
 		if (this.inventoryUIPrefab) {
 			prefab = this.inventoryUIPrefab;
 		} else {
-			prefab = AssetCache.LoadAsset(
-				"Assets/AirshipPackages/@Easy/Core/Prefabs/Inventory/AirshipInventoryUI.prefab",
-			);
+			prefab = Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/Inventory/AirshipInventoryUI.prefab");
 		}
 		const go = Object.Instantiate(prefab);
 		const uiComp = go.GetAirshipComponent<AirshipInventoryUI>();

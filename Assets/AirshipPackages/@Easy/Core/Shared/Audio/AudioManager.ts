@@ -1,5 +1,5 @@
-import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
 import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
+import { Asset } from "../Asset";
 import StringUtils from "../Types/StringUtil";
 
 const MAX_DISTANCE = 18;
@@ -165,7 +165,7 @@ export class AudioManager {
 	}
 
 	public static LoadFullPathAudioClip(fullPath: string): AudioClip | undefined {
-		const clip = AssetCache.LoadAssetIfExists<AudioClip>(fullPath);
+		const clip = Asset.LoadAssetIfExists<AudioClip>(fullPath);
 		if (!clip) {
 			warn("Unable to load clip: " + fullPath);
 		}

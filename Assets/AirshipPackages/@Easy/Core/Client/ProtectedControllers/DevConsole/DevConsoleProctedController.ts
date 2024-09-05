@@ -7,19 +7,21 @@ export class DevConsoleProtectedController implements OnStart {
 	OnStart(): void {
 		const openedBin = new Bin();
 
-		try {
-			DevConsole.OnConsoleOpened.Connect(() => {
-				openedBin.Add(Mouse.AddUnlocker());
-			});
-			if (DevConsole.IsOpen) {
-				openedBin.Add(Mouse.AddUnlocker());
-			}
+		task.delay(0, () => {
+			try {
+				DevConsole.OnConsoleOpened.Connect(() => {
+					openedBin.Add(Mouse.AddUnlocker());
+				});
+				if (DevConsole.IsOpen) {
+					openedBin.Add(Mouse.AddUnlocker());
+				}
 
-			DevConsole.OnConsoleClosed.Connect(() => {
-				openedBin.Clean();
-			});
-		} catch (err) {
-			Debug.LogError(err);
-		}
+				DevConsole.OnConsoleClosed.Connect(() => {
+					openedBin.Clean();
+				});
+			} catch (err) {
+				Debug.LogError("[Dev Console Hook]: " + err);
+			}
+		});
 	}
 }

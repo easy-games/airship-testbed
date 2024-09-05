@@ -1,6 +1,6 @@
 import { MainMenuController } from "@Easy/Core/Client/ProtectedControllers/MainMenuController";
 import { Dependency, Singleton } from "@Easy/Core/Shared/Flamework";
-import { AssetCache } from "../../AssetCache/AssetCache";
+import { Asset } from "../../Asset";
 import { Game } from "../../Game";
 import { AppManager } from "../../Util/AppManager";
 import { Bin } from "../../Util/Bin";
@@ -40,7 +40,7 @@ export class MainMenuSingleton {
 
 	protected OnStart(): void {
 		// const readOnlyCanvasGO = Object.Instantiate(
-		// 	AssetCache.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/UI/AirshipReadOnlyCanvas.prefab"),
+		// 	Asset.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/UI/AirshipReadOnlyCanvas.prefab"),
 		// );
 		// const canvasRect = readOnlyCanvasGO.transform as RectTransform;
 		// const canvasScaler = readOnlyCanvasGO.gameObject.GetComponent<CanvasScaler>()!;
@@ -96,7 +96,7 @@ export class MainMenuSingleton {
 
 	public async ShowConfirmModal(title: string, message: string): Promise<boolean> {
 		const go = Object.Instantiate(
-			AssetCache.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/UI/Modals/AirshipConfirmModal.prefab"),
+			Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/UI/Modals/AirshipConfirmModal.prefab"),
 			Dependency<MainMenuController>().mainContentCanvas.transform,
 		);
 		const confirmModal = go.GetAirshipComponent<ConfirmModal>()!;

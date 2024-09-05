@@ -66,20 +66,20 @@ export class MainMenuController {
 				MainMenuPageType.AvatarMobile,
 				this.refs.GetValue("Pages", "AvatarMobile").GetAirshipComponent<AvatarMenuComponent>()!,
 			);
-			this.avatarView = Object.Instantiate(
-				this.refs.GetValue<GameObject>("AvatarMobile", "Avatar3DSceneTemplate"),
-				CoreRefs.protectedTransform,
-			).GetAirshipComponent<AvatarViewComponent>()!;
+			// this.avatarView = Object.Instantiate(
+			// 	this.refs.GetValue<GameObject>("AvatarMobile", "Avatar3DSceneTemplate"),
+			// 	CoreRefs.protectedTransform,
+			// ).GetAirshipComponent<AvatarViewComponent>()!;
 			this.refs.GetValue("Pages", "Avatar").SetActive(false);
 		} else {
 			this.pageMap.set(
 				MainMenuPageType.Avatar,
 				this.refs.GetValue("Pages", "Avatar").GetAirshipComponent<AvatarMenuComponent>()!,
 			);
-			this.avatarView = Object.Instantiate(
-				this.refs.GetValue<GameObject>("Avatar", "Avatar3DSceneTemplate"),
-				CoreRefs.protectedTransform,
-			).GetAirshipComponent<AvatarViewComponent>()!;
+			// this.avatarView = Object.Instantiate(
+			// 	this.refs.GetValue<GameObject>("Avatar", "Avatar3DSceneTemplate"),
+			// 	CoreRefs.protectedTransform,
+			// ).GetAirshipComponent<AvatarViewComponent>()!;
 			this.refs.GetValue("Pages", "AvatarMobile").SetActive(false);
 		}
 
@@ -93,7 +93,7 @@ export class MainMenuController {
 		);
 
 		if (Game.coreContext === CoreContext.GAME) {
-			this.avatarView.HideAvatar();
+			this.avatarView?.HideAvatar();
 		} else {
 			this.open = true;
 		}

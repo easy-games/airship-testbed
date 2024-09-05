@@ -1,8 +1,10 @@
 import { OutfitDto } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipPlatformInventory";
 import { AvatarCollectionManager } from "@Easy/Core/Shared/Avatar/AvatarCollectionManager";
 import { AvatarPlatformAPI } from "@Easy/Core/Shared/Avatar/AvatarPlatformAPI";
+import AvatarViewComponent from "@Easy/Core/Shared/Avatar/AvatarViewComponent";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
+import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import AirshipButton from "@Easy/Core/Shared/MainMenu/Components/AirshipButton";
@@ -12,7 +14,6 @@ import { Mouse } from "@Easy/Core/Shared/UserInput/Mouse";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
-import { RandomUtil } from "@Easy/Core/Shared/Util/RandomUtil";
 import MainMenuPageComponent from "../../../Shared/MainMenu/Components/MainMenuPageComponent";
 import { MainMenuController } from "../MainMenuController";
 import { MainMenuPageType } from "../MainMenuPageName";
@@ -176,10 +177,6 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 		this.ClearItembuttons();
 
-		AvatarCollectionManager.instance.DownloadAllAccessories().then(() => {
-			this.LoadAllOutfits();
-		});
-
 		if (Game.IsEditor()) {
 			Keyboard.OnKeyDown(Key.PrintScreen, (event) => {
 				if (Keyboard.IsKeyDown(Key.LeftShift)) {
@@ -200,18 +197,45 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 				avatarView.AlignCamera(this.avatarCenterRect.position, this.avatarCameraOffset);
 			}
 		} else {
-			error("no 3D avatar to render in avatar editor");
+			// error("no 3D avatar to render in avatar editor");
 		}
 	}
 
+	private downloadedAccessories = false;
+
 	override OpenPage(params?: unknown): void {
 		super.OpenPage(params);
+
+		AvatarCollectionManager.instance.Setup();
+
 		this.SetDirty(false);
 		this.LoadAllOutfits();
 
 		const mainMenuSingleton = Dependency<MainMenuSingleton>();
 
 		this.bin.Add(mainMenuSingleton.socialMenuModifier.Add({ hidden: true }));
+
+		if (!this.downloadedAccessories) {
+			this.downloadedAccessories = true;
+			AvatarCollectionManager.instance.DownloadAllAccessories().then(() => {
+				this.LoadAllOutfits();
+			});
+		}
+
+		// Load the character
+		if (this.mainMenu.avatarView === undefined) {
+			if (Game.IsMobile()) {
+				this.mainMenu.avatarView = Object.Instantiate(
+					this.mainMenu.refs.GetValue<GameObject>("AvatarMobile", "Avatar3DSceneTemplate"),
+					CoreRefs.protectedTransform,
+				).GetAirshipComponent<AvatarViewComponent>()!;
+			} else {
+				this.mainMenu.avatarView = Object.Instantiate(
+					this.mainMenu.refs.GetValue<GameObject>("Avatar", "Avatar3DSceneTemplate"),
+					CoreRefs.protectedTransform,
+				).GetAirshipComponent<AvatarViewComponent>()!;
+			}
+		}
 
 		let rawImage = this.avatarRenderHolder?.GetComponent<RawImage>();
 		if (rawImage) {
@@ -290,7 +314,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		if (this.mainMenu?.avatarView) {
 			this.mainMenu.avatarView.dragging = false;
 		} else {
-			error("no 3D avatar to render in avatar editor");
+			// error("no 3D avatar to render in avatar editor");
 		}
 	}
 

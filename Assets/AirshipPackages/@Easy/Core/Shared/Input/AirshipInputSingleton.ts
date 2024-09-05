@@ -1,7 +1,7 @@
 import { Singleton } from "@Easy/Core/Shared/Flamework";
 import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 import { Airship } from "../Airship";
-import { AssetCache } from "../AssetCache/AssetCache";
+import { Asset } from "../Asset";
 import { CoreContext } from "../CoreClientContext";
 import { CoreRefs } from "../CoreRefs";
 import { Game } from "../Game";
@@ -94,7 +94,7 @@ export class AirshipInputSingleton {
 	/**
 	 * The default mobile button prefab.
 	 */
-	private mobileButtonPrefab = AssetCache.LoadAsset(
+	private mobileButtonPrefab = Asset.LoadAsset(
 		"AirshipPackages/@Easy/Core/Prefabs/UI/MobileControls/MobileButton.prefab",
 	);
 	/**
@@ -179,7 +179,7 @@ export class AirshipInputSingleton {
 	 */
 	public CreateTouchJoystick(parent: Transform): TouchJoystick {
 		const go = Object.Instantiate(
-			AssetCache.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/UI/MobileControls/TouchJoystick.prefab"),
+			Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/UI/MobileControls/TouchJoystick.prefab"),
 			parent,
 		);
 		const joystick = go.GetAirshipComponent<TouchJoystick>()!;
@@ -208,13 +208,11 @@ export class AirshipInputSingleton {
 		let go: GameObject;
 		if (parent) {
 			go = Object.Instantiate(
-				AssetCache.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/Input/ProximityPrompt.prefab"),
+				Asset.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/Input/ProximityPrompt.prefab"),
 				parent,
 			);
 		} else {
-			go = Object.Instantiate(
-				AssetCache.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/Input/ProximityPrompt.prefab"),
-			);
+			go = Object.Instantiate(Asset.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/Input/ProximityPrompt.prefab"));
 		}
 		const prompt = go.GetAirshipComponent<ProximityPrompt>()!;
 		prompt.actionName = actionName.lower();
@@ -265,7 +263,7 @@ export class AirshipInputSingleton {
 	 */
 	private CreateMobileControlCanvas(): void {
 		const mobileControlsCanvas = Object.Instantiate(
-			AssetCache.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/UI/MobileControls/MobileControlsCanvas.prefab"),
+			Asset.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/UI/MobileControls/MobileControlsCanvas.prefab"),
 			CoreRefs.rootTransform,
 		);
 		this.mobileControlsContainer = mobileControlsCanvas;
@@ -314,7 +312,7 @@ export class AirshipInputSingleton {
 
 		if (config?.icon) {
 			// Assets/AirshipPackages/@Easy/Core/Prefabs/Images/crouch-pose.png
-			const iconTexture = AssetCache.LoadAssetIfExists<Texture2D>(config.icon);
+			const iconTexture = Asset.LoadAssetIfExists<Texture2D>(config.icon);
 			if (iconTexture) {
 				const img = mobileButton.transform.GetChild(0).GetComponent<Image>()!;
 				img.sprite = Bridge.MakeSprite(iconTexture);

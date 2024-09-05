@@ -40,6 +40,7 @@ export class MainMenuNavbarController {
 	public Setup(): void {
 		const refs = this.mainMenuController.refs;
 
+		const logoButton = refs.GetValue("UI", "LogoButton");
 		const homeButton = refs.GetValue("UI", "NavbarHomeButton");
 		const avatarButton = refs.GetValue("UI", "NavbarAvatarButton");
 		const myGamesButton = refs.GetValue("UI", "NavbarMyGamesButton");
@@ -57,6 +58,9 @@ export class MainMenuNavbarController {
 
 		CoreUI.SetupButton(homeButton, { noHoverSound: true });
 		CanvasAPI.OnClickEvent(homeButton, () => {
+			this.mainMenuController.RouteToPage(MainMenuPageType.Home);
+		});
+		CanvasAPI.OnClickEvent(logoButton, () => {
 			this.mainMenuController.RouteToPage(MainMenuPageType.Home);
 		});
 

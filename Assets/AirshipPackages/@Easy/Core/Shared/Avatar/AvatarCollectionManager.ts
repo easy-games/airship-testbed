@@ -16,6 +16,7 @@ export class AvatarCollectionManager {
 	>();
 	private readonly ownedAvatarFaces: AccessoryFace[] = [];
 	private readonly avatarSkinAccessories: AccessorySkin[] = [];
+	private isSetup = false;
 
 	public defaultOutfit: AccessoryOutfit | undefined;
 
@@ -29,6 +30,26 @@ export class AvatarCollectionManager {
 			return;
 		}
 		AvatarCollectionManager.instance = this;
+
+		if (Game.IsInGame()) {
+			this.Setup();
+		}
+
+		//Print all of the mapped accessories
+		// for (const [key, value] of this.avatarAccessories) {
+		// 	print("Loaded Avatar ACC: " + tostring(key) + ", " + value.size());
+		// 	for (let i = 0; i < value.size(); i++) {
+		// 		print("Acc " + i + ": " + value[i].ToString());
+		// 	}
+		// }
+	}
+
+	/**
+	 * @internal
+	 */
+	public Setup(): void {
+		if (this.isSetup) return;
+		this.isSetup = true;
 
 		//Load avatar accessories
 		let avatarCollection = AssetBridge.Instance.LoadAsset<AvatarAccessoryCollection>(
@@ -66,14 +87,6 @@ export class AvatarCollectionManager {
 			const element = avatarCollection.skinColors.GetValue(i);
 			this.skinColors.push(element);
 		}
-
-		//Print all of the mapped accessories
-		// for (const [key, value] of this.avatarAccessories) {
-		// 	print("Loaded Avatar ACC: " + tostring(key) + ", " + value.size());
-		// 	for (let i = 0; i < value.size(); i++) {
-		// 		print("Acc " + i + ": " + value[i].ToString());
-		// 	}
-		// }
 	}
 
 	private AddAvailableAvatarItem(itemDto: AccessoryInstanceDto, item: AccessoryComponent) {
@@ -157,7 +170,7 @@ export class AvatarCollectionManager {
 			);
 			if (!outfit) {
 				error("Unable to make a new outfit :(");
-			}else if(firstOutfit){
+			} else if (firstOutfit) {
 				firstOutfit = false;
 				equippedOutfitId = outfit.outfitId;
 			}

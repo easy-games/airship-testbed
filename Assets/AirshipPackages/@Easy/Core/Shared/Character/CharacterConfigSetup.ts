@@ -30,6 +30,8 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 	public useAirshipCameraSystem = true;
 	public startInFirstPerson = false;
 	public allowFirstPersonToggle = true;
+	public useSprintFOV = true;
+	public sprintFOVMultiplier = 1.08;
 
 	@Header("UI")
 	public showChat = true;
@@ -70,6 +72,9 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 					//Force first person view model
 					Airship.Camera.SetFirstPerson(this.startInFirstPerson);
 				}
+				//Camera FOV
+				Airship.Camera.SetSprintFOVEnabled(this.useSprintFOV);
+				Airship.Camera.SetSprintFOVMultiplier(this.sprintFOVMultiplier);
 			}
 
 			//UI visual toggles

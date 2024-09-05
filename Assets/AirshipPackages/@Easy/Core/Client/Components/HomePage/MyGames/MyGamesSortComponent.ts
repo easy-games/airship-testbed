@@ -22,7 +22,7 @@ export default class MyGamesSortComponent extends AirshipBehaviour {
 			if (this.fetchMyGames) {
 				search.FetchMyGames();
 			}
-			this.sort.SetGames(search.myGames);
+			this.sort.SetGames(search.myGames, 0);
 		});
 	}
 

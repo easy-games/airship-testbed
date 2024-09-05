@@ -1,5 +1,5 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
-import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
+import { Asset } from "@Easy/Core/Shared/Asset";
 import { AirshipCharacterCameraSingleton } from "@Easy/Core/Shared/Camera/AirshipCharacterCameraSingleton";
 import Character from "@Easy/Core/Shared/Character/Character";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
@@ -152,7 +152,7 @@ export class BubbleChatController {
 			return existingChatContainer.gameObject;
 		}
 
-		const chatContainer = AssetCache.LoadAsset("@Easy/Core/Client/Resources/Prefabs/BubbleChatContainer.prefab");
+		const chatContainer = Asset.LoadAsset("@Easy/Core/Client/Resources/Prefabs/BubbleChatContainer.prefab");
 		const chatContainerObject = Object.Instantiate(chatContainer);
 		chatContainerObject.name = "BubbleChatContainer";
 		const chatTransform = chatContainerObject.transform;
