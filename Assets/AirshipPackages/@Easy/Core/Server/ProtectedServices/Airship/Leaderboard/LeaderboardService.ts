@@ -237,7 +237,7 @@ export class ProtectedLeaderboardService {
 		count = math.clamp(count, 1, 1000 - startIndex); // ensure they don't reach past 1000;
 
 		const result = InternalHttpManager.GetAsync(
-			`${AirshipUrl.DataStoreService}/loaderboards/leaderboard-id/${name}/rankings?skip=${startIndex}&limit=${count}`,
+			`${AirshipUrl.DataStoreService}/leaderboards/leaderboard-id/${name}/rankings?skip=${startIndex}&limit=${count}`,
 		);
 		if (!result.success || result.statusCode > 299) {
 			warn(`Unable to get leaderboard rankings. Status Code: ${result.statusCode}.\n`, result.error);
