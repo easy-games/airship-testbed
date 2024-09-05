@@ -71,11 +71,11 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 50bf628099f0f644f9ebed1da07f9da6, type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
-      objectReference: {fileID: 2100000, guid: c93930bc60ebadf4787bb0509ac39cf2, type: 2}
+      objectReference: {fileID: 2100000, guid: 7ce144eff77fd488eb9f5c6c21698233, type: 2}
     - target: {fileID: -7511558181221131132, guid: 50bf628099f0f644f9ebed1da07f9da6, type: 3}
       propertyPath: 'm_Materials.Array.data[2]'
       value: 
-      objectReference: {fileID: 2100000, guid: 73bb5ed0ab4b2e84fa84f01a35c048b2, type: 2}
+      objectReference: {fileID: 2100000, guid: 7ce144eff77fd488eb9f5c6c21698233, type: 2}
     - target: {fileID: -7511558181221131132, guid: 50bf628099f0f644f9ebed1da07f9da6, type: 3}
       propertyPath: 'm_Materials.Array.data[3]'
       value: 
@@ -83,11 +83,11 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 50bf628099f0f644f9ebed1da07f9da6, type: 3}
       propertyPath: 'm_Materials.Array.data[4]'
       value: 
-      objectReference: {fileID: 2100000, guid: 73bb5ed0ab4b2e84fa84f01a35c048b2, type: 2}
+      objectReference: {fileID: 2100000, guid: 7ce144eff77fd488eb9f5c6c21698233, type: 2}
     - target: {fileID: -7511558181221131132, guid: 50bf628099f0f644f9ebed1da07f9da6, type: 3}
       propertyPath: 'm_Materials.Array.data[5]'
       value: 
-      objectReference: {fileID: 2100000, guid: 12a29c78a35e94e4b8a57328abf7eda6, type: 2}
+      objectReference: {fileID: 2100000, guid: 7ce144eff77fd488eb9f5c6c21698233, type: 2}
     - target: {fileID: 919132149155446097, guid: 50bf628099f0f644f9ebed1da07f9da6, type: 3}
       propertyPath: m_Name
       value: WolfPelt
