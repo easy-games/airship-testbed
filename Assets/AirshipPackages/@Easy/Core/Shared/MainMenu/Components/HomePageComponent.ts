@@ -35,10 +35,10 @@ export default class HomePageComponent extends MainMenuPageComponent {
 			this.FetchGames();
 		});
 
-		const platform = AirshipPlatformUtil.GetLocalPlatform();
-		if (platform === AirshipPlatform.Windows) {
-			this.scrollRect.scrollSensitivity = 22;
-		}
+		// const platform = AirshipPlatformUtil.GetLocalPlatform();
+		// if (platform === AirshipPlatform.Windows) {
+		// 	this.scrollRect.scrollSensitivity = 22;
+		// }
 	}
 
 	private ClearSorts(): void {

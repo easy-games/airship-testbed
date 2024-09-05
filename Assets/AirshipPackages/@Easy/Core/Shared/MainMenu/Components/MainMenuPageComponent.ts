@@ -48,10 +48,11 @@ export default class MainMenuPageComponent extends AirshipBehaviour {
 			(this.gameObject.transform as RectTransform).anchoredPosition = new Vector2(0, targetY);
 			canvasGroup.alpha = 1;
 		} else {
-			const rect = this.transform as RectTransform;
-			rect.anchoredPosition = new Vector2(0, targetY - 20);
-			const tween = NativeTween.AnchoredPositionY(rect, targetY, this.animateInDuration).SetUseUnscaledTime(true);
-			tween.SetEase(EaseType.QuadOut);
+			// const rect = this.transform as RectTransform;
+			// rect.anchoredPosition = new Vector2(0, targetY - 20);
+			// const tween = NativeTween.AnchoredPositionY(rect, targetY, this.animateInDuration).SetUseUnscaledTime(true);
+			// tween.SetEase(EaseType.QuadOut);
+			(this.gameObject.transform as RectTransform).anchoredPosition = new Vector2(0, targetY);
 
 			canvasGroup.alpha = 0;
 			NativeTween.CanvasGroupAlpha(canvasGroup, 1, this.animateInDuration).SetUseUnscaledTime(true);
