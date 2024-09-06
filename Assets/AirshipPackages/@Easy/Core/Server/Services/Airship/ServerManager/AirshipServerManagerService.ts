@@ -1,6 +1,7 @@
 import {
 	ServerBridgeApiCreateServer,
 	ServerBridgeApiDelistServer,
+	ServerBridgeApiGetGameConfig,
 	ServerBridgeApiGetServerList,
 	ServerBridgeApiGetServers,
 	ServerBridgeApiListServer,
@@ -127,6 +128,20 @@ export class AirshipServerManagerService {
 			ServerManagerServiceBridgeTopics.SetAccessMode,
 			LuauContext.Protected,
 			mode,
+		);
+		if (!result.success) throw result.error;
+		return result.data;
+	}
+
+	/**
+	 * Retrieves the game config passed to this server in the {@link AirshipServerManagerService.CreateServer} function. If
+	 * the configuration cannot be parsed or does not exist, returns undefined.
+	 * @returns The game configuration object or undefined.
+	 */
+	public async GetGameConfig<T>(): Promise<T | undefined> {
+		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiGetGameConfig<T>>(
+			ServerManagerServiceBridgeTopics.GetGameConfig,
+			LuauContext.Protected,
 		);
 		if (!result.success) throw result.error;
 		return result.data;

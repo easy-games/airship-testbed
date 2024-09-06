@@ -18,6 +18,7 @@ export const enum ServerManagerServiceBridgeTopics {
 	DelistServer = "ServerManagerService:UnlistServer",
 	GetServerList = "ServerManagerService:GetServerList",
 	SetAccessMode = "ServerManagerService:SetAccessMode",
+	GetGameConfig = "ServerManagerService:GetGameConfig",
 }
 
 export type ServerBridgeApiCreateServer = (config?: AirshipServerConfig) => Result<AirshipServerData, string>;
@@ -29,6 +30,7 @@ export type ServerBridgeApiListServer = (config?: { name?: string; description?:
 export type ServerBridgeApiDelistServer = () => Result<boolean, string>;
 export type ServerBridgeApiGetServerList = (page?: number) => Result<{ entries: AirshipServerData[] }, string>;
 export type ServerBridgeApiSetAccessMode = (mode: AirshipServerAccessMode) => Result<boolean, string>;
+export type ServerBridgeApiGetGameConfig<T> = () => Result<T | undefined, string>;
 
 @Service({})
 export class ProtectedServerManagerService {
@@ -90,6 +92,17 @@ export class ProtectedServerManagerService {
 			ServerManagerServiceBridgeTopics.SetAccessMode,
 			(_, mode) => {
 				const [success, result] = this.SetAccessMode(mode).await();
+				if (!success) {
+					return { success: false, error: "Unable to complete request." };
+				}
+				return result;
+			},
+		);
+
+		contextbridge.callback<ServerBridgeApiGetGameConfig<any>>(
+			ServerManagerServiceBridgeTopics.GetGameConfig,
+			(_) => {
+				const [success, result] = this.GetGameConfig<any>().await();
 				if (!success) {
 					return { success: false, error: "Unable to complete request." };
 				}
@@ -203,6 +216,20 @@ export class ProtectedServerManagerService {
 	public async SetAccessMode(mode: AirshipServerAccessMode): Promise<ReturnType<ServerBridgeApiSetAccessMode>> {
 		const res = await AgonesCore.Agones.SetLabel("AccessMode", mode);
 		return { success: true, data: res };
+	}
+
+	public async GetGameConfig<T>() {
+		const serverBootstrap = GameObject.Find("ServerBootstrap").GetComponent<ServerBootstrap>()!;
+		const gs = serverBootstrap.GetGameServer();
+		try {
+			const gameConfigString = gs?.ObjectMeta.Annotations.Get("GameConfig");
+			if (!gameConfigString) return undefined;
+
+			const gameConfig = DecodeJSON(gameConfigString);
+			return gameConfig as T;
+		} catch (err) {
+			return undefined;
+		}
 	}
 
 	protected OnStart(): void {}
