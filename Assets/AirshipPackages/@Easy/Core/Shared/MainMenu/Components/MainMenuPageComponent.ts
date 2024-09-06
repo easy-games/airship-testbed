@@ -44,7 +44,7 @@ export default class MainMenuPageComponent extends AirshipBehaviour {
 
 		const canvasGroup = this.gameObject.GetComponent<CanvasGroup>()!;
 		const targetY = this.GetTargetAnchoredPositionY();
-		if (this.animateInDuration <= 0 || Game.IsPortrait()) {
+		if (this.animateInDuration <= 0 || Game.IsPortrait() || true) {
 			(this.gameObject.transform as RectTransform).anchoredPosition = new Vector2(0, targetY);
 			canvasGroup.alpha = 1;
 		} else {
