@@ -918,6 +918,7 @@ interface AnimatorOverrideController extends RuntimeAnimatorController {
 
 interface ServerBootstrap {
 	onProcessExit(callback: () => void): void;
+	GetGameServer(): GameServer | undefined;
 }
 
 interface TerrainData {
