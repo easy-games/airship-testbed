@@ -129,13 +129,14 @@ export class AirshipCharactersSingleton {
 			});
 		}
 
-		Airship.Characters.ObserveCharacters((character) => {
-			character.onDeath.ConnectWithPriority(SignalPriority.MONITOR, () => {
-				if (Game.IsServer()) {
-					character.Despawn();
-				}
-			});
-		});
+		//Let individual games manage what to do on character death
+		// Airship.Characters.ObserveCharacters((character) => {
+		// 	character.onDeath.ConnectWithPriority(SignalPriority.MONITOR, () => {
+		// 		if (Game.IsServer()) {
+		// 			character.Despawn();
+		// 		}
+		// 	});
+		// });
 
 		if (Game.IsClient()) {
 			CoreNetwork.ServerToClient.Character.SetHealth.client.OnServerEvent((id, health) => {
