@@ -36,3 +36,10 @@ interface UserInGameStatus extends BaseUserStatus<UserStatus.IN_GAME> {
 }
 
 export type UserStatusData = UserOfflineStatus | UserOnlineStatus | UserInGameStatus;
+
+/**
+ * Represents information about a players location in a game.
+ */
+export interface AirshipPlayerLocation {
+	serverId: string;
+}

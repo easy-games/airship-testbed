@@ -1,4 +1,4 @@
-import { PublicUser } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipUser";
+import { AirshipPlayerLocation, PublicUser } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipUser";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Result } from "@Easy/Core/Shared/Types/Result";
@@ -9,6 +9,7 @@ export const enum UserServiceBridgeTopics {
 	GetUserByUsername = "UserService:GetUserByUsername",
 	GetUserById = "UserService:GetUserById",
 	GetUsersById = "UserService:GetUsersById",
+	GetUserLocationsById = "UserService:GetUserLocationsById",
 }
 
 export type ServerBridgeApiGetUserByUsername = (username: string) => Result<PublicUser | undefined, string>;
@@ -17,6 +18,9 @@ export type ServerBridgeApiGetUsersById = (
 	userIds: string[],
 	strict?: boolean,
 ) => Result<Record<string, PublicUser>, string>;
+export type ServerBridgeApiGetUserLocationsById = (
+	userIds: string[],
+) => Result<{ [userId: string]: AirshipPlayerLocation | undefined }, string>;
 
 @Service({})
 export class ProtectedUserService {
@@ -46,6 +50,17 @@ export class ProtectedUserService {
 			UserServiceBridgeTopics.GetUsersById,
 			(_, userIds, strict = false) => {
 				const [success, result] = this.GetUsersById(userIds, strict).await();
+				if (!success) {
+					return { success: false, error: "Unable to complete request." };
+				}
+				return result;
+			},
+		);
+
+		contextbridge.callback<ServerBridgeApiGetUserLocationsById>(
+			UserServiceBridgeTopics.GetUserLocationsById,
+			(_, userIds) => {
+				const [success, result] = this.GetUserLocationsById(userIds).await();
 				if (!success) {
 					return { success: false, error: "Unable to complete request." };
 				}
@@ -143,6 +158,39 @@ export class ProtectedUserService {
 		return {
 			success: true,
 			data: map,
+		};
+	}
+
+	public async GetUserLocationsById(userIds: string[]): Promise<ReturnType<ServerBridgeApiGetUserLocationsById>> {
+		if (userIds.size() === 0) {
+			return {
+				success: true,
+				data: {},
+			};
+		}
+
+		const res = InternalHttpManager.GetAsync(
+			`${AirshipUrl.GameCoordinator}/user-locations?userIds[]=${userIds.join("&userIds[]=")}`,
+		);
+
+		if (!res.success || res.statusCode > 299) {
+			warn(`Unable to get user locations. Status Code:  ${res.statusCode}.\n`, res.error);
+			return {
+				success: false,
+				error: res.error,
+			};
+		}
+
+		if (!res.data) {
+			return {
+				success: true,
+				data: {},
+			};
+		}
+
+		return {
+			success: true,
+			data: DecodeJSON(res.data),
 		};
 	}
 

@@ -4,13 +4,16 @@ import {
 	ServerListControllerBridgeTopics,
 } from "@Easy/Core/Client/ProtectedControllers/Airship/ServerList/ProtectedServerListController";
 import { Platform } from "@Easy/Core/Shared/Airship";
-import { ServerListEntry, ServerListEntryWithFriends } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipServerList";
+import {
+	AirshipServerData,
+	ServerListEntryWithFriends,
+} from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipServerManager";
 import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/ContextBridgeUtil";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 
 /**
- * Allows access to player party information.
+ * Allows access to the game server list.
  */
 @Service({})
 export class AirshipServerListController {
@@ -26,7 +29,7 @@ export class AirshipServerListController {
 	 * Gets a page of the server list.
 	 * @param page The page to retrieve. Starts at 0.
 	 */
-	public async GetServerList(page: number = 0): Promise<{ entries: ServerListEntry[] }> {
+	public async GetServerList(page: number = 0): Promise<{ entries: AirshipServerData[] }> {
 		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ClientBridgeApiGetServerList>(
 			ServerListControllerBridgeTopics.GetServerList,
 			LuauContext.Protected,

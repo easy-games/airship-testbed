@@ -7,8 +7,9 @@ import { AirshipDataStoreService } from "../Server/Services/Airship/DataStore/Ai
 import { AirshipLeaderboardService } from "../Server/Services/Airship/Leaderboard/AirshipLeaderboardService";
 import { AirshipPartyService } from "../Server/Services/Airship/Party/AirshipPartyService";
 import { AirshipPlatformInventoryService } from "../Server/Services/Airship/PlatformInventory/AirshipPlatformInventoryService";
-import { AirshipServerListService } from "../Server/Services/Airship/ServerList/AirshipServerListService";
+import { AirshipServerManagerService } from "../Server/Services/Airship/ServerManager/AirshipServerManagerService";
 import { AirshipTransferService } from "../Server/Services/Airship/Transfer/AirshipTransferService";
+import { AirshipUserService } from "../Server/Services/Airship/User/AirshipUserService";
 import { AirshipAvatarSingleton } from "./Avatar/AirshipAvatarSingleton";
 import { AirshipCharacterCameraSingleton } from "./Camera/AirshipCharacterCameraSingleton";
 import { AirshipCharactersSingleton } from "./Character/AirshipCharactersSingleton";
@@ -86,7 +87,15 @@ export namespace Platform {
 		 * - Content that players may want to trade or sell to other players
 		 */
 		export let Inventory = undefined! as AirshipPlatformInventoryService;
-		export let ServerList = undefined! as AirshipServerListService;
+		/**
+		 * Allows management of the current server as well as APIs for creating and getting information about
+		 * other game servers.
+		 */
+		export let ServerManager = undefined! as AirshipServerManagerService;
+		/**
+		 * Provides access to user information.
+		 */
+		export let User = undefined! as AirshipUserService;
 	}
 
 	/**

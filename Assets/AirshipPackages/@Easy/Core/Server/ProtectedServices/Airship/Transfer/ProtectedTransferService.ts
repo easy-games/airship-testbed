@@ -2,10 +2,9 @@ import {
 	AirshipGameTransferConfig,
 	AirshipMatchingServerTransferConfig,
 	AirshipPlayerTransferConfig,
-	AirshipServerConfig,
 	AirshipServerTransferConfig,
 } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipTransfers";
-import { CreateServerResponse } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipTransfers";
+import { TransferResult } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipTransfers";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Result } from "@Easy/Core/Shared/Types/Result";
@@ -13,45 +12,35 @@ import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 
 export const enum TransferServiceBridgeTopics {
-	CreateServer = "TransferService:CreateServer",
 	TransferGroupToGame = "TransferService:TransferGroupToGame",
 	TransferGroupToServer = "TransferService:TransferGroupToServer",
 	TransferGroupToMatchingServer = "TransferService:TransferGroupToMatchingServer",
 	TransferGroupToPlayer = "TransferService:TransferGroupToPlayer",
 }
 
-export type ServerBridgeApiCreateServer = (config?: AirshipServerConfig) => Result<CreateServerResponse, string>;
 export type ServerBridgeApiTransferGroupToGame = (
 	userIds: string[],
 	gameId: string,
 	config?: AirshipGameTransferConfig,
-) => Result<undefined, string>;
+) => Result<TransferResult, string>;
 export type ServerBridgeApiTransferGroupToServer = (
 	userIds: string[],
 	serverId: string,
 	config?: AirshipServerTransferConfig,
-) => Result<undefined, string>;
+) => Result<TransferResult, string>;
 export type ServerBridgeApiTransferGroupToMatchingServer = (
 	userIds: string[],
 	config: AirshipMatchingServerTransferConfig,
-) => Result<undefined, string>;
+) => Result<TransferResult, string>;
 export type ServerBridgeApiTransferGroupToPlayer = (
 	userIds: string[],
 	targetUserId: string,
 	config?: AirshipPlayerTransferConfig,
-) => Result<undefined, string>;
+) => Result<TransferResult, string>;
 
 @Service({})
 export class ProtectedTransferService {
 	constructor() {
-		contextbridge.callback<ServerBridgeApiCreateServer>(TransferServiceBridgeTopics.CreateServer, (_, config) => {
-			const [success, result] = this.CreateServer(config).await();
-			if (!success) {
-				return { success: false, error: "Unable to complete request." };
-			}
-			return result;
-		});
-
 		contextbridge.callback<ServerBridgeApiTransferGroupToGame>(
 			TransferServiceBridgeTopics.TransferGroupToGame,
 			(_, players, gameId, config) => {
@@ -109,35 +98,6 @@ export class ProtectedTransferService {
 		);
 	}
 
-	public async CreateServer(config?: AirshipServerConfig): Promise<ReturnType<ServerBridgeApiCreateServer>> {
-		const res = InternalHttpManager.PostAsync(
-			`${AirshipUrl.GameCoordinator}/servers/create`,
-			EncodeJSON({
-				sceneId: config?.sceneId,
-				region: config?.region,
-				accessMode: config?.accessMode,
-				allowedUids: config?.allowedUserIds,
-				maxPlayers: config?.maxPlayers,
-				tags: config?.tags,
-			}),
-		);
-
-		if (!res.success && res.statusCode > 299) {
-			warn(`Unable to create server. Status Code:  ${res.statusCode}.\n`, res.data);
-			return {
-				success: false,
-				error: res.error,
-			};
-		}
-
-		return {
-			success: true,
-			data: DecodeJSON<{
-				serverId: string;
-			}>(res.data),
-		};
-	}
-
 	public async TransferGroupToGame(
 		players: readonly (string | Player)[],
 		gameId: string,
@@ -164,7 +124,7 @@ export class ProtectedTransferService {
 
 		return {
 			success: true,
-			data: undefined,
+			data: DecodeJSON(res.data),
 		};
 	}
 
@@ -193,7 +153,7 @@ export class ProtectedTransferService {
 
 		return {
 			success: true,
-			data: undefined,
+			data: DecodeJSON(res.data),
 		};
 	}
 
@@ -225,7 +185,7 @@ export class ProtectedTransferService {
 
 		return {
 			success: true,
-			data: undefined,
+			data: DecodeJSON(res.data),
 		};
 	}
 
@@ -254,7 +214,7 @@ export class ProtectedTransferService {
 
 		return {
 			success: true,
-			data: undefined,
+			data: DecodeJSON(res.data),
 		};
 	}
 }
