@@ -55,8 +55,8 @@ export class AirshipUserService {
 	}
 
 	/**
-	 * Gets multiple users at once. This function will not succeed if it is unable to
-	 * resolve all provided ids into a user.
+	 * Gets multiple users at once. When the strict parameter is set to true (default is false), the function will
+	 * error if it is unable to resolve all userIds.
 	 * @param userIds The userIds to get.
 	 * @param strict Specifies if all users must be found. If set to false, the function will
 	 * succeed even if not all userIds resolve to a user.
@@ -92,7 +92,7 @@ export class AirshipUserService {
 		userIds: string[],
 	): Promise<{ [userId: string]: AirshipPlayerLocation | undefined }> {
 		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiGetUserLocationsById>(
-			UserServiceBridgeTopics.GetUsersById,
+			UserServiceBridgeTopics.GetUserLocationsById,
 			LuauContext.Protected,
 			userIds,
 		);
