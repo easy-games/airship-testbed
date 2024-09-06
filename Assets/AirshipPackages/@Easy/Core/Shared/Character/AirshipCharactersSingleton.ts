@@ -278,12 +278,17 @@ export class AirshipCharactersSingleton {
 		};
 	}
 
-	public SpawnNonPlayerCharacter(position: Vector3): Character {
+	public SpawnNonPlayerCharacter(
+		position: Vector3,
+		config?: {
+			customCharacterTemplate?: GameObject;
+		},
+	): Character {
 		if (!Game.IsServer()) {
 			error("Player.SpawnCharacter must be called on the server.");
 		}
 
-		const go = Object.Instantiate(this.GetDefaultCharacterTemplate());
+		const go = Object.Instantiate(config?.customCharacterTemplate ?? this.GetDefaultCharacterTemplate());
 		go.name = `Character`;
 		const characterComponent = go.GetAirshipComponent<Character>();
 		if (!characterComponent) {
