@@ -357,6 +357,10 @@
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/BlockedUser.ts",
 			"name": "BlockedUser"
 		},
+		"AirshipPackages/@Easy/Core/Client/ProtectedControllers/Transfer/TransferToast@TransferToast": {
+			"assetPath": "AirshipPackages/@Easy/Core/Client/ProtectedControllers/Transfer/TransferToast.ts",
+			"name": "TransferToast"
+		},
 		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/SocialNotificationComponent@SocialNotificationComponent": {
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/SocialNotificationComponent.ts",
 			"name": "SocialNotificationComponent"

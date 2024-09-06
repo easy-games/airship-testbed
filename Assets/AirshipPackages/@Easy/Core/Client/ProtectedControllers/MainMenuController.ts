@@ -1,11 +1,13 @@
+import { Asset } from "@Easy/Core/Shared/Asset";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
-import { Controller } from "@Easy/Core/Shared/Flamework";
+import { Controller, Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import HomePageComponent from "@Easy/Core/Shared/MainMenu/Components/HomePageComponent";
 import GameGeneralPage from "@Easy/Core/Shared/MainMenu/Components/Settings/General/GameGeneralPage";
 import { Mouse } from "@Easy/Core/Shared/UserInput";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
+import inspect from "@Easy/Core/Shared/Util/Inspect";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { SetTimeout } from "@Easy/Core/Shared/Util/Timer";
 import AvatarViewComponent from "../../Shared/Avatar/AvatarViewComponent";
@@ -15,6 +17,8 @@ import DevelopMenuPage from "./Develop/DevelopMenuPage";
 import { MainMenuBeforePageChangeSignal } from "./MainMenuBeforePageChangeSignal";
 import { MainMenuPageChangeSignal } from "./MainMenuPageChangeSignal";
 import { MainMenuPageType } from "./MainMenuPageName";
+import { SocketController } from "./Socket/SocketController";
+import TransferToast from "./Transfer/TransferToast";
 
 @Controller()
 export class MainMenuController {
@@ -40,6 +44,8 @@ export class MainMenuController {
 	private socialIsVisible = true;
 
 	private gameCursorLocked = false;
+
+	public activeTransferToast: TransferToast | undefined;
 
 	constructor() {
 		const mainMenuPrefab = AssetBridge.Instance.LoadAsset(
@@ -205,6 +211,25 @@ export class MainMenuController {
 			// 	this.Disconnect();
 			// });
 		}
+
+		const socketController = Dependency<SocketController>();
+		socketController.On<{
+			game: {
+				name: string;
+			};
+		}>("game-coordinator/server-transfer-pending", (data) => {
+			print("pending transfer: " + inspect(data));
+
+			if (this.activeTransferToast) {
+				Object.Destroy(this.activeTransferToast.gameObject);
+				this.activeTransferToast = undefined;
+			}
+
+			const toast = Object.Instantiate(
+				Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/UI/TransferPendingToast.prefab"),
+			).GetAirshipComponent<TransferToast>()!;
+			toast.gameName.text = data.game.name;
+		});
 	}
 
 	public RouteToPage(pageType: MainMenuPageType, force = false, noTween = false, params?: unknown) {
