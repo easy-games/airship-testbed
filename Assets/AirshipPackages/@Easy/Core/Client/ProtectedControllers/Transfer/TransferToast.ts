@@ -13,7 +13,7 @@ export default class TransferToast extends AirshipBehaviour {
 		const rect = this.transform as RectTransform;
 		rect.anchoredPosition = new Vector2(rect.anchoredPosition.x, 0);
 
-		NativeTween.CanvasGroupAlpha(this.canvasGroup, 1, 1).SetEaseQuadOut();
+		NativeTween.CanvasGroupAlpha(this.canvasGroup, 1, 0.7).SetEaseQuadOut();
 		NativeTween.AnchoredPositionY(rect, -86, 1).SetEaseQuadOut();
 
 		this.bin.Add(

@@ -220,16 +220,22 @@ export class MainMenuController {
 		}>("game-coordinator/server-transfer-pending", (data) => {
 			print("pending transfer: " + inspect(data));
 
-			if (this.activeTransferToast) {
-				Object.Destroy(this.activeTransferToast.gameObject);
-				this.activeTransferToast = undefined;
-			}
-
-			const toast = Object.Instantiate(
-				Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/UI/TransferPendingToast.prefab"),
-			).GetAirshipComponent<TransferToast>()!;
-			toast.gameName.text = data.game.name;
+			this.ShowTransferPendingToast(data.game.name);
 		});
+	}
+
+	private ShowTransferPendingToast(gameName: string): void {
+		if (this.activeTransferToast) {
+			Object.Destroy(this.activeTransferToast.gameObject);
+			this.activeTransferToast = undefined;
+		}
+
+		const toast = Object.Instantiate(
+			Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/UI/TransferPendingToast.prefab"),
+			this.refs.GetValue<GameObject>("UI", "ToastContainer").transform,
+		).GetAirshipComponent<TransferToast>()!;
+		toast.gameName.text = gameName.upper();
+		this.activeTransferToast = toast;
 	}
 
 	public RouteToPage(pageType: MainMenuPageType, force = false, noTween = false, params?: unknown) {
