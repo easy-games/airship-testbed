@@ -108,6 +108,7 @@ export class ProtectedServerManagerService {
 				allowedUids: config?.allowedUserIds,
 				maxPlayers: config?.maxPlayers,
 				tags: config?.tags,
+				gameConfig: config?.gameConfig,
 			}),
 		);
 

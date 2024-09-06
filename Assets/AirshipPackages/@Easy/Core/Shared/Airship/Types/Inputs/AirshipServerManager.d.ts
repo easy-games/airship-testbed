@@ -22,4 +22,6 @@ export interface AirshipServerConfig {
 	allowedUserIds?: string[];
 	/** An array of tags to associate with this server. You can have up to 100 tags. */
 	tags?: string[];
+	/** An object representing game configuration to be passed to the created server. */
+	gameConfig?: object;
 }
