@@ -9,6 +9,7 @@ import { AirshipPartyService } from "../Server/Services/Airship/Party/AirshipPar
 import { AirshipPlatformInventoryService } from "../Server/Services/Airship/PlatformInventory/AirshipPlatformInventoryService";
 import { AirshipServerManagerService } from "../Server/Services/Airship/ServerManager/AirshipServerManagerService";
 import { AirshipTransferService } from "../Server/Services/Airship/Transfer/AirshipTransferService";
+import { AirshipUserService } from "../Server/Services/Airship/User/AirshipUserService";
 import { AirshipAvatarSingleton } from "./Avatar/AirshipAvatarSingleton";
 import { AirshipCharacterCameraSingleton } from "./Camera/AirshipCharacterCameraSingleton";
 import { AirshipCharactersSingleton } from "./Character/AirshipCharactersSingleton";
@@ -91,6 +92,10 @@ export namespace Platform {
 		 * other game servers.
 		 */
 		export let ServerManager = undefined! as AirshipServerManagerService;
+		/**
+		 * Provides access to user information.
+		 */
+		export let User = undefined! as AirshipUserService;
 	}
 
 	/**

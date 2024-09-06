@@ -5,6 +5,7 @@ import {
 	ServerBridgeApiGetUsersById,
 	UserServiceBridgeTopics,
 } from "@Easy/Core/Server/ProtectedServices/Airship/User/UserService";
+import { Platform } from "@Easy/Core/Shared/Airship";
 import { AirshipPlayerLocation, PublicUser } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipUser";
 import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/ContextBridgeUtil";
 import { Service } from "@Easy/Core/Shared/Flamework";
@@ -17,6 +18,8 @@ import { Game } from "@Easy/Core/Shared/Game";
 export class AirshipUserService {
 	constructor() {
 		if (!Game.IsServer()) return;
+
+		Platform.Server.User = this;
 	}
 
 	protected OnStart(): void {}

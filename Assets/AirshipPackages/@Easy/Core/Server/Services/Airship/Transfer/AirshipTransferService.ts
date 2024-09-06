@@ -40,6 +40,8 @@ export class AirshipTransferService {
 	public transferPlayersOnShutdown = true;
 
 	constructor() {
+		if (!Game.IsServer()) return;
+
 		Platform.Server.Transfer = this;
 	}
 
