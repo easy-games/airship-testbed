@@ -1,10 +1,13 @@
 import {
+	ServerBridgeApiAddAllowedPlayer,
 	ServerBridgeApiCreateServer,
 	ServerBridgeApiDelistServer,
+	ServerBridgeApiGetAllowedPlayers,
 	ServerBridgeApiGetGameConfig,
 	ServerBridgeApiGetServerList,
 	ServerBridgeApiGetServers,
 	ServerBridgeApiListServer,
+	ServerBridgeApiRemoveAllowedPlayer,
 	ServerBridgeApiSetAccessMode,
 	ServerManagerServiceBridgeTopics,
 } from "@Easy/Core/Server/ProtectedServices/Airship/ServerManager/ProtectedServerManagerService";
@@ -142,6 +145,52 @@ export class AirshipServerManagerService {
 		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiGetGameConfig<T>>(
 			ServerManagerServiceBridgeTopics.GetGameConfig,
 			LuauContext.Protected,
+		);
+		if (!result.success) throw result.error;
+		return result.data;
+	}
+
+	/**
+	 * Gets the user IDs of players that are allowed on this server. An empty array indicates that all
+	 * players are allowed.
+	 * @returns The userIds of all players allowed to join this server.
+	 */
+	public async GetAllowedPlayers(): Promise<string[]> {
+		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiGetAllowedPlayers>(
+			ServerManagerServiceBridgeTopics.GetAllowedPlayers,
+			LuauContext.Protected,
+		);
+		if (!result.success) throw result.error;
+		return result.data;
+	}
+
+	/**
+	 * Adds a userId to the allowed player list. You can get the current allowed players list with
+	 * {@link AirshipServerManager.GetAllowedPlayers}.
+	 * @param userId The userId of the player.
+	 * @returns True if the userId was added, false otherwise.
+	 */
+	public async AddAllowedPlayer(userId: string): Promise<boolean> {
+		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiAddAllowedPlayer>(
+			ServerManagerServiceBridgeTopics.AddAllowedPlayer,
+			LuauContext.Protected,
+			userId,
+		);
+		if (!result.success) throw result.error;
+		return result.data;
+	}
+
+	/**
+	 * Removes a userId from the allowed player list. If the allowed players list is empty, all players will
+	 * be allowed to join. You can get the current allowed players list with {@link AirshipServerManager.GetAllowedPlayers}.
+	 * @param userId The userId of the player
+	 * @returns True if the userId was removed, false otherwise.
+	 */
+	public async RemoveAllowedPlayer(userId: string): Promise<boolean> {
+		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiRemoveAllowedPlayer>(
+			ServerManagerServiceBridgeTopics.RemoveAllowedPlayer,
+			LuauContext.Protected,
+			userId,
 		);
 		if (!result.success) throw result.error;
 		return result.data;

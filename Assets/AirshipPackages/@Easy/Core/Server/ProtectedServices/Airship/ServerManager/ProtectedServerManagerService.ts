@@ -19,6 +19,9 @@ export const enum ServerManagerServiceBridgeTopics {
 	GetServerList = "ServerManagerService:GetServerList",
 	SetAccessMode = "ServerManagerService:SetAccessMode",
 	GetGameConfig = "ServerManagerService:GetGameConfig",
+	GetAllowedPlayers = "ServerManagerService:GetAllowedPlayers",
+	AddAllowedPlayer = "ServerManagerService:AddAllowedPlayer",
+	RemoveAllowedPlayer = "ServerManagerService:RemoveAllowedPlayer",
 }
 
 export type ServerBridgeApiCreateServer = (config?: AirshipServerConfig) => Result<AirshipServerData, string>;
@@ -31,6 +34,9 @@ export type ServerBridgeApiDelistServer = () => Result<boolean, string>;
 export type ServerBridgeApiGetServerList = (page?: number) => Result<{ entries: AirshipServerData[] }, string>;
 export type ServerBridgeApiSetAccessMode = (mode: AirshipServerAccessMode) => Result<boolean, string>;
 export type ServerBridgeApiGetGameConfig<T> = () => Result<T | undefined, string>;
+export type ServerBridgeApiGetAllowedPlayers = () => Result<string[], string>;
+export type ServerBridgeApiAddAllowedPlayer = (userId: string) => Result<boolean, string>;
+export type ServerBridgeApiRemoveAllowedPlayer = (userId: string) => Result<boolean, string>;
 
 @Service({})
 export class ProtectedServerManagerService {
@@ -99,10 +105,43 @@ export class ProtectedServerManagerService {
 			},
 		);
 
-		contextbridge.callback<ServerBridgeApiGetGameConfig<any>>(
+		contextbridge.callback<ServerBridgeApiGetGameConfig<unknown>>(
 			ServerManagerServiceBridgeTopics.GetGameConfig,
 			(_) => {
-				const [success, result] = this.GetGameConfig<any>().await();
+				const [success, result] = this.GetGameConfig().await();
+				if (!success) {
+					return { success: false, error: "Unable to complete request." };
+				}
+				return result;
+			},
+		);
+
+		contextbridge.callback<ServerBridgeApiGetAllowedPlayers>(
+			ServerManagerServiceBridgeTopics.GetAllowedPlayers,
+			(_) => {
+				const [success, result] = this.GetAllowedPlayers().await();
+				if (!success) {
+					return { success: false, error: "Unable to complete request." };
+				}
+				return result;
+			},
+		);
+
+		contextbridge.callback<ServerBridgeApiAddAllowedPlayer>(
+			ServerManagerServiceBridgeTopics.AddAllowedPlayer,
+			(_, userId) => {
+				const [success, result] = this.AddAllowedPlayer(userId).await();
+				if (!success) {
+					return { success: false, error: "Unable to complete request." };
+				}
+				return result;
+			},
+		);
+
+		contextbridge.callback<ServerBridgeApiRemoveAllowedPlayer>(
+			ServerManagerServiceBridgeTopics.RemoveAllowedPlayer,
+			(_, userId) => {
+				const [success, result] = this.RemoveAllowedPlayer(userId).await();
 				if (!success) {
 					return { success: false, error: "Unable to complete request." };
 				}
@@ -218,19 +257,55 @@ export class ProtectedServerManagerService {
 		return { success: true, data: res };
 	}
 
-	public async GetGameConfig<T>() {
+	public async GetGameConfig<T>(): Promise<ReturnType<ServerBridgeApiGetGameConfig<T>>> {
 		const serverBootstrap = GameObject.Find("ServerBootstrap").GetComponent<ServerBootstrap>()!;
 		const gs = serverBootstrap.GetGameServer();
 		try {
 			const gameConfigString = gs?.ObjectMeta.Annotations.Get("GameConfig");
-			if (!gameConfigString) return undefined;
+			if (!gameConfigString)
+				return {
+					success: true,
+					data: undefined,
+				};
 
 			const gameConfig = DecodeJSON(gameConfigString);
-			return gameConfig as T;
+			return {
+				success: true,
+				data: gameConfig as T,
+			};
 		} catch (err) {
-			return undefined;
+			return {
+				success: true,
+				data: undefined,
+			};
 		}
 	}
 
-	protected OnStart(): void {}
+	public async GetAllowedPlayers(): Promise<ReturnType<ServerBridgeApiGetAllowedPlayers>> {
+		const players = await AgonesCore.Agones.GetListValues("allowedPlayers");
+		const userIds = [];
+		for (let i = 0; i < players.Length; i++) {
+			userIds.push(players.GetValue(i));
+		}
+		return {
+			success: true,
+			data: userIds,
+		};
+	}
+
+	public async AddAllowedPlayer(userId: string): Promise<ReturnType<ServerBridgeApiAddAllowedPlayer>> {
+		const result = await AgonesCore.Agones.AppendListValue("allowedPlayers", userId);
+		return {
+			success: true,
+			data: result,
+		};
+	}
+
+	public async RemoveAllowedPlayer(userId: string): Promise<ReturnType<ServerBridgeApiRemoveAllowedPlayer>> {
+		const result = await AgonesCore.Agones.DeleteListValue("allowedPlayers", userId);
+		return {
+			success: true,
+			data: result,
+		};
+	}
 }
