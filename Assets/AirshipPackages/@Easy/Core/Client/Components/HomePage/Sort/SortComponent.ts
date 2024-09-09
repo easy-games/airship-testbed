@@ -99,6 +99,22 @@ export default class SortComponent extends AirshipBehaviour {
 		return gameComponents;
 	}
 
+	/**
+	 * Updates any matching game tiles with new information.
+	 * This will not create any new data.
+	 *
+	 * @param games
+	 */
+	public UpdateGames(games: GameDto[]): void {
+		for (let go of this.content) {
+			const gameComp = go.gameObject.GetAirshipComponent<HomePageGameComponent>();
+			const dto = games.find((x) => x.id === gameComp?.gameDto.id);
+			if (dto) {
+				gameComp?.UpdateGameDto(dto);
+			}
+		}
+	}
+
 	public SetTitle(title: string) {
 		this.titleText.GetComponent<TMP_Text>()!.text = title;
 	}

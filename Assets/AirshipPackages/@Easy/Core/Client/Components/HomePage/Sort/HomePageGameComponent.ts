@@ -80,16 +80,8 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 	public Init(gameDto: GameDto, index: number) {
 		this.gameDto = gameDto;
 		this.index = index;
-		this.titleText.text = gameDto.name;
-		if (gameDto.liveStats?.playerCount !== undefined && gameDto.liveStats.playerCount > 0) {
-			this.playerCountText.text = gameDto.liveStats.playerCount + "";
-			this.playerCountWrapper.SetActive(true);
-			this.playsWrapper.SetActive(false);
-		} else {
-			this.playsText.text = gameDto.plays + "";
-			this.playsWrapper.SetActive(true);
-			this.playerCountWrapper.SetActive(false);
-		}
+
+		this.UpdateGameDto(gameDto);
 
 		{
 			// Game image
@@ -113,13 +105,6 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 				downloadConn.Disconnect();
 			});
 		}
-
-		const timeUpdatedSeconds = DateParser.FromISO(gameDto.lastVersionUpdate!);
-		const timeDiff = os.time() - timeUpdatedSeconds;
-		const timeString = TimeUtil.FormatTimeAgo(timeDiff, {
-			includeAgo: true,
-		});
-		this.authorText.text = `${gameDto.organization.name} • ${timeString}`;
 
 		{
 			// Org image
@@ -154,6 +139,27 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 		});
 
 		this.FadeIn();
+	}
+
+	public UpdateGameDto(gameDto: GameDto): void {
+		this.titleText.text = gameDto.name;
+
+		if (gameDto.liveStats?.playerCount !== undefined && gameDto.liveStats.playerCount > 0) {
+			this.playerCountText.text = gameDto.liveStats.playerCount + "";
+			this.playerCountWrapper.SetActive(true);
+			this.playsWrapper.SetActive(false);
+		} else {
+			this.playsText.text = gameDto.plays + "";
+			this.playsWrapper.SetActive(true);
+			this.playerCountWrapper.SetActive(false);
+		}
+
+		const timeUpdatedSeconds = DateParser.FromISO(gameDto.lastVersionUpdate!);
+		const timeDiff = os.time() - timeUpdatedSeconds;
+		const timeString = TimeUtil.FormatTimeAgo(timeDiff, {
+			includeAgo: true,
+		});
+		this.authorText.text = `${gameDto.organization.name} • ${timeString}`;
 	}
 
 	public HasAdminPermissions(): boolean {

@@ -1,10 +1,10 @@
+import { MainMenuController } from "@Easy/Core/Client/ProtectedControllers/MainMenuController";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import SearchSingleton from "@Easy/Core/Shared/MainMenu/Components/Search/SearchSingleton";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
-import { SetTimeout } from "@Easy/Core/Shared/Util/Timer";
-import { DecodeJSON } from "@Easy/Core/Shared/json";
+import { SetInterval, SetTimeout } from "@Easy/Core/Shared/Util/Timer";
 import { GamesDto } from "../../../Client/Components/HomePage/API/GamesAPI";
 import SortComponent from "../../../Client/Components/HomePage/Sort/SortComponent";
 import { SortId } from "../../../Client/Components/HomePage/Sort/SortId";
@@ -32,8 +32,16 @@ export default class HomePageComponent extends MainMenuPageComponent {
 		this.CreateSort(SortId.Popular, "Popular");
 		Bridge.UpdateLayout(this.scrollRect.transform, true);
 		task.spawn(() => {
-			this.FetchGames();
+			this.FetchGames(false);
 		});
+
+		this.bin.Add(
+			SetInterval(10, () => {
+				if (Dependency<MainMenuController>().IsOpen()) {
+					this.FetchGames(true);
+				}
+			}),
+		);
 
 		// const platform = AirshipPlatformUtil.GetLocalPlatform();
 		// if (platform === AirshipPlatform.Windows) {
@@ -70,20 +78,19 @@ export default class HomePageComponent extends MainMenuPageComponent {
 		const go = Object.Instantiate(this.spacerPrefab, this.mainContent);
 	}
 
-	public FetchGames(): void {
+	public FetchGames(updateOnly: boolean): void {
 		const res = InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/games");
 		if (!res.success) {
 			// warn("Failed to fetch games. Retrying in 1s..");
 			this.bin.Add(
 				SetTimeout(1, () => {
-					this.FetchGames();
+					this.FetchGames(updateOnly);
 				}),
 			);
 			return;
 		}
 
-		const data = DecodeJSON<GamesDto>(res.data);
-		// print("Games data: " + inspect(data));
+		const data = json.decode<GamesDto>(res.data);
 
 		let sorts: SortId[];
 		sorts = ObjectUtils.keys(this.sorts);
@@ -108,7 +115,12 @@ export default class HomePageComponent extends MainMenuPageComponent {
 				return true;
 			});
 
-			sortComponent.SetGames(games, indexCounter);
+			if (updateOnly) {
+				sortComponent.UpdateGames(games);
+			} else {
+				sortComponent.SetGames(games, indexCounter);
+			}
+
 			indexCounter += games.size();
 		}
 
