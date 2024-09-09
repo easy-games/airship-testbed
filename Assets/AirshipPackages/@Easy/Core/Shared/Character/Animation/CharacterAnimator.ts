@@ -24,8 +24,6 @@ export default class CharacterAnimator extends AirshipBehaviour {
 
 	protected viewModelEnabled = false;
 
-	private footstepAudioBundle: AudioClipBundle | undefined;
-
 	private Log(message: string) {
 		// print("Animator " + this.character.id + ": " + message);
 	}
@@ -37,15 +35,6 @@ export default class CharacterAnimator extends AirshipBehaviour {
 		this.character.WaitForInit();
 
 		if (Game.IsClient()) {
-			//AUDIO
-			this.footstepAudioBundle = new AudioClipBundle([]);
-			this.footstepAudioBundle.volumeScale = this.baseFootstepVolumeScale;
-			this.footstepAudioBundle.soundOptions.maxDistance = 15;
-			this.character.WaitForInit();
-			this.footstepAudioBundle.spacialMode = this.character?.IsLocalCharacter()
-				? AudioBundleSpacialMode.GLOBAL
-				: AudioBundleSpacialMode.SPACIAL;
-
 			//ANIMATIONS
 			this.bin.Add(
 				this.character.onHealthChanged.Connect((newHealth, oldHealth) => {
@@ -54,8 +43,6 @@ export default class CharacterAnimator extends AirshipBehaviour {
 					}
 				}),
 			);
-
-			//VFX
 		}
 
 		// todo: is this needed?
