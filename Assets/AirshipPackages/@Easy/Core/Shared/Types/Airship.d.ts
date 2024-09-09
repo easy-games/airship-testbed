@@ -592,6 +592,7 @@ interface CharacterAnimationHelper extends Component {
 	SetState(newState: CharacterState, force = false, noRootLayerFade = false);
 	SetVelocity(vel: Vector3);
 	SetGrounded(grounded: boolean);
+	GetPlaybackSpeed(): number;
 	/**
 	 * Under the hood, we call `animator.CrossFadeInFixedTime()`
 	 *
