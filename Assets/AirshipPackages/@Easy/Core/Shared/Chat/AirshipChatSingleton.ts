@@ -48,7 +48,7 @@ export class AirshipChatSingleton {
 	 * @param val Whether or not chat should be visible.
 	 */
 	public SetUIEnabled(val: boolean): void {
-		if (!Game.IsClient()) error("Cannot set chat UI enabled on server.");
+		if (!Game.IsClient()) return;
 
 		contextbridge.invoke<(val: boolean) => void>("ClientChatSingleton:SetUIEnabled", LuauContext.Protected, val);
 	}
