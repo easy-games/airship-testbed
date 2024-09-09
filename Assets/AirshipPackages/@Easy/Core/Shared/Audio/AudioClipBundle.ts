@@ -20,26 +20,36 @@ export class AudioClipBundle {
 	public spacialMode: AudioBundleSpacialMode = AudioBundleSpacialMode.SPACIAL;
 	public spacialPosition = Vector3.zero;
 	public volumeScale = 1;
-	public useFullPath = false;
 
 	public soundOptions: PlaySoundConfig = { volumeScale: 1, loop: false };
-	private clipPaths: string[];
+	private clips: AudioClip[];
 	private possibleRandomIndex: number[] = [];
 	private lastIndexPlayed = -1;
 	private lastAudioSource: AudioSource | undefined;
-
-	public constructor(clipPaths: string[]) {
-		this.clipPaths = clipPaths;
-		this.RefreshPossibleRandomIndex();
-	}
-
-	public UpdatePaths(newPaths: string[]) {
-		this.Stop();
-		this.clipPaths = newPaths;
-		this.RefreshPossibleRandomIndex();
-	}
-
 	private tweeningStop = false;
+
+	public constructor(playMode: AudioBundlePlayMode, clips: AudioClip[]) {
+		this.playMode = playMode;
+		this.clips = clips;
+		this.clips.forEach((clip) => {
+			print("CLIP: " + clip.name);
+		});
+		this.RefreshPossibleRandomIndex();
+	}
+
+	public UpdateClips(clips: AudioClip[]) {
+		this.Stop();
+		this.clips = clips;
+		this.RefreshPossibleRandomIndex();
+	}
+
+	public UpdateSpacialPosition(newPosition: Vector3) {
+		if (this.lastAudioSource) {
+			this.lastAudioSource.transform.position = newPosition;
+		}
+		this.spacialPosition = newPosition;
+	}
+
 	public Stop(fadeOutDuration = 0) {
 		if (this.lastAudioSource) {
 			if (fadeOutDuration > 0) {
@@ -60,7 +70,6 @@ export class AudioClipBundle {
 				//HARD STOP
 				this.tweeningStop = false;
 				this.lastAudioSource.Stop();
-				PoolManager.ReleaseObject(this.lastAudioSource.gameObject);
 				this.lastAudioSource = undefined;
 			}
 		}
@@ -74,25 +83,13 @@ export class AudioClipBundle {
 		this.lastIndexPlayed = index;
 		this.soundOptions.volumeScale = this.volumeScale;
 		if (this.spacialMode === AudioBundleSpacialMode.SPACIAL) {
-			if (this.useFullPath) {
-				this.lastAudioSource = AudioManager.PlayFullPathAtPosition(
-					this.clipPaths[index],
-					this.spacialPosition,
-					this.soundOptions,
-				);
-			} else {
-				this.lastAudioSource = AudioManager.PlayAtPosition(
-					this.clipPaths[index],
-					this.spacialPosition,
-					this.soundOptions,
-				);
-			}
+			this.lastAudioSource = AudioManager.PlayClipAtPosition(
+				this.clips[index],
+				this.spacialPosition,
+				this.soundOptions,
+			);
 		} else {
-			if (this.useFullPath) {
-				this.lastAudioSource = AudioManager.PlayFullPathGlobal(this.clipPaths[index], this.soundOptions);
-			} else {
-				this.lastAudioSource = AudioManager.PlayGlobal(this.clipPaths[index], this.soundOptions);
-			}
+			this.lastAudioSource = AudioManager.PlayClipGlobal(this.clips[index], this.soundOptions);
 		}
 
 		if (fadeInDuration > 0 && this.lastAudioSource) {
@@ -100,6 +97,12 @@ export class AudioClipBundle {
 			this.lastAudioSource.volume = 0;
 			NativeTween.AudioSourceVolume(this.lastAudioSource, volume, fadeInDuration);
 		}
+	}
+
+	public PlayNextAt(position: Vector3) {
+		this.spacialMode = AudioBundleSpacialMode.SPACIAL;
+		this.spacialPosition = position;
+		this.PlayNext();
 	}
 
 	public PlayNext() {
@@ -118,7 +121,7 @@ export class AudioClipBundle {
 		}
 
 		//LOOP & RANDOM TO LOOP
-		const arraySize = this.clipPaths.size();
+		const arraySize = this.clips.size();
 		const lastIndex = arraySize - 1;
 		if (this.playMode === AudioBundlePlayMode.LOOP) {
 			this.soundOptions.loop = true;
@@ -145,18 +148,20 @@ export class AudioClipBundle {
 			randomIndex = this.GetRandomIndex(lastIndex);
 			this.PlayManual(randomIndex);
 
-			//print("Playing random before loop: " + randomIndex);
-			if (this.lastAudioSource?.clip) {
-				const delayLength = math.max(0.1, this.lastAudioSource.clip.length - 0.15);
+			print("Playing random before loop: " + randomIndex);
+			if (this.lastAudioSource) {
+				const delayLength = math.max(0.1, this.clips[this.lastIndexPlayed].length - 0.15);
+				print("Delaying: " + delayLength);
 				task.delay(delayLength, () => {
 					if (this.lastAudioSource && this.lastAudioSource.isPlaying) {
-						//print("Transition to Looping Audio" + lastIndex + ": " + this.clipPaths[lastIndex]);
+						print("Transition to Looping Audio" + lastIndex + ": " + this.clips[lastIndex]);
 						//Fade out current sound
 						this.Stop(0.35);
-						//Play a Loop
-						this.soundOptions.loop = true;
-						this.PlayManual(lastIndex, 0.15);
 					}
+					//Play a Loop
+					print("Playing new loop");
+					this.soundOptions.loop = true;
+					this.PlayManual(lastIndex, 0.15);
 				});
 			}
 		}
@@ -164,7 +169,7 @@ export class AudioClipBundle {
 
 	private StepIndex() {
 		this.lastIndexPlayed++;
-		if (this.lastIndexPlayed >= this.clipPaths.size()) {
+		if (this.lastIndexPlayed >= this.clips.size()) {
 			this.lastIndexPlayed = 0;
 		}
 	}
@@ -172,7 +177,7 @@ export class AudioClipBundle {
 	private RefreshPossibleRandomIndex() {
 		this.possibleRandomIndex.clear();
 		let randomStep = 0;
-		for (let i = 0; i < this.clipPaths.size(); i++) {
+		for (let i = 0; i < this.clips.size(); i++) {
 			if (i !== this.lastIndexPlayed) {
 				this.possibleRandomIndex[randomStep] = i;
 				randomStep++;
