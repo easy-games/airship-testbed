@@ -23,8 +23,9 @@ export class TransferController {
 			TransferManager.Instance.ConnectToServer(data.gameServer.ip, data.gameServer.port);
 
 			try {
-				// avoiding version bump
+				// supporting old versions of player by try catching this
 				CrossSceneState.ServerTransferData.gameId = data.gameId;
+				// CrossSceneState.ServerTransferData.loadingImageUrl = "";
 			} catch (err) {}
 		});
 	}

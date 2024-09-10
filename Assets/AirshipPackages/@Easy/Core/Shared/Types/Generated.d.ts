@@ -25813,7 +25813,7 @@ interface CoreLoadingScreen extends BundleLoadingScreen {
     disconnectButton: Button;
     continueButton: Button;
     spinner: GameObject;
-    gameImage: Image;
+    gameImage: RawImage;
     editorGameImageColor: Color;
     voiceChatCard: RectTransform;
     voiceChatToggle: InternalToggle;
@@ -25825,6 +25825,18 @@ interface CoreLoadingScreen extends BundleLoadingScreen {
     Close(): void;
     SetProgress(text: string, percent: number): void;
     SetTotalDownloadSize(sizeBytes: number): void;
+
+
+}
+    
+interface RawImage extends MaskableGraphic {
+    readonly mainTexture: Texture;
+    texture: Texture;
+    uvRect: Rect;
+
+
+
+    SetNativeSize(): void;
 
 
 }
@@ -25856,6 +25868,7 @@ interface InternalToggleConstructor {
 declare const InternalToggle: InternalToggleConstructor;
     
 interface CoreLoadingScreenConstructor {
+    gameImageCache: CSDictionary<string, Texture2D>;
 
 
     new(): CoreLoadingScreen;
@@ -33522,7 +33535,6 @@ interface CharacterJointConstructor {
 declare const CharacterJoint: CharacterJointConstructor;
     
 interface ServerConsole extends MonoBehaviour {
-    RemoteLogging: boolean;
 
 
 
@@ -33542,18 +33554,6 @@ interface ServerConsoleConstructor {
 
 }
 declare const ServerConsole: ServerConsoleConstructor;
-    
-interface RawImage extends MaskableGraphic {
-    readonly mainTexture: Texture;
-    texture: Texture;
-    uvRect: Rect;
-
-
-
-    SetNativeSize(): void;
-
-
-}
     
 interface Application {
 
@@ -36395,6 +36395,8 @@ interface MainMenuLoadingScreen extends BundleLoadingScreen {
     errorWrapper: GameObject;
     errorText: TMP_Text;
     sceneManager: MainMenuSceneManager;
+    mainContent: RectTransform;
+    mainContentCanvasGroup: CanvasGroup;
 
 
 
@@ -37463,6 +37465,7 @@ interface ServerTransferData {
     address: string;
     port: number;
     gameId: string;
+    loadingImageUrl: string;
 
 
 
@@ -43103,14 +43106,14 @@ interface CharacterMovementData extends MonoBehaviour {
     terminalVelocity: number;
     minimumVelocity: number;
     useMinimumVelocityInAir: boolean;
-    maxStepUpHeight: number;
-    stepUpRampDistance: number;
     drag: number;
     airDragMultiplier: number;
     airSpeedMultiplier: number;
     detectStepUps: boolean;
     alwaysStepUp: boolean;
     assistedLedgeJump: boolean;
+    maxStepUpHeight: number;
+    stepUpRampDistance: number;
     detectSlopes: boolean;
     slopeForce: number;
     minSlopeDelta: number;
