@@ -11,6 +11,7 @@ import { AuthController } from "../Auth/AuthController";
 export class SocketController {
 	private onEvent = new Signal<[eventName: string, data: string]>();
 	public onSocketConnectionChanged = new Signal<[connected: boolean]>();
+	public doReconnect = true;
 
 	constructor(private readonly authController: AuthController) {}
 
@@ -48,7 +49,14 @@ export class SocketController {
 		SocketManager.Instance.OnDisconnected((reason) => {
 			CoreLogger.Warn("Disconnected from socket: " + reason);
 			this.onSocketConnectionChanged.Fire(false);
-			this.Connect();
+
+			if (this.doReconnect) {
+				this.Connect();
+			}
+		});
+
+		this.On("new-connection-created", (data) => {
+			this.doReconnect = false;
 		});
 	}
 
@@ -75,6 +83,7 @@ export class SocketController {
 
 	public Connect(): void {
 		if (Game.IsEditor() && !Game.IsInternal()) return;
+		this.doReconnect = true;
 		let connected = SocketManager.ConnectAsyncInternal();
 		this.onSocketConnectionChanged.Fire(connected);
 	}
