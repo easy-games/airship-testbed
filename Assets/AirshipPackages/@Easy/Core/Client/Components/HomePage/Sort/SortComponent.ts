@@ -12,6 +12,7 @@ export default class SortComponent extends AirshipBehaviour {
 	public pageScrollRect?: ScrollRect;
 	public gridLayoutGroup!: GridLayoutGroup;
 	public layoutElement!: LayoutElement;
+	public gameMap = new Map<string, HomePageGameComponent>();
 
 	private bin = new Bin();
 
@@ -87,6 +88,7 @@ export default class SortComponent extends AirshipBehaviour {
 			const gameGo = Object.Instantiate(this.gamePrefab, this.content) as GameObject;
 			const gameComponent = gameGo.GetAirshipComponent<HomePageGameComponent>();
 			if (gameComponent) {
+				this.gameMap.set(gameDto.id, gameComponent);
 				gameComponent.Init(gameDto, i);
 				if (this.pageScrollRect) {
 					gameComponent.SetDragRedirectTarget(this.pageScrollRect);
@@ -100,19 +102,18 @@ export default class SortComponent extends AirshipBehaviour {
 	}
 
 	/**
-	 * Updates any matching game tiles with new information.
-	 * This will not create any new data.
 	 *
-	 * @param games
+	 * @param gameId
+	 * @param playerCount
+	 * @returns True if a game with matching gameId was found.
 	 */
-	public UpdateGames(games: GameDto[]): void {
-		for (let go of this.content) {
-			const gameComp = go.gameObject.GetAirshipComponent<HomePageGameComponent>();
-			const dto = games.find((x) => x.id === gameComp?.gameDto.id);
-			if (dto) {
-				gameComp?.UpdateGameDto(dto);
-			}
+	public UpdateGamePlayerCount(gameId: string, playerCount: number): boolean {
+		const gameComponent = this.gameMap.get(gameId);
+		if (gameComponent) {
+			gameComponent.UpdatePlayerCount(playerCount);
+			return true;
 		}
+		return false;
 	}
 
 	public SetTitle(title: string) {

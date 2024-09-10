@@ -60,8 +60,8 @@ export class SocketController {
 		});
 	}
 
-	public On<T = unknown>(eventName: string, callback: (data: T) => void): void {
-		this.onEvent.Connect((e, d) => {
+	public On<T = unknown>(eventName: string, callback: (data: T) => void): () => void {
+		return this.onEvent.Connect((e, d) => {
 			if (e === eventName) {
 				callback(DecodeJSON(d));
 			}

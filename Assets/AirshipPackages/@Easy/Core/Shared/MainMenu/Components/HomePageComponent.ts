@@ -1,15 +1,16 @@
-import { MainMenuController } from "@Easy/Core/Client/ProtectedControllers/MainMenuController";
+import { SocketController } from "@Easy/Core/Client/ProtectedControllers/Socket/SocketController";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import SearchSingleton from "@Easy/Core/Shared/MainMenu/Components/Search/SearchSingleton";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
-import { SetInterval, SetTimeout } from "@Easy/Core/Shared/Util/Timer";
+import { SetTimeout } from "@Easy/Core/Shared/Util/Timer";
 import { GamesDto } from "../../../Client/Components/HomePage/API/GamesAPI";
 import SortComponent from "../../../Client/Components/HomePage/Sort/SortComponent";
 import { SortId } from "../../../Client/Components/HomePage/Sort/SortId";
 import { MainMenuBlockSingleton } from "../../../Client/ProtectedControllers//Settings/MainMenuBlockSingleton";
 import DateParser from "../../DateParser";
+import inspect from "../../Util/Inspect";
 import MainMenuPageComponent from "./MainMenuPageComponent";
 
 export default class HomePageComponent extends MainMenuPageComponent {
@@ -32,16 +33,35 @@ export default class HomePageComponent extends MainMenuPageComponent {
 		this.CreateSort(SortId.Popular, "Popular");
 		Bridge.UpdateLayout(this.scrollRect.transform, true);
 		task.spawn(() => {
-			this.FetchGames(false);
+			this.FetchGames();
 		});
 
+		const socketController = Dependency<SocketController>();
 		this.bin.Add(
-			SetInterval(10, () => {
-				if (Dependency<MainMenuController>().IsOpen()) {
-					this.FetchGames(true);
+			socketController.On<{
+				games: {
+					[key: string]: number;
+				};
+			}>("homepage-events/update-player-count", (data) => {
+				print("update player count: " + inspect(data));
+				for (let gameId of ObjectUtils.keys(data.games) as string[]) {
+					const playerCount = data.games[gameId];
+					for (let sort of ObjectUtils.values(this.sorts)) {
+						if (sort.UpdateGamePlayerCount(gameId, playerCount)) {
+							break;
+						}
+					}
 				}
 			}),
 		);
+		socketController.Emit("join-room", {
+			room: "homepage-events",
+		});
+		this.bin.Add(() => {
+			socketController.Emit("leave-room", {
+				room: "homepage-events",
+			});
+		});
 
 		// const platform = AirshipPlatformUtil.GetLocalPlatform();
 		// if (platform === AirshipPlatform.Windows) {
@@ -78,13 +98,13 @@ export default class HomePageComponent extends MainMenuPageComponent {
 		const go = Object.Instantiate(this.spacerPrefab, this.mainContent);
 	}
 
-	public FetchGames(updateOnly: boolean): void {
+	public FetchGames(): void {
 		const res = InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/games");
 		if (!res.success) {
 			// warn("Failed to fetch games. Retrying in 1s..");
 			this.bin.Add(
 				SetTimeout(1, () => {
-					this.FetchGames(updateOnly);
+					this.FetchGames();
 				}),
 			);
 			return;
@@ -115,11 +135,7 @@ export default class HomePageComponent extends MainMenuPageComponent {
 				return true;
 			});
 
-			if (updateOnly) {
-				sortComponent.UpdateGames(games);
-			} else {
-				sortComponent.SetGames(games, indexCounter);
-			}
+			sortComponent.SetGames(games, indexCounter);
 
 			indexCounter += games.size();
 		}

@@ -300,7 +300,7 @@ export class ProtectedFriendsController {
 				customGameTitle: Game.gameData?.name,
 			},
 		};
-		CoreLogger.Log("send status update: " + json.encode(status));
+		// CoreLogger.Log("send status update: " + json.encode(status));
 		InternalHttpManager.PutAsync(AirshipUrl.GameCoordinator + "/user-status/self", json.encode(status));
 	}
 

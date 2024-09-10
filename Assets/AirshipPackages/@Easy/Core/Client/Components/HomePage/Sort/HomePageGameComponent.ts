@@ -81,7 +81,15 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 		this.gameDto = gameDto;
 		this.index = index;
 
-		this.UpdateGameDto(gameDto);
+		this.titleText.text = gameDto.name;
+		const timeUpdatedSeconds = DateParser.FromISO(gameDto.lastVersionUpdate!);
+		const timeDiff = os.time() - timeUpdatedSeconds;
+		const timeString = TimeUtil.FormatTimeAgo(timeDiff, {
+			includeAgo: true,
+		});
+		this.authorText.text = `${gameDto.organization.name} • ${timeString}`;
+
+		this.UpdatePlayerCount(gameDto.liveStats?.playerCount ?? 0);
 
 		{
 			// Game image
@@ -141,25 +149,16 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 		this.FadeIn();
 	}
 
-	public UpdateGameDto(gameDto: GameDto): void {
-		this.titleText.text = gameDto.name;
-
-		if (gameDto.liveStats?.playerCount !== undefined && gameDto.liveStats.playerCount > 0) {
-			this.playerCountText.text = gameDto.liveStats.playerCount + "";
+	public UpdatePlayerCount(playerCount: number): void {
+		if (playerCount > 0) {
+			this.playerCountText.text = playerCount + "";
 			this.playerCountWrapper.SetActive(true);
 			this.playsWrapper.SetActive(false);
 		} else {
-			this.playsText.text = gameDto.plays + "";
+			this.playsText.text = this.gameDto.plays + "";
 			this.playsWrapper.SetActive(true);
 			this.playerCountWrapper.SetActive(false);
 		}
-
-		const timeUpdatedSeconds = DateParser.FromISO(gameDto.lastVersionUpdate!);
-		const timeDiff = os.time() - timeUpdatedSeconds;
-		const timeString = TimeUtil.FormatTimeAgo(timeDiff, {
-			includeAgo: true,
-		});
-		this.authorText.text = `${gameDto.organization.name} • ${timeString}`;
 	}
 
 	public HasAdminPermissions(): boolean {
