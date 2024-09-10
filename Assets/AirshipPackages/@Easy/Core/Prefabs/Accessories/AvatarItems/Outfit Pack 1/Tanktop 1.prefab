@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &6574704277693418820
+--- !u!1 &1129621367826831922
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,24 +8,24 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2607466702789621691}
-  - component: {fileID: 2031088557109599460}
-  - component: {fileID: 5277934382875855144}
-  - component: {fileID: 7272280013838001057}
+  - component: {fileID: 3692447059650258011}
+  - component: {fileID: 7524904996727738828}
+  - component: {fileID: 1211504482765119445}
+  - component: {fileID: 378538291013512516}
   m_Layer: 0
-  m_Name: Long Shirt
+  m_Name: Tanktop 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2607466702789621691
+--- !u!4 &3692447059650258011
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6574704277693418820}
+  m_GameObject: {fileID: 1129621367826831922}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
@@ -34,13 +34,13 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!137 &2031088557109599460
+--- !u!137 &7524904996727738828
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6574704277693418820}
+  m_GameObject: {fileID: 1129621367826831922}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -56,7 +56,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 8e65ca095943f77499381c3a56739bb3, type: 2}
+  - {fileID: 2100000, guid: 811b7dae86e5d2b429701b34de31a753, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -81,7 +81,7 @@ SkinnedMeshRenderer:
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
   m_SkinnedMotionVectors: 1
-  m_Mesh: {fileID: 6681443583752640614, guid: b270b681ec1451748a86d72d59a594e7, type: 3}
+  m_Mesh: {fileID: -1830536277532187644, guid: b270b681ec1451748a86d72d59a594e7, type: 3}
   m_Bones:
   - {fileID: 0}
   - {fileID: 0}
@@ -109,16 +109,16 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 0}
   m_AABB:
-    m_Center: {x: 0, y: 0.01888568, z: 1.0347998}
-    m_Extent: {x: 0.46796513, y: 0.22011614, z: 0.3691367}
+    m_Center: {x: -0.000000074505806, y: -0.0110244155, z: 1.090805}
+    m_Extent: {x: 0.20460398, y: 0.18681587, z: 0.2852233}
   m_DirtyAABB: 0
---- !u!114 &5277934382875855144
+--- !u!114 &1211504482765119445
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6574704277693418820}
+  m_GameObject: {fileID: 1129621367826831922}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
@@ -127,22 +127,22 @@ MonoBehaviour:
   colorSettings:
   - baseColor: {r: 1, g: 1, b: 1, a: 1}
   addedByEditorScript: 0
---- !u!114 &7272280013838001057
+--- !u!114 &378538291013512516
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6574704277693418820}
+  m_GameObject: {fileID: 1129621367826831922}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0b74917b00f1d374c9a7136917a61ddf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serverClassId: 703934c5-1d8c-47f4-bb80-f21caadc2d72
-  serverClassIdStaging: 1aae2452-2f79-4aaf-8208-5863791907e1
+  serverClassId: 6315569d-99c8-4641-9726-2812f3ac8add
+  serverClassIdStaging: a5620219-cb58-4d73-ae15-abf0ed85269a
   accessorySlot: 5
   visibilityMode: 2
   skinnedToCharacter: 1
   canMeshCombine: 1
-  bodyMask: 12
+  bodyMask: 0

@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1443180847444210414
+--- !u!1 &5590757831242196915
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,24 +8,24 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5793859090950627388}
-  - component: {fileID: 5712706917721755624}
-  - component: {fileID: 5174943966508385944}
-  - component: {fileID: 7753452265518702293}
+  - component: {fileID: 6496325290612020256}
+  - component: {fileID: 3701081855105473201}
+  - component: {fileID: 7844956625921497619}
+  - component: {fileID: 8250544884108246839}
   m_Layer: 0
-  m_Name: Goth Combat Boots
+  m_Name: Long Sleeve 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5793859090950627388
+--- !u!4 &6496325290612020256
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1443180847444210414}
+  m_GameObject: {fileID: 5590757831242196915}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
@@ -34,13 +34,13 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!137 &5712706917721755624
+--- !u!137 &3701081855105473201
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1443180847444210414}
+  m_GameObject: {fileID: 5590757831242196915}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -56,7 +56,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6f4ae58093968be498b063722fda75ca, type: 2}
+  - {fileID: 2100000, guid: 6b1c4eee05441fb41a5b25f974e0890d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -81,7 +81,7 @@ SkinnedMeshRenderer:
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
   m_SkinnedMotionVectors: 1
-  m_Mesh: {fileID: -2325540897893906286, guid: b270b681ec1451748a86d72d59a594e7, type: 3}
+  m_Mesh: {fileID: -3810759188041644685, guid: b270b681ec1451748a86d72d59a594e7, type: 3}
   m_Bones:
   - {fileID: 0}
   - {fileID: 0}
@@ -109,16 +109,16 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 0}
   m_AABB:
-    m_Center: {x: 0.000000059604645, y: -0.015678406, z: 0.13074297}
-    m_Extent: {x: 0.36980808, y: 0.29012045, z: 0.3306244}
+    m_Center: {x: -0.00000008940697, y: -0.005100429, z: 1.1063533}
+    m_Extent: {x: 0.5808321, y: 0.2523421, z: 0.2867967}
   m_DirtyAABB: 0
---- !u!114 &5174943966508385944
+--- !u!114 &7844956625921497619
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1443180847444210414}
+  m_GameObject: {fileID: 5590757831242196915}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
@@ -127,22 +127,22 @@ MonoBehaviour:
   colorSettings:
   - baseColor: {r: 1, g: 1, b: 1, a: 1}
   addedByEditorScript: 0
---- !u!114 &7753452265518702293
+--- !u!114 &8250544884108246839
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1443180847444210414}
+  m_GameObject: {fileID: 5590757831242196915}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0b74917b00f1d374c9a7136917a61ddf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serverClassId: 564ac3ca-fb7e-410b-8122-50d7e96d7d55
-  serverClassIdStaging: 1e52a9aa-6372-4706-a8eb-e31eada083f5
-  accessorySlot: 10
+  serverClassId: 7a0e8ec5-3caf-4ecb-a392-6bbd2abf4127
+  serverClassIdStaging: 737aac29-8ae6-4293-857f-6b4efa467082
+  accessorySlot: 5
   visibilityMode: 2
   skinnedToCharacter: 1
   canMeshCombine: 1
-  bodyMask: 50331648
+  bodyMask: 9474184

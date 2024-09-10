@@ -37909,6 +37909,7 @@ interface DevConsole {
 }
     
 interface DevConsoleMono extends MonoBehaviour {
+    bottom: GameObject;
     activeContext: LogContext;
 
 
@@ -43084,6 +43085,7 @@ interface CharacterMovementData extends MonoBehaviour {
     sprintSpeed: number;
     accelerationForce: number;
     sprintAccelerationForce: number;
+    minAccelerationDelta: number;
     onlySprintForward: boolean;
     autoCrouch: boolean;
     preventFallingWhileCrouching: boolean;
