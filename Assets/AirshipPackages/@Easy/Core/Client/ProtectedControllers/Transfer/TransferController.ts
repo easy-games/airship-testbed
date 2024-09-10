@@ -1,5 +1,6 @@
 import { AirshipGameServer } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipTransfers";
 import { Controller, Dependency } from "@Easy/Core/Shared/Flamework";
+import { Game } from "@Easy/Core/Shared/Game";
 import { Result } from "@Easy/Core/Shared/Types/Result";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import inspect from "@Easy/Core/Shared/Util/Inspect";
@@ -21,6 +22,10 @@ export class TransferController {
 			loadingScreenImageId?: string;
 		}>("game-coordinator/server-transfer", (data) => {
 			print("Received transfer event: " + inspect(data));
+			if (Game.serverId === data.gameServer.serverId) {
+				print("Recieved transfer event for server we are already connected to. Ignoring.");
+				return;
+			}
 			TransferManager.Instance.ConnectToServer(data.gameServer.ip, data.gameServer.port);
 
 			try {
