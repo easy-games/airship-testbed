@@ -18,6 +18,7 @@ export class TransferController {
 			gameVersion: number;
 			requestTime: number;
 			transferData?: unknown;
+			loadingScreenImageId?: string;
 		}>("game-coordinator/server-transfer", (data) => {
 			print("Received transfer event: " + inspect(data));
 			TransferManager.Instance.ConnectToServer(data.gameServer.ip, data.gameServer.port);
@@ -25,7 +26,9 @@ export class TransferController {
 			try {
 				// supporting old versions of player by try catching this
 				CrossSceneState.ServerTransferData.gameId = data.gameId;
-				// CrossSceneState.ServerTransferData.loadingImageUrl = "";
+				// CrossSceneState.ServerTransferData.loadingImageUrl = data.loadingScreenImageId
+				// 	? `${AirshipUrl.CDN}/images/${data.loadingScreenImageId}`
+				// 	: "";
 			} catch (err) {}
 		});
 	}
