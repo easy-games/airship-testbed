@@ -1,5 +1,4 @@
 import { OnUpdate } from "@Easy/Core/Shared/Util/Timer";
-import { Duration } from "../Util/Duration";
 import { Signal } from "../Util/Signal";
 import { TweenEasingFunction } from "./EasingFunctions";
 
@@ -135,7 +134,7 @@ export class Tween<T> implements LuauTween<T> {
 	public static Number(
 		easingFunction: TweenEasingFunction,
 		durationSeconds: number,
-		callback: (delta: number) => void,
+		callback: (val: number) => void,
 		from: number = 0,
 		to: number = 1,
 	): LuauTween<number> {

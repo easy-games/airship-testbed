@@ -13,6 +13,7 @@ export default class SortComponent extends AirshipBehaviour {
 	public gridLayoutGroup!: GridLayoutGroup;
 	public layoutElement!: LayoutElement;
 	public gameMap = new Map<string, HomePageGameComponent>();
+	@NonSerialized() public games: GameDto[] = [];
 
 	private bin = new Bin();
 
@@ -60,18 +61,28 @@ export default class SortComponent extends AirshipBehaviour {
 	}
 
 	public UpdatePreferredHeight(): void {
+		if (this.games.size() === 0) {
+			this.layoutElement.preferredHeight = 0;
+			this.layoutElement.minHeight = 0;
+			if (this.pageScrollRect) {
+				Bridge.UpdateLayout(this.pageScrollRect.transform, true);
+			}
+			return;
+		}
 		let rows = math.ceil(this.content.childCount / this.gridLayoutGroup.constraintCount);
 
 		this.layoutElement.preferredHeight =
 			rows * (this.gridLayoutGroup.cellSize.y + this.gridLayoutGroup.spacing.y) +
 			40 + // title
 			50; // bottom padding
+		this.layoutElement.minHeight = this.layoutElement.preferredHeight;
 		if (this.pageScrollRect) {
 			Bridge.UpdateLayout(this.pageScrollRect.transform, true);
 		}
 	}
 
 	public SetGames(games: GameDto[], indexOffset: number): HomePageGameComponent[] {
+		this.games = games;
 		this.titleText.gameObject.SetActive(games.size() > 0);
 
 		this.content.gameObject.ClearChildren();
