@@ -24,6 +24,34 @@ PrefabInstance:
       propertyPath: <PrefabId>k__BackingField
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 1645000729044007242, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
+      propertyPath: drag
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1645000729044007242, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
+      propertyPath: speed
+      value: 4.66666
+      objectReference: {fileID: 0}
+    - target: {fileID: 1645000729044007242, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
+      propertyPath: sprintSpeed
+      value: 6.66666
+      objectReference: {fileID: 0}
+    - target: {fileID: 1645000729044007242, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
+      propertyPath: minimumVelocity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1645000729044007242, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
+      propertyPath: accelerationForce
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1645000729044007242, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
+      propertyPath: sprintAccelerationForce
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1645000729044007242, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
+      propertyPath: useAccelerationMovement
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7088081142443290682, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       propertyPath: scriptFile
       value: 
