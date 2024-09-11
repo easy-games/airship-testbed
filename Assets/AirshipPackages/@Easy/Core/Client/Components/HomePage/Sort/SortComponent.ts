@@ -19,6 +19,7 @@ export default class SortComponent extends AirshipBehaviour {
 
 	override Awake(): void {
 		this.Clear();
+		this.titleText.SetActive(false);
 	}
 
 	public OnEnable(): void {
