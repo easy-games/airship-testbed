@@ -9,6 +9,7 @@ import { GamesDto } from "../../../Client/Components/HomePage/API/GamesAPI";
 import SortComponent from "../../../Client/Components/HomePage/Sort/SortComponent";
 import { SortId } from "../../../Client/Components/HomePage/Sort/SortId";
 import { MainMenuBlockSingleton } from "../../../Client/ProtectedControllers//Settings/MainMenuBlockSingleton";
+import { Asset } from "../../Asset";
 import DateParser from "../../DateParser";
 import inspect from "../../Util/Inspect";
 import MainMenuPageComponent from "./MainMenuPageComponent";
@@ -31,6 +32,12 @@ export default class HomePageComponent extends MainMenuPageComponent {
 		this.ClearSorts();
 		this.CreateSort(SortId.RecentlyUpdated, "Recently Updated");
 		this.CreateSort(SortId.Popular, "Popular");
+
+		Object.Instantiate(
+			Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/MainMenu/HomePage/DiscordHero.prefab"),
+			this.mainContent,
+		);
+
 		Bridge.UpdateLayout(this.scrollRect.transform, true);
 		task.spawn(() => {
 			this.FetchGames();
@@ -77,13 +84,7 @@ export default class HomePageComponent extends MainMenuPageComponent {
 		// this.loadedGameComponents.clear();
 
 		//Destroy the sort containers
-		let toRemove: Transform[] = [];
-		for (let i = 0; i < this.mainContent.GetChildCount(); i++) {
-			toRemove.push(this.mainContent.GetChild(i));
-		}
-		for (const t of toRemove) {
-			Object.Destroy(t.gameObject);
-		}
+		this.mainContent.gameObject.ClearChildren();
 	}
 
 	private CreateSort(sortId: SortId, title: string): void {

@@ -480,6 +480,10 @@
 		"Code/Components/TestCharacter@TestCharacter": {
 			"assetPath": "Code/Components/TestCharacter.ts",
 			"name": "TestCharacter"
+		},
+		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/JoinDiscordButton@JoinDiscordButton": {
+			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/JoinDiscordButton.ts",
+			"name": "JoinDiscordButton"
 		}
 	},
 	"enum": {
