@@ -424,7 +424,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: You can start building on Airship today! The developer community is organized
+  m_text: You can start building on Airship today. The developer community is organized
     around our discord.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 39fc97816df3344858585cf3cbaec56e, type: 2}
