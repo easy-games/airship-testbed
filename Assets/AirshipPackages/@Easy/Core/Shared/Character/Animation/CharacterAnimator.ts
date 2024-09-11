@@ -1,7 +1,7 @@
-﻿﻿import { AudioBundleSpacialMode, AudioClipBundle } from "@Easy/Core/Shared/Audio/AudioClipBundle";
-import Character from "@Easy/Core/Shared/Character/Character";
+﻿﻿import Character from "@Easy/Core/Shared/Character/Character";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { Game } from "../../Game";
+import { Airship } from "../../Airship";
 
 export default class CharacterAnimator extends AirshipBehaviour {
 	@Header("References")
@@ -11,8 +11,7 @@ export default class CharacterAnimator extends AirshipBehaviour {
 	private deathClip?: AnimationClip;
 	private deathClipViewmodel?: AnimationClip;
 
-	@Header("Variables")
-	public baseFootstepVolumeScale = 0.1;
+	public OnAnimationEvent: (key: string, strValue?: string, intValue?: number, floatValue?: number)=>void;
 
 	private readonly flashTransitionDuration = 0.035;
 	private readonly flashOnTime = 0.07;
@@ -25,7 +24,7 @@ export default class CharacterAnimator extends AirshipBehaviour {
 	protected viewModelEnabled = false;
 
 	private Log(message: string) {
-		// print("Animator " + this.character.id + ": " + message);
+		print("Animator " + this.character.id + ": " + message);
 	}
 
 	public Start() {
@@ -43,6 +42,21 @@ export default class CharacterAnimator extends AirshipBehaviour {
 					}
 				}),
 			);
+
+			//Animation Events
+			this.bin.AddEngineEventConnection(this.character.animationHelper.OnAnimEvent((key)=>{
+				this.HandleAnimationEvents(key);
+				if(this.OnAnimationEvent){
+					this.OnAnimationEvent(key);
+				}
+			}))
+
+			this.bin.AddEngineEventConnection(this.character.animationHelper.OnAnimObjEvent((data)=>{
+				this.HandleAnimationEvents(data.key, data.stringValue, data.intValue, data.floatValue);
+				if(this.OnAnimationEvent){
+					this.OnAnimationEvent(data.key, data.stringValue, data.intValue, data.floatValue);
+				}
+			}))
 		}
 
 		// todo: is this needed?
@@ -142,5 +156,13 @@ export default class CharacterAnimator extends AirshipBehaviour {
 
 	public Destroy(): void {
 		this.bin.Clean();
+	}
+
+	private HandleAnimationEvents(key: string, strValue?: string, intValue?: number, floatValue?: number){
+		if(key === "Footstep"){
+			if(this.character.movement.IsGrounded()){
+				Airship.Characters.footsteps.PlayFootstepSound(this.character);
+			}
+		}
 	}
 }

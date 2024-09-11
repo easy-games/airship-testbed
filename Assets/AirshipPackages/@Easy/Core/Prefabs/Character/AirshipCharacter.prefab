@@ -1,151 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1460775334046746424
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6992120071555877156}
-  - component: {fileID: 8840760579717825281}
-  - component: {fileID: 286768175947434448}
-  - component: {fileID: 284590236569622971}
-  m_Layer: 3
-  m_Name: Jeans Shorts_legs
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6992120071555877156
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1460775334046746424}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6518322715866115168}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!137 &8840760579717825281
-SkinnedMeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1460775334046746424}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 3
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 145dbb13b88bbfa4eaa40eafa6361a67, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  serializedVersion: 2
-  m_Quality: 0
-  m_UpdateWhenOffscreen: 0
-  m_SkinnedMotionVectors: 1
-  m_Mesh: {fileID: 6707945061561167290, guid: b270b681ec1451748a86d72d59a594e7, type: 3}
-  m_Bones:
-  - {fileID: 5875690076550259987}
-  - {fileID: 1782866185563844852}
-  - {fileID: 1824174608814416388}
-  - {fileID: 4552757974777105144}
-  - {fileID: 597071408544157732}
-  - {fileID: 2789449189954693859}
-  - {fileID: 6171980446745522960}
-  - {fileID: 1181276517542276745}
-  - {fileID: 7047559035807332088}
-  - {fileID: 5310603344414226791}
-  - {fileID: 317645858752949646}
-  - {fileID: 495800328867296159}
-  - {fileID: 1882189065308473761}
-  - {fileID: 6139455571770569595}
-  - {fileID: 1511796090335394906}
-  - {fileID: 6174443182718725209}
-  - {fileID: 109835959296207961}
-  - {fileID: 1906595064653400338}
-  - {fileID: 5533038306360379179}
-  - {fileID: 7788278244735413054}
-  - {fileID: 7306504748899550370}
-  - {fileID: 1824023489933030458}
-  - {fileID: 766676014972873497}
-  m_BlendShapeWeights: []
-  m_RootBone: {fileID: 5875690076550259987}
-  m_AABB:
-    m_Center: {x: 0, y: -0.03410576, z: 0.6845479}
-    m_Extent: {x: 0.2789171, y: 0.14869641, z: 0.2768774}
-  m_DirtyAABB: 0
---- !u!114 &286768175947434448
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1460775334046746424}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colorSettings:
-  - baseColor: {r: 1, g: 1, b: 1, a: 1}
-  addedByEditorScript: 0
---- !u!114 &284590236569622971
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1460775334046746424}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b74917b00f1d374c9a7136917a61ddf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serverClassId: febca5e3-78b9-4f45-8907-28d4313d1a88
-  serverClassIdStaging: fba3a580-63dd-4cb6-8601-e8fe6865fe09
-  accessorySlot: 9
-  visibilityMode: 2
-  skinnedToCharacter: 1
-  canMeshCombine: 1
-  bodyMask: 0
 --- !u!1 &3994489106181738915
 GameObject:
   m_ObjectHideFlags: 0
@@ -401,6 +255,152 @@ TrailRenderer:
   m_Autodestruct: 0
   m_Emitting: 1
   m_ApplyActiveColorSpace: 1
+--- !u!1 &6290605416325695202
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 331108856767257372}
+  - component: {fileID: 1127388900857186299}
+  - component: {fileID: 3008379843680880215}
+  - component: {fileID: 8744349454883691504}
+  m_Layer: 3
+  m_Name: Jeans Shorts_legs 1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &331108856767257372
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6290605416325695202}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6518322715866115168}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!137 &1127388900857186299
+SkinnedMeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6290605416325695202}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 3
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 145dbb13b88bbfa4eaa40eafa6361a67, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  serializedVersion: 2
+  m_Quality: 0
+  m_UpdateWhenOffscreen: 0
+  m_SkinnedMotionVectors: 1
+  m_Mesh: {fileID: 6707945061561167290, guid: b270b681ec1451748a86d72d59a594e7, type: 3}
+  m_Bones:
+  - {fileID: 5875690076550259987}
+  - {fileID: 1782866185563844852}
+  - {fileID: 1824174608814416388}
+  - {fileID: 4552757974777105144}
+  - {fileID: 597071408544157732}
+  - {fileID: 2789449189954693859}
+  - {fileID: 6171980446745522960}
+  - {fileID: 1181276517542276745}
+  - {fileID: 7047559035807332088}
+  - {fileID: 5310603344414226791}
+  - {fileID: 317645858752949646}
+  - {fileID: 495800328867296159}
+  - {fileID: 1882189065308473761}
+  - {fileID: 6139455571770569595}
+  - {fileID: 1511796090335394906}
+  - {fileID: 6174443182718725209}
+  - {fileID: 109835959296207961}
+  - {fileID: 1906595064653400338}
+  - {fileID: 5533038306360379179}
+  - {fileID: 7788278244735413054}
+  - {fileID: 7306504748899550370}
+  - {fileID: 1824023489933030458}
+  - {fileID: 766676014972873497}
+  m_BlendShapeWeights: []
+  m_RootBone: {fileID: 5875690076550259987}
+  m_AABB:
+    m_Center: {x: 0, y: -0.03410576, z: 0.6845479}
+    m_Extent: {x: 0.2789171, y: 0.14869641, z: 0.2768774}
+  m_DirtyAABB: 0
+--- !u!114 &3008379843680880215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6290605416325695202}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - baseColor: {r: 1, g: 1, b: 1, a: 1}
+  addedByEditorScript: 0
+--- !u!114 &8744349454883691504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6290605416325695202}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b74917b00f1d374c9a7136917a61ddf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serverClassId: febca5e3-78b9-4f45-8907-28d4313d1a88
+  serverClassIdStaging: fba3a580-63dd-4cb6-8601-e8fe6865fe09
+  accessorySlot: 9
+  visibilityMode: 2
+  skinnedToCharacter: 1
+  canMeshCombine: 1
+  bodyMask: 294912
 --- !u!1 &7282857183101611409
 GameObject:
   m_ObjectHideFlags: 0
@@ -1038,6 +1038,7 @@ MonoBehaviour:
   drawDebugGizmos_STATES: 0
   useExtraLogging: 0
   observerRotationLerpMod: 10
+  playAnimationOnServer: 1
   lookVector: {x: 1, y: 1, z: 1}
 --- !u!114 &1645000729044007242
 MonoBehaviour:
@@ -1058,6 +1059,7 @@ MonoBehaviour:
   sprintSpeed: 6.666667
   accelerationForce: 0.6
   sprintAccelerationForce: 0.85
+  minAccelerationDelta: 0
   onlySprintForward: 0
   autoCrouch: 1
   preventFallingWhileCrouching: 0
@@ -1082,14 +1084,14 @@ MonoBehaviour:
   terminalVelocity: 50
   minimumVelocity: 7
   useMinimumVelocityInAir: 0
-  maxStepUpHeight: 0.5
-  stepUpRampDistance: 0.75
   drag: 0.25
   airDragMultiplier: 1
   airSpeedMultiplier: 1
   detectStepUps: 1
   alwaysStepUp: 0
   assistedLedgeJump: 1
+  maxStepUpHeight: 0.5
+  stepUpRampDistance: 0.75
   detectSlopes: 0
   slopeForce: 45
   minSlopeDelta: 0.1
@@ -1107,6 +1109,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 906797123808458266}
+  networkAnimator: {fileID: 0}
   events: {fileID: 6059025528528977290}
   sprintVfx: {fileID: 8366697698488531815}
   jumpPoofVfx: {fileID: 8321520850568583672}
@@ -1114,7 +1117,6 @@ MonoBehaviour:
   minAirborneTime: 0.25
   particleMaxDistance: 25
   directionalBlendLerpMod: 15
-  animationSpeedLerpMod: 5
   idleRectionLength: 15
 --- !u!114 &7124091312930647041
 MonoBehaviour:
@@ -1208,6 +1210,21 @@ MonoBehaviour:
       decorators: []
       nullable: 0
       serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: playFootstepSounds
+      type: boolean
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 1
       serializedObject: {fileID: 0}
       modified: 0
     displayIcon: {fileID: 0}
@@ -1448,6 +1465,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: AirshipRig
       objectReference: {fileID: 0}
+    - target: {fileID: 7233710194765161957, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: anim
+      value: 
+      objectReference: {fileID: 903796914586745664}
     - target: {fileID: 7933318673209200117, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
       propertyPath: colorSettings.Array.data[0].baseColor.b
       value: 0.54901963
@@ -1489,7 +1510,7 @@ PrefabInstance:
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 7638964220878943247, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 6992120071555877156}
+      addedObject: {fileID: 331108856767257372}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
 --- !u!4 &109835959296207961 stripped
