@@ -59,7 +59,14 @@ export default class SocialMenu extends AirshipBehaviour {
 				this.SetOfflineNoticeVisible(!connected);
 
 				if (!connected && !Game.IsEditor()) {
-					Game.localPlayer.SendMessage(ChatColor.Red("[Airship] Lost connection to online services."));
+					// give time to reconnect
+					task.delay(2, () => {
+						if (!socketController.IsConnected()) {
+							Game.localPlayer.SendMessage(
+								ChatColor.Red("[Airship] Lost connection to online services."),
+							);
+						}
+					});
 				}
 			}),
 		);
