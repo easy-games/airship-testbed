@@ -21,6 +21,7 @@ export default class HomePageComponent extends MainMenuPageComponent {
 	public scrollRect!: ScrollRect;
 	private bin = new Bin();
 	private sorts = new Map<SortId, SortComponent>();
+	private addedDiscordHero = false;
 	// private loadedGameComponents: HomePageGameComponent[] = [];
 
 	protected Awake(): void {
@@ -30,13 +31,9 @@ export default class HomePageComponent extends MainMenuPageComponent {
 	override OpenPage(params?: unknown): void {
 		super.OpenPage(params);
 		this.ClearSorts();
+		this.addedDiscordHero = false;
 		this.CreateSort(SortId.RecentlyUpdated, "Recently Updated");
 		this.CreateSort(SortId.Popular, "Popular");
-
-		Object.Instantiate(
-			Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/MainMenu/HomePage/DiscordHero.prefab"),
-			this.mainContent,
-		);
 
 		Bridge.UpdateLayout(this.scrollRect.transform, true);
 		task.spawn(() => {
@@ -145,6 +142,14 @@ export default class HomePageComponent extends MainMenuPageComponent {
 		task.spawn(() => {
 			Dependency<SearchSingleton>().AddGames([...data.recentlyUpdated, ...data.popular]);
 		});
+
+		if (!this.addedDiscordHero) {
+			this.addedDiscordHero = true;
+			Object.Instantiate(
+				Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/MainMenu/HomePage/DiscordHero.prefab"),
+				this.mainContent,
+			);
+		}
 	}
 
 	override OnDisable(): void {

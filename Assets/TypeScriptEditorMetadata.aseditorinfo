@@ -389,6 +389,10 @@
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipToggle.ts",
 			"name": "AirshipToggle"
 		},
+		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/JoinDiscordButton@JoinDiscordButton": {
+			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/JoinDiscordButton.ts",
+			"name": "JoinDiscordButton"
+		},
 		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/DevConsoleButton@DevConsoleButton": {
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/DevConsoleButton.ts",
 			"name": "DevConsoleButton"
@@ -481,9 +485,9 @@
 			"assetPath": "Code/Components/TestCharacter.ts",
 			"name": "TestCharacter"
 		},
-		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/JoinDiscordButton@JoinDiscordButton": {
-			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/JoinDiscordButton.ts",
-			"name": "JoinDiscordButton"
+		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/DiscordHero@DiscordHero": {
+			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/DiscordHero.ts",
+			"name": "DiscordHero"
 		}
 	},
 	"enum": {
