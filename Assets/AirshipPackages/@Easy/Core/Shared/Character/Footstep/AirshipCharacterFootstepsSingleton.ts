@@ -1,18 +1,13 @@
 import { Singleton } from "@Easy/Core/Shared/Flamework";
-import { Airship } from "../../Airship";
 import { Asset } from "../../Asset";
-import { CameraReferences } from "../../Camera/CameraReferences";
-import { Game } from "../../Game";
 import StringUtils from "../../Types/StringUtil";
 import { RandomUtil } from "../../Util/RandomUtil";
 import { Signal } from "../../Util/Signal";
-import { SetInterval } from "../../Util/Timer";
 import Character from "../Character";
 import { CharacterFootstepSignal } from "./CharacterFootstepSignal";
 
 @Singleton({})
 export class AirshipCharacterFootstepsSingleton {
-	private entityLastFootstepTime = new Map<number, number>();
 
 	public onFootstep = new Signal<CharacterFootstepSignal>();
 	public baseFootstepVolumeScale = 0.1;
@@ -62,62 +57,11 @@ export class AirshipCharacterFootstepsSingleton {
 		});
 	}
 
-	protected OnStart(): void {
-		if (!Game.IsClient()) return;
+	public PlayFootstepSound(character: Character): void {
+		if (!this.foostepSoundsEnabled) return;
 
-		task.delay(0.1, () => {
-			const camTransform = CameraReferences.mainCamera?.transform;
-			SetInterval(0.05, () => {
-				if (!this.foostepSoundsEnabled) return;
-				if (camTransform === undefined) return;
-				const currentTime = Time.time;
-				const camPos = camTransform.position;
-				Profiler.BeginSample("Footsteps");
-				let footstepCount = 0;
-				for (const character of Airship.Characters.GetCharacters()) {
-					if (character.IsDead()) continue;
-					let cooldown = -1;
-					const state = character.state;
-					if (state === CharacterState.Sprinting) {
-						cooldown = 0.23;
-					} else if (state === CharacterState.Running) {
-						cooldown = 0.36;
-					}
-					if (cooldown === -1) {
-						continue;
-					}
-					const lastTime = this.entityLastFootstepTime.get(character.id) || 0;
-					if (currentTime - lastTime < cooldown) {
-						continue;
-					}
-					this.entityLastFootstepTime.set(character.id, currentTime);
-
-					if (!character.movement.groundedRaycastHit.collider) {
-						continue;
-					}
-
-					Profiler.BeginSample("PlayFootstepSound");
-					try {
-						// todo: footsteps
-						// character.animator.PlayFootstepSound(volumeScale, camPos);
-						this.PlayFootstepSound(character, camPos);
-					} catch (err) {
-						Debug.LogError("footstep error: " + err);
-					}
-					footstepCount++;
-					if (footstepCount >= 5) {
-						break;
-					}
-					Profiler.EndSample();
-				}
-				Profiler.EndSample();
-			});
-		});
-	}
-
-	private PlayFootstepSound(character: Character, camPos: Vector3): void {
 		const raycastHit = character.movement.groundedRaycastHit;
-		const renderer = raycastHit.collider.GetComponent<Renderer>()!;
+		const renderer = raycastHit.collider?.GetComponent<Renderer>();
 
 		let materialName = "grass";
 		let material: Material | undefined;
@@ -167,7 +111,6 @@ export class AirshipCharacterFootstepsSingleton {
 			raycastHit,
 			material,
 			RandomUtil.FromArray(clips),
-			camPos,
 			volume,
 			crouching,
 		);
