@@ -31,9 +31,9 @@ export class TransferController {
 			try {
 				// supporting old versions of player by try catching this
 				CrossSceneState.ServerTransferData.gameId = data.gameId;
-				// CrossSceneState.ServerTransferData.loadingImageUrl = data.loadingScreenImageId
-				// 	? `${AirshipUrl.CDN}/images/${data.loadingScreenImageId}`
-				// 	: "";
+				CrossSceneState.ServerTransferData.loadingImageUrl = data.loadingScreenImageId
+					? `${AirshipUrl.CDN}/images/${data.loadingScreenImageId}`
+					: "";
 			} catch (err) {}
 		});
 	}
