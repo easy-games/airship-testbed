@@ -1,6 +1,5 @@
 import {} from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { SetTimeout } from "@Easy/Core/Shared/Util/Timer";
 import { MainMenuController } from "../../../Client/ProtectedControllers//MainMenuController";
 import { MainMenuPageType } from "../../../Client/ProtectedControllers//MainMenuPageName";
 
@@ -26,7 +25,7 @@ export default class MainMenuPageComponent extends AirshipBehaviour {
 		if (pageType === MainMenuPageType.Home) {
 			// this.OpenPage();
 		} else {
-			this.ClosePage(true);
+			this.ClosePage();
 		}
 	}
 
@@ -63,20 +62,11 @@ export default class MainMenuPageComponent extends AirshipBehaviour {
 		return 0;
 	}
 
-	public ClosePage(instant = false) {
-		if (!this.activePage && !instant) {
+	public ClosePage() {
+		if (!this.activePage) {
 			return;
 		}
 		this.activePage = false;
-		// print("closing page: " + this.pageType);
-
-		// gameObject.GetComponent<RectTransform>()!.TweenLocalPosition(new Vector3(-20, 0, 0), 0.1);
-		const canvasGroup = this.gameObject.GetComponent<CanvasGroup>()!;
-		if (canvasGroup) NativeTween.CanvasGroupAlpha(canvasGroup, 0, this.animateOutDuration).SetUseUnscaledTime(true);
-		SetTimeout(instant ? 0 : this.animateOutDuration, () => {
-			if (!this.activePage) {
-				this.gameObject.SetActive(false);
-			}
-		});
+		this.gameObject.SetActive(false);
 	}
 }

@@ -305,8 +305,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		});
 	}
 
-	override ClosePage(instant?: boolean): void {
-		super.ClosePage(instant);
+	override ClosePage(): void {
+		super.ClosePage();
 		this.Log("Close AVATAR");
 		this.bin.Clean();
 		this.avatarRenderHolder?.SetActive(false);
