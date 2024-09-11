@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Concrete_Clean_Triplanar
+  m_Name: Concrete
   m_Shader: {fileID: -6465566751694194690, guid: 00f5c0f514115344b837245f162be5fa, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
