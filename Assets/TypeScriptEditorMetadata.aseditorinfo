@@ -461,6 +461,10 @@
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/Item/ItemDefinition/ItemDefinitionComponent.ts",
 			"name": "ItemDefinitionComponent"
 		},
+		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/DiscordHero@DiscordHero": {
+			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/DiscordHero.ts",
+			"name": "DiscordHero"
+		},
 		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/MobileNavbar@MobileNavbar": {
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/MobileNavbar.ts",
 			"name": "MobileNavbar"
@@ -484,10 +488,6 @@
 		"Code/Components/TestCharacter@TestCharacter": {
 			"assetPath": "Code/Components/TestCharacter.ts",
 			"name": "TestCharacter"
-		},
-		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/DiscordHero@DiscordHero": {
-			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/DiscordHero.ts",
-			"name": "DiscordHero"
 		}
 	},
 	"enum": {

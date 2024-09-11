@@ -149,6 +149,7 @@ export default class HomePageComponent extends MainMenuPageComponent {
 				Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/MainMenu/HomePage/DiscordHero.prefab"),
 				this.mainContent,
 			);
+			Bridge.UpdateLayout(this.scrollRect.transform.parent, true);
 		}
 	}
 

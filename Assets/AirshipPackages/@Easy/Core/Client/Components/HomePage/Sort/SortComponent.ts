@@ -78,7 +78,7 @@ export default class SortComponent extends AirshipBehaviour {
 			50; // bottom padding
 		this.layoutElement.minHeight = this.layoutElement.preferredHeight;
 		if (this.pageScrollRect) {
-			Bridge.UpdateLayout(this.pageScrollRect.transform, true);
+			Bridge.UpdateLayout(this.pageScrollRect.transform.parent, true);
 		}
 	}
 
