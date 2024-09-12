@@ -164,12 +164,16 @@ type AirshipDecorator<T> = T & {
 	__airship_Decorator: never;
 };
 
+type AirshipScriptedObject = AirshipBehaviour | AirshipScriptableRenderPass;
 type AirshipBehaviourFieldDecorator<T extends ReadonlyArray<unknown>> = (
 	...args: T
-) => AirshipDecorator<(target: AirshipBehaviour, property: string) => void>;
+) => AirshipDecorator<(target: AirshipScriptedObject, property: string) => void>;
 type AirshipBehaviourClassDecorator<T extends ReadonlyArray<unknown>> = (
 	...args: T
-) => AirshipDecorator<(target: typeof AirshipBehaviour) => void>;
+) => AirshipDecorator<(target: typeof AirshipScriptedObject) => void>;
+
+declare const int: AirshipDecorator<(target: AirshipScriptedObject, property: string) => void>;
+declare type int = number;
 
 /**
  * Marks this property to not be serialized in an AirshipBehaviour

@@ -488,6 +488,14 @@
 		"Code/Components/TestCharacter@TestCharacter": {
 			"assetPath": "Code/Components/TestCharacter.ts",
 			"name": "TestCharacter"
+		},
+		"Rendering/TestRenderPass@ExamleBlurPass": {
+			"assetPath": "Rendering/TestRenderPass.ts",
+			"name": "ExamleBlurPass"
+		},
+		"Rendering/TestRenderPass@ExampleBlurPass": {
+			"assetPath": "Rendering/TestRenderPass.ts",
+			"name": "ExampleBlurPass"
 		}
 	},
 	"enum": {
