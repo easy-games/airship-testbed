@@ -118,8 +118,11 @@ export class ClientChatSingleton {
 			}
 		});
 
-		this.RegisterCommand(new MessageCommand());
-		this.RegisterCommand(new ReplyCommand());
+		if (Game.IsProtectedLuauContext()) {
+			print("ClientChatSingleton.constructor");
+			this.RegisterCommand(new MessageCommand());
+			this.RegisterCommand(new ReplyCommand());
+		}
 
 		if (Game.IsMobile()) {
 			this.canvas.enabled = false;
@@ -203,11 +206,12 @@ export class ClientChatSingleton {
 			this.AddMessage(rawText, nameWithPrefix, senderClientId);
 		});
 
-		// Submitting on mobile.
-		CanvasAPI.OnInputFieldSubmit(this.inputField.gameObject, (data) => {
-			this.SubmitInputField();
-		});
 		if (Game.IsMobile()) {
+			// Submitting on mobile.
+			CanvasAPI.OnInputFieldSubmit(this.inputField.gameObject, (data) => {
+				this.SubmitInputField();
+			});
+
 			this.ShowChatInput();
 		} else {
 			this.HideChatInput();
