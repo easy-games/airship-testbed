@@ -2,6 +2,7 @@
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { Game } from "../../Game";
 import { Airship } from "../../Airship";
+import { Signal } from "../../Util/Signal";
 
 export default class CharacterAnimator extends AirshipBehaviour {
 	@Header("References")
@@ -11,7 +12,7 @@ export default class CharacterAnimator extends AirshipBehaviour {
 	private deathClip?: AnimationClip;
 	private deathClipViewmodel?: AnimationClip;
 
-	public OnAnimationEvent: (key: string, strValue?: string, intValue?: number, floatValue?: number)=>void;
+	public OnAnimationEvent = new Signal<[key: string, strValue?: string, intValue?: number, floatValue?: number]>();
 
 	private readonly flashTransitionDuration = 0.035;
 	private readonly flashOnTime = 0.07;
@@ -47,14 +48,14 @@ export default class CharacterAnimator extends AirshipBehaviour {
 			this.bin.AddEngineEventConnection(this.character.animationHelper.OnAnimEvent((key)=>{
 				this.HandleAnimationEvents(key);
 				if(this.OnAnimationEvent){
-					this.OnAnimationEvent(key);
+					this.OnAnimationEvent.Fire(key);
 				}
 			}))
 
 			this.bin.AddEngineEventConnection(this.character.animationHelper.OnAnimObjEvent((data)=>{
 				this.HandleAnimationEvents(data.key, data.stringValue, data.intValue, data.floatValue);
 				if(this.OnAnimationEvent){
-					this.OnAnimationEvent(data.key, data.stringValue, data.intValue, data.floatValue);
+					this.OnAnimationEvent.Fire(data.key, data.stringValue, data.intValue, data.floatValue);
 				}
 			}))
 		}
