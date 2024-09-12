@@ -49,12 +49,12 @@ export default class DemoManager extends AirshipBehaviour {
 
 		Airship.Input.CreateAction("interact", Binding.Key(Key.F));
 
-		Airship.Inventory.RegisterItem("WoodSword", {
-			displayName: "Wood Sword",
-			maxStackSize: 1,
-			accessoryPaths: ["Assets/Resources/Accessories/Weapons/Swords/WoodSword/wood_sword.prefab"],
-			image: "Assets/Resources/ItemRenders/wood_sword.png",
-		});
+		// Airship.Inventory.RegisterItem("WoodSword", {
+		// 	displayName: "Wood Sword",
+		// 	maxStackSize: 1,
+		// 	accessoryPaths: ["Assets/Resources/Accessories/Weapons/Swords/WoodSword/wood_sword.prefab"],
+		// 	image: "Assets/Resources/ItemRenders/wood_sword.png",
+		// });
 
 		if (Game.IsServer()) {
 			this.bin.Add(
