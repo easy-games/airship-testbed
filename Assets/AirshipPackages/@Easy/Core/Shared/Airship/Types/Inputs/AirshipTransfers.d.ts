@@ -1,10 +1,5 @@
-/** Configuration for Airship transfers to games. */
-export interface AirshipGameTransferConfig {
-	/**
-	 * The preferred server to transfer to. If transfering to this server is not possible or it does not match the other
-	 * requested parameters, a different server will be selected.
-	 */
-	preferredServerId?: string;
+/** Base transfer configuration that all transfer requests can include */
+interface AishipBaseTransferConfig {
 	/** JSON encodable object that will be provided to the server being joined */
 	serverTransferData?: unknown;
 	/** JSON encodable object that will be provided to the client on transfer */
@@ -16,11 +11,20 @@ export interface AirshipGameTransferConfig {
 	loadingScreenImageId?: string;
 }
 
+/** Configuration for Airship transfers to games. */
+export interface AirshipGameTransferConfig extends AishipBaseTransferConfig {
+	/**
+	 * The preferred server to transfer to. If transfering to this server is not possible or it does not match the other
+	 * requested parameters, a different server will be selected.
+	 */
+	preferredServerId?: string;
+}
+
 /**
  * Configuration for Airship transfers to matching servers. If a configuration parameter is left undefined, any value will be accepted
  * for that parameter.
  */
-export interface AirshipMatchingServerTransferConfig {
+export interface AirshipMatchingServerTransferConfig extends AishipBaseTransferConfig {
 	/**
 	 * The sceneId to transfer the player to. Note that this is based on the scene the server was _started_ with,
 	 * not it's currently active scene.
@@ -43,30 +47,10 @@ export interface AirshipMatchingServerTransferConfig {
 	 * The access mode of the server. Only servers with this access mode will be selected.
 	 */
 	accessMode?: AccessMode;
-	/** JSON encodable object that will be provided to the server being joined */
-	serverTransferData?: unknown;
-	/** JSON encodable object that will be provided to the client on transfer */
-	clientTransferData?: unknown;
-	/** Loading screen image to be used. You can upload loading screen images on https://create.airship.gg/ */
-	loadingScreenImageId?: string;
 }
 
 /** Configuration for Airship transfers to a target player. */
-export interface AirshipPlayerTransferConfig {
-	/** JSON encodable object that will be provided to the server being joined */
-	serverTransferData?: unknown;
-	/** JSON encodable object that will be provided to the client on transfer */
-	clientTransferData?: unknown;
-	/** Loading screen image to be used. You can upload loading screen images on https://create.airship.gg/ */
-	loadingScreenImageId?: string;
-}
+export interface AirshipPlayerTransferConfig extends AishipBaseTransferConfig {}
 
 /** Configuration for Airship transfers to specific game servers. */
-export interface AirshipServerTransferConfig {
-	/** JSON encodable object that will be provided to the server being joined */
-	serverTransferData?: unknown;
-	/** JSON encodable object that will be provided to the client on transfer */
-	clientTransferData?: unknown;
-	/** Loading screen image to be used. You can upload loading screen images on https://create.airship.gg/ */
-	loadingScreenImageId?: string;
-}
+export interface AirshipServerTransferConfig extends AishipBaseTransferConfig {}
