@@ -119,7 +119,6 @@ export class ClientChatSingleton {
 		});
 
 		if (Game.IsProtectedLuauContext()) {
-			print("ClientChatSingleton.constructor");
 			this.RegisterCommand(new MessageCommand());
 			this.RegisterCommand(new ReplyCommand());
 		}
