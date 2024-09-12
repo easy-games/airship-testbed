@@ -7,7 +7,6 @@ export class CharacterFootstepSignal extends Cancellable {
 		public readonly raycastHit: RaycastHit,
 		public readonly material: Material | undefined,
 		public audioClip: AudioClip,
-		public readonly cameraPosition: Vector3,
 		public volume: number,
 		public readonly crouching: boolean,
 	) {
