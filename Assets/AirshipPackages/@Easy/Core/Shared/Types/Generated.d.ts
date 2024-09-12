@@ -2924,14 +2924,6 @@ declare const enum LineAlignment {
     Local = 1,
     TransformZ = 1,
 }
-declare const enum EntityAnimationEventKey {
-    FOOTSTEP = 0,
-    JUMP = 1,
-    LAND = 2,
-    SLIDE_START = 3,
-    SLIDE_END = 4,
-    DEFAULT = -1,
-}
 declare const enum Result {
     InProgress = 0,
     Success = 1,
@@ -3459,6 +3451,12 @@ declare const enum TreeMotionVectorModeOverride {
     PerObjectMotion = 1,
     ForceNoMotion = 2,
     InheritFromPrototype = 3,
+}
+declare const enum BlockingObjects {
+    None = 0,
+    TwoD = 1,
+    ThreeD = 2,
+    All = 3,
 }
 declare const enum RemovePlayerOptions {
     KeepActive = 0,
@@ -43519,6 +43517,21 @@ interface TerrainConstructor {
 
 }
 declare const Terrain: TerrainConstructor;
+    
+interface GraphicRaycaster extends BaseRaycaster {
+    readonly sortOrderPriority: number;
+    readonly renderOrderPriority: number;
+    ignoreReversedGraphics: boolean;
+    blockingObjects: BlockingObjects;
+    blockingMask: LayerMask;
+    readonly eventCamera: Camera;
+
+
+
+    Raycast(eventData: PointerEventData, resultAppendList: CSArray<RaycastResult>): void;
+
+
+}
     
 interface NetworkServer {
 
