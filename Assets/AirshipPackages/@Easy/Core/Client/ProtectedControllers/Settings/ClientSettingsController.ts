@@ -30,6 +30,18 @@ export class ClientSettingsController {
 
 	constructor() {
 		this.data = defaultData;
+
+		contextbridge.callback<() => number>("ClientSettings:GetMouseSensitivity", () => {
+			return this.GetMouseSensitivity();
+		});
+
+		contextbridge.callback<() => number>("ClientSettings:GetMouseSmoothing", () => {
+			return this.GetMouseSmoothing();
+		});
+
+		contextbridge.callback<() => number>("ClientSettings:GetTouchSensitivity", () => {
+			return this.GetTouchSensitivity();
+		});
 	}
 
 	protected OnStart(): void {
@@ -53,18 +65,6 @@ export class ClientSettingsController {
 				this.unsavedChanges = false;
 				this.SaveSettings();
 			}
-		});
-
-		contextbridge.callback<() => number>("ClientSettings:GetMouseSensitivity", () => {
-			return this.GetMouseSensitivity();
-		});
-
-		contextbridge.callback<() => number>("ClientSettings:GetMouseSmoothing", () => {
-			return this.GetMouseSmoothing();
-		});
-
-		contextbridge.callback<() => number>("ClientSettings:GetTouchSensitivity", () => {
-			return this.GetTouchSensitivity();
 		});
 
 		// Microphone
