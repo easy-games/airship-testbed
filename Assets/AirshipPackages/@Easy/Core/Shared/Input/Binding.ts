@@ -96,4 +96,14 @@ export class Binding {
 	public GetInputType() {
 		return InputUtil.GetInputTypeFromBinding(this, KeyType.Primary);
 	}
+
+	/** Returns the primary key for this binding (if it is a key binding, otherwise returns undefined) */
+	public GetKey(): Key | undefined {
+		return (this.config as KeyBindingConfig).key ?? Key.None;
+	}
+
+	/** Returns the mouse button for this binding (if it is a mouse binding, otherwise returns undefined) */
+	public GetMouseButton(): MouseButton | undefined {
+		return (this.config as MouseBindingConfig).mouseButton;
+	}
 }
