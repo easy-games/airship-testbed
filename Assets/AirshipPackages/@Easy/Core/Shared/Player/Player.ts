@@ -244,13 +244,17 @@ export class Player {
 	}
 
 	public SetCharacter(character: Character | undefined): void {
-		if (!Game.IsServer()) {
-			error("Player.SetCharacter() must be called from the server.");
-		}
+		// if (!Game.IsServer()) {
+		// 	error("Player.SetCharacter() must be called from the server.");
+		// }
 		// character?.networkIdentity.conn
-		character?.networkIdentity.AssignClientAuthority(this.networkIdentity.connectionToClient!);
+		if (Game.IsServer() && character?.networkIdentity.isServer) {
+			character?.networkIdentity.AssignClientAuthority(this.networkIdentity.connectionToClient!);
+		}
 		this.SetCharacterInternal(character);
-		CoreNetwork.ServerToClient.Character.SetCharacter.server.FireAllClients(this.connectionId, character?.id);
+		if (Game.IsServer() && !Game.IsHosting()) {
+			CoreNetwork.ServerToClient.Character.SetCharacter.server.FireAllClients(this.connectionId, character?.id);
+		}
 	}
 
 	private SetCharacterInternal(character: Character | undefined): void {
