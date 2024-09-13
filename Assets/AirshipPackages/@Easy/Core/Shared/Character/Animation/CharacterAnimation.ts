@@ -2,6 +2,7 @@
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { Airship } from "../../Airship";
 import { Signal } from "../../Util/Signal";
+import { Game } from "../../Game";
 
 export default class CharacterAnimator extends AirshipBehaviour {
 	@Header("References")
