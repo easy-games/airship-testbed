@@ -1,3 +1,4 @@
+import { InputUtils } from "../Util/InputUtils";
 import { ActionInputType, InputUtil, KeyType, ModifierKey } from "./InputUtil";
 
 interface KeyBindingConfig {
@@ -105,5 +106,26 @@ export class Binding {
 	/** Returns the mouse button for this binding (if it is a mouse binding, otherwise returns undefined) */
 	public GetMouseButton(): MouseButton | undefined {
 		return (this.config as MouseBindingConfig).mouseButton;
+	}
+
+	/** Gets the display name for the binding, for example: "Left Shift + S" or "Left Mouse Button" */
+	public GetDisplayName(): string | undefined {
+		if (this.IsUnset()) return undefined;
+
+		const key = this.GetKey();
+		let result = "";
+		if (key !== undefined) {
+			result = `${InputUtils.GetStringForKeyCode(key)}`;
+		}
+		const mouseButton = this.GetMouseButton();
+		if (mouseButton !== undefined) {
+			result = `${InputUtils.GetStringForMouseButton(mouseButton)}`;
+		}
+
+		const modifierKey = this.GetModifierKey();
+		if (modifierKey !== undefined && modifierKey !== Key.None) {
+			result = `${InputUtils.GetStringForKeyCode(modifierKey)} + ${result}`
+		}
+		return result;
 	}
 }

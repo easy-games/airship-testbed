@@ -62,9 +62,9 @@ export class InputUtils {
 	};
 
 	public static mouseButtonMap: Record<MouseButton, string> = {
-		[MouseButton.LeftButton]: "Left Button",
-		[MouseButton.MiddleButton]: "Middle Button",
-		[MouseButton.RightButton]: "Right Button",
+		[MouseButton.LeftButton]: "Left Mouse Button",
+		[MouseButton.MiddleButton]: "Middle Mouse Button",
+		[MouseButton.RightButton]: "Right Mouse Button",
 	};
 
 	/**
