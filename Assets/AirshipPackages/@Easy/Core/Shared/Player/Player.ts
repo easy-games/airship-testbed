@@ -247,6 +247,8 @@ export class Player {
 		if (!Game.IsServer()) {
 			error("Player.SetCharacter() must be called from the server.");
 		}
+		// character?.networkIdentity.conn
+		character?.networkIdentity.AssignClientAuthority(this.networkIdentity.connectionToClient!);
 		this.SetCharacterInternal(character);
 		CoreNetwork.ServerToClient.Character.SetCharacter.server.FireAllClients(this.connectionId, character?.id);
 	}
