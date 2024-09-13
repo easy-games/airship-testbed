@@ -20,7 +20,7 @@ export default class CharacterTeleporter extends AirshipBehaviour {
                             print("Teleporting to: " + this.targetTeleporter.gameObject.name);
                             this.currentTargets.delete(character.id);
                         this.targetTeleporter.RecieveTarget(character);
-                        character.movement.Teleport(this.targetTeleporter.transform.position);
+                        character.movement!.Teleport(this.targetTeleporter.transform.position);
                     }
                 });
             }

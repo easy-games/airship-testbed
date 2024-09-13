@@ -9,7 +9,7 @@ import { LocalCharacterSingleton } from "./LocalCharacterSingleton";
 
 export class CharacterInput {
 	private readonly bin = new Bin();
-	private readonly movement: CharacterMovement;
+	private readonly movement?: CharacterMovement;
 	private disablers = new Set<number>();
 	private disablerCounter = 1;
 
@@ -33,7 +33,7 @@ export class CharacterInput {
 	public SetEnabled(enabled: boolean) {
 		this.enabled = enabled;
 		if (!enabled) {
-			this.movement.SetMoveInput(Vector3.zero, false, false, false, false);
+			this.movement?.SetMoveInput(Vector3.zero, false, false, false, false);
 		}
 	}
 
@@ -91,7 +91,7 @@ export class CharacterInput {
 
 		const onMobileJoystickChanged = (position: Vector3, phase: MobileJoystickPhase) => {
 			if (!this.enabled) return;
-			this.movement.SetMoveInput(position, false, false, false, false);
+			this.movement?.SetMoveInput(position, false, false, false, false);
 		};
 
 		const localCharacterSingleton = Dependency<LocalCharacterSingleton>();
@@ -107,7 +107,7 @@ export class CharacterInput {
 				);
 				localCharacterSingleton.onBeforeLocalEntityInput.Fire(moveSignal);
 
-				this.movement.SetMoveInput(
+				this.movement?.SetMoveInput(
 					moveSignal.moveDirection,
 					moveSignal.jump,
 					moveSignal.sprinting,

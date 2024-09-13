@@ -262,8 +262,13 @@ export class AppManager {
 	 */
 	public static IsOpen(): boolean {
 		if (Game.IsGameLuauContext()) {
-			if (contextbridge.invoke<() => boolean>("AppManager:IsOpenFromGame", LuauContext.Protected)) {
-				return true;
+			try {
+				if (contextbridge.invoke<() => boolean>("AppManager:IsOpenFromGame", LuauContext.Protected)) {
+					return true;
+				}
+			} catch (err) {
+				Debug.LogError(err);
+				return false;
 			}
 		}
 		return this.opened;

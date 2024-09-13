@@ -30,8 +30,10 @@ export default class OneWayPlatform extends AirshipBehaviour {
 			this.activeGo.SetActive(!characterIsBelow);
 			this.inactiveGo.SetActive(characterIsBelow);
 			//print("Characer Y:  "+ character.transform.position.y + " platform Y: " + this.transform.position.y + " characterIsBelow: " + characterIsBelow);
-			character.movement.IgnoreGroundCollider(this.collider, characterIsBelow);
-			Physics.IgnoreCollision(this.collider, character.movement.mainCollider, characterIsBelow);
+			if (character.movement) {
+				character.movement.IgnoreGroundCollider(this.collider, characterIsBelow);
+				Physics.IgnoreCollision(this.collider, character.movement.mainCollider, characterIsBelow);
+			}
 		}
 	}
 }

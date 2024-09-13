@@ -95,12 +95,29 @@ export class AirshipCharactersSingleton {
 					}
 				}
 			});
+
+			CoreNetwork.ServerToClient.Character.SetCharacter.client.OnServerEvent((connId, characterId) => {
+				const player = Airship.Players.FindByConnectionId(connId);
+				if (!player) return;
+
+				type PlayerInternal = {
+					SetCharacterInternal(character: Character | undefined): void;
+				};
+
+				if (characterId === undefined) {
+					(player as unknown as PlayerInternal).SetCharacterInternal(undefined);
+					return;
+				}
+
+				const character = Airship.Characters.FindById(characterId);
+				(player as unknown as PlayerInternal).SetCharacterInternal(character);
+			});
 		}
 
 		if (Game.IsClient()) {
 			CoreNetwork.ServerToClient.Character.ChangeOutfit.client.OnServerEvent((characterId, outfitDto) => {
 				const character = this.FindById(characterId);
-				if (!character) return;
+				if (!character || !character.accessoryBuilder) return;
 
 				if (outfitDto) {
 					character.LoadUserOutfit(outfitDto);
@@ -191,8 +208,8 @@ export class AirshipCharactersSingleton {
 					accessoryTemplates = [...Airship.Inventory.GetAccessoriesForItemType(itemDef.itemType)];
 				}
 
-				character.accessoryBuilder.RemoveAccessorySlot(AccessorySlot.LeftHand, false);
-				character.accessoryBuilder.RemoveAccessorySlot(AccessorySlot.RightHand, false);
+				character.accessoryBuilder?.RemoveAccessorySlot(AccessorySlot.LeftHand, false);
+				character.accessoryBuilder?.RemoveAccessorySlot(AccessorySlot.RightHand, false);
 				if (viewmodelAccessoryBuilder) {
 					viewmodelAccessoryBuilder.RemoveAccessorySlot(AccessorySlot.LeftHand, false);
 					viewmodelAccessoryBuilder.RemoveAccessorySlot(AccessorySlot.RightHand, false);
@@ -204,7 +221,7 @@ export class AirshipCharactersSingleton {
 				// this.activeAccessoriesWorldmodel.clear();
 				// this.activeAccessoriesViewmodel.clear();
 				for (const accessoryTemplate of accessoryTemplates) {
-					character.accessoryBuilder.AddSingleAccessory(accessoryTemplate, true);
+					character.accessoryBuilder?.AddSingleAccessory(accessoryTemplate, true);
 					if (viewmodelAccessoryBuilder) {
 						viewmodelAccessoryBuilder.AddSingleAccessory(accessoryTemplate, false);
 					}
@@ -328,8 +345,8 @@ export class AirshipCharactersSingleton {
 				);
 				characterNetworkObj.gameObject.name = "Character_" + player.username;
 			}
-			if (Game.IsEditor() && !Game.IsHosting()) {
-				//Hack to load your own outfit in dedicated mode
+			if (Game.IsEditor() && !Game.IsHosting() && character.accessoryBuilder) {
+				// Hack to load your own outfit in dedicated mode
 				Airship.Avatar.LoadOutfitFromLocalUser(character.accessoryBuilder);
 			}
 			character.Init(player, dto.id, dto.outfitDto);

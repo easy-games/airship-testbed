@@ -127,9 +127,8 @@ export class Player {
 
 	/**
 	 * Can yield if the player's outfit hasn't finished downloading.
-	 * @param position
-	 * @param config
-	 * @returns
+	 * @param position Spawn position of character
+	 * @param config.lookDirection Initial facing direction of character
 	 */
 	public SpawnCharacter(
 		position: Vector3,
@@ -153,7 +152,7 @@ export class Player {
 		go.name = `Character_${this.username}`;
 		const characterComponent = go.GetAirshipComponent<Character>()!;
 		if (config?.lookDirection) {
-			characterComponent.movement.SetLookVector(config?.lookDirection);
+			characterComponent.movement?.SetLookVector(config?.lookDirection);
 		}
 
 		if (!this.outfitLoaded) {
@@ -244,6 +243,20 @@ export class Player {
 	}
 
 	public SetCharacter(character: Character | undefined): void {
+		// if (!Game.IsServer()) {
+		// 	error("Player.SetCharacter() must be called from the server.");
+		// }
+		// character?.networkIdentity.conn
+		if (Game.IsServer() && character?.networkIdentity.isServer) {
+			character?.networkIdentity.AssignClientAuthority(this.networkIdentity.connectionToClient!);
+		}
+		this.SetCharacterInternal(character);
+		if (Game.IsServer() && !Game.IsHosting()) {
+			CoreNetwork.ServerToClient.Character.SetCharacter.server.FireAllClients(this.connectionId, character?.id);
+		}
+	}
+
+	private SetCharacterInternal(character: Character | undefined): void {
 		this.character = character;
 		this.onCharacterChanged.Fire(character);
 	}

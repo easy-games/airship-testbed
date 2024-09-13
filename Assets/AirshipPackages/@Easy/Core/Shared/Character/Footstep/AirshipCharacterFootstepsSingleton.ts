@@ -59,6 +59,7 @@ export class AirshipCharacterFootstepsSingleton {
 
 	public PlayFootstepSound(character: Character): void {
 		if (!this.foostepSoundsEnabled) return;
+		if (!character.movement) return; // TODO remove dependency on movement for footsteps
 
 		const raycastHit = character.movement.groundedRaycastHit;
 		const renderer = raycastHit.collider?.GetComponent<Renderer>();

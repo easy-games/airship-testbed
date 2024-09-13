@@ -49,12 +49,12 @@ export default class DemoManager extends AirshipBehaviour {
 
 		Airship.Input.CreateAction("interact", Binding.Key(Key.F));
 
-		Airship.Inventory.RegisterItem("WoodSword", {
-			displayName: "Wood Sword",
-			maxStackSize: 1,
-			accessoryPaths: ["Assets/Resources/Accessories/Weapons/Swords/WoodSword/wood_sword.prefab"],
-			image: "Assets/Resources/ItemRenders/wood_sword.png",
-		});
+		// Airship.Inventory.RegisterItem("WoodSword", {
+		// 	displayName: "Wood Sword",
+		// 	maxStackSize: 1,
+		// 	accessoryPaths: ["Assets/Resources/Accessories/Weapons/Swords/WoodSword/wood_sword.prefab"],
+		// 	image: "Assets/Resources/ItemRenders/wood_sword.png",
+		// });
 
 		if (Game.IsServer()) {
 			this.bin.Add(
@@ -99,7 +99,7 @@ export default class DemoManager extends AirshipBehaviour {
 					const cube = Object.Instantiate(Asset.LoadAsset("Assets/Resources/OfflineCube.prefab"));
 					cube.transform.position = Game.localPlayer.character!.rig.head.position.add(new Vector3(0, 1, 0));
 					const rb = cube.gameObject.GetComponent<Rigidbody>()!;
-					rb.velocity = Game.localPlayer.character!.movement.GetLookVector().add(new Vector3(0, 1, 0)).mul(5);
+					rb.velocity = Game.localPlayer.character!.movement!.GetLookVector().add(new Vector3(0, 1, 0)).mul(5);
 				}),
 			);
 		}

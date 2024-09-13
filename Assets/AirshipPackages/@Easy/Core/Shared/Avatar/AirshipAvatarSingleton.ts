@@ -79,6 +79,10 @@ export class AirshipAvatarSingleton {
 		if (!character.player) {
 			return;
 		}
+		if (!character.accessoryBuilder) {
+			warn("Cannot load outfit without Accessory Builder set on Character.")
+			return;
+		}
 		this.LoadOutfitByUserId(character.player.userId, character.accessoryBuilder, options);
 	}
 

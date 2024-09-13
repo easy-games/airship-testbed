@@ -30,6 +30,7 @@ export default class SettingsPage extends AirshipBehaviour {
 	private bin = new Bin();
 
 	public OnEnable(): void {
+		print("OnEnable settingspage: " + this.gameObject.activeInHierarchy);
 		if (!Game.IsClient()) return;
 
 		const rect = this.gameObject.transform as RectTransform;

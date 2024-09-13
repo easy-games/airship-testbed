@@ -32,7 +32,7 @@ export class HumanoidCameraMode extends CameraMode {
 	private readonly bin = new Bin();
 
 	private lookVector = Vector3.zero;
-	private readonly movement: CharacterMovement;
+	private readonly movement?: CharacterMovement;
 	private occlusionCam!: OcclusionCam;
 	private lookBackwards = false;
 
@@ -276,7 +276,7 @@ export class HumanoidCameraMode extends CameraMode {
 		const newLookVector = this.lookBackwards && !this.firstPerson ? transform.forward.mul(-1) : transform.forward;
 		const diff = this.lookVector.sub(newLookVector).magnitude;
 		if (diff > 0.01) {
-			this.movement.SetLookVector(newLookVector);
+			this.movement?.SetLookVector(newLookVector);
 			this.lookVector = newLookVector;
 		}
 	}
@@ -310,7 +310,7 @@ export class HumanoidCameraMode extends CameraMode {
 		// Determine Y-axis rotation based on direction:
 		direction = direction.normalized;
 		this.rotationY = math.atan2(-direction.x, direction.z) % TAU;
-		this.movement.SetLookVector(direction);
+		this.movement?.SetLookVector(direction);
 	}
 
 	public SetDirection(direction: Vector3) {
@@ -319,7 +319,7 @@ export class HumanoidCameraMode extends CameraMode {
 		this.rotationY = math.atan2(-direction.x, direction.z) % TAU;
 		const adj = new Vector2(direction.x, direction.z).magnitude;
 		this.rotationX = math.clamp(math.pi / 2 + math.atan2(direction.y, adj), MIN_ROT_X, MAX_ROT_X);
-		this.movement.SetLookVector(direction);
+		this.movement?.SetLookVector(direction);
 	}
 
 	private GetCamYOffset(isFirstPerson: boolean) {

@@ -5,7 +5,6 @@ import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Binding } from "@Easy/Core/Shared/Input/Binding";
 import { InputAction } from "@Easy/Core/Shared/Input/InputAction";
 import { InputUtil } from "@Easy/Core/Shared/Input/InputUtil";
-import { FormatUtil } from "@Easy/Core/Shared/Util/FormatUtil";
 import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
 import { Keyboard, Mouse } from "../../../UserInput";
@@ -133,7 +132,7 @@ export default class SettingsKeybind extends AirshipBehaviour {
 	 */
 	public Init(action: InputAction) {
 		this.inputAction = action;
-		this.title.text = FormatUtil.ToDisplayFormat(action.name);
+		this.title.text = action.GetDisplayName();
 		this.UpdateBindingTextFromBinding(action.binding);
 
 		Airship.Input.onActionUnbound.Connect((unbound) => {

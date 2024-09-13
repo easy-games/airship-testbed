@@ -1,6 +1,5 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { Game } from "@Easy/Core/Shared/Game";
-import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
 
 export default class NPCSpawner extends AirshipBehaviour {
 	public spawnpoint: Transform;
@@ -10,7 +9,7 @@ export default class NPCSpawner extends AirshipBehaviour {
 
 		const character = Airship.Characters.SpawnNonPlayerCharacter(this.spawnpoint.position);
 		const inv = character.inventory;
-		inv.SetItem(1, new ItemStack("WoodSword"));
+		// inv.SetItem(1, new ItemStack("WoodSword"));
 		inv.SetHeldSlot(1);
 
 		task.spawn(() => {

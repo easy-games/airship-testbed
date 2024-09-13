@@ -23,12 +23,12 @@ export default class Character extends AirshipBehaviour {
 	public player?: Player;
 
 	@NonSerialized()
-	public animation!: CharacterAnimation;
+	public animation?: CharacterAnimation;
 
 	@Header("References")
-	public movement!: CharacterMovement;
+	public movement?: CharacterMovement;
 	public animationHelper!: CharacterAnimationHelper;
-	public accessoryBuilder!: AccessoryBuilder;
+	public accessoryBuilder?: AccessoryBuilder;
 	public model!: GameObject;
 	public networkIdentity!: NetworkIdentity;
 	public rigRoot!: GameObject;
@@ -107,24 +107,26 @@ export default class Character extends AirshipBehaviour {
 		);
 
 		// Custom move command data handling:
-		const customDataConn = this.movement.OnBeginMove((moveData, isReplay) => {
-			this.BeginMove(moveData, isReplay);
-		});
-		this.bin.Add(() => {
-			Bridge.DisconnectEvent(customDataConn);
-		});
-
-		{
-			// state change
-			const conn = this.movement.OnStateChanged((state) => {
-				if (this.state === state) return;
-				const oldState = this.state;
-				this.state = state;
-				this.onStateChanged.Fire(state, oldState);
+		if (this.movement) {
+			const customDataConn = this.movement.OnBeginMove((moveData, isReplay) => {
+				this.BeginMove(moveData, isReplay);
 			});
 			this.bin.Add(() => {
-				Bridge.DisconnectEvent(conn);
+				Bridge.DisconnectEvent(customDataConn);
 			});
+
+			{
+				// state change
+				const conn = this.movement.OnStateChanged((state) => {
+					if (this.state === state) return;
+					const oldState = this.state;
+					this.state = state;
+					this.onStateChanged.Fire(state, oldState);
+				});
+				this.bin.Add(() => {
+					Bridge.DisconnectEvent(conn);
+				});
+			}
 		}
 	}
 
@@ -145,24 +147,33 @@ export default class Character extends AirshipBehaviour {
 		this.player = player;
 		this.id = id;
 		this.outfitDto = outfitDto;
-		this.animation.SetViewModelEnabled(player?.IsLocalPlayer() ?? false);
+		this.animation?.SetViewModelEnabled(player?.IsLocalPlayer() ?? false);
 		this.health = 100;
 		this.maxHealth = 100;
 		this.despawned = false;
 		this.initialized = true;
 
-		this.LoadUserOutfit(outfitDto);
+		if (this.accessoryBuilder) {
+			this.LoadUserOutfit(outfitDto);
+		}
 
-		//Apply the queued custom data to movement
-		const customDataFlushedConn = this.movement.OnSetCustomData(() => {
-			this.ProccessCustomMoveData();
-		});
-		this.bin.Add(() => {
-			Bridge.DisconnectEvent(customDataFlushedConn);
-		});
+		if (this.movement) {
+			// Apply the queued custom data to movement
+			const customDataFlushedConn = this.movement.OnSetCustomData(() => {
+				this.ProccessCustomMoveData();
+			});
+			this.bin.Add(() => {
+				Bridge.DisconnectEvent(customDataFlushedConn);
+			});
+		}
 	}
 
 	public LoadUserOutfit(outfitDto: OutfitDto | undefined) {
+		if (!this.accessoryBuilder) {
+			warn("Cannot load outfit without Accessory Builder set on Character.");
+			return;
+		}
+
 		this.outfitDto = outfitDto;
 		//print("using outfit: " + outfitDto?.name);
 		if (Game.IsClient() && outfitDto && this.autoLoadAvatarOutfit) {
@@ -230,6 +241,11 @@ export default class Character extends AirshipBehaviour {
 	 * You can call it from the client only when using Client Authoratative characters.
 	 */
 	public Teleport(pos: Vector3, lookVector?: Vector3): void {
+		if (!this.movement) {
+			warn("Cannot teleport character: movement script missing.");
+			return;
+		}
+
 		if (lookVector) {
 			this.movement.TeleportAndLook(pos, lookVector);
 		} else {

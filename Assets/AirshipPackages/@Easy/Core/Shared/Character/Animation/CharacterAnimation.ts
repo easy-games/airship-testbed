@@ -1,6 +1,5 @@
 ﻿﻿import Character from "@Easy/Core/Shared/Character/Character";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
-import { Game } from "../../Game";
 import { Airship } from "../../Airship";
 import { Signal } from "../../Util/Signal";
 
@@ -90,34 +89,12 @@ export default class CharacterAnimator extends AirshipBehaviour {
 		//Play death animation
 		if (this.character.IsLocalCharacter()) {
 			//Lock Inputs
-			this.character.movement.disableInput = true;
+			if (this.character.movement) this.character.movement.disableInput = true;
 		}
 		const deathClip = this.isFirstPerson ? this.deathClipViewmodel : this.deathClip;
 		if (deathClip) {
 			this.character.animationHelper.PlayAnimation(deathClip, CharacterAnimationLayer.OVERRIDE_1, 0.05);
 		}
-	}
-
-	private PlayDamageFlash() {
-		if (this.character.IsDestroyed() || this.isFlashing) return;
-		let allMeshes = this.character.accessoryBuilder.GetAllAccessoryMeshes();
-		const duration = this.flashTransitionDuration + this.flashOnTime;
-		this.isFlashing = true;
-		for (let i = 0; i < allMeshes.Length; i++) {
-			const renderer = allMeshes.GetValue(i);
-			if (renderer && renderer.enabled) {
-				NativeTween.MaterialsFloatProperty(
-					renderer,
-					"_OverrideStrength",
-					0,
-					1,
-					this.flashTransitionDuration,
-				).SetPingPong();
-			}
-		}
-		task.delay(duration, () => {
-			this.isFlashing = false;
-		});
 	}
 
 	public SetFresnelColor(color: Color, power: number, strength: number) {
@@ -151,7 +128,7 @@ export default class CharacterAnimator extends AirshipBehaviour {
 	}
 
 	public SetPlaybackSpeed(newSpeed: number) {
-		this.character.animation.SetPlaybackSpeed(newSpeed);
+		this.character.animation?.SetPlaybackSpeed(newSpeed);
 	}
 
 	public IsViewModelEnabled(): boolean {
@@ -163,8 +140,8 @@ export default class CharacterAnimator extends AirshipBehaviour {
 	}
 
 	private HandleAnimationEvents(key: string, strValue?: string, intValue?: number, floatValue?: number){
-		if(key === "Footstep"){
-			if(this.character.movement.IsGrounded()){
+		if (key === "Footstep") {
+			if (this.character.movement?.IsGrounded()) {
 				Airship.Characters.footsteps.PlayFootstepSound(this.character);
 			}
 		}

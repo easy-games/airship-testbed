@@ -72,10 +72,15 @@ export const CoreNetwork = {
 		PlayerEliminated: new NetworkSignal<[clientId: number]>("PlayerEliminated"),
 
 		Character: {
-			Spawn: new NetworkSignal<[characterDto: CharacterDto]>("Spawn"),
-			SetHealth: new NetworkSignal<[characterId: number, health: number]>("SetHealth"),
-			SetMaxHealth: new NetworkSignal<[characterId: number, health: number]>("SetMaxHealth"),
-			ChangeOutfit: new NetworkSignal<[characterId: number, outfitDto: OutfitDto | undefined]>("ChangeOutfit"),
+			Spawn: new NetworkSignal<[characterDto: CharacterDto]>("AirshipSpawn"),
+			SetHealth: new NetworkSignal<[characterId: number, health: number]>("AirshipSetHealth"),
+			SetMaxHealth: new NetworkSignal<[characterId: number, health: number]>("AirshipSetMaxHealth"),
+			ChangeOutfit: new NetworkSignal<[characterId: number, outfitDto: OutfitDto | undefined]>(
+				"AirshipChangeOutfit",
+			),
+			SetCharacter: new NetworkSignal<[connectionId: number, characterId: number | undefined]>(
+				"AirshipSetCharacter",
+			),
 		},
 
 		Purchase: {

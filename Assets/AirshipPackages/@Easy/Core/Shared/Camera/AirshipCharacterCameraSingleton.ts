@@ -112,7 +112,7 @@ export class AirshipCharacterCameraSingleton {
 		if (Game.IsClient()) {
 			const p = Game.localPlayer;
 			OnUpdate.Connect(() => {
-				if (p.character?.movement.IsSprinting()) {
+				if (p.character?.movement?.IsSprinting()) {
 					this.lastSprintTime = Time.unscaledTime;
 				}
 				this.MakeFOVReflectCharacterState();

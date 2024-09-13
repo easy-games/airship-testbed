@@ -128,21 +128,25 @@ export class AirshipInputSingleton {
 			);
 		}
 
+		if (Game.IsProtectedLuauContext()) {
+			contextbridge.subscribe("ProtectedKeybind:CreateAction", 
+				(from: LuauContext, name: string, id: number, binding: Binding) => {
+					if (from !== LuauContext.Game) return;
+
+					this.RegisterAction(name, Binding.Clone(binding));
+				});
+		}
+
 		Airship.Input.onActionBound.Connect((action) => {
 			if (!action.binding.IsUnset()) {
 				if (this.unsetOnDuplicateKeybind) {
 					this.UnsetDuplicateBindings(action);
 				}
 				this.CreateActionListeners(action);
-				// Action was bound in the protected context (IE: The keybind menu)
-				// We must tell the game context about this so it can also rebind.
-				if (Game.IsProtectedLuauContext()) {
-					contextbridge.broadcast("ProtectedKeybind:Updated", action.name, action.id, action.binding);
-				}
 			}
 		});
 
-		Airship.Input.CreateActions([
+		Airship.Input.RegisterActions([
 			{ name: "Forward", binding: Binding.Key(Key.W) },
 			{ name: "Left", binding: Binding.Key(Key.A) },
 			{ name: "Back", binding: Binding.Key(Key.S) },
@@ -242,6 +246,25 @@ export class AirshipInputSingleton {
 		}
 	}
 
+	/** Bulk register action */
+	private RegisterActions(actions: InputActionSchema[]): void {
+		for (const action of actions) {
+			this.RegisterAction(action.name, action.binding, {
+				category: action.category ?? "General",
+				secondaryBinding: action.secondaryBinding,
+			});
+		}
+	}
+
+
+	/** Same as CreateAction (except it won't broadcast over context bridge) */
+	private RegisterAction(name: string, binding: Binding, config?: InputActionConfig): InputAction {
+		const action = new InputAction(name, binding, false, config?.category ?? "General");
+		this.AddActionToTable(action);
+		this.onActionBound.Fire(action);
+		return action;
+	}
+
 	/**
 	 * Creates an action with respect to the provided name and binding. After this action is created,
 	 * it will immediately start firing up and down events. This action's binding can be updated through Airship's
@@ -253,9 +276,15 @@ export class AirshipInputSingleton {
 	 * @param category The category this action belongs to.
 	 */
 	public CreateAction(name: string, binding: Binding, config?: InputActionConfig): void {
-		const action = new InputAction(name.lower(), binding, false, config?.category ?? "General");
-		this.AddActionToTable(action);
-		this.onActionBound.Fire(action);
+		const action = this.RegisterAction(name, binding, config);
+		// Tell game context about new binding
+		if (Game.IsProtectedLuauContext() && !action.binding.IsUnset()) {
+			contextbridge.broadcast("ProtectedKeybind:Updated", action.name, action.id, action.binding);
+		}
+		// Tell protected context of new action
+		if (Game.IsGameLuauContext()) {
+			contextbridge.broadcast("ProtectedKeybind:CreateAction", name, action.id, action.binding);
+		}
 	}
 
 	/**

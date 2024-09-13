@@ -22,7 +22,7 @@ export default class CharacterMoveSlide extends AirshipBehaviour {
 		if (this.character.IsLocalCharacter()) {
 			Airship.Input.CreateAction(this.SlideKey, Binding.Key(Key.Q));
 			Airship.Input.OnDown(this.SlideKey).Connect(() => {
-				this.startTick = this.character.movement.GetNextTick();
+				this.startTick = this.character.movement!.GetNextTick();
 			});
 		}
 
@@ -46,7 +46,7 @@ export default class CharacterMoveSlide extends AirshipBehaviour {
 	public Update(dt: number): void {
 		if (this.character.IsInitialized() && this.character.IsLocalCharacter()) {
 			if (Airship.Input.IsDown(this.SlideKey)) {
-				let characterState = this.character.movement.GetState();
+				let characterState = this.character.movement!.GetState();
 				if (characterState === CharacterState.Running || characterState === CharacterState.Sprinting) {
 					this.character.AddCustomMoveData(this.SlideKey, this.startTick);
 				}
