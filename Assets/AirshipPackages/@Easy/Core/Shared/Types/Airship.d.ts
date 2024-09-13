@@ -583,15 +583,19 @@ interface MeshProcessorConstructor {
 }
 declare const MeshProcessor: MeshProcessorConstructor;
 
-interface AnimationTrigger extends ScriptableObject{
-    key: string;
-    stringValue: string;
-    intValue: number;
-    floatValue: number;
+interface AnimationEventListener extends MonoBehaviour {
+    minRepeatMessageTime: number;
+
+    OnAnimObjEvent(callback: (data: AnimationEventData) => void): EngineEventConnection;
+    OnAnimEvent(callback: (key: string) => void): EngineEventConnection;
+
+    TriggerEvent(key: string): void;
+    TriggerEventObj(obj: Object): void;
 }
 
 interface CharacterAnimationHelper extends Component {
 	animator: Animator;
+	animationEvents?: AnimationEventListener;
 	SetForceLookForward(forceLookForward: boolean): void;
 	SetFirstPerson(firstPerson: boolean): void;
 	SetRootMovementLayer(itemInHand: boolean): void;
@@ -600,8 +604,6 @@ interface CharacterAnimationHelper extends Component {
 	SetVelocity(vel: Vector3);
 	SetGrounded(grounded: boolean);
 	GetPlaybackSpeed(): number;
-	OnAnimObjEvent(callback: (data: AnimationTrigger) => void): EngineEventConnection;
-	OnAnimEvent(callback: (key: string) => void): EngineEventConnection;
 	/**
 	 * Under the hood, we call `animator.CrossFadeInFixedTime()`
 	 *

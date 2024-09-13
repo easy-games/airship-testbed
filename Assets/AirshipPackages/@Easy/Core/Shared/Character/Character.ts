@@ -7,7 +7,7 @@ import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { CoreNetwork } from "../CoreNetwork";
 import { DamageInfo, DamageInfoCustomData } from "../Damage/DamageInfo";
-import CharacterAnimator from "./Animation/CharacterAnimator";
+import CharacterAnimation from "./Animation/CharacterAnimation";
 import CharacterConfigSetup from "./CharacterConfigSetup";
 
 /**
@@ -23,7 +23,7 @@ export default class Character extends AirshipBehaviour {
 	public player?: Player;
 
 	@NonSerialized()
-	public animator!: CharacterAnimator;
+	public animation!: CharacterAnimation;
 
 	@Header("References")
 	public movement!: CharacterMovement;
@@ -69,7 +69,7 @@ export default class Character extends AirshipBehaviour {
 	public Awake(): void {
 		this.inventory = this.gameObject.GetAirshipComponent<Inventory>()!;
 		this.rig = this.rigRoot.GetComponent<CharacterRig>()!;
-		this.animator = this.gameObject.GetAirshipComponent<CharacterAnimator>()!;
+		this.animation = this.gameObject.GetAirshipComponent<CharacterAnimation>()!;
 	}
 
 	public LateUpdate(dt: number): void {
@@ -145,7 +145,7 @@ export default class Character extends AirshipBehaviour {
 		this.player = player;
 		this.id = id;
 		this.outfitDto = outfitDto;
-		this.animator.SetViewModelEnabled(player?.IsLocalPlayer() ?? false);
+		this.animation.SetViewModelEnabled(player?.IsLocalPlayer() ?? false);
 		this.health = 100;
 		this.maxHealth = 100;
 		this.despawned = false;

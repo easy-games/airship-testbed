@@ -56,7 +56,7 @@ export class FirstPersonCameraSystem {
 		if (!CameraReferences.viewmodelCamera) return;
 		CameraReferences.viewmodelCamera.gameObject.SetActive(isFirstPerson);
 		// Game.localPlayer.character?.animationHelper?.SetFirstPerson(isFirstPerson);
-		Game.localPlayer.character?.animator.SetFirstPerson(isFirstPerson);
+		Game.localPlayer.character?.animation.SetFirstPerson(isFirstPerson);
 
 		//Reset shoulders since not all animations will key these values
 		// this.entityReferences.shoulderL.localPosition = this.originalShoulderLPosition;

@@ -45,19 +45,22 @@ export default class CharacterAnimator extends AirshipBehaviour {
 			);
 
 			//Animation Events
-			this.bin.AddEngineEventConnection(this.character.animationHelper.OnAnimEvent((key)=>{
-				this.HandleAnimationEvents(key);
-				if(this.OnAnimationEvent){
-					this.OnAnimationEvent.Fire(key);
-				}
-			}))
-
-			this.bin.AddEngineEventConnection(this.character.animationHelper.OnAnimObjEvent((data)=>{
-				this.HandleAnimationEvents(data.key, data.stringValue, data.intValue, data.floatValue);
-				if(this.OnAnimationEvent){
-					this.OnAnimationEvent.Fire(data.key, data.stringValue, data.intValue, data.floatValue);
-				}
-			}))
+			const animEvents = this.character.animationHelper.animationEvents;
+			if(animEvents){
+				this.bin.AddEngineEventConnection(animEvents.OnAnimEvent((key)=>{
+					this.HandleAnimationEvents(key);
+					if(this.OnAnimationEvent){
+						this.OnAnimationEvent.Fire(key);
+					}
+				}));
+	
+				this.bin.AddEngineEventConnection(animEvents.OnAnimObjEvent((data)=>{
+					this.HandleAnimationEvents(data.key, data.stringValue, data.intValue, data.floatValue);
+					if(this.OnAnimationEvent){
+						this.OnAnimationEvent.Fire(data.key, data.stringValue, data.intValue, data.floatValue);
+					}
+				}));
+			}
 		}
 
 		// todo: is this needed?
@@ -148,7 +151,7 @@ export default class CharacterAnimator extends AirshipBehaviour {
 	}
 
 	public SetPlaybackSpeed(newSpeed: number) {
-		this.character.animator.SetPlaybackSpeed(newSpeed);
+		this.character.animation.SetPlaybackSpeed(newSpeed);
 	}
 
 	public IsViewModelEnabled(): boolean {
