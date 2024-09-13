@@ -492,6 +492,10 @@
 		"Code/Components/TestCharacter@TestCharacter": {
 			"assetPath": "Code/Components/TestCharacter.ts",
 			"name": "TestCharacter"
+		},
+		"Code/InputTest@InputTest": {
+			"assetPath": "Code/InputTest.ts",
+			"name": "InputTest"
 		}
 	},
 	"enum": {

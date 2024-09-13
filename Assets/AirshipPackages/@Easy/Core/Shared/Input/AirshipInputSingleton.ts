@@ -10,6 +10,7 @@ import { ControlScheme, Keyboard, Mouse, Preferred as PreferredControls } from "
 import { Bin } from "../Util/Bin";
 import { CanvasAPI, PointerDirection } from "../Util/CanvasAPI";
 import { Signal } from "../Util/Signal";
+import { CoreAction } from "./AirshipCoreAction";
 import { Binding } from "./Binding";
 import { InputAction, InputActionConfig, InputActionSchema } from "./InputAction";
 import { InputActionEvent } from "./InputActionEvent";
@@ -137,6 +138,15 @@ export class AirshipInputSingleton {
 				});
 		}
 
+		if (Game.IsProtectedLuauContext()) {
+			contextbridge.subscribe("ProtectedKeybind:UnregisterAction", 
+				(from: LuauContext, name: string) => {
+					if (from !== LuauContext.Game) return;
+
+					this.DisableCoreActions([name as CoreAction]);
+				});
+		}
+
 		Airship.Input.onActionBound.Connect((action) => {
 			if (!action.binding.IsUnset()) {
 				if (this.unsetOnDuplicateKeybind) {
@@ -147,26 +157,25 @@ export class AirshipInputSingleton {
 		});
 
 		Airship.Input.RegisterActions([
-			{ name: "Forward", binding: Binding.Key(Key.W) },
-			{ name: "Left", binding: Binding.Key(Key.A) },
-			{ name: "Back", binding: Binding.Key(Key.S) },
-			{ name: "Right", binding: Binding.Key(Key.D) },
-			{ name: "Jump", binding: Binding.Key(Key.Space) },
-			{ name: "Sprint", binding: Binding.Key(Key.LeftShift) },
+			{ name: CoreAction.Forward, binding: Binding.Key(Key.W) },
+			{ name: CoreAction.Left, binding: Binding.Key(Key.A) },
+			{ name: CoreAction.Back, binding: Binding.Key(Key.S) },
+			{ name: CoreAction.Right, binding: Binding.Key(Key.D) },
+			{ name: CoreAction.Jump, binding: Binding.Key(Key.Space) },
+			{ name: CoreAction.Sprint, binding: Binding.Key(Key.LeftShift) },
 			{
-				name: "Crouch",
+				name: CoreAction.Crouch,
 				binding: Binding.Key(Key.LeftCtrl),
 				secondaryBinding: Binding.Key(Key.C),
 			},
-			{ name: "UseItem", binding: Binding.MouseButton(MouseButton.LeftButton) },
+			{ name: CoreAction.PrimaryAction, binding: Binding.MouseButton(MouseButton.LeftButton) },
 			{
-				name: "SecondaryUseItem",
+				name: CoreAction.SecondaryAction,
 				binding: Binding.MouseButton(MouseButton.RightButton),
 			},
-			{ name: "Inventory", binding: Binding.Key(Key.E) },
-			{ name: "Inspect", binding: Binding.Key(Key.Y) },
-			{ name: "Interact", binding: Binding.Key(Key.F) },
-			{ name: "PushToTalk", binding: Binding.Key(Key.V) },
+			{ name: CoreAction.Inventory, binding: Binding.Key(Key.E) },
+			{ name: CoreAction.Interact, binding: Binding.Key(Key.F) },
+			{ name: CoreAction.PushToTalk, binding: Binding.Key(Key.V) },
 		]);
 	}
 
@@ -256,6 +265,24 @@ export class AirshipInputSingleton {
 		}
 	}
 
+	/**
+	 * Unsets a list of core actions. The player will not be able
+	 * to see these actions in their settings UI while in your game.
+	 * 
+	 * @param coreActions List of actions to unbind and hide
+	 */
+	public DisableCoreActions(coreActions: CoreAction[]) {
+		for (const actionName of coreActions) {
+			if (Game.IsGameLuauContext()) {
+				contextbridge.broadcast("ProtectedKeybind:UnregisterAction", actionName);
+			} else {
+				this.UnregisterAction(actionName);
+			}
+			this.GetActions(actionName).forEach(a => {
+				a.UnsetBinding();
+			});
+		}
+	}
 
 	/** Same as CreateAction (except it won't broadcast over context bridge) */
 	private RegisterAction(name: string, binding: Binding, config?: InputActionConfig): InputAction {
@@ -263,6 +290,11 @@ export class AirshipInputSingleton {
 		this.AddActionToTable(action);
 		this.onActionBound.Fire(action);
 		return action;
+	}
+
+	/** Unregisters an action (removes binding, clears from settings menu) */
+	private UnregisterAction(name: string) {
+		this.actionTable.delete(name.lower());
 	}
 
 	/**
