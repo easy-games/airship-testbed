@@ -60,6 +60,13 @@ declare abstract class AirshipScriptableRenderPass {
 	// readonly renderPassEvent: RenderPassEvent;
 
 	/**
+	 * @deprecated Use {@link Create} to handle anything that needs to be executed on the render pass creation
+	 */
+	protected constructor();
+
+	protected Create(): void;
+
+	/**
 	 * Execute the pass. This is where custom rendering occurs. Specific details are left to the implementation
 	 */
 	protected Execute?(cmd: CommandBuffer, renderingData: RenderingData): void;
