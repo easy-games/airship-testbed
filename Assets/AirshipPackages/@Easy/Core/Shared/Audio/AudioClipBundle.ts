@@ -31,9 +31,6 @@ export class AudioClipBundle {
 	public constructor(playMode: AudioBundlePlayMode, clips: AudioClip[]) {
 		this.playMode = playMode;
 		this.clips = clips;
-		this.clips.forEach((clip) => {
-			print("CLIP: " + clip.name);
-		});
 		this.RefreshPossibleRandomIndex();
 	}
 
@@ -148,18 +145,18 @@ export class AudioClipBundle {
 			randomIndex = this.GetRandomIndex(lastIndex);
 			this.PlayManual(randomIndex);
 
-			print("Playing random before loop: " + randomIndex);
+			//print("Playing random before loop: " + randomIndex);
 			if (this.lastAudioSource) {
 				const delayLength = math.max(0.1, this.clips[this.lastIndexPlayed].length - 0.15);
-				print("Delaying: " + delayLength);
+				//print("Delaying: " + delayLength);
 				task.delay(delayLength, () => {
 					if (this.lastAudioSource && this.lastAudioSource.isPlaying) {
-						print("Transition to Looping Audio" + lastIndex + ": " + this.clips[lastIndex]);
+						//print("Transition to Looping Audio" + lastIndex + ": " + this.clips[lastIndex]);
 						//Fade out current sound
 						this.Stop(0.35);
 					}
 					//Play a Loop
-					print("Playing new loop");
+					//print("Playing new loop");
 					this.soundOptions.loop = true;
 					this.PlayManual(lastIndex, 0.15);
 				});

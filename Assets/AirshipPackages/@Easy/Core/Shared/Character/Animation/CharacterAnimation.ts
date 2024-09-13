@@ -4,7 +4,7 @@ import { Airship } from "../../Airship";
 import { Signal } from "../../Util/Signal";
 import { Game } from "../../Game";
 
-export default class CharacterAnimator extends AirshipBehaviour {
+export default class CharacterAnimation extends AirshipBehaviour {
 	@Header("References")
 	public character!: Character;
 	public flinchClip?: AnimationClip;
