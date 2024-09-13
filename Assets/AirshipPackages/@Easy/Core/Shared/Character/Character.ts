@@ -23,7 +23,7 @@ export default class Character extends AirshipBehaviour {
 	public player?: Player;
 
 	@NonSerialized()
-	public animator!: CharacterAnimator;
+	public animator?: CharacterAnimator;
 
 	@Header("References")
 	public movement?: CharacterMovement;
@@ -147,7 +147,7 @@ export default class Character extends AirshipBehaviour {
 		this.player = player;
 		this.id = id;
 		this.outfitDto = outfitDto;
-		this.animator.SetViewModelEnabled(player?.IsLocalPlayer() ?? false);
+		this.animator?.SetViewModelEnabled(player?.IsLocalPlayer() ?? false);
 		this.health = 100;
 		this.maxHealth = 100;
 		this.despawned = false;
