@@ -1,7 +1,7 @@
 ﻿﻿import Character from "@Easy/Core/Shared/Character/Character";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
-import { Game } from "../../Game";
 import { Airship } from "../../Airship";
+import { Game } from "../../Game";
 
 export default class CharacterAnimator extends AirshipBehaviour {
 	@Header("References")
@@ -86,7 +86,7 @@ export default class CharacterAnimator extends AirshipBehaviour {
 		//Play death animation
 		if (this.character.IsLocalCharacter()) {
 			//Lock Inputs
-			this.character.movement.disableInput = true;
+			if (this.character.movement) this.character.movement.disableInput = true;
 		}
 		const deathClip = this.isFirstPerson ? this.deathClipViewmodel : this.deathClip;
 		if (deathClip) {
@@ -159,8 +159,8 @@ export default class CharacterAnimator extends AirshipBehaviour {
 	}
 
 	private HandleAnimationEvents(key: string, strValue?: string, intValue?: number, floatValue?: number){
-		if(key === "Footstep"){
-			if(this.character.movement.IsGrounded()){
+		if (key === "Footstep") {
+			if (this.character.movement?.IsGrounded()) {
 				Airship.Characters.footsteps.PlayFootstepSound(this.character);
 			}
 		}

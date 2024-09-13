@@ -27,7 +27,7 @@ export default class CharacterForceTrigger extends AirshipBehaviour {
 				if (bounds.Contains(characterTransform.position)) {
 					if(!this.characterInCollider){
 						this.characterInCollider = true;
-						character.movement.AddImpulse(
+						character.movement!.AddImpulse(
 							this.forceSpace === Space.Self
 								? this.transform.TransformVector(this.triggerForce)
 								: this.triggerForce,

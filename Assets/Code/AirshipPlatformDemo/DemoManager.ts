@@ -99,7 +99,7 @@ export default class DemoManager extends AirshipBehaviour {
 					const cube = Object.Instantiate(Asset.LoadAsset("Assets/Resources/OfflineCube.prefab"));
 					cube.transform.position = Game.localPlayer.character!.rig.head.position.add(new Vector3(0, 1, 0));
 					const rb = cube.gameObject.GetComponent<Rigidbody>()!;
-					rb.velocity = Game.localPlayer.character!.movement.GetLookVector().add(new Vector3(0, 1, 0)).mul(5);
+					rb.velocity = Game.localPlayer.character!.movement!.GetLookVector().add(new Vector3(0, 1, 0)).mul(5);
 				}),
 			);
 		}

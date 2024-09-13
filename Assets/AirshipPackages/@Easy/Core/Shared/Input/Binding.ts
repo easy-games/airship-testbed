@@ -31,6 +31,10 @@ export class Binding {
 		});
 	}
 
+	public static Clone(other: Binding) {
+		return new Binding(table.clone(other.config));
+	}
+
 	public static AreEqual(a: Binding, b: Binding) {
 		if (a.config.isKeyBinding && b.config.isKeyBinding) {
 			return a.config.key === b.config.key && a.config.modifierKey === b.config.modifierKey;

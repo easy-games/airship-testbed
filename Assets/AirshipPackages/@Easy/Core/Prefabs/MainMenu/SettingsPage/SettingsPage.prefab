@@ -4278,6 +4278,21 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 2885323753851354642}
       modified: 1
+    - name: tabBtns
+      type: Array
+      objectType: 
+      items:
+        type: AirshipBehaviour
+        objectType: SettingsTabButton
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsTabButton.ts
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
     displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0
@@ -4642,6 +4657,21 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 2885323753851354642}
       modified: 1
+    - name: tabBtns
+      type: Array
+      objectType: 
+      items:
+        type: AirshipBehaviour
+        objectType: SettingsTabButton
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/SettingsTabButton.ts
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
     displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0

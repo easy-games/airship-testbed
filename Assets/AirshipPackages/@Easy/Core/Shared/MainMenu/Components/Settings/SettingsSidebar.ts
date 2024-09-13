@@ -23,6 +23,7 @@ export default class SettingsSidebar extends AirshipBehaviour {
 		for (let other of this.tabBtns) {
 			if (other.tab === undefined) continue;
 			if (other.gameObject === tab.gameObject) {
+				print("Setactive: " + other.tab.name);
 				other.SetSelected(true);
 				other.tab.SetActive(true);
 

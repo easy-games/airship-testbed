@@ -1,4 +1,5 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
+import { Game } from "@Easy/Core/Shared/Game";
 import { InputAction } from "@Easy/Core/Shared/Input/InputAction";
 import { ActionInputType, InputUtil, KeyType } from "@Easy/Core/Shared/Input/InputUtil";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
@@ -8,11 +9,12 @@ import SettingsKeybind from "./SettingsKeybind";
 export default class SettingsKeybindPage extends AirshipBehaviour {
 	public keybindPrefab!: GameObject;
 	public list!: Transform;
-	public resetToDefaultBtn!: GameObject;
+	public resetToDefaultBtn?: GameObject;
 
 	private bin = new Bin();
 
 	public OnEnable(): void {
+		print("OnEnable SettingsKeybindPage: " + Game.IsGameLuauContext());
 		this.list.gameObject.ClearChildren();
 
 		const bindings = Airship.Input.GetBindings();
@@ -29,15 +31,19 @@ export default class SettingsKeybindPage extends AirshipBehaviour {
 			this.AddKeybind(binding);
 		}
 
-		this.bin.AddEngineEventConnection(
-			CanvasAPI.OnClickEvent(this.resetToDefaultBtn, () => {
-				let childCount = this.list.childCount;
-				for (let i = 0; i < childCount; i++) {
-					const keybind = this.list.GetChild(i).gameObject.GetAirshipComponent<SettingsKeybind>()!;
-					keybind.ResetToDefault();
-				}
-			}),
-		);
+		print("Is undefined;" + (this.resetToDefaultBtn === undefined));
+		print(this.resetToDefaultBtn);
+		if (this.resetToDefaultBtn) {
+			this.bin.AddEngineEventConnection(
+				CanvasAPI.OnClickEvent(this.resetToDefaultBtn, () => {
+					let childCount = this.list.childCount;
+					for (let i = 0; i < childCount; i++) {
+						const keybind = this.list.GetChild(i).gameObject.GetAirshipComponent<SettingsKeybind>()!;
+						keybind.ResetToDefault();
+					}
+				}),
+			);
+		}
 	}
 
 	public AddKeybind(action: InputAction): void {

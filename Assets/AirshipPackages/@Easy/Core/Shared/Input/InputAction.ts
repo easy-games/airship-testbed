@@ -1,5 +1,6 @@
 import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 import { Airship } from "../Airship";
+import { FormatUtil } from "../Util/FormatUtil";
 import { Binding } from "./Binding";
 import { ModifierKey } from "./InputUtil";
 
@@ -85,6 +86,7 @@ export class InputAction {
    *
    */
   public isSecondary: boolean;
+  private properlyCapitalizedName: string;
 
   constructor(
     name: string,
@@ -93,11 +95,17 @@ export class InputAction {
     category = "General"
   ) {
     this.id = InputAction.inputActionId++;
-    this.name = name;
+    this.name = name.lower();
+    this.properlyCapitalizedName = name;
+
     this.defaultBinding = ObjectUtils.deepCopy(binding);
     this.isSecondary = isSecondary;
     this.binding = binding;
     this.category = category;
+  }
+
+  public DisplayName() {
+
   }
 
   /**
@@ -166,5 +174,10 @@ export class InputAction {
         : (-1 as MouseButton),
       category: this.category,
     };
+  }
+
+  /** For an action of name DashJump this will return Dash Jump */
+  public GetDisplayName() {
+    return FormatUtil.ToDisplayFormat(this.properlyCapitalizedName);
   }
 }

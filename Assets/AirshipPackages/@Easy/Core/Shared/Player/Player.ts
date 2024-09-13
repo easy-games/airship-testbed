@@ -127,9 +127,8 @@ export class Player {
 
 	/**
 	 * Can yield if the player's outfit hasn't finished downloading.
-	 * @param position
-	 * @param config
-	 * @returns
+	 * @param position Spawn position of character
+	 * @param config.lookDirection Initial facing direction of character
 	 */
 	public SpawnCharacter(
 		position: Vector3,
@@ -153,7 +152,7 @@ export class Player {
 		go.name = `Character_${this.username}`;
 		const characterComponent = go.GetAirshipComponent<Character>()!;
 		if (config?.lookDirection) {
-			characterComponent.movement.SetLookVector(config?.lookDirection);
+			characterComponent.movement?.SetLookVector(config?.lookDirection);
 		}
 
 		if (!this.outfitLoaded) {

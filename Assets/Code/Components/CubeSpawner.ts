@@ -25,7 +25,7 @@ export default class CubeSpawner extends AirshipBehaviour {
 			this.bin.Add(
 				spawnCubeRemote.server.OnClientEvent((player) => {
 					const headPos = player.character!.rig.head.position;
-					const lookDir = player.character!.movement.GetLookVector();
+					const lookDir = player.character!.movement!.GetLookVector();
 					const cube = Object.Instantiate(
 						this.serverOwnedCubePrefab,
 						headPos.add(lookDir),

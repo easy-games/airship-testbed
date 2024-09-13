@@ -52,6 +52,8 @@ export class BotCommand extends ChatCommand {
 		};
 
 		const doMove = () => {
+			if (!character.movement) return;
+			
 			let direction = new Vector3(randDirectionComponent(), 0, randDirectionComponent());
 			character.movement.SetMoveInput(
 				direction,
