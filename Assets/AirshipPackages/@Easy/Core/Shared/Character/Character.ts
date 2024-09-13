@@ -28,7 +28,7 @@ export default class Character extends AirshipBehaviour {
 	@Header("References")
 	public movement?: CharacterMovement;
 	public animationHelper!: CharacterAnimationHelper;
-	public accessoryBuilder!: AccessoryBuilder;
+	public accessoryBuilder?: AccessoryBuilder;
 	public model!: GameObject;
 	public networkIdentity!: NetworkIdentity;
 	public rigRoot!: GameObject;
@@ -153,7 +153,9 @@ export default class Character extends AirshipBehaviour {
 		this.despawned = false;
 		this.initialized = true;
 
-		this.LoadUserOutfit(outfitDto);
+		if (this.accessoryBuilder) {
+			this.LoadUserOutfit(outfitDto);
+		}
 
 		if (this.movement) {
 			// Apply the queued custom data to movement
@@ -167,6 +169,11 @@ export default class Character extends AirshipBehaviour {
 	}
 
 	public LoadUserOutfit(outfitDto: OutfitDto | undefined) {
+		if (!this.accessoryBuilder) {
+			warn("Cannot load outfit without Accessory Builder set on Character.");
+			return;
+		}
+
 		this.outfitDto = outfitDto;
 		//print("using outfit: " + outfitDto?.name);
 		if (Game.IsClient() && outfitDto && this.autoLoadAvatarOutfit) {

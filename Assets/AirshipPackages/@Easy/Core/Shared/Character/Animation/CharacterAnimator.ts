@@ -94,28 +94,6 @@ export default class CharacterAnimator extends AirshipBehaviour {
 		}
 	}
 
-	private PlayDamageFlash() {
-		if (this.character.IsDestroyed() || this.isFlashing) return;
-		let allMeshes = this.character.accessoryBuilder.GetAllAccessoryMeshes();
-		const duration = this.flashTransitionDuration + this.flashOnTime;
-		this.isFlashing = true;
-		for (let i = 0; i < allMeshes.Length; i++) {
-			const renderer = allMeshes.GetValue(i);
-			if (renderer && renderer.enabled) {
-				NativeTween.MaterialsFloatProperty(
-					renderer,
-					"_OverrideStrength",
-					0,
-					1,
-					this.flashTransitionDuration,
-				).SetPingPong();
-			}
-		}
-		task.delay(duration, () => {
-			this.isFlashing = false;
-		});
-	}
-
 	public SetFresnelColor(color: Color, power: number, strength: number) {
 		// if (this.character.) return;
 		// let allMeshes = ArrayUtil.Combine(
