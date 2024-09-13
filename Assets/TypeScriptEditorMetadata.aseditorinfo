@@ -101,14 +101,6 @@
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Navbar/NavbarSettingsButton.ts",
 			"name": "NavbarSettingsButton"
 		},
-		"Code/Components/CharacterSpawner@CharacterSpawner": {
-			"assetPath": "Code/Components/CharacterSpawner.ts",
-			"name": "CharacterSpawner"
-		},
-		"Code/Components/NPCSpawner@NPCSpawner": {
-			"assetPath": "Code/Components/NPCSpawner.ts",
-			"name": "NPCSpawner"
-		},
 		"AirshipPackages/@Easy/Core/Shared/MainMenu/Components/SocialFriendRequestsButtonComponent@SocialFriendRequestsButtonComponent": {
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/MainMenu/Components/SocialFriendRequestsButtonComponent.ts",
 			"name": "SocialFriendRequestsButtonComponent"
@@ -273,6 +265,10 @@
 			"assetPath": "AirshipPackages/@Easy/Core/Shared/Network/AirshipNetworkBehaviour.ts",
 			"name": "AirshipNetworkBehaviour"
 		},
+		"Code/AirshipPlatformDemo/CharacterSwapper@CharacterSwapper": {
+			"assetPath": "Code/AirshipPlatformDemo/CharacterSwapper.ts",
+			"name": "CharacterSwapper"
+		},
 		"Code/AirshipPlatformDemo/MovementModifications/CharacterForceTrigger@CharacterForceTrigger": {
 			"assetPath": "Code/AirshipPlatformDemo/MovementModifications/CharacterForceTrigger.ts",
 			"name": "CharacterForceTrigger"
@@ -293,9 +289,17 @@
 			"assetPath": "Code/AirshipPlatformDemo/MovementModifications/OneWayPlatform.ts",
 			"name": "OneWayPlatform"
 		},
+		"Code/Components/CharacterSpawner@CharacterSpawner": {
+			"assetPath": "Code/Components/CharacterSpawner.ts",
+			"name": "CharacterSpawner"
+		},
 		"Code/Components/HandsUp@HandsUp": {
 			"assetPath": "Code/Components/HandsUp.ts",
 			"name": "HandsUp"
+		},
+		"Code/Components/NPCSpawner@NPCSpawner": {
+			"assetPath": "Code/Components/NPCSpawner.ts",
+			"name": "NPCSpawner"
 		},
 		"Code/AirshipPlatformDemo/ClientScript@ClientScript": {
 			"assetPath": "Code/AirshipPlatformDemo/ClientScript.ts",

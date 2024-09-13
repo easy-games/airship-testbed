@@ -244,6 +244,14 @@ export class Player {
 	}
 
 	public SetCharacter(character: Character | undefined): void {
+		if (!Game.IsServer()) {
+			error("Player.SetCharacter() must be called from the server.");
+		}
+		this.SetCharacterInternal(character);
+		CoreNetwork.ServerToClient.Character.SetCharacter.server.FireAllClients(this.connectionId, character?.id);
+	}
+
+	private SetCharacterInternal(character: Character | undefined): void {
 		this.character = character;
 		this.onCharacterChanged.Fire(character);
 	}

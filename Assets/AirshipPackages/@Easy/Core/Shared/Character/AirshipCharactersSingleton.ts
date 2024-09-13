@@ -95,6 +95,23 @@ export class AirshipCharactersSingleton {
 					}
 				}
 			});
+
+			CoreNetwork.ServerToClient.Character.SetCharacter.client.OnServerEvent((connId, characterId) => {
+				const player = Airship.Players.FindByConnectionId(connId);
+				if (!player) return;
+
+				type PlayerInternal = {
+					SetCharacterInternal(character: Character | undefined): void;
+				};
+
+				if (characterId === undefined) {
+					(player as unknown as PlayerInternal).SetCharacterInternal(undefined);
+					return;
+				}
+
+				const character = Airship.Characters.FindById(characterId);
+				(player as unknown as PlayerInternal).SetCharacterInternal(character);
+			});
 		}
 
 		if (Game.IsClient()) {
