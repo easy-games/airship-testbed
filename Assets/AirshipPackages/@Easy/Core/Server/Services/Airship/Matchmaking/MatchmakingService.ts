@@ -73,7 +73,7 @@ export class AirshipMatchmakingService {
 	}
 
 	/**
-	 * Joins a queue. This function is used to find players to play with.
+	 * Given a group, joins the matchmaking queue looking for other players to play with.
 	 * @param body The body of the request, containing the queueId, groupId, and information about the players in the group.
 	 * @returns undefined if the request was successful, otherwise an error message.
 	 */
@@ -88,7 +88,7 @@ export class AirshipMatchmakingService {
 	}
 
 	/**
-	 * Leaves a queue. This function is used to find players to play with.
+	 * Removed a group from a matchmaking queue.
 	 * @param body The body of the request, containing the groupId.
 	 * @returns undefined if the request was successful, otherwise an error message.
 	 */

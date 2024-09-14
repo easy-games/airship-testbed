@@ -54,6 +54,7 @@ export class ProtectedMatchmakingService {
 	}
 
 	public async CreateGroup(userIds: string[]): Promise<Result<Group, string>> {
+		print(`protected: MatchmakingService.CreateGroup: ${EncodeJSON(userIds)}`);
 		const res = InternalHttpManager.PostAsync(`${AirshipUrl.GameCoordinator}/groups`, EncodeJSON({
 			userIds,
 		}));
@@ -62,24 +63,28 @@ export class ProtectedMatchmakingService {
 	}
 
 	public async GetGroupById(groupId: string): Promise<Result<Group | undefined, string>> {
+		print(`protected: MatchmakingService.GetGroupById: ${groupId}`);
 		const res = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/groups/group-id/${groupId}`);
 
 		return processResponse(res, `An error occurred while trying to find group with id ${groupId}`, {allowEmptyData: true});
 	}
 
 	public async GetGroupByUserId(uid: string): Promise<Result<Group | undefined, string>> {
+		print(`protected: MatchmakingService.GetGroupByUserId: ${uid}`);
 		const res = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/groups/uid/${uid}`);
 
 		return processResponse(res, `An error occurred while trying to find group for user with id ${uid}`, {allowEmptyData: true});
 	}
 
 	public async JoinQueue(body: JoinQueueDto): Promise<Result<undefined, string>> {
+		print(`protected: MatchmakingService.JoinQueue: ${EncodeJSON(body)}`);
 		const res = InternalHttpManager.PostAsync(`${AirshipUrl.GameCoordinator}/matchmaking/queue/join`, EncodeJSON(body));
 
 		return processResponse(res, `An error occurred while attempting to join queue: ${body.queueId} group: ${body.groupId}`, {allowEmptyData: true, returnErrorBodyForStatusCodes: [400]});
 	}
 
 	public async LeaveQueue(body: {groupId: string}): Promise<Result<undefined, string>> {
+		print(`protected: MatchmakingService.LeaveQueue: ${EncodeJSON(body)}`);
 		const res = InternalHttpManager.PostAsync(`${AirshipUrl.GameCoordinator}/matchmaking/queue/leave`, EncodeJSON(body));
 
 		return processResponse(res, `An error occurred while attempting to leave queue for group: ${body.groupId}`, {allowEmptyData: true, returnErrorBodyForStatusCodes: [400]});

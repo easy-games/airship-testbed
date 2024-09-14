@@ -27,6 +27,7 @@ export class ProtectedPartyController {
 	}
 
 	public async GetCurrentGroup(): Promise<ReturnType<ClientBridgeApiGetGroupForSelf>> {
+		print(`protected: MatchmakingController.GetCurrentGroup`);
 		const currentGameId = Game.gameId;
 		const res = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/groups/game-id/:gameId/self`);
 
@@ -34,6 +35,7 @@ export class ProtectedPartyController {
 	}
 
 	public async LeaveQueueForSelf(): Promise<ReturnType<ClientBridgeApiLeaveQueueForSelf>> {
+		print(`protected: MatchmakingController.LeaveQueueForSelf`);
 		const currentGameId = Game.gameId;
 		const res = InternalHttpManager.PostAsync(`${AirshipUrl.GameCoordinator}/matchmaking/queue/leave/self`);
 		return processResponse(res, `An error occurred while trying to leave queue for game ${currentGameId}`, { allowEmptyData: true });
