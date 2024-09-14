@@ -19,7 +19,7 @@ export class MatchmakingController {
 	protected OnStart(): void { }
 
 	/**
-	 * Gets the users current party data.
+	 * Gets the users current matchmaking group data if they are in a group, otherwise returns undefined.
 	 */
 	public async GetCurrentGroup(): Promise<Group | undefined> {
 		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ClientBridgeApiGetGroupForSelf>(

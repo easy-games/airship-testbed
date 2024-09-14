@@ -24,6 +24,11 @@ export class ProtectedPartyController {
 			MatchmakingControllerBridgeTopics.GetGroupForSelf,
 			(_) => awaitToResult(this.GetCurrentGroup())
 		);
+
+		contextbridge.callback<ClientBridgeApiLeaveQueueForSelf>(
+			MatchmakingControllerBridgeTopics.LeaveQueueForSelf,
+			(_) => awaitToResult(this.LeaveQueueForSelf())
+		);
 	}
 
 	public async GetCurrentGroup(): Promise<ReturnType<ClientBridgeApiGetGroupForSelf>> {
