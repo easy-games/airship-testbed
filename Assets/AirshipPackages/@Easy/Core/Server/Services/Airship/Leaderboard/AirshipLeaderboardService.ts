@@ -9,7 +9,6 @@ import {
 } from "@Easy/Core/Server/ProtectedServices/Airship/Leaderboard/LeaderboardService";
 import { Platform } from "@Easy/Core/Shared/Airship";
 import { RankData } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipLeaderboard";
-import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/ContextBridgeUtil";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 
@@ -39,7 +38,7 @@ export class AirshipLeaderboardService {
 	 * @param update An object containing a map of ids and scores.
 	 */
 	public async Update(leaderboardName: string, update: LeaderboardUpdate): Promise<void> {
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiLeaderboardUpdate>(
+		const result = contextbridge.invoke<ServerBridgeApiLeaderboardUpdate>(
 			LeaderboardServiceBridgeTopics.Update,
 			LuauContext.Protected,
 			leaderboardName,
@@ -55,7 +54,7 @@ export class AirshipLeaderboardService {
 	 * @param id The id
 	 */
 	public async GetRank(leaderboardName: string, id: string): Promise<RankData | undefined> {
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiLeaderboardGetRank>(
+		const result = contextbridge.invoke<ServerBridgeApiLeaderboardGetRank>(
 			LeaderboardServiceBridgeTopics.GetRank,
 			LuauContext.Protected,
 			leaderboardName,
@@ -71,7 +70,7 @@ export class AirshipLeaderboardService {
 	 * @param id
 	 */
 	public async DeleteEntry(leaderboardName: string, id: string): Promise<void> {
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiLeaderboardDeleteEntry>(
+		const result = contextbridge.invoke<ServerBridgeApiLeaderboardDeleteEntry>(
 			LeaderboardServiceBridgeTopics.DeleteEntry,
 			LuauContext.Protected,
 			leaderboardName,
@@ -87,7 +86,7 @@ export class AirshipLeaderboardService {
 	 * @param ids
 	 */
 	public async DeleteEntries(leaderboardName: string, ids: string[]): Promise<void> {
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiLeaderboardDeleteEntries>(
+		const result = contextbridge.invoke<ServerBridgeApiLeaderboardDeleteEntries>(
 			LeaderboardServiceBridgeTopics.DeleteEntries,
 			LuauContext.Protected,
 			leaderboardName,
@@ -102,7 +101,7 @@ export class AirshipLeaderboardService {
 	 * @param leaderboardName
 	 */
 	public async ResetLeaderboard(leaderboardName: string): Promise<void> {
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiLeaderboardResetLeaderboard>(
+		const result = contextbridge.invoke<ServerBridgeApiLeaderboardResetLeaderboard>(
 			LeaderboardServiceBridgeTopics.ResetLeaderboard,
 			LuauContext.Protected,
 			leaderboardName,
@@ -122,7 +121,7 @@ export class AirshipLeaderboardService {
 	 * @param count The number of entries to retrieve. Defaults to 100.
 	 */
 	public async GetRankRange(leaderboardName: string, startIndex = 0, count = 100): Promise<RankData[]> {
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiLeaderboardGetRankRange>(
+		const result = contextbridge.invoke<ServerBridgeApiLeaderboardGetRankRange>(
 			LeaderboardServiceBridgeTopics.GetRankRange,
 			LuauContext.Protected,
 			leaderboardName,

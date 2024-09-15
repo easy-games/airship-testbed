@@ -9,7 +9,6 @@ import {
 } from "@Easy/Core/Client/ProtectedControllers/Airship/User/UserController";
 import { Platform } from "@Easy/Core/Shared/Airship";
 import { PublicUser } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipUser";
-import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/ContextBridgeUtil";
 import { Controller, Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 
@@ -54,7 +53,7 @@ export class AirshipUserController {
 
 		let result: ReturnType<BridgeApiGetUserByUsername>;
 		if (contextbridge.current() !== LuauContext.Protected) {
-			result = await ContextBridgeUtil.PromisifyBridgeInvoke<BridgeApiGetUserByUsername>(
+			result = contextbridge.invoke<BridgeApiGetUserByUsername>(
 				UserControllerBridgeTopics.GetUserByUsername,
 				LuauContext.Protected,
 				username,
@@ -90,7 +89,7 @@ export class AirshipUserController {
 
 		let result: ReturnType<BridgeApiGetUserById>;
 		if (contextbridge.current() !== LuauContext.Protected) {
-			result = await ContextBridgeUtil.PromisifyBridgeInvoke<BridgeApiGetUserById>(
+			result = contextbridge.invoke<BridgeApiGetUserById>(
 				UserControllerBridgeTopics.GetUserById,
 				LuauContext.Protected,
 				userId,
@@ -119,7 +118,7 @@ export class AirshipUserController {
 		map: Record<string, PublicUser>;
 		array: PublicUser[];
 	}> {
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<BridgeApiGetUsersById>(
+		const result = contextbridge.invoke<BridgeApiGetUsersById>(
 			UserControllerBridgeTopics.GetUsersById,
 			LuauContext.Protected,
 			userIds,
@@ -134,7 +133,7 @@ export class AirshipUserController {
 	 * @returns A list of friends.
 	 */
 	public async GetFriends(): Promise<PublicUser[]> {
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<BridgeApiGetFriends>(
+		const result = contextbridge.invoke<BridgeApiGetFriends>(
 			UserControllerBridgeTopics.GetFriends,
 			LuauContext.Protected,
 		);
@@ -148,7 +147,7 @@ export class AirshipUserController {
 	 * @returns True if friends, false otherwise.
 	 */
 	public async IsFriendsWith(userId: string): Promise<boolean> {
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<BrigdeApiIsFriendsWith>(
+		const result = contextbridge.invoke<BrigdeApiIsFriendsWith>(
 			UserControllerBridgeTopics.IsFriendsWith,
 			LuauContext.Protected,
 			userId,

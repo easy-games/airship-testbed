@@ -5,7 +5,6 @@ import {
 	ServerBridgeApiDataSetKey,
 } from "@Easy/Core/Server/ProtectedServices/Airship/DataStore/DataStoreService";
 import { Platform } from "@Easy/Core/Shared/Airship";
-import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/ContextBridgeUtil";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 
@@ -43,7 +42,7 @@ export class AirshipDataStoreService {
 			return this.internalDB[key];
 		}
 
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiDataGetKey<T>>(
+		const result = contextbridge.invoke<ServerBridgeApiDataGetKey<T>>(
 			DataStoreServiceBridgeTopics.GetKey,
 			LuauContext.Protected,
 			key,
@@ -67,7 +66,7 @@ export class AirshipDataStoreService {
 			return data;
 		}
 
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiDataSetKey<T>>(
+		const result = contextbridge.invoke<ServerBridgeApiDataSetKey<T>>(
 			DataStoreServiceBridgeTopics.SetKey,
 			LuauContext.Protected,
 			key,
@@ -109,7 +108,7 @@ export class AirshipDataStoreService {
 			return undefined as unknown as T;
 		}
 
-		const currentData = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiDataGetKey<T>>(
+		const currentData = contextbridge.invoke<ServerBridgeApiDataGetKey<T>>(
 			DataStoreServiceBridgeTopics.GetKey,
 			LuauContext.Protected,
 			key,
@@ -119,7 +118,7 @@ export class AirshipDataStoreService {
 		try {
 			const newData = await callback(currentData.data?.value);
 			if (newData === undefined) return currentData.data?.value;
-			const setResult = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiDataSetKey<T>>(
+			const setResult = contextbridge.invoke<ServerBridgeApiDataSetKey<T>>(
 				DataStoreServiceBridgeTopics.SetKey,
 				LuauContext.Protected,
 				key,
@@ -148,7 +147,7 @@ export class AirshipDataStoreService {
 			return data;
 		}
 
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiDataDeleteKey<T>>(
+		const result = contextbridge.invoke<ServerBridgeApiDataDeleteKey<T>>(
 			DataStoreServiceBridgeTopics.DeleteKey,
 			LuauContext.Protected,
 			key,
@@ -182,7 +181,7 @@ export class AirshipDataStoreService {
 			return undefined as unknown as T;
 		}
 
-		const currentData = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiDataGetKey<T>>(
+		const currentData = contextbridge.invoke<ServerBridgeApiDataGetKey<T>>(
 			DataStoreServiceBridgeTopics.GetKey,
 			LuauContext.Protected,
 			key,
@@ -198,7 +197,7 @@ export class AirshipDataStoreService {
 				return currentData.data.value;
 			}
 
-			const deleteResult = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiDataDeleteKey<T>>(
+			const deleteResult = contextbridge.invoke<ServerBridgeApiDataDeleteKey<T>>(
 				DataStoreServiceBridgeTopics.DeleteKey,
 				LuauContext.Protected,
 				key,

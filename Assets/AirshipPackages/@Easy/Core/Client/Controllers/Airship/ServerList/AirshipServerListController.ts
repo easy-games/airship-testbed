@@ -8,7 +8,6 @@ import {
 	AirshipServerData,
 	ServerListEntryWithFriends,
 } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipServerManager";
-import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/ContextBridgeUtil";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 
@@ -30,10 +29,11 @@ export class AirshipServerListController {
 	 * @param page The page to retrieve. Starts at 0.
 	 */
 	public async GetServerList(page: number = 0): Promise<{ entries: AirshipServerData[] }> {
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ClientBridgeApiGetServerList>(
+		const result = contextbridge.invoke<ClientBridgeApiGetServerList>(
 			ServerListControllerBridgeTopics.GetServerList,
 			LuauContext.Protected,
 		);
+
 		if (!result.success) throw result.error;
 		return result.data;
 	}
@@ -42,7 +42,7 @@ export class AirshipServerListController {
 	 * Gets servers friends of this user are on. Only listed servers are returned.
 	 */
 	public async GetFriendServers(): Promise<{ entries: ServerListEntryWithFriends[] }> {
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ClientBridgeApiGetFriendServers>(
+		const result = contextbridge.invoke<ClientBridgeApiGetFriendServers>(
 			ServerListControllerBridgeTopics.GetFriendServers,
 			LuauContext.Protected,
 		);

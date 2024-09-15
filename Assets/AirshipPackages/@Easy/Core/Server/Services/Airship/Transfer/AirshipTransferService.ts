@@ -13,7 +13,6 @@ import {
 	AirshipServerTransferConfig,
 } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipTransfers";
 import { TransferResult } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipTransfers";
-import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/ContextBridgeUtil";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Player } from "@Easy/Core/Shared/Player/Player";
@@ -81,7 +80,7 @@ export class AirshipTransferService {
 		config?: AirshipGameTransferConfig,
 	): Promise<TransferResult> {
 		let userIds: string[] = players.map((player) => (typeIs(player, "table") ? player.userId : player));
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiTransferGroupToGame>(
+		const result = contextbridge.invoke<ServerBridgeApiTransferGroupToGame>(
 			TransferServiceBridgeTopics.TransferGroupToGame,
 			LuauContext.Protected,
 			userIds,
@@ -118,7 +117,7 @@ export class AirshipTransferService {
 		config?: AirshipServerTransferConfig,
 	): Promise<TransferResult> {
 		let userIds: string[] = players.map((player) => (typeIs(player, "table") ? player.userId : player));
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiTransferGroupToServer>(
+		const result = contextbridge.invoke<ServerBridgeApiTransferGroupToServer>(
 			TransferServiceBridgeTopics.TransferGroupToServer,
 			LuauContext.Protected,
 			userIds,
@@ -153,7 +152,7 @@ export class AirshipTransferService {
 		selectors: AirshipMatchingServerTransferConfig,
 	): Promise<TransferResult> {
 		let userIds: string[] = players.map((player) => (typeIs(player, "table") ? player.userId : player));
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiTransferGroupToMatchingServer>(
+		const result = contextbridge.invoke<ServerBridgeApiTransferGroupToMatchingServer>(
 			TransferServiceBridgeTopics.TransferGroupToMatchingServer,
 			LuauContext.Protected,
 			userIds,
@@ -189,7 +188,7 @@ export class AirshipTransferService {
 		config?: AirshipPlayerTransferConfig,
 	): Promise<TransferResult> {
 		let userIds: string[] = players.map((player) => (typeIs(player, "table") ? player.userId : player));
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiTransferGroupToPlayer>(
+		const result = contextbridge.invoke<ServerBridgeApiTransferGroupToPlayer>(
 			TransferServiceBridgeTopics.TransferGroupToPlayer,
 			LuauContext.Protected,
 			userIds,

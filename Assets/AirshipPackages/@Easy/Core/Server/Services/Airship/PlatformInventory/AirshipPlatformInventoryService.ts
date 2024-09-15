@@ -8,7 +8,6 @@ import {
 import { Platform } from "@Easy/Core/Shared/Airship";
 import { ItemQueryParameters } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipPlatformInventory";
 import { ItemInstanceDto, Transaction } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipPlatformInventory";
-import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/ContextBridgeUtil";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 
@@ -43,7 +42,7 @@ export class AirshipPlatformInventoryService {
 	 * Grants a user the provided item.
 	 */
 	public async GrantItem(userId: string, classId: string): Promise<ItemInstanceDto> {
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiGrantItem>(
+		const result = contextbridge.invoke<ServerBridgeApiGrantItem>(
 			PlatformInventoryServiceBridgeTopics.GrantItem,
 			LuauContext.Protected,
 			userId,
@@ -57,7 +56,7 @@ export class AirshipPlatformInventoryService {
 	 * Deletes the given item instance from the users inventory.
 	 */
 	public async DeleteItem(instanceId: string): Promise<ItemInstanceDto> {
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiDeleteItem>(
+		const result = contextbridge.invoke<ServerBridgeApiDeleteItem>(
 			PlatformInventoryServiceBridgeTopics.DeleteItem,
 			LuauContext.Protected,
 			instanceId,
@@ -70,7 +69,7 @@ export class AirshipPlatformInventoryService {
 	 * Gets all items in a users inventory.
 	 */
 	public async GetItems(userId: string, query?: ItemQueryParameters): Promise<ItemInstanceDto[]> {
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiGetItems>(
+		const result = contextbridge.invoke<ServerBridgeApiGetItems>(
 			PlatformInventoryServiceBridgeTopics.GetItems,
 			LuauContext.Protected,
 			userId,
@@ -91,7 +90,7 @@ export class AirshipPlatformInventoryService {
 		user1: { uid: string; itemInstanceIds: string[] },
 		user2: { uid: string; itemInstanceIds: string[] },
 	): Promise<Transaction> {
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiPerformTrade>(
+		const result = contextbridge.invoke<ServerBridgeApiPerformTrade>(
 			PlatformInventoryServiceBridgeTopics.PerformTrade,
 			LuauContext.Protected,
 			user1,

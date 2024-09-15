@@ -7,7 +7,6 @@ import {
 } from "@Easy/Core/Server/ProtectedServices/Airship/User/UserService";
 import { Platform } from "@Easy/Core/Shared/Airship";
 import { AirshipPlayerLocation, PublicUser } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipUser";
-import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/ContextBridgeUtil";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 
@@ -30,7 +29,7 @@ export class AirshipUserService {
 	 * @returns A user object
 	 */
 	public async GetUserByUsername(username: string): Promise<PublicUser | undefined> {
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiGetUserByUsername>(
+		const result = contextbridge.invoke<ServerBridgeApiGetUserByUsername>(
 			UserServiceBridgeTopics.GetUserByUsername,
 			LuauContext.Protected,
 			username,
@@ -45,7 +44,7 @@ export class AirshipUserService {
 	 * @returns A user object
 	 */
 	public async GetUserById(userId: string): Promise<PublicUser | undefined> {
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiGetUserById>(
+		const result = contextbridge.invoke<ServerBridgeApiGetUserById>(
 			UserServiceBridgeTopics.GetUserById,
 			LuauContext.Protected,
 			userId,
@@ -63,7 +62,7 @@ export class AirshipUserService {
 	 * @returns An array of user objects.
 	 */
 	public async GetUsersById(userIds: string[], strict: boolean = false): Promise<Record<string, PublicUser>> {
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiGetUsersById>(
+		const result = contextbridge.invoke<ServerBridgeApiGetUsersById>(
 			UserServiceBridgeTopics.GetUsersById,
 			LuauContext.Protected,
 			userIds,
@@ -91,7 +90,7 @@ export class AirshipUserService {
 	public async GetUserLocationsById(
 		userIds: string[],
 	): Promise<{ [userId: string]: AirshipPlayerLocation | undefined }> {
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiGetUserLocationsById>(
+		const result = contextbridge.invoke<ServerBridgeApiGetUserLocationsById>(
 			UserServiceBridgeTopics.GetUserLocationsById,
 			LuauContext.Protected,
 			userIds,

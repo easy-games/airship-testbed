@@ -5,7 +5,6 @@ import {
 } from "@Easy/Core/Server/ProtectedServices/Airship/Party/PartyService";
 import { Platform } from "@Easy/Core/Shared/Airship";
 import { GameServerPartyData } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipParty";
-import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/ContextBridgeUtil";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 
@@ -28,7 +27,7 @@ export class AirshipPartyService {
 	 * @param userId The id of the user
 	 */
 	public async GetPartyForUserId(userId: string): Promise<GameServerPartyData | undefined> {
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiGetPartyForUserId>(
+		const result = contextbridge.invoke<ServerBridgeApiGetPartyForUserId>(
 			PartyServiceBridgeTopics.GetPartyForUserId,
 			LuauContext.Protected,
 			userId,
@@ -43,7 +42,7 @@ export class AirshipPartyService {
 	 * @param partyId The id of the party
 	 */
 	public async GetPartyById(partyId: string): Promise<GameServerPartyData | undefined> {
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiGetPartyById>(
+		const result = contextbridge.invoke<ServerBridgeApiGetPartyById>(
 			PartyServiceBridgeTopics.GetPartyById,
 			LuauContext.Protected,
 			partyId,
