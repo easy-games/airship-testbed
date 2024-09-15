@@ -29,24 +29,19 @@ export class AirshipServerListController {
 	 * @param page The page to retrieve. Starts at 0.
 	 */
 	public async GetServerList(page: number = 0): Promise<{ entries: AirshipServerData[] }> {
-		const result = contextbridge.invoke<ClientBridgeApiGetServerList>(
+		return contextbridge.invoke<ClientBridgeApiGetServerList>(
 			ServerListControllerBridgeTopics.GetServerList,
 			LuauContext.Protected,
 		);
-
-		if (!result.success) throw result.error;
-		return result.data;
 	}
 
 	/**
 	 * Gets servers friends of this user are on. Only listed servers are returned.
 	 */
 	public async GetFriendServers(): Promise<{ entries: ServerListEntryWithFriends[] }> {
-		const result = contextbridge.invoke<ClientBridgeApiGetFriendServers>(
+		return contextbridge.invoke<ClientBridgeApiGetFriendServers>(
 			ServerListControllerBridgeTopics.GetFriendServers,
 			LuauContext.Protected,
 		);
-		if (!result.success) throw result.error;
-		return result.data;
 	}
 }

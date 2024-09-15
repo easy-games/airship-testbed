@@ -7,7 +7,6 @@ import {
 import { TransferResult } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipTransfers";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Player } from "@Easy/Core/Shared/Player/Player";
-import { Result } from "@Easy/Core/Shared/Types/Result";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 
@@ -22,21 +21,21 @@ export type ServerBridgeApiTransferGroupToGame = (
 	userIds: string[],
 	gameId: string,
 	config?: AirshipGameTransferConfig,
-) => Result<TransferResult, string>;
+) => TransferResult;
 export type ServerBridgeApiTransferGroupToServer = (
 	userIds: string[],
 	serverId: string,
 	config?: AirshipServerTransferConfig,
-) => Result<TransferResult, string>;
+) => TransferResult;
 export type ServerBridgeApiTransferGroupToMatchingServer = (
 	userIds: string[],
 	config: AirshipMatchingServerTransferConfig,
-) => Result<TransferResult, string>;
+) => TransferResult;
 export type ServerBridgeApiTransferGroupToPlayer = (
 	userIds: string[],
 	targetUserId: string,
 	config?: AirshipPlayerTransferConfig,
-) => Result<TransferResult, string>;
+) => TransferResult;
 
 @Service({})
 export class ProtectedTransferService {
@@ -44,56 +43,28 @@ export class ProtectedTransferService {
 		contextbridge.callback<ServerBridgeApiTransferGroupToGame>(
 			TransferServiceBridgeTopics.TransferGroupToGame,
 			(_, players, gameId, config) => {
-				const [success, result] = this.TransferGroupToGame(players, gameId, config).await();
-				if (!success) {
-					return {
-						success: false,
-						error: "Unable to complete request.",
-					};
-				}
-				return result;
+				return this.TransferGroupToGame(players, gameId, config).expect();
 			},
 		);
 
 		contextbridge.callback<ServerBridgeApiTransferGroupToServer>(
 			TransferServiceBridgeTopics.TransferGroupToServer,
 			(_, players, serverId, config) => {
-				const [success, result] = this.TransferGroupToServer(players, serverId, config).await();
-				if (!success) {
-					return {
-						success: false,
-						error: "Unable to complete request.",
-					};
-				}
-				return result;
+				return this.TransferGroupToServer(players, serverId, config).expect();
 			},
 		);
 
 		contextbridge.callback<ServerBridgeApiTransferGroupToMatchingServer>(
 			TransferServiceBridgeTopics.TransferGroupToMatchingServer,
 			(_, players, config) => {
-				const [success, result] = this.TransferGroupToMatchingServer(players, config).await();
-				if (!success) {
-					return {
-						success: false,
-						error: "Unable to complete request.",
-					};
-				}
-				return result;
+				return this.TransferGroupToMatchingServer(players, config).expect();
 			},
 		);
 
 		contextbridge.callback<ServerBridgeApiTransferGroupToPlayer>(
 			TransferServiceBridgeTopics.TransferGroupToPlayer,
 			(_, players, targetUserId, config) => {
-				const [success, result] = this.TransferGroupToPlayer(players, targetUserId, config).await();
-				if (!success) {
-					return {
-						success: false,
-						error: "Unable to complete request.",
-					};
-				}
-				return result;
+				return this.TransferGroupToPlayer(players, targetUserId, config).expect();
 			},
 		);
 	}
@@ -116,16 +87,10 @@ export class ProtectedTransferService {
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to complete transfer request. Status Code:  ${res.statusCode}.\n`, res.error);
-			return {
-				success: false,
-				error: res.error,
-			};
+			throw res.error;
 		}
 
-		return {
-			success: true,
-			data: DecodeJSON(res.data),
-		};
+		return DecodeJSON(res.data) as TransferResult;
 	}
 
 	public async TransferGroupToServer(
@@ -145,16 +110,10 @@ export class ProtectedTransferService {
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to complete transfer request. Status Code:  ${res.statusCode}.\n`, res.error);
-			return {
-				success: false,
-				error: res.error,
-			};
+			throw res.error;
 		}
 
-		return {
-			success: true,
-			data: DecodeJSON(res.data),
-		};
+		return DecodeJSON(res.data) as TransferResult;
 	}
 
 	public async TransferGroupToMatchingServer(
@@ -177,16 +136,10 @@ export class ProtectedTransferService {
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to complete transfer request. Status Code:  ${res.statusCode}.\n`, res.error);
-			return {
-				success: false,
-				error: res.error,
-			};
+			throw res.error;
 		}
 
-		return {
-			success: true,
-			data: DecodeJSON(res.data),
-		};
+		return DecodeJSON(res.data) as TransferResult;
 	}
 
 	public async TransferGroupToPlayer(
@@ -206,15 +159,9 @@ export class ProtectedTransferService {
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to complete transfer request. Status Code:  ${res.statusCode}.\n`, res.error);
-			return {
-				success: false,
-				error: res.error,
-			};
+			throw res.error;
 		}
 
-		return {
-			success: true,
-			data: DecodeJSON(res.data),
-		};
+		return DecodeJSON(res.data) as TransferResult;
 	}
 }

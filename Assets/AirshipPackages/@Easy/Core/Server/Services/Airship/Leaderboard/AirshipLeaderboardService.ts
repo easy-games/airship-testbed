@@ -38,14 +38,12 @@ export class AirshipLeaderboardService {
 	 * @param update An object containing a map of ids and scores.
 	 */
 	public async Update(leaderboardName: string, update: LeaderboardUpdate): Promise<void> {
-		const result = contextbridge.invoke<ServerBridgeApiLeaderboardUpdate>(
+		return contextbridge.invoke<ServerBridgeApiLeaderboardUpdate>(
 			LeaderboardServiceBridgeTopics.Update,
 			LuauContext.Protected,
 			leaderboardName,
 			update,
 		);
-		if (!result.success) throw result.error;
-		return result.data;
 	}
 
 	/**
@@ -54,14 +52,12 @@ export class AirshipLeaderboardService {
 	 * @param id The id
 	 */
 	public async GetRank(leaderboardName: string, id: string): Promise<RankData | undefined> {
-		const result = contextbridge.invoke<ServerBridgeApiLeaderboardGetRank>(
+		return contextbridge.invoke<ServerBridgeApiLeaderboardGetRank>(
 			LeaderboardServiceBridgeTopics.GetRank,
 			LuauContext.Protected,
 			leaderboardName,
 			id,
 		);
-		if (!result.success) throw result.error;
-		return result.data;
 	}
 
 	/**
@@ -70,14 +66,12 @@ export class AirshipLeaderboardService {
 	 * @param id
 	 */
 	public async DeleteEntry(leaderboardName: string, id: string): Promise<void> {
-		const result = contextbridge.invoke<ServerBridgeApiLeaderboardDeleteEntry>(
+		return contextbridge.invoke<ServerBridgeApiLeaderboardDeleteEntry>(
 			LeaderboardServiceBridgeTopics.DeleteEntry,
 			LuauContext.Protected,
 			leaderboardName,
 			id,
 		);
-		if (!result.success) throw result.error;
-		return result.data;
 	}
 
 	/**
@@ -86,14 +80,12 @@ export class AirshipLeaderboardService {
 	 * @param ids
 	 */
 	public async DeleteEntries(leaderboardName: string, ids: string[]): Promise<void> {
-		const result = contextbridge.invoke<ServerBridgeApiLeaderboardDeleteEntries>(
+		return contextbridge.invoke<ServerBridgeApiLeaderboardDeleteEntries>(
 			LeaderboardServiceBridgeTopics.DeleteEntries,
 			LuauContext.Protected,
 			leaderboardName,
 			ids,
 		);
-		if (!result.success) throw result.error;
-		return result.data;
 	}
 
 	/**
@@ -101,13 +93,11 @@ export class AirshipLeaderboardService {
 	 * @param leaderboardName
 	 */
 	public async ResetLeaderboard(leaderboardName: string): Promise<void> {
-		const result = contextbridge.invoke<ServerBridgeApiLeaderboardResetLeaderboard>(
+		return contextbridge.invoke<ServerBridgeApiLeaderboardResetLeaderboard>(
 			LeaderboardServiceBridgeTopics.ResetLeaderboard,
 			LuauContext.Protected,
 			leaderboardName,
 		);
-		if (!result.success) throw result.error;
-		return result.data;
 	}
 
 	/**
@@ -121,14 +111,12 @@ export class AirshipLeaderboardService {
 	 * @param count The number of entries to retrieve. Defaults to 100.
 	 */
 	public async GetRankRange(leaderboardName: string, startIndex = 0, count = 100): Promise<RankData[]> {
-		const result = contextbridge.invoke<ServerBridgeApiLeaderboardGetRankRange>(
+		return contextbridge.invoke<ServerBridgeApiLeaderboardGetRankRange>(
 			LeaderboardServiceBridgeTopics.GetRankRange,
 			LuauContext.Protected,
 			leaderboardName,
 			startIndex,
 			count,
 		);
-		if (!result.success) throw result.error;
-		return result.data;
 	}
 }

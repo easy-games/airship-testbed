@@ -27,13 +27,11 @@ export class AirshipPartyService {
 	 * @param userId The id of the user
 	 */
 	public async GetPartyForUserId(userId: string): Promise<GameServerPartyData | undefined> {
-		const result = contextbridge.invoke<ServerBridgeApiGetPartyForUserId>(
+		return contextbridge.invoke<ServerBridgeApiGetPartyForUserId>(
 			PartyServiceBridgeTopics.GetPartyForUserId,
 			LuauContext.Protected,
 			userId,
 		);
-		if (!result.success) throw result.error;
-		return result.data;
 	}
 
 	/**
@@ -42,12 +40,10 @@ export class AirshipPartyService {
 	 * @param partyId The id of the party
 	 */
 	public async GetPartyById(partyId: string): Promise<GameServerPartyData | undefined> {
-		const result = contextbridge.invoke<ServerBridgeApiGetPartyById>(
+		return contextbridge.invoke<ServerBridgeApiGetPartyById>(
 			PartyServiceBridgeTopics.GetPartyById,
 			LuauContext.Protected,
 			partyId,
 		);
-		if (!result.success) throw result.error;
-		return result.data;
 	}
 }

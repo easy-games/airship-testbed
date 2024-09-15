@@ -28,12 +28,10 @@ export class AirshipPlatformInventoryController {
 	 * @returns
 	 */
 	public async GetItems(query?: ItemQueryParameters): Promise<ItemInstanceDto[]> {
-		const result = contextbridge.invoke<ClientBridgeApiGetItems>(
+		return contextbridge.invoke<ClientBridgeApiGetItems>(
 			PlatformInventoryControllerBridgeTopics.GetItems,
 			LuauContext.Protected,
 			query,
 		);
-		if (!result.success) throw result.error;
-		return result.data;
 	}
 }

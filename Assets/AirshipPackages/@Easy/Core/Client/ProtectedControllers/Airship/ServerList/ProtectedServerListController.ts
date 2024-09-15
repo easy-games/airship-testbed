@@ -5,7 +5,6 @@ import {
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { DecodeJSON } from "@Easy/Core/Shared/json";
-import { Result } from "@Easy/Core/Shared/Types/Result";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 
 export const enum ServerListControllerBridgeTopics {
@@ -13,8 +12,8 @@ export const enum ServerListControllerBridgeTopics {
 	GetFriendServers = "ServerListController:GetFriendServers",
 }
 
-export type ClientBridgeApiGetServerList = (page?: number) => Result<{ entries: AirshipServerData[] }, string>;
-export type ClientBridgeApiGetFriendServers = () => Result<{ entries: ServerListEntryWithFriends[] }, string>;
+export type ClientBridgeApiGetServerList = (page?: number) => { entries: AirshipServerData[] };
+export type ClientBridgeApiGetFriendServers = () => { entries: ServerListEntryWithFriends[] };
 
 @Service({})
 export class ProtectedTransferService {
@@ -22,21 +21,13 @@ export class ProtectedTransferService {
 		if (!Game.IsServer()) return;
 
 		contextbridge.callback<ClientBridgeApiGetServerList>(ServerListControllerBridgeTopics.GetServerList, (_) => {
-			const [success, result] = this.GetServerList().await();
-			if (!success) {
-				return { success: false, error: "Unable to complete request." };
-			}
-			return result;
+			return this.GetServerList().expect();
 		});
 
 		contextbridge.callback<ClientBridgeApiGetFriendServers>(
 			ServerListControllerBridgeTopics.GetFriendServers,
 			(_) => {
-				const [success, result] = this.GetFriendServers().await();
-				if (!success) {
-					return { success: false, error: "Unable to complete request." };
-				}
-				return result;
+				return this.GetFriendServers().expect();
 			},
 		);
 	}
@@ -48,16 +39,10 @@ export class ProtectedTransferService {
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to get server list. Status Code:  ${res.statusCode}.\n`, res.error);
-			return {
-				success: false,
-				error: res.error,
-			};
+			throw res.error;
 		}
 
-		return {
-			success: true,
-			data: DecodeJSON(res.data) as { entries: AirshipServerData[] },
-		};
+		return DecodeJSON(res.data) as { entries: AirshipServerData[] };
 	}
 
 	public async GetFriendServers(): Promise<ReturnType<ClientBridgeApiGetFriendServers>> {
@@ -67,16 +52,10 @@ export class ProtectedTransferService {
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to get friend server list. Status Code:  ${res.statusCode}.\n`, res.error);
-			return {
-				success: false,
-				error: res.error,
-			};
+			throw res.error;
 		}
 
-		return {
-			success: true,
-			data: DecodeJSON(res.data) as { entries: ServerListEntryWithFriends[] },
-		};
+		return DecodeJSON(res.data) as { entries: ServerListEntryWithFriends[] };
 	}
 
 	protected OnStart(): void {}

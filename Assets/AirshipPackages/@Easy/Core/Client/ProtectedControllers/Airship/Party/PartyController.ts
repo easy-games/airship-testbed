@@ -1,7 +1,6 @@
 import { Party } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipParty";
 import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { Result } from "@Easy/Core/Shared/Types/Result";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 
@@ -9,7 +8,7 @@ export const enum PartyControllerBridgeTopics {
 	GetParty = "PartyController:GetParty",
 }
 
-export type ClientBridgeApiGetParty = () => Result<Party, string>;
+export type ClientBridgeApiGetParty = () => Party;
 
 @Controller({})
 export class ProtectedPartyController {
@@ -17,11 +16,7 @@ export class ProtectedPartyController {
 		if (!Game.IsClient()) return;
 
 		contextbridge.callback<ClientBridgeApiGetParty>(PartyControllerBridgeTopics.GetParty, (_) => {
-			const [success, result] = this.GetParty().await();
-			if (!success) {
-				return { success: false, error: "Unable to complete request." };
-			}
-			return result;
+			return this.GetParty().expect();
 		});
 	}
 
@@ -30,16 +25,10 @@ export class ProtectedPartyController {
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to get user pary. Status Code: ${res.statusCode}.\n`, res.error);
-			return {
-				success: false,
-				error: res.error,
-			};
+			throw res.error;
 		}
 
-		return {
-			success: true,
-			data: DecodeJSON(res.data) as Party,
-		};
+		return DecodeJSON(res.data) as Party;
 	}
 
 	public async InviteToParty(userId: string) {

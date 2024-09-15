@@ -42,41 +42,35 @@ export class AirshipPlatformInventoryService {
 	 * Grants a user the provided item.
 	 */
 	public async GrantItem(userId: string, classId: string): Promise<ItemInstanceDto> {
-		const result = contextbridge.invoke<ServerBridgeApiGrantItem>(
+		return contextbridge.invoke<ServerBridgeApiGrantItem>(
 			PlatformInventoryServiceBridgeTopics.GrantItem,
 			LuauContext.Protected,
 			userId,
 			classId,
 		);
-		if (!result.success) throw result.error;
-		return result.data;
 	}
 
 	/**
 	 * Deletes the given item instance from the users inventory.
 	 */
 	public async DeleteItem(instanceId: string): Promise<ItemInstanceDto> {
-		const result = contextbridge.invoke<ServerBridgeApiDeleteItem>(
+		return contextbridge.invoke<ServerBridgeApiDeleteItem>(
 			PlatformInventoryServiceBridgeTopics.DeleteItem,
 			LuauContext.Protected,
 			instanceId,
 		);
-		if (!result.success) throw result.error;
-		return result.data;
 	}
 
 	/**
 	 * Gets all items in a users inventory.
 	 */
 	public async GetItems(userId: string, query?: ItemQueryParameters): Promise<ItemInstanceDto[]> {
-		const result = contextbridge.invoke<ServerBridgeApiGetItems>(
+		return contextbridge.invoke<ServerBridgeApiGetItems>(
 			PlatformInventoryServiceBridgeTopics.GetItems,
 			LuauContext.Protected,
 			userId,
 			query,
 		);
-		if (!result.success) throw result.error;
-		return result.data;
 	}
 
 	/**
@@ -90,13 +84,11 @@ export class AirshipPlatformInventoryService {
 		user1: { uid: string; itemInstanceIds: string[] },
 		user2: { uid: string; itemInstanceIds: string[] },
 	): Promise<Transaction> {
-		const result = contextbridge.invoke<ServerBridgeApiPerformTrade>(
+		return contextbridge.invoke<ServerBridgeApiPerformTrade>(
 			PlatformInventoryServiceBridgeTopics.PerformTrade,
 			LuauContext.Protected,
 			user1,
 			user2,
 		);
-		if (!result.success) throw result.error;
-		return result.data;
 	}
 }

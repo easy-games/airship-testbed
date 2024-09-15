@@ -61,15 +61,14 @@ export class AirshipUserController {
 		} else {
 			result = await Dependency<ProtectedUserController>().GetUserByUsername(username);
 		}
-		if (!result.success) throw result.error;
 
-		if (result.data) {
-			this.AddUserToCache(result.data.uid, result.data);
+		if (result) {
+			this.AddUserToCache(result.uid, result);
 		} else {
 			this.usernameToUidCache.set(username, "");
 		}
 
-		return result.data;
+		return result;
 	}
 
 	/**
@@ -97,10 +96,9 @@ export class AirshipUserController {
 		} else {
 			result = await Dependency<ProtectedUserController>().GetUserById(userId);
 		}
-		if (!result.success) throw result.error;
 
-		this.AddUserToCache(userId, result.data);
-		return result.data;
+		this.AddUserToCache(userId, result);
+		return result;
 	}
 
 	/**
@@ -118,14 +116,12 @@ export class AirshipUserController {
 		map: Record<string, PublicUser>;
 		array: PublicUser[];
 	}> {
-		const result = contextbridge.invoke<BridgeApiGetUsersById>(
+		return contextbridge.invoke<BridgeApiGetUsersById>(
 			UserControllerBridgeTopics.GetUsersById,
 			LuauContext.Protected,
 			userIds,
 			strict,
 		);
-		if (!result.success) throw result.error;
-		return result.data;
 	}
 
 	/**
@@ -133,12 +129,7 @@ export class AirshipUserController {
 	 * @returns A list of friends.
 	 */
 	public async GetFriends(): Promise<PublicUser[]> {
-		const result = contextbridge.invoke<BridgeApiGetFriends>(
-			UserControllerBridgeTopics.GetFriends,
-			LuauContext.Protected,
-		);
-		if (!result.success) throw result.error;
-		return result.data;
+		return contextbridge.invoke<BridgeApiGetFriends>(UserControllerBridgeTopics.GetFriends, LuauContext.Protected);
 	}
 
 	/**
@@ -147,13 +138,11 @@ export class AirshipUserController {
 	 * @returns True if friends, false otherwise.
 	 */
 	public async IsFriendsWith(userId: string): Promise<boolean> {
-		const result = contextbridge.invoke<BrigdeApiIsFriendsWith>(
+		return contextbridge.invoke<BrigdeApiIsFriendsWith>(
 			UserControllerBridgeTopics.IsFriendsWith,
 			LuauContext.Protected,
 			userId,
 		);
-		if (!result.success) throw result.success;
-		return result.data;
 	}
 
 	private AddUserToCache(userId: string, user?: PublicUser) {

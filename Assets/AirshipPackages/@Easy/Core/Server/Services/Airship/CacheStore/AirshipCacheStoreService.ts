@@ -44,8 +44,7 @@ export class AirshipCacheStoreService {
 			key,
 			expireTimeSec,
 		);
-		if (!result.success) throw result.error;
-		return result.data?.value;
+		return result?.value;
 	}
 
 	/**
@@ -65,8 +64,7 @@ export class AirshipCacheStoreService {
 			data,
 			expireTimeSec,
 		);
-		if (!result.success) throw result.error;
-		return result.data.value;
+		return result?.value;
 	}
 
 	/**
@@ -89,14 +87,12 @@ export class AirshipCacheStoreService {
 	public async SetKeyTTL(key: string, expireTimeSec: number): Promise<number> {
 		this.CheckKey(key);
 
-		const result = contextbridge.invoke<ServerBridgeApiCacheSetKeyTTL>(
+		return contextbridge.invoke<ServerBridgeApiCacheSetKeyTTL>(
 			CacheStoreServiceBridgeTopics.SetKeyTTL,
 			LuauContext.Protected,
 			key,
 			expireTimeSec,
 		);
-		if (!result.success) throw result.error;
-		return result.data;
 	}
 
 	/**

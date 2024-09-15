@@ -47,9 +47,7 @@ export class AirshipDataStoreService {
 			LuauContext.Protected,
 			key,
 		);
-
-		if (!result.success) throw result.error;
-		return result.data?.value;
+		return result?.value;
 	}
 
 	/**
@@ -72,9 +70,7 @@ export class AirshipDataStoreService {
 			key,
 			data,
 		);
-
-		if (!result.success) throw result.error;
-		return result.data?.value;
+		return result?.value;
 	}
 
 	/**
@@ -113,20 +109,18 @@ export class AirshipDataStoreService {
 			LuauContext.Protected,
 			key,
 		);
-		if (!currentData.success) throw currentData.error;
 
 		try {
-			const newData = await callback(currentData.data?.value);
-			if (newData === undefined) return currentData.data?.value;
+			const newData = await callback(currentData?.value);
+			if (newData === undefined) return currentData?.value;
 			const setResult = contextbridge.invoke<ServerBridgeApiDataSetKey<T>>(
 				DataStoreServiceBridgeTopics.SetKey,
 				LuauContext.Protected,
 				key,
 				newData,
-				currentData.data?.metadata.etag ?? "CREATE",
+				currentData?.metadata.etag ?? "CREATE",
 			);
-			if (!setResult.success) throw setResult.error;
-			return setResult.data.value;
+			return setResult.value;
 		} catch (err) {
 			warn("Error retrieving updated value.", err);
 			throw "Error retrieving updated value.";
@@ -152,9 +146,7 @@ export class AirshipDataStoreService {
 			LuauContext.Protected,
 			key,
 		);
-
-		if (!result.success) throw result.error;
-		return result.data?.value;
+		return result?.value;
 	}
 
 	/**
@@ -186,25 +178,23 @@ export class AirshipDataStoreService {
 			LuauContext.Protected,
 			key,
 		);
-		if (!currentData.success) throw currentData.error;
-		if (!currentData.data?.value) {
+		if (!currentData?.value) {
 			return undefined;
 		}
 
 		try {
-			const shouldDelete = await callback(currentData.data.value);
+			const shouldDelete = await callback(currentData.value);
 			if (!shouldDelete) {
-				return currentData.data.value;
+				return currentData.value;
 			}
 
 			const deleteResult = contextbridge.invoke<ServerBridgeApiDataDeleteKey<T>>(
 				DataStoreServiceBridgeTopics.DeleteKey,
 				LuauContext.Protected,
 				key,
-				currentData.data.metadata.etag,
+				currentData.metadata.etag,
 			);
-			if (!deleteResult.success) throw deleteResult.error;
-			return deleteResult.data?.value;
+			return deleteResult?.value;
 		} catch (err) {
 			warn("Error retrieving updated value.", err);
 			throw "Error retrieving updated value.";

@@ -29,13 +29,11 @@ export class AirshipUserService {
 	 * @returns A user object
 	 */
 	public async GetUserByUsername(username: string): Promise<PublicUser | undefined> {
-		const result = contextbridge.invoke<ServerBridgeApiGetUserByUsername>(
+		return contextbridge.invoke<ServerBridgeApiGetUserByUsername>(
 			UserServiceBridgeTopics.GetUserByUsername,
 			LuauContext.Protected,
 			username,
 		);
-		if (!result.success) throw result.error;
-		return result.data;
 	}
 
 	/**
@@ -44,13 +42,11 @@ export class AirshipUserService {
 	 * @returns A user object
 	 */
 	public async GetUserById(userId: string): Promise<PublicUser | undefined> {
-		const result = contextbridge.invoke<ServerBridgeApiGetUserById>(
+		return contextbridge.invoke<ServerBridgeApiGetUserById>(
 			UserServiceBridgeTopics.GetUserById,
 			LuauContext.Protected,
 			userId,
 		);
-		if (!result.success) throw result.error;
-		return result.data;
 	}
 
 	/**
@@ -62,14 +58,12 @@ export class AirshipUserService {
 	 * @returns An array of user objects.
 	 */
 	public async GetUsersById(userIds: string[], strict: boolean = false): Promise<Record<string, PublicUser>> {
-		const result = contextbridge.invoke<ServerBridgeApiGetUsersById>(
+		return contextbridge.invoke<ServerBridgeApiGetUsersById>(
 			UserServiceBridgeTopics.GetUsersById,
 			LuauContext.Protected,
 			userIds,
 			strict,
 		);
-		if (!result.success) throw result.error;
-		return result.data;
 	}
 
 	/**
@@ -90,12 +84,10 @@ export class AirshipUserService {
 	public async GetUserLocationsById(
 		userIds: string[],
 	): Promise<{ [userId: string]: AirshipPlayerLocation | undefined }> {
-		const result = contextbridge.invoke<ServerBridgeApiGetUserLocationsById>(
+		return contextbridge.invoke<ServerBridgeApiGetUserLocationsById>(
 			UserServiceBridgeTopics.GetUserLocationsById,
 			LuauContext.Protected,
 			userIds,
 		);
-		if (!result.success) throw result.error;
-		return result.data;
 	}
 }

@@ -80,15 +80,13 @@ export class AirshipTransferService {
 		config?: AirshipGameTransferConfig,
 	): Promise<TransferResult> {
 		let userIds: string[] = players.map((player) => (typeIs(player, "table") ? player.userId : player));
-		const result = contextbridge.invoke<ServerBridgeApiTransferGroupToGame>(
+		return contextbridge.invoke<ServerBridgeApiTransferGroupToGame>(
 			TransferServiceBridgeTopics.TransferGroupToGame,
 			LuauContext.Protected,
 			userIds,
 			gameId,
 			config,
 		);
-		if (!result.success) throw result.error;
-		return result.data;
 	}
 
 	/**
@@ -117,15 +115,13 @@ export class AirshipTransferService {
 		config?: AirshipServerTransferConfig,
 	): Promise<TransferResult> {
 		let userIds: string[] = players.map((player) => (typeIs(player, "table") ? player.userId : player));
-		const result = contextbridge.invoke<ServerBridgeApiTransferGroupToServer>(
+		return contextbridge.invoke<ServerBridgeApiTransferGroupToServer>(
 			TransferServiceBridgeTopics.TransferGroupToServer,
 			LuauContext.Protected,
 			userIds,
 			serverId,
 			config,
 		);
-		if (!result.success) throw result.error;
-		return result.data;
 	}
 
 	/**
@@ -152,14 +148,12 @@ export class AirshipTransferService {
 		selectors: AirshipMatchingServerTransferConfig,
 	): Promise<TransferResult> {
 		let userIds: string[] = players.map((player) => (typeIs(player, "table") ? player.userId : player));
-		const result = contextbridge.invoke<ServerBridgeApiTransferGroupToMatchingServer>(
+		return contextbridge.invoke<ServerBridgeApiTransferGroupToMatchingServer>(
 			TransferServiceBridgeTopics.TransferGroupToMatchingServer,
 			LuauContext.Protected,
 			userIds,
 			selectors,
 		);
-		if (!result.success) throw result.error;
-		return result.data;
 	}
 
 	/**
@@ -188,14 +182,12 @@ export class AirshipTransferService {
 		config?: AirshipPlayerTransferConfig,
 	): Promise<TransferResult> {
 		let userIds: string[] = players.map((player) => (typeIs(player, "table") ? player.userId : player));
-		const result = contextbridge.invoke<ServerBridgeApiTransferGroupToPlayer>(
+		return contextbridge.invoke<ServerBridgeApiTransferGroupToPlayer>(
 			TransferServiceBridgeTopics.TransferGroupToPlayer,
 			LuauContext.Protected,
 			userIds,
 			targetUserId,
 			config,
 		);
-		if (!result.success) throw result.error;
-		return result.data;
 	}
 }
