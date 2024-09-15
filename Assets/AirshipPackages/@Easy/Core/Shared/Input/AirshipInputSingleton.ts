@@ -115,13 +115,13 @@ export class AirshipInputSingleton {
 
 		// If the client loses focus, force all actions in the down state
 		// into the up state.
-		Application.OnFocusChanged((focused) => {
-			if (!focused) {
-				for (const downAction of this.actionDownState) {
-					this.SetUp(downAction);
-				}
-			}
-		});
+		// Application.OnFocusChanged((focused) => {
+		// 	if (!focused) {
+		// 		for (const downAction of this.actionDownState) {
+		// 			this.SetUp(downAction);
+		// 		}
+		// 	}
+		// });
 
 		if (Game.coreContext === CoreContext.GAME && Game.IsGameLuauContext()) {
 			this.CreateMobileControlCanvas();
