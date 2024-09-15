@@ -29337,6 +29337,7 @@ interface Binding {
 }
     
 interface BindingConstructor {
+    Key(L: Key): import("../Input/Binding").Binding;
 
 
 

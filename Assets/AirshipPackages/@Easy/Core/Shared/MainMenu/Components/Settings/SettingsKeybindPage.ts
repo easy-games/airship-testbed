@@ -1,5 +1,4 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
-import { Game } from "@Easy/Core/Shared/Game";
 import { InputAction } from "@Easy/Core/Shared/Input/InputAction";
 import { ActionInputType, InputUtil, KeyType } from "@Easy/Core/Shared/Input/InputUtil";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
@@ -14,7 +13,6 @@ export default class SettingsKeybindPage extends AirshipBehaviour {
 	private bin = new Bin();
 
 	public OnEnable(): void {
-		print("OnEnable SettingsKeybindPage: " + Game.IsGameLuauContext());
 		this.list.gameObject.ClearChildren();
 
 		const bindings = Airship.Input.GetBindings();
@@ -31,8 +29,6 @@ export default class SettingsKeybindPage extends AirshipBehaviour {
 			this.AddKeybind(binding);
 		}
 
-		print("Is undefined;" + (this.resetToDefaultBtn === undefined));
-		print(this.resetToDefaultBtn);
 		if (this.resetToDefaultBtn) {
 			this.bin.AddEngineEventConnection(
 				CanvasAPI.OnClickEvent(this.resetToDefaultBtn, () => {

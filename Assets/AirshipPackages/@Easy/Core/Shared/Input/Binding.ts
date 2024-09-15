@@ -1,13 +1,13 @@
 import { InputUtils } from "../Util/InputUtils";
 import { ActionInputType, InputUtil, KeyType, ModifierKey } from "./InputUtil";
 
-interface KeyBindingConfig {
+export interface KeyBindingConfig {
 	isKeyBinding: true;
 	key: Key;
 	modifierKey: ModifierKey;
 }
 
-interface MouseBindingConfig {
+export interface MouseBindingConfig {
 	isKeyBinding: false;
 	mouseButton: MouseButton;
 	modifierKey: ModifierKey;
@@ -90,25 +90,49 @@ export class Binding {
 		);
 	}
 
-	public GetModifierKey() {
+	/**
+	 * Returns this binding's `ModifierKey` as it's `Key` equivalent.
+	 *
+	 * @returns Binding's modifier key as it's `Key` equivalent
+	 */
+	public GetModifierAsKey() {
 		return InputUtil.GetKeyFromModifier(this.config.modifierKey);
 	}
 
+	/**
+	 * Returns this binding's `ActionInputType`. `ActionInputType` is based on the binding's
+	 * primary key. If the key is a mouse button, this returns `ActionInputType.Mouse`, if
+	 * it's a keyboard key, `ActionInputType.Keyboard`, and so forth.
+	 *
+	 * @returns The `ActionInputType` that corresponds to this binding.
+	 */
 	public GetInputType() {
 		return InputUtil.GetInputTypeFromBinding(this, KeyType.Primary);
 	}
 
-	/** Returns the primary key for this binding (if it is a key binding, otherwise returns undefined) */
+	/**
+	 * Returns the primary key for this binding.
+	 *
+	 * @returns `Key` for this binding if it exists, otherwise undefined.
+	 */
 	public GetKey(): Key | undefined {
 		return (this.config as KeyBindingConfig).key ?? Key.None;
 	}
 
-	/** Returns the mouse button for this binding (if it is a mouse binding, otherwise returns undefined) */
+	/**
+	 * Gets the mouse button for this binding.
+	 *
+	 * @returns `MouseButton` for this binding if it exists, otherwise undefined.
+	 */
 	public GetMouseButton(): MouseButton | undefined {
 		return (this.config as MouseBindingConfig).mouseButton;
 	}
 
-	/** Gets the display name for the binding, for example: "Left Shift + S" or "Left Mouse Button" */
+	/**
+	 * Gets the display name for the binding, for example: "Left Shift + S" or "Left Mouse Button"
+	 *
+	 * @returns Display name for the binding.
+	 */
 	public GetDisplayName(): string | undefined {
 		if (this.IsUnset()) return undefined;
 
@@ -122,9 +146,9 @@ export class Binding {
 			result = `${InputUtils.GetStringForMouseButton(mouseButton)}`;
 		}
 
-		const modifierKey = this.GetModifierKey();
+		const modifierKey = this.GetModifierAsKey();
 		if (modifierKey !== undefined && modifierKey !== Key.None) {
-			result = `${InputUtils.GetStringForKeyCode(modifierKey)} + ${result}`
+			result = `${InputUtils.GetStringForKeyCode(modifierKey)} + ${result}`;
 		}
 		return result;
 	}
