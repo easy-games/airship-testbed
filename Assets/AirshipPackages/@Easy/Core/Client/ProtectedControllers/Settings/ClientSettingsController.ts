@@ -19,9 +19,7 @@ const defaultData: ClientSettingsFile = {
 	micDeviceName: undefined,
 	microphoneEnabled: false,
 	coreKeybindOverrides: undefined,
-	gameKeybindOverrides: {
-		["123"]: { ["Test"]: { category: "General", name: "Test", modifierKey: 0, mouseButton: 0, primaryKey: 0 } },
-	},
+	gameKeybindOverrides: {},
 };
 
 @Controller({ loadOrder: -1 })
