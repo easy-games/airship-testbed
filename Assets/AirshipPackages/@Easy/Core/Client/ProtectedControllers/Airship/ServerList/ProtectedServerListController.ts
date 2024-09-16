@@ -2,7 +2,7 @@ import {
 	AirshipServerData,
 	ServerListEntryWithFriends,
 } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipServerManager";
-import { Service } from "@Easy/Core/Shared/Flamework";
+import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { DecodeJSON } from "@Easy/Core/Shared/json";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
@@ -15,10 +15,10 @@ export const enum ServerListControllerBridgeTopics {
 export type ClientBridgeApiGetServerList = (page?: number) => { entries: AirshipServerData[] };
 export type ClientBridgeApiGetFriendServers = () => { entries: ServerListEntryWithFriends[] };
 
-@Service({})
-export class ProtectedTransferService {
+@Controller({})
+export class ProtectedServerListController {
 	constructor() {
-		if (!Game.IsServer()) return;
+		if (!Game.IsClient()) return;
 
 		contextbridge.callback<ClientBridgeApiGetServerList>(ServerListControllerBridgeTopics.GetServerList, (_) => {
 			return this.GetServerList().expect();
