@@ -8,13 +8,13 @@ import {
 	AirshipServerData,
 	ServerListEntryWithFriends,
 } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipServerManager";
-import { Service } from "@Easy/Core/Shared/Flamework";
+import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 
 /**
  * Allows access to the game server list.
  */
-@Service({})
+@Controller({})
 export class AirshipServerListController {
 	constructor() {
 		if (!Game.IsClient()) return;
