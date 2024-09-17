@@ -3,7 +3,6 @@ import { ItemInstanceDto } from "@Easy/Core/Shared/Airship/Types/Outputs/Airship
 import { PlatformInventoryUtil } from "@Easy/Core/Shared/Airship/Util/PlatformInventoryUtil";
 import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { Result } from "@Easy/Core/Shared/Types/Result";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { DecodeJSON } from "@Easy/Core/Shared/json";
 
@@ -11,7 +10,7 @@ export const enum PlatformInventoryControllerBridgeTopics {
 	GetItems = "PartyControllerGetInventory",
 }
 
-export type ClientBridgeApiGetItems = (query?: ItemQueryParameters) => Result<ItemInstanceDto[], string>;
+export type ClientBridgeApiGetItems = (query?: ItemQueryParameters) => ItemInstanceDto[];
 
 @Controller({})
 export class ProtectedPlatformInventoryController {
@@ -21,11 +20,7 @@ export class ProtectedPlatformInventoryController {
 		contextbridge.callback<ClientBridgeApiGetItems>(
 			PlatformInventoryControllerBridgeTopics.GetItems,
 			(_, query) => {
-				const [success, result] = this.GetItems(query).await();
-				if (!success) {
-					return { success: false, error: "Unable to complete request." };
-				}
-				return result;
+				return this.GetItems(query).expect();
 			},
 		);
 	}
@@ -42,16 +37,10 @@ export class ProtectedPlatformInventoryController {
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to complete request. Status Code:  ${res.statusCode}.\n`, res.error);
-			return {
-				success: false,
-				error: res.error,
-			};
+			throw res.error;
 		}
 
-		return {
-			success: true,
-			data: DecodeJSON(res.data),
-		};
+		return DecodeJSON(res.data) as ItemInstanceDto[];
 	}
 
 	protected OnStart(): void {}

@@ -5,7 +5,6 @@ import {
 	ServerBridgeApiCacheSetKeyTTL,
 } from "@Easy/Core/Server/ProtectedServices/Airship/CacheStore/CacheStoreService";
 import { Platform } from "@Easy/Core/Shared/Airship";
-import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/ContextBridgeUtil";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 
@@ -39,14 +38,13 @@ export class AirshipCacheStoreService {
 	public async GetKey<T extends object>(key: string, expireTimeSec?: number): Promise<T | undefined> {
 		this.CheckKey(key);
 
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiCacheGetKey<T>>(
+		const result = contextbridge.invoke<ServerBridgeApiCacheGetKey<T>>(
 			CacheStoreServiceBridgeTopics.GetKey,
 			LuauContext.Protected,
 			key,
 			expireTimeSec,
 		);
-		if (!result.success) throw result.error;
-		return result.data?.value;
+		return result?.value;
 	}
 
 	/**
@@ -59,15 +57,14 @@ export class AirshipCacheStoreService {
 	public async SetKey<T extends object | string | number>(key: string, data: T, expireTimeSec: number): Promise<T> {
 		this.CheckKey(key);
 
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiCacheSetKey<T>>(
+		const result = contextbridge.invoke<ServerBridgeApiCacheSetKey<T>>(
 			CacheStoreServiceBridgeTopics.SetKey,
 			LuauContext.Protected,
 			key,
 			data,
 			expireTimeSec,
 		);
-		if (!result.success) throw result.error;
-		return result.data.value;
+		return result?.value;
 	}
 
 	/**
@@ -90,14 +87,12 @@ export class AirshipCacheStoreService {
 	public async SetKeyTTL(key: string, expireTimeSec: number): Promise<number> {
 		this.CheckKey(key);
 
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiCacheSetKeyTTL>(
+		return contextbridge.invoke<ServerBridgeApiCacheSetKeyTTL>(
 			CacheStoreServiceBridgeTopics.SetKeyTTL,
 			LuauContext.Protected,
 			key,
 			expireTimeSec,
 		);
-		if (!result.success) throw result.error;
-		return result.data;
 	}
 
 	/**

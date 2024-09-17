@@ -2,9 +2,7 @@ import { LeaderboardUpdate } from "@Easy/Core/Server/Services/Airship/Leaderboar
 import { RankData } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipLeaderboard";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { Result } from "@Easy/Core/Shared/Types/Result";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
-import inspect from "@Easy/Core/Shared/Util/Inspect";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 
 export const enum LeaderboardServiceBridgeTopics {
@@ -16,25 +14,16 @@ export const enum LeaderboardServiceBridgeTopics {
 	GetRankRange = "LeaderboardService:GetRankRange",
 }
 
-export type ServerBridgeApiLeaderboardUpdate = (
-	leaderboardName: string,
-	update: LeaderboardUpdate,
-) => Result<undefined, string>;
-export type ServerBridgeApiLeaderboardGetRank = (
-	leaderboardName: string,
-	id: string,
-) => Result<RankData | undefined, string>;
-export type ServerBridgeApiLeaderboardDeleteEntry = (leaderboardName: string, id: string) => Result<undefined, string>;
-export type ServerBridgeApiLeaderboardDeleteEntries = (
-	leaderboardName: string,
-	ids: string[],
-) => Result<undefined, string>;
-export type ServerBridgeApiLeaderboardResetLeaderboard = (leaderboardName: string) => Result<undefined, string>;
+export type ServerBridgeApiLeaderboardUpdate = (leaderboardName: string, update: LeaderboardUpdate) => void;
+export type ServerBridgeApiLeaderboardGetRank = (leaderboardName: string, id: string) => RankData | undefined;
+export type ServerBridgeApiLeaderboardDeleteEntry = (leaderboardName: string, id: string) => void;
+export type ServerBridgeApiLeaderboardDeleteEntries = (leaderboardName: string, ids: string[]) => void;
+export type ServerBridgeApiLeaderboardResetLeaderboard = (leaderboardName: string) => void;
 export type ServerBridgeApiLeaderboardGetRankRange = (
 	leaderboardName: string,
 	startIndex?: number,
 	count?: number,
-) => Result<RankData[], string>;
+) => RankData[];
 
 @Service({})
 export class ProtectedLeaderboardService {
@@ -44,66 +33,42 @@ export class ProtectedLeaderboardService {
 		contextbridge.callback<ServerBridgeApiLeaderboardUpdate>(
 			LeaderboardServiceBridgeTopics.Update,
 			(_, leaderboardName, update) => {
-				const [success, result] = this.Update(leaderboardName, update).await();
-				if (!success) {
-					return { success: false, error: "Unable to complete request." };
-				}
-				return result;
+				return this.Update(leaderboardName, update).expect();
 			},
 		);
 
 		contextbridge.callback<ServerBridgeApiLeaderboardGetRank>(
 			LeaderboardServiceBridgeTopics.GetRank,
 			(_, leaderboardName, id) => {
-				const [success, result] = this.GetRank(leaderboardName, id).await();
-				if (!success) {
-					return { success: false, error: "Unable to complete request." };
-				}
-				return result;
+				return this.GetRank(leaderboardName, id).expect();
 			},
 		);
 
 		contextbridge.callback<ServerBridgeApiLeaderboardGetRankRange>(
 			LeaderboardServiceBridgeTopics.GetRankRange,
 			(_, leaderboardName, startIndex = 0, count = 100) => {
-				const [success, result] = this.GetRankRange(leaderboardName, startIndex, count).await();
-				if (!success) {
-					return { success: false, error: "Unable to complete request." };
-				}
-				return result;
+				return this.GetRankRange(leaderboardName, startIndex, count).expect();
 			},
 		);
 
 		contextbridge.callback<ServerBridgeApiLeaderboardDeleteEntry>(
 			LeaderboardServiceBridgeTopics.DeleteEntry,
 			(_, leaderboardName, id) => {
-				const [success, result] = this.DeleteEntry(leaderboardName, id).await();
-				if (!success) {
-					return { success: false, error: "Unable to complete request." };
-				}
-				return result;
+				return this.DeleteEntry(leaderboardName, id).expect();
 			},
 		);
 
 		contextbridge.callback<ServerBridgeApiLeaderboardDeleteEntries>(
 			LeaderboardServiceBridgeTopics.DeleteEntries,
 			(_, leaderboardName, ids) => {
-				const [success, result] = this.DeleteEntries(leaderboardName, ids).await();
-				if (!success) {
-					return { success: false, error: "Unable to complete request." };
-				}
-				return result;
+				return this.DeleteEntries(leaderboardName, ids).expect();
 			},
 		);
 
 		contextbridge.callback<ServerBridgeApiLeaderboardResetLeaderboard>(
 			LeaderboardServiceBridgeTopics.ResetLeaderboard,
 			(_, leaderboardName) => {
-				const [success, result] = this.ResetLeaderboard(leaderboardName).await();
-				if (!success) {
-					return { success: false, error: "Unable to complete request." };
-				}
-				return result;
+				return this.ResetLeaderboard(leaderboardName).expect();
 			},
 		);
 	}
@@ -112,14 +77,6 @@ export class ProtectedLeaderboardService {
 		name: string,
 		update: LeaderboardUpdate,
 	): Promise<ReturnType<ServerBridgeApiLeaderboardUpdate>> {
-		print(
-			"Got update",
-			inspect(update),
-			"sending",
-			EncodeJSON({
-				stats: update,
-			}),
-		);
 		const result = InternalHttpManager.PostAsync(
 			`${AirshipUrl.DataStoreService}/leaderboards/leaderboard-id/${name}/stats`,
 			EncodeJSON({
@@ -129,16 +86,8 @@ export class ProtectedLeaderboardService {
 
 		if (!result.success || result.statusCode > 299) {
 			warn(`Unable to update leaderboard. Status Code: ${result.statusCode}.\n`, result.error);
-			return {
-				success: false,
-				error: result.error,
-			};
+			throw result.error;
 		}
-
-		return {
-			success: true,
-			data: undefined,
-		};
 	}
 
 	public async GetRank(name: string, id: string): Promise<ReturnType<ServerBridgeApiLeaderboardGetRank>> {
@@ -147,23 +96,14 @@ export class ProtectedLeaderboardService {
 		);
 		if (!result.success || result.statusCode > 299) {
 			warn(`Unable to get leaderboard rank. Status Code: ${result.statusCode}.\n`, result.error);
-			return {
-				success: false,
-				error: result.error,
-			};
+			throw result.error;
 		}
 
 		if (!result.data) {
-			return {
-				success: true,
-				data: undefined,
-			};
+			return undefined;
 		}
 
-		return {
-			success: true,
-			data: DecodeJSON(result.data) as RankData,
-		};
+		return DecodeJSON(result.data) as RankData;
 	}
 
 	public async DeleteEntry(name: string, id: string): Promise<ReturnType<ServerBridgeApiLeaderboardDeleteEntry>> {
@@ -173,16 +113,8 @@ export class ProtectedLeaderboardService {
 
 		if (!result.success || result.statusCode > 299) {
 			warn(`Unable to update leaderboard. Status Code: ${result.statusCode}.\n`, result.error);
-			return {
-				success: false,
-				error: result.error,
-			};
+			throw result.error;
 		}
-
-		return {
-			success: true,
-			data: undefined,
-		};
 	}
 
 	public async DeleteEntries(
@@ -198,16 +130,8 @@ export class ProtectedLeaderboardService {
 
 		if (!result.success || result.statusCode > 299) {
 			warn(`Unable to update leaderboard. Status Code: ${result.statusCode}.\n`, result.error);
-			return {
-				success: false,
-				error: result.error,
-			};
+			throw result.error;
 		}
-
-		return {
-			success: true,
-			data: undefined,
-		};
 	}
 
 	public async ResetLeaderboard(name: string): Promise<ReturnType<ServerBridgeApiLeaderboardResetLeaderboard>> {
@@ -217,16 +141,8 @@ export class ProtectedLeaderboardService {
 
 		if (!result.success || result.statusCode > 299) {
 			warn(`Unable to reset leaderboard. Status Code: ${result.statusCode}.\n`, result.error);
-			return {
-				success: false,
-				error: result.error,
-			};
+			throw result.error;
 		}
-
-		return {
-			success: true,
-			data: undefined,
-		};
 	}
 
 	public async GetRankRange(
@@ -241,23 +157,14 @@ export class ProtectedLeaderboardService {
 		);
 		if (!result.success || result.statusCode > 299) {
 			warn(`Unable to get leaderboard rankings. Status Code: ${result.statusCode}.\n`, result.error);
-			return {
-				success: false,
-				error: result.error,
-			};
+			throw result.error;
 		}
 
 		if (!result.data) {
-			return {
-				success: true,
-				data: [],
-			};
+			return [];
 		}
 
-		return {
-			success: true,
-			data: DecodeJSON(result.data) as RankData[],
-		};
+		return DecodeJSON(result.data) as RankData[];
 	}
 
 	protected OnStart(): void {}

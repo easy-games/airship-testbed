@@ -1,7 +1,6 @@
 import { AirshipPlayerLocation, PublicUser } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipUser";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { Result } from "@Easy/Core/Shared/Types/Result";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { DecodeJSON } from "@Easy/Core/Shared/json";
 
@@ -12,15 +11,12 @@ export const enum UserServiceBridgeTopics {
 	GetUserLocationsById = "UserService:GetUserLocationsById",
 }
 
-export type ServerBridgeApiGetUserByUsername = (username: string) => Result<PublicUser | undefined, string>;
-export type ServerBridgeApiGetUserById = (userId: string) => Result<PublicUser | undefined, string>;
-export type ServerBridgeApiGetUsersById = (
-	userIds: string[],
-	strict?: boolean,
-) => Result<Record<string, PublicUser>, string>;
-export type ServerBridgeApiGetUserLocationsById = (
-	userIds: string[],
-) => Result<{ [userId: string]: AirshipPlayerLocation | undefined }, string>;
+export type ServerBridgeApiGetUserByUsername = (username: string) => PublicUser | undefined;
+export type ServerBridgeApiGetUserById = (userId: string) => PublicUser | undefined;
+export type ServerBridgeApiGetUsersById = (userIds: string[], strict?: boolean) => { [userId: string]: PublicUser };
+export type ServerBridgeApiGetUserLocationsById = (userIds: string[]) => {
+	[userId: string]: AirshipPlayerLocation | undefined;
+};
 
 @Service({})
 export class ProtectedUserService {
@@ -30,41 +26,25 @@ export class ProtectedUserService {
 		contextbridge.callback<ServerBridgeApiGetUserByUsername>(
 			UserServiceBridgeTopics.GetUserByUsername,
 			(_, username) => {
-				const [success, result] = this.GetUserByUsername(username).await();
-				if (!success) {
-					return { success: false, error: "Unable to complete request." };
-				}
-				return result;
+				return this.GetUserByUsername(username).expect();
 			},
 		);
 
 		contextbridge.callback<ServerBridgeApiGetUserById>(UserServiceBridgeTopics.GetUserById, (_, userId) => {
-			const [success, result] = this.GetUserById(userId).await();
-			if (!success) {
-				return { success: false, error: "Unable to complete request." };
-			}
-			return result;
+			return this.GetUserById(userId).expect();
 		});
 
 		contextbridge.callback<ServerBridgeApiGetUsersById>(
 			UserServiceBridgeTopics.GetUsersById,
 			(_, userIds, strict = false) => {
-				const [success, result] = this.GetUsersById(userIds, strict).await();
-				if (!success) {
-					return { success: false, error: "Unable to complete request." };
-				}
-				return result;
+				return this.GetUsersById(userIds, strict).expect();
 			},
 		);
 
 		contextbridge.callback<ServerBridgeApiGetUserLocationsById>(
 			UserServiceBridgeTopics.GetUserLocationsById,
 			(_, userIds) => {
-				const [success, result] = this.GetUserLocationsById(userIds).await();
-				if (!success) {
-					return { success: false, error: "Unable to complete request." };
-				}
-				return result;
+				return this.GetUserLocationsById(userIds).expect();
 			},
 		);
 	}
@@ -76,23 +56,14 @@ export class ProtectedUserService {
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to get user. Status Code:  ${res.statusCode}.\n`, res.error);
-			return {
-				success: false,
-				error: res.error,
-			};
+			throw res.error;
 		}
 
 		if (!res.data) {
-			return {
-				success: true,
-				data: undefined,
-			};
+			return undefined;
 		}
 
-		return {
-			success: true,
-			data: DecodeJSON(res.data) as PublicUser,
-		};
+		return DecodeJSON(res.data) as PublicUser;
 	}
 
 	public async GetUserById(userId: string): Promise<ReturnType<ServerBridgeApiGetUserById>> {
@@ -100,23 +71,14 @@ export class ProtectedUserService {
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to get user. Status Code:  ${res.statusCode}.\n`, res.error);
-			return {
-				success: false,
-				error: res.error,
-			};
+			throw res.error;
 		}
 
 		if (!res.data) {
-			return {
-				success: true,
-				data: undefined,
-			};
+			return undefined;
 		}
 
-		return {
-			success: true,
-			data: DecodeJSON(res.data) as PublicUser,
-		};
+		return DecodeJSON(res.data) as PublicUser;
 	}
 
 	public async GetUsersById(
@@ -124,10 +86,7 @@ export class ProtectedUserService {
 		strict: boolean = false,
 	): Promise<ReturnType<ServerBridgeApiGetUsersById>> {
 		if (userIds.size() === 0) {
-			return {
-				success: true,
-				data: {},
-			};
+			return {};
 		}
 
 		const res = InternalHttpManager.GetAsync(
@@ -138,35 +97,23 @@ export class ProtectedUserService {
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to get user. Status Code:  ${res.statusCode}.\n`, res.error);
-			return {
-				success: false,
-				error: res.error,
-			};
+			throw res.error;
 		}
 
 		if (!res.data) {
-			return {
-				success: true,
-				data: {},
-			};
+			return {};
 		}
 
 		let array = DecodeJSON(res.data) as PublicUser[];
 		const map: Record<string, PublicUser> = {};
 		array.forEach((u) => (map[u.uid] = u));
 
-		return {
-			success: true,
-			data: map,
-		};
+		return map;
 	}
 
 	public async GetUserLocationsById(userIds: string[]): Promise<ReturnType<ServerBridgeApiGetUserLocationsById>> {
 		if (userIds.size() === 0) {
-			return {
-				success: true,
-				data: {},
-			};
+			return {};
 		}
 
 		const res = InternalHttpManager.GetAsync(
@@ -175,23 +122,14 @@ export class ProtectedUserService {
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to get user locations. Status Code:  ${res.statusCode}.\n`, res.error);
-			return {
-				success: false,
-				error: res.error,
-			};
+			throw res.error;
 		}
 
 		if (!res.data) {
-			return {
-				success: true,
-				data: {},
-			};
+			return {};
 		}
 
-		return {
-			success: true,
-			data: DecodeJSON(res.data),
-		};
+		return DecodeJSON(res.data) as ReturnType<ServerBridgeApiGetUserLocationsById>;
 	}
 
 	protected OnStart(): void {}

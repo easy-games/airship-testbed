@@ -1,6 +1,5 @@
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { Result } from "@Easy/Core/Shared/Types/Result";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 
@@ -10,16 +9,9 @@ export const enum CacheStoreServiceBridgeTopics {
 	SetKeyTTL = "CacheStore:SetKeyTTL",
 }
 
-export type ServerBridgeApiCacheGetKey<T> = (
-	key: string,
-	expireTimeSec?: number,
-) => Result<CacheStoreRecord<T> | undefined, string>;
-export type ServerBridgeApiCacheSetKey<T> = (
-	key: string,
-	data: T,
-	expireTimeSec: number,
-) => Result<CacheStoreRecord<T>, string>;
-export type ServerBridgeApiCacheSetKeyTTL = (key: string, expireTimeSec: number) => Result<number, string>;
+export type ServerBridgeApiCacheGetKey<T> = (key: string, expireTimeSec?: number) => CacheStoreRecord<T> | undefined;
+export type ServerBridgeApiCacheSetKey<T> = (key: string, data: T, expireTimeSec: number) => CacheStoreRecord<T>;
+export type ServerBridgeApiCacheSetKeyTTL = (key: string, expireTimeSec: number) => number;
 
 export interface CacheStoreRecord<T> {
 	value: T;
@@ -37,42 +29,21 @@ export class ProtectedCacheStoreService {
 		contextbridge.callback<ServerBridgeApiCacheGetKey<unknown>>(
 			CacheStoreServiceBridgeTopics.GetKey,
 			(_, key, expireTimeSec) => {
-				const [success, result] = this.GetKey(key, expireTimeSec).await();
-				if (!success) {
-					return {
-						success: false,
-						error: "Unable to complete request.",
-					};
-				}
-				return result;
+				return this.GetKey(key, expireTimeSec).expect();
 			},
 		);
 
 		contextbridge.callback<ServerBridgeApiCacheSetKey<unknown>>(
 			CacheStoreServiceBridgeTopics.SetKey,
 			(_, key, data, expireTimeSec) => {
-				const [success, result] = this.SetKey(key, data, expireTimeSec).await();
-				if (!success) {
-					return {
-						success: false,
-						error: "Unable to complete request.",
-					};
-				}
-				return result;
+				return this.SetKey(key, data, expireTimeSec).expect();
 			},
 		);
 
 		contextbridge.callback<ServerBridgeApiCacheSetKeyTTL>(
 			CacheStoreServiceBridgeTopics.SetKeyTTL,
 			(_, key, expireTimeSec) => {
-				const [success, result] = this.SetKeyTTL(key, expireTimeSec).await();
-				if (!success) {
-					return {
-						success: false,
-						error: "Unable to complete request.",
-					};
-				}
-				return result;
+				return this.SetKeyTTL(key, expireTimeSec).expect();
 			},
 		);
 	}
@@ -83,22 +54,13 @@ export class ProtectedCacheStoreService {
 		const result = InternalHttpManager.GetAsync(`${AirshipUrl.DataStoreService}/cache/key/${key}${query}`);
 		if (!result.success) {
 			warn(`Unable to get cache key. Status Code: ${result.statusCode}.\n`, result.error);
-			return {
-				success: false,
-				error: result.error,
-			};
+			throw result.error;
 		}
 
 		if (!result.data) {
-			return {
-				success: false,
-				error: result.error,
-			};
+			return undefined;
 		}
-		return {
-			success: true,
-			data: DecodeJSON(result.data),
-		};
+		return DecodeJSON(result.data) as CacheStoreRecord<T>;
 	}
 
 	public async SetKey<T>(
@@ -113,16 +75,10 @@ export class ProtectedCacheStoreService {
 		);
 		if (!result.success || result.statusCode > 299) {
 			warn(`Unable to set cache key. Status Code: ${result.statusCode}.\n`, result.error);
-			return {
-				success: false,
-				error: result.error,
-			};
+			throw result.error;
 		}
 
-		return {
-			success: true,
-			data: DecodeJSON(result.data),
-		};
+		return DecodeJSON(result.data) as CacheStoreRecord<T>;
 	}
 
 	public async SetKeyTTL(key: string, expireTimeSec: number): Promise<ReturnType<ServerBridgeApiCacheSetKeyTTL>> {
@@ -135,16 +91,10 @@ export class ProtectedCacheStoreService {
 		);
 		if (!result.success || result.statusCode > 299) {
 			warn(`Unable to set cache key ttl. Status Code: ${result.statusCode}.\n`, result.error);
-			return {
-				success: false,
-				error: result.error,
-			};
+			throw result.error;
 		}
 
-		return {
-			success: true,
-			data: (DecodeJSON(result.data) as { ttl: number }).ttl,
-		};
+		return (DecodeJSON(result.data) as { ttl: number }).ttl;
 	}
 
 	protected OnStart(): void {}
