@@ -25,6 +25,13 @@ export class Game {
 	public static onLocalPlayerLoaded = new Signal<void>();
 	public static onDeviceOrientationChanged = new Signal<"landscape" | "portrait">();
 
+	/**
+	 * Fired when the local player opens the Main Menu (escape key).
+	 *
+	 * You can also use {@link IsMenuOpen()} to check if opened.
+	 */
+	public static readonly onMenuOpened = new Signal<[opened: boolean]>();
+
 	public static readonly deviceType = DeviceBridge.GetDeviceType();
 
 	public static WaitForLocalPlayerLoaded(): void {
@@ -72,6 +79,18 @@ export class Game {
 	public static WaitForGameData(): GameDto {
 		if (this.gameData) return this.gameData;
 		return this.onGameDataLoaded.Wait();
+	}
+
+	/**
+	 * Used to check if the Airship Escape Menu is opened.
+	 *
+	 * @returns True if the Airship Escape Menu is open.
+	 */
+	public static IsMenuOpen(): boolean {
+		if (Game.IsGameLuauContext()) {
+			return contextbridge.invoke("Game:IsMenuOpen", LuauContext.Protected);
+		}
+		return false;
 	}
 
 	/**
@@ -200,4 +219,10 @@ export class Game {
 	public static IsGameLuauContext(): boolean {
 		return contextbridge.current() === LuauContext.Game;
 	}
+}
+
+if (Game.IsGameLuauContext()) {
+	contextbridge.subscribe("Game:MenuToggled", (from, opened: boolean) => {
+		Game.onMenuOpened.Fire(opened);
+	});
 }
