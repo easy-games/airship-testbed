@@ -4833,3 +4833,25 @@ declare const MultiAimConstraint: MultiAimConstraintConstructor;
 
 interface RandomConstructor {}
 declare const Random: RandomConstructor;
+
+interface VolumeProfile extends ScriptableObject {
+	components: CSArray<VolumeComponent>;
+	isDirty: boolean;
+
+	// Add<T>(overrides: boolean): T;
+	// Add(type: unknown, overrides: boolean): VolumeComponent;
+	// GetHashCode(): number;
+	// Has<T>(): boolean;
+	// Has(type: unknown): boolean;
+	// HasSubclassOf(type: unknown): boolean;
+	// Remove<T>(): void;
+	// Remove(type: unknown): void;
+	Reset(): void;
+	// Get<T>(component: T): T | undefined;
+	GetDepthOfField(): DepthOfField | undefined;
+}
+
+interface VolumeProfileConstructor {
+	new (): VolumeProfile;
+}
+declare const VolumeProfile: VolumeProfileConstructor;
