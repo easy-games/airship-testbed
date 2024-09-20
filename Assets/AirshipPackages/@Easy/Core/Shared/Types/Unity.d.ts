@@ -2083,6 +2083,9 @@ interface GameObject extends Object {
 
 	/** Destroys all child gameobjects. */
 	ClearChildren(): void;
+
+	/**Sets the layer on this game object and all descendants */
+	SetLayerRecursive(layer: number): void;
 }
 declare const gameObject: GameObject;
 
@@ -4721,6 +4724,9 @@ interface Transform extends Component, Iterable<Transform> {
 	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform.Translate.html | Transform.Translate}
 	 */
 	Translate(x: number, y: number, z: number, relativeTo: Transform): void;
+
+	/**Get all descendant transforms. Does not inclue the root transform. */
+	GetDescendants(): CSArray<Transform>;
 }
 
 interface Collider extends Component {
