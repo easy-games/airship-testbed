@@ -63,6 +63,13 @@ export function InitNet() {
 		NetworkCore.Net.OnBroadcastFromServerAction((blob) => {
 			const msg = blob.Decode() as BlobData;
 			const id = msg.i;
+
+			// All ids coming from game are odd and from protected are even 
+			// Never listen to game messages from protected context
+			if ((id % 2) === 1 && contextbridge.current() === LuauContext.Protected) {
+				return;
+			}
+
 			const data = msg.d;
 			const callbacks = callbacksByIdClient.get(tostring(id));
 			if (callbacks === undefined) {
