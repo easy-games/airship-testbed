@@ -1,7 +1,6 @@
 import { GameServerPartyData } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipParty";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { Result } from "@Easy/Core/Shared/Types/Result";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { DecodeJSON } from "@Easy/Core/Shared/json";
 
@@ -10,8 +9,8 @@ export const enum PartyServiceBridgeTopics {
 	GetPartyById = "PartyService:GetPartyById",
 }
 
-export type ServerBridgeApiGetPartyForUserId = (userId: string) => Result<GameServerPartyData | undefined, string>;
-export type ServerBridgeApiGetPartyById = (partyId: string) => Result<GameServerPartyData | undefined, string>;
+export type ServerBridgeApiGetPartyForUserId = (userId: string) => GameServerPartyData | undefined;
+export type ServerBridgeApiGetPartyById = (partyId: string) => GameServerPartyData | undefined;
 
 @Service({})
 export class ProtectedPartyService {
@@ -21,20 +20,12 @@ export class ProtectedPartyService {
 		contextbridge.callback<ServerBridgeApiGetPartyForUserId>(
 			PartyServiceBridgeTopics.GetPartyForUserId,
 			(_, userId) => {
-				const [success, result] = this.GetPartyForUserId(userId).await();
-				if (!success) {
-					return { success: false, error: "Unable to complete request." };
-				}
-				return result;
+				return this.GetPartyForUserId(userId).expect();
 			},
 		);
 
 		contextbridge.callback<ServerBridgeApiGetPartyById>(PartyServiceBridgeTopics.GetPartyById, (_, partyId) => {
-			const [success, result] = this.GetPartyById(partyId).await();
-			if (!success) {
-				return { success: false, error: "Unable to complete request." };
-			}
-			return result;
+			return this.GetPartyById(partyId).expect();
 		});
 	}
 
@@ -43,20 +34,14 @@ export class ProtectedPartyService {
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to get party for user. Status Code:  ${res.statusCode}.\n`, res.error);
-			return {
-				success: false,
-				error: res.error,
-			};
+			throw res.error;
 		}
 
 		if (!res.data) {
-			return { success: true, data: undefined };
+			return undefined;
 		}
 
-		return {
-			success: true,
-			data: DecodeJSON(res.data) as GameServerPartyData,
-		};
+		return DecodeJSON(res.data) as GameServerPartyData;
 	}
 
 	public async GetPartyById(partyId: string): Promise<ReturnType<ServerBridgeApiGetPartyById>> {
@@ -64,20 +49,14 @@ export class ProtectedPartyService {
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to get party for user. Status Code:  ${res.statusCode}.\n`, res.error);
-			return {
-				success: false,
-				error: res.error,
-			};
+			throw res.error;
 		}
 
 		if (!res.data) {
-			return { success: true, data: undefined };
+			return undefined;
 		}
 
-		return {
-			success: true,
-			data: DecodeJSON(res.data) as GameServerPartyData,
-		};
+		return DecodeJSON(res.data) as GameServerPartyData;
 	}
 
 	protected OnStart(): void {}

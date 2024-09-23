@@ -17,7 +17,6 @@ import {
 	AirshipServerConfig,
 } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipServerManager";
 import { AirshipServerData } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipServerManager";
-import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/ContextBridgeUtil";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 
@@ -41,13 +40,11 @@ export class AirshipServerManagerService {
 	 * @returns The id of the new server. Undefined if the server was not able to be created.
 	 */
 	public async CreateServer(config?: AirshipServerConfig): Promise<AirshipServerData> {
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiCreateServer>(
+		return contextbridge.invoke<ServerBridgeApiCreateServer>(
 			ServerManagerServiceBridgeTopics.CreateServer,
 			LuauContext.Protected,
 			config,
 		);
-		if (!result.success) throw result.error;
-		return result.data;
 	}
 
 	/**
@@ -66,13 +63,11 @@ export class AirshipServerManagerService {
 	 * @returns A map of server ID to server data. If the server could not be found, it will not be included in the map.
 	 */
 	public async GetServers(serverIds: string[]): Promise<{ [serverId: string]: AirshipServerData | undefined }> {
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiGetServers>(
+		return contextbridge.invoke<ServerBridgeApiGetServers>(
 			ServerManagerServiceBridgeTopics.GetServers,
 			LuauContext.Protected,
 			serverIds,
 		);
-		if (!result.success) throw result.error;
-		return result.data;
 	}
 
 	/**
@@ -89,25 +84,21 @@ export class AirshipServerManagerService {
 	 * @returns True if the server was successfully listed.
 	 */
 	public async ListServer(config?: { name?: string; description?: string }): Promise<boolean> {
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiListServer>(
+		return contextbridge.invoke<ServerBridgeApiListServer>(
 			ServerManagerServiceBridgeTopics.ListServer,
 			LuauContext.Protected,
 			config,
 		);
-		if (!result.success) throw result.error;
-		return result.data;
 	}
 
 	/**
 	 * Unlists the server if it has been listed. No change is made if the server is not listed.
 	 */
 	public async DelistServer(): Promise<boolean> {
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiDelistServer>(
+		return contextbridge.invoke<ServerBridgeApiDelistServer>(
 			ServerManagerServiceBridgeTopics.DelistServer,
 			LuauContext.Protected,
 		);
-		if (!result.success) throw result.error;
-		return result.data;
 	}
 
 	/**
@@ -115,25 +106,21 @@ export class AirshipServerManagerService {
 	 * @param page The page to retrieve. Starts at 0.
 	 */
 	public async GetServerList(page: number = 0): Promise<{ entries: AirshipServerData[] }> {
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiGetServerList>(
+		return contextbridge.invoke<ServerBridgeApiGetServerList>(
 			ServerManagerServiceBridgeTopics.GetServerList,
 			LuauContext.Protected,
 		);
-		if (!result.success) throw result.error;
-		return result.data;
 	}
 
 	/**
-	 * Unlists the server if it has been listed. No change is made if the server is not listed.
+	 * Updates the access mode of the server.
 	 */
 	public async SetAccessMode(mode: AirshipServerAccessMode): Promise<boolean> {
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiSetAccessMode>(
+		return contextbridge.invoke<ServerBridgeApiSetAccessMode>(
 			ServerManagerServiceBridgeTopics.SetAccessMode,
 			LuauContext.Protected,
 			mode,
 		);
-		if (!result.success) throw result.error;
-		return result.data;
 	}
 
 	/**
@@ -141,13 +128,11 @@ export class AirshipServerManagerService {
 	 * the configuration cannot be parsed or does not exist, returns undefined.
 	 * @returns The game configuration object or undefined.
 	 */
-	public async GetGameConfig<T>(): Promise<T | undefined> {
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiGetGameConfig<T>>(
+	public GetGameConfig<T>(): T | undefined {
+		return contextbridge.invoke<ServerBridgeApiGetGameConfig<T>>(
 			ServerManagerServiceBridgeTopics.GetGameConfig,
 			LuauContext.Protected,
 		);
-		if (!result.success) throw result.error;
-		return result.data;
 	}
 
 	/**
@@ -156,12 +141,10 @@ export class AirshipServerManagerService {
 	 * @returns The userIds of all players allowed to join this server.
 	 */
 	public async GetAllowedPlayers(): Promise<string[]> {
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiGetAllowedPlayers>(
+		return contextbridge.invoke<ServerBridgeApiGetAllowedPlayers>(
 			ServerManagerServiceBridgeTopics.GetAllowedPlayers,
 			LuauContext.Protected,
 		);
-		if (!result.success) throw result.error;
-		return result.data;
 	}
 
 	/**
@@ -171,13 +154,11 @@ export class AirshipServerManagerService {
 	 * @returns True if the userId was added, false otherwise.
 	 */
 	public async AddAllowedPlayer(userId: string): Promise<boolean> {
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiAddAllowedPlayer>(
+		return contextbridge.invoke<ServerBridgeApiAddAllowedPlayer>(
 			ServerManagerServiceBridgeTopics.AddAllowedPlayer,
 			LuauContext.Protected,
 			userId,
 		);
-		if (!result.success) throw result.error;
-		return result.data;
 	}
 
 	/**
@@ -187,12 +168,10 @@ export class AirshipServerManagerService {
 	 * @returns True if the userId was removed, false otherwise.
 	 */
 	public async RemoveAllowedPlayer(userId: string): Promise<boolean> {
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiRemoveAllowedPlayer>(
+		return contextbridge.invoke<ServerBridgeApiRemoveAllowedPlayer>(
 			ServerManagerServiceBridgeTopics.RemoveAllowedPlayer,
 			LuauContext.Protected,
 			userId,
 		);
-		if (!result.success) throw result.error;
-		return result.data;
 	}
 }

@@ -55,10 +55,7 @@ export default class FriendRecommendation extends AirshipBehaviour {
 		this.recommendationContext = context;
 		this.context.text = this.GetRecommendationString(context);
 
-		const userResult = await Dependency<ProtectedUserController>().GetUserById(userId);
-		if (!userResult.success) return false;
-
-		this.user = userResult.data;
+		this.user = await Dependency<ProtectedUserController>().GetUserById(userId);
 		if (!this.user) return false;
 
 		Airship.Players.GetProfilePictureAsync(userId).then((tex) => {
@@ -116,9 +113,8 @@ export default class FriendRecommendation extends AirshipBehaviour {
 		Dependency<ProtectedUserController>()
 			.GetUserById(this.user.uid)
 			.andThen((res) => {
-				if (!res.data) return;
-
-				Dependency<ProtectedFriendsController>().SendFriendRequest(res.data.username);
+				if (!res) return;
+				Dependency<ProtectedFriendsController>().SendFriendRequest(res.username);
 			});
 	}
 }

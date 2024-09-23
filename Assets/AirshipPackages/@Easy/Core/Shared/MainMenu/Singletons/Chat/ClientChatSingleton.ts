@@ -121,6 +121,10 @@ export class ClientChatSingleton {
 		if (Game.IsProtectedLuauContext()) {
 			this.RegisterCommand(new MessageCommand());
 			this.RegisterCommand(new ReplyCommand());
+
+			contextbridge.callback<() => boolean>("ClientChatSingleton:IsOpen", () => {
+				return this.IsOpen();
+			});
 		}
 
 		if (Game.IsMobile()) {

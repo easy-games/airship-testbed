@@ -3,7 +3,6 @@ import { ItemInstanceDto, Transaction } from "@Easy/Core/Shared/Airship/Types/Ou
 import { PlatformInventoryUtil } from "@Easy/Core/Shared/Airship/Util/PlatformInventoryUtil";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { Result } from "@Easy/Core/Shared/Types/Result";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 
@@ -14,16 +13,13 @@ export const enum PlatformInventoryServiceBridgeTopics {
 	PerformTrade = "PlatformInventoryService:PerformTrade",
 }
 
-export type ServerBridgeApiGrantItem = (userId: string, classId: string) => Result<ItemInstanceDto, string>;
-export type ServerBridgeApiDeleteItem = (instanceId: string) => Result<ItemInstanceDto, string>;
-export type ServerBridgeApiGetItems = (
-	userId: string,
-	query?: ItemQueryParameters,
-) => Result<ItemInstanceDto[], string>;
+export type ServerBridgeApiGrantItem = (userId: string, classId: string) => ItemInstanceDto;
+export type ServerBridgeApiDeleteItem = (instanceId: string) => ItemInstanceDto;
+export type ServerBridgeApiGetItems = (userId: string, query?: ItemQueryParameters) => ItemInstanceDto[];
 export type ServerBridgeApiPerformTrade = (
 	user1: { uid: string; itemInstanceIds: string[] },
 	user2: { uid: string; itemInstanceIds: string[] },
-) => Result<Transaction, string>;
+) => Transaction;
 
 @Service({})
 export class ProtectedPlatformInventoryService {
@@ -33,44 +29,28 @@ export class ProtectedPlatformInventoryService {
 		contextbridge.callback<ServerBridgeApiGrantItem>(
 			PlatformInventoryServiceBridgeTopics.GrantItem,
 			(_, userId, classId) => {
-				const [success, result] = this.GrantItem(userId, classId).await();
-				if (!success) {
-					return { success: false, error: "Unable to complete request." };
-				}
-				return result;
+				return this.GrantItem(userId, classId).expect();
 			},
 		);
 
 		contextbridge.callback<ServerBridgeApiDeleteItem>(
 			PlatformInventoryServiceBridgeTopics.DeleteItem,
 			(_, instanceId) => {
-				const [success, result] = this.DeleteItem(instanceId).await();
-				if (!success) {
-					return { success: false, error: "Unable to complete request." };
-				}
-				return result;
+				return this.DeleteItem(instanceId).expect();
 			},
 		);
 
 		contextbridge.callback<ServerBridgeApiGetItems>(
 			PlatformInventoryServiceBridgeTopics.GetItems,
 			(_, userId, query) => {
-				const [success, result] = this.GetItems(userId, query).await();
-				if (!success) {
-					return { success: false, error: "Unable to complete request." };
-				}
-				return result;
+				return this.GetItems(userId, query).expect();
 			},
 		);
 
 		contextbridge.callback<ServerBridgeApiPerformTrade>(
 			PlatformInventoryServiceBridgeTopics.PerformTrade,
 			(_, user1, user2) => {
-				const [success, result] = this.PerformTrade(user1, user2).await();
-				if (!success) {
-					return { success: false, error: "Unable to complete request." };
-				}
-				return result;
+				return this.PerformTrade(user1, user2).expect();
 			},
 		);
 	}
@@ -83,16 +63,10 @@ export class ProtectedPlatformInventoryService {
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to complete request. Status Code:  ${res.statusCode}.\n`, res.error);
-			return {
-				success: false,
-				error: res.error,
-			};
+			throw res.error;
 		}
 
-		return {
-			success: true,
-			data: DecodeJSON(res.data),
-		};
+		return DecodeJSON(res.data) as ItemInstanceDto;
 	}
 
 	public async DeleteItem(instanceId: string): Promise<ReturnType<ServerBridgeApiDeleteItem>> {
@@ -100,16 +74,10 @@ export class ProtectedPlatformInventoryService {
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to complete request. Status Code:  ${res.statusCode}.\n`, res.error);
-			return {
-				success: false,
-				error: res.error,
-			};
+			throw res.error;
 		}
 
-		return {
-			success: true,
-			data: DecodeJSON(res.data),
-		};
+		return DecodeJSON(res.data) as ItemInstanceDto;
 	}
 
 	public async GetItems(userId: string, query?: ItemQueryParameters): Promise<ReturnType<ServerBridgeApiGetItems>> {
@@ -119,16 +87,14 @@ export class ProtectedPlatformInventoryService {
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to complete request. Status Code:  ${res.statusCode}.\n`, res.error);
-			return {
-				success: false,
-				error: res.error,
-			};
+			throw res.error;
 		}
 
-		return {
-			success: true,
-			data: DecodeJSON(res.data),
-		};
+		if (!res.data) {
+			return [];
+		}
+
+		return DecodeJSON(res.data) as ItemInstanceDto[];
 	}
 
 	public async PerformTrade(
@@ -145,16 +111,10 @@ export class ProtectedPlatformInventoryService {
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to complete request. Status Code:  ${res.statusCode}.\n`, res.error);
-			return {
-				success: false,
-				error: res.error,
-			};
+			throw res.error;
 		}
 
-		return {
-			success: true,
-			data: DecodeJSON(res.data),
-		};
+		return DecodeJSON(res.data) as Transaction;
 	}
 
 	protected OnStart(): void {}

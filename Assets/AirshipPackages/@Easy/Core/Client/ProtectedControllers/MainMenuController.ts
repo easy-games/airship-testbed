@@ -61,6 +61,10 @@ export class MainMenuController {
 		this.socialMenuGroup = this.refs.GetValue<CanvasGroup>("UI", "SocialGroup");
 		CloudImage.ClearCache();
 
+		contextbridge.callback("Game:IsMenuOpen", (from) => {
+			return this.IsOpen();
+		});
+
 		this.pageMap = new Map<MainMenuPageType, MainMenuPageComponent>([
 			[MainMenuPageType.Home, this.refs.GetValue("Pages", "Home").GetAirshipComponent<HomePageComponent>()!],
 			[MainMenuPageType.Develop, this.refs.GetValue("Pages", "Develop").GetAirshipComponent<DevelopMenuPage>()!],
@@ -146,6 +150,7 @@ export class MainMenuController {
 
 		this.gameCursorLocked = InputBridge.Instance.IsMouseLocked();
 
+		contextbridge.broadcast("Game:MenuToggled", true);
 		AppManager.OpenCustom(() => {
 			this.CloseFromGame();
 		});
@@ -166,6 +171,7 @@ export class MainMenuController {
 	public CloseFromGame(): void {
 		if (!this.IsOpen()) return;
 		this.open = false;
+		contextbridge.broadcast("Game:MenuToggled", false);
 
 		InputBridge.Instance.SetMouseLocked(this.gameCursorLocked);
 

@@ -2,8 +2,9 @@ import { MainMenuController } from "@Easy/Core/Client/ProtectedControllers/MainM
 import { RightClickMenuController } from "@Easy/Core/Client/ProtectedControllers/UI/RightClickMenu/RightClickMenuController";
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
+import { Game } from "@Easy/Core/Shared/Game";
 import { Binding } from "@Easy/Core/Shared/Input/Binding";
-import { InputAction } from "@Easy/Core/Shared/Input/InputAction";
+import { InputAction, InputActionContext } from "@Easy/Core/Shared/Input/InputAction";
 import { InputUtil } from "@Easy/Core/Shared/Input/InputUtil";
 import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
@@ -117,6 +118,16 @@ export default class SettingsKeybind extends AirshipBehaviour {
 	 */
 	private UpdateBinding(newBinding: Binding): void {
 		this.inputAction?.UpdateBinding(newBinding);
+		// Let's be absolutely sure that we're updating the Protected
+		// instance of this keybind.
+		if (this.inputAction?.context === InputActionContext.Protected && Game.IsProtectedLuauContext()) {
+			Airship.Input.BroadcastProtectedKeybindUpdate(this.inputAction);
+			if (this.inputAction.isCore) {
+				Airship.Input.SerializeCoreKeybinds();
+			} else {
+				Airship.Input.SerializeGameKeybind(this.inputAction);
+			}
+		}
 	}
 
 	/**

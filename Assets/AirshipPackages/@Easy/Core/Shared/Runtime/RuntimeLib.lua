@@ -1,4 +1,4 @@
-local Promise = require("./Promise")
+local Promise = require("Assets/AirshipPackages/@Easy/Core/Shared/Runtime/Promise")
 
 local OUTPUT_PREFIX = "roblox-ts: "
 local NODE_MODULES = "node_modules"

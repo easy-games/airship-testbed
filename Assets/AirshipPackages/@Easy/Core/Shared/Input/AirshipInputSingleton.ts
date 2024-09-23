@@ -1,4 +1,5 @@
-import { Singleton } from "@Easy/Core/Shared/Flamework";
+import { ClientSettingsController } from "@Easy/Core/Client/ProtectedControllers/Settings/ClientSettingsController";
+import { Dependency, Singleton } from "@Easy/Core/Shared/Flamework";
 import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 import { Airship } from "../Airship";
 import { Asset } from "../Asset";
@@ -11,10 +12,10 @@ import { Bin } from "../Util/Bin";
 import { CanvasAPI, PointerDirection } from "../Util/CanvasAPI";
 import { Signal } from "../Util/Signal";
 import { CoreAction } from "./AirshipCoreAction";
-import { Binding } from "./Binding";
-import { InputAction, InputActionConfig, InputActionSchema } from "./InputAction";
+import { Binding, KeyBindingConfig, MouseBindingConfig } from "./Binding";
+import { InputAction, InputActionConfig, InputActionSchema, SerializableAction } from "./InputAction";
 import { InputActionEvent } from "./InputActionEvent";
-import { ActionInputType, InputUtil, KeyType } from "./InputUtil";
+import { ActionInputType, InputUtil, KeyType, ModifierKey } from "./InputUtil";
 import { MobileButtonConfig } from "./Mobile/MobileButton";
 import MobileControlsCanvas from "./Mobile/MobileControlsCanvas";
 import TouchJoystick from "./Mobile/TouchJoystick";
@@ -65,10 +66,6 @@ export class AirshipInputSingleton {
 	 */
 	public onActionUnbound = new Signal<InputAction>();
 	/**
-	 * Input singleton keyboard instance.
-	 */
-	private keyboard = new Keyboard();
-	/**
 	 *
 	 */
 	private controlManager = new PreferredControls();
@@ -116,35 +113,57 @@ export class AirshipInputSingleton {
 	protected OnStart(): void {
 		if (!Game.IsClient()) return;
 
+		// If the client loses focus, force all actions in the down state
+		// into the up state.
+		// Application.OnFocusChanged((focused) => {
+		// 	if (!focused) {
+		// 		for (const downAction of this.actionDownState) {
+		// 			this.SetUp(downAction);
+		// 		}
+		// 	}
+		// });
+
 		if (Game.coreContext === CoreContext.GAME && Game.IsGameLuauContext()) {
 			this.CreateMobileControlCanvas();
+			// A Game keybind was updated from the keybind menu.
 			contextbridge.subscribe(
 				"ProtectedKeybind:Updated",
-				(from: LuauContext, name: string, id: number, protectedBinding: Binding) => {
+				(
+					from: LuauContext,
+					name: string,
+					id: number,
+					isKeyBinding: boolean,
+					key?: Key,
+					modifierKey?: ModifierKey,
+					mouseButton?: MouseButton,
+				) => {
 					if (from !== LuauContext.Protected) return;
 					const matchingGameAction = this.GetActions(name).find((a) => a.id === id);
 					if (!matchingGameAction) return;
-					matchingGameAction.UpdateBinding(protectedBinding);
+					let binding: Binding | undefined;
+					if (isKeyBinding && key) binding = Binding.Key(key, modifierKey);
+					if (!isKeyBinding && mouseButton !== undefined && mouseButton > -1) {
+						binding = Binding.MouseButton(mouseButton, modifierKey);
+					}
+					if (binding) matchingGameAction.UpdateBinding(binding);
 				},
 			);
 		}
 
 		if (Game.IsProtectedLuauContext()) {
-			contextbridge.subscribe("ProtectedKeybind:CreateAction", 
+			contextbridge.subscribe(
+				"ProtectedKeybind:CreateAction",
 				(from: LuauContext, name: string, id: number, binding: Binding) => {
 					if (from !== LuauContext.Game) return;
+					const action = this.RegisterAction(name, Binding.Clone(binding));
+					this.TryOverrideGameKeybind(action);
+				},
+			);
 
-					this.RegisterAction(name, Binding.Clone(binding));
-				});
-		}
-
-		if (Game.IsProtectedLuauContext()) {
-			contextbridge.subscribe("ProtectedKeybind:UnregisterAction", 
-				(from: LuauContext, name: string) => {
-					if (from !== LuauContext.Game) return;
-
-					this.DisableCoreActions([name as CoreAction]);
-				});
+			contextbridge.subscribe("ProtectedKeybind:UnregisterAction", (from: LuauContext, name: string) => {
+				if (from !== LuauContext.Game) return;
+				this.DisableCoreActions([name as CoreAction]);
+			});
 		}
 
 		Airship.Input.onActionBound.Connect((action) => {
@@ -177,6 +196,16 @@ export class AirshipInputSingleton {
 			{ name: CoreAction.Interact, binding: Binding.Key(Key.F) },
 			{ name: CoreAction.PushToTalk, binding: Binding.Key(Key.V) },
 		]);
+
+		if (Game.IsProtectedLuauContext()) {
+			// Read **Core** keybinds from `ClientSettings.json` & apply overrides.
+			task.spawn(() => {
+				const clientSettings = Dependency<ClientSettingsController>().WaitForSettingsLoaded().expect();
+				const overrides = clientSettings.coreKeybindOverrides;
+				if (!overrides) return;
+				this.DeserializeCoreKeybinds(overrides);
+			});
+		}
 	}
 
 	/**
@@ -258,17 +287,22 @@ export class AirshipInputSingleton {
 	/** Bulk register action */
 	private RegisterActions(actions: InputActionSchema[]): void {
 		for (const action of actions) {
-			this.RegisterAction(action.name, action.binding, {
-				category: action.category ?? "General",
-				secondaryBinding: action.secondaryBinding,
-			});
+			this.RegisterAction(
+				action.name,
+				action.binding,
+				{
+					category: action.category ?? "General",
+					secondaryBinding: action.secondaryBinding,
+				},
+				true,
+			);
 		}
 	}
 
 	/**
 	 * Unsets a list of core actions. The player will not be able
 	 * to see these actions in their settings UI while in your game.
-	 * 
+	 *
 	 * @param coreActions List of actions to unbind and hide
 	 */
 	public DisableCoreActions(coreActions: CoreAction[]) {
@@ -278,15 +312,15 @@ export class AirshipInputSingleton {
 			} else {
 				this.UnregisterAction(actionName);
 			}
-			this.GetActions(actionName).forEach(a => {
+			this.GetActions(actionName).forEach((a) => {
 				a.UnsetBinding();
 			});
 		}
 	}
 
 	/** Same as CreateAction (except it won't broadcast over context bridge) */
-	private RegisterAction(name: string, binding: Binding, config?: InputActionConfig): InputAction {
-		const action = new InputAction(name, binding, false, config?.category ?? "General");
+	private RegisterAction(name: string, binding: Binding, config?: InputActionConfig, isCore = false): InputAction {
+		const action = new InputAction(name, binding, false, config?.category ?? "General", isCore);
 		this.AddActionToTable(action);
 		this.onActionBound.Fire(action);
 		return action;
@@ -311,11 +345,44 @@ export class AirshipInputSingleton {
 		const action = this.RegisterAction(name, binding, config);
 		// Tell game context about new binding
 		if (Game.IsProtectedLuauContext() && !action.binding.IsUnset()) {
-			contextbridge.broadcast("ProtectedKeybind:Updated", action.name, action.id, action.binding);
+			this.BroadcastProtectedKeybindUpdate(action);
 		}
 		// Tell protected context of new action
 		if (Game.IsGameLuauContext()) {
 			contextbridge.broadcast("ProtectedKeybind:CreateAction", name, action.id, action.binding);
+		}
+	}
+
+	/**
+	 * Broadcasts a protected keybind update from the Protected context to
+	 * the game context.
+	 *
+	 * @param action The action whose binding is being updated.
+	 * @internal
+	 */
+	public BroadcastProtectedKeybindUpdate(action: InputAction): void {
+		if (!Game.IsProtectedLuauContext()) return;
+		if (action.binding.config.isKeyBinding) {
+			const castedBinding = action.binding.config as KeyBindingConfig;
+			contextbridge.broadcast(
+				"ProtectedKeybind:Updated",
+				action.name,
+				action.id,
+				castedBinding.isKeyBinding,
+				castedBinding.key,
+				castedBinding.modifierKey,
+			);
+		} else {
+			const castedBinding = action.binding.config as MouseBindingConfig;
+			contextbridge.broadcast(
+				"ProtectedKeybind:Updated",
+				action.name,
+				action.id,
+				castedBinding.isKeyBinding,
+				undefined,
+				undefined,
+				castedBinding.mouseButton,
+			);
 		}
 	}
 
@@ -650,7 +717,7 @@ export class AirshipInputSingleton {
 			if (action.binding.config.isKeyBinding) {
 				signalCleanup.Add(
 					Keyboard.OnKeyDown(action.binding.config.key, (event) => {
-						const isModifierKeyDown = Keyboard.IsKeyDown(action.binding.GetModifierKey());
+						const isModifierKeyDown = Keyboard.IsKeyDown(action.binding.GetModifierAsKey());
 						if (!isModifierKeyDown) return;
 						this.actionDownState.add(action.name);
 						const actionDownSignals = this.actionDownSignals.get(action.name);
@@ -699,7 +766,7 @@ export class AirshipInputSingleton {
 					}),
 				);
 				signalCleanup.Add(
-					Keyboard.OnKeyUp(action.binding.GetModifierKey(), (event) => {
+					Keyboard.OnKeyUp(action.binding.GetModifierAsKey(), (event) => {
 						const isDown = this.actionDownState.has(action.name);
 						if (!isDown) return;
 						this.actionDownState.delete(action.name);
@@ -726,7 +793,7 @@ export class AirshipInputSingleton {
 			} else {
 				signalCleanup.Add(
 					Mouse.OnButtonDown(action.binding.config.mouseButton, (event) => {
-						const isModifierKeyDown = Keyboard.IsKeyDown(action.binding.GetModifierKey());
+						const isModifierKeyDown = Keyboard.IsKeyDown(action.binding.GetModifierAsKey());
 						if (!isModifierKeyDown) return;
 						this.actionDownState.add(action.name);
 						const actionDownSignals = this.actionDownSignals.get(action.name);
@@ -775,7 +842,7 @@ export class AirshipInputSingleton {
 					}),
 				);
 				signalCleanup.Add(
-					Keyboard.OnKeyUp(action.binding.GetModifierKey(), (event) => {
+					Keyboard.OnKeyUp(action.binding.GetModifierAsKey(), (event) => {
 						const isDown = this.actionDownState.has(action.name);
 						if (!isDown) return;
 						this.actionDownState.delete(action.name);
@@ -811,6 +878,14 @@ export class AirshipInputSingleton {
 						) {
 							// If this is keybind a mouse keybind, and we're over UI that is a raycast target,
 							// do not propagate action event. Do not ever propagate if control scheme is touch.
+							return;
+						}
+						// Do not fire down events when chat is open and selected.
+						const isChatOpen = contextbridge.invoke<() => boolean>(
+							"ClientChatSingleton:IsOpen",
+							LuauContext.Protected,
+						);
+						if (isChatOpen && action.binding.GetInputType() === ActionInputType.Keyboard) {
 							return;
 						}
 						const isDown = this.actionDownState.has(action.name);
@@ -961,6 +1036,90 @@ export class AirshipInputSingleton {
 			}
 		}
 		targetSignals.set(actionName, newSignals);
+	}
+
+	/**
+	 * Serializes core keybind overrides to `ClientSettings.json`. Keybinds are serialized when
+	 * a keybind is updated through the keybind menu.
+	 *
+	 * @internal
+	 */
+	public SerializeCoreKeybinds(): void {
+		if (!Game.IsProtectedLuauContext()) return;
+		const coreKeybinds: { [key in CoreAction]?: SerializableAction } = {};
+		for (const coreAction of ObjectUtils.values(CoreAction)) {
+			const actions = this.GetActions(coreAction);
+			for (const action of actions) {
+				const serialized = action.GetSerializable();
+				coreKeybinds[coreAction] = serialized;
+			}
+		}
+		Dependency<ClientSettingsController>().SetCoreKeybindOverrides(coreKeybinds);
+	}
+
+	/**
+	 * Deserializes and binds core keybind overrides. These overrides are set when a keybind
+	 * is updated through the keybind menu.
+	 *
+	 * @param keybinds Keybinds parsed from `ClientSettings.json`.
+	 */
+	private DeserializeCoreKeybinds(keybinds: { [key in CoreAction]?: SerializableAction }): void {
+		for (const [name, data] of ObjectUtils.entries(keybinds)) {
+			const binding = this.CreateBindingFromSerializedAction(data);
+			const matchingAction = this.GetActions(name)[0];
+			if (!matchingAction || !matchingAction.isCore) return;
+			matchingAction.UpdateBinding(binding);
+			this.BroadcastProtectedKeybindUpdate(matchingAction);
+		}
+	}
+
+	/**
+	 * Serializes game keybind to `ClientSettings.json`. A game Keybind is serialized when
+	 * updated through the keybind menu.
+	 *
+	 * @param action The Game action that is being serialized.
+	 * @internal
+	 */
+	public SerializeGameKeybind(action: InputAction): void {
+		if (!Game.IsProtectedLuauContext()) return;
+		task.spawn(() => {
+			const gameId = Game.IsEditor() ? Game.gameId : Game.WaitForGameData().id;
+			Dependency<ClientSettingsController>().UpdateGameKeybindOverrides(gameId, action.GetSerializable());
+		});
+	}
+
+	/**
+	 * Deserializes and binds game keybind override, if it exists for provided action.
+	 *
+	 * @param action The Game action that we an override is being searched for.
+	 * @internal
+	 */
+	public TryOverrideGameKeybind(action: InputAction): void {
+		if (!Game.IsProtectedLuauContext()) return;
+		task.spawn(() => {
+			const gameId = Game.IsEditor() ? Game.gameId : Game.WaitForGameData().id;
+			const clientSettings = Dependency<ClientSettingsController>().WaitForSettingsLoaded().expect();
+			const gameOverrides = clientSettings.gameKeybindOverrides[gameId];
+			if (!gameOverrides) return;
+			const actionOverride = gameOverrides[action.name];
+			if (!actionOverride) return;
+			const bindingFromSettings = this.CreateBindingFromSerializedAction(actionOverride);
+			action.UpdateBinding(bindingFromSettings);
+			this.BroadcastProtectedKeybindUpdate(action);
+		});
+	}
+
+	/**
+	 * Creates a `Binding` from a deserialized action. The returned `Binding` can be used to update an
+	 * existing action.
+	 *
+	 * @param action A deserialized action.
+	 * @returns A `Binding` that matches the deserialized action data.
+	 */
+	private CreateBindingFromSerializedAction(action: SerializableAction): Binding {
+		const isKeybind = (action.mouseButton as number) === -1;
+		if (isKeybind) return Binding.Key(action.primaryKey, action.modifierKey);
+		return Binding.MouseButton(action.mouseButton, action.modifierKey);
 	}
 
 	/**

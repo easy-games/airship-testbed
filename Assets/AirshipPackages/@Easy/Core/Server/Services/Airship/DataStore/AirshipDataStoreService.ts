@@ -5,7 +5,6 @@ import {
 	ServerBridgeApiDataSetKey,
 } from "@Easy/Core/Server/ProtectedServices/Airship/DataStore/DataStoreService";
 import { Platform } from "@Easy/Core/Shared/Airship";
-import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/ContextBridgeUtil";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 
@@ -43,14 +42,12 @@ export class AirshipDataStoreService {
 			return this.internalDB[key];
 		}
 
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiDataGetKey<T>>(
+		const result = contextbridge.invoke<ServerBridgeApiDataGetKey<T>>(
 			DataStoreServiceBridgeTopics.GetKey,
 			LuauContext.Protected,
 			key,
 		);
-
-		if (!result.success) throw result.error;
-		return result.data?.value;
+		return result?.value;
 	}
 
 	/**
@@ -67,15 +64,13 @@ export class AirshipDataStoreService {
 			return data;
 		}
 
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiDataSetKey<T>>(
+		const result = contextbridge.invoke<ServerBridgeApiDataSetKey<T>>(
 			DataStoreServiceBridgeTopics.SetKey,
 			LuauContext.Protected,
 			key,
 			data,
 		);
-
-		if (!result.success) throw result.error;
-		return result.data?.value;
+		return result?.value;
 	}
 
 	/**
@@ -109,25 +104,23 @@ export class AirshipDataStoreService {
 			return undefined as unknown as T;
 		}
 
-		const currentData = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiDataGetKey<T>>(
+		const currentData = contextbridge.invoke<ServerBridgeApiDataGetKey<T>>(
 			DataStoreServiceBridgeTopics.GetKey,
 			LuauContext.Protected,
 			key,
 		);
-		if (!currentData.success) throw currentData.error;
 
 		try {
-			const newData = await callback(currentData.data?.value);
-			if (newData === undefined) return currentData.data?.value;
-			const setResult = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiDataSetKey<T>>(
+			const newData = await callback(currentData?.value);
+			if (newData === undefined) return currentData?.value;
+			const setResult = contextbridge.invoke<ServerBridgeApiDataSetKey<T>>(
 				DataStoreServiceBridgeTopics.SetKey,
 				LuauContext.Protected,
 				key,
 				newData,
-				currentData.data?.metadata.etag ?? "CREATE",
+				currentData?.metadata.etag ?? "CREATE",
 			);
-			if (!setResult.success) throw setResult.error;
-			return setResult.data.value;
+			return setResult.value;
 		} catch (err) {
 			warn("Error retrieving updated value.", err);
 			throw "Error retrieving updated value.";
@@ -148,14 +141,12 @@ export class AirshipDataStoreService {
 			return data;
 		}
 
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiDataDeleteKey<T>>(
+		const result = contextbridge.invoke<ServerBridgeApiDataDeleteKey<T>>(
 			DataStoreServiceBridgeTopics.DeleteKey,
 			LuauContext.Protected,
 			key,
 		);
-
-		if (!result.success) throw result.error;
-		return result.data?.value;
+		return result?.value;
 	}
 
 	/**
@@ -182,30 +173,28 @@ export class AirshipDataStoreService {
 			return undefined as unknown as T;
 		}
 
-		const currentData = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiDataGetKey<T>>(
+		const currentData = contextbridge.invoke<ServerBridgeApiDataGetKey<T>>(
 			DataStoreServiceBridgeTopics.GetKey,
 			LuauContext.Protected,
 			key,
 		);
-		if (!currentData.success) throw currentData.error;
-		if (!currentData.data?.value) {
+		if (!currentData?.value) {
 			return undefined;
 		}
 
 		try {
-			const shouldDelete = await callback(currentData.data.value);
+			const shouldDelete = await callback(currentData.value);
 			if (!shouldDelete) {
-				return currentData.data.value;
+				return currentData.value;
 			}
 
-			const deleteResult = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiDataDeleteKey<T>>(
+			const deleteResult = contextbridge.invoke<ServerBridgeApiDataDeleteKey<T>>(
 				DataStoreServiceBridgeTopics.DeleteKey,
 				LuauContext.Protected,
 				key,
-				currentData.data.metadata.etag,
+				currentData.metadata.etag,
 			);
-			if (!deleteResult.success) throw deleteResult.error;
-			return deleteResult.data?.value;
+			return deleteResult?.value;
 		} catch (err) {
 			warn("Error retrieving updated value.", err);
 			throw "Error retrieving updated value.";

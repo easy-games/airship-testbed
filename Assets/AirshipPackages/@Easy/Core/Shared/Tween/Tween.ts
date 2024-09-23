@@ -85,7 +85,7 @@ export class Tween<T> implements LuauTween<T> {
 		if (wasPlaying) this.Pause();
 
 		this.interpolator = (step: number) => {
-			const elapsedTime = this.elapsedTime + (this.useUnscaledTime ? Time.unscaledTime : step);
+			const elapsedTime = this.elapsedTime + (this.useUnscaledTime ? Time.unscaledDeltaTime : step);
 			this.elapsedTime = elapsedTime;
 
 			if (duration > elapsedTime) {

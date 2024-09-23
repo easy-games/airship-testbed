@@ -60,6 +60,7 @@ interface Time {
 	 */
 	frameCount: number;
 	timeScale: number;
+	unscaledDeltaTime: number;
 	unscaledTime: number;
 }
 

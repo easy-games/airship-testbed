@@ -1,4 +1,6 @@
 import { Controller } from "@Easy/Core/Shared/Flamework";
+import { CoreAction } from "@Easy/Core/Shared/Input/AirshipCoreAction";
+import { SerializableAction } from "@Easy/Core/Shared/Input/InputAction";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
@@ -16,6 +18,8 @@ const defaultData: ClientSettingsFile = {
 	statusText: "",
 	micDeviceName: undefined,
 	microphoneEnabled: false,
+	coreKeybindOverrides: undefined,
+	gameKeybindOverrides: {},
 };
 
 @Controller({ loadOrder: -1 })
@@ -148,6 +152,26 @@ export class ClientSettingsController {
 	public SetMouseSmoothing(value: number): void {
 		this.data.mouseSmoothing = value;
 		this.unsavedChanges = true;
+	}
+
+	public SetCoreKeybindOverrides(value: { [key in CoreAction]?: SerializableAction }): void {
+		this.data.coreKeybindOverrides = value;
+		this.MarkAsDirty();
+	}
+
+	public GetCoreKeybindOverrides(): { [key in CoreAction]?: SerializableAction } | undefined {
+		return this.data.coreKeybindOverrides;
+	}
+
+	public UpdateGameKeybindOverrides(gameId: string, action: SerializableAction): void {
+		const gameKeybinds = this.data.gameKeybindOverrides[gameId] ?? {};
+		gameKeybinds[action.name] = action;
+		this.data.gameKeybindOverrides[gameId] = gameKeybinds;
+		this.MarkAsDirty();
+	}
+
+	public GetGameKeybindOverrides(gameId: string): { [key: string]: SerializableAction } | undefined {
+		return this.data.gameKeybindOverrides[gameId];
 	}
 
 	public GetTouchSensitivity(): number {

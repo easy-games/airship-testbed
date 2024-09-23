@@ -52,6 +52,11 @@ export default class MainMenuContent extends AirshipBehaviour {
 				this.CalcLayout();
 			}),
 		);
+
+		// Disable all pages to start.
+		for (let child of this.pages) {
+			child.gameObject.SetActive(false);
+		}
 	}
 
 	public CalcLayout(): void {

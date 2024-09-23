@@ -9,7 +9,6 @@ import {
 } from "@Easy/Core/Client/ProtectedControllers/Airship/User/UserController";
 import { Platform } from "@Easy/Core/Shared/Airship";
 import { PublicUser } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipUser";
-import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/ContextBridgeUtil";
 import { Controller, Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 
@@ -54,7 +53,7 @@ export class AirshipUserController {
 
 		let result: ReturnType<BridgeApiGetUserByUsername>;
 		if (contextbridge.current() !== LuauContext.Protected) {
-			result = await ContextBridgeUtil.PromisifyBridgeInvoke<BridgeApiGetUserByUsername>(
+			result = contextbridge.invoke<BridgeApiGetUserByUsername>(
 				UserControllerBridgeTopics.GetUserByUsername,
 				LuauContext.Protected,
 				username,
@@ -62,15 +61,14 @@ export class AirshipUserController {
 		} else {
 			result = await Dependency<ProtectedUserController>().GetUserByUsername(username);
 		}
-		if (!result.success) throw result.error;
 
-		if (result.data) {
-			this.AddUserToCache(result.data.uid, result.data);
+		if (result) {
+			this.AddUserToCache(result.uid, result);
 		} else {
 			this.usernameToUidCache.set(username, "");
 		}
 
-		return result.data;
+		return result;
 	}
 
 	/**
@@ -90,7 +88,7 @@ export class AirshipUserController {
 
 		let result: ReturnType<BridgeApiGetUserById>;
 		if (contextbridge.current() !== LuauContext.Protected) {
-			result = await ContextBridgeUtil.PromisifyBridgeInvoke<BridgeApiGetUserById>(
+			result = contextbridge.invoke<BridgeApiGetUserById>(
 				UserControllerBridgeTopics.GetUserById,
 				LuauContext.Protected,
 				userId,
@@ -98,10 +96,9 @@ export class AirshipUserController {
 		} else {
 			result = await Dependency<ProtectedUserController>().GetUserById(userId);
 		}
-		if (!result.success) throw result.error;
 
-		this.AddUserToCache(userId, result.data);
-		return result.data;
+		this.AddUserToCache(userId, result);
+		return result;
 	}
 
 	/**
@@ -119,14 +116,12 @@ export class AirshipUserController {
 		map: Record<string, PublicUser>;
 		array: PublicUser[];
 	}> {
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<BridgeApiGetUsersById>(
+		return contextbridge.invoke<BridgeApiGetUsersById>(
 			UserControllerBridgeTopics.GetUsersById,
 			LuauContext.Protected,
 			userIds,
 			strict,
 		);
-		if (!result.success) throw result.error;
-		return result.data;
 	}
 
 	/**
@@ -134,12 +129,7 @@ export class AirshipUserController {
 	 * @returns A list of friends.
 	 */
 	public async GetFriends(): Promise<PublicUser[]> {
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<BridgeApiGetFriends>(
-			UserControllerBridgeTopics.GetFriends,
-			LuauContext.Protected,
-		);
-		if (!result.success) throw result.error;
-		return result.data;
+		return contextbridge.invoke<BridgeApiGetFriends>(UserControllerBridgeTopics.GetFriends, LuauContext.Protected);
 	}
 
 	/**
@@ -148,13 +138,11 @@ export class AirshipUserController {
 	 * @returns True if friends, false otherwise.
 	 */
 	public async IsFriendsWith(userId: string): Promise<boolean> {
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<BrigdeApiIsFriendsWith>(
+		return contextbridge.invoke<BrigdeApiIsFriendsWith>(
 			UserControllerBridgeTopics.IsFriendsWith,
 			LuauContext.Protected,
 			userId,
 		);
-		if (!result.success) throw result.success;
-		return result.data;
 	}
 
 	private AddUserToCache(userId: string, user?: PublicUser) {

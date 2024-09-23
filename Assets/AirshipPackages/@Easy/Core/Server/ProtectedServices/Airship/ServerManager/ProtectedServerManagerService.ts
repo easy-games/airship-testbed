@@ -6,7 +6,6 @@ import { AirshipServerData } from "@Easy/Core/Shared/Airship/Types/Outputs/Airsh
 import { Dependency, Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
-import { Result } from "@Easy/Core/Shared/Types/Result";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { ShutdownService } from "../../Shutdown/ShutdownService";
 
@@ -24,19 +23,17 @@ export const enum ServerManagerServiceBridgeTopics {
 	RemoveAllowedPlayer = "ServerManagerService:RemoveAllowedPlayer",
 }
 
-export type ServerBridgeApiCreateServer = (config?: AirshipServerConfig) => Result<AirshipServerData, string>;
-export type ServerBridgeApiGetServers = (
-	serverIds: string[],
-) => Result<{ [serverId: string]: AirshipServerData | undefined }, string>;
-export type ServerBridgeApiShutdownServer = () => Result<undefined, string>;
-export type ServerBridgeApiListServer = (config?: { name?: string; description?: string }) => Result<boolean, string>;
-export type ServerBridgeApiDelistServer = () => Result<boolean, string>;
-export type ServerBridgeApiGetServerList = (page?: number) => Result<{ entries: AirshipServerData[] }, string>;
-export type ServerBridgeApiSetAccessMode = (mode: AirshipServerAccessMode) => Result<boolean, string>;
-export type ServerBridgeApiGetGameConfig<T> = () => Result<T | undefined, string>;
-export type ServerBridgeApiGetAllowedPlayers = () => Result<string[], string>;
-export type ServerBridgeApiAddAllowedPlayer = (userId: string) => Result<boolean, string>;
-export type ServerBridgeApiRemoveAllowedPlayer = (userId: string) => Result<boolean, string>;
+export type ServerBridgeApiCreateServer = (config?: AirshipServerConfig) => AirshipServerData;
+export type ServerBridgeApiGetServers = (serverIds: string[]) => { [serverId: string]: AirshipServerData | undefined };
+export type ServerBridgeApiShutdownServer = () => void;
+export type ServerBridgeApiListServer = (config?: { name?: string; description?: string }) => boolean;
+export type ServerBridgeApiDelistServer = () => boolean;
+export type ServerBridgeApiGetServerList = (page?: number) => { entries: AirshipServerData[] };
+export type ServerBridgeApiSetAccessMode = (mode: AirshipServerAccessMode) => boolean;
+export type ServerBridgeApiGetGameConfig<T> = () => T | undefined;
+export type ServerBridgeApiGetAllowedPlayers = () => string[];
+export type ServerBridgeApiAddAllowedPlayer = (userId: string) => boolean;
+export type ServerBridgeApiRemoveAllowedPlayer = (userId: string) => boolean;
 
 @Service({})
 export class ProtectedServerManagerService {
@@ -46,22 +43,14 @@ export class ProtectedServerManagerService {
 		contextbridge.callback<ServerBridgeApiCreateServer>(
 			ServerManagerServiceBridgeTopics.CreateServer,
 			(_, config) => {
-				const [success, result] = this.CreateServer(config).await();
-				if (!success) {
-					return { success: false, error: "Unable to complete request." };
-				}
-				return result;
+				return this.CreateServer(config).expect();
 			},
 		);
 
 		contextbridge.callback<ServerBridgeApiGetServers>(
 			ServerManagerServiceBridgeTopics.GetServers,
 			(_, serverIds) => {
-				const [success, result] = this.GetServers(serverIds).await();
-				if (!success) {
-					return { success: false, error: "Unable to complete request." };
-				}
-				return result;
+				return this.GetServers(serverIds).expect();
 			},
 		);
 
@@ -71,81 +60,49 @@ export class ProtectedServerManagerService {
 		});
 
 		contextbridge.callback<ServerBridgeApiListServer>(ServerManagerServiceBridgeTopics.ListServer, (_, config) => {
-			const [success, result] = this.ListServer(config).await();
-			if (!success) {
-				return { success: false, error: "Unable to complete request." };
-			}
-			return result;
+			return this.ListServer(config).expect();
 		});
 
 		contextbridge.callback<ServerBridgeApiDelistServer>(ServerManagerServiceBridgeTopics.DelistServer, (_) => {
-			const [success, result] = this.DelistServer().await();
-			if (!success) {
-				return { success: false, error: "Unable to complete request." };
-			}
-			return result;
+			return this.DelistServer().expect();
 		});
 
 		contextbridge.callback<ServerBridgeApiGetServerList>(ServerManagerServiceBridgeTopics.GetServerList, (_) => {
-			const [success, result] = this.GetServerList().await();
-			if (!success) {
-				return { success: false, error: "Unable to complete request." };
-			}
-			return result;
+			return this.GetServerList().expect();
 		});
 
 		contextbridge.callback<ServerBridgeApiSetAccessMode>(
 			ServerManagerServiceBridgeTopics.SetAccessMode,
 			(_, mode) => {
-				const [success, result] = this.SetAccessMode(mode).await();
-				if (!success) {
-					return { success: false, error: "Unable to complete request." };
-				}
-				return result;
+				return this.SetAccessMode(mode).expect();
 			},
 		);
 
 		contextbridge.callback<ServerBridgeApiGetGameConfig<unknown>>(
 			ServerManagerServiceBridgeTopics.GetGameConfig,
 			(_) => {
-				const [success, result] = this.GetGameConfig().await();
-				if (!success) {
-					return { success: false, error: "Unable to complete request." };
-				}
-				return result;
+				return this.GetGameConfig();
 			},
 		);
 
 		contextbridge.callback<ServerBridgeApiGetAllowedPlayers>(
 			ServerManagerServiceBridgeTopics.GetAllowedPlayers,
 			(_) => {
-				const [success, result] = this.GetAllowedPlayers().await();
-				if (!success) {
-					return { success: false, error: "Unable to complete request." };
-				}
-				return result;
+				return this.GetAllowedPlayers().expect();
 			},
 		);
 
 		contextbridge.callback<ServerBridgeApiAddAllowedPlayer>(
 			ServerManagerServiceBridgeTopics.AddAllowedPlayer,
 			(_, userId) => {
-				const [success, result] = this.AddAllowedPlayer(userId).await();
-				if (!success) {
-					return { success: false, error: "Unable to complete request." };
-				}
-				return result;
+				return this.AddAllowedPlayer(userId).expect();
 			},
 		);
 
 		contextbridge.callback<ServerBridgeApiRemoveAllowedPlayer>(
 			ServerManagerServiceBridgeTopics.RemoveAllowedPlayer,
 			(_, userId) => {
-				const [success, result] = this.RemoveAllowedPlayer(userId).await();
-				if (!success) {
-					return { success: false, error: "Unable to complete request." };
-				}
-				return result;
+				return this.RemoveAllowedPlayer(userId).expect();
 			},
 		);
 	}
@@ -166,24 +123,15 @@ export class ProtectedServerManagerService {
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to create server. Status Code:  ${res.statusCode}.\n`, res.data);
-			return {
-				success: false,
-				error: res.error,
-			};
+			throw res.error;
 		}
 
-		return {
-			success: true,
-			data: DecodeJSON<AirshipServerData>(res.data),
-		};
+		return DecodeJSON<AirshipServerData>(res.data) as AirshipServerData;
 	}
 
 	public async GetServers(serverIds: string[]): Promise<ReturnType<ServerBridgeApiGetServers>> {
 		if (serverIds.size() === 0) {
-			return {
-				success: true,
-				data: {},
-			};
+			return {};
 		}
 
 		const res = InternalHttpManager.GetAsync(
@@ -192,23 +140,14 @@ export class ProtectedServerManagerService {
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to get servers. Status Code:  ${res.statusCode}.\n`, res.error);
-			return {
-				success: false,
-				error: res.error,
-			};
+			throw res.error;
 		}
 
 		if (!res.data) {
-			return {
-				success: true,
-				data: {},
-			};
+			return {};
 		}
 
-		return {
-			success: true,
-			data: DecodeJSON(res.data),
-		};
+		return DecodeJSON(res.data) as ReturnType<ServerBridgeApiGetServers>;
 	}
 
 	public async ListServer(config?: {
@@ -219,18 +158,12 @@ export class ProtectedServerManagerService {
 		if (config?.description) await AgonesCore.Agones.SetAnnotation("ServerListDesc", config.description);
 
 		const res = await AgonesCore.Agones.SetAnnotation("ServerListActive", "true");
-		return {
-			success: true,
-			data: res,
-		};
+		return res;
 	}
 
 	public async DelistServer(): Promise<ReturnType<ServerBridgeApiDelistServer>> {
 		const res = await AgonesCore.Agones.SetAnnotation("ServerListActive", "false");
-		return {
-			success: true,
-			data: res,
-		};
+		return res;
 	}
 
 	public async GetServerList(page: number = 0): Promise<ReturnType<ServerBridgeApiGetServerList>> {
@@ -240,44 +173,28 @@ export class ProtectedServerManagerService {
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to get server list. Status Code:  ${res.statusCode}.\n`, res.error);
-			return {
-				success: false,
-				error: res.error,
-			};
+			throw res.error;
 		}
 
-		return {
-			success: true,
-			data: DecodeJSON(res.data) as { entries: AirshipServerData[] },
-		};
+		return DecodeJSON(res.data) as { entries: AirshipServerData[] };
 	}
 
 	public async SetAccessMode(mode: AirshipServerAccessMode): Promise<ReturnType<ServerBridgeApiSetAccessMode>> {
 		const res = await AgonesCore.Agones.SetLabel("AccessMode", mode);
-		return { success: true, data: res };
+		return res;
 	}
 
-	public async GetGameConfig<T>(): Promise<ReturnType<ServerBridgeApiGetGameConfig<T>>> {
+	public GetGameConfig<T>(): ReturnType<ServerBridgeApiGetGameConfig<T>> {
 		const serverBootstrap = GameObject.Find("ServerBootstrap").GetComponent<ServerBootstrap>()!;
 		const gs = serverBootstrap.GetGameServer();
 		try {
 			const gameConfigString = gs?.ObjectMeta.Annotations.Get("GameConfig");
-			if (!gameConfigString)
-				return {
-					success: true,
-					data: undefined,
-				};
+			if (!gameConfigString) return undefined;
 
 			const gameConfig = DecodeJSON(gameConfigString);
-			return {
-				success: true,
-				data: gameConfig as T,
-			};
+			return gameConfig as T;
 		} catch (err) {
-			return {
-				success: true,
-				data: undefined,
-			};
+			return undefined;
 		}
 	}
 
@@ -287,25 +204,14 @@ export class ProtectedServerManagerService {
 		for (let i = 0; i < players.Length; i++) {
 			userIds.push(players.GetValue(i));
 		}
-		return {
-			success: true,
-			data: userIds,
-		};
+		return userIds;
 	}
 
 	public async AddAllowedPlayer(userId: string): Promise<ReturnType<ServerBridgeApiAddAllowedPlayer>> {
-		const result = await AgonesCore.Agones.AppendListValue("allowedPlayers", userId);
-		return {
-			success: true,
-			data: result,
-		};
+		return await AgonesCore.Agones.AppendListValue("allowedPlayers", userId);
 	}
 
 	public async RemoveAllowedPlayer(userId: string): Promise<ReturnType<ServerBridgeApiRemoveAllowedPlayer>> {
-		const result = await AgonesCore.Agones.DeleteListValue("allowedPlayers", userId);
-		return {
-			success: true,
-			data: result,
-		};
+		return await AgonesCore.Agones.DeleteListValue("allowedPlayers", userId);
 	}
 }

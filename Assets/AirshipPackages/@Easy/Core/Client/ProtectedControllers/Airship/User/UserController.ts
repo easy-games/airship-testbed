@@ -4,7 +4,6 @@ import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Protected } from "@Easy/Core/Shared/Protected";
-import { Result } from "@Easy/Core/Shared/Types/Result";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { DecodeJSON } from "@Easy/Core/Shared/json";
@@ -20,14 +19,14 @@ export const enum UserControllerBridgeTopics {
 	IsFriendsWith = "UserController:IsFriendsWith",
 }
 
-export type BridgeApiGetUserByUsername = (username: string) => Result<PublicUser | undefined, string>;
-export type BridgeApiGetUserById = (userId: string) => Result<PublicUser | undefined, string>;
+export type BridgeApiGetUserByUsername = (username: string) => PublicUser | undefined;
+export type BridgeApiGetUserById = (userId: string) => PublicUser | undefined;
 export type BridgeApiGetUsersById = (
 	userIds: string[],
 	strict?: boolean,
-) => Result<{ map: Record<string, PublicUser>; array: PublicUser[] }, string>;
-export type BridgeApiGetFriends = () => Result<PublicUser[], string>;
-export type BrigdeApiIsFriendsWith = (userId: string) => Result<boolean, string>;
+) => { map: Record<string, PublicUser>; array: PublicUser[] };
+export type BridgeApiGetFriends = () => PublicUser[];
+export type BrigdeApiIsFriendsWith = (userId: string) => boolean;
 
 @Controller({})
 export class ProtectedUserController {
@@ -42,43 +41,27 @@ export class ProtectedUserController {
 		contextbridge.callback<BridgeApiGetUserByUsername>(
 			UserControllerBridgeTopics.GetUserByUsername,
 			(_, username) => {
-				const [success, result] = this.GetUserByUsername(username).await();
-				if (!success) {
-					return { success: false, error: "Unable to complete request." };
-				}
-				return result;
+				return this.GetUserByUsername(username).expect();
 			},
 		);
 
 		contextbridge.callback<BridgeApiGetUserById>(UserControllerBridgeTopics.GetUserById, (_, userId) => {
-			const [success, result] = this.GetUserById(userId).await();
-			if (!success) {
-				return { success: false, error: "Unable to complete request." };
-			}
-			return result;
+			return this.GetUserById(userId).expect();
 		});
 
 		contextbridge.callback<BridgeApiGetUsersById>(
 			UserControllerBridgeTopics.GetUsersById,
 			(_, userIds, strict = true) => {
-				const [success, result] = this.GetUsersById(userIds, strict).await();
-				if (!success) {
-					return { success: false, error: "Unable to complete request." };
-				}
-				return result;
+				return this.GetUsersById(userIds, strict).expect();
 			},
 		);
 
 		contextbridge.callback<BridgeApiGetFriends>(UserControllerBridgeTopics.GetFriends, (_) => {
-			const [success, result] = this.GetFriends().await();
-			if (!success) return { success: false, error: "Unable to complete request." };
-			return result;
+			return this.GetFriends().expect();
 		});
 
 		contextbridge.callback<BrigdeApiIsFriendsWith>(UserControllerBridgeTopics.IsFriendsWith, (_, userId) => {
-			const [success, result] = this.IsFriendsWith(userId).await();
-			if (!success) return { success: false, error: "Unable to complete request." };
-			return result;
+			return this.IsFriendsWith(userId).expect();
 		});
 	}
 
@@ -94,18 +77,12 @@ export class ProtectedUserController {
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to get friends. Status Code ${res.statusCode}.\n`, res.error);
-			return {
-				success: false,
-				error: res.error,
-			};
+			throw res.error;
 		}
 
 		const data = DecodeJSON(res.data) as { areFriends: boolean };
 
-		return {
-			success: true,
-			data: data.areFriends,
-		};
+		return data.areFriends;
 	}
 
 	/**
@@ -118,23 +95,14 @@ export class ProtectedUserController {
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to get user. Status Code:  ${res.statusCode}.\n`, res.error);
-			return {
-				success: false,
-				error: res.error,
-			};
+			throw res.error;
 		}
 
 		if (!res.data) {
-			return {
-				success: true,
-				data: undefined,
-			};
+			return undefined;
 		}
 
-		return {
-			success: true,
-			data: DecodeJSON(res.data) as PublicUser,
-		};
+		return DecodeJSON(res.data) as PublicUser;
 	}
 
 	public async GetUserByUsername(username: string): Promise<ReturnType<BridgeApiGetUserByUsername>> {
@@ -142,33 +110,21 @@ export class ProtectedUserController {
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to get user. Status Code:  ${res.statusCode}.\n`, res.error);
-			return {
-				success: false,
-				error: res.error,
-			};
+			throw res.error;
 		}
 
 		if (!res.data) {
-			return {
-				success: true,
-				data: undefined,
-			};
+			return undefined;
 		}
 
-		return {
-			success: true,
-			data: DecodeJSON(res.data) as PublicUser,
-		};
+		return DecodeJSON(res.data) as PublicUser;
 	}
 
 	public async GetUsersById(userIds: string[], strict = true): Promise<ReturnType<BridgeApiGetUsersById>> {
 		if (userIds.size() === 0) {
 			return {
-				success: true,
-				data: {
-					map: {},
-					array: [],
-				},
+				map: {},
+				array: [],
 			};
 		}
 
@@ -180,19 +136,13 @@ export class ProtectedUserController {
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to get user. Status Code:  ${res.statusCode}.\n`, res.error);
-			return {
-				success: false,
-				error: res.error,
-			};
+			throw res.error;
 		}
 
 		if (!res.data) {
 			return {
-				success: true,
-				data: {
-					map: {},
-					array: [],
-				},
+				map: {},
+				array: [],
 			};
 		}
 
@@ -201,11 +151,8 @@ export class ProtectedUserController {
 		array.forEach((u) => (map[u.uid] = u));
 
 		return {
-			success: true,
-			data: {
-				map,
-				array,
-			},
+			map,
+			array,
 		};
 	}
 
@@ -214,16 +161,10 @@ export class ProtectedUserController {
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to get friends. Status Code ${res.statusCode}.\n`, res.error);
-			return {
-				success: false,
-				error: res.error,
-			};
+			throw res.error;
 		}
 
-		return {
-			success: true,
-			data: DecodeJSON(res.data) as PublicUser[],
-		};
+		return DecodeJSON(res.data) as PublicUser[];
 	}
 
 	protected OnStart(): void {

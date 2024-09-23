@@ -2083,6 +2083,9 @@ interface GameObject extends Object {
 
 	/** Destroys all child gameobjects. */
 	ClearChildren(): void;
+
+	/**Sets the layer on this game object and all descendants */
+	SetLayerRecursive(layer: number): void;
 }
 declare const gameObject: GameObject;
 
@@ -4721,6 +4724,9 @@ interface Transform extends Component, Iterable<Transform> {
 	 * More info: {@link https://docs.unity3d.com/ScriptReference/Transform.Translate.html | Transform.Translate}
 	 */
 	Translate(x: number, y: number, z: number, relativeTo: Transform): void;
+
+	/**Get all descendant transforms. Does not inclue the root transform. */
+	GetDescendants(): CSArray<Transform>;
 }
 
 interface Collider extends Component {
@@ -4833,3 +4839,25 @@ declare const MultiAimConstraint: MultiAimConstraintConstructor;
 
 interface RandomConstructor {}
 declare const Random: RandomConstructor;
+
+interface VolumeProfile extends ScriptableObject {
+	components: CSArray<VolumeComponent>;
+	isDirty: boolean;
+
+	// Add<T>(overrides: boolean): T;
+	// Add(type: unknown, overrides: boolean): VolumeComponent;
+	// GetHashCode(): number;
+	// Has<T>(): boolean;
+	// Has(type: unknown): boolean;
+	// HasSubclassOf(type: unknown): boolean;
+	// Remove<T>(): void;
+	// Remove(type: unknown): void;
+	Reset(): void;
+	// Get<T>(component: T): T | undefined;
+	GetDepthOfField(): DepthOfField | undefined;
+}
+
+interface VolumeProfileConstructor {
+	new (): VolumeProfile;
+}
+declare const VolumeProfile: VolumeProfileConstructor;
