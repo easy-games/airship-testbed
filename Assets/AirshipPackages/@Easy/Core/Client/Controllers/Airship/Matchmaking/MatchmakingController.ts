@@ -1,7 +1,6 @@
-import { ClientBridgeApiGetGroupForSelf, ClientBridgeApiLeaveQueueForSelf, MatchmakingControllerBridgeTopics } from "@Easy/Core/Client/ProtectedControllers/Airship/Matchmaking/MatchmakingController";
+import { ClientBridgeApiGetGroupForSelf, ClientBridgeApiLeaveQueue, MatchmakingControllerBridgeTopics } from "@Easy/Core/Client/ProtectedControllers/Airship/Matchmaking/MatchmakingController";
 import { Platform } from "@Easy/Core/Shared/Airship";
 import { Group } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipMatchmaking";
-import { ContextBridgeUtil } from "@Easy/Core/Shared/Airship/Util/ContextBridgeUtil";
 import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 
@@ -9,7 +8,7 @@ import { Game } from "@Easy/Core/Shared/Game";
  * This controller provides information about the users matchmaking status.
  */
 @Controller({})
-export class MatchmakingController {
+export class AirshipMatchmakingController {
 	constructor() {
 		if (!Game.IsClient()) return;
 
@@ -22,23 +21,19 @@ export class MatchmakingController {
 	 * Gets the users current matchmaking group data if they are in a group, otherwise returns undefined.
 	 */
 	public async GetCurrentGroup(): Promise<Group | undefined> {
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ClientBridgeApiGetGroupForSelf>(
+		return contextbridge.invoke<ClientBridgeApiGetGroupForSelf>(
 			MatchmakingControllerBridgeTopics.GetGroupForSelf,
 			LuauContext.Protected,
 		);
-		if (!result.success) throw result.error;
-		return result.data;
 	}
 
 	/**
-	 * Leaves the current queue if the user in a group and that group is in a queue. This stops matchmaking for the entire group.
+	 * If the players group is in queue, removes the group from the queue. All players in the group will leave matchmaking.
 	 */
-	public async LeaveQueueForSelf(): Promise<Group | undefined> {
-		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ClientBridgeApiLeaveQueueForSelf>(
-			MatchmakingControllerBridgeTopics.LeaveQueueForSelf,
+	public async LeaveQueue(): Promise<Group | undefined> {
+		return contextbridge.invoke<ClientBridgeApiLeaveQueue>(
+			MatchmakingControllerBridgeTopics.LeaveQueue,
 			LuauContext.Protected,
 		);
-		if (!result.success) throw result.error;
-		return result.data;
 	}
 }

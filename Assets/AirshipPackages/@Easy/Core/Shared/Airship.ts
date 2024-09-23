@@ -1,4 +1,4 @@
-import { MatchmakingController } from "../Client/Controllers/Airship/Matchmaking/MatchmakingController";
+import { AirshipMatchmakingController } from "../Client/Controllers/Airship/Matchmaking/MatchmakingController";
 import { AirshipPartyController } from "../Client/Controllers/Airship/Party/AirshipPartyController";
 import { AirshipPlatformInventoryController } from "../Client/Controllers/Airship/PlatformInventory/AirshipPlatformInventoryController";
 import { AirshipServerListController } from "../Client/Controllers/Airship/ServerList/AirshipServerListController";
@@ -130,7 +130,7 @@ export namespace Platform {
 		/**
 		 * Provides information about the users matchmaking status.
 		 */
-		export let Matchmaking = undefined! as MatchmakingController;
+		export let Matchmaking = undefined! as AirshipMatchmakingController;
 	}
 }
 

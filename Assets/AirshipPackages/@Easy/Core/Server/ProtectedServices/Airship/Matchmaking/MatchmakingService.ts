@@ -1,12 +1,9 @@
-import { GameServerPartyData } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipParty";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { Result } from "@Easy/Core/Shared/Types/Result";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 import { Group } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipMatchmaking";
 import { JoinQueueDto } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipMatchmaking";
-import { awaitToResult, processResponse } from "@Easy/Core/Shared/Util/AirshipUtil";
 
 export const enum MatchmakingServiceBridgeTopics {
 	CreateGroup = "MatchmakingService:CreateGroup",
@@ -16,11 +13,11 @@ export const enum MatchmakingServiceBridgeTopics {
 	LeaveQueue = "MatchmakingService:LeaveQueue",
 }
 
-export type ServerBridgeApiCreateGroup = (userIds: string[]) => Result<Group, string>;
-export type ServerBridgeApiGetGroupById = (groupId: string) => Result<Group | undefined, string>;
-export type ServerBridgeApiGetGroupByUserId = (uid: string) => Result<Group | undefined, string>;
-export type ServerBridgeApiJoinQueue = (body: JoinQueueDto) => Result<undefined, string>;
-export type ServerBridgeApiLeaveQueue = (groupId: string) => Result<undefined, string>;
+export type ServerBridgeApiCreateGroup = (userIds: string[]) => Group;
+export type ServerBridgeApiGetGroupById = (groupId: string) => Group | undefined;
+export type ServerBridgeApiGetGroupByUserId = (uid: string) => Group | undefined;
+export type ServerBridgeApiJoinQueue = (body: JoinQueueDto) => undefined;
+export type ServerBridgeApiLeaveQueue = (groupId: string) => undefined;
 
 @Service({})
 export class ProtectedMatchmakingService {
@@ -29,66 +26,107 @@ export class ProtectedMatchmakingService {
 
 		contextbridge.callback<ServerBridgeApiCreateGroup>(
 			MatchmakingServiceBridgeTopics.CreateGroup,
-			(_, userIds) => awaitToResult(this.CreateGroup(userIds)),
+			(_, userIds) => this.CreateGroup(userIds).expect(),
 		);
 
 		contextbridge.callback<ServerBridgeApiGetGroupById>(
 			MatchmakingServiceBridgeTopics.GetGroupById,
-			(_, groupId) => awaitToResult(this.GetGroupById(groupId)),
+			(_, groupId) => this.GetGroupById(groupId).expect(),
 		);
 
 		contextbridge.callback<ServerBridgeApiGetGroupByUserId>(
 			MatchmakingServiceBridgeTopics.GetGroupByUserId,
-			(_, uid) => awaitToResult(this.GetGroupByUserId(uid)),
+			(_, uid) => this.GetGroupByUserId(uid).expect(),
 		);
 
 		contextbridge.callback<ServerBridgeApiJoinQueue>(
 			MatchmakingServiceBridgeTopics.JoinQueue,
-			(_, body) => awaitToResult(this.JoinQueue(body)),
+			(_, body) => this.JoinQueue(body).expect(),
 		);
 
 		contextbridge.callback<ServerBridgeApiLeaveQueue>(
 			MatchmakingServiceBridgeTopics.LeaveQueue,
-			(_, groupId) => awaitToResult(this.LeaveQueue(groupId)),
+			(_, groupId) => this.LeaveQueue(groupId).expect(),
 		);
 	}
 
-	public async CreateGroup(userIds: string[]): Promise<Result<Group, string>> {
+	public async CreateGroup(userIds: string[]): Promise<Group> {
 		print(`protected: MatchmakingService.CreateGroup: ${EncodeJSON(userIds)}`);
-		const res = InternalHttpManager.PostAsync(`${AirshipUrl.GameCoordinator}/groups`, EncodeJSON({
+		const result = InternalHttpManager.PostAsync(`${AirshipUrl.GameCoordinator}/groups`, EncodeJSON({
 			userIds,
 		}));
 
-		return processResponse(res, "Unable to create group", {allowEmptyData: false});
+		if (!result.success || result.statusCode > 299) {
+			warn(`Unable to create group. Status Code: ${result.statusCode}.\n`, result.error);
+			throw result.error;
+		}
+
+		return DecodeJSON(result.data) as Group;
 	}
 
-	public async GetGroupById(groupId: string): Promise<Result<Group | undefined, string>> {
+	public async GetGroupById(groupId: string): Promise<Group | undefined> {
 		print(`protected: MatchmakingService.GetGroupById: ${groupId}`);
-		const res = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/groups/group-id/${groupId}`);
+		const result = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/groups/group-id/${groupId}`);
 
-		return processResponse(res, `An error occurred while trying to find group with id ${groupId}`, {allowEmptyData: true});
+		if (!result.success || result.statusCode > 299) {
+			warn(`An error occurred while trying to find group with id ${groupId}. Status Code: ${result.statusCode}.\n`, result.error);
+			throw result.error;
+		}
+
+		if (!result.data) {
+			return undefined;
+		}
+
+		return DecodeJSON(result.data) as Group;
 	}
 
-	public async GetGroupByUserId(uid: string): Promise<Result<Group | undefined, string>> {
+	public async GetGroupByUserId(uid: string): Promise<Group | undefined> {
 		print(`protected: MatchmakingService.GetGroupByUserId: ${uid}`);
-		const res = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/groups/uid/${uid}`);
+		const result = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/groups/uid/${uid}`);
 
-		return processResponse(res, `An error occurred while trying to find group for user with id ${uid}`, {allowEmptyData: true});
+		if (!result.success || result.statusCode > 299) {
+			warn(`An error occurred while trying to find group for user with id ${uid}. Status Code: ${result.statusCode}.\n`, result.error);
+			throw result.error;
+		}
+
+		if (!result.data) {
+			return undefined;
+		}
+
+		return DecodeJSON(result.data) as Group;
 	}
 
-	public async JoinQueue(body: JoinQueueDto): Promise<Result<undefined, string>> {
+	public async JoinQueue(body: JoinQueueDto): Promise<undefined> {
 		print(`protected: MatchmakingService.JoinQueue: ${EncodeJSON(body)}`);
-		const res = InternalHttpManager.PostAsync(`${AirshipUrl.GameCoordinator}/matchmaking/queue/join`, EncodeJSON(body));
+		const result = InternalHttpManager.PostAsync(`${AirshipUrl.GameCoordinator}/matchmaking/queue/join`, EncodeJSON(body));
 
-		return processResponse(res, `An error occurred while attempting to join queue: ${body.queueId} group: ${body.groupId}`, {allowEmptyData: true, returnErrorBodyForStatusCodes: [400]});
+		if (!result.success || result.statusCode > 299) {
+			if (result.statusCode === 400) {
+				error(result.data);
+			}
+
+			warn(`An error occurred while attempting to join queue: ${body.queueId} group: ${body.groupId}. Status Code: ${result.statusCode}.\n`, result.error);
+			throw result.error;
+		}
+
+		return undefined;
 	}
 
-	public async LeaveQueue(groupId: string): Promise<Result<undefined, string>> {
-		print(`protected: MatchmakingService.LeaveQueue: ${EncodeJSON({groupId})}`);
-		const res = InternalHttpManager.PostAsync(`${AirshipUrl.GameCoordinator}/matchmaking/queue/leave`, EncodeJSON({groupId}));
+	public async LeaveQueue(groupId: string): Promise<undefined> {
+		print(`protected: MatchmakingService.LeaveQueue: ${EncodeJSON({ groupId })}`);
+		const result = InternalHttpManager.PostAsync(`${AirshipUrl.GameCoordinator}/matchmaking/queue/leave`, EncodeJSON({ groupId }));
 
-		return processResponse(res, `An error occurred while attempting to leave queue for group: ${groupId}`, {allowEmptyData: true, returnErrorBodyForStatusCodes: [400]});
+		if (!result.success || result.statusCode > 299) {
+			if (result.statusCode === 400) {
+				error(result.data);
+			}
+
+			warn(`An error occurred while attempting to leave queue for group: ${groupId}. Status Code: ${result.statusCode}.\n`, result.error);
+			throw result.error;
+		}
+
+		return undefined;
 	}
-	
-	protected OnStart(): void {}
+
+	protected OnStart(): void { }
 }

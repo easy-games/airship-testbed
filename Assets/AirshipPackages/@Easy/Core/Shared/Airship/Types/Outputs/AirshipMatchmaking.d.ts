@@ -29,4 +29,10 @@ interface IdleData {
 	state: GroupState.IDLE;
 }
 
+/**
+ * Current state of a matchmaking group.
+ * IDLE - The matchmaking group is not in a queue or match.
+ * IN_QUEUE - The matchmaking group is in a queue and is waiting to be matched with other groups.
+ * IN_MATCH - The matchmaking group is currently in a match.
+ */
 export type GroupStatus = QueueData | MatchData | IdleData;
