@@ -32,7 +32,7 @@ export default class CharacterRagdoll extends AirshipBehaviour {
 		}
 
 		const TEST = false;
-		if(TEST){
+		if (TEST) {
 			Airship.Input.CreateAction("TEST", Binding.Key(Key.F));
 			Airship.Input.OnDown("TEST").Connect(() => {
 				this.SetRagdoll(!this.ragdollEnabled);
@@ -71,10 +71,18 @@ export default class CharacterRagdoll extends AirshipBehaviour {
 		//Toggle physics objects
 		for (let i = 0; i < this.joints.size(); i++) {
 			//Have to set collision mode to Discrete with going kinematic otherwise Unity throws an error
-			this.rigids[i].collisionDetectionMode = ragdollOn ? this.collisionDetectionMode :  CollisionDetectionMode.Discrete;
+			this.rigids[i].collisionDetectionMode = ragdollOn
+				? this.collisionDetectionMode
+				: CollisionDetectionMode.Discrete;
 			this.rigids[i].interpolation = ragdollOn ? this.interpolationMode : RigidbodyInterpolation.None;
 			this.rigids[i].isKinematic = !ragdollOn;
 			this.colliders[i].enabled = ragdollOn;
+		}
+
+		//Make sure skinned meshes still render even when thrown far from origin
+		var renderers = this.gameObject.GetComponentsInChildren<SkinnedMeshRenderer>();
+		for (let i = 0; i < renderers.Length; i++) {
+			renderers.GetValue(i).updateWhenOffscreen = ragdollOn;
 		}
 	}
 
