@@ -111,9 +111,7 @@ export default class MatchmakerButton extends AirshipBehaviour {
 			return;
 		}
 
-		const [success, result] = Platform.Server.Matchmaking.LeaveQueue({
-			groupId: this.matchmakerSingleton.groupId,
-		}).await();
+		const [success, result] = Platform.Server.Matchmaking.LeaveQueue(this.matchmakerSingleton.groupId).await();
 		if (!success) {
 			print("Failed to leave queue: " + EncodeJSON(result));
 			return;

@@ -110,7 +110,6 @@ export namespace Platform {
 	 * Client accessible services.
 	 */
 	export namespace Client {
-		
 		/**
 		 * This controller provides information about the users current party.
 		 */
@@ -129,7 +128,7 @@ export namespace Platform {
 		 */
 		export let ServerList = undefined! as AirshipServerListController;
 		/**
-		 * This controller provides information about the users matchmaking status.
+		 * Provides information about the users matchmaking status.
 		 */
 		export let Matchmaking = undefined! as MatchmakingController;
 	}

@@ -88,15 +88,15 @@ export class AirshipMatchmakingService {
 	}
 
 	/**
-	 * Removed a group from a matchmaking queue.
+	 * Remove a group from a matchmaking queue.
 	 * @param body The body of the request, containing the groupId.
 	 * @returns undefined if the request was successful, otherwise an error message.
 	 */
-	public async LeaveQueue(body: {groupId: string}): Promise<void> {
+	public async LeaveQueue(groupId: string): Promise<void> {
 		const result = await ContextBridgeUtil.PromisifyBridgeInvoke<ServerBridgeApiLeaveQueue>(
 			MatchmakingServiceBridgeTopics.LeaveQueue,
 			LuauContext.Protected,
-			body,
+			groupId,
 		);
 		if (!result.success) throw result.error;
 		return result.data;

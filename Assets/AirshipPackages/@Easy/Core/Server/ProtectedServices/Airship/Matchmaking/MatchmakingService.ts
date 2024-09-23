@@ -20,7 +20,7 @@ export type ServerBridgeApiCreateGroup = (userIds: string[]) => Result<Group, st
 export type ServerBridgeApiGetGroupById = (groupId: string) => Result<Group | undefined, string>;
 export type ServerBridgeApiGetGroupByUserId = (uid: string) => Result<Group | undefined, string>;
 export type ServerBridgeApiJoinQueue = (body: JoinQueueDto) => Result<undefined, string>;
-export type ServerBridgeApiLeaveQueue = (body: {groupId: string}) => Result<undefined, string>;
+export type ServerBridgeApiLeaveQueue = (groupId: string) => Result<undefined, string>;
 
 @Service({})
 export class ProtectedMatchmakingService {
@@ -49,7 +49,7 @@ export class ProtectedMatchmakingService {
 
 		contextbridge.callback<ServerBridgeApiLeaveQueue>(
 			MatchmakingServiceBridgeTopics.LeaveQueue,
-			(_, body) => awaitToResult(this.LeaveQueue(body)),
+			(_, groupId) => awaitToResult(this.LeaveQueue(groupId)),
 		);
 	}
 
@@ -83,11 +83,11 @@ export class ProtectedMatchmakingService {
 		return processResponse(res, `An error occurred while attempting to join queue: ${body.queueId} group: ${body.groupId}`, {allowEmptyData: true, returnErrorBodyForStatusCodes: [400]});
 	}
 
-	public async LeaveQueue(body: {groupId: string}): Promise<Result<undefined, string>> {
-		print(`protected: MatchmakingService.LeaveQueue: ${EncodeJSON(body)}`);
-		const res = InternalHttpManager.PostAsync(`${AirshipUrl.GameCoordinator}/matchmaking/queue/leave`, EncodeJSON(body));
+	public async LeaveQueue(groupId: string): Promise<Result<undefined, string>> {
+		print(`protected: MatchmakingService.LeaveQueue: ${EncodeJSON({groupId})}`);
+		const res = InternalHttpManager.PostAsync(`${AirshipUrl.GameCoordinator}/matchmaking/queue/leave`, EncodeJSON({groupId}));
 
-		return processResponse(res, `An error occurred while attempting to leave queue for group: ${body.groupId}`, {allowEmptyData: true, returnErrorBodyForStatusCodes: [400]});
+		return processResponse(res, `An error occurred while attempting to leave queue for group: ${groupId}`, {allowEmptyData: true, returnErrorBodyForStatusCodes: [400]});
 	}
 	
 	protected OnStart(): void {}
