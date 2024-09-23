@@ -4,9 +4,6 @@ import { Group } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipMatchmakin
 import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 
-/**
- * This controller provides information about the users matchmaking status.
- */
 @Controller({})
 export class AirshipMatchmakingController {
 	constructor() {
