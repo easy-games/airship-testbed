@@ -80,7 +80,7 @@ export default class CharacterRagdoll extends AirshipBehaviour {
 		}
 
 		//Make sure skinned meshes still render even when thrown far from origin
-		var renderers = this.gameObject.GetComponentsInChildren<SkinnedMeshRenderer>();
+		const renderers = this.gameObject.GetComponentsInChildren<SkinnedMeshRenderer>();
 		for (let i = 0; i < renderers.Length; i++) {
 			renderers.GetValue(i).updateWhenOffscreen = ragdollOn;
 		}
