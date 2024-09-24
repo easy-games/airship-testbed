@@ -26,6 +26,18 @@ declare abstract class AirshipBehaviour {
 	public readonly transform: Transform;
 
 	/**
+	 * The enabled state of this component - to set the enabled state use {@link SetEnabled}
+	 */
+	// TODO: Have the compiler detect this and handle appropriately
+	public get enabled(): boolean;
+	public set enabled(value: boolean): void;
+
+	/**
+	 * Sets whether or not this component is enabled
+	 */
+	public SetEnabled(enabled: boolean): void;
+
+	/**
 	 * ## Use {@link Awake} instead of overloading the constructor!
 	 * - You can specify non-optional properties using the null-assertion operator - `!`
 	 *

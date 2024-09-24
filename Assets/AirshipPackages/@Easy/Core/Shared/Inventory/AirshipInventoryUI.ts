@@ -46,7 +46,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 
 	private slotToBackpackTileMap = new Map<number, GameObject>();
 
-	private enabled = true;
+	// private enabled = true;
 	private visible = false;
 	private backpackEnabled = true;
 
