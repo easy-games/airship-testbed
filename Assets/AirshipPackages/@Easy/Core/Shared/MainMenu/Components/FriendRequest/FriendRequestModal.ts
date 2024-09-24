@@ -4,8 +4,8 @@ import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import IncomingFriendRequestCard from "./IncomingFriendRequestCard";
 
 export default class FriendRequestModal extends AirshipBehaviour {
-	public content!: Transform;
-	public friendRequestPrefab!: GameObject;
+	private content!: Transform;
+	private friendRequestPrefab!: GameObject;
 	private bin = new Bin();
 
 	override Start(): void {
