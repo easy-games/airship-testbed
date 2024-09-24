@@ -63,7 +63,7 @@ export class RecommendedFriendsController implements OnStart {
 			Protected.protectedPlayers.ObservePlayers((p) => {
 				const gameData = Game.WaitForGameData();
 
-				if (p.IsLocalPlayer()) return;
+				if (Protected.user.localUser?.uid === p.userId) return;
 				if (seenThisSession.has(p.userId)) return;
 				// If we're way over max recommendations stop adding new users. Otherwise we'll purge when saving.
 				if (this.recommendedFriends.recommendations.size() > MAX_RECOMMENDED_FRIENDS * 2) return;
