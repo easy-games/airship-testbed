@@ -51,7 +51,6 @@ export class ProtectedMatchmakingService {
 	}
 
 	public async CreateGroup(userIds: string[]): Promise<Group> {
-		print(`protected: MatchmakingService.CreateGroup: ${EncodeJSON(userIds)}`);
 		const result = InternalHttpManager.PostAsync(`${AirshipUrl.GameCoordinator}/groups`, EncodeJSON({
 			userIds,
 		}));
@@ -65,7 +64,6 @@ export class ProtectedMatchmakingService {
 	}
 
 	public async GetGroupById(groupId: string): Promise<Group | undefined> {
-		print(`protected: MatchmakingService.GetGroupById: ${groupId}`);
 		const result = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/groups/group-id/${groupId}`);
 
 		if (!result.success || result.statusCode > 299) {
@@ -81,7 +79,6 @@ export class ProtectedMatchmakingService {
 	}
 
 	public async GetGroupByUserId(uid: string): Promise<Group | undefined> {
-		print(`protected: MatchmakingService.GetGroupByUserId: ${uid}`);
 		const result = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/groups/uid/${uid}`);
 
 		if (!result.success || result.statusCode > 299) {
@@ -97,7 +94,6 @@ export class ProtectedMatchmakingService {
 	}
 
 	public async JoinQueue(body: JoinQueueDto): Promise<undefined> {
-		print(`protected: MatchmakingService.JoinQueue: ${EncodeJSON(body)}`);
 		const result = InternalHttpManager.PostAsync(`${AirshipUrl.GameCoordinator}/matchmaking/queue/join`, EncodeJSON(body));
 
 		if (!result.success || result.statusCode > 299) {
@@ -113,7 +109,6 @@ export class ProtectedMatchmakingService {
 	}
 
 	public async LeaveQueue(groupId: string): Promise<undefined> {
-		print(`protected: MatchmakingService.LeaveQueue: ${EncodeJSON({ groupId })}`);
 		const result = InternalHttpManager.PostAsync(`${AirshipUrl.GameCoordinator}/matchmaking/queue/leave`, EncodeJSON({ groupId }));
 
 		if (!result.success || result.statusCode > 299) {

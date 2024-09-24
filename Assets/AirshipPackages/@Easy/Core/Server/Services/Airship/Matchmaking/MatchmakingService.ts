@@ -60,7 +60,7 @@ export class AirshipMatchmakingService {
 	/**
 	 * Given a group, joins the matchmaking queue looking for other players to play with.
 	 * @param body The body of the request, containing the queueId, groupId, and information about the players in the group.
-	 * @returns undefined if the request was successful. Throws an error if the user is already in a group.
+	 * @returns undefined if the request was successful. Returns an error if the user is already in a group.
 	 */
 	public async JoinQueue(body: JoinQueueDto): Promise<void> {
 		return contextbridge.invoke<ServerBridgeApiJoinQueue>(
@@ -73,7 +73,7 @@ export class AirshipMatchmakingService {
 	/**
 	 * Remove a group from a matchmaking queue.
 	 * @param body The body of the request, containing the groupId.
-	 * @returns undefined if the request was successful. Throws an error if the user is not in a group.
+	 * @returns undefined if the request was successful. Returns an error if the user is not in a group.
 	 */
 	public async LeaveQueue(groupId: string): Promise<void> {
 		return contextbridge.invoke<ServerBridgeApiLeaveQueue>(

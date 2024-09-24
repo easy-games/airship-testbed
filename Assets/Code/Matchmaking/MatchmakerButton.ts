@@ -4,17 +4,21 @@ import ProximityPrompt from "@Easy/Core/Shared/Input/ProximityPrompts/ProximityP
 import MatchmakerSingleton from "./MatchmakerSingleton";
 import { EncodeJSON } from "@Easy/Core/Shared/json";
 import { NetworkFunction } from "@Easy/Core/Shared/Network/NetworkFunction";
+import { Player } from "@Easy/Core/Shared/Player/Player";
 
 export enum MatchmakingAction {
 	CreateGroup,
 	GroupJoinQueue,
 	GroupLeaveQueue,
 	GetGroupStatus,
-	UserGetCurrentGroup,
+	ClientGetCurrentGroup,
+	ServerUserGetCurrentGroup,
+	ClientLeaveQueue,
 }
 
 const clientActions = new Set<MatchmakingAction>([
-	MatchmakingAction.UserGetCurrentGroup,
+	MatchmakingAction.ClientGetCurrentGroup,
+	MatchmakingAction.ClientLeaveQueue,
 ]);
 
 export default class MatchmakerButton extends AirshipBehaviour {
@@ -31,7 +35,7 @@ export default class MatchmakerButton extends AirshipBehaviour {
 			if (Game.IsClient()) {
 				if (clientActions.has(this.action)) {
 					print(`[${this.gameObject.name}] Performing action: ${this.action}`);
-					this.PerformAction();
+					this.PerformAction(Game.localPlayer);
 				} else {
 					print(`[${this.gameObject.name}] Sending action to server`);
 					this.performAction.client.FireServer({});
@@ -39,13 +43,13 @@ export default class MatchmakerButton extends AirshipBehaviour {
 			}
 		});
 		if (Game.IsServer()) {
-			this.performAction.server.SetCallback((_, action) => {
-				this.PerformAction();
+			this.performAction.server.SetCallback((player, action) => {
+				this.PerformAction(player);
 			});
 		}
 	}
 
-	private PerformAction(): void {
+	private PerformAction(player: Player): void {
 		print(`[${this.gameObject.name}] Performing action: ${this.action}`);
 		switch (this.action) {
 			case MatchmakingAction.CreateGroup:
@@ -60,8 +64,14 @@ export default class MatchmakerButton extends AirshipBehaviour {
 			case MatchmakingAction.GetGroupStatus:
 				this.GetGroupStatus();
 				break;
-			case MatchmakingAction.UserGetCurrentGroup:
-				this.UserGetCurrentGroup();
+			case MatchmakingAction.ClientGetCurrentGroup:
+				this.ClientGetCurrentGroup();
+				break;
+			case MatchmakingAction.ServerUserGetCurrentGroup:
+				this.ServerUserGetCurrentGroup(player);
+				break;
+			case MatchmakingAction.ClientLeaveQueue:
+				this.ClientLeaveQueue();
 				break;
 			default:
 				print("Unknown action");
@@ -133,14 +143,36 @@ export default class MatchmakerButton extends AirshipBehaviour {
 		print("Successfully got group status: " + EncodeJSON(result));
 	}
 
-	private UserGetCurrentGroup(): void {
+	private ServerUserGetCurrentGroup(player: Player): void {
+		if (!Game.IsServer()) return;
+		const [success, result] = Platform.Server.Matchmaking.GetGroupByUserId(player.userId).await();
+		if (!success) {
+			print("Failed to get current group: " + EncodeJSON(result));
+			return;
+		}
+		print(`Successfully got current group for player ${player.userId}: ${EncodeJSON(result)}`);
+	}
+
+	private ClientGetCurrentGroup(): void {
 		if (!Game.IsClient()) return;
+		print("Attempting to get current group for client");
 		const [success, result] = Platform.Client.Matchmaking.GetCurrentGroup().await();
 		if (!success) {
 			print("Failed to get current group: " + EncodeJSON(result));
 			return;
 		}
 		print("Successfully got current group: " + EncodeJSON(result));
+	}
+
+	private ClientLeaveQueue(): void {
+		if (!Game.IsClient()) return;
+		print("Attempting to leave queue for client");
+		const [success, result] = Platform.Client.Matchmaking.LeaveQueue().await();
+		if (!success) {
+			print("Failed to leave queue: " + EncodeJSON(result));
+			return;
+		}
+		print("Successfully left queue: " + EncodeJSON(result));
 	}
 
 	override OnDestroy(): void { }
