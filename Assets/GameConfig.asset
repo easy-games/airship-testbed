@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GameConfig
   m_EditorClassIdentifier: 
   gameId: 66158b436197f84bec646cff
-  startingScene: {fileID: 102900000, guid: 497a63aec7ca045bab13a5e25c5d7bba, type: 3}
+  startingScene: {fileID: 102900000, guid: a084c6e521979490f8d8737f1c807bf8, type: 3}
   gameScenes:
   - {fileID: 102900000, guid: 3c9ae368a8ce5be42a0926c8ff129454, type: 3}
   - {fileID: 102900000, guid: 497a63aec7ca045bab13a5e25c5d7bba, type: 3}
@@ -26,7 +26,7 @@ MonoBehaviour:
   packages:
   - id: '@Easy/Core'
     assetVersion: 612
-    codeVersion: 704
+    codeVersion: 705
     game: 0
     localSource: 1
     disabled: 0
