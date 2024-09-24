@@ -4,25 +4,54 @@ import StringUtils from "../Types/StringUtil";
 
 const MAX_DISTANCE = 18;
 
+/**
+ * Configuration for the Audio Source that will play your Audio Clip.
+ */
 export interface PlaySoundConfig {
+	/**
+	 * Sets the volume of the Audio Source.
+	 */
 	volumeScale?: number;
+	/**
+	 * Sets wether Audio Source will play looped. If true Audio Manager will not
+	 * clean up your Audio Source automatically (you will need to destroy it when you
+	 * no longer need the sound).
+	 */
 	loop?: boolean;
+	/**
+	 * Sets the pitch of the Audio Source.
+	 */
 	pitch?: number;
+	/**
+	 * Sets the max distance of the Audio Source.
+	 */
 	maxDistance?: number;
+	/**
+	 * Sets the min distance of the Audio Source.
+	 */
 	minDistance?: number;
+	/**
+	 * Sets the roll off mode of the Audio Source.
+	 */
 	rollOffMode?: AudioRolloffMode;
+	/**
+	 * This should be a Game Object with an Audio Source on it. Normally Audio Manager
+	 * creates a new Audio Source to play your sound, but if you provide this template we
+	 * will clone it and play your sound from this object. All other config properties work
+	 * on top of this (for example if you supply volumeScale that will override the volume of
+	 * your Audio Source).
+	 */
 	audioSourceTemplate?: GameObject;
 }
 
+/**
+ * A set of utilities that allow you to quickly play an Audio Clip with configuration.
+ */
 export class AudioManager {
-	public static soundFolderPath = "Shared/Resources/Sound/";
-	private static soundFolderIndex: number;
-
 	private static audioSourceTemplate: GameObject | undefined;
 	private static globalAudioSources: Map<number, AudioSource> = new Map();
 
 	public static Init(): void {
-		this.soundFolderIndex = this.soundFolderPath.size();
 		this.CacheAudioSources();
 	}
 
@@ -36,6 +65,13 @@ export class AudioManager {
 		// PoolManager.PreLoadPool(this.audioSourceTemplate, 15, CoreRefs.rootTransform);
 	}
 
+	/**
+	 * Loads an Audio Clip from path and plays it globally.
+	 * 
+	 * @param sound Path to audio clip. Must be under ``Resources`` folder or else it won't exist in published game.
+	 * @param config Audio Source configuration
+	 * @returns Spawned Audio Source playing the clip (or undefined if the clip can't be loaded).
+	 */
 	public static PlayGlobal(sound: string, config?: PlaySoundConfig) {
 		const clip = this.LoadAudioClip(sound);
 		if (!clip) {
@@ -167,11 +203,6 @@ export class AudioManager {
 	}
 
 	public static LoadAudioClip(sound: string): AudioClip | undefined {
-		//print("Loading clip: " + this.SoundFolderPath +":::"+this.FriendlyPath(sound));
-
-		if (StringUtils.includes(sound, "@")) {
-			return this.LoadFullPathAudioClip(this.FriendlyPath(sound));
-		}
 		return this.LoadFullPathAudioClip(this.FriendlyPath(sound));
 	}
 
@@ -181,9 +212,5 @@ export class AudioManager {
 			warn("Unable to load clip: " + fullPath);
 		}
 		return clip;
-	}
-
-	public static GetLocalPathFromFullPath(fullPath: string) {
-		return fullPath.sub(this.soundFolderIndex);
 	}
 }
