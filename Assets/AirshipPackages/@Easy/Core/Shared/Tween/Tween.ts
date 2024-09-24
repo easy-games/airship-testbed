@@ -138,7 +138,7 @@ export class Tween<T> implements LuauTween<T> {
 		from: number = 0,
 		to: number = 1,
 	): LuauTween<number> {
-		return new Tween<number>(durationSeconds, easingFunction, NumberLerp(from, to), callback, to);
+		return new Tween<number>(durationSeconds, easingFunction, NumberLerp(from, to), callback, to).Play();
 	}
 
 	public static Vector3(
@@ -148,7 +148,7 @@ export class Tween<T> implements LuauTween<T> {
 		from: Vector3 = Vector3.zero,
 		to: Vector3 = Vector3.one,
 	): LuauTween<Vector3> {
-		return new Tween(durationSeconds, easingFunction, VectorLerp(from, to), callback, to);
+		return new Tween(durationSeconds, easingFunction, VectorLerp(from, to), callback, to).Play();
 	}
 
 	public static Vector2(
@@ -158,7 +158,7 @@ export class Tween<T> implements LuauTween<T> {
 		from: Vector2 = Vector2.zero,
 		to: Vector2 = Vector2.one,
 	): LuauTween<Vector2> {
-		return new Tween(durationSeconds, easingFunction, Vector2Lerp(from, to), callback, to);
+		return new Tween(durationSeconds, easingFunction, Vector2Lerp(from, to), callback, to).Play();
 	}
 
 	public static Color(
@@ -168,7 +168,7 @@ export class Tween<T> implements LuauTween<T> {
 		from: Color = Color.black,
 		to: Color = Color.white,
 	): LuauTween<Color> {
-		return new Tween(durationSeconds, easingFunction, ColorLerp(from, to), callback, to);
+		return new Tween(durationSeconds, easingFunction, ColorLerp(from, to), callback, to).Play();
 	}
 
 	public Destroy() {
