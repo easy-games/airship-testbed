@@ -11,15 +11,17 @@ export default class CharacterSwapper extends AirshipBehaviour {
 	@NonSerialized() public toggleCharacterRemote = new NetworkSignal("ToggleCharacter");
 
 	override Start(): void {
-		Airship.Players.ObservePlayers((player) => {
-			Airship.Characters.SpawnNonPlayerCharacter(this.spawnPoint.position);
-		});
-		Airship.Characters.ObserveCharacters((c) => {
-			this.characters.push(c);
-			return () => {
-				this.characters.remove(this.characters.indexOf(c));
-			};
-		});
+		if (Game.IsServer()) {
+			Airship.Players.ObservePlayers((player) => {
+				Airship.Characters.SpawnNonPlayerCharacter(this.spawnPoint.position);
+			});
+			Airship.Characters.ObserveCharacters((c) => {
+				this.characters.push(c);
+				return () => {
+					this.characters.remove(this.characters.indexOf(c));
+				};
+			});
+		}
 
 		if (Game.IsClient()) {
 			Airship.Input.CreateAction("ToggleCharacter", Binding.Key(Key.K));
