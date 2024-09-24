@@ -132,6 +132,12 @@ export class RecommendedFriendsController implements OnStart {
 		});
 	}
 
+	public DeleteRecommendation(userId: string) {
+		this.recommendedFriends.recommendations.delete(userId);
+		this.sortOutdated = true;
+		this.fileRequiresSave = true;
+	}
+
 	private TrimRecommendedFriends() {
 		if (this.recommendedFriends.recommendations.size() < MAX_RECOMMENDED_FRIENDS) return;
 

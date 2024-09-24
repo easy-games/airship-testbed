@@ -196,7 +196,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3027810235059869620, guid: b4133d9ff571e4eecaee0729b5a769e7, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 500
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3027810235059869620, guid: b4133d9ff571e4eecaee0729b5a769e7, type: 3}
       propertyPath: m_SizeDelta.y
@@ -204,7 +204,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3027810235059869620, guid: b4133d9ff571e4eecaee0729b5a769e7, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 250
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3027810235059869620, guid: b4133d9ff571e4eecaee0729b5a769e7, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -326,6 +326,10 @@ PrefabInstance:
       propertyPath: m_text
       value: Friend Requests
       objectReference: {fileID: 0}
+    - target: {fileID: 8012868004065787895, guid: b4133d9ff571e4eecaee0729b5a769e7, type: 3}
+      propertyPath: m_metadata.properties.Array.data[1].serializedValue
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8085561438190567824, guid: b4133d9ff571e4eecaee0729b5a769e7, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -351,9 +355,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4384965718840488171, guid: b4133d9ff571e4eecaee0729b5a769e7, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3911599205296823280}
-    - targetCorrespondingSourceObject: {fileID: 4384965718840488171, guid: b4133d9ff571e4eecaee0729b5a769e7, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 539430409201077283}
   m_SourcePrefab: {fileID: 100100000, guid: b4133d9ff571e4eecaee0729b5a769e7, type: 3}
 --- !u!224 &5303429692019472209 stripped
 RectTransform:
@@ -390,37 +391,7 @@ MonoBehaviour:
     name: FriendRequestModal
     singleton: 0
     decorators: []
-    properties:
-    - name: content
-      type: object
-      objectType: Transform
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 5303429692019472209}
-      modified: 1
-    - name: friendRequestPrefab
-      type: object
-      objectType: GameObject
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 8094481695794984158, guid: 21da7d50b019240928ae085f3c86bbac, type: 3}
-      modified: 1
+    properties: []
     displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0
@@ -455,17 +426,3 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &539430409201077283
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6865710692144369678}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_HorizontalFit: 0
-  m_VerticalFit: 2

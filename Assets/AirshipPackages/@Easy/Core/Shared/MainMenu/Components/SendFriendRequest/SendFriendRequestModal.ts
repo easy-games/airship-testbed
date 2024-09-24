@@ -1,3 +1,4 @@
+import { ProtectedUserController } from "@Easy/Core/Client/ProtectedControllers/Airship/User/UserController";
 import { RecommendedFriendsController } from "@Easy/Core/Client/ProtectedControllers/Social/RecommendedFriendsController";
 import FriendRecommendation from "@Easy/Core/Prefabs/UI/Modals/Components/FriendRecommendation";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
@@ -6,7 +7,6 @@ import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
-import inspect from "@Easy/Core/Shared/Util/Inspect";
 import { Theme } from "@Easy/Core/Shared/Util/Theme";
 import AirshipButton from "../AirshipButton";
 
@@ -59,41 +59,44 @@ export default class SendFriendRequestModal extends AirshipBehaviour {
 	}
 
 	private async LoadRecommendations() {
-		const sortedRecommendations = Dependency<RecommendedFriendsController>().GetSortedRecommendations();
 		this.recommendationsContent.ClearChildren();
+		const sortedRecommendations = Dependency<RecommendedFriendsController>().GetSortedRecommendations();
 
 		const hasRecommendations = sortedRecommendations.size() > 0;
 		// Set "Recently played with:" and recommendation content visibility
-		this.recommendationsContent.SetActive(hasRecommendations);
-		this.recentlyPlayedWithText.SetActive(hasRecommendations);
+		this.recommendationsContent.SetActive(false);
+		this.recentlyPlayedWithText.SetActive(false);
 
 		// Instantiate recommendation cards
 		let remainingRecommendations = 8;
+		let successfulRecommendations = 0;
 		for (let i = 0; i < sortedRecommendations.size() && remainingRecommendations > 0; i++) {
+			successfulRecommendations++;
 			const rec = sortedRecommendations[i];
 
-			// Check if card is displayable before parenting
-			const cardObj = Object.Instantiate(this.recommendationCardPrefab, this.recommendationsContent.transform);
-			const card = cardObj.GetAirshipComponent<FriendRecommendation>()!;
-			card.Setup(rec.uid, rec.recommendation.context)
-				.then((setupSuccess) => {
-					if (setupSuccess) {
-						cardObj.transform.parent = this.recommendationsContent.transform;
-						cardObj.transform.localScale = new Vector3(1, 1, 1); // Why is this necessary? Defaults to 0.5,0.5,0.5
-					} else {
-						print(
-							"Failed to fetch recommended user: uid=" +
-								rec.uid +
-								" username=" +
-								rec.recommendation.username,
-						);
-						Object.Destroy(cardObj);
-					}
-				})
-				.catch((err) => {
-					warn("Failed to setup recommendation card: " + inspect(err));
-					Object.Destroy(cardObj);
-				});
+			Dependency<ProtectedUserController>().GetUserById(rec.uid).then((user) => {
+				if (!user) {
+					Dependency<RecommendedFriendsController>().DeleteRecommendation(rec.uid);
+					return;
+				}
+
+				if (!this.recentlyPlayedWithText.activeInHierarchy) {
+					this.recentlyPlayedWithText.SetActive(true);
+					this.recommendationsContent.SetActive(true);
+					NativeTween.GraphicAlpha(this.recentlyPlayedWithText, 1, 0.06).SetUseUnscaledTime(true);
+				}
+
+				const cardObj = Object.Instantiate(this.recommendationCardPrefab, this.recommendationsContent.transform);
+				const card = cardObj.GetAirshipComponent<FriendRecommendation>()!;
+				card.Setup(user, rec.recommendation.context);
+				
+				cardObj.transform.parent = this.recommendationsContent.transform;
+				cardObj.transform.localScale = new Vector3(1, 1, 1); // Why is this necessary? Defaults to 0.5,0.5,0.5
+				cardObj.transform.localScale = Vector3.zero;
+				cardObj.GetComponent<CanvasGroup>()!.alpha = 0;
+				NativeTween.CanvasGroupAlpha(cardObj, 1, 0.06).SetUseUnscaledTime(true);
+				NativeTween.LocalScale(cardObj, Vector3.one, 0.06).SetUseUnscaledTime(true);
+			});
 			remainingRecommendations--;
 		}
 	}

@@ -51,14 +51,12 @@ export default class FriendRecommendation extends AirshipBehaviour {
 	 *
 	 * @internal
 	 */
-	public async Setup(userId: string, context: RecommendationContext): Promise<boolean> {
+	public async Setup(user: PublicUser, context: RecommendationContext): Promise<boolean> {
 		this.recommendationContext = context;
 		this.context.text = this.GetRecommendationString(context);
+		this.user = user;
 
-		this.user = await Dependency<ProtectedUserController>().GetUserById(userId);
-		if (!this.user) return false;
-
-		Airship.Players.GetProfilePictureAsync(userId).then((tex) => {
+		Airship.Players.GetProfilePictureAsync(user.uid).then((tex) => {
 			this.icon.texture = tex;
 		});
 		this.name.text = this.user.username;
