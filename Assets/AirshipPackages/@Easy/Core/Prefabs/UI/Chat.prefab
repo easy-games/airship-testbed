@@ -62,7 +62,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 8
   m_TargetDisplay: 0
 --- !u!114 &4470850130474952004
 MonoBehaviour:
@@ -145,8 +145,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptFile: {fileID: -1006994567462013250, guid: 3c14a0670c2a2a542b18a2acf418ba49, type: 3}
-  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/Chat/ChatManager.lua
+  scriptFile: {fileID: 4872170270887285682, guid: b0324fea8136c4925bed8c7fc11514a9, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Singletons/Chat/ChatWindow.lua
   m_error: 0
   m_yielded: 0
   m_canResume: 0
@@ -155,7 +155,7 @@ MonoBehaviour:
   m_onLateUpdateHandle: -1
   m_shortFileName: 
   m_metadata:
-    name: ChatManager
+    name: ChatWindow
     singleton: 0
     decorators: []
     properties:
@@ -173,6 +173,21 @@ MonoBehaviour:
       nullable: 0
       serializedValue: 
       serializedObject: {fileID: 4470850130474952004}
+      modified: 1
+    - name: scrollViewImg
+      type: object
+      objectType: Image
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 4470850130914412303}
       modified: 1
     displayIcon: {fileID: 0}
     displayName: 
