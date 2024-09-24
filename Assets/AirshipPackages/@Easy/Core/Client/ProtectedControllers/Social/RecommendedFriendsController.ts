@@ -188,6 +188,9 @@ export class RecommendedFriendsController implements OnStart {
 			const steamFriendsWithAirship = Dependency<SteamFriendsProtectedController>().GetSteamFriendsWithAirship();
 			if (steamFriendsWithAirship) {
 				for (const [uid, data] of steamFriendsWithAirship) {
+					const friendsController = Dependency<ProtectedFriendsController>();
+					if (friendsController.IsFriendsWith(uid)) continue; // Already friends
+
 					const rec = this.GetDefaultRecommendedFriend(data.username);
 					rec.context.steamFriend = data.steamName;
 
