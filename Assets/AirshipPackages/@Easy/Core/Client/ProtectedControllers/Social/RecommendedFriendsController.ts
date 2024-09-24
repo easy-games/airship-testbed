@@ -3,6 +3,7 @@ import { Game } from "@Easy/Core/Shared/Game";
 import { Protected } from "@Easy/Core/Shared/Protected";
 import { MapUtil } from "@Easy/Core/Shared/Util/MapUtil";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
+import { ProtectedUserController } from "../Airship/User/UserController";
 import { ProtectedFriendsController } from "./FriendsController";
 import { MainMenuPartyController } from "./MainMenuPartyController";
 import { SteamFriendsProtectedController } from "./SteamFriendsProtectedController";
@@ -190,6 +191,7 @@ export class RecommendedFriendsController implements OnStart {
 				for (const [uid, data] of steamFriendsWithAirship) {
 					const friendsController = Dependency<ProtectedFriendsController>();
 					if (friendsController.IsFriendsWith(uid)) continue; // Already friends
+					if (friendsController.HasOutgoingFriendRequest(uid)) continue;
 
 					const rec = this.GetDefaultRecommendedFriend(data.username);
 					rec.context.steamFriend = data.steamName;
@@ -199,6 +201,13 @@ export class RecommendedFriendsController implements OnStart {
 						uid: uid,
 					})
 				}
+			}
+
+			const localUserId = Dependency<ProtectedUserController>().localUser?.uid;
+			if (localUserId !== undefined) {
+				this.sortedRecommendations = this.sortedRecommendations.filter(r => {
+					return r.uid !== localUserId;
+				});
 			}
 			this.sortedRecommendations.sort((a, b) => {
 				const aScore = this.GetRecommendationScore(a.recommendation);
