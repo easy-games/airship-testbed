@@ -11,6 +11,7 @@ export interface PlaySoundConfig {
 	maxDistance?: number;
 	minDistance?: number;
 	rollOffMode?: AudioRolloffMode;
+	audioSourceTemplate?: GameObject;
 }
 
 export class AudioManager {
@@ -54,14 +55,16 @@ export class AudioManager {
 	}
 
 	public static PlayClipGlobal(clip: AudioClip, config?: PlaySoundConfig): AudioSource | undefined {
-		const audioSource = this.GetAudioSource(Vector3.zero);
+		const audioSource = this.GetAudioSource(Vector3.zero, config?.audioSourceTemplate);
+		const providedAudioSource = config?.audioSourceTemplate !== undefined
+
 		audioSource.spatialBlend = 0;
-		audioSource.loop = config?.loop ?? false;
-		audioSource.pitch = config?.pitch ?? 1;
-		audioSource.rolloffMode = config?.rollOffMode ?? AudioRolloffMode.Logarithmic;
-		audioSource.maxDistance = config?.maxDistance ?? 500;
-		audioSource.minDistance = config?.minDistance ?? 1;
-		audioSource.volume = config?.volumeScale ?? 1;
+		if (config?.loop !== undefined || !providedAudioSource) audioSource.loop = config?.loop ?? false;
+		if (config?.pitch !== undefined || !providedAudioSource) audioSource.pitch = config?.pitch ?? 1;
+		if (config?.rollOffMode !== undefined || !providedAudioSource) audioSource.rolloffMode = config?.rollOffMode ?? AudioRolloffMode.Logarithmic;
+		if (config?.maxDistance !== undefined || !providedAudioSource) audioSource.maxDistance = config?.maxDistance ?? 500;
+		if (config?.minDistance !== undefined || !providedAudioSource) audioSource.minDistance = config?.minDistance ?? 1;
+		if (config?.volumeScale !== undefined || !providedAudioSource) audioSource.volume = config?.volumeScale ?? 1;
 		if (!clip) {
 			warn("Trying to play unidentified clip");
 			return undefined;
@@ -114,18 +117,20 @@ export class AudioManager {
 		position: Vector3,
 		config?: PlaySoundConfig,
 	): AudioSource | undefined {
-		const audioSource = this.GetAudioSource(position);
+		const audioSource =  this.GetAudioSource(position, config?.audioSourceTemplate);
+		const providedAudioSource = config?.audioSourceTemplate !== undefined
 		audioSource.spatialBlend = 1;
-		audioSource.loop = config?.loop ?? false;
+
+		if (config?.loop !== undefined || !providedAudioSource) audioSource.loop = config?.loop ?? false;
 		if (!clip) {
 			warn("Trying to play unidentified clip");
 			return undefined;
 		}
-		audioSource.rolloffMode = config?.rollOffMode ?? AudioRolloffMode.Logarithmic;
-		audioSource.maxDistance = config?.maxDistance ?? 500;
-		audioSource.minDistance = config?.minDistance ?? 1;
-		audioSource.pitch = config?.pitch ?? 1;
-		audioSource.volume = config?.volumeScale ?? 1;
+		if (config?.rollOffMode !== undefined || !providedAudioSource) audioSource.rolloffMode = config?.rollOffMode ?? AudioRolloffMode.Logarithmic;
+		if (config?.maxDistance !== undefined || !providedAudioSource) audioSource.maxDistance = config?.maxDistance ?? 500;
+		if (config?.minDistance !== undefined || !providedAudioSource) audioSource.minDistance = config?.minDistance ?? 1;
+		if (config?.pitch !== undefined || !providedAudioSource) audioSource.pitch = config?.pitch ?? 1;
+		if (config?.volumeScale !== undefined || !providedAudioSource) audioSource.volume = config?.volumeScale ?? 1;
 		audioSource.PlayOneShot(clip);
 		if (!audioSource.loop) {
 			task.unscaledDelay(clip.length + 1, () => {
@@ -137,7 +142,13 @@ export class AudioManager {
 		return audioSource;
 	}
 
-	private static GetAudioSource(position: Vector3): AudioSource {
+	private static GetAudioSource(position: Vector3, customAudioSourceTemplate?: GameObject): AudioSource {
+		if (customAudioSourceTemplate) {
+			const go = Object.Instantiate(customAudioSourceTemplate, position, Quaternion.identity);
+			const audioSource = go.GetComponent<AudioSource>();
+			assert(audioSource, "Failed to play sound: Your audioSourceTemplate does not have an Audio Source component on it.")
+			return audioSource;
+		}
 		if (!this.audioSourceTemplate || this.audioSourceTemplate.IsDestroyed()) {
 			this.CacheAudioSources();
 		}
