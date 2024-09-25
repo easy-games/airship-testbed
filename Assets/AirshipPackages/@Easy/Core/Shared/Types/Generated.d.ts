@@ -43112,13 +43112,14 @@ interface CharacterMovementData extends MonoBehaviour {
     characterHeight: number;
     characterRadius: number;
     colliderGroundOffset: number;
+    onlySprintForward: boolean;
     useAccelerationMovement: boolean;
     speed: number;
     sprintSpeed: number;
     accelerationForce: number;
     sprintAccelerationForce: number;
     minAccelerationDelta: number;
-    onlySprintForward: boolean;
+    accelerationTurnFriction: number;
     autoCrouch: boolean;
     preventFallingWhileCrouching: boolean;
     preventStepUpWhileCrouching: boolean;
@@ -43140,6 +43141,7 @@ interface CharacterMovementData extends MonoBehaviour {
     minimumVelocity: number;
     useMinimumVelocityInAir: boolean;
     preventWallClipping: boolean;
+    alwaysSnapToGround: boolean;
     drag: number;
     airDragMultiplier: number;
     airSpeedMultiplier: number;

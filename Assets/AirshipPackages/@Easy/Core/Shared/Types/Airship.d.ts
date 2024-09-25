@@ -369,14 +369,7 @@ interface WindowProxy {
 	OnWindowFocus(callback: (hasFocus: boolean) => void): void;
 }
 
-interface PointLight extends Component {
-	color: Color;
-	intensity: number;
-	range: number;
-	castShadows: boolean;
-	highQualityLight: boolean;
-}
-
+ 
 interface DestroyWatcher extends Component {
 	OnDestroyedEvent(callback: () => void): EngineEventConnection;
 }
@@ -508,46 +501,6 @@ interface ProjectileManagerConstructor {
 }
 declare const ProjectileManager: ProjectileManagerConstructor;
 
-interface WorldSaveFile extends ScriptableObject {
-	chunks: CSArray<SaveChunk>;
-	worldPositions: CSArray<WorldPosition>;
-	pointLights: CSArray<SavePointLight>;
-	blockIdToScopeName: CSArray<BlockIdToScopedName>;
-	cubeMapPath: string;
-	globalSkySaturation: number;
-	globalSunColor: Color;
-	globalSunBrightness: number;
-	globalAmbientLight: Color;
-	globalAmbientBrightness: number;
-	globalAmbientOcclusion: number;
-	globalRadiosityScale: number;
-	globalRadiosityDirectLightAmp: number;
-	globalFogStart: number;
-	globalFogEnd: number;
-	globalFogColor: Color;
-
-	// eslint-disable-next-line @typescript-eslint/no-misused-new
-	constructor(): WorldSaveFile;
-
-	CreateFromVoxelWorld(world: VoxelWorld): void;
-	GetChunks(): CSArray<SaveChunk>;
-	GetFileBlockIdFromStringId(blockTypeId: string): number;
-	GetFileScopedBlockTypeId(fileBlockId: number): string;
-	GetMapObjects(): CSArray<WorldPosition>;
-	GetPointlights(): CSArray<SavePointLight>;
-	LoadIntoVoxelWorld(world: VoxelWorld): void;
-}
-
-interface SavePointLight {
-	name: string;
-	color: Color;
-	position: Vector3;
-	rotation: Quaternion;
-	intensity: number;
-	range: number;
-	castShadows: boolean;
-	highQualityLight: boolean;
-}
 
 interface AirshipProjectile {
 	OnHit(callback: (event: ProjectileHitEvent) => void): EngineEventConnection;
