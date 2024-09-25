@@ -46,7 +46,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 
 	private slotToBackpackTileMap = new Map<number, GameObject>();
 
-	// private enabled = true;
+	private inventoryEnabled = true;
 	private visible = false;
 	private backpackEnabled = true;
 
@@ -70,7 +70,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			this.SetupBackpack();
 		});
 		Airship.Input.OnDown("Inventory").Connect((event) => {
-			if (event.uiProcessed || !this.enabled || !this.isSetup) return;
+			if (event.uiProcessed || !this.inventoryEnabled || !this.isSetup) return;
 			if (this.IsBackpackShown() || AppManager.IsOpen()) {
 				AppManager.Close();
 			} else {
@@ -97,7 +97,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	}
 
 	public OpenBackpack(): void {
-		if (!this.enabled || !this.backpackEnabled) return;
+		if (!this.inventoryEnabled || !this.backpackEnabled) return;
 
 		this.backpackShown = true;
 
