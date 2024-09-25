@@ -203,17 +203,9 @@ export class ClientChatSingleton {
 		const isMainMenu = Game.coreContext === CoreContext.MAIN_MENU;
 		if (isMainMenu) return;
 
-		contextbridge.subscribe(
-			"Chat:AddMessage",
-			(
-				context: LuauContext,
-				rawText: string,
-				nameWithPrefix: string | undefined,
-				senderClientId: number | undefined,
-			) => {
-				this.AddMessage(rawText, nameWithPrefix, senderClientId);
-			},
-		);
+		contextbridge.subscribe("Chat:AddLocalMessage", (context: LuauContext, rawText: string) => {
+			this.AddMessage(rawText, undefined, undefined);
+		});
 
 		CoreNetwork.ServerToClient.ChatMessage.client.OnServerEvent((rawText, nameWithPrefix, senderClientId) => {
 			this.AddMessage(rawText, nameWithPrefix, senderClientId);

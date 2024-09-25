@@ -220,9 +220,7 @@ export class Player {
 			CoreNetwork.ServerToClient.ChatMessage.server.FireClient(this, message, undefined, undefined);
 		} else {
 			if (this.userId !== Game.localPlayer.userId) error("Cannot SendMessage to non-local client.");
-			contextbridge.broadcast<
-				(rawText: string, nameWithPrefix: string | undefined, senderClientId: number | undefined) => void
-			>("Chat:AddMessage", message, undefined, undefined);
+			contextbridge.broadcast<(rawText: string) => void>("Chat:AddLocalMessage", message);
 			// `ClientChatSingleton` only exists in the protected context. We can't do this here. v
 			// Dependency<ClientChatSingleton>().RenderChatMessage(message);
 		}
