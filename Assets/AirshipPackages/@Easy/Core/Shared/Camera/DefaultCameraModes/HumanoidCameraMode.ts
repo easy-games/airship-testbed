@@ -14,16 +14,11 @@ const CAM_Y_OFFSET = 1.7;
 const CAM_Y_OFFSET_CROUCH_1ST_PERSON = CAM_Y_OFFSET / 1.5;
 const CAM_Y_OFFSET_CROUCH_3RD_PERSON = CAM_Y_OFFSET;
 
-const MIN_ROT_X = math.rad(1);
-const MAX_ROT_X = math.rad(179);
-
-const XZ_LOCKED_OFFSET = new Vector3(0.45, 0, 3.5);
 const Y_LOCKED_ROTATION = 0;
 
 const TAU = math.pi * 2;
 
 let MOUSE_SENS_SCALAR = 15;
-let MOUSE_SMOOTHING = 1.6;
 
 export class HumanoidCameraMode extends CameraMode {
 	GetFriendlyName(): string {
@@ -46,8 +41,13 @@ export class HumanoidCameraMode extends CameraMode {
 
 	private lastAttachToPos = new Vector3(0, 0, 0);
 
+	private xOffset = 0.45;
+	private zOffset = 3.5;
 	private yOffset = 0;
 	private yOffsetSpring: SpringTween | undefined;
+
+	private minRotX = math.rad(1);
+	private maxRotX = math.rad(179);
 
 	private readonly preferred = this.bin.Add(new Preferred());
 	private readonly touchscreen = this.bin.Add(new Touchscreen());
@@ -110,8 +110,8 @@ export class HumanoidCameraMode extends CameraMode {
 							(touchStartRotY - deltaPosSinceStart.x * Airship.Input.GetTouchSensitivity()) % TAU;
 						this.rotationX = math.clamp(
 							touchStartRotX + deltaPosSinceStart.y * Airship.Input.GetTouchSensitivity(),
-							MIN_ROT_X,
-							MAX_ROT_X,
+							this.minRotX,
+							this.maxRotX,
 						);
 						break;
 					}
@@ -152,7 +152,7 @@ export class HumanoidCameraMode extends CameraMode {
 		}
 
 		this.SetFirstPerson(this.firstPerson);
-		this.SetYAxisDirection(this.graphicalCharacterGO.transform.forward);
+		this.SetYAxisDirection(this.character.movement.GetLookVector());
 	}
 
 	OnStop() {
@@ -207,8 +207,8 @@ export class HumanoidCameraMode extends CameraMode {
 					(this.rotationY - (moveDelta.x / Screen.width) * mouseSensitivity * MOUSE_SENS_SCALAR) % TAU;
 				this.rotationX = math.clamp(
 					this.rotationX + (moveDelta.y / Screen.width) * mouseSensitivity * MOUSE_SENS_SCALAR,
-					MIN_ROT_X,
-					MAX_ROT_X,
+					this.minRotX,
+					this.maxRotX,
 				);
 			}
 
@@ -221,13 +221,13 @@ export class HumanoidCameraMode extends CameraMode {
 	}
 
 	OnLateUpdate(dt: number) {
-		let xOffset = this.lockView && !this.firstPerson ? XZ_LOCKED_OFFSET.x : 0;
+		let xOffset = this.lockView && !this.firstPerson ? this.xOffset : 0;
 		if (this.lockView && !this.firstPerson) {
 			if (this.rotationX < math.rad(45)) {
-				xOffset = MathUtil.Map(this.rotationX, MIN_ROT_X, math.rad(45), 0, xOffset);
+				xOffset = MathUtil.Map(this.rotationX, this.minRotX, math.rad(45), 0, xOffset);
 			}
 		}
-		const zOffset = XZ_LOCKED_OFFSET.z;
+		const zOffset = this.zOffset;
 		const radius = this.firstPerson ? 1 : zOffset;
 		const yRotOffset = this.lockView
 			? Y_LOCKED_ROTATION + (this.lookBackwards && !this.firstPerson ? math.pi : 0)
@@ -257,12 +257,68 @@ export class HumanoidCameraMode extends CameraMode {
 			newPosition = newPosition.add(new Vector3(0, -0.13, 0));
 		}
 		let lv = posOffset.mul(-1).normalized;
-		if(lv === Vector3.zero){
-			lv = new Vector3(0,0,.01);
+		if (lv === Vector3.zero) {
+			lv = new Vector3(0, 0, 0.01);
 		}
 		const rotation = Quaternion.LookRotation(lv, Vector3.up);
 
 		return new CameraTransform(newPosition, rotation);
+	}
+
+	/**
+	 * Sets camera's `x` offset.
+	 *
+	 * @param xOffset The camera's new `x` offset.
+	 */
+	public SetXOffset(xOffset: number): void {
+		this.xOffset = xOffset;
+	}
+
+	/**
+	 * Returns the camera's `x` offset.
+	 *
+	 * @returns The camera's **current** `x` offset.
+	 */
+
+	public GetXOffset(): number {
+		return this.xOffset;
+	}
+
+	/**
+	 * Sets camera's `z` offset.
+	 *
+	 * @param xOffset The camera's new `z` offset.
+	 */
+
+	public SetZOffset(zOffset: number): void {
+		this.zOffset = zOffset;
+	}
+
+	/**
+	 * Returns the camera's `z` offset.
+	 *
+	 * @returns The camera's **current** `z` offset.
+	 */
+	public GetZOffset(): number {
+		return this.zOffset;
+	}
+
+	/**
+	 * Sets the camera's minimum `x` rotation angle. This is how far **down** the camera can look.
+	 *
+	 * @param minX The minimum `x` rotation angle in **degrees**.
+	 */
+	public SetMinRotX(minX: number): void {
+		this.minRotX = math.rad(minX);
+	}
+
+	/**
+	 * Sets the camera's maximum `x` rotation angle. This is how far **up** the camera can look.
+	 *
+	 * @param minX The maximum `x` rotation angle in **degrees**.
+	 */
+	public SetMaxRotX(maxX: number): void {
+		this.maxRotX = math.rad(maxX);
 	}
 
 	OnPostUpdate(camera: Camera) {
@@ -274,13 +330,15 @@ export class HumanoidCameraMode extends CameraMode {
 		this.camRight = transform.right;
 
 		const newLookVector = this.lookBackwards && !this.firstPerson ? transform.forward.mul(-1) : transform.forward;
-		const diff = this.lookVector.sub(newLookVector).magnitude;
-		if (diff > 0.01) {
-			this.movement?.SetLookVector(newLookVector);
-			this.lookVector = newLookVector;
-		}
+		this.movement?.SetLookVector(newLookVector);
+		this.lookVector = newLookVector;
 	}
 
+	/**
+	 * Toggles camera mode first person state based on `firstPerson` argument.
+	 *
+	 * @param firstPerson Whether or not first person mode should be enabled.
+	 */
 	public SetFirstPerson(firstPerson: boolean) {
 		this.firstPerson = firstPerson;
 	}
@@ -306,19 +364,25 @@ export class HumanoidCameraMode extends CameraMode {
 	/**
 	 * Explicitly set the direction of the camera on the Y-axis based on the given directional vector.
 	 */
-	public SetYAxisDirection(direction: Vector3) {
+	public SetYAxisDirection(direction: Vector3): void {
 		// Determine Y-axis rotation based on direction:
 		direction = direction.normalized;
 		this.rotationY = math.atan2(-direction.x, direction.z) % TAU;
 		this.movement?.SetLookVector(direction);
 	}
 
-	public SetDirection(direction: Vector3) {
+	/**
+	 * Sets this camera to the provided `direction` vector. This also updates the look vector
+	 * of the `Character` this camera is attached to.
+	 *
+	 * @param direction The direction to set this camera to.
+	 */
+	public SetDirection(direction: Vector3): void {
 		// Determine Y-axis rotation based on direction:
 		direction = direction.normalized;
 		this.rotationY = math.atan2(-direction.x, direction.z) % TAU;
 		const adj = new Vector2(direction.x, direction.z).magnitude;
-		this.rotationX = math.clamp(math.pi / 2 + math.atan2(direction.y, adj), MIN_ROT_X, MAX_ROT_X);
+		this.rotationX = math.clamp(math.pi / 2 + math.atan2(direction.y, adj), this.minRotX, this.maxRotX);
 		this.movement?.SetLookVector(direction);
 	}
 

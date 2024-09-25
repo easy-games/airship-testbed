@@ -1,9 +1,7 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
-import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { ClientChatSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/Chat/ClientChatSingleton";
 import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { Team } from "../Team/Team";
 import { Bin } from "../Util/Bin";
@@ -218,12 +216,15 @@ export class Player {
 	 * @param message Message to send in chat.
 	 */
 	public SendMessage(message: string): void {
-		if (Game.IsServer()) {
+		if (Game.IsServer() && !Game.IsHosting()) {
 			CoreNetwork.ServerToClient.ChatMessage.server.FireClient(this, message, undefined, undefined);
 		} else {
 			if (this.userId !== Game.localPlayer.userId) error("Cannot SendMessage to non-local client.");
-
-			Dependency<ClientChatSingleton>().RenderChatMessage(message);
+			contextbridge.broadcast<
+				(rawText: string, nameWithPrefix: string | undefined, senderClientId: number | undefined) => void
+			>("Chat:AddMessage", message, undefined, undefined);
+			// `ClientChatSingleton` only exists in the protected context. We can't do this here. v
+			// Dependency<ClientChatSingleton>().RenderChatMessage(message);
 		}
 	}
 

@@ -199,11 +199,17 @@ export class ClientChatSingleton {
 		const isMainMenu = Game.coreContext === CoreContext.MAIN_MENU;
 		if (isMainMenu) return;
 
-		contextbridge.callback<
-			(rawText: string, nameWithPrefix: string | undefined, senderClientId: number | undefined) => void
-		>("Chat:AddMessage", (fromContext, rawText, nameWithPrefix, senderClientId) => {
-			this.AddMessage(rawText, nameWithPrefix, senderClientId);
-		});
+		contextbridge.subscribe(
+			"Chat:AddMessage",
+			(
+				context: LuauContext,
+				rawText: string,
+				nameWithPrefix: string | undefined,
+				senderClientId: number | undefined,
+			) => {
+				this.AddMessage(rawText, nameWithPrefix, senderClientId);
+			},
+		);
 
 		CoreNetwork.ServerToClient.ChatMessage.client.OnServerEvent((rawText, nameWithPrefix, senderClientId) => {
 			this.AddMessage(rawText, nameWithPrefix, senderClientId);
@@ -421,7 +427,6 @@ export class ClientChatSingleton {
 	}
 
 	public RenderChatMessage(message: string, sender?: ProtectedPlayer): void {
-		print(message);
 		try {
 			const chatMessage = GameObjectUtil.InstantiateIn(this.chatMessagePrefab, this.content.transform);
 			const refs = chatMessage.GetComponent<GameObjectReferences>()!;
