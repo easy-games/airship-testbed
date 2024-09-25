@@ -46693,7 +46693,6 @@ interface VoxelWorld extends MonoBehaviour {
     InvokeOnFinishedReplicatingChunksFromServer(): void;
     LoadEmptyWorld(): void;
     LoadWorldFromSaveFile(file: WorldSaveFile): void;
-    LoadWorldFromSaveFileObject(file: unknown): void;
     OnRenderObject(): void;
     PlaceGrassOnTopOfGrass(): void;
     RaycastVoxel(pos: Vector3, direction: Vector3, maxDistance: number): VoxelRaycastResult;

@@ -218,6 +218,10 @@ export class MainMenuController {
 			// });
 		}
 
+		// Uncomment to test transfer toast UI
+		// task.delay(1, () => {
+		// 	this.ShowTransferPendingToast("Test Game");
+		// });
 		const socketController = Dependency<SocketController>();
 		socketController.On<{
 			game: {
@@ -236,9 +240,20 @@ export class MainMenuController {
 			this.activeTransferToast = undefined;
 		}
 
+		let parent: Transform | undefined;
+		if (Game.IsInGame()) {
+			parent = GameObject.Find("AirshipEngineOverlay")?.transform.GetChild(0);
+		} else {
+			parent = this.refs.GetValue<GameObject>("UI", "ToastContainer").transform;
+		}
+		if (parent === undefined) {
+			Debug.LogError("Missing parent for transfer toast.");
+			return;
+		}
+
 		const toast = Object.Instantiate(
 			Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/UI/TransferPendingToast.prefab"),
-			this.refs.GetValue<GameObject>("UI", "ToastContainer").transform,
+			parent,
 		).GetAirshipComponent<TransferToast>()!;
 		toast.gameName.text = gameName.upper();
 		this.activeTransferToast = toast;

@@ -178,17 +178,6 @@ interface Nullable<T> {
 	Value: T;
 }
 
-interface VoxelWorld {
-	OnVoxelPlaced(callback: (voxel: number, x: number, y: number, z: number) => void): EngineEventConnection;
-	OnPreVoxelPlaced(callback: (voxel: number, x: number, y: number, z: number) => void): EngineEventConnection;
-	OnFinishedLoading(callback: () => void): EngineEventConnection;
-	OnFinishedReplicatingChunksFromServer(callback: () => void): EngineEventConnection;
-}
-
-interface VoxelWorldConstructor {
-	VoxelDataToBlockId(voxel: number);
-}
-
 declare const enum MobileJoystickPhase {
 	Began = 0,
 	Moved = 1,
