@@ -1054,13 +1054,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterHeight: 1.8
   characterRadius: 0.2
+  colliderGroundOffset: 0.015
+  onlySprintForward: 0
   useAccelerationMovement: 0
   speed: 4.666667
   sprintSpeed: 6.666667
   accelerationForce: 0.6
   sprintAccelerationForce: 0.85
   minAccelerationDelta: 0
-  onlySprintForward: 0
+  accelerationTurnFriction: 0
   autoCrouch: 1
   preventFallingWhileCrouching: 0
   preventStepUpWhileCrouching: 0
@@ -1071,7 +1073,7 @@ MonoBehaviour:
   jumpCoyoteTime: 0.14
   allowDebugFlying: 0
   flySpeedMultiplier: 3
-  verticalFlySpeed: 4
+  verticalFlySpeed: 2
   jumpUpBlockCooldown: 0.4
   useGravity: 1
   useGravityWhileGrounded: 0

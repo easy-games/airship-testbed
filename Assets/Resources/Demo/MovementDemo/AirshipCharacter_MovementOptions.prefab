@@ -26,31 +26,75 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1645000729044007242, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       propertyPath: drag
-      value: 0.1
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 1645000729044007242, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       propertyPath: speed
-      value: 4.66666
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1645000729044007242, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
+      propertyPath: jumpSpeed
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1645000729044007242, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
+      propertyPath: autoCrouch
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1645000729044007242, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       propertyPath: sprintSpeed
-      value: 6.66666
+      value: 7.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1645000729044007242, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
+      propertyPath: detectStepUps
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1645000729044007242, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
+      propertyPath: jumpCoyoteTime
+      value: 0.18
       objectReference: {fileID: 0}
     - target: {fileID: 1645000729044007242, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       propertyPath: minimumVelocity
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1645000729044007242, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
+      propertyPath: verticalFlySpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1645000729044007242, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       propertyPath: accelerationForce
-      value: 0.2
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1645000729044007242, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
+      propertyPath: gravityMultiplier
+      value: 2.22
+      objectReference: {fileID: 0}
+    - target: {fileID: 1645000729044007242, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
+      propertyPath: onlySprintForward
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1645000729044007242, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
+      propertyPath: crouchSpeedMultiplier
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1645000729044007242, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
+      propertyPath: crouchHeightMultiplier
+      value: 0.75
       objectReference: {fileID: 0}
     - target: {fileID: 1645000729044007242, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       propertyPath: sprintAccelerationForce
-      value: 0.4
+      value: 0.85
       objectReference: {fileID: 0}
     - target: {fileID: 1645000729044007242, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       propertyPath: useAccelerationMovement
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1645000729044007242, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
+      propertyPath: useMinimumVelocityInAir
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1645000729044007242, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
+      propertyPath: upwardsGravityMultiplier
+      value: 0.75
       objectReference: {fileID: 0}
     - target: {fileID: 7088081142443290682, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       propertyPath: scriptFile
@@ -59,7 +103,7 @@ PrefabInstance:
     - target: {fileID: 7124091312930647041, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       propertyPath: scriptFile
       value: 
-      objectReference: {fileID: -3495772444630422662, guid: 1d9ff343e68ebb247bb7a1dd2270fd63, type: 3}
+      objectReference: {fileID: 5399347344820012199, guid: 1d9ff343e68ebb247bb7a1dd2270fd63, type: 3}
     - target: {fileID: 7931457288082626079, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       propertyPath: authorityMode
       value: 0
