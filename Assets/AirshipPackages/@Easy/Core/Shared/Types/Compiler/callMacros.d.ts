@@ -21,18 +21,12 @@ declare function typeOf(value: any): keyof CheckableTypes;
  * }
  * ```
  */
-declare function typeIs<T extends keyof CheckableTypes>(
-	value: any,
-	type: T
-): value is CheckableTypes[T];
+declare function typeIs<T extends keyof CheckableTypes>(value: any, type: T): value is CheckableTypes[T];
 
 /**
  * Returns true if `instance.ClassName == className`, otherwise false.
  */
-declare function classIs<T extends keyof Instances>(
-	instance: Instance,
-	className: T
-): instance is Instances[T];
+declare function classIs<T extends keyof Instances>(instance: Instance, className: T): instance is Instances[T];
 
 /**
  * Returns the passed argument. This function is a macro that compiles to just `arg`.
@@ -64,11 +58,41 @@ declare function identity<T>(arg: T): T;
  *
  * The `step` argument controls the amount incremented per loop. It defaults to `1`.
  */
-declare function $range(
-	start: number,
-	finish: number,
-	step?: number
-): Iterable<number>;
+declare function $range(start: number, finish: number, step?: number): Iterable<number>;
+
+/**
+ * Macro for `Object.Instantiate`
+ * @param original
+ * @param position
+ * @param rotation
+ */
+declare function Instantiate<T extends Object = GameObject>(original: T, position: Vector3, rotation: Quaternion): T;
+declare function Instantiate<T extends Object = GameObject>(
+	original: T,
+	position: Vector3,
+	rotation: Quaternion,
+	parent: Transform,
+): T;
+declare function Instantiate<T extends Object = GameObject>(original: T): T;
+declare function Instantiate<T extends Object = GameObject>(original: T, parent: Transform): T;
+declare function Instantiate<T extends Object = GameObject>(
+	original: T,
+	parent: Transform,
+	instantiateInWorldSpace: boolean,
+): T;
+declare function Instantiate<T>(original: T): T;
+declare function Instantiate<T>(original: T, position: Vector3, rotation: Quaternion): T;
+declare function Instantiate<T>(original: T, position: Vector3, rotation: Quaternion, parent: Transform): T;
+declare function Instantiate<T>(original: T, parent: Transform): T;
+declare function Instantiate<T>(original: T, parent: Transform, worldPositionStays: boolean): T;
+
+/**
+ * Macro for `Object.Destroy`
+ * @param obj
+ * @param t
+ */
+declare function Destroy(obj: Object, t: number): void;
+declare function Destroy(obj: Object): void;
 
 /**
  * **Only valid as the expression of a return statement!**
