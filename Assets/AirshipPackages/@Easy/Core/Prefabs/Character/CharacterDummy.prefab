@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &28503186132058573
+--- !u!1 &2661333182686642532
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,24 +8,24 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4681464159441093276}
-  - component: {fileID: 6224336280620055542}
-  - component: {fileID: 8597869888341579784}
-  - component: {fileID: 8924731048841623452}
+  - component: {fileID: 2411125840223367262}
+  - component: {fileID: 2042848928896990921}
+  - component: {fileID: 1263114080604273790}
+  - component: {fileID: 3818132258228968495}
   m_Layer: 3
-  m_Name: Jeans Shorts_legs
+  m_Name: Jeans Shorts_legs 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4681464159441093276
+--- !u!4 &2411125840223367262
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 28503186132058573}
+  m_GameObject: {fileID: 2661333182686642532}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
@@ -34,13 +34,13 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4018353837249200105}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!137 &6224336280620055542
+--- !u!137 &2042848928896990921
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 28503186132058573}
+  m_GameObject: {fileID: 2661333182686642532}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -112,13 +112,13 @@ SkinnedMeshRenderer:
     m_Center: {x: 0, y: -0.03410576, z: 0.6845479}
     m_Extent: {x: 0.2789171, y: 0.14869641, z: 0.2768774}
   m_DirtyAABB: 0
---- !u!114 &8597869888341579784
+--- !u!114 &1263114080604273790
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 28503186132058573}
+  m_GameObject: {fileID: 2661333182686642532}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
@@ -127,13 +127,13 @@ MonoBehaviour:
   colorSettings:
   - baseColor: {r: 1, g: 1, b: 1, a: 1}
   addedByEditorScript: 0
---- !u!114 &8924731048841623452
+--- !u!114 &3818132258228968495
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 28503186132058573}
+  m_GameObject: {fileID: 2661333182686642532}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0b74917b00f1d374c9a7136917a61ddf, type: 3}
@@ -145,7 +145,7 @@ MonoBehaviour:
   visibilityMode: 2
   skinnedToCharacter: 1
   canMeshCombine: 1
-  bodyMask: 0
+  bodyMask: 294912
 --- !u!1001 &7904297279129899913
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -200,15 +200,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 775500863108363337, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       propertyPath: colorSettings.Array.data[0].baseColor.b
-      value: 0.54901963
+      value: 0.3754005
       objectReference: {fileID: 0}
     - target: {fileID: 775500863108363337, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       propertyPath: colorSettings.Array.data[0].baseColor.g
-      value: 0.7254902
+      value: 0.5064722
       objectReference: {fileID: 0}
     - target: {fileID: 775500863108363337, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       propertyPath: colorSettings.Array.data[0].baseColor.r
-      value: 0.9254902
+      value: 0.7169812
       objectReference: {fileID: 0}
     - target: {fileID: 870249656690825545, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       propertyPath: m_Layer
@@ -232,15 +232,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1653396917023359388, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       propertyPath: colorSettings.Array.data[0].baseColor.b
-      value: 0.54901963
+      value: 0.3754005
       objectReference: {fileID: 0}
     - target: {fileID: 1653396917023359388, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       propertyPath: colorSettings.Array.data[0].baseColor.g
-      value: 0.7254902
+      value: 0.5064722
       objectReference: {fileID: 0}
     - target: {fileID: 1653396917023359388, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       propertyPath: colorSettings.Array.data[0].baseColor.r
-      value: 0.9254902
+      value: 0.7169812
       objectReference: {fileID: 0}
     - target: {fileID: 1874737176428378354, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       propertyPath: m_Layer
@@ -472,15 +472,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6804509994981840282, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       propertyPath: colorSettings.Array.data[0].baseColor.b
-      value: 0.54901963
+      value: 0.3754005
       objectReference: {fileID: 0}
     - target: {fileID: 6804509994981840282, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       propertyPath: colorSettings.Array.data[0].baseColor.g
-      value: 0.7254902
+      value: 0.5064722
       objectReference: {fileID: 0}
     - target: {fileID: 6804509994981840282, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       propertyPath: colorSettings.Array.data[0].baseColor.r
-      value: 0.9254902
+      value: 0.7169812
       objectReference: {fileID: 0}
     - target: {fileID: 6820238334156077891, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       propertyPath: m_Layer
@@ -599,10 +599,11 @@ PrefabInstance:
     - {fileID: 0}
     m_RemovedGameObjects:
     - {fileID: 1460775334046746424, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
+    - {fileID: 1243123700181202754, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 6518322715866115168, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 4681464159441093276}
+      addedObject: {fileID: 2411125840223367262}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2619739460046039987, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       insertIndex: -1
