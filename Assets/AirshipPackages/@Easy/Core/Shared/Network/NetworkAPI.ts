@@ -41,7 +41,7 @@ function addToQueue(msg: BlobData) {
 
 export function InitNet() {
 	if (RunUtil.IsServer()) {
-		NetworkCore.Net.OnBroadcastFromClientAction((clientId, blob) => {
+		NetworkCore.Net.OnBroadcastFromClientAction((fromContext, clientId, blob) => {
 			const msg = blob.Decode() as BlobData;
 			const id = msg.i;
 			const data = msg.d;
@@ -60,15 +60,9 @@ export function InitNet() {
 		});
 	}
 	if (RunUtil.IsClient()) {
-		NetworkCore.Net.OnBroadcastFromServerAction((blob) => {
+		NetworkCore.Net.OnBroadcastFromServerAction((fromContext, blob) => {
 			const msg = blob.Decode() as BlobData;
 			const id = msg.i;
-
-			// All ids coming from game are odd and from protected are even 
-			// Never listen to game messages from protected context
-			if ((id % 2) === 1 && contextbridge.current() === LuauContext.Protected) {
-				return;
-			}
 
 			const data = msg.d;
 			const callbacks = callbacksByIdClient.get(tostring(id));

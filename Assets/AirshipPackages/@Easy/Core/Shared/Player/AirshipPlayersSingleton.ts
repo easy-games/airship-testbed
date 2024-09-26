@@ -56,6 +56,7 @@ export class AirshipPlayersSingleton {
 
 	constructor() {
 		Airship.Players = this;
+		print("Starting up airship.players on " + contextbridge.current());
 		// const timeStart = Time.time;
 
 		const FetchLocalPlayerWithWait = () => {

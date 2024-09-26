@@ -19,8 +19,8 @@ type Mutable<T> = {
 };
 
 interface Net {
-	OnBroadcastFromClientAction(callback: (clientId: number, blob: BinaryBlob) => void): void;
-	OnBroadcastFromServerAction(callback: (blob: BinaryBlob) => void): void;
+	OnBroadcastFromClientAction(callback: (fromContext: LuauContext, clientId: number, blob: BinaryBlob) => void): void;
+	OnBroadcastFromServerAction(callback: (fromContext: LuauContext, blob: BinaryBlob) => void): void;
 }
 
 interface BinaryBlob {

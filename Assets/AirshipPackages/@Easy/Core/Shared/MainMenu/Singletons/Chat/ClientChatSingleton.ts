@@ -157,6 +157,14 @@ export class ClientChatSingleton {
 				// });
 			});
 		}
+
+		if (Game.IsClient()) {
+			print("register chat message listener: " + contextbridge.current());
+			CoreNetwork.ServerToClient.ChatMessage.client.OnServerEvent((msg, senderPrefix, senderClientId) => {
+				print("On receive chat message");
+				contextbridge.broadcast<(msg: string) => void>("Chat:AddLocalMessage", msg);
+			});
+		}
 	}
 
 	public OpenMobile(): void {
@@ -426,6 +434,7 @@ export class ClientChatSingleton {
 		}
 
 		if (sendChatToServer) {
+			print("Send chat message from: " + contextbridge.current());
 			CoreNetwork.ClientToServer.SendChatMessage.client.FireServer(message);
 		}
 	}
