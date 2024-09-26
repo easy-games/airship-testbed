@@ -143,24 +143,23 @@ export class AirshipPlayersSingleton {
 			// HttpManager.SetLoggingEnabled(true);
 		}
 
-		if (Game.IsGameLuauContext()) {
-			task.spawn(() => {
+		task.spawn(() => {
+			if (Game.IsClient()) {
+				this.InitClient();
+			}
+			if (Game.IsServer()) {
 				if (Game.IsClient()) {
-					this.InitClient();
-				}
-				if (Game.IsServer()) {
-					if (Game.IsClient()) {
-						Game.WaitForLocalPlayerLoaded();
-					}
-					this.InitServer();
-				}
-
-				if (Game.IsClient() && Game.coreContext === CoreContext.GAME) {
 					Game.WaitForLocalPlayerLoaded();
-					CoreNetwork.ClientToServer.Ready.client.FireServer();
 				}
-			});
-		}
+				this.InitServer();
+			}
+
+			if (Game.IsClient() && Game.coreContext === CoreContext.GAME && Game.IsProtectedLuauContext()) {
+				Game.WaitForLocalPlayerLoaded();
+				print("Post ready: " + contextbridge.current());
+				CoreNetwork.ClientToServer.Ready.client.FireServer();
+			}
+		});
 	}
 
 	/**
@@ -193,14 +192,25 @@ export class AirshipPlayersSingleton {
 			}
 		});
 
-		CoreNetwork.ServerToClient.AllPlayers.client.OnServerEvent((playerDtos) => {
-			for (let dto of playerDtos) {
-				this.AddPlayerClient(dto);
-			}
-		});
-		CoreNetwork.ServerToClient.AddPlayer.client.OnServerEvent((playerDto) => {
-			this.AddPlayerClient(playerDto);
-		});
+		// These remotes only come through in prot context
+		if (Game.IsProtectedLuauContext()) {
+			CoreNetwork.ServerToClient.AllPlayers.client.OnServerEvent((playerDtos) => {
+				contextbridge.broadcast<(clients: PlayerDto[]) => void>("ProtectedPlayers:AddClients", playerDtos);
+				for (let dto of playerDtos) {
+					this.AddPlayerClient(dto);
+				}
+			});
+			CoreNetwork.ServerToClient.AddPlayer.client.OnServerEvent((playerDto) => {
+				contextbridge.broadcast<(clients: PlayerDto[]) => void>("ProtectedPlayers:AddClients", [playerDto]);
+				this.AddPlayerClient(playerDto);
+			});
+		} else if (Game.IsGameLuauContext()) {
+			contextbridge.subscribe<(from: LuauContext, clients: PlayerDto[]) => void>("ProtectedPlayers:AddClients", (from, clients ) => {
+				for (const dto of clients) {
+					this.AddPlayerClient(dto);
+				}
+			});
+		}
 		CoreNetwork.ServerToClient.RemovePlayer.client.OnServerEvent((clientId) => {
 			const player = this.FindByConnectionId(clientId);
 			if (player) {
@@ -213,6 +223,7 @@ export class AirshipPlayersSingleton {
 
 	private InitServer(): void {
 		const onPlayerPreJoin = (dto: PlayerInfoDto) => {
+			print("on player pre-join: " + contextbridge.current());
 			// LocalPlayer is hardcoded, so we check if this client should be treated as local player.
 			let player: Player;
 			if (Game.IsHosting() && dto.connectionId === 0) {
@@ -229,6 +240,7 @@ export class AirshipPlayersSingleton {
 				);
 			}
 			dto.gameObject.name = `Player_${dto.username}`;
+			print("Set " + dto.connectionId + " in " + contextbridge.current());
 			this.playersPendingReady.set(dto.connectionId, player);
 
 			// check for existing player with matching userId
@@ -261,33 +273,50 @@ export class AirshipPlayersSingleton {
 		const players = this.playerManagerBridge.GetPlayers();
 		for (let i = 0; i < players.Length; i++) {
 			const clientInfo = players.GetValue(i);
+			print("On player added: (0)" + clientInfo.connectionId);
 			onPlayerPreJoin(clientInfo);
 		}
 		this.playerManagerBridge.OnPlayerAdded((clientInfo) => {
+			print("On player added: " + clientInfo.connectionId);
 			onPlayerPreJoin(clientInfo);
 		});
 		this.playerManagerBridge.OnPlayerRemoved((clientInfo) => {
 			onPlayerRemoved(clientInfo);
 		});
 
-		// Player completes join
-		if (Game.IsGameLuauContext()) {
+		if (Game.IsProtectedLuauContext()) {
 			CoreNetwork.ClientToServer.Ready.server.OnClientEvent((player) => {
+				this.HandlePlayerConnect(player);
+				contextbridge.broadcast<(connId: number) => void>("ProtectedPlayers:PlayerReady", player.connectionId);
+			});
+		} else if (Game.IsGameLuauContext()) {
+			contextbridge.subscribe<(context: LuauContext, connId: number) => void>("ProtectedPlayers:PlayerReady", (context, connId) => {
+				print("get " + connId + " on game.");
+				const player = this.playersPendingReady.get(connId);
+				if (!player) {
+					warn("Failed to register player: not found in players list.");
+					return;
+				}
 				// fetch outfit
 				task.spawn(() => {
 					this.FetchEquippedOutfit(player, false);
 				});
+				this.HandlePlayerConnect(player);
+			});
+		}
 
-				if (RunUtil.IsHosting()) {
-					this.HandlePlayerReadyServer(Game.localPlayer);
+		if (Game.IsProtectedLuauContext()) {
+			CoreNetwork.ClientToServer.ChangedOutfit.server.OnClientEvent((player) => {
+				contextbridge.broadcast<(connId: number) => void>("ProtectedPlayers:ChangedOutfitServer", player.connectionId);
+			});
+		} else if (Game.IsGameLuauContext()) {
+			contextbridge.subscribe<(from: LuauContext, connId: number) => void>("ProtectedPlayers:ChangedOutfitServer", (from, connId) => {
+				const player = this.FindByConnectionId(connId);
+				if (!player) {
+					warn("Couldn't find player when equipping outfit. connId=" + connId);
 					return;
 				}
 
-				this.playersPendingReady.delete(player.connectionId);
-				this.HandlePlayerReadyServer(player);
-			});
-
-			CoreNetwork.ClientToServer.ChangedOutfit.server.OnClientEvent((player) => {
 				this.FetchEquippedOutfit(player, true).then(() => {
 					if (Airship.Characters.allowMidGameOutfitChanges && player.character) {
 						const outfitDto = player.selectedOutfit;
@@ -302,6 +331,23 @@ export class AirshipPlayersSingleton {
 				});
 			});
 		}
+
+		// Player completes join
+		if (Game.IsGameLuauContext()) {
+			CoreNetwork.ClientToServer.ChangedOutfit.server.OnClientEvent((player) => {
+				
+			});
+		}
+	}
+
+	private HandlePlayerConnect(player: Player) {
+		if (RunUtil.IsHosting()) {
+			this.HandlePlayerReadyServer(Game.localPlayer);
+			return;
+		}
+
+		this.playersPendingReady.delete(player.connectionId);
+		this.HandlePlayerReadyServer(player);
 	}
 
 	private async FetchEquippedOutfit(player: Player, ignoreCache: boolean): Promise<boolean> {
@@ -349,7 +395,7 @@ export class AirshipPlayersSingleton {
 				task.unscaledWait();
 			}
 		}
-		if (Game.IsGameLuauContext()) {
+		if (Game.IsProtectedLuauContext()) {
 			CoreNetwork.ServerToClient.ServerInfo.server.FireClient(
 				player,
 				Game.gameId,
@@ -363,12 +409,12 @@ export class AirshipPlayersSingleton {
 		}
 
 		// notify all clients of the joining player
-		if (Game.IsGameLuauContext()) {
+		if (Game.IsProtectedLuauContext()) {
 			CoreNetwork.ServerToClient.AddPlayer.server.FireExcept(player, player.Encode());
 		}
 
 		// send list of all connected players to the joining player
-		if (Game.IsGameLuauContext()) {
+		if (Game.IsProtectedLuauContext()) {
 			const playerDtos: PlayerDto[] = table.create(this.players.size());
 			for (let p of this.players) {
 				playerDtos.push(p.Encode());
@@ -531,7 +577,7 @@ export class AirshipPlayersSingleton {
 	 * Special method used for startup handshake.
 	 * @internal
 	 */
-	public FindByClientIdIncludePending(clientId: number): Player | undefined {
+	public FindByConnectionIdIncludePending(clientId: number): Player | undefined {
 		return this.FindByConnectionId(clientId) ?? this.playersPendingReady.get(clientId);
 	}
 
@@ -540,7 +586,7 @@ export class AirshipPlayersSingleton {
 	 */
 	public WaitForClientIdIncludePending(clientId: number, timeout = 5): Promise<Player | undefined> {
 		return new Promise((resolve) => {
-			let readyOrPending = this.FindByClientIdIncludePending(clientId);
+			let readyOrPending = this.FindByConnectionIdIncludePending(clientId);
 			if (readyOrPending) {
 				resolve(readyOrPending);
 				return;
@@ -548,7 +594,7 @@ export class AirshipPlayersSingleton {
 			let acc = 0;
 			const disconnect = OnUpdate.Connect((dt) => {
 				acc += dt;
-				readyOrPending = this.FindByClientIdIncludePending(clientId);
+				readyOrPending = this.FindByConnectionIdIncludePending(clientId);
 				if (acc >= timeout) {
 					disconnect();
 					resolve(undefined);

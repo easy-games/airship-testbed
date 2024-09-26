@@ -47,12 +47,24 @@ export class AirshipChatSingleton {
 			this.RegisterCoreCommands();
 
 			if (Game.IsServer()) this.SubscribeToChatMessage();
+
+			// On client listen for game chat messages and direct them to protected
+			if (Game.IsClient()) {
+				CoreNetwork.ServerToClient.ChatMessage.client.OnServerEvent((msg, nameWithPrefix, senderClientId) => {
+					contextbridge.broadcast<(msg: string, nameWithPrefix?: string, senderClientId?: number) => void>("Chat:AddLocalMessage", msg, nameWithPrefix, senderClientId);
+				});
+			}
 		}
 	}
 
 	private SubscribeToChatMessage() {
-		contextbridge.subscribe<(fromContext: LuauContext, msg: string, from: Player) => void>("ProtectedChat:SendMessage", (fromContext, text, player) => {
-			// const player = Airship.Players.GetPlayers()
+		contextbridge.subscribe<(fromContext: LuauContext, msg: string, fromConnId: number) => void>("ProtectedChat:SendMessage", (fromContext, text, fromConnId) => {
+			const player = Airship.Players.FindByConnectionId(fromConnId);
+			if (!player) {
+				warn("Couldn't find player when trying to send chat message. connId=" + fromConnId);
+				return;
+			}
+
 			if (StringUtils.startsWith(text, "/")) {
 				const commandData = ChatUtil.ParseCommandData(text);
 
@@ -70,10 +82,7 @@ export class AirshipChatSingleton {
 				return;
 			}
 
-			// todo: format name color
 			let nameWithPrefix = player.username + ": ";
-			// let message = this.FormatUserChatMessage(player, text, this.canUseRichText);
-			print("Broadcast from server -> client on " + contextbridge.current());
 			CoreNetwork.ServerToClient.ChatMessage.server.FireAllClients(
 				text,
 				nameWithPrefix,

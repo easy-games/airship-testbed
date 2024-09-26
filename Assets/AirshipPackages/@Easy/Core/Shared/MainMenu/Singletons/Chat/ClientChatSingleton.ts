@@ -140,31 +140,6 @@ export class ClientChatSingleton {
 		contextbridge.callback<(val: boolean) => void>("ClientChatSingleton:SetUIEnabled", (from, val) => {
 			this.canvas.gameObject.SetActive(val);
 		});
-
-		if (Game.IsInGame()) {
-			task.unscaledDelay(0, () => {
-				// const overlayCanvas = Object.Instantiate(
-				// 	Asset.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/UI/MobileControls/AirshipOverlayCanvas.prefab"),
-				// 	CoreRefs.protectedTransform,
-				// );
-				// const controls = new Preferred();
-				// controls.ObserveControlScheme((scheme) => {
-				// 	if (scheme === ControlScheme.Touch) {
-				// 		overlayCanvas.SetActive(true);
-				// 	} else {
-				// 		overlayCanvas.SetActive(false);
-				// 	}
-				// });
-			});
-		}
-
-		if (Game.IsClient()) {
-			print("register chat message listener: " + contextbridge.current());
-			CoreNetwork.ServerToClient.ChatMessage.client.OnServerEvent((msg, senderPrefix, senderClientId) => {
-				print("On receive chat message");
-				contextbridge.broadcast<(msg: string) => void>("Chat:AddLocalMessage", msg);
-			});
-		}
 	}
 
 	public OpenMobile(): void {
@@ -211,10 +186,11 @@ export class ClientChatSingleton {
 		const isMainMenu = Game.coreContext === CoreContext.MAIN_MENU;
 		if (isMainMenu) return;
 
-		contextbridge.subscribe("Chat:AddLocalMessage", (context: LuauContext, rawText: string) => {
-			this.AddMessage(rawText, undefined, undefined);
+		contextbridge.subscribe("Chat:AddLocalMessage", (context: LuauContext, rawText: string, nameWithPrefix?: string, senderClientId?: number) => {
+			this.AddMessage(rawText, nameWithPrefix, senderClientId);
 		});
 
+		print("Register ChatMessage.client on " + contextbridge.current());
 		CoreNetwork.ServerToClient.ChatMessage.client.OnServerEvent((rawText, nameWithPrefix, senderClientId) => {
 			this.AddMessage(rawText, nameWithPrefix, senderClientId);
 		});
