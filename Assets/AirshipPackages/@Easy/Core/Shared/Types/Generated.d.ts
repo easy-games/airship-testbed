@@ -35324,12 +35324,8 @@ interface Tween<DriverValueType> extends MonoBehaviour, ITween {
     SetEaseSineIn(): Tween<DriverValueType>;
     SetEaseSineInOut(): Tween<DriverValueType>;
     SetEaseSineOut(): Tween<DriverValueType>;
-    SetFrom(valueFrom: DriverValueType): Tween<DriverValueType>;
     SetInfinite(): Tween<DriverValueType>;
     SetLoopCount(loopCount: number): Tween<DriverValueType>;
-    SetOnCancel(onCancel: unknown): Tween<DriverValueType>;
-    SetOnComplete(onComplete: unknown): Tween<DriverValueType>;
-    SetOnStart(onStart: unknown): Tween<DriverValueType>;
     SetOvershooting(overshooting: number): Tween<DriverValueType>;
     SetPaused(isPaused: boolean): Tween<DriverValueType>;
     SetPingPong(): Tween<DriverValueType>;
@@ -43119,6 +43115,7 @@ interface CharacterMovementData extends MonoBehaviour {
     accelerationForce: number;
     sprintAccelerationForce: number;
     minAccelerationDelta: number;
+    inAirDirectionalControl: number;
     accelerationTurnFriction: number;
     autoCrouch: boolean;
     preventFallingWhileCrouching: boolean;

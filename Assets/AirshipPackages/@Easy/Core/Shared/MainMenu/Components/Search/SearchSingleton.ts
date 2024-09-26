@@ -3,7 +3,6 @@ import { Controller, Service } from "@Easy/Core/Shared/Flamework/flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
-import { SetTimeout } from "@Easy/Core/Shared/Util/Timer";
 import { DecodeJSON } from "@Easy/Core/Shared/json";
 
 @Service({ loadOrder: -1000 })
@@ -48,18 +47,26 @@ export default class SearchSingleton {
 			}
 
 			// warn("Failed to fetch my games. Retrying in 1s..");
-			SetTimeout(math.min(retryDelay * 2, 30), () => {
+			task.delay(math.min(retryDelay * 2, 30), () => {
 				this.FetchMyGames();
 			});
 			return;
 		}
 
-		let data = DecodeJSON<MyGamesDto>(res.data);
-		data = data.filter((g) => g.lastVersionUpdate !== undefined);
-		this.myGames = data;
-		this.myGamesIds.clear();
-		for (let g of this.myGames) {
-			this.myGamesIds.add(g.id);
+		try {
+			let data = DecodeJSON<MyGamesDto>(res.data);
+			data = data.filter((g) => g.lastVersionUpdate !== undefined);
+			this.myGames = data;
+			this.myGamesIds.clear();
+			for (let g of this.myGames) {
+				this.myGamesIds.add(g.id);
+			}
+		} catch (err) {
+			warn("Failed to decode my games: " + res.error);
+			task.delay(math.min(retryDelay * 2, 30), () => {
+				this.FetchMyGames();
+			});
+			return;
 		}
 	}
 
@@ -67,15 +74,23 @@ export default class SearchSingleton {
 		const res = InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/games");
 		if (!res.success) {
 			// warn("Failed to fetch games. Retrying in 1s..");
-			SetTimeout(1, () => {
+			task.delay(1, () => {
 				this.FetchPopularGames();
 			});
 			return;
 		}
 
-		const data = DecodeJSON<GamesDto>(res.data);
-		task.spawn(() => {
-			this.AddGames([...data.recentlyUpdated, ...data.popular]);
-		});
+		try {
+			const data = DecodeJSON<GamesDto>(res.data);
+			task.spawn(() => {
+				this.AddGames([...data.recentlyUpdated, ...data.popular]);
+			});
+		} catch (err) {
+			warn("Failed to decode popular games: " + res.error);
+
+			task.delay(1, () => {
+				this.FetchPopularGames();
+			});
+		}
 	}
 }

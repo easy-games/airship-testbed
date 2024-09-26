@@ -31,7 +31,7 @@ export default class CharacterSwapper extends AirshipBehaviour {
 		}
 
 		if (Game.IsServer()) {
-			this.toggleCharacterRemote.server.OnClientEvent((player) => {
+			this.toggleCharacterRemote.server.OnClientEvent(async (player) => {
 				let found: Character | undefined;
 				for (let c of this.characters) {
 					if (player.character !== c) {
