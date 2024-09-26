@@ -24,8 +24,9 @@ export default class SettingsDisconnectButton extends AirshipBehaviour {
 				}
 			}),
 		);
-		this.bin.AddEngineEventConnection(
-			CanvasAPI.OnClickEvent(this.gameObject, () => {
+		const btn = this.gameObject.GetComponent<Button>();
+		this.bin.Add(
+			btn.onClick.Connect(async () => {
 				task.spawn(() => {
 					TransferManager.Instance.Disconnect();
 				});
