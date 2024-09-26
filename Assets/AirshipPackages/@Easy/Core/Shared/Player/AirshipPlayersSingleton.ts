@@ -8,7 +8,6 @@ import { Team } from "@Easy/Core/Shared/Team/Team";
 import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
 import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
-import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { Asset } from "../Asset";
@@ -218,6 +217,7 @@ export class AirshipPlayersSingleton {
 				player = Game.localPlayer;
 			} else {
 				let playerInfo = dto.gameObject.GetComponent<PlayerInfo>()!;
+				// print("Making new player with connectionId: " + dto.connectionId);
 				player = new Player(
 					dto.gameObject.GetComponent<NetworkIdentity>()!,
 					dto.connectionId,
@@ -277,7 +277,7 @@ export class AirshipPlayersSingleton {
 					this.FetchEquippedOutfit(player, false);
 				});
 
-				if (RunUtil.IsHosting()) {
+				if (Game.IsHosting()) {
 					this.HandlePlayerReadyServer(Game.localPlayer);
 					return;
 				}
