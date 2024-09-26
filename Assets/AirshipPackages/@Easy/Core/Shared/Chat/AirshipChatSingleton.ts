@@ -1,4 +1,3 @@
-import { ChatService } from "@Easy/Core/Server/Services/Chat/ChatService";
 import { AddInventoryCommand } from "@Easy/Core/Server/Services/Chat/Commands/AddInventoryCommand";
 import { BotCommand } from "@Easy/Core/Server/Services/Chat/Commands/BotCommand";
 import { DamageCommand } from "@Easy/Core/Server/Services/Chat/Commands/DamageCommand";
@@ -16,11 +15,15 @@ import { TeamCommand } from "@Easy/Core/Server/Services/Chat/Commands/TeamComman
 import { TpAllCommand } from "@Easy/Core/Server/Services/Chat/Commands/TpAllCommand";
 import { TpCommand } from "@Easy/Core/Server/Services/Chat/Commands/TpCommand";
 import { TpsCommand } from "@Easy/Core/Server/Services/Chat/Commands/TpsCommand";
-import { Dependency, Singleton } from "@Easy/Core/Shared/Flamework";
+import { Singleton } from "@Easy/Core/Shared/Flamework";
 import { Airship } from "../Airship";
 import { ChatCommand } from "../Commands/ChatCommand";
+import { CoreNetwork } from "../CoreNetwork";
 import { Game } from "../Game";
 import { Player } from "../Player/Player";
+import StringUtils from "../Types/StringUtil";
+import { ChatUtil } from "../Util/ChatUtil";
+import ObjectUtils from "../Util/ObjectUtils";
 
 /**
  * Access using {@link Airship.Chat}. Functions for configuring the chat window
@@ -30,14 +33,62 @@ import { Player } from "../Player/Player";
  */
 @Singleton({})
 export class AirshipChatSingleton {
+	private commands = new Map<string, ChatCommand>();
+
+	public readonly canUseRichText = true;
+	
 	constructor() {
 		Airship.Chat = this;
 	}
 
 	protected OnStart(): void {
+		print("Airship chat singleton: " + contextbridge.current());
 		if (Game.IsInGame()) {
 			this.RegisterCoreCommands();
+
+			if (Game.IsServer()) this.SubscribeToChatMessage();
+
+			// On client listen for game chat messages and direct them to protected
+			if (Game.IsClient()) {
+				CoreNetwork.ServerToClient.ChatMessage.client.OnServerEvent((msg, nameWithPrefix, senderClientId) => {
+					contextbridge.broadcast<(msg: string, nameWithPrefix?: string, senderClientId?: number) => void>("Chat:AddLocalMessage", msg, nameWithPrefix, senderClientId);
+				});
+			}
 		}
+	}
+
+	private SubscribeToChatMessage() {
+		contextbridge.subscribe<(fromContext: LuauContext, msg: string, fromConnId: number) => void>("ProtectedChat:SendMessage", (fromContext, text, fromConnId) => {
+			const player = Airship.Players.FindByConnectionId(fromConnId);
+			if (!player) {
+				warn("Couldn't find player when trying to send chat message. connId=" + fromConnId);
+				return;
+			}
+
+			if (StringUtils.startsWith(text, "/")) {
+				const commandData = ChatUtil.ParseCommandData(text);
+
+				print(player.username + ": " + text);
+
+				if (commandData) {
+					const command = this.commands.get(commandData.label);
+					if (command) {
+						command.Execute(player, commandData.args);
+						return;
+					}
+				}
+
+				player.SendMessage(`Invalid command: ${text}`);
+				return;
+			}
+
+			let nameWithPrefix = player.username + ": ";
+			CoreNetwork.ServerToClient.ChatMessage.server.FireAllClients(
+				text,
+				nameWithPrefix,
+				player.connectionId,
+			);
+		});
 	}
 
 	/**
@@ -51,25 +102,6 @@ export class AirshipChatSingleton {
 		if (!Game.IsClient()) return;
 
 		contextbridge.invoke<(val: boolean) => void>("ClientChatSingleton:SetUIEnabled", LuauContext.Protected, val);
-	}
-
-	/**
-	 * [Server only]
-	 *
-	 * Registers provided command.
-	 *
-	 * @param command A command instance.
-	 */
-	public RegisterCommand(command: ChatCommand): void {
-		if (!Game.IsServer()) {
-			error(
-				"Error trying to call RegisterCommand " +
-					command.commandLabel +
-					": Can only register command on server.",
-			);
-		}
-
-		Dependency<ChatService>().RegisterCommand(command);
 	}
 
 	/**
@@ -101,5 +133,31 @@ export class AirshipChatSingleton {
 		this.RegisterCommand(new HelpCommand());
 		this.RegisterCommand(new TeamChatCommand());
 		this.RegisterCommand(new KickCommand());
+	}
+
+	/**
+	 * [Server only]
+	 *
+	 * Registers provided command.
+	 *
+	 * @param command A command instance.
+	 */
+	public RegisterCommand(command: ChatCommand) {
+		if (!Game.IsServer()) {
+			error(
+				"Error trying to call RegisterCommand " +
+					command.commandLabel +
+					": Can only register command on server.",
+			);
+		}
+
+		this.commands.set(command.commandLabel.lower(), command);
+		for (let alias of command.aliases) {
+			this.commands.set(alias.lower(), command);
+		}
+	}
+
+	public GetCommands(): ChatCommand[] {
+		return ObjectUtils.values(this.commands);
 	}
 }

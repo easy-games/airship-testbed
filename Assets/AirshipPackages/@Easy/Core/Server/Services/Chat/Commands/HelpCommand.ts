@@ -1,9 +1,8 @@
+import { Airship } from "@Easy/Core/Shared/Airship";
 import { ChatCommand } from "@Easy/Core/Shared/Commands/ChatCommand";
-import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import { Theme } from "@Easy/Core/Shared/Util/Theme";
-import { ChatService } from "../ChatService";
 
 export class HelpCommand extends ChatCommand {
 	constructor() {
@@ -13,7 +12,7 @@ export class HelpCommand extends ChatCommand {
 	public Execute(player: Player, args: string[]): void {
 		player.SendMessage("Available chat commands:");
 
-		const commands = Dependency<ChatService>().GetCommands();
+		const commands = Airship.Chat.GetCommands();
 		for (const com of commands) {
 			const msg = ColorUtil.ColoredText(
 				Theme.yellow,
