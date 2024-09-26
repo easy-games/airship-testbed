@@ -292,7 +292,6 @@ export class AirshipPlayersSingleton {
 			});
 		} else if (Game.IsGameLuauContext()) {
 			contextbridge.subscribe<(context: LuauContext, connId: number) => void>("ProtectedPlayers:PlayerReady", (context, connId) => {
-				print("get " + connId + " on game.");
 				const player = this.playersPendingReady.get(connId);
 				if (!player) {
 					warn("Failed to register player: not found in players list.");
