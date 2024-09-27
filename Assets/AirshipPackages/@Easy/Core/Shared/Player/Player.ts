@@ -157,7 +157,7 @@ export class Player {
 			// Load in outfit after spawn if it's not already downloaded
 			task.spawn(() => {
 				let startTime = Time.time;
-				this.WaitForOutfitLoaded(10);
+				this.WaitForOutfitLoaded(15);
 				if (characterComponent.IsAlive()) {
 					if (Game.IsInternal()) {
 						let diff = Time.time - startTime;
@@ -165,11 +165,15 @@ export class Player {
 							print("Waited " + math.floor(diff * 1000) + " ms for outfit.");
 						}
 					}
-					characterComponent.outfitDto = this.selectedOutfit;
-					CoreNetwork.ServerToClient.Character.ChangeOutfit.server.FireAllClients(
-						characterComponent.id,
-						this.selectedOutfit,
-					);
+					if (this.selectedOutfit) {
+						characterComponent.outfitDto = this.selectedOutfit;
+						CoreNetwork.ServerToClient.Character.ChangeOutfit.server.FireAllClients(
+							characterComponent.id,
+							this.selectedOutfit,
+						);
+					} else {
+						warn("Unable to load outfit for player: " + this.userId);
+					}
 				}
 			});
 		}

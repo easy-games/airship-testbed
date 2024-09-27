@@ -329,7 +329,7 @@ export class AirshipPlayersSingleton {
 						if (Airship.Characters.allowMidGameOutfitChanges && player.character) {
 							const outfitDto = player.selectedOutfit;
 							player.character.outfitDto = outfitDto;
-							if (Game.IsGameLuauContext()) {
+							if (Game.IsGameLuauContext() && outfitDto) {
 								CoreNetwork.ServerToClient.Character.ChangeOutfit.server.FireAllClients(
 									player.character.id,
 									outfitDto,
