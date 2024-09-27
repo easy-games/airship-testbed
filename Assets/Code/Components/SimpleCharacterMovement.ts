@@ -11,13 +11,11 @@ export default class SimpleCharacterMovement extends AirshipBehaviour {
 	public networkIdentity: NetworkIdentity;
 
 	@NonSerialized() public velocity = new Vector3();
-	@NonSerialized() public isOwned = false;
 
 	override Start(): void {}
 
 	protected Update(dt: number): void {
-		this.isOwned = this.networkIdentity.isOwned;
-		if (!this.isOwned) return;
+		if (!this.networkIdentity.isOwned) return;
 
 		const grounded = this.characterController.isGrounded;
 		if (grounded) {
