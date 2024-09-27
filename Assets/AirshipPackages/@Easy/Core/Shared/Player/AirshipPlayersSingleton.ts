@@ -48,10 +48,11 @@ export class AirshipPlayersSingleton {
 
 	private playersPendingReady = new Map<number, Player>();
 
-	private cachedProfilePictureTextures = new Map<string, Texture2D>();
-	private cachedProfilePictureSprite = new Map<string, Sprite>();
+	private cachedProfilePictureTexturesByUserId = new Map<string, Texture2D>();
+	private cachedProfilePictureSpriteByUserId = new Map<string, Sprite>();
+	private cachedProfilePictureByImageId = new Map<string, Texture2D>();
+	private cachedUserIdToProfileImageId = new Map<string, string>();
 
-	private profilePictureByImageIdCache = new Map<string, Texture2D>();
 	private outfitFetchTime = new Map<string, number>();
 
 	constructor() {
@@ -684,7 +685,12 @@ export class AirshipPlayersSingleton {
 	 * @internal
 	 */
 	public GetDefaultProfilePictureFromUserId(userId: string): Texture2D {
-		const [num] = string.byte(userId, userId.size());
+		let num = 0;
+		if (userId.size() > 0) {
+			const [n] = string.byte(userId, userId.size());
+			num = n;
+		}
+
 		let files = [
 			"Assets/AirshipPackages/@Easy/Core/Prefabs/Images/ProfilePictures/BlueDefaultProfilePicture.png",
 			"Assets/AirshipPackages/@Easy/Core/Prefabs/Images/ProfilePictures/RedDefaultProfilePicture.png",
@@ -706,20 +712,23 @@ export class AirshipPlayersSingleton {
 	 * exist it will return the default profile picture for the user.
 	 */
 	public async GetProfilePictureAsync(userId: string, useLocalCache = true): Promise<Texture2D> {
-		const cachedByUserId = this.cachedProfilePictureTextures.get(userId);
+		const cachedByUserId = this.cachedProfilePictureTexturesByUserId.get(userId);
 		if (useLocalCache && cachedByUserId) {
 			return cachedByUserId;
 		}
 
 		const [success, user] = Dependency<AirshipUserController>().GetUserById(userId, useLocalCache).await();
 		if (!success || user?.profileImageId === undefined) {
-			return this.GetDefaultProfilePictureFromUserId(userId);
+			const texture = this.GetDefaultProfilePictureFromUserId(userId);
+			this.cachedProfilePictureTexturesByUserId.set(userId, texture);
+			return texture;
 		}
 
 		const imageId = user.profileImageId;
 		const texture = await this.GetProfilePictureFromImageId(imageId, useLocalCache);
 		if (texture) {
-			this.cachedProfilePictureTextures.set(userId, texture);
+			this.cachedProfilePictureTexturesByUserId.set(userId, texture);
+			this.cachedProfilePictureByImageId.set(imageId, texture);
 			return texture;
 		}
 		return this.GetDefaultProfilePictureFromUserId(userId);
@@ -729,19 +738,19 @@ export class AirshipPlayersSingleton {
 	 * @returns Profile picture from image id (with caching)
 	 * @internal
 	 */
-	public async GetProfilePictureFromImageId(imageId: string, useLocalCache = true): Promise<Texture2D | undefined> {
+	private async GetProfilePictureFromImageId(imageId: string, useLocalCache = true): Promise<Texture2D | undefined> {
 		// First check cache for image
 		if (useLocalCache) {
-			const existing = this.profilePictureByImageIdCache.get(imageId);
-			if (existing) {
-				return existing;
+			const existingTexture = this.cachedProfilePictureByImageId.get(imageId);
+			if (existingTexture) {
+				return existingTexture;
 			}
 		}
 
 		// Download image if not found locally (or useLocalCache = false)
 		const texture = Bridge.DownloadTexture2DYielding(`${AirshipUrl.CDN}/images/${imageId}`);
 		if (texture) {
-			this.profilePictureByImageIdCache.set(imageId, texture);
+			this.cachedProfilePictureByImageId.set(imageId, texture);
 			return texture;
 		}
 		return undefined;
@@ -752,7 +761,7 @@ export class AirshipPlayersSingleton {
 	 * @param userId
 	 */
 	public ClearProfilePictureCache(userId: string): void {
-		this.cachedProfilePictureSprite.delete(userId);
-		this.cachedProfilePictureTextures.delete(userId);
+		this.cachedProfilePictureSpriteByUserId.delete(userId);
+		this.cachedProfilePictureTexturesByUserId.delete(userId);
 	}
 }
