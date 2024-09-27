@@ -78,15 +78,18 @@ export class HumanoidCameraMode extends CameraMode {
 		);
 
 		this.movement = character.movement;
-		this.bin.AddEngineEventConnection(
-			this.movement.OnNewLookVector((newLookVector) => {
-				//If another script updates the look vector we should face the camera towards it
-				this.SetYAxisDirection(newLookVector);
-			}),
-		);
+		if (this.movement) {
+			this.bin.AddEngineEventConnection(
+				this.movement.OnNewLookVector((newLookVector) => {
+					//If another script updates the look vector we should face the camera towards it
+					this.SetYAxisDirection(newLookVector);
+				}),
+			);
+		}
+
 		this.attachTo = graphicalCharacterGO.transform;
 		this.firstPerson = initialFirstPerson;
-		this.spineBone = character.rig.spine;
+		// this.spineBone = character.rig?.spine;
 		this.SetupMobileControls();
 	}
 
@@ -158,7 +161,10 @@ export class HumanoidCameraMode extends CameraMode {
 		}
 
 		this.SetFirstPerson(this.firstPerson);
-		this.SetYAxisDirection(this.character.movement.GetLookVector());
+
+		if (this.character.movement) {
+			this.SetYAxisDirection(this.character.movement.GetLookVector());
+		}
 	}
 
 	OnStop() {

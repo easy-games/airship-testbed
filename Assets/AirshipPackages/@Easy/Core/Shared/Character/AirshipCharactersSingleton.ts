@@ -194,7 +194,7 @@ export class AirshipCharactersSingleton {
 
 	private WatchForHeldItemAccessories() {
 		this.ObserveCharacters((character) => {
-			character.inventory.ObserveHeldItem((itemStack) => {
+			character.inventory?.ObserveHeldItem((itemStack) => {
 				const itemDef = itemStack?.itemDef;
 
 				let viewmodelAccessoryBuilder: AccessoryBuilder | undefined;

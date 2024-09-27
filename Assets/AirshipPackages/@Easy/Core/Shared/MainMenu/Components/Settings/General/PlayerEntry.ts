@@ -5,7 +5,6 @@ import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { ProtectedPlayer } from "@Easy/Core/Shared/Player/ProtectedPlayer";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
-import inspect from "@Easy/Core/Shared/Util/Inspect";
 
 export default class PlayerEntry extends AirshipBehaviour {
 	public bgImage!: Image;
@@ -20,8 +19,6 @@ export default class PlayerEntry extends AirshipBehaviour {
 
 	public Init(player: ProtectedPlayer): void {
 		task.spawn(async () => {
-			print("PlayerEntry.Init protectedPlayer: " + inspect(player));
-
 			const texture = await Airship.Players.GetProfilePictureAsync(player.profileImageId);
 			if (texture) {
 				this.profileImage.texture = texture;

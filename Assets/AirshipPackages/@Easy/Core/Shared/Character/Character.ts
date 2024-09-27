@@ -46,7 +46,7 @@ export default class Character extends AirshipBehaviour {
 	private maxHealth = 100;
 	/** A bin that is cleaned when the entity despawns. */
 	@NonSerialized() public readonly bin = new Bin();
-	@NonSerialized() public inventory!: Inventory;
+	@NonSerialized() public inventory: Inventory;
 	@NonSerialized() public outfitDto: OutfitDto | undefined;
 
 	// Signals
