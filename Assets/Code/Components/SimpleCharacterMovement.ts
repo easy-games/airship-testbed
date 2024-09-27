@@ -12,8 +12,6 @@ export default class SimpleCharacterMovement extends AirshipBehaviour {
 
 	@NonSerialized() public velocity = new Vector3();
 
-	override Start(): void {}
-
 	protected Update(dt: number): void {
 		if (!this.networkIdentity.isOwned) return;
 
@@ -35,6 +33,4 @@ export default class SimpleCharacterMovement extends AirshipBehaviour {
 		this.velocity = this.velocity.WithY(this.velocity.y + this.gravity * Time.deltaTime);
 		this.characterController.Move(this.velocity.mul(Time.deltaTime));
 	}
-
-	override OnDestroy(): void {}
 }

@@ -338,7 +338,7 @@ MonoBehaviour:
       decorators: []
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 221116691580093277}
+      serializedObject: {fileID: 0}
       modified: 1
     - name: networkIdentity
       type: object
@@ -368,7 +368,7 @@ MonoBehaviour:
       decorators: []
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 221116691580093277}
+      serializedObject: {fileID: 0}
       modified: 1
     - name: footstepAudioSource
       type: object
@@ -383,7 +383,7 @@ MonoBehaviour:
       decorators: []
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 7506948018560868888}
+      serializedObject: {fileID: 0}
       modified: 1
     - name: autoLoadAvatarOutfit
       type: boolean
