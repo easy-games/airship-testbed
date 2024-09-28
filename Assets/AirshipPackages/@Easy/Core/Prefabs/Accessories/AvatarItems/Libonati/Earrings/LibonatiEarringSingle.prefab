@@ -45,7 +45,6 @@ GameObject:
   - component: {fileID: 8865312553734803602}
   - component: {fileID: 8466345760860630873}
   - component: {fileID: 2427062692221424655}
-  - component: {fileID: 4201144580923120534}
   - component: {fileID: 1195238442789411321}
   m_Layer: 0
   m_Name: AirshipTrapezoid (2)
@@ -62,7 +61,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1350641913391432926}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.22306955, y: -0.34920782, z: -0.7960477, w: -0.44113722}
+  m_LocalRotation: {x: 0.16490926, y: -0.9403184, z: 0.092224725, w: 0.28302094}
   m_LocalPosition: {x: -3.4694465e-18, y: 0.00000023841858, z: 0}
   m_LocalScale: {x: 0.49567, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -76,7 +75,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1350641913391432926}
-  m_Mesh: {fileID: 0}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &2427062692221424655
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -121,24 +120,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &4201144580923120534
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1350641913391432926}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6464f7ec1cf864b4f93e95f1427793b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rebuildMode: 0
-  meshFilter: {fileID: 8466345760860630873}
-  trapWidth: 0.228
-  trapDepth: 0.775
-  topColor: {r: 0.3915094, g: 0.6486883, b: 1, a: 1}
-  bottomColor: {r: 0.39658976, g: 0.25698647, b: 0.5188679, a: 1}
 --- !u!114 &1195238442789411321
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -182,7 +163,7 @@ Transform:
   m_GameObject: {fileID: 1432666070379167125}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -7.2759567e-12, w: 1}
-  m_LocalPosition: {x: 0, y: -2.43, z: 0}
+  m_LocalPosition: {x: 2.182787e-11, y: -0.93000007, z: 0}
   m_LocalScale: {x: 0.21503554, y: 1.90338, z: 0.21503553}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -195,7 +176,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1432666070379167125}
-  m_Mesh: {fileID: 2534964839176971238, guid: bdf2babf7a223774cae5f80a52733f88, type: 3}
+  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &8484728013859311626
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -322,7 +303,6 @@ GameObject:
   - component: {fileID: 5490801520492672510}
   - component: {fileID: 2298404149468847740}
   - component: {fileID: 3048386562785843167}
-  - component: {fileID: 7803541834260127693}
   - component: {fileID: 2589154376518775960}
   m_Layer: 0
   m_Name: AirshipTrapezoid
@@ -339,7 +319,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2819597749701383536}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.13216725, y: -0.97164637, z: -0.1680626, w: -0.10094598}
+  m_LocalRotation: {x: 0.18824226, y: 0.50369734, z: -0.53487855, w: -0.6517352}
   m_LocalPosition: {x: -3.4694465e-18, y: 0.00000023841858, z: 0}
   m_LocalScale: {x: 0.49567, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -353,7 +333,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2819597749701383536}
-  m_Mesh: {fileID: 0}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &3048386562785843167
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -398,24 +378,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &7803541834260127693
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2819597749701383536}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6464f7ec1cf864b4f93e95f1427793b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rebuildMode: 0
-  meshFilter: {fileID: 2298404149468847740}
-  trapWidth: 0.228
-  trapDepth: 0.775
-  topColor: {r: 0.3915094, g: 0.6486883, b: 1, a: 1}
-  bottomColor: {r: 0.39658976, g: 0.25698647, b: 0.5188679, a: 1}
 --- !u!114 &2589154376518775960
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -442,7 +404,6 @@ GameObject:
   - component: {fileID: 4261560701056825488}
   - component: {fileID: 1081296739279947740}
   - component: {fileID: 5978870542043611363}
-  - component: {fileID: 9183753751707398644}
   - component: {fileID: 4765217732366866130}
   m_Layer: 0
   m_Name: AirshipTrapezoid (1)
@@ -459,7 +420,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4649428686546540818}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.49714068, y: 0.4802341, z: -0.49296898, w: 0.52840143}
+  m_LocalRotation: {x: -0.11183901, y: 0.66883713, z: -0.73463, w: -0.02162683}
   m_LocalPosition: {x: -3.4694465e-18, y: 0.00000023841858, z: 0}
   m_LocalScale: {x: 0.49566996, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -473,7 +434,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4649428686546540818}
-  m_Mesh: {fileID: 0}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &5978870542043611363
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -518,24 +479,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &9183753751707398644
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4649428686546540818}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6464f7ec1cf864b4f93e95f1427793b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rebuildMode: 0
-  meshFilter: {fileID: 1081296739279947740}
-  trapWidth: 0.228
-  trapDepth: 0.775
-  topColor: {r: 0.3915094, g: 0.6486883, b: 1, a: 1}
-  bottomColor: {r: 0.39658976, g: 0.25698647, b: 0.5188679, a: 1}
 --- !u!114 &4765217732366866130
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -579,8 +522,8 @@ Transform:
   m_GameObject: {fileID: 5699207121785817789}
   serializedVersion: 2
   m_LocalRotation: {x: -0.49999976, y: -0.50000024, z: -0.5000001, w: 0.49999985}
-  m_LocalPosition: {x: -0.15799916, y: -0.10000004, z: 0}
-  m_LocalScale: {x: 1, y: 1.471, z: 1}
+  m_LocalPosition: {x: -0, y: 1.098, z: 0}
+  m_LocalScale: {x: 1.18, y: 0.25, z: 1.18}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2541435791948721469}
@@ -592,7 +535,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5699207121785817789}
-  m_Mesh: {fileID: -8803937527578110353, guid: bdf2babf7a223774cae5f80a52733f88, type: 3}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &7230456593846716622
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -663,7 +606,6 @@ GameObject:
   - component: {fileID: 2249462873600610242}
   - component: {fileID: 3766403737636451212}
   - component: {fileID: 6667489080953500531}
-  - component: {fileID: 8875872619665823714}
   - component: {fileID: 3208711062785515662}
   m_Layer: 0
   m_Name: AirshipTrapezoid (4)
@@ -680,7 +622,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6128172540185002467}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.59512544, y: 0.5090789, z: -0.6062373, w: -0.13835007}
+  m_LocalRotation: {x: -0.51267076, y: 0.47354513, z: 0.43398336, w: 0.5697212}
   m_LocalPosition: {x: -3.4694465e-18, y: 0.00000023841858, z: 0}
   m_LocalScale: {x: 0.49567, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -694,7 +636,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6128172540185002467}
-  m_Mesh: {fileID: 0}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &6667489080953500531
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -739,24 +681,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &8875872619665823714
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6128172540185002467}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6464f7ec1cf864b4f93e95f1427793b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rebuildMode: 0
-  meshFilter: {fileID: 3766403737636451212}
-  trapWidth: 0.228
-  trapDepth: 0.775
-  topColor: {r: 0.3915094, g: 0.6486883, b: 1, a: 1}
-  bottomColor: {r: 0.39658976, g: 0.25698647, b: 0.5188679, a: 1}
 --- !u!114 &3208711062785515662
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -783,7 +707,6 @@ GameObject:
   - component: {fileID: 8332459220741373202}
   - component: {fileID: 5285251946476726345}
   - component: {fileID: 8634573941058525061}
-  - component: {fileID: 7658450587521004936}
   - component: {fileID: 3737621492713438748}
   m_Layer: 0
   m_Name: AirshipTrapezoid (5)
@@ -800,7 +723,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6859088201741961591}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.52586806, y: -0.44435197, z: 0.15356748, w: -0.7088238}
+  m_LocalRotation: {x: -0.09107716, y: 0.25411263, z: -0.57544655, w: -0.77200586}
   m_LocalPosition: {x: -3.4694465e-18, y: 0.00000023841858, z: 0}
   m_LocalScale: {x: 0.49566996, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -814,7 +737,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6859088201741961591}
-  m_Mesh: {fileID: 0}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &8634573941058525061
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -859,24 +782,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &7658450587521004936
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6859088201741961591}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6464f7ec1cf864b4f93e95f1427793b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rebuildMode: 0
-  meshFilter: {fileID: 5285251946476726345}
-  trapWidth: 0.228
-  trapDepth: 0.775
-  topColor: {r: 0.3915094, g: 0.6486883, b: 1, a: 1}
-  bottomColor: {r: 0.39658976, g: 0.25698647, b: 0.5188679, a: 1}
 --- !u!114 &3737621492713438748
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -903,7 +808,6 @@ GameObject:
   - component: {fileID: 5732587071934392733}
   - component: {fileID: 7591223262388514874}
   - component: {fileID: 8324251579121522905}
-  - component: {fileID: 6954780467982964773}
   - component: {fileID: 4400096520713265423}
   m_Layer: 0
   m_Name: AirshipTrapezoid (3)
@@ -920,7 +824,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7199311627603628143}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.587628, y: -0.2562213, z: 0.40063888, w: 0.654624}
+  m_LocalRotation: {x: -0.18529944, y: -0.66723937, z: 0.7049407, w: -0.1533444}
   m_LocalPosition: {x: -3.4694465e-18, y: 0.00000023841858, z: 0}
   m_LocalScale: {x: 0.49566996, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -934,7 +838,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7199311627603628143}
-  m_Mesh: {fileID: 0}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &8324251579121522905
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -979,24 +883,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &6954780467982964773
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7199311627603628143}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6464f7ec1cf864b4f93e95f1427793b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rebuildMode: 0
-  meshFilter: {fileID: 7591223262388514874}
-  trapWidth: 0.228
-  trapDepth: 0.775
-  topColor: {r: 0.3915094, g: 0.6486883, b: 1, a: 1}
-  bottomColor: {r: 0.39658976, g: 0.25698647, b: 0.5188679, a: 1}
 --- !u!114 &4400096520713265423
 MonoBehaviour:
   m_ObjectHideFlags: 0

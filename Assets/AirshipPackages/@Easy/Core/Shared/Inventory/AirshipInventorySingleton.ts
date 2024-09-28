@@ -80,6 +80,7 @@ export class AirshipInventorySingleton {
 		if (Game.IsClient()) {
 			Game.localPlayer.ObserveCharacter((character) => {
 				if (!character || this.isUISetup) return;
+				if (character.inventory === undefined) return;
 
 				if (
 					this.uiVisibility === InventoryUIVisibility.Always ||

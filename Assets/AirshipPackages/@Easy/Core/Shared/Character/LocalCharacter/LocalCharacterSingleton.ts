@@ -70,19 +70,21 @@ export class LocalCharacterSingleton {
 			cameraController.SetupCamera(character);
 			cameraController.SetupCameraControls(bin);
 
-			const stateChangedConn = this.characterMovement.OnStateChanged((state) => {
-				if (state !== this.currentState) {
-					this.prevState = this.currentState;
-					this.currentState = state;
-					this.stateChanged.Fire(state);
-				}
-				if (this.sprintOverlayEmission) {
-					this.sprintOverlayEmission.enabled = state === CharacterState.Sprinting;
-				}
-			});
-			bin.Add(() => {
-				Bridge.DisconnectEvent(stateChangedConn);
-			});
+			if (this.characterMovement) {
+				const stateChangedConn = this.characterMovement.OnStateChanged((state) => {
+					if (state !== this.currentState) {
+						this.prevState = this.currentState;
+						this.currentState = state;
+						this.stateChanged.Fire(state);
+					}
+					if (this.sprintOverlayEmission) {
+						this.sprintOverlayEmission.enabled = state === CharacterState.Sprinting;
+					}
+				});
+				bin.Add(() => {
+					Bridge.DisconnectEvent(stateChangedConn);
+				});
+			}
 
 			// Pause Editor
 			bin.Add(

@@ -22,6 +22,7 @@ export default class DemoManager extends AirshipBehaviour {
 	public spawnCharacter = false;
 
 	private bin = new Bin();
+	private lookDir = new Vector3(-1, 0.5, 1);
 
 	override Start(): void {
 		// task.spawn(() => {
@@ -99,7 +100,18 @@ export default class DemoManager extends AirshipBehaviour {
 					const cube = Object.Instantiate(Asset.LoadAsset("Assets/Resources/OfflineCube.prefab"));
 					cube.transform.position = Game.localPlayer.character!.rig.head.position.add(new Vector3(0, 1, 0));
 					const rb = cube.gameObject.GetComponent<Rigidbody>()!;
-					rb.velocity = Game.localPlayer.character!.movement!.GetLookVector().add(new Vector3(0, 1, 0)).mul(5);
+					rb.velocity = Game.localPlayer
+						.character!.movement!.GetLookVector()
+						.add(new Vector3(0, 1, 0))
+						.mul(5);
+				}),
+			);
+
+			this.bin.Add(
+				Keyboard.OnKeyDown(Key.R, (event) => {
+					if (event.uiProcessed) return;
+					Game.localPlayer.character?.movement.SetLookVector(this.lookDir);
+					this.lookDir = Quaternion.AngleAxis(90, Vector3.up).mul(this.lookDir);
 				}),
 			);
 		}

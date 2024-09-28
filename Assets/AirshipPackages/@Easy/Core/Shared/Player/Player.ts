@@ -157,7 +157,7 @@ export class Player {
 			// Load in outfit after spawn if it's not already downloaded
 			task.spawn(() => {
 				let startTime = Time.time;
-				this.WaitForOutfitLoaded(10);
+				this.WaitForOutfitLoaded(15);
 				if (characterComponent.IsAlive()) {
 					if (Game.IsInternal()) {
 						let diff = Time.time - startTime;
@@ -165,11 +165,15 @@ export class Player {
 							print("Waited " + math.floor(diff * 1000) + " ms for outfit.");
 						}
 					}
-					characterComponent.outfitDto = this.selectedOutfit;
-					CoreNetwork.ServerToClient.Character.ChangeOutfit.server.FireAllClients(
-						characterComponent.id,
-						this.selectedOutfit,
-					);
+					if (this.selectedOutfit) {
+						characterComponent.outfitDto = this.selectedOutfit;
+						CoreNetwork.ServerToClient.Character.ChangeOutfit.server.FireAllClients(
+							characterComponent.id,
+							this.selectedOutfit,
+						);
+					} else {
+						warn("Unable to load outfit for player: " + this.userId);
+					}
 				}
 			});
 		}
@@ -220,11 +224,13 @@ export class Player {
 			CoreNetwork.ServerToClient.ChatMessage.server.FireClient(this, message, undefined, undefined);
 		} else {
 			if (this.userId !== Game.localPlayer.userId) error("Cannot SendMessage to non-local client.");
-			task.spawn(() => {
+
+			// Defer here doesn't seem great. The purpose is to avoid "cannot broadcast from within a subscribed function"
+			// The problem is numerous places (ex: messaging when invalid command, broadcasting player joined server msg) trigger
+			// this to run. Ideally we can eventually support multiple broadcasts simultaneously but until that this patch works.
+			task.defer(() => {
 				contextbridge.broadcast<(rawText: string) => void>("Chat:AddLocalMessage", message);
 			});
-			// `ClientChatSingleton` only exists in the protected context. We can't do this here. v
-			// Dependency<ClientChatSingleton>().RenderChatMessage(message);
 		}
 	}
 

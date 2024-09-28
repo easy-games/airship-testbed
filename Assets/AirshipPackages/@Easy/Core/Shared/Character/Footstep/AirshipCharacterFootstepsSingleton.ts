@@ -8,7 +8,6 @@ import { CharacterFootstepSignal } from "./CharacterFootstepSignal";
 
 @Singleton({})
 export class AirshipCharacterFootstepsSingleton {
-
 	public onFootstep = new Signal<CharacterFootstepSignal>();
 	public baseFootstepVolumeScale = 0.1;
 	public foostepSoundsEnabled = true;
@@ -121,6 +120,8 @@ export class AirshipCharacterFootstepsSingleton {
 		const audioClip = signal.audioClip;
 
 		// print("playing footstep sound: " + audioClip.name);
-		character.footstepAudioSource.PlayOneShot(audioClip, signal.volume);
+		if (character.footstepAudioSource) {
+			character.footstepAudioSource.PlayOneShot(audioClip, signal.volume);
+		}
 	}
 }

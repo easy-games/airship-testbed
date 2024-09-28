@@ -116,6 +116,7 @@ interface CharacterMovement extends Component {
 	OnAdjustMove(callback: (modifier: MoveModifier) => void): EngineEventConnection;
 	OnMoveDirectionChanged(callback: (direction: Vector3) => void): EngineEventConnection;
 	OnJumped(callback: (velocity: Vector3) => void): EngineEventConnection;
+	OnNewLookVector(callback: (newLookVector: Vector3) => void): EngineEventConnection;
 
 	GetLookVector(): Vector3;
 	IsSprinting(): boolean;
@@ -130,6 +131,7 @@ interface CharacterMovement extends Component {
 		moveDirWorldSpace: boolean,
 	): void;
 	SetLookVector(lookVector: Vector3): void;
+	SetLookVectorRecurring(lookVector: Vector3): void;
 	SetCustomData(customData: BinaryBlob): void;
 	SetFlying(enabled: boolean): void;
 	SetDebugFlying(enabled: boolean): void;

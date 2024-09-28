@@ -78,9 +78,18 @@ export class HumanoidCameraMode extends CameraMode {
 		);
 
 		this.movement = character.movement;
+		if (this.movement) {
+			this.bin.AddEngineEventConnection(
+				this.movement.OnNewLookVector((newLookVector) => {
+					//If another script updates the look vector we should face the camera towards it
+					this.SetYAxisDirection(newLookVector);
+				}),
+			);
+		}
+
 		this.attachTo = graphicalCharacterGO.transform;
 		this.firstPerson = initialFirstPerson;
-		this.spineBone = character.rig.spine;
+		// this.spineBone = character.rig?.spine;
 		this.SetupMobileControls();
 	}
 
@@ -152,7 +161,10 @@ export class HumanoidCameraMode extends CameraMode {
 		}
 
 		this.SetFirstPerson(this.firstPerson);
-		this.SetYAxisDirection(this.character.movement.GetLookVector());
+
+		if (this.character.movement) {
+			this.SetYAxisDirection(this.character.movement.GetLookVector());
+		}
 	}
 
 	OnStop() {
@@ -330,7 +342,7 @@ export class HumanoidCameraMode extends CameraMode {
 		this.camRight = transform.right;
 
 		const newLookVector = this.lookBackwards && !this.firstPerson ? transform.forward.mul(-1) : transform.forward;
-		this.movement?.SetLookVector(newLookVector);
+		this.movement?.SetLookVectorRecurring(newLookVector);
 		this.lookVector = newLookVector;
 	}
 
@@ -368,7 +380,6 @@ export class HumanoidCameraMode extends CameraMode {
 		// Determine Y-axis rotation based on direction:
 		direction = direction.normalized;
 		this.rotationY = math.atan2(-direction.x, direction.z) % TAU;
-		this.movement?.SetLookVector(direction);
 	}
 
 	/**
@@ -383,7 +394,7 @@ export class HumanoidCameraMode extends CameraMode {
 		this.rotationY = math.atan2(-direction.x, direction.z) % TAU;
 		const adj = new Vector2(direction.x, direction.z).magnitude;
 		this.rotationX = math.clamp(math.pi / 2 + math.atan2(direction.y, adj), this.minRotX, this.maxRotX);
-		this.movement?.SetLookVector(direction);
+		this.movement?.SetLookVectorRecurring(direction);
 	}
 
 	private GetCamYOffset(isFirstPerson: boolean) {

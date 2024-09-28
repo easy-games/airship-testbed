@@ -25,12 +25,14 @@ export default class Character extends AirshipBehaviour {
 	@NonSerialized()
 	public animation?: CharacterAnimation;
 
-	@Header("References")
+	@Header("Required References")
+	public networkIdentity!: NetworkIdentity;
+
+	@Header("Optional References")
 	public movement: CharacterMovement;
 	public animationHelper!: CharacterAnimationHelper;
 	public accessoryBuilder: AccessoryBuilder;
 	public model!: GameObject;
-	public networkIdentity!: NetworkIdentity;
 	public rigRoot!: GameObject;
 	public footstepAudioSource!: AudioSource;
 	@NonSerialized() public rig!: CharacterRig;
@@ -46,7 +48,7 @@ export default class Character extends AirshipBehaviour {
 	private maxHealth = 100;
 	/** A bin that is cleaned when the entity despawns. */
 	@NonSerialized() public readonly bin = new Bin();
-	@NonSerialized() public inventory!: Inventory;
+	@NonSerialized() public inventory: Inventory;
 	@NonSerialized() public outfitDto: OutfitDto | undefined;
 
 	// Signals
@@ -68,7 +70,7 @@ export default class Character extends AirshipBehaviour {
 
 	public Awake(): void {
 		this.inventory = this.gameObject.GetAirshipComponent<Inventory>()!;
-		this.rig = this.rigRoot.GetComponent<CharacterRig>()!;
+		this.rig = this.rigRoot?.GetComponent<CharacterRig>();
 		this.animation = this.gameObject.GetAirshipComponent<CharacterAnimation>()!;
 	}
 
@@ -83,6 +85,10 @@ export default class Character extends AirshipBehaviour {
 	}
 
 	public OnEnable(): void {
+		if (this.model === undefined) {
+			this.model = this.gameObject;
+		}
+
 		this.despawned = false;
 		this.bin.Add(
 			Airship.Damage.onDamage.ConnectWithPriority(SignalPriority.MONITOR, (damageInfo) => {

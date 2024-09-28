@@ -190,7 +190,6 @@ export class ClientChatSingleton {
 			this.AddMessage(rawText, nameWithPrefix, senderClientId);
 		});
 
-		print("Register ChatMessage.client on " + contextbridge.current());
 		CoreNetwork.ServerToClient.ChatMessage.client.OnServerEvent((rawText, nameWithPrefix, senderClientId) => {
 			this.AddMessage(rawText, nameWithPrefix, senderClientId);
 		});
