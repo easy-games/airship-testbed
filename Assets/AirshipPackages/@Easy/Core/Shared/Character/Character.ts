@@ -254,6 +254,9 @@ export default class Character extends AirshipBehaviour {
 
 		if (lookVector) {
 			this.movement.TeleportAndLook(pos, lookVector);
+			if (Game.IsClient()) {
+				Airship.Camera.humanoidCameraMode?.SetDirection(lookVector);
+			}
 		} else {
 			this.movement.Teleport(pos);
 		}
