@@ -155,7 +155,6 @@ export class AirshipPlayersSingleton {
 
 			if (Game.IsClient() && Game.coreContext === CoreContext.GAME && Game.IsProtectedLuauContext()) {
 				Game.WaitForLocalPlayerLoaded();
-				print("Post ready: " + contextbridge.current());
 				CoreNetwork.ClientToServer.Ready.client.FireServer();
 			}
 		});

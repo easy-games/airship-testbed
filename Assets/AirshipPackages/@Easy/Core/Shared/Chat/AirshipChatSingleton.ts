@@ -42,7 +42,6 @@ export class AirshipChatSingleton {
 	}
 
 	protected OnStart(): void {
-		print("Airship chat singleton: " + contextbridge.current());
 		if (Game.IsInGame()) {
 			this.RegisterCoreCommands();
 
