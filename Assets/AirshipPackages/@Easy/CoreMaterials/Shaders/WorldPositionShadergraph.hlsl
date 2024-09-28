@@ -6,8 +6,8 @@ void PositionToUV_float(float uvScale, float3 position, out float2 xPlane, out f
 {
 	position *= uvScale;
 	xPlane = float2(position.x, position.y);
-	yPlane = float2(position.y, position.z);
-	zPlane = float2(position.z, position.x);
+	yPlane = float2(position.z, position.y);
+	zPlane = float2(position.x, position.z);
 }
 
 
