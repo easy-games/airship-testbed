@@ -224,11 +224,13 @@ export class Player {
 			CoreNetwork.ServerToClient.ChatMessage.server.FireClient(this, message, undefined, undefined);
 		} else {
 			if (this.userId !== Game.localPlayer.userId) error("Cannot SendMessage to non-local client.");
-			task.spawn(() => {
+
+			// Defer here doesn't seem great. The purpose is to avoid "cannot broadcast from within a subscribed function"
+			// The problem is numerous places (ex: messaging when invalid command, broadcasting player joined server msg) trigger
+			// this to run. Ideally we can eventually support multiple broadcasts simultaneously but until that this patch works.
+			task.defer(() => {
 				contextbridge.broadcast<(rawText: string) => void>("Chat:AddLocalMessage", message);
 			});
-			// `ClientChatSingleton` only exists in the protected context. We can't do this here. v
-			// Dependency<ClientChatSingleton>().RenderChatMessage(message);
 		}
 	}
 
