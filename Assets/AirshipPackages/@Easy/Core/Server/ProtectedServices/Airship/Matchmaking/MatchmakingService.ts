@@ -98,7 +98,7 @@ export class ProtectedMatchmakingService {
 
 		if (!result.success || result.statusCode > 299) {
 			if (result.statusCode === 400) {
-				error(result.data);
+				throw result.error;
 			}
 
 			warn(`An error occurred while attempting to join queue: ${body.queueId} group: ${body.groupId}. Status Code: ${result.statusCode}.\n`, result.error);
@@ -113,7 +113,7 @@ export class ProtectedMatchmakingService {
 
 		if (!result.success || result.statusCode > 299) {
 			if (result.statusCode === 400) {
-				error(result.data);
+				throw result.error;
 			}
 
 			warn(`An error occurred while attempting to leave queue for group: ${groupId}. Status Code: ${result.statusCode}.\n`, result.error);

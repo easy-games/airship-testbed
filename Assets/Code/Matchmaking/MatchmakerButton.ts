@@ -98,14 +98,9 @@ export default class MatchmakerButton extends AirshipBehaviour {
 			print("Group ID not set, cannot join queue");
 			return;
 		}
-		const users = Airship.Players.GetPlayers();
-		const userIds = users.map((u) => u.userId);
 		const [success, result] = Platform.Server.Matchmaking.JoinQueue({
 			groupId: this.matchmakerSingleton.groupId,
 			queueId: "testqueue1",
-			members: userIds.map((u) => ({
-				uid: u,
-			})),
 		}).await();
 		if (!success) {
 			print("Failed to join queue: " + EncodeJSON(result));
