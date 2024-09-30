@@ -620,7 +620,7 @@ export class ProtectedFriendsController {
 
 		if (config.loadImage) {
 			task.spawn(async () => {
-				let texture = await Airship.Players.GetDefaultProfilePictureFromUserId(friend.userId);
+				const texture = await Airship.Players.GetProfilePictureAsync(friend.userId);
 				if (texture) {
 					profileImage.texture = texture;
 				}
