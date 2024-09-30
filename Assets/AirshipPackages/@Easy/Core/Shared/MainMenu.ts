@@ -48,3 +48,8 @@ Flamework.Ignite();
 
 const mainMenuLoadingScreen = GameObject.Find("MainMenuLoadingScreen").GetComponent<MainMenuLoadingScreen>()!;
 mainMenuLoadingScreen.Close();
+
+const mainMenuSceneManager = GameObject.Find("MainMenuSceneManager").GetComponent<MainMenuSceneManager>()!;
+try {
+	mainMenuSceneManager.CompletedTSLoad();
+} catch (err) {}
