@@ -118,13 +118,11 @@ export class AirshipCharactersSingleton {
 			CoreNetwork.ServerToClient.Character.ChangeOutfit.client.OnServerEvent((characterId, outfitDto) => {
 				const character = this.FindById(characterId);
 				if (!character || !character.accessoryBuilder) {
-					error("Trying to set outfit on character without any accessory builder: " + characterId);
+					return;
 				}
 
 				if (outfitDto) {
 					character.LoadUserOutfit(outfitDto);
-				} else {
-					warn("Server trying to set client to empty outfit data");
 				}
 			});
 		}
