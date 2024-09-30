@@ -123,8 +123,6 @@ export class AirshipCharactersSingleton {
 
 				if (outfitDto) {
 					character.LoadUserOutfit(outfitDto);
-				} else {
-					warn("Server trying to set client to empty outfit data");
 				}
 			});
 		}
