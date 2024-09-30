@@ -33,6 +33,9 @@ export class NametagController {
 		if (character.IsLocalCharacter() && !this.showSelfNametag) {
 			return;
 		}
+
+		if (character.rig?.head === undefined) return;
+
 		const bin = new Bin();
 		this.UpdateNametag(character);
 		const SetNametagAlpha = (character: Character, alpha: number) => {
@@ -62,7 +65,7 @@ export class NametagController {
 		const nametagPrefab = AssetBridge.Instance.LoadAsset(
 			"Assets/AirshipPackages/@Easy/Core/Prefabs/Nametag.prefab",
 		) as GameObject;
-		const nametag = Object.Instantiate(nametagPrefab, character.rig.head);
+		const nametag = Object.Instantiate(nametagPrefab, character.rig?.head);
 		nametag.name = this.nameTagId;
 
 		this.UpdateNametag(character);
@@ -76,7 +79,7 @@ export class NametagController {
 		const team: Team | undefined = character.player?.team;
 		const localTeam = Game.localPlayer.team;
 
-		const nameTag = character.rig.head.FindChild(this.nameTagId);
+		const nameTag = character.rig?.head?.FindChild(this.nameTagId);
 		if (nameTag === undefined) {
 			this.CreateNametag(character);
 			return;

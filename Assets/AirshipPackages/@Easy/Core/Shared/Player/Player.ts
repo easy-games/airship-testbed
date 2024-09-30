@@ -1,9 +1,7 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
-import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { ClientChatSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/Chat/ClientChatSingleton";
 import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { Team } from "../Team/Team";
 import { Bin } from "../Util/Bin";
@@ -159,7 +157,7 @@ export class Player {
 			// Load in outfit after spawn if it's not already downloaded
 			task.spawn(() => {
 				let startTime = Time.time;
-				this.WaitForOutfitLoaded(10);
+				this.WaitForOutfitLoaded(15);
 				if (characterComponent.IsAlive()) {
 					if (Game.IsInternal()) {
 						let diff = Time.time - startTime;
@@ -167,11 +165,15 @@ export class Player {
 							print("Waited " + math.floor(diff * 1000) + " ms for outfit.");
 						}
 					}
-					characterComponent.outfitDto = this.selectedOutfit;
-					CoreNetwork.ServerToClient.Character.ChangeOutfit.server.FireAllClients(
-						characterComponent.id,
-						this.selectedOutfit,
-					);
+					if (this.selectedOutfit) {
+						characterComponent.outfitDto = this.selectedOutfit;
+						CoreNetwork.ServerToClient.Character.ChangeOutfit.server.FireAllClients(
+							characterComponent.id,
+							this.selectedOutfit,
+						);
+					} else {
+						warn("Unable to load outfit for player: " + this.userId);
+					}
 				}
 			});
 		}
@@ -218,12 +220,17 @@ export class Player {
 	 * @param message Message to send in chat.
 	 */
 	public SendMessage(message: string): void {
-		if (Game.IsServer()) {
+		if (Game.IsServer() && !Game.IsHosting()) {
 			CoreNetwork.ServerToClient.ChatMessage.server.FireClient(this, message, undefined, undefined);
 		} else {
 			if (this.userId !== Game.localPlayer.userId) error("Cannot SendMessage to non-local client.");
 
-			Dependency<ClientChatSingleton>().RenderChatMessage(message);
+			// Defer here doesn't seem great. The purpose is to avoid "cannot broadcast from within a subscribed function"
+			// The problem is numerous places (ex: messaging when invalid command, broadcasting player joined server msg) trigger
+			// this to run. Ideally we can eventually support multiple broadcasts simultaneously but until that this patch works.
+			task.defer(() => {
+				contextbridge.broadcast<(rawText: string) => void>("Chat:AddLocalMessage", message);
+			});
 		}
 	}
 

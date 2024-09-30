@@ -93,6 +93,10 @@ export class ProtectedUserController {
 	public async GetUserById(userId: string): Promise<ReturnType<BridgeApiGetUserById>> {
 		const res = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/users/uid/${userId}`);
 
+		if (res.statusCode === 404) {
+			return undefined;
+		}
+
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to get user. Status Code:  ${res.statusCode}.\n`, res.error);
 			throw res.error;

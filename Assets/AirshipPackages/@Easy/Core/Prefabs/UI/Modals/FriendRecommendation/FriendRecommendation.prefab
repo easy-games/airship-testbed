@@ -509,7 +509,8 @@ GameObject:
   - component: {fileID: 7989023762949546370}
   - component: {fileID: 8567483083159053290}
   - component: {fileID: 1641769009405390987}
-  - component: {fileID: 2442769322648999144}
+  - component: {fileID: 2303681727769019818}
+  - component: {fileID: 5370973479211432417}
   m_Layer: 5
   m_Name: FriendRecommendation
   m_TagString: Untagged
@@ -766,11 +767,23 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 5370973479211432417}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &2442769322648999144
+--- !u!225 &2303681727769019818
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7258860404998580013}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &5370973479211432417
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -783,7 +796,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 0

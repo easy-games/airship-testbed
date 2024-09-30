@@ -8,100 +8,6 @@ local TS = {}
 
 TS.Promise = Promise
 
--- function TS.getModule(context, scope, moduleName)
--- 	-- legacy call signature
--- 	if moduleName == nil then
--- 		moduleName = scope
--- 		scope = DEFAULT_SCOPE
--- 	end
-
--- 	-- ensure modules have fully replicated
--- 	if RunService:IsRunning() and RunService:IsClient() and not isPlugin(context) and not game:IsLoaded() then
--- 		game.Loaded:Wait()
--- 	end
-
--- 	local object = context
--- 	repeat
--- 		local nodeModulesFolder = object:FindFirstChild(NODE_MODULES)
--- 		if nodeModulesFolder then
--- 			local scopeFolder = nodeModulesFolder:FindFirstChild(scope)
--- 			if scopeFolder then
--- 				local module = scopeFolder:FindFirstChild(moduleName)
--- 				if module then
--- 					return module
--- 				end
--- 			end
--- 		end
--- 		object = object.Parent
--- 	until object == nil
-
--- 	error(OUTPUT_PREFIX .. "Could not find module: " .. moduleName, 2)
--- end
-
--- This is a hash which TS.import uses as a kind of linked-list-like history of [Script who Loaded] -> Library
--- local currentlyLoading = {}
--- local registeredLibraries = {}
-
--- function TS.import(context, module, ...)
--- 	for i = 1, select("#", ...) do
--- 		module = module:WaitForChild((select(i, ...)))
--- 	end
-
--- 	if module.ClassName ~= "ModuleScript" then
--- 		error(OUTPUT_PREFIX .. "Failed to import! Expected ModuleScript, got " .. module.ClassName, 2)
--- 	end
-
--- 	currentlyLoading[context] = module
-
--- 	-- Check to see if a case like this occurs:
--- 	-- module -> Module1 -> Module2 -> module
-
--- 	-- WHERE currentlyLoading[module] is Module1
--- 	-- and currentlyLoading[Module1] is Module2
--- 	-- and currentlyLoading[Module2] is module
-
--- 	local currentModule = module
--- 	local depth = 0
-
--- 	while currentModule do
--- 		depth = depth + 1
--- 		currentModule = currentlyLoading[currentModule]
-
--- 		if currentModule == module then
--- 			local str = currentModule.Name -- Get the string traceback
-
--- 			for _ = 1, depth do
--- 				currentModule = currentlyLoading[currentModule]
--- 				str = str .. "  ⇒ " .. currentModule.Name
--- 			end
-
--- 			error(OUTPUT_PREFIX .. "Failed to import! Detected a circular dependency chain: " .. str, 2)
--- 		end
--- 	end
-
--- 	if not registeredLibraries[module] then
--- 		if _G[module] then
--- 			error(
--- 				OUTPUT_PREFIX
--- 				.. "Invalid module access! Do you have multiple TS runtimes trying to import this? "
--- 				.. module:GetFullName(),
--- 				2
--- 			)
--- 		end
-
--- 		_G[module] = TS
--- 		registeredLibraries[module] = true -- register as already loaded for subsequent calls
--- 	end
-
--- 	local data = require(module)
-
--- 	if currentlyLoading[context] == module then -- Thread-safe cleanup!
--- 		currentlyLoading[context] = nil
--- 	end
-
--- 	return data
--- end
-
 function TS.instanceof(obj, class)
 	-- custom Class.instanceof() check
 	if type(class) == "table" and type(class.instanceof) == "function" then
@@ -132,14 +38,14 @@ function TS.async(callback)
 		local n = select("#", ...)
 		local args = { ... }
 		return Promise.new(function(resolve, reject)
-			coroutine.wrap(function()
+			task.spawn(function()
 				local ok, result = pcall(callback, unpack(args, 1, n))
 				if ok then
 					resolve(result)
 				else
 					reject(result)
 				end
-			end)()
+			end)
 		end)
 	end
 end

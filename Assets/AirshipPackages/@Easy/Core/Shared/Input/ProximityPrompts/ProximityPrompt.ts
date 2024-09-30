@@ -32,11 +32,24 @@ export default class ProximityPrompt extends AirshipBehaviour {
 	@NonSerialized()
 	public id!: number;
 
-	/** On activated signal. */
+	/**
+	 * On activated signal.
+	 *
+	 * This only works on the Client.
+	 **/
 	@NonSerialized() public onActivated = new Signal<void>();
-	/** On entered proximity signal. */
+	/**
+	 * On entered proximity signal.
+	 *
+	 * This only works on the Client.
+	 **/
 	@NonSerialized() public onShown = new Signal<void>();
-	/** On exited proximity signal. */
+
+	/**
+	 * On exited proximity signal.
+	 *
+	 * This only works on the Client.
+	 **/
 	@NonSerialized() public onHidden = new Signal<void>();
 
 	private shownBin = new Bin();
@@ -78,11 +91,11 @@ export default class ProximityPrompt extends AirshipBehaviour {
 		this.bin.Clean();
 	}
 
-	public KeyDown(): void {
+	private KeyDown(): void {
 		NativeTween.LocalScale(this.canvas.transform, Vector3.one.mul(0.8), 0.08).SetEaseQuadOut();
 	}
 
-	public KeyUp(): void {
+	private KeyUp(): void {
 		NativeTween.LocalScale(this.canvas.transform, new Vector3(1, 1, 1), 0.08).SetEaseQuadOut();
 	}
 
@@ -101,12 +114,17 @@ export default class ProximityPrompt extends AirshipBehaviour {
 		(this.maxRange as number) = val;
 	}
 
-	/** Called when prompt activates. */
-	public Activate(): void {
+	/**
+	 * Triggers the onActivated event on the prompt.
+	 *
+	 * Use this to manually trigger prompts using custom mechanics.
+	 *
+	 **/
+	protected Activate(): void {
 		this.onActivated.Fire();
 	}
 
-	public Hide(instant?: boolean): void {
+	protected Hide(instant?: boolean): void {
 		if (!this.shown) return;
 		this.shown = false;
 
@@ -132,7 +150,7 @@ export default class ProximityPrompt extends AirshipBehaviour {
 		this.onHidden.Fire();
 	}
 
-	public Show(): void {
+	protected Show(): void {
 		if (this.shown) return;
 		this.shown = true;
 		this.shownBin.Clean();

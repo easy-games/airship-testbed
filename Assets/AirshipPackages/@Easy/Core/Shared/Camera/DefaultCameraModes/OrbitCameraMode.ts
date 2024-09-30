@@ -1,5 +1,4 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
-import { Game } from "@Easy/Core/Shared/Game";
 import { ControlScheme, Keyboard, Mouse, Preferred, Touchscreen } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CameraMode } from "../CameraMode";
@@ -9,13 +8,13 @@ import DefaultCameraMask from "../DefaultCameraMask";
 const MIN_ROT_X = math.rad(1);
 const MAX_ROT_X = math.rad(179);
 
-let MOUSE_SENS_SCALAR = 0.02;
-if (Game.IsMac()) {
-	MOUSE_SENS_SCALAR *= 5;
-}
-if (!Game.IsEditor()) {
-	MOUSE_SENS_SCALAR *= 0.15;
-}
+const MOUSE_SENS_SCALAR = 15;
+// if (Game.IsMac()) {
+// 	MOUSE_SENS_SCALAR *= 5;
+// }
+// if (!Game.IsEditor()) {
+// 	MOUSE_SENS_SCALAR *= 0.15;
+// }
 const Y_LOCKED_ROTATION = math.rad(15);
 const Y_OFFSET = 1.85;
 
@@ -38,6 +37,8 @@ export class OrbitCameraMode extends CameraMode {
 
 	private mouseLocked = false;
 	private mouseLockSwapped = false;
+	private mouseSmoothingEnabled = true;
+	private smoothVector = new Vector2(0, 0);
 
 	private readonly preferred = this.bin.Add(new Preferred());
 	private readonly touchscreen = this.bin.Add(new Touchscreen());
@@ -168,14 +169,32 @@ export class OrbitCameraMode extends CameraMode {
 				this.mouseLockSwapped = false;
 				mouseDelta = new Vector2(0, 0);
 			}
+			let moveDelta = mouseDelta;
+
+			// Trying to do 1/MOUSE_SMOOTHING every 1/120th of a second (while supporting variable dt). Not sure if this math checks out.
+			if (this.mouseSmoothingEnabled) {
+				// Raise to the 1.8 to reduce movement near 0
+				// if (math.abs(mouseDelta.x) < 1 && math.abs(mouseDelta.y) < 1) {
+				// 	mouseDelta = new Vector2(math.pow(math.abs(mouseDelta.x), 1.8) * math.sign(mouseDelta.x), math.pow(math.abs(mouseDelta.y), 1.8) * math.sign(mouseDelta.y));
+				// }
+
+				const smoothFactor = math.pow(1 / (1 + Airship.Input.GetMouseSmoothing()), Time.deltaTime * 120);
+				// print(smoothFactor);
+				this.smoothVector = new Vector2(
+					Mathf.Lerp(this.smoothVector.x, mouseDelta.x, smoothFactor),
+					Mathf.Lerp(this.smoothVector.y, mouseDelta.y, smoothFactor),
+				);
+				moveDelta = this.smoothVector;
+			}
 
 			const mouseSensitivity = Airship.Input.GetMouseSensitivity();
 			if (!this.lockView) {
 				// this.mouse.SetPosition(this.rightClickPos);
 			}
-			this.rotationY = (this.rotationY - mouseDelta.x * mouseSensitivity * MOUSE_SENS_SCALAR) % (math.pi * 2);
+			this.rotationY =
+				(this.rotationY - (mouseDelta.x / Screen.width) * mouseSensitivity * MOUSE_SENS_SCALAR) % (math.pi * 2);
 			this.rotationX = math.clamp(
-				this.rotationX + mouseDelta.y * mouseSensitivity * MOUSE_SENS_SCALAR,
+				this.rotationX + (moveDelta.y / Screen.width) * mouseSensitivity * MOUSE_SENS_SCALAR,
 				MIN_ROT_X,
 				MAX_ROT_X,
 			);
@@ -206,8 +225,8 @@ export class OrbitCameraMode extends CameraMode {
 		let rotation: Quaternion;
 
 		let lv = posOffset.mul(-1).normalized;
-		if(lv === Vector3.zero){
-			lv = new Vector3(0,0,.01);
+		if (lv === Vector3.zero) {
+			lv = new Vector3(0, 0, 0.01);
 		}
 		rotation = Quaternion.LookRotation(lv, Vector3.up);
 

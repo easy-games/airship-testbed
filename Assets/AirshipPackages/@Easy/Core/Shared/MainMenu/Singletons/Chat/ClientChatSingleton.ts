@@ -18,6 +18,7 @@ import { ChatUtil } from "@Easy/Core/Shared/Util/ChatUtil";
 import { SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { SetInterval, SetTimeout } from "@Easy/Core/Shared/Util/Timer";
 import { MainMenuBlockSingleton } from "../../../../Client/ProtectedControllers//Settings/MainMenuBlockSingleton";
+import ChatWindow from "./ChatWindow";
 import { MessageCommand } from "./ClientCommands/MessageCommand";
 import { ReplyCommand } from "./ClientCommands/ReplyCommand";
 
@@ -79,6 +80,8 @@ export class ClientChatSingleton {
 	private commands = new Map<string, ChatCommand>();
 	private lastChatMessageRenderedTime = Time.time;
 
+	public chatWindow: ChatWindow;
+
 	constructor() {
 		const refs = Dependency<CoreUIController>().refs.GetValue("Apps", "Chat").GetComponent<GameObjectReferences>()!;
 		this.canvas = refs.GetValue("UI", "Canvas").GetComponent<Canvas>()!;
@@ -87,6 +90,7 @@ export class ClientChatSingleton {
 		this.chatMessagePrefab = refs.GetValue("UI", "ChatMessagePrefab");
 		this.inputField = refs.GetValue("UI", "InputField");
 		this.inputTransform = refs.GetValue("UI", "Input");
+		this.chatWindow = this.canvas.gameObject.GetAirshipComponent<ChatWindow>()!;
 		this.inputWrapperImage = this.inputTransform.GetComponent<Image>()!;
 		this.content.gameObject.ClearChildren();
 
@@ -136,23 +140,6 @@ export class ClientChatSingleton {
 		contextbridge.callback<(val: boolean) => void>("ClientChatSingleton:SetUIEnabled", (from, val) => {
 			this.canvas.gameObject.SetActive(val);
 		});
-
-		if (Game.IsInGame()) {
-			task.unscaledDelay(0, () => {
-				// const overlayCanvas = Object.Instantiate(
-				// 	Asset.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/UI/MobileControls/AirshipOverlayCanvas.prefab"),
-				// 	CoreRefs.protectedTransform,
-				// );
-				// const controls = new Preferred();
-				// controls.ObserveControlScheme((scheme) => {
-				// 	if (scheme === ControlScheme.Touch) {
-				// 		overlayCanvas.SetActive(true);
-				// 	} else {
-				// 		overlayCanvas.SetActive(false);
-				// 	}
-				// });
-			});
-		}
 	}
 
 	public OpenMobile(): void {
@@ -199,9 +186,7 @@ export class ClientChatSingleton {
 		const isMainMenu = Game.coreContext === CoreContext.MAIN_MENU;
 		if (isMainMenu) return;
 
-		contextbridge.callback<
-			(rawText: string, nameWithPrefix: string | undefined, senderClientId: number | undefined) => void
-		>("Chat:AddMessage", (fromContext, rawText, nameWithPrefix, senderClientId) => {
+		contextbridge.subscribe("Chat:AddLocalMessage", (context: LuauContext, rawText: string, nameWithPrefix?: string, senderClientId?: number) => {
 			this.AddMessage(rawText, nameWithPrefix, senderClientId);
 		});
 
@@ -343,6 +328,10 @@ export class ClientChatSingleton {
 			new Vector2(this.inputTransform.sizeDelta.x, 40),
 			0.04,
 		)?.SetUseUnscaledTime(true);
+		if (!Game.IsMobile()) {
+			this.chatWindow.FocusDesktop();
+		}
+
 		// this.chatInputBin.Add(() => {
 		// 	t.Cancel();
 		// });
@@ -357,6 +346,10 @@ export class ClientChatSingleton {
 			0.04,
 		)?.SetUseUnscaledTime(true);
 		this.selected = false;
+
+		if (!Game.IsMobile()) {
+			this.chatWindow.UnfocusDesktop();
+		}
 		// this.chatInputBin.Add(() => {
 		// 	t.Cancel();
 		// });
@@ -416,12 +409,12 @@ export class ClientChatSingleton {
 		}
 
 		if (sendChatToServer) {
+			print("Send chat message from: " + contextbridge.current());
 			CoreNetwork.ClientToServer.SendChatMessage.client.FireServer(message);
 		}
 	}
 
 	public RenderChatMessage(message: string, sender?: ProtectedPlayer): void {
-		print(message);
 		try {
 			const chatMessage = GameObjectUtil.InstantiateIn(this.chatMessagePrefab, this.content.transform);
 			const refs = chatMessage.GetComponent<GameObjectReferences>()!;

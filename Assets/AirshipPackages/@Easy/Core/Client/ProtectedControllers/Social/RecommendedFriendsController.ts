@@ -3,6 +3,7 @@ import { Game } from "@Easy/Core/Shared/Game";
 import { Protected } from "@Easy/Core/Shared/Protected";
 import { MapUtil } from "@Easy/Core/Shared/Util/MapUtil";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
+import { ProtectedUserController } from "../Airship/User/UserController";
 import { ProtectedFriendsController } from "./FriendsController";
 import { MainMenuPartyController } from "./MainMenuPartyController";
 import { SteamFriendsProtectedController } from "./SteamFriendsProtectedController";
@@ -62,7 +63,7 @@ export class RecommendedFriendsController implements OnStart {
 			Protected.protectedPlayers.ObservePlayers((p) => {
 				const gameData = Game.WaitForGameData();
 
-				if (p.IsLocalPlayer()) return;
+				if (Protected.user.localUser?.uid === p.userId) return;
 				if (seenThisSession.has(p.userId)) return;
 				// If we're way over max recommendations stop adding new users. Otherwise we'll purge when saving.
 				if (this.recommendedFriends.recommendations.size() > MAX_RECOMMENDED_FRIENDS * 2) return;
@@ -132,6 +133,12 @@ export class RecommendedFriendsController implements OnStart {
 		});
 	}
 
+	public DeleteRecommendation(userId: string) {
+		this.recommendedFriends.recommendations.delete(userId);
+		this.sortOutdated = true;
+		this.fileRequiresSave = true;
+	}
+
 	private TrimRecommendedFriends() {
 		if (this.recommendedFriends.recommendations.size() < MAX_RECOMMENDED_FRIENDS) return;
 
@@ -182,6 +189,10 @@ export class RecommendedFriendsController implements OnStart {
 			const steamFriendsWithAirship = Dependency<SteamFriendsProtectedController>().GetSteamFriendsWithAirship();
 			if (steamFriendsWithAirship) {
 				for (const [uid, data] of steamFriendsWithAirship) {
+					const friendsController = Dependency<ProtectedFriendsController>();
+					if (friendsController.IsFriendsWith(uid)) continue; // Already friends
+					if (friendsController.HasOutgoingFriendRequest(uid)) continue;
+
 					const rec = this.GetDefaultRecommendedFriend(data.username);
 					rec.context.steamFriend = data.steamName;
 
@@ -190,6 +201,13 @@ export class RecommendedFriendsController implements OnStart {
 						uid: uid,
 					})
 				}
+			}
+
+			const localUserId = Dependency<ProtectedUserController>().localUser?.uid;
+			if (localUserId !== undefined) {
+				this.sortedRecommendations = this.sortedRecommendations.filter(r => {
+					return r.uid !== localUserId;
+				});
 			}
 			this.sortedRecommendations.sort((a, b) => {
 				const aScore = this.GetRecommendationScore(a.recommendation);

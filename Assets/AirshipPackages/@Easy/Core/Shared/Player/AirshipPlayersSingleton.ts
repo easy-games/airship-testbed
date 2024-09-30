@@ -8,13 +8,13 @@ import { Team } from "@Easy/Core/Shared/Team/Team";
 import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
 import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
-import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { Asset } from "../Asset";
 import { AvatarPlatformAPI } from "../Avatar/AvatarPlatformAPI";
 import { CoreLogger } from "../Logger/CoreLogger";
 import { AirshipUrl } from "../Util/AirshipUrl";
+import { RunUtil } from "../Util/RunUtil";
 import { Levenshtein } from "../Util/Strings/Levenshtein";
 import { OnUpdate } from "../Util/Timer";
 import { DecodeJSON, EncodeJSON } from "../json";
@@ -48,15 +48,15 @@ export class AirshipPlayersSingleton {
 
 	private playersPendingReady = new Map<number, Player>();
 
-	private cachedProfilePictureTextures = new Map<string, Texture2D>();
-	private cachedProfilePictureSprite = new Map<string, Sprite>();
+	private cachedProfilePictureTexturesByUserId = new Map<string, Texture2D>();
+	private cachedProfilePictureSpriteByUserId = new Map<string, Sprite>();
+	private cachedProfilePictureByImageId = new Map<string, Texture2D>();
+	private cachedUserIdToProfileImageId = new Map<string, string>();
 
-	private profilePictureByImageIdCache = new Map<string, Texture2D>();
 	private outfitFetchTime = new Map<string, number>();
 
 	constructor() {
 		Airship.Players = this;
-		// const timeStart = Time.time;
 
 		const FetchLocalPlayerWithWait = () => {
 			let localPlayerInfo: PlayerInfo | undefined = this.playerManagerBridge.localPlayer;
@@ -142,24 +142,22 @@ export class AirshipPlayersSingleton {
 			// HttpManager.SetLoggingEnabled(true);
 		}
 
-		if (Game.IsGameLuauContext()) {
-			task.spawn(() => {
+		task.spawn(() => {
+			if (Game.IsClient()) {
+				this.InitClient();
+			}
+			if (Game.IsServer()) {
 				if (Game.IsClient()) {
-					this.InitClient();
-				}
-				if (Game.IsServer()) {
-					if (Game.IsClient()) {
-						Game.WaitForLocalPlayerLoaded();
-					}
-					this.InitServer();
-				}
-
-				if (Game.IsClient() && Game.coreContext === CoreContext.GAME) {
 					Game.WaitForLocalPlayerLoaded();
-					CoreNetwork.ClientToServer.Ready.client.FireServer();
 				}
-			});
-		}
+				this.InitServer();
+			}
+
+			if (Game.IsClient() && Game.coreContext === CoreContext.GAME && Game.IsProtectedLuauContext()) {
+				Game.WaitForLocalPlayerLoaded();
+				CoreNetwork.ClientToServer.Ready.client.FireServer();
+			}
+		});
 	}
 
 	/**
@@ -192,14 +190,28 @@ export class AirshipPlayersSingleton {
 			}
 		});
 
-		CoreNetwork.ServerToClient.AllPlayers.client.OnServerEvent((playerDtos) => {
-			for (let dto of playerDtos) {
-				this.AddPlayerClient(dto);
-			}
-		});
-		CoreNetwork.ServerToClient.AddPlayer.client.OnServerEvent((playerDto) => {
-			this.AddPlayerClient(playerDto);
-		});
+		// These remotes only come through in prot context
+		if (Game.IsProtectedLuauContext()) {
+			CoreNetwork.ServerToClient.AllPlayers.client.OnServerEvent((playerDtos) => {
+				contextbridge.broadcast<(clients: PlayerDto[]) => void>("ProtectedPlayers:AddClients", playerDtos);
+				for (let dto of playerDtos) {
+					this.AddPlayerClient(dto);
+				}
+			});
+			CoreNetwork.ServerToClient.AddPlayer.client.OnServerEvent((playerDto) => {
+				contextbridge.broadcast<(clients: PlayerDto[]) => void>("ProtectedPlayers:AddClients", [playerDto]);
+				this.AddPlayerClient(playerDto);
+			});
+		} else if (Game.IsGameLuauContext()) {
+			contextbridge.subscribe<(from: LuauContext, clients: PlayerDto[]) => void>(
+				"ProtectedPlayers:AddClients",
+				(from, clients) => {
+					for (const dto of clients) {
+						this.AddPlayerClient(dto);
+					}
+				},
+			);
+		}
 		CoreNetwork.ServerToClient.RemovePlayer.client.OnServerEvent((clientId) => {
 			const player = this.FindByConnectionId(clientId);
 			if (player) {
@@ -218,6 +230,7 @@ export class AirshipPlayersSingleton {
 				player = Game.localPlayer;
 			} else {
 				let playerInfo = dto.gameObject.GetComponent<PlayerInfo>()!;
+				// print("Making new player with connectionId: " + dto.connectionId);
 				player = new Player(
 					dto.gameObject.GetComponent<NetworkIdentity>()!,
 					dto.connectionId,
@@ -269,38 +282,76 @@ export class AirshipPlayersSingleton {
 			onPlayerRemoved(clientInfo);
 		});
 
+		if (Game.IsProtectedLuauContext()) {
+			CoreNetwork.ClientToServer.Ready.server.OnClientEvent((player) => {
+				this.HandlePlayerConnect(player);
+				contextbridge.broadcast<(connId: number) => void>("ProtectedPlayers:PlayerReady", player.connectionId);
+			});
+		} else if (Game.IsGameLuauContext()) {
+			contextbridge.subscribe<(context: LuauContext, connId: number) => void>(
+				"ProtectedPlayers:PlayerReady",
+				(context, connId) => {
+					const player = this.playersPendingReady.get(connId);
+					if (!player) {
+						warn("Failed to register player: not found in players list.");
+						return;
+					}
+					// fetch outfit
+					task.spawn(() => {
+						this.FetchEquippedOutfit(player, false);
+					});
+					this.HandlePlayerConnect(player);
+				},
+			);
+		}
+
+		if (Game.IsProtectedLuauContext()) {
+			CoreNetwork.ClientToServer.ChangedOutfit.server.OnClientEvent((player) => {
+				contextbridge.broadcast<(connId: number) => void>(
+					"ProtectedPlayers:ChangedOutfitServer",
+					player.connectionId,
+				);
+			});
+		} else if (Game.IsGameLuauContext()) {
+			contextbridge.subscribe<(from: LuauContext, connId: number) => void>(
+				"ProtectedPlayers:ChangedOutfitServer",
+				(from, connId) => {
+					const player = this.FindByConnectionId(connId);
+					if (!player) {
+						warn("Couldn't find player when equipping outfit. connId=" + connId);
+						return;
+					}
+
+					this.FetchEquippedOutfit(player, true).then(() => {
+						if (Airship.Characters.allowMidGameOutfitChanges && player.character) {
+							const outfitDto = player.selectedOutfit;
+							player.character.outfitDto = outfitDto;
+							if (Game.IsGameLuauContext() && outfitDto) {
+								CoreNetwork.ServerToClient.Character.ChangeOutfit.server.FireAllClients(
+									player.character.id,
+									outfitDto,
+								);
+							}
+						}
+					});
+				},
+			);
+		}
+
 		// Player completes join
 		if (Game.IsGameLuauContext()) {
-			CoreNetwork.ClientToServer.Ready.server.OnClientEvent((player) => {
-				// fetch outfit
-				task.spawn(() => {
-					this.FetchEquippedOutfit(player, false);
-				});
-
-				if (RunUtil.IsHosting()) {
-					this.HandlePlayerReadyServer(Game.localPlayer);
-					return;
-				}
-
-				this.playersPendingReady.delete(player.connectionId);
-				this.HandlePlayerReadyServer(player);
-			});
-
-			CoreNetwork.ClientToServer.ChangedOutfit.server.OnClientEvent((player) => {
-				this.FetchEquippedOutfit(player, true).then(() => {
-					if (Airship.Characters.allowMidGameOutfitChanges && player.character) {
-						const outfitDto = player.selectedOutfit;
-						player.character.outfitDto = outfitDto;
-						if (Game.IsGameLuauContext()) {
-							CoreNetwork.ServerToClient.Character.ChangeOutfit.server.FireAllClients(
-								player.character.id,
-								outfitDto,
-							);
-						}
-					}
-				});
-			});
+			CoreNetwork.ClientToServer.ChangedOutfit.server.OnClientEvent((player) => {});
 		}
+	}
+
+	private HandlePlayerConnect(player: Player) {
+		if (RunUtil.IsHosting()) {
+			this.HandlePlayerReadyServer(Game.localPlayer);
+			return;
+		}
+
+		this.playersPendingReady.delete(player.connectionId);
+		this.HandlePlayerReadyServer(player);
 	}
 
 	private async FetchEquippedOutfit(player: Player, ignoreCache: boolean): Promise<boolean> {
@@ -348,7 +399,7 @@ export class AirshipPlayersSingleton {
 				task.unscaledWait();
 			}
 		}
-		if (Game.IsGameLuauContext()) {
+		if (Game.IsProtectedLuauContext()) {
 			CoreNetwork.ServerToClient.ServerInfo.server.FireClient(
 				player,
 				Game.gameId,
@@ -362,12 +413,12 @@ export class AirshipPlayersSingleton {
 		}
 
 		// notify all clients of the joining player
-		if (Game.IsGameLuauContext()) {
+		if (Game.IsProtectedLuauContext()) {
 			CoreNetwork.ServerToClient.AddPlayer.server.FireExcept(player, player.Encode());
 		}
 
 		// send list of all connected players to the joining player
-		if (Game.IsGameLuauContext()) {
+		if (Game.IsProtectedLuauContext()) {
 			const playerDtos: PlayerDto[] = table.create(this.players.size());
 			for (let p of this.players) {
 				playerDtos.push(p.Encode());
@@ -530,7 +581,7 @@ export class AirshipPlayersSingleton {
 	 * Special method used for startup handshake.
 	 * @internal
 	 */
-	public FindByClientIdIncludePending(clientId: number): Player | undefined {
+	public FindByConnectionIdIncludePending(clientId: number): Player | undefined {
 		return this.FindByConnectionId(clientId) ?? this.playersPendingReady.get(clientId);
 	}
 
@@ -539,7 +590,7 @@ export class AirshipPlayersSingleton {
 	 */
 	public WaitForClientIdIncludePending(clientId: number, timeout = 5): Promise<Player | undefined> {
 		return new Promise((resolve) => {
-			let readyOrPending = this.FindByClientIdIncludePending(clientId);
+			let readyOrPending = this.FindByConnectionIdIncludePending(clientId);
 			if (readyOrPending) {
 				resolve(readyOrPending);
 				return;
@@ -547,7 +598,7 @@ export class AirshipPlayersSingleton {
 			let acc = 0;
 			const disconnect = OnUpdate.Connect((dt) => {
 				acc += dt;
-				readyOrPending = this.FindByClientIdIncludePending(clientId);
+				readyOrPending = this.FindByConnectionIdIncludePending(clientId);
 				if (acc >= timeout) {
 					disconnect();
 					resolve(undefined);
@@ -631,7 +682,12 @@ export class AirshipPlayersSingleton {
 	 * @internal
 	 */
 	public GetDefaultProfilePictureFromUserId(userId: string): Texture2D {
-		const [num] = string.byte(userId, userId.size());
+		let num = 0;
+		if (userId.size() > 0) {
+			const [n] = string.byte(userId, userId.size());
+			num = n;
+		}
+
 		let files = [
 			"Assets/AirshipPackages/@Easy/Core/Prefabs/Images/ProfilePictures/BlueDefaultProfilePicture.png",
 			"Assets/AirshipPackages/@Easy/Core/Prefabs/Images/ProfilePictures/RedDefaultProfilePicture.png",
@@ -653,20 +709,23 @@ export class AirshipPlayersSingleton {
 	 * exist it will return the default profile picture for the user.
 	 */
 	public async GetProfilePictureAsync(userId: string, useLocalCache = true): Promise<Texture2D> {
-		const cachedByUserId = this.cachedProfilePictureTextures.get(userId);
+		const cachedByUserId = this.cachedProfilePictureTexturesByUserId.get(userId);
 		if (useLocalCache && cachedByUserId) {
 			return cachedByUserId;
 		}
 
 		const [success, user] = Dependency<AirshipUserController>().GetUserById(userId, useLocalCache).await();
 		if (!success || user?.profileImageId === undefined) {
-			return this.GetDefaultProfilePictureFromUserId(userId);
+			const texture = this.GetDefaultProfilePictureFromUserId(userId);
+			this.cachedProfilePictureTexturesByUserId.set(userId, texture);
+			return texture;
 		}
 
 		const imageId = user.profileImageId;
 		const texture = await this.GetProfilePictureFromImageId(imageId, useLocalCache);
 		if (texture) {
-			this.cachedProfilePictureTextures.set(userId, texture);
+			this.cachedProfilePictureTexturesByUserId.set(userId, texture);
+			this.cachedProfilePictureByImageId.set(imageId, texture);
 			return texture;
 		}
 		return this.GetDefaultProfilePictureFromUserId(userId);
@@ -679,16 +738,16 @@ export class AirshipPlayersSingleton {
 	private async GetProfilePictureFromImageId(imageId: string, useLocalCache = true): Promise<Texture2D | undefined> {
 		// First check cache for image
 		if (useLocalCache) {
-			const existing = this.profilePictureByImageIdCache.get(imageId);
-			if (existing) {
-				return existing;
+			const existingTexture = this.cachedProfilePictureByImageId.get(imageId);
+			if (existingTexture) {
+				return existingTexture;
 			}
 		}
 
 		// Download image if not found locally (or useLocalCache = false)
 		const texture = Bridge.DownloadTexture2DYielding(`${AirshipUrl.CDN}/images/${imageId}`);
 		if (texture) {
-			this.profilePictureByImageIdCache.set(imageId, texture);
+			this.cachedProfilePictureByImageId.set(imageId, texture);
 			return texture;
 		}
 		return undefined;
@@ -699,7 +758,7 @@ export class AirshipPlayersSingleton {
 	 * @param userId
 	 */
 	public ClearProfilePictureCache(userId: string): void {
-		this.cachedProfilePictureSprite.delete(userId);
-		this.cachedProfilePictureTextures.delete(userId);
+		this.cachedProfilePictureSpriteByUserId.delete(userId);
+		this.cachedProfilePictureTexturesByUserId.delete(userId);
 	}
 }

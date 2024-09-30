@@ -87,14 +87,16 @@ export class AirshipUserController {
 		}
 
 		let result: ReturnType<BridgeApiGetUserById>;
-		if (contextbridge.current() !== LuauContext.Protected) {
+		if (contextbridge.current() === LuauContext.Protected) {
+			// print("[API Client_Protected]: GetUserById " + userId + " " + debug.traceback());
+			result = await Dependency<ProtectedUserController>().GetUserById(userId);
+		} else {
+			// print("[API Client_Game]: GetUserById " + userId + " " + debug.traceback());
 			result = contextbridge.invoke<BridgeApiGetUserById>(
 				UserControllerBridgeTopics.GetUserById,
 				LuauContext.Protected,
 				userId,
 			);
-		} else {
-			result = await Dependency<ProtectedUserController>().GetUserById(userId);
 		}
 
 		this.AddUserToCache(userId, result);

@@ -206,7 +206,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2155337513137235902, guid: 181b2904433958842b5d064457bf28cf, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 1161.7725
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2155337513137235902, guid: 181b2904433958842b5d064457bf28cf, type: 3}
       propertyPath: m_SizeDelta.y
@@ -408,6 +408,34 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6934736764521813171, guid: 181b2904433958842b5d064457bf28cf, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6934736764521813171, guid: 181b2904433958842b5d064457bf28cf, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6934736764521813171, guid: 181b2904433958842b5d064457bf28cf, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6934736764521813171, guid: 181b2904433958842b5d064457bf28cf, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6934736764521813171, guid: 181b2904433958842b5d064457bf28cf, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6934736764521813171, guid: 181b2904433958842b5d064457bf28cf, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7531252219990268584, guid: 181b2904433958842b5d064457bf28cf, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7555839764175971262, guid: 181b2904433958842b5d064457bf28cf, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -439,6 +467,10 @@ PrefabInstance:
     - target: {fileID: 8977788296866168925, guid: 181b2904433958842b5d064457bf28cf, type: 3}
       propertyPath: m_Name
       value: HomePage
+      objectReference: {fileID: 0}
+    - target: {fileID: 9103378589906694925, guid: 181b2904433958842b5d064457bf28cf, type: 3}
+      propertyPath: m_Material
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

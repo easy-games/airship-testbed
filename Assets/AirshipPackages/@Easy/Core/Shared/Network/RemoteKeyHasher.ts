@@ -80,14 +80,6 @@ export class RemoteKeyHasher {
 		if (append) absoluteKey = `${absoluteKey}${append}`;
 
 		let keyHash = absoluteKey.hash();
-		// Make all game ids odd and all protected ids even.
-		// This is a temporary fix for this card:
-		// https://www.notion.so/easygg/NetworkFunction-seems-to-cause-remote-queue-to-fill-up-due-to-callback-being-fired-in-core-game-cont-10992fb8edaa806591bee5196dd7c40a?pvs=4
-		if (context.isGame && (keyHash % 2) === 0) {
-			keyHash++;
-		} else if (!context.isGame && (keyHash % 2) === 1) {
-			keyHash++;
-		}
 
 		if (this.remoteIdentifierCache.has(absoluteKey)) {
 			error(

@@ -99,14 +99,24 @@ export class ProximityPromptController {
 
 						if (closest) {
 							this.shownPrompts.add(prompt);
-							prompt.Show();
+							(
+								prompt as unknown as {
+									Show(): void;
+								}
+							).Show();
+							// prompt.Show();
 							return;
 						}
 					}
 
 					// fallback to hide
 					this.shownPrompts.delete(prompt);
-					prompt.Hide();
+					(
+						prompt as unknown as {
+							Hide(): void;
+						}
+					).Hide();
+					// prompt.Hide();
 				});
 
 				distanceMap.clear();

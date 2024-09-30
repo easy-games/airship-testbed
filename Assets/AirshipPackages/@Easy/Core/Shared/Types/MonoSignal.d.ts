@@ -2,7 +2,7 @@ type MonoSignalParams<T> = Parameters<
 	T extends unknown[] ? (...args: T) => never : T extends unknown ? (arg: T) => never : () => never
 >;
 
-type MonoSignalCallback<T> = (...args: MonoSignalParams<T>) => boolean | void;
+type MonoSignalCallback<T> = (...args: MonoSignalParams<T>) => boolean | void | Promise<void>;
 
 /** Represents a connection to a MonoSignal. */
 interface MonoSignalConnection {

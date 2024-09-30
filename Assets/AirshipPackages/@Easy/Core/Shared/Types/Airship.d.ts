@@ -19,8 +19,8 @@ type Mutable<T> = {
 };
 
 interface Net {
-	OnBroadcastFromClientAction(callback: (clientId: number, blob: BinaryBlob) => void): void;
-	OnBroadcastFromServerAction(callback: (blob: BinaryBlob) => void): void;
+	OnBroadcastFromClientAction(callback: (fromContext: LuauContext, clientId: number, blob: BinaryBlob) => void): void;
+	OnBroadcastFromServerAction(callback: (fromContext: LuauContext, blob: BinaryBlob) => void): void;
 }
 
 interface BinaryBlob {
@@ -116,6 +116,7 @@ interface CharacterMovement extends Component {
 	OnAdjustMove(callback: (modifier: MoveModifier) => void): EngineEventConnection;
 	OnMoveDirectionChanged(callback: (direction: Vector3) => void): EngineEventConnection;
 	OnJumped(callback: (velocity: Vector3) => void): EngineEventConnection;
+	OnNewLookVector(callback: (newLookVector: Vector3) => void): EngineEventConnection;
 
 	GetLookVector(): Vector3;
 	IsSprinting(): boolean;
@@ -130,6 +131,7 @@ interface CharacterMovement extends Component {
 		moveDirWorldSpace: boolean,
 	): void;
 	SetLookVector(lookVector: Vector3): void;
+	SetLookVectorRecurring(lookVector: Vector3): void;
 	SetCustomData(customData: BinaryBlob): void;
 	SetFlying(enabled: boolean): void;
 	SetDebugFlying(enabled: boolean): void;
@@ -176,17 +178,6 @@ interface CharacterMovement extends Component {
 interface Nullable<T> {
 	HasValue: boolean;
 	Value: T;
-}
-
-interface VoxelWorld {
-	OnVoxelPlaced(callback: (voxel: number, x: number, y: number, z: number) => void): EngineEventConnection;
-	OnPreVoxelPlaced(callback: (voxel: number, x: number, y: number, z: number) => void): EngineEventConnection;
-	OnFinishedLoading(callback: () => void): EngineEventConnection;
-	OnFinishedReplicatingChunksFromServer(callback: () => void): EngineEventConnection;
-}
-
-interface VoxelWorldConstructor {
-	VoxelDataToBlockId(voxel: number);
 }
 
 declare const enum MobileJoystickPhase {
@@ -380,14 +371,7 @@ interface WindowProxy {
 	OnWindowFocus(callback: (hasFocus: boolean) => void): void;
 }
 
-interface PointLight extends Component {
-	color: Color;
-	intensity: number;
-	range: number;
-	castShadows: boolean;
-	highQualityLight: boolean;
-}
-
+ 
 interface DestroyWatcher extends Component {
 	OnDestroyedEvent(callback: () => void): EngineEventConnection;
 }
@@ -519,46 +503,6 @@ interface ProjectileManagerConstructor {
 }
 declare const ProjectileManager: ProjectileManagerConstructor;
 
-interface WorldSaveFile extends ScriptableObject {
-	chunks: CSArray<SaveChunk>;
-	worldPositions: CSArray<WorldPosition>;
-	pointLights: CSArray<SavePointLight>;
-	blockIdToScopeName: CSArray<BlockIdToScopedName>;
-	cubeMapPath: string;
-	globalSkySaturation: number;
-	globalSunColor: Color;
-	globalSunBrightness: number;
-	globalAmbientLight: Color;
-	globalAmbientBrightness: number;
-	globalAmbientOcclusion: number;
-	globalRadiosityScale: number;
-	globalRadiosityDirectLightAmp: number;
-	globalFogStart: number;
-	globalFogEnd: number;
-	globalFogColor: Color;
-
-	// eslint-disable-next-line @typescript-eslint/no-misused-new
-	constructor(): WorldSaveFile;
-
-	CreateFromVoxelWorld(world: VoxelWorld): void;
-	GetChunks(): CSArray<SaveChunk>;
-	GetFileBlockIdFromStringId(blockTypeId: string): number;
-	GetFileScopedBlockTypeId(fileBlockId: number): string;
-	GetMapObjects(): CSArray<WorldPosition>;
-	GetPointlights(): CSArray<SavePointLight>;
-	LoadIntoVoxelWorld(world: VoxelWorld): void;
-}
-
-interface SavePointLight {
-	name: string;
-	color: Color;
-	position: Vector3;
-	rotation: Quaternion;
-	intensity: number;
-	range: number;
-	castShadows: boolean;
-	highQualityLight: boolean;
-}
 
 interface AirshipProjectile {
 	OnHit(callback: (event: ProjectileHitEvent) => void): EngineEventConnection;
@@ -751,147 +695,6 @@ interface BridgeConstructor {
 }
 
 declare const easygg_objectrefs: unknown;
-
-interface VoxelWorld extends MonoBehaviour {
-	debugReloadOnScriptReloadMode: boolean;
-	radiosityEnabled: boolean;
-	globalSunBrightness: number;
-	globalSkyBrightness: number;
-	globalFogStart: number;
-	globalFogEnd: number;
-	globalFogColor: Color;
-	globalSkySaturation: number;
-	globalSunColor: Color;
-	globalAmbientLight: Color;
-	globalAmbientBrightness: number;
-	globalAmbientOcclusion: number;
-	globalRadiosityScale: number;
-	globalRadiosityDirectLightAmp: number;
-	showRadioistyProbes: boolean;
-	focusPosition: Vector3;
-	autoLoad: boolean;
-	voxelWorldFile: WorldSaveFile;
-	blockDefines: CSArray<TextAsset>;
-	worldNetworker: VoxelWorldNetworker;
-	chunksFolder: GameObject;
-	lightsFolder: GameObject;
-	finishedReplicatingChunksFromServer: boolean;
-	sceneLights: CSDictionary<number, LightReference>;
-	chunks: CSDictionary<unknown, Chunk>;
-	worldPositionEditorIndicators: CSDictionary<string, Transform>;
-	cubeMap: Cubemap;
-	cubeMapPath: string;
-	cubeMapSHData: CSArray<float3>;
-	lodNearDistance: number;
-	lodFarDistance: number;
-	lodTransitionSpeed: number;
-	pointLights: CSArray<GameObject>;
-	voxelWorldMaterialCache: CSDictionary<Material, Material>;
-	radiosityRaySamples: CSArray<CSArray<Vector3>>;
-	blocks: VoxelBlocks;
-	selectedBlockIndex: number;
-	renderingDisabled: boolean;
-	finishedLoading: boolean;
-	globalSunDirection: Vector3;
-	globalSunDirectionNormalized: Vector3;
-
-	// eslint-disable-next-line @typescript-eslint/no-misused-new
-	constructor(): VoxelWorld;
-
-	AddChunk(key: unknown, chunk: Chunk): void;
-	CalculateCheapSunAtPoint(point: Vector3, normal: Vector3): number;
-	CalculateDirectLightingForWorldPoint(samplePoint: Vector3, sunPoint: unknown, normal: Vector3, chunk: Chunk): Color;
-	CalculateLightingForWorldPoint(samplePoint: Vector3, normal: Vector3): unknown;
-	CalculateLightingForWorldPoint(samplePoint: Vector3, sunPoint: unknown, normal: Vector3, chunk: Chunk): unknown;
-	CalculatePlaneIntersection(origin: Vector3, dir: Vector3, planeNormal: Vector3, planePoint: Vector3): Vector3;
-	CalculatePointLightColorAtPoint(samplePoint: Vector3, normal: Vector3, lightRef: LightReference): number;
-	CalculatePointLightColorAtPointShadow(samplePoint: Vector3, normal: Vector3, lightRef: LightReference): Color;
-	CalculatePointLightShadowAtPoint(samplePoint: Vector3, normal: Vector3, lightRef: LightReference): number;
-	CalculateSunShadowAtPoint(point: Vector3, faceAxis: number, normal: Vector3): number;
-	CanSeePoint(pos: Vector3, dest: Vector3, destNormal: Vector3): boolean;
-	CreateSamples(): void;
-	DeleteRenderedGameObjects(): void;
-	DirtyMesh(voxel: unknown, priority: boolean): void;
-	DirtyNeighborMeshes(voxel: unknown, priority: boolean): void;
-	FullWorldUpdate(): void;
-	GenerateWorld(populateTerrain: boolean): void;
-	GetBlockDefinesContents(): CSArray<string>;
-	GetChunkByChunkPos(pos: unknown): Chunk;
-	GetCollisionType(voxelData: number): CollisionType;
-	GetDirectWorldLightingFromRayImpact(pos: Vector3, direction: Vector3, maxDistance: number): Color;
-	GetNumProcessingMeshChunks(): number;
-	GetNumRadiosityProcessingChunks(): number;
-	GetOrMakeRadiosityProbeFor(pos: unknown): RadiosityProbeSample;
-	GetRadiosityProbeColorForWorldPoint(pos: Vector3, normal: Vector3): Color;
-	GetRadiosityProbeColorIfVisible(key: unknown, pos: Vector3, normal: Vector3): Color;
-	GetRadiosityProbeIfVisible(key: unknown, pos: Vector3, normal: Vector3): RadiosityProbeSample;
-	GetVoxelAndChunkAt(pos: unknown): unknown;
-	GetVoxelAt(pos: Vector3): number;
-	GetWorldLightingFromRayImpact(
-		pos: Vector3,
-		direction: Vector3,
-		maxDistance: number,
-		debugSamples: CSArray<RadiosityProbeSample>,
-	): unknown;
-	InitializeLightingForChunk(chunk: Chunk): void;
-	InvokeOnFinishedReplicatingChunksFromServer(): void;
-	LoadEmptyWorld(cubeMapPath: string): void;
-	LoadWorldFromSaveFile(file: WorldSaveFile): void;
-	OnRenderObject(): void;
-	PlaceGrassOnTopOfGrass(): void;
-	RaycastIndirectLightingAtPoint(pos: Vector3, normal: Vector3): Color;
-	RaycastVoxel(pos: Vector3, direction: Vector3, maxDistance: number): VoxelRaycastResult;
-	RaycastVoxel_Internal(pos: Vector3, direction: Vector3, maxDistance: number, debug: boolean): unknown;
-	RaycastVoxelForLighting(pos: Vector3, direction: Vector3, maxDistance: number, debug: boolean): number;
-	RaycastVoxelForRadiosity(pos: Vector3, direction: Vector3, maxDistance: number, debug: boolean): unknown;
-	ReadVoxelAt(pos: Vector3): number;
-	RegenerateAllMeshes(): void;
-	ReloadTextureAtlas(): void;
-	SampleSphericalHarmonics(shMap: CSArray<float3>, unitVector: Vector3): Color;
-	SaveToFile(): void;
-	SpawnDebugSphere(pos: Vector3, col: Color, radius: number): GameObject;
-	Update(): void;
-	UpdateLights(): void;
-	UpdatePropertiesForAllChunksForRendering(): void;
-	UpdateSceneLights(): void;
-	Vector3ToNearestIndex(normal: Vector3): number;
-	WriteVoxelAt(pos: Vector3, num: number, priority: boolean): void;
-	WriteVoxelGroupAt(positions: CSArray<Vector3>, nums: CSArray<number>, priority: boolean): void;
-	WriteVoxelGroupAtTS(blob: unknown, priority: boolean): void;
-	LoadWorld(): void;
-}
-
-interface VoxelWorldConstructor {
-	runThreaded: boolean;
-	doVisuals: boolean;
-	maxActiveThreads: number;
-	maxMainThreadMeshMillisecondsPerFrame: number;
-	maxMainThreadThreadKickoffMillisecondsPerFrame: number;
-	showDebugSpheres: boolean;
-	showDebugBounds: boolean;
-	chunkSize: number;
-	radiositySize: number;
-	lightingConvergedCount: number;
-	numSoftShadowSamples: number;
-	softShadowRadius: number;
-	radiosityRunawayClamp: number;
-	probeMaxRange: number;
-	maxSamplesPerFrame: number;
-	maxRadiositySamples: number;
-	skyCountsAsLightForRadiosity: boolean;
-
-	Abs(input: Vector3): Vector3;
-	DeleteChildGameObjects(parent: GameObject): void;
-	Floor(input: Vector3): Vector3;
-	FloorInt(input: Vector3): unknown;
-	GenerateRaySamples(normal: Vector3, sampleCount: number): CSArray<Vector3>;
-	HashCoordinates(x: number, y: number, z: number): number;
-	Sign(input: Vector3): Vector3;
-	VoxelDataToBlockId(block: number): number;
-	VoxelDataToBlockId(block: number): number;
-	VoxelIsSolid(voxel: number): boolean;
-}
-declare const VoxelWorld: VoxelWorldConstructor;
 
 interface SteamLuauAPIConstructor {
 	SetGameRichPresence(gameName: string, status: string): boolean;

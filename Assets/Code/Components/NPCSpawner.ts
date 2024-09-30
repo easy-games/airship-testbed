@@ -9,6 +9,7 @@ export default class NPCSpawner extends AirshipBehaviour {
 
 		const character = Airship.Characters.SpawnNonPlayerCharacter(this.spawnpoint.position);
 		const inv = character.inventory;
+		if (!inv) return;
 		// inv.SetItem(1, new ItemStack("WoodSword"));
 		inv.SetHeldSlot(1);
 

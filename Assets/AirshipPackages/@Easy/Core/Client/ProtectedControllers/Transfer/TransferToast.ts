@@ -14,7 +14,7 @@ export default class TransferToast extends AirshipBehaviour {
 		rect.anchoredPosition = new Vector2(rect.anchoredPosition.x, 0);
 
 		NativeTween.CanvasGroupAlpha(this.canvasGroup, 1, 0.7).SetEaseQuadOut();
-		NativeTween.AnchoredPositionY(rect, -86, 1).SetEaseQuadOut();
+		NativeTween.AnchoredPositionY(rect, -86, 0.5).SetEaseBounceOut();
 
 		this.bin.Add(
 			this.cancelButton.onClick.Connect(() => {
