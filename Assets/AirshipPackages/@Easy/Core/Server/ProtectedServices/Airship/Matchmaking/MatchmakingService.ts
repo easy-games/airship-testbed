@@ -97,10 +97,6 @@ export class ProtectedMatchmakingService {
 		const result = InternalHttpManager.PostAsync(`${AirshipUrl.GameCoordinator}/matchmaking/queue/join`, EncodeJSON(body));
 
 		if (!result.success || result.statusCode > 299) {
-			if (result.statusCode === 400) {
-				throw result.error;
-			}
-
 			warn(`An error occurred while attempting to join queue: ${body.queueId} group: ${body.groupId}. Status Code: ${result.statusCode}.\n`, result.error);
 			throw result.error;
 		}
@@ -112,10 +108,6 @@ export class ProtectedMatchmakingService {
 		const result = InternalHttpManager.PostAsync(`${AirshipUrl.GameCoordinator}/matchmaking/queue/leave`, EncodeJSON({ groupId }));
 
 		if (!result.success || result.statusCode > 299) {
-			if (result.statusCode === 400) {
-				throw result.error;
-			}
-
 			warn(`An error occurred while attempting to leave queue for group: ${groupId}. Status Code: ${result.statusCode}.\n`, result.error);
 			throw result.error;
 		}
