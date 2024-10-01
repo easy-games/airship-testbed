@@ -6,9 +6,14 @@ import { Airship } from "../../Airship";
 import { Dependency } from "../../Flamework";
 import { Game } from "../../Game";
 import { Protected } from "../../Protected";
-import { CanvasAPI } from "../../Util/CanvasAPI";
+import { CanvasAPI, HoverState } from "../../Util/CanvasAPI";
+import { SettingsPageSingleton } from "../Singletons/SettingsPageSingleton";
 
 export default class ProfileOptionsButton extends AirshipBehaviour {
+	public hoverBG: Image;
+	public profileImage: RawImage;
+	public button: Button;
+
 	override Start(): void {
 		task.spawn(() => {
 			this.UpdatePicture();
@@ -19,9 +24,24 @@ export default class ProfileOptionsButton extends AirshipBehaviour {
 			});
 		});
 
+		this.hoverBG.enabled = false;
+		CanvasAPI.OnHoverEvent(this.button.gameObject, (hov) => {
+			if (hov === HoverState.ENTER) {
+				this.hoverBG.enabled = true;
+			} else {
+				this.hoverBG.enabled = false;
+			}
+		});
+
 		CanvasAPI.OnClickEvent(this.gameObject, () => {
 			const options: RightClickMenuButton[] = [];
 			if (!Game.IsMobile()) {
+				options.push({
+					text: "Settings",
+					onClick: () => {
+						Dependency<SettingsPageSingleton>().Open();
+					},
+				});
 				if (!Screen.fullScreen) {
 					options.push({
 						text: "Go Fullscreen",
@@ -64,7 +84,7 @@ export default class ProfileOptionsButton extends AirshipBehaviour {
 		if (userController.localUser) {
 			Airship.Players.GetProfilePictureAsync(userController.localUser.uid).then((texture) => {
 				if (texture) {
-					this.gameObject.GetComponent<RawImage>()!.texture = texture;
+					this.profileImage.texture = texture;
 				}
 			});
 		}
