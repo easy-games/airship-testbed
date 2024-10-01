@@ -431,13 +431,13 @@ export class ProtectedFriendsController {
 		}
 
 		// Uncomment to simulate tons of fake friends
-		for (let i = 0; i < 20; i++) {
-			const dupe: UserStatusData = {
-				...sorted[0],
-				userId: "dummy" + i,
-			};
-			sorted.push(dupe);
-		}
+		// for (let i = 0; i < 20; i++) {
+		// 	const dupe: UserStatusData = {
+		// 		...sorted[0],
+		// 		userId: "dummy" + i,
+		// 	};
+		// 	sorted.push(dupe);
+		// }
 
 		// Add & update
 		const friendsContent = this.mainMenuController.refs.GetValue("Social", "FriendsContent");
