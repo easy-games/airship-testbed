@@ -1366,6 +1366,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   redirectTarget: {fileID: 7989854690407011383}
+  ignoreDrag: 0
 --- !u!1 &2013596142469564572
 GameObject:
   m_ObjectHideFlags: 0
@@ -1467,7 +1468,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 84.28, y: 0}
+  m_AnchoredPosition: {x: 83.6, y: 0}
   m_SizeDelta: {x: 0, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4914814531080940544
@@ -1500,8 +1501,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: SnickTrix
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8d354403cbae24e3dadadced631ed91a, type: 2}
-  m_sharedMaterial: {fileID: 4646554452606745, guid: 8d354403cbae24e3dadadced631ed91a, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f0ce55d58d63e4deab29e7ad50308632, type: 2}
+  m_sharedMaterial: {fileID: 813049023685960433, guid: f0ce55d58d63e4deab29e7ad50308632, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3240,8 +3241,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 338.72, y: 0}
-  m_SizeDelta: {x: 122.56, y: 40}
+  m_AnchoredPosition: {x: 339.4, y: 0}
+  m_SizeDelta: {x: 121.2, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2258048063875617269
 CanvasRenderer:
@@ -4204,6 +4205,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   redirectTarget: {fileID: 7989854690407011383}
+  ignoreDrag: 0
 --- !u!1 &6845232589604446719
 GameObject:
   m_ObjectHideFlags: 0
