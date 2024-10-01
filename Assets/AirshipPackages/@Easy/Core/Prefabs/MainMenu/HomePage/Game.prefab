@@ -1907,6 +1907,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   redirectTarget: {fileID: 0}
+  ignoreDrag: 0
 --- !u!114 &5822766457300189634
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1933,7 +1934,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52c162dc854d2f24fa639ba0623de5ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 30
+  size: 10
   spread: 0
   useGlobalAngle: 0
   offsetAngle: 90
