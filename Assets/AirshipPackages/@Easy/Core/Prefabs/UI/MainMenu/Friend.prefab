@@ -700,12 +700,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1944914621726832160}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: da4a9c662d9443bdb1d6cc66c6179573, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   redirectTarget: {fileID: 0}
+  ignoreDrag: 1
 --- !u!114 &6678656062570326313
 MonoBehaviour:
   m_ObjectHideFlags: 0
