@@ -8,6 +8,10 @@ export default class SocialNotificationComponent extends AirshipBehaviour {
 	public usernameText!: TMP_Text;
 	public acceptButton!: Button;
 	public declineButton!: Button;
+	public bgImage: Image;
+	public bgColorSpeed = 2;
+	public bgColor1: Color;
+	public bgColor2: Color;
 
 	/**
 	 * Fires true if accepted. False if declined.
@@ -15,6 +19,14 @@ export default class SocialNotificationComponent extends AirshipBehaviour {
 	@NonSerialized() public onResult = new Signal<boolean>();
 
 	public bin = new Bin();
+
+	protected Update(dt: number): void {
+		this.bgImage.color = Color.Lerp(
+			this.bgColor1,
+			this.bgColor2,
+			math.sin(Time.time * this.bgColorSpeed) * 0.5 + 1,
+		);
+	}
 
 	override OnEnable(): void {
 		// Accept
@@ -34,8 +46,8 @@ export default class SocialNotificationComponent extends AirshipBehaviour {
 
 		// animation
 		let inner = this.transform.GetChild(0) as RectTransform;
-		inner.anchoredPosition = new Vector2(-20, 0);
-		NativeTween.AnchoredPositionX(inner, 0, 0.15).SetEaseBounceOut().SetUseUnscaledTime(true);
+		inner.localScale = Vector3.zero;
+		NativeTween.LocalScale(inner, Vector3.one, 0.15).SetEaseBounceOut().SetUseUnscaledTime(true);
 	}
 
 	public OnDisable(): void {

@@ -12,6 +12,7 @@ import { MainMenuBlockSingleton } from "../../../Client/ProtectedControllers//Se
 import { Asset } from "../../Asset";
 import DateParser from "../../DateParser";
 import inspect from "../../Util/Inspect";
+import DiscordHero from "./DiscordHero";
 import MainMenuPageComponent from "./MainMenuPageComponent";
 
 export default class HomePageComponent extends MainMenuPageComponent {
@@ -145,11 +146,13 @@ export default class HomePageComponent extends MainMenuPageComponent {
 
 		if (!this.addedDiscordHero) {
 			this.addedDiscordHero = true;
-			Object.Instantiate(
+			const go = Object.Instantiate(
 				Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/MainMenu/HomePage/DiscordHero.prefab"),
 				this.mainContent,
 			);
 			Bridge.UpdateLayout(this.scrollRect.transform.parent, true);
+			const discordHero = go.GetAirshipComponent<DiscordHero>()!;
+			discordHero.scrollRedirect.redirectTarget = this.scrollRect;
 		}
 	}
 
