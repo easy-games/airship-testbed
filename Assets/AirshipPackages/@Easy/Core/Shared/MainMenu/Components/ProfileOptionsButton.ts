@@ -13,8 +13,12 @@ export default class ProfileOptionsButton extends AirshipBehaviour {
 	public hoverBG: Image;
 	public profileImage: RawImage;
 	public button: Button;
+	public usernameText: TMP_Text;
 
 	override Start(): void {
+		this.usernameText.text = "";
+		this.profileImage.enabled = false;
+		Bridge.UpdateLayout(this.transform as RectTransform, true);
 		task.spawn(() => {
 			this.UpdatePicture();
 		});
@@ -82,9 +86,12 @@ export default class ProfileOptionsButton extends AirshipBehaviour {
 		const userController = Dependency<ProtectedUserController>();
 		userController.WaitForLocalUser();
 		if (userController.localUser) {
+			this.usernameText.text = userController.localUser.username;
+			Bridge.UpdateLayout(this.transform as RectTransform, true);
 			Airship.Players.GetProfilePictureAsync(userController.localUser.uid).then((texture) => {
 				if (texture) {
 					this.profileImage.texture = texture;
+					this.profileImage.enabled = true;
 				}
 			});
 		}
