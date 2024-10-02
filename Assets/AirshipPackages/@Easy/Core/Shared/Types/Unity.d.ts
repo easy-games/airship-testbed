@@ -1445,16 +1445,35 @@ interface PhysicsConstructor {
 	RaycastAll(ray: Ray): CSArray<RaycastHit>;
 
 	Simulate(step: number): void;
+
 	SphereCast(
-		ray: Ray,
+		origin: Vector3,
 		radius: number,
+		direction: Vector3,
+	): LuaTuple<
+		| [hit: true, point: Vector3, normal: Vector3, collider: Collider]
+		| [hit: false, point: undefined, normal: undefined, collider: undefined]
+	>;
+	SphereCast(
+		origin: Vector3,
+		radius: number,
+		direction: Vector3,
+		maxDistance: number,
+	): LuaTuple<
+		| [hit: true, point: Vector3, normal: Vector3, collider: Collider]
+		| [hit: false, point: undefined, normal: undefined, collider: undefined]
+	>;
+	SphereCast(
+		origin: Vector3,
+		radius: number,
+		direction: Vector3,
 		maxDistance: number,
 		layerMask: number,
-		queryTriggerInteraction: QueryTriggerInteraction,
-	): boolean;
-	SphereCast(ray: Ray, radius: number, maxDistance: number, layerMask: number): boolean;
-	SphereCast(ray: Ray, radius: number, maxDistance: number): boolean;
-	SphereCast(ray: Ray, radius: number): boolean;
+	): LuaTuple<
+		| [hit: true, point: Vector3, normal: Vector3, collider: Collider]
+		| [hit: false, point: undefined, normal: undefined, collider: undefined]
+	>;
+
 	SphereCastAll(
 		origin: Vector3,
 		radius: number,
