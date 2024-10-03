@@ -1,0 +1,79 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &5535080349271351791
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 17ee9060b96b3f74c8e885038a86bf1e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 20.737
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 17ee9060b96b3f74c8e885038a86bf1e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.001
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 17ee9060b96b3f74c8e885038a86bf1e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -5.793
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 17ee9060b96b3f74c8e885038a86bf1e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9196183
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 17ee9060b96b3f74c8e885038a86bf1e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 17ee9060b96b3f74c8e885038a86bf1e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.39281324
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 17ee9060b96b3f74c8e885038a86bf1e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 17ee9060b96b3f74c8e885038a86bf1e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 17ee9060b96b3f74c8e885038a86bf1e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -46.259
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 17ee9060b96b3f74c8e885038a86bf1e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -2094453591203770445, guid: 17ee9060b96b3f74c8e885038a86bf1e, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: be8ef12a528b1664d80991eccf91dad0, type: 2}
+    - target: {fileID: -496044314701266071, guid: 17ee9060b96b3f74c8e885038a86bf1e, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: be8ef12a528b1664d80991eccf91dad0, type: 2}
+    - target: {fileID: 695831293002485034, guid: 17ee9060b96b3f74c8e885038a86bf1e, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: be8ef12a528b1664d80991eccf91dad0, type: 2}
+    - target: {fileID: 919132149155446097, guid: 17ee9060b96b3f74c8e885038a86bf1e, type: 3}
+      propertyPath: m_Name
+      value: Astronaut - LowB
+      objectReference: {fileID: 0}
+    - target: {fileID: 1152570453916135466, guid: 17ee9060b96b3f74c8e885038a86bf1e, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: be8ef12a528b1664d80991eccf91dad0, type: 2}
+    - target: {fileID: 4155328389627045709, guid: 17ee9060b96b3f74c8e885038a86bf1e, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: be8ef12a528b1664d80991eccf91dad0, type: 2}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 17ee9060b96b3f74c8e885038a86bf1e, type: 3}
