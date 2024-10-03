@@ -54,7 +54,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!1 &4161265818397792812
+--- !u!1 &4803588965652456270
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -62,10 +62,41 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8017262465870081831}
-  - component: {fileID: 176670357032452248}
-  - component: {fileID: 485045041972385026}
-  - component: {fileID: 5620072530533403927}
+  - component: {fileID: 473010626989301856}
+  m_Layer: 3
+  m_Name: SlopeVisuals
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &473010626989301856
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4803588965652456270}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2528350621025029902}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4929249022504976760
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8675384169185349042}
+  - component: {fileID: 834308750560714088}
+  - component: {fileID: 4008253120632888609}
+  - component: {fileID: 3055803881340546504}
   m_Layer: 3
   m_Name: Jeans Shorts_legs 1
   m_TagString: Untagged
@@ -73,13 +104,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8017262465870081831
+--- !u!4 &8675384169185349042
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4161265818397792812}
+  m_GameObject: {fileID: 4929249022504976760}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
@@ -88,13 +119,13 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6518322715866115168}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!137 &176670357032452248
+--- !u!137 &834308750560714088
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4161265818397792812}
+  m_GameObject: {fileID: 4929249022504976760}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -166,13 +197,13 @@ SkinnedMeshRenderer:
     m_Center: {x: 0, y: -0.03410576, z: 0.6845479}
     m_Extent: {x: 0.2789171, y: 0.14869641, z: 0.2768774}
   m_DirtyAABB: 0
---- !u!114 &485045041972385026
+--- !u!114 &4008253120632888609
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4161265818397792812}
+  m_GameObject: {fileID: 4929249022504976760}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
@@ -181,13 +212,13 @@ MonoBehaviour:
   colorSettings:
   - baseColor: {r: 1, g: 1, b: 1, a: 1}
   addedByEditorScript: 0
---- !u!114 &5620072530533403927
+--- !u!114 &3055803881340546504
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4161265818397792812}
+  m_GameObject: {fileID: 4929249022504976760}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0b74917b00f1d374c9a7136917a61ddf, type: 3}
@@ -200,37 +231,6 @@ MonoBehaviour:
   skinnedToCharacter: 1
   canMeshCombine: 1
   bodyMask: 294912
---- !u!1 &4803588965652456270
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 473010626989301856}
-  m_Layer: 3
-  m_Name: SlopeVisuals
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &473010626989301856
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4803588965652456270}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2528350621025029902}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6156126593727608046
 GameObject:
   m_ObjectHideFlags: 0
@@ -1078,6 +1078,7 @@ MonoBehaviour:
   jumpUpBlockCooldown: 0.4
   useGravity: 1
   useGravityWhileGrounded: 0
+  alwaysSnapToGround: 0
   gravityMultiplier: 5
   upwardsGravityMultiplier: 1
   groundCollisionLayerMask:
@@ -1086,8 +1087,7 @@ MonoBehaviour:
   terminalVelocity: 50
   minimumVelocity: 7
   useMinimumVelocityInAir: 0
-  preventWallClipping: 0
-  alwaysSnapToGround: 0
+  preventWallClipping: 1
   drag: 0.25
   airDragMultiplier: 1
   airSpeedMultiplier: 1
@@ -1480,7 +1480,7 @@ PrefabInstance:
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 7638964220878943247, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 8017262465870081831}
+      addedObject: {fileID: 8675384169185349042}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
 --- !u!4 &109835959296207961 stripped
