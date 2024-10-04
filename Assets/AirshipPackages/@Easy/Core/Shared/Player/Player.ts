@@ -52,6 +52,11 @@ export class Player {
 	private bin = new Bin();
 	private connected = true;
 
+	/**
+	 * The player's selected outfit.
+	 *
+	 * OutfitDto's can be passed to Character.LoadUserOutfit()
+	 */
 	public selectedOutfit: OutfitDto | undefined;
 	public outfitLoaded = false;
 
