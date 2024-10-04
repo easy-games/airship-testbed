@@ -16,7 +16,7 @@ MonoBehaviour:
   autoConvertMaterials: 1
   autoUpdatePackages: 1
   enableMainMenu: 1
-  buildWithoutUpload: 1
+  buildWithoutUpload: 0
   manageTypescriptProject: 0
   safeguardBundleModification: 1
   selfCompileAllShaders: 0
