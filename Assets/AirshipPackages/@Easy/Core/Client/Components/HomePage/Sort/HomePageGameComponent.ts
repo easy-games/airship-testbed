@@ -80,6 +80,7 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 	public Init(gameDto: GameDto, index: number) {
 		this.gameDto = gameDto;
 		this.index = index;
+		this.transform.gameObject.name = gameDto.name;
 
 		this.titleText.text = gameDto.name;
 		const timeUpdatedSeconds = DateParser.FromISO(gameDto.lastVersionUpdate!);

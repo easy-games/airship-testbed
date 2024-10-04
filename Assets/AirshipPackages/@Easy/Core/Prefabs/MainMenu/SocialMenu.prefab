@@ -1341,7 +1341,67 @@ MonoBehaviour:
     name: ProfileOptionsButton
     singleton: 0
     decorators: []
-    properties: []
+    properties:
+    - name: hoverBG
+      type: object
+      objectType: Image
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: profileImage
+      type: object
+      objectType: RawImage
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: button
+      type: object
+      objectType: Button
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: usernameText
+      type: object
+      objectType: TMP_Text
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
     displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0
@@ -1380,7 +1440,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -54.882637, y: 0}
+  m_AnchoredPosition: {x: -54.882637, y: -2.5}
   m_SizeDelta: {x: 19.165009, y: 22.998}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8997673458551122677
@@ -4376,7 +4436,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -23.889725, y: 0}
+  m_AnchoredPosition: {x: -23.889725, y: -2.5}
   m_SizeDelta: {x: 15.5796, y: 20.2534}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7744455159711991408
@@ -4400,7 +4460,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.6313726}
+  m_Color: {r: 0.31132078, g: 0.08957814, b: 0.08957814, a: 0.6313726}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: -10, y: -10, z: -10, w: -10}
   m_Maskable: 0
@@ -4706,8 +4766,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: SnickTrix
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 39fc97816df3344858585cf3cbaec56e, type: 2}
-  m_sharedMaterial: {fileID: -1186578902683691609, guid: 39fc97816df3344858585cf3cbaec56e, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 53a3e4838fd444fc2a41358218e6dc04, type: 2}
+  m_sharedMaterial: {fileID: -7483138428884005792, guid: 53a3e4838fd444fc2a41358218e6dc04, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -5508,6 +5568,7 @@ GameObject:
   - component: {fileID: 8251003740771935494}
   - component: {fileID: 9075517869892467588}
   - component: {fileID: 2003233440497548915}
+  - component: {fileID: 1249750481794819375}
   m_Layer: 0
   m_Name: Scroll View
   m_TagString: Untagged
@@ -5625,6 +5686,18 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: 1
   m_LayoutPriority: 1
+--- !u!114 &1249750481794819375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4480443164818120478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34c42c9104644b4694f9b2e77752e21b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4667552683838246380
 GameObject:
   m_ObjectHideFlags: 0
@@ -6595,7 +6668,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -5, y: 0}
+  m_AnchoredPosition: {x: 5, y: 0}
   m_SizeDelta: {x: 5, y: -17}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &1342423211738983480
@@ -8181,11 +8254,11 @@ RectTransform:
   - {fileID: 2366866637576464169}
   m_Father: {fileID: 411714957947943442}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 1}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0.49998474, y: 0}
   m_SizeDelta: {x: 300, y: 75}
-  m_Pivot: {x: 1, y: 1}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1525777100514049007
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -8207,7 +8280,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.38039216, g: 0.49411765, b: 0.91764706, a: 1}
+  m_Color: {r: 0.2880918, g: 0.69216543, b: 0.735849, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 0
@@ -9315,7 +9388,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0.00012207031}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &5744001887552983595
@@ -10128,6 +10201,66 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 4812589028008682264}
       modified: 1
+    - name: bgImage
+      type: object
+      objectType: Image
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 4314307989788269644}
+      modified: 1
+    - name: bgColorSpeed
+      type: number
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 2
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: bgColor1
+      type: Color
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: '{"r":0.2078431397676468,"g":0.5843137502670288,"b":0.5058823823928833,"a":1.0}'
+      serializedObject: {fileID: 0}
+      modified: 1
+    - name: bgColor2
+      type: Color
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: '{"r":0.2862745225429535,"g":0.6941176652908325,"b":0.7372549176216126,"a":1.0}'
+      serializedObject: {fileID: 0}
+      modified: 1
     displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0
@@ -10822,91 +10955,15 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7727935298036860593}
     m_Modifications:
-    - target: {fileID: 61588793420208117, guid: 75ae88b11aef04b9eb0e54de2576f84b, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1944914621726832160, guid: 75ae88b11aef04b9eb0e54de2576f84b, type: 3}
       propertyPath: m_Name
       value: Friend
-      objectReference: {fileID: 0}
-    - target: {fileID: 1944914621726832160, guid: 75ae88b11aef04b9eb0e54de2576f84b, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2327042405372721676, guid: 75ae88b11aef04b9eb0e54de2576f84b, type: 3}
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 4497294125863309327, guid: 75ae88b11aef04b9eb0e54de2576f84b, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4497294125863309327, guid: 75ae88b11aef04b9eb0e54de2576f84b, type: 3}
-      propertyPath: redirectTarget
-      value: 
-      objectReference: {fileID: 9075517869892467588}
     - target: {fileID: 5848003039250579154, guid: 75ae88b11aef04b9eb0e54de2576f84b, type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 6678656062570326313, guid: 75ae88b11aef04b9eb0e54de2576f84b, type: 3}
-      propertyPath: scriptFile
-      value: 
-      objectReference: {fileID: -7352938463746943854, guid: e62f1a95537954889b2ecaf17f806844, type: 3}
-    - target: {fileID: 6678656062570326313, guid: 75ae88b11aef04b9eb0e54de2576f84b, type: 3}
-      propertyPath: m_metadata.properties.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 6678656062570326313, guid: 75ae88b11aef04b9eb0e54de2576f84b, type: 3}
-      propertyPath: m_metadata.properties.Array.data[0].name
-      value: friendId
-      objectReference: {fileID: 0}
-    - target: {fileID: 6678656062570326313, guid: 75ae88b11aef04b9eb0e54de2576f84b, type: 3}
-      propertyPath: m_metadata.properties.Array.data[0].type
-      value: string
-      objectReference: {fileID: 0}
-    - target: {fileID: 6678656062570326313, guid: 75ae88b11aef04b9eb0e54de2576f84b, type: 3}
-      propertyPath: m_metadata.properties.Array.data[1].name
-      value: redirectScroll
-      objectReference: {fileID: 0}
-    - target: {fileID: 6678656062570326313, guid: 75ae88b11aef04b9eb0e54de2576f84b, type: 3}
-      propertyPath: m_metadata.properties.Array.data[1].type
-      value: object
-      objectReference: {fileID: 0}
-    - target: {fileID: 6678656062570326313, guid: 75ae88b11aef04b9eb0e54de2576f84b, type: 3}
-      propertyPath: m_metadata.properties.Array.data[0].modified
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6678656062570326313, guid: 75ae88b11aef04b9eb0e54de2576f84b, type: 3}
-      propertyPath: m_metadata.properties.Array.data[1].modified
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6678656062570326313, guid: 75ae88b11aef04b9eb0e54de2576f84b, type: 3}
-      propertyPath: m_metadata.properties.Array.data[2].modified
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6678656062570326313, guid: 75ae88b11aef04b9eb0e54de2576f84b, type: 3}
-      propertyPath: m_metadata.properties.Array.data[0].objectType
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 6678656062570326313, guid: 75ae88b11aef04b9eb0e54de2576f84b, type: 3}
-      propertyPath: m_metadata.properties.Array.data[1].serializedObject
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 6678656062570326313, guid: 75ae88b11aef04b9eb0e54de2576f84b, type: 3}
-      propertyPath: m_metadata.properties.Array.data[2].serializedObject
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 6678656062570326313, guid: 75ae88b11aef04b9eb0e54de2576f84b, type: 3}
-      propertyPath: m_metadata.properties.Array.data[1].decorators.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6678656062570326313, guid: 75ae88b11aef04b9eb0e54de2576f84b, type: 3}
-      propertyPath: m_metadata.properties.Array.data[1].decorators.Array.data[0].name
-      value: HideInInspector
-      objectReference: {fileID: 0}
-    - target: {fileID: 8341820573187745907, guid: 75ae88b11aef04b9eb0e54de2576f84b, type: 3}
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 0}

@@ -1,5 +1,6 @@
 export default class DiscordHero extends AirshipBehaviour {
 	public canvasGroup: CanvasGroup;
+	public scrollRedirect: AirshipRedirectScroll;
 
 	override Start(): void {
 		this.canvasGroup.alpha = 0;

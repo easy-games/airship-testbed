@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 3766583743316440238}
   - component: {fileID: 1676642907774328205}
   - component: {fileID: 8585113469913008211}
+  - component: {fileID: 265866157319337477}
   m_Layer: 5
   m_Name: DiscordBtn
   m_TagString: Untagged
@@ -284,6 +285,19 @@ MonoBehaviour:
     displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0
+--- !u!114 &265866157319337477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1744777680330877891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da4a9c662d9443bdb1d6cc66c6179573, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  redirectTarget: {fileID: 0}
 --- !u!1 &3483713889555547586
 GameObject:
   m_ObjectHideFlags: 0
@@ -774,6 +788,21 @@ MonoBehaviour:
       nullable: 0
       serializedValue: 
       serializedObject: {fileID: 1765970028450380837}
+      modified: 1
+    - name: scrollRedirect
+      type: object
+      objectType: AirshipRedirectScroll
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 265866157319337477}
       modified: 1
     displayIcon: {fileID: 0}
     displayName: 

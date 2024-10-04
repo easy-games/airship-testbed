@@ -308,7 +308,9 @@ export class AirshipInputSingleton {
 	public DisableCoreActions(coreActions: CoreAction[]) {
 		for (const actionName of coreActions) {
 			if (Game.IsGameLuauContext()) {
-				contextbridge.broadcast("ProtectedKeybind:UnregisterAction", actionName);
+				task.defer(() => {
+					contextbridge.broadcast("ProtectedKeybind:UnregisterAction", actionName);
+				});
 			} else {
 				this.UnregisterAction(actionName);
 			}
@@ -349,7 +351,9 @@ export class AirshipInputSingleton {
 		}
 		// Tell protected context of new action
 		if (Game.IsGameLuauContext()) {
-			contextbridge.broadcast("ProtectedKeybind:CreateAction", name, action.id, action.binding);
+			task.defer(() => {
+				contextbridge.broadcast("ProtectedKeybind:CreateAction", name, action.id, action.binding);
+			});
 		}
 	}
 
@@ -364,25 +368,29 @@ export class AirshipInputSingleton {
 		if (!Game.IsProtectedLuauContext()) return;
 		if (action.binding.config.isKeyBinding) {
 			const castedBinding = action.binding.config as KeyBindingConfig;
-			contextbridge.broadcast(
-				"ProtectedKeybind:Updated",
-				action.name,
-				action.id,
-				castedBinding.isKeyBinding,
-				castedBinding.key,
-				castedBinding.modifierKey,
-			);
+			task.defer(() => {
+				contextbridge.broadcast(
+					"ProtectedKeybind:Updated",
+					action.name,
+					action.id,
+					castedBinding.isKeyBinding,
+					castedBinding.key,
+					castedBinding.modifierKey,
+				);
+			});
 		} else {
 			const castedBinding = action.binding.config as MouseBindingConfig;
-			contextbridge.broadcast(
-				"ProtectedKeybind:Updated",
-				action.name,
-				action.id,
-				castedBinding.isKeyBinding,
-				undefined,
-				undefined,
-				castedBinding.mouseButton,
-			);
+			task.defer(() => {
+				contextbridge.broadcast(
+					"ProtectedKeybind:Updated",
+					action.name,
+					action.id,
+					castedBinding.isKeyBinding,
+					undefined,
+					undefined,
+					castedBinding.mouseButton,
+				);
+			});
 		}
 	}
 
