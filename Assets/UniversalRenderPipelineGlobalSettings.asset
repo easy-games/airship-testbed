@@ -53,17 +53,17 @@ MonoBehaviour:
       m_Keys:
       - 3c9ae368a8ce5be42a0926c8ff129454
       - 7adf34f37f4884c5ab92c16c58f38874
-      m_Values: 0101
+      m_Values: 0001
   m_ShaderStrippingSetting:
     m_Version: 0
     m_ExportShaderVariants: 1
-    m_ShaderVariantLogLevel: 0
+    m_ShaderVariantLogLevel: 2
     m_StripRuntimeDebugShaders: 1
   m_URPShaderStrippingSetting:
     m_Version: 0
     m_StripUnusedPostProcessingVariants: 0
     m_StripUnusedVariants: 1
-    m_StripScreenCoordOverrideVariants: 1
+    m_StripScreenCoordOverrideVariants: 0
   m_ShaderVariantLogLevel: 0
   m_ExportShaderVariants: 1
   m_StripDebugVariants: 1
