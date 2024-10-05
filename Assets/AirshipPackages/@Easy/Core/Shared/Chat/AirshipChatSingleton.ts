@@ -36,7 +36,7 @@ export class AirshipChatSingleton {
 	private commands = new Map<string, ChatCommand>();
 
 	public readonly canUseRichText = true;
-	
+
 	constructor() {
 		Airship.Chat = this;
 	}
@@ -50,44 +50,52 @@ export class AirshipChatSingleton {
 			// On client listen for game chat messages and direct them to protected
 			if (Game.IsClient()) {
 				CoreNetwork.ServerToClient.ChatMessage.client.OnServerEvent((msg, nameWithPrefix, senderClientId) => {
-					contextbridge.broadcast<(msg: string, nameWithPrefix?: string, senderClientId?: number) => void>("Chat:AddLocalMessage", msg, nameWithPrefix, senderClientId);
+					contextbridge.broadcast<(msg: string, nameWithPrefix?: string, senderClientId?: number) => void>(
+						"Chat:AddLocalMessage",
+						msg,
+						nameWithPrefix,
+						senderClientId,
+					);
 				});
 			}
 		}
 	}
 
 	private SubscribeToChatMessage() {
-		contextbridge.subscribe<(fromContext: LuauContext, msg: string, fromConnId: number) => void>("ProtectedChat:SendMessage", (fromContext, text, fromConnId) => {
-			const player = Airship.Players.FindByConnectionId(fromConnId);
-			if (!player) {
-				warn("Couldn't find player when trying to send chat message. connId=" + fromConnId);
-				return;
-			}
-
-			if (StringUtils.startsWith(text, "/")) {
-				const commandData = ChatUtil.ParseCommandData(text);
-
-				print(player.username + ": " + text);
-
-				if (commandData) {
-					const command = this.commands.get(commandData.label);
-					if (command) {
-						command.Execute(player, commandData.args);
-						return;
-					}
+		contextbridge.subscribe<(fromContext: LuauContext, msg: string, fromConnId: number) => void>(
+			"ProtectedChat:SendMessage",
+			(fromContext, text, fromConnId) => {
+				const player = Airship.Players.FindByConnectionId(fromConnId);
+				if (!player) {
+					warn("Couldn't find player when trying to send chat message. connId=" + fromConnId);
+					return;
 				}
 
-				player.SendMessage(`Invalid command: ${text}`);
-				return;
-			}
+				if (StringUtils.startsWith(text, "/")) {
+					const commandData = ChatUtil.ParseCommandData(text);
 
-			let nameWithPrefix = player.username + ": ";
-			CoreNetwork.ServerToClient.ChatMessage.server.FireAllClients(
-				text,
-				nameWithPrefix,
-				player.connectionId,
-			);
-		});
+					print(player.username + ": " + text);
+
+					if (commandData) {
+						const command = this.commands.get(commandData.label);
+						if (command) {
+							command.Execute(player, commandData.args);
+							return;
+						}
+					}
+
+					player.SendMessage(`Invalid command: ${text}`);
+					return;
+				}
+
+				let nameWithPrefix = player.username + ": ";
+				CoreNetwork.ServerToClient.ChatMessage.server.FireAllClients(text, nameWithPrefix, player.connectionId);
+			},
+		);
+	}
+
+	public IsOpen(): boolean {
+		return contextbridge.invoke<() => boolean>("ClientChatSingleton:IsOpen", LuauContext.Protected);
 	}
 
 	/**
