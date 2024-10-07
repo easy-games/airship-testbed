@@ -371,13 +371,8 @@ interface WindowProxy {
 	OnWindowFocus(callback: (hasFocus: boolean) => void): void;
 }
 
- 
 interface DestroyWatcher extends Component {
 	OnDestroyedEvent(callback: () => void): EngineEventConnection;
-}
-
-interface ProjectileNetworkBehaviour extends Component {
-	OnCollide(callback: (collision: Collision) => void): EngineEventConnection;
 }
 
 interface OcclusionCam extends Component {
@@ -493,21 +488,6 @@ interface LayerMask {
 }
 declare const LayerMask: LayerMask;
 
-interface ProjectileManager {
-	OnProjectileCollide(callback: (projectile: AirshipProjectile, collision: Collision) => void): void;
-	OnProjectileValidate(callback: (validateEvent: ProjectileValidateEvent) => void): void;
-	OnProjectileLaunched(callback: (projectile: AirshipProjectile, shooter: GameObject) => void): void;
-}
-interface ProjectileManagerConstructor {
-	Instance: ProjectileManager;
-}
-declare const ProjectileManager: ProjectileManagerConstructor;
-
-
-interface AirshipProjectile {
-	OnHit(callback: (event: ProjectileHitEvent) => void): EngineEventConnection;
-}
-
 interface EasyCoreAPI {
 	OnInitializedEvent(callback: () => void): void;
 	OnIdTokenChangedEvent(callback: (idToken: string) => void): void;
@@ -529,13 +509,13 @@ interface MeshProcessorConstructor {
 declare const MeshProcessor: MeshProcessorConstructor;
 
 interface AnimationEventListener extends MonoBehaviour {
-    minRepeatMessageTime: number;
+	minRepeatMessageTime: number;
 
-    OnAnimObjEvent(callback: (data: AnimationEventData) => void): EngineEventConnection;
-    OnAnimEvent(callback: (key: string) => void): EngineEventConnection;
+	OnAnimObjEvent(callback: (data: AnimationEventData) => void): EngineEventConnection;
+	OnAnimEvent(callback: (key: string) => void): EngineEventConnection;
 
-    TriggerEvent(key: string): void;
-    TriggerEventObj(obj: Object): void;
+	TriggerEvent(key: string): void;
+	TriggerEventObj(obj: Object): void;
 }
 
 interface CharacterAnimationHelper extends Component {
