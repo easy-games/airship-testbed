@@ -1,3 +1,4 @@
+import { AirshipMatchmakingController } from "../Client/Controllers/Airship/Matchmaking/MatchmakingController";
 import { AirshipPartyController } from "../Client/Controllers/Airship/Party/AirshipPartyController";
 import { AirshipPlatformInventoryController } from "../Client/Controllers/Airship/PlatformInventory/AirshipPlatformInventoryController";
 import { AirshipServerListController } from "../Client/Controllers/Airship/ServerList/AirshipServerListController";
@@ -5,6 +6,7 @@ import { AirshipUserController } from "../Client/Controllers/Airship/User/Airshi
 import { AirshipCacheStoreService } from "../Server/Services/Airship/CacheStore/AirshipCacheStoreService";
 import { AirshipDataStoreService } from "../Server/Services/Airship/DataStore/AirshipDataStoreService";
 import { AirshipLeaderboardService } from "../Server/Services/Airship/Leaderboard/AirshipLeaderboardService";
+import { AirshipMatchmakingService } from "../Server/Services/Airship/Matchmaking/MatchmakingService";
 import { AirshipPartyService } from "../Server/Services/Airship/Party/AirshipPartyService";
 import { AirshipPlatformInventoryService } from "../Server/Services/Airship/PlatformInventory/AirshipPlatformInventoryService";
 import { AirshipServerManagerService } from "../Server/Services/Airship/ServerManager/AirshipServerManagerService";
@@ -61,6 +63,12 @@ export namespace Platform {
 		 * accessed using the name provided during setup.
 		 */
 		export let Leaderboard = undefined! as AirshipLeaderboardService;
+		/**
+		 * This service provides access to the airship matchmaking system.
+		 * Add players to matchmaking groups and join queues to find other players to play with.
+		 * Matchmaking queues must be created using the https://create.airship.gg website.
+		 */
+		export let Matchmaking = undefined! as AirshipMatchmakingService
 		/**
 		 * Allows access to player party information.
 		 */
@@ -119,6 +127,10 @@ export namespace Platform {
 		 * Provides access to a games server list.
 		 */
 		export let ServerList = undefined! as AirshipServerListController;
+		/**
+		 * Provides information about the users matchmaking status.
+		 */
+		export let Matchmaking = undefined! as AirshipMatchmakingController;
 	}
 }
 

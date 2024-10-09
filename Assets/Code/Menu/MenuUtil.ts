@@ -36,6 +36,11 @@ export class MenuUtil {
 			subtitle: "Post processing volumes",
 			sceneName: "PostProcessing",
 		},
+		{
+			title: "Matchmaking",
+			subtitle: "Matchmaking testing scene.",
+			sceneName: "Matchmaking",
+		},
 	];
 
 	public static loadGlobalSceneRequest = new NetworkFunction<string, boolean>("LoadGlobalScene");
