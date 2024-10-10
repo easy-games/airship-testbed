@@ -155,7 +155,7 @@ interface CharacterMovement extends Component {
 	GetCurrentMoveInputData(): MoveInputData;
 
 	rootTransform: Transform; //The true position transform
-	networkTransform: Transform; //The interpolated network transform
+	airshipTransform: Transform; //The transform controlled by the movement script
 	graphicTransform: Transform; //A transform we can animate
 
 	moveData: CharacterMovementData;
