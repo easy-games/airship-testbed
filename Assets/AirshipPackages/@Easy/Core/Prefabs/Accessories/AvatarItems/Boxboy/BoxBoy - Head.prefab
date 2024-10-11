@@ -146,7 +146,7 @@ MonoBehaviour:
   visibilityMode: 2
   skinnedToCharacter: 1
   canMeshCombine: 1
-  bodyMask: 0
+  bodyMask: 16
 --- !u!1 &9057937124252174508
 GameObject:
   m_ObjectHideFlags: 0
