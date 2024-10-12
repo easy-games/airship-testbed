@@ -397,6 +397,39 @@ interface AccessoryHelper extends MonoBehaviour {
 	RightHand: Transform;
 }
 
+    
+interface AccessoryBuilder extends MonoBehaviour {
+    rig: CharacterRig;
+    firstPerson: boolean;
+    currentOutfit: AccessoryOutfit;
+    currentUserId: string;
+    currentUserName: string;
+    cancelPendingDownload: boolean;
+
+    AddAccessories(accessoryTemplates: CSArray<AccessoryComponent>, addMode: AccessoryAddMode, rebuildMeshImmediately: boolean): CSArray<ActiveAccessory>;
+    AddSingleAccessory(accessoryTemplate: AccessoryComponent, rebuildMeshImmediately: boolean): ActiveAccessory;
+    AddSkinAccessory(skin: AccessorySkin, rebuildMeshImmediately: boolean): void;
+    EquipAccessoryOutfit(outfit: AccessoryOutfit, rebuildMeshImmediately: boolean): CSArray<ActiveAccessory>;
+    GetAccessoryMeshes(slot: AccessorySlot): CSArray<Renderer>;
+    GetAccessoryParticles(slot: AccessorySlot): CSArray<ParticleSystem>;
+    GetActiveAccessories(): CSArray<ActiveAccessory>;
+    GetActiveAccessoryBySlot(target: AccessorySlot): ActiveAccessory;
+    GetAllAccessoryMeshes(): CSArray<Renderer>;
+    GetCombinedSkinnedMesh(): SkinnedMeshRenderer;
+    GetCombinedStaticMesh(): MeshRenderer;
+    RemoveAccessorySlot(slot: AccessorySlot, rebuildMeshImmediately: boolean): void;
+    RemoveAllAccessories(rebuildMeshImmediately: boolean): void;
+    RemoveClothingAccessories(rebuildMeshImmediately: boolean): void;
+    SetAccessoryColor(slot: AccessorySlot, color: Color, rebuildMeshImmediately: boolean): void;
+    SetCreateOverlayMeshOnCombine(on: boolean): void;
+    SetFaceTexture(texture: Texture2D): void;
+    SetSkinColor(color: Color, rebuildMeshImmediately: boolean): void;
+    TryCombineMeshes(): void;
+
+	OnMeshCombined: MonoSignal<[usedMeshCombiner: boolean, skinnedMesh: SkinnedMeshRenderer, staticMesh: MeshRenderer]>;
+
+}
+
 interface CanvasUIEvents extends Component {
 	RegisterEvents(gameObject: GameObject): void;
 }
