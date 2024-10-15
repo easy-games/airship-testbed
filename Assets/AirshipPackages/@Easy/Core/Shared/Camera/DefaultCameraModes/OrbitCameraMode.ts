@@ -199,9 +199,11 @@ export class OrbitCameraMode extends CameraMode {
 				// this.mouse.SetPosition(this.rightClickPos);
 			}
 			this.rotationY =
-				(this.rotationY - (mouseDelta.x / Screen.width) * mouseSensitivity * MOUSE_SENS_SCALAR) % (math.pi * 2);
+				(this.rotationY -
+					(mouseDelta.x / Screen.width) * mouseSensitivity * CameraConstants.SensitivityScalar) %
+				(math.pi * 2);
 			this.rotationX = math.clamp(
-				this.rotationX + (moveDelta.y / Screen.width) * mouseSensitivity * MOUSE_SENS_SCALAR,
+				this.rotationX + (moveDelta.y / Screen.width) * mouseSensitivity * CameraConstants.SensitivityScalar,
 				this.minRotX,
 				this.maxRotX,
 			);
