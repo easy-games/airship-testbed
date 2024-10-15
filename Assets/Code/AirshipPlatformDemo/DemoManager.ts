@@ -1,6 +1,7 @@
 import SteamRichPresence from "@Easy/Core/Client/Airship/Steam/SteamRichPresence";
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { Asset } from "@Easy/Core/Shared/Asset";
+import { FixedCameraMode } from "@Easy/Core/Shared/Camera/DefaultCameraModes/FixedCameraMode";
 
 import Character from "@Easy/Core/Shared/Character/Character";
 import { Game } from "@Easy/Core/Shared/Game";
@@ -75,6 +76,15 @@ export default class DemoManager extends AirshipBehaviour {
 			);
 		}
 		if (Game.IsClient()) {
+			task.delay(7, () => {
+				print("i be here rn!");
+				const fixed = Airship.Camera.GetMode<FixedCameraMode>();
+				if (!fixed) return;
+				fixed.SetTarget(this.spawnPosition);
+				task.delay(5, () => {
+					fixed.SetTarget(Game.localPlayer.character!.model);
+				});
+			});
 			// Display local player deaths
 			this.bin.Add(
 				Game.localPlayer.ObserveCharacter((character) => {

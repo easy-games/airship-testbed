@@ -68,7 +68,7 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 				Airship.Camera.canToggleFirstPerson = this.allowFirstPersonToggle;
 				if (this.startInFirstPerson) {
 					//Change to a new camera mode
-					Airship.Camera.SetMode(CharacterCameraMode.Locked);
+					Airship.Camera.SetMode(CharacterCameraMode.Fixed);
 					//Force first person view model
 					Airship.Camera.SetFirstPerson(this.startInFirstPerson);
 				}

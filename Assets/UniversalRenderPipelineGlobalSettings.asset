@@ -53,7 +53,7 @@ MonoBehaviour:
       m_Keys:
       - 3c9ae368a8ce5be42a0926c8ff129454
       - 7adf34f37f4884c5ab92c16c58f38874
-      m_Values: 0101
+      m_Values: 0001
   m_ShaderStrippingSetting:
     m_Version: 0
     m_ExportShaderVariants: 1

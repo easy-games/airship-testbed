@@ -44,7 +44,7 @@ export class OrbitCameraMode extends CameraMode {
 	private readonly touchscreen = this.bin.Add(new Touchscreen());
 
 	constructor(private readonly distance: number, private transform: Transform, graphicalCharacter?: Transform) {
-		super();
+		super(transform.gameObject);
 		if (graphicalCharacter !== undefined) {
 			this.entityDriver = transform.GetComponent<CharacterMovement>()!;
 			this.transform = graphicalCharacter;

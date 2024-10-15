@@ -1,5 +1,5 @@
 export enum CharacterCameraMode {
-	Locked,
+	Fixed,
 	Orbit,
 	None,
 }

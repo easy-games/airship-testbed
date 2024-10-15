@@ -9,13 +9,14 @@ import { Game } from "../Game";
 import { Keyboard } from "../UserInput";
 import { Bin } from "../Util/Bin";
 import { Signal } from "../Util/Signal";
-import { OnUpdate } from "../Util/Timer";
+import { OnLateUpdate, OnUpdate } from "../Util/Timer";
+import { CameraConstants } from "./CameraConstants";
 import { CameraReferences } from "./CameraReferences";
 import CameraRig from "./CameraRig";
 import { CameraSystem } from "./CameraSystem";
 import { CharacterCameraType } from "./CharacterCameraType";
+import { FixedCameraMode } from "./DefaultCameraModes/FixedCameraMode";
 import { FlyCameraMode } from "./DefaultCameraModes/FlyCameraMode";
-import { HumanoidCameraMode } from "./DefaultCameraModes/HumanoidCameraMode";
 import { OrbitCameraMode } from "./DefaultCameraModes/OrbitCameraMode";
 import { FirstPersonCameraSystem } from "./FirstPersonCameraSystem";
 
@@ -54,10 +55,9 @@ export class AirshipCharacterCameraSingleton {
 	public readonly firstPersonChanged = new Signal<[isFirstPerson: boolean]>();
 
 	private fps?: FirstPersonCameraSystem;
-	public humanoidCameraMode: HumanoidCameraMode | undefined;
-	private orbitCameraMode: OrbitCameraMode | undefined;
+	public activeCameraMode: CameraMode | undefined;
 
-	private characterCameraMode: CharacterCameraMode = CharacterCameraMode.Locked;
+	private characterCameraMode: CharacterCameraMode = CharacterCameraMode.Fixed;
 
 	private sprintFOVEnabled = true;
 	private isFOVManaged = true;
@@ -169,6 +169,7 @@ export class AirshipCharacterCameraSingleton {
 	 * @param mode New mode.
 	 */
 	private SetModeInternal(mode: CameraMode) {
+		this.activeCameraMode = mode;
 		this.cameraSystem?.SetMode(mode);
 	}
 
@@ -290,24 +291,23 @@ export class AirshipCharacterCameraSingleton {
 		};
 	}
 
-	private CreateHumanoidCameraMode(character: Character): HumanoidCameraMode {
-		this.humanoidCameraMode = new HumanoidCameraMode(character, character.model, this.firstPerson);
-		this.humanoidCameraMode.SetLookBackwards(this.lookBackwards);
-		this.humanoidCameraMode.SetFirstPerson(this.firstPerson);
-		return this.humanoidCameraMode;
+	private CreateFixedCameraMode(character: Character): CameraMode {
+		return new FixedCameraMode(character.model, CameraConstants.DefaultFixedCameraConfig);
 	}
 
 	private CreateOrbitCameraMode(character: Character): OrbitCameraMode {
-		return new OrbitCameraMode(4, character.gameObject.transform, character.model.transform);
+		return new OrbitCameraMode(15, character.gameObject.transform, character.model.transform);
 	}
 
 	/**
 	 * @internal
 	 */
 	public SetupCamera(character: Character) {
-		if (this.characterCameraMode === CharacterCameraMode.Locked) {
-			this.SetModeInternal(this.CreateHumanoidCameraMode(character));
-			this.cameraSystem?.SetOnClearCallback(() => this.CreateHumanoidCameraMode(character));
+		if (this.characterCameraMode === CharacterCameraMode.Fixed) {
+			const mode = this.CreateFixedCameraMode(character);
+			this.SetModeInternal(mode);
+			//this.ManageFixedCameraForCharacter(mode, character);
+			this.cameraSystem?.SetOnClearCallback(() => this.CreateFixedCameraMode(character));
 		} else if (this.characterCameraMode === CharacterCameraMode.Orbit) {
 			this.SetModeInternal(this.CreateOrbitCameraMode(character));
 			this.cameraSystem?.SetOnClearCallback(() => this.CreateOrbitCameraMode(character));
@@ -338,7 +338,7 @@ export class AirshipCharacterCameraSingleton {
 				if (!this.IsEnabled()) return;
 				if (event.uiProcessed) return;
 				if (!this.canToggleFirstPerson) return;
-				if (this.cameraSystem?.GetMode() === this.humanoidCameraMode) {
+				if (this.cameraSystem?.GetMode() === this.activeCameraMode) {
 					this.ToggleFirstPerson();
 				}
 			}),
@@ -349,9 +349,9 @@ export class AirshipCharacterCameraSingleton {
 			Keyboard.OnKeyDown(Key.H, (event) => {
 				if (!this.IsEnabled()) return;
 				if (event.uiProcessed) return;
-				if (this.cameraSystem?.GetMode() === this.humanoidCameraMode) {
-					this.SetLookBackwards(!this.lookBackwards);
-				}
+				// if (this.cameraSystem?.GetMode() === this.humanoidCameraMode) {
+				// 	this.SetLookBackwards(!this.lookBackwards);
+				// }
 			}),
 		);
 
@@ -389,33 +389,139 @@ export class AirshipCharacterCameraSingleton {
 		);
 	}
 
+	/**
+	 *
+	 * @returns
+	 */
+	public GetMode<T extends CameraMode>(): T | undefined {
+		const mode = this.cameraSystem?.GetMode();
+		if (!mode) return undefined;
+		return mode as T;
+	}
+
 	public SetMode(mode: CharacterCameraMode): void {
 		if (!Game.IsClient()) return;
 		this.characterCameraMode = mode;
 
 		if (Game.localPlayer.character) {
 			const character = Game.localPlayer.character;
-			if (mode === CharacterCameraMode.Locked) {
-				this.SetModeInternal(this.CreateHumanoidCameraMode(character));
+			if (mode === CharacterCameraMode.Fixed) {
+				const cameraMode = this.CreateFixedCameraMode(character);
+				this.SetModeInternal(cameraMode);
 			} else if (mode === CharacterCameraMode.Orbit) {
-				this.SetModeInternal(this.CreateOrbitCameraMode(character));
+				const cameraMode = this.CreateOrbitCameraMode(character);
+				this.SetModeInternal(cameraMode);
 			}
 		}
 
-		if (mode !== CharacterCameraMode.Locked) {
+		if (mode !== CharacterCameraMode.Fixed) {
 			this.firstPerson = false;
 		}
 	}
 
-	private SetLookBackwards(lookBackwards: boolean) {
-		if (this.lookBackwards === lookBackwards) return;
-		this.lookBackwards = lookBackwards;
-		this.lookBackwardsChanged.Fire(this.lookBackwards);
-
-		if (this.cameraSystem?.GetMode() === this.humanoidCameraMode) {
-			this.humanoidCameraMode?.SetLookBackwards(this.lookBackwards);
-		}
+	public SetModeNew<T extends new (...args: any[]) => CameraMode>(
+		cls: T,
+		...args: ConstructorParameters<T>
+	): CameraMode {
+		const mode = new cls(args);
+		this.SetModeInternal(mode);
+		return mode;
 	}
+
+	/**
+	 * @internal
+	 */
+	public ManageFixedCameraForLocalCharacter(mode: FixedCameraMode, character: Character): Bin {
+		const cleanup = new Bin();
+		if (character.IsLocalCharacter()) {
+			// The first thing we do for `Character` targets is synchronize the camera
+			// with their current look vector.
+			mode.SetDirection(character.movement.GetLookVector());
+
+			const setFirstPerson = () => {
+				mode.SetXOffset(CameraConstants.DefaultFirstPersonFixedCameraConfig.xOffset!);
+				mode.SetZOffset(CameraConstants.DefaultFirstPersonFixedCameraConfig.zOffset!);
+				mode.SetOcclusionBumping(CameraConstants.DefaultFirstPersonFixedCameraConfig.shouldOcclusionBump!);
+				mode.SetStaticOffset(CameraConstants.DefaultFirstPersonFixedCameraConfig.staticOffset);
+			};
+
+			const setThirdPerson = () => {
+				mode.SetXOffset(CameraConstants.DefaultFixedCameraConfig.xOffset);
+				mode.SetZOffset(CameraConstants.DefaultFixedCameraConfig.zOffset);
+				mode.SetOcclusionBumping(CameraConstants.DefaultFixedCameraConfig.shouldOcclusionBump);
+				mode.SetStaticOffset(undefined);
+			};
+
+			// If the character started in first person mode, immediately update the fixed camera
+			// values. Otherwise, do so when the perspective changes.
+			if (this.IsFirstPerson()) {
+				setFirstPerson();
+			}
+			const firstPersonChanged = this.firstPersonChanged.Connect((isFirstPerson) => {
+				if (isFirstPerson) {
+					setFirstPerson();
+				} else {
+					setThirdPerson();
+				}
+			});
+
+			// If the target `Character` crouches, and is in first person, animate the camera's
+			// `y` offset.
+			let targetOffsetY = CameraConstants.DefaultFixedCameraConfig.yOffset;
+			const stateChanged = character.onStateChanged.Connect(() => {
+				if (!this.IsFirstPerson()) return;
+				const isCrouching = character.state === CharacterState.Crouching;
+				targetOffsetY = isCrouching
+					? CameraConstants.FirstPersonCrouchConfig.yOffset
+					: CameraConstants.DefaultFixedCameraConfig.yOffset;
+			});
+			const crouchAnimator = OnUpdate.Connect((dt) => {
+				const currentOffsetY = mode.GetYOffset();
+				if (currentOffsetY === targetOffsetY) return;
+				const newOffsetY =
+					currentOffsetY < targetOffsetY
+						? math.clamp(
+								currentOffsetY + dt * CameraConstants.FirstPersonCrouchConfig.speed,
+								0,
+								targetOffsetY,
+						  )
+						: math.clamp(
+								currentOffsetY - dt * CameraConstants.FirstPersonCrouchConfig.speed,
+								targetOffsetY,
+								targetOffsetY * 2,
+						  );
+				mode.SetYOffset(newOffsetY);
+			});
+
+			// When the fixed camera is targeting the local `Character`, synchronize the character &
+			// camera's look vectors.
+			const lookVectorSync = OnLateUpdate.Connect(() => {
+				character.movement.SetLookVector(mode.cameraForwardVector);
+			});
+			const lookVectorSyncInverse = character.movement.OnNewLookVector((lookVector) => {
+				character.movement.SetLookVectorRecurring(mode.cameraForwardVector);
+				mode.SetYAxisDirection(lookVector);
+			});
+
+			cleanup.Add(crouchAnimator);
+			cleanup.Add(stateChanged);
+			cleanup.Add(firstPersonChanged);
+			cleanup.Add(lookVectorSync);
+			cleanup.Add(() => Bridge.DisconnectEvent(lookVectorSyncInverse));
+		}
+
+		return cleanup;
+	}
+
+	// private SetLookBackwards(lookBackwards: boolean) {
+	// 	if (this.lookBackwards === lookBackwards) return;
+	// 	this.lookBackwards = lookBackwards;
+	// 	this.lookBackwardsChanged.Fire(this.lookBackwards);
+
+	// 	if (this.cameraSystem?.GetMode() === this.humanoidCameraMode) {
+	// 		this.humanoidCameraMode?.SetLookBackwards(this.lookBackwards);
+	// 	}
+	// }
 
 	public ToggleFirstPerson() {
 		this.SetFirstPerson(!this.firstPerson);
@@ -424,11 +530,11 @@ export class AirshipCharacterCameraSingleton {
 	/**
 	 * Changes the preferred perspective for the local character.
 	 *
-	 * This will only work if using {@link CharacterCameraMode.Locked}. You can set this with {@link SetMode()}
+	 * This will only work if using {@link CharacterCameraMode.Fixed}. You can set this with {@link SetMode()}
 	 */
 	public SetFirstPerson(value: boolean) {
 		assert(
-			this.characterCameraMode === CharacterCameraMode.Locked,
+			this.characterCameraMode === CharacterCameraMode.Fixed,
 			"SetFirstPerson() can only be called when using CharacterCameraMode.Locked",
 		);
 
@@ -439,9 +545,6 @@ export class AirshipCharacterCameraSingleton {
 		this.firstPerson = value;
 		this.firstPersonChanged.Fire(this.firstPerson);
 
-		if (this.cameraSystem?.GetMode() === this.humanoidCameraMode) {
-			this.humanoidCameraMode?.SetFirstPerson(this.firstPerson);
-		}
 		this.fps?.OnFirstPersonChanged(this.firstPerson);
 	}
 
