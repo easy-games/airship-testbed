@@ -1,6 +1,7 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { ControlScheme, Keyboard, Mouse, Preferred, Touchscreen } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import ObjectUtils from "../../Util/ObjectUtils";
 import { CameraConstants, OrbitCameraConfig } from "../CameraConstants";
 import { CameraMode } from "../CameraMode";
 import { CameraTransform } from "../CameraTransform";
@@ -28,7 +29,7 @@ export class OrbitCameraMode extends CameraMode {
 	private lookVector = Vector3.zero;
 	private lastAttachToPos = Vector3.zero;
 
-	private readonly entityDriver?: CharacterMovement;
+	// private readonly entityDriver?: CharacterMovement;
 
 	private minRotX = math.rad(1);
 	private maxRotX = math.rad(179);
@@ -56,7 +57,12 @@ export class OrbitCameraMode extends CameraMode {
 		this.SetupMobileControls();
 	}
 
-	private Init(config: OrbitCameraConfig): void {}
+	private Init(config: OrbitCameraConfig): void {
+		// Set all of the values from provided config. We fallback to our defaults, which are optimized for
+		// the default Airship character.
+		this.config = ObjectUtils.deepCopy(config);
+		this.SetRadius(this.config.radius ?? CameraConstants.DefaultOrbitCameraConfig.radius);
+	}
 
 	private SetupMobileControls() {
 		const touchscreen = this.bin.Add(new Touchscreen());
@@ -154,6 +160,15 @@ export class OrbitCameraMode extends CameraMode {
 		);
 	}
 
+	/**
+	 * Sets camera's radius.
+	 *
+	 * @param xOffset The camera's new radius.
+	 */
+	public SetRadius(radius: number): void {
+		this.radius = radius;
+	}
+
 	OnStop() {
 		this.bin.Clean();
 	}
@@ -247,14 +262,14 @@ export class OrbitCameraMode extends CameraMode {
 		transform.LookAt(this.lastAttachToPos);
 		this.occlusionCam.BumpForOcclusion(this.lastAttachToPos, DefaultCameraMask);
 
-		// Update character direction:
-		if (this.entityDriver !== undefined) {
-			const newLookVector = transform.forward;
-			const diff = this.lookVector.Distance(newLookVector);
-			if (diff > 0.01) {
-				this.entityDriver.SetLookVector(newLookVector);
-				this.lookVector = newLookVector;
-			}
-		}
+		// // Update character direction:
+		// if (this.entityDriver !== undefined) {
+		// 	const newLookVector = transform.forward;
+		// 	const diff = this.lookVector.Distance(newLookVector);
+		// 	if (diff > 0.01) {
+		// 		this.entityDriver.SetLookVector(newLookVector);
+		// 		this.lookVector = newLookVector;
+		// 	}
+		// }
 	}
 }
