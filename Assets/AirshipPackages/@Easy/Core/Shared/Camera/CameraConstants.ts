@@ -26,7 +26,26 @@ export interface FixedCameraConfig {
 	 * Whether or not occlusion bumping should be performed. Occlusion bumping prevents the camera's transform
 	 * from being positioned inside of objects.
 	 */
-	shouldOcclusionBump: boolean;
+	shouldOcclusionBump?: boolean;
+}
+
+/**
+ * Orbit camera configuration. Describes the behaviour and appearance of camera.
+ */
+export interface OrbitCameraConfig {
+	/**
+	 * The camera's radius. This is how far away the camera sits from the target.
+	 */
+	radius?: number;
+	/**
+	 * The camera's `y` offset relative to the target.
+	 */
+	yOffset?: number;
+	/*
+	 * Whether or not occlusion bumping should be performed. Occlusion bumping prevents the camera's transform
+	 * from being positioned inside of objects.
+	 */
+	shouldOcclusionBump?: boolean;
 }
 
 /**
@@ -45,6 +64,11 @@ interface FirstPersonCrouchConfig {
 
 export class CameraConstants {
 	/**
+	 * Raw camera sensitivity multiplier.
+	 */
+	public static SensitivityScalar = 15;
+
+	/**
 	 * Default fixed camera configuration. This configuration is optimized for use with the default
 	 * Airship character in third person mode.
 	 */
@@ -54,6 +78,16 @@ export class CameraConstants {
 		zOffset: 3.5,
 		minRotX: 1,
 		maxRotX: 179,
+		shouldOcclusionBump: true,
+	};
+
+	/**
+	 * Default orbit camera configuration. This configuration is optimized for use with the default
+	 * Airship character in third person mode.
+	 */
+	public static DefaultOrbitCameraConfig: Required<OrbitCameraConfig> = {
+		radius: 4,
+		yOffset: 1.85,
 		shouldOcclusionBump: true,
 	};
 

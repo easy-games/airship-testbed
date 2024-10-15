@@ -9,8 +9,6 @@ import DefaultCameraMask from "../DefaultCameraMask";
 
 const TAU = math.pi * 2;
 
-let MOUSE_SENS_SCALAR = 15;
-
 export class FixedCameraMode extends CameraMode {
 	GetFriendlyName(): string {
 		return "Fixed Camera Mode";
@@ -187,9 +185,12 @@ export class FixedCameraMode extends CameraMode {
 
 				// Using Screen.width for both X and Y sensitivity (feels wrong having different vertical & horizontal sens)
 				this.rotationY =
-					(this.rotationY - (moveDelta.x / Screen.width) * mouseSensitivity * MOUSE_SENS_SCALAR) % TAU;
+					(this.rotationY -
+						(moveDelta.x / Screen.width) * mouseSensitivity * CameraConstants.SensitivityScalar) %
+					TAU;
 				this.rotationX = math.clamp(
-					this.rotationX + (moveDelta.y / Screen.width) * mouseSensitivity * MOUSE_SENS_SCALAR,
+					this.rotationX +
+						(moveDelta.y / Screen.width) * mouseSensitivity * CameraConstants.SensitivityScalar,
 					this.minRotX,
 					this.maxRotX,
 				);

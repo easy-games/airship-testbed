@@ -296,7 +296,7 @@ export class AirshipCharacterCameraSingleton {
 	}
 
 	private CreateOrbitCameraMode(character: Character): OrbitCameraMode {
-		return new OrbitCameraMode(15, character.gameObject.transform, character.model.transform);
+		return new OrbitCameraMode(character.gameObject, CameraConstants.DefaultOrbitCameraConfig);
 	}
 
 	/**

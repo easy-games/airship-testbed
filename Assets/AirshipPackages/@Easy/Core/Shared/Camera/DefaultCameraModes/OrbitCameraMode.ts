@@ -1,20 +1,11 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { ControlScheme, Keyboard, Mouse, Preferred, Touchscreen } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { CameraConstants, OrbitCameraConfig } from "../CameraConstants";
 import { CameraMode } from "../CameraMode";
 import { CameraTransform } from "../CameraTransform";
 import DefaultCameraMask from "../DefaultCameraMask";
 
-const MIN_ROT_X = math.rad(1);
-const MAX_ROT_X = math.rad(179);
-
-const MOUSE_SENS_SCALAR = 15;
-// if (Game.IsMac()) {
-// 	MOUSE_SENS_SCALAR *= 5;
-// }
-// if (!Game.IsEditor()) {
-// 	MOUSE_SENS_SCALAR *= 0.15;
-// }
 const Y_LOCKED_ROTATION = math.rad(15);
 const Y_OFFSET = 1.85;
 
@@ -22,6 +13,10 @@ export class OrbitCameraMode extends CameraMode {
 	GetFriendlyName(): string {
 		return "Orbit Camera Mode";
 	}
+
+	private config: OrbitCameraConfig;
+	private radius = 4;
+
 	private readonly bin = new Bin();
 
 	private occlusionCam!: OcclusionCam;
@@ -35,6 +30,9 @@ export class OrbitCameraMode extends CameraMode {
 
 	private readonly entityDriver?: CharacterMovement;
 
+	private minRotX = math.rad(1);
+	private maxRotX = math.rad(179);
+
 	private mouseLocked = false;
 	private mouseLockSwapped = false;
 	private mouseSmoothingEnabled = true;
@@ -43,14 +41,22 @@ export class OrbitCameraMode extends CameraMode {
 	private readonly preferred = this.bin.Add(new Preferred());
 	private readonly touchscreen = this.bin.Add(new Touchscreen());
 
-	constructor(private readonly distance: number, private transform: Transform, graphicalCharacter?: Transform) {
-		super(transform.gameObject);
-		if (graphicalCharacter !== undefined) {
-			this.entityDriver = transform.GetComponent<CharacterMovement>()!;
-			this.transform = graphicalCharacter;
-		}
-		// this.SetupMobileControls();
+	// constructor(private readonly distance: number, private transform: Transform, graphicalCharacter?: Transform) {
+	// 	super(transform.gameObject);
+	// 	if (graphicalCharacter !== undefined) {
+	// 		this.entityDriver = transform.GetComponent<CharacterMovement>()!;
+	// 		this.transform = graphicalCharacter;
+	// 	}
+	// 	// this.SetupMobileControls();
+	// }
+
+	constructor(target: GameObject, config: OrbitCameraConfig) {
+		super(target);
+		this.Init(config);
+		this.SetupMobileControls();
 	}
+
+	private Init(config: OrbitCameraConfig): void {}
 
 	private SetupMobileControls() {
 		const touchscreen = this.bin.Add(new Touchscreen());
@@ -73,11 +79,12 @@ export class OrbitCameraMode extends CameraMode {
 				case TouchPhase.Moved: {
 					if (touchOverUI) break;
 					const deltaPosSinceStart = position.sub(touchStartPos);
-					this.rotationY = (touchStartRotY - deltaPosSinceStart.x * MOUSE_SENS_SCALAR) % (math.pi * 2);
+					this.rotationY =
+						(touchStartRotY - deltaPosSinceStart.x * CameraConstants.SensitivityScalar) % (math.pi * 2);
 					this.rotationX = math.clamp(
-						touchStartRotX + deltaPosSinceStart.y * MOUSE_SENS_SCALAR,
-						MIN_ROT_X,
-						MAX_ROT_X,
+						touchStartRotX + deltaPosSinceStart.y * CameraConstants.SensitivityScalar,
+						this.minRotX,
+						this.maxRotX,
 					);
 					break;
 				}
@@ -90,9 +97,9 @@ export class OrbitCameraMode extends CameraMode {
 		});
 	}
 
-	SetTransform(transform: Transform) {
-		this.transform = transform;
-	}
+	// SetTransform(transform: Transform) {
+	// 	this.transform = transform;
+	// }
 
 	OnStart(camera: Camera, rootTransform: Transform) {
 		this.occlusionCam = rootTransform.GetComponent<OcclusionCam>()!;
@@ -195,8 +202,8 @@ export class OrbitCameraMode extends CameraMode {
 				(this.rotationY - (mouseDelta.x / Screen.width) * mouseSensitivity * MOUSE_SENS_SCALAR) % (math.pi * 2);
 			this.rotationX = math.clamp(
 				this.rotationX + (moveDelta.y / Screen.width) * mouseSensitivity * MOUSE_SENS_SCALAR,
-				MIN_ROT_X,
-				MAX_ROT_X,
+				this.minRotX,
+				this.maxRotX,
 			);
 		}
 
@@ -208,7 +215,7 @@ export class OrbitCameraMode extends CameraMode {
 	}
 
 	OnLateUpdate(dt: number) {
-		const radius = this.distance;
+		const radius = this.radius;
 		const yRotOffset = this.lockView ? Y_LOCKED_ROTATION : 0;
 
 		// Polar to cartesian conversion (i.e. the 3D point around the sphere of the character):
@@ -218,7 +225,7 @@ export class OrbitCameraMode extends CameraMode {
 		const yPos = radius * math.cos(this.rotationX);
 
 		const posOffset = new Vector3(xPos, yPos, zPos);
-		const attachToPos = this.transform.position.add(new Vector3(0, Y_OFFSET, 0));
+		const attachToPos = this.target?.transform.position.add(new Vector3(0, Y_OFFSET, 0)) ?? Vector3.zero;
 		this.lastAttachToPos = attachToPos;
 
 		let newPosition = attachToPos.add(posOffset);
