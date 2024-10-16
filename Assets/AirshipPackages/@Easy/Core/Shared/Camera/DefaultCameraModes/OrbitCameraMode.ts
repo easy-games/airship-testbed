@@ -24,7 +24,7 @@ export class OrbitCameraMode extends CameraMode {
 
 	private occlusionCam!: OcclusionCam;
 
-	private lockView = true;
+	private locked = false;
 	private rightClicking = false;
 	private rightClickPos = Vector2.zero;
 
@@ -46,15 +46,6 @@ export class OrbitCameraMode extends CameraMode {
 
 	private readonly preferred = this.cameraCleanup.Add(new Preferred());
 	private readonly touchscreen = this.cameraCleanup.Add(new Touchscreen());
-
-	// constructor(private readonly distance: number, private transform: Transform, graphicalCharacter?: Transform) {
-	// 	super(transform.gameObject);
-	// 	if (graphicalCharacter !== undefined) {
-	// 		this.entityDriver = transform.GetComponent<CharacterMovement>()!;
-	// 		this.transform = graphicalCharacter;
-	// 	}
-	// 	// this.SetupMobileControls();
-	// }
 
 	constructor(target: GameObject, config?: OrbitCameraConfig) {
 		super(target);
@@ -146,9 +137,9 @@ export class OrbitCameraMode extends CameraMode {
 		// const mouseUnlocker = this.mouse.AddUnlocker();
 		// this.bin.Add(() => this.mouse.RemoveUnlocker(mouseUnlocker));
 
-		if (!this.lockView) {
-			this.cameraCleanup.Add(Mouse.AddUnlocker());
-		}
+		// if (!this.locked) {
+		// 	this.cameraCleanup.Add(Mouse.AddUnlocker());
+		// }
 
 		this.cameraCleanup.Add(
 			Airship.Input.preferredControls.ObserveControlScheme((scheme) => {
@@ -279,6 +270,25 @@ export class OrbitCameraMode extends CameraMode {
 		this.rotationX = math.clamp(math.pi / 2 + math.atan2(direction.y, adj), this.minRotX, this.maxRotX);
 	}
 
+	/**
+	 * Returns whether or not this camera is locked.
+	 *
+	 * @returns Whether or not this camera is locked.
+	 */
+	public GetLocked(): boolean {
+		return this.locked;
+	}
+
+	/**
+	 * Sets the camera's lock state to `locked`. When a camera is locked,
+	 * it's rotation does not update in response to mouse or touch events.
+	 *
+	 * @param locked Whether or not camera should be locked.
+	 */
+	public SetLocked(locked: boolean): void {
+		this.locked = locked;
+	}
+
 	OnStop() {
 		this.cameraCleanup.Clean();
 	}
@@ -294,7 +304,7 @@ export class OrbitCameraMode extends CameraMode {
 		if (lf !== rt) {
 			this.rotationY += (lf ? 1 : -1) * Time.deltaTime * 4;
 		}
-		if (Mouse.IsLocked() && (rightClick || this.lockView)) {
+		if (Mouse.IsLocked() && rightClick && !this.locked) {
 			let mouseDelta = Mouse.GetDelta();
 			// This is to prevent large jump on first movement (happens always on mac)
 			if (this.mouseLockSwapped && mouseDelta.magnitude > 0) {
@@ -320,9 +330,9 @@ export class OrbitCameraMode extends CameraMode {
 			}
 
 			const mouseSensitivity = Airship.Input.GetMouseSensitivity();
-			if (!this.lockView) {
-				// this.mouse.SetPosition(this.rightClickPos);
-			}
+			// if (!this.locked) {
+			// 	// this.mouse.SetPosition(this.rightClickPos);
+			// }
 			this.rotationY =
 				(this.rotationY -
 					(mouseDelta.x / Screen.width) * mouseSensitivity * CameraConstants.SensitivityScalar) %
@@ -373,15 +383,5 @@ export class OrbitCameraMode extends CameraMode {
 
 		this.cameraRightVector = transform.right;
 		this.cameraForwardVector = transform.forward;
-
-		// // Update character direction:
-		// if (this.entityDriver !== undefined) {
-		// 	const newLookVector = transform.forward;
-		// 	const diff = this.lookVector.Distance(newLookVector);
-		// 	if (diff > 0.01) {
-		// 		this.entityDriver.SetLookVector(newLookVector);
-		// 		this.lookVector = newLookVector;
-		// 	}
-		// }
 	}
 }

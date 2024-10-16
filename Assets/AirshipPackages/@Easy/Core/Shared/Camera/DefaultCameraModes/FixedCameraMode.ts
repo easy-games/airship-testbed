@@ -229,6 +229,16 @@ export class FixedCameraMode extends CameraMode {
 		return new CameraTransform(newCameraPos, rotation);
 	}
 
+	OnPostUpdate(camera: Camera) {
+		const transform = camera.transform;
+		if (this.shouldBumpForOcclusion) {
+			transform.LookAt(this.lastCameraPos);
+			this.occlusionCam.BumpForOcclusion(this.lastCameraPos, DefaultCameraMask);
+		}
+		this.cameraRightVector = transform.right;
+		this.cameraForwardVector = transform.forward;
+	}
+
 	/**
 	 *
 	 * @internal
@@ -330,14 +340,23 @@ export class FixedCameraMode extends CameraMode {
 		return this.maxRotX;
 	}
 
-	OnPostUpdate(camera: Camera) {
-		const transform = camera.transform;
-		if (this.shouldBumpForOcclusion) {
-			transform.LookAt(this.lastCameraPos);
-			this.occlusionCam.BumpForOcclusion(this.lastCameraPos, DefaultCameraMask);
-		}
-		this.cameraRightVector = transform.right;
-		this.cameraForwardVector = transform.forward;
+	/**
+	 * Returns whether or not this camera is locked.
+	 *
+	 * @returns Whether or not this camera is locked.
+	 */
+	public GetLocked(): boolean {
+		return this.locked;
+	}
+
+	/**
+	 * Sets the camera's lock state to `locked`. When a camera is locked,
+	 * it's rotation does not update in response to mouse or touch events.
+	 *
+	 * @param locked Whether or not camera should be locked.
+	 */
+	public SetLocked(locked: boolean): void {
+		this.locked = locked;
 	}
 
 	/**

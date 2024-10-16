@@ -1,14 +1,12 @@
 import SteamRichPresence from "@Easy/Core/Client/Airship/Steam/SteamRichPresence";
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { Asset } from "@Easy/Core/Shared/Asset";
-import { OrbitCameraMode } from "@Easy/Core/Shared/Camera/DefaultCameraModes/OrbitCameraMode";
+import { FixedCameraMode } from "@Easy/Core/Shared/Camera/DefaultCameraModes/FixedCameraMode";
 
 import Character from "@Easy/Core/Shared/Character/Character";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Binding } from "@Easy/Core/Shared/Input/Binding";
 import { Player } from "@Easy/Core/Shared/Player/Player";
-import { TweenEasingFunction } from "@Easy/Core/Shared/Tween/EasingFunctions";
-import { Tween } from "@Easy/Core/Shared/Tween/Tween";
 import { Keyboard } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 
@@ -79,18 +77,30 @@ export default class DemoManager extends AirshipBehaviour {
 		}
 		if (Game.IsClient()) {
 			task.delay(3.5, () => {
-				const m = Airship.Camera.SetModeNew(OrbitCameraMode, Game.localPlayer.character!.model);
-				task.delay(3, () => {
-					Tween.Number(
-						TweenEasingFunction.InOutSine,
-						2,
-						(val) => {
-							m.SetRadius(val);
-						},
-						4,
-						10,
-					);
+				const m = Airship.Camera.SetModeNew(FixedCameraMode, Game.localPlayer.character!.model, {
+					xOffset: 0.8,
+					zOffset: 4,
 				});
+				task.delay(5, () => m.SetLocked(true));
+				// task.delay(3, () => {
+				// 	task.delay(5, () => {
+				// 		m.SetTarget(Game.localPlayer.character!.model);
+				// 		Airship.Camera.SetModeNew(FixedCameraMode, Game.localPlayer.character!.model, {
+				// 			xOffset: 0.8,
+				// 			zOffset: 4,
+				// 		});
+				// 	});
+				// 	m.SetTarget(this.spawnPosition);
+				// 	Tween.Number(
+				// 		TweenEasingFunction.InOutSine,
+				// 		2,
+				// 		(val) => {
+				// 			m.SetRadius(val);
+				// 		},
+				// 		4,
+				// 		10,
+				// 	);
+				// });
 				// task.delay(6, () => {
 				// 	const mn = Airship.Camera.SetModeNew(FixedCameraMode, Game.localPlayer.character!.model, {});
 				// 	task.delay(4, () => {
