@@ -57,7 +57,7 @@ export class AirshipCharacterCameraSingleton {
 	private fps?: FirstPersonCameraSystem;
 	public activeCameraMode: CameraMode | undefined;
 
-	private characterCameraMode: CharacterCameraMode = CharacterCameraMode.Fixed;
+	public characterCameraMode: CharacterCameraMode = CharacterCameraMode.Fixed;
 
 	private sprintFOVEnabled = true;
 	private isFOVManaged = true;
@@ -81,7 +81,7 @@ export class AirshipCharacterCameraSingleton {
 		CameraReferences.viewmodelCamera = cameraRig.viewmodelCamera;
 
 		this.cameraSystem = new CameraSystem();
-		this.SetMode(this.characterCameraMode);
+		//this.SetMode(this.characterCameraMode);
 		return this.cameraSystem;
 	}
 
@@ -291,26 +291,31 @@ export class AirshipCharacterCameraSingleton {
 		};
 	}
 
-	private CreateFixedCameraMode(character: Character): CameraMode {
-		return new FixedCameraMode(character.model, CameraConstants.DefaultFixedCameraConfig);
-	}
+	// private CreateFixedCameraMode(character: Character): CameraMode {
+	// 	return new FixedCameraMode(character.model, CameraConstants.DefaultFixedCameraConfig);
+	// }
 
-	private CreateOrbitCameraMode(character: Character): OrbitCameraMode {
-		return new OrbitCameraMode(character.gameObject, CameraConstants.DefaultOrbitCameraConfig);
-	}
+	// private CreateOrbitCameraMode(character: Character): OrbitCameraMode {
+	// 	return new OrbitCameraMode(character.gameObject, CameraConstants.DefaultOrbitCameraConfig);
+	// }
 
 	/**
 	 * @internal
 	 */
 	public SetupCamera(character: Character) {
 		if (this.characterCameraMode === CharacterCameraMode.Fixed) {
-			const mode = this.CreateFixedCameraMode(character);
-			this.SetModeInternal(mode);
+			// const mode = this.CreateFixedCameraMode(character);
+			// this.SetModeInternal(mode);
 			//this.ManageFixedCameraForCharacter(mode, character);
-			this.cameraSystem?.SetOnClearCallback(() => this.CreateFixedCameraMode(character));
+			// this.cameraSystem?.SetOnClearCallback(() => {
+			// 	print("SET ON CLEAR CALLBACK?");
+			// 	return this.CreateFixedCameraMode(character);
+			// });
+			this.SetModeNew(FixedCameraMode, character.model);
 		} else if (this.characterCameraMode === CharacterCameraMode.Orbit) {
-			this.SetModeInternal(this.CreateOrbitCameraMode(character));
-			this.cameraSystem?.SetOnClearCallback(() => this.CreateOrbitCameraMode(character));
+			// this.SetModeInternal(this.CreateOrbitCameraMode(character));
+			// this.cameraSystem?.SetOnClearCallback(() => this.CreateOrbitCameraMode(character));
+			this.SetModeNew(OrbitCameraMode, character.model);
 		}
 
 		//Set up first person camera
@@ -399,33 +404,33 @@ export class AirshipCharacterCameraSingleton {
 		return mode as T;
 	}
 
-	public SetMode(mode: CharacterCameraMode): void {
-		if (!Game.IsClient()) return;
-		this.characterCameraMode = mode;
+	// public SetMode(mode: CharacterCameraMode): void {
+	// 	if (!Game.IsClient()) return;
+	// 	this.characterCameraMode = mode;
 
-		if (Game.localPlayer.character) {
-			const character = Game.localPlayer.character;
-			if (mode === CharacterCameraMode.Fixed) {
-				const cameraMode = this.CreateFixedCameraMode(character);
-				this.SetModeInternal(cameraMode);
-			} else if (mode === CharacterCameraMode.Orbit) {
-				const cameraMode = this.CreateOrbitCameraMode(character);
-				this.SetModeInternal(cameraMode);
-			}
-		}
+	// 	if (Game.localPlayer.character) {
+	// 		const character = Game.localPlayer.character;
+	// 		if (mode === CharacterCameraMode.Fixed) {
+	// 			const cameraMode = this.CreateFixedCameraMode(character);
+	// 			this.SetModeInternal(cameraMode);
+	// 		} else if (mode === CharacterCameraMode.Orbit) {
+	// 			const cameraMode = this.CreateOrbitCameraMode(character);
+	// 			this.SetModeInternal(cameraMode);
+	// 		}
+	// 	}
 
-		if (mode !== CharacterCameraMode.Fixed) {
-			this.firstPerson = false;
-		}
-	}
+	// 	if (mode !== CharacterCameraMode.Fixed) {
+	// 		this.firstPerson = false;
+	// 	}
+	// }
 
 	public SetModeNew<T extends new (...args: any[]) => CameraMode>(
 		cls: T,
 		...args: ConstructorParameters<T>
-	): CameraMode {
-		const mode = new cls(args);
+	): InstanceType<T> {
+		const mode = new cls(...args!);
 		this.SetModeInternal(mode);
-		return mode;
+		return mode as InstanceType<T>;
 	}
 
 	/**
@@ -506,6 +511,33 @@ export class AirshipCharacterCameraSingleton {
 			cleanup.Add(crouchAnimator);
 			cleanup.Add(stateChanged);
 			cleanup.Add(firstPersonChanged);
+			cleanup.Add(lookVectorSync);
+			cleanup.Add(() => Bridge.DisconnectEvent(lookVectorSyncInverse));
+		}
+
+		return cleanup;
+	}
+
+	/**
+	 * @internal
+	 */
+	public ManageOrbitCameraForLocalCharacter(mode: OrbitCameraMode, character: Character): Bin {
+		const cleanup = new Bin();
+		if (character.IsLocalCharacter()) {
+			// The first thing we do for `Character` targets is synchronize the camera
+			// with their current look vector.
+			mode.SetDirection(character.movement.GetLookVector());
+
+			// When the fixed camera is targeting the local `Character`, synchronize the character &
+			// camera's look vectors.
+			const lookVectorSync = OnLateUpdate.Connect(() => {
+				character.movement.SetLookVector(mode.cameraForwardVector);
+			});
+			const lookVectorSyncInverse = character.movement.OnNewLookVector((lookVector) => {
+				character.movement.SetLookVectorRecurring(mode.cameraForwardVector);
+				mode.SetYAxisDirection(lookVector);
+			});
+
 			cleanup.Add(lookVectorSync);
 			cleanup.Add(() => Bridge.DisconnectEvent(lookVectorSyncInverse));
 		}

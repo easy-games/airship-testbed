@@ -1,12 +1,14 @@
 import SteamRichPresence from "@Easy/Core/Client/Airship/Steam/SteamRichPresence";
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { Asset } from "@Easy/Core/Shared/Asset";
-import { FixedCameraMode } from "@Easy/Core/Shared/Camera/DefaultCameraModes/FixedCameraMode";
+import { OrbitCameraMode } from "@Easy/Core/Shared/Camera/DefaultCameraModes/OrbitCameraMode";
 
 import Character from "@Easy/Core/Shared/Character/Character";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Binding } from "@Easy/Core/Shared/Input/Binding";
 import { Player } from "@Easy/Core/Shared/Player/Player";
+import { TweenEasingFunction } from "@Easy/Core/Shared/Tween/EasingFunctions";
+import { Tween } from "@Easy/Core/Shared/Tween/Tween";
 import { Keyboard } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 
@@ -68,22 +70,40 @@ export default class DemoManager extends AirshipBehaviour {
 				Airship.Damage.onDeath.Connect((damageInfo) => {
 					const character = damageInfo.gameObject.GetAirshipComponent<Character>();
 					if (character?.player) {
-						// task.delay(2, () => {
-						this.SpawnPlayer(character.player!);
-						// });
+						task.delay(6, () => {
+							//this.SpawnPlayer(character.player!);
+						});
 					}
 				}),
 			);
 		}
 		if (Game.IsClient()) {
-			task.delay(7, () => {
-				print("i be here rn!");
-				const fixed = Airship.Camera.GetMode<FixedCameraMode>();
-				if (!fixed) return;
-				fixed.SetTarget(this.spawnPosition);
-				task.delay(5, () => {
-					fixed.SetTarget(Game.localPlayer.character!.model);
+			task.delay(3.5, () => {
+				const m = Airship.Camera.SetModeNew(OrbitCameraMode, Game.localPlayer.character!.model);
+				task.delay(3, () => {
+					Tween.Number(
+						TweenEasingFunction.InOutSine,
+						2,
+						(val) => {
+							m.SetRadius(val);
+						},
+						4,
+						10,
+					);
 				});
+				// task.delay(6, () => {
+				// 	const mn = Airship.Camera.SetModeNew(FixedCameraMode, Game.localPlayer.character!.model, {});
+				// 	task.delay(4, () => {
+				// 		// mn.SetTarget(this.spawnPosition);
+				// 		mn.SetZOffset(4);
+				// 	});
+				// });
+				// const fixed = Airship.Camera.GetMode<FixedCameraMode>();
+				// if (!fixed) return;
+				// fixed.SetTarget(this.spawnPosition);
+				// task.delay(5, () => {
+				// 	fixed.SetTarget(Game.localPlayer.character!.model);
+				// });
 			});
 			// Display local player deaths
 			this.bin.Add(

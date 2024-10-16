@@ -1,6 +1,5 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
-import { CharacterCameraMode } from "@Easy/Core/Shared/Character/LocalCharacter/CharacterCameraMode";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
@@ -15,7 +14,7 @@ export default class CharacterSpawner extends AirshipBehaviour {
 	private bin = new Bin();
 
 	override Start(): void {
-		Airship.Camera.SetMode(CharacterCameraMode.Fixed);
+		// Airship.Camera.SetMode(CharacterCameraMode.Fixed);
 		if (Game.IsServer()) {
 			this.bin.Add(
 				Airship.Players.ObservePlayers((player) => {

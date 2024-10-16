@@ -7,8 +7,7 @@ import { CameraMode } from "../CameraMode";
 import { CameraTransform } from "../CameraTransform";
 import DefaultCameraMask from "../DefaultCameraMask";
 
-const Y_LOCKED_ROTATION = math.rad(15);
-const Y_OFFSET = 1.85;
+const TAU = math.pi * 2;
 
 export class OrbitCameraMode extends CameraMode {
 	GetFriendlyName(): string {
@@ -16,9 +15,12 @@ export class OrbitCameraMode extends CameraMode {
 	}
 
 	private config: OrbitCameraConfig;
-	private radius = 4;
+	private readonly cameraCleanUp = new Bin();
 
-	private readonly bin = new Bin();
+	private radius = 4;
+	private yOffset = 1.85;
+
+	private readonly cameraCleanup = new Bin();
 
 	private occlusionCam!: OcclusionCam;
 
@@ -28,6 +30,9 @@ export class OrbitCameraMode extends CameraMode {
 
 	private lookVector = Vector3.zero;
 	private lastAttachToPos = Vector3.zero;
+
+	public cameraForwardVector = Vector3.zero;
+	private cameraRightVector = new Vector3(0, 0, 1);
 
 	// private readonly entityDriver?: CharacterMovement;
 
@@ -39,8 +44,8 @@ export class OrbitCameraMode extends CameraMode {
 	private mouseSmoothingEnabled = true;
 	private smoothVector = new Vector2(0, 0);
 
-	private readonly preferred = this.bin.Add(new Preferred());
-	private readonly touchscreen = this.bin.Add(new Touchscreen());
+	private readonly preferred = this.cameraCleanup.Add(new Preferred());
+	private readonly touchscreen = this.cameraCleanup.Add(new Touchscreen());
 
 	// constructor(private readonly distance: number, private transform: Transform, graphicalCharacter?: Transform) {
 	// 	super(transform.gameObject);
@@ -51,9 +56,9 @@ export class OrbitCameraMode extends CameraMode {
 	// 	// this.SetupMobileControls();
 	// }
 
-	constructor(target: GameObject, config: OrbitCameraConfig) {
+	constructor(target: GameObject, config?: OrbitCameraConfig) {
 		super(target);
-		this.Init(config);
+		this.Init(config ?? CameraConstants.DefaultOrbitCameraConfig);
 		this.SetupMobileControls();
 	}
 
@@ -62,10 +67,31 @@ export class OrbitCameraMode extends CameraMode {
 		// the default Airship character.
 		this.config = ObjectUtils.deepCopy(config);
 		this.SetRadius(this.config.radius ?? CameraConstants.DefaultOrbitCameraConfig.radius);
+		this.SetYOffset(this.config.yOffset ?? CameraConstants.DefaultOrbitCameraConfig.yOffset);
+		// This enables our character specific behavior for the default Airship character.
+		// TODO: Maybe we move this out of here and add a signal that fires when the camera mode
+		// is changed?
+		let characterLogicBin: Bin | undefined;
+		if (this.character && this.character.IsLocalCharacter()) {
+			print(`Starting orbit camera for local character.`);
+			characterLogicBin = Airship.Camera.ManageOrbitCameraForLocalCharacter(this, this.character);
+			this.cameraCleanUp.Add(() => characterLogicBin!.Clean());
+		}
+		this.cameraCleanUp.Add(
+			this.onTargetChanged.Connect((event) => {
+				if (characterLogicBin && !event.after.character?.IsLocalCharacter()) {
+					characterLogicBin.Clean();
+				}
+				if (event.after.character?.IsLocalCharacter()) {
+					characterLogicBin = Airship.Camera.ManageOrbitCameraForLocalCharacter(this, event.after.character);
+					this.cameraCleanUp.Add(() => characterLogicBin!.Clean());
+				}
+			}),
+		);
 	}
 
 	private SetupMobileControls() {
-		const touchscreen = this.bin.Add(new Touchscreen());
+		const touchscreen = this.cameraCleanup.Add(new Touchscreen());
 		let touchStartPos = Vector3.zero;
 		let touchStartRotX = 0;
 		let touchStartRotY = 0;
@@ -114,17 +140,17 @@ export class OrbitCameraMode extends CameraMode {
 		}
 		this.occlusionCam.Init(camera);
 
-		this.bin.Add(this.preferred);
-		this.bin.Add(this.touchscreen);
+		this.cameraCleanup.Add(this.preferred);
+		this.cameraCleanup.Add(this.touchscreen);
 
 		// const mouseUnlocker = this.mouse.AddUnlocker();
 		// this.bin.Add(() => this.mouse.RemoveUnlocker(mouseUnlocker));
 
 		if (!this.lockView) {
-			this.bin.Add(Mouse.AddUnlocker());
+			this.cameraCleanup.Add(Mouse.AddUnlocker());
 		}
 
-		this.bin.Add(
+		this.cameraCleanup.Add(
 			Airship.Input.preferredControls.ObserveControlScheme((scheme) => {
 				const controlSchemeBin = new Bin();
 				if (scheme === ControlScheme.MouseKeyboard) {
@@ -169,8 +195,92 @@ export class OrbitCameraMode extends CameraMode {
 		this.radius = radius;
 	}
 
+	/**
+	 * Gets camera's radius.
+	 *
+	 * @returns The camera's radius.
+	 */
+	public GetRadius(): number {
+		return this.radius;
+	}
+
+	/**
+	 * Sets camera's `y` offset.
+	 *
+	 * @param yOffset The camera's new `y` offset.
+	 */
+
+	public SetYOffset(yOffset: number): void {
+		this.yOffset = yOffset;
+	}
+
+	/**
+	 * Returns the camera's `y` offset.
+	 *
+	 * @returns The camera's **current** `y` offset.
+	 */
+	public GetYOffset(): number {
+		return this.yOffset;
+	}
+
+	/**
+	 * Sets the camera's minimum `x` rotation angle. This is how far **down** the camera can look.
+	 *
+	 * @param minX The minimum `x` rotation angle in **degrees**.
+	 */
+	public SetMinRotX(minX: number): void {
+		this.minRotX = math.rad(minX);
+	}
+
+	/**
+	 * Returns the camera's minimum `x` rotation angle in **degrees**.
+	 *
+	 * @returns The camera's minimum `x` rotation angle in **degrees**.
+	 */
+	public GetMinRotX(): number {
+		return this.minRotX;
+	}
+
+	/**
+	 * Sets the camera's maximum `x` rotation angle. This is how far **up** the camera can look.
+	 *
+	 * @param minX The maximum `x` rotation angle in **degrees**.
+	 */
+	public SetMaxRotX(maxX: number): void {
+		this.maxRotX = math.rad(maxX);
+	}
+
+	/**
+	 * Returns the camera's maximum `x` rotation angle in **degrees**.
+	 *
+	 * @returns The camera's maximu, `x` rotation angle in **degrees**.
+	 */
+	public GetMaxRotX(): number {
+		return this.maxRotX;
+	}
+
+	/**
+	 * Explicitly set the direction of the camera on the Y-axis based on the given directional vector.
+	 */
+	public SetYAxisDirection(direction: Vector3): void {
+		direction = direction.normalized;
+		this.rotationY = math.atan2(-direction.x, direction.z) % TAU;
+	}
+
+	/**
+	 * Sets this camera to the provided `direction` vector.
+	 *
+	 * @param direction The direction to set this camera to.
+	 */
+	public SetDirection(direction: Vector3): void {
+		direction = direction.normalized;
+		this.rotationY = math.atan2(-direction.x, direction.z) % TAU;
+		const adj = new Vector2(direction.x, direction.z).magnitude;
+		this.rotationX = math.clamp(math.pi / 2 + math.atan2(direction.y, adj), this.minRotX, this.maxRotX);
+	}
+
 	OnStop() {
-		this.bin.Clean();
+		this.cameraCleanup.Clean();
 	}
 
 	OnUpdate(dt: number) {
@@ -233,16 +343,15 @@ export class OrbitCameraMode extends CameraMode {
 
 	OnLateUpdate(dt: number) {
 		const radius = this.radius;
-		const yRotOffset = this.lockView ? Y_LOCKED_ROTATION : 0;
 
 		// Polar to cartesian conversion (i.e. the 3D point around the sphere of the character):
-		const rotY = this.rotationY + yRotOffset - math.pi / 2;
+		const rotY = this.rotationY - math.pi / 2;
 		const xPos = radius * math.cos(rotY) * math.sin(this.rotationX);
 		const zPos = radius * math.sin(rotY) * math.sin(this.rotationX);
 		const yPos = radius * math.cos(this.rotationX);
 
 		const posOffset = new Vector3(xPos, yPos, zPos);
-		const attachToPos = this.target?.transform.position.add(new Vector3(0, Y_OFFSET, 0)) ?? Vector3.zero;
+		const attachToPos = this.target?.transform.position.add(new Vector3(0, this.yOffset, 0)) ?? Vector3.zero;
 		this.lastAttachToPos = attachToPos;
 
 		let newPosition = attachToPos.add(posOffset);
@@ -261,6 +370,9 @@ export class OrbitCameraMode extends CameraMode {
 		const transform = camera.transform;
 		transform.LookAt(this.lastAttachToPos);
 		this.occlusionCam.BumpForOcclusion(this.lastAttachToPos, DefaultCameraMask);
+
+		this.cameraRightVector = transform.right;
+		this.cameraForwardVector = transform.forward;
 
 		// // Update character direction:
 		// if (this.entityDriver !== undefined) {

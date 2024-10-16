@@ -18,10 +18,9 @@ export class FixedCameraMode extends CameraMode {
 
 	private readonly cameraCleanUp = new Bin();
 
-	public cameraForwardVector = Vector3.zero;
-
 	private occlusionCam!: OcclusionCam;
 
+	public cameraForwardVector = Vector3.zero;
 	private cameraRightVector = new Vector3(0, 0, 1);
 
 	private lastCameraPos = new Vector3(0, 0, 0);
@@ -49,33 +48,13 @@ export class FixedCameraMode extends CameraMode {
 	private mouseLocked = Mouse.IsLocked();
 	private mouseLockSwapped = false;
 
-	constructor(target: GameObject, config: FixedCameraConfig) {
+	constructor(target: GameObject, config?: FixedCameraConfig) {
 		super(target);
-		this.Init(config);
+		this.Init(config ?? CameraConstants.DefaultFixedCameraConfig);
 		this.SetupMobileControls();
 	}
 
 	private Init(config: FixedCameraConfig): void {
-		// This enables our character specific behavior for the default Airship character.
-		// TODO: Maybe we move this out of here and add a signal that fires when the camera mode
-		// is changed?
-		let coreLogicBin: Bin | undefined;
-		if (this.character && this.character.IsLocalCharacter()) {
-			coreLogicBin = Airship.Camera.ManageFixedCameraForLocalCharacter(this, this.character);
-			this.cameraCleanUp.Add(() => coreLogicBin!.Clean());
-		}
-		this.cameraCleanUp.Add(
-			this.onTargetChanged.Connect((event) => {
-				if (coreLogicBin && !event.after.character?.IsLocalCharacter()) {
-					coreLogicBin.Clean();
-				}
-				if (event.after.character?.IsLocalCharacter()) {
-					coreLogicBin = Airship.Camera.ManageFixedCameraForLocalCharacter(this, event.after.character);
-					this.cameraCleanUp.Add(() => coreLogicBin!.Clean());
-				}
-			}),
-		);
-
 		// Set all of the values from provided config. We fallback to our defaults, which are optimized for
 		// the default Airship character.
 		this.config = ObjectUtils.deepCopy(config);
@@ -86,6 +65,26 @@ export class FixedCameraMode extends CameraMode {
 		this.SetMaxRotX(this.config.maxRotX ?? CameraConstants.DefaultFixedCameraConfig.maxRotX);
 		this.SetOcclusionBumping(
 			this.config.shouldOcclusionBump ?? CameraConstants.DefaultFixedCameraConfig.shouldOcclusionBump,
+		);
+		// This enables our character specific behavior for the default Airship character.
+		// TODO: Maybe we move this out of here and add a signal that fires when the camera mode
+		// is changed?
+		let characterLogicBin: Bin | undefined;
+		if (this.character && this.character.IsLocalCharacter()) {
+			print(`Starting fixed camera for local character.`);
+			characterLogicBin = Airship.Camera.ManageFixedCameraForLocalCharacter(this, this.character);
+			this.cameraCleanUp.Add(() => characterLogicBin!.Clean());
+		}
+		this.cameraCleanUp.Add(
+			this.onTargetChanged.Connect((event) => {
+				if (characterLogicBin && !event.after.character?.IsLocalCharacter()) {
+					characterLogicBin.Clean();
+				}
+				if (event.after.character?.IsLocalCharacter()) {
+					characterLogicBin = Airship.Camera.ManageFixedCameraForLocalCharacter(this, event.after.character);
+					this.cameraCleanUp.Add(() => characterLogicBin!.Clean());
+				}
+			}),
 		);
 	}
 
@@ -158,6 +157,7 @@ export class FixedCameraMode extends CameraMode {
 	}
 
 	OnStop() {
+		print(`Calling stop for fixed camera mode`);
 		this.cameraCleanUp.Clean();
 	}
 
@@ -304,12 +304,30 @@ export class FixedCameraMode extends CameraMode {
 	}
 
 	/**
+	 * Returns the camera's minimum `x` rotation angle in **degrees**.
+	 *
+	 * @returns The camera's minimum `x` rotation angle in **degrees**.
+	 */
+	public GetMinRotX(): number {
+		return this.minRotX;
+	}
+
+	/**
 	 * Sets the camera's maximum `x` rotation angle. This is how far **up** the camera can look.
 	 *
 	 * @param minX The maximum `x` rotation angle in **degrees**.
 	 */
 	public SetMaxRotX(maxX: number): void {
 		this.maxRotX = math.rad(maxX);
+	}
+
+	/**
+	 * Returns the camera's maximum `x` rotation angle in **degrees**.
+	 *
+	 * @returns The camera's maximu, `x` rotation angle in **degrees**.
+	 */
+	public GetMaxRotX(): number {
+		return this.maxRotX;
 	}
 
 	OnPostUpdate(camera: Camera) {
