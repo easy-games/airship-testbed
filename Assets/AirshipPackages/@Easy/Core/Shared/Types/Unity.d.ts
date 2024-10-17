@@ -4880,3 +4880,16 @@ interface VolumeProfileConstructor {
 	new (): VolumeProfile;
 }
 declare const VolumeProfile: VolumeProfileConstructor;
+
+interface GradientConstructor {
+	/**
+	 * Creates a C# array of `GradientColorKey`
+	 * @param length The size of the array
+	 */
+	CreateColorKeyArray(length: number): CSArray<GradientColorKey>;
+	/**
+	 * Creates a C# array of `GradientAlphaKey`
+	 * @param length The size of the array
+	 */
+	CreateAlphaKeyArray(length: number): CSArray<GradientAlphaKey>;
+}

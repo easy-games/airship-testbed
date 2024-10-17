@@ -159,6 +159,11 @@ export default class Character extends AirshipBehaviour {
 		this.despawned = false;
 		this.initialized = true;
 
+		// Client side: update the player's selected outfit to whatever this character has.
+		// This may cause an issue if the character is init'd with a random outfit.
+		if (player && outfitDto && Game.IsClient()) {
+			player.selectedOutfit = outfitDto;
+		}
 		if (this.accessoryBuilder) {
 			this.LoadUserOutfit(outfitDto);
 		}

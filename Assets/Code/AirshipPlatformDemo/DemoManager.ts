@@ -8,6 +8,7 @@ import { Binding } from "@Easy/Core/Shared/Input/Binding";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Keyboard } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { MathUtil } from "@Easy/Core/Shared/Util/MathUtil";
 
 export default class DemoManager extends AirshipBehaviour {
 	public spawnPosition!: GameObject;
@@ -23,6 +24,7 @@ export default class DemoManager extends AirshipBehaviour {
 
 	private bin = new Bin();
 	private lookDir = new Vector3(-1, 0.5, 1);
+	private npcCharacter: Character;
 
 	override Start(): void {
 		// task.spawn(() => {
@@ -73,6 +75,8 @@ export default class DemoManager extends AirshipBehaviour {
 					}
 				}),
 			);
+
+			this.npcCharacter = Airship.Characters.SpawnNonPlayerCharacter(this.spawnPosition.transform.position);
 		}
 		if (Game.IsClient()) {
 			// SetInterval(1, () => {
@@ -166,7 +170,25 @@ export default class DemoManager extends AirshipBehaviour {
 		}
 	}
 
-	public override Update(dt: number): void {}
+	private testDirFlip = 1;
+	private testImpulseForce = 8;
+	public override Update(dt: number): void {
+		if(Game.IsServer() || this.npcCharacter?.networkIdentity?.isOwned){
+			const xAnchor = this.spawnPosition.transform.position.x;
+			if((this.testDirFlip > 0 && this.npcCharacter.transform.position.x > xAnchor + 5) ||
+			(this.testDirFlip<0 && this.npcCharacter.transform.position.x < xAnchor-5)){
+				this.testDirFlip *= -1;
+			}
+			let dir = new Vector3(this.testDirFlip,0,0);
+			let time = Time.time *.4;
+			//FORCE TEST
+			if(math.random() > 1-Time.deltaTime){
+				this.npcCharacter.movement.AddImpulse(new Vector3(math.random()*this.testImpulseForce*2 - this.testImpulseForce, math.lerp(0,this.testImpulseForce*2, math.random()), math.random() *this.testImpulseForce*2 - this.testImpulseForce));
+			}
+			//MOVE TEST
+			this.npcCharacter.movement.SetMoveInput(dir, math.random() > 1-Time.deltaTime*2, math.sin(time) > .2, math.cos(time) < .2, true);
+		}
+	}
 
 	public SpawnPlayer(player: Player): void {
 		if (!this.spawnCharacter) return;

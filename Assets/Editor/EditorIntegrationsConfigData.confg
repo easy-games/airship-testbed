@@ -19,6 +19,7 @@ MonoBehaviour:
   buildWithoutUpload: 0
   manageTypescriptProject: 0
   safeguardBundleModification: 1
+  selfCompileAllShaders: 0
   promptIfLuauPluginChanged: 1
   luauScriptTimeout: 10
   typescriptVerbose: 0
@@ -26,7 +27,7 @@ MonoBehaviour:
   typescriptWriteOnlyChanged: 0
   typescriptRestoreConsoleErrors: 1
   typescriptPreventPlayOnError: 1
-  typescriptAutostartCompiler: 1
+  typescriptAutostartCompiler: 0
   compilerVersion: 1
   typescriptEditor: 0
   typescriptEditorCustomPath: 

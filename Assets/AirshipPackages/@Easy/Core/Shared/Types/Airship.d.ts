@@ -112,7 +112,7 @@ interface CharacterMovement extends Component {
 	OnBeginMove(callback: (inputData: MoveInputData, isReplay: boolean) => void): EngineEventConnection;
 	OnEndMove(callback: (inputData: MoveInputData, isReplay: boolean) => void): EngineEventConnection;
 	OnDispatchCustomData(callback: (tick: number, customData: BinaryBlob) => void): EngineEventConnection;
-	OnImpactWithGround(callback: (velocity: Vector3) => void): EngineEventConnection;
+	OnImpactWithGround(callback: (velocity: Vector3, hitInfo: RaycastHit) => void): EngineEventConnection;
 	OnAdjustMove(callback: (modifier: MoveModifier) => void): EngineEventConnection;
 	OnMoveDirectionChanged(callback: (direction: Vector3) => void): EngineEventConnection;
 	OnJumped(callback: (velocity: Vector3) => void): EngineEventConnection;
@@ -155,7 +155,7 @@ interface CharacterMovement extends Component {
 	GetCurrentMoveInputData(): MoveInputData;
 
 	rootTransform: Transform; //The true position transform
-	networkTransform: Transform; //The interpolated network transform
+	airshipTransform: Transform; //The transform controlled by the movement script
 	graphicTransform: Transform; //A transform we can animate
 
 	moveData: CharacterMovementData;
@@ -371,13 +371,8 @@ interface WindowProxy {
 	OnWindowFocus(callback: (hasFocus: boolean) => void): void;
 }
 
- 
 interface DestroyWatcher extends Component {
 	OnDestroyedEvent(callback: () => void): EngineEventConnection;
-}
-
-interface ProjectileNetworkBehaviour extends Component {
-	OnCollide(callback: (collision: Collision) => void): EngineEventConnection;
 }
 
 interface OcclusionCam extends Component {
@@ -400,6 +395,39 @@ declare const enum CharacterState {
 
 interface AccessoryHelper extends MonoBehaviour {
 	RightHand: Transform;
+}
+
+    
+interface AccessoryBuilder extends MonoBehaviour {
+    rig: CharacterRig;
+    firstPerson: boolean;
+    currentOutfit: AccessoryOutfit;
+    currentUserId: string;
+    currentUserName: string;
+    cancelPendingDownload: boolean;
+
+    AddAccessories(accessoryTemplates: CSArray<AccessoryComponent>, addMode: AccessoryAddMode, rebuildMeshImmediately: boolean): CSArray<ActiveAccessory>;
+    AddSingleAccessory(accessoryTemplate: AccessoryComponent, rebuildMeshImmediately: boolean): ActiveAccessory;
+    AddSkinAccessory(skin: AccessorySkin, rebuildMeshImmediately: boolean): void;
+    EquipAccessoryOutfit(outfit: AccessoryOutfit, rebuildMeshImmediately: boolean): CSArray<ActiveAccessory>;
+    GetAccessoryMeshes(slot: AccessorySlot): CSArray<Renderer>;
+    GetAccessoryParticles(slot: AccessorySlot): CSArray<ParticleSystem>;
+    GetActiveAccessories(): CSArray<ActiveAccessory>;
+    GetActiveAccessoryBySlot(target: AccessorySlot): ActiveAccessory;
+    GetAllAccessoryMeshes(): CSArray<Renderer>;
+    GetCombinedSkinnedMesh(): SkinnedMeshRenderer;
+    GetCombinedStaticMesh(): MeshRenderer;
+    RemoveAccessorySlot(slot: AccessorySlot, rebuildMeshImmediately: boolean): void;
+    RemoveAllAccessories(rebuildMeshImmediately: boolean): void;
+    RemoveClothingAccessories(rebuildMeshImmediately: boolean): void;
+    SetAccessoryColor(slot: AccessorySlot, color: Color, rebuildMeshImmediately: boolean): void;
+    SetCreateOverlayMeshOnCombine(on: boolean): void;
+    SetFaceTexture(texture: Texture2D): void;
+    SetSkinColor(color: Color, rebuildMeshImmediately: boolean): void;
+    TryCombineMeshes(): void;
+
+	OnMeshCombined: MonoSignal<[usedMeshCombiner: boolean, skinnedMesh: SkinnedMeshRenderer, staticMesh: MeshRenderer]>;
+
 }
 
 interface CanvasUIEvents extends Component {
@@ -493,21 +521,6 @@ interface LayerMask {
 }
 declare const LayerMask: LayerMask;
 
-interface ProjectileManager {
-	OnProjectileCollide(callback: (projectile: AirshipProjectile, collision: Collision) => void): void;
-	OnProjectileValidate(callback: (validateEvent: ProjectileValidateEvent) => void): void;
-	OnProjectileLaunched(callback: (projectile: AirshipProjectile, shooter: GameObject) => void): void;
-}
-interface ProjectileManagerConstructor {
-	Instance: ProjectileManager;
-}
-declare const ProjectileManager: ProjectileManagerConstructor;
-
-
-interface AirshipProjectile {
-	OnHit(callback: (event: ProjectileHitEvent) => void): EngineEventConnection;
-}
-
 interface EasyCoreAPI {
 	OnInitializedEvent(callback: () => void): void;
 	OnIdTokenChangedEvent(callback: (idToken: string) => void): void;
@@ -529,13 +542,13 @@ interface MeshProcessorConstructor {
 declare const MeshProcessor: MeshProcessorConstructor;
 
 interface AnimationEventListener extends MonoBehaviour {
-    minRepeatMessageTime: number;
+	minRepeatMessageTime: number;
 
-    OnAnimObjEvent(callback: (data: AnimationEventData) => void): EngineEventConnection;
-    OnAnimEvent(callback: (key: string) => void): EngineEventConnection;
+	OnAnimObjEvent(callback: (data: AnimationEventData) => void): EngineEventConnection;
+	OnAnimEvent(callback: (key: string) => void): EngineEventConnection;
 
-    TriggerEvent(key: string): void;
-    TriggerEventObj(obj: Object): void;
+	TriggerEvent(key: string): void;
+	TriggerEventObj(obj: Object): void;
 }
 
 interface CharacterAnimationHelper extends Component {

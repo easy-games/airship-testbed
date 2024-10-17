@@ -29984,7 +29984,15 @@ interface GameConfig extends ScriptableObject {
     gameLayers: CSArray<string>;
     gameTags: CSArray<string>;
     physicsMatrix: CSArray<boolean>;
-    physicsGravity: Vector3;
+    gravity: Vector3;
+    bounceThreshold: number;
+    defaultMaxDepenetrationVelocity: number;
+    sleepThreshold: number;
+    defaultContactOffset: number;
+    defaultSolverIterations: number;
+    defaultSolverVelocityIterations: number;
+    queriesHitBackfaces: boolean;
+    queriesHitTriggers: boolean;
 
 
 
@@ -31128,8 +31136,6 @@ interface AccessoryBuilder extends MonoBehaviour {
     currentUserName: string;
     cancelPendingDownload: boolean;
 
-
-
     AddAccessories(accessoryTemplates: CSArray<AccessoryComponent>, addMode: AccessoryAddMode, rebuildMeshImmediately: boolean): CSArray<ActiveAccessory>;
     AddSingleAccessory(accessoryTemplate: AccessoryComponent, rebuildMeshImmediately: boolean): ActiveAccessory;
     AddSkinAccessory(skin: AccessorySkin, rebuildMeshImmediately: boolean): void;
@@ -31145,6 +31151,7 @@ interface AccessoryBuilder extends MonoBehaviour {
     RemoveAllAccessories(rebuildMeshImmediately: boolean): void;
     RemoveClothingAccessories(rebuildMeshImmediately: boolean): void;
     SetAccessoryColor(slot: AccessorySlot, color: Color, rebuildMeshImmediately: boolean): void;
+    SetCreateOverlayMeshOnCombine(on: boolean): void;
     SetFaceTexture(texture: Texture2D): void;
     SetSkinColor(color: Color, rebuildMeshImmediately: boolean): void;
     TryCombineMeshes(): void;
@@ -35745,9 +35752,9 @@ interface BlockDefinition {
     detail: boolean;
     doOcclusion: boolean;
     mesh: LodSet;
-    meshTiles: CSDictionary<number, LodSet>;
+    meshTiles: CSArray<LodSet>;
     meshTileProcessingOrder: CSArray<number>;
-    meshContexts: CSArray<VoxelMeshCopy>;
+    meshContexts: CSArray<CSArray<VoxelMeshCopy>>;
     editorTexture: Texture2D;
     topUvs: Rect;
     bottomUvs: Rect;
@@ -35773,11 +35780,15 @@ interface VoxelBlockDefinition extends ScriptableObject {
     topTexture: TextureSet;
     sideTexture: TextureSet;
     bottomTexture: TextureSet;
-    quarterBlockMesh: VoxelQuarterBlockMeshDefinition;
+    quarterBlockMeshes: CSArray<VoxelQuarterBlockMeshDefinition>;
     prefab: GameObject;
     staticMeshLOD0: GameObject;
     staticMeshLOD1: GameObject;
     staticMeshLOD2: GameObject;
+    meshTile1x1x1: MeshSet;
+    meshTile2x2x2: MeshSet;
+    meshTile3x3x3: MeshSet;
+    meshTile4x4x4: MeshSet;
     metallic: number;
     smoothness: number;
     normalScale: number;
@@ -35865,6 +35876,27 @@ interface VoxelQuarterBlockMeshDefinitionConstructor {
 }
 declare const VoxelQuarterBlockMeshDefinition: VoxelQuarterBlockMeshDefinitionConstructor;
     
+interface MeshSet {
+    mesh_LOD0: GameObject;
+    mesh_LOD1: GameObject;
+    mesh_LOD2: GameObject;
+
+
+
+
+
+}
+    
+interface MeshSetConstructor {
+
+
+    new(): MeshSet;
+
+
+
+}
+declare const MeshSet: MeshSetConstructor;
+    
 interface VoxelBlockDefinitionConstructor {
 
 
@@ -35888,7 +35920,8 @@ interface LodSet {
     
 interface VoxelMeshCopy {
     quaternions: CSArray<unknown>;
-    rotation: CSDictionary<number, PrecalculatedRotation>;
+    flip: CSArray<PrecalculatedFlip>;
+    rotation: CSArray<PrecalculatedRotation>;
     srcUvs: CSArray<Vector2>;
     srcColors: CSArray<Color32>;
     srcVertices: CSArray<Vector3>;
@@ -35902,6 +35935,51 @@ interface VoxelMeshCopy {
 
 
 }
+    
+interface PrecalculatedFlip {
+    vertices: CSArray<Vector3>;
+    normals: CSArray<Vector3>;
+    surfaces: CSArray<Surface>;
+
+
+
+
+
+}
+    
+interface Surface {
+    triangles: CSArray<number>;
+    meshMaterial: Material;
+    meshMaterialName: string;
+
+
+
+    Clone(): Surface;
+    Invert(): void;
+
+
+}
+    
+interface SurfaceConstructor {
+
+
+    new(triangles: CSArray<number>, material: Material, materialName: string): Surface;
+    new(): Surface;
+
+
+
+}
+declare const Surface: SurfaceConstructor;
+    
+interface PrecalculatedFlipConstructor {
+
+
+    new(srcVertices: CSArray<Vector3>, srcNormals: CSArray<Vector3>, srcSurfaces: CSArray<Surface>, flip: Flips): PrecalculatedFlip;
+
+
+
+}
+declare const PrecalculatedFlip: PrecalculatedFlipConstructor;
     
 interface PrecalculatedRotation {
     vertices: CSArray<Vector3>;
@@ -35917,34 +35995,11 @@ interface PrecalculatedRotationConstructor {
 
 
     new(srcVertices: CSArray<Vector3>, srcNormals: CSArray<Vector3>, rot: Rotations, quat: Quaternion): PrecalculatedRotation;
-    new(srcVertices: CSArray<Vector3>, srcNormals: CSArray<Vector3>, rot: Rotations, quat: Quaternion): PrecalculatedRotation;
 
 
 
 }
 declare const PrecalculatedRotation: PrecalculatedRotationConstructor;
-    
-interface Surface {
-    triangles: CSArray<number>;
-    meshMaterial: Material;
-    meshMaterialName: string;
-
-
-
-
-
-}
-    
-interface SurfaceConstructor {
-
-
-    new(triangles: CSArray<number>, material: Material, materialName: string): Surface;
-    new(): Surface;
-
-
-
-}
-declare const Surface: SurfaceConstructor;
     
 interface VoxelMeshCopyConstructor {
 
@@ -36001,6 +36056,7 @@ declare const VoxelBlockDefinionList: VoxelBlockDefinionListConstructor;
     
     
 interface VoxelBlocksConstructor {
+    allTileSizes: CSArray<number>;
     meshTileOffsets: CSDictionary<number, Vector3>;
     meshTileSizes: CSDictionary<number, Vector3>;
     TileSizeNames: CSArray<string>;
@@ -38388,6 +38444,7 @@ declare const LineRenderer: LineRendererConstructor;
 interface AirshipRedirectScroll extends MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler {
     isDragging: boolean;
     redirectTarget: ScrollRect;
+    ignoreDrag: boolean;
 
 
 
@@ -43144,6 +43201,7 @@ interface CharacterMovementData extends MonoBehaviour {
     jumpUpBlockCooldown: number;
     useGravity: boolean;
     useGravityWhileGrounded: boolean;
+    alwaysSnapToGround: boolean;
     gravityMultiplier: number;
     upwardsGravityMultiplier: number;
     groundCollisionLayerMask: LayerMask;
@@ -43151,7 +43209,6 @@ interface CharacterMovementData extends MonoBehaviour {
     minimumVelocity: number;
     useMinimumVelocityInAir: boolean;
     preventWallClipping: boolean;
-    alwaysSnapToGround: boolean;
     drag: number;
     airDragMultiplier: number;
     airSpeedMultiplier: number;
@@ -46659,6 +46716,7 @@ interface AnimationEventDataConstructor {
 declare const AnimationEventData: AnimationEventDataConstructor;
     
 interface VoxelWorld extends MonoBehaviour {
+    doVisuals: boolean;
     debugReloadOnScriptReloadMode: boolean;
     focusPosition: Vector3;
     autoLoad: boolean;
@@ -46673,6 +46731,9 @@ interface VoxelWorld extends MonoBehaviour {
     lodTransitionSpeed: number;
     voxelBlocks: VoxelBlocks;
     selectedBlockIndex: number;
+    highlightedBlock: number;
+    highlightedBlockPos: Vector3;
+    mirrorAround: Vector3;
     renderingDisabled: boolean;
     hasUnsavedChanges: boolean;
     loadingStatus: LoadingStatus;
@@ -46706,7 +46767,6 @@ interface VoxelWorld extends MonoBehaviour {
     LoadEmptyWorld(): void;
     LoadWorldFromSaveFile(file: WorldSaveFile): void;
     OnRenderObject(): void;
-    PlaceGrassOnTopOfGrass(): void;
     RaycastVoxel(pos: Vector3, direction: Vector3, maxDistance: number): VoxelRaycastResult;
     RaycastVoxel_Internal(pos: Vector3, direction: Vector3, maxDistance: number, debug: boolean): unknown;
     RaycastVoxelForLighting(pos: Vector3, direction: Vector3, maxDistance: number, debug: boolean): number;
@@ -46790,9 +46850,7 @@ interface VoxelWorldNetworker extends NetworkBehaviour {
 
     OnReadyCommand(connection: NetworkConnectionToClient): void;
     OnStartClient(): void;
-    TargetDirtyLights(conn: NetworkConnection): void;
     TargetFinishedSendingWorldRpc(conn: NetworkConnection): void;
-    TargetSetLightingProperties(conn: NetworkConnection): void;
     TargetWriteChunksRpc(conn: NetworkConnection, positions: CSArray<Vector3>, chunks: CSArray<Chunk>): void;
     TargetWriteVoxelGroupRpc(conn: NetworkConnection, positions: CSArray<Vector3>, nums: CSArray<number>, priority: boolean): void;
     TargetWriteVoxelRpc(conn: NetworkConnection, pos: Vector3, voxel: number): void;
@@ -46874,13 +46932,13 @@ interface VoxelRaycastResult {
     
 interface VoxelWorldConstructor {
     runThreaded: boolean;
-    doVisuals: boolean;
     maxActiveThreads: number;
     maxMainThreadMeshMillisecondsPerFrame: number;
     maxMainThreadThreadKickoffMillisecondsPerFrame: number;
     showDebugSpheres: boolean;
     showDebugBounds: boolean;
     chunkSize: number;
+    allFlips: CSArray<number>;
 
 
     new(): VoxelWorld;
@@ -46893,7 +46951,9 @@ interface VoxelWorldConstructor {
     Floor(input: Vector3): Vector3;
     FloorInt(input: Vector3): Vector3;
     GetFirstInstance(): VoxelWorld;
+    GetVoxelFlippedBits(voxel: number): number;
     HashCoordinates(x: number, y: number, z: number): number;
+    SetVoxelFlippedBits(voxel: number, flippedBits: number): number;
     Sign(input: Vector3): Vector3;
     VoxelDataToBlockId(block: number): number;
     VoxelDataToBlockId(block: number): number;

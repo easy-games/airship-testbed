@@ -17,7 +17,6 @@ export default class Navbar extends AirshipBehaviour {
 	public left!: RectTransform;
 	public quitGameBtn!: RectTransform;
 	public searchWrapper: RectTransform;
-	public accountWrapper: RectTransform;
 
 	private bin = new Bin();
 
@@ -55,7 +54,6 @@ export default class Navbar extends AirshipBehaviour {
 				}
 			}),
 		);
-		Bridge.UpdateLayout(this.accountWrapper, true);
 
 		// this.quitGameBtn.gameObject.SetActive(Screen.fullScreen);
 		this.quitGameBtn.gameObject.SetActive(false);

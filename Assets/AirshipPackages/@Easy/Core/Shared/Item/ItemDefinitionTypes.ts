@@ -18,7 +18,7 @@ export type SoundDef = { path: string } & PlaySoundConfig;
 // }
 
 export interface ItemDefExtraData {
-	[x: string | number]: any;
+	// [x: string | number]: any;
 }
 
 export interface ItemDef {

@@ -120,6 +120,9 @@ export class AirshipCharactersSingleton {
 				if (!character || !character.accessoryBuilder) {
 					return;
 				}
+				if (character.player) {
+					character.player.selectedOutfit = outfitDto;
+				}
 
 				if (outfitDto) {
 					character.LoadUserOutfit(outfitDto);
