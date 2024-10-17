@@ -337,9 +337,12 @@ export class AirshipCharacterCameraSingleton {
 			Keyboard.OnKeyDown(Key.H, (event) => {
 				if (!this.IsEnabled()) return;
 				if (event.uiProcessed) return;
-				// if (this.cameraSystem?.GetMode() === this.humanoidCameraMode) {
-				// 	this.SetLookBackwards(!this.lookBackwards);
-				// }
+				if (this.firstPerson) return;
+				const mode = this.GetMode();
+				if (!mode) return;
+				const newBackwardsState = !mode.GetLookBackwards();
+				mode.SetLookBackwards(newBackwardsState);
+				// this.SetLookBackwards(!this.lookBackwards);
 			}),
 		);
 
@@ -420,6 +423,7 @@ export class AirshipCharacterCameraSingleton {
 				mode.SetZOffset(CameraConstants.DefaultFirstPersonFixedCameraConfig.zOffset!);
 				mode.SetOcclusionBumping(CameraConstants.DefaultFirstPersonFixedCameraConfig.shouldOcclusionBump!);
 				mode.SetStaticOffset(CameraConstants.DefaultFirstPersonFixedCameraConfig.staticOffset);
+				mode.SetLookBackwards(false);
 			};
 
 			const setThirdPerson = () => {
@@ -516,16 +520,6 @@ export class AirshipCharacterCameraSingleton {
 
 		return cleanup;
 	}
-
-	// private SetLookBackwards(lookBackwards: boolean) {
-	// 	if (this.lookBackwards === lookBackwards) return;
-	// 	this.lookBackwards = lookBackwards;
-	// 	this.lookBackwardsChanged.Fire(this.lookBackwards);
-
-	// 	if (this.cameraSystem?.GetMode() === this.humanoidCameraMode) {
-	// 		this.humanoidCameraMode?.SetLookBackwards(this.lookBackwards);
-	// 	}
-	// }
 
 	public ToggleFirstPerson() {
 		this.SetFirstPerson(!this.firstPerson);

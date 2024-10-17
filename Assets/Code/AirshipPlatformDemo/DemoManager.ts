@@ -80,8 +80,8 @@ export default class DemoManager extends AirshipBehaviour {
 			// 	print(thing instanceof FixedCameraMode);
 			// });
 			task.delay(3.5, () => {
-				const m = Airship.Camera.GetMode();
-				m?.SetLookBackwards(true);
+				// const m = Airship.Camera.GetMode();
+				// m?.SetLookBackwards(true);
 				// m?.SetXOffset(0.1);
 				// m?.SetZOffset(1.75);
 				// const m = Airship.Camera.SetMode(OrbitCameraMode, Game.localPlayer.character!.model, {});

@@ -364,6 +364,15 @@ export class FixedCameraMode extends CameraMode {
 	}
 
 	/**
+	 * Returns whether or not camera is currently looking behind.
+	 *
+	 * @returns Whether or not camera is currently looking behind.
+	 */
+	public GetLookBackwards(): boolean {
+		return this.lookBehind;
+	}
+
+	/**
 	 * Sets the camera's lock state to `locked`. When a camera is locked,
 	 * it's rotation does not update in response to mouse or touch events.
 	 *
