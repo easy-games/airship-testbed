@@ -25,16 +25,9 @@ export class OrbitCameraMode extends CameraMode {
 	private occlusionCam!: OcclusionCam;
 
 	private locked = false;
-	private rightClicking = false;
-	private rightClickPos = Vector2.zero;
-
-	private lookVector = Vector3.zero;
 	private lastAttachToPos = Vector3.zero;
 
 	public cameraForwardVector = Vector3.zero;
-	private cameraRightVector = new Vector3(0, 0, 1);
-
-	// private readonly entityDriver?: CharacterMovement;
 
 	private minRotX = math.rad(1);
 	private maxRotX = math.rad(179);
@@ -59,12 +52,13 @@ export class OrbitCameraMode extends CameraMode {
 		this.config = ObjectUtils.deepCopy(config);
 		this.SetRadius(this.config.radius ?? CameraConstants.DefaultOrbitCameraConfig.radius);
 		this.SetYOffset(this.config.yOffset ?? CameraConstants.DefaultOrbitCameraConfig.yOffset);
+		this.SetMinRotX(this.config.minRotX ?? CameraConstants.DefaultOrbitCameraConfig.minRotX);
+		this.SetMaxRotX(this.config.maxRotX ?? CameraConstants.DefaultOrbitCameraConfig.maxRotX);
 		// This enables our character specific behavior for the default Airship character.
 		// TODO: Maybe we move this out of here and add a signal that fires when the camera mode
 		// is changed?
 		let characterLogicBin: Bin | undefined;
 		if (this.character && this.character.IsLocalCharacter()) {
-			print(`Starting orbit camera for local character.`);
 			characterLogicBin = Airship.Camera.ManageOrbitCameraForLocalCharacter(this, this.character);
 			this.cameraCleanUp.Add(() => characterLogicBin!.Clean());
 		}
@@ -119,10 +113,6 @@ export class OrbitCameraMode extends CameraMode {
 			}
 		});
 	}
-
-	// SetTransform(transform: Transform) {
-	// 	this.transform = transform;
-	// }
 
 	OnStart(camera: Camera, rootTransform: Transform) {
 		this.occlusionCam = rootTransform.GetComponent<OcclusionCam>()!;
@@ -183,10 +173,6 @@ export class OrbitCameraMode extends CameraMode {
 
 	OnUpdate(dt: number) {
 		const rightClick = Mouse.isRightDown;
-		if (rightClick && !this.rightClicking) {
-			this.rightClickPos = Mouse.position;
-		}
-		this.rightClicking = rightClick;
 
 		if (Mouse.IsLocked() && rightClick && !this.locked) {
 			let mouseDelta = Mouse.GetDelta();
@@ -257,8 +243,19 @@ export class OrbitCameraMode extends CameraMode {
 		transform.LookAt(this.lastAttachToPos);
 		this.occlusionCam.BumpForOcclusion(this.lastAttachToPos, DefaultCameraMask);
 
-		this.cameraRightVector = transform.right;
 		this.cameraForwardVector = transform.forward;
+	}
+
+	/**
+	 * Bulk updates camera properties.
+	 *
+	 * @param properties `OrbitCamera` properties.
+	 */
+	public UpdateProperties(properties: Partial<OrbitCameraConfig>): void {
+		if (properties.radius) this.SetRadius(properties.radius);
+		if (properties.yOffset) this.SetYOffset(properties.yOffset);
+		if (properties.minRotX) this.SetMinRotX(properties.minRotX);
+		if (properties.maxRotX) this.SetMaxRotX(properties.maxRotX);
 	}
 
 	/**

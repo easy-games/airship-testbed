@@ -41,6 +41,14 @@ export interface OrbitCameraConfig {
 	 * The camera's `y` offset relative to the target.
 	 */
 	yOffset?: number;
+	/**
+	 * The camera's minimum `x` rotation angle in **degrees**. This is how far **down** the camera can look.
+	 */
+	minRotX?: number;
+	/**
+	 * The camera's maximum `x` rotation angle in **degrees**. This is how far **up** the camera can look.
+	 */
+	maxRotX?: number;
 	/*
 	 * Whether or not occlusion bumping should be performed. Occlusion bumping prevents the camera's transform
 	 * from being positioned inside of objects.
@@ -88,6 +96,8 @@ export class CameraConstants {
 	public static DefaultOrbitCameraConfig: Required<OrbitCameraConfig> = {
 		radius: 4,
 		yOffset: 1.85,
+		minRotX: 1,
+		maxRotX: 179,
 		shouldOcclusionBump: true,
 	};
 
@@ -111,4 +121,18 @@ export class CameraConstants {
 		speed: 5,
 		yOffset: 1.13,
 	};
+
+	/**
+	 * @internal
+	 */
+	public static UpdateDefaultFixedCameraConfig(config: Required<FixedCameraConfig>): void {
+		this.DefaultFixedCameraConfig = config;
+	}
+
+	/**
+	 * @internal
+	 */
+	public static UpdateDefaultOrbitCameraConfig(config: Required<OrbitCameraConfig>): void {
+		this.DefaultOrbitCameraConfig = config;
+	}
 }

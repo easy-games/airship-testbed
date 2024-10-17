@@ -14,9 +14,19 @@ export class FixedCameraMode extends CameraMode {
 		return "Fixed Camera Mode";
 	}
 
-	private config: FixedCameraConfig;
-
 	private readonly cameraCleanUp = new Bin();
+	private readonly preferred = this.cameraCleanUp.Add(new Preferred());
+	private readonly touchscreen = this.cameraCleanUp.Add(new Touchscreen());
+
+	private config: FixedCameraConfig;
+	private locked = false;
+	private shouldBumpForOcclusion = true;
+	private xOffset = 0;
+	private yOffset = 0;
+	private zOffset = 0;
+	private staticOffset: Vector3 | undefined;
+	private minRotX = math.rad(1);
+	private maxRotX = math.rad(179);
 
 	private occlusionCam!: OcclusionCam;
 
@@ -24,22 +34,6 @@ export class FixedCameraMode extends CameraMode {
 	private cameraRightVector = new Vector3(0, 0, 1);
 
 	private lastCameraPos = new Vector3(0, 0, 0);
-
-	private locked = false;
-
-	private shouldBumpForOcclusion = true;
-
-	private xOffset = 0;
-	private yOffset = 0;
-	private zOffset = 0;
-
-	private staticOffset: Vector3 | undefined;
-
-	private minRotX = math.rad(1);
-	private maxRotX = math.rad(179);
-
-	private readonly preferred = this.cameraCleanUp.Add(new Preferred());
-	private readonly touchscreen = this.cameraCleanUp.Add(new Touchscreen());
 
 	private mouseSmoothingEnabled = true;
 	private smoothVector = new Vector2(0, 0);
@@ -71,7 +65,6 @@ export class FixedCameraMode extends CameraMode {
 		// is changed?
 		let characterLogicBin: Bin | undefined;
 		if (this.character && this.character.IsLocalCharacter()) {
-			print(`Starting fixed camera for local character.`);
 			characterLogicBin = Airship.Camera.ManageFixedCameraForLocalCharacter(this, this.character);
 			this.cameraCleanUp.Add(() => characterLogicBin!.Clean());
 		}
@@ -237,6 +230,20 @@ export class FixedCameraMode extends CameraMode {
 		}
 		this.cameraRightVector = transform.right;
 		this.cameraForwardVector = transform.forward;
+	}
+
+	/**
+	 * Bulk updates camera properties.
+	 *
+	 * @param properties `FixedCamera` properties.
+	 */
+	public UpdateProperties(properties: Partial<FixedCameraConfig>): void {
+		if (properties.xOffset) this.SetXOffset(properties.xOffset);
+		if (properties.yOffset) this.SetYOffset(properties.yOffset);
+		if (properties.zOffset) this.SetZOffset(properties.zOffset);
+		if (properties.minRotX) this.SetMinRotX(properties.minRotX);
+		if (properties.maxRotX) this.SetMaxRotX(properties.maxRotX);
+		if (properties.shouldOcclusionBump) this.SetOcclusionBumping(properties.shouldOcclusionBump);
 	}
 
 	/**

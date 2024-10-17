@@ -1,18 +1,13 @@
 import SteamRichPresence from "@Easy/Core/Client/Airship/Steam/SteamRichPresence";
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { Asset } from "@Easy/Core/Shared/Asset";
-import { AirshipCharacterCameraSingleton } from "@Easy/Core/Shared/Camera/AirshipCharacterCameraSingleton";
-import { FixedCameraMode } from "@Easy/Core/Shared/Camera/DefaultCameraModes/FixedCameraMode";
-import { OrbitCameraMode } from "@Easy/Core/Shared/Camera/DefaultCameraModes/OrbitCameraMode";
 
 import Character from "@Easy/Core/Shared/Character/Character";
-import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Binding } from "@Easy/Core/Shared/Input/Binding";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Keyboard } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
-import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
 
 export default class DemoManager extends AirshipBehaviour {
 	public spawnPosition!: GameObject;
@@ -80,13 +75,16 @@ export default class DemoManager extends AirshipBehaviour {
 			);
 		}
 		if (Game.IsClient()) {
-			SetInterval(1, () => {
-				const thing = Dependency<AirshipCharacterCameraSingleton>().activeCameraMode;
-				print(thing instanceof FixedCameraMode);
-			});
+			// SetInterval(1, () => {
+			// 	const thing = Dependency<AirshipCharacterCameraSingleton>().activeCameraMode;
+			// 	print(thing instanceof FixedCameraMode);
+			// });
 			task.delay(3.5, () => {
-				const m = Airship.Camera.SetMode(OrbitCameraMode, Game.localPlayer.character!.model, {});
-				task.delay(5, () => m.SetLocked(true));
+				// const m = Airship.Camera.GetMode();
+				// m?.SetXOffset(0.1);
+				// m?.SetZOffset(1.75);
+				// const m = Airship.Camera.SetMode(OrbitCameraMode, Game.localPlayer.character!.model, {});
+				// task.delay(5, () => m.SetLocked(true));
 				// task.delay(3, () => {
 				// 	task.delay(5, () => {
 				// 		m.SetTarget(Game.localPlayer.character!.model);

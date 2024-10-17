@@ -1,4 +1,9 @@
 import { Airship } from "../Airship";
+import { AirshipCharacterCameraSingleton } from "../Camera/AirshipCharacterCameraSingleton";
+import { CameraConstants } from "../Camera/CameraConstants";
+import { FixedCameraMode } from "../Camera/DefaultCameraModes/FixedCameraMode";
+import { OrbitCameraMode } from "../Camera/DefaultCameraModes/OrbitCameraMode";
+import { Dependency } from "../Flamework";
 import { Game } from "../Game";
 import { InventoryUIVisibility } from "../Inventory/InventoryUIVisibility";
 import { CharacterCameraMode } from "./LocalCharacter/CharacterCameraMode";
@@ -26,18 +31,31 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 	public instantiateViewmodel = true;
 	public customViewmodelPrefab?: GameObject;
 
-	@Header("Camera System")
-	public useAirshipCameraSystem = true;
-	public characterCameraMode = CharacterCameraMode.Fixed;
-	public startInFirstPerson = false;
-	public allowFirstPersonToggle = true;
-	public useSprintFOV = true;
-	public sprintFOVMultiplier = 1.08;
-
 	@Header("UI")
 	public showChat = true;
 	public inventoryVisibility = InventoryUIVisibility.WhenHasItems;
 	public inventoryUIPrefab?: GameObject;
+
+	@Header("Camera System")
+	public useAirshipCameraSystem = true;
+	public startInFirstPerson = false;
+	public allowFirstPersonToggle = true;
+	public useSprintFOV = true;
+	public sprintFOVMultiplier = 1.08;
+	public characterCameraMode = CharacterCameraMode.Fixed;
+
+	@Header("Character Camera Configuration")
+	@Header("Fixed Camera")
+	public fixedXOffset = 0.45;
+	public fixedYOffset = 1.7;
+	public fixedZOffset = 3.5;
+	public fixedMinRotX = 1;
+	public fixedMaxRotX = 179;
+	@Header("Orbit Camera")
+	public orbitRadius = 4;
+	public orbitYOffset = 1.85;
+	public orbitMinRotX = 1;
+	public orbitMaxRotX = 179;
 
 	public Awake(): void {
 		//Character
@@ -64,15 +82,42 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 			//Camera
 			//Toggle the core camera system
 			Airship.Camera.SetEnabled(this.useAirshipCameraSystem);
+			//Change to a new camera mode
+			Airship.Camera.characterCameraMode = CharacterCameraMode.Fixed;
+
 			if (this.useAirshipCameraSystem) {
 				//Allow clients to toggle their view model
 				Airship.Camera.canToggleFirstPerson = this.allowFirstPersonToggle;
-				if (this.startInFirstPerson) {
-					//Change to a new camera mode
-					Airship.Camera.characterCameraMode = CharacterCameraMode.Fixed;
+				if (this.startInFirstPerson && this.characterCameraMode === CharacterCameraMode.Fixed) {
 					//Force first person view model
 					Airship.Camera.SetFirstPerson(this.startInFirstPerson);
 				}
+
+				CameraConstants.UpdateDefaultFixedCameraConfig({
+					xOffset: this.fixedXOffset,
+					yOffset: this.fixedYOffset,
+					zOffset: this.fixedZOffset,
+					maxRotX: this.fixedMaxRotX,
+					minRotX: this.fixedMinRotX,
+					shouldOcclusionBump: CameraConstants.DefaultFixedCameraConfig.shouldOcclusionBump,
+				});
+				CameraConstants.UpdateDefaultOrbitCameraConfig({
+					radius: this.orbitRadius,
+					yOffset: this.orbitYOffset,
+					maxRotX: this.orbitMaxRotX,
+					minRotX: this.orbitMinRotX,
+					shouldOcclusionBump: CameraConstants.DefaultOrbitCameraConfig.shouldOcclusionBump,
+				});
+
+				const activeCameraMode = Dependency<AirshipCharacterCameraSingleton>().activeCameraMode;
+				if (activeCameraMode && activeCameraMode instanceof FixedCameraMode) {
+					activeCameraMode.UpdateProperties(CameraConstants.DefaultFixedCameraConfig);
+				}
+
+				if (activeCameraMode && activeCameraMode instanceof OrbitCameraMode) {
+					activeCameraMode.UpdateProperties(CameraConstants.DefaultOrbitCameraConfig);
+				}
+
 				//Camera FOV
 				Airship.Camera.SetSprintFOVEnabled(this.useSprintFOV);
 				Airship.Camera.SetSprintFOVMultiplier(this.sprintFOVMultiplier);
