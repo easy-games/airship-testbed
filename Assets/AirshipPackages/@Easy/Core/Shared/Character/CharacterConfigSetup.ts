@@ -28,6 +28,7 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 
 	@Header("Camera System")
 	public useAirshipCameraSystem = true;
+	public characterCameraMode = CharacterCameraMode.Fixed;
 	public startInFirstPerson = false;
 	public allowFirstPersonToggle = true;
 	public useSprintFOV = true;

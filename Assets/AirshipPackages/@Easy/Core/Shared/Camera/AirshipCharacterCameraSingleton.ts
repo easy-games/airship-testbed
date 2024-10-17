@@ -291,31 +291,14 @@ export class AirshipCharacterCameraSingleton {
 		};
 	}
 
-	// private CreateFixedCameraMode(character: Character): CameraMode {
-	// 	return new FixedCameraMode(character.model, CameraConstants.DefaultFixedCameraConfig);
-	// }
-
-	// private CreateOrbitCameraMode(character: Character): OrbitCameraMode {
-	// 	return new OrbitCameraMode(character.gameObject, CameraConstants.DefaultOrbitCameraConfig);
-	// }
-
 	/**
 	 * @internal
 	 */
 	public SetupCamera(character: Character) {
 		if (this.characterCameraMode === CharacterCameraMode.Fixed) {
-			// const mode = this.CreateFixedCameraMode(character);
-			// this.SetModeInternal(mode);
-			//this.ManageFixedCameraForCharacter(mode, character);
-			// this.cameraSystem?.SetOnClearCallback(() => {
-			// 	print("SET ON CLEAR CALLBACK?");
-			// 	return this.CreateFixedCameraMode(character);
-			// });
-			this.SetModeNew(FixedCameraMode, character.model);
+			this.SetMode(FixedCameraMode, character.model);
 		} else if (this.characterCameraMode === CharacterCameraMode.Orbit) {
-			// this.SetModeInternal(this.CreateOrbitCameraMode(character));
-			// this.cameraSystem?.SetOnClearCallback(() => this.CreateOrbitCameraMode(character));
-			this.SetModeNew(OrbitCameraMode, character.model);
+			this.SetMode(OrbitCameraMode, character.model);
 		}
 
 		//Set up first person camera
@@ -395,36 +378,25 @@ export class AirshipCharacterCameraSingleton {
 	}
 
 	/**
+	 * Returns the `CameraMode` of type `T`. If a generic type is _not_ provided,
+	 * this defaults to the standard camera mode `FixedCameraMode`.
 	 *
-	 * @returns
+	 * @returns The `CameraMode`, if it exists. Otherwise, `undefined`.
 	 */
-	public GetMode<T extends CameraMode>(): T | undefined {
+	public GetMode<T extends CameraMode = FixedCameraMode>(): T | undefined {
 		const mode = this.cameraSystem?.GetMode();
 		if (!mode) return undefined;
 		return mode as T;
 	}
 
-	// public SetMode(mode: CharacterCameraMode): void {
-	// 	if (!Game.IsClient()) return;
-	// 	this.characterCameraMode = mode;
-
-	// 	if (Game.localPlayer.character) {
-	// 		const character = Game.localPlayer.character;
-	// 		if (mode === CharacterCameraMode.Fixed) {
-	// 			const cameraMode = this.CreateFixedCameraMode(character);
-	// 			this.SetModeInternal(cameraMode);
-	// 		} else if (mode === CharacterCameraMode.Orbit) {
-	// 			const cameraMode = this.CreateOrbitCameraMode(character);
-	// 			this.SetModeInternal(cameraMode);
-	// 		}
-	// 	}
-
-	// 	if (mode !== CharacterCameraMode.Fixed) {
-	// 		this.firstPerson = false;
-	// 	}
-	// }
-
-	public SetModeNew<T extends new (...args: any[]) => CameraMode>(
+	/**
+	 * Sets and returns a new `CameraMode`.
+	 *
+	 * @param cls The `CameraMode` that is being set.
+	 * @param args The mode's constructor arguments.
+	 * @returns The new `CameraMode`.
+	 */
+	public SetMode<T extends new (...args: any[]) => CameraMode>(
 		cls: T,
 		...args: ConstructorParameters<T>
 	): InstanceType<T> {

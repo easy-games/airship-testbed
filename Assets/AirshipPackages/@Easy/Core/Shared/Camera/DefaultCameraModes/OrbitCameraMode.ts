@@ -1,5 +1,5 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
-import { ControlScheme, Keyboard, Mouse, Preferred, Touchscreen } from "@Easy/Core/Shared/UserInput";
+import { ControlScheme, Mouse, Preferred, Touchscreen } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import ObjectUtils from "../../Util/ObjectUtils";
 import { CameraConstants, OrbitCameraConfig } from "../CameraConstants";
@@ -177,6 +177,90 @@ export class OrbitCameraMode extends CameraMode {
 		);
 	}
 
+	OnStop() {
+		this.cameraCleanup.Clean();
+	}
+
+	OnUpdate(dt: number) {
+		const rightClick = Mouse.isRightDown;
+		if (rightClick && !this.rightClicking) {
+			this.rightClickPos = Mouse.position;
+		}
+		this.rightClicking = rightClick;
+
+		if (Mouse.IsLocked() && rightClick && !this.locked) {
+			let mouseDelta = Mouse.GetDelta();
+			// This is to prevent large jump on first movement (happens always on mac)
+			if (this.mouseLockSwapped && mouseDelta.magnitude > 0) {
+				this.mouseLockSwapped = false;
+				mouseDelta = new Vector2(0, 0);
+			}
+			let moveDelta = mouseDelta;
+
+			// Trying to do 1/MOUSE_SMOOTHING every 1/120th of a second (while supporting variable dt). Not sure if this math checks out.
+			if (this.mouseSmoothingEnabled) {
+				const smoothFactor = math.pow(1 / (1 + Airship.Input.GetMouseSmoothing()), Time.deltaTime * 120);
+				this.smoothVector = new Vector2(
+					Mathf.Lerp(this.smoothVector.x, mouseDelta.x, smoothFactor),
+					Mathf.Lerp(this.smoothVector.y, mouseDelta.y, smoothFactor),
+				);
+				moveDelta = this.smoothVector;
+			}
+
+			const mouseSensitivity = Airship.Input.GetMouseSensitivity();
+
+			this.rotationY =
+				(this.rotationY -
+					(mouseDelta.x / Screen.width) * mouseSensitivity * CameraConstants.SensitivityScalar) %
+				(math.pi * 2);
+			this.rotationX = math.clamp(
+				this.rotationX + (moveDelta.y / Screen.width) * mouseSensitivity * CameraConstants.SensitivityScalar,
+				this.minRotX,
+				this.maxRotX,
+			);
+		}
+
+		// Update mouse locked state. This will make the next frame's delta be 0.
+		if (this.mouseLocked !== Mouse.IsLocked()) {
+			this.mouseLocked = !this.mouseLocked;
+			this.mouseLockSwapped = true;
+		}
+	}
+
+	OnLateUpdate(dt: number) {
+		const radius = this.radius;
+
+		// Polar to cartesian conversion (i.e. the 3D point around the sphere of the character):
+		const rotY = this.rotationY - math.pi / 2;
+		const xPos = radius * math.cos(rotY) * math.sin(this.rotationX);
+		const zPos = radius * math.sin(rotY) * math.sin(this.rotationX);
+		const yPos = radius * math.cos(this.rotationX);
+
+		const posOffset = new Vector3(xPos, yPos, zPos);
+		const attachToPos = this.target?.transform.position.add(new Vector3(0, this.yOffset, 0)) ?? Vector3.zero;
+		this.lastAttachToPos = attachToPos;
+
+		let newPosition = attachToPos.add(posOffset);
+		let rotation: Quaternion;
+
+		let lv = posOffset.mul(-1).normalized;
+		if (lv === Vector3.zero) {
+			lv = new Vector3(0, 0, 0.01);
+		}
+		rotation = Quaternion.LookRotation(lv, Vector3.up);
+
+		return new CameraTransform(newPosition, rotation);
+	}
+
+	OnPostUpdate(camera: Camera) {
+		const transform = camera.transform;
+		transform.LookAt(this.lastAttachToPos);
+		this.occlusionCam.BumpForOcclusion(this.lastAttachToPos, DefaultCameraMask);
+
+		this.cameraRightVector = transform.right;
+		this.cameraForwardVector = transform.forward;
+	}
+
 	/**
 	 * Sets camera's radius.
 	 *
@@ -287,101 +371,5 @@ export class OrbitCameraMode extends CameraMode {
 	 */
 	public SetLocked(locked: boolean): void {
 		this.locked = locked;
-	}
-
-	OnStop() {
-		this.cameraCleanup.Clean();
-	}
-
-	OnUpdate(dt: number) {
-		const lf = Keyboard.IsKeyDown(Key.LeftArrow);
-		const rt = Keyboard.IsKeyDown(Key.RightArrow);
-		const rightClick = Mouse.isRightDown;
-		if (rightClick && !this.rightClicking) {
-			this.rightClickPos = Mouse.position;
-		}
-		this.rightClicking = rightClick;
-		if (lf !== rt) {
-			this.rotationY += (lf ? 1 : -1) * Time.deltaTime * 4;
-		}
-		if (Mouse.IsLocked() && rightClick && !this.locked) {
-			let mouseDelta = Mouse.GetDelta();
-			// This is to prevent large jump on first movement (happens always on mac)
-			if (this.mouseLockSwapped && mouseDelta.magnitude > 0) {
-				this.mouseLockSwapped = false;
-				mouseDelta = new Vector2(0, 0);
-			}
-			let moveDelta = mouseDelta;
-
-			// Trying to do 1/MOUSE_SMOOTHING every 1/120th of a second (while supporting variable dt). Not sure if this math checks out.
-			if (this.mouseSmoothingEnabled) {
-				// Raise to the 1.8 to reduce movement near 0
-				// if (math.abs(mouseDelta.x) < 1 && math.abs(mouseDelta.y) < 1) {
-				// 	mouseDelta = new Vector2(math.pow(math.abs(mouseDelta.x), 1.8) * math.sign(mouseDelta.x), math.pow(math.abs(mouseDelta.y), 1.8) * math.sign(mouseDelta.y));
-				// }
-
-				const smoothFactor = math.pow(1 / (1 + Airship.Input.GetMouseSmoothing()), Time.deltaTime * 120);
-				// print(smoothFactor);
-				this.smoothVector = new Vector2(
-					Mathf.Lerp(this.smoothVector.x, mouseDelta.x, smoothFactor),
-					Mathf.Lerp(this.smoothVector.y, mouseDelta.y, smoothFactor),
-				);
-				moveDelta = this.smoothVector;
-			}
-
-			const mouseSensitivity = Airship.Input.GetMouseSensitivity();
-			// if (!this.locked) {
-			// 	// this.mouse.SetPosition(this.rightClickPos);
-			// }
-			this.rotationY =
-				(this.rotationY -
-					(mouseDelta.x / Screen.width) * mouseSensitivity * CameraConstants.SensitivityScalar) %
-				(math.pi * 2);
-			this.rotationX = math.clamp(
-				this.rotationX + (moveDelta.y / Screen.width) * mouseSensitivity * CameraConstants.SensitivityScalar,
-				this.minRotX,
-				this.maxRotX,
-			);
-		}
-
-		// Update mouse locked state. This will make the next frame's delta be 0.
-		if (this.mouseLocked !== Mouse.IsLocked()) {
-			this.mouseLocked = !this.mouseLocked;
-			this.mouseLockSwapped = true;
-		}
-	}
-
-	OnLateUpdate(dt: number) {
-		const radius = this.radius;
-
-		// Polar to cartesian conversion (i.e. the 3D point around the sphere of the character):
-		const rotY = this.rotationY - math.pi / 2;
-		const xPos = radius * math.cos(rotY) * math.sin(this.rotationX);
-		const zPos = radius * math.sin(rotY) * math.sin(this.rotationX);
-		const yPos = radius * math.cos(this.rotationX);
-
-		const posOffset = new Vector3(xPos, yPos, zPos);
-		const attachToPos = this.target?.transform.position.add(new Vector3(0, this.yOffset, 0)) ?? Vector3.zero;
-		this.lastAttachToPos = attachToPos;
-
-		let newPosition = attachToPos.add(posOffset);
-		let rotation: Quaternion;
-
-		let lv = posOffset.mul(-1).normalized;
-		if (lv === Vector3.zero) {
-			lv = new Vector3(0, 0, 0.01);
-		}
-		rotation = Quaternion.LookRotation(lv, Vector3.up);
-
-		return new CameraTransform(newPosition, rotation);
-	}
-
-	OnPostUpdate(camera: Camera) {
-		const transform = camera.transform;
-		transform.LookAt(this.lastAttachToPos);
-		this.occlusionCam.BumpForOcclusion(this.lastAttachToPos, DefaultCameraMask);
-
-		this.cameraRightVector = transform.right;
-		this.cameraForwardVector = transform.forward;
 	}
 }
