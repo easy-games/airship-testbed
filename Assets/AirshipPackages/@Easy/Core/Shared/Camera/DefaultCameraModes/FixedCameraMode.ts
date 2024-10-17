@@ -30,6 +30,8 @@ export class FixedCameraMode extends CameraMode {
 
 	private occlusionCam!: OcclusionCam;
 
+	private lookBehind = false;
+
 	public cameraForwardVector = Vector3.zero;
 	private cameraRightVector = new Vector3(0, 0, 1);
 
@@ -143,14 +145,9 @@ export class FixedCameraMode extends CameraMode {
 				}
 			}),
 		);
-
-		// if (!this.locked) {
-		// 	this.cameraCleanUp.Add(Mouse.AddUnlocker());
-		// }
 	}
 
 	OnStop() {
-		print(`Calling stop for fixed camera mode`);
 		this.cameraCleanUp.Clean();
 	}
 
@@ -205,7 +202,8 @@ export class FixedCameraMode extends CameraMode {
 		}
 
 		// Polar to cartesian conversion (i.e. the 3D point around the sphere of the character):
-		const rotY = this.rotationY - math.pi / 2;
+		const rotYOffset = this.lookBehind ? math.pi : 0;
+		const rotY = this.rotationY + rotYOffset - math.pi / 2;
 		const xPos = this.zOffset * math.cos(rotY) * math.sin(this.rotationX);
 		const zPos = this.zOffset * math.sin(rotY) * math.sin(this.rotationX);
 		const yPos = this.zOffset * math.cos(this.rotationX);
@@ -229,7 +227,7 @@ export class FixedCameraMode extends CameraMode {
 			this.occlusionCam.BumpForOcclusion(this.lastCameraPos, DefaultCameraMask);
 		}
 		this.cameraRightVector = transform.right;
-		this.cameraForwardVector = transform.forward;
+		this.cameraForwardVector = this.lookBehind ? transform.forward.mul(-1) : transform.forward;
 	}
 
 	/**
@@ -354,6 +352,15 @@ export class FixedCameraMode extends CameraMode {
 	 */
 	public GetLocked(): boolean {
 		return this.locked;
+	}
+
+	/**
+	 * Sets whether or not camera should look behind.
+	 *
+	 * @param lookBehind Whether or not camera should look behind.
+	 */
+	public SetLookBackwards(lookBehind: boolean): void {
+		this.lookBehind = lookBehind;
 	}
 
 	/**
