@@ -83,7 +83,7 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 			//Toggle the core camera system
 			Airship.Camera.SetEnabled(this.useAirshipCameraSystem);
 			//Change to a new camera mode
-			Airship.Camera.characterCameraMode = CharacterCameraMode.Fixed;
+			Airship.Camera.characterCameraMode = this.characterCameraMode;
 
 			if (this.useAirshipCameraSystem) {
 				//Allow clients to toggle their view model
