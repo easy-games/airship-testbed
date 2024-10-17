@@ -8,7 +8,6 @@ import { Binding } from "@Easy/Core/Shared/Input/Binding";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Keyboard } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
-import { MathUtil } from "@Easy/Core/Shared/Util/MathUtil";
 
 export default class DemoManager extends AirshipBehaviour {
 	public spawnPosition!: GameObject;
@@ -79,50 +78,6 @@ export default class DemoManager extends AirshipBehaviour {
 			this.npcCharacter = Airship.Characters.SpawnNonPlayerCharacter(this.spawnPosition.transform.position);
 		}
 		if (Game.IsClient()) {
-			// SetInterval(1, () => {
-			// 	const thing = Dependency<AirshipCharacterCameraSingleton>().activeCameraMode;
-			// 	print(thing instanceof FixedCameraMode);
-			// });
-			task.delay(3.5, () => {
-				// const m = Airship.Camera.GetMode();
-				// m?.SetLookBackwards(true);
-				// m?.SetXOffset(0.1);
-				// m?.SetZOffset(1.75);
-				// const m = Airship.Camera.SetMode(OrbitCameraMode, Game.localPlayer.character!.model, {});
-				// task.delay(5, () => m.SetLocked(true));
-				// task.delay(3, () => {
-				// 	task.delay(5, () => {
-				// 		m.SetTarget(Game.localPlayer.character!.model);
-				// 		Airship.Camera.SetModeNew(FixedCameraMode, Game.localPlayer.character!.model, {
-				// 			xOffset: 0.8,
-				// 			zOffset: 4,
-				// 		});
-				// 	});
-				// 	m.SetTarget(this.spawnPosition);
-				// 	Tween.Number(
-				// 		TweenEasingFunction.InOutSine,
-				// 		2,
-				// 		(val) => {
-				// 			m.SetRadius(val);
-				// 		},
-				// 		4,
-				// 		10,
-				// 	);
-				// });
-				// task.delay(6, () => {
-				// 	const mn = Airship.Camera.SetModeNew(FixedCameraMode, Game.localPlayer.character!.model, {});
-				// 	task.delay(4, () => {
-				// 		// mn.SetTarget(this.spawnPosition);
-				// 		mn.SetZOffset(4);
-				// 	});
-				// });
-				// const fixed = Airship.Camera.GetMode<FixedCameraMode>();
-				// if (!fixed) return;
-				// fixed.SetTarget(this.spawnPosition);
-				// task.delay(5, () => {
-				// 	fixed.SetTarget(Game.localPlayer.character!.model);
-				// });
-			});
 			// Display local player deaths
 			this.bin.Add(
 				Game.localPlayer.ObserveCharacter((character) => {
@@ -173,20 +128,34 @@ export default class DemoManager extends AirshipBehaviour {
 	private testDirFlip = 1;
 	private testImpulseForce = 8;
 	public override Update(dt: number): void {
-		if(Game.IsServer() || this.npcCharacter?.networkIdentity?.isOwned){
+		if (Game.IsServer() || this.npcCharacter?.networkIdentity?.isOwned) {
 			const xAnchor = this.spawnPosition.transform.position.x;
-			if((this.testDirFlip > 0 && this.npcCharacter.transform.position.x > xAnchor + 5) ||
-			(this.testDirFlip<0 && this.npcCharacter.transform.position.x < xAnchor-5)){
+			if (
+				(this.testDirFlip > 0 && this.npcCharacter.transform.position.x > xAnchor + 5) ||
+				(this.testDirFlip < 0 && this.npcCharacter.transform.position.x < xAnchor - 5)
+			) {
 				this.testDirFlip *= -1;
 			}
-			let dir = new Vector3(this.testDirFlip,0,0);
-			let time = Time.time *.4;
+			let dir = new Vector3(this.testDirFlip, 0, 0);
+			let time = Time.time * 0.4;
 			//FORCE TEST
-			if(math.random() > 1-Time.deltaTime){
-				this.npcCharacter.movement.AddImpulse(new Vector3(math.random()*this.testImpulseForce*2 - this.testImpulseForce, math.lerp(0,this.testImpulseForce*2, math.random()), math.random() *this.testImpulseForce*2 - this.testImpulseForce));
+			if (math.random() > 1 - Time.deltaTime) {
+				this.npcCharacter.movement.AddImpulse(
+					new Vector3(
+						math.random() * this.testImpulseForce * 2 - this.testImpulseForce,
+						math.lerp(0, this.testImpulseForce * 2, math.random()),
+						math.random() * this.testImpulseForce * 2 - this.testImpulseForce,
+					),
+				);
 			}
 			//MOVE TEST
-			this.npcCharacter.movement.SetMoveInput(dir, math.random() > 1-Time.deltaTime*2, math.sin(time) > .2, math.cos(time) < .2, true);
+			this.npcCharacter.movement.SetMoveInput(
+				dir,
+				math.random() > 1 - Time.deltaTime * 2,
+				math.sin(time) > 0.2,
+				math.cos(time) < 0.2,
+				true,
+			);
 		}
 	}
 

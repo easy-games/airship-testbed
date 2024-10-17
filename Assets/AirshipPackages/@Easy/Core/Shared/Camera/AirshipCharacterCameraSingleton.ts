@@ -296,9 +296,9 @@ export class AirshipCharacterCameraSingleton {
 	 */
 	public SetupCamera(character: Character) {
 		if (this.characterCameraMode === CharacterCameraMode.Fixed) {
-			this.SetMode(FixedCameraMode, character.model);
+			this.SetMode(CharacterCameraMode.Fixed);
 		} else if (this.characterCameraMode === CharacterCameraMode.Orbit) {
-			this.SetMode(OrbitCameraMode, character.model);
+			this.SetMode(CharacterCameraMode.Orbit);
 		}
 
 		//Set up first person camera
@@ -393,19 +393,36 @@ export class AirshipCharacterCameraSingleton {
 	}
 
 	/**
-	 * Sets and returns a new `CameraMode`.
+	 * Sets a new `CharacterCameraMode`. If the local character _does_ not exist when
+	 * this function is called, the camera mode's target is set to a `GameObject` located
+	 * at `Vector3.zero`.
 	 *
-	 * @param cls The `CameraMode` that is being set.
-	 * @param args The mode's constructor arguments.
+	 * @param characterCameraMode A `CharacterCameraMode`.
+	 */
+	public SetMode(characterCameraMode: CharacterCameraMode): CameraMode {
+		this.characterCameraMode = characterCameraMode;
+		const target =
+			Game.localPlayer.character?.model ?? GameObject.CreateAtPos(Vector3.zero, "CameraTargetPlaceholder");
+		if (characterCameraMode === CharacterCameraMode.Fixed) {
+			const mode = new FixedCameraMode(target);
+			this.SetModeInternal(mode);
+			return mode;
+		} else {
+			const mode = new OrbitCameraMode(target);
+			this.SetModeInternal(mode);
+			return mode;
+		}
+	}
+
+	/**
+	 * Sets and returns a new custom `CameraMode`.
+	 *
+	 * @param mode The `CameraMode` that is being set.
 	 * @returns The new `CameraMode`.
 	 */
-	public SetMode<T extends new (...args: any[]) => CameraMode>(
-		cls: T,
-		...args: ConstructorParameters<T>
-	): InstanceType<T> {
-		const mode = new cls(...args!);
+	public SetModeCustom(mode: CameraMode): CameraMode {
 		this.SetModeInternal(mode);
-		return mode as InstanceType<T>;
+		return mode;
 	}
 
 	/**
@@ -477,9 +494,11 @@ export class AirshipCharacterCameraSingleton {
 			// When the fixed camera is targeting the local `Character`, synchronize the character &
 			// camera's look vectors.
 			const lookVectorSync = OnLateUpdate.Connect(() => {
+				if (character.movement.disableInput) return;
 				character.movement.SetLookVector(mode.cameraForwardVector);
 			});
 			const lookVectorSyncInverse = character.movement.OnNewLookVector((lookVector) => {
+				if (character.movement.disableInput) return;
 				character.movement.SetLookVectorRecurring(mode.cameraForwardVector);
 				mode.SetYAxisDirection(lookVector);
 			});
@@ -507,9 +526,11 @@ export class AirshipCharacterCameraSingleton {
 			// When the fixed camera is targeting the local `Character`, synchronize the character &
 			// camera's look vectors.
 			const lookVectorSync = OnLateUpdate.Connect(() => {
+				if (character.movement.disableInput) return;
 				character.movement.SetLookVector(mode.cameraForwardVector);
 			});
 			const lookVectorSyncInverse = character.movement.OnNewLookVector((lookVector) => {
+				if (character.movement.disableInput) return;
 				character.movement.SetLookVectorRecurring(mode.cameraForwardVector);
 				mode.SetYAxisDirection(lookVector);
 			});
@@ -528,7 +549,7 @@ export class AirshipCharacterCameraSingleton {
 	/**
 	 * Changes the preferred perspective for the local character.
 	 *
-	 * This will only work if using {@link CharacterCameraMode.Fixed}. You can set this with {@link SetMode()}
+	 * This will only work if using {@link CharacterCameraMode.Fixed}. You can set this with {@link SetModeCustom()}
 	 */
 	public SetFirstPerson(value: boolean) {
 		assert(
