@@ -154,7 +154,7 @@ export class AirshipServerManagerService {
 
 	/**
 	 * Checks if the provided userId is allowed on the server.
-	 * @param userId
+	 * @param userId The userId of the player.
 	 * @returns True if allowed, false otherwise.
 	 */
 	public async HasAllowedPlayer(userId: string): Promise<boolean> {
