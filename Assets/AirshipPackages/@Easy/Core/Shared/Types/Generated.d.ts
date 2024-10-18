@@ -2193,82 +2193,163 @@ declare const enum UnloadSceneOptions {
     None = 0,
     UnloadAllEmbeddedSceneObjects = 1,
 }
+declare const enum AvatarMaskBodyPart {
+    Root = 0,
+    Body = 1,
+    Head = 2,
+    LeftLeg = 3,
+    RightLeg = 4,
+    LeftArm = 5,
+    RightArm = 6,
+    LeftFingers = 7,
+    RightFingers = 8,
+    LeftFootIK = 9,
+    RightFootIK = 10,
+    LeftHandIK = 11,
+    RightHandIK = 12,
+    LastBodyPart = 13,
+}
 declare const enum SkinQuality {
     Auto = 0,
     Bone1 = 1,
     Bone2 = 2,
     Bone4 = 4,
 }
-declare const enum AccessorySlot {
-    Root = 0,
-    Head = 1,
-    Hair = 2,
-    Face = 3,
-    Neck = 4,
-    Torso = 5,
-    RightHand = 6,
-    LeftHand = 7,
-    Waist = 8,
-    Legs = 9,
-    Feet = 10,
-    Ears = 11,
-    Nose = 12,
-    TorsoOuter = 13,
-    TorsoInner = 14,
-    Backpack = 15,
-    Hands = 16,
-    HandsOuter = 17,
-    LeftWrist = 18,
-    RightWrist = 19,
-    LegsOuter = 20,
-    LegsInner = 21,
-    FeetInner = 22,
-    LeftFoot = 23,
-    RightFoot = 24,
+declare const enum ApplicationInstallMode {
+    Unknown = 0,
+    Store = 1,
+    DeveloperBuild = 2,
+    Adhoc = 3,
+    Enterprise = 4,
+    Editor = 5,
 }
-declare const enum VisibilityMode {
-    THIRD_PERSON = 0,
-    FIRST_PERSON = 1,
-    BOTH = 2,
+declare const enum ApplicationSandboxType {
+    Unknown = 0,
+    NotSandboxed = 1,
+    Sandboxed = 2,
+    SandboxBroken = 3,
 }
-declare const enum BodyMask {
-    NONE = 0,
-    HAIR = 1,
-    FACE = 2,
-    R_ARM_UPPER = 4,
-    L_ARM_UPPER = 8,
-    EARS = 16,
-    UNUSED1 = 32,
-    UNUSED2 = 64,
-    L_ARM_LOWER = 128,
-    L_HAND = 256,
-    R_HAND = 512,
-    R_ARM_LOWER = 1024,
-    R_ARM_JOINTS = 2048,
-    L_ARM_JOINTS = 4096,
-    UNUSED5 = 8192,
-    UNUSED6 = 16384,
-    L_LEG_UPPER = 32768,
-    HIPS = 65536,
-    TORSO = 131072,
-    R_LEG_UPPER = 262144,
-    R_LEG_JOINTS = 524288,
-    L_LEG_JOINTS = 1048576,
-    UNUSED9 = 2097152,
-    UNUSED10 = 4194304,
-    L_LEG_LOWER = 8388608,
-    L_FOOT = 16777216,
-    R_FOOT = 33554432,
-    R_LEG_LOWER = 67108864,
-    UNUSED11 = 134217728,
-    UNUSED12 = 268435456,
-    UNUSED13 = 536870912,
-    UNUSED14 = 1073741824,
+declare const enum ThreadPriority {
+    Low = 0,
+    BelowNormal = 1,
+    Normal = 2,
+    High = 4,
 }
-declare const enum AccessoryAddMode {
-    ReplaceAll = 0,
-    Replace = 1,
-    AddIfNone = 2,
+declare const enum RuntimePlatform {
+    OSXEditor = 0,
+    OSXPlayer = 1,
+    WindowsPlayer = 2,
+    OSXWebPlayer = 3,
+    OSXDashboardPlayer = 4,
+    WindowsWebPlayer = 5,
+    WindowsEditor = 7,
+    IPhonePlayer = 8,
+    PS3 = 9,
+    XBOX360 = 10,
+    Android = 11,
+    NaCl = 12,
+    LinuxPlayer = 13,
+    FlashPlayer = 15,
+    LinuxEditor = 16,
+    WebGLPlayer = 17,
+    MetroPlayerX86 = 18,
+    WSAPlayerX86 = 18,
+    MetroPlayerX64 = 19,
+    WSAPlayerX64 = 19,
+    MetroPlayerARM = 20,
+    WSAPlayerARM = 20,
+    WP8Player = 21,
+    BB10Player = 22,
+    BlackBerryPlayer = 22,
+    TizenPlayer = 23,
+    PSP2 = 24,
+    PS4 = 25,
+    PSM = 26,
+    XboxOne = 27,
+    SamsungTVPlayer = 28,
+    WiiU = 30,
+    tvOS = 31,
+    Switch = 32,
+    Lumin = 33,
+    Stadia = 34,
+    LinuxHeadlessSimulation = 35,
+    GameCoreXboxSeries = 36,
+    GameCoreXboxOne = 37,
+    PS5 = 38,
+    EmbeddedLinuxArm64 = 39,
+    EmbeddedLinuxArm32 = 40,
+    EmbeddedLinuxX64 = 41,
+    EmbeddedLinuxX86 = 42,
+    LinuxServer = 43,
+    WindowsServer = 44,
+    OSXServer = 45,
+    QNXArm32 = 46,
+    QNXArm64 = 47,
+    QNXX64 = 48,
+    QNXX86 = 49,
+    GameCoreScarlett = -1,
+    CloudRendering = -1,
+}
+declare const enum SystemLanguage {
+    Afrikaans = 0,
+    Arabic = 1,
+    Basque = 2,
+    Belarusian = 3,
+    Bulgarian = 4,
+    Catalan = 5,
+    Chinese = 6,
+    Czech = 7,
+    Danish = 8,
+    Dutch = 9,
+    English = 10,
+    Estonian = 11,
+    Faroese = 12,
+    Finnish = 13,
+    French = 14,
+    German = 15,
+    Greek = 16,
+    Hebrew = 17,
+    Hungarian = 18,
+    Hugarian = 18,
+    Icelandic = 19,
+    Indonesian = 20,
+    Italian = 21,
+    Japanese = 22,
+    Korean = 23,
+    Latvian = 24,
+    Lithuanian = 25,
+    Norwegian = 26,
+    Polish = 27,
+    Portuguese = 28,
+    Romanian = 29,
+    Russian = 30,
+    SerboCroatian = 31,
+    Slovak = 32,
+    Slovenian = 33,
+    Spanish = 34,
+    Swedish = 35,
+    Thai = 36,
+    Turkish = 37,
+    Ukrainian = 38,
+    Vietnamese = 39,
+    ChineseSimplified = 40,
+    ChineseTraditional = 41,
+    Hindi = 42,
+    Unknown = 43,
+}
+declare const enum NetworkReachability {
+    NotReachable = 0,
+    ReachableViaCarrierDataNetwork = 1,
+    ReachableViaLocalAreaNetwork = 2,
+}
+declare const enum StackTraceLogType {
+    None = 0,
+    ScriptOnly = 1,
+    Full = 2,
+}
+declare const enum UserAuthorization {
+    WebCam = 1,
+    Microphone = 2,
 }
 declare const enum ParticleSystemCurveMode {
     Constant = 0,
@@ -2493,158 +2574,6 @@ declare const enum ParticleSystemCustomDataMode {
 declare const enum ParticleSystemStopBehavior {
     StopEmittingAndClear = 0,
     StopEmitting = 1,
-}
-declare const enum AvatarMaskBodyPart {
-    Root = 0,
-    Body = 1,
-    Head = 2,
-    LeftLeg = 3,
-    RightLeg = 4,
-    LeftArm = 5,
-    RightArm = 6,
-    LeftFingers = 7,
-    RightFingers = 8,
-    LeftFootIK = 9,
-    RightFootIK = 10,
-    LeftHandIK = 11,
-    RightHandIK = 12,
-    LastBodyPart = 13,
-}
-declare const enum ApplicationInstallMode {
-    Unknown = 0,
-    Store = 1,
-    DeveloperBuild = 2,
-    Adhoc = 3,
-    Enterprise = 4,
-    Editor = 5,
-}
-declare const enum ApplicationSandboxType {
-    Unknown = 0,
-    NotSandboxed = 1,
-    Sandboxed = 2,
-    SandboxBroken = 3,
-}
-declare const enum ThreadPriority {
-    Low = 0,
-    BelowNormal = 1,
-    Normal = 2,
-    High = 4,
-}
-declare const enum RuntimePlatform {
-    OSXEditor = 0,
-    OSXPlayer = 1,
-    WindowsPlayer = 2,
-    OSXWebPlayer = 3,
-    OSXDashboardPlayer = 4,
-    WindowsWebPlayer = 5,
-    WindowsEditor = 7,
-    IPhonePlayer = 8,
-    PS3 = 9,
-    XBOX360 = 10,
-    Android = 11,
-    NaCl = 12,
-    LinuxPlayer = 13,
-    FlashPlayer = 15,
-    LinuxEditor = 16,
-    WebGLPlayer = 17,
-    MetroPlayerX86 = 18,
-    WSAPlayerX86 = 18,
-    MetroPlayerX64 = 19,
-    WSAPlayerX64 = 19,
-    MetroPlayerARM = 20,
-    WSAPlayerARM = 20,
-    WP8Player = 21,
-    BB10Player = 22,
-    BlackBerryPlayer = 22,
-    TizenPlayer = 23,
-    PSP2 = 24,
-    PS4 = 25,
-    PSM = 26,
-    XboxOne = 27,
-    SamsungTVPlayer = 28,
-    WiiU = 30,
-    tvOS = 31,
-    Switch = 32,
-    Lumin = 33,
-    Stadia = 34,
-    LinuxHeadlessSimulation = 35,
-    GameCoreXboxSeries = 36,
-    GameCoreXboxOne = 37,
-    PS5 = 38,
-    EmbeddedLinuxArm64 = 39,
-    EmbeddedLinuxArm32 = 40,
-    EmbeddedLinuxX64 = 41,
-    EmbeddedLinuxX86 = 42,
-    LinuxServer = 43,
-    WindowsServer = 44,
-    OSXServer = 45,
-    QNXArm32 = 46,
-    QNXArm64 = 47,
-    QNXX64 = 48,
-    QNXX86 = 49,
-    GameCoreScarlett = -1,
-    CloudRendering = -1,
-}
-declare const enum SystemLanguage {
-    Afrikaans = 0,
-    Arabic = 1,
-    Basque = 2,
-    Belarusian = 3,
-    Bulgarian = 4,
-    Catalan = 5,
-    Chinese = 6,
-    Czech = 7,
-    Danish = 8,
-    Dutch = 9,
-    English = 10,
-    Estonian = 11,
-    Faroese = 12,
-    Finnish = 13,
-    French = 14,
-    German = 15,
-    Greek = 16,
-    Hebrew = 17,
-    Hungarian = 18,
-    Hugarian = 18,
-    Icelandic = 19,
-    Indonesian = 20,
-    Italian = 21,
-    Japanese = 22,
-    Korean = 23,
-    Latvian = 24,
-    Lithuanian = 25,
-    Norwegian = 26,
-    Polish = 27,
-    Portuguese = 28,
-    Romanian = 29,
-    Russian = 30,
-    SerboCroatian = 31,
-    Slovak = 32,
-    Slovenian = 33,
-    Spanish = 34,
-    Swedish = 35,
-    Thai = 36,
-    Turkish = 37,
-    Ukrainian = 38,
-    Vietnamese = 39,
-    ChineseSimplified = 40,
-    ChineseTraditional = 41,
-    Hindi = 42,
-    Unknown = 43,
-}
-declare const enum NetworkReachability {
-    NotReachable = 0,
-    ReachableViaCarrierDataNetwork = 1,
-    ReachableViaLocalAreaNetwork = 2,
-}
-declare const enum StackTraceLogType {
-    None = 0,
-    ScriptOnly = 1,
-    Full = 2,
-}
-declare const enum UserAuthorization {
-    WebCam = 1,
-    Microphone = 2,
 }
 declare const enum ParticleSystemRenderSpace {
     View = 0,
@@ -3085,6 +3014,72 @@ declare const enum EngineRunMode {
     PLAY = 1,
     BOTH = 2,
     NONE = -1,
+}
+declare const enum AccessorySlot {
+    Root = 0,
+    Head = 1,
+    Hair = 2,
+    Face = 3,
+    Neck = 4,
+    Torso = 5,
+    RightHand = 6,
+    LeftHand = 7,
+    Waist = 8,
+    Legs = 9,
+    Feet = 10,
+    Ears = 11,
+    Nose = 12,
+    TorsoOuter = 13,
+    TorsoInner = 14,
+    Backpack = 15,
+    Hands = 16,
+    HandsOuter = 17,
+    LeftWrist = 18,
+    RightWrist = 19,
+    LegsOuter = 20,
+    LegsInner = 21,
+    FeetInner = 22,
+    LeftFoot = 23,
+    RightFoot = 24,
+}
+declare const enum VisibilityMode {
+    THIRD_PERSON = 0,
+    FIRST_PERSON = 1,
+    BOTH = 2,
+}
+declare const enum BodyMask {
+    NONE = 0,
+    HAIR = 1,
+    FACE = 2,
+    R_ARM_UPPER = 4,
+    L_ARM_UPPER = 8,
+    EARS = 16,
+    UNUSED1 = 32,
+    UNUSED2 = 64,
+    L_ARM_LOWER = 128,
+    L_HAND = 256,
+    R_HAND = 512,
+    R_ARM_LOWER = 1024,
+    R_ARM_JOINTS = 2048,
+    L_ARM_JOINTS = 4096,
+    UNUSED5 = 8192,
+    UNUSED6 = 16384,
+    L_LEG_UPPER = 32768,
+    HIPS = 65536,
+    TORSO = 131072,
+    R_LEG_UPPER = 262144,
+    R_LEG_JOINTS = 524288,
+    L_LEG_JOINTS = 1048576,
+    UNUSED9 = 2097152,
+    UNUSED10 = 4194304,
+    L_LEG_LOWER = 8388608,
+    L_FOOT = 16777216,
+    R_FOOT = 33554432,
+    R_LEG_LOWER = 67108864,
+    UNUSED11 = 134217728,
+    UNUSED12 = 268435456,
+    UNUSED13 = 536870912,
+    UNUSED14 = 1073741824,
 }
 declare const enum BlendMode {
     Normal = 0,
@@ -11448,6 +11443,7 @@ interface AgonesProxy extends MonoBehaviour {
     Connect(): void;
     DeleteListValue(list: string, value: string): boolean;
     GetListValues(list: string): CSArray<string>;
+    ListContains(list: string, value: string): boolean;
     Ready(): void;
     SetAnnotation(key: string, value: string): boolean;
     SetLabel(key: string, value: string): boolean;
@@ -31128,77 +31124,92 @@ interface LoadSceneParametersConstructor {
 declare const LoadSceneParameters: LoadSceneParametersConstructor;
     
     
-interface AccessoryBuilder extends MonoBehaviour {
-    rig: CharacterRig;
-    firstPerson: boolean;
-    currentOutfit: AccessoryOutfit;
-    currentUserId: string;
-    currentUserName: string;
-    cancelPendingDownload: boolean;
+interface AvatarMask extends Object {
+    /**
+     * Number of transforms.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/AvatarMask-transformCount.html | AvatarMask.transformCount}
+     */
+    transformCount: number;
 
-    AddAccessories(accessoryTemplates: CSArray<AccessoryComponent>, addMode: AccessoryAddMode, rebuildMeshImmediately: boolean): CSArray<ActiveAccessory>;
-    AddSingleAccessory(accessoryTemplate: AccessoryComponent, rebuildMeshImmediately: boolean): ActiveAccessory;
-    AddSkinAccessory(skin: AccessorySkin, rebuildMeshImmediately: boolean): void;
-    EquipAccessoryOutfit(outfit: AccessoryOutfit, rebuildMeshImmediately: boolean): CSArray<ActiveAccessory>;
-    GetAccessoryMeshes(slot: AccessorySlot): CSArray<Renderer>;
-    GetAccessoryParticles(slot: AccessorySlot): CSArray<ParticleSystem>;
-    GetActiveAccessories(): CSArray<ActiveAccessory>;
-    GetActiveAccessoryBySlot(target: AccessorySlot): ActiveAccessory;
-    GetAllAccessoryMeshes(): CSArray<Renderer>;
-    GetCombinedSkinnedMesh(): SkinnedMeshRenderer;
-    GetCombinedStaticMesh(): MeshRenderer;
-    RemoveAccessorySlot(slot: AccessorySlot, rebuildMeshImmediately: boolean): void;
-    RemoveAllAccessories(rebuildMeshImmediately: boolean): void;
-    RemoveClothingAccessories(rebuildMeshImmediately: boolean): void;
-    SetAccessoryColor(slot: AccessorySlot, color: Color, rebuildMeshImmediately: boolean): void;
-    SetCreateOverlayMeshOnCombine(on: boolean): void;
-    SetFaceTexture(texture: Texture2D): void;
-    SetSkinColor(color: Color, rebuildMeshImmediately: boolean): void;
-    TryCombineMeshes(): void;
+
+
+    AddTransformPath(transform: Transform): void;
+    /**
+     * Adds a transform path into the AvatarMask.
+     * @param transform The transform to add into the AvatarMask.
+     * @param recursive Whether to also add all children of the specified transform.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/AvatarMask.AddTransformPath.html | AvatarMask.AddTransformPath}
+     */
+    AddTransformPath(transform: Transform, recursive: boolean): void;
+    /**
+     * Returns true if the humanoid body part at the given index is active.
+     * @param index The index of the humanoid body part.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/AvatarMask.GetHumanoidBodyPartActive.html | AvatarMask.GetHumanoidBodyPartActive}
+     */
+    GetHumanoidBodyPartActive(index: AvatarMaskBodyPart): boolean;
+    /**
+     * Returns true if the transform at the given index is active.
+     * @param index The index of the transform.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/AvatarMask.GetTransformActive.html | AvatarMask.GetTransformActive}
+     */
+    GetTransformActive(index: number): boolean;
+    /**
+     * Returns the path of the transform at the given index.
+     * @param index The index of the transform.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/AvatarMask.GetTransformPath.html | AvatarMask.GetTransformPath}
+     */
+    GetTransformPath(index: number): string;
+    RemoveTransformPath(transform: Transform): void;
+    /**
+     * Removes a transform path from the AvatarMask.
+     * @param transform The Transform that should be removed from the AvatarMask.
+     * @param recursive Whether to also remove all children of the specified transform.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/AvatarMask.RemoveTransformPath.html | AvatarMask.RemoveTransformPath}
+     */
+    RemoveTransformPath(transform: Transform, recursive: boolean): void;
+    /**
+     * Sets the humanoid body part at the given index to active or not.
+     * @param index The index of the humanoid body part.
+     * @param value Active or not.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/AvatarMask.SetHumanoidBodyPartActive.html | AvatarMask.SetHumanoidBodyPartActive}
+     */
+    SetHumanoidBodyPartActive(index: AvatarMaskBodyPart, value: boolean): void;
+    /**
+     * Sets the tranform at the given index to active or not.
+     * @param index The index of the transform.
+     * @param value Active or not.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/AvatarMask.SetTransformActive.html | AvatarMask.SetTransformActive}
+     */
+    SetTransformActive(index: number, value: boolean): void;
+    /**
+     * Sets the path of the transform at the given index.
+     * @param index The index of the transform.
+     * @param path The path of the transform.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/AvatarMask.SetTransformPath.html | AvatarMask.SetTransformPath}
+     */
+    SetTransformPath(index: number, path: string): void;
 
 
 }
     
-interface CharacterRig extends MonoBehaviour {
-    bodyMesh: SkinnedMeshRenderer;
-    armsMesh: SkinnedMeshRenderer;
-    headMesh: Renderer;
-    faceMesh: Renderer;
-    rigHolder: Transform;
-    rootMotion: Transform;
-    master: Transform;
-    hips: Transform;
-    spine: Transform;
-    head: Transform;
-    upperArmL: Transform;
-    forearmL: Transform;
-    handL: Transform;
-    fingersL: Transform;
-    thumbL: Transform;
-    upperArmR: Transform;
-    forearmR: Transform;
-    handR: Transform;
-    fingersR: Transform;
-    thumbR: Transform;
-    thighL: Transform;
-    shinL: Transform;
-    footL: Transform;
-    thighR: Transform;
-    shinR: Transform;
-    footR: Transform;
-    headTop: Transform;
-    neck: Transform;
-    spineChest: Transform;
-    heldItemL: Transform;
-    heldItemR: Transform;
-    baseMeshes: CSArray<Renderer>;
+interface AvatarMaskConstructor {
 
 
+    new(): AvatarMask;
 
-    GetSlotTransform(slot: AccessorySlot): Transform;
 
 
 }
+declare const AvatarMask: AvatarMaskConstructor;
     
 interface SkinnedMeshRenderer extends Renderer {
     /**
@@ -31303,21 +31314,7 @@ interface SkinnedMeshRendererConstructor {
 }
 declare const SkinnedMeshRenderer: SkinnedMeshRendererConstructor;
     
-interface CharacterRigConstructor {
-
-
-    new(): CharacterRig;
-
-
-
-}
-declare const CharacterRig: CharacterRigConstructor;
-    
-interface AccessoryOutfit extends ScriptableObject {
-    accessories: CSArray<AccessoryComponent>;
-    faceDecal: AccessoryFace;
-    forceSkinColor: boolean;
-    skinColor: Color;
+interface GizmoUtils extends Debug {
 
 
 
@@ -31325,10 +31322,153 @@ interface AccessoryOutfit extends ScriptableObject {
 
 }
     
+interface GizmoUtilsConstructor {
+
+
+    new(): GizmoUtils;
+
+
+    DrawArc(startAngle: number, endAngle: number, position: Vector3, orientation: Quaternion, radius: number, color: Color, drawChord: boolean, drawSector: boolean, arcSegments: number, durationSec: number): void;
+    DrawBox(position: Vector3, orientation: Quaternion, halfSize: Vector3, color: Color, durationSec: number): void;
+    DrawCircle(position: Vector3, rotation: Quaternion, radius: number, segments: number, color: Color, durationSec: number): void;
+    DrawQuad(pointA: Vector3, pointB: Vector3, pointC: Vector3, pointD: Vector3, color: Color, durationSec: number): void;
+    DrawRect(origin: Vector3, orientation: Quaternion, extent: Vector2, color: Color, durationSec: number): void;
+    DrawSingleLine(startPosition: Vector3, endPosition: Vector3, color: Color, durationSec: number): void;
+    DrawSphere(position: Vector3, radius: number, color: Color, segments: number, durationSec: number): void;
+    TogglePauseEngine(): void;
+
+}
+declare const GizmoUtils: GizmoUtilsConstructor;
     
-interface BodyMaskInspectorData {
-    name: string;
-    bodyMask: BodyMask;
+interface CollisionWatcher extends MonoBehaviour {
+
+    readonly OnCollide: MonoSignal<Collision>;
+
+
+
+
+}
+    
+interface Collision {
+    /**
+     * The total impulse applied to this contact pair to resolve the collision.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Collision-impulse.html | Collision.impulse}
+     */
+    readonly impulse: Vector3;
+    /**
+     * The relative linear velocity of the two colliding objects (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Collision-relativeVelocity.html | Collision.relativeVelocity}
+     */
+    readonly relativeVelocity: Vector3;
+    /**
+     * The Rigidbody we hit (Read Only). This is null if the object we hit is a collider with no rigidbody attached.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Collision-rigidbody.html | Collision.rigidbody}
+     */
+    readonly rigidbody: Rigidbody;
+    /**
+     * The ArticulationBody of the collider that your GameObject collides with (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Collision-articulationBody.html | Collision.articulationBody}
+     */
+    readonly articulationBody: ArticulationBody;
+    /**
+     * The Rigidbody or ArticulationBody of the collider that your Component collides with (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Collision-body.html | Collision.body}
+     */
+    readonly body: Component;
+    /**
+     * The Collider we hit (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Collision-collider.html | Collision.collider}
+     */
+    readonly collider: Collider;
+    /**
+     * The Transform of the object we hit (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Collision-transform.html | Collision.transform}
+     */
+    readonly transform: Transform;
+    /**
+     * The GameObject whose collider you are colliding with. (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Collision-gameObject.html | Collision.gameObject}
+     */
+    readonly gameObject: GameObject;
+    /**
+     * Gets the number of contacts for this collision.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Collision-contactCount.html | Collision.contactCount}
+     */
+    readonly contactCount: number;
+    /**
+     * The contact points generated by the physics engine. You should avoid using this as it produces memory garbage. Use GetContact or GetContacts instead.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Collision-contacts.html | Collision.contacts}
+     */
+    readonly contacts: CSArray<ContactPoint>;
+
+
+
+    /**
+     * Gets the contact point at the specified index.
+     * @param index The index of the contact to retrieve.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Collision.GetContact.html | Collision.GetContact}
+     */
+    GetContact(index: number): ContactPoint;
+    /**
+     * Retrieves all contact points for this collision.
+     * @param contacts An array of ContactPoint used to receive the results.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Collision.GetContacts.html | Collision.GetContacts}
+     */
+    GetContacts(contacts: CSArray<ContactPoint>): number;
+    GetContacts(contacts: CSArray<ContactPoint>): number;
+
+
+}
+    
+interface ContactPoint {
+    /**
+     * The point of contact.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/ContactPoint-point.html | ContactPoint.point}
+     */
+    readonly point: Vector3;
+    /**
+     * Normal of the contact point.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/ContactPoint-normal.html | ContactPoint.normal}
+     */
+    readonly normal: Vector3;
+    /**
+     * The impulse applied to this contact pair to resolve the collision.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/ContactPoint-impulse.html | ContactPoint.impulse}
+     */
+    readonly impulse: Vector3;
+    /**
+     * The first collider in contact at the point.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/ContactPoint-thisCollider.html | ContactPoint.thisCollider}
+     */
+    readonly thisCollider: Collider;
+    /**
+     * The other collider in contact at the point.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/ContactPoint-otherCollider.html | ContactPoint.otherCollider}
+     */
+    readonly otherCollider: Collider;
+    /**
+     * The distance between the colliders at the contact point.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/ContactPoint-separation.html | ContactPoint.separation}
+     */
+    readonly separation: number;
 
 
 
@@ -31336,55 +31476,46 @@ interface BodyMaskInspectorData {
 
 }
     
-interface BodyMaskInspectorDataConstructor {
+interface CollisionConstructor {
 
 
-    new(mask: BodyMask, name: string): BodyMaskInspectorData;
-
-
-
-}
-declare const BodyMaskInspectorData: BodyMaskInspectorDataConstructor;
-    
-    
-interface AccessoryFace extends ScriptableObject {
-    serverClassId: string;
-    serverClassIdStaging: string;
-    serverInstanceId: string;
-    decalTexture: Texture2D;
-
-
-
-    GetServerClassId(): string;
-
-
-}
-    
-interface AccessoryFaceConstructor {
-
-
-    new(): AccessoryFace;
+    new(): Collision;
 
 
 
 }
-declare const AccessoryFace: AccessoryFaceConstructor;
+declare const Collision: CollisionConstructor;
     
-interface AccessoryOutfitConstructor {
+interface CollisionWatcherConstructor {
 
 
-    new(): AccessoryOutfit;
+    new(): CollisionWatcher;
 
 
 
 }
-declare const AccessoryOutfit: AccessoryOutfitConstructor;
+declare const CollisionWatcher: CollisionWatcherConstructor;
     
-interface ActiveAccessory {
-    AccessoryComponent: AccessoryComponent;
-    rootTransform: Transform;
-    gameObjects: CSArray<GameObject>;
-    renderers: CSArray<Renderer>;
+interface TriggerWatcher extends MonoBehaviour {
+
+    readonly OnEnter: MonoSignal<Collider>;
+
+
+
+
+}
+    
+interface TriggerWatcherConstructor {
+
+
+    new(): TriggerWatcher;
+
+
+
+}
+declare const TriggerWatcher: TriggerWatcherConstructor;
+    
+interface PhysicsExt {
 
 
 
@@ -31392,28 +31523,553 @@ interface ActiveAccessory {
 
 }
     
-interface AccessorySkin extends ScriptableObject {
-    skinTextureDiffuse: Texture2D;
-    skinTextureNormal: Texture2D;
-    skinTextureORM: Texture2D;
-    faceTextureDiffuse: Texture2D;
+interface SphereCastReturnData {
+    readonly HitCount: number;
+    readonly RaycastHits: CSArray<RaycastHit>;
 
 
 
-    ToString(): string;
 
 
 }
     
-interface AccessorySkinConstructor {
+interface SphereCastReturnDataConstructor {
 
 
-    new(): AccessorySkin;
+    new(hitCount: number, raycastHits: CSArray<RaycastHit>): SphereCastReturnData;
 
 
 
 }
-declare const AccessorySkin: AccessorySkinConstructor;
+declare const SphereCastReturnData: SphereCastReturnDataConstructor;
+    
+interface PhysicsExtConstructor {
+
+
+    new(): PhysicsExt;
+
+
+    EasySphereCast(start: Vector3, direction: Vector3, radius: number, distance: number, layerMask: number): SphereCastReturnData;
+
+}
+declare const PhysicsExt: PhysicsExtConstructor;
+    
+interface Joint extends Component {
+    /**
+     * A reference to another rigidbody this joint connects to.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-connectedBody.html | Joint.connectedBody}
+     */
+    connectedBody: Rigidbody;
+    /**
+     * A reference to an articulation body this joint connects to.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-connectedArticulationBody.html | Joint.connectedArticulationBody}
+     */
+    connectedArticulationBody: ArticulationBody;
+    /**
+     * The Direction of the axis around which the body is constrained.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-axis.html | Joint.axis}
+     */
+    axis: Vector3;
+    /**
+     * The Position of the anchor around which the joints motion is constrained.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-anchor.html | Joint.anchor}
+     */
+    anchor: Vector3;
+    /**
+     * Position of the anchor relative to the connected Rigidbody.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-connectedAnchor.html | Joint.connectedAnchor}
+     */
+    connectedAnchor: Vector3;
+    /**
+     * Should the connectedAnchor be calculated automatically?
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-autoConfigureConnectedAnchor.html | Joint.autoConfigureConnectedAnchor}
+     */
+    autoConfigureConnectedAnchor: boolean;
+    /**
+     * The force that needs to be applied for this joint to break.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-breakForce.html | Joint.breakForce}
+     */
+    breakForce: number;
+    /**
+     * The torque that needs to be applied for this joint to break. To be able to break, a joint must be _Locked_ or _Limited_ on the axis of rotation where the torque is being applied. This means that some joints cannot break, such as an unconstrained Configurable Joint.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-breakTorque.html | Joint.breakTorque}
+     */
+    breakTorque: number;
+    /**
+     * Enable collision between bodies connected with the joint.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-enableCollision.html | Joint.enableCollision}
+     */
+    enableCollision: boolean;
+    /**
+     * Toggle preprocessing for this joint.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-enablePreprocessing.html | Joint.enablePreprocessing}
+     */
+    enablePreprocessing: boolean;
+    /**
+     * The scale to apply to the inverse mass and inertia tensor of the body prior to solving the constraints.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-massScale.html | Joint.massScale}
+     */
+    massScale: number;
+    /**
+     * The scale to apply to the inverse mass and inertia tensor of the connected body prior to solving the constraints.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-connectedMassScale.html | Joint.connectedMassScale}
+     */
+    connectedMassScale: number;
+    /**
+     * The force applied by the solver to satisfy all constraints.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-currentForce.html | Joint.currentForce}
+     */
+    readonly currentForce: Vector3;
+    /**
+     * The torque applied by the solver to satisfy all constraints.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-currentTorque.html | Joint.currentTorque}
+     */
+    readonly currentTorque: Vector3;
+
+
+
+
+
+}
+    
+interface JointConstructor {
+
+
+    new(): Joint;
+
+
+
+}
+declare const Joint: JointConstructor;
+    
+interface CharacterJoint extends Joint {
+    /**
+     * The secondary axis around which the joint can rotate.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/CharacterJoint-swingAxis.html | CharacterJoint.swingAxis}
+     */
+    swingAxis: Vector3;
+    /**
+     * The configuration of the spring attached to the twist limits of the joint.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/CharacterJoint-twistLimitSpring.html | CharacterJoint.twistLimitSpring}
+     */
+    twistLimitSpring: SoftJointLimitSpring;
+    /**
+     * The configuration of the spring attached to the swing limits of the joint.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/CharacterJoint-swingLimitSpring.html | CharacterJoint.swingLimitSpring}
+     */
+    swingLimitSpring: SoftJointLimitSpring;
+    /**
+     * The lower limit around the primary axis of the character joint.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/CharacterJoint-lowTwistLimit.html | CharacterJoint.lowTwistLimit}
+     */
+    lowTwistLimit: SoftJointLimit;
+    /**
+     * The upper limit around the primary axis of the character joint.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/CharacterJoint-highTwistLimit.html | CharacterJoint.highTwistLimit}
+     */
+    highTwistLimit: SoftJointLimit;
+    /**
+     * The angular limit of rotation (in degrees) around the primary axis of the character joint.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/CharacterJoint-swing1Limit.html | CharacterJoint.swing1Limit}
+     */
+    swing1Limit: SoftJointLimit;
+    /**
+     * The angular limit of rotation (in degrees) around the primary axis of the character joint.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/CharacterJoint-swing2Limit.html | CharacterJoint.swing2Limit}
+     */
+    swing2Limit: SoftJointLimit;
+    /**
+     * Brings violated constraints back into alignment even when the solver fails.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/CharacterJoint-enableProjection.html | CharacterJoint.enableProjection}
+     */
+    enableProjection: boolean;
+    /**
+     * Set the linear tolerance threshold for projection.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/CharacterJoint-projectionDistance.html | CharacterJoint.projectionDistance}
+     */
+    projectionDistance: number;
+    /**
+     * Set the angular tolerance threshold (in degrees) for projection.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/CharacterJoint-projectionAngle.html | CharacterJoint.projectionAngle}
+     */
+    projectionAngle: number;
+
+
+
+
+
+}
+    
+interface SoftJointLimitSpring {
+    /**
+     * The stiffness of the spring limit. When stiffness is zero the limit is hard, otherwise soft.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/SoftJointLimitSpring-spring.html | SoftJointLimitSpring.spring}
+     */
+    spring: number;
+    /**
+     * The damping of the spring limit. In effect when the stiffness of the sprint limit is not zero.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/SoftJointLimitSpring-damper.html | SoftJointLimitSpring.damper}
+     */
+    damper: number;
+
+
+
+
+
+}
+    
+interface SoftJointLimit {
+    /**
+     * The limit position/angle of the joint (in degrees).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/SoftJointLimit-limit.html | SoftJointLimit.limit}
+     */
+    limit: number;
+    /**
+     * When the joint hits the limit, it can be made to bounce off it.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/SoftJointLimit-bounciness.html | SoftJointLimit.bounciness}
+     */
+    bounciness: number;
+    /**
+     * Determines how far ahead in space the solver can &quot;see&quot; the joint limit.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/SoftJointLimit-contactDistance.html | SoftJointLimit.contactDistance}
+     */
+    contactDistance: number;
+
+
+
+
+
+}
+    
+interface CharacterJointConstructor {
+
+
+    new(): CharacterJoint;
+
+
+
+}
+declare const CharacterJoint: CharacterJointConstructor;
+    
+interface ServerConsole extends MonoBehaviour {
+
+
+
+    Cleanup(): void;
+    OnClientConnectedToServer(): void;
+    OnStartServer(): void;
+
+
+}
+    
+interface ServerConsoleConstructor {
+
+
+    new(): ServerConsole;
+
+
+
+}
+declare const ServerConsole: ServerConsoleConstructor;
+    
+interface Application {
+
+
+
+
+
+}
+    
+interface AdvertisingIdentifierCallback {
+
+
+
+    BeginInvoke(advertisingId: string, trackingEnabled: boolean, errorMsg: string, callback: unknown, object: unknown): unknown;
+    EndInvoke(result: unknown): void;
+    Invoke(advertisingId: string, trackingEnabled: boolean, errorMsg: string): void;
+
+
+}
+    
+interface AdvertisingIdentifierCallbackConstructor {
+
+
+    new(object: unknown, method: unknown): AdvertisingIdentifierCallback;
+
+
+
+}
+declare const AdvertisingIdentifierCallback: AdvertisingIdentifierCallbackConstructor;
+    
+interface ApplicationConstructor {
+    /**
+     * Returns true when called in any kind of built Player, or when called in the Editor in Play mode (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-isPlaying.html | Application.isPlaying}
+     */
+    readonly isPlaying: boolean;
+    /**
+     * Whether the Player currently has focus (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-isFocused.html | Application.isFocused}
+     */
+    readonly isFocused: boolean;
+    /**
+     * Returns a GUID for this build (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-buildGUID.html | Application.buildGUID}
+     */
+    readonly buildGUID: string;
+    /**
+     * Determines whether the Player should run when the application is in the background
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-runInBackground.html | Application.runInBackground}
+     */
+    runInBackground: boolean;
+    /**
+     * Returns true when Unity is launched with the -batchmode flag from the command line (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-isBatchMode.html | Application.isBatchMode}
+     */
+    readonly isBatchMode: boolean;
+    /**
+     * Contains the path to the game data folder on the target device (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-dataPath.html | Application.dataPath}
+     */
+    readonly dataPath: string;
+    /**
+     * The path to the StreamingAssets  folder (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-streamingAssetsPath.html | Application.streamingAssetsPath}
+     */
+    readonly streamingAssetsPath: string;
+    /**
+     * Contains the path to a persistent data directory (Read-only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-persistentDataPath.html | Application.persistentDataPath}
+     */
+    readonly persistentDataPath: string;
+    /**
+     * Contains the path to a temporary data / cache directory (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-temporaryCachePath.html | Application.temporaryCachePath}
+     */
+    readonly temporaryCachePath: string;
+    /**
+     * The URL of the document. For WebGL, this is a web URL. For Android, iOS, or Universal Windows Platform (UWP) this is a deep link URL (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-absoluteURL.html | Application.absoluteURL}
+     */
+    readonly absoluteURL: string;
+    /**
+     * The version of the Unity runtime used to play the content.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-unityVersion.html | Application.unityVersion}
+     */
+    readonly unityVersion: string;
+    /**
+     * Returns application version number (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-version.html | Application.version}
+     */
+    readonly version: string;
+    /**
+     * Returns the name of the store or package that installed the application (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-installerName.html | Application.installerName}
+     */
+    readonly installerName: string;
+    /**
+     * Returns the application identifier at runtime.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-identifier.html | Application.identifier}
+     */
+    readonly identifier: string;
+    /**
+     * Returns application install mode (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-installMode.html | Application.installMode}
+     */
+    readonly installMode: ApplicationInstallMode;
+    /**
+     * Returns application running in a sandbox environment (Read-only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-sandboxType.html | Application.sandboxType}
+     */
+    readonly sandboxType: ApplicationSandboxType;
+    /**
+     * Returns application product name (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-productName.html | Application.productName}
+     */
+    readonly productName: string;
+    /**
+     * Returns application company name (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-companyName.html | Application.companyName}
+     */
+    readonly companyName: string;
+    /**
+     * A unique cloud project identifier. It is unique for every project (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-cloudProjectId.html | Application.cloudProjectId}
+     */
+    readonly cloudProjectId: string;
+    /**
+     * Specifies the target frame rate at which Unity tries to render your game.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-targetFrameRate.html | Application.targetFrameRate}
+     */
+    targetFrameRate: number;
+    /**
+     * Returns the path to the console log file, or an empty string if the current platform does not support log files.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-consoleLogPath.html | Application.consoleLogPath}
+     */
+    readonly consoleLogPath: string;
+    /**
+     * Priority of background loading thread.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-backgroundLoadingPriority.html | Application.backgroundLoadingPriority}
+     */
+    backgroundLoadingPriority: ThreadPriority;
+    /**
+     * Returns false if application is altered in any way after it was built.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-genuine.html | Application.genuine}
+     */
+    readonly genuine: boolean;
+    /**
+     * Returns true if application integrity can be confirmed.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-genuineCheckAvailable.html | Application.genuineCheckAvailable}
+     */
+    readonly genuineCheckAvailable: boolean;
+    /**
+     * Returns the platform the game is running on (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-platform.html | Application.platform}
+     */
+    readonly platform: RuntimePlatform;
+    /**
+     * Identifies whether the current Runtime platform is a known mobile platform.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-isMobilePlatform.html | Application.isMobilePlatform}
+     */
+    readonly isMobilePlatform: boolean;
+    /**
+     * Is the current Runtime platform a known console platform.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-isConsolePlatform.html | Application.isConsolePlatform}
+     */
+    readonly isConsolePlatform: boolean;
+    /**
+     * The language in which the user's operating system is running in.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-systemLanguage.html | Application.systemLanguage}
+     */
+    readonly systemLanguage: SystemLanguage;
+    /**
+     * Returns the type of internet reachability currently possible on the device.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-internetReachability.html | Application.internetReachability}
+     */
+    readonly internetReachability: NetworkReachability;
+    /**
+     * Cancellation token raised on exiting Play mode (Editor) or on quitting the application (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-exitCancellationToken.html | Application.exitCancellationToken}
+     */
+    readonly exitCancellationToken: unknown;
+    /**
+     * Whether the game is running inside the Unity Editor (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-isEditor.html | Application.isEditor}
+     */
+    readonly isEditor: boolean;
+
+
+    new(): Application;
+
+
+    CanStreamedLevelBeLoaded(levelIndex: number): boolean;
+    CanStreamedLevelBeLoaded(levelName: string): boolean;
+    GetStackTraceLogType(logType: LogType): StackTraceLogType;
+    HasProLicense(): boolean;
+    HasUserAuthorization(mode: UserAuthorization): boolean;
+    IsPlaying(obj: Object): boolean;
+    OpenURL(url: string): void;
+    Quit(exitCode: number): void;
+    Quit(): void;
+    RequestAdvertisingIdentifierAsync(delegateMethod: AdvertisingIdentifierCallback): boolean;
+    RequestUserAuthorization(mode: UserAuthorization): AsyncOperation;
+    SetStackTraceLogType(logType: LogType, stackTraceType: StackTraceLogType): void;
+    Unload(): void;
+
+    readonly lowMemory: MonoSignal<void>;
+    readonly memoryUsageChanged: MonoSignal<void>;
+    readonly logMessageReceived: MonoSignal<void>;
+    readonly logMessageReceivedThreaded: MonoSignal<void>;
+    readonly onBeforeRender: MonoSignal<void>;
+    readonly focusChanged: MonoSignal<boolean>;
+    readonly deepLinkActivated: MonoSignal<string>;
+    readonly wantsToQuit: MonoSignal<boolean>;
+    readonly quitting: MonoSignal<void>;
+    readonly unloading: MonoSignal<void>;
+}
+declare const Application: ApplicationConstructor;
+    
+interface ClientNetworkConnector extends MonoBehaviour {
+    expectingDisconnect: boolean;
+    reconnectAttempt: number;
+
+
+
+    NetworkClient_OnConnected(): void;
+    NetworkClient_OnDisconnected(): void;
+
+
+}
+    
+interface ClientNetworkConnectorConstructor {
+
+
+    new(): ClientNetworkConnector;
+
+
+
+}
+declare const ClientNetworkConnector: ClientNetworkConnectorConstructor;
     
 interface ParticleSystem extends Component {
     /**
@@ -33041,860 +33697,6 @@ interface ParticleSystemConstructor {
 
 }
 declare const ParticleSystem: ParticleSystemConstructor;
-    
-interface AccessoryBuilderConstructor {
-
-
-    new(): AccessoryBuilder;
-
-
-
-}
-declare const AccessoryBuilder: AccessoryBuilderConstructor;
-    
-interface AvatarMask extends Object {
-    /**
-     * Number of transforms.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/AvatarMask-transformCount.html | AvatarMask.transformCount}
-     */
-    transformCount: number;
-
-
-
-    AddTransformPath(transform: Transform): void;
-    /**
-     * Adds a transform path into the AvatarMask.
-     * @param transform The transform to add into the AvatarMask.
-     * @param recursive Whether to also add all children of the specified transform.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/AvatarMask.AddTransformPath.html | AvatarMask.AddTransformPath}
-     */
-    AddTransformPath(transform: Transform, recursive: boolean): void;
-    /**
-     * Returns true if the humanoid body part at the given index is active.
-     * @param index The index of the humanoid body part.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/AvatarMask.GetHumanoidBodyPartActive.html | AvatarMask.GetHumanoidBodyPartActive}
-     */
-    GetHumanoidBodyPartActive(index: AvatarMaskBodyPart): boolean;
-    /**
-     * Returns true if the transform at the given index is active.
-     * @param index The index of the transform.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/AvatarMask.GetTransformActive.html | AvatarMask.GetTransformActive}
-     */
-    GetTransformActive(index: number): boolean;
-    /**
-     * Returns the path of the transform at the given index.
-     * @param index The index of the transform.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/AvatarMask.GetTransformPath.html | AvatarMask.GetTransformPath}
-     */
-    GetTransformPath(index: number): string;
-    RemoveTransformPath(transform: Transform): void;
-    /**
-     * Removes a transform path from the AvatarMask.
-     * @param transform The Transform that should be removed from the AvatarMask.
-     * @param recursive Whether to also remove all children of the specified transform.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/AvatarMask.RemoveTransformPath.html | AvatarMask.RemoveTransformPath}
-     */
-    RemoveTransformPath(transform: Transform, recursive: boolean): void;
-    /**
-     * Sets the humanoid body part at the given index to active or not.
-     * @param index The index of the humanoid body part.
-     * @param value Active or not.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/AvatarMask.SetHumanoidBodyPartActive.html | AvatarMask.SetHumanoidBodyPartActive}
-     */
-    SetHumanoidBodyPartActive(index: AvatarMaskBodyPart, value: boolean): void;
-    /**
-     * Sets the tranform at the given index to active or not.
-     * @param index The index of the transform.
-     * @param value Active or not.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/AvatarMask.SetTransformActive.html | AvatarMask.SetTransformActive}
-     */
-    SetTransformActive(index: number, value: boolean): void;
-    /**
-     * Sets the path of the transform at the given index.
-     * @param index The index of the transform.
-     * @param path The path of the transform.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/AvatarMask.SetTransformPath.html | AvatarMask.SetTransformPath}
-     */
-    SetTransformPath(index: number, path: string): void;
-
-
-}
-    
-interface AvatarMaskConstructor {
-
-
-    new(): AvatarMask;
-
-
-
-}
-declare const AvatarMask: AvatarMaskConstructor;
-    
-interface GizmoUtils extends Debug {
-
-
-
-
-
-}
-    
-interface GizmoUtilsConstructor {
-
-
-    new(): GizmoUtils;
-
-
-    DrawArc(startAngle: number, endAngle: number, position: Vector3, orientation: Quaternion, radius: number, color: Color, drawChord: boolean, drawSector: boolean, arcSegments: number, durationSec: number): void;
-    DrawBox(position: Vector3, orientation: Quaternion, halfSize: Vector3, color: Color, durationSec: number): void;
-    DrawCircle(position: Vector3, rotation: Quaternion, radius: number, segments: number, color: Color, durationSec: number): void;
-    DrawQuad(pointA: Vector3, pointB: Vector3, pointC: Vector3, pointD: Vector3, color: Color, durationSec: number): void;
-    DrawRect(origin: Vector3, orientation: Quaternion, extent: Vector2, color: Color, durationSec: number): void;
-    DrawSingleLine(startPosition: Vector3, endPosition: Vector3, color: Color, durationSec: number): void;
-    DrawSphere(position: Vector3, radius: number, color: Color, segments: number, durationSec: number): void;
-    TogglePauseEngine(): void;
-
-}
-declare const GizmoUtils: GizmoUtilsConstructor;
-    
-interface CollisionWatcher extends MonoBehaviour {
-
-    readonly OnCollide: MonoSignal<Collision>;
-
-
-
-
-}
-    
-interface Collision {
-    /**
-     * The total impulse applied to this contact pair to resolve the collision.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Collision-impulse.html | Collision.impulse}
-     */
-    readonly impulse: Vector3;
-    /**
-     * The relative linear velocity of the two colliding objects (Read Only).
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Collision-relativeVelocity.html | Collision.relativeVelocity}
-     */
-    readonly relativeVelocity: Vector3;
-    /**
-     * The Rigidbody we hit (Read Only). This is null if the object we hit is a collider with no rigidbody attached.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Collision-rigidbody.html | Collision.rigidbody}
-     */
-    readonly rigidbody: Rigidbody;
-    /**
-     * The ArticulationBody of the collider that your GameObject collides with (Read Only).
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Collision-articulationBody.html | Collision.articulationBody}
-     */
-    readonly articulationBody: ArticulationBody;
-    /**
-     * The Rigidbody or ArticulationBody of the collider that your Component collides with (Read Only).
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Collision-body.html | Collision.body}
-     */
-    readonly body: Component;
-    /**
-     * The Collider we hit (Read Only).
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Collision-collider.html | Collision.collider}
-     */
-    readonly collider: Collider;
-    /**
-     * The Transform of the object we hit (Read Only).
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Collision-transform.html | Collision.transform}
-     */
-    readonly transform: Transform;
-    /**
-     * The GameObject whose collider you are colliding with. (Read Only).
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Collision-gameObject.html | Collision.gameObject}
-     */
-    readonly gameObject: GameObject;
-    /**
-     * Gets the number of contacts for this collision.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Collision-contactCount.html | Collision.contactCount}
-     */
-    readonly contactCount: number;
-    /**
-     * The contact points generated by the physics engine. You should avoid using this as it produces memory garbage. Use GetContact or GetContacts instead.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Collision-contacts.html | Collision.contacts}
-     */
-    readonly contacts: CSArray<ContactPoint>;
-
-
-
-    /**
-     * Gets the contact point at the specified index.
-     * @param index The index of the contact to retrieve.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Collision.GetContact.html | Collision.GetContact}
-     */
-    GetContact(index: number): ContactPoint;
-    /**
-     * Retrieves all contact points for this collision.
-     * @param contacts An array of ContactPoint used to receive the results.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Collision.GetContacts.html | Collision.GetContacts}
-     */
-    GetContacts(contacts: CSArray<ContactPoint>): number;
-    GetContacts(contacts: CSArray<ContactPoint>): number;
-
-
-}
-    
-interface ContactPoint {
-    /**
-     * The point of contact.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/ContactPoint-point.html | ContactPoint.point}
-     */
-    readonly point: Vector3;
-    /**
-     * Normal of the contact point.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/ContactPoint-normal.html | ContactPoint.normal}
-     */
-    readonly normal: Vector3;
-    /**
-     * The impulse applied to this contact pair to resolve the collision.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/ContactPoint-impulse.html | ContactPoint.impulse}
-     */
-    readonly impulse: Vector3;
-    /**
-     * The first collider in contact at the point.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/ContactPoint-thisCollider.html | ContactPoint.thisCollider}
-     */
-    readonly thisCollider: Collider;
-    /**
-     * The other collider in contact at the point.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/ContactPoint-otherCollider.html | ContactPoint.otherCollider}
-     */
-    readonly otherCollider: Collider;
-    /**
-     * The distance between the colliders at the contact point.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/ContactPoint-separation.html | ContactPoint.separation}
-     */
-    readonly separation: number;
-
-
-
-
-
-}
-    
-interface CollisionConstructor {
-
-
-    new(): Collision;
-
-
-
-}
-declare const Collision: CollisionConstructor;
-    
-interface CollisionWatcherConstructor {
-
-
-    new(): CollisionWatcher;
-
-
-
-}
-declare const CollisionWatcher: CollisionWatcherConstructor;
-    
-interface TriggerWatcher extends MonoBehaviour {
-
-    readonly OnEnter: MonoSignal<Collider>;
-
-
-
-
-}
-    
-interface TriggerWatcherConstructor {
-
-
-    new(): TriggerWatcher;
-
-
-
-}
-declare const TriggerWatcher: TriggerWatcherConstructor;
-    
-interface PhysicsExt {
-
-
-
-
-
-}
-    
-interface SphereCastReturnData {
-    readonly HitCount: number;
-    readonly RaycastHits: CSArray<RaycastHit>;
-
-
-
-
-
-}
-    
-interface SphereCastReturnDataConstructor {
-
-
-    new(hitCount: number, raycastHits: CSArray<RaycastHit>): SphereCastReturnData;
-
-
-
-}
-declare const SphereCastReturnData: SphereCastReturnDataConstructor;
-    
-interface PhysicsExtConstructor {
-
-
-    new(): PhysicsExt;
-
-
-    EasySphereCast(start: Vector3, direction: Vector3, radius: number, distance: number, layerMask: number): SphereCastReturnData;
-
-}
-declare const PhysicsExt: PhysicsExtConstructor;
-    
-interface Joint extends Component {
-    /**
-     * A reference to another rigidbody this joint connects to.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-connectedBody.html | Joint.connectedBody}
-     */
-    connectedBody: Rigidbody;
-    /**
-     * A reference to an articulation body this joint connects to.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-connectedArticulationBody.html | Joint.connectedArticulationBody}
-     */
-    connectedArticulationBody: ArticulationBody;
-    /**
-     * The Direction of the axis around which the body is constrained.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-axis.html | Joint.axis}
-     */
-    axis: Vector3;
-    /**
-     * The Position of the anchor around which the joints motion is constrained.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-anchor.html | Joint.anchor}
-     */
-    anchor: Vector3;
-    /**
-     * Position of the anchor relative to the connected Rigidbody.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-connectedAnchor.html | Joint.connectedAnchor}
-     */
-    connectedAnchor: Vector3;
-    /**
-     * Should the connectedAnchor be calculated automatically?
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-autoConfigureConnectedAnchor.html | Joint.autoConfigureConnectedAnchor}
-     */
-    autoConfigureConnectedAnchor: boolean;
-    /**
-     * The force that needs to be applied for this joint to break.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-breakForce.html | Joint.breakForce}
-     */
-    breakForce: number;
-    /**
-     * The torque that needs to be applied for this joint to break. To be able to break, a joint must be _Locked_ or _Limited_ on the axis of rotation where the torque is being applied. This means that some joints cannot break, such as an unconstrained Configurable Joint.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-breakTorque.html | Joint.breakTorque}
-     */
-    breakTorque: number;
-    /**
-     * Enable collision between bodies connected with the joint.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-enableCollision.html | Joint.enableCollision}
-     */
-    enableCollision: boolean;
-    /**
-     * Toggle preprocessing for this joint.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-enablePreprocessing.html | Joint.enablePreprocessing}
-     */
-    enablePreprocessing: boolean;
-    /**
-     * The scale to apply to the inverse mass and inertia tensor of the body prior to solving the constraints.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-massScale.html | Joint.massScale}
-     */
-    massScale: number;
-    /**
-     * The scale to apply to the inverse mass and inertia tensor of the connected body prior to solving the constraints.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-connectedMassScale.html | Joint.connectedMassScale}
-     */
-    connectedMassScale: number;
-    /**
-     * The force applied by the solver to satisfy all constraints.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-currentForce.html | Joint.currentForce}
-     */
-    readonly currentForce: Vector3;
-    /**
-     * The torque applied by the solver to satisfy all constraints.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Joint-currentTorque.html | Joint.currentTorque}
-     */
-    readonly currentTorque: Vector3;
-
-
-
-
-
-}
-    
-interface JointConstructor {
-
-
-    new(): Joint;
-
-
-
-}
-declare const Joint: JointConstructor;
-    
-interface CharacterJoint extends Joint {
-    /**
-     * The secondary axis around which the joint can rotate.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/CharacterJoint-swingAxis.html | CharacterJoint.swingAxis}
-     */
-    swingAxis: Vector3;
-    /**
-     * The configuration of the spring attached to the twist limits of the joint.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/CharacterJoint-twistLimitSpring.html | CharacterJoint.twistLimitSpring}
-     */
-    twistLimitSpring: SoftJointLimitSpring;
-    /**
-     * The configuration of the spring attached to the swing limits of the joint.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/CharacterJoint-swingLimitSpring.html | CharacterJoint.swingLimitSpring}
-     */
-    swingLimitSpring: SoftJointLimitSpring;
-    /**
-     * The lower limit around the primary axis of the character joint.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/CharacterJoint-lowTwistLimit.html | CharacterJoint.lowTwistLimit}
-     */
-    lowTwistLimit: SoftJointLimit;
-    /**
-     * The upper limit around the primary axis of the character joint.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/CharacterJoint-highTwistLimit.html | CharacterJoint.highTwistLimit}
-     */
-    highTwistLimit: SoftJointLimit;
-    /**
-     * The angular limit of rotation (in degrees) around the primary axis of the character joint.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/CharacterJoint-swing1Limit.html | CharacterJoint.swing1Limit}
-     */
-    swing1Limit: SoftJointLimit;
-    /**
-     * The angular limit of rotation (in degrees) around the primary axis of the character joint.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/CharacterJoint-swing2Limit.html | CharacterJoint.swing2Limit}
-     */
-    swing2Limit: SoftJointLimit;
-    /**
-     * Brings violated constraints back into alignment even when the solver fails.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/CharacterJoint-enableProjection.html | CharacterJoint.enableProjection}
-     */
-    enableProjection: boolean;
-    /**
-     * Set the linear tolerance threshold for projection.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/CharacterJoint-projectionDistance.html | CharacterJoint.projectionDistance}
-     */
-    projectionDistance: number;
-    /**
-     * Set the angular tolerance threshold (in degrees) for projection.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/CharacterJoint-projectionAngle.html | CharacterJoint.projectionAngle}
-     */
-    projectionAngle: number;
-
-
-
-
-
-}
-    
-interface SoftJointLimitSpring {
-    /**
-     * The stiffness of the spring limit. When stiffness is zero the limit is hard, otherwise soft.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/SoftJointLimitSpring-spring.html | SoftJointLimitSpring.spring}
-     */
-    spring: number;
-    /**
-     * The damping of the spring limit. In effect when the stiffness of the sprint limit is not zero.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/SoftJointLimitSpring-damper.html | SoftJointLimitSpring.damper}
-     */
-    damper: number;
-
-
-
-
-
-}
-    
-interface SoftJointLimit {
-    /**
-     * The limit position/angle of the joint (in degrees).
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/SoftJointLimit-limit.html | SoftJointLimit.limit}
-     */
-    limit: number;
-    /**
-     * When the joint hits the limit, it can be made to bounce off it.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/SoftJointLimit-bounciness.html | SoftJointLimit.bounciness}
-     */
-    bounciness: number;
-    /**
-     * Determines how far ahead in space the solver can &quot;see&quot; the joint limit.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/SoftJointLimit-contactDistance.html | SoftJointLimit.contactDistance}
-     */
-    contactDistance: number;
-
-
-
-
-
-}
-    
-interface CharacterJointConstructor {
-
-
-    new(): CharacterJoint;
-
-
-
-}
-declare const CharacterJoint: CharacterJointConstructor;
-    
-interface ServerConsole extends MonoBehaviour {
-
-
-
-    Cleanup(): void;
-    OnClientConnectedToServer(): void;
-    OnStartServer(): void;
-
-
-}
-    
-interface ServerConsoleConstructor {
-
-
-    new(): ServerConsole;
-
-
-
-}
-declare const ServerConsole: ServerConsoleConstructor;
-    
-interface Application {
-
-
-
-
-
-}
-    
-interface AdvertisingIdentifierCallback {
-
-
-
-    BeginInvoke(advertisingId: string, trackingEnabled: boolean, errorMsg: string, callback: unknown, object: unknown): unknown;
-    EndInvoke(result: unknown): void;
-    Invoke(advertisingId: string, trackingEnabled: boolean, errorMsg: string): void;
-
-
-}
-    
-interface AdvertisingIdentifierCallbackConstructor {
-
-
-    new(object: unknown, method: unknown): AdvertisingIdentifierCallback;
-
-
-
-}
-declare const AdvertisingIdentifierCallback: AdvertisingIdentifierCallbackConstructor;
-    
-interface ApplicationConstructor {
-    /**
-     * Returns true when called in any kind of built Player, or when called in the Editor in Play mode (Read Only).
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-isPlaying.html | Application.isPlaying}
-     */
-    readonly isPlaying: boolean;
-    /**
-     * Whether the Player currently has focus (Read Only).
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-isFocused.html | Application.isFocused}
-     */
-    readonly isFocused: boolean;
-    /**
-     * Returns a GUID for this build (Read Only).
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-buildGUID.html | Application.buildGUID}
-     */
-    readonly buildGUID: string;
-    /**
-     * Determines whether the Player should run when the application is in the background
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-runInBackground.html | Application.runInBackground}
-     */
-    runInBackground: boolean;
-    /**
-     * Returns true when Unity is launched with the -batchmode flag from the command line (Read Only).
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-isBatchMode.html | Application.isBatchMode}
-     */
-    readonly isBatchMode: boolean;
-    /**
-     * Contains the path to the game data folder on the target device (Read Only).
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-dataPath.html | Application.dataPath}
-     */
-    readonly dataPath: string;
-    /**
-     * The path to the StreamingAssets  folder (Read Only).
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-streamingAssetsPath.html | Application.streamingAssetsPath}
-     */
-    readonly streamingAssetsPath: string;
-    /**
-     * Contains the path to a persistent data directory (Read-only).
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-persistentDataPath.html | Application.persistentDataPath}
-     */
-    readonly persistentDataPath: string;
-    /**
-     * Contains the path to a temporary data / cache directory (Read Only).
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-temporaryCachePath.html | Application.temporaryCachePath}
-     */
-    readonly temporaryCachePath: string;
-    /**
-     * The URL of the document. For WebGL, this is a web URL. For Android, iOS, or Universal Windows Platform (UWP) this is a deep link URL (Read Only).
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-absoluteURL.html | Application.absoluteURL}
-     */
-    readonly absoluteURL: string;
-    /**
-     * The version of the Unity runtime used to play the content.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-unityVersion.html | Application.unityVersion}
-     */
-    readonly unityVersion: string;
-    /**
-     * Returns application version number (Read Only).
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-version.html | Application.version}
-     */
-    readonly version: string;
-    /**
-     * Returns the name of the store or package that installed the application (Read Only).
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-installerName.html | Application.installerName}
-     */
-    readonly installerName: string;
-    /**
-     * Returns the application identifier at runtime.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-identifier.html | Application.identifier}
-     */
-    readonly identifier: string;
-    /**
-     * Returns application install mode (Read Only).
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-installMode.html | Application.installMode}
-     */
-    readonly installMode: ApplicationInstallMode;
-    /**
-     * Returns application running in a sandbox environment (Read-only).
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-sandboxType.html | Application.sandboxType}
-     */
-    readonly sandboxType: ApplicationSandboxType;
-    /**
-     * Returns application product name (Read Only).
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-productName.html | Application.productName}
-     */
-    readonly productName: string;
-    /**
-     * Returns application company name (Read Only).
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-companyName.html | Application.companyName}
-     */
-    readonly companyName: string;
-    /**
-     * A unique cloud project identifier. It is unique for every project (Read Only).
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-cloudProjectId.html | Application.cloudProjectId}
-     */
-    readonly cloudProjectId: string;
-    /**
-     * Specifies the target frame rate at which Unity tries to render your game.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-targetFrameRate.html | Application.targetFrameRate}
-     */
-    targetFrameRate: number;
-    /**
-     * Returns the path to the console log file, or an empty string if the current platform does not support log files.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-consoleLogPath.html | Application.consoleLogPath}
-     */
-    readonly consoleLogPath: string;
-    /**
-     * Priority of background loading thread.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-backgroundLoadingPriority.html | Application.backgroundLoadingPriority}
-     */
-    backgroundLoadingPriority: ThreadPriority;
-    /**
-     * Returns false if application is altered in any way after it was built.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-genuine.html | Application.genuine}
-     */
-    readonly genuine: boolean;
-    /**
-     * Returns true if application integrity can be confirmed.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-genuineCheckAvailable.html | Application.genuineCheckAvailable}
-     */
-    readonly genuineCheckAvailable: boolean;
-    /**
-     * Returns the platform the game is running on (Read Only).
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-platform.html | Application.platform}
-     */
-    readonly platform: RuntimePlatform;
-    /**
-     * Identifies whether the current Runtime platform is a known mobile platform.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-isMobilePlatform.html | Application.isMobilePlatform}
-     */
-    readonly isMobilePlatform: boolean;
-    /**
-     * Is the current Runtime platform a known console platform.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-isConsolePlatform.html | Application.isConsolePlatform}
-     */
-    readonly isConsolePlatform: boolean;
-    /**
-     * The language in which the user's operating system is running in.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-systemLanguage.html | Application.systemLanguage}
-     */
-    readonly systemLanguage: SystemLanguage;
-    /**
-     * Returns the type of internet reachability currently possible on the device.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-internetReachability.html | Application.internetReachability}
-     */
-    readonly internetReachability: NetworkReachability;
-    /**
-     * Cancellation token raised on exiting Play mode (Editor) or on quitting the application (Read Only).
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-exitCancellationToken.html | Application.exitCancellationToken}
-     */
-    readonly exitCancellationToken: unknown;
-    /**
-     * Whether the game is running inside the Unity Editor (Read Only).
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Application-isEditor.html | Application.isEditor}
-     */
-    readonly isEditor: boolean;
-
-
-    new(): Application;
-
-
-    CanStreamedLevelBeLoaded(levelIndex: number): boolean;
-    CanStreamedLevelBeLoaded(levelName: string): boolean;
-    GetStackTraceLogType(logType: LogType): StackTraceLogType;
-    HasProLicense(): boolean;
-    HasUserAuthorization(mode: UserAuthorization): boolean;
-    IsPlaying(obj: Object): boolean;
-    OpenURL(url: string): void;
-    Quit(exitCode: number): void;
-    Quit(): void;
-    RequestAdvertisingIdentifierAsync(delegateMethod: AdvertisingIdentifierCallback): boolean;
-    RequestUserAuthorization(mode: UserAuthorization): AsyncOperation;
-    SetStackTraceLogType(logType: LogType, stackTraceType: StackTraceLogType): void;
-    Unload(): void;
-
-    readonly lowMemory: MonoSignal<void>;
-    readonly memoryUsageChanged: MonoSignal<void>;
-    readonly logMessageReceived: MonoSignal<void>;
-    readonly logMessageReceivedThreaded: MonoSignal<void>;
-    readonly onBeforeRender: MonoSignal<void>;
-    readonly focusChanged: MonoSignal<boolean>;
-    readonly deepLinkActivated: MonoSignal<string>;
-    readonly wantsToQuit: MonoSignal<boolean>;
-    readonly quitting: MonoSignal<void>;
-    readonly unloading: MonoSignal<void>;
-}
-declare const Application: ApplicationConstructor;
-    
-interface ClientNetworkConnector extends MonoBehaviour {
-    expectingDisconnect: boolean;
-    reconnectAttempt: number;
-
-
-
-    NetworkClient_OnConnected(): void;
-    NetworkClient_OnDisconnected(): void;
-
-
-}
-    
-interface ClientNetworkConnectorConstructor {
-
-
-    new(): ClientNetworkConnector;
-
-
-
-}
-declare const ClientNetworkConnector: ClientNetworkConnectorConstructor;
     
 interface ParticleSystemRenderer extends Renderer {
     /**
@@ -35755,6 +35557,7 @@ interface BlockDefinition {
     meshTiles: CSArray<LodSet>;
     meshTileProcessingOrder: CSArray<number>;
     meshContexts: CSArray<CSArray<VoxelMeshCopy>>;
+    meshContextsRandomTable: CSArray<number>;
     editorTexture: Texture2D;
     topUvs: Rect;
     bottomUvs: Rect;
@@ -35858,6 +35661,7 @@ interface VoxelQuarterBlockMeshDefinition extends ScriptableObject {
     DL: GameObject;
     DM: GameObject;
     DN: GameObject;
+    probablity: number;
 
 
 
@@ -36068,6 +35872,8 @@ interface VoxelBlocksConstructor {
     new(): VoxelBlocks;
 
 
+    GetRandomMeshContext(block: BlockDefinition): CSArray<VoxelMeshCopy>;
+    GetRandomMeshContext(block: BlockDefinition, origin: Vector3, offset: number): CSArray<VoxelMeshCopy>;
 
 }
 declare const VoxelBlocks: VoxelBlocksConstructor;
@@ -38258,6 +38064,73 @@ interface CloudImageConstructor {
 }
 declare const CloudImage: CloudImageConstructor;
     
+interface AccessoryOutfit extends ScriptableObject {
+    accessories: CSArray<AccessoryComponent>;
+    faceDecal: AccessoryFace;
+    forceSkinColor: boolean;
+    skinColor: Color;
+
+
+
+
+
+}
+    
+    
+interface BodyMaskInspectorData {
+    name: string;
+    bodyMask: BodyMask;
+
+
+
+
+
+}
+    
+interface BodyMaskInspectorDataConstructor {
+
+
+    new(mask: BodyMask, name: string): BodyMaskInspectorData;
+
+
+
+}
+declare const BodyMaskInspectorData: BodyMaskInspectorDataConstructor;
+    
+    
+interface AccessoryFace extends ScriptableObject {
+    serverClassId: string;
+    serverClassIdStaging: string;
+    serverInstanceId: string;
+    decalTexture: Texture2D;
+
+
+
+    GetServerClassId(): string;
+
+
+}
+    
+interface AccessoryFaceConstructor {
+
+
+    new(): AccessoryFace;
+
+
+
+}
+declare const AccessoryFace: AccessoryFaceConstructor;
+    
+interface AccessoryOutfitConstructor {
+
+
+    new(): AccessoryOutfit;
+
+
+
+}
+declare const AccessoryOutfit: AccessoryOutfitConstructor;
+    
 interface LineRenderer extends Renderer {
     /**
      * Set the width at the start of the line.
@@ -38619,6 +38492,57 @@ interface AirshipPlatformUtilConstructor {
 
 }
 declare const AirshipPlatformUtil: AirshipPlatformUtilConstructor;
+    
+interface CharacterRig extends MonoBehaviour {
+    bodyMesh: SkinnedMeshRenderer;
+    armsMesh: SkinnedMeshRenderer;
+    headMesh: Renderer;
+    faceMesh: Renderer;
+    rigHolder: Transform;
+    rootMotion: Transform;
+    master: Transform;
+    hips: Transform;
+    spine: Transform;
+    head: Transform;
+    upperArmL: Transform;
+    forearmL: Transform;
+    handL: Transform;
+    fingersL: Transform;
+    thumbL: Transform;
+    upperArmR: Transform;
+    forearmR: Transform;
+    handR: Transform;
+    fingersR: Transform;
+    thumbR: Transform;
+    thighL: Transform;
+    shinL: Transform;
+    footL: Transform;
+    thighR: Transform;
+    shinR: Transform;
+    footR: Transform;
+    headTop: Transform;
+    neck: Transform;
+    spineChest: Transform;
+    heldItemL: Transform;
+    heldItemR: Transform;
+    baseMeshes: CSArray<Renderer>;
+
+
+
+    GetSlotTransform(slot: AccessorySlot): Transform;
+
+
+}
+    
+interface CharacterRigConstructor {
+
+
+    new(): CharacterRig;
+
+
+
+}
+declare const CharacterRig: CharacterRigConstructor;
     
 interface AvatarAccessoryCollection extends ScriptableObject {
     accessories: CSArray<AccessoryComponent>;
