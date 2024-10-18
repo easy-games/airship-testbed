@@ -21,7 +21,9 @@ export const enum ServerManagerServiceBridgeTopics {
 	GetAllowedPlayers = "ServerManagerService:GetAllowedPlayers",
 	AddAllowedPlayer = "ServerManagerService:AddAllowedPlayer",
 	RemoveAllowedPlayer = "ServerManagerService:RemoveAllowedPlayer",
+	HasAllowedPlayer = "ServerManagerService:HasAllowedPlayer",
 	GetTags = "ServerManagerService:GetTags",
+	HasTag = "ServerManagerService:HasTag",
 	AddTag = "ServerManagerService:AddTag",
 	RemoveTag = "ServerManagerService:RemoveTag",
 }
@@ -35,11 +37,16 @@ export type ServerBridgeApiGetServerList = (page?: number) => { entries: Airship
 export type ServerBridgeApiSetAccessMode = (mode: AirshipServerAccessMode) => boolean;
 export type ServerBridgeApiGetGameConfig<T> = () => T | undefined;
 export type ServerBridgeApiGetAllowedPlayers = () => string[];
+export type ServerBridgeApiHasAllowedPlayer = (userId: string) => boolean;
 export type ServerBridgeApiAddAllowedPlayer = (userId: string) => boolean;
 export type ServerBridgeApiRemoveAllowedPlayer = (userId: string) => boolean;
 export type ServerBridgeApiGetTags = () => string[];
+export type ServerBridgeApiHasTag = (tag: string) => boolean;
 export type ServerBridgeApiAddTag = (tag: string) => boolean;
 export type ServerBridgeApiRemoveTag = (tag: string) => boolean;
+
+const ALLOWED_PLAYERS_LIST_KEY = "allowedPlayers";
+const TAGS_LIST_KEY = "tags";
 
 @Service({})
 export class ProtectedServerManagerService {
@@ -98,6 +105,13 @@ export class ProtectedServerManagerService {
 			},
 		);
 
+		contextbridge.callback<ServerBridgeApiHasAllowedPlayer>(
+			ServerManagerServiceBridgeTopics.HasAllowedPlayer,
+			(_, userId) => {
+				return this.HasAllowedPlayer(userId).expect();
+			},
+		);
+
 		contextbridge.callback<ServerBridgeApiAddAllowedPlayer>(
 			ServerManagerServiceBridgeTopics.AddAllowedPlayer,
 			(_, userId) => {
@@ -114,6 +128,10 @@ export class ProtectedServerManagerService {
 
 		contextbridge.callback<ServerBridgeApiGetTags>(ServerManagerServiceBridgeTopics.GetTags, (_) => {
 			return this.GetTags().expect();
+		});
+
+		contextbridge.callback<ServerBridgeApiAddTag>(ServerManagerServiceBridgeTopics.HasTag, (_, tag) => {
+			return this.HasTag(tag).expect();
 		});
 
 		contextbridge.callback<ServerBridgeApiAddTag>(ServerManagerServiceBridgeTopics.AddTag, (_, tag) => {
@@ -217,7 +235,7 @@ export class ProtectedServerManagerService {
 	}
 
 	public async GetAllowedPlayers(): Promise<ReturnType<ServerBridgeApiGetAllowedPlayers>> {
-		const players = await AgonesCore.Agones.GetListValues("allowedPlayers");
+		const players = await AgonesCore.Agones.GetListValues(ALLOWED_PLAYERS_LIST_KEY);
 		const userIds = [];
 		for (let i = 0; i < players.Length; i++) {
 			userIds.push(players.GetValue(i));
@@ -225,16 +243,20 @@ export class ProtectedServerManagerService {
 		return userIds;
 	}
 
+	public async HasAllowedPlayer(userId: string): Promise<ReturnType<ServerBridgeApiHasAllowedPlayer>> {
+		return await AgonesCore.Agones.ListContains(ALLOWED_PLAYERS_LIST_KEY, userId);
+	}
+
 	public async AddAllowedPlayer(userId: string): Promise<ReturnType<ServerBridgeApiAddAllowedPlayer>> {
-		return await AgonesCore.Agones.AppendListValue("allowedPlayers", userId);
+		return await AgonesCore.Agones.AppendListValue(ALLOWED_PLAYERS_LIST_KEY, userId);
 	}
 
 	public async RemoveAllowedPlayer(userId: string): Promise<ReturnType<ServerBridgeApiRemoveAllowedPlayer>> {
-		return await AgonesCore.Agones.DeleteListValue("allowedPlayers", userId);
+		return await AgonesCore.Agones.DeleteListValue(ALLOWED_PLAYERS_LIST_KEY, userId);
 	}
 
 	public async GetTags(): Promise<ReturnType<ServerBridgeApiGetTags>> {
-		const tags = await AgonesCore.Agones.GetListValues("tags");
+		const tags = await AgonesCore.Agones.GetListValues(TAGS_LIST_KEY);
 		const tagValues = [];
 		for (let i = 0; i < tags.Length; i++) {
 			tagValues.push(tags.GetValue(i));
@@ -242,11 +264,15 @@ export class ProtectedServerManagerService {
 		return tagValues;
 	}
 
+	public async HasTag(tag: string): Promise<ReturnType<ServerBridgeApiHasTag>> {
+		return await AgonesCore.Agones.ListContains(TAGS_LIST_KEY, tag);
+	}
+
 	public async AddTag(tag: string): Promise<ReturnType<ServerBridgeApiAddTag>> {
-		return await AgonesCore.Agones.AppendListValue("tags", tag);
+		return await AgonesCore.Agones.AppendListValue(TAGS_LIST_KEY, tag);
 	}
 
 	public async RemoveTag(tag: string): Promise<ReturnType<ServerBridgeApiRemoveTag>> {
-		return await AgonesCore.Agones.DeleteListValue("tags", tag);
+		return await AgonesCore.Agones.DeleteListValue(TAGS_LIST_KEY, tag);
 	}
 }

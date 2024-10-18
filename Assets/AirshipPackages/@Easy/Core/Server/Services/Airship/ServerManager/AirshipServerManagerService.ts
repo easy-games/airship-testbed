@@ -8,6 +8,8 @@ import {
 	ServerBridgeApiGetServerList,
 	ServerBridgeApiGetServers,
 	ServerBridgeApiGetTags,
+	ServerBridgeApiHasAllowedPlayer,
+	ServerBridgeApiHasTag,
 	ServerBridgeApiListServer,
 	ServerBridgeApiRemoveAllowedPlayer,
 	ServerBridgeApiRemoveTag,
@@ -151,6 +153,19 @@ export class AirshipServerManagerService {
 	}
 
 	/**
+	 * Checks if the provided userId is allowed on the server.
+	 * @param userId
+	 * @returns True if allowed, false otherwise.
+	 */
+	public async HasAllowedPlayer(userId: string): Promise<boolean> {
+		return contextbridge.invoke<ServerBridgeApiHasAllowedPlayer>(
+			ServerManagerServiceBridgeTopics.HasAllowedPlayer,
+			LuauContext.Protected,
+			userId,
+		);
+	}
+
+	/**
 	 * Adds a userId to the allowed player list. You can get the current allowed players list with
 	 * {@link AirshipServerManager.GetAllowedPlayers}.
 	 * @param userId The userId of the player.
@@ -186,6 +201,19 @@ export class AirshipServerManagerService {
 		return contextbridge.invoke<ServerBridgeApiGetTags>(
 			ServerManagerServiceBridgeTopics.GetTags,
 			LuauContext.Protected,
+		);
+	}
+
+	/**
+	 * Checks if the provided tag exists on the server.
+	 * @param tag The tag to check for.
+	 * @returns True if the tag exists, false otherwise.
+	 */
+	public async HasTag(tag: string): Promise<boolean> {
+		return contextbridge.invoke<ServerBridgeApiHasTag>(
+			ServerManagerServiceBridgeTopics.HasTag,
+			LuauContext.Protected,
+			tag,
 		);
 	}
 
