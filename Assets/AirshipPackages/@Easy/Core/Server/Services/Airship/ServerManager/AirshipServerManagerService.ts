@@ -1,13 +1,16 @@
 import {
 	ServerBridgeApiAddAllowedPlayer,
+	ServerBridgeApiAddTag,
 	ServerBridgeApiCreateServer,
 	ServerBridgeApiDelistServer,
 	ServerBridgeApiGetAllowedPlayers,
 	ServerBridgeApiGetGameConfig,
 	ServerBridgeApiGetServerList,
 	ServerBridgeApiGetServers,
+	ServerBridgeApiGetTags,
 	ServerBridgeApiListServer,
 	ServerBridgeApiRemoveAllowedPlayer,
+	ServerBridgeApiRemoveTag,
 	ServerBridgeApiSetAccessMode,
 	ServerManagerServiceBridgeTopics,
 } from "@Easy/Core/Server/ProtectedServices/Airship/ServerManager/ProtectedServerManagerService";
@@ -172,6 +175,43 @@ export class AirshipServerManagerService {
 			ServerManagerServiceBridgeTopics.RemoveAllowedPlayer,
 			LuauContext.Protected,
 			userId,
+		);
+	}
+
+	/**
+	 * Gets the tags on this server.
+	 * @returns The tags on this server.
+	 */
+	public async GetTags(): Promise<string[]> {
+		return contextbridge.invoke<ServerBridgeApiGetTags>(
+			ServerManagerServiceBridgeTopics.GetTags,
+			LuauContext.Protected,
+		);
+	}
+
+	/**
+	 * Adds a tag to server.
+	 * @param tag The tag to add.
+	 * @returns True if the tag was added, false otherwise.
+	 */
+	public async AddTag(tag: string): Promise<boolean> {
+		return contextbridge.invoke<ServerBridgeApiAddTag>(
+			ServerManagerServiceBridgeTopics.AddTag,
+			LuauContext.Protected,
+			tag,
+		);
+	}
+
+	/**
+	 * Removes a tag from the server.
+	 * @param tag The tag to remove.
+	 * @returns True if the tag was removed, false otherwise.
+	 */
+	public async RemoveTag(tag: string): Promise<boolean> {
+		return contextbridge.invoke<ServerBridgeApiRemoveTag>(
+			ServerManagerServiceBridgeTopics.RemoveTag,
+			LuauContext.Protected,
+			tag,
 		);
 	}
 }
