@@ -433,7 +433,9 @@ export class AirshipCharacterCameraSingleton {
 		if (character.IsLocalCharacter()) {
 			// The first thing we do for `Character` targets is synchronize the camera
 			// with their current look vector.
-			mode.SetYAxisDirection(character.movement.GetLookVector());
+			if (character.movement) {
+				mode.SetYAxisDirection(character.movement.GetLookVector());
+			}
 
 			const setFirstPerson = () => {
 				mode.SetXOffset(CameraConstants.DefaultFirstPersonFixedCameraConfig.xOffset!);
@@ -494,20 +496,25 @@ export class AirshipCharacterCameraSingleton {
 			// When the fixed camera is targeting the local `Character`, synchronize the character &
 			// camera's look vectors.
 			const lookVectorSync = OnLateUpdate.Connect(() => {
+				if (!character.movement) return;
 				if (character.movement.disableInput) return;
 				character.movement.SetLookVector(mode.cameraForwardVector);
 			});
-			const lookVectorSyncInverse = character.movement.OnNewLookVector((lookVector) => {
-				if (character.movement.disableInput) return;
-				character.movement.SetLookVectorRecurring(mode.cameraForwardVector);
-				mode.SetYAxisDirection(lookVector);
-			});
+
+			if (character.movement) {
+				const lookVectorSyncInverse = character.movement.OnNewLookVector((lookVector) => {
+					if (!character.movement) return;
+					if (character.movement.disableInput) return;
+					character.movement.SetLookVectorRecurring(mode.cameraForwardVector);
+					mode.SetYAxisDirection(lookVector);
+				});
+				cleanup.Add(() => Bridge.DisconnectEvent(lookVectorSyncInverse));
+			}
 
 			cleanup.Add(crouchAnimator);
 			cleanup.Add(stateChanged);
 			cleanup.Add(firstPersonChanged);
 			cleanup.Add(lookVectorSync);
-			cleanup.Add(() => Bridge.DisconnectEvent(lookVectorSyncInverse));
 		}
 
 		return cleanup;
@@ -521,22 +528,29 @@ export class AirshipCharacterCameraSingleton {
 		if (character.IsLocalCharacter()) {
 			// The first thing we do for `Character` targets is synchronize the camera
 			// with their current look vector.
-			mode.SetYAxisDirection(character.movement.GetLookVector());
+			if (character.movement) {
+				mode.SetYAxisDirection(character.movement.GetLookVector());
+			}
 
 			// When the fixed camera is targeting the local `Character`, synchronize the character &
 			// camera's look vectors.
 			const lookVectorSync = OnLateUpdate.Connect(() => {
+				if (!character.movement) return;
 				if (character.movement.disableInput) return;
 				character.movement.SetLookVector(mode.cameraForwardVector);
 			});
-			const lookVectorSyncInverse = character.movement.OnNewLookVector((lookVector) => {
-				if (character.movement.disableInput) return;
-				character.movement.SetLookVectorRecurring(mode.cameraForwardVector);
-				mode.SetYAxisDirection(lookVector);
-			});
+
+			if (character.movement) {
+				const lookVectorSyncInverse = character.movement.OnNewLookVector((lookVector) => {
+					if (!character.movement) return;
+					if (character.movement.disableInput) return;
+					character.movement.SetLookVectorRecurring(mode.cameraForwardVector);
+					mode.SetYAxisDirection(lookVector);
+				});
+				cleanup.Add(() => Bridge.DisconnectEvent(lookVectorSyncInverse));
+			}
 
 			cleanup.Add(lookVectorSync);
-			cleanup.Add(() => Bridge.DisconnectEvent(lookVectorSyncInverse));
 		}
 
 		return cleanup;
