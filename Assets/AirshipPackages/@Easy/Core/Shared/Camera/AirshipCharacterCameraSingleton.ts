@@ -433,7 +433,7 @@ export class AirshipCharacterCameraSingleton {
 		if (character.IsLocalCharacter()) {
 			// The first thing we do for `Character` targets is synchronize the camera
 			// with their current look vector.
-			mode.SetDirection(character.movement.GetLookVector());
+			mode.SetYAxisDirection(character.movement.GetLookVector());
 
 			const setFirstPerson = () => {
 				mode.SetXOffset(CameraConstants.DefaultFirstPersonFixedCameraConfig.xOffset!);
@@ -521,7 +521,7 @@ export class AirshipCharacterCameraSingleton {
 		if (character.IsLocalCharacter()) {
 			// The first thing we do for `Character` targets is synchronize the camera
 			// with their current look vector.
-			mode.SetDirection(character.movement.GetLookVector());
+			mode.SetYAxisDirection(character.movement.GetLookVector());
 
 			// When the fixed camera is targeting the local `Character`, synchronize the character &
 			// camera's look vectors.
