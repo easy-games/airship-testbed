@@ -1,4 +1,8 @@
-import { ClientBridgeApiGetGroupForSelf, ClientBridgeApiLeaveQueue, MatchmakingControllerBridgeTopics } from "@Easy/Core/Client/ProtectedControllers/Airship/Matchmaking/MatchmakingController";
+import {
+	ClientBridgeApiGetGroupForSelf,
+	ClientBridgeApiLeaveQueue,
+	MatchmakingControllerBridgeTopics,
+} from "@Easy/Core/Client/ProtectedControllers/Airship/Matchmaking/MatchmakingController";
 import { Platform } from "@Easy/Core/Shared/Airship";
 import { Group } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipMatchmaking";
 import { Controller } from "@Easy/Core/Shared/Flamework";
@@ -12,7 +16,7 @@ export class AirshipMatchmakingController {
 		Platform.Client.Matchmaking = this;
 	}
 
-	protected OnStart(): void { }
+	protected OnStart(): void {}
 
 	/**
 	 * Gets the users current matchmaking group data if they are in a group, otherwise returns undefined.

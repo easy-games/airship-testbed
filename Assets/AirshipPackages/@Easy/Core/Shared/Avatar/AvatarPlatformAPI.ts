@@ -1,7 +1,12 @@
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
-import { AccessoryInstanceDto, OutfitCreateDto, OutfitDto, OutfitPatch } from "../Airship/Types/Outputs/AirshipPlatformInventory";
+import {
+	AccessoryInstanceDto,
+	OutfitCreateDto,
+	OutfitDto,
+	OutfitPatch,
+} from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { CoreLogger } from "../Logger/CoreLogger";
 
 // TODO this needs to be moved to the main menu lua sandbox
@@ -36,8 +41,10 @@ export class AvatarPlatformAPI {
 	public static async GetEquippedOutfit(): Promise<OutfitDto | undefined> {
 		this.Log("GetEquippedOutfit");
 		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/equipped/self`));
-		if (res.success && res.data && res.data !== "") {
-			return DecodeJSON(res.data) as OutfitDto;
+		if (res.success) {
+			const { outfit } = DecodeJSON(res.data) as { outfit: OutfitDto | undefined };
+			if (!outfit) return undefined;
+			return outfit;
 		} else {
 			CoreLogger.Error("failed to load user equipped outfit: " + (res.error ?? "Empty Data"));
 		}
@@ -45,9 +52,11 @@ export class AvatarPlatformAPI {
 
 	public static async GetUserEquippedOutfit(userId: string): Promise<OutfitDto | undefined> {
 		const res = InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/uid/${userId}/equipped`));
-		if (res.success && res.data && res.data !== "") {
+		if (res.success) {
 			this.Log("LOADED OUTFIT: " + res.data);
-			return DecodeJSON<OutfitDto>(res.data);
+			const { outfit } = DecodeJSON(res.data) as { outfit: OutfitDto | undefined };
+			if (!outfit) return undefined;
+			return outfit;
 		} else {
 			CoreLogger.Error("failed to load users equipped outfit: " + (res.error ?? "Empty Data"));
 		}
@@ -56,9 +65,11 @@ export class AvatarPlatformAPI {
 	public static async GetAvatarOutfit(outfitId: string): Promise<OutfitDto | undefined> {
 		this.Log("GetAvatarOutfit");
 		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/outfit-id/${outfitId}`));
-		if (res.success && res.data && res.data !== "") {
+		if (res.success) {
 			this.Log("LOADED OUTFIT: " + res.data);
-			return DecodeJSON(res.data) as OutfitDto;
+			const { outfit } = DecodeJSON(res.data) as { outfit: OutfitDto | undefined };
+			if (!outfit) return undefined;
+			return outfit;
 		} else {
 			CoreLogger.Error("failed to load user outfit: " + (res.error ?? "Empty Data"));
 		}
@@ -69,9 +80,9 @@ export class AvatarPlatformAPI {
 		let res = InternalHttpManager.PostAsync(this.GetHttpUrl(`outfits`), EncodeJSON(outfit));
 		if (res.success) {
 			this.Log("CREATED OUTFIT: " + res.data);
-			return DecodeJSON<OutfitDto>(res.data);
-		}else{
-			CoreLogger.Error("Error creating outfit: " +res.error);
+			return DecodeJSON<{ outfit: OutfitDto }>(res.data).outfit;
+		} else {
+			CoreLogger.Error("Error creating outfit: " + res.error);
 		}
 	}
 
@@ -96,12 +107,7 @@ export class AvatarPlatformAPI {
 		}
 	}
 
-	public static async CreateDefaultAvatarOutfit(
-		equipped: boolean,
-		outfitId: string,
-		name: string,
-		skinColor: Color,
-	) {
+	public static async CreateDefaultAvatarOutfit(equipped: boolean, outfitId: string, name: string, skinColor: Color) {
 		this.Log("CreateDefaultAvatarOutfit");
 		let accessorUUIDs: string[] = [];
 
@@ -152,8 +158,7 @@ export class AvatarPlatformAPI {
 	private static UpdateOutfit(outfitId: string, update: Partial<OutfitPatch>) {
 		let res = InternalHttpManager.PatchAsync(this.GetHttpUrl(`outfits/outfit-id/${outfitId}`), EncodeJSON(update));
 		if (res.success) {
-			const decodedResult = DecodeJSON<OutfitDto>(res.data);
-			return decodedResult;
+			return DecodeJSON<{ outfit: OutfitDto }>(res.data).outfit;
 		} else {
 			CoreLogger.Error("Error Updating Outfit: " + res.error);
 		}

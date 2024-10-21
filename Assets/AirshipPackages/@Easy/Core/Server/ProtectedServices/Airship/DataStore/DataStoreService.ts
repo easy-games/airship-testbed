@@ -51,11 +51,7 @@ export class ProtectedDataStoreService {
 			throw result.error;
 		}
 
-		if (!result.data) {
-			return undefined;
-		}
-
-		return DecodeJSON(result.data) as DataStoreRecord<T>;
+		return DecodeJSON<{ data: DataStoreRecord<T> | undefined }>(result.data).data;
 	}
 
 	public async SetKey<T>(key: string, data: T, etag?: string): Promise<ReturnType<ServerBridgeApiDataSetKey<T>>> {
@@ -69,7 +65,7 @@ export class ProtectedDataStoreService {
 			throw result.error;
 		}
 
-		return DecodeJSON(result.data) as DataStoreRecord<T>;
+		return DecodeJSON<{ data: DataStoreRecord<T> }>(result.data).data;
 	}
 
 	public async DeleteKey<T>(key: string, etag?: string): Promise<ReturnType<ServerBridgeApiDataDeleteKey<T>>> {
@@ -80,11 +76,7 @@ export class ProtectedDataStoreService {
 			throw result.error;
 		}
 
-		if (!result.data) {
-			return undefined;
-		}
-
-		return DecodeJSON(result.data) as DataStoreRecord<T>;
+		return DecodeJSON<{ data: DataStoreRecord<T> | undefined }>(result.data).data;
 	}
 
 	protected OnStart(): void {}

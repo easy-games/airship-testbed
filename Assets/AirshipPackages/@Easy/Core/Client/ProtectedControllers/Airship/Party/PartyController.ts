@@ -28,7 +28,7 @@ export class ProtectedPartyController {
 			throw res.error;
 		}
 
-		return DecodeJSON(res.data) as Party;
+		return DecodeJSON<{ party: Party }>(res.data).party;
 	}
 
 	public async InviteToParty(userId: string) {

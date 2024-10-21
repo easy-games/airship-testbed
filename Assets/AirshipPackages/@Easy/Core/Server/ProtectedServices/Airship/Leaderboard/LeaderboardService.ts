@@ -99,11 +99,7 @@ export class ProtectedLeaderboardService {
 			throw result.error;
 		}
 
-		if (!result.data) {
-			return undefined;
-		}
-
-		return DecodeJSON(result.data) as RankData;
+		return DecodeJSON<{ ranking: RankData | undefined }>(result.data).ranking;
 	}
 
 	public async DeleteEntry(name: string, id: string): Promise<ReturnType<ServerBridgeApiLeaderboardDeleteEntry>> {

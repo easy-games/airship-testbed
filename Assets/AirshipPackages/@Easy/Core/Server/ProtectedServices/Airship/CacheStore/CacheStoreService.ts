@@ -10,7 +10,11 @@ export const enum CacheStoreServiceBridgeTopics {
 }
 
 export type ServerBridgeApiCacheGetKey<T> = (key: string, expireTimeSec?: number) => CacheStoreRecord<T> | undefined;
-export type ServerBridgeApiCacheSetKey<T> = (key: string, data: T, expireTimeSec: number) => CacheStoreRecord<T>;
+export type ServerBridgeApiCacheSetKey<T> = (
+	key: string,
+	data: T,
+	expireTimeSec: number,
+) => CacheStoreRecord<T> | undefined;
 export type ServerBridgeApiCacheSetKeyTTL = (key: string, expireTimeSec: number) => number;
 
 export interface CacheStoreRecord<T> {
@@ -57,10 +61,7 @@ export class ProtectedCacheStoreService {
 			throw result.error;
 		}
 
-		if (!result.data) {
-			return undefined;
-		}
-		return DecodeJSON(result.data) as CacheStoreRecord<T>;
+		return DecodeJSON<{ data: CacheStoreRecord<T> | undefined }>(result.data).data;
 	}
 
 	public async SetKey<T>(
@@ -78,7 +79,7 @@ export class ProtectedCacheStoreService {
 			throw result.error;
 		}
 
-		return DecodeJSON(result.data) as CacheStoreRecord<T>;
+		return DecodeJSON<{ data: CacheStoreRecord<T> }>(result.data).data;
 	}
 
 	public async SetKeyTTL(key: string, expireTimeSec: number): Promise<ReturnType<ServerBridgeApiCacheSetKeyTTL>> {
