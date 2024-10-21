@@ -61,7 +61,7 @@ export class ProtectedCacheStoreService {
 			throw result.error;
 		}
 
-		return DecodeJSON<{ data: CacheStoreRecord<T> | undefined }>(result.data).data;
+		return DecodeJSON<{ record: CacheStoreRecord<T> | undefined }>(result.data).record;
 	}
 
 	public async SetKey<T>(
@@ -79,7 +79,7 @@ export class ProtectedCacheStoreService {
 			throw result.error;
 		}
 
-		return DecodeJSON<{ data: CacheStoreRecord<T> | undefined }>(result.data).data;
+		return DecodeJSON<{ record: CacheStoreRecord<T> | undefined }>(result.data).record;
 	}
 
 	public async SetKeyTTL(key: string, expireTimeSec: number): Promise<ReturnType<ServerBridgeApiCacheSetKeyTTL>> {
