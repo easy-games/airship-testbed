@@ -38076,6 +38076,29 @@ interface AccessoryOutfit extends ScriptableObject {
 
 }
     
+interface AccessoryComponent extends MonoBehaviour {
+    serverClassId: string;
+    serverClassIdStaging: string;
+    accessorySlot: AccessorySlot;
+    visibilityMode: VisibilityMode;
+    skinnedToCharacter: boolean;
+    canMeshCombine: boolean;
+    bodyMask: number;
+    localPosition: Vector3;
+    localRotation: Quaternion;
+    localScale: Vector3;
+
+
+
+    Copy(other: AccessoryComponent): void;
+    GetServerClassId(): string;
+    GetServerInstanceId(): string;
+    GetSlotNumber(): number;
+    HasFlag(flag: BodyMask): boolean;
+    SetInstanceId(id: string): void;
+
+
+}
     
 interface BodyMaskInspectorData {
     name: string;
@@ -38097,6 +38120,17 @@ interface BodyMaskInspectorDataConstructor {
 }
 declare const BodyMaskInspectorData: BodyMaskInspectorDataConstructor;
     
+interface AccessoryComponentConstructor {
+    BodyMaskInspectorDatas: CSArray<BodyMaskInspectorData>;
+
+
+    new(): AccessoryComponent;
+
+
+    GetBodyMaskName(bit: number): string;
+
+}
+declare const AccessoryComponent: AccessoryComponentConstructor;
     
 interface AccessoryFace extends ScriptableObject {
     serverClassId: string;
@@ -46673,6 +46707,7 @@ interface VoxelWorld extends MonoBehaviour {
     AddChunk(key: Vector3, chunk: Chunk): void;
     CalculatePlaneIntersection(origin: Vector3, dir: Vector3, planeNormal: Vector3, planePoint: Vector3): Vector3;
     CanSeePoint(pos: Vector3, dest: Vector3, destNormal: Vector3): boolean;
+    ColorVoxelAt(pos: Vector3, color: Color32, priority: boolean): void;
     CreateSingleStarterBlock(): void;
     DeleteRenderedGameObjects(): void;
     DirtyMesh(voxel: Vector3, priority: boolean): void;
@@ -46687,6 +46722,7 @@ interface VoxelWorld extends MonoBehaviour {
     GetNumRadiosityProcessingChunks(): number;
     GetVoxelAndChunkAt(pos: Vector3): unknown;
     GetVoxelAt(pos: Vector3): number;
+    GetVoxelColorAt(pos: Vector3): Color32;
     InvokeOnFinishedReplicatingChunksFromServer(): void;
     LoadEmptyWorld(): void;
     LoadWorldFromSaveFile(file: WorldSaveFile): void;
@@ -46730,6 +46766,7 @@ interface WorldSaveFile extends ScriptableObject {
 interface SaveChunk {
     key: Vector3;
     data: CSArray<number>;
+    color: CSArray<number>;
 
 
 
@@ -46740,7 +46777,7 @@ interface SaveChunk {
 interface SaveChunkConstructor {
 
 
-    new(key: Vector3, data: CSArray<number>): SaveChunk;
+    new(key: Vector3, data: CSArray<number>, color: CSArray<number>): SaveChunk;
 
 
 
@@ -46785,6 +46822,7 @@ interface VoxelWorldNetworker extends NetworkBehaviour {
     
 interface Chunk {
     readWriteVoxel: CSArray<number>;
+    color: CSArray<number>;
     materialPropertiesDirty: boolean;
     world: VoxelWorld;
     bottomLeftInt: Vector3;
@@ -46805,6 +46843,7 @@ interface Chunk {
     GetLocalVoxelAt(localX: number, localY: number, localZ: number): number;
     GetPriorityUpdate(): boolean;
     GetVoxelAt(worldPos: Vector3): number;
+    GetVoxelColorAt(worldPos: Vector3): Color32;
     HasVoxels(): boolean;
     IsGeometryDirty(): boolean;
     MainthreadForceCollisionRebuild(): void;
@@ -46814,6 +46853,7 @@ interface Chunk {
     SetGeometryDirty(dirty: boolean, priority: boolean): void;
     SetWorld(world: VoxelWorld): void;
     WriteVoxel(worldPos: Vector3, num: number): void;
+    WriteVoxelColor(worldPos: Vector3, col: Color32): void;
 
 
 }
@@ -46886,6 +46926,41 @@ interface VoxelWorldConstructor {
 
 }
 declare const VoxelWorld: VoxelWorldConstructor;
+    
+interface AccessorySkin extends ScriptableObject {
+    skinTextureDiffuse: Texture2D;
+    skinTextureNormal: Texture2D;
+    skinTextureORM: Texture2D;
+    faceTextureDiffuse: Texture2D;
+
+
+
+    ToString(): string;
+
+
+}
+    
+interface AccessorySkinConstructor {
+
+
+    new(): AccessorySkin;
+
+
+
+}
+declare const AccessorySkin: AccessorySkinConstructor;
+    
+interface ActiveAccessory {
+    AccessoryComponent: AccessoryComponent;
+    rootTransform: Transform;
+    gameObjects: CSArray<GameObject>;
+    renderers: CSArray<Renderer>;
+
+
+
+
+
+}
     
 interface AirshipSteamFriendInfo {
     playingAirship: boolean;
