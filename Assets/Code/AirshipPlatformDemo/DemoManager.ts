@@ -8,7 +8,6 @@ import { Binding } from "@Easy/Core/Shared/Input/Binding";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Keyboard } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
-import { MathUtil } from "@Easy/Core/Shared/Util/MathUtil";
 
 export default class DemoManager extends AirshipBehaviour {
 	public spawnPosition!: GameObject;
@@ -69,9 +68,9 @@ export default class DemoManager extends AirshipBehaviour {
 				Airship.Damage.onDeath.Connect((damageInfo) => {
 					const character = damageInfo.gameObject.GetAirshipComponent<Character>();
 					if (character?.player) {
-						// task.delay(2, () => {
-						this.SpawnPlayer(character.player!);
-						// });
+						task.delay(6, () => {
+							//this.SpawnPlayer(character.player!);
+						});
 					}
 				}),
 			);
@@ -129,20 +128,34 @@ export default class DemoManager extends AirshipBehaviour {
 	private testDirFlip = 1;
 	private testImpulseForce = 8;
 	public override Update(dt: number): void {
-		if(Game.IsServer() || this.npcCharacter?.networkIdentity?.isOwned){
+		if (Game.IsServer() || this.npcCharacter?.networkIdentity?.isOwned) {
 			const xAnchor = this.spawnPosition.transform.position.x;
-			if((this.testDirFlip > 0 && this.npcCharacter.transform.position.x > xAnchor + 5) ||
-			(this.testDirFlip<0 && this.npcCharacter.transform.position.x < xAnchor-5)){
+			if (
+				(this.testDirFlip > 0 && this.npcCharacter.transform.position.x > xAnchor + 5) ||
+				(this.testDirFlip < 0 && this.npcCharacter.transform.position.x < xAnchor - 5)
+			) {
 				this.testDirFlip *= -1;
 			}
-			let dir = new Vector3(this.testDirFlip,0,0);
-			let time = Time.time *.4;
+			let dir = new Vector3(this.testDirFlip, 0, 0);
+			let time = Time.time * 0.4;
 			//FORCE TEST
-			if(math.random() > 1-Time.deltaTime){
-				this.npcCharacter.movement.AddImpulse(new Vector3(math.random()*this.testImpulseForce*2 - this.testImpulseForce, math.lerp(0,this.testImpulseForce*2, math.random()), math.random() *this.testImpulseForce*2 - this.testImpulseForce));
+			if (math.random() > 1 - Time.deltaTime) {
+				this.npcCharacter.movement.AddImpulse(
+					new Vector3(
+						math.random() * this.testImpulseForce * 2 - this.testImpulseForce,
+						math.lerp(0, this.testImpulseForce * 2, math.random()),
+						math.random() * this.testImpulseForce * 2 - this.testImpulseForce,
+					),
+				);
 			}
 			//MOVE TEST
-			this.npcCharacter.movement.SetMoveInput(dir, math.random() > 1-Time.deltaTime*2, math.sin(time) > .2, math.cos(time) < .2, true);
+			this.npcCharacter.movement.SetMoveInput(
+				dir,
+				math.random() > 1 - Time.deltaTime * 2,
+				math.sin(time) > 0.2,
+				math.cos(time) < 0.2,
+				true,
+			);
 		}
 	}
 

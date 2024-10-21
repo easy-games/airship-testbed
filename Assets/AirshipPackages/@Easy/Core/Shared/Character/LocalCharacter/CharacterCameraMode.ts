@@ -1,5 +1,7 @@
 export enum CharacterCameraMode {
-	Locked,
+	Fixed,
 	Orbit,
-	None,
 }
+
+const t = CharacterCameraMode as unknown as { Locked: number };
+t["Locked"] = CharacterCameraMode.Fixed;

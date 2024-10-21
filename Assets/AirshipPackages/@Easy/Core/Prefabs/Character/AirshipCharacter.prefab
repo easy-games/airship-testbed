@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &767042598421911371
+--- !u!1 &1893650489547789612
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,10 +8,10 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8012870067196846070}
-  - component: {fileID: 6957682035740317735}
-  - component: {fileID: 5537981009712244065}
-  - component: {fileID: 2120469463301612055}
+  - component: {fileID: 7915646124278817712}
+  - component: {fileID: 3170397959587225731}
+  - component: {fileID: 3208725921296040634}
+  - component: {fileID: 5150185295768061865}
   m_Layer: 3
   m_Name: Jeans Shorts_legs 1
   m_TagString: Untagged
@@ -19,13 +19,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8012870067196846070
+--- !u!4 &7915646124278817712
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 767042598421911371}
+  m_GameObject: {fileID: 1893650489547789612}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
@@ -34,13 +34,13 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6518322715866115168}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!137 &6957682035740317735
+--- !u!137 &3170397959587225731
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 767042598421911371}
+  m_GameObject: {fileID: 1893650489547789612}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -112,13 +112,13 @@ SkinnedMeshRenderer:
     m_Center: {x: 0, y: -0.03410576, z: 0.6845479}
     m_Extent: {x: 0.2789171, y: 0.14869641, z: 0.2768774}
   m_DirtyAABB: 0
---- !u!114 &5537981009712244065
+--- !u!114 &3208725921296040634
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 767042598421911371}
+  m_GameObject: {fileID: 1893650489547789612}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
@@ -127,13 +127,13 @@ MonoBehaviour:
   colorSettings:
   - baseColor: {r: 1, g: 1, b: 1, a: 1}
   addedByEditorScript: 0
---- !u!114 &2120469463301612055
+--- !u!114 &5150185295768061865
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 767042598421911371}
+  m_GameObject: {fileID: 1893650489547789612}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0b74917b00f1d374c9a7136917a61ddf, type: 3}
@@ -1078,7 +1078,7 @@ MonoBehaviour:
   jumpUpBlockCooldown: 0.4
   useGravity: 1
   useGravityWhileGrounded: 0
-  alwaysSnapToGround: 0
+  alwaysSnapToGround: 1
   gravityMultiplier: 5
   upwardsGravityMultiplier: 1
   groundCollisionLayerMask:
@@ -1480,7 +1480,7 @@ PrefabInstance:
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 7638964220878943247, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 8012870067196846070}
+      addedObject: {fileID: 7915646124278817712}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
 --- !u!4 &109835959296207961 stripped

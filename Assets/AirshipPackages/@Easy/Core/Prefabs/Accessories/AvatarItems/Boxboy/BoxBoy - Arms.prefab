@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &6987551408267953030
+--- !u!1 &5685507720442427339
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,39 +8,39 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8097532860626808894}
-  - component: {fileID: 6111223680766533411}
-  - component: {fileID: 7648073787590770860}
-  - component: {fileID: 207064001571194531}
+  - component: {fileID: 9015704835176434129}
+  - component: {fileID: 4409135850383021488}
+  - component: {fileID: 876436560426402365}
+  - component: {fileID: 4774490663985270939}
   m_Layer: 0
-  m_Name: Torn Baggy Pants 2
+  m_Name: BoxBoy - Arms
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8097532860626808894
+--- !u!4 &9015704835176434129
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6987551408267953030}
+  m_GameObject: {fileID: 5685507720442427339}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!137 &6111223680766533411
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+--- !u!137 &4409135850383021488
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6987551408267953030}
+  m_GameObject: {fileID: 5685507720442427339}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -56,7 +56,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 07b0d24b95d4a0348af8f1c58e2fb3cc, type: 2}
+  - {fileID: 2100000, guid: e756c509db2238f4e85a4dd0d0f72591, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -81,7 +81,7 @@ SkinnedMeshRenderer:
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
   m_SkinnedMotionVectors: 1
-  m_Mesh: {fileID: -7259821593530265154, guid: b270b681ec1451748a86d72d59a594e7, type: 3}
+  m_Mesh: {fileID: -3601854674519550899, guid: 88cd3695bb30cb448a08e4c4d157ccbc, type: 3}
   m_Bones:
   - {fileID: 0}
   - {fileID: 0}
@@ -109,16 +109,16 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 0}
   m_AABB:
-    m_Center: {x: 0.000000059604645, y: -0.013828948, z: 0.50747836}
-    m_Extent: {x: 0.36769003, y: 0.2133539, z: 0.48107508}
+    m_Center: {x: -0.000000059604645, y: -0.03299217, z: 0.956766}
+    m_Extent: {x: 0.6225757, y: 0.19053671, z: 0.21027991}
   m_DirtyAABB: 0
---- !u!114 &7648073787590770860
+--- !u!114 &876436560426402365
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6987551408267953030}
+  m_GameObject: {fileID: 5685507720442427339}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
@@ -127,22 +127,22 @@ MonoBehaviour:
   colorSettings:
   - baseColor: {r: 1, g: 1, b: 1, a: 1}
   addedByEditorScript: 0
---- !u!114 &207064001571194531
+--- !u!114 &4774490663985270939
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6987551408267953030}
+  m_GameObject: {fileID: 5685507720442427339}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0b74917b00f1d374c9a7136917a61ddf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serverClassId: edef7bbe-8793-4d15-ad48-3a6101d511b2
+  serverClassId: 14f57239-2264-465c-9346-fa6654a2d6f1
   serverClassIdStaging: 
-  accessorySlot: 9
+  accessorySlot: 16
   visibilityMode: 2
   skinnedToCharacter: 1
   canMeshCombine: 1
-  bodyMask: 75792384
+  bodyMask: 0
