@@ -18,7 +18,9 @@ export class ArrayUtil {
 	}
 
 	/**
-	 * Groups array values into a map by the specified key value - note: This does not account for duplicate values
+	 * Will map an array to a map w/ the given key as the key of the map with the value being the first item that matches that key
+	 *
+	 * Note: If you want more than one value for each key mapped, use {@link GroupByKey}
 	 * @param array The array to mapify
 	 * @param groupKey The key to use
 	 */
@@ -29,10 +31,7 @@ export class ArrayUtil {
 		const map = new Map<TValue[TKey], TValue>();
 		for (const value of array) {
 			const applicator = value[groupKey];
-			if (map.get(applicator)) {
-				warn("Duplicate key", applicator);
-				continue;
-			}
+			if (map.has(applicator)) continue;
 
 			map.set(applicator, value);
 		}
