@@ -397,37 +397,39 @@ interface AccessoryHelper extends MonoBehaviour {
 	RightHand: Transform;
 }
 
-    
 interface AccessoryBuilder extends MonoBehaviour {
-    rig: CharacterRig;
-    firstPerson: boolean;
-    currentOutfit: AccessoryOutfit;
-    currentUserId: string;
-    currentUserName: string;
-    cancelPendingDownload: boolean;
+	rig: CharacterRig;
+	firstPerson: boolean;
+	currentOutfit: AccessoryOutfit;
+	currentUserId: string;
+	currentUserName: string;
+	cancelPendingDownload: boolean;
 
-    AddAccessories(accessoryTemplates: CSArray<AccessoryComponent>, addMode: AccessoryAddMode, rebuildMeshImmediately: boolean): CSArray<ActiveAccessory>;
-    AddSingleAccessory(accessoryTemplate: AccessoryComponent, rebuildMeshImmediately: boolean): ActiveAccessory;
-    AddSkinAccessory(skin: AccessorySkin, rebuildMeshImmediately: boolean): void;
-    EquipAccessoryOutfit(outfit: AccessoryOutfit, rebuildMeshImmediately: boolean): CSArray<ActiveAccessory>;
-    GetAccessoryMeshes(slot: AccessorySlot): CSArray<Renderer>;
-    GetAccessoryParticles(slot: AccessorySlot): CSArray<ParticleSystem>;
-    GetActiveAccessories(): CSArray<ActiveAccessory>;
-    GetActiveAccessoryBySlot(target: AccessorySlot): ActiveAccessory;
-    GetAllAccessoryMeshes(): CSArray<Renderer>;
-    GetCombinedSkinnedMesh(): SkinnedMeshRenderer;
-    GetCombinedStaticMesh(): MeshRenderer;
-    RemoveAccessorySlot(slot: AccessorySlot, rebuildMeshImmediately: boolean): void;
-    RemoveAllAccessories(rebuildMeshImmediately: boolean): void;
-    RemoveClothingAccessories(rebuildMeshImmediately: boolean): void;
-    SetAccessoryColor(slot: AccessorySlot, color: Color, rebuildMeshImmediately: boolean): void;
-    SetCreateOverlayMeshOnCombine(on: boolean): void;
-    SetFaceTexture(texture: Texture2D): void;
-    SetSkinColor(color: Color, rebuildMeshImmediately: boolean): void;
-    TryCombineMeshes(): void;
+	AddAccessories(
+		accessoryTemplates: CSArray<AccessoryComponent>,
+		addMode: AccessoryAddMode,
+		rebuildMeshImmediately: boolean,
+	): CSArray<ActiveAccessory>;
+	AddSingleAccessory(accessoryTemplate: AccessoryComponent, rebuildMeshImmediately: boolean): ActiveAccessory;
+	AddSkinAccessory(skin: AccessorySkin, rebuildMeshImmediately: boolean): void;
+	EquipAccessoryOutfit(outfit: AccessoryOutfit, rebuildMeshImmediately: boolean): CSArray<ActiveAccessory>;
+	GetAccessoryMeshes(slot: AccessorySlot): CSArray<Renderer>;
+	GetAccessoryParticles(slot: AccessorySlot): CSArray<ParticleSystem>;
+	GetActiveAccessories(): CSArray<ActiveAccessory>;
+	GetActiveAccessoryBySlot(target: AccessorySlot): ActiveAccessory;
+	GetAllAccessoryMeshes(): CSArray<Renderer>;
+	GetCombinedSkinnedMesh(): SkinnedMeshRenderer;
+	GetCombinedStaticMesh(): MeshRenderer;
+	RemoveAccessorySlot(slot: AccessorySlot, rebuildMeshImmediately: boolean): void;
+	RemoveAllAccessories(rebuildMeshImmediately: boolean): void;
+	RemoveClothingAccessories(rebuildMeshImmediately: boolean): void;
+	SetAccessoryColor(slot: AccessorySlot, color: Color, rebuildMeshImmediately: boolean): void;
+	SetCreateOverlayMeshOnCombine(on: boolean): void;
+	SetFaceTexture(texture: Texture2D): void;
+	SetSkinColor(color: Color, rebuildMeshImmediately: boolean): void;
+	TryCombineMeshes(): void;
 
 	OnMeshCombined: MonoSignal<[usedMeshCombiner: boolean, skinnedMesh: SkinnedMeshRenderer, staticMesh: MeshRenderer]>;
-
 }
 
 interface CanvasUIEvents extends Component {
@@ -954,4 +956,32 @@ interface AccessoryComponent extends MonoBehaviour {
 	GetSlotNumber(): number;
 	HasFlag(flag: BodyMask): boolean;
 	SetInstanceId(id: string): void;
+}
+
+interface AnimationClipReplacementEntry {
+	baseClipName: string;
+	replacementClip: AnimationClip;
+}
+
+interface AnimatorClipReplacer extends Component {
+	AnimatorController: Object | undefined;
+	clipReplacements: AnimationClipReplacementEntry[];
+	baseClipSelectionPresets: any[];
+
+	/**
+	 * Applies the animation clip replacements to the provided Animator or AnimatorOverrideController.
+	 * @param controller - The Animator or AnimatorOverrideController to apply the replacements to.
+	 */
+	ReplaceClips(controller: Object): void;
+	/**
+	 * Directly applies clip replacements to the given AnimatorOverrideController.
+	 * @param overrideController - The AnimatorOverrideController to apply the replacements to.
+	 */
+	ReplaceClips(overrideController: AnimatorOverrideController): void;
+	/**
+	 * Returns the RuntimeAnimatorController from the AnimatorController property.
+	 * It supports Animator, GameObject, and AnimatorOverrideController types,
+	 * returning the associated RuntimeAnimatorController or null if none is found.
+	 */
+	RuntimeAnimator: RuntimeAnimatorController | null;
 }
