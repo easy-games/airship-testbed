@@ -3043,9 +3043,9 @@ declare const enum AccessorySlot {
     RightFoot = 24,
 }
 declare const enum VisibilityMode {
-    THIRD_PERSON = 0,
-    FIRST_PERSON = 1,
-    BOTH = 2,
+    ThirdPerson = 0,
+    FirstPerson = 1,
+    Both = 2,
 }
 declare const enum BodyMask {
     NONE = 0,
@@ -35592,6 +35592,7 @@ interface VoxelBlockDefinition extends ScriptableObject {
     meshTile2x2x2: MeshSet;
     meshTile3x3x3: MeshSet;
     meshTile4x4x4: MeshSet;
+    rotatedPlacement: boolean;
     metallic: number;
     smoothness: number;
     normalScale: number;
@@ -37040,344 +37041,6 @@ interface InternalHttpManagerConstructor {
 
 }
 declare const InternalHttpManager: InternalHttpManagerConstructor;
-    
-interface FriendsControllerBackend {
-
-
-
-
-
-}
-    
-interface FriendsControllerBackendConstructor {
-
-
-    new(): FriendsControllerBackend;
-
-
-    GetFriends(): HttpResponse;
-    IsFriendsWith(uid: string): HttpResponse;
-
-}
-declare const FriendsControllerBackend: FriendsControllerBackendConstructor;
-    
-interface MatchmakingControllerBackend {
-
-
-
-
-
-}
-    
-interface MatchmakingControllerBackendConstructor {
-
-
-    new(): MatchmakingControllerBackend;
-
-
-    GetStatus(): HttpResponse;
-
-}
-declare const MatchmakingControllerBackend: MatchmakingControllerBackendConstructor;
-    
-interface PartyControllerBackend {
-
-
-
-
-
-}
-    
-interface PartyControllerBackendConstructor {
-
-
-    new(): PartyControllerBackend;
-
-
-    GetParty(): HttpResponse;
-
-}
-declare const PartyControllerBackend: PartyControllerBackendConstructor;
-    
-interface AirshipInventoryControllerBackend {
-
-
-
-
-
-}
-    
-interface AirshipInventoryControllerBackendConstructor {
-
-
-    new(): AirshipInventoryControllerBackend;
-
-
-    GetEquippedOutfitByUserId(uid: string): HttpResponse;
-    GetEquippedProfilePictureByUserId(uid: string): HttpResponse;
-
-}
-declare const AirshipInventoryControllerBackend: AirshipInventoryControllerBackendConstructor;
-    
-interface TransferControllerBackend {
-
-
-
-
-
-}
-    
-interface TransferControllerBackendConstructor {
-
-
-    new(): TransferControllerBackend;
-
-
-    TransferToGame(body: string): HttpResponse;
-    TransferToPartyLeader(): HttpResponse;
-
-}
-declare const TransferControllerBackend: TransferControllerBackendConstructor;
-    
-interface UsersControllerBackend {
-
-
-
-
-
-}
-    
-interface UsersControllerBackendConstructor {
-
-
-    new(): UsersControllerBackend;
-
-
-    GetUserById(userId: string): HttpResponse;
-    GetUserByUsername(username: string): HttpResponse;
-    GetUsersById(query: string): HttpResponse;
-
-}
-declare const UsersControllerBackend: UsersControllerBackendConstructor;
-    
-interface CacheStoreServiceBackend {
-
-
-
-
-
-}
-    
-interface CacheStoreServiceBackendConstructor {
-
-
-    new(): CacheStoreServiceBackend;
-
-
-    GetKey(key: string, expireTimeSec: unknown): HttpResponse;
-    SetKey(key: string, expireTimeSec: number, body: string): HttpResponse;
-    SetKeyTTL(key: string, expireTimeSec: number): HttpResponse;
-
-}
-declare const CacheStoreServiceBackend: CacheStoreServiceBackendConstructor;
-    
-interface DataStoreServiceBackend {
-
-
-
-
-
-}
-    
-interface DataStoreServiceBackendConstructor {
-
-
-    new(): DataStoreServiceBackend;
-
-
-    DeleteKey(key: string): HttpResponse;
-    GetKey(key: string): HttpResponse;
-    SetKey(key: string, body: string): HttpResponse;
-
-}
-declare const DataStoreServiceBackend: DataStoreServiceBackendConstructor;
-    
-interface LeaderboardServiceBackend {
-
-
-
-
-
-}
-    
-interface LeaderboardServiceBackendConstructor {
-
-
-    new(): LeaderboardServiceBackend;
-
-
-    GetRank(leaderboardName: string, id: string): HttpResponse;
-    GetRankRange(leaderboardName: string, skip: number, limit: number): HttpResponse;
-    Update(leaderboardName: string, body: string): HttpResponse;
-
-}
-declare const LeaderboardServiceBackend: LeaderboardServiceBackendConstructor;
-    
-interface PartyServiceBackend {
-
-
-
-
-
-}
-    
-interface PartyServiceBackendConstructor {
-
-
-    new(): PartyServiceBackend;
-
-
-    GetPartyById(partyId: string): HttpResponse;
-    GetPartyForUserId(userId: string): HttpResponse;
-
-}
-declare const PartyServiceBackend: PartyServiceBackendConstructor;
-    
-interface MatchmakingServiceBackend {
-
-
-
-
-
-}
-    
-interface MatchmakingServiceBackendConstructor {
-
-
-    new(): MatchmakingServiceBackend;
-
-
-    GetMatchmakingRegions(): HttpResponse;
-    JoinPartyToQueue(partyId: string, body: string): HttpResponse;
-    RemovePartyFromQueue(partyId: string): HttpResponse;
-
-}
-declare const MatchmakingServiceBackend: MatchmakingServiceBackendConstructor;
-    
-interface TransferServiceBackend {
-
-
-
-
-
-}
-    
-interface TransferServiceBackendConstructor {
-
-
-    new(): TransferServiceBackend;
-
-
-    CreateServer(body: string): HttpResponse;
-    Transfer(body: string): HttpResponse;
-
-}
-declare const TransferServiceBackend: TransferServiceBackendConstructor;
-    
-interface AirshipInventoryServiceBackend {
-
-
-
-
-
-}
-    
-interface ItemClassInput {
-    name: string;
-    imageId: string;
-    tags: CSArray<string>;
-    description: string;
-    default: boolean;
-    tradable: boolean;
-    marketable: boolean;
-
-
-
-
-
-}
-    
-interface ItemClassInputConstructor {
-
-
-    new(): ItemClassInput;
-
-
-
-}
-declare const ItemClassInput: ItemClassInputConstructor;
-    
-interface AccessoryClassInput extends ItemClassInput {
-
-
-
-
-
-}
-    
-interface AccessoryClassInputConstructor {
-
-
-    new(): AccessoryClassInput;
-
-
-
-}
-declare const AccessoryClassInput: AccessoryClassInputConstructor;
-    
-interface AirshipInventoryServiceBackendConstructor {
-
-
-    new(): AirshipInventoryServiceBackend;
-
-
-    CreateItem(ownerResourceId: string, data: AccessoryClassInput): HttpResponse;
-    DeleteAccessory(itemId: string): HttpResponse;
-    DeleteItem(itemId: string): HttpResponse;
-    DeleteProfilePicture(itemId: string): HttpResponse;
-    GetAccessories(uid: string, query: string): HttpResponse;
-    GetEquippedOutfitByUserId(userId: string): HttpResponse;
-    GetEquippedProfilePictureByUserId(uid: string): HttpResponse;
-    GetItems(uid: string, query: string): HttpResponse;
-    GetProfilePictures(uid: string, query: string): HttpResponse;
-    GrantAccessory(uid: string, classId: string): HttpResponse;
-    GrantItem(uid: string, classId: string): HttpResponse;
-    GrantProfilePicture(uid: string, classId: string): HttpResponse;
-    PerformTrade(body: string): HttpResponse;
-
-}
-declare const AirshipInventoryServiceBackend: AirshipInventoryServiceBackendConstructor;
-    
-interface UsersServiceBackend {
-
-
-
-
-
-}
-    
-interface UsersServiceBackendConstructor {
-
-
-    new(): UsersServiceBackend;
-
-
-    GetUserById(userId: string): HttpResponse;
-    GetUserByUsername(username: string): HttpResponse;
-    GetUsersById(query: string): HttpResponse;
-
-}
-declare const UsersServiceBackend: UsersServiceBackendConstructor;
     
 interface CrossSceneState {
 
@@ -46691,6 +46354,7 @@ interface VoxelWorld extends MonoBehaviour {
     selectedBlockIndex: number;
     highlightedBlock: number;
     highlightedBlockPos: Vector3;
+    currentCamera: Camera;
     mirrorAround: Vector3;
     renderingDisabled: boolean;
     hasUnsavedChanges: boolean;
@@ -46739,6 +46403,7 @@ interface VoxelWorld extends MonoBehaviour {
     TransformPointToLocalSpace(point: Vector3): Vector3;
     TransformPointToWorldSpace(point: Vector3): Vector3;
     TransformRayToLocalSpace(ray: Ray): Ray;
+    TransformVectorToLocalSpace(vec: Vector3): Vector3;
     TransformVectorToWorldSpace(vec: Vector3): Vector3;
     Update(): void;
     WriteVoxelAt(pos: Vector3, num: number, priority: boolean): void;
@@ -46902,6 +46567,7 @@ interface VoxelWorldConstructor {
     showDebugSpheres: boolean;
     showDebugBounds: boolean;
     chunkSize: number;
+    flipNames: CSArray<string>;
     allFlips: CSArray<number>;
 
 
