@@ -42,9 +42,7 @@ export class AvatarPlatformAPI {
 		this.Log("GetEquippedOutfit");
 		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/equipped/self`));
 		if (res.success) {
-			const { outfit } = DecodeJSON(res.data) as { outfit: OutfitDto | undefined };
-			if (!outfit) return undefined;
-			return outfit;
+			return DecodeJSON<{ outfit: OutfitDto | undefined }>(res.data).outfit;
 		} else {
 			CoreLogger.Error("failed to load user equipped outfit: " + (res.error ?? "Empty Data"));
 		}
@@ -54,9 +52,7 @@ export class AvatarPlatformAPI {
 		const res = InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/uid/${userId}/equipped`));
 		if (res.success) {
 			this.Log("LOADED OUTFIT: " + res.data);
-			const { outfit } = DecodeJSON(res.data) as { outfit: OutfitDto | undefined };
-			if (!outfit) return undefined;
-			return outfit;
+			return DecodeJSON<{ outfit: OutfitDto | undefined }>(res.data).outfit;
 		} else {
 			CoreLogger.Error("failed to load users equipped outfit: " + (res.error ?? "Empty Data"));
 		}
@@ -67,9 +63,7 @@ export class AvatarPlatformAPI {
 		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/outfit-id/${outfitId}`));
 		if (res.success) {
 			this.Log("LOADED OUTFIT: " + res.data);
-			const { outfit } = DecodeJSON(res.data) as { outfit: OutfitDto | undefined };
-			if (!outfit) return undefined;
-			return outfit;
+			return DecodeJSON<{ outfit: OutfitDto | undefined }>(res.data).outfit;
 		} else {
 			CoreLogger.Error("failed to load user outfit: " + (res.error ?? "Empty Data"));
 		}
