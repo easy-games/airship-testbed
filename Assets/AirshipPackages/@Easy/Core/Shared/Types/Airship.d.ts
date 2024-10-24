@@ -569,7 +569,7 @@ interface CharacterAnimationHelper extends Component {
 	 * @param layer
 	 * @param fixedTransitionDuration The duration of the transition (in seconds).
 	 */
-	PlayAnimation(clip: AnimationClip, layer: CharacterAnimationLayer, fixedTransitionDuration: number);
+	PlayAnimation(clip: AnimationClip, layer: CharacterAnimationLayer, fixedTransitionDuration: number): void;
 
 	/**
 	 * Under the hood, we call `animator.CrossFadeInFixedTime()`
@@ -577,7 +577,7 @@ interface CharacterAnimationHelper extends Component {
 	 * @param layer
 	 * @param fixedTransitionDuration The duration of the transition (in seconds).
 	 */
-	StopAnimation(layer: CharacterAnimationLayer, fixedTransitionDuration: number);
+	StopAnimation(layer: CharacterAnimationLayer, fixedTransitionDuration: number): void;
 }
 
 declare const enum CharacterAnimationLayer {
