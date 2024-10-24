@@ -110,7 +110,7 @@ export abstract class CameraMode {
 	/** Called every frame. Use this method for constructing the `CameraTransform`. */
 	abstract OnLateUpdate(deltaTime: number): CameraTransform;
 
-	abstract OnPostUpdate(camera: Camera): void;
+	abstract OnPostUpdate(cameraHolder: Transform): void;
 }
 
 // Necessary for our Lua plugin to not complain about return type:

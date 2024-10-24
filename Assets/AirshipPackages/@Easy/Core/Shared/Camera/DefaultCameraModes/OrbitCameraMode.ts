@@ -238,12 +238,11 @@ export class OrbitCameraMode extends CameraMode {
 		return new CameraTransform(newPosition, rotation);
 	}
 
-	OnPostUpdate(camera: Camera) {
-		const transform = camera.transform;
-		transform.LookAt(this.lastAttachToPos);
+	OnPostUpdate(cameraHolder: Transform) {
+		cameraHolder.LookAt(this.lastAttachToPos);
 		this.occlusionCam.BumpForOcclusion(this.lastAttachToPos, DefaultCameraMask);
 
-		this.cameraForwardVector = transform.forward;
+		this.cameraForwardVector = cameraHolder.forward;
 	}
 
 	/**
