@@ -450,18 +450,22 @@ export default class Inventory extends AirshipBehaviour {
 		this.SetHeldSlot(dto.heldSlot);
 	}
 
-	public HasEnough(itemType: string, amount: number): boolean {
+	public GetItemCount(itemType: string): number {
 		let total = 0;
 		for (let itemStack of Object.values(this.items)) {
 			if (itemStack.itemType === itemType) {
 				total += itemStack.amount;
 			}
 		}
-		return total >= amount;
+		return total;
+	}
+
+	public HasEnough(itemType: string, amount: number): boolean {
+		return this.GetItemCount(itemType) >= amount;
 	}
 
 	public HasItemType(itemType: string): boolean {
-		return this.HasEnough(itemType, 1);
+		return this.GetItemCount(itemType) > 0;
 	}
 
 	public GetMaxSlots(): number {
