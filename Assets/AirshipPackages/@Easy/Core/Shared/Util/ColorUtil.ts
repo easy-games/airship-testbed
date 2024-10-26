@@ -7,7 +7,7 @@ export class ColorUtil {
 	 */
 	public static ColorToHex(color: Color): string {
 		return string.format(
-			"#%X%X%X",
+			"#%02X%02X%02X",
 			math.floor(color.r * 255),
 			math.floor(color.g * 255),
 			math.floor(color.b * 255),
