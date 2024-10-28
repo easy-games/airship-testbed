@@ -46371,7 +46371,7 @@ interface VoxelWorld extends MonoBehaviour {
     AddChunk(key: Vector3, chunk: Chunk): void;
     CalculatePlaneIntersection(origin: Vector3, dir: Vector3, planeNormal: Vector3, planePoint: Vector3): Vector3;
     CanSeePoint(pos: Vector3, dest: Vector3, destNormal: Vector3): boolean;
-    ColorVoxelAt(pos: Vector3, color: Color32, priority: boolean): void;
+    ColorVoxelAt(pos: Vector3, color: Color, priority: boolean): void;
     CreateSingleStarterBlock(): void;
     DeleteRenderedGameObjects(): void;
     DirtyMesh(voxel: Vector3, priority: boolean): void;
@@ -46488,6 +46488,7 @@ interface VoxelWorldNetworker extends NetworkBehaviour {
 interface Chunk {
     readWriteVoxel: CSArray<number>;
     color: CSArray<number>;
+    damageMap: CSDictionary<number, number>;
     materialPropertiesDirty: boolean;
     world: VoxelWorld;
     bottomLeftInt: Vector3;
