@@ -11,7 +11,7 @@ export default class CharacterOverlayMaterial extends AirshipBehaviour {
 	private currentSkinnedRenderers: SkinnedMeshRenderer[] = [];
 	private currentStaticRenderers: MeshRenderer[] = [];
 	private currentRenderers: Renderer[] = [];
-	private currentMaterial: Material;
+	private currentMaterial: Material | undefined;
 
 	override Start(): void {
 		//print("Overlay start");
@@ -39,24 +39,25 @@ export default class CharacterOverlayMaterial extends AirshipBehaviour {
 						}
 					}
 				}
-				this.SetOverlayMaterial(this.defaultOverlayMaterialTemplate);
+				this.SetOverlayMaterial(this.currentMaterial ?? this.defaultOverlayMaterialTemplate, true);
 			}),
 		);
 	}
 
-	public SetOverlayMaterial(newMaterial: Material) {
-		if (newMaterial === this.currentMaterial) {
+	public SetOverlayMaterial(newMaterial: Material | undefined, force = false) {
+		if (!force && newMaterial === this.currentMaterial) {
 			return;
 		}
 		this.currentMaterial = newMaterial;
+
 		//print("Setting overlay to mat: " + (newMaterial?.name ?? ""));
 		for (let ren of this.currentSkinnedRenderers) {
-			ren.SetMaterial(ren.sharedMesh.subMeshCount - 1, newMaterial);
+			ren.SetMaterial(ren.sharedMesh.subMeshCount - 1, newMaterial!);
 		}
 		for (let ren of this.currentStaticRenderers) {
 			const filter = ren.gameObject.GetComponent<MeshFilter>();
 			if (filter?.mesh) {
-				ren.SetMaterial(filter.mesh.subMeshCount - 1, newMaterial);
+				ren.SetMaterial(filter.mesh.subMeshCount - 1, newMaterial!);
 			}
 		}
 	}
