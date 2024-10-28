@@ -5,7 +5,7 @@ import { MathUtil } from "@Easy/Core/Shared/Util/MathUtil";
 import { CameraMode, CameraTransform } from "..";
 import ObjectUtils from "../../Util/ObjectUtils";
 import { CameraConstants, FixedCameraConfig } from "../CameraConstants";
-import DefaultCameraMask from "../DefaultCameraMask";
+import { OcclusionCameraManager } from "../OcclusionCameraManager";
 
 const TAU = math.pi * 2;
 
@@ -223,7 +223,7 @@ export class FixedCameraMode extends CameraMode {
 	OnPostUpdate(cameraHolder: Transform) {
 		if (this.shouldBumpForOcclusion) {
 			cameraHolder.LookAt(this.lastCameraPos);
-			this.occlusionCam.BumpForOcclusion(this.lastCameraPos, DefaultCameraMask);
+			this.occlusionCam.BumpForOcclusion(this.lastCameraPos, OcclusionCameraManager.GetMask());
 		}
 		this.cameraRightVector = cameraHolder.right;
 		this.cameraForwardVector = this.lookBehind ? cameraHolder.forward.mul(-1) : cameraHolder.forward;

@@ -5,7 +5,7 @@ import ObjectUtils from "../../Util/ObjectUtils";
 import { CameraConstants, OrbitCameraConfig } from "../CameraConstants";
 import { CameraMode } from "../CameraMode";
 import { CameraTransform } from "../CameraTransform";
-import DefaultCameraMask from "../DefaultCameraMask";
+import { OcclusionCameraManager } from "../OcclusionCameraManager";
 
 const TAU = math.pi * 2;
 
@@ -240,7 +240,7 @@ export class OrbitCameraMode extends CameraMode {
 
 	OnPostUpdate(cameraHolder: Transform) {
 		cameraHolder.LookAt(this.lastAttachToPos);
-		this.occlusionCam.BumpForOcclusion(this.lastAttachToPos, DefaultCameraMask);
+		this.occlusionCam.BumpForOcclusion(this.lastAttachToPos, OcclusionCameraManager.GetMask());
 
 		this.cameraForwardVector = cameraHolder.forward;
 	}
