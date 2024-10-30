@@ -14,9 +14,9 @@ export class FixedCameraMode extends CameraMode {
 		return "Fixed Camera Mode";
 	}
 
-	private readonly cameraCleanUp = new Bin();
-	private readonly preferred = this.cameraCleanUp.Add(new Preferred());
-	private readonly touchscreen = this.cameraCleanUp.Add(new Touchscreen());
+	public OnStopBin = new Bin();
+	private readonly preferred = this.OnStopBin.Add(new Preferred());
+	private readonly touchscreen = this.OnStopBin.Add(new Touchscreen());
 
 	private config: FixedCameraConfig;
 	private locked = false;
@@ -68,28 +68,28 @@ export class FixedCameraMode extends CameraMode {
 		let characterLogicBin: Bin | undefined;
 		if (this.character && this.character.IsLocalCharacter()) {
 			characterLogicBin = Airship.Camera.ManageFixedCameraForLocalCharacter(this, this.character);
-			this.cameraCleanUp.Add(() => characterLogicBin!.Clean());
+			this.OnStopBin.Add(() => characterLogicBin!.Clean());
 		}
-		this.cameraCleanUp.Add(
+		this.OnStopBin.Add(
 			this.onTargetChanged.Connect((event) => {
 				if (characterLogicBin && !event.after.character?.IsLocalCharacter()) {
 					characterLogicBin.Clean();
 				}
 				if (event.after.character?.IsLocalCharacter()) {
 					characterLogicBin = Airship.Camera.ManageFixedCameraForLocalCharacter(this, event.after.character);
-					this.cameraCleanUp.Add(() => characterLogicBin!.Clean());
+					this.OnStopBin.Add(() => characterLogicBin!.Clean());
 				}
 			}),
 		);
 	}
 
 	private SetupMobileControls() {
-		const touchscreen = this.cameraCleanUp.Add(new Touchscreen());
+		const touchscreen = this.OnStopBin.Add(new Touchscreen());
 		let touchStartPos = new Vector3(0, 0, 0);
 		let touchStartRotX = 0;
 		let touchStartRotY = 0;
 		let touchOverUI = false;
-		this.cameraCleanUp.Add(
+		this.OnStopBin.Add(
 			touchscreen.pan.Connect((position, phase) => {
 				switch (phase) {
 					case TouchPhase.Began:
@@ -131,14 +131,14 @@ export class FixedCameraMode extends CameraMode {
 		}
 		this.occlusionCam.Init(camera);
 
-		this.cameraCleanUp.Add(this.preferred);
-		this.cameraCleanUp.Add(this.touchscreen);
+		this.OnStopBin.Add(this.preferred);
+		this.OnStopBin.Add(this.touchscreen);
 
-		this.cameraCleanUp.Add(
+		this.OnStopBin.Add(
 			Airship.Input.preferredControls.ObserveControlScheme((scheme) => {
 				if (scheme === ControlScheme.Touch) {
 					const unlocker = Mouse.AddUnlocker();
-					this.cameraCleanUp.Add(unlocker);
+					this.OnStopBin.Add(unlocker);
 					return () => {
 						unlocker();
 					};
@@ -148,7 +148,7 @@ export class FixedCameraMode extends CameraMode {
 	}
 
 	OnStop() {
-		this.cameraCleanUp.Clean();
+		this.OnStopBin.Clean();
 	}
 
 	OnUpdate(dt: number) {

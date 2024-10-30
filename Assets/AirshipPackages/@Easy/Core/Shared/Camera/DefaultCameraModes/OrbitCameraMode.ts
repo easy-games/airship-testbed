@@ -15,12 +15,10 @@ export class OrbitCameraMode extends CameraMode {
 	}
 
 	private config: OrbitCameraConfig;
-	private readonly cameraCleanUp = new Bin();
+	public OnStopBin = new Bin();
 
 	private radius = 4;
 	private yOffset = 1.85;
-
-	private readonly cameraCleanup = new Bin();
 
 	private occlusionCam!: OcclusionCam;
 
@@ -37,8 +35,8 @@ export class OrbitCameraMode extends CameraMode {
 	private mouseSmoothingEnabled = true;
 	private smoothVector = new Vector2(0, 0);
 
-	private readonly preferred = this.cameraCleanup.Add(new Preferred());
-	private readonly touchscreen = this.cameraCleanup.Add(new Touchscreen());
+	private readonly preferred = this.OnStopBin.Add(new Preferred());
+	private readonly touchscreen = this.OnStopBin.Add(new Touchscreen());
 
 	constructor(target: GameObject, config?: OrbitCameraConfig) {
 		super(target);
@@ -60,23 +58,23 @@ export class OrbitCameraMode extends CameraMode {
 		let characterLogicBin: Bin | undefined;
 		if (this.character && this.character.IsLocalCharacter()) {
 			characterLogicBin = Airship.Camera.ManageOrbitCameraForLocalCharacter(this, this.character);
-			this.cameraCleanUp.Add(() => characterLogicBin!.Clean());
+			this.OnStopBin.Add(() => characterLogicBin!.Clean());
 		}
-		this.cameraCleanUp.Add(
+		this.OnStopBin.Add(
 			this.onTargetChanged.Connect((event) => {
 				if (characterLogicBin && !event.after.character?.IsLocalCharacter()) {
 					characterLogicBin.Clean();
 				}
 				if (event.after.character?.IsLocalCharacter()) {
 					characterLogicBin = Airship.Camera.ManageOrbitCameraForLocalCharacter(this, event.after.character);
-					this.cameraCleanUp.Add(() => characterLogicBin!.Clean());
+					this.OnStopBin.Add(() => characterLogicBin!.Clean());
 				}
 			}),
 		);
 	}
 
 	private SetupMobileControls() {
-		const touchscreen = this.cameraCleanup.Add(new Touchscreen());
+		const touchscreen = this.OnStopBin.Add(new Touchscreen());
 		let touchStartPos = Vector3.zero;
 		let touchStartRotX = 0;
 		let touchStartRotY = 0;
@@ -121,8 +119,8 @@ export class OrbitCameraMode extends CameraMode {
 		}
 		this.occlusionCam.Init(camera);
 
-		this.cameraCleanup.Add(this.preferred);
-		this.cameraCleanup.Add(this.touchscreen);
+		this.OnStopBin.Add(this.preferred);
+		this.OnStopBin.Add(this.touchscreen);
 
 		// const mouseUnlocker = this.mouse.AddUnlocker();
 		// this.bin.Add(() => this.mouse.RemoveUnlocker(mouseUnlocker));
@@ -131,7 +129,7 @@ export class OrbitCameraMode extends CameraMode {
 		// 	this.cameraCleanup.Add(Mouse.AddUnlocker());
 		// }
 
-		this.cameraCleanup.Add(
+		this.OnStopBin.Add(
 			Airship.Input.preferredControls.ObserveControlScheme((scheme) => {
 				const controlSchemeBin = new Bin();
 				if (scheme === ControlScheme.MouseKeyboard) {
@@ -168,7 +166,7 @@ export class OrbitCameraMode extends CameraMode {
 	}
 
 	OnStop() {
-		this.cameraCleanup.Clean();
+		this.OnStopBin.Clean();
 	}
 
 	OnUpdate(dt: number) {
