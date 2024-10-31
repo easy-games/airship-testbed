@@ -3043,9 +3043,9 @@ declare const enum AccessorySlot {
     RightFoot = 24,
 }
 declare const enum VisibilityMode {
-    THIRD_PERSON = 0,
-    FIRST_PERSON = 1,
-    BOTH = 2,
+    ThirdPerson = 0,
+    FirstPerson = 1,
+    Both = 2,
 }
 declare const enum BodyMask {
     NONE = 0,
@@ -35592,6 +35592,7 @@ interface VoxelBlockDefinition extends ScriptableObject {
     meshTile2x2x2: MeshSet;
     meshTile3x3x3: MeshSet;
     meshTile4x4x4: MeshSet;
+    rotatedPlacement: boolean;
     metallic: number;
     smoothness: number;
     normalScale: number;
@@ -37041,344 +37042,6 @@ interface InternalHttpManagerConstructor {
 }
 declare const InternalHttpManager: InternalHttpManagerConstructor;
     
-interface FriendsControllerBackend {
-
-
-
-
-
-}
-    
-interface FriendsControllerBackendConstructor {
-
-
-    new(): FriendsControllerBackend;
-
-
-    GetFriends(): HttpResponse;
-    IsFriendsWith(uid: string): HttpResponse;
-
-}
-declare const FriendsControllerBackend: FriendsControllerBackendConstructor;
-    
-interface MatchmakingControllerBackend {
-
-
-
-
-
-}
-    
-interface MatchmakingControllerBackendConstructor {
-
-
-    new(): MatchmakingControllerBackend;
-
-
-    GetStatus(): HttpResponse;
-
-}
-declare const MatchmakingControllerBackend: MatchmakingControllerBackendConstructor;
-    
-interface PartyControllerBackend {
-
-
-
-
-
-}
-    
-interface PartyControllerBackendConstructor {
-
-
-    new(): PartyControllerBackend;
-
-
-    GetParty(): HttpResponse;
-
-}
-declare const PartyControllerBackend: PartyControllerBackendConstructor;
-    
-interface AirshipInventoryControllerBackend {
-
-
-
-
-
-}
-    
-interface AirshipInventoryControllerBackendConstructor {
-
-
-    new(): AirshipInventoryControllerBackend;
-
-
-    GetEquippedOutfitByUserId(uid: string): HttpResponse;
-    GetEquippedProfilePictureByUserId(uid: string): HttpResponse;
-
-}
-declare const AirshipInventoryControllerBackend: AirshipInventoryControllerBackendConstructor;
-    
-interface TransferControllerBackend {
-
-
-
-
-
-}
-    
-interface TransferControllerBackendConstructor {
-
-
-    new(): TransferControllerBackend;
-
-
-    TransferToGame(body: string): HttpResponse;
-    TransferToPartyLeader(): HttpResponse;
-
-}
-declare const TransferControllerBackend: TransferControllerBackendConstructor;
-    
-interface UsersControllerBackend {
-
-
-
-
-
-}
-    
-interface UsersControllerBackendConstructor {
-
-
-    new(): UsersControllerBackend;
-
-
-    GetUserById(userId: string): HttpResponse;
-    GetUserByUsername(username: string): HttpResponse;
-    GetUsersById(query: string): HttpResponse;
-
-}
-declare const UsersControllerBackend: UsersControllerBackendConstructor;
-    
-interface CacheStoreServiceBackend {
-
-
-
-
-
-}
-    
-interface CacheStoreServiceBackendConstructor {
-
-
-    new(): CacheStoreServiceBackend;
-
-
-    GetKey(key: string, expireTimeSec: unknown): HttpResponse;
-    SetKey(key: string, expireTimeSec: number, body: string): HttpResponse;
-    SetKeyTTL(key: string, expireTimeSec: number): HttpResponse;
-
-}
-declare const CacheStoreServiceBackend: CacheStoreServiceBackendConstructor;
-    
-interface DataStoreServiceBackend {
-
-
-
-
-
-}
-    
-interface DataStoreServiceBackendConstructor {
-
-
-    new(): DataStoreServiceBackend;
-
-
-    DeleteKey(key: string): HttpResponse;
-    GetKey(key: string): HttpResponse;
-    SetKey(key: string, body: string): HttpResponse;
-
-}
-declare const DataStoreServiceBackend: DataStoreServiceBackendConstructor;
-    
-interface LeaderboardServiceBackend {
-
-
-
-
-
-}
-    
-interface LeaderboardServiceBackendConstructor {
-
-
-    new(): LeaderboardServiceBackend;
-
-
-    GetRank(leaderboardName: string, id: string): HttpResponse;
-    GetRankRange(leaderboardName: string, skip: number, limit: number): HttpResponse;
-    Update(leaderboardName: string, body: string): HttpResponse;
-
-}
-declare const LeaderboardServiceBackend: LeaderboardServiceBackendConstructor;
-    
-interface PartyServiceBackend {
-
-
-
-
-
-}
-    
-interface PartyServiceBackendConstructor {
-
-
-    new(): PartyServiceBackend;
-
-
-    GetPartyById(partyId: string): HttpResponse;
-    GetPartyForUserId(userId: string): HttpResponse;
-
-}
-declare const PartyServiceBackend: PartyServiceBackendConstructor;
-    
-interface MatchmakingServiceBackend {
-
-
-
-
-
-}
-    
-interface MatchmakingServiceBackendConstructor {
-
-
-    new(): MatchmakingServiceBackend;
-
-
-    GetMatchmakingRegions(): HttpResponse;
-    JoinPartyToQueue(partyId: string, body: string): HttpResponse;
-    RemovePartyFromQueue(partyId: string): HttpResponse;
-
-}
-declare const MatchmakingServiceBackend: MatchmakingServiceBackendConstructor;
-    
-interface TransferServiceBackend {
-
-
-
-
-
-}
-    
-interface TransferServiceBackendConstructor {
-
-
-    new(): TransferServiceBackend;
-
-
-    CreateServer(body: string): HttpResponse;
-    Transfer(body: string): HttpResponse;
-
-}
-declare const TransferServiceBackend: TransferServiceBackendConstructor;
-    
-interface AirshipInventoryServiceBackend {
-
-
-
-
-
-}
-    
-interface ItemClassInput {
-    name: string;
-    imageId: string;
-    tags: CSArray<string>;
-    description: string;
-    default: boolean;
-    tradable: boolean;
-    marketable: boolean;
-
-
-
-
-
-}
-    
-interface ItemClassInputConstructor {
-
-
-    new(): ItemClassInput;
-
-
-
-}
-declare const ItemClassInput: ItemClassInputConstructor;
-    
-interface AccessoryClassInput extends ItemClassInput {
-
-
-
-
-
-}
-    
-interface AccessoryClassInputConstructor {
-
-
-    new(): AccessoryClassInput;
-
-
-
-}
-declare const AccessoryClassInput: AccessoryClassInputConstructor;
-    
-interface AirshipInventoryServiceBackendConstructor {
-
-
-    new(): AirshipInventoryServiceBackend;
-
-
-    CreateItem(ownerResourceId: string, data: AccessoryClassInput): HttpResponse;
-    DeleteAccessory(itemId: string): HttpResponse;
-    DeleteItem(itemId: string): HttpResponse;
-    DeleteProfilePicture(itemId: string): HttpResponse;
-    GetAccessories(uid: string, query: string): HttpResponse;
-    GetEquippedOutfitByUserId(userId: string): HttpResponse;
-    GetEquippedProfilePictureByUserId(uid: string): HttpResponse;
-    GetItems(uid: string, query: string): HttpResponse;
-    GetProfilePictures(uid: string, query: string): HttpResponse;
-    GrantAccessory(uid: string, classId: string): HttpResponse;
-    GrantItem(uid: string, classId: string): HttpResponse;
-    GrantProfilePicture(uid: string, classId: string): HttpResponse;
-    PerformTrade(body: string): HttpResponse;
-
-}
-declare const AirshipInventoryServiceBackend: AirshipInventoryServiceBackendConstructor;
-    
-interface UsersServiceBackend {
-
-
-
-
-
-}
-    
-interface UsersServiceBackendConstructor {
-
-
-    new(): UsersServiceBackend;
-
-
-    GetUserById(userId: string): HttpResponse;
-    GetUserByUsername(username: string): HttpResponse;
-    GetUsersById(query: string): HttpResponse;
-
-}
-declare const UsersServiceBackend: UsersServiceBackendConstructor;
-    
 interface CrossSceneState {
 
 
@@ -38076,6 +37739,29 @@ interface AccessoryOutfit extends ScriptableObject {
 
 }
     
+interface AccessoryComponent extends MonoBehaviour {
+    serverClassId: string;
+    serverClassIdStaging: string;
+    accessorySlot: AccessorySlot;
+    visibilityMode: VisibilityMode;
+    skinnedToCharacter: boolean;
+    canMeshCombine: boolean;
+    bodyMask: number;
+    localPosition: Vector3;
+    localRotation: Quaternion;
+    localScale: Vector3;
+
+
+
+    Copy(other: AccessoryComponent): void;
+    GetServerClassId(): string;
+    GetServerInstanceId(): string;
+    GetSlotNumber(): number;
+    HasFlag(flag: BodyMask): boolean;
+    SetInstanceId(id: string): void;
+
+
+}
     
 interface BodyMaskInspectorData {
     name: string;
@@ -38097,6 +37783,17 @@ interface BodyMaskInspectorDataConstructor {
 }
 declare const BodyMaskInspectorData: BodyMaskInspectorDataConstructor;
     
+interface AccessoryComponentConstructor {
+    BodyMaskInspectorDatas: CSArray<BodyMaskInspectorData>;
+
+
+    new(): AccessoryComponent;
+
+
+    GetBodyMaskName(bit: number): string;
+
+}
+declare const AccessoryComponent: AccessoryComponentConstructor;
     
 interface AccessoryFace extends ScriptableObject {
     serverClassId: string;
@@ -46657,6 +46354,7 @@ interface VoxelWorld extends MonoBehaviour {
     selectedBlockIndex: number;
     highlightedBlock: number;
     highlightedBlockPos: Vector3;
+    currentCamera: Camera;
     mirrorAround: Vector3;
     renderingDisabled: boolean;
     hasUnsavedChanges: boolean;
@@ -46673,6 +46371,7 @@ interface VoxelWorld extends MonoBehaviour {
     AddChunk(key: Vector3, chunk: Chunk): void;
     CalculatePlaneIntersection(origin: Vector3, dir: Vector3, planeNormal: Vector3, planePoint: Vector3): Vector3;
     CanSeePoint(pos: Vector3, dest: Vector3, destNormal: Vector3): boolean;
+    ColorVoxelAt(pos: Vector3, color: Color, priority: boolean): void;
     CreateSingleStarterBlock(): void;
     DeleteRenderedGameObjects(): void;
     DirtyMesh(voxel: Vector3, priority: boolean): void;
@@ -46687,6 +46386,7 @@ interface VoxelWorld extends MonoBehaviour {
     GetNumRadiosityProcessingChunks(): number;
     GetVoxelAndChunkAt(pos: Vector3): unknown;
     GetVoxelAt(pos: Vector3): number;
+    GetVoxelColorAt(pos: Vector3): Color32;
     InvokeOnFinishedReplicatingChunksFromServer(): void;
     LoadEmptyWorld(): void;
     LoadWorldFromSaveFile(file: WorldSaveFile): void;
@@ -46703,6 +46403,7 @@ interface VoxelWorld extends MonoBehaviour {
     TransformPointToLocalSpace(point: Vector3): Vector3;
     TransformPointToWorldSpace(point: Vector3): Vector3;
     TransformRayToLocalSpace(ray: Ray): Ray;
+    TransformVectorToLocalSpace(vec: Vector3): Vector3;
     TransformVectorToWorldSpace(vec: Vector3): Vector3;
     Update(): void;
     WriteVoxelAt(pos: Vector3, num: number, priority: boolean): void;
@@ -46730,6 +46431,7 @@ interface WorldSaveFile extends ScriptableObject {
 interface SaveChunk {
     key: Vector3;
     data: CSArray<number>;
+    color: CSArray<number>;
 
 
 
@@ -46740,7 +46442,7 @@ interface SaveChunk {
 interface SaveChunkConstructor {
 
 
-    new(key: Vector3, data: CSArray<number>): SaveChunk;
+    new(key: Vector3, data: CSArray<number>, color: CSArray<number>): SaveChunk;
 
 
 
@@ -46785,6 +46487,8 @@ interface VoxelWorldNetworker extends NetworkBehaviour {
     
 interface Chunk {
     readWriteVoxel: CSArray<number>;
+    color: CSArray<number>;
+    damageMap: CSDictionary<number, number>;
     materialPropertiesDirty: boolean;
     world: VoxelWorld;
     bottomLeftInt: Vector3;
@@ -46805,6 +46509,7 @@ interface Chunk {
     GetLocalVoxelAt(localX: number, localY: number, localZ: number): number;
     GetPriorityUpdate(): boolean;
     GetVoxelAt(worldPos: Vector3): number;
+    GetVoxelColorAt(worldPos: Vector3): Color32;
     HasVoxels(): boolean;
     IsGeometryDirty(): boolean;
     MainthreadForceCollisionRebuild(): void;
@@ -46814,6 +46519,7 @@ interface Chunk {
     SetGeometryDirty(dirty: boolean, priority: boolean): void;
     SetWorld(world: VoxelWorld): void;
     WriteVoxel(worldPos: Vector3, num: number): void;
+    WriteVoxelColor(worldPos: Vector3, col: Color32): void;
 
 
 }
@@ -46862,6 +46568,7 @@ interface VoxelWorldConstructor {
     showDebugSpheres: boolean;
     showDebugBounds: boolean;
     chunkSize: number;
+    flipNames: CSArray<string>;
     allFlips: CSArray<number>;
 
 
@@ -46886,6 +46593,41 @@ interface VoxelWorldConstructor {
 
 }
 declare const VoxelWorld: VoxelWorldConstructor;
+    
+interface AccessorySkin extends ScriptableObject {
+    skinTextureDiffuse: Texture2D;
+    skinTextureNormal: Texture2D;
+    skinTextureORM: Texture2D;
+    faceTextureDiffuse: Texture2D;
+
+
+
+    ToString(): string;
+
+
+}
+    
+interface AccessorySkinConstructor {
+
+
+    new(): AccessorySkin;
+
+
+
+}
+declare const AccessorySkin: AccessorySkinConstructor;
+    
+interface ActiveAccessory {
+    AccessoryComponent: AccessoryComponent;
+    rootTransform: Transform;
+    gameObjects: CSArray<GameObject>;
+    renderers: CSArray<Renderer>;
+
+
+
+
+
+}
     
 interface AirshipSteamFriendInfo {
     playingAirship: boolean;
