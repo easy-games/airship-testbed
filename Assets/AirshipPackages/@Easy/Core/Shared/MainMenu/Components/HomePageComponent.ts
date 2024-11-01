@@ -152,9 +152,7 @@ export default class HomePageComponent extends MainMenuPageComponent {
 			);
 			Bridge.UpdateLayout(this.scrollRect.transform.parent, true);
 			const discordHero = go.GetAirshipComponent<DiscordHero>()!;
-			if (discordHero.scrollRedirect) {
-				discordHero.scrollRedirect.redirectTarget = this.scrollRect;
-			}
+			discordHero.scrollRedirect.redirectTarget = this.scrollRect;
 		}
 	}
 
