@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &5170263369747658681
+--- !u!1 &5144853951797547356
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,50 +8,38 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7007703718364026886}
-  - component: {fileID: 898678669769324916}
-  - component: {fileID: 9014786624142956193}
-  - component: {fileID: 5814430468114193231}
-  - component: {fileID: 8445018492158817610}
-  - component: {fileID: 7664895702866148847}
-  - component: {fileID: 7588549324019435617}
+  - component: {fileID: 6832978242981902023}
+  - component: {fileID: 1473572674604711913}
+  - component: {fileID: 1041603063301621232}
   m_Layer: 0
-  m_Name: AirshipPredictedRigidbody_Sphere
+  m_Name: GraphicsHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7007703718364026886
+--- !u!4 &6832978242981902023
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5170263369747658681}
+  m_GameObject: {fileID: 5144853951797547356}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 24.42, y: 10.981858, z: 2.43}
-  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 7007703718364026886}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &898678669769324916
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5170263369747658681}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &9014786624142956193
+--- !u!23 &1473572674604711913
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5170263369747658681}
+  m_GameObject: {fileID: 5144853951797547356}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -89,6 +77,50 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1041603063301621232
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5144853951797547356}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &5170263369747658681
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7007703718364026886}
+  - component: {fileID: 5814430468114193231}
+  - component: {fileID: 8445018492158817610}
+  - component: {fileID: 7664895702866148847}
+  - component: {fileID: 7588549324019435617}
+  m_Layer: 0
+  m_Name: AirshipPredictedRigidbody_Sphere
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7007703718364026886
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5170263369747658681}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 24.42, y: 10.981858, z: 2.43}
+  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6832978242981902023}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &5814430468114193231
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -174,7 +206,8 @@ MonoBehaviour:
   serverColor: {r: 1, g: 0, b: 0, a: 1}
   clientColor: {r: 0, g: 0, b: 0, a: 1}
   rigid: {fileID: 8445018492158817610}
-  rotationCorrectionThreshold: 5
+  graphicsHolder: {fileID: 6832978242981902023}
+  rotationCorrectionThreshold: 15
 --- !u!114 &7588549324019435617
 MonoBehaviour:
   m_ObjectHideFlags: 0
