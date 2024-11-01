@@ -46373,6 +46373,7 @@ interface VoxelWorld extends MonoBehaviour {
     CanSeePoint(pos: Vector3, dest: Vector3, destNormal: Vector3): boolean;
     ColorVoxelAt(pos: Vector3, color: Color, priority: boolean): void;
     CreateSingleStarterBlock(): void;
+    DamageVoxelAt(pos: Vector3, damage: number, priority: boolean): void;
     DeleteRenderedGameObjects(): void;
     DirtyMesh(voxel: Vector3, priority: boolean): void;
     DirtyNeighborMeshes(voxel: Vector3, priority: boolean): void;
@@ -46384,6 +46385,7 @@ interface VoxelWorld extends MonoBehaviour {
     GetCollisionType(voxelData: number): CollisionType;
     GetNumProcessingMeshChunks(): number;
     GetNumRadiosityProcessingChunks(): number;
+    GetPrefabAt(pos: Vector3): GameObject;
     GetVoxelAndChunkAt(pos: Vector3): unknown;
     GetVoxelAt(pos: Vector3): number;
     GetVoxelColorAt(pos: Vector3): Color32;
@@ -46507,6 +46509,7 @@ interface Chunk {
     GetKey(): Vector3;
     GetLocalVoxelAt(localPos: Vector3): number;
     GetLocalVoxelAt(localX: number, localY: number, localZ: number): number;
+    GetPrefabAt(worldPos: Vector3): GameObject;
     GetPriorityUpdate(): boolean;
     GetVoxelAt(worldPos: Vector3): number;
     GetVoxelColorAt(worldPos: Vector3): Color32;
@@ -46520,6 +46523,7 @@ interface Chunk {
     SetWorld(world: VoxelWorld): void;
     WriteVoxel(worldPos: Vector3, num: number): void;
     WriteVoxelColor(worldPos: Vector3, col: Color32): void;
+    WriteVoxelDamage(worldPos: Vector3, dmg: number): void;
 
 
 }
