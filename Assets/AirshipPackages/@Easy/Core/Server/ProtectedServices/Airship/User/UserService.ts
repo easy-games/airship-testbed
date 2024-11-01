@@ -59,11 +59,7 @@ export class ProtectedUserService {
 			throw res.error;
 		}
 
-		if (!res.data) {
-			return undefined;
-		}
-
-		return DecodeJSON(res.data) as PublicUser;
+		return DecodeJSON<{ user: PublicUser | undefined }>(res.data).user;
 	}
 
 	public async GetUserById(userId: string): Promise<ReturnType<ServerBridgeApiGetUserById>> {
@@ -74,11 +70,7 @@ export class ProtectedUserService {
 			throw res.error;
 		}
 
-		if (!res.data) {
-			return undefined;
-		}
-
-		return DecodeJSON(res.data) as PublicUser;
+		return DecodeJSON<{ user: PublicUser | undefined }>(res.data).user;
 	}
 
 	public async GetUsersById(

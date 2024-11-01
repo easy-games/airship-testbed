@@ -37,11 +37,7 @@ export class ProtectedPartyService {
 			throw res.error;
 		}
 
-		if (!res.data) {
-			return undefined;
-		}
-
-		return DecodeJSON(res.data) as GameServerPartyData;
+		return DecodeJSON<{ party: GameServerPartyData | undefined }>(res.data).party;
 	}
 
 	public async GetPartyById(partyId: string): Promise<ReturnType<ServerBridgeApiGetPartyById>> {
@@ -52,11 +48,7 @@ export class ProtectedPartyService {
 			throw res.error;
 		}
 
-		if (!res.data) {
-			return undefined;
-		}
-
-		return DecodeJSON(res.data) as GameServerPartyData;
+		return DecodeJSON<{ party: GameServerPartyData | undefined }>(res.data).party;
 	}
 
 	protected OnStart(): void {}

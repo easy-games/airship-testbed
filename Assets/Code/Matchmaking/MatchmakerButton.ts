@@ -27,7 +27,6 @@ export default class MatchmakerButton extends AirshipBehaviour {
 	private matchmakerSingleton: MatchmakerSingleton;
 	private performAction: NetworkFunction<{}, void>;
 
-
 	override Start(): void {
 		this.performAction = new NetworkFunction<{}, void>(`MatchmakerButton:PerformAction:${this.action}`);
 		this.matchmakerSingleton = MatchmakerSingleton.Get();
@@ -84,7 +83,7 @@ export default class MatchmakerButton extends AirshipBehaviour {
 		const users = Airship.Players.GetPlayers();
 		const userIds = users.map((u) => u.userId);
 		const [success, result] = Platform.Server.Matchmaking.CreateGroup(userIds).await();
-		if (!success) {
+		if (!success || !result) {
 			print("Failed to create group: " + EncodeJSON(result));
 			return;
 		}
@@ -162,13 +161,13 @@ export default class MatchmakerButton extends AirshipBehaviour {
 	private ClientLeaveQueue(): void {
 		if (!Game.IsClient()) return;
 		print("Attempting to leave queue for client");
-		const [success, result] = Platform.Client.Matchmaking.LeaveQueue().await();
+		const [success, _] = Platform.Client.Matchmaking.LeaveQueue().await();
 		if (!success) {
-			print("Failed to leave queue: " + EncodeJSON(result));
+			print("Failed to leave queue");
 			return;
 		}
-		print("Successfully left queue: " + EncodeJSON(result));
+		print("Successfully left queue");
 	}
 
-	override OnDestroy(): void { }
+	override OnDestroy(): void {}
 }

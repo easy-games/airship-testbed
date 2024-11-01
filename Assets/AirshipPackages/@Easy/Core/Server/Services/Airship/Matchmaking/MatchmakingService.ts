@@ -1,4 +1,11 @@
-import { MatchmakingServiceBridgeTopics, ServerBridgeApiCreateGroup, ServerBridgeApiGetGroupById, ServerBridgeApiGetGroupByUserId, ServerBridgeApiJoinQueue, ServerBridgeApiLeaveQueue } from "@Easy/Core/Server/ProtectedServices/Airship/Matchmaking/MatchmakingService";
+import {
+	MatchmakingServiceBridgeTopics,
+	ServerBridgeApiCreateGroup,
+	ServerBridgeApiGetGroupById,
+	ServerBridgeApiGetGroupByUserId,
+	ServerBridgeApiJoinQueue,
+	ServerBridgeApiLeaveQueue,
+} from "@Easy/Core/Server/ProtectedServices/Airship/Matchmaking/MatchmakingService";
 import { Platform } from "@Easy/Core/Shared/Airship";
 import { JoinQueueDto } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipMatchmaking";
 import { Group } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipMatchmaking";
@@ -15,15 +22,14 @@ export class AirshipMatchmakingService {
 
 	protected OnStart(): void {}
 
-
 	/**
-	* Creates a matchmaking group. Matchmaking groups allow players to enter a matchmaking queue.
-	* Players must be in a matchmaking group to join a queue. When in a queue, groups
-	* will be paired with other groups based on the queue configuration.
-	* @param userIds The userIds of the players to add to the group
-	* @returns The group that was created
-	*/
-	public async CreateGroup(userIds: string[]): Promise<Group> {
+	 * Creates a matchmaking group. Matchmaking groups allow players to enter a matchmaking queue.
+	 * Players must be in a matchmaking group to join a queue. When in a queue, groups
+	 * will be paired with other groups based on the queue configuration.
+	 * @param userIds The userIds of the players to add to the group
+	 * @returns The group that was created
+	 */
+	public async CreateGroup(userIds: string[]): Promise<Group | undefined> {
 		return contextbridge.invoke<ServerBridgeApiCreateGroup>(
 			MatchmakingServiceBridgeTopics.CreateGroup,
 			LuauContext.Protected,

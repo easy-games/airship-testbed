@@ -12,7 +12,7 @@ export const enum MatchmakingControllerBridgeTopics {
 }
 
 export type ClientBridgeApiGetGroupForSelf = () => Group | undefined;
-export type ClientBridgeApiLeaveQueue = () => Group | undefined;
+export type ClientBridgeApiLeaveQueue = () => undefined;
 
 @Controller({})
 export class ProtectedMatchmakingController {
@@ -46,11 +46,7 @@ export class ProtectedMatchmakingController {
 			throw result.error;
 		}
 
-		if (!result.data) {
-			return undefined;
-		}
-
-		return DecodeJSON(result.data) as Group;
+		return DecodeJSON<{ group: Group | undefined }>(result.data).group;
 	}
 
 	public async LeaveQueue(): Promise<ReturnType<ClientBridgeApiLeaveQueue>> {
@@ -69,12 +65,6 @@ export class ProtectedMatchmakingController {
 			);
 			throw result.error;
 		}
-
-		if (!result.data) {
-			return undefined;
-		}
-
-		return DecodeJSON(result.data) as Group;
 	}
 
 	protected OnStart(): void {}
