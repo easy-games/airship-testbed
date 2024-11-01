@@ -113,7 +113,9 @@ task.spawn(() => {
 	}
 	const res = InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/games/game-id/" + Game.gameId);
 	if (res.success) {
-		const gameData = json.decode(res.data) as GameDto;
+		// note: this can be undefined but right now we do not handle that case so the type system does not allow it
+		const gameData = json.decode<{ game: GameDto /* | undefined */ }>(res.data).game;
+		// todo: we should do something here if the game data does not exist
 		Game.gameData = gameData;
 		Game.onGameDataLoaded.Fire(Game.gameData);
 	} else {

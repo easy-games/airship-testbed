@@ -125,7 +125,10 @@ export class Signal<T extends unknown[] | unknown = void> {
 			isCancellable = true;
 		}
 		for (let priority of keys) {
-			const entries = [...this.connections.get(priority)!];
+			const conns = this.connections.get(priority);
+			if (!conns) continue;
+
+			const entries = [...conns];
 			for (let entry of entries) {
 				fireCount++;
 

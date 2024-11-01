@@ -102,11 +102,7 @@ export class ProtectedUserController {
 			throw res.error;
 		}
 
-		if (!res.data) {
-			return undefined;
-		}
-
-		return DecodeJSON(res.data) as PublicUser;
+		return DecodeJSON<{ user: PublicUser | undefined }>(res.data).user;
 	}
 
 	public async GetUserByUsername(username: string): Promise<ReturnType<BridgeApiGetUserByUsername>> {
@@ -117,11 +113,7 @@ export class ProtectedUserController {
 			throw res.error;
 		}
 
-		if (!res.data) {
-			return undefined;
-		}
-
-		return DecodeJSON(res.data) as PublicUser;
+		return DecodeJSON<{ user: PublicUser | undefined }>(res.data).user;
 	}
 
 	public async GetUsersById(userIds: string[], strict = true): Promise<ReturnType<BridgeApiGetUsersById>> {
@@ -187,7 +179,9 @@ export class ProtectedUserController {
 		const res = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/users/self`);
 		let success = false;
 		if (res.success) {
-			if (res.data.size() === 0 || res.data === "") {
+			const { user } = DecodeJSON<{ user: User | undefined }>(res.data);
+
+			if (!user) {
 				let ignore = false;
 				if (Game.coreContext === CoreContext.GAME && Game.IsEditor()) {
 					ignore = true;
@@ -198,14 +192,13 @@ export class ProtectedUserController {
 				return;
 			}
 			try {
-				const data = DecodeJSON(res.data) as User;
-				this.localUser = data;
+				this.localUser = user;
 				this.localUserLoaded = true;
 
 				if (Game.coreContext === CoreContext.MAIN_MENU || true) {
 					const writeUser = Game.localPlayer as Player;
-					writeUser.userId = data.uid;
-					writeUser.username = data.username;
+					writeUser.userId = user.uid;
+					writeUser.username = user.username;
 					Game.localPlayerLoaded = true;
 					Game.onLocalPlayerLoaded.Fire();
 				}
