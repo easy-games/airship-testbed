@@ -18,29 +18,29 @@ export default class CharacterMoveSlide extends AirshipBehaviour {
 		this.character = this.gameObject.GetAirshipComponent<Character>()!;
 		this.character.WaitForInit();
 
-		//Locally listen to actions
-		if (this.character.IsLocalCharacter()) {
-			Airship.Input.CreateAction(this.SlideKey, Binding.Key(Key.Q));
-			Airship.Input.OnDown(this.SlideKey).Connect(() => {
-				this.startTick = this.character.movement!.GetNextTick();
-			});
-		}
+		// //Locally listen to actions
+		// if (this.character.IsLocalCharacter()) {
+		// 	Airship.Input.CreateAction(this.SlideKey, Binding.Key(Key.Q));
+		// 	Airship.Input.OnDown(this.SlideKey).Connect(() => {
+		// 		this.startTick = this.character.movement!.GetNextTick();
+		// 	});
+		// }
 
-		if (this.character.IsLocalCharacter() || Game.IsServer()) {
-			//Listen to custom data and modify movement based on values
-			this.character.OnBeginMove.Connect((customMoveData, inputData, isReplay) => {
-				if (customMoveData.has(this.SlideKey)) {
-					let startTick = customMoveData.get(this.SlideKey) as number;
-					//print("Start Slide. Tick: " + startTick + ", isReplay: " + isReplay);
-					// this.Slide(inputData.moveDir, startTick, inputData.GetTick());
-				} else {
-					if (this.slideStartTime > 0) {
-						//print("Stop Slide. Tick: " + inputData.GetTick() + ", isReplay: " + isReplay);
-					}
-					this.StopSlide();
-				}
-			});
-		}
+		// if (this.character.IsLocalCharacter() || Game.IsServer()) {
+		// 	//Listen to custom data and modify movement based on values
+		// 	this.character.OnBeginMove.Connect((customMoveData, inputData, isReplay) => {
+		// 		if (customMoveData.has(this.SlideKey)) {
+		// 			let startTick = customMoveData.get(this.SlideKey) as number;
+		// 			//print("Start Slide. Tick: " + startTick + ", isReplay: " + isReplay);
+		// 			// this.Slide(inputData.moveDir, startTick, inputData.GetTick());
+		// 		} else {
+		// 			if (this.slideStartTime > 0) {
+		// 				//print("Stop Slide. Tick: " + inputData.GetTick() + ", isReplay: " + isReplay);
+		// 			}
+		// 			this.StopSlide();
+		// 		}
+		// 	});
+		// }
 	}
 
 	public Update(dt: number): void {

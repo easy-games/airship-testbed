@@ -142,7 +142,7 @@ export default class CharacterAnimation extends AirshipBehaviour {
 
 	private HandleAnimationEvents(key: string, strValue?: string, intValue?: number, floatValue?: number){
 		if (key === "Footstep") {
-			if (this.character.movement?.IsGrounded()) {
+			if (this.character.movement?.isGrounded) {
 				Airship.Characters.footsteps.PlayFootstepSound(this.character);
 			}
 		}
