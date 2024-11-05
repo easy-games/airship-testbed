@@ -36241,28 +36241,6 @@ interface WindowCoreConstructor {
 }
 declare const WindowCore: WindowCoreConstructor;
     
-interface CharacterMoveModifier {
-    speedMultiplier: number;
-    jumpMultiplier: number;
-    blockSprint: boolean;
-    blockJump: boolean;
-
-
-
-
-
-}
-    
-interface CharacterMoveModifierConstructor {
-
-
-    new(): CharacterMoveModifier;
-
-
-
-}
-declare const CharacterMoveModifier: CharacterMoveModifierConstructor;
-    
 interface MaterialColorURP extends MonoBehaviour {
     colorSettings: CSArray<ColorSetting>;
     addedByEditorScript: boolean;
@@ -36347,8 +36325,8 @@ interface MainMenuSceneManager extends MonoBehaviour {
 
 }
     
-interface PackageLatestVersionResponse {
-    package: PackageResponse;
+interface PackageVersionResponse {
+    package: Package;
 
 
 
@@ -36356,7 +36334,7 @@ interface PackageLatestVersionResponse {
 
 }
     
-interface PackageResponse {
+interface Package {
     assetVersionNumber: number;
     codeVersionNumber: number;
 
@@ -36366,25 +36344,25 @@ interface PackageResponse {
 
 }
     
-interface PackageResponseConstructor {
+interface PackageConstructor {
 
 
-    new(): PackageResponse;
+    new(): Package;
 
 
 
 }
-declare const PackageResponse: PackageResponseConstructor;
+declare const Package: PackageConstructor;
     
-interface PackageLatestVersionResponseConstructor {
+interface PackageVersionResponseConstructor {
 
 
-    new(): PackageLatestVersionResponse;
+    new(): PackageVersionResponse;
 
 
 
 }
-declare const PackageLatestVersionResponse: PackageLatestVersionResponseConstructor;
+declare const PackageVersionResponse: PackageVersionResponseConstructor;
     
 interface IPromise<PromisedT> {
     readonly Id: number;
@@ -36457,7 +36435,7 @@ interface MainMenuSceneManagerConstructor {
     new(): MainMenuSceneManager;
 
 
-    GetLatestPackageVersion(packageId: string): IPromise<PackageLatestVersionResponse>;
+    GetLatestPackageVersion(packageId: string): IPromise<PackageVersionResponse>;
 
 }
 declare const MainMenuSceneManager: MainMenuSceneManagerConstructor;
@@ -44693,9 +44671,6 @@ interface MoveInputData {
 
 
 
-    Dispose(): void;
-    GetTick(): number;
-    SetTick(value: number): void;
 
 
 }
@@ -44706,7 +44681,6 @@ interface MoveInputDataConstructor {
     new(moveDir: Vector3, jump: boolean, crouch: boolean, sprint: boolean, lookVector: Vector3, customData: BinaryBlob): MoveInputData;
 
 
-    CompareBinaryBlobs(a: BinaryBlob, b: BinaryBlob): boolean;
 
 }
 declare const MoveInputData: MoveInputDataConstructor;

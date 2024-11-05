@@ -2950,7 +2950,7 @@ MonoBehaviour:
             is also assigned in the NetworkPrefabCollection in Shared/Resources"'
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 8616685848737228372, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
+      serializedObject: {fileID: 5042559581574877564, guid: c6dc87ea1a89c3e4aa4c27ad6203c150, type: 3}
       modified: 1
     - name: movementSpace
       type: IntEnum
