@@ -8,6 +8,15 @@ export const enum AirshipServerAccessMode {
 	FriendsOnly = "FRIENDS_ONLY",
 }
 
+/**
+ * The fleet a game server uses.
+ */
+export const enum AirshipServerFleet {
+	CostOptimized = "cost-optimized",
+	Standard = "standard",
+	HighPerformance = "high-performance",
+}
+
 /** Configuration for an Airship server. */
 export interface AirshipServerConfig {
 	/** The scene the server will start on. Defaults to the scene provided during deployment. */
@@ -24,4 +33,6 @@ export interface AirshipServerConfig {
 	tags?: string[];
 	/** An object representing game configuration to be passed to the created server. */
 	gameConfig?: object;
+	/** The fleet the game server will use. This determines the performance characteristics of the underlying server host. */
+	fleet?: AirshipServerFleet;
 }

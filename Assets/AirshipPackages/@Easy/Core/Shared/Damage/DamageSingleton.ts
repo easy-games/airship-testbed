@@ -67,10 +67,18 @@ export class DamageSingleton {
 	 * @param attacker
 	 * @param data
 	 */
-	public InflictDamage(gameObject: GameObject, damage: number, attacker?: GameObject, data?: DamageInfoCustomData) {
+	public InflictDamage(
+		gameObject: GameObject,
+		damage: number,
+		attacker?: GameObject,
+		data?: DamageInfoCustomData,
+	): DamageInfo {
 		assert(damage >= 0, "Unable to InflictDamage with a negative damage amount.");
 
 		const damageInfo = new DamageInfo(gameObject, damage, attacker, data ?? {});
+		this.onDamage.Fire(damageInfo);
+		if (damageInfo.IsCancelled()) return damageInfo;
+
 		if (Game.IsServer() && this.autoNetwork) {
 			const nob = damageInfo.gameObject.GetComponentInParent<NetworkIdentity>();
 			const attackerNob = damageInfo.attacker?.GetComponentInParent<NetworkIdentity>();
@@ -83,7 +91,7 @@ export class DamageSingleton {
 				);
 			}
 		}
-		this.onDamage.Fire(damageInfo);
+		return damageInfo;
 	}
 
 	/**

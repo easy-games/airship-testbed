@@ -154,6 +154,7 @@ export class ProtectedServerManagerService {
 				maxPlayers: config?.maxPlayers,
 				tags: config?.tags,
 				gameConfig: config?.gameConfig,
+				fleet: config?.fleet,
 			}),
 		);
 
