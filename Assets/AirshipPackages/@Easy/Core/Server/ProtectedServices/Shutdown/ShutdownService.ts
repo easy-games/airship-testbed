@@ -7,7 +7,7 @@ export class ShutdownService {
 	private playerConnected = false;
 	private timeWithNoPlayers = 0;
 
-	private static shutdownTimeNobodyConnected = 10 * 60;
+	private static shutdownTimeNobodyConnected = 3 * 60;
 	private static shutdownTimeAllPlayersLeft = 1 * 60;
 
 	private serverBootstrap: ServerBootstrap;
