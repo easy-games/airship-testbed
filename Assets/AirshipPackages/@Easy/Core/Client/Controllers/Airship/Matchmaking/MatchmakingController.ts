@@ -11,7 +11,7 @@ import { Signal } from "@Easy/Core/Shared/Util/Signal";
 
 @Controller({})
 export class AirshipMatchmakingController {
-	public onGroupChange: Signal<Group> = new Signal();
+	public readonly onGroupChange: Signal<Group> = new Signal();
 
 	constructor() {
 		if (!Game.IsClient()) return;
