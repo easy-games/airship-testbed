@@ -167,7 +167,7 @@ export class AirshipCharactersSingleton {
 			});
 			CoreNetwork.ServerToClient.Character.SetMaxHealth.client.OnServerEvent((id, maxHealth) => {
 				if (Game.IsHosting()) return;
-				this.FindById(id)?.SetHealth(maxHealth);
+				this.FindById(id)?.SetMaxHealth(maxHealth);
 			});
 		}
 

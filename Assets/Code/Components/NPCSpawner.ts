@@ -7,6 +7,10 @@ export default class NPCSpawner extends AirshipBehaviour {
 	override Start(): void {
 		if (!Game.IsServer()) return;
 
+		this.SpawnWhenReady();
+	}
+
+	private SpawnWhenReady(): void {
 		const character = Airship.Characters.SpawnNonPlayerCharacter(this.spawnpoint.position);
 		const inv = character.inventory;
 		if (!inv) return;
