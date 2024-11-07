@@ -18,7 +18,9 @@ export default class TeamsCommand extends ChatCommand {
 		}
 
 		for (let team of teams) {
-			let msg = ChatColor.Color(team.color, team.name + ` (${teamCount})`) + ChatColor.White(": ");
+			let msg =
+				ChatColor.Bold(ChatColor.Color(team.color, team.name + ` (${team.GetPlayers().size()})`)) +
+				ChatColor.White(": ");
 
 			let i = 0;
 			for (let player of team.GetPlayers()) {
