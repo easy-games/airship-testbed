@@ -12,6 +12,7 @@ import { LagCommand } from "@Easy/Core/Server/Services/Chat/Commands/LagCommand"
 import { SetTeamCommand } from "@Easy/Core/Server/Services/Chat/Commands/SetTeamCommand";
 import { TeamChatCommand } from "@Easy/Core/Server/Services/Chat/Commands/TeamChatCommand";
 import { TeamCommand } from "@Easy/Core/Server/Services/Chat/Commands/TeamCommand";
+import TeamsCommand from "@Easy/Core/Server/Services/Chat/Commands/TeamsCommand";
 import { TpAllCommand } from "@Easy/Core/Server/Services/Chat/Commands/TpAllCommand";
 import { TpCommand } from "@Easy/Core/Server/Services/Chat/Commands/TpCommand";
 import { TpsCommand } from "@Easy/Core/Server/Services/Chat/Commands/TpsCommand";
@@ -140,6 +141,7 @@ export class AirshipChatSingleton {
 		this.RegisterCommand(new HelpCommand());
 		this.RegisterCommand(new TeamChatCommand());
 		this.RegisterCommand(new KickCommand());
+		this.RegisterCommand(new TeamsCommand());
 	}
 
 	/**

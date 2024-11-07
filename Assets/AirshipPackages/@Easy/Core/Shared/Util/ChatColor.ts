@@ -16,4 +16,5 @@ export const ChatColor = {
 	Yellow: (msg: string) => HexColor(Theme.yellow, msg),
 	Bold: (msg: string) => `<b>${msg}</b>`,
 	Italic: (msg: string) => `<i>${msg}</i>`,
+	HexColor: (hexColor: string, msg: string) => HexColor(ColorUtil.HexToColor(hexColor), msg),
 };
