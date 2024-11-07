@@ -28,7 +28,7 @@ export default class TeamsCommand extends ChatCommand {
 			let i = 0;
 			for (let player of teamPlayers) {
 				msg += player.username;
-				if (i < teamCount) {
+				if (i < teamPlayers.size() - 1) {
 					msg += ", ";
 				}
 				i++;
