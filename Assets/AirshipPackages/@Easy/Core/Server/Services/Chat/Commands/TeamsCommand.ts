@@ -18,14 +18,17 @@ export default class TeamsCommand extends ChatCommand {
 		}
 
 		for (let team of teams) {
-			let msg =
-				ChatColor.Bold(ChatColor.Color(team.color, team.name + ` (${team.GetPlayers().size()})`)) +
-				ChatColor.White(": ");
+			const teamPlayers = team.GetPlayers();
+			let msg = ChatColor.Bold(ChatColor.Color(team.color, team.name + ` (${teamPlayers.size()})`));
+
+			if (teamPlayers.size() > 0) {
+				msg += ChatColor.White(": ");
+			}
 
 			let i = 0;
-			for (let player of team.GetPlayers()) {
+			for (let player of teamPlayers) {
 				msg += player.username;
-				if (i < teamCount - 1) {
+				if (i < teamCount) {
 					msg += ", ";
 				}
 				i++;
