@@ -36274,6 +36274,7 @@ interface MaterialColorURP extends MonoBehaviour {
     EditorFirstTimeSetup(): void;
     GetColorSettingByMaterial(mat: Material): ColorSetting;
     InitializeColorsFromCurrentMaterials(): void;
+    SetColor(indx: number, newColor: Color): void;
     SetColorOnAll(newColor: Color): void;
 
 
@@ -36347,8 +36348,8 @@ interface MainMenuSceneManager extends MonoBehaviour {
 
 }
     
-interface PackageLatestVersionResponse {
-    package: PackageResponse;
+interface PackageVersionResponse {
+    package: Package;
 
 
 
@@ -36356,7 +36357,7 @@ interface PackageLatestVersionResponse {
 
 }
     
-interface PackageResponse {
+interface Package {
     assetVersionNumber: number;
     codeVersionNumber: number;
 
@@ -36366,25 +36367,25 @@ interface PackageResponse {
 
 }
     
-interface PackageResponseConstructor {
+interface PackageConstructor {
 
 
-    new(): PackageResponse;
+    new(): Package;
 
 
 
 }
-declare const PackageResponse: PackageResponseConstructor;
+declare const Package: PackageConstructor;
     
-interface PackageLatestVersionResponseConstructor {
+interface PackageVersionResponseConstructor {
 
 
-    new(): PackageLatestVersionResponse;
+    new(): PackageVersionResponse;
 
 
 
 }
-declare const PackageLatestVersionResponse: PackageLatestVersionResponseConstructor;
+declare const PackageVersionResponse: PackageVersionResponseConstructor;
     
 interface IPromise<PromisedT> {
     readonly Id: number;
@@ -36457,7 +36458,7 @@ interface MainMenuSceneManagerConstructor {
     new(): MainMenuSceneManager;
 
 
-    GetLatestPackageVersion(packageId: string): IPromise<PackageLatestVersionResponse>;
+    GetLatestPackageVersion(packageId: string): IPromise<PackageVersionResponse>;
 
 }
 declare const MainMenuSceneManager: MainMenuSceneManagerConstructor;
@@ -46369,6 +46370,7 @@ interface VoxelWorld extends MonoBehaviour {
 
 
     AddChunk(key: Vector3, chunk: Chunk): void;
+    BulkReadVoxels(positions: CSArray<Vector3>): CSArray<number>;
     CalculatePlaneIntersection(origin: Vector3, dir: Vector3, planeNormal: Vector3, planePoint: Vector3): Vector3;
     CanSeePoint(pos: Vector3, dest: Vector3, destNormal: Vector3): boolean;
     ColorVoxelAt(pos: Vector3, color: Color, priority: boolean): void;
@@ -46473,6 +46475,7 @@ declare const WorldSaveFile: WorldSaveFileConstructor;
     
 interface VoxelWorldNetworker extends NetworkBehaviour {
     world: VoxelWorld;
+    networkWriteVoxels: boolean;
 
 
 
@@ -46583,6 +46586,7 @@ interface VoxelWorldConstructor {
     CardinalVector(normal: Vector3): Vector3;
     CreateChunk(key: Vector3): Chunk;
     DeleteChildGameObjects(parent: GameObject): void;
+    FlipBitsToQuaternion(flipBits: number): Quaternion;
     Floor(input: Vector3): Vector3;
     FloorInt(input: Vector3): Vector3;
     GetFirstInstance(): VoxelWorld;
