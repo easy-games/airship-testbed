@@ -350,7 +350,7 @@ export class AirshipCharactersSingleton {
 				);
 				characterNetworkObj.gameObject.name = "Character_" + player.username;
 			}
-			if (Game.IsEditor() && !Game.IsHosting() && character.accessoryBuilder) {
+			if (player && Game.IsEditor() && !Game.IsHosting() && character.accessoryBuilder) {
 				// Hack to load your own outfit in dedicated mode
 				Airship.Avatar.LoadOutfitFromLocalUser(character.accessoryBuilder);
 			}
