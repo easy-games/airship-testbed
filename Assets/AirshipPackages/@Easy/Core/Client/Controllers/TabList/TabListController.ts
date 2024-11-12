@@ -7,7 +7,7 @@ import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Keyboard } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
-import { OnLateUpdate, SetInterval } from "@Easy/Core/Shared/Util/Timer";
+import { OnLateUpdate } from "@Easy/Core/Shared/Util/Timer";
 
 @Controller({})
 export class TabListController {
@@ -81,11 +81,11 @@ export class TabListController {
 		});
 
 		// Prevent window from staying open once tabbed out.
-		SetInterval(0.1, () => {
-			if (this.IsShown() && !Application.isFocused) {
-				this.Hide();
-			}
-		});
+		// SetInterval(0.1, () => {
+		// 	if (this.IsShown() && !Application.isFocused) {
+		// 		this.Hide();
+		// 	}
+		// });
 
 		Application.focusChanged.Connect((focused) => {
 			this.Hide(true, true);
