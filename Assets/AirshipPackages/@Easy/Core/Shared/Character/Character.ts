@@ -247,9 +247,7 @@ export default class Character extends AirshipBehaviour {
 	}
 
 	/**
-	 * This should be called from the server.
-	 *
-	 * You can call it from the client only when using Client Authoratative characters.
+	 * This can be called from the server or from the player that owns the character and has authority
 	 */
 	public Teleport(pos: Vector3, lookVector?: Vector3): void {
 		if (!this.movement) {
