@@ -13,7 +13,7 @@ export const enum MatchmakingServiceBridgeTopics {
 	LeaveQueue = "MatchmakingService:LeaveQueue",
 }
 
-export type ServerBridgeApiCreateGroup = (userIds: string[]) => Group | undefined;
+export type ServerBridgeApiCreateGroup = (userIds: string[]) => Group;
 export type ServerBridgeApiGetGroupById = (groupId: string) => Group | undefined;
 export type ServerBridgeApiGetGroupByUserId = (uid: string) => Group | undefined;
 export type ServerBridgeApiJoinQueue = (body: JoinQueueDto) => undefined;
@@ -46,7 +46,7 @@ export class ProtectedMatchmakingService {
 		);
 	}
 
-	public async CreateGroup(userIds: string[]): Promise<Group | undefined> {
+	public async CreateGroup(userIds: string[]): Promise<Group> {
 		const result = InternalHttpManager.PostAsync(
 			`${AirshipUrl.GameCoordinator}/groups`,
 			EncodeJSON({
@@ -59,7 +59,7 @@ export class ProtectedMatchmakingService {
 			throw result.error;
 		}
 
-		return DecodeJSON<{ group: Group | undefined }>(result.data).group;
+		return DecodeJSON<{ group: Group}>(result.data).group;
 	}
 
 	public async GetGroupById(groupId: string): Promise<Group | undefined> {
