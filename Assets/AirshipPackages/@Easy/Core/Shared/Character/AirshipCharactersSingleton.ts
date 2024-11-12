@@ -311,7 +311,7 @@ export class AirshipCharactersSingleton {
 			error("Player.SpawnCharacter must be called on the server.");
 		}
 
-		const go = Object.Instantiate(config?.customCharacterTemplate ?? this.GetDefaultCharacterTemplate());
+		const go = Object.Instantiate(this.GetDefaultCharacterTemplate());
 		go.name = `Character`;
 		const characterComponent = go.GetAirshipComponent<Character>();
 		if (!characterComponent) {
