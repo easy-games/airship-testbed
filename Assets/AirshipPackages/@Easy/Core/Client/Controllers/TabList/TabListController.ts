@@ -71,7 +71,7 @@ export class TabListController {
 
 		Keyboard.OnKeyDown(Key.Tab, (e) => {
 			if (e.uiProcessed) return;
-			if (!Application.isFocused) return;
+			// if (!Application.isFocused) return;
 			if (!Keyboard.IsEitherKeyDown(Key.LeftAlt, Key.LeftCommand)) {
 				this.Show();
 			}
