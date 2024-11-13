@@ -34740,6 +34740,61 @@ interface OptionDataConstructor {
 }
 declare const OptionData: OptionDataConstructor;
     
+interface TMP_Dropdown extends Selectable, ISubmitHandler, IPointerClickHandler, ICancelHandler {
+    template: RectTransform;
+    captionText: TMP_Text;
+    captionImage: Image;
+    placeholder: Graphic;
+    itemText: TMP_Text;
+    itemImage: Image;
+    options: CSArray<OptionData>;
+    alphaFadeSpeed: number;
+    value: number;
+    readonly IsExpanded: boolean;
+    MultiSelect: boolean;
+
+    readonly onValueChanged: MonoSignal<void>;
+
+
+    AddOptions(options: CSArray<OptionData>): void;
+    AddOptions(options: CSArray<string>): void;
+    AddOptions(options: CSArray<Sprite>): void;
+    ClearOptions(): void;
+    Hide(): void;
+    OnCancel(eventData: BaseEventData): void;
+    OnPointerClick(eventData: PointerEventData): void;
+    OnSubmit(eventData: BaseEventData): void;
+    RefreshShownValue(): void;
+    SetValueWithoutNotify(input: number): void;
+    Show(): void;
+
+
+}
+    
+interface OptionData {
+    text: string;
+    image: Sprite;
+    color: Color;
+
+
+
+
+
+}
+    
+interface OptionDataConstructor {
+
+
+    new(): OptionData;
+    new(text: string): OptionData;
+    new(image: Sprite): OptionData;
+    new(text: string, image: Sprite, color: Color): OptionData;
+
+
+
+}
+declare const OptionData: OptionDataConstructor;
+    
 interface CanvasHitDetector extends MonoBehaviour {
 
 
@@ -35858,10 +35913,12 @@ interface BlockDefinition {
     bottomUvs: Rect;
     sideUvs: Rect;
     materials: CSArray<Material>;
-    meshMaterial: Material;
+    materialInstanceIds: CSArray<number>;
+    meshMaterialInstanceId: number;
     minecraftConversions: CSArray<string>;
     blockId: number;
     blockTypeId: string;
+    meshMaterial: Material;
 
 
 
@@ -36051,6 +36108,7 @@ interface Surface {
     triangles: CSArray<number>;
     meshMaterial: Material;
     meshMaterialName: string;
+    meshMaterialId: number;
 
 
 
@@ -36063,7 +36121,7 @@ interface Surface {
 interface SurfaceConstructor {
 
 
-    new(triangles: CSArray<number>, material: Material, materialName: string): Surface;
+    new(triangles: CSArray<number>, material: Material, materialName: string, materialId: number): Surface;
     new(): Surface;
 
 
@@ -39526,6 +39584,8 @@ interface RenderUtilsConstructor {
 
 
     CreateDefaultRenderTexture(width: number, height: number): RenderTexture;
+    CreateDefaultTexture2D(width: number, height: number): Texture2D;
+    CreateTexture2D(width: number, height: number, format: TextureFormat, mipChain: boolean, linear: boolean): Texture2D;
 
 }
 declare const RenderUtils: RenderUtilsConstructor;
@@ -46819,6 +46879,7 @@ interface Chunk {
     Free(): void;
     GetGameObject(): GameObject;
     GetKey(): Vector3;
+    GetLocalColorAt(localX: number, localY: number, localZ: number): Color32;
     GetLocalVoxelAt(localPos: Vector3): number;
     GetLocalVoxelAt(localX: number, localY: number, localZ: number): number;
     GetPrefabAt(worldPos: Vector3): GameObject;
