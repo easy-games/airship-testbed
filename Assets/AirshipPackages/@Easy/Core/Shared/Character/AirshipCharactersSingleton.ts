@@ -361,6 +361,28 @@ export class AirshipCharactersSingleton {
 		});
 	}
 
+	public WaitForId(characterId: number): Character;
+	public WaitForId(characterId: number, timeoutSeconds: number): Character | undefined;
+	public WaitForId(characterId: number, timeout?: number): Character | undefined {
+		let character: Character | undefined;
+
+		if (timeout !== undefined) {
+			let startTime = Time.time;
+
+			while (!(character = this.FindById(characterId)) && Time.time < startTime + timeout) {
+				task.wait();
+			}
+
+			return character;
+		} else {
+			while (!(character = this.FindById(characterId))) {
+				task.wait();
+			}
+
+			return character;
+		}
+	}
+
 	public FindById(characterId: number): Character | undefined {
 		for (let character of this.characters) {
 			if (character.id === characterId) {
