@@ -9,6 +9,9 @@ import { CoreNetwork } from "../CoreNetwork";
 import { DamageInfo, DamageInfoCustomData } from "../Damage/DamageInfo";
 import CharacterAnimation from "./Animation/CharacterAnimation";
 import CharacterConfigSetup from "./CharacterConfigSetup";
+import { Dependency } from "../Flamework";
+import { NametagController } from "@Easy/Core/Client/Controllers/Entity/Nametag/NametagController";
+import NametagComponent from "../Nametag/NametagComponent";
 
 /**
  * A character is a (typically human) object in the scene. It controls movement and default animation.
@@ -56,6 +59,8 @@ export default class Character extends AirshipBehaviour {
 	@NonSerialized() public onDespawn = new Signal<void>();
 	@NonSerialized() public onStateChanged = new Signal<[newState: CharacterState, oldState: CharacterState]>();
 	@NonSerialized() public onHealthChanged = new Signal<[newHealth: number, oldHealth: number]>();
+
+	private displayName: string;
 
 	private initialized = false;
 	private despawned = false;
@@ -334,6 +339,19 @@ export default class Character extends AirshipBehaviour {
 
 	public SetMaxHealth(maxHealth: number): void {
 		this.maxHealth = maxHealth;
+	}
+
+	public SetDisplayName(displayName: string) {
+		this.displayName = displayName;
+		const nametag = this.gameObject.GetAirshipComponentInChildren<NametagComponent>();
+
+		if (nametag !== undefined) {
+			nametag.SetText(displayName);
+		}
+	}
+
+	public GetDisplayName() {
+		return this.displayName;
 	}
 
 	/**

@@ -2,6 +2,7 @@ import { Airship } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
 import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import NametagComponent from "@Easy/Core/Shared/Nametag/NametagComponent";
 import { Team } from "@Easy/Core/Shared/Team/Team";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { SignalPriority } from "@Easy/Core/Shared/Util/Signal";
@@ -35,15 +36,18 @@ export class NametagController {
 		}
 
 		if (character.rig?.head === undefined) return;
+		const tag = character.rig.head.gameObject.GetAirshipComponent<NametagComponent>();
+		if (!tag) return;
 
 		const bin = new Bin();
-		this.UpdateNametag(character);
+		this.UpdateNametag(character, tag);
 		const SetNametagAlpha = (character: Character, alpha: number) => {
-			const nameTag = character.model.transform.FindChild(this.nameTagId);
-			if (nameTag) {
-				const canvasGroup = nameTag.GetChild(0).GetComponent<CanvasGroup>()!;
-				NativeTween.CanvasGroupAlpha(canvasGroup, alpha, 0.1).SetUseUnscaledTime(true);
-			}
+			// const nameTag = character.model.transform.FindChild(this.nameTagId);
+			// if (nameTag) {
+			// 	const canvasGroup = nameTag.GetChild(0).GetComponent<CanvasGroup>()!;
+			// 	NativeTween.CanvasGroupAlpha(canvasGroup, alpha, 0.1).SetUseUnscaledTime(true);
+			// }
+			tag.SetAlpha(alpha);
 		};
 		bin.Add(
 			character.onStateChanged.Connect((newState, oldState) => {
@@ -68,12 +72,11 @@ export class NametagController {
 		const nametag = Object.Instantiate(nametagPrefab, character.rig?.head);
 		nametag.name = this.nameTagId;
 
-		this.UpdateNametag(character);
-
+		this.UpdateNametag(character, nametag.GetAirshipComponent<NametagComponent>()!);
 		return nametag;
 	}
 
-	public UpdateNametag(character: Character): void {
+	public UpdateNametag(character: Character, tag: NametagComponent): void {
 		if (character.IsLocalCharacter() && !this.showSelfNametag) return;
 
 		const team: Team | undefined = character.player?.team;
@@ -85,14 +88,9 @@ export class NametagController {
 			return;
 		}
 
-		const references = nameTag.gameObject.GetComponent<GameObjectReferences>()!;
-		const textLabel = references.GetValue<TextMeshProUGUI>(this.graphicsBundleName, "Text");
-		const teamImage = references.GetValue<UGUIImage>(this.graphicsBundleName, "Team");
-		const canvas = references.GetValue<Canvas>(this.graphicsBundleName, "Canvas");
-
 		// Username text
 		let displayName = character.player?.username ?? character.gameObject.name;
-		textLabel.text = displayName;
+		tag.SetText(displayName);
 
 		// Username color
 		let color: Color | undefined;
@@ -103,18 +101,13 @@ export class NametagController {
 				color = Theme.red;
 			}
 		}
+
 		if (color === undefined) {
 			color = Theme.white;
 		}
-		textLabel.color = color;
 
-		// Team image
-		if (team) {
-			teamImage.color = team.color;
-			teamImage.enabled = true;
-		} else {
-			teamImage.enabled = false;
-		}
+		tag.SetTextColor(color);
+		tag.SetTeam(team);
 	}
 
 	public DestroyNametag(character: Character) {
