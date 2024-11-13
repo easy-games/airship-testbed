@@ -74,6 +74,7 @@ export const CoreNetwork = {
 		Character: {
 			Spawn: new NetworkSignal<[characterDto: CharacterDto]>("AirshipSpawn"),
 			SetHealth: new NetworkSignal<[characterId: number, health: number]>("AirshipSetHealth"),
+			SetNametag: new NetworkSignal<[characterId: number, displayName: string]>("AirshipSetNametag"),
 			SetMaxHealth: new NetworkSignal<[characterId: number, health: number]>("AirshipSetMaxHealth"),
 			ChangeOutfit: new NetworkSignal<[characterId: number, outfitDto: OutfitDto | undefined]>(
 				"AirshipChangeOutfit",

@@ -1,7 +1,9 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
+import { Asset } from "@Easy/Core/Shared/Asset";
 import Character from "@Easy/Core/Shared/Character/Character";
 import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import NametagComponent from "@Easy/Core/Shared/Nametag/NametagComponent";
 import { Team } from "@Easy/Core/Shared/Team/Team";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { SignalPriority } from "@Easy/Core/Shared/Util/Signal";
@@ -37,13 +39,11 @@ export class NametagController {
 		if (character.rig?.head === undefined) return;
 
 		const bin = new Bin();
-		this.UpdateNametag(character);
+		const nameTag = this.UpdateNametag(character);
+		if (!nameTag) return;
+
 		const SetNametagAlpha = (character: Character, alpha: number) => {
-			const nameTag = character.model.transform.FindChild(this.nameTagId);
-			if (nameTag) {
-				const canvasGroup = nameTag.GetChild(0).GetComponent<CanvasGroup>()!;
-				NativeTween.CanvasGroupAlpha(canvasGroup, alpha, 0.1).SetUseUnscaledTime(true);
-			}
+			nameTag.SetAlpha(alpha);
 		};
 		bin.Add(
 			character.onStateChanged.Connect((newState, oldState) => {
@@ -61,38 +61,31 @@ export class NametagController {
 		return bin;
 	}
 
-	private CreateNametag(character: Character): GameObject {
-		const nametagPrefab = AssetBridge.Instance.LoadAsset(
-			"Assets/AirshipPackages/@Easy/Core/Prefabs/Nametag.prefab",
-		) as GameObject;
-		const nametag = Object.Instantiate(nametagPrefab, character.rig?.head);
-		nametag.name = this.nameTagId;
+	private CreateNametag(character: Character): NametagComponent {
+		const nametagPrefab = Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/Nametag.prefab");
+		const nametagGo = Object.Instantiate(nametagPrefab, character.rig?.head);
+		nametagGo.name = this.nameTagId;
 
-		this.UpdateNametag(character);
+		const nameTag = nametagGo.GetAirshipComponent<NametagComponent>();
+		assert(nameTag, "Missing NametagComponent");
 
-		return nametag;
+		return nameTag;
 	}
 
-	public UpdateNametag(character: Character): void {
+	public UpdateNametag(character: Character): NametagComponent | undefined {
 		if (character.IsLocalCharacter() && !this.showSelfNametag) return;
 
 		const team: Team | undefined = character.player?.team;
 		const localTeam = Game.localPlayer.team;
 
-		const nameTag = character.rig?.head?.FindChild(this.nameTagId);
+		let nameTag = character.gameObject.GetAirshipComponentInChildren<NametagComponent>();
 		if (nameTag === undefined) {
-			this.CreateNametag(character);
-			return;
+			nameTag = this.CreateNametag(character);
 		}
 
-		const references = nameTag.gameObject.GetComponent<GameObjectReferences>()!;
-		const textLabel = references.GetValue<TextMeshProUGUI>(this.graphicsBundleName, "Text");
-		const teamImage = references.GetValue<UGUIImage>(this.graphicsBundleName, "Team");
-		const canvas = references.GetValue<Canvas>(this.graphicsBundleName, "Canvas");
-
 		// Username text
-		let displayName = character.player?.username ?? character.gameObject.name;
-		textLabel.text = displayName;
+		let displayName = character.GetDisplayName() || (character.player?.username ?? character.gameObject.name);
+		nameTag.SetText(displayName);
 
 		// Username color
 		let color: Color | undefined;
@@ -103,22 +96,18 @@ export class NametagController {
 				color = Theme.red;
 			}
 		}
+
 		if (color === undefined) {
 			color = Theme.white;
 		}
-		textLabel.color = color;
 
-		// Team image
-		if (team) {
-			teamImage.color = team.color;
-			teamImage.enabled = true;
-		} else {
-			teamImage.enabled = false;
-		}
+		nameTag.SetTextColor(color);
+		nameTag.SetTeam(team);
+		return nameTag;
 	}
 
 	public DestroyNametag(character: Character) {
-		const nametag = character.model.transform.FindChild(this.nameTagId);
+		const nametag = character.model.gameObject.GetAirshipComponentInChildren<NametagComponent>();
 		if (nametag) {
 			Object.Destroy(nametag.gameObject);
 		}
