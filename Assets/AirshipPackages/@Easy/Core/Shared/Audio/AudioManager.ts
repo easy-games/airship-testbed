@@ -42,6 +42,11 @@ export interface PlaySoundConfig {
 	 * your Audio Source).
 	 */
 	audioSourceTemplate?: GameObject;
+
+	/**
+	 * Defaults to 0.
+	 */
+	dopplerLevel?: number;
 }
 
 /**
