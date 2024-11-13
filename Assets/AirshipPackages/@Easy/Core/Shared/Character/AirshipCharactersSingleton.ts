@@ -139,6 +139,7 @@ export class AirshipCharactersSingleton {
 						netId: character.networkIdentity.netId,
 						ownerConnectionId: character.player?.connectionId,
 						outfitDto: character.outfitDto,
+						displayName: character.GetDisplayName(),
 					});
 				}
 				return characters;
@@ -164,6 +165,10 @@ export class AirshipCharactersSingleton {
 			CoreNetwork.ServerToClient.Character.SetHealth.client.OnServerEvent((id, health) => {
 				if (Game.IsHosting()) return;
 				this.FindById(id)?.SetHealth(health);
+			});
+			CoreNetwork.ServerToClient.Character.SetNametag.client.OnServerEvent((id, name) => {
+				if (Game.IsHosting()) return;
+				this.FindById(id)?.SetDisplayName(name);
 			});
 			CoreNetwork.ServerToClient.Character.SetMaxHealth.client.OnServerEvent((id, maxHealth) => {
 				if (Game.IsHosting()) return;
@@ -317,7 +322,7 @@ export class AirshipCharactersSingleton {
 		if (!characterComponent) {
 			error("Trying to spawn a character prefab without a character component on it!");
 		}
-		characterComponent.Init(undefined, Airship.Characters.MakeNewId(), undefined);
+		characterComponent.Init(undefined, Airship.Characters.MakeNewId(), undefined, go.name);
 		const rb = go.GetComponent<Rigidbody>();
 		if (rb) rb.position = position;
 		go.transform.position = position;
@@ -354,7 +359,7 @@ export class AirshipCharactersSingleton {
 				// Hack to load your own outfit in dedicated mode
 				Airship.Avatar.LoadOutfitFromLocalUser(character.accessoryBuilder);
 			}
-			character.Init(player, dto.id, dto.outfitDto);
+			character.Init(player, dto.id, dto.outfitDto, dto.displayName);
 			Airship.Characters.RegisterCharacter(character);
 			player?.SetCharacter(character);
 			Airship.Characters.onCharacterSpawned.Fire(character);
@@ -435,6 +440,7 @@ export class AirshipCharactersSingleton {
 				netId: character.networkIdentity.netId,
 				ownerConnectionId: character.player?.connectionId,
 				outfitDto: character.outfitDto,
+				displayName: character.GetDisplayName(),
 			});
 		}
 	}

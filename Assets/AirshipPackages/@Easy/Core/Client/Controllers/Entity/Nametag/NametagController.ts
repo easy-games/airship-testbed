@@ -1,4 +1,5 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
+import { Asset } from "@Easy/Core/Shared/Asset";
 import Character from "@Easy/Core/Shared/Character/Character";
 import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
@@ -36,18 +37,13 @@ export class NametagController {
 		}
 
 		if (character.rig?.head === undefined) return;
-		const tag = character.rig.head.gameObject.GetAirshipComponent<NametagComponent>();
-		if (!tag) return;
 
 		const bin = new Bin();
-		this.UpdateNametag(character, tag);
+		const nameTag = this.UpdateNametag(character);
+		if (!nameTag) return;
+
 		const SetNametagAlpha = (character: Character, alpha: number) => {
-			// const nameTag = character.model.transform.FindChild(this.nameTagId);
-			// if (nameTag) {
-			// 	const canvasGroup = nameTag.GetChild(0).GetComponent<CanvasGroup>()!;
-			// 	NativeTween.CanvasGroupAlpha(canvasGroup, alpha, 0.1).SetUseUnscaledTime(true);
-			// }
-			tag.SetAlpha(alpha);
+			nameTag.SetAlpha(alpha);
 		};
 		bin.Add(
 			character.onStateChanged.Connect((newState, oldState) => {
@@ -65,32 +61,31 @@ export class NametagController {
 		return bin;
 	}
 
-	private CreateNametag(character: Character): GameObject {
-		const nametagPrefab = AssetBridge.Instance.LoadAsset(
-			"Assets/AirshipPackages/@Easy/Core/Prefabs/Nametag.prefab",
-		) as GameObject;
-		const nametag = Object.Instantiate(nametagPrefab, character.rig?.head);
-		nametag.name = this.nameTagId;
+	private CreateNametag(character: Character): NametagComponent {
+		const nametagPrefab = Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/Nametag.prefab");
+		const nametagGo = Object.Instantiate(nametagPrefab, character.rig?.head);
+		nametagGo.name = this.nameTagId;
 
-		this.UpdateNametag(character, nametag.GetAirshipComponent<NametagComponent>()!);
-		return nametag;
+		const nameTag = nametagGo.GetAirshipComponent<NametagComponent>();
+		assert(nameTag, "Missing NametagComponent");
+
+		return nameTag;
 	}
 
-	public UpdateNametag(character: Character, tag: NametagComponent): void {
+	public UpdateNametag(character: Character): NametagComponent | undefined {
 		if (character.IsLocalCharacter() && !this.showSelfNametag) return;
 
 		const team: Team | undefined = character.player?.team;
 		const localTeam = Game.localPlayer.team;
 
-		const nameTag = character.rig?.head?.FindChild(this.nameTagId);
+		let nameTag = character.gameObject.GetAirshipComponentInChildren<NametagComponent>();
 		if (nameTag === undefined) {
-			this.CreateNametag(character);
-			return;
+			nameTag = this.CreateNametag(character);
 		}
 
 		// Username text
-		let displayName = character.player?.username ?? character.gameObject.name;
-		tag.SetText(displayName);
+		let displayName = character.GetDisplayName() || (character.player?.username ?? character.gameObject.name);
+		nameTag.SetText(displayName);
 
 		// Username color
 		let color: Color | undefined;
@@ -106,12 +101,13 @@ export class NametagController {
 			color = Theme.white;
 		}
 
-		tag.SetTextColor(color);
-		tag.SetTeam(team);
+		nameTag.SetTextColor(color);
+		nameTag.SetTeam(team);
+		return nameTag;
 	}
 
 	public DestroyNametag(character: Character) {
-		const nametag = character.model.transform.FindChild(this.nameTagId);
+		const nametag = character.model.gameObject.GetAirshipComponentInChildren<NametagComponent>();
 		if (nametag) {
 			Object.Destroy(nametag.gameObject);
 		}

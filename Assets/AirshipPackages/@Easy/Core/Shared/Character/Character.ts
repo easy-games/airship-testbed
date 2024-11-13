@@ -60,8 +60,7 @@ export default class Character extends AirshipBehaviour {
 	@NonSerialized() public onStateChanged = new Signal<[newState: CharacterState, oldState: CharacterState]>();
 	@NonSerialized() public onHealthChanged = new Signal<[newHealth: number, oldHealth: number]>();
 
-	private displayName: string;
-
+	private displayName = "";
 	private initialized = false;
 	private despawned = false;
 
@@ -154,7 +153,7 @@ export default class Character extends AirshipBehaviour {
 		}
 	}
 
-	public Init(player: Player | undefined, id: number, outfitDto: OutfitDto | undefined): void {
+	public Init(player: Player | undefined, id: number, outfitDto: OutfitDto | undefined, displayName?: string): void {
 		this.player = player;
 		this.id = id;
 		this.outfitDto = outfitDto;
@@ -163,6 +162,7 @@ export default class Character extends AirshipBehaviour {
 		this.maxHealth = 100;
 		this.despawned = false;
 		this.initialized = true;
+		this.displayName = displayName || "";
 
 		// Client side: update the player's selected outfit to whatever this character has.
 		// This may cause an issue if the character is init'd with a random outfit.
@@ -347,6 +347,10 @@ export default class Character extends AirshipBehaviour {
 
 		if (nametag !== undefined) {
 			nametag.SetText(displayName);
+		}
+
+		if (Game.IsServer()) {
+			CoreNetwork.ServerToClient.Character.SetNametag.server.FireAllClients(this.id, displayName);
 		}
 	}
 
