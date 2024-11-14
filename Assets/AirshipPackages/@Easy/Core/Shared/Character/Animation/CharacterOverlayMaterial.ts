@@ -11,7 +11,7 @@ export default class CharacterOverlayMaterial extends AirshipBehaviour {
 	private currentSkinnedRenderers: SkinnedMeshRenderer[] = [];
 	private currentStaticRenderers: MeshRenderer[] = [];
 	private currentRenderers: Renderer[] = [];
-	private currentMaterial: Material;
+	private currentMaterial?: Material;
 
 	override Start(): void {
 		//print("Overlay start");
@@ -39,6 +39,7 @@ export default class CharacterOverlayMaterial extends AirshipBehaviour {
 						}
 					}
 				}
+				this.currentMaterial = undefined;
 				this.SetOverlayMaterial(this.defaultOverlayMaterialTemplate);
 			}),
 		);
@@ -71,7 +72,7 @@ export default class CharacterOverlayMaterial extends AirshipBehaviour {
 		this.SetOverlayMaterial(this.defaultOverlayMaterialTemplate);
 	}
 
-	public ClearOverlayMaterial(){
+	public ClearOverlayMaterial() {
 		for (let ren of this.currentSkinnedRenderers) {
 			if (!ren?.sharedMesh) {
 				continue;
