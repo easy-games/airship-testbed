@@ -251,7 +251,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		if (texture2d) {
 			let cachedSprite = this.spriteCacheForItemType.get(itemStack.itemDef.itemType);
 			if (!cachedSprite) {
-				cachedSprite = Bridge.MakeSprite(texture2d);
+				cachedSprite = Bridge.MakeDefaultSprite(texture2d);
 				this.spriteCacheForItemType.set(itemType, cachedSprite);
 			}
 			tileComponent.itemImage.sprite = cachedSprite;

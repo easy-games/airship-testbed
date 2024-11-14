@@ -167,7 +167,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 		if (!this.avatarCamera) {
 			return;
 		}
-		this.renderTexture = RenderUtils.CreateDefaultRenderTexture(width, height);
+		this.renderTexture = Bridge.MakeDefaultRenderTexture(width, height);
 		this.avatarCamera.targetTexture = this.renderTexture;
 		this.avatarCamera.enabled = true;
 		this.mainMenuSingleton.avatarEditorRenderTexture = this.renderTexture;

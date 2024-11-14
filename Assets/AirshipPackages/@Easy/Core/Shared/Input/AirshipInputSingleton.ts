@@ -451,7 +451,7 @@ export class AirshipInputSingleton {
 			const iconTexture = Asset.LoadAssetIfExists<Texture2D>(config.icon);
 			if (iconTexture) {
 				const img = mobileButton.transform.GetChild(0).GetComponent<Image>()!;
-				img.sprite = Bridge.MakeSprite(iconTexture);
+				img.sprite = Bridge.MakeDefaultSprite(iconTexture);
 			} else {
 				warn(`Unable to create icon for mobile button (${actionName}). Invalid icon path: ${config.icon}`);
 			}

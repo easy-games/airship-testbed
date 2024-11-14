@@ -35678,6 +35678,8 @@ interface BridgeConstructor {
 
 
 
+    ClearAllMaterials(ren: Renderer): void;
+    ClearMaterial(ren: Renderer, materialI: number): void;
     CopyToClipboard(text: string): void;
     DownloadTexture2DYielding(url: string): Texture2D;
     GetActiveScene(): Scene;
@@ -35695,18 +35697,20 @@ interface BridgeConstructor {
     HasMicrophonePermission(): boolean;
     IsFullScreen(): boolean;
     IsMicRecording(): boolean;
-    Lerp(start: Vector3, goal: Vector3, alpha: number): Vector3;
     LoadGlobalSceneByName(sceneName: string): void;
     LoadScene(sceneName: string, restartLuau: boolean, loadSceneMode: LoadSceneMode): void;
     LoadSceneAsyncFromAssetBundle(sceneName: string, loadSceneMode: LoadSceneMode): void;
     LoadSceneForConnection(conn: NetworkConnection, sceneName: string, makeActiveScene: boolean): void;
     MakeColorArray(size: number): CSArray<Color>;
+    MakeDefaultRenderTexture(width: number, height: number): RenderTexture;
+    MakeDefaultSprite(texture: Texture2D): Sprite;
+    MakeDefaultTexture2D(width: number, height: number): Texture2D;
     MakeFloatArray(size: number): CSArray<number>;
     MakeIntArray(size: number): CSArray<number>;
     MakeMaterialPropertyBlock(): MaterialPropertyBlock;
     MakeMesh(): Mesh;
-    MakeSprite(texture2D: Texture2D): Sprite;
-    MakeVector2(x: number, y: number): Vector2;
+    MakeSprite(texture: Texture2D, rect: Rect, pivot: Vector2, pixelsPerUnit: number): Sprite;
+    MakeTexture2D(width: number, height: number, format: TextureFormat, mipChain: boolean, linear: boolean): Texture2D;
     MakeVector3Array(size: number): CSArray<Vector3>;
     MoveGameObjectToScene(gameObject: GameObject, scene: Scene): void;
     OpenDevConsole(): void;
@@ -35717,7 +35721,6 @@ interface BridgeConstructor {
     SetMicDeviceIndex(i: number): void;
     SetParentToSceneRoot(transform: Transform): void;
     SetVolume(volume: number): void;
-    Slerp(start: Vector3, goal: Vector3, alpha: number): Vector3;
     StartMicRecording(frequency: number, sampleLength: number): void;
     StopMicRecording(): void;
     UnloadGlobalSceneByName(sceneName: string): void;
@@ -39569,26 +39572,6 @@ interface GizmosConstructor {
 
 }
 declare const Gizmos: GizmosConstructor;
-    
-interface RenderUtils {
-
-
-
-
-
-}
-    
-interface RenderUtilsConstructor {
-
-
-
-
-    CreateDefaultRenderTexture(width: number, height: number): RenderTexture;
-    CreateDefaultTexture2D(width: number, height: number): Texture2D;
-    CreateTexture2D(width: number, height: number, format: TextureFormat, mipChain: boolean, linear: boolean): Texture2D;
-
-}
-declare const RenderUtils: RenderUtilsConstructor;
     
 interface DeviceBridge {
 
