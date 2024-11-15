@@ -7,11 +7,9 @@ import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { CoreNetwork } from "../CoreNetwork";
 import { DamageInfo, DamageInfoCustomData } from "../Damage/DamageInfo";
+import NametagComponent from "../Nametag/NametagComponent";
 import CharacterAnimation from "./Animation/CharacterAnimation";
 import CharacterConfigSetup from "./CharacterConfigSetup";
-import { Dependency } from "../Flamework";
-import { NametagController } from "@Easy/Core/Client/Controllers/Entity/Nametag/NametagController";
-import NametagComponent from "../Nametag/NametagComponent";
 
 /**
  * A character is a (typically human) object in the scene. It controls movement and default animation.
@@ -100,7 +98,7 @@ export default class Character extends AirshipBehaviour {
 					if (this.IsDead()) return;
 					let newHealth = math.max(0, this.health - damageInfo.damage);
 
-					this.SetHealth(newHealth, true);
+					this.SetHealth(newHealth, true, true);
 
 					if (Game.IsServer() && newHealth <= 0) {
 						Airship.Damage.BroadcastDeath(damageInfo);
@@ -316,7 +314,7 @@ export default class Character extends AirshipBehaviour {
 	 * @param dontInflictDeath If true, a death event will not be fired if the character's new health is less than or equal to zero.
 	 * This is useful when you want to broadcast a custom death event with {@link Airship.Damage.BroadcastDeath}.
 	 */
-	public SetHealth(health: number, dontInflictDeath?: boolean): void {
+	public SetHealth(health: number, dontInflictDeath?: boolean, noNetwork = false): void {
 		if (this.health === health) return;
 
 		const oldHealth = this.health;
@@ -324,7 +322,9 @@ export default class Character extends AirshipBehaviour {
 		this.onHealthChanged.Fire(health, oldHealth);
 
 		if (Game.IsServer()) {
-			CoreNetwork.ServerToClient.Character.SetHealth.server.FireAllClients(this.id, health);
+			if (!noNetwork) {
+				CoreNetwork.ServerToClient.Character.SetHealth.server.FireAllClients(this.id, health);
+			}
 
 			if (this.health <= 0 && !dontInflictDeath) {
 				const damageInfo = new DamageInfo(this.gameObject, oldHealth, undefined, {});
