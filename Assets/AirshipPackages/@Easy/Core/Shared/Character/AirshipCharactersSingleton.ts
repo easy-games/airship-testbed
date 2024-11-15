@@ -231,7 +231,7 @@ export class AirshipCharactersSingleton {
 				// this.activeAccessoriesWorldmodel.clear();
 				// this.activeAccessoriesViewmodel.clear();
 				for (const accessoryTemplate of accessoryTemplates) {
-					character.accessoryBuilder?.AddSingleAccessory(accessoryTemplate, true);
+					character.accessoryBuilder?.AddSingleAccessory(accessoryTemplate, false);
 					if (viewmodelAccessoryBuilder) {
 						viewmodelAccessoryBuilder.AddSingleAccessory(accessoryTemplate, false);
 					}
