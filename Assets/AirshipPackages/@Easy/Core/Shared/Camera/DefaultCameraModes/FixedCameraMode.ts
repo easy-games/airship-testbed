@@ -168,8 +168,8 @@ export class FixedCameraMode extends CameraMode {
 				if (this.mouseSmoothingEnabled) {
 					const smoothFactor = math.pow(1 / (1 + Airship.Input.GetMouseSmoothing()), Time.deltaTime * 120);
 					this.smoothVector = new Vector2(
-						Mathf.Lerp(this.smoothVector.x, mouseDelta.x, smoothFactor),
-						Mathf.Lerp(this.smoothVector.y, mouseDelta.y, smoothFactor),
+						math.lerp(this.smoothVector.x, mouseDelta.x, smoothFactor),
+						math.lerp(this.smoothVector.y, mouseDelta.y, smoothFactor),
 					);
 					moveDelta = this.smoothVector;
 				}
