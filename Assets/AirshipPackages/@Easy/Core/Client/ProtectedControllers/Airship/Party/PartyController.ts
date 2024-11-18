@@ -3,20 +3,26 @@ import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
+import { SocketController } from "../../Socket/SocketController";
 
 export const enum PartyControllerBridgeTopics {
 	GetParty = "PartyController:GetParty",
+	OnPartyChange = "PartyController:OnPartyChange",
 }
 
 export type ClientBridgeApiGetParty = () => Party;
 
 @Controller({})
 export class ProtectedPartyController {
-	constructor() {
+	constructor(private readonly socketController: SocketController) {
 		if (!Game.IsClient()) return;
 
 		contextbridge.callback<ClientBridgeApiGetParty>(PartyControllerBridgeTopics.GetParty, (_) => {
 			return this.GetParty().expect();
+		});
+
+		this.socketController.On<Party>("game-coordinator/party-update", (data) => {
+			contextbridge.invoke(PartyControllerBridgeTopics.OnPartyChange, LuauContext.Game, data);
 		});
 	}
 

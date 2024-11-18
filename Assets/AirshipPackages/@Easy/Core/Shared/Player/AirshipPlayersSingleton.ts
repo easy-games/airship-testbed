@@ -661,6 +661,35 @@ export class AirshipPlayersSingleton {
 	}
 
 	/**
+	 * Waits for online player by userId.
+	 *
+	 * @param userId Target user id to match.
+	 * @param timeoutSeconds An optional timeout.
+	 * @returns Player with user id if one exists, otherwise undefined.
+	 */
+	public WaitForUserId(userId: string): Player;
+	public WaitForUserId(userId: string, timeoutSeconds: number): Player | undefined;
+	public WaitForUserId(userId: string, timeout?: number): Player | undefined {
+		let player: Player | undefined;
+
+		if (timeout !== undefined) {
+			let startTime = Time.time;
+
+			while (!(player = this.FindByUserId(userId)) && Time.time < startTime + timeout) {
+				task.wait();
+			}
+
+			return player;
+		} else {
+			while (!(player = this.FindByUserId(userId))) {
+				task.wait();
+			}
+
+			return player;
+		}
+	}
+
+	/**
 	 * Searches for online player by username. This is case sensitive. For a more lenient
 	 * username search see {@link FindByFuzzySearch}.
 	 *

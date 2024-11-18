@@ -139,6 +139,7 @@ export class AirshipCharactersSingleton {
 						netId: character.networkIdentity.netId,
 						ownerConnectionId: character.player?.connectionId,
 						outfitDto: character.outfitDto,
+						displayName: character.GetDisplayName(),
 					});
 				}
 				return characters;
@@ -165,9 +166,13 @@ export class AirshipCharactersSingleton {
 				if (Game.IsHosting()) return;
 				this.FindById(id)?.SetHealth(health);
 			});
+			CoreNetwork.ServerToClient.Character.SetNametag.client.OnServerEvent((id, name) => {
+				if (Game.IsHosting()) return;
+				this.FindById(id)?.SetDisplayName(name);
+			});
 			CoreNetwork.ServerToClient.Character.SetMaxHealth.client.OnServerEvent((id, maxHealth) => {
 				if (Game.IsHosting()) return;
-				this.FindById(id)?.SetHealth(maxHealth);
+				this.FindById(id)?.SetMaxHealth(maxHealth);
 			});
 		}
 
@@ -226,7 +231,7 @@ export class AirshipCharactersSingleton {
 				// this.activeAccessoriesWorldmodel.clear();
 				// this.activeAccessoriesViewmodel.clear();
 				for (const accessoryTemplate of accessoryTemplates) {
-					character.accessoryBuilder?.AddSingleAccessory(accessoryTemplate, true);
+					character.accessoryBuilder?.AddSingleAccessory(accessoryTemplate, false);
 					if (viewmodelAccessoryBuilder) {
 						viewmodelAccessoryBuilder.AddSingleAccessory(accessoryTemplate, false);
 					}
@@ -311,13 +316,13 @@ export class AirshipCharactersSingleton {
 			error("Player.SpawnCharacter must be called on the server.");
 		}
 
-		const go = Object.Instantiate(config?.customCharacterTemplate ?? this.GetDefaultCharacterTemplate());
+		const go = Object.Instantiate(this.GetDefaultCharacterTemplate());
 		go.name = `Character`;
 		const characterComponent = go.GetAirshipComponent<Character>();
 		if (!characterComponent) {
 			error("Trying to spawn a character prefab without a character component on it!");
 		}
-		characterComponent.Init(undefined, Airship.Characters.MakeNewId(), undefined);
+		characterComponent.Init(undefined, Airship.Characters.MakeNewId(), undefined, go.name);
 		const rb = go.GetComponent<Rigidbody>();
 		if (rb) rb.position = position;
 		go.transform.position = position;
@@ -350,15 +355,37 @@ export class AirshipCharactersSingleton {
 				);
 				characterNetworkObj.gameObject.name = "Character_" + player.username;
 			}
-			if (Game.IsEditor() && !Game.IsHosting() && character.accessoryBuilder) {
+			if (player && Game.IsEditor() && !Game.IsHosting() && character.accessoryBuilder) {
 				// Hack to load your own outfit in dedicated mode
 				Airship.Avatar.LoadOutfitFromLocalUser(character.accessoryBuilder);
 			}
-			character.Init(player, dto.id, dto.outfitDto);
+			character.Init(player, dto.id, dto.outfitDto, dto.displayName);
 			Airship.Characters.RegisterCharacter(character);
 			player?.SetCharacter(character);
 			Airship.Characters.onCharacterSpawned.Fire(character);
 		});
+	}
+
+	public WaitForId(characterId: number): Character;
+	public WaitForId(characterId: number, timeoutSeconds: number): Character | undefined;
+	public WaitForId(characterId: number, timeout?: number): Character | undefined {
+		let character: Character | undefined;
+
+		if (timeout !== undefined) {
+			let startTime = Time.time;
+
+			while (!(character = this.FindById(characterId)) && Time.time < startTime + timeout) {
+				task.wait();
+			}
+
+			return character;
+		} else {
+			while (!(character = this.FindById(characterId))) {
+				task.wait();
+			}
+
+			return character;
+		}
 	}
 
 	public FindById(characterId: number): Character | undefined {
@@ -413,6 +440,7 @@ export class AirshipCharactersSingleton {
 				netId: character.networkIdentity.netId,
 				ownerConnectionId: character.player?.connectionId,
 				outfitDto: character.outfitDto,
+				displayName: character.GetDisplayName(),
 			});
 		}
 	}

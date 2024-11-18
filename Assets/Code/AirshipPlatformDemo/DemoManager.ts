@@ -8,6 +8,7 @@ import { Binding } from "@Easy/Core/Shared/Input/Binding";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Keyboard } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { Network } from "Code/Network";
 
 export default class DemoManager extends AirshipBehaviour {
 	public spawnPosition!: GameObject;
@@ -76,6 +77,12 @@ export default class DemoManager extends AirshipBehaviour {
 			);
 
 			this.npcCharacter = Airship.Characters.SpawnNonPlayerCharacter(this.spawnPosition.transform.position);
+
+			this.bin.Add(
+				Network.ClientToServer.TestServer.server.OnClientEvent((player, value)=>{
+					this.TestServer(player.character);
+				})
+			);
 		}
 		if (Game.IsClient()) {
 			// Display local player deaths
@@ -113,8 +120,10 @@ export default class DemoManager extends AirshipBehaviour {
 			this.bin.Add(
 				Keyboard.OnKeyDown(Key.R, (event) => {
 					if (event.uiProcessed) return;
-					Game.localPlayer.character?.movement.SetLookVector(this.lookDir);
-					this.lookDir = Quaternion.AngleAxis(90, Vector3.up).mul(this.lookDir);
+					// Game.localPlayer.character?.movement.SetLookVector(this.lookDir);
+					// this.lookDir = Quaternion.AngleAxis(90, Vector3.up).mul(this.lookDir);
+					print("Going to test server");
+					Network.ClientToServer.TestServer.client.FireServer(true);
 				}),
 			);
 		}
@@ -123,6 +132,16 @@ export default class DemoManager extends AirshipBehaviour {
 		for (let go of this.cleanupOnStart) {
 			Object.Destroy(go);
 		}
+	}
+
+	private TestServer(character: Character | undefined){
+		//Runs on the server when the client presses R
+		print("Test Server");
+		if(character){
+			print("Testing from character: " + character.id);
+			character.Teleport(new Vector3(0,10,0), Vector3.forward);
+		}
+
 	}
 
 	private testDirFlip = 1;
@@ -139,19 +158,19 @@ export default class DemoManager extends AirshipBehaviour {
 			let dir = new Vector3(this.testDirFlip, 0, 0);
 			let time = Time.time * 0.4;
 			//FORCE TEST
-			if (math.random() > 1 - Time.deltaTime) {
-				this.npcCharacter.movement.AddImpulse(
-					new Vector3(
-						math.random() * this.testImpulseForce * 2 - this.testImpulseForce,
-						math.lerp(0, this.testImpulseForce * 2, math.random()),
-						math.random() * this.testImpulseForce * 2 - this.testImpulseForce,
-					),
-				);
-			}
+			// if (math.random() > 1 - Time.deltaTime) {
+			// 	this.npcCharacter.movement.AddImpulse(
+			// 		new Vector3(
+			// 			math.random() * this.testImpulseForce * 2 - this.testImpulseForce,
+			// 			math.lerp(0, this.testImpulseForce * 2, math.random()),
+			// 			math.random() * this.testImpulseForce * 2 - this.testImpulseForce,
+			// 		),
+			// 	);
+			// }
 			//MOVE TEST
 			this.npcCharacter.movement.SetMoveInput(
 				dir,
-				math.random() > 1 - Time.deltaTime * 2,
+				false,//math.random() > 1 - Time.deltaTime * 2,
 				math.sin(time) > 0.2,
 				math.cos(time) < 0.2,
 				true,

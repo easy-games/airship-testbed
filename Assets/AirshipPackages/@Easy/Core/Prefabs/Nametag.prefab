@@ -217,6 +217,7 @@ GameObject:
   - component: {fileID: 6624741054312536370}
   - component: {fileID: 6624741054312536371}
   - component: {fileID: 2280940548742182689}
+  - component: {fileID: 9210300016828542962}
   m_Layer: 0
   m_Name: Nametag
   m_TagString: Untagged
@@ -278,6 +279,110 @@ MonoBehaviour:
       value: {fileID: 6624741055486560264}
     - key: Canvas
       value: {fileID: 6624741053933692589}
+--- !u!114 &9210300016828542962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6624741054312536369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scriptFile: {fileID: -8131947875739178776, guid: 385f81eeadef7ec4ca782e138e83045c, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/Nametag/NametagComponent.lua
+  m_error: 0
+  m_yielded: 0
+  m_canResume: 0
+  m_asyncYield: 0
+  m_onUpdateHandle: -1
+  m_onLateUpdateHandle: -1
+  m_shortFileName: 
+  m_metadata:
+    name: NametagComponent
+    singleton: 0
+    decorators: []
+    properties:
+    - name: teamImage
+      type: object
+      objectType: Image
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 4696879877199369276}
+      modified: 1
+    - name: backgroundImage
+      type: object
+      objectType: Image
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 6624741054402371218}
+      modified: 1
+    - name: nametagText
+      type: object
+      objectType: TMP_Text
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 6624741055486560264}
+      modified: 1
+    - name: canvas
+      type: object
+      objectType: Canvas
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 6624741053933692589}
+      modified: 1
+    - name: canvasGroup
+      type: object
+      objectType: CanvasGroup
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 5834984087847673655}
+      modified: 1
+    displayIcon: {fileID: 0}
+    displayName: 
+  contextOverwritten: 0
 --- !u!1 &6624741054402371216
 GameObject:
   m_ObjectHideFlags: 0

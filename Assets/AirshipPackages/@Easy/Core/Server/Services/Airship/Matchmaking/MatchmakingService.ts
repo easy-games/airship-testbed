@@ -29,7 +29,7 @@ export class AirshipMatchmakingService {
 	 * @param userIds The userIds of the players to add to the group
 	 * @returns The group that was created
 	 */
-	public async CreateGroup(userIds: string[]): Promise<Group | undefined> {
+	public async CreateGroup(userIds: string[]): Promise<Group> {
 		return contextbridge.invoke<ServerBridgeApiCreateGroup>(
 			MatchmakingServiceBridgeTopics.CreateGroup,
 			LuauContext.Protected,

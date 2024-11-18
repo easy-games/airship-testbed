@@ -138,7 +138,7 @@ export default class Inventory extends AirshipBehaviour {
 				];
 				for (const hotbarIndex of $range(0, hotbarKeys.size() - 1)) {
 					Keyboard.OnKeyDown(hotbarKeys[hotbarIndex], (event) => {
-						// if (!this.enabled || event.uiProcessed) return;
+						if (event.uiProcessed) return;
 						this.SetHeldSlot(hotbarIndex);
 					});
 				}

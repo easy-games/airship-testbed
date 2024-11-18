@@ -7,6 +7,7 @@ import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { CoreNetwork } from "../CoreNetwork";
 import { DamageInfo, DamageInfoCustomData } from "../Damage/DamageInfo";
+import NametagComponent from "../Nametag/NametagComponent";
 import CharacterAnimation from "./Animation/CharacterAnimation";
 import CharacterConfigSetup from "./CharacterConfigSetup";
 
@@ -57,6 +58,7 @@ export default class Character extends AirshipBehaviour {
 	@NonSerialized() public onStateChanged = new Signal<[newState: CharacterState, oldState: CharacterState]>();
 	@NonSerialized() public onHealthChanged = new Signal<[newHealth: number, oldHealth: number]>();
 
+	private displayName = "";
 	private initialized = false;
 	private despawned = false;
 
@@ -96,7 +98,7 @@ export default class Character extends AirshipBehaviour {
 					if (this.IsDead()) return;
 					let newHealth = math.max(0, this.health - damageInfo.damage);
 
-					this.SetHealth(newHealth, true);
+					this.SetHealth(newHealth, true, true);
 
 					if (Game.IsServer() && newHealth <= 0) {
 						Airship.Damage.BroadcastDeath(damageInfo);
@@ -149,7 +151,7 @@ export default class Character extends AirshipBehaviour {
 		}
 	}
 
-	public Init(player: Player | undefined, id: number, outfitDto: OutfitDto | undefined): void {
+	public Init(player: Player | undefined, id: number, outfitDto: OutfitDto | undefined, displayName?: string): void {
 		this.player = player;
 		this.id = id;
 		this.outfitDto = outfitDto;
@@ -158,6 +160,7 @@ export default class Character extends AirshipBehaviour {
 		this.maxHealth = 100;
 		this.despawned = false;
 		this.initialized = true;
+		this.displayName = displayName || "";
 
 		// Client side: update the player's selected outfit to whatever this character has.
 		// This may cause an issue if the character is init'd with a random outfit.
@@ -247,9 +250,7 @@ export default class Character extends AirshipBehaviour {
 	}
 
 	/**
-	 * This should be called from the server.
-	 *
-	 * You can call it from the client only when using Client Authoratative characters.
+	 * This can be called from the server or from the player that owns the character and has authority
 	 */
 	public Teleport(pos: Vector3, lookVector?: Vector3): void {
 		if (!this.movement) {
@@ -313,7 +314,7 @@ export default class Character extends AirshipBehaviour {
 	 * @param dontInflictDeath If true, a death event will not be fired if the character's new health is less than or equal to zero.
 	 * This is useful when you want to broadcast a custom death event with {@link Airship.Damage.BroadcastDeath}.
 	 */
-	public SetHealth(health: number, dontInflictDeath?: boolean): void {
+	public SetHealth(health: number, dontInflictDeath?: boolean, noNetwork = false): void {
 		if (this.health === health) return;
 
 		const oldHealth = this.health;
@@ -321,7 +322,9 @@ export default class Character extends AirshipBehaviour {
 		this.onHealthChanged.Fire(health, oldHealth);
 
 		if (Game.IsServer()) {
-			CoreNetwork.ServerToClient.Character.SetHealth.server.FireAllClients(this.id, health);
+			if (!noNetwork) {
+				CoreNetwork.ServerToClient.Character.SetHealth.server.FireAllClients(this.id, health);
+			}
 
 			if (this.health <= 0 && !dontInflictDeath) {
 				const damageInfo = new DamageInfo(this.gameObject, oldHealth, undefined, {});
@@ -336,6 +339,23 @@ export default class Character extends AirshipBehaviour {
 
 	public SetMaxHealth(maxHealth: number): void {
 		this.maxHealth = maxHealth;
+	}
+
+	public SetDisplayName(displayName: string) {
+		this.displayName = displayName;
+		const nametag = this.gameObject.GetAirshipComponentInChildren<NametagComponent>();
+
+		if (nametag !== undefined) {
+			nametag.SetText(displayName);
+		}
+
+		if (Game.IsServer()) {
+			CoreNetwork.ServerToClient.Character.SetNametag.server.FireAllClients(this.id, displayName);
+		}
+	}
+
+	public GetDisplayName() {
+		return this.displayName;
 	}
 
 	/**

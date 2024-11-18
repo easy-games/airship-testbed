@@ -27,6 +27,7 @@ export class DamageCommand extends ChatCommand {
 			return;
 		}
 		Airship.Damage.InflictDamage(target.gameObject, amount);
+		print(`Inflicted ${amount} damage to ${target.id}`);
 		player.SendMessage(`Inflicted ${amount} damage to ${target.id}`);
 	}
 }

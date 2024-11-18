@@ -2732,6 +2732,14 @@ declare const enum Direction {
     BottomToTop = 2,
     TopToBottom = 3,
 }
+declare const enum VerticalWrapMode {
+    Truncate = 0,
+    Overflow = 1,
+}
+declare const enum HorizontalWrapMode {
+    Wrap = 0,
+    Overflow = 1,
+}
 declare const enum AudioClipLoadType {
     DecompressOnLoad = 0,
     CompressedInMemory = 1,
@@ -2868,6 +2876,13 @@ declare const enum FitMode {
     Unconstrained = 0,
     MinSize = 1,
     PreferredSize = 2,
+}
+declare const enum AspectMode {
+    None = 0,
+    WidthControlsHeight = 1,
+    HeightControlsWidth = 2,
+    FitInParent = 3,
+    EnvelopeParent = 4,
 }
 declare const enum MovementType {
     Unrestricted = 0,
@@ -34445,6 +34460,341 @@ interface Slider extends Selectable, IInitializePotentialDragHandler, IDragHandl
 
 }
     
+interface Dropdown extends Selectable, ISubmitHandler, IPointerClickHandler, ICancelHandler {
+    template: RectTransform;
+    captionText: Text;
+    captionImage: Image;
+    itemText: Text;
+    itemImage: Image;
+    options: CSArray<OptionData>;
+    alphaFadeSpeed: number;
+    value: number;
+
+    readonly onValueChanged: MonoSignal<void>;
+
+
+    AddOptions(options: CSArray<OptionData>): void;
+    AddOptions(options: CSArray<string>): void;
+    AddOptions(options: CSArray<Sprite>): void;
+    ClearOptions(): void;
+    Hide(): void;
+    OnCancel(eventData: BaseEventData): void;
+    OnPointerClick(eventData: PointerEventData): void;
+    OnSubmit(eventData: BaseEventData): void;
+    RefreshShownValue(): void;
+    SetValueWithoutNotify(input: number): void;
+    Show(): void;
+
+
+}
+    
+interface Text extends MaskableGraphic, ILayoutElement {
+    readonly cachedTextGenerator: TextGenerator;
+    readonly cachedTextGeneratorForLayout: TextGenerator;
+    readonly mainTexture: Texture;
+    font: Font;
+    text: string;
+    supportRichText: boolean;
+    resizeTextForBestFit: boolean;
+    resizeTextMinSize: number;
+    resizeTextMaxSize: number;
+    alignment: TextAnchor;
+    alignByGeometry: boolean;
+    fontSize: number;
+    horizontalOverflow: HorizontalWrapMode;
+    verticalOverflow: VerticalWrapMode;
+    lineSpacing: number;
+    fontStyle: FontStyle;
+    readonly pixelsPerUnit: number;
+    readonly minWidth: number;
+    readonly preferredWidth: number;
+    readonly flexibleWidth: number;
+    readonly minHeight: number;
+    readonly preferredHeight: number;
+    readonly flexibleHeight: number;
+    readonly layoutPriority: number;
+
+
+
+    CalculateLayoutInputHorizontal(): void;
+    CalculateLayoutInputVertical(): void;
+    FontTextureChanged(): void;
+    GetGenerationSettings(extents: Vector2): TextGenerationSettings;
+    OnRebuildRequested(): void;
+
+
+}
+    
+interface TextGenerator {
+    /**
+     * The number of characters that have been generated and are included in the visible lines.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/TextGenerator-characterCountVisible.html | TextGenerator.characterCountVisible}
+     */
+    readonly characterCountVisible: number;
+    /**
+     * Array of generated vertices.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/TextGenerator-verts.html | TextGenerator.verts}
+     */
+    readonly verts: CSArray<UIVertex>;
+    /**
+     * Array of generated characters.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/TextGenerator-characters.html | TextGenerator.characters}
+     */
+    readonly characters: CSArray<UICharInfo>;
+    /**
+     * Information about each generated text line.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/TextGenerator-lines.html | TextGenerator.lines}
+     */
+    readonly lines: CSArray<UILineInfo>;
+    /**
+     * Extents of the generated text in rect format.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/TextGenerator-rectExtents.html | TextGenerator.rectExtents}
+     */
+    readonly rectExtents: Rect;
+    /**
+     * Number of vertices generated.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/TextGenerator-vertexCount.html | TextGenerator.vertexCount}
+     */
+    readonly vertexCount: number;
+    /**
+     * The number of characters that have been generated.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/TextGenerator-characterCount.html | TextGenerator.characterCount}
+     */
+    readonly characterCount: number;
+    /**
+     * Number of text lines generated.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/TextGenerator-lineCount.html | TextGenerator.lineCount}
+     */
+    readonly lineCount: number;
+    /**
+     * The size of the font that was found if using best fit mode.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/TextGenerator-fontSizeUsedForBestFit.html | TextGenerator.fontSizeUsedForBestFit}
+     */
+    readonly fontSizeUsedForBestFit: number;
+
+
+
+    GetCharacters(characters: CSArray<UICharInfo>): void;
+    /**
+     * Returns the current UICharInfo.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/TextGenerator.GetCharactersArray.html | TextGenerator.GetCharactersArray}
+     */
+    GetCharactersArray(): CSArray<UICharInfo>;
+    GetLines(lines: CSArray<UILineInfo>): void;
+    /**
+     * Returns the current UILineInfo.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/TextGenerator.GetLinesArray.html | TextGenerator.GetLinesArray}
+     */
+    GetLinesArray(): CSArray<UILineInfo>;
+    /**
+     * Given a string and settings, returns the preferred height for a container that would hold this text.
+     * @param str Generation text.
+     * @param settings Settings for generation.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/TextGenerator.GetPreferredHeight.html | TextGenerator.GetPreferredHeight}
+     */
+    GetPreferredHeight(str: string, settings: TextGenerationSettings): number;
+    /**
+     * Given a string and settings, returns the preferred width for a container that would hold this text.
+     * @param str Generation text.
+     * @param settings Settings for generation.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/TextGenerator.GetPreferredWidth.html | TextGenerator.GetPreferredWidth}
+     */
+    GetPreferredWidth(str: string, settings: TextGenerationSettings): number;
+    GetVertices(vertices: CSArray<UIVertex>): void;
+    /**
+     * Returns the current UIVertex array.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/TextGenerator.GetVerticesArray.html | TextGenerator.GetVerticesArray}
+     */
+    GetVerticesArray(): CSArray<UIVertex>;
+    /**
+     * Mark the text generator as invalid. This will force a full text generation the next time Populate is called.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/TextGenerator.Invalidate.html | TextGenerator.Invalidate}
+     */
+    Invalidate(): void;
+    /**
+     * Will generate the vertices and other data for the given string with the given settings.
+     * @param str String to generate.
+     * @param settings Settings.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/TextGenerator.Populate.html | TextGenerator.Populate}
+     */
+    Populate(str: string, settings: TextGenerationSettings): boolean;
+    /**
+     * Will generate the vertices and other data for the given string with the given settings.
+     * @param str String to generate.
+     * @param settings Generation settings.
+     * @param context The object used as context of the error log message, if necessary.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/TextGenerator.PopulateWithErrors.html | TextGenerator.PopulateWithErrors}
+     */
+    PopulateWithErrors(str: string, settings: TextGenerationSettings, context: GameObject): boolean;
+
+
+}
+    
+interface UICharInfo {
+    cursorPos: Vector2;
+    charWidth: number;
+
+
+
+
+
+}
+    
+interface UILineInfo {
+    startCharIdx: number;
+    height: number;
+    topY: number;
+    leading: number;
+
+
+
+
+
+}
+    
+interface TextGenerationSettings {
+    font: Font;
+    color: Color;
+    fontSize: number;
+    lineSpacing: number;
+    richText: boolean;
+    scaleFactor: number;
+    fontStyle: FontStyle;
+    textAnchor: TextAnchor;
+    alignByGeometry: boolean;
+    resizeTextForBestFit: boolean;
+    resizeTextMinSize: number;
+    resizeTextMaxSize: number;
+    updateBounds: boolean;
+    verticalOverflow: VerticalWrapMode;
+    horizontalOverflow: HorizontalWrapMode;
+    generationExtents: Vector2;
+    pivot: Vector2;
+    generateOutOfBounds: boolean;
+
+
+
+    Equals(other: TextGenerationSettings): boolean;
+
+
+}
+    
+interface TextGeneratorConstructor {
+
+
+    new(): TextGenerator;
+    new(initialCapacity: number): TextGenerator;
+
+
+
+}
+declare const TextGenerator: TextGeneratorConstructor;
+    
+interface TextConstructor {
+
+
+
+
+    GetTextAnchorPivot(anchor: TextAnchor): Vector2;
+
+}
+declare const Text: TextConstructor;
+    
+interface OptionData {
+    text: string;
+    image: Sprite;
+
+
+
+
+
+}
+    
+interface OptionDataConstructor {
+
+
+    new(): OptionData;
+    new(text: string): OptionData;
+    new(image: Sprite): OptionData;
+    new(text: string, image: Sprite): OptionData;
+
+
+
+}
+declare const OptionData: OptionDataConstructor;
+    
+interface TMP_Dropdown extends Selectable, ISubmitHandler, IPointerClickHandler, ICancelHandler {
+    template: RectTransform;
+    captionText: TMP_Text;
+    captionImage: Image;
+    placeholder: Graphic;
+    itemText: TMP_Text;
+    itemImage: Image;
+    options: CSArray<OptionData>;
+    alphaFadeSpeed: number;
+    value: number;
+    readonly IsExpanded: boolean;
+    MultiSelect: boolean;
+
+    readonly onValueChanged: MonoSignal<void>;
+
+
+    AddOptions(options: CSArray<OptionData>): void;
+    AddOptions(options: CSArray<string>): void;
+    AddOptions(options: CSArray<Sprite>): void;
+    ClearOptions(): void;
+    Hide(): void;
+    OnCancel(eventData: BaseEventData): void;
+    OnPointerClick(eventData: PointerEventData): void;
+    OnSubmit(eventData: BaseEventData): void;
+    RefreshShownValue(): void;
+    SetValueWithoutNotify(input: number): void;
+    Show(): void;
+
+
+}
+    
+interface OptionData {
+    text: string;
+    image: Sprite;
+    color: Color;
+
+
+
+
+
+}
+    
+interface OptionDataConstructor {
+
+
+    new(): OptionData;
+    new(text: string): OptionData;
+    new(image: Sprite): OptionData;
+    new(text: string, image: Sprite, color: Color): OptionData;
+
+
+
+}
+declare const OptionData: OptionDataConstructor;
+    
 interface CanvasHitDetector extends MonoBehaviour {
 
 
@@ -35328,6 +35678,8 @@ interface BridgeConstructor {
 
 
 
+    ClearAllMaterials(ren: Renderer): void;
+    ClearMaterial(ren: Renderer, materialI: number): void;
     CopyToClipboard(text: string): void;
     DownloadTexture2DYielding(url: string): Texture2D;
     GetActiveScene(): Scene;
@@ -35345,18 +35697,20 @@ interface BridgeConstructor {
     HasMicrophonePermission(): boolean;
     IsFullScreen(): boolean;
     IsMicRecording(): boolean;
-    Lerp(start: Vector3, goal: Vector3, alpha: number): Vector3;
     LoadGlobalSceneByName(sceneName: string): void;
     LoadScene(sceneName: string, restartLuau: boolean, loadSceneMode: LoadSceneMode): void;
     LoadSceneAsyncFromAssetBundle(sceneName: string, loadSceneMode: LoadSceneMode): void;
     LoadSceneForConnection(conn: NetworkConnection, sceneName: string, makeActiveScene: boolean): void;
     MakeColorArray(size: number): CSArray<Color>;
+    MakeDefaultRenderTexture(width: number, height: number): RenderTexture;
+    MakeDefaultSprite(texture: Texture2D): Sprite;
+    MakeDefaultTexture2D(width: number, height: number): Texture2D;
     MakeFloatArray(size: number): CSArray<number>;
     MakeIntArray(size: number): CSArray<number>;
     MakeMaterialPropertyBlock(): MaterialPropertyBlock;
     MakeMesh(): Mesh;
-    MakeSprite(texture2D: Texture2D): Sprite;
-    MakeVector2(x: number, y: number): Vector2;
+    MakeSprite(texture: Texture2D, rect: Rect, pivot: Vector2, pixelsPerUnit: number): Sprite;
+    MakeTexture2D(width: number, height: number, format: TextureFormat, mipChain: boolean, linear: boolean): Texture2D;
     MakeVector3Array(size: number): CSArray<Vector3>;
     MoveGameObjectToScene(gameObject: GameObject, scene: Scene): void;
     OpenDevConsole(): void;
@@ -35367,7 +35721,6 @@ interface BridgeConstructor {
     SetMicDeviceIndex(i: number): void;
     SetParentToSceneRoot(transform: Transform): void;
     SetVolume(volume: number): void;
-    Slerp(start: Vector3, goal: Vector3, alpha: number): Vector3;
     StartMicRecording(frequency: number, sampleLength: number): void;
     StopMicRecording(): void;
     UnloadGlobalSceneByName(sceneName: string): void;
@@ -35563,10 +35916,12 @@ interface BlockDefinition {
     bottomUvs: Rect;
     sideUvs: Rect;
     materials: CSArray<Material>;
-    meshMaterial: Material;
+    materialInstanceIds: CSArray<number>;
+    meshMaterialInstanceId: number;
     minecraftConversions: CSArray<string>;
     blockId: number;
     blockTypeId: string;
+    meshMaterial: Material;
 
 
 
@@ -35756,6 +36111,7 @@ interface Surface {
     triangles: CSArray<number>;
     meshMaterial: Material;
     meshMaterialName: string;
+    meshMaterialId: number;
 
 
 
@@ -35768,7 +36124,7 @@ interface Surface {
 interface SurfaceConstructor {
 
 
-    new(triangles: CSArray<number>, material: Material, materialName: string): Surface;
+    new(triangles: CSArray<number>, material: Material, materialName: string, materialId: number): Surface;
     new(): Surface;
 
 
@@ -36252,6 +36608,7 @@ interface MaterialColorURP extends MonoBehaviour {
     EditorFirstTimeSetup(): void;
     GetColorSettingByMaterial(mat: Material): ColorSetting;
     InitializeColorsFromCurrentMaterials(): void;
+    SetColor(indx: number, newColor: Color): void;
     SetColorOnAll(newColor: Color): void;
 
 
@@ -37280,6 +37637,20 @@ interface ContentSizeFitter extends UIBehaviour, ILayoutSelfController {
 
 
 
+    SetLayoutHorizontal(): void;
+    SetLayoutVertical(): void;
+
+
+}
+    
+interface AspectRatioFitter extends UIBehaviour, ILayoutSelfController {
+    aspectMode: AspectMode;
+    aspectRatio: number;
+
+
+
+    IsAspectModeValid(): boolean;
+    IsComponentValidOnObject(): boolean;
     SetLayoutHorizontal(): void;
     SetLayoutVertical(): void;
 
@@ -39179,24 +39550,6 @@ interface GizmosConstructor {
 
 }
 declare const Gizmos: GizmosConstructor;
-    
-interface RenderUtils {
-
-
-
-
-
-}
-    
-interface RenderUtilsConstructor {
-
-
-
-
-    CreateDefaultRenderTexture(width: number, height: number): RenderTexture;
-
-}
-declare const RenderUtils: RenderUtilsConstructor;
     
 interface DeviceBridge {
 
@@ -46343,6 +46696,7 @@ interface VoxelWorld extends MonoBehaviour {
 
 
     AddChunk(key: Vector3, chunk: Chunk): void;
+    BulkReadVoxels(positions: CSArray<Vector3>): CSArray<number>;
     CalculatePlaneIntersection(origin: Vector3, dir: Vector3, planeNormal: Vector3, planePoint: Vector3): Vector3;
     CanSeePoint(pos: Vector3, dest: Vector3, destNormal: Vector3): boolean;
     ColorVoxelAt(pos: Vector3, color: Color, priority: boolean): void;
@@ -46447,6 +46801,7 @@ declare const WorldSaveFile: WorldSaveFileConstructor;
     
 interface VoxelWorldNetworker extends NetworkBehaviour {
     world: VoxelWorld;
+    networkWriteVoxels: boolean;
 
 
 
@@ -46481,6 +46836,7 @@ interface Chunk {
     Free(): void;
     GetGameObject(): GameObject;
     GetKey(): Vector3;
+    GetLocalColorAt(localX: number, localY: number, localZ: number): Color32;
     GetLocalVoxelAt(localPos: Vector3): number;
     GetLocalVoxelAt(localX: number, localY: number, localZ: number): number;
     GetPrefabAt(worldPos: Vector3): GameObject;
@@ -46557,12 +46913,14 @@ interface VoxelWorldConstructor {
     CardinalVector(normal: Vector3): Vector3;
     CreateChunk(key: Vector3): Chunk;
     DeleteChildGameObjects(parent: GameObject): void;
+    FlipBitsToQuaternion(flipBits: number): Quaternion;
     Floor(input: Vector3): Vector3;
     FloorInt(input: Vector3): Vector3;
     GetFirstInstance(): VoxelWorld;
     GetVoxelFlippedBits(voxel: number): number;
     HashCoordinates(x: number, y: number, z: number): number;
     SetVoxelFlippedBits(voxel: number, flippedBits: number): number;
+    SetVoxelSolidBit(voxel: number, solid: boolean): number;
     Sign(input: Vector3): Vector3;
     VoxelDataToBlockId(block: number): number;
     VoxelDataToBlockId(block: number): number;

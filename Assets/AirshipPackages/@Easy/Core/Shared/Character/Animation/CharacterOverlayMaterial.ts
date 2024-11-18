@@ -11,7 +11,7 @@ export default class CharacterOverlayMaterial extends AirshipBehaviour {
 	private currentSkinnedRenderers: SkinnedMeshRenderer[] = [];
 	private currentStaticRenderers: MeshRenderer[] = [];
 	private currentRenderers: Renderer[] = [];
-	private currentMaterial: Material | undefined;
+	private currentMaterial?: Material;
 
 	override Start(): void {
 		//print("Overlay start");
@@ -39,25 +39,53 @@ export default class CharacterOverlayMaterial extends AirshipBehaviour {
 						}
 					}
 				}
-				this.SetOverlayMaterial(this.currentMaterial ?? this.defaultOverlayMaterialTemplate, true);
+				this.currentMaterial = undefined;
+				this.SetOverlayMaterial(this.defaultOverlayMaterialTemplate);
 			}),
 		);
 	}
 
-	public SetOverlayMaterial(newMaterial: Material | undefined, force = false) {
-		if (!force && newMaterial === this.currentMaterial) {
+	public SetOverlayMaterial(newMaterial: Material) {
+		if (newMaterial === this.currentMaterial) {
 			return;
 		}
 		this.currentMaterial = newMaterial;
-
 		//print("Setting overlay to mat: " + (newMaterial?.name ?? ""));
 		for (let ren of this.currentSkinnedRenderers) {
-			ren.SetMaterial(ren.sharedMesh.subMeshCount - 1, newMaterial!);
+			if (!ren?.sharedMesh) {
+				continue;
+			}
+			ren.SetMaterial(ren.sharedMesh.subMeshCount - 1, newMaterial);
 		}
 		for (let ren of this.currentStaticRenderers) {
+			if (!ren) {
+				continue;
+			}
 			const filter = ren.gameObject.GetComponent<MeshFilter>();
 			if (filter?.mesh) {
-				ren.SetMaterial(filter.mesh.subMeshCount - 1, newMaterial!);
+				ren.SetMaterial(filter.mesh.subMeshCount - 1, newMaterial);
+			}
+		}
+	}
+
+	public ResetOverlayMaterial() {
+		this.SetOverlayMaterial(this.defaultOverlayMaterialTemplate);
+	}
+
+	public ClearOverlayMaterial() {
+		for (let ren of this.currentSkinnedRenderers) {
+			if (!ren?.sharedMesh) {
+				continue;
+			}
+			Bridge.ClearMaterial(ren, ren.sharedMesh.subMeshCount - 1);
+		}
+		for (let ren of this.currentStaticRenderers) {
+			if (!ren) {
+				continue;
+			}
+			const filter = ren.gameObject.GetComponent<MeshFilter>();
+			if (filter?.mesh) {
+				Bridge.ClearMaterial(ren, filter.sharedMesh.subMeshCount - 1);
 			}
 		}
 	}

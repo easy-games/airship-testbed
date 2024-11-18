@@ -3,6 +3,7 @@ import { NetworkSignal } from "@Easy/Core/Shared/Network/NetworkSignal";
 export const Network = {
 	ClientToServer: {
 		BounceBall: new NetworkSignal<[nobId: number]>("BounceBall"),
+		TestServer: new NetworkSignal<[value: boolean]>("TestServer"),
 	},
 	ServerToClient: {
 		//DEMO SCENE

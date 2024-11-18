@@ -12,6 +12,7 @@ import { LagCommand } from "@Easy/Core/Server/Services/Chat/Commands/LagCommand"
 import { SetTeamCommand } from "@Easy/Core/Server/Services/Chat/Commands/SetTeamCommand";
 import { TeamChatCommand } from "@Easy/Core/Server/Services/Chat/Commands/TeamChatCommand";
 import { TeamCommand } from "@Easy/Core/Server/Services/Chat/Commands/TeamCommand";
+import TeamsCommand from "@Easy/Core/Server/Services/Chat/Commands/TeamsCommand";
 import { TpAllCommand } from "@Easy/Core/Server/Services/Chat/Commands/TpAllCommand";
 import { TpCommand } from "@Easy/Core/Server/Services/Chat/Commands/TpCommand";
 import { TpsCommand } from "@Easy/Core/Server/Services/Chat/Commands/TpsCommand";
@@ -22,8 +23,21 @@ import { CoreNetwork } from "../CoreNetwork";
 import { Game } from "../Game";
 import { Player } from "../Player/Player";
 import StringUtils from "../Types/StringUtil";
+import { Cancellable } from "../Util/Cancellable";
 import { ChatUtil } from "../Util/ChatUtil";
 import ObjectUtils from "../Util/ObjectUtils";
+import { Signal } from "../Util/Signal";
+
+class ChatMessageEvent extends Cancellable {
+	/**
+	 * @param messager Player who sent chat message
+	 * @param nametag Name and prefix to be displayed in chat message. Also includes spacing before message. Defaults to "Player1: "
+	 * @param message Contents of the chat message (modifiable)
+	 */
+	constructor(public readonly messager: Player, public nametag: string, public message: string) {
+		super();
+	}
+}
 
 /**
  * Access using {@link Airship.Chat}. Functions for configuring the chat window
@@ -36,6 +50,14 @@ export class AirshipChatSingleton {
 	private commands = new Map<string, ChatCommand>();
 
 	public readonly canUseRichText = true;
+	/**
+	 * Event fired when a player chats.
+	 * - If the chat message is a command this will not fire.
+	 * - Can be cancelled to prevent the message from going through.
+	 * - Message and nametag can be modified to change what is displayed.
+	 * - Yielding in a callback will delay the message from being processed.
+	 */
+	public readonly onChatMessage = new Signal<ChatMessageEvent>().WithAllowYield(true);
 
 	constructor() {
 		Airship.Chat = this;
@@ -89,7 +111,8 @@ export class AirshipChatSingleton {
 				}
 
 				let nameWithPrefix = player.username + ": ";
-				CoreNetwork.ServerToClient.ChatMessage.server.FireAllClients(text, nameWithPrefix, player.connectionId);
+				const result = this.onChatMessage.Fire(new ChatMessageEvent(player, nameWithPrefix, text));
+				CoreNetwork.ServerToClient.ChatMessage.server.FireAllClients(result.message, result.nametag, player.connectionId);
 			},
 		);
 	}
@@ -140,6 +163,7 @@ export class AirshipChatSingleton {
 		this.RegisterCommand(new HelpCommand());
 		this.RegisterCommand(new TeamChatCommand());
 		this.RegisterCommand(new KickCommand());
+		this.RegisterCommand(new TeamsCommand());
 	}
 
 	/**

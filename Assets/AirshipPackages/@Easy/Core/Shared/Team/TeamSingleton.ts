@@ -160,4 +160,13 @@ export class TeamsSingleton {
 	public FindById(teamId: string): Team | undefined {
 		return this.teams.get(teamId)?.team;
 	}
+
+	/**
+	 * Fetch a team by player.
+	 * @param player Player to search for.
+	 * @returns First found team a player is in, if one exists.
+	 */
+	public FindByPlayer(player: Player): Team | undefined {
+		return ObjectUtils.values(this.teams).find((entry) => entry.team.GetPlayers().has(player))?.team;
+	}
 }
