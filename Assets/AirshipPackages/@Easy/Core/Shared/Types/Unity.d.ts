@@ -4893,3 +4893,128 @@ interface GradientConstructor {
 	 */
 	CreateAlphaKeyArray(length: number): CSArray<GradientAlphaKey>;
 }
+
+interface Mathf {}
+
+interface MathfConstructor {
+	/** @deprecated Use `math.pi` instead. */
+	PI: number;
+	/** @deprecated Use `math.huge` instead. */
+	Infinity: number;
+	/** @deprecated Use `-math.huge` instead. */
+	NegativeInfinity: number;
+	/** @deprecated Use `math.deg()` instead. */
+	Deg2Rad: number;
+	/** @deprecated Use `math.rad()` instead. */
+	Rad2Deg: number;
+	readonly Epsilon: number;
+
+	/** @deprecated Use `math.abs()` instead. */
+	Abs(f: number): number;
+	/** @deprecated Use `math.acos()` instead. */
+	Acos(f: number): number;
+	/** @deprecated Use `math.approximately()` instead. */
+	Approximately(a: number, b: number): boolean;
+	/** @deprecated Use `math.asin()` instead. */
+	Asin(f: number): number;
+	/** @deprecated Use `math.atan()` instead. */
+	Atan(f: number): number;
+	/** @deprecated Use `math.atan2()` instead. */
+	Atan2(y: number, x: number): number;
+	/** @deprecated Use `math.ceil()` instead. */
+	Ceil(f: number): number;
+	/** @deprecated Use `math.ceil()` instead. */
+	CeilToInt(f: number): number;
+	/** @deprecated Use `math.clamp()` instead. */
+	Clamp(value: number, min: number, max: number): number;
+	/** @deprecated Use `math.clamp01()` instead. */
+	Clamp01(value: number): number;
+	/** @deprecated Use `math.closestPowerOfTwo()` instead. */
+	ClosestPowerOfTwo(value: number): number;
+	CorrelatedColorTemperatureToRGB(kelvin: number): Color;
+	/** @deprecated Use `math.cos()` instead. */
+	Cos(f: number): number;
+	/** @deprecated Use `math.deltaAngle()` instead. */
+	DeltaAngle(current: number, target: number): number;
+	/** @deprecated Use `math.exp()` instead. */
+	Exp(power: number): number;
+	/** @deprecated Use `math.floor()` instead. */
+	Floor(f: number): number;
+	Gamma(value: number, absmax: number, gamma: number): number;
+	GammaToLinearSpace(value: number): number;
+	/** @deprecated Use `math.inverseLerp()` instead. */
+	InverseLerp(a: number, b: number, value: number): number;
+	/** @deprecated Use `math.isPowerOfTwo()` instead. */
+	IsPowerOfTwo(value: number): boolean;
+	/** @deprecated Use `math.lerp()` instead. */
+	Lerp(a: number, b: number, t: number): number;
+	LerpAngle(a: number, b: number, t: number): number;
+	/** @deprecated Use `math.lerpUnclamped()` instead. */
+	LerpUnclamped(a: number, b: number, t: number): number;
+	LinearToGammaSpace(value: number): number;
+	/** @deprecated Use `math.log()` instead. */
+	Log(f: number, p: number): number;
+	/** @deprecated Use `math.log()` instead. */
+	Log(f: number): number;
+	/** @deprecated Use `math.log10()` instead. */
+	Log10(f: number): number;
+	/** @deprecated Use `math.max()` instead. */
+	Max(a: number, b: number): number;
+	/** @deprecated Use `math.min()` instead. */
+	Min(a: number, b: number): number;
+	/** @deprecated Use `math.moveTowards()` instead. */
+	MoveTowards(current: number, target: number, maxDelta: number): number;
+	/** @deprecated Use `math.moveTowardsAngle()` instead. */
+	MoveTowardsAngle(current: number, target: number, maxDelta: number): number;
+	/** @deprecated Use `math.log()` instead. */
+	NextPowerOfTwo(value: number): number;
+	/** @deprecated Use `math.noise()` instead. */
+	PerlinNoise(x: number, y: number): number;
+	/** @deprecated Use `math.noise()` instead. */
+	PerlinNoise1D(x: number): number;
+	/** @deprecated Use `math.pingPong()` instead. */
+	PingPong(t: number, length: number): number;
+	/** @deprecated Use `math.pow()` instead. */
+	Pow(f: number, p: number): number;
+	/** @deprecated Use `math.repeat()` instead. */
+	Repeat(t: number, length: number): number;
+	/** @deprecated Use `math.round()` instead. */
+	Round(f: number): number;
+	/** @deprecated Use `math.sign()` instead. */
+	Sign(f: number): number;
+	/** @deprecated Use `math.sin()` instead. */
+	Sin(f: number): number;
+	SmoothDamp(current: number, target: number, currentVelocity: unknown, smoothTime: number, maxSpeed: number): number;
+	SmoothDamp(current: number, target: number, currentVelocity: unknown, smoothTime: number): number;
+	SmoothDamp(
+		current: number,
+		target: number,
+		currentVelocity: unknown,
+		smoothTime: number,
+		maxSpeed: number,
+		deltaTime: number,
+	): number;
+	SmoothDampAngle(
+		current: number,
+		target: number,
+		currentVelocity: unknown,
+		smoothTime: number,
+		maxSpeed: number,
+	): number;
+	SmoothDampAngle(current: number, target: number, currentVelocity: unknown, smoothTime: number): number;
+	SmoothDampAngle(
+		current: number,
+		target: number,
+		currentVelocity: unknown,
+		smoothTime: number,
+		maxSpeed: number,
+		deltaTime: number,
+	): number;
+	/** @deprecated Use `math.smoothStep()` instead. */
+	SmoothStep(from: number, to: number, t: number): number;
+	/** @deprecated Use `math.sqrt()` instead. */
+	Sqrt(f: number): number;
+	/** @deprecated Use `math.tan()` instead. */
+	Tan(f: number): number;
+}
+declare const Mathf: MathfConstructor;
