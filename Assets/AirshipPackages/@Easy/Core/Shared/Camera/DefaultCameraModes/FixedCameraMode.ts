@@ -28,6 +28,9 @@ export class FixedCameraMode extends CameraMode {
 	private minRotX = math.rad(1);
 	private maxRotX = math.rad(179);
 
+	private lastTargetPos: Vector3 | undefined;
+	private lastRot: Quaternion | undefined;
+
 	private occlusionCam!: OcclusionCam;
 
 	private lookBehind = false;
@@ -195,6 +198,11 @@ export class FixedCameraMode extends CameraMode {
 	}
 
 	OnLateUpdate(dt: number) {
+		const characterTarget = this.GetCharacterTarget();
+		if (characterTarget && (characterTarget.IsDead() || characterTarget.IsDestroyed())) {
+			return new CameraTransform(this.lastTargetPos ?? Vector3.zero, this.lastRot ?? Quaternion.identity);
+		}
+
 		let xOffset = this.xOffset;
 
 		if (!this.locked && this.rotationX < math.rad(45)) {
@@ -210,12 +218,15 @@ export class FixedCameraMode extends CameraMode {
 
 		const posOffset = new Vector3(xPos, yPos, zPos);
 		const targetPos = this.target?.transform.position ?? Vector3.zero;
+		this.lastTargetPos = targetPos;
+
 		const cameraPos = targetPos.add(new Vector3(0, this.yOffset, 0)).add(this.cameraRightVector.mul(xOffset));
 		this.lastCameraPos = cameraPos;
 
 		const newCameraPos = cameraPos.add(this.staticOffset ?? posOffset);
 		const lookVector = posOffset.mul(-1).normalized;
 		const rotation = Quaternion.LookRotation(lookVector, Vector3.up);
+		this.lastRot = rotation;
 
 		return new CameraTransform(newCameraPos, rotation);
 	}
