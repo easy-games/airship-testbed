@@ -1,9 +1,15 @@
+import { PublicUser } from "./AirshipUser";
+
 export interface Group {
 	groupId: string;
 	gameId: string;
 	members: GroupMember[];
 	status: GroupStatus;
 	createdAt: number;
+}
+
+export interface GroupMember extends PublicUser {
+	active: boolean;
 }
 
 export enum GroupState {
