@@ -42,3 +42,37 @@ interface IdleData {
  * IN_MATCH - The matchmaking group is currently in a match.
  */
 export type GroupStatus = QueueData | MatchData | IdleData;
+
+/**
+ * The configuration provided to a server created by the matchmaker.
+ */
+export interface MatchConfig {
+	/** The teams created for this match */
+	teams: MatchTeam[];
+}
+
+/** A team in a match. */
+interface MatchTeam {
+	/** The name of the team as provided in the queue configuration. */
+	name: string;
+	/** The groups which make up the team. */
+	groups: MatchTeamGroup[];
+}
+
+/** A group that makes up part of a team in a match. */
+interface MatchTeamGroup {
+	/** The id of the group. */
+	id: string;
+	/** The players in the group. */
+	players: MatchTeamGroupPlayer[];
+	/** The attributes provided with this group when they joined the matchmaking queue. */
+	attributes: Record<string, any>;
+}
+
+/** A player in a group that is part of a team in a match. */
+interface MatchTeamGroupPlayer {
+	/** The user id of the player */
+	id: string;
+	/** The attributes provided with this player when they joined the matchmaking queue with their group. */
+	attributes: Record<string, any>;
+}
