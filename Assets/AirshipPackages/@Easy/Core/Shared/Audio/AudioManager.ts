@@ -183,9 +183,10 @@ export class AudioManager {
 		audioSource.PlayOneShot(clip);
 		if (!audioSource.loop) {
 			task.unscaledDelay(clip.length + 1, () => {
-				audioSource.Stop();
-				PoolManager.ReleaseObject(audioSource.gameObject);
-				// Object.Destroy(audioSource.gameObject);
+				if (audioSource) {
+					audioSource.Stop();
+					PoolManager.ReleaseObject(audioSource.gameObject);
+				}
 			});
 		}
 		return audioSource;

@@ -963,15 +963,15 @@ interface AnimationClipReplacementEntry {
 	replacementClip: AnimationClip;
 }
 
-interface AnimatorClipReplacer extends Component {
+interface AnimatorClipReplacer extends MonoBehaviour {
 	AnimatorController: Object | undefined;
 	clipReplacements: AnimationClipReplacementEntry[];
 	baseClipSelectionPresets: any[];
 
 	/**
-     * Directly remove clip replacements to the given AnimatorOverrideController.
-     * @param controller - The AnimatorOverrideController to apply the replacements to.
-     */
+	 * Directly remove clip replacements to the given AnimatorOverrideController.
+	 * @param controller - The AnimatorOverrideController to apply the replacements to.
+	 */
 	RemoveClips(controller: Object): void;
 	/**
 	 * Applies the animation clip replacements to the provided Animator or AnimatorOverrideController.
