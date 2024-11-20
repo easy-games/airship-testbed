@@ -99,6 +99,7 @@ export class DamageSingleton {
 	 * @param damageInfo
 	 */
 	public BroadcastDeath(damageInfo: DamageInfo): void {
+		this.onDeath.Fire(damageInfo);
 		if (Game.IsServer() && this.autoNetwork) {
 			const nob = damageInfo.gameObject.GetComponentInParent<NetworkIdentity>();
 			const attackerNob = damageInfo.attacker?.GetComponentInParent<NetworkIdentity>();
@@ -111,7 +112,6 @@ export class DamageSingleton {
 				);
 			}
 		}
-		this.onDeath.Fire(damageInfo);
 	}
 
 	/**
