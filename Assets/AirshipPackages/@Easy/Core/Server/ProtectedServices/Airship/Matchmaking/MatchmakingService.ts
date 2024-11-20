@@ -1,9 +1,9 @@
+import { JoinQueueDto } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipMatchmaking";
+import { Group, MatchConfig } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipMatchmaking";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
-import { Group } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipMatchmaking";
-import { JoinQueueDto } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipMatchmaking";
 
 export const enum MatchmakingServiceBridgeTopics {
 	CreateGroup = "MatchmakingService:CreateGroup",
@@ -11,6 +11,7 @@ export const enum MatchmakingServiceBridgeTopics {
 	GetGroupByUserId = "MatchmakingService:GetGroupByUserId",
 	JoinQueue = "MatchmakingService:JoinQueue",
 	LeaveQueue = "MatchmakingService:LeaveQueue",
+	GetMatchConfig = "MatchmakingService:GetMatchConfig",
 }
 
 export type ServerBridgeApiCreateGroup = (userIds: string[]) => Group;
@@ -18,6 +19,7 @@ export type ServerBridgeApiGetGroupById = (groupId: string) => Group | undefined
 export type ServerBridgeApiGetGroupByUserId = (uid: string) => Group | undefined;
 export type ServerBridgeApiJoinQueue = (body: JoinQueueDto) => undefined;
 export type ServerBridgeApiLeaveQueue = (groupId: string) => undefined;
+export type ServerBridgeApiGetMatchConfig = () => MatchConfig | undefined;
 
 @Service({})
 export class ProtectedMatchmakingService {
@@ -44,6 +46,10 @@ export class ProtectedMatchmakingService {
 		contextbridge.callback<ServerBridgeApiLeaveQueue>(MatchmakingServiceBridgeTopics.LeaveQueue, (_, groupId) =>
 			this.LeaveQueue(groupId).expect(),
 		);
+
+		contextbridge.callback<ServerBridgeApiGetMatchConfig>(MatchmakingServiceBridgeTopics.GetMatchConfig, (_) => {
+			return this.GetMatchConfig().expect();
+		});
 	}
 
 	public async CreateGroup(userIds: string[]): Promise<Group> {
@@ -59,7 +65,7 @@ export class ProtectedMatchmakingService {
 			throw result.error;
 		}
 
-		return DecodeJSON<{ group: Group}>(result.data).group;
+		return DecodeJSON<{ group: Group }>(result.data).group;
 	}
 
 	public async GetGroupById(groupId: string): Promise<Group | undefined> {
@@ -122,6 +128,20 @@ export class ProtectedMatchmakingService {
 		}
 
 		return undefined;
+	}
+
+	public async GetMatchConfig(): Promise<MatchConfig | undefined> {
+		const serverBootstrap = GameObject.Find("ServerBootstrap").GetComponent<ServerBootstrap>()!;
+		const gs = serverBootstrap.GetGameServer();
+		try {
+			const matchConfigString = gs?.ObjectMeta.Annotations.Get("MatchConfig");
+			if (!matchConfigString) return undefined;
+
+			const matchConfig = DecodeJSON(matchConfigString);
+			return matchConfig as MatchConfig;
+		} catch (err) {
+			return undefined;
+		}
 	}
 
 	protected OnStart(): void {}
