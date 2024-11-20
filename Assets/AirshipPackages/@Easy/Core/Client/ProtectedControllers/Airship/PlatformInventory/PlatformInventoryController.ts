@@ -4,7 +4,6 @@ import { PlatformInventoryUtil } from "@Easy/Core/Shared/Airship/Util/PlatformIn
 import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
-import { DecodeJSON } from "@Easy/Core/Shared/json";
 
 export const enum PlatformInventoryControllerBridgeTopics {
 	GetItems = "PartyControllerGetInventory",
@@ -40,7 +39,7 @@ export class ProtectedPlatformInventoryController {
 			throw res.error;
 		}
 
-		return DecodeJSON(res.data) as ItemInstanceDto[];
+		return json.decode(res.data) as ItemInstanceDto[];
 	}
 
 	protected OnStart(): void {}

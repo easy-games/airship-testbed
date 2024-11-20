@@ -3,7 +3,6 @@ import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
-import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 import { FirebaseSignUpResponse, FirebaseTokenResponse } from "./API/FirebaseAPI";
 
 declare const AirshipPlatformUrl: {
@@ -84,13 +83,13 @@ export class AuthController {
 		// https://firebase.google.com/docs/reference/rest/auth#section-refresh-token
 		const res = HttpManager.PostAsync(
 			`https://securetoken.googleapis.com/v1/token?key=${this.apiKey}`,
-			EncodeJSON({
+			json.encode({
 				grant_type: "refresh_token",
 				refresh_token: refreshToken,
 			}),
 		);
 		if (res.success) {
-			const data = DecodeJSON(res.data) as FirebaseTokenResponse;
+			const data = json.decode(res.data) as FirebaseTokenResponse;
 			this.idToken = data.id_token;
 			InternalHttpManager.SetAuthToken(data.id_token);
 			StateManager.SetString("firebase_idToken", data.id_token);
@@ -109,12 +108,12 @@ export class AuthController {
 		print("signing up...");
 		const res = HttpManager.PostAsync(
 			`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${this.apiKey}`,
-			EncodeJSON({
+			json.encode({
 				returnSecureToken: true,
 			}),
 		);
 		if (res.success) {
-			const data = DecodeJSON(res.data) as FirebaseSignUpResponse;
+			const data = json.decode(res.data) as FirebaseSignUpResponse;
 
 			this.idToken = data.idToken;
 			InternalHttpManager.SetAuthToken(data.idToken);

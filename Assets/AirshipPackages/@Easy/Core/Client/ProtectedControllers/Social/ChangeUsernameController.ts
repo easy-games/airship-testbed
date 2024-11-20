@@ -10,7 +10,6 @@ import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import { SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { OnFixedUpdate } from "@Easy/Core/Shared/Util/Timer";
-import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 import { ProtectedUserController } from "../Airship/User/UserController";
 import { AuthController } from "../Auth/AuthController";
 
@@ -77,7 +76,7 @@ export class ChangeUsernameController {
 		const text = this.inputField.text;
 		const res = HttpManager.PatchAsync(
 			AirshipUrl.GameCoordinator + "/users",
-			EncodeJSON({
+			json.encode({
 				username: text,
 			}),
 			this.authController.GetAuthHeaders(),
@@ -123,7 +122,7 @@ export class ChangeUsernameController {
 			AirshipUrl.GameCoordinator + "/users/availability?username=" + username,
 		);
 		if (res.success) {
-			const data = DecodeJSON<{ available: boolean }>(res.data);
+			const data = json.decode<{ available: boolean }>(res.data);
 			if (data.available) {
 				this.SetResponseText("success", "");
 			} else {

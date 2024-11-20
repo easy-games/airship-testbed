@@ -3,7 +3,6 @@ import { Group, MatchConfig } from "@Easy/Core/Shared/Airship/Types/Outputs/Airs
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
-import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 
 export const enum MatchmakingServiceBridgeTopics {
 	CreateGroup = "MatchmakingService:CreateGroup",
@@ -55,7 +54,7 @@ export class ProtectedMatchmakingService {
 	public async CreateGroup(userIds: string[]): Promise<Group> {
 		const result = InternalHttpManager.PostAsync(
 			`${AirshipUrl.GameCoordinator}/groups`,
-			EncodeJSON({
+			json.encode({
 				userIds,
 			}),
 		);
@@ -65,7 +64,7 @@ export class ProtectedMatchmakingService {
 			throw result.error;
 		}
 
-		return DecodeJSON<{ group: Group }>(result.data).group;
+		return json.decode<{ group: Group }>(result.data).group;
 	}
 
 	public async GetGroupById(groupId: string): Promise<Group | undefined> {
@@ -79,7 +78,7 @@ export class ProtectedMatchmakingService {
 			throw result.error;
 		}
 
-		return DecodeJSON<{ group: Group | undefined }>(result.data).group;
+		return json.decode<{ group: Group | undefined }>(result.data).group;
 	}
 
 	public async GetGroupByUserId(uid: string): Promise<Group | undefined> {
@@ -93,13 +92,13 @@ export class ProtectedMatchmakingService {
 			throw result.error;
 		}
 
-		return DecodeJSON<{ group: Group | undefined }>(result.data).group;
+		return json.decode<{ group: Group | undefined }>(result.data).group;
 	}
 
 	public async JoinQueue(body: JoinQueueDto): Promise<undefined> {
 		const result = InternalHttpManager.PostAsync(
 			`${AirshipUrl.GameCoordinator}/matchmaking/queue/join`,
-			EncodeJSON(body),
+			json.encode(body),
 		);
 
 		if (!result.success || result.statusCode > 299) {
@@ -116,7 +115,7 @@ export class ProtectedMatchmakingService {
 	public async LeaveQueue(groupId: string): Promise<undefined> {
 		const result = InternalHttpManager.PostAsync(
 			`${AirshipUrl.GameCoordinator}/matchmaking/queue/leave`,
-			EncodeJSON({ groupId }),
+			json.encode({ groupId }),
 		);
 
 		if (!result.success || result.statusCode > 299) {
@@ -137,7 +136,7 @@ export class ProtectedMatchmakingService {
 			const matchConfigString = gs?.ObjectMeta.Annotations.Get("MatchConfig");
 			if (!matchConfigString) return undefined;
 
-			const matchConfig = DecodeJSON(matchConfigString);
+			const matchConfig = json.decode(matchConfigString);
 			return matchConfig as MatchConfig;
 		} catch (err) {
 			return undefined;

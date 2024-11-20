@@ -4,7 +4,6 @@ import { PlatformInventoryUtil } from "@Easy/Core/Shared/Airship/Util/PlatformIn
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
-import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 
 export const enum PlatformInventoryServiceBridgeTopics {
 	GrantItem = "PlatformInventoryService:GrantItem",
@@ -66,7 +65,7 @@ export class ProtectedPlatformInventoryService {
 			throw res.error;
 		}
 
-		return DecodeJSON(res.data) as ItemInstanceDto;
+		return json.decode(res.data) as ItemInstanceDto;
 	}
 
 	public async DeleteItem(instanceId: string): Promise<ReturnType<ServerBridgeApiDeleteItem>> {
@@ -77,7 +76,7 @@ export class ProtectedPlatformInventoryService {
 			throw res.error;
 		}
 
-		return DecodeJSON(res.data) as ItemInstanceDto;
+		return json.decode(res.data) as ItemInstanceDto;
 	}
 
 	public async GetItems(userId: string, query?: ItemQueryParameters): Promise<ReturnType<ServerBridgeApiGetItems>> {
@@ -94,7 +93,7 @@ export class ProtectedPlatformInventoryService {
 			return [];
 		}
 
-		return DecodeJSON(res.data) as ItemInstanceDto[];
+		return json.decode(res.data) as ItemInstanceDto[];
 	}
 
 	public async PerformTrade(
@@ -103,7 +102,7 @@ export class ProtectedPlatformInventoryService {
 	): Promise<ReturnType<ServerBridgeApiPerformTrade>> {
 		const res = InternalHttpManager.PostAsync(
 			`${AirshipUrl.ContentService}/transactions/trade`,
-			EncodeJSON({
+			json.encode({
 				leftTradeHalf: user1,
 				rightTradeHalf: user2,
 			}),
@@ -114,7 +113,7 @@ export class ProtectedPlatformInventoryService {
 			throw res.error;
 		}
 
-		return DecodeJSON(res.data) as Transaction;
+		return json.decode(res.data) as Transaction;
 	}
 
 	protected OnStart(): void {}

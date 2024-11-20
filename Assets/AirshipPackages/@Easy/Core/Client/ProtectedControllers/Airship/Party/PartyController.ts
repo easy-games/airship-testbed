@@ -2,7 +2,6 @@ import { Party } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipParty";
 import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
-import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 import { SocketController } from "../../Socket/SocketController";
 
 export const enum PartyControllerBridgeTopics {
@@ -34,13 +33,13 @@ export class ProtectedPartyController {
 			throw res.error;
 		}
 
-		return DecodeJSON<{ party: Party }>(res.data).party;
+		return json.decode<{ party: Party }>(res.data).party;
 	}
 
 	public async InviteToParty(userId: string) {
 		InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/parties/party/invite",
-			EncodeJSON({
+			json.encode({
 				userToAdd: userId,
 			}),
 		);

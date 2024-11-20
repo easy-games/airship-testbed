@@ -2,7 +2,6 @@ import { Airship, Platform } from "@Easy/Core/Shared/Airship";
 import { Game } from "@Easy/Core/Shared/Game";
 import ProximityPrompt from "@Easy/Core/Shared/Input/ProximityPrompts/ProximityPrompt";
 import MatchmakerSingleton from "./MatchmakerSingleton";
-import { EncodeJSON } from "@Easy/Core/Shared/json";
 import { NetworkFunction } from "@Easy/Core/Shared/Network/NetworkFunction";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 
@@ -84,7 +83,7 @@ export default class MatchmakerButton extends AirshipBehaviour {
 		const userIds = users.map((u) => u.userId);
 		const [success, result] = Platform.Server.Matchmaking.CreateGroup(userIds).await();
 		if (!success || !result) {
-			print("Failed to create group: " + EncodeJSON(result));
+			print("Failed to create group: " + json.encode(result));
 			return;
 		}
 		this.matchmakerSingleton.groupId = result.groupId;
@@ -102,7 +101,7 @@ export default class MatchmakerButton extends AirshipBehaviour {
 			queueId: "testqueue1",
 		}).await();
 		if (!success) {
-			print("Failed to join queue: " + EncodeJSON(result));
+			print("Failed to join queue: " + json.encode(result));
 			return;
 		}
 		print("Successfully joined queue");
@@ -117,7 +116,7 @@ export default class MatchmakerButton extends AirshipBehaviour {
 
 		const [success, result] = Platform.Server.Matchmaking.LeaveQueue(this.matchmakerSingleton.groupId).await();
 		if (!success) {
-			print("Failed to leave queue: " + EncodeJSON(result));
+			print("Failed to leave queue: " + json.encode(result));
 			return;
 		}
 		print("Successfully left queue");
@@ -131,20 +130,20 @@ export default class MatchmakerButton extends AirshipBehaviour {
 		}
 		const [success, result] = Platform.Server.Matchmaking.GetGroupById(this.matchmakerSingleton.groupId).await();
 		if (!success) {
-			print("Failed to get group status: " + EncodeJSON(result));
+			print("Failed to get group status: " + json.encode(result));
 			return;
 		}
-		print("Successfully got group status: " + EncodeJSON(result));
+		print("Successfully got group status: " + json.encode(result));
 	}
 
 	private ServerUserGetCurrentGroup(player: Player): void {
 		if (!Game.IsServer()) return;
 		const [success, result] = Platform.Server.Matchmaking.GetGroupByUserId(player.userId).await();
 		if (!success) {
-			print("Failed to get current group: " + EncodeJSON(result));
+			print("Failed to get current group: " + json.encode(result));
 			return;
 		}
-		print(`Successfully got current group for player ${player.userId}: ${EncodeJSON(result)}`);
+		print(`Successfully got current group for player ${player.userId}: ${json.encode(result)}`);
 	}
 
 	private ClientGetCurrentGroup(): void {
@@ -152,10 +151,10 @@ export default class MatchmakerButton extends AirshipBehaviour {
 		print("Attempting to get current group for client");
 		const [success, result] = Platform.Client.Matchmaking.GetCurrentGroup().await();
 		if (!success) {
-			print("Failed to get current group: " + EncodeJSON(result));
+			print("Failed to get current group: " + json.encode(result));
 			return;
 		}
-		print("Successfully got current group: " + EncodeJSON(result));
+		print("Successfully got current group: " + json.encode(result));
 	}
 
 	private ClientLeaveQueue(): void {

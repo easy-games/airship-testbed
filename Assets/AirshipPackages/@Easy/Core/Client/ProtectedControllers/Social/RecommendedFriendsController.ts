@@ -2,7 +2,6 @@ import { Controller, Dependency, OnStart } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Protected } from "@Easy/Core/Shared/Protected";
 import { MapUtil } from "@Easy/Core/Shared/Util/MapUtil";
-import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 import { ProtectedUserController } from "../Airship/User/UserController";
 import { ProtectedFriendsController } from "./FriendsController";
 import { MainMenuPartyController } from "./MainMenuPartyController";
@@ -52,7 +51,7 @@ export class RecommendedFriendsController implements OnStart {
 	OnStart(): void {
 		const fileText = DiskManager.ReadFileAsync("RecommendedFriends.json");
 		if (fileText && fileText !== "") {
-			this.recommendedFriends = DecodeJSON<RecommendedFriendsFile>(fileText);
+			this.recommendedFriends = json.decode<RecommendedFriendsFile>(fileText);
 		}
 		this.StartSavingLoop();
 
@@ -155,7 +154,7 @@ export class RecommendedFriendsController implements OnStart {
 		Profiler.BeginSample("Airship Write Recommended Friends");
 		this.TrimRecommendedFriends();
 		this.fileRequiresSave = false;
-		DiskManager.WriteFileAsync("RecommendedFriends.json", EncodeJSON(this.recommendedFriends));
+		DiskManager.WriteFileAsync("RecommendedFriends.json", json.encode(this.recommendedFriends));
 		Profiler.EndSample();
 	}
 

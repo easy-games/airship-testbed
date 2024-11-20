@@ -5,7 +5,6 @@ import {
 import { AirshipServerData } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipServerManager";
 import { Dependency, Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { ShutdownService } from "../../Shutdown/ShutdownService";
 
@@ -146,7 +145,7 @@ export class ProtectedServerManagerService {
 	public async CreateServer(config?: AirshipServerConfig): Promise<ReturnType<ServerBridgeApiCreateServer>> {
 		const res = InternalHttpManager.PostAsync(
 			`${AirshipUrl.GameCoordinator}/servers/create`,
-			EncodeJSON({
+			json.encode({
 				sceneId: config?.sceneId,
 				region: config?.region,
 				accessMode: config?.accessMode,
@@ -163,7 +162,7 @@ export class ProtectedServerManagerService {
 			throw res.error;
 		}
 
-		return DecodeJSON<AirshipServerData>(res.data) as AirshipServerData;
+		return json.decode<AirshipServerData>(res.data) as AirshipServerData;
 	}
 
 	public async GetServers(serverIds: string[]): Promise<ReturnType<ServerBridgeApiGetServers>> {
@@ -184,7 +183,7 @@ export class ProtectedServerManagerService {
 			return {};
 		}
 
-		return DecodeJSON(res.data) as ReturnType<ServerBridgeApiGetServers>;
+		return json.decode(res.data) as ReturnType<ServerBridgeApiGetServers>;
 	}
 
 	public async ListServer(config?: {
@@ -213,7 +212,7 @@ export class ProtectedServerManagerService {
 			throw res.error;
 		}
 
-		return DecodeJSON(res.data) as { entries: AirshipServerData[] };
+		return json.decode(res.data) as { entries: AirshipServerData[] };
 	}
 
 	public async SetAccessMode(mode: AirshipServerAccessMode): Promise<ReturnType<ServerBridgeApiSetAccessMode>> {
@@ -228,7 +227,7 @@ export class ProtectedServerManagerService {
 			const gameConfigString = gs?.ObjectMeta.Annotations.Get("GameConfig");
 			if (!gameConfigString) return undefined;
 
-			const gameConfig = DecodeJSON(gameConfigString);
+			const gameConfig = json.decode(gameConfigString);
 			return gameConfig as T;
 		} catch (err) {
 			return undefined;

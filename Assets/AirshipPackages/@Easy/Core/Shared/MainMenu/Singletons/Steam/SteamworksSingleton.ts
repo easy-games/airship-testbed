@@ -3,7 +3,6 @@ import { TransferController } from "@Easy/Core/Client/ProtectedControllers/Trans
 import inspect from "@Easy/Core/Shared/Util/Inspect";
 import { Dependency, Singleton } from "../../../Flamework";
 import { Game } from "../../../Game";
-import { DecodeJSON, EncodeJSON } from "../../../json";
 
 interface SteamConnectPacket {
 	gameId: string;
@@ -14,7 +13,7 @@ interface SteamConnectPacket {
 export class SteamworksSingleton {
 	protected OnStart(): void {
 		SteamLuauAPI.OnRichPresenceGameJoinRequest((connectionStr, steamId) => {
-			const connectInfo = DecodeJSON<Partial<SteamConnectPacket>>(connectionStr);
+			const connectInfo = json.decode<Partial<SteamConnectPacket>>(connectionStr);
 			if (!connectInfo || !connectInfo.gameId) {
 				print("[SteamworksSingleton] Invalid connect info on steam join request: " + inspect(connectInfo));
 				print("[SteamworksSingleton] Connection string: " + connectionStr);
@@ -36,7 +35,7 @@ export class SteamworksSingleton {
 			Game.WaitForGameData();
 			SteamLuauAPI.SetRichPresence(
 				"connect",
-				EncodeJSON(
+				json.encode(
 					identity<SteamConnectPacket>({
 						gameId: Game.gameId,
 						serverId: Game.serverId,
