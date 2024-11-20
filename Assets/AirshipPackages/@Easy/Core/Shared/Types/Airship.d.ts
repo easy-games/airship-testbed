@@ -109,8 +109,8 @@ interface MoveModifier {
 interface CharacterMovement extends Component {
 	OnStateChanged(callback: (state: CharacterState) => void): EngineEventConnection;
 	OnSetCustomData(callback: () => void): EngineEventConnection;
-	OnBeginMove(callback: (inputData: AirshipPredictedCharacterState, isReplay: boolean) => void): EngineEventConnection;
-	OnEndMove(callback: (inputData: AirshipPredictedCharacterState, isReplay: boolean) => void): EngineEventConnection;
+	OnBeginMove(callback: (stateData: AirshipPredictedCharacterState, isReplay: boolean) => void): EngineEventConnection;
+	OnEndMove(callback: (stateData: AirshipPredictedCharacterState, isReplay: boolean) => void): EngineEventConnection;
 	OnDispatchCustomData(callback: (tick: number, customData: BinaryBlob) => void): EngineEventConnection;
 	OnImpactWithGround(callback: (velocity: Vector3, hitInfo: RaycastHit) => void): EngineEventConnection;
 	OnAdjustMove(callback: (modifier: MoveModifier) => void): EngineEventConnection;
