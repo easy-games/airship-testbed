@@ -9,7 +9,6 @@ interface SignalLike<T extends Callback = Callback> {
 type Trackable =
 	| GameObject
 	| ConnectionLike
-	// | AirshipConnection
 	| MonoSignalConnection
 	| Promise<unknown>
 	| thread
@@ -38,7 +37,11 @@ function getObjCleanupFn<T extends Trackable>(obj: T, cleanupMethod?: string): s
 	if (cleanupMethod !== undefined) {
 		return cleanupMethod;
 	}
-	if (t === "userdata") {
+	if (t === "UnityObject") {
+		return "Destroy";
+	} else if (t === "MonoSignalConnection") {
+		return "Disconnect";
+	} else if (t === "userdata") {
 		if (tostring(obj) === "MonoSignalConnection") {
 			return MONO_SIGNAL_CONN_MARKER;
 		}

@@ -179,6 +179,16 @@ declare function type(value: unknown): keyof CheckablePrimitives;
 interface CheckableTypes extends CheckablePrimitives {
 	Vector2: Vector2;
 	Vector3: Vector3;
+	Vector4: Vector4;
+	UnityObject: UnityObject;
+	MonoSignal: MonoSignal;
+	MonoSignalConnection: MonoSignalConnection;
+	Plane: Plane;
+	Ray: Ray;
+	Color: Color;
+	Quaternion: Quaternion;
+	BinaryBlob: BinaryBlob;
+	Matrix4x4: Matrix4x4;
 }
 
 interface GameServerObjectMeta {}
