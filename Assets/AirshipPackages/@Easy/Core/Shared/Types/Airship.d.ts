@@ -553,6 +553,13 @@ interface AnimationEventListener extends MonoBehaviour {
 	TriggerEventObj(obj: Object): void;
 }
 
+interface CharacterStateData {
+	state: CharacterState;
+	grounded: boolean;
+	sprinting: boolean;
+	crouching: boolean;
+	localVelocity: Vector3;
+}
 interface CharacterAnimationHelper extends Component {
 	animator: Animator;
 	animationEvents?: AnimationEventListener;
@@ -560,7 +567,7 @@ interface CharacterAnimationHelper extends Component {
 	SetFirstPerson(firstPerson: boolean): void;
 	SetRootMovementLayer(itemInHand: boolean): void;
 	ClearStatesOnNonRootLayers(): void;
-	SetState(newState: CharacterState, force = false, noRootLayerFade = false);
+	SetState(newState: CharacterStateData);
 	SetVelocity(vel: Vector3);
 	SetGrounded(grounded: boolean);
 	GetPlaybackSpeed(): number;
