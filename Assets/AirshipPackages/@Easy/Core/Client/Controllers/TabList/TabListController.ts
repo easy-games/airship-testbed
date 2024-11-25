@@ -97,34 +97,27 @@ export class TabListController {
 
 	public FullUpdate(): void {
 		let teams = Airship.Teams.GetTeams();
-		// if (teams.size() > 0) {
-		// 	teams = teams.sort((a, b) => {
-		// 		if (a.HasLocalPlayer()) {
-		// 			return true;
-		// 		}
-		// 		if (b.HasLocalPlayer()) {
-		// 			return false;
-		// 		}
-		// 		return string.byte(a.id)[0] < string.byte(b.id)[0];
-		// 	});
-		// }
+
 		let players = Airship.Players.GetPlayers().sort((a, b) => {
 			if (a === Game.localPlayer) return true;
 
-			let aTeamIndex = math.huge;
-			let bTeamIndex = math.huge;
-
-			let aTeam = a.team;
-			let bTeam = b.team;
-
-			if (aTeam) {
-				aTeamIndex = teams.indexOf(aTeam);
-			}
-			if (bTeam) {
-				bTeamIndex = teams.indexOf(bTeam);
+			if (a.team && b.team) {
+				const teamAIndex = teams.indexOf(a.team);
+				const teamBIndex = teams.indexOf(b.team);
+				return teamAIndex < teamBIndex;
 			}
 
-			return aTeamIndex < bTeamIndex;
+			// Players with teams should come first?
+			if (a.team && !b.team) {
+				return true;
+			} else if (b.team && !a.team) {
+				return false;
+			}
+
+			const [playerACodepoint] = utf8.codepoint(a.username);
+			const [playerBCodepoint] = utf8.codepoint(b.username);
+
+			return playerACodepoint < playerBCodepoint; // sort alphabetically if no teams
 		});
 
 		for (let i = 0; i < this.maxSlots; i++) {
@@ -173,24 +166,6 @@ export class TabListController {
 				image.texture = texture;
 			}
 		});
-
-		// const addFriendGo = refs.GetValue<GameObject>("UI", "AddFriendButton");
-		// const isFriends = player.IsFriend();
-		// addFriendGo.SetActive(!isFriends && !player.IsLocalPlayer());
-		// if (init) {
-		// 	CoreUI.SetupButton(addFriendGo);
-		// 	CanvasAPI.OnClickEvent(addFriendGo, () => {
-		// 		Dependency<FriendsController>().SendFriendRequest(player.username);
-		// 		addFriendGo.TweenGraphicAlpha(0.5, 0.12);
-		// 	});
-		// }
-		// if (isFriends) {
-		// 	if (Dependency<FriendsController>().HasOutgoingFriendRequest(player.userId)) {
-		// 		addFriendGo.GetComponent<Image>()!.color = new Color(1, 1, 1, 0.5);
-		// 	} else {
-		// 		addFriendGo.GetComponent<Image>()!.color = new Color(1, 1, 1, 1);
-		// 	}
-		// }
 
 		usernameText.text = username;
 	}
