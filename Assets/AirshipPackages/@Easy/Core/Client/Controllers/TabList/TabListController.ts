@@ -99,7 +99,9 @@ export class TabListController {
 		let teams = Airship.Teams.GetTeams();
 
 		let players = Airship.Players.GetPlayers().sort((a, b) => {
+			// `localPlayer` should always come first
 			if (a === Game.localPlayer) return true;
+			if (b === Game.localPlayer) return false;
 
 			if (a.team && b.team) {
 				const teamAIndex = teams.indexOf(a.team);
