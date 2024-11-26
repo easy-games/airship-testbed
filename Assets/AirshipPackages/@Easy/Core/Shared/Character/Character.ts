@@ -31,6 +31,7 @@ export default class Character extends AirshipBehaviour {
 
 	@Header("Optional References")
 	public movement: CharacterMovement;
+	public animator: Animator;
 	public animationHelper!: CharacterAnimationHelper;
 	public accessoryBuilder: AccessoryBuilder;
 	public model!: GameObject;

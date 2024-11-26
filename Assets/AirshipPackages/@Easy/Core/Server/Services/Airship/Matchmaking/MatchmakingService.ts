@@ -3,12 +3,13 @@ import {
 	ServerBridgeApiCreateGroup,
 	ServerBridgeApiGetGroupById,
 	ServerBridgeApiGetGroupByUserId,
+	ServerBridgeApiGetMatchConfig,
 	ServerBridgeApiJoinQueue,
 	ServerBridgeApiLeaveQueue,
 } from "@Easy/Core/Server/ProtectedServices/Airship/Matchmaking/MatchmakingService";
 import { Platform } from "@Easy/Core/Shared/Airship";
 import { JoinQueueDto } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipMatchmaking";
-import { Group } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipMatchmaking";
+import { Group, MatchConfig } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipMatchmaking";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 
@@ -86,6 +87,19 @@ export class AirshipMatchmakingService {
 			MatchmakingServiceBridgeTopics.LeaveQueue,
 			LuauContext.Protected,
 			groupId,
+		);
+	}
+
+	/**
+	 * Retrieves the match config for this server. The match config is provided to servers that are started
+	 * by Airship to service a match for a matchmaking queue. This function will return undefined if the server
+	 * was not started by the matchmaking service.
+	 * @returns The match configuration if it exists.
+	 */
+	public async GetMatchConfig(): Promise<MatchConfig | undefined> {
+		return contextbridge.invoke<ServerBridgeApiGetMatchConfig>(
+			MatchmakingServiceBridgeTopics.GetMatchConfig,
+			LuauContext.Protected,
 		);
 	}
 }

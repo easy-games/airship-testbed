@@ -6,7 +6,6 @@ import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Protected } from "@Easy/Core/Shared/Protected";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
-import { DecodeJSON } from "@Easy/Core/Shared/json";
 import { AuthController } from "../../Auth/AuthController";
 import { ProtectedFriendsController } from "../../Social/FriendsController";
 import { User } from "../../User/User";
@@ -80,7 +79,7 @@ export class ProtectedUserController {
 			throw res.error;
 		}
 
-		const data = DecodeJSON(res.data) as { areFriends: boolean };
+		const data = json.decode(res.data) as { areFriends: boolean };
 
 		return data.areFriends;
 	}
@@ -102,7 +101,7 @@ export class ProtectedUserController {
 			throw res.error;
 		}
 
-		return DecodeJSON<{ user: PublicUser | undefined }>(res.data).user;
+		return json.decode<{ user: PublicUser | undefined }>(res.data).user;
 	}
 
 	public async GetUserByUsername(username: string): Promise<ReturnType<BridgeApiGetUserByUsername>> {
@@ -113,7 +112,7 @@ export class ProtectedUserController {
 			throw res.error;
 		}
 
-		return DecodeJSON<{ user: PublicUser | undefined }>(res.data).user;
+		return json.decode<{ user: PublicUser | undefined }>(res.data).user;
 	}
 
 	public async GetUsersById(userIds: string[], strict = true): Promise<ReturnType<BridgeApiGetUsersById>> {
@@ -142,7 +141,7 @@ export class ProtectedUserController {
 			};
 		}
 
-		const array = DecodeJSON(res.data) as PublicUser[];
+		const array = json.decode(res.data) as PublicUser[];
 		const map: Record<string, PublicUser> = {};
 		array.forEach((u) => (map[u.uid] = u));
 
@@ -160,7 +159,7 @@ export class ProtectedUserController {
 			throw res.error;
 		}
 
-		return DecodeJSON(res.data) as PublicUser[];
+		return json.decode(res.data) as PublicUser[];
 	}
 
 	protected OnStart(): void {
@@ -179,7 +178,7 @@ export class ProtectedUserController {
 		const res = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/users/self`);
 		let success = false;
 		if (res.success) {
-			const { user } = DecodeJSON<{ user: User | undefined }>(res.data);
+			const { user } = json.decode<{ user: User | undefined }>(res.data);
 
 			if (!user) {
 				let ignore = false;

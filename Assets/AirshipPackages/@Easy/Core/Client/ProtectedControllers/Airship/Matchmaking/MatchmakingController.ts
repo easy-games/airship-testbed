@@ -2,7 +2,6 @@ import { Group } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipMatchmakin
 import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
-import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 import { SocketController } from "../../Socket/SocketController";
 
 export const enum MatchmakingControllerBridgeTopics {
@@ -46,14 +45,14 @@ export class ProtectedMatchmakingController {
 			throw result.error;
 		}
 
-		return DecodeJSON<{ group: Group | undefined }>(result.data).group;
+		return json.decode<{ group: Group | undefined }>(result.data).group;
 	}
 
 	public async LeaveQueue(): Promise<ReturnType<ClientBridgeApiLeaveQueue>> {
 		const currentGameId = Game.gameId;
 		const result = InternalHttpManager.PostAsync(
 			`${AirshipUrl.GameCoordinator}/matchmaking/queue/leave/self`,
-			EncodeJSON({
+			json.encode({
 				gameId: currentGameId,
 			}),
 		);

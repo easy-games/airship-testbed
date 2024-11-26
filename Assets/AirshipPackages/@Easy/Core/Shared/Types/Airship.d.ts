@@ -548,6 +548,13 @@ interface AnimationEventListener extends MonoBehaviour {
 	TriggerEventObj(obj: Object): void;
 }
 
+interface CharacterStateData {
+	state: CharacterState;
+	grounded: boolean;
+	sprinting: boolean;
+	crouching: boolean;
+	localVelocity: Vector3;
+}
 interface CharacterAnimationHelper extends Component {
 	animator: Animator;
 	animationEvents?: AnimationEventListener;
@@ -555,7 +562,7 @@ interface CharacterAnimationHelper extends Component {
 	SetFirstPerson(firstPerson: boolean): void;
 	SetRootMovementLayer(itemInHand: boolean): void;
 	ClearStatesOnNonRootLayers(): void;
-	SetState(newState: CharacterState, force = false, noRootLayerFade = false);
+	SetState(newState: CharacterStateData);
 	SetVelocity(vel: Vector3);
 	SetGrounded(grounded: boolean);
 	GetPlaybackSpeed(): number;
@@ -958,15 +965,15 @@ interface AnimationClipReplacementEntry {
 	replacementClip: AnimationClip;
 }
 
-interface AnimatorClipReplacer extends Component {
+interface AnimatorClipReplacer extends MonoBehaviour {
 	AnimatorController: Object | undefined;
 	clipReplacements: AnimationClipReplacementEntry[];
 	baseClipSelectionPresets: any[];
 
 	/**
-     * Directly remove clip replacements to the given AnimatorOverrideController.
-     * @param controller - The AnimatorOverrideController to apply the replacements to.
-     */
+	 * Directly remove clip replacements to the given AnimatorOverrideController.
+	 * @param controller - The AnimatorOverrideController to apply the replacements to.
+	 */
 	RemoveClips(controller: Object): void;
 	/**
 	 * Applies the animation clip replacements to the provided Animator or AnimatorOverrideController.

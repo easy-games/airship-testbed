@@ -21,6 +21,10 @@ export class Team {
 		return this.players;
 	}
 
+	public HasPlayer(player: Player): boolean {
+		return this.players.has(player);
+	}
+
 	public AddPlayer(player: Player): void {
 		const oldTeam = player.team;
 

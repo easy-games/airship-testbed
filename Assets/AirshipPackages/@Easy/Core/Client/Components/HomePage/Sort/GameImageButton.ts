@@ -8,7 +8,6 @@ import { Mouse } from "@Easy/Core/Shared/UserInput";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI, PointerButton, PointerDirection } from "@Easy/Core/Shared/Util/CanvasAPI";
-import { EncodeJSON } from "@Easy/Core/Shared/json";
 import HomePageGameComponent from "./HomePageGameComponent";
 
 export default class GameImageButton extends AirshipBehaviour {
@@ -83,7 +82,7 @@ export default class GameImageButton extends AirshipBehaviour {
 								task.spawn(() => {
 									const res = InternalHttpManager.PostAsync(
 										AirshipUrl.DeploymentService + "/game-servers/shutdown",
-										EncodeJSON({
+										json.encode({
 											gameId: gameComponent.gameDto.id,
 										}),
 									);

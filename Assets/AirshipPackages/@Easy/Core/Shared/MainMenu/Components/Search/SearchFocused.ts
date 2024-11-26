@@ -8,7 +8,6 @@ import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { MobileGameList } from "@Easy/Core/Shared/Util/MobileGameList";
 import { OnFixedUpdate, OnLateUpdate } from "@Easy/Core/Shared/Util/Timer";
-import { DecodeJSON } from "@Easy/Core/Shared/json";
 import { MainMenuSingleton } from "../../Singletons/MainMenuSingleton";
 import GameSearchResult from "./GameSearchResult";
 import { SearchResultDto } from "./SearchAPI";
@@ -159,7 +158,7 @@ export default class SearchFocused extends AirshipBehaviour {
 		if (thisQuery !== this.queryId) return;
 		let games: GameDto[];
 		if (res.success) {
-			games = DecodeJSON<GameDto[]>(res.data);
+			games = json.decode<GameDto[]>(res.data);
 			if (games.size() === 0) {
 				games = [...Dependency<SearchSingleton>().games];
 			}

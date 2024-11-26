@@ -2,7 +2,6 @@ import { GameServerPartyData } from "@Easy/Core/Shared/Airship/Types/Outputs/Air
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
-import { DecodeJSON } from "@Easy/Core/Shared/json";
 
 export const enum PartyServiceBridgeTopics {
 	GetPartyForUserId = "PartyService:GetPartyForUserId",
@@ -37,7 +36,7 @@ export class ProtectedPartyService {
 			throw res.error;
 		}
 
-		return DecodeJSON<{ party: GameServerPartyData | undefined }>(res.data).party;
+		return json.decode<{ party: GameServerPartyData | undefined }>(res.data).party;
 	}
 
 	public async GetPartyById(partyId: string): Promise<ReturnType<ServerBridgeApiGetPartyById>> {
@@ -48,7 +47,7 @@ export class ProtectedPartyService {
 			throw res.error;
 		}
 
-		return DecodeJSON<{ party: GameServerPartyData | undefined }>(res.data).party;
+		return json.decode<{ party: GameServerPartyData | undefined }>(res.data).party;
 	}
 
 	protected OnStart(): void {}

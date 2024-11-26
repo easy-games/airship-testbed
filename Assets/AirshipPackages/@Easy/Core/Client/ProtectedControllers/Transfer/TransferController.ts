@@ -4,7 +4,6 @@ import { Game } from "@Easy/Core/Shared/Game";
 import { Result } from "@Easy/Core/Shared/Types/Result";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import inspect from "@Easy/Core/Shared/Util/Inspect";
-import { EncodeJSON } from "@Easy/Core/Shared/json";
 import { MainMenuPartyController } from "../Social/MainMenuPartyController";
 import { SocketController } from "../Socket/SocketController";
 
@@ -53,7 +52,7 @@ export class TransferController {
 		let isPartyLeader = Dependency<MainMenuPartyController>().IsPartyLeader();
 		const res = InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/transfers/transfer/self",
-			EncodeJSON({
+			json.encode({
 				gameId: gameId,
 				preferredServerId,
 				withParty: isPartyLeader,

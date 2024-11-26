@@ -3579,13 +3579,6 @@ declare const enum LoadingStatus {
     Loading = 1,
     Loaded = 2,
 }
-declare const enum CharacterState {
-    Idle = 0,
-    Running = 1,
-    Airborne = 2,
-    Sprinting = 3,
-    Crouching = 4,
-}
 
     
 interface RaycastHit {
@@ -36607,6 +36600,28 @@ interface WindowCoreConstructor {
 }
 declare const WindowCore: WindowCoreConstructor;
     
+interface CharacterMoveModifier {
+    speedMultiplier: number;
+    jumpMultiplier: number;
+    blockSprint: boolean;
+    blockJump: boolean;
+
+
+
+
+
+}
+    
+interface CharacterMoveModifierConstructor {
+
+
+    new(): CharacterMoveModifier;
+
+
+
+}
+declare const CharacterMoveModifier: CharacterMoveModifierConstructor;
+    
 interface MaterialColorURP extends MonoBehaviour {
     colorSettings: CSArray<ColorSetting>;
     addedByEditorScript: boolean;
@@ -36704,7 +36719,7 @@ interface PackageVersionResponse {
 interface Package {
     assetVersionNumber: number;
     codeVersionNumber: number;
-    publishVersionNumber: number;
+    publishNumber: number;
 
 
 
@@ -42932,90 +42947,6 @@ interface StandaloneFileBrowserConstructor {
 }
 declare const StandaloneFileBrowser: StandaloneFileBrowserConstructor;
     
-interface Mathf {
-
-
-
-
-
-}
-    
-interface MathfConstructor {
-    PI: number;
-    Infinity: number;
-    NegativeInfinity: number;
-    Deg2Rad: number;
-    Rad2Deg: number;
-    readonly Epsilon: number;
-
-
-
-
-    Abs(f: number): number;
-    Abs(value: number): number;
-    Acos(f: number): number;
-    Approximately(a: number, b: number): boolean;
-    Asin(f: number): number;
-    Atan(f: number): number;
-    Atan2(y: number, x: number): number;
-    Ceil(f: number): number;
-    CeilToInt(f: number): number;
-    Clamp(value: number, min: number, max: number): number;
-    Clamp(value: number, min: number, max: number): number;
-    Clamp01(value: number): number;
-    ClosestPowerOfTwo(value: number): number;
-    CorrelatedColorTemperatureToRGB(kelvin: number): Color;
-    Cos(f: number): number;
-    DeltaAngle(current: number, target: number): number;
-    Exp(power: number): number;
-    FloatToHalf(val: number): number;
-    Floor(f: number): number;
-    FloorToInt(f: number): number;
-    Gamma(value: number, absmax: number, gamma: number): number;
-    GammaToLinearSpace(value: number): number;
-    HalfToFloat(val: number): number;
-    InverseLerp(a: number, b: number, value: number): number;
-    IsPowerOfTwo(value: number): boolean;
-    Lerp(a: number, b: number, t: number): number;
-    LerpAngle(a: number, b: number, t: number): number;
-    LerpUnclamped(a: number, b: number, t: number): number;
-    LinearToGammaSpace(value: number): number;
-    Log(f: number, p: number): number;
-    Log(f: number): number;
-    Log10(f: number): number;
-    Max(a: number, b: number): number;
-    Max(values: CSArray<number>): number;
-    Max(a: number, b: number): number;
-    Max(values: CSArray<number>): number;
-    Min(a: number, b: number): number;
-    Min(values: CSArray<number>): number;
-    Min(a: number, b: number): number;
-    Min(values: CSArray<number>): number;
-    MoveTowards(current: number, target: number, maxDelta: number): number;
-    MoveTowardsAngle(current: number, target: number, maxDelta: number): number;
-    NextPowerOfTwo(value: number): number;
-    PerlinNoise(x: number, y: number): number;
-    PerlinNoise1D(x: number): number;
-    PingPong(t: number, length: number): number;
-    Pow(f: number, p: number): number;
-    Repeat(t: number, length: number): number;
-    Round(f: number): number;
-    RoundToInt(f: number): number;
-    Sign(f: number): number;
-    Sin(f: number): number;
-    SmoothDamp(current: number, target: number, currentVelocity: unknown, smoothTime: number, maxSpeed: number): number;
-    SmoothDamp(current: number, target: number, currentVelocity: unknown, smoothTime: number): number;
-    SmoothDamp(current: number, target: number, currentVelocity: unknown, smoothTime: number, maxSpeed: number, deltaTime: number): number;
-    SmoothDampAngle(current: number, target: number, currentVelocity: unknown, smoothTime: number, maxSpeed: number): number;
-    SmoothDampAngle(current: number, target: number, currentVelocity: unknown, smoothTime: number): number;
-    SmoothDampAngle(current: number, target: number, currentVelocity: unknown, smoothTime: number, maxSpeed: number, deltaTime: number): number;
-    SmoothStep(from: number, to: number, t: number): number;
-    Sqrt(f: number): number;
-    Tan(f: number): number;
-
-}
-declare const Mathf: MathfConstructor;
-    
 interface UnityWebRequestTexture {
 
 
@@ -44217,6 +44148,96 @@ interface VolumeConstructor {
 }
 declare const Volume: VolumeConstructor;
     
+interface LensDistortion extends VolumeComponent, IPostProcessComponent {
+    intensity: ClampedFloatParameter;
+    xMultiplier: ClampedFloatParameter;
+    yMultiplier: ClampedFloatParameter;
+    center: Vector2Parameter;
+    scale: ClampedFloatParameter;
+
+
+
+    IsActive(): boolean;
+
+
+}
+    
+interface Vector2Parameter extends VolumeParameter<Vector2> {
+
+
+
+    Interp(from: Vector2, to: Vector2, t: number): void;
+
+
+}
+    
+interface Vector2ParameterConstructor {
+
+
+    new(value: Vector2, overrideState: boolean): Vector2Parameter;
+
+
+
+}
+declare const Vector2Parameter: Vector2ParameterConstructor;
+    
+interface LensDistortionConstructor {
+
+
+    new(): LensDistortion;
+
+
+
+}
+declare const LensDistortion: LensDistortionConstructor;
+    
+interface Vignette extends VolumeComponent, IPostProcessComponent {
+    color: ColorParameter;
+    center: Vector2Parameter;
+    intensity: ClampedFloatParameter;
+    smoothness: ClampedFloatParameter;
+    rounded: BoolParameter;
+
+
+
+    IsActive(): boolean;
+
+
+}
+    
+interface ColorParameter extends VolumeParameter<Color> {
+    hdr: boolean;
+    showAlpha: boolean;
+    showEyeDropper: boolean;
+
+
+
+    Interp(from: Color, to: Color, t: number): void;
+
+
+}
+    
+interface ColorParameterConstructor {
+
+
+    new(value: Color, overrideState: boolean): ColorParameter;
+    new(value: Color, hdr: boolean, showAlpha: boolean, showEyeDropper: boolean, overrideState: boolean): ColorParameter;
+
+
+
+}
+declare const ColorParameter: ColorParameterConstructor;
+    
+interface VignetteConstructor {
+
+
+    new(): Vignette;
+
+
+
+}
+declare const Vignette: VignetteConstructor;
+    
 interface NetworkServer {
 
 
@@ -45035,6 +45056,9 @@ interface MoveInputData {
 
 
 
+    Dispose(): void;
+    GetTick(): number;
+    SetTick(value: number): void;
 
 
 }
@@ -45045,6 +45069,7 @@ interface MoveInputDataConstructor {
     new(moveDir: Vector3, jump: boolean, crouch: boolean, sprint: boolean, lookVector: Vector3, customData: BinaryBlob): MoveInputData;
 
 
+    CompareBinaryBlobs(a: BinaryBlob, b: BinaryBlob): boolean;
 
 }
 declare const MoveInputData: MoveInputDataConstructor;
@@ -46975,54 +47000,6 @@ interface ActiveAccessory {
 
 
 }
-    
-interface AirshipPredictedState {
-    readonly timestamp: number;
-    readonly position: Vector3;
-    readonly velocity: Vector3;
-
-
-
-    Interpolate(other: AirshipPredictedState, delta: number): AirshipPredictedState;
-
-
-}
-    
-interface CharacterMovementState extends AirshipPredictedState {
-    currentMoveInput: MoveInputData;
-    inputDisabled: boolean;
-    isFlying: boolean;
-    jumpCount: number;
-    airborneFromImpulse: boolean;
-    alreadyJumped: boolean;
-    prevMoveDir: Vector3;
-    lastGroundedMoveDir: Vector3;
-    prevCrouch: boolean;
-    prevStepUp: boolean;
-    prevGrounded: boolean;
-    state: CharacterState;
-    prevState: CharacterState;
-    timeSinceBecameGrounded: number;
-    timeSinceWasGrounded: number;
-    timeSinceJump: number;
-
-
-
-    Interpolate(other: AirshipPredictedState, delta: number): AirshipPredictedState;
-
-
-}
-    
-interface CharacterMovementStateConstructor {
-
-
-    new(): CharacterMovementState;
-    new(time: number, pos: Vector3, vel: Vector3): CharacterMovementState;
-
-
-
-}
-declare const CharacterMovementState: CharacterMovementStateConstructor;
     
 interface AirshipSteamFriendInfo {
     playingAirship: boolean;

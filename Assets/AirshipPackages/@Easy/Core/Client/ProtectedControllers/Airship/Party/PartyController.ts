@@ -2,8 +2,8 @@ import { Party } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipParty";
 import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
-import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 import { SocketController } from "../../Socket/SocketController";
+import { Signal } from "@Easy/Core/Shared/Util/Signal";
 
 export const enum PartyControllerBridgeTopics {
 	GetParty = "PartyController:GetParty",
@@ -14,6 +14,8 @@ export type ClientBridgeApiGetParty = () => Party;
 
 @Controller({})
 export class ProtectedPartyController {
+	public readonly onPartyChange = new Signal<Party>();
+
 	constructor(private readonly socketController: SocketController) {
 		if (!Game.IsClient()) return;
 
@@ -22,6 +24,7 @@ export class ProtectedPartyController {
 		});
 
 		this.socketController.On<Party>("game-coordinator/party-update", (data) => {
+			this.onPartyChange.Fire(data);
 			contextbridge.invoke(PartyControllerBridgeTopics.OnPartyChange, LuauContext.Game, data);
 		});
 	}
@@ -34,13 +37,13 @@ export class ProtectedPartyController {
 			throw res.error;
 		}
 
-		return DecodeJSON<{ party: Party }>(res.data).party;
+		return json.decode<{ party: Party }>(res.data).party;
 	}
 
 	public async InviteToParty(userId: string) {
 		InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/parties/party/invite",
-			EncodeJSON({
+			json.encode({
 				userToAdd: userId,
 			}),
 		);

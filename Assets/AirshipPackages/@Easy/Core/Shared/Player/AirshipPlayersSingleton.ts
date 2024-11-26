@@ -17,7 +17,6 @@ import { AirshipUrl } from "../Util/AirshipUrl";
 import { RunUtil } from "../Util/RunUtil";
 import { Levenshtein } from "../Util/Strings/Levenshtein";
 import { OnUpdate } from "../Util/Timer";
-import { DecodeJSON, EncodeJSON } from "../json";
 import { BridgedPlayer } from "./BridgedPlayer";
 import { Player, PlayerDto } from "./Player";
 
@@ -359,7 +358,7 @@ export class AirshipPlayersSingleton {
 			player.selectedOutfit = outfitDto;
 			player.outfitLoaded = true;
 			if (Game.IsEditor()) {
-				EditorSessionState.SetString("player_" + player.userId + "_outfit", EncodeJSON(outfitDto));
+				EditorSessionState.SetString("player_" + player.userId + "_outfit", json.encode(outfitDto));
 			}
 		};
 
@@ -367,7 +366,7 @@ export class AirshipPlayersSingleton {
 			//print("Using editor cache: " + player.userId);
 			const data = EditorSessionState.GetString("player_" + player.userId + "_outfit");
 			if (data) {
-				const outfitDto = DecodeJSON<OutfitDto>(data);
+				const outfitDto = json.decode<OutfitDto>(data);
 				if (outfitDto) {
 					SetOutfit(outfitDto);
 					return true;

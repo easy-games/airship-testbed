@@ -172,7 +172,7 @@ export class AirshipInventorySingleton {
 				itemStack.SetItemType(itemType);
 			}
 			if (amount !== undefined) {
-				itemStack.SetAmount(amount);
+				itemStack.SetAmount(amount, { noNetwork: Game.IsHosting() });
 			}
 		});
 	}

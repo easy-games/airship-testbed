@@ -3,7 +3,6 @@ import { RankData } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipLeaderb
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
-import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 
 export const enum LeaderboardServiceBridgeTopics {
 	Update = "LeaderboardService:Update",
@@ -79,7 +78,7 @@ export class ProtectedLeaderboardService {
 	): Promise<ReturnType<ServerBridgeApiLeaderboardUpdate>> {
 		const result = InternalHttpManager.PostAsync(
 			`${AirshipUrl.DataStoreService}/leaderboards/leaderboard-id/${name}/stats`,
-			EncodeJSON({
+			json.encode({
 				stats: update,
 			}),
 		);
@@ -99,7 +98,7 @@ export class ProtectedLeaderboardService {
 			throw result.error;
 		}
 
-		return DecodeJSON<{ ranking: RankData | undefined }>(result.data).ranking;
+		return json.decode<{ ranking: RankData | undefined }>(result.data).ranking;
 	}
 
 	public async DeleteEntry(name: string, id: string): Promise<ReturnType<ServerBridgeApiLeaderboardDeleteEntry>> {
@@ -119,7 +118,7 @@ export class ProtectedLeaderboardService {
 	): Promise<ReturnType<ServerBridgeApiLeaderboardDeleteEntries>> {
 		const result = InternalHttpManager.PostAsync(
 			`${AirshipUrl.DataStoreService}/leaderboards/leaderboard-id/${name}/stats/batch-delete`,
-			EncodeJSON({
+			json.encode({
 				ids,
 			}),
 		);
@@ -160,7 +159,7 @@ export class ProtectedLeaderboardService {
 			return [];
 		}
 
-		return DecodeJSON(result.data) as RankData[];
+		return json.decode(result.data) as RankData[];
 	}
 
 	protected OnStart(): void {}

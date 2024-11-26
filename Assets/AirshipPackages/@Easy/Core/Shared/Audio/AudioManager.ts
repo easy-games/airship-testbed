@@ -56,8 +56,38 @@ export class AudioManager {
 	private static audioSourceTemplate: GameObject | undefined;
 	private static globalAudioSources: Map<number, AudioSource> = new Map();
 
+	private static cleanupQueue = new Set<{
+		audioSource: AudioSource;
+		aliveUntil: number;
+		isGlobal: boolean;
+	}>();
+
 	public static Init(): void {
 		this.CacheAudioSources();
+
+		task.spawn(() => {
+			let toRemove = [];
+			while (task.wait(1)) {
+				const now = Time.unscaledTime;
+				for (let item of this.cleanupQueue) {
+					if (now >= item.aliveUntil) {
+						task.spawn(() => {
+							if (item.audioSource.IsDestroyed()) return;
+
+							item.audioSource.Stop();
+							if (item.isGlobal) {
+								this.globalAudioSources.delete(item.audioSource.gameObject.GetInstanceID());
+							}
+							PoolManager.ReleaseObject(item.audioSource.gameObject);
+						});
+						toRemove.push(item);
+					}
+				}
+				for (let item of toRemove) {
+					this.cleanupQueue.delete(item);
+				}
+			}
+		});
 	}
 
 	private static CacheAudioSources() {
@@ -102,29 +132,24 @@ export class AudioManager {
 		audioSource.spatialBlend = 0;
 		if (config?.loop !== undefined || !providedAudioSource) audioSource.loop = config?.loop ?? false;
 		if (config?.pitch !== undefined || !providedAudioSource) audioSource.pitch = config?.pitch ?? 1;
-		if (config?.rollOffMode !== undefined || !providedAudioSource)
-			audioSource.rolloffMode = config?.rollOffMode ?? AudioRolloffMode.Logarithmic;
-		if (config?.maxDistance !== undefined || !providedAudioSource)
-			audioSource.maxDistance = config?.maxDistance ?? 500;
-		if (config?.minDistance !== undefined || !providedAudioSource)
-			audioSource.minDistance = config?.minDistance ?? 1;
 		if (config?.volumeScale !== undefined || !providedAudioSource) audioSource.volume = config?.volumeScale ?? 1;
-		if (config?.dopplerLevel !== undefined || !providedAudioSource)
-			audioSource.dopplerLevel = config?.dopplerLevel ?? 0;
 		if (!clip) {
 			warn("Trying to play unidentified clip");
 			return undefined;
 		}
-		audioSource.PlayOneShot(clip);
+		if (config?.loop) {
+			audioSource.clip = clip;
+			audioSource.Play();
+		} else {
+			audioSource.PlayOneShot(clip);
+		}
 		//audioSource.PlayOneShot(clip, );
 		this.globalAudioSources.set(audioSource.gameObject.GetInstanceID(), audioSource);
 		if (!audioSource.loop) {
-			task.unscaledDelay(clip.length + 1, () => {
-				if (audioSource.IsDestroyed()) return;
-				audioSource.Stop();
-				this.globalAudioSources.delete(audioSource.gameObject.GetInstanceID());
-				PoolManager.ReleaseObject(audioSource.gameObject);
-				// Object.Destroy(audioSource.gameObject);
+			this.cleanupQueue.add({
+				audioSource,
+				aliveUntil: Time.unscaledTime + clip.length + 1,
+				isGlobal: true,
 			});
 		}
 		return audioSource;
@@ -180,12 +205,20 @@ export class AudioManager {
 			audioSource.minDistance = config?.minDistance ?? 1;
 		if (config?.pitch !== undefined || !providedAudioSource) audioSource.pitch = config?.pitch ?? 1;
 		if (config?.volumeScale !== undefined || !providedAudioSource) audioSource.volume = config?.volumeScale ?? 1;
-		audioSource.PlayOneShot(clip);
+		if (config?.dopplerLevel !== undefined || !providedAudioSource) {
+			audioSource.dopplerLevel = config?.dopplerLevel ?? 0;
+		}
+		if (config?.loop) {
+			audioSource.clip = clip;
+			audioSource.Play();
+		} else {
+			audioSource.PlayOneShot(clip);
+		}
 		if (!audioSource.loop) {
-			task.unscaledDelay(clip.length + 1, () => {
-				audioSource.Stop();
-				PoolManager.ReleaseObject(audioSource.gameObject);
-				// Object.Destroy(audioSource.gameObject);
+			this.cleanupQueue.add({
+				audioSource,
+				aliveUntil: Time.unscaledTime + clip.length + 1,
+				isGlobal: false,
 			});
 		}
 		return audioSource;
