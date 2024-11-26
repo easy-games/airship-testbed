@@ -30028,6 +30028,7 @@ interface AirshipPackageDocument {
     id: string;
     assetVersion: string;
     codeVersion: string;
+    publishVersionNumber: string;
     game: boolean;
     localSource: boolean;
     disabled: boolean;
@@ -30603,6 +30604,7 @@ interface StartupConfig {
     GameAssetVersion: string;
     GameCodeVersion: string;
     StartingSceneName: string;
+    GamePublishVersion: string;
     CdnUrl: string;
     packages: CSArray<AirshipPackageDocument>;
 
@@ -35709,6 +35711,7 @@ interface BridgeConstructor {
     MakeIntArray(size: number): CSArray<number>;
     MakeMaterialPropertyBlock(): MaterialPropertyBlock;
     MakeMesh(): Mesh;
+    MakeSprite(texture2D: Texture2D): Sprite;
     MakeSprite(texture: Texture2D, rect: Rect, pivot: Vector2, pixelsPerUnit: number): Sprite;
     MakeTexture2D(width: number, height: number, format: TextureFormat, mipChain: boolean, linear: boolean): Texture2D;
     MakeVector3Array(size: number): CSArray<Vector3>;
@@ -36716,6 +36719,7 @@ interface PackageVersionResponse {
 interface Package {
     assetVersionNumber: number;
     codeVersionNumber: number;
+    publishNumber: number;
 
 
 
@@ -42942,7 +42946,6 @@ interface StandaloneFileBrowserConstructor {
 
 }
 declare const StandaloneFileBrowser: StandaloneFileBrowserConstructor;
-
     
 interface UnityWebRequestTexture {
 
@@ -44144,6 +44147,96 @@ interface VolumeConstructor {
 
 }
 declare const Volume: VolumeConstructor;
+    
+interface LensDistortion extends VolumeComponent, IPostProcessComponent {
+    intensity: ClampedFloatParameter;
+    xMultiplier: ClampedFloatParameter;
+    yMultiplier: ClampedFloatParameter;
+    center: Vector2Parameter;
+    scale: ClampedFloatParameter;
+
+
+
+    IsActive(): boolean;
+
+
+}
+    
+interface Vector2Parameter extends VolumeParameter<Vector2> {
+
+
+
+    Interp(from: Vector2, to: Vector2, t: number): void;
+
+
+}
+    
+interface Vector2ParameterConstructor {
+
+
+    new(value: Vector2, overrideState: boolean): Vector2Parameter;
+
+
+
+}
+declare const Vector2Parameter: Vector2ParameterConstructor;
+    
+interface LensDistortionConstructor {
+
+
+    new(): LensDistortion;
+
+
+
+}
+declare const LensDistortion: LensDistortionConstructor;
+    
+interface Vignette extends VolumeComponent, IPostProcessComponent {
+    color: ColorParameter;
+    center: Vector2Parameter;
+    intensity: ClampedFloatParameter;
+    smoothness: ClampedFloatParameter;
+    rounded: BoolParameter;
+
+
+
+    IsActive(): boolean;
+
+
+}
+    
+interface ColorParameter extends VolumeParameter<Color> {
+    hdr: boolean;
+    showAlpha: boolean;
+    showEyeDropper: boolean;
+
+
+
+    Interp(from: Color, to: Color, t: number): void;
+
+
+}
+    
+interface ColorParameterConstructor {
+
+
+    new(value: Color, overrideState: boolean): ColorParameter;
+    new(value: Color, hdr: boolean, showAlpha: boolean, showEyeDropper: boolean, overrideState: boolean): ColorParameter;
+
+
+
+}
+declare const ColorParameter: ColorParameterConstructor;
+    
+interface VignetteConstructor {
+
+
+    new(): Vignette;
+
+
+
+}
+declare const Vignette: VignetteConstructor;
     
 interface NetworkServer {
 
