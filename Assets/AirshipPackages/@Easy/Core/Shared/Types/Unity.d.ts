@@ -4884,6 +4884,7 @@ interface VolumeProfile extends ScriptableObject {
 	Reset(): void;
 	// Get<T>(component: T): T | undefined;
 	GetDepthOfField(): DepthOfField | undefined;
+	GetVolumeComponents(): CSArray<VolumeComponent>;
 }
 
 interface VolumeProfileConstructor {
