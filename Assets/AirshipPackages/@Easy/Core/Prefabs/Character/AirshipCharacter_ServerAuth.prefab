@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &774951606313488548
+--- !u!1 &6741169564715443661
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,10 +8,10 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5897694028021557090}
-  - component: {fileID: 2133405366518917575}
-  - component: {fileID: 4504160957976092611}
-  - component: {fileID: 3567974228693905870}
+  - component: {fileID: 3968706936788797057}
+  - component: {fileID: 2758379931188893030}
+  - component: {fileID: 8665539309575350096}
+  - component: {fileID: 1580611429028228550}
   m_Layer: 3
   m_Name: Jeans Shorts_legs 1
   m_TagString: Untagged
@@ -19,13 +19,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5897694028021557090
+--- !u!4 &3968706936788797057
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 774951606313488548}
+  m_GameObject: {fileID: 6741169564715443661}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
@@ -34,13 +34,13 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7501836857581394760}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!137 &2133405366518917575
+--- !u!137 &2758379931188893030
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 774951606313488548}
+  m_GameObject: {fileID: 6741169564715443661}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -112,13 +112,13 @@ SkinnedMeshRenderer:
     m_Center: {x: 0, y: -0.03410576, z: 0.6845479}
     m_Extent: {x: 0.2789171, y: 0.14869641, z: 0.2768774}
   m_DirtyAABB: 0
---- !u!114 &4504160957976092611
+--- !u!114 &8665539309575350096
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 774951606313488548}
+  m_GameObject: {fileID: 6741169564715443661}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
@@ -127,13 +127,13 @@ MonoBehaviour:
   colorSettings:
   - baseColor: {r: 1, g: 1, b: 1, a: 1}
   addedByEditorScript: 0
---- !u!114 &3567974228693905870
+--- !u!114 &1580611429028228550
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 774951606313488548}
+  m_GameObject: {fileID: 6741169564715443661}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0b74917b00f1d374c9a7136917a61ddf, type: 3}
@@ -211,10 +211,11 @@ PrefabInstance:
     m_RemovedGameObjects:
     - {fileID: 6842749966987518785, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
     - {fileID: 1893650489547789612, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
+    - {fileID: 8039730238058382929, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 6518322715866115168, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5897694028021557090}
+      addedObject: {fileID: 3968706936788797057}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8616685848737228372, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       insertIndex: -1
@@ -315,10 +316,10 @@ MonoBehaviour:
   onlyRecordChanges: 1
   compareLastFirst: 1
   checkReconcileEveryNthFrame: 4
-  oneFrameAhead: 0
-  positionCorrectionThreshold: 0.2
-  velocityCorrectionThreshold: 1.5
-  velocitySnapThreshold: 3
+  serverSerializationOffset: 0
+  positionCorrectionThreshold: 0.4
+  velocityCorrectionThreshold: 3
+  velocitySnapThreshold: 5
   reduceSendsWhileIdle: 1
   showLogs: 1
   showGizmos: 1
