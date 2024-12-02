@@ -4,7 +4,6 @@ import {
 } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipServerManager";
 import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { DecodeJSON } from "@Easy/Core/Shared/json";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 
 export const enum ServerListControllerBridgeTopics {
@@ -42,7 +41,7 @@ export class ProtectedServerListController {
 			throw res.error;
 		}
 
-		return DecodeJSON(res.data) as { entries: AirshipServerData[] };
+		return json.decode(res.data) as { entries: AirshipServerData[] };
 	}
 
 	public async GetFriendServers(): Promise<ReturnType<ClientBridgeApiGetFriendServers>> {
@@ -55,7 +54,7 @@ export class ProtectedServerListController {
 			throw res.error;
 		}
 
-		return DecodeJSON(res.data) as { entries: ServerListEntryWithFriends[] };
+		return json.decode(res.data) as { entries: ServerListEntryWithFriends[] };
 	}
 
 	protected OnStart(): void {}

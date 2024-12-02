@@ -14,7 +14,6 @@ import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
-import { EncodeJSON } from "@Easy/Core/Shared/json";
 import { MainMenuController } from "../MainMenuController";
 import { SocketController } from "../Socket/SocketController";
 import { ProtectedFriendsController } from "./FriendsController";
@@ -81,7 +80,7 @@ export class MainMenuPartyController {
 					if (result) {
 						const res = InternalHttpManager.PostAsync(
 							AirshipUrl.GameCoordinator + "/parties/party/join",
-							EncodeJSON({
+							json.encode({
 								partyId: data.partyId,
 							}),
 						);
@@ -214,7 +213,7 @@ export class MainMenuPartyController {
 		CanvasAPI.OnClickEvent(leaveButton, () => {
 			InternalHttpManager.PostAsync(
 				AirshipUrl.GameCoordinator + "/parties/party/remove",
-				EncodeJSON({
+				json.encode({
 					userToRemove: Game.localPlayer.userId,
 				}),
 			);
@@ -228,7 +227,7 @@ export class MainMenuPartyController {
 	public async InviteUser(userIdToAdd: string): Promise<Result<undefined, undefined>> {
 		const res = InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/parties/party/invite",
-			EncodeJSON({ userToAdd: userIdToAdd }),
+			json.encode({ userToAdd: userIdToAdd }),
 		);
 
 		if (!res.success || res.statusCode > 299) {
@@ -250,7 +249,7 @@ export class MainMenuPartyController {
 	public async RemoveUser(userIdToRemove: string): Promise<Result<undefined, undefined>> {
 		const res = InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/parties/party/remove",
-			EncodeJSON({ userToRemove: userIdToRemove }),
+			json.encode({ userToRemove: userIdToRemove }),
 		);
 
 		if (!res.success || res.statusCode > 299) {
@@ -271,7 +270,7 @@ export class MainMenuPartyController {
 	public async JoinParty(partyId: string): Promise<Result<undefined, undefined>> {
 		const res = InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/parties/party/join",
-			EncodeJSON({ partyId }),
+			json.encode({ partyId }),
 		);
 
 		if (!res.success || res.statusCode > 299) {

@@ -3,18 +3,52 @@ declare namespace task {
 	function spawn<T extends Callback>(callback: T, ...args: Parameters<T>): thread;
 	function spawn(thread: thread, ...args: unknown[]): thread;
 
+	/**
+	 * Resumes the passed thread or function instantly using the engine's scheduler.
+	 *
+	 * This is equivalent to `task.spawn`, except the thread is not owned by the calling thread. This means
+	 * that the thread will continue to run, even if the parent thread belongs to a destroyed UnityObject.
+	 */
+	function spawnDetached<T extends Callback>(callback: T, ...args: Parameters<T>): thread;
+
 	/** Resumes the passed thread or function at the end of the invocation cycle using the engine's scheduler. */
 	function defer<T extends Callback>(callback: T, ...args: Parameters<T>): thread;
 	function defer(thread: thread, ...args: unknown[]): thread;
 
+	/**
+	 * Resumes the passed thread or function at the end of the invocation cycle using the engine's scheduler.
+	 *
+	 * This is equivalent to `task.defer`, except the thread is not owned by the calling thread. This means
+	 * that the thread will continue to run, even if the parent thread belongs to a destroyed UnityObject.
+	 */
+	function deferDetached<T extends Callback>(callback: T, ...args: Parameters<T>): thread;
+
 	/** Resumes the passed thread or function after the elapsed `delayTime` seconds using the engine's scheduler. */
 	function delay<T extends Callback>(delayTime: number, callback: T, ...args: Parameters<T>): thread;
 	function delay(delayTime: number, thread: thread, ...args: unknown[]): thread;
+
+	/**
+	 * Resumes the passed thread or function after the elapsed `delayTime` seconds using the engine's scheduler.
+	 *
+	 * This is equivalent to `task.delay`, except the thread is not owned by the calling thread. This means
+	 * that the thread will continue to run, even if the parent thread belongs to a destroyed UnityObject.
+	 */
+	function delayDetached<T extends Callback>(delayTime: number, callback: T, ...args: Parameters<T>): thread;
+
 	/**
 	 * Resumes the passed thread or function after the elapsed `delayTime` seconds using the engine's scheduler.
 	 * This uses unscaled time (`Time.unscaledTime`), so `Time.timeScale` will not effect duration.
 	 */
 	function unscaledDelay<T extends Callback>(delayTime: number, callback: T, ...args: Parameters<T>): thread;
+
+	/**
+	 * Resumes the passed thread or function after the elapsed `delayTime` seconds using the engine's scheduler.
+	 * This uses unscaled time (`Time.unscaledTime`), so `Time.timeScale` will not effect duration.
+	 *
+	 * This is equivalent to `task.unscaledDelay`, except the thread is not owned by the calling thread. This means
+	 * that the thread will continue to run, even if the parent thread belongs to a destroyed UnityObject.
+	 */
+	function unscaledDelayDetached<T extends Callback>(delayTime: number, callback: T, ...args: Parameters<T>): thread;
 
 	/** Yields the current thread until the next frame. Returns the delta time waited. */
 	function wait(): number;

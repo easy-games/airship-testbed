@@ -4,7 +4,6 @@ import { Controller, Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Protected } from "@Easy/Core/Shared/Protected";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
-import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 import { ProtectedUserController } from "../User/UserController";
 
 export const enum PurchaseControllerBridgeTopics {
@@ -33,7 +32,7 @@ export class ProtectedPurchaseController {
 
 				const res = InternalHttpManager.PostAsync(
 					`${AirshipUrl.ContentService}/shop/purchase/validate`,
-					EncodeJSON({
+					json.encode({
 						productId,
 						receiverUid: targetUser.uid,
 						quantity,
@@ -45,7 +44,7 @@ export class ProtectedPurchaseController {
 					return false;
 				}
 
-				const validationData = DecodeJSON(res.data) as {
+				const validationData = json.decode(res.data) as {
 					total: number;
 					quantity: number;
 					productId: string;
@@ -66,14 +65,14 @@ export class ProtectedPurchaseController {
 	protected OnStart(): void {}
 
 	public PerformPurchase(config: { productId: string; receiverUid: string; quantity: number; total: number }): void {
-		const res = InternalHttpManager.PostAsync(`${AirshipUrl.ContentService}/shop/purchase`, EncodeJSON(config));
+		const res = InternalHttpManager.PostAsync(`${AirshipUrl.ContentService}/shop/purchase`, json.encode(config));
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Purchase failed. Status Code: ${res.statusCode}.\n`, res.error);
 			throw res.error;
 		}
 
-		const receiptData = DecodeJSON(res.data) as { receiptId: string };
+		const receiptData = json.decode(res.data) as { receiptId: string };
 		// Notify server of receipt so that it can process it
 	}
 }

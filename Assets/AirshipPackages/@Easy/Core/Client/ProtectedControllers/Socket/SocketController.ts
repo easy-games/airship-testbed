@@ -4,7 +4,6 @@ import { CoreLogger } from "@Easy/Core/Shared/Logger/CoreLogger";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
-import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 import { AuthController } from "../Auth/AuthController";
 
 @Controller({})
@@ -37,7 +36,7 @@ export class SocketController {
 				() => {
 					InternalHttpManager.PutAsync(
 						AirshipUrl.GameCoordinator + "/user-session/data",
-						EncodeJSON({
+						json.encode({
 							regionPriority: ["na"],
 						}),
 					);
@@ -63,7 +62,7 @@ export class SocketController {
 	public On<T = unknown>(eventName: string, callback: (data: T) => void): () => void {
 		return this.onEvent.Connect((e, d) => {
 			if (e === eventName) {
-				callback(DecodeJSON(d));
+				callback(json.decode(d));
 			}
 		});
 	}
@@ -73,7 +72,7 @@ export class SocketController {
 			data = { _hold: "yes" };
 		}
 		task.spawn(() => {
-			SocketManager.EmitAsync(eventName, EncodeJSON(data));
+			SocketManager.EmitAsync(eventName, json.encode(data));
 		});
 	}
 

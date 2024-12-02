@@ -3,7 +3,6 @@ import { Controller, Service } from "@Easy/Core/Shared/Flamework/flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
-import { DecodeJSON } from "@Easy/Core/Shared/json";
 
 @Service({ loadOrder: -1000 })
 @Controller({ loadOrder: -1000 })
@@ -54,7 +53,7 @@ export default class SearchSingleton {
 		}
 
 		try {
-			let data = DecodeJSON<MyGamesDto>(res.data);
+			let data = json.decode<MyGamesDto>(res.data);
 			data = data.filter((g) => g.lastVersionUpdate !== undefined);
 			this.myGames = data;
 			this.myGamesIds.clear();
@@ -81,7 +80,7 @@ export default class SearchSingleton {
 		}
 
 		try {
-			const data = DecodeJSON<GamesDto>(res.data);
+			const data = json.decode<GamesDto>(res.data);
 			task.spawn(() => {
 				this.AddGames([...data.recentlyUpdated, ...data.popular]);
 			});

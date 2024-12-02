@@ -2,7 +2,6 @@ import { AirshipPlayerLocation, PublicUser } from "@Easy/Core/Shared/Airship/Typ
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
-import { DecodeJSON } from "@Easy/Core/Shared/json";
 
 export const enum UserServiceBridgeTopics {
 	GetUserByUsername = "UserService:GetUserByUsername",
@@ -59,7 +58,7 @@ export class ProtectedUserService {
 			throw res.error;
 		}
 
-		return DecodeJSON<{ user: PublicUser | undefined }>(res.data).user;
+		return json.decode<{ user: PublicUser | undefined }>(res.data).user;
 	}
 
 	public async GetUserById(userId: string): Promise<ReturnType<ServerBridgeApiGetUserById>> {
@@ -70,7 +69,7 @@ export class ProtectedUserService {
 			throw res.error;
 		}
 
-		return DecodeJSON<{ user: PublicUser | undefined }>(res.data).user;
+		return json.decode<{ user: PublicUser | undefined }>(res.data).user;
 	}
 
 	public async GetUsersById(
@@ -96,7 +95,7 @@ export class ProtectedUserService {
 			return {};
 		}
 
-		let array = DecodeJSON(res.data) as PublicUser[];
+		let array = json.decode(res.data) as PublicUser[];
 		const map: Record<string, PublicUser> = {};
 		array.forEach((u) => (map[u.uid] = u));
 
@@ -121,7 +120,7 @@ export class ProtectedUserService {
 			return {};
 		}
 
-		return DecodeJSON(res.data) as ReturnType<ServerBridgeApiGetUserLocationsById>;
+		return json.decode(res.data) as ReturnType<ServerBridgeApiGetUserLocationsById>;
 	}
 
 	protected OnStart(): void {}

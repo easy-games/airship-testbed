@@ -3,7 +3,6 @@ import { CoreAction } from "@Easy/Core/Shared/Input/AirshipCoreAction";
 import { SerializableAction } from "@Easy/Core/Shared/Input/InputAction";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
-import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 import { ClientSettingsFile } from "./ClientSettingsFile";
 
 const defaultData: ClientSettingsFile = {
@@ -51,7 +50,7 @@ export class ClientSettingsController {
 	protected OnStart(): void {
 		const savedContents = DiskManager.ReadFileAsync("ClientSettings.json");
 		if (savedContents && savedContents !== "") {
-			this.data = DecodeJSON(savedContents);
+			this.data = json.decode(savedContents);
 			this.data = { ...defaultData, ...this.data };
 		} else {
 			this.data = defaultData;
@@ -133,7 +132,7 @@ export class ClientSettingsController {
 	}
 
 	public SaveSettings(): void {
-		DiskManager.WriteFileAsync("ClientSettings.json", EncodeJSON(this.data));
+		DiskManager.WriteFileAsync("ClientSettings.json", json.encode(this.data));
 	}
 
 	public GetMouseSensitivity(): number {

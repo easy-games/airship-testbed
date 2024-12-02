@@ -1,5 +1,4 @@
 import { Singleton } from "@Easy/Core/Shared/Flamework";
-import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 
 interface BlockedGame {
 	id: string;
@@ -27,7 +26,7 @@ export class MainMenuBlockSingleton {
 	protected OnStart(): void {
 		const blockListContents = DiskManager.ReadFileAsync("BlockList.json");
 		if (blockListContents && blockListContents !== "") {
-			const data = DecodeJSON<BlockListFile>(blockListContents);
+			const data = json.decode<BlockListFile>(blockListContents);
 			for (let game of data.games) {
 				this.blockedGameIds.add(game.id);
 				this.blockedGames.push(game);
@@ -88,6 +87,6 @@ export class MainMenuBlockSingleton {
 			games: this.blockedGames,
 			users: this.blockedUsers,
 		};
-		DiskManager.WriteFileAsync("BlockList.json", EncodeJSON(data));
+		DiskManager.WriteFileAsync("BlockList.json", json.encode(data));
 	}
 }

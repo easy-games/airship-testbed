@@ -1,7 +1,6 @@
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
-import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 
 export const enum DataStoreServiceBridgeTopics {
 	GetKey = "DataStore:GetKey",
@@ -51,21 +50,21 @@ export class ProtectedDataStoreService {
 			throw result.error;
 		}
 
-		return DecodeJSON<{ record: DataStoreRecord<T> | undefined }>(result.data).record;
+		return json.decode<{ record: DataStoreRecord<T> | undefined }>(result.data).record;
 	}
 
 	public async SetKey<T>(key: string, data: T, etag?: string): Promise<ReturnType<ServerBridgeApiDataSetKey<T>>> {
 		const query = etag ? `?etag=${etag}` : "";
 		const result = InternalHttpManager.PostAsync(
 			`${AirshipUrl.DataStoreService}/data/key/${key}${query}`,
-			EncodeJSON(data),
+			json.encode(data),
 		);
 		if (!result.success || result.statusCode > 299) {
 			warn(`Unable to set data key. Status Code: ${result.statusCode}.\n`, result.error);
 			throw result.error;
 		}
 
-		return DecodeJSON<{ record: DataStoreRecord<T> }>(result.data).record;
+		return json.decode<{ record: DataStoreRecord<T> }>(result.data).record;
 	}
 
 	public async DeleteKey<T>(key: string, etag?: string): Promise<ReturnType<ServerBridgeApiDataDeleteKey<T>>> {
@@ -76,7 +75,7 @@ export class ProtectedDataStoreService {
 			throw result.error;
 		}
 
-		return DecodeJSON<{ record: DataStoreRecord<T> | undefined }>(result.data).record;
+		return json.decode<{ record: DataStoreRecord<T> | undefined }>(result.data).record;
 	}
 
 	protected OnStart(): void {}

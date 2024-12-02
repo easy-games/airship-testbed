@@ -52,7 +52,7 @@ export default class PartyMember extends AirshipBehaviour {
 		// 		CanvasAPI.OnClickEvent(this.kickButton.gameObject, () => {
 		// 			InternalHttpManager.PostAsync(
 		// 				AirshipUrl.GameCoordinator + "/parties/party/remove",
-		// 				EncodeJSON({
+		// 				json.encode({
 		// 					userToRemove: user.uid,
 		// 				}),
 		// 			);

@@ -2,7 +2,6 @@ import { AirshipPurchaseReceipt } from "@Easy/Core/Shared/Airship/Types/Outputs/
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
-import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 
 @Service({})
 export class ProtectedPurchaseService {
@@ -18,7 +17,7 @@ export class ProtectedPurchaseService {
 	public ProcessReceipt(receiptId: string) {
 		const res = InternalHttpManager.PostAsync(
 			`${AirshipUrl.ContentService}/shop/purchase/receipt/claim`,
-			EncodeJSON({ receiptId }),
+			json.encode({ receiptId }),
 		);
 
 		if (!res.success || res.statusCode > 299) {
@@ -29,7 +28,7 @@ export class ProtectedPurchaseService {
 			};
 		}
 
-		const receipt = DecodeJSON(res.data) as AirshipPurchaseReceipt;
+		const receipt = json.decode(res.data) as AirshipPurchaseReceipt;
 
 		try {
 			// Process receipt by calling game callback
@@ -37,7 +36,7 @@ export class ProtectedPurchaseService {
 			if (result) {
 				InternalHttpManager.PostAsync(
 					`${AirshipUrl.ContentService}/shop/purchase/receipt/complete`,
-					EncodeJSON({
+					json.encode({
 						receiptId,
 						result: "COMPLETED",
 					}),
@@ -48,7 +47,7 @@ export class ProtectedPurchaseService {
 
 		InternalHttpManager.PostAsync(
 			`${AirshipUrl.ContentService}/shop/purchase/receipt/complete`,
-			EncodeJSON({
+			json.encode({
 				receiptId,
 				result: "FAILED",
 			}),

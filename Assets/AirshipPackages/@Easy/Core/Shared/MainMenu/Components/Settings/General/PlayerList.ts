@@ -3,6 +3,7 @@ import { Protected } from "@Easy/Core/Shared/Protected";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { ProtectedPlayersSingleton } from "../../../Singletons/ProtectedPlayersSingleton";
 import PlayerEntry from "./PlayerEntry";
+import { ProtectedPartyController } from "@Easy/Core/Client/ProtectedControllers/Airship/Party/PartyController";
 
 export default class PlayerList extends AirshipBehaviour {
 	public content!: RectTransform;
@@ -13,6 +14,9 @@ export default class PlayerList extends AirshipBehaviour {
 	public OnEnable(): void {
 		task.spawn(() => {
 			const protectedPlayers = Dependency<ProtectedPlayersSingleton>();
+			const protectedParty = Dependency<ProtectedPartyController>();
+			protectedParty.GetParty();
+
 			if (this.gameObject.activeInHierarchy) {
 				this.RenderAll();
 				this.bin.Add(
@@ -22,6 +26,12 @@ export default class PlayerList extends AirshipBehaviour {
 				);
 				this.bin.Add(
 					protectedPlayers.onPlayerDisconnected.Connect(() => {
+						this.RenderAll();
+					}),
+				);
+
+				this.bin.Add(
+					protectedParty.onPartyChange.Connect((party) => {
 						this.RenderAll();
 					}),
 				);

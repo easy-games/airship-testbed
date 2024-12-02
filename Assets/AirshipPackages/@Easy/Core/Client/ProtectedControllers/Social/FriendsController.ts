@@ -22,7 +22,6 @@ import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import inspect from "@Easy/Core/Shared/Util/Inspect";
 import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
-import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 import { ProtectedPartyController } from "../Airship/Party/PartyController";
 import { AuthController } from "../Auth/AuthController";
 import { MainMenuController } from "../MainMenuController";
@@ -121,7 +120,7 @@ export class ProtectedFriendsController {
 
 		const cachedStatusesRaw = StateManager.GetString("main-menu:friend-statuses");
 		if (cachedStatusesRaw) {
-			this.friendStatuses = DecodeJSON(cachedStatusesRaw);
+			this.friendStatuses = json.decode(cachedStatusesRaw);
 			this.UpdateFriendsList();
 		}
 
@@ -218,7 +217,7 @@ export class ProtectedFriendsController {
 			}
 			this.UpdateFriendsList();
 
-			const saveRaw = EncodeJSON(this.friendStatuses);
+			const saveRaw = json.encode(this.friendStatuses);
 			StateManager.SetString("main-menu:friend-statuses", saveRaw);
 		});
 
@@ -309,7 +308,7 @@ export class ProtectedFriendsController {
 		if (!res.success) {
 			return;
 		}
-		const data = DecodeJSON(res.data) as {
+		const data = json.decode(res.data) as {
 			friends: User[];
 			outgoingRequests: User[];
 			incomingRequests: User[];
@@ -334,7 +333,7 @@ export class ProtectedFriendsController {
 		// 	Task.Spawn(() => {
 		// 		const res = HttpManager.PostAsync(
 		// 			AirshipUrl.GameCoordinator + "/friends/requests/self",
-		// 			EncodeJSON({
+		// 			json.encode({
 		// 				discriminatedUsername: user.discriminatedUsername,
 		// 			}),
 		// 			this.authController.GetAuthHeaders(),
@@ -348,7 +347,7 @@ export class ProtectedFriendsController {
 	public AcceptFriendRequestAsync(username: string, userId: string): boolean {
 		const res = InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/friends/requests/self",
-			EncodeJSON({
+			json.encode({
 				username: username,
 			}),
 		);
@@ -390,7 +389,7 @@ export class ProtectedFriendsController {
 		print('adding friend: "' + username + '"');
 		const res = InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/friends/requests/self",
-			EncodeJSON({
+			json.encode({
 				username: username,
 			}),
 		);
@@ -507,7 +506,7 @@ export class ProtectedFriendsController {
 									task.spawn(() => {
 										const res = InternalHttpManager.PostAsync(
 											AirshipUrl.GameCoordinator + "/parties/party/join",
-											EncodeJSON({
+											json.encode({
 												uid: friend.userId,
 												// partyId: friend,
 											}),

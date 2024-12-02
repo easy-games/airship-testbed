@@ -18,7 +18,6 @@ import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import { MapUtil } from "@Easy/Core/Shared/Util/MapUtil";
 import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { Theme } from "@Easy/Core/Shared/Util/Theme";
-import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 import { MainMenuController } from "../../MainMenuController";
 import { ProtectedFriendsController } from "../FriendsController";
 import { MainMenuPartyController } from "../MainMenuPartyController";
@@ -113,7 +112,7 @@ export class DirectMessageController {
 				this.lastMessagedFriend = friend;
 			}
 
-			StateManager.SetString("direct-messages:" + data.sender, EncodeJSON(messages));
+			StateManager.SetString("direct-messages:" + data.sender, json.encode(messages));
 		});
 
 		this.socketController.On<DirectMessage>("game-coordinator/party-message", (data) => {
@@ -143,7 +142,7 @@ export class DirectMessageController {
 				}
 			}
 
-			StateManager.SetString("direct-messages:party", EncodeJSON(messages));
+			StateManager.SetString("direct-messages:party", json.encode(messages));
 		});
 	}
 
@@ -259,7 +258,7 @@ export class DirectMessageController {
 		if (message === "") return;
 		InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/chat/message/direct",
-			EncodeJSON({
+			json.encode({
 				target: uid,
 				text: message,
 			}),
@@ -290,7 +289,7 @@ export class DirectMessageController {
 		if (message === "") return;
 		InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/chat/message/party",
-			EncodeJSON({
+			json.encode({
 				text: message,
 			}),
 		);
@@ -455,7 +454,7 @@ export class DirectMessageController {
 			this.loadedMessagesFromUserIdFromDisk.add(uid);
 			const raw = StateManager.GetString("direct-messages:" + uid);
 			if (raw) {
-				const messages = DecodeJSON<Array<DirectMessage>>(raw);
+				const messages = json.decode<Array<DirectMessage>>(raw);
 				this.messagesMap.set(uid, messages);
 				return messages;
 			}

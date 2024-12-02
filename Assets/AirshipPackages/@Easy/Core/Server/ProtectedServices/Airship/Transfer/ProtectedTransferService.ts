@@ -8,7 +8,6 @@ import { TransferResult } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipT
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
-import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 
 export const enum TransferServiceBridgeTopics {
 	TransferGroupToGame = "TransferService:TransferGroupToGame",
@@ -76,7 +75,7 @@ export class ProtectedTransferService {
 	): Promise<ReturnType<ServerBridgeApiTransferGroupToGame>> {
 		const res = InternalHttpManager.PostAsync(
 			`${AirshipUrl.GameCoordinator}/transfers/transfer/target/game`,
-			EncodeJSON({
+			json.encode({
 				uids: players.map((p) => (typeIs(p, "string") ? p : p.userId)),
 				gameId,
 				preferredServerId: config?.preferredServerId,
@@ -90,7 +89,7 @@ export class ProtectedTransferService {
 			throw res.error;
 		}
 
-		return DecodeJSON(res.data) as TransferResult;
+		return json.decode(res.data) as TransferResult;
 	}
 
 	public async TransferGroupToServer(
@@ -100,7 +99,7 @@ export class ProtectedTransferService {
 	): Promise<ReturnType<ServerBridgeApiTransferGroupToServer>> {
 		const res = InternalHttpManager.PostAsync(
 			`${AirshipUrl.GameCoordinator}/transfers/transfer/target/server`,
-			EncodeJSON({
+			json.encode({
 				uids: players.map((p) => (typeIs(p, "string") ? p : p.userId)),
 				serverId,
 				serverTransferData: config?.serverTransferData,
@@ -113,7 +112,7 @@ export class ProtectedTransferService {
 			throw res.error;
 		}
 
-		return DecodeJSON(res.data) as TransferResult;
+		return json.decode(res.data) as TransferResult;
 	}
 
 	public async TransferGroupToMatchingServer(
@@ -122,7 +121,7 @@ export class ProtectedTransferService {
 	): Promise<ReturnType<ServerBridgeApiTransferGroupToMatchingServer>> {
 		const res = InternalHttpManager.PostAsync(
 			`${AirshipUrl.GameCoordinator}/transfers/transfer/target/matching`,
-			EncodeJSON({
+			json.encode({
 				uids: players.map((p) => (typeIs(p, "string") ? p : p.userId)),
 				sceneId: config.sceneId,
 				maxPlayers: config.maxPlayers,
@@ -139,7 +138,7 @@ export class ProtectedTransferService {
 			throw res.error;
 		}
 
-		return DecodeJSON(res.data) as TransferResult;
+		return json.decode(res.data) as TransferResult;
 	}
 
 	public async TransferGroupToPlayer(
@@ -149,7 +148,7 @@ export class ProtectedTransferService {
 	): Promise<ReturnType<ServerBridgeApiTransferGroupToPlayer>> {
 		const res = InternalHttpManager.PostAsync(
 			`${AirshipUrl.GameCoordinator}/transfers/transfer/target/player`,
-			EncodeJSON({
+			json.encode({
 				uids: players.map((p) => (typeIs(p, "string") ? p : p.userId)),
 				targetUserId,
 				serverTransferData: config?.serverTransferData,
@@ -162,6 +161,6 @@ export class ProtectedTransferService {
 			throw res.error;
 		}
 
-		return DecodeJSON(res.data) as TransferResult;
+		return json.decode(res.data) as TransferResult;
 	}
 }

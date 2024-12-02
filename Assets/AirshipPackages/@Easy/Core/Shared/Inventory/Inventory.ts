@@ -239,6 +239,7 @@ export default class Inventory extends AirshipBehaviour {
 						cleanup();
 					}
 					currentItemStack = selected;
+					this.SetHeldSlotInternal(slot);
 					cleanup = callback(selected);
 				}
 			}),

@@ -1,7 +1,6 @@
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
-import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 
 export const enum CacheStoreServiceBridgeTopics {
 	GetKey = "CacheStore:GetKey",
@@ -61,7 +60,7 @@ export class ProtectedCacheStoreService {
 			throw result.error;
 		}
 
-		return DecodeJSON<{ record: CacheStoreRecord<T> | undefined }>(result.data).record;
+		return json.decode<{ record: CacheStoreRecord<T> | undefined }>(result.data).record;
 	}
 
 	public async SetKey<T>(
@@ -72,14 +71,14 @@ export class ProtectedCacheStoreService {
 		const expireTime = math.clamp(expireTimeSec, 0, this.maxExpireSec);
 		const result = InternalHttpManager.PostAsync(
 			`${AirshipUrl.DataStoreService}/cache/key/${key}?expiry=${expireTime}`,
-			EncodeJSON(data),
+			json.encode(data),
 		);
 		if (!result.success || result.statusCode > 299) {
 			warn(`Unable to set cache key. Status Code: ${result.statusCode}.\n`, result.error);
 			throw result.error;
 		}
 
-		return DecodeJSON<{ record: CacheStoreRecord<T> | undefined }>(result.data).record;
+		return json.decode<{ record: CacheStoreRecord<T> | undefined }>(result.data).record;
 	}
 
 	public async SetKeyTTL(key: string, expireTimeSec: number): Promise<ReturnType<ServerBridgeApiCacheSetKeyTTL>> {
@@ -95,7 +94,7 @@ export class ProtectedCacheStoreService {
 			throw result.error;
 		}
 
-		return (DecodeJSON(result.data) as { ttl: number }).ttl;
+		return (json.decode(result.data) as { ttl: number }).ttl;
 	}
 
 	protected OnStart(): void {}
