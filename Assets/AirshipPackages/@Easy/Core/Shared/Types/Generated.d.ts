@@ -17679,12 +17679,7 @@ interface PackageVersionResponse {
 interface Package {
     assetVersionNumber: number;
     codeVersionNumber: number;
-<<<<<<< HEAD
-    publishVersionNumber: number;
-||||||| e514c4dd7
-=======
     publishNumber: number;
->>>>>>> 2de4af93bc0b321ad68833f192effe6f9c5e2949
 
 
 
@@ -18083,7 +18078,7 @@ interface InternalHttpManager {
 
 
 }
-
+    
 interface InternalHttpManagerConstructor {
     editorUserId: string;
     editorAuthToken: string;
