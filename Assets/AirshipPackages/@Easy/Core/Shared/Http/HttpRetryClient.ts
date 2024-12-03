@@ -27,7 +27,6 @@ export const DefaultRetryConfig: RetryConfig<RetryMethod.Direct> | RetryConfig<R
 }
 
 class HttpExecutionPackage<M extends RetryMethod> {
-    public readonly id: string;
     public readonly createdAt: number;
 
     constructor(
@@ -70,7 +69,7 @@ type InternalHttpManagerHttpFunctionsRef = Omit<InternalHttpManagerConstructor,
 >
 type InternalHttpManagerHttpFunctions<M extends RetryMethod> = {
     [K in keyof InternalHttpManagerHttpFunctionsRef]: (
-        this: ThisParameterType<HttpRetryClientClass<M>>,
+        this: ThisParameterType<HttpRetryClient<M>>,
         ...params: Parameters<InternalHttpManagerHttpFunctionsRef[K]>
     ) => Promise<HttpResponse>;
 }
@@ -83,7 +82,7 @@ export interface RetryInformation {
     remainingRequests: number;
 }
 
-export class HttpRetryClientClass<M extends RetryMethod> implements InternalHttpManagerHttpFunctions<M> { 
+export class HttpRetryClient<M extends RetryMethod> implements InternalHttpManagerHttpFunctions<M> { 
     private retryData: Record<string, RetryInformation> = {};
     private inflightRequests: Record<string, number> = {};
     private waitingRequests: Record<string, Array<HttpExecutionPackage<M>>> = {};
@@ -287,5 +286,5 @@ export class HttpRetryClientClass<M extends RetryMethod> implements InternalHttp
     }
 }
 
-export const DirectHttpRetryClient = new HttpRetryClientClass(RetryMethod.Direct);
-export const JitterHttpRetryClient = new HttpRetryClientClass(RetryMethod.JitterBackoff);
+export const DirectHttpRetryClient = new HttpRetryClient(RetryMethod.Direct);
+export const JitterHttpRetryClient = new HttpRetryClient(RetryMethod.JitterBackoff);
