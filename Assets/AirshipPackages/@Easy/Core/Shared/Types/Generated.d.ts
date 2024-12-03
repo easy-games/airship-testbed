@@ -3056,6 +3056,14 @@ declare const enum AccessorySlot {
     FeetInner = 22,
     LeftFoot = 23,
     RightFoot = 24,
+    LeftLegUpper = 25,
+    LeftLegLower = 26,
+    RightLegUpper = 27,
+    RightLegLower = 28,
+    LeftArmUpper = 29,
+    LeftArmLower = 30,
+    RightArmUpper = 31,
+    RightArmLower = 32,
 }
 declare const enum VisibilityMode {
     ThirdPerson = 0,

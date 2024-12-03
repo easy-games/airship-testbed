@@ -59,6 +59,8 @@ export class CameraSystem {
 	}
 
 	private OnEnabled() {
+		this.currentMode.OnEnabled();
+
 		const stopOnUpdate = OnUpdate.ConnectWithPriority(SignalPriority.LOWEST, (dt) => {
 			this.currentMode.OnUpdate(dt);
 		});
