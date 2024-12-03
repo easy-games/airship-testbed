@@ -26,36 +26,56 @@ export const DefaultRetryConfig: RetryConfig<RetryMethod.Direct> | RetryConfig<R
     maxWaitingSeconds: 120,
 }
 
-type HttpFunctor = (...params: any[]) => HttpResponse;
-
-class HttpExecutionPackage<M extends RetryMethod, F extends HttpFunctor> {
+class HttpExecutionPackage<M extends RetryMethod> {
     public readonly id: string;
     public readonly createdAt: number;
 
     constructor(
         public readonly key: string,
-        private readonly functor: F,
-        private readonly params: Parameters<F>,
+        private readonly functor: HigherOrderFunction,
+        private readonly params: string[],
         public readonly config: RetryConfig<M>,
         public readonly resolver: (response: HttpResponse) => void,
-        public readonly rejector: (error: any) => void,
+        public readonly rejector: (error: unknown) => void,
     ) {
         this.createdAt = os.time();
     }
 
     public execute(): HttpResponse {
-        return this.functor(...this.params);
+        switch (this.functor) {
+            case "DeleteAsync":
+                return InternalHttpManager.DeleteAsync(this.params[0]);
+            case "GetAsync":
+                return InternalHttpManager.GetAsync(this.params[0]);
+            case "GetAsyncWithHeaders":
+                return InternalHttpManager.GetAsyncWithHeaders(this.params[0], this.params[1]);
+            case "PatchAsync":
+                return InternalHttpManager.PatchAsync(this.params[0], this.params[1]);
+            case "PostAsync":
+                if (this.params.size() === 2) {
+                    return InternalHttpManager.PostAsync(this.params[0], this.params[1]);
+                } else {
+                    return InternalHttpManager.PostAsync(this.params[0]);
+                }
+            case "PutAsync":
+                return InternalHttpManager.PutAsync(this.params[0], this.params[1]);
+            case "PutImageAsync":
+                return InternalHttpManager.PutImageAsync(this.params[0], this.params[1]);
+        }
     }
 }
-
-type GenericExecutionPackage<M extends RetryMethod> = HttpExecutionPackage<M, any>;
 
 type InternalHttpManagerHttpFunctionsRef = Omit<InternalHttpManagerConstructor, 
     "editorAuthToken" | "editorUserId" | "authToken" | "SetAuthToken" | "SetEditorAuthToken"
 >
-type InternalHttpManagerHttpFunctions = {
-    [K in keyof InternalHttpManagerHttpFunctionsRef]: (...params: Parameters<InternalHttpManagerHttpFunctionsRef[K]>) => Promise<HttpResponse>;
+type InternalHttpManagerHttpFunctions<M extends RetryMethod> = {
+    [K in keyof InternalHttpManagerHttpFunctionsRef]: (
+        this: ThisParameterType<HttpRetryClientClass<M>>,
+        ...params: Parameters<InternalHttpManagerHttpFunctionsRef[K]>
+    ) => Promise<HttpResponse>;
 }
+
+type HigherOrderFunction = keyof InternalHttpManagerHttpFunctions<RetryMethod>;
 
 export interface RetryInformation {
     postedAt: number;
@@ -63,10 +83,10 @@ export interface RetryInformation {
     remainingRequests: number;
 }
 
-export class HttpRetryClientClass<M extends RetryMethod> implements InternalHttpManagerHttpFunctions {
+export class HttpRetryClientClass<M extends RetryMethod> implements InternalHttpManagerHttpFunctions<M> { 
     private retryData: Record<string, RetryInformation> = {};
     private inflightRequests: Record<string, number> = {};
-    private waitingRequests: Record<string, Array<GenericExecutionPackage<M>>> = {};
+    private waitingRequests: Record<string, Array<HttpExecutionPackage<M>>> = {};
     private popping: Record<string, boolean> = {};
 
     constructor(private readonly method: M) {}
@@ -76,13 +96,13 @@ export class HttpRetryClientClass<M extends RetryMethod> implements InternalHttp
 
         const badIndexes = [];
         for (let i = 0; i < this.waitingRequests[key].size(); i++) {
-            const next = this.waitingRequests[key][i];
-            if (!next.config.maxWaitingSeconds) {
+            const req = this.waitingRequests[key][i];
+            if (!req.config.maxWaitingSeconds) {
                 continue;
             }
 
-            if ((timeout - next.createdAt) >= next.config.maxWaitingSeconds) {
-                next.rejector("Http request exceeded max waiting time.");
+            if ((timeout - req.createdAt) >= req.config.maxWaitingSeconds) {
+                req.rejector("Http request exceeded max waiting time.");
                 badIndexes.push(i);
             }
         }
@@ -95,31 +115,31 @@ export class HttpRetryClientClass<M extends RetryMethod> implements InternalHttp
     }
 
     private PopMore(key: string): void {
-        const next = this.waitingRequests[key].pop();
+        const req = this.waitingRequests[key].pop();
 
-        if (!next) {
+        if (!req) {
             return;
         }
 
-        const config = next.config;
+        const config = req.config;
         const currentInflight = this.inflightRequests[key];
 
         if (config.maxInflightRequests >= currentInflight) {
             return;
         }
 
-        task.spawn(() => this.SendInFlight(next));
+        task.spawn(() => this.SendInFlight(req));
         
         if (config.maxInflightRequests === currentInflight + 1) {
             return;
         }
 
         for (let i = 0; i < config.maxInflightRequests - (currentInflight + 1); i++) {
-            const next = this.waitingRequests[key].pop();
-            if (!next) {
+            const req = this.waitingRequests[key].pop();
+            if (!req) {
                 return;
             }
-            task.spawn(() => this.SendInFlight(next));
+            task.spawn(() => this.SendInFlight(req));
         }
     }
 
@@ -148,7 +168,7 @@ export class HttpRetryClientClass<M extends RetryMethod> implements InternalHttp
         }
     }
 
-    private Resolve(executor: GenericExecutionPackage<M>, response: HttpResponse, popMore = true): void {
+    private Resolve(executor: HttpExecutionPackage<M>, response: HttpResponse, popMore = true): void {
         this.inflightRequests[executor.key] -= 1;
         executor.resolver(response);
         if (popMore) {
@@ -158,9 +178,9 @@ export class HttpRetryClientClass<M extends RetryMethod> implements InternalHttp
         }
     }
 
-    private Reject(executor: GenericExecutionPackage<M>, error: any, popMore = true): void {
+    private Reject(executor: HttpExecutionPackage<M>, cause: any, popMore = true): void {
         this.inflightRequests[executor.key] -= 1;
-        executor.rejector(error);
+        executor.rejector(cause);
         if (popMore) {
             this.PopMoreOrWait(executor.key);
         } else {
@@ -168,7 +188,7 @@ export class HttpRetryClientClass<M extends RetryMethod> implements InternalHttp
         }
     }
 
-    private SendInFlight(executor: GenericExecutionPackage<M>): void {
+    private SendInFlight(executor: HttpExecutionPackage<M>): void {
         this.inflightRequests[executor.key] += 1;
         try {
             const response = executor.execute();
@@ -220,7 +240,7 @@ export class HttpRetryClientClass<M extends RetryMethod> implements InternalHttp
     }
 
     private Call<F extends (...params: any[]) => HttpResponse, M extends RetryMethod>(
-        key: string, functor: F, params: Parameters<F>, config: RetryConfig<M>
+        key: string, functor: HigherOrderFunction, params: Parameters<F>, config: RetryConfig<M>
     ): Promise<HttpResponse> {
         return new Promise((resolve, reject) => {
             const executionPackage = new HttpExecutionPackage(key, functor, params, config, resolve, reject);
@@ -234,36 +254,36 @@ export class HttpRetryClientClass<M extends RetryMethod> implements InternalHttp
     }
 
     public DeleteAsync(url: string, config: RetryConfig<M> = DefaultRetryConfig): Promise<HttpResponse> {
-        return this.Call(url, InternalHttpManager.DeleteAsync, [url], config);
+        return this.Call(url, "DeleteAsync", [url], config);
     }
 
     public GetAsync(url: string, config: RetryConfig<M> = DefaultRetryConfig): Promise<HttpResponse> {
-        return this.Call(url, InternalHttpManager.GetAsync, [url], config);
+        return this.Call(url, "GetAsync", [url], config);
     }
 
     public GetAsyncWithHeaders(url: string, headers: string, config: RetryConfig<M> = DefaultRetryConfig): Promise<HttpResponse> {
-        return this.Call(url, InternalHttpManager.GetAsyncWithHeaders, [url, headers], config);
+        return this.Call(url, "GetAsyncWithHeaders", [url, headers], config);
     }
 
     public PatchAsync(url: string, data: string, config: RetryConfig<M> = DefaultRetryConfig): Promise<HttpResponse> {
-        return this.Call(url, InternalHttpManager.PatchAsync, [url, data], config);
+        return this.Call(url, "PatchAsync", [url, data], config);
     }
 
     // the overloads here make this kind of awkward
     public PostAsync(url: string, data?: string, config: RetryConfig<M> = DefaultRetryConfig): Promise<HttpResponse> {
         if (data) {
-            return this.Call(url, () => InternalHttpManager.PostAsync(url, data), [], config);
+            return this.Call(url, "PostAsync", [url, data], config);
         } else {
-            return this.Call(url, () => InternalHttpManager.PostAsync(url), [], config); 
+            return this.Call(url, "PostAsync", [url], config);
         }
     }
 
     public PutAsync(url: string, data: string, config: RetryConfig<M> = DefaultRetryConfig): Promise<HttpResponse> {
-        return this.Call(url, InternalHttpManager.PutAsync, [url, data], config);
+        return this.Call(url, "PutAsync", [url, data], config);
     }
 
     public PutImageAsync(url: string, filePath: string, config: RetryConfig<M> = DefaultRetryConfig): Promise<HttpResponse> {
-        return this.Call(url, InternalHttpManager.PutImageAsync, [url, filePath], config);
+        return this.Call(url, "PutImageAsync", [url, filePath], config);
     }
 }
 
