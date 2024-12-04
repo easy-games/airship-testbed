@@ -3587,6 +3587,13 @@ declare const enum LoadingStatus {
     Loading = 1,
     Loaded = 2,
 }
+declare const enum CharacterState {
+    Idle = 0,
+    Running = 1,
+    Airborne = 2,
+    Sprinting = 3,
+    Crouching = 4,
+}
 
     
 interface RaycastHit {
@@ -36608,28 +36615,6 @@ interface WindowCoreConstructor {
 }
 declare const WindowCore: WindowCoreConstructor;
     
-interface CharacterMoveModifier {
-    speedMultiplier: number;
-    jumpMultiplier: number;
-    blockSprint: boolean;
-    blockJump: boolean;
-
-
-
-
-
-}
-    
-interface CharacterMoveModifierConstructor {
-
-
-    new(): CharacterMoveModifier;
-
-
-
-}
-declare const CharacterMoveModifier: CharacterMoveModifierConstructor;
-    
 interface MaterialColorURP extends MonoBehaviour {
     colorSettings: CSArray<ColorSetting>;
     addedByEditorScript: boolean;
@@ -45064,9 +45049,8 @@ interface MoveInputData {
 
 
 
-    Dispose(): void;
-    GetTick(): number;
-    SetTick(value: number): void;
+    Equals(other: MoveInputData): boolean;
+    GetHashCode(): number;
 
 
 }
@@ -45077,7 +45061,6 @@ interface MoveInputDataConstructor {
     new(moveDir: Vector3, jump: boolean, crouch: boolean, sprint: boolean, lookVector: Vector3, customData: BinaryBlob): MoveInputData;
 
 
-    CompareBinaryBlobs(a: BinaryBlob, b: BinaryBlob): boolean;
 
 }
 declare const MoveInputData: MoveInputDataConstructor;
@@ -47008,6 +46991,57 @@ interface ActiveAccessory {
 
 
 }
+    
+interface AirshipPredictedState {
+    timestamp: number;
+    position: Vector3;
+    velocity: Vector3;
+
+
+
+    Interpolate(other: AirshipPredictedState, delta: number): AirshipPredictedState;
+
+
+}
+    
+interface CharacterMovementState extends AirshipPredictedState {
+    currentMoveInput: MoveInputData;
+    inputDisabled: boolean;
+    isFlying: boolean;
+    jumpCount: number;
+    airborneFromImpulse: boolean;
+    alreadyJumped: boolean;
+    prevMoveDir: Vector3;
+    lastGroundedMoveDir: Vector3;
+    prevCrouch: boolean;
+    prevStepUp: boolean;
+    prevGrounded: boolean;
+    state: CharacterState;
+    prevState: CharacterState;
+    timeSinceBecameGrounded: number;
+    timeSinceWasGrounded: number;
+    timeSinceJump: number;
+
+
+
+    CopyFrom(copyState: CharacterMovementState): void;
+    Equals(other: CharacterMovementState): boolean;
+    Interpolate(other: AirshipPredictedState, delta: number): AirshipPredictedState;
+
+
+}
+    
+interface CharacterMovementStateConstructor {
+
+
+    new(): CharacterMovementState;
+    new(time: number, pos: Vector3, vel: Vector3): CharacterMovementState;
+    new(copyState: CharacterMovementState): CharacterMovementState;
+
+
+
+}
+declare const CharacterMovementState: CharacterMovementStateConstructor;
     
 interface AirshipSteamFriendInfo {
     playingAirship: boolean;
