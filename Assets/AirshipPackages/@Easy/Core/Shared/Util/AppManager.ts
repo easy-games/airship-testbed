@@ -227,9 +227,11 @@ export class AppManager {
 
 	public static Close(): void {
 		if (Game.IsGameLuauContext()) {
-			if (contextbridge.invoke<() => boolean>("AppManager:EscapePressedFromGame", LuauContext.Protected)) {
-				return;
-			}
+			task.spawn(() => {
+				if (contextbridge.invoke<() => boolean>("AppManager:EscapePressedFromGame", LuauContext.Protected)) {
+					return;
+				}
+			});
 		}
 
 		if (!this.opened) return;
@@ -294,7 +296,7 @@ if (Game.IsGameLuauContext() || !Game.IsInGame()) {
 				AppManager.Close();
 			}
 		},
-		SignalPriority.HIGH,
+		SignalPriority.LOW,
 	);
 	Keyboard.OnKeyDown(
 		EscapeKey,
@@ -310,7 +312,7 @@ if (Game.IsGameLuauContext() || !Game.IsInGame()) {
 			}
 			contextbridge.invoke<() => void>("MainMenu:OpenFromGame", LuauContext.Protected);
 		},
-		SignalPriority.LOW,
+		SignalPriority.LOWEST,
 	);
 	Keyboard.OnKeyDown(
 		Key.F,

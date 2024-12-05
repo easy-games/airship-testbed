@@ -1,4 +1,5 @@
 import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
+import { Game } from "../Game";
 import { KeySignal } from "./Drivers/Signals/KeySignal";
 
 const inputBridge = InputBridge.Instance;
@@ -51,21 +52,45 @@ export class Keyboard {
 	}
 }
 
-inputBridge.OnKeyPressEvent((key, isDown) => {
-	const uiSelected = EventSystem.current.currentSelectedGameObject !== undefined;
-	const event = new KeySignal(key, uiSelected);
-	const keyboardUntyped = Keyboard as {
-		onKeyDownSignal: Signal<unknown>;
-		onKeyUpSignal: Signal<unknown>;
-	};
+if (Game.IsProtectedLuauContext()) {
+	inputBridge.OnKeyPressEvent((key, isDown) => {
+		const uiSelected = EventSystem.current.currentSelectedGameObject !== undefined;
+		const event = new KeySignal(key, uiSelected);
+		const keyboardUntyped = Keyboard as {
+			onKeyDownSignal: Signal<unknown>;
+			onKeyUpSignal: Signal<unknown>;
+		};
 
-	if (isDown) {
-		if (!event.IsCancelled()) {
-			keyboardUntyped.onKeyDownSignal.Fire(event);
+		if (isDown) {
+			if (!event.IsCancelled()) {
+				keyboardUntyped.onKeyDownSignal.Fire(event);
+			}
+		} else {
+			if (!event.IsCancelled()) {
+				keyboardUntyped.onKeyUpSignal.Fire(event);
+			}
 		}
-	} else {
+
 		if (!event.IsCancelled()) {
-			keyboardUntyped.onKeyUpSignal.Fire(event);
+			contextbridge.broadcast("Input:KeyDown", key, uiSelected, isDown);
 		}
-	}
-});
+	});
+} else if (Game.IsGameLuauContext()) {
+	contextbridge.subscribe(
+		"Input:KeyDown",
+		(fromContext: LuauContext, key: Key, uiSelected: boolean, isDown: boolean) => {
+			task.defer(() => {
+				const event = new KeySignal(key, uiSelected);
+				const keyboardUntyped = Keyboard as {
+					onKeyDownSignal: Signal<unknown>;
+					onKeyUpSignal: Signal<unknown>;
+				};
+				if (isDown) {
+					keyboardUntyped.onKeyDownSignal.Fire(event);
+				} else {
+					keyboardUntyped.onKeyUpSignal.Fire(event);
+				}
+			});
+		},
+	);
+}
