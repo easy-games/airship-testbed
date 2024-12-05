@@ -228,6 +228,7 @@ export default class Inventory extends AirshipBehaviour {
 		let currentItemStack = this.items.get(this.heldSlot);
 		let cleanup = callback(currentItemStack);
 
+		// This seems like it should not be here! Why are we listening to network and calling SetHeldSlotInternal()?!
 		bin.Add(
 			CoreNetwork.ServerToClient.SetHeldInventorySlot.client.OnServerEvent((invId, slot) => {
 				if (invId === this.id) {
