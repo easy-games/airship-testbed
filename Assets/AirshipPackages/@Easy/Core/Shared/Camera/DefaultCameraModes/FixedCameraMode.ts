@@ -18,7 +18,7 @@ export class FixedCameraMode extends CameraMode {
 	private readonly preferred = this.OnStopBin.Add(new Preferred());
 	private readonly touchscreen = this.OnStopBin.Add(new Touchscreen());
 
-	private config: FixedCameraConfig;
+	public config: FixedCameraConfig;
 	private locked = false;
 	private shouldBumpForOcclusion = true;
 	private xOffset = 0;
@@ -65,25 +65,7 @@ export class FixedCameraMode extends CameraMode {
 		this.SetOcclusionBumping(
 			this.config.shouldOcclusionBump ?? CameraConstants.DefaultFixedCameraConfig.shouldOcclusionBump,
 		);
-		// This enables our character specific behavior for the default Airship character.
-		// TODO: Maybe we move this out of here and add a signal that fires when the camera mode
-		// is changed?
-		let characterLogicBin: Bin | undefined;
-		if (this.character && this.character.IsLocalCharacter()) {
-			characterLogicBin = Airship.Camera.ManageFixedCameraForLocalCharacter(this, this.character);
-			this.OnStopBin.Add(() => characterLogicBin!.Clean());
-		}
-		this.OnStopBin.Add(
-			this.onTargetChanged.Connect((event) => {
-				if (characterLogicBin && !event.after.character?.IsLocalCharacter()) {
-					characterLogicBin.Clean();
-				}
-				if (event.after.character?.IsLocalCharacter()) {
-					characterLogicBin = Airship.Camera.ManageFixedCameraForLocalCharacter(this, event.after.character);
-					this.OnStopBin.Add(() => characterLogicBin!.Clean());
-				}
-			}),
-		);
+		this.OnEnabled();
 	}
 
 	private SetupMobileControls() {
@@ -145,6 +127,28 @@ export class FixedCameraMode extends CameraMode {
 					return () => {
 						unlocker();
 					};
+				}
+			}),
+		);
+	}
+
+	public OnEnabled(): void {
+		// This enables our character specific behavior for the default Airship character.
+		// TODO: Maybe we move this out of here and add a signal that fires when the camera mode
+		// is changed?
+		let characterLogicBin: Bin | undefined;
+		if (this.character && this.character.IsLocalCharacter()) {
+			characterLogicBin = Airship.Camera.ManageFixedCameraForLocalCharacter(this, this.character);
+			this.OnStopBin.Add(() => characterLogicBin!.Clean());
+		}
+		this.OnStopBin.Add(
+			this.onTargetChanged.Connect((event) => {
+				if (characterLogicBin && !event.after.character?.IsLocalCharacter()) {
+					characterLogicBin.Clean();
+				}
+				if (event.after.character?.IsLocalCharacter()) {
+					characterLogicBin = Airship.Camera.ManageFixedCameraForLocalCharacter(this, event.after.character);
+					this.OnStopBin.Add(() => characterLogicBin!.Clean());
 				}
 			}),
 		);

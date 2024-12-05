@@ -139,8 +139,19 @@ export class LocalCharacterSingleton {
 			// Cleanup:
 			bin.Add(() => {
 				if (cameraController.IsEnabled()) {
+					// If the camera mode's target is _not_ the local character don't
+					// clean up camera.
+					const mode = cameraController.GetMode();
+					if (mode) {
+						const target = mode.GetTarget();
+						const isTargetLocalCharacter = target === character.model;
+						if (!isTargetLocalCharacter) return;
+					}
 					cameraController.CleanupCamera();
 				}
+			});
+
+			bin.Add(() => {
 				this.input?.Destroy();
 			});
 

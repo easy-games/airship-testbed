@@ -96,6 +96,9 @@ export abstract class CameraMode {
 		return this.character;
 	}
 
+	/** Called when the camera mode is enabled. */
+	public OnEnabled(): void {}
+
 	abstract GetFriendlyName(): string;
 
 	/** Called when the camera mode starts. */
