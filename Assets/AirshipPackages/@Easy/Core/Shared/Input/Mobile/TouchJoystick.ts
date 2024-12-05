@@ -26,7 +26,7 @@ export default class TouchJoystick extends AirshipBehaviour {
 
 	public Awake(): void {
 		this.rectTransform = this.gameObject.GetComponent<RectTransform>()!;
-		this.canvas = this.gameObject.GetComponentInParent<Canvas>();
+		this.canvas = this.gameObject.GetComponentInParent<Canvas>()!;
 		if (this.canvas === undefined) {
 			error("TouchJoystick must be placed inside of a canvas.");
 		}

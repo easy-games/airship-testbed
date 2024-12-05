@@ -32,7 +32,7 @@ export default class CubeSpawner extends AirshipBehaviour {
 						Quaternion.identity,
 					);
 					cube.transform.LookAt(cube.transform.position.add(lookDir));
-					const rb = cube.GetComponent<Rigidbody>();
+					const rb = cube.GetComponent<Rigidbody>()!;
 					rb.velocity = cube.transform.forward.add(new Vector3(0, 2, 0)).mul(2.5);
 					NetworkServer.Spawn(cube);
 				}),

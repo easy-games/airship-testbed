@@ -32,12 +32,12 @@ export default class MobileControlsCanvas extends AirshipBehaviour {
 			this.crouchGO = Airship.Input.CreateMobileButton("CrouchToggle", new Vector2(-140, 340), {
 				icon: CoreIcon.CrouchPose,
 			});
-			this.crouchImg = this.crouchGO.GetComponent<Image>();
+			this.crouchImg = this.crouchGO.GetComponent<Image>()!;
 
 			this.sprintGO = Airship.Input.CreateMobileButton("SprintToggle", new Vector2(-140, 520), {
 				icon: CoreIcon.SprintPose,
 			});
-			this.sprintImg = this.sprintGO.GetComponent<Image>();
+			this.sprintImg = this.sprintGO.GetComponent<Image>()!;
 		}
 		this.bin.Add(
 			Airship.Input.OnDown("CrouchToggle").Connect((event) => {

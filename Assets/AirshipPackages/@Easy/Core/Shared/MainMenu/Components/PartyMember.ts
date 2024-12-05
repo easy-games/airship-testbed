@@ -22,7 +22,7 @@ export default class PartyMember extends AirshipBehaviour {
 	private bin = new Bin();
 
 	public Start(): void {
-		this.layoutElement = this.gameObject.GetComponent<LayoutElement>();
+		this.layoutElement = this.gameObject.GetComponent<LayoutElement>()!;
 	}
 
 	public SetUser(user: PublicUser, asLeader: boolean): void {

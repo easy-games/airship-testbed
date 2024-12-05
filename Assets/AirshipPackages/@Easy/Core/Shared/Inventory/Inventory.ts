@@ -145,7 +145,7 @@ export default class Inventory extends AirshipBehaviour {
 
 				// Scroll to select held item:
 				Mouse.onScrolled.Connect((event) => {
-					if (!this.controlsEnabled || event.uiProcessed) return;
+					if (!this.controlsEnabled || event.uiProcessed || event.IsCancelled()) return;
 					if (Mouse.IsOverUI()) return;
 					// print("scroll: " + delta);
 					if (math.abs(event.delta) < 0.05) return;

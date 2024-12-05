@@ -97,7 +97,7 @@ export abstract class AirshipNetworkBehaviour extends AirshipBehaviour {
 	protected Awake(): void {
 		this.networkIdentity =
 			this.gameObject.GetComponent<NetworkIdentity>() ??
-			this.gameObject.GetComponentInParent<NetworkIdentity>(true);
+			this.gameObject.GetComponentInParent<NetworkIdentity>(true)!;
 		assert(
 			this.networkIdentity,
 			"Missing NetworkIdentity on GameObject or parent of '" + this.gameObject.name + "'",

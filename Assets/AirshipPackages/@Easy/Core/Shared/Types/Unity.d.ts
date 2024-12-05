@@ -2034,33 +2034,33 @@ interface GameObject extends Object {
 	 *
 	 * More info: {@link https://docs.unity3d.com/ScriptReference/GameObject.GetComponent.html | GameObject.GetComponent}
 	 */
-	GetComponent<T extends Component>(): T;
+	GetComponent<T extends Component>(): T | undefined;
 	/**
 	 * Gets a reference to a component of type T on the specified GameObject, or any child of the GameObject.
 	 *
 	 * More info: {@link https://docs.unity3d.com/ScriptReference/GameObject.GetComponentInChildren.html | GameObject.GetComponentInChildren}
 	 */
-	GetComponentInChildren<T extends Component>(): T;
+	GetComponentInChildren<T extends Component>(): T | undefined;
 	/**
 	 * Gets a reference to a component of type T on the specified GameObject, or any child of the GameObject.
 	 * @param includeInactive Whether to include inactive child GameObjects in the search.
 	 *
 	 * More info: {@link https://docs.unity3d.com/ScriptReference/GameObject.GetComponentInChildren.html | GameObject.GetComponentInChildren}
 	 */
-	GetComponentInChildren<T extends Component>(includeInactive: boolean): T;
+	GetComponentInChildren<T extends Component>(includeInactive: boolean): T | undefined;
 	/**
 	 * Gets a reference to a component of type T on the specified GameObject, or any parent of the GameObject.
 	 *
 	 * More info: {@link https://docs.unity3d.com/ScriptReference/GameObject.GetComponentInParent.html | GameObject.GetComponentInParent}
 	 */
-	GetComponentInParent<T extends Component>(): T;
+	GetComponentInParent<T extends Component>(): T | undefined;
 	/**
 	 * Gets a reference to a component of type T on the specified GameObject, or any parent of the GameObject.
 	 * @param includeInactive Whether to include inactive parent GameObjects in the search.
 	 *
 	 * More info: {@link https://docs.unity3d.com/ScriptReference/GameObject.GetComponentInParent.html | GameObject.GetComponentInParent}
 	 */
-	GetComponentInParent<T extends Component>(includeInactive: boolean): T;
+	GetComponentInParent<T extends Component>(includeInactive: boolean): T | undefined;
 	/**
 	 * Gets references to all components of type T on the specified GameObject.
 	 *

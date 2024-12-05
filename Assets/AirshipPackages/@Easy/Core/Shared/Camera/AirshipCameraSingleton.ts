@@ -34,7 +34,7 @@ interface CharacterStateSnapshot {
  * - Allow toggling to and from first person by toggling the ViewmodelCamera
  */
 @Singleton({})
-export class AirshipCharacterCameraSingleton {
+export class AirshipCameraSingleton {
 	public canToggleFirstPerson = true;
 
 	private lookBackwards = false;
@@ -68,6 +68,8 @@ export class AirshipCharacterCameraSingleton {
 
 	private lastSprintTime = 0;
 
+	public cameraRig?: CameraRig;
+
 	constructor() {
 		Airship.Camera = this;
 	}
@@ -79,6 +81,7 @@ export class AirshipCharacterCameraSingleton {
 		CameraReferences.cameraHolder = cameraRig.transform;
 		CameraReferences.mainCamera = cameraRig.mainCamera;
 		CameraReferences.viewmodelCamera = cameraRig.viewmodelCamera;
+		this.cameraRig = cameraRig;
 
 		this.cameraSystem = new CameraSystem();
 		//this.SetMode(this.characterCameraMode);
@@ -243,6 +246,12 @@ export class AirshipCharacterCameraSingleton {
 				fov *= this.sprintFovMultiplier;
 			}
 			this.cameraSystem?.SetFOV(CharacterCameraType.FIRST_PERSON, fov, false);
+
+			if (this.IsFirstPerson()) {
+				if (this.cameraRig?.uiCamera) {
+					this.cameraRig.uiCamera.fieldOfView = fov;
+				}
+			}
 		}
 
 		// third person
@@ -252,6 +261,12 @@ export class AirshipCharacterCameraSingleton {
 				fov *= this.sprintFovMultiplier;
 			}
 			this.cameraSystem?.SetFOV(CharacterCameraType.THIRD_PERSON, fov, false);
+
+			if (!this.IsFirstPerson()) {
+				if (this.cameraRig?.uiCamera) {
+					this.cameraRig.uiCamera.fieldOfView = fov;
+				}
+			}
 		}
 	}
 
