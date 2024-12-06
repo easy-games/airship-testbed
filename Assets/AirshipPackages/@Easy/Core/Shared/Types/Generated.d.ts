@@ -46993,13 +46993,12 @@ interface ActiveAccessory {
 }
     
 interface AirshipPredictedState {
-    timestamp: number;
+    tick: number;
     position: Vector3;
     velocity: Vector3;
 
 
 
-    Interpolate(other: AirshipPredictedState, delta: number): AirshipPredictedState;
 
 
 }
@@ -47026,7 +47025,6 @@ interface CharacterMovementState extends AirshipPredictedState {
 
     CopyFrom(copyState: CharacterMovementState): void;
     Equals(other: CharacterMovementState): boolean;
-    Interpolate(other: AirshipPredictedState, delta: number): AirshipPredictedState;
 
 
 }
@@ -47035,7 +47033,7 @@ interface CharacterMovementStateConstructor {
 
 
     new(): CharacterMovementState;
-    new(time: number, pos: Vector3, vel: Vector3): CharacterMovementState;
+    new(tick: number, pos: Vector3, vel: Vector3): CharacterMovementState;
     new(copyState: CharacterMovementState): CharacterMovementState;
 
 
