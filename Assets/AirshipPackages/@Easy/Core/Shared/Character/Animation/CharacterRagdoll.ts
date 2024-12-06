@@ -15,19 +15,19 @@ export default class CharacterRagdoll extends AirshipBehaviour {
 	private ragdollEnabled = false;
 
 	protected Awake(): void {
-		this.rig = this.gameObject.GetComponent<CharacterRig>();
+		this.rig = this.gameObject.GetComponent<CharacterRig>()!;
 		if (!this.rig) {
 			error("CharacterRagdoll component must be on the same object as the CharacterRig");
 		}
-		this.anim = this.gameObject.GetComponent<Animator>();
+		this.anim = this.gameObject.GetComponent<Animator>()!;
 		const foundJoints = this.gameObject.GetComponentsInChildren<CharacterJoint>();
 		for (let i = 0; i < foundJoints.Length; i++) {
 			let joint = foundJoints.GetValue(i);
 			if (joint) {
 				let go = joint.gameObject;
 				this.joints.push(joint);
-				this.colliders.push(go.GetComponent<Collider>());
-				this.rigids.push(go.GetComponent<Rigidbody>());
+				this.colliders.push(go.GetComponent<Collider>()!);
+				this.rigids.push(go.GetComponent<Rigidbody>()!);
 			}
 		}
 

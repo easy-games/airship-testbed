@@ -3,7 +3,7 @@ import { Game } from "@Easy/Core/Shared/Game";
 import { Keyboard } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
-import { AirshipCharacterCameraSingleton } from "../../Camera/AirshipCharacterCameraSingleton";
+import { AirshipCameraSingleton } from "../../Camera/AirshipCameraSingleton";
 import { CharacterInput } from "./CharacterInput";
 import { LocalCharacterInputSignal } from "./LocalCharacterInputSignal";
 @Singleton({
@@ -66,7 +66,7 @@ export class LocalCharacterSingleton {
 			this.screenshot = character.gameObject.AddComponent<CameraScreenshotRecorder>();
 
 			// Set up camera
-			const cameraController = Dependency<AirshipCharacterCameraSingleton>();
+			const cameraController = Dependency<AirshipCameraSingleton>();
 			cameraController.SetupCamera(character);
 			cameraController.SetupCameraControls(bin);
 
@@ -139,8 +139,19 @@ export class LocalCharacterSingleton {
 			// Cleanup:
 			bin.Add(() => {
 				if (cameraController.IsEnabled()) {
+					// If the camera mode's target is _not_ the local character don't
+					// clean up camera.
+					const mode = cameraController.GetMode();
+					if (mode) {
+						const target = mode.GetTarget();
+						const isTargetLocalCharacter = target === character.model;
+						if (!isTargetLocalCharacter) return;
+					}
 					cameraController.CleanupCamera();
 				}
+			});
+
+			bin.Add(() => {
 				this.input?.Destroy();
 			});
 

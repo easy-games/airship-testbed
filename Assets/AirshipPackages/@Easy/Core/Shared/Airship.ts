@@ -13,7 +13,7 @@ import { AirshipServerManagerService } from "../Server/Services/Airship/ServerMa
 import { AirshipTransferService } from "../Server/Services/Airship/Transfer/AirshipTransferService";
 import { AirshipUserService } from "../Server/Services/Airship/User/AirshipUserService";
 import { AirshipAvatarSingleton } from "./Avatar/AirshipAvatarSingleton";
-import { AirshipCharacterCameraSingleton } from "./Camera/AirshipCharacterCameraSingleton";
+import { AirshipCameraSingleton } from "./Camera/AirshipCameraSingleton";
 import { AirshipCharactersSingleton } from "./Character/AirshipCharactersSingleton";
 import CharacterConfigSetup from "./Character/CharacterConfigSetup";
 import { AirshipChatSingleton } from "./Chat/AirshipChatSingleton";
@@ -68,7 +68,7 @@ export namespace Platform {
 		 * Add players to matchmaking groups and join queues to find other players to play with.
 		 * Matchmaking queues must be created using the https://create.airship.gg website.
 		 */
-		export let Matchmaking = undefined! as AirshipMatchmakingService
+		export let Matchmaking = undefined! as AirshipMatchmakingService;
 		/**
 		 * Allows access to player party information.
 		 */
@@ -188,7 +188,7 @@ export namespace Airship {
 	 *
 	 * `Airship.Camera` is only functional when a CameraRig.prefab is placed in your scene.
 	 */
-	export let Camera = undefined! as AirshipCharacterCameraSingleton;
+	export let Camera = undefined! as AirshipCameraSingleton;
 
 	/**
 	 * Functions for configuring the chat window as well as broadcasting messages.

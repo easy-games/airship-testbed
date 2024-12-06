@@ -145,7 +145,7 @@ export default class Inventory extends AirshipBehaviour {
 
 				// Scroll to select held item:
 				Mouse.onScrolled.Connect((event) => {
-					if (!this.controlsEnabled || event.uiProcessed) return;
+					if (!this.controlsEnabled || event.uiProcessed || event.IsCancelled()) return;
 					if (Mouse.IsOverUI()) return;
 					// print("scroll: " + delta);
 					if (math.abs(event.delta) < 0.05) return;
@@ -228,6 +228,7 @@ export default class Inventory extends AirshipBehaviour {
 		let currentItemStack = this.items.get(this.heldSlot);
 		let cleanup = callback(currentItemStack);
 
+		// This seems like it should not be here! Why are we listening to network and calling SetHeldSlotInternal()?!
 		bin.Add(
 			CoreNetwork.ServerToClient.SetHeldInventorySlot.client.OnServerEvent((invId, slot) => {
 				if (invId === this.id) {

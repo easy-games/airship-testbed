@@ -1,5 +1,5 @@
 import { Asset } from "@Easy/Core/Shared/Asset";
-import { AirshipCharacterCameraSingleton } from "@Easy/Core/Shared/Camera/AirshipCharacterCameraSingleton";
+import { AirshipCameraSingleton } from "@Easy/Core/Shared/Camera/AirshipCameraSingleton";
 import Character from "@Easy/Core/Shared/Character/Character";
 import { Dependency, Singleton } from "@Easy/Core/Shared/Flamework";
 import { GameObjectUtil } from "@Easy/Core/Shared/GameObject/GameObjectUtil";
@@ -31,32 +31,24 @@ export class BubbleChatController {
 			}
 		});
 		*/
-
 		// Replace distant bubbles with "..."
 		// task.spawn(() => {
 		// 	while (true) {
 		// 		task.wait(0.5);
-
 		// 		const mainCamera = Camera.main;
 		// 		if (!mainCamera) continue;
-
 		// 		const cameraPosition = mainCamera.transform.position;
-
 		// 		for (const [containerTransform, minimized] of this.chatContainerMinimized) {
 		// 			// Clear out destroyed containers
 		// 			if (!containerTransform.gameObject) {
 		// 				this.chatContainerMinimized.delete(containerTransform);
 		// 				continue;
 		// 			}
-
 		// 			const shouldBeMinimized = this.ShouldChatBeMinimized(containerTransform, cameraPosition);
 		// 			if (shouldBeMinimized === minimized) continue;
-
 		// 			this.chatContainerMinimized.set(containerTransform, shouldBeMinimized);
-
 		// 			const canvas = containerTransform.FindChild("Canvas");
 		// 			if (!canvas) continue;
-
 		// 			// Loop over all bubbles within the container and replace their contents
 		// 			const childTextComponents = canvas.gameObject.GetComponentsInChildren<TextMeshProUGUI>();
 		// 			const size = childTextComponents.Length;
@@ -162,9 +154,9 @@ export class BubbleChatController {
 
 			const canvasComponent = canvas.GetComponent<Canvas>()!;
 			if (character.IsLocalCharacter()) {
-				const isFirstPerson = Dependency<AirshipCharacterCameraSingleton>().IsFirstPerson();
+				const isFirstPerson = Dependency<AirshipCameraSingleton>().IsFirstPerson();
 				canvasComponent.enabled = !isFirstPerson;
-				Dependency<AirshipCharacterCameraSingleton>().firstPersonChanged.Connect((isFirst) => {
+				Dependency<AirshipCameraSingleton>().firstPersonChanged.Connect((isFirst) => {
 					canvasComponent.enabled = !isFirst;
 				});
 			}
