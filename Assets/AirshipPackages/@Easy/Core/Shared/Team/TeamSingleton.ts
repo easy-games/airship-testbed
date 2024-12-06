@@ -82,6 +82,11 @@ export class TeamsSingleton {
 				const teamDtos = ObjectUtils.values(this.teams).map((e) => e.team.Encode());
 				CoreNetwork.ServerToClient.AddTeams.server.FireClient(player, teamDtos);
 			});
+			Airship.Players.onPlayerDisconnected.ConnectWithPriority(SignalPriority.LOWEST, (player) => {
+				if (player.team) {
+					player.team.RemovePlayer(player);
+				}
+			});
 		}
 	}
 
