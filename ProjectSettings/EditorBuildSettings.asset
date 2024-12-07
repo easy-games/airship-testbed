@@ -44,6 +44,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Matchmaking.unity
     guid: a084c6e521979490f8d8737f1c807bf8
+  - enabled: 1
+    path: Assets/Scenes/ClientPrediction.unity
+    guid: 79c3e93f2ccdf5e44884e88c44848560
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: db23642ed970b40389a45925eb39009c, type: 2}
   m_UseUCBPForAssetBundles: 0

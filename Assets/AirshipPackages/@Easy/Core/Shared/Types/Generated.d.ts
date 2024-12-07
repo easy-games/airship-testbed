@@ -47020,6 +47020,7 @@ interface CharacterMovementState extends AirshipPredictedState {
     timeSinceBecameGrounded: number;
     timeSinceWasGrounded: number;
     timeSinceJump: number;
+    customData: BinaryBlob;
 
 
 

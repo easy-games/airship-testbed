@@ -104,7 +104,6 @@ export class AirshipCameraSingleton {
 
 	protected OnStart(): void {
 		Dependency<LocalCharacterSingleton>().stateChanged.Connect((state) => {
-			// const isSprinting = Dependency<LocalCharacterSingleton>().input?.IsSprinting();
 			this.UpdateLocalCharacterState({
 				sprinting:
 					state === CharacterState.Sprinting ||
