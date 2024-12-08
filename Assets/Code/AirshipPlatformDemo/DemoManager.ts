@@ -79,9 +79,9 @@ export default class DemoManager extends AirshipBehaviour {
 			this.npcCharacter = Airship.Characters.SpawnNonPlayerCharacter(this.spawnPosition.transform.position);
 
 			this.bin.Add(
-				Network.ClientToServer.TestServer.server.OnClientEvent((player, value)=>{
+				Network.ClientToServer.TestServer.server.OnClientEvent((player, value) => {
 					this.TestServer(player.character);
-				})
+				}),
 			);
 		}
 		if (Game.IsClient()) {
@@ -134,14 +134,13 @@ export default class DemoManager extends AirshipBehaviour {
 		}
 	}
 
-	private TestServer(character: Character | undefined){
+	private TestServer(character: Character | undefined) {
 		//Runs on the server when the client presses R
 		print("Test Server");
-		if(character){
+		if (character) {
 			print("Testing from character: " + character.id);
-			character.Teleport(new Vector3(0,10,0), Vector3.forward);
+			character.Teleport(new Vector3(0, 10, 0), Vector3.forward);
 		}
-
 	}
 
 	private testDirFlip = 1;
@@ -170,7 +169,7 @@ export default class DemoManager extends AirshipBehaviour {
 			//MOVE TEST
 			this.npcCharacter.movement.SetMoveInput(
 				dir,
-				false,//math.random() > 1 - Time.deltaTime * 2,
+				false, //math.random() > 1 - Time.deltaTime * 2,
 				math.sin(time) > 0.2,
 				math.cos(time) < 0.2,
 				true,
