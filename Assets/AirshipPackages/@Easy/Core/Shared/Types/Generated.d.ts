@@ -38561,7 +38561,7 @@ declare const AirshipPlatformUtil: AirshipPlatformUtilConstructor;
 interface CharacterRig extends MonoBehaviour {
     bodyMesh: SkinnedMeshRenderer;
     armsMesh: SkinnedMeshRenderer;
-    headMesh: Renderer;
+    headMesh: SkinnedMeshRenderer;
     faceMesh: Renderer;
     rigHolder: Transform;
     rootMotion: Transform;
@@ -38590,6 +38590,10 @@ interface CharacterRig extends MonoBehaviour {
     spineChest: Transform;
     heldItemL: Transform;
     heldItemR: Transform;
+    headColor: MaterialColorURP;
+    bodyColor: MaterialColorURP;
+    armsColor: MaterialColorURP;
+    viewmodelArmsColor: MaterialColorURP;
     baseMeshes: CSArray<Renderer>;
 
 
@@ -46773,6 +46777,7 @@ interface VoxelWorld extends MonoBehaviour {
 interface WorldSaveFile extends ScriptableObject {
     chunks: CSArray<SaveChunk>;
     blockIdToScopeName: CSArray<BlockIdToScopedName>;
+    chunksCompressed: CSArray<number>;
 
 
 
@@ -46792,6 +46797,7 @@ interface SaveChunk {
 
 
 
+    Serialize(writer: unknown, version: number): void;
 
 
 }
@@ -46802,6 +46808,7 @@ interface SaveChunkConstructor {
     new(key: Vector3, data: CSArray<number>, color: CSArray<number>): SaveChunk;
 
 
+    Deserialize(reader: unknown, version: number, voxelData: CSArray<number>, colors: CSArray<number>): Vector3;
 
 }
 declare const SaveChunk: SaveChunkConstructor;
@@ -46984,13 +46991,26 @@ interface ActiveAccessory {
     AccessoryComponent: AccessoryComponent;
     rootTransform: Transform;
     gameObjects: CSArray<GameObject>;
+    meshRenderers: CSArray<MeshRenderer>;
+    skinnedMeshRenderers: CSArray<SkinnedMeshRenderer>;
     renderers: CSArray<Renderer>;
+    meshFilters: CSArray<MeshFilter>;
 
 
 
 
 
 }
+    
+interface ActiveAccessoryConstructor {
+
+
+    new(): ActiveAccessory;
+
+
+
+}
+declare const ActiveAccessory: ActiveAccessoryConstructor;
     
 interface AirshipPredictedState {
     tick: number;

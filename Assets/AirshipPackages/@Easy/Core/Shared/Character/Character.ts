@@ -62,6 +62,7 @@ export default class Character extends AirshipBehaviour {
 	private displayName = "";
 	private initialized = false;
 	private despawned = false;
+	private prevOutfitEncoded = "";
 
 	/*
 	 * [Advanced]
@@ -169,6 +170,9 @@ export default class Character extends AirshipBehaviour {
 			player.selectedOutfit = outfitDto;
 		}
 		if (this.accessoryBuilder) {
+			if (player) {
+				this.SetMeshCacheId(`Player:${player.userId}`);
+			}
 			this.LoadUserOutfit(outfitDto);
 		}
 
@@ -181,6 +185,10 @@ export default class Character extends AirshipBehaviour {
 				Bridge.DisconnectEvent(customDataFlushedConn);
 			});
 		}
+	}
+
+	public SetMeshCacheId(cacheId: string | undefined): void {
+		this.accessoryBuilder.meshCombiner.cacheId = cacheId ?? "";
 	}
 
 	public LoadUserOutfit(outfitDto: OutfitDto | undefined) {

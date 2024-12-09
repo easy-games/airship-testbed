@@ -140,8 +140,6 @@ interface CharacterMovement extends Component {
 	IsIgnoringCollider(collider: Collider): boolean;
 	SetVelocity(velocity: Vector3): void;
 	GetVelocity(): Vector3;
-	DisableMovement();
-	EnableMovement();
 	GetState(): CharacterState;
 	GetTimeSinceWasGrounded(): number;
 	GetTimeSinceBecameGrounded(): number;
@@ -149,7 +147,7 @@ interface CharacterMovement extends Component {
 
 	//Public
 	enabled: boolean;
-	disableInput : boolean;
+	disableInput: boolean;
 	rigidbody: Rigidbody;
 	rootTransform: Transform; //The true position transform
 	airshipTransform: Transform; //The transform controlled by the movement script
@@ -161,12 +159,12 @@ interface CharacterMovement extends Component {
 
 	//Public Getters Private Setters
 	currentMoveState: CharacterMovementState;
-	currentCharacterHeight : number;
-	standingCharacterHeight : number;
-	characterRadius : number;
-	characterHalfExtents : Vector3;
-	isGrounded : boolean;
-	isSprinting : boolean;
+	currentCharacterHeight: number;
+	standingCharacterHeight: number;
+	characterRadius: number;
+	characterHalfExtents: Vector3;
+	isGrounded: boolean;
+	isSprinting: boolean;
 	groundedRaycastHit: RaycastHit;
 }
 
@@ -399,6 +397,7 @@ interface AccessoryBuilder extends MonoBehaviour {
 	currentUserId: string;
 	currentUserName: string;
 	cancelPendingDownload: boolean;
+	meshCombiner: MeshCombiner;
 
 	AddAccessories(
 		accessoryTemplates: CSArray<AccessoryComponent>,
@@ -426,6 +425,14 @@ interface AccessoryBuilder extends MonoBehaviour {
 
 	OnMeshCombined: MonoSignal<[usedMeshCombiner: boolean, skinnedMesh: SkinnedMeshRenderer, staticMesh: MeshRenderer]>;
 }
+
+interface MeshCombiner extends MonoBehaviour {
+	cacheId: string;
+}
+interface MeshCombinerConstructor {
+	public RemoveMeshCache(cacheId: string): void;
+}
+declare const MeshCombiner: MeshCombinerConstructor;
 
 interface CanvasUIEvents extends Component {
 	RegisterEvents(gameObject: GameObject): void;
