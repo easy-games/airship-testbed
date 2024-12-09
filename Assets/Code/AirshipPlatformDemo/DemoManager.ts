@@ -5,6 +5,7 @@ import { Asset } from "@Easy/Core/Shared/Asset";
 import Character from "@Easy/Core/Shared/Character/Character";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Binding } from "@Easy/Core/Shared/Input/Binding";
+import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Keyboard } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
@@ -52,12 +53,15 @@ export default class DemoManager extends AirshipBehaviour {
 
 		Airship.Input.CreateAction("interact", Binding.Key(Key.F));
 
-		// Airship.Inventory.RegisterItem("WoodSword", {
-		// 	displayName: "Wood Sword",
-		// 	maxStackSize: 1,
-		// 	accessoryPaths: ["Assets/Resources/Accessories/Weapons/Swords/WoodSword/wood_sword.prefab"],
-		// 	image: "Assets/Resources/ItemRenders/wood_sword.png",
-		// });
+		Airship.Inventory.RegisterItem("WoodSword", {
+			displayName: "Wood Sword",
+			maxStackSize: 1,
+			accessoryPaths: ["Assets/Resources/Prefabs/WoodSword.prefab"],
+			// image: "Assets/Resources/ItemRenders/wood_sword.png",
+		});
+		Airship.Characters.ObserveCharacters((c) => {
+			c.inventory.AddItem(new ItemStack("WoodSword"));
+		});
 
 		if (Game.IsServer()) {
 			this.bin.Add(
