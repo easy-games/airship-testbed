@@ -16,6 +16,11 @@ export class MenuUtil {
 			sceneName: "MovementMods",
 		},
 		{
+			title: "Predicted Movement",
+			subtitle: "Server Auth Client Predicted movement",
+			sceneName: "ClientPrediction",
+		},
+		{
 			title: "Rigidbodies",
 			subtitle: "Cubes with physics!",
 			sceneName: "RigidBodies",
