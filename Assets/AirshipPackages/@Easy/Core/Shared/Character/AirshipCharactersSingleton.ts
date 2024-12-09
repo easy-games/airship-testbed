@@ -204,7 +204,7 @@ export class AirshipCharactersSingleton {
 	}
 
 	public RemoveMeshCacheId(cacheId: string): void {
-		MeshCombiner.RemoveMeshCache(cacheId);
+		// MeshCombiner.RemoveMeshCache(cacheId);
 	}
 
 	private WatchForHeldItemAccessories() {
