@@ -5,6 +5,7 @@ import Object from "@Easy/Core/Shared/Util/ObjectUtils";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { Game } from "../Game";
 import { Keyboard, Mouse } from "../UserInput";
+import { Cancellable } from "../Util/Cancellable";
 import { ItemStack, ItemStackDto } from "./ItemStack";
 import { BeforeLocalInventoryHeldSlotChanged } from "./Signal/BeforeLocalInventoryHeldSlotChanged";
 
@@ -12,6 +13,12 @@ export interface InventoryDto {
 	id: number;
 	items: Map<number, ItemStackDto>;
 	heldSlot: number;
+}
+
+class OnBeforeAddItemEvent extends Cancellable {
+	constructor(public itemStack: ItemStack) {
+		super();
+	}
 }
 
 export default class Inventory extends AirshipBehaviour {
@@ -23,6 +30,8 @@ export default class Inventory extends AirshipBehaviour {
 
 	@NonSerialized() private items = new Map<number, ItemStack>();
 
+	/** Fired at the start of AddItem. Can be used to modify the added ItemStack or cancel the operation. */
+	@NonSerialized() public readonly onBeforeAddItem = new Signal<OnBeforeAddItemEvent>();
 	/** Used to cancel changing held item slots. */
 	@NonSerialized() public readonly onBeforeLocalHeldSlotChanged = new Signal<BeforeLocalInventoryHeldSlotChanged>();
 	/** Fired when a `slot` points to a new `ItemStack`. Changes to the same ItemStack will **not** fire this event. */
@@ -369,6 +378,12 @@ export default class Inventory extends AirshipBehaviour {
 	}
 
 	public AddItem(itemStack: ItemStack): boolean {
+		// OnBeforeAddItem event
+		const addItemEvent = new OnBeforeAddItemEvent(itemStack);
+		const result = this.onBeforeAddItem.Fire(addItemEvent);
+		if (result.IsCancelled()) return false;
+		itemStack = addItemEvent.itemStack;
+
 		// Merge with existing
 		for (let [otherId, otherItem] of this.items) {
 			if (itemStack.CanMerge(otherItem)) {
