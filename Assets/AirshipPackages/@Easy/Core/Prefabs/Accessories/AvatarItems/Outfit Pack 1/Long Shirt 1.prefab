@@ -147,5 +147,7 @@ MonoBehaviour:
   meshLods:
   - {fileID: 4300000, guid: 37efe61c5a5d54cec81d92c5ce65a773, type: 2}
   - {fileID: 4300000, guid: f6d4948e7da704ae285911a16e5f3526, type: 2}
+  matColors:
+  - {fileID: 5277934382875855144}
   canMeshCombine: 1
   bodyMask: 12
