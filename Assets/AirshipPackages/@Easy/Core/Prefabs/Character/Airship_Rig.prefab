@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2270388183419339240}
   - component: {fileID: 7132230456949110370}
-  - component: {fileID: 8462687060145104204}
+  - component: {fileID: 115702469869794286}
   m_Layer: 3
   m_Name: CombinedMeshRenderer_LOD2
   m_TagString: Untagged
@@ -87,7 +87,7 @@ SkinnedMeshRenderer:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
   m_DirtyAABB: 0
---- !u!114 &8462687060145104204
+--- !u!114 &115702469869794286
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -503,6 +503,9 @@ MonoBehaviour:
   accessorySlot: 9
   visibilityMode: 2
   skinnedToCharacter: 1
+  meshLods: []
+  matColors:
+  - {fileID: 1777377698501017585}
   canMeshCombine: 1
   bodyMask: 294912
 --- !u!1 &3114543442279630557
@@ -557,7 +560,10 @@ MonoBehaviour:
   - {fileID: 1149836141499182161}
   - {fileID: 665416985170017182}
   - {fileID: 7132230456949110370}
-  materialColorURP: {fileID: 2210429693668880385}
+  baseMeshMatColors:
+  - {fileID: 2210429693668880385}
+  - {fileID: 7243268431693276113}
+  - {fileID: 115702469869794286}
   rootBone: {fileID: 7060538637195656572}
   createOverlayMesh: 0
   hiddenSurfaces:
@@ -855,7 +861,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8786266964554109000}
   - component: {fileID: 665416985170017182}
-  - component: {fileID: 8450344285725377707}
+  - component: {fileID: 7243268431693276113}
   m_Layer: 3
   m_Name: CombinedMeshRenderer_LOD1
   m_TagString: Untagged
@@ -932,7 +938,7 @@ SkinnedMeshRenderer:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
   m_DirtyAABB: 0
---- !u!114 &8450344285725377707
+--- !u!114 &7243268431693276113
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
