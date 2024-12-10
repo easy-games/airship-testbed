@@ -145,7 +145,7 @@ MonoBehaviour:
   visibilityMode: 2
   skinnedToCharacter: 1
   meshLods:
-  - {fileID: 4300000, guid: 133907d5531ab47e08df7a9148c3f206, type: 2}
-  - {fileID: 4300000, guid: 42ede006926974d66918c304aa6b90ff, type: 2}
+  - {fileID: 4300000, guid: 37efe61c5a5d54cec81d92c5ce65a773, type: 2}
+  - {fileID: 4300000, guid: f6d4948e7da704ae285911a16e5f3526, type: 2}
   canMeshCombine: 1
   bodyMask: 12

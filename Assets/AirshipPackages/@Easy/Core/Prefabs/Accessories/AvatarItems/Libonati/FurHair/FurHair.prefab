@@ -55,6 +55,7 @@ MonoBehaviour:
   accessorySlot: 2
   visibilityMode: 0
   skinnedToCharacter: 0
+  meshLods: []
   canMeshCombine: 1
   bodyMask: 0
 --- !u!1 &1513318743141021560
@@ -10353,6 +10354,10 @@ PrefabInstance:
       value: 41276f7e-ad9d-46cb-a080-c8b24fecb88f
       objectReference: {fileID: 0}
     - target: {fileID: 8539257135083228966, guid: a80db8faf3c207d4a9bbff13e0d02936, type: 3}
+      propertyPath: meshLods.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8539257135083228966, guid: a80db8faf3c207d4a9bbff13e0d02936, type: 3}
       propertyPath: serverClassIdStaging
       value: 
       objectReference: {fileID: 0}
@@ -10452,6 +10457,10 @@ PrefabInstance:
       value: 41276f7e-ad9d-46cb-a080-c8b24fecb88f
       objectReference: {fileID: 0}
     - target: {fileID: 8539257135083228966, guid: a80db8faf3c207d4a9bbff13e0d02936, type: 3}
+      propertyPath: meshLods.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8539257135083228966, guid: a80db8faf3c207d4a9bbff13e0d02936, type: 3}
       propertyPath: serverClassIdStaging
       value: 
       objectReference: {fileID: 0}
@@ -10549,6 +10558,10 @@ PrefabInstance:
     - target: {fileID: 8539257135083228966, guid: a80db8faf3c207d4a9bbff13e0d02936, type: 3}
       propertyPath: serverClassId
       value: 41276f7e-ad9d-46cb-a080-c8b24fecb88f
+      objectReference: {fileID: 0}
+    - target: {fileID: 8539257135083228966, guid: a80db8faf3c207d4a9bbff13e0d02936, type: 3}
+      propertyPath: meshLods.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8539257135083228966, guid: a80db8faf3c207d4a9bbff13e0d02936, type: 3}
       propertyPath: serverClassIdStaging

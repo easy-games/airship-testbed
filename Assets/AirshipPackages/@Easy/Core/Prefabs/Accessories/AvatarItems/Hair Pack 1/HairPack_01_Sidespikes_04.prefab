@@ -51,6 +51,7 @@ MonoBehaviour:
   accessorySlot: 2
   visibilityMode: 2
   skinnedToCharacter: 0
+  meshLods: []
   canMeshCombine: 1
   bodyMask: 0
 --- !u!1001 &1586266189869414945

@@ -906,6 +906,7 @@ MonoBehaviour:
   drawDebugGizmos_STEPUP: 0
   drawDebugGizmos_STATES: 0
   useExtraLogging: 0
+  autoCalibrateSkiddingSpeed: 1
   observerRotationLerpMod: 10
   playAnimationOnServer: 1
 --- !u!114 &1645000729044007242
@@ -962,7 +963,7 @@ MonoBehaviour:
   detectStepUps: 1
   alwaysStepUp: 0
   assistedLedgeJump: 1
-  maxStepUpHeight: 0.5
+  maxStepUpHeight: 0.337
   stepUpRampDistance: 0.75
   detectSlopes: 0
   slopeForce: 45
