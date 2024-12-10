@@ -188,7 +188,7 @@ export default class Character extends AirshipBehaviour {
 	}
 
 	public SetMeshCacheId(cacheId: string | undefined): void {
-		this.accessoryBuilder.meshCombiner.cacheId = cacheId ?? "";
+		// this.accessoryBuilder.meshCombiner.cacheId = cacheId ?? "";
 	}
 
 	public LoadUserOutfit(outfitDto: OutfitDto | undefined) {
