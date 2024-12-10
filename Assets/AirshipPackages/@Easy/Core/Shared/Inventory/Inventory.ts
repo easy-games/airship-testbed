@@ -320,6 +320,8 @@ export default class Inventory extends AirshipBehaviour {
 				bin.Add(
 					itemStack.amountChanged.Connect((e) => {
 						if (e.noNetwork) return;
+						if (Game.IsHosting()) return;
+						
 						CoreNetwork.ServerToClient.UpdateInventorySlot.server.FireAllClients(
 							this.id,
 							slot,
@@ -331,6 +333,8 @@ export default class Inventory extends AirshipBehaviour {
 				bin.Add(
 					itemStack.itemTypeChanged.Connect((e) => {
 						if (e.noNetwork) return;
+						if (Game.IsHosting()) return;
+
 						CoreNetwork.ServerToClient.UpdateInventorySlot.server.FireAllClients(
 							this.id,
 							slot,
