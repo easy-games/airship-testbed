@@ -39,7 +39,8 @@ export class FlyCameraMode extends CameraMode {
 	private fovSpring!: Spring;
 
 	private camera!: Camera;
-	private originalFov = 0;
+	private mainOriginalFov = 0;
+	private uiOriginalFov = 0;
 	private currentFov = 0;
 
 	private keyboard!: Keyboard;
@@ -55,8 +56,9 @@ export class FlyCameraMode extends CameraMode {
 		this.fovSpring.goal = new Vector3(0, 0, START_FOV);
 
 		this.camera = camera;
-		this.originalFov = camera.fieldOfView;
-		this.currentFov = this.originalFov;
+		this.mainOriginalFov = camera.fieldOfView;
+		this.uiOriginalFov = Airship.Camera.cameraRig?.uiCamera?.fieldOfView ?? 0;
+		this.currentFov = this.mainOriginalFov;
 
 		// Sink keys:
 		const sinkKeys = new Set<Key>();
@@ -100,7 +102,10 @@ export class FlyCameraMode extends CameraMode {
 		});
 
 		this.bin.Add(() => {
-			this.camera.fieldOfView = this.originalFov;
+			this.camera.fieldOfView = this.mainOriginalFov;
+			if (Airship.Camera.cameraRig?.uiCamera !== undefined) {
+				Airship.Camera.cameraRig.uiCamera.fieldOfView = this.uiOriginalFov;
+			}
 		});
 	}
 
@@ -164,6 +169,9 @@ export class FlyCameraMode extends CameraMode {
 		const fov = this.fovSpring.Update(dt).z;
 		this.currentFov = fov;
 		this.camera.fieldOfView = fov;
+		if (Airship.Camera.cameraRig?.uiCamera !== undefined) {
+			Airship.Camera.cameraRig.uiCamera.fieldOfView = fov;
+		}
 
 		const position = this.positionSpring.Update(dt);
 		const rotation = Quaternion.Euler(math.deg(-this.rotationX + math.pi / 2), math.deg(-this.rotationY), 0);
