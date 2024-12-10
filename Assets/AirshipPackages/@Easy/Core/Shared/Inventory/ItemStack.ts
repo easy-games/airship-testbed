@@ -43,6 +43,7 @@ export class ItemStack {
 
 	public SetItemType(itemType: string): void {
 		(this.itemType as string) = itemType;
+		(this.itemDef as ItemDef) = Airship.Inventory.GetItemDef(itemType);
 		this.itemTypeChanged.Fire({ itemStack: this, itemType: itemType, noNetwork: false });
 		this.changed.Fire();
 	}
