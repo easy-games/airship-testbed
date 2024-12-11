@@ -69,14 +69,14 @@ task.spawnDetached(() => {
 });
 
 // return the time remaining before the rate limit is reset, or undefined if the key is not rate limited
-function isCurrentlyRateLimited(retryKey: string | undefined): number | undefined {
+function tryAcquireRateLimitTicket(retryKey: string | undefined): number | undefined {
     if (retryKey === undefined) return undefined;
     
     const retryInfo = retryData[retryKey];
     if (retryInfo === undefined) return undefined;
 
     const resetAfter = translateResetAfter(retryInfo.postedAt, retryInfo.resetAfter);
-    
+
     if (resetAfter <= 0) {
         delete retryData[retryKey];
         return undefined;
@@ -92,7 +92,7 @@ function isCurrentlyRateLimited(retryKey: string | undefined): number | undefine
 
 // return the time remaining before the rate limit is reset, or undefined if the request was not rate limited
 // return undefined if the request could not be rate limited due to a missing header
-function isRateLimited(retryKey: string | undefined, response: HttpResponse): number | undefined {
+function processHttpResponse(retryKey: string | undefined, response: HttpResponse): number | undefined {
     let resetAfter: number | undefined;
     let remainingRequests: number | undefined;
 
@@ -150,7 +150,7 @@ function handleActiveRateLimit(inflightTask: InflightTask<HttpExecutionPackage, 
 
 const throttle = HttpInflightThrottle(100, (inflightTask: InflightTask<HttpExecutionPackage, HttpResponse>) => {
     const retryKey = inflightTask.key.retryKey;
-    const rateLimitResetsAt = isCurrentlyRateLimited(retryKey);
+    const rateLimitResetsAt = tryAcquireRateLimitTicket(retryKey);
     if (rateLimitResetsAt !== undefined) {
         handleActiveRateLimit(inflightTask, rateLimitResetsAt);
         return;
@@ -166,7 +166,7 @@ const throttle = HttpInflightThrottle(100, (inflightTask: InflightTask<HttpExecu
             }
         }
         const response = inflightTask.key.execute();
-        const activeRateLimitResetsAt = isRateLimited(retryKey, response);
+        const activeRateLimitResetsAt = processHttpResponse(retryKey, response);
 
         if (activeRateLimitResetsAt === undefined) {
             // this is kind of a mouthful
