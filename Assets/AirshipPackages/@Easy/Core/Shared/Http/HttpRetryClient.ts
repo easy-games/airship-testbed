@@ -91,7 +91,7 @@ function isCurrentlyRateLimited(retryKey: string | undefined): number | undefine
 }
 
 // return the time remaining before the rate limit is reset, or undefined if the request was not rate limited
-// return null if the request could not be rate limited due to a missing header
+// return undefined if the request could not be rate limited due to a missing header
 function isRateLimited(retryKey: string | undefined, response: HttpResponse): number | undefined {
     let resetAfter: number | undefined;
     let remainingRequests: number | undefined;
