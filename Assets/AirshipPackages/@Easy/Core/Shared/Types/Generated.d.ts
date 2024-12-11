@@ -36622,6 +36622,7 @@ interface MaterialColorURP extends MonoBehaviour {
 
 
     Clear(): void;
+    CopyFrom(other: MaterialColorURP): void;
     DoUpdate(): void;
     EditorFirstTimeSetup(): void;
     GetColorSettingByMaterial(mat: Material): ColorSetting;
@@ -38113,7 +38114,8 @@ interface AccessoryComponent extends MonoBehaviour {
     accessorySlot: AccessorySlot;
     visibilityMode: VisibilityMode;
     skinnedToCharacter: boolean;
-    canMeshCombine: boolean;
+    meshLods: CSArray<Mesh>;
+    matColors: CSArray<MaterialColorURP>;
     bodyMask: number;
     localPosition: Vector3;
     localRotation: Quaternion;
@@ -38563,6 +38565,9 @@ interface CharacterRig extends MonoBehaviour {
     armsMesh: SkinnedMeshRenderer;
     headMesh: SkinnedMeshRenderer;
     faceMesh: Renderer;
+    bodyMeshLOD: CSArray<SkinnedMeshRenderer>;
+    armsMeshLOD: CSArray<SkinnedMeshRenderer>;
+    headMeshLOD: CSArray<SkinnedMeshRenderer>;
     rigHolder: Transform;
     rootMotion: Transform;
     master: Transform;
@@ -46767,6 +46772,7 @@ interface VoxelWorld extends MonoBehaviour {
     TransformVectorToLocalSpace(vec: Vector3): Vector3;
     TransformVectorToWorldSpace(vec: Vector3): Vector3;
     Update(): void;
+    WaitForChunkToLoad(voxel: Vector3): void;
     WriteVoxelAt(pos: Vector3, num: number, priority: boolean): void;
     WriteVoxelGroupAt(positions: CSArray<Vector3>, nums: CSArray<number>, priority: boolean): void;
     WriteVoxelGroupAtTS(blob: unknown, priority: boolean): void;
@@ -46879,12 +46885,14 @@ interface Chunk {
     GetVoxelColorAt(worldPos: Vector3): Color32;
     HasVoxels(): boolean;
     IsGeometryDirty(): boolean;
+    IsLoaded(): boolean;
     MainthreadForceCollisionRebuild(): void;
     MainthreadUpdateMesh(world: VoxelWorld): boolean;
     NeedsToCopyMeshToScene(): boolean;
     NeedsToGenerateMesh(): boolean;
     SetGeometryDirty(dirty: boolean, priority: boolean): void;
     SetWorld(world: VoxelWorld): void;
+    WaitForLoaded(): void;
     WriteVoxel(worldPos: Vector3, num: number): void;
     WriteVoxelColor(worldPos: Vector3, col: Color32): void;
     WriteVoxelDamage(worldPos: Vector3, dmg: number): void;
@@ -46989,12 +46997,15 @@ declare const AccessorySkin: AccessorySkinConstructor;
     
 interface ActiveAccessory {
     AccessoryComponent: AccessoryComponent;
+    lodLevel: number;
+    maxLodLevel: number;
     rootTransform: Transform;
     gameObjects: CSArray<GameObject>;
     meshRenderers: CSArray<MeshRenderer>;
     skinnedMeshRenderers: CSArray<SkinnedMeshRenderer>;
     renderers: CSArray<Renderer>;
     meshFilters: CSArray<MeshFilter>;
+    lods: CSArray<ActiveAccessory>;
 
 
 
