@@ -1,8 +1,8 @@
-export interface KeyType<K> {
-    shouldRemove(this: ThisParameterType<KeyType<K>>, createdAt: number, additionalWaitTime: number): boolean;
+export interface KeyType {
+    shouldRemove(createdAt: number, additionalWaitTime: number): boolean;
 }
 
-export class InflightTask<K extends KeyType<K>, T> {
+export class InflightTask<K extends KeyType, T> {
     public readonly createdAt: number;
 
     constructor(
@@ -18,9 +18,9 @@ export class InflightTask<K extends KeyType<K>, T> {
     }
 }
 
-export type RequestExecutor<K extends KeyType<K>, T> = (task: InflightTask<K, T>) => void;
+export type RequestExecutor<K extends KeyType, T> = (task: InflightTask<K, T>) => void;
 
-export class HttpInflightThrottleExecutor<K extends KeyType<K>, T> {
+export class HttpInflightThrottleExecutor<K extends KeyType, T> {
     private readonly queue: Array<InflightTask<K, T>> = [];
 
     constructor(private availableSize: number, private readonly requestExecutor: RequestExecutor<K, T>) {
@@ -97,7 +97,7 @@ export class HttpInflightThrottleExecutor<K extends KeyType<K>, T> {
     }
 }
 
-export function HttpInflightThrottle<K extends KeyType<K>, T>(
+export function HttpInflightThrottle<K extends KeyType, T>(
     limit: number, requestExecutor: RequestExecutor<K, T>
 ) {
     return new HttpInflightThrottleExecutor(limit, requestExecutor);

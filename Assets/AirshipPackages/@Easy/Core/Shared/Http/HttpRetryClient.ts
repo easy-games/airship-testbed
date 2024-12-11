@@ -13,7 +13,7 @@ export const DefaultRetryConfig: RetryConfig = {
     maxWaitingSeconds: 120,
 }
 
-class HttpExecutionPackage implements KeyType<HttpExecutionPackage> {
+class HttpExecutionPackage implements KeyType {
     private readonly maxWaitingSeconds: number | undefined;
     public readonly retryKey: string | undefined;
 
