@@ -46,8 +46,6 @@ class HttpExecutionPackage implements KeyType {
 export interface RetryInformation {
     postedAt: number;
     resetAfter: number;
-    remainingRequests: number;
-    acquiredTickets: number;
 }
 
 // translates a reset after value to the current value based on the time the value was posted
@@ -55,7 +53,6 @@ function translateResetAfter(postedAt: number, resetAfter: number): number {
     return resetAfter - (os.time() - postedAt);
 }
 
-const inflightTasks: {[key: string]: number} = {};
 const retryData: {[key: string]: RetryInformation} = {};
 
 // clean up any unnecessary retry data every 30 seconds
@@ -71,7 +68,7 @@ task.spawnDetached(() => {
 });
 
 // return the time remaining before the rate limit is reset, or undefined if the key is not rate limited
-function tryAcquireRateLimitTicket(retryKey: string | undefined): number | undefined {
+function isCurrentlyLimited(retryKey: string | undefined): number | undefined {
     if (retryKey === undefined) return undefined;
     
     const retryInfo = retryData[retryKey];
@@ -84,22 +81,14 @@ function tryAcquireRateLimitTicket(retryKey: string | undefined): number | undef
         return undefined;
     }
 
-    if (retryInfo.acquiredTickets < retryInfo.remainingRequests) {
-        retryData[retryKey].acquiredTickets++;
-        return undefined;
-    }
-
     return resetAfter;
 }
 
 // return the time remaining before the rate limit is reset, or undefined if the request was not rate limited
 // return undefined if the request could not be rate limited due to a missing header
 function processHttpResponse(retryKey: string | undefined, response: HttpResponse): number | undefined {
-    let resetAfter: number | undefined;
-    let remainingRequests: number | undefined;
-
     if (response.statusCode === 429) {
-        resetAfter = tonumber(response.GetHeader("Retry-After"));
+        const resetAfter = tonumber(response.GetHeader("Retry-After"));
 
         if (resetAfter === undefined) {
             return undefined;
@@ -109,30 +98,16 @@ function processHttpResponse(retryKey: string | undefined, response: HttpRespons
             return 1; // retry in 1 second & don't mark it
         }
 
-        if (retryKey === undefined) {
-            return resetAfter;
+        if (retryKey === undefined) return resetAfter;
+
+        retryData[retryKey] = {
+            postedAt: os.time(),
+            resetAfter: resetAfter,
         }
 
-        remainingRequests = 0;
-    } else if (retryKey === undefined) {
-        return 0;
-    } else {
-        resetAfter = tonumber(response.GetHeader("RateLimit-Reset"));
-        remainingRequests = tonumber(response.GetHeader("RateLimit-Remaining"));
-
-        if (resetAfter === undefined || remainingRequests === undefined) {
-            return 0;
-        }
+        return resetAfter;
     }
-
-    retryData[retryKey] = {
-        postedAt: os.time(),
-        resetAfter: resetAfter,
-        remainingRequests: remainingRequests,
-        acquiredTickets: inflightTasks[retryKey]! - 1,
-    }
-
-    return response.statusCode === 429 ? resetAfter : 0;
+    return 0;
 }
 
 // handles hat happens to an inflight task when a rate limit is received for a certain amount of time
@@ -152,21 +127,13 @@ function handleActiveRateLimit(inflightTask: InflightTask<HttpExecutionPackage, 
 
 const throttle = HttpInflightThrottle(100, (inflightTask: InflightTask<HttpExecutionPackage, HttpResponse>) => {
     const retryKey = inflightTask.key.retryKey;
-    const rateLimitResetsAt = tryAcquireRateLimitTicket(retryKey);
+    const rateLimitResetsAt = isCurrentlyLimited(retryKey);
     if (rateLimitResetsAt !== undefined) {
         handleActiveRateLimit(inflightTask, rateLimitResetsAt);
         return;
     }
 
     try {
-        if (retryKey !== undefined) {
-            // add 1 to the inflight task directory, used to prevent 429 hits
-            if (inflightTasks[retryKey] === undefined) {
-                inflightTasks[retryKey] = 1;
-            } else {
-                inflightTasks[retryKey] += 1;
-            }
-        }
         const response = inflightTask.key.execute();
         const activeRateLimitResetsAt = processHttpResponse(retryKey, response);
 
@@ -183,14 +150,6 @@ const throttle = HttpInflightThrottle(100, (inflightTask: InflightTask<HttpExecu
         inflightTask.resolve(response);
     } catch (err) {
         inflightTask.reject(err);
-    } finally {
-        // remove 1 from the inflight tasks directory
-        if (retryKey !== undefined) {
-            inflightTasks[retryKey] -= 1;
-            if (inflightTasks[retryKey] === 0) {
-                delete inflightTasks[retryKey];
-            }
-        }
     }
 });
 
