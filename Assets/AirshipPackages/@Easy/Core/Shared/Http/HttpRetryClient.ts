@@ -112,7 +112,6 @@ function processHttpResponse(retryKey: string | undefined, response: HttpRespons
 
 // handles hat happens to an inflight task when a rate limit is received for a certain amount of time
 function handleActiveRateLimit(inflightTask: InflightTask<HttpExecutionPackage, HttpResponse>, resetAt: number) {
-    throttle.removeWaiting(resetAt, -1);
     if (inflightTask.shouldRemove(resetAt)) {
         inflightTask.reject("Http request timed out while waiting.");
         return;
