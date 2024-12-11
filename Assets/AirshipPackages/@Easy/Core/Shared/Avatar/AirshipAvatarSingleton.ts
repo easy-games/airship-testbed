@@ -140,6 +140,9 @@ export class AirshipAvatarSingleton {
 		outfit.accessories.forEach((acc) => {
 			const accComponentTemplate = AvatarCollectionManager.instance.GetAccessoryFromClassId(acc.class.classId);
 			if (accComponentTemplate) {
+				if (builder.firstPerson) {
+					return;
+				}
 				let accComponent = builder.AddSingleAccessory(accComponentTemplate, false);
 				if (accComponent?.AccessoryComponent) {
 					accComponent.AccessoryComponent.SetInstanceId(acc.instanceId);
