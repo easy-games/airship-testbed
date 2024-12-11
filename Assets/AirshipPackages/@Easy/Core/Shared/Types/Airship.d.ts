@@ -404,7 +404,10 @@ interface AccessoryBuilder extends MonoBehaviour {
 		addMode: AccessoryAddMode,
 		rebuildMeshImmediately: boolean,
 	): CSArray<ActiveAccessory>;
-	AddSingleAccessory(accessoryTemplate: AccessoryComponent, rebuildMeshImmediately: boolean): ActiveAccessory;
+	AddSingleAccessory(
+		accessoryTemplate: AccessoryComponent,
+		rebuildMeshImmediately: boolean,
+	): ActiveAccessory | undefined;
 	AddSkinAccessory(skin: AccessorySkin, rebuildMeshImmediately: boolean): void;
 	EquipAccessoryOutfit(outfit: AccessoryOutfit, rebuildMeshImmediately: boolean): CSArray<ActiveAccessory>;
 	GetAccessoryMeshes(slot: AccessorySlot): CSArray<Renderer>;

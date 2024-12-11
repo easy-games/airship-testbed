@@ -38,11 +38,15 @@ export class AirshipAvatarSingleton {
 	public LoadOutfitByUserId(
 		userId: string,
 		builder: AccessoryBuilder,
-		options: { removeOldClothingAccessories?: boolean } = {},
+		options: { removeOldClothingAccessories?: boolean; updateViewmodel?: boolean } = {},
 	) {
 		AvatarPlatformAPI.GetUserEquippedOutfit(userId).then((outfit) => {
 			if (outfit) {
 				this.LoadUserOutfitDto(outfit, builder, options);
+
+				if (options.updateViewmodel && Airship.Characters.viewmodel) {
+					this.LoadUserOutfitDto(outfit, Airship.Characters.viewmodel.accessoryBuilder, options);
+				}
 			}
 		});
 	}
@@ -80,7 +84,7 @@ export class AirshipAvatarSingleton {
 			return;
 		}
 		if (!character.accessoryBuilder) {
-			warn("Cannot load outfit without Accessory Builder set on Character.")
+			warn("Cannot load outfit without Accessory Builder set on Character.");
 			return;
 		}
 		this.LoadOutfitByUserId(character.player.userId, character.accessoryBuilder, options);
@@ -102,9 +106,15 @@ export class AirshipAvatarSingleton {
 			if (!outfitDto) {
 				// warn("Unable to load users default outfit. Equipping baked default outfit");
 				this.LoadDefaultOutfit(builder);
+				if (Airship.Characters.viewmodel) {
+					this.LoadDefaultOutfit(Airship.Characters.viewmodel.accessoryBuilder);
+				}
 				return;
 			}
 			this.LoadUserOutfitDto(outfitDto, builder, options);
+			if (Airship.Characters.viewmodel) {
+				this.LoadUserOutfitDto(outfitDto, Airship.Characters.viewmodel.accessoryBuilder, options);
+			}
 		});
 	}
 
@@ -133,14 +143,14 @@ export class AirshipAvatarSingleton {
 				let accComponent = builder.AddSingleAccessory(accComponentTemplate, false);
 				if (accComponent?.AccessoryComponent) {
 					accComponent.AccessoryComponent.SetInstanceId(acc.instanceId);
-				} else {
+				} else if (!builder.firstPerson) {
 					warn("Unable to find accessory with class ID: " + acc.class.classId);
 				}
 			} else {
 				const face = AvatarCollectionManager.instance.GetAccessoryFaceFromClassId(acc.class.classId);
 				if (face?.decalTexture) {
 					builder.SetFaceTexture(face.decalTexture);
-				} else {
+				} else if (!builder.firstPerson) {
 					warn("Unable to find accessory with class ID: " + acc.class.classId);
 				}
 			}

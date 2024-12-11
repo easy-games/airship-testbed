@@ -203,6 +203,11 @@ export default class Character extends AirshipBehaviour {
 			Airship.Avatar.LoadUserOutfitDto(outfitDto, this.accessoryBuilder, {
 				removeOldClothingAccessories: true,
 			});
+			if (this.IsLocalCharacter() && Airship.Characters.viewmodel) {
+				Airship.Avatar.LoadUserOutfitDto(outfitDto, Airship.Characters.viewmodel.accessoryBuilder, {
+					removeOldClothingAccessories: true,
+				});
+			}
 		}
 	}
 

@@ -520,7 +520,7 @@ GameObject:
   - component: {fileID: 8712362769775679849}
   - component: {fileID: 4521999006255447849}
   m_Layer: 3
-  m_Name: CombinedMesh
+  m_Name: MeshCombiner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -560,7 +560,7 @@ MonoBehaviour:
   - {fileID: 1149836141499182161}
   - {fileID: 665416985170017182}
   - {fileID: 7132230456949110370}
-  baseMeshMatColors:
+  outputBaseMeshMatColors:
   - {fileID: 2210429693668880385}
   - {fileID: 7243268431693276113}
   - {fileID: 115702469869794286}
@@ -571,6 +571,7 @@ MonoBehaviour:
   - {fileID: 6078896053619956190}
   - {fileID: 2024086838016654922}
   - {fileID: 55439361505670796}
+  firstPerson: 0
   rig: {fileID: 7139438170797187685}
 --- !u!205 &4521999006255447849
 LODGroup:
@@ -586,7 +587,7 @@ LODGroup:
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.2
+  - screenRelativeHeight: 0.17688882
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 1149836141499182161}
@@ -1402,7 +1403,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4845036152095233570}
   m_Layer: 3
-  m_Name: Airship_Rig
+  m_Name: AirshipRigHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1994,6 +1995,7 @@ MonoBehaviour:
   armsMesh: {fileID: 4466944578396753522}
   headMesh: {fileID: 3418875587636762027}
   faceMesh: {fileID: 3664559219000330965}
+  viewmodelArmsMesh: {fileID: 0}
   bodyMeshLOD:
   - {fileID: 8874355582159802038}
   - {fileID: 7077335761925975193}
