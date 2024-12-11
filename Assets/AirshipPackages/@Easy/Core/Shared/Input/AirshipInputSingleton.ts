@@ -233,17 +233,29 @@ export class AirshipInputSingleton {
 	 * activation key while in range will fire the `InputActionDirection.Up` event, and releasing it will
 	 * fire the `InputActionDirection.Down` event.
 	 *
-	 * @param actionName The action name associated with _this_ prompt.
+	 * @param inputAction The action name associated with _this_ prompt.
 	 * @param parent An optional parent `Transform` that this prompt will live underneath.
 	 * @param config A `ProximityPrompt` configuration. Describes prompt text and distance required to activate.
 	 * @returns The created `ProximityPrompt`.
 	 */
 	public CreateProximityPrompt(
-		actionName: string,
+		/**
+		 * The input action ID. This is something you listen to with `Airship.Input.OnDown()`
+		 */
+		inputAction: string,
+		/**
+		 * The title above the keybind. This is usually the name of the object.
+		 *
+		 * Empty string can be used to now show the object text.
+		 */
+		objectText: string,
+
+		/**
+		 * The action below the keybind. This is usually something like "Pick up".
+		 */
+		actionText: string,
 		parent?: Transform,
 		config?: {
-			primaryText?: string;
-			secondaryText?: string;
 			maxRange?: number;
 		},
 	): ProximityPrompt {
@@ -257,13 +269,9 @@ export class AirshipInputSingleton {
 			go = Object.Instantiate(Asset.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/Input/ProximityPrompt.prefab"));
 		}
 		const prompt = go.GetAirshipComponent<ProximityPrompt>()!;
-		prompt.actionName = actionName.lower();
-		if (config?.primaryText !== undefined) {
-			prompt.SetPrimaryText(config.primaryText);
-		}
-		if (config?.secondaryText !== undefined) {
-			prompt.SetSecondaryText(config.secondaryText);
-		}
+		prompt.actionName = inputAction.lower();
+		prompt.SetObjectText(objectText);
+		prompt.SetActionText(actionText);
 		if (config?.maxRange !== undefined) {
 			prompt.SetMaxRange(config.maxRange);
 		}

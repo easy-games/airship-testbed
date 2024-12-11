@@ -11,8 +11,9 @@ import { ActionInputType } from "../InputUtil";
 export default class ProximityPrompt extends AirshipBehaviour {
 	@Header("Config")
 	@SerializeField()
-	private primaryText = "Apple";
-	@SerializeField() public secondaryText = "Pickup";
+	private objectText = "Key";
+	public objectTextWrapper: GameObject;
+	@SerializeField() public actionText = "Pick up";
 	@Tooltip("The action name should match something created with Airship.input.CreateAction()")
 	public actionName = "interact";
 	@SerializeField() public maxRange = 5;
@@ -22,8 +23,8 @@ export default class ProximityPrompt extends AirshipBehaviour {
 
 	@Header("References")
 	public canvas!: Canvas;
-	public primaryTextLabel!: TMP_Text;
-	public secondaryTextLabel!: TMP_Text;
+	public objectTextLabel!: TMP_Text;
+	public actionTextLabel!: TMP_Text;
 	public keybindTextLabel!: TMP_Text;
 	public backgroundImg!: Image;
 	public button!: Button;
@@ -57,8 +58,8 @@ export default class ProximityPrompt extends AirshipBehaviour {
 	private shown = false;
 
 	override OnEnable(): void {
-		this.SetPrimaryText(this.primaryText);
-		this.SetSecondaryText(this.secondaryText);
+		this.SetObjectText(this.objectText);
+		this.SetActionText(this.actionText);
 		if (Game.IsClient()) {
 			task.unscaledDelay(0, () => {
 				Dependency<ProximityPromptController>().RegisterProximityPrompt(this);
@@ -92,22 +93,34 @@ export default class ProximityPrompt extends AirshipBehaviour {
 	}
 
 	private KeyDown(): void {
-		NativeTween.LocalScale(this.canvas.transform, Vector3.one.mul(0.8), 0.08).SetEaseQuadOut();
+		NativeTween.LocalScale(this.canvas.transform, Vector3.one.mul(0.008), 0.08).SetEaseQuadOut();
 	}
 
 	private KeyUp(): void {
-		NativeTween.LocalScale(this.canvas.transform, new Vector3(1, 1, 1), 0.08).SetEaseQuadOut();
+		NativeTween.LocalScale(this.canvas.transform, Vector3.one.mul(0.01), 0.08).SetEaseQuadOut();
 	}
 
-	public SetPrimaryText(val: string): void {
-		(this.primaryText as string) = val;
-		this.primaryTextLabel.text = val;
+	/**
+	 * Use an empty string to not display an object text.
+	 * @param val
+	 * @returns
+	 */
+	public SetObjectText(val: string): void {
+		(this.objectText as string) = val;
+
+		if (val === "" || val === undefined) {
+			this.objectTextWrapper.SetActive(false);
+			return;
+		} else {
+			this.objectTextWrapper.SetActive(true);
+		}
+
+		this.objectTextLabel.text = val;
 	}
 
-	public SetSecondaryText(val: string): void {
-		val = val.upper();
-		(this.secondaryText as string) = val;
-		this.secondaryTextLabel.text = val;
+	public SetActionText(val: string): void {
+		(this.actionText as string) = val;
+		this.actionTextLabel.text = val;
 	}
 
 	public SetMaxRange(val: number): void {
@@ -157,7 +170,7 @@ export default class ProximityPrompt extends AirshipBehaviour {
 
 		this.canvas.enabled = true;
 		this.canvas.transform.localScale = Vector3.zero;
-		NativeTween.LocalScale(this.canvas.transform, Vector3.one, 0.18).SetEaseQuadOut();
+		NativeTween.LocalScale(this.canvas.transform, Vector3.one.mul(0.01), 0.18).SetEaseQuadOut();
 
 		// for button
 		this.backgroundImg.raycastTarget = Game.IsMobile() || this.mouseRaycastTarget;

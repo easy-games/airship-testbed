@@ -62,6 +62,7 @@ export default class Character extends AirshipBehaviour {
 	private displayName = "";
 	private initialized = false;
 	private despawned = false;
+	private prevOutfitEncoded = "";
 
 	/*
 	 * [Advanced]
@@ -69,11 +70,11 @@ export default class Character extends AirshipBehaviour {
 	 * Custom data that the client sends in their move packet.
 	 * Map<id, dataBlob>, inputData, isReplay
 	 */
-	public OnBeginMove = new Signal<[Map<string, unknown>, MoveInputData, boolean]>();
+	public OnBeginMove = new Signal<[Map<string, unknown>, CharacterMovementState, boolean]>();
 
 	public Awake(): void {
 		this.inventory = this.gameObject.GetAirshipComponent<Inventory>()!;
-		this.rig = this.rigRoot?.GetComponent<CharacterRig>();
+		this.rig = this.rigRoot?.GetComponent<CharacterRig>()!;
 		this.animation = this.gameObject.GetAirshipComponent<CharacterAnimation>()!;
 	}
 
@@ -169,6 +170,9 @@ export default class Character extends AirshipBehaviour {
 			player.selectedOutfit = outfitDto;
 		}
 		if (this.accessoryBuilder) {
+			if (player) {
+				this.SetMeshCacheId(`Player:${player.userId}`);
+			}
 			this.LoadUserOutfit(outfitDto);
 		}
 
@@ -183,6 +187,10 @@ export default class Character extends AirshipBehaviour {
 		}
 	}
 
+	public SetMeshCacheId(cacheId: string | undefined): void {
+		// this.accessoryBuilder.meshCombiner.cacheId = cacheId ?? "";
+	}
+
 	public LoadUserOutfit(outfitDto: OutfitDto | undefined) {
 		if (!this.accessoryBuilder) {
 			warn("Cannot load outfit without Accessory Builder set on Character.");
@@ -195,6 +203,11 @@ export default class Character extends AirshipBehaviour {
 			Airship.Avatar.LoadUserOutfitDto(outfitDto, this.accessoryBuilder, {
 				removeOldClothingAccessories: true,
 			});
+			if (this.IsLocalCharacter() && Airship.Characters.viewmodel) {
+				Airship.Avatar.LoadUserOutfitDto(outfitDto, Airship.Characters.viewmodel.accessoryBuilder, {
+					removeOldClothingAccessories: true,
+				});
+			}
 		}
 	}
 
@@ -219,10 +232,10 @@ export default class Character extends AirshipBehaviour {
 		this.movement?.SetCustomData(new BinaryBlob(customDataQueue));
 	}
 
-	private BeginMove(moveData: MoveInputData, isReplay: boolean) {
+	private BeginMove(stateData: CharacterMovementState, isReplay: boolean) {
 		//Decode binary block into usable key value array
-		const allData = moveData.customData
-			? (moveData.customData.Decode() as { key: string; value: unknown }[])
+		const allData = stateData.currentMoveInput.customData
+			? (stateData.currentMoveInput.customData.Decode() as { key: string; value: unknown }[])
 			: undefined;
 		const allCustomData: Map<string, unknown> = new Map();
 		if (allData) {
@@ -234,7 +247,7 @@ export default class Character extends AirshipBehaviour {
 		}
 
 		//Local signal for parsing the key value pairs
-		this.OnBeginMove.Fire(allCustomData, moveData, isReplay);
+		this.OnBeginMove.Fire(allCustomData, stateData, isReplay);
 	}
 
 	public IsInitialized() {

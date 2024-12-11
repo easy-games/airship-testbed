@@ -3587,6 +3587,13 @@ declare const enum LoadingStatus {
     Loading = 1,
     Loaded = 2,
 }
+declare const enum CharacterState {
+    Idle = 0,
+    Running = 1,
+    Airborne = 2,
+    Sprinting = 3,
+    Crouching = 4,
+}
 
     
 interface RaycastHit {
@@ -17568,28 +17575,6 @@ interface WindowCoreConstructor {
 }
 declare const WindowCore: WindowCoreConstructor;
     
-interface CharacterMoveModifier {
-    speedMultiplier: number;
-    jumpMultiplier: number;
-    blockSprint: boolean;
-    blockJump: boolean;
-
-
-
-
-
-}
-    
-interface CharacterMoveModifierConstructor {
-
-
-    new(): CharacterMoveModifier;
-
-
-
-}
-declare const CharacterMoveModifier: CharacterMoveModifierConstructor;
-    
 interface MaterialColorURP extends MonoBehaviour {
     colorSettings: CSArray<ColorSetting>;
     addedByEditorScript: boolean;
@@ -17597,6 +17582,7 @@ interface MaterialColorURP extends MonoBehaviour {
 
 
     Clear(): void;
+    CopyFrom(other: MaterialColorURP): void;
     DoUpdate(): void;
     EditorFirstTimeSetup(): void;
     GetColorSettingByMaterial(mat: Material): ColorSetting;
@@ -18768,7 +18754,8 @@ interface AccessoryComponent extends MonoBehaviour {
     accessorySlot: AccessorySlot;
     visibilityMode: VisibilityMode;
     skinnedToCharacter: boolean;
-    canMeshCombine: boolean;
+    meshLods: CSArray<Mesh>;
+    matColors: CSArray<MaterialColorURP>;
     bodyMask: number;
     localPosition: Vector3;
     localRotation: Quaternion;
@@ -19070,8 +19057,11 @@ declare const AirshipPlatformUtil: AirshipPlatformUtilConstructor;
 interface CharacterRig extends MonoBehaviour {
     bodyMesh: SkinnedMeshRenderer;
     armsMesh: SkinnedMeshRenderer;
-    headMesh: Renderer;
+    headMesh: SkinnedMeshRenderer;
     faceMesh: Renderer;
+    bodyMeshLOD: CSArray<SkinnedMeshRenderer>;
+    armsMeshLOD: CSArray<SkinnedMeshRenderer>;
+    headMeshLOD: CSArray<SkinnedMeshRenderer>;
     rigHolder: Transform;
     rootMotion: Transform;
     master: Transform;
@@ -19099,6 +19089,10 @@ interface CharacterRig extends MonoBehaviour {
     spineChest: Transform;
     heldItemL: Transform;
     heldItemR: Transform;
+    headColor: MaterialColorURP;
+    bodyColor: MaterialColorURP;
+    armsColor: MaterialColorURP;
+    viewmodelArmsColor: MaterialColorURP;
     baseMeshes: CSArray<Renderer>;
 
 
@@ -22568,9 +22562,8 @@ interface MoveInputData {
 
 
 
-    Dispose(): void;
-    GetTick(): number;
-    SetTick(value: number): void;
+    Equals(other: MoveInputData): boolean;
+    GetHashCode(): number;
 
 
 }
@@ -22581,7 +22574,6 @@ interface MoveInputDataConstructor {
     new(moveDir: Vector3, jump: boolean, crouch: boolean, sprint: boolean, lookVector: Vector3, customData: BinaryBlob): MoveInputData;
 
 
-    CompareBinaryBlobs(a: BinaryBlob, b: BinaryBlob): boolean;
 
 }
 declare const MoveInputData: MoveInputDataConstructor;
@@ -23072,6 +23064,7 @@ interface VoxelWorld extends MonoBehaviour {
     TransformVectorToLocalSpace(vec: Vector3): Vector3;
     TransformVectorToWorldSpace(vec: Vector3): Vector3;
     Update(): void;
+    WaitForChunkToLoad(voxel: Vector3): void;
     WriteVoxelAt(pos: Vector3, num: number, priority: boolean): void;
     WriteVoxelGroupAt(positions: CSArray<Vector3>, nums: CSArray<number>, priority: boolean): void;
     WriteVoxelGroupAtTS(blob: unknown, priority: boolean): void;
@@ -23082,6 +23075,7 @@ interface VoxelWorld extends MonoBehaviour {
 interface WorldSaveFile extends ScriptableObject {
     chunks: CSArray<SaveChunk>;
     blockIdToScopeName: CSArray<BlockIdToScopedName>;
+    chunksCompressed: CSArray<number>;
 
 
 
@@ -23101,6 +23095,7 @@ interface SaveChunk {
 
 
 
+    Serialize(writer: unknown, version: number): void;
 
 
 }
@@ -23111,6 +23106,7 @@ interface SaveChunkConstructor {
     new(key: Vector3, data: CSArray<number>, color: CSArray<number>): SaveChunk;
 
 
+    Deserialize(reader: unknown, version: number, voxelData: CSArray<number>, colors: CSArray<number>): Vector3;
 
 }
 declare const SaveChunk: SaveChunkConstructor;
@@ -23181,12 +23177,14 @@ interface Chunk {
     GetVoxelColorAt(worldPos: Vector3): Color32;
     HasVoxels(): boolean;
     IsGeometryDirty(): boolean;
+    IsLoaded(): boolean;
     MainthreadForceCollisionRebuild(): void;
     MainthreadUpdateMesh(world: VoxelWorld): boolean;
     NeedsToCopyMeshToScene(): boolean;
     NeedsToGenerateMesh(): boolean;
     SetGeometryDirty(dirty: boolean, priority: boolean): void;
     SetWorld(world: VoxelWorld): void;
+    WaitForLoaded(): void;
     WriteVoxel(worldPos: Vector3, num: number): void;
     WriteVoxelColor(worldPos: Vector3, col: Color32): void;
     WriteVoxelDamage(worldPos: Vector3, dmg: number): void;
@@ -23291,15 +23289,81 @@ declare const AccessorySkin: AccessorySkinConstructor;
     
 interface ActiveAccessory {
     AccessoryComponent: AccessoryComponent;
+    lodLevel: number;
+    maxLodLevel: number;
     rootTransform: Transform;
     gameObjects: CSArray<GameObject>;
+    meshRenderers: CSArray<MeshRenderer>;
+    skinnedMeshRenderers: CSArray<SkinnedMeshRenderer>;
     renderers: CSArray<Renderer>;
+    meshFilters: CSArray<MeshFilter>;
+    lods: CSArray<ActiveAccessory>;
 
 
 
 
 
 }
+    
+interface ActiveAccessoryConstructor {
+
+
+    new(): ActiveAccessory;
+
+
+
+}
+declare const ActiveAccessory: ActiveAccessoryConstructor;
+    
+interface AirshipPredictedState {
+    tick: number;
+    position: Vector3;
+    velocity: Vector3;
+
+
+
+
+
+}
+    
+interface CharacterMovementState extends AirshipPredictedState {
+    currentMoveInput: MoveInputData;
+    inputDisabled: boolean;
+    isFlying: boolean;
+    jumpCount: number;
+    airborneFromImpulse: boolean;
+    alreadyJumped: boolean;
+    prevMoveDir: Vector3;
+    lastGroundedMoveDir: Vector3;
+    prevCrouch: boolean;
+    prevStepUp: boolean;
+    prevGrounded: boolean;
+    state: CharacterState;
+    prevState: CharacterState;
+    timeSinceBecameGrounded: number;
+    timeSinceWasGrounded: number;
+    timeSinceJump: number;
+    customData: BinaryBlob;
+
+
+
+    CopyFrom(copyState: CharacterMovementState): void;
+    Equals(other: CharacterMovementState): boolean;
+
+
+}
+    
+interface CharacterMovementStateConstructor {
+
+
+    new(): CharacterMovementState;
+    new(tick: number, pos: Vector3, vel: Vector3): CharacterMovementState;
+    new(copyState: CharacterMovementState): CharacterMovementState;
+
+
+
+}
+declare const CharacterMovementState: CharacterMovementStateConstructor;
     
 interface AirshipSteamFriendInfo {
     playingAirship: boolean;

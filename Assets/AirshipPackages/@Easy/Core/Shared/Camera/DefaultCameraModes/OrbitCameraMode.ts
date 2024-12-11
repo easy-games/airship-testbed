@@ -52,7 +52,9 @@ export class OrbitCameraMode extends CameraMode {
 		this.SetYOffset(this.config.yOffset ?? CameraConstants.DefaultOrbitCameraConfig.yOffset);
 		this.SetMinRotX(this.config.minRotX ?? CameraConstants.DefaultOrbitCameraConfig.minRotX);
 		this.SetMaxRotX(this.config.maxRotX ?? CameraConstants.DefaultOrbitCameraConfig.maxRotX);
-		this.OnEnabled();
+		if (Airship.Camera.IsEnabled()) {
+			this.OnEnabled();
+		}
 	}
 
 	public OnEnabled(): void {

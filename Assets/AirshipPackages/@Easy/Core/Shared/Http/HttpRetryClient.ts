@@ -6,6 +6,8 @@ export interface RetryConfig {
     maxWaitingSeconds?: number;
     // Key to use for uniquely identifying a request, when a key is rate limited all other keys
     // will assume the rate limit has been reached for them as well.
+    //
+    // Not providing this key will disable proactive rate limiting.
     retryKey?: string;
 }
 

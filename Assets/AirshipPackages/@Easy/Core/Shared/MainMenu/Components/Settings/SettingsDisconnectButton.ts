@@ -24,7 +24,7 @@ export default class SettingsDisconnectButton extends AirshipBehaviour {
 				}
 			}),
 		);
-		const btn = this.gameObject.GetComponent<Button>();
+		const btn = this.gameObject.GetComponent<Button>()!;
 		this.bin.Add(
 			btn.onClick.Connect(async () => {
 				task.spawn(() => {

@@ -122,6 +122,7 @@ export class AirshipCharactersSingleton {
 				}
 				if (character.player) {
 					character.player.selectedOutfit = outfitDto;
+					Airship.Characters.RemoveMeshCacheId("Player:" + character.player?.userId);
 				}
 
 				if (outfitDto) {
@@ -200,6 +201,10 @@ export class AirshipCharactersSingleton {
 		}
 
 		this.WatchForHeldItemAccessories();
+	}
+
+	public RemoveMeshCacheId(cacheId: string): void {
+		// MeshCombiner.RemoveMeshCache(cacheId);
 	}
 
 	private WatchForHeldItemAccessories() {

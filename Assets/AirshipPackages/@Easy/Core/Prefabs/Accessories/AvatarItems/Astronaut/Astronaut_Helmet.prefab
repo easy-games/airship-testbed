@@ -145,6 +145,12 @@ MonoBehaviour:
   accessorySlot: 1
   visibilityMode: 0
   skinnedToCharacter: 1
+  meshLods:
+  - {fileID: 4300000, guid: 9e5fbe5cdbda249bf944bbba1d91d998, type: 2}
+  - {fileID: 4300000, guid: 4e178313e08bf4c7db9bf617f49c2488, type: 2}
+  matColors:
+  - {fileID: 6202095471421543824}
+  - {fileID: 3742654335325295998}
   canMeshCombine: 1
   bodyMask: 0
 --- !u!1001 &184259644913605999
@@ -209,3 +215,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1347731975810975185, guid: 1382490552a80c24aa1b461cce369a69, type: 3}
   m_PrefabInstance: {fileID: 184259644913605999}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3742654335325295998 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3566300472197253137, guid: 1382490552a80c24aa1b461cce369a69, type: 3}
+  m_PrefabInstance: {fileID: 184259644913605999}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

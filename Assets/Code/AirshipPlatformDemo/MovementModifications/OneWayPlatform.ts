@@ -10,7 +10,7 @@ export default class OneWayPlatform extends AirshipBehaviour {
 	private characterBelow = false;
 
 	public Awake(): void {
-		this.collider = this.gameObject.GetComponentInChildren<Collider>();
+		this.collider = this.gameObject.GetComponentInChildren<Collider>()!;
 		Airship.Characters.onCharacterSpawned.Connect((character) => {
 			if (Game.IsClient() && !character.IsLocalCharacter()) {
 				return;

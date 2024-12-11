@@ -144,5 +144,10 @@ MonoBehaviour:
   accessorySlot: 5
   visibilityMode: 2
   skinnedToCharacter: 1
+  meshLods:
+  - {fileID: 4300000, guid: 7b29e98ca19b54358ac781ee111b98e7, type: 2}
+  - {fileID: 4300000, guid: 16efc3ae4be3b4fa799fb1c36cdb3bae, type: 2}
+  matColors:
+  - {fileID: 2854034242425869126}
   canMeshCombine: 1
   bodyMask: 12

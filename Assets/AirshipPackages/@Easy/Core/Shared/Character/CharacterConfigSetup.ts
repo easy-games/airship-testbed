@@ -1,5 +1,5 @@
 import { Airship } from "../Airship";
-import { AirshipCharacterCameraSingleton } from "../Camera/AirshipCharacterCameraSingleton";
+import { AirshipCameraSingleton } from "../Camera/AirshipCameraSingleton";
 import { CameraConstants } from "../Camera/CameraConstants";
 import { FixedCameraMode } from "../Camera/DefaultCameraModes/FixedCameraMode";
 import { OrbitCameraMode } from "../Camera/DefaultCameraModes/OrbitCameraMode";
@@ -109,7 +109,7 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 					shouldOcclusionBump: CameraConstants.DefaultOrbitCameraConfig.shouldOcclusionBump,
 				});
 
-				const activeCameraMode = Dependency<AirshipCharacterCameraSingleton>().activeCameraMode;
+				const activeCameraMode = Dependency<AirshipCameraSingleton>().activeCameraMode;
 				if (activeCameraMode && activeCameraMode instanceof FixedCameraMode) {
 					activeCameraMode.UpdateProperties(CameraConstants.DefaultFixedCameraConfig);
 				}

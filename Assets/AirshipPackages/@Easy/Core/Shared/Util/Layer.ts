@@ -5,7 +5,7 @@ export const enum Layer {
 	CHARACTER = 3,
 	WATER = 4,
 	UI = 5,
-	WORLD_UI = 5,
+	WORLD_UI = 6,
 	VIEW_MODEL = 7,
 	VISUALLY_HIDDEN = 8,
 	IGNORE_COLLISION = 9,

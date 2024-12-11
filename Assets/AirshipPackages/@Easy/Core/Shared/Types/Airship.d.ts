@@ -109,19 +109,15 @@ interface MoveModifier {
 interface CharacterMovement extends Component {
 	OnStateChanged(callback: (state: CharacterState) => void): EngineEventConnection;
 	OnSetCustomData(callback: () => void): EngineEventConnection;
-	OnBeginMove(callback: (inputData: MoveInputData, isReplay: boolean) => void): EngineEventConnection;
-	OnEndMove(callback: (inputData: MoveInputData, isReplay: boolean) => void): EngineEventConnection;
+	OnBeginMove(callback: (stateData: CharacterMovementState, isReplay: boolean) => void): EngineEventConnection;
+	OnEndMove(callback: (stateData: CharacterMovementState, isReplay: boolean) => void): EngineEventConnection;
 	OnDispatchCustomData(callback: (tick: number, customData: BinaryBlob) => void): EngineEventConnection;
 	OnImpactWithGround(callback: (velocity: Vector3, hitInfo: RaycastHit) => void): EngineEventConnection;
 	OnAdjustMove(callback: (modifier: MoveModifier) => void): EngineEventConnection;
 	OnMoveDirectionChanged(callback: (direction: Vector3) => void): EngineEventConnection;
 	OnJumped(callback: (velocity: Vector3) => void): EngineEventConnection;
 	OnNewLookVector(callback: (newLookVector: Vector3) => void): EngineEventConnection;
-
 	GetLookVector(): Vector3;
-	IsSprinting(): boolean;
-	IsGrounded(): boolean;
-	enabled: boolean;
 
 	SetMoveInput(
 		direction: Vector3,
@@ -144,35 +140,32 @@ interface CharacterMovement extends Component {
 	IsIgnoringCollider(collider: Collider): boolean;
 	SetVelocity(velocity: Vector3): void;
 	GetVelocity(): Vector3;
-	DisableMovement();
-	EnableMovement();
 	GetState(): CharacterState;
-	UpdateSyncTick(): void;
-	GetNextTick(): number;
-	GetPrevTick(): number;
 	GetTimeSinceWasGrounded(): number;
 	GetTimeSinceBecameGrounded(): number;
 	GetCurrentMoveInputData(): MoveInputData;
 
+	//Public
+	enabled: boolean;
+	disableInput: boolean;
+	rigidbody: Rigidbody;
 	rootTransform: Transform; //The true position transform
 	airshipTransform: Transform; //The transform controlled by the movement script
 	graphicTransform: Transform; //A transform we can animate
-
+	slopeVisualizer: Transform; //A Transform that rotates to match the slope you are standing on
 	moveData: CharacterMovementData;
-
-	groundedBlockId: number;
-	groundedBlockPos: Vector3;
-	groundedRaycastHit: RaycastHit;
-	replicatedLookVector: Vector3;
-	disableInput: boolean;
-
 	animationHelper: CharacterAnimationHelper;
+	mainCollider: BoxCollider;
 
-	standingCharacterHeight: number;
+	//Public Getters Private Setters
+	currentMoveState: CharacterMovementState;
 	currentCharacterHeight: number;
+	standingCharacterHeight: number;
 	characterRadius: number;
 	characterHalfExtents: Vector3;
-	mainCollider: BoxCollider;
+	isGrounded: boolean;
+	isSprinting: boolean;
+	groundedRaycastHit: RaycastHit;
 }
 
 interface Nullable<T> {
@@ -404,13 +397,17 @@ interface AccessoryBuilder extends MonoBehaviour {
 	currentUserId: string;
 	currentUserName: string;
 	cancelPendingDownload: boolean;
+	meshCombiner: MeshCombiner;
 
 	AddAccessories(
 		accessoryTemplates: CSArray<AccessoryComponent>,
 		addMode: AccessoryAddMode,
 		rebuildMeshImmediately: boolean,
 	): CSArray<ActiveAccessory>;
-	AddSingleAccessory(accessoryTemplate: AccessoryComponent, rebuildMeshImmediately: boolean): ActiveAccessory;
+	AddSingleAccessory(
+		accessoryTemplate: AccessoryComponent,
+		rebuildMeshImmediately: boolean,
+	): ActiveAccessory | undefined;
 	AddSkinAccessory(skin: AccessorySkin, rebuildMeshImmediately: boolean): void;
 	EquipAccessoryOutfit(outfit: AccessoryOutfit, rebuildMeshImmediately: boolean): CSArray<ActiveAccessory>;
 	GetAccessoryMeshes(slot: AccessorySlot): CSArray<Renderer>;
@@ -431,6 +428,14 @@ interface AccessoryBuilder extends MonoBehaviour {
 
 	OnMeshCombined: MonoSignal<[usedMeshCombiner: boolean, skinnedMesh: SkinnedMeshRenderer, staticMesh: MeshRenderer]>;
 }
+
+interface MeshCombiner extends MonoBehaviour {
+	cacheId: string;
+}
+interface MeshCombinerConstructor {
+	public RemoveMeshCache(cacheId: string): void;
+}
+declare const MeshCombiner: MeshCombinerConstructor;
 
 interface CanvasUIEvents extends Component {
 	RegisterEvents(gameObject: GameObject): void;
@@ -563,6 +568,7 @@ interface CharacterStateData {
 interface CharacterAnimationHelper extends Component {
 	animator: Animator;
 	animationEvents?: AnimationEventListener;
+	isSkidding: boolean;
 	SetForceLookForward(forceLookForward: boolean): void;
 	SetFirstPerson(firstPerson: boolean): void;
 	SetRootMovementLayer(itemInHand: boolean): void;

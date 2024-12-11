@@ -47,6 +47,8 @@ export default class CharacterSpawner extends AirshipBehaviour {
 					const character = damageInfo.gameObject.GetAirshipComponent<Character>();
 					if (character?.gameObject.scene !== this.gameObject.scene) return;
 
+					character.Despawn();
+
 					task.delay(this.delay, () => {
 						if (character?.player?.IsConnected()) {
 							this.SpawnCharacter(character.player!);

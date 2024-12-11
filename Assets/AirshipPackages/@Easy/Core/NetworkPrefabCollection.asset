@@ -15,3 +15,5 @@ MonoBehaviour:
   networkPrefabs:
   - {fileID: 8616685848737228372, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
   - {fileID: 5326062294046176630, guid: ea1bb737942ee8d4a91219481150b1e2, type: 3}
+  - {fileID: 5042559581574877564, guid: c6dc87ea1a89c3e4aa4c27ad6203c150, type: 3}
+  - {fileID: 5170263369747658681, guid: 6aadf547abb3137408402c37d3b3d489, type: 3}
