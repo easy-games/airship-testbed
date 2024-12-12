@@ -1,0 +1,716 @@
+fileFormatVersion: 2
+guid: 6e02b5de7d22c3d439b7af67186093fe
+ModelImporter:
+  serializedVersion: 22200
+  internalIDToNameTable: []
+  externalObjects: {}
+  materials:
+    materialImportMode: 0
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    removeConstantScaleCurves: 1
+    motionNodeName: Airship_Rig
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 0
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Airship_Character_Gesture__Negative_RightHand
+      takeName: Airship_Character_Gesture__Negative_RightHand
+      internalID: 464310227929572309
+      firstFrame: 0
+      lastFrame: 30
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Body
+        weight: 0
+      - path: Face
+        weight: 0
+      - path: Head
+        weight: 0
+      - path: Arms
+        weight: 0
+      - path: Airship_Rig
+        weight: 0
+      - path: Airship_Rig/root_motion
+        weight: 0
+      - path: Airship_Rig/root_motion/master
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.L
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L/hand.L
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L/hand.L/fingers.L
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L/hand.L/thumb.L
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L/hand.L/weapon.L
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.R
+        weight: 1
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R
+        weight: 1
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R/hand.R
+        weight: 1
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R/hand.R/fingers.R
+        weight: 1
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R/hand.R/thumb.R
+        weight: 1
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R/hand.R/weapon.R
+        weight: 1
+      - path: Airship_Rig/root_motion/master/spine/head
+        weight: 0
+      - path: Airship_Rig/root_motion/master/hips
+        weight: 0
+      - path: Airship_Rig/root_motion/master/thigh.L
+        weight: 0
+      - path: Airship_Rig/root_motion/master/thigh.L/shin.L
+        weight: 0
+      - path: Airship_Rig/root_motion/master/thigh.L/shin.L/foot.L
+        weight: 0
+      - path: Airship_Rig/root_motion/master/thigh.R
+        weight: 0
+      - path: Airship_Rig/root_motion/master/thigh.R/shin.R
+        weight: 0
+      - path: Airship_Rig/root_motion/master/thigh.R/shin.R/foot.R
+        weight: 0
+      maskType: 1
+      maskSource: {fileID: 31900000, guid: 73b71d1ebff5d1546b27eff36dd98fe1, type: 2}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Airship_Character_Gesture__Negative_LeftHand
+      takeName: Airship_Character_Gesture__Negative_LeftHand
+      internalID: -7508136028908914956
+      firstFrame: 0
+      lastFrame: 30
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Body
+        weight: 0
+      - path: Face
+        weight: 0
+      - path: Head
+        weight: 0
+      - path: Arms
+        weight: 0
+      - path: Airship_Rig
+        weight: 0
+      - path: Airship_Rig/root_motion
+        weight: 0
+      - path: Airship_Rig/root_motion/master
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.L
+        weight: 1
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L
+        weight: 1
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L/hand.L
+        weight: 1
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L/hand.L/fingers.L
+        weight: 1
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L/hand.L/thumb.L
+        weight: 1
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L/hand.L/weapon.L
+        weight: 1
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.R
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R/hand.R
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R/hand.R/fingers.R
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R/hand.R/thumb.R
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R/hand.R/weapon.R
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine/head
+        weight: 0
+      - path: Airship_Rig/root_motion/master/hips
+        weight: 0
+      - path: Airship_Rig/root_motion/master/thigh.L
+        weight: 0
+      - path: Airship_Rig/root_motion/master/thigh.L/shin.L
+        weight: 0
+      - path: Airship_Rig/root_motion/master/thigh.L/shin.L/foot.L
+        weight: 0
+      - path: Airship_Rig/root_motion/master/thigh.R
+        weight: 0
+      - path: Airship_Rig/root_motion/master/thigh.R/shin.R
+        weight: 0
+      - path: Airship_Rig/root_motion/master/thigh.R/shin.R/foot.R
+        weight: 0
+      maskType: 1
+      maskSource: {fileID: 31900000, guid: 5011098b94c00bb4091381d9237e8e90, type: 2}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Airship_Character_Gesture__Positive_LeftHand
+      takeName: Airship_Character_Gesture__Positive_LeftHand
+      internalID: -4933616862402142054
+      firstFrame: 0
+      lastFrame: 30
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Body
+        weight: 0
+      - path: Face
+        weight: 0
+      - path: Head
+        weight: 0
+      - path: Arms
+        weight: 0
+      - path: Airship_Rig
+        weight: 0
+      - path: Airship_Rig/root_motion
+        weight: 0
+      - path: Airship_Rig/root_motion/master
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.L
+        weight: 1
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L
+        weight: 1
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L/hand.L
+        weight: 1
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L/hand.L/fingers.L
+        weight: 1
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L/hand.L/thumb.L
+        weight: 1
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L/hand.L/weapon.L
+        weight: 1
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.R
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R/hand.R
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R/hand.R/fingers.R
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R/hand.R/thumb.R
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R/hand.R/weapon.R
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine/head
+        weight: 0
+      - path: Airship_Rig/root_motion/master/hips
+        weight: 0
+      - path: Airship_Rig/root_motion/master/thigh.L
+        weight: 0
+      - path: Airship_Rig/root_motion/master/thigh.L/shin.L
+        weight: 0
+      - path: Airship_Rig/root_motion/master/thigh.L/shin.L/foot.L
+        weight: 0
+      - path: Airship_Rig/root_motion/master/thigh.R
+        weight: 0
+      - path: Airship_Rig/root_motion/master/thigh.R/shin.R
+        weight: 0
+      - path: Airship_Rig/root_motion/master/thigh.R/shin.R/foot.R
+        weight: 0
+      maskType: 1
+      maskSource: {fileID: 31900000, guid: 5011098b94c00bb4091381d9237e8e90, type: 2}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Airship_Character_Gesture__Positive_RightHand
+      takeName: Airship_Character_Gesture__Positive_RightHand
+      internalID: 7804001176748369513
+      firstFrame: 0
+      lastFrame: 30
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Body
+        weight: 0
+      - path: Face
+        weight: 0
+      - path: Head
+        weight: 0
+      - path: Arms
+        weight: 0
+      - path: Airship_Rig
+        weight: 0
+      - path: Airship_Rig/root_motion
+        weight: 0
+      - path: Airship_Rig/root_motion/master
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.L
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L/hand.L
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L/hand.L/fingers.L
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L/hand.L/thumb.L
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L/hand.L/weapon.L
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.R
+        weight: 1
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R
+        weight: 1
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R/hand.R
+        weight: 1
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R/hand.R/fingers.R
+        weight: 1
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R/hand.R/thumb.R
+        weight: 1
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R/hand.R/weapon.R
+        weight: 1
+      - path: Airship_Rig/root_motion/master/spine/head
+        weight: 0
+      - path: Airship_Rig/root_motion/master/hips
+        weight: 0
+      - path: Airship_Rig/root_motion/master/thigh.L
+        weight: 0
+      - path: Airship_Rig/root_motion/master/thigh.L/shin.L
+        weight: 0
+      - path: Airship_Rig/root_motion/master/thigh.L/shin.L/foot.L
+        weight: 0
+      - path: Airship_Rig/root_motion/master/thigh.R
+        weight: 0
+      - path: Airship_Rig/root_motion/master/thigh.R/shin.R
+        weight: 0
+      - path: Airship_Rig/root_motion/master/thigh.R/shin.R/foot.R
+        weight: 0
+      maskType: 1
+      maskSource: {fileID: 31900000, guid: 73b71d1ebff5d1546b27eff36dd98fe1, type: 2}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Airship_Character_Gesture__Pointing_RightHand
+      takeName: Airship_Character_Gesture__Pointing_RightHand
+      internalID: -5045878675382109921
+      firstFrame: 0
+      lastFrame: 30
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Body
+        weight: 0
+      - path: Face
+        weight: 0
+      - path: Head
+        weight: 0
+      - path: Arms
+        weight: 0
+      - path: Airship_Rig
+        weight: 0
+      - path: Airship_Rig/root_motion
+        weight: 0
+      - path: Airship_Rig/root_motion/master
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.L
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L/hand.L
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L/hand.L/fingers.L
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L/hand.L/thumb.L
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L/hand.L/weapon.L
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.R
+        weight: 1
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R
+        weight: 1
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R/hand.R
+        weight: 1
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R/hand.R/fingers.R
+        weight: 1
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R/hand.R/thumb.R
+        weight: 1
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R/hand.R/weapon.R
+        weight: 1
+      - path: Airship_Rig/root_motion/master/spine/head
+        weight: 0
+      - path: Airship_Rig/root_motion/master/hips
+        weight: 0
+      - path: Airship_Rig/root_motion/master/thigh.L
+        weight: 0
+      - path: Airship_Rig/root_motion/master/thigh.L/shin.L
+        weight: 0
+      - path: Airship_Rig/root_motion/master/thigh.L/shin.L/foot.L
+        weight: 0
+      - path: Airship_Rig/root_motion/master/thigh.R
+        weight: 0
+      - path: Airship_Rig/root_motion/master/thigh.R/shin.R
+        weight: 0
+      - path: Airship_Rig/root_motion/master/thigh.R/shin.R/foot.R
+        weight: 0
+      maskType: 1
+      maskSource: {fileID: 31900000, guid: 73b71d1ebff5d1546b27eff36dd98fe1, type: 2}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Airship_Character_Gesture__Pointing_LeftHand
+      takeName: Airship_Character_Gesture__Pointing_LeftHand
+      internalID: 7508947180506267230
+      firstFrame: 0
+      lastFrame: 30
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Body
+        weight: 0
+      - path: Face
+        weight: 0
+      - path: Head
+        weight: 0
+      - path: Arms
+        weight: 0
+      - path: Airship_Rig
+        weight: 0
+      - path: Airship_Rig/root_motion
+        weight: 0
+      - path: Airship_Rig/root_motion/master
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.L
+        weight: 1
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L
+        weight: 1
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L/hand.L
+        weight: 1
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L/hand.L/fingers.L
+        weight: 1
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L/hand.L/thumb.L
+        weight: 1
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L/hand.L/weapon.L
+        weight: 1
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.R
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R/hand.R
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R/hand.R/fingers.R
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R/hand.R/thumb.R
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R/hand.R/weapon.R
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine/head
+        weight: 0
+      - path: Airship_Rig/root_motion/master/hips
+        weight: 0
+      - path: Airship_Rig/root_motion/master/thigh.L
+        weight: 0
+      - path: Airship_Rig/root_motion/master/thigh.L/shin.L
+        weight: 0
+      - path: Airship_Rig/root_motion/master/thigh.L/shin.L/foot.L
+        weight: 0
+      - path: Airship_Rig/root_motion/master/thigh.R
+        weight: 0
+      - path: Airship_Rig/root_motion/master/thigh.R/shin.R
+        weight: 0
+      - path: Airship_Rig/root_motion/master/thigh.R/shin.R/foot.R
+        weight: 0
+      maskType: 1
+      maskSource: {fileID: 31900000, guid: 5011098b94c00bb4091381d9237e8e90, type: 2}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Airship_Character_Gesture__HandsUp
+      takeName: Airship_Character_Gesture__HandsUp
+      internalID: 5351126027374450987
+      firstFrame: 0
+      lastFrame: 30
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Body
+        weight: 0
+      - path: Face
+        weight: 0
+      - path: Head
+        weight: 0
+      - path: Arms
+        weight: 0
+      - path: Airship_Rig
+        weight: 0
+      - path: Airship_Rig/root_motion
+        weight: 0
+      - path: Airship_Rig/root_motion/master
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine
+        weight: 0
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.L
+        weight: 1
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L
+        weight: 1
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L/hand.L
+        weight: 1
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L/hand.L/fingers.L
+        weight: 1
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L/hand.L/thumb.L
+        weight: 1
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L/hand.L/weapon.L
+        weight: 1
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.R
+        weight: 1
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R
+        weight: 1
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R/hand.R
+        weight: 1
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R/hand.R/fingers.R
+        weight: 1
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R/hand.R/thumb.R
+        weight: 1
+      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R/hand.R/weapon.R
+        weight: 1
+      - path: Airship_Rig/root_motion/master/spine/head
+        weight: 0
+      - path: Airship_Rig/root_motion/master/hips
+        weight: 0
+      - path: Airship_Rig/root_motion/master/thigh.L
+        weight: 0
+      - path: Airship_Rig/root_motion/master/thigh.L/shin.L
+        weight: 0
+      - path: Airship_Rig/root_motion/master/thigh.L/shin.L/foot.L
+        weight: 0
+      - path: Airship_Rig/root_motion/master/thigh.R
+        weight: 0
+      - path: Airship_Rig/root_motion/master/thigh.R/shin.R
+        weight: 0
+      - path: Airship_Rig/root_motion/master/thigh.R/shin.R/foot.R
+        weight: 0
+      maskType: 1
+      maskSource: {fileID: 31900000, guid: 737efd26dd7f946de83b16d10973b496, type: 2}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importPhysicalCameras: 1
+    importVisibility: 1
+    importBlendShapes: 0
+    importCameras: 0
+    importLights: 0
+    nodeNameCollisionStrategy: 1
+    fileIdsGeneration: 2
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 1
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 1
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    strictVertexDataChecks: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 1
+  humanDescription:
+    serializedVersion: 3
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 1
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 32b6c86e4b9e5c040818bf1ea6fe61c2, type: 3}
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 2
+  humanoidOversampling: 1
+  avatarSetup: 2
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 1
+  importBlendShapeDeformPercent: 1
+  remapMaterialsIfMaterialImportModeIsNone: 0
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
