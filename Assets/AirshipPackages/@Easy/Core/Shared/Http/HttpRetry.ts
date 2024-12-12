@@ -8,11 +8,11 @@ export interface RetryConfig {
     retryKey?: string;
 }
 
-class HttpExecutionTask {
+class HttpTask {
     public readonly retryKey: string | undefined;
 
     constructor(
-        private readonly functor: () => HttpResponse,
+        private readonly httpRequest: () => HttpResponse,
         config: RetryConfig,
         public readonly resolve: (response: HttpResponse) => void,
         public readonly reject: (err: any) => void
@@ -21,28 +21,28 @@ class HttpExecutionTask {
     }
 
     public execute() {
-        return this.functor();
+        return this.httpRequest();
     }
 }
 
 interface RetryInformation {
-    postedAt: number;
+    receivedAt: number;
     resetAfter: number;
 }
 
-// translates a reset after value to the current value based on the time the value was posted
-function translateResetAfter(postedAt: number, resetAfter: number): number {
-    return resetAfter - (os.time() - postedAt);
-}
-
 const retryData: {[key: string]: RetryInformation} = {};
+
+// translates a reset after value to the current value based on the time the value was posted
+function translateResetAfter(receivedAt: number, resetAfter: number): number {
+    return resetAfter - (os.time() - receivedAt);
+}
 
 // clean up any unnecessary retry data every 30 seconds
 task.spawnDetached(() => {
     while (task.unscaledWait(30)) {
         for (const key of keys(retryData)) { 
             const retryInfo = retryData[key];
-            if (translateResetAfter(retryInfo.postedAt, retryInfo.resetAfter) <= 0) {
+            if (translateResetAfter(retryInfo.receivedAt, retryInfo.resetAfter) <= 0) {
                 delete retryData[key];
             }
         }
@@ -56,7 +56,7 @@ function isCurrentlyLimited(retryKey: string | undefined): number | undefined {
     const retryInfo = retryData[retryKey];
     if (retryInfo === undefined) return undefined;
 
-    const resetAfter = translateResetAfter(retryInfo.postedAt, retryInfo.resetAfter);
+    const resetAfter = translateResetAfter(retryInfo.receivedAt, retryInfo.resetAfter);
 
     if (resetAfter <= 0) {
         delete retryData[retryKey];
@@ -83,7 +83,7 @@ function processHttpResponse(retryKey: string | undefined, response: HttpRespons
         if (retryKey === undefined) return resetAfter;
 
         retryData[retryKey] = {
-            postedAt: os.time(),
+            receivedAt: os.time(),
             resetAfter: resetAfter,
         }
 
@@ -92,42 +92,38 @@ function processHttpResponse(retryKey: string | undefined, response: HttpRespons
     return 0;
 }
 
-// handles hat happens to an inflight task when a rate limit is received for a certain amount of time
-function handleActiveRateLimit(executionTask: HttpExecutionTask, resetAt: number) {
-    task.unscaledDelayDetached(resetAt, () => {
-        sendInFlight(executionTask);
-    });
-}
-
-function sendInFlight(executionTask: HttpExecutionTask) {
-    const currentRateLimit = isCurrentlyLimited(executionTask.retryKey);
-    if (currentRateLimit !== undefined) {
-        handleActiveRateLimit(executionTask, currentRateLimit);
+function executeHttpTask(httpTask: HttpTask) {
+    const currentRateLimitResetsAt = isCurrentlyLimited(httpTask.retryKey);
+    if (currentRateLimitResetsAt !== undefined) {
+        // handle active rate limit
+        task.unscaledDelayDetached(currentRateLimitResetsAt, () => executeHttpTask(httpTask));
         return;
     }
 
     try {
-        const response = executionTask.execute();
-        const activeRateLimitResetsAt = processHttpResponse(executionTask.retryKey, response);
+        const response = httpTask.execute();
+        const activeRateLimitResetsAt = processHttpResponse(httpTask.retryKey, response);
 
         if (activeRateLimitResetsAt === undefined) {
-            executionTask.resolve(response);
+            // pass through 429 response, the header telling us how long to wait does not exist
+            httpTask.resolve(response);
             return;
         }
 
         if (activeRateLimitResetsAt > 0) {
-            handleActiveRateLimit(executionTask, activeRateLimitResetsAt);
+            // handle active rate limit
+            task.unscaledDelayDetached(activeRateLimitResetsAt, () => executeHttpTask(httpTask));
             return;
         }
-        executionTask.resolve(response);
+        httpTask.resolve(response);
     } catch (err) {
-        executionTask.reject(err);
+        httpTask.reject(err);
     }
 }
 
-export const RetryHttp429 = (functor: () => HttpResponse, config: RetryConfig = {}): Promise<HttpResponse> => {
+export const RetryHttp429 = (httpRequest: () => HttpResponse, config: RetryConfig = {}): Promise<HttpResponse> => {
     return new Promise((resolve, reject) => {
-        const executionTask = new HttpExecutionTask(functor, config, resolve, reject);
-        sendInFlight(executionTask);
+        const httpTask = new HttpTask(httpRequest, config, resolve, reject);
+        executeHttpTask(httpTask);
     });
 }
