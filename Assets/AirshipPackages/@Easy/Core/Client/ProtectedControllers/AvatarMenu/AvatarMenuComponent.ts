@@ -935,14 +935,14 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			return;
 		}
 
-		this.renderSetup.CreateItemCamera();
-		this.renderSetup?.SetupForRenders(false);
 		this.renderSetup.uploadThumbnails = true;
 		if(Airship.Input.IsDown(CoreAction.Sprint)){
 			print("Rendering All Items");
 			this.renderSetup.RenderAllItems();
 		}else{
 			print("Rendering Selected Items");
+			this.renderSetup.CreateItemCamera();
+			this.renderSetup?.SetupForRenders(false);
 			for (let [key, value] of this.thumbnailRenderList) {
 				if (value && value.button.GetSelected()) {
 					this.renderSetup?.RenderItem(value.accesory);
