@@ -1,7 +1,6 @@
 import { CoreContext } from "../../CoreClientContext";
 import { Dependency } from "../../Flamework";
 import { Game } from "../../Game";
-import { CoreLogger } from "../../Logger/CoreLogger";
 import { Bin } from "../../Util/Bin";
 import { MainMenuSingleton } from "../Singletons/MainMenuSingleton";
 
