@@ -1,23 +1,26 @@
 import { keys } from "../Util/ObjectUtils";
 
+function defaultRetrieveRetryTime(response: HttpResponse): number | undefined {
+    return tonumber(response.GetHeader("Retry-After"));
+}
+
 export interface RetryConfig {
     // Key to use for uniquely identifying a request, when a key is rate limited all other keys
     // will assume the rate limit has been reached for them as well.
     //
     // Not providing this key will disable proactive rate limiting.
     retryKey?: string;
+
+    retrieveRetryTime?: (response: HttpResponse) => number | undefined;
 }
 
 class HttpTask {
-    public readonly retryKey: string | undefined;
-
     constructor(
         private readonly httpRequest: () => HttpResponse,
-        config: RetryConfig,
+        public readonly config: RetryConfig,
         public readonly resolve: (response: HttpResponse) => void,
         public readonly reject: (err: any) => void
     ) {
-        this.retryKey = config.retryKey;
     }
 
     public execute() {
@@ -68,9 +71,9 @@ function isCurrentlyLimited(retryKey: string | undefined): number | undefined {
 
 // return the time remaining before the rate limit is reset, or undefined if the request was not rate limited
 // return undefined if the request could not be rate limited due to a missing header
-function processHttpResponse(retryKey: string | undefined, response: HttpResponse): number | undefined {
+function processHttpResponse(config: RetryConfig, response: HttpResponse): number | undefined { 
     if (response.statusCode === 429) {
-        const resetAfter = tonumber(response.GetHeader("Retry-After"));
+        const resetAfter = (config.retrieveRetryTime || defaultRetrieveRetryTime)(response);
 
         if (resetAfter === undefined) {
             return undefined;
@@ -80,6 +83,7 @@ function processHttpResponse(retryKey: string | undefined, response: HttpRespons
             return 1; // retry in 1 second & don't mark it
         }
 
+        const retryKey = config.retryKey;
         if (retryKey === undefined) return resetAfter;
 
         retryData[retryKey] = {
@@ -93,7 +97,7 @@ function processHttpResponse(retryKey: string | undefined, response: HttpRespons
 }
 
 function executeHttpTask(httpTask: HttpTask) {
-    const currentRateLimitResetsAt = isCurrentlyLimited(httpTask.retryKey);
+    const currentRateLimitResetsAt = isCurrentlyLimited(httpTask.config.retryKey);
     if (currentRateLimitResetsAt !== undefined) {
         // handle active rate limit
         task.unscaledDelayDetached(currentRateLimitResetsAt, () => executeHttpTask(httpTask));
@@ -102,7 +106,7 @@ function executeHttpTask(httpTask: HttpTask) {
 
     try {
         const response = httpTask.execute();
-        const activeRateLimitResetsAt = processHttpResponse(httpTask.retryKey, response);
+        const activeRateLimitResetsAt = processHttpResponse(httpTask.config, response);
 
         if (activeRateLimitResetsAt === undefined) {
             // pass through 429 response, the header telling us how long to wait does not exist
