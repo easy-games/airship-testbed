@@ -1,9 +1,6 @@
 import { keys } from "../Util/ObjectUtils";
-import { HttpInflightThrottle, InflightTask, KeyType } from "./HttpInflightThrottle";
 
 export interface RetryConfig {
-    // Time waiting in seconds before we ditch the request and throw an error.
-    maxWaitingSeconds?: number;
     // Key to use for uniquely identifying a request, when a key is rate limited all other keys
     // will assume the rate limit has been reached for them as well.
     //
@@ -11,39 +8,24 @@ export interface RetryConfig {
     retryKey?: string;
 }
 
-export const DefaultRetryConfig: RetryConfig = {
-    maxWaitingSeconds: 120,
-}
-
-class HttpExecutionPackage implements KeyType {
-    private readonly maxWaitingSeconds: number | undefined;
+class HttpExecutionTask {
     public readonly retryKey: string | undefined;
 
-    constructor(private readonly functor: () => HttpResponse, config: RetryConfig) {
-        if (config.maxWaitingSeconds === undefined || config.maxWaitingSeconds < 0) {
-            this.maxWaitingSeconds = undefined;
-        } else {
-            this.maxWaitingSeconds = config.maxWaitingSeconds;
-        }
+    constructor(
+        private readonly functor: () => HttpResponse,
+        config: RetryConfig,
+        public readonly resolve: (response: HttpResponse) => void,
+        public readonly reject: (err: any) => void
+    ) {
         this.retryKey = config.retryKey;
     }
 
     public execute() {
         return this.functor();
     }
-
-    public shouldRemove(createdAt: number, additionalWaitTime: number): boolean {
-        if (this.maxWaitingSeconds === undefined) {
-            return false;
-        }
-
-        const now = os.time() + additionalWaitTime;
-        const elapsed = now - createdAt;
-        return elapsed >= this.maxWaitingSeconds;
-    }
 }
 
-export interface RetryInformation {
+interface RetryInformation {
     postedAt: number;
     resetAfter: number;
 }
@@ -70,7 +52,7 @@ task.spawnDetached(() => {
 // return the time remaining before the rate limit is reset, or undefined if the key is not rate limited
 function isCurrentlyLimited(retryKey: string | undefined): number | undefined {
     if (retryKey === undefined) return undefined;
-    
+
     const retryInfo = retryData[retryKey];
     if (retryInfo === undefined) return undefined;
 
@@ -111,47 +93,41 @@ function processHttpResponse(retryKey: string | undefined, response: HttpRespons
 }
 
 // handles hat happens to an inflight task when a rate limit is received for a certain amount of time
-function handleActiveRateLimit(inflightTask: InflightTask<HttpExecutionPackage, HttpResponse>, resetAt: number) {
-    if (inflightTask.shouldRemove(resetAt)) {
-        inflightTask.reject("Http request timed out while waiting.");
-        return;
-    } else {
-        task.unscaledDelayDetached(resetAt, () => {
-            // restack request
-            throttle.runTask(inflightTask);
-        });
-        return;
-    }
+function handleActiveRateLimit(executionTask: HttpExecutionTask, resetAt: number) {
+    task.unscaledDelayDetached(resetAt, () => {
+        sendInFlight(executionTask);
+    });
 }
 
-const throttle = HttpInflightThrottle(100, (inflightTask: InflightTask<HttpExecutionPackage, HttpResponse>) => {
-    const retryKey = inflightTask.key.retryKey;
-    const rateLimitResetsAt = isCurrentlyLimited(retryKey);
-    if (rateLimitResetsAt !== undefined) {
-        handleActiveRateLimit(inflightTask, rateLimitResetsAt);
+function sendInFlight(executionTask: HttpExecutionTask) {
+    const currentRateLimit = isCurrentlyLimited(executionTask.retryKey);
+    if (currentRateLimit !== undefined) {
+        handleActiveRateLimit(executionTask, currentRateLimit);
         return;
     }
 
     try {
-        const response = inflightTask.key.execute();
-        const activeRateLimitResetsAt = processHttpResponse(retryKey, response);
+        const response = executionTask.execute();
+        const activeRateLimitResetsAt = processHttpResponse(executionTask.retryKey, response);
 
         if (activeRateLimitResetsAt === undefined) {
-            // this is kind of a mouthful
-            inflightTask.reject("Could not determine when to retry request due to a missing header during a 429.");
+            executionTask.resolve(response);
             return;
         }
 
         if (activeRateLimitResetsAt > 0) {
-            handleActiveRateLimit(inflightTask, activeRateLimitResetsAt);
+            handleActiveRateLimit(executionTask, activeRateLimitResetsAt);
             return;
         }
-        inflightTask.resolve(response);
+        executionTask.resolve(response);
     } catch (err) {
-        inflightTask.reject(err);
+        executionTask.reject(err);
     }
-});
+}
 
-export const ThrottleHttp = (functor: () => HttpResponse, config: RetryConfig = DefaultRetryConfig): Promise<HttpResponse> => {
-    return throttle.run(new HttpExecutionPackage(functor, config));
+export const RetryHttp429 = (functor: () => HttpResponse, config: RetryConfig = {}): Promise<HttpResponse> => {
+    return new Promise((resolve, reject) => {
+        const executionTask = new HttpExecutionTask(functor, config, resolve, reject);
+        sendInFlight(executionTask);
+    });
 }
