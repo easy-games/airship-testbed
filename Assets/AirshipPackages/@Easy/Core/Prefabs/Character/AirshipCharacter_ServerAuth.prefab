@@ -144,6 +144,9 @@ MonoBehaviour:
   accessorySlot: 9
   visibilityMode: 2
   skinnedToCharacter: 1
+  meshLods: []
+  matColors:
+  - {fileID: 3857526699807368833}
   canMeshCombine: 1
   bodyMask: 294912
 --- !u!1001 &3633942113770370856
@@ -323,8 +326,8 @@ MonoBehaviour:
   velocitySnapThreshold: 5
   reduceSendsWhileIdle: 1
   smoothRigidbodies: 0
-  showLogs: 1
-  showGizmos: 1
+  showLogs: 0
+  showGizmos: 0
   gizmoDuration: 4
   gizmoVelocityThreshold: 0.1
   drawGizmosEveryNthFrame: 4
