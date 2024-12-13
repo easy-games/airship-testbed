@@ -66,11 +66,11 @@ export default class Character extends AirshipBehaviour {
 
 	/*
 	 * [Advanced]
-	 *
-	 * Custom data that the client sends in their move packet.
+	 * Listen to custom data being sent through the movement system
+	 * Key Value pairs created using AddCustomMoveData will fire here during movement ticks that use them
 	 * Map<id, dataBlob>, inputData, isReplay
 	 */
-	public OnBeginMove = new Signal<[Map<string, unknown>, CharacterMovementState, boolean]>();
+	public OnUseCustomMoveData = new Signal<[Map<string, unknown>, CharacterMovementState, boolean]>();
 
 	public Awake(): void {
 		this.inventory = this.gameObject.GetAirshipComponent<Inventory>()!;
@@ -238,16 +238,20 @@ export default class Character extends AirshipBehaviour {
 			? (stateData.currentMoveInput.customData.Decode() as { key: string; value: unknown }[])
 			: undefined;
 		const allCustomData: Map<string, unknown> = new Map();
+		let usingCustomData = false;
 		if (allData) {
 			//print("ALLDATA: " + inspect(allData));
 			for (const data of allData) {
 				//print("Found custom data " + data.key + " with value: " + data.value);
 				allCustomData.set(data.key, data.value);
+				usingCustomData = true;
 			}
 		}
 
-		//Local signal for parsing the key value pairs
-		this.OnBeginMove.Fire(allCustomData, stateData, isReplay);
+		if (usingCustomData) {
+			//Local signal for parsing the key value pairs
+			this.OnUseCustomMoveData.Fire(allCustomData, stateData, isReplay);
+		}
 	}
 
 	public IsInitialized() {
