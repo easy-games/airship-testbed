@@ -4192,9 +4192,9 @@ MonoBehaviour:
       fileRef: 
       decorators: []
       nullable: 0
-      serializedValue: 0
+      serializedValue: 1
       serializedObject: {fileID: 0}
-      modified: 0
+      modified: 1
     displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0

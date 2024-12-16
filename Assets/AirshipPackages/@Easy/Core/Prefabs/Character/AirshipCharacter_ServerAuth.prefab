@@ -325,7 +325,7 @@ MonoBehaviour:
   velocityCorrectionThreshold: 3
   velocitySnapThreshold: 5
   reduceSendsWhileIdle: 1
-  smoothRigidbodies: 0
+  smoothRigidbody: 1
   showLogs: 0
   showGizmos: 0
   gizmoDuration: 4
