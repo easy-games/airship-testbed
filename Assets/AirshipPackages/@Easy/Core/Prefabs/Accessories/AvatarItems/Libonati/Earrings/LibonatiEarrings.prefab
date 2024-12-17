@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4470309775196928967}
-  - component: {fileID: 7638501342747260519}
   m_Layer: 0
   m_Name: LibonatiEarrings
   m_TagString: Untagged
@@ -34,26 +33,6 @@ Transform:
   - {fileID: 1305612357537047203}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7638501342747260519
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2177309540373439235}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b74917b00f1d374c9a7136917a61ddf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serverClassId: 9e8dd097-26d6-4500-a952-143e501357e7
-  serverClassIdStaging: c47d910d-4b23-49b3-964e-e026e54c4c33
-  accessorySlot: 11
-  visibilityMode: 0
-  skinnedToCharacter: 0
-  meshLods: []
-  canMeshCombine: 1
-  bodyMask: 0
 --- !u!1001 &3556306479647166366
 PrefabInstance:
   m_ObjectHideFlags: 0

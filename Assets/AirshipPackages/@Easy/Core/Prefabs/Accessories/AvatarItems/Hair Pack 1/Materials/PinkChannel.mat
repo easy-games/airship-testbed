@@ -115,6 +115,8 @@ Material:
     - _ClearCoatSmoothness: 0
     - _Cull: 2
     - _Cutoff: 0.5
+    - _CutoffPlaneHeight: 1.43
+    - _CutoffSmoothMod: 0.25
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
@@ -123,6 +125,8 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
+    - _HatOffsetStrength: 0
+    - _HeadRadius: 0.202
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _OverrideStrength: 0
@@ -145,11 +149,15 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _AnisoColor: {r: 1, g: 1, b: 1, a: 1}
-    - _BaseColor: {r: 0.1548427, g: 0.254717, b: 0.14057495, a: 1}
+    - _BaseColor: {r: 0.15294118, g: 0.25490198, b: 0.14117648, a: 1}
     - _Color: {r: 0.15484267, g: 0.25471696, b: 0.1405749, a: 1}
     - _ColorBot: {r: 0.5283019, g: 0.5283019, b: 0.3264507, a: 1}
     - _ColorMid: {r: 0.6981132, g: 0, b: 0.6981132, a: 1}
+    - _CutoffAxis: {r: 0, g: 0.2, b: 1, a: 0}
+    - _CutoffPlaneDir: {r: 1, g: -0.45, b: 0, a: 0}
+    - _CutoffPlaneNormal: {r: 0, g: 0, b: 1, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _HeadCenter: {r: 0, g: 0.035, b: 1.635, a: 0}
     - _RimColor: {r: 0, g: 1, b: 1, a: 1}
     - _RimColorShadow: {r: 0.25, g: 0.5, b: 0.5, a: 1}
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}

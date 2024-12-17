@@ -88,10 +88,7 @@ class NetworkFunctionServer<TX extends unknown[] | unknown, RX extends unknown[]
 		const thread = coroutine.running();
 		this.yieldingThreads.set(sendId, thread);
 		NetworkAPI.fireClient(this.id, player, sendArgs, NetworkChannel.Reliable);
-		print("yield co");
-		print("Start listening for remote function: " + this.id);
 		const res = coroutine.yield() as unknown as NetworkFunctionReturn<RX>;;
-		print("post yield co");
 		return res;
 	}
 
@@ -99,9 +96,7 @@ class NetworkFunctionServer<TX extends unknown[] | unknown, RX extends unknown[]
 		if (this.listening) return;
 		this.listening = true;
 		NetworkAPI.connect(true, this.id, (player: Player, sendId: number, ...args: unknown[]) => {
-			print("Respond to remote function");
 			const thread = this.yieldingThreads.get(sendId);
-			print("Thread exists: " + (thread !== undefined));
 			this.yieldingThreads.delete(sendId);
 			if (thread !== undefined) {
 				task.spawn(thread, ...args);

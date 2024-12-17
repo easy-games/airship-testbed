@@ -4,6 +4,7 @@ export const Network = {
 	ClientToServer: {
 		BounceBall: new NetworkSignal<[nobId: number]>("BounceBall"),
 		TestServer: new NetworkSignal<[value: boolean]>("TestServer"),
+		TestMovement: new NetworkSignal<[type: number]>("TestMovement"),
 	},
 	ServerToClient: {
 		//DEMO SCENE

@@ -23,9 +23,9 @@ export default class CharacterForceTrigger extends AirshipBehaviour {
 
 			let characterTransform = character.transform;
 			//Locally we want to refresh our colliders during replays
-			character.OnBeginMove.Connect((customData, inputData, isReplay) => {
+			character.OnUseCustomMoveData.Connect((customData, inputData, isReplay) => {
 				if (bounds.Contains(characterTransform.position)) {
-					if(!this.characterInCollider){
+					if (!this.characterInCollider) {
 						this.characterInCollider = true;
 						character.movement!.AddImpulse(
 							this.forceSpace === Space.Self
@@ -33,7 +33,7 @@ export default class CharacterForceTrigger extends AirshipBehaviour {
 								: this.triggerForce,
 						);
 					}
-				}else{
+				} else {
 					this.characterInCollider = false;
 				}
 			});
