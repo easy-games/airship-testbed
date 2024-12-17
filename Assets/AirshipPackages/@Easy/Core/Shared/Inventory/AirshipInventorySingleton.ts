@@ -109,9 +109,9 @@ export class AirshipInventorySingleton {
 
 	public SetUIVisibility(visibility: InventoryUIVisibility): void {
 		this.uiVisibility = visibility;
-
 		if (visibility === InventoryUIVisibility.Never) {
 			this.ui?.gameObject.SetActive(false);
+			return;
 		} else {
 			this.ui?.gameObject.SetActive(true);
 		}

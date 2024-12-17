@@ -551,8 +551,8 @@ declare const MeshProcessor: MeshProcessorConstructor;
 interface AnimationEventListener extends MonoBehaviour {
 	minRepeatMessageTime: number;
 
-	OnAnimObjEvent(callback: (data: AnimationEventData) => void): EngineEventConnection;
-	OnAnimEvent(callback: (key: string) => void): EngineEventConnection;
+	OnAnimObjEvent(callback: (data: AnimationEventData) => void): MonoSignal;
+	OnAnimEvent(callback: (key: string) => void): MonoSignal;
 
 	TriggerEvent(key: string): void;
 	TriggerEventObj(obj: Object): void;

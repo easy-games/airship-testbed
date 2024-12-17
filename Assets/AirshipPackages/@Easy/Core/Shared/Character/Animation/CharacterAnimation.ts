@@ -1,8 +1,8 @@
 ﻿﻿import Character from "@Easy/Core/Shared/Character/Character";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { Airship } from "../../Airship";
-import { Signal } from "../../Util/Signal";
 import { Game } from "../../Game";
+import { Signal } from "../../Util/Signal";
 
 export default class CharacterAnimation extends AirshipBehaviour {
 	@Header("References")
@@ -46,20 +46,24 @@ export default class CharacterAnimation extends AirshipBehaviour {
 
 			//Animation Events
 			const animEvents = this.character.animationHelper.animationEvents;
-			if(animEvents){
-				this.bin.AddEngineEventConnection(animEvents.OnAnimEvent((key)=>{
-					this.HandleAnimationEvents(key);
-					if(this.OnAnimationEvent){
-						this.OnAnimationEvent.Fire(key);
-					}
-				}));
-	
-				this.bin.AddEngineEventConnection(animEvents.OnAnimObjEvent((data)=>{
-					this.HandleAnimationEvents(data.key, data.stringValue, data.intValue, data.floatValue);
-					if(this.OnAnimationEvent){
-						this.OnAnimationEvent.Fire(data.key, data.stringValue, data.intValue, data.floatValue);
-					}
-				}));
+			if (animEvents) {
+				this.bin.AddEngineEventConnection(
+					animEvents.OnAnimEvent((key) => {
+						this.HandleAnimationEvents(key);
+						if (this.OnAnimationEvent) {
+							this.OnAnimationEvent.Fire(key);
+						}
+					}),
+				);
+
+				this.bin.AddEngineEventConnection(
+					animEvents.OnAnimObjEvent((data) => {
+						this.HandleAnimationEvents(data.key, data.stringValue, data.intValue, data.floatValue);
+						if (this.OnAnimationEvent) {
+							this.OnAnimationEvent.Fire(data.key, data.stringValue, data.intValue, data.floatValue);
+						}
+					}),
+				);
 			}
 		}
 
@@ -140,7 +144,7 @@ export default class CharacterAnimation extends AirshipBehaviour {
 		this.bin.Clean();
 	}
 
-	private HandleAnimationEvents(key: string, strValue?: string, intValue?: number, floatValue?: number){
+	private HandleAnimationEvents(key: string, strValue?: string, intValue?: number, floatValue?: number) {
 		if (key === "Footstep") {
 			if (this.character.movement?.isGrounded) {
 				Airship.Characters.footsteps.PlayFootstepSound(this.character);
