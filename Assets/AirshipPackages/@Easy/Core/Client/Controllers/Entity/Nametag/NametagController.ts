@@ -42,18 +42,26 @@ export class NametagController {
 		const nameTag = this.UpdateNametag(character);
 		if (!nameTag) return;
 
-		const SetNametagAlpha = (character: Character, alpha: number) => {
-			nameTag.SetAlpha(alpha);
-		};
-		bin.Add(
-			character.onStateChanged.Connect((newState, oldState) => {
-				if (newState === CharacterState.Crouching) {
-					SetNametagAlpha(character, 0.1);
-				} else if (oldState === CharacterState.Crouching) {
-					SetNametagAlpha(character, 1);
-				}
-			}),
-		);
+		if (character.player) {
+			bin.Add(
+				character.player.onChangeTeam.Connect(() => {
+					this.UpdateNametag(character);
+				}),
+			);
+		}
+
+		// const SetNametagAlpha = (character: Character, alpha: number) => {
+		// 	nameTag.SetAlpha(alpha);
+		// };
+		// bin.Add(
+		// 	character.onStateChanged.Connect((newState, oldState) => {
+		// 		if (newState === CharacterState.Crouching) {
+		// 			SetNametagAlpha(character, 0.1);
+		// 		} else if (oldState === CharacterState.Crouching) {
+		// 			SetNametagAlpha(character, 1);
+		// 		}
+		// 	}),
+		// );
 		bin.Add(() => {
 			this.DestroyNametag(character);
 		});
@@ -76,7 +84,7 @@ export class NametagController {
 		if (character.IsLocalCharacter() && !this.showSelfNametag) return;
 
 		const team: Team | undefined = character.player?.team;
-		const localTeam = Game.localPlayer.team;
+		const localPlayerTeam = Game.localPlayer.team;
 
 		let nameTag = character.gameObject.GetAirshipComponentInChildren<NametagComponent>();
 		if (nameTag === undefined) {
@@ -89,8 +97,8 @@ export class NametagController {
 
 		// Username color
 		let color: Color | undefined;
-		if (localTeam) {
-			if (character.player && localTeam.GetPlayers().has(character.player)) {
+		if (localPlayerTeam && team) {
+			if (character.player && localPlayerTeam.GetPlayers().has(character.player)) {
 				color = Theme.green;
 			} else {
 				color = Theme.red;
