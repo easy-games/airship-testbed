@@ -38567,7 +38567,6 @@ interface CharacterRig extends MonoBehaviour {
     armsMesh: SkinnedMeshRenderer;
     headMesh: SkinnedMeshRenderer;
     faceMesh: Renderer;
-    viewmodelArmsMesh: SkinnedMeshRenderer;
     bodyMeshLOD: CSArray<SkinnedMeshRenderer>;
     armsMeshLOD: CSArray<SkinnedMeshRenderer>;
     headMeshLOD: CSArray<SkinnedMeshRenderer>;
