@@ -18,7 +18,8 @@ function defaultRetrieveRetryTime(response: HttpResponse): number | undefined {
  */
 export interface RetryConfig {
     /**
-     * A key used to identify a request, when a key is rate limited all other keys will assume the rate limit also applies to them.
+     * A key used to identify a request, when a key is rate limited all other other requests with the same key will
+     *  assume the rate limit has been reached for them as well.
      * 
      * Not providing this key will disable any proactive rate limiting.
      */
@@ -69,7 +70,7 @@ function translateResetAfter(receivedAt: number, resetAfter: number): number {
 // clean up any unnecessary retry data every 30 seconds
 task.spawnDetached(() => {
     while (task.unscaledWait(30)) {
-        for (const key of keys(retryData)) { 
+        for (const key of keys(retryData)) {
             const retryInfo = retryData[key];
             if (translateResetAfter(retryInfo.receivedAt, retryInfo.resetAfter) <= 0) {
                 delete retryData[key];
@@ -81,8 +82,8 @@ task.spawnDetached(() => {
 /**
  * Checks if a rate limit is currently being applied to a key.
  * 
- * @param retryKey A key used to identify a type of request. When a key is rate limited all 
- * other keys will assume the rate limit has been reached for them as well.
+ * @param retryKey A key used to identify a type of request. When a key is rate limited all
+ *  other requests with the same key will assume the rate limit has been reached for them as well.
  * @returns The time remaining before the rate limit is reset, or undefined if the key is not rate limited.
  */
 function isCurrentlyLimited(retryKey: string | undefined): number | undefined {
@@ -101,6 +102,38 @@ function isCurrentlyLimited(retryKey: string | undefined): number | undefined {
     return resetAfter;
 }
 
+enum RateLimitInstructionType {
+    PassThroughError = "pass_through_error",
+    Retry = "retry",
+    Success = "success",
+}
+
+interface RateLimitInstructionBase<T extends RateLimitInstructionType> {
+    type: T;
+}
+
+/**
+ * A rate limit instruction which indicates that the request is a 429 error and should be passed through.
+ * This happens when the request is rate limited but the response headers don't provide a retry time.
+ */
+interface RateLimitPassThroughErrorInstruction extends RateLimitInstructionBase<RateLimitInstructionType.PassThroughError> {
+}
+
+/**
+ * A rate limit instruction which indicates that the request should be retried.
+ */
+interface RateLimitRetryInstruction extends RateLimitInstructionBase<RateLimitInstructionType.Retry> {
+    resetAfter: number;
+}
+
+/**
+ * A rate limit instruction which indicates that the request was successful.
+ */
+interface RateLimitSuccessInstruction extends RateLimitInstructionBase<RateLimitInstructionType.Success> {
+}
+
+type RateLimitInstruction = RateLimitPassThroughErrorInstruction | RateLimitRetryInstruction | RateLimitSuccessInstruction;
+
 /**
  * Determines if an executed request was rate limited.
  * 
@@ -108,30 +141,30 @@ function isCurrentlyLimited(retryKey: string | undefined): number | undefined {
  * @param response The http response which is being processed due to a 429 response code.
  * @returns The time remaining before the rate limit is reset, or undefined if the request was not rate limited.
  */
-function processHttpResponse(config: RetryConfig, response: HttpResponse): number | undefined { 
-    if (response.statusCode === 429) {
-        const resetAfter = (config.retrieveRetryTime || defaultRetrieveRetryTime)(response);
+function processHttpResponse(config: RetryConfig, response: HttpResponse): RateLimitInstruction {
+    if (response.statusCode !== 429) return { type: RateLimitInstructionType.Success };
 
-        if (resetAfter === undefined) {
-            return undefined;
-        }
+    const resetAfter = (config.retrieveRetryTime || defaultRetrieveRetryTime)(response);
 
-        if (resetAfter === 0) {
-            return 1; // retry in 1 second & don't mark it
-        }
+    if (resetAfter === undefined) return { type: RateLimitInstructionType.PassThroughError };
 
-        const retryKey = config.retryKey;
-        if (retryKey === undefined) return resetAfter;
+    const retryKey = config.retryKey;
 
+    if (retryKey !== undefined) {
         retryData[retryKey] = {
             receivedAt: os.time(),
             resetAfter: resetAfter,
-        }
-
-        return resetAfter;
+        };
     }
-    return 0;
+
+    return { type: RateLimitInstructionType.Retry, resetAfter };
 }
+
+/**
+ * Offsets the rate limit "delay" by this amount to prevent the delay from stopping ~.5 seconds before the actual reset time.
+ * If a time is given in seconds without decimals then the offset has a chance of being rounded down making our delay slightly too short.
+ */
+const DELAY_OFFSET = 0.5;
 
 /**
  * Executes an http task, retrying if the request is rate limited or if the {@link RetryConfig.retryKey}
@@ -143,54 +176,40 @@ function executeHttpTask(httpTask: HttpTask): void {
     const currentRateLimitResetsAt = isCurrentlyLimited(httpTask.config.retryKey);
     if (currentRateLimitResetsAt !== undefined) {
         // handle existing rate limit
-
-        // TODO: remove the logging message here after testing is complete
-        // if it's actively rate limited it should be logged earlier that the route was rate limited
-        const retryKey = httpTask.config.retryKey;
-        if (retryKey !== undefined) {
-            CoreLogger.Warn(`Http request "${retryKey}" has an active rate limit of ${currentRateLimitResetsAt} seconds remaining.`);
-        } else {
-            CoreLogger.Warn(`Http request without a retry key has an active rate limit of ${currentRateLimitResetsAt} seconds remaining.`);
-        }
-
-        task.unscaledDelayDetached(currentRateLimitResetsAt + .5, () => { 
-            CoreLogger.Log(`Http request "${retryKey}" has been continued.`);
-            executeHttpTask(httpTask);
-        });
+        task.unscaledDelayDetached(currentRateLimitResetsAt + DELAY_OFFSET, () => executeHttpTask(httpTask));
         return;
     }
 
     try {
         const response = httpTask.execute();
-        const activeRateLimitResetsAt = processHttpResponse(httpTask.config, response);
+        const instruction = processHttpResponse(httpTask.config, response);
 
-        if (activeRateLimitResetsAt === undefined) {
-            // pass through 429 response, the header telling us how long to wait does not exist
-            const retryKey = httpTask.config.retryKey;
-            if (retryKey !== undefined) {
-                CoreLogger.Warn(`Http request "${retryKey}" received a 429 response code but could not determine a retry time.`);
-            } else {
-                CoreLogger.Warn("Http request without a retry key received a 429 response code but could not determine a retry time.");
-            }
-            httpTask.resolve(response);
-            return;
-        }
+        const retryKey = httpTask.config.retryKey;
+        switch (instruction.type) {
+            case RateLimitInstructionType.PassThroughError:
+                // pass through 429 error
+                if (retryKey !== undefined) {
+                    CoreLogger.Warn(`Http request "${retryKey}" received a 429 response code but could not determine a retry time.`);
+                } else {
+                    CoreLogger.Warn("Http request without a retry key received a 429 response code but could not determine a retry time.");
+                }
+                httpTask.resolve(response);
+                return;
 
-        if (activeRateLimitResetsAt > 0) {
-            // handle active rate limit
-            const retryKey = httpTask.config.retryKey;
-            if (retryKey !== undefined) {
-                CoreLogger.Warn(`Http request "${retryKey}" was rate limited for ${activeRateLimitResetsAt} seconds.`);
-            } else {
-                CoreLogger.Warn(`Http request without a retry key was rate limited for ${activeRateLimitResetsAt} seconds.`);
-            }
-            task.unscaledDelayDetached(activeRateLimitResetsAt + .5, () => { 
-                CoreLogger.Log(`Http request "${retryKey}" has been continued.`);
-                executeHttpTask(httpTask);
-            });
-            return;
+            case RateLimitInstructionType.Retry:
+                // handle active rate limit
+                if (retryKey !== undefined) {
+                    CoreLogger.Warn(`Http request "${retryKey}" was rate limited for ${instruction.resetAfter} seconds.`);
+                } else {
+                    CoreLogger.Warn(`Http request without a retry key was rate limited for ${instruction.resetAfter} seconds.`);
+                }
+                task.unscaledDelayDetached(instruction.resetAfter + DELAY_OFFSET, () => executeHttpTask(httpTask));
+                return;
+
+            case RateLimitInstructionType.Success:
+                httpTask.resolve(response);
+                return;
         }
-        httpTask.resolve(response);
     } catch (err) {
         httpTask.reject(err);
     }
