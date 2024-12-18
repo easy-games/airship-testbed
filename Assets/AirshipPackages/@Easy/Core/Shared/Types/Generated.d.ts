@@ -21254,6 +21254,26 @@ interface GraphicConstructor {
 }
 declare const Graphic: GraphicConstructor;
     
+interface ISerializationCallbackReceiver {
+
+
+
+    /**
+     * Implement this method to receive a callback after Unity deserializes your object.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/ISerializationCallbackReceiver.OnAfterDeserialize.html | ISerializationCallbackReceiver.OnAfterDeserialize}
+     */
+    OnAfterDeserialize(): void;
+    /**
+     * Implement this method to receive a callback before Unity serializes your object.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/ISerializationCallbackReceiver.OnBeforeSerialize.html | ISerializationCallbackReceiver.OnBeforeSerialize}
+     */
+    OnBeforeSerialize(): void;
+
+
+}
+    
 interface ICanvasRaycastFilter {
 
 
@@ -21283,26 +21303,6 @@ interface ILayoutElement {
 
     CalculateLayoutInputHorizontal(): void;
     CalculateLayoutInputVertical(): void;
-
-
-}
-    
-interface ISerializationCallbackReceiver {
-
-
-
-    /**
-     * Implement this method to receive a callback after Unity deserializes your object.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/ISerializationCallbackReceiver.OnAfterDeserialize.html | ISerializationCallbackReceiver.OnAfterDeserialize}
-     */
-    OnAfterDeserialize(): void;
-    /**
-     * Implement this method to receive a callback before Unity serializes your object.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/ISerializationCallbackReceiver.OnBeforeSerialize.html | ISerializationCallbackReceiver.OnBeforeSerialize}
-     */
-    OnBeforeSerialize(): void;
 
 
 }
@@ -21356,7 +21356,7 @@ interface MaskableGraphic extends Graphic, IClippable, IMaterialModifier, IMaska
 
 }
     
-interface Image extends MaskableGraphic, ICanvasRaycastFilter, ILayoutElement, ISerializationCallbackReceiver {
+interface Image extends MaskableGraphic, ISerializationCallbackReceiver, ICanvasRaycastFilter, ILayoutElement {
     sprite: Sprite;
     overrideSprite: Sprite;
     type: Type;
@@ -29784,7 +29784,7 @@ interface ITextSelection {
 
 }
     
-interface TextElement extends BindableElement, INotifyValueChanged<string>, ITextElement, ITextEdition, ITextElementExperimentalFeatures, ITextSelection {
+interface TextElement extends BindableElement, ITextElement, INotifyValueChanged<string>, ITextEdition, ITextElementExperimentalFeatures, ITextSelection {
     /**
      * The text to be displayed.
      * 
@@ -38454,7 +38454,6 @@ interface VertexHelperConstructor {
 declare const VertexHelper: VertexHelperConstructor;
     
 interface TrueShadow extends UIBehaviour, IMeshModifier, ICanvasElement {
-    readonly UsingRendererMaterialProvider: boolean;
     Size: number;
     Spread: number;
     UseGlobalAngle: boolean;
@@ -38472,6 +38471,7 @@ interface TrueShadow extends UIBehaviour, IMeshModifier, ICanvasElement {
     CustomHash: number;
     readonly Offset: Vector2;
     Cutout: boolean;
+    readonly UsingRendererMaterialProvider: boolean;
 
 
 
