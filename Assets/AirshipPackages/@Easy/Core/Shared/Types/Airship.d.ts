@@ -133,9 +133,13 @@ interface CharacterMovement extends Component {
 	SetDebugFlying(enabled: boolean): void;
 	IsFlying(): boolean;
 	Teleport(position: Vector3): void;
+	TeleportWithoutReconcile(position: Vector3): void;
 	TeleportAndLook(position: Vector3, lookVector: Vector3): void;
+	TeleportAndLookWithoutReconcile(position: Vector3, lookVector: Vector3): void;
 	AddImpulse(impulse: Vector3): void;
+	AddImpulseWithoutReconcile(impulse: Vector3): void;
 	SetImpulse(impulse: Vector3): void;
+	SetImpulseWithoutReconcile(impulse: Vector3): void;
 	IgnoreGroundCollider(collider: Collider, ignore: boolean): void;
 	IsIgnoringCollider(collider: Collider): boolean;
 	SetVelocity(velocity: Vector3): void;
