@@ -144,6 +144,7 @@ export default class ProximityPrompt extends AirshipBehaviour {
 	}
 
 	protected Hide(instant?: boolean): void {
+		if (this.gameObject.IsDestroyed()) return;
 		if (!this.shown) return;
 		this.shown = false;
 
