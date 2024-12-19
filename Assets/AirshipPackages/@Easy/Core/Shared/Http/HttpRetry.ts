@@ -18,7 +18,7 @@ function defaultRetrieveRetryTime(response: HttpResponse): number | undefined {
  */
 export interface RetryConfig {
     /**
-     * A key used to identify a request, when a key is rate limited all other other requests with the same key will
+     * A key used to identify a request, when a key is rate limited all other requests with the same key will
      *  assume the rate limit has been reached for them as well.
      * 
      * Not providing this key will disable any proactive rate limiting.
@@ -58,21 +58,12 @@ interface RetryInformation {
 
 const retryData: {[key: string]: RetryInformation} = {};
 
-/**
- * @param receivedAt When the resetAfter time was received.
- * @param resetAfter The time to wait before retrying the request.
- * @returns The adjusted value of `resetAfter` based on when the value was received.
- */
-function translateResetAfter(receivedAt: number, resetAfter: number): number {
-    return resetAfter - (os.time() - receivedAt);
-}
-
 // clean up any unnecessary retry data every 30 seconds
 task.spawnDetached(() => {
     while (task.unscaledWait(30)) {
         for (const key of keys(retryData)) {
             const retryInfo = retryData[key];
-            if (translateResetAfter(retryInfo.receivedAt, retryInfo.resetAfter) <= 0) {
+            if ((retryInfo.resetAfter - (os.time() - retryInfo.receivedAt)) <= 0) {
                 delete retryData[key];
             }
         }
@@ -92,7 +83,7 @@ function isCurrentlyLimited(retryKey: string | undefined): number | undefined {
     const retryInfo = retryData[retryKey];
     if (retryInfo === undefined) return undefined;
 
-    const resetAfter = translateResetAfter(retryInfo.receivedAt, retryInfo.resetAfter);
+    const resetAfter = retryInfo.resetAfter - (os.time() - retryInfo.receivedAt);
 
     if (resetAfter <= 0) {
         delete retryData[retryKey];
