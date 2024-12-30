@@ -60,6 +60,7 @@ export default class MobileControlsCanvas extends AirshipBehaviour {
 		);
 		this.bin.Add(
 			Game.localPlayer.ObserveCharacter((character) => {
+				if (!Game.IsMobile()) return;
 				if (character === undefined) {
 					this.HideCharacterControls();
 					return;
