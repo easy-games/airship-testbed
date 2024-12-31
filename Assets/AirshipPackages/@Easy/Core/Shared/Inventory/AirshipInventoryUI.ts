@@ -1,5 +1,4 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
-import Inventory from "@Easy/Core/Shared/Inventory/Inventory";
 import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
 import { Keyboard, Mouse } from "@Easy/Core/Shared/UserInput";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
@@ -7,15 +6,8 @@ import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { OnUpdate } from "@Easy/Core/Shared/Util/Timer";
 import { Asset } from "../Asset";
+import { DraggingState } from "./AirshipDraggingState";
 import AirshipInventoryTile from "./AirshipInventoryTile";
-
-type DraggingState = {
-	inventory: Inventory;
-	itemStack: ItemStack;
-	slot: number;
-	transform: RectTransform;
-	consumed: boolean;
-};
 
 export default class AirshipInventoryUI extends AirshipBehaviour {
 	@Header("Variables")
@@ -30,6 +22,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	public backpackCanvas!: Canvas;
 	public backpackContent!: RectTransform;
 	public backpackTileTemplate!: GameObject;
+	public dropItemCatcher: RectTransform;
 
 	@Header("Backpack (Hotbar Row)")
 	@Tooltip("The hotbar content that is displayed when backpack is open.")
@@ -54,6 +47,8 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	private draggingBin = new Bin();
 	private spriteCacheForItemType = new Map<string, Sprite>();
 
+	private bin = new Bin();
+
 	private isSetup = false;
 
 	override Awake() {
@@ -77,6 +72,18 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 				this.OpenBackpack();
 			}
 		});
+
+		this.bin.AddEngineEventConnection(
+			CanvasAPI.OnDropEvent(this.dropItemCatcher.gameObject, (e) => {
+				if (!this.draggingState) return;
+
+				const drag = this.draggingState;
+				drag.consumed = true;
+				task.spawn(() => {
+					Airship.Inventory.localInventory?.onDraggedOutsideInventory.Fire(drag);
+				});
+			}),
+		);
 	}
 
 	public SetHealtbarVisible(visible: boolean) {
@@ -476,5 +483,9 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 
 	public IsBackpackShown(): boolean {
 		return this.backpackShown;
+	}
+
+	protected OnDestroy(): void {
+		this.bin.Clean();
 	}
 }
