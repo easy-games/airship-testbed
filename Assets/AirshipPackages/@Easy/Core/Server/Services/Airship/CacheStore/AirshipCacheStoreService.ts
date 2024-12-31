@@ -103,9 +103,9 @@ export class AirshipCacheStoreService {
 	 * Checks that the key is valid. Throws an error if not valid.
 	 */
 	private CheckKey(key: string): void {
-		if (!key || key.match("^[%w%.%:]+$")[0] === undefined) {
+		if (!key || key.match("^[%w%.%:_%-]+$")[0] === undefined) {
 			throw error(
-				"Bad key provided. Ensure that your data store keys only include alphanumeric characters, _, ., and :",
+				`Bad key provided (${key}). Ensure that your cache store keys only include alphanumeric characters or _-.:`,
 			);
 		}
 	}

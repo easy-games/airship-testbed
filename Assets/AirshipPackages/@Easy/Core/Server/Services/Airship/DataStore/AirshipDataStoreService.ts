@@ -36,7 +36,7 @@ export class AirshipDataStoreService {
 	 * @returns The data associated with the provided key. If no data is found, nothing is returned.
 	 */
 	public async GetKey<T extends object>(key: string): Promise<T | undefined> {
-		this.checkKey(key);
+		this.CheckKey(key);
 
 		if (Game.IsEditor()) {
 			return this.internalDB[key];
@@ -57,7 +57,7 @@ export class AirshipDataStoreService {
 	 * @returns The data that was associated with the provided key.
 	 */
 	public async SetKey<T extends object>(key: string, data: T): Promise<T> {
-		this.checkKey(key);
+		this.CheckKey(key);
 
 		if (Game.IsEditor()) {
 			this.internalDB[key] = data;
@@ -97,7 +97,7 @@ export class AirshipDataStoreService {
 		key: string,
 		callback: (record?: T) => Promise<T | undefined> | T | undefined,
 	): Promise<T | undefined> {
-		this.checkKey(key);
+		this.CheckKey(key);
 
 		if (Game.IsEditor()) {
 			warn("[Data Store] GetAndSet() is unavailable in editor.");
@@ -133,7 +133,7 @@ export class AirshipDataStoreService {
 	 * @returns The data that was deleted. If no data was deleted, nothing will be returned.
 	 */
 	public async DeleteKey<T extends object>(key: string): Promise<T | undefined> {
-		this.checkKey(key);
+		this.CheckKey(key);
 
 		if (Game.IsEditor()) {
 			const data = this.internalDB[key];
@@ -166,7 +166,7 @@ export class AirshipDataStoreService {
 		key: string,
 		callback: (record: T) => Promise<boolean> | boolean,
 	): Promise<T | undefined> {
-		this.checkKey(key);
+		this.CheckKey(key);
 
 		if (Game.IsEditor()) {
 			warn("[Data Store] GetAndDelete is unavailable in editor.");
@@ -204,10 +204,10 @@ export class AirshipDataStoreService {
 	/**
 	 * Checks that the key is valid
 	 */
-	private checkKey(key: string): void {
-		if (!key || key.match("^[%w%.%:]+$")[0] === undefined) {
+	private CheckKey(key: string): void {
+		if (!key || key.match("^[%w%.%:_%-]+$")[0] === undefined) {
 			throw error(
-				"Bad key provided. Ensure that your data store keys only include alphanumeric characters, _, ., and :",
+				`Bad key provided (${key}). Ensure that your data store keys only include alphanumeric characters or _-.:`,
 			);
 		}
 	}
