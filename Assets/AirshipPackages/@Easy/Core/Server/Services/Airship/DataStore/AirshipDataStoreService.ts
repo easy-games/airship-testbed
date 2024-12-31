@@ -32,7 +32,7 @@ export class AirshipDataStoreService {
 
 	/**
 	 * Gets the data associated with the given key.
-	 * @param key The key to use. Keys must be alphanumeric and may include the following symbols: ``_.:``
+	 * @param key The key to use. Keys must be alphanumeric and may include the following symbols: ``_-.:``
 	 * @returns The data associated with the provided key. If no data is found, nothing is returned.
 	 */
 	public async GetKey<T extends object>(key: string): Promise<T | undefined> {
@@ -52,7 +52,7 @@ export class AirshipDataStoreService {
 
 	/**
 	 * Sets the data for the given key.
-	 * @param key The key to use. Keys must be alphanumeric and may include the following symbols: _.:
+	 * @param key The key to use. Keys must be alphanumeric and may include the following symbols: _-.:
 	 * @param data The data to associate with the provided key.
 	 * @returns The data that was associated with the provided key.
 	 */
@@ -89,7 +89,7 @@ export class AirshipDataStoreService {
 	 *
 	 * Returning no data from the callback (undefined) will abort the update and no data will be changed.
 	 *
-	 * @param key The key to use. Keys must be alphanumeric and may include the following symbols: _.:
+	 * @param key The key to use. Keys must be alphanumeric and may include the following symbols: _-.:
 	 * @param callback The function that will be called to retrieve the new data value.
 	 * @returns The data that was associated with the provided key.
 	 */
@@ -129,7 +129,7 @@ export class AirshipDataStoreService {
 
 	/**
 	 * Deletes the data associated with the given key.
-	 * @param key The key to use. Keys must be alphanumeric and may include the following symbols: _.:
+	 * @param key The key to use. Keys must be alphanumeric and may include the following symbols: _-.:
 	 * @returns The data that was deleted. If no data was deleted, nothing will be returned.
 	 */
 	public async DeleteKey<T extends object>(key: string): Promise<T | undefined> {
@@ -157,7 +157,7 @@ export class AirshipDataStoreService {
 	 *
 	 * The callback function will not be called if the key has no associated data.
 	 *
-	 * @param key The key to use. Keys must be alphanumeric and may include the following symbols: _.:
+	 * @param key The key to use. Keys must be alphanumeric and may include the following symbols: _-.:
 	 * @param callback The function that will be called to determine if the value should be deleted. Returning
 	 * true will delete the key.
 	 * @returns The data that was deleted. If no data was deleted, nothing will be returned.
