@@ -11,6 +11,13 @@ declare namespace task {
 	 */
 	function spawnDetached<T extends Callback>(callback: T, ...args: Parameters<T>): thread;
 
+	/**
+	 * Resumes the passed thread or function instantly using the engine's scheduler.
+	 *
+	 * This is like `task.spawn(thread, ...)`, except it will detach ownership from the parent thread and the thread will continue to run as if it were detached.
+	 */
+	function spawnDetached(thread: thread, ...args: unknown[]): thread;
+
 	/** Resumes the passed thread or function at the end of the invocation cycle using the engine's scheduler. */
 	function defer<T extends Callback>(callback: T, ...args: Parameters<T>): thread;
 	function defer(thread: thread, ...args: unknown[]): thread;
