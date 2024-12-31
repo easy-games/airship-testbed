@@ -24,6 +24,10 @@ export class Mouse {
 	public static readonly onRightUp = new Signal<[event: PointerButtonSignal]>();
 	public static readonly onMiddleDown = new Signal<[event: PointerButtonSignal]>();
 	public static readonly onMiddleUp = new Signal<[event: PointerButtonSignal]>();
+	public static readonly onForwardDown = new Signal<[event: PointerButtonSignal]>();
+	public static readonly onForwardUp = new Signal<[event: PointerButtonSignal]>();
+	public static readonly onBackDown = new Signal<[event: PointerButtonSignal]>();
+	public static readonly onBackUp = new Signal<[event: PointerButtonSignal]>();
 	public static readonly onScrolled = new Signal<[event: ScrollSignal]>();
 	public static readonly onMoved = new Signal<[position: Vector2]>();
 	// public readonly Delta = new Signal<[delta: Vector2]>();
@@ -31,6 +35,8 @@ export class Mouse {
 	public static readonly isLeftDown = inputBridge.IsLeftMouseButtonDown();
 	public static readonly isRightDown = inputBridge.IsRightMouseButtonDown();
 	public static readonly isMiddleDown = inputBridge.IsMiddleMouseButtonDown();
+	public static readonly isBackDown = inputBridge.IsBackMouseButtonDown();
+	public static readonly isForwardDown = inputBridge.IsForwardMouseButtonDown();
 	public static readonly position = inputBridge.GetMousePosition();
 
 	constructor() {
@@ -53,6 +59,10 @@ export class Mouse {
 				return Mouse.onMiddleDown.Connect(callback);
 			case MouseButton.RightButton:
 				return Mouse.onRightDown.Connect(callback);
+			case MouseButton.BackButton:
+				return Mouse.onBackDown.Connect(callback);
+			case MouseButton.ForwardButton:
+				return Mouse.onForwardDown.Connect(callback);
 		}
 	}
 
@@ -70,6 +80,10 @@ export class Mouse {
 				return Mouse.onMiddleUp.Connect(callback);
 			case MouseButton.RightButton:
 				return Mouse.onRightUp.Connect(callback);
+			case MouseButton.BackButton:
+				return Mouse.onBackUp.Connect(callback);
+			case MouseButton.ForwardButton:
+				return Mouse.onForwardUp.Connect(callback);
 		}
 	}
 
@@ -215,6 +229,28 @@ if (Game.IsGameLuauContext()) {
 	});
 }
 
+inputBridge.OnForwardMouseButtonPressEvent((isDown) => {
+	const uiProcessed = CanvasAPI.IsPointerOverUI();
+	const event = new PointerButtonSignal(isDown, uiProcessed);
+	if (isDown) {
+		(Mouse.isForwardDown as boolean) = true;
+		Mouse.onForwardDown.Fire(event);
+	} else {
+		(Mouse.isForwardDown as boolean) = false;
+		Mouse.onForwardUp.Fire(event);
+	}
+});
+inputBridge.OnBackMouseButtonPressEvent((isDown) => {
+	const uiProcessed = CanvasAPI.IsPointerOverUI();
+	const event = new PointerButtonSignal(isDown, uiProcessed);
+	if (isDown) {
+		(Mouse.isBackDown as boolean) = true;
+		Mouse.onBackDown.Fire(event);
+	} else {
+		(Mouse.isBackDown as boolean) = false;
+		Mouse.onBackUp.Fire(event);
+	}
+});
 inputBridge.OnLeftMouseButtonPressEvent((isDown) => {
 	const uiProcessed = CanvasAPI.IsPointerOverUI();
 	const event = new PointerButtonSignal(isDown, uiProcessed);

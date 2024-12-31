@@ -65,6 +65,8 @@ export class InputUtils {
 		[MouseButton.LeftButton]: "Left Mouse Button",
 		[MouseButton.MiddleButton]: "Middle Mouse Button",
 		[MouseButton.RightButton]: "Right Mouse Button",
+		[MouseButton.ForwardButton]: "Forward Mouse Button",
+		[MouseButton.BackButton]: "Back Mouse Button",
 	};
 
 	/**

@@ -188,6 +188,8 @@ interface InputBridge {
 	OnLeftMouseButtonPressEvent(callback: (isDown: boolean) => void): EngineEventConnection;
 	OnRightMouseButtonPressEvent(callback: (isDown: boolean) => void): EngineEventConnection;
 	OnMiddleMouseButtonPressEvent(callback: (isDown: boolean) => void): EngineEventConnection;
+	OnBackMouseButtonPressEvent(callback: (isDown: boolean) => void): EngineEventConnection;
+	OnForwardMouseButtonPressEvent(callback: (isDown: boolean) => void): EngineEventConnection;
 	OnMouseScrollEvent(callback: (scrollAmount: number) => void): EngineEventConnection;
 	OnMouseMoveEvent(callback: (location: Vector2) => void): EngineEventConnection;
 	OnMouseDeltaEvent(callback: (delta: Vector2) => void): EngineEventConnection;
@@ -204,6 +206,8 @@ interface InputBridge {
 	IsLeftMouseButtonDown(): boolean;
 	IsRightMouseButtonDown(): boolean;
 	IsMiddleMouseButtonDown(): boolean;
+	IsForwardMouseButtonDown(): boolean;
+	IsBackMouseButtonDown(): boolean;
 	SetCursorVisible(isVisible: boolean): void;
 	GetMousePosition(): Vector2;
 	GetMouseDelta(): Vector2;
@@ -345,6 +349,8 @@ declare const enum MouseButton {
 	LeftButton = 0,
 	RightButton = 1,
 	MiddleButton = 2,
+	ForwardButton = 3,
+	BackButton = 4,
 }
 
 declare const enum InputActionPhase {
