@@ -56,7 +56,7 @@ class NetworkFunctionClient<TX extends unknown[] | unknown, RX extends unknown[]
 			const thread = this.yieldingThreads.get(sendId);
 			this.yieldingThreads.delete(sendId);
 			if (thread !== undefined) {
-				task.spawnDetached(thread, ...args);
+				task.spawn(thread, ...args);
 			}
 		});
 	}
@@ -102,7 +102,7 @@ class NetworkFunctionServer<TX extends unknown[] | unknown, RX extends unknown[]
 			const thread = this.yieldingThreads.get(sendId);
 			this.yieldingThreads.delete(sendId);
 			if (thread !== undefined) {
-				task.spawnDetached(thread, ...args);
+				task.spawn(thread, ...args);
 			}
 		});
 	}

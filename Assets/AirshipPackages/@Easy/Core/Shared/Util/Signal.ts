@@ -135,7 +135,7 @@ export class Signal<T extends unknown[] | unknown = void> {
 				if (this.allowYielding) {
 					entry.callback(...args);
 				} else {
-					const thread = task.spawn(entry.callback, ...args);
+					const thread = task.spawnDetached(entry.callback, ...args);
 
 					if (this.allowYielding && isCancellable && coroutine.status(thread) !== "dead") {
 						warn(debug.traceback(thread, "Signal callback yielded. This might be an error.") + "\n--\n");
@@ -167,10 +167,6 @@ export class Signal<T extends unknown[] | unknown = void> {
 	public Wait() {
 		const thread = coroutine.running();
 		this.Once((...args) => {
-			// const [success, err] = coroutine.resume(thread, ...args);
-			// if (!success) {
-			// 	error(err);
-			// }
 			task.spawn(thread, ...args);
 		});
 		return coroutine.yield() as SignalWait<T>;
