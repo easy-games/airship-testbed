@@ -6,6 +6,7 @@ import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { Game } from "../Game";
 import { Keyboard, Mouse } from "../UserInput";
 import { Cancellable } from "../Util/Cancellable";
+import { DraggingState } from "./AirshipDraggingState";
 import { ItemStack, ItemStackDto } from "./ItemStack";
 import { BeforeLocalInventoryHeldSlotChanged } from "./Signal/BeforeLocalInventoryHeldSlotChanged";
 
@@ -37,6 +38,13 @@ export default class Inventory extends AirshipBehaviour {
 	/** Fired when a `slot` points to a new `ItemStack`. Changes to the same ItemStack will **not** fire this event. */
 	@NonSerialized() public readonly onSlotChanged = new Signal<[slot: number, itemStack: ItemStack | undefined]>();
 	@NonSerialized() public readonly onHeldSlotChanged = new Signal<number>();
+	/**
+	 * Fired when the local player drags an item outside of their inventory.
+	 * This is often used to drop an item.
+	 *
+	 * This is only fired on the client
+	 **/
+	@NonSerialized() public readonly onDraggedOutsideInventory = new Signal<[drag: DraggingState]>();
 	/**
 	 * Fired whenever any change happens.
 	 * This includes changes to ItemStacks.
@@ -321,7 +329,7 @@ export default class Inventory extends AirshipBehaviour {
 					itemStack.amountChanged.Connect((e) => {
 						if (e.noNetwork) return;
 						if (Game.IsHosting()) return;
-						
+
 						CoreNetwork.ServerToClient.UpdateInventorySlot.server.FireAllClients(
 							this.id,
 							slot,
