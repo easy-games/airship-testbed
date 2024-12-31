@@ -6,8 +6,8 @@ type NetworkParamsToClient<T> = Parameters<
 	T extends unknown[]
 		? (player: Player, ...args: T) => void
 		: T extends unknown
-			? (player: Player, arg: T) => void
-			: (player: Player) => void
+		? (player: Player, arg: T) => void
+		: (player: Player) => void
 >;
 
 type NetworkParamsToServer<T> = Parameters<
@@ -20,7 +20,10 @@ type NetworkCallbackFromClient<T> = (player: Player, ...args: NetworkParamsToCli
 type NetworkCallbackFromServer<T> = (...args: NetworkParamsToServer<T>) => void;
 
 type NetworkFunctionReturn<RX> = RX extends [infer A] ? A : RX;
-type NetworkFunctionCallbackFromServer<TX, RX> = (player: Player, ...args: NetworkParamsToServer<TX>) => NetworkFunctionReturn<RX>;
+type NetworkFunctionCallbackFromServer<TX, RX> = (
+	player: Player,
+	...args: NetworkParamsToServer<TX>
+) => NetworkFunctionReturn<RX>;
 type NetworkFunctionCallbackFromClient<TX, RX> = (...args: NetworkParamsToServer<TX>) => NetworkFunctionReturn<RX>;
 
 const packageMap = new Map<number, number>();
@@ -88,7 +91,7 @@ class NetworkFunctionServer<TX extends unknown[] | unknown, RX extends unknown[]
 		const thread = coroutine.running();
 		this.yieldingThreads.set(sendId, thread);
 		NetworkAPI.fireClient(this.id, player, sendArgs, NetworkChannel.Reliable);
-		const res = coroutine.yield() as unknown as NetworkFunctionReturn<RX>;;
+		const res = coroutine.yield() as unknown as NetworkFunctionReturn<RX>;
 		return res;
 	}
 
