@@ -1332,22 +1332,6 @@ interface PhysicsConstructor {
 	// OverlapSphereNonAlloc(position: Vector3, radius: number, results: Array<Collider>, layerMask: number): number;
 	// OverlapSphereNonAlloc(position: Vector3, radius: number, results: Array<Collider>): number;
 
-	/**
-	 * @deprecated Use {@link Physics.Raycast} instead
-	 * @param start
-	 * @param dir
-	 * @param distance
-	 * @param layerMask
-	 */
-	EasyRaycast(
-		start: Vector3,
-		dir: Vector3,
-		distance: number,
-		layerMask?: number,
-	): LuaTuple<
-		| [hit: true, point: Vector3, normal: Vector3, collider: Collider]
-		| [hit: false, point: undefined, normal: undefined, collider: undefined]
-	>;
 	Raycast(
 		origin: Vector3,
 		direction: Vector3,
