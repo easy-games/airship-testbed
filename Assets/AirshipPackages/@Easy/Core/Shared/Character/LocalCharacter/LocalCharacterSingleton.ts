@@ -22,6 +22,7 @@ export class LocalCharacterSingleton {
 	private sprintOverlayEmission?: EmissionModule;
 
 	private moveDirWorldSpace = false;
+	private movementEnabled = true;
 
 	/**
 	 * This can be used to change input before it's processed by the entity system.
@@ -213,6 +214,14 @@ export class LocalCharacterSingleton {
 	 */
 	public SetMoveDirWorldSpace(worldSpace: boolean): void {
 		this.moveDirWorldSpace = worldSpace;
+	}
+
+	public SetDefaultMovementEnabled(enabled: boolean) {
+		this.movementEnabled = enabled;
+	}
+
+	public IsDefaultMovementEnabled() {
+		return this.movementEnabled;
 	}
 
 	public IsMoveDirWorldSpace(): boolean {
