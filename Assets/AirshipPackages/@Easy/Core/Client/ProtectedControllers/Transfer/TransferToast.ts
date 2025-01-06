@@ -21,8 +21,8 @@ export default class TransferToast extends AirshipBehaviour {
 			this.cancelButton.onClick.Connect(() => {
 				task.spawn(async () => {
 					await RetryHttp429(
-						() => InternalHttpManager.PostAsync(AirshipUrl.GameCoordinator + "/transfers/transfer/self/cancel"),
-						{ retryKey: "post/game-coordinator/transfers/transfer/self/cancel" }
+						() => InternalHttpManager.PostAsync(AirshipUrl.GameCoordinator + "/transfers/transfer/cancel"),
+						{ retryKey: "post/game-coordinator/transfers/transfer/cancel" }
 					);
 					if (this.gameObject.activeInHierarchy) {
 						Object.Destroy(this.gameObject);
