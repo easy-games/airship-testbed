@@ -20,7 +20,12 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 		"Must include a Character component. Make sure this prefab is also assigned in the Resources/NetworkPrefabCollection.asset",
 	)
 	public customCharacterPrefab?: GameObject;
+	@Spacing(5)
+	public useDefaultMovement = true;
+
+	@Spacing(5)
 	public movementSpace = Space.Self;
+
 	public enableJumping = true;
 	public enableSprinting = true;
 	public enableCrouching = true;
@@ -78,6 +83,7 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 			//Movement
 			//Control how client inputs are recieved by the movement system
 			Airship.Characters.localCharacterManager.SetMoveDirWorldSpace(this.movementSpace === Space.World);
+			Airship.Characters.localCharacterManager.SetDefaultMovementEnabled(this.useDefaultMovement);
 
 			//Camera
 			//Toggle the core camera system

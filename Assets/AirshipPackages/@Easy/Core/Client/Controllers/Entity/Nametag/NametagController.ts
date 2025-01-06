@@ -17,6 +17,7 @@ export class NametagController {
 	private nametagsEnabled = true;
 	// Clean to destroy nametag & related connections
 	private nametagBins = new Map<Character, Bin>();
+	private allNametags: NametagComponent[] = [];
 
 	protected OnStart(): void {
 		Airship.Characters.onCharacterSpawned.ConnectWithPriority(SignalPriority.HIGH, (character) => {
@@ -42,45 +43,58 @@ export class NametagController {
 		const nameTag = this.UpdateNametag(character);
 		if (!nameTag) return;
 
-		const SetNametagAlpha = (character: Character, alpha: number) => {
-			nameTag.SetAlpha(alpha);
-		};
-		bin.Add(
-			character.onStateChanged.Connect((newState, oldState) => {
-				if (newState === CharacterState.Crouching) {
-					SetNametagAlpha(character, 0.1);
-				} else if (oldState === CharacterState.Crouching) {
-					SetNametagAlpha(character, 1);
-				}
-			}),
-		);
+		if (character.player) {
+			bin.Add(
+				character.player.onChangeTeam.Connect(() => {
+					this.UpdateNametag(character);
+				}),
+			);
+		}
+
+		// const SetNametagAlpha = (character: Character, alpha: number) => {
+		// 	nameTag.SetAlpha(alpha);
+		// };
+		// bin.Add(
+		// 	character.onStateChanged.Connect((newState, oldState) => {
+		// 		if (newState === CharacterState.Crouching) {
+		// 			SetNametagAlpha(character, 0.1);
+		// 		} else if (oldState === CharacterState.Crouching) {
+		// 			SetNametagAlpha(character, 1);
+		// 		}
+		// 	}),
+		// );
 		bin.Add(() => {
-			this.DestroyNametag(character);
+			this.FindAndDestroyNametag(character.model.gameObject);
 		});
 		this.nametagBins.set(character, bin);
 		return bin;
 	}
 
-	private CreateNametag(character: Character): NametagComponent {
+	public CreateNametag(parent: Transform): NametagComponent {
+		if(parent === undefined){
+			error("Must pass in a valid transform to CreateNametag");
+		}
 		const nametagPrefab = Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/Nametag.prefab");
-		const nametagGo = Object.Instantiate(nametagPrefab, character.rig?.head);
+		const nametagGo = Object.Instantiate(nametagPrefab, parent);
 		nametagGo.name = this.nameTagId;
 
-		const nameTag = nametagGo.GetAirshipComponent<NametagComponent>();
-		assert(nameTag, "Missing NametagComponent");
+		const nametag = nametagGo.GetAirshipComponent<NametagComponent>();
+		assert(nametag, "Missing NametagComponent");
 
-		return nameTag;
+		this.allNametags.push(nametag);
+
+		return nametag;
 	}
 
 	public UpdateNametag(character: Character): NametagComponent | undefined {
 		if (character.IsLocalCharacter() && !this.showSelfNametag) return;
 
 		const team: Team | undefined = character.player?.team;
-		const localTeam = Game.localPlayer.team;
+		const localPlayerTeam = Game.localPlayer.team;
 
 		let nameTag = character.gameObject.GetAirshipComponentInChildren<NametagComponent>();
 		if (nameTag === undefined) {
-			nameTag = this.CreateNametag(character);
+			nameTag = this.CreateNametag(character.rig?.head);
 		}
 
 		// Username text
@@ -89,8 +103,8 @@ export class NametagController {
 
 		// Username color
 		let color: Color | undefined;
-		if (localTeam) {
-			if (character.player && localTeam.GetPlayers().has(character.player)) {
+		if (localPlayerTeam && team) {
+			if (character.player && localPlayerTeam.GetPlayers().has(character.player)) {
 				color = Theme.green;
 			} else {
 				color = Theme.red;
@@ -106,11 +120,20 @@ export class NametagController {
 		return nameTag;
 	}
 
-	public DestroyNametag(character: Character) {
-		const nametag = character.model.gameObject.GetAirshipComponentInChildren<NametagComponent>();
+	public DestroyNametag(nametag?: NametagComponent) {
 		if (nametag) {
+			for(let i=0; i<this.allNametags.size();i++){
+				if(nametag === this.allNametags[i]){
+					this.allNametags.remove(i);
+					break;
+				}
+			}
 			Object.Destroy(nametag.gameObject);
 		}
+	}
+
+	public FindAndDestroyNametag(root: GameObject){
+		this.DestroyNametag(root.GetAirshipComponentInChildren<NametagComponent>());
 	}
 
 	public SetNametagsEnabled(enabled: boolean) {
@@ -118,7 +141,7 @@ export class NametagController {
 
 		this.nametagsEnabled = enabled;
 
-		// Destroy all existing nametags
+		// Toggle all existing character nametags
 		for (const character of Airship.Characters.GetCharacters()) {
 			if (enabled) {
 				this.HookCharacterNametag(character);

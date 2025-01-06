@@ -189,6 +189,16 @@ export default class SettingsKeybind extends AirshipBehaviour {
 				this.SetListening(false);
 			}
 
+			if (Mouse.isBackDown) {
+				this.UpdateBinding(Binding.MouseButton(MouseButton.BackButton));
+				this.SetListening(false);
+			}
+
+			if (Mouse.isForwardDown) {
+				this.UpdateBinding(Binding.MouseButton(MouseButton.ForwardButton));
+				this.SetListening(false);
+			}
+
 			for (let key of ObjectUtils.keys(InputUtils.keyCodeMap) as Key[]) {
 				if (key === Key.None) continue;
 				if (Keyboard.IsKeyDown(key) && this.isListening) {

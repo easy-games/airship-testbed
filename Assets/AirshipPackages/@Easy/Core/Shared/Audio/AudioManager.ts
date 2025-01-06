@@ -234,7 +234,7 @@ export class AudioManager {
 			);
 			return audioSource;
 		}
-		if (!this.audioSourceTemplate || this.audioSourceTemplate.IsDestroyed()) {
+		if (!this.audioSourceTemplate) {
 			this.CacheAudioSources();
 		}
 		const go = PoolManager.SpawnObject(this.audioSourceTemplate!, position, Quaternion.identity);

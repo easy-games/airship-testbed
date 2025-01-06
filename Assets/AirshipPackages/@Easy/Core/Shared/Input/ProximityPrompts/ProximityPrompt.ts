@@ -20,6 +20,12 @@ export default class ProximityPrompt extends AirshipBehaviour {
 	@Tooltip("Makes the prompt clickable with mouse.")
 	@SerializeField()
 	public mouseRaycastTarget = false;
+	@Tooltip(
+		"If true the prompt will only ever render where it was spawned (you are unable to move it). This is slightly faster in bulk.",
+	)
+	public static = false;
+	@Tooltip("If true this prompt can be activated at any time by having the activation key in the down state.")
+	public activateWhenDown = false;
 
 	@Header("References")
 	public canvas!: Canvas;
@@ -56,8 +62,12 @@ export default class ProximityPrompt extends AirshipBehaviour {
 	private shownBin = new Bin();
 	private bin = new Bin();
 	private shown = false;
+	/** Position on enable */
+	private initialPosition: Vector3;
 
 	override OnEnable(): void {
+		this.initialPosition = this.transform.position;
+
 		this.SetObjectText(this.objectText);
 		this.SetActionText(this.actionText);
 		if (Game.IsClient()) {
@@ -138,6 +148,7 @@ export default class ProximityPrompt extends AirshipBehaviour {
 	}
 
 	protected Hide(instant?: boolean): void {
+		if (this.gameObject.IsDestroyed()) return;
 		if (!this.shown) return;
 		this.shown = false;
 
@@ -180,15 +191,25 @@ export default class ProximityPrompt extends AirshipBehaviour {
 				if (event.uiProcessed) return;
 
 				this.KeyUp();
-				this.Activate();
+				if (!this.activateWhenDown) {
+					this.Activate();
+				}
 			}),
 		);
 		this.shownBin.Add(
 			Airship.Input.OnDown(this.actionName).Connect((event) => {
 				this.KeyDown();
+				if (this.activateWhenDown) {
+					this.Activate();
+				}
 			}),
 		);
+
 		this.onShown.Fire();
+
+		if (this.activateWhenDown && Airship.Input.IsDown(this.actionName)) {
+			this.Activate();
+		}
 
 		task.spawn(() => {
 			if (Game.IsMobile()) {
@@ -205,6 +226,11 @@ export default class ProximityPrompt extends AirshipBehaviour {
 				}
 			}
 		});
+	}
+
+	public GetPosition() {
+		if (this.static) return this.initialPosition;
+		return this.transform.position;
 	}
 
 	public IsShown(): boolean {

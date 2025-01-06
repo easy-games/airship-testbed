@@ -97,6 +97,8 @@ export class CharacterInput {
 		const localCharacterSingleton = Dependency<LocalCharacterSingleton>();
 		this.bin.Add(
 			OnUpdate.Connect((dt) => {
+				if (!localCharacterSingleton.IsDefaultMovementEnabled()) return;
+
 				let sprinting = this.IsSprinting();
 
 				const moveSignal = new LocalCharacterInputSignal(

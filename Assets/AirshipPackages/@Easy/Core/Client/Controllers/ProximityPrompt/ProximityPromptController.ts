@@ -3,6 +3,7 @@ import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
 import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import ProximityPrompt from "@Easy/Core/Shared/Input/ProximityPrompts/ProximityPrompt";
+import { MapUtil } from "@Easy/Core/Shared/Util/MapUtil";
 
 /** Prompt poll rate, how frequently we update `activatableProximityPrompts`. */
 const PROMPT_POLL_RATE = 0.1;
@@ -41,23 +42,6 @@ export class ProximityPromptController {
 		this.allPrompts = this.allPrompts.filter((p) => p !== prompt);
 	}
 
-	/** Returns distance between local player and a proximity prompt. */
-	private GetDistanceToPrompt(prompt: ProximityPrompt): number {
-		/* If local character does _not_ have a position, fallback to `math.huge`. */
-		const localCharacterPosition = Game.localPlayer.character?.gameObject.transform.position;
-		if (!localCharacterPosition) return math.huge;
-
-		const mainCamera = CameraReferences.mainCamera;
-		if (mainCamera) {
-			if (!(prompt.canvas.transform as RectTransform).IsVisibleFrom(mainCamera)) {
-				return math.huge;
-			}
-		}
-
-		/* Otherwise, return distance. */
-		return localCharacterPosition.sub(prompt.transform.position).magnitude;
-	}
-
 	/** Displays and hides prompts based on `activationRange`. */
 	private StartPromptTicker(): void {
 		task.spawn(() => {
@@ -65,59 +49,69 @@ export class ProximityPromptController {
 			let distanceMap = new Map<ProximityPrompt, number>();
 
 			while (task.unscaledWait(PROMPT_POLL_RATE)) {
+				/* If local character does _not_ have a position, fallback to `math.huge`. */
+				const localCharacterPosition = Game.localPlayer.character?.gameObject.transform.position;
+				if (!localCharacterPosition) continue;
+
+				const mainCamera = CameraReferences.mainCamera;
+
+				let possiblePrompts = new Map<string, ProximityPrompt[]>();
 				for (let prompt of this.allPrompts) {
 					if (promptActionMap.has(prompt.actionName)) {
 						promptActionMap.get(prompt.actionName)!.push(prompt);
 					} else {
 						promptActionMap.set(prompt.actionName, [prompt]);
 					}
-				}
-				for (let prompt of this.allPrompts) {
-					const distToPrompt = this.GetDistanceToPrompt(prompt);
+
+					const distToPrompt = localCharacterPosition.sub(prompt.GetPosition()).magnitude;
+					if (distToPrompt > prompt.maxRange) continue;
+
+					const actionPrompts = MapUtil.GetOrCreate(possiblePrompts, prompt.actionName, []);
+					actionPrompts.push(prompt);
 					distanceMap.set(prompt, distToPrompt);
 					if (this.promptDistanceLogging) {
 						print("[Proximity Prompt]: " + prompt.gameObject.name + " distance: " + distToPrompt);
 					}
 				}
-
-				this.allPrompts.forEach((prompt) => {
-					const distToPrompt = distanceMap.get(prompt)!;
-					if (distToPrompt <= prompt.maxRange) {
-						// check if closest
-						let closest = true;
-						let promptsOfSameAction = promptActionMap.get(prompt.actionName)!;
-						if (promptsOfSameAction.size() > 1) {
-							for (let other of promptsOfSameAction) {
-								if (other === prompt) continue;
-								const otherDistance = distanceMap.get(other)!;
-								if (otherDistance < distToPrompt) {
-									closest = false;
-									break;
-								}
+				
+				const newlyVisiblePrompts = new Set<ProximityPrompt>();
+				for (const [actionName, promptList] of possiblePrompts) {
+					const sortedPrompts = promptList.sort((a, b) => distanceMap.get(a)! < distanceMap.get(b)!);
+					let toDisplayPrompt = sortedPrompts[0];
+					// If main camera exists filter out prompts that aren't visible
+					if (mainCamera) {
+						let foundVisiblePrompt = false;
+						for (const prompt of sortedPrompts) {
+							if (!(prompt.canvas.transform as RectTransform).IsVisibleFrom(mainCamera)) {
+								continue;
 							}
+							foundVisiblePrompt = true;
+							toDisplayPrompt = prompt;
+							break
 						}
 
-						if (closest) {
-							this.shownPrompts.add(prompt);
-							(
-								prompt as unknown as {
-									Show(): void;
-								}
-							).Show();
-							// prompt.Show();
-							return;
-						}
+						if (!foundVisiblePrompt) continue; // No prompts visible with this action
 					}
 
-					// fallback to hide
-					this.shownPrompts.delete(prompt);
+					newlyVisiblePrompts.add(toDisplayPrompt);
+					this.shownPrompts.add(toDisplayPrompt);
+					(
+						toDisplayPrompt as unknown as {
+							Show(): void;
+						}
+					).Show();
+				}
+
+				// Hide all non-shown prompts
+				for (const prompt of this.shownPrompts) {
+					if (newlyVisiblePrompts.has(prompt)) continue;
+
 					(
 						prompt as unknown as {
 							Hide(): void;
 						}
 					).Hide();
-					// prompt.Hide();
-				});
+				}
 
 				distanceMap.clear();
 				promptActionMap.clear();

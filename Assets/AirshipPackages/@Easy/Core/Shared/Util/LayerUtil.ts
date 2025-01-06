@@ -1,6 +1,6 @@
 export class LayerUtil {
 	public static GetLayerMask(layers: number[]): number {
-		let mask = 1;
+		let mask = 0;
 
 		layers.forEach((layerValue) => (mask |= 1 << layerValue));
 
