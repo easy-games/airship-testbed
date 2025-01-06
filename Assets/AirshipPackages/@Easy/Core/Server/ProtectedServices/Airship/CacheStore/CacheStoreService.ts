@@ -1,5 +1,6 @@
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import { RetryHttp429 } from "@Easy/Core/Shared/Http/HttpRetry";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 
 export const enum CacheStoreServiceBridgeTopics {
@@ -54,7 +55,10 @@ export class ProtectedCacheStoreService {
 	public async GetKey<T>(key: string, expireTimeSec?: number): Promise<ReturnType<ServerBridgeApiCacheGetKey<T>>> {
 		const expireTime = expireTimeSec !== undefined ? math.clamp(expireTimeSec, 0, this.maxExpireSec) : undefined;
 		const query = expireTime !== undefined ? `?expiry=${expireTime}` : "";
-		const result = InternalHttpManager.GetAsync(`${AirshipUrl.DataStoreService}/cache/key/${key}${query}`);
+		const result = await RetryHttp429(
+			() => InternalHttpManager.GetAsync(`${AirshipUrl.DataStoreService}/cache/key/${key}${query}`),
+			{ retryKey: "get/data-store-service/cache/key/:key" },
+		);
 		if (!result.success) {
 			warn(`Unable to get cache key. Status Code: ${result.statusCode}.\n`, result.error);
 			throw result.error;
@@ -69,9 +73,12 @@ export class ProtectedCacheStoreService {
 		expireTimeSec: number,
 	): Promise<ReturnType<ServerBridgeApiCacheSetKey<T>>> {
 		const expireTime = math.clamp(expireTimeSec, 0, this.maxExpireSec);
-		const result = InternalHttpManager.PostAsync(
-			`${AirshipUrl.DataStoreService}/cache/key/${key}?expiry=${expireTime}`,
-			json.encode(data),
+		const result = await RetryHttp429(
+			() => InternalHttpManager.PostAsync(
+				`${AirshipUrl.DataStoreService}/cache/key/${key}?expiry=${expireTime}`,
+				json.encode(data),
+			),
+			{ retryKey: "post/data-store-service/cache/key/:key" },
 		);
 		if (!result.success || result.statusCode > 299) {
 			warn(`Unable to set cache key. Status Code: ${result.statusCode}.\n`, result.error);
@@ -82,12 +89,15 @@ export class ProtectedCacheStoreService {
 	}
 
 	public async SetKeyTTL(key: string, expireTimeSec: number): Promise<ReturnType<ServerBridgeApiCacheSetKeyTTL>> {
-		const result = InternalHttpManager.GetAsync(
-			`${AirshipUrl.DataStoreService}/cache/key/${key}/ttl?expiry=${math.clamp(
-				expireTimeSec,
-				0,
-				this.maxExpireSec,
-			)}`,
+		const result = await RetryHttp429(
+			() => InternalHttpManager.GetAsync(
+				`${AirshipUrl.DataStoreService}/cache/key/${key}/ttl?expiry=${math.clamp(
+					expireTimeSec,
+					0,
+					this.maxExpireSec,
+				)}`,
+			),
+			{ retryKey: "get/data-store-service/cache/key/:key/ttl" },
 		);
 		if (!result.success || result.statusCode > 299) {
 			warn(`Unable to set cache key ttl. Status Code: ${result.statusCode}.\n`, result.error);

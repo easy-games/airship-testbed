@@ -1,6 +1,7 @@
 import { AirshipPurchaseReceipt } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipPurchase";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import { RetryHttp429 } from "@Easy/Core/Shared/Http/HttpRetry";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 
 @Service({})
@@ -15,10 +16,13 @@ export class ProtectedPurchaseService {
 	 * Processes a receipt recieved from a client. This involves making the claim on the receipt,
 	 */
 	public ProcessReceipt(receiptId: string) {
-		const res = InternalHttpManager.PostAsync(
-			`${AirshipUrl.ContentService}/shop/purchase/receipt/claim`,
-			json.encode({ receiptId }),
-		);
+		const res = RetryHttp429(
+			() => InternalHttpManager.PostAsync(
+				`${AirshipUrl.ContentService}/shop/purchase/receipt/claim`,
+				json.encode({ receiptId }),
+			),
+			{ retryKey: "post/content-service/shop/purchase/receipt/claim" },
+		).expect();
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to claim receipt. Status Code: ${res.statusCode}.\n`, res.error);
@@ -34,23 +38,29 @@ export class ProtectedPurchaseService {
 			// Process receipt by calling game callback
 			const result = false || true;
 			if (result) {
-				InternalHttpManager.PostAsync(
-					`${AirshipUrl.ContentService}/shop/purchase/receipt/complete`,
-					json.encode({
-						receiptId,
-						result: "COMPLETED",
-					}),
-				);
+				RetryHttp429(
+					() => InternalHttpManager.PostAsync(
+						`${AirshipUrl.ContentService}/shop/purchase/receipt/complete`,
+						json.encode({
+							receiptId,
+							result: "COMPLETED",
+						}),
+					),
+					{ retryKey: "post/content-service/shop/purchase/receipt/complete" },
+				).expect();
 				return;
 			}
 		} catch (err) {}
 
-		InternalHttpManager.PostAsync(
-			`${AirshipUrl.ContentService}/shop/purchase/receipt/complete`,
-			json.encode({
-				receiptId,
-				result: "FAILED",
-			}),
-		);
+		RetryHttp429(
+			() => InternalHttpManager.PostAsync(
+				`${AirshipUrl.ContentService}/shop/purchase/receipt/complete`,
+				json.encode({
+					receiptId,
+					result: "FAILED",
+				}),
+			),
+			{ retryKey: "post/content-service/shop/purchase/receipt/complete" },
+		).expect();
 	}
 }

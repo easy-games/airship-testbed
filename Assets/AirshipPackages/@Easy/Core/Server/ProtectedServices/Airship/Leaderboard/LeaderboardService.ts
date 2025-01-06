@@ -2,6 +2,7 @@ import { LeaderboardUpdate } from "@Easy/Core/Server/Services/Airship/Leaderboar
 import { RankData } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipLeaderboard";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import { RetryHttp429 } from "@Easy/Core/Shared/Http/HttpRetry";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 
 export const enum LeaderboardServiceBridgeTopics {
@@ -76,11 +77,14 @@ export class ProtectedLeaderboardService {
 		name: string,
 		update: LeaderboardUpdate,
 	): Promise<ReturnType<ServerBridgeApiLeaderboardUpdate>> {
-		const result = InternalHttpManager.PostAsync(
-			`${AirshipUrl.DataStoreService}/leaderboards/leaderboard-id/${name}/stats`,
-			json.encode({
-				stats: update,
-			}),
+		const result = await RetryHttp429(
+			() => InternalHttpManager.PostAsync(
+				`${AirshipUrl.DataStoreService}/leaderboards/leaderboard-id/${name}/stats`,
+				json.encode({
+					stats: update,
+				}),
+			),
+			{ retryKey: "post/data-store-service/leaderboards/leaderboard-id/:leaderboardName/stats" },
 		);
 
 		if (!result.success || result.statusCode > 299) {
@@ -90,8 +94,11 @@ export class ProtectedLeaderboardService {
 	}
 
 	public async GetRank(name: string, id: string): Promise<ReturnType<ServerBridgeApiLeaderboardGetRank>> {
-		const result = InternalHttpManager.GetAsync(
-			`${AirshipUrl.DataStoreService}/leaderboards/leaderboard-id/${name}/id/${id}/ranking`,
+		const result = await RetryHttp429(
+			() => InternalHttpManager.GetAsync(
+				`${AirshipUrl.DataStoreService}/leaderboards/leaderboard-id/${name}/id/${id}/ranking`,
+			),
+			{ retryKey: "get/data-store-service/leaderboards/leaderboard-id/:leaderboardName/id/:id/ranking" },
 		);
 		if (!result.success || result.statusCode > 299) {
 			warn(`Unable to get leaderboard rank. Status Code: ${result.statusCode}.\n`, result.error);
@@ -102,8 +109,11 @@ export class ProtectedLeaderboardService {
 	}
 
 	public async DeleteEntry(name: string, id: string): Promise<ReturnType<ServerBridgeApiLeaderboardDeleteEntry>> {
-		const result = InternalHttpManager.DeleteAsync(
-			`${AirshipUrl.DataStoreService}/leaderboards/leaderboard-id/${name}/id/${id}/stats`,
+		const result = await RetryHttp429(
+			() => InternalHttpManager.DeleteAsync(
+				`${AirshipUrl.DataStoreService}/leaderboards/leaderboard-id/${name}/id/${id}/stats`,
+			),
+			{ retryKey: "delete/data-store-service/leaderboards/leaderboard-id/:leaderboardName/id/:id/stats" },
 		);
 
 		if (!result.success || result.statusCode > 299) {
@@ -116,11 +126,14 @@ export class ProtectedLeaderboardService {
 		name: string,
 		ids: string[],
 	): Promise<ReturnType<ServerBridgeApiLeaderboardDeleteEntries>> {
-		const result = InternalHttpManager.PostAsync(
-			`${AirshipUrl.DataStoreService}/leaderboards/leaderboard-id/${name}/stats/batch-delete`,
-			json.encode({
-				ids,
-			}),
+		const result = await RetryHttp429(
+			() => InternalHttpManager.PostAsync(
+				`${AirshipUrl.DataStoreService}/leaderboards/leaderboard-id/${name}/stats/batch-delete`,
+				json.encode({
+					ids,
+				}),
+			),
+			{ retryKey: "post/data-store-service/leaderboards/leaderboard-id/:leaderboardName/stats/batch-delete" },
 		);
 
 		if (!result.success || result.statusCode > 299) {
@@ -130,8 +143,11 @@ export class ProtectedLeaderboardService {
 	}
 
 	public async ResetLeaderboard(name: string): Promise<ReturnType<ServerBridgeApiLeaderboardResetLeaderboard>> {
-		const result = InternalHttpManager.PostAsync(
-			`${AirshipUrl.DataStoreService}/leaderboards/game-id/${Game.gameId}/leaderboard-id/${name}/reset`,
+		const result = await RetryHttp429(
+			() => InternalHttpManager.PostAsync(
+				`${AirshipUrl.DataStoreService}/leaderboards/game-id/${Game.gameId}/leaderboard-id/${name}/reset`,
+			),
+			{ retryKey: "post/data-store-service/leaderboards/game-id/:gameId/leaderboard-id/:leaderboardName/reset" },
 		);
 
 		if (!result.success || result.statusCode > 299) {
@@ -147,8 +163,11 @@ export class ProtectedLeaderboardService {
 	): Promise<ReturnType<ServerBridgeApiLeaderboardGetRankRange>> {
 		count = math.clamp(count, 1, 1000 - startIndex); // ensure they don't reach past 1000;
 
-		const result = InternalHttpManager.GetAsync(
-			`${AirshipUrl.DataStoreService}/leaderboards/leaderboard-id/${name}/rankings?skip=${startIndex}&limit=${count}`,
+		const result = await RetryHttp429(
+			() => InternalHttpManager.GetAsync(
+				`${AirshipUrl.DataStoreService}/leaderboards/leaderboard-id/${name}/rankings?skip=${startIndex}&limit=${count}`,
+			),
+			{ retryKey: "get/data-store-service/leaderboards/leaderboard-id/:leaderboardName/rankings" },
 		);
 		if (!result.success || result.statusCode > 299) {
 			warn(`Unable to get leaderboard rankings. Status Code: ${result.statusCode}.\n`, result.error);

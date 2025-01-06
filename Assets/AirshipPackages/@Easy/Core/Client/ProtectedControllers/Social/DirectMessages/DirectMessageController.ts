@@ -22,6 +22,7 @@ import { MainMenuController } from "../../MainMenuController";
 import { ProtectedFriendsController } from "../FriendsController";
 import { MainMenuPartyController } from "../MainMenuPartyController";
 import { DirectMessage } from "./DirectMessage";
+import { RetryHttp429 } from "@Easy/Core/Shared/Http/HttpRetry";
 
 @Controller({})
 export class DirectMessageController {
@@ -256,13 +257,13 @@ export class DirectMessageController {
 		}
 
 		if (message === "") return;
-		InternalHttpManager.PostAsync(
+		RetryHttp429(() => InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/chat/message/direct",
 			json.encode({
 				target: uid,
 				text: message,
 			}),
-		);
+		), { retryKey: "post/game-coordinator/chat/message/direct" }).expect();
 		this.inputField!.text = "";
 		const sentMessage: DirectMessage = {
 			sender: Game.localPlayer.userId,
@@ -287,12 +288,12 @@ export class DirectMessageController {
 
 	public SendPartyMessage(message: string): void {
 		if (message === "") return;
-		InternalHttpManager.PostAsync(
+		RetryHttp429(() => InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/chat/message/party",
 			json.encode({
 				text: message,
 			}),
-		);
+		), { retryKey: "post/game-coordinator/chat/message/party" }).expect();
 		this.inputField!.text = "";
 		const sentMessage: DirectMessage = {
 			sender: Game.localPlayer.userId,

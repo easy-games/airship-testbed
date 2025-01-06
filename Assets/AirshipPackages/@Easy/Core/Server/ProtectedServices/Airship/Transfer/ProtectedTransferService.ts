@@ -6,6 +6,7 @@ import {
 } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipTransfers";
 import { TransferResult } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipTransfers";
 import { Service } from "@Easy/Core/Shared/Flamework";
+import { RetryHttp429 } from "@Easy/Core/Shared/Http/HttpRetry";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 
@@ -73,15 +74,18 @@ export class ProtectedTransferService {
 		gameId: string,
 		config?: AirshipGameTransferConfig,
 	): Promise<ReturnType<ServerBridgeApiTransferGroupToGame>> {
-		const res = InternalHttpManager.PostAsync(
-			`${AirshipUrl.GameCoordinator}/transfers/transfer/target/game`,
-			json.encode({
-				uids: players.map((p) => (typeIs(p, "string") ? p : p.userId)),
-				gameId,
-				preferredServerId: config?.preferredServerId,
-				serverTransferData: config?.serverTransferData,
-				clientTransferData: config?.clientTransferData,
-			}),
+		const res = await RetryHttp429(
+			() => InternalHttpManager.PostAsync(
+				`${AirshipUrl.GameCoordinator}/transfers/transfer/target/game`,
+				json.encode({
+					uids: players.map((p) => (typeIs(p, "string") ? p : p.userId)),
+					gameId,
+					preferredServerId: config?.preferredServerId,
+					serverTransferData: config?.serverTransferData,
+					clientTransferData: config?.clientTransferData,
+				}),
+			),
+			{ retryKey: "post/game-coordinator/transfers/transfer/target/game" },
 		);
 
 		if (!res.success || res.statusCode > 299) {
@@ -97,14 +101,17 @@ export class ProtectedTransferService {
 		serverId: string,
 		config?: AirshipServerTransferConfig,
 	): Promise<ReturnType<ServerBridgeApiTransferGroupToServer>> {
-		const res = InternalHttpManager.PostAsync(
-			`${AirshipUrl.GameCoordinator}/transfers/transfer/target/server`,
-			json.encode({
-				uids: players.map((p) => (typeIs(p, "string") ? p : p.userId)),
-				serverId,
-				serverTransferData: config?.serverTransferData,
-				clientTransferData: config?.clientTransferData,
-			}),
+		const res = await RetryHttp429(
+			() => InternalHttpManager.PostAsync(
+				`${AirshipUrl.GameCoordinator}/transfers/transfer/target/server`,
+				json.encode({
+					uids: players.map((p) => (typeIs(p, "string") ? p : p.userId)),
+					serverId,
+					serverTransferData: config?.serverTransferData,
+					clientTransferData: config?.clientTransferData,
+				}),
+			),
+			{ retryKey: "post/game-coordinator/transfers/transfer/target/server" },
 		);
 
 		if (!res.success || res.statusCode > 299) {
@@ -119,18 +126,21 @@ export class ProtectedTransferService {
 		players: readonly (string | Player)[],
 		config: AirshipMatchingServerTransferConfig,
 	): Promise<ReturnType<ServerBridgeApiTransferGroupToMatchingServer>> {
-		const res = InternalHttpManager.PostAsync(
-			`${AirshipUrl.GameCoordinator}/transfers/transfer/target/matching`,
-			json.encode({
-				uids: players.map((p) => (typeIs(p, "string") ? p : p.userId)),
-				sceneId: config.sceneId,
-				maxPlayers: config.maxPlayers,
-				regions: config.regions,
-				tag: config.tag,
-				accessMode: config.accessMode,
-				serverTransferData: config.serverTransferData,
-				clientTransferData: config.clientTransferData,
-			}),
+		const res = await RetryHttp429(
+			() => InternalHttpManager.PostAsync(
+				`${AirshipUrl.GameCoordinator}/transfers/transfer/target/matching`,
+				json.encode({
+					uids: players.map((p) => (typeIs(p, "string") ? p : p.userId)),
+					sceneId: config.sceneId,
+					maxPlayers: config.maxPlayers,
+					regions: config.regions,
+					tag: config.tag,
+					accessMode: config.accessMode,
+					serverTransferData: config.serverTransferData,
+					clientTransferData: config.clientTransferData,
+				}),
+			),
+			{ retryKey: "post/game-coordinator/transfers/transfer/target/matching" },
 		);
 
 		if (!res.success || res.statusCode > 299) {
@@ -146,14 +156,17 @@ export class ProtectedTransferService {
 		targetUserId: string,
 		config?: AirshipPlayerTransferConfig,
 	): Promise<ReturnType<ServerBridgeApiTransferGroupToPlayer>> {
-		const res = InternalHttpManager.PostAsync(
-			`${AirshipUrl.GameCoordinator}/transfers/transfer/target/player`,
-			json.encode({
-				uids: players.map((p) => (typeIs(p, "string") ? p : p.userId)),
-				targetUserId,
-				serverTransferData: config?.serverTransferData,
-				clientTransferData: config?.clientTransferData,
-			}),
+		const res = await RetryHttp429(
+			() => InternalHttpManager.PostAsync(
+				`${AirshipUrl.GameCoordinator}/transfers/transfer/target/player`,
+				json.encode({
+					uids: players.map((p) => (typeIs(p, "string") ? p : p.userId)),
+					targetUserId,
+					serverTransferData: config?.serverTransferData,
+					clientTransferData: config?.clientTransferData,
+				}),
+			),
+			{ retryKey: "post/game-coordinator/transfers/transfer/target/player" },
 		);
 
 		if (!res.success || res.statusCode > 299) {

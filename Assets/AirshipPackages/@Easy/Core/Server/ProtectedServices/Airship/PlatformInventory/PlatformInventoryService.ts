@@ -3,6 +3,7 @@ import { ItemInstanceDto, Transaction } from "@Easy/Core/Shared/Airship/Types/Ou
 import { PlatformInventoryUtil } from "@Easy/Core/Shared/Airship/Util/PlatformInventoryUtil";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import { RetryHttp429 } from "@Easy/Core/Shared/Http/HttpRetry";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 
 export const enum PlatformInventoryServiceBridgeTopics {
@@ -55,9 +56,12 @@ export class ProtectedPlatformInventoryService {
 	}
 
 	public async GrantItem(userId: string, classId: string): Promise<ReturnType<ServerBridgeApiGrantItem>> {
-		const res = InternalHttpManager.PostAsync(
-			`${AirshipUrl.ContentService}/items/uid/${userId}/class-id/${classId}`,
-			"",
+		const res = await RetryHttp429(
+			() => InternalHttpManager.PostAsync(
+				`${AirshipUrl.ContentService}/items/uid/${userId}/class-id/${classId}`,
+				"",
+			),
+			{ retryKey: "post/content-service/items/uid/:userId/class-id/:classId" },
 		);
 
 		if (!res.success || res.statusCode > 299) {
@@ -69,7 +73,10 @@ export class ProtectedPlatformInventoryService {
 	}
 
 	public async DeleteItem(instanceId: string): Promise<ReturnType<ServerBridgeApiDeleteItem>> {
-		const res = InternalHttpManager.DeleteAsync(`${AirshipUrl.ContentService}/items/item-id/${instanceId}`);
+		const res = await RetryHttp429(
+			() => InternalHttpManager.DeleteAsync(`${AirshipUrl.ContentService}/items/item-id/${instanceId}`),
+			{ retryKey: "delete/content-service/items/item-id/:instanceId" },
+		);
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to complete request. Status Code:  ${res.statusCode}.\n`, res.error);
@@ -80,8 +87,11 @@ export class ProtectedPlatformInventoryService {
 	}
 
 	public async GetItems(userId: string, query?: ItemQueryParameters): Promise<ReturnType<ServerBridgeApiGetItems>> {
-		const res = InternalHttpManager.GetAsync(
-			`${AirshipUrl.ContentService}/items/uid/${userId}?=${PlatformInventoryUtil.BuildItemQueryString(query)}`,
+		const res = await RetryHttp429(
+			() => InternalHttpManager.GetAsync(
+				`${AirshipUrl.ContentService}/items/uid/${userId}?=${PlatformInventoryUtil.BuildItemQueryString(query)}`,
+			),
+			{ retryKey: "get/content-service/items/uid/:userId" },
 		);
 
 		if (!res.success || res.statusCode > 299) {
@@ -100,12 +110,15 @@ export class ProtectedPlatformInventoryService {
 		user1: { uid: string; itemInstanceIds: string[] },
 		user2: { uid: string; itemInstanceIds: string[] },
 	): Promise<ReturnType<ServerBridgeApiPerformTrade>> {
-		const res = InternalHttpManager.PostAsync(
-			`${AirshipUrl.ContentService}/transactions/trade`,
-			json.encode({
-				leftTradeHalf: user1,
-				rightTradeHalf: user2,
-			}),
+		const res = await RetryHttp429(
+			() => InternalHttpManager.PostAsync(
+				`${AirshipUrl.ContentService}/transactions/trade`,
+				json.encode({
+					leftTradeHalf: user1,
+					rightTradeHalf: user2,
+				}),
+			),
+			{ retryKey: "post/content-service/transactions/trade" },
 		);
 
 		if (!res.success || res.statusCode > 299) {

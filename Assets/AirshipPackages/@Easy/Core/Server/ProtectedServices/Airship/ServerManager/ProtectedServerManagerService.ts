@@ -7,6 +7,7 @@ import { Dependency, Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { ShutdownService } from "../../Shutdown/ShutdownService";
+import { RetryHttp429 } from "@Easy/Core/Shared/Http/HttpRetry";
 
 export const enum ServerManagerServiceBridgeTopics {
 	CreateServer = "ServerManagerService:CreateServer",
@@ -143,18 +144,21 @@ export class ProtectedServerManagerService {
 	}
 
 	public async CreateServer(config?: AirshipServerConfig): Promise<ReturnType<ServerBridgeApiCreateServer>> {
-		const res = InternalHttpManager.PostAsync(
-			`${AirshipUrl.GameCoordinator}/servers/create`,
-			json.encode({
-				sceneId: config?.sceneId,
-				region: config?.region,
-				accessMode: config?.accessMode,
-				allowedUids: config?.allowedUserIds,
-				maxPlayers: config?.maxPlayers,
-				tags: config?.tags,
-				gameConfig: config?.gameConfig,
-				fleet: config?.fleet,
-			}),
+		const res = await RetryHttp429(
+			() => InternalHttpManager.PostAsync(
+				`${AirshipUrl.GameCoordinator}/servers/create`,
+				json.encode({
+					sceneId: config?.sceneId,
+					region: config?.region,
+					accessMode: config?.accessMode,
+					allowedUids: config?.allowedUserIds,
+					maxPlayers: config?.maxPlayers,
+					tags: config?.tags,
+					gameConfig: config?.gameConfig,
+					fleet: config?.fleet,
+				}),
+			),
+			{ retryKey: "post/game-coordinator/servers/create" },
 		);
 
 		if (!res.success || res.statusCode > 299) {
@@ -170,8 +174,11 @@ export class ProtectedServerManagerService {
 			return {};
 		}
 
-		const res = InternalHttpManager.GetAsync(
-			`${AirshipUrl.GameCoordinator}/servers?serverIds[]=${serverIds.join("&serverIds[]=")}`,
+		const res = await RetryHttp429(
+			() => InternalHttpManager.GetAsync(
+				`${AirshipUrl.GameCoordinator}/servers?serverIds[]=${serverIds.join("&serverIds[]=")}`,
+			),
+			{ retryKey: "get/game-coordinator/servers" },
 		);
 
 		if (!res.success || res.statusCode > 299) {
@@ -203,8 +210,11 @@ export class ProtectedServerManagerService {
 	}
 
 	public async GetServerList(page: number = 0): Promise<ReturnType<ServerBridgeApiGetServerList>> {
-		const res = InternalHttpManager.GetAsync(
-			`${AirshipUrl.GameCoordinator}/servers/game-id/${Game.gameId}/list?page=${page}`,
+		const res = await RetryHttp429(
+			() => InternalHttpManager.GetAsync(
+				`${AirshipUrl.GameCoordinator}/servers/game-id/${Game.gameId}/list?page=${page}`,
+			),
+			{ retryKey: "get/game-coordinator/servers/game-id/:gameId/list" },
 		);
 
 		if (!res.success || res.statusCode > 299) {

@@ -9,6 +9,7 @@ import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import { Theme } from "@Easy/Core/Shared/Util/Theme";
 import AirshipButton from "../AirshipButton";
+import { RetryHttp429 } from "@Easy/Core/Shared/Http/HttpRetry";
 
 export default class SendFriendRequestModal extends AirshipBehaviour {
 	public inputField!: TMP_InputField;
@@ -108,12 +109,15 @@ export default class SendFriendRequestModal extends AirshipBehaviour {
 		let username = this.inputField.text;
 		if (username === "") return;
 
-		const res = InternalHttpManager.PostAsync(
-			AirshipUrl.GameCoordinator + "/friends/requests/self",
-			json.encode({
-				username,
-			}),
-		);
+		const res = RetryHttp429(
+			() => InternalHttpManager.PostAsync(
+				AirshipUrl.GameCoordinator + "/friends/requests/self",
+				json.encode({
+					username,
+				}),
+			),
+			{ retryKey: "post/game-coordinator/friends/requests/self" },
+		).expect();
 		if (!res.success) {
 			if (res.statusCode === 422) {
 				this.responseText.text = `Player "${username}\" does not exist.`;

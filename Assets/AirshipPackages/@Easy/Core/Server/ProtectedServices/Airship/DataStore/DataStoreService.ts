@@ -1,5 +1,6 @@
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import { RetryHttp429 } from "@Easy/Core/Shared/Http/HttpRetry";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 
 export const enum DataStoreServiceBridgeTopics {
@@ -44,7 +45,10 @@ export class ProtectedDataStoreService {
 	}
 
 	public async GetKey<T>(key: string): Promise<ReturnType<ServerBridgeApiDataGetKey<T>>> {
-		const result = InternalHttpManager.GetAsync(`${AirshipUrl.DataStoreService}/data/key/${key}`);
+		const result = await RetryHttp429(
+			() => InternalHttpManager.GetAsync(`${AirshipUrl.DataStoreService}/data/key/${key}`),
+			{ retryKey: "get/data-store-service/data/key/:key" },
+		);
 		if (!result.success || result.statusCode > 299) {
 			warn(`Unable to get data key. Status Code: ${result.statusCode}.\n`, result.error);
 			throw result.error;
@@ -55,9 +59,12 @@ export class ProtectedDataStoreService {
 
 	public async SetKey<T>(key: string, data: T, etag?: string): Promise<ReturnType<ServerBridgeApiDataSetKey<T>>> {
 		const query = etag ? `?etag=${etag}` : "";
-		const result = InternalHttpManager.PostAsync(
-			`${AirshipUrl.DataStoreService}/data/key/${key}${query}`,
-			json.encode(data),
+		const result = await RetryHttp429(
+			() => InternalHttpManager.PostAsync(
+				`${AirshipUrl.DataStoreService}/data/key/${key}${query}`,
+				json.encode(data),
+			),
+			{ retryKey: "post/data-store-service/data/key/:key" },
 		);
 		if (!result.success || result.statusCode > 299) {
 			warn(`Unable to set data key. Status Code: ${result.statusCode}.\n`, result.error);
@@ -69,7 +76,10 @@ export class ProtectedDataStoreService {
 
 	public async DeleteKey<T>(key: string, etag?: string): Promise<ReturnType<ServerBridgeApiDataDeleteKey<T>>> {
 		const query = etag ? `?etag=${etag}` : "";
-		const result = InternalHttpManager.DeleteAsync(`${AirshipUrl.DataStoreService}/data/key/${key}${query}`);
+		const result = await RetryHttp429(
+			() => InternalHttpManager.DeleteAsync(`${AirshipUrl.DataStoreService}/data/key/${key}${query}`),
+			{ retryKey: "delete/data-store-service/data/key/:key" },
+		);
 		if (!result.success || result.statusCode > 299) {
 			warn(`Unable to delete data key. Status Code: ${result.statusCode}.\n`, result.error);
 			throw result.error;

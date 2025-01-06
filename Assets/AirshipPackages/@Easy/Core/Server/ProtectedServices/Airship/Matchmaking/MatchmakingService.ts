@@ -2,6 +2,7 @@ import { JoinQueueDto } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipMatc
 import { Group, MatchConfig } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipMatchmaking";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import { RetryHttp429 } from "@Easy/Core/Shared/Http/HttpRetry";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 
 export const enum MatchmakingServiceBridgeTopics {
@@ -52,12 +53,12 @@ export class ProtectedMatchmakingService {
 	}
 
 	public async CreateGroup(userIds: string[]): Promise<Group> {
-		const result = InternalHttpManager.PostAsync(
+		const result = await RetryHttp429(() => InternalHttpManager.PostAsync(
 			`${AirshipUrl.GameCoordinator}/groups`,
 			json.encode({
 				userIds,
 			}),
-		);
+		), { retryKey: "post/game-coordinator/groups" });
 
 		if (!result.success || result.statusCode > 299) {
 			warn(`Unable to create group. Status Code: ${result.statusCode}.\n`, result.error);
@@ -68,7 +69,10 @@ export class ProtectedMatchmakingService {
 	}
 
 	public async GetGroupById(groupId: string): Promise<Group | undefined> {
-		const result = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/groups/group-id/${groupId}`);
+		const result = await RetryHttp429(
+			() => InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/groups/group-id/${groupId}`),
+			{ retryKey: "get/game-coordinator/groups/group-id/:groupId" },
+		)
 
 		if (!result.success || result.statusCode > 299) {
 			warn(
@@ -82,7 +86,10 @@ export class ProtectedMatchmakingService {
 	}
 
 	public async GetGroupByUserId(uid: string): Promise<Group | undefined> {
-		const result = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/groups/uid/${uid}`);
+		const result = await RetryHttp429(
+			() => InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/groups/uid/${uid}`),
+			{ retryKey: "get/game-coordinator/groups/uid/:uid" },
+		)
 
 		if (!result.success || result.statusCode > 299) {
 			warn(
@@ -96,10 +103,10 @@ export class ProtectedMatchmakingService {
 	}
 
 	public async JoinQueue(body: JoinQueueDto): Promise<undefined> {
-		const result = InternalHttpManager.PostAsync(
+		const result = await RetryHttp429(() => InternalHttpManager.PostAsync(
 			`${AirshipUrl.GameCoordinator}/matchmaking/queue/join`,
 			json.encode(body),
-		);
+		), { retryKey: "post/game-coordinator/matchmaking/queue/join" });
 
 		if (!result.success || result.statusCode > 299) {
 			warn(
@@ -113,10 +120,10 @@ export class ProtectedMatchmakingService {
 	}
 
 	public async LeaveQueue(groupId: string): Promise<undefined> {
-		const result = InternalHttpManager.PostAsync(
+		const result = await RetryHttp429(() => InternalHttpManager.PostAsync(
 			`${AirshipUrl.GameCoordinator}/matchmaking/queue/leave`,
 			json.encode({ groupId }),
-		);
+		), { retryKey: "post/game-coordinator/matchmaking/queue/leave" });
 
 		if (!result.success || result.statusCode > 299) {
 			warn(

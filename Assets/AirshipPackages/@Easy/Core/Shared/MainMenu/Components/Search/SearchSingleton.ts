@@ -1,6 +1,7 @@
 import { GameDto, GamesDto, MyGamesDto } from "@Easy/Core/Client/Components/HomePage/API/GamesAPI";
 import { Controller, Service } from "@Easy/Core/Shared/Flamework/flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import { RetryHttp429 } from "@Easy/Core/Shared/Http/HttpRetry";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 
@@ -38,7 +39,10 @@ export default class SearchSingleton {
 	}
 
 	public FetchMyGames(retryDelay = 1): void {
-		const res = InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/memberships/games/self?liveStats=true");
+		const res = RetryHttp429(
+			() => InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/memberships/games/self?liveStats=true"),
+			{ retryKey: "get/content-service/memberships/games/self" },
+		).expect();
 		if (!res.success) {
 			if (400 <= res.statusCode && res.statusCode < 500) {
 				warn("Failed to fetch my games: " + res.error);
@@ -70,7 +74,10 @@ export default class SearchSingleton {
 	}
 
 	public FetchPopularGames(): void {
-		const res = InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/games");
+		const res = RetryHttp429(
+			() => InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/games"),
+			{ retryKey: "get/content-service/games" },
+		).expect();
 		if (!res.success) {
 			// warn("Failed to fetch games. Retrying in 1s..");
 			task.delay(1, () => {

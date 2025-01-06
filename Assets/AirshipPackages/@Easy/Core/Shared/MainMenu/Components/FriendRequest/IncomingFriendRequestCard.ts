@@ -30,7 +30,7 @@ export default class IncomingFriendRequestCard extends AirshipBehaviour {
 		// Accept
 		{
 			const conn = CanvasAPI.OnClickEvent(this.acceptButton.gameObject, () => {
-				task.spawn(() => this.HandleResult(true));
+				task.spawn(async () => { await this.HandleResult(true) });
 			});
 			this.bin.Add(() => Bridge.DisconnectEvent(conn));
 		}
@@ -38,18 +38,18 @@ export default class IncomingFriendRequestCard extends AirshipBehaviour {
 		// Decline
 		{
 			const conn = CanvasAPI.OnClickEvent(this.declineButton.gameObject, () => {
-				task.spawn(() => this.HandleResult(false));
+				task.spawn(async () => { await this.HandleResult(false) });
 			});
 			this.bin.Add(() => Bridge.DisconnectEvent(conn));
 		}
 	}
 
-	private HandleResult(result: boolean) {
+	private async HandleResult(result: boolean): Promise<void> {
 		const friendsController = Dependency<ProtectedFriendsController>();
 		if (result) {
-			friendsController.AcceptFriendRequestAsync(this.user.username, this.user.uid);
+			await friendsController.AcceptFriendRequestAsync(this.user.username, this.user.uid);
 		} else {
-			friendsController.RejectFriendRequestAsync(this.user.uid);
+			await friendsController.RejectFriendRequestAsync(this.user.uid);
 		}
 	}
 

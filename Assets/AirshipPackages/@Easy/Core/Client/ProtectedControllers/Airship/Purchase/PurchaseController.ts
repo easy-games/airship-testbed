@@ -5,6 +5,7 @@ import { Game } from "@Easy/Core/Shared/Game";
 import { Protected } from "@Easy/Core/Shared/Protected";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { ProtectedUserController } from "../User/UserController";
+import { RetryHttp429 } from "@Easy/Core/Shared/Http/HttpRetry";
 
 export const enum PurchaseControllerBridgeTopics {
 	RequestPurchase = "PurchaseController:RequestPurchase",
@@ -30,14 +31,14 @@ export class ProtectedPurchaseController {
 					return false;
 				}
 
-				const res = InternalHttpManager.PostAsync(
+				const res = RetryHttp429(() => InternalHttpManager.PostAsync(
 					`${AirshipUrl.ContentService}/shop/purchase/validate`,
 					json.encode({
 						productId,
 						receiverUid: targetUser.uid,
 						quantity,
 					}),
-				);
+				), { retryKey: "post/content-service/shop/purchase/validate" }).expect();
 
 				if (!res.success || res.statusCode > 299 || !res.data) {
 					warn(`Unable to validate purchase. Status Code: ${res.statusCode}.\n`, res.error);
@@ -65,7 +66,10 @@ export class ProtectedPurchaseController {
 	protected OnStart(): void {}
 
 	public PerformPurchase(config: { productId: string; receiverUid: string; quantity: number; total: number }): void {
-		const res = InternalHttpManager.PostAsync(`${AirshipUrl.ContentService}/shop/purchase`, json.encode(config));
+		const res = RetryHttp429(() =>
+			InternalHttpManager.PostAsync(`${AirshipUrl.ContentService}/shop/purchase`, json.encode(config)),
+			{ retryKey: "post/content-service/shop/purchase" },
+		).expect();
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Purchase failed. Status Code: ${res.statusCode}.\n`, res.error);

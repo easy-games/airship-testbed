@@ -1,6 +1,7 @@
 import { AirshipPlayerLocation, PublicUser } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipUser";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import { RetryHttp429 } from "@Easy/Core/Shared/Http/HttpRetry";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 
 export const enum UserServiceBridgeTopics {
@@ -49,9 +50,12 @@ export class ProtectedUserService {
 	}
 
 	public async GetUserByUsername(username: string): Promise<ReturnType<ServerBridgeApiGetUserByUsername>> {
-		const res = InternalHttpManager.GetAsync(
-			`${AirshipUrl.GameCoordinator}/users/user?descriminatedUsername=${username}`,
-		);
+		const res = await RetryHttp429(
+			() => InternalHttpManager.GetAsync(
+				`${AirshipUrl.GameCoordinator}/users/user?descriminatedUsername=${username}`,
+			),
+			{ retryKey: "get/game-coordinator/users/user" },
+		)
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to get user. Status Code:  ${res.statusCode}.\n`, res.error);
@@ -62,7 +66,10 @@ export class ProtectedUserService {
 	}
 
 	public async GetUserById(userId: string): Promise<ReturnType<ServerBridgeApiGetUserById>> {
-		const res = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/users/uid/${userId}`);
+		const res = await RetryHttp429(
+			() => InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/users/uid/${userId}`),
+			{ retryKey: "get/game-coordinator/users/uid/:userId" },
+		);
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to get user. Status Code:  ${res.statusCode}.\n`, res.error);
@@ -80,10 +87,13 @@ export class ProtectedUserService {
 			return {};
 		}
 
-		const res = InternalHttpManager.GetAsync(
-			`${AirshipUrl.GameCoordinator}/users?users[]=${userIds.join("&users[]=")}&strict=${
-				strict ? "true" : "false"
-			}`,
+		const res = await RetryHttp429(
+			() => InternalHttpManager.GetAsync(
+				`${AirshipUrl.GameCoordinator}/users?users[]=${userIds.join("&users[]=")}&strict=${
+					strict ? "true" : "false"
+				}`,
+			),
+			{ retryKey: "get/game-coordinator/users" },
 		);
 
 		if (!res.success || res.statusCode > 299) {
@@ -107,8 +117,11 @@ export class ProtectedUserService {
 			return {};
 		}
 
-		const res = InternalHttpManager.GetAsync(
-			`${AirshipUrl.GameCoordinator}/user-locations?userIds[]=${userIds.join("&userIds[]=")}`,
+		const res = await RetryHttp429(
+			() => InternalHttpManager.GetAsync(
+				`${AirshipUrl.GameCoordinator}/user-locations?userIds[]=${userIds.join("&userIds[]=")}`,
+			),
+			{ retryKey: "get/game-coordinator/user-locations" },
 		);
 
 		if (!res.success || res.statusCode > 299) {

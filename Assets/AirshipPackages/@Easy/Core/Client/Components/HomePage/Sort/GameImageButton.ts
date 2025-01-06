@@ -9,6 +9,7 @@ import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI, PointerButton, PointerDirection } from "@Easy/Core/Shared/Util/CanvasAPI";
 import HomePageGameComponent from "./HomePageGameComponent";
+import { RetryHttp429 } from "@Easy/Core/Shared/Http/HttpRetry";
 
 export default class GameImageButton extends AirshipBehaviour {
 	public gameComponentGO?: GameObject;
@@ -79,13 +80,13 @@ export default class GameImageButton extends AirshipBehaviour {
 						actions.push({
 							text: "Restart Servers",
 							onClick: () => {
-								task.spawn(() => {
-									const res = InternalHttpManager.PostAsync(
+								task.spawn(async () => {
+									const res = await RetryHttp429(() => InternalHttpManager.PostAsync(
 										AirshipUrl.DeploymentService + "/game-servers/shutdown",
 										json.encode({
 											gameId: gameComponent.gameDto.id,
 										}),
-									);
+									), { retryKey: "post/deployment-service/game-servers/shutdown" });
 									if (res.success) {
 										print("Successfully restarted servers for game " + gameComponent.gameDto.name);
 									} else {
