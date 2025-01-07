@@ -714,8 +714,8 @@ Transform:
   m_GameObject: {fileID: 195832286}
   serializedVersion: 2
   m_LocalRotation: {x: 0.000000021855694, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.5, z: 0}
-  m_LocalScale: {x: 60, y: 1, z: 45}
+  m_LocalPosition: {x: 0.5, y: -2, z: -0.00000006556708}
+  m_LocalScale: {x: 15.719999, y: 1, z: 45}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2084599074}
@@ -3514,6 +3514,25 @@ MonoBehaviour:
       serializedValue: 179
       serializedObject: {fileID: 0}
       modified: 0
+    - name: useDefaultMovement
+      type: boolean
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators:
+      - name: Spacing
+        parameters:
+        - type: number
+          serializedValue: 5
+      nullable: 0
+      serializedValue: 1
+      serializedObject: {fileID: 0}
+      modified: 0
     displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0
@@ -4021,7 +4040,7 @@ MonoBehaviour:
           serializedValue: '"Templates"'
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 5170263369747658681, guid: 6aadf547abb3137408402c37d3b3d489, type: 3}
+      serializedObject: {fileID: 5170263369747658681, guid: 7d4f07649463bae469d56e931be39f4f, type: 3}
       modified: 1
     - name: hillSpawnPoint
       type: object
