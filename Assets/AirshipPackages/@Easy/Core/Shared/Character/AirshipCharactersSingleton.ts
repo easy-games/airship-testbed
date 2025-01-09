@@ -411,9 +411,9 @@ export class AirshipCharactersSingleton {
 		return undefined;
 	}
 
-	public FindByClientId(clientId: number): Character | undefined {
+	public FindByplayerConnectionId(connectionId: number): Character | undefined {
 		for (let character of this.characters) {
-			if (character.player?.connectionId === clientId) {
+			if (character.player?.connectionId === connectionId) {
 				return character;
 			}
 		}
