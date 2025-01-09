@@ -46,6 +46,11 @@ export class MenuUtil {
 			subtitle: "Matchmaking testing scene.",
 			sceneName: "Matchmaking",
 		},
+		{
+			title: "Rate Limiting",
+			subtitle: "Rate limiting testing scene.",
+			sceneName: "RateLimiting",
+		}
 	];
 
 	public static loadGlobalSceneRequest = new NetworkFunction<string, boolean>("LoadGlobalScene");

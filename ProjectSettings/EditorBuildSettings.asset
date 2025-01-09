@@ -47,6 +47,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ClientPrediction.unity
     guid: 79c3e93f2ccdf5e44884e88c44848560
+  - enabled: 1
+    path: Assets/Scenes/RateLimiting.unity
+    guid: 7693a532d67f926e7a091ec2bc95dd01
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: db23642ed970b40389a45925eb39009c, type: 2}
   m_UseUCBPForAssetBundles: 0
