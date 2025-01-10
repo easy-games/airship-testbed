@@ -11560,6 +11560,7 @@ interface BinaryBlob {
 
 
 
+    Equals(other: BinaryBlob): boolean;
     GetDictionary(): CSDictionary<unknown, unknown>;
 
 
@@ -35974,7 +35975,6 @@ interface VoxelBlockDefinition extends ScriptableObject {
     solid: boolean;
     collisionType: CollisionType;
     randomRotation: boolean;
-    minecraftIds: string;
 
 
 
@@ -37868,6 +37868,7 @@ interface DevConsole {
     
 interface DevConsoleMono extends MonoBehaviour {
     bottom: GameObject;
+    loggingEnabled: boolean;
     activeContext: LogContext;
 
 
@@ -38565,6 +38566,7 @@ interface CharacterRig extends MonoBehaviour {
     armsMesh: SkinnedMeshRenderer;
     headMesh: SkinnedMeshRenderer;
     faceMesh: Renderer;
+    viewmodelArmsMesh: SkinnedMeshRenderer;
     bodyMeshLOD: CSArray<SkinnedMeshRenderer>;
     armsMeshLOD: CSArray<SkinnedMeshRenderer>;
     headMeshLOD: CSArray<SkinnedMeshRenderer>;
@@ -46741,6 +46743,7 @@ interface VoxelWorld extends MonoBehaviour {
     DeleteRenderedGameObjects(): void;
     DirtyMesh(voxel: Vector3, priority: boolean): void;
     DirtyNeighborMeshes(voxel: Vector3, priority: boolean): void;
+    FillFlatGround(): void;
     FillRandomTerrain(): void;
     FillSingleBlock(): void;
     FullWorldUpdate(): void;
@@ -47072,6 +47075,56 @@ interface CharacterMovementStateConstructor {
 
 }
 declare const CharacterMovementState: CharacterMovementStateConstructor;
+    
+interface AirshipPredictionManager extends MonoBehaviour {
+
+
+
+    DisableDebugMode(): void;
+    EnabledDebugMode(): void;
+    InterpolateBodies(): void;
+    QueueReplay(replayController: IPredictedReplay, initialState: AirshipPredictedState, endingTick: number, afterIndex: number): void;
+    RegisterPredictedObject(replayObject: IPredictedReplay): void;
+    RegisterRigidbody(rigid: Rigidbody, graphicsHolder: Transform): void;
+    StartPrediction(): void;
+    StepDebugPhysics(): void;
+    StopPrediction(): void;
+    UnRegisterPredictedObject(replayObject: IPredictedReplay): void;
+    UnRegisterRigidbody(rigid: Rigidbody): void;
+
+
+}
+    
+interface IPredictedReplay {
+    readonly friendlyName: string;
+    readonly guid: number;
+
+
+
+    OnReplayFinished(initialState: AirshipPredictedState): void;
+    OnReplayingOthersFinished(): void;
+    OnReplayingOthersStarted(): void;
+    OnReplayStarted(initialState: AirshipPredictedState, historyIndex: number): void;
+    OnReplayTickFinished(tick: number): void;
+    OnReplayTickStarted(tick: number): void;
+
+
+}
+    
+interface AirshipPredictionManagerConstructor {
+    SmoothRigidbodies: boolean;
+    OnPhysicsTick: unknown;
+    OnPreReplayTick: unknown;
+    readonly PhysicsTime: number;
+    readonly instance: AirshipPredictionManager;
+
+
+    new(): AirshipPredictionManager;
+
+
+
+}
+declare const AirshipPredictionManager: AirshipPredictionManagerConstructor;
     
 interface AirshipSteamFriendInfo {
     playingAirship: boolean;
