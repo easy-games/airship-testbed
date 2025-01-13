@@ -69,10 +69,9 @@ interface MatchTeamGroup {
 	attributes: Record<string, any>;
 }
 
+
 /** A player in a group that is part of a team in a match. */
-interface MatchTeamGroupPlayer {
-	/** The user id of the player */
-	id: string;
+type MatchTeamGroupPlayer = PublicUser & {
 	/** The attributes provided with this player when they joined the matchmaking queue with their group. */
 	attributes: Record<string, any>;
-}
+};
