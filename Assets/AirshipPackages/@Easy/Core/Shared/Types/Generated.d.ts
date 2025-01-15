@@ -47126,6 +47126,34 @@ interface AirshipPredictionManagerConstructor {
 }
 declare const AirshipPredictionManager: AirshipPredictionManagerConstructor;
     
+interface VisualGraphComponent extends MonoBehaviour {
+    image: RawImage;
+    dataResolution: number;
+    logValues: boolean;
+    testGraphOverTime: boolean;
+    testGraph: boolean;
+    readonly minValue: number;
+    readonly maxValue: number;
+
+
+
+    AddValue(delta: number): void;
+    SetLineColor(newColor: Color): void;
+    UpdateMesh(): void;
+
+
+}
+    
+interface VisualGraphComponentConstructor {
+
+
+    new(): VisualGraphComponent;
+
+
+
+}
+declare const VisualGraphComponent: VisualGraphComponentConstructor;
+    
 interface AirshipSteamFriendInfo {
     playingAirship: boolean;
     steamId: number;
