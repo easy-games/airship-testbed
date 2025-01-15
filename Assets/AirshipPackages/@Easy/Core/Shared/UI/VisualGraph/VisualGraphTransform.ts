@@ -1,14 +1,13 @@
-import VisualGraphView from "./VisualGraphComponent";
 import VisualGraphManager from "./VisualGraphManager";
+import VisualGraphView from "./VisualGraphView";
 
 export default class VisualGraphTransform extends AirshipBehaviour {
-	public color = Color.red;
-
+	public graphName = "";
 	private graph?: VisualGraphView = undefined;
 
 	protected OnEnable(): void {
 		if(!this.graph){
-			this.graph = VisualGraphManager.ManagerAddGraph(this.gameObject.name + "_T", this.color);
+			this.graph = VisualGraphManager.ManagerAddGraph(this.graphName??this.gameObject.name + "_T");
 		}
 	}
 
@@ -20,6 +19,6 @@ export default class VisualGraphTransform extends AirshipBehaviour {
 	}
 
 	protected LateUpdate(dt: number): void {
-		this.graph?.AddValue(this.transform.position.y);
+		this.graph?.AddValues(this.transform.position);
 	}
 }

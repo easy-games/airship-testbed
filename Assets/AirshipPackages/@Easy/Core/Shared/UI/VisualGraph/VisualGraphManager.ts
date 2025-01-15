@@ -1,4 +1,4 @@
-import VisualGraphView from "./VisualGraphComponent";
+import VisualGraphView from "./VisualGraphView";
 
 export default class VisualGraphManager extends AirshipBehaviour {
 	@Header("Templates")
@@ -9,20 +9,19 @@ export default class VisualGraphManager extends AirshipBehaviour {
 
 	private currentGraphics: VisualGraphView[] = [];
 
-	public static ManagerAddGraph(title: string, color: Color){
-		return VisualGraphSingelton.GetInstance()?.AddGraph(title, color);
+	public static ManagerAddGraph(title: string){
+		return VisualGraphSingelton.GetInstance()?.AddGraph(title);
 	}
 	public static ManagerRemoveGraph(graph: VisualGraphView){
 		return VisualGraphSingelton.GetInstance()?.RemoveGraph(graph);
 	}
 	
-	public AddGraph(title: string, color: Color){
+	public AddGraph(title: string){
 		let newGraph = Instantiate(this.graphTemplate, this.graphHolder).GetAirshipComponent<VisualGraphView>();
 		if(!newGraph){
 			error("Graph template must have a VisualGraphView Airship component on it");
 		}
 		newGraph.SetTitle(title);
-		newGraph.SetLineColor(color);
 		this.currentGraphics.push(newGraph);
 		return newGraph;
 	}
@@ -30,10 +29,12 @@ export default class VisualGraphManager extends AirshipBehaviour {
 	public RemoveGraph(graph: VisualGraphView){
 		for(let i=0; i<this.currentGraphics.size(); i++){
 			if(this.currentGraphics[i] === graph){
+				Destroy(this.currentGraphics[i].gameObject);
 				this.currentGraphics.remove(i);
 				return true;
 			}
 		}
+		warn("Unable to remove graph: " + graph.titleTxt.text);
 		return false;
 	}
 }
@@ -54,5 +55,6 @@ export class VisualGraphSingelton {
 			error("Visual Graph is missing manager component");
 		}
 		VisualGraphSingelton.instance = currentManager;
+		return currentManager;
 	}
 }

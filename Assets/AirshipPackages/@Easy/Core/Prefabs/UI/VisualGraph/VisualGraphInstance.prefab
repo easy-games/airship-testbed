@@ -193,8 +193,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   image: {fileID: 8273489698266059811}
-  dataResolution: 32
-  logValues: 1
+  dataResolution: 64
+  logValues: 0
   testGraphOverTime: 0
   testGraph: 0
 --- !u!114 &5032562153517187013

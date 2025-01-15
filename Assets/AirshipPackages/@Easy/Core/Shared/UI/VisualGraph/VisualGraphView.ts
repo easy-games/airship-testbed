@@ -5,8 +5,11 @@ export default class VisualGraphView extends AirshipBehaviour {
 	public maxRangeTxt: TextMeshProUGUI;
 
 
-	public SetLineColor(newColor: Color){
-		this.graph.SetLineColor(newColor);
+	public SetLineColor(newColorA: Color){
+		this.graph.SetLineColor(newColorA);
+	}
+	public SetLineColors(newColorA: Color, newColorB: Color, newColorC: Color){
+		this.graph.SetLineColors(newColorA, newColorB, newColorC);
 	}
 
 	public SetTitle(newTitle: string){
@@ -18,7 +21,16 @@ export default class VisualGraphView extends AirshipBehaviour {
 
 	public AddValue(newValue: number){
 		this.graph.AddValue(newValue);
-		this.minRangeTxt.text = this.graph.minValue + " - ";
-		this.maxRangeTxt.text = this.graph.maxValue + " - ";
+		this.RefreshRange();
+	}
+
+	public AddValues(newValues: Vector3){
+		this.graph.AddValues(newValues);
+		this.RefreshRange();
+	}
+
+	private RefreshRange(){
+		this.minRangeTxt.text = math.round(this.graph.minValue) + " - ";
+		this.maxRangeTxt.text = math.round(this.graph.maxValue) + " - ";
 	}
 }

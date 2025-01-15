@@ -47137,8 +47137,10 @@ interface VisualGraphComponent extends MonoBehaviour {
 
 
 
-    AddValue(delta: number): void;
-    SetLineColor(newColor: Color): void;
+    AddValue(newValue: number): void;
+    AddValues(newValue: Vector3): void;
+    SetLineColor(colorA: Color): void;
+    SetLineColors(colorA: Color, colorB: Color, colorC: Color): void;
     UpdateMesh(): void;
 
 
