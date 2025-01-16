@@ -86,7 +86,7 @@ export default class GameImageButton extends AirshipBehaviour {
 										json.encode({
 											gameId: gameComponent.gameDto.id,
 										}),
-									), { retryKey: "post/deployment-service/game-servers/shutdown" });
+									), "post/deployment-service/game-servers/shutdown");
 									if (res.success) {
 										print("Successfully restarted servers for game " + gameComponent.gameDto.name);
 									} else {

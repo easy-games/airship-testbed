@@ -209,8 +209,13 @@ function delayHttpTask(httpTask: HttpTask, suggestedDelay: number | undefined): 
 
     const maxWaitTime = httpTask.config.maxWaitTimeSeconds ?? DEFAULT_MAX_WAIT_TIME_SECONDS;
 
-    if (((os.time() + retryDelay) - httpTask.startedAt) > maxWaitTime) {
+    if (os.time() - httpTask.startedAt > maxWaitTime) {
         httpTask.reject(error(`Max wait time of ${maxWaitTime} seconds has been exceeded.`));
+        return;
+    }
+
+    if (((os.time() + retryDelay) - httpTask.startedAt) > maxWaitTime) {
+        httpTask.reject(error(`Max wait time of ${maxWaitTime} seconds will be exceeded by the retry delay.`));
         return;
     }
 
@@ -268,7 +273,7 @@ function executeHttpTask(httpTask: HttpTask): void {
 
 type HttpCallback = () => HttpResponse;
 type HttpRetryCallback = 
-    ((httpRequest: HttpCallback, config: HttpRetryConfig) => Promise<HttpResponse>)
+    ((httpRequest: HttpCallback, config?: HttpRetryConfig) => Promise<HttpResponse>)
     &
     ((httpRequest: HttpCallback, retryKey: string) => Promise<HttpResponse>);
 

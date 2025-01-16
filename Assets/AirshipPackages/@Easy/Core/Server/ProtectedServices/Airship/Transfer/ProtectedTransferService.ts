@@ -6,7 +6,7 @@ import {
 } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipTransfers";
 import { TransferResult } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipTransfers";
 import { Service } from "@Easy/Core/Shared/Flamework";
-import { HttpRetry } from "@Easy/Core/Shared/Http/HttpRetry";
+import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 
@@ -39,6 +39,8 @@ export type ServerBridgeApiTransferGroupToPlayer = (
 
 @Service({})
 export class ProtectedTransferService {
+	private readonly httpRetry = HttpRetryInstance();
+
 	constructor() {
 		contextbridge.callback<ServerBridgeApiTransferGroupToGame>(
 			TransferServiceBridgeTopics.TransferGroupToGame,
@@ -74,7 +76,7 @@ export class ProtectedTransferService {
 		gameId: string,
 		config?: AirshipGameTransferConfig,
 	): Promise<ReturnType<ServerBridgeApiTransferGroupToGame>> {
-		const res = await HttpRetry(
+		const res = await this.httpRetry(
 			() => InternalHttpManager.PostAsync(
 				`${AirshipUrl.GameCoordinator}/transfers/transfer/target/game`,
 				json.encode({
@@ -85,7 +87,7 @@ export class ProtectedTransferService {
 					clientTransferData: config?.clientTransferData,
 				}),
 			),
-			{ retryKey: "post/game-coordinator/transfers/transfer/target/game" },
+			"TransferGroupToGame",
 		);
 
 		if (!res.success || res.statusCode > 299) {
@@ -101,7 +103,7 @@ export class ProtectedTransferService {
 		serverId: string,
 		config?: AirshipServerTransferConfig,
 	): Promise<ReturnType<ServerBridgeApiTransferGroupToServer>> {
-		const res = await HttpRetry(
+		const res = await this.httpRetry(
 			() => InternalHttpManager.PostAsync(
 				`${AirshipUrl.GameCoordinator}/transfers/transfer/target/server`,
 				json.encode({
@@ -111,7 +113,7 @@ export class ProtectedTransferService {
 					clientTransferData: config?.clientTransferData,
 				}),
 			),
-			{ retryKey: "post/game-coordinator/transfers/transfer/target/server" },
+			"TransferGroupToServer",
 		);
 
 		if (!res.success || res.statusCode > 299) {
@@ -126,7 +128,7 @@ export class ProtectedTransferService {
 		players: readonly (string | Player)[],
 		config: AirshipMatchingServerTransferConfig,
 	): Promise<ReturnType<ServerBridgeApiTransferGroupToMatchingServer>> {
-		const res = await HttpRetry(
+		const res = await this.httpRetry(
 			() => InternalHttpManager.PostAsync(
 				`${AirshipUrl.GameCoordinator}/transfers/transfer/target/matching`,
 				json.encode({
@@ -140,7 +142,7 @@ export class ProtectedTransferService {
 					clientTransferData: config.clientTransferData,
 				}),
 			),
-			{ retryKey: "post/game-coordinator/transfers/transfer/target/matching" },
+			"TransferGroupToMatchingServer",
 		);
 
 		if (!res.success || res.statusCode > 299) {
@@ -156,7 +158,7 @@ export class ProtectedTransferService {
 		targetUserId: string,
 		config?: AirshipPlayerTransferConfig,
 	): Promise<ReturnType<ServerBridgeApiTransferGroupToPlayer>> {
-		const res = await HttpRetry(
+		const res = await this.httpRetry(
 			() => InternalHttpManager.PostAsync(
 				`${AirshipUrl.GameCoordinator}/transfers/transfer/target/player`,
 				json.encode({
@@ -166,7 +168,7 @@ export class ProtectedTransferService {
 					clientTransferData: config?.clientTransferData,
 				}),
 			),
-			{ retryKey: "post/game-coordinator/transfers/transfer/target/player" },
+			"TransferGroupToPlayer",
 		);
 
 		if (!res.success || res.statusCode > 299) {

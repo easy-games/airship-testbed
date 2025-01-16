@@ -3,7 +3,7 @@ import { ItemInstanceDto, Transaction } from "@Easy/Core/Shared/Airship/Types/Ou
 import { PlatformInventoryUtil } from "@Easy/Core/Shared/Airship/Util/PlatformInventoryUtil";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { HttpRetry } from "@Easy/Core/Shared/Http/HttpRetry";
+import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 
 export const enum PlatformInventoryServiceBridgeTopics {
@@ -23,6 +23,8 @@ export type ServerBridgeApiPerformTrade = (
 
 @Service({})
 export class ProtectedPlatformInventoryService {
+	private readonly httpRetry = HttpRetryInstance();
+
 	constructor() {
 		if (!Game.IsServer()) return;
 
@@ -56,12 +58,12 @@ export class ProtectedPlatformInventoryService {
 	}
 
 	public async GrantItem(userId: string, classId: string): Promise<ReturnType<ServerBridgeApiGrantItem>> {
-		const res = await HttpRetry(
+		const res = await this.httpRetry(
 			() => InternalHttpManager.PostAsync(
 				`${AirshipUrl.ContentService}/items/uid/${userId}/class-id/${classId}`,
 				"",
 			),
-			{ retryKey: "post/content-service/items/uid/:userId/class-id/:classId" },
+			"GrantItem",
 		);
 
 		if (!res.success || res.statusCode > 299) {
@@ -73,9 +75,9 @@ export class ProtectedPlatformInventoryService {
 	}
 
 	public async DeleteItem(instanceId: string): Promise<ReturnType<ServerBridgeApiDeleteItem>> {
-		const res = await HttpRetry(
+		const res = await this.httpRetry(
 			() => InternalHttpManager.DeleteAsync(`${AirshipUrl.ContentService}/items/item-id/${instanceId}`),
-			{ retryKey: "delete/content-service/items/item-id/:instanceId" },
+			"DeleteItem",
 		);
 
 		if (!res.success || res.statusCode > 299) {
@@ -87,11 +89,11 @@ export class ProtectedPlatformInventoryService {
 	}
 
 	public async GetItems(userId: string, query?: ItemQueryParameters): Promise<ReturnType<ServerBridgeApiGetItems>> {
-		const res = await HttpRetry(
+		const res = await this.httpRetry(
 			() => InternalHttpManager.GetAsync(
 				`${AirshipUrl.ContentService}/items/uid/${userId}?=${PlatformInventoryUtil.BuildItemQueryString(query)}`,
 			),
-			{ retryKey: "get/content-service/items/uid/:userId" },
+			"GetItems",
 		);
 
 		if (!res.success || res.statusCode > 299) {
@@ -110,7 +112,7 @@ export class ProtectedPlatformInventoryService {
 		user1: { uid: string; itemInstanceIds: string[] },
 		user2: { uid: string; itemInstanceIds: string[] },
 	): Promise<ReturnType<ServerBridgeApiPerformTrade>> {
-		const res = await HttpRetry(
+		const res = await this.httpRetry(
 			() => InternalHttpManager.PostAsync(
 				`${AirshipUrl.ContentService}/transactions/trade`,
 				json.encode({
@@ -118,7 +120,7 @@ export class ProtectedPlatformInventoryService {
 					rightTradeHalf: user2,
 				}),
 			),
-			{ retryKey: "post/content-service/transactions/trade" },
+			"PerformTrade",
 		);
 
 		if (!res.success || res.statusCode > 299) {

@@ -12,10 +12,11 @@ import { SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { OnFixedUpdate } from "@Easy/Core/Shared/Util/Timer";
 import { ProtectedUserController } from "../Airship/User/UserController";
 import { AuthController } from "../Auth/AuthController";
-import { HttpRetry } from "@Easy/Core/Shared/Http/HttpRetry";
+import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
 
 @Controller({})
 export class ChangeUsernameController {
+	private readonly httpRetry = HttpRetryInstance();
 	private canvas: Canvas;
 	private responseText: TMP_Text;
 	private submitButton: GameObject;
@@ -119,11 +120,11 @@ export class ChangeUsernameController {
 		}
 
 		this.lastCheckedUsername = username;
-		const res = HttpRetry(
+		const res = this.httpRetry(
 			() => InternalHttpManager.GetAsync(
 				AirshipUrl.GameCoordinator + "/users/availability?username=" + username,
 			),
-			{ retryKey: "get/game-coordinator/users/availability" }
+			"CheckUsername"
 		).expect();
 		if (res.success) {
 			const data = json.decode<{ available: boolean }>(res.data);

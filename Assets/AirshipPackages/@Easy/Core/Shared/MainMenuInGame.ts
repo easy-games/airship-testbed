@@ -114,7 +114,7 @@ task.spawn(async () => {
 	}
 	const res = await HttpRetry(
 		() => InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/games/game-id/" + Game.gameId),
-		{ retryKey: "get/content-service/games/game-id/:gameId" }
+		"get/content-service/games/game-id/:gameId"
 	);
 	if (res.success) {
 		// note: this can be undefined but right now we do not handle that case so the type system does not allow it

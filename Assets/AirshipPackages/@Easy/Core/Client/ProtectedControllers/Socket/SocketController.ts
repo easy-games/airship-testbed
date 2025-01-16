@@ -5,10 +5,11 @@ import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
 import { AuthController } from "../Auth/AuthController";
-import { HttpRetry } from "@Easy/Core/Shared/Http/HttpRetry";
+import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
 
 @Controller({})
 export class SocketController {
+	private readonly httpRetry = HttpRetryInstance();
 	private onEvent = new Signal<[eventName: string, data: string]>();
 	public onSocketConnectionChanged = new Signal<[connected: boolean]>();
 	public doReconnect = true;
@@ -35,12 +36,12 @@ export class SocketController {
 			SetInterval(
 				60 * 60,
 				() => {
-					HttpRetry(() => InternalHttpManager.PutAsync(
+					this.httpRetry(() => InternalHttpManager.PutAsync(
 						AirshipUrl.GameCoordinator + "/user-session/data",
 						json.encode({
 							regionPriority: ["na"],
 						}),
-					), { retryKey: "put/game-coordinator/user-session/data" }).expect();
+					), "UpdateUserSessionData").expect();
 				},
 				true,
 			);

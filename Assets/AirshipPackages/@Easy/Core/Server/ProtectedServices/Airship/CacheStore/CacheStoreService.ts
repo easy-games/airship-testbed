@@ -1,6 +1,6 @@
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { HttpRetry } from "@Easy/Core/Shared/Http/HttpRetry";
+import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 
 export const enum CacheStoreServiceBridgeTopics {
@@ -24,6 +24,7 @@ export interface CacheStoreRecord<T> {
 
 @Service({})
 export class ProtectedCacheStoreService {
+	private readonly httpRetry = HttpRetryInstance();
 	/** Reflects backend data-store-service settings */
 	private maxExpireSec = 60 * 60 * 24; // 24h in seconds
 
@@ -55,9 +56,9 @@ export class ProtectedCacheStoreService {
 	public async GetKey<T>(key: string, expireTimeSec?: number): Promise<ReturnType<ServerBridgeApiCacheGetKey<T>>> {
 		const expireTime = expireTimeSec !== undefined ? math.clamp(expireTimeSec, 0, this.maxExpireSec) : undefined;
 		const query = expireTime !== undefined ? `?expiry=${expireTime}` : "";
-		const result = await HttpRetry(
+		const result = await this.httpRetry(
 			() => InternalHttpManager.GetAsync(`${AirshipUrl.DataStoreService}/cache/key/${key}${query}`),
-			{ retryKey: "get/data-store-service/cache/key/:key" },
+			"GetCacheKey",
 		);
 		if (!result.success) {
 			warn(`Unable to get cache key. Status Code: ${result.statusCode}.\n`, result.error);
@@ -73,12 +74,12 @@ export class ProtectedCacheStoreService {
 		expireTimeSec: number,
 	): Promise<ReturnType<ServerBridgeApiCacheSetKey<T>>> {
 		const expireTime = math.clamp(expireTimeSec, 0, this.maxExpireSec);
-		const result = await HttpRetry(
+		const result = await this.httpRetry(
 			() => InternalHttpManager.PostAsync(
 				`${AirshipUrl.DataStoreService}/cache/key/${key}?expiry=${expireTime}`,
 				json.encode(data),
 			),
-			{ retryKey: "post/data-store-service/cache/key/:key" },
+			"SetCacheKey",
 		);
 		if (!result.success || result.statusCode > 299) {
 			warn(`Unable to set cache key. Status Code: ${result.statusCode}.\n`, result.error);
@@ -89,7 +90,7 @@ export class ProtectedCacheStoreService {
 	}
 
 	public async SetKeyTTL(key: string, expireTimeSec: number): Promise<ReturnType<ServerBridgeApiCacheSetKeyTTL>> {
-		const result = await HttpRetry(
+		const result = await this.httpRetry(
 			() => InternalHttpManager.GetAsync(
 				`${AirshipUrl.DataStoreService}/cache/key/${key}/ttl?expiry=${math.clamp(
 					expireTimeSec,
@@ -97,7 +98,7 @@ export class ProtectedCacheStoreService {
 					this.maxExpireSec,
 				)}`,
 			),
-			{ retryKey: "get/data-store-service/cache/key/:key/ttl" },
+			"SetCacheKeyTTL",
 		);
 		if (!result.success || result.statusCode > 299) {
 			warn(`Unable to set cache key ttl. Status Code: ${result.statusCode}.\n`, result.error);

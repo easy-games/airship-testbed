@@ -9,7 +9,7 @@ import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { AuthController } from "../../Auth/AuthController";
 import { ProtectedFriendsController } from "../../Social/FriendsController";
 import { User } from "../../User/User";
-import { HttpRetry } from "@Easy/Core/Shared/Http/HttpRetry";
+import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
 
 export const enum UserControllerBridgeTopics {
 	GetUserByUsername = "UserController:GetUserByUsername",
@@ -30,6 +30,7 @@ export type BrigdeApiIsFriendsWith = (userId: string) => boolean;
 
 @Controller({})
 export class ProtectedUserController {
+	private readonly httpRetry = HttpRetryInstance();
 	public localUser: User | undefined;
 
 	public onLocalUserUpdated = new Signal<User>();
@@ -73,9 +74,9 @@ export class ProtectedUserController {
 	 * @internal
 	 */
 	public async IsFriendsWith(userId: string): Promise<ReturnType<BrigdeApiIsFriendsWith>> {
-		const res = await HttpRetry(
+		const res = await this.httpRetry(
 			() => InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/friends/uid/${userId}/status`),
-			{ retryKey: "get/game-coordinator/friends/uid/:userId/status" }
+			"IsFriendsWith"
 		);
 
 		if (!res.success || res.statusCode > 299) {
@@ -94,9 +95,9 @@ export class ProtectedUserController {
 	 * @internal
 	 */
 	public async GetUserById(userId: string): Promise<ReturnType<BridgeApiGetUserById>> {
-		const res = await HttpRetry(
+		const res = await this.httpRetry(
 			() => InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/users/uid/${userId}`),
-			{ retryKey: "get/game-coordinator/users/uid/:userId" }
+			"GetUserById"
 		);
 
 		if (res.statusCode === 404) {
@@ -112,9 +113,9 @@ export class ProtectedUserController {
 	}
 
 	public async GetUserByUsername(username: string): Promise<ReturnType<BridgeApiGetUserByUsername>> {
-		const res = await HttpRetry(
+		const res = await this.httpRetry(
 			() => InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/users/user?username=${username}`),
-			{ retryKey: "get/game-coordinator/users/user" }
+			"GetUserByUsername"
 		);
 
 		if (!res.success || res.statusCode > 299) {
@@ -133,13 +134,13 @@ export class ProtectedUserController {
 			};
 		}
 
-		const res = await HttpRetry(
+		const res = await this.httpRetry(
 			() => InternalHttpManager.GetAsync(
 				`${AirshipUrl.GameCoordinator}/users?users[]=${userIds.join("&users[]=")}&strict=${
 					strict ? "true" : "false"
 				}`,
 			),
-			{ retryKey: "get/game-coordinator/users" }
+			"GetUsersById"
 		);
 
 		if (!res.success || res.statusCode > 299) {
@@ -165,9 +166,9 @@ export class ProtectedUserController {
 	}
 
 	public async GetFriends(): Promise<ReturnType<BridgeApiGetFriends>> {
-		const res = await HttpRetry(
+		const res = await this.httpRetry(
 			() => InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/friends/self`),
-			{ retryKey: "get/game-coordinator/friends/self" }
+			"GetFriends"
 		);
 
 		if (!res.success || res.statusCode > 299) {
@@ -191,9 +192,9 @@ export class ProtectedUserController {
 	}
 
 	public async FetchLocalUser(): Promise<void> {
-		const res = await HttpRetry(
+		const res = await this.httpRetry(
 			() => InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/users/self`),
-			{ retryKey: "get/game-coordinator/users/self" }
+			"FetchLocalUser"
 		);
 		let success = false;
 		if (res.success) {

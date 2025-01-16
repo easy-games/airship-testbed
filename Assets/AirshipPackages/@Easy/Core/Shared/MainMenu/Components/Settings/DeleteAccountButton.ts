@@ -19,7 +19,7 @@ export default class DeleteAccountButton extends AirshipBehaviour {
 					if (!confirmed) return;
 					const res = await HttpRetry(
 						() => InternalHttpManager.DeleteAsync(AirshipUrl.GameCoordinator + "/users/self"),
-						{ retryKey: "delete/game-coordinator/users/self" }
+						"delete/game-coordinator/users/self"
 					);
 					if (res.error) {
 						error(res.error);

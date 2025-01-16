@@ -41,7 +41,7 @@ export default class SearchSingleton {
 	public FetchMyGames(retryDelay = 1): void {
 		const res = HttpRetry(
 			() => InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/memberships/games/self?liveStats=true"),
-			{ retryKey: "get/content-service/memberships/games/self" },
+			"get/content-service/memberships/games/self",
 		).expect();
 		if (!res.success) {
 			if (400 <= res.statusCode && res.statusCode < 500) {
@@ -76,7 +76,7 @@ export default class SearchSingleton {
 	public FetchPopularGames(): void {
 		const res = HttpRetry(
 			() => InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/games"),
-			{ retryKey: "get/content-service/games" },
+			"get/content-service/games",
 		).expect();
 		if (!res.success) {
 			// warn("Failed to fetch games. Retrying in 1s..");

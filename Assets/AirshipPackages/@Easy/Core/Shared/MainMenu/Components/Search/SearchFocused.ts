@@ -157,7 +157,7 @@ export default class SearchFocused extends AirshipBehaviour {
 		let thisQuery = this.queryId;
 		const res = HttpRetry(
 			() => InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/games/autocomplete?name=" + text),
-			{ retryKey: "get/content-service/games/autocomplete" },
+			"get/content-service/games/autocomplete",
 		).expect();
 		if (thisQuery !== this.queryId) return;
 		let games: GameDto[];

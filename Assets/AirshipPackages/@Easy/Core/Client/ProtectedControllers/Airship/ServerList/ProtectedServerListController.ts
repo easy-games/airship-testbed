@@ -4,7 +4,7 @@ import {
 } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipServerManager";
 import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { HttpRetry } from "@Easy/Core/Shared/Http/HttpRetry";
+import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 
 export const enum ServerListControllerBridgeTopics {
@@ -17,6 +17,8 @@ export type ClientBridgeApiGetFriendServers = () => { entries: ServerListEntryWi
 
 @Controller({})
 export class ProtectedServerListController {
+	private readonly httpRetry = HttpRetryInstance();
+
 	constructor() {
 		if (!Game.IsClient()) return;
 
@@ -33,9 +35,9 @@ export class ProtectedServerListController {
 	}
 
 	public async GetServerList(page: number = 0): Promise<ReturnType<ClientBridgeApiGetServerList>> {
-		const res = await HttpRetry(() => InternalHttpManager.GetAsync(
+		const res = await this.httpRetry(() => InternalHttpManager.GetAsync(
 			`${AirshipUrl.GameCoordinator}/servers/game-id/${Game.gameId}/list?page=${page}`,
-		), { retryKey: "get/game-coordinator/servers/game-id/:gameId/list" });
+		), "GetServerList");
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to get server list. Status Code:  ${res.statusCode}.\n`, res.error);
@@ -46,9 +48,9 @@ export class ProtectedServerListController {
 	}
 
 	public async GetFriendServers(): Promise<ReturnType<ClientBridgeApiGetFriendServers>> {
-		const res = await HttpRetry(() => InternalHttpManager.GetAsync(
+		const res = await this.httpRetry(() => InternalHttpManager.GetAsync(
 			`${AirshipUrl.GameCoordinator}/servers/game-id/${Game.gameId}/list/friends`,
-		), { retryKey: "get/game-coordinator/servers/game-id/:gameId/list/friends" });
+		), "GetFriendServers");
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to get friend server list. Status Code:  ${res.statusCode}.\n`, res.error);

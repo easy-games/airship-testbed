@@ -4,7 +4,7 @@ import { Game } from "@Easy/Core/Shared/Game";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { SocketController } from "../../Socket/SocketController";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
-import { HttpRetry } from "@Easy/Core/Shared/Http/HttpRetry";
+import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
 
 export const enum PartyControllerBridgeTopics {
 	GetParty = "PartyController:GetParty",
@@ -15,6 +15,7 @@ export type ClientBridgeApiGetParty = () => Party;
 
 @Controller({})
 export class ProtectedPartyController {
+	private readonly httpRetry = HttpRetryInstance();
 	public readonly onPartyChange = new Signal<Party>();
 
 	constructor(private readonly socketController: SocketController) {
@@ -31,9 +32,9 @@ export class ProtectedPartyController {
 	}
 
 	public async GetParty(): Promise<ReturnType<ClientBridgeApiGetParty>> {
-		const res = await HttpRetry(() =>
+		const res = await this.httpRetry(() =>
 			InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/parties/party/self`),
-			{ retryKey: "get/game-coordinator/parties/party/self" }
+			"GetParty"
 		);
 
 		if (!res.success || res.statusCode > 299) {
@@ -45,12 +46,12 @@ export class ProtectedPartyController {
 	}
 
 	public async InviteToParty(userId: string) {
-		await HttpRetry(() => InternalHttpManager.PostAsync(
+		await this.httpRetry(() => InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/parties/party/invite",
 			json.encode({
 				userToAdd: userId,
 			}),
-		), { retryKey: "post/game-coordinator/parties/party/invite" });
+		), "InviteToParty");
 	}
 
 	protected OnStart(): void {}

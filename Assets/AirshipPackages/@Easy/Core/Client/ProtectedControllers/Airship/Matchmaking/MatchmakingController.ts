@@ -16,7 +16,7 @@ export type ClientBridgeApiLeaveQueue = () => undefined;
 
 @Controller({})
 export class ProtectedMatchmakingController {
-	private readonly retryHttp = HttpRetryInstance();
+	private readonly httpRetry = HttpRetryInstance();
 
 	constructor(private readonly socketController: SocketController) {
 		if (!Game.IsClient()) return;
@@ -36,9 +36,9 @@ export class ProtectedMatchmakingController {
 
 	public async GetCurrentGroup(): Promise<ReturnType<ClientBridgeApiGetGroupForSelf>> {
 		const currentGameId = Game.gameId;
-		const result = await this.retryHttp(() => InternalHttpManager.GetAsync(
+		const result = await this.httpRetry(() => InternalHttpManager.GetAsync(
 			`${AirshipUrl.GameCoordinator}/groups/game-id/${currentGameId}/self`,
-		), { retryKey: `get/game-coordinator/groups/game-id/:currentGameId/self` });
+		), "GetCurrentGroup");
 
 		if (!result.success || result.statusCode > 299) {
 			warn(
@@ -53,12 +53,12 @@ export class ProtectedMatchmakingController {
 
 	public async LeaveQueue(): Promise<ReturnType<ClientBridgeApiLeaveQueue>> {
 		const currentGameId = Game.gameId;
-		const result = await this.retryHttp(() => InternalHttpManager.PostAsync(
+		const result = await this.httpRetry(() => InternalHttpManager.PostAsync(
 			`${AirshipUrl.GameCoordinator}/matchmaking/queue/leave/self`,
 			json.encode({
 				gameId: currentGameId,
 			}),
-		), { retryKey: 'post/game-coordinator/matchmaking/queue/leave/self' });
+		), "LeaveQueue");
 
 		if (!result.success || result.statusCode > 299) {
 			warn(

@@ -6,10 +6,12 @@ import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import inspect from "@Easy/Core/Shared/Util/Inspect";
 import { MainMenuPartyController } from "../Social/MainMenuPartyController";
 import { SocketController } from "../Socket/SocketController";
-import { HttpRetry } from "@Easy/Core/Shared/Http/HttpRetry";
+import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
 
 @Controller({})
 export class TransferController {
+	private readonly httpRetry = HttpRetryInstance();
+
 	constructor(private readonly socketController: SocketController) {}
 
 	protected OnStart(): void {
@@ -52,14 +54,14 @@ export class TransferController {
 	): Promise<Result<undefined, undefined>> {
 		let isPartyLeader = Dependency<MainMenuPartyController>().IsPartyLeader();
 
-		const res = await HttpRetry(() => InternalHttpManager.PostAsync(
+		const res = await this.httpRetry(() => InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/transfers/transfer/self",
 			json.encode({
 				gameId: gameId,
 				preferredServerId,
 				withParty: isPartyLeader,
 			}),
-		), { retryKey: "post/game-coordinator/transfers/transfer/self" });
+		), "TransferToGame");
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to complete transfer request. Status Code:  ${res.statusCode}.\n`, res.error);
@@ -80,10 +82,10 @@ export class TransferController {
 	 * or the client is not in a party, this function will have no effect.
 	 */
 	public async TransferToPartyLeader(): Promise<Result<undefined, undefined>> {
-		const res = await HttpRetry(() => InternalHttpManager.PostAsync(
+		const res = await this.httpRetry(() => InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/transfers/transfer/self/party",
 			"",
-		), { retryKey: "post/game-coordinator/transfers/transfer/self/party" });
+		), "TransferToPartyLeader");
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to complete transfer request. Status Code:  ${res.statusCode}.\n`, res.error);
@@ -104,10 +106,10 @@ export class TransferController {
 	 * Only the party leader can send this request.
 	 */
 	public async TransferPartyMembersToLeader(): Promise<boolean> {
-		const res = await HttpRetry(() => InternalHttpManager.PostAsync(
+		const res = await this.httpRetry(() => InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/transfers/transfer/party",
 			"",
-		), { retryKey: "post/game-coordinator/transfers/transfer/party" });
+		), "TransferPartyMembersToLeader");
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to complete transfer request. Status Code:  ${res.statusCode}.\n`, res.error);

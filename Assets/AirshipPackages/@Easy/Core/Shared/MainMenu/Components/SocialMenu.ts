@@ -96,7 +96,7 @@ export default class SocialMenu extends AirshipBehaviour {
 	private FetchLiveStats(): void {
 		const res = HttpRetry(
 			() => InternalHttpManager.GetAsync(AirshipUrl.GameCoordinator + "/stats"),
-			{ retryKey: "get/game-coordinator/stats" },
+			"get/game-coordinator/stats",
 		).expect();
 		if (!res.success) return;
 

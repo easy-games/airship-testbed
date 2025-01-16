@@ -85,7 +85,7 @@ export default class SettingsProfilePage extends AirshipBehaviour {
 						json.encode({
 							profileImageId: "",
 						}),
-					), { retryKey: "patch/game-coordinator/users" });
+					), "patch/game-coordinator/users");
 					if (res.success) {
 						Airship.Players.ClearProfilePictureCache(Game.localPlayer.userId);
 						Protected.user.localUser!.profileImageId = undefined;

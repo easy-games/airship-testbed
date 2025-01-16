@@ -116,7 +116,7 @@ export default class SendFriendRequestModal extends AirshipBehaviour {
 					username,
 				}),
 			),
-			{ retryKey: "post/game-coordinator/friends/requests/self" },
+			"post/game-coordinator/friends/requests/self",
 		).expect();
 		if (!res.success) {
 			if (res.statusCode === 422) {

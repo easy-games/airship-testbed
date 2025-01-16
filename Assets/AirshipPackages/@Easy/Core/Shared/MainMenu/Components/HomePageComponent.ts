@@ -102,7 +102,7 @@ export default class HomePageComponent extends MainMenuPageComponent {
 	public FetchGames(): void {
 		const res = HttpRetry(
 			() => InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/games"),
-			{ retryKey: "get/content-service/games" },
+			"get/content-service/games",
 		).expect();
 		if (!res.success) {
 			// warn("Failed to fetch games. Retrying in 1s..");

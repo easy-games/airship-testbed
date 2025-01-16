@@ -1,7 +1,7 @@
 import { AirshipPlayerLocation, PublicUser } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipUser";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { HttpRetry } from "@Easy/Core/Shared/Http/HttpRetry";
+import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 
 export const enum UserServiceBridgeTopics {
@@ -20,6 +20,8 @@ export type ServerBridgeApiGetUserLocationsById = (userIds: string[]) => {
 
 @Service({})
 export class ProtectedUserService {
+	private readonly httpRetry = HttpRetryInstance();
+
 	constructor() {
 		if (!Game.IsServer()) return;
 
@@ -50,11 +52,11 @@ export class ProtectedUserService {
 	}
 
 	public async GetUserByUsername(username: string): Promise<ReturnType<ServerBridgeApiGetUserByUsername>> {
-		const res = await HttpRetry(
+		const res = await this.httpRetry(
 			() => InternalHttpManager.GetAsync(
 				`${AirshipUrl.GameCoordinator}/users/user?descriminatedUsername=${username}`,
 			),
-			{ retryKey: "get/game-coordinator/users/user" },
+			"GetUserByUsername",
 		)
 
 		if (!res.success || res.statusCode > 299) {
@@ -66,9 +68,9 @@ export class ProtectedUserService {
 	}
 
 	public async GetUserById(userId: string): Promise<ReturnType<ServerBridgeApiGetUserById>> {
-		const res = await HttpRetry(
+		const res = await this.httpRetry(
 			() => InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/users/uid/${userId}`),
-			{ retryKey: "get/game-coordinator/users/uid/:userId" },
+			"GetUserById",
 		);
 
 		if (!res.success || res.statusCode > 299) {
@@ -87,13 +89,13 @@ export class ProtectedUserService {
 			return {};
 		}
 
-		const res = await HttpRetry(
+		const res = await this.httpRetry(
 			() => InternalHttpManager.GetAsync(
 				`${AirshipUrl.GameCoordinator}/users?users[]=${userIds.join("&users[]=")}&strict=${
 					strict ? "true" : "false"
 				}`,
 			),
-			{ retryKey: "get/game-coordinator/users" },
+			"GetUsersById",
 		);
 
 		if (!res.success || res.statusCode > 299) {
@@ -117,11 +119,11 @@ export class ProtectedUserService {
 			return {};
 		}
 
-		const res = await HttpRetry(
+		const res = await this.httpRetry(
 			() => InternalHttpManager.GetAsync(
 				`${AirshipUrl.GameCoordinator}/user-locations?userIds[]=${userIds.join("&userIds[]=")}`,
 			),
-			{ retryKey: "get/game-coordinator/user-locations" },
+			"GetUserLocationsById",
 		);
 
 		if (!res.success || res.statusCode > 299) {
