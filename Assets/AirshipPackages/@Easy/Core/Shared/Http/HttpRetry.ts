@@ -287,7 +287,7 @@ let contextId = 0;
  * 
  * @returns An isolated retry mechanism which can be used to retry http requests.
  */
-export const RetryHttpContext: () => RetryHttpCallback = () => {
+export const RetryHttpInstance: () => RetryHttpCallback = () => {
     const prefixId = contextId++; 
     return (httpRequest: HttpCallback, config: RetryConfig | string = {}): Promise<HttpResponse> => {
         if (typeIs(config, "string")) {
@@ -309,4 +309,4 @@ export const RetryHttpContext: () => RetryHttpCallback = () => {
  *               provide a string as the retryKey in place of the config object.
  * @returns A promise which when resolved will contain the response from the request. The promise will be rejected if the request fails.
  */
-export const RetryHttp = RetryHttpContext();
+export const RetryHttp = RetryHttpInstance();

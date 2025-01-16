@@ -3,7 +3,7 @@ import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { SocketController } from "../../Socket/SocketController";
-import { RetryHttpContext } from "@Easy/Core/Shared/Http/HttpRetry";
+import { RetryHttpInstance } from "@Easy/Core/Shared/Http/HttpRetry";
 
 export const enum MatchmakingControllerBridgeTopics {
 	GetGroupForSelf = "MatchmakingController:GetGroupForSelf",
@@ -16,7 +16,7 @@ export type ClientBridgeApiLeaveQueue = () => undefined;
 
 @Controller({})
 export class ProtectedMatchmakingController {
-	private readonly retryHttp = RetryHttpContext();
+	private readonly retryHttp = RetryHttpInstance();
 
 	constructor(private readonly socketController: SocketController) {
 		if (!Game.IsClient()) return;
