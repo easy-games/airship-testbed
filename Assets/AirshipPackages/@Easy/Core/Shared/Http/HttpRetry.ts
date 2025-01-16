@@ -180,6 +180,16 @@ function calculateDelay(attempts: number): number {
 }
 
 function delayHttpTask(httpTask: HttpTask, suggestedDelay: number | undefined): void {
+    if (httpTask.retryCount >= (httpTask.config.maxRetries || 10)) {
+        if (httpTask.config.retryKey) {
+            CoreLogger.Warn(`Http request "${httpTask.config.retryKey}" took more than ${httpTask.retryCount} retries to complete.`);
+        } else {
+            CoreLogger.Warn(`Http request without a retry key took more than ${httpTask.retryCount} retries to complete.`);
+        }
+        httpTask.reject(error("Too many retries."));
+        return;
+    }
+
     const retryDelay = (suggestedDelay || 0) + calculateDelay(httpTask.retryCount);
 
     if (httpTask.config.maxWaitTimeSeconds === 0) {
@@ -204,16 +214,6 @@ function delayHttpTask(httpTask: HttpTask, suggestedDelay: number | undefined): 
  * @param httpTask The task to be executed.
  */
 function executeHttpTask(httpTask: HttpTask): void {
-    if (httpTask.retryCount >= (httpTask.config.maxRetries || 10)) {
-        if (httpTask.config.retryKey) {
-            CoreLogger.Warn(`Http request "${httpTask.config.retryKey}" took more than ${httpTask.retryCount} retries to complete.`);
-        } else {
-            CoreLogger.Warn(`Http request without a retry key took more than ${httpTask.retryCount} retries to complete.`);
-        }
-        httpTask.reject(error("Too many retries."));
-        return;
-    }
-    
     const currentRateLimitResetsAt = isCurrentlyLimited(httpTask.config.retryKey);
     if (currentRateLimitResetsAt !== undefined) {
         // handle existing rate limit
