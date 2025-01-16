@@ -4,7 +4,7 @@ import {
 } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipServerManager";
 import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { RetryHttp } from "@Easy/Core/Shared/Http/HttpRetry";
+import { HttpRetry } from "@Easy/Core/Shared/Http/HttpRetry";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 
 export const enum ServerListControllerBridgeTopics {
@@ -33,7 +33,7 @@ export class ProtectedServerListController {
 	}
 
 	public async GetServerList(page: number = 0): Promise<ReturnType<ClientBridgeApiGetServerList>> {
-		const res = await RetryHttp(() => InternalHttpManager.GetAsync(
+		const res = await HttpRetry(() => InternalHttpManager.GetAsync(
 			`${AirshipUrl.GameCoordinator}/servers/game-id/${Game.gameId}/list?page=${page}`,
 		), { retryKey: "get/game-coordinator/servers/game-id/:gameId/list" });
 
@@ -46,7 +46,7 @@ export class ProtectedServerListController {
 	}
 
 	public async GetFriendServers(): Promise<ReturnType<ClientBridgeApiGetFriendServers>> {
-		const res = await RetryHttp(() => InternalHttpManager.GetAsync(
+		const res = await HttpRetry(() => InternalHttpManager.GetAsync(
 			`${AirshipUrl.GameCoordinator}/servers/game-id/${Game.gameId}/list/friends`,
 		), { retryKey: "get/game-coordinator/servers/game-id/:gameId/list/friends" });
 

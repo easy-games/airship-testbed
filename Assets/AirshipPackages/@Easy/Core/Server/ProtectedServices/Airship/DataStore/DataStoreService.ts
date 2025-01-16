@@ -1,6 +1,6 @@
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { RetryHttp } from "@Easy/Core/Shared/Http/HttpRetry";
+import { HttpRetry } from "@Easy/Core/Shared/Http/HttpRetry";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 
 export const enum DataStoreServiceBridgeTopics {
@@ -45,7 +45,7 @@ export class ProtectedDataStoreService {
 	}
 
 	public async GetKey<T>(key: string): Promise<ReturnType<ServerBridgeApiDataGetKey<T>>> {
-		const result = await RetryHttp(
+		const result = await HttpRetry(
 			() => InternalHttpManager.GetAsync(`${AirshipUrl.DataStoreService}/data/key/${key}`),
 			{ retryKey: "get/data-store-service/data/key/:key" },
 		);
@@ -59,7 +59,7 @@ export class ProtectedDataStoreService {
 
 	public async SetKey<T>(key: string, data: T, etag?: string): Promise<ReturnType<ServerBridgeApiDataSetKey<T>>> {
 		const query = etag ? `?etag=${etag}` : "";
-		const result = await RetryHttp(
+		const result = await HttpRetry(
 			() => InternalHttpManager.PostAsync(
 				`${AirshipUrl.DataStoreService}/data/key/${key}${query}`,
 				json.encode(data),
@@ -76,7 +76,7 @@ export class ProtectedDataStoreService {
 
 	public async DeleteKey<T>(key: string, etag?: string): Promise<ReturnType<ServerBridgeApiDataDeleteKey<T>>> {
 		const query = etag ? `?etag=${etag}` : "";
-		const result = await RetryHttp(
+		const result = await HttpRetry(
 			() => InternalHttpManager.DeleteAsync(`${AirshipUrl.DataStoreService}/data/key/${key}${query}`),
 			{ retryKey: "delete/data-store-service/data/key/:key" },
 		);

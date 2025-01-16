@@ -1,7 +1,7 @@
 import { GameServerPartyData } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipParty";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { RetryHttp } from "@Easy/Core/Shared/Http/HttpRetry";
+import { HttpRetry } from "@Easy/Core/Shared/Http/HttpRetry";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 
 export const enum PartyServiceBridgeTopics {
@@ -30,7 +30,7 @@ export class ProtectedPartyService {
 	}
 
 	public async GetPartyForUserId(userId: string): Promise<ReturnType<ServerBridgeApiGetPartyForUserId>> {
-		const res = await RetryHttp(
+		const res = await HttpRetry(
 			() => InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/parties/uid/${userId}`),
 			{ retryKey: "get/game-coordinator/parties/uid/:userId" },
 		);
@@ -44,7 +44,7 @@ export class ProtectedPartyService {
 	}
 
 	public async GetPartyById(partyId: string): Promise<ReturnType<ServerBridgeApiGetPartyById>> {
-		const res = await RetryHttp(
+		const res = await HttpRetry(
 			() => InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/parties/party-id/${partyId}`),
 			{ retryKey: "get/game-coordinator/parties/party-id/:partyId" },
 		);

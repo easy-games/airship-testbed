@@ -1,6 +1,6 @@
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { RetryHttp } from "@Easy/Core/Shared/Http/HttpRetry";
+import { HttpRetry } from "@Easy/Core/Shared/Http/HttpRetry";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 
 export const enum CacheStoreServiceBridgeTopics {
@@ -55,7 +55,7 @@ export class ProtectedCacheStoreService {
 	public async GetKey<T>(key: string, expireTimeSec?: number): Promise<ReturnType<ServerBridgeApiCacheGetKey<T>>> {
 		const expireTime = expireTimeSec !== undefined ? math.clamp(expireTimeSec, 0, this.maxExpireSec) : undefined;
 		const query = expireTime !== undefined ? `?expiry=${expireTime}` : "";
-		const result = await RetryHttp(
+		const result = await HttpRetry(
 			() => InternalHttpManager.GetAsync(`${AirshipUrl.DataStoreService}/cache/key/${key}${query}`),
 			{ retryKey: "get/data-store-service/cache/key/:key" },
 		);
@@ -73,7 +73,7 @@ export class ProtectedCacheStoreService {
 		expireTimeSec: number,
 	): Promise<ReturnType<ServerBridgeApiCacheSetKey<T>>> {
 		const expireTime = math.clamp(expireTimeSec, 0, this.maxExpireSec);
-		const result = await RetryHttp(
+		const result = await HttpRetry(
 			() => InternalHttpManager.PostAsync(
 				`${AirshipUrl.DataStoreService}/cache/key/${key}?expiry=${expireTime}`,
 				json.encode(data),
@@ -89,7 +89,7 @@ export class ProtectedCacheStoreService {
 	}
 
 	public async SetKeyTTL(key: string, expireTimeSec: number): Promise<ReturnType<ServerBridgeApiCacheSetKeyTTL>> {
-		const result = await RetryHttp(
+		const result = await HttpRetry(
 			() => InternalHttpManager.GetAsync(
 				`${AirshipUrl.DataStoreService}/cache/key/${key}/ttl?expiry=${math.clamp(
 					expireTimeSec,

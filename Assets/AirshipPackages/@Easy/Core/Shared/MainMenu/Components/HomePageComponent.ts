@@ -14,7 +14,7 @@ import DateParser from "../../DateParser";
 import inspect from "../../Util/Inspect";
 import DiscordHero from "./DiscordHero";
 import MainMenuPageComponent from "./MainMenuPageComponent";
-import { RetryHttp } from "../../Http/HttpRetry";
+import { HttpRetry } from "../../Http/HttpRetry";
 
 export default class HomePageComponent extends MainMenuPageComponent {
 	public mainContent!: Transform;
@@ -100,7 +100,7 @@ export default class HomePageComponent extends MainMenuPageComponent {
 	}
 
 	public FetchGames(): void {
-		const res = RetryHttp(
+		const res = HttpRetry(
 			() => InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/games"),
 			{ retryKey: "get/content-service/games" },
 		).expect();

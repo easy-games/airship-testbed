@@ -2,7 +2,7 @@ import { LeaderboardUpdate } from "@Easy/Core/Server/Services/Airship/Leaderboar
 import { RankData } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipLeaderboard";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { RetryHttp } from "@Easy/Core/Shared/Http/HttpRetry";
+import { HttpRetry } from "@Easy/Core/Shared/Http/HttpRetry";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 
 export const enum LeaderboardServiceBridgeTopics {
@@ -77,7 +77,7 @@ export class ProtectedLeaderboardService {
 		name: string,
 		update: LeaderboardUpdate,
 	): Promise<ReturnType<ServerBridgeApiLeaderboardUpdate>> {
-		const result = await RetryHttp(
+		const result = await HttpRetry(
 			() => InternalHttpManager.PostAsync(
 				`${AirshipUrl.DataStoreService}/leaderboards/leaderboard-id/${name}/stats`,
 				json.encode({
@@ -94,7 +94,7 @@ export class ProtectedLeaderboardService {
 	}
 
 	public async GetRank(name: string, id: string): Promise<ReturnType<ServerBridgeApiLeaderboardGetRank>> {
-		const result = await RetryHttp(
+		const result = await HttpRetry(
 			() => InternalHttpManager.GetAsync(
 				`${AirshipUrl.DataStoreService}/leaderboards/leaderboard-id/${name}/id/${id}/ranking`,
 			),
@@ -109,7 +109,7 @@ export class ProtectedLeaderboardService {
 	}
 
 	public async DeleteEntry(name: string, id: string): Promise<ReturnType<ServerBridgeApiLeaderboardDeleteEntry>> {
-		const result = await RetryHttp(
+		const result = await HttpRetry(
 			() => InternalHttpManager.DeleteAsync(
 				`${AirshipUrl.DataStoreService}/leaderboards/leaderboard-id/${name}/id/${id}/stats`,
 			),
@@ -126,7 +126,7 @@ export class ProtectedLeaderboardService {
 		name: string,
 		ids: string[],
 	): Promise<ReturnType<ServerBridgeApiLeaderboardDeleteEntries>> {
-		const result = await RetryHttp(
+		const result = await HttpRetry(
 			() => InternalHttpManager.PostAsync(
 				`${AirshipUrl.DataStoreService}/leaderboards/leaderboard-id/${name}/stats/batch-delete`,
 				json.encode({
@@ -143,7 +143,7 @@ export class ProtectedLeaderboardService {
 	}
 
 	public async ResetLeaderboard(name: string): Promise<ReturnType<ServerBridgeApiLeaderboardResetLeaderboard>> {
-		const result = await RetryHttp(
+		const result = await HttpRetry(
 			() => InternalHttpManager.PostAsync(
 				`${AirshipUrl.DataStoreService}/leaderboards/game-id/${Game.gameId}/leaderboard-id/${name}/reset`,
 			),
@@ -163,7 +163,7 @@ export class ProtectedLeaderboardService {
 	): Promise<ReturnType<ServerBridgeApiLeaderboardGetRankRange>> {
 		count = math.clamp(count, 1, 1000 - startIndex); // ensure they don't reach past 1000;
 
-		const result = await RetryHttp(
+		const result = await HttpRetry(
 			() => InternalHttpManager.GetAsync(
 				`${AirshipUrl.DataStoreService}/leaderboards/leaderboard-id/${name}/rankings?skip=${startIndex}&limit=${count}`,
 			),

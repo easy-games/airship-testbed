@@ -5,7 +5,7 @@ import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
 import { AuthController } from "../Auth/AuthController";
-import { RetryHttp } from "@Easy/Core/Shared/Http/HttpRetry";
+import { HttpRetry } from "@Easy/Core/Shared/Http/HttpRetry";
 
 @Controller({})
 export class SocketController {
@@ -35,7 +35,7 @@ export class SocketController {
 			SetInterval(
 				60 * 60,
 				() => {
-					RetryHttp(() => InternalHttpManager.PutAsync(
+					HttpRetry(() => InternalHttpManager.PutAsync(
 						AirshipUrl.GameCoordinator + "/user-session/data",
 						json.encode({
 							regionPriority: ["na"],

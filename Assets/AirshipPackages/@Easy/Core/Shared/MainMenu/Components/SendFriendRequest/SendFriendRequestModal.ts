@@ -9,7 +9,7 @@ import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import { Theme } from "@Easy/Core/Shared/Util/Theme";
 import AirshipButton from "../AirshipButton";
-import { RetryHttp } from "@Easy/Core/Shared/Http/HttpRetry";
+import { HttpRetry } from "@Easy/Core/Shared/Http/HttpRetry";
 
 export default class SendFriendRequestModal extends AirshipBehaviour {
 	public inputField!: TMP_InputField;
@@ -109,7 +109,7 @@ export default class SendFriendRequestModal extends AirshipBehaviour {
 		let username = this.inputField.text;
 		if (username === "") return;
 
-		const res = RetryHttp(
+		const res = HttpRetry(
 			() => InternalHttpManager.PostAsync(
 				AirshipUrl.GameCoordinator + "/friends/requests/self",
 				json.encode({

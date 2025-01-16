@@ -7,7 +7,7 @@ import {
 	OutfitPatch,
 } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { CoreLogger } from "../Logger/CoreLogger";
-import { RetryHttp } from "../Http/HttpRetry";
+import { HttpRetry } from "../Http/HttpRetry";
 
 // TODO this needs to be moved to the main menu lua sandbox
 export class AvatarPlatformAPI {
@@ -32,7 +32,7 @@ export class AvatarPlatformAPI {
 
 	public static async GetAllOutfits(): Promise<OutfitDto[] | undefined> {
 		this.Log("GetAllOutfits");
-		const res = await RetryHttp(
+		const res = await HttpRetry(
 			() => InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits`)),
 			{ retryKey: "get/content-service/outfits" },
 		);
@@ -43,7 +43,7 @@ export class AvatarPlatformAPI {
 
 	public static async GetEquippedOutfit(): Promise<OutfitDto | undefined> {
 		this.Log("GetEquippedOutfit");
-		const res = await RetryHttp(
+		const res = await HttpRetry(
 			() => InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/equipped/self`)),
 			{ retryKey: "get/content-service/outfits/equipped/self" },
 		);
@@ -55,7 +55,7 @@ export class AvatarPlatformAPI {
 	}
 
 	public static async GetUserEquippedOutfit(userId: string): Promise<OutfitDto | undefined> {
-		const res = await RetryHttp(
+		const res = await HttpRetry(
 			() => InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/uid/${userId}/equipped`)),
 			{ retryKey: "get/content-service/outfits/uid/:userId/equipped" },
 		);
@@ -69,7 +69,7 @@ export class AvatarPlatformAPI {
 
 	public static async GetAvatarOutfit(outfitId: string): Promise<OutfitDto | undefined> {
 		this.Log("GetAvatarOutfit");
-		const res = await RetryHttp(
+		const res = await HttpRetry(
 			() => InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/outfit-id/${outfitId}`)),
 			{ retryKey: "get/content-service/outfits/outfit-id/:outfitId" },
 		);
@@ -83,7 +83,7 @@ export class AvatarPlatformAPI {
 
 	public static async CreateAvatarOutfit(outfit: OutfitCreateDto) {
 		this.Log("CreateAvatarOutfit: " + this.GetHttpUrl(`outfits`) + " data: " + json.encode(outfit));
-		const res = await RetryHttp(
+		const res = await HttpRetry(
 			() => InternalHttpManager.PostAsync(this.GetHttpUrl(`outfits`), json.encode(outfit)),
 			{ retryKey: "post/content-service/outfits" },
 		);
@@ -97,7 +97,7 @@ export class AvatarPlatformAPI {
 
 	public static async EquipAvatarOutfit(outfitId: string) {
 		this.Log("EquipAvatarOutfit");
-		const res = await RetryHttp(
+		const res = await HttpRetry(
 			() => InternalHttpManager.PostAsync(this.GetHttpUrl(`outfits/outfit-id/${outfitId}/equip`)),
 			{ retryKey: "post/content-service/outfits/outfit-id/:outfitId/equip" },
 		);
@@ -110,7 +110,7 @@ export class AvatarPlatformAPI {
 
 	public static async GetAccessories() {
 		this.Log("GetAccessories");
-		const res = await RetryHttp(
+		const res = await HttpRetry(
 			() => InternalHttpManager.GetAsync(this.GetHttpUrl(`accessories/self`)),
 			{ retryKey: "get/content-service/accessories/self" },
 		);
@@ -171,7 +171,7 @@ export class AvatarPlatformAPI {
 	}
 
 	private static async UpdateOutfit(outfitId: string, update: Partial<OutfitPatch>) {
-		const res = await RetryHttp(
+		const res = await HttpRetry(
 			() => InternalHttpManager.PatchAsync(this.GetHttpUrl(`outfits/outfit-id/${outfitId}`), json.encode(update)),
 			{ retryKey: "patch/content-service/outfits/outfit-id/:outfitId" },
 		);
@@ -183,7 +183,7 @@ export class AvatarPlatformAPI {
 	}
 
 	public static async LoadImage(fileId: string) {
-		const res = await RetryHttp(
+		const res = await HttpRetry(
 			() => InternalHttpManager.GetAsync(this.GetImageUrl(fileId)),
 			{ retryKey: "get/cdn/images" },
 		);
@@ -200,7 +200,7 @@ export class AvatarPlatformAPI {
 			return;
 		}
 		this.Log("Updating item with new image");
-		const res = await RetryHttp(
+		const res = await HttpRetry(
 			() => InternalHttpManager.PatchAsync(
 				this.GetHttpUrl(`accessories/class-id/${classId}`),
 				json.encode({
@@ -222,7 +222,7 @@ export class AvatarPlatformAPI {
 
 		let getPath = `${AirshipUrl.ContentService}/item-classes/images/resource-id/${resourceId}/signed-url?contentType=image%2Fpng&contentLength=${fileSize}`;
 		this.Log("get path: " + getPath);
-		const res = await RetryHttp(
+		const res = await HttpRetry(
 			() => InternalHttpManager.GetAsync(getPath),
 			{ retryKey: "get/content-service/item-classes/images/resource-id/:resourceId/signed-url" },
 		);
@@ -234,7 +234,7 @@ export class AvatarPlatformAPI {
 			const url = data.url;
 			const imageId = data.imageId;
 			this.Log("Got image url: " + url);
-			const uploadRes = await RetryHttp(() => InternalHttpManager.PutImageAsync(url, filePath));
+			const uploadRes = await HttpRetry(() => InternalHttpManager.PutImageAsync(url, filePath));
 			if (uploadRes.success) {
 				this.Log("UPLOAD COMPLETE: " + url);
 			} else {

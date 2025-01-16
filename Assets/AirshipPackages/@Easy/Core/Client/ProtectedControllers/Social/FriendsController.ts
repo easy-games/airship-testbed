@@ -31,7 +31,7 @@ import { TransferController } from "../Transfer/TransferController";
 import { RightClickMenuButton } from "../UI/RightClickMenu/RightClickMenuButton";
 import { User } from "../User/User";
 import { DirectMessageController } from "./DirectMessages/DirectMessageController";
-import { RetryHttp } from "@Easy/Core/Shared/Http/HttpRetry";
+import { HttpRetry } from "@Easy/Core/Shared/Http/HttpRetry";
 
 @Controller({})
 export class ProtectedFriendsController {
@@ -301,14 +301,14 @@ export class ProtectedFriendsController {
 			},
 		};
 		// CoreLogger.Log("send status update: " + json.encode(status));
-		RetryHttp(
+		HttpRetry(
 			() => InternalHttpManager.PutAsync(AirshipUrl.GameCoordinator + "/user-status/self", json.encode(status)),
 			{ retryKey: "put/game-coordinator/user-status/self" },
 		).expect();
 	}
 
 	public FetchFriends(): void {
-		const res = RetryHttp(
+		const res = HttpRetry(
 			() => InternalHttpManager.GetAsync(AirshipUrl.GameCoordinator + "/friends/requests/self"),
 			{ retryKey: "get/game-coordinator/friends/requests/self" },
 		).expect();
@@ -352,7 +352,7 @@ export class ProtectedFriendsController {
 	}
 
 	public async AcceptFriendRequestAsync(username: string, userId: string): Promise<boolean> {
-		const res = await RetryHttp(() => InternalHttpManager.PostAsync(
+		const res = await HttpRetry(() => InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/friends/requests/self",
 			json.encode({
 				username: username,
@@ -369,7 +369,7 @@ export class ProtectedFriendsController {
 	}
 
 	public async RejectFriendRequestAsync(userId: string): Promise<boolean> {
-		const res = await RetryHttp(
+		const res = await HttpRetry(
 			() => InternalHttpManager.DeleteAsync(AirshipUrl.GameCoordinator + "/friends/uid/" + userId),
 			{ retryKey: "delete/game-coordinator/friends/uid/:userId" },
 		);
@@ -398,7 +398,7 @@ export class ProtectedFriendsController {
 
 	public SendFriendRequest(username: string): boolean {
 		print('adding friend: "' + username + '"');
-		const res = RetryHttp(() => InternalHttpManager.PostAsync(
+		const res = HttpRetry(() => InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/friends/requests/self",
 			json.encode({
 				username: username,
@@ -515,7 +515,7 @@ export class ProtectedFriendsController {
 								text: "Join Party",
 								onClick: () => {
 									task.spawn(async () => {
-										const res = await RetryHttp(() => InternalHttpManager.PostAsync(
+										const res = await HttpRetry(() => InternalHttpManager.PostAsync(
 											AirshipUrl.GameCoordinator + "/parties/party/join",
 											json.encode({
 												uid: friend.userId,

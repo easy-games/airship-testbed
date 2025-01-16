@@ -17,7 +17,7 @@ import { AirshipUrl } from "./Util/AirshipUrl";
 import { AppManager } from "./Util/AppManager";
 import { CanvasAPI } from "./Util/CanvasAPI";
 import { OnFixedUpdate, OnLateUpdate, OnUpdate } from "./Util/Timer";
-import { RetryHttp } from "./Http/HttpRetry";
+import { HttpRetry } from "./Http/HttpRetry";
 
 CoreRefs.Init();
 
@@ -112,7 +112,7 @@ task.spawn(async () => {
 		task.wait();
 		continue;
 	}
-	const res = await RetryHttp(
+	const res = await HttpRetry(
 		() => InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/games/game-id/" + Game.gameId),
 		{ retryKey: "get/content-service/games/game-id/:gameId" }
 	);

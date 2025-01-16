@@ -13,7 +13,7 @@ import GameSearchResult from "./GameSearchResult";
 import { SearchResultDto } from "./SearchAPI";
 import SearchResult from "./SearchResult";
 import SearchSingleton from "./SearchSingleton";
-import { RetryHttp } from "@Easy/Core/Shared/Http/HttpRetry";
+import { HttpRetry } from "@Easy/Core/Shared/Http/HttpRetry";
 
 export default class SearchFocused extends AirshipBehaviour {
 	@Header("References")
@@ -155,7 +155,7 @@ export default class SearchFocused extends AirshipBehaviour {
 
 		this.queryId++;
 		let thisQuery = this.queryId;
-		const res = RetryHttp(
+		const res = HttpRetry(
 			() => InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/games/autocomplete?name=" + text),
 			{ retryKey: "get/content-service/games/autocomplete" },
 		).expect();

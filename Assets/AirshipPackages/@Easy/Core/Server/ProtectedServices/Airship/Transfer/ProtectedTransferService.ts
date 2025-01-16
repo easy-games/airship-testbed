@@ -6,7 +6,7 @@ import {
 } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipTransfers";
 import { TransferResult } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipTransfers";
 import { Service } from "@Easy/Core/Shared/Flamework";
-import { RetryHttp } from "@Easy/Core/Shared/Http/HttpRetry";
+import { HttpRetry } from "@Easy/Core/Shared/Http/HttpRetry";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 
@@ -74,7 +74,7 @@ export class ProtectedTransferService {
 		gameId: string,
 		config?: AirshipGameTransferConfig,
 	): Promise<ReturnType<ServerBridgeApiTransferGroupToGame>> {
-		const res = await RetryHttp(
+		const res = await HttpRetry(
 			() => InternalHttpManager.PostAsync(
 				`${AirshipUrl.GameCoordinator}/transfers/transfer/target/game`,
 				json.encode({
@@ -101,7 +101,7 @@ export class ProtectedTransferService {
 		serverId: string,
 		config?: AirshipServerTransferConfig,
 	): Promise<ReturnType<ServerBridgeApiTransferGroupToServer>> {
-		const res = await RetryHttp(
+		const res = await HttpRetry(
 			() => InternalHttpManager.PostAsync(
 				`${AirshipUrl.GameCoordinator}/transfers/transfer/target/server`,
 				json.encode({
@@ -126,7 +126,7 @@ export class ProtectedTransferService {
 		players: readonly (string | Player)[],
 		config: AirshipMatchingServerTransferConfig,
 	): Promise<ReturnType<ServerBridgeApiTransferGroupToMatchingServer>> {
-		const res = await RetryHttp(
+		const res = await HttpRetry(
 			() => InternalHttpManager.PostAsync(
 				`${AirshipUrl.GameCoordinator}/transfers/transfer/target/matching`,
 				json.encode({
@@ -156,7 +156,7 @@ export class ProtectedTransferService {
 		targetUserId: string,
 		config?: AirshipPlayerTransferConfig,
 	): Promise<ReturnType<ServerBridgeApiTransferGroupToPlayer>> {
-		const res = await RetryHttp(
+		const res = await HttpRetry(
 			() => InternalHttpManager.PostAsync(
 				`${AirshipUrl.GameCoordinator}/transfers/transfer/target/player`,
 				json.encode({

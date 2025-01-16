@@ -3,7 +3,7 @@ import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { MainMenuSingleton } from "../../Singletons/MainMenuSingleton";
-import { RetryHttp } from "@Easy/Core/Shared/Http/HttpRetry";
+import { HttpRetry } from "@Easy/Core/Shared/Http/HttpRetry";
 
 export default class DeleteAccountButton extends AirshipBehaviour {
 	private bin = new Bin();
@@ -17,7 +17,7 @@ export default class DeleteAccountButton extends AirshipBehaviour {
 						"Are you sure you want to delete your account? This cannot be undone.",
 					);
 					if (!confirmed) return;
-					const res = await RetryHttp(
+					const res = await HttpRetry(
 						() => InternalHttpManager.DeleteAsync(AirshipUrl.GameCoordinator + "/users/self"),
 						{ retryKey: "delete/game-coordinator/users/self" }
 					);

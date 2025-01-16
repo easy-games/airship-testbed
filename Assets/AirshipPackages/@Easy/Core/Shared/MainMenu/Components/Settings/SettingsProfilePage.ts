@@ -2,7 +2,7 @@ import { ChangeUsernameController } from "@Easy/Core/Client/ProtectedControllers
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { RetryHttp } from "@Easy/Core/Shared/Http/HttpRetry";
+import { HttpRetry } from "@Easy/Core/Shared/Http/HttpRetry";
 import { Protected } from "@Easy/Core/Shared/Protected";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
@@ -80,7 +80,7 @@ export default class SettingsProfilePage extends AirshipBehaviour {
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnClickEvent(this.removeProfileImageBtn.gameObject, () => {
 				task.spawn(async () => {
-					const res = await RetryHttp(() => InternalHttpManager.PatchAsync(
+					const res = await HttpRetry(() => InternalHttpManager.PatchAsync(
 						AirshipUrl.GameCoordinator + "/users",
 						json.encode({
 							profileImageId: "",

@@ -1,6 +1,6 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { Game } from "@Easy/Core/Shared/Game";
-import { RetryConfig, RetryHttp } from "@Easy/Core/Shared/Http/HttpRetry";
+import { RetryConfig, HttpRetry } from "@Easy/Core/Shared/Http/HttpRetry";
 import { Binding } from "@Easy/Core/Shared/Input/Binding";
 import ProximityPrompt from "@Easy/Core/Shared/Input/ProximityPrompts/ProximityPrompt";
 
@@ -99,7 +99,7 @@ export default class RateLimitingButton extends AirshipBehaviour {
         const me = syncValue;
         syncValue++;
         print(`<-> (${me}) Enter "RateLimitingButton#CallNotRateLimited" <->`); 
-        await RetryHttp(NonRateLimited, RateLimitConfig);
+        await HttpRetry(NonRateLimited, RateLimitConfig);
         print(`=== (${me}) Exit "RateLimitingButton#CallNotRateLimited" ===`); 
     }
 
@@ -107,7 +107,7 @@ export default class RateLimitingButton extends AirshipBehaviour {
         const me = syncValue;
         syncValue++;
         print(`<-> (${me}) Enter "RateLimitingButton#CallRateLimited5Seconds" <->`); 
-        await RetryHttp(RateLimitedXSeconds(5), RateLimitConfig);
+        await HttpRetry(RateLimitedXSeconds(5), RateLimitConfig);
         print(`=== (${me}) Exit "RateLimitingButton#CallRateLimited5Seconds" ===`);
     }
 
@@ -115,7 +115,7 @@ export default class RateLimitingButton extends AirshipBehaviour {
         const me = syncValue;
         syncValue++;
         print(`<-> (${me}) Enter "RateLimitingButton#CallRateLimited10Seconds" <->`); 
-        await RetryHttp(RateLimitedXSeconds(10), RateLimitConfig);
+        await HttpRetry(RateLimitedXSeconds(10), RateLimitConfig);
         print(`=== (${me}) Exit "RateLimitingButton#CallRateLimited10Seconds" ===`);
     }
 
@@ -123,7 +123,7 @@ export default class RateLimitingButton extends AirshipBehaviour {
         const me = syncValue;
         syncValue++;
         print(`<-> (${me}) Enter "RateLimitingButton#CallRateLimited30Seconds" <->`); 
-        await RetryHttp(RateLimitedXSeconds(30), RateLimitConfig);
+        await HttpRetry(RateLimitedXSeconds(30), RateLimitConfig);
         print(`=== (${me}) Exit "RateLimitingButton#CallRateLimited30Seconds" ===`);
     }
 }
