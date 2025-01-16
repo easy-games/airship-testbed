@@ -1,6 +1,6 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { Game } from "@Easy/Core/Shared/Game";
-import { RetryConfig, HttpRetry } from "@Easy/Core/Shared/Http/HttpRetry";
+import { HttpRetryConfig, HttpRetry } from "@Easy/Core/Shared/Http/HttpRetry";
 import { Binding } from "@Easy/Core/Shared/Input/Binding";
 import ProximityPrompt from "@Easy/Core/Shared/Input/ProximityPrompts/ProximityPrompt";
 
@@ -11,7 +11,7 @@ export enum RateLimitingAction {
     CallRateLimited30Seconds = "CallRateLimited30Seconds",
 }
 
-const RateLimitConfig: RetryConfig = {
+const RateLimitConfig: HttpRetryConfig = {
     retryKey: "RateLimitDemo",
 }
 

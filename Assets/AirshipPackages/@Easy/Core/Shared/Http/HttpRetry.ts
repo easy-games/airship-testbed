@@ -3,7 +3,7 @@ import { keys } from "../Util/ObjectUtils";
 
 /**
  * The default implementation which {@link HttpRetry} will use to retrieve the retry time from the response.
- * This can be overridden by passing a custom implementation to the {@link RetryConfig.retrieveRetryTime} property.
+ * This can be overridden by passing a custom implementation to the {@link HttpRetryConfig.retrieveRetryTime} property.
  * 
  * @param response The http response which is being processed due to a 429 response code.
  * @returns A number representing the number of seconds to wait before retrying the request.
@@ -13,10 +13,13 @@ function defaultRetrieveRetryTime(response: HttpResponse): number | undefined {
     return tonumber(response.GetHeader("Retry-After"));
 }
 
+const DEFAULT_MAX_WAIT_TIME_SECONDS = 60;
+const DEFAULT_MAX_RETRIES = 10;
+
 /**
  * A configuration object which configures a request for the {@link HttpRetry} function.
  */
-export interface RetryConfig {
+export interface HttpRetryConfig {
     /**
      * A key used to identify a request, when a key is rate limited all other requests with the same key will
      *  assume the rate limit has been reached for them as well.
@@ -57,7 +60,7 @@ class HttpTask {
 
     constructor(
         private readonly httpRequest: () => HttpResponse,
-        public readonly config: RetryConfig,
+        public readonly config: HttpRetryConfig,
         public readonly resolve: (response: HttpResponse) => void,
         public readonly reject: (err: any) => void
     ) {
@@ -150,7 +153,7 @@ type RateLimitInstruction = RateLimitPassThroughErrorInstruction | RateLimitRetr
  * @param response The http response which is being processed due to a 429 response code.
  * @returns The time remaining before the rate limit is reset, or undefined if the request was not rate limited.
  */
-function processHttpResponse(config: RetryConfig, response: HttpResponse): RateLimitInstruction {
+function processHttpResponse(config: HttpRetryConfig, response: HttpResponse): RateLimitInstruction {
     if (response.statusCode !== 429) return { type: RateLimitInstructionType.Success };
 
     const resetAfter = (config.retrieveRetryTime || defaultRetrieveRetryTime)(response);
@@ -192,7 +195,7 @@ function calculateDelay(attempts: number): number {
 }
 
 function delayHttpTask(httpTask: HttpTask, suggestedDelay: number | undefined): void {
-    if (httpTask.retryCount >= (httpTask.config.maxRetries || 10)) {
+    if (httpTask.retryCount >= (httpTask.config.maxRetries || DEFAULT_MAX_RETRIES)) {
         if (httpTask.config.retryKey) {
             CoreLogger.Warn(`Http request "${httpTask.config.retryKey}" took more than ${httpTask.retryCount} retries to complete.`);
         } else {
@@ -204,7 +207,7 @@ function delayHttpTask(httpTask: HttpTask, suggestedDelay: number | undefined): 
 
     const retryDelay = (suggestedDelay || 0) + calculateDelay(httpTask.retryCount);
 
-    const maxWaitTime = httpTask.config.maxWaitTimeSeconds ?? 60;
+    const maxWaitTime = httpTask.config.maxWaitTimeSeconds ?? DEFAULT_MAX_WAIT_TIME_SECONDS;
 
     if (((os.time() + retryDelay) - httpTask.startedAt) > maxWaitTime) {
         httpTask.reject(error(`Max wait time of ${maxWaitTime} seconds has been exceeded.`));
@@ -215,7 +218,7 @@ function delayHttpTask(httpTask: HttpTask, suggestedDelay: number | undefined): 
 }
 
 /**
- * Executes an http task, retrying if the request is rate limited or if the {@link RetryConfig.retryKey}
+ * Executes an http task, retrying if the request is rate limited or if the {@link HttpRetryConfig.retryKey}
  *  from {@link HttpTask.config} is actively being rate limited.
  * 
  * @param httpTask The task to be executed.
@@ -265,11 +268,11 @@ function executeHttpTask(httpTask: HttpTask): void {
 
 type HttpCallback = () => HttpResponse;
 type HttpRetryCallback = 
-    ((httpRequest: HttpCallback, config: RetryConfig) => Promise<HttpResponse>)
+    ((httpRequest: HttpCallback, config: HttpRetryConfig) => Promise<HttpResponse>)
     &
     ((httpRequest: HttpCallback, retryKey: string) => Promise<HttpResponse>);
 
-const CreateHttpRetryPromise: HttpRetryCallback = (httpRequest: HttpCallback, config: RetryConfig | string = {}): Promise<HttpResponse> => {
+const CreateHttpRetryPromise: HttpRetryCallback = (httpRequest: HttpCallback, config: HttpRetryConfig | string = {}): Promise<HttpResponse> => {
     return new Promise((resolve, reject) => {
         if (typeIs(config, "string")) {
             config = { retryKey: config };
@@ -289,7 +292,7 @@ let contextId = 0;
  */
 export const HttpRetryInstance: () => HttpRetryCallback = () => {
     const prefixId = contextId++; 
-    return (httpRequest: HttpCallback, config: RetryConfig | string = {}): Promise<HttpResponse> => {
+    return (httpRequest: HttpCallback, config: HttpRetryConfig | string = {}): Promise<HttpResponse> => {
         if (typeIs(config, "string")) {
             return CreateHttpRetryPromise(httpRequest, `${prefixId}:${config}`);
         } else if (config.retryKey) {
@@ -305,7 +308,7 @@ export const HttpRetryInstance: () => HttpRetryCallback = () => {
  * standard 429 response code and the "Retry-After" header (by default) to determine when to retry the request.
  * 
  * @param httpRequest A function which returns an HttpResponse. This function will be called each time the request is tried.
- * @param config An optional configuration object, see {@link RetryConfig} for more details. If only providing the retryKey you can
+ * @param config An optional configuration object, see {@link HttpRetryConfig} for more details. If only providing the retryKey you can
  *               provide a string as the retryKey in place of the config object.
  * @returns A promise which when resolved will contain the response from the request. The promise will be rejected if the request fails.
  */
