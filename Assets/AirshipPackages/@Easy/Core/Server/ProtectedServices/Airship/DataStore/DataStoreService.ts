@@ -118,13 +118,13 @@ export class ProtectedDataStoreService {
 		lockMode?: AirshipDataStoreLockMode,
 		stealFromOwnerId?: string,
 	): Promise<ReturnType<ServerBridgeApiDataSetLock>> {
-		const result = InternalHttpManager.PostAsync(
+		const result = await this.httpRetry(() => InternalHttpManager.PostAsync(
 			`${AirshipUrl.DataStoreService}/data/key/${key}/lock`,
 			json.encode({
 				lockMode,
 				forceIfWriterId: stealFromOwnerId,
 			}),
-		);
+		), "SetLock");
 		if (!result.success || result.statusCode > 299) {
 			warn(`Unable to lock data key. Status Code: ${result.statusCode}.\n`, result.error);
 			throw result.error;
@@ -134,7 +134,7 @@ export class ProtectedDataStoreService {
 	}
 
 	public async GetLockDataForKey(key: string): Promise<ReturnType<ServerBridgeApiDataGetLockData>> {
-		const result = InternalHttpManager.GetAsync(`${AirshipUrl.DataStoreService}/data/key/${key}/lock`);
+		const result = await this.httpRetry(() => InternalHttpManager.GetAsync(`${AirshipUrl.DataStoreService}/data/key/${key}/lock`), "GetLock");
 		if (!result.success || result.statusCode > 299) {
 			warn(`Unable to get lock data for key. Status Code: ${result.statusCode}.\n`, result.error);
 			throw result.error;
