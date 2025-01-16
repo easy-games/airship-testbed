@@ -76,6 +76,18 @@ interface RetryInformation {
 
 const retryData: { [key: string]: RetryInformation } = {};
 
+// clean up any unnecessary retry data every 30 seconds
+task.spawnDetached(() => {
+    while (task.unscaledWait(30)) {
+        for (const key of keys(retryData)) {
+            const retryInfo = retryData[key];
+            if ((retryInfo.resetAfter - (os.time() - retryInfo.receivedAt)) <= 0) {
+                delete retryData[key];
+            }
+        }
+    }
+});
+
 /**
  * Checks if a rate limit is currently being applied to a key.
  * 
@@ -192,12 +204,7 @@ function delayHttpTask(httpTask: HttpTask, suggestedDelay: number | undefined): 
 
     const retryDelay = (suggestedDelay || 0) + calculateDelay(httpTask.retryCount);
 
-    if (httpTask.config.maxWaitTimeSeconds === 0) {
-        httpTask.reject(error("Max wait time of 0 has been exceeded."));
-        return;
-    }
-
-    const maxWaitTime = httpTask.config.maxWaitTimeSeconds || 60;
+    const maxWaitTime = httpTask.config.maxWaitTimeSeconds ?? 60;
 
     if (((os.time() + retryDelay) - httpTask.startedAt) > maxWaitTime) {
         httpTask.reject(error(`Max wait time of ${maxWaitTime} seconds has been exceeded.`));
@@ -262,16 +269,7 @@ type RetryHttp429Callback =
     &
     ((httpRequest: HttpCallback, retryKey: string) => Promise<HttpResponse>);
 
-/**
- * Sets up a retry mechanism for a function which returns an HttpResponse. This retry mechanism uses the
- * standard 429 response code and the "Retry-After" header (by default) to determine when to retry the request.
- * 
- * @param httpRequest A function which returns an HttpResponse. This function will be called each time the request is tried.
- * @param config An optional configuration object, see {@link RetryConfig} for more details. If only providing the retryKey you can
- *               provide a string as the retryKey in place of the config object.
- * @returns A promise which when resolved will contain the response from the request. The promise will be rejected if the request fails.
- */
-export const RetryHttp429: RetryHttp429Callback = (httpRequest: HttpCallback, config: RetryConfig | string = {}): Promise<HttpResponse> => {
+const PromisifyRetryHttp429: RetryHttp429Callback = (httpRequest: HttpCallback, config: RetryConfig | string = {}): Promise<HttpResponse> => {
     return new Promise((resolve, reject) => {
         if (typeIs(config, "string")) {
             config = { retryKey: config };
@@ -287,17 +285,28 @@ let contextId = 0;
 /**
  * Isolates a retry context which prefixes all retry keys used with the returned function.
  * 
- * @returns A wrapped instance of {@link RetryHttp429}.
+ * @returns An isolated retry mechanism which can be used to retry http requests.
  */
 export const RetryHttp429Context: () => RetryHttp429Callback = () => {
     const prefixId = contextId++; 
     return (httpRequest: HttpCallback, config: RetryConfig | string = {}): Promise<HttpResponse> => {
         if (typeIs(config, "string")) {
-            return RetryHttp429(httpRequest, `{${prefixId}}:${config}`);
+            return PromisifyRetryHttp429(httpRequest, `{${prefixId}}:${config}`);
         } else if (config.retryKey) {
-            return RetryHttp429(httpRequest, { ...config, retryKey: `{${prefixId}}:${config.retryKey}` });
+            return PromisifyRetryHttp429(httpRequest, { ...config, retryKey: `{${prefixId}}:${config.retryKey}` });
         } else {
-            return RetryHttp429(httpRequest, config);
+            return PromisifyRetryHttp429(httpRequest, config);
         }
     }
 };
+
+/**
+ * Sets up a retry mechanism for a function which returns an HttpResponse. This retry mechanism uses the
+ * standard 429 response code and the "Retry-After" header (by default) to determine when to retry the request.
+ * 
+ * @param httpRequest A function which returns an HttpResponse. This function will be called each time the request is tried.
+ * @param config An optional configuration object, see {@link RetryConfig} for more details. If only providing the retryKey you can
+ *               provide a string as the retryKey in place of the config object.
+ * @returns A promise which when resolved will contain the response from the request. The promise will be rejected if the request fails.
+ */
+export const RetryHttp429 = RetryHttp429Context();
