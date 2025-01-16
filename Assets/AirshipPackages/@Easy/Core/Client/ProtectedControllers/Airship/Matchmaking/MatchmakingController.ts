@@ -3,7 +3,7 @@ import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { SocketController } from "../../Socket/SocketController";
-import { RetryHttp429, RetryHttp429Context } from "@Easy/Core/Shared/Http/HttpRetry";
+import { RetryHttp429Context } from "@Easy/Core/Shared/Http/HttpRetry";
 
 export const enum MatchmakingControllerBridgeTopics {
 	GetGroupForSelf = "MatchmakingController:GetGroupForSelf",
