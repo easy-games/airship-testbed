@@ -13,8 +13,8 @@ function defaultRetrieveRetryTime(response: HttpResponse): number | undefined {
     return tonumber(response.GetHeader("Retry-After"));
 }
 
-const DEFAULT_MAX_WAIT_TIME_SECONDS = 60;
-const DEFAULT_MAX_RETRIES = 10;
+const DEFAULT_MAX_WAIT_TIME_SECONDS = 20;
+const DEFAULT_MAX_RETRIES = 5;
 
 /**
  * A configuration object which configures a request for the {@link HttpRetry} function.
@@ -42,14 +42,14 @@ export interface HttpRetryConfig {
     /**
      * The maximum amount of time to wait in seconds before aborting the retry process.
      * 
-     * If not provided, the default is 1 minute.
+     * If not provided, the default is 20 seconds.
      */
     maxWaitTimeSeconds?: number;
 
     /**
      * The maximum number of times to retry a request before giving up.
      * 
-     * If not provided, the default is 10.
+     * If not provided, the default is 5.
      */
     maxRetries?: number;
 }
@@ -196,11 +196,6 @@ function calculateDelay(attempts: number): number {
 
 function delayHttpTask(httpTask: HttpTask, suggestedDelay: number | undefined): void {
     if (httpTask.retryCount >= (httpTask.config.maxRetries || DEFAULT_MAX_RETRIES)) {
-        if (httpTask.config.retryKey) {
-            CoreLogger.Warn(`Http request "${httpTask.config.retryKey}" took more than ${httpTask.retryCount} retries to complete.`);
-        } else {
-            CoreLogger.Warn(`Http request without a retry key took more than ${httpTask.retryCount} retries to complete.`);
-        }
         httpTask.reject(error("Too many retries."));
         return;
     }
