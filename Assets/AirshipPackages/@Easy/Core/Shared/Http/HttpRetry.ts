@@ -187,8 +187,10 @@ function delayHttpTask(httpTask: HttpTask, suggestedDelay: number | undefined): 
         return;
     }
 
-    if (((os.time() + retryDelay) - httpTask.startedAt) > (httpTask.config.maxWaitTimeSeconds || 60)) {
-        httpTask.reject(error("Max wait time of " + (httpTask.config.maxWaitTimeSeconds || 60) + " seconds has been exceeded."));
+    const maxWaitTime = httpTask.config.maxWaitTimeSeconds || 60;
+
+    if (((os.time() + retryDelay) - httpTask.startedAt) > maxWaitTime) {
+        httpTask.reject(error(`Max wait time of ${maxWaitTime} seconds has been exceeded.`));
         return;
     }
 
