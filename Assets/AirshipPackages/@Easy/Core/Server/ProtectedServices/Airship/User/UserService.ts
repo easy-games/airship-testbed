@@ -1,7 +1,7 @@
 import { AirshipPlayerLocation, PublicUser } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipUser";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { RetryHttp429 } from "@Easy/Core/Shared/Http/HttpRetry";
+import { RetryHttp } from "@Easy/Core/Shared/Http/HttpRetry";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 
 export const enum UserServiceBridgeTopics {
@@ -50,7 +50,7 @@ export class ProtectedUserService {
 	}
 
 	public async GetUserByUsername(username: string): Promise<ReturnType<ServerBridgeApiGetUserByUsername>> {
-		const res = await RetryHttp429(
+		const res = await RetryHttp(
 			() => InternalHttpManager.GetAsync(
 				`${AirshipUrl.GameCoordinator}/users/user?descriminatedUsername=${username}`,
 			),
@@ -66,7 +66,7 @@ export class ProtectedUserService {
 	}
 
 	public async GetUserById(userId: string): Promise<ReturnType<ServerBridgeApiGetUserById>> {
-		const res = await RetryHttp429(
+		const res = await RetryHttp(
 			() => InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/users/uid/${userId}`),
 			{ retryKey: "get/game-coordinator/users/uid/:userId" },
 		);
@@ -87,7 +87,7 @@ export class ProtectedUserService {
 			return {};
 		}
 
-		const res = await RetryHttp429(
+		const res = await RetryHttp(
 			() => InternalHttpManager.GetAsync(
 				`${AirshipUrl.GameCoordinator}/users?users[]=${userIds.join("&users[]=")}&strict=${
 					strict ? "true" : "false"
@@ -117,7 +117,7 @@ export class ProtectedUserService {
 			return {};
 		}
 
-		const res = await RetryHttp429(
+		const res = await RetryHttp(
 			() => InternalHttpManager.GetAsync(
 				`${AirshipUrl.GameCoordinator}/user-locations?userIds[]=${userIds.join("&userIds[]=")}`,
 			),

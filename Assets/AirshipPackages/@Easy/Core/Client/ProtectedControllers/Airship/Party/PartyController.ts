@@ -4,7 +4,7 @@ import { Game } from "@Easy/Core/Shared/Game";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { SocketController } from "../../Socket/SocketController";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
-import { RetryHttp429 } from "@Easy/Core/Shared/Http/HttpRetry";
+import { RetryHttp } from "@Easy/Core/Shared/Http/HttpRetry";
 
 export const enum PartyControllerBridgeTopics {
 	GetParty = "PartyController:GetParty",
@@ -31,7 +31,7 @@ export class ProtectedPartyController {
 	}
 
 	public async GetParty(): Promise<ReturnType<ClientBridgeApiGetParty>> {
-		const res = await RetryHttp429(() =>
+		const res = await RetryHttp(() =>
 			InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/parties/party/self`),
 			{ retryKey: "get/game-coordinator/parties/party/self" }
 		);
@@ -45,7 +45,7 @@ export class ProtectedPartyController {
 	}
 
 	public async InviteToParty(userId: string) {
-		await RetryHttp429(() => InternalHttpManager.PostAsync(
+		await RetryHttp(() => InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/parties/party/invite",
 			json.encode({
 				userToAdd: userId,

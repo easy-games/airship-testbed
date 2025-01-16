@@ -18,7 +18,7 @@ import { MainMenuController } from "../MainMenuController";
 import { SocketController } from "../Socket/SocketController";
 import { ProtectedFriendsController } from "./FriendsController";
 import { MainMenuAddFriendsController } from "./MainMenuAddFriendsController";
-import { RetryHttp429 } from "@Easy/Core/Shared/Http/HttpRetry";
+import { RetryHttp } from "@Easy/Core/Shared/Http/HttpRetry";
 
 @Controller({})
 export class MainMenuPartyController {
@@ -79,7 +79,7 @@ export class MainMenuPartyController {
 				data.members[0].username,
 				(result) => {
 					if (result) {
-						const res = RetryHttp429(() => InternalHttpManager.PostAsync(
+						const res = RetryHttp(() => InternalHttpManager.PostAsync(
 							AirshipUrl.GameCoordinator + "/parties/party/join",
 							json.encode({
 								partyId: data.partyId,
@@ -212,7 +212,7 @@ export class MainMenuPartyController {
 		}
 
 		CanvasAPI.OnClickEvent(leaveButton, () => {
-			RetryHttp429(() => InternalHttpManager.PostAsync(
+			RetryHttp(() => InternalHttpManager.PostAsync(
 				AirshipUrl.GameCoordinator + "/parties/party/remove",
 				json.encode({
 					userToRemove: Game.localPlayer.userId,
@@ -226,7 +226,7 @@ export class MainMenuPartyController {
 	 * @param userIdToAdd The userId of the user to invite
 	 */
 	public async InviteUser(userIdToAdd: string): Promise<Result<undefined, undefined>> {
-		const res = await RetryHttp429(() => InternalHttpManager.PostAsync(
+		const res = await RetryHttp(() => InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/parties/party/invite",
 			json.encode({ userToAdd: userIdToAdd }),
 		), { retryKey: "post/game-coordinator/parties/party/invite" });
@@ -248,7 +248,7 @@ export class MainMenuPartyController {
 	 * @param userIdToRemove
 	 */
 	public async RemoveUser(userIdToRemove: string): Promise<Result<undefined, undefined>> {
-		const res = await RetryHttp429(() => InternalHttpManager.PostAsync(
+		const res = await RetryHttp(() => InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/parties/party/remove",
 			json.encode({
 				userToRemove: userIdToRemove,
@@ -271,7 +271,7 @@ export class MainMenuPartyController {
 	 * @param partyId The id of the party
 	 */
 	public async JoinParty(partyId: string): Promise<Result<undefined, undefined>> {
-		const res = await RetryHttp429(() => InternalHttpManager.PostAsync(
+		const res = await RetryHttp(() => InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/parties/party/join",
 			json.encode({ partyId }),
 		), { retryKey: "post/game-coordinator/parties/party/join" });

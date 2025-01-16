@@ -3,7 +3,7 @@ import { ItemInstanceDto, Transaction } from "@Easy/Core/Shared/Airship/Types/Ou
 import { PlatformInventoryUtil } from "@Easy/Core/Shared/Airship/Util/PlatformInventoryUtil";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { RetryHttp429 } from "@Easy/Core/Shared/Http/HttpRetry";
+import { RetryHttp } from "@Easy/Core/Shared/Http/HttpRetry";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 
 export const enum PlatformInventoryServiceBridgeTopics {
@@ -56,7 +56,7 @@ export class ProtectedPlatformInventoryService {
 	}
 
 	public async GrantItem(userId: string, classId: string): Promise<ReturnType<ServerBridgeApiGrantItem>> {
-		const res = await RetryHttp429(
+		const res = await RetryHttp(
 			() => InternalHttpManager.PostAsync(
 				`${AirshipUrl.ContentService}/items/uid/${userId}/class-id/${classId}`,
 				"",
@@ -73,7 +73,7 @@ export class ProtectedPlatformInventoryService {
 	}
 
 	public async DeleteItem(instanceId: string): Promise<ReturnType<ServerBridgeApiDeleteItem>> {
-		const res = await RetryHttp429(
+		const res = await RetryHttp(
 			() => InternalHttpManager.DeleteAsync(`${AirshipUrl.ContentService}/items/item-id/${instanceId}`),
 			{ retryKey: "delete/content-service/items/item-id/:instanceId" },
 		);
@@ -87,7 +87,7 @@ export class ProtectedPlatformInventoryService {
 	}
 
 	public async GetItems(userId: string, query?: ItemQueryParameters): Promise<ReturnType<ServerBridgeApiGetItems>> {
-		const res = await RetryHttp429(
+		const res = await RetryHttp(
 			() => InternalHttpManager.GetAsync(
 				`${AirshipUrl.ContentService}/items/uid/${userId}?=${PlatformInventoryUtil.BuildItemQueryString(query)}`,
 			),
@@ -110,7 +110,7 @@ export class ProtectedPlatformInventoryService {
 		user1: { uid: string; itemInstanceIds: string[] },
 		user2: { uid: string; itemInstanceIds: string[] },
 	): Promise<ReturnType<ServerBridgeApiPerformTrade>> {
-		const res = await RetryHttp429(
+		const res = await RetryHttp(
 			() => InternalHttpManager.PostAsync(
 				`${AirshipUrl.ContentService}/transactions/trade`,
 				json.encode({

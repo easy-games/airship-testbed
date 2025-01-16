@@ -9,7 +9,7 @@ import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { AuthController } from "../../Auth/AuthController";
 import { ProtectedFriendsController } from "../../Social/FriendsController";
 import { User } from "../../User/User";
-import { RetryHttp429 } from "@Easy/Core/Shared/Http/HttpRetry";
+import { RetryHttp } from "@Easy/Core/Shared/Http/HttpRetry";
 
 export const enum UserControllerBridgeTopics {
 	GetUserByUsername = "UserController:GetUserByUsername",
@@ -73,7 +73,7 @@ export class ProtectedUserController {
 	 * @internal
 	 */
 	public async IsFriendsWith(userId: string): Promise<ReturnType<BrigdeApiIsFriendsWith>> {
-		const res = await RetryHttp429(
+		const res = await RetryHttp(
 			() => InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/friends/uid/${userId}/status`),
 			{ retryKey: "get/game-coordinator/friends/uid/:userId/status" }
 		);
@@ -94,7 +94,7 @@ export class ProtectedUserController {
 	 * @internal
 	 */
 	public async GetUserById(userId: string): Promise<ReturnType<BridgeApiGetUserById>> {
-		const res = await RetryHttp429(
+		const res = await RetryHttp(
 			() => InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/users/uid/${userId}`),
 			{ retryKey: "get/game-coordinator/users/uid/:userId" }
 		);
@@ -112,7 +112,7 @@ export class ProtectedUserController {
 	}
 
 	public async GetUserByUsername(username: string): Promise<ReturnType<BridgeApiGetUserByUsername>> {
-		const res = await RetryHttp429(
+		const res = await RetryHttp(
 			() => InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/users/user?username=${username}`),
 			{ retryKey: "get/game-coordinator/users/user" }
 		);
@@ -133,7 +133,7 @@ export class ProtectedUserController {
 			};
 		}
 
-		const res = await RetryHttp429(
+		const res = await RetryHttp(
 			() => InternalHttpManager.GetAsync(
 				`${AirshipUrl.GameCoordinator}/users?users[]=${userIds.join("&users[]=")}&strict=${
 					strict ? "true" : "false"
@@ -165,7 +165,7 @@ export class ProtectedUserController {
 	}
 
 	public async GetFriends(): Promise<ReturnType<BridgeApiGetFriends>> {
-		const res = await RetryHttp429(
+		const res = await RetryHttp(
 			() => InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/friends/self`),
 			{ retryKey: "get/game-coordinator/friends/self" }
 		);
@@ -191,7 +191,7 @@ export class ProtectedUserController {
 	}
 
 	public async FetchLocalUser(): Promise<void> {
-		const res = await RetryHttp429(
+		const res = await RetryHttp(
 			() => InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/users/self`),
 			{ retryKey: "get/game-coordinator/users/self" }
 		);

@@ -5,7 +5,7 @@ import { Game } from "@Easy/Core/Shared/Game";
 import { Protected } from "@Easy/Core/Shared/Protected";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { ProtectedUserController } from "../User/UserController";
-import { RetryHttp429 } from "@Easy/Core/Shared/Http/HttpRetry";
+import { RetryHttp } from "@Easy/Core/Shared/Http/HttpRetry";
 
 export const enum PurchaseControllerBridgeTopics {
 	RequestPurchase = "PurchaseController:RequestPurchase",
@@ -31,7 +31,7 @@ export class ProtectedPurchaseController {
 					return false;
 				}
 
-				const res = RetryHttp429(() => InternalHttpManager.PostAsync(
+				const res = RetryHttp(() => InternalHttpManager.PostAsync(
 					`${AirshipUrl.ContentService}/shop/purchase/validate`,
 					json.encode({
 						productId,
@@ -66,7 +66,7 @@ export class ProtectedPurchaseController {
 	protected OnStart(): void {}
 
 	public PerformPurchase(config: { productId: string; receiverUid: string; quantity: number; total: number }): void {
-		const res = RetryHttp429(() =>
+		const res = RetryHttp(() =>
 			InternalHttpManager.PostAsync(`${AirshipUrl.ContentService}/shop/purchase`, json.encode(config)),
 			{ retryKey: "post/content-service/shop/purchase" },
 		).expect();

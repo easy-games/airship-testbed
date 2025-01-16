@@ -1,7 +1,7 @@
 import { GameDto, GamesDto, MyGamesDto } from "@Easy/Core/Client/Components/HomePage/API/GamesAPI";
 import { Controller, Service } from "@Easy/Core/Shared/Flamework/flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { RetryHttp429 } from "@Easy/Core/Shared/Http/HttpRetry";
+import { RetryHttp } from "@Easy/Core/Shared/Http/HttpRetry";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 
@@ -39,7 +39,7 @@ export default class SearchSingleton {
 	}
 
 	public FetchMyGames(retryDelay = 1): void {
-		const res = RetryHttp429(
+		const res = RetryHttp(
 			() => InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/memberships/games/self?liveStats=true"),
 			{ retryKey: "get/content-service/memberships/games/self" },
 		).expect();
@@ -74,7 +74,7 @@ export default class SearchSingleton {
 	}
 
 	public FetchPopularGames(): void {
-		const res = RetryHttp429(
+		const res = RetryHttp(
 			() => InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/games"),
 			{ retryKey: "get/content-service/games" },
 		).expect();

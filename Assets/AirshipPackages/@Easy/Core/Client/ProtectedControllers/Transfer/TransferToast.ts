@@ -1,4 +1,4 @@
-import { RetryHttp429 } from "@Easy/Core/Shared/Http/HttpRetry";
+import { RetryHttp } from "@Easy/Core/Shared/Http/HttpRetry";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 
@@ -20,7 +20,7 @@ export default class TransferToast extends AirshipBehaviour {
 		this.bin.Add(
 			this.cancelButton.onClick.Connect(() => {
 				task.spawn(async () => {
-					await RetryHttp429(
+					await RetryHttp(
 						() => InternalHttpManager.PostAsync(AirshipUrl.GameCoordinator + "/transfers/transfer/cancel"),
 						{ retryKey: "post/game-coordinator/transfers/transfer/cancel" }
 					);

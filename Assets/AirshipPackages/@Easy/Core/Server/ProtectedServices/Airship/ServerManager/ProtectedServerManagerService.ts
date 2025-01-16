@@ -7,7 +7,7 @@ import { Dependency, Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { ShutdownService } from "../../Shutdown/ShutdownService";
-import { RetryHttp429 } from "@Easy/Core/Shared/Http/HttpRetry";
+import { RetryHttp } from "@Easy/Core/Shared/Http/HttpRetry";
 
 export const enum ServerManagerServiceBridgeTopics {
 	CreateServer = "ServerManagerService:CreateServer",
@@ -144,7 +144,7 @@ export class ProtectedServerManagerService {
 	}
 
 	public async CreateServer(config?: AirshipServerConfig): Promise<ReturnType<ServerBridgeApiCreateServer>> {
-		const res = await RetryHttp429(
+		const res = await RetryHttp(
 			() => InternalHttpManager.PostAsync(
 				`${AirshipUrl.GameCoordinator}/servers/create`,
 				json.encode({
@@ -174,7 +174,7 @@ export class ProtectedServerManagerService {
 			return {};
 		}
 
-		const res = await RetryHttp429(
+		const res = await RetryHttp(
 			() => InternalHttpManager.GetAsync(
 				`${AirshipUrl.GameCoordinator}/servers?serverIds[]=${serverIds.join("&serverIds[]=")}`,
 			),
@@ -210,7 +210,7 @@ export class ProtectedServerManagerService {
 	}
 
 	public async GetServerList(page: number = 0): Promise<ReturnType<ServerBridgeApiGetServerList>> {
-		const res = await RetryHttp429(
+		const res = await RetryHttp(
 			() => InternalHttpManager.GetAsync(
 				`${AirshipUrl.GameCoordinator}/servers/game-id/${Game.gameId}/list?page=${page}`,
 			),

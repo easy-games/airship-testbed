@@ -12,7 +12,7 @@ import { SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { OnFixedUpdate } from "@Easy/Core/Shared/Util/Timer";
 import { ProtectedUserController } from "../Airship/User/UserController";
 import { AuthController } from "../Auth/AuthController";
-import { RetryHttp429 } from "@Easy/Core/Shared/Http/HttpRetry";
+import { RetryHttp } from "@Easy/Core/Shared/Http/HttpRetry";
 
 @Controller({})
 export class ChangeUsernameController {
@@ -119,7 +119,7 @@ export class ChangeUsernameController {
 		}
 
 		this.lastCheckedUsername = username;
-		const res = RetryHttp429(
+		const res = RetryHttp(
 			() => InternalHttpManager.GetAsync(
 				AirshipUrl.GameCoordinator + "/users/availability?username=" + username,
 			),

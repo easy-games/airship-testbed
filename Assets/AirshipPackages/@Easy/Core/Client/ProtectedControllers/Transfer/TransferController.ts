@@ -6,7 +6,7 @@ import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import inspect from "@Easy/Core/Shared/Util/Inspect";
 import { MainMenuPartyController } from "../Social/MainMenuPartyController";
 import { SocketController } from "../Socket/SocketController";
-import { RetryHttp429 } from "@Easy/Core/Shared/Http/HttpRetry";
+import { RetryHttp } from "@Easy/Core/Shared/Http/HttpRetry";
 
 @Controller({})
 export class TransferController {
@@ -52,7 +52,7 @@ export class TransferController {
 	): Promise<Result<undefined, undefined>> {
 		let isPartyLeader = Dependency<MainMenuPartyController>().IsPartyLeader();
 
-		const res = await RetryHttp429(() => InternalHttpManager.PostAsync(
+		const res = await RetryHttp(() => InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/transfers/transfer/self",
 			json.encode({
 				gameId: gameId,
@@ -80,7 +80,7 @@ export class TransferController {
 	 * or the client is not in a party, this function will have no effect.
 	 */
 	public async TransferToPartyLeader(): Promise<Result<undefined, undefined>> {
-		const res = await RetryHttp429(() => InternalHttpManager.PostAsync(
+		const res = await RetryHttp(() => InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/transfers/transfer/self/party",
 			"",
 		), { retryKey: "post/game-coordinator/transfers/transfer/self/party" });
@@ -104,7 +104,7 @@ export class TransferController {
 	 * Only the party leader can send this request.
 	 */
 	public async TransferPartyMembersToLeader(): Promise<boolean> {
-		const res = await RetryHttp429(() => InternalHttpManager.PostAsync(
+		const res = await RetryHttp(() => InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/transfers/transfer/party",
 			"",
 		), { retryKey: "post/game-coordinator/transfers/transfer/party" });

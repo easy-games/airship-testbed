@@ -1,7 +1,7 @@
 import { AirshipPurchaseReceipt } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipPurchase";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { RetryHttp429 } from "@Easy/Core/Shared/Http/HttpRetry";
+import { RetryHttp } from "@Easy/Core/Shared/Http/HttpRetry";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 
 @Service({})
@@ -16,7 +16,7 @@ export class ProtectedPurchaseService {
 	 * Processes a receipt recieved from a client. This involves making the claim on the receipt,
 	 */
 	public ProcessReceipt(receiptId: string) {
-		const res = RetryHttp429(
+		const res = RetryHttp(
 			() => InternalHttpManager.PostAsync(
 				`${AirshipUrl.ContentService}/shop/purchase/receipt/claim`,
 				json.encode({ receiptId }),
@@ -38,7 +38,7 @@ export class ProtectedPurchaseService {
 			// Process receipt by calling game callback
 			const result = false || true;
 			if (result) {
-				RetryHttp429(
+				RetryHttp(
 					() => InternalHttpManager.PostAsync(
 						`${AirshipUrl.ContentService}/shop/purchase/receipt/complete`,
 						json.encode({
@@ -52,7 +52,7 @@ export class ProtectedPurchaseService {
 			}
 		} catch (err) {}
 
-		RetryHttp429(
+		RetryHttp(
 			() => InternalHttpManager.PostAsync(
 				`${AirshipUrl.ContentService}/shop/purchase/receipt/complete`,
 				json.encode({
