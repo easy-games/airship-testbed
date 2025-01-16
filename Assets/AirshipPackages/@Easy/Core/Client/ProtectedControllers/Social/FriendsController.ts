@@ -158,12 +158,12 @@ export class ProtectedFriendsController {
 						if (result) {
 							task.spawn(async () => {
 								this.socialNotification.gameObject.SetActive(false);
-								this.AcceptFriendRequestAsync(foundUser.username, foundUser.uid);
+								await this.AcceptFriendRequestAsync(foundUser.username, foundUser.uid);
 							});
 						} else {
 							task.spawn(async () => {
 								this.socialNotification.gameObject.SetActive(false);
-								this.RejectFriendRequestAsync(foundUser.uid);
+								await this.RejectFriendRequestAsync(foundUser.uid);
 							});
 						}
 					},
