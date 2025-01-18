@@ -71,6 +71,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8616685848737228372, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       insertIndex: -1
       addedObject: {fileID: -2215653899337362901}
+    - targetCorrespondingSourceObject: {fileID: 8616685848737228372, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 952053684114308443}
+    - targetCorrespondingSourceObject: {fileID: 7387929036933538088, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5191571332923387930}
   m_SourcePrefab: {fileID: 100100000, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
 --- !u!1 &5042559581574877564 stripped
 GameObject:
@@ -113,6 +119,129 @@ MonoBehaviour:
   clientColor: {r: 0, g: 0, b: 1, a: 1}
   movement: {fileID: 6664317513368887607}
   pauseOnReplay: 0
+--- !u!114 &952053684114308443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5042559581574877564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scriptFile: {fileID: -5013684570317190384, guid: d16f7b806f2baa74c809d1b7a5b66f68, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/UI/VisualGraph/VisualGraphTransform.lua
+  m_error: 0
+  m_yielded: 0
+  m_canResume: 0
+  m_asyncYield: 0
+  m_onUpdateHandle: -1
+  m_onLateUpdateHandle: -1
+  m_shortFileName: 
+  m_metadata:
+    name: VisualGraphTransform
+    singleton: 0
+    decorators: []
+    properties:
+    - name: graphName
+      type: string
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: Root Pos
+      serializedObject: {fileID: 0}
+      modified: 1
+    - name: useMovementTransform
+      type: boolean
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 0
+      serializedObject: {fileID: 0}
+      modified: 0
+    displayIcon: {fileID: 0}
+    displayName: 
+  contextOverwritten: 0
+--- !u!1 &6118537333859603968 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7387929036933538088, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
+  m_PrefabInstance: {fileID: 3633942113770370856}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5191571332923387930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6118537333859603968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scriptFile: {fileID: -5013684570317190384, guid: d16f7b806f2baa74c809d1b7a5b66f68, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/UI/VisualGraph/VisualGraphTransform.lua
+  m_error: 0
+  m_yielded: 0
+  m_canResume: 0
+  m_asyncYield: 0
+  m_onUpdateHandle: -1
+  m_onLateUpdateHandle: -1
+  m_shortFileName: 
+  m_metadata:
+    name: VisualGraphTransform
+    singleton: 0
+    decorators: []
+    properties:
+    - name: graphName
+      type: string
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: Graphic Pos
+      serializedObject: {fileID: 0}
+      modified: 1
+    - name: useMovementTransform
+      type: boolean
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 0
+      serializedObject: {fileID: 0}
+      modified: 0
+    displayIcon: {fileID: 0}
+    displayName: 
+  contextOverwritten: 0
 --- !u!114 &6664317513368887607 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7931457288082626079, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
