@@ -1,3 +1,4 @@
+import { Asset } from "../../Asset";
 import VisualGraphView from "./VisualGraphView";
 
 export default class VisualGraphManager extends AirshipBehaviour {
@@ -47,8 +48,15 @@ export class VisualGraphSingelton {
 		}
 		let currentManagerHolder = GameObject.Find("VisualGraphCanvas");
 		if(!currentManagerHolder){
-			warn("Something is trying to use the VisualGraph but the canvas manager is not in the scene");
-			return undefined;
+			let template = Asset.LoadAssetIfExists("Assets/AirshipPackages/@Easy/Core/Prefabs/UI/VisualGraph/VisualGraphCanvas.prefab");
+			if(template){
+				currentManagerHolder = Instantiate(template);
+				currentManagerHolder.name = "VisualGraphCanvas";
+			}
+			if(!template || ! currentManagerHolder){
+				warn("Something is trying to use the VisualGraph but the canvas manager is not in the scene");
+				return undefined;
+			}
 		}
 		let currentManager = currentManagerHolder.GetAirshipComponent<VisualGraphManager>();
 		if(!currentManager){
