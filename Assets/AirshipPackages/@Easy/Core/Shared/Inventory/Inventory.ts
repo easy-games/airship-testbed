@@ -96,21 +96,43 @@ export default class Inventory extends AirshipBehaviour {
 			if (!Game.IsServer()) {
 				Airship.Inventory.RegisterInventory(this);
 			}
+
+			// This seems like it should not be here! Why are we listening to network and calling SetHeldSlotInternal()?!
+			this.bin.Add(
+				CoreNetwork.ServerToClient.SetHeldInventorySlot.client.OnServerEvent((invId, slot) => {
+					if (invId === this.id) {
+						// print("SetHeldInventorySlot invId: " + invId + ", slot: " + slot);
+						// const selected = this.items.get(slot);
+						// if (selected?.itemType === currentItemStack?.itemType) return;
+
+						// if (cleanup !== undefined) {
+						// 	cleanup();
+						// }
+						// currentItemStack = selected;
+						this.SetHeldSlotInternal(slot);
+						// cleanup = callback(selected);
+					}
+				}),
+			);
 		};
 
 		const StartServer = () => {
 			// print("NetID (OnStartServer): " + this.networkIdentity.netId);
 			this.id = this.networkIdentity.netId;
-			CoreNetwork.ClientToServer.SetHeldSlot.server.OnClientEvent((player, invId, slot) => {
-				if (this.id !== invId) return;
+			this.bin.Add(
+				CoreNetwork.ClientToServer.SetHeldSlot.server.OnClientEvent((player, invId, slot) => {
+					if (this.id !== invId) return;
 
-				const character = Airship.Characters.FindByPlayer(player);
-				if (!character || character.inventory !== this) return;
+					const character = Airship.Characters.FindByPlayer(player);
+					if (!character || character.inventory !== this) return;
 
-				this.SetHeldSlotInternal(slot);
+					if (!(Game.IsHosting() && Game.localPlayer === player)) {
+						this.SetHeldSlotInternal(slot);
+					}
 
-				CoreNetwork.ServerToClient.SetHeldInventorySlot.server.FireExcept(player, this.id, slot, true);
-			});
+					CoreNetwork.ServerToClient.SetHeldInventorySlot.server.FireExcept(player, this.id, slot, true);
+				}),
+			);
 			Airship.Inventory.RegisterInventory(this);
 		};
 
@@ -154,51 +176,55 @@ export default class Inventory extends AirshipBehaviour {
 					Key.Digit9,
 				];
 				for (const hotbarIndex of $range(0, hotbarKeys.size() - 1)) {
-					Keyboard.OnKeyDown(hotbarKeys[hotbarIndex], (event) => {
-						if (event.uiProcessed) return;
-						this.SetHeldSlot(hotbarIndex);
-					});
+					controlsBin.Add(
+						Keyboard.OnKeyDown(hotbarKeys[hotbarIndex], (event) => {
+							if (event.uiProcessed) return;
+							this.SetHeldSlot(hotbarIndex);
+						}),
+					);
 				}
 
 				// Scroll to select held item:
-				Mouse.onScrolled.Connect((event) => {
-					if (!this.controlsEnabled || event.uiProcessed || event.IsCancelled()) return;
-					if (Mouse.IsOverUI()) return;
-					// print("scroll: " + delta);
-					if (math.abs(event.delta) < 0.05) return;
+				controlsBin.Add(
+					Mouse.onScrolled.Connect((event) => {
+						if (!this.controlsEnabled || event.uiProcessed || event.IsCancelled()) return;
+						if (Mouse.IsOverUI()) return;
+						// print("scroll: " + delta);
+						if (math.abs(event.delta) < 0.05) return;
 
-					const now = Time.time;
-					if (now - this.lastScrollTime < this.scrollCooldown) {
-						return;
-					}
-
-					this.lastScrollTime = now;
-
-					const selectedSlot = this.GetHeldSlot();
-					if (selectedSlot === undefined) return;
-
-					const inc = event.delta < 0 ? 1 : -1;
-					let trySlot = selectedSlot;
-
-					// Find the next available item in the hotbar:
-					for (const _ of $range(1, hotbarKeys.size())) {
-						trySlot += inc;
-
-						// Clamp index to hotbar items:
-						if (inc === 1 && trySlot >= hotbarKeys.size()) {
-							trySlot = 0;
-						} else if (inc === -1 && trySlot < 0) {
-							trySlot = hotbarKeys.size() - 1;
+						const now = Time.time;
+						if (now - this.lastScrollTime < this.scrollCooldown) {
+							return;
 						}
 
-						// If the item at the given `trySlot` index exists, set it as the held item:
-						const itemAtSlot = this.GetItem(trySlot);
-						if (itemAtSlot !== undefined) {
-							this.SetHeldSlot(trySlot);
-							break;
+						this.lastScrollTime = now;
+
+						const selectedSlot = this.GetHeldSlot();
+						if (selectedSlot === undefined) return;
+
+						const inc = event.delta < 0 ? 1 : -1;
+						let trySlot = selectedSlot;
+
+						// Find the next available item in the hotbar:
+						for (const _ of $range(1, hotbarKeys.size())) {
+							trySlot += inc;
+
+							// Clamp index to hotbar items:
+							if (inc === 1 && trySlot >= hotbarKeys.size()) {
+								trySlot = 0;
+							} else if (inc === -1 && trySlot < 0) {
+								trySlot = hotbarKeys.size() - 1;
+							}
+
+							// If the item at the given `trySlot` index exists, set it as the held item:
+							const itemAtSlot = this.GetItem(trySlot);
+							if (itemAtSlot !== undefined) {
+								this.SetHeldSlot(trySlot);
+								break;
+							}
 						}
-					}
-				});
+					}),
+				);
 			}),
 		);
 	}
@@ -244,24 +270,6 @@ export default class Inventory extends AirshipBehaviour {
 		this.observeHeldItemBins.push(bin);
 		let currentItemStack = this.items.get(this.heldSlot);
 		let cleanup = callback(currentItemStack);
-
-		// This seems like it should not be here! Why are we listening to network and calling SetHeldSlotInternal()?!
-		bin.Add(
-			CoreNetwork.ServerToClient.SetHeldInventorySlot.client.OnServerEvent((invId, slot) => {
-				if (invId === this.id) {
-					// print("SetHeldInventorySlot invId: " + invId + ", slot: " + slot);
-					const selected = this.items.get(slot);
-					if (selected?.itemType === currentItemStack?.itemType) return;
-
-					if (cleanup !== undefined) {
-						cleanup();
-					}
-					currentItemStack = selected;
-					this.SetHeldSlotInternal(slot);
-					cleanup = callback(selected);
-				}
-			}),
-		);
 
 		bin.Add(
 			this.onHeldSlotChanged.Connect((newSlot) => {

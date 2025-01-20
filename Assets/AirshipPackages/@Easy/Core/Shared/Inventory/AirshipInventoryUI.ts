@@ -171,6 +171,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 				inv.onHeldSlotChanged.Connect((slot) => {
 					for (let i = 0; i < inv.hotbarSlots; i++) {
 						const itemStack = inv.GetItem(i);
+
 						this.UpdateHotbarSlot(i, slot, itemStack);
 					}
 					this.prevHeldSlot = slot;
