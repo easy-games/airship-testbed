@@ -21,7 +21,7 @@ const DEFAULT_MAX_RETRIES = 5;
  */
 export interface HttpRetryConfig {
     /**
-     * A key used to identify a request, when a key is rate limited all other requests with the same key will
+     * A key used to identify a request. When a key is rate limited all other requests with the same key will
      *  assume the rate limit has been reached for them as well.
      * 
      * Not providing this key will disable any proactive rate limiting.
@@ -35,7 +35,7 @@ export interface HttpRetryConfig {
      * 
      * @param response The http response which is being processed due to a 429 response code.
      * @returns A number representing the number of seconds to wait before retrying the request.
-     *          If undefined is returned the promise returned by {@link HttpRetry} will be resolved with the response.
+     *          If undefined is returned, the promise returned by {@link HttpRetry} will be resolved with the response.
      */
     retrieveRetryTime?: (response: HttpResponse) => number | undefined;
 
@@ -286,7 +286,9 @@ const CreateHttpRetryPromise: HttpRetryCallback = (httpRequest: HttpCallback, co
 let contextId = 0;
 
 /**
- * Isolates a retry context which prefixes all retry keys used with the returned function.
+ * Creates an isolated retry key context. Use the returned function to perform retries in the isolated retryKey context.
+ * Keys within an isolated context will not conflict with keys in other contexts or in the global context.
+ * This function is useful for singletons where you can have a shared retry context internally.
  * 
  * @returns An isolated retry mechanism which can be used to retry http requests.
  */
