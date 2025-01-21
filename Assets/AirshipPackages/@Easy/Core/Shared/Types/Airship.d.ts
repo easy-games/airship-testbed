@@ -952,6 +952,20 @@ interface Volume extends MonoBehaviour {
 	sharedProfile: VolumeProfile;
 }
 
+interface TubeRendererCS extends MonoBehaviour {
+	SetPositions(positions: CSArray<Vector3>): void;
+	SetStartRadius(radius: number): void;
+	GetStartRadius(): number;
+	SetEndRadius(radius: number): void;
+	GetEndRadius(): number;
+	SetSides(sides: number): void;
+}
+
+interface TubeRendererCSConstructor {
+	new (): TubeRendererCS;
+}
+declare const TubeRendererCS: TubeRendererCSConstructor;
+
 interface NetworkBehaviour extends MonoBehaviour {}
 
 interface LagCompensator extends NetworkBehaviour {
