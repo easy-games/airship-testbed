@@ -11,19 +11,19 @@ export default class PredictedMovementDebugging extends AirshipBehaviour {
 	public movement: CharacterMovement;
 
 	@Header("Variables")
-	public showVel = false;
-	public showModel = false;
-	public showRoot = false;
-	public showCamera = false;
+	// public showVel = false;
+	// public showModel = false;
+	// public showRoot = false;
+	// public showCamera = false;
 	
-	private rigidVelGraph?: VisualGraphView = undefined;
-	private modelPositionGraph?: VisualGraphView = undefined;
-	private rootPositionGraph?: VisualGraphView = undefined;
-	private cameraPositionGraph?: VisualGraphView = undefined;
+	// private rigidVelGraph?: VisualGraphView = undefined;
+	// private modelPositionGraph?: VisualGraphView = undefined;
+	// private rootPositionGraph?: VisualGraphView = undefined;
+	// private cameraPositionGraph?: VisualGraphView = undefined;
 
-	private rigid: Rigidbody;
+	// private rigid: Rigidbody;
 
-	private lastMag = 0;
+	// private lastMag = 0;
 	private bin = new Bin();
 
 	private DebugSignal = new NetworkSignal<[i: number]>("PredictedDebugSignal");
@@ -34,7 +34,6 @@ export default class PredictedMovementDebugging extends AirshipBehaviour {
 				this.DebugSignal.client.FireServer(0);
 			}));
 			this.bin.Add(Keyboard.OnKeyDown(Key.F, (e)=>{
-				Game.localPlayer.character?.movement.SetDebugFlying(true);
 				this.DebugSignal.client.FireServer(1);
 			}));
 		}

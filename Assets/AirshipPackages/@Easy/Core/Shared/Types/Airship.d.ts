@@ -126,6 +126,7 @@ interface CharacterMovement extends Component {
 		crouch: boolean,
 		moveDirWorldSpace: boolean,
 	): void;
+	SetMovementEnabled(isEnabled: boolean): void;
 	SetLookVector(lookVector: Vector3): void;
 	SetLookVectorRecurring(lookVector: Vector3): void;
 	SetCustomData(customData: BinaryBlob): void;

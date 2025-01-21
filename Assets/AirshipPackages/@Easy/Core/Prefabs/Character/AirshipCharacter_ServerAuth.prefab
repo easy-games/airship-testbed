@@ -9,6 +9,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1645000729044007242, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
+      propertyPath: allowDebugFlying
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1645000729044007242, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       propertyPath: groundCollisionLayerMask.m_Bits
       value: 4294836481
       objectReference: {fileID: 0}
@@ -74,6 +78,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8616685848737228372, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 952053684114308443}
+    - targetCorrespondingSourceObject: {fileID: 8616685848737228372, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3426884107082537107}
     - targetCorrespondingSourceObject: {fileID: 7387929036933538088, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5191571332923387930}
@@ -99,14 +106,14 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   stateHistoryLimit: 48
-  recordInterval: 0.05
+  recordInterval: 0.06
   onlyRecordChanges: 1
   compareLastFirst: 1
   checkReconcileEveryNthFrame: 4
   serverSerializationOffset: 0
   replayTickOffset: 0
-  positionCorrectionThreshold: 0.4
-  velocityCorrectionThreshold: 3
+  positionCorrectionThreshold: 0.5
+  velocityCorrectionThreshold: 5
   velocitySnapThreshold: 5
   reduceSendsWhileIdle: 1
   smoothRigidbody: 1
@@ -175,6 +182,54 @@ MonoBehaviour:
       serializedValue: 0
       serializedObject: {fileID: 0}
       modified: 0
+    displayIcon: {fileID: 0}
+    displayName: 
+  contextOverwritten: 0
+--- !u!114 &3426884107082537107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5042559581574877564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scriptFile: {fileID: 6929938930846345048, guid: 44926cdece2cd4612bf5615b39fba6f4, type: 3}
+  m_fileFullPath: Assets/Code/Components/Debugging/PredictedMovementDebugging.lua
+  m_error: 0
+  m_yielded: 0
+  m_canResume: 0
+  m_asyncYield: 0
+  m_onUpdateHandle: -1
+  m_onLateUpdateHandle: -1
+  m_shortFileName: 
+  m_metadata:
+    name: PredictedMovementDebugging
+    singleton: 0
+    decorators: []
+    properties:
+    - name: movement
+      type: object
+      objectType: CharacterMovement
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"References"'
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 6664317513368887607}
+      modified: 1
     displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0

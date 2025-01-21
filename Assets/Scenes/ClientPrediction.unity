@@ -2308,9 +2308,6 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 7736549642688669431, guid: 241cf930257357542a77bc6d7fb552e4, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 956461710}
-    - targetCorrespondingSourceObject: {fileID: 7736549642688669431, guid: 241cf930257357542a77bc6d7fb552e4, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 956461711}
   m_SourcePrefab: {fileID: 100100000, guid: 241cf930257357542a77bc6d7fb552e4, type: 3}
 --- !u!20 &569461824 stripped
@@ -3083,9 +3080,9 @@ MonoBehaviour:
         - type: string
           serializedValue: '"UI Displays"'
       nullable: 0
-      serializedValue: 1
+      serializedValue: 0
       serializedObject: {fileID: 0}
-      modified: 0
+      modified: 1
     - name: customViewmodelPrefab
       type: object
       objectType: GameObject
@@ -4304,65 +4301,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7736549642688669431, guid: 241cf930257357542a77bc6d7fb552e4, type: 3}
   m_PrefabInstance: {fileID: 569461823}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &956461710
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 956461706}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  scriptFile: {fileID: -5013684570317190384, guid: d16f7b806f2baa74c809d1b7a5b66f68, type: 3}
-  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/UI/VisualGraph/VisualGraphTransform.lua
-  m_error: 0
-  m_yielded: 0
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
-    name: VisualGraphTransform
-    singleton: 0
-    decorators: []
-    properties:
-    - name: graphName
-      type: string
-      objectType: 
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      decorators: []
-      nullable: 0
-      serializedValue: CameraTransform
-      serializedObject: {fileID: 0}
-      modified: 1
-    - name: useMovementTransform
-      type: boolean
-      objectType: 
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      decorators: []
-      nullable: 0
-      serializedValue: 0
-      serializedObject: {fileID: 0}
-      modified: 0
-    displayIcon: {fileID: 0}
-    displayName: 
-  contextOverwritten: 0
 --- !u!114 &956461711
 MonoBehaviour:
   m_ObjectHideFlags: 0

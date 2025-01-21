@@ -1,4 +1,5 @@
 import { Asset } from "../../Asset";
+import { Game } from "../../Game";
 import VisualGraphView from "./VisualGraphView";
 
 export default class VisualGraphManager extends AirshipBehaviour {
@@ -11,9 +12,15 @@ export default class VisualGraphManager extends AirshipBehaviour {
 	private currentGraphics: VisualGraphView[] = [];
 
 	public static ManagerAddGraph(title: string){
+		if(!Game.IsClient()){
+			return;
+		}
 		return VisualGraphSingelton.GetInstance()?.AddGraph(title);
 	}
 	public static ManagerRemoveGraph(graph: VisualGraphView){
+		if(!Game.IsClient()){
+			return;
+		}
 		return VisualGraphSingelton.GetInstance()?.RemoveGraph(graph);
 	}
 	
