@@ -3375,6 +3375,10 @@ declare const enum ScrollViewMode {
     Horizontal = 1,
     VerticalAndHorizontal = 2,
 }
+declare const enum DecalScaleMode {
+    ScaleInvariant = 0,
+    InheritFromHierarchy = 1,
+}
 declare const enum DetailScatterMode {
     CoverageMode = 0,
     InstanceCountMode = 1,
@@ -36837,12 +36841,14 @@ interface HttpManager {
     
 interface HttpResponse {
     success: boolean;
-    statusCode: number;
     data: string;
     error: string;
+    statusCode: number;
+    headers: CSDictionary<string, string>;
 
 
 
+    GetHeader(headerName: string): string;
 
 
 }
@@ -40809,6 +40815,37 @@ interface AirshipLongPressConstructor {
 
 }
 declare const AirshipLongPress: AirshipLongPressConstructor;
+    
+interface DecalProjector extends MonoBehaviour {
+    material: Material;
+    drawDistance: number;
+    fadeScale: number;
+    startAngleFade: number;
+    endAngleFade: number;
+    uvScale: Vector2;
+    uvBias: Vector2;
+    renderingLayerMask: number;
+    scaleMode: DecalScaleMode;
+    pivot: Vector3;
+    size: Vector3;
+    fadeFactor: number;
+
+
+
+    IsValid(): boolean;
+
+
+}
+    
+interface DecalProjectorConstructor {
+
+
+    new(): DecalProjector;
+
+
+
+}
+declare const DecalProjector: DecalProjectorConstructor;
     
 interface BoxCollider2D extends Collider2D {
     /**
@@ -47139,8 +47176,10 @@ interface VisualGraphComponent extends MonoBehaviour {
 
     AddValue(newValue: number): void;
     AddValues(newValue: Vector3): void;
+    ClearRange(): void;
     SetLineColor(colorA: Color): void;
     SetLineColors(colorA: Color, colorB: Color, colorC: Color): void;
+    SetRange(minRange: number, maxRange: number): void;
     UpdateMesh(): void;
 
 
