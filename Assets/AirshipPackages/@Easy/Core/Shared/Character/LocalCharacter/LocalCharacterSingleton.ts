@@ -103,22 +103,6 @@ export class LocalCharacterSingleton {
 				}
 			});
 
-			// Toggle fly mode (like mc creative):
-			let lastSpace = 0;
-			bin.Add(
-				Keyboard.OnKeyDown(Key.Space, (event) => {
-					if (event.uiProcessed) return;
-					const now = Time.time;
-					const dt = now - lastSpace;
-					if (dt < 0.3) {
-						lastSpace = 0;
-						this.characterMovement?.SetDebugFlying(!this.characterMovement.IsFlying());
-					} else {
-						lastSpace = now;
-					}
-				}),
-			);
-
 			// Screenshot:
 			bin.Add(
 				Keyboard.OnKeyDown(Key.F2, (event) => {
