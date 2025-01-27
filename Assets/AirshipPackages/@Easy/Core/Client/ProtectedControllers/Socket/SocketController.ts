@@ -41,8 +41,9 @@ export class SocketController {
 					const regions = InternalHttpManager.GetAsync(
 						AirshipUrl.GameCoordinator + "/servers/regions/ping-servers",
 					);
-					if (!regions.success)
+					if (!regions.success) {
 						return warn("Unable to retrieve ping servers from GC. Region selection may not be possible.");
+					}
 					const serverMap = json.decode(regions.data) as { [regionId: string]: string };
 					const regionLatencies: { [regionId: string]: number } = {};
 					for (const [regionId, serverId] of ObjectUtils.entries(serverMap)) {
@@ -57,7 +58,7 @@ export class SocketController {
 								);
 								continue;
 							}
-							regionLatencies[regionId] = ((os.clock() - start) * 1000) / 2; // this measures round trip time, so divide by 2.
+							regionLatencies[regionId] = (os.clock() - start) * 1000;
 						} catch (err) {
 							warn(`Unable to calculate latency for ${regionId}. This region will not be reported.`);
 						}
