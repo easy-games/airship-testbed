@@ -235,12 +235,7 @@ export class ProtectedServerManagerService {
 	}
 
 	public async GetAllowedPlayers(): Promise<ReturnType<ServerBridgeApiGetAllowedPlayers>> {
-		const players = await AgonesCore.Agones.GetListValues(ALLOWED_PLAYERS_LIST_KEY);
-		const userIds = [];
-		for (let i = 0; i < players.Length; i++) {
-			userIds.push(players.GetValue(i));
-		}
-		return userIds;
+		return await AgonesCore.Agones.GetListValues(ALLOWED_PLAYERS_LIST_KEY);
 	}
 
 	public async HasAllowedPlayer(userId: string): Promise<ReturnType<ServerBridgeApiHasAllowedPlayer>> {
@@ -256,12 +251,7 @@ export class ProtectedServerManagerService {
 	}
 
 	public async GetTags(): Promise<ReturnType<ServerBridgeApiGetTags>> {
-		const tags = await AgonesCore.Agones.GetListValues(TAGS_LIST_KEY);
-		const tagValues = [];
-		for (let i = 0; i < tags.Length; i++) {
-			tagValues.push(tags.GetValue(i));
-		}
-		return tagValues;
+		return await AgonesCore.Agones.GetListValues(TAGS_LIST_KEY);
 	}
 
 	public async HasTag(tag: string): Promise<ReturnType<ServerBridgeApiHasTag>> {
