@@ -270,8 +270,7 @@ export class AirshipPlayersSingleton {
 			}
 		};
 		const players = this.playerManagerBridge.GetPlayers();
-		for (let i = 0; i < players.Length; i++) {
-			const clientInfo = players.GetValue(i);
+		for (const clientInfo of players) {
 			onPlayerPreJoin(clientInfo);
 		}
 		this.playerManagerBridge.OnPlayerAdded((clientInfo) => {
