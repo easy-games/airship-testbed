@@ -91,14 +91,14 @@ declare namespace System {
 }
 
 // interface CSDictionary<Key, Value> {
-// 	Keys: CSArray<Key>;
-// 	Values: CSArray<Value>;
+// 	Keys: Key[];
+// 	Values: Value[];
 // 	Count: number;
 //     [Key in Key]: Value;
 // }
 
 interface EasyFileServiceConstructor {
-	GetFilesInPath(path: string, searchPattern?: string): CSArray<string>;
+	GetFilesInPath(path: string, searchPattern?: string): string[];
 	GetEasyAssetPath(obj: Object): string;
 }
 declare const EasyFileService: EasyFileServiceConstructor;
@@ -1056,7 +1056,7 @@ interface PhysicsConstructor {
 		maxDistance: number,
 		layerMask: number,
 		queryTriggerInteraction: QueryTriggerInteraction,
-	): CSArray<RaycastHit>;
+	): RaycastHit[];
 	BoxCastAll(
 		center: Vector3,
 		halfExtents: Vector3,
@@ -1064,16 +1064,16 @@ interface PhysicsConstructor {
 		orientation: Quaternion,
 		maxDistance: number,
 		layerMask: number,
-	): CSArray<RaycastHit>;
+	): RaycastHit[];
 	BoxCastAll(
 		center: Vector3,
 		halfExtents: Vector3,
 		direction: Vector3,
 		orientation: Quaternion,
 		maxDistance: number,
-	): CSArray<RaycastHit>;
-	BoxCastAll(center: Vector3, halfExtents: Vector3, direction: Vector3, orientation: Quaternion): CSArray<RaycastHit>;
-	BoxCastAll(center: Vector3, halfExtents: Vector3, direction: Vector3): CSArray<RaycastHit>;
+	): RaycastHit[];
+	BoxCastAll(center: Vector3, halfExtents: Vector3, direction: Vector3, orientation: Quaternion): RaycastHit[];
+	BoxCastAll(center: Vector3, halfExtents: Vector3, direction: Vector3): RaycastHit[];
 	// BoxCastNonAlloc(
 	// 	center: Vector3,
 	// 	halfExtents: Vector3,
@@ -1164,7 +1164,7 @@ interface PhysicsConstructor {
 		maxDistance: number,
 		layerMask: number,
 		queryTriggerInteraction: QueryTriggerInteraction,
-	): CSArray<RaycastHit>;
+	): RaycastHit[];
 	CapsuleCastAll(
 		point1: Vector3,
 		point2: Vector3,
@@ -1172,15 +1172,15 @@ interface PhysicsConstructor {
 		direction: Vector3,
 		maxDistance: number,
 		layerMask: number,
-	): CSArray<RaycastHit>;
+	): RaycastHit[];
 	CapsuleCastAll(
 		point1: Vector3,
 		point2: Vector3,
 		radius: number,
 		direction: Vector3,
 		maxDistance: number,
-	): CSArray<RaycastHit>;
-	CapsuleCastAll(point1: Vector3, point2: Vector3, radius: number, direction: Vector3): CSArray<RaycastHit>;
+	): RaycastHit[];
+	CapsuleCastAll(point1: Vector3, point2: Vector3, radius: number, direction: Vector3): RaycastHit[];
 	// CapsuleCastNonAlloc(
 	// 	point1: Vector3,
 	// 	point2: Vector3,
@@ -1263,10 +1263,10 @@ interface PhysicsConstructor {
 		orientation: Quaternion,
 		layerMask: number,
 		queryTriggerInteraction: QueryTriggerInteraction,
-	): CSArray<Collider>;
-	OverlapBox(center: Vector3, halfExtents: Vector3, orientation: Quaternion, layerMask: number): CSArray<Collider>;
-	OverlapBox(center: Vector3, halfExtents: Vector3, orientation: Quaternion): CSArray<Collider>;
-	OverlapBox(center: Vector3, halfExtents: Vector3): CSArray<Collider>;
+	): Collider[];
+	OverlapBox(center: Vector3, halfExtents: Vector3, orientation: Quaternion, layerMask: number): Collider[];
+	OverlapBox(center: Vector3, halfExtents: Vector3, orientation: Quaternion): Collider[];
+	OverlapBox(center: Vector3, halfExtents: Vector3): Collider[];
 	// OverlapBoxNonAlloc(
 	// 	center: Vector3,
 	// 	halfExtents: Vector3,
@@ -1296,8 +1296,8 @@ interface PhysicsConstructor {
 		layerMask: number,
 		queryTriggerInteraction: QueryTriggerInteraction,
 	): Array<Collider>;
-	OverlapCapsule(point0: Vector3, point1: Vector3, radius: number, layerMask: number): CSArray<Collider>;
-	OverlapCapsule(point0: Vector3, point1: Vector3, radius: number): CSArray<Collider>;
+	OverlapCapsule(point0: Vector3, point1: Vector3, radius: number, layerMask: number): Collider[];
+	OverlapCapsule(point0: Vector3, point1: Vector3, radius: number): Collider[];
 	// OverlapCapsuleNonAlloc(
 	// 	point0: Vector3,
 	// 	point1: Vector3,
@@ -1319,9 +1319,9 @@ interface PhysicsConstructor {
 		radius: number,
 		layerMask: number,
 		queryTriggerInteraction: QueryTriggerInteraction,
-	): CSArray<Collider>;
-	OverlapSphere(position: Vector3, radius: number, layerMask: number): CSArray<Collider>;
-	OverlapSphere(position: Vector3, radius: number): CSArray<Collider>;
+	): Collider[];
+	OverlapSphere(position: Vector3, radius: number, layerMask: number): Collider[];
+	OverlapSphere(position: Vector3, radius: number): Collider[];
 	// OverlapSphereNonAlloc(
 	// 	position: Vector3,
 	// 	radius: number,
@@ -1440,19 +1440,19 @@ interface PhysicsConstructor {
 		maxDistance: number,
 		layerMask: number,
 		queryTriggerInteraction: QueryTriggerInteraction,
-	): CSArray<RaycastHit>;
-	RaycastAll(origin: Vector3, direction: Vector3, maxDistance: number, layerMask: number): CSArray<RaycastHit>;
-	RaycastAll(origin: Vector3, direction: Vector3, maxDistance: number): CSArray<RaycastHit>;
-	RaycastAll(origin: Vector3, direction: Vector3): CSArray<RaycastHit>;
+	): RaycastHit[];
+	RaycastAll(origin: Vector3, direction: Vector3, maxDistance: number, layerMask: number): RaycastHit[];
+	RaycastAll(origin: Vector3, direction: Vector3, maxDistance: number): RaycastHit[];
+	RaycastAll(origin: Vector3, direction: Vector3): RaycastHit[];
 	RaycastAll(
 		ray: Ray,
 		maxDistance: number,
 		layerMask: number,
 		queryTriggerInteraction: QueryTriggerInteraction,
-	): CSArray<RaycastHit>;
-	RaycastAll(ray: Ray, maxDistance: number, layerMask: number): CSArray<RaycastHit>;
-	RaycastAll(ray: Ray, maxDistance: number): CSArray<RaycastHit>;
-	RaycastAll(ray: Ray): CSArray<RaycastHit>;
+	): RaycastHit[];
+	RaycastAll(ray: Ray, maxDistance: number, layerMask: number): RaycastHit[];
+	RaycastAll(ray: Ray, maxDistance: number): RaycastHit[];
+	RaycastAll(ray: Ray): RaycastHit[];
 
 	Simulate(step: number): void;
 
@@ -1491,26 +1491,26 @@ interface PhysicsConstructor {
 		maxDistance: number,
 		layerMask: number,
 		queryTriggerInteraction: QueryTriggerInteraction,
-	): CSArray<RaycastHit>;
+	): RaycastHit[];
 	SphereCastAll(
 		origin: Vector3,
 		radius: number,
 		direction: Vector3,
 		maxDistance: number,
 		layerMask: number,
-	): CSArray<RaycastHit>;
-	SphereCastAll(origin: Vector3, radius: number, direction: Vector3, maxDistance: number): CSArray<RaycastHit>;
-	SphereCastAll(origin: Vector3, radius: number, direction: Vector3): CSArray<RaycastHit>;
+	): RaycastHit[];
+	SphereCastAll(origin: Vector3, radius: number, direction: Vector3, maxDistance: number): RaycastHit[];
+	SphereCastAll(origin: Vector3, radius: number, direction: Vector3): RaycastHit[];
 	SphereCastAll(
 		ray: Ray,
 		radius: number,
 		maxDistance: number,
 		layerMask: number,
 		queryTriggerInteraction: QueryTriggerInteraction,
-	): CSArray<RaycastHit>;
-	SphereCastAll(ray: Ray, radius: number, maxDistance: number, layerMask: number): CSArray<RaycastHit>;
-	SphereCastAll(ray: Ray, radius: number, maxDistance: number): CSArray<RaycastHit>;
-	SphereCastAll(ray: Ray, radius: number): CSArray<RaycastHit>;
+	): RaycastHit[];
+	SphereCastAll(ray: Ray, radius: number, maxDistance: number, layerMask: number): RaycastHit[];
+	SphereCastAll(ray: Ray, radius: number, maxDistance: number): RaycastHit[];
+	SphereCastAll(ray: Ray, radius: number): RaycastHit[];
 	// SphereCastNonAlloc(
 	// 	origin: Vector3,
 	// 	radius: number,
@@ -1535,7 +1535,7 @@ interface PhysicsConstructor {
 	// 	results: Array<RaycastHit>,
 	// 	maxDistance: number,
 	// ): number;
-	// SphereCastNonAlloc(origin: Vector3, radius: number, direction: Vector3, results: CSArray<RaycastHit>): number;
+	// SphereCastNonAlloc(origin: Vector3, radius: number, direction: Vector3, results: RaycastHit[]): number;
 	// SphereCastNonAlloc(
 	// 	ray: Ray,
 	// 	radius: number,
@@ -1686,7 +1686,7 @@ interface KeyDownEvent {
 }
 
 interface AssetBridge {
-	GetAllAssets(): CSArray<string>;
+	GetAllAssets(): string[];
 	// GetAssetBundle(name: string): AssetBundle;
 	IsLoaded(): boolean;
 	LoadAsset<T = GameObject>(path: string): T;
@@ -1864,13 +1864,13 @@ interface Component extends Object {
 	 *
 	 * More info: {@link https://docs.unity3d.com/ScriptReference/Component.GetComponents.html | Component.GetComponents}
 	 */
-	GetComponents<T extends Component>(): CSArray<T>;
+	GetComponents<T extends Component>(): T[];
 	/**
 	 * Gets references to all components of type T on the same GameObject as the component specified.
 	 *
 	 * More info: {@link https://docs.unity3d.com/ScriptReference/Component.GetComponents.html | Component.GetComponents}
 	 */
-	GetComponents<T extends Component>(name: string): CSArray<T>;
+	GetComponents<T extends Component>(name: string): T[];
 
 	IsDestroyed(): boolean;
 }
@@ -2066,33 +2066,33 @@ interface GameObject extends Object {
 	 *
 	 * More info: {@link https://docs.unity3d.com/ScriptReference/GameObject.GetComponents.html | GameObject.GetComponents}
 	 */
-	GetComponents<T>(): CSArray<T>;
+	GetComponents<T>(): T[];
 	/**
 	 * Gets references to all components of type T on the specified GameObject, and any child of the GameObject.
 	 * @param includeInactive Whether to include inactive child GameObjects in the search.
 	 *
 	 * More info: {@link https://docs.unity3d.com/ScriptReference/GameObject.GetComponentsInChildren.html | GameObject.GetComponentsInChildren}
 	 */
-	GetComponentsInChildren<T extends Component>(includeInactive: boolean): CSArray<T>;
+	GetComponentsInChildren<T extends Component>(includeInactive: boolean): T[];
 	/**
 	 * Gets references to all components of type T on the specified GameObject, and any child of the GameObject.
 	 *
 	 * More info: {@link https://docs.unity3d.com/ScriptReference/GameObject.GetComponentsInChildren.html | GameObject.GetComponentsInChildren}
 	 */
-	GetComponentsInChildren<T extends Component>(): CSArray<T>;
+	GetComponentsInChildren<T extends Component>(): T[];
 	/**
 	 * Gets references to all components of type T on the specified GameObject, and any parent of the GameObject.
 	 * @param includeInactive Whether to include inactive parent GameObjects in the search.
 	 *
 	 * More info: {@link https://docs.unity3d.com/ScriptReference/GameObject.GetComponentsInParent.html | GameObject.GetComponentsInParent}
 	 */
-	GetComponentsInParent<T extends Component>(includeInactive: boolean): CSArray<T>;
+	GetComponentsInParent<T extends Component>(includeInactive: boolean): T[];
 	/**
 	 * Gets references to all components of type T on the specified GameObject, and any parent of the GameObject.
 	 *
 	 * More info: {@link https://docs.unity3d.com/ScriptReference/GameObject.GetComponentsInParent.html | GameObject.GetComponentsInParent}
 	 */
-	GetComponentsInParent<T>(): CSArray<T>;
+	GetComponentsInParent<T>(): T[];
 
 	GetAirshipComponentInChildren<T extends AirshipBehaviour>(): T | undefined;
 	GetAirshipComponentsInChildren<T extends AirshipBehaviour>(): T[];
@@ -2125,10 +2125,10 @@ interface GameObjectConstructor {
 	FindObjectsByType<T extends Component>(
 		findObjectsInactive: FindObjectsInactive,
 		sortMode: FindObjectsSortMode,
-	): CSArray<T>;
-	FindObjectsByType<T extends Component>(sortMode: FindObjectsSortMode): CSArray<T>;
+	): T[];
+	FindObjectsByType<T extends Component>(sortMode: FindObjectsSortMode): T[];
 	FindAnyObjectByType<T extends Component>(): T;
-	FindGameObjectsWithTag(tag: string): CSArray<GameObject>;
+	FindGameObjectsWithTag(tag: string): GameObject[];
 	FindGameObjectWithTag(tag: string): GameObject;
 	FindWithTag(tag: string): GameObject;
 	Create(name?: string): GameObject;
@@ -2213,7 +2213,7 @@ declare const Color: ColorConstructor;
 interface GameObjectReferences extends MonoBehaviour {
 	constructor(): GameObjectReferences;
 
-	GetAllValues<T = GameObject>(bundleKey: string): CSArray<T>;
+	GetAllValues<T = GameObject>(bundleKey: string): T[];
 	GetValue<T = GameObject>(bundleKey: string, itemKey: string): T;
 }
 
@@ -2651,10 +2651,10 @@ interface AkSoundEngineConstructor {
 	AddOutput(
 		in_Settings: AkOutputSettings,
 		out_pDeviceID: unknown,
-		in_pListenerIDs: CSArray<number>,
+		in_pListenerIDs: number[],
 		in_uNumListeners: number,
 	): AKRESULT;
-	AddOutput(in_Settings: AkOutputSettings, out_pDeviceID: unknown, in_pListenerIDs: CSArray<number>): AKRESULT;
+	AddOutput(in_Settings: AkOutputSettings, out_pDeviceID: unknown, in_pListenerIDs: number[]): AKRESULT;
 	AddOutput(in_Settings: AkOutputSettings, out_pDeviceID: unknown): AKRESULT;
 	AddOutput(in_Settings: AkOutputSettings): AKRESULT;
 	AddOutputCaptureMarker(in_MarkerText: string): AKRESULT;
@@ -2867,7 +2867,7 @@ interface AkSoundEngineConstructor {
 		out_bCachePinnedMemoryFull: unknown,
 	): AKRESULT;
 	GetBufferTick(): number;
-	GetCaptureSamples(in_idOutputDeviceID: number, out_pSamples: CSArray<number>, in_uBufferSize: number): number;
+	GetCaptureSamples(in_idOutputDeviceID: number, out_pSamples: number[], in_uBufferSize: number): number;
 	GetCurrentLanguage(): string;
 	GetCustomPropertyValue(in_ObjectID: number, in_uPropID: number, out_iValue: unknown): AKRESULT;
 	GetCustomPropertyValue(in_ObjectID: number, in_uPropID: number, out_fValue: unknown): AKRESULT;
@@ -2939,12 +2939,8 @@ interface AkSoundEngineConstructor {
 	GetOutputID(in_szShareSet: string, in_idDevice: number): number;
 	GetPanningRule(out_ePanningRule: unknown, in_idOutput: number): AKRESULT;
 	GetPanningRule(out_ePanningRule: unknown): AKRESULT;
-	GetPlayingIDsFromGameObject(in_GameObjId: number, io_ruNumIDs: unknown, out_aPlayingIDs: CSArray<number>): AKRESULT;
-	GetPlayingIDsFromGameObject(
-		in_GameObjId: GameObject,
-		io_ruNumIDs: unknown,
-		out_aPlayingIDs: CSArray<number>,
-	): AKRESULT;
+	GetPlayingIDsFromGameObject(in_GameObjId: number, io_ruNumIDs: unknown, out_aPlayingIDs: number[]): AKRESULT;
+	GetPlayingIDsFromGameObject(in_GameObjId: GameObject, io_ruNumIDs: unknown, out_aPlayingIDs: number[]): AKRESULT;
 	GetPlayingSegmentInfo(in_PlayingID: number, out_segmentInfo: AkSegmentInfo, in_bExtrapolate: boolean): AKRESULT;
 	GetPlayingSegmentInfo(in_PlayingID: number, out_segmentInfo: AkSegmentInfo): AKRESULT;
 	GetPosition(in_GameObjectID: number, out_rPosition: AkWorldTransform): AKRESULT;
@@ -2983,29 +2979,29 @@ interface AkSoundEngineConstructor {
 	GetSampleTick(): number;
 	GetSourceMultiplePlayPositions(
 		in_PlayingID: number,
-		out_audioNodeID: CSArray<number>,
-		out_mediaID: CSArray<number>,
-		out_msTime: CSArray<number>,
+		out_audioNodeID: number[],
+		out_mediaID: number[],
+		out_msTime: number[],
 		io_pcPositions: unknown,
 		in_bExtrapolate: boolean,
 	): AKRESULT;
 	GetSourceMultiplePlayPositions(
 		in_PlayingID: number,
-		out_audioNodeID: CSArray<number>,
-		out_mediaID: CSArray<number>,
-		out_msTime: CSArray<number>,
+		out_audioNodeID: number[],
+		out_mediaID: number[],
+		out_msTime: number[],
 		io_pcPositions: unknown,
 	): AKRESULT;
 	GetSourcePlayPosition(in_PlayingID: number, out_puPosition: unknown, in_bExtrapolate: boolean): AKRESULT;
 	GetSourcePlayPosition(in_PlayingID: number, out_puPosition: unknown): AKRESULT;
 	GetSourceStreamBuffering(in_PlayingID: number, out_buffering: unknown, out_bIsBuffering: unknown): AKRESULT;
 	GetSpeakerAngles(
-		io_pfSpeakerAngles: CSArray<number>,
+		io_pfSpeakerAngles: number[],
 		io_uNumAngles: unknown,
 		out_fHeightAngle: unknown,
 		in_idOutput: number,
 	): AKRESULT;
-	GetSpeakerAngles(io_pfSpeakerAngles: CSArray<number>, io_uNumAngles: unknown, out_fHeightAngle: unknown): AKRESULT;
+	GetSpeakerAngles(io_pfSpeakerAngles: number[], io_uNumAngles: unknown, out_fHeightAngle: unknown): AKRESULT;
 	GetSpeakerConfiguration(in_idOutput: number): AkChannelConfig;
 	GetSpeakerConfiguration(): AkChannelConfig;
 	GetState(in_stateGroup: number, out_rState: unknown): AKRESULT;
@@ -3458,18 +3454,18 @@ interface AkSoundEngineConstructor {
 		in_pfnBankCallback: BankCallback,
 		in_pCookie: unknown,
 	): AKRESULT;
-	PrepareEvent(in_PreparationType: AkPreparationType, in_ppszString: CSArray<string>, in_uNumEvent: number): AKRESULT;
-	PrepareEvent(in_PreparationType: AkPreparationType, in_pEventID: CSArray<number>, in_uNumEvent: number): AKRESULT;
+	PrepareEvent(in_PreparationType: AkPreparationType, in_ppszString: string[], in_uNumEvent: number): AKRESULT;
+	PrepareEvent(in_PreparationType: AkPreparationType, in_pEventID: number[], in_uNumEvent: number): AKRESULT;
 	PrepareEvent(
 		in_PreparationType: AkPreparationType,
-		in_ppszString: CSArray<string>,
+		in_ppszString: string[],
 		in_uNumEvent: number,
 		in_pfnBankCallback: BankCallback,
 		in_pCookie: unknown,
 	): AKRESULT;
 	PrepareEvent(
 		in_PreparationType: AkPreparationType,
-		in_pEventID: CSArray<number>,
+		in_pEventID: number[],
 		in_uNumEvent: number,
 		in_pfnBankCallback: BankCallback,
 		in_pCookie: unknown,
@@ -3478,21 +3474,21 @@ interface AkSoundEngineConstructor {
 		in_PreparationType: AkPreparationType,
 		in_eGameSyncType: AkGroupType,
 		in_pszGroupName: string,
-		in_ppszGameSyncName: CSArray<string>,
+		in_ppszGameSyncName: string[],
 		in_uNumGameSyncs: number,
 	): AKRESULT;
 	PrepareGameSyncs(
 		in_PreparationType: AkPreparationType,
 		in_eGameSyncType: AkGroupType,
 		in_GroupID: number,
-		in_paGameSyncID: CSArray<number>,
+		in_paGameSyncID: number[],
 		in_uNumGameSyncs: number,
 	): AKRESULT;
 	PrepareGameSyncs(
 		in_PreparationType: AkPreparationType,
 		in_eGameSyncType: AkGroupType,
 		in_pszGroupName: string,
-		in_ppszGameSyncName: CSArray<string>,
+		in_ppszGameSyncName: string[],
 		in_uNumGameSyncs: number,
 		in_pfnBankCallback: BankCallback,
 		in_pCookie: unknown,
@@ -3501,7 +3497,7 @@ interface AkSoundEngineConstructor {
 		in_PreparationType: AkPreparationType,
 		in_eGameSyncType: AkGroupType,
 		in_GroupID: number,
-		in_paGameSyncID: CSArray<number>,
+		in_paGameSyncID: number[],
 		in_uNumGameSyncs: number,
 		in_pfnBankCallback: BankCallback,
 		in_pCookie: unknown,
@@ -3636,11 +3632,11 @@ interface AkSoundEngineConstructor {
 	ResetTranslator(): AKRESULT;
 	ResolveDialogueEvent(
 		in_eventID: number,
-		in_aArgumentValues: CSArray<number>,
+		in_aArgumentValues: number[],
 		in_uNumArguments: number,
 		in_idSequence: number,
 	): number;
-	ResolveDialogueEvent(in_eventID: number, in_aArgumentValues: CSArray<number>, in_uNumArguments: number): number;
+	ResolveDialogueEvent(in_eventID: number, in_aArgumentValues: number[], in_uNumArguments: number): number;
 	ROTL32(x: number, r: number): number;
 	ROTL64(x: number, r: number): number;
 	Seek(in_playingID: number, in_iPosition: number, in_bSeekToNearestMarker: boolean): AKRESULT;
@@ -3790,7 +3786,7 @@ interface AkSoundEngineConstructor {
 	SetBusEffect(in_pszBusName: string, in_uFXIndex: number, in_shareSetID: number): AKRESULT;
 	SetCurrentLanguage(in_pszAudioSrcPath: string): AKRESULT;
 	SetDecodedBankPath(in_DecodedPath: string): AKRESULT;
-	SetDefaultListeners(in_pListenerObjs: CSArray<number>, in_uNumListeners: number): AKRESULT;
+	SetDefaultListeners(in_pListenerObjs: number[], in_uNumListeners: number): AKRESULT;
 	SetDiffractionOrder(in_uDiffractionOrder: number, in_bUpdatePaths: boolean): AKRESULT;
 	SetDistanceProbe(in_listenerGameObjectID: number, in_distanceProbeGameObjectID: number): AKRESULT;
 	SetEarlyReflectionsAuxSend(in_gameObjectID: number, in_auxBusID: number): AKRESULT;
@@ -3824,7 +3820,7 @@ interface AkSoundEngineConstructor {
 		in_GeomSetID: number,
 		Triangles: AkTriangleArray,
 		NumTriangles: number,
-		Vertices: CSArray<Vector3>,
+		Vertices: Vector3[],
 		NumVertices: number,
 		Surfaces: AkAcousticSurfaceArray,
 		NumSurfaces: number,
@@ -3855,17 +3851,13 @@ interface AkSoundEngineConstructor {
 		in_AuxBusID: number,
 		in_gameObjectID: GameObject,
 	): AKRESULT;
-	SetListeners(in_emitterGameObj: number, in_pListenerGameObjs: CSArray<number>, in_uNumListeners: number): AKRESULT;
-	SetListeners(
-		in_emitterGameObj: GameObject,
-		in_pListenerGameObjs: CSArray<number>,
-		in_uNumListeners: number,
-	): AKRESULT;
+	SetListeners(in_emitterGameObj: number, in_pListenerGameObjs: number[], in_uNumListeners: number): AKRESULT;
+	SetListeners(in_emitterGameObj: GameObject, in_pListenerGameObjs: number[], in_uNumListeners: number): AKRESULT;
 	SetListenerSpatialization(
 		in_uListenerID: number,
 		in_bSpatialized: boolean,
 		in_channelConfig: AkChannelConfig,
-		in_pVolumeOffsets: CSArray<number>,
+		in_pVolumeOffsets: number[],
 	): AKRESULT;
 	SetListenerSpatialization(
 		in_uListenerID: number,
@@ -3876,7 +3868,7 @@ interface AkSoundEngineConstructor {
 		in_uListenerID: GameObject,
 		in_bSpatialized: boolean,
 		in_channelConfig: AkChannelConfig,
-		in_pVolumeOffsets: CSArray<number>,
+		in_pVolumeOffsets: number[],
 	): AKRESULT;
 	SetListenerSpatialization(
 		in_uListenerID: GameObject,
@@ -4139,12 +4131,12 @@ interface AkSoundEngineConstructor {
 	SetScalingFactor(in_GameObjectID: number, in_fAttenuationScalingFactor: number): AKRESULT;
 	SetScalingFactor(in_GameObjectID: GameObject, in_fAttenuationScalingFactor: number): AKRESULT;
 	SetSpeakerAngles(
-		in_pfSpeakerAngles: CSArray<number>,
+		in_pfSpeakerAngles: number[],
 		in_uNumAngles: number,
 		in_fHeightAngle: number,
 		in_idOutput: number,
 	): AKRESULT;
-	SetSpeakerAngles(in_pfSpeakerAngles: CSArray<number>, in_uNumAngles: number, in_fHeightAngle: number): AKRESULT;
+	SetSpeakerAngles(in_pfSpeakerAngles: number[], in_uNumAngles: number, in_fHeightAngle: number): AKRESULT;
 	SetState(in_stateGroup: number, in_state: number): AKRESULT;
 	SetState(in_pszStateGroup: string, in_pszState: string): AKRESULT;
 	SetSwitch(in_switchGroup: number, in_switchState: number, in_gameObjectID: number): AKRESULT;
@@ -4243,7 +4235,7 @@ interface EventSystem extends UIBehaviour {
 
 	IsPointerOverGameObject(): boolean;
 	IsPointerOverGameObject(pointerId: number): boolean;
-	RaycastAll(eventData: PointerEventData, raycastResults: CSArray<RaycastResult>): void;
+	RaycastAll(eventData: PointerEventData, raycastResults: RaycastResult[]): void;
 	SetSelectedGameObject(selected: GameObject, pointer: BaseEventData): void;
 	SetSelectedGameObject(selected: GameObject | undefined): void;
 	ToString(): string;
@@ -4755,7 +4747,7 @@ interface Transform extends Component, Iterable<Transform> {
 	Translate(x: number, y: number, z: number, relativeTo: Transform): void;
 
 	/**Get all descendant transforms. Does not inclue the root transform. */
-	GetDescendants(): CSArray<Transform>;
+	GetDescendants(): Transform[];
 }
 
 interface Collider extends Component {
@@ -4838,7 +4830,7 @@ interface NavMeshConstructor {
 	SetLayerCost(layer: number, cost: number): void;
 	SetLinkActive(handle: NavMeshLinkInstance, value: boolean): void;
 	SetLinkOwner(handle: NavMeshLinkInstance, owner: Object): void;
-	Triangulate(vertices: CSArray<Vector3>, indices: CSArray<number>): void;
+	Triangulate(vertices: Vector3[], indices: number[]): void;
 }
 declare const NavMesh: NavMeshConstructor;
 
@@ -4870,7 +4862,7 @@ interface RandomConstructor {}
 declare const Random: RandomConstructor;
 
 interface VolumeProfile extends ScriptableObject {
-	components: CSArray<VolumeComponent>;
+	components: VolumeComponent[];
 	isDirty: boolean;
 
 	// Add<T>(overrides: boolean): T;
@@ -4884,7 +4876,7 @@ interface VolumeProfile extends ScriptableObject {
 	Reset(): void;
 	// Get<T>(component: T): T | undefined;
 	GetDepthOfField(): DepthOfField | undefined;
-	GetVolumeComponents(): CSArray<VolumeComponent>;
+	GetVolumeComponents(): VolumeComponent[];
 }
 
 interface VolumeProfileConstructor {
@@ -4897,12 +4889,12 @@ interface GradientConstructor {
 	 * Creates a C# array of `GradientColorKey`
 	 * @param length The size of the array
 	 */
-	CreateColorKeyArray(length: number): CSArray<GradientColorKey>;
+	CreateColorKeyArray(length: number): GradientColorKey[];
 	/**
 	 * Creates a C# array of `GradientAlphaKey`
 	 * @param length The size of the array
 	 */
-	CreateAlphaKeyArray(length: number): CSArray<GradientAlphaKey>;
+	CreateAlphaKeyArray(length: number): GradientAlphaKey[];
 }
 
 interface Mathf {}

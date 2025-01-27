@@ -162,7 +162,7 @@ export class SceneManager {
 	 * @returns Array of scenes in the hierarchy.
 	 */
 	public static GetScenes(): Scene[] {
-		return CSArrayUtil.Convert(Bridge.GetScenes());
+		return Bridge.GetScenes();
 	}
 
 	/**

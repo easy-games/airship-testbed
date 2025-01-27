@@ -69,7 +69,7 @@ declare const Time: Time;
 interface PlayerManagerBridge extends Component {
 	OnPlayerAdded(callback: (clientInfo: PlayerInfoDto) => void): EngineEventConnection;
 	OnPlayerRemoved(callback: (clientInfo: PlayerInfoDto) => void): EngineEventConnection;
-	GetPlayers(): CSArray<PlayerInfoDto>;
+	GetPlayers(): PlayerInfoDto[];
 	AddBotPlayer(username: string, tag: string, userId: string): void;
 	GetPlayerInfoByClientId(clientId: number): PlayerInfoDto;
 	localPlayer: PlayerInfo;
@@ -411,21 +411,21 @@ interface AccessoryBuilder extends MonoBehaviour {
 	meshCombiner: MeshCombiner;
 
 	AddAccessories(
-		accessoryTemplates: CSArray<AccessoryComponent>,
+		accessoryTemplates: AccessoryComponent[],
 		addMode: AccessoryAddMode,
 		rebuildMeshImmediately: boolean,
-	): CSArray<ActiveAccessory>;
+	): ActiveAccessory[];
 	AddSingleAccessory(
 		accessoryTemplate: AccessoryComponent,
 		rebuildMeshImmediately: boolean,
 	): ActiveAccessory | undefined;
 	AddSkinAccessory(skin: AccessorySkin, rebuildMeshImmediately: boolean): void;
-	EquipAccessoryOutfit(outfit: AccessoryOutfit, rebuildMeshImmediately: boolean): CSArray<ActiveAccessory>;
-	GetAccessoryMeshes(slot: AccessorySlot): CSArray<Renderer>;
-	GetAccessoryParticles(slot: AccessorySlot): CSArray<ParticleSystem>;
-	GetActiveAccessories(): CSArray<ActiveAccessory>;
+	EquipAccessoryOutfit(outfit: AccessoryOutfit, rebuildMeshImmediately: boolean): ActiveAccessory[];
+	GetAccessoryMeshes(slot: AccessorySlot): Renderer[];
+	GetAccessoryParticles(slot: AccessorySlot): ParticleSystem[];
+	GetActiveAccessories(): ActiveAccessory[];
 	GetActiveAccessoryBySlot(target: AccessorySlot): ActiveAccessory;
-	GetAllAccessoryMeshes(): CSArray<Renderer>;
+	GetAllAccessoryMeshes(): Renderer[];
 	GetCombinedSkinnedMesh(): SkinnedMeshRenderer;
 	GetCombinedStaticMesh(): MeshRenderer;
 	RemoveAccessorySlot(slot: AccessorySlot, rebuildMeshImmediately: boolean): void;
@@ -742,7 +742,7 @@ interface SteamLuauAPIConstructor {
 	OnRichPresenceGameJoinRequest(callback: (connectStr: string, steamId: number) => void): EngineEventConnection;
 	OnNewLaunchParams(callback: (gameId: string, serverId: string, customData: string) => void): EngineEventConnection;
 	ProcessPendingJoinRequests(): void;
-	GetSteamFriends(): CSArray<AirshipSteamFriendInfo>;
+	GetSteamFriends(): AirshipSteamFriendInfo[];
 	IsSteamInitialized(): boolean;
 }
 declare const SteamLuauAPI: SteamLuauAPIConstructor;
@@ -838,7 +838,7 @@ interface NetworkIdentity extends MonoBehaviour {
 	 * Server's network connection to the client. This is only valid for client-owned objects (including the Player object) on the server.
 	 */
 	readonly connectionToClient: NetworkConnectionToClient | undefined;
-	readonly NetworkBehaviours: CSArray<NetworkBehaviour>;
+	readonly NetworkBehaviours: NetworkBehaviour[];
 	readonly SpawnedFromInstantiate: boolean;
 
 	/**
@@ -953,7 +953,7 @@ interface Volume extends MonoBehaviour {
 }
 
 interface TubeRendererCS extends MonoBehaviour {
-	SetPositions(positions: CSArray<Vector3>): void;
+	SetPositions(positions: Vector3[]): void;
 	SetStartRadius(radius: number): void;
 	GetStartRadius(): number;
 	SetEndRadius(radius: number): void;

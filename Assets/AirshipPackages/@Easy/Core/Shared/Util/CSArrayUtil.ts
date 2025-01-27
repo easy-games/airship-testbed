@@ -3,6 +3,8 @@
  */
 export class CSArrayUtil {
 	/**
+	 * @deprecated Native CS arrays are no longer exposed to the TS layer.
+	 *
 	 * Convert a C# array to a native Typescript array.
 	 * @param array A C# array.
 	 * @returns A native Typescript array.
