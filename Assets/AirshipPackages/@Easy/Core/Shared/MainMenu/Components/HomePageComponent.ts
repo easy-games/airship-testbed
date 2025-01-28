@@ -127,10 +127,10 @@ export default class HomePageComponent extends MainMenuPageComponent {
 				if (g.lastVersionUpdate === undefined) return false;
 				let timeUpdatedSeconds = DateParser.FromISO(g.lastVersionUpdate) as number;
 
-				// Jul 16, 2024
-				if (timeUpdatedSeconds <= 1722442457) {
-					return false;
-				}
+				// Jan 6, 2025
+				// if (timeUpdatedSeconds <= 1736205525) {
+				// 	return false;
+				// }
 
 				return true;
 			});

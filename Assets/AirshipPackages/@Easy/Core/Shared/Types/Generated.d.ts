@@ -3537,6 +3537,23 @@ declare const enum DisplayType {
     Checkbox = 0,
     EnumPopup = 1,
 }
+declare const enum PassType {
+    Normal = 0,
+    Vertex = 1,
+    VertexLM = 2,
+    VertexLMRGBM = 3,
+    ForwardBase = 4,
+    ForwardAdd = 5,
+    LightPrePassBase = 6,
+    LightPrePassFinal = 7,
+    ShadowCaster = 8,
+    Deferred = 10,
+    Meta = 11,
+    MotionVectors = 12,
+    ScriptableRenderPipeline = 13,
+    ScriptableRenderPipelineDefaultUnlit = 14,
+    GrabPass = 15,
+}
 declare const enum RemovePlayerOptions {
     KeepActive = 0,
     Unspawn = 1,
@@ -44279,6 +44296,119 @@ interface VignetteConstructor {
 }
 declare const Vignette: VignetteConstructor;
     
+interface ShaderWarmup {
+
+
+
+
+
+}
+    
+interface ShaderWarmupSetup {
+    vdecl: CSArray<VertexAttributeDescriptor>;
+
+
+
+
+
+}
+    
+interface ShaderVariantCollection extends Object {
+    /**
+     * Number of shaders in this collection (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/ShaderVariantCollection-shaderCount.html | ShaderVariantCollection.shaderCount}
+     */
+    readonly shaderCount: number;
+    /**
+     * Number of total variants in this collection (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/ShaderVariantCollection-variantCount.html | ShaderVariantCollection.variantCount}
+     */
+    readonly variantCount: number;
+    /**
+     * Number of total variants in this collection that are already warmed up (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/ShaderVariantCollection-warmedUpVariantCount.html | ShaderVariantCollection.warmedUpVariantCount}
+     */
+    readonly warmedUpVariantCount: number;
+    /**
+     * Is this ShaderVariantCollection already warmed up? (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/ShaderVariantCollection-isWarmedUp.html | ShaderVariantCollection.isWarmedUp}
+     */
+    readonly isWarmedUp: boolean;
+
+
+
+    Add(variant: ShaderVariant): boolean;
+    /**
+     * Remove all shader variants from the collection.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/ShaderVariantCollection.Clear.html | ShaderVariantCollection.Clear}
+     */
+    Clear(): void;
+    Contains(variant: ShaderVariant): boolean;
+    Remove(variant: ShaderVariant): boolean;
+    /**
+     * Prewarms all shader variants in this shader variant collection.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/ShaderVariantCollection.WarmUp.html | ShaderVariantCollection.WarmUp}
+     */
+    WarmUp(): void;
+    /**
+     * Prewarms the given number of shader variants in this shader variant collection.
+     * @param variantCount The maximum number of variants to warm up.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/ShaderVariantCollection.WarmUpProgressively.html | ShaderVariantCollection.WarmUpProgressively}
+     */
+    WarmUpProgressively(variantCount: number): boolean;
+
+
+}
+    
+interface ShaderVariant {
+    shader: Shader;
+    passType: PassType;
+    keywords: CSArray<string>;
+
+
+
+
+
+}
+    
+interface ShaderVariantConstructor {
+
+
+    new(shader: Shader, passType: PassType, keywords: CSArray<string>): ShaderVariant;
+
+
+
+}
+declare const ShaderVariant: ShaderVariantConstructor;
+    
+interface ShaderVariantCollectionConstructor {
+
+
+    new(): ShaderVariantCollection;
+
+
+
+}
+declare const ShaderVariantCollection: ShaderVariantCollectionConstructor;
+    
+interface ShaderWarmupConstructor {
+
+
+
+
+    WarmupShader(shader: Shader, setup: ShaderWarmupSetup): void;
+    WarmupShaderFromCollection(collection: ShaderVariantCollection, shader: Shader, setup: ShaderWarmupSetup): void;
+
+}
+declare const ShaderWarmup: ShaderWarmupConstructor;
+    
 interface NetworkServer {
 
 
@@ -47117,6 +47247,7 @@ interface AirshipPredictionManager extends MonoBehaviour {
 
 
 
+    Awake(): void;
     DisableDebugMode(): void;
     EnabledDebugMode(): void;
     InterpolateBodies(): void;
