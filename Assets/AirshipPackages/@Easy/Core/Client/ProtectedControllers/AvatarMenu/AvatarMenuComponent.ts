@@ -936,10 +936,10 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 
 		this.renderSetup.uploadThumbnails = true;
-		if(Airship.Input.IsDown(CoreAction.Sprint)){
+		if (Airship.Input.IsDown(CoreAction.Sprint)) {
 			print("Rendering All Items");
 			this.renderSetup.RenderAllItems();
-		}else{
+		} else {
 			print("Rendering Selected Items");
 			this.renderSetup.CreateItemCamera();
 			this.renderSetup?.SetupForRenders(false);
