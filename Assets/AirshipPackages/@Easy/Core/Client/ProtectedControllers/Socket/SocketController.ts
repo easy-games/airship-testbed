@@ -46,15 +46,23 @@ export class SocketController {
 					}
 					const serverMap = json.decode(regions.data) as { [regionId: string]: string };
 					const regionLatencies: { [regionId: string]: number } = {};
-					for (const [regionId, serverUrl] of ObjectUtils.entries(serverMap)) {
-						try {
-							regionLatencies[regionId] = UdpPingTool.GetPing(serverUrl);
-						} catch (err) {
-							warn(
-								`Unable to calculate latency for "${regionId}" (${serverUrl}). This region will not be reported.`,
-								err,
-							);
+					// Use the best of three tests.
+					for (let i = 0; i < 3; i++) {
+						for (const [regionId, serverUrl] of ObjectUtils.entries(serverMap)) {
+							try {
+								const ping = UdpPingTool.GetPing(serverUrl);
+								print(`Ping to ${regionId} was ${ping}`);
+								if (!regionLatencies[regionId] || regionLatencies[regionId] > ping) {
+									regionLatencies[regionId] = ping;
+								}
+							} catch (err) {
+								warn(
+									`Unable to calculate latency for "${regionId}" (${serverUrl}). This region will not be reported.`,
+									err,
+								);
+							}
 						}
+						task.unscaledWait(0.25);
 					}
 					print(`Region Latency Report:`, inspect(regionLatencies));
 					InternalHttpManager.PutAsync(
