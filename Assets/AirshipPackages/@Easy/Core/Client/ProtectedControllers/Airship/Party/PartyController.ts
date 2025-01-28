@@ -47,6 +47,8 @@ export class ProtectedPartyController {
 	protected OnStart(): void {
 		this.socketController.On<Party>("game-coordinator/party-update", (data) => {
 			this.onPartyChange.Fire(data);
+
+			// We only invoke when in-game because it's the only time a callback is registered.
 			if (Game.IsInGame()) {
 				contextbridge.invoke(PartyControllerBridgeTopics.OnPartyChange, LuauContext.Game, data);
 			}
