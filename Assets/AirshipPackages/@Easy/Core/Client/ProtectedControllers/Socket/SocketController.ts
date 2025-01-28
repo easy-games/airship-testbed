@@ -46,21 +46,14 @@ export class SocketController {
 					}
 					const serverMap = json.decode(regions.data) as { [regionId: string]: string };
 					const regionLatencies: { [regionId: string]: number } = {};
-					for (const [regionId, serverId] of ObjectUtils.entries(serverMap)) {
+					for (const [regionId, serverUrl] of ObjectUtils.entries(serverMap)) {
 						try {
-							// note this ping measurment will be an over-estimate of actual ping time since it includes
-							// processing overhead and the additional latency of estabilishing an HTTP connection.
-							const start = os.clock();
-							const resp = HttpManager.GetAsync(serverId);
-							if (!resp.success) {
-								warn(
-									`Request to ping server for ${regionId} failed. This region will not be reported.`,
-								);
-								continue;
-							}
-							regionLatencies[regionId] = (os.clock() - start) * 1000;
+							regionLatencies[regionId] = UdpPingTool.GetPing(serverUrl);
 						} catch (err) {
-							warn(`Unable to calculate latency for ${regionId}. This region will not be reported.`);
+							warn(
+								`Unable to calculate latency for ${regionId} (${serverUrl}). This region will not be reported.`,
+								err,
+							);
 						}
 					}
 					print(`Region Latency Report:`, inspect(regionLatencies));

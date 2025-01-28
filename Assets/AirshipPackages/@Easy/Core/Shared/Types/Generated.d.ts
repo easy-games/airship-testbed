@@ -37403,6 +37403,26 @@ interface InternalHttpManagerConstructor {
 }
 declare const InternalHttpManager: InternalHttpManagerConstructor;
     
+interface UdpPingTool {
+
+
+
+
+
+}
+    
+interface UdpPingToolConstructor {
+
+
+    new(): UdpPingTool;
+
+
+    GetPing(serverUrl: string): number;
+    Test(v: string): number;
+
+}
+declare const UdpPingTool: UdpPingToolConstructor;
+    
 interface CrossSceneState {
 
 
@@ -47117,6 +47137,7 @@ interface AirshipPredictionManager extends MonoBehaviour {
 
 
 
+    Awake(): void;
     DisableDebugMode(): void;
     EnabledDebugMode(): void;
     InterpolateBodies(): void;
