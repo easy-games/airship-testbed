@@ -50,9 +50,8 @@ export class SocketController {
 					for (let i = 0; i < 3; i++) {
 						for (const [regionId, serverUrl] of ObjectUtils.entries(serverMap)) {
 							try {
-								const ping = UdpPingTool.GetPing(serverUrl);
-								print(`Ping to ${regionId} was ${ping}`);
-								if (!regionLatencies[regionId] || regionLatencies[regionId] > ping) {
+								const ping = UdpPingTool.GetPing(serverUrl, 1000);
+								if (regionLatencies[regionId] === undefined || regionLatencies[regionId] > ping) {
 									regionLatencies[regionId] = ping;
 								}
 							} catch (err) {

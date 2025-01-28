@@ -37434,7 +37434,7 @@ interface UdpPingToolConstructor {
     new(): UdpPingTool;
 
 
-    GetPing(serverUrl: string): number;
+    GetPing(serverUrl: string, timeoutMilliseconds: number): number;
 
 }
 declare const UdpPingTool: UdpPingToolConstructor;
