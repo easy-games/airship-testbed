@@ -47,7 +47,9 @@ export class ProtectedPartyController {
 	protected OnStart(): void {
 		this.socketController.On<Party>("game-coordinator/party-update", (data) => {
 			this.onPartyChange.Fire(data);
-			contextbridge.invoke(PartyControllerBridgeTopics.OnPartyChange, LuauContext.Game, data);
+			if (Game.IsInGame()) {
+				contextbridge.invoke(PartyControllerBridgeTopics.OnPartyChange, LuauContext.Game, data);
+			}
 		});
 	}
 }
