@@ -51,7 +51,7 @@ export class SocketController {
 							regionLatencies[regionId] = UdpPingTool.GetPing(serverUrl);
 						} catch (err) {
 							warn(
-								`Unable to calculate latency for ${regionId} (${serverUrl}). This region will not be reported.`,
+								`Unable to calculate latency for "${regionId}" (${serverUrl}). This region will not be reported.`,
 								err,
 							);
 						}
