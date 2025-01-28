@@ -37420,6 +37420,25 @@ interface InternalHttpManagerConstructor {
 }
 declare const InternalHttpManager: InternalHttpManagerConstructor;
     
+interface UdpPingTool {
+
+
+
+
+
+}
+    
+interface UdpPingToolConstructor {
+
+
+    new(): UdpPingTool;
+
+
+    GetPing(serverUrl: string, timeoutMilliseconds: number): number;
+
+}
+declare const UdpPingTool: UdpPingToolConstructor;
+    
 interface CrossSceneState {
 
 

@@ -5,6 +5,7 @@ import {
 	ServerBridgeApiDelistServer,
 	ServerBridgeApiGetAllowedPlayers,
 	ServerBridgeApiGetGameConfig,
+	ServerBridgeApiGetRegions,
 	ServerBridgeApiGetServerList,
 	ServerBridgeApiGetServers,
 	ServerBridgeApiGetTags,
@@ -241,5 +242,16 @@ export class AirshipServerManagerService {
 			LuauContext.Protected,
 			tag,
 		);
+	}
+
+	/**
+	 * Gets the available regionIds for game servers. Available regions may change periodically.
+	 * @returns
+	 */
+	public async GetRegions() {
+		return contextbridge.invoke<ServerBridgeApiGetRegions>(
+			ServerManagerServiceBridgeTopics.GetRegions,
+			LuauContext.Protected,
+		).regionIds;
 	}
 }

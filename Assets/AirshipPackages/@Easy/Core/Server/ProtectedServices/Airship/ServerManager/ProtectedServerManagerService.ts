@@ -25,6 +25,7 @@ export const enum ServerManagerServiceBridgeTopics {
 	HasTag = "ServerManagerService:HasTag",
 	AddTag = "ServerManagerService:AddTag",
 	RemoveTag = "ServerManagerService:RemoveTag",
+	GetRegions = "ServerManagerService:GetRegions",
 }
 
 export type ServerBridgeApiCreateServer = (config?: AirshipServerConfig) => AirshipServerData;
@@ -43,6 +44,7 @@ export type ServerBridgeApiGetTags = () => string[];
 export type ServerBridgeApiHasTag = (tag: string) => boolean;
 export type ServerBridgeApiAddTag = (tag: string) => boolean;
 export type ServerBridgeApiRemoveTag = (tag: string) => boolean;
+export type ServerBridgeApiGetRegions = () => { regionIds: string[] };
 
 const ALLOWED_PLAYERS_LIST_KEY = "allowedPlayers";
 const TAGS_LIST_KEY = "tags";
@@ -274,5 +276,16 @@ export class ProtectedServerManagerService {
 
 	public async RemoveTag(tag: string): Promise<ReturnType<ServerBridgeApiRemoveTag>> {
 		return await AgonesCore.Agones.DeleteListValue(TAGS_LIST_KEY, tag);
+	}
+
+	public async GetRegions() {
+		const res = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/servers/regions`);
+
+		if (!res.success || res.statusCode > 299) {
+			warn(`Unable to get regions. Status Code:  ${res.statusCode}.\n`, res.error);
+			throw res.error;
+		}
+
+		return json.decode(res.data) as ReturnType<ServerBridgeApiGetRegions>;
 	}
 }

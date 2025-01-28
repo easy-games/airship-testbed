@@ -2,6 +2,8 @@ import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { CoreLogger } from "@Easy/Core/Shared/Logger/CoreLogger";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
+import inspect from "@Easy/Core/Shared/Util/Inspect";
+import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
 import { AuthController } from "../Auth/AuthController";
@@ -11,6 +13,7 @@ export class SocketController {
 	private onEvent = new Signal<[eventName: string, data: string]>();
 	public onSocketConnectionChanged = new Signal<[connected: boolean]>();
 	public doReconnect = true;
+	public cancelSessionReportTask: () => void | undefined;
 
 	constructor(private readonly authController: AuthController) {}
 
@@ -30,19 +33,50 @@ export class SocketController {
 			task.spawn(() => {
 				this.Connect();
 			});
-			// Expires every 6 hours. So we fire every hour.
-			SetInterval(
-				60 * 60,
-				() => {
+			if (this.cancelSessionReportTask) this.cancelSessionReportTask();
+			// Expires every 6 hours. Run every 5 minutes to keep up to date.
+			this.cancelSessionReportTask = SetInterval(
+				60 * 5,
+				async () => {
+					const regions = InternalHttpManager.GetAsync(
+						AirshipUrl.GameCoordinator + "/servers/regions/ping-servers",
+					);
+					if (!regions.success) {
+						return warn("Unable to retrieve ping servers from GC. Region selection may not be possible.");
+					}
+					const serverMap = json.decode(regions.data) as { [regionId: string]: string };
+					const regionLatencies: { [regionId: string]: number } = {};
+					// Use the best of three tests.
+					for (let i = 0; i < 3; i++) {
+						for (const [regionId, serverUrl] of ObjectUtils.entries(serverMap)) {
+							try {
+								const ping = UdpPingTool.GetPing(serverUrl, 1000);
+								if (regionLatencies[regionId] === undefined || regionLatencies[regionId] > ping) {
+									regionLatencies[regionId] = ping;
+								}
+							} catch (err) {
+								warn(
+									`Unable to calculate latency for "${regionId}" (${serverUrl}). This region will not be reported.`,
+									err,
+								);
+							}
+						}
+						task.unscaledWait(0.25);
+					}
+					print(`Region Latency Report:`, inspect(regionLatencies));
 					InternalHttpManager.PutAsync(
 						AirshipUrl.GameCoordinator + "/user-session/data",
 						json.encode({
-							regionPriority: ["na"],
+							regionLatencies,
 						}),
 					);
 				},
 				true,
 			);
+		});
+
+		this.authController.onSignOut.Connect(() => {
+			if (this.cancelSessionReportTask) this.cancelSessionReportTask();
 		});
 
 		SocketManager.Instance.OnDisconnected((reason) => {
