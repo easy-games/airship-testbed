@@ -7987,6 +7987,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1819332072802288073, guid: 613da809ba5471841bc3c04522f4b134, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2668176232425038666, guid: 613da809ba5471841bc3c04522f4b134, type: 3}
       propertyPath: m_AdditionalShaderChannelsFlag
       value: 25
