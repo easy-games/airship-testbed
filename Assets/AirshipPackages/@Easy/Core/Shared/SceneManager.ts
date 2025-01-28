@@ -161,7 +161,7 @@ export class SceneManager {
 	 *
 	 * @returns Array of scenes in the hierarchy.
 	 */
-	public static GetScenes(): Scene[] {
+	public static GetScenes(): Readonly<Scene[]> {
 		return Bridge.GetScenes();
 	}
 
