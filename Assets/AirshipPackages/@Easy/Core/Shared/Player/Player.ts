@@ -279,8 +279,10 @@ export class Player {
 
 		bin.Add(
 			this.onCharacterChanged.Connect((newCharacter) => {
-				cleanup?.();
-				cleanup = observer(newCharacter);
+				task.spawn(() => {
+					cleanup?.();
+					cleanup = observer(newCharacter);
+				});
 			}),
 		);
 

@@ -534,12 +534,16 @@ export class AirshipInventorySingleton {
 		const bin = new Bin();
 		let cleanup: CleanupFunc;
 		if (this.localInventory) {
-			cleanup = callback(this.localInventory);
+			task.spawn(() => {
+				cleanup = callback(this.localInventory!);
+			});
 		}
 
 		bin.Add(
 			this.localInventoryChanged.Connect((inv) => {
-				cleanup = callback(inv);
+				task.spawn(() => {
+					cleanup = callback(inv);
+				});
 			}),
 		);
 		bin.Add(() => {
@@ -560,12 +564,16 @@ export class AirshipInventorySingleton {
 				if (inv) {
 					invBin.Add(
 						inv.ObserveHeldItem((itemStack) => {
-							cleanup?.();
-							cleanup = callback(itemStack);
+							task.spawn(() => {
+								cleanup?.();
+								cleanup = callback(itemStack);
+							});
 						}),
 					);
 				} else {
-					cleanup = callback(undefined);
+					task.spawn(() => {
+						cleanup = callback(undefined);
+					});
 				}
 			}),
 		);

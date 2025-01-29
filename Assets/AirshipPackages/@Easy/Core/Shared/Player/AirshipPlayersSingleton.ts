@@ -502,10 +502,12 @@ export class AirshipPlayersSingleton {
 	): () => void {
 		const cleanupPerPlayer = new Map<Player, () => void>();
 		const observe = (player: Player) => {
-			const cleanup = observer(player);
-			if (cleanup !== undefined) {
-				cleanupPerPlayer.set(player, cleanup);
-			}
+			task.spawn(() => {
+				const cleanup = observer(player);
+				if (cleanup !== undefined) {
+					cleanupPerPlayer.set(player, cleanup);
+				}
+			});
 		};
 		for (const player of this.players) {
 			observe(player);

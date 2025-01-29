@@ -277,10 +277,14 @@ export default class Inventory extends AirshipBehaviour {
 				if (selected?.itemType === currentItemStack?.itemType) return;
 
 				if (cleanup !== undefined) {
-					cleanup();
+					task.spawn(() => {
+						cleanup!();
+					});
 				}
 				currentItemStack = selected;
-				cleanup = callback(selected);
+				task.spawn(() => {
+					cleanup = callback(selected);
+				});
 			}),
 		);
 		bin.Add(
@@ -288,10 +292,14 @@ export default class Inventory extends AirshipBehaviour {
 				if (slot === this.heldSlot) {
 					if (itemStack?.itemType === currentItemStack?.itemType) return;
 					if (cleanup !== undefined) {
-						cleanup();
+						task.spawn(() => {
+							cleanup!();
+						});
 					}
 					currentItemStack = itemStack;
-					cleanup = callback(itemStack);
+					task.spawn(() => {
+						cleanup = callback(itemStack);
+					});
 				}
 			}),
 		);

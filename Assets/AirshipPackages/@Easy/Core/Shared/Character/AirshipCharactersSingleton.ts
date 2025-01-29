@@ -278,10 +278,12 @@ export class AirshipCharactersSingleton {
 	): () => void {
 		const cleanupPerCharacter = new Map<Character, () => void>();
 		const observe = (character: Character) => {
-			const cleanup = observer(character);
-			if (cleanup !== undefined) {
-				cleanupPerCharacter.set(character, cleanup);
-			}
+			task.spawn(() => {
+				const cleanup = observer(character);
+				if (cleanup !== undefined) {
+					cleanupPerCharacter.set(character, cleanup);
+				}
+			});
 		};
 		for (const character of this.characters) {
 			observe(character);
