@@ -109,11 +109,7 @@ function fireExcept(id: number, ignorePlayer: Player, args: unknown[], channel: 
 function fireClients(id: number, players: Player[], args: unknown[], channel: NetworkChannel) {
 	const msg = pack(id, args);
 	const clientIds = players.map((player) => player.connectionId);
-	NetworkCore.Net.BroadcastToClients(
-		clientIds as unknown as CSArray<number>,
-		msg,
-		channel === NetworkChannel.Reliable ? 1 : 0,
-	);
+	NetworkCore.Net.BroadcastToClients(clientIds, msg, channel === NetworkChannel.Reliable ? 1 : 0);
 }
 
 function connect(asServer: boolean, id: number, callback: Callback): () => void {

@@ -57,8 +57,9 @@ export class AvatarCollectionManager {
 		);
 
 		// print("Found avatar collection: " + avatarCollection);
-		for (let i = 0; i < avatarCollection.accessories.Length; i++) {
-			const element = avatarCollection.accessories.GetValue(i);
+		const accessories = avatarCollection.accessories;
+		for (const i of $range(0, accessories.size())) {
+			const element = accessories[i];
 			if (!element) {
 				CoreLogger.Warn("Empty element in avatar generalAccessories collection: " + i);
 				continue;
@@ -70,8 +71,9 @@ export class AvatarCollectionManager {
 		}
 
 		if (this.allAvatarFaces.size() === 0) {
-			for (let i = 0; i < avatarCollection.faces.Length; i++) {
-				const element = avatarCollection.faces.GetValue(i);
+			const faces = avatarCollection.faces;
+			for (const i of $range(0, faces.size())) {
+				const element = faces[i];
 				if (!element) {
 					CoreLogger.Warn("Empty element in avatar generalAccessories collection: " + i);
 					continue;
@@ -83,8 +85,9 @@ export class AvatarCollectionManager {
 			}
 		}
 
-		for (let i = 0; i < avatarCollection.skinColors.Length; i++) {
-			const element = avatarCollection.skinColors.GetValue(i);
+		const skinColors = avatarCollection.skinColors;
+		for (const i of $range(0, skinColors.size())) {
+			const element = skinColors[i];
 			this.skinColors.push(element);
 		}
 	}

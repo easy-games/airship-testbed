@@ -86,8 +86,8 @@ export class ClientSettingsController {
 		const micDevices = Bridge.GetMicDevices();
 		if (this.data.micDeviceName !== undefined) {
 			// const currentDeviceIndex = Bridge.GetCurrentMicDeviceIndex();
-			for (let i = 0; i < micDevices.Length; i++) {
-				const deviceName = micDevices.GetValue(i);
+			for (const i of $range(0, micDevices.size())) {
+				const deviceName = micDevices[i];
 				if (deviceName === this.data.micDeviceName) {
 					Bridge.SetMicDeviceIndex(i);
 					this.StartMicRecording();
@@ -97,7 +97,7 @@ export class ClientSettingsController {
 		}
 
 		// fallback
-		if (micDevices.Length > 0) {
+		if (micDevices.size() > 0) {
 			Bridge.SetMicDeviceIndex(0);
 			this.StartMicRecording();
 		}

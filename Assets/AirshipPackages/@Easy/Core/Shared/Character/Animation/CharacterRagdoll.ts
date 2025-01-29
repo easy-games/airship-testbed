@@ -21,14 +21,11 @@ export default class CharacterRagdoll extends AirshipBehaviour {
 		}
 		this.anim = this.gameObject.GetComponent<Animator>()!;
 		const foundJoints = this.gameObject.GetComponentsInChildren<CharacterJoint>();
-		for (let i = 0; i < foundJoints.Length; i++) {
-			let joint = foundJoints.GetValue(i);
-			if (joint) {
-				let go = joint.gameObject;
-				this.joints.push(joint);
-				this.colliders.push(go.GetComponent<Collider>()!);
-				this.rigids.push(go.GetComponent<Rigidbody>()!);
-			}
+		for (const joint of foundJoints) {
+			let go = joint.gameObject;
+			this.joints.push(joint);
+			this.colliders.push(go.GetComponent<Collider>()!);
+			this.rigids.push(go.GetComponent<Rigidbody>()!);
 		}
 
 		const TEST = false;
@@ -81,8 +78,8 @@ export default class CharacterRagdoll extends AirshipBehaviour {
 
 		//Make sure skinned meshes still render even when thrown far from origin
 		const renderers = this.gameObject.GetComponentsInChildren<SkinnedMeshRenderer>();
-		for (let i = 0; i < renderers.Length; i++) {
-			renderers.GetValue(i).updateWhenOffscreen = ragdollOn;
+		for (const renderer of renderers) {
+			renderer.updateWhenOffscreen = ragdollOn;
 		}
 	}
 

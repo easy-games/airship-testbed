@@ -344,7 +344,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			nav.SetSelected(i === index);
 			if (i === index && this.categoryLabelTxt) {
 				this.categoryLabelTxt.text =
-					nav.gameObject.GetComponentsInChildren<TextMeshProUGUI>().GetValue(0).text ?? "No Category";
+					nav.gameObject.GetComponentsInChildren<TextMeshProUGUI>()[0].text ?? "No Category";
 			}
 		}
 
@@ -607,8 +607,9 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 		//Make these objects not use baked lighting settings
 		if (acc) {
-			for (let i = 0; i < acc.renderers.Length; i++) {
-				let ren = acc.renderers.GetValue(i);
+			const renderers = acc.renderers;
+			for (const i of $range(0, renderers.size())) {
+				const ren = renderers[i];
 				if (ren) {
 					ren.lightProbeUsage = LightProbeUsage.CustomProvided;
 				}

@@ -33,7 +33,7 @@ export class ShutdownService {
 			}
 
 			const players = PlayerManagerBridge.Instance.GetPlayers();
-			let playerCount = players.Length;
+			const playerCount = players.size();
 
 			if (playerCount > 0) {
 				this.playerConnected = true;

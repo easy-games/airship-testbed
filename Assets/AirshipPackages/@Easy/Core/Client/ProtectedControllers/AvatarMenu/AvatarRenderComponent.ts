@@ -174,10 +174,9 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 		}
 	}
 
-	private AlignCamera(meshes: CSArray<Renderer>) {
+	private AlignCamera(meshes: Renderer[]) {
 		let totalBounds: Bounds | undefined = undefined;
-		for (let index = 0; index < meshes.Length; index++) {
-			const mesh = meshes.GetValue(index);
+		for (const mesh of meshes) {
 			if (!totalBounds) {
 				totalBounds = mesh.bounds;
 			} else {

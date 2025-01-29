@@ -146,7 +146,7 @@ export class AirshipServerManagerService {
 	 * players are allowed.
 	 * @returns The userIds of all players allowed to join this server.
 	 */
-	public async GetAllowedPlayers(): Promise<string[]> {
+	public async GetAllowedPlayers(): Promise<Readonly<string[]>> {
 		return contextbridge.invoke<ServerBridgeApiGetAllowedPlayers>(
 			ServerManagerServiceBridgeTopics.GetAllowedPlayers,
 			LuauContext.Protected,
@@ -198,7 +198,7 @@ export class AirshipServerManagerService {
 	 * Gets the tags on this server.
 	 * @returns The tags on this server.
 	 */
-	public async GetTags(): Promise<string[]> {
+	public async GetTags(): Promise<Readonly<string[]>> {
 		return contextbridge.invoke<ServerBridgeApiGetTags>(
 			ServerManagerServiceBridgeTopics.GetTags,
 			LuauContext.Protected,

@@ -3883,8 +3883,8 @@ interface Scene {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/SceneManagement.Scene.GetRootGameObjects.html | SceneManagement.Scene.GetRootGameObjects}
      */
-    GetRootGameObjects(): CSArray<GameObject>;
-    GetRootGameObjects(rootGameObjects: CSArray<GameObject>): void;
+    GetRootGameObjects(): Readonly<GameObject[]>;
+    GetRootGameObjects(rootGameObjects: Readonly<GameObject[]>): void;
     /**
      * Whether this is a valid Scene.
 A Scene may be invalid if, for example, you tried to open a Scene that does not exist. In this case, the Scene returned from EditorSceneManager.OpenScene would return False for IsValid.
@@ -4384,9 +4384,9 @@ interface Rigidbody extends Component {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rigidbody.SweepTestAll.html | Rigidbody.SweepTestAll}
      */
-    SweepTestAll(direction: Vector3, maxDistance: number, queryTriggerInteraction: QueryTriggerInteraction): CSArray<RaycastHit>;
-    SweepTestAll(direction: Vector3, maxDistance: number): CSArray<RaycastHit>;
-    SweepTestAll(direction: Vector3): CSArray<RaycastHit>;
+    SweepTestAll(direction: Vector3, maxDistance: number, queryTriggerInteraction: QueryTriggerInteraction): Readonly<RaycastHit[]>;
+    SweepTestAll(direction: Vector3, maxDistance: number): Readonly<RaycastHit[]>;
+    SweepTestAll(direction: Vector3): Readonly<RaycastHit[]>;
     /**
      * Forces a rigidbody to wake up.
      * 
@@ -4832,14 +4832,14 @@ interface ArticulationBody extends Behaviour {
      * More info: {@link https://docs.unity3d.com/ScriptReference/ArticulationBody.GetDenseJacobian.html | ArticulationBody.GetDenseJacobian}
      */
     GetDenseJacobian(jacobian: unknown): number;
-    GetDofStartIndices(dofStartIndices: CSArray<number>): number;
-    GetDriveForces(forces: CSArray<number>): number;
-    GetDriveTargets(targets: CSArray<number>): number;
-    GetDriveTargetVelocities(targetVelocities: CSArray<number>): number;
-    GetJointAccelerations(accelerations: CSArray<number>): number;
-    GetJointCoriolisCentrifugalForces(forces: CSArray<number>): number;
-    GetJointExternalForces(forces: CSArray<number>, step: number): number;
-    GetJointForces(forces: CSArray<number>): number;
+    GetDofStartIndices(dofStartIndices: Readonly<number[]>): number;
+    GetDriveForces(forces: Readonly<number[]>): number;
+    GetDriveTargets(targets: Readonly<number[]>): number;
+    GetDriveTargetVelocities(targetVelocities: Readonly<number[]>): number;
+    GetJointAccelerations(accelerations: Readonly<number[]>): number;
+    GetJointCoriolisCentrifugalForces(forces: Readonly<number[]>): number;
+    GetJointExternalForces(forces: Readonly<number[]>, step: number): number;
+    GetJointForces(forces: Readonly<number[]>): number;
     /**
      * Returns the forces required for the body to reach the provided acceleration in reduced space.
      * @param acceleration The desired acceleration in reduced space.
@@ -4847,9 +4847,9 @@ interface ArticulationBody extends Behaviour {
      * More info: {@link https://docs.unity3d.com/ScriptReference/ArticulationBody.GetJointForcesForAcceleration.html | ArticulationBody.GetJointForcesForAcceleration}
      */
     GetJointForcesForAcceleration(acceleration: ArticulationReducedSpace): ArticulationReducedSpace;
-    GetJointGravityForces(forces: CSArray<number>): number;
-    GetJointPositions(positions: CSArray<number>): number;
-    GetJointVelocities(velocities: CSArray<number>): number;
+    GetJointGravityForces(forces: Readonly<number[]>): number;
+    GetJointPositions(positions: Readonly<number[]>): number;
+    GetJointVelocities(velocities: Readonly<number[]>): number;
     /**
      * Gets the velocity of the articulation body at the specified worldPoint in global space.
      * 
@@ -4927,8 +4927,8 @@ interface ArticulationBody extends Behaviour {
      * More info: {@link https://docs.unity3d.com/ScriptReference/ArticulationBody.SetDriveTarget.html | ArticulationBody.SetDriveTarget}
      */
     SetDriveTarget(axis: ArticulationDriveAxis, value: number): void;
-    SetDriveTargets(targets: CSArray<number>): void;
-    SetDriveTargetVelocities(targetVelocities: CSArray<number>): void;
+    SetDriveTargets(targets: Readonly<number[]>): void;
+    SetDriveTargetVelocities(targetVelocities: Readonly<number[]>): void;
     /**
      * Sets the target velocity value of the specified drive.
      * @param axis The drive axis.
@@ -4937,9 +4937,9 @@ interface ArticulationBody extends Behaviour {
      * More info: {@link https://docs.unity3d.com/ScriptReference/ArticulationBody.SetDriveTargetVelocity.html | ArticulationBody.SetDriveTargetVelocity}
      */
     SetDriveTargetVelocity(axis: ArticulationDriveAxis, value: number): void;
-    SetJointForces(forces: CSArray<number>): void;
-    SetJointPositions(positions: CSArray<number>): void;
-    SetJointVelocities(velocities: CSArray<number>): void;
+    SetJointForces(forces: Readonly<number[]>): void;
+    SetJointPositions(positions: Readonly<number[]>): void;
+    SetJointVelocities(velocities: Readonly<number[]>): void;
     /**
      * Forces an articulation body to sleep.
      * 
@@ -5273,8 +5273,8 @@ interface PhysicsScene {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/PhysicsScene.BoxCast.html | PhysicsScene.BoxCast}
      */
-    BoxCast(center: Vector3, halfExtents: Vector3, direction: Vector3, results: CSArray<RaycastHit>, orientation: Quaternion, maxDistance: number, layerMask: number, queryTriggerInteraction: QueryTriggerInteraction): number;
-    BoxCast(center: Vector3, halfExtents: Vector3, direction: Vector3, results: CSArray<RaycastHit>): number;
+    BoxCast(center: Vector3, halfExtents: Vector3, direction: Vector3, results: Readonly<RaycastHit[]>, orientation: Quaternion, maxDistance: number, layerMask: number, queryTriggerInteraction: QueryTriggerInteraction): number;
+    BoxCast(center: Vector3, halfExtents: Vector3, direction: Vector3, results: Readonly<RaycastHit[]>): number;
     /**
      * Casts a capsule against all colliders in this physics scene and returns detailed information on what was hit.
      * @param point1 The center of the sphere at the start of the capsule.
@@ -5302,7 +5302,7 @@ interface PhysicsScene {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/PhysicsScene.CapsuleCast.html | PhysicsScene.CapsuleCast}
      */
-    CapsuleCast(point1: Vector3, point2: Vector3, radius: number, direction: Vector3, results: CSArray<RaycastHit>, maxDistance: number, layerMask: number, queryTriggerInteraction: QueryTriggerInteraction): number;
+    CapsuleCast(point1: Vector3, point2: Vector3, radius: number, direction: Vector3, results: Readonly<RaycastHit[]>, maxDistance: number, layerMask: number, queryTriggerInteraction: QueryTriggerInteraction): number;
     Equals(other: unknown): boolean;
     Equals(other: PhysicsScene): boolean;
     GetHashCode(): number;
@@ -5335,8 +5335,8 @@ interface PhysicsScene {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/PhysicsScene.OverlapBox.html | PhysicsScene.OverlapBox}
      */
-    OverlapBox(center: Vector3, halfExtents: Vector3, results: CSArray<Collider>, orientation: Quaternion, layerMask: number, queryTriggerInteraction: QueryTriggerInteraction): number;
-    OverlapBox(center: Vector3, halfExtents: Vector3, results: CSArray<Collider>): number;
+    OverlapBox(center: Vector3, halfExtents: Vector3, results: Readonly<Collider[]>, orientation: Quaternion, layerMask: number, queryTriggerInteraction: QueryTriggerInteraction): number;
+    OverlapBox(center: Vector3, halfExtents: Vector3, results: Readonly<Collider[]>): number;
     /**
      * Check the given capsule against the physics world and return all overlapping colliders in the user-provided buffer.
      * @param point0 The center of the sphere at the start of the capsule.
@@ -5348,7 +5348,7 @@ interface PhysicsScene {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/PhysicsScene.OverlapCapsule.html | PhysicsScene.OverlapCapsule}
      */
-    OverlapCapsule(point0: Vector3, point1: Vector3, radius: number, results: CSArray<Collider>, layerMask: number, queryTriggerInteraction: QueryTriggerInteraction): number;
+    OverlapCapsule(point0: Vector3, point1: Vector3, radius: number, results: Readonly<Collider[]>, layerMask: number, queryTriggerInteraction: QueryTriggerInteraction): number;
     /**
      * Computes and stores colliders touching or inside the sphere into the provided buffer.
      * @param position Center of the sphere.
@@ -5359,7 +5359,7 @@ interface PhysicsScene {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/PhysicsScene.OverlapSphere.html | PhysicsScene.OverlapSphere}
      */
-    OverlapSphere(position: Vector3, radius: number, results: CSArray<Collider>, layerMask: number, queryTriggerInteraction: QueryTriggerInteraction): number;
+    OverlapSphere(position: Vector3, radius: number, results: Readonly<Collider[]>, layerMask: number, queryTriggerInteraction: QueryTriggerInteraction): number;
     /**
      * Casts a ray, from point origin, in direction direction, of length maxDistance, against all colliders in the Scene.
      * @param origin The starting point of the ray in world coordinates.
@@ -5394,7 +5394,7 @@ interface PhysicsScene {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/PhysicsScene.Raycast.html | PhysicsScene.Raycast}
      */
-    Raycast(origin: Vector3, direction: Vector3, raycastHits: CSArray<RaycastHit>, maxDistance: number, layerMask: number, queryTriggerInteraction: QueryTriggerInteraction): number;
+    Raycast(origin: Vector3, direction: Vector3, raycastHits: Readonly<RaycastHit[]>, maxDistance: number, layerMask: number, queryTriggerInteraction: QueryTriggerInteraction): number;
     /**
      * Resets the Transform positions of interpolated and extrapolated Rigidbodies in this PhysicsScene to Rigidbody.position and Transform rotations to Rigidbody.rotation.
      * 
@@ -5442,7 +5442,7 @@ interface PhysicsScene {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/PhysicsScene.SphereCast.html | PhysicsScene.SphereCast}
      */
-    SphereCast(origin: Vector3, radius: number, direction: Vector3, results: CSArray<RaycastHit>, maxDistance: number, layerMask: number, queryTriggerInteraction: QueryTriggerInteraction): number;
+    SphereCast(origin: Vector3, radius: number, direction: Vector3, results: Readonly<RaycastHit[]>, maxDistance: number, layerMask: number, queryTriggerInteraction: QueryTriggerInteraction): number;
     ToString(): string;
 
 
@@ -5727,7 +5727,7 @@ interface PhysicsScene2D {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/PhysicsScene2D.BoxCast.html | PhysicsScene2D.BoxCast}
      */
-    BoxCast(origin: Vector2, size: Vector2, angle: number, direction: Vector2, distance: number, results: CSArray<RaycastHit2D>, layerMask: number): number;
+    BoxCast(origin: Vector2, size: Vector2, angle: number, direction: Vector2, distance: number, results: Readonly<RaycastHit2D[]>, layerMask: number): number;
     /**
      * Casts a box against the colliders in the PhysicsScene2D, returning all intersections.
      * @param origin The point in 2D space where the box originates.
@@ -5740,8 +5740,8 @@ interface PhysicsScene2D {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/PhysicsScene2D.BoxCast.html | PhysicsScene2D.BoxCast}
      */
-    BoxCast(origin: Vector2, size: Vector2, angle: number, direction: Vector2, distance: number, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
-    BoxCast(origin: Vector2, size: Vector2, angle: number, direction: Vector2, distance: number, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
+    BoxCast(origin: Vector2, size: Vector2, angle: number, direction: Vector2, distance: number, contactFilter: ContactFilter2D, results: Readonly<RaycastHit2D[]>): number;
+    BoxCast(origin: Vector2, size: Vector2, angle: number, direction: Vector2, distance: number, contactFilter: ContactFilter2D, results: Readonly<RaycastHit2D[]>): number;
     /**
      * Casts a capsule against colliders in the PhysicsScene2D, returning the first intersection only.
      * @param origin The point in 2D space where the capsule originates.
@@ -5781,7 +5781,7 @@ interface PhysicsScene2D {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/PhysicsScene2D.CapsuleCast.html | PhysicsScene2D.CapsuleCast}
      */
-    CapsuleCast(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, distance: number, results: CSArray<RaycastHit2D>, layerMask: number): number;
+    CapsuleCast(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, distance: number, results: Readonly<RaycastHit2D[]>, layerMask: number): number;
     /**
      * Casts a capsule against the Colliders in the PhysicsScene2D, returning all intersections.
      * @param origin The point in 2D space where the capsule originates.
@@ -5795,8 +5795,8 @@ interface PhysicsScene2D {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/PhysicsScene2D.CapsuleCast.html | PhysicsScene2D.CapsuleCast}
      */
-    CapsuleCast(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, distance: number, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
-    CapsuleCast(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, distance: number, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
+    CapsuleCast(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, distance: number, contactFilter: ContactFilter2D, results: Readonly<RaycastHit2D[]>): number;
+    CapsuleCast(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, distance: number, contactFilter: ContactFilter2D, results: Readonly<RaycastHit2D[]>): number;
     /**
      * Casts a circle against colliders in the PhysicsScene2D, returning the first intersection only.
      * @param origin The point in 2D space where the circle originates.
@@ -5830,7 +5830,7 @@ interface PhysicsScene2D {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/PhysicsScene2D.CircleCast.html | PhysicsScene2D.CircleCast}
      */
-    CircleCast(origin: Vector2, radius: number, direction: Vector2, distance: number, results: CSArray<RaycastHit2D>, layerMask: number): number;
+    CircleCast(origin: Vector2, radius: number, direction: Vector2, distance: number, results: Readonly<RaycastHit2D[]>, layerMask: number): number;
     /**
      * Casts a circle against the colliders in the PhysicsScene2D, returning all intersections.
      * @param origin The point in 2D space where the circle originates.
@@ -5842,8 +5842,8 @@ interface PhysicsScene2D {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/PhysicsScene2D.CircleCast.html | PhysicsScene2D.CircleCast}
      */
-    CircleCast(origin: Vector2, radius: number, direction: Vector2, distance: number, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
-    CircleCast(origin: Vector2, radius: number, direction: Vector2, distance: number, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
+    CircleCast(origin: Vector2, radius: number, direction: Vector2, distance: number, contactFilter: ContactFilter2D, results: Readonly<RaycastHit2D[]>): number;
+    CircleCast(origin: Vector2, radius: number, direction: Vector2, distance: number, contactFilter: ContactFilter2D, results: Readonly<RaycastHit2D[]>): number;
     Equals(other: unknown): boolean;
     Equals(other: PhysicsScene2D): boolean;
     GetHashCode(): number;
@@ -5865,8 +5865,8 @@ interface PhysicsScene2D {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/PhysicsScene2D.GetRayIntersection.html | PhysicsScene2D.GetRayIntersection}
      */
-    GetRayIntersection(ray: Ray, distance: number, results: CSArray<RaycastHit2D>, layerMask: number): number;
-    GetRayIntersection(ray: Ray, distance: number, results: CSArray<RaycastHit2D>, layerMask: number): number;
+    GetRayIntersection(ray: Ray, distance: number, results: Readonly<RaycastHit2D[]>, layerMask: number): number;
+    GetRayIntersection(ray: Ray, distance: number, results: Readonly<RaycastHit2D[]>, layerMask: number): number;
     /**
      * Determines whether the physics Scene is empty or not.
      * 
@@ -5906,7 +5906,7 @@ interface PhysicsScene2D {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/PhysicsScene2D.Linecast.html | PhysicsScene2D.Linecast}
      */
-    Linecast(start: Vector2, end: Vector2, results: CSArray<RaycastHit2D>, layerMask: number): number;
+    Linecast(start: Vector2, end: Vector2, results: Readonly<RaycastHit2D[]>, layerMask: number): number;
     /**
      * Casts a line segment against colliders in the PhysicsScene2D.
      * @param start The start point of the line in world space.
@@ -5916,8 +5916,8 @@ interface PhysicsScene2D {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/PhysicsScene2D.Linecast.html | PhysicsScene2D.Linecast}
      */
-    Linecast(start: Vector2, end: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
-    Linecast(start: Vector2, end: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
+    Linecast(start: Vector2, end: Vector2, contactFilter: ContactFilter2D, results: Readonly<RaycastHit2D[]>): number;
+    Linecast(start: Vector2, end: Vector2, contactFilter: ContactFilter2D, results: Readonly<RaycastHit2D[]>): number;
     /**
      * Checks an area (non-rotated box) against Colliders in the PhysicsScene2D, returning the first intersection only.
      * @param pointA One corner of the rectangle.
@@ -5945,7 +5945,7 @@ interface PhysicsScene2D {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/PhysicsScene2D.OverlapArea.html | PhysicsScene2D.OverlapArea}
      */
-    OverlapArea(pointA: Vector2, pointB: Vector2, results: CSArray<Collider2D>, layerMask: number): number;
+    OverlapArea(pointA: Vector2, pointB: Vector2, results: Readonly<Collider2D[]>, layerMask: number): number;
     /**
      * Checks an area (non-rotated box) against Colliders in the PhysicsScene2D, returning all intersections.
      * @param pointA One corner of the rectangle.
@@ -5955,8 +5955,8 @@ interface PhysicsScene2D {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/PhysicsScene2D.OverlapArea.html | PhysicsScene2D.OverlapArea}
      */
-    OverlapArea(pointA: Vector2, pointB: Vector2, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
-    OverlapArea(pointA: Vector2, pointB: Vector2, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    OverlapArea(pointA: Vector2, pointB: Vector2, contactFilter: ContactFilter2D, results: Readonly<Collider2D[]>): number;
+    OverlapArea(pointA: Vector2, pointB: Vector2, contactFilter: ContactFilter2D, results: Readonly<Collider2D[]>): number;
     /**
      * Checks a box against Colliders in the PhysicsScene2D, returning the first intersection only.
      * @param point The center of the box.
@@ -5987,7 +5987,7 @@ interface PhysicsScene2D {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/PhysicsScene2D.OverlapBox.html | PhysicsScene2D.OverlapBox}
      */
-    OverlapBox(point: Vector2, size: Vector2, angle: number, results: CSArray<Collider2D>, layerMask: number): number;
+    OverlapBox(point: Vector2, size: Vector2, angle: number, results: Readonly<Collider2D[]>, layerMask: number): number;
     /**
      * Checks a box against Colliders in the PhysicsScene2D, returning all intersections.
      * @param point The center of the box.
@@ -5998,8 +5998,8 @@ interface PhysicsScene2D {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/PhysicsScene2D.OverlapBox.html | PhysicsScene2D.OverlapBox}
      */
-    OverlapBox(point: Vector2, size: Vector2, angle: number, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
-    OverlapBox(point: Vector2, size: Vector2, angle: number, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    OverlapBox(point: Vector2, size: Vector2, angle: number, contactFilter: ContactFilter2D, results: Readonly<Collider2D[]>): number;
+    OverlapBox(point: Vector2, size: Vector2, angle: number, contactFilter: ContactFilter2D, results: Readonly<Collider2D[]>): number;
     /**
      * Checks a capsule against Colliders in the PhysicsScene2D, returning the first intersection only.
      * @param point The center of the capsule.
@@ -6033,7 +6033,7 @@ interface PhysicsScene2D {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/PhysicsScene2D.OverlapCapsule.html | PhysicsScene2D.OverlapCapsule}
      */
-    OverlapCapsule(point: Vector2, size: Vector2, direction: CapsuleDirection2D, angle: number, results: CSArray<Collider2D>, layerMask: number): number;
+    OverlapCapsule(point: Vector2, size: Vector2, direction: CapsuleDirection2D, angle: number, results: Readonly<Collider2D[]>, layerMask: number): number;
     /**
      * Checks a capsule against Colliders in the PhysicsScene2D, returning all intersections.
      * @param point The center of the capsule.
@@ -6045,8 +6045,8 @@ interface PhysicsScene2D {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/PhysicsScene2D.OverlapCapsule.html | PhysicsScene2D.OverlapCapsule}
      */
-    OverlapCapsule(point: Vector2, size: Vector2, direction: CapsuleDirection2D, angle: number, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
-    OverlapCapsule(point: Vector2, size: Vector2, direction: CapsuleDirection2D, angle: number, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    OverlapCapsule(point: Vector2, size: Vector2, direction: CapsuleDirection2D, angle: number, contactFilter: ContactFilter2D, results: Readonly<Collider2D[]>): number;
+    OverlapCapsule(point: Vector2, size: Vector2, direction: CapsuleDirection2D, angle: number, contactFilter: ContactFilter2D, results: Readonly<Collider2D[]>): number;
     /**
      * Checks a circle against Colliders in the PhysicsScene2D, returning the first intersection only.
      * @param point The centre of the circle.
@@ -6074,7 +6074,7 @@ interface PhysicsScene2D {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/PhysicsScene2D.OverlapCircle.html | PhysicsScene2D.OverlapCircle}
      */
-    OverlapCircle(point: Vector2, radius: number, results: CSArray<Collider2D>, layerMask: number): number;
+    OverlapCircle(point: Vector2, radius: number, results: Readonly<Collider2D[]>, layerMask: number): number;
     /**
      * Checks a circle against Colliders in the PhysicsScene2D, returning all intersections.
      * @param point The centre of the circle.
@@ -6084,8 +6084,8 @@ interface PhysicsScene2D {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/PhysicsScene2D.OverlapCircle.html | PhysicsScene2D.OverlapCircle}
      */
-    OverlapCircle(point: Vector2, radius: number, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
-    OverlapCircle(point: Vector2, radius: number, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    OverlapCircle(point: Vector2, radius: number, contactFilter: ContactFilter2D, results: Readonly<Collider2D[]>): number;
+    OverlapCircle(point: Vector2, radius: number, contactFilter: ContactFilter2D, results: Readonly<Collider2D[]>): number;
     /**
      * Checks a point against Colliders in the PhysicsScene2D, returning the first intersection only.
      * @param point A point in world space.
@@ -6110,7 +6110,7 @@ interface PhysicsScene2D {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/PhysicsScene2D.OverlapPoint.html | PhysicsScene2D.OverlapPoint}
      */
-    OverlapPoint(point: Vector2, results: CSArray<Collider2D>, layerMask: number): number;
+    OverlapPoint(point: Vector2, results: Readonly<Collider2D[]>, layerMask: number): number;
     /**
      * Checks a point against Colliders in the PhysicsScene2D, returning all intersections.
      * @param point A point in world space.
@@ -6119,8 +6119,8 @@ interface PhysicsScene2D {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/PhysicsScene2D.OverlapPoint.html | PhysicsScene2D.OverlapPoint}
      */
-    OverlapPoint(point: Vector2, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
-    OverlapPoint(point: Vector2, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    OverlapPoint(point: Vector2, contactFilter: ContactFilter2D, results: Readonly<Collider2D[]>): number;
+    OverlapPoint(point: Vector2, contactFilter: ContactFilter2D, results: Readonly<Collider2D[]>): number;
     /**
      * Casts a ray against colliders in the PhysicsScene2D, returning the first intersection only.
      * @param origin The point in 2D space where the ray originates.
@@ -6151,7 +6151,7 @@ interface PhysicsScene2D {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/PhysicsScene2D.Raycast.html | PhysicsScene2D.Raycast}
      */
-    Raycast(origin: Vector2, direction: Vector2, distance: number, results: CSArray<RaycastHit2D>, layerMask: number): number;
+    Raycast(origin: Vector2, direction: Vector2, distance: number, results: Readonly<RaycastHit2D[]>, layerMask: number): number;
     /**
      * Casts a ray against colliders the PhysicsScene2D, returning all intersections.
      * @param origin The point in 2D space where the ray originates.
@@ -6162,8 +6162,8 @@ interface PhysicsScene2D {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/PhysicsScene2D.Raycast.html | PhysicsScene2D.Raycast}
      */
-    Raycast(origin: Vector2, direction: Vector2, distance: number, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
-    Raycast(origin: Vector2, direction: Vector2, distance: number, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
+    Raycast(origin: Vector2, direction: Vector2, distance: number, contactFilter: ContactFilter2D, results: Readonly<RaycastHit2D[]>): number;
+    Raycast(origin: Vector2, direction: Vector2, distance: number, contactFilter: ContactFilter2D, results: Readonly<RaycastHit2D[]>): number;
     Simulate(deltaTime: number): boolean;
     /**
      * Simulate physics associated with this PhysicsScene.
@@ -6377,8 +6377,8 @@ interface Collider2D extends Behaviour {
 
 
 
-    Cast(direction: Vector2, results: CSArray<RaycastHit2D>): number;
-    Cast(direction: Vector2, results: CSArray<RaycastHit2D>, distance: number): number;
+    Cast(direction: Vector2, results: Readonly<RaycastHit2D[]>): number;
+    Cast(direction: Vector2, results: Readonly<RaycastHit2D[]>, distance: number): number;
     /**
      * Casts the Collider shape into the Scene starting at the Collider position ignoring the Collider itself.
      * @param direction Vector representing the direction to cast the shape.
@@ -6388,9 +6388,9 @@ interface Collider2D extends Behaviour {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Collider2D.Cast.html | Collider2D.Cast}
      */
-    Cast(direction: Vector2, results: CSArray<RaycastHit2D>, distance: number, ignoreSiblingColliders: boolean): number;
-    Cast(direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
-    Cast(direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number): number;
+    Cast(direction: Vector2, results: Readonly<RaycastHit2D[]>, distance: number, ignoreSiblingColliders: boolean): number;
+    Cast(direction: Vector2, contactFilter: ContactFilter2D, results: Readonly<RaycastHit2D[]>): number;
+    Cast(direction: Vector2, contactFilter: ContactFilter2D, results: Readonly<RaycastHit2D[]>, distance: number): number;
     /**
      * Casts the Collider shape into the Scene starting at the Collider position ignoring the Collider itself.
      * @param direction Vector representing the direction to cast the shape.
@@ -6401,11 +6401,11 @@ interface Collider2D extends Behaviour {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Collider2D.Cast.html | Collider2D.Cast}
      */
-    Cast(direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number, ignoreSiblingColliders: boolean): number;
-    Cast(direction: Vector2, results: CSArray<RaycastHit2D>, distance: number, ignoreSiblingColliders: boolean): number;
-    Cast(direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number, ignoreSiblingColliders: boolean): number;
-    Cast(position: Vector2, angle: number, direction: Vector2, results: CSArray<RaycastHit2D>, distance: number, ignoreSiblingColliders: boolean): number;
-    Cast(position: Vector2, angle: number, direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number, ignoreSiblingColliders: boolean): number;
+    Cast(direction: Vector2, contactFilter: ContactFilter2D, results: Readonly<RaycastHit2D[]>, distance: number, ignoreSiblingColliders: boolean): number;
+    Cast(direction: Vector2, results: Readonly<RaycastHit2D[]>, distance: number, ignoreSiblingColliders: boolean): number;
+    Cast(direction: Vector2, contactFilter: ContactFilter2D, results: Readonly<RaycastHit2D[]>, distance: number, ignoreSiblingColliders: boolean): number;
+    Cast(position: Vector2, angle: number, direction: Vector2, results: Readonly<RaycastHit2D[]>, distance: number, ignoreSiblingColliders: boolean): number;
+    Cast(position: Vector2, angle: number, direction: Vector2, contactFilter: ContactFilter2D, results: Readonly<RaycastHit2D[]>, distance: number, ignoreSiblingColliders: boolean): number;
     /**
      * Returns a point on the perimeter of this Collider that is closest to the specified position.
      * @param position The position from which to find the closest point on this Collider.
@@ -6447,8 +6447,8 @@ interface Collider2D extends Behaviour {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Collider2D.GetContacts.html | Collider2D.GetContacts}
      */
-    GetContacts(contacts: CSArray<ContactPoint2D>): number;
-    GetContacts(contacts: CSArray<ContactPoint2D>): number;
+    GetContacts(contacts: Readonly<ContactPoint2D[]>): number;
+    GetContacts(contacts: Readonly<ContactPoint2D[]>): number;
     /**
      * Retrieves all contact points for this Collider, with the results filtered by the contactFilter.
      * @param contactFilter The contact filter used to filter the results differently, such as by layer mask, Z depth, or normal angle.
@@ -6456,16 +6456,16 @@ interface Collider2D extends Behaviour {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Collider2D.GetContacts.html | Collider2D.GetContacts}
      */
-    GetContacts(contactFilter: ContactFilter2D, contacts: CSArray<ContactPoint2D>): number;
-    GetContacts(contactFilter: ContactFilter2D, contacts: CSArray<ContactPoint2D>): number;
+    GetContacts(contactFilter: ContactFilter2D, contacts: Readonly<ContactPoint2D[]>): number;
+    GetContacts(contactFilter: ContactFilter2D, contacts: Readonly<ContactPoint2D[]>): number;
     /**
      * Retrieves all colliders in contact with this Collider.
      * @param colliders An array of Collider2D used to receive the results.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Collider2D.GetContacts.html | Collider2D.GetContacts}
      */
-    GetContacts(colliders: CSArray<Collider2D>): number;
-    GetContacts(colliders: CSArray<Collider2D>): number;
+    GetContacts(colliders: Readonly<Collider2D[]>): number;
+    GetContacts(colliders: Readonly<Collider2D[]>): number;
     /**
      * Retrieves all colliders in contact with this Collider, with the results filtered by the contactFilter.
      * @param contactFilter The contact filter used to filter the results differently, such as by layer mask, Z depth, or normal angle.
@@ -6473,9 +6473,9 @@ interface Collider2D extends Behaviour {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Collider2D.GetContacts.html | Collider2D.GetContacts}
      */
-    GetContacts(contactFilter: ContactFilter2D, colliders: CSArray<Collider2D>): number;
-    GetContacts(contactFilter: ContactFilter2D, colliders: CSArray<Collider2D>): number;
-    GetShapeBounds(bounds: CSArray<Bounds>, useRadii: boolean, useWorldSpace: boolean): Bounds;
+    GetContacts(contactFilter: ContactFilter2D, colliders: Readonly<Collider2D[]>): number;
+    GetContacts(contactFilter: ContactFilter2D, colliders: Readonly<Collider2D[]>): number;
+    GetShapeBounds(bounds: Readonly<Bounds[]>, useRadii: boolean, useWorldSpace: boolean): Bounds;
     /**
      * Generates a simple hash value based upon the geometry of the Collider2D.
      * 
@@ -6535,11 +6535,11 @@ interface Collider2D extends Behaviour {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Collider2D.Overlap.html | Collider2D.Overlap}
      */
-    Overlap(contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
-    Overlap(results: CSArray<Collider2D>): number;
-    Overlap(contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
-    Overlap(position: Vector2, angle: number, results: CSArray<Collider2D>): number;
-    Overlap(position: Vector2, angle: number, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    Overlap(contactFilter: ContactFilter2D, results: Readonly<Collider2D[]>): number;
+    Overlap(results: Readonly<Collider2D[]>): number;
+    Overlap(contactFilter: ContactFilter2D, results: Readonly<Collider2D[]>): number;
+    Overlap(position: Vector2, angle: number, results: Readonly<Collider2D[]>): number;
+    Overlap(position: Vector2, angle: number, contactFilter: ContactFilter2D, results: Readonly<Collider2D[]>): number;
     /**
      * Check if a collider overlaps a point in space.
      * @param point A point in world space.
@@ -6547,10 +6547,10 @@ interface Collider2D extends Behaviour {
      * More info: {@link https://docs.unity3d.com/ScriptReference/Collider2D.OverlapPoint.html | Collider2D.OverlapPoint}
      */
     OverlapPoint(point: Vector2): boolean;
-    Raycast(direction: Vector2, results: CSArray<RaycastHit2D>): number;
-    Raycast(direction: Vector2, results: CSArray<RaycastHit2D>, distance: number): number;
-    Raycast(direction: Vector2, results: CSArray<RaycastHit2D>, distance: number, layerMask: number): number;
-    Raycast(direction: Vector2, results: CSArray<RaycastHit2D>, distance: number, layerMask: number, minDepth: number): number;
+    Raycast(direction: Vector2, results: Readonly<RaycastHit2D[]>): number;
+    Raycast(direction: Vector2, results: Readonly<RaycastHit2D[]>, distance: number): number;
+    Raycast(direction: Vector2, results: Readonly<RaycastHit2D[]>, distance: number, layerMask: number): number;
+    Raycast(direction: Vector2, results: Readonly<RaycastHit2D[]>, distance: number, layerMask: number, minDepth: number): number;
     /**
      * Casts a ray into the Scene that starts at the Collider position and ignores the Collider itself.
      * @param direction Vector representing the direction of the ray.
@@ -6562,8 +6562,8 @@ interface Collider2D extends Behaviour {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Collider2D.Raycast.html | Collider2D.Raycast}
      */
-    Raycast(direction: Vector2, results: CSArray<RaycastHit2D>, distance: number, layerMask: number, minDepth: number, maxDepth: number): number;
-    Raycast(direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
+    Raycast(direction: Vector2, results: Readonly<RaycastHit2D[]>, distance: number, layerMask: number, minDepth: number, maxDepth: number): number;
+    Raycast(direction: Vector2, contactFilter: ContactFilter2D, results: Readonly<RaycastHit2D[]>): number;
     /**
      * Casts a ray into the Scene that starts at the Collider position and ignores the Collider itself.
      * @param direction Vector representing the direction of the ray.
@@ -6573,8 +6573,8 @@ interface Collider2D extends Behaviour {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Collider2D.Raycast.html | Collider2D.Raycast}
      */
-    Raycast(direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number): number;
-    Raycast(direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number): number;
+    Raycast(direction: Vector2, contactFilter: ContactFilter2D, results: Readonly<RaycastHit2D[]>, distance: number): number;
+    Raycast(direction: Vector2, contactFilter: ContactFilter2D, results: Readonly<RaycastHit2D[]>, distance: number): number;
 
 
 }
@@ -6637,7 +6637,7 @@ interface CompositeCollider2D extends Collider2D {
      * More info: {@link https://docs.unity3d.com/ScriptReference/CompositeCollider2D.GenerateGeometry.html | CompositeCollider2D.GenerateGeometry}
      */
     GenerateGeometry(): void;
-    GetCompositedColliders(colliders: CSArray<Collider2D>): number;
+    GetCompositedColliders(colliders: Readonly<Collider2D[]>): number;
     /**
      * Gets a path from the Collider by its index.
      * @param index The index of the path from 0 to pathCount minus 1.
@@ -6645,8 +6645,8 @@ interface CompositeCollider2D extends Collider2D {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/CompositeCollider2D.GetPath.html | CompositeCollider2D.GetPath}
      */
-    GetPath(index: number, points: CSArray<Vector2>): number;
-    GetPath(index: number, points: CSArray<Vector2>): number;
+    GetPath(index: number, points: Readonly<Vector2[]>): number;
+    GetPath(index: number, points: Readonly<Vector2[]>): number;
     /**
      * Gets the number of points in the specified path from the Collider by its index.
      * @param index The index of the path from 0 to pathCount minus 1.
@@ -6921,7 +6921,7 @@ interface Rigidbody2D extends Component {
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rigidbody2D.AddTorque.html | Rigidbody2D.AddTorque}
      */
     AddTorque(torque: number, mode: ForceMode2D): void;
-    Cast(direction: Vector2, results: CSArray<RaycastHit2D>): number;
+    Cast(direction: Vector2, results: Readonly<RaycastHit2D[]>): number;
     /**
      * All the Collider2D shapes attached to the Rigidbody2D are cast into the Scene starting at each Collider position ignoring the Colliders attached to the same Rigidbody2D.
      * @param direction Vector representing the direction to cast each Collider2D shape.
@@ -6930,9 +6930,9 @@ interface Rigidbody2D extends Component {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rigidbody2D.Cast.html | Rigidbody2D.Cast}
      */
-    Cast(direction: Vector2, results: CSArray<RaycastHit2D>, distance: number): number;
-    Cast(direction: Vector2, results: CSArray<RaycastHit2D>, distance: number): number;
-    Cast(direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
+    Cast(direction: Vector2, results: Readonly<RaycastHit2D[]>, distance: number): number;
+    Cast(direction: Vector2, results: Readonly<RaycastHit2D[]>, distance: number): number;
+    Cast(direction: Vector2, contactFilter: ContactFilter2D, results: Readonly<RaycastHit2D[]>): number;
     /**
      * All the Collider2D shapes attached to the Rigidbody2D are cast into the Scene starting at each Collider position ignoring the Colliders attached to the same Rigidbody2D.
      * @param direction Vector representing the direction to cast each Collider2D shape.
@@ -6942,10 +6942,10 @@ interface Rigidbody2D extends Component {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rigidbody2D.Cast.html | Rigidbody2D.Cast}
      */
-    Cast(direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number): number;
-    Cast(direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number): number;
-    Cast(position: Vector2, angle: number, direction: Vector2, results: CSArray<RaycastHit2D>, distance: number): number;
-    Cast(position: Vector2, angle: number, direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number): number;
+    Cast(direction: Vector2, contactFilter: ContactFilter2D, results: Readonly<RaycastHit2D[]>, distance: number): number;
+    Cast(direction: Vector2, contactFilter: ContactFilter2D, results: Readonly<RaycastHit2D[]>, distance: number): number;
+    Cast(position: Vector2, angle: number, direction: Vector2, results: Readonly<RaycastHit2D[]>, distance: number): number;
+    Cast(position: Vector2, angle: number, direction: Vector2, contactFilter: ContactFilter2D, results: Readonly<RaycastHit2D[]>, distance: number): number;
     /**
      * Returns a point on the perimeter of all enabled Colliders attached to this Rigidbody that is closest to the specified position.
      * @param position The position from which to find the closest point on this Rigidbody.
@@ -6971,8 +6971,8 @@ interface Rigidbody2D extends Component {
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rigidbody2D.Distance.html | Rigidbody2D.Distance}
      */
     Distance(thisPosition: Vector2, thisAngle: number, collider: Collider2D, position: Vector2, angle: number): ColliderDistance2D;
-    GetAttachedColliders(results: CSArray<Collider2D>): number;
-    GetAttachedColliders(results: CSArray<Collider2D>): number;
+    GetAttachedColliders(results: Readonly<Collider2D[]>): number;
+    GetAttachedColliders(results: Readonly<Collider2D[]>): number;
     /**
      * Returns all Collider2D that are attached to this Rigidbody2D.
      * @param results An array of Collider2D used to receive the results.
@@ -6980,16 +6980,16 @@ interface Rigidbody2D extends Component {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rigidbody2D.GetAttachedColliders.html | Rigidbody2D.GetAttachedColliders}
      */
-    GetAttachedColliders(results: CSArray<Collider2D>, findTriggers: boolean): number;
-    GetAttachedColliders(results: CSArray<Collider2D>, findTriggers: boolean): number;
+    GetAttachedColliders(results: Readonly<Collider2D[]>, findTriggers: boolean): number;
+    GetAttachedColliders(results: Readonly<Collider2D[]>, findTriggers: boolean): number;
     /**
      * Retrieves all contact points for all of the Collider(s) attached to this Rigidbody.
      * @param contacts An array of ContactPoint2D used to receive the results.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rigidbody2D.GetContacts.html | Rigidbody2D.GetContacts}
      */
-    GetContacts(contacts: CSArray<ContactPoint2D>): number;
-    GetContacts(contacts: CSArray<ContactPoint2D>): number;
+    GetContacts(contacts: Readonly<ContactPoint2D[]>): number;
+    GetContacts(contacts: Readonly<ContactPoint2D[]>): number;
     /**
      * Retrieves all contact points for all of the Collider(s) attached to this Rigidbody, with the results filtered by the ContactFilter2D.
      * @param contactFilter The contact filter used to filter the results differently, such as by layer mask, Z depth, or normal angle.
@@ -6997,16 +6997,16 @@ interface Rigidbody2D extends Component {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rigidbody2D.GetContacts.html | Rigidbody2D.GetContacts}
      */
-    GetContacts(contactFilter: ContactFilter2D, contacts: CSArray<ContactPoint2D>): number;
-    GetContacts(contactFilter: ContactFilter2D, contacts: CSArray<ContactPoint2D>): number;
+    GetContacts(contactFilter: ContactFilter2D, contacts: Readonly<ContactPoint2D[]>): number;
+    GetContacts(contactFilter: ContactFilter2D, contacts: Readonly<ContactPoint2D[]>): number;
     /**
      * Retrieves all Colliders in contact with any of the Collider(s) attached to this Rigidbody.
      * @param colliders An array of Collider2D used to receive the results.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rigidbody2D.GetContacts.html | Rigidbody2D.GetContacts}
      */
-    GetContacts(colliders: CSArray<Collider2D>): number;
-    GetContacts(colliders: CSArray<Collider2D>): number;
+    GetContacts(colliders: Readonly<Collider2D[]>): number;
+    GetContacts(colliders: Readonly<Collider2D[]>): number;
     /**
      * Retrieves all Colliders in contact with any of the Collider(s) attached to this rigidbody, with the results filtered by the ContactFilter2D.
      * @param contactFilter The contact filter used to filter the results differently, such as by layer mask, Z depth, or normal angle.
@@ -7014,8 +7014,8 @@ interface Rigidbody2D extends Component {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rigidbody2D.GetContacts.html | Rigidbody2D.GetContacts}
      */
-    GetContacts(contactFilter: ContactFilter2D, colliders: CSArray<Collider2D>): number;
-    GetContacts(contactFilter: ContactFilter2D, colliders: CSArray<Collider2D>): number;
+    GetContacts(contactFilter: ContactFilter2D, colliders: Readonly<Collider2D[]>): number;
+    GetContacts(contactFilter: ContactFilter2D, colliders: Readonly<Collider2D[]>): number;
     /**
      * Get a local space point given the point point in rigidBody global space.
      * @param point The global space point to transform into local space.
@@ -7151,11 +7151,11 @@ interface Rigidbody2D extends Component {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rigidbody2D.Overlap.html | Rigidbody2D.Overlap}
      */
-    Overlap(contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
-    Overlap(results: CSArray<Collider2D>): number;
-    Overlap(contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
-    Overlap(position: Vector2, angle: number, results: CSArray<Collider2D>): number;
-    Overlap(position: Vector2, angle: number, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    Overlap(contactFilter: ContactFilter2D, results: Readonly<Collider2D[]>): number;
+    Overlap(results: Readonly<Collider2D[]>): number;
+    Overlap(contactFilter: ContactFilter2D, results: Readonly<Collider2D[]>): number;
+    Overlap(position: Vector2, angle: number, results: Readonly<Collider2D[]>): number;
+    Overlap(position: Vector2, angle: number, contactFilter: ContactFilter2D, results: Readonly<Collider2D[]>): number;
     /**
      * Check if any of the Rigidbody2D colliders overlap a point in space.
      * @param point A point in world space.
@@ -7516,9 +7516,9 @@ interface PhysicsShapeGroup2D {
      * More info: {@link https://docs.unity3d.com/ScriptReference/PhysicsShapeGroup2D.AddCircle.html | PhysicsShapeGroup2D.AddCircle}
      */
     AddCircle(center: Vector2, radius: number): number;
-    AddEdges(vertices: CSArray<Vector2>, edgeRadius: number): number;
-    AddEdges(vertices: CSArray<Vector2>, useAdjacentStart: boolean, useAdjacentEnd: boolean, adjacentStart: Vector2, adjacentEnd: Vector2, edgeRadius: number): number;
-    AddPolygon(vertices: CSArray<Vector2>): number;
+    AddEdges(vertices: Readonly<Vector2[]>, edgeRadius: number): number;
+    AddEdges(vertices: Readonly<Vector2[]>, useAdjacentStart: boolean, useAdjacentEnd: boolean, adjacentStart: Vector2, adjacentEnd: Vector2, edgeRadius: number): number;
+    AddPolygon(vertices: Readonly<Vector2[]>): number;
     /**
      * Clears all the vertices and shapes from the PhysicsShapeGroup.
      * 
@@ -7539,8 +7539,8 @@ interface PhysicsShapeGroup2D {
      * More info: {@link https://docs.unity3d.com/ScriptReference/PhysicsShapeGroup2D.GetShape.html | PhysicsShapeGroup2D.GetShape}
      */
     GetShape(shapeIndex: number): PhysicsShape2D;
-    GetShapeData(shapes: CSArray<PhysicsShape2D>, vertices: CSArray<Vector2>): void;
-    GetShapeData(shapes: CSArray<PhysicsShape2D>, vertices: CSArray<Vector2>): void;
+    GetShapeData(shapes: Readonly<PhysicsShape2D[]>, vertices: Readonly<Vector2[]>): void;
+    GetShapeData(shapes: Readonly<PhysicsShape2D[]>, vertices: Readonly<Vector2[]>): void;
     /**
      * Gets a single vertex of a shape. The vertex index is zero-based with the shape having a quantity of vertex specified by PhysicsShape2D.vertexCount.
      * @param shapeIndex The index of the shape stored in the PhysicsShapeGroup2D. The shape index is zero-based with the shape group having a quantity of shapes specified by PhysicsShapeGroup2D.shapeCount|shapeCount.
@@ -7549,7 +7549,7 @@ interface PhysicsShapeGroup2D {
      * More info: {@link https://docs.unity3d.com/ScriptReference/PhysicsShapeGroup2D.GetShapeVertex.html | PhysicsShapeGroup2D.GetShapeVertex}
      */
     GetShapeVertex(shapeIndex: number, vertexIndex: number): Vector2;
-    GetShapeVertices(shapeIndex: number, vertices: CSArray<Vector2>): void;
+    GetShapeVertices(shapeIndex: number, vertices: Readonly<Vector2[]>): void;
     /**
      * Sets the adjacent vertices of a shape.
      * @param shapeIndex The index of the shape to be modified that is stored the PhysicsShapeGroup2D.
@@ -7747,7 +7747,7 @@ interface Mesh extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh-bindposes.html | Mesh.bindposes}
      */
-    bindposes: CSArray<Matrix4x4>;
+    bindposes: Readonly<Matrix4x4[]>;
     /**
      * Returns true if the Mesh is read/write enabled, or false if it is not.
      * 
@@ -7777,79 +7777,79 @@ interface Mesh extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh-vertices.html | Mesh.vertices}
      */
-    vertices: CSArray<Vector3>;
+    vertices: Readonly<Vector3[]>;
     /**
      * The normals of the Mesh.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh-normals.html | Mesh.normals}
      */
-    normals: CSArray<Vector3>;
+    normals: Readonly<Vector3[]>;
     /**
      * The tangents of the Mesh.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh-tangents.html | Mesh.tangents}
      */
-    tangents: CSArray<Vector4>;
+    tangents: Readonly<Vector4[]>;
     /**
      * The texture coordinates (UVs) in the first channel.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh-uv.html | Mesh.uv}
      */
-    uv: CSArray<Vector2>;
+    uv: Readonly<Vector2[]>;
     /**
      * The texture coordinates (UVs) in the second channel.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh-uv2.html | Mesh.uv2}
      */
-    uv2: CSArray<Vector2>;
+    uv2: Readonly<Vector2[]>;
     /**
      * The texture coordinates (UVs) in the third channel.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh-uv3.html | Mesh.uv3}
      */
-    uv3: CSArray<Vector2>;
+    uv3: Readonly<Vector2[]>;
     /**
      * The texture coordinates (UVs) in the fourth channel.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh-uv4.html | Mesh.uv4}
      */
-    uv4: CSArray<Vector2>;
+    uv4: Readonly<Vector2[]>;
     /**
      * The texture coordinates (UVs) in the fifth channel.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh-uv5.html | Mesh.uv5}
      */
-    uv5: CSArray<Vector2>;
+    uv5: Readonly<Vector2[]>;
     /**
      * The texture coordinates (UVs) in the sixth channel.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh-uv6.html | Mesh.uv6}
      */
-    uv6: CSArray<Vector2>;
+    uv6: Readonly<Vector2[]>;
     /**
      * The texture coordinates (UVs) in the seventh channel.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh-uv7.html | Mesh.uv7}
      */
-    uv7: CSArray<Vector2>;
+    uv7: Readonly<Vector2[]>;
     /**
      * The texture coordinates (UVs) in the eighth channel.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh-uv8.html | Mesh.uv8}
      */
-    uv8: CSArray<Vector2>;
+    uv8: Readonly<Vector2[]>;
     /**
      * Vertex colors of the Mesh.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh-colors.html | Mesh.colors}
      */
-    colors: CSArray<Color>;
+    colors: Readonly<Color[]>;
     /**
      * Vertex colors of the Mesh.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh-colors32.html | Mesh.colors32}
      */
-    colors32: CSArray<Color32>;
+    colors32: Readonly<Color32[]>;
     /**
      * Returns the number of vertex attributes that the mesh has. (Read Only)
      * 
@@ -7861,13 +7861,13 @@ interface Mesh extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh-triangles.html | Mesh.triangles}
      */
-    triangles: CSArray<number>;
+    triangles: Readonly<number[]>;
     /**
      * The BoneWeight for each vertex in the Mesh, which represents 4 bones per vertex.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh-boneWeights.html | Mesh.boneWeights}
      */
-    boneWeights: CSArray<BoneWeight>;
+    boneWeights: Readonly<BoneWeight[]>;
     /**
      * The dimension of data in the bone weight buffer.
      * 
@@ -7887,7 +7887,7 @@ interface Mesh extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.AddBlendShapeFrame.html | Mesh.AddBlendShapeFrame}
      */
-    AddBlendShapeFrame(shapeName: string, frameWeight: number, deltaVertices: CSArray<Vector3>, deltaNormals: CSArray<Vector3>, deltaTangents: CSArray<Vector3>): void;
+    AddBlendShapeFrame(shapeName: string, frameWeight: number, deltaVertices: Readonly<Vector3[]>, deltaNormals: Readonly<Vector3[]>, deltaTangents: Readonly<Vector3[]>): void;
     /**
      * Clears all vertex data and all triangle indices.
      * @param keepVertexLayout True if the existing Mesh data layout should be preserved.
@@ -7916,7 +7916,7 @@ interface Mesh extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.CombineMeshes.html | Mesh.CombineMeshes}
      */
-    CombineMeshes(combine: CSArray<CombineInstance>, mergeSubMeshes: boolean, useMatrices: boolean, hasLightmapData: boolean): void;
+    CombineMeshes(combine: Readonly<CombineInstance[]>, mergeSubMeshes: boolean, useMatrices: boolean, hasLightmapData: boolean): void;
     /**
      * Combines several Meshes into this Mesh.
      * @param combine Descriptions of the Meshes to combine.
@@ -7925,7 +7925,7 @@ interface Mesh extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.CombineMeshes.html | Mesh.CombineMeshes}
      */
-    CombineMeshes(combine: CSArray<CombineInstance>, mergeSubMeshes: boolean, useMatrices: boolean): void;
+    CombineMeshes(combine: Readonly<CombineInstance[]>, mergeSubMeshes: boolean, useMatrices: boolean): void;
     /**
      * Combines several Meshes into this Mesh.
      * @param combine Descriptions of the Meshes to combine.
@@ -7933,20 +7933,20 @@ interface Mesh extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.CombineMeshes.html | Mesh.CombineMeshes}
      */
-    CombineMeshes(combine: CSArray<CombineInstance>, mergeSubMeshes: boolean): void;
+    CombineMeshes(combine: Readonly<CombineInstance[]>, mergeSubMeshes: boolean): void;
     /**
      * Combines several Meshes into this Mesh.
      * @param combine Descriptions of the Meshes to combine.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.CombineMeshes.html | Mesh.CombineMeshes}
      */
-    CombineMeshes(combine: CSArray<CombineInstance>): void;
+    CombineMeshes(combine: Readonly<CombineInstance[]>): void;
     /**
      * Gets the bone weights for the Mesh.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.GetAllBoneWeights.html | Mesh.GetAllBoneWeights}
      */
-    GetAllBoneWeights(): CSArray<BoneWeight1>;
+    GetAllBoneWeights(): Readonly<BoneWeight1[]>;
     /**
      * Gets the base vertex index of the given sub-mesh.
      * @param submesh The sub-mesh index. See subMeshCount.
@@ -7959,8 +7959,8 @@ interface Mesh extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.GetBindposes.html | Mesh.GetBindposes}
      */
-    GetBindposes(): CSArray<Matrix4x4>;
-    GetBindposes(bindposes: CSArray<Matrix4x4>): void;
+    GetBindposes(): Readonly<Matrix4x4[]>;
+    GetBindposes(bindposes: Readonly<Matrix4x4[]>): void;
     /**
      * Retrieves a GraphicsBuffer that provides direct read and write access to GPU blend shape vertex data.
      * @param layout Which buffer to access. The default value is Rendering.BlendShapeBufferLayout.PerShape.
@@ -7998,7 +7998,7 @@ interface Mesh extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.GetBlendShapeFrameVertices.html | Mesh.GetBlendShapeFrameVertices}
      */
-    GetBlendShapeFrameVertices(shapeIndex: number, frameIndex: number, deltaVertices: CSArray<Vector3>, deltaNormals: CSArray<Vector3>, deltaTangents: CSArray<Vector3>): void;
+    GetBlendShapeFrameVertices(shapeIndex: number, frameIndex: number, deltaVertices: Readonly<Vector3[]>, deltaNormals: Readonly<Vector3[]>, deltaTangents: Readonly<Vector3[]>): void;
     /**
      * Returns the weight of a blend shape frame.
      * @param shapeIndex The shape index of the frame.
@@ -8024,7 +8024,7 @@ interface Mesh extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.GetBonesPerVertex.html | Mesh.GetBonesPerVertex}
      */
-    GetBonesPerVertex(): CSArray<number>;
+    GetBonesPerVertex(): Readonly<number[]>;
     /**
      * Retrieves a GraphicsBuffer that provides direct read and write access to GPU bone weight data.
      * @param layout Which buffer to access, based on maximum bones per vertex.
@@ -8032,9 +8032,9 @@ interface Mesh extends Object {
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.GetBoneWeightBuffer.html | Mesh.GetBoneWeightBuffer}
      */
     GetBoneWeightBuffer(layout: SkinWeights): GraphicsBuffer;
-    GetBoneWeights(boneWeights: CSArray<BoneWeight>): void;
-    GetColors(colors: CSArray<Color>): void;
-    GetColors(colors: CSArray<Color32>): void;
+    GetBoneWeights(boneWeights: Readonly<BoneWeight[]>): void;
+    GetColors(colors: Readonly<Color[]>): void;
+    GetColors(colors: Readonly<Color32[]>): void;
     /**
      * Retrieves a GraphicsBuffer to the GPU index buffer.
      * 
@@ -8059,7 +8059,7 @@ interface Mesh extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.GetIndices.html | Mesh.GetIndices}
      */
-    GetIndices(submesh: number): CSArray<number>;
+    GetIndices(submesh: number): Readonly<number[]>;
     /**
      * Fetches the index list for the specified sub-mesh.
      * @param submesh The sub-mesh index. See subMeshCount.
@@ -8067,10 +8067,10 @@ interface Mesh extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.GetIndices.html | Mesh.GetIndices}
      */
-    GetIndices(submesh: number, applyBaseVertex: boolean): CSArray<number>;
-    GetIndices(indices: CSArray<number>, submesh: number): void;
-    GetIndices(indices: CSArray<number>, submesh: number, applyBaseVertex: boolean): void;
-    GetIndices(indices: CSArray<number>, submesh: number, applyBaseVertex: boolean): void;
+    GetIndices(submesh: number, applyBaseVertex: boolean): Readonly<number[]>;
+    GetIndices(indices: Readonly<number[]>, submesh: number): void;
+    GetIndices(indices: Readonly<number[]>, submesh: number, applyBaseVertex: boolean): void;
+    GetIndices(indices: Readonly<number[]>, submesh: number, applyBaseVertex: boolean): void;
     /**
      * Retrieves a native (underlying graphics API) pointer to the index buffer.
      * 
@@ -8084,7 +8084,7 @@ interface Mesh extends Object {
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.GetNativeVertexBufferPtr.html | Mesh.GetNativeVertexBufferPtr}
      */
     GetNativeVertexBufferPtr(index: number): unknown;
-    GetNormals(normals: CSArray<Vector3>): void;
+    GetNormals(normals: Readonly<Vector3[]>): void;
     /**
      * Get information about a sub-mesh of the Mesh.
      * @param index Sub-mesh index. See subMeshCount. Out of range indices throw an exception.
@@ -8092,7 +8092,7 @@ interface Mesh extends Object {
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.GetSubMesh.html | Mesh.GetSubMesh}
      */
     GetSubMesh(index: number): SubMeshDescriptor;
-    GetTangents(tangents: CSArray<Vector4>): void;
+    GetTangents(tangents: Readonly<Vector4[]>): void;
     /**
      * Gets the topology of a sub-mesh.
      * 
@@ -8105,7 +8105,7 @@ interface Mesh extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.GetTriangles.html | Mesh.GetTriangles}
      */
-    GetTriangles(submesh: number): CSArray<number>;
+    GetTriangles(submesh: number): Readonly<number[]>;
     /**
      * Fetches the triangle list for the specified sub-mesh on this object.
      * @param submesh The sub-mesh index. See subMeshCount.
@@ -8113,10 +8113,10 @@ interface Mesh extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.GetTriangles.html | Mesh.GetTriangles}
      */
-    GetTriangles(submesh: number, applyBaseVertex: boolean): CSArray<number>;
-    GetTriangles(triangles: CSArray<number>, submesh: number): void;
-    GetTriangles(triangles: CSArray<number>, submesh: number, applyBaseVertex: boolean): void;
-    GetTriangles(triangles: CSArray<number>, submesh: number, applyBaseVertex: boolean): void;
+    GetTriangles(submesh: number, applyBaseVertex: boolean): Readonly<number[]>;
+    GetTriangles(triangles: Readonly<number[]>, submesh: number): void;
+    GetTriangles(triangles: Readonly<number[]>, submesh: number, applyBaseVertex: boolean): void;
+    GetTriangles(triangles: Readonly<number[]>, submesh: number, applyBaseVertex: boolean): void;
     /**
      * The UV distribution metric can be used to calculate the desired mipmap level based on the position of the camera.
      * @param uvSetIndex UV set index to return the UV distibution metric for. 0 for first.
@@ -8124,9 +8124,9 @@ interface Mesh extends Object {
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.GetUVDistributionMetric.html | Mesh.GetUVDistributionMetric}
      */
     GetUVDistributionMetric(uvSetIndex: number): number;
-    GetUVs(channel: number, uvs: CSArray<Vector2>): void;
-    GetUVs(channel: number, uvs: CSArray<Vector3>): void;
-    GetUVs(channel: number, uvs: CSArray<Vector4>): void;
+    GetUVs(channel: number, uvs: Readonly<Vector2[]>): void;
+    GetUVs(channel: number, uvs: Readonly<Vector3[]>): void;
+    GetUVs(channel: number, uvs: Readonly<Vector4[]>): void;
     /**
      * Returns information about a vertex attribute based on its index.
      * @param index The vertex attribute index (0 to vertexAttributeCount-1).
@@ -8160,15 +8160,15 @@ interface Mesh extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.GetVertexAttributes.html | Mesh.GetVertexAttributes}
      */
-    GetVertexAttributes(): CSArray<VertexAttributeDescriptor>;
+    GetVertexAttributes(): Readonly<VertexAttributeDescriptor[]>;
     /**
      * Get information about vertex attributes of a Mesh, without memory allocations.
      * @param attributes Collection of vertex attributes to receive the results.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.GetVertexAttributes.html | Mesh.GetVertexAttributes}
      */
-    GetVertexAttributes(attributes: CSArray<VertexAttributeDescriptor>): number;
-    GetVertexAttributes(attributes: CSArray<VertexAttributeDescriptor>): number;
+    GetVertexAttributes(attributes: Readonly<VertexAttributeDescriptor[]>): number;
+    GetVertexAttributes(attributes: Readonly<VertexAttributeDescriptor[]>): number;
     /**
      * Gets the vertex buffer stream index of a specific vertex data attribute on this Mesh.
      * @param attr The vertex data attribute to check for.
@@ -8190,7 +8190,7 @@ interface Mesh extends Object {
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.GetVertexBufferStride.html | Mesh.GetVertexBufferStride}
      */
     GetVertexBufferStride(stream: number): number;
-    GetVertices(vertices: CSArray<Vector3>): void;
+    GetVertices(vertices: Readonly<Vector3[]>): void;
     /**
      * Checks if a specific vertex data attribute exists on this Mesh.
      * @param attr Vertex data attribute to check for.
@@ -8282,18 +8282,18 @@ interface Mesh extends Object {
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.RecalculateUVDistributionMetrics.html | Mesh.RecalculateUVDistributionMetrics}
      */
     RecalculateUVDistributionMetrics(uvAreaThreshold: number): void;
-    SetBindposes(poses: CSArray<Matrix4x4>): void;
-    SetBoneWeights(bonesPerVertex: CSArray<number>, weights: CSArray<BoneWeight1>): void;
-    SetColors(inColors: CSArray<Color>): void;
-    SetColors(inColors: CSArray<Color>, start: number, length: number): void;
-    SetColors(inColors: CSArray<Color>, start: number, length: number, flags: MeshUpdateFlags): void;
+    SetBindposes(poses: Readonly<Matrix4x4[]>): void;
+    SetBoneWeights(bonesPerVertex: Readonly<number[]>, weights: Readonly<BoneWeight1[]>): void;
+    SetColors(inColors: Readonly<Color[]>): void;
+    SetColors(inColors: Readonly<Color[]>, start: number, length: number): void;
+    SetColors(inColors: Readonly<Color[]>, start: number, length: number, flags: MeshUpdateFlags): void;
     /**
      * Set the per-vertex colors of the Mesh.
      * @param inColors Per-vertex colors.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.SetColors.html | Mesh.SetColors}
      */
-    SetColors(inColors: CSArray<Color>): void;
+    SetColors(inColors: Readonly<Color[]>): void;
     /**
      * Sets the per-vertex colors of the Mesh, using a part of the input array.
      * @param inColors Per-vertex colors.
@@ -8302,7 +8302,7 @@ interface Mesh extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.SetColors.html | Mesh.SetColors}
      */
-    SetColors(inColors: CSArray<Color>, start: number, length: number): void;
+    SetColors(inColors: Readonly<Color[]>, start: number, length: number): void;
     /**
      * Sets the per-vertex colors of the Mesh, using a part of the input array.
      * @param inColors Per-vertex colors.
@@ -8312,17 +8312,17 @@ interface Mesh extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.SetColors.html | Mesh.SetColors}
      */
-    SetColors(inColors: CSArray<Color>, start: number, length: number, flags: MeshUpdateFlags): void;
-    SetColors(inColors: CSArray<Color32>): void;
-    SetColors(inColors: CSArray<Color32>, start: number, length: number): void;
-    SetColors(inColors: CSArray<Color32>, start: number, length: number, flags: MeshUpdateFlags): void;
+    SetColors(inColors: Readonly<Color[]>, start: number, length: number, flags: MeshUpdateFlags): void;
+    SetColors(inColors: Readonly<Color32[]>): void;
+    SetColors(inColors: Readonly<Color32[]>, start: number, length: number): void;
+    SetColors(inColors: Readonly<Color32[]>, start: number, length: number, flags: MeshUpdateFlags): void;
     /**
      * Set the per-vertex colors of the Mesh.
      * @param inColors Per-vertex colors.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.SetColors.html | Mesh.SetColors}
      */
-    SetColors(inColors: CSArray<Color32>): void;
+    SetColors(inColors: Readonly<Color32[]>): void;
     /**
      * Sets the per-vertex colors of the Mesh, using a part of the input array.
      * @param inColors Per-vertex colors.
@@ -8331,7 +8331,7 @@ interface Mesh extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.SetColors.html | Mesh.SetColors}
      */
-    SetColors(inColors: CSArray<Color32>, start: number, length: number): void;
+    SetColors(inColors: Readonly<Color32[]>, start: number, length: number): void;
     /**
      * Sets the per-vertex colors of the Mesh, using a part of the input array.
      * @param inColors Per-vertex colors.
@@ -8341,13 +8341,13 @@ interface Mesh extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.SetColors.html | Mesh.SetColors}
      */
-    SetColors(inColors: CSArray<Color32>, start: number, length: number, flags: MeshUpdateFlags): void;
-    SetColors<T>(inColors: CSArray<T>): void;
-    SetColors<T>(inColors: CSArray<T>, start: number, length: number): void;
-    SetColors<T>(inColors: CSArray<T>, start: number, length: number, flags: MeshUpdateFlags): void;
-    SetIndexBufferData<T>(data: CSArray<T>, dataStart: number, meshBufferStart: number, count: number, flags: MeshUpdateFlags): void;
-    SetIndexBufferData<T>(data: CSArray<T>, dataStart: number, meshBufferStart: number, count: number, flags: MeshUpdateFlags): void;
-    SetIndexBufferData<T>(data: CSArray<T>, dataStart: number, meshBufferStart: number, count: number, flags: MeshUpdateFlags): void;
+    SetColors(inColors: Readonly<Color32[]>, start: number, length: number, flags: MeshUpdateFlags): void;
+    SetColors<T>(inColors: Readonly<T[]>): void;
+    SetColors<T>(inColors: Readonly<T[]>, start: number, length: number): void;
+    SetColors<T>(inColors: Readonly<T[]>, start: number, length: number, flags: MeshUpdateFlags): void;
+    SetIndexBufferData<T>(data: Readonly<T[]>, dataStart: number, meshBufferStart: number, count: number, flags: MeshUpdateFlags): void;
+    SetIndexBufferData<T>(data: Readonly<T[]>, dataStart: number, meshBufferStart: number, count: number, flags: MeshUpdateFlags): void;
+    SetIndexBufferData<T>(data: Readonly<T[]>, dataStart: number, meshBufferStart: number, count: number, flags: MeshUpdateFlags): void;
     /**
      * Sets the index buffer size and format.
      * @param indexCount Size of index buffer.
@@ -8364,7 +8364,7 @@ interface Mesh extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.SetIndices.html | Mesh.SetIndices}
      */
-    SetIndices(indices: CSArray<number>, topology: MeshTopology, submesh: number): void;
+    SetIndices(indices: Readonly<number[]>, topology: MeshTopology, submesh: number): void;
     /**
      * Sets the index buffer for the sub-mesh.
      * @param indices The array of indices that define the mesh faces.
@@ -8375,7 +8375,7 @@ Use false when you want to use the existing bounding box and reduce the CPU cost
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.SetIndices.html | Mesh.SetIndices}
      */
-    SetIndices(indices: CSArray<number>, topology: MeshTopology, submesh: number, calculateBounds: boolean): void;
+    SetIndices(indices: Readonly<number[]>, topology: MeshTopology, submesh: number, calculateBounds: boolean): void;
     /**
      * Sets the index buffer for the sub-mesh.
      * @param indices The array of indices that define the mesh faces.
@@ -8387,7 +8387,7 @@ Use false when you want to use the existing bounding box and reduce the CPU cost
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.SetIndices.html | Mesh.SetIndices}
      */
-    SetIndices(indices: CSArray<number>, topology: MeshTopology, submesh: number, calculateBounds: boolean, baseVertex: number): void;
+    SetIndices(indices: Readonly<number[]>, topology: MeshTopology, submesh: number, calculateBounds: boolean, baseVertex: number): void;
     /**
      * Sets the index buffer of a sub-mesh, using a part of the input array.
      * @param indices The array of indices that define the mesh faces.
@@ -8401,7 +8401,7 @@ Use false when you want to use the existing bounding box and reduce the CPU cost
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.SetIndices.html | Mesh.SetIndices}
      */
-    SetIndices(indices: CSArray<number>, indicesStart: number, indicesLength: number, topology: MeshTopology, submesh: number, calculateBounds: boolean, baseVertex: number): void;
+    SetIndices(indices: Readonly<number[]>, indicesStart: number, indicesLength: number, topology: MeshTopology, submesh: number, calculateBounds: boolean, baseVertex: number): void;
     /**
      * Sets the index buffer for the sub-mesh.
      * @param indices The array of indices that define the mesh faces.
@@ -8413,7 +8413,7 @@ Use false when you want to use the existing bounding box and reduce the CPU cost
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.SetIndices.html | Mesh.SetIndices}
      */
-    SetIndices(indices: CSArray<number>, topology: MeshTopology, submesh: number, calculateBounds: boolean, baseVertex: number): void;
+    SetIndices(indices: Readonly<number[]>, topology: MeshTopology, submesh: number, calculateBounds: boolean, baseVertex: number): void;
     /**
      * Sets the index buffer of a sub-mesh, using a part of the input array.
      * @param indices The array of indices that define the mesh faces.
@@ -8427,23 +8427,23 @@ Use false when you want to use the existing bounding box and reduce the CPU cost
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.SetIndices.html | Mesh.SetIndices}
      */
-    SetIndices(indices: CSArray<number>, indicesStart: number, indicesLength: number, topology: MeshTopology, submesh: number, calculateBounds: boolean, baseVertex: number): void;
-    SetIndices<T>(indices: CSArray<T>, topology: MeshTopology, submesh: number, calculateBounds: boolean, baseVertex: number): void;
-    SetIndices<T>(indices: CSArray<T>, indicesStart: number, indicesLength: number, topology: MeshTopology, submesh: number, calculateBounds: boolean, baseVertex: number): void;
-    SetIndices(indices: CSArray<number>, topology: MeshTopology, submesh: number, calculateBounds: boolean, baseVertex: number): void;
-    SetIndices(indices: CSArray<number>, indicesStart: number, indicesLength: number, topology: MeshTopology, submesh: number, calculateBounds: boolean, baseVertex: number): void;
-    SetIndices(indices: CSArray<number>, topology: MeshTopology, submesh: number, calculateBounds: boolean, baseVertex: number): void;
-    SetIndices(indices: CSArray<number>, indicesStart: number, indicesLength: number, topology: MeshTopology, submesh: number, calculateBounds: boolean, baseVertex: number): void;
-    SetNormals(inNormals: CSArray<Vector3>): void;
-    SetNormals(inNormals: CSArray<Vector3>, start: number, length: number): void;
-    SetNormals(inNormals: CSArray<Vector3>, start: number, length: number, flags: MeshUpdateFlags): void;
+    SetIndices(indices: Readonly<number[]>, indicesStart: number, indicesLength: number, topology: MeshTopology, submesh: number, calculateBounds: boolean, baseVertex: number): void;
+    SetIndices<T>(indices: Readonly<T[]>, topology: MeshTopology, submesh: number, calculateBounds: boolean, baseVertex: number): void;
+    SetIndices<T>(indices: Readonly<T[]>, indicesStart: number, indicesLength: number, topology: MeshTopology, submesh: number, calculateBounds: boolean, baseVertex: number): void;
+    SetIndices(indices: Readonly<number[]>, topology: MeshTopology, submesh: number, calculateBounds: boolean, baseVertex: number): void;
+    SetIndices(indices: Readonly<number[]>, indicesStart: number, indicesLength: number, topology: MeshTopology, submesh: number, calculateBounds: boolean, baseVertex: number): void;
+    SetIndices(indices: Readonly<number[]>, topology: MeshTopology, submesh: number, calculateBounds: boolean, baseVertex: number): void;
+    SetIndices(indices: Readonly<number[]>, indicesStart: number, indicesLength: number, topology: MeshTopology, submesh: number, calculateBounds: boolean, baseVertex: number): void;
+    SetNormals(inNormals: Readonly<Vector3[]>): void;
+    SetNormals(inNormals: Readonly<Vector3[]>, start: number, length: number): void;
+    SetNormals(inNormals: Readonly<Vector3[]>, start: number, length: number, flags: MeshUpdateFlags): void;
     /**
      * Set the normals of the Mesh.
      * @param inNormals Per-vertex normals.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.SetNormals.html | Mesh.SetNormals}
      */
-    SetNormals(inNormals: CSArray<Vector3>): void;
+    SetNormals(inNormals: Readonly<Vector3[]>): void;
     /**
      * Sets the vertex normals of the Mesh, using a part of the input array.
      * @param inNormals Per-vertex normals.
@@ -8452,7 +8452,7 @@ Use false when you want to use the existing bounding box and reduce the CPU cost
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.SetNormals.html | Mesh.SetNormals}
      */
-    SetNormals(inNormals: CSArray<Vector3>, start: number, length: number): void;
+    SetNormals(inNormals: Readonly<Vector3[]>, start: number, length: number): void;
     /**
      * Sets the vertex normals of the Mesh, using a part of the input array.
      * @param inNormals Per-vertex normals.
@@ -8462,10 +8462,10 @@ Use false when you want to use the existing bounding box and reduce the CPU cost
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.SetNormals.html | Mesh.SetNormals}
      */
-    SetNormals(inNormals: CSArray<Vector3>, start: number, length: number, flags: MeshUpdateFlags): void;
-    SetNormals<T>(inNormals: CSArray<T>): void;
-    SetNormals<T>(inNormals: CSArray<T>, start: number, length: number): void;
-    SetNormals<T>(inNormals: CSArray<T>, start: number, length: number, flags: MeshUpdateFlags): void;
+    SetNormals(inNormals: Readonly<Vector3[]>, start: number, length: number, flags: MeshUpdateFlags): void;
+    SetNormals<T>(inNormals: Readonly<T[]>): void;
+    SetNormals<T>(inNormals: Readonly<T[]>, start: number, length: number): void;
+    SetNormals<T>(inNormals: Readonly<T[]>, start: number, length: number, flags: MeshUpdateFlags): void;
     /**
      * Sets the information about a sub-mesh of the Mesh.
      * @param index Sub-mesh index. See subMeshCount. Out of range indices throw an exception.
@@ -8484,7 +8484,7 @@ Use false when you want to use the existing bounding box and reduce the CPU cost
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.SetSubMeshes.html | Mesh.SetSubMeshes}
      */
-    SetSubMeshes(desc: CSArray<SubMeshDescriptor>, start: number, count: number, flags: MeshUpdateFlags): void;
+    SetSubMeshes(desc: Readonly<SubMeshDescriptor[]>, start: number, count: number, flags: MeshUpdateFlags): void;
     /**
      * Sets information defining all sub-meshes in this Mesh, replacing any existing sub-meshes.
      * @param desc An array or list of sub-mesh data descriptors.
@@ -8492,21 +8492,21 @@ Use false when you want to use the existing bounding box and reduce the CPU cost
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.SetSubMeshes.html | Mesh.SetSubMeshes}
      */
-    SetSubMeshes(desc: CSArray<SubMeshDescriptor>, flags: MeshUpdateFlags): void;
-    SetSubMeshes(desc: CSArray<SubMeshDescriptor>, start: number, count: number, flags: MeshUpdateFlags): void;
-    SetSubMeshes(desc: CSArray<SubMeshDescriptor>, flags: MeshUpdateFlags): void;
-    SetSubMeshes<T>(desc: CSArray<T>, start: number, count: number, flags: MeshUpdateFlags): void;
-    SetSubMeshes<T>(desc: CSArray<T>, flags: MeshUpdateFlags): void;
-    SetTangents(inTangents: CSArray<Vector4>): void;
-    SetTangents(inTangents: CSArray<Vector4>, start: number, length: number): void;
-    SetTangents(inTangents: CSArray<Vector4>, start: number, length: number, flags: MeshUpdateFlags): void;
+    SetSubMeshes(desc: Readonly<SubMeshDescriptor[]>, flags: MeshUpdateFlags): void;
+    SetSubMeshes(desc: Readonly<SubMeshDescriptor[]>, start: number, count: number, flags: MeshUpdateFlags): void;
+    SetSubMeshes(desc: Readonly<SubMeshDescriptor[]>, flags: MeshUpdateFlags): void;
+    SetSubMeshes<T>(desc: Readonly<T[]>, start: number, count: number, flags: MeshUpdateFlags): void;
+    SetSubMeshes<T>(desc: Readonly<T[]>, flags: MeshUpdateFlags): void;
+    SetTangents(inTangents: Readonly<Vector4[]>): void;
+    SetTangents(inTangents: Readonly<Vector4[]>, start: number, length: number): void;
+    SetTangents(inTangents: Readonly<Vector4[]>, start: number, length: number, flags: MeshUpdateFlags): void;
     /**
      * Set the tangents of the Mesh.
      * @param inTangents Per-vertex tangents.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.SetTangents.html | Mesh.SetTangents}
      */
-    SetTangents(inTangents: CSArray<Vector4>): void;
+    SetTangents(inTangents: Readonly<Vector4[]>): void;
     /**
      * Sets the tangents of the Mesh, using a part of the input array.
      * @param inTangents Per-vertex tangents.
@@ -8515,7 +8515,7 @@ Use false when you want to use the existing bounding box and reduce the CPU cost
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.SetTangents.html | Mesh.SetTangents}
      */
-    SetTangents(inTangents: CSArray<Vector4>, start: number, length: number): void;
+    SetTangents(inTangents: Readonly<Vector4[]>, start: number, length: number): void;
     /**
      * Sets the tangents of the Mesh, using a part of the input array.
      * @param inTangents Per-vertex tangents.
@@ -8525,10 +8525,10 @@ Use false when you want to use the existing bounding box and reduce the CPU cost
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.SetTangents.html | Mesh.SetTangents}
      */
-    SetTangents(inTangents: CSArray<Vector4>, start: number, length: number, flags: MeshUpdateFlags): void;
-    SetTangents<T>(inTangents: CSArray<T>): void;
-    SetTangents<T>(inTangents: CSArray<T>, start: number, length: number): void;
-    SetTangents<T>(inTangents: CSArray<T>, start: number, length: number, flags: MeshUpdateFlags): void;
+    SetTangents(inTangents: Readonly<Vector4[]>, start: number, length: number, flags: MeshUpdateFlags): void;
+    SetTangents<T>(inTangents: Readonly<T[]>): void;
+    SetTangents<T>(inTangents: Readonly<T[]>, start: number, length: number): void;
+    SetTangents<T>(inTangents: Readonly<T[]>, start: number, length: number, flags: MeshUpdateFlags): void;
     /**
      * Sets the triangle list for the sub-mesh.
      * @param triangles The list of indices that define the triangles.
@@ -8536,7 +8536,7 @@ Use false when you want to use the existing bounding box and reduce the CPU cost
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.SetTriangles.html | Mesh.SetTriangles}
      */
-    SetTriangles(triangles: CSArray<number>, submesh: number): void;
+    SetTriangles(triangles: Readonly<number[]>, submesh: number): void;
     /**
      * Sets the triangle list for the sub-mesh.
      * @param triangles The list of indices that define the triangles.
@@ -8546,7 +8546,7 @@ Use false when you want to use the existing bounding box and reduce the CPU cost
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.SetTriangles.html | Mesh.SetTriangles}
      */
-    SetTriangles(triangles: CSArray<number>, submesh: number, calculateBounds: boolean): void;
+    SetTriangles(triangles: Readonly<number[]>, submesh: number, calculateBounds: boolean): void;
     /**
      * Sets the triangle list for the sub-mesh.
      * @param triangles The list of indices that define the triangles.
@@ -8557,7 +8557,7 @@ Use false when you want to use the existing bounding box and reduce the CPU cost
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.SetTriangles.html | Mesh.SetTriangles}
      */
-    SetTriangles(triangles: CSArray<number>, submesh: number, calculateBounds: boolean, baseVertex: number): void;
+    SetTriangles(triangles: Readonly<number[]>, submesh: number, calculateBounds: boolean, baseVertex: number): void;
     /**
      * Sets the triangle list of the Mesh, using a part of the input array.
      * @param triangles The list of indices that define the triangles.
@@ -8570,7 +8570,7 @@ Use false when you want to use the existing bounding box and reduce the CPU cost
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.SetTriangles.html | Mesh.SetTriangles}
      */
-    SetTriangles(triangles: CSArray<number>, trianglesStart: number, trianglesLength: number, submesh: number, calculateBounds: boolean, baseVertex: number): void;
+    SetTriangles(triangles: Readonly<number[]>, trianglesStart: number, trianglesLength: number, submesh: number, calculateBounds: boolean, baseVertex: number): void;
     /**
      * Sets the triangle list for the sub-mesh.
      * @param triangles The list of indices that define the triangles.
@@ -8581,7 +8581,7 @@ Use false when you want to use the existing bounding box and reduce the CPU cost
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.SetTriangles.html | Mesh.SetTriangles}
      */
-    SetTriangles(triangles: CSArray<number>, submesh: number, calculateBounds: boolean, baseVertex: number): void;
+    SetTriangles(triangles: Readonly<number[]>, submesh: number, calculateBounds: boolean, baseVertex: number): void;
     /**
      * Sets the triangle list of the Mesh, using a part of the input array.
      * @param triangles The list of indices that define the triangles.
@@ -8594,22 +8594,22 @@ Use false when you want to use the existing bounding box and reduce the CPU cost
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.SetTriangles.html | Mesh.SetTriangles}
      */
-    SetTriangles(triangles: CSArray<number>, trianglesStart: number, trianglesLength: number, submesh: number, calculateBounds: boolean, baseVertex: number): void;
-    SetTriangles(triangles: CSArray<number>, submesh: number): void;
-    SetTriangles(triangles: CSArray<number>, submesh: number, calculateBounds: boolean): void;
-    SetTriangles(triangles: CSArray<number>, submesh: number, calculateBounds: boolean, baseVertex: number): void;
-    SetTriangles(triangles: CSArray<number>, trianglesStart: number, trianglesLength: number, submesh: number, calculateBounds: boolean, baseVertex: number): void;
-    SetTriangles(triangles: CSArray<number>, submesh: number, calculateBounds: boolean, baseVertex: number): void;
-    SetTriangles(triangles: CSArray<number>, trianglesStart: number, trianglesLength: number, submesh: number, calculateBounds: boolean, baseVertex: number): void;
-    SetUVs(channel: number, uvs: CSArray<Vector2>): void;
-    SetUVs(channel: number, uvs: CSArray<Vector3>): void;
-    SetUVs(channel: number, uvs: CSArray<Vector4>): void;
-    SetUVs(channel: number, uvs: CSArray<Vector2>, start: number, length: number): void;
-    SetUVs(channel: number, uvs: CSArray<Vector2>, start: number, length: number, flags: MeshUpdateFlags): void;
-    SetUVs(channel: number, uvs: CSArray<Vector3>, start: number, length: number): void;
-    SetUVs(channel: number, uvs: CSArray<Vector3>, start: number, length: number, flags: MeshUpdateFlags): void;
-    SetUVs(channel: number, uvs: CSArray<Vector4>, start: number, length: number): void;
-    SetUVs(channel: number, uvs: CSArray<Vector4>, start: number, length: number, flags: MeshUpdateFlags): void;
+    SetTriangles(triangles: Readonly<number[]>, trianglesStart: number, trianglesLength: number, submesh: number, calculateBounds: boolean, baseVertex: number): void;
+    SetTriangles(triangles: Readonly<number[]>, submesh: number): void;
+    SetTriangles(triangles: Readonly<number[]>, submesh: number, calculateBounds: boolean): void;
+    SetTriangles(triangles: Readonly<number[]>, submesh: number, calculateBounds: boolean, baseVertex: number): void;
+    SetTriangles(triangles: Readonly<number[]>, trianglesStart: number, trianglesLength: number, submesh: number, calculateBounds: boolean, baseVertex: number): void;
+    SetTriangles(triangles: Readonly<number[]>, submesh: number, calculateBounds: boolean, baseVertex: number): void;
+    SetTriangles(triangles: Readonly<number[]>, trianglesStart: number, trianglesLength: number, submesh: number, calculateBounds: boolean, baseVertex: number): void;
+    SetUVs(channel: number, uvs: Readonly<Vector2[]>): void;
+    SetUVs(channel: number, uvs: Readonly<Vector3[]>): void;
+    SetUVs(channel: number, uvs: Readonly<Vector4[]>): void;
+    SetUVs(channel: number, uvs: Readonly<Vector2[]>, start: number, length: number): void;
+    SetUVs(channel: number, uvs: Readonly<Vector2[]>, start: number, length: number, flags: MeshUpdateFlags): void;
+    SetUVs(channel: number, uvs: Readonly<Vector3[]>, start: number, length: number): void;
+    SetUVs(channel: number, uvs: Readonly<Vector3[]>, start: number, length: number, flags: MeshUpdateFlags): void;
+    SetUVs(channel: number, uvs: Readonly<Vector4[]>, start: number, length: number): void;
+    SetUVs(channel: number, uvs: Readonly<Vector4[]>, start: number, length: number, flags: MeshUpdateFlags): void;
     /**
      * Sets the texture coordinates (UVs) stored in a given channel.
      * @param channel The channel, in [0..7] range.
@@ -8617,7 +8617,7 @@ Use false when you want to use the existing bounding box and reduce the CPU cost
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.SetUVs.html | Mesh.SetUVs}
      */
-    SetUVs(channel: number, uvs: CSArray<Vector2>): void;
+    SetUVs(channel: number, uvs: Readonly<Vector2[]>): void;
     /**
      * Sets the texture coordinates (UVs) stored in a given channel.
      * @param channel The channel, in [0..7] range.
@@ -8625,7 +8625,7 @@ Use false when you want to use the existing bounding box and reduce the CPU cost
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.SetUVs.html | Mesh.SetUVs}
      */
-    SetUVs(channel: number, uvs: CSArray<Vector3>): void;
+    SetUVs(channel: number, uvs: Readonly<Vector3[]>): void;
     /**
      * Sets the texture coordinates (UVs) stored in a given channel.
      * @param channel The channel, in [0..7] range.
@@ -8633,7 +8633,7 @@ Use false when you want to use the existing bounding box and reduce the CPU cost
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.SetUVs.html | Mesh.SetUVs}
      */
-    SetUVs(channel: number, uvs: CSArray<Vector4>): void;
+    SetUVs(channel: number, uvs: Readonly<Vector4[]>): void;
     /**
      * Sets the UVs of the Mesh, using a part of the input array.
      * @param channel The UV channel, in [0..7] range.
@@ -8643,7 +8643,7 @@ Use false when you want to use the existing bounding box and reduce the CPU cost
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.SetUVs.html | Mesh.SetUVs}
      */
-    SetUVs(channel: number, uvs: CSArray<Vector2>, start: number, length: number): void;
+    SetUVs(channel: number, uvs: Readonly<Vector2[]>, start: number, length: number): void;
     /**
      * Sets the UVs of the Mesh, using a part of the input array.
      * @param channel The UV channel, in [0..7] range.
@@ -8654,7 +8654,7 @@ Use false when you want to use the existing bounding box and reduce the CPU cost
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.SetUVs.html | Mesh.SetUVs}
      */
-    SetUVs(channel: number, uvs: CSArray<Vector2>, start: number, length: number, flags: MeshUpdateFlags): void;
+    SetUVs(channel: number, uvs: Readonly<Vector2[]>, start: number, length: number, flags: MeshUpdateFlags): void;
     /**
      * Sets the UVs of the Mesh, using a part of the input array.
      * @param channel The UV channel, in [0..7] range.
@@ -8664,28 +8664,7 @@ Use false when you want to use the existing bounding box and reduce the CPU cost
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.SetUVs.html | Mesh.SetUVs}
      */
-    SetUVs(channel: number, uvs: CSArray<Vector3>, start: number, length: number): void;
-    /**
-     * Sets the UVs of the Mesh, using a part of the input array.
-     * @param channel The UV channel, in [0..7] range.
-     * @param uvs UVs to set for the given index.
-     * @param start Index of the first element to take from the input array.
-     * @param length Number of elements to take from the input array.
-     * @param flags Flags controlling the function behavior, see MeshUpdateFlags.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.SetUVs.html | Mesh.SetUVs}
-     */
-    SetUVs(channel: number, uvs: CSArray<Vector3>, start: number, length: number, flags: MeshUpdateFlags): void;
-    /**
-     * Sets the UVs of the Mesh, using a part of the input array.
-     * @param channel The UV channel, in [0..7] range.
-     * @param uvs UVs to set for the given index.
-     * @param start Index of the first element to take from the input array.
-     * @param length Number of elements to take from the input array.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.SetUVs.html | Mesh.SetUVs}
-     */
-    SetUVs(channel: number, uvs: CSArray<Vector4>, start: number, length: number): void;
+    SetUVs(channel: number, uvs: Readonly<Vector3[]>, start: number, length: number): void;
     /**
      * Sets the UVs of the Mesh, using a part of the input array.
      * @param channel The UV channel, in [0..7] range.
@@ -8696,13 +8675,34 @@ Use false when you want to use the existing bounding box and reduce the CPU cost
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.SetUVs.html | Mesh.SetUVs}
      */
-    SetUVs(channel: number, uvs: CSArray<Vector4>, start: number, length: number, flags: MeshUpdateFlags): void;
-    SetUVs<T>(channel: number, uvs: CSArray<T>): void;
-    SetUVs<T>(channel: number, uvs: CSArray<T>, start: number, length: number): void;
-    SetUVs<T>(channel: number, uvs: CSArray<T>, start: number, length: number, flags: MeshUpdateFlags): void;
-    SetVertexBufferData<T>(data: CSArray<T>, dataStart: number, meshBufferStart: number, count: number, stream: number, flags: MeshUpdateFlags): void;
-    SetVertexBufferData<T>(data: CSArray<T>, dataStart: number, meshBufferStart: number, count: number, stream: number, flags: MeshUpdateFlags): void;
-    SetVertexBufferData<T>(data: CSArray<T>, dataStart: number, meshBufferStart: number, count: number, stream: number, flags: MeshUpdateFlags): void;
+    SetUVs(channel: number, uvs: Readonly<Vector3[]>, start: number, length: number, flags: MeshUpdateFlags): void;
+    /**
+     * Sets the UVs of the Mesh, using a part of the input array.
+     * @param channel The UV channel, in [0..7] range.
+     * @param uvs UVs to set for the given index.
+     * @param start Index of the first element to take from the input array.
+     * @param length Number of elements to take from the input array.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.SetUVs.html | Mesh.SetUVs}
+     */
+    SetUVs(channel: number, uvs: Readonly<Vector4[]>, start: number, length: number): void;
+    /**
+     * Sets the UVs of the Mesh, using a part of the input array.
+     * @param channel The UV channel, in [0..7] range.
+     * @param uvs UVs to set for the given index.
+     * @param start Index of the first element to take from the input array.
+     * @param length Number of elements to take from the input array.
+     * @param flags Flags controlling the function behavior, see MeshUpdateFlags.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.SetUVs.html | Mesh.SetUVs}
+     */
+    SetUVs(channel: number, uvs: Readonly<Vector4[]>, start: number, length: number, flags: MeshUpdateFlags): void;
+    SetUVs<T>(channel: number, uvs: Readonly<T[]>): void;
+    SetUVs<T>(channel: number, uvs: Readonly<T[]>, start: number, length: number): void;
+    SetUVs<T>(channel: number, uvs: Readonly<T[]>, start: number, length: number, flags: MeshUpdateFlags): void;
+    SetVertexBufferData<T>(data: Readonly<T[]>, dataStart: number, meshBufferStart: number, count: number, stream: number, flags: MeshUpdateFlags): void;
+    SetVertexBufferData<T>(data: Readonly<T[]>, dataStart: number, meshBufferStart: number, count: number, stream: number, flags: MeshUpdateFlags): void;
+    SetVertexBufferData<T>(data: Readonly<T[]>, dataStart: number, meshBufferStart: number, count: number, stream: number, flags: MeshUpdateFlags): void;
     /**
      * Sets the vertex buffer size and layout.
      * @param vertexCount The number of vertices in the Mesh.
@@ -8710,18 +8710,18 @@ Use false when you want to use the existing bounding box and reduce the CPU cost
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.SetVertexBufferParams.html | Mesh.SetVertexBufferParams}
      */
-    SetVertexBufferParams(vertexCount: number, attributes: CSArray<VertexAttributeDescriptor>): void;
-    SetVertexBufferParams(vertexCount: number, attributes: CSArray<VertexAttributeDescriptor>): void;
-    SetVertices(inVertices: CSArray<Vector3>): void;
-    SetVertices(inVertices: CSArray<Vector3>, start: number, length: number): void;
-    SetVertices(inVertices: CSArray<Vector3>, start: number, length: number, flags: MeshUpdateFlags): void;
+    SetVertexBufferParams(vertexCount: number, attributes: Readonly<VertexAttributeDescriptor[]>): void;
+    SetVertexBufferParams(vertexCount: number, attributes: Readonly<VertexAttributeDescriptor[]>): void;
+    SetVertices(inVertices: Readonly<Vector3[]>): void;
+    SetVertices(inVertices: Readonly<Vector3[]>, start: number, length: number): void;
+    SetVertices(inVertices: Readonly<Vector3[]>, start: number, length: number, flags: MeshUpdateFlags): void;
     /**
      * Assigns a new vertex positions array.
      * @param inVertices Per-vertex positions.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.SetVertices.html | Mesh.SetVertices}
      */
-    SetVertices(inVertices: CSArray<Vector3>): void;
+    SetVertices(inVertices: Readonly<Vector3[]>): void;
     /**
      * Sets the vertex positions of the Mesh, using a part of the input array.
      * @param inVertices Per-vertex positions.
@@ -8730,7 +8730,7 @@ Use false when you want to use the existing bounding box and reduce the CPU cost
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.SetVertices.html | Mesh.SetVertices}
      */
-    SetVertices(inVertices: CSArray<Vector3>, start: number, length: number): void;
+    SetVertices(inVertices: Readonly<Vector3[]>, start: number, length: number): void;
     /**
      * Sets the vertex positions of the Mesh, using a part of the input array.
      * @param inVertices Per-vertex positions.
@@ -8740,10 +8740,10 @@ Use false when you want to use the existing bounding box and reduce the CPU cost
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.SetVertices.html | Mesh.SetVertices}
      */
-    SetVertices(inVertices: CSArray<Vector3>, start: number, length: number, flags: MeshUpdateFlags): void;
-    SetVertices<T>(inVertices: CSArray<T>): void;
-    SetVertices<T>(inVertices: CSArray<T>, start: number, length: number): void;
-    SetVertices<T>(inVertices: CSArray<T>, start: number, length: number, flags: MeshUpdateFlags): void;
+    SetVertices(inVertices: Readonly<Vector3[]>, start: number, length: number, flags: MeshUpdateFlags): void;
+    SetVertices<T>(inVertices: Readonly<T[]>): void;
+    SetVertices<T>(inVertices: Readonly<T[]>, start: number, length: number): void;
+    SetVertices<T>(inVertices: Readonly<T[]>, start: number, length: number, flags: MeshUpdateFlags): void;
     /**
      * Upload previously done Mesh modifications to the graphics API.
      * @param markNoLongerReadable Frees up system memory copy of mesh data when set to true.
@@ -9000,7 +9000,7 @@ interface GraphicsBuffer {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/GraphicsBuffer.LockBufferForWrite.html | GraphicsBuffer.LockBufferForWrite}
      */
-    LockBufferForWrite<T>(bufferStartIndex: number, count: number): CSArray<T>;
+    LockBufferForWrite<T>(bufferStartIndex: number, count: number): Readonly<T[]>;
     /**
      * Release a Graphics Buffer.
      * 
@@ -9021,8 +9021,8 @@ interface GraphicsBuffer {
      * More info: {@link https://docs.unity3d.com/ScriptReference/GraphicsBuffer.SetData.html | GraphicsBuffer.SetData}
      */
     SetData(data: unknown): void;
-    SetData<T>(data: CSArray<T>): void;
-    SetData<T>(data: CSArray<T>): void;
+    SetData<T>(data: Readonly<T[]>): void;
+    SetData<T>(data: Readonly<T[]>): void;
     /**
      * Partial copy of data values from an array into the buffer.
      * @param data Array of values to fill the buffer.
@@ -9033,8 +9033,8 @@ interface GraphicsBuffer {
      * More info: {@link https://docs.unity3d.com/ScriptReference/GraphicsBuffer.SetData.html | GraphicsBuffer.SetData}
      */
     SetData(data: unknown, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
-    SetData<T>(data: CSArray<T>, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
-    SetData<T>(data: CSArray<T>, nativeBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
+    SetData<T>(data: Readonly<T[]>, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
+    SetData<T>(data: Readonly<T[]>, nativeBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
     /**
      * Ends a write operation to the buffer
      * @param countWritten Number of elements written to the buffer. Counted from the first element.
@@ -9088,7 +9088,7 @@ interface ComputeBuffer {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/ComputeBuffer.BeginWrite.html | ComputeBuffer.BeginWrite}
      */
-    BeginWrite<T>(computeBufferStartIndex: number, count: number): CSArray<T>;
+    BeginWrite<T>(computeBufferStartIndex: number, count: number): Readonly<T[]>;
     Dispose(): void;
     /**
      * Ends a write operation to the buffer
@@ -9146,8 +9146,8 @@ interface ComputeBuffer {
      * More info: {@link https://docs.unity3d.com/ScriptReference/ComputeBuffer.SetData.html | ComputeBuffer.SetData}
      */
     SetData(data: unknown): void;
-    SetData<T>(data: CSArray<T>): void;
-    SetData<T>(data: CSArray<T>): void;
+    SetData<T>(data: Readonly<T[]>): void;
+    SetData<T>(data: Readonly<T[]>): void;
     /**
      * Partial copy of data values from an array into the buffer.
      * @param data Array of values to fill the buffer.
@@ -9158,8 +9158,8 @@ interface ComputeBuffer {
      * More info: {@link https://docs.unity3d.com/ScriptReference/ComputeBuffer.SetData.html | ComputeBuffer.SetData}
      */
     SetData(data: unknown, managedBufferStartIndex: number, computeBufferStartIndex: number, count: number): void;
-    SetData<T>(data: CSArray<T>, managedBufferStartIndex: number, computeBufferStartIndex: number, count: number): void;
-    SetData<T>(data: CSArray<T>, nativeBufferStartIndex: number, computeBufferStartIndex: number, count: number): void;
+    SetData<T>(data: Readonly<T[]>, managedBufferStartIndex: number, computeBufferStartIndex: number, count: number): void;
+    SetData<T>(data: Readonly<T[]>, nativeBufferStartIndex: number, computeBufferStartIndex: number, count: number): void;
 
 
 }
@@ -9338,29 +9338,29 @@ interface MeshData {
 
 
 
-    GetColors(outColors: CSArray<Color>): void;
-    GetColors(outColors: CSArray<Color32>): void;
-    GetIndexData<T>(): CSArray<T>;
-    GetIndices(outIndices: CSArray<number>, submesh: number, applyBaseVertex: boolean): void;
-    GetIndices(outIndices: CSArray<number>, submesh: number, applyBaseVertex: boolean): void;
-    GetNormals(outNormals: CSArray<Vector3>): void;
+    GetColors(outColors: Readonly<Color[]>): void;
+    GetColors(outColors: Readonly<Color32[]>): void;
+    GetIndexData<T>(): Readonly<T[]>;
+    GetIndices(outIndices: Readonly<number[]>, submesh: number, applyBaseVertex: boolean): void;
+    GetIndices(outIndices: Readonly<number[]>, submesh: number, applyBaseVertex: boolean): void;
+    GetNormals(outNormals: Readonly<Vector3[]>): void;
     GetSubMesh(index: number): SubMeshDescriptor;
-    GetTangents(outTangents: CSArray<Vector4>): void;
-    GetUVs(channel: number, outUVs: CSArray<Vector2>): void;
-    GetUVs(channel: number, outUVs: CSArray<Vector3>): void;
-    GetUVs(channel: number, outUVs: CSArray<Vector4>): void;
+    GetTangents(outTangents: Readonly<Vector4[]>): void;
+    GetUVs(channel: number, outUVs: Readonly<Vector2[]>): void;
+    GetUVs(channel: number, outUVs: Readonly<Vector3[]>): void;
+    GetUVs(channel: number, outUVs: Readonly<Vector4[]>): void;
     GetVertexAttributeDimension(attr: VertexAttribute): number;
     GetVertexAttributeFormat(attr: VertexAttribute): VertexAttributeFormat;
     GetVertexAttributeOffset(attr: VertexAttribute): number;
     GetVertexAttributeStream(attr: VertexAttribute): number;
     GetVertexBufferStride(stream: number): number;
-    GetVertexData<T>(stream: number): CSArray<T>;
-    GetVertices(outVertices: CSArray<Vector3>): void;
+    GetVertexData<T>(stream: number): Readonly<T[]>;
+    GetVertices(outVertices: Readonly<Vector3[]>): void;
     HasVertexAttribute(attr: VertexAttribute): boolean;
     SetIndexBufferParams(indexCount: number, format: IndexFormat): void;
     SetSubMesh(index: number, desc: SubMeshDescriptor, flags: MeshUpdateFlags): void;
-    SetVertexBufferParams(vertexCount: number, attributes: CSArray<VertexAttributeDescriptor>): void;
-    SetVertexBufferParams(vertexCount: number, attributes: CSArray<VertexAttributeDescriptor>): void;
+    SetVertexBufferParams(vertexCount: number, attributes: Readonly<VertexAttributeDescriptor[]>): void;
+    SetVertexBufferParams(vertexCount: number, attributes: Readonly<VertexAttributeDescriptor[]>): void;
 
 
 }
@@ -9372,15 +9372,15 @@ interface MeshConstructor {
 
 
     AcquireReadOnlyMeshData(mesh: Mesh): MeshDataArray;
-    AcquireReadOnlyMeshData(meshes: CSArray<Mesh>): MeshDataArray;
-    AcquireReadOnlyMeshData(meshes: CSArray<Mesh>): MeshDataArray;
+    AcquireReadOnlyMeshData(meshes: Readonly<Mesh[]>): MeshDataArray;
+    AcquireReadOnlyMeshData(meshes: Readonly<Mesh[]>): MeshDataArray;
     AllocateWritableMeshData(meshCount: number): MeshDataArray;
     AllocateWritableMeshData(mesh: Mesh): MeshDataArray;
-    AllocateWritableMeshData(meshes: CSArray<Mesh>): MeshDataArray;
-    AllocateWritableMeshData(meshes: CSArray<Mesh>): MeshDataArray;
+    AllocateWritableMeshData(meshes: Readonly<Mesh[]>): MeshDataArray;
+    AllocateWritableMeshData(meshes: Readonly<Mesh[]>): MeshDataArray;
     ApplyAndDisposeWritableMeshData(data: MeshDataArray, mesh: Mesh, flags: MeshUpdateFlags): void;
-    ApplyAndDisposeWritableMeshData(data: MeshDataArray, meshes: CSArray<Mesh>, flags: MeshUpdateFlags): void;
-    ApplyAndDisposeWritableMeshData(data: MeshDataArray, meshes: CSArray<Mesh>, flags: MeshUpdateFlags): void;
+    ApplyAndDisposeWritableMeshData(data: MeshDataArray, meshes: Readonly<Mesh[]>, flags: MeshUpdateFlags): void;
+    ApplyAndDisposeWritableMeshData(data: MeshDataArray, meshes: Readonly<Mesh[]>, flags: MeshUpdateFlags): void;
 
 }
 declare const Mesh: MeshConstructor;
@@ -9400,12 +9400,12 @@ interface PhysicsScene2DConstructor {
 
 
 
-    OverlapCollider(collider: Collider2D, results: CSArray<Collider2D>, layerMask: number): number;
-    OverlapCollider(collider: Collider2D, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
-    OverlapCollider(collider: Collider2D, results: CSArray<Collider2D>): number;
-    OverlapCollider(collider: Collider2D, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
-    OverlapCollider(position: Vector2, angle: number, collider: Collider2D, results: CSArray<Collider2D>): number;
-    OverlapCollider(position: Vector2, angle: number, collider: Collider2D, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    OverlapCollider(collider: Collider2D, results: Readonly<Collider2D[]>, layerMask: number): number;
+    OverlapCollider(collider: Collider2D, contactFilter: ContactFilter2D, results: Readonly<Collider2D[]>): number;
+    OverlapCollider(collider: Collider2D, results: Readonly<Collider2D[]>): number;
+    OverlapCollider(collider: Collider2D, contactFilter: ContactFilter2D, results: Readonly<Collider2D[]>): number;
+    OverlapCollider(position: Vector2, angle: number, collider: Collider2D, results: Readonly<Collider2D[]>): number;
+    OverlapCollider(position: Vector2, angle: number, collider: Collider2D, contactFilter: ContactFilter2D, results: Readonly<Collider2D[]>): number;
 
 }
 declare const PhysicsScene2D: PhysicsScene2DConstructor;
@@ -9697,73 +9697,73 @@ interface Physics2DConstructor {
     BoxCast(origin: Vector2, size: Vector2, angle: number, direction: Vector2, distance: number, layerMask: number): RaycastHit2D;
     BoxCast(origin: Vector2, size: Vector2, angle: number, direction: Vector2, distance: number, layerMask: number, minDepth: number): RaycastHit2D;
     BoxCast(origin: Vector2, size: Vector2, angle: number, direction: Vector2, distance: number, layerMask: number, minDepth: number, maxDepth: number): RaycastHit2D;
-    BoxCast(origin: Vector2, size: Vector2, angle: number, direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
-    BoxCast(origin: Vector2, size: Vector2, angle: number, direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number): number;
-    BoxCast(origin: Vector2, size: Vector2, angle: number, direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number): number;
-    BoxCastAll(origin: Vector2, size: Vector2, angle: number, direction: Vector2): CSArray<RaycastHit2D>;
-    BoxCastAll(origin: Vector2, size: Vector2, angle: number, direction: Vector2, distance: number): CSArray<RaycastHit2D>;
-    BoxCastAll(origin: Vector2, size: Vector2, angle: number, direction: Vector2, distance: number, layerMask: number): CSArray<RaycastHit2D>;
-    BoxCastAll(origin: Vector2, size: Vector2, angle: number, direction: Vector2, distance: number, layerMask: number, minDepth: number): CSArray<RaycastHit2D>;
-    BoxCastAll(origin: Vector2, size: Vector2, angle: number, direction: Vector2, distance: number, layerMask: number, minDepth: number, maxDepth: number): CSArray<RaycastHit2D>;
+    BoxCast(origin: Vector2, size: Vector2, angle: number, direction: Vector2, contactFilter: ContactFilter2D, results: Readonly<RaycastHit2D[]>): number;
+    BoxCast(origin: Vector2, size: Vector2, angle: number, direction: Vector2, contactFilter: ContactFilter2D, results: Readonly<RaycastHit2D[]>, distance: number): number;
+    BoxCast(origin: Vector2, size: Vector2, angle: number, direction: Vector2, contactFilter: ContactFilter2D, results: Readonly<RaycastHit2D[]>, distance: number): number;
+    BoxCastAll(origin: Vector2, size: Vector2, angle: number, direction: Vector2): Readonly<RaycastHit2D[]>;
+    BoxCastAll(origin: Vector2, size: Vector2, angle: number, direction: Vector2, distance: number): Readonly<RaycastHit2D[]>;
+    BoxCastAll(origin: Vector2, size: Vector2, angle: number, direction: Vector2, distance: number, layerMask: number): Readonly<RaycastHit2D[]>;
+    BoxCastAll(origin: Vector2, size: Vector2, angle: number, direction: Vector2, distance: number, layerMask: number, minDepth: number): Readonly<RaycastHit2D[]>;
+    BoxCastAll(origin: Vector2, size: Vector2, angle: number, direction: Vector2, distance: number, layerMask: number, minDepth: number, maxDepth: number): Readonly<RaycastHit2D[]>;
     CapsuleCast(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2): RaycastHit2D;
     CapsuleCast(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, distance: number): RaycastHit2D;
     CapsuleCast(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, distance: number, layerMask: number): RaycastHit2D;
     CapsuleCast(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, distance: number, layerMask: number, minDepth: number): RaycastHit2D;
     CapsuleCast(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, distance: number, layerMask: number, minDepth: number, maxDepth: number): RaycastHit2D;
-    CapsuleCast(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
-    CapsuleCast(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number): number;
-    CapsuleCast(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number): number;
-    CapsuleCastAll(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2): CSArray<RaycastHit2D>;
-    CapsuleCastAll(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, distance: number): CSArray<RaycastHit2D>;
-    CapsuleCastAll(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, distance: number, layerMask: number): CSArray<RaycastHit2D>;
-    CapsuleCastAll(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, distance: number, layerMask: number, minDepth: number): CSArray<RaycastHit2D>;
-    CapsuleCastAll(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, distance: number, layerMask: number, minDepth: number, maxDepth: number): CSArray<RaycastHit2D>;
+    CapsuleCast(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, contactFilter: ContactFilter2D, results: Readonly<RaycastHit2D[]>): number;
+    CapsuleCast(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, contactFilter: ContactFilter2D, results: Readonly<RaycastHit2D[]>, distance: number): number;
+    CapsuleCast(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, contactFilter: ContactFilter2D, results: Readonly<RaycastHit2D[]>, distance: number): number;
+    CapsuleCastAll(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2): Readonly<RaycastHit2D[]>;
+    CapsuleCastAll(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, distance: number): Readonly<RaycastHit2D[]>;
+    CapsuleCastAll(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, distance: number, layerMask: number): Readonly<RaycastHit2D[]>;
+    CapsuleCastAll(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, distance: number, layerMask: number, minDepth: number): Readonly<RaycastHit2D[]>;
+    CapsuleCastAll(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, distance: number, layerMask: number, minDepth: number, maxDepth: number): Readonly<RaycastHit2D[]>;
     CircleCast(origin: Vector2, radius: number, direction: Vector2): RaycastHit2D;
     CircleCast(origin: Vector2, radius: number, direction: Vector2, distance: number): RaycastHit2D;
     CircleCast(origin: Vector2, radius: number, direction: Vector2, distance: number, layerMask: number): RaycastHit2D;
     CircleCast(origin: Vector2, radius: number, direction: Vector2, distance: number, layerMask: number, minDepth: number): RaycastHit2D;
     CircleCast(origin: Vector2, radius: number, direction: Vector2, distance: number, layerMask: number, minDepth: number, maxDepth: number): RaycastHit2D;
-    CircleCast(origin: Vector2, radius: number, direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
-    CircleCast(origin: Vector2, radius: number, direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number): number;
-    CircleCast(origin: Vector2, radius: number, direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number): number;
-    CircleCastAll(origin: Vector2, radius: number, direction: Vector2): CSArray<RaycastHit2D>;
-    CircleCastAll(origin: Vector2, radius: number, direction: Vector2, distance: number): CSArray<RaycastHit2D>;
-    CircleCastAll(origin: Vector2, radius: number, direction: Vector2, distance: number, layerMask: number): CSArray<RaycastHit2D>;
-    CircleCastAll(origin: Vector2, radius: number, direction: Vector2, distance: number, layerMask: number, minDepth: number): CSArray<RaycastHit2D>;
-    CircleCastAll(origin: Vector2, radius: number, direction: Vector2, distance: number, layerMask: number, minDepth: number, maxDepth: number): CSArray<RaycastHit2D>;
+    CircleCast(origin: Vector2, radius: number, direction: Vector2, contactFilter: ContactFilter2D, results: Readonly<RaycastHit2D[]>): number;
+    CircleCast(origin: Vector2, radius: number, direction: Vector2, contactFilter: ContactFilter2D, results: Readonly<RaycastHit2D[]>, distance: number): number;
+    CircleCast(origin: Vector2, radius: number, direction: Vector2, contactFilter: ContactFilter2D, results: Readonly<RaycastHit2D[]>, distance: number): number;
+    CircleCastAll(origin: Vector2, radius: number, direction: Vector2): Readonly<RaycastHit2D[]>;
+    CircleCastAll(origin: Vector2, radius: number, direction: Vector2, distance: number): Readonly<RaycastHit2D[]>;
+    CircleCastAll(origin: Vector2, radius: number, direction: Vector2, distance: number, layerMask: number): Readonly<RaycastHit2D[]>;
+    CircleCastAll(origin: Vector2, radius: number, direction: Vector2, distance: number, layerMask: number, minDepth: number): Readonly<RaycastHit2D[]>;
+    CircleCastAll(origin: Vector2, radius: number, direction: Vector2, distance: number, layerMask: number, minDepth: number, maxDepth: number): Readonly<RaycastHit2D[]>;
     ClosestPoint(position: Vector2, collider: Collider2D): Vector2;
     ClosestPoint(position: Vector2, rigidbody: Rigidbody2D): Vector2;
     Distance(colliderA: Collider2D, colliderB: Collider2D): ColliderDistance2D;
     Distance(colliderA: Collider2D, positionA: Vector2, angleA: number, colliderB: Collider2D, positionB: Vector2, angleB: number): ColliderDistance2D;
-    GetContacts(collider1: Collider2D, collider2: Collider2D, contactFilter: ContactFilter2D, contacts: CSArray<ContactPoint2D>): number;
-    GetContacts(collider: Collider2D, contacts: CSArray<ContactPoint2D>): number;
-    GetContacts(collider: Collider2D, contactFilter: ContactFilter2D, contacts: CSArray<ContactPoint2D>): number;
-    GetContacts(collider: Collider2D, colliders: CSArray<Collider2D>): number;
-    GetContacts(collider: Collider2D, contactFilter: ContactFilter2D, colliders: CSArray<Collider2D>): number;
-    GetContacts(rigidbody: Rigidbody2D, contacts: CSArray<ContactPoint2D>): number;
-    GetContacts(rigidbody: Rigidbody2D, contactFilter: ContactFilter2D, contacts: CSArray<ContactPoint2D>): number;
-    GetContacts(rigidbody: Rigidbody2D, colliders: CSArray<Collider2D>): number;
-    GetContacts(rigidbody: Rigidbody2D, contactFilter: ContactFilter2D, colliders: CSArray<Collider2D>): number;
-    GetContacts(collider1: Collider2D, collider2: Collider2D, contactFilter: ContactFilter2D, contacts: CSArray<ContactPoint2D>): number;
-    GetContacts(collider: Collider2D, contacts: CSArray<ContactPoint2D>): number;
-    GetContacts(collider: Collider2D, contactFilter: ContactFilter2D, contacts: CSArray<ContactPoint2D>): number;
-    GetContacts(collider: Collider2D, colliders: CSArray<Collider2D>): number;
-    GetContacts(collider: Collider2D, contactFilter: ContactFilter2D, colliders: CSArray<Collider2D>): number;
-    GetContacts(rigidbody: Rigidbody2D, contacts: CSArray<ContactPoint2D>): number;
-    GetContacts(rigidbody: Rigidbody2D, contactFilter: ContactFilter2D, contacts: CSArray<ContactPoint2D>): number;
-    GetContacts(rigidbody: Rigidbody2D, colliders: CSArray<Collider2D>): number;
-    GetContacts(rigidbody: Rigidbody2D, contactFilter: ContactFilter2D, colliders: CSArray<Collider2D>): number;
+    GetContacts(collider1: Collider2D, collider2: Collider2D, contactFilter: ContactFilter2D, contacts: Readonly<ContactPoint2D[]>): number;
+    GetContacts(collider: Collider2D, contacts: Readonly<ContactPoint2D[]>): number;
+    GetContacts(collider: Collider2D, contactFilter: ContactFilter2D, contacts: Readonly<ContactPoint2D[]>): number;
+    GetContacts(collider: Collider2D, colliders: Readonly<Collider2D[]>): number;
+    GetContacts(collider: Collider2D, contactFilter: ContactFilter2D, colliders: Readonly<Collider2D[]>): number;
+    GetContacts(rigidbody: Rigidbody2D, contacts: Readonly<ContactPoint2D[]>): number;
+    GetContacts(rigidbody: Rigidbody2D, contactFilter: ContactFilter2D, contacts: Readonly<ContactPoint2D[]>): number;
+    GetContacts(rigidbody: Rigidbody2D, colliders: Readonly<Collider2D[]>): number;
+    GetContacts(rigidbody: Rigidbody2D, contactFilter: ContactFilter2D, colliders: Readonly<Collider2D[]>): number;
+    GetContacts(collider1: Collider2D, collider2: Collider2D, contactFilter: ContactFilter2D, contacts: Readonly<ContactPoint2D[]>): number;
+    GetContacts(collider: Collider2D, contacts: Readonly<ContactPoint2D[]>): number;
+    GetContacts(collider: Collider2D, contactFilter: ContactFilter2D, contacts: Readonly<ContactPoint2D[]>): number;
+    GetContacts(collider: Collider2D, colliders: Readonly<Collider2D[]>): number;
+    GetContacts(collider: Collider2D, contactFilter: ContactFilter2D, colliders: Readonly<Collider2D[]>): number;
+    GetContacts(rigidbody: Rigidbody2D, contacts: Readonly<ContactPoint2D[]>): number;
+    GetContacts(rigidbody: Rigidbody2D, contactFilter: ContactFilter2D, contacts: Readonly<ContactPoint2D[]>): number;
+    GetContacts(rigidbody: Rigidbody2D, colliders: Readonly<Collider2D[]>): number;
+    GetContacts(rigidbody: Rigidbody2D, contactFilter: ContactFilter2D, colliders: Readonly<Collider2D[]>): number;
     GetIgnoreCollision(collider1: Collider2D, collider2: Collider2D): boolean;
     GetIgnoreLayerCollision(layer1: number, layer2: number): boolean;
     GetLayerCollisionMask(layer: number): number;
     GetRayIntersection(ray: Ray): RaycastHit2D;
     GetRayIntersection(ray: Ray, distance: number): RaycastHit2D;
     GetRayIntersection(ray: Ray, distance: number, layerMask: number): RaycastHit2D;
-    GetRayIntersection(ray: Ray, distance: number, results: CSArray<RaycastHit2D>, layerMask: number): number;
-    GetRayIntersectionAll(ray: Ray): CSArray<RaycastHit2D>;
-    GetRayIntersectionAll(ray: Ray, distance: number): CSArray<RaycastHit2D>;
-    GetRayIntersectionAll(ray: Ray, distance: number, layerMask: number): CSArray<RaycastHit2D>;
-    GetRayIntersectionNonAlloc(ray: Ray, results: CSArray<RaycastHit2D>, distance: number, layerMask: number): number;
+    GetRayIntersection(ray: Ray, distance: number, results: Readonly<RaycastHit2D[]>, layerMask: number): number;
+    GetRayIntersectionAll(ray: Ray): Readonly<RaycastHit2D[]>;
+    GetRayIntersectionAll(ray: Ray, distance: number): Readonly<RaycastHit2D[]>;
+    GetRayIntersectionAll(ray: Ray, distance: number, layerMask: number): Readonly<RaycastHit2D[]>;
+    GetRayIntersectionNonAlloc(ray: Ray, results: Readonly<RaycastHit2D[]>, distance: number, layerMask: number): number;
     IgnoreCollision(collider1: Collider2D, collider2: Collider2D): void;
     IgnoreCollision(collider1: Collider2D, collider2: Collider2D, ignore: boolean): void;
     IgnoreLayerCollision(layer1: number, layer2: number): void;
@@ -9777,79 +9777,79 @@ interface Physics2DConstructor {
     Linecast(start: Vector2, end: Vector2, layerMask: number): RaycastHit2D;
     Linecast(start: Vector2, end: Vector2, layerMask: number, minDepth: number): RaycastHit2D;
     Linecast(start: Vector2, end: Vector2, layerMask: number, minDepth: number, maxDepth: number): RaycastHit2D;
-    Linecast(start: Vector2, end: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
-    Linecast(start: Vector2, end: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
-    LinecastAll(start: Vector2, end: Vector2): CSArray<RaycastHit2D>;
-    LinecastAll(start: Vector2, end: Vector2, layerMask: number): CSArray<RaycastHit2D>;
-    LinecastAll(start: Vector2, end: Vector2, layerMask: number, minDepth: number): CSArray<RaycastHit2D>;
-    LinecastAll(start: Vector2, end: Vector2, layerMask: number, minDepth: number, maxDepth: number): CSArray<RaycastHit2D>;
+    Linecast(start: Vector2, end: Vector2, contactFilter: ContactFilter2D, results: Readonly<RaycastHit2D[]>): number;
+    Linecast(start: Vector2, end: Vector2, contactFilter: ContactFilter2D, results: Readonly<RaycastHit2D[]>): number;
+    LinecastAll(start: Vector2, end: Vector2): Readonly<RaycastHit2D[]>;
+    LinecastAll(start: Vector2, end: Vector2, layerMask: number): Readonly<RaycastHit2D[]>;
+    LinecastAll(start: Vector2, end: Vector2, layerMask: number, minDepth: number): Readonly<RaycastHit2D[]>;
+    LinecastAll(start: Vector2, end: Vector2, layerMask: number, minDepth: number, maxDepth: number): Readonly<RaycastHit2D[]>;
     OverlapArea(pointA: Vector2, pointB: Vector2): Collider2D;
     OverlapArea(pointA: Vector2, pointB: Vector2, layerMask: number): Collider2D;
     OverlapArea(pointA: Vector2, pointB: Vector2, layerMask: number, minDepth: number): Collider2D;
     OverlapArea(pointA: Vector2, pointB: Vector2, layerMask: number, minDepth: number, maxDepth: number): Collider2D;
-    OverlapArea(pointA: Vector2, pointB: Vector2, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
-    OverlapArea(pointA: Vector2, pointB: Vector2, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
-    OverlapAreaAll(pointA: Vector2, pointB: Vector2): CSArray<Collider2D>;
-    OverlapAreaAll(pointA: Vector2, pointB: Vector2, layerMask: number): CSArray<Collider2D>;
-    OverlapAreaAll(pointA: Vector2, pointB: Vector2, layerMask: number, minDepth: number): CSArray<Collider2D>;
-    OverlapAreaAll(pointA: Vector2, pointB: Vector2, layerMask: number, minDepth: number, maxDepth: number): CSArray<Collider2D>;
+    OverlapArea(pointA: Vector2, pointB: Vector2, contactFilter: ContactFilter2D, results: Readonly<Collider2D[]>): number;
+    OverlapArea(pointA: Vector2, pointB: Vector2, contactFilter: ContactFilter2D, results: Readonly<Collider2D[]>): number;
+    OverlapAreaAll(pointA: Vector2, pointB: Vector2): Readonly<Collider2D[]>;
+    OverlapAreaAll(pointA: Vector2, pointB: Vector2, layerMask: number): Readonly<Collider2D[]>;
+    OverlapAreaAll(pointA: Vector2, pointB: Vector2, layerMask: number, minDepth: number): Readonly<Collider2D[]>;
+    OverlapAreaAll(pointA: Vector2, pointB: Vector2, layerMask: number, minDepth: number, maxDepth: number): Readonly<Collider2D[]>;
     OverlapBox(point: Vector2, size: Vector2, angle: number): Collider2D;
     OverlapBox(point: Vector2, size: Vector2, angle: number, layerMask: number): Collider2D;
     OverlapBox(point: Vector2, size: Vector2, angle: number, layerMask: number, minDepth: number): Collider2D;
     OverlapBox(point: Vector2, size: Vector2, angle: number, layerMask: number, minDepth: number, maxDepth: number): Collider2D;
-    OverlapBox(point: Vector2, size: Vector2, angle: number, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
-    OverlapBox(point: Vector2, size: Vector2, angle: number, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
-    OverlapBoxAll(point: Vector2, size: Vector2, angle: number): CSArray<Collider2D>;
-    OverlapBoxAll(point: Vector2, size: Vector2, angle: number, layerMask: number): CSArray<Collider2D>;
-    OverlapBoxAll(point: Vector2, size: Vector2, angle: number, layerMask: number, minDepth: number): CSArray<Collider2D>;
-    OverlapBoxAll(point: Vector2, size: Vector2, angle: number, layerMask: number, minDepth: number, maxDepth: number): CSArray<Collider2D>;
+    OverlapBox(point: Vector2, size: Vector2, angle: number, contactFilter: ContactFilter2D, results: Readonly<Collider2D[]>): number;
+    OverlapBox(point: Vector2, size: Vector2, angle: number, contactFilter: ContactFilter2D, results: Readonly<Collider2D[]>): number;
+    OverlapBoxAll(point: Vector2, size: Vector2, angle: number): Readonly<Collider2D[]>;
+    OverlapBoxAll(point: Vector2, size: Vector2, angle: number, layerMask: number): Readonly<Collider2D[]>;
+    OverlapBoxAll(point: Vector2, size: Vector2, angle: number, layerMask: number, minDepth: number): Readonly<Collider2D[]>;
+    OverlapBoxAll(point: Vector2, size: Vector2, angle: number, layerMask: number, minDepth: number, maxDepth: number): Readonly<Collider2D[]>;
     OverlapCapsule(point: Vector2, size: Vector2, direction: CapsuleDirection2D, angle: number): Collider2D;
     OverlapCapsule(point: Vector2, size: Vector2, direction: CapsuleDirection2D, angle: number, layerMask: number): Collider2D;
     OverlapCapsule(point: Vector2, size: Vector2, direction: CapsuleDirection2D, angle: number, layerMask: number, minDepth: number): Collider2D;
     OverlapCapsule(point: Vector2, size: Vector2, direction: CapsuleDirection2D, angle: number, layerMask: number, minDepth: number, maxDepth: number): Collider2D;
-    OverlapCapsule(point: Vector2, size: Vector2, direction: CapsuleDirection2D, angle: number, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
-    OverlapCapsule(point: Vector2, size: Vector2, direction: CapsuleDirection2D, angle: number, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
-    OverlapCapsuleAll(point: Vector2, size: Vector2, direction: CapsuleDirection2D, angle: number): CSArray<Collider2D>;
-    OverlapCapsuleAll(point: Vector2, size: Vector2, direction: CapsuleDirection2D, angle: number, layerMask: number): CSArray<Collider2D>;
-    OverlapCapsuleAll(point: Vector2, size: Vector2, direction: CapsuleDirection2D, angle: number, layerMask: number, minDepth: number): CSArray<Collider2D>;
-    OverlapCapsuleAll(point: Vector2, size: Vector2, direction: CapsuleDirection2D, angle: number, layerMask: number, minDepth: number, maxDepth: number): CSArray<Collider2D>;
+    OverlapCapsule(point: Vector2, size: Vector2, direction: CapsuleDirection2D, angle: number, contactFilter: ContactFilter2D, results: Readonly<Collider2D[]>): number;
+    OverlapCapsule(point: Vector2, size: Vector2, direction: CapsuleDirection2D, angle: number, contactFilter: ContactFilter2D, results: Readonly<Collider2D[]>): number;
+    OverlapCapsuleAll(point: Vector2, size: Vector2, direction: CapsuleDirection2D, angle: number): Readonly<Collider2D[]>;
+    OverlapCapsuleAll(point: Vector2, size: Vector2, direction: CapsuleDirection2D, angle: number, layerMask: number): Readonly<Collider2D[]>;
+    OverlapCapsuleAll(point: Vector2, size: Vector2, direction: CapsuleDirection2D, angle: number, layerMask: number, minDepth: number): Readonly<Collider2D[]>;
+    OverlapCapsuleAll(point: Vector2, size: Vector2, direction: CapsuleDirection2D, angle: number, layerMask: number, minDepth: number, maxDepth: number): Readonly<Collider2D[]>;
     OverlapCircle(point: Vector2, radius: number): Collider2D;
     OverlapCircle(point: Vector2, radius: number, layerMask: number): Collider2D;
     OverlapCircle(point: Vector2, radius: number, layerMask: number, minDepth: number): Collider2D;
     OverlapCircle(point: Vector2, radius: number, layerMask: number, minDepth: number, maxDepth: number): Collider2D;
-    OverlapCircle(point: Vector2, radius: number, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
-    OverlapCircle(point: Vector2, radius: number, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
-    OverlapCircleAll(point: Vector2, radius: number): CSArray<Collider2D>;
-    OverlapCircleAll(point: Vector2, radius: number, layerMask: number): CSArray<Collider2D>;
-    OverlapCircleAll(point: Vector2, radius: number, layerMask: number, minDepth: number): CSArray<Collider2D>;
-    OverlapCircleAll(point: Vector2, radius: number, layerMask: number, minDepth: number, maxDepth: number): CSArray<Collider2D>;
-    OverlapCollider(collider: Collider2D, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
-    OverlapCollider(collider: Collider2D, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
-    OverlapCollider(collider: Collider2D, results: CSArray<Collider2D>): number;
+    OverlapCircle(point: Vector2, radius: number, contactFilter: ContactFilter2D, results: Readonly<Collider2D[]>): number;
+    OverlapCircle(point: Vector2, radius: number, contactFilter: ContactFilter2D, results: Readonly<Collider2D[]>): number;
+    OverlapCircleAll(point: Vector2, radius: number): Readonly<Collider2D[]>;
+    OverlapCircleAll(point: Vector2, radius: number, layerMask: number): Readonly<Collider2D[]>;
+    OverlapCircleAll(point: Vector2, radius: number, layerMask: number, minDepth: number): Readonly<Collider2D[]>;
+    OverlapCircleAll(point: Vector2, radius: number, layerMask: number, minDepth: number, maxDepth: number): Readonly<Collider2D[]>;
+    OverlapCollider(collider: Collider2D, contactFilter: ContactFilter2D, results: Readonly<Collider2D[]>): number;
+    OverlapCollider(collider: Collider2D, contactFilter: ContactFilter2D, results: Readonly<Collider2D[]>): number;
+    OverlapCollider(collider: Collider2D, results: Readonly<Collider2D[]>): number;
     OverlapPoint(point: Vector2): Collider2D;
     OverlapPoint(point: Vector2, layerMask: number): Collider2D;
     OverlapPoint(point: Vector2, layerMask: number, minDepth: number): Collider2D;
     OverlapPoint(point: Vector2, layerMask: number, minDepth: number, maxDepth: number): Collider2D;
-    OverlapPoint(point: Vector2, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
-    OverlapPoint(point: Vector2, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
-    OverlapPointAll(point: Vector2): CSArray<Collider2D>;
-    OverlapPointAll(point: Vector2, layerMask: number): CSArray<Collider2D>;
-    OverlapPointAll(point: Vector2, layerMask: number, minDepth: number): CSArray<Collider2D>;
-    OverlapPointAll(point: Vector2, layerMask: number, minDepth: number, maxDepth: number): CSArray<Collider2D>;
+    OverlapPoint(point: Vector2, contactFilter: ContactFilter2D, results: Readonly<Collider2D[]>): number;
+    OverlapPoint(point: Vector2, contactFilter: ContactFilter2D, results: Readonly<Collider2D[]>): number;
+    OverlapPointAll(point: Vector2): Readonly<Collider2D[]>;
+    OverlapPointAll(point: Vector2, layerMask: number): Readonly<Collider2D[]>;
+    OverlapPointAll(point: Vector2, layerMask: number, minDepth: number): Readonly<Collider2D[]>;
+    OverlapPointAll(point: Vector2, layerMask: number, minDepth: number, maxDepth: number): Readonly<Collider2D[]>;
     Raycast(origin: Vector2, direction: Vector2): RaycastHit2D;
     Raycast(origin: Vector2, direction: Vector2, distance: number): RaycastHit2D;
     Raycast(origin: Vector2, direction: Vector2, distance: number, layerMask: number): RaycastHit2D;
     Raycast(origin: Vector2, direction: Vector2, distance: number, layerMask: number, minDepth: number): RaycastHit2D;
     Raycast(origin: Vector2, direction: Vector2, distance: number, layerMask: number, minDepth: number, maxDepth: number): RaycastHit2D;
-    Raycast(origin: Vector2, direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
-    Raycast(origin: Vector2, direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number): number;
-    Raycast(origin: Vector2, direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number): number;
-    RaycastAll(origin: Vector2, direction: Vector2): CSArray<RaycastHit2D>;
-    RaycastAll(origin: Vector2, direction: Vector2, distance: number): CSArray<RaycastHit2D>;
-    RaycastAll(origin: Vector2, direction: Vector2, distance: number, layerMask: number): CSArray<RaycastHit2D>;
-    RaycastAll(origin: Vector2, direction: Vector2, distance: number, layerMask: number, minDepth: number): CSArray<RaycastHit2D>;
-    RaycastAll(origin: Vector2, direction: Vector2, distance: number, layerMask: number, minDepth: number, maxDepth: number): CSArray<RaycastHit2D>;
-    RaycastNonAlloc(origin: Vector2, direction: Vector2, results: CSArray<RaycastHit2D>, distance: number, layerMask: number): number;
+    Raycast(origin: Vector2, direction: Vector2, contactFilter: ContactFilter2D, results: Readonly<RaycastHit2D[]>): number;
+    Raycast(origin: Vector2, direction: Vector2, contactFilter: ContactFilter2D, results: Readonly<RaycastHit2D[]>, distance: number): number;
+    Raycast(origin: Vector2, direction: Vector2, contactFilter: ContactFilter2D, results: Readonly<RaycastHit2D[]>, distance: number): number;
+    RaycastAll(origin: Vector2, direction: Vector2): Readonly<RaycastHit2D[]>;
+    RaycastAll(origin: Vector2, direction: Vector2, distance: number): Readonly<RaycastHit2D[]>;
+    RaycastAll(origin: Vector2, direction: Vector2, distance: number, layerMask: number): Readonly<RaycastHit2D[]>;
+    RaycastAll(origin: Vector2, direction: Vector2, distance: number, layerMask: number, minDepth: number): Readonly<RaycastHit2D[]>;
+    RaycastAll(origin: Vector2, direction: Vector2, distance: number, layerMask: number, minDepth: number, maxDepth: number): Readonly<RaycastHit2D[]>;
+    RaycastNonAlloc(origin: Vector2, direction: Vector2, results: Readonly<RaycastHit2D[]>, distance: number, layerMask: number): number;
     SetLayerCollisionMask(layer: number, layerMask: number): void;
     Simulate(deltaTime: number): boolean;
     Simulate(deltaTime: number, simulationLayers: number): boolean;
@@ -10072,8 +10072,8 @@ interface DebugConstructor {
     Assert(condition: boolean, message: string): void;
     Assert(condition: boolean, message: unknown, context: Object): void;
     Assert(condition: boolean, message: string, context: Object): void;
-    AssertFormat(condition: boolean, format: string, args: CSArray<unknown>): void;
-    AssertFormat(condition: boolean, context: Object, format: string, args: CSArray<unknown>): void;
+    AssertFormat(condition: boolean, format: string, args: Readonly<unknown[]>): void;
+    AssertFormat(condition: boolean, context: Object, format: string, args: Readonly<unknown[]>): void;
     Break(): void;
     ClearDeveloperConsole(): void;
     DebugBreak(): void;
@@ -10090,22 +10090,22 @@ interface DebugConstructor {
     Log(message: unknown, context: Object): void;
     LogAssertion(message: unknown): void;
     LogAssertion(message: unknown, context: Object): void;
-    LogAssertionFormat(format: string, args: CSArray<unknown>): void;
-    LogAssertionFormat(context: Object, format: string, args: CSArray<unknown>): void;
+    LogAssertionFormat(format: string, args: Readonly<unknown[]>): void;
+    LogAssertionFormat(context: Object, format: string, args: Readonly<unknown[]>): void;
     LogError(message: unknown): void;
     LogError(message: unknown, context: Object): void;
-    LogErrorFormat(format: string, args: CSArray<unknown>): void;
-    LogErrorFormat(context: Object, format: string, args: CSArray<unknown>): void;
+    LogErrorFormat(format: string, args: Readonly<unknown[]>): void;
+    LogErrorFormat(context: Object, format: string, args: Readonly<unknown[]>): void;
     LogException(exception: unknown): void;
     LogException(exception: unknown, context: Object): void;
-    LogFormat(format: string, args: CSArray<unknown>): void;
-    LogFormat(context: Object, format: string, args: CSArray<unknown>): void;
-    LogFormat(logType: LogType, logOptions: LogOption, context: Object, format: string, args: CSArray<unknown>): void;
+    LogFormat(format: string, args: Readonly<unknown[]>): void;
+    LogFormat(context: Object, format: string, args: Readonly<unknown[]>): void;
+    LogFormat(logType: LogType, logOptions: LogOption, context: Object, format: string, args: Readonly<unknown[]>): void;
     LogWarning(message: unknown): void;
     LogWarning(message: unknown, context: Object): void;
-    LogWarningFormat(format: string, args: CSArray<unknown>): void;
-    LogWarningFormat(context: Object, format: string, args: CSArray<unknown>): void;
-    RetrieveStartupLogs(): CSArray<StartupLog>;
+    LogWarningFormat(format: string, args: Readonly<unknown[]>): void;
+    LogWarningFormat(context: Object, format: string, args: Readonly<unknown[]>): void;
+    RetrieveStartupLogs(): Readonly<StartupLog[]>;
 
 }
 declare const Debug: DebugConstructor;
@@ -10196,19 +10196,19 @@ Returns NULL if there is no associated alpha Texture for the source Sprite. This
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Sprite-vertices.html | Sprite.vertices}
      */
-    readonly vertices: CSArray<Vector2>;
+    readonly vertices: Readonly<Vector2[]>;
     /**
      * Returns a copy of the array containing Sprite mesh triangles.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Sprite-triangles.html | Sprite.triangles}
      */
-    readonly triangles: CSArray<number>;
+    readonly triangles: Readonly<number[]>;
     /**
      * The base Texture coordinates of the Sprite mesh.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Sprite-uv.html | Sprite.uv}
      */
-    readonly uv: CSArray<Vector2>;
+    readonly uv: Readonly<Vector2[]>;
 
 
 
@@ -10219,7 +10219,7 @@ Returns NULL if there is no associated alpha Texture for the source Sprite. This
      * More info: {@link https://docs.unity3d.com/ScriptReference/Sprite.AddScriptableObject.html | Sprite.AddScriptableObject}
      */
     AddScriptableObject(obj: ScriptableObject): boolean;
-    GetPhysicsShape(shapeIdx: number, physicsShape: CSArray<Vector2>): number;
+    GetPhysicsShape(shapeIdx: number, physicsShape: Readonly<Vector2[]>): number;
     /**
      * The number of physics shapes for the Sprite.
      * 
@@ -10239,7 +10239,7 @@ Returns NULL if there is no associated alpha Texture for the source Sprite. This
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Sprite.GetScriptableObjects.html | Sprite.GetScriptableObjects}
      */
-    GetScriptableObjects(scriptableObjects: CSArray<ScriptableObject>): number;
+    GetScriptableObjects(scriptableObjects: Readonly<ScriptableObject[]>): number;
     /**
      * Gets the number of ScriptableObject that the sprite references.
      * 
@@ -10258,7 +10258,7 @@ Returns NULL if there is no associated alpha Texture for the source Sprite. This
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Sprite.GetSecondaryTextures.html | Sprite.GetSecondaryTextures}
      */
-    GetSecondaryTextures(secondaryTexture: CSArray<SecondarySpriteTexture>): number;
+    GetSecondaryTextures(secondaryTexture: Readonly<SecondarySpriteTexture[]>): number;
     /**
      * Sets up new Sprite geometry.
      * @param vertices Array of vertex positions in Sprite Rect space.
@@ -10266,8 +10266,8 @@ Returns NULL if there is no associated alpha Texture for the source Sprite. This
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Sprite.OverrideGeometry.html | Sprite.OverrideGeometry}
      */
-    OverrideGeometry(vertices: CSArray<Vector2>, triangles: CSArray<number>): void;
-    OverridePhysicsShape(physicsShapes: CSArray<CSArray<Vector2>>): void;
+    OverrideGeometry(vertices: Readonly<Vector2[]>, triangles: Readonly<number[]>): void;
+    OverridePhysicsShape(physicsShapes: Readonly<Readonly<Vector2[]>[]>): void;
     /**
      * Removes the ScriptableObject reference from the sprite.
      * @param i The index of the ScriptableObject reference to remove.
@@ -10601,12 +10601,12 @@ interface Hash128 {
      * More info: {@link https://docs.unity3d.com/ScriptReference/Hash128.Append.html | Hash128.Append}
      */
     Append(data: string): void;
-    Append<T>(data: CSArray<T>): void;
-    Append<T>(data: CSArray<T>, start: number, count: number): void;
-    Append<T>(data: CSArray<T>): void;
-    Append<T>(data: CSArray<T>, start: number, count: number): void;
-    Append<T>(data: CSArray<T>): void;
-    Append<T>(data: CSArray<T>, start: number, count: number): void;
+    Append<T>(data: Readonly<T[]>): void;
+    Append<T>(data: Readonly<T[]>, start: number, count: number): void;
+    Append<T>(data: Readonly<T[]>): void;
+    Append<T>(data: Readonly<T[]>, start: number, count: number): void;
+    Append<T>(data: Readonly<T[]>): void;
+    Append<T>(data: Readonly<T[]>, start: number, count: number): void;
     Append<T>(val: unknown): void;
     /**
      * Hash new input data and combine with the current hash value.
@@ -10653,12 +10653,12 @@ interface Hash128Constructor {
 
 
     Compute(data: string): Hash128;
-    Compute<T>(data: CSArray<T>): Hash128;
-    Compute<T>(data: CSArray<T>, start: number, count: number): Hash128;
-    Compute<T>(data: CSArray<T>): Hash128;
-    Compute<T>(data: CSArray<T>, start: number, count: number): Hash128;
-    Compute<T>(data: CSArray<T>): Hash128;
-    Compute<T>(data: CSArray<T>, start: number, count: number): Hash128;
+    Compute<T>(data: Readonly<T[]>): Hash128;
+    Compute<T>(data: Readonly<T[]>, start: number, count: number): Hash128;
+    Compute<T>(data: Readonly<T[]>): Hash128;
+    Compute<T>(data: Readonly<T[]>, start: number, count: number): Hash128;
+    Compute<T>(data: Readonly<T[]>): Hash128;
+    Compute<T>(data: Readonly<T[]>, start: number, count: number): Hash128;
     Compute<T>(val: unknown): Hash128;
     Compute(val: number): Hash128;
     Compute(val: number): Hash128;
@@ -10986,7 +10986,7 @@ interface Texture2D extends Texture {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2D.GetPixelData.html | Texture2D.GetPixelData}
      */
-    GetPixelData<T>(mipLevel: number): CSArray<T>;
+    GetPixelData<T>(mipLevel: number): Readonly<T[]>;
     /**
      * Gets the pixel color data for part of a mipmap level as Color structs.
      * @param x The starting x position of the section to fetch.
@@ -10997,7 +10997,7 @@ interface Texture2D extends Texture {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2D.GetPixels.html | Texture2D.GetPixels}
      */
-    GetPixels(x: number, y: number, blockWidth: number, blockHeight: number, miplevel: number): CSArray<Color>;
+    GetPixels(x: number, y: number, blockWidth: number, blockHeight: number, miplevel: number): Readonly<Color[]>;
     /**
      * Gets the pixel color data for part of a mipmap level as Color structs.
      * @param x The starting x position of the section to fetch.
@@ -11007,45 +11007,45 @@ interface Texture2D extends Texture {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2D.GetPixels.html | Texture2D.GetPixels}
      */
-    GetPixels(x: number, y: number, blockWidth: number, blockHeight: number): CSArray<Color>;
+    GetPixels(x: number, y: number, blockWidth: number, blockHeight: number): Readonly<Color[]>;
     /**
      * Gets the pixel color data for a mipmap level as Color structs.
      * @param miplevel The mipmap level to get. The range is 0 through the texture's Texture.mipmapCount. The default value is 0.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2D.GetPixels.html | Texture2D.GetPixels}
      */
-    GetPixels(miplevel: number): CSArray<Color>;
+    GetPixels(miplevel: number): Readonly<Color[]>;
     /**
      * Gets the pixel color data for a mipmap level as Color structs.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2D.GetPixels.html | Texture2D.GetPixels}
      */
-    GetPixels(): CSArray<Color>;
+    GetPixels(): Readonly<Color[]>;
     /**
      * Gets the pixel color data for a mipmap level as Color32 structs.
      * @param miplevel The mipmap level to get. The range is 0 through the texture's Texture.mipmapCount. The default value is 0.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2D.GetPixels32.html | Texture2D.GetPixels32}
      */
-    GetPixels32(miplevel: number): CSArray<Color32>;
+    GetPixels32(miplevel: number): Readonly<Color32[]>;
     /**
      * Gets the pixel color data for a mipmap level as Color32 structs.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2D.GetPixels32.html | Texture2D.GetPixels32}
      */
-    GetPixels32(): CSArray<Color32>;
+    GetPixels32(): Readonly<Color32[]>;
     /**
      * Gets the raw data from a texture, as a copy.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2D.GetRawTextureData.html | Texture2D.GetRawTextureData}
      */
-    GetRawTextureData(): CSArray<number>;
+    GetRawTextureData(): Readonly<number[]>;
     /**
      * Gets the raw data from a texture, as a copy.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2D.GetRawTextureData.html | Texture2D.GetRawTextureData}
      */
-    GetRawTextureData<T>(): CSArray<T>;
+    GetRawTextureData<T>(): Readonly<T[]>;
     /**
      * Checks to see whether the mipmap level set by requestedMipmapLevel has finished loading.
      * 
@@ -11066,8 +11066,8 @@ interface Texture2D extends Texture {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2D.LoadRawTextureData.html | Texture2D.LoadRawTextureData}
      */
-    LoadRawTextureData(data: CSArray<number>): void;
-    LoadRawTextureData<T>(data: CSArray<T>): void;
+    LoadRawTextureData(data: Readonly<number[]>): void;
+    LoadRawTextureData<T>(data: Readonly<T[]>): void;
     /**
      * Packs multiple Textures into a texture atlas.
      * @param textures Array of textures to pack into the atlas.
@@ -11077,9 +11077,9 @@ interface Texture2D extends Texture {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2D.PackTextures.html | Texture2D.PackTextures}
      */
-    PackTextures(textures: CSArray<Texture2D>, padding: number, maximumAtlasSize: number, makeNoLongerReadable: boolean): CSArray<Rect>;
-    PackTextures(textures: CSArray<Texture2D>, padding: number, maximumAtlasSize: number): CSArray<Rect>;
-    PackTextures(textures: CSArray<Texture2D>, padding: number): CSArray<Rect>;
+    PackTextures(textures: Readonly<Texture2D[]>, padding: number, maximumAtlasSize: number, makeNoLongerReadable: boolean): Readonly<Rect[]>;
+    PackTextures(textures: Readonly<Texture2D[]>, padding: number, maximumAtlasSize: number): Readonly<Rect[]>;
+    PackTextures(textures: Readonly<Texture2D[]>, padding: number): Readonly<Rect[]>;
     /**
      * Reads pixels from the current render target and writes them to a texture.
      * @param source The region of the render target to read from.
@@ -11138,8 +11138,8 @@ interface Texture2D extends Texture {
      * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2D.SetPixel.html | Texture2D.SetPixel}
      */
     SetPixel(x: number, y: number, color: Color, mipLevel: number): void;
-    SetPixelData<T>(data: CSArray<T>, mipLevel: number, sourceDataStartIndex: number): void;
-    SetPixelData<T>(data: CSArray<T>, mipLevel: number, sourceDataStartIndex: number): void;
+    SetPixelData<T>(data: Readonly<T[]>, mipLevel: number, sourceDataStartIndex: number): void;
+    SetPixelData<T>(data: Readonly<T[]>, mipLevel: number, sourceDataStartIndex: number): void;
     /**
      * Sets the pixel colors of part of a mipmap level.
      * @param x The x coordinate to place the block of pixels at. The range is 0 through (texture width - 1).
@@ -11151,8 +11151,8 @@ interface Texture2D extends Texture {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2D.SetPixels.html | Texture2D.SetPixels}
      */
-    SetPixels(x: number, y: number, blockWidth: number, blockHeight: number, colors: CSArray<Color>, miplevel: number): void;
-    SetPixels(x: number, y: number, blockWidth: number, blockHeight: number, colors: CSArray<Color>): void;
+    SetPixels(x: number, y: number, blockWidth: number, blockHeight: number, colors: Readonly<Color[]>, miplevel: number): void;
+    SetPixels(x: number, y: number, blockWidth: number, blockHeight: number, colors: Readonly<Color[]>): void;
     /**
      * Sets the pixel colors of an entire mipmap level.
      * @param colors The array of pixel colours to use. This is a 2D image flattened to a 1D array.
@@ -11160,8 +11160,8 @@ interface Texture2D extends Texture {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2D.SetPixels.html | Texture2D.SetPixels}
      */
-    SetPixels(colors: CSArray<Color>, miplevel: number): void;
-    SetPixels(colors: CSArray<Color>): void;
+    SetPixels(colors: Readonly<Color[]>, miplevel: number): void;
+    SetPixels(colors: Readonly<Color[]>): void;
     /**
      * Sets the pixel colors of an entire mipmap level.
      * @param colors The array of pixel colours to use. This is a 2D image flattened to a 1D array.
@@ -11169,14 +11169,14 @@ interface Texture2D extends Texture {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2D.SetPixels32.html | Texture2D.SetPixels32}
      */
-    SetPixels32(colors: CSArray<Color32>, miplevel: number): void;
+    SetPixels32(colors: Readonly<Color32[]>, miplevel: number): void;
     /**
      * Sets the pixel colors of an entire mipmap level.
      * @param colors The array of pixel colours to use. This is a 2D image flattened to a 1D array.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2D.SetPixels32.html | Texture2D.SetPixels32}
      */
-    SetPixels32(colors: CSArray<Color32>): void;
+    SetPixels32(colors: Readonly<Color32[]>): void;
     /**
      * Sets the pixel colors of part of a mipmap level.
      * @param x The x coordinate to place the block of pixels at. The range is 0 through (texture width - 1).
@@ -11188,7 +11188,7 @@ interface Texture2D extends Texture {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2D.SetPixels32.html | Texture2D.SetPixels32}
      */
-    SetPixels32(x: number, y: number, blockWidth: number, blockHeight: number, colors: CSArray<Color32>, miplevel: number): void;
+    SetPixels32(x: number, y: number, blockWidth: number, blockHeight: number, colors: Readonly<Color32[]>, miplevel: number): void;
     /**
      * Sets the pixel colors of part of a mipmap level.
      * @param x The x coordinate to place the block of pixels at. The range is 0 through (texture width - 1).
@@ -11199,7 +11199,7 @@ interface Texture2D extends Texture {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2D.SetPixels32.html | Texture2D.SetPixels32}
      */
-    SetPixels32(x: number, y: number, blockWidth: number, blockHeight: number, colors: CSArray<Color32>): void;
+    SetPixels32(x: number, y: number, blockWidth: number, blockHeight: number, colors: Readonly<Color32[]>): void;
     /**
      * Updates Unity texture to use different native texture object.
      * @param nativeTex Native 2D texture object.
@@ -11269,7 +11269,7 @@ interface Texture2DConstructor {
 
 
     CreateExternalTexture(width: number, height: number, format: TextureFormat, mipChain: boolean, linear: boolean, nativeTex: unknown): Texture2D;
-    GenerateAtlas(sizes: CSArray<Vector2>, padding: number, atlasSize: number, results: CSArray<Rect>): boolean;
+    GenerateAtlas(sizes: Readonly<Vector2[]>, padding: number, atlasSize: number, results: Readonly<Rect[]>): boolean;
 
 }
 declare const Texture2D: Texture2DConstructor;
@@ -11311,7 +11311,7 @@ interface SpriteConstructor {
 
 
     Create(texture: Texture2D, rect: Rect, pivot: Vector2, pixelsPerUnit: number, extrude: number, meshType: SpriteMeshType, border: Vector4, generateFallbackPhysicsShape: boolean): Sprite;
-    Create(texture: Texture2D, rect: Rect, pivot: Vector2, pixelsPerUnit: number, extrude: number, meshType: SpriteMeshType, border: Vector4, generateFallbackPhysicsShape: boolean, secondaryTextures: CSArray<SecondarySpriteTexture>): Sprite;
+    Create(texture: Texture2D, rect: Rect, pivot: Vector2, pixelsPerUnit: number, extrude: number, meshType: SpriteMeshType, border: Vector4, generateFallbackPhysicsShape: boolean, secondaryTextures: Readonly<SecondarySpriteTexture[]>): Sprite;
     Create(texture: Texture2D, rect: Rect, pivot: Vector2, pixelsPerUnit: number, extrude: number, meshType: SpriteMeshType, border: Vector4): Sprite;
     Create(texture: Texture2D, rect: Rect, pivot: Vector2, pixelsPerUnit: number, extrude: number, meshType: SpriteMeshType): Sprite;
     Create(texture: Texture2D, rect: Rect, pivot: Vector2, pixelsPerUnit: number, extrude: number): Sprite;
@@ -11327,7 +11327,7 @@ interface TextAsset extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/TextAsset-bytes.html | TextAsset.bytes}
      */
-    readonly bytes: CSArray<number>;
+    readonly bytes: Readonly<number[]>;
     /**
      * The text contents of the file as a string. (Read Only)
      * 
@@ -11348,7 +11348,7 @@ interface TextAsset extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/TextAsset.GetData.html | TextAsset.GetData}
      */
-    GetData<T>(): CSArray<T>;
+    GetData<T>(): Readonly<T[]>;
     /**
      * Returns the contents of the TextAsset.
      * 
@@ -11451,21 +11451,21 @@ interface ResourcesConstructor {
     new(): Resources;
 
 
-    FindObjectsOfTypeAll(type: unknown): CSArray<Object>;
-    FindObjectsOfTypeAll<T>(): CSArray<T>;
+    FindObjectsOfTypeAll(type: unknown): Readonly<Object[]>;
+    FindObjectsOfTypeAll<T>(): Readonly<T[]>;
     GetBuiltinResource(type: unknown, path: string): Object;
     GetBuiltinResource<T>(path: string): T;
     InstanceIDIsValid(instanceId: number): boolean;
-    InstanceIDsToValidArray(instanceIDs: CSArray<number>, validArray: CSArray<boolean>): void;
+    InstanceIDsToValidArray(instanceIDs: Readonly<number[]>, validArray: Readonly<boolean[]>): void;
     InstanceIDsToValidArray(instanceIDs: unknown, validArray: unknown): void;
     InstanceIDToObject(instanceID: number): Object;
-    InstanceIDToObjectList(instanceIDs: CSArray<number>, objects: CSArray<Object>): void;
+    InstanceIDToObjectList(instanceIDs: Readonly<number[]>, objects: Readonly<Object[]>): void;
     Load(path: string): Object;
     Load<T>(path: string): T;
     Load(path: string, systemTypeInstance: unknown): Object;
-    LoadAll(path: string, systemTypeInstance: unknown): CSArray<Object>;
-    LoadAll(path: string): CSArray<Object>;
-    LoadAll<T>(path: string): CSArray<T>;
+    LoadAll(path: string, systemTypeInstance: unknown): Readonly<Object[]>;
+    LoadAll(path: string): Readonly<Object[]>;
+    LoadAll<T>(path: string): Readonly<T[]>;
     LoadAsync(path: string): ResourceRequest;
     LoadAsync<T>(path: string): ResourceRequest;
     LoadAsync(path: string, type: unknown): ResourceRequest;
@@ -11493,7 +11493,7 @@ interface AgonesProxy extends MonoBehaviour {
     AppendListValue(list: string, value: string): boolean;
     Connect(): void;
     DeleteListValue(list: string, value: string): boolean;
-    GetListValues(list: string): CSArray<string>;
+    GetListValues(list: string): Readonly<string[]>;
     ListContains(list: string, value: string): boolean;
     Ready(): void;
     SetAnnotation(key: string, value: string): boolean;
@@ -11567,7 +11567,7 @@ interface Net extends MonoBehaviour {
     BroadcastToAllClients(blob: BinaryBlob, reliable: number): void;
     BroadcastToAllExceptClient(ignoredClientId: number, blob: BinaryBlob, reliable: number): void;
     BroadcastToClient(clientId: number, blob: BinaryBlob, reliable: number): void;
-    BroadcastToClients(clientIds: CSArray<number>, blob: BinaryBlob, reliable: number): void;
+    BroadcastToClients(clientIds: Readonly<number[]>, blob: BinaryBlob, reliable: number): void;
     BroadcastToServer(blob: BinaryBlob, reliable: number): void;
     OnStartClient(): void;
     OnStartServer(): void;
@@ -11577,7 +11577,7 @@ interface Net extends MonoBehaviour {
     
 interface BinaryBlob {
     m_dataSize: number;
-    m_data: CSArray<number>;
+    m_data: Readonly<number[]>;
 
 
 
@@ -11591,7 +11591,7 @@ interface BinaryBlobConstructor {
 
 
     new(): BinaryBlob;
-    new(bytes: CSArray<number>): BinaryBlob;
+    new(bytes: Readonly<number[]>): BinaryBlob;
 
 
 
@@ -11759,7 +11759,7 @@ See EditorSceneManager.SetSceneCullingMask.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Camera-layerCullDistances.html | Camera.layerCullDistances}
      */
-    layerCullDistances: CSArray<number>;
+    layerCullDistances: Readonly<number[]>;
     /**
      * Whether or not the Camera will use occlusion culling during rendering.
      * 
@@ -12044,7 +12044,7 @@ If called outside of a rendering callback and stereo is enabled, it will return 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Camera.AddCommandBufferAsync.html | Camera.AddCommandBufferAsync}
      */
     AddCommandBufferAsync(evt: CameraEvent, buffer: CommandBuffer, queueType: ComputeQueueType): void;
-    CalculateFrustumCorners(viewport: Rect, z: number, eye: MonoOrStereoscopicEye, outCorners: CSArray<Vector3>): void;
+    CalculateFrustumCorners(viewport: Rect, z: number, eye: MonoOrStereoscopicEye, outCorners: Readonly<Vector3[]>): void;
     /**
      * Calculates and returns oblique near-plane projection matrix.
      * @param clipPlane Vector4 that describes a clip plane.
@@ -12066,7 +12066,7 @@ If called outside of a rendering callback and stereo is enabled, it will return 
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Camera.GetCommandBuffers.html | Camera.GetCommandBuffers}
      */
-    GetCommandBuffers(evt: CameraEvent): CSArray<CommandBuffer>;
+    GetCommandBuffers(evt: CameraEvent): Readonly<CommandBuffer[]>;
     /**
      * Retrieves the effective vertical field of view of the camera, including GateFit.
                     Fitting the sensor gate and the resolution gate has an impact on the final field of view. If the sensor gate aspect ratio is the same as the resolution gate aspect ratio or if the camera is not in physical mode, then this method returns the same value as the fieldofview property.
@@ -12236,7 +12236,7 @@ If called outside of a rendering callback and stereo is enabled, it will return 
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Camera.SetTargetBuffers.html | Camera.SetTargetBuffers}
      */
-    SetTargetBuffers(colorBuffer: CSArray<RenderBuffer>, depthBuffer: RenderBuffer): void;
+    SetTargetBuffers(colorBuffer: Readonly<RenderBuffer[]>, depthBuffer: RenderBuffer): void;
     SubmitRenderRequest<RequestData>(renderRequest: RequestData): void;
     /**
      * Get culling parameters for a camera.
@@ -12756,10 +12756,10 @@ interface CommandBuffer {
 
 
 
-    BeginRenderPass(width: number, height: number, samples: number, attachments: CSArray<AttachmentDescriptor>, depthAttachmentIndex: number, subPasses: CSArray<SubPassDescriptor>): void;
-    BeginRenderPass(width: number, height: number, volumeDepth: number, samples: number, attachments: CSArray<AttachmentDescriptor>, depthAttachmentIndex: number, subPasses: CSArray<SubPassDescriptor>): void;
-    BeginRenderPass(width: number, height: number, samples: number, attachments: CSArray<AttachmentDescriptor>, depthAttachmentIndex: number, subPasses: CSArray<SubPassDescriptor>, debugNameUtf8: unknown): void;
-    BeginRenderPass(width: number, height: number, volumeDepth: number, samples: number, attachments: CSArray<AttachmentDescriptor>, depthAttachmentIndex: number, subPasses: CSArray<SubPassDescriptor>, debugNameUtf8: unknown): void;
+    BeginRenderPass(width: number, height: number, samples: number, attachments: Readonly<AttachmentDescriptor[]>, depthAttachmentIndex: number, subPasses: Readonly<SubPassDescriptor[]>): void;
+    BeginRenderPass(width: number, height: number, volumeDepth: number, samples: number, attachments: Readonly<AttachmentDescriptor[]>, depthAttachmentIndex: number, subPasses: Readonly<SubPassDescriptor[]>): void;
+    BeginRenderPass(width: number, height: number, samples: number, attachments: Readonly<AttachmentDescriptor[]>, depthAttachmentIndex: number, subPasses: Readonly<SubPassDescriptor[]>, debugNameUtf8: unknown): void;
+    BeginRenderPass(width: number, height: number, volumeDepth: number, samples: number, attachments: Readonly<AttachmentDescriptor[]>, depthAttachmentIndex: number, subPasses: Readonly<SubPassDescriptor[]>, debugNameUtf8: unknown): void;
     /**
      * Adds a command to begin profile sampling.
      * @param name Name of the profile information used for sampling.
@@ -12958,7 +12958,7 @@ interface CommandBuffer {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.ClearRenderTarget.html | Rendering.CommandBuffer.ClearRenderTarget}
      */
-    ClearRenderTarget(clearFlags: RTClearFlags, backgroundColors: CSArray<Color>, depth: number, stencil: number): void;
+    ClearRenderTarget(clearFlags: RTClearFlags, backgroundColors: Readonly<Color[]>, depth: number, stencil: number): void;
     /**
      * Adds a command to configure foveated rendering.
      * @param platformData The native pointer from XR.XRDisplaySubsystem.XRRenderPass.foveatedRenderingInfo.
@@ -13237,7 +13237,7 @@ InvalidOperationException will be thrown if the current platform doesn't support
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.DrawMeshInstanced.html | Rendering.CommandBuffer.DrawMeshInstanced}
      */
-    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, matrices: CSArray<Matrix4x4>, count: number, properties: MaterialPropertyBlock): void;
+    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, matrices: Readonly<Matrix4x4[]>, count: number, properties: MaterialPropertyBlock): void;
     /**
      * Adds a &quot;draw mesh with instancing&quot; command.
 
@@ -13255,7 +13255,7 @@ InvalidOperationException will be thrown if the current platform doesn't support
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.DrawMeshInstanced.html | Rendering.CommandBuffer.DrawMeshInstanced}
      */
-    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, matrices: CSArray<Matrix4x4>, count: number): void;
+    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, matrices: Readonly<Matrix4x4[]>, count: number): void;
     /**
      * Adds a &quot;draw mesh with instancing&quot; command.
 
@@ -13272,7 +13272,7 @@ InvalidOperationException will be thrown if the current platform doesn't support
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.DrawMeshInstanced.html | Rendering.CommandBuffer.DrawMeshInstanced}
      */
-    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, matrices: CSArray<Matrix4x4>): void;
+    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, matrices: Readonly<Matrix4x4[]>): void;
     /**
      * Add a &quot;draw mesh with indirect instancing&quot; command.
      * @param mesh The Mesh to draw.
@@ -13362,7 +13362,7 @@ InvalidOperationException will be thrown if the current platform doesn't support
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.DrawMeshInstancedProcedural.html | Rendering.CommandBuffer.DrawMeshInstancedProcedural}
      */
     DrawMeshInstancedProcedural(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, count: number, properties: MaterialPropertyBlock): void;
-    DrawMultipleMeshes(matrices: CSArray<Matrix4x4>, meshes: CSArray<Mesh>, subsetIndices: CSArray<number>, count: number, material: Material, shaderPass: number, properties: MaterialPropertyBlock): void;
+    DrawMultipleMeshes(matrices: Readonly<Matrix4x4[]>, meshes: Readonly<Mesh[]>, subsetIndices: Readonly<number[]>, count: number, material: Material, shaderPass: number, properties: MaterialPropertyBlock): void;
     /**
      * Adds a command onto the commandbuffer to draw the VR Device's occlusion mesh to the current render target.
      * @param normalizedCamViewport The viewport of the camera currently being rendered.
@@ -13860,28 +13860,28 @@ InvalidOperationException will be thrown if the current platform doesn't support
     RequestAsyncReadback(src: Texture, mipIndex: number, x: number, width: number, y: number, height: number, z: number, depth: number, callback: unknown): void;
     RequestAsyncReadback(src: Texture, mipIndex: number, x: number, width: number, y: number, height: number, z: number, depth: number, dstFormat: TextureFormat, callback: unknown): void;
     RequestAsyncReadback(src: Texture, mipIndex: number, x: number, width: number, y: number, height: number, z: number, depth: number, dstFormat: GraphicsFormat, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeArray<T>(output: CSArray<T>, src: ComputeBuffer, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeArray<T>(output: CSArray<T>, src: ComputeBuffer, size: number, offset: number, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeArray<T>(output: CSArray<T>, src: GraphicsBuffer, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeArray<T>(output: CSArray<T>, src: GraphicsBuffer, size: number, offset: number, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeArray<T>(output: CSArray<T>, src: Texture, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeArray<T>(output: CSArray<T>, src: Texture, mipIndex: number, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeArray<T>(output: CSArray<T>, src: Texture, mipIndex: number, dstFormat: TextureFormat, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeArray<T>(output: CSArray<T>, src: Texture, mipIndex: number, dstFormat: GraphicsFormat, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeArray<T>(output: CSArray<T>, src: Texture, mipIndex: number, x: number, width: number, y: number, height: number, z: number, depth: number, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeArray<T>(output: CSArray<T>, src: Texture, mipIndex: number, x: number, width: number, y: number, height: number, z: number, depth: number, dstFormat: TextureFormat, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeArray<T>(output: CSArray<T>, src: Texture, mipIndex: number, x: number, width: number, y: number, height: number, z: number, depth: number, dstFormat: GraphicsFormat, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeSlice<T>(output: CSArray<T>, src: ComputeBuffer, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeSlice<T>(output: CSArray<T>, src: ComputeBuffer, size: number, offset: number, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeSlice<T>(output: CSArray<T>, src: GraphicsBuffer, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeSlice<T>(output: CSArray<T>, src: GraphicsBuffer, size: number, offset: number, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeSlice<T>(output: CSArray<T>, src: Texture, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeSlice<T>(output: CSArray<T>, src: Texture, mipIndex: number, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeSlice<T>(output: CSArray<T>, src: Texture, mipIndex: number, dstFormat: TextureFormat, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeSlice<T>(output: CSArray<T>, src: Texture, mipIndex: number, dstFormat: GraphicsFormat, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeSlice<T>(output: CSArray<T>, src: Texture, mipIndex: number, x: number, width: number, y: number, height: number, z: number, depth: number, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeSlice<T>(output: CSArray<T>, src: Texture, mipIndex: number, x: number, width: number, y: number, height: number, z: number, depth: number, dstFormat: TextureFormat, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeSlice<T>(output: CSArray<T>, src: Texture, mipIndex: number, x: number, width: number, y: number, height: number, z: number, depth: number, dstFormat: GraphicsFormat, callback: unknown): void;
+    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: ComputeBuffer, callback: unknown): void;
+    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: ComputeBuffer, size: number, offset: number, callback: unknown): void;
+    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: GraphicsBuffer, callback: unknown): void;
+    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: GraphicsBuffer, size: number, offset: number, callback: unknown): void;
+    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: Texture, callback: unknown): void;
+    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, callback: unknown): void;
+    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, dstFormat: TextureFormat, callback: unknown): void;
+    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, dstFormat: GraphicsFormat, callback: unknown): void;
+    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, x: number, width: number, y: number, height: number, z: number, depth: number, callback: unknown): void;
+    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, x: number, width: number, y: number, height: number, z: number, depth: number, dstFormat: TextureFormat, callback: unknown): void;
+    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, x: number, width: number, y: number, height: number, z: number, depth: number, dstFormat: GraphicsFormat, callback: unknown): void;
+    RequestAsyncReadbackIntoNativeSlice<T>(output: Readonly<T[]>, src: ComputeBuffer, callback: unknown): void;
+    RequestAsyncReadbackIntoNativeSlice<T>(output: Readonly<T[]>, src: ComputeBuffer, size: number, offset: number, callback: unknown): void;
+    RequestAsyncReadbackIntoNativeSlice<T>(output: Readonly<T[]>, src: GraphicsBuffer, callback: unknown): void;
+    RequestAsyncReadbackIntoNativeSlice<T>(output: Readonly<T[]>, src: GraphicsBuffer, size: number, offset: number, callback: unknown): void;
+    RequestAsyncReadbackIntoNativeSlice<T>(output: Readonly<T[]>, src: Texture, callback: unknown): void;
+    RequestAsyncReadbackIntoNativeSlice<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, callback: unknown): void;
+    RequestAsyncReadbackIntoNativeSlice<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, dstFormat: TextureFormat, callback: unknown): void;
+    RequestAsyncReadbackIntoNativeSlice<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, dstFormat: GraphicsFormat, callback: unknown): void;
+    RequestAsyncReadbackIntoNativeSlice<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, x: number, width: number, y: number, height: number, z: number, depth: number, callback: unknown): void;
+    RequestAsyncReadbackIntoNativeSlice<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, x: number, width: number, y: number, height: number, z: number, depth: number, dstFormat: TextureFormat, callback: unknown): void;
+    RequestAsyncReadbackIntoNativeSlice<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, x: number, width: number, y: number, height: number, z: number, depth: number, dstFormat: GraphicsFormat, callback: unknown): void;
     /**
      * Force an antialiased render texture to be resolved.
      * @param rt The antialiased render texture to resolve.
@@ -13914,8 +13914,8 @@ InvalidOperationException will be thrown if the current platform doesn't support
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.SetBufferData.html | Rendering.CommandBuffer.SetBufferData}
      */
     SetBufferData(buffer: ComputeBuffer, data: unknown): void;
-    SetBufferData<T>(buffer: ComputeBuffer, data: CSArray<T>): void;
-    SetBufferData<T>(buffer: ComputeBuffer, data: CSArray<T>): void;
+    SetBufferData<T>(buffer: ComputeBuffer, data: Readonly<T[]>): void;
+    SetBufferData<T>(buffer: ComputeBuffer, data: Readonly<T[]>): void;
     /**
      * Adds a command to process a partial copy of data values from an array into the buffer.
      * @param buffer The destination buffer.
@@ -13927,8 +13927,8 @@ InvalidOperationException will be thrown if the current platform doesn't support
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.SetBufferData.html | Rendering.CommandBuffer.SetBufferData}
      */
     SetBufferData(buffer: ComputeBuffer, data: unknown, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
-    SetBufferData<T>(buffer: ComputeBuffer, data: CSArray<T>, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
-    SetBufferData<T>(buffer: ComputeBuffer, data: CSArray<T>, nativeBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
+    SetBufferData<T>(buffer: ComputeBuffer, data: Readonly<T[]>, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
+    SetBufferData<T>(buffer: ComputeBuffer, data: Readonly<T[]>, nativeBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
     /**
      * Adds a command to set the buffer with values from an array.
      * @param buffer The destination buffer.
@@ -13937,8 +13937,8 @@ InvalidOperationException will be thrown if the current platform doesn't support
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.SetBufferData.html | Rendering.CommandBuffer.SetBufferData}
      */
     SetBufferData(buffer: GraphicsBuffer, data: unknown): void;
-    SetBufferData<T>(buffer: GraphicsBuffer, data: CSArray<T>): void;
-    SetBufferData<T>(buffer: GraphicsBuffer, data: CSArray<T>): void;
+    SetBufferData<T>(buffer: GraphicsBuffer, data: Readonly<T[]>): void;
+    SetBufferData<T>(buffer: GraphicsBuffer, data: Readonly<T[]>): void;
     /**
      * Adds a command to process a partial copy of data values from an array into the buffer.
      * @param buffer The destination buffer.
@@ -13950,8 +13950,8 @@ InvalidOperationException will be thrown if the current platform doesn't support
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.SetBufferData.html | Rendering.CommandBuffer.SetBufferData}
      */
     SetBufferData(buffer: GraphicsBuffer, data: unknown, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
-    SetBufferData<T>(buffer: GraphicsBuffer, data: CSArray<T>, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
-    SetBufferData<T>(buffer: GraphicsBuffer, data: CSArray<T>, nativeBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
+    SetBufferData<T>(buffer: GraphicsBuffer, data: Readonly<T[]>, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
+    SetBufferData<T>(buffer: GraphicsBuffer, data: Readonly<T[]>, nativeBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
     /**
      * Adds a command to set an input or output buffer parameter on a ComputeShader.
      * @param computeShader ComputeShader to set parameter for.
@@ -14082,7 +14082,7 @@ InvalidOperationException will be thrown if the current platform doesn't support
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.SetComputeFloatParams.html | Rendering.CommandBuffer.SetComputeFloatParams}
      */
-    SetComputeFloatParams(computeShader: ComputeShader, name: string, values: CSArray<number>): void;
+    SetComputeFloatParams(computeShader: ComputeShader, name: string, values: Readonly<number[]>): void;
     /**
      * Adds a command to set multiple consecutive float parameters on a ComputeShader.
      * @param computeShader ComputeShader to set parameter for.
@@ -14091,7 +14091,7 @@ InvalidOperationException will be thrown if the current platform doesn't support
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.SetComputeFloatParams.html | Rendering.CommandBuffer.SetComputeFloatParams}
      */
-    SetComputeFloatParams(computeShader: ComputeShader, nameID: number, values: CSArray<number>): void;
+    SetComputeFloatParams(computeShader: ComputeShader, nameID: number, values: Readonly<number[]>): void;
     /**
      * Adds a command to set an integer parameter on a ComputeShader.
      * @param computeShader ComputeShader to set parameter for.
@@ -14118,7 +14118,7 @@ InvalidOperationException will be thrown if the current platform doesn't support
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.SetComputeIntParams.html | Rendering.CommandBuffer.SetComputeIntParams}
      */
-    SetComputeIntParams(computeShader: ComputeShader, name: string, values: CSArray<number>): void;
+    SetComputeIntParams(computeShader: ComputeShader, name: string, values: Readonly<number[]>): void;
     /**
      * Adds a command to set multiple consecutive integer parameters on a ComputeShader.
      * @param computeShader ComputeShader to set parameter for.
@@ -14127,7 +14127,7 @@ InvalidOperationException will be thrown if the current platform doesn't support
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.SetComputeIntParams.html | Rendering.CommandBuffer.SetComputeIntParams}
      */
-    SetComputeIntParams(computeShader: ComputeShader, nameID: number, values: CSArray<number>): void;
+    SetComputeIntParams(computeShader: ComputeShader, nameID: number, values: Readonly<number[]>): void;
     /**
      * Adds a command to set a matrix array parameter on a ComputeShader.
      * @param computeShader ComputeShader to set parameter for.
@@ -14136,7 +14136,7 @@ InvalidOperationException will be thrown if the current platform doesn't support
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.SetComputeMatrixArrayParam.html | Rendering.CommandBuffer.SetComputeMatrixArrayParam}
      */
-    SetComputeMatrixArrayParam(computeShader: ComputeShader, nameID: number, values: CSArray<Matrix4x4>): void;
+    SetComputeMatrixArrayParam(computeShader: ComputeShader, nameID: number, values: Readonly<Matrix4x4[]>): void;
     /**
      * Adds a command to set a matrix array parameter on a ComputeShader.
      * @param computeShader ComputeShader to set parameter for.
@@ -14145,7 +14145,7 @@ InvalidOperationException will be thrown if the current platform doesn't support
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.SetComputeMatrixArrayParam.html | Rendering.CommandBuffer.SetComputeMatrixArrayParam}
      */
-    SetComputeMatrixArrayParam(computeShader: ComputeShader, name: string, values: CSArray<Matrix4x4>): void;
+    SetComputeMatrixArrayParam(computeShader: ComputeShader, name: string, values: Readonly<Matrix4x4[]>): void;
     /**
      * Adds a command to set a matrix parameter on a ComputeShader.
      * @param computeShader ComputeShader to set parameter for.
@@ -14247,7 +14247,7 @@ InvalidOperationException will be thrown if the current platform doesn't support
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.SetComputeVectorArrayParam.html | Rendering.CommandBuffer.SetComputeVectorArrayParam}
      */
-    SetComputeVectorArrayParam(computeShader: ComputeShader, nameID: number, values: CSArray<Vector4>): void;
+    SetComputeVectorArrayParam(computeShader: ComputeShader, nameID: number, values: Readonly<Vector4[]>): void;
     /**
      * Adds a command to set a vector array parameter on a ComputeShader.
      * @param computeShader ComputeShader to set parameter for.
@@ -14256,7 +14256,7 @@ InvalidOperationException will be thrown if the current platform doesn't support
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.SetComputeVectorArrayParam.html | Rendering.CommandBuffer.SetComputeVectorArrayParam}
      */
-    SetComputeVectorArrayParam(computeShader: ComputeShader, name: string, values: CSArray<Vector4>): void;
+    SetComputeVectorArrayParam(computeShader: ComputeShader, name: string, values: Readonly<Vector4[]>): void;
     /**
      * Adds a command to set a vector parameter on a ComputeShader.
      * @param computeShader ComputeShader to set parameter for.
@@ -14402,15 +14402,15 @@ Polygons that are not parallel to the near and far clip planes have Z slope. Adj
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.SetGlobalFloatArray.html | Rendering.CommandBuffer.SetGlobalFloatArray}
      */
-    SetGlobalFloatArray(nameID: number, values: CSArray<number>): void;
-    SetGlobalFloatArray(propertyName: string, values: CSArray<number>): void;
-    SetGlobalFloatArray(nameID: number, values: CSArray<number>): void;
+    SetGlobalFloatArray(nameID: number, values: Readonly<number[]>): void;
+    SetGlobalFloatArray(propertyName: string, values: Readonly<number[]>): void;
+    SetGlobalFloatArray(nameID: number, values: Readonly<number[]>): void;
     /**
      * Add a &quot;set global shader float array property&quot; command.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.SetGlobalFloatArray.html | Rendering.CommandBuffer.SetGlobalFloatArray}
      */
-    SetGlobalFloatArray(propertyName: string, values: CSArray<number>): void;
+    SetGlobalFloatArray(propertyName: string, values: Readonly<number[]>): void;
     /**
      * Adds a command to set the value of a given property for all Shaders, where the property has a type of Int in ShaderLab code.
      * 
@@ -14452,15 +14452,15 @@ Polygons that are not parallel to the near and far clip planes have Z slope. Adj
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.SetGlobalMatrixArray.html | Rendering.CommandBuffer.SetGlobalMatrixArray}
      */
-    SetGlobalMatrixArray(nameID: number, values: CSArray<Matrix4x4>): void;
-    SetGlobalMatrixArray(propertyName: string, values: CSArray<Matrix4x4>): void;
-    SetGlobalMatrixArray(nameID: number, values: CSArray<Matrix4x4>): void;
+    SetGlobalMatrixArray(nameID: number, values: Readonly<Matrix4x4[]>): void;
+    SetGlobalMatrixArray(propertyName: string, values: Readonly<Matrix4x4[]>): void;
+    SetGlobalMatrixArray(nameID: number, values: Readonly<Matrix4x4[]>): void;
     /**
      * Add a &quot;set global shader matrix array property&quot; command.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.SetGlobalMatrixArray.html | Rendering.CommandBuffer.SetGlobalMatrixArray}
      */
-    SetGlobalMatrixArray(propertyName: string, values: CSArray<Matrix4x4>): void;
+    SetGlobalMatrixArray(propertyName: string, values: Readonly<Matrix4x4[]>): void;
     /**
      * Adds a command to bind the RayTracingAccelerationStructure object to all shader stages.
      * @param name The name of the acceleration structure in shader code.
@@ -14518,15 +14518,15 @@ Polygons that are not parallel to the near and far clip planes have Z slope. Adj
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.SetGlobalVectorArray.html | Rendering.CommandBuffer.SetGlobalVectorArray}
      */
-    SetGlobalVectorArray(nameID: number, values: CSArray<Vector4>): void;
-    SetGlobalVectorArray(propertyName: string, values: CSArray<Vector4>): void;
-    SetGlobalVectorArray(nameID: number, values: CSArray<Vector4>): void;
+    SetGlobalVectorArray(nameID: number, values: Readonly<Vector4[]>): void;
+    SetGlobalVectorArray(propertyName: string, values: Readonly<Vector4[]>): void;
+    SetGlobalVectorArray(nameID: number, values: Readonly<Vector4[]>): void;
     /**
      * Add a &quot;set global shader vector array property&quot; command.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.SetGlobalVectorArray.html | Rendering.CommandBuffer.SetGlobalVectorArray}
      */
-    SetGlobalVectorArray(propertyName: string, values: CSArray<Vector4>): void;
+    SetGlobalVectorArray(propertyName: string, values: Readonly<Vector4[]>): void;
     /**
      * Adds a command to multiply the instance count of every draw call by a specific multiplier.
      * 
@@ -14572,7 +14572,7 @@ Polygons that are not parallel to the near and far clip planes have Z slope. Adj
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.SetLateLatchProjectionMatrices.html | Rendering.CommandBuffer.SetLateLatchProjectionMatrices}
      */
-    SetLateLatchProjectionMatrices(projectionMat: CSArray<Matrix4x4>): void;
+    SetLateLatchProjectionMatrices(projectionMat: Readonly<Matrix4x4[]>): void;
     /**
      * Add a command to set the projection matrix.
      * @param proj Projection (camera to clip space) matrix.
@@ -14784,7 +14784,7 @@ Polygons that are not parallel to the near and far clip planes have Z slope. Adj
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.SetRayTracingFloatParams.html | Rendering.CommandBuffer.SetRayTracingFloatParams}
      */
-    SetRayTracingFloatParams(rayTracingShader: RayTracingShader, name: string, values: CSArray<number>): void;
+    SetRayTracingFloatParams(rayTracingShader: RayTracingShader, name: string, values: Readonly<number[]>): void;
     /**
      * Adds a command to set multiple consecutive float parameters on a RayTracingShader.
      * @param rayTracingShader RayTracingShader to set parameter for.
@@ -14793,7 +14793,7 @@ Polygons that are not parallel to the near and far clip planes have Z slope. Adj
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.SetRayTracingFloatParams.html | Rendering.CommandBuffer.SetRayTracingFloatParams}
      */
-    SetRayTracingFloatParams(rayTracingShader: RayTracingShader, nameID: number, values: CSArray<number>): void;
+    SetRayTracingFloatParams(rayTracingShader: RayTracingShader, nameID: number, values: Readonly<number[]>): void;
     /**
      * Adds a command to set an integer parameter on a RayTracingShader.
      * @param rayTracingShader RayTracingShader to set parameter for.
@@ -14820,7 +14820,7 @@ Polygons that are not parallel to the near and far clip planes have Z slope. Adj
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.SetRayTracingIntParams.html | Rendering.CommandBuffer.SetRayTracingIntParams}
      */
-    SetRayTracingIntParams(rayTracingShader: RayTracingShader, name: string, values: CSArray<number>): void;
+    SetRayTracingIntParams(rayTracingShader: RayTracingShader, name: string, values: Readonly<number[]>): void;
     /**
      * Adds a command to set multiple consecutive integer parameters on a RayTracingShader.
      * @param rayTracingShader RayTracingShader to set parameter for.
@@ -14829,7 +14829,7 @@ Polygons that are not parallel to the near and far clip planes have Z slope. Adj
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.SetRayTracingIntParams.html | Rendering.CommandBuffer.SetRayTracingIntParams}
      */
-    SetRayTracingIntParams(rayTracingShader: RayTracingShader, nameID: number, values: CSArray<number>): void;
+    SetRayTracingIntParams(rayTracingShader: RayTracingShader, nameID: number, values: Readonly<number[]>): void;
     /**
      * Adds a command to set a matrix array parameter on a RayTracingShader.
      * @param rayTracingShader RayTracingShader to set parameter for.
@@ -14838,7 +14838,7 @@ Polygons that are not parallel to the near and far clip planes have Z slope. Adj
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.SetRayTracingMatrixArrayParam.html | Rendering.CommandBuffer.SetRayTracingMatrixArrayParam}
      */
-    SetRayTracingMatrixArrayParam(rayTracingShader: RayTracingShader, name: string, values: CSArray<Matrix4x4>): void;
+    SetRayTracingMatrixArrayParam(rayTracingShader: RayTracingShader, name: string, values: Readonly<Matrix4x4[]>): void;
     /**
      * Adds a command to set a matrix array parameter on a RayTracingShader.
      * @param rayTracingShader RayTracingShader to set parameter for.
@@ -14847,7 +14847,7 @@ Polygons that are not parallel to the near and far clip planes have Z slope. Adj
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.SetRayTracingMatrixArrayParam.html | Rendering.CommandBuffer.SetRayTracingMatrixArrayParam}
      */
-    SetRayTracingMatrixArrayParam(rayTracingShader: RayTracingShader, nameID: number, values: CSArray<Matrix4x4>): void;
+    SetRayTracingMatrixArrayParam(rayTracingShader: RayTracingShader, nameID: number, values: Readonly<Matrix4x4[]>): void;
     /**
      * Adds a command to set a matrix parameter on a RayTracingShader.
      * @param rayTracingShader RayTracingShader to set parameter for.
@@ -14900,7 +14900,7 @@ Polygons that are not parallel to the near and far clip planes have Z slope. Adj
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.SetRayTracingVectorArrayParam.html | Rendering.CommandBuffer.SetRayTracingVectorArrayParam}
      */
-    SetRayTracingVectorArrayParam(rayTracingShader: RayTracingShader, name: string, values: CSArray<Vector4>): void;
+    SetRayTracingVectorArrayParam(rayTracingShader: RayTracingShader, name: string, values: Readonly<Vector4[]>): void;
     /**
      * Adds a command to set a vector array parameter on a RayTracingShader.
      * @param rayTracingShader RayTracingShader to set parameter for.
@@ -14909,7 +14909,7 @@ Polygons that are not parallel to the near and far clip planes have Z slope. Adj
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.SetRayTracingVectorArrayParam.html | Rendering.CommandBuffer.SetRayTracingVectorArrayParam}
      */
-    SetRayTracingVectorArrayParam(rayTracingShader: RayTracingShader, nameID: number, values: CSArray<Vector4>): void;
+    SetRayTracingVectorArrayParam(rayTracingShader: RayTracingShader, nameID: number, values: Readonly<Vector4[]>): void;
     /**
      * Adds a command to set a vector parameter on a RayTracingShader.
      * @param rayTracingShader RayTracingShader to set parameter for.
@@ -15039,7 +15039,7 @@ Polygons that are not parallel to the near and far clip planes have Z slope. Adj
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.SetRenderTarget.html | Rendering.CommandBuffer.SetRenderTarget}
      */
-    SetRenderTarget(colors: CSArray<RenderTargetIdentifier>, depth: RenderTargetIdentifier): void;
+    SetRenderTarget(colors: Readonly<RenderTargetIdentifier[]>, depth: RenderTargetIdentifier): void;
     /**
      * Add a &quot;set active render target&quot; command.
      * @param colors Render targets to set as color buffers (MRT).
@@ -15050,7 +15050,7 @@ Polygons that are not parallel to the near and far clip planes have Z slope. Adj
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.SetRenderTarget.html | Rendering.CommandBuffer.SetRenderTarget}
      */
-    SetRenderTarget(colors: CSArray<RenderTargetIdentifier>, depth: RenderTargetIdentifier, mipLevel: number, cubemapFace: CubemapFace, depthSlice: number): void;
+    SetRenderTarget(colors: Readonly<RenderTargetIdentifier[]>, depth: RenderTargetIdentifier, mipLevel: number, cubemapFace: CubemapFace, depthSlice: number): void;
     /**
      * Add a &quot;set active render target&quot; command.
      * @param mipLevel The mip level of the render target to render into.
@@ -15305,8 +15305,8 @@ interface AttachmentIndexArrayConstructor {
 
 
     new(numAttachments: number): AttachmentIndexArray;
-    new(attachments: CSArray<number>): AttachmentIndexArray;
-    new(attachments: CSArray<number>): AttachmentIndexArray;
+    new(attachments: Readonly<number[]>): AttachmentIndexArray;
+    new(attachments: Readonly<number[]>): AttachmentIndexArray;
 
 
 
@@ -15411,7 +15411,7 @@ interface SamplerConstructor {
 
 
     Get(name: string): Sampler;
-    GetNames(names: CSArray<string>): number;
+    GetNames(names: Readonly<string[]>): number;
 
 }
 declare const Sampler: SamplerConstructor;
@@ -15547,7 +15547,7 @@ interface Material extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Material-enabledKeywords.html | Material.enabledKeywords}
      */
-    enabledKeywords: CSArray<LocalKeyword>;
+    enabledKeywords: Readonly<LocalKeyword[]>;
     /**
      * Defines how the material should interact with lightmaps and lightprobes.
      * 
@@ -15577,7 +15577,7 @@ interface Material extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Material-shaderKeywords.html | Material.shaderKeywords}
      */
-    shaderKeywords: CSArray<string>;
+    shaderKeywords: Readonly<string[]>;
     /**
      * Parent of this material.
      * 
@@ -15691,16 +15691,16 @@ interface Material extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Material.GetColorArray.html | Material.GetColorArray}
      */
-    GetColorArray(name: string): CSArray<Color>;
+    GetColorArray(name: string): Readonly<Color[]>;
     /**
      * Get a named color array.
      * @param nameID The name ID of the property retrieved by Shader.PropertyToID.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Material.GetColorArray.html | Material.GetColorArray}
      */
-    GetColorArray(nameID: number): CSArray<Color>;
-    GetColorArray(name: string, values: CSArray<Color>): void;
-    GetColorArray(nameID: number, values: CSArray<Color>): void;
+    GetColorArray(nameID: number): Readonly<Color[]>;
+    GetColorArray(name: string, values: Readonly<Color[]>): void;
+    GetColorArray(nameID: number, values: Readonly<Color[]>): void;
     /**
      * Get a named Constant Buffer value.
      * @param name The name of the constant buffer property to return.
@@ -15728,16 +15728,16 @@ interface Material extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Material.GetFloatArray.html | Material.GetFloatArray}
      */
-    GetFloatArray(name: string): CSArray<number>;
+    GetFloatArray(name: string): Readonly<number[]>;
     /**
      * Get a named float array.
      * @param nameID The name ID of the property retrieved by Shader.PropertyToID.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Material.GetFloatArray.html | Material.GetFloatArray}
      */
-    GetFloatArray(nameID: number): CSArray<number>;
-    GetFloatArray(name: string, values: CSArray<number>): void;
-    GetFloatArray(nameID: number, values: CSArray<number>): void;
+    GetFloatArray(nameID: number): Readonly<number[]>;
+    GetFloatArray(name: string, values: Readonly<number[]>): void;
+    GetFloatArray(nameID: number, values: Readonly<number[]>): void;
     /**
      * This method is deprecated. Use GetFloat or GetInteger instead.
      * @param name The name of the property.
@@ -15786,16 +15786,16 @@ interface Material extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Material.GetMatrixArray.html | Material.GetMatrixArray}
      */
-    GetMatrixArray(name: string): CSArray<Matrix4x4>;
+    GetMatrixArray(name: string): Readonly<Matrix4x4[]>;
     /**
      * Get a named matrix array.
      * @param nameID The name ID of the property retrieved by Shader.PropertyToID.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Material.GetMatrixArray.html | Material.GetMatrixArray}
      */
-    GetMatrixArray(nameID: number): CSArray<Matrix4x4>;
-    GetMatrixArray(name: string, values: CSArray<Matrix4x4>): void;
-    GetMatrixArray(nameID: number, values: CSArray<Matrix4x4>): void;
+    GetMatrixArray(nameID: number): Readonly<Matrix4x4[]>;
+    GetMatrixArray(name: string, values: Readonly<Matrix4x4[]>): void;
+    GetMatrixArray(nameID: number, values: Readonly<Matrix4x4[]>): void;
     /**
      * Returns the name of the shader pass at index pass.
      * 
@@ -15808,7 +15808,7 @@ interface Material extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Material.GetPropertyNames.html | Material.GetPropertyNames}
      */
-    GetPropertyNames(type: MaterialPropertyType): CSArray<string>;
+    GetPropertyNames(type: MaterialPropertyType): Readonly<string[]>;
     /**
      * Checks whether a given Shader pass is enabled on this Material.
      * @param passName Shader pass name (case insensitive).
@@ -15861,15 +15861,15 @@ interface Material extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Material.GetTexturePropertyNameIDs.html | Material.GetTexturePropertyNameIDs}
      */
-    GetTexturePropertyNameIDs(): CSArray<number>;
-    GetTexturePropertyNameIDs(outNames: CSArray<number>): void;
+    GetTexturePropertyNameIDs(): Readonly<number[]>;
+    GetTexturePropertyNameIDs(outNames: Readonly<number[]>): void;
     /**
      * Returns the names of all texture properties exposed on this material.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Material.GetTexturePropertyNames.html | Material.GetTexturePropertyNames}
      */
-    GetTexturePropertyNames(): CSArray<string>;
-    GetTexturePropertyNames(outNames: CSArray<string>): void;
+    GetTexturePropertyNames(): Readonly<string[]>;
+    GetTexturePropertyNames(outNames: Readonly<string[]>): void;
     /**
      * Gets the placement scale of texture propertyName.
      * @param name The name of the property.
@@ -15904,16 +15904,16 @@ interface Material extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Material.GetVectorArray.html | Material.GetVectorArray}
      */
-    GetVectorArray(name: string): CSArray<Vector4>;
+    GetVectorArray(name: string): Readonly<Vector4[]>;
     /**
      * Get a named vector array.
      * @param nameID The name ID of the property retrieved by Shader.PropertyToID.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Material.GetVectorArray.html | Material.GetVectorArray}
      */
-    GetVectorArray(nameID: number): CSArray<Vector4>;
-    GetVectorArray(name: string, values: CSArray<Vector4>): void;
-    GetVectorArray(nameID: number, values: CSArray<Vector4>): void;
+    GetVectorArray(nameID: number): Readonly<Vector4[]>;
+    GetVectorArray(name: string, values: Readonly<Vector4[]>): void;
+    GetVectorArray(nameID: number, values: Readonly<Vector4[]>): void;
     /**
      * Checks if the ShaderLab file assigned to the Material has a ComputeBuffer property with the given name.
      * @param name The name of the property.
@@ -16191,8 +16191,8 @@ interface Material extends Object {
      * More info: {@link https://docs.unity3d.com/ScriptReference/Material.SetColor.html | Material.SetColor}
      */
     SetColor(nameID: number, value: Color): void;
-    SetColorArray(name: string, values: CSArray<Color>): void;
-    SetColorArray(nameID: number, values: CSArray<Color>): void;
+    SetColorArray(name: string, values: Readonly<Color[]>): void;
+    SetColorArray(nameID: number, values: Readonly<Color[]>): void;
     /**
      * Sets a color array property.
      * @param name Property name.
@@ -16200,7 +16200,7 @@ interface Material extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Material.SetColorArray.html | Material.SetColorArray}
      */
-    SetColorArray(name: string, values: CSArray<Color>): void;
+    SetColorArray(name: string, values: Readonly<Color[]>): void;
     /**
      * Sets a color array property.
      * @param nameID Property name ID, use Shader.PropertyToID to get it.
@@ -16208,7 +16208,7 @@ interface Material extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Material.SetColorArray.html | Material.SetColorArray}
      */
-    SetColorArray(nameID: number, values: CSArray<Color>): void;
+    SetColorArray(nameID: number, values: Readonly<Color[]>): void;
     /**
      * Sets a ComputeBuffer or GraphicsBuffer as a named constant buffer for the material.
      * @param name The name of the constant buffer to override.
@@ -16265,8 +16265,8 @@ interface Material extends Object {
      * More info: {@link https://docs.unity3d.com/ScriptReference/Material.SetFloat.html | Material.SetFloat}
      */
     SetFloat(nameID: number, value: number): void;
-    SetFloatArray(name: string, values: CSArray<number>): void;
-    SetFloatArray(nameID: number, values: CSArray<number>): void;
+    SetFloatArray(name: string, values: Readonly<number[]>): void;
+    SetFloatArray(nameID: number, values: Readonly<number[]>): void;
     /**
      * Sets a float array property.
      * @param name Property name.
@@ -16274,7 +16274,7 @@ interface Material extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Material.SetFloatArray.html | Material.SetFloatArray}
      */
-    SetFloatArray(name: string, values: CSArray<number>): void;
+    SetFloatArray(name: string, values: Readonly<number[]>): void;
     /**
      * Sets a float array property.
      * @param nameID Property name ID. Use Shader.PropertyToID to get this ID.
@@ -16282,7 +16282,7 @@ interface Material extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Material.SetFloatArray.html | Material.SetFloatArray}
      */
-    SetFloatArray(nameID: number, values: CSArray<number>): void;
+    SetFloatArray(nameID: number, values: Readonly<number[]>): void;
     /**
      * This method is deprecated. Use SetFloat or SetInteger instead.
      * @param name Property name, e.g. &quot;_SrcBlend&quot;.
@@ -16339,8 +16339,8 @@ interface Material extends Object {
      * More info: {@link https://docs.unity3d.com/ScriptReference/Material.SetMatrix.html | Material.SetMatrix}
      */
     SetMatrix(nameID: number, value: Matrix4x4): void;
-    SetMatrixArray(name: string, values: CSArray<Matrix4x4>): void;
-    SetMatrixArray(nameID: number, values: CSArray<Matrix4x4>): void;
+    SetMatrixArray(name: string, values: Readonly<Matrix4x4[]>): void;
+    SetMatrixArray(nameID: number, values: Readonly<Matrix4x4[]>): void;
     /**
      * Sets a matrix array property.
      * @param name Property name.
@@ -16348,7 +16348,7 @@ interface Material extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Material.SetMatrixArray.html | Material.SetMatrixArray}
      */
-    SetMatrixArray(name: string, values: CSArray<Matrix4x4>): void;
+    SetMatrixArray(name: string, values: Readonly<Matrix4x4[]>): void;
     /**
      * Sets a matrix array property.
      * @param nameID Property name ID, use Shader.PropertyToID to get it.
@@ -16356,7 +16356,7 @@ interface Material extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Material.SetMatrixArray.html | Material.SetMatrixArray}
      */
-    SetMatrixArray(nameID: number, values: CSArray<Matrix4x4>): void;
+    SetMatrixArray(nameID: number, values: Readonly<Matrix4x4[]>): void;
     /**
      * Sets an override tag/value on the material.
      * @param tag Name of the tag to set.
@@ -16478,8 +16478,8 @@ interface Material extends Object {
      * More info: {@link https://docs.unity3d.com/ScriptReference/Material.SetVector.html | Material.SetVector}
      */
     SetVector(nameID: number, value: Vector4): void;
-    SetVectorArray(name: string, values: CSArray<Vector4>): void;
-    SetVectorArray(nameID: number, values: CSArray<Vector4>): void;
+    SetVectorArray(name: string, values: Readonly<Vector4[]>): void;
+    SetVectorArray(nameID: number, values: Readonly<Vector4[]>): void;
     /**
      * Sets a vector array property.
      * @param name Property name.
@@ -16487,7 +16487,7 @@ interface Material extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Material.SetVectorArray.html | Material.SetVectorArray}
      */
-    SetVectorArray(name: string, values: CSArray<Vector4>): void;
+    SetVectorArray(name: string, values: Readonly<Vector4[]>): void;
     /**
      * Sets a vector array property.
      * @param nameID Property name ID, use Shader.PropertyToID to get it.
@@ -16495,7 +16495,7 @@ interface Material extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Material.SetVectorArray.html | Material.SetVectorArray}
      */
-    SetVectorArray(nameID: number, values: CSArray<Vector4>): void;
+    SetVectorArray(nameID: number, values: Readonly<Vector4[]>): void;
 
 
 }
@@ -16580,7 +16580,7 @@ interface Shader extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Shader.FindTextureStack.html | Shader.FindTextureStack}
      */
-    FindTextureStack(propertyIndex: number, stackName: CSArray<string>, layerIndex: unknown): boolean;
+    FindTextureStack(propertyIndex: number, stackName: Readonly<string[]>, layerIndex: unknown): boolean;
     /**
      * Returns the dependency shader.
      * @param name The name of the dependency to query.
@@ -16601,7 +16601,7 @@ interface Shader extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Shader.GetPropertyAttributes.html | Shader.GetPropertyAttributes}
      */
-    GetPropertyAttributes(propertyIndex: number): CSArray<string>;
+    GetPropertyAttributes(propertyIndex: number): Readonly<string[]>;
     /**
      * Returns the number of properties in this Shader.
      * 
@@ -16695,13 +16695,13 @@ interface LocalKeywordSpace {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.LocalKeywordSpace-keywords.html | Rendering.LocalKeywordSpace.keywords}
      */
-    readonly keywords: CSArray<LocalKeyword>;
+    readonly keywords: Readonly<LocalKeyword[]>;
     /**
      * An array containing the names of all local shader keywords in this local keyword space. (Read Only)
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.LocalKeywordSpace-keywordNames.html | Rendering.LocalKeywordSpace.keywordNames}
      */
-    readonly keywordNames: CSArray<string>;
+    readonly keywordNames: Readonly<string[]>;
     /**
      * The number of local shader keywords in this local keyword space. (Read Only)
      * 
@@ -16847,7 +16847,7 @@ interface RayTracingAccelerationStructure {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RayTracingAccelerationStructure.AddInstance.html | Rendering.RayTracingAccelerationStructure.AddInstance}
      */
-    AddInstance(targetRenderer: Renderer, subMeshFlags: CSArray<number>, enableTriangleCulling: boolean, frontTriangleCounterClockwise: boolean, mask: number, id: number): number;
+    AddInstance(targetRenderer: Renderer, subMeshFlags: Readonly<number[]>, enableTriangleCulling: boolean, frontTriangleCounterClockwise: boolean, mask: number, id: number): number;
     /**
      * Adds a ray tracing instance associated with a list of axis-aligned bounding boxes (AABBs) to the RayTracingAccelerationStructure for procedural geometry generation using intersection shaders.
      * @param config The common parameters that this AABBs ray tracing instance uses.
@@ -16859,10 +16859,10 @@ interface RayTracingAccelerationStructure {
     AddInstance(config: RayTracingAABBsInstanceConfig, matrix: Matrix4x4, id: number): number;
     AddInstance(config: unknown, matrix: Matrix4x4, prevMatrix: unknown, id: number): number;
     AddInstance(config: unknown, matrix: Matrix4x4, prevMatrix: unknown, id: number): number;
-    AddInstances<T>(config: unknown, instanceData: CSArray<T>, instanceCount: number, startInstance: number, id: number): number;
-    AddInstances<T>(config: unknown, instanceData: CSArray<T>, instanceCount: number, startInstance: number, id: number): number;
-    AddInstances<T>(config: unknown, instanceData: CSArray<T>, instanceCount: number, startInstance: number, id: number): number;
-    AddInstances<T>(config: unknown, instanceData: CSArray<T>, id: number): number;
+    AddInstances<T>(config: unknown, instanceData: Readonly<T[]>, instanceCount: number, startInstance: number, id: number): number;
+    AddInstances<T>(config: unknown, instanceData: Readonly<T[]>, instanceCount: number, startInstance: number, id: number): number;
+    AddInstances<T>(config: unknown, instanceData: Readonly<T[]>, instanceCount: number, startInstance: number, id: number): number;
+    AddInstances<T>(config: unknown, instanceData: Readonly<T[]>, id: number): number;
     /**
      * Adds the ray tracing instances associated with a VFXRenderer to the RayTracingAccelerationStructure.
      * @param targetRenderer The Renderer to add to the RayTracingAccelerationStructure.
@@ -16870,7 +16870,7 @@ interface RayTracingAccelerationStructure {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RayTracingAccelerationStructure.AddVFXInstances.html | Rendering.RayTracingAccelerationStructure.AddVFXInstances}
      */
-    AddVFXInstances(targetRenderer: Renderer, vfxSystemMasks: CSArray<number>): void;
+    AddVFXInstances(targetRenderer: Renderer, vfxSystemMasks: Readonly<number[]>): void;
     /**
      * Builds acceleration structures on the GPU. Allocates any GPU memory required for storing acceleration structure data.
      * 
@@ -17181,7 +17181,7 @@ interface Renderer extends Component {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Renderer-materials.html | Renderer.materials}
      */
-    materials: CSArray<Material>;
+    materials: Readonly<Material[]>;
     /**
      * Returns the first instantiated Material assigned to the renderer.
      * 
@@ -17199,12 +17199,12 @@ interface Renderer extends Component {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Renderer-sharedMaterials.html | Renderer.sharedMaterials}
      */
-    sharedMaterials: CSArray<Material>;
+    sharedMaterials: Readonly<Material[]>;
 
 
 
-    GetClosestReflectionProbes(result: CSArray<ReflectionProbeBlendInfo>): void;
-    GetMaterials(m: CSArray<Material>): void;
+    GetClosestReflectionProbes(result: Readonly<ReflectionProbeBlendInfo[]>): void;
+    GetMaterials(m: Readonly<Material[]>): void;
     /**
      * Get per-Renderer or per-Material property block.
      * @param properties Material parameters to retrieve.
@@ -17220,7 +17220,7 @@ interface Renderer extends Component {
      * More info: {@link https://docs.unity3d.com/ScriptReference/Renderer.GetPropertyBlock.html | Renderer.GetPropertyBlock}
      */
     GetPropertyBlock(properties: MaterialPropertyBlock, materialIndex: number): void;
-    GetSharedMaterials(m: CSArray<Material>): void;
+    GetSharedMaterials(m: Readonly<Material[]>): void;
     /**
      * Returns true if the Renderer has a material property block attached via SetPropertyBlock.
      * 
@@ -17239,7 +17239,7 @@ interface Renderer extends Component {
      * More info: {@link https://docs.unity3d.com/ScriptReference/Renderer.ResetLocalBounds.html | Renderer.ResetLocalBounds}
      */
     ResetLocalBounds(): void;
-    SetMaterials(materials: CSArray<Material>): void;
+    SetMaterials(materials: Readonly<Material[]>): void;
     /**
      * Lets you set or clear per-renderer or per-material parameter overrides.
      * @param properties Property block with values you want to override.
@@ -17255,7 +17255,7 @@ interface Renderer extends Component {
      * More info: {@link https://docs.unity3d.com/ScriptReference/Renderer.SetPropertyBlock.html | Renderer.SetPropertyBlock}
      */
     SetPropertyBlock(properties: MaterialPropertyBlock, materialIndex: number): void;
-    SetSharedMaterials(materials: CSArray<Material>): void;
+    SetSharedMaterials(materials: Readonly<Material[]>): void;
 
 
 }
@@ -17491,15 +17491,15 @@ interface MaterialPropertyBlock {
      * More info: {@link https://docs.unity3d.com/ScriptReference/MaterialPropertyBlock.Clear.html | MaterialPropertyBlock.Clear}
      */
     Clear(): void;
-    CopyProbeOcclusionArrayFrom(occlusionProbes: CSArray<Vector4>): void;
+    CopyProbeOcclusionArrayFrom(occlusionProbes: Readonly<Vector4[]>): void;
     /**
      * This function copies the entire source array into a Vector4 property array named unity_ProbesOcclusion for use with instanced rendering.
      * @param occlusionProbes The array of probe occlusion values to copy from.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/MaterialPropertyBlock.CopyProbeOcclusionArrayFrom.html | MaterialPropertyBlock.CopyProbeOcclusionArrayFrom}
      */
-    CopyProbeOcclusionArrayFrom(occlusionProbes: CSArray<Vector4>): void;
-    CopyProbeOcclusionArrayFrom(occlusionProbes: CSArray<Vector4>, sourceStart: number, destStart: number, count: number): void;
+    CopyProbeOcclusionArrayFrom(occlusionProbes: Readonly<Vector4[]>): void;
+    CopyProbeOcclusionArrayFrom(occlusionProbes: Readonly<Vector4[]>, sourceStart: number, destStart: number, count: number): void;
     /**
      * This function copies the source array into a Vector4 property array named unity_ProbesOcclusion with the specified source and destination range for use with instanced rendering.
      * @param occlusionProbes The array of probe occlusion values to copy from.
@@ -17509,16 +17509,16 @@ interface MaterialPropertyBlock {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/MaterialPropertyBlock.CopyProbeOcclusionArrayFrom.html | MaterialPropertyBlock.CopyProbeOcclusionArrayFrom}
      */
-    CopyProbeOcclusionArrayFrom(occlusionProbes: CSArray<Vector4>, sourceStart: number, destStart: number, count: number): void;
-    CopySHCoefficientArraysFrom(lightProbes: CSArray<SphericalHarmonicsL2>): void;
+    CopyProbeOcclusionArrayFrom(occlusionProbes: Readonly<Vector4[]>, sourceStart: number, destStart: number, count: number): void;
+    CopySHCoefficientArraysFrom(lightProbes: Readonly<SphericalHarmonicsL2[]>): void;
     /**
      * This function converts and copies the entire source array into 7 Vector4 property arrays named unity_SHAr, unity_SHAg, unity_SHAb, unity_SHBr, unity_SHBg, unity_SHBb and unity_SHC for use with instanced rendering.
      * @param lightProbes The array of SH values to copy from.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/MaterialPropertyBlock.CopySHCoefficientArraysFrom.html | MaterialPropertyBlock.CopySHCoefficientArraysFrom}
      */
-    CopySHCoefficientArraysFrom(lightProbes: CSArray<SphericalHarmonicsL2>): void;
-    CopySHCoefficientArraysFrom(lightProbes: CSArray<SphericalHarmonicsL2>, sourceStart: number, destStart: number, count: number): void;
+    CopySHCoefficientArraysFrom(lightProbes: Readonly<SphericalHarmonicsL2[]>): void;
+    CopySHCoefficientArraysFrom(lightProbes: Readonly<SphericalHarmonicsL2[]>, sourceStart: number, destStart: number, count: number): void;
     /**
      * This function converts and copies the source array into 7 Vector4 property arrays named unity_SHAr, unity_SHAg, unity_SHAb, unity_SHBr, unity_SHBg, unity_SHBb and unity_SHC with the specified source and destination range for use with instanced rendering.
      * @param lightProbes The array of SH values to copy from.
@@ -17528,7 +17528,7 @@ interface MaterialPropertyBlock {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/MaterialPropertyBlock.CopySHCoefficientArraysFrom.html | MaterialPropertyBlock.CopySHCoefficientArraysFrom}
      */
-    CopySHCoefficientArraysFrom(lightProbes: CSArray<SphericalHarmonicsL2>, sourceStart: number, destStart: number, count: number): void;
+    CopySHCoefficientArraysFrom(lightProbes: Readonly<SphericalHarmonicsL2[]>, sourceStart: number, destStart: number, count: number): void;
     /**
      * Get a color from the property block.
      * @param name The name of the property.
@@ -17563,16 +17563,16 @@ interface MaterialPropertyBlock {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/MaterialPropertyBlock.GetFloatArray.html | MaterialPropertyBlock.GetFloatArray}
      */
-    GetFloatArray(name: string): CSArray<number>;
+    GetFloatArray(name: string): Readonly<number[]>;
     /**
      * Get a float array from the property block.
      * @param nameID The name ID of the property retrieved by Shader.PropertyToID.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/MaterialPropertyBlock.GetFloatArray.html | MaterialPropertyBlock.GetFloatArray}
      */
-    GetFloatArray(nameID: number): CSArray<number>;
-    GetFloatArray(name: string, values: CSArray<number>): void;
-    GetFloatArray(nameID: number, values: CSArray<number>): void;
+    GetFloatArray(nameID: number): Readonly<number[]>;
+    GetFloatArray(name: string, values: Readonly<number[]>): void;
+    GetFloatArray(nameID: number, values: Readonly<number[]>): void;
     /**
      * This method is deprecated. Use GetFloat or GetInteger instead.
      * @param name The name of the property.
@@ -17621,16 +17621,16 @@ interface MaterialPropertyBlock {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/MaterialPropertyBlock.GetMatrixArray.html | MaterialPropertyBlock.GetMatrixArray}
      */
-    GetMatrixArray(name: string): CSArray<Matrix4x4>;
+    GetMatrixArray(name: string): Readonly<Matrix4x4[]>;
     /**
      * Get a matrix array from the property block.
      * @param nameID The name ID of the property retrieved by Shader.PropertyToID.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/MaterialPropertyBlock.GetMatrixArray.html | MaterialPropertyBlock.GetMatrixArray}
      */
-    GetMatrixArray(nameID: number): CSArray<Matrix4x4>;
-    GetMatrixArray(name: string, values: CSArray<Matrix4x4>): void;
-    GetMatrixArray(nameID: number, values: CSArray<Matrix4x4>): void;
+    GetMatrixArray(nameID: number): Readonly<Matrix4x4[]>;
+    GetMatrixArray(name: string, values: Readonly<Matrix4x4[]>): void;
+    GetMatrixArray(nameID: number, values: Readonly<Matrix4x4[]>): void;
     /**
      * Get a texture from the property block.
      * @param name The name of the property.
@@ -17665,16 +17665,16 @@ interface MaterialPropertyBlock {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/MaterialPropertyBlock.GetVectorArray.html | MaterialPropertyBlock.GetVectorArray}
      */
-    GetVectorArray(name: string): CSArray<Vector4>;
+    GetVectorArray(name: string): Readonly<Vector4[]>;
     /**
      * Get a vector array from the property block.
      * @param nameID The name ID of the property retrieved by Shader.PropertyToID.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/MaterialPropertyBlock.GetVectorArray.html | MaterialPropertyBlock.GetVectorArray}
      */
-    GetVectorArray(nameID: number): CSArray<Vector4>;
-    GetVectorArray(name: string, values: CSArray<Vector4>): void;
-    GetVectorArray(nameID: number, values: CSArray<Vector4>): void;
+    GetVectorArray(nameID: number): Readonly<Vector4[]>;
+    GetVectorArray(name: string, values: Readonly<Vector4[]>): void;
+    GetVectorArray(nameID: number, values: Readonly<Vector4[]>): void;
     /**
      * Checks if MaterialPropertyBlock has the ComputeBuffer property with the given name or name ID. To set the property, use SetBuffer.
      * @param name The name of the property.
@@ -17919,8 +17919,8 @@ interface MaterialPropertyBlock {
      * More info: {@link https://docs.unity3d.com/ScriptReference/MaterialPropertyBlock.SetFloat.html | MaterialPropertyBlock.SetFloat}
      */
     SetFloat(nameID: number, value: number): void;
-    SetFloatArray(name: string, values: CSArray<number>): void;
-    SetFloatArray(nameID: number, values: CSArray<number>): void;
+    SetFloatArray(name: string, values: Readonly<number[]>): void;
+    SetFloatArray(nameID: number, values: Readonly<number[]>): void;
     /**
      * Set a float array property.
      * @param name The name of the property.
@@ -17928,7 +17928,7 @@ interface MaterialPropertyBlock {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/MaterialPropertyBlock.SetFloatArray.html | MaterialPropertyBlock.SetFloatArray}
      */
-    SetFloatArray(name: string, values: CSArray<number>): void;
+    SetFloatArray(name: string, values: Readonly<number[]>): void;
     /**
      * Set a float array property.
      * @param nameID The name ID of the property retrieved by Shader.PropertyToID.
@@ -17936,7 +17936,7 @@ interface MaterialPropertyBlock {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/MaterialPropertyBlock.SetFloatArray.html | MaterialPropertyBlock.SetFloatArray}
      */
-    SetFloatArray(nameID: number, values: CSArray<number>): void;
+    SetFloatArray(nameID: number, values: Readonly<number[]>): void;
     /**
      * This method is deprecated. Use SetFloat or SetInteger instead.
      * @param name The name of the property.
@@ -17985,8 +17985,8 @@ interface MaterialPropertyBlock {
      * More info: {@link https://docs.unity3d.com/ScriptReference/MaterialPropertyBlock.SetMatrix.html | MaterialPropertyBlock.SetMatrix}
      */
     SetMatrix(nameID: number, value: Matrix4x4): void;
-    SetMatrixArray(name: string, values: CSArray<Matrix4x4>): void;
-    SetMatrixArray(nameID: number, values: CSArray<Matrix4x4>): void;
+    SetMatrixArray(name: string, values: Readonly<Matrix4x4[]>): void;
+    SetMatrixArray(nameID: number, values: Readonly<Matrix4x4[]>): void;
     /**
      * Set a matrix array property.
      * @param name The name of the property.
@@ -17994,7 +17994,7 @@ interface MaterialPropertyBlock {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/MaterialPropertyBlock.SetMatrixArray.html | MaterialPropertyBlock.SetMatrixArray}
      */
-    SetMatrixArray(name: string, values: CSArray<Matrix4x4>): void;
+    SetMatrixArray(name: string, values: Readonly<Matrix4x4[]>): void;
     /**
      * Set a matrix array property.
      * @param nameID The array to set.
@@ -18002,7 +18002,7 @@ interface MaterialPropertyBlock {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/MaterialPropertyBlock.SetMatrixArray.html | MaterialPropertyBlock.SetMatrixArray}
      */
-    SetMatrixArray(nameID: number, values: CSArray<Matrix4x4>): void;
+    SetMatrixArray(nameID: number, values: Readonly<Matrix4x4[]>): void;
     /**
      * Set a texture property.
      * @param name The name of the property.
@@ -18053,8 +18053,8 @@ interface MaterialPropertyBlock {
      * More info: {@link https://docs.unity3d.com/ScriptReference/MaterialPropertyBlock.SetVector.html | MaterialPropertyBlock.SetVector}
      */
     SetVector(nameID: number, value: Vector4): void;
-    SetVectorArray(name: string, values: CSArray<Vector4>): void;
-    SetVectorArray(nameID: number, values: CSArray<Vector4>): void;
+    SetVectorArray(name: string, values: Readonly<Vector4[]>): void;
+    SetVectorArray(nameID: number, values: Readonly<Vector4[]>): void;
     /**
      * Set a vector array property.
      * @param name The name of the property.
@@ -18062,7 +18062,7 @@ interface MaterialPropertyBlock {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/MaterialPropertyBlock.SetVectorArray.html | MaterialPropertyBlock.SetVectorArray}
      */
-    SetVectorArray(name: string, values: CSArray<Vector4>): void;
+    SetVectorArray(name: string, values: Readonly<Vector4[]>): void;
     /**
      * Set a vector array property.
      * @param nameID The name ID of the property retrieved by Shader.PropertyToID.
@@ -18070,7 +18070,7 @@ interface MaterialPropertyBlock {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/MaterialPropertyBlock.SetVectorArray.html | MaterialPropertyBlock.SetVectorArray}
      */
-    SetVectorArray(nameID: number, values: CSArray<Vector4>): void;
+    SetVectorArray(nameID: number, values: Readonly<Vector4[]>): void;
 
 
 }
@@ -18110,7 +18110,7 @@ interface SphericalHarmonicsL2 {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.SphericalHarmonicsL2.Evaluate.html | Rendering.SphericalHarmonicsL2.Evaluate}
      */
-    Evaluate(directions: CSArray<Vector3>, results: CSArray<Color>): void;
+    Evaluate(directions: Readonly<Vector3[]>, results: Readonly<Color[]>): void;
     GetHashCode(): number;
 
 
@@ -18243,7 +18243,7 @@ interface BuildSettingsConstructor {
 declare const BuildSettings: BuildSettingsConstructor;
     
 interface RayTracingInstanceCullingResults {
-    materialsCRC: CSArray<RayTracingInstanceMaterialCRC>;
+    materialsCRC: Readonly<RayTracingInstanceMaterialCRC[]>;
     transformsChanged: boolean;
 
 
@@ -18297,13 +18297,13 @@ interface ShaderConstructor {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Shader-enabledGlobalKeywords.html | Shader.enabledGlobalKeywords}
      */
-    readonly enabledGlobalKeywords: CSArray<GlobalKeyword>;
+    readonly enabledGlobalKeywords: Readonly<GlobalKeyword[]>;
     /**
      * An array containing the global shader keywords that currently exist. This includes enabled and disabled global shader keywords.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Shader-globalKeywords.html | Shader.globalKeywords}
      */
-    readonly globalKeywords: CSArray<GlobalKeyword>;
+    readonly globalKeywords: Readonly<GlobalKeyword[]>;
 
 
 
@@ -18317,28 +18317,28 @@ interface ShaderConstructor {
     GetGlobalColor(nameID: number): Color;
     GetGlobalFloat(name: string): number;
     GetGlobalFloat(nameID: number): number;
-    GetGlobalFloatArray(name: string): CSArray<number>;
-    GetGlobalFloatArray(nameID: number): CSArray<number>;
-    GetGlobalFloatArray(name: string, values: CSArray<number>): void;
-    GetGlobalFloatArray(nameID: number, values: CSArray<number>): void;
+    GetGlobalFloatArray(name: string): Readonly<number[]>;
+    GetGlobalFloatArray(nameID: number): Readonly<number[]>;
+    GetGlobalFloatArray(name: string, values: Readonly<number[]>): void;
+    GetGlobalFloatArray(nameID: number, values: Readonly<number[]>): void;
     GetGlobalInt(name: string): number;
     GetGlobalInt(nameID: number): number;
     GetGlobalInteger(name: string): number;
     GetGlobalInteger(nameID: number): number;
     GetGlobalMatrix(name: string): Matrix4x4;
     GetGlobalMatrix(nameID: number): Matrix4x4;
-    GetGlobalMatrixArray(name: string): CSArray<Matrix4x4>;
-    GetGlobalMatrixArray(nameID: number): CSArray<Matrix4x4>;
-    GetGlobalMatrixArray(name: string, values: CSArray<Matrix4x4>): void;
-    GetGlobalMatrixArray(nameID: number, values: CSArray<Matrix4x4>): void;
+    GetGlobalMatrixArray(name: string): Readonly<Matrix4x4[]>;
+    GetGlobalMatrixArray(nameID: number): Readonly<Matrix4x4[]>;
+    GetGlobalMatrixArray(name: string, values: Readonly<Matrix4x4[]>): void;
+    GetGlobalMatrixArray(nameID: number, values: Readonly<Matrix4x4[]>): void;
     GetGlobalTexture(name: string): Texture;
     GetGlobalTexture(nameID: number): Texture;
     GetGlobalVector(name: string): Vector4;
     GetGlobalVector(nameID: number): Vector4;
-    GetGlobalVectorArray(name: string): CSArray<Vector4>;
-    GetGlobalVectorArray(nameID: number): CSArray<Vector4>;
-    GetGlobalVectorArray(name: string, values: CSArray<Vector4>): void;
-    GetGlobalVectorArray(nameID: number, values: CSArray<Vector4>): void;
+    GetGlobalVectorArray(name: string): Readonly<Vector4[]>;
+    GetGlobalVectorArray(nameID: number): Readonly<Vector4[]>;
+    GetGlobalVectorArray(name: string, values: Readonly<Vector4[]>): void;
+    GetGlobalVectorArray(nameID: number, values: Readonly<Vector4[]>): void;
     IsKeywordEnabled(keyword: string): boolean;
     IsKeywordEnabled(keyword: unknown): boolean;
     PropertyToID(name: string): number;
@@ -18354,20 +18354,20 @@ interface ShaderConstructor {
     SetGlobalConstantBuffer(nameID: number, value: GraphicsBuffer, offset: number, size: number): void;
     SetGlobalFloat(name: string, value: number): void;
     SetGlobalFloat(nameID: number, value: number): void;
-    SetGlobalFloatArray(name: string, values: CSArray<number>): void;
-    SetGlobalFloatArray(nameID: number, values: CSArray<number>): void;
-    SetGlobalFloatArray(name: string, values: CSArray<number>): void;
-    SetGlobalFloatArray(nameID: number, values: CSArray<number>): void;
+    SetGlobalFloatArray(name: string, values: Readonly<number[]>): void;
+    SetGlobalFloatArray(nameID: number, values: Readonly<number[]>): void;
+    SetGlobalFloatArray(name: string, values: Readonly<number[]>): void;
+    SetGlobalFloatArray(nameID: number, values: Readonly<number[]>): void;
     SetGlobalInt(name: string, value: number): void;
     SetGlobalInt(nameID: number, value: number): void;
     SetGlobalInteger(name: string, value: number): void;
     SetGlobalInteger(nameID: number, value: number): void;
     SetGlobalMatrix(name: string, value: Matrix4x4): void;
     SetGlobalMatrix(nameID: number, value: Matrix4x4): void;
-    SetGlobalMatrixArray(name: string, values: CSArray<Matrix4x4>): void;
-    SetGlobalMatrixArray(nameID: number, values: CSArray<Matrix4x4>): void;
-    SetGlobalMatrixArray(name: string, values: CSArray<Matrix4x4>): void;
-    SetGlobalMatrixArray(nameID: number, values: CSArray<Matrix4x4>): void;
+    SetGlobalMatrixArray(name: string, values: Readonly<Matrix4x4[]>): void;
+    SetGlobalMatrixArray(nameID: number, values: Readonly<Matrix4x4[]>): void;
+    SetGlobalMatrixArray(name: string, values: Readonly<Matrix4x4[]>): void;
+    SetGlobalMatrixArray(nameID: number, values: Readonly<Matrix4x4[]>): void;
     SetGlobalRayTracingAccelerationStructure(name: string, value: RayTracingAccelerationStructure): void;
     SetGlobalRayTracingAccelerationStructure(nameID: number, value: RayTracingAccelerationStructure): void;
     SetGlobalTexture(name: string, value: Texture): void;
@@ -18376,10 +18376,10 @@ interface ShaderConstructor {
     SetGlobalTexture(nameID: number, value: RenderTexture, element: RenderTextureSubElement): void;
     SetGlobalVector(name: string, value: Vector4): void;
     SetGlobalVector(nameID: number, value: Vector4): void;
-    SetGlobalVectorArray(name: string, values: CSArray<Vector4>): void;
-    SetGlobalVectorArray(nameID: number, values: CSArray<Vector4>): void;
-    SetGlobalVectorArray(name: string, values: CSArray<Vector4>): void;
-    SetGlobalVectorArray(nameID: number, values: CSArray<Vector4>): void;
+    SetGlobalVectorArray(name: string, values: Readonly<Vector4[]>): void;
+    SetGlobalVectorArray(nameID: number, values: Readonly<Vector4[]>): void;
+    SetGlobalVectorArray(name: string, values: Readonly<Vector4[]>): void;
+    SetGlobalVectorArray(nameID: number, values: Readonly<Vector4[]>): void;
     SetKeyword(keyword: unknown, value: boolean): void;
     WarmupAllShaders(): void;
 
@@ -18424,13 +18424,13 @@ interface ComputeShader extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/ComputeShader-shaderKeywords.html | ComputeShader.shaderKeywords}
      */
-    shaderKeywords: CSArray<string>;
+    shaderKeywords: Readonly<string[]>;
     /**
      * An array containing the local shader keywords that are currently enabled for this compute shader.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/ComputeShader-enabledKeywords.html | ComputeShader.enabledKeywords}
      */
-    enabledKeywords: CSArray<LocalKeyword>;
+    enabledKeywords: Readonly<LocalKeyword[]>;
 
 
 
@@ -18652,7 +18652,7 @@ interface ComputeShader extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/ComputeShader.SetFloats.html | ComputeShader.SetFloats}
      */
-    SetFloats(name: string, values: CSArray<number>): void;
+    SetFloats(name: string, values: Readonly<number[]>): void;
     /**
      * Set multiple consecutive float parameters at once.
      * @param nameID Property name ID, use Shader.PropertyToID to get it.
@@ -18660,7 +18660,7 @@ interface ComputeShader extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/ComputeShader.SetFloats.html | ComputeShader.SetFloats}
      */
-    SetFloats(nameID: number, values: CSArray<number>): void;
+    SetFloats(nameID: number, values: Readonly<number[]>): void;
     /**
      * Set an integer parameter.
      * @param nameID Property name ID, use Shader.PropertyToID to get it.
@@ -18684,7 +18684,7 @@ interface ComputeShader extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/ComputeShader.SetInts.html | ComputeShader.SetInts}
      */
-    SetInts(name: string, values: CSArray<number>): void;
+    SetInts(name: string, values: Readonly<number[]>): void;
     /**
      * Set multiple consecutive integer parameters at once.
      * @param nameID Property name ID, use Shader.PropertyToID to get it.
@@ -18692,7 +18692,7 @@ interface ComputeShader extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/ComputeShader.SetInts.html | ComputeShader.SetInts}
      */
-    SetInts(nameID: number, values: CSArray<number>): void;
+    SetInts(nameID: number, values: Readonly<number[]>): void;
     /**
      * Sets the state of a local shader keyword for this compute shader.
      * @param keyword The Rendering.LocalKeyword keyword to enable or disable.
@@ -18724,7 +18724,7 @@ interface ComputeShader extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/ComputeShader.SetMatrixArray.html | ComputeShader.SetMatrixArray}
      */
-    SetMatrixArray(nameID: number, values: CSArray<Matrix4x4>): void;
+    SetMatrixArray(nameID: number, values: Readonly<Matrix4x4[]>): void;
     /**
      * Set a Matrix array parameter.
      * @param name Variable name in shader code.
@@ -18732,7 +18732,7 @@ interface ComputeShader extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/ComputeShader.SetMatrixArray.html | ComputeShader.SetMatrixArray}
      */
-    SetMatrixArray(name: string, values: CSArray<Matrix4x4>): void;
+    SetMatrixArray(name: string, values: Readonly<Matrix4x4[]>): void;
     /**
      * Sets a RayTracingAccelerationStructure to be used for Inline Ray Tracing (Ray Queries).
      * @param kernelIndex For which kernel the RayTracingAccelerationStructure is being set. See FindKernel.
@@ -18852,7 +18852,7 @@ interface ComputeShader extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/ComputeShader.SetVectorArray.html | ComputeShader.SetVectorArray}
      */
-    SetVectorArray(nameID: number, values: CSArray<Vector4>): void;
+    SetVectorArray(nameID: number, values: Readonly<Vector4[]>): void;
     /**
      * Set a vector array parameter.
      * @param name Variable name in shader code.
@@ -18860,7 +18860,7 @@ interface ComputeShader extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/ComputeShader.SetVectorArray.html | ComputeShader.SetVectorArray}
      */
-    SetVectorArray(name: string, values: CSArray<Vector4>): void;
+    SetVectorArray(name: string, values: Readonly<Vector4[]>): void;
 
 
 }
@@ -19029,7 +19029,7 @@ interface RayTracingShader extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RayTracingShader.SetFloats.html | Rendering.RayTracingShader.SetFloats}
      */
-    SetFloats(name: string, values: CSArray<number>): void;
+    SetFloats(name: string, values: Readonly<number[]>): void;
     /**
      * Sets the values for a float array uniform.
      * @param nameID The ID of the property as given by Shader.PropertyToID.
@@ -19037,7 +19037,7 @@ interface RayTracingShader extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RayTracingShader.SetFloats.html | Rendering.RayTracingShader.SetFloats}
      */
-    SetFloats(nameID: number, values: CSArray<number>): void;
+    SetFloats(nameID: number, values: Readonly<number[]>): void;
     /**
      * Sets the value of a int uniform.
      * @param nameID The ID of the property as given by Shader.PropertyToID.
@@ -19061,7 +19061,7 @@ interface RayTracingShader extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RayTracingShader.SetInts.html | Rendering.RayTracingShader.SetInts}
      */
-    SetInts(name: string, values: CSArray<number>): void;
+    SetInts(name: string, values: Readonly<number[]>): void;
     /**
      * Sets the values for a int array uniform.
      * @param nameID The ID of the property as given by Shader.PropertyToID.
@@ -19069,7 +19069,7 @@ interface RayTracingShader extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RayTracingShader.SetInts.html | Rendering.RayTracingShader.SetInts}
      */
-    SetInts(nameID: number, values: CSArray<number>): void;
+    SetInts(nameID: number, values: Readonly<number[]>): void;
     /**
      * Sets the value of a matrix uniform.
      * @param nameID The ID of the property as given by Shader.PropertyToID.
@@ -19093,7 +19093,7 @@ interface RayTracingShader extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RayTracingShader.SetMatrixArray.html | Rendering.RayTracingShader.SetMatrixArray}
      */
-    SetMatrixArray(nameID: number, values: CSArray<Matrix4x4>): void;
+    SetMatrixArray(nameID: number, values: Readonly<Matrix4x4[]>): void;
     /**
      * Sets a matrix array uniform.
      * @param name The name of the property being set.
@@ -19101,7 +19101,7 @@ interface RayTracingShader extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RayTracingShader.SetMatrixArray.html | Rendering.RayTracingShader.SetMatrixArray}
      */
-    SetMatrixArray(name: string, values: CSArray<Matrix4x4>): void;
+    SetMatrixArray(name: string, values: Readonly<Matrix4x4[]>): void;
     /**
      * Selects which Shader Pass to use when executing ray/geometry intersection shaders.
      * @param passName The Shader Pass to use when executing ray tracing shaders.
@@ -19164,7 +19164,7 @@ interface RayTracingShader extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RayTracingShader.SetVectorArray.html | Rendering.RayTracingShader.SetVectorArray}
      */
-    SetVectorArray(nameID: number, values: CSArray<Vector4>): void;
+    SetVectorArray(nameID: number, values: Readonly<Vector4[]>): void;
     /**
      * Sets a vector array uniform.
      * @param name The name of the property being set.
@@ -19172,7 +19172,7 @@ interface RayTracingShader extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RayTracingShader.SetVectorArray.html | Rendering.RayTracingShader.SetVectorArray}
      */
-    SetVectorArray(name: string, values: CSArray<Vector4>): void;
+    SetVectorArray(name: string, values: Readonly<Vector4[]>): void;
 
 
 }
@@ -19396,7 +19396,7 @@ interface RenderTargetBinding {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RenderTargetBinding-colorRenderTargets.html | Rendering.RenderTargetBinding.colorRenderTargets}
      */
-    colorRenderTargets: CSArray<RenderTargetIdentifier>;
+    colorRenderTargets: Readonly<RenderTargetIdentifier[]>;
     /**
      * Depth/stencil buffer to use as render target.
      * 
@@ -19408,13 +19408,13 @@ interface RenderTargetBinding {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RenderTargetBinding-colorLoadActions.html | Rendering.RenderTargetBinding.colorLoadActions}
      */
-    colorLoadActions: CSArray<number>;
+    colorLoadActions: Readonly<number[]>;
     /**
      * Store actions for color buffers.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RenderTargetBinding-colorStoreActions.html | Rendering.RenderTargetBinding.colorStoreActions}
      */
-    colorStoreActions: CSArray<number>;
+    colorStoreActions: Readonly<number[]>;
     /**
      * Load action for the depth/stencil buffer.
      * 
@@ -19443,7 +19443,7 @@ interface RenderTargetBinding {
 interface RenderTargetBindingConstructor {
 
 
-    new(colorRenderTargets: CSArray<RenderTargetIdentifier>, colorLoadActions: CSArray<number>, colorStoreActions: CSArray<number>, depthRenderTarget: RenderTargetIdentifier, depthLoadAction: RenderBufferLoadAction, depthStoreAction: RenderBufferStoreAction): RenderTargetBinding;
+    new(colorRenderTargets: Readonly<RenderTargetIdentifier[]>, colorLoadActions: Readonly<number[]>, colorStoreActions: Readonly<number[]>, depthRenderTarget: RenderTargetIdentifier, depthLoadAction: RenderBufferLoadAction, depthStoreAction: RenderBufferStoreAction): RenderTargetBinding;
     new(colorRenderTarget: RenderTargetIdentifier, colorLoadAction: RenderBufferLoadAction, colorStoreAction: RenderBufferStoreAction, depthRenderTarget: RenderTargetIdentifier, depthLoadAction: RenderBufferLoadAction, depthStoreAction: RenderBufferStoreAction): RenderTargetBinding;
     new(setup: RenderTargetSetup): RenderTargetBinding;
 
@@ -19552,7 +19552,7 @@ interface Cubemap extends Texture {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Cubemap.GetPixelData.html | Cubemap.GetPixelData}
      */
-    GetPixelData<T>(mipLevel: number, face: CubemapFace): CSArray<T>;
+    GetPixelData<T>(mipLevel: number, face: CubemapFace): Readonly<T[]>;
     /**
      * Gets the pixel color data for a mipmap level of a face as Color structs.
      * @param face The CubemapFace to read from.
@@ -19560,14 +19560,14 @@ interface Cubemap extends Texture {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Cubemap.GetPixels.html | Cubemap.GetPixels}
      */
-    GetPixels(face: CubemapFace, miplevel: number): CSArray<Color>;
+    GetPixels(face: CubemapFace, miplevel: number): Readonly<Color[]>;
     /**
      * Gets the pixel color data for a mipmap level of a face as Color structs.
      * @param face The CubemapFace to read from.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Cubemap.GetPixels.html | Cubemap.GetPixels}
      */
-    GetPixels(face: CubemapFace): CSArray<Color>;
+    GetPixels(face: CubemapFace): Readonly<Color[]>;
     /**
      * Checks to see whether the mipmap level set by requestedMipmapLevel has finished loading.
      * 
@@ -19595,8 +19595,8 @@ interface Cubemap extends Texture {
      * More info: {@link https://docs.unity3d.com/ScriptReference/Cubemap.SetPixel.html | Cubemap.SetPixel}
      */
     SetPixel(face: CubemapFace, x: number, y: number, color: Color, mip: number): void;
-    SetPixelData<T>(data: CSArray<T>, mipLevel: number, face: CubemapFace, sourceDataStartIndex: number): void;
-    SetPixelData<T>(data: CSArray<T>, mipLevel: number, face: CubemapFace, sourceDataStartIndex: number): void;
+    SetPixelData<T>(data: Readonly<T[]>, mipLevel: number, face: CubemapFace, sourceDataStartIndex: number): void;
+    SetPixelData<T>(data: Readonly<T[]>, mipLevel: number, face: CubemapFace, sourceDataStartIndex: number): void;
     /**
      * Sets the pixel colors of an entire mipmap level of a face.
      * @param colors The array of pixel colours to use. This is a 2D image flattened to a 1D array.
@@ -19605,7 +19605,7 @@ interface Cubemap extends Texture {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Cubemap.SetPixels.html | Cubemap.SetPixels}
      */
-    SetPixels(colors: CSArray<Color>, face: CubemapFace, miplevel: number): void;
+    SetPixels(colors: Readonly<Color[]>, face: CubemapFace, miplevel: number): void;
     /**
      * Sets the pixel colors of an entire mipmap level of a face.
      * @param colors The array of pixel colours to use. This is a 2D image flattened to a 1D array.
@@ -19613,7 +19613,7 @@ interface Cubemap extends Texture {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Cubemap.SetPixels.html | Cubemap.SetPixels}
      */
-    SetPixels(colors: CSArray<Color>, face: CubemapFace): void;
+    SetPixels(colors: Readonly<Color[]>, face: CubemapFace): void;
     /**
      * Performs smoothing of near edge regions.
      * @param smoothRegionWidthInPixels Pixel distance at edges over which to apply smoothing.
@@ -19723,7 +19723,7 @@ interface CameraConstructor {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Camera-allCameras.html | Camera.allCameras}
      */
-    readonly allCameras: CSArray<Camera>;
+    readonly allCameras: Readonly<Camera[]>;
 
 
     new(): Camera;
@@ -19732,7 +19732,7 @@ interface CameraConstructor {
     CalculateProjectionMatrixFromPhysicalProperties(output: unknown, focalLength: number, sensorSize: Vector2, lensShift: Vector2, nearClip: number, farClip: number, gateFitParameters: GateFitParameters): void;
     FieldOfViewToFocalLength(fieldOfView: number, sensorSize: number): number;
     FocalLengthToFieldOfView(focalLength: number, sensorSize: number): number;
-    GetAllCameras(cameras: CSArray<Camera>): number;
+    GetAllCameras(cameras: Readonly<Camera[]>): number;
     HorizontalToVerticalFieldOfView(horizontalFieldOfView: number, aspectRatio: number): number;
     SetupCurrent(cur: Camera): void;
     VerticalToHorizontalFieldOfView(verticalFieldOfView: number, aspectRatio: number): number;
@@ -20252,13 +20252,13 @@ Only usable on Android, Windows Phone or Windows Tablets.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Input-touches.html | Input.touches}
      */
-    readonly touches: CSArray<Touch>;
+    readonly touches: Readonly<Touch[]>;
     /**
      * Returns list of acceleration measurements which occurred during the last frame. (Read Only) (Allocates temporary variables).
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Input-accelerationEvents.html | Input.accelerationEvents}
      */
-    readonly accelerationEvents: CSArray<AccelerationEvent>;
+    readonly accelerationEvents: Readonly<AccelerationEvent[]>;
 
 
     new(): Input;
@@ -20271,7 +20271,7 @@ Only usable on Android, Windows Phone or Windows Tablets.
     GetButton(buttonName: string): boolean;
     GetButtonDown(buttonName: string): boolean;
     GetButtonUp(buttonName: string): boolean;
-    GetJoystickNames(): CSArray<string>;
+    GetJoystickNames(): Readonly<string[]>;
     GetKey(key: KeyCode): boolean;
     GetKey(name: string): boolean;
     GetKeyDown(key: KeyCode): boolean;
@@ -20390,7 +20390,7 @@ interface BaseInputConstructor {
 declare const BaseInput: BaseInputConstructor;
     
 interface PointerEventData extends BaseEventData {
-    hovered: CSArray<GameObject>;
+    hovered: Readonly<GameObject[]>;
     pointerEnter: GameObject;
     readonly lastPress: GameObject;
     rawPointerPress: GameObject;
@@ -20466,7 +20466,7 @@ interface BaseRaycaster extends UIBehaviour {
 
 
 
-    Raycast(eventData: PointerEventData, resultAppendList: CSArray<RaycastResult>): void;
+    Raycast(eventData: PointerEventData, resultAppendList: Readonly<RaycastResult[]>): void;
     ToString(): string;
 
 
@@ -20835,14 +20835,14 @@ interface RectTransform extends Transform {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/RectTransform.GetLocalCorners.html | RectTransform.GetLocalCorners}
      */
-    GetLocalCorners(fourCornersArray: CSArray<Vector3>): void;
+    GetLocalCorners(fourCornersArray: Readonly<Vector3[]>): void;
     /**
      * Get the corners of the calculated rectangle in world space.
      * @param fourCornersArray The array that corners are filled into.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/RectTransform.GetWorldCorners.html | RectTransform.GetWorldCorners}
      */
-    GetWorldCorners(fourCornersArray: CSArray<Vector3>): void;
+    GetWorldCorners(fourCornersArray: Readonly<Vector3[]>): void;
     SetInsetAndSizeFromParentEdge(edge: Edge, inset: number, size: number): void;
     SetSizeWithCurrentAnchors(axis: Axis, size: number): void;
 
@@ -21234,12 +21234,12 @@ interface CanvasRendererConstructor {
     new(): CanvasRenderer;
 
 
-    AddUIVertexStream(verts: CSArray<UIVertex>, positions: CSArray<Vector3>, colors: CSArray<Color32>, uv0S: CSArray<Vector4>, uv1S: CSArray<Vector4>, normals: CSArray<Vector3>, tangents: CSArray<Vector4>): void;
-    AddUIVertexStream(verts: CSArray<UIVertex>, positions: CSArray<Vector3>, colors: CSArray<Color32>, uv0S: CSArray<Vector4>, uv1S: CSArray<Vector4>, uv2S: CSArray<Vector4>, uv3S: CSArray<Vector4>, normals: CSArray<Vector3>, tangents: CSArray<Vector4>): void;
-    CreateUIVertexStream(verts: CSArray<UIVertex>, positions: CSArray<Vector3>, colors: CSArray<Color32>, uv0S: CSArray<Vector4>, uv1S: CSArray<Vector4>, normals: CSArray<Vector3>, tangents: CSArray<Vector4>, indices: CSArray<number>): void;
-    CreateUIVertexStream(verts: CSArray<UIVertex>, positions: CSArray<Vector3>, colors: CSArray<Color32>, uv0S: CSArray<Vector4>, uv1S: CSArray<Vector4>, uv2S: CSArray<Vector4>, uv3S: CSArray<Vector4>, normals: CSArray<Vector3>, tangents: CSArray<Vector4>, indices: CSArray<number>): void;
-    SplitUIVertexStreams(verts: CSArray<UIVertex>, positions: CSArray<Vector3>, colors: CSArray<Color32>, uv0S: CSArray<Vector4>, uv1S: CSArray<Vector4>, normals: CSArray<Vector3>, tangents: CSArray<Vector4>, indices: CSArray<number>): void;
-    SplitUIVertexStreams(verts: CSArray<UIVertex>, positions: CSArray<Vector3>, colors: CSArray<Color32>, uv0S: CSArray<Vector4>, uv1S: CSArray<Vector4>, uv2S: CSArray<Vector4>, uv3S: CSArray<Vector4>, normals: CSArray<Vector3>, tangents: CSArray<Vector4>, indices: CSArray<number>): void;
+    AddUIVertexStream(verts: Readonly<UIVertex[]>, positions: Readonly<Vector3[]>, colors: Readonly<Color32[]>, uv0S: Readonly<Vector4[]>, uv1S: Readonly<Vector4[]>, normals: Readonly<Vector3[]>, tangents: Readonly<Vector4[]>): void;
+    AddUIVertexStream(verts: Readonly<UIVertex[]>, positions: Readonly<Vector3[]>, colors: Readonly<Color32[]>, uv0S: Readonly<Vector4[]>, uv1S: Readonly<Vector4[]>, uv2S: Readonly<Vector4[]>, uv3S: Readonly<Vector4[]>, normals: Readonly<Vector3[]>, tangents: Readonly<Vector4[]>): void;
+    CreateUIVertexStream(verts: Readonly<UIVertex[]>, positions: Readonly<Vector3[]>, colors: Readonly<Color32[]>, uv0S: Readonly<Vector4[]>, uv1S: Readonly<Vector4[]>, normals: Readonly<Vector3[]>, tangents: Readonly<Vector4[]>, indices: Readonly<number[]>): void;
+    CreateUIVertexStream(verts: Readonly<UIVertex[]>, positions: Readonly<Vector3[]>, colors: Readonly<Color32[]>, uv0S: Readonly<Vector4[]>, uv1S: Readonly<Vector4[]>, uv2S: Readonly<Vector4[]>, uv3S: Readonly<Vector4[]>, normals: Readonly<Vector3[]>, tangents: Readonly<Vector4[]>, indices: Readonly<number[]>): void;
+    SplitUIVertexStreams(verts: Readonly<UIVertex[]>, positions: Readonly<Vector3[]>, colors: Readonly<Color32[]>, uv0S: Readonly<Vector4[]>, uv1S: Readonly<Vector4[]>, normals: Readonly<Vector3[]>, tangents: Readonly<Vector4[]>, indices: Readonly<number[]>): void;
+    SplitUIVertexStreams(verts: Readonly<UIVertex[]>, positions: Readonly<Vector3[]>, colors: Readonly<Color32[]>, uv0S: Readonly<Vector4[]>, uv1S: Readonly<Vector4[]>, uv2S: Readonly<Vector4[]>, uv3S: Readonly<Vector4[]>, normals: Readonly<Vector3[]>, tangents: Readonly<Vector4[]>, indices: Readonly<number[]>): void;
 
     readonly onRequestRebuild: MonoSignal<void>;
 }
@@ -21552,7 +21552,7 @@ interface Animator extends Behaviour {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Animator-parameters.html | Animator.parameters}
      */
-    readonly parameters: CSArray<AnimatorControllerParameter>;
+    readonly parameters: Readonly<AnimatorControllerParameter[]>;
     /**
      * Returns the number of parameters in the controller.
      * 
@@ -21781,8 +21781,8 @@ interface Animator extends Behaviour {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Animator.GetBehaviours.html | Animator.GetBehaviours}
      */
-    GetBehaviours<T>(): CSArray<T>;
-    GetBehaviours(fullPathHash: number, layerIndex: number): CSArray<StateMachineBehaviour>;
+    GetBehaviours<T>(): Readonly<T[]>;
+    GetBehaviours(fullPathHash: number, layerIndex: number): Readonly<StateMachineBehaviour[]>;
     /**
      * Retrieves the Transform mapped to a human bone based on its id.
      * @param humanBoneId The human bone to be queried. See the HumanBodyBones enum for a list of possible values.
@@ -21810,8 +21810,8 @@ interface Animator extends Behaviour {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Animator.GetCurrentAnimatorClipInfo.html | Animator.GetCurrentAnimatorClipInfo}
      */
-    GetCurrentAnimatorClipInfo(layerIndex: number): CSArray<AnimatorClipInfo>;
-    GetCurrentAnimatorClipInfo(layerIndex: number, clips: CSArray<AnimatorClipInfo>): void;
+    GetCurrentAnimatorClipInfo(layerIndex: number): Readonly<AnimatorClipInfo[]>;
+    GetCurrentAnimatorClipInfo(layerIndex: number, clips: Readonly<AnimatorClipInfo[]>): void;
     /**
      * Returns the number of AnimatorClipInfo in the current state.
      * @param layerIndex The layer index.
@@ -21923,8 +21923,8 @@ interface Animator extends Behaviour {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Animator.GetNextAnimatorClipInfo.html | Animator.GetNextAnimatorClipInfo}
      */
-    GetNextAnimatorClipInfo(layerIndex: number): CSArray<AnimatorClipInfo>;
-    GetNextAnimatorClipInfo(layerIndex: number, clips: CSArray<AnimatorClipInfo>): void;
+    GetNextAnimatorClipInfo(layerIndex: number): Readonly<AnimatorClipInfo[]>;
+    GetNextAnimatorClipInfo(layerIndex: number, clips: Readonly<AnimatorClipInfo[]>): void;
     /**
      * Returns the number of AnimatorClipInfo in the next state.
      * @param layerIndex The layer index.
@@ -22374,7 +22374,7 @@ interface RuntimeAnimatorController extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/RuntimeAnimatorController-animationClips.html | RuntimeAnimatorController.animationClips}
      */
-    readonly animationClips: CSArray<AnimationClip>;
+    readonly animationClips: Readonly<AnimationClip[]>;
 
 
 
@@ -22469,7 +22469,7 @@ interface AnimationClip extends Motion {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/AnimationClip-events.html | AnimationClip.events}
      */
-    events: CSArray<AnimationEvent>;
+    events: Readonly<AnimationEvent[]>;
 
 
 
@@ -22816,7 +22816,7 @@ interface AnimationCurve {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/AnimationCurve-keys.html | AnimationCurve.keys}
      */
-    keys: CSArray<Keyframe>;
+    keys: Readonly<Keyframe[]>;
     readonly Item: Keyframe;
     /**
      * The number of keys in the curve. (Read Only)
@@ -22974,7 +22974,7 @@ declare const Keyframe: KeyframeConstructor;
 interface AnimationCurveConstructor {
 
 
-    new(keys: CSArray<Keyframe>): AnimationCurve;
+    new(keys: Readonly<Keyframe[]>): AnimationCurve;
     new(): AnimationCurve;
 
 
@@ -23022,8 +23022,8 @@ interface Avatar extends Object {
 }
     
 interface HumanDescription {
-    human: CSArray<HumanBone>;
-    skeleton: CSArray<SkeletonBone>;
+    human: Readonly<HumanBone[]>;
+    skeleton: Readonly<SkeletonBone[]>;
     /**
      * Defines how the upper arm's roll/twisting is distributed between the shoulder and elbow joints.
      * 
@@ -23628,8 +23628,8 @@ interface AnimatorControllerPlayable extends IPlayable {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Animations.AnimatorControllerPlayable.GetCurrentAnimatorClipInfo.html | Animations.AnimatorControllerPlayable.GetCurrentAnimatorClipInfo}
      */
-    GetCurrentAnimatorClipInfo(layerIndex: number): CSArray<AnimatorClipInfo>;
-    GetCurrentAnimatorClipInfo(layerIndex: number, clips: CSArray<AnimatorClipInfo>): void;
+    GetCurrentAnimatorClipInfo(layerIndex: number): Readonly<AnimatorClipInfo[]>;
+    GetCurrentAnimatorClipInfo(layerIndex: number, clips: Readonly<AnimatorClipInfo[]>): void;
     /**
      * Returns the number of AnimatorClipInfo in the current state.
      * @param layerIndex The layer index.
@@ -23695,14 +23695,14 @@ interface AnimatorControllerPlayable extends IPlayable {
      * More info: {@link https://docs.unity3d.com/ScriptReference/Animations.AnimatorControllerPlayable.GetLayerWeight.html | Animations.AnimatorControllerPlayable.GetLayerWeight}
      */
     GetLayerWeight(layerIndex: number): number;
-    GetNextAnimatorClipInfo(layerIndex: number, clips: CSArray<AnimatorClipInfo>): void;
+    GetNextAnimatorClipInfo(layerIndex: number, clips: Readonly<AnimatorClipInfo[]>): void;
     /**
      * Returns an array of all the AnimatorClipInfo in the next state of the given layer.
      * @param layerIndex The layer index.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Animations.AnimatorControllerPlayable.GetNextAnimatorClipInfo.html | Animations.AnimatorControllerPlayable.GetNextAnimatorClipInfo}
      */
-    GetNextAnimatorClipInfo(layerIndex: number): CSArray<AnimatorClipInfo>;
+    GetNextAnimatorClipInfo(layerIndex: number): Readonly<AnimatorClipInfo[]>;
     /**
      * Returns the number of AnimatorClipInfo in the next state.
      * @param layerIndex The layer index.
@@ -23944,13 +23944,13 @@ interface AnimatorConstructor {
 declare const Animator: AnimatorConstructor;
     
 interface SelectableConstructor {
-    readonly allSelectablesArray: CSArray<Selectable>;
+    readonly allSelectablesArray: Readonly<Selectable[]>;
     readonly allSelectableCount: number;
 
 
 
 
-    AllSelectablesNoAlloc(selectables: CSArray<Selectable>): number;
+    AllSelectablesNoAlloc(selectables: Readonly<Selectable[]>): number;
 
 }
 declare const Selectable: SelectableConstructor;
@@ -24056,9 +24056,9 @@ interface TMP_Text extends MaskableGraphic {
     isRightToLeftText: boolean;
     font: TMP_FontAsset;
     fontSharedMaterial: Material;
-    fontSharedMaterials: CSArray<Material>;
+    fontSharedMaterials: Readonly<Material[]>;
     fontMaterial: Material;
-    fontMaterials: CSArray<Material>;
+    fontMaterials: Readonly<Material[]>;
     color: Color;
     alpha: number;
     enableVertexGradient: boolean;
@@ -24096,7 +24096,7 @@ interface TMP_Text extends MaskableGraphic {
     readonly firstOverflowCharacterIndex: number;
     linkedTextComponent: TMP_Text;
     readonly isTextTruncated: boolean;
-    fontFeatures: CSArray<OTL_FeatureTag>;
+    fontFeatures: Readonly<OTL_FeatureTag[]>;
     extraPadding: boolean;
     richText: boolean;
     emojiFallbackSupport: boolean;
@@ -24158,8 +24158,8 @@ interface TMP_Text extends MaskableGraphic {
     GetRenderedValues(): Vector2;
     GetRenderedValues(onlyVisibleCharacters: boolean): Vector2;
     GetTextInfo(text: string): TMP_TextInfo;
-    SetCharArray(sourceText: CSArray<string>): void;
-    SetCharArray(sourceText: CSArray<string>, start: number, length: number): void;
+    SetCharArray(sourceText: Readonly<string[]>): void;
+    SetCharArray(sourceText: Readonly<string[]>, start: number, length: number): void;
     SetText(sourceText: string): void;
     SetText(sourceText: string, arg0: number): void;
     SetText(sourceText: string, arg0: number, arg1: number): void;
@@ -24170,9 +24170,9 @@ interface TMP_Text extends MaskableGraphic {
     SetText(sourceText: string, arg0: number, arg1: number, arg2: number, arg3: number, arg4: number, arg5: number, arg6: number): void;
     SetText(sourceText: string, arg0: number, arg1: number, arg2: number, arg3: number, arg4: number, arg5: number, arg6: number, arg7: number): void;
     SetText(sourceText: unknown): void;
-    SetText(sourceText: CSArray<string>): void;
-    SetText(sourceText: CSArray<string>, start: number, length: number): void;
-    SetVertices(vertices: CSArray<Vector3>): void;
+    SetText(sourceText: Readonly<string[]>): void;
+    SetText(sourceText: Readonly<string[]>, start: number, length: number): void;
+    SetVertices(vertices: Readonly<Vector3[]>): void;
     UpdateGeometry(mesh: Mesh, index: number): void;
     UpdateMeshPadding(): void;
     UpdateVertexData(flags: TMP_VertexDataUpdateFlags): void;
@@ -24344,12 +24344,12 @@ interface TMP_FontAsset extends TMP_Asset {
     creationSettings: FontAssetCreationSettings;
     readonly sourceFontFile: Font;
     atlasPopulationMode: AtlasPopulationMode;
-    readonly glyphTable: CSArray<Glyph>;
+    readonly glyphTable: Readonly<Glyph[]>;
     readonly glyphLookupTable: CSDictionary<number, Glyph>;
-    readonly characterTable: CSArray<TMP_Character>;
+    readonly characterTable: Readonly<TMP_Character[]>;
     readonly characterLookupTable: CSDictionary<number, TMP_Character>;
     readonly atlasTexture: Texture2D;
-    atlasTextures: CSArray<Texture2D>;
+    atlasTextures: Readonly<Texture2D[]>;
     readonly atlasTextureCount: number;
     isMultiAtlasTexturesEnabled: boolean;
     getFontFeatures: boolean;
@@ -24358,22 +24358,22 @@ interface TMP_FontAsset extends TMP_Asset {
     readonly atlasPadding: number;
     readonly atlasRenderMode: GlyphRenderMode;
     readonly fontFeatureTable: TMP_FontFeatureTable;
-    fallbackFontAssetTable: CSArray<TMP_FontAsset>;
-    readonly fontWeightTable: CSArray<TMP_FontWeightPair>;
+    fallbackFontAssetTable: Readonly<TMP_FontAsset[]>;
+    readonly fontWeightTable: Readonly<TMP_FontWeightPair[]>;
 
 
 
     ClearFontAssetData(setAtlasSizeToZero: boolean): void;
     HasCharacter(character: number): boolean;
     HasCharacter(character: string, searchFallbacks: boolean, tryAddCharacter: boolean): boolean;
-    HasCharacters(text: string, missingCharacters: CSArray<string>): boolean;
-    HasCharacters(text: string, missingCharacters: CSArray<number>, searchFallbacks: boolean, tryAddCharacter: boolean): boolean;
+    HasCharacters(text: string, missingCharacters: Readonly<string[]>): boolean;
+    HasCharacters(text: string, missingCharacters: Readonly<number[]>, searchFallbacks: boolean, tryAddCharacter: boolean): boolean;
     HasCharacters(text: string): boolean;
     ReadFontAssetDefinition(): void;
-    TryAddCharacters(unicodes: CSArray<number>, includeFontFeatures: boolean): boolean;
-    TryAddCharacters(unicodes: CSArray<number>, missingUnicodes: CSArray<number>, includeFontFeatures: boolean): boolean;
+    TryAddCharacters(unicodes: Readonly<number[]>, includeFontFeatures: boolean): boolean;
+    TryAddCharacters(unicodes: Readonly<number[]>, missingUnicodes: Readonly<number[]>, includeFontFeatures: boolean): boolean;
     TryAddCharacters(characters: string, includeFontFeatures: boolean): boolean;
-    TryAddCharacters(characters: string, missingCharacters: CSArray<string>, includeFontFeatures: boolean): boolean;
+    TryAddCharacters(characters: string, missingCharacters: Readonly<string[]>, includeFontFeatures: boolean): boolean;
 
 
 }
@@ -24411,7 +24411,7 @@ interface Font extends Object {
      * More info: {@link https://docs.unity3d.com/ScriptReference/Font-material.html | Font.material}
      */
     material: Material;
-    fontNames: CSArray<string>;
+    fontNames: Readonly<string[]>;
     /**
      * Is the font a dynamic font.
      * 
@@ -24435,7 +24435,7 @@ interface Font extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Font-characterInfo.html | Font.characterInfo}
      */
-    characterInfo: CSArray<CharacterInfo>;
+    characterInfo: Readonly<CharacterInfo[]>;
     /**
      * The line height of the font.
      * 
@@ -24585,10 +24585,10 @@ interface FontConstructor {
 
 
     CreateDynamicFontFromOSFont(fontname: string, size: number): Font;
-    CreateDynamicFontFromOSFont(fontnames: CSArray<string>, size: number): Font;
+    CreateDynamicFontFromOSFont(fontnames: Readonly<string[]>, size: number): Font;
     GetMaxVertsForString(str: string): number;
-    GetOSInstalledFontNames(): CSArray<string>;
-    GetPathsToOSFonts(): CSArray<string>;
+    GetOSInstalledFontNames(): Readonly<string[]>;
+    GetPathsToOSFonts(): Readonly<string[]>;
 
     readonly textureRebuilt: MonoSignal<Font>;
 }
@@ -24806,11 +24806,11 @@ interface TMP_CharacterConstructor {
 declare const TMP_Character: TMP_CharacterConstructor;
     
 interface TMP_FontFeatureTable {
-    multipleSubstitutionRecords: CSArray<MultipleSubstitutionRecord>;
-    ligatureRecords: CSArray<LigatureSubstitutionRecord>;
-    glyphPairAdjustmentRecords: CSArray<GlyphPairAdjustmentRecord>;
-    MarkToBaseAdjustmentRecords: CSArray<MarkToBaseAdjustmentRecord>;
-    MarkToMarkAdjustmentRecords: CSArray<MarkToMarkAdjustmentRecord>;
+    multipleSubstitutionRecords: Readonly<MultipleSubstitutionRecord[]>;
+    ligatureRecords: Readonly<LigatureSubstitutionRecord[]>;
+    glyphPairAdjustmentRecords: Readonly<GlyphPairAdjustmentRecord[]>;
+    MarkToBaseAdjustmentRecords: Readonly<MarkToBaseAdjustmentRecord[]>;
+    MarkToMarkAdjustmentRecords: Readonly<MarkToMarkAdjustmentRecord[]>;
 
 
 
@@ -24823,7 +24823,7 @@ interface TMP_FontFeatureTable {
     
 interface MultipleSubstitutionRecord {
     targetGlyphID: number;
-    substituteGlyphIDs: CSArray<number>;
+    substituteGlyphIDs: Readonly<number[]>;
 
 
 
@@ -24832,7 +24832,7 @@ interface MultipleSubstitutionRecord {
 }
     
 interface LigatureSubstitutionRecord {
-    componentGlyphIDs: CSArray<number>;
+    componentGlyphIDs: Readonly<number[]>;
     ligatureGlyphID: number;
 
 
@@ -25038,7 +25038,7 @@ interface TMP_FontAssetConstructor {
     CreateFontAsset(font: Font): TMP_FontAsset;
     CreateFontAsset(font: Font, samplingPointSize: number, atlasPadding: number, renderMode: GlyphRenderMode, atlasWidth: number, atlasHeight: number, atlasPopulationMode: AtlasPopulationMode, enableMultiAtlasSupport: boolean): TMP_FontAsset;
     GetCharacters(fontAsset: TMP_FontAsset): string;
-    GetCharactersArray(fontAsset: TMP_FontAsset): CSArray<number>;
+    GetCharactersArray(fontAsset: TMP_FontAsset): Readonly<number[]>;
 
 }
 declare const TMP_FontAsset: TMP_FontAssetConstructor;
@@ -25093,11 +25093,11 @@ declare const TMP_ColorGradient: TMP_ColorGradientConstructor;
     
 interface TMP_SpriteAsset extends TMP_Asset {
     spriteSheet: Texture;
-    spriteInfoList: CSArray<TMP_Sprite>;
-    fallbackSpriteAssets: CSArray<TMP_SpriteAsset>;
-    readonly spriteCharacterTable: CSArray<TMP_SpriteCharacter>;
+    spriteInfoList: Readonly<TMP_Sprite[]>;
+    fallbackSpriteAssets: Readonly<TMP_SpriteAsset[]>;
+    readonly spriteCharacterTable: Readonly<TMP_SpriteCharacter[]>;
     readonly spriteCharacterLookupTable: CSDictionary<number, TMP_SpriteCharacter>;
-    readonly spriteGlyphTable: CSArray<TMP_SpriteGlyph>;
+    readonly spriteGlyphTable: Readonly<TMP_SpriteGlyph[]>;
 
 
 
@@ -25230,8 +25230,8 @@ interface TMP_Style {
     hashCode: number;
     readonly styleOpeningDefinition: string;
     readonly styleClosingDefinition: string;
-    readonly styleOpeningTagArray: CSArray<number>;
-    readonly styleClosingTagArray: CSArray<number>;
+    readonly styleOpeningTagArray: Readonly<number[]>;
+    readonly styleClosingTagArray: Readonly<number[]>;
 
 
 
@@ -25270,19 +25270,19 @@ interface TMP_TextInfo {
     lineCount: number;
     pageCount: number;
     materialCount: number;
-    characterInfo: CSArray<TMP_CharacterInfo>;
-    wordInfo: CSArray<TMP_WordInfo>;
-    linkInfo: CSArray<TMP_LinkInfo>;
-    lineInfo: CSArray<TMP_LineInfo>;
-    pageInfo: CSArray<TMP_PageInfo>;
-    meshInfo: CSArray<TMP_MeshInfo>;
+    characterInfo: Readonly<TMP_CharacterInfo[]>;
+    wordInfo: Readonly<TMP_WordInfo[]>;
+    linkInfo: Readonly<TMP_LinkInfo[]>;
+    lineInfo: Readonly<TMP_LineInfo[]>;
+    pageInfo: Readonly<TMP_PageInfo[]>;
+    meshInfo: Readonly<TMP_MeshInfo[]>;
 
 
 
     ClearAllMeshInfo(): void;
     ClearMeshInfo(updateMesh: boolean): void;
-    ClearUnusedVertices(materials: CSArray<MaterialReference>): void;
-    CopyMeshInfoVertexData(): CSArray<TMP_MeshInfo>;
+    ClearUnusedVertices(materials: Readonly<MaterialReference[]>): void;
+    CopyMeshInfoVertexData(): Readonly<TMP_MeshInfo[]>;
     ResetVertexLayout(isVolumetric: boolean): void;
 
 
@@ -25503,13 +25503,13 @@ interface TMP_PageInfo {
 interface TMP_MeshInfo {
     mesh: Mesh;
     vertexCount: number;
-    vertices: CSArray<Vector3>;
-    normals: CSArray<Vector3>;
-    tangents: CSArray<Vector4>;
-    uvs0: CSArray<Vector4>;
-    uvs2: CSArray<Vector2>;
-    colors32: CSArray<Color32>;
-    triangles: CSArray<number>;
+    vertices: Readonly<Vector3[]>;
+    normals: Readonly<Vector3[]>;
+    tangents: Readonly<Vector4[]>;
+    uvs0: Readonly<Vector4[]>;
+    uvs2: Readonly<Vector2[]>;
+    colors32: Readonly<Color32[]>;
+    triangles: Readonly<number[]>;
     material: Material;
 
 
@@ -25522,7 +25522,7 @@ interface TMP_MeshInfo {
     ResizeMeshInfo(size: number): void;
     ResizeMeshInfo(size: number, isVolumetric: boolean): void;
     SortGeometry(order: VertexSortingOrder): void;
-    SortGeometry(sortingOrder: CSArray<number>): void;
+    SortGeometry(sortingOrder: Readonly<number[]>): void;
     SwapVertexData(src: number, dst: number): void;
 
 
@@ -25562,9 +25562,9 @@ interface MaterialReferenceConstructor {
     new(index: number, fontAsset: TMP_FontAsset, spriteAsset: TMP_SpriteAsset, material: Material, padding: number): MaterialReference;
 
 
-    AddMaterialReference(material: Material, fontAsset: TMP_FontAsset, materialReferences: CSArray<MaterialReference>, materialReferenceIndexLookup: CSDictionary<number, number>): number;
-    AddMaterialReference(material: Material, spriteAsset: TMP_SpriteAsset, materialReferences: CSArray<MaterialReference>, materialReferenceIndexLookup: CSDictionary<number, number>): number;
-    Contains(materialReferences: CSArray<MaterialReference>, fontAsset: TMP_FontAsset): boolean;
+    AddMaterialReference(material: Material, fontAsset: TMP_FontAsset, materialReferences: Readonly<MaterialReference[]>, materialReferenceIndexLookup: CSDictionary<number, number>): number;
+    AddMaterialReference(material: Material, spriteAsset: TMP_SpriteAsset, materialReferences: Readonly<MaterialReference[]>, materialReferenceIndexLookup: CSDictionary<number, number>): number;
+    Contains(materialReferences: Readonly<MaterialReference[]>, fontAsset: TMP_FontAsset): boolean;
 
 }
 declare const MaterialReference: MaterialReferenceConstructor;
@@ -25576,8 +25576,8 @@ interface TMP_TextInfoConstructor {
     new(textComponent: TMP_Text): TMP_TextInfo;
 
 
-    Resize<T>(array: CSArray<T>, size: number): void;
-    Resize<T>(array: CSArray<T>, size: number, isBlockAllocated: boolean): void;
+    Resize<T>(array: Readonly<T[]>, size: number): void;
+    Resize<T>(array: Readonly<T[]>, size: number, isBlockAllocated: boolean): void;
 
 }
 declare const TMP_TextInfo: TMP_TextInfoConstructor;
@@ -26391,7 +26391,7 @@ interface IStylePropertyAnimations {
 
     CancelAllAnimations(): void;
     CancelAnimation(id: StylePropertyId): void;
-    GetAllAnimations(outPropertyIds: CSArray<StylePropertyId>): void;
+    GetAllAnimations(outPropertyIds: Readonly<StylePropertyId[]>): void;
     HasRunningAnimation(id: StylePropertyId): boolean;
     Start(id: StylePropertyId, from: number, to: number, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
     Start(id: StylePropertyId, from: number, to: number, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
@@ -26598,12 +26598,12 @@ interface FontAsset extends TextAsset {
     readonly sourceFontFile: Font;
     atlasPopulationMode: AtlasPopulationMode;
     faceInfo: FaceInfo;
-    readonly glyphTable: CSArray<Glyph>;
+    readonly glyphTable: Readonly<Glyph[]>;
     readonly glyphLookupTable: CSDictionary<number, Glyph>;
-    readonly characterTable: CSArray<Character>;
+    readonly characterTable: Readonly<Character[]>;
     readonly characterLookupTable: CSDictionary<number, Character>;
     readonly atlasTexture: Texture2D;
-    atlasTextures: CSArray<Texture2D>;
+    atlasTextures: Readonly<Texture2D[]>;
     readonly atlasTextureCount: number;
     isMultiAtlasTexturesEnabled: boolean;
     getFontFeatures: boolean;
@@ -26612,8 +26612,8 @@ interface FontAsset extends TextAsset {
     readonly atlasPadding: number;
     readonly atlasRenderMode: GlyphRenderMode;
     readonly fontFeatureTable: FontFeatureTable;
-    fallbackFontAssetTable: CSArray<FontAsset>;
-    readonly fontWeightTable: CSArray<FontWeightPair>;
+    fallbackFontAssetTable: Readonly<FontAsset[]>;
+    readonly fontWeightTable: Readonly<FontWeightPair[]>;
     regularStyleWeight: number;
     regularStyleSpacing: number;
     boldStyleWeight: number;
@@ -26627,14 +26627,14 @@ interface FontAsset extends TextAsset {
     HasCharacter(character: number): boolean;
     HasCharacter(character: string, searchFallbacks: boolean, tryAddCharacter: boolean): boolean;
     HasCharacter(character: number, searchFallbacks: boolean, tryAddCharacter: boolean): boolean;
-    HasCharacters(text: string, missingCharacters: CSArray<string>): boolean;
-    HasCharacters(text: string, missingCharacters: CSArray<number>, searchFallbacks: boolean, tryAddCharacter: boolean): boolean;
+    HasCharacters(text: string, missingCharacters: Readonly<string[]>): boolean;
+    HasCharacters(text: string, missingCharacters: Readonly<number[]>, searchFallbacks: boolean, tryAddCharacter: boolean): boolean;
     HasCharacters(text: string): boolean;
     ReadFontAssetDefinition(): void;
-    TryAddCharacters(unicodes: CSArray<number>, includeFontFeatures: boolean): boolean;
-    TryAddCharacters(unicodes: CSArray<number>, missingUnicodes: CSArray<number>, includeFontFeatures: boolean): boolean;
+    TryAddCharacters(unicodes: Readonly<number[]>, includeFontFeatures: boolean): boolean;
+    TryAddCharacters(unicodes: Readonly<number[]>, missingUnicodes: Readonly<number[]>, includeFontFeatures: boolean): boolean;
     TryAddCharacters(characters: string, includeFontFeatures: boolean): boolean;
-    TryAddCharacters(characters: string, missingCharacters: CSArray<string>, includeFontFeatures: boolean): boolean;
+    TryAddCharacters(characters: string, missingCharacters: Readonly<string[]>, includeFontFeatures: boolean): boolean;
 
 
 }
@@ -26727,7 +26727,7 @@ interface FontAssetConstructor {
     CreateFontAsset(font: Font): FontAsset;
     CreateFontAsset(font: Font, samplingPointSize: number, atlasPadding: number, renderMode: GlyphRenderMode, atlasWidth: number, atlasHeight: number, atlasPopulationMode: AtlasPopulationMode, enableMultiAtlasSupport: boolean): FontAsset;
     GetCharacters(fontAsset: FontAsset): string;
-    GetCharactersArray(fontAsset: FontAsset): CSArray<number>;
+    GetCharactersArray(fontAsset: FontAsset): Readonly<number[]>;
 
 }
 declare const FontAsset: FontAssetConstructor;
@@ -27426,25 +27426,25 @@ interface IResolvedStyle {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-transitionDelay.html | UIElements.IResolvedStyle.transitionDelay}
      */
-    readonly transitionDelay: CSArray<TimeValue>;
+    readonly transitionDelay: Readonly<TimeValue[]>;
     /**
      * Time a transition animation should take to complete.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-transitionDuration.html | UIElements.IResolvedStyle.transitionDuration}
      */
-    readonly transitionDuration: CSArray<TimeValue>;
+    readonly transitionDuration: Readonly<TimeValue[]>;
     /**
      * Properties to which a transition effect should be applied.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-transitionProperty.html | UIElements.IResolvedStyle.transitionProperty}
      */
-    readonly transitionProperty: CSArray<StylePropertyName>;
+    readonly transitionProperty: Readonly<StylePropertyName[]>;
     /**
      * Determines how intermediate values are calculated for properties modified by a transition effect.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-transitionTimingFunction.html | UIElements.IResolvedStyle.transitionTimingFunction}
      */
-    readonly transitionTimingFunction: CSArray<EasingFunction>;
+    readonly transitionTimingFunction: Readonly<EasingFunction[]>;
     /**
      * A translate transformation.
      * 
@@ -28319,11 +28319,11 @@ interface IProperty {
     /**
      * Returns all attribute of the given type.
      */
-    GetAttributes<TAttribute>(): CSArray<TAttribute>;
+    GetAttributes<TAttribute>(): Readonly<TAttribute[]>;
     /**
      * Returns all attribute of the given type.
      */
-    GetAttributes(): CSArray<unknown>;
+    GetAttributes(): Readonly<unknown[]>;
     /**
      * Returns true if the property has any attributes of the given type.
      */
@@ -28364,7 +28364,7 @@ interface Hierarchy {
 
 
     Add(child: VisualElement): void;
-    Children(): CSArray<VisualElement>;
+    Children(): Readonly<VisualElement[]>;
     Clear(): void;
     ElementAt(index: number): VisualElement;
     Equals(other: Hierarchy): boolean;
@@ -28426,7 +28426,7 @@ interface IPanel {
      * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IPanel.Pick.html | UIElements.IPanel.Pick}
      */
     Pick(point: Vector2): VisualElement;
-    PickAll(point: Vector2, picked: CSArray<VisualElement>): VisualElement;
+    PickAll(point: Vector2, picked: Readonly<VisualElement[]>): VisualElement;
 
 
 }
@@ -28481,13 +28481,13 @@ interface VisualTreeAsset extends ScriptableObject {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.VisualTreeAsset-templateDependencies.html | UIElements.VisualTreeAsset.templateDependencies}
      */
-    readonly templateDependencies: CSArray<VisualTreeAsset>;
+    readonly templateDependencies: Readonly<VisualTreeAsset[]>;
     /**
      * The stylesheets used by this VisualTreeAsset.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.VisualTreeAsset-stylesheets.html | UIElements.VisualTreeAsset.stylesheets}
      */
-    readonly stylesheets: CSArray<StyleSheet>;
+    readonly stylesheets: Readonly<StyleSheet[]>;
     /**
      * A hash value computed from the template content.
      * 
@@ -29130,8 +29130,8 @@ interface StyleTransformOriginConstructor {
 }
 declare const StyleTransformOrigin: StyleTransformOriginConstructor;
     
-interface StyleList<T> extends IStyleValue<CSArray<T>> {
-    value: CSArray<T>;
+interface StyleList<T> extends IStyleValue<Readonly<T[]>> {
+    value: Readonly<T[]>;
     keyword: StyleKeyword;
 
 
@@ -29147,7 +29147,7 @@ interface StyleList<T> extends IStyleValue<CSArray<T>> {
 interface StyleListConstructor {
 
 
-    new(v: CSArray<T>): StyleList<T>;
+    new(v: Readonly<T[]>): StyleList<T>;
     new(keyword: StyleKeyword): StyleList<T>;
 
 
@@ -29308,7 +29308,7 @@ interface ICustomStyle {
     TryGetValue(property: CustomStyleProperty<Sprite>, value: unknown): boolean;
     TryGetValue(property: CustomStyleProperty<VectorImage>, value: unknown): boolean;
     TryGetValue<T>(property: CustomStyleProperty<T>, value: unknown): boolean;
-    TryGetValue(property: CustomStyleProperty<string>, value: CSArray<string>): boolean;
+    TryGetValue(property: CustomStyleProperty<string>, value: Readonly<string[]>): boolean;
 
 
 }
@@ -30026,12 +30026,12 @@ declare const TextField: TextFieldConstructor;
 interface GameConfig extends ScriptableObject {
     gameId: string;
     startingScene: SceneAsset;
-    gameScenes: CSArray<Object>;
-    packages: CSArray<AirshipPackageDocument>;
-    tags: CSArray<string>;
-    gameLayers: CSArray<string>;
-    gameTags: CSArray<string>;
-    physicsMatrix: CSArray<boolean>;
+    gameScenes: Readonly<Object[]>;
+    packages: Readonly<AirshipPackageDocument[]>;
+    tags: Readonly<string[]>;
+    gameLayers: Readonly<string[]>;
+    gameTags: Readonly<string[]>;
+    physicsMatrix: Readonly<boolean[]>;
     gravity: Vector3;
     bounceThreshold: number;
     defaultMaxDepenetrationVelocity: number;
@@ -30047,8 +30047,8 @@ interface GameConfig extends ScriptableObject {
     DeserializeSettings(): void;
     SerializeSettings(): void;
     ToJson(): string;
-    TryGetRuntimeTag(userTag: string, runtimeTag: CSArray<string>): boolean;
-    TryGetUserTag(runtimeTag: string, userTag: CSArray<string>): boolean;
+    TryGetRuntimeTag(userTag: string, runtimeTag: Readonly<string[]>): boolean;
+    TryGetUserTag(runtimeTag: string, userTag: Readonly<string[]>): boolean;
 
 
 }
@@ -30297,7 +30297,7 @@ interface Light extends Behaviour {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Light-layerShadowCullDistances.html | Light.layerShadowCullDistances}
      */
-    layerShadowCullDistances: CSArray<number>;
+    layerShadowCullDistances: Readonly<number[]>;
     /**
      * The size of a directional light's cookie.
      * 
@@ -30379,7 +30379,7 @@ interface Light extends Behaviour {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Light.GetCommandBuffers.html | Light.GetCommandBuffers}
      */
-    GetCommandBuffers(evt: LightEvent): CSArray<CommandBuffer>;
+    GetCommandBuffers(evt: LightEvent): Readonly<CommandBuffer[]>;
     /**
      * Remove all command buffers set on this light.
      * 
@@ -30643,7 +30643,7 @@ interface StartupConfig {
     StartingSceneName: string;
     GamePublishVersion: string;
     CdnUrl: string;
-    packages: CSArray<AirshipPackageDocument>;
+    packages: Readonly<AirshipPackageDocument[]>;
 
 
 
@@ -30769,8 +30769,8 @@ declare const GameServerSpec: GameServerSpecConstructor;
 interface GameServerStatus {
     readonly State: string;
     readonly Address: string;
-    readonly Addresses: CSArray<StatusAddresses>;
-    readonly Ports: CSArray<StatusPort>;
+    readonly Addresses: Readonly<StatusAddresses[]>;
+    readonly Ports: Readonly<StatusPort[]>;
 
 
 
@@ -30892,7 +30892,7 @@ interface AgonesBetaSdk extends AgonesSdk {
     GetCounterCount(key: string): number;
     GetListCapacity(key: string): number;
     GetListLength(key: string): number;
-    GetListValues(key: string): CSArray<string>;
+    GetListValues(key: string): Readonly<string[]>;
     IncrementCounter(key: string, amount: number): boolean;
     ListContains(key: string, value: string): boolean;
     SetCounterCapacity(key: string, amount: number): boolean;
@@ -30919,7 +30919,7 @@ interface NetworkConnection {
     authenticationData: unknown;
     isReady: boolean;
     lastMessageTime: number;
-    readonly owned: CSArray<NetworkIdentity>;
+    readonly owned: Readonly<NetworkIdentity[]>;
     readonly identity: NetworkIdentity;
     readonly remoteTimeStamp: number;
 
@@ -30935,7 +30935,7 @@ interface NetworkConnection {
     
     
 interface NetworkConnectionToClient extends NetworkConnection {
-    readonly observing: CSArray<NetworkIdentity>;
+    readonly observing: Readonly<NetworkIdentity[]>;
     unbatcher: Unbatcher;
     remoteTimeline: number;
     remoteTimescale: number;
@@ -30957,8 +30957,8 @@ interface Unbatcher {
 
 
 
-    AddBatch(batch: CSArray<number>): boolean;
-    GetNextMessage(message: CSArray<number>, remoteTimeStamp: unknown): boolean;
+    AddBatch(batch: Readonly<number[]>): boolean;
+    GetNextMessage(message: Readonly<number[]>, remoteTimeStamp: unknown): boolean;
 
 
 }
@@ -31033,9 +31033,9 @@ interface NetworkReader {
 
     Read<T>(): T;
     ReadByte(): number;
-    ReadBytes(bytes: CSArray<number>, count: number): CSArray<number>;
-    ReadBytesSegment(count: number): CSArray<number>;
-    SetBuffer(segment: CSArray<number>): void;
+    ReadBytes(bytes: Readonly<number[]>, count: number): Readonly<number[]>;
+    ReadBytesSegment(count: number): Readonly<number[]>;
+    SetBuffer(segment: Readonly<number[]>): void;
     ToString(): string;
 
 
@@ -31045,7 +31045,7 @@ interface NetworkReaderConstructor {
     AllocationLimit: number;
 
 
-    new(segment: CSArray<number>): NetworkReader;
+    new(segment: Readonly<number[]>): NetworkReader;
 
 
 
@@ -31059,12 +31059,12 @@ interface NetworkWriter {
 
 
     Reset(): void;
-    ToArray(): CSArray<number>;
-    ToArraySegment(): CSArray<number>;
+    ToArray(): Readonly<number[]>;
+    ToArraySegment(): Readonly<number[]>;
     ToString(): string;
     Write<T>(value: T): void;
     WriteByte(value: number): void;
-    WriteBytes(array: CSArray<number>, offset: number, count: number): void;
+    WriteBytes(array: Readonly<number[]>, offset: number, count: number): void;
     WriteBytes(ptr: unknown, offset: number, size: number): boolean;
 
 
@@ -31290,7 +31290,7 @@ interface SkinnedMeshRenderer extends Renderer {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/SkinnedMeshRenderer-bones.html | SkinnedMeshRenderer.bones}
      */
-    bones: CSArray<Transform>;
+    bones: Readonly<Transform[]>;
     /**
      * The mesh used for skinning.
      * 
@@ -31463,7 +31463,7 @@ interface Collision {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Collision-contacts.html | Collision.contacts}
      */
-    readonly contacts: CSArray<ContactPoint>;
+    readonly contacts: Readonly<ContactPoint[]>;
 
 
 
@@ -31480,8 +31480,8 @@ interface Collision {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Collision.GetContacts.html | Collision.GetContacts}
      */
-    GetContacts(contacts: CSArray<ContactPoint>): number;
-    GetContacts(contacts: CSArray<ContactPoint>): number;
+    GetContacts(contacts: Readonly<ContactPoint[]>): number;
+    GetContacts(contacts: Readonly<ContactPoint[]>): number;
 
 
 }
@@ -31579,7 +31579,7 @@ interface PhysicsExt {
     
 interface SphereCastReturnData {
     readonly HitCount: number;
-    readonly RaycastHits: CSArray<RaycastHit>;
+    readonly RaycastHits: Readonly<RaycastHit[]>;
 
 
 
@@ -31590,7 +31590,7 @@ interface SphereCastReturnData {
 interface SphereCastReturnDataConstructor {
 
 
-    new(hitCount: number, raycastHits: CSArray<RaycastHit>): SphereCastReturnData;
+    new(hitCount: number, raycastHits: Readonly<RaycastHit[]>): SphereCastReturnData;
 
 
 
@@ -32379,13 +32379,13 @@ interface ParticleSystem extends Component {
      */
     Emit(count: number): void;
     Emit(emitParams: EmitParams, count: number): void;
-    GetCustomParticleData(customData: CSArray<Vector4>, streamIndex: ParticleSystemCustomData): number;
-    GetParticles(particles: CSArray<Particle>, size: number, offset: number): number;
-    GetParticles(particles: CSArray<Particle>, size: number): number;
-    GetParticles(particles: CSArray<Particle>): number;
-    GetParticles(particles: CSArray<Particle>, size: number, offset: number): number;
-    GetParticles(particles: CSArray<Particle>, size: number): number;
-    GetParticles(particles: CSArray<Particle>): number;
+    GetCustomParticleData(customData: Readonly<Vector4[]>, streamIndex: ParticleSystemCustomData): number;
+    GetParticles(particles: Readonly<Particle[]>, size: number, offset: number): number;
+    GetParticles(particles: Readonly<Particle[]>, size: number): number;
+    GetParticles(particles: Readonly<Particle[]>): number;
+    GetParticles(particles: Readonly<Particle[]>, size: number, offset: number): number;
+    GetParticles(particles: Readonly<Particle[]>, size: number): number;
+    GetParticles(particles: Readonly<Particle[]>): number;
     /**
      * Returns all the data that relates to the current internal state of the Particle System.
      * 
@@ -32438,13 +32438,13 @@ interface ParticleSystem extends Component {
      * More info: {@link https://docs.unity3d.com/ScriptReference/ParticleSystem.Play.html | ParticleSystem.Play}
      */
     Play(): void;
-    SetCustomParticleData(customData: CSArray<Vector4>, streamIndex: ParticleSystemCustomData): void;
-    SetParticles(particles: CSArray<Particle>, size: number, offset: number): void;
-    SetParticles(particles: CSArray<Particle>, size: number): void;
-    SetParticles(particles: CSArray<Particle>): void;
-    SetParticles(particles: CSArray<Particle>, size: number, offset: number): void;
-    SetParticles(particles: CSArray<Particle>, size: number): void;
-    SetParticles(particles: CSArray<Particle>): void;
+    SetCustomParticleData(customData: Readonly<Vector4[]>, streamIndex: ParticleSystemCustomData): void;
+    SetParticles(particles: Readonly<Particle[]>, size: number, offset: number): void;
+    SetParticles(particles: Readonly<Particle[]>, size: number): void;
+    SetParticles(particles: Readonly<Particle[]>): void;
+    SetParticles(particles: Readonly<Particle[]>, size: number, offset: number): void;
+    SetParticles(particles: Readonly<Particle[]>, size: number): void;
+    SetParticles(particles: Readonly<Particle[]>): void;
     SetPlaybackState(playbackState: PlaybackState): void;
     SetTrails(trailData: Trails): void;
     /**
@@ -32510,7 +32510,7 @@ interface ParticleSystem extends Component {
      */
     TriggerSubEmitter(subEmitterIndex: number): void;
     TriggerSubEmitter(subEmitterIndex: number, particle: unknown): void;
-    TriggerSubEmitter(subEmitterIndex: number, particles: CSArray<Particle>): void;
+    TriggerSubEmitter(subEmitterIndex: number, particles: Readonly<Particle[]>): void;
 
 
 }
@@ -32622,13 +32622,13 @@ interface Gradient {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Gradient-colorKeys.html | Gradient.colorKeys}
      */
-    colorKeys: CSArray<GradientColorKey>;
+    colorKeys: Readonly<GradientColorKey[]>;
     /**
      * All alpha keys defined in the gradient.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Gradient-alphaKeys.html | Gradient.alphaKeys}
      */
-    alphaKeys: CSArray<GradientAlphaKey>;
+    alphaKeys: Readonly<GradientAlphaKey[]>;
     /**
      * Controls how the gradient colors are interpolated.
      * 
@@ -32661,7 +32661,7 @@ interface Gradient {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Gradient.SetKeys.html | Gradient.SetKeys}
      */
-    SetKeys(colorKeys: CSArray<GradientColorKey>, alphaKeys: CSArray<GradientAlphaKey>): void;
+    SetKeys(colorKeys: Readonly<GradientColorKey[]>, alphaKeys: Readonly<GradientAlphaKey[]>): void;
 
 
 }
@@ -32740,10 +32740,10 @@ interface EmissionModule {
 
 
     GetBurst(index: number): Burst;
-    GetBursts(bursts: CSArray<Burst>): number;
+    GetBursts(bursts: Readonly<Burst[]>): number;
     SetBurst(index: number, burst: Burst): void;
-    SetBursts(bursts: CSArray<Burst>): void;
-    SetBursts(bursts: CSArray<Burst>, size: number): void;
+    SetBursts(bursts: Readonly<Burst[]>): void;
+    SetBursts(bursts: Readonly<Burst[]>, size: number): void;
 
 
 }
@@ -33327,33 +33327,33 @@ interface Texture3D extends Texture {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Texture3D.GetPixelData.html | Texture3D.GetPixelData}
      */
-    GetPixelData<T>(mipLevel: number): CSArray<T>;
+    GetPixelData<T>(mipLevel: number): Readonly<T[]>;
     /**
      * Gets the pixel color data for a mipmap level as Color structs.
      * @param miplevel The mipmap level to get. The range is 0 through the texture's Texture.mipmapCount. The default value is 0.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Texture3D.GetPixels.html | Texture3D.GetPixels}
      */
-    GetPixels(miplevel: number): CSArray<Color>;
+    GetPixels(miplevel: number): Readonly<Color[]>;
     /**
      * Gets the pixel color data for a mipmap level as Color structs.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Texture3D.GetPixels.html | Texture3D.GetPixels}
      */
-    GetPixels(): CSArray<Color>;
+    GetPixels(): Readonly<Color[]>;
     /**
      * Gets the pixel color data for a mipmap level as Color32 structs.
      * @param miplevel The mipmap level to get. The range is 0 through the texture's Texture.mipmapCount. The default value is 0.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Texture3D.GetPixels32.html | Texture3D.GetPixels32}
      */
-    GetPixels32(miplevel: number): CSArray<Color32>;
+    GetPixels32(miplevel: number): Readonly<Color32[]>;
     /**
      * Gets the pixel color data for a mipmap level as Color32 structs.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Texture3D.GetPixels32.html | Texture3D.GetPixels32}
      */
-    GetPixels32(): CSArray<Color32>;
+    GetPixels32(): Readonly<Color32[]>;
     /**
      * Sets the pixel color at coordinates (x, y, z).
      * @param x The x coordinate of the pixel to set. The range is 0 through the (texture width - 1).
@@ -33375,8 +33375,8 @@ interface Texture3D extends Texture {
      * More info: {@link https://docs.unity3d.com/ScriptReference/Texture3D.SetPixel.html | Texture3D.SetPixel}
      */
     SetPixel(x: number, y: number, z: number, color: Color, mipLevel: number): void;
-    SetPixelData<T>(data: CSArray<T>, mipLevel: number, sourceDataStartIndex: number): void;
-    SetPixelData<T>(data: CSArray<T>, mipLevel: number, sourceDataStartIndex: number): void;
+    SetPixelData<T>(data: Readonly<T[]>, mipLevel: number, sourceDataStartIndex: number): void;
+    SetPixelData<T>(data: Readonly<T[]>, mipLevel: number, sourceDataStartIndex: number): void;
     /**
      * Sets the pixel colors of an entire mipmap level.
      * @param colors The array of pixel colours to use. This is a 3D texture flattened to a 1D array.
@@ -33384,14 +33384,14 @@ interface Texture3D extends Texture {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Texture3D.SetPixels.html | Texture3D.SetPixels}
      */
-    SetPixels(colors: CSArray<Color>, miplevel: number): void;
+    SetPixels(colors: Readonly<Color[]>, miplevel: number): void;
     /**
      * Sets the pixel colors of an entire mipmap level.
      * @param colors The array of pixel colours to use. This is a 3D texture flattened to a 1D array.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Texture3D.SetPixels.html | Texture3D.SetPixels}
      */
-    SetPixels(colors: CSArray<Color>): void;
+    SetPixels(colors: Readonly<Color[]>): void;
     /**
      * Sets the pixel colors of an entire mipmap level.
      * @param colors The array of pixel colours to use. This is a 3D texture flattened to a 1D array.
@@ -33399,14 +33399,14 @@ interface Texture3D extends Texture {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Texture3D.SetPixels32.html | Texture3D.SetPixels32}
      */
-    SetPixels32(colors: CSArray<Color32>, miplevel: number): void;
+    SetPixels32(colors: Readonly<Color32[]>, miplevel: number): void;
     /**
      * Sets the pixel colors of an entire mipmap level.
      * @param colors The array of pixel colours to use. This is a 3D texture flattened to a 1D array.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Texture3D.SetPixels32.html | Texture3D.SetPixels32}
      */
-    SetPixels32(colors: CSArray<Color32>): void;
+    SetPixels32(colors: Readonly<Color32[]>): void;
     /**
      * Updates Unity texture to use different native texture object.
      * @param nativeTex Native 3D texture object.
@@ -33444,7 +33444,7 @@ interface ParticleSystemForceFieldConstructor {
     new(): ParticleSystemForceField;
 
 
-    FindAll(): CSArray<ParticleSystemForceField>;
+    FindAll(): Readonly<ParticleSystemForceField[]>;
 
 }
 declare const ParticleSystemForceField: ParticleSystemForceFieldConstructor;
@@ -33995,24 +33995,24 @@ interface ParticleSystemRenderer extends Renderer {
      * More info: {@link https://docs.unity3d.com/ScriptReference/ParticleSystemRenderer.BakeTrailsTexture.html | ParticleSystemRenderer.BakeTrailsTexture}
      */
     BakeTrailsTexture(verticesTexture: unknown, indicesTexture: unknown, camera: Camera, options: ParticleSystemBakeTextureOptions): number;
-    GetActiveTrailVertexStreams(streams: CSArray<ParticleSystemVertexStream>): void;
-    GetActiveVertexStreams(streams: CSArray<ParticleSystemVertexStream>): void;
+    GetActiveTrailVertexStreams(streams: Readonly<ParticleSystemVertexStream[]>): void;
+    GetActiveVertexStreams(streams: Readonly<ParticleSystemVertexStream[]>): void;
     /**
      * Gets the array of Meshes to use when selecting particle meshes.
      * @param meshes An array this function populates with the list of Meshes the ParticleSystemRenderer uses for particle Mesh selection. If the array is smaller than the number of Meshes, this function cannot populate it with every Mesh. If the array is larger than the number of Meshes, this function ignores indices greater than the number of Meshes. Use ParticleSystemRenderer.meshCount to get the number of Meshes the ParticleSystemRenderer has.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/ParticleSystemRenderer.GetMeshes.html | ParticleSystemRenderer.GetMeshes}
      */
-    GetMeshes(meshes: CSArray<Mesh>): number;
+    GetMeshes(meshes: Readonly<Mesh[]>): number;
     /**
      * Gets the array of Mesh weightings to use when randomly selecting particle meshes.
      * @param weightings An array this function populates with the list of Mesh weightings the ParticleSystemRenderer uses for particle Mesh selection. If the array is smaller than the number of weights, this function cannot populate it with every weight. If the array is larger than the number of weights, this function ignores indices greater than the number of weights. Use ParticleSystemRenderer.meshCount to get the number of Meshes, and thus weights, the ParticleSystemRenderer has.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/ParticleSystemRenderer.GetMeshWeightings.html | ParticleSystemRenderer.GetMeshWeightings}
      */
-    GetMeshWeightings(weightings: CSArray<number>): number;
-    SetActiveTrailVertexStreams(streams: CSArray<ParticleSystemVertexStream>): void;
-    SetActiveVertexStreams(streams: CSArray<ParticleSystemVertexStream>): void;
+    GetMeshWeightings(weightings: Readonly<number[]>): number;
+    SetActiveTrailVertexStreams(streams: Readonly<ParticleSystemVertexStream[]>): void;
+    SetActiveVertexStreams(streams: Readonly<ParticleSystemVertexStream[]>): void;
     /**
      * Sets the Meshes that the ParticleSystemRenderer uses to display particles when the ParticleSystemRenderer.renderMode is set to ParticleSystemRenderMode.Mesh.
      * @param meshes The array of Meshes to use.
@@ -34020,14 +34020,14 @@ interface ParticleSystemRenderer extends Renderer {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/ParticleSystemRenderer.SetMeshes.html | ParticleSystemRenderer.SetMeshes}
      */
-    SetMeshes(meshes: CSArray<Mesh>, size: number): void;
+    SetMeshes(meshes: Readonly<Mesh[]>, size: number): void;
     /**
      * Sets the Meshes that the ParticleSystemRenderer uses to display particles when the ParticleSystemRenderer.renderMode is set to ParticleSystemRenderMode.Mesh.
      * @param meshes The array of Meshes to use.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/ParticleSystemRenderer.SetMeshes.html | ParticleSystemRenderer.SetMeshes}
      */
-    SetMeshes(meshes: CSArray<Mesh>): void;
+    SetMeshes(meshes: Readonly<Mesh[]>): void;
     /**
      * Sets the weights that the ParticleSystemRenderer uses to assign Meshes to particles.
      * @param weightings The array of weights to use.
@@ -34035,14 +34035,14 @@ interface ParticleSystemRenderer extends Renderer {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/ParticleSystemRenderer.SetMeshWeightings.html | ParticleSystemRenderer.SetMeshWeightings}
      */
-    SetMeshWeightings(weightings: CSArray<number>, size: number): void;
+    SetMeshWeightings(weightings: Readonly<number[]>, size: number): void;
     /**
      * Sets the weights that the ParticleSystemRenderer uses to assign Meshes to particles.
      * @param weightings The array of weights to use.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/ParticleSystemRenderer.SetMeshWeightings.html | ParticleSystemRenderer.SetMeshWeightings}
      */
-    SetMeshWeightings(weightings: CSArray<number>): void;
+    SetMeshWeightings(weightings: Readonly<number[]>): void;
 
 
 }
@@ -34222,15 +34222,15 @@ interface ProfilerConstructor {
     BeginSample(name: string, targetObject: Object): void;
     BeginThreadProfiling(threadGroupName: string, threadName: string): void;
     EmitFrameMetaData(id: unknown, tag: number, data: unknown): void;
-    EmitFrameMetaData<T>(id: unknown, tag: number, data: CSArray<T>): void;
-    EmitFrameMetaData<T>(id: unknown, tag: number, data: CSArray<T>): void;
+    EmitFrameMetaData<T>(id: unknown, tag: number, data: Readonly<T[]>): void;
+    EmitFrameMetaData<T>(id: unknown, tag: number, data: Readonly<T[]>): void;
     EmitSessionMetaData(id: unknown, tag: number, data: unknown): void;
-    EmitSessionMetaData<T>(id: unknown, tag: number, data: CSArray<T>): void;
-    EmitSessionMetaData<T>(id: unknown, tag: number, data: CSArray<T>): void;
+    EmitSessionMetaData<T>(id: unknown, tag: number, data: Readonly<T[]>): void;
+    EmitSessionMetaData<T>(id: unknown, tag: number, data: Readonly<T[]>): void;
     EndSample(): void;
     EndThreadProfiling(): void;
-    GetAllCategories(categories: CSArray<ProfilerCategory>): void;
-    GetAllCategories(categories: CSArray<ProfilerCategory>): void;
+    GetAllCategories(categories: Readonly<ProfilerCategory[]>): void;
+    GetAllCategories(categories: Readonly<ProfilerCategory[]>): void;
     GetAllocatedMemoryForGraphicsDriver(): number;
     GetAreaEnabled(area: ProfilerArea): boolean;
     GetCategoriesCount(): number;
@@ -34239,7 +34239,7 @@ interface ProfilerConstructor {
     GetRuntimeMemorySizeLong(o: Object): number;
     GetTempAllocatorSize(): number;
     GetTotalAllocatedMemoryLong(): number;
-    GetTotalFragmentationInfo(stats: CSArray<number>): number;
+    GetTotalFragmentationInfo(stats: Readonly<number[]>): number;
     GetTotalReservedMemoryLong(): number;
     GetTotalUnusedReservedMemoryLong(): number;
     IsCategoryEnabled(category: ProfilerCategory): boolean;
@@ -34464,7 +34464,7 @@ interface TMP_InputValidator extends ScriptableObject {
 
 
 
-    Validate(text: CSArray<string>, pos: unknown, ch: string): string;
+    Validate(text: Readonly<string[]>, pos: unknown, ch: string): string;
 
 
 }
@@ -34505,16 +34505,16 @@ interface Dropdown extends Selectable, ISubmitHandler, IPointerClickHandler, ICa
     captionImage: Image;
     itemText: Text;
     itemImage: Image;
-    options: CSArray<OptionData>;
+    options: Readonly<OptionData[]>;
     alphaFadeSpeed: number;
     value: number;
 
     readonly onValueChanged: MonoSignal<void>;
 
 
-    AddOptions(options: CSArray<OptionData>): void;
-    AddOptions(options: CSArray<string>): void;
-    AddOptions(options: CSArray<Sprite>): void;
+    AddOptions(options: Readonly<OptionData[]>): void;
+    AddOptions(options: Readonly<string[]>): void;
+    AddOptions(options: Readonly<Sprite[]>): void;
     ClearOptions(): void;
     Hide(): void;
     OnCancel(eventData: BaseEventData): void;
@@ -34576,19 +34576,19 @@ interface TextGenerator {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/TextGenerator-verts.html | TextGenerator.verts}
      */
-    readonly verts: CSArray<UIVertex>;
+    readonly verts: Readonly<UIVertex[]>;
     /**
      * Array of generated characters.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/TextGenerator-characters.html | TextGenerator.characters}
      */
-    readonly characters: CSArray<UICharInfo>;
+    readonly characters: Readonly<UICharInfo[]>;
     /**
      * Information about each generated text line.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/TextGenerator-lines.html | TextGenerator.lines}
      */
-    readonly lines: CSArray<UILineInfo>;
+    readonly lines: Readonly<UILineInfo[]>;
     /**
      * Extents of the generated text in rect format.
      * 
@@ -34622,20 +34622,20 @@ interface TextGenerator {
 
 
 
-    GetCharacters(characters: CSArray<UICharInfo>): void;
+    GetCharacters(characters: Readonly<UICharInfo[]>): void;
     /**
      * Returns the current UICharInfo.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/TextGenerator.GetCharactersArray.html | TextGenerator.GetCharactersArray}
      */
-    GetCharactersArray(): CSArray<UICharInfo>;
-    GetLines(lines: CSArray<UILineInfo>): void;
+    GetCharactersArray(): Readonly<UICharInfo[]>;
+    GetLines(lines: Readonly<UILineInfo[]>): void;
     /**
      * Returns the current UILineInfo.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/TextGenerator.GetLinesArray.html | TextGenerator.GetLinesArray}
      */
-    GetLinesArray(): CSArray<UILineInfo>;
+    GetLinesArray(): Readonly<UILineInfo[]>;
     /**
      * Given a string and settings, returns the preferred height for a container that would hold this text.
      * @param str Generation text.
@@ -34652,13 +34652,13 @@ interface TextGenerator {
      * More info: {@link https://docs.unity3d.com/ScriptReference/TextGenerator.GetPreferredWidth.html | TextGenerator.GetPreferredWidth}
      */
     GetPreferredWidth(str: string, settings: TextGenerationSettings): number;
-    GetVertices(vertices: CSArray<UIVertex>): void;
+    GetVertices(vertices: Readonly<UIVertex[]>): void;
     /**
      * Returns the current UIVertex array.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/TextGenerator.GetVerticesArray.html | TextGenerator.GetVerticesArray}
      */
-    GetVerticesArray(): CSArray<UIVertex>;
+    GetVerticesArray(): Readonly<UIVertex[]>;
     /**
      * Mark the text generator as invalid. This will force a full text generation the next time Populate is called.
      * 
@@ -34786,7 +34786,7 @@ interface TMP_Dropdown extends Selectable, ISubmitHandler, IPointerClickHandler,
     placeholder: Graphic;
     itemText: TMP_Text;
     itemImage: Image;
-    options: CSArray<OptionData>;
+    options: Readonly<OptionData[]>;
     alphaFadeSpeed: number;
     value: number;
     readonly IsExpanded: boolean;
@@ -34795,9 +34795,9 @@ interface TMP_Dropdown extends Selectable, ISubmitHandler, IPointerClickHandler,
     readonly onValueChanged: MonoSignal<void>;
 
 
-    AddOptions(options: CSArray<OptionData>): void;
-    AddOptions(options: CSArray<string>): void;
-    AddOptions(options: CSArray<Sprite>): void;
+    AddOptions(options: Readonly<OptionData[]>): void;
+    AddOptions(options: Readonly<string[]>): void;
+    AddOptions(options: Readonly<Sprite[]>): void;
     ClearOptions(): void;
     Hide(): void;
     OnCancel(eventData: BaseEventData): void;
@@ -35084,7 +35084,7 @@ interface AudioSource extends AudioBehaviour {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/AudioSource.GetOutputData.html | AudioSource.GetOutputData}
      */
-    GetOutputData(samples: CSArray<number>, channel: number): void;
+    GetOutputData(samples: Readonly<number[]>, channel: number): void;
     /**
      * Reads a user-defined parameter of a custom spatializer effect that is attached to an AudioSource.
      * @param index Zero-based index of user-defined parameter to be read.
@@ -35101,7 +35101,7 @@ interface AudioSource extends AudioBehaviour {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/AudioSource.GetSpectrumData.html | AudioSource.GetSpectrumData}
      */
-    GetSpectrumData(samples: CSArray<number>, channel: number, window: FFTWindow): void;
+    GetSpectrumData(samples: Readonly<number[]>, channel: number, window: FFTWindow): void;
     /**
      * Pauses playing the clip.
      * 
@@ -35286,7 +35286,7 @@ interface AudioClip extends AudioResource {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/AudioClip.GetData.html | AudioClip.GetData}
      */
-    GetData(data: CSArray<number>, offsetSamples: number): boolean;
+    GetData(data: Readonly<number[]>, offsetSamples: number): boolean;
     /**
      * Loads the audio data of a clip. Clips that have &quot;Preload Audio Data&quot; set will load the audio data automatically.
      * 
@@ -35298,7 +35298,7 @@ interface AudioClip extends AudioResource {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/AudioClip.SetData.html | AudioClip.SetData}
      */
-    SetData(data: CSArray<number>, offsetSamples: number): boolean;
+    SetData(data: Readonly<number[]>, offsetSamples: number): boolean;
     SetData(data: unknown, offsetSamples: number): boolean;
     /**
      * Unloads the audio data associated with the clip. This works only for AudioClips that are based on actual sound file assets.
@@ -35314,9 +35314,9 @@ interface PCMReaderCallback {
 
 
 
-    BeginInvoke(data: CSArray<number>, callback: unknown, object: unknown): unknown;
+    BeginInvoke(data: Readonly<number[]>, callback: unknown, object: unknown): unknown;
     EndInvoke(result: unknown): void;
-    Invoke(data: CSArray<number>): void;
+    Invoke(data: Readonly<number[]>): void;
 
 
 }
@@ -35410,7 +35410,7 @@ interface AudioMixer extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Audio.AudioMixer.FindMatchingGroups.html | Audio.AudioMixer.FindMatchingGroups}
      */
-    FindMatchingGroups(subPath: string): CSArray<AudioMixerGroup>;
+    FindMatchingGroups(subPath: string): Readonly<AudioMixerGroup[]>;
     /**
      * The name must be an exact match.
      * @param name Name of snapshot object to be returned.
@@ -35444,7 +35444,7 @@ Note: Calling this function in MonoBehaviour.Awake will result in unexpected beh
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Audio.AudioMixer.TransitionToSnapshots.html | Audio.AudioMixer.TransitionToSnapshots}
      */
-    TransitionToSnapshots(snapshots: CSArray<AudioMixerSnapshot>, weights: CSArray<number>, timeToReach: number): void;
+    TransitionToSnapshots(snapshots: Readonly<AudioMixerSnapshot[]>, weights: Readonly<number[]>, timeToReach: number): void;
 
 
 }
@@ -35554,7 +35554,7 @@ interface Bridge {
     
 interface IChatroomNetwork {
     readonly OwnID: number;
-    readonly PeerIDs: CSArray<number>;
+    readonly PeerIDs: Readonly<number[]>;
 
     readonly OnCreatedChatroom: MonoSignal<void>;
     readonly OnChatroomCreationFailed: MonoSignal<unknown>;
@@ -35581,7 +35581,7 @@ interface ChatroomAudioSegment {
     segmentIndex: number;
     frequency: number;
     channelCount: number;
-    samples: CSArray<number>;
+    samples: Readonly<number[]>;
 
 
 
@@ -35592,7 +35592,7 @@ interface ChatroomAudioSegment {
 interface AirshipUniVoiceNetwork extends NetworkBehaviour, IChatroomNetwork {
     agent: ChatroomAgent;
     readonly OwnID: number;
-    readonly PeerIDs: CSArray<number>;
+    readonly PeerIDs: Readonly<number[]>;
 
     readonly OnCreatedChatroom: MonoSignal<void>;
     readonly OnChatroomCreationFailed: MonoSignal<unknown>;
@@ -35609,14 +35609,14 @@ interface AirshipUniVoiceNetwork extends NetworkBehaviour, IChatroomNetwork {
     BroadcastAudioSegment(data: ChatroomAudioSegment): void;
     CloseChatroom(data: unknown): void;
     Dispose(): void;
-    FromByteArray<T>(data: CSArray<number>): T;
+    FromByteArray<T>(data: Readonly<number[]>): T;
     HostChatroom(data: unknown): void;
     JoinChatroom(data: unknown): void;
     LeaveChatroom(data: unknown): void;
     NetworkServer_OnDisconnected(connection: NetworkConnectionToClient): void;
     OnReadyCommand(conn: NetworkConnectionToClient): void;
     OnStartServer(): void;
-    ToByteArray<T>(obj: T): CSArray<number>;
+    ToByteArray<T>(obj: T): Readonly<number[]>;
     Weaved(): boolean;
 
 
@@ -35645,7 +35645,7 @@ interface IAudioOutput {
 
 
 
-    Feed(segmentIndex: number, frequency: number, channelCount: number, audioSamples: CSArray<number>): void;
+    Feed(segmentIndex: number, frequency: number, channelCount: number, audioSamples: Readonly<number[]>): void;
     Feed(segment: ChatroomAudioSegment): void;
 
 
@@ -35676,7 +35676,7 @@ interface IAudioInput {
     readonly ChannelCount: number;
     readonly SegmentRate: number;
 
-    readonly OnSegmentReady: MonoSignal<number, CSArray<number>>;
+    readonly OnSegmentReady: MonoSignal<number, Readonly<number[]>>;
 
 
 
@@ -35727,11 +35727,11 @@ interface BridgeConstructor {
     GetAverageFPS(): number;
     GetCurrentFPS(): number;
     GetCurrentMicDeviceIndex(): number;
-    GetMicDevices(): CSArray<string>;
+    GetMicDevices(): Readonly<string[]>;
     GetMonoRam(): number;
     GetReservedRam(): number;
     GetScene(sceneName: string): Scene;
-    GetScenes(): CSArray<Scene>;
+    GetScenes(): Readonly<Scene[]>;
     GetVolume(): number;
     HasMicrophonePermission(): boolean;
     IsFullScreen(): boolean;
@@ -35740,18 +35740,18 @@ interface BridgeConstructor {
     LoadScene(sceneName: string, restartLuau: boolean, loadSceneMode: LoadSceneMode): void;
     LoadSceneAsyncFromAssetBundle(sceneName: string, loadSceneMode: LoadSceneMode): void;
     LoadSceneForConnection(conn: NetworkConnection, sceneName: string, makeActiveScene: boolean): void;
-    MakeColorArray(size: number): CSArray<Color>;
+    MakeColorArray(size: number): Readonly<Color[]>;
     MakeDefaultRenderTexture(width: number, height: number): RenderTexture;
     MakeDefaultSprite(texture: Texture2D): Sprite;
     MakeDefaultTexture2D(width: number, height: number): Texture2D;
-    MakeFloatArray(size: number): CSArray<number>;
-    MakeIntArray(size: number): CSArray<number>;
+    MakeFloatArray(size: number): Readonly<number[]>;
+    MakeIntArray(size: number): Readonly<number[]>;
     MakeMaterialPropertyBlock(): MaterialPropertyBlock;
     MakeMesh(): Mesh;
     MakeSprite(texture2D: Texture2D): Sprite;
     MakeSprite(texture: Texture2D, rect: Rect, pivot: Vector2, pixelsPerUnit: number): Sprite;
     MakeTexture2D(width: number, height: number, format: TextureFormat, mipChain: boolean, linear: boolean): Texture2D;
-    MakeVector3Array(size: number): CSArray<Vector3>;
+    MakeVector3Array(size: number): Readonly<Vector3[]>;
     MoveGameObjectToScene(gameObject: GameObject, scene: Scene): void;
     OpenDevConsole(): void;
     RemoveRichText(input: string): string;
@@ -35870,8 +35870,8 @@ interface VoxelBlocks extends MonoBehaviour {
     atlas: TexturePacker;
     loadedBlocks: CSDictionary<number, BlockDefinition>;
     rootAssetPath: string;
-    m_bundlePaths: CSArray<string>;
-    blockDefinionLists: CSArray<VoxelBlockDefinionList>;
+    m_bundlePaths: Readonly<string[]>;
+    blockDefinionLists: Readonly<VoxelBlockDefinionList[]>;
 
 
 
@@ -35947,18 +35947,18 @@ interface BlockDefinition {
     detail: boolean;
     doOcclusion: boolean;
     mesh: LodSet;
-    meshTiles: CSArray<LodSet>;
-    meshTileProcessingOrder: CSArray<number>;
-    meshContexts: CSArray<CSArray<VoxelMeshCopy>>;
-    meshContextsRandomTable: CSArray<number>;
+    meshTiles: Readonly<LodSet[]>;
+    meshTileProcessingOrder: Readonly<number[]>;
+    meshContexts: Readonly<Readonly<VoxelMeshCopy[]>[]>;
+    meshContextsRandomTable: Readonly<number[]>;
     editorTexture: Texture2D;
     topUvs: Rect;
     bottomUvs: Rect;
     sideUvs: Rect;
-    materials: CSArray<Material>;
-    materialInstanceIds: CSArray<number>;
+    materials: Readonly<Material[]>;
+    materialInstanceIds: Readonly<number[]>;
     meshMaterialInstanceId: number;
-    minecraftConversions: CSArray<string>;
+    minecraftConversions: Readonly<string[]>;
     blockId: number;
     blockTypeId: string;
     meshMaterial: Material;
@@ -35978,7 +35978,7 @@ interface VoxelBlockDefinition extends ScriptableObject {
     topTexture: TextureSet;
     sideTexture: TextureSet;
     bottomTexture: TextureSet;
-    quarterBlockMeshes: CSArray<VoxelQuarterBlockMeshDefinition>;
+    quarterBlockMeshes: Readonly<VoxelQuarterBlockMeshDefinition[]>;
     prefab: GameObject;
     staticMeshLOD0: GameObject;
     staticMeshLOD1: GameObject;
@@ -36118,14 +36118,14 @@ interface LodSet {
 }
     
 interface VoxelMeshCopy {
-    quaternions: CSArray<unknown>;
-    flip: CSArray<PrecalculatedFlip>;
-    rotation: CSArray<PrecalculatedRotation>;
-    srcUvs: CSArray<Vector2>;
-    srcColors: CSArray<Color32>;
-    srcVertices: CSArray<Vector3>;
-    srcNormals: CSArray<Vector3>;
-    surfaces: CSArray<Surface>;
+    quaternions: Readonly<unknown[]>;
+    flip: Readonly<PrecalculatedFlip[]>;
+    rotation: Readonly<PrecalculatedRotation[]>;
+    srcUvs: Readonly<Vector2[]>;
+    srcColors: Readonly<Color32[]>;
+    srcVertices: Readonly<Vector3[]>;
+    srcNormals: Readonly<Vector3[]>;
+    surfaces: Readonly<Surface[]>;
 
 
 
@@ -36136,9 +36136,9 @@ interface VoxelMeshCopy {
 }
     
 interface PrecalculatedFlip {
-    vertices: CSArray<Vector3>;
-    normals: CSArray<Vector3>;
-    surfaces: CSArray<Surface>;
+    vertices: Readonly<Vector3[]>;
+    normals: Readonly<Vector3[]>;
+    surfaces: Readonly<Surface[]>;
 
 
 
@@ -36147,7 +36147,7 @@ interface PrecalculatedFlip {
 }
     
 interface Surface {
-    triangles: CSArray<number>;
+    triangles: Readonly<number[]>;
     meshMaterial: Material;
     meshMaterialName: string;
     meshMaterialId: number;
@@ -36163,7 +36163,7 @@ interface Surface {
 interface SurfaceConstructor {
 
 
-    new(triangles: CSArray<number>, material: Material, materialName: string, materialId: number): Surface;
+    new(triangles: Readonly<number[]>, material: Material, materialName: string, materialId: number): Surface;
     new(): Surface;
 
 
@@ -36174,7 +36174,7 @@ declare const Surface: SurfaceConstructor;
 interface PrecalculatedFlipConstructor {
 
 
-    new(srcVertices: CSArray<Vector3>, srcNormals: CSArray<Vector3>, srcSurfaces: CSArray<Surface>, flip: Flips): PrecalculatedFlip;
+    new(srcVertices: Readonly<Vector3[]>, srcNormals: Readonly<Vector3[]>, srcSurfaces: Readonly<Surface[]>, flip: Flips): PrecalculatedFlip;
 
 
 
@@ -36182,8 +36182,8 @@ interface PrecalculatedFlipConstructor {
 declare const PrecalculatedFlip: PrecalculatedFlipConstructor;
     
 interface PrecalculatedRotation {
-    vertices: CSArray<Vector3>;
-    normals: CSArray<Vector3>;
+    vertices: Readonly<Vector3[]>;
+    normals: Readonly<Vector3[]>;
 
 
 
@@ -36194,7 +36194,7 @@ interface PrecalculatedRotation {
 interface PrecalculatedRotationConstructor {
 
 
-    new(srcVertices: CSArray<Vector3>, srcNormals: CSArray<Vector3>, rot: Rotations, quat: Quaternion): PrecalculatedRotation;
+    new(srcVertices: Readonly<Vector3[]>, srcNormals: Readonly<Vector3[]>, rot: Rotations, quat: Quaternion): PrecalculatedRotation;
 
 
 
@@ -36235,7 +36235,7 @@ declare const BlockDefinition: BlockDefinitionConstructor;
     
 interface VoxelBlockDefinionList extends ScriptableObject {
     scope: string;
-    blockDefinitions: CSArray<VoxelBlockDefinition>;
+    blockDefinitions: Readonly<VoxelBlockDefinition[]>;
 
 
 
@@ -36256,20 +36256,20 @@ declare const VoxelBlockDefinionList: VoxelBlockDefinionListConstructor;
     
     
 interface VoxelBlocksConstructor {
-    allTileSizes: CSArray<number>;
+    allTileSizes: Readonly<number[]>;
     meshTileOffsets: CSDictionary<number, Vector3>;
     meshTileSizes: CSDictionary<number, Vector3>;
-    TileSizeNames: CSArray<string>;
-    ContextBlockNames: CSArray<string>;
-    QuarterBlockNames: CSArray<string>;
-    QuarterBlockSubstitutions: CSArray<number>;
+    TileSizeNames: Readonly<string[]>;
+    ContextBlockNames: Readonly<string[]>;
+    QuarterBlockNames: Readonly<string[]>;
+    QuarterBlockSubstitutions: Readonly<number[]>;
 
 
     new(): VoxelBlocks;
 
 
-    GetRandomMeshContext(block: BlockDefinition): CSArray<VoxelMeshCopy>;
-    GetRandomMeshContext(block: BlockDefinition, origin: Vector3, offset: number): CSArray<VoxelMeshCopy>;
+    GetRandomMeshContext(block: BlockDefinition): Readonly<VoxelMeshCopy[]>;
+    GetRandomMeshContext(block: BlockDefinition, origin: Vector3, offset: number): Readonly<VoxelMeshCopy[]>;
 
 }
 declare const VoxelBlocks: VoxelBlocksConstructor;
@@ -36514,9 +36514,9 @@ interface TrailRenderer extends Renderer {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/TrailRenderer.AddPositions.html | TrailRenderer.AddPositions}
      */
-    AddPositions(positions: CSArray<Vector3>): void;
-    AddPositions(positions: CSArray<Vector3>): void;
-    AddPositions(positions: CSArray<Vector3>): void;
+    AddPositions(positions: Readonly<Vector3[]>): void;
+    AddPositions(positions: Readonly<Vector3[]>): void;
+    AddPositions(positions: Readonly<Vector3[]>): void;
     /**
      * Creates a snapshot of TrailRenderer and stores it in mesh.
      * @param mesh A static mesh that will receive the snapshot of the trail.
@@ -36554,18 +36554,18 @@ Useful for restarting a trail from a new position.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/TrailRenderer.GetPositions.html | TrailRenderer.GetPositions}
      */
-    GetPositions(positions: CSArray<Vector3>): number;
-    GetPositions(positions: CSArray<Vector3>): number;
-    GetPositions(positions: CSArray<Vector3>): number;
+    GetPositions(positions: Readonly<Vector3[]>): number;
+    GetPositions(positions: Readonly<Vector3[]>): number;
+    GetPositions(positions: Readonly<Vector3[]>): number;
     /**
      * Get the visible positions of all vertices in the trail.
      * @param positions The array of positions to retrieve.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/TrailRenderer.GetVisiblePositions.html | TrailRenderer.GetVisiblePositions}
      */
-    GetVisiblePositions(positions: CSArray<Vector3>): number;
-    GetVisiblePositions(positions: CSArray<Vector3>): number;
-    GetVisiblePositions(positions: CSArray<Vector3>): number;
+    GetVisiblePositions(positions: Readonly<Vector3[]>): number;
+    GetVisiblePositions(positions: Readonly<Vector3[]>): number;
+    GetVisiblePositions(positions: Readonly<Vector3[]>): number;
     /**
      * Set the position of a vertex in the trail.
      * @param index Which position to set.
@@ -36580,9 +36580,9 @@ Useful for restarting a trail from a new position.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/TrailRenderer.SetPositions.html | TrailRenderer.SetPositions}
      */
-    SetPositions(positions: CSArray<Vector3>): void;
-    SetPositions(positions: CSArray<Vector3>): void;
-    SetPositions(positions: CSArray<Vector3>): void;
+    SetPositions(positions: Readonly<Vector3[]>): void;
+    SetPositions(positions: Readonly<Vector3[]>): void;
+    SetPositions(positions: Readonly<Vector3[]>): void;
 
 
 }
@@ -36637,7 +36637,7 @@ interface WindowCoreConstructor {
 declare const WindowCore: WindowCoreConstructor;
     
 interface MaterialColorURP extends MonoBehaviour {
-    colorSettings: CSArray<ColorSetting>;
+    colorSettings: Readonly<ColorSetting[]>;
     addedByEditorScript: boolean;
 
 
@@ -36786,7 +36786,7 @@ interface IPromise<PromisedT> {
     Then(onResolved: unknown, onRejected: unknown, onProgress: unknown): IPromise;
     Then(onResolved: unknown, onRejected: unknown, onProgress: unknown): IPromise;
     Then<ConvertedT>(transform: unknown): IPromise<ConvertedT>;
-    ThenAll<ConvertedT>(chain: unknown): IPromise<CSArray<ConvertedT>>;
+    ThenAll<ConvertedT>(chain: unknown): IPromise<Readonly<ConvertedT[]>>;
     ThenAll(chain: unknown): IPromise;
     ThenRace<ConvertedT>(chain: unknown): IPromise<ConvertedT>;
     ThenRace(chain: unknown): IPromise;
@@ -36818,7 +36818,7 @@ interface IPromise {
     Then(onResolved: unknown, onRejected: unknown, onProgress: unknown): IPromise;
     Then(onResolved: unknown, onRejected: unknown, onProgress: unknown): IPromise;
     ThenAll(chain: unknown): IPromise;
-    ThenAll<ConvertedT>(chain: unknown): IPromise<CSArray<ConvertedT>>;
+    ThenAll<ConvertedT>(chain: unknown): IPromise<Readonly<ConvertedT[]>>;
     ThenRace(chain: unknown): IPromise;
     ThenRace<ConvertedT>(chain: unknown): IPromise<ConvertedT>;
     ThenSequence(chain: unknown): IPromise;
@@ -36875,7 +36875,7 @@ interface RequestHelper {
     Method: string;
     Body: unknown;
     BodyString: string;
-    BodyRaw: CSArray<number>;
+    BodyRaw: Readonly<number[]>;
     Timeout?: number;
     ContentType: string;
     Retries: number;
@@ -36889,7 +36889,7 @@ interface RequestHelper {
     IgnoreHttpException: boolean;
     FormData: WWWForm;
     SimpleForm: CSDictionary<string, string>;
-    FormSections: CSArray<IMultipartFormSection>;
+    FormSections: Readonly<IMultipartFormSection[]>;
     CertificateHandler: CertificateHandler;
     UploadHandler: UploadHandler;
     DownloadHandler: DownloadHandler;
@@ -36924,7 +36924,7 @@ interface WWWForm {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/WWWForm-data.html | WWWForm.data}
      */
-    readonly data: CSArray<number>;
+    readonly data: Readonly<number[]>;
 
 
 
@@ -36933,19 +36933,19 @@ interface WWWForm {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/WWWForm.AddBinaryData.html | WWWForm.AddBinaryData}
      */
-    AddBinaryData(fieldName: string, contents: CSArray<number>): void;
+    AddBinaryData(fieldName: string, contents: Readonly<number[]>): void;
     /**
      * Add binary data to the form.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/WWWForm.AddBinaryData.html | WWWForm.AddBinaryData}
      */
-    AddBinaryData(fieldName: string, contents: CSArray<number>, fileName: string): void;
+    AddBinaryData(fieldName: string, contents: Readonly<number[]>, fileName: string): void;
     /**
      * Add binary data to the form.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/WWWForm.AddBinaryData.html | WWWForm.AddBinaryData}
      */
-    AddBinaryData(fieldName: string, contents: CSArray<number>, fileName: string, mimeType: string): void;
+    AddBinaryData(fieldName: string, contents: Readonly<number[]>, fileName: string, mimeType: string): void;
     /**
      * Add a simple field to the form.
      * 
@@ -36990,7 +36990,7 @@ interface IMultipartFormSection {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Networking.IMultipartFormSection-sectionData.html | Networking.IMultipartFormSection.sectionData}
      */
-    readonly sectionData: CSArray<number>;
+    readonly sectionData: Readonly<number[]>;
     /**
      * Returns a string denoting the desired filename of this section on the destination server.
      * 
@@ -37030,7 +37030,7 @@ interface UploadHandler {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Networking.UploadHandler-data.html | Networking.UploadHandler.data}
      */
-    readonly data: CSArray<number>;
+    readonly data: Readonly<number[]>;
     /**
      * Determines the default Content-Type header which will be transmitted with the outbound HTTP request.
      * 
@@ -37074,13 +37074,13 @@ interface DownloadHandler {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Networking.DownloadHandler-nativeData.html | Networking.DownloadHandler.nativeData}
      */
-    readonly nativeData: CSArray<number>;
+    readonly nativeData: Readonly<number[]>;
     /**
      * Returns the raw bytes downloaded from the remote server, or null. (Read Only)
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Networking.DownloadHandler-data.html | Networking.DownloadHandler.data}
      */
-    readonly data: CSArray<number>;
+    readonly data: Readonly<number[]>;
     /**
      * Convenience property. Returns the bytes from data interpreted as a UTF8 string. (Read Only)
      * 
@@ -37328,7 +37328,7 @@ interface UnityWebRequestConstructor {
     Delete(uri: unknown): UnityWebRequest;
     EscapeURL(s: string): string;
     EscapeURL(s: string, e: unknown): string;
-    GenerateBoundary(): CSArray<number>;
+    GenerateBoundary(): Readonly<number[]>;
     Get(uri: string): UnityWebRequest;
     Get(uri: unknown): UnityWebRequest;
     Head(uri: string): UnityWebRequest;
@@ -37337,20 +37337,20 @@ interface UnityWebRequestConstructor {
     Post(uri: unknown, postData: string, contentType: string): UnityWebRequest;
     Post(uri: string, formData: WWWForm): UnityWebRequest;
     Post(uri: unknown, formData: WWWForm): UnityWebRequest;
-    Post(uri: string, multipartFormSections: CSArray<IMultipartFormSection>): UnityWebRequest;
-    Post(uri: unknown, multipartFormSections: CSArray<IMultipartFormSection>): UnityWebRequest;
-    Post(uri: string, multipartFormSections: CSArray<IMultipartFormSection>, boundary: CSArray<number>): UnityWebRequest;
-    Post(uri: unknown, multipartFormSections: CSArray<IMultipartFormSection>, boundary: CSArray<number>): UnityWebRequest;
+    Post(uri: string, multipartFormSections: Readonly<IMultipartFormSection[]>): UnityWebRequest;
+    Post(uri: unknown, multipartFormSections: Readonly<IMultipartFormSection[]>): UnityWebRequest;
+    Post(uri: string, multipartFormSections: Readonly<IMultipartFormSection[]>, boundary: Readonly<number[]>): UnityWebRequest;
+    Post(uri: unknown, multipartFormSections: Readonly<IMultipartFormSection[]>, boundary: Readonly<number[]>): UnityWebRequest;
     Post(uri: string, formFields: CSDictionary<string, string>): UnityWebRequest;
     Post(uri: unknown, formFields: CSDictionary<string, string>): UnityWebRequest;
     PostWwwForm(uri: string, form: string): UnityWebRequest;
     PostWwwForm(uri: unknown, form: string): UnityWebRequest;
-    Put(uri: string, bodyData: CSArray<number>): UnityWebRequest;
-    Put(uri: unknown, bodyData: CSArray<number>): UnityWebRequest;
+    Put(uri: string, bodyData: Readonly<number[]>): UnityWebRequest;
+    Put(uri: unknown, bodyData: Readonly<number[]>): UnityWebRequest;
     Put(uri: string, bodyData: string): UnityWebRequest;
     Put(uri: unknown, bodyData: string): UnityWebRequest;
-    SerializeFormSections(multipartFormSections: CSArray<IMultipartFormSection>, boundary: CSArray<number>): CSArray<number>;
-    SerializeSimpleForm(formFields: CSDictionary<string, string>): CSArray<number>;
+    SerializeFormSections(multipartFormSections: Readonly<IMultipartFormSection[]>, boundary: Readonly<number[]>): Readonly<number[]>;
+    SerializeSimpleForm(formFields: CSDictionary<string, string>): Readonly<number[]>;
     UnEscapeURL(s: string): string;
     UnEscapeURL(s: string, e: unknown): string;
 
@@ -37506,7 +37506,7 @@ interface ToggleGroup extends UIBehaviour {
 
 
 
-    ActiveToggles(): CSArray<Toggle>;
+    ActiveToggles(): Readonly<Toggle[]>;
     AnyTogglesOn(): boolean;
     EnsureValidState(): void;
     GetFirstActiveToggle(): Toggle;
@@ -37946,10 +37946,10 @@ interface Command {
 
 
 
-    GetAliases(): CSArray<string>;
+    GetAliases(): Readonly<string[]>;
     GetFormattedName(): string;
     GetFormattedParameter(parameterIndex: number): string;
-    GetParameters(): CSArray<Parameter>;
+    GetParameters(): Readonly<Parameter[]>;
     ToFormattedString(): string;
     ToString(): string;
 
@@ -38023,7 +38023,7 @@ interface DevConsoleConstructor {
     InvokeDelayed(action: unknown, delay: number): Coroutine;
     Log(message: unknown, context: LogContext, prepend: boolean): void;
     Log(message: unknown, colour: Color, context: LogContext, prepend: boolean): void;
-    LogCollection<T>(collection: CSArray<T>, toString: unknown, prefix: string, suffix: string): void;
+    LogCollection<T>(collection: Readonly<T[]>, toString: unknown, prefix: string, suffix: string): void;
     LogCommand(): void;
     LogCommand(name: string): void;
     LogError(message: unknown, context: LogContext, prepend: boolean): void;
@@ -38140,7 +38140,7 @@ interface CloudImageConstructor {
 declare const CloudImage: CloudImageConstructor;
     
 interface AccessoryOutfit extends ScriptableObject {
-    accessories: CSArray<AccessoryComponent>;
+    accessories: Readonly<AccessoryComponent[]>;
     faceDecal: AccessoryFace;
     forceSkinColor: boolean;
     skinColor: Color;
@@ -38157,8 +38157,8 @@ interface AccessoryComponent extends MonoBehaviour {
     accessorySlot: AccessorySlot;
     visibilityMode: VisibilityMode;
     skinnedToCharacter: boolean;
-    meshLods: CSArray<Mesh>;
-    matColors: CSArray<MaterialColorURP>;
+    meshLods: Readonly<Mesh[]>;
+    matColors: Readonly<MaterialColorURP[]>;
     bodyMask: number;
     localPosition: Vector3;
     localRotation: Quaternion;
@@ -38197,7 +38197,7 @@ interface BodyMaskInspectorDataConstructor {
 declare const BodyMaskInspectorData: BodyMaskInspectorDataConstructor;
     
 interface AccessoryComponentConstructor {
-    BodyMaskInspectorDatas: CSArray<BodyMaskInspectorData>;
+    BodyMaskInspectorDatas: Readonly<BodyMaskInspectorData[]>;
 
 
     new(): AccessoryComponent;
@@ -38383,9 +38383,9 @@ interface LineRenderer extends Renderer {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/LineRenderer.GetPositions.html | LineRenderer.GetPositions}
      */
-    GetPositions(positions: CSArray<Vector3>): number;
-    GetPositions(positions: CSArray<Vector3>): number;
-    GetPositions(positions: CSArray<Vector3>): number;
+    GetPositions(positions: Readonly<Vector3[]>): number;
+    GetPositions(positions: Readonly<Vector3[]>): number;
+    GetPositions(positions: Readonly<Vector3[]>): number;
     /**
      * Set the position of a vertex in the line.
      * @param index Which position to set.
@@ -38400,9 +38400,9 @@ interface LineRenderer extends Renderer {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/LineRenderer.SetPositions.html | LineRenderer.SetPositions}
      */
-    SetPositions(positions: CSArray<Vector3>): void;
-    SetPositions(positions: CSArray<Vector3>): void;
-    SetPositions(positions: CSArray<Vector3>): void;
+    SetPositions(positions: Readonly<Vector3[]>): void;
+    SetPositions(positions: Readonly<Vector3[]>): void;
+    SetPositions(positions: Readonly<Vector3[]>): void;
     /**
      * Generates a simplified version of the original line by removing points that fall within the specified tolerance.
      * @param tolerance This value is used to evaluate which points should be removed from the line. A higher value results in a simpler line (less points). A positive value close to zero results in a line with little to no reduction. A value of zero or less has no effect.
@@ -38466,9 +38466,9 @@ interface VertexHelper {
 
 
     AddTriangle(idx0: number, idx1: number, idx2: number): void;
-    AddUIVertexQuad(verts: CSArray<UIVertex>): void;
-    AddUIVertexStream(verts: CSArray<UIVertex>, indices: CSArray<number>): void;
-    AddUIVertexTriangleStream(verts: CSArray<UIVertex>): void;
+    AddUIVertexQuad(verts: Readonly<UIVertex[]>): void;
+    AddUIVertexStream(verts: Readonly<UIVertex[]>, indices: Readonly<number[]>): void;
+    AddUIVertexTriangleStream(verts: Readonly<UIVertex[]>): void;
     AddVert(position: Vector3, color: Color32, uv0: Vector4, uv1: Vector4, uv2: Vector4, uv3: Vector4, normal: Vector3, tangent: Vector4): void;
     AddVert(position: Vector3, color: Color32, uv0: Vector4, uv1: Vector4, normal: Vector3, tangent: Vector4): void;
     AddVert(position: Vector3, color: Color32, uv0: Vector4): void;
@@ -38476,7 +38476,7 @@ interface VertexHelper {
     Clear(): void;
     Dispose(): void;
     FillMesh(mesh: Mesh): void;
-    GetUIVertexStream(stream: CSArray<UIVertex>): void;
+    GetUIVertexStream(stream: Readonly<UIVertex[]>): void;
     PopulateUIVertex(vertex: unknown, i: number): void;
     SetUIVertex(vertex: UIVertex, i: number): void;
 
@@ -38588,7 +38588,7 @@ interface AirshipPlatformUtil {
 }
     
 interface AirshipPlatformUtilConstructor {
-    livePlatforms: CSArray<number>;
+    livePlatforms: Readonly<number[]>;
 
 
     new(): AirshipPlatformUtil;
@@ -38609,9 +38609,9 @@ interface CharacterRig extends MonoBehaviour {
     headMesh: SkinnedMeshRenderer;
     faceMesh: Renderer;
     viewmodelArmsMesh: SkinnedMeshRenderer;
-    bodyMeshLOD: CSArray<SkinnedMeshRenderer>;
-    armsMeshLOD: CSArray<SkinnedMeshRenderer>;
-    headMeshLOD: CSArray<SkinnedMeshRenderer>;
+    bodyMeshLOD: Readonly<SkinnedMeshRenderer[]>;
+    armsMeshLOD: Readonly<SkinnedMeshRenderer[]>;
+    headMeshLOD: Readonly<SkinnedMeshRenderer[]>;
     rigHolder: Transform;
     rootMotion: Transform;
     master: Transform;
@@ -38643,7 +38643,7 @@ interface CharacterRig extends MonoBehaviour {
     bodyColor: MaterialColorURP;
     armsColor: MaterialColorURP;
     viewmodelArmsColor: MaterialColorURP;
-    baseMeshes: CSArray<Renderer>;
+    baseMeshes: Readonly<Renderer[]>;
 
 
 
@@ -38663,9 +38663,9 @@ interface CharacterRigConstructor {
 declare const CharacterRig: CharacterRigConstructor;
     
 interface AvatarAccessoryCollection extends ScriptableObject {
-    accessories: CSArray<AccessoryComponent>;
-    faces: CSArray<AccessoryFace>;
-    skinColors: CSArray<Color>;
+    accessories: Readonly<AccessoryComponent[]>;
+    faces: Readonly<AccessoryFace[]>;
+    skinColors: Readonly<Color[]>;
 
 
 
@@ -39447,7 +39447,7 @@ interface ScreenConstructor {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Screen-resolutions.html | Screen.resolutions}
      */
-    readonly resolutions: CSArray<Resolution>;
+    readonly resolutions: Readonly<Resolution[]>;
     /**
      * Get the requested MSAA sample count of the screen buffer.
      * 
@@ -39477,7 +39477,7 @@ interface ScreenConstructor {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Screen-cutouts.html | Screen.cutouts}
      */
-    readonly cutouts: CSArray<Rect>;
+    readonly cutouts: Readonly<Rect[]>;
     /**
      * Enables auto-rotation to portrait.
      * 
@@ -39537,7 +39537,7 @@ interface ScreenConstructor {
     new(): Screen;
 
 
-    GetDisplayLayout(displayLayout: CSArray<DisplayInfo>): void;
+    GetDisplayLayout(displayLayout: Readonly<DisplayInfo[]>): void;
     MoveMainWindowTo(display: unknown, position: Vector2Int): AsyncOperation;
     SetMSAASamples(numSamples: number): void;
     SetResolution(width: number, height: number, fullscreenMode: FullScreenMode, preferredRefreshRate: RefreshRate): void;
@@ -40057,7 +40057,7 @@ interface NavMeshPath {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/AI.NavMeshPath-corners.html | AI.NavMeshPath.corners}
      */
-    readonly corners: CSArray<Vector3>;
+    readonly corners: Readonly<Vector3[]>;
     /**
      * Status of the path. (Read Only)
      * 
@@ -40079,7 +40079,7 @@ interface NavMeshPath {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/AI.NavMeshPath.GetCornersNonAlloc.html | AI.NavMeshPath.GetCornersNonAlloc}
      */
-    GetCornersNonAlloc(results: CSArray<Vector3>): number;
+    GetCornersNonAlloc(results: Readonly<Vector3[]>): number;
 
 
 }
@@ -40283,9 +40283,9 @@ interface NavMeshQueryFilter {
 }
     
 interface NavMeshTriangulation {
-    vertices: CSArray<Vector3>;
-    indices: CSArray<number>;
-    areas: CSArray<number>;
+    vertices: Readonly<Vector3[]>;
+    indices: Readonly<number[]>;
+    areas: Readonly<number[]>;
 
 
 
@@ -40394,7 +40394,7 @@ interface NavMeshBuildSettings {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/AI.NavMeshBuildSettings.ValidationReport.html | AI.NavMeshBuildSettings.ValidationReport}
      */
-    ValidationReport(buildBounds: Bounds): CSArray<string>;
+    ValidationReport(buildBounds: Bounds): Readonly<string[]>;
 
 
 }
@@ -40991,7 +40991,7 @@ interface PolygonCollider2D extends Collider2D {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/PolygonCollider2D-points.html | PolygonCollider2D.points}
      */
-    points: CSArray<Vector2>;
+    points: Readonly<Vector2[]>;
     /**
      * The number of paths in the polygon.
      * 
@@ -41018,8 +41018,8 @@ interface PolygonCollider2D extends Collider2D {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/PolygonCollider2D.GetPath.html | PolygonCollider2D.GetPath}
      */
-    GetPath(index: number): CSArray<Vector2>;
-    GetPath(index: number, points: CSArray<Vector2>): number;
+    GetPath(index: number): Readonly<Vector2[]>;
+    GetPath(index: number, points: Readonly<Vector2[]>): number;
     /**
      * Return the total number of points in the polygon in all paths.
      * 
@@ -41033,8 +41033,8 @@ interface PolygonCollider2D extends Collider2D {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/PolygonCollider2D.SetPath.html | PolygonCollider2D.SetPath}
      */
-    SetPath(index: number, points: CSArray<Vector2>): void;
-    SetPath(index: number, points: CSArray<Vector2>): void;
+    SetPath(index: number, points: Readonly<Vector2[]>): void;
+    SetPath(index: number, points: Readonly<Vector2[]>): void;
 
 
 }
@@ -41095,7 +41095,7 @@ interface CustomCollider2D extends Collider2D {
      * More info: {@link https://docs.unity3d.com/ScriptReference/CustomCollider2D.GetCustomShapes.html | CustomCollider2D.GetCustomShapes}
      */
     GetCustomShapes(physicsShapeGroup: PhysicsShapeGroup2D, shapeIndex: number, shapeCount: number): number;
-    GetCustomShapes(shapes: CSArray<PhysicsShape2D>, vertices: CSArray<Vector2>): number;
+    GetCustomShapes(shapes: Readonly<PhysicsShape2D[]>, vertices: Readonly<Vector2[]>): number;
     /**
      * Sets a single shape and all associated shape vertices from the specified physicsShapeGroup into the Collider.
      * @param physicsShapeGroup The PhysicsShapeGroup2D to use as the source of shapes and vertices.
@@ -41105,7 +41105,7 @@ interface CustomCollider2D extends Collider2D {
      * More info: {@link https://docs.unity3d.com/ScriptReference/CustomCollider2D.SetCustomShape.html | CustomCollider2D.SetCustomShape}
      */
     SetCustomShape(physicsShapeGroup: PhysicsShapeGroup2D, srcShapeIndex: number, dstShapeIndex: number): void;
-    SetCustomShape(shapes: CSArray<PhysicsShape2D>, vertices: CSArray<Vector2>, srcShapeIndex: number, dstShapeIndex: number): void;
+    SetCustomShape(shapes: Readonly<PhysicsShape2D[]>, vertices: Readonly<Vector2[]>, srcShapeIndex: number, dstShapeIndex: number): void;
     /**
      * Sets all the shapes and vertices in the Collider to those represented by the specified PhysicsShapeGroup2D.
      * @param physicsShapeGroup The PhysicsShapeGroup2D to use as the source of shapes and vertices.
@@ -41113,7 +41113,7 @@ interface CustomCollider2D extends Collider2D {
      * More info: {@link https://docs.unity3d.com/ScriptReference/CustomCollider2D.SetCustomShapes.html | CustomCollider2D.SetCustomShapes}
      */
     SetCustomShapes(physicsShapeGroup: PhysicsShapeGroup2D): void;
-    SetCustomShapes(shapes: CSArray<PhysicsShape2D>, vertices: CSArray<Vector2>): void;
+    SetCustomShapes(shapes: Readonly<PhysicsShape2D[]>, vertices: Readonly<Vector2[]>): void;
 
 
 }
@@ -41152,7 +41152,7 @@ interface EdgeCollider2D extends Collider2D {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/EdgeCollider2D-points.html | EdgeCollider2D.points}
      */
-    points: CSArray<Vector2>;
+    points: Readonly<Vector2[]>;
     /**
      * Set this to true to use the adjacentStartPoint to form the collision normal that is used to calculate the collision response when a collision occurs at the Edge Collider's start point. Set this to false to not use the adjacentStartPoint, and the collision normal becomes the direction of motion of the collision.
      * 
@@ -41180,14 +41180,14 @@ interface EdgeCollider2D extends Collider2D {
 
 
 
-    GetPoints(points: CSArray<Vector2>): number;
+    GetPoints(points: Readonly<Vector2[]>): number;
     /**
      * Reset to a single edge consisting of two points.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/EdgeCollider2D.Reset.html | EdgeCollider2D.Reset}
      */
     Reset(): void;
-    SetPoints(points: CSArray<Vector2>): boolean;
+    SetPoints(points: Readonly<Vector2[]>): boolean;
 
 
 }
@@ -41720,13 +41720,13 @@ interface TerrainData extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/TerrainData-detailPrototypes.html | TerrainData.detailPrototypes}
      */
-    detailPrototypes: CSArray<DetailPrototype>;
+    detailPrototypes: Readonly<DetailPrototype[]>;
     /**
      * Contains the current trees placed in the terrain.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/TerrainData-treeInstances.html | TerrainData.treeInstances}
      */
-    treeInstances: CSArray<TreeInstance>;
+    treeInstances: Readonly<TreeInstance[]>;
     /**
      * Returns the number of tree instances.
      * 
@@ -41738,7 +41738,7 @@ interface TerrainData extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/TerrainData-treePrototypes.html | TerrainData.treePrototypes}
      */
-    treePrototypes: CSArray<TreePrototype>;
+    treePrototypes: Readonly<TreePrototype[]>;
     /**
      * Number of alpha map layers.
      * 
@@ -41780,13 +41780,13 @@ interface TerrainData extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/TerrainData-alphamapTextures.html | TerrainData.alphamapTextures}
      */
-    readonly alphamapTextures: CSArray<Texture2D>;
+    readonly alphamapTextures: Readonly<Texture2D[]>;
     /**
      * Retrieves the terrain layers used by the current terrain.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/TerrainData-terrainLayers.html | TerrainData.terrainLayers}
      */
-    terrainLayers: CSArray<TerrainLayer>;
+    terrainLayers: Readonly<TerrainLayer[]>;
 
 
 
@@ -41806,7 +41806,7 @@ interface TerrainData extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/TerrainData.ComputeDetailInstanceTransforms.html | TerrainData.ComputeDetailInstanceTransforms}
      */
-    ComputeDetailInstanceTransforms(patchX: number, patchY: number, layer: number, density: number, bounds: unknown): CSArray<DetailInstanceTransform>;
+    ComputeDetailInstanceTransforms(patchX: number, patchY: number, layer: number, density: number, bounds: unknown): Readonly<DetailInstanceTransform[]>;
     /**
      * Copies the specified part of the active RenderTexture to the Terrain heightmap texture.
      * @param sourceRect The part of the active Render Texture to copy.
@@ -41867,7 +41867,7 @@ interface TerrainData extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/TerrainData.GetClampedDetailPatches.html | TerrainData.GetClampedDetailPatches}
      */
-    GetClampedDetailPatches(density: number): CSArray<Vector2Int>;
+    GetClampedDetailPatches(density: number): Readonly<Vector2Int[]>;
     /**
      * Returns a 2D array of the detail object density (i.e. the number of detail objects for this layer) in the specific location.
      * @param xBase First x index of detail object density data to retrieve.
@@ -41952,13 +41952,13 @@ interface TerrainData extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/TerrainData.GetMaximumHeightError.html | TerrainData.GetMaximumHeightError}
      */
-    GetMaximumHeightError(): CSArray<number>;
+    GetMaximumHeightError(): Readonly<number[]>;
     /**
      * Returns an array of min max height values for all the renderable patches in a terrain.  The returned array can be modified and then passed to OverrideMinMaxPatchHeights.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/TerrainData.GetPatchMinMaxHeights.html | TerrainData.GetPatchMinMaxHeights}
      */
-    GetPatchMinMaxHeights(): CSArray<PatchExtents>;
+    GetPatchMinMaxHeights(): Readonly<PatchExtents[]>;
     /**
      * Gets the gradient of the terrain at point (x,y).
      * 
@@ -41970,8 +41970,8 @@ interface TerrainData extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/TerrainData.GetSupportedLayers.html | TerrainData.GetSupportedLayers}
      */
-    GetSupportedLayers(xBase: number, yBase: number, totalWidth: number, totalHeight: number): CSArray<number>;
-    GetSupportedLayers(positionBase: Vector2Int, size: Vector2Int): CSArray<number>;
+    GetSupportedLayers(xBase: number, yBase: number, totalWidth: number, totalHeight: number): Readonly<number[]>;
+    GetSupportedLayers(positionBase: Vector2Int, size: Vector2Int): Readonly<number[]>;
     /**
      * Gets the tree instance at the specified index. It is used as a faster version of treeInstances[index] as this function doesn't create the entire tree instances array.
      * @param index The index of the tree instance.
@@ -41991,14 +41991,14 @@ interface TerrainData extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/TerrainData.OverrideMaximumHeightError.html | TerrainData.OverrideMaximumHeightError}
      */
-    OverrideMaximumHeightError(maxError: CSArray<number>): void;
+    OverrideMaximumHeightError(maxError: Readonly<number[]>): void;
     /**
      * Override the minimum and maximum patch heights for every renderable terrain patch.  Note that the overriden values get reset when the terrain resolution is changed and stays unchanged when the terrain heightmap is painted or changed via script.
      * @param minMaxHeights Array of minimum and maximum terrain patch height values.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/TerrainData.OverrideMinMaxPatchHeights.html | TerrainData.OverrideMinMaxPatchHeights}
      */
-    OverrideMinMaxPatchHeights(minMaxHeights: CSArray<PatchExtents>): void;
+    OverrideMinMaxPatchHeights(minMaxHeights: Readonly<PatchExtents[]>): void;
     /**
      * Reloads all the values of the available prototypes (ie, detail mesh assets) in the TerrainData Object.
      * 
@@ -42088,7 +42088,7 @@ interface TerrainData extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/TerrainData.SetTerrainLayersRegisterUndo.html | TerrainData.SetTerrainLayersRegisterUndo}
      */
-    SetTerrainLayersRegisterUndo(terrainLayers: CSArray<TerrainLayer>, undoName: string): void;
+    SetTerrainLayersRegisterUndo(terrainLayers: Readonly<TerrainLayer[]>, undoName: string): void;
     /**
      * Sets the tree instance with new parameters at the specified index. However, you cannot change TreeInstance.prototypeIndex and TreeInstance.position. If you change them, the method throws an ArgumentException.
      * @param index The index of the tree instance.
@@ -42104,7 +42104,7 @@ interface TerrainData extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/TerrainData.SetTreeInstances.html | TerrainData.SetTreeInstances}
      */
-    SetTreeInstances(instances: CSArray<TreeInstance>, snapToHeightmap: boolean): void;
+    SetTreeInstances(instances: Readonly<TreeInstance[]>, snapToHeightmap: boolean): void;
     /**
      * Performs synchronization queued by previous calls to CopyActiveRenderTextureToHeightmap and DirtyHeightmapRegion, which makes the height data and LOD data used for tessellation up to date.
      * 
@@ -42254,7 +42254,7 @@ interface DetailPrototype {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/DetailPrototype.Validate.html | DetailPrototype.Validate}
      */
-    Validate(errorMessage: CSArray<string>): boolean;
+    Validate(errorMessage: Readonly<string[]>): boolean;
 
 
 }
@@ -42761,13 +42761,13 @@ interface RenderParamsConstructor {
 declare const RenderParams: RenderParamsConstructor;
     
 interface RenderTargetSetup {
-    color: CSArray<RenderBuffer>;
+    color: Readonly<RenderBuffer[]>;
     depth: RenderBuffer;
     mipLevel: number;
     cubemapFace: CubemapFace;
     depthSlice: number;
-    colorLoad: CSArray<number>;
-    colorStore: CSArray<number>;
+    colorLoad: Readonly<number[]>;
+    colorStore: Readonly<number[]>;
     depthLoad: RenderBufferLoadAction;
     depthStore: RenderBufferStoreAction;
 
@@ -42780,14 +42780,14 @@ interface RenderTargetSetup {
 interface RenderTargetSetupConstructor {
 
 
-    new(color: CSArray<RenderBuffer>, depth: RenderBuffer, mip: number, face: CubemapFace, colorLoad: CSArray<number>, colorStore: CSArray<number>, depthLoad: RenderBufferLoadAction, depthStore: RenderBufferStoreAction): RenderTargetSetup;
+    new(color: Readonly<RenderBuffer[]>, depth: RenderBuffer, mip: number, face: CubemapFace, colorLoad: Readonly<number[]>, colorStore: Readonly<number[]>, depthLoad: RenderBufferLoadAction, depthStore: RenderBufferStoreAction): RenderTargetSetup;
     new(color: RenderBuffer, depth: RenderBuffer): RenderTargetSetup;
     new(color: RenderBuffer, depth: RenderBuffer, mipLevel: number): RenderTargetSetup;
     new(color: RenderBuffer, depth: RenderBuffer, mipLevel: number, face: CubemapFace): RenderTargetSetup;
     new(color: RenderBuffer, depth: RenderBuffer, mipLevel: number, face: CubemapFace, depthSlice: number): RenderTargetSetup;
-    new(color: CSArray<RenderBuffer>, depth: RenderBuffer): RenderTargetSetup;
-    new(color: CSArray<RenderBuffer>, depth: RenderBuffer, mipLevel: number): RenderTargetSetup;
-    new(color: CSArray<RenderBuffer>, depth: RenderBuffer, mip: number, face: CubemapFace): RenderTargetSetup;
+    new(color: Readonly<RenderBuffer[]>, depth: RenderBuffer): RenderTargetSetup;
+    new(color: Readonly<RenderBuffer[]>, depth: RenderBuffer, mipLevel: number): RenderTargetSetup;
+    new(color: Readonly<RenderBuffer[]>, depth: RenderBuffer, mip: number, face: CubemapFace): RenderTargetSetup;
 
 
 
@@ -42853,10 +42853,10 @@ interface GraphicsConstructor {
     Blit(source: Texture, dest: GraphicsTexture, mat: Material, pass: number): void;
     Blit(source: Texture, dest: GraphicsTexture, mat: Material, pass: number, destDepthSlice: number): void;
     Blit(source: Texture, dest: GraphicsTexture, mat: Material): void;
-    BlitMultiTap(source: Texture, dest: RenderTexture, mat: Material, offsets: CSArray<Vector2>): void;
-    BlitMultiTap(source: Texture, dest: RenderTexture, mat: Material, destDepthSlice: number, offsets: CSArray<Vector2>): void;
-    BlitMultiTap(source: Texture, dest: GraphicsTexture, mat: Material, offsets: CSArray<Vector2>): void;
-    BlitMultiTap(source: Texture, dest: GraphicsTexture, mat: Material, destDepthSlice: number, offsets: CSArray<Vector2>): void;
+    BlitMultiTap(source: Texture, dest: RenderTexture, mat: Material, offsets: Readonly<Vector2[]>): void;
+    BlitMultiTap(source: Texture, dest: RenderTexture, mat: Material, destDepthSlice: number, offsets: Readonly<Vector2[]>): void;
+    BlitMultiTap(source: Texture, dest: GraphicsTexture, mat: Material, offsets: Readonly<Vector2[]>): void;
+    BlitMultiTap(source: Texture, dest: GraphicsTexture, mat: Material, destDepthSlice: number, offsets: Readonly<Vector2[]>): void;
     ClearRandomWriteTargets(): void;
     ConvertTexture(src: Texture, dst: Texture): boolean;
     ConvertTexture(src: Texture, srcElement: number, dst: Texture, dstElement: number): boolean;
@@ -42892,23 +42892,23 @@ interface GraphicsConstructor {
     DrawMesh(mesh: Mesh, matrix: Matrix4x4, material: Material, layer: number, camera: Camera, submeshIndex: number, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean, probeAnchor: Transform): void;
     DrawMesh(mesh: Mesh, matrix: Matrix4x4, material: Material, layer: number, camera: Camera, submeshIndex: number, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean, probeAnchor: Transform, useLightProbes: boolean): void;
     DrawMesh(mesh: Mesh, matrix: Matrix4x4, material: Material, layer: number, camera: Camera, submeshIndex: number, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean, probeAnchor: Transform, lightProbeUsage: LightProbeUsage): void;
-    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: CSArray<Matrix4x4>, count: number, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean, layer: number, camera: Camera, lightProbeUsage: LightProbeUsage, lightProbeProxyVolume: LightProbeProxyVolume): void;
-    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: CSArray<Matrix4x4>, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean, layer: number, camera: Camera, lightProbeUsage: LightProbeUsage, lightProbeProxyVolume: LightProbeProxyVolume): void;
-    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: CSArray<Matrix4x4>): void;
-    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: CSArray<Matrix4x4>, count: number): void;
-    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: CSArray<Matrix4x4>, count: number, properties: MaterialPropertyBlock): void;
-    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: CSArray<Matrix4x4>, count: number, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode): void;
-    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: CSArray<Matrix4x4>, count: number, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean): void;
-    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: CSArray<Matrix4x4>, count: number, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean, layer: number): void;
-    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: CSArray<Matrix4x4>, count: number, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean, layer: number, camera: Camera): void;
-    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: CSArray<Matrix4x4>, count: number, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean, layer: number, camera: Camera, lightProbeUsage: LightProbeUsage): void;
-    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: CSArray<Matrix4x4>): void;
-    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: CSArray<Matrix4x4>, properties: MaterialPropertyBlock): void;
-    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: CSArray<Matrix4x4>, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode): void;
-    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: CSArray<Matrix4x4>, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean): void;
-    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: CSArray<Matrix4x4>, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean, layer: number): void;
-    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: CSArray<Matrix4x4>, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean, layer: number, camera: Camera): void;
-    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: CSArray<Matrix4x4>, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean, layer: number, camera: Camera, lightProbeUsage: LightProbeUsage): void;
+    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: Readonly<Matrix4x4[]>, count: number, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean, layer: number, camera: Camera, lightProbeUsage: LightProbeUsage, lightProbeProxyVolume: LightProbeProxyVolume): void;
+    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: Readonly<Matrix4x4[]>, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean, layer: number, camera: Camera, lightProbeUsage: LightProbeUsage, lightProbeProxyVolume: LightProbeProxyVolume): void;
+    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: Readonly<Matrix4x4[]>): void;
+    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: Readonly<Matrix4x4[]>, count: number): void;
+    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: Readonly<Matrix4x4[]>, count: number, properties: MaterialPropertyBlock): void;
+    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: Readonly<Matrix4x4[]>, count: number, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode): void;
+    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: Readonly<Matrix4x4[]>, count: number, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean): void;
+    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: Readonly<Matrix4x4[]>, count: number, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean, layer: number): void;
+    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: Readonly<Matrix4x4[]>, count: number, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean, layer: number, camera: Camera): void;
+    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: Readonly<Matrix4x4[]>, count: number, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean, layer: number, camera: Camera, lightProbeUsage: LightProbeUsage): void;
+    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: Readonly<Matrix4x4[]>): void;
+    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: Readonly<Matrix4x4[]>, properties: MaterialPropertyBlock): void;
+    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: Readonly<Matrix4x4[]>, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode): void;
+    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: Readonly<Matrix4x4[]>, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean): void;
+    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: Readonly<Matrix4x4[]>, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean, layer: number): void;
+    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: Readonly<Matrix4x4[]>, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean, layer: number, camera: Camera): void;
+    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, matrices: Readonly<Matrix4x4[]>, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean, layer: number, camera: Camera, lightProbeUsage: LightProbeUsage): void;
     DrawMeshInstancedIndirect(mesh: Mesh, submeshIndex: number, material: Material, bounds: Bounds, bufferWithArgs: ComputeBuffer, argsOffset: number, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean, layer: number, camera: Camera, lightProbeUsage: LightProbeUsage, lightProbeProxyVolume: LightProbeProxyVolume): void;
     DrawMeshInstancedIndirect(mesh: Mesh, submeshIndex: number, material: Material, bounds: Bounds, bufferWithArgs: GraphicsBuffer, argsOffset: number, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean, layer: number, camera: Camera, lightProbeUsage: LightProbeUsage, lightProbeProxyVolume: LightProbeProxyVolume): void;
     DrawMeshInstancedIndirect(mesh: Mesh, submeshIndex: number, material: Material, bounds: Bounds, bufferWithArgs: ComputeBuffer, argsOffset: number, properties: MaterialPropertyBlock, castShadows: ShadowCastingMode, receiveShadows: boolean, layer: number, camera: Camera, lightProbeUsage: LightProbeUsage): void;
@@ -42946,9 +42946,9 @@ interface GraphicsConstructor {
     ExecuteCommandBufferAsync(buffer: CommandBuffer, queueType: ComputeQueueType): void;
     RenderMesh(rparams: unknown, mesh: Mesh, submeshIndex: number, objectToWorld: Matrix4x4, prevObjectToWorld: unknown): void;
     RenderMeshIndirect(rparams: unknown, mesh: Mesh, commandBuffer: GraphicsBuffer, commandCount: number, startCommand: number): void;
-    RenderMeshInstanced<T>(rparams: unknown, mesh: Mesh, submeshIndex: number, instanceData: CSArray<T>, instanceCount: number, startInstance: number): void;
-    RenderMeshInstanced<T>(rparams: unknown, mesh: Mesh, submeshIndex: number, instanceData: CSArray<T>, instanceCount: number, startInstance: number): void;
-    RenderMeshInstanced<T>(rparams: RenderParams, mesh: Mesh, submeshIndex: number, instanceData: CSArray<T>, instanceCount: number, startInstance: number): void;
+    RenderMeshInstanced<T>(rparams: unknown, mesh: Mesh, submeshIndex: number, instanceData: Readonly<T[]>, instanceCount: number, startInstance: number): void;
+    RenderMeshInstanced<T>(rparams: unknown, mesh: Mesh, submeshIndex: number, instanceData: Readonly<T[]>, instanceCount: number, startInstance: number): void;
+    RenderMeshInstanced<T>(rparams: RenderParams, mesh: Mesh, submeshIndex: number, instanceData: Readonly<T[]>, instanceCount: number, startInstance: number): void;
     RenderMeshPrimitives(rparams: unknown, mesh: Mesh, submeshIndex: number, instanceCount: number): void;
     RenderPrimitives(rparams: unknown, topology: MeshTopology, vertexCount: number, instanceCount: number): void;
     RenderPrimitivesIndexed(rparams: unknown, topology: MeshTopology, indexBuffer: GraphicsBuffer, indexCount: number, startIndex: number, instanceCount: number): void;
@@ -42962,7 +42962,7 @@ interface GraphicsConstructor {
     SetRenderTarget(rt: RenderTexture, mipLevel: number, face: CubemapFace, depthSlice: number): void;
     SetRenderTarget(rt: GraphicsTexture, mipLevel: number, face: CubemapFace, depthSlice: number): void;
     SetRenderTarget(colorBuffer: RenderBuffer, depthBuffer: RenderBuffer, mipLevel: number, face: CubemapFace, depthSlice: number): void;
-    SetRenderTarget(colorBuffers: CSArray<RenderBuffer>, depthBuffer: RenderBuffer): void;
+    SetRenderTarget(colorBuffers: Readonly<RenderBuffer[]>, depthBuffer: RenderBuffer): void;
     SetRenderTarget(setup: RenderTargetSetup): void;
     SetRenderTarget(rt: RenderTexture): void;
     SetRenderTarget(rt: RenderTexture, mipLevel: number): void;
@@ -42986,7 +42986,7 @@ interface StandaloneFileBrowser {
     
 interface ExtensionFilter {
     Name: string;
-    Extensions: CSArray<string>;
+    Extensions: Readonly<string[]>;
 
 
 
@@ -42997,7 +42997,7 @@ interface ExtensionFilter {
 interface ExtensionFilterConstructor {
 
 
-    new(filterName: string, filterExtensions: CSArray<string>): ExtensionFilter;
+    new(filterName: string, filterExtensions: Readonly<string[]>): ExtensionFilter;
 
 
 
@@ -43010,16 +43010,16 @@ interface StandaloneFileBrowserConstructor {
     new(): StandaloneFileBrowser;
 
 
-    OpenFilePanel(title: string, directory: string, extension: string, multiselect: boolean): CSArray<string>;
-    OpenFilePanel(title: string, directory: string, extensions: CSArray<ExtensionFilter>, multiselect: boolean): CSArray<string>;
+    OpenFilePanel(title: string, directory: string, extension: string, multiselect: boolean): Readonly<string[]>;
+    OpenFilePanel(title: string, directory: string, extensions: Readonly<ExtensionFilter[]>, multiselect: boolean): Readonly<string[]>;
     OpenFilePanelAsync(title: string, directory: string, extension: string, multiselect: boolean, cb: unknown): void;
-    OpenFilePanelAsync(title: string, directory: string, extensions: CSArray<ExtensionFilter>, multiselect: boolean, cb: unknown): void;
-    OpenFolderPanel(title: string, directory: string, multiselect: boolean): CSArray<string>;
+    OpenFilePanelAsync(title: string, directory: string, extensions: Readonly<ExtensionFilter[]>, multiselect: boolean, cb: unknown): void;
+    OpenFolderPanel(title: string, directory: string, multiselect: boolean): Readonly<string[]>;
     OpenFolderPanelAsync(title: string, directory: string, multiselect: boolean, cb: unknown): void;
     SaveFilePanel(title: string, directory: string, defaultName: string, extension: string): string;
-    SaveFilePanel(title: string, directory: string, defaultName: string, extensions: CSArray<ExtensionFilter>): string;
+    SaveFilePanel(title: string, directory: string, defaultName: string, extensions: Readonly<ExtensionFilter[]>): string;
     SaveFilePanelAsync(title: string, directory: string, defaultName: string, extension: string, cb: unknown): void;
-    SaveFilePanelAsync(title: string, directory: string, defaultName: string, extensions: CSArray<ExtensionFilter>, cb: unknown): void;
+    SaveFilePanelAsync(title: string, directory: string, defaultName: string, extensions: Readonly<ExtensionFilter[]>, cb: unknown): void;
 
 }
 declare const StandaloneFileBrowser: StandaloneFileBrowserConstructor;
@@ -43101,7 +43101,7 @@ interface IDropHandler extends IEventSystemHandler {
 }
     
 interface EventTrigger extends MonoBehaviour, ISubmitHandler, IPointerClickHandler, ICancelHandler, IBeginDragHandler, IInitializePotentialDragHandler, IDragHandler, IEndDragHandler, IDropHandler, IScrollHandler, IUpdateSelectedHandler, IPointerEnterHandler, ISelectHandler, IPointerExitHandler, IDeselectHandler, IPointerDownHandler, IMoveHandler, IPointerUpHandler {
-    triggers: CSArray<Entry>;
+    triggers: Readonly<Entry[]>;
 
 
 
@@ -43465,7 +43465,7 @@ interface Terrain extends Behaviour {
      * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain.Flush.html | Terrain.Flush}
      */
     Flush(): void;
-    GetClosestReflectionProbes(result: CSArray<ReflectionProbeBlendInfo>): void;
+    GetClosestReflectionProbes(result: Readonly<ReflectionProbeBlendInfo[]>): void;
     GetKeepUnusedCameraRenderingResources(cameraInstanceID: number): boolean;
     /**
      * Get the position of the terrain.
@@ -43579,14 +43579,14 @@ interface TerrainConstructor {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Terrain-activeTerrains.html | Terrain.activeTerrains}
      */
-    readonly activeTerrains: CSArray<Terrain>;
+    readonly activeTerrains: Readonly<Terrain[]>;
 
 
     new(): Terrain;
 
 
     CreateTerrainGameObject(assignTerrain: TerrainData): GameObject;
-    GetActiveTerrains(terrainList: CSArray<Terrain>): void;
+    GetActiveTerrains(terrainList: Readonly<Terrain[]>): void;
     SetConnectivityDirty(): void;
 
 }
@@ -43602,7 +43602,7 @@ interface GraphicRaycaster extends BaseRaycaster {
 
 
 
-    Raycast(eventData: PointerEventData, resultAppendList: CSArray<RaycastResult>): void;
+    Raycast(eventData: PointerEventData, resultAppendList: Readonly<RaycastResult[]>): void;
 
 
 }
@@ -43669,8 +43669,8 @@ interface SerializedProperty {
     objectReferenceInstanceIDValue: number;
     enumValueIndex: number;
     enumValueFlag: number;
-    readonly enumNames: CSArray<string>;
-    readonly enumDisplayNames: CSArray<string>;
+    readonly enumNames: Readonly<string[]>;
+    readonly enumDisplayNames: Readonly<string[]>;
     vector2Value: Vector2;
     vector3Value: Vector3;
     vector4Value: Vector4;
@@ -43716,7 +43716,7 @@ interface SerializedProperty {
     
 interface SerializedObject {
     readonly targetObject: Object;
-    readonly targetObjects: CSArray<Object>;
+    readonly targetObjects: Readonly<Object[]>;
     readonly context: Object;
     readonly hasModifiedProperties: boolean;
     readonly isEditingMultipleObjects: boolean;
@@ -43744,8 +43744,8 @@ interface SerializedObjectConstructor {
 
     new(obj: Object): SerializedObject;
     new(obj: Object, context: Object): SerializedObject;
-    new(objs: CSArray<Object>): SerializedObject;
-    new(objs: CSArray<Object>, context: Object): SerializedObject;
+    new(objs: Readonly<Object[]>): SerializedObject;
+    new(objs: Readonly<Object[]>, context: Object): SerializedObject;
 
 
 
@@ -43941,7 +43941,7 @@ declare const SerializedProperty: SerializedPropertyConstructor;
 interface VolumeComponent extends ScriptableObject, IApplyRevertPropertyContextMenuItemProvider {
     active: boolean;
     readonly displayName: string;
-    readonly parameters: CSArray<VolumeParameter>;
+    readonly parameters: Readonly<VolumeParameter[]>;
 
 
 
@@ -44189,7 +44189,7 @@ declare const DepthOfField: DepthOfFieldConstructor;
     
 interface IVolume {
     isGlobal: boolean;
-    readonly colliders: CSArray<Collider>;
+    readonly colliders: Readonly<Collider[]>;
 
 
 
@@ -44204,7 +44204,7 @@ interface Volume extends MonoBehaviour, IVolume {
     sharedProfile: VolumeProfile;
     isGlobal: boolean;
     profile: VolumeProfile;
-    readonly colliders: CSArray<Collider>;
+    readonly colliders: Readonly<Collider[]>;
 
 
 
@@ -44663,7 +44663,7 @@ interface SpawnMessage extends NetworkMessage {
     position: Vector3;
     rotation: Quaternion;
     scale: Vector3;
-    payload: CSArray<number>;
+    payload: Readonly<number[]>;
 
 
 
@@ -45635,7 +45635,7 @@ interface VisualEffect extends Behaviour {
      * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.GetMesh.html | VFX.VisualEffect.GetMesh}
      */
     GetMesh(name: string): Mesh;
-    GetOutputEventNames(names: CSArray<string>): void;
+    GetOutputEventNames(names: Readonly<string[]>): void;
     /**
      * Gets information on a particle system.
      * @param nameID The system ID. This is the same ID that Shader.PropertyToID returns.
@@ -45650,7 +45650,7 @@ interface VisualEffect extends Behaviour {
      * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.GetParticleSystemInfo.html | VFX.VisualEffect.GetParticleSystemInfo}
      */
     GetParticleSystemInfo(name: string): VFXParticleSystemInfo;
-    GetParticleSystemNames(names: CSArray<string>): void;
+    GetParticleSystemNames(names: Readonly<string[]>): void;
     /**
      * Gets the value of a named Skinned Mesh Renderer property.
      * @param nameID The name of the property.
@@ -45680,8 +45680,8 @@ interface VisualEffect extends Behaviour {
      * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffect.GetSpawnSystemInfo.html | VFX.VisualEffect.GetSpawnSystemInfo}
      */
     GetSpawnSystemInfo(name: string): VFXSpawnerState;
-    GetSpawnSystemNames(names: CSArray<string>): void;
-    GetSystemNames(names: CSArray<string>): void;
+    GetSpawnSystemNames(names: Readonly<string[]>): void;
+    GetSystemNames(names: Readonly<string[]>): void;
     /**
      * Gets the value of a named texture property.
      * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
@@ -46306,8 +46306,8 @@ interface VisualEffectAsset extends VisualEffectObject {
 
 
 
-    GetEvents(names: CSArray<string>): void;
-    GetExposedProperties(exposedProperties: CSArray<VFXExposedProperty>): void;
+    GetEvents(names: Readonly<string[]>): void;
+    GetExposedProperties(exposedProperties: Readonly<VFXExposedProperty[]>): void;
     /**
      * Provides the configured space of an exposed property in VisualEffectAsset.
      * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
@@ -46920,7 +46920,7 @@ interface VoxelWorld extends MonoBehaviour {
 
 
     AddChunk(key: Vector3, chunk: Chunk): void;
-    BulkReadVoxels(positions: CSArray<Vector3>): CSArray<number>;
+    BulkReadVoxels(positions: Readonly<Vector3[]>): Readonly<number[]>;
     CalculatePlaneIntersection(origin: Vector3, dir: Vector3, planeNormal: Vector3, planePoint: Vector3): Vector3;
     CanSeePoint(pos: Vector3, dest: Vector3, destNormal: Vector3): boolean;
     ColorVoxelAt(pos: Vector3, color: Color, priority: boolean): void;
@@ -46963,21 +46963,21 @@ interface VoxelWorld extends MonoBehaviour {
     Update(): void;
     WaitForChunkToLoad(voxel: Vector3): void;
     WriteVoxelAt(pos: Vector3, num: number, priority: boolean): void;
-    WriteVoxelGroupAt(positions: CSArray<Vector3>, nums: CSArray<number>, priority: boolean): void;
+    WriteVoxelGroupAt(positions: Readonly<Vector3[]>, nums: Readonly<number[]>, priority: boolean): void;
     WriteVoxelGroupAtTS(blob: unknown, priority: boolean): void;
 
 
 }
     
 interface WorldSaveFile extends ScriptableObject {
-    chunks: CSArray<SaveChunk>;
-    blockIdToScopeName: CSArray<BlockIdToScopedName>;
-    chunksCompressed: CSArray<number>;
+    chunks: Readonly<SaveChunk[]>;
+    blockIdToScopeName: Readonly<BlockIdToScopedName[]>;
+    chunksCompressed: Readonly<number[]>;
 
 
 
     CreateFromVoxelWorld(world: VoxelWorld): void;
-    GetChunks(): CSArray<SaveChunk>;
+    GetChunks(): Readonly<SaveChunk[]>;
     GetFileBlockIdFromStringId(blockTypeId: string): number;
     GetFileScopedBlockTypeId(fileBlockId: number): string;
     LoadIntoVoxelWorld(world: VoxelWorld): void;
@@ -46987,8 +46987,8 @@ interface WorldSaveFile extends ScriptableObject {
     
 interface SaveChunk {
     key: Vector3;
-    data: CSArray<number>;
-    color: CSArray<number>;
+    data: Readonly<number[]>;
+    color: Readonly<number[]>;
 
 
 
@@ -47000,10 +47000,10 @@ interface SaveChunk {
 interface SaveChunkConstructor {
 
 
-    new(key: Vector3, data: CSArray<number>, color: CSArray<number>): SaveChunk;
+    new(key: Vector3, data: Readonly<number[]>, color: Readonly<number[]>): SaveChunk;
 
 
-    Deserialize(reader: unknown, version: number, voxelData: CSArray<number>, colors: CSArray<number>): Vector3;
+    Deserialize(reader: unknown, version: number, voxelData: Readonly<number[]>, colors: Readonly<number[]>): Vector3;
 
 }
 declare const SaveChunk: SaveChunkConstructor;
@@ -47037,8 +47037,8 @@ interface VoxelWorldNetworker extends NetworkBehaviour {
     OnReadyCommand(connection: NetworkConnectionToClient): void;
     OnStartClient(): void;
     TargetFinishedSendingWorldRpc(conn: NetworkConnection): void;
-    TargetWriteChunksRpc(conn: NetworkConnection, positions: CSArray<Vector3>, chunks: CSArray<Chunk>): void;
-    TargetWriteVoxelGroupRpc(conn: NetworkConnection, positions: CSArray<Vector3>, nums: CSArray<number>, priority: boolean): void;
+    TargetWriteChunksRpc(conn: NetworkConnection, positions: Readonly<Vector3[]>, chunks: Readonly<Chunk[]>): void;
+    TargetWriteVoxelGroupRpc(conn: NetworkConnection, positions: Readonly<Vector3[]>, nums: Readonly<number[]>, priority: boolean): void;
     TargetWriteVoxelRpc(conn: NetworkConnection, pos: Vector3, voxel: number): void;
     Weaved(): boolean;
 
@@ -47046,8 +47046,8 @@ interface VoxelWorldNetworker extends NetworkBehaviour {
 }
     
 interface Chunk {
-    readWriteVoxel: CSArray<number>;
-    color: CSArray<number>;
+    readWriteVoxel: Readonly<number[]>;
+    color: Readonly<number[]>;
     damageMap: CSDictionary<number, number>;
     materialPropertiesDirty: boolean;
     world: VoxelWorld;
@@ -47055,7 +47055,7 @@ interface Chunk {
     bounds: Bounds;
     numUpdates: number;
     currentCamera: Camera;
-    colliders: CSArray<BoxCollider>;
+    colliders: Readonly<BoxCollider[]>;
     chunkKey: Vector3;
 
 
@@ -47133,8 +47133,8 @@ interface VoxelWorldConstructor {
     showDebugSpheres: boolean;
     showDebugBounds: boolean;
     chunkSize: number;
-    flipNames: CSArray<string>;
-    allFlips: CSArray<number>;
+    flipNames: Readonly<string[]>;
+    allFlips: Readonly<number[]>;
 
 
     new(): VoxelWorld;
@@ -47189,12 +47189,12 @@ interface ActiveAccessory {
     lodLevel: number;
     maxLodLevel: number;
     rootTransform: Transform;
-    gameObjects: CSArray<GameObject>;
-    meshRenderers: CSArray<MeshRenderer>;
-    skinnedMeshRenderers: CSArray<SkinnedMeshRenderer>;
-    renderers: CSArray<Renderer>;
-    meshFilters: CSArray<MeshFilter>;
-    lods: CSArray<ActiveAccessory>;
+    gameObjects: Readonly<GameObject[]>;
+    meshRenderers: Readonly<MeshRenderer[]>;
+    skinnedMeshRenderers: Readonly<SkinnedMeshRenderer[]>;
+    renderers: Readonly<Renderer[]>;
+    meshFilters: Readonly<MeshFilter[]>;
+    lods: Readonly<ActiveAccessory[]>;
 
 
 

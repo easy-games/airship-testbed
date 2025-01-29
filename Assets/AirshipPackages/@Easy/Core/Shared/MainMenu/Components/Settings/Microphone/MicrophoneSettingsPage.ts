@@ -13,8 +13,8 @@ export default class MicrophoneSettingsPage extends AirshipBehaviour {
 
 		const currentDeviceIndex = Bridge.GetCurrentMicDeviceIndex();
 		const deviceNames = Bridge.GetMicDevices();
-		for (let i = 0; i < deviceNames.Length; i++) {
-			const deviceName = deviceNames.GetValue(i);
+		for (const i of $range(0, deviceNames.size())) {
+			const deviceName = deviceNames[i];
 			const btnGo = Object.Instantiate(
 				AssetBridge.Instance.LoadAsset(
 					"Assets/AirshipPackages/@Easy/Core/Prefabs/MainMenu/SettingsPage/MicDevice.prefab",

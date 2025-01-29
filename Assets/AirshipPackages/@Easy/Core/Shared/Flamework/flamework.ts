@@ -49,8 +49,7 @@ export namespace Flamework {
 		}
 
 		const files = EasyFileService.GetFilesInPath(path, searchPattern);
-		for (let i = 0; i < files.Length; i++) {
-			let filePath = files.GetValue(i);
+		for (let filePath of files) {
 			if (ignorePatterns !== undefined) {
 				let ignored = false;
 				for (let ignorePattern of ignorePatterns) {
