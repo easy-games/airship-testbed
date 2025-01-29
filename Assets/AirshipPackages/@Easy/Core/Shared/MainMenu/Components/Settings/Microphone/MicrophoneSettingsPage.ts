@@ -13,7 +13,7 @@ export default class MicrophoneSettingsPage extends AirshipBehaviour {
 
 		const currentDeviceIndex = Bridge.GetCurrentMicDeviceIndex();
 		const deviceNames = Bridge.GetMicDevices();
-		for (const i of $range(0, deviceNames.size())) {
+		for (const i of $range(0, deviceNames.size() - 1)) {
 			const deviceName = deviceNames[i];
 			const btnGo = Object.Instantiate(
 				AssetBridge.Instance.LoadAsset(

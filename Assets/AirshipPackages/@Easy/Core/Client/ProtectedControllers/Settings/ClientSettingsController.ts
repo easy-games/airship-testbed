@@ -86,7 +86,7 @@ export class ClientSettingsController {
 		const micDevices = Bridge.GetMicDevices();
 		if (this.data.micDeviceName !== undefined) {
 			// const currentDeviceIndex = Bridge.GetCurrentMicDeviceIndex();
-			for (const i of $range(0, micDevices.size())) {
+			for (const i of $range(0, micDevices.size() - 1)) {
 				const deviceName = micDevices[i];
 				if (deviceName === this.data.micDeviceName) {
 					Bridge.SetMicDeviceIndex(i);

@@ -608,7 +608,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		//Make these objects not use baked lighting settings
 		if (acc) {
 			const renderers = acc.renderers;
-			for (const i of $range(0, renderers.size())) {
+			for (const i of $range(0, renderers.size() - 1)) {
 				const ren = renderers[i];
 				if (ren) {
 					ren.lightProbeUsage = LightProbeUsage.CustomProvided;

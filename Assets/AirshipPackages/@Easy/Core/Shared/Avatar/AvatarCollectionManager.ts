@@ -58,7 +58,7 @@ export class AvatarCollectionManager {
 
 		// print("Found avatar collection: " + avatarCollection);
 		const accessories = avatarCollection.accessories;
-		for (const i of $range(0, accessories.size())) {
+		for (const i of $range(0, accessories.size() - 1)) {
 			const element = accessories[i];
 			if (!element) {
 				CoreLogger.Warn("Empty element in avatar generalAccessories collection: " + i);
@@ -72,7 +72,7 @@ export class AvatarCollectionManager {
 
 		if (this.allAvatarFaces.size() === 0) {
 			const faces = avatarCollection.faces;
-			for (const i of $range(0, faces.size())) {
+			for (const i of $range(0, faces.size() - 1)) {
 				const element = faces[i];
 				if (!element) {
 					CoreLogger.Warn("Empty element in avatar generalAccessories collection: " + i);
@@ -86,7 +86,7 @@ export class AvatarCollectionManager {
 		}
 
 		const skinColors = avatarCollection.skinColors;
-		for (const i of $range(0, skinColors.size())) {
+		for (const i of $range(0, skinColors.size() - 1)) {
 			const element = skinColors[i];
 			this.skinColors.push(element);
 		}

@@ -118,7 +118,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 		if (!lights) {
 			error("Unable to find lights in scene");
 		}
-		for (const i of $range(0, lights.size())) {
+		for (const i of $range(0, lights.size() - 1)) {
 			const light = lights[i];
 			if (light && light.gameObject.scene.name !== "CoreScene" && light.gameObject.scene.name !== "MainMenu") {
 				light.cullingMask &= ~(1 << Layer.AVATAR_EDITOR);
