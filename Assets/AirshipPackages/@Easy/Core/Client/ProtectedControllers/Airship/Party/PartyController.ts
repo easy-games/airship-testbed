@@ -7,10 +7,14 @@ import { SocketController } from "../../Socket/SocketController";
 
 export const enum PartyControllerBridgeTopics {
 	GetParty = "PartyController:GetParty",
+	InviteToParty = "PartyController:InviteToParty",
+	RemoveFromParty = "PartyController:RemoveFromParty",
 	OnPartyChange = "PartyController:OnPartyChange",
 }
 
 export type ClientBridgeApiGetParty = () => Party;
+export type ClientBridgeApiInviteToParty = (userId: string) => void;
+export type ClientBridgeApiRemoveFromParty = (userId: string) => void;
 
 @Controller({})
 export class ProtectedPartyController {
@@ -22,6 +26,17 @@ export class ProtectedPartyController {
 		contextbridge.callback<ClientBridgeApiGetParty>(PartyControllerBridgeTopics.GetParty, (_) => {
 			return this.GetParty().expect();
 		});
+
+		contextbridge.callback<ClientBridgeApiInviteToParty>(PartyControllerBridgeTopics.InviteToParty, (_, userId) => {
+			return this.InviteToParty(userId).expect();
+		});
+
+		contextbridge.callback<ClientBridgeApiRemoveFromParty>(
+			PartyControllerBridgeTopics.RemoveFromParty,
+			(_, userId) => {
+				return this.RemoveFromParty(userId).expect();
+			},
+		);
 	}
 
 	public async GetParty(): Promise<ReturnType<ClientBridgeApiGetParty>> {
@@ -36,12 +51,31 @@ export class ProtectedPartyController {
 	}
 
 	public async InviteToParty(userId: string) {
-		InternalHttpManager.PostAsync(
+		const res = InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/parties/party/invite",
 			json.encode({
 				userToAdd: userId,
 			}),
 		);
+
+		if (!res.success || res.statusCode > 299) {
+			warn(`Unable to invite user to party. Status Code: ${res.statusCode}\n`, res.error);
+			throw res.error;
+		}
+	}
+
+	public async RemoveFromParty(userId: string) {
+		const res = InternalHttpManager.PostAsync(
+			AirshipUrl.GameCoordinator + "/parties/party/remove",
+			json.encode({
+				userToRemove: userId,
+			}),
+		);
+
+		if (!res.success || res.statusCode > 299) {
+			warn(`Unable to remove user from party. Status Code: ${res.statusCode}\n`, res.error);
+			throw res.error;
+		}
 	}
 
 	protected OnStart(): void {
