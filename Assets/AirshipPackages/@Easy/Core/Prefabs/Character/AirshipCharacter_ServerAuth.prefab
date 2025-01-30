@@ -81,6 +81,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8616685848737228372, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3426884107082537107}
+    - targetCorrespondingSourceObject: {fileID: 8616685848737228372, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4944229044116784204}
     - targetCorrespondingSourceObject: {fileID: 7387929036933538088, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5191571332923387930}
@@ -109,8 +112,8 @@ MonoBehaviour:
   recordInterval: 0.06
   onlyRecordChanges: 1
   compareLastFirst: 1
-  checkReconcileEveryNthFrame: 4
-  serverSerializationOffset: 0
+  serverToClientSendDelay: 0
+  serverToObserversSendDelay: 0
   replayTickOffset: 0
   positionCorrectionThreshold: 0.5
   velocityCorrectionThreshold: 5
@@ -124,8 +127,8 @@ MonoBehaviour:
   drawGizmosEveryNthFrame: 4
   serverColor: {r: 1, g: 0, b: 0, a: 1}
   clientColor: {r: 0, g: 0, b: 1, a: 1}
-  movement: {fileID: 6664317513368887607}
   pauseOnReplay: 0
+  movement: {fileID: 6664317513368887607}
 --- !u!114 &952053684114308443
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -233,6 +236,21 @@ MonoBehaviour:
     displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0
+--- !u!114 &4944229044116784204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5042559581574877564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48a845081ca4460469cd40f4a35513b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
 --- !u!1 &6118537333859603968 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7387929036933538088, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
