@@ -520,6 +520,21 @@ declare namespace debug {
 		: T extends `${infer A}${infer _}`
 		? LuaTuple<TS.InfoFlags<[A]>>
 		: LuaTuple<[unknown, unknown, unknown, unknown, unknown]>;
+
+	/**
+	 * Sets the memory category for the current thread and any threads that spawn off of the current thread.
+	 */
+	function setmemorycategory(category: string): void;
+
+	/**
+	 * Gets the memory usage in bytes for the given category.
+	 */
+	function getmemorycategory(category: string): number;
+
+	/**
+	 * Resets the memory category for the current thread to the default category (the name of the script).
+	 */
+	function resetmemorycategory(): void;
 }
 
 interface TimeManager {
