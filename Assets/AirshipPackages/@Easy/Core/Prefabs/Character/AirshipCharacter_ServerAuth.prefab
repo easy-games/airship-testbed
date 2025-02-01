@@ -112,12 +112,13 @@ MonoBehaviour:
   recordInterval: 0.06
   onlyRecordChanges: 1
   compareLastFirst: 1
-  serverToClientSendDelay: 0
-  serverToObserversSendDelay: 0
+  serverToClientUpdatesPerSecond: 0
   replayTickOffset: 0
   positionCorrectionThreshold: 0.5
   velocityCorrectionThreshold: 5
   velocitySnapThreshold: 5
+  serverToObserversUpdatesPerSecond: 20
+  observerStatesBehindMargin: 3
   reduceSendsWhileIdle: 1
   smoothRigidbody: 1
   showLogs: 0
