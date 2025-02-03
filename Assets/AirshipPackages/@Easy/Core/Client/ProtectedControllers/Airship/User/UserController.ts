@@ -186,6 +186,7 @@ export class ProtectedUserController {
 					ignore = true;
 				}
 				if (!ignore) {
+					print("users/self did not contain user. routing to login screen. full response: " + res.data);
 					Bridge.LoadScene("Login", true, LoadSceneMode.Single);
 				}
 				return;
