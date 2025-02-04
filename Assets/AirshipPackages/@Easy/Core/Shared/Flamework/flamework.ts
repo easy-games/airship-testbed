@@ -210,7 +210,8 @@ export namespace Flamework {
 
 		for (const [dependency, identifier] of init) {
 			if (startedIdentifiers.has(identifier)) continue;
-			// debug.setmemorycategory(identifier);
+
+			debug.setmemorycategory(identifier);
 			const initResult = dependency.OnInit();
 			if (Promise.is(initResult)) {
 				const [status, value] = initResult.awaitStatus();
@@ -218,7 +219,7 @@ export namespace Flamework {
 					throw `OnInit failed for dependency '${identifier}'. ${tostring(value)}`;
 				}
 			}
-			// debug.resetmemorycategory();
+			debug.resetmemorycategory();
 		}
 
 		isInitialized = true;
@@ -226,9 +227,10 @@ export namespace Flamework {
 		for (const [dependency, identifier] of start) {
 			if (startedIdentifiers.has(identifier)) continue;
 			startedIdentifiers.add(identifier);
-			coroutine.wrap(() => {
+			task.spawn(() => {
+				debug.setmemorycategory(identifier);
 				dependency.OnStart();
-			})();
+			});
 		}
 
 		return dependencies;
