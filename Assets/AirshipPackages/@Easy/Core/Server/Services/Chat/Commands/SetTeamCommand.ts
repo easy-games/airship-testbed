@@ -2,6 +2,7 @@ import { Airship } from "@Easy/Core/Shared/Airship";
 import { ChatCommand } from "@Easy/Core/Shared/Commands/ChatCommand";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Player } from "@Easy/Core/Shared/Player/Player";
+import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import { Theme } from "@Easy/Core/Shared/Util/Theme";
 
@@ -11,15 +12,16 @@ export class SetTeamCommand extends ChatCommand {
 	}
 
 	public Execute(player: Player, args: string[]): void {
-		if (args.size() < 1) {
-			player.SendMessage("Invalid arguments.");
+		if (args.size() !== 2) {
+			player.SendMessage(ChatColor.Red("Invalid arguments. /setteam <player> <team>"));
+			return;
 		}
 
 		let username = args[0];
 		let teamName = args[1];
 
 		/* Validate target player. */
-		const targetPlayer = Airship.Players.FindByUsername(username);
+		const targetPlayer = Airship.Players.FindByFuzzySearch(username);
 		if (!targetPlayer) {
 			player.SendMessage(`Invalid username: ${username}`);
 			return;
