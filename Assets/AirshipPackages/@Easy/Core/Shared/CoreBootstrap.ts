@@ -32,7 +32,10 @@ task.spawn(() => {
 CanvasAPI.Init();
 AppManager.Init();
 AudioManager.Init();
-InitNet();
+task.spawn(() => {
+	debug.setmemorycategory("InitNet");
+	InitNet();
+});
 
 const COREPATH = "@easy/core";
 
