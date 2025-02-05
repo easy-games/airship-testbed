@@ -49,6 +49,12 @@ export interface PlaySoundConfig {
 	dopplerLevel?: number;
 }
 
+interface CleanupQueueItem {
+	audioSource: AudioSource;
+	aliveUntil: number;
+	isGlobal: boolean;
+}
+
 /**
  * A set of utilities that allow you to quickly play an Audio Clip with configuration.
  */
@@ -56,20 +62,21 @@ export class AudioManager {
 	private static audioSourceTemplate: GameObject | undefined;
 	private static globalAudioSources: Map<number, AudioSource> = new Map();
 
-	private static cleanupQueue = new Set<{
-		audioSource: AudioSource;
-		aliveUntil: number;
-		isGlobal: boolean;
-	}>();
+	private static cleanupQueue = new Set<CleanupQueueItem>();
 
 	public static Init(): void {
 		this.CacheAudioSources();
 
 		task.spawn(() => {
-			let toRemove = [];
+			const toRemove: CleanupQueueItem[] = [];
+
 			while (task.wait(1)) {
+				if (this.cleanupQueue.isEmpty()) {
+					continue;
+				}
+
 				const now = Time.unscaledTime;
-				for (let item of this.cleanupQueue) {
+				for (const item of this.cleanupQueue) {
 					if (now >= item.aliveUntil) {
 						task.spawn(() => {
 							if (item.audioSource.IsDestroyed()) return;
@@ -83,9 +90,11 @@ export class AudioManager {
 						toRemove.push(item);
 					}
 				}
-				for (let item of toRemove) {
+
+				for (const item of toRemove) {
 					this.cleanupQueue.delete(item);
 				}
+				toRemove.clear();
 			}
 		});
 	}
