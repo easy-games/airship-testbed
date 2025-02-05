@@ -29,6 +29,9 @@ export default class EscapeMenuButton extends AirshipBehaviour {
 
 	override OnDestroy(): void {
 		this.bin.Clean();
+	}
+
+	protected OnDisable(): void {
 		this.text.color = ColorUtil.HexToColor("D9D9D9");
 		const textRect = this.text.transform as RectTransform;
 		textRect.anchoredPosition = new Vector2(221, textRect.anchoredPosition.y);
