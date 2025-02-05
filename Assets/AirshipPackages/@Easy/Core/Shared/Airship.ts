@@ -21,6 +21,7 @@ import { DamageSingleton } from "./Damage/DamageSingleton";
 import { AirshipInputSingleton } from "./Input/AirshipInputSingleton";
 import { AirshipInventorySingleton } from "./Inventory/AirshipInventorySingleton";
 import { LoadingScreenSingleton } from "./LoadingScreen/LoadingScreenSingleton";
+import { AirshipMenuSingleton } from "./Menu/AirshipMenuSingleton";
 import { AirshipPlayersSingleton } from "./Player/AirshipPlayersSingleton";
 import { Player } from "./Player/Player";
 import { AirshipPurchaseSingleton } from "./Purchase/PurchaseSingleton";
@@ -200,6 +201,11 @@ export namespace Airship {
 	 * Provides services to manage and sell products for real money.
 	 */
 	export let Shop = undefined! as AirshipPurchaseSingleton;
+
+	/**
+	 * Exposes customization to the in-game Airship escape menu.
+	 */
+	export let Menu = undefined! as AirshipMenuSingleton;
 
 	/**
 	 * Internal method used to wait until Airship singletons are ready.

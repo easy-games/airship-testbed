@@ -28,9 +28,19 @@ export class MainMenuSingleton {
 	public avatarEditorRenderTexture: RenderTexture;
 	public onAvatarEditorRenderTextureUpdated = new Signal<RenderTexture>();
 
+	public leaveMatchButtonData?: {
+		text: string;
+	};
+
 	constructor() {
 		this.screenSize = new Vector2(Screen.width, Screen.height);
 		this.rawScreenSize = new Vector2(Screen.width, Screen.height);
+
+		contextbridge.callback("Menu:AddLeaveMatchButton", (from, text: string) => {
+			this.leaveMatchButtonData = {
+				text,
+			};
+		});
 	}
 
 	public SetHideMobileEscapeButton(val: boolean) {

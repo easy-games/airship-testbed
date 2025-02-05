@@ -4,9 +4,11 @@ import { Keyboard } from "@Easy/Core/Shared/UserInput";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { MainMenuSingleton } from "../../../Singletons/MainMenuSingleton";
 import { SettingsPageSingleton } from "../../../Singletons/SettingsPageSingleton";
 import MainMenuPageComponent from "../../MainMenuPageComponent";
 import { SettingsTab } from "../SettingsPageName";
+import EscapeMenuButton from "./EscapeMenuButton";
 
 export default class GameGeneralPage extends MainMenuPageComponent {
 	public settingsBtn: Button;
@@ -14,8 +16,11 @@ export default class GameGeneralPage extends MainMenuPageComponent {
 	public buttonsContainer: RectTransform;
 	public playerListBtn: Button;
 	public playerListBackBtn: Button;
-	public disconnectBtn: Button;
+	public disconnectBtn: EscapeMenuButton;
 	public resumeBtn: Button;
+
+	public leaveMatchBtn: EscapeMenuButton;
+	public leaveMatchSpacer: GameObject;
 
 	public generalPage: GameObject;
 	public playerListPage: GameObject;
@@ -31,6 +36,14 @@ export default class GameGeneralPage extends MainMenuPageComponent {
 	public OnEnable(): void {
 		this.generalPage.SetActive(true);
 		this.playerListPage.SetActive(false);
+
+		const mainMenu = Dependency<MainMenuSingleton>();
+		if (mainMenu.leaveMatchButtonData) {
+			this.leaveMatchBtn.text.text = mainMenu.leaveMatchButtonData.text;
+			this.leaveMatchBtn.gameObject.SetActive(true);
+			this.leaveMatchSpacer.gameObject.SetActive(true);
+			this.disconnectBtn.text.text = "Quit to Main Menu";
+		}
 	}
 
 	public OpenPlayerListSubPage(): void {
@@ -84,9 +97,16 @@ export default class GameGeneralPage extends MainMenuPageComponent {
 			}),
 		);
 		this.bin.Add(
-			this.disconnectBtn.onClick.Connect(() => {
+			this.disconnectBtn.button.onClick.Connect(() => {
 				task.spawn(() => {
 					TransferManager.Instance.Disconnect();
+				});
+			}),
+		);
+		this.bin.Add(
+			this.leaveMatchBtn.button.onClick.Connect(() => {
+				task.spawn(() => {
+					contextbridge.broadcast("Menu:LeaveMatchBtnPressed");
 				});
 			}),
 		);
@@ -104,7 +124,6 @@ export default class GameGeneralPage extends MainMenuPageComponent {
 			this.gameDesc.text = Game.gameData!.description;
 
 			let thumbUrl = AirshipUrl.CDN + "/images/" + Game.gameData!.iconImageId + ".png";
-			print("url: " + thumbUrl);
 			const tex = Bridge.DownloadTexture2DYielding(thumbUrl);
 			this.gameImg.texture = tex;
 			NativeTween.GraphicAlpha(this.gameImg, 1, 0.12).SetEaseQuadOut();

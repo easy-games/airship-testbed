@@ -3,6 +3,7 @@ import { CanvasAPI, HoverState } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 
 export default class EscapeMenuButton extends AirshipBehaviour {
+	public button: Button;
 	public text: TMP_Text;
 	public iconImage: Image;
 	private bin = new Bin();

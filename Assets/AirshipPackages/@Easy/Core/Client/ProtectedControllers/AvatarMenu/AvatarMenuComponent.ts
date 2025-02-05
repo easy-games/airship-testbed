@@ -1,3 +1,4 @@
+import { Airship } from "@Easy/Core/Shared/Airship";
 import { OutfitDto } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipPlatformInventory";
 import { AvatarCollectionManager } from "@Easy/Core/Shared/Avatar/AvatarCollectionManager";
 import { AvatarPlatformAPI } from "@Easy/Core/Shared/Avatar/AvatarPlatformAPI";
@@ -7,6 +8,7 @@ import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
 import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import { CoreAction } from "@Easy/Core/Shared/Input/AirshipCoreAction";
 import AirshipButton from "@Easy/Core/Shared/MainMenu/Components/AirshipButton";
 import { MainMenuSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/MainMenuSingleton";
 import { Keyboard } from "@Easy/Core/Shared/UserInput";
@@ -23,8 +25,6 @@ import AvatarMenuProfileComponent from "./AvatarMenuProfileComponent";
 import AvatarRenderComponent from "./AvatarRenderComponent";
 import OutfitButton from "./Outfit/OutfitButtonComponent";
 import OutfitButtonNameComponent from "./Outfit/OutfitButtonNameComponent";
-import { Airship } from "@Easy/Core/Shared/Airship";
-import { CoreAction } from "@Easy/Core/Shared/Input/AirshipCoreAction";
 
 export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private readonly generalHookupKey = "General";
