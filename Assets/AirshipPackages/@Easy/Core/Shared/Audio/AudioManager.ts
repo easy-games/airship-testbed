@@ -68,6 +68,8 @@ export class AudioManager {
 		this.CacheAudioSources();
 
 		task.spawn(() => {
+			debug.setmemorycategory("AudioManagerCleanup");
+
 			const toRemove: CleanupQueueItem[] = [];
 
 			while (task.wait(1)) {
