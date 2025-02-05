@@ -1449,6 +1449,21 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 6412415369928807349}
       modified: 1
+    - name: resumeBtn
+      type: object
+      objectType: Button
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 3546205661708233695}
+      modified: 1
     displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0
@@ -2175,6 +2190,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7539554840099469866, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
   m_PrefabInstance: {fileID: 5164713674572266380}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3546205661708233695 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8546170711853650003, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
+  m_PrefabInstance: {fileID: 5164713674572266380}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &6477487473142996770
 PrefabInstance:
   m_ObjectHideFlags: 0

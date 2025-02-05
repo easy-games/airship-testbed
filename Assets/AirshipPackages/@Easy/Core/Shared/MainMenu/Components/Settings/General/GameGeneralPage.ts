@@ -2,6 +2,7 @@ import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Keyboard } from "@Easy/Core/Shared/UserInput";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
+import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { SettingsPageSingleton } from "../../../Singletons/SettingsPageSingleton";
 import MainMenuPageComponent from "../../MainMenuPageComponent";
@@ -14,6 +15,7 @@ export default class GameGeneralPage extends MainMenuPageComponent {
 	public playerListBtn: Button;
 	public playerListBackBtn: Button;
 	public disconnectBtn: Button;
+	public resumeBtn: Button;
 
 	public generalPage: GameObject;
 	public playerListPage: GameObject;
@@ -27,33 +29,6 @@ export default class GameGeneralPage extends MainMenuPageComponent {
 	private subPageBin = new Bin();
 
 	public OnEnable(): void {
-		this.bin.Add(
-			this.settingsBtn.onClick.Connect(() => {
-				Dependency<SettingsPageSingleton>().Open(SettingsTab.Input);
-			}),
-		);
-		this.bin.Add(
-			this.keybindsBtn.onClick.Connect(() => {
-				Dependency<SettingsPageSingleton>().Open(SettingsTab.Keybinds);
-			}),
-		);
-		this.bin.Add(
-			this.playerListBtn.onClick.Connect(() => {
-				this.OpenPlayerListSubPage();
-			}),
-		);
-		this.bin.Add(
-			this.playerListBackBtn.onClick.Connect(() => {
-				this.CloseSubPage();
-			}),
-		);
-		this.bin.Add(
-			this.disconnectBtn.onClick.Connect(() => {
-				task.spawn(() => {
-					TransferManager.Instance.Disconnect();
-				});
-			}),
-		);
 		this.generalPage.SetActive(true);
 		this.playerListPage.SetActive(false);
 	}
@@ -88,6 +63,39 @@ export default class GameGeneralPage extends MainMenuPageComponent {
 	}
 
 	override Start(): void {
+		this.bin.Add(
+			this.settingsBtn.onClick.Connect(() => {
+				Dependency<SettingsPageSingleton>().Open(SettingsTab.Input);
+			}),
+		);
+		this.bin.Add(
+			this.keybindsBtn.onClick.Connect(() => {
+				Dependency<SettingsPageSingleton>().Open(SettingsTab.Keybinds);
+			}),
+		);
+		this.bin.Add(
+			this.playerListBtn.onClick.Connect(() => {
+				this.OpenPlayerListSubPage();
+			}),
+		);
+		this.bin.Add(
+			this.playerListBackBtn.onClick.Connect(() => {
+				this.CloseSubPage();
+			}),
+		);
+		this.bin.Add(
+			this.disconnectBtn.onClick.Connect(() => {
+				task.spawn(() => {
+					TransferManager.Instance.Disconnect();
+				});
+			}),
+		);
+		this.bin.Add(
+			this.resumeBtn.onClick.Connect(() => {
+				AppManager.Close();
+			}),
+		);
+
 		task.spawn(() => {
 			if (!Game.gameData) {
 				Game.onGameDataLoaded.Wait();
