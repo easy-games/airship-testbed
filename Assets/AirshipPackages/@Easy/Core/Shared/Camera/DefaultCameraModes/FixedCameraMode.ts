@@ -241,7 +241,10 @@ export class FixedCameraMode extends CameraMode {
 		if (this.shouldBumpForOcclusion && this.lastTargetPos) {
 			cameraHolder.LookAt(this.lastCameraPos);
 			const targetPosition = this.lastTargetPos.add(Vector3.up.mul(this.yOffset));
-			this.occlusionCam.BumpForOcclusion(targetPosition, OcclusionCameraManager.GetMask());
+			//Collide camera with enviornment and send signal with new camera distance
+			this.onTargetDistance.Fire(
+				this.occlusionCam.BumpForOcclusion(targetPosition, OcclusionCameraManager.GetMask()),
+			);
 		}
 		this.cameraRightVector = cameraHolder.right;
 		this.cameraForwardVector = this.lookBehind ? cameraHolder.forward.mul(-1) : cameraHolder.forward;

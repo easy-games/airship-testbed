@@ -50,6 +50,7 @@ export default class Character extends AirshipBehaviour {
 	private maxHealth = 100;
 	/** A bin that is cleaned when the entity despawns. */
 	@NonSerialized() public readonly bin = new Bin();
+	@NonSerialized() public readonly cameraBin = new Bin();
 	@NonSerialized() public inventory: Inventory;
 	@NonSerialized() public outfitDto: OutfitDto | undefined;
 
@@ -138,12 +139,39 @@ export default class Character extends AirshipBehaviour {
 				});
 			}
 		}
+
+		this.WaitForInit();
+		if (!this.despawned && this.IsLocalCharacter()) {
+			//Camera
+			this.bin.Add(
+				Airship.Camera.onCameraModeChanged.Connect((mode) => {
+					this.cameraBin.Clean();
+					this.cameraBin.Add(
+						mode.onTargetDistance.Connect((distance) => {
+							this.EvaluateCameraDistance(distance);
+						}),
+					);
+				}),
+			);
+			if (Airship.Camera.activeCameraMode) {
+				this.cameraBin.Add(
+					Airship.Camera.activeCameraMode?.onTargetDistance.Connect((distance) => {
+						this.EvaluateCameraDistance(distance);
+					}),
+				);
+			}
+		}
+	}
+
+	protected EvaluateCameraDistance(distance: number) {
+		this.rig?.gameObject?.SetActive(distance > 0.75);
 	}
 
 	public OnDisable(): void {
 		Airship.Characters.UnregisterCharacter(this);
 		if (Game.IsClient() && !this.despawned) {
 			this.bin.Clean();
+			this.cameraBin.Clean();
 			this.despawned = true;
 			this.onDespawn.Fire();
 			Airship.Characters.onCharacterDespawned.Fire(this);

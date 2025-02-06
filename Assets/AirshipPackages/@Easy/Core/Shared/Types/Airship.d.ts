@@ -382,7 +382,7 @@ interface DestroyWatcher extends Component {
 interface OcclusionCam extends Component {
 	targetCamera: Camera;
 	Init(camera: Camera);
-	BumpForOcclusion(attachToPos: Vector3, mask: number): void;
+	BumpForOcclusion(attachToPos: Vector3, mask: number): number;
 }
 
 interface PredictedObject extends GameObject {
