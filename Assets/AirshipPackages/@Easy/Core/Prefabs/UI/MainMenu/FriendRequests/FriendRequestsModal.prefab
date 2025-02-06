@@ -391,7 +391,37 @@ MonoBehaviour:
     name: FriendRequestModal
     singleton: 0
     decorators: []
-    properties: []
+    properties:
+    - name: content
+      type: object
+      objectType: Transform
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 5303429692019472209}
+      modified: 1
+    - name: friendRequestPrefab
+      type: object
+      objectType: GameObject
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 8094481695794984158, guid: 21da7d50b019240928ae085f3c86bbac, type: 3}
+      modified: 1
     displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0
