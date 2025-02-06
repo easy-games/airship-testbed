@@ -306,13 +306,14 @@ export class DirectMessageController {
 			pitch: 1.5,
 		});
 
-		if (Game.coreContext === CoreContext.GAME) {
-			let text =
-				ColorUtil.ColoredText(Theme.pink, "[Party] ") +
-				ColorUtil.ColoredText(Theme.white, Game.localPlayer.username) +
-				ColorUtil.ColoredText(Theme.gray, ": " + message);
-			Dependency<ClientChatSingleton>().RenderChatMessage(text);
-		}
+		// predict send for sender
+		// if (Game.coreContext === CoreContext.GAME) {
+		// 	let text =
+		// 		ColorUtil.ColoredText(Theme.pink, "[Party] ") +
+		// 		ColorUtil.ColoredText(Theme.white, Game.localPlayer.username) +
+		// 		ColorUtil.ColoredText(Theme.gray, ": " + message);
+		// 	Dependency<ClientChatSingleton>().RenderChatMessage(text);
+		// }
 	}
 
 	private RenderChatMessage(dm: DirectMessage, receivedWhileOpen: boolean, isParty?: boolean): void {
