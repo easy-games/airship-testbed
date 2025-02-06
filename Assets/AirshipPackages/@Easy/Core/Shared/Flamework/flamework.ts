@@ -208,10 +208,18 @@ export namespace Flamework {
 			if (IsStartableDependency(dependency)) start.set(dependency, getIdentifier(dependency));
 		}
 
+		const getMemCat = (identifier: string) => {
+			const parts = identifier.split("@");
+			if (parts.size() === 0) {
+				return identifier;
+			}
+			return parts[parts.size() - 1];
+		};
+
 		for (const [dependency, identifier] of init) {
 			if (startedIdentifiers.has(identifier)) continue;
 
-			debug.setmemorycategory(identifier);
+			debug.setmemorycategory(getMemCat(identifier));
 			const initResult = dependency.OnInit();
 			if (Promise.is(initResult)) {
 				const [status, value] = initResult.awaitStatus();
@@ -228,7 +236,7 @@ export namespace Flamework {
 			if (startedIdentifiers.has(identifier)) continue;
 			startedIdentifiers.add(identifier);
 			task.spawn(() => {
-				debug.setmemorycategory(identifier);
+				debug.setmemorycategory(getMemCat(identifier));
 				dependency.OnStart();
 			});
 		}
