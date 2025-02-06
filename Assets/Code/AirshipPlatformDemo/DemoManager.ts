@@ -9,6 +9,7 @@ import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Keyboard } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
 import { Network } from "Code/Network";
 
 export default class DemoManager extends AirshipBehaviour {
@@ -28,6 +29,12 @@ export default class DemoManager extends AirshipBehaviour {
 	private npcCharacter: Character;
 
 	override Start(): void {
+		if (Game.IsEditor()) {
+			Airship.Menu.AddLeaveMatchButton("Back to Lobby", () => {
+				Game.localPlayer.SendMessage(ChatColor.Green("Teleporting back to the Lobby..."));
+			});
+		}
+
 		// task.spawn(() => {
 		// 	while (task.wait(1)) {
 		// 		AudioManager.PlayClipGlobal(this.TestSound);

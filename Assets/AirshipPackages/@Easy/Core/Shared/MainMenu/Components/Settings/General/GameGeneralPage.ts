@@ -106,6 +106,7 @@ export default class GameGeneralPage extends MainMenuPageComponent {
 		this.bin.Add(
 			this.leaveMatchBtn.button.onClick.Connect(() => {
 				task.spawn(() => {
+					AppManager.Close();
 					contextbridge.broadcast("Menu:LeaveMatchBtnPressed");
 				});
 			}),
