@@ -4,5 +4,6 @@
     "latejoin:5",
     "Client",
     "latejoin:30"
-  ]
+  ],
+  "version": "1.4.0"
 }
