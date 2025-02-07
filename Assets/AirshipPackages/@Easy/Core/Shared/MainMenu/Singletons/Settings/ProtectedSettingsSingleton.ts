@@ -22,6 +22,17 @@ const defaultData: ClientSettingsFile = {
 	gameKeybindOverrides: {},
 };
 
+enum GameSettingType {
+	Slider,
+	Toggle,
+}
+
+interface GameSetting {
+	name: string;
+	type: GameSettingType;
+	value: unknown;
+}
+
 /**
  * Notes:
  * I don't like all of the getters and setters in here. We should
@@ -42,6 +53,8 @@ export class ProtectedSettingsSingleton {
 	public micFrequency = 16_000;
 	public micSampleLength = 100;
 
+	public gameSettings: GameSetting[] = [];
+
 	constructor() {
 		Protected.settings = this;
 
@@ -58,6 +71,24 @@ export class ProtectedSettingsSingleton {
 		contextbridge.callback<() => number>("ClientSettings:GetTouchSensitivity", () => {
 			return this.GetTouchSensitivity();
 		});
+
+		contextbridge.callback(
+			"Settings:AddSlider",
+			(fromContext, name: string, startingValue: number, min: number, max: number) => {
+				assert(min < max, "Slider: max must be greater than min.");
+
+				if (this.gameSettings.find((x) => x.name === name)) {
+					error(`A setting named "${name}" already exists.`);
+				}
+
+				const setting: GameSetting = {
+					name,
+					type: GameSettingType.Slider,
+					value: startingValue,
+				};
+				this.gameSettings.push(setting);
+			},
+		);
 	}
 
 	protected OnStart(): void {
