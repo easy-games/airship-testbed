@@ -1,5 +1,4 @@
-import { ClientSettingsController } from "@Easy/Core/Client/ProtectedControllers/Settings/ClientSettingsController";
-import { Dependency, Singleton } from "@Easy/Core/Shared/Flamework";
+import { Singleton } from "@Easy/Core/Shared/Flamework";
 import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 import { Airship } from "../Airship";
 import { Asset } from "../Asset";
@@ -7,6 +6,7 @@ import { CoreContext } from "../CoreClientContext";
 import { CoreRefs } from "../CoreRefs";
 import { Game } from "../Game";
 import AirshipButton from "../MainMenu/Components/AirshipButton";
+import { Protected } from "../Protected";
 import { ControlScheme, Keyboard, Mouse, Preferred as PreferredControls } from "../UserInput";
 import { Bin } from "../Util/Bin";
 import { CanvasAPI, PointerDirection } from "../Util/CanvasAPI";
@@ -200,7 +200,7 @@ export class AirshipInputSingleton {
 		if (Game.IsProtectedLuauContext()) {
 			// Read **Core** keybinds from `ClientSettings.json` & apply overrides.
 			task.spawn(() => {
-				const clientSettings = Dependency<ClientSettingsController>().WaitForSettingsLoaded().expect();
+				const clientSettings = Protected.settings.WaitForSettingsLoaded().expect();
 				const overrides = clientSettings.coreKeybindOverrides;
 				if (!overrides) return;
 				this.DeserializeCoreKeybinds(overrides);
@@ -1070,7 +1070,7 @@ export class AirshipInputSingleton {
 				coreKeybinds[coreAction] = serialized;
 			}
 		}
-		Dependency<ClientSettingsController>().SetCoreKeybindOverrides(coreKeybinds);
+		Protected.settings.SetCoreKeybindOverrides(coreKeybinds);
 	}
 
 	/**
@@ -1100,7 +1100,7 @@ export class AirshipInputSingleton {
 		if (!Game.IsProtectedLuauContext()) return;
 		task.spawn(() => {
 			const gameId = Game.IsEditor() ? Game.gameId : Game.WaitForGameData().id;
-			Dependency<ClientSettingsController>().UpdateGameKeybindOverrides(gameId, action.GetSerializable());
+			Protected.settings.UpdateGameKeybindOverrides(gameId, action.GetSerializable());
 		});
 	}
 
@@ -1114,7 +1114,7 @@ export class AirshipInputSingleton {
 		if (!Game.IsProtectedLuauContext()) return;
 		task.spawn(() => {
 			const gameId = Game.IsEditor() ? Game.gameId : Game.WaitForGameData().id;
-			const clientSettings = Dependency<ClientSettingsController>().WaitForSettingsLoaded().expect();
+			const clientSettings = Protected.settings.WaitForSettingsLoaded().expect();
 			const gameOverrides = clientSettings.gameKeybindOverrides[gameId];
 			if (!gameOverrides) return;
 			const actionOverride = gameOverrides[action.name];

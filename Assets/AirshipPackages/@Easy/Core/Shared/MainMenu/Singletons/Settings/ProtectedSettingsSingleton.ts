@@ -1,9 +1,10 @@
-import { Controller } from "@Easy/Core/Shared/Flamework";
-import { CoreAction } from "@Easy/Core/Shared/Input/AirshipCoreAction";
-import { SerializableAction } from "@Easy/Core/Shared/Input/InputAction";
-import { Signal } from "@Easy/Core/Shared/Util/Signal";
-import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
-import { ClientSettingsFile } from "./ClientSettingsFile";
+import { ClientSettingsFile } from "@Easy/Core/Shared/MainMenu/Singletons/Settings/ClientSettingsFile";
+import { Singleton } from "../../../Flamework";
+import { CoreAction } from "../../../Input/AirshipCoreAction";
+import { SerializableAction } from "../../../Input/InputAction";
+import { Protected } from "../../../Protected";
+import { Signal } from "../../../Util/Signal";
+import { SetInterval } from "../../../Util/Timer";
 
 const defaultData: ClientSettingsFile = {
 	mouseSensitivity: 2,
@@ -21,8 +22,18 @@ const defaultData: ClientSettingsFile = {
 	gameKeybindOverrides: {},
 };
 
-@Controller({ loadOrder: -1 })
-export class ClientSettingsController {
+/**
+ * Notes:
+ * I don't like all of the getters and setters in here. We should
+ * clean that up eventually.
+ * - Luke
+ */
+
+/**
+ * @internal
+ */
+@Singleton({ loadOrder: -1 })
+export class ProtectedSettingsSingleton {
 	public data: ClientSettingsFile;
 	private unsavedChanges = false;
 	private settingsLoaded = false;
@@ -32,6 +43,8 @@ export class ClientSettingsController {
 	public micSampleLength = 100;
 
 	constructor() {
+		Protected.settings = this;
+
 		this.data = defaultData;
 
 		contextbridge.callback<() => number>("ClientSettings:GetMouseSensitivity", () => {

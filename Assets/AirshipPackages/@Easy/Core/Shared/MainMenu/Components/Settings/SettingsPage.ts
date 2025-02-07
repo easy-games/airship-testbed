@@ -1,7 +1,7 @@
-import { ClientSettingsController } from "@Easy/Core/Client/ProtectedControllers/Settings/ClientSettingsController";
 import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import { Protected } from "@Easy/Core/Shared/Protected";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI, PointerDirection } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { MainMenuSingleton } from "../../Singletons/MainMenuSingleton";
@@ -97,19 +97,19 @@ export default class SettingsPage extends AirshipBehaviour {
 			}),
 		);
 
-		const clientSettingsController = Dependency<ClientSettingsController>();
+		const settings = Protected.settings;
 
-		this.SetupSlider(this.mouseSensitivityGO, clientSettingsController.GetMouseSensitivity(), (val) => {
-			clientSettingsController.SetMouseSensitivity(val);
+		this.SetupSlider(this.mouseSensitivityGO, settings.GetMouseSensitivity(), (val) => {
+			settings.SetMouseSensitivity(val);
 		});
-		this.SetupSlider(this.mouseSmoothingGO, clientSettingsController.GetMouseSmoothing(), (val) => {
-			clientSettingsController.SetMouseSmoothing(val);
+		this.SetupSlider(this.mouseSmoothingGO, settings.GetMouseSmoothing(), (val) => {
+			settings.SetMouseSmoothing(val);
 		});
-		this.SetupSlider(this.touchSensitibityGO, clientSettingsController.GetTouchSensitivity(), (val) => {
-			clientSettingsController.SetTouchSensitivity(val);
+		this.SetupSlider(this.touchSensitibityGO, settings.GetTouchSensitivity(), (val) => {
+			settings.SetTouchSensitivity(val);
 		});
-		this.SetupSlider(this.volumeGO, clientSettingsController.GetGlobalVolume(), (val) => {
-			clientSettingsController.SetGlobalVolume(val);
+		this.SetupSlider(this.volumeGO, settings.GetGlobalVolume(), (val) => {
+			settings.SetGlobalVolume(val);
 		});
 	}
 
