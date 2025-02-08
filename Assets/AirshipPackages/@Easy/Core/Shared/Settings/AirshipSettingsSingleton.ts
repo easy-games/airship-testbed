@@ -40,4 +40,32 @@ export class AirshipSettingsSingleton {
 	public GetSlider(name: string): number {
 		return contextbridge.invoke("Settings:Slider:GetValue", LuauContext.Protected, name);
 	}
+
+	public AddToggle(name: string, startingValue: boolean): void {
+		contextbridge.invoke("Settings:AddToggle", LuauContext.Protected, name, startingValue);
+	}
+
+	public ObserveToggle(name: string, callback: (val: boolean) => void): () => void {
+		const startingVal = contextbridge.invoke("Settings:Toggle:GetValue", LuauContext.Protected, name);
+		task.spawn(() => {
+			callback(startingVal);
+		});
+		return contextbridge.subscribe(
+			"Settings:Toggle:OnChanged",
+			(from: LuauContext, name2: string, val: boolean) => {
+				if (name2 === name) {
+					callback(val);
+				}
+			},
+		);
+	}
+
+	public GetToggle(name: string): boolean {
+		return contextbridge.invoke("Settings:Toggle:GetValue", LuauContext.Protected, name);
+	}
+
+	/** Adds a spacer to the settings menu. Purely visual for those who want to stay organized :) */
+	public AddSpacer(): void {
+		contextbridge.invoke("Settings:AddSpacer", LuauContext.Protected);
+	}
 }

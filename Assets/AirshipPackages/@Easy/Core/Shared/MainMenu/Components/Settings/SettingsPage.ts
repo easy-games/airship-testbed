@@ -4,10 +4,14 @@ import { Game } from "@Easy/Core/Shared/Game";
 import { Protected } from "@Easy/Core/Shared/Protected";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI, PointerDirection } from "@Easy/Core/Shared/Util/CanvasAPI";
-import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 import { MainMenuSingleton } from "../../Singletons/MainMenuSingleton";
-import { InternalGameSettingType, InternalSliderGameSetting } from "../../Singletons/Settings/InternalGameSetting";
+import {
+	InternalGameSetting,
+	InternalGameSettingType,
+	InternalSliderGameSetting,
+} from "../../Singletons/Settings/InternalGameSetting";
 import SettingsSlider from "./Controls/SettingsSlider";
+import SettingsToggle from "./Controls/SettingsToggle";
 import { SettingsTab } from "./SettingsPageName";
 import SettingsSidebar from "./SettingsSidebar";
 
@@ -31,6 +35,8 @@ export default class SettingsPage extends AirshipBehaviour {
 
 	@Header("Prefabs")
 	public sliderPrefab: GameObject;
+	public togglePrefab: GameObject;
+	public spacerPrefab: GameObject;
 
 	// public mobilePages!: RectTransform[];
 
@@ -105,7 +111,13 @@ export default class SettingsPage extends AirshipBehaviour {
 
 		this.gamePageSettingsContainer.gameObject.ClearChildren();
 		if (Protected.settings.gameSettings.size() > 0) {
-			for (let gameSetting of ObjectUtils.values(Protected.settings.gameSettings)) {
+			for (let gameSetting of Protected.settings.gameSettingsOrdered) {
+				if (gameSetting === "space") {
+					Object.Instantiate(this.spacerPrefab, this.gamePageSettingsContainer);
+					continue;
+				}
+
+				// Slider
 				if (gameSetting.type === InternalGameSettingType.Slider) {
 					const setting = gameSetting as InternalSliderGameSetting;
 					const go = Object.Instantiate(this.sliderPrefab, this.gamePageSettingsContainer);
@@ -113,6 +125,19 @@ export default class SettingsPage extends AirshipBehaviour {
 					settingsSlider.Init(gameSetting.name, setting.value as number, setting.min, setting.max);
 					this.bin.Add(
 						settingsSlider.onChange.Connect((val) => {
+							Protected.settings.SetGameSetting(setting.name, val);
+						}),
+					);
+				}
+
+				// Toggle
+				if (gameSetting.type === InternalGameSettingType.Toggle) {
+					const setting = gameSetting as InternalGameSetting;
+					const go = Object.Instantiate(this.togglePrefab, this.gamePageSettingsContainer);
+					const toggle = go.GetAirshipComponent<SettingsToggle>()!;
+					toggle.Init(gameSetting.name, gameSetting.value as boolean);
+					this.bin.Add(
+						toggle.toggle.onValueChanged.Connect((val) => {
 							Protected.settings.SetGameSetting(setting.name, val);
 						}),
 					);

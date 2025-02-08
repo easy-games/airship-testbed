@@ -50,6 +50,7 @@ export class ProtectedSettingsSingleton {
 	public micSampleLength = 100;
 
 	public gameSettings = new Map<string, InternalGameSetting>();
+	public gameSettingsOrdered: (InternalGameSetting | "space")[] = [];
 	private savedGameSettings: SavedGameSettings = {
 		gameSettings: [],
 	};
@@ -99,6 +100,7 @@ export class ProtectedSettingsSingleton {
 					max,
 				};
 				this.gameSettings.set(name, setting);
+				this.gameSettingsOrdered.push(setting);
 			},
 		);
 
@@ -110,6 +112,46 @@ export class ProtectedSettingsSingleton {
 			}
 			return setting.value as number;
 		});
+
+		/** *********** **/
+		contextbridge.callback("Settings:AddToggle", (fromContext, name: string, startingValue: boolean) => {
+			if (this.gameSettings.has(name)) {
+				error(`A setting named "${name}" already exists.`);
+			}
+
+			let value = startingValue;
+			try {
+				for (let s of this.savedGameSettings.gameSettings) {
+					if (s.name === name && s.type === InternalGameSettingType.Slider) {
+						value = s.value as boolean;
+					}
+				}
+			} catch (err) {
+				warn("Failed to load saved game setting: " + name + ". " + err);
+			}
+
+			const setting: InternalGameSetting = {
+				name,
+				type: InternalGameSettingType.Toggle,
+				value,
+			};
+			this.gameSettings.set(name, setting);
+			this.gameSettingsOrdered.push(setting);
+		});
+
+		contextbridge.callback("Settings:Toggle:GetValue", (from: LuauContext, name: string) => {
+			const setting = this.gameSettings.get(name);
+			if (!setting) {
+				warn(`Tried to get setting that didn't exist: "${name}"`);
+				return 1;
+			}
+			return setting.value as number;
+		});
+
+		// ************ //
+		contextbridge.callback("Settings:AddSpacer", (from: LuauContext) => {
+			this.gameSettingsOrdered.push("space");
+		});
 	}
 
 	public SetGameSetting(name: string, value: unknown): void {
@@ -119,6 +161,8 @@ export class ProtectedSettingsSingleton {
 		setting.value = value;
 		if (setting.type === InternalGameSettingType.Slider) {
 			contextbridge.broadcast("Settings:Slider:OnChanged", name, value);
+		} else if (setting.type === InternalGameSettingType.Toggle) {
+			contextbridge.broadcast("Settings:Toggle:OnChanged", name, value);
 		}
 		this.MarkAsDirty();
 	}

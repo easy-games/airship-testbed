@@ -39,6 +39,12 @@ export default class DemoManager extends AirshipBehaviour {
 		Airship.Settings.ObserveSlider("Background Music", (val) => {
 			print("music: " + val);
 		});
+		Airship.Settings.AddToggle("Potato Graphics Mode", false);
+		Airship.Settings.ObserveToggle("Potato Graphics Mode", (val) => {
+			print("potato mode: " + val);
+		});
+		Airship.Settings.AddSpacer();
+		Airship.Settings.AddToggle("Secret Toggle", false);
 
 		// task.spawn(() => {
 		// 	while (task.wait(1)) {

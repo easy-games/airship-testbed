@@ -171,7 +171,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -6.8060913}
   m_SizeDelta: {x: 153.6689, y: 25}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &6664012370865844421
@@ -589,11 +589,11 @@ RectTransform:
   - {fileID: 6632678622217771062}
   m_Father: {fileID: 70873977686430445}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -1.3000183}
-  m_SizeDelta: {x: 42.172, y: 34.0928}
-  m_Pivot: {x: 0, y: 0.5}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: -25.553589}
+  m_SizeDelta: {x: 42.172, y: 34.092804}
+  m_Pivot: {x: 0, y: 1}
 --- !u!222 &8122096750299138997
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -803,10 +803,10 @@ RectTransform:
   - {fileID: 902482504315666935}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 70}
+  m_SizeDelta: {x: 0, y: 68.84729}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &8468661073840028355
 MonoBehaviour:
@@ -980,7 +980,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 16
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -1052,11 +1052,11 @@ RectTransform:
   - {fileID: 8779948224964017434}
   m_Father: {fileID: 70873977686430445}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 22.05, y: -1.3000075}
-  m_SizeDelta: {x: -44.1, y: 20}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 44.099976, y: -32.59998}
+  m_SizeDelta: {x: -44.100098, y: 20}
+  m_Pivot: {x: 0, y: 1}
 --- !u!114 &6903293745786959150
 MonoBehaviour:
   m_ObjectHideFlags: 0
