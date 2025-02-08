@@ -4,12 +4,15 @@ import { Game } from "@Easy/Core/Shared/Game";
 import { Protected } from "@Easy/Core/Shared/Protected";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI, PointerDirection } from "@Easy/Core/Shared/Util/CanvasAPI";
+import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 import { MainMenuSingleton } from "../../Singletons/MainMenuSingleton";
+import { InternalGameSettingType, InternalSliderGameSetting } from "../../Singletons/Settings/InternalGameSetting";
+import SettingsSlider from "./Controls/SettingsSlider";
 import { SettingsTab } from "./SettingsPageName";
 import SettingsSidebar from "./SettingsSidebar";
 
 export default class SettingsPage extends AirshipBehaviour {
-	public sidebar!: RectTransform;
+	public sidebar!: SettingsSidebar;
 	public tabs!: RectTransform;
 	public scrollView!: RectTransform;
 	public canvasScalar: CanvasScaler;
@@ -18,22 +21,25 @@ export default class SettingsPage extends AirshipBehaviour {
 	public mobileHeader: RectTransform;
 	public desktopCloseButtonWrapper: RectTransform;
 	public mobileCloseButtonWrapper: RectTransform;
+	public gamePageSettingsContainer: Transform;
 
 	@Header("Sliders")
-	public mouseSensitivityGO!: GameObject;
-	public mouseSmoothingGO!: GameObject;
-	public touchSensitibityGO!: GameObject;
-	public volumeGO!: GameObject;
+	public mouseSensitivitySlider!: SettingsSlider;
+	public mouseSmoothingSlider!: SettingsSlider;
+	public touchSensitibitySlider!: SettingsSlider;
+	public volumeSlider!: SettingsSlider;
+
+	@Header("Prefabs")
+	public sliderPrefab: GameObject;
 
 	// public mobilePages!: RectTransform[];
 
 	private bin = new Bin();
 
 	public OnEnable(): void {
-		print("OnEnable settingspage: " + this.gameObject.activeInHierarchy);
 		if (!Game.IsClient()) return;
 
-		const rect = this.gameObject.transform as RectTransform;
+		// const rect = this.transform as RectTransform;
 		const mainMenu = Dependency<MainMenuSingleton>();
 		this.bin.Add(() => {
 			mainMenu.SetHideMobileEscapeButton(false);
@@ -76,13 +82,13 @@ export default class SettingsPage extends AirshipBehaviour {
 					}
 
 					if (Game.deviceType === AirshipDeviceType.Phone) {
-						this.tabs.GetChild(0).gameObject.SetActive(true); // Profile
-						this.tabs.GetChild(1).gameObject.SetActive(true); // Input
-						this.tabs.GetChild(2).gameObject.SetActive(true); // Sound
+						this.tabs.GetChild(1).gameObject.SetActive(true); // Profile
+						this.tabs.GetChild(2).gameObject.SetActive(true); // Input
+						this.tabs.GetChild(3).gameObject.SetActive(true); // Sound
 
-						this.tabs.GetChild(6).gameObject.SetActive(true); // Blocked
-						this.tabs.GetChild(7).gameObject.SetActive(true); // Developer
-						this.tabs.GetChild(8).gameObject.SetActive(true); // Other
+						this.tabs.GetChild(7).gameObject.SetActive(true); // Blocked
+						this.tabs.GetChild(8).gameObject.SetActive(true); // Developer
+						this.tabs.GetChild(9).gameObject.SetActive(true); // Other
 					}
 				} else {
 					this.tabs.anchorMax = new Vector2(0, 1);
@@ -97,18 +103,48 @@ export default class SettingsPage extends AirshipBehaviour {
 			}),
 		);
 
+		this.gamePageSettingsContainer.gameObject.ClearChildren();
+		if (Protected.settings.gameSettings.size() > 0) {
+			for (let gameSetting of ObjectUtils.values(Protected.settings.gameSettings)) {
+				if (gameSetting.type === InternalGameSettingType.Slider) {
+					const setting = gameSetting as InternalSliderGameSetting;
+					const go = Object.Instantiate(this.sliderPrefab, this.gamePageSettingsContainer);
+					const settingsSlider = go.GetAirshipComponent<SettingsSlider>()!;
+					settingsSlider.Init(gameSetting.name, setting.value as number, setting.min, setting.max);
+					this.bin.Add(
+						settingsSlider.onChange.Connect((val) => {
+							Protected.settings.SetGameSetting(setting.name, val);
+						}),
+					);
+				}
+			}
+		}
+	}
+
+	protected Start(): void {
 		const settings = Protected.settings;
 
-		this.SetupSlider(this.mouseSensitivityGO, settings.GetMouseSensitivity(), (val) => {
+		this.mouseSensitivitySlider.Init("Mouse Sensitivity", settings.GetMouseSensitivity(), 0.01, 2);
+		this.mouseSensitivitySlider.onChange.Connect((val) => {
 			settings.SetMouseSensitivity(val);
 		});
-		this.SetupSlider(this.mouseSmoothingGO, settings.GetMouseSmoothing(), (val) => {
+
+		this.mouseSmoothingSlider.Init("Mouse Smoothing", settings.GetMouseSmoothing(), 0, 2);
+		this.mouseSmoothingSlider.onChange.Connect((val) => {
 			settings.SetMouseSmoothing(val);
 		});
-		this.SetupSlider(this.touchSensitibityGO, settings.GetTouchSensitivity(), (val) => {
-			settings.SetTouchSensitivity(val);
-		});
-		this.SetupSlider(this.volumeGO, settings.GetGlobalVolume(), (val) => {
+
+		if (Game.IsMobile()) {
+			this.touchSensitibitySlider.Init("Touch Sensitivity", settings.GetTouchSensitivity(), 0.01, 2);
+			this.touchSensitibitySlider.onChange.Connect((val) => {
+				settings.SetTouchSensitivity(val);
+			});
+		} else {
+			this.touchSensitibitySlider.gameObject.SetActive(false);
+		}
+
+		this.volumeSlider.Init("Global Volume", settings.GetGlobalVolume(), 0, 2);
+		this.volumeSlider.onChange.Connect((val) => {
 			settings.SetGlobalVolume(val);
 		});
 	}
@@ -124,56 +160,6 @@ export default class SettingsPage extends AirshipBehaviour {
 				continue;
 			}
 		}
-	}
-
-	private SetupSlider(go: GameObject, startingValue: number, onChange: (val: number) => void): void {
-		const transform = go.transform;
-		const inputField = transform.FindChild("InputField")!.GetComponent<TMP_InputField>()!;
-		const slider = transform.FindChild("Slider")!.GetComponent<Slider>()!;
-
-		let valRounded = math.floor(startingValue * 10) / 10;
-		slider.value = valRounded;
-		inputField.text = valRounded + "";
-
-		let ignoreNextSliderChange = false;
-		let ignoreNextInputFieldChange = false;
-
-		this.bin.AddEngineEventConnection(
-			CanvasAPI.OnValueChangeEvent(inputField.gameObject, () => {
-				if (ignoreNextInputFieldChange) {
-					ignoreNextInputFieldChange = false;
-					return;
-				}
-
-				const value = tonumber(inputField.text);
-				if (value === undefined) return;
-
-				ignoreNextSliderChange = true;
-				onChange(value);
-				slider.value = value;
-			}),
-		);
-
-		this.bin.AddEngineEventConnection(
-			CanvasAPI.OnValueChangeEvent(slider.gameObject, (value) => {
-				if (ignoreNextSliderChange) {
-					ignoreNextSliderChange = false;
-					return;
-				}
-
-				ignoreNextInputFieldChange = true;
-				onChange(value);
-				inputField.text = math.floor(value * 100) / 100 + "";
-			}),
-		);
-
-		this.bin.AddEngineEventConnection(
-			CanvasAPI.OnPointerEvent(slider.gameObject, (direction) => {
-				if (direction === PointerDirection.DOWN) {
-					this.PlaySelectSound();
-				}
-			}),
-		);
 	}
 
 	private SetupToggle(toggle: Toggle, onChange: (val: boolean) => void): void {

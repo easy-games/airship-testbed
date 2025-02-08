@@ -1,4 +1,5 @@
 import { Game } from "@Easy/Core/Shared/Game";
+import { Protected } from "@Easy/Core/Shared/Protected";
 import SettingsTabButton from "./SettingsTabButton";
 
 export default class SettingsSidebar extends AirshipBehaviour {
@@ -22,7 +23,8 @@ export default class SettingsSidebar extends AirshipBehaviour {
 
 	private SetupGameTab(): void {
 		const gameTabBtn = this.tabBtns[0];
-		if (false) {
+		if (Protected.settings.gameSettings.size() === 0) {
+			// no custom game settings, so we disable the tab.
 			this.hasGameTab = false;
 			gameTabBtn.gameObject.SetActive(false);
 			return;

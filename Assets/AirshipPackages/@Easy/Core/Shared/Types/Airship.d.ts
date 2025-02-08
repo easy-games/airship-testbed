@@ -736,6 +736,7 @@ interface DiskManager {
 	/** Will return empty string if file not found. */
 	ReadFileAsync(path: string): string | undefined;
 	WriteFileAsync(path: string, content: string): boolean;
+	EnsureDirectory(path: string): void;
 }
 declare const DiskManager: DiskManager;
 

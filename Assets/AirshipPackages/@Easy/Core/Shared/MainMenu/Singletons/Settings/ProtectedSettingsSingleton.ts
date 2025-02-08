@@ -1,10 +1,13 @@
+import { Game } from "@Easy/Core/Shared/Game";
 import { ClientSettingsFile } from "@Easy/Core/Shared/MainMenu/Singletons/Settings/ClientSettingsFile";
+import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 import { Singleton } from "../../../Flamework";
 import { CoreAction } from "../../../Input/AirshipCoreAction";
 import { SerializableAction } from "../../../Input/InputAction";
 import { Protected } from "../../../Protected";
 import { Signal } from "../../../Util/Signal";
 import { SetInterval } from "../../../Util/Timer";
+import { InternalGameSetting, InternalGameSettingType, InternalSliderGameSetting } from "./InternalGameSetting";
 
 const defaultData: ClientSettingsFile = {
 	mouseSensitivity: 2,
@@ -22,15 +25,8 @@ const defaultData: ClientSettingsFile = {
 	gameKeybindOverrides: {},
 };
 
-enum GameSettingType {
-	Slider,
-	Toggle,
-}
-
-interface GameSetting {
-	name: string;
-	type: GameSettingType;
-	value: unknown;
+interface SavedGameSettings {
+	gameSettings: InternalGameSetting[];
 }
 
 /**
@@ -53,7 +49,10 @@ export class ProtectedSettingsSingleton {
 	public micFrequency = 16_000;
 	public micSampleLength = 100;
 
-	public gameSettings: GameSetting[] = [];
+	public gameSettings = new Map<string, InternalGameSetting>();
+	private savedGameSettings: SavedGameSettings = {
+		gameSettings: [],
+	};
 
 	constructor() {
 		Protected.settings = this;
@@ -77,21 +76,81 @@ export class ProtectedSettingsSingleton {
 			(fromContext, name: string, startingValue: number, min: number, max: number) => {
 				assert(min < max, "Slider: max must be greater than min.");
 
-				if (this.gameSettings.find((x) => x.name === name)) {
+				if (this.gameSettings.has(name)) {
 					error(`A setting named "${name}" already exists.`);
 				}
 
-				const setting: GameSetting = {
+				let value = startingValue;
+				try {
+					for (let s of this.savedGameSettings.gameSettings) {
+						if (s.name === name && s.type === InternalGameSettingType.Slider) {
+							value = math.clamp(s.value as number, min, max);
+						}
+					}
+				} catch (err) {
+					warn("Failed to load saved game setting: " + name + ". " + err);
+				}
+
+				const setting: InternalSliderGameSetting = {
 					name,
-					type: GameSettingType.Slider,
-					value: startingValue,
+					type: InternalGameSettingType.Slider,
+					value,
+					min,
+					max,
 				};
-				this.gameSettings.push(setting);
+				this.gameSettings.set(name, setting);
 			},
 		);
+
+		contextbridge.callback("Settings:Slider:GetValue", (from: LuauContext, name: string) => {
+			const setting = this.gameSettings.get(name);
+			if (!setting) {
+				warn(`Tried to get setting that didn't exist: "${name}"`);
+				return 1;
+			}
+			return setting.value as number;
+		});
+	}
+
+	public SetGameSetting(name: string, value: unknown): void {
+		const setting = this.gameSettings.get(name);
+		assert(setting, `Tried to set game setting that didn't exist: ${name}`);
+
+		setting.value = value;
+		if (setting.type === InternalGameSettingType.Slider) {
+			contextbridge.broadcast("Settings:Slider:OnChanged", name, value);
+		}
+		this.MarkAsDirty();
+	}
+
+	private LoadGameSettingsFromDisk(): void {
+		Game.WaitForGameData();
+		DiskManager.EnsureDirectory("GameSettings");
+		const raw = DiskManager.ReadFileAsync(`GameSettings/${Game.gameId}.json`);
+		if (raw && raw !== "") {
+			this.savedGameSettings = json.decode<SavedGameSettings>(raw);
+
+			// This is for the case when gamedev registers settings before we finish loading.
+			for (let s of this.savedGameSettings.gameSettings) {
+				const realSetting = this.gameSettings.get(s.name);
+				if (realSetting && realSetting.type === s.type) {
+					this.SetGameSetting(s.name, s.value);
+				}
+			}
+		} else {
+			this.savedGameSettings = {
+				gameSettings: [],
+			};
+		}
 	}
 
 	protected OnStart(): void {
+		if (!Game.IsClient()) return;
+
+		task.spawn(() => {
+			this.LoadGameSettingsFromDisk();
+		});
+
 		const savedContents = DiskManager.ReadFileAsync("ClientSettings.json");
 		if (savedContents && savedContents !== "") {
 			this.data = json.decode(savedContents);
@@ -177,6 +236,20 @@ export class ProtectedSettingsSingleton {
 
 	public SaveSettings(): void {
 		DiskManager.WriteFileAsync("ClientSettings.json", json.encode(this.data));
+		if (Game.gameData) {
+			let saved: SavedGameSettings = {
+				gameSettings: ObjectUtils.values(this.gameSettings).map((s) => {
+					// strip un-needed data
+					return {
+						name: s.name,
+						type: s.type,
+						value: s.value,
+					};
+				}),
+			};
+			DiskManager.EnsureDirectory("GameSettings");
+			DiskManager.WriteFileAsync(`GameSettings/${Game.gameId}.json`, json.encode(saved));
+		}
 	}
 
 	public GetMouseSensitivity(): number {

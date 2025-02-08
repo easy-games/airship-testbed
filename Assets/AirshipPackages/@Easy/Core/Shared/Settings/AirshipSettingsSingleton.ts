@@ -36,4 +36,8 @@ export class AirshipSettingsSingleton {
 			}
 		});
 	}
+
+	public GetSlider(name: string): number {
+		return contextbridge.invoke("Settings:Slider:GetValue", LuauContext.Protected, name);
+	}
 }
