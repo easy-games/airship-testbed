@@ -10,7 +10,6 @@ export default class SettingsSidebar extends AirshipBehaviour {
 	@NonSerialized() public tabBtns: SettingsTabButton[] = [];
 
 	protected Awake(): void {
-		print("SettingsSidebar.awake");
 		let childCount = this.gameObject.transform.childCount;
 		for (let i = 0; i < childCount; i++) {
 			const tab = this.gameObject.transform.GetChild(i).gameObject.GetAirshipComponent<SettingsTabButton>()!;
