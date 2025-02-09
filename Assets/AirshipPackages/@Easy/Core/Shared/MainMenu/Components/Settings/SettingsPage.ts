@@ -3,7 +3,6 @@ import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Protected } from "@Easy/Core/Shared/Protected";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
-import { CanvasAPI, PointerDirection } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { MainMenuSingleton } from "../../Singletons/MainMenuSingleton";
 import {
 	InternalGameSetting,
@@ -185,19 +184,6 @@ export default class SettingsPage extends AirshipBehaviour {
 				continue;
 			}
 		}
-	}
-
-	private SetupToggle(toggle: Toggle, onChange: (val: boolean) => void): void {
-		CanvasAPI.OnToggleValueChangeEvent(toggle.gameObject, (value) => {
-			this.PlaySelectSound();
-			onChange(value);
-		});
-
-		CanvasAPI.OnPointerEvent(toggle.gameObject, (direction) => {
-			if (direction === PointerDirection.DOWN) {
-				this.PlaySelectSound();
-			}
-		});
 	}
 
 	private PlaySelectSound() {

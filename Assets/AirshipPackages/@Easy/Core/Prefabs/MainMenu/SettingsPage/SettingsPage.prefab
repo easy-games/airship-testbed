@@ -17842,7 +17842,7 @@ PrefabInstance:
       objectReference: {fileID: 813049023685960433, guid: f0ce55d58d63e4deab29e7ad50308632, type: 2}
     - target: {fileID: 7870844954251950013, guid: 91e45031359dd4e63aad8dd2a9796057, type: 3}
       propertyPath: m_Name
-      value: Profile
+      value: Account
       objectReference: {fileID: 0}
     - target: {fileID: 7983861799235934131, guid: 91e45031359dd4e63aad8dd2a9796057, type: 3}
       propertyPath: m_Sprite
