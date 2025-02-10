@@ -566,6 +566,7 @@ GameObject:
   - component: {fileID: 8997996947095583982}
   - component: {fileID: 5043041770756594627}
   - component: {fileID: -1624083086148811293}
+  - component: {fileID: 606316830658707215}
   - component: {fileID: 7088081142443290682}
   - component: {fileID: 7931457288082626079}
   - component: {fileID: 1645000729044007242}
@@ -788,6 +789,159 @@ MonoBehaviour:
       nullable: 0
       serializedValue: 
       serializedObject: {fileID: 906797123808458266}
+      modified: 1
+    displayIcon: {fileID: 0}
+    displayName: 
+  contextOverwritten: 0
+--- !u!114 &606316830658707215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8616685848737228372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scriptFile: {fileID: 3379845904423814631, guid: b265ca149231a634a8b651b688c7a486, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/CharacterRendering.lua
+  m_error: 0
+  m_yielded: 0
+  m_canResume: 0
+  m_asyncYield: 0
+  m_onUpdateHandle: -1
+  m_onLateUpdateHandle: -1
+  m_shortFileName: 
+  m_metadata:
+    name: CharacterRendering
+    singleton: 0
+    decorators: []
+    properties:
+    - name: renderBehindWalls
+      type: boolean
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"Variables"'
+      nullable: 0
+      serializedValue: 0
+      serializedObject: {fileID: 0}
+      modified: 1
+    - name: renderBehindWallsForLocalPlayer
+      type: boolean
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 0
+      serializedObject: {fileID: 0}
+      modified: 1
+    - name: renderTransparentWhenCloseForLocalPlayer
+      type: boolean
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 1
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: transparentDistance
+      type: number
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 0.5
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: transparentMargin
+      type: number
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 0.5
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: transparencyMat
+      type: object
+      objectType: Material
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 2100000, guid: ca49173e5777762468a1bbc685bfe012, type: 2}
+      modified: 1
+    - name: behindWallsMat
+      type: object
+      objectType: Material
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 2100000, guid: 0453a966689cd354a9defde5acf896da, type: 2}
+      modified: 1
+    - name: stencilMat
+      type: object
+      objectType: Material
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 2100000, guid: 94728df95d924ac408cc8ba97da6fe09, type: 2}
       modified: 1
     displayIcon: {fileID: 0}
     displayName: 
@@ -1232,6 +1386,66 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7911948219130051474}
     m_Modifications:
+    - target: {fileID: 2775551324891126259, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: colorSettings.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2775551324891126259, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: colorSettings.Array.data[1].baseColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2775551324891126259, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: colorSettings.Array.data[1].baseColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2775551324891126259, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: colorSettings.Array.data[1].baseColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2775551324891126259, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: colorSettings.Array.data[1].baseColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3048756369540025053, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3418875587636762027, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3418875587636762027, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 92798f4dd55bd614cbd0271dde95cc71, type: 2}
+    - target: {fileID: 4230453897974672422, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: colorSettings.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4230453897974672422, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: colorSettings.Array.data[1].baseColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4230453897974672422, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: colorSettings.Array.data[1].baseColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4230453897974672422, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: colorSettings.Array.data[1].baseColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4230453897974672422, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: colorSettings.Array.data[1].baseColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4466944578396753522, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4466944578396753522, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 92798f4dd55bd614cbd0271dde95cc71, type: 2}
     - target: {fileID: 4845036152095233570, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1272,20 +1486,70 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7933318673209200117, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: colorSettings.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7933318673209200117, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: colorSettings.Array.data[1].baseColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7933318673209200117, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: colorSettings.Array.data[1].baseColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7933318673209200117, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: colorSettings.Array.data[1].baseColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7933318673209200117, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: colorSettings.Array.data[1].baseColor.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8802499123621670980, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
       propertyPath: m_Name
       value: AirshipRigHolder
       objectReference: {fileID: 0}
+    - target: {fileID: 8874355582159802038, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8874355582159802038, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 92798f4dd55bd614cbd0271dde95cc71, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3048756369540025053, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2351584625843784001}
   m_SourcePrefab: {fileID: 100100000, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
 --- !u!95 &906797123808458266 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 4387387471186734709, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
   m_PrefabInstance: {fileID: 3492179243954559087}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1889802406829740722 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3048756369540025053, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+  m_PrefabInstance: {fileID: 3492179243954559087}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2351584625843784001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1889802406829740722}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fc2d7b4c4802984484eb65fe5e13ce2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeUntilDeathInSeconds: 0
+  destroyMode: 0
 --- !u!114 &5232673978488062214 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8712362769775679849, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}

@@ -10,7 +10,7 @@ export const enum Layer {
 	VISUALLY_HIDDEN = 8,
 	IGNORE_COLLISION = 9,
 	AVATAR_EDITOR = 10,
-	VOXELWORLD = 11,
+	STENCIL_MASK = 11,
 }
 
 export const enum GameLayer {
