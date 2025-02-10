@@ -837,7 +837,7 @@ MonoBehaviour:
       nullable: 0
       serializedValue: 0
       serializedObject: {fileID: 0}
-      modified: 0
+      modified: 1
     - name: renderBehindWallsForLocalPlayer
       type: boolean
       objectType: 
@@ -850,9 +850,9 @@ MonoBehaviour:
       fileRef: 
       decorators: []
       nullable: 0
-      serializedValue: 1
+      serializedValue: 0
       serializedObject: {fileID: 0}
-      modified: 0
+      modified: 1
     - name: renderTransparentWhenCloseForLocalPlayer
       type: boolean
       objectType: 
@@ -883,40 +883,6 @@ MonoBehaviour:
       serializedValue: 0.5
       serializedObject: {fileID: 0}
       modified: 0
-    - name: stencilMaterial
-      type: object
-      objectType: Material
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      decorators:
-      - name: Header
-        parameters:
-        - type: string
-          serializedValue: '"References"'
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 2100000, guid: 94728df95d924ac408cc8ba97da6fe09, type: 2}
-      modified: 1
-    - name: useDithering
-      type: boolean
-      objectType: 
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      decorators: []
-      nullable: 0
-      serializedValue: 1
-      serializedObject: {fileID: 0}
-      modified: 0
     - name: transparentMargin
       type: number
       objectType: 
@@ -932,6 +898,51 @@ MonoBehaviour:
       serializedValue: 0.5
       serializedObject: {fileID: 0}
       modified: 0
+    - name: transparencyMat
+      type: object
+      objectType: Material
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 2100000, guid: ca49173e5777762468a1bbc685bfe012, type: 2}
+      modified: 1
+    - name: behindWallsMat
+      type: object
+      objectType: Material
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 2100000, guid: 0453a966689cd354a9defde5acf896da, type: 2}
+      modified: 1
+    - name: stencilMat
+      type: object
+      objectType: Material
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 2100000, guid: 94728df95d924ac408cc8ba97da6fe09, type: 2}
+      modified: 1
     displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0

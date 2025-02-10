@@ -5,16 +5,17 @@ import Character from "./Character";
 
 export default class CharacterRendering extends AirshipBehaviour {
 	@Header("References")
-	public stencilMaterial?: Material;
+	public stencilMat: Material;
+	public transparencyMat?: Material;
+	public behindWallsMat?: Material;
 
 	@Header("Variables")
 	@SerializeField()
 	private renderBehindWalls = false;
 	@SerializeField()
-	private renderBehindWallsForLocalPlayer = true;
+	private renderBehindWallsForLocalPlayer = false;
 	@SerializeField()
 	private renderTransparentWhenCloseForLocalPlayer = true;
-	public useDithering = true;
 	public transparentDistance = 0.5;
 	public transparentMargin = 0.5;
 
@@ -72,20 +73,39 @@ export default class CharacterRendering extends AirshipBehaviour {
 
 		this.propertyBlock = new MaterialPropertyBlock();
 
-		//Mesh Combine Event
+		//Mesh Combine Event so we can set materials
 		this.bin.Add(
 			this.character.accessoryBuilder.OnMeshCombined.Connect((usedCombine, skinnedMesh, staticMesh) => {
-				if (
-					this.stencilMaterial &&
+				const wallRenders =
+					this.behindWallsMat &&
 					(this.renderBehindWalls ||
-						(this.renderBehindWallsForLocalPlayer && this.character.IsLocalCharacter()))
-				) {
+						(this.renderBehindWallsForLocalPlayer && this.character.IsLocalCharacter()));
+				const useAlpha =
+					this.transparencyMat ||
+					(this.character.IsLocalCharacter() && this.renderTransparentWhenCloseForLocalPlayer);
+
+				if (wallRenders || useAlpha) {
 					//Setup materials to render behind walls
 					this.renderers = this.character.accessoryBuilder.GetAllAccessoryMeshes();
+					this.propertyBlock.SetFloat("_Transparency", 1);
+
 					for (let i = 0; i < this.renderers.size(); i++) {
 						const ren = this.renderers[i];
-						ren.gameObject.layer = Layer.CHARACTER;
-						ren.SetMaterial(ren.materials.size(), this.stencilMaterial);
+
+						//Store depth in stencil
+						ren.SetMaterial(ren.materials.size(), this.stencilMat);
+
+						//Transparencyransparency
+						if (this.transparencyMat) {
+							ren.SetMaterial(ren.materials.size(), this.transparencyMat);
+							ren.SetPropertyBlock(this.propertyBlock);
+						}
+
+						//Render behind walls
+						if (wallRenders && this.behindWallsMat) {
+							ren.SetMaterial(ren.materials.size(), this.behindWallsMat);
+						}
+
 						ren.gameObject.layer = Layer.STENCIL_MASK;
 					}
 				}
@@ -115,7 +135,7 @@ export default class CharacterRendering extends AirshipBehaviour {
 	}
 
 	protected EvaluateCameraDistance(distance: number) {
-		if (this.useDithering && this.stencilMaterial) {
+		if (this.transparencyMat && this.renderTransparentWhenCloseForLocalPlayer) {
 			let alpha = math.max(0, distance - this.transparentDistance) / this.transparentMargin;
 			this.propertyBlock.SetFloat("_Transparency", alpha);
 			for (let i = 0; i < this.renderers.size(); i++) {
