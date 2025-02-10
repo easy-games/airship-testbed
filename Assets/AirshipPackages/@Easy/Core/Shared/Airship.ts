@@ -25,6 +25,7 @@ import { AirshipMenuSingleton } from "./Menu/AirshipMenuSingleton";
 import { AirshipPlayersSingleton } from "./Player/AirshipPlayersSingleton";
 import { Player } from "./Player/Player";
 import { AirshipPurchaseSingleton } from "./Purchase/PurchaseSingleton";
+import { AirshipSettingsSingleton } from "./Settings/AirshipSettingsSingleton";
 import { TeamsSingleton } from "./Team/TeamSingleton";
 
 /**
@@ -206,6 +207,11 @@ export namespace Airship {
 	 * Exposes customization to the in-game Airship escape menu.
 	 */
 	export let Menu = undefined! as AirshipMenuSingleton;
+
+	/**
+	 * Register custom settings that show up in the settings menu.
+	 */
+	export let Settings = undefined! as AirshipSettingsSingleton;
 
 	/**
 	 * Internal method used to wait until Airship singletons are ready.

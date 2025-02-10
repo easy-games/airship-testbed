@@ -78,7 +78,7 @@ export default class GameGeneralPage extends MainMenuPageComponent {
 	override Start(): void {
 		this.bin.Add(
 			this.settingsBtn.onClick.Connect(() => {
-				Dependency<SettingsPageSingleton>().Open(SettingsTab.Input);
+				Dependency<SettingsPageSingleton>().Open(SettingsTab.Game);
 			}),
 		);
 		this.bin.Add(

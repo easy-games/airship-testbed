@@ -12,6 +12,7 @@ import FriendCard from "@Easy/Core/Shared/MainMenu/Components/Friends/FriendCard
 import NoFriendsCardComponent from "@Easy/Core/Shared/MainMenu/Components/Friends/NoFriendsCardComponent";
 import SocialFriendRequestsButtonComponent from "@Easy/Core/Shared/MainMenu/Components/SocialFriendRequestsButtonComponent";
 import SocialNotificationComponent from "@Easy/Core/Shared/MainMenu/Components/SocialNotificationComponent";
+import { Protected } from "@Easy/Core/Shared/Protected";
 import { CoreUI } from "@Easy/Core/Shared/UI/CoreUI";
 import { Mouse } from "@Easy/Core/Shared/UserInput";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
@@ -25,7 +26,6 @@ import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { ProtectedPartyController } from "../Airship/Party/PartyController";
 import { AuthController } from "../Auth/AuthController";
 import { MainMenuController } from "../MainMenuController";
-import { ClientSettingsController } from "../Settings/ClientSettingsController";
 import { SocketController } from "../Socket/SocketController";
 import { TransferController } from "../Transfer/TransferController";
 import { RightClickMenuButton } from "../UI/RightClickMenu/RightClickMenuButton";
@@ -60,7 +60,6 @@ export class ProtectedFriendsController {
 		private readonly socketController: SocketController,
 		private readonly mainMenuController: MainMenuController,
 		private readonly rightClickMenuController: RightClickMenuController,
-		private readonly clientSettingsController: ClientSettingsController,
 	) {
 		contextbridge.callback("FriendsController:SendStatusUpdate", (from) => {
 			this.SendStatusUpdateYielding();
@@ -245,8 +244,8 @@ export class ProtectedFriendsController {
 		const statusTextInput = this.mainMenuController.refs.GetValue("Social", "StatusInputField") as TMP_InputField;
 		let savedStatus = StateManager.GetString("social:status-text");
 		if (!savedStatus || savedStatus === "") {
-			this.clientSettingsController.WaitForSettingsLoaded();
-			savedStatus = this.clientSettingsController.data.statusText;
+			Protected.settings.WaitForSettingsLoaded();
+			savedStatus = Protected.settings.data.statusText;
 		}
 		if (savedStatus) {
 			this.SetStatusText(savedStatus);
@@ -273,8 +272,8 @@ export class ProtectedFriendsController {
 	public SetStatusText(text: string): void {
 		this.statusText = text;
 		StateManager.SetString("social:status-text", text);
-		this.clientSettingsController.data.statusText = text;
-		this.clientSettingsController.MarkAsDirty();
+		Protected.settings.data.statusText = text;
+		Protected.settings.MarkAsDirty();
 		this.SendStatusUpdateYielding();
 	}
 
