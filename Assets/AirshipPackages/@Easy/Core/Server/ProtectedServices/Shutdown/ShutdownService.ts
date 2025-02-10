@@ -77,7 +77,7 @@ export class ShutdownService {
 		};
 
 		// We allow up to 30 minutes for servers to finish up matches / handle shutdown messages. Set a timer for 30 minutes + 10 seconds to shutdown the server if it isn't already
-		task.unscaledDelay(30 * 60 + 15, () => {
+		task.unscaledDelay(30 * 60 + 10, () => {
 			Done();
 		});
 		task.spawn(() => {
