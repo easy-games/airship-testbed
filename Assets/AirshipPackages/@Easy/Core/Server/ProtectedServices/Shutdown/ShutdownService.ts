@@ -10,6 +10,8 @@ export class ShutdownService {
 	private static shutdownTimeNobodyConnected = 3 * 60;
 	private static shutdownTimeAllPlayersLeft = 1 * 60;
 
+	private fireOnShutdownStarted = false;
+
 	private serverBootstrap: ServerBootstrap;
 
 	constructor() {
@@ -58,11 +60,12 @@ export class ShutdownService {
 	}
 
 	public Shutdown(): void {
-		const serverBootstrap = GameObject.Find("ServerBootstrap").GetComponent<ServerBootstrap>()!;
-		serverBootstrap.Shutdown();
+		this.FireOnShutdown();
 	}
 
 	private FireOnShutdown(): void {
+		if (this.fireOnShutdownStarted) return;
+		this.fireOnShutdownStarted = true;
 		print("FireOnShutdown");
 		let done = false;
 
@@ -73,7 +76,8 @@ export class ShutdownService {
 			this.serverBootstrap.Shutdown();
 		};
 
-		task.unscaledDelay(30, () => {
+		// We allow up to 30 minutes for servers to finish up matches / handle shutdown messages. Set a timer for 30 minutes + 10 seconds to shutdown the server if it isn't already
+		task.unscaledDelay(30 * 60 + 10, () => {
 			Done();
 		});
 		task.spawn(() => {
