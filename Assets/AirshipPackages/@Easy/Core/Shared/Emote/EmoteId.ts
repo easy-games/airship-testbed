@@ -3,4 +3,7 @@ export enum EmoteId {
 	CutThroat = "CutThroat",
 	FingerGun = "FingerGun",
 	HandsUp = "HandsUp",
+	ThumbsUp = "ThumbsUp",
+	ThumbsDown = "ThumbsDown",
+	Point = "Point",
 }

@@ -4,6 +4,7 @@ export interface EmoteDefinition {
 	title: string;
 	desc: string;
 	image: string;
-	looped?: boolean;
 	fadeInTime?: number;
+	fadeOutTime?: number;
+	duration?: number;
 }

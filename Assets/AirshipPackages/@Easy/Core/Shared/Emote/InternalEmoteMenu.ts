@@ -11,10 +11,13 @@ export default class InternalEmoteMenu extends AirshipBehaviour {
 
 	override Start(): void {
 		this.radialMenu.SetItems([
-			InternalEmoteDefinitions[EmoteId.Wave],
 			InternalEmoteDefinitions[EmoteId.CutThroat],
 			InternalEmoteDefinitions[EmoteId.FingerGun],
+			InternalEmoteDefinitions[EmoteId.Point],
+			InternalEmoteDefinitions[EmoteId.ThumbsUp],
+			InternalEmoteDefinitions[EmoteId.ThumbsDown],
 			InternalEmoteDefinitions[EmoteId.HandsUp],
+			InternalEmoteDefinitions[EmoteId.Wave],
 		]);
 		Airship.Input.CreateAction("Emote", Binding.Key(Key.B));
 
