@@ -106,7 +106,9 @@ export default class CharacterRendering extends AirshipBehaviour {
 							ren.SetMaterial(ren.materials.size(), this.behindWallsMat);
 						}
 
-						ren.gameObject.layer = Layer.STENCIL_MASK;
+						ren.gameObject.layer = this.character.IsLocalCharacter()
+							? Layer.LOCAL_STENCIL_MASK
+							: Layer.STENCIL_MASK;
 					}
 				}
 			}),
