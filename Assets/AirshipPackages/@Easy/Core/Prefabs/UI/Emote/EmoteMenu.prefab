@@ -219,9 +219,9 @@ MonoBehaviour:
       fileRef: 
       decorators: []
       nullable: 0
-      serializedValue: 20
+      serializedValue: 0
       serializedObject: {fileID: 0}
-      modified: 0
+      modified: 1
     - name: segmentPrefab
       type: object
       objectType: GameObject
@@ -235,7 +235,7 @@ MonoBehaviour:
       decorators: []
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 1053266698358566867}
+      serializedObject: {fileID: 295427120363969404, guid: 6acc8607a905c4b1aab1c63b7cf2e2b1, type: 3}
       modified: 1
     - name: segmentContainer
       type: object
@@ -326,6 +326,21 @@ MonoBehaviour:
       nullable: 0
       serializedValue: 
       serializedObject: {fileID: 8302674247317586291}
+      modified: 1
+    - name: itemDetailsImg
+      type: object
+      objectType: Image
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 3483501320665332316}
       modified: 1
     displayIcon: {fileID: 0}
     displayName: 
@@ -512,8 +527,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
-  m_fontSizeBase: 18
+  m_fontSize: 16
+  m_fontSizeBase: 16
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1018,10 +1033,5 @@ PrefabInstance:
 --- !u!224 &21442078588124448 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 776950552375003535, guid: 6acc8607a905c4b1aab1c63b7cf2e2b1, type: 3}
-  m_PrefabInstance: {fileID: 757841815874745519}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1053266698358566867 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 295427120363969404, guid: 6acc8607a905c4b1aab1c63b7cf2e2b1, type: 3}
   m_PrefabInstance: {fileID: 757841815874745519}
   m_PrefabAsset: {fileID: 0}

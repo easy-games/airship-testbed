@@ -2,6 +2,7 @@ import { Airship } from "../Airship";
 import { Asset } from "../Asset";
 import { EmoteStartSignal } from "../Character/Signal/EmoteStartSignal";
 import { CoreNetwork } from "../CoreNetwork";
+import { CoreRefs } from "../CoreRefs";
 import { OnStart, Singleton } from "../Flamework";
 import { Game } from "../Game";
 import { Bin } from "../Util/Bin";
@@ -9,9 +10,12 @@ import { SignalPriority } from "../Util/Signal";
 import { EmoteDefinition } from "./EmoteDefinition";
 import { EmoteId } from "./EmoteId";
 import { InternalEmoteDefinitions } from "./InternalEmoteDef";
+import InternalEmoteMenu from "./InternalEmoteMenu";
 
 @Singleton({})
 export default class AirshipEmoteSingleton implements OnStart {
+	private emoteMenu: InternalEmoteMenu;
+
 	public OnStart() {
 		if (Game.IsServer()) this.StartServer();
 		if (Game.IsClient()) this.StartClient();
@@ -32,6 +36,11 @@ export default class AirshipEmoteSingleton implements OnStart {
 	}
 
 	private StartClient(): void {
+		this.emoteMenu = Object.Instantiate(
+			Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/UI/Emote/EmoteMenu.prefab"),
+			CoreRefs.rootTransform,
+		);
+
 		CoreNetwork.ServerToClient.Character.EmoteStart.client.OnServerEvent((characterId, emoteId) => {
 			const character = Airship.Characters.FindById(characterId);
 			if (!character) return;
