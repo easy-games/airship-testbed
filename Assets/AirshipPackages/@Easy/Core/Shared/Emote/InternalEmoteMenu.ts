@@ -1,10 +1,10 @@
 import { Airship } from "../Airship";
-import { Asset } from "../Asset";
-import { Game } from "../Game";
+import { CoreNetwork } from "../CoreNetwork";
 import { Binding } from "../Input/Binding";
 import { InternalRadialUI } from "../UI/RadialMenu/InternalRadialUI";
+import { EmoteDefinition } from "./EmoteDefinition";
 import { EmoteId } from "./EmoteId";
-import { InternalEmoteDef, InternalEmoteDefinitions } from "./InternalEmoteDef";
+import { InternalEmoteDefinitions } from "./InternalEmoteDef";
 
 export default class InternalEmoteMenu extends AirshipBehaviour {
 	public radialMenu: InternalRadialUI;
@@ -14,6 +14,7 @@ export default class InternalEmoteMenu extends AirshipBehaviour {
 			InternalEmoteDefinitions[EmoteId.Wave],
 			InternalEmoteDefinitions[EmoteId.CutThroat],
 			InternalEmoteDefinitions[EmoteId.FingerGun],
+			InternalEmoteDefinitions[EmoteId.HandsUp],
 		]);
 		Airship.Input.CreateAction("Emote", Binding.Key(Key.B));
 
@@ -28,9 +29,8 @@ export default class InternalEmoteMenu extends AirshipBehaviour {
 
 		this.radialMenu.onSubmit.Connect((data) => {
 			if (!data) return;
-			const emoteDef = data as InternalEmoteDef;
-			const anim = Asset.LoadAsset<AnimationClip>(emoteDef.anim);
-			Game.localPlayer.character?.animationHelper.PlayAnimation(anim, CharacterAnimationLayer.OVERRIDE_3, 0.1);
+			const emoteDef = data as EmoteDefinition;
+			CoreNetwork.ClientToServer.Character.EmoteRequest.client.FireServer(emoteDef.id);
 		});
 	}
 

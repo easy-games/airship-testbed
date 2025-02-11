@@ -10,6 +10,7 @@ import { DamageInfo, DamageInfoCustomData } from "../Damage/DamageInfo";
 import NametagComponent from "../Nametag/NametagComponent";
 import CharacterAnimation from "./Animation/CharacterAnimation";
 import CharacterConfigSetup from "./CharacterConfigSetup";
+import { EmoteStartSignal } from "./Signal/EmoteStartSignal";
 
 /**
  * A character is a (typically human) object in the scene. It controls movement and default animation.
@@ -52,12 +53,15 @@ export default class Character extends AirshipBehaviour {
 	@NonSerialized() public readonly bin = new Bin();
 	@NonSerialized() public inventory: Inventory;
 	@NonSerialized() public outfitDto: OutfitDto | undefined;
+	@NonSerialized() public isEmoting = false;
 
 	// Signals
 	@NonSerialized() public onDeath = new Signal<void>();
 	@NonSerialized() public onDespawn = new Signal<void>();
 	@NonSerialized() public onStateChanged = new Signal<[newState: CharacterState, oldState: CharacterState]>();
 	@NonSerialized() public onHealthChanged = new Signal<[newHealth: number, oldHealth: number]>();
+	@NonSerialized() public onEmoteStart = new Signal<EmoteStartSignal>();
+	@NonSerialized() public onEmoteEnd = new Signal<[]>();
 
 	private displayName = "";
 	private initialized = false;

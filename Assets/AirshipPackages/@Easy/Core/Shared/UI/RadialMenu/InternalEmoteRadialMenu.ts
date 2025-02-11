@@ -1,10 +1,10 @@
 import { Asset } from "@Easy/Core/Shared/Asset";
-import { InternalEmoteDef } from "../../Emote/InternalEmoteDef";
+import { EmoteDefinition } from "../../Emote/EmoteDefinition";
 import InternalRadialUISegment from "./InternalRadialSegment";
 import { InternalRadialSegment, InternalRadialUI } from "./InternalRadialUI";
 
-export default class InternalEmoteRadialUI extends InternalRadialUI<InternalEmoteDef> {
-	public OnWheelSegmentCreated(segment: InternalRadialSegment<InternalEmoteDef>): void {
+export default class InternalEmoteRadialUI extends InternalRadialUI<EmoteDefinition> {
+	public OnWheelSegmentCreated(segment: InternalRadialSegment<EmoteDefinition>): void {
 		const radialSegment = segment.gameObject.GetAirshipComponent<InternalRadialUISegment>();
 		if (!radialSegment) return;
 		const center = segment.centerOffset;

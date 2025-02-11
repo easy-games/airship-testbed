@@ -81,6 +81,8 @@ export default class DemoManager extends AirshipBehaviour {
 			c.inventory.AddItem(new ItemStack("WoodSword"));
 		});
 
+		this.HideAccessoriesWhileEmoting();
+
 		if (Game.IsServer()) {
 			this.bin.Add(
 				Airship.Players.ObservePlayers((player) => {
@@ -154,6 +156,28 @@ export default class DemoManager extends AirshipBehaviour {
 		for (let go of this.cleanupOnStart) {
 			Object.Destroy(go);
 		}
+	}
+
+	private HideAccessoriesWhileEmoting(): void {
+		Airship.Characters.ObserveCharacters((character) => {
+			const emoteBin = new Bin();
+			character.onEmoteStart.Connect((e) => {
+				const renderers = character.accessoryBuilder.GetActiveAccessoryBySlot(
+					AccessorySlot.RightHand,
+				).renderers;
+				for (let r of renderers) {
+					print("r: " + r.name);
+					const prevEnabled = r.enabled;
+					r.enabled = false;
+					emoteBin.Add(() => {
+						r.enabled = prevEnabled;
+					});
+				}
+			});
+			character.onEmoteEnd.Connect(() => {
+				emoteBin.Clean();
+			});
+		});
 	}
 
 	private TestServer(character: Character | undefined) {

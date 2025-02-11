@@ -91,6 +91,7 @@ export default class CharacterRendering extends AirshipBehaviour {
 
 					for (let i = 0; i < this.renderers.size(); i++) {
 						const ren = this.renderers[i];
+						// if (!ren.gameObject.activeInHierarchy) continue;
 
 						//Store depth in stencil
 						ren.SetMaterial(ren.materials.size(), this.stencilMat);

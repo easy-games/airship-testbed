@@ -157,7 +157,10 @@ export abstract class InternalRadialUI<T extends InternalRadialUIData = Internal
 
 	public Show() {
 		this.SetSelectedIndex(this.radialSegments.size() - 1);
-		NativeTween.GraphicAlpha(this.bg, 0.4, 0.2).SetEaseQuadOut();
+		const t = NativeTween.GraphicAlpha(this.bg, 0.4, 0.2).SetEaseQuadOut();
+		this.bin.Add(() => {
+			t.Cancel();
+		});
 		this.bin.Add(Mouse.AddUnlocker());
 
 		Mouse.WarpCursorPosition(new Vector2(Screen.width / 2, Screen.height / 2));
@@ -181,13 +184,17 @@ export abstract class InternalRadialUI<T extends InternalRadialUIData = Internal
 	}
 
 	public Hide() {
+		if (!this.active) return;
 		this.segmentContainer.gameObject.SetActive(false);
 		this.itemDetailsRect.gameObject.SetActive(false);
-		this.bg.color = new Color(0, 0, 0, 0);
+		NativeTween.GraphicAlpha(this.bg, 0, 0.2).SetEaseQuadOut();
+		// this.bg.color = new Color(0, 0, 0, 0);
 		this.bin.Clean();
 		this.active = false;
 		if (this.selectedIndex > -1) {
-			this.onSubmit.Fire(this.radialSegments[this.selectedIndex].data as T);
+			task.spawnDetached(() => {
+				this.onSubmit.Fire(this.radialSegments[this.selectedIndex].data as T);
+			});
 		}
 	}
 
