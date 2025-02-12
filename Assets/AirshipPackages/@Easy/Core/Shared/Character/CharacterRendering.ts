@@ -24,6 +24,7 @@ export default class CharacterRendering extends AirshipBehaviour {
 	private character: Character;
 	private renderers: Renderer[] = [];
 	private propertyBlock: MaterialPropertyBlock;
+	private lastSetAlpha = -1;
 
 	protected Awake(): void {
 		this.character = this.gameObject.GetAirshipComponent<Character>()!;
@@ -73,11 +74,33 @@ export default class CharacterRendering extends AirshipBehaviour {
 
 		this.propertyBlock = new MaterialPropertyBlock();
 
+		this.bin.Add(
+			this.character.accessoryBuilder.OnAccessoryAdded.Connect((willCombine, accessories) => {
+				if (willCombine) {
+					return;
+				}
+				const wallRenders =
+					this.behindWallsMat !== undefined &&
+					(this.renderBehindWalls ||
+						(this.renderBehindWallsForLocalPlayer && this.character.IsLocalCharacter()));
+				for (let i = 0; i < accessories.size(); i++) {
+					for (let j = 0; j < accessories[i].renderers.size(); j++) {
+						// print(
+						// 	"ACC ADDED j: " + j + ": " + accessories[i].renderers[j].transform.parent.gameObject.name,
+						// );
+						this.SetupRenderer(accessories[i].renderers[j], wallRenders);
+						this.renderers.push(accessories[i].renderers[j]);
+					}
+				}
+				this.lastSetAlpha = -1;
+			}),
+		);
+
 		//Mesh Combine Event so we can set materials
 		this.bin.Add(
 			this.character.accessoryBuilder.OnMeshCombined.Connect((usedCombine, skinnedMesh, staticMesh) => {
 				const wallRenders =
-					this.behindWallsMat &&
+					this.behindWallsMat !== undefined &&
 					(this.renderBehindWalls ||
 						(this.renderBehindWallsForLocalPlayer && this.character.IsLocalCharacter()));
 				const useAlpha =
@@ -86,29 +109,12 @@ export default class CharacterRendering extends AirshipBehaviour {
 
 				if (wallRenders || useAlpha) {
 					//Setup materials to render behind walls
+					this.lastSetAlpha = -1;
 					this.renderers = this.character.accessoryBuilder.GetAllAccessoryMeshes();
 					this.propertyBlock.SetFloat("_Transparency", 1);
 
 					for (let i = 0; i < this.renderers.size(); i++) {
-						const ren = this.renderers[i];
-
-						//Store depth in stencil
-						ren.SetMaterial(ren.materials.size(), this.stencilMat);
-
-						//Transparencyransparency
-						if (this.transparencyMat) {
-							ren.SetMaterial(ren.materials.size(), this.transparencyMat);
-							ren.SetPropertyBlock(this.propertyBlock);
-						}
-
-						//Render behind walls
-						if (wallRenders && this.behindWallsMat) {
-							ren.SetMaterial(ren.materials.size(), this.behindWallsMat);
-						}
-
-						ren.gameObject.layer = this.character.IsLocalCharacter()
-							? Layer.LOCAL_STENCIL_MASK
-							: Layer.STENCIL_MASK;
+						this.SetupRenderer(this.renderers[i], wallRenders);
 					}
 				}
 			}),
@@ -136,12 +142,37 @@ export default class CharacterRendering extends AirshipBehaviour {
 		}
 	}
 
+	private SetupRenderer(ren: Renderer, wallRenders: boolean) {
+		//Store depth in stencil
+		ren.SetMaterial(ren.materials.size(), this.stencilMat);
+
+		//Transparencyransparency
+		if (this.transparencyMat) {
+			ren.SetMaterial(ren.materials.size(), this.transparencyMat);
+			ren.SetPropertyBlock(this.propertyBlock);
+		}
+
+		//Render behind walls
+		if (wallRenders && this.behindWallsMat) {
+			ren.SetMaterial(ren.materials.size(), this.behindWallsMat);
+		}
+
+		ren.gameObject.layer = this.character.IsLocalCharacter() ? Layer.LOCAL_STENCIL_MASK : Layer.STENCIL_MASK;
+	}
+
 	protected EvaluateCameraDistance(distance: number) {
 		if (this.transparencyMat && this.renderTransparentWhenCloseForLocalPlayer) {
 			let alpha = math.max(0, distance - this.transparentDistance) / this.transparentMargin;
-			this.propertyBlock.SetFloat("_Transparency", alpha);
-			for (let i = 0; i < this.renderers.size(); i++) {
-				this.renderers[i].SetPropertyBlock(this.propertyBlock);
+			if (this.lastSetAlpha !== alpha) {
+				this.lastSetAlpha = alpha;
+				this.propertyBlock.SetFloat("_Transparency", alpha);
+				for (let i = this.renderers.size() - 1; i >= 0; i--) {
+					if (this.renderers[i]) {
+						this.renderers[i].SetPropertyBlock(this.propertyBlock);
+					} else {
+						this.renderers.remove(i);
+					}
+				}
 			}
 		} else {
 			this.character.rig?.gameObject?.SetActive(distance > this.transparentDistance);
