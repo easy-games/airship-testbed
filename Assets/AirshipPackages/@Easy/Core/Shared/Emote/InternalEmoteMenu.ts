@@ -44,7 +44,7 @@ export default class InternalEmoteMenu extends AirshipBehaviour {
 			const emoteDef = data as EmoteDefinition;
 			CoreNetwork.ClientToServer.Character.EmoteRequest.client.FireServer(emoteDef.id);
 			AudioManager.PlayClipGlobal(Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Sound/UI_Select.wav"), {
-				volumeScale: 0.18,
+				volumeScale: 0.08,
 			});
 		});
 	}
