@@ -2,6 +2,7 @@ import { Airship } from "../Airship";
 import { Asset } from "../Asset";
 import { AudioManager } from "../Audio/AudioManager";
 import { CoreNetwork } from "../CoreNetwork";
+import { Game } from "../Game";
 import { Binding } from "../Input/Binding";
 import { InternalRadialUI } from "../UI/RadialMenu/InternalRadialUI";
 import { EmoteDefinition } from "./EmoteDefinition";
@@ -26,6 +27,7 @@ export default class InternalEmoteMenu extends AirshipBehaviour {
 
 		Airship.Input.OnDown("Emote").Connect((e) => {
 			if (e.uiProcessed) return;
+			if (!Game.localPlayer.character?.IsAlive()) return;
 
 			this.radialMenu.Show();
 		});
