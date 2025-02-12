@@ -110,7 +110,7 @@ export default class CharacterRendering extends AirshipBehaviour {
 				if (wallRenders || useAlpha) {
 					//Setup materials to render behind walls
 					this.lastSetAlpha = -1;
-					this.renderers = this.character.accessoryBuilder.GetAllAccessoryMeshes();
+					this.renderers = this.character.accessoryBuilder.GetAllAccessoryRenderers();
 					this.propertyBlock.SetFloat("_Transparency", 1);
 
 					for (let i = 0; i < this.renderers.size(); i++) {

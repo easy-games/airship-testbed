@@ -162,17 +162,17 @@ export default class DemoManager extends AirshipBehaviour {
 		Airship.Characters.ObserveCharacters((character) => {
 			const emoteBin = new Bin();
 			character.onEmoteStart.Connect((e) => {
-				const renderers = character.accessoryBuilder.GetActiveAccessoryBySlot(
-					AccessorySlot.RightHand,
-				).renderers;
-				for (let r of renderers) {
-					const prevEnabled = r.enabled;
-					r.enabled = false;
-					emoteBin.Add(() => {
-						if (r) {
-							r.enabled = prevEnabled;
-						}
-					});
+				const activeAccessory = character.accessoryBuilder.GetActiveAccessoryBySlot(AccessorySlot.RightHand);
+				if (activeAccessory) {
+					for (let r of activeAccessory.renderers) {
+						const prevEnabled = r.enabled;
+						r.enabled = false;
+						emoteBin.Add(() => {
+							if (r) {
+								r.enabled = prevEnabled;
+							}
+						});
+					}
 				}
 			});
 			character.onEmoteEnd.Connect(() => {

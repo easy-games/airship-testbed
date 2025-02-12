@@ -106,7 +106,7 @@ declare const enum GeometryType {
     Terrain = 6,
     Invalid = -1,
 }
-declare const enum PhysicMaterialCombine {
+declare const enum PhysicsMaterialCombine {
     Average = 0,
     Multiply = 1,
     Minimum = 2,
@@ -152,6 +152,13 @@ declare const enum GeometryType {
 declare const enum GenerationType {
     Synchronous = 0,
     Manual = 1,
+}
+declare const enum PhysicsMaterialCombine2D {
+    Average = 0,
+    Mean = 1,
+    Multiply = 2,
+    Minimum = 3,
+    Maximum = 4,
 }
 declare const enum RigidbodyType2D {
     Dynamic = 0,
@@ -279,6 +286,17 @@ declare const enum SimulationMode2D {
     FixedUpdate = 0,
     Update = 1,
     Script = 2,
+}
+declare const enum IntegrityCheckLevel {
+    Low = 1,
+    Medium = 2,
+    High = 3,
+}
+declare const enum ValidationLevel {
+    None = 0,
+    Low = 1,
+    Medium = 2,
+    High = 3,
 }
 declare const enum LogType {
     Error = 0,
@@ -692,7 +710,7 @@ declare const enum RenderTextureCreationFlags {
     NoResolvedColorSurface = 256,
     DynamicallyScalable = 1024,
     BindMS = 2048,
-    DynamicallyScalableExplicit = 65536,
+    DynamicallyScalableExplicit = 131072,
 }
 declare const enum MonoOrStereoscopicEye {
     Left = 0,
@@ -820,6 +838,11 @@ declare const enum RayTracingAccelerationStructureBuildFlags {
     PreferFastTrace = 1,
     PreferFastBuild = 2,
     MinimizeMemory = 4,
+}
+declare const enum LODFadeMode {
+    None = 0,
+    CrossFade = 1,
+    SpeedTree = 2,
 }
 declare const enum ReflectionProbeClearFlags {
     Skybox = 1,
@@ -1733,22 +1756,174 @@ declare const enum TouchScreenKeyboardType {
     DecimalPad = 11,
     OneTimeCode = 12,
 }
+declare const enum InputFieldAppearance {
+    Customizable = 0,
+    AlwaysVisible = 1,
+    AlwaysHidden = 2,
+}
+declare const enum Align {
+    Auto = 0,
+    FlexStart = 1,
+    Center = 2,
+    FlexEnd = 3,
+    Stretch = 4,
+}
+declare const enum BackgroundPositionKeyword {
+    Center = 0,
+    Top = 1,
+    Bottom = 2,
+    Left = 3,
+    Right = 4,
+}
+declare const enum LengthUnit {
+    Pixel = 0,
+    Percent = 1,
+}
+declare const enum Repeat {
+    NoRepeat = 0,
+    Space = 1,
+    Round = 2,
+    Repeat = 3,
+}
+declare const enum BackgroundSizeType {
+    Length = 0,
+    Cover = 1,
+    Contain = 2,
+}
+declare const enum DisplayStyle {
+    Flex = 0,
+    None = 1,
+}
+declare const enum StyleKeyword {
+    Undefined = 0,
+    Null = 1,
+    Auto = 2,
+    None = 3,
+    Initial = 4,
+}
+declare const enum FlexDirection {
+    Column = 0,
+    ColumnReverse = 1,
+    Row = 2,
+    RowReverse = 3,
+}
+declare const enum Wrap {
+    NoWrap = 0,
+    Wrap = 1,
+    WrapReverse = 2,
+}
+declare const enum Justify {
+    FlexStart = 0,
+    Center = 1,
+    FlexEnd = 2,
+    SpaceBetween = 3,
+    SpaceAround = 4,
+    SpaceEvenly = 5,
+}
+declare const enum Position {
+    Relative = 0,
+    Absolute = 1,
+}
+declare const enum AngleUnit {
+    Degree = 0,
+    Gradian = 1,
+    Radian = 2,
+    Turn = 3,
+}
+declare const enum TextOverflow {
+    Clip = 0,
+    Ellipsis = 1,
+}
+declare const enum TimeUnit {
+    Second = 0,
+    Millisecond = 1,
+}
+declare const enum EasingMode {
+    Ease = 0,
+    EaseIn = 1,
+    EaseOut = 2,
+    EaseInOut = 3,
+    Linear = 4,
+    EaseInSine = 5,
+    EaseOutSine = 6,
+    EaseInOutSine = 7,
+    EaseInCubic = 8,
+    EaseOutCubic = 9,
+    EaseInOutCubic = 10,
+    EaseInCirc = 11,
+    EaseOutCirc = 12,
+    EaseInOutCirc = 13,
+    EaseInElastic = 14,
+    EaseOutElastic = 15,
+    EaseInOutElastic = 16,
+    EaseInBack = 17,
+    EaseOutBack = 18,
+    EaseInOutBack = 19,
+    EaseInBounce = 20,
+    EaseOutBounce = 21,
+    EaseInOutBounce = 22,
+}
+declare const enum EditorTextRenderingMode {
+    SDF = 0,
+    Bitmap = 1,
+}
+declare const enum AtlasPopulationMode {
+    Static = 0,
+    Dynamic = 1,
+    DynamicOS = 2,
+}
+declare const enum TextElementType {
+    Character = 1,
+    Sprite = 2,
+}
+declare const enum TextAnchor {
+    UpperLeft = 0,
+    UpperCenter = 1,
+    UpperRight = 2,
+    MiddleLeft = 3,
+    MiddleCenter = 4,
+    MiddleRight = 5,
+    LowerLeft = 6,
+    LowerCenter = 7,
+    LowerRight = 8,
+}
+declare const enum TextGeneratorType {
+    Standard = 0,
+    Advanced = 1,
+}
+declare const enum TextOverflowPosition {
+    End = 0,
+    Start = 1,
+    Middle = 2,
+}
+declare const enum Visibility {
+    Visible = 0,
+    Hidden = 1,
+}
+declare const enum WhiteSpace {
+    Normal = 0,
+    NoWrap = 1,
+    Pre = 2,
+    PreWrap = 3,
+}
 declare const enum StylePropertyId {
     Unknown = 0,
     Color = 65536,
     FontSize = 65537,
     LetterSpacing = 65538,
     TextShadow = 65539,
-    UnityFont = 65540,
-    UnityFontDefinition = 65541,
-    UnityFontStyleAndWeight = 65542,
-    UnityParagraphSpacing = 65543,
-    UnityTextAlign = 65544,
-    UnityTextOutlineColor = 65545,
-    UnityTextOutlineWidth = 65546,
-    Visibility = 65547,
-    WhiteSpace = 65548,
-    WordSpacing = 65549,
+    UnityEditorTextRenderingMode = 65540,
+    UnityFont = 65541,
+    UnityFontDefinition = 65542,
+    UnityFontStyleAndWeight = 65543,
+    UnityParagraphSpacing = 65544,
+    UnityTextAlign = 65545,
+    UnityTextGenerator = 65546,
+    UnityTextOutlineColor = 65547,
+    UnityTextOutlineWidth = 65548,
+    Visibility = 65549,
+    WhiteSpace = 65550,
+    WordSpacing = 65551,
     AlignContent = 131072,
     AlignItems = 131073,
     AlignSelf = 131074,
@@ -1828,141 +2003,6 @@ declare const enum StylePropertyId {
     Opacity = 458766,
     Overflow = 458767,
     Custom = -1,
-}
-declare const enum LengthUnit {
-    Pixel = 0,
-    Percent = 1,
-}
-declare const enum AtlasPopulationMode {
-    Static = 0,
-    Dynamic = 1,
-    DynamicOS = 2,
-}
-declare const enum TextElementType {
-    Character = 1,
-    Sprite = 2,
-}
-declare const enum AngleUnit {
-    Degree = 0,
-    Gradian = 1,
-    Radian = 2,
-    Turn = 3,
-}
-declare const enum BackgroundPositionKeyword {
-    Center = 0,
-    Top = 1,
-    Bottom = 2,
-    Left = 3,
-    Right = 4,
-}
-declare const enum Repeat {
-    NoRepeat = 0,
-    Space = 1,
-    Round = 2,
-    Repeat = 3,
-}
-declare const enum BackgroundSizeType {
-    Length = 0,
-    Cover = 1,
-    Contain = 2,
-}
-declare const enum Align {
-    Auto = 0,
-    FlexStart = 1,
-    Center = 2,
-    FlexEnd = 3,
-    Stretch = 4,
-}
-declare const enum DisplayStyle {
-    Flex = 0,
-    None = 1,
-}
-declare const enum StyleKeyword {
-    Undefined = 0,
-    Null = 1,
-    Auto = 2,
-    None = 3,
-    Initial = 4,
-}
-declare const enum FlexDirection {
-    Column = 0,
-    ColumnReverse = 1,
-    Row = 2,
-    RowReverse = 3,
-}
-declare const enum Wrap {
-    NoWrap = 0,
-    Wrap = 1,
-    WrapReverse = 2,
-}
-declare const enum Justify {
-    FlexStart = 0,
-    Center = 1,
-    FlexEnd = 2,
-    SpaceBetween = 3,
-    SpaceAround = 4,
-    SpaceEvenly = 5,
-}
-declare const enum Position {
-    Relative = 0,
-    Absolute = 1,
-}
-declare const enum TextOverflow {
-    Clip = 0,
-    Ellipsis = 1,
-}
-declare const enum TimeUnit {
-    Second = 0,
-    Millisecond = 1,
-}
-declare const enum EasingMode {
-    Ease = 0,
-    EaseIn = 1,
-    EaseOut = 2,
-    EaseInOut = 3,
-    Linear = 4,
-    EaseInSine = 5,
-    EaseOutSine = 6,
-    EaseInOutSine = 7,
-    EaseInCubic = 8,
-    EaseOutCubic = 9,
-    EaseInOutCubic = 10,
-    EaseInCirc = 11,
-    EaseOutCirc = 12,
-    EaseInOutCirc = 13,
-    EaseInElastic = 14,
-    EaseOutElastic = 15,
-    EaseInOutElastic = 16,
-    EaseInBack = 17,
-    EaseOutBack = 18,
-    EaseInOutBack = 19,
-    EaseInBounce = 20,
-    EaseOutBounce = 21,
-    EaseInOutBounce = 22,
-}
-declare const enum TextAnchor {
-    UpperLeft = 0,
-    UpperCenter = 1,
-    UpperRight = 2,
-    MiddleLeft = 3,
-    MiddleCenter = 4,
-    MiddleRight = 5,
-    LowerLeft = 6,
-    LowerCenter = 7,
-    LowerRight = 8,
-}
-declare const enum TextOverflowPosition {
-    End = 0,
-    Start = 1,
-    Middle = 2,
-}
-declare const enum Visibility {
-    Visible = 0,
-    Hidden = 1,
-}
-declare const enum WhiteSpace {
-    Normal = 0,
-    NoWrap = 1,
 }
 declare const enum PropagationPhase {
     None = 0,
@@ -2105,6 +2145,13 @@ declare const enum LightType {
     Pyramid = 5,
     Box = 6,
     Tube = 7,
+}
+declare const enum LightUnit {
+    Lumen = 0,
+    Candela = 1,
+    Lux = 2,
+    Nits = 3,
+    Ev100 = 4,
 }
 declare const enum LightmapBakeType {
     Mixed = 1,
@@ -2287,8 +2334,10 @@ declare const enum RuntimePlatform {
     QNXArm64 = 47,
     QNXX64 = 48,
     QNXX86 = 49,
-    GameCoreScarlett = -1,
+    VisionOS = 50,
+    ReservedCFE = 51,
     CloudRendering = -1,
+    GameCoreScarlett = -1,
 }
 declare const enum SystemLanguage {
     Afrikaans = 0,
@@ -2826,6 +2875,7 @@ declare const enum StereoScreenCaptureMode {
     LeftEye = 1,
     RightEye = 2,
     BothEyes = 3,
+    MotionVectors = 4,
 }
 declare const enum ContextStyle {
     Block = 0,
@@ -2902,6 +2952,7 @@ declare const enum SaveFolder {
 declare const enum LogContext {
     Client = 0,
     Server = 1,
+    Memory = 2,
 }
 declare const enum Key {
     None = 0,
@@ -3156,19 +3207,20 @@ declare const enum BuildTarget {
     Switch = 38,
     Lumin = 39,
     Stadia = 40,
-    LinuxHeadlessSimulation = 41,
     CloudRendering = 41,
-    GameCoreScarlett = 42,
+    LinuxHeadlessSimulation = 41,
     GameCoreXboxSeries = 42,
+    GameCoreScarlett = 42,
     GameCoreXboxOne = 43,
     PS5 = 44,
     EmbeddedLinux = 45,
     QNX = 46,
-    Bratwurst = 47,
+    VisionOS = 47,
+    ReservedCFE = 48,
     NoTarget = -2,
-    MetroPlayer = -1,
     iPhone = -1,
     BB10 = -1,
+    MetroPlayer = -1,
 }
 declare const enum BatteryStatus {
     Unknown = 0,
@@ -3214,6 +3266,7 @@ declare const enum GraphicsDeviceType {
     PlayStation5 = 26,
     PlayStation5NGGC = 27,
     WebGPU = 28,
+    ReservedCFE = 29,
     GameCoreScarlett = -1,
 }
 declare const enum RenderingThreadingMode {
@@ -3445,6 +3498,12 @@ declare const enum DataFormat {
     HalfFloat = 0,
     Float = 1,
 }
+declare const enum DownloadedTextureFlags {
+    None = 0,
+    Readable = 1,
+    MipmapChain = 2,
+    LinearColorSpace = 4,
+}
 declare const enum EventTriggerType {
     PointerEnter = 0,
     PointerExit = 1,
@@ -3513,6 +3572,7 @@ declare const enum SerializedPropertyType {
     BoundsInt = 23,
     ManagedReference = 24,
     Hash128 = 25,
+    RenderingLayerMask = 26,
     Generic = -1,
 }
 declare const enum SerializedPropertyNumericType {
@@ -3918,17 +3978,164 @@ declare const TagHandle: TagHandleConstructor;
     
     
     
+interface InstantiateParameters {
+    parent: Transform;
+    scene: Scene;
+    worldSpace: boolean;
+
+
+
+
+
+}
+    
+interface YieldInstruction {
+
+
+
+
+
+}
+    
+interface YieldInstructionConstructor {
+
+
+    new(): YieldInstruction;
+
+
+
+}
+declare const YieldInstruction: YieldInstructionConstructor;
+    
+interface AsyncOperation extends YieldInstruction {
+    /**
+     * Has the operation finished? (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/AsyncOperation-isDone.html | AsyncOperation.isDone}
+     */
+    readonly isDone: boolean;
+    /**
+     * What's the operation's progress. (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/AsyncOperation-progress.html | AsyncOperation.progress}
+     */
+    readonly progress: number;
+    /**
+     * Priority lets you tweak in which order async operation calls will be performed.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/AsyncOperation-priority.html | AsyncOperation.priority}
+     */
+    priority: number;
+    /**
+     * Allow Scenes to be activated as soon as it is ready.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/AsyncOperation-allowSceneActivation.html | AsyncOperation.allowSceneActivation}
+     */
+    allowSceneActivation: boolean;
+
+    readonly completed: MonoSignal<AsyncOperation>;
+
+
+
+
+}
+    
+interface AsyncOperationConstructor {
+
+
+    new(): AsyncOperation;
+
+
+
+}
+declare const AsyncOperation: AsyncOperationConstructor;
+    
+interface AsyncInstantiateOperation extends AsyncOperation {
+    /**
+     * If isDone is true, then Result contains the instantiated objects. The size of the array is the same as the 'count' argument for the InstantiateAsync call.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/AsyncInstantiateOperation-Result.html | AsyncInstantiateOperation.Result}
+     */
+    readonly Result: Readonly<Object[]>;
+
+
+
+    /**
+     * Method that cancels all the operations connected to the asynchronous instantiation if the operation is not done yet, that is, where isDone == false. This method deletes all the objects created so far, which are not visible to users while they're not activated, and stops all the internal jobs connected to the operation.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/AsyncInstantiateOperation.Cancel.html | AsyncInstantiateOperation.Cancel}
+     */
+    Cancel(): void;
+    /**
+     * This property can be true only if allowSceneActivation is set to false, and if the operation has already completed everything needed for object instantiation except for the main thread integrating the objects and calling their Awake methods. Users can set allowSceneActivation to true to trigger the activation or call the Cancel method to cancel instantiation.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/AsyncInstantiateOperation.IsWaitingForSceneActivation.html | AsyncInstantiateOperation.IsWaitingForSceneActivation}
+     */
+    IsWaitingForSceneActivation(): boolean;
+    /**
+     * Blocks the current thread until this operation is done.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/AsyncInstantiateOperation.WaitForCompletion.html | AsyncInstantiateOperation.WaitForCompletion}
+     */
+    WaitForCompletion(): void;
+
+
+}
+    
+interface AsyncInstantiateOperationConstructor {
+
+
+    new(): AsyncInstantiateOperation;
+
+
+    GetIntegrationTimeMS(): number;
+    SetIntegrationTimeMS(integrationTimeMS: number): void;
+
+}
+declare const AsyncInstantiateOperation: AsyncInstantiateOperationConstructor;
+    
+interface AsyncInstantiateOperation<T> extends AsyncInstantiateOperation {
+    readonly Result: Readonly<T[]>;
+
+
+
+    GetAwaiter(): Awaiter<T>;
+
+
+}
+    
+interface Awaiter<T> {
+    readonly IsCompleted: boolean;
+
+
+
+    GetResult(): Readonly<T[]>;
+    OnCompleted(continuation: unknown): void;
+
+
+}
+    
+interface AwaiterConstructor {
+
+
+    new(op: AsyncInstantiateOperation<T>): Awaiter<T>;
+
+
+
+}
+declare const Awaiter: AwaiterConstructor;
+    
     
     
     
     
 interface Rigidbody extends Component {
     /**
-     * The velocity vector of the rigidbody. It represents the rate of change of Rigidbody position.
+     * The linear velocity vector of the rigidbody. It represents the rate of change of Rigidbody position.
      * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Rigidbody-velocity.html | Rigidbody.velocity}
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rigidbody-linearVelocity.html | Rigidbody.linearVelocity}
      */
-    velocity: Vector3;
+    linearVelocity: Vector3;
     /**
      * The angular velocity vector of the rigidbody measured in radians per second.
      * 
@@ -3936,17 +4143,17 @@ interface Rigidbody extends Component {
      */
     angularVelocity: Vector3;
     /**
-     * The drag of the object.
+     * The linear damping of the object.
      * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Rigidbody-drag.html | Rigidbody.drag}
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rigidbody-linearDamping.html | Rigidbody.linearDamping}
      */
-    drag: number;
+    linearDamping: number;
     /**
-     * The angular drag of the object.
+     * The angular damping of the object.
      * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Rigidbody-angularDrag.html | Rigidbody.angularDrag}
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rigidbody-angularDamping.html | Rigidbody.angularDamping}
      */
-    angularDrag: number;
+    angularDamping: number;
     /**
      * The mass of the rigidbody.
      * 
@@ -4359,7 +4566,7 @@ interface Rigidbody extends Component {
      */
     SetDensity(density: number): void;
     /**
-     * Forces a rigidbody to sleep at least one frame.
+     * Forces a rigidbody to sleep until woken up.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rigidbody.Sleep.html | Rigidbody.Sleep}
      */
@@ -4367,7 +4574,7 @@ interface Rigidbody extends Component {
     /**
      * Tests if a rigidbody would collide with anything, if it was moved through the Scene.
      * @param direction The direction into which to sweep the rigidbody.
-     * @param hitInfo If true is returned, hitInfo will contain more information about where the collider was hit (See Also: RaycastHit).
+     * @param hitInfo If true is returned, hitInfo will contain more information about where the collider was hit (Additional resources: RaycastHit).
      * @param maxDistance The length of the sweep.
      * @param queryTriggerInteraction Specifies whether this query should hit Triggers.
      * 
@@ -4581,9 +4788,9 @@ interface ArticulationBody extends Behaviour {
     /**
      * Linear velocity of the body defined in world space.
      * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/ArticulationBody-velocity.html | ArticulationBody.velocity}
+     * More info: {@link https://docs.unity3d.com/ScriptReference/ArticulationBody-linearVelocity.html | ArticulationBody.linearVelocity}
      */
-    velocity: Vector3;
+    linearVelocity: Vector3;
     /**
      * The angular velocity of the body defined in world space.
      * 
@@ -5180,7 +5387,6 @@ interface GeometryHolder {
 interface GeometryHolderConstructor {
 
 
-    new(): GeometryHolder;
 
 
     Create<T>(geometry: T): GeometryHolder;
@@ -5188,37 +5394,37 @@ interface GeometryHolderConstructor {
 }
 declare const GeometryHolder: GeometryHolderConstructor;
     
-interface PhysicMaterial extends Object {
+interface PhysicsMaterial extends Object {
     /**
      * How bouncy is the surface? A value of 0 will not bounce. A value of 1 will bounce without any loss of energy.
      * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/PhysicMaterial-bounciness.html | PhysicMaterial.bounciness}
+     * More info: {@link https://docs.unity3d.com/ScriptReference/PhysicsMaterial-bounciness.html | PhysicsMaterial.bounciness}
      */
     bounciness: number;
     /**
      * The friction used when already moving.  This value is usually between 0 and 1.
      * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/PhysicMaterial-dynamicFriction.html | PhysicMaterial.dynamicFriction}
+     * More info: {@link https://docs.unity3d.com/ScriptReference/PhysicsMaterial-dynamicFriction.html | PhysicsMaterial.dynamicFriction}
      */
     dynamicFriction: number;
     /**
      * The friction coefficient used when an object is lying on a surface.
      * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/PhysicMaterial-staticFriction.html | PhysicMaterial.staticFriction}
+     * More info: {@link https://docs.unity3d.com/ScriptReference/PhysicsMaterial-staticFriction.html | PhysicsMaterial.staticFriction}
      */
     staticFriction: number;
     /**
      * Determines how the friction is combined.
      * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/PhysicMaterial-frictionCombine.html | PhysicMaterial.frictionCombine}
+     * More info: {@link https://docs.unity3d.com/ScriptReference/PhysicsMaterial-frictionCombine.html | PhysicsMaterial.frictionCombine}
      */
-    frictionCombine: PhysicMaterialCombine;
+    frictionCombine: PhysicsMaterialCombine;
     /**
      * Determines how the bounciness is combined.
      * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/PhysicMaterial-bounceCombine.html | PhysicMaterial.bounceCombine}
+     * More info: {@link https://docs.unity3d.com/ScriptReference/PhysicsMaterial-bounceCombine.html | PhysicsMaterial.bounceCombine}
      */
-    bounceCombine: PhysicMaterialCombine;
+    bounceCombine: PhysicsMaterialCombine;
 
 
 
@@ -5226,16 +5432,16 @@ interface PhysicMaterial extends Object {
 
 }
     
-interface PhysicMaterialConstructor {
+interface PhysicsMaterialConstructor {
 
 
-    new(): PhysicMaterial;
-    new(name: string): PhysicMaterial;
+    new(): PhysicsMaterial;
+    new(name: string): PhysicsMaterial;
 
 
 
 }
-declare const PhysicMaterial: PhysicMaterialConstructor;
+declare const PhysicsMaterial: PhysicsMaterialConstructor;
     
     
     
@@ -5250,7 +5456,7 @@ interface PhysicsScene {
      * @param center Center of the box.
      * @param halfExtents Half the size of the box in each dimension.
      * @param direction The direction in which to cast the box.
-     * @param hitInfo If true is returned, hitInfo will contain more information about where the collider was hit. (See Also: RaycastHit).
+     * @param hitInfo If true is returned, hitInfo will contain more information about where the collider was hit. (Additional resources: RaycastHit).
      * @param orientation Rotation of the box.
      * @param maxDistance The max length of the cast.
      * @param layerMask A that is used to selectively ignore colliders when casting a capsule.
@@ -5281,7 +5487,7 @@ interface PhysicsScene {
      * @param point2 The center of the sphere at the end of the capsule.
      * @param radius The radius of the capsule.
      * @param direction The direction into which to sweep the capsule.
-     * @param hitInfo If true is returned, hitInfo will contain more information about where the collider was hit. (See Also: RaycastHit).
+     * @param hitInfo If true is returned, hitInfo will contain more information about where the collider was hit. (Additional resources: RaycastHit).
      * @param maxDistance The max length of the sweep.
      * @param layerMask A that is used to selectively ignore colliders when casting a capsule.
      * @param queryTriggerInteraction Specifies whether this query should hit Triggers.
@@ -5375,7 +5581,7 @@ interface PhysicsScene {
      * Casts a ray, from point origin, in direction direction, of length maxDistance, against all colliders in the Scene.
      * @param origin The starting point of the ray in world coordinates.
      * @param direction The direction of the ray.
-     * @param hitInfo If true is returned, hitInfo will contain more information about where the collider was hit. (See Also: RaycastHit).
+     * @param hitInfo If true is returned, hitInfo will contain more information about where the collider was hit. (Additional resources: RaycastHit).
      * @param maxDistance The max distance the ray should check for collisions.
      * @param layerMask A that is used to selectively ignore Colliders when casting a ray.
      * @param queryTriggerInteraction Specifies whether this query should hit Triggers.
@@ -5422,7 +5628,7 @@ interface PhysicsScene {
      * @param origin The center of the sphere at the start of the sweep.
      * @param radius The radius of the sphere.
      * @param direction The direction into which to sweep the sphere.
-     * @param hitInfo If true is returned, hitInfo will contain more information about where the collider was hit. (See Also: RaycastHit).
+     * @param hitInfo If true is returned, hitInfo will contain more information about where the collider was hit. (Additional resources: RaycastHit).
      * @param maxDistance The max length of the cast.
      * @param layerMask A that is used to selectively ignore colliders when casting a capsule.
      * @param queryTriggerInteraction Specifies whether this query should hit Triggers.
@@ -6180,49 +6386,49 @@ interface PhysicsScene2D {
     
 interface RaycastHit2D {
     /**
-     * The centroid of the primitive used to perform the cast.
+     * The world space centroid (center) of the physics query shape when it intersects.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/RaycastHit2D-centroid.html | RaycastHit2D.centroid}
      */
     centroid: Vector2;
     /**
-     * The point in world space where the ray hit the collider's surface.
+     * The world space position where the physics query shape intersected with the detected Collider2D surface.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/RaycastHit2D-point.html | RaycastHit2D.point}
      */
     point: Vector2;
     /**
-     * The normal vector of the surface hit by the ray.
+     * The surface normal of the detected Collider2D.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/RaycastHit2D-normal.html | RaycastHit2D.normal}
      */
     normal: Vector2;
     /**
-     * The distance from the ray origin to the impact point.
+     * The distance the physics query traversed before it detected a Collider2D.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/RaycastHit2D-distance.html | RaycastHit2D.distance}
      */
     distance: number;
     /**
-     * Fraction of the distance along the ray that the hit occurred.
+     * The fraction of the distance specified to the physics query before it detected a Collider2D.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/RaycastHit2D-fraction.html | RaycastHit2D.fraction}
      */
     fraction: number;
     /**
-     * The collider hit by the ray.
+     * The Collider2D detected by the physics query.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/RaycastHit2D-collider.html | RaycastHit2D.collider}
      */
     readonly collider: Collider2D;
     /**
-     * The Rigidbody2D attached to the object that was hit.
+     * The Rigidbody2D that the Collider2D detected by the physics query is attached to.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/RaycastHit2D-rigidbody.html | RaycastHit2D.rigidbody}
      */
     readonly rigidbody: Rigidbody2D;
     /**
-     * The Transform of the object that was hit.
+     * The Transform on the GameObject that the Collider2D is attached to.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/RaycastHit2D-transform.html | RaycastHit2D.transform}
      */
@@ -6363,17 +6569,29 @@ interface Collider2D extends Behaviour {
      */
     callbackLayers: LayerMask;
     /**
-     * Get the friction used by the collider.
+     * The friction used by the Collider2D.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Collider2D-friction.html | Collider2D.friction}
      */
     readonly friction: number;
     /**
-     * Get the bounciness used by the collider.
+     * The bounciness used by the Collider2D.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Collider2D-bounciness.html | Collider2D.bounciness}
      */
     readonly bounciness: number;
+    /**
+     * The friction combine mode used by the Collider2D.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Collider2D-frictionCombine.html | Collider2D.frictionCombine}
+     */
+    readonly frictionCombine: PhysicsMaterialCombine2D;
+    /**
+     * The bounciness combine mode used by the Collider2D.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Collider2D-bounceCombine.html | Collider2D.bounceCombine}
+     */
+    readonly bounceCombine: PhysicsMaterialCombine2D;
 
 
 
@@ -6682,23 +6900,23 @@ interface Rigidbody2D extends Component {
      */
     rotation: number;
     /**
-     * Linear velocity of the Rigidbody in units per second.
+     * The linear velocity of the Rigidbody2D represents the rate of change over time of the Rigidbody2D position in world-units.
      * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Rigidbody2D-velocity.html | Rigidbody2D.velocity}
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rigidbody2D-linearVelocity.html | Rigidbody2D.linearVelocity}
      */
-    velocity: Vector2;
+    linearVelocity: Vector2;
     /**
-     * The X component of the linear velocity of the Rigidbody in units per second.
+     * The X component of the linear velocity of the Rigidbody2D in world-units per second.
      * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Rigidbody2D-velocityX.html | Rigidbody2D.velocityX}
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rigidbody2D-linearVelocityX.html | Rigidbody2D.linearVelocityX}
      */
-    velocityX: number;
+    linearVelocityX: number;
     /**
-     * The Y component of the linear velocity of the Rigidbody in units per second.
+     * The Y component of the linear velocity of the Rigidbody2D in world-units per second.
      * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Rigidbody2D-velocityY.html | Rigidbody2D.velocityY}
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rigidbody2D-linearVelocityY.html | Rigidbody2D.linearVelocityY}
      */
-    velocityY: number;
+    linearVelocityY: number;
     /**
      * Angular velocity in degrees per second.
      * 
@@ -6742,17 +6960,17 @@ interface Rigidbody2D extends Component {
      */
     inertia: number;
     /**
-     * Coefficient of drag.
+     * The linear damping of the Rigidbody2D linear velocity.
      * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Rigidbody2D-drag.html | Rigidbody2D.drag}
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rigidbody2D-linearDamping.html | Rigidbody2D.linearDamping}
      */
-    drag: number;
+    linearDamping: number;
     /**
-     * Coefficient of angular drag.
+     * The angular damping of the Rigidbody2D angular velocity.
      * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Rigidbody2D-angularDrag.html | Rigidbody2D.angularDrag}
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rigidbody2D-angularDamping.html | Rigidbody2D.angularDamping}
      */
-    angularDrag: number;
+    angularDamping: number;
     /**
      * The degree to which this object is affected by gravity.
      * 
@@ -6771,12 +6989,6 @@ interface Rigidbody2D extends Component {
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rigidbody2D-useFullKinematicContacts.html | Rigidbody2D.useFullKinematicContacts}
      */
     useFullKinematicContacts: boolean;
-    /**
-     * Should this rigidbody be taken out of physics control?
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Rigidbody2D-isKinematic.html | Rigidbody2D.isKinematic}
-     */
-    isKinematic: boolean;
     /**
      * Controls whether physics will change the rotation of the object.
      * 
@@ -6872,16 +7084,16 @@ interface Rigidbody2D extends Component {
      */
     AddForceAtPosition(force: Vector2, position: Vector2, mode: ForceMode2D): void;
     /**
-     * Adds a force to the X component of the Rigidbody2D.velocity|velocity only leaving the Y component of the world space Rigidbody2D.velocity|velocity untouched.
-     * @param force The force to add to the X component of the velocity in the world space of the Rigidbody2D.
+     * Adds a force to the X component of the Rigidbody2D.linearVelocity only leaving the Y component of the world space Rigidbody2D.linearVelocity untouched.
+     * @param force The force to add to the X component of the Linear Velocity in the world space of the Rigidbody2D.
      * @param mode The method used to apply the specified force.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rigidbody2D.AddForceX.html | Rigidbody2D.AddForceX}
      */
     AddForceX(force: number, mode: ForceMode2D): void;
     /**
-     * Adds a force to the Y component of the Rigidbody2D.velocity|velocity only leaving the X component of the world space Rigidbody2D.velocity|velocity untouched.
-     * @param force The force to add to the Y component of the velocity in the world space of the Rigidbody2D.
+     * Adds a force to the Y component of the Rigidbody2D.linearVelocity only leaving the X component of the world space Rigidbody2D.linearVelocity untouched.
+     * @param force The force to add to the Y component of the Linear Velocity in the world space of the Rigidbody2D.
      * @param mode The method used to apply the specified force.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rigidbody2D.AddForceY.html | Rigidbody2D.AddForceY}
@@ -6889,7 +7101,7 @@ interface Rigidbody2D extends Component {
     AddForceY(force: number, mode: ForceMode2D): void;
     AddRelativeForce(relativeForce: Vector2): void;
     /**
-     * Adds a force to the local space Rigidbody2D.velocity|velocity. In other words, the force is applied in the rotated coordinate space of the Rigidbody2D.
+     * Adds a force to the local space Rigidbody2D.linearVelocity. In other words, the force is applied in the rotated coordinate space of the Rigidbody2D.
      * @param relativeForce Components of the force in the X and Y axes.
      * @param mode The method used to apply the specified force.
      * 
@@ -6897,16 +7109,16 @@ interface Rigidbody2D extends Component {
      */
     AddRelativeForce(relativeForce: Vector2, mode: ForceMode2D): void;
     /**
-     * Adds a force to the X component of the Rigidbody2D.velocity|velocity in the local space of the Rigidbody2D only leaving the Y component of the local space Rigidbody2D.velocity|velocity untouched.
-     * @param force The force to add to the X component of the velocity in the local space of the Rigidbody2D.
+     * Adds a force to the X component of the Rigidbody2D.linearVelocity in the local space of the Rigidbody2D only leaving the Y component of the local space Rigidbody2D.linearVelocity untouched.
+     * @param force The force to add to the X component of the Linear Velocity in the local space of the Rigidbody2D.
      * @param mode The method used to apply the specified force.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rigidbody2D.AddRelativeForceX.html | Rigidbody2D.AddRelativeForceX}
      */
     AddRelativeForceX(force: number, mode: ForceMode2D): void;
     /**
-     * Adds a force to the Y component of the Rigidbody2D.velocity|velocity in the local space of the Rigidbody2D only leaving the X component of the local space Rigidbody2D.velocity|velocity untouched.
-     * @param force The force to add to the Y component of the velocity in the local space of the Rigidbody2D.
+     * Adds a force to the Y component of the Rigidbody2D.linearVelocity in the local space of the Rigidbody2D only leaving the X component of the local space Rigidbody2D.linearVelocity untouched.
+     * @param force The force to add to the Y component of the Linear Velocity in the local space of the Rigidbody2D.
      * @param mode The method used to apply the specified force.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rigidbody2D.AddRelativeForceY.html | Rigidbody2D.AddRelativeForceY}
@@ -7196,7 +7408,7 @@ interface Rigidbody2D extends Component {
     
 interface PhysicsMaterial2D extends Object {
     /**
-     * The degree of elasticity during collisions.
+     * Coefficient of restitution.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/PhysicsMaterial2D-bounciness.html | PhysicsMaterial2D.bounciness}
      */
@@ -7207,6 +7419,18 @@ interface PhysicsMaterial2D extends Object {
      * More info: {@link https://docs.unity3d.com/ScriptReference/PhysicsMaterial2D-friction.html | PhysicsMaterial2D.friction}
      */
     friction: number;
+    /**
+     * Determines how the effective friction is calculated when two Collider2D come into contact.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/PhysicsMaterial2D-frictionCombine.html | PhysicsMaterial2D.frictionCombine}
+     */
+    frictionCombine: PhysicsMaterialCombine2D;
+    /**
+     * Determines how the effective bounciness is calculated when two Collider2D come into contact.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/PhysicsMaterial2D-bounceCombine.html | PhysicsMaterial2D.bounceCombine}
+     */
+    bounceCombine: PhysicsMaterialCombine2D;
 
 
 
@@ -7221,6 +7445,7 @@ interface PhysicsMaterial2DConstructor {
     new(name: string): PhysicsMaterial2D;
 
 
+    GetCombinedValues(valueA: number, valueB: number, materialCombineA: PhysicsMaterialCombine2D, materialCombineB: PhysicsMaterialCombine2D): number;
 
 }
 declare const PhysicsMaterial2D: PhysicsMaterial2DConstructor;
@@ -7423,6 +7648,18 @@ interface ContactPoint2D {
      * More info: {@link https://docs.unity3d.com/ScriptReference/ContactPoint2D-relativeVelocity.html | ContactPoint2D.relativeVelocity}
      */
     readonly relativeVelocity: Vector2;
+    /**
+     * The effective friction used for the ContactPoint2D.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/ContactPoint2D-friction.html | ContactPoint2D.friction}
+     */
+    readonly friction: number;
+    /**
+     * The effective bounciness used for the ContactPoint2D.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/ContactPoint2D-bounciness.html | ContactPoint2D.bounciness}
+     */
+    readonly bounciness: number;
     /**
      * The incoming Collider2D involved in the collision with the otherCollider.
      * 
@@ -8766,6 +9003,9 @@ interface Color32 {
 
 
 
+    Equals(other: unknown): boolean;
+    Equals(other: Color32): boolean;
+    GetHashCode(): number;
     /**
      * Returns a formatted string for this color.
      * 
@@ -9628,6 +9868,12 @@ interface Physics2DConstructor {
      */
     bounceThreshold: number;
     /**
+     * A threshold below which a contact is automatically disabled.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Physics2D-contactThreshold.html | Physics2D.contactThreshold}
+     */
+    contactThreshold: number;
+    /**
      * The maximum linear position correction used when solving constraints.  This helps to prevent overshoot.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Physics2D-maxLinearCorrection.html | Physics2D.maxLinearCorrection}
@@ -9980,24 +10226,6 @@ interface MonoBehaviour extends Behaviour {
 
 }
     
-interface YieldInstruction {
-
-
-
-
-
-}
-    
-interface YieldInstructionConstructor {
-
-
-    new(): YieldInstruction;
-
-
-
-}
-declare const YieldInstruction: YieldInstructionConstructor;
-    
 interface Coroutine extends YieldInstruction {
 
 
@@ -10075,6 +10303,7 @@ interface DebugConstructor {
     AssertFormat(condition: boolean, format: string, args: Readonly<unknown[]>): void;
     AssertFormat(condition: boolean, context: Object, format: string, args: Readonly<unknown[]>): void;
     Break(): void;
+    CheckIntegrity(level: IntegrityCheckLevel): string;
     ClearDeveloperConsole(): void;
     DebugBreak(): void;
     DrawLine(start: Vector3, end: Vector3, color: Color, duration: number): void;
@@ -10086,6 +10315,7 @@ interface DebugConstructor {
     DrawRay(start: Vector3, dir: Vector3): void;
     DrawRay(start: Vector3, dir: Vector3, color: Color, duration: number, depthTest: boolean): void;
     ExtractStackTraceNoAlloc(buffer: unknown, bufferMax: number, projectFolder: string): number;
+    IsValidationLevelEnabled(level: ValidationLevel): boolean;
     Log(message: unknown): void;
     Log(message: unknown, context: Object): void;
     LogAssertion(message: unknown): void;
@@ -10156,7 +10386,7 @@ Returns NULL if there is no associated alpha Texture for the source Sprite. This
      */
     readonly associatedAlphaSplitTexture: Texture2D;
     /**
-     * Location of the Sprite's center point in the Rect on the original Texture, specified in pixels.
+     * Location of the Sprite's pivot point in the Rect on the original Texture, specified in pixels.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Sprite-pivot.html | Sprite.pivot}
      */
@@ -10706,6 +10936,16 @@ interface GraphicsTextureDescriptor {
 
 }
     
+interface GraphicsTextureDescriptorConstructor {
+
+
+    new(): GraphicsTextureDescriptor;
+
+
+
+}
+declare const GraphicsTextureDescriptor: GraphicsTextureDescriptorConstructor;
+    
 interface GraphicsTextureConstructor {
     /**
      * Currently active graphics texture.
@@ -10825,6 +11065,7 @@ The desiredTextureMemory value can be greater than the Texture.targetTextureMemo
 
     SetGlobalAnisotropicFilteringLimits(forcedMin: number, globalMax: number): void;
     SetStreamingTextureMaterialDebugProperties(): void;
+    SetStreamingTextureMaterialDebugProperties(materialTextureSlot: number): void;
 
 }
 declare const Texture: TextureConstructor;
@@ -10946,6 +11187,39 @@ interface Texture2D extends Texture {
      * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2D.Compress.html | Texture2D.Compress}
      */
     Compress(highQuality: boolean): void;
+    /**
+     * Copies pixel data from another texture on the CPU.
+     * @param src The source texture.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2D.CopyPixels.html | Texture2D.CopyPixels}
+     */
+    CopyPixels(src: Texture): void;
+    /**
+     * Copies pixel data from another texture on the CPU.
+     * @param src The source texture.
+     * @param srcElement The element in the source texture to copy from. For example, the CubemapFace in a Cubemap or the slice in a texture array. Set the value to 0 if src is a 2D texture.
+     * @param srcMip The mipmap level to copy from. The range is 0 through the source texture's Texture.mipmapCount. The default value is 0.
+     * @param dstMip The mipmap level to write to. The range is 0 through this texture's Texture.mipmapCount. The default value is 0.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2D.CopyPixels.html | Texture2D.CopyPixels}
+     */
+    CopyPixels(src: Texture, srcElement: number, srcMip: number, dstMip: number): void;
+    /**
+     * Copies pixel data from another texture on the CPU.
+     * @param src The source texture.
+     * @param srcElement The element in the source texture to copy from. For example, the CubemapFace in a Cubemap or the slice in a texture array. Set the value to 0 if src is a 2D texture.
+     * @param srcMip The mipmap level to copy from. The range is 0 through the source texture's Texture.mipmapCount. The default value is 0.
+     * @param srcX The starting x coordinate of src to copy from. 0 is the left of the texture.
+     * @param srcY The starting y coordinate of src to copy from. 0 is the bottom of the texture.
+     * @param srcWidth The width of src to copy.
+     * @param srcHeight The height of src to copy.
+     * @param dstMip The mipmap level to write to. The range is 0 through this texture's Texture.mipmapCount. The default value is 0.
+     * @param dstX The x coordinate of this texture to copy to.
+     * @param dstY The y coordinate to this texture to copy to.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2D.CopyPixels.html | Texture2D.CopyPixels}
+     */
+    CopyPixels(src: Texture, srcElement: number, srcMip: number, srcX: number, srcY: number, srcWidth: number, srcHeight: number, dstMip: number, dstX: number, dstY: number): void;
     /**
      * Gets the pixel color at coordinates (x, y).
      * @param x The x coordinate of the pixel to get. The range is 0 through (texture width - 1).
@@ -11364,6 +11638,7 @@ interface TextAssetConstructor {
 
     new(): TextAsset;
     new(text: string): TextAsset;
+    new(bytes: unknown): TextAsset;
 
 
 
@@ -11377,49 +11652,6 @@ interface Resources {
 
 
 }
-    
-interface AsyncOperation extends YieldInstruction {
-    /**
-     * Has the operation finished? (Read Only)
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/AsyncOperation-isDone.html | AsyncOperation.isDone}
-     */
-    readonly isDone: boolean;
-    /**
-     * What's the operation's progress. (Read Only)
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/AsyncOperation-progress.html | AsyncOperation.progress}
-     */
-    readonly progress: number;
-    /**
-     * Priority lets you tweak in which order async operation calls will be performed.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/AsyncOperation-priority.html | AsyncOperation.priority}
-     */
-    priority: number;
-    /**
-     * Allow Scenes to be activated as soon as it is ready.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/AsyncOperation-allowSceneActivation.html | AsyncOperation.allowSceneActivation}
-     */
-    allowSceneActivation: boolean;
-
-    readonly completed: MonoSignal<AsyncOperation>;
-
-
-
-
-}
-    
-interface AsyncOperationConstructor {
-
-
-    new(): AsyncOperation;
-
-
-
-}
-declare const AsyncOperation: AsyncOperationConstructor;
     
 interface ResourceRequest extends AsyncOperation {
     /**
@@ -12061,7 +12293,7 @@ If called outside of a rendering callback and stereo is enabled, it will return 
     CopyFrom(other: Camera): void;
     CopyStereoDeviceProjectionMatrixToNonJittered(eye: StereoscopicEye): void;
     /**
-     * Get command buffers to be executed at a specified place.
+     * Get command buffers to be executed at a specified place. This API is only available with the Built-in renderer.
      * @param evt When to execute the command buffer during rendering.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Camera.GetCommandBuffers.html | Camera.GetCommandBuffers}
@@ -12194,7 +12426,7 @@ If called outside of a rendering callback and stereo is enabled, it will return 
     ScreenPointToRay(pos: Vector3, eye: MonoOrStereoscopicEye): Ray;
     /**
      * Returns a ray going from camera through a screen point.
-     * @param pos A 3D point, with the x and y coordinates containing a 2D screenspace point in pixels. The lower left pixel of the screen is (0,0). The upper right pixel of the screen is (screen width in pixels - 1, screen height in pixels - 1). Unity ignores the z coordinate.
+     * @param pos A 3D point, with the x and y coordinates containing a 2D screen space point in pixels. The lower left pixel of the screen is (0,0). The upper right pixel of the screen is (screen width in pixels - 1, screen height in pixels - 1). Unity ignores the z coordinate.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Camera.ScreenPointToRay.html | Camera.ScreenPointToRay}
      */
@@ -12208,7 +12440,7 @@ If called outside of a rendering callback and stereo is enabled, it will return 
     ScreenToWorldPoint(position: Vector3, eye: MonoOrStereoscopicEye): Vector3;
     /**
      * Transforms a point from screen space into world space, where world space is defined as the coordinate system at the very top of your game's hierarchy.
-     * @param position A 2D screenspace point in pixels, plus a z coordinate for the distance from the camera in world units. The lower left pixel of the screen is (0,0). The upper right pixel of the screen is (screen width in pixels - 1, screen height in pixels - 1).
+     * @param position A 2D screen space point in pixels, plus a z coordinate for the distance from the camera in world units. The lower left pixel of the screen is (0,0). The upper right pixel of the screen is (screen width in pixels - 1, screen height in pixels - 1).
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Camera.ScreenToWorldPoint.html | Camera.ScreenToWorldPoint}
      */
@@ -12351,7 +12583,7 @@ Specifying this property creates a stencil element for the RenderTexture and set
 This allows for stencil data to be bound as a Texture to all shader types for the platforms that support it.
 This property does not specify the format of the stencil buffer, which is constrained by the depth buffer format specified in RenderTexture.depth.
 
-Currently, most platforms only support R8_UInt (DirectX11, DirectX12), while PS4 also supports R8_UNorm.
+Currently, most platforms only support R8_UInt (DirectX11, DirectX12).
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/RenderTexture-stencilFormat.html | RenderTexture.stencilFormat}
      */
@@ -12536,7 +12768,7 @@ interface RenderTextureDescriptor {
     /**
      * The multisample antialiasing level for the RenderTexture.
 
-See Also: RenderTexture.antiAliasing.
+Additional resources: RenderTexture.antiAliasing.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/RenderTextureDescriptor-msaaSamples.html | RenderTextureDescriptor.msaaSamples}
      */
@@ -12566,7 +12798,7 @@ Specifying this property creates a stencil element for the RenderTexture and set
 This allows for stencil data to be bound as a Texture to all shader types for the platforms that support it.
 This property does not specify the format of the stencil buffer, which is constrained by the depth buffer format specified in RenderTexture.depth.
 
-Currently, most platforms only support R8_UInt (DirectX11, DirectX12), while PS4 also supports R8_UNorm.
+Currently, most platforms only support R8_UInt (DirectX11, DirectX12).
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/RenderTextureDescriptor-stencilFormat.html | RenderTextureDescriptor.stencilFormat}
      */
@@ -12598,7 +12830,7 @@ Currently, most platforms only support R8_UInt (DirectX11, DirectX12), while PS4
     /**
      * Dimensionality (type) of the render texture.
 
-See Also: RenderTexture.dimension.
+Additional resources: RenderTexture.dimension.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/RenderTextureDescriptor-dimension.html | RenderTextureDescriptor.dimension}
      */
@@ -12606,7 +12838,7 @@ See Also: RenderTexture.dimension.
     /**
      * Determines how the RenderTexture is sampled if it is used as a shadow map.
 
-See Also: ShadowSamplingMode for more details.
+Additional resources: ShadowSamplingMode for more details.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/RenderTextureDescriptor-shadowSamplingMode.html | RenderTextureDescriptor.shadowSamplingMode}
      */
@@ -12632,7 +12864,7 @@ See Also: ShadowSamplingMode for more details.
     /**
      * Render texture has mipmaps when this flag is set.
 
-See Also: RenderTexture.useMipMap.
+Additional resources: RenderTexture.useMipMap.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/RenderTextureDescriptor-useMipMap.html | RenderTextureDescriptor.useMipMap}
      */
@@ -12646,7 +12878,7 @@ See Also: RenderTexture.useMipMap.
     /**
      * Enable random access write into this render texture on Shader Model 5.0 level shaders.
 
-See Also: RenderTexture.enableRandomWrite.
+Additional resources: RenderTexture.enableRandomWrite.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/RenderTextureDescriptor-enableRandomWrite.html | RenderTextureDescriptor.enableRandomWrite}
      */
@@ -12660,7 +12892,7 @@ See Also: RenderTexture.enableRandomWrite.
     /**
      * Set to true to enable dynamic resolution scaling on this render texture. Mutually exclusive with RenderTextureDescriptor.useDynamicScaleExplicit
 
-See Also: RenderTexture.useDynamicScale.
+Additional resources: RenderTexture.useDynamicScale.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/RenderTextureDescriptor-useDynamicScale.html | RenderTextureDescriptor.useDynamicScale}
      */
@@ -12668,7 +12900,7 @@ See Also: RenderTexture.useDynamicScale.
     /**
      * Set to true to enable dynamic resolution scaling on this render texture and control when this scaling happens. Mutually exclusive with RenderTextureDescriptor.useDynamicScale
 
-See Also: RenderTexture.useDynamicScaleExplicit.
+Additional resources: RenderTexture.useDynamicScaleExplicit.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/RenderTextureDescriptor-useDynamicScaleExplicit.html | RenderTextureDescriptor.useDynamicScaleExplicit}
      */
@@ -12774,6 +13006,12 @@ interface CommandBuffer {
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.BeginSample.html | Rendering.CommandBuffer.BeginSample}
      */
     BeginSample(sampler: CustomSampler): void;
+    /**
+     * Adds a command to begin profile sampling.
+     * @param marker The ProfilerMarker that the CommandBuffer uses for sampling.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.BeginSample.html | Rendering.CommandBuffer.BeginSample}
+     */
     BeginSample(marker: ProfilerMarker): void;
     /**
      * Adds a command to use a shader to copy the pixel data from a texture into a render texture.
@@ -12904,7 +13142,7 @@ interface CommandBuffer {
      */
     Clear(): void;
     /**
-     * Clear random write targets for level pixel shaders.
+     * Unset random write targets for level pixel shaders.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.ClearRandomWriteTargets.html | Rendering.CommandBuffer.ClearRandomWriteTargets}
      */
@@ -13176,6 +13414,17 @@ interface CommandBuffer {
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.DispatchRays.html | Rendering.CommandBuffer.DispatchRays}
      */
     DispatchRays(rayTracingShader: RayTracingShader, rayGenName: string, width: number, height: number, depth: number, camera: Camera): void;
+    /**
+     * Adds a command to execute a RayTracingShader.
+     * @param rayTracingShader RayTracingShader to execute.
+     * @param rayGenName The name of the ray generation shader.
+     * @param argsBuffer Buffer containing dispatch dimensions for indirect DispatchRays.
+     * @param argsOffset The byte offset into argsBuffer where the dispatch dimensions start.
+     * @param camera Optional parameter used to setup camera-related built-in shader variables.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.DispatchRays.html | Rendering.CommandBuffer.DispatchRays}
+     */
+    DispatchRays(rayTracingShader: RayTracingShader, rayGenName: string, argsBuffer: GraphicsBuffer, argsOffset: number, camera: Camera): void;
     Dispose(): void;
     /**
      * Add a &quot;draw mesh&quot; command.
@@ -13686,6 +13935,12 @@ InvalidOperationException will be thrown if the current platform doesn't support
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.EndSample.html | Rendering.CommandBuffer.EndSample}
      */
     EndSample(sampler: CustomSampler): void;
+    /**
+     * Adds a command to end profile sampling.
+     * @param marker The ProfilerMarker that the CommandBuffer uses for sampling.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.EndSample.html | Rendering.CommandBuffer.EndSample}
+     */
     EndSample(marker: ProfilerMarker): void;
     /**
      * Generate mipmap levels of a render texture.
@@ -13701,12 +13956,108 @@ InvalidOperationException will be thrown if the current platform doesn't support
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.GenerateMips.html | Rendering.CommandBuffer.GenerateMips}
      */
     GenerateMips(rt: RenderTexture): void;
+    /**
+     * Add a &quot;get a temporary render texture&quot; command.
+     * @param nameID Shader property name for this texture.
+     * @param width Width in pixels, or -1 for &quot;camera pixel width&quot;.
+     * @param height Height in pixels, or -1 for &quot;camera pixel height&quot;.
+     * @param depthBuffer Depth buffer bits (0, 16 or 24).
+     * @param filter Texture filtering mode (default is Point).
+     * @param format Format of the render texture (default is ARGB32).
+     * @param antiAliasing Anti-aliasing (default is no anti-aliasing).
+     * @param enableRandomWrite Should random-write access into the texture be enabled (default is false).
+     * @param memorylessMode Render texture memoryless mode.
+     * @param useDynamicScale Whether to enable for the texture.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.GetTemporaryRT.html | Rendering.CommandBuffer.GetTemporaryRT}
+     */
     GetTemporaryRT(nameID: number, width: number, height: number, depthBuffer: number, filter: FilterMode, format: GraphicsFormat, antiAliasing: number, enableRandomWrite: boolean, memorylessMode: RenderTextureMemoryless, useDynamicScale: boolean): void;
+    /**
+     * Add a &quot;get a temporary render texture&quot; command.
+     * @param nameID Shader property name for this texture.
+     * @param width Width in pixels, or -1 for &quot;camera pixel width&quot;.
+     * @param height Height in pixels, or -1 for &quot;camera pixel height&quot;.
+     * @param depthBuffer Depth buffer bits (0, 16 or 24).
+     * @param filter Texture filtering mode (default is Point).
+     * @param format Format of the render texture (default is ARGB32).
+     * @param antiAliasing Anti-aliasing (default is no anti-aliasing).
+     * @param enableRandomWrite Should random-write access into the texture be enabled (default is false).
+     * @param memorylessMode Render texture memoryless mode.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.GetTemporaryRT.html | Rendering.CommandBuffer.GetTemporaryRT}
+     */
     GetTemporaryRT(nameID: number, width: number, height: number, depthBuffer: number, filter: FilterMode, format: GraphicsFormat, antiAliasing: number, enableRandomWrite: boolean, memorylessMode: RenderTextureMemoryless): void;
+    /**
+     * Add a &quot;get a temporary render texture&quot; command.
+     * @param nameID Shader property name for this texture.
+     * @param width Width in pixels, or -1 for &quot;camera pixel width&quot;.
+     * @param height Height in pixels, or -1 for &quot;camera pixel height&quot;.
+     * @param depthBuffer Depth buffer bits (0, 16 or 24).
+     * @param filter Texture filtering mode (default is Point).
+     * @param format Format of the render texture (default is ARGB32).
+     * @param antiAliasing Anti-aliasing (default is no anti-aliasing).
+     * @param enableRandomWrite Should random-write access into the texture be enabled (default is false).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.GetTemporaryRT.html | Rendering.CommandBuffer.GetTemporaryRT}
+     */
     GetTemporaryRT(nameID: number, width: number, height: number, depthBuffer: number, filter: FilterMode, format: GraphicsFormat, antiAliasing: number, enableRandomWrite: boolean): void;
+    /**
+     * Add a &quot;get a temporary render texture&quot; command.
+     * @param nameID Shader property name for this texture.
+     * @param width Width in pixels, or -1 for &quot;camera pixel width&quot;.
+     * @param height Height in pixels, or -1 for &quot;camera pixel height&quot;.
+     * @param depthBuffer Depth buffer bits (0, 16 or 24).
+     * @param filter Texture filtering mode (default is Point).
+     * @param format Format of the render texture (default is ARGB32).
+     * @param antiAliasing Anti-aliasing (default is no anti-aliasing).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.GetTemporaryRT.html | Rendering.CommandBuffer.GetTemporaryRT}
+     */
     GetTemporaryRT(nameID: number, width: number, height: number, depthBuffer: number, filter: FilterMode, format: GraphicsFormat, antiAliasing: number): void;
+    /**
+     * Add a &quot;get a temporary render texture&quot; command.
+     * @param nameID Shader property name for this texture.
+     * @param width Width in pixels, or -1 for &quot;camera pixel width&quot;.
+     * @param height Height in pixels, or -1 for &quot;camera pixel height&quot;.
+     * @param depthBuffer Depth buffer bits (0, 16 or 24).
+     * @param filter Texture filtering mode (default is Point).
+     * @param format Format of the render texture (default is ARGB32).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.GetTemporaryRT.html | Rendering.CommandBuffer.GetTemporaryRT}
+     */
     GetTemporaryRT(nameID: number, width: number, height: number, depthBuffer: number, filter: FilterMode, format: GraphicsFormat): void;
+    /**
+     * Add a &quot;get a temporary render texture&quot; command.
+     * @param nameID Shader property name for this texture.
+     * @param width Width in pixels, or -1 for &quot;camera pixel width&quot;.
+     * @param height Height in pixels, or -1 for &quot;camera pixel height&quot;.
+     * @param depthBuffer Depth buffer bits (0, 16 or 24).
+     * @param filter Texture filtering mode (default is Point).
+     * @param format Format of the render texture (default is ARGB32).
+     * @param readWrite Color space conversion mode.
+     * @param antiAliasing Anti-aliasing (default is no anti-aliasing).
+     * @param enableRandomWrite Should random-write access into the texture be enabled (default is false).
+     * @param memorylessMode Render texture memoryless mode.
+     * @param useDynamicScale Whether to enable for the texture.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.GetTemporaryRT.html | Rendering.CommandBuffer.GetTemporaryRT}
+     */
     GetTemporaryRT(nameID: number, width: number, height: number, depthBuffer: number, filter: FilterMode, format: RenderTextureFormat, readWrite: RenderTextureReadWrite, antiAliasing: number, enableRandomWrite: boolean, memorylessMode: RenderTextureMemoryless, useDynamicScale: boolean): void;
+    /**
+     * Add a &quot;get a temporary render texture&quot; command.
+     * @param nameID Shader property name for this texture.
+     * @param width Width in pixels, or -1 for &quot;camera pixel width&quot;.
+     * @param height Height in pixels, or -1 for &quot;camera pixel height&quot;.
+     * @param depthBuffer Depth buffer bits (0, 16 or 24).
+     * @param filter Texture filtering mode (default is Point).
+     * @param format Format of the render texture (default is ARGB32).
+     * @param readWrite Color space conversion mode.
+     * @param antiAliasing Anti-aliasing (default is no anti-aliasing).
+     * @param enableRandomWrite Should random-write access into the texture be enabled (default is false).
+     * @param memorylessMode Render texture memoryless mode.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.GetTemporaryRT.html | Rendering.CommandBuffer.GetTemporaryRT}
+     */
     GetTemporaryRT(nameID: number, width: number, height: number, depthBuffer: number, filter: FilterMode, format: RenderTextureFormat, readWrite: RenderTextureReadWrite, antiAliasing: number, enableRandomWrite: boolean, memorylessMode: RenderTextureMemoryless): void;
     /**
      * Add a &quot;get a temporary render texture&quot; command.
@@ -13723,11 +14074,74 @@ InvalidOperationException will be thrown if the current platform doesn't support
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.GetTemporaryRT.html | Rendering.CommandBuffer.GetTemporaryRT}
      */
     GetTemporaryRT(nameID: number, width: number, height: number, depthBuffer: number, filter: FilterMode, format: RenderTextureFormat, readWrite: RenderTextureReadWrite, antiAliasing: number, enableRandomWrite: boolean): void;
+    /**
+     * Add a &quot;get a temporary render texture&quot; command.
+     * @param nameID Shader property name for this texture.
+     * @param width Width in pixels, or -1 for &quot;camera pixel width&quot;.
+     * @param height Height in pixels, or -1 for &quot;camera pixel height&quot;.
+     * @param depthBuffer Depth buffer bits (0, 16 or 24).
+     * @param filter Texture filtering mode (default is Point).
+     * @param format Format of the render texture (default is ARGB32).
+     * @param readWrite Color space conversion mode.
+     * @param antiAliasing Anti-aliasing (default is no anti-aliasing).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.GetTemporaryRT.html | Rendering.CommandBuffer.GetTemporaryRT}
+     */
     GetTemporaryRT(nameID: number, width: number, height: number, depthBuffer: number, filter: FilterMode, format: RenderTextureFormat, readWrite: RenderTextureReadWrite, antiAliasing: number): void;
+    /**
+     * Add a &quot;get a temporary render texture&quot; command.
+     * @param nameID Shader property name for this texture.
+     * @param width Width in pixels, or -1 for &quot;camera pixel width&quot;.
+     * @param height Height in pixels, or -1 for &quot;camera pixel height&quot;.
+     * @param depthBuffer Depth buffer bits (0, 16 or 24).
+     * @param filter Texture filtering mode (default is Point).
+     * @param format Format of the render texture (default is ARGB32).
+     * @param readWrite Color space conversion mode.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.GetTemporaryRT.html | Rendering.CommandBuffer.GetTemporaryRT}
+     */
     GetTemporaryRT(nameID: number, width: number, height: number, depthBuffer: number, filter: FilterMode, format: RenderTextureFormat, readWrite: RenderTextureReadWrite): void;
+    /**
+     * Add a &quot;get a temporary render texture&quot; command.
+     * @param nameID Shader property name for this texture.
+     * @param width Width in pixels, or -1 for &quot;camera pixel width&quot;.
+     * @param height Height in pixels, or -1 for &quot;camera pixel height&quot;.
+     * @param depthBuffer Depth buffer bits (0, 16 or 24).
+     * @param filter Texture filtering mode (default is Point).
+     * @param format Format of the render texture (default is ARGB32).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.GetTemporaryRT.html | Rendering.CommandBuffer.GetTemporaryRT}
+     */
     GetTemporaryRT(nameID: number, width: number, height: number, depthBuffer: number, filter: FilterMode, format: RenderTextureFormat): void;
+    /**
+     * Add a &quot;get a temporary render texture&quot; command.
+     * @param nameID Shader property name for this texture.
+     * @param width Width in pixels, or -1 for &quot;camera pixel width&quot;.
+     * @param height Height in pixels, or -1 for &quot;camera pixel height&quot;.
+     * @param depthBuffer Depth buffer bits (0, 16 or 24).
+     * @param filter Texture filtering mode (default is Point).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.GetTemporaryRT.html | Rendering.CommandBuffer.GetTemporaryRT}
+     */
     GetTemporaryRT(nameID: number, width: number, height: number, depthBuffer: number, filter: FilterMode): void;
+    /**
+     * Add a &quot;get a temporary render texture&quot; command.
+     * @param nameID Shader property name for this texture.
+     * @param width Width in pixels, or -1 for &quot;camera pixel width&quot;.
+     * @param height Height in pixels, or -1 for &quot;camera pixel height&quot;.
+     * @param depthBuffer Depth buffer bits (0, 16 or 24).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.GetTemporaryRT.html | Rendering.CommandBuffer.GetTemporaryRT}
+     */
     GetTemporaryRT(nameID: number, width: number, height: number, depthBuffer: number): void;
+    /**
+     * Add a &quot;get a temporary render texture&quot; command.
+     * @param nameID Shader property name for this texture.
+     * @param width Width in pixels, or -1 for &quot;camera pixel width&quot;.
+     * @param height Height in pixels, or -1 for &quot;camera pixel height&quot;.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.GetTemporaryRT.html | Rendering.CommandBuffer.GetTemporaryRT}
+     */
     GetTemporaryRT(nameID: number, width: number, height: number): void;
     /**
      * Add a &quot;get a temporary render texture&quot; command.
@@ -13738,10 +14152,71 @@ InvalidOperationException will be thrown if the current platform doesn't support
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.GetTemporaryRT.html | Rendering.CommandBuffer.GetTemporaryRT}
      */
     GetTemporaryRT(nameID: number, desc: RenderTextureDescriptor, filter: FilterMode): void;
+    /**
+     * Add a &quot;get a temporary render texture&quot; command.
+     * @param nameID Shader property name for this texture.
+     * @param desc Use this RenderTextureDescriptor for the settings when creating the temporary RenderTexture.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.GetTemporaryRT.html | Rendering.CommandBuffer.GetTemporaryRT}
+     */
     GetTemporaryRT(nameID: number, desc: RenderTextureDescriptor): void;
+    /**
+     * Add a &quot;get a temporary render texture array&quot; command.
+     * @param nameID Shader property name for this texture.
+     * @param width Width in pixels, or -1 for &quot;camera pixel width&quot;.
+     * @param height Height in pixels, or -1 for &quot;camera pixel height&quot;.
+     * @param slices Number of slices in texture array.
+     * @param depthBuffer Depth buffer bits (0, 16 or 24).
+     * @param filter Texture filtering mode (default is Point).
+     * @param format Format of the render texture (default is ARGB32).
+     * @param antiAliasing Anti-aliasing (default is no anti-aliasing).
+     * @param enableRandomWrite Should random-write access into the texture be enabled (default is false).
+     * @param useDynamicScale Whether to enable for the texture array.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.GetTemporaryRTArray.html | Rendering.CommandBuffer.GetTemporaryRTArray}
+     */
     GetTemporaryRTArray(nameID: number, width: number, height: number, slices: number, depthBuffer: number, filter: FilterMode, format: GraphicsFormat, antiAliasing: number, enableRandomWrite: boolean, useDynamicScale: boolean): void;
+    /**
+     * Add a &quot;get a temporary render texture array&quot; command.
+     * @param nameID Shader property name for this texture.
+     * @param width Width in pixels, or -1 for &quot;camera pixel width&quot;.
+     * @param height Height in pixels, or -1 for &quot;camera pixel height&quot;.
+     * @param slices Number of slices in texture array.
+     * @param depthBuffer Depth buffer bits (0, 16 or 24).
+     * @param filter Texture filtering mode (default is Point).
+     * @param format Format of the render texture (default is ARGB32).
+     * @param antiAliasing Anti-aliasing (default is no anti-aliasing).
+     * @param enableRandomWrite Should random-write access into the texture be enabled (default is false).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.GetTemporaryRTArray.html | Rendering.CommandBuffer.GetTemporaryRTArray}
+     */
     GetTemporaryRTArray(nameID: number, width: number, height: number, slices: number, depthBuffer: number, filter: FilterMode, format: GraphicsFormat, antiAliasing: number, enableRandomWrite: boolean): void;
+    /**
+     * Add a &quot;get a temporary render texture array&quot; command.
+     * @param nameID Shader property name for this texture.
+     * @param width Width in pixels, or -1 for &quot;camera pixel width&quot;.
+     * @param height Height in pixels, or -1 for &quot;camera pixel height&quot;.
+     * @param slices Number of slices in texture array.
+     * @param depthBuffer Depth buffer bits (0, 16 or 24).
+     * @param filter Texture filtering mode (default is Point).
+     * @param format Format of the render texture (default is ARGB32).
+     * @param antiAliasing Anti-aliasing (default is no anti-aliasing).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.GetTemporaryRTArray.html | Rendering.CommandBuffer.GetTemporaryRTArray}
+     */
     GetTemporaryRTArray(nameID: number, width: number, height: number, slices: number, depthBuffer: number, filter: FilterMode, format: GraphicsFormat, antiAliasing: number): void;
+    /**
+     * Add a &quot;get a temporary render texture array&quot; command.
+     * @param nameID Shader property name for this texture.
+     * @param width Width in pixels, or -1 for &quot;camera pixel width&quot;.
+     * @param height Height in pixels, or -1 for &quot;camera pixel height&quot;.
+     * @param slices Number of slices in texture array.
+     * @param depthBuffer Depth buffer bits (0, 16 or 24).
+     * @param filter Texture filtering mode (default is Point).
+     * @param format Format of the render texture (default is ARGB32).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.GetTemporaryRTArray.html | Rendering.CommandBuffer.GetTemporaryRTArray}
+     */
     GetTemporaryRTArray(nameID: number, width: number, height: number, slices: number, depthBuffer: number, filter: FilterMode, format: GraphicsFormat): void;
     /**
      * Add a &quot;get a temporary render texture array&quot; command.
@@ -13759,11 +14234,80 @@ InvalidOperationException will be thrown if the current platform doesn't support
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.GetTemporaryRTArray.html | Rendering.CommandBuffer.GetTemporaryRTArray}
      */
     GetTemporaryRTArray(nameID: number, width: number, height: number, slices: number, depthBuffer: number, filter: FilterMode, format: RenderTextureFormat, readWrite: RenderTextureReadWrite, antiAliasing: number, enableRandomWrite: boolean): void;
+    /**
+     * Add a &quot;get a temporary render texture array&quot; command.
+     * @param nameID Shader property name for this texture.
+     * @param width Width in pixels, or -1 for &quot;camera pixel width&quot;.
+     * @param height Height in pixels, or -1 for &quot;camera pixel height&quot;.
+     * @param slices Number of slices in texture array.
+     * @param depthBuffer Depth buffer bits (0, 16 or 24).
+     * @param filter Texture filtering mode (default is Point).
+     * @param format Format of the render texture (default is ARGB32).
+     * @param readWrite Color space conversion mode.
+     * @param antiAliasing Anti-aliasing (default is no anti-aliasing).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.GetTemporaryRTArray.html | Rendering.CommandBuffer.GetTemporaryRTArray}
+     */
     GetTemporaryRTArray(nameID: number, width: number, height: number, slices: number, depthBuffer: number, filter: FilterMode, format: RenderTextureFormat, readWrite: RenderTextureReadWrite, antiAliasing: number): void;
+    /**
+     * Add a &quot;get a temporary render texture array&quot; command.
+     * @param nameID Shader property name for this texture.
+     * @param width Width in pixels, or -1 for &quot;camera pixel width&quot;.
+     * @param height Height in pixels, or -1 for &quot;camera pixel height&quot;.
+     * @param slices Number of slices in texture array.
+     * @param depthBuffer Depth buffer bits (0, 16 or 24).
+     * @param filter Texture filtering mode (default is Point).
+     * @param format Format of the render texture (default is ARGB32).
+     * @param readWrite Color space conversion mode.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.GetTemporaryRTArray.html | Rendering.CommandBuffer.GetTemporaryRTArray}
+     */
     GetTemporaryRTArray(nameID: number, width: number, height: number, slices: number, depthBuffer: number, filter: FilterMode, format: RenderTextureFormat, readWrite: RenderTextureReadWrite): void;
+    /**
+     * Add a &quot;get a temporary render texture array&quot; command.
+     * @param nameID Shader property name for this texture.
+     * @param width Width in pixels, or -1 for &quot;camera pixel width&quot;.
+     * @param height Height in pixels, or -1 for &quot;camera pixel height&quot;.
+     * @param slices Number of slices in texture array.
+     * @param depthBuffer Depth buffer bits (0, 16 or 24).
+     * @param filter Texture filtering mode (default is Point).
+     * @param format Format of the render texture (default is ARGB32).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.GetTemporaryRTArray.html | Rendering.CommandBuffer.GetTemporaryRTArray}
+     */
     GetTemporaryRTArray(nameID: number, width: number, height: number, slices: number, depthBuffer: number, filter: FilterMode, format: RenderTextureFormat): void;
+    /**
+     * Add a &quot;get a temporary render texture array&quot; command.
+     * @param nameID Shader property name for this texture.
+     * @param width Width in pixels, or -1 for &quot;camera pixel width&quot;.
+     * @param height Height in pixels, or -1 for &quot;camera pixel height&quot;.
+     * @param slices Number of slices in texture array.
+     * @param depthBuffer Depth buffer bits (0, 16 or 24).
+     * @param filter Texture filtering mode (default is Point).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.GetTemporaryRTArray.html | Rendering.CommandBuffer.GetTemporaryRTArray}
+     */
     GetTemporaryRTArray(nameID: number, width: number, height: number, slices: number, depthBuffer: number, filter: FilterMode): void;
+    /**
+     * Add a &quot;get a temporary render texture array&quot; command.
+     * @param nameID Shader property name for this texture.
+     * @param width Width in pixels, or -1 for &quot;camera pixel width&quot;.
+     * @param height Height in pixels, or -1 for &quot;camera pixel height&quot;.
+     * @param slices Number of slices in texture array.
+     * @param depthBuffer Depth buffer bits (0, 16 or 24).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.GetTemporaryRTArray.html | Rendering.CommandBuffer.GetTemporaryRTArray}
+     */
     GetTemporaryRTArray(nameID: number, width: number, height: number, slices: number, depthBuffer: number): void;
+    /**
+     * Add a &quot;get a temporary render texture array&quot; command.
+     * @param nameID Shader property name for this texture.
+     * @param width Width in pixels, or -1 for &quot;camera pixel width&quot;.
+     * @param height Height in pixels, or -1 for &quot;camera pixel height&quot;.
+     * @param slices Number of slices in texture array.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.GetTemporaryRTArray.html | Rendering.CommandBuffer.GetTemporaryRTArray}
+     */
     GetTemporaryRTArray(nameID: number, width: number, height: number, slices: number): void;
     /**
      * Increments the updateCount property of a Texture.
@@ -15074,6 +15618,12 @@ Polygons that are not parallel to the near and far clip planes have Z slope. Adj
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.SetShadowSamplingMode.html | Rendering.CommandBuffer.SetShadowSamplingMode}
      */
     SetShadowSamplingMode(shadowmap: RenderTargetIdentifier, mode: ShadowSamplingMode): void;
+    /**
+     * Add a command to set single-pass stereo mode for the camera.
+     * @param mode Single-pass stereo mode for the camera.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.SetSinglePassStereo.html | Rendering.CommandBuffer.SetSinglePassStereo}
+     */
     SetSinglePassStereo(mode: SinglePassStereoMode): void;
     /**
      * Schedules the setup of Camera specific global Shader variables.
@@ -15139,6 +15689,13 @@ Polygons that are not parallel to the near and far clip planes have Z slope. Adj
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.WaitOnAsyncGraphicsFence.html | Rendering.CommandBuffer.WaitOnAsyncGraphicsFence}
      */
     WaitOnAsyncGraphicsFence(fence: GraphicsFence, stage: SynchronisationStage): void;
+    /**
+     * Instructs the GPU to pause processing of the queue until it passes through the GraphicsFence fence.
+     * @param fence The GraphicsFence the GPU waits for. The fenceType of the graphics fence must be Rendering.GraphicsFenceType.AsyncQueueSynchronisation.
+     * @param stage Which SynchronisationStage to wait for.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.WaitOnAsyncGraphicsFence.html | Rendering.CommandBuffer.WaitOnAsyncGraphicsFence}
+     */
     WaitOnAsyncGraphicsFence(fence: GraphicsFence, stage: SynchronisationStageFlags): void;
 
 
@@ -15542,6 +16099,12 @@ interface Material extends Object {
      * More info: {@link https://docs.unity3d.com/ScriptReference/Material-renderQueue.html | Material.renderQueue}
      */
     renderQueue: number;
+    /**
+     * Raw render queue of this material.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Material-rawRenderQueue.html | Material.rawRenderQueue}
+     */
+    readonly rawRenderQueue: number;
     /**
      * An array containing the local shader keywords that are currently enabled for this material.
      * 
@@ -17069,7 +17632,7 @@ interface Renderer extends Component {
      */
     reflectionProbeUsage: ReflectionProbeUsage;
     /**
-     * Determines which rendering layer this renderer lives on.
+     * Determines which rendering layer this renderer lives on, if you use a.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Renderer-renderingLayerMask.html | Renderer.renderingLayerMask}
      */
@@ -17116,6 +17679,12 @@ interface Renderer extends Component {
      * More info: {@link https://docs.unity3d.com/ScriptReference/Renderer-sortingOrder.html | Renderer.sortingOrder}
      */
     sortingOrder: number;
+    /**
+     * Is the renderer the first LOD level in its group.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Renderer-isLOD0.html | Renderer.isLOD0}
+     */
+    readonly isLOD0: boolean;
     /**
      * Controls if dynamic occlusion culling should be performed for this renderer.
      * 
@@ -17200,6 +17769,12 @@ interface Renderer extends Component {
      * More info: {@link https://docs.unity3d.com/ScriptReference/Renderer-sharedMaterials.html | Renderer.sharedMaterials}
      */
     sharedMaterials: Readonly<Material[]>;
+    /**
+     * The LODGroup for this Renderer.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Renderer-LODGroup.html | Renderer.LODGroup}
+     */
+    readonly LODGroup: LODGroup;
 
 
 
@@ -17259,6 +17834,113 @@ interface Renderer extends Component {
 
 
 }
+    
+interface LODGroup extends Component {
+    /**
+     * The local reference point against which the LOD distance is calculated.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/LODGroup-localReferencePoint.html | LODGroup.localReferencePoint}
+     */
+    localReferencePoint: Vector3;
+    /**
+     * The size of the LOD object in local space.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/LODGroup-size.html | LODGroup.size}
+     */
+    size: number;
+    /**
+     * The number of LOD levels.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/LODGroup-lodCount.html | LODGroup.lodCount}
+     */
+    readonly lodCount: number;
+    /**
+     * Specify whether the last LOD level is a BillboardRenderer.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/LODGroup-lastLODBillboard.html | LODGroup.lastLODBillboard}
+     */
+    lastLODBillboard: boolean;
+    /**
+     * The LOD fade mode used.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/LODGroup-fadeMode.html | LODGroup.fadeMode}
+     */
+    fadeMode: LODFadeMode;
+    /**
+     * Specify if the cross-fading should be animated by time. The animation duration is specified globally as crossFadeAnimationDuration.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/LODGroup-animateCrossFading.html | LODGroup.animateCrossFading}
+     */
+    animateCrossFading: boolean;
+    /**
+     * Allows you to enable or disable the LODGroup.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/LODGroup-enabled.html | LODGroup.enabled}
+     */
+    enabled: boolean;
+
+
+
+    ForceLOD(index: number): void;
+    /**
+     * Returns the array of LODs.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/LODGroup.GetLODs.html | LODGroup.GetLODs}
+     */
+    GetLODs(): Readonly<LOD[]>;
+    /**
+     * Recalculate the bounding region for the LODGroup (Relatively slow, do not call often).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/LODGroup.RecalculateBounds.html | LODGroup.RecalculateBounds}
+     */
+    RecalculateBounds(): void;
+    /**
+     * Set the LODs for the LOD group. This will remove any existing LODs configured on the LODGroup.
+     * @param lods The LODs to use for this group.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/LODGroup.SetLODs.html | LODGroup.SetLODs}
+     */
+    SetLODs(lods: Readonly<LOD[]>): void;
+
+
+}
+    
+interface LOD {
+    screenRelativeTransitionHeight: number;
+    fadeTransitionWidth: number;
+    renderers: Readonly<Renderer[]>;
+
+
+
+
+
+}
+    
+interface LODConstructor {
+
+
+    new(screenRelativeTransitionHeight: number, renderers: Readonly<Renderer[]>): LOD;
+
+
+
+}
+declare const LOD: LODConstructor;
+    
+interface LODGroupConstructor {
+    /**
+     * The cross-fading animation duration in seconds. ArgumentException will be thrown if it is set to zero or a negative value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/LODGroup-crossFadeAnimationDuration.html | LODGroup.crossFadeAnimationDuration}
+     */
+    crossFadeAnimationDuration: number;
+
+
+    new(): LODGroup;
+
+
+
+}
+declare const LODGroup: LODGroupConstructor;
     
 interface ReflectionProbeBlendInfo {
     probe: ReflectionProbe;
@@ -17376,7 +18058,7 @@ interface ReflectionProbe extends Behaviour {
     /**
      * Sets the way the probe will refresh.
 
-See Also: ReflectionProbeRefreshMode.
+Additional resources: ReflectionProbeRefreshMode.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/ReflectionProbe-refreshMode.html | ReflectionProbe.refreshMode}
      */
@@ -17384,7 +18066,7 @@ See Also: ReflectionProbeRefreshMode.
     /**
      * Sets this probe time-slicing mode
 
-See Also: ReflectionProbeTimeSlicingMode.
+Additional resources: ReflectionProbeTimeSlicingMode.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/ReflectionProbe-timeSlicingMode.html | ReflectionProbe.timeSlicingMode}
      */
@@ -18887,6 +19569,16 @@ interface RayTracingShader extends Object {
      */
     Dispatch(rayGenFunctionName: string, width: number, height: number, depth: number, camera: Camera): void;
     /**
+     * Dispatches this RayTracingShader.
+     * @param rayGenFunctionName The name of the ray generation shader.
+     * @param argsBuffer Buffer containing dispatch dimensions.
+     * @param argsOffset The byte offset into the buffer where the dispatch dimensions start.
+     * @param camera If you pass this parameter, Unity sets up built-in shader variables related to that camera.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RayTracingShader.DispatchIndirect.html | Rendering.RayTracingShader.DispatchIndirect}
+     */
+    DispatchIndirect(rayGenFunctionName: string, argsBuffer: GraphicsBuffer, argsOffset: number, camera: Camera): void;
+    /**
      * Sets the value for RayTracingAccelerationStructure property of this RayTracingShader.
      * @param nameID The ID of the RayTracingAccelerationStructure as given by Shader.PropertyToID.
      * @param accelerationStructure The value to set the RayTracingAccelerationStructure to.
@@ -19527,6 +20219,15 @@ interface Cubemap extends Texture {
      */
     ClearRequestedMipmapLevel(): void;
     /**
+     * Copies pixel data from another texture on the CPU.
+     * @param src The source texture.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Cubemap.CopyPixels.html | Cubemap.CopyPixels}
+     */
+    CopyPixels(src: Texture): void;
+    CopyPixels(src: Texture, srcElement: number, srcMip: number, dstFace: CubemapFace, dstMip: number): void;
+    CopyPixels(src: Texture, srcElement: number, srcMip: number, srcX: number, srcY: number, srcWidth: number, srcHeight: number, dstFace: CubemapFace, dstMip: number, dstX: number, dstY: number): void;
+    /**
      * Gets the pixel color at coordinates (x, y).
      * @param face The CubemapFace to sample.
      * @param x The x coordinate of the pixel to get. The range is 0 through (texture width - 1).
@@ -19883,13 +20584,15 @@ interface Compass {
      */
     readonly rawVector: Vector3;
     /**
-     * Timestamp (in seconds since 1970) when the heading was last time updated. (Read Only)
+     * Indicates the time elapsed since the compass heading was last updated. (Read Only)
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Compass-timestamp.html | Compass.timestamp}
      */
     readonly timestamp: number;
     /**
-     * Used to enable or disable compass. Note, that if you want Input.compass.trueHeading property to contain a valid value, you must also enable location updates by calling Input.location.Start().
+     * Use to enable or disable compass. Note, that if you want Input.compass.trueHeading property to contain a valid value, you must also enable location updates. To do this, call Input.location.Start().
+
+Note: On the web platform,  the compass is available only with an HTTPS connection, except during development when you might use http:localhost.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Compass-enabled.html | Compass.enabled}
      */
@@ -20162,6 +20865,12 @@ interface InputConstructor {
      */
     readonly mousePresent: boolean;
     /**
+     * Returns whether the device on which application is currently running supports touch input.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Input-touchSupported.html | Input.touchSupported}
+     */
+    readonly touchSupported: boolean;
+    /**
      * Returns the number of queued pen events that can be accessed by calling GetPenEvent().
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Input-penEventCount.html | Input.penEventCount}
@@ -20185,12 +20894,6 @@ interface InputConstructor {
      * More info: {@link https://docs.unity3d.com/ScriptReference/Input-stylusTouchSupported.html | Input.stylusTouchSupported}
      */
     readonly stylusTouchSupported: boolean;
-    /**
-     * Returns whether the device on which application is currently running supports touch input.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Input-touchSupported.html | Input.touchSupported}
-     */
-    readonly touchSupported: boolean;
     /**
      * Property indicating whether the system handles multiple touches.
      * 
@@ -20223,8 +20926,6 @@ interface InputConstructor {
     readonly accelerationEventCount: number;
     /**
      * Should  Back button quit the application?
-
-Only usable on Android, Windows Phone or Windows Tablets.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Input-backButtonLeavesApp.html | Input.backButtonLeavesApp}
      */
@@ -20346,6 +21047,7 @@ interface BaseInputModule extends UIBehaviour {
 
 
     ActivateModule(): void;
+    ConvertPointerEventScrollDeltaToTicks(scrollDelta: Vector2): Vector2;
     ConvertUIToolkitPointerId(sourcePointerData: PointerEventData): number;
     DeactivateModule(): void;
     IsModuleSupported(): boolean;
@@ -20364,6 +21066,7 @@ interface BaseInput extends UIBehaviour {
     readonly mousePresent: boolean;
     readonly mousePosition: Vector2;
     readonly mouseScrollDelta: Vector2;
+    readonly mouseScrollDeltaPerTick: number;
     readonly touchSupported: boolean;
     readonly touchCount: number;
 
@@ -20880,7 +21583,7 @@ interface Canvas extends Behaviour {
      */
     readonly pixelRect: Rect;
     /**
-     * Used to scale the entire canvas, while still making it fit the screen. Only applies with renderMode is Screen Space.
+     * Scales the entire canvas, ensuring it fits the screen. It only applies when Canvas.renderMode is set to Screen Space.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Canvas-scaleFactor.html | Canvas.scaleFactor}
      */
@@ -20904,13 +21607,13 @@ interface Canvas extends Behaviour {
      */
     vertexColorAlwaysGammaSpace: boolean;
     /**
-     * Force elements in the canvas to be aligned with pixels. Only applies with renderMode is Screen Space.
+     * Forces pixel alignment for elements in the canvas. It only applies when Canvas.renderMode is set to Screen Space.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Canvas-pixelPerfect.html | Canvas.pixelPerfect}
      */
     pixelPerfect: boolean;
     /**
-     * How far away from the camera is the Canvas generated.
+     * How far away from the camera is the Canvas generated? It only applies when Canvas.renderMode is set to RenderMode.ScreenSpaceCamera.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Canvas-planeDistance.html | Canvas.planeDistance}
      */
@@ -20922,7 +21625,7 @@ interface Canvas extends Behaviour {
      */
     readonly renderOrder: number;
     /**
-     * Override the sorting of canvas.
+     * Allows for nested canvases to override the Canvas.sortingOrder from parent canvases.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Canvas-overrideSorting.html | Canvas.overrideSorting}
      */
@@ -21054,7 +21757,7 @@ interface CanvasRenderer extends Component {
     cullTransparentMesh: boolean;
     /**
      * True if rect clipping has been enabled on this renderer.
-See Also: CanvasRenderer.EnableRectClipping, CanvasRenderer.DisableRectClipping.
+Additional resources: CanvasRenderer.EnableRectClipping, CanvasRenderer.DisableRectClipping.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/CanvasRenderer-hasRectClipping.html | CanvasRenderer.hasRectClipping}
      */
@@ -21164,7 +21867,7 @@ See Also: CanvasRenderer.EnableRectClipping, CanvasRenderer.DisableRectClipping.
     SetColor(color: Color): void;
     /**
      * Set the material for the canvas renderer. If a texture is specified then it will be used as the 'MainTex' instead of the material's 'MainTex'.
-See Also: CanvasRenderer.materialCount, CanvasRenderer.SetTexture.
+Additional resources: CanvasRenderer.materialCount, CanvasRenderer.SetTexture.
      * @param material Material for rendering.
      * @param index Material index.
      * 
@@ -21173,7 +21876,7 @@ See Also: CanvasRenderer.materialCount, CanvasRenderer.SetTexture.
     SetMaterial(material: Material, index: number): void;
     /**
      * Set the material for the canvas renderer. If a texture is specified then it will be used as the 'MainTex' instead of the material's 'MainTex'.
-See Also: CanvasRenderer.materialCount, CanvasRenderer.SetTexture.
+Additional resources: CanvasRenderer.materialCount, CanvasRenderer.SetTexture.
      * @param material Material for rendering.
      * @param texture Material texture overide.
      * 
@@ -21281,13 +21984,13 @@ interface ISerializationCallbackReceiver {
 
 
     /**
-     * Implement this method to receive a callback after Unity deserializes your object.
+     * Implement this callback to transform data back into runtime data types after an object is deserialized.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/ISerializationCallbackReceiver.OnAfterDeserialize.html | ISerializationCallbackReceiver.OnAfterDeserialize}
      */
     OnAfterDeserialize(): void;
     /**
-     * Implement this method to receive a callback before Unity serializes your object.
+     * Implement this callback to transform data into serializable data types immediately before an object is serialized.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/ISerializationCallbackReceiver.OnBeforeSerialize.html | ISerializationCallbackReceiver.OnBeforeSerialize}
      */
@@ -21687,7 +22390,7 @@ interface Animator extends Behaviour {
      */
     fireEvents: boolean;
     /**
-     * Controls the behaviour of the Animator component when a GameObject is disabled.
+     * Controls the behaviour of the Animator component when a GameObject is inactive.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Animator-keepAnimatorStateOnDisable.html | Animator.keepAnimatorStateOnDisable}
      */
@@ -22159,7 +22862,7 @@ interface Animator extends Behaviour {
     /**
      * Sets the rotation of an IK goal.
      * @param goal The AvatarIKGoal that is set.
-     * @param goalRotation The rotation in world space.
+     * @param goalRotation The rotation of the goal in world space which should follow Unity's world coordinates convention (see below).
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Animator.SetIKRotation.html | Animator.SetIKRotation}
      */
@@ -22632,7 +23335,7 @@ interface AnimationState extends TrackedReference {
      */
     time: number;
     /**
-     * The normalized time of the animation.
+     * Normalized time of the State.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/AnimationState-normalizedTime.html | AnimationState.normalizedTime}
      */
@@ -22883,9 +23586,9 @@ interface AnimationCurve {
      */
     GetHashCode(): number;
     /**
-     * Removes the keyframe at index and inserts key.
+     * Moves the key at index to key.time and key.value.
      * @param index The index of the key to move.
-     * @param key The key (with its new time) to insert.
+     * @param key The keyframe containing the new time and value.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/AnimationCurve.MoveKey.html | AnimationCurve.MoveKey}
      */
@@ -23559,18 +24262,18 @@ interface StateMachineBehaviour extends ScriptableObject {
     OnStateIK(animator: Animator, stateInfo: AnimatorStateInfo, layerIndex: number): void;
     OnStateIK(animator: Animator, stateInfo: AnimatorStateInfo, layerIndex: number, controller: AnimatorControllerPlayable): void;
     /**
-     * Called on the first Update frame when making a transition to a state machine. This is not called when making a transition into a state machine sub-state.
-     * @param animator The Animator playing this state machine.
-     * @param stateMachinePathHash The full path hash for this state machine.
+     * Invoked on the first update frame when taking a transition into a state machine. Implement this message to influence the entry transition into the sub-state machine.
+     * @param animator The Animator evaluating the state machine.
+     * @param stateMachinePathHash The hash of the full path to the state machine.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/StateMachineBehaviour.OnStateMachineEnter.html | StateMachineBehaviour.OnStateMachineEnter}
      */
     OnStateMachineEnter(animator: Animator, stateMachinePathHash: number): void;
     OnStateMachineEnter(animator: Animator, stateMachinePathHash: number, controller: AnimatorControllerPlayable): void;
     /**
-     * Called on the last Update frame when making a transition out of a StateMachine. This is not called when making a transition into a StateMachine sub-state.
-     * @param animator The Animator playing this state machine.
-     * @param stateMachinePathHash The full path hash for this state machine.
+     * Invoked on the last update frame when taking a transition out of a StateMachine. Implement this message to influence the exit transition out of the sub-state machine
+     * @param animator The Animator evaluating the state machine.
+     * @param stateMachinePathHash The hash of the full path to the state machine.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/StateMachineBehaviour.OnStateMachineExit.html | StateMachineBehaviour.OnStateMachineExit}
      */
@@ -25995,6 +26698,14 @@ interface IDelayedField {
 
 }
     
+interface IEditableElement {
+
+
+
+
+
+}
+    
 interface IMixedValueSupport {
     /**
      * Indicates whether to enable the mixed value state on the value field.
@@ -26052,7 +26763,7 @@ interface ITextEdition {
      */
     maxLength: number;
     /**
-     * The placeholder property represents a short hint intended to aid the users with data entry when the control has no value.
+     * A short hint to help users understand what to enter in the field.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ITextEdition-placeholder.html | UIElements.ITextEdition.placeholder}
      */
@@ -26220,6 +26931,12 @@ interface TouchScreenKeyboardConstructor {
      */
     hideInput: boolean;
     /**
+     * Returns the status of the on-screen keyboard's input field.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/TouchScreenKeyboard-inputFieldAppearance.html | TouchScreenKeyboard.inputFieldAppearance}
+     */
+    readonly inputFieldAppearance: InputFieldAppearance;
+    /**
      * Returns portion of the screen which is covered by the keyboard.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/TouchScreenKeyboard-area.html | TouchScreenKeyboard.area}
@@ -26383,642 +27100,6 @@ interface IValueAnimation {
 }
     
     
-interface IStylePropertyAnimations {
-    runningAnimationCount: number;
-    completedAnimationCount: number;
-
-
-
-    CancelAllAnimations(): void;
-    CancelAnimation(id: StylePropertyId): void;
-    GetAllAnimations(outPropertyIds: Readonly<StylePropertyId[]>): void;
-    HasRunningAnimation(id: StylePropertyId): boolean;
-    Start(id: StylePropertyId, from: number, to: number, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: number, to: number, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: Length, to: Length, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: Color, to: Color, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: Background, to: Background, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: FontDefinition, to: FontDefinition, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: Font, to: Font, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: TextShadow, to: TextShadow, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: Scale, to: Scale, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: Translate, to: Translate, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: Rotate, to: Rotate, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: TransformOrigin, to: TransformOrigin, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: BackgroundPosition, to: BackgroundPosition, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: BackgroundRepeat, to: BackgroundRepeat, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: BackgroundSize, to: BackgroundSize, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    StartEnum(id: StylePropertyId, from: number, to: number, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    UpdateAnimation(id: StylePropertyId): void;
-
-
-}
-    
-interface Length {
-    /**
-     * The length value.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Length-value.html | UIElements.Length.value}
-     */
-    value: number;
-    /**
-     * The unit of the value property.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Length-unit.html | UIElements.Length.unit}
-     */
-    unit: LengthUnit;
-
-
-
-    Equals(other: Length): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    /**
-     * Check if Length is Auto.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Length.IsAuto.html | UIElements.Length.IsAuto}
-     */
-    IsAuto(): boolean;
-    /**
-     * Check if Length is None.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Length.IsNone.html | UIElements.Length.IsNone}
-     */
-    IsNone(): boolean;
-    ToString(): string;
-
-
-}
-    
-interface LengthConstructor {
-
-
-    new(value: number): Length;
-    new(value: number, unit: LengthUnit): Length;
-
-
-    Auto(): Length;
-    None(): Length;
-    Percent(value: number): Length;
-
-}
-declare const Length: LengthConstructor;
-    
-interface Background {
-    /**
-     * The texture to display as a background.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Background-texture.html | UIElements.Background.texture}
-     */
-    texture: Texture2D;
-    /**
-     * The sprite to display as a background.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Background-sprite.html | UIElements.Background.sprite}
-     */
-    sprite: Sprite;
-    /**
-     * The RenderTexture to display as a background.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Background-renderTexture.html | UIElements.Background.renderTexture}
-     */
-    renderTexture: RenderTexture;
-    /**
-     * The VectorImage to display as a background.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Background-vectorImage.html | UIElements.Background.vectorImage}
-     */
-    vectorImage: VectorImage;
-
-
-
-    Equals(other: Background): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    /**
-     * Retrieves the selected asset which can be of a type of Texture, Sprite, RenderTexture or VectorImage.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Background.GetSelectedImage.html | UIElements.Background.GetSelectedImage}
-     */
-    GetSelectedImage(): Object;
-    /**
-     * Help verify whether an asset has been assigned or not.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Background.IsEmpty.html | UIElements.Background.IsEmpty}
-     */
-    IsEmpty(): boolean;
-    ToString(): string;
-
-
-}
-    
-interface VectorImage extends ScriptableObject {
-    /**
-     * The width of the vector image.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.VectorImage-width.html | UIElements.VectorImage.width}
-     */
-    readonly width: number;
-    /**
-     * The height of the vector image.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.VectorImage-height.html | UIElements.VectorImage.height}
-     */
-    readonly height: number;
-
-
-
-
-
-}
-    
-interface VectorImageConstructor {
-
-
-    new(): VectorImage;
-
-
-
-}
-declare const VectorImage: VectorImageConstructor;
-    
-interface BackgroundConstructor {
-
-
-    new(t: Texture2D): Background;
-
-
-    FromRenderTexture(rt: RenderTexture): Background;
-    FromSprite(s: Sprite): Background;
-    FromTexture2D(t: Texture2D): Background;
-    FromVectorImage(vi: VectorImage): Background;
-
-}
-declare const Background: BackgroundConstructor;
-    
-interface FontDefinition {
-    /**
-     * Font to use to display text. You cannot set this and FontDefinition.fontAsset at the same time.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.FontDefinition-font.html | UIElements.FontDefinition.font}
-     */
-    font: Font;
-    /**
-     * SDF font to use to display text. You cannot set this and FontDefinition.font at the same time.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.FontDefinition-fontAsset.html | UIElements.FontDefinition.fontAsset}
-     */
-    fontAsset: FontAsset;
-
-
-
-    Equals(other: FontDefinition): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-
-}
-    
-interface TextAsset extends ScriptableObject {
-    readonly version: string;
-    readonly instanceID: number;
-    hashCode: number;
-    material: Material;
-    materialHashCode: number;
-
-
-
-
-
-}
-    
-interface FontAsset extends TextAsset {
-    fontAssetCreationEditorSettings: FontAssetCreationEditorSettings;
-    readonly sourceFontFile: Font;
-    atlasPopulationMode: AtlasPopulationMode;
-    faceInfo: FaceInfo;
-    readonly glyphTable: Readonly<Glyph[]>;
-    readonly glyphLookupTable: CSDictionary<number, Glyph>;
-    readonly characterTable: Readonly<Character[]>;
-    readonly characterLookupTable: CSDictionary<number, Character>;
-    readonly atlasTexture: Texture2D;
-    atlasTextures: Readonly<Texture2D[]>;
-    readonly atlasTextureCount: number;
-    isMultiAtlasTexturesEnabled: boolean;
-    getFontFeatures: boolean;
-    readonly atlasWidth: number;
-    readonly atlasHeight: number;
-    readonly atlasPadding: number;
-    readonly atlasRenderMode: GlyphRenderMode;
-    readonly fontFeatureTable: FontFeatureTable;
-    fallbackFontAssetTable: Readonly<FontAsset[]>;
-    readonly fontWeightTable: Readonly<FontWeightPair[]>;
-    regularStyleWeight: number;
-    regularStyleSpacing: number;
-    boldStyleWeight: number;
-    boldStyleSpacing: number;
-    italicStyleSlant: number;
-    tabMultiple: number;
-
-
-
-    ClearFontAssetData(setAtlasSizeToZero: boolean): void;
-    HasCharacter(character: number): boolean;
-    HasCharacter(character: string, searchFallbacks: boolean, tryAddCharacter: boolean): boolean;
-    HasCharacter(character: number, searchFallbacks: boolean, tryAddCharacter: boolean): boolean;
-    HasCharacters(text: string, missingCharacters: Readonly<string[]>): boolean;
-    HasCharacters(text: string, missingCharacters: Readonly<number[]>, searchFallbacks: boolean, tryAddCharacter: boolean): boolean;
-    HasCharacters(text: string): boolean;
-    ReadFontAssetDefinition(): void;
-    TryAddCharacters(unicodes: Readonly<number[]>, includeFontFeatures: boolean): boolean;
-    TryAddCharacters(unicodes: Readonly<number[]>, missingUnicodes: Readonly<number[]>, includeFontFeatures: boolean): boolean;
-    TryAddCharacters(characters: string, includeFontFeatures: boolean): boolean;
-    TryAddCharacters(characters: string, missingCharacters: Readonly<string[]>, includeFontFeatures: boolean): boolean;
-
-
-}
-    
-interface FontAssetCreationEditorSettings {
-    sourceFontFileGUID: string;
-    faceIndex: number;
-    pointSizeSamplingMode: number;
-    pointSize: number;
-    padding: number;
-    paddingMode: number;
-    packingMode: number;
-    atlasWidth: number;
-    atlasHeight: number;
-    characterSetSelectionMode: number;
-    characterSequence: string;
-    referencedFontAssetGUID: string;
-    referencedTextAssetGUID: string;
-    fontStyle: number;
-    fontStyleModifier: number;
-    renderMode: number;
-    includeFontFeatures: boolean;
-
-
-
-
-
-}
-    
-interface TextElement {
-    readonly elementType: TextElementType;
-    unicode: number;
-    textAsset: TextAsset;
-    glyph: Glyph;
-    glyphIndex: number;
-    scale: number;
-
-
-
-
-
-}
-    
-    
-    
-interface FontFeatureTable {
-
-
-
-    /**
-     * Sorts the glyph pair adjustment records by glyph index.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/TextCore.Text.FontFeatureTable.SortGlyphPairAdjustmentRecords.html | TextCore.Text.FontFeatureTable.SortGlyphPairAdjustmentRecords}
-     */
-    SortGlyphPairAdjustmentRecords(): void;
-    /**
-     * Sorts the Mark-to-Base Adjustment Table records.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/TextCore.Text.FontFeatureTable.SortMarkToBaseAdjustmentRecords.html | TextCore.Text.FontFeatureTable.SortMarkToBaseAdjustmentRecords}
-     */
-    SortMarkToBaseAdjustmentRecords(): void;
-    /**
-     * Sorts the Mark-to-Mark Adjustment Table records.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/TextCore.Text.FontFeatureTable.SortMarkToMarkAdjustmentRecords.html | TextCore.Text.FontFeatureTable.SortMarkToMarkAdjustmentRecords}
-     */
-    SortMarkToMarkAdjustmentRecords(): void;
-
-
-}
-    
-interface FontWeightPair {
-    regularTypeface: FontAsset;
-    italicTypeface: FontAsset;
-
-
-
-
-
-}
-    
-interface FontAssetConstructor {
-
-
-    new(): FontAsset;
-
-
-    CreateFontAsset(familyName: string, styleName: string, pointSize: number): FontAsset;
-    CreateFontAsset(fontFilePath: string, faceIndex: number, samplingPointSize: number, atlasPadding: number, renderMode: GlyphRenderMode, atlasWidth: number, atlasHeight: number): FontAsset;
-    CreateFontAsset(font: Font): FontAsset;
-    CreateFontAsset(font: Font, samplingPointSize: number, atlasPadding: number, renderMode: GlyphRenderMode, atlasWidth: number, atlasHeight: number, atlasPopulationMode: AtlasPopulationMode, enableMultiAtlasSupport: boolean): FontAsset;
-    GetCharacters(fontAsset: FontAsset): string;
-    GetCharactersArray(fontAsset: FontAsset): Readonly<number[]>;
-
-}
-declare const FontAsset: FontAssetConstructor;
-    
-interface FontDefinitionConstructor {
-
-
-
-
-    FromFont(f: Font): FontDefinition;
-    FromSDFFont(f: FontAsset): FontDefinition;
-
-}
-declare const FontDefinition: FontDefinitionConstructor;
-    
-interface TextShadow {
-    offset: Vector2;
-    blurRadius: number;
-    color: Color;
-
-
-
-    Equals(obj: unknown): boolean;
-    Equals(other: TextShadow): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-
-}
-    
-interface Scale {
-    value: Vector3;
-
-
-
-    Equals(other: Scale): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-
-}
-    
-interface ScaleConstructor {
-
-
-    new(scale: Vector2): Scale;
-    new(scale: Vector3): Scale;
-
-
-    None(): Scale;
-
-}
-declare const Scale: ScaleConstructor;
-    
-interface Translate {
-    x: Length;
-    y: Length;
-    z: number;
-
-
-
-    Equals(other: Translate): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-
-}
-    
-interface TranslateConstructor {
-
-
-    new(x: Length, y: Length, z: number): Translate;
-    new(x: Length, y: Length): Translate;
-
-
-    None(): Translate;
-
-}
-declare const Translate: TranslateConstructor;
-    
-interface Rotate {
-    /**
-     * The angle applied by the rotation. Positive values represent clockwise rotation and negative values represent counterclockwise rotation.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Rotate-angle.html | UIElements.Rotate.angle}
-     */
-    angle: Angle;
-
-
-
-    Equals(other: Rotate): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-
-}
-    
-interface Angle {
-    /**
-     * The angle value.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Angle-value.html | UIElements.Angle.value}
-     */
-    value: number;
-    /**
-     * The unit of the value property.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Angle-unit.html | UIElements.Angle.unit}
-     */
-    unit: AngleUnit;
-
-
-
-    Equals(other: Angle): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    /**
-     * Returns the value of the angle, expressed in degrees.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Angle.ToDegrees.html | UIElements.Angle.ToDegrees}
-     */
-    ToDegrees(): number;
-    /**
-     * Returns the value of the angle, expressed in gradians.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Angle.ToGradians.html | UIElements.Angle.ToGradians}
-     */
-    ToGradians(): number;
-    /**
-     * Returns the value of the angle, expressed in radians.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Angle.ToRadians.html | UIElements.Angle.ToRadians}
-     */
-    ToRadians(): number;
-    ToString(): string;
-    /**
-     * Returns the value of the angle, expressed in turns.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Angle.ToTurns.html | UIElements.Angle.ToTurns}
-     */
-    ToTurns(): number;
-
-
-}
-    
-interface AngleConstructor {
-
-
-    new(value: number): Angle;
-    new(value: number, unit: AngleUnit): Angle;
-
-
-    Degrees(value: number): Angle;
-    Gradians(value: number): Angle;
-    Radians(value: number): Angle;
-    Turns(value: number): Angle;
-
-}
-declare const Angle: AngleConstructor;
-    
-interface RotateConstructor {
-
-
-    new(angle: Angle): Rotate;
-
-
-    None(): Rotate;
-
-}
-declare const Rotate: RotateConstructor;
-    
-interface TransformOrigin {
-    x: Length;
-    y: Length;
-    z: number;
-
-
-
-    Equals(other: TransformOrigin): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-
-}
-    
-interface TransformOriginConstructor {
-
-
-    new(x: Length, y: Length, z: number): TransformOrigin;
-    new(x: Length, y: Length): TransformOrigin;
-
-
-    Initial(): TransformOrigin;
-
-}
-declare const TransformOrigin: TransformOriginConstructor;
-    
-interface BackgroundPosition {
-    keyword: BackgroundPositionKeyword;
-    offset: Length;
-
-
-
-    Equals(obj: unknown): boolean;
-    Equals(other: BackgroundPosition): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-
-}
-    
-interface BackgroundPositionConstructor {
-
-
-    new(keyword: BackgroundPositionKeyword): BackgroundPosition;
-    new(keyword: BackgroundPositionKeyword, offset: Length): BackgroundPosition;
-
-
-
-}
-declare const BackgroundPosition: BackgroundPositionConstructor;
-    
-interface BackgroundRepeat {
-    x: Repeat;
-    y: Repeat;
-
-
-
-    Equals(obj: unknown): boolean;
-    Equals(other: BackgroundRepeat): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-
-}
-    
-interface BackgroundRepeatConstructor {
-
-
-    new(repeatX: Repeat, repeatY: Repeat): BackgroundRepeat;
-
-
-
-}
-declare const BackgroundRepeat: BackgroundRepeatConstructor;
-    
-interface BackgroundSize {
-    /**
-     * Background size type
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.BackgroundSize-sizeType.html | UIElements.BackgroundSize.sizeType}
-     */
-    sizeType: BackgroundSizeType;
-    /**
-     * Background size x
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.BackgroundSize-x.html | UIElements.BackgroundSize.x}
-     */
-    x: Length;
-    /**
-     * Background size y
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.BackgroundSize-y.html | UIElements.BackgroundSize.y}
-     */
-    y: Length;
-
-
-
-    Equals(obj: unknown): boolean;
-    Equals(other: BackgroundSize): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-
-
-}
-    
-interface BackgroundSizeConstructor {
-
-
-    new(sizeX: Length, sizeY: Length): BackgroundSize;
-    new(sizeType: BackgroundSizeType): BackgroundSize;
-
-
-
-}
-declare const BackgroundSize: BackgroundSizeConstructor;
-    
 interface IVisualElementScheduler {
 
 
@@ -27146,7 +27227,7 @@ interface IResolvedStyle {
      */
     readonly backgroundRepeat: BackgroundRepeat;
     /**
-     * Background image size value.
+     * Background image size value. Transitions are fully supported only when using size in pixels or percentages, such as pixel-to-pixel or percentage-to-percentage transitions.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-backgroundSize.html | UIElements.IResolvedStyle.backgroundSize}
      */
@@ -27458,6 +27539,12 @@ interface IResolvedStyle {
      */
     readonly unityBackgroundImageTintColor: Color;
     /**
+     * TextElement editor rendering mode.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-unityEditorTextRenderingMode.html | UIElements.IResolvedStyle.unityEditorTextRenderingMode}
+     */
+    readonly unityEditorTextRenderingMode: EditorTextRenderingMode;
+    /**
      * Font to draw the element's text, defined as a Font object.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-unityFont.html | UIElements.IResolvedStyle.unityFont}
@@ -27518,6 +27605,12 @@ interface IResolvedStyle {
      */
     readonly unityTextAlign: TextAnchor;
     /**
+     * Switches between Unity's standard and advanced text generator
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-unityTextGenerator.html | UIElements.IResolvedStyle.unityTextGenerator}
+     */
+    readonly unityTextGenerator: TextGeneratorType;
+    /**
      * Outline color of the text.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IResolvedStyle-unityTextOutlineColor.html | UIElements.IResolvedStyle.unityTextOutlineColor}
@@ -27566,6 +27659,238 @@ interface IResolvedStyle {
 
 }
     
+interface Background {
+    /**
+     * The texture to display as a background.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Background-texture.html | UIElements.Background.texture}
+     */
+    texture: Texture2D;
+    /**
+     * The sprite to display as a background.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Background-sprite.html | UIElements.Background.sprite}
+     */
+    sprite: Sprite;
+    /**
+     * The RenderTexture to display as a background.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Background-renderTexture.html | UIElements.Background.renderTexture}
+     */
+    renderTexture: RenderTexture;
+    /**
+     * The VectorImage to display as a background.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Background-vectorImage.html | UIElements.Background.vectorImage}
+     */
+    vectorImage: VectorImage;
+
+
+
+    Equals(other: Background): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    /**
+     * Retrieves the selected asset which can be of a type of Texture, Sprite, RenderTexture or VectorImage.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Background.GetSelectedImage.html | UIElements.Background.GetSelectedImage}
+     */
+    GetSelectedImage(): Object;
+    /**
+     * Help verify whether an asset has been assigned or not.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Background.IsEmpty.html | UIElements.Background.IsEmpty}
+     */
+    IsEmpty(): boolean;
+    ToString(): string;
+
+
+}
+    
+interface VectorImage extends ScriptableObject {
+    /**
+     * The width of the vector image.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.VectorImage-width.html | UIElements.VectorImage.width}
+     */
+    readonly width: number;
+    /**
+     * The height of the vector image.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.VectorImage-height.html | UIElements.VectorImage.height}
+     */
+    readonly height: number;
+
+
+
+
+
+}
+    
+interface VectorImageConstructor {
+
+
+    new(): VectorImage;
+
+
+
+}
+declare const VectorImage: VectorImageConstructor;
+    
+interface BackgroundConstructor {
+
+
+    new(t: Texture2D): Background;
+
+
+    FromRenderTexture(rt: RenderTexture): Background;
+    FromSprite(s: Sprite): Background;
+    FromTexture2D(t: Texture2D): Background;
+    FromVectorImage(vi: VectorImage): Background;
+
+}
+declare const Background: BackgroundConstructor;
+    
+interface BackgroundPosition {
+    keyword: BackgroundPositionKeyword;
+    offset: Length;
+
+
+
+    Equals(obj: unknown): boolean;
+    Equals(other: BackgroundPosition): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+
+}
+    
+interface Length {
+    /**
+     * The length value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Length-value.html | UIElements.Length.value}
+     */
+    value: number;
+    /**
+     * The unit of the value property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Length-unit.html | UIElements.Length.unit}
+     */
+    unit: LengthUnit;
+
+
+
+    Equals(other: Length): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    /**
+     * Check if Length is Auto.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Length.IsAuto.html | UIElements.Length.IsAuto}
+     */
+    IsAuto(): boolean;
+    /**
+     * Check if Length is None.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Length.IsNone.html | UIElements.Length.IsNone}
+     */
+    IsNone(): boolean;
+    ToString(): string;
+
+
+}
+    
+interface LengthConstructor {
+
+
+    new(value: number): Length;
+    new(value: number, unit: LengthUnit): Length;
+
+
+    Auto(): Length;
+    None(): Length;
+    Percent(value: number): Length;
+
+}
+declare const Length: LengthConstructor;
+    
+interface BackgroundPositionConstructor {
+
+
+    new(keyword: BackgroundPositionKeyword): BackgroundPosition;
+    new(keyword: BackgroundPositionKeyword, offset: Length): BackgroundPosition;
+
+
+
+}
+declare const BackgroundPosition: BackgroundPositionConstructor;
+    
+interface BackgroundRepeat {
+    x: Repeat;
+    y: Repeat;
+
+
+
+    Equals(obj: unknown): boolean;
+    Equals(other: BackgroundRepeat): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+
+}
+    
+interface BackgroundRepeatConstructor {
+
+
+    new(repeatX: Repeat, repeatY: Repeat): BackgroundRepeat;
+
+
+
+}
+declare const BackgroundRepeat: BackgroundRepeatConstructor;
+    
+interface BackgroundSize {
+    /**
+     * Background size type
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.BackgroundSize-sizeType.html | UIElements.BackgroundSize.sizeType}
+     */
+    sizeType: BackgroundSizeType;
+    /**
+     * Background size x
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.BackgroundSize-x.html | UIElements.BackgroundSize.x}
+     */
+    x: Length;
+    /**
+     * Background size y
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.BackgroundSize-y.html | UIElements.BackgroundSize.y}
+     */
+    y: Length;
+
+
+
+    Equals(obj: unknown): boolean;
+    Equals(other: BackgroundSize): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+
+}
+    
+interface BackgroundSizeConstructor {
+
+
+    new(sizeX: Length, sizeY: Length): BackgroundSize;
+    new(sizeType: BackgroundSizeType): BackgroundSize;
+
+
+
+}
+declare const BackgroundSize: BackgroundSizeConstructor;
+    
 interface IStyleValue<T> {
     value: T;
     keyword: StyleKeyword;
@@ -27610,6 +27935,123 @@ interface StyleFloatConstructor {
 
 }
 declare const StyleFloat: StyleFloatConstructor;
+    
+interface Rotate {
+    /**
+     * The angle applied by the rotation. Positive values represent clockwise rotation and negative values represent counterclockwise rotation.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Rotate-angle.html | UIElements.Rotate.angle}
+     */
+    angle: Angle;
+
+
+
+    Equals(other: Rotate): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+
+}
+    
+interface Angle {
+    /**
+     * The angle value.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Angle-value.html | UIElements.Angle.value}
+     */
+    value: number;
+    /**
+     * The unit of the value property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Angle-unit.html | UIElements.Angle.unit}
+     */
+    unit: AngleUnit;
+
+
+
+    Equals(other: Angle): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    /**
+     * Returns the value of the angle, expressed in degrees.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Angle.ToDegrees.html | UIElements.Angle.ToDegrees}
+     */
+    ToDegrees(): number;
+    /**
+     * Returns the value of the angle, expressed in gradians.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Angle.ToGradians.html | UIElements.Angle.ToGradians}
+     */
+    ToGradians(): number;
+    /**
+     * Returns the value of the angle, expressed in radians.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Angle.ToRadians.html | UIElements.Angle.ToRadians}
+     */
+    ToRadians(): number;
+    ToString(): string;
+    /**
+     * Returns the value of the angle, expressed in turns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Angle.ToTurns.html | UIElements.Angle.ToTurns}
+     */
+    ToTurns(): number;
+
+
+}
+    
+interface AngleConstructor {
+
+
+    new(value: number): Angle;
+    new(value: number, unit: AngleUnit): Angle;
+
+
+    Degrees(value: number): Angle;
+    Gradians(value: number): Angle;
+    Radians(value: number): Angle;
+    Turns(value: number): Angle;
+
+}
+declare const Angle: AngleConstructor;
+    
+interface RotateConstructor {
+
+
+    new(angle: Angle): Rotate;
+
+
+    None(): Rotate;
+
+}
+declare const Rotate: RotateConstructor;
+    
+interface Scale {
+    value: Vector3;
+
+
+
+    Equals(other: Scale): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+
+}
+    
+interface ScaleConstructor {
+
+
+    new(scale: Vector2): Scale;
+    new(scale: Vector3): Scale;
+
+
+    None(): Scale;
+
+}
+declare const Scale: ScaleConstructor;
     
 interface TimeValue {
     /**
@@ -27697,6 +28139,293 @@ interface EasingFunctionConstructor {
 }
 declare const EasingFunction: EasingFunctionConstructor;
     
+interface FontDefinition {
+    /**
+     * Font to use to display text. You cannot set this and FontDefinition.fontAsset at the same time.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.FontDefinition-font.html | UIElements.FontDefinition.font}
+     */
+    font: Font;
+    /**
+     * SDF font to use to display text. You cannot set this and FontDefinition.font at the same time.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.FontDefinition-fontAsset.html | UIElements.FontDefinition.fontAsset}
+     */
+    fontAsset: FontAsset;
+
+
+
+    Equals(other: FontDefinition): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+
+}
+    
+interface TextAsset extends ScriptableObject {
+    readonly version: string;
+    readonly instanceID: number;
+    hashCode: number;
+    material: Material;
+    materialHashCode: number;
+
+
+
+
+
+}
+    
+interface FontAsset extends TextAsset {
+    fontAssetCreationEditorSettings: FontAssetCreationEditorSettings;
+    readonly sourceFontFile: Font;
+    atlasPopulationMode: AtlasPopulationMode;
+    faceInfo: FaceInfo;
+    readonly glyphTable: Readonly<Glyph[]>;
+    readonly glyphLookupTable: CSDictionary<number, Glyph>;
+    readonly characterTable: Readonly<Character[]>;
+    readonly characterLookupTable: CSDictionary<number, Character>;
+    readonly atlasTexture: Texture2D;
+    atlasTextures: Readonly<Texture2D[]>;
+    readonly atlasTextureCount: number;
+    isMultiAtlasTexturesEnabled: boolean;
+    getFontFeatures: boolean;
+    readonly atlasWidth: number;
+    readonly atlasHeight: number;
+    readonly atlasPadding: number;
+    readonly atlasRenderMode: GlyphRenderMode;
+    readonly fontFeatureTable: FontFeatureTable;
+    fallbackFontAssetTable: Readonly<FontAsset[]>;
+    readonly fontWeightTable: Readonly<FontWeightPair[]>;
+    regularStyleWeight: number;
+    regularStyleSpacing: number;
+    boldStyleWeight: number;
+    boldStyleSpacing: number;
+    italicStyleSlant: number;
+    tabMultiple: number;
+
+
+
+    ClearFontAssetData(setAtlasSizeToZero: boolean): void;
+    HasCharacter(character: number): boolean;
+    HasCharacter(character: string, searchFallbacks: boolean, tryAddCharacter: boolean): boolean;
+    HasCharacter(character: number, searchFallbacks: boolean, tryAddCharacter: boolean): boolean;
+    HasCharacters(text: string, missingCharacters: Readonly<string[]>): boolean;
+    HasCharacters(text: string, missingCharacters: Readonly<number[]>, searchFallbacks: boolean, tryAddCharacter: boolean): boolean;
+    HasCharacters(text: string): boolean;
+    ReadFontAssetDefinition(): void;
+    TryAddCharacters(unicodes: Readonly<number[]>, includeFontFeatures: boolean): boolean;
+    TryAddCharacters(unicodes: Readonly<number[]>, missingUnicodes: Readonly<number[]>, includeFontFeatures: boolean): boolean;
+    TryAddCharacters(characters: string, includeFontFeatures: boolean): boolean;
+    TryAddCharacters(characters: string, missingCharacters: Readonly<string[]>, includeFontFeatures: boolean): boolean;
+
+
+}
+    
+interface FontAssetCreationEditorSettings {
+    sourceFontFileGUID: string;
+    faceIndex: number;
+    pointSizeSamplingMode: number;
+    pointSize: number;
+    padding: number;
+    paddingMode: number;
+    packingMode: number;
+    atlasWidth: number;
+    atlasHeight: number;
+    characterSetSelectionMode: number;
+    characterSequence: string;
+    referencedFontAssetGUID: string;
+    referencedTextAssetGUID: string;
+    fontStyle: number;
+    fontStyleModifier: number;
+    renderMode: number;
+    includeFontFeatures: boolean;
+
+
+
+
+
+}
+    
+interface TextElement {
+    readonly elementType: TextElementType;
+    unicode: number;
+    textAsset: TextAsset;
+    glyph: Glyph;
+    glyphIndex: number;
+    scale: number;
+
+
+
+
+
+}
+    
+    
+    
+interface FontFeatureTable {
+
+
+
+    /**
+     * Sorts the glyph pair adjustment records by glyph index.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/TextCore.Text.FontFeatureTable.SortGlyphPairAdjustmentRecords.html | TextCore.Text.FontFeatureTable.SortGlyphPairAdjustmentRecords}
+     */
+    SortGlyphPairAdjustmentRecords(): void;
+    /**
+     * Sorts the Mark-to-Base Adjustment Table records.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/TextCore.Text.FontFeatureTable.SortMarkToBaseAdjustmentRecords.html | TextCore.Text.FontFeatureTable.SortMarkToBaseAdjustmentRecords}
+     */
+    SortMarkToBaseAdjustmentRecords(): void;
+    /**
+     * Sorts the Mark-to-Mark Adjustment Table records.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/TextCore.Text.FontFeatureTable.SortMarkToMarkAdjustmentRecords.html | TextCore.Text.FontFeatureTable.SortMarkToMarkAdjustmentRecords}
+     */
+    SortMarkToMarkAdjustmentRecords(): void;
+
+
+}
+    
+interface FontWeightPair {
+    regularTypeface: FontAsset;
+    italicTypeface: FontAsset;
+
+
+
+
+
+}
+    
+interface FontAssetConstructor {
+
+
+    new(): FontAsset;
+
+
+    CreateFontAsset(familyName: string, styleName: string, pointSize: number): FontAsset;
+    CreateFontAsset(fontFilePath: string, faceIndex: number, samplingPointSize: number, atlasPadding: number, renderMode: GlyphRenderMode, atlasWidth: number, atlasHeight: number): FontAsset;
+    CreateFontAsset(font: Font): FontAsset;
+    CreateFontAsset(font: Font, samplingPointSize: number, atlasPadding: number, renderMode: GlyphRenderMode, atlasWidth: number, atlasHeight: number, atlasPopulationMode: AtlasPopulationMode, enableMultiAtlasSupport: boolean): FontAsset;
+    GetCharacters(fontAsset: FontAsset): string;
+    GetCharactersArray(fontAsset: FontAsset): Readonly<number[]>;
+
+}
+declare const FontAsset: FontAssetConstructor;
+    
+interface FontDefinitionConstructor {
+
+
+
+
+    FromFont(f: Font): FontDefinition;
+    FromSDFFont(f: FontAsset): FontDefinition;
+
+}
+declare const FontDefinition: FontDefinitionConstructor;
+    
+interface IStylePropertyAnimations {
+    runningAnimationCount: number;
+    completedAnimationCount: number;
+
+
+
+    CancelAllAnimations(): void;
+    CancelAnimation(id: StylePropertyId): void;
+    GetAllAnimations(outPropertyIds: Readonly<StylePropertyId[]>): void;
+    HasRunningAnimation(id: StylePropertyId): boolean;
+    Start(id: StylePropertyId, from: number, to: number, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: number, to: number, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: Length, to: Length, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: Color, to: Color, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: Background, to: Background, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: FontDefinition, to: FontDefinition, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: Font, to: Font, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: TextShadow, to: TextShadow, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: Scale, to: Scale, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: Translate, to: Translate, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: Rotate, to: Rotate, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: TransformOrigin, to: TransformOrigin, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: BackgroundPosition, to: BackgroundPosition, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: BackgroundRepeat, to: BackgroundRepeat, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: BackgroundSize, to: BackgroundSize, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    StartEnum(id: StylePropertyId, from: number, to: number, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    UpdateAnimation(id: StylePropertyId): void;
+
+
+}
+    
+interface TextShadow {
+    offset: Vector2;
+    blurRadius: number;
+    color: Color;
+
+
+
+    Equals(obj: unknown): boolean;
+    Equals(other: TextShadow): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+
+}
+    
+interface Translate {
+    x: Length;
+    y: Length;
+    z: number;
+
+
+
+    Equals(other: Translate): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+
+}
+    
+interface TranslateConstructor {
+
+
+    new(x: Length, y: Length, z: number): Translate;
+    new(x: Length, y: Length): Translate;
+
+
+    None(): Translate;
+
+}
+declare const Translate: TranslateConstructor;
+    
+interface TransformOrigin {
+    x: Length;
+    y: Length;
+    z: number;
+
+
+
+    Equals(other: TransformOrigin): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+
+
+}
+    
+interface TransformOriginConstructor {
+
+
+    new(x: Length, y: Length, z: number): TransformOrigin;
+    new(x: Length, y: Length): TransformOrigin;
+
+
+    Initial(): TransformOrigin;
+
+}
+declare const TransformOrigin: TransformOriginConstructor;
+    
 interface ITransform {
     /**
      * The position of the VisualElement transform.
@@ -27742,7 +28471,7 @@ interface IEventHandler {
      */
     HandleEvent(evt: EventBase): void;
     /**
-     * Returns true if event handlers for the event propagation BubbleUp phase, have been attached on this object.
+     * Returns true if event handlers for the event propagation BubbleUp phase, have been attached to this object.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IEventHandler.HasBubbleUpHandlers.html | UIElements.IEventHandler.HasBubbleUpHandlers}
      */
@@ -28062,7 +28791,7 @@ interface CallbackEventHandler extends IEventHandler {
 
 
     /**
-     * Return true if event handlers for the event propagation BubbleUp phase have been attached on this object.
+     * Return true if event handlers for the event propagation BubbleUp phase have been attached to this object.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.CallbackEventHandler.HasBubbleUpHandlers.html | UIElements.CallbackEventHandler.HasBubbleUpHandlers}
      */
@@ -28317,11 +29046,11 @@ interface IProperty {
      */
     GetAttribute<TAttribute>(): TAttribute;
     /**
-     * Returns all attribute of the given type.
+     * Returns all attribute for this property.
      */
     GetAttributes<TAttribute>(): Readonly<TAttribute[]>;
     /**
-     * Returns all attribute of the given type.
+     * Returns all attribute for this property.
      */
     GetAttributes(): Readonly<unknown[]>;
     /**
@@ -28416,6 +29145,12 @@ interface IPanel {
      * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IPanel-isDirty.html | UIElements.IPanel.isDirty}
      */
     readonly isDirty: boolean;
+    /**
+     * Gives the current scaled pixels per point value of the panel.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IPanel-scaledPixelsPerPoint.html | UIElements.IPanel.scaledPixelsPerPoint}
+     */
+    readonly scaledPixelsPerPoint: number;
 
 
 
@@ -28602,13 +29337,13 @@ interface IBinding {
      */
     PreUpdate(): void;
     /**
-     * Disconnects the field from its bound property
+     * Disconnects the field from its bound property.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IBinding.Release.html | UIElements.IBinding.Release}
      */
     Release(): void;
     /**
-     * Called at regular intervals to synchronize bound properties to their IBindable counterparts. Called before the Update() method.
+     * Called at regular intervals to synchronize bound properties to their IBindable counterparts.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IBinding.Update.html | UIElements.IBinding.Update}
      */
@@ -29806,7 +30541,7 @@ interface ITextSelection {
 
 }
     
-interface TextElement extends BindableElement, ITextElement, INotifyValueChanged<string>, ITextEdition, ITextElementExperimentalFeatures, ITextSelection {
+interface TextElement extends BindableElement, ITextElement, ITextEdition, ITextElementExperimentalFeatures, INotifyValueChanged<string>, ITextSelection {
     /**
      * The text to be displayed.
      * 
@@ -29898,15 +30633,7 @@ interface LabelConstructor {
 }
 declare const Label: LabelConstructor;
     
-interface IEditableElement {
-
-
-
-
-
-}
-    
-interface BaseField<TValueType> extends BindableElement, IMixedValueSupport, INotifyValueChanged<TValueType>, IPrefixLabel, IEditableElement {
+interface BaseField<TValueType> extends BindableElement, IEditableElement, IMixedValueSupport, INotifyValueChanged<TValueType>, IPrefixLabel {
     value: TValueType;
     readonly labelElement: Label;
     label: string;
@@ -30139,7 +30866,7 @@ interface Light extends Behaviour {
      * The color temperature of the light.
           Correlated Color Temperature (abbreviated as CCT) is multiplied with the color filter when calculating the final color of a light source. The color temperature of the electromagnetic radiation emitted from an ideal black body is defined as its surface temperature in Kelvin. White is 6500K according to the D65 standard. A candle light is 1800K and a soft warm light bulb is 2700K.
           If you want to use colorTemperature, GraphicsSettings.lightsUseLinearIntensity and Light.useColorTemperature has to be enabled.
-          See Also: GraphicsSettings.lightsUseLinearIntensity, GraphicsSettings.useColorTemperature.
+          Additional resources: GraphicsSettings.lightsUseLinearIntensity, GraphicsSettings.useColorTemperature.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Light-colorTemperature.html | Light.colorTemperature}
      */
@@ -30163,6 +30890,24 @@ interface Light extends Behaviour {
      */
     bounceIntensity: number;
     /**
+     * The unit Light.intensity should be displayed in.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Light-lightUnit.html | Light.lightUnit}
+     */
+    lightUnit: LightUnit;
+    /**
+     * How far away to measure LightUnit.Lux from.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Light-luxAtDistance.html | Light.luxAtDistance}
+     */
+    luxAtDistance: number;
+    /**
+     * Wether a Spot Light should simulate having a reflector.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Light-enableSpotReflector.html | Light.enableSpotReflector}
+     */
+    enableSpotReflector: boolean;
+    /**
      * Set to true to override light bounding sphere for culling.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Light-useBoundingSphereOverride.html | Light.useBoundingSphereOverride}
@@ -30180,6 +30925,12 @@ interface Light extends Behaviour {
      * More info: {@link https://docs.unity3d.com/ScriptReference/Light-useViewFrustumForShadowCasterCull.html | Light.useViewFrustumForShadowCasterCull}
      */
     useViewFrustumForShadowCasterCull: boolean;
+    /**
+     * Force a light to be visible even if outside the view frustum.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Light-forceVisible.html | Light.forceVisible}
+     */
+    forceVisible: boolean;
     /**
      * The custom resolution of the shadow map.
      * 
@@ -30317,7 +31068,7 @@ interface Light extends Behaviour {
      */
     renderMode: LightRenderMode;
     /**
-     * The size of the area light (Editor only).
+     * The size of the area light.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Light-areaSize.html | Light.areaSize}
      */
@@ -30616,6 +31367,8 @@ interface ServerBootstrap extends MonoBehaviour {
     gameId: string;
     serverId: string;
     organizationId: string;
+    isShutdownEventTriggered: boolean;
+    isAgonesShutdownTriggered: boolean;
     serverContext: ServerContext;
     isServerReady: boolean;
     isStartupConfigReady: boolean;
@@ -32181,7 +32934,7 @@ interface ParticleSystem extends Component {
      */
     useAutoRandomSeed: boolean;
     /**
-     * Does this system support Procedural Simulation?
+     * Determines whether this system supports Procedural Simulation.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/ParticleSystem-proceduralSimulationSupported.html | ParticleSystem.proceduralSimulationSupported}
      */
@@ -33283,6 +34036,41 @@ interface Texture3D extends Texture {
     Apply(updateMipmaps: boolean, makeNoLongerReadable: boolean): void;
     Apply(updateMipmaps: boolean): void;
     Apply(): void;
+    /**
+     * Copies pixel data from another texture on the CPU.
+     * @param src The source texture.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Texture3D.CopyPixels.html | Texture3D.CopyPixels}
+     */
+    CopyPixels(src: Texture): void;
+    /**
+     * Copies pixel data from another texture on the CPU.
+     * @param src The source texture.
+     * @param srcElement The element in the source texture to copy from. For example, the CubemapFace in a Cubemap or the slice in a texture array. Set the value to 0 if src is a 2D texture.
+     * @param srcMip The mipmap level to copy from. The range is 0 through the source texture's Texture.mipmapCount. The default value is 0.
+     * @param dstElement The depth slice to copy to in this 3D texture.
+     * @param dstMip The mipmap level to write to. The range is 0 through this texture's Texture.mipmapCount. The default value is 0.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Texture3D.CopyPixels.html | Texture3D.CopyPixels}
+     */
+    CopyPixels(src: Texture, srcElement: number, srcMip: number, dstElement: number, dstMip: number): void;
+    /**
+     * Copies pixel data from another texture on the CPU.
+     * @param src The source texture.
+     * @param srcElement The element in the source texture to copy from. For example, the CubemapFace in a Cubemap or the slice in a texture array. Set the value to 0 if src is a 2D texture.
+     * @param srcMip The mipmap level to copy from. The range is 0 through the source texture's Texture.mipmapCount. The default value is 0.
+     * @param srcX The starting x coordinate of src to copy from. 0 is the left of the texture.
+     * @param srcY The starting y coordinate of src to copy from. 0 is the bottom of the texture.
+     * @param srcWidth The width of src to copy.
+     * @param srcHeight The height of src to copy.
+     * @param dstElement The depth slice to copy to in this 3D texture.
+     * @param dstMip The mipmap level to write to. The range is 0 through this texture's Texture.mipmapCount. The default value is 0.
+     * @param dstX The x coordinate of this texture to copy to.
+     * @param dstY The y coordinate to this texture to copy to.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Texture3D.CopyPixels.html | Texture3D.CopyPixels}
+     */
+    CopyPixels(src: Texture, srcElement: number, srcMip: number, srcX: number, srcY: number, srcWidth: number, srcHeight: number, dstElement: number, dstMip: number, dstX: number, dstY: number): void;
     /**
      * Gets the pixel color at coordinates (x, y, z).
      * @param x The x coordinate of the pixel to get. The range is 0 through the (texture width - 1).
@@ -34922,19 +35710,19 @@ interface AudioSource extends AudioBehaviour {
      */
     gamepadSpeakerOutputType: GamepadSpeakerOutputType;
     /**
-     * Is the clip playing right now (Read Only)?
+     * Returns whether the AudioSource is currently playing an AudioResource(Read Only).
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/AudioSource-isPlaying.html | AudioSource.isPlaying}
      */
     readonly isPlaying: boolean;
     /**
-     * True if all sounds played by the AudioSource (main sound started by Play() or playOnAwake as well as one-shots) are culled by the audio system.
+     * True if all sounds played by the AudioSource, such as main sound started by Play() or playOnAwake, and one-shots are culled by the audio system.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/AudioSource-isVirtual.html | AudioSource.isVirtual}
      */
     readonly isVirtual: boolean;
     /**
-     * Is the audio clip looping?
+     * Checks if the audio clip is looping
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/AudioSource-loop.html | AudioSource.loop}
      */
@@ -35000,13 +35788,13 @@ interface AudioSource extends AudioBehaviour {
      */
     bypassEffects: boolean;
     /**
-     * When set global effects on the AudioListener will not be applied to the audio signal generated by the AudioSource. Does not apply if the AudioSource is playing into a mixer group.
+     * When set, global effects on the AudioListener doesn't apply to the audio signal generated by the AudioSource. It also does'nt apply, if the AudioSource is playing into a mixer group.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/AudioSource-bypassListenerEffects.html | AudioSource.bypassListenerEffects}
      */
     bypassListenerEffects: boolean;
     /**
-     * When set doesn't route the signal from an AudioSource into the global reverb associated with reverb zones.
+     * When set, it doesn't route the signal from an AudioSource into the global reverb associated with reverb zones.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/AudioSource-bypassReverbZones.html | AudioSource.bypassReverbZones}
      */
@@ -35094,8 +35882,8 @@ interface AudioSource extends AudioBehaviour {
      */
     GetSpatializerFloat(index: number, value: unknown): boolean;
     /**
-     * Provides a block of the currently playing audio source's spectrum data.
-     * @param samples The array to populate with audio samples. Its length must be a power of 2.
+     * Provides the block of audio frequencies (spectrum data) of the AudioSource that is currently playing.
+     * @param samples The array to populate with frequency domain representations of audio samples. The array length must be a power of 2 (such as 128, 256, 512). Also, the length must not be less than 64 or greater than 8192.
      * @param channel The channel to sample from.
      * @param window The FFTWindow type to use when sampling.
      * 
@@ -35138,7 +35926,7 @@ interface AudioSource extends AudioBehaviour {
     /**
      * Plays an AudioClip, and scales the AudioSource volume by volumeScale.
      * @param clip The clip being played.
-     * @param volumeScale The scale of the volume (0-1).
+     * @param volumeScale The scale of the volume. Unity automatically clamps negative scales to zero. Note: Scales larger than one might cause clipping.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/AudioSource.PlayOneShot.html | AudioSource.PlayOneShot}
      */
@@ -35428,10 +36216,8 @@ interface AudioMixer extends Object {
     GetFloat(name: string, value: unknown): boolean;
     /**
      * Sets the value of the exposed parameter specified. When a parameter is exposed, it is not controlled by mixer snapshots. You can only change the parameter with this function.
-
-Note: Calling this function in MonoBehaviour.Awake will result in unexpected behavior. Use MonoBehaviour.Start instead.
-     * @param name Name of exposed parameter.
-     * @param value New value of exposed parameter.
+     * @param name The name of an exposed Audio Mixer group parameter. To expose a parameter, go to the Audio Mixer group's Inspector window, right click the parameter you want to expose, and choose Expose [parameter name] to script.
+     * @param value Use to set the exposed Audio Mixer group parameter to a new value.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Audio.AudioMixer.SetFloat.html | Audio.AudioMixer.SetFloat}
      */
@@ -37126,7 +37912,7 @@ interface UnityWebRequest {
      */
     method: string;
     /**
-     * A human-readable string describing any system errors encountered by this UnityWebRequest object while handling HTTP requests or responses. (Read Only)
+     * A human-readable string describing any system errors encountered by this UnityWebRequest object while handling HTTP requests or responses. The default value is null. (Read Only)
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Networking.UnityWebRequest-error.html | Networking.UnityWebRequest.error}
      */
@@ -37920,6 +38706,7 @@ interface DevConsoleMono extends MonoBehaviour {
     OnClientTabClick(): void;
     OnLogMessageCallback(logString: string, stackTrace: string, type: LogType): void;
     OnLogMessageReceived(logString: string, stackTrace: string, type: LogType, context: LogContext, time: string, prepend: boolean): void;
+    OnMemoryTabClick(): void;
     OnRepositionButtonPointerDown(eventData: BaseEventData): void;
     OnRepositionButtonPointerUp(_: BaseEventData): void;
     OnServerTabClick(): void;
@@ -38724,7 +39511,19 @@ interface SystemInfoConstructor {
      */
     readonly processorType: string;
     /**
-     * Processor frequency in MHz (Read Only).
+     * Specifies the model name of the processor in the user's device (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/SystemInfo-processorModel.html | SystemInfo.processorModel}
+     */
+    readonly processorModel: string;
+    /**
+     * Specifies the manufacturer name of the processor in the user's device (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/SystemInfo-processorManufacturer.html | SystemInfo.processorManufacturer}
+     */
+    readonly processorManufacturer: string;
+    /**
+     * The processor frequency of the device in MHz (Read Only).
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/SystemInfo-processorFrequency.html | SystemInfo.processorFrequency}
      */
@@ -39006,7 +39805,7 @@ interface SystemInfoConstructor {
      */
     readonly supportedRandomWriteTargetCount: number;
     /**
-     * Are multisampled textures supported? (Read Only)
+     * Returns a value of 1 or higher if multisampled textures are supported. (Read Only)
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/SystemInfo-supportsMultisampledTextures.html | SystemInfo.supportsMultisampledTextures}
      */
@@ -39018,13 +39817,19 @@ interface SystemInfoConstructor {
      */
     readonly supportsMultisampled2DArrayTextures: boolean;
     /**
+     * A boolean property that indicates whether multi-sampled back buffer is supported (true if supported, false if not supported).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/SystemInfo-supportsMultisampledBackBuffer.html | SystemInfo.supportsMultisampledBackBuffer}
+     */
+    readonly supportsMultisampledBackBuffer: boolean;
+    /**
      * Returns true if multisampled textures are resolved automatically
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/SystemInfo-supportsMultisampleAutoResolve.html | SystemInfo.supportsMultisampleAutoResolve}
      */
     readonly supportsMultisampleAutoResolve: boolean;
     /**
-     * Returns true if the 'Mirror Once' texture wrap mode is supported. (Read Only)
+     * Returns a value of 1 or higher if the 'Mirror Once' texture wrap mode is supported. (Read Only)
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/SystemInfo-supportsTextureWrapMirrorOnce.html | SystemInfo.supportsTextureWrapMirrorOnce}
      */
@@ -39162,6 +39967,12 @@ interface SystemInfoConstructor {
      */
     readonly supportsAsyncGPUReadback: boolean;
     /**
+     * Returns true if parallel PSO creation is available for this device and false otherwise.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/SystemInfo-supportsParallelPSOCreation.html | SystemInfo.supportsParallelPSOCreation}
+     */
+    readonly supportsParallelPSOCreation: boolean;
+    /**
      * Checks if ray tracing shaders are supported by the current system configuration. (Read Only)
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/SystemInfo-supportsRayTracingShaders.html | SystemInfo.supportsRayTracingShaders}
@@ -39179,6 +39990,12 @@ interface SystemInfoConstructor {
      * More info: {@link https://docs.unity3d.com/ScriptReference/SystemInfo-supportsInlineRayTracing.html | SystemInfo.supportsInlineRayTracing}
      */
     readonly supportsInlineRayTracing: boolean;
+    /**
+     * Returns true if the graphics system supports indirect ray tracing dispatch. (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/SystemInfo-supportsIndirectDispatchRays.html | SystemInfo.supportsIndirectDispatchRays}
+     */
+    readonly supportsIndirectDispatchRays: boolean;
     /**
      * Does the current renderer support binding constant buffers directly? (Read Only)
      * 
@@ -39263,6 +40080,12 @@ interface SystemInfoConstructor {
      * More info: {@link https://docs.unity3d.com/ScriptReference/SystemInfo-supportsIndirectArgumentsBuffer.html | SystemInfo.supportsIndirectArgumentsBuffer}
      */
     readonly supportsIndirectArgumentsBuffer: boolean;
+    /**
+     * Indicates whether RenderPass can use its depth attachment as input. (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/SystemInfo-supportsDepthFetchInRenderPass.html | SystemInfo.supportsDepthFetchInRenderPass}
+     */
+    readonly supportsDepthFetchInRenderPass: boolean;
 
 
     new(): SystemInfo;
@@ -39811,7 +40634,7 @@ interface NavMeshAgent extends Behaviour {
     readonly pathStatus: NavMeshPathStatus;
     readonly pathEndPosition: Vector3;
     /**
-     * This property holds the stop or resume condition of the NavMesh agent.
+     * Use this property to set, or get, whether the NavMesh agent stops or continues its movement along the current path.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/AI.NavMeshAgent-isStopped.html | AI.NavMeshAgent.isStopped}
      */
@@ -40343,7 +41166,7 @@ interface NavMeshBuildSettings {
      */
     minRegionArea: number;
     /**
-     * Enables overriding the default voxel size. See Also: voxelSize.
+     * Enables overriding the default voxel size. Additional resources: voxelSize.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/AI.NavMeshBuildSettings-overrideVoxelSize.html | AI.NavMeshBuildSettings.overrideVoxelSize}
      */
@@ -40355,7 +41178,7 @@ interface NavMeshBuildSettings {
      */
     voxelSize: number;
     /**
-     * Enables overriding the default tile size. See Also: tileSize.
+     * Enables overriding the default tile size. Additional resources: tileSize.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/AI.NavMeshBuildSettings-overrideTileSize.html | AI.NavMeshBuildSettings.overrideTileSize}
      */
@@ -40506,7 +41329,7 @@ interface ScrollView extends VisualElement {
      */
     verticalScrollerVisibility: ScrollerVisibility;
     /**
-     * Specifies the minimum amount of time in milliseconds between each elastic spring animation execution.
+     * The minimum amount of time, in milliseconds, between executions of elastic spring animation.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.ScrollView-elasticAnimationIntervalMs.html | UIElements.ScrollView.elasticAnimationIntervalMs}
      */
@@ -40704,6 +41527,7 @@ interface BaseSlider<TValueType> extends BaseField<TValueType>, IValueField<TVal
     readonly range: TValueType;
     pageSize: number;
     showInputField: boolean;
+    fill: boolean;
     value: TValueType;
     direction: SliderDirection;
     inverted: boolean;
@@ -40728,6 +41552,8 @@ interface BaseSliderConstructor {
     readonly draggerUssClassName: string;
     readonly draggerBorderUssClassName: string;
     readonly textFieldClassName: string;
+    readonly fillUssClassName: string;
+    readonly movableUssClassName: string;
 
 
 
@@ -41710,7 +42536,7 @@ interface TerrainData extends Object {
      */
     readonly detailResolutionPerPatch: number;
     /**
-     * See Also: DetailScatterMode
+     * Additional resources: DetailScatterMode
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/TerrainData-detailScatterMode.html | TerrainData.detailScatterMode}
      */
@@ -41960,7 +42786,7 @@ interface TerrainData extends Object {
      */
     GetPatchMinMaxHeights(): Readonly<PatchExtents[]>;
     /**
-     * Gets the gradient of the terrain at point (x,y).
+     * Gets the gradient of the terrain at point (x,y). The gradient's value is always positive.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/TerrainData.GetSteepness.html | TerrainData.GetSteepness}
      */
@@ -41971,6 +42797,11 @@ interface TerrainData extends Object {
      * More info: {@link https://docs.unity3d.com/ScriptReference/TerrainData.GetSupportedLayers.html | TerrainData.GetSupportedLayers}
      */
     GetSupportedLayers(xBase: number, yBase: number, totalWidth: number, totalHeight: number): Readonly<number[]>;
+    /**
+     * Returns an array of all supported detail layer indices in the area.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/TerrainData.GetSupportedLayers.html | TerrainData.GetSupportedLayers}
+     */
     GetSupportedLayers(positionBase: Vector2Int, size: Vector2Int): Readonly<number[]>;
     /**
      * Gets the tree instance at the specified index. It is used as a faster version of treeInstances[index] as this function doesn't create the entire tree instances array.
@@ -42860,11 +43691,17 @@ interface GraphicsConstructor {
     ClearRandomWriteTargets(): void;
     ConvertTexture(src: Texture, dst: Texture): boolean;
     ConvertTexture(src: Texture, srcElement: number, dst: Texture, dstElement: number): boolean;
+    ConvertTexture(src: GraphicsTexture, dst: GraphicsTexture): boolean;
+    ConvertTexture(src: GraphicsTexture, srcElement: number, dst: GraphicsTexture, dstElement: number): boolean;
     CopyBuffer(source: GraphicsBuffer, dest: GraphicsBuffer): void;
     CopyTexture(src: Texture, dst: Texture): void;
     CopyTexture(src: Texture, srcElement: number, dst: Texture, dstElement: number): void;
     CopyTexture(src: Texture, srcElement: number, srcMip: number, dst: Texture, dstElement: number, dstMip: number): void;
     CopyTexture(src: Texture, srcElement: number, srcMip: number, srcX: number, srcY: number, srcWidth: number, srcHeight: number, dst: Texture, dstElement: number, dstMip: number, dstX: number, dstY: number): void;
+    CopyTexture(src: GraphicsTexture, dst: GraphicsTexture): void;
+    CopyTexture(src: GraphicsTexture, srcElement: number, dst: GraphicsTexture, dstElement: number): void;
+    CopyTexture(src: GraphicsTexture, srcElement: number, srcMip: number, dst: GraphicsTexture, dstElement: number, dstMip: number): void;
+    CopyTexture(src: GraphicsTexture, srcElement: number, srcMip: number, srcX: number, srcY: number, srcWidth: number, srcHeight: number, dst: GraphicsTexture, dstElement: number, dstMip: number, dstX: number, dstY: number): void;
     CreateAsyncGraphicsFence(stage: SynchronisationStage): GraphicsFence;
     CreateAsyncGraphicsFence(): GraphicsFence;
     CreateGraphicsFence(fenceType: GraphicsFenceType, stage: SynchronisationStageFlags): GraphicsFence;
@@ -43032,6 +43869,49 @@ interface UnityWebRequestTexture {
 
 }
     
+interface DownloadedTextureParams {
+    flags: DownloadedTextureFlags;
+    mipmapCount: number;
+    /**
+     * Check or change the flag for readability in flags variable.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Networking.DownloadedTextureParams-readable.html | Networking.DownloadedTextureParams.readable}
+     */
+    readable: boolean;
+    /**
+     * Check or change the flag for mipmaps in flags variable.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Networking.DownloadedTextureParams-mipmapChain.html | Networking.DownloadedTextureParams.mipmapChain}
+     */
+    mipmapChain: boolean;
+    /**
+     * Check or change the flag for linear color space in flags variable.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Networking.DownloadedTextureParams-linearColorSpace.html | Networking.DownloadedTextureParams.linearColorSpace}
+     */
+    linearColorSpace: boolean;
+
+
+
+
+
+}
+    
+interface DownloadedTextureParamsConstructor {
+    /**
+     * Returns parameters set to recommended values. It is recommended to use this for the initial values and modify only specific parameters that you need.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Networking.DownloadedTextureParams-Default.html | Networking.DownloadedTextureParams.Default}
+     */
+    readonly Default: DownloadedTextureParams;
+
+
+
+
+
+}
+declare const DownloadedTextureParams: DownloadedTextureParamsConstructor;
+    
 interface UnityWebRequestTextureConstructor {
 
 
@@ -43041,6 +43921,8 @@ interface UnityWebRequestTextureConstructor {
     GetTexture(uri: unknown): UnityWebRequest;
     GetTexture(uri: string, nonReadable: boolean): UnityWebRequest;
     GetTexture(uri: unknown, nonReadable: boolean): UnityWebRequest;
+    GetTexture(uri: string, parameters: DownloadedTextureParams): UnityWebRequest;
+    GetTexture(uri: unknown, parameters: DownloadedTextureParams): UnityWebRequest;
 
 }
 declare const UnityWebRequestTexture: UnityWebRequestTextureConstructor;
@@ -43065,6 +43947,7 @@ interface DownloadHandlerTextureConstructor {
 
     new(): DownloadHandlerTexture;
     new(readable: boolean): DownloadHandlerTexture;
+    new(parameters: DownloadedTextureParams): DownloadHandlerTexture;
 
 
     GetContent(www: UnityWebRequest): Texture2D;
@@ -44324,7 +45207,7 @@ interface ShaderWarmup {
 }
     
 interface ShaderWarmupSetup {
-    vdecl: CSArray<VertexAttributeDescriptor>;
+    vdecl: Readonly<VertexAttributeDescriptor[]>;
 
 
 
@@ -44389,7 +45272,7 @@ interface ShaderVariantCollection extends Object {
 interface ShaderVariant {
     shader: Shader;
     passType: PassType;
-    keywords: CSArray<string>;
+    keywords: Readonly<string[]>;
 
 
 
@@ -44400,7 +45283,7 @@ interface ShaderVariant {
 interface ShaderVariantConstructor {
 
 
-    new(shader: Shader, passType: PassType, keywords: CSArray<string>): ShaderVariant;
+    new(shader: Shader, passType: PassType, keywords: Readonly<string[]>): ShaderVariant;
 
 
 
@@ -45130,17 +46013,17 @@ interface ConstantForce extends Behaviour {
      */
     force: Vector3;
     /**
-     * The force - relative to the rigid bodies coordinate system - applied every frame.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/ConstantForce-relativeForce.html | ConstantForce.relativeForce}
-     */
-    relativeForce: Vector3;
-    /**
      * The torque applied to the rigidbody every frame.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/ConstantForce-torque.html | ConstantForce.torque}
      */
     torque: Vector3;
+    /**
+     * The force - relative to the rigid bodies coordinate system - applied every frame.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/ConstantForce-relativeForce.html | ConstantForce.relativeForce}
+     */
+    relativeForce: Vector3;
     /**
      * The torque - relative to the rigid bodies coordinate system - applied every frame.
      * 
@@ -47219,9 +48102,20 @@ interface AirshipPredictedState {
 
 
 
+    Copy(otherState: AirshipPredictedState): AirshipPredictedState;
 
 
 }
+    
+interface AirshipPredictedStateConstructor {
+
+
+    new(): AirshipPredictedState;
+
+
+
+}
+declare const AirshipPredictedState: AirshipPredictedStateConstructor;
     
 interface CharacterMovementState extends AirshipPredictedState {
     currentMoveInput: MoveInputData;
