@@ -169,7 +169,9 @@ export default class DemoManager extends AirshipBehaviour {
 					const prevEnabled = r.enabled;
 					r.enabled = false;
 					emoteBin.Add(() => {
-						r.enabled = prevEnabled;
+						if (r) {
+							r.enabled = prevEnabled;
+						}
 					});
 				}
 			});

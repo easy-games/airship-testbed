@@ -26,7 +26,6 @@ export default class AirshipEmoteSingleton implements OnStart {
 			const emoteDef = InternalEmoteDefinitions[emoteId as EmoteId] as EmoteDefinition | undefined;
 			if (!emoteDef) return;
 			if (!player.character) return;
-			if (player.character.isEmoting) return;
 
 			const startSignal = player.character.onEmoteStart.Fire(new EmoteStartSignal(emoteId));
 			if (startSignal.IsCancelled()) return;
@@ -61,24 +60,29 @@ export default class AirshipEmoteSingleton implements OnStart {
 
 			const anim = Asset.LoadAsset<AnimationClip>(def.anim);
 			character.animationHelper.PlayAnimation(anim, CharacterAnimationLayer.OVERRIDE_3, def.fadeInTime ?? 0.1);
+			character.isEmoting = true;
 
 			const length = def.duration ?? anim.length;
 			const emoteBin = new Bin();
 			let alive = true;
 			emoteBin.Add(
 				character.onEmoteEnd.ConnectWithPriority(SignalPriority.HIGHEST, () => {
-					alive = false;
 					emoteBin.Clean();
 				}),
 			);
-			if (anim.isLooping) {
-				emoteBin.Add(() => {
-					character.animationHelper.StopAnimation(CharacterAnimationLayer.OVERRIDE_3, def.fadeOutTime ?? 0.2);
-				});
-			}
+			emoteBin.Add(() => {
+				alive = false;
+			});
 			task.delay(length, () => {
 				if (alive) {
 					emoteBin.Clean();
+					if (anim.isLooping) {
+						character.animationHelper.StopAnimation(
+							CharacterAnimationLayer.OVERRIDE_3,
+							def.fadeOutTime ?? 0.2,
+						);
+					}
+					character.isEmoting = false;
 					character.onEmoteEnd.Fire();
 				}
 			});
