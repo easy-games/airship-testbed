@@ -65,6 +65,7 @@ export abstract class InternalRadialUI<T extends InternalRadialUIData = Internal
 
 	@SerializeField() protected canvasGroup: CanvasGroup;
 	@SerializeField() public bg: Image;
+	@SerializeField() public container: RectTransform;
 
 	@Header("Item Details")
 	@Spacing(10)
@@ -157,9 +158,12 @@ export abstract class InternalRadialUI<T extends InternalRadialUIData = Internal
 
 	public Show() {
 		this.SetSelectedIndex(this.radialSegments.size() - 1);
-		const t = NativeTween.GraphicAlpha(this.bg, 0.4, 0.2).SetEaseQuadOut();
+		const t1 = NativeTween.GraphicAlpha(this.bg, 0.4, 0.2).SetEaseQuadOut();
+		this.container.localScale = Vector3.one.mul(1.15);
+		const t2 = NativeTween.LocalScale(this.container, Vector3.one, 0.2).SetEaseQuadOut();
 		this.bin.Add(() => {
-			t.Cancel();
+			t1.Cancel();
+			t2.Cancel();
 		});
 		this.bin.Add(Mouse.AddUnlocker());
 

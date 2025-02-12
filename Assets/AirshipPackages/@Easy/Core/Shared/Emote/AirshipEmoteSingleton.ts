@@ -40,6 +40,7 @@ export default class AirshipEmoteSingleton implements OnStart {
 			Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/UI/Emote/EmoteMenu.prefab"),
 			CoreRefs.rootTransform,
 		);
+		this.emoteMenu.gameObject.name = "EmoteMenu";
 
 		CoreNetwork.ServerToClient.Character.EmoteStart.client.OnServerEvent((characterId, emoteId) => {
 			const character = Airship.Characters.FindById(characterId);

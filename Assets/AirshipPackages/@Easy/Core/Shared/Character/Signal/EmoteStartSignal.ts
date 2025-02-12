@@ -1,7 +1,7 @@
 import { Cancellable } from "../../Util/Cancellable";
 
 export class EmoteStartSignal extends Cancellable {
-	constructor(public emoteId: string) {
+	constructor(public readonly emoteId: string) {
 		super();
 	}
 }

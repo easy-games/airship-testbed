@@ -166,7 +166,6 @@ export default class DemoManager extends AirshipBehaviour {
 					AccessorySlot.RightHand,
 				).renderers;
 				for (let r of renderers) {
-					print("r: " + r.name);
 					const prevEnabled = r.enabled;
 					r.enabled = false;
 					emoteBin.Add(() => {

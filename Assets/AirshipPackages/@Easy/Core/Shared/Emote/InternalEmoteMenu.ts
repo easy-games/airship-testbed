@@ -10,6 +10,7 @@ export default class InternalEmoteMenu extends AirshipBehaviour {
 	public radialMenu: InternalRadialUI;
 
 	override Start(): void {
+		task.wait(0.1);
 		this.radialMenu.SetItems([
 			InternalEmoteDefinitions[EmoteId.CutThroat],
 			InternalEmoteDefinitions[EmoteId.FingerGun],
