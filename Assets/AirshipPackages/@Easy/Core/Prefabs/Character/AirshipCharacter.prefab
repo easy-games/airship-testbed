@@ -835,7 +835,7 @@ MonoBehaviour:
         - type: string
           serializedValue: '"Variables"'
       nullable: 0
-      serializedValue: 1
+      serializedValue: 0
       serializedObject: {fileID: 0}
       modified: 1
     - name: renderBehindWallsForLocalPlayer
@@ -850,7 +850,7 @@ MonoBehaviour:
       fileRef: 
       decorators: []
       nullable: 0
-      serializedValue: 1
+      serializedValue: 0
       serializedObject: {fileID: 0}
       modified: 1
     - name: renderTransparentWhenCloseForLocalPlayer

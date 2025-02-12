@@ -1,11 +1,13 @@
 import { Airship } from "../../Airship";
 import { Game } from "../../Game";
+import { CoreAction } from "../../Input/AirshipCoreAction";
 import { Binding } from "../../Input/Binding";
 
 export default class CharacterRagdoll extends AirshipBehaviour {
 	public startOn = false;
 	public interpolationMode = RigidbodyInterpolation.None;
 	public collisionDetectionMode = CollisionDetectionMode.Discrete;
+	public testForce = 10;
 
 	private colliders: Collider[] = [];
 	private rigids: Rigidbody[] = [];
@@ -27,25 +29,30 @@ export default class CharacterRagdoll extends AirshipBehaviour {
 			this.colliders.push(go.GetComponent<Collider>()!);
 			this.rigids.push(go.GetComponent<Rigidbody>()!);
 		}
+		this.ragdollEnabled = true;
+		this.SetRagdoll(false);
 
 		const TEST = false;
 		if (TEST) {
 			Airship.Input.CreateAction("TEST", Binding.Key(Key.F));
 			Airship.Input.OnDown("TEST").Connect(() => {
-				this.SetRagdoll(!this.ragdollEnabled);
 				this.AddGlobalForce(
-					Game.localPlayer.character?.movement?.GetVelocity().mul(3) ?? Vector3.zero,
+					Game.localPlayer.character?.movement?.GetVelocity().mul(this.testForce) ?? Vector3.zero,
 					ForceMode.Impulse,
 				);
 				this.AddExplosiveForce(
-					math.random(20, 40),
+					math.random(10, 20) * this.testForce,
 					new Vector3(math.random() - 0.5, math.random() - 0.5, math.random() - 0.5).add(
 						Game.localPlayer.character?.transform.position ?? Vector3.zero,
 					),
-					2,
+					5,
 					1 + math.random() * 2,
 					ForceMode.Impulse,
 				);
+			});
+
+			Airship.Input.OnDown(CoreAction.Jump).Connect(() => {
+				this.SetRagdoll(!this.ragdollEnabled);
 			});
 		}
 	}
@@ -65,14 +72,24 @@ export default class CharacterRagdoll extends AirshipBehaviour {
 		if (this.anim) {
 			this.anim.enabled = !ragdollOn;
 		}
+
 		//Toggle physics objects
 		for (let i = 0; i < this.joints.size(); i++) {
 			//Have to set collision mode to Discrete with going kinematic otherwise Unity throws an error
+			let rigid = this.rigids[i];
+			if (!rigid.isKinematic) {
+				this.rigids[i].velocity = Vector3.zero;
+				this.rigids[i].angularVelocity = Vector3.zero;
+			}
 			this.rigids[i].collisionDetectionMode = ragdollOn
 				? this.collisionDetectionMode
 				: CollisionDetectionMode.Discrete;
 			this.rigids[i].interpolation = ragdollOn ? this.interpolationMode : RigidbodyInterpolation.None;
 			this.rigids[i].isKinematic = !ragdollOn;
+			if (!rigid.isKinematic) {
+				this.rigids[i].velocity = Vector3.zero;
+				this.rigids[i].angularVelocity = Vector3.zero;
+			}
 			this.colliders[i].enabled = ragdollOn;
 		}
 
