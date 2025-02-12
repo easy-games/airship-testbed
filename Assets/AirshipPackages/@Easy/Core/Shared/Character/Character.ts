@@ -395,4 +395,11 @@ export default class Character extends AirshipBehaviour {
 		}
 		return Game.IsClient() && this.player?.userId === Game.localPlayer?.userId;
 	}
+
+	/**
+	 * Cancels emote if the character is emoting. Otherwise, does nothing.
+	 */
+	public CancelEmote(): void {
+		if (!this.isEmoting) return;
+	}
 }
