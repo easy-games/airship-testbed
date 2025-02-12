@@ -438,6 +438,8 @@ interface AccessoryBuilder extends MonoBehaviour {
 	TryCombineMeshes(): void;
 
 	OnMeshCombined: MonoSignal<[usedMeshCombiner: boolean, skinnedMesh: SkinnedMeshRenderer, staticMesh: MeshRenderer]>;
+	OnAccessoryAdded: MonoSignal<[willCombineImmediate: boolean, accessories: ActiveAccessory[]]>;
+	OnAccessoryRemoved: MonoSignal<[willCombineImmediate: boolean, accessories: ActiveAccessory[]]>;
 }
 
 interface MeshCombiner extends MonoBehaviour {
