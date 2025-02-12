@@ -1,5 +1,6 @@
 import { Airship } from "../Airship";
 import { Asset } from "../Asset";
+import Character from "../Character/Character";
 import { EmoteStartSignal } from "../Character/Signal/EmoteStartSignal";
 import { CoreNetwork } from "../CoreNetwork";
 import { CoreRefs } from "../CoreRefs";
@@ -31,6 +32,15 @@ export default class AirshipEmoteSingleton implements OnStart {
 			if (startSignal.IsCancelled()) return;
 
 			CoreNetwork.ServerToClient.Character.EmoteStart.server.FireAllClients(player.character.id, emoteId);
+		});
+
+		CoreNetwork.ClientToServer.Character.EmoteCancelRequest.server.OnClientEvent((player) => {
+			if (!player.character) return;
+			if (!player.character.isEmoting) return;
+
+			player.character.isEmoting = false;
+			player.character.onEmoteEnd.Fire();
+			CoreNetwork.ServerToClient.Character.EmoteEnd.server.FireExcept(player, player.character.id);
 		});
 	}
 
@@ -77,9 +87,10 @@ export default class AirshipEmoteSingleton implements OnStart {
 				if (alive) {
 					emoteBin.Clean();
 					if (anim.isLooping) {
+						character.isEmoting = false;
 						character.animationHelper.StopAnimation(
 							CharacterAnimationLayer.OVERRIDE_3,
-							def.fadeOutTime ?? 0.2,
+							def.fadeOutTime ?? 0.1,
 						);
 					}
 					character.isEmoting = false;
@@ -87,5 +98,19 @@ export default class AirshipEmoteSingleton implements OnStart {
 				}
 			});
 		});
+
+		CoreNetwork.ServerToClient.Character.EmoteEnd.client.OnServerEvent((characterId) => {
+			const character = Airship.Characters.FindById(characterId);
+			if (!character || !character.IsAlive()) return;
+			if (!character.isEmoting) return;
+
+			this.StopEmoting(character);
+		});
+	}
+
+	public StopEmoting(character: Character, fadeOutTime = 0.1): void {
+		character.isEmoting = false;
+		character.animationHelper.StopAnimation(CharacterAnimationLayer.OVERRIDE_3, fadeOutTime);
+		character.onEmoteEnd.Fire();
 	}
 }

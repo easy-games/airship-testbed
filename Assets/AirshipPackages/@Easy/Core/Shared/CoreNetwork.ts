@@ -25,6 +25,7 @@ export const CoreNetwork = {
 		Character: {
 			RequestCharacters: new NetworkFunction<[], CharacterDto[]>("RequestCharacters"),
 			EmoteRequest: new NetworkSignal<[emoteId: string]>("AirshipEmoteRequest"),
+			EmoteCancelRequest: new NetworkSignal("AirshipEmoteCancelRequest"),
 		},
 		SendChatMessage: new NetworkSignal<[text: string]>("SendChatMessage"),
 		ChangedOutfit: new NetworkSignal("ChangedOutfit"),

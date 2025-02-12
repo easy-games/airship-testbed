@@ -7,6 +7,8 @@ import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { CoreNetwork } from "../CoreNetwork";
 import { DamageInfo, DamageInfoCustomData } from "../Damage/DamageInfo";
+import AirshipEmoteSingleton from "../Emote/AirshipEmoteSingleton";
+import { Dependency } from "../Flamework";
 import NametagComponent from "../Nametag/NametagComponent";
 import CharacterAnimation from "./Animation/CharacterAnimation";
 import CharacterConfigSetup from "./CharacterConfigSetup";
@@ -401,5 +403,15 @@ export default class Character extends AirshipBehaviour {
 	 */
 	public CancelEmote(): void {
 		if (!this.isEmoting) return;
+
+		// Cancel immediately locally
+		Dependency<AirshipEmoteSingleton>().StopEmoting(this);
+
+		if (Game.IsClient() && this.IsLocalCharacter()) {
+			CoreNetwork.ClientToServer.Character.EmoteCancelRequest.client.FireServer();
+		}
+		if (Game.IsServer()) {
+			CoreNetwork.ServerToClient.Character.EmoteEnd.server.FireAllClients(this.id);
+		}
 	}
 }
