@@ -189,11 +189,14 @@ export class AvatarPlatformAPI {
 	public static async UploadImage(resourceId: string, filePath: string, fileSize: number): Promise<string> {
 		this.Log("Requesting image url: " + resourceId);
 
-		let getPath = `${AirshipUrl.ContentService}/item-classes/images/resource-id/${resourceId}/signed-url?contentType=image%2Fpng&contentLength=${fileSize}`;
-		this.Log("get path: " + getPath);
-		const res = InternalHttpManager.GetAsync(getPath);
-
-		//GET /item-classes/images/resource-id/6536df9f3843ac629cf3b8b1/signed-url?contentType=image%2Fpng&contentLength=1128045 HTTP/3
+		let postPath = `${AirshipUrl.ContentService}/images`;
+		this.Log("post path: " + postPath);
+		const res = InternalHttpManager.PostAsync(postPath, json.encode({
+			contentType: "image/png",
+			contentLength: fileSize,
+			resourceId,
+			namespace: "items"
+		}));
 
 		if (res.success) {
 			const data = json.decode<{ url: string; imageId: string }>(res.data);
