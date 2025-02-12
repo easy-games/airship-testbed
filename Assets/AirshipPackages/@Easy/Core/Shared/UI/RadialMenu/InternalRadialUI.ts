@@ -1,4 +1,4 @@
-import { Mouse } from "@Easy/Core/Shared/UserInput";
+import { Keyboard, Mouse } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { Asset } from "../../Asset";
@@ -160,7 +160,7 @@ export abstract class InternalRadialUI<T extends InternalRadialUIData = Internal
 		this.segmentContainer.gameObject.SetActive(true);
 		this.active = true;
 
-		this.SetSelectedIndex(this.radialSegments.size() - 1);
+		this.SetSelectedIndex(-1);
 		const t1 = NativeTween.GraphicAlpha(this.bg, 0.4, 0.2).SetEaseQuadOut();
 		this.container.localScale = Vector3.one.mul(1.15);
 		const t2 = NativeTween.LocalScale(this.container, Vector3.one, 0.2).SetEaseQuadOut();
@@ -181,6 +181,11 @@ export abstract class InternalRadialUI<T extends InternalRadialUIData = Internal
 		);
 		this.bin.Add(
 			Mouse.onLeftDown.Connect(() => {
+				this.Hide();
+			}),
+		);
+		this.bin.Add(
+			Keyboard.OnKeyDown(Key.Escape, () => {
 				this.Hide();
 			}),
 		);
@@ -217,23 +222,23 @@ export abstract class InternalRadialUI<T extends InternalRadialUIData = Internal
 		const normalizedOffset = offset.normalized;
 		const dist = math.sqrt(offset.sqrMagnitude);
 
-		if (offset !== Vector2.zero) {
-			if (dist >= 50) {
-				let angle = math.deg(math.atan2(normalizedOffset.y, -normalizedOffset.x));
-				angle -= OFFSET + 90;
-				if (angle < 0) {
-					angle += 360;
-				}
+		if (offset !== Vector2.zero && dist >= 55) {
+			let angle = math.deg(math.atan2(normalizedOffset.y, -normalizedOffset.x));
+			angle -= OFFSET + 90;
+			if (angle < 0) {
+				angle += 360;
+			}
 
-				const sliceAngles = 360 / this.radialSegments.size();
-				for (let i = 0; i < this.radialSegments.size(); i++) {
-					if (angle > i * sliceAngles && angle < (i + 1) * sliceAngles) {
-						if (this.selectedIndex !== i) {
-							this.SetSelectedIndex(i);
-						}
+			const sliceAngles = 360 / this.radialSegments.size();
+			for (let i = 0; i < this.radialSegments.size(); i++) {
+				if (angle > i * sliceAngles && angle < (i + 1) * sliceAngles) {
+					if (this.selectedIndex !== i) {
+						this.SetSelectedIndex(i);
 					}
 				}
 			}
+		} else {
+			this.SetSelectedIndex(-1);
 		}
 
 		for (let i = 0; i < this.radialSegments.size(); i++) {
@@ -250,18 +255,23 @@ export abstract class InternalRadialUI<T extends InternalRadialUIData = Internal
 	}
 
 	private SetSelectedIndex(i: number): void {
+		// Update previous selected
 		if (this.selectedIndex > -1) {
 			const prevSegment = this.radialSegments[this.selectedIndex];
 			NativeTween.LocalScale(prevSegment.gameObject.transform, Vector3.one, 0.1).SetEaseQuadOut();
-			// prevSegment.gameObject.transform.localScale = Vector3.one;
 		}
+
 		this.selectedIndex = i;
-		const segment = this.radialSegments[i];
-		this.onSelectionChanged.Fire(i, segment.data as T);
-		this.itemDetailsRect.gameObject.SetActive(true);
-		this.itemDetailsTitle.text = segment.data.title;
-		this.itemDetailsDesc.text = segment.data.desc;
-		this.itemDetailsImg.sprite = Asset.LoadAsset(segment.data.image);
-		NativeTween.LocalScale(segment.gameObject.transform, Vector3.one.mul(1.03), 0.1).SetEaseQuadOut();
+		if (i > -1) {
+			const segment = this.radialSegments[i];
+			this.onSelectionChanged.Fire(i, segment.data as T);
+			this.itemDetailsRect.gameObject.SetActive(true);
+			this.itemDetailsTitle.text = segment.data.title;
+			this.itemDetailsDesc.text = segment.data.desc;
+			this.itemDetailsImg.sprite = Asset.LoadAsset(segment.data.image);
+			NativeTween.LocalScale(segment.gameObject.transform, Vector3.one.mul(1.03), 0.1).SetEaseQuadOut();
+		} else {
+			this.itemDetailsRect.gameObject.SetActive(false);
+		}
 	}
 }
