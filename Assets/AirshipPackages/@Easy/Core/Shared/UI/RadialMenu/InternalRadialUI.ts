@@ -157,6 +157,9 @@ export abstract class InternalRadialUI<T extends InternalRadialUIData = Internal
 	}
 
 	public Show() {
+		this.segmentContainer.gameObject.SetActive(true);
+		this.active = true;
+
 		this.SetSelectedIndex(this.radialSegments.size() - 1);
 		const t1 = NativeTween.GraphicAlpha(this.bg, 0.4, 0.2).SetEaseQuadOut();
 		this.container.localScale = Vector3.one.mul(1.15);
@@ -168,10 +171,6 @@ export abstract class InternalRadialUI<T extends InternalRadialUIData = Internal
 		this.bin.Add(Mouse.AddUnlocker());
 
 		Mouse.WarpCursorPosition(new Vector2(Screen.width / 2, Screen.height / 2));
-		task.defer(() => {
-			this.segmentContainer.gameObject.SetActive(true);
-			this.active = true;
-		});
 
 		this.bin.Add(
 			Mouse.onRightDown.Connect(() => {
@@ -199,6 +198,9 @@ export abstract class InternalRadialUI<T extends InternalRadialUIData = Internal
 			task.spawnDetached(() => {
 				this.onSubmit.Fire(this.radialSegments[this.selectedIndex].data as T);
 			});
+		}
+		for (let segment of this.radialSegments) {
+			segment.gameObject.transform.localScale = Vector3.one;
 		}
 	}
 
@@ -248,12 +250,18 @@ export abstract class InternalRadialUI<T extends InternalRadialUIData = Internal
 	}
 
 	private SetSelectedIndex(i: number): void {
-		const item = this.radialSegments[i];
+		if (this.selectedIndex > -1) {
+			const prevSegment = this.radialSegments[this.selectedIndex];
+			NativeTween.LocalScale(prevSegment.gameObject.transform, Vector3.one, 0.1).SetEaseQuadOut();
+			// prevSegment.gameObject.transform.localScale = Vector3.one;
+		}
 		this.selectedIndex = i;
-		this.onSelectionChanged.Fire(i, this.radialSegments[i].data as T);
+		const segment = this.radialSegments[i];
+		this.onSelectionChanged.Fire(i, segment.data as T);
 		this.itemDetailsRect.gameObject.SetActive(true);
-		this.itemDetailsTitle.text = item.data.title;
-		this.itemDetailsDesc.text = item.data.desc;
-		this.itemDetailsImg.sprite = Asset.LoadAsset(item.data.image);
+		this.itemDetailsTitle.text = segment.data.title;
+		this.itemDetailsDesc.text = segment.data.desc;
+		this.itemDetailsImg.sprite = Asset.LoadAsset(segment.data.image);
+		NativeTween.LocalScale(segment.gameObject.transform, Vector3.one.mul(1.03), 0.1).SetEaseQuadOut();
 	}
 }

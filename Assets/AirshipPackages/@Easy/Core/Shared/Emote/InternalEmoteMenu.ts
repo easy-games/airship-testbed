@@ -1,4 +1,6 @@
 import { Airship } from "../Airship";
+import { Asset } from "../Asset";
+import { AudioManager } from "../Audio/AudioManager";
 import { CoreNetwork } from "../CoreNetwork";
 import { Binding } from "../Input/Binding";
 import { InternalRadialUI } from "../UI/RadialMenu/InternalRadialUI";
@@ -31,10 +33,19 @@ export default class InternalEmoteMenu extends AirshipBehaviour {
 			this.radialMenu.Hide();
 		});
 
+		this.radialMenu.onSelectionChanged.Connect(() => {
+			AudioManager.PlayClipGlobal(Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Sound/UI_Switch.wav"), {
+				volumeScale: 0.04,
+			});
+		});
+
 		this.radialMenu.onSubmit.Connect((data) => {
 			if (!data) return;
 			const emoteDef = data as EmoteDefinition;
 			CoreNetwork.ClientToServer.Character.EmoteRequest.client.FireServer(emoteDef.id);
+			AudioManager.PlayClipGlobal(Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Sound/UI_Select.wav"), {
+				volumeScale: 0.18,
+			});
 		});
 	}
 
