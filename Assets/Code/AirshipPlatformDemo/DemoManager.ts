@@ -178,12 +178,6 @@ export default class DemoManager extends AirshipBehaviour {
 			character.onEmoteEnd.Connect(() => {
 				emoteBin.Clean();
 			});
-
-			// character.onEmoteStart.Connect((e) => {
-			// 	task.delay(0.5, () => {
-			// 		character.CancelEmote();
-			// 	});
-			// });
 		});
 	}
 
