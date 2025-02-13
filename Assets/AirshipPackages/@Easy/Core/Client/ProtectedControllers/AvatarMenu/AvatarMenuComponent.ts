@@ -44,6 +44,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	public avatarOptionsHolder!: RectTransform;
 	public avatar3DHolder!: RectTransform;
 	public contentScrollRect!: ScrollRect;
+	public avatarLoadingContainer: RectTransform;
+	public avatarLoadingContainerMobile: RectTransform;
 
 	public grid: GridLayoutGroup;
 
@@ -240,8 +242,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 
 		const charTransform = this.mainMenu.avatarView?.humanEntityGo?.transform!;
-		charTransform.position = new Vector3(0, -200, 0);
-		print("set pos -200");
+		charTransform.localPosition = new Vector3(0, -200, 0);
+		this.avatarLoadingContainer.gameObject.SetActive(true);
 
 		let rawImage = this.avatarRenderHolder?.GetComponent<RawImage>();
 		if (rawImage) {
@@ -781,7 +783,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		let accBuilder = this.mainMenu?.avatarView?.accessoryBuilder;
 		accBuilder?.OnMeshCombined.Once(() => {
 			print("set pos 0,0,0");
-			charTransform.position = Vector3.zero;
+			charTransform.localPosition = Vector3.zero;
+			this.avatarLoadingContainer.gameObject.SetActive(false);
 		});
 
 		this.SelectSkinColor(ColorUtil.HexToColor(this.currentUserOutfit.skinColor), true);
