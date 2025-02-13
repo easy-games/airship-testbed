@@ -99,6 +99,7 @@ export abstract class InternalRadialUI<T extends InternalRadialUIData = Internal
 		this.segmentContainer.gameObject.SetActive(false);
 		this.itemDetailsRect.gameObject.SetActive(false);
 		this.bg.color = new Color(0, 0, 0, 0);
+		this.bg.raycastTarget = false;
 	}
 
 	public abstract OnWheelSegmentCreated(segment: InternalRadialSegment<T>): void;
@@ -164,6 +165,7 @@ export abstract class InternalRadialUI<T extends InternalRadialUIData = Internal
 
 		this.SetSelectedIndex(-1);
 		const t1 = NativeTween.GraphicAlpha(this.bg, 0.5, 0.2).SetEaseQuadOut();
+		this.bg.raycastTarget = true;
 		this.container.localScale = Vector3.one.mul(1.15);
 		const t2 = NativeTween.LocalScale(this.container, Vector3.one, 0.2).SetEaseQuadOut();
 		this.bin.Add(() => {
@@ -206,6 +208,7 @@ export abstract class InternalRadialUI<T extends InternalRadialUIData = Internal
 		this.segmentContainer.gameObject.SetActive(false);
 		this.itemDetailsRect.gameObject.SetActive(false);
 		NativeTween.GraphicAlpha(this.bg, 0, 0.2).SetEaseQuadOut();
+		this.bg.raycastTarget = false;
 		// this.bg.color = new Color(0, 0, 0, 0);
 		this.bin.Clean();
 		this.active = false;
