@@ -26,7 +26,6 @@ const defs: {
 		title: "Boom",
 		desc: "You're done bud",
 		image: "Assets/AirshipPackages/@Easy/Core/Prefabs/EmoteImages/EmoteFingerGun.png.sprite",
-		duration: 1,
 	},
 	[EmoteId.HandsUp]: {
 		anim: "Assets/AirshipPackages/@Easy/Core/Prefabs/Character/Animations/Gestures/Airship_Character_Gesture__HandsUp.anim",
@@ -38,7 +37,7 @@ const defs: {
 		duration: 4,
 	},
 	[EmoteId.ThumbsUp]: {
-		anim: "Assets/AirshipPackages/@Easy/Core/Prefabs/Character/Animations/Gestures/Airship_Character_Gesture__Positive_LeftHand.anim",
+		anim: "Assets/AirshipPackages/@Easy/Core/Prefabs/Character/Animations/Gestures/Airship_Character_Gesture__Positive_RightHand.anim",
 		title: "Thumbs up",
 		desc: "I agree with that!",
 		image: "Assets/AirshipPackages/@Easy/Core/Prefabs/EmoteImages/EmoteThumbsUp.png.sprite",
@@ -47,7 +46,7 @@ const defs: {
 		duration: gestureDuration,
 	},
 	[EmoteId.ThumbsDown]: {
-		anim: "Assets/AirshipPackages/@Easy/Core/Prefabs/Character/Animations/Gestures/Airship_Character_Gesture__Negative_LeftHand.anim",
+		anim: "Assets/AirshipPackages/@Easy/Core/Prefabs/Character/Animations/Gestures/Airship_Character_Gesture__Negative_RightHand.anim",
 		title: "Thumbs down",
 		desc: "I don't agree",
 		image: "Assets/AirshipPackages/@Easy/Core/Prefabs/EmoteImages/EmoteThumbsDown.png.sprite",
@@ -56,7 +55,7 @@ const defs: {
 		duration: gestureDuration,
 	},
 	[EmoteId.Point]: {
-		anim: "Assets/AirshipPackages/@Easy/Core/Prefabs/Character/Animations/Gestures/Airship_Character_Gesture__Pointing_LeftHand.anim",
+		anim: "Assets/AirshipPackages/@Easy/Core/Prefabs/Character/Animations/Gestures/Airship_Character_Gesture__Pointing_RightHand.anim",
 		title: "Point",
 		desc: "You there!",
 		image: "Assets/AirshipPackages/@Easy/Core/Prefabs/EmoteImages/EmotePoint.png.sprite",
