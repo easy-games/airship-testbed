@@ -1,6 +1,6 @@
 import { Keyboard, Mouse } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
-import { Signal } from "@Easy/Core/Shared/Util/Signal";
+import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { Asset } from "../../Asset";
 import InternalRadialUISegment from "./InternalRadialSegment";
 
@@ -173,14 +173,15 @@ export abstract class InternalRadialUI<T extends InternalRadialUIData = Internal
 		Mouse.WarpCursorPosition(new Vector2(Screen.width / 2, Screen.height / 2));
 
 		this.bin.Add(
-			Mouse.onRightDown.Connect(() => {
+			Mouse.onRightDown.ConnectWithPriority(SignalPriority.HIGHEST, (e) => {
+				e.SetCancelled(true);
 				this.selectedIndex = -1;
 				this.onSelectionChanged.Fire(-1, undefined);
 				this.Hide();
 			}),
 		);
 		this.bin.Add(
-			Mouse.onLeftDown.Connect(() => {
+			Mouse.onRightDown.ConnectWithPriority(SignalPriority.HIGHEST, () => {
 				this.Hide();
 			}),
 		);

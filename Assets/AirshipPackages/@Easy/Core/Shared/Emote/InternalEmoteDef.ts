@@ -4,7 +4,7 @@ import { EmoteId } from "./EmoteId";
 
 const gestureFadeInTime = 0.22;
 const gestureFadeOutTime = 0.22;
-const gestureDuration = 1.6;
+const gestureDuration = 2.2;
 
 const defs: {
 	[key in EmoteId]: Omit<EmoteDefinition, "id">;
