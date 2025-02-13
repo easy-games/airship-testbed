@@ -27,14 +27,14 @@ export default class CharacterRendering extends AirshipBehaviour {
 	private lastSetAlpha = -1;
 
 	protected Awake(): void {
-		this.character = this.gameObject.GetAirshipComponent<Character>()!;
-		if (this.character?.accessoryBuilder) {
-			this.character.accessoryBuilder.SetCreateOverlayMeshOnCombine(true);
-		}
+		// this.character = this.gameObject.GetAirshipComponent<Character>()!;
+		// if (this.character?.accessoryBuilder) {
+		// 	this.character.accessoryBuilder.SetCreateOverlayMeshOnCombine(true);
+		// }
 	}
 
 	protected OnEnable(): void {
-		this.Refresh();
+		// this.Refresh();
 	}
 
 	protected OnDisable(): void {
