@@ -1,5 +1,8 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
+import { Game } from "@Easy/Core/Shared/Game";
+import { Protected } from "@Easy/Core/Shared/Protected";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
 
 type VoiceState = "talking" | "silent";
 
@@ -11,30 +14,47 @@ export default class MicIndicator extends AirshipBehaviour {
 	private bin = new Bin();
 	private stateBin = new Bin();
 
+	private voiceChat = Bridge.GetAirshipVoiceChatNetwork();
+	private agent: ChatroomAgent = this.voiceChat.agent;
+
+	private errorMsgTime = 0;
+
 	override OnEnable(): void {}
 
 	protected Start(): void {
-		const voiceChat = Bridge.GetAirshipVoiceChatNetwork();
 		task.spawn(() => {
-			while (!voiceChat.gameObject.activeInHierarchy || !voiceChat.agent) {
+			while (!this.voiceChat.gameObject.activeInHierarchy || !this.agent) {
 				task.unscaledWait();
 			}
-			voiceChat.agent.MuteSelf = true;
+			this.agent.MuteSelf = true;
 			Airship.Input.OnDown("PushToTalk").Connect((event) => {
-				voiceChat.agent.MuteSelf = false;
+				if (event.uiProcessed) return;
+
+				if (!Protected.settings.data.microphoneEnabled) {
+					if (Time.time - this.errorMsgTime > 4) {
+						this.errorMsgTime = Time.time;
+						Game.localPlayer.SendMessage(
+							ChatColor.Red(
+								"You tried to use voice chat when microphone was disabled. Enable it in settings.",
+							),
+						);
+					}
+					return;
+				}
+				this.agent.MuteSelf = false;
 			});
 			Airship.Input.OnUp("PushToTalk").Connect((event) => {
-				voiceChat.agent.MuteSelf = true;
+				this.agent.MuteSelf = true;
 			});
 		});
 		this.canvasGroup.alpha = 0;
 	}
 
 	public Update(dt: number): void {
-		if (Airship.Input.IsDown("PushToTalk")) {
-			this.SetState("talking");
-		} else {
+		if (this.agent.MuteSelf) {
 			this.SetState("silent");
+		} else {
+			this.SetState("talking");
 		}
 	}
 
