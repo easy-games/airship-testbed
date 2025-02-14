@@ -87,7 +87,7 @@ export default class Inventory extends AirshipBehaviour {
 		const target = this.modifyPermission;
 		if (target === InventoryModifyPermission.NetworkOwner) {
 			return Game.IsClient()
-				? this.networkIdentity.isOwned
+				? player === Game.localPlayer && this.networkIdentity.isOwned
 				: this.networkIdentity.connectionToClient?.connectionId === player.connectionId;
 		} else {
 			return true;
