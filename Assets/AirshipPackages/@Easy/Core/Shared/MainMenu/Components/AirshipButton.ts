@@ -31,7 +31,7 @@ export default class AirshipButton extends AirshipBehaviour {
 	}
 
 	override Start(): void {
-		const rect = this.gameObject.GetComponent<RectTransform>()!;
+		const rect = this.transform as RectTransform;
 		this.startPos = rect.anchoredPosition;
 		this.startingScale = rect.localScale;
 		this.bin.AddEngineEventConnection(
@@ -75,7 +75,7 @@ export default class AirshipButton extends AirshipBehaviour {
 	}
 
 	public PlayMouseUpEffect(): void {
-		const rect = this.gameObject.GetComponent<RectTransform>()!;
+		const rect = this.transform as RectTransform;
 		if (this.clickEffect === AirshipButtonClickEffect.Squish) {
 			NativeTween.LocalScale(rect, this.startingScale, 0.1).SetUseUnscaledTime(true);
 		} else if (this.clickEffect === AirshipButtonClickEffect.ShiftDown) {
@@ -113,6 +113,10 @@ export default class AirshipButton extends AirshipBehaviour {
 
 	public SetStartingScale(scale: Vector3): void {
 		this.startingScale = scale;
+	}
+
+	protected OnDisable(): void {
+		this.transform.localScale = Vector3.one;
 	}
 
 	override OnDestroy(): void {

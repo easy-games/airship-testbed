@@ -186,9 +186,12 @@ export class ClientChatSingleton {
 		const isMainMenu = Game.coreContext === CoreContext.MAIN_MENU;
 		if (isMainMenu) return;
 
-		contextbridge.subscribe("Chat:AddLocalMessage", (context: LuauContext, rawText: string, nameWithPrefix?: string, senderClientId?: number) => {
-			this.AddMessage(rawText, nameWithPrefix, senderClientId);
-		});
+		contextbridge.subscribe(
+			"Chat:AddLocalMessage",
+			(context: LuauContext, rawText: string, nameWithPrefix?: string, senderClientId?: number) => {
+				this.AddMessage(rawText, nameWithPrefix, senderClientId);
+			},
+		);
 
 		CoreNetwork.ServerToClient.ChatMessage.client.OnServerEvent((rawText, nameWithPrefix, senderClientId) => {
 			this.AddMessage(rawText, nameWithPrefix, senderClientId);
@@ -210,6 +213,7 @@ export class ClientChatSingleton {
 		Keyboard.OnKeyDown(
 			Key.Enter,
 			(event) => {
+				if (DevConsole.IsOpen) return;
 				if (EventSystem.current.currentSelectedGameObject && !this.selected) return;
 				if (this.selected) {
 					this.SubmitInputField();

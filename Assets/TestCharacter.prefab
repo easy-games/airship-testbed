@@ -27,7 +27,7 @@ PrefabInstance:
     - target: {fileID: 7124091312930647041, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       propertyPath: scriptFile
       value: 
-      objectReference: {fileID: -3495772444630422662, guid: 1d9ff343e68ebb247bb7a1dd2270fd63, type: 3}
+      objectReference: {fileID: 5399347344820012199, guid: 1d9ff343e68ebb247bb7a1dd2270fd63, type: 3}
     - target: {fileID: 8440015110078338219, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       propertyPath: _assetId
       value: 2280995564

@@ -423,15 +423,7 @@ export class AirshipCharactersSingleton {
 	}
 
 	public FindByCollider(collider: Collider): Character | undefined {
-		for (let character of this.characters) {
-			if (
-				character.gameObject === collider.gameObject ||
-				character.gameObject === collider.gameObject.transform.parent?.parent?.gameObject
-			) {
-				return character;
-			}
-		}
-		return undefined;
+		return collider.gameObject.GetAirshipComponentInParent<Character>();
 	}
 
 	/**

@@ -57,6 +57,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: CharacterForceTrigger
+    singleton: 0
     decorators: []
     properties:
     - name: forceSpace
@@ -67,7 +68,7 @@ MonoBehaviour:
         objectType: 
         serializedItems: []
         objectRefs: []
-      refPath: 
+      refPath: AirshipPackages/@Easy/Core/Shared/Types/Generated.d@Space
       fileRef: 
       decorators: []
       nullable: 0
@@ -89,9 +90,9 @@ MonoBehaviour:
       serializedValue: '{"x":0.0,"y":100.0,"z":0.0}'
       serializedObject: {fileID: 0}
       modified: 1
-    - name: continuous
-      type: boolean
-      objectType: 
+    - name: collider
+      type: object
+      objectType: BoxCollider
       items:
         type: 
         objectType: 
@@ -101,9 +102,9 @@ MonoBehaviour:
       fileRef: 
       decorators: []
       nullable: 0
-      serializedValue: 0
-      serializedObject: {fileID: 0}
-      modified: 0
+      serializedValue: 
+      serializedObject: {fileID: 2987259677804363232}
+      modified: 1
     displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0
@@ -126,8 +127,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3, y: 1, z: 3}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 3, y: 1.5, z: 3}
+  m_Center: {x: 0, y: -0.5, z: 0}
 --- !u!1 &8282519569632685581
 GameObject:
   m_ObjectHideFlags: 0
@@ -169,7 +170,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8282519569632685581}
-  m_Mesh: {fileID: -5495902117074765545, guid: bdf2babf7a223774cae5f80a52733f88, type: 3}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &6722799087152646170
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -189,6 +190,7 @@ MeshRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:

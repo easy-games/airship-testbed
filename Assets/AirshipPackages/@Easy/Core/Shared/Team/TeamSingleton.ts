@@ -154,7 +154,7 @@ export class TeamsSingleton {
 	 * @returns Team that corresponds to name, if it exists.
 	 */
 	public FindByName(teamName: string): Team | undefined {
-		return ObjectUtils.values(this.teams).find((entry) => entry.team.name === teamName)?.team;
+		return ObjectUtils.values(this.teams).find((entry) => entry.team.name.lower() === teamName.lower())?.team;
 	}
 
 	/**

@@ -1,5 +1,4 @@
-import { ClientSettingsController } from "@Easy/Core/Client/ProtectedControllers/Settings/ClientSettingsController";
-import { Dependency } from "@Easy/Core/Shared/Flamework";
+import { Protected } from "@Easy/Core/Shared/Protected";
 import AirshipToggle from "../../AirshipToggle";
 import MicDevice from "./MicDevice";
 
@@ -28,7 +27,7 @@ export default class MicrophoneSettingsPage extends AirshipBehaviour {
 			micDeviceComponent.SetSelected(currentDeviceIndex === i);
 		}
 
-		const clientSettings = Dependency<ClientSettingsController>();
+		const clientSettings = Protected.settings;
 		task.spawn(() => {
 			const permission = Bridge.HasMicrophonePermission() && clientSettings.data.microphoneEnabled;
 			this.voiceChatToggle.SetValue(permission, true);
@@ -63,7 +62,7 @@ export default class MicrophoneSettingsPage extends AirshipBehaviour {
 		Bridge.StopMicRecording();
 		Bridge.SetMicDeviceIndex(deviceIndex);
 
-		const clientSettings = Dependency<ClientSettingsController>();
+		const clientSettings = Protected.settings;
 		clientSettings.data.micDeviceName = deviceName;
 		clientSettings.MarkAsDirty();
 

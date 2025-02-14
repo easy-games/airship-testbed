@@ -110,16 +110,17 @@ export default class PartyCard extends AirshipBehaviour {
 			return;
 		}
 
-		if (!userStatus || userStatus.status !== UserStatus.IN_GAME) {
-			this.layoutElement.preferredHeight = 84;
-			this.layoutElement.gameObject.GetComponent<ImageWithRoundedCorners>()?.Refresh();
-			this.partyChatButton.gameObject.SetActive(false);
-			return;
-		}
+		// Party chat button visibility
 		if (Game.IsMobile()) {
 			this.partyChatButton.gameObject.SetActive(false);
 		} else {
 			this.partyChatButton.gameObject.SetActive(true);
+		}
+
+		if (!userStatus || userStatus.status !== UserStatus.IN_GAME) {
+			this.layoutElement.preferredHeight = 84;
+			this.layoutElement.gameObject.GetComponent<ImageWithRoundedCorners>()?.Refresh();
+			return;
 		}
 
 		this.layoutElement.preferredHeight = 124;

@@ -382,7 +382,7 @@ interface DestroyWatcher extends Component {
 interface OcclusionCam extends Component {
 	targetCamera: Camera;
 	Init(camera: Camera);
-	BumpForOcclusion(attachToPos: Vector3, mask: number): void;
+	BumpForOcclusion(attachToPos: Vector3, mask: number): number;
 }
 
 interface PredictedObject extends GameObject {
@@ -421,11 +421,11 @@ interface AccessoryBuilder extends MonoBehaviour {
 	): ActiveAccessory | undefined;
 	AddSkinAccessory(skin: AccessorySkin, rebuildMeshImmediately: boolean): void;
 	EquipAccessoryOutfit(outfit: AccessoryOutfit, rebuildMeshImmediately: boolean): ActiveAccessory[];
-	GetAccessoryMeshes(slot: AccessorySlot): Renderer[];
+	GetAccessoryRenderers(slot: AccessorySlot): Renderer[];
 	GetAccessoryParticles(slot: AccessorySlot): ParticleSystem[];
 	GetActiveAccessories(): ActiveAccessory[];
-	GetActiveAccessoryBySlot(target: AccessorySlot): ActiveAccessory;
-	GetAllAccessoryMeshes(): Renderer[];
+	GetActiveAccessoryBySlot(target: AccessorySlot): ActiveAccessory | undefined;
+	GetAllAccessoryRenderers(): Renderer[];
 	GetCombinedSkinnedMesh(): SkinnedMeshRenderer;
 	GetCombinedStaticMesh(): MeshRenderer;
 	RemoveAccessorySlot(slot: AccessorySlot, rebuildMeshImmediately: boolean): void;
@@ -438,6 +438,8 @@ interface AccessoryBuilder extends MonoBehaviour {
 	TryCombineMeshes(): void;
 
 	OnMeshCombined: MonoSignal<[usedMeshCombiner: boolean, skinnedMesh: SkinnedMeshRenderer, staticMesh: MeshRenderer]>;
+	OnAccessoryAdded: MonoSignal<[willCombineImmediate: boolean, accessories: ActiveAccessory[]]>;
+	OnAccessoryRemoved: MonoSignal<[willCombineImmediate: boolean, accessories: ActiveAccessory[]]>;
 }
 
 interface MeshCombiner extends MonoBehaviour {
@@ -736,6 +738,7 @@ interface DiskManager {
 	/** Will return empty string if file not found. */
 	ReadFileAsync(path: string): string | undefined;
 	WriteFileAsync(path: string, content: string): boolean;
+	EnsureDirectory(path: string): void;
 }
 declare const DiskManager: DiskManager;
 

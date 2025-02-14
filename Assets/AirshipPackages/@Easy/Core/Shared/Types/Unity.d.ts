@@ -1712,6 +1712,10 @@ declare const Ray: RayConstructor;
 
 interface Rigidbody {
 	AddForce_ForceMode(force: Vector3, forceMode: ForceMode): void;
+	/**
+	 * @deprecated Use `linearVelocity` instead.
+	 */
+	velocity: Vector3;
 }
 
 interface Component extends Object {

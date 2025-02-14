@@ -1,16 +1,13 @@
-import { ClientSettingsController } from "@Easy/Core/Client/ProtectedControllers//Settings/ClientSettingsController";
 import { Controller } from "@Easy/Core/Shared/Flamework";
+import { Protected } from "@Easy/Core/Shared/Protected";
 import { MainMenuController } from "../MainMenuController";
 
 @Controller({})
 export class MainMenuSettingsUIController {
-	constructor(
-		private readonly clientSettingsController: ClientSettingsController,
-		private readonly mainMenuController: MainMenuController,
-	) {}
+	constructor(private readonly mainMenuController: MainMenuController) {}
 
 	protected OnStart(): void {
-		this.clientSettingsController.WaitForSettingsLoaded().then(() => {
+		Protected.settings.WaitForSettingsLoaded().then(() => {
 			this.Setup();
 		});
 	}

@@ -2,6 +2,7 @@ import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI, HoverState } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { SettingsPageSingleton } from "../../Singletons/SettingsPageSingleton";
+import { SettingsTab } from "../Settings/SettingsPageName";
 
 export default class NavbarSettingsButton extends AirshipBehaviour {
 	public bgImage!: Image;
@@ -11,7 +12,7 @@ export default class NavbarSettingsButton extends AirshipBehaviour {
 	override Start(): void {
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnClickEvent(this.gameObject, () => {
-				Dependency<SettingsPageSingleton>().Open();
+				Dependency<SettingsPageSingleton>().Open(SettingsTab.Account);
 			}),
 		);
 

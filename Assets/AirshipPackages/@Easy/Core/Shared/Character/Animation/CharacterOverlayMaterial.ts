@@ -28,7 +28,7 @@ export default class CharacterOverlayMaterial extends AirshipBehaviour {
 					this.currentRenderers = [skinnedMesh, staticMesh];
 				} else {
 					//Individual accessories
-					let allMeshes = this.accessoryBuilder.GetAllAccessoryMeshes();
+					let allMeshes = this.accessoryBuilder.GetAllAccessoryRenderers();
 					for (const mesh of allMeshes) {
 						this.currentRenderers.push(mesh);
 						if (mesh instanceof SkinnedMeshRenderer) {

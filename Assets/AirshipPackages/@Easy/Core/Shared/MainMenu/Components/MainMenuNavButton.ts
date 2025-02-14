@@ -14,6 +14,7 @@ export default class MainMenuNavButton extends AirshipBehaviour {
 
 	private textColorActive = new Color(1, 1, 1, 1);
 	private textColorNormal = ColorUtil.HexToColor("D8D8D8");
+	public noTextColorChange = false;
 
 	public Awake(): void {
 		this.image = this.gameObject.GetComponent<Image>()!;
@@ -23,6 +24,7 @@ export default class MainMenuNavButton extends AirshipBehaviour {
 	override Start(): void {
 		CanvasAPI.OnHoverEvent(this.gameObject, (state) => {
 			if (this.selected) return;
+			if (this.noTextColorChange) return;
 			if (state === HoverState.ENTER) {
 				this.text.color = this.textColorActive;
 				this.iconImage.color = this.textColorActive;
@@ -51,6 +53,8 @@ export default class MainMenuNavButton extends AirshipBehaviour {
 		this.selected = val;
 
 		this.image.color = this.image.color = val ? this.selectedColor : this.unselectedColor;
+
+		if (this.noTextColorChange) return;
 		this.text.color = val ? this.textColorActive : this.textColorNormal;
 		this.iconImage.color = val ? this.textColorActive : this.textColorNormal;
 		// this.image.color = val ? this.selectedColor : this.unselectedColor;

@@ -52,9 +52,9 @@ MonoBehaviour:
   skinnedToCharacter: 0
   meshLods: []
   matColors:
-  - {fileID: 3037679283555048450}
-  - {fileID: 6572687862675281048}
-  - {fileID: 4313368169031728760}
+  - {fileID: 384965475275141233}
+  - {fileID: 869406232457159299}
+  - {fileID: 9213572400741714100}
   canMeshCombine: 1
   bodyMask: 0
 --- !u!1001 &5443328445201169373
@@ -65,30 +65,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1374214092104779756}
     m_Modifications:
-    - target: {fileID: 1205969264586436421, guid: 68c591db23376cd4499028d27bccdbe0, type: 3}
-      propertyPath: colorSettings.Array.data[0].baseColor.b
-      value: 0.060074758
-      objectReference: {fileID: 0}
-    - target: {fileID: 1205969264586436421, guid: 68c591db23376cd4499028d27bccdbe0, type: 3}
-      propertyPath: colorSettings.Array.data[0].baseColor.g
-      value: 0.10592982
-      objectReference: {fileID: 0}
-    - target: {fileID: 1205969264586436421, guid: 68c591db23376cd4499028d27bccdbe0, type: 3}
-      propertyPath: colorSettings.Array.data[0].baseColor.r
-      value: 0.16981131
-      objectReference: {fileID: 0}
-    - target: {fileID: 1209801791608330600, guid: 68c591db23376cd4499028d27bccdbe0, type: 3}
-      propertyPath: colorSettings.Array.data[0].baseColor.b
-      value: 0.09758811
-      objectReference: {fileID: 0}
-    - target: {fileID: 1209801791608330600, guid: 68c591db23376cd4499028d27bccdbe0, type: 3}
-      propertyPath: colorSettings.Array.data[0].baseColor.g
-      value: 0.4056604
-      objectReference: {fileID: 0}
-    - target: {fileID: 1209801791608330600, guid: 68c591db23376cd4499028d27bccdbe0, type: 3}
-      propertyPath: colorSettings.Array.data[0].baseColor.r
-      value: 0.34000027
-      objectReference: {fileID: 0}
     - target: {fileID: 6212854767953000105, guid: 68c591db23376cd4499028d27bccdbe0, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0
@@ -129,30 +105,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7035351969134946271, guid: 68c591db23376cd4499028d27bccdbe0, type: 3}
-      propertyPath: colorSettings.Array.data[0].baseColor.b
-      value: 0.060074758
-      objectReference: {fileID: 0}
-    - target: {fileID: 7035351969134946271, guid: 68c591db23376cd4499028d27bccdbe0, type: 3}
-      propertyPath: colorSettings.Array.data[0].baseColor.g
-      value: 0.10592982
-      objectReference: {fileID: 0}
-    - target: {fileID: 7035351969134946271, guid: 68c591db23376cd4499028d27bccdbe0, type: 3}
-      propertyPath: colorSettings.Array.data[0].baseColor.r
-      value: 0.16981131
-      objectReference: {fileID: 0}
-    - target: {fileID: 8094867518488987045, guid: 68c591db23376cd4499028d27bccdbe0, type: 3}
-      propertyPath: colorSettings.Array.data[0].baseColor.b
-      value: 0.060074758
-      objectReference: {fileID: 0}
-    - target: {fileID: 8094867518488987045, guid: 68c591db23376cd4499028d27bccdbe0, type: 3}
-      propertyPath: colorSettings.Array.data[0].baseColor.g
-      value: 0.10592982
-      objectReference: {fileID: 0}
-    - target: {fileID: 8094867518488987045, guid: 68c591db23376cd4499028d27bccdbe0, type: 3}
-      propertyPath: colorSettings.Array.data[0].baseColor.r
-      value: 0.16981131
-      objectReference: {fileID: 0}
     - target: {fileID: 9048351829562244662, guid: 68c591db23376cd4499028d27bccdbe0, type: 3}
       propertyPath: m_Name
       value: Sidespikes_low
@@ -162,36 +114,36 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 68c591db23376cd4499028d27bccdbe0, type: 3}
+--- !u!114 &384965475275141233 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5682762552815045548, guid: 68c591db23376cd4499028d27bccdbe0, type: 3}
+  m_PrefabInstance: {fileID: 5443328445201169373}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &869406232457159299 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5159531143919311198, guid: 68c591db23376cd4499028d27bccdbe0, type: 3}
+  m_PrefabInstance: {fileID: 5443328445201169373}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &2140027993048780148 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6212854767953000105, guid: 68c591db23376cd4499028d27bccdbe0, type: 3}
   m_PrefabInstance: {fileID: 5443328445201169373}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &3037679283555048450 stripped
+--- !u!114 &9213572400741714100 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7035351969134946271, guid: 68c591db23376cd4499028d27bccdbe0, type: 3}
-  m_PrefabInstance: {fileID: 5443328445201169373}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &4313368169031728760 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8094867518488987045, guid: 68c591db23376cd4499028d27bccdbe0, type: 3}
-  m_PrefabInstance: {fileID: 5443328445201169373}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &6572687862675281048 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1205969264586436421, guid: 68c591db23376cd4499028d27bccdbe0, type: 3}
+  m_CorrespondingSourceObject: {fileID: 3771686802607518569, guid: 68c591db23376cd4499028d27bccdbe0, type: 3}
   m_PrefabInstance: {fileID: 5443328445201169373}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}

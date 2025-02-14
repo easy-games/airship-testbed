@@ -1,7 +1,7 @@
 import { ProtectedPartyController } from "@Easy/Core/Client/ProtectedControllers/Airship/Party/PartyController";
 import { MainMenuBlockSingleton } from "@Easy/Core/Client/ProtectedControllers/Settings/MainMenuBlockSingleton";
 import { ProtectedFriendsController } from "@Easy/Core/Client/ProtectedControllers/Social/FriendsController";
-import { Airship, Platform } from "@Easy/Core/Shared/Airship";
+import { Airship } from "@Easy/Core/Shared/Airship";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { ProtectedPlayer } from "@Easy/Core/Shared/Player/ProtectedPlayer";
@@ -21,6 +21,10 @@ export default class PlayerEntry extends AirshipBehaviour {
 	public OnEnable(): void {}
 
 	public Init(player: ProtectedPlayer): void {
+		this.reportBtn.SetActive(false);
+		this.addToPartyBtn.SetActive(false);
+		this.addFriendBtn.SetActive(false);
+
 		task.spawn(async () => {
 			const texture = await Airship.Players.GetProfilePictureAsync(player.userId);
 			if (texture) {

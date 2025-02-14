@@ -8,6 +8,7 @@ import { Game } from "../../Game";
 import { Protected } from "../../Protected";
 import { CanvasAPI, HoverState } from "../../Util/CanvasAPI";
 import { SettingsPageSingleton } from "../Singletons/SettingsPageSingleton";
+import { SettingsTab } from "./Settings/SettingsPageName";
 
 export default class ProfileOptionsButton extends AirshipBehaviour {
 	public hoverBG: Image;
@@ -43,7 +44,7 @@ export default class ProfileOptionsButton extends AirshipBehaviour {
 				options.push({
 					text: "Settings",
 					onClick: () => {
-						Dependency<SettingsPageSingleton>().Open();
+						Dependency<SettingsPageSingleton>().Open(SettingsTab.Account);
 					},
 				});
 				if (!Screen.fullScreen) {
