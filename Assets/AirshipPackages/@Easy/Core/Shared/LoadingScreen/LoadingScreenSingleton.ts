@@ -29,7 +29,12 @@ export class LoadingScreenSingleton {
 		if (Game.coreContext === CoreContext.MAIN_MENU) return;
 		this.coreLoadingScreen = GameObject.Find("CoreLoadingScreen")?.GetComponent<CoreLoadingScreen>()!;
 		this.coreLoadingScreen.SetProgress("Building the World", 10);
-		this.loadingBin.Add(Mouse.AddUnlocker());
+
+		task.spawn(() => {
+			// AddUnlocker can yield, which we need to avoid in singleton constructors,
+			// so this is wrapped in a spawn for now.
+			this.loadingBin.Add(Mouse.AddUnlocker());
+		});
 
 		OnUpdate.Once(() => {
 			if (!this.hasUsed) {
