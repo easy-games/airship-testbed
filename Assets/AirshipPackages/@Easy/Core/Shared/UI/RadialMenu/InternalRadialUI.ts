@@ -1,6 +1,6 @@
 import { Keyboard, Mouse } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
-import { Signal } from "@Easy/Core/Shared/Util/Signal";
+import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { Asset } from "../../Asset";
 import InternalRadialUISegment from "./InternalRadialSegment";
 
@@ -62,6 +62,8 @@ const OFFSET = 45;
 export abstract class InternalRadialUI<T extends InternalRadialUIData = InternalRadialUIData> extends AirshipBehaviour {
 	public readonly onSelectionChanged = new Signal<[index: number, data: T | undefined]>();
 	public readonly onSubmit = new Signal<[data: T | undefined]>();
+	public readonly onOpened = new Signal();
+	public readonly onClosed = new Signal();
 
 	@SerializeField() protected canvasGroup: CanvasGroup;
 	@SerializeField() public bg: Image;
@@ -97,6 +99,7 @@ export abstract class InternalRadialUI<T extends InternalRadialUIData = Internal
 		this.segmentContainer.gameObject.SetActive(false);
 		this.itemDetailsRect.gameObject.SetActive(false);
 		this.bg.color = new Color(0, 0, 0, 0);
+		this.bg.raycastTarget = false;
 	}
 
 	public abstract OnWheelSegmentCreated(segment: InternalRadialSegment<T>): void;
@@ -161,7 +164,8 @@ export abstract class InternalRadialUI<T extends InternalRadialUIData = Internal
 		this.active = true;
 
 		this.SetSelectedIndex(-1);
-		const t1 = NativeTween.GraphicAlpha(this.bg, 0.4, 0.2).SetEaseQuadOut();
+		const t1 = NativeTween.GraphicAlpha(this.bg, 0.5, 0.2).SetEaseQuadOut();
+		this.bg.raycastTarget = true;
 		this.container.localScale = Vector3.one.mul(1.15);
 		const t2 = NativeTween.LocalScale(this.container, Vector3.one, 0.2).SetEaseQuadOut();
 		this.bin.Add(() => {
@@ -173,14 +177,15 @@ export abstract class InternalRadialUI<T extends InternalRadialUIData = Internal
 		Mouse.WarpCursorPosition(new Vector2(Screen.width / 2, Screen.height / 2));
 
 		this.bin.Add(
-			Mouse.onRightDown.Connect(() => {
+			Mouse.onRightDown.ConnectWithPriority(SignalPriority.HIGHEST, (e) => {
+				e.SetCancelled(true);
 				this.selectedIndex = -1;
 				this.onSelectionChanged.Fire(-1, undefined);
 				this.Hide();
 			}),
 		);
 		this.bin.Add(
-			Mouse.onLeftDown.Connect(() => {
+			Mouse.onRightDown.ConnectWithPriority(SignalPriority.HIGHEST, () => {
 				this.Hide();
 			}),
 		);
@@ -189,6 +194,13 @@ export abstract class InternalRadialUI<T extends InternalRadialUIData = Internal
 				this.Hide();
 			}),
 		);
+		this.bin.Add(
+			Mouse.onLeftDown.ConnectWithPriority(SignalPriority.HIGHEST, (e) => {
+				e.SetCancelled(true);
+				this.Hide();
+			}),
+		);
+		this.onOpened.Fire();
 	}
 
 	public Hide() {
@@ -196,6 +208,7 @@ export abstract class InternalRadialUI<T extends InternalRadialUIData = Internal
 		this.segmentContainer.gameObject.SetActive(false);
 		this.itemDetailsRect.gameObject.SetActive(false);
 		NativeTween.GraphicAlpha(this.bg, 0, 0.2).SetEaseQuadOut();
+		this.bg.raycastTarget = false;
 		// this.bg.color = new Color(0, 0, 0, 0);
 		this.bin.Clean();
 		this.active = false;
@@ -207,6 +220,7 @@ export abstract class InternalRadialUI<T extends InternalRadialUIData = Internal
 		for (let segment of this.radialSegments) {
 			segment.gameObject.transform.localScale = Vector3.one;
 		}
+		this.onClosed.Fire();
 	}
 
 	private selectedIndex = -1;

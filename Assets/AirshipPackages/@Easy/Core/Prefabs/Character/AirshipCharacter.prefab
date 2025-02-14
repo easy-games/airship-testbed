@@ -867,7 +867,7 @@ MonoBehaviour:
       nullable: 0
       serializedValue: 1
       serializedObject: {fileID: 0}
-      modified: 0
+      modified: 1
     - name: transparentDistance
       type: number
       objectType: 
@@ -942,6 +942,21 @@ MonoBehaviour:
       nullable: 0
       serializedValue: 
       serializedObject: {fileID: 2100000, guid: 94728df95d924ac408cc8ba97da6fe09, type: 2}
+      modified: 1
+    - name: character
+      type: AirshipBehaviour
+      objectType: Character
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: AirshipPackages/@Easy/Core/Shared/Character/Character.ts
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: -1624083086148811293}
       modified: 1
     displayIcon: {fileID: 0}
     displayName: 

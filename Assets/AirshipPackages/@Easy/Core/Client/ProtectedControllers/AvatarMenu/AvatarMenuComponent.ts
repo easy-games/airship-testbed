@@ -44,6 +44,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	public avatarOptionsHolder!: RectTransform;
 	public avatar3DHolder!: RectTransform;
 	public contentScrollRect!: ScrollRect;
+	public avatarLoadingContainer: RectTransform;
+	public avatarLoadingContainerMobile: RectTransform;
 
 	public grid: GridLayoutGroup;
 
@@ -239,6 +241,10 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			}
 		}
 
+		const charTransform = this.mainMenu.avatarView?.humanEntityGo?.transform!;
+		charTransform.localPosition = new Vector3(0, -200, 0);
+		this.avatarLoadingContainer.gameObject.SetActive(true);
+
 		let rawImage = this.avatarRenderHolder?.GetComponent<RawImage>();
 		if (rawImage) {
 			rawImage.texture = mainMenuSingleton.avatarEditorRenderTexture;
@@ -255,7 +261,6 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			this.bin.Add(
 				Dependency<MainMenuController>().onBeforePageChange.Connect((event) => {
 					if (this.dirty && event.oldPage === MainMenuPageType.Avatar) {
-						print("showing confirm..");
 						const [success, res] = Dependency<MainMenuSingleton>()
 							.ShowConfirmModal(this.discardTitle, this.discardMessage)
 							.await();
@@ -758,6 +763,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			return;
 		}
 		this.Log("Loading outfit: " + this.currentUserOutfit.name);
+
 		this.ClearAllAccessories();
 
 		this.currentUserOutfit.accessories.forEach((acc, index) => {
@@ -771,6 +777,14 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 					this.SelectFaceItem(face, false);
 				}
 			}
+		});
+
+		const charTransform = this.mainMenu.avatarView?.humanEntityGo?.transform!;
+		let accBuilder = this.mainMenu?.avatarView?.accessoryBuilder;
+		accBuilder?.OnMeshCombined.Once(() => {
+			print("set pos 0,0,0");
+			charTransform.localPosition = Vector3.zero;
+			this.avatarLoadingContainer.gameObject.SetActive(false);
 		});
 
 		this.SelectSkinColor(ColorUtil.HexToColor(this.currentUserOutfit.skinColor), true);

@@ -36,8 +36,8 @@ export default class InternalEmoteMenu extends AirshipBehaviour {
 		});
 
 		this.radialMenu.onSelectionChanged.Connect(() => {
-			AudioManager.PlayClipGlobal(Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Sound/UI_Switch.wav"), {
-				volumeScale: 0.04,
+			AudioManager.PlayClipGlobal(Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Sound/UI_Notch.wav"), {
+				volumeScale: 0.5,
 			});
 		});
 
@@ -46,7 +46,7 @@ export default class InternalEmoteMenu extends AirshipBehaviour {
 			const emoteDef = data as EmoteDefinition;
 			CoreNetwork.ClientToServer.Character.EmoteRequest.client.FireServer(emoteDef.id);
 			AudioManager.PlayClipGlobal(Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Sound/UI_Select.wav"), {
-				volumeScale: 0.08,
+				volumeScale: 0.35,
 			});
 		});
 	}

@@ -8,7 +8,7 @@ Shader "Airship/AirshipCharacterAlpha"
     }
     SubShader
     {
-        Tags { "RenderType"="Geometry-1" "RenderPipeline" = "UniversalRenderPipeline"}
+        Tags { "RenderType"="Geometry-1" "RenderPipeline" = "UniversalPipeline"}
         ZWrite On
 
         Pass
