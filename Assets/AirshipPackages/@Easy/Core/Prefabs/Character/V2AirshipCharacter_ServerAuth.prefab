@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -1624083086148811293, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
+      propertyPath: m_metadata.properties.Array.data[1].serializedObject
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1645000729044007242, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -19,6 +23,10 @@ PrefabInstance:
     - target: {fileID: 1645000729044007242, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       propertyPath: groundCollisionLayerMask.m_Bits
       value: 4294836481
+      objectReference: {fileID: 0}
+    - target: {fileID: 5519949438957097557, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
+      propertyPath: m_UseGravity
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7931457288082626079, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       propertyPath: m_Enabled
@@ -74,6 +82,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2553089008290134946, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
+    - {fileID: 7931457288082626079, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
+    - {fileID: 1645000729044007242, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
     m_RemovedGameObjects:
     - {fileID: 6842749966987518785, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
     - {fileID: 1893650489547789612, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
@@ -173,6 +183,13 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   movementSystem: {fileID: 161186105165723314}
+  maxServerCommandBuffer: 4
+  maxServerCommandCatchup: 1
+  maxServerCommandPrediction: 2
+  interpolationBufferSize: 3
+  clientInputRate: 30
+  serverSnapshotRate: 20
+  serverAuth: 1
 --- !u!114 &161186105165723314
 MonoBehaviour:
   m_ObjectHideFlags: 0
