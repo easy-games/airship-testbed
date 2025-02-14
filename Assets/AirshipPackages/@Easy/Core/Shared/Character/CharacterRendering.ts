@@ -5,6 +5,7 @@ import Character from "./Character";
 
 export default class CharacterRendering extends AirshipBehaviour {
 	@Header("References")
+	public character: Character;
 	public stencilMat: Material;
 	public transparencyMat?: Material;
 	public behindWallsMat?: Material;
@@ -21,20 +22,18 @@ export default class CharacterRendering extends AirshipBehaviour {
 
 	private bin = new Bin();
 	private cameraBin = new Bin();
-	private character: Character;
 	private renderers: Renderer[] = [];
 	private propertyBlock: MaterialPropertyBlock;
 	private lastSetAlpha = -1;
 
 	protected Awake(): void {
-		// this.character = this.gameObject.GetAirshipComponent<Character>()!;
-		// if (this.character?.accessoryBuilder) {
-		// 	this.character.accessoryBuilder.SetCreateOverlayMeshOnCombine(true);
-		// }
+		if (this.character?.accessoryBuilder) {
+			this.character.accessoryBuilder.SetCreateOverlayMeshOnCombine(true);
+		}
 	}
 
 	protected OnEnable(): void {
-		// this.Refresh();
+		this.Refresh();
 	}
 
 	protected OnDisable(): void {
