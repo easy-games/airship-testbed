@@ -15,7 +15,8 @@ export default class MicIndicator extends AirshipBehaviour {
 	private stateBin = new Bin();
 
 	private voiceChat = Bridge.GetAirshipVoiceChatNetwork();
-	private agent: ChatroomAgent = this.voiceChat.agent;
+	private agent: ChatroomAgent | undefined;
+	private hasAgent = false;
 
 	private errorMsgTime = 0;
 
@@ -23,10 +24,14 @@ export default class MicIndicator extends AirshipBehaviour {
 
 	protected Start(): void {
 		task.spawn(() => {
-			while (!this.voiceChat.gameObject.activeInHierarchy || !this.agent) {
+			while (!this.voiceChat.gameObject.activeInHierarchy || !this.voiceChat.agent) {
 				task.unscaledWait();
 			}
+			this.agent = this.voiceChat.agent;
+			this.hasAgent = true;
+
 			this.agent.MuteSelf = true;
+
 			Airship.Input.OnDown("PushToTalk").Connect((event) => {
 				if (event.uiProcessed) return;
 
@@ -41,17 +46,18 @@ export default class MicIndicator extends AirshipBehaviour {
 					}
 					return;
 				}
-				this.agent.MuteSelf = false;
+				this.agent!.MuteSelf = false;
 			});
 			Airship.Input.OnUp("PushToTalk").Connect((event) => {
-				this.agent.MuteSelf = true;
+				this.agent!.MuteSelf = true;
 			});
 		});
 		this.canvasGroup.alpha = 0;
 	}
 
 	public Update(dt: number): void {
-		if (this.agent.MuteSelf) {
+		if (!this.hasAgent) return;
+		if (this.agent!.MuteSelf) {
 			this.SetState("silent");
 		} else {
 			this.SetState("talking");
