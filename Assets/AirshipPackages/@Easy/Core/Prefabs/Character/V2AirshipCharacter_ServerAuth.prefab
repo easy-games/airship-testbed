@@ -183,12 +183,8 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   movementSystem: {fileID: 161186105165723314}
-  maxServerCommandBuffer: 4
   maxServerCommandCatchup: 1
   maxServerCommandPrediction: 2
-  interpolationBufferSize: 3
-  clientInputRate: 30
-  serverSnapshotRate: 20
   serverAuth: 1
 --- !u!114 &161186105165723314
 MonoBehaviour:
