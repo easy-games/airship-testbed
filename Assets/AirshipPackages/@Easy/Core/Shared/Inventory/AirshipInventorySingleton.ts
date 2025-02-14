@@ -684,4 +684,14 @@ export class AirshipInventorySingleton {
 
 		return undefined;
 	}
+
+	/**
+	 * Allows you to open another inventory
+	 */
+	public OpenExternalInventory(inventory: Inventory): CleanupFunc {
+		const ui = this.ui;
+		if (!ui) return;
+
+		return ui.OpenBackpackWithExternalInventory(inventory);
+	}
 }

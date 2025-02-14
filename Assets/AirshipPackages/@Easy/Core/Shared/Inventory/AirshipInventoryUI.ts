@@ -8,6 +8,7 @@ import { OnUpdate } from "@Easy/Core/Shared/Util/Timer";
 import { Asset } from "../Asset";
 import { DraggingState } from "./AirshipDraggingState";
 import AirshipInventoryTile from "./AirshipInventoryTile";
+import Inventory from "./Inventory";
 
 export default class AirshipInventoryUI extends AirshipBehaviour {
 	@Header("Variables")
@@ -24,6 +25,10 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	public backpackTileTemplate!: GameObject;
 	public dropItemCatcher: RectTransform;
 
+	@Header("External Inventory")
+	@Tooltip("The content for the external inventory")
+	public externalInventoryContent!: RectTransform;
+
 	@Header("Backpack (Hotbar Row)")
 	@Tooltip("The hotbar content that is displayed when backpack is open.")
 	public backpackHotbarContent!: RectTransform;
@@ -38,6 +43,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	// private inventoryRefs: GameObjectReferences;
 
 	private slotToBackpackTileMap = new Map<number, GameObject>();
+	private slotToExternalInventoryTileMap = new Map<number, GameObject>();
 
 	private inventoryEnabled = true;
 	private visible = false;
@@ -48,6 +54,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	private spriteCacheForItemType = new Map<string, Sprite>();
 
 	private bin = new Bin();
+	private backpackOpenBin = new Bin();
 
 	private isSetup = false;
 
@@ -57,6 +64,10 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	}
 
 	override Start(): void {
+		if (this.externalInventoryContent) {
+			this.externalInventoryContent.gameObject.SetActive(false);
+		}
+
 		Airship.Inventory.ObserveLocalInventory((inv) => {
 			if (this.isSetup) return;
 
@@ -118,9 +129,18 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			onClose: () => {
 				this.backpackShown = false;
 				this.hotbarCanvas.enabled = true;
+				this.backpackOpenBin.Clean();
 			},
 			noDarkBackground: this.darkBackground === false,
 		});
+	}
+
+	public OpenBackpackWithExternalInventory(inventory: Inventory) {
+		this.backpackOpenBin.Add(this.SetupExternalInventory(inventory));
+		this.externalInventoryContent.gameObject.SetActive(true);
+
+		// Open the regular backpack plspls
+		this.OpenBackpack();
 	}
 
 	private SetupHotbar(): void {
@@ -189,42 +209,6 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 				invBin.Clean();
 			};
 		});
-
-		// Healthbar
-		// Game.localPlayer.ObserveCharacter((character) => {
-		// 	const bin = new Bin();
-
-		// 	if (character === undefined) {
-		// 		if (!this.firstSpawn) this.healthBar.SetValue(0);
-		// 		if (this.firstSpawn) this.firstSpawn = false;
-
-		// 		if (this.enabled) this.SetVisible(false);
-
-		// 		// this.healthBar.transform.gameObject.SetActive(false);
-		// 		// this.SetEnabled(false);
-		// 		return;
-		// 	}
-		// 	if (this.enabled) this.SetVisible(true);
-		// 	// this.healthBar.transform.gameObject.SetActive(true);
-
-		// 	const SetFill = (newHealth: number, instant: boolean) => {
-		// 		let fill = newHealth / character.GetMaxHealth();
-		// 		if (instant) {
-		// 			this.healthBar.InstantlySetValue(fill);
-		// 		} else {
-		// 			this.healthBar.SetValue(fill);
-		// 		}
-		// 	};
-		// 	SetFill(character.GetHealth(), false);
-		// 	bin.Add(
-		// 		character.onHealthChanged.Connect((h) => {
-		// 			SetFill(h, false);
-		// 		}),
-		// 	);
-		// 	return () => {
-		// 		bin.Clean();
-		// 	};
-		// });
 	}
 
 	private UpdateTile(tile: GameObject, slot: number, itemStack: ItemStack | undefined): void {
@@ -310,6 +294,36 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 				Airship.Inventory.localInventory?.SetHeldSlot(slot);
 			});
 		}
+	}
+
+	private SetupExternalInventory(inventory: Inventory) {
+		// Pretty much we want to display & handle the external inventory interaction here if requested
+		const bin = new Bin();
+
+		const count = this.externalInventoryContent.childCount;
+		for (let i = 0; i < inventory.maxSlots; i++) {
+			let tileGO: GameObject;
+			if (i >= count) {
+				tileGO = Object.Instantiate(this.backpackHotbarTileTemplate, this.externalInventoryContent);
+			} else {
+				tileGO = this.externalInventoryContent.GetChild(i).gameObject;
+			}
+
+			this.slotToExternalInventoryTileMap.set(i, tileGO);
+		}
+
+		bin.Add(
+			inventory.ObserveSlots((stack, slot) => {
+				const tile = this.slotToExternalInventoryTileMap.get(slot)!;
+				this.UpdateTile(tile, slot, stack);
+			}),
+		);
+
+		this.externalInventoryContent.gameObject.SetActive(true);
+		return () => {
+			this.externalInventoryContent.gameObject.SetActive(false);
+			this.externalInventoryContent.gameObject.ClearChildren();
+		};
 	}
 
 	private SetupBackpack(): void {
