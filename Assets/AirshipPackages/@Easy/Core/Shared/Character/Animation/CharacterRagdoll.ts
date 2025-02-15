@@ -31,7 +31,7 @@ export default class CharacterRagdoll extends AirshipBehaviour {
 		this.ragdollEnabled = true;
 		this.SetRagdoll(false);
 
-		const TEST = false;
+		const TEST = true;
 		if (TEST) {
 			Airship.Input.CreateAction("TEST", Binding.Key(Key.F));
 			Airship.Input.OnDown("TEST").Connect(() => {
@@ -73,8 +73,10 @@ export default class CharacterRagdoll extends AirshipBehaviour {
 		}
 
 		//Let prefabs specify specifies that need to toggle
-		for (let i = 0; i < this.toggleOffDuringRagdoll.size(); i++) {
-			this.toggleOffDuringRagdoll[i].enabled = !ragdollOn;
+		if (this.toggleOffDuringRagdoll) {
+			for (let i = 0; i < this.toggleOffDuringRagdoll.size(); i++) {
+				this.toggleOffDuringRagdoll[i].enabled = !ragdollOn;
+			}
 		}
 
 		//Toggle physics objects
