@@ -7,11 +7,11 @@ export default class CharacterRagdoll extends AirshipBehaviour {
 	public startOn = false;
 	public interpolationMode = RigidbodyInterpolation.None;
 	public collisionDetectionMode = CollisionDetectionMode.Discrete;
+	public toggleOffDuringRagdoll: MonoBehaviour[];
 	public testForce = 10;
 
 	private colliders: Collider[] = [];
 	private rigids: Rigidbody[] = [];
-	private joints: CharacterJoint[] = [];
 	private rig: CharacterRig;
 	private anim: Animator;
 	private ragdollEnabled = false;
@@ -22,12 +22,11 @@ export default class CharacterRagdoll extends AirshipBehaviour {
 			error("CharacterRagdoll component must be on the same object as the CharacterRig");
 		}
 		this.anim = this.gameObject.GetComponent<Animator>()!;
-		const foundJoints = this.gameObject.GetComponentsInChildren<CharacterJoint>();
-		for (const joint of foundJoints) {
-			let go = joint.gameObject;
-			this.joints.push(joint);
+		const foundRigids = this.gameObject.GetComponentsInChildren<Rigidbody>();
+		for (const rigid of foundRigids) {
+			let go = rigid.gameObject;
+			this.rigids.push(rigid);
 			this.colliders.push(go.GetComponent<Collider>()!);
-			this.rigids.push(go.GetComponent<Rigidbody>()!);
 		}
 		this.ragdollEnabled = true;
 		this.SetRagdoll(false);
@@ -73,12 +72,18 @@ export default class CharacterRagdoll extends AirshipBehaviour {
 			this.anim.enabled = !ragdollOn;
 		}
 
+		//Let prefabs specify specifies that need to toggle
+		for (let i = 0; i < this.toggleOffDuringRagdoll.size(); i++) {
+			this.toggleOffDuringRagdoll[i].enabled = !ragdollOn;
+		}
+
 		//Toggle physics objects
-		for (let i = 0; i < this.joints.size(); i++) {
+		for (let i = 0; i < this.rigids.size(); i++) {
+			//print("Joint " + this.rigids[i].gameObject.name + " vel: " + this.rigids[i].linearVelocity);
 			//Have to set collision mode to Discrete with going kinematic otherwise Unity throws an error
 			let rigid = this.rigids[i];
 			if (!rigid.isKinematic) {
-				this.rigids[i].velocity = Vector3.zero;
+				this.rigids[i].linearVelocity = Vector3.zero;
 				this.rigids[i].angularVelocity = Vector3.zero;
 			}
 			this.rigids[i].collisionDetectionMode = ragdollOn
@@ -87,7 +92,7 @@ export default class CharacterRagdoll extends AirshipBehaviour {
 			this.rigids[i].interpolation = ragdollOn ? this.interpolationMode : RigidbodyInterpolation.None;
 			this.rigids[i].isKinematic = !ragdollOn;
 			if (!rigid.isKinematic) {
-				this.rigids[i].velocity = Vector3.zero;
+				this.rigids[i].linearVelocity = Vector3.zero;
 				this.rigids[i].angularVelocity = Vector3.zero;
 			}
 			this.colliders[i].enabled = ragdollOn;
@@ -100,12 +105,19 @@ export default class CharacterRagdoll extends AirshipBehaviour {
 		}
 	}
 
+	public ForceVelocity(newLinearVelocity: Vector3, newAngularVelocity: Vector3) {
+		for (let i = 0; i < this.rigids.size(); i++) {
+			this.rigids[i].linearVelocity = newLinearVelocity;
+			this.rigids[i].angularVelocity = newAngularVelocity;
+		}
+	}
+
 	public AddGlobalForce(force: Vector3, mode: ForceMode) {
 		if (!this.ragdollEnabled) {
 			return;
 		}
 
-		for (let i = 0; i < this.joints.size(); i++) {
+		for (let i = 0; i < this.rigids.size(); i++) {
 			this.rigids[i].AddForce(force, mode);
 		}
 	}
@@ -121,7 +133,7 @@ export default class CharacterRagdoll extends AirshipBehaviour {
 			return;
 		}
 
-		for (let i = 0; i < this.joints.size(); i++) {
+		for (let i = 0; i < this.rigids.size(); i++) {
 			this.rigids[i].AddExplosionForce(explosionForce, explosionPosition, explosionRadius, upwardsModifier, mode);
 		}
 	}
