@@ -138,7 +138,7 @@ Material:
     - _SrcBlend: 2
     - _SrcBlendAlpha: 0
     - _Surface: 1
-    - _Transparency: 0.5
+    - _Transparency: 1
     - _Triplanar_Scale: 0.25
     - _WorkflowMode: 1
     - _ZWrite: 0
