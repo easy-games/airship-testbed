@@ -31,7 +31,7 @@ export default class CharacterRagdoll extends AirshipBehaviour {
 		this.ragdollEnabled = true;
 		this.SetRagdoll(false);
 
-		const TEST = true;
+		const TEST = false;
 		if (TEST) {
 			Airship.Input.CreateAction("TEST", Binding.Key(Key.F));
 			Airship.Input.OnDown("TEST").Connect(() => {
