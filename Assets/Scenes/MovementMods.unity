@@ -823,8 +823,6 @@ MonoBehaviour:
   visibilityMode: 2
   skinnedToCharacter: 1
   meshLods: []
-  matColors:
-  - {fileID: 94397240}
   canMeshCombine: 1
   bodyMask: 294912
 --- !u!114 &94397240
@@ -1792,7 +1790,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7506683791199097645, guid: ea1bb737942ee8d4a91219481150b1e2, type: 3}
       propertyPath: m_metadata.properties.Array.size
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7506683791199097645, guid: ea1bb737942ee8d4a91219481150b1e2, type: 3}
       propertyPath: m_metadata.properties.Array.data[3].name
@@ -4375,8 +4373,6 @@ MonoBehaviour:
   visibilityMode: 2
   skinnedToCharacter: 1
   meshLods: []
-  matColors:
-  - {fileID: 445398163}
   canMeshCombine: 1
   bodyMask: 294912
 --- !u!114 &445398163
@@ -4628,8 +4624,6 @@ MonoBehaviour:
   visibilityMode: 2
   skinnedToCharacter: 1
   meshLods: []
-  matColors:
-  - {fileID: 481512955}
   canMeshCombine: 1
   bodyMask: 294912
 --- !u!114 &481512955
@@ -5400,8 +5394,6 @@ MonoBehaviour:
   meshLods:
   - {fileID: 4300000, guid: 37efe61c5a5d54cec81d92c5ce65a773, type: 2}
   - {fileID: 4300000, guid: f6d4948e7da704ae285911a16e5f3526, type: 2}
-  matColors:
-  - {fileID: 584813059}
   canMeshCombine: 1
   bodyMask: 12
 --- !u!114 &584813059
@@ -11021,8 +11013,6 @@ MonoBehaviour:
   visibilityMode: 2
   skinnedToCharacter: 1
   meshLods: []
-  matColors:
-  - {fileID: 1093707817}
   canMeshCombine: 1
   bodyMask: 294912
 --- !u!114 &1093707817
@@ -14638,8 +14628,6 @@ MonoBehaviour:
   meshLods:
   - {fileID: 4300000, guid: f7e9a1d0d20e64e2297ec6c784aeff06, type: 2}
   - {fileID: 4300000, guid: 0a46ad907945d4b71b1e8883897d20f8, type: 2}
-  matColors:
-  - {fileID: 1373369480}
   canMeshCombine: 1
   bodyMask: 50331648
 --- !u!114 &1373369480
@@ -15333,8 +15321,6 @@ MonoBehaviour:
   visibilityMode: 2
   skinnedToCharacter: 1
   meshLods: []
-  matColors:
-  - {fileID: 1485221721}
   canMeshCombine: 1
   bodyMask: 294912
 --- !u!114 &1485221721
@@ -17118,8 +17104,6 @@ MonoBehaviour:
   visibilityMode: 2
   skinnedToCharacter: 1
   meshLods: []
-  matColors:
-  - {fileID: 1643825468}
   canMeshCombine: 1
   bodyMask: 294912
 --- !u!114 &1643825468
@@ -17273,8 +17257,6 @@ MonoBehaviour:
   visibilityMode: 2
   skinnedToCharacter: 1
   meshLods: []
-  matColors:
-  - {fileID: 1653676839}
   canMeshCombine: 1
   bodyMask: 294912
 --- !u!114 &1653676839
@@ -17425,8 +17407,6 @@ MonoBehaviour:
   meshLods:
   - {fileID: 4300000, guid: f7e9a1d0d20e64e2297ec6c784aeff06, type: 2}
   - {fileID: 4300000, guid: 0a46ad907945d4b71b1e8883897d20f8, type: 2}
-  matColors:
-  - {fileID: 1663575224}
   canMeshCombine: 1
   bodyMask: 50331648
 --- !u!114 &1663575224
@@ -17956,8 +17936,6 @@ MonoBehaviour:
   visibilityMode: 2
   skinnedToCharacter: 1
   meshLods: []
-  matColors:
-  - {fileID: 1710578098}
   canMeshCombine: 1
   bodyMask: 294912
 --- !u!114 &1710578098
@@ -18108,8 +18086,6 @@ MonoBehaviour:
   meshLods:
   - {fileID: 4300000, guid: 2ae0ad668977e48caab1b2c6359ea494, type: 2}
   - {fileID: 4300000, guid: f3e4232cacefb4c1e92155c13835e031, type: 2}
-  matColors:
-  - {fileID: 1711280680}
   canMeshCombine: 1
   bodyMask: 77365248
 --- !u!114 &1711280680
@@ -19615,8 +19591,6 @@ MonoBehaviour:
   visibilityMode: 2
   skinnedToCharacter: 1
   meshLods: []
-  matColors:
-  - {fileID: 1870790817}
   canMeshCombine: 1
   bodyMask: 294912
 --- !u!114 &1870790817
@@ -20441,8 +20415,6 @@ MonoBehaviour:
   meshLods:
   - {fileID: 4300000, guid: 37efe61c5a5d54cec81d92c5ce65a773, type: 2}
   - {fileID: 4300000, guid: f6d4948e7da704ae285911a16e5f3526, type: 2}
-  matColors:
-  - {fileID: 1973412844}
   canMeshCombine: 1
   bodyMask: 12
 --- !u!114 &1973412844
@@ -22425,8 +22397,6 @@ MonoBehaviour:
   meshLods:
   - {fileID: 4300000, guid: 2ae0ad668977e48caab1b2c6359ea494, type: 2}
   - {fileID: 4300000, guid: f3e4232cacefb4c1e92155c13835e031, type: 2}
-  matColors:
-  - {fileID: 2138857510}
   canMeshCombine: 1
   bodyMask: 77365248
 --- !u!114 &2138857510

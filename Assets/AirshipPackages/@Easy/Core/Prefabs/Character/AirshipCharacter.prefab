@@ -943,21 +943,25 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 2100000, guid: 94728df95d924ac408cc8ba97da6fe09, type: 2}
       modified: 1
-    - name: character
-      type: AirshipBehaviour
-      objectType: Character
+    - name: staticRenderers
+      type: Array
+      objectType: 
       items:
-        type: 
-        objectType: 
+        type: object
+        objectType: Renderer
         serializedItems: []
         objectRefs: []
       refPath: 
-      fileRef: AirshipPackages/@Easy/Core/Shared/Character/Character.ts
-      decorators: []
+      fileRef: 
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"Variables"'
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: -1624083086148811293}
-      modified: 1
+      serializedObject: {fileID: 0}
+      modified: 0
     displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0
