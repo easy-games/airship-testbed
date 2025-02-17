@@ -1046,3 +1046,12 @@ interface AnimatorClipReplacer extends MonoBehaviour {
 	 */
 	RuntimeAnimator: RuntimeAnimatorController | null;
 }
+
+interface Clothing {
+	classId: string;
+	accessoryPrefabs: AccessoryComponent[];
+}
+interface ClothingConstructor {
+	DownloadAsync(classId: string, airId: string, versionHash: string): Clothing | undefined;
+}
+declare const Clothing: ClothingConstructor;
