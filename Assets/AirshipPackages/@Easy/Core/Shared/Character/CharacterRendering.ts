@@ -110,8 +110,9 @@ export default class CharacterRendering extends AirshipBehaviour {
 						// print(
 						// 	"ACC ADDED j: " + j + ": " + accessories[i].renderers[j].transform.parent.gameObject.name,
 						// );
-						this.SetupRenderer(accessories[i].renderers[j], useWallRenders, useAlpha);
-						this.accRenderers.push(accessories[i].renderers[j]);
+						if (this.SetupRenderer(accessories[i].renderers[j], useWallRenders, useAlpha)) {
+							this.accRenderers.push(accessories[i].renderers[j]);
+						}
 					}
 				}
 				this.lastSetAlpha = -1;
@@ -127,17 +128,20 @@ export default class CharacterRendering extends AirshipBehaviour {
 				if (useWallRenders || useAlpha) {
 					//Setup materials to render behind walls
 					this.lastSetAlpha = -1;
-					this.accRenderers = this.character.accessoryBuilder.GetAllAccessoryRenderers();
+					this.accRenderers.clear();
+					const newRenderers = this.character.accessoryBuilder.GetAllAccessoryRenderers();
 					this.propertyBlock.SetFloat("_Transparency", 1);
 
-					for (let i = 0; i < this.accRenderers.size(); i++) {
+					for (let i = 0; i < newRenderers.size(); i++) {
 						//TODO: Right now Mesh Renderers are not combined in the MeshCombine so
 						//if they have multiple submeshes this rendering technique will NOT work.
 						//Ignoring them for now
-						if (this.accRenderers[i] instanceof MeshRenderer) {
+						if (newRenderers[i] instanceof MeshRenderer) {
 							continue;
 						}
-						this.SetupRenderer(this.accRenderers[i], useWallRenders, useAlpha);
+						if (this.SetupRenderer(this.accRenderers[i], useWallRenders, useAlpha)) {
+							this.accRenderers.push(newRenderers[i]);
+						}
 					}
 				}
 			}),
@@ -180,9 +184,28 @@ export default class CharacterRendering extends AirshipBehaviour {
 		);
 	}
 
+	public AddStaticRenderer(ren: Renderer) {
+		if (this.SetupRenderer(ren, this.IsUsingWallMat(), this.IsUsingAlpha())) {
+			this.staticRenderers.push(ren);
+			return true;
+		} else {
+			warn("Unabled to manually add static renderer: " + ren.gameObject.name);
+			return false;
+		}
+	}
+
 	private SetupRenderer(ren: Renderer, useWallRenders: boolean, useAlpha: boolean) {
-		if (ren === undefined) {
-			return;
+		if (ren === undefined || ren.gameObject.layer === Layer.TRANSPARENT_FX) {
+			return false;
+		}
+		const shaderName = ren.materials[ren.materials.size() - 1].GetTag("LightMode", false, "");
+		if (
+			shaderName === "CharacterDepth" ||
+			shaderName === "CharacterAlpha" ||
+			shaderName === "CharacterBehindOpaque"
+		) {
+			//We already setup this renderer, don't do it again or we will add duplicated render passes
+			return false;
 		}
 
 		//Store depth in stencil
@@ -200,6 +223,7 @@ export default class CharacterRendering extends AirshipBehaviour {
 		}
 
 		ren.gameObject.layer = this.character.IsLocalCharacter() ? Layer.LOCAL_STENCIL_MASK : Layer.STENCIL_MASK;
+		return true;
 	}
 
 	protected EvaluateCameraDistance(distance: number, camPos: Vector3, targetPos: Vector3) {
