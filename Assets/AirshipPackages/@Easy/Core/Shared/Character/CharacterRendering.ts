@@ -28,14 +28,14 @@ export default class CharacterRendering extends AirshipBehaviour {
 	private lastSetAlpha = -1;
 
 	protected Awake(): void {
-		this.character = this.gameObject.GetAirshipComponent<Character>()!;
-		if (this.character) {
-			this.Init();
-		}
+		// this.character = this.gameObject.GetAirshipComponent<Character>()!;
+		// if (this.character) {
+		// 	this.Init();
+		// }
 	}
 
 	protected OnEnable(): void {
-		this.Refresh();
+		// this.Refresh();
 	}
 
 	protected OnDisable(): void {
@@ -71,7 +71,7 @@ export default class CharacterRendering extends AirshipBehaviour {
 		this.renderBehindWalls = renderBehindWalls;
 		this.renderBehindWallsForLocalPlayer = renderBehindWallsForLocalPlayer;
 		this.renderTransparentWhenCloseForLocalPlayer = renderTransparentWhenCloseForLocalPlayer;
-		this.Refresh();
+		// this.Refresh();
 	}
 
 	private Refresh() {
