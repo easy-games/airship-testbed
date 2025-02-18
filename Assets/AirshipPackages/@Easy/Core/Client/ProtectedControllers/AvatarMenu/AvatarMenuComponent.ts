@@ -1,4 +1,4 @@
-import { Airship } from "@Easy/Core/Shared/Airship";
+import { Airship, Platform } from "@Easy/Core/Shared/Airship";
 import { OutfitDto } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipPlatformInventory";
 import { AvatarCollectionManager } from "@Easy/Core/Shared/Avatar/AvatarCollectionManager";
 import { AvatarPlatformAPI } from "@Easy/Core/Shared/Avatar/AvatarPlatformAPI";
@@ -432,7 +432,12 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.mainMenu?.avatarView?.CameraFocusSlot(slot);
 	}
 
-	private DisplayItems(items: { instanceId: string; item: AccessoryComponent }[]) {
+	private async DisplayItems(items: { instanceId: string; item: AccessoryComponent }[]) {
+		const ownedItems = await Platform.Client.Inventory.GetItems({ queryType: "tag", tags: ["Clothing"] });
+		for (let item of ownedItems) {
+			const clothing = Clothing.DownloadYielding(item.classId, "airId", "versionHash");
+		}
+
 		if (items && items.size() > 0) {
 			items.forEach((value) => {
 				this.AddItemButton(value.item.GetServerClassId(), value.instanceId, value.name, () => {
@@ -476,20 +481,6 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 		this.UpdateButtonGraphics();
 		this.mainMenu?.avatarView?.CameraFocusSlot(AccessorySlot.Root);
-	}
-
-	private DisplaySkinTextures() {
-		let items = AvatarCollectionManager.instance.GetAllAvatarSkins();
-		if (items && items.size() > 0) {
-			items.forEach((value) => {
-				this.AddItemButton(value.ToString(), "", value.ToString(), () => {
-					//Accessory
-					this.SelectSkinItem(value);
-				});
-			});
-		} else {
-			this.Log("Displaying no skin items");
-		}
 	}
 
 	private AddColorButton(color: Color) {
