@@ -139,7 +139,7 @@ export default class CharacterRendering extends AirshipBehaviour {
 						if (newRenderers[i] instanceof MeshRenderer) {
 							continue;
 						}
-						if (this.SetupRenderer(this.accRenderers[i], useWallRenders, useAlpha)) {
+						if (this.SetupRenderer(newRenderers[i], useWallRenders, useAlpha)) {
 							this.accRenderers.push(newRenderers[i]);
 						}
 					}
