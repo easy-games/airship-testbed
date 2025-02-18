@@ -296,7 +296,12 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		}
 	}
 
+	private externalInventory?: Inventory;
 	private SetupExternalInventory(inventory: Inventory) {
+		const localInventory = Airship.Inventory.localInventory;
+		if (!localInventory) return () => void 0;
+
+		this.externalInventory = inventory;
 		// Pretty much we want to display & handle the external inventory interaction here if requested
 		const bin = new Bin();
 
@@ -310,6 +315,42 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			}
 
 			this.slotToExternalInventoryTileMap.set(i, tileGO);
+
+			const tile = tileGO.gameObject.GetAirshipComponentInChildren<AirshipInventoryTile>();
+			if (!tile) continue;
+
+			bin.AddEngineEventConnection(
+				CanvasAPI.OnClickEvent(tile.button.gameObject, () => {
+					print("Clickity clackity");
+					Airship.Inventory.MoveToSlot(inventory, i, localInventory, localInventory.GetFirstOpenSlot(), 1);
+				}),
+			);
+
+			bin.AddEngineEventConnection(
+				CanvasAPI.OnDropEvent(tile.button.gameObject, () => {
+					if (!this.IsBackpackShown()) {
+						warn("backpack not shown");
+						return;
+					}
+					if (!this.draggingState) {
+						warn("draggingState is missing");
+						return;
+					}
+					if (!Airship.Inventory.localInventory) {
+						warn("no local inv");
+						return;
+					}
+
+					print("Should drop to slot", i);
+					Airship.Inventory.MoveToSlot(
+						this.draggingState.inventory,
+						this.draggingState.slot,
+						inventory,
+						i,
+						this.draggingState.itemStack.amount,
+					);
+				}),
+			);
 		}
 
 		bin.Add(
@@ -318,6 +359,10 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 				this.UpdateTile(tile, slot, stack);
 			}),
 		);
+
+		bin.Add(() => {
+			this.externalInventory = undefined;
+		});
 
 		this.externalInventoryContent.gameObject.SetActive(true);
 		return () => {
