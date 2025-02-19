@@ -580,6 +580,16 @@ export default class Inventory extends AirshipBehaviour {
 		return undefined;
 	}
 
+	public FindMergeableSlotWithItemType(itemType: string) {
+		for (let i = 0; i < this.maxSlots; i++) {
+			const itemStack = this.GetItem(i);
+			if (itemStack?.itemType === itemType && itemStack.amount < itemStack.GetMaxStackSize()) {
+				return i;
+			}
+		}
+		return undefined;
+	}
+
 	public GetAllItems(): ItemStack[] {
 		return Object.values(this.items);
 	}

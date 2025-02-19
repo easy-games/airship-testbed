@@ -3,7 +3,7 @@ import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
 import { Keyboard, Mouse } from "@Easy/Core/Shared/UserInput";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
-import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
+import { CanvasAPI, PointerButton, PointerDirection } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { OnUpdate } from "@Easy/Core/Shared/Util/Timer";
 import { Asset } from "../Asset";
 import { DraggingState } from "./AirshipDraggingState";
@@ -391,7 +391,10 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		if (this.externalInventory) {
 			const stack = inventory.GetItem(slot);
 			if (!stack) return;
-			const freeSlot = this.externalInventory.GetFirstOpenSlot();
+			const freeSlot = Keyboard.IsKeyDown(Key.LeftShift)
+				? this.externalInventory.FindMergeableSlotWithItemType(stack.itemType) ??
+				  this.externalInventory.GetFirstOpenSlot()
+				: this.externalInventory.GetFirstOpenSlot();
 			if (freeSlot === -1) return;
 
 			Airship.Inventory.MoveToSlot(inventory, slot, this.externalInventory, freeSlot, stack.amount);
@@ -443,6 +446,21 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			if (!tile) continue;
 
 			bin.AddEngineEventConnection(
+				CanvasAPI.OnPointerEvent(tile.button.gameObject, (direction, button) => {
+					if (direction === PointerDirection.UP && button === PointerButton.MIDDLE) {
+						const stack = inventory.GetItem(i);
+						if (!stack) return;
+
+						const openSlot = inventory.GetFirstOpenSlot();
+						if (openSlot === -1) return;
+
+						const half = math.floor(stack.amount / 2);
+						Airship.Inventory.MoveToSlot(inventory, i, localInventory, openSlot, half);
+					}
+				}),
+			);
+
+			bin.AddEngineEventConnection(
 				CanvasAPI.OnClickEvent(tile.button.gameObject, () => {
 					const openSlot = localInventory.GetFirstOpenSlot();
 					if (openSlot === -1) return;
@@ -460,12 +478,38 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			}
 		}
 
+		const slotBinMap = new Map<number, Bin>();
 		bin.Add(
 			inventory.ObserveSlots((stack, slot) => {
+				slotBinMap.get(slot)?.Clean();
+				if (slot > inventory.maxSlots) return;
+
+				const slotBin = new Bin();
+				slotBinMap.set(slot, slotBin);
+
 				const tile = this.slotToExternalInventoryTileMap.get(slot)!;
 				this.UpdateTile(tile, slot, stack);
+
+				if (stack) {
+					slotBin.Add(
+						stack.amountChanged.Connect((e) => {
+							this.UpdateTile(tile, slot, e.itemStack);
+						}),
+					);
+
+					slotBin.Add(
+						stack.itemTypeChanged.Connect((e) => {
+							this.UpdateTile(tile, slot, e.itemStack);
+						}),
+					);
+				}
 			}),
 		);
+
+		bin.Add(() => {
+			slotBinMap.forEach((bin) => bin.Clean());
+			slotBinMap.clear();
+		});
 
 		// TODO: Layout hack, remove when update ordering fixed by Stephen
 		{
@@ -577,10 +621,6 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 					});
 
 					this.BindDragEventsOnButton(tileComponent.button, Airship.Inventory.localInventory!, i);
-
-					// for (const connection of connections) {
-					// 	invBin.AddEngineEventConnection(connection);
-					// }
 				}
 			}
 			init = false;
