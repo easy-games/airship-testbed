@@ -19,8 +19,8 @@ export interface InventoryDto {
 }
 
 export const enum InventoryModifyPermission {
-	NetworkOwner,
-	Everyone,
+	NetworkOwner = "OWNER",
+	Everyone = "ALL",
 }
 
 class OnBeforeAddItemEvent extends Cancellable {
@@ -40,7 +40,9 @@ export default class Inventory extends AirshipBehaviour {
 	public heldSlot = 0;
 
 	@Header("Permissions")
-	@Tooltip("Who can modify this inventory")
+	@Tooltip(
+		"Who can modify this inventory\n\n<b>Network Owner</b>: The network owner of this Inventory's NetworkIdentity\n<b>Everyone</b>: Any client can modify the inventory",
+	)
 	@SerializeField()
 	protected modifyPermission = InventoryModifyPermission.NetworkOwner;
 
@@ -598,56 +600,17 @@ export default class Inventory extends AirshipBehaviour {
 	}
 
 	/**
-	 * Transfers the given slot to another inventory
-	 *
-	 * If no {@link targetSlot | `targetSlot`} is provided, it will find the first available slot on the target inventory
-	 *
-	 * Will return `true` if it swapped successfully
+	 * Gets the value of the {@link modifyPermission | Modify Permission} property for this inventory
 	 */
-	public TransferSlotToOtherInventory(
-		sourceSlot: number,
-		targetInventory: Inventory,
-		targetSlot: number = this.GetFirstOpenSlot(),
-	): boolean {
-		// We can't target invalid slots
-		if (targetSlot === -1) return false;
-
-		// If there's nothing here, there's nothing to transfer 🤔
-		const stackAtSourceSlot = this.GetItem(sourceSlot);
-		if (stackAtSourceSlot === undefined) return false;
-
-		const stackAtTargetSlot = targetInventory.GetItem(targetSlot);
-
-		// Peform a swap, otherwise perform a straight "transfer"
-		if (stackAtTargetSlot !== undefined) {
-			this.SetItem(sourceSlot, stackAtTargetSlot);
-			targetInventory.SetItem(targetSlot, stackAtSourceSlot);
-			return true;
-		} else {
-			this.SetItem(sourceSlot, undefined);
-			targetInventory.SetItem(targetSlot, stackAtSourceSlot);
-			return true;
-		}
-	}
-
-	// /**
-	//  * Swaps the contents with {@link slot1 | `slot1`} with {@link slot2 | `slot2`}
-	//  *
-	//  * If you want to swap with another inventory's slot, see {@link TransferSlotToOtherInventory | `TransferSlotToOtherInventory`}
-	//  */
-	// public SwapSlots(slot1: number, slot2: number) {
-	// 	const atSlot1 = this.GetItem(slot1);
-	// 	const atSlot2 = this.GetItem(slot2);
-	// 	if (atSlot1 === undefined && atSlot2 === undefined) return; // do nothing if both are empty... lol.
-
-	// 	this.SetItem(slot1, atSlot2);
-	// 	this.SetItem(slot2, atSlot1);
-	// }
-
 	public GetModifyPermission(): InventoryModifyPermission {
 		return this.modifyPermission;
 	}
 
+	/**
+	 * Returns true if the player has permissions to modify this inventory
+	 * @param player
+	 * @returns
+	 */
 	public CanPlayerModifyInventory(player: Player): boolean {
 		const permission = this.modifyPermission;
 		if (permission === InventoryModifyPermission.NetworkOwner) {
