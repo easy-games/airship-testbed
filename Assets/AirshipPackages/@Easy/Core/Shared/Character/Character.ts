@@ -7,9 +7,12 @@ import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { CoreNetwork } from "../CoreNetwork";
 import { DamageInfo, DamageInfoCustomData } from "../Damage/DamageInfo";
+import AirshipEmoteSingleton from "../Emote/AirshipEmoteSingleton";
+import { Dependency } from "../Flamework";
 import NametagComponent from "../Nametag/NametagComponent";
 import CharacterAnimation from "./Animation/CharacterAnimation";
 import CharacterConfigSetup from "./CharacterConfigSetup";
+import { EmoteStartSignal } from "./Signal/EmoteStartSignal";
 
 /**
  * A character is a (typically human) object in the scene. It controls movement and default animation.
@@ -52,12 +55,15 @@ export default class Character extends AirshipBehaviour {
 	@NonSerialized() public readonly bin = new Bin();
 	@NonSerialized() public inventory: Inventory;
 	@NonSerialized() public outfitDto: OutfitDto | undefined;
+	@NonSerialized() public isEmoting = false;
 
 	// Signals
 	@NonSerialized() public onDeath = new Signal<void>();
 	@NonSerialized() public onDespawn = new Signal<void>();
 	@NonSerialized() public onStateChanged = new Signal<[newState: CharacterState, oldState: CharacterState]>();
 	@NonSerialized() public onHealthChanged = new Signal<[newHealth: number, oldHealth: number]>();
+	@NonSerialized() public onEmoteStart = new Signal<EmoteStartSignal>();
+	@NonSerialized() public onEmoteEnd = new Signal<[]>();
 
 	private displayName = "";
 	private initialized = false;
@@ -390,5 +396,22 @@ export default class Character extends AirshipBehaviour {
 			error("Tried to call IsLocalCharacter() before character was initialized. Please use WaitForInit()");
 		}
 		return Game.IsClient() && this.player?.userId === Game.localPlayer?.userId;
+	}
+
+	/**
+	 * Cancels emote if the character is emoting. Otherwise, does nothing.
+	 */
+	public CancelEmote(): void {
+		if (!this.isEmoting) return;
+
+		// Cancel immediately locally
+		Dependency<AirshipEmoteSingleton>().StopEmoting(this);
+
+		if (Game.IsClient() && this.IsLocalCharacter()) {
+			CoreNetwork.ClientToServer.Character.EmoteCancelRequest.client.FireServer();
+		}
+		if (Game.IsServer()) {
+			CoreNetwork.ServerToClient.Character.EmoteEnd.server.FireAllClients(this.id);
+		}
 	}
 }

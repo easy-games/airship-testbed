@@ -421,11 +421,11 @@ interface AccessoryBuilder extends MonoBehaviour {
 	): ActiveAccessory | undefined;
 	AddSkinAccessory(skin: AccessorySkin, rebuildMeshImmediately: boolean): void;
 	EquipAccessoryOutfit(outfit: AccessoryOutfit, rebuildMeshImmediately: boolean): ActiveAccessory[];
-	GetAccessoryMeshes(slot: AccessorySlot): Renderer[];
+	GetAccessoryRenderers(slot: AccessorySlot): Renderer[];
 	GetAccessoryParticles(slot: AccessorySlot): ParticleSystem[];
 	GetActiveAccessories(): ActiveAccessory[];
-	GetActiveAccessoryBySlot(target: AccessorySlot): ActiveAccessory;
-	GetAllAccessoryMeshes(): Renderer[];
+	GetActiveAccessoryBySlot(target: AccessorySlot): ActiveAccessory | undefined;
+	GetAllAccessoryRenderers(): Renderer[];
 	GetCombinedSkinnedMesh(): SkinnedMeshRenderer;
 	GetCombinedStaticMesh(): MeshRenderer;
 	RemoveAccessorySlot(slot: AccessorySlot, rebuildMeshImmediately: boolean): void;

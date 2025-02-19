@@ -1,10 +1,10 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { Group } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipMatchmaking";
-import { Singleton } from "@Easy/Core/Shared/Flamework";
+import { OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 
 @Singleton({})
-export class AirshipMenuSingleton {
+export class AirshipMenuSingleton implements OnStart {
 	public readonly onGroupChange: Signal<Group> = new Signal();
 
 	private leaveMatchBtnCallback: (() => void) | undefined;
@@ -19,7 +19,7 @@ export class AirshipMenuSingleton {
 		});
 	}
 
-	protected OnStart(): void {}
+	public OnStart(): void {}
 
 	/**
 	 * Adds a special "Leave Match" button.

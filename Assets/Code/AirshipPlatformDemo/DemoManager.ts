@@ -36,13 +36,13 @@ export default class DemoManager extends AirshipBehaviour {
 		}
 
 		Airship.Settings.AddSlider("Background Music", 1, 0, 2);
-		Airship.Settings.ObserveSlider("Background Music", (val) => {
-			print("music: " + val);
-		});
+		// Airship.Settings.ObserveSlider("Background Music", (val) => {
+		// 	print("music: " + val);
+		// });
 		Airship.Settings.AddToggle("Potato Graphics Mode", false);
-		Airship.Settings.ObserveToggle("Potato Graphics Mode", (val) => {
-			print("potato mode: " + val);
-		});
+		// Airship.Settings.ObserveToggle("Potato Graphics Mode", (val) => {
+		// 	print("potato mode: " + val);
+		// });
 		Airship.Settings.AddSpacer();
 		Airship.Settings.AddToggle("Secret Toggle", false);
 
@@ -81,6 +81,8 @@ export default class DemoManager extends AirshipBehaviour {
 			c.inventory.AddItem(new ItemStack("WoodSword"));
 		});
 
+		this.HideAccessoriesWhileEmoting();
+
 		if (Game.IsServer()) {
 			this.bin.Add(
 				Airship.Players.ObservePlayers((player) => {
@@ -98,7 +100,7 @@ export default class DemoManager extends AirshipBehaviour {
 				}),
 			);
 
-			this.npcCharacter = Airship.Characters.SpawnNonPlayerCharacter(this.spawnPosition.transform.position);
+			// this.npcCharacter = Airship.Characters.SpawnNonPlayerCharacter(this.spawnPosition.transform.position);
 
 			this.bin.Add(
 				Network.ClientToServer.TestServer.server.OnClientEvent((player, value) => {
@@ -156,6 +158,29 @@ export default class DemoManager extends AirshipBehaviour {
 		}
 	}
 
+	private HideAccessoriesWhileEmoting(): void {
+		Airship.Characters.ObserveCharacters((character) => {
+			const emoteBin = new Bin();
+			character.onEmoteStart.Connect((e) => {
+				const activeAccessory = character.accessoryBuilder.GetActiveAccessoryBySlot(AccessorySlot.RightHand);
+				if (activeAccessory) {
+					for (let r of activeAccessory.renderers) {
+						const prevEnabled = r.enabled;
+						r.enabled = false;
+						emoteBin.Add(() => {
+							if (r) {
+								r.enabled = prevEnabled;
+							}
+						});
+					}
+				}
+			});
+			character.onEmoteEnd.Connect(() => {
+				emoteBin.Clean();
+			});
+		});
+	}
+
 	private TestServer(character: Character | undefined) {
 		//Runs on the server when the client presses R
 		print("Test Server");
@@ -168,35 +193,35 @@ export default class DemoManager extends AirshipBehaviour {
 	private testDirFlip = 1;
 	private testImpulseForce = 8;
 	public override Update(dt: number): void {
-		if (Game.IsServer() || this.npcCharacter?.networkIdentity?.isOwned) {
-			const xAnchor = this.spawnPosition.transform.position.x;
-			if (
-				(this.testDirFlip > 0 && this.npcCharacter.transform.position.x > xAnchor + 5) ||
-				(this.testDirFlip < 0 && this.npcCharacter.transform.position.x < xAnchor - 5)
-			) {
-				this.testDirFlip *= -1;
-			}
-			let dir = new Vector3(this.testDirFlip, 0, 0);
-			let time = Time.time * 0.4;
-			//FORCE TEST
-			// if (math.random() > 1 - Time.deltaTime) {
-			// 	this.npcCharacter.movement.AddImpulse(
-			// 		new Vector3(
-			// 			math.random() * this.testImpulseForce * 2 - this.testImpulseForce,
-			// 			math.lerp(0, this.testImpulseForce * 2, math.random()),
-			// 			math.random() * this.testImpulseForce * 2 - this.testImpulseForce,
-			// 		),
-			// 	);
-			// }
-			//MOVE TEST
-			this.npcCharacter.movement.SetMoveInput(
-				dir,
-				false, //math.random() > 1 - Time.deltaTime * 2,
-				math.sin(time) > 0.2,
-				math.cos(time) < 0.2,
-				true,
-			);
-		}
+		// if (Game.IsServer() || this.npcCharacter?.networkIdentity?.isOwned) {
+		// 	const xAnchor = this.spawnPosition.transform.position.x;
+		// 	if (
+		// 		(this.testDirFlip > 0 && this.npcCharacter.transform.position.x > xAnchor + 5) ||
+		// 		(this.testDirFlip < 0 && this.npcCharacter.transform.position.x < xAnchor - 5)
+		// 	) {
+		// 		this.testDirFlip *= -1;
+		// 	}
+		// 	let dir = new Vector3(this.testDirFlip, 0, 0);
+		// 	let time = Time.time * 0.4;
+		// 	//FORCE TEST
+		// 	// if (math.random() > 1 - Time.deltaTime) {
+		// 	// 	this.npcCharacter.movement.AddImpulse(
+		// 	// 		new Vector3(
+		// 	// 			math.random() * this.testImpulseForce * 2 - this.testImpulseForce,
+		// 	// 			math.lerp(0, this.testImpulseForce * 2, math.random()),
+		// 	// 			math.random() * this.testImpulseForce * 2 - this.testImpulseForce,
+		// 	// 		),
+		// 	// 	);
+		// 	// }
+		// 	//MOVE TEST
+		// 	this.npcCharacter.movement.SetMoveInput(
+		// 		dir,
+		// 		false, //math.random() > 1 - Time.deltaTime * 2,
+		// 		math.sin(time) > 0.2,
+		// 		math.cos(time) < 0.2,
+		// 		true,
+		// 	);
+		// }
 	}
 
 	public SpawnPlayer(player: Player): void {
