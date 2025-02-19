@@ -3,7 +3,7 @@ Shader "Airship/AirshipCharacterAlpha"
     Properties
     {
         _Transparency ("Alpha", Range(0,1)) = 1.0
-        _FresnelStrength ("Fresnel Strength", Range(0,2)) = 1.0
+        _FresnelStrength ("Fresnel Strength", Range(0,5)) = 1.0
         _DitherSize ("Dither Size", float) = 1.0
     }
     SubShader
@@ -65,7 +65,7 @@ Shader "Airship/AirshipCharacterAlpha"
             half4 frag(VertToFrag input) : SV_Target
             {
                 //return half4(1,0,0,1);
-                const float alpha = saturate(_Transparency + (input.fresnelDelta * input.fresnelDelta));
+                const float alpha = 1-saturate(_Transparency + _Transparency * (input.fresnelDelta * input.fresnelDelta));
                 //alpha = _Transparency;
                 //return input.fresnelDelta;
 

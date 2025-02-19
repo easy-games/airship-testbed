@@ -1792,7 +1792,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7506683791199097645, guid: ea1bb737942ee8d4a91219481150b1e2, type: 3}
       propertyPath: m_metadata.properties.Array.size
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7506683791199097645, guid: ea1bb737942ee8d4a91219481150b1e2, type: 3}
       propertyPath: m_metadata.properties.Array.data[3].name
