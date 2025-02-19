@@ -56,5 +56,3 @@ export class ArrayUtil {
 		return map;
 	}
 }
-
-const test = ArrayUtil.GroupByKey([{ test: "hi there" }], "test");

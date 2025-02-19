@@ -880,7 +880,7 @@ MonoBehaviour:
       fileRef: 
       decorators: []
       nullable: 0
-      serializedValue: 0.5
+      serializedValue: 0.3
       serializedObject: {fileID: 0}
       modified: 0
     - name: transparentMargin

@@ -14,7 +14,6 @@ import { Asset } from "../Asset";
 import { AvatarPlatformAPI } from "../Avatar/AvatarPlatformAPI";
 import { CoreLogger } from "../Logger/CoreLogger";
 import { AirshipUrl } from "../Util/AirshipUrl";
-import { RunUtil } from "../Util/RunUtil";
 import { Levenshtein } from "../Util/Strings/Levenshtein";
 import { OnUpdate } from "../Util/Timer";
 import { BridgedPlayer } from "./BridgedPlayer";
@@ -343,7 +342,7 @@ export class AirshipPlayersSingleton {
 	}
 
 	private HandlePlayerConnect(player: Player) {
-		if (RunUtil.IsHosting()) {
+		if (Game.IsHosting()) {
 			this.HandlePlayerReadyServer(Game.localPlayer);
 			return;
 		}
@@ -390,6 +389,9 @@ export class AirshipPlayersSingleton {
 	}
 
 	private HandlePlayerReadyServer(player: Player): void {
+		while (player.networkIdentity?.connectionToClient === undefined) {
+			task.unscaledWait();
+		}
 		const conn = player.networkIdentity.connectionToClient;
 		if (!conn?.isReady) {
 			CoreLogger.Log("Player " + player.username + "'s connection was not ready. Waiting for ready.");

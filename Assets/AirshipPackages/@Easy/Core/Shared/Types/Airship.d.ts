@@ -742,10 +742,23 @@ interface DiskManager {
 }
 declare const DiskManager: DiskManager;
 
+interface EngineEventConnection extends Number {
+	/**
+	 * **NOTE**: Engine Event Connections are integer-based
+	 *
+	 * If you want to disconnect an engine event - use
+	 * ```ts
+	 * Bridge.DisconnectEvent(eventConnection)
+	 * ```
+	 * @hidden
+	 * @deprecated
+	 */
+	readonly _nominal_EngineEventConnection: unique symbol;
+}
 /**
  * To disconnect, call `Bridge.DisconnectEvent(eventConnection)`
  */
-type EngineEventConnection = number;
+// type EngineEventConnection = number & { /** @deprecated */ readonly _nominal_EngineEventConnection: unique symbol };
 
 interface BridgeConstructor {
 	DisconnectEvent(eventConnection: EngineEventConnection): void;

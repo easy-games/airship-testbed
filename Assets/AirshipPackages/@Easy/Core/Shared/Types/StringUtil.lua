@@ -85,4 +85,27 @@ function StringUtils.endsWith(str1, str2, pos)
 	return start > 0 and string.sub(str1, start, pos) == str2
 end
 
+function StringUtils.ncifyVariableName(name: string): string
+	if string.find(name, "^_", 1) ~= nil then
+		name = string.sub(name, 2)
+	elseif string.find(name, "^k", 1) ~= nil then
+		name = string.sub(name, 2)
+	elseif string.find(name, "^m_", 1) ~= nil then
+		name = string.sub(name, 3)
+	end
+
+	local newStr = ""
+	for i = 1, #name do
+		local char = string.sub(name, i, i)
+		if i == 1 then
+			newStr ..= string.upper(char)
+		elseif string.upper(char) == char then
+			newStr ..= " " .. char
+		else
+			newStr ..= char
+		end
+	end
+	return newStr
+end
+
 return StringUtils
