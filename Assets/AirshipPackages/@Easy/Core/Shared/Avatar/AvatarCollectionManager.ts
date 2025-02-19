@@ -1,8 +1,9 @@
 import { AuthController } from "@Easy/Core/Client/ProtectedControllers/Auth/AuthController";
-import { AccessoryClass, AccessoryInstanceDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
+import { AccessoryClass, ClothingInstanceDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { Dependency } from "../Flamework";
 import { Game } from "../Game";
 import { CoreLogger } from "../Logger/CoreLogger";
+import { Protected } from "../Protected";
 import { RandomUtil } from "../Util/RandomUtil";
 import { AvatarPlatformAPI } from "./AvatarPlatformAPI";
 
@@ -92,7 +93,7 @@ export class AvatarCollectionManager {
 		}
 	}
 
-	private AddAvailableAvatarItem(itemDto: AccessoryInstanceDto, item: AccessoryComponent) {
+	private AddAvailableAvatarItem(itemDto: ClothingInstanceDto, item: AccessoryComponent) {
 		//print("Adding item: " + itemDto.class.name + " test: " + item.name);
 		const slotNumber: number = item.GetSlotNumber();
 		let items = this.ownedAvatarAccessories.get(slotNumber);
@@ -113,7 +114,7 @@ export class AvatarCollectionManager {
 		this.ownedAvatarAccessories.set(slotNumber, items);
 	}
 
-	private AddAvailableFaceItem(itemDto: AccessoryInstanceDto, item: AccessoryFace) {
+	private AddAvailableFaceItem(itemDto: ClothingInstanceDto, item: AccessoryFace) {
 		//print("Adding face: " + itemDto.class.name + " test: " + item.name);
 		if (itemDto.class.name === "Face Simple 01" || itemDto.class.name === "FaceDecalSimple01") {
 			AvatarPlatformAPI.defaultFace = itemDto;
@@ -129,7 +130,7 @@ export class AvatarCollectionManager {
 
 		//Get all owned accessories and map them to usable values
 		CoreLogger.Log("Downloading owned accessories");
-		let acc = await AvatarPlatformAPI.GetAccessories();
+		let acc = await Protected.Avatar.GetAccessories();
 		if (acc) {
 			acc.forEach((itemData) => {
 				this.allAvatarClasses.set(itemData.class.classId, itemData.class);

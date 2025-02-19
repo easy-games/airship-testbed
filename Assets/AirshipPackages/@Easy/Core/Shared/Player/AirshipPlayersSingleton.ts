@@ -11,8 +11,8 @@ import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { Asset } from "../Asset";
-import { AvatarPlatformAPI } from "../Avatar/AvatarPlatformAPI";
 import { CoreLogger } from "../Logger/CoreLogger";
+import { Protected } from "../Protected";
 import { AirshipUrl } from "../Util/AirshipUrl";
 import { Levenshtein } from "../Util/Strings/Levenshtein";
 import { OnUpdate } from "../Util/Timer";
@@ -380,10 +380,10 @@ export class AirshipPlayersSingleton {
 
 		if (player.IsLocalPlayer() || Game.IsEditor()) {
 			//print("loading local outfit");
-			await AvatarPlatformAPI.GetEquippedOutfit().then(SetOutfit);
+			await Protected.Avatar.GetEquippedOutfit().then(SetOutfit);
 		} else {
 			//print("loading outfit from server for player: " + player.userId);
-			await AvatarPlatformAPI.GetUserEquippedOutfit(player.userId).then(SetOutfit);
+			await Protected.Avatar.GetUserEquippedOutfit(player.userId).then(SetOutfit);
 		}
 		return true;
 	}

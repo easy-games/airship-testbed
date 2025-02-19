@@ -109,8 +109,8 @@ export default class SettingsPage extends AirshipBehaviour {
 		);
 
 		this.gamePageSettingsContainer.gameObject.ClearChildren();
-		if (Protected.settings.gameSettings.size() > 0) {
-			for (let gameSetting of Protected.settings.gameSettingsOrdered) {
+		if (Protected.Settings.gameSettings.size() > 0) {
+			for (let gameSetting of Protected.Settings.gameSettingsOrdered) {
 				if (gameSetting === "space") {
 					Object.Instantiate(this.spacerPrefab, this.gamePageSettingsContainer);
 					continue;
@@ -124,7 +124,7 @@ export default class SettingsPage extends AirshipBehaviour {
 					settingsSlider.Init(gameSetting.name, setting.value as number, setting.min, setting.max);
 					this.bin.Add(
 						settingsSlider.onChange.Connect((val) => {
-							Protected.settings.SetGameSetting(setting.name, val);
+							Protected.Settings.SetGameSetting(setting.name, val);
 						}),
 					);
 				}
@@ -137,7 +137,7 @@ export default class SettingsPage extends AirshipBehaviour {
 					toggle.Init(gameSetting.name, gameSetting.value as boolean);
 					this.bin.Add(
 						toggle.toggle.onValueChanged.Connect((val) => {
-							Protected.settings.SetGameSetting(setting.name, val);
+							Protected.Settings.SetGameSetting(setting.name, val);
 						}),
 					);
 				}
@@ -146,7 +146,7 @@ export default class SettingsPage extends AirshipBehaviour {
 	}
 
 	protected Start(): void {
-		const settings = Protected.settings;
+		const settings = Protected.Settings;
 
 		this.mouseSensitivitySlider.Init("Mouse Sensitivity", settings.GetMouseSensitivity(), 0.01, 2);
 		this.mouseSensitivitySlider.onChange.Connect((val) => {

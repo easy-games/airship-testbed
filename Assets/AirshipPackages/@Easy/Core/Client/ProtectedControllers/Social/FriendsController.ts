@@ -244,8 +244,8 @@ export class ProtectedFriendsController {
 		const statusTextInput = this.mainMenuController.refs.GetValue("Social", "StatusInputField") as TMP_InputField;
 		let savedStatus = StateManager.GetString("social:status-text");
 		if (!savedStatus || savedStatus === "") {
-			Protected.settings.WaitForSettingsLoaded();
-			savedStatus = Protected.settings.data.statusText;
+			Protected.Settings.WaitForSettingsLoaded();
+			savedStatus = Protected.Settings.data.statusText;
 		}
 		if (savedStatus) {
 			this.SetStatusText(savedStatus);
@@ -272,8 +272,8 @@ export class ProtectedFriendsController {
 	public SetStatusText(text: string): void {
 		this.statusText = text;
 		StateManager.SetString("social:status-text", text);
-		Protected.settings.data.statusText = text;
-		Protected.settings.MarkAsDirty();
+		Protected.Settings.data.statusText = text;
+		Protected.Settings.MarkAsDirty();
 		this.SendStatusUpdateYielding();
 	}
 

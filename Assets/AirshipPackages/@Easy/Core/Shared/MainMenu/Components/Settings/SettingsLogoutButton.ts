@@ -8,7 +8,7 @@ export default class SettingsLogoutButton extends AirshipBehaviour {
 	override Start(): void {
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnClickEvent(this.gameObject, () => {
-				Protected.user.Logout();
+				Protected.User.Logout();
 			}),
 		);
 	}

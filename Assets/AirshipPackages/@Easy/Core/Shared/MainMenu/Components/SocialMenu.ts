@@ -78,7 +78,7 @@ export default class SocialMenu extends AirshipBehaviour {
 		);
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnClickEvent(this.logoutbutton.gameObject, () => {
-				Protected.user.Logout();
+				Protected.User.Logout();
 			}),
 		);
 	}

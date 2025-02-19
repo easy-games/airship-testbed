@@ -1,35 +1,120 @@
-import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
-import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
+import { AuthController } from "@Easy/Core/Client/ProtectedControllers/Auth/AuthController";
 import {
-	AccessoryInstanceDto,
+	ClothingInstanceDto,
 	OutfitCreateDto,
 	OutfitDto,
 	OutfitPatch,
-} from "../Airship/Types/Outputs/AirshipPlatformInventory";
-import { CoreLogger } from "../Logger/CoreLogger";
+} from "../../Airship/Types/Outputs/AirshipPlatformInventory";
+import { Dependency, Singleton } from "../../Flamework";
+import { CoreLogger } from "../../Logger/CoreLogger";
+import { Protected } from "../../Protected";
+import { AirshipUrl } from "../../Util/AirshipUrl";
+import { ColorUtil } from "../../Util/ColorUtil";
+import { RandomUtil } from "../../Util/RandomUtil";
+import { Signal } from "../../Util/Signal";
 
-// TODO this needs to be moved to the main menu lua sandbox
-export class AvatarPlatformAPI {
-	public static defaultFace?: AccessoryInstanceDto;
-	public static defaultShirt?: AccessoryInstanceDto;
-	public static defaultPants?: AccessoryInstanceDto;
-	public static defaultShoes?: AccessoryInstanceDto;
+@Singleton()
+export class ProtectedAvatarSingleton {
+	public defaultFace?: ClothingInstanceDto;
+	public defaultShirt?: ClothingInstanceDto;
+	public defaultPants?: ClothingInstanceDto;
+	public defaultShoes?: ClothingInstanceDto;
 
-	private static Log(message: string) {
-		//print("AvatarAPI: " + message);
+	private isLoadingInventory = false;
+	public isInventoryLoaded = false;
+	public onInventoryLoaded = new Signal();
+
+	public outfits: OutfitDto[] = [];
+	public ownedClothing: ClothingInstanceDto[] = [];
+
+	public skinColors = [
+		"#FFF3EA",
+		"#F6D7BB",
+		"#ECB98C",
+		"#D99E72",
+		"#C68953",
+		"#A56E45",
+		"#925E39",
+		"#7D4F2B",
+		"#4E2F13",
+		"#352214",
+	];
+
+	constructor() {
+		Protected.Avatar = this;
 	}
 
-	public static GetHttpUrl(path: string) {
+	public async LoadInventory(): Promise<void> {
+		if (this.isInventoryLoaded) return;
+		if (this.isLoadingInventory) {
+			Debug.LogWarning("Tried to load inventory when already loading.");
+			return;
+		}
+
+		await Dependency<AuthController>().WaitForAuthed();
+
+		// Get all owned clothing and map them to usable values
+		this.Log("Downloading owned clothing...");
+		let clothingData = await Protected.Avatar.GetAccessories();
+		this.Log("got clothing: " + clothingData);
+
+		if (clothingData) {
+			this.ownedClothing = clothingData;
+		}
+
+		// Load the outfits
+		let outfits = await Protected.Avatar.GetAllOutfits();
+		const maxNumberOfOutfits = 5;
+		const numberOfOutfits = outfits ? outfits.size() : 0;
+		let name = "";
+		let equippedOutfitId = "";
+		let firstOutfit = true;
+
+		//Create missing outfits up to 5
+		for (let i = numberOfOutfits; i < maxNumberOfOutfits; i++) {
+			name = "Default" + i;
+			print("Creating missing outfit: " + name);
+			let outfit = await Protected.Avatar.CreateDefaultAvatarOutfit(
+				firstOutfit,
+				name,
+				name,
+				ColorUtil.HexToColor(RandomUtil.FromArray(this.skinColors)),
+			);
+			if (!outfit) {
+				error("Unable to make a new outfit :(");
+			} else if (firstOutfit) {
+				firstOutfit = false;
+				equippedOutfitId = outfit.outfitId;
+			}
+			this.outfits.push(outfit);
+		}
+
+		// Make sure an outfit is equipped
+		if (equippedOutfitId !== "" && (await Protected.Avatar.GetEquippedOutfit()) === undefined) {
+			print("Setting equipped outfit: " + equippedOutfitId);
+			await Protected.Avatar.EquipAvatarOutfit(equippedOutfitId);
+		}
+
+		this.isLoadingInventory = false;
+		this.isInventoryLoaded = true;
+		this.onInventoryLoaded.Fire();
+	}
+
+	private Log(message: string) {
+		print("Protected.avatar: " + message);
+	}
+
+	public GetHttpUrl(path: string) {
 		let url = `${AirshipUrl.ContentService}/${path}`;
 		this.Log("HTTP URL: " + url);
 		return url;
 	}
 
-	public static GetImageUrl(imageId: string) {
+	public GetImageUrl(imageId: string) {
 		return `${AirshipUrl.CDN}/images/${imageId}.png`;
 	}
 
-	public static async GetAllOutfits(): Promise<OutfitDto[] | undefined> {
+	public async GetAllOutfits(): Promise<OutfitDto[] | undefined> {
 		this.Log("GetAllOutfits");
 		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits`));
 		if (res.success) {
@@ -37,7 +122,7 @@ export class AvatarPlatformAPI {
 		}
 	}
 
-	public static async GetEquippedOutfit(): Promise<OutfitDto | undefined> {
+	public async GetEquippedOutfit(): Promise<OutfitDto | undefined> {
 		this.Log("GetEquippedOutfit");
 		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/equipped/self`));
 		if (res.success) {
@@ -47,7 +132,7 @@ export class AvatarPlatformAPI {
 		}
 	}
 
-	public static async GetUserEquippedOutfit(userId: string): Promise<OutfitDto | undefined> {
+	public async GetUserEquippedOutfit(userId: string): Promise<OutfitDto | undefined> {
 		const res = InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/uid/${userId}/equipped`));
 		if (res.success) {
 			this.Log("LOADED OUTFIT: " + res.data);
@@ -57,7 +142,7 @@ export class AvatarPlatformAPI {
 		}
 	}
 
-	public static async GetAvatarOutfit(outfitId: string): Promise<OutfitDto | undefined> {
+	public async GetAvatarOutfit(outfitId: string): Promise<OutfitDto | undefined> {
 		this.Log("GetAvatarOutfit");
 		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/outfit-id/${outfitId}`));
 		if (res.success) {
@@ -68,7 +153,7 @@ export class AvatarPlatformAPI {
 		}
 	}
 
-	public static async CreateAvatarOutfit(outfit: OutfitCreateDto) {
+	public async CreateAvatarOutfit(outfit: OutfitCreateDto) {
 		this.Log("CreateAvatarOutfit: " + this.GetHttpUrl(`outfits`) + " data: " + json.encode(outfit));
 		let res = InternalHttpManager.PostAsync(this.GetHttpUrl(`outfits`), json.encode(outfit));
 		if (res.success) {
@@ -79,7 +164,7 @@ export class AvatarPlatformAPI {
 		}
 	}
 
-	public static async EquipAvatarOutfit(outfitId: string) {
+	public async EquipAvatarOutfit(outfitId: string) {
 		this.Log("EquipAvatarOutfit");
 		let res = InternalHttpManager.PostAsync(this.GetHttpUrl(`outfits/outfit-id/${outfitId}/equip`));
 		if (res.success) {
@@ -89,18 +174,17 @@ export class AvatarPlatformAPI {
 		}
 	}
 
-	public static async GetAccessories() {
-		this.Log("GetAccessories");
+	public async GetAccessories() {
 		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`accessories/self`));
 		if (res.success) {
 			//this.Log("Got acc: " + res.data);
-			return json.decode<AccessoryInstanceDto[]>(res.data);
+			return json.decode<ClothingInstanceDto[]>(res.data);
 		} else {
 			CoreLogger.Error("Unable to load avatar items for user");
 		}
 	}
 
-	public static async CreateDefaultAvatarOutfit(equipped: boolean, outfitId: string, name: string, skinColor: Color) {
+	public async CreateDefaultAvatarOutfit(equipped: boolean, outfitId: string, name: string, skinColor: Color) {
 		this.Log("CreateDefaultAvatarOutfit");
 		let accessorUUIDs: string[] = [];
 
@@ -133,14 +217,14 @@ export class AvatarPlatformAPI {
 		return this.CreateAvatarOutfit(outfit);
 	}
 
-	public static async RenameOutfit(outfitId: string, newName: string) {
+	public async RenameOutfit(outfitId: string, newName: string) {
 		this.Log("RenameOutfitAccessories");
 		return this.UpdateOutfit(outfitId, {
 			name: newName,
 		});
 	}
 
-	public static async SaveOutfitAccessories(outfitId: string, skinColor: string, instanceIds: string[]) {
+	public async SaveOutfitAccessories(outfitId: string, skinColor: string, instanceIds: string[]) {
 		this.Log("SaveOutfitAccessories");
 		return this.UpdateOutfit(outfitId, {
 			accessories: instanceIds,
@@ -148,7 +232,7 @@ export class AvatarPlatformAPI {
 		});
 	}
 
-	private static UpdateOutfit(outfitId: string, update: Partial<OutfitPatch>) {
+	private UpdateOutfit(outfitId: string, update: Partial<OutfitPatch>) {
 		let res = InternalHttpManager.PatchAsync(this.GetHttpUrl(`outfits/outfit-id/${outfitId}`), json.encode(update));
 		if (res.success) {
 			return json.decode<{ outfit: OutfitDto }>(res.data).outfit;
@@ -157,16 +241,16 @@ export class AvatarPlatformAPI {
 		}
 	}
 
-	public static async LoadImage(fileId: string) {
+	public async LoadImage(fileId: string) {
 		let res = InternalHttpManager.GetAsync(this.GetImageUrl(fileId));
 		if (res.success) {
-			return json.decode<AccessoryInstanceDto[]>(res.data);
+			return json.decode<ClothingInstanceDto[]>(res.data);
 		} else {
 			CoreLogger.Error("Error loading image: " + res.error);
 		}
 	}
 
-	public static async UploadItemImage(classId: string, resourceId: string, filePath: string, fileSize: number) {
+	public async UploadItemImage(classId: string, resourceId: string, filePath: string, fileSize: number) {
 		const imageId = await this.UploadImage(resourceId, filePath, fileSize);
 		if (imageId === "" || imageId === undefined) {
 			return;
@@ -186,17 +270,20 @@ export class AvatarPlatformAPI {
 		}
 	}
 
-	public static async UploadImage(resourceId: string, filePath: string, fileSize: number): Promise<string> {
+	public async UploadImage(resourceId: string, filePath: string, fileSize: number): Promise<string> {
 		this.Log("Requesting image url: " + resourceId);
 
 		let postPath = `${AirshipUrl.ContentService}/images`;
 		this.Log("post path: " + postPath);
-		const res = InternalHttpManager.PostAsync(postPath, json.encode({
-			contentType: "image/png",
-			contentLength: fileSize,
-			resourceId,
-			namespace: "items"
-		}));
+		const res = InternalHttpManager.PostAsync(
+			postPath,
+			json.encode({
+				contentType: "image/png",
+				contentLength: fileSize,
+				resourceId,
+				namespace: "items",
+			}),
+		);
 
 		if (res.success) {
 			const data = json.decode<{ url: string; imageId: string }>(res.data);

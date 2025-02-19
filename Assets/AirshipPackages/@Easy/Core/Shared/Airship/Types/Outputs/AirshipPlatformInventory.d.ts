@@ -54,7 +54,7 @@ export interface ItemInstanceDto {
 	float: number;
 }
 
-export interface AccessoryInstanceDto extends ItemInstanceDto {
+export interface ClothingInstanceDto extends ItemInstanceDto {
 	class: AccessoryClass;
 }
 
@@ -74,7 +74,7 @@ export interface OutfitPatch {
 	name: string;
 }
 
-export interface OutfitCreateDto{
+export interface OutfitCreateDto {
 	outfitId: string;
 	owner: string;
 
@@ -93,7 +93,7 @@ export interface OutfitDto {
 	name: string;
 	/** Hex string */
 	skinColor: string;
-	accessories: Array<AccessoryInstanceDto>;
+	accessories: Array<ClothingInstanceDto>;
 
 	equipped: boolean;
 }

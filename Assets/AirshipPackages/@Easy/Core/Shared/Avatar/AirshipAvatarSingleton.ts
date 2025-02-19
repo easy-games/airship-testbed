@@ -1,12 +1,9 @@
 import { Airship } from "../Airship";
 import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
-import Character from "../Character/Character";
 import { Singleton } from "../Flamework";
-import { Player } from "../Player/Player";
+import { Protected } from "../Protected";
 import { ColorUtil } from "../Util/ColorUtil";
 import { AvatarCollectionManager } from "./AvatarCollectionManager";
-import { AvatarPlatformAPI } from "./AvatarPlatformAPI";
-
 /**
  * Access using {@link Airship.Avatar}. Avatar singleton provides utilities for working with visual elements of a character
  *
@@ -20,7 +17,7 @@ export class AirshipAvatarSingleton {
 	}
 
 	/**
-	 * Load a default outfit onto the character so they aren't nakey
+	 * Load a default outfit onto the character so they aren't naked
 	 * @param builder accessory builder for character
 	 */
 	public LoadDefaultOutfit(builder: AccessoryBuilder) {
@@ -40,69 +37,69 @@ export class AirshipAvatarSingleton {
 		builder: AccessoryBuilder,
 		options: { removeOldClothingAccessories?: boolean; updateViewmodel?: boolean } = {},
 	) {
-		AvatarPlatformAPI.GetUserEquippedOutfit(userId).then((outfit) => {
+		Protected.Avatar.GetUserEquippedOutfit(userId).then((outfit) => {
 			if (outfit) {
-				this.LoadUserOutfitDto(outfit, builder, options);
+				this.LoadOutfit(builder, outfit, options);
 
 				if (options.updateViewmodel && Airship.Characters.viewmodel) {
-					this.LoadUserOutfitDto(outfit, Airship.Characters.viewmodel.accessoryBuilder, options);
+					this.LoadOutfit(Airship.Characters.viewmodel.accessoryBuilder, outfit, options);
 				}
 			}
 		});
 	}
 
-	/**
-	 * If this character has a Player it will load that players equipped outfit
-	 * @param character character with an accessory builder on it
-	 * @param builder accessory builder for character
-	 * @param options optional params
-	 */
-	public LoadOutfitByPlayer(
-		player: Player,
-		builder: AccessoryBuilder,
-		options: {
-			removeOldClothingAccessories?: boolean;
-			combineMeshes?: boolean;
-		},
-	) {
-		this.LoadOutfitByUserId(player.userId, builder, options);
-	}
+	// /**
+	//  * If this character has a Player it will load that players equipped outfit
+	//  * @param character character with an accessory builder on it
+	//  * @param builder accessory builder for character
+	//  * @param options optional params
+	//  */
+	// public LoadOutfitByPlayer(
+	// 	player: Player,
+	// 	builder: AccessoryBuilder,
+	// 	options: {
+	// 		removeOldClothingAccessories?: boolean;
+	// 		combineMeshes?: boolean;
+	// 	},
+	// ) {
+	// 	this.LoadOutfitByUserId(player.userId, builder, options);
+	// }
 
-	/**
-	 * If this character has a Player it will load that players equipped outfit
-	 * @param character character with an accessory builder on it
-	 * @param options optional params
-	 */
-	public LoadOutfitByCharacter(
-		character: Character,
-		options: {
-			removeOldClothingAccessories?: boolean;
-			combineMeshes?: boolean;
-		},
-	) {
-		if (!character.player) {
-			return;
-		}
-		if (!character.accessoryBuilder) {
-			warn("Cannot load outfit without Accessory Builder set on Character.");
-			return;
-		}
-		this.LoadOutfitByUserId(character.player.userId, character.accessoryBuilder, options);
-	}
+	// /**
+	//  * If this character has a Player it will load that players equipped outfit
+	//  * @param character character with an accessory builder on it
+	//  * @param options optional params
+	//  */
+	// public LoadOutfitByCharacter(
+	// 	character: Character,
+	// 	options: {
+	// 		removeOldClothingAccessories?: boolean;
+	// 		combineMeshes?: boolean;
+	// 	},
+	// ) {
+	// 	if (!character.player) {
+	// 		return;
+	// 	}
+	// 	if (!character.accessoryBuilder) {
+	// 		warn("Cannot load outfit without Accessory Builder set on Character.");
+	// 		return;
+	// 	}
+	// 	this.LoadOutfitByUserId(character.player.userId, character.accessoryBuilder, options);
+	// }
 
 	/**
 	 * Gets the equipped outfit for your local logged in character
 	 * @param builder accessory builder for character
 	 * @param options optional params
 	 */
-	public LoadOutfitFromLocalUser(
+	public LoadLocalPlayerOutfit(
 		builder: AccessoryBuilder,
 		options: {
 			removeOldClothingAccessories?: boolean;
 			combineMeshes?: boolean;
 		} = {},
 	) {
-		AvatarPlatformAPI.GetEquippedOutfit().then((outfitDto) => {
+		Protected.Avatar.GetEquippedOutfit().then((outfitDto) => {
 			if (!outfitDto) {
 				// warn("Unable to load users default outfit. Equipping baked default outfit");
 				this.LoadDefaultOutfit(builder);
@@ -111,9 +108,9 @@ export class AirshipAvatarSingleton {
 				}
 				return;
 			}
-			this.LoadUserOutfitDto(outfitDto, builder, options);
+			this.LoadOutfit(builder, outfitDto, options);
 			if (Airship.Characters.viewmodel) {
-				this.LoadUserOutfitDto(outfitDto, Airship.Characters.viewmodel.accessoryBuilder, options);
+				this.LoadOutfit(Airship.Characters.viewmodel.accessoryBuilder, outfitDto, options);
 			}
 		});
 	}
@@ -129,9 +126,9 @@ export class AirshipAvatarSingleton {
 	 *
 	 * @internal
 	 */
-	public LoadUserOutfitDto(
-		outfit: OutfitDto,
+	public LoadOutfit(
 		builder: AccessoryBuilder,
+		outfit: OutfitDto,
 		options: { removeOldClothingAccessories?: boolean } = {},
 	) {
 		if (options.removeOldClothingAccessories) {
