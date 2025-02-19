@@ -28,9 +28,6 @@ export default class AirshipEmoteSingleton implements OnStart {
 			if (!emoteDef) return;
 			if (!player.character) return;
 
-			const startSignal = player.character.onEmoteStart.Fire(new EmoteStartSignal(emoteId));
-			if (startSignal.IsCancelled()) return;
-
 			CoreNetwork.ServerToClient.Character.EmoteStart.server.FireAllClients(player.character.id, emoteId);
 		});
 
@@ -63,10 +60,8 @@ export default class AirshipEmoteSingleton implements OnStart {
 				character.onEmoteEnd.Fire();
 			}
 
-			if (!Game.IsHosting()) {
-				const startSignal = character.onEmoteStart.Fire(new EmoteStartSignal(emoteId));
-				if (startSignal.IsCancelled()) return;
-			}
+			const startSignal = character.onEmoteStart.Fire(new EmoteStartSignal(emoteId));
+			if (startSignal.IsCancelled()) return;
 
 			const anim = Asset.LoadAsset<AnimationClip>(def.anim);
 			character.animationHelper.PlayAnimation(anim, CharacterAnimationLayer.OVERRIDE_3, def.fadeInTime ?? 0.1);
