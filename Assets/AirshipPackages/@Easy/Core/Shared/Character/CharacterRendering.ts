@@ -28,14 +28,14 @@ export default class CharacterRendering extends AirshipBehaviour {
 	private lastSetAlpha = -1;
 
 	protected Awake(): void {
-		// this.character = this.gameObject.GetAirshipComponent<Character>()!;
-		// if (this.character) {
-		// 	this.Init();
-		// }
+		this.character = this.gameObject.GetAirshipComponent<Character>()!;
+		if (this.character) {
+			this.Init();
+		}
 	}
 
 	protected OnEnable(): void {
-		// this.Refresh();
+		this.Refresh();
 	}
 
 	protected OnDisable(): void {
@@ -71,7 +71,7 @@ export default class CharacterRendering extends AirshipBehaviour {
 		this.renderBehindWalls = renderBehindWalls;
 		this.renderBehindWallsForLocalPlayer = renderBehindWallsForLocalPlayer;
 		this.renderTransparentWhenCloseForLocalPlayer = renderTransparentWhenCloseForLocalPlayer;
-		// this.Refresh();
+		this.Refresh();
 	}
 
 	private Refresh() {
@@ -140,6 +140,7 @@ export default class CharacterRendering extends AirshipBehaviour {
 							continue;
 						}
 						if (this.SetupRenderer(newRenderers[i], useWallRenders, useAlpha)) {
+							//print("added acc: " + newRenderers[i].gameObject.name);
 							this.accRenderers.push(newRenderers[i]);
 						}
 					}
@@ -196,8 +197,10 @@ export default class CharacterRendering extends AirshipBehaviour {
 
 	private SetupRenderer(ren: Renderer, useWallRenders: boolean, useAlpha: boolean) {
 		if (ren === undefined || ren.gameObject.layer === Layer.TRANSPARENT_FX) {
+			//print("ignoring ren: " + ren?.gameObject.name);
 			return false;
 		}
+		//print("Ren: " + ren?.gameObject.name + " layer: " + ren?.gameObject.layer);
 		const shaderName = ren.materials[ren.materials.size() - 1].GetTag("LightMode", false, "");
 		if (
 			shaderName === "CharacterDepth" ||
@@ -205,6 +208,7 @@ export default class CharacterRendering extends AirshipBehaviour {
 			shaderName === "CharacterBehindOpaque"
 		) {
 			//We already setup this renderer, don't do it again or we will add duplicated render passes
+			//print("ren already had materials: " + ren.gameObject.name);
 			return false;
 		}
 
@@ -223,6 +227,7 @@ export default class CharacterRendering extends AirshipBehaviour {
 		}
 
 		ren.gameObject.layer = this.character.IsLocalCharacter() ? Layer.LOCAL_STENCIL_MASK : Layer.STENCIL_MASK;
+		//print("setup ren: " + ren.gameObject.name);
 		return true;
 	}
 
