@@ -72,8 +72,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	}
 
 	override Start(): void {
-		this.backpackLabel.gameObject.SetActive(false);
-
+		this.backpackLabel?.gameObject.SetActive(false);
 		this.externalInventoryContent?.gameObject.SetActive(false);
 		this.externalInventoryLabel?.gameObject.SetActive(false);
 

@@ -446,7 +446,7 @@ MonoBehaviour:
       decorators: []
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 4499402824064225554, guid: d9e66e1ed6267c84782d4f7a258d57ab, type: 3}
+      serializedObject: {fileID: 0}
       modified: 1
     - name: useAirshipCameraSystem
       type: boolean

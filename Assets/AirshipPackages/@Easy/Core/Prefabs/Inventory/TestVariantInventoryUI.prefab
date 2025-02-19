@@ -145,6 +145,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 4527967416572302903, guid: 891e9dca8023a49b5ba4c2a7940f0ae7, type: 3}
+      propertyPath: m_metadata.properties.Array.data[11].serializedObject
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4527967416572302903, guid: 891e9dca8023a49b5ba4c2a7940f0ae7, type: 3}
       propertyPath: m_metadata.properties.Array.data[12].serializedObject
       value: 
       objectReference: {fileID: 0}
