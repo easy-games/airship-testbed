@@ -22,7 +22,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	public hotbarContent!: RectTransform;
 
 	@Header("Backpack")
-	public backpackLabel: TMP_Text;
+	public backpackLabel?: TMP_Text;
 	public backpackCanvas!: Canvas;
 	public backpackContent!: RectTransform;
 	public dropItemCatcher: RectTransform;
@@ -417,7 +417,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		const bin = new Bin();
 		this.externalInventoryContent.gameObject.SetActive(true);
 
-		this.backpackLabel.gameObject.SetActive(true);
+		this.backpackLabel?.gameObject.SetActive(true);
 		this.externalInventoryLabel?.gameObject.SetActive(true);
 
 		const prompt = inventory.gameObject.GetAirshipComponentInChildren<ProximityPrompt>();
@@ -480,7 +480,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 
 		bin.Add(() => {
 			this.externalInventory = undefined;
-			this.backpackLabel.gameObject.SetActive(false);
+			this.backpackLabel?.gameObject.SetActive(false);
 			this.externalInventoryLabel?.gameObject.SetActive(false);
 			this.externalInventoryContent!.gameObject.SetActive(false);
 		});
