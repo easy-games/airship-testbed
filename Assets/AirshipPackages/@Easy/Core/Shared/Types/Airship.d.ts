@@ -1065,6 +1065,6 @@ interface Clothing {
 	accessoryPrefabs: AccessoryComponent[];
 }
 interface ClothingConstructor {
-	DownloadYielding(classId: string, airId: string, versionHash: string): Clothing | undefined;
+	DownloadYielding(classId: string, airId: string): Clothing | undefined;
 }
 declare const Clothing: ClothingConstructor;

@@ -1051,6 +1051,31 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 8440015110078338219}
       modified: 1
+    - name: modifyPermission
+      type: StringEnum
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: AirshipPackages/@Easy/Core/Shared/Inventory/Inventory@InventoryModifyPermission
+      fileRef: 
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"Permissions"'
+      - name: Tooltip
+        parameters:
+        - type: string
+          serializedValue: '"Who can modify this inventory\n\n<b>Network Owner</b>:
+            The network owner of this Inventory''s NetworkIdentity\n<b>Everyone</b>:
+            Any client can modify the inventory"'
+      nullable: 0
+      serializedValue: OWNER
+      serializedObject: {fileID: 0}
+      modified: 0
     displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0

@@ -1,4 +1,4 @@
-import { Airship, Platform } from "@Easy/Core/Shared/Airship";
+import { Airship } from "@Easy/Core/Shared/Airship";
 import { OutfitDto } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipPlatformInventory";
 import { AvatarCollectionManager } from "@Easy/Core/Shared/Avatar/AvatarCollectionManager";
 import { AvatarPlatformAPI } from "@Easy/Core/Shared/Avatar/AvatarPlatformAPI";
@@ -192,6 +192,19 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 				}
 			});
 		}
+
+		// Testing
+		task.spawnDetached(() => {
+			const clothing = Clothing.DownloadYielding(
+				"ffbc21f2-f977-4452-bb98-43064890f0b8",
+				"105f7569-9c1d-48d2-9f38-ede68ff2a86a",
+			);
+			if (clothing) {
+				print("got clothing");
+				const go = Instantiate(clothing.accessoryPrefabs[0]);
+				print("instantiated accessory: " + clothing.accessoryPrefabs[0].gameObject.name);
+			}
+		});
 	}
 
 	private RefreshAvatar() {
@@ -433,10 +446,10 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private async DisplayItems(items: { instanceId: string; item: AccessoryComponent }[]) {
-		const ownedItems = await Platform.Client.Inventory.GetItems({ queryType: "tag", tags: ["Clothing"] });
-		for (let item of ownedItems) {
-			const clothing = Clothing.DownloadYielding(item.classId, "airId", "versionHash");
-		}
+		// const ownedItems = await Platform.Client.Inventory.GetItems({ queryType: "tag", tags: ["Clothing"] });
+		// for (let item of ownedItems) {
+		// 	const clothing = Clothing.DownloadYielding(item.classId, "airId", "versionHash");
+		// }
 
 		if (items && items.size() > 0) {
 			items.forEach((value) => {
