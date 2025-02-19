@@ -200,9 +200,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 				"105f7569-9c1d-48d2-9f38-ede68ff2a86a",
 			);
 			if (clothing) {
-				print("got clothing");
 				const go = Instantiate(clothing.accessoryPrefabs[0]);
-				print("instantiated accessory: " + clothing.accessoryPrefabs[0].gameObject.name);
 			}
 		});
 	}
