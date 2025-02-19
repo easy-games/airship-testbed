@@ -10,6 +10,8 @@ import { DraggingState } from "./AirshipDraggingState";
 import AirshipInventoryTile from "./AirshipInventoryTile";
 import Inventory from "./Inventory";
 import { Game } from "../Game";
+import StringUtils from "../Types/StringUtil";
+import ProximityPrompt from "../Input/ProximityPrompts/ProximityPrompt";
 
 export default class AirshipInventoryUI extends AirshipBehaviour {
 	@Header("Variables")
@@ -405,7 +407,11 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		const bin = new Bin();
 		this.backpackLabel.gameObject.SetActive(true);
 		this.externalInventoryLabel.gameObject.SetActive(true);
-		this.externalInventoryLabel.text = inventory.gameObject.name;
+
+		const prompt = inventory.gameObject.GetAirshipComponentInChildren<ProximityPrompt>();
+
+		this.externalInventoryLabel.text =
+			prompt?.GetObjectText() ?? StringUtils.ncifyVariableName(inventory.gameObject.name);
 
 		const count = this.externalInventoryContent.childCount;
 		for (let i = 0; i < inventory.maxSlots; i++) {
