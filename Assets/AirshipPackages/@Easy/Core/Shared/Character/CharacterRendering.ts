@@ -17,7 +17,7 @@ export default class CharacterRendering extends AirshipBehaviour {
 	private renderBehindWallsForLocalPlayer = false;
 	@SerializeField()
 	private renderTransparentWhenCloseForLocalPlayer = true;
-	public transparentDistance = 0.5;
+	public transparentDistance = 0.3;
 	public transparentMargin = 0.5;
 
 	private bin = new Bin();
