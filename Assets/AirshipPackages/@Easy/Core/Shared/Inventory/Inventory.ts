@@ -9,11 +9,18 @@ import { Cancellable } from "../Util/Cancellable";
 import { DraggingState } from "./AirshipDraggingState";
 import { ItemStack, ItemStackDto } from "./ItemStack";
 import { BeforeLocalInventoryHeldSlotChanged } from "./Signal/BeforeLocalInventoryHeldSlotChanged";
+import { MapUtil } from "../Util/MapUtil";
+import { Player } from "../Player/Player";
 
 export interface InventoryDto {
 	id: number;
 	items: Map<number, ItemStackDto>;
 	heldSlot: number;
+}
+
+export const enum InventoryModifyPermission {
+	NetworkOwner = "OWNER",
+	Everyone = "ALL",
 }
 
 class OnBeforeAddItemEvent extends Cancellable {
@@ -23,11 +30,21 @@ class OnBeforeAddItemEvent extends Cancellable {
 }
 
 export default class Inventory extends AirshipBehaviour {
+	@Header("Networking")
 	public networkIdentity!: NetworkIdentity;
 	@NonSerialized() public id!: number;
+
+	@Header("Slots")
 	public maxSlots = 45;
 	public hotbarSlots = 9;
 	public heldSlot = 0;
+
+	@Header("Permissions")
+	@Tooltip(
+		"Who can modify this inventory\n\n<b>Network Owner</b>: The network owner of this Inventory's NetworkIdentity\n<b>Everyone</b>: Any client can modify the inventory",
+	)
+	@SerializeField()
+	protected modifyPermission = InventoryModifyPermission.NetworkOwner;
 
 	@NonSerialized() private items = new Map<number, ItemStack>();
 
@@ -263,6 +280,38 @@ export default class Inventory extends AirshipBehaviour {
 			}
 		}
 		return undefined;
+	}
+
+	/**
+	 * Observes the slots of this inventory
+	 */
+	public ObserveSlots(observer: (stack: ItemStack | undefined, index: number) => CleanupFunc) {
+		const bin = this.bin.Extend();
+
+		const slotBins = new Map<number, Bin>();
+		for (let i = 0; i < this.maxSlots; i++) {
+			const atSlot = this.GetItem(i);
+
+			const slotBin = MapUtil.GetOrCreate(slotBins, i, () => bin.Extend());
+			const cleanupFn = observer(atSlot, i);
+			if (typeIs(cleanupFn, "function")) {
+				slotBin.Add(cleanupFn);
+			}
+		}
+
+		bin.Add(
+			this.onSlotChanged.Connect((slot, stack) => {
+				const slotBin = MapUtil.GetOrCreate(slotBins, slot, () => bin.Extend());
+				slotBin.Clean();
+
+				const result = observer(stack, slot);
+				if (typeIs(result, "function")) {
+					slotBin.Add(result);
+				}
+			}),
+		);
+
+		return () => bin.Clean();
 	}
 
 	public ObserveHeldItem(callback: (itemStack: ItemStack | undefined) => CleanupFunc): Bin {
@@ -548,5 +597,28 @@ export default class Inventory extends AirshipBehaviour {
 				this.controlsEnabled = false;
 			}
 		};
+	}
+
+	/**
+	 * Gets the value of the {@link modifyPermission | Modify Permission} property for this inventory
+	 */
+	public GetModifyPermission(): InventoryModifyPermission {
+		return this.modifyPermission;
+	}
+
+	/**
+	 * Returns true if the player has permissions to modify this inventory
+	 * @param player
+	 * @returns
+	 */
+	public CanPlayerModifyInventory(player: Player): boolean {
+		const permission = this.modifyPermission;
+		if (permission === InventoryModifyPermission.NetworkOwner) {
+			return Game.IsClient()
+				? player === Game.localPlayer && this.networkIdentity.isOwned
+				: this.networkIdentity.connectionToClient?.connectionId === player.connectionId;
+		} else {
+			return true;
+		}
 	}
 }

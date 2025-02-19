@@ -196,6 +196,16 @@ export class AirshipInventorySingleton {
 				const toInv = this.GetInventory(toInvId);
 				if (!toInv) return;
 
+				if (!fromInv.CanPlayerModifyInventory(player)) {
+					warn(`[Inventory] MoveToSlot ${player.username} Cannot Modify Source Inventory`);
+					return;
+				}
+
+				if (!toInv.CanPlayerModifyInventory(player)) {
+					warn(`[Inventory] MoveToSlot ${player.username} Cannot Modify Target Inventory`);
+					return;
+				}
+
 				const fromItemStack = fromInv.GetItem(fromSlot);
 				if (!fromItemStack) return;
 
@@ -232,6 +242,16 @@ export class AirshipInventorySingleton {
 
 				const toInv = this.GetInventory(toInvId);
 				if (!toInv) return;
+
+				if (!fromInv.CanPlayerModifyInventory(player)) {
+					warn(`[Inventory] QuickMoveSlot ${player.username} Cannot Modify Source Inventory`);
+					return;
+				}
+
+				if (!toInv.CanPlayerModifyInventory(player)) {
+					warn(`[Inventory] QuickMoveSlot ${player.username} Cannot Modify Target Inventory`);
+					return;
+				}
 
 				const itemStack = fromInv.GetItem(fromSlot);
 				if (!itemStack) return;
@@ -486,6 +506,10 @@ export class AirshipInventorySingleton {
 	}
 
 	public MoveToSlot(fromInv: Inventory, fromSlot: number, toInv: Inventory, toSlot: number, amount: number): void {
+		if (!fromInv.CanPlayerModifyInventory(Game.localPlayer) || !toInv.CanPlayerModifyInventory(Game.localPlayer)) {
+			return;
+		}
+
 		const fromItemStack = fromInv.GetItem(fromSlot);
 		if (!fromItemStack) return;
 
@@ -683,5 +707,15 @@ export class AirshipInventorySingleton {
 		}
 
 		return undefined;
+	}
+
+	/**
+	 * Allows you to open another inventory
+	 */
+	public OpenExternalInventory(inventory: Inventory): CleanupFunc {
+		const ui = this.ui;
+		if (!ui) return;
+
+		return ui.OpenBackpackWithExternalInventory(inventory);
 	}
 }

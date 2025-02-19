@@ -128,6 +128,10 @@ export default class ProximityPrompt extends AirshipBehaviour {
 		this.objectTextLabel.text = val;
 	}
 
+	public GetObjectText() {
+		return this.objectText;
+	}
+
 	public SetActionText(val: string): void {
 		(this.actionText as string) = val;
 		this.actionTextLabel.text = val;

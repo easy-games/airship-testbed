@@ -78,6 +78,13 @@ declare namespace StringUtils {
 	 * @param position The position in this string at which to begin searching for searchElement.
 	 */
 	function startsWith(str: string, searchString: string, position?: number): boolean;
+
+	/**
+	 * Makes a displayable name from a variable, e.g. `"playerHealth"` becomes `"Player Health"`
+	 *
+	 * based on {@link https://docs.unity3d.com/6000.0/Documentation/ScriptReference/ObjectNames.NicifyVariableName.html | ObjectNames.NicifyVariableName}
+	 */
+	function ncifyVariableName(value: string): string;
 }
 
 export = StringUtils;
