@@ -1106,6 +1106,7 @@ interface AnimatorClipReplacer extends MonoBehaviour {
 interface Clothing {
 	classId: string;
 	accessoryPrefabs: AccessoryComponent[];
+	face: AccessoryFace | undefined;
 }
 interface ClothingConstructor {
 	DownloadYielding(classId: string, airId: string): Clothing | undefined;

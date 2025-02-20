@@ -116,10 +116,10 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 	public RenderItem(accessoryTemplate: AccessoryComponent) {
 		print("Rending item: " + accessoryTemplate.name);
 		//Clear the outfit
-		this.builder.RemoveAllAccessories(false);
+		this.builder.RemoveAll(false);
 		this.builder.rig.faceMesh.gameObject.SetActive(false);
 		//Load the accessory onto the avatar
-		let acc = this.builder.AddSingleAccessory(accessoryTemplate, true);
+		let acc = this.builder.Add(accessoryTemplate, true);
 		this.RenderClass(accessoryTemplate.name, accessoryTemplate.GetServerClassId(), accessoryTemplate.accessorySlot);
 	}
 	/**
@@ -130,7 +130,7 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 	public RenderFace(face: AccessoryFace) {
 		print("Rending Face: " + face.name);
 		//Clear the outfit
-		this.builder.RemoveAllAccessories(true);
+		this.builder.RemoveAll(true);
 		//Load the accessory onto the avatar
 		this.builder.rig.faceMesh.gameObject.SetActive(true);
 		this.builder.SetFaceTexture(face.decalTexture);

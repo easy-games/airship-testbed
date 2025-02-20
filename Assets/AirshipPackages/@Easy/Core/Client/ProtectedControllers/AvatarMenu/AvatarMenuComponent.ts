@@ -1,5 +1,6 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
-import { OutfitDto } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipPlatformInventory";
+import { ClothingInstanceDto, OutfitDto } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipPlatformInventory";
+import { InternalClothingMeta } from "@Easy/Core/Shared/Airship/Util/InternalClothingMeta";
 import { AvatarCollectionManager } from "@Easy/Core/Shared/Avatar/AvatarCollectionManager";
 import { AvatarPlatformAPI } from "@Easy/Core/Shared/Avatar/AvatarPlatformAPI";
 import AvatarViewComponent from "@Easy/Core/Shared/Avatar/AvatarViewComponent";
@@ -11,6 +12,7 @@ import { Game } from "@Easy/Core/Shared/Game";
 import { CoreAction } from "@Easy/Core/Shared/Input/AirshipCoreAction";
 import AirshipButton from "@Easy/Core/Shared/MainMenu/Components/AirshipButton";
 import { MainMenuSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/MainMenuSingleton";
+import { Protected } from "@Easy/Core/Shared/Protected";
 import { Keyboard } from "@Easy/Core/Shared/UserInput";
 import { Mouse } from "@Easy/Core/Shared/UserInput/Mouse";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
@@ -90,6 +92,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	private discardTitle = "Discarding Changes!";
 	private discardMessage = "Are you sure you want to discard changes to your outfit?";
+
+	private accessoryBuilder!: AccessoryBuilder;
 
 	private Log(message: string) {
 		//print("Avatar Editor: " + message + " (" + Time.time + ")");
@@ -251,6 +255,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 				).GetAirshipComponent<AvatarViewComponent>()!;
 			}
 		}
+		this.accessoryBuilder = this.mainMenu.avatarView.accessoryBuilder!;
 
 		const charTransform = this.mainMenu.avatarView?.humanEntityGo?.transform!;
 		charTransform.localPosition = new Vector3(0, -200, 0);
@@ -462,12 +467,20 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private DisplayFaceItems() {
-		let faceItems = AvatarCollectionManager.instance.GetAllAvatarFaceItems();
+		let faceItems = Protected.Avatar.ownedClothing.filter((clothing) => {
+			const meta = InternalClothingMeta.get(clothing.classId);
+			return meta?.faceDecal ?? false;
+		});
 		if (faceItems) {
-			faceItems.forEach((value) => {
-				this.AddItemButton(value.GetServerClassId(), value.serverInstanceId, value.name, () => {
-					//Accessory
-					this.SelectFaceItem(value);
+			faceItems.forEach((clothingDto) => {
+				this.AddItemButton(clothingDto.classId, clothingDto.instanceId, clothingDto.name, () => {
+					task.spawn(() => {
+						const meta = InternalClothingMeta.get(clothingDto.classId)!;
+						const clothing = Clothing.DownloadYielding(clothingDto.classId, meta.airId);
+						if (clothing) {
+							this.SelectFaceItem(clothing.face!);
+						}
+					});
 				});
 			});
 		}
@@ -592,19 +605,20 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 	}
 
-	private SelectItem(instanceId: string, accTemplate?: AccessoryComponent, instantRefresh = true) {
+	private SelectItem(instanceId: string, accTemplate?: AccessoryComponent) {
 		if (!accTemplate) {
 			return;
 		}
 		const alreadySelected = this.activeAccessories.get(accTemplate.GetSlotNumber()) === instanceId;
-		this.RemoveItem(accTemplate.GetSlotNumber(), instantRefresh);
+		this.RemoveItem(accTemplate.GetSlotNumber());
 		if (alreadySelected) {
 			//Already selected this item so just deselect it
 			this.UpdateButtonGraphics();
 			return;
 		}
 		this.Log("Selecting item: " + accTemplate.ToString());
-		let acc = this.mainMenu?.avatarView?.accessoryBuilder?.AddSingleAccessory(accTemplate, instantRefresh);
+		let acc = this.accessoryBuilder.Add(accTemplate);
+		this.accessoryBuilder.UpdateCombinedMesh();
 		acc?.AccessoryComponent.SetInstanceId(instanceId);
 		this.mainMenu?.avatarView?.PlayReaction(acc?.AccessoryComponent.accessorySlot ?? AccessorySlot.Root);
 		this.activeAccessories.set(accTemplate.GetSlotNumber(), instanceId);
@@ -624,38 +638,38 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 	}
 
-	private SelectFaceItem(face: AccessoryFace, instantRefresh = true) {
+	private SelectFaceItem(face: ClothingInstanceDto) {
 		if (!face) {
 			print("Missing face item: " + face);
 			return;
 		}
-		const accBuilder = this.mainMenu?.avatarView?.accessoryBuilder;
-		this.mainMenu?.avatarView?.accessoryBuilder?.SetFaceTexture(face.decalTexture);
-		this.selectedFaceId = face.serverInstanceId;
+
+		const meta = InternalClothingMeta.get(face.classId);
+		if (meta) {
+			task.spawn(() => {
+				const clothing = Clothing.DownloadYielding(face.classId, meta.airId);
+				if (clothing?.face) {
+					this.accessoryBuilder.SetFaceTexture(clothing.face.decalTexture);
+					this.accessoryBuilder.UpdateCombinedMesh();
+				}
+			});
+		}
+		this.selectedFaceId = face.instanceId;
 		this.UpdateButtonGraphics();
 		this.SetDirty(true);
 	}
 
-	private SelectSkinItem(acc: AccessorySkin, instantRefresh = true) {
-		if (!acc) {
-			return;
-		}
-		this.Log("Selecting skin item: " + acc.ToString());
-		this.mainMenu?.avatarView?.accessoryBuilder?.AddSkinAccessory(acc, instantRefresh);
-		this.SetDirty(true);
-	}
-
-	private SelectSkinColor(color: Color, instantRefresh = true) {
+	private SelectSkinColor(color: Color) {
 		this.Log("Selecting Color: " + color);
-		this.mainMenu?.avatarView?.accessoryBuilder?.SetSkinColor(color, instantRefresh);
+		this.mainMenu?.avatarView?.accessoryBuilder?.SetSkinColor(color);
 		this.mainMenu?.avatarView?.PlayReaction(AccessorySlot.Root);
 		this.selectedColor = ColorUtil.ColorToHex(color);
 		this.UpdateButtonGraphics();
 		this.SetDirty(true);
 	}
 
-	private RemoveItem(slot: AccessorySlot, instantRefresh = true) {
-		this.mainMenu?.avatarView?.accessoryBuilder?.RemoveAccessorySlot(slot, instantRefresh);
+	private RemoveItem(slot: AccessorySlot) {
+		this.mainMenu?.avatarView?.accessoryBuilder?.RemoveBySlot(slot);
 		let instanceId = this.activeAccessories.get(slot);
 		if (instanceId && instanceId !== "") {
 			this.selectedAccessories.delete(instanceId);
@@ -671,7 +685,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	private LoadAllOutfits() {
 		this.Log("LoadAllOutfits");
-		AvatarPlatformAPI.GetAllOutfits().then((outfits) => {
+		Protected.Avatar.GetAllOutfits().then((outfits) => {
 			this.outfits = outfits;
 			const outfitSize = this.outfits ? this.outfits.size() : 0;
 			if (outfitSize <= 0) {
@@ -697,7 +711,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 				}
 			}
 
-			AvatarPlatformAPI.GetEquippedOutfit().then((equippedOutfit) => {
+			Protected.Avatar.GetEquippedOutfit().then((equippedOutfit) => {
 				if (equippedOutfit && this.outfits) {
 					let i = 0;
 					for (let outfit of this.outfits) {
@@ -755,7 +769,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private ClearAllAccessories() {
-		this.mainMenu?.avatarView?.accessoryBuilder?.RemoveAllAccessories(true);
+		this.mainMenu?.avatarView?.accessoryBuilder?.RemoveAll(true);
 		this.selectedAccessories.clear();
 		this.activeAccessories.clear();
 	}
@@ -772,11 +786,11 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			this.Log("Outfit acc: " + acc.class.name + ": " + acc.class.classId);
 			let accComponent = AvatarCollectionManager.instance.GetAccessoryFromClassId(acc.class.classId);
 			if (accComponent) {
-				this.SelectItem(acc.instanceId, accComponent, false);
+				this.SelectItem(acc.instanceId, accComponent);
 			} else {
 				let face = AvatarCollectionManager.instance.GetAccessoryFaceFromClassId(acc.class.classId);
 				if (face) {
-					this.SelectFaceItem(face, false);
+					this.SelectFaceItem(face);
 				}
 			}
 		});

@@ -223,11 +223,11 @@ export class AirshipCharactersSingleton {
 					accessoryTemplates = [...Airship.Inventory.GetAccessoriesForItemType(itemDef.itemType)];
 				}
 
-				character.accessoryBuilder?.RemoveAccessorySlot(AccessorySlot.LeftHand, false);
-				character.accessoryBuilder?.RemoveAccessorySlot(AccessorySlot.RightHand, false);
+				character.accessoryBuilder?.RemoveBySlot(AccessorySlot.LeftHand, false);
+				character.accessoryBuilder?.RemoveBySlot(AccessorySlot.RightHand, false);
 				if (viewmodelAccessoryBuilder) {
-					viewmodelAccessoryBuilder.RemoveAccessorySlot(AccessorySlot.LeftHand, false);
-					viewmodelAccessoryBuilder.RemoveAccessorySlot(AccessorySlot.RightHand, false);
+					viewmodelAccessoryBuilder.RemoveBySlot(AccessorySlot.LeftHand, false);
+					viewmodelAccessoryBuilder.RemoveBySlot(AccessorySlot.RightHand, false);
 				}
 
 				// const firstPerson = this.character.animator.IsFirstPerson();
@@ -236,9 +236,9 @@ export class AirshipCharactersSingleton {
 				// this.activeAccessoriesWorldmodel.clear();
 				// this.activeAccessoriesViewmodel.clear();
 				for (const accessoryTemplate of accessoryTemplates) {
-					character.accessoryBuilder?.AddSingleAccessory(accessoryTemplate, false);
+					character.accessoryBuilder?.Add(accessoryTemplate, false);
 					if (viewmodelAccessoryBuilder) {
-						viewmodelAccessoryBuilder.AddSingleAccessory(accessoryTemplate, false);
+						viewmodelAccessoryBuilder.Add(accessoryTemplate, false);
 					}
 
 					//Load the animator for the held item if one exists

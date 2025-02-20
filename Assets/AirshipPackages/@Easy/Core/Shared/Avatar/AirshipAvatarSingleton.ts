@@ -1,5 +1,6 @@
 import { Airship } from "../Airship";
 import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
+import { InternalClothingMeta } from "../Airship/Util/InternalClothingMeta";
 import { Singleton } from "../Flamework";
 import { Protected } from "../Protected";
 import { ColorUtil } from "../Util/ColorUtil";
@@ -129,30 +130,27 @@ export class AirshipAvatarSingleton {
 		options: { removeOldClothingAccessories?: boolean } = {},
 	) {
 		if (options.removeOldClothingAccessories) {
-			builder.RemoveClothingAccessories(false);
+			builder.RemoveClothingAccessories();
 		}
+
 		outfit.accessories.forEach((acc) => {
-			const accComponentTemplate = AvatarCollectionManager.instance.GetAccessoryFromClassId(acc.class.classId);
-			if (accComponentTemplate) {
-				if (builder.firstPerson) {
-					return;
+			const meta = InternalClothingMeta.get(acc.classId);
+			if (!meta) return;
+
+			// todo: why are we returning if first person?
+			if (builder.firstPerson) return;
+
+			const clothing = Clothing.DownloadYielding(acc.classId, meta.airId);
+			if (clothing) {
+				if (clothing.accessoryPrefabs && clothing.accessoryPrefabs.size() > 0) {
+					builder.AddRange(clothing.accessoryPrefabs);
 				}
-				let accComponent = builder.AddSingleAccessory(accComponentTemplate, false);
-				if (accComponent?.AccessoryComponent) {
-					accComponent.AccessoryComponent.SetInstanceId(acc.instanceId);
-				} else if (!builder.firstPerson) {
-					warn("Unable to find accessory with class ID: " + acc.class.classId);
-				}
-			} else {
-				const face = AvatarCollectionManager.instance.GetAccessoryFaceFromClassId(acc.class.classId);
-				if (face?.decalTexture) {
-					builder.SetFaceTexture(face.decalTexture);
-				} else if (!builder.firstPerson) {
-					warn("Unable to find accessory with class ID: " + acc.class.classId);
+				if (clothing.face) {
+					builder.SetFaceTexture(clothing.face.decalTexture);
 				}
 			}
 		});
-		builder.SetSkinColor(ColorUtil.HexToColor(outfit.skinColor), false);
-		builder.TryCombineMeshes();
+		builder.SetSkinColor(ColorUtil.HexToColor(outfit.skinColor));
+		builder.UpdateCombinedMesh();
 	}
 }
