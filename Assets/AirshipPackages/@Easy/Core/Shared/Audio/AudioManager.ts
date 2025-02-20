@@ -47,6 +47,11 @@ export interface PlaySoundConfig {
 	 * Defaults to 0.
 	 */
 	dopplerLevel?: number;
+
+	/**
+	 * Mixer group for sound to play in.
+	 */
+	mixerGroup?: AudioMixerGroup;
 }
 
 interface CleanupQueueItem {
@@ -144,8 +149,9 @@ export class AudioManager {
 		if (config?.loop !== undefined || !providedAudioSource) audioSource.loop = config?.loop ?? false;
 		if (config?.pitch !== undefined || !providedAudioSource) audioSource.pitch = config?.pitch ?? 1;
 		if (config?.volumeScale !== undefined || !providedAudioSource) audioSource.volume = config?.volumeScale ?? 1;
+		if (config?.mixerGroup !== undefined || !providedAudioSource) audioSource.outputAudioMixerGroup = config?.mixerGroup!;
 		if (!clip) {
-			warn("Trying to play unidentified clip");
+			warn("Trying to play unidentified clip: " + clip);
 			return undefined;
 		}
 
@@ -216,6 +222,7 @@ export class AudioManager {
 		if (config?.dopplerLevel !== undefined || !providedAudioSource) {
 			audioSource.dopplerLevel = config?.dopplerLevel ?? 0;
 		}
+		if (config?.mixerGroup !== undefined || !providedAudioSource) audioSource.outputAudioMixerGroup = config?.mixerGroup!;
 		
 		audioSource.resource = clip;
 		audioSource.Play();
