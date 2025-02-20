@@ -56,7 +56,7 @@ export interface PlaySoundConfig {
 
 interface CleanupQueueItem {
 	audioSource: AudioSource;
-	aliveUntil: number;
+	aliveUntil?: number;
 	isGlobal: boolean;
 }
 
@@ -84,7 +84,16 @@ export class AudioManager {
 
 				const now = Time.unscaledTime;
 				for (const item of this.cleanupQueue) {
-					if (now >= item.aliveUntil) {
+					let requiresCleanup = false;
+					// If audio is played through an AudioRandomContainer instead of clip
+					// then we don't know when it'll be done playing (just poll)
+					if (item.aliveUntil !== undefined) {
+						requiresCleanup = now >= item.aliveUntil;
+					} else {
+						requiresCleanup = !item.audioSource.isPlaying;
+					}
+
+					if (requiresCleanup) {
 						task.spawn(() => {
 							if (item.audioSource.IsDestroyed()) return;
 
@@ -141,7 +150,7 @@ export class AudioManager {
 		return this.PlayClipGlobal(clip, config);
 	}
 
-	public static PlayClipGlobal(clip: AudioResource, config?: PlaySoundConfig): AudioSource | undefined {
+	public static PlayClipGlobal(audioResource: AudioResource, config?: PlaySoundConfig): AudioSource | undefined {
 		const audioSource = this.GetAudioSource(Vector3.zero, config?.audioSourceTemplate);
 		const providedAudioSource = config?.audioSourceTemplate !== undefined;
 
@@ -150,19 +159,20 @@ export class AudioManager {
 		if (config?.pitch !== undefined || !providedAudioSource) audioSource.pitch = config?.pitch ?? 1;
 		if (config?.volumeScale !== undefined || !providedAudioSource) audioSource.volume = config?.volumeScale ?? 1;
 		if (config?.mixerGroup !== undefined || !providedAudioSource) audioSource.outputAudioMixerGroup = config?.mixerGroup!;
-		if (!clip) {
-			warn("Trying to play unidentified clip: " + clip);
+		if (!audioResource) {
+			warn("Trying to play unidentified clip: " + audioResource);
 			return undefined;
 		}
 
-		audioSource.resource = clip;
+		audioSource.resource = audioResource;
 		audioSource.Play();
 		
 		this.globalAudioSources.set(audioSource.gameObject.GetInstanceID(), audioSource);
 		if (!audioSource.loop) {
+			const clip = audioSource.clip;
 			this.cleanupQueue.add({
 				audioSource,
-				aliveUntil: Time.unscaledTime + audioSource.clip.length + 1,
+				aliveUntil: clip ? Time.unscaledTime + clip.length + 1 : undefined,
 				isGlobal: true,
 			});
 		}
@@ -198,7 +208,7 @@ export class AudioManager {
 	}
 
 	public static PlayClipAtPosition(
-		clip: AudioResource,
+		audioResource: AudioResource,
 		position: Vector3,
 		config?: PlaySoundConfig,
 	): AudioSource | undefined {
@@ -207,7 +217,7 @@ export class AudioManager {
 		audioSource.spatialBlend = 1;
 
 		if (config?.loop !== undefined || !providedAudioSource) audioSource.loop = config?.loop ?? false;
-		if (!clip) {
+		if (!audioResource) {
 			warn("Trying to play unidentified clip");
 			return undefined;
 		}
@@ -224,13 +234,14 @@ export class AudioManager {
 		}
 		if (config?.mixerGroup !== undefined || !providedAudioSource) audioSource.outputAudioMixerGroup = config?.mixerGroup!;
 		
-		audioSource.resource = clip;
+		audioSource.resource = audioResource;
 		audioSource.Play();
 		
 		if (!audioSource.loop) {
+			const clip = audioSource.clip;
 			this.cleanupQueue.add({
 				audioSource,
-				aliveUntil: Time.unscaledTime + audioSource.clip.length + 1,
+				aliveUntil: clip ? Time.unscaledTime + clip.length + 1 : undefined,
 				isGlobal: false,
 			});
 		}
