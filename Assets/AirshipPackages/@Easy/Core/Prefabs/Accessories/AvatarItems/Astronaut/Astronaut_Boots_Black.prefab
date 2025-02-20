@@ -53,6 +53,7 @@ SkinnedMeshRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -144,5 +145,6 @@ MonoBehaviour:
   accessorySlot: 10
   visibilityMode: 0
   skinnedToCharacter: 1
+  meshLods: []
   canMeshCombine: 1
   bodyMask: 50331648

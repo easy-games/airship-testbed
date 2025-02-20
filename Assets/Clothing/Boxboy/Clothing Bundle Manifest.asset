@@ -17,8 +17,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 545fc84fa9a6e4d78a4c87de3cae0116, type: 2}
   - {fileID: 11400000, guid: 203e974f2ba9a4204b709c3bedb9c84e, type: 2}
   - {fileID: 11400000, guid: 40844c48c38344539a601fdef4faf148, type: 2}
-  macAirId: 105f7569-9c1d-48d2-9f38-ede68ff2a86a
-  windowsAirId: 
-  linuxAirId: 
-  iosAirId: 
-  androidAirId: 
+  airId: 555f157a-963d-416e-a3a7-0eb99b39d4cf

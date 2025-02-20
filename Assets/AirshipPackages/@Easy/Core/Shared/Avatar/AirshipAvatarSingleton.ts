@@ -3,7 +3,6 @@ import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { Singleton } from "../Flamework";
 import { Protected } from "../Protected";
 import { ColorUtil } from "../Util/ColorUtil";
-import { AvatarCollectionManager } from "./AvatarCollectionManager";
 /**
  * Access using {@link Airship.Avatar}. Avatar singleton provides utilities for working with visual elements of a character
  *
@@ -13,7 +12,6 @@ import { AvatarCollectionManager } from "./AvatarCollectionManager";
 export class AirshipAvatarSingleton {
 	constructor() {
 		Airship.Avatar = this;
-		new AvatarCollectionManager();
 	}
 
 	/**
@@ -21,32 +19,33 @@ export class AirshipAvatarSingleton {
 	 * @param builder accessory builder for character
 	 */
 	public LoadDefaultOutfit(builder: AccessoryBuilder) {
-		if (AvatarCollectionManager.instance.defaultOutfit) {
-			builder.EquipAccessoryOutfit(AvatarCollectionManager.instance.defaultOutfit, true);
-		}
+		error("//todo: LoadDefaultOutfit");
+		// if (AvatarCollectionManager.instance.defaultOutfit) {
+		// 	builder.EquipAccessoryOutfit(AvatarCollectionManager.instance.defaultOutfit, true);
+		// }
 	}
 
-	/**
-	 * Load the equipped outfit of a user into the accessory builder
-	 * @param userId target userId
-	 * @param builder accessory builder for character
-	 * @param options optional params
-	 */
-	public LoadOutfitByUserId(
-		userId: string,
-		builder: AccessoryBuilder,
-		options: { removeOldClothingAccessories?: boolean; updateViewmodel?: boolean } = {},
-	) {
-		Protected.Avatar.GetUserEquippedOutfit(userId).then((outfit) => {
-			if (outfit) {
-				this.LoadOutfit(builder, outfit, options);
+	// /**
+	//  * Load the equipped outfit of a user into the accessory builder
+	//  * @param userId target userId
+	//  * @param builder accessory builder for character
+	//  * @param options optional params
+	//  */
+	// public LoadOutfitByUserId(
+	// 	userId: string,
+	// 	builder: AccessoryBuilder,
+	// 	options: { removeOldClothingAccessories?: boolean; updateViewmodel?: boolean } = {},
+	// ) {
+	// 	Protected.Avatar.GetUserEquippedOutfit(userId).then((outfit) => {
+	// 		if (outfit) {
+	// 			this.LoadOutfit(builder, outfit, options);
 
-				if (options.updateViewmodel && Airship.Characters.viewmodel) {
-					this.LoadOutfit(Airship.Characters.viewmodel.accessoryBuilder, outfit, options);
-				}
-			}
-		});
-	}
+	// 			if (options.updateViewmodel && Airship.Characters.viewmodel) {
+	// 				this.LoadOutfit(Airship.Characters.viewmodel.accessoryBuilder, outfit, options);
+	// 			}
+	// 		}
+	// 	});
+	// }
 
 	// /**
 	//  * If this character has a Player it will load that players equipped outfit
@@ -116,17 +115,15 @@ export class AirshipAvatarSingleton {
 	}
 
 	/**
-	 * Load an outfit into the accessory builder
-	 * @param outfit  outfit from server
+	 * Load an outfit onto an accessory builder.
+	 *
+	 * **Note: if used on a character, this will not persist across respawns**. If you're using a character, it's recommended to use `character.LoadOutfit()`
+	 *
 	 * @param builder accessory builder for character
+	 * @param outfit  outfit from server
 	 * @param options optional params
 	 */
-	/**
-	 * Internal use only`.
-	 *
-	 * @internal
-	 */
-	public LoadOutfit(
+	public async LoadOutfit(
 		builder: AccessoryBuilder,
 		outfit: OutfitDto,
 		options: { removeOldClothingAccessories?: boolean } = {},

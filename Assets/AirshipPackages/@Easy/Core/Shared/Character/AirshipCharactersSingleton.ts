@@ -126,7 +126,7 @@ export class AirshipCharactersSingleton {
 				}
 
 				if (outfitDto) {
-					character.LoadUserOutfit(outfitDto);
+					character.LoadOutfit(outfitDto);
 				}
 			});
 		}
