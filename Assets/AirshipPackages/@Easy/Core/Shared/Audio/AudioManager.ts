@@ -136,7 +136,7 @@ export class AudioManager {
 		return this.PlayClipGlobal(clip, config);
 	}
 
-	public static PlayClipGlobal(clip: AudioClip, config?: PlaySoundConfig): AudioSource | undefined {
+	public static PlayClipGlobal(clip: AudioResource, config?: PlaySoundConfig): AudioSource | undefined {
 		const audioSource = this.GetAudioSource(Vector3.zero, config?.audioSourceTemplate);
 		const providedAudioSource = config?.audioSourceTemplate !== undefined;
 
@@ -148,18 +148,15 @@ export class AudioManager {
 			warn("Trying to play unidentified clip");
 			return undefined;
 		}
-		if (config?.loop) {
-			audioSource.clip = clip;
-			audioSource.Play();
-		} else {
-			audioSource.PlayOneShot(clip);
-		}
-		//audioSource.PlayOneShot(clip, );
+
+		audioSource.resource = clip;
+		audioSource.Play();
+		
 		this.globalAudioSources.set(audioSource.gameObject.GetInstanceID(), audioSource);
 		if (!audioSource.loop) {
 			this.cleanupQueue.add({
 				audioSource,
-				aliveUntil: Time.unscaledTime + clip.length + 1,
+				aliveUntil: Time.unscaledTime + audioSource.clip.length + 1,
 				isGlobal: true,
 			});
 		}
@@ -195,7 +192,7 @@ export class AudioManager {
 	}
 
 	public static PlayClipAtPosition(
-		clip: AudioClip,
+		clip: AudioResource,
 		position: Vector3,
 		config?: PlaySoundConfig,
 	): AudioSource | undefined {
@@ -219,16 +216,14 @@ export class AudioManager {
 		if (config?.dopplerLevel !== undefined || !providedAudioSource) {
 			audioSource.dopplerLevel = config?.dopplerLevel ?? 0;
 		}
-		if (config?.loop) {
-			audioSource.clip = clip;
-			audioSource.Play();
-		} else {
-			audioSource.PlayOneShot(clip);
-		}
+		
+		audioSource.resource = clip;
+		audioSource.Play();
+		
 		if (!audioSource.loop) {
 			this.cleanupQueue.add({
 				audioSource,
-				aliveUntil: Time.unscaledTime + clip.length + 1,
+				aliveUntil: Time.unscaledTime + audioSource.clip.length + 1,
 				isGlobal: false,
 			});
 		}
