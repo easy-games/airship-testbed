@@ -1738,38 +1738,38 @@ interface Component extends Object {
 	 */
 	tag: string;
 
-	/**
-	 * Calls the method named methodName on every MonoBehaviour in this game object or any of its children.
-	 * @param methodName Name of the method to call.
-	 * @param parameter Optional parameter to pass to the method (can be any value).
-	 * @param options Should an error be raised if the method does not exist for a given target object?
-	 *
-	 * More info: {@link https://docs.unity3d.com/ScriptReference/Component.BroadcastMessage.html | Component.BroadcastMessage}
-	 */
-	BroadcastMessage(methodName: string, parameter: unknown, options: SendMessageOptions): void;
-	/**
-	 * Calls the method named methodName on every MonoBehaviour in this game object or any of its children.
-	 * @param methodName Name of the method to call.
-	 * @param parameter Optional parameter to pass to the method (can be any value).
-	 *
-	 * More info: {@link https://docs.unity3d.com/ScriptReference/Component.BroadcastMessage.html | Component.BroadcastMessage}
-	 */
-	BroadcastMessage(methodName: string, parameter: unknown): void;
-	/**
-	 * Calls the method named methodName on every MonoBehaviour in this game object or any of its children.
-	 * @param methodName Name of the method to call.
-	 *
-	 * More info: {@link https://docs.unity3d.com/ScriptReference/Component.BroadcastMessage.html | Component.BroadcastMessage}
-	 */
-	BroadcastMessage(methodName: string): void;
-	/**
-	 * Calls the method named methodName on every MonoBehaviour in this game object or any of its children.
-	 * @param methodName Name of the method to call.
-	 * @param options Should an error be raised if the method does not exist for a given target object?
-	 *
-	 * More info: {@link https://docs.unity3d.com/ScriptReference/Component.BroadcastMessage.html | Component.BroadcastMessage}
-	 */
-	BroadcastMessage(methodName: string, options: SendMessageOptions): void;
+	// /**
+	//  * Calls the method named methodName on every MonoBehaviour in this game object or any of its children.
+	//  * @param methodName Name of the method to call.
+	//  * @param parameter Optional parameter to pass to the method (can be any value).
+	//  * @param options Should an error be raised if the method does not exist for a given target object?
+	//  *
+	//  * More info: {@link https://docs.unity3d.com/ScriptReference/Component.BroadcastMessage.html | Component.BroadcastMessage}
+	//  */
+	// BroadcastMessage(methodName: string, parameter: unknown, options: SendMessageOptions): void;
+	// /**
+	//  * Calls the method named methodName on every MonoBehaviour in this game object or any of its children.
+	//  * @param methodName Name of the method to call.
+	//  * @param parameter Optional parameter to pass to the method (can be any value).
+	//  *
+	//  * More info: {@link https://docs.unity3d.com/ScriptReference/Component.BroadcastMessage.html | Component.BroadcastMessage}
+	//  */
+	// BroadcastMessage(methodName: string, parameter: unknown): void;
+	// /**
+	//  * Calls the method named methodName on every MonoBehaviour in this game object or any of its children.
+	//  * @param methodName Name of the method to call.
+	//  *
+	//  * More info: {@link https://docs.unity3d.com/ScriptReference/Component.BroadcastMessage.html | Component.BroadcastMessage}
+	//  */
+	// BroadcastMessage(methodName: string): void;
+	// /**
+	//  * Calls the method named methodName on every MonoBehaviour in this game object or any of its children.
+	//  * @param methodName Name of the method to call.
+	//  * @param options Should an error be raised if the method does not exist for a given target object?
+	//  *
+	//  * More info: {@link https://docs.unity3d.com/ScriptReference/Component.BroadcastMessage.html | Component.BroadcastMessage}
+	//  */
+	// BroadcastMessage(methodName: string, options: SendMessageOptions): void;
 	/**
 	 * Checks the GameObject's tag against the defined tag.
 	 * @param tag The tag to compare.
@@ -1784,70 +1784,70 @@ interface Component extends Object {
 	 * More info: {@link https://docs.unity3d.com/ScriptReference/Component.CompareTag.html | Component.CompareTag}
 	 */
 	CompareTag(tag: TagHandle): boolean;
-	/**
-	 * Calls the method named methodName on every MonoBehaviour in this game object.
-	 * @param methodName Name of the method to call.
-	 * @param value Optional parameter for the method.
-	 *
-	 * More info: {@link https://docs.unity3d.com/ScriptReference/Component.SendMessage.html | Component.SendMessage}
-	 */
-	SendMessage(methodName: string, value: unknown): void;
-	/**
-	 * Calls the method named methodName on every MonoBehaviour in this game object.
-	 * @param methodName Name of the method to call.
-	 *
-	 * More info: {@link https://docs.unity3d.com/ScriptReference/Component.SendMessage.html | Component.SendMessage}
-	 */
-	SendMessage(methodName: string): void;
-	/**
-	 * Calls the method named methodName on every MonoBehaviour in this game object.
-	 * @param methodName Name of the method to call.
-	 * @param value Optional parameter for the method.
-	 * @param options Should an error be raised if the target object doesn't implement the method for the message?
-	 *
-	 * More info: {@link https://docs.unity3d.com/ScriptReference/Component.SendMessage.html | Component.SendMessage}
-	 */
-	SendMessage(methodName: string, value: unknown, options: SendMessageOptions): void;
-	/**
-	 * Calls the method named methodName on every MonoBehaviour in this game object.
-	 * @param methodName Name of the method to call.
-	 * @param options Should an error be raised if the target object doesn't implement the method for the message?
-	 *
-	 * More info: {@link https://docs.unity3d.com/ScriptReference/Component.SendMessage.html | Component.SendMessage}
-	 */
-	SendMessage(methodName: string, options: SendMessageOptions): void;
-	/**
-	 * Calls the method named methodName on every MonoBehaviour in this game object and on every ancestor of the behaviour.
-	 * @param methodName Name of method to call.
-	 * @param value Optional parameter value for the method.
-	 * @param options Should an error be raised if the method does not exist on the target object?
-	 *
-	 * More info: {@link https://docs.unity3d.com/ScriptReference/Component.SendMessageUpwards.html | Component.SendMessageUpwards}
-	 */
-	SendMessageUpwards(methodName: string, value: unknown, options: SendMessageOptions): void;
-	/**
-	 * Calls the method named methodName on every MonoBehaviour in this game object and on every ancestor of the behaviour.
-	 * @param methodName Name of method to call.
-	 * @param value Optional parameter value for the method.
-	 *
-	 * More info: {@link https://docs.unity3d.com/ScriptReference/Component.SendMessageUpwards.html | Component.SendMessageUpwards}
-	 */
-	SendMessageUpwards(methodName: string, value: unknown): void;
-	/**
-	 * Calls the method named methodName on every MonoBehaviour in this game object and on every ancestor of the behaviour.
-	 * @param methodName Name of method to call.
-	 *
-	 * More info: {@link https://docs.unity3d.com/ScriptReference/Component.SendMessageUpwards.html | Component.SendMessageUpwards}
-	 */
-	SendMessageUpwards(methodName: string): void;
-	/**
-	 * Calls the method named methodName on every MonoBehaviour in this game object and on every ancestor of the behaviour.
-	 * @param methodName Name of method to call.
-	 * @param options Should an error be raised if the method does not exist on the target object?
-	 *
-	 * More info: {@link https://docs.unity3d.com/ScriptReference/Component.SendMessageUpwards.html | Component.SendMessageUpwards}
-	 */
-	SendMessageUpwards(methodName: string, options: SendMessageOptions): void;
+	// /**
+	//  * Calls the method named methodName on every MonoBehaviour in this game object.
+	//  * @param methodName Name of the method to call.
+	//  * @param value Optional parameter for the method.
+	//  *
+	//  * More info: {@link https://docs.unity3d.com/ScriptReference/Component.SendMessage.html | Component.SendMessage}
+	//  */
+	// SendMessage(methodName: string, value: unknown): void;
+	// /**
+	//  * Calls the method named methodName on every MonoBehaviour in this game object.
+	//  * @param methodName Name of the method to call.
+	//  *
+	//  * More info: {@link https://docs.unity3d.com/ScriptReference/Component.SendMessage.html | Component.SendMessage}
+	//  */
+	// SendMessage(methodName: string): void;
+	// /**
+	//  * Calls the method named methodName on every MonoBehaviour in this game object.
+	//  * @param methodName Name of the method to call.
+	//  * @param value Optional parameter for the method.
+	//  * @param options Should an error be raised if the target object doesn't implement the method for the message?
+	//  *
+	//  * More info: {@link https://docs.unity3d.com/ScriptReference/Component.SendMessage.html | Component.SendMessage}
+	//  */
+	// SendMessage(methodName: string, value: unknown, options: SendMessageOptions): void;
+	// /**
+	//  * Calls the method named methodName on every MonoBehaviour in this game object.
+	//  * @param methodName Name of the method to call.
+	//  * @param options Should an error be raised if the target object doesn't implement the method for the message?
+	//  *
+	//  * More info: {@link https://docs.unity3d.com/ScriptReference/Component.SendMessage.html | Component.SendMessage}
+	//  */
+	// SendMessage(methodName: string, options: SendMessageOptions): void;
+	// /**
+	//  * Calls the method named methodName on every MonoBehaviour in this game object and on every ancestor of the behaviour.
+	//  * @param methodName Name of method to call.
+	//  * @param value Optional parameter value for the method.
+	//  * @param options Should an error be raised if the method does not exist on the target object?
+	//  *
+	//  * More info: {@link https://docs.unity3d.com/ScriptReference/Component.SendMessageUpwards.html | Component.SendMessageUpwards}
+	//  */
+	// SendMessageUpwards(methodName: string, value: unknown, options: SendMessageOptions): void;
+	// /**
+	//  * Calls the method named methodName on every MonoBehaviour in this game object and on every ancestor of the behaviour.
+	//  * @param methodName Name of method to call.
+	//  * @param value Optional parameter value for the method.
+	//  *
+	//  * More info: {@link https://docs.unity3d.com/ScriptReference/Component.SendMessageUpwards.html | Component.SendMessageUpwards}
+	//  */
+	// SendMessageUpwards(methodName: string, value: unknown): void;
+	// /**
+	//  * Calls the method named methodName on every MonoBehaviour in this game object and on every ancestor of the behaviour.
+	//  * @param methodName Name of method to call.
+	//  *
+	//  * More info: {@link https://docs.unity3d.com/ScriptReference/Component.SendMessageUpwards.html | Component.SendMessageUpwards}
+	//  */
+	// SendMessageUpwards(methodName: string): void;
+	// /**
+	//  * Calls the method named methodName on every MonoBehaviour in this game object and on every ancestor of the behaviour.
+	//  * @param methodName Name of method to call.
+	//  * @param options Should an error be raised if the method does not exist on the target object?
+	//  *
+	//  * More info: {@link https://docs.unity3d.com/ScriptReference/Component.SendMessageUpwards.html | Component.SendMessageUpwards}
+	//  */
+	// SendMessageUpwards(methodName: string, options: SendMessageOptions): void;
 
 	/**
 	 * Gets a reference to a component of type T on the same GameObject as the component specified.
@@ -5025,3 +5025,128 @@ interface MathfConstructor {
 	Tan(f: number): number;
 }
 declare const Mathf: MathfConstructor;
+
+interface MonoBehaviour extends Behaviour {
+	/**
+	 * Cancellation token raised when the MonoBehaviour is destroyed (Read Only).
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/MonoBehaviour-destroyCancellationToken.html | MonoBehaviour.destroyCancellationToken}
+	 */
+	readonly destroyCancellationToken: unknown;
+	/**
+	 * Disabling this lets you skip the GUI layout phase.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/MonoBehaviour-useGUILayout.html | MonoBehaviour.useGUILayout}
+	 */
+	useGUILayout: boolean;
+	/**
+	 * Returns a boolean value which represents if Start was called.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/MonoBehaviour-didStart.html | MonoBehaviour.didStart}
+	 */
+	readonly didStart: boolean;
+	/**
+	 * Returns a boolean value which represents if Awake was called.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/MonoBehaviour-didAwake.html | MonoBehaviour.didAwake}
+	 */
+	readonly didAwake: boolean;
+	// /**
+	//  * Allow a specific instance of a MonoBehaviour to run in edit mode (only available in the editor).
+	//  *
+	//  * More info: {@link https://docs.unity3d.com/ScriptReference/MonoBehaviour-runInEditMode.html | MonoBehaviour.runInEditMode}
+	//  */
+	// runInEditMode: boolean;
+
+	// /**
+	//  * Cancels all Invoke calls on this MonoBehaviour.
+	//  *
+	//  * More info: {@link https://docs.unity3d.com/ScriptReference/MonoBehaviour.CancelInvoke.html | MonoBehaviour.CancelInvoke}
+	//  */
+	// CancelInvoke(): void;
+	// /**
+	//  * Cancels all Invoke calls with name methodName on this behaviour.
+	//  *
+	//  * More info: {@link https://docs.unity3d.com/ScriptReference/MonoBehaviour.CancelInvoke.html | MonoBehaviour.CancelInvoke}
+	//  */
+	// CancelInvoke(methodName: string): void;
+	// /**
+	//  * Invokes the method methodName in time seconds.
+	//  *
+	//  * More info: {@link https://docs.unity3d.com/ScriptReference/MonoBehaviour.Invoke.html | MonoBehaviour.Invoke}
+	//  */
+	// Invoke(methodName: string, time: number): void;
+	// /**
+	//  * Invokes the method methodName in time seconds, then repeatedly every repeatRate seconds.
+	//  * @param methodName The name of a method to invoke.
+	//  * @param time Start invoking after n seconds.
+	//  * @param repeatRate Repeat every n seconds.
+	//  *
+	//  * More info: {@link https://docs.unity3d.com/ScriptReference/MonoBehaviour.InvokeRepeating.html | MonoBehaviour.InvokeRepeating}
+	//  */
+	// InvokeRepeating(methodName: string, time: number, repeatRate: number): void;
+	// /**
+	//  * Is any invoke pending on this MonoBehaviour?
+	//  *
+	//  * More info: {@link https://docs.unity3d.com/ScriptReference/MonoBehaviour.IsInvoking.html | MonoBehaviour.IsInvoking}
+	//  */
+	// IsInvoking(): boolean;
+	// /**
+	//  * Is any invoke on methodName pending?
+	//  *
+	//  * More info: {@link https://docs.unity3d.com/ScriptReference/MonoBehaviour.IsInvoking.html | MonoBehaviour.IsInvoking}
+	//  */
+	// IsInvoking(methodName: string): boolean;
+	// /**
+	//  * Starts a coroutine named methodName.
+	//  *
+	//  * More info: {@link https://docs.unity3d.com/ScriptReference/MonoBehaviour.StartCoroutine.html | MonoBehaviour.StartCoroutine}
+	//  */
+	// StartCoroutine(methodName: string): Coroutine;
+	// /**
+	//  * Starts a coroutine named methodName.
+	//  *
+	//  * More info: {@link https://docs.unity3d.com/ScriptReference/MonoBehaviour.StartCoroutine.html | MonoBehaviour.StartCoroutine}
+	//  */
+	// StartCoroutine(methodName: string, value: unknown): Coroutine;
+	// /**
+	//  * Starts a Coroutine.
+	//  *
+	//  * More info: {@link https://docs.unity3d.com/ScriptReference/MonoBehaviour.StartCoroutine.html | MonoBehaviour.StartCoroutine}
+	//  */
+	// StartCoroutine(routine: unknown): Coroutine;
+	// /**
+	//  * Stops all coroutines running on this behaviour.
+	//  *
+	//  * More info: {@link https://docs.unity3d.com/ScriptReference/MonoBehaviour.StopAllCoroutines.html | MonoBehaviour.StopAllCoroutines}
+	//  */
+	// StopAllCoroutines(): void;
+	// /**
+	//  * Stops the first coroutine named methodName, or the coroutine stored in routine running on this behaviour.
+	//  * @param routine Name of the function in code, including coroutines.
+	//  *
+	//  * More info: {@link https://docs.unity3d.com/ScriptReference/MonoBehaviour.StopCoroutine.html | MonoBehaviour.StopCoroutine}
+	//  */
+	// StopCoroutine(routine: unknown): void;
+	// /**
+	//  * Stops the first coroutine named methodName, or the coroutine stored in routine running on this behaviour.
+	//  * @param routine Name of the function in code, including coroutines.
+	//  *
+	//  * More info: {@link https://docs.unity3d.com/ScriptReference/MonoBehaviour.StopCoroutine.html | MonoBehaviour.StopCoroutine}
+	//  */
+	// StopCoroutine(routine: Coroutine): void;
+	// /**
+	//  * Stops the first coroutine named methodName, or the coroutine stored in routine running on this behaviour.
+	//  * @param methodName Name of coroutine.
+	//  *
+	//  * More info: {@link https://docs.unity3d.com/ScriptReference/MonoBehaviour.StopCoroutine.html | MonoBehaviour.StopCoroutine}
+	//  */
+	// StopCoroutine(methodName: string): void;
+}
+
+interface MonoBehaviourConstructor {
+	new (): MonoBehaviour;
+
+	print(message: unknown): void;
+}
+declare const MonoBehaviour: MonoBehaviourConstructor;

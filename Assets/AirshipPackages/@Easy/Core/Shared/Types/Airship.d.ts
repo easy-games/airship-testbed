@@ -410,17 +410,29 @@ interface AccessoryBuilder extends MonoBehaviour {
 	cancelPendingDownload: boolean;
 	meshCombiner: MeshCombiner;
 
-	AddAccessories(
-		accessoryTemplates: AccessoryComponent[],
-		addMode: AccessoryAddMode,
-		rebuildMeshImmediately: boolean,
-	): ActiveAccessory[];
-	AddSingleAccessory(
-		accessoryTemplate: AccessoryComponent,
-		rebuildMeshImmediately: boolean,
-	): ActiveAccessory | undefined;
-	AddSkinAccessory(skin: AccessorySkin, rebuildMeshImmediately: boolean): void;
-	EquipAccessoryOutfit(outfit: AccessoryOutfit, rebuildMeshImmediately: boolean): ActiveAccessory[];
+	/**
+	 * Adds an array of accessories.
+	 *
+	 * **Skinned mesh accessories will not be added until you call `UpdateImmediately()`**
+	 */
+	AddRange(accessoryTemplates: AccessoryComponent[]): ActiveAccessory[];
+	/**
+	 * Adds a single accessory.
+	 *
+	 * **Skinned mesh accessories will not be added until you call `UpdateImmediately()`**
+	 */
+	Add(accessoryTemplate: AccessoryComponent): ActiveAccessory | undefined;
+	/**
+	 * Sets the skin.
+	 *
+	 * **Will not take effect until you call `UpdateImmediately()`**
+	 */
+	SetSkin(skin: AccessorySkin): void;
+	/**
+	 *
+	 * **Will not update until you call `UpdateImmediately()`**
+	 */
+	LoadOutfit(outfit: AccessoryOutfit): ActiveAccessory[];
 	GetAccessoryRenderers(slot: AccessorySlot): Renderer[];
 	GetAccessoryParticles(slot: AccessorySlot): ParticleSystem[];
 	GetActiveAccessories(): ActiveAccessory[];
@@ -428,18 +440,49 @@ interface AccessoryBuilder extends MonoBehaviour {
 	GetAllAccessoryRenderers(): Renderer[];
 	GetCombinedSkinnedMesh(): SkinnedMeshRenderer;
 	GetCombinedStaticMesh(): MeshRenderer;
-	RemoveAccessorySlot(slot: AccessorySlot, rebuildMeshImmediately: boolean): void;
-	RemoveAllAccessories(rebuildMeshImmediately: boolean): void;
-	RemoveClothingAccessories(rebuildMeshImmediately: boolean): void;
-	SetAccessoryColor(slot: AccessorySlot, color: Color, rebuildMeshImmediately: boolean): void;
+	/**
+	 * Removes an active accessory on the given slot (if one exists).
+	 *
+	 * **Skinned mesh accessories will not be added until you call `UpdateImmediately()`**
+	 */
+	RemoveBySlot(slot: AccessorySlot): void;
+	/**
+	 * Removes all accessories.
+	 *
+	 * **Skinned mesh accessories will not be added until you call `UpdateImmediately()`**
+	 */
+	RemoveAll(): void;
+	/**
+	 * Removes all accessories sitting in "clothing" slots.
+	 * This means everything except for the right and left hand. Clothing slots may change in the future.
+	 *
+	 * **Skinned mesh accessories will not be added until you call `UpdateImmediately()`**
+	 */
+	RemoveClothingAccessories(): void;
 	SetCreateOverlayMeshOnCombine(on: boolean): void;
+	/**
+	 *
+	 * **Will not take effect until you call `UpdateImmediately()`**
+	 */
 	SetFaceTexture(texture: Texture2D): void;
-	SetSkinColor(color: Color, rebuildMeshImmediately: boolean): void;
-	TryCombineMeshes(): void;
+	/**
+	 *
+	 * **Will not take effect until you call `UpdateImmediately()`**
+	 */
+	SetSkinColor(color: Color): void;
+
+	/**
+	 * Regenerates the combined skinned mesh. Skinned mesh accessories will not be visible until this method is called.
+	 *
+	 * This involves reconstructing the character mesh and LOD's which is expensive. You should limit usage of this method.
+	 *
+	 * **If you are only equipping a static mesh (such as a sword or hat), you do not need to call this method.** However, if you are equipping a skinned mesh shirt that bends with the character, you would need to call this method.
+	 */
+	UpdateCombinedMesh(): void;
 
 	OnMeshCombined: MonoSignal<[usedMeshCombiner: boolean, skinnedMesh: SkinnedMeshRenderer, staticMesh: MeshRenderer]>;
-	OnAccessoryAdded: MonoSignal<[willCombineImmediate: boolean, accessories: ActiveAccessory[]]>;
-	OnAccessoryRemoved: MonoSignal<[willCombineImmediate: boolean, accessories: ActiveAccessory[]]>;
+	OnAccessoryAdded: MonoSignal<[accessories: ActiveAccessory[]]>;
+	OnAccessoryRemoved: MonoSignal<[accessories: ActiveAccessory[]]>;
 }
 
 interface MeshCombiner extends MonoBehaviour {
