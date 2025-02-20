@@ -649,7 +649,7 @@ MonoBehaviour:
     properties:
     - name: animationHelper
       type: object
-      objectType: CharacterAnimationHelper
+      objectType: BasicCharacterAnimationHelper
       items:
         type: 
         objectType: 
@@ -660,11 +660,11 @@ MonoBehaviour:
       decorators: []
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 903796914586745664}
-      modified: 1
+      serializedObject: {fileID: 0}
+      modified: 0
     - name: movement
       type: object
-      objectType: CharacterMovement
+      objectType: BasicCharacterMovement
       items:
         type: 
         objectType: 
@@ -679,8 +679,8 @@ MonoBehaviour:
           serializedValue: '"References"'
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 7931457288082626079}
-      modified: 1
+      serializedObject: {fileID: 0}
+      modified: 0
     - name: accessoryBuilder
       type: object
       objectType: AccessoryBuilder

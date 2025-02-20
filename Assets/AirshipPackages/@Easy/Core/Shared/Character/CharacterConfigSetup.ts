@@ -138,6 +138,7 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 		if (!this.enableJumping || !this.enableCrouching || !this.enableSprinting) {
 			//Listen to input event
 			Airship.Characters.localCharacterManager.onBeforeLocalEntityInput.Connect((event) => {
+				print("before entirt");
 				//Force the event off if we don't want that feature
 				if (!this.enableJumping) {
 					event.jump = false;

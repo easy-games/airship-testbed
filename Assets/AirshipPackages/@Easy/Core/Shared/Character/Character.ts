@@ -33,9 +33,9 @@ export default class Character extends AirshipBehaviour {
 	public networkIdentity!: NetworkIdentity;
 
 	@Header("Optional References")
-	public movement: CharacterMovement;
+	public movement: BasicCharacterMovement;
 	public animator: Animator;
-	public animationHelper!: CharacterAnimationHelper;
+	public animationHelper!: BasicCharacterAnimationHelper;
 	public accessoryBuilder: AccessoryBuilder;
 	public model!: GameObject;
 	public rigRoot!: GameObject;
@@ -76,7 +76,7 @@ export default class Character extends AirshipBehaviour {
 	 * Key Value pairs created using AddCustomMoveData will fire here during movement ticks that use them
 	 * Map<id, dataBlob>, inputData, isReplay
 	 */
-	public OnUseCustomMoveData = new Signal<[Map<string, unknown>, CharacterMovementState, boolean]>();
+	public OnUseCustomMoveData = new Signal<[Map<string, unknown>, BasicCharacterMovementState, boolean]>();
 
 	public Awake(): void {
 		this.inventory = this.gameObject.GetAirshipComponent<Inventory>()!;
@@ -238,10 +238,10 @@ export default class Character extends AirshipBehaviour {
 		this.movement?.SetCustomData(new BinaryBlob(customDataQueue));
 	}
 
-	private BeginMove(stateData: CharacterMovementState, isReplay: boolean) {
+	private BeginMove(stateData: BasicCharacterMovementState, isReplay: boolean) {
 		//Decode binary block into usable key value array
-		const allData = stateData.currentMoveInput.customData
-			? (stateData.currentMoveInput.customData.Decode() as { key: string; value: unknown }[])
+		const allData = stateData.customData
+			? (stateData.customData.Decode() as { key: string; value: unknown }[])
 			: undefined;
 		const allCustomData: Map<string, unknown> = new Map();
 		let usingCustomData = false;

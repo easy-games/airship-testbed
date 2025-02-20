@@ -173,6 +173,74 @@ interface CharacterMovement extends Component {
 	groundedRaycastHit: RaycastHit;
 }
 
+interface BasicCharacterMovement extends Component {
+	OnStateChanged(callback: (state: CharacterState) => void): EngineEventConnection;
+	OnSetCustomData(callback: () => void): EngineEventConnection;
+	OnBeginMove(callback: (stateData: BasicCharacterMovementState, isReplay: boolean) => void): EngineEventConnection;
+	OnEndMove(callback: (stateData: BasicCharacterMovementState, isReplay: boolean) => void): EngineEventConnection;
+	OnDispatchCustomData(callback: (tick: number, customData: BinaryBlob) => void): EngineEventConnection;
+	OnImpactWithGround(callback: (velocity: Vector3, hitInfo: RaycastHit) => void): EngineEventConnection;
+	OnAdjustMove(callback: (modifier: MoveModifier) => void): EngineEventConnection;
+	OnMoveDirectionChanged(callback: (direction: Vector3) => void): EngineEventConnection;
+	OnJumped(callback: (velocity: Vector3) => void): EngineEventConnection;
+	OnNewLookVector(callback: (newLookVector: Vector3) => void): EngineEventConnection;
+	GetLookVector(): Vector3;
+
+	SetMoveInput(
+		direction: Vector3,
+		jump: boolean,
+		sprinting: boolean,
+		crouch: boolean,
+		moveDirWorldSpace: boolean,
+	): void;
+	SetMovementEnabled(isEnabled: boolean): void;
+	SetLookVector(lookVector: Vector3): void;
+	SetLookVectorRecurring(lookVector: Vector3): void;
+	SetCustomData(customData: BinaryBlob): void;
+	SetFlying(enabled: boolean): void;
+	SetDebugFlying(enabled: boolean): void;
+	IsFlying(): boolean;
+	Teleport(position: Vector3): void;
+	// TeleportWithoutReconcile(position: Vector3): void;
+	TeleportAndLook(position: Vector3, lookVector: Vector3): void;
+	// TeleportAndLookWithoutReconcile(position: Vector3, lookVector: Vector3): void;
+	AddImpulse(impulse: Vector3): void;
+	// AddImpulseWithoutReconcile(impulse: Vector3): void;
+	SetImpulse(impulse: Vector3): void;
+	// SetImpulseWithoutReconcile(impulse: Vector3): void;
+	IgnoreGroundCollider(collider: Collider, ignore: boolean): void;
+	IsIgnoringCollider(collider: Collider): boolean;
+	SetVelocity(velocity: Vector3): void;
+	GetVelocity(): Vector3;
+	GetState(): CharacterState;
+	GetTimeSinceWasGrounded(): number;
+	GetTimeSinceBecameGrounded(): number;
+	// GetCurrentMoveInputData(): MoveInputData;
+
+	//Public
+	enabled: boolean;
+	disableInput: boolean;
+	rigidbody: Rigidbody;
+	rootTransform: Transform; //The true position transform
+	airshipTransform: Transform; //The transform controlled by the movement script
+	graphicTransform: Transform; //A transform we can animate
+	slopeVisualizer: Transform; //A Transform that rotates to match the slope you are standing on
+	movementSettings: BasicCharacterMovementSettings;
+	animationHelper: CharacterAnimationHelper;
+	mainCollider: BoxCollider;
+
+	// Public Getters Private Setters
+	currentMoveState: BasicCharacterMovementState;
+	currentAnimState: BasicCharacterAnimationSyncData;
+	currentCharacterHeight: number;
+	standingCharacterHeight: number;
+	characterRadius: number;
+	characterHalfExtents: Vector3;
+	//isGrounded: boolean;
+	//isSprinting: boolean;
+	groundedRaycastHit: RaycastHit;
+}
+
 interface Nullable<T> {
 	HasValue: boolean;
 	Value: T;
@@ -602,6 +670,36 @@ interface CharacterAnimationHelper extends Component {
 	SetRootMovementLayer(itemInHand: boolean): void;
 	ClearStatesOnNonRootLayers(): void;
 	SetState(newState: CharacterStateData);
+	SetVelocity(vel: Vector3);
+	SetGrounded(grounded: boolean);
+	GetPlaybackSpeed(): number;
+	/**
+	 * Under the hood, we call `animator.CrossFadeInFixedTime()`
+	 *
+	 * @param clip If the clip is looping, it will play looped.
+	 * @param layer
+	 * @param fixedTransitionDuration The duration of the transition (in seconds).
+	 */
+	PlayAnimation(clip: AnimationClip, layer: CharacterAnimationLayer, fixedTransitionDuration: number): void;
+
+	/**
+	 * Under the hood, we call `animator.CrossFadeInFixedTime()`
+	 *
+	 * @param layer
+	 * @param fixedTransitionDuration The duration of the transition (in seconds).
+	 */
+	StopAnimation(layer: CharacterAnimationLayer, fixedTransitionDuration: number): void;
+}
+
+interface BasicCharacterAnimationHelper extends Component {
+	animator: Animator;
+	animationEvents?: AnimationEventListener;
+	isSkidding: boolean;
+	SetForceLookForward(forceLookForward: boolean): void;
+	SetFirstPerson(firstPerson: boolean): void;
+	SetRootMovementLayer(itemInHand: boolean): void;
+	ClearStatesOnNonRootLayers(): void;
+	SetState(newState: BasicCharacterStateData);
 	SetVelocity(vel: Vector3);
 	SetGrounded(grounded: boolean);
 	GetPlaybackSpeed(): number;

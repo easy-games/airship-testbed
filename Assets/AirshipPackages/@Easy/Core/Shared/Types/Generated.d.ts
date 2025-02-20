@@ -3675,6 +3675,13 @@ declare const enum CharacterState {
     Sprinting = 3,
     Crouching = 4,
 }
+declare const enum BasicCharacterState {
+    Idle = 0,
+    Running = 1,
+    Airborne = 2,
+    Sprinting = 3,
+    Crouching = 4,
+}
 
     
 interface RaycastHit {
@@ -36761,6 +36768,7 @@ interface VoxelBlockDefinition extends ScriptableObject {
     description: string;
     contextStyle: ContextStyle;
     meshMaterial: Material;
+    halfBlock: boolean;
     topTexture: TextureSet;
     sideTexture: TextureSet;
     bottomTexture: TextureSet;
@@ -48031,6 +48039,7 @@ interface VoxelWorldConstructor {
     Floor(input: Vector3): Vector3;
     FloorInt(input: Vector3): Vector3;
     GetFirstInstance(): VoxelWorld;
+    GetScaleFromFlipBits(flipBits: number): Vector3;
     GetVoxelFlippedBits(voxel: number): number;
     HashCoordinates(x: number, y: number, z: number): number;
     SetVoxelFlippedBits(voxel: number, flippedBits: number): number;
@@ -48238,6 +48247,205 @@ interface VisualGraphComponentConstructor {
 
 }
 declare const VisualGraphComponent: VisualGraphComponentConstructor;
+    
+interface StateSnapshot {
+    lastProcessedCommand: number;
+    time: number;
+
+
+
+    CompareWithMargin(margin: number, snapshot: StateSnapshot): boolean;
+
+
+}
+    
+interface StateSnapshotConstructor {
+
+
+    new(): StateSnapshot;
+
+
+
+}
+declare const StateSnapshot: StateSnapshotConstructor;
+    
+interface BasicCharacterMovementState extends StateSnapshot {
+    position: Vector3;
+    velocity: Vector3;
+    impulseVelocity: Vector3;
+    currentSpeed: number;
+    inputDisabled: boolean;
+    isFlying: boolean;
+    isSprinting: boolean;
+    jumpCount: number;
+    airborneFromImpulse: boolean;
+    alreadyJumped: boolean;
+    prevMoveDir: Vector3;
+    lastGroundedMoveDir: Vector3;
+    isCrouching: boolean;
+    prevStepUp: boolean;
+    isGrounded: boolean;
+    state: BasicCharacterState;
+    prevState: BasicCharacterState;
+    timeSinceBecameGrounded: number;
+    timeSinceWasGrounded: number;
+    timeSinceJump: number;
+    lookVector: Vector3;
+    customData: BinaryBlob;
+
+
+
+    CompareWithMargin(margin: number, snapshot: StateSnapshot): boolean;
+    CopyFrom(copyState: BasicCharacterMovementState): void;
+    ToString(): string;
+
+
+}
+    
+interface BasicCharacterMovementStateConstructor {
+
+
+    new(): BasicCharacterMovementState;
+
+
+
+}
+declare const BasicCharacterMovementState: BasicCharacterMovementStateConstructor;
+    
+interface InputCommand {
+    commandNumber: number;
+    time: number;
+
+
+
+
+
+}
+    
+interface InputCommandConstructor {
+
+
+    new(): InputCommand;
+
+
+
+}
+declare const InputCommand: InputCommandConstructor;
+    
+interface BasicCharacterInputData extends InputCommand {
+    moveDir: Vector3;
+    jump: boolean;
+    crouch: boolean;
+    sprint: boolean;
+    lookVector: Vector3;
+    customData: BinaryBlob;
+
+
+
+
+
+}
+    
+interface BasicCharacterInputDataConstructor {
+
+
+    new(): BasicCharacterInputData;
+
+
+
+}
+declare const BasicCharacterInputData: BasicCharacterInputDataConstructor;
+    
+interface BasicCharacterMovementSettings extends MonoBehaviour {
+    characterHeight: number;
+    characterRadius: number;
+    colliderGroundOffset: number;
+    onlySprintForward: boolean;
+    useAccelerationMovement: boolean;
+    speed: number;
+    sprintSpeed: number;
+    accelerationForce: number;
+    sprintAccelerationForce: number;
+    minAccelerationDelta: number;
+    inAirDirectionalControl: number;
+    accelerationTurnFriction: number;
+    autoCrouch: boolean;
+    preventFallingWhileCrouching: boolean;
+    preventStepUpWhileCrouching: boolean;
+    crouchSpeedMultiplier: number;
+    crouchHeightMultiplier: number;
+    numberOfJumps: number;
+    jumpSpeed: number;
+    jumpCoyoteTime: number;
+    allowDebugFlying: boolean;
+    flySpeedMultiplier: number;
+    verticalFlySpeed: number;
+    jumpUpBlockCooldown: number;
+    useGravity: boolean;
+    useGravityWhileGrounded: boolean;
+    alwaysSnapToGround: boolean;
+    gravityMultiplier: number;
+    upwardsGravityMultiplier: number;
+    groundCollisionLayerMask: LayerMask;
+    terminalVelocity: number;
+    minimumVelocity: number;
+    useMinimumVelocityInAir: boolean;
+    preventWallClipping: boolean;
+    drag: number;
+    airDragMultiplier: number;
+    airSpeedMultiplier: number;
+    detectStepUps: boolean;
+    alwaysStepUp: boolean;
+    assistedLedgeJump: boolean;
+    maxStepUpHeight: number;
+    stepUpRampDistance: number;
+    detectSlopes: boolean;
+    slopeForce: number;
+    minSlopeDelta: number;
+    maxSlopeDelta: number;
+
+
+
+
+
+}
+    
+interface BasicCharacterMovementSettingsConstructor {
+
+
+    new(): BasicCharacterMovementSettings;
+
+
+
+}
+declare const BasicCharacterMovementSettings: BasicCharacterMovementSettingsConstructor;
+    
+interface BasicCharacterAnimationSyncData {
+    state: BasicCharacterState;
+    grounded: boolean;
+    sprinting: boolean;
+    crouching: boolean;
+    jumping: boolean;
+    localVelocity: Vector3;
+    lookVector: Vector3;
+
+
+
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+
+
+}
+    
+interface BasicCharacterAnimationSyncDataConstructor {
+
+
+    new(): BasicCharacterAnimationSyncData;
+
+
+
+}
+declare const BasicCharacterAnimationSyncData: BasicCharacterAnimationSyncDataConstructor;
     
 interface AirshipSteamFriendInfo {
     playingAirship: boolean;
