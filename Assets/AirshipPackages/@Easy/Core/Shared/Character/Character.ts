@@ -10,6 +10,7 @@ import { DamageInfo, DamageInfoCustomData } from "../Damage/DamageInfo";
 import AirshipEmoteSingleton from "../Emote/AirshipEmoteSingleton";
 import { Dependency } from "../Flamework";
 import NametagComponent from "../Nametag/NametagComponent";
+import inspect from "../Util/Inspect";
 import CharacterAnimation from "./Animation/CharacterAnimation";
 import CharacterConfigSetup from "./CharacterConfigSetup";
 import { EmoteStartSignal } from "./Signal/EmoteStartSignal";
@@ -179,6 +180,7 @@ export default class Character extends AirshipBehaviour {
 			if (player) {
 				this.SetMeshCacheId(`Player:${player.userId}`);
 			}
+			print("Init outfitDto: " + inspect(outfitDto));
 			this.LoadOutfit(outfitDto);
 		}
 
@@ -197,11 +199,6 @@ export default class Character extends AirshipBehaviour {
 		// this.accessoryBuilder.meshCombiner.cacheId = cacheId ?? "";
 	}
 
-	/**
-	 * Shortcut for calling `Airship.Avatar.LoadOutfit()`
-	 * @param outfitDto
-	 * @returns
-	 */
 	public LoadOutfit(outfitDto: OutfitDto | undefined) {
 		if (!this.accessoryBuilder) {
 			warn("Cannot load outfit without Accessory Builder set on Character.");
@@ -209,6 +206,7 @@ export default class Character extends AirshipBehaviour {
 		}
 
 		this.outfitDto = outfitDto;
+		print("Character.LoadOutfit " + inspect(outfitDto));
 		if (Game.IsClient() && outfitDto && this.autoLoadAvatarOutfit) {
 			task.spawn(() => {
 				Airship.Avatar.LoadOutfit(this.accessoryBuilder, outfitDto, {
@@ -216,6 +214,7 @@ export default class Character extends AirshipBehaviour {
 				});
 			});
 
+			// Viewmodel
 			if (this.IsLocalCharacter() && Airship.Characters.viewmodel) {
 				task.spawn(() => {
 					Airship.Avatar.LoadOutfit(Airship.Characters.viewmodel!.accessoryBuilder, outfitDto, {

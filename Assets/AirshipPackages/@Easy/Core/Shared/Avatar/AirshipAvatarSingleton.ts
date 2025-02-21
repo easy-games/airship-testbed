@@ -2,8 +2,8 @@ import { Airship } from "../Airship";
 import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { InternalClothingMeta } from "../Airship/Util/InternalClothingMeta";
 import { Singleton } from "../Flamework";
-import { Protected } from "../Protected";
 import { ColorUtil } from "../Util/ColorUtil";
+import inspect from "../Util/Inspect";
 /**
  * Access using {@link Airship.Avatar}. Avatar singleton provides utilities for working with visual elements of a character
  *
@@ -19,7 +19,7 @@ export class AirshipAvatarSingleton {
 	 * Load a default outfit onto the character so they aren't naked
 	 * @param builder accessory builder for character
 	 */
-	public LoadDefaultOutfit(builder: AccessoryBuilder) {
+	private LoadDefaultOutfit(builder: AccessoryBuilder) {
 		error("//todo: LoadDefaultOutfit");
 		// if (AvatarCollectionManager.instance.defaultOutfit) {
 		// 	builder.EquipAccessoryOutfit(AvatarCollectionManager.instance.defaultOutfit, true);
@@ -92,28 +92,28 @@ export class AirshipAvatarSingleton {
 	 * @param builder accessory builder for character
 	 * @param options optional params
 	 */
-	public LoadLocalPlayerOutfit(
-		builder: AccessoryBuilder,
-		options: {
-			removeOldClothingAccessories?: boolean;
-			combineMeshes?: boolean;
-		} = {},
-	) {
-		Protected.Avatar.GetEquippedOutfit().then((outfitDto) => {
-			if (!outfitDto) {
-				// warn("Unable to load users default outfit. Equipping baked default outfit");
-				this.LoadDefaultOutfit(builder);
-				if (Airship.Characters.viewmodel) {
-					this.LoadDefaultOutfit(Airship.Characters.viewmodel.accessoryBuilder);
-				}
-				return;
-			}
-			this.LoadOutfit(builder, outfitDto, options);
-			if (Airship.Characters.viewmodel) {
-				this.LoadOutfit(Airship.Characters.viewmodel.accessoryBuilder, outfitDto, options);
-			}
-		});
-	}
+	// public LoadLocalPlayerOutfit(
+	// 	builder: AccessoryBuilder,
+	// 	options: {
+	// 		removeOldClothingAccessories?: boolean;
+	// 		combineMeshes?: boolean;
+	// 	} = {},
+	// ) {
+	// 	Protected.Avatar.GetEquippedOutfit().then((outfitDto) => {
+	// 		if (!outfitDto) {
+	// 			// warn("Unable to load users default outfit. Equipping baked default outfit");
+	// 			this.LoadDefaultOutfit(builder);
+	// 			if (Airship.Characters.viewmodel) {
+	// 				this.LoadDefaultOutfit(Airship.Characters.viewmodel.accessoryBuilder);
+	// 			}
+	// 			return;
+	// 		}
+	// 		this.LoadOutfit(builder, outfitDto, options);
+	// 		if (Airship.Characters.viewmodel) {
+	// 			this.LoadOutfit(Airship.Characters.viewmodel.accessoryBuilder, outfitDto, options);
+	// 		}
+	// 	});
+	// }
 
 	/**
 	 * Load an outfit onto an accessory builder.
@@ -129,30 +129,48 @@ export class AirshipAvatarSingleton {
 		outfit: OutfitDto,
 		options: { removeOldClothingAccessories?: boolean } = {},
 	) {
+		print("Loading outfit: " + inspect(outfit) + " " + debug.traceback());
 		if (options.removeOldClothingAccessories) {
-			builder.RemoveClothingAccessories();
+			// builder.RemoveClothingAccessories();
 		}
 
-		outfit.accessories.forEach((acc) => {
-			const meta = InternalClothingMeta.get(acc.class.classId);
-			if (!meta) return;
+		// Download clothing in parallel with Promise.all
+		let promises: Promise<void>[] = [];
+		for (let clothingDto of outfit.accessories) {
+			promises.push(
+				new Promise((resolve) => {
+					const meta = InternalClothingMeta.get(clothingDto.class.classId);
+					if (!meta) return;
 
-			// todo: why are we returning if first person?
-			if (builder.firstPerson) return;
+					// todo: why are we returning if first person?
+					if (builder.firstPerson) return;
 
-			const clothing = Clothing.DownloadYielding(acc.class.classId, meta.airId);
-			if (clothing) {
-				if (clothing.accessoryPrefabs && clothing.accessoryPrefabs.size() > 0) {
-					for (let accessoryPrefab of clothing.accessoryPrefabs) {
-						builder.Add(accessoryPrefab);
+					const clothing = Clothing.DownloadYielding(clothingDto.class.classId, meta.airId);
+					if (clothing) {
+						if (clothing.accessoryPrefabs && clothing.accessoryPrefabs.size() > 0) {
+							for (let accessoryPrefab of clothing.accessoryPrefabs) {
+								builder.Add(accessoryPrefab);
+							}
+						}
+						if (clothing.face) {
+							builder.SetFaceTexture(clothing.face.decalTexture);
+						}
 					}
-				}
-				if (clothing.face) {
-					builder.SetFaceTexture(clothing.face.decalTexture);
-				}
-			}
-		});
+					resolve();
+				}),
+			);
+		}
+		await Promise.all(promises);
+
 		builder.SetSkinColor(ColorUtil.HexToColor(outfit.skinColor));
 		builder.UpdateCombinedMesh();
+	}
+
+	public async GetUserEquippedOutfitDto(userId: string): Promise<OutfitDto | undefined> {
+		return new Promise((resolve) => {
+			const outfit = contextbridge.invoke("Avatar:GetUserEquippedOutfitDto", LuauContext.Protected, userId);
+			print("got outfit from contextbridge: " + inspect(outfit));
+			resolve(outfit);
+		});
 	}
 }

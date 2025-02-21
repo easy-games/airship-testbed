@@ -12,7 +12,6 @@ import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { Asset } from "../Asset";
 import { CoreLogger } from "../Logger/CoreLogger";
-import { Protected } from "../Protected";
 import { AirshipUrl } from "../Util/AirshipUrl";
 import { Levenshtein } from "../Util/Strings/Levenshtein";
 import { OnUpdate } from "../Util/Timer";
@@ -360,31 +359,22 @@ export class AirshipPlayersSingleton {
 			}
 		};
 
-		if (Game.IsEditor() && !ignoreCache) {
-			//print("Using editor cache: " + player.userId);
-			const data = EditorSessionState.GetString("player_" + player.userId + "_outfit");
-			if (data) {
-				const outfitDto = json.decode<OutfitDto>(data);
-				if (outfitDto) {
-					SetOutfit(outfitDto);
-					return true;
-				}
-			}
-		}
-
-		// let diff = os.time() - (this.outfitFetchTime.get(player.userId) ?? 0);
-		// if (diff <= 0.5) {
-		// 	return;
+		// Uncomment to disable editor cache
+		// if (Game.IsEditor() && !ignoreCache) {
+		// 	//print("Using editor cache: " + player.userId);
+		// 	const data = EditorSessionState.GetString("player_" + player.userId + "_outfit");
+		// 	if (data) {
+		// 		const outfitDto = json.decode<OutfitDto>(data);
+		// 		if (outfitDto) {
+		// 			SetOutfit(outfitDto);
+		// 			return true;
+		// 		}
+		// 	}
 		// }
-		// this.outfitFetchTime.set(player.userId, os.time());
 
-		if (player.IsLocalPlayer() || Game.IsEditor()) {
-			//print("loading local outfit");
-			await Protected.Avatar.GetEquippedOutfit().then(SetOutfit);
-		} else {
-			//print("loading outfit from server for player: " + player.userId);
-			await Protected.Avatar.GetUserEquippedOutfit(player.userId).then(SetOutfit);
-		}
+		const outfit = await Airship.Avatar.GetUserEquippedOutfitDto(player.userId);
+		SetOutfit(outfit);
+
 		return true;
 	}
 

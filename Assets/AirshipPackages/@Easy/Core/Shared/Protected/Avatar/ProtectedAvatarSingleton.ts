@@ -6,6 +6,7 @@ import {
 	OutfitPatch,
 } from "../../Airship/Types/Outputs/AirshipPlatformInventory";
 import { Dependency, Singleton } from "../../Flamework";
+import { Game } from "../../Game";
 import { CoreLogger } from "../../Logger/CoreLogger";
 import { Protected } from "../../Protected";
 import { AirshipUrl } from "../../Util/AirshipUrl";
@@ -44,6 +45,24 @@ export class ProtectedAvatarSingleton {
 
 	constructor() {
 		Protected.Avatar = this;
+
+		contextbridge.callback("Avatar:GetUserEquippedOutfitDto", (from, userId: string) => {
+			let isSelf = userId === Protected.User.localUser?.uid;
+			// Hack for editor
+			if (Game.IsEditor() && userId.size() <= 2) {
+				isSelf = true;
+			}
+
+			if (isSelf) {
+				print("getting self outfit");
+				const outfit = this.GetEquippedOutfit().expect();
+				return outfit;
+			} else {
+				print("getting other user outfit: " + userId);
+				const outfit = this.GetUserEquippedOutfit(userId).expect();
+				return outfit;
+			}
+		});
 	}
 
 	public async LoadInventory(): Promise<void> {
