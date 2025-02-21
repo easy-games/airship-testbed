@@ -360,17 +360,17 @@ export class AirshipPlayersSingleton {
 			}
 		};
 
-		// if (Game.IsEditor() && !ignoreCache) {
-		// 	//print("Using editor cache: " + player.userId);
-		// 	const data = EditorSessionState.GetString("player_" + player.userId + "_outfit2");
-		// 	if (data) {
-		// 		const outfitDto = json.decode<OutfitDto>(data);
-		// 		if (outfitDto) {
-		// 			SetOutfit(outfitDto);
-		// 			return true;
-		// 		}
-		// 	}
-		// }
+		if (Game.IsEditor() && !ignoreCache) {
+			//print("Using editor cache: " + player.userId);
+			const data = EditorSessionState.GetString("player_" + player.userId + "_outfit2");
+			if (data) {
+				const outfitDto = json.decode<OutfitDto>(data);
+				if (outfitDto) {
+					SetOutfit(outfitDto);
+					return true;
+				}
+			}
+		}
 
 		// let diff = os.time() - (this.outfitFetchTime.get(player.userId) ?? 0);
 		// if (diff <= 0.5) {
