@@ -26,6 +26,13 @@ export default class MainMenuContent extends AirshipBehaviour {
 
 	private bin = new Bin();
 
+	override Awake(): void {
+		// Disable all pages to start.
+		for (const child of this.pages) {
+			child.gameObject.SetActive(false);
+		}
+	}
+
 	override Start(): void {
 		this.mainMenu = Dependency<MainMenuSingleton>();
 
@@ -52,11 +59,6 @@ export default class MainMenuContent extends AirshipBehaviour {
 				this.CalcLayout();
 			}),
 		);
-
-		// Disable all pages to start.
-		for (let child of this.pages) {
-			child.gameObject.SetActive(false);
-		}
 	}
 
 	public CalcLayout(): void {
