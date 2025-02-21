@@ -133,7 +133,11 @@ export class Signal<T extends unknown[] | unknown = void> {
 				fireCount++;
 
 				if (this.allowYielding) {
-					entry.callback(...args);
+					try {
+						entry.callback(...args);
+					} catch (e) {
+						warn("Error in signal callback: " + e);
+					}
 				} else {
 					const thread = task.spawnDetached(entry.callback, ...args);
 
