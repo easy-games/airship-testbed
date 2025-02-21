@@ -27,6 +27,7 @@ export class ProtectedAvatarSingleton {
 
 	public outfits: OutfitDto[] = [];
 	public ownedClothing: ClothingInstanceDto[] = [];
+	public equippedOutfit: OutfitDto | undefined;
 
 	public skinColors = [
 		"#FFF3EA",
@@ -54,46 +55,86 @@ export class ProtectedAvatarSingleton {
 
 		await Dependency<AuthController>().WaitForAuthed();
 
+		const promises: Promise<void>[] = [];
+
+		let loadedOutfitFromBackend: OutfitDto | undefined;
+
 		// Get all owned clothing and map them to usable values
-		this.Log("Downloading owned clothing...");
-		let clothingData = await Protected.Avatar.GetAccessories();
-		this.Log("Owned clothing count: " + (clothingData?.size() ?? 0));
-		if (clothingData) {
-			this.Log("Owned clothing sample: " + inspect(clothingData[0]));
-			this.ownedClothing = clothingData;
-		}
+		promises.push(
+			new Promise(async (resolve) => {
+				this.Log("Downloading owned clothing...");
+				let clothingData = await Protected.Avatar.GetAccessories();
+				this.Log("Owned clothing count: " + (clothingData?.size() ?? 0));
+				if (clothingData) {
+					this.Log("Owned clothing sample: " + inspect(clothingData[0]));
+					this.ownedClothing = clothingData;
+				}
+				resolve();
+			}),
+		);
 
 		// Load the outfits
-		let outfits = await Protected.Avatar.GetAllOutfits();
-		const maxNumberOfOutfits = 5;
-		const numberOfOutfits = outfits ? outfits.size() : 0;
-		let name = "";
-		let equippedOutfitId = "";
-		let firstOutfit = true;
+		promises.push(
+			new Promise(async (resolve) => {
+				let outfitsRes = await Protected.Avatar.GetAllOutfits();
+				if (outfitsRes) {
+					this.outfits = outfitsRes;
+				}
+				const maxNumberOfOutfits = 5;
+				const numberOfOutfits = outfitsRes ? outfitsRes.size() : 0;
+				let name = "";
+				let equippedOutfitId = "";
+				let firstOutfit = true;
 
-		//Create missing outfits up to 5
-		for (let i = numberOfOutfits; i < maxNumberOfOutfits; i++) {
-			name = "Default" + i;
-			print("Creating missing outfit: " + name);
-			let outfit = await Protected.Avatar.CreateDefaultAvatarOutfit(
-				firstOutfit,
-				name,
-				name,
-				ColorUtil.HexToColor(RandomUtil.FromArray(this.skinColors)),
-			);
-			if (!outfit) {
-				error("Unable to make a new outfit :(");
-			} else if (firstOutfit) {
-				firstOutfit = false;
-				equippedOutfitId = outfit.outfitId;
-			}
-			this.outfits.push(outfit);
-		}
+				//Create missing outfits up to 5
+				for (let i = numberOfOutfits; i < maxNumberOfOutfits; i++) {
+					name = "Default" + i;
+					print("Creating missing outfit: " + name);
+					let outfit = await Protected.Avatar.CreateDefaultAvatarOutfit(
+						firstOutfit,
+						name,
+						name,
+						ColorUtil.HexToColor(RandomUtil.FromArray(this.skinColors)),
+					);
+					if (!outfit) {
+						error("Unable to make a new outfit :(");
+					} else if (firstOutfit) {
+						firstOutfit = false;
+						equippedOutfitId = outfit.outfitId;
+					}
+					this.outfits.push(outfit);
+				}
 
-		// Make sure an outfit is equipped
-		if (equippedOutfitId !== "" && (await Protected.Avatar.GetEquippedOutfit()) === undefined) {
-			print("Setting equipped outfit: " + equippedOutfitId);
-			await Protected.Avatar.EquipAvatarOutfit(equippedOutfitId);
+				if (!this.equippedOutfit && this.outfits.size() > 0) {
+					this.equippedOutfit = this.outfits[0];
+				}
+
+				// Make sure an outfit is equipped. We don't need to wait on this.
+				task.spawn(async () => {
+					if (equippedOutfitId !== "" && (await Protected.Avatar.GetEquippedOutfit()) === undefined) {
+						print("Setting equipped outfit: " + equippedOutfitId);
+						await Protected.Avatar.EquipAvatarOutfit(equippedOutfitId);
+					}
+				});
+
+				resolve();
+			}),
+		);
+
+		// Get the loaded outfit dto.
+		promises.push(
+			new Promise(async (resolve) => {
+				loadedOutfitFromBackend = await Protected.Avatar.GetEquippedOutfit();
+				resolve();
+			}),
+		);
+
+		// Run in parallel
+		await Promise.all(promises);
+
+		// We want the loaded outfit to be the same object as the one in outfits array.
+		if (loadedOutfitFromBackend) {
+			this.equippedOutfit = this.outfits.find((o) => o.outfitId === loadedOutfitFromBackend?.outfitId);
 		}
 
 		this.isLoadingInventory = false;
