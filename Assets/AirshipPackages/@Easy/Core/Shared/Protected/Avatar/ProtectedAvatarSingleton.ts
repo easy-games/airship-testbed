@@ -102,7 +102,7 @@ export class ProtectedAvatarSingleton {
 	}
 
 	private Log(message: string) {
-		print("Protected.Avatar: " + message);
+		// print("Protected.Avatar: " + message);
 	}
 
 	public GetHttpUrl(path: string) {
@@ -237,7 +237,7 @@ export class ProtectedAvatarSingleton {
 		if (res.success) {
 			return json.decode<{ outfit: OutfitDto }>(res.data).outfit;
 		} else {
-			CoreLogger.Error("Error Updating Outfit: " + res.error);
+			CoreLogger.Error("Error Updating Outfit: " + res.data);
 		}
 	}
 
