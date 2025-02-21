@@ -3668,13 +3668,6 @@ declare const enum LoadingStatus {
     Loading = 1,
     Loaded = 2,
 }
-declare const enum CharacterState {
-    Idle = 0,
-    Running = 1,
-    Airborne = 2,
-    Sprinting = 3,
-    Crouching = 4,
-}
 declare const enum BasicCharacterState {
     Idle = 0,
     Running = 1,
@@ -26641,6 +26634,7 @@ interface CoreLoadingScreen extends BundleLoadingScreen {
 
     ClickContinueButton(): void;
     Close(): void;
+    OnReload(): void;
     SetProgress(text: string, percent: number): void;
     SetTotalDownloadSize(sizeBytes: number): void;
 
@@ -36407,7 +36401,7 @@ interface AirshipUniVoiceNetwork extends NetworkBehaviour, IChatroomNetwork {
     JoinChatroom(data: unknown): void;
     LeaveChatroom(data: unknown): void;
     NetworkServer_OnDisconnected(connection: NetworkConnectionToClient): void;
-    OnReadyCommand(conn: NetworkConnectionToClient): void;
+    OnReadyCommand(sender: NetworkConnectionToClient): void;
     OnStartServer(): void;
     ToByteArray<T>(obj: T): Readonly<number[]>;
     Weaved(): boolean;
@@ -44036,70 +44030,6 @@ interface EntryConstructor {
 }
 declare const Entry: EntryConstructor;
     
-interface CharacterMovementData extends MonoBehaviour {
-    characterHeight: number;
-    characterRadius: number;
-    colliderGroundOffset: number;
-    onlySprintForward: boolean;
-    useAccelerationMovement: boolean;
-    speed: number;
-    sprintSpeed: number;
-    accelerationForce: number;
-    sprintAccelerationForce: number;
-    minAccelerationDelta: number;
-    inAirDirectionalControl: number;
-    accelerationTurnFriction: number;
-    autoCrouch: boolean;
-    preventFallingWhileCrouching: boolean;
-    preventStepUpWhileCrouching: boolean;
-    crouchSpeedMultiplier: number;
-    crouchHeightMultiplier: number;
-    numberOfJumps: number;
-    jumpSpeed: number;
-    jumpCoyoteTime: number;
-    allowDebugFlying: boolean;
-    flySpeedMultiplier: number;
-    verticalFlySpeed: number;
-    jumpUpBlockCooldown: number;
-    useGravity: boolean;
-    useGravityWhileGrounded: boolean;
-    alwaysSnapToGround: boolean;
-    gravityMultiplier: number;
-    upwardsGravityMultiplier: number;
-    groundCollisionLayerMask: LayerMask;
-    terminalVelocity: number;
-    minimumVelocity: number;
-    useMinimumVelocityInAir: boolean;
-    preventWallClipping: boolean;
-    drag: number;
-    airDragMultiplier: number;
-    airSpeedMultiplier: number;
-    detectStepUps: boolean;
-    alwaysStepUp: boolean;
-    assistedLedgeJump: boolean;
-    maxStepUpHeight: number;
-    stepUpRampDistance: number;
-    detectSlopes: boolean;
-    slopeForce: number;
-    minSlopeDelta: number;
-    maxSlopeDelta: number;
-
-
-
-
-
-}
-    
-interface CharacterMovementDataConstructor {
-
-
-    new(): CharacterMovementData;
-
-
-
-}
-declare const CharacterMovementData: CharacterMovementDataConstructor;
-    
 interface Terrain extends Behaviour {
     /**
      * The Terrain Data that stores heightmaps, terrain textures, detail meshes and trees.
@@ -48104,118 +48034,6 @@ interface ActiveAccessoryConstructor {
 }
 declare const ActiveAccessory: ActiveAccessoryConstructor;
     
-interface AirshipPredictedState {
-    tick: number;
-    position: Vector3;
-    velocity: Vector3;
-
-
-
-    Copy(otherState: AirshipPredictedState): AirshipPredictedState;
-
-
-}
-    
-interface AirshipPredictedStateConstructor {
-
-
-    new(): AirshipPredictedState;
-
-
-
-}
-declare const AirshipPredictedState: AirshipPredictedStateConstructor;
-    
-interface CharacterMovementState extends AirshipPredictedState {
-    currentMoveInput: MoveInputData;
-    inputDisabled: boolean;
-    isFlying: boolean;
-    jumpCount: number;
-    airborneFromImpulse: boolean;
-    alreadyJumped: boolean;
-    prevMoveDir: Vector3;
-    lastGroundedMoveDir: Vector3;
-    prevCrouch: boolean;
-    prevStepUp: boolean;
-    prevGrounded: boolean;
-    state: CharacterState;
-    prevState: CharacterState;
-    timeSinceBecameGrounded: number;
-    timeSinceWasGrounded: number;
-    timeSinceJump: number;
-    customData: BinaryBlob;
-
-
-
-    CopyFrom(copyState: CharacterMovementState): void;
-    Equals(other: CharacterMovementState): boolean;
-
-
-}
-    
-interface CharacterMovementStateConstructor {
-
-
-    new(): CharacterMovementState;
-    new(tick: number, pos: Vector3, vel: Vector3): CharacterMovementState;
-    new(copyState: CharacterMovementState): CharacterMovementState;
-
-
-
-}
-declare const CharacterMovementState: CharacterMovementStateConstructor;
-    
-interface AirshipPredictionManager extends MonoBehaviour {
-
-
-
-    Awake(): void;
-    DisableDebugMode(): void;
-    EnabledDebugMode(): void;
-    InterpolateBodies(): void;
-    QueueReplay(replayController: IPredictedReplay, initialState: AirshipPredictedState, endingTick: number, afterIndex: number): void;
-    RegisterPredictedObject(replayObject: IPredictedReplay): void;
-    RegisterRigidbody(rigid: Rigidbody, graphicsHolder: Transform): void;
-    StartPrediction(): void;
-    StepDebugPhysics(): void;
-    StopPrediction(): void;
-    UnRegisterPredictedObject(replayObject: IPredictedReplay): void;
-    UnRegisterRigidbody(rigid: Rigidbody): void;
-
-
-}
-    
-interface IPredictedReplay {
-    readonly friendlyName: string;
-    readonly guid: number;
-
-
-
-    OnReplayFinished(initialState: AirshipPredictedState): void;
-    OnReplayingOthersFinished(): void;
-    OnReplayingOthersStarted(): void;
-    OnReplayStarted(initialState: AirshipPredictedState, historyIndex: number): void;
-    OnReplayTickFinished(tick: number): void;
-    OnReplayTickStarted(tick: number): void;
-
-
-}
-    
-interface AirshipPredictionManagerConstructor {
-    SmoothRigidbodies: boolean;
-    OnPhysicsTick: unknown;
-    OnPreReplayTick: unknown;
-    readonly PhysicsTime: number;
-    readonly instance: AirshipPredictionManager;
-
-
-    new(): AirshipPredictionManager;
-
-
-
-}
-declare const AirshipPredictionManager: AirshipPredictionManagerConstructor;
-    
 interface VisualGraphComponent extends MonoBehaviour {
     image: RawImage;
     dataResolution: number;
@@ -48285,6 +48103,7 @@ interface BasicCharacterMovementState extends StateSnapshot {
     isCrouching: boolean;
     prevStepUp: boolean;
     isGrounded: boolean;
+    animGrounded: boolean;
     state: BasicCharacterState;
     prevState: BasicCharacterState;
     timeSinceBecameGrounded: number;

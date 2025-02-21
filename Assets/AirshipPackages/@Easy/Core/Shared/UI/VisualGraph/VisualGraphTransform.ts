@@ -1,6 +1,6 @@
+import { Bin } from "../../Util/Bin";
 import VisualGraphManager from "./VisualGraphManager";
 import VisualGraphView from "./VisualGraphView";
-import { Bin } from "../../Util/Bin";
 
 export default class VisualGraphTransform extends AirshipBehaviour {
 	public graphName = "";
@@ -9,36 +9,36 @@ export default class VisualGraphTransform extends AirshipBehaviour {
 	private bin = new Bin();
 
 	protected OnEnable(): void {
-		if(!this.graph){
-			this.graph = VisualGraphManager.ManagerAddGraph(this.graphName??this.gameObject.name + "_T");
+		if (!this.graph) {
+			this.graph = VisualGraphManager.ManagerAddGraph(this.graphName ?? this.gameObject.name + "_T");
 		}
-		if(this.useMovementTransform) {
-			let movement = this.gameObject.GetComponent<CharacterMovement>();
-			if(movement){
-				this.bin.AddEngineEventConnection(movement.OnEndMove(() =>{
-					this.Tick(Time.fixedDeltaTime);
-				}));
+		if (this.useMovementTransform) {
+			let movement = this.gameObject.GetComponent<BasicCharacterMovement>();
+			if (movement) {
+				this.bin.AddEngineEventConnection(
+					movement.OnEndMove(() => {
+						this.Tick(Time.fixedDeltaTime);
+					}),
+				);
 			}
 		}
 	}
 
 	protected OnDisable(): void {
-		if(this.graph){
+		if (this.graph) {
 			VisualGraphManager.ManagerRemoveGraph(this.graph);
 			this.graph = undefined;
 		}
 	}
 
 	protected LateUpdate(dt: number): void {
-		if(this.useMovementTransform){
+		if (this.useMovementTransform) {
 			return;
 		}
 		this.Tick(dt);
 	}
 
-	private Tick(dt: number){
+	private Tick(dt: number) {
 		this.graph?.AddValues(this.transform.position);
 	}
-
-
 }

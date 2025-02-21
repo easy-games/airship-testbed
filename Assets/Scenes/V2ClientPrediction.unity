@@ -1648,7 +1648,6 @@ GameObject:
   - component: {fileID: 381259716}
   - component: {fileID: 381259715}
   - component: {fileID: 381259713}
-  - component: {fileID: 381259711}
   - component: {fileID: 381259719}
   - component: {fileID: 381259721}
   - component: {fileID: 381259720}
@@ -1659,24 +1658,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &381259711
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 381259710}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aad33d2d3a16c44f0af8acf2bb2c7f94, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncDirection: 0
-  syncMode: 0
-  syncInterval: 0
-  position1: {fileID: 1026156098}
-  position2: {fileID: 1144421107}
-  time: 10
 --- !u!114 &381259713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3259,7 +3240,7 @@ MonoBehaviour:
             is also assigned in the NetworkPrefabCollection in Shared/Resources"'
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 5042559581574877564, guid: cc93418b1655c4596830405942094869, type: 3}
+      serializedObject: {fileID: 5042559581574877564, guid: c6dc87ea1a89c3e4aa4c27ad6203c150, type: 3}
       modified: 1
     - name: movementSpace
       type: IntEnum
@@ -6854,7 +6835,6 @@ GameObject:
   - component: {fileID: 1603096023}
   - component: {fileID: 1603096022}
   - component: {fileID: 1603096021}
-  - component: {fileID: 1603096020}
   - component: {fileID: 1603096019}
   - component: {fileID: 1603096018}
   - component: {fileID: 1603096017}
@@ -6956,24 +6936,6 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
---- !u!114 &1603096020
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1603096015}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aad33d2d3a16c44f0af8acf2bb2c7f94, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncDirection: 0
-  syncMode: 0
-  syncInterval: 0
-  position1: {fileID: 196204555}
-  position2: {fileID: 475267726}
-  time: 10
 --- !u!114 &1603096021
 MonoBehaviour:
   m_ObjectHideFlags: 0
