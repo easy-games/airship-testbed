@@ -430,7 +430,7 @@ MonoBehaviour:
   movementSystem: {fileID: 4994063822197572165}
   maxServerCommandCatchup: 1
   maxServerCommandPrediction: 1
-  serverAuth: 0
+  serverAuth: 1
 --- !u!114 &5407425255743614049
 MonoBehaviour:
   m_ObjectHideFlags: 0
