@@ -1,7 +1,7 @@
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import {
-	AccessoryInstanceDto,
+	GearInstanceDto,
 	OutfitCreateDto,
 	OutfitDto,
 	OutfitPatch,
@@ -10,10 +10,10 @@ import { CoreLogger } from "../Logger/CoreLogger";
 
 // TODO this needs to be moved to the main menu lua sandbox
 export class AvatarPlatformAPI {
-	public static defaultFace?: AccessoryInstanceDto;
-	public static defaultShirt?: AccessoryInstanceDto;
-	public static defaultPants?: AccessoryInstanceDto;
-	public static defaultShoes?: AccessoryInstanceDto;
+	public static defaultFace?: GearInstanceDto;
+	public static defaultShirt?: GearInstanceDto;
+	public static defaultPants?: GearInstanceDto;
+	public static defaultShoes?: GearInstanceDto;
 
 	private static Log(message: string) {
 		//print("AvatarAPI: " + message);
@@ -91,10 +91,10 @@ export class AvatarPlatformAPI {
 
 	public static async GetAccessories() {
 		this.Log("GetAccessories");
-		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`accessories/self`));
+		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`gear/self`));
 		if (res.success) {
 			//this.Log("Got acc: " + res.data);
-			return json.decode<AccessoryInstanceDto[]>(res.data);
+			return json.decode<GearInstanceDto[]>(res.data);
 		} else {
 			CoreLogger.Error("Unable to load avatar items for user");
 		}
@@ -125,7 +125,7 @@ export class AvatarPlatformAPI {
 		let outfit: OutfitCreateDto = {
 			name: name,
 			outfitId: outfitId,
-			accessories: accessorUUIDs,
+			gear: accessorUUIDs,
 			equipped: equipped,
 			owner: ownerId,
 			skinColor: ColorUtil.ColorToHex(skinColor),
@@ -143,7 +143,7 @@ export class AvatarPlatformAPI {
 	public static async SaveOutfitAccessories(outfitId: string, skinColor: string, instanceIds: string[]) {
 		this.Log("SaveOutfitAccessories");
 		return this.UpdateOutfit(outfitId, {
-			accessories: instanceIds,
+			gear: instanceIds,
 			skinColor: skinColor,
 		});
 	}
@@ -160,7 +160,7 @@ export class AvatarPlatformAPI {
 	public static async LoadImage(fileId: string) {
 		let res = InternalHttpManager.GetAsync(this.GetImageUrl(fileId));
 		if (res.success) {
-			return json.decode<AccessoryInstanceDto[]>(res.data);
+			return json.decode<GearInstanceDto[]>(res.data);
 		} else {
 			CoreLogger.Error("Error loading image: " + res.error);
 		}
@@ -173,7 +173,7 @@ export class AvatarPlatformAPI {
 		}
 		this.Log("Updating item with new image");
 		let res = InternalHttpManager.PatchAsync(
-			this.GetHttpUrl(`accessories/class-id/${classId}`),
+			this.GetHttpUrl(`gear/class-id/${classId}`),
 			json.encode({
 				image: undefined,
 				imageId,
@@ -191,12 +191,15 @@ export class AvatarPlatformAPI {
 
 		let postPath = `${AirshipUrl.ContentService}/images`;
 		this.Log("post path: " + postPath);
-		const res = InternalHttpManager.PostAsync(postPath, json.encode({
-			contentType: "image/png",
-			contentLength: fileSize,
-			resourceId,
-			namespace: "items"
-		}));
+		const res = InternalHttpManager.PostAsync(
+			postPath,
+			json.encode({
+				contentType: "image/png",
+				contentLength: fileSize,
+				resourceId,
+				namespace: "items",
+			}),
+		);
 
 		if (res.success) {
 			const data = json.decode<{ url: string; imageId: string }>(res.data);

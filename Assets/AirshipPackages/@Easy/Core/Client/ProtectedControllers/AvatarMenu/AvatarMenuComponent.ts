@@ -766,7 +766,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 		this.ClearAllAccessories();
 
-		this.currentUserOutfit.accessories.forEach((acc, index) => {
+		this.currentUserOutfit.gear.forEach((acc, index) => {
 			this.Log("Outfit acc: " + acc.class.name + ": " + acc.class.classId);
 			let accComponent = AvatarCollectionManager.instance.GetAccessoryFromClassId(acc.class.classId);
 			if (accComponent) {

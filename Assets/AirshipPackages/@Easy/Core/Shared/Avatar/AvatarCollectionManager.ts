@@ -1,5 +1,5 @@
 import { AuthController } from "@Easy/Core/Client/ProtectedControllers/Auth/AuthController";
-import { AccessoryClass, AccessoryInstanceDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
+import { GearClass, GearInstanceDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { Dependency } from "../Flamework";
 import { Game } from "../Game";
 import { CoreLogger } from "../Logger/CoreLogger";
@@ -9,7 +9,7 @@ import { AvatarPlatformAPI } from "./AvatarPlatformAPI";
 export class AvatarCollectionManager {
 	private readonly allAvatarAccessories = new Map<string, AccessoryComponent>();
 	private readonly allAvatarFaces = new Map<string, AccessoryFace>();
-	private readonly allAvatarClasses = new Map<string, AccessoryClass>();
+	private readonly allAvatarClasses = new Map<string, GearClass>();
 	private readonly ownedAvatarAccessories = new Map<
 		AccessorySlot,
 		{ instanceId: string; item: AccessoryComponent }[]
@@ -92,7 +92,7 @@ export class AvatarCollectionManager {
 		}
 	}
 
-	private AddAvailableAvatarItem(itemDto: AccessoryInstanceDto, item: AccessoryComponent) {
+	private AddAvailableAvatarItem(itemDto: GearInstanceDto, item: AccessoryComponent) {
 		//print("Adding item: " + itemDto.class.name + " test: " + item.name);
 		const slotNumber: number = item.GetSlotNumber();
 		let items = this.ownedAvatarAccessories.get(slotNumber);
@@ -113,7 +113,7 @@ export class AvatarCollectionManager {
 		this.ownedAvatarAccessories.set(slotNumber, items);
 	}
 
-	private AddAvailableFaceItem(itemDto: AccessoryInstanceDto, item: AccessoryFace) {
+	private AddAvailableFaceItem(itemDto: GearInstanceDto, item: AccessoryFace) {
 		//print("Adding face: " + itemDto.class.name + " test: " + item.name);
 		if (itemDto.class.name === "Face Simple 01" || itemDto.class.name === "FaceDecalSimple01") {
 			AvatarPlatformAPI.defaultFace = itemDto;
