@@ -12,6 +12,7 @@ import Inventory from "./Inventory";
 import { Game } from "../Game";
 import StringUtils from "../Types/StringUtil";
 import ProximityPrompt from "../Input/ProximityPrompts/ProximityPrompt";
+import { SlotInteractionEvent } from "./Signal/SlotInteractionEvent";
 
 export default class AirshipInventoryUI extends AirshipBehaviour {
 	@Header("Variables")
@@ -445,20 +446,20 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			const tile = tileGO.gameObject.GetAirshipComponentInChildren<AirshipInventoryTile>();
 			if (!tile) continue;
 
-			bin.AddEngineEventConnection(
-				CanvasAPI.OnPointerEvent(tile.button.gameObject, (direction, button) => {
-					if (direction === PointerDirection.UP && button === PointerButton.MIDDLE) {
-						const stack = inventory.GetItem(i);
-						if (!stack) return;
+			// bin.AddEngineEventConnection(
+			// 	CanvasAPI.OnPointerEvent(tile.button.gameObject, (direction, button) => {
+			// 		if (direction === PointerDirection.UP && button === PointerButton.MIDDLE) {
+			// 			const stack = inventory.GetItem(i);
+			// 			if (!stack) return;
 
-						const openSlot = inventory.GetFirstOpenSlot();
-						if (openSlot === -1) return;
+			// 			const openSlot = inventory.GetFirstOpenSlot();
+			// 			if (openSlot === -1) return;
 
-						const half = math.floor(stack.amount / 2);
-						Airship.Inventory.MoveToSlot(inventory, i, localInventory, openSlot, half);
-					}
-				}),
-			);
+			// 			const half = math.floor(stack.amount / 2);
+			// 			Airship.Inventory.MoveToSlot(inventory, i, localInventory, openSlot, half);
+			// 		}
+			// 	}),
+			// );
 
 			bin.AddEngineEventConnection(
 				CanvasAPI.OnClickEvent(tile.button.gameObject, () => {
@@ -606,17 +607,12 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 						if (i < inv.hotbarSlots) {
 							// hotbar
 							if (this.IsBackpackShown()) {
-								if (Keyboard.IsKeyDown(Key.LeftShift)) {
-									this.QuickMoveSlot(inv, i);
-								}
+								Airship.Inventory.onInventorySlotClicked.Fire(new SlotInteractionEvent(inv, i));
 							} else {
 								inv.SetHeldSlot(i);
 							}
 						} else {
-							// backpack
-							if (Keyboard.IsKeyDown(Key.LeftShift)) {
-								this.QuickMoveSlot(inv, i);
-							}
+							Airship.Inventory.onInventorySlotClicked.Fire(new SlotInteractionEvent(inv, i));
 						}
 					});
 

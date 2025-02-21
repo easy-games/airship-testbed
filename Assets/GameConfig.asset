@@ -27,8 +27,8 @@ MonoBehaviour:
   - {fileID: 102900000, guid: 017f9e0c7f22c50478c482ac322a381a, type: 3}
   packages:
   - id: '@Easy/Core'
-    assetVersion: 163
-    codeVersion: 396
+    assetVersion: 171
+    codeVersion: 415
     publishVersionNumber: 
     game: 0
     localSource: 1
