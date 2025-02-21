@@ -223,6 +223,7 @@ export class ProtectedSettingsSingleton {
 				return;
 			}
 			if (!Bridge.HasMicrophonePermission()) {
+				this.SetMicrophoneEnabled(false);
 				return;
 			}
 			this.PickMicAndStartRecording();

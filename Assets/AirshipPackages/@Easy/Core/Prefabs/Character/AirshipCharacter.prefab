@@ -865,7 +865,7 @@ MonoBehaviour:
       fileRef: 
       decorators: []
       nullable: 0
-      serializedValue: 0
+      serializedValue: 1
       serializedObject: {fileID: 0}
       modified: 1
     - name: transparentDistance
@@ -880,7 +880,7 @@ MonoBehaviour:
       fileRef: 
       decorators: []
       nullable: 0
-      serializedValue: 0.5
+      serializedValue: 0.3
       serializedObject: {fileID: 0}
       modified: 0
     - name: transparentMargin
@@ -943,6 +943,25 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 2100000, guid: 94728df95d924ac408cc8ba97da6fe09, type: 2}
       modified: 1
+    - name: staticRenderers
+      type: Array
+      objectType: 
+      items:
+        type: object
+        objectType: Renderer
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"Variables"'
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
     displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0
@@ -1032,6 +1051,31 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 8440015110078338219}
       modified: 1
+    - name: modifyPermission
+      type: StringEnum
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: AirshipPackages/@Easy/Core/Shared/Inventory/Inventory@InventoryModifyPermission
+      fileRef: 
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"Permissions"'
+      - name: Tooltip
+        parameters:
+        - type: string
+          serializedValue: '"Who can modify this inventory\n\n<b>Network Owner</b>:
+            The network owner of this Inventory''s NetworkIdentity\n<b>Everyone</b>:
+            Any client can modify the inventory"'
+      nullable: 0
+      serializedValue: OWNER
+      serializedObject: {fileID: 0}
+      modified: 0
     displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0
@@ -1235,7 +1279,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8616685848737228372}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 5
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0.9, z: 0}

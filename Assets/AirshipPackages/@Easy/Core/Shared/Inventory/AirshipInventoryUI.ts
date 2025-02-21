@@ -3,11 +3,16 @@ import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
 import { Keyboard, Mouse } from "@Easy/Core/Shared/UserInput";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
-import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
+import { CanvasAPI, PointerButton, PointerDirection } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { OnUpdate } from "@Easy/Core/Shared/Util/Timer";
 import { Asset } from "../Asset";
 import { DraggingState } from "./AirshipDraggingState";
 import AirshipInventoryTile from "./AirshipInventoryTile";
+import Inventory from "./Inventory";
+import { Game } from "../Game";
+import StringUtils from "../Types/StringUtil";
+import ProximityPrompt from "../Input/ProximityPrompts/ProximityPrompt";
+import { SlotInteractionEvent } from "./Signal/SlotInteractionEvent";
 
 export default class AirshipInventoryUI extends AirshipBehaviour {
 	@Header("Variables")
@@ -16,18 +21,27 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	@Header("Hotbar")
 	public hotbarCanvas!: Canvas;
 	public hotbarContent!: RectTransform;
-	public hotbarTileTemplate!: GameObject;
 
 	@Header("Backpack")
+	public backpackLabel?: TMP_Text;
 	public backpackCanvas!: Canvas;
 	public backpackContent!: RectTransform;
-	public backpackTileTemplate!: GameObject;
 	public dropItemCatcher: RectTransform;
+
+	@Header("External Inventory")
+	@Tooltip("The content for the external inventory")
+	public externalInventoryLabel?: TMP_Text;
+	public externalInventoryContent?: RectTransform;
 
 	@Header("Backpack (Hotbar Row)")
 	@Tooltip("The hotbar content that is displayed when backpack is open.")
 	public backpackHotbarContent!: RectTransform;
 	public backpackHotbarTileTemplate!: GameObject;
+
+	@Header("Prefabs")
+	public hotbarTileTemplate!: GameObject;
+	public backpackTileTemplate!: GameObject;
+	public otherInventoryTileTemplate?: GameObject;
 
 	// public onDropOutsideInventory = new Signal<[slot: number, itemStack: ItemStack]>();
 
@@ -38,6 +52,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	// private inventoryRefs: GameObjectReferences;
 
 	private slotToBackpackTileMap = new Map<number, GameObject>();
+	private slotToExternalInventoryTileMap = new Map<number, GameObject>();
 
 	private inventoryEnabled = true;
 	private visible = false;
@@ -48,6 +63,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	private spriteCacheForItemType = new Map<string, Sprite>();
 
 	private bin = new Bin();
+	private backpackOpenBin = new Bin();
 
 	private isSetup = false;
 
@@ -57,6 +73,10 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	}
 
 	override Start(): void {
+		this.backpackLabel?.gameObject.SetActive(false);
+		this.externalInventoryContent?.gameObject.SetActive(false);
+		this.externalInventoryLabel?.gameObject.SetActive(false);
+
 		Airship.Inventory.ObserveLocalInventory((inv) => {
 			if (this.isSetup) return;
 
@@ -118,9 +138,20 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			onClose: () => {
 				this.backpackShown = false;
 				this.hotbarCanvas.enabled = true;
+				this.backpackOpenBin.Clean();
 			},
 			noDarkBackground: this.darkBackground === false,
 		});
+	}
+
+	public OpenBackpackWithExternalInventory(inventory: Inventory) {
+		const closed = this.SetupExternalInventory(inventory);
+		if (!closed) return;
+
+		this.backpackOpenBin.Add(closed);
+
+		// Open the regular backpack plspls
+		this.OpenBackpack();
 	}
 
 	private SetupHotbar(): void {
@@ -189,42 +220,6 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 				invBin.Clean();
 			};
 		});
-
-		// Healthbar
-		// Game.localPlayer.ObserveCharacter((character) => {
-		// 	const bin = new Bin();
-
-		// 	if (character === undefined) {
-		// 		if (!this.firstSpawn) this.healthBar.SetValue(0);
-		// 		if (this.firstSpawn) this.firstSpawn = false;
-
-		// 		if (this.enabled) this.SetVisible(false);
-
-		// 		// this.healthBar.transform.gameObject.SetActive(false);
-		// 		// this.SetEnabled(false);
-		// 		return;
-		// 	}
-		// 	if (this.enabled) this.SetVisible(true);
-		// 	// this.healthBar.transform.gameObject.SetActive(true);
-
-		// 	const SetFill = (newHealth: number, instant: boolean) => {
-		// 		let fill = newHealth / character.GetMaxHealth();
-		// 		if (instant) {
-		// 			this.healthBar.InstantlySetValue(fill);
-		// 		} else {
-		// 			this.healthBar.SetValue(fill);
-		// 		}
-		// 	};
-		// 	SetFill(character.GetHealth(), false);
-		// 	bin.Add(
-		// 		character.onHealthChanged.Connect((h) => {
-		// 			SetFill(h, false);
-		// 		}),
-		// 	);
-		// 	return () => {
-		// 		bin.Clean();
-		// 	};
-		// });
 	}
 
 	private UpdateTile(tile: GameObject, slot: number, itemStack: ItemStack | undefined): void {
@@ -279,6 +274,86 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		}
 	}
 
+	/**
+	 * Binds the dragging events for the given {@link button} to the given {@link inventory}, with the slot index {@link slotIndex}
+	 */
+	private BindDragEventsOnButton(button: Button, inventory: Inventory, slotIndex: number): EngineEventConnection[] {
+		return [
+			CanvasAPI.OnBeginDragEvent(button.gameObject, () => {
+				this.draggingBin.Clean();
+				if (!this.IsBackpackShown()) return;
+				if (Keyboard.IsKeyDown(Key.LeftShift)) return;
+
+				const itemStack = inventory.GetItem(slotIndex);
+				if (!itemStack) return;
+
+				const visual = button.transform.GetChild(0).gameObject;
+				const clone = Object.Instantiate(visual, this.backpackCanvas.transform);
+
+				const slotNumber = clone.transform.Find("SlotNumber");
+				slotNumber?.gameObject.SetActive(false);
+
+				clone.transform.SetAsLastSibling();
+
+				const cloneRect = clone.GetComponent<RectTransform>()!;
+				cloneRect.sizeDelta = new Vector2(100, 100);
+				const cloneImage = clone.transform.GetChild(0).GetComponent<Image>()!;
+				cloneImage.raycastTarget = false;
+
+				visual.SetActive(false);
+
+				const cloneTransform = clone.GetComponent<RectTransform>()!;
+				cloneTransform.position = Mouse.GetPositionVector3();
+
+				this.draggingBin.Add(
+					OnUpdate.Connect((dt) => {
+						cloneTransform.position = Mouse.GetPositionVector3();
+					}),
+				);
+				this.draggingBin.Add(() => {
+					visual.SetActive(true);
+				});
+
+				this.draggingState = {
+					slot: slotIndex,
+					itemStack,
+					inventory,
+					transform: cloneTransform,
+					consumed: false,
+				};
+			}),
+			CanvasAPI.OnDropEvent(button.gameObject, () => {
+				if (!this.IsBackpackShown()) return;
+				if (!this.draggingState) return;
+
+				Airship.Inventory.MoveToSlot(
+					this.draggingState.inventory,
+					this.draggingState.slot,
+					inventory,
+					slotIndex,
+					this.draggingState.itemStack.amount,
+				);
+				this.draggingState.consumed = true;
+			}),
+			CanvasAPI.OnEndDragEvent(button.gameObject, () => {
+				this.draggingBin.Clean();
+
+				if (this.draggingState) {
+					if (!this.draggingState.consumed) {
+						// Intent may be to drop item
+						// this.characterInvController.DropItemInSlot(
+						// 	this.draggingState.slot,
+						// 	this.draggingState.itemStack.amount,
+						// );
+					}
+
+					Object.Destroy(this.draggingState.transform.gameObject);
+					this.draggingState = undefined;
+				}
+			}),
+		];
+	}
+
 	private prevHeldSlot = -2;
 	private UpdateHotbarSlot(
 		slot: number,
@@ -310,6 +385,153 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 				Airship.Inventory.localInventory?.SetHeldSlot(slot);
 			});
 		}
+	}
+
+	private QuickMoveSlot(inventory: Inventory, slot: number) {
+		// If we have an external inventory, will need to swap to that instead on shift-click
+		if (this.externalInventory) {
+			const stack = inventory.GetItem(slot);
+			if (!stack) return;
+			const freeSlot = Keyboard.IsKeyDown(Key.LeftShift)
+				? this.externalInventory.FindMergeableSlotWithItemType(stack.itemType) ??
+				  this.externalInventory.GetFirstOpenSlot()
+				: this.externalInventory.GetFirstOpenSlot();
+			if (freeSlot === -1) return;
+
+			Airship.Inventory.MoveToSlot(inventory, slot, this.externalInventory, freeSlot, stack.amount);
+		} else {
+			Airship.Inventory.QuickMoveSlot(inventory, slot);
+		}
+	}
+
+	private externalInventory?: Inventory;
+	private SetupExternalInventory(inventory: Inventory) {
+		const localInventory = Airship.Inventory.localInventory;
+		if (!localInventory) return;
+		if (!this.externalInventoryContent) {
+			warn("External Inventory not supported by this inventory prefab");
+			return;
+		}
+
+		if (!inventory.CanPlayerModifyInventory(Game.localPlayer)) return;
+		this.externalInventory = inventory;
+
+		// Pretty much we want to display & handle the external inventory interaction here if requested
+		const bin = new Bin();
+		this.externalInventoryContent.gameObject.SetActive(true);
+
+		this.backpackLabel?.gameObject.SetActive(true);
+		this.externalInventoryLabel?.gameObject.SetActive(true);
+
+		const prompt = inventory.gameObject.GetAirshipComponentInChildren<ProximityPrompt>();
+
+		if (this.externalInventoryLabel)
+			this.externalInventoryLabel.text =
+				prompt?.GetObjectText() ?? StringUtils.ncifyVariableName(inventory.gameObject.name);
+
+		const count = this.externalInventoryContent.childCount;
+		for (let i = 0; i < inventory.maxSlots; i++) {
+			let tileGO: GameObject;
+			if (i >= count) {
+				tileGO = Object.Instantiate(
+					this.otherInventoryTileTemplate ?? this.backpackHotbarTileTemplate!,
+					this.externalInventoryContent,
+				);
+			} else {
+				tileGO = this.externalInventoryContent.GetChild(i).gameObject;
+			}
+
+			this.slotToExternalInventoryTileMap.set(i, tileGO);
+
+			const tile = tileGO.gameObject.GetAirshipComponentInChildren<AirshipInventoryTile>();
+			if (!tile) continue;
+
+			// bin.AddEngineEventConnection(
+			// 	CanvasAPI.OnPointerEvent(tile.button.gameObject, (direction, button) => {
+			// 		if (direction === PointerDirection.UP && button === PointerButton.MIDDLE) {
+			// 			const stack = inventory.GetItem(i);
+			// 			if (!stack) return;
+
+			// 			const openSlot = inventory.GetFirstOpenSlot();
+			// 			if (openSlot === -1) return;
+
+			// 			const half = math.floor(stack.amount / 2);
+			// 			Airship.Inventory.MoveToSlot(inventory, i, localInventory, openSlot, half);
+			// 		}
+			// 	}),
+			// );
+
+			bin.AddEngineEventConnection(
+				CanvasAPI.OnClickEvent(tile.button.gameObject, () => {
+					const openSlot = localInventory.GetFirstOpenSlot();
+					if (openSlot === -1) return;
+
+					const stack = inventory.GetItem(i);
+					if (!stack) return;
+
+					Airship.Inventory.MoveToSlot(inventory, i, localInventory, openSlot, stack.amount);
+				}),
+			);
+
+			const connections = this.BindDragEventsOnButton(tile.button, inventory, i);
+			for (const connection of connections) {
+				bin.AddEngineEventConnection(connection);
+			}
+		}
+
+		const slotBinMap = new Map<number, Bin>();
+		bin.Add(
+			inventory.ObserveSlots((stack, slot) => {
+				slotBinMap.get(slot)?.Clean();
+				if (slot > inventory.maxSlots) return;
+
+				const slotBin = new Bin();
+				slotBinMap.set(slot, slotBin);
+
+				const tile = this.slotToExternalInventoryTileMap.get(slot)!;
+				this.UpdateTile(tile, slot, stack);
+
+				if (stack) {
+					slotBin.Add(
+						stack.amountChanged.Connect((e) => {
+							this.UpdateTile(tile, slot, e.itemStack);
+						}),
+					);
+
+					slotBin.Add(
+						stack.itemTypeChanged.Connect((e) => {
+							this.UpdateTile(tile, slot, e.itemStack);
+						}),
+					);
+				}
+			}),
+		);
+
+		bin.Add(() => {
+			slotBinMap.forEach((bin) => bin.Clean());
+			slotBinMap.clear();
+		});
+
+		// TODO: Layout hack, remove when update ordering fixed by Stephen
+		{
+			task.defer(() => {
+				// Programming Gods, forgive me for I have sinned with this call
+				LayoutRebuilder.ForceRebuildLayoutImmediate(
+					this.backpackCanvas.transform.Find("BackpackWrapper").transform as RectTransform,
+				);
+			});
+		}
+
+		bin.Add(() => {
+			this.externalInventory = undefined;
+			this.backpackLabel?.gameObject.SetActive(false);
+			this.externalInventoryLabel?.gameObject.SetActive(false);
+			this.externalInventoryContent!.gameObject.SetActive(false);
+		});
+
+		return () => {
+			bin.Clean();
+		};
 	}
 
 	private SetupBackpack(): void {
@@ -385,97 +607,16 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 						if (i < inv.hotbarSlots) {
 							// hotbar
 							if (this.IsBackpackShown()) {
-								if (Keyboard.IsKeyDown(Key.LeftShift)) {
-									Airship.Inventory.QuickMoveSlot(inv, i);
-								}
+								Airship.Inventory.onInventorySlotClicked.Fire(new SlotInteractionEvent(inv, i));
 							} else {
 								inv.SetHeldSlot(i);
 							}
 						} else {
-							// backpack
-							if (Keyboard.IsKeyDown(Key.LeftShift)) {
-								Airship.Inventory.QuickMoveSlot(inv, i);
-							}
+							Airship.Inventory.onInventorySlotClicked.Fire(new SlotInteractionEvent(inv, i));
 						}
 					});
-					CanvasAPI.OnBeginDragEvent(tileComponent.button.gameObject, () => {
-						this.draggingBin.Clean();
-						if (!this.IsBackpackShown()) return;
-						if (Keyboard.IsKeyDown(Key.LeftShift)) return;
 
-						if (!Airship.Inventory.localInventory) return;
-						const itemStack = Airship.Inventory.localInventory.GetItem(i);
-						if (!itemStack) return;
-
-						const visual = tileComponent.button.transform.GetChild(0).gameObject;
-						const clone = Object.Instantiate(visual, this.backpackCanvas.transform);
-
-						const slotNumber = clone.transform.Find("SlotNumber");
-						slotNumber?.gameObject.SetActive(false);
-
-						clone.transform.SetAsLastSibling();
-
-						const cloneRect = clone.GetComponent<RectTransform>()!;
-						cloneRect.sizeDelta = new Vector2(100, 100);
-						const cloneImage = clone.transform.GetChild(0).GetComponent<Image>()!;
-						cloneImage.raycastTarget = false;
-
-						visual.SetActive(false);
-
-						const cloneTransform = clone.GetComponent<RectTransform>()!;
-						cloneTransform.position = Mouse.GetPositionVector3();
-
-						this.draggingBin.Add(
-							OnUpdate.Connect((dt) => {
-								cloneTransform.position = Mouse.GetPositionVector3();
-							}),
-						);
-						this.draggingBin.Add(() => {
-							visual.SetActive(true);
-						});
-
-						this.draggingState = {
-							slot: i,
-							itemStack,
-							inventory: Airship.Inventory.localInventory,
-							transform: cloneTransform,
-							consumed: false,
-						};
-					});
-
-					// Called before end
-					CanvasAPI.OnDropEvent(tileComponent.button.gameObject, () => {
-						if (!this.IsBackpackShown()) return;
-						if (!this.draggingState) return;
-						if (!Airship.Inventory.localInventory) return;
-
-						Airship.Inventory.MoveToSlot(
-							this.draggingState.inventory,
-							this.draggingState.slot,
-							Airship.Inventory.localInventory,
-							i,
-							this.draggingState.itemStack.amount,
-						);
-						this.draggingState.consumed = true;
-					});
-
-					// Called after drop
-					CanvasAPI.OnEndDragEvent(tileComponent.button.gameObject, () => {
-						this.draggingBin.Clean();
-
-						if (this.draggingState) {
-							if (!this.draggingState.consumed) {
-								// Intent may be to drop item
-								// this.characterInvController.DropItemInSlot(
-								// 	this.draggingState.slot,
-								// 	this.draggingState.itemStack.amount,
-								// );
-							}
-
-							Object.Destroy(this.draggingState.transform.gameObject);
-							this.draggingState = undefined;
-						}
-					});
+					this.BindDragEventsOnButton(tileComponent.button, Airship.Inventory.localInventory!, i);
 				}
 			}
 			init = false;

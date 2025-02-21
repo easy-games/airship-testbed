@@ -13,6 +13,8 @@ import AirshipInventoryUI from "./AirshipInventoryUI";
 import Inventory, { InventoryDto } from "./Inventory";
 import { InventoryUIVisibility } from "./InventoryUIVisibility";
 import { ItemStack } from "./ItemStack";
+import { MovingToSlotEvent } from "./Signal/MovingToSlotEvent";
+import { SlotInteractionEvent } from "./Signal/SlotInteractionEvent";
 
 interface InventoryEntry {
 	Inv: Inventory;
@@ -30,6 +32,28 @@ const itemDefinitions: {
 export class AirshipInventorySingleton {
 	public localInventory?: Inventory;
 	public localInventoryChanged = new Signal<Inventory>();
+
+	/**
+	 * Invoked when an inventory slot move is requested
+	 *
+	 * Can be used to cancel inventory transfers in certain situations e.g: non-tradeable items, or non-droppable items
+	 */
+	public readonly onMovingToSlot = new Signal<MovingToSlotEvent>();
+
+	/**
+	 * Event that is invoked when the inventory slot is clicked on the client
+	 * @client
+	 *
+	 * Can be used to implement custom inventory functionality, e.g. "quick move" on shift click:
+	 * ```ts
+	 * Airship.Inventory.onInventorySlotClicked.Connect((event) => {
+	 * 	if (Keyboard.IsKeyDown(Key.LeftShift)) {
+	 *			Airship.Inventory.QuickMoveSlot(event.inventory, event.slotIndex);
+	 *		}
+	 * });
+	 * ```
+	 */
+	public readonly onInventorySlotClicked = new Signal<SlotInteractionEvent>();
 
 	/**
 	 * If `true`, the Inventory UI will immediately be enabled for the player.
@@ -196,13 +220,27 @@ export class AirshipInventorySingleton {
 				const toInv = this.GetInventory(toInvId);
 				if (!toInv) return;
 
+				if (!fromInv.CanPlayerModifyInventory(player)) {
+					warn(`[Inventory] MoveToSlot ${player.username} Cannot Modify Source Inventory`);
+					return;
+				}
+
+				if (!toInv.CanPlayerModifyInventory(player)) {
+					warn(`[Inventory] MoveToSlot ${player.username} Cannot Modify Target Inventory`);
+					return;
+				}
+
+				const event = this.onMovingToSlot.Fire(new MovingToSlotEvent(fromInv, fromSlot, toInv, toSlot, amount));
+				if (event.IsCancelled()) return;
+				amount = event.amount;
+
 				const fromItemStack = fromInv.GetItem(fromSlot);
 				if (!fromItemStack) return;
 
 				const toItemStack = toInv.GetItem(toSlot);
 				if (toItemStack !== undefined) {
 					if (toItemStack.CanMerge(fromItemStack)) {
-						if (toItemStack.amount + amount <= toItemStack.GetMaxStackSize()) {
+						if (event.allowMerging && toItemStack.amount + amount <= toItemStack.GetMaxStackSize()) {
 							toItemStack.SetAmount(toItemStack.amount + amount);
 							fromItemStack.Decrement(amount);
 							CoreNetwork.ClientToServer.Inventory.MoveToSlot.client.FireServer(
@@ -219,9 +257,14 @@ export class AirshipInventorySingleton {
 					}
 				}
 
-				this.SwapSlots(fromInv, fromSlot, toInv, toSlot, {
-					clientPredicted: true,
-				});
+				// If < fromItemStack we wanna "split"
+				if (amount < fromItemStack.amount) {
+					this.MoveAmountToSlot(fromInv, fromSlot, toInv, toSlot, amount, { clientPredicted: true });
+				} else {
+					this.SwapSlots(fromInv, fromSlot, toInv, toSlot, {
+						clientPredicted: true,
+					});
+				}
 			},
 		);
 
@@ -232,6 +275,16 @@ export class AirshipInventorySingleton {
 
 				const toInv = this.GetInventory(toInvId);
 				if (!toInv) return;
+
+				if (!fromInv.CanPlayerModifyInventory(player)) {
+					warn(`[Inventory] QuickMoveSlot ${player.username} Cannot Modify Source Inventory`);
+					return;
+				}
+
+				if (!toInv.CanPlayerModifyInventory(player)) {
+					warn(`[Inventory] QuickMoveSlot ${player.username} Cannot Modify Target Inventory`);
+					return;
+				}
 
 				const itemStack = fromInv.GetItem(fromSlot);
 				if (!itemStack) return;
@@ -338,6 +391,29 @@ export class AirshipInventorySingleton {
 			clientPredicted: config?.clientPredicted,
 		});
 		fromInventory.SetItem(fromSlot, toItem, {
+			clientPredicted: config?.clientPredicted,
+		});
+	}
+
+	private MoveAmountToSlot(
+		fromInventory: Inventory,
+		fromSlot: number,
+		toInventory: Inventory,
+		toSlot: number,
+		amount: number,
+		config?: { clientPredicted: boolean },
+	) {
+		amount = math.floor(amount); // ensure it's a whole number
+
+		const fromItem = fromInventory.GetItem(fromSlot);
+		// const toItem = toInventory.GetItem(toSlot);
+		if (fromItem === undefined) return;
+		if (amount >= fromItem.amount) {
+			return this.SwapSlots(fromInventory, fromSlot, toInventory, toSlot, config);
+		}
+
+		fromItem.SetAmount(fromItem.amount - amount);
+		toInventory.SetItem(toSlot, new ItemStack(fromItem.itemType, amount), {
 			clientPredicted: config?.clientPredicted,
 		});
 	}
@@ -486,13 +562,26 @@ export class AirshipInventorySingleton {
 	}
 
 	public MoveToSlot(fromInv: Inventory, fromSlot: number, toInv: Inventory, toSlot: number, amount: number): void {
+		if (!fromInv.CanPlayerModifyInventory(Game.localPlayer) || !toInv.CanPlayerModifyInventory(Game.localPlayer)) {
+			return;
+		}
+
+		const event = this.onMovingToSlot.Fire(new MovingToSlotEvent(fromInv, fromSlot, toInv, toSlot, amount));
+		if (event.IsCancelled()) return;
+
+		// fromInv = event.fromInventory;
+		// toInv = event.toInventory;
+		// fromSlot = event.fromSlot;
+		// toSlot = event.toSlot;
+		amount = event.amount;
+
 		const fromItemStack = fromInv.GetItem(fromSlot);
 		if (!fromItemStack) return;
 
 		const toItemStack = toInv.GetItem(toSlot);
 		if (toItemStack !== undefined) {
 			if (toItemStack.CanMerge(fromItemStack)) {
-				if (toItemStack.amount + amount <= toItemStack.GetMaxStackSize()) {
+				if (event.allowMerging && toItemStack.amount + amount <= toItemStack.GetMaxStackSize()) {
 					toItemStack.SetAmount(toItemStack.amount + amount);
 					fromItemStack.Decrement(amount);
 					CoreNetwork.ClientToServer.Inventory.MoveToSlot.client.FireServer(
@@ -509,9 +598,14 @@ export class AirshipInventorySingleton {
 			}
 		}
 
-		this.SwapSlots(fromInv, fromSlot, toInv, toSlot, {
-			clientPredicted: true,
-		});
+		if (amount < fromItemStack.amount) {
+			this.MoveAmountToSlot(fromInv, fromSlot, toInv, toSlot, amount, { clientPredicted: true });
+		} else {
+			this.SwapSlots(fromInv, fromSlot, toInv, toSlot, {
+				clientPredicted: true,
+			});
+		}
+
 		CoreNetwork.ClientToServer.Inventory.MoveToSlot.client.FireServer(
 			fromInv.id,
 			fromSlot,
@@ -683,5 +777,15 @@ export class AirshipInventorySingleton {
 		}
 
 		return undefined;
+	}
+
+	/**
+	 * Allows you to open another inventory
+	 */
+	public OpenExternalInventory(inventory: Inventory): CleanupFunc {
+		const ui = this.ui;
+		if (!ui) return;
+
+		return ui.OpenBackpackWithExternalInventory(inventory);
 	}
 }

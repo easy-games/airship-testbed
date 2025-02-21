@@ -21,7 +21,7 @@ Material:
   stringTagMap: {}
   disabledShaderPasses:
   - MOTIONVECTORS
-  m_LockedProperties: 
+  m_LockedProperties: _Transparency
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -120,7 +120,7 @@ Material:
     - _DstBlend: 0
     - _DstBlendAlpha: 1
     - _EnvironmentReflections: 1
-    - _FresnelStrength: 0.9
+    - _FresnelStrength: 2
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
@@ -138,7 +138,7 @@ Material:
     - _SrcBlend: 2
     - _SrcBlendAlpha: 0
     - _Surface: 1
-    - _Transparency: 0.5
+    - _Transparency: 1
     - _Triplanar_Scale: 0.25
     - _WorkflowMode: 1
     - _ZWrite: 0

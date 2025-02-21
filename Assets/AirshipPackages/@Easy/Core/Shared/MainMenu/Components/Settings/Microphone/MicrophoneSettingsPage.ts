@@ -37,6 +37,8 @@ export default class MicrophoneSettingsPage extends AirshipBehaviour {
 				if (val) {
 					if (Bridge.HasMicrophonePermission()) {
 						clientSettings.PickMicAndStartRecording();
+						clientSettings.SetMicrophoneEnabled(true);
+						clientSettings.MarkAsDirty();
 					} else {
 						Bridge.RequestMicrophonePermissionAsync();
 						if (!Bridge.HasMicrophonePermission()) {
@@ -44,12 +46,14 @@ export default class MicrophoneSettingsPage extends AirshipBehaviour {
 							this.voiceChatToggle.SetValue(false);
 							return;
 						}
+						// user said "yes"
+						clientSettings.SetMicrophoneEnabled(true);
+						clientSettings.MarkAsDirty();
 					}
 				} else {
 					clientSettings.SetMicrophoneEnabled(false);
+					clientSettings.MarkAsDirty();
 				}
-				clientSettings.SetMicrophoneEnabled(val);
-				clientSettings.MarkAsDirty();
 			});
 		});
 	}
