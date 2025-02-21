@@ -134,16 +134,18 @@ export class AirshipAvatarSingleton {
 		}
 
 		outfit.accessories.forEach((acc) => {
-			const meta = InternalClothingMeta.get(acc.classId);
+			const meta = InternalClothingMeta.get(acc.class.classId);
 			if (!meta) return;
 
 			// todo: why are we returning if first person?
 			if (builder.firstPerson) return;
 
-			const clothing = Clothing.DownloadYielding(acc.classId, meta.airId);
+			const clothing = Clothing.DownloadYielding(acc.class.classId, meta.airId);
 			if (clothing) {
 				if (clothing.accessoryPrefabs && clothing.accessoryPrefabs.size() > 0) {
-					builder.AddRange(clothing.accessoryPrefabs);
+					for (let accessoryPrefab of clothing.accessoryPrefabs) {
+						builder.Add(accessoryPrefab);
+					}
 				}
 				if (clothing.face) {
 					builder.SetFaceTexture(clothing.face.decalTexture);

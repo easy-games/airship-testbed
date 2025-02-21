@@ -10,6 +10,7 @@ import { CoreLogger } from "../../Logger/CoreLogger";
 import { Protected } from "../../Protected";
 import { AirshipUrl } from "../../Util/AirshipUrl";
 import { ColorUtil } from "../../Util/ColorUtil";
+import inspect from "../../Util/Inspect";
 import { RandomUtil } from "../../Util/RandomUtil";
 import { Signal } from "../../Util/Signal";
 
@@ -56,9 +57,9 @@ export class ProtectedAvatarSingleton {
 		// Get all owned clothing and map them to usable values
 		this.Log("Downloading owned clothing...");
 		let clothingData = await Protected.Avatar.GetAccessories();
-		this.Log("got clothing: " + clothingData);
-
+		this.Log("Owned clothing count: " + (clothingData?.size() ?? 0));
 		if (clothingData) {
+			this.Log("Owned clothing sample: " + inspect(clothingData[0]));
 			this.ownedClothing = clothingData;
 		}
 
@@ -101,12 +102,11 @@ export class ProtectedAvatarSingleton {
 	}
 
 	private Log(message: string) {
-		print("Protected.avatar: " + message);
+		print("Protected.Avatar: " + message);
 	}
 
 	public GetHttpUrl(path: string) {
 		let url = `${AirshipUrl.ContentService}/${path}`;
-		this.Log("HTTP URL: " + url);
 		return url;
 	}
 

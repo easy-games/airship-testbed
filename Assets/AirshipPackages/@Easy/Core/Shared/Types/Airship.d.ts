@@ -415,7 +415,7 @@ interface AccessoryBuilder extends MonoBehaviour {
 	 *
 	 * **Skinned mesh accessories will not be added until you call `UpdateImmediately()`**
 	 */
-	AddRange(accessoryTemplates: AccessoryComponent[]): ActiveAccessory[];
+	// AddRange(accessoryTemplates: AccessoryComponent[]): ActiveAccessory[];
 	/**
 	 * Adds a single accessory.
 	 *

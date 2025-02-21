@@ -36,7 +36,9 @@ export interface ItemClass {
 }
 
 export interface AccessoryClass extends ItemClass {
-	accessory: {};
+	accessory: {
+		airAssets: string[];
+	};
 }
 
 export interface ProfilePictureClass extends ItemClass {
@@ -47,7 +49,6 @@ export interface ProfilePictureClass extends ItemClass {
 
 export interface ItemInstanceDto {
 	ownerId: string;
-	classId: string;
 	class: ItemClass;
 	instanceId: string;
 	createdAt: string;
