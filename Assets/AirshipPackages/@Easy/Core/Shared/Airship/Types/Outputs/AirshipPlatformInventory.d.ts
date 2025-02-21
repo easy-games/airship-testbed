@@ -35,9 +35,11 @@ export interface ItemClass {
 	};
 }
 
-export interface AccessoryClass extends ItemClass {
-	accessory: {
+export interface GearClass extends ItemClass {
+	gear: {
 		airAssets: string[];
+		category: string | undefined;
+		subcategory: string | undefined;
 	};
 }
 
@@ -55,8 +57,8 @@ export interface ItemInstanceDto {
 	float: number;
 }
 
-export interface ClothingInstanceDto extends ItemInstanceDto {
-	class: AccessoryClass;
+export interface GearInstanceDto extends ItemInstanceDto {
+	class: GearClass;
 }
 
 export interface ProfilePictureInstanceDto extends ItemInstanceDto {
@@ -70,7 +72,7 @@ export interface EquippedProfilePicture {
 }
 
 export interface OutfitPatch {
-	accessories: string[];
+	gear: string[];
 	skinColor: string;
 	name: string;
 }
@@ -82,7 +84,7 @@ export interface OutfitCreateDto {
 	name: string;
 	/** Hex string */
 	skinColor: string;
-	accessories: Array<string>;
+	gear: Array<string>;
 
 	equipped: boolean;
 }
@@ -94,7 +96,7 @@ export interface OutfitDto {
 	name: string;
 	/** Hex string */
 	skinColor: string;
-	accessories: Array<ClothingInstanceDto>;
+	gear: Array<GearInstanceDto>;
 
 	equipped: boolean;
 }

@@ -136,7 +136,7 @@ export class AirshipAvatarSingleton {
 
 		// Download clothing in parallel with Promise.all
 		let promises: Promise<void>[] = [];
-		for (let clothingDto of outfit.accessories) {
+		for (let clothingDto of outfit.gear) {
 			promises.push(
 				new Promise((resolve) => {
 					const meta = InternalClothingMeta.get(clothingDto.class.classId);

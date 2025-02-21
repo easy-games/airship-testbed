@@ -1,6 +1,6 @@
 import { AuthController } from "@Easy/Core/Client/ProtectedControllers/Auth/AuthController";
 import {
-	ClothingInstanceDto,
+	GearInstanceDto,
 	OutfitCreateDto,
 	OutfitDto,
 	OutfitPatch,
@@ -17,17 +17,17 @@ import { Signal } from "../../Util/Signal";
 
 @Singleton()
 export class ProtectedAvatarSingleton {
-	public defaultFace?: ClothingInstanceDto;
-	public defaultShirt?: ClothingInstanceDto;
-	public defaultPants?: ClothingInstanceDto;
-	public defaultShoes?: ClothingInstanceDto;
+	public defaultFace?: GearInstanceDto;
+	public defaultShirt?: GearInstanceDto;
+	public defaultPants?: GearInstanceDto;
+	public defaultShoes?: GearInstanceDto;
 
 	private isLoadingInventory = false;
 	public isInventoryLoaded = false;
 	public onInventoryLoaded = new Signal();
 
 	public outfits: OutfitDto[] = [];
-	public ownedClothing: ClothingInstanceDto[] = [];
+	public ownedClothing: GearInstanceDto[] = [];
 	public equippedOutfit: OutfitDto | undefined;
 
 	public skinColors = [
@@ -82,7 +82,7 @@ export class ProtectedAvatarSingleton {
 		promises.push(
 			new Promise(async (resolve) => {
 				this.Log("Downloading owned clothing...");
-				let clothingData = await Protected.Avatar.GetAccessories();
+				let clothingData = await Protected.Avatar.GetGear();
 				this.Log("Owned clothing count: " + (clothingData?.size() ?? 0));
 				if (clothingData) {
 					this.Log("Owned clothing sample: " + inspect(clothingData[0]));
@@ -234,11 +234,11 @@ export class ProtectedAvatarSingleton {
 		}
 	}
 
-	public async GetAccessories() {
-		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`accessories/self`));
+	public async GetGear() {
+		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`gear/self`));
 		if (res.success) {
 			//this.Log("Got acc: " + res.data);
-			return json.decode<ClothingInstanceDto[]>(res.data);
+			return json.decode<GearInstanceDto[]>(res.data);
 		} else {
 			CoreLogger.Error("Unable to load avatar items for user");
 		}
@@ -269,7 +269,7 @@ export class ProtectedAvatarSingleton {
 		let outfit: OutfitCreateDto = {
 			name: name,
 			outfitId: outfitId,
-			accessories: accessorUUIDs,
+			gear: accessorUUIDs,
 			equipped: equipped,
 			owner: ownerId,
 			skinColor: ColorUtil.ColorToHex(skinColor),
@@ -287,7 +287,7 @@ export class ProtectedAvatarSingleton {
 	public async SaveOutfitAccessories(outfitId: string, skinColor: string, instanceIds: string[]) {
 		this.Log("SaveOutfitAccessories");
 		return this.UpdateOutfit(outfitId, {
-			accessories: instanceIds,
+			gear: instanceIds,
 			skinColor: skinColor,
 		});
 	}
@@ -304,7 +304,7 @@ export class ProtectedAvatarSingleton {
 	public async LoadImage(fileId: string) {
 		let res = InternalHttpManager.GetAsync(this.GetImageUrl(fileId));
 		if (res.success) {
-			return json.decode<ClothingInstanceDto[]>(res.data);
+			return json.decode<GearInstanceDto[]>(res.data);
 		} else {
 			CoreLogger.Error("Error loading image: " + res.error);
 		}

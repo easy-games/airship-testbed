@@ -1,4 +1,4 @@
-import { ClothingInstanceDto, OutfitDto } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipPlatformInventory";
+import { GearInstanceDto, OutfitDto } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipPlatformInventory";
 import { InternalClothingMeta } from "@Easy/Core/Shared/Airship/Util/InternalClothingMeta";
 import AvatarViewComponent from "@Easy/Core/Shared/Avatar/AvatarViewComponent";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
@@ -427,7 +427,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.mainMenu?.avatarView?.CameraFocusSlot(slot);
 	}
 
-	private async DisplayClothingItems(clothing: ClothingInstanceDto[]) {
+	private async DisplayClothingItems(clothing: GearInstanceDto[]) {
 		// const ownedItems = await Platform.Client.Inventory.GetItems({ queryType: "tag", tags: ["Clothing"] });
 		// for (let item of ownedItems) {
 		// 	const clothing = Clothing.DownloadYielding(item.classId, "airId", "versionHash");
@@ -506,7 +506,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 	}
 
-	private AddItemButton(clothingDto: ClothingInstanceDto, onClickCallback: () => void) {
+	private AddItemButton(clothingDto: GearInstanceDto, onClickCallback: () => void) {
 		//let newButton = PoolManager.SpawnObject(this.itemButtonTemplate, this.mainContentHolder);
 		const newButton = Object.Instantiate(this.itemButtonTemplate!, this.mainContentHolder!);
 		this.bin.AddEngineEventConnection(CanvasAPI.OnClickEvent(newButton, onClickCallback));
@@ -566,7 +566,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 	}
 
-	private async SelectItem(clothingDto: ClothingInstanceDto): Promise<void> {
+	private async SelectItem(clothingDto: GearInstanceDto): Promise<void> {
 		const meta = InternalClothingMeta.get(clothingDto.class.classId);
 		if (!meta || meta.slot === undefined) return;
 
@@ -593,7 +593,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 	}
 
-	private async SelectFaceItem(face: ClothingInstanceDto): Promise<void> {
+	private async SelectFaceItem(face: GearInstanceDto): Promise<void> {
 		if (!face) {
 			print("Missing face item: " + face);
 			return;
@@ -722,17 +722,17 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		// Download all accessories in parallel with Promise.all
 		// We won't mesh combine until after all this is done.
 		let promises: Promise<void>[] = [];
-		for (let clothingDto of this.viewedOutfit.accessories) {
+		for (let gearDto of this.viewedOutfit.gear) {
 			promises.push(
 				new Promise(async (resolve) => {
-					const meta = InternalClothingMeta.get(clothingDto.class.classId);
+					const meta = InternalClothingMeta.get(gearDto.class.classId);
 					if (!meta) return resolve();
 
 					if (meta.slot !== undefined) {
-						await this.SelectItem(clothingDto);
+						await this.SelectItem(gearDto);
 					}
 					if (meta.faceDecal !== undefined) {
-						await this.SelectFaceItem(clothingDto);
+						await this.SelectFaceItem(gearDto);
 					}
 					resolve();
 				}),
