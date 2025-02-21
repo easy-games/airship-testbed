@@ -581,7 +581,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		const alreadySelected = this.activeAccessories.get(meta.slot) === clothingDto.instanceId;
 		this.RemoveItem(meta.slot);
 		if (alreadySelected) {
-			//Already selected this item so just deselect it
+			// Already selected this item so just deselect it
+			this.accessoryBuilder.UpdateCombinedMesh();
 			this.UpdateButtonGraphics();
 			return;
 		}
