@@ -15,3 +15,4 @@ MonoBehaviour:
   classId: 14f57239-2264-465c-9346-fa6654a2d6f1
   accessoryPrefabs:
   - {fileID: 4774490663985270939, guid: c84a40a21c874254bab8c72d696fd0fb, type: 3}
+  face: {fileID: 0}

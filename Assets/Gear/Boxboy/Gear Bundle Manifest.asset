@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0832818dd13c4fcaa31b988d657c7d46, type: 3}
-  m_Name: Clothing Bundle Manifest
+  m_Name: Gear Bundle Manifest
   m_EditorClassIdentifier: 
   clothingList:
   - {fileID: 11400000, guid: e57b08b1c1e144e9a8ba7f36b51fa667, type: 2}

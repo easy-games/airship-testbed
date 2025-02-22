@@ -147,7 +147,7 @@ export class AirshipAvatarSingleton {
 						return resolve();
 					}
 
-					const clothing = Clothing.DownloadYielding(clothingDto.class.classId, meta.airId);
+					const clothing = PlatformGear.DownloadYielding(clothingDto.class.classId, meta.airId);
 					if (clothing) {
 						// print("Downloaded " + clothingDto.class.name + " " + (Time.time - start));
 						if (clothing.accessoryPrefabs && clothing.accessoryPrefabs.size() > 0) {

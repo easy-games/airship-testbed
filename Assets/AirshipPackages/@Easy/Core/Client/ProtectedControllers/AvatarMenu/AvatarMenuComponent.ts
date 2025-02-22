@@ -584,11 +584,11 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.UpdateButtonGraphics();
 		this.SetDirty(true);
 
-		const clothing = Clothing.DownloadYielding(clothingDto.class.classId, meta.airId);
-		if (!clothing) error("failed to download clothing.");
-		if (clothing?.accessoryPrefabs === undefined) error("empty accessory prefabs.");
+		const gear = PlatformGear.DownloadYielding(clothingDto.class.classId, meta.airId);
+		if (!gear) error("failed to download clothing.");
+		if (gear?.accessoryPrefabs === undefined) error("empty accessory prefabs.");
 
-		for (let accessoryPrefab of clothing.accessoryPrefabs) {
+		for (let accessoryPrefab of gear.accessoryPrefabs) {
 			this.accessoryBuilder.Add(accessoryPrefab);
 		}
 	}
@@ -606,7 +606,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		const meta = InternalClothingMeta.get(face.class.classId);
 		if (!meta) return;
 		if (meta) {
-			const clothing = Clothing.DownloadYielding(face.class.classId, meta.airId);
+			const clothing = PlatformGear.DownloadYielding(face.class.classId, meta.airId);
 			if (clothing?.face) {
 				this.accessoryBuilder.SetFaceTexture(clothing.face.decalTexture);
 				this.accessoryBuilder.UpdateCombinedMesh();

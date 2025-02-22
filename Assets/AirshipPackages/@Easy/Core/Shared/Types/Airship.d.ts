@@ -1104,12 +1104,12 @@ interface AnimatorClipReplacer extends MonoBehaviour {
 	RuntimeAnimator: RuntimeAnimatorController | null;
 }
 
-interface Clothing {
+interface PlatformGear {
 	classId: string;
 	accessoryPrefabs: AccessoryComponent[];
 	face: AccessoryFace | undefined;
 }
-interface ClothingConstructor {
-	DownloadYielding(classId: string, airId: string): Clothing | undefined;
+interface PlatformGearConstructor {
+	DownloadYielding(classId: string, airId: string): PlatformGear | undefined;
 }
-declare const Clothing: ClothingConstructor;
+declare const PlatformGear: PlatformGearConstructor;
