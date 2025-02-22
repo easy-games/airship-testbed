@@ -10,7 +10,6 @@ import { DamageInfo, DamageInfoCustomData } from "../Damage/DamageInfo";
 import AirshipEmoteSingleton from "../Emote/AirshipEmoteSingleton";
 import { Dependency } from "../Flamework";
 import NametagComponent from "../Nametag/NametagComponent";
-import inspect from "../Util/Inspect";
 import CharacterAnimation from "./Animation/CharacterAnimation";
 import CharacterConfigSetup from "./CharacterConfigSetup";
 import { EmoteStartSignal } from "./Signal/EmoteStartSignal";
@@ -180,7 +179,6 @@ export default class Character extends AirshipBehaviour {
 			if (player) {
 				this.SetMeshCacheId(`Player:${player.userId}`);
 			}
-			print("Init outfitDto: " + inspect(outfitDto));
 			this.LoadOutfit(outfitDto);
 		}
 
@@ -206,7 +204,7 @@ export default class Character extends AirshipBehaviour {
 		}
 
 		this.outfitDto = outfitDto;
-		print("Character.LoadOutfit " + inspect(outfitDto));
+		// print("Character.LoadOutfit " + inspect(outfitDto));
 		if (Game.IsClient() && outfitDto && this.autoLoadAvatarOutfit) {
 			task.spawn(() => {
 				Airship.Avatar.LoadOutfit(this.accessoryBuilder, outfitDto, {

@@ -3,7 +3,6 @@ import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { InternalClothingMeta } from "../Airship/Util/InternalClothingMeta";
 import { Singleton } from "../Flamework";
 import { ColorUtil } from "../Util/ColorUtil";
-import inspect from "../Util/Inspect";
 /**
  * Access using {@link Airship.Avatar}. Avatar singleton provides utilities for working with visual elements of a character
  *
@@ -129,24 +128,28 @@ export class AirshipAvatarSingleton {
 		outfit: OutfitDto,
 		options: { removeOldClothingAccessories?: boolean } = {},
 	) {
-		print("Loading outfit: " + inspect(outfit) + " " + debug.traceback());
+		// print("Loading outfit: " + inspect(outfit) + " " + debug.traceback());
 		if (options.removeOldClothingAccessories) {
-			// builder.RemoveClothingAccessories();
+			builder.RemoveClothingAccessories();
 		}
 
 		// Download clothing in parallel with Promise.all
+		const start = Time.time;
 		let promises: Promise<void>[] = [];
 		for (let clothingDto of outfit.gear) {
 			promises.push(
 				new Promise((resolve) => {
 					const meta = InternalClothingMeta.get(clothingDto.class.classId);
-					if (!meta) return;
+					if (!meta) return resolve();
 
 					// todo: why are we returning if first person?
-					if (builder.firstPerson) return;
+					if (builder.firstPerson) {
+						return resolve();
+					}
 
 					const clothing = Clothing.DownloadYielding(clothingDto.class.classId, meta.airId);
 					if (clothing) {
+						// print("Downloaded " + clothingDto.class.name + " " + (Time.time - start));
 						if (clothing.accessoryPrefabs && clothing.accessoryPrefabs.size() > 0) {
 							for (let accessoryPrefab of clothing.accessoryPrefabs) {
 								builder.Add(accessoryPrefab);
@@ -161,6 +164,7 @@ export class AirshipAvatarSingleton {
 			);
 		}
 		await Promise.all(promises);
+		// print("Finished downloads " + (Time.time - start));
 
 		builder.SetSkinColor(ColorUtil.HexToColor(outfit.skinColor));
 		builder.UpdateCombinedMesh();
@@ -169,7 +173,6 @@ export class AirshipAvatarSingleton {
 	public async GetUserEquippedOutfitDto(userId: string): Promise<OutfitDto | undefined> {
 		return new Promise((resolve) => {
 			const outfit = contextbridge.invoke("Avatar:GetUserEquippedOutfitDto", LuauContext.Protected, userId);
-			print("got outfit from contextbridge: " + inspect(outfit));
 			resolve(outfit);
 		});
 	}

@@ -487,6 +487,7 @@ interface AccessoryBuilder extends MonoBehaviour {
 
 interface MeshCombiner extends MonoBehaviour {
 	cacheId: string;
+	DisableBaseRenderers(): void;
 }
 interface MeshCombinerConstructor {
 	public RemoveMeshCache(cacheId: string): void;

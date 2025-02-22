@@ -54,11 +54,9 @@ export class ProtectedAvatarSingleton {
 			}
 
 			if (isSelf) {
-				print("getting self outfit");
 				const outfit = this.GetEquippedOutfit().expect();
 				return outfit;
 			} else {
-				print("getting other user outfit: " + userId);
 				const outfit = this.GetUserEquippedOutfit(userId).expect();
 				return outfit;
 			}
