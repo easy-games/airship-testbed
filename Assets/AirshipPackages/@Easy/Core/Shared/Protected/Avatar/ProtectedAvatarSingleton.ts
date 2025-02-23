@@ -365,6 +365,8 @@ export class ProtectedAvatarSingleton {
 		}
 	}
 
+	// This is super gross... But I think it's needed. AccessorySlot is a const enum which makes reverse mapping impossible.
+	// We don't want to make subcategories use AccessorySlot directly because it might limit either subcategories or accessory slots.
 	public GearClothingSubcategoryToSlot(slot: GearClothingSubcategory): AccessorySlot {
 		switch (slot) {
 			case GearClothingSubcategory.Head:
@@ -397,6 +399,7 @@ export class ProtectedAvatarSingleton {
 		}
 	}
 
+	// This is gross.. for more info read above comment on GearClothingSubcategoryToSlot
 	public AccessorySlotToClothingSubcategory(slot: AccessorySlot): GearClothingSubcategory {
 		switch (slot) {
 			case AccessorySlot.Root:
