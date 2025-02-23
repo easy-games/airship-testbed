@@ -12,7 +12,6 @@ import { CoreLogger } from "../../Logger/CoreLogger";
 import { Protected } from "../../Protected";
 import { AirshipUrl } from "../../Util/AirshipUrl";
 import { ColorUtil } from "../../Util/ColorUtil";
-import inspect from "../../Util/Inspect";
 import { RandomUtil } from "../../Util/RandomUtil";
 import { Signal } from "../../Util/Signal";
 
@@ -87,11 +86,11 @@ export class ProtectedAvatarSingleton {
 					// this.Log("Owned clothing sample: " + inspect(clothingData[0]));
 					this.ownedClothing = clothingData;
 
-					for (let c of clothingData) {
-						if (c.class.gear.airAssets.size() > 0) {
-							print("Found gear with airAssets: " + inspect(c));
-						}
-					}
+					// for (let c of clothingData) {
+					// 	if (c.class.gear.airAssets.size() > 0) {
+					// 		print("Found gear with airAssets: " + inspect(c));
+					// 	}
+					// }
 				}
 				resolve();
 			}),
