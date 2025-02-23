@@ -1,5 +1,4 @@
 import { GearInstanceDto, OutfitDto } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipPlatformInventory";
-import { InternalClothingMeta } from "@Easy/Core/Shared/Airship/Util/InternalClothingMeta";
 import AvatarViewComponent from "@Easy/Core/Shared/Avatar/AvatarViewComponent";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
@@ -36,7 +35,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	public avatarRenderHolder?: GameObject;
 	public avatarCenterRect?: RectTransform;
 	public categoryLabelTxt?: TextMeshProUGUI;
-	public mainContentHolder?: Transform;
+	public mainContentHolder: Transform;
 	public avatarProfileMenuGo?: GameObject;
 	public avatarToolbar!: RectTransform;
 	public avatarOptionsHolder!: RectTransform;
@@ -105,9 +104,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.avatarProfileMenu?.Init(mainMenu);
 
 		// Remove any dummy content
-		if (this.mainContentHolder) {
-			this.mainContentHolder.gameObject.ClearChildren();
-		}
+		this.mainContentHolder.gameObject.ClearChildren();
 
 		let i = 0;
 		// Hookup Nav buttons
@@ -178,7 +175,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			});
 		}
 
-		this.ClearItembuttons();
+		this.DestroyItemButtons();
 
 		if (Game.IsEditor()) {
 			Keyboard.OnKeyDown(Key.PrintScreen, (event) => {
@@ -360,7 +357,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 		this.activeSubIndex = subIndex;
 
-		this.ClearItembuttons();
+		this.DestroyItemButtons();
 
 		switch (this.activeMainIndex) {
 			case 0:
@@ -420,7 +417,9 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 		//Accessories
 		let validClothingItems = Protected.Avatar.ownedClothing.filter(
-			(c) => InternalClothingMeta.get(c.class.classId)?.slot === slot,
+			(c) =>
+				c.class.gear.subcategory !== undefined &&
+				Protected.Avatar.GearClothingSubcategoryToSlot(c.class.gear.subcategory) === slot,
 		);
 		this.DisplayClothingItems(validClothingItems);
 		this.currentFocusedSlot = slot;
@@ -445,8 +444,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	private DisplayFaceItems() {
 		let faceItems = Protected.Avatar.ownedClothing.filter((clothing) => {
-			const meta = InternalClothingMeta.get(clothing.class.classId);
-			return meta?.faceDecal ?? false;
+			return clothing.class.gear.subcategory && clothing.class.gear.subcategory === "FaceDecal";
 		});
 		if (faceItems) {
 			faceItems.forEach((clothingDto) => {
@@ -460,14 +458,11 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private itemButtonBin: Bin = new Bin();
-	private ClearItembuttons() {
-		//Highlight selected items
-		for (let i = 0; i < this.currentContentBtns.size(); i++) {
-			//PoolManager.ReleaseObject(this.currentContentBtns[i].button.gameObject);
-			Object.Destroy(this.currentContentBtns[i].button.gameObject);
-		}
+
+	private DestroyItemButtons() {
 		this.itemButtonBin.Clean();
 		this.currentContentBtns.clear();
+		this.mainContentHolder.gameObject.ClearChildren();
 	}
 
 	private DisplayColorScheme() {
@@ -509,7 +504,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private AddItemButton(clothingDto: GearInstanceDto, onClickCallback: () => void) {
 		//let newButton = PoolManager.SpawnObject(this.itemButtonTemplate, this.mainContentHolder);
 		const newButton = Object.Instantiate(this.itemButtonTemplate!, this.mainContentHolder!);
-		this.bin.AddEngineEventConnection(CanvasAPI.OnClickEvent(newButton, onClickCallback));
+		this.itemButtonBin.AddEngineEventConnection(CanvasAPI.OnClickEvent(newButton, onClickCallback));
 
 		const accessoryBtn = newButton.GetAirshipComponent<AvatarAccessoryBtn>()!;
 		accessoryBtn.scrollRedirect.redirectTarget = this.contentScrollRect;
@@ -567,24 +562,24 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private async SelectItem(clothingDto: GearInstanceDto): Promise<void> {
-		const meta = InternalClothingMeta.get(clothingDto.class.classId);
-		if (!meta || meta.slot === undefined) return;
+		if (clothingDto.class.gear.airAssets.size() === 0 || !clothingDto.class.gear.subcategory) return;
+		const slot = Protected.Avatar.GearClothingSubcategoryToSlot(clothingDto.class.gear.subcategory);
 
-		const alreadySelected = this.activeAccessories.get(meta.slot) === clothingDto.instanceId;
-		this.RemoveItem(meta.slot);
+		const alreadySelected = this.activeAccessories.get(slot) === clothingDto.instanceId;
+		this.RemoveItem(slot);
 		if (alreadySelected) {
 			// Already selected this item so just deselect it
 			this.UpdateButtonGraphics();
 			return;
 		}
 
-		this.mainMenu?.avatarView?.PlayReaction(meta.slot ?? AccessorySlot.Root);
-		this.activeAccessories.set(meta.slot!, clothingDto.instanceId);
+		this.mainMenu?.avatarView?.PlayReaction(slot);
+		this.activeAccessories.set(slot, clothingDto.instanceId);
 		this.selectedAccessories.set(clothingDto.instanceId, true);
 		this.UpdateButtonGraphics();
 		this.SetDirty(true);
 
-		const gear = PlatformGear.DownloadYielding(clothingDto.class.classId, meta.airId);
+		const gear = PlatformGear.DownloadYielding(clothingDto.class.classId, clothingDto.class.gear.airAssets[0]);
 		if (!gear) error("failed to download clothing.");
 		if (gear?.accessoryPrefabs === undefined) error("empty accessory prefabs.");
 
@@ -603,14 +598,12 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.UpdateButtonGraphics();
 		this.SetDirty(true);
 
-		const meta = InternalClothingMeta.get(face.class.classId);
-		if (!meta) return;
-		if (meta) {
-			const clothing = PlatformGear.DownloadYielding(face.class.classId, meta.airId);
-			if (clothing?.face) {
-				this.accessoryBuilder.SetFaceTexture(clothing.face.decalTexture);
-				this.accessoryBuilder.UpdateCombinedMesh();
-			}
+		if (face.class.gear.airAssets.size() === 0) return;
+
+		const clothing = PlatformGear.DownloadYielding(face.class.classId, face.class.gear.airAssets[0]);
+		if (clothing?.face) {
+			this.accessoryBuilder.SetFaceTexture(clothing.face.decalTexture);
+			this.accessoryBuilder.UpdateCombinedMesh();
 		}
 	}
 
@@ -725,15 +718,14 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		for (let gearDto of this.viewedOutfit.gear) {
 			promises.push(
 				new Promise(async (resolve) => {
-					const meta = InternalClothingMeta.get(gearDto.class.classId);
-					if (!meta) return resolve();
+					if (gearDto.class.gear.airAssets.size() === 0 || !gearDto.class.gear.subcategory) return resolve();
 
-					if (meta.slot !== undefined) {
-						await this.SelectItem(gearDto);
-					}
-					if (meta.faceDecal !== undefined) {
+					if (gearDto.class.gear.subcategory === "FaceDecal") {
 						await this.SelectFaceItem(gearDto);
+						return resolve();
 					}
+
+					await this.SelectItem(gearDto);
 					resolve();
 				}),
 			);
@@ -897,7 +889,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		if (this.renderSetup) {
 			Object.Destroy(this.renderSetup);
 		}
-		this.ClearItembuttons();
+		this.DestroyItemButtons();
 		this.thumbnailRenderList.clear();
 		this.mainMenu?.avatarView?.backdropHolder?.gameObject.SetActive(true);
 		this.OpenPage();

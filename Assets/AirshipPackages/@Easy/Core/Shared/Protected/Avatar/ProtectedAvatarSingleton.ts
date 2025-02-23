@@ -1,5 +1,6 @@
 import { AuthController } from "@Easy/Core/Client/ProtectedControllers/Auth/AuthController";
 import {
+	GearClothingSubcategory,
 	GearInstanceDto,
 	OutfitCreateDto,
 	OutfitDto,
@@ -83,8 +84,14 @@ export class ProtectedAvatarSingleton {
 				let clothingData = await Protected.Avatar.GetGear();
 				this.Log("Owned clothing count: " + (clothingData?.size() ?? 0));
 				if (clothingData) {
-					this.Log("Owned clothing sample: " + inspect(clothingData[0]));
+					// this.Log("Owned clothing sample: " + inspect(clothingData[0]));
 					this.ownedClothing = clothingData;
+
+					for (let c of clothingData) {
+						if (c.class.gear.airAssets.size() > 0) {
+							print("Found gear with airAssets: " + inspect(c));
+						}
+					}
 				}
 				resolve();
 			}),
@@ -160,7 +167,7 @@ export class ProtectedAvatarSingleton {
 	}
 
 	private Log(message: string) {
-		// print("Protected.Avatar: " + message);
+		print("Protected.Avatar: " + message);
 	}
 
 	public GetHttpUrl(path: string) {
@@ -173,7 +180,6 @@ export class ProtectedAvatarSingleton {
 	}
 
 	public async GetAllOutfits(): Promise<OutfitDto[] | undefined> {
-		this.Log("GetAllOutfits");
 		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits`));
 		if (res.success) {
 			return json.decode(res.data) as OutfitDto[];
@@ -181,7 +187,6 @@ export class ProtectedAvatarSingleton {
 	}
 
 	public async GetEquippedOutfit(): Promise<OutfitDto | undefined> {
-		this.Log("GetEquippedOutfit");
 		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/equipped/self`));
 		if (res.success) {
 			return json.decode<{ outfit: OutfitDto | undefined }>(res.data).outfit;
@@ -193,7 +198,6 @@ export class ProtectedAvatarSingleton {
 	public async GetUserEquippedOutfit(userId: string): Promise<OutfitDto | undefined> {
 		const res = InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/uid/${userId}/equipped`));
 		if (res.success) {
-			this.Log("LOADED OUTFIT: " + res.data);
 			return json.decode<{ outfit: OutfitDto | undefined }>(res.data).outfit;
 		} else {
 			CoreLogger.Error("failed to load users equipped outfit: " + (res.error ?? "Empty Data"));
@@ -201,10 +205,8 @@ export class ProtectedAvatarSingleton {
 	}
 
 	public async GetAvatarOutfit(outfitId: string): Promise<OutfitDto | undefined> {
-		this.Log("GetAvatarOutfit");
 		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/outfit-id/${outfitId}`));
 		if (res.success) {
-			this.Log("LOADED OUTFIT: " + res.data);
 			return json.decode<{ outfit: OutfitDto | undefined }>(res.data).outfit;
 		} else {
 			CoreLogger.Error("failed to load user outfit: " + (res.error ?? "Empty Data"));
@@ -223,7 +225,6 @@ export class ProtectedAvatarSingleton {
 	}
 
 	public async EquipAvatarOutfit(outfitId: string) {
-		this.Log("EquipAvatarOutfit");
 		let res = InternalHttpManager.PostAsync(this.GetHttpUrl(`outfits/outfit-id/${outfitId}/equip`));
 		if (res.success) {
 			this.Log("EQUIPPED OUTFIT: " + res.data);
@@ -243,7 +244,6 @@ export class ProtectedAvatarSingleton {
 	}
 
 	public async CreateDefaultAvatarOutfit(equipped: boolean, outfitId: string, name: string, skinColor: Color) {
-		this.Log("CreateDefaultAvatarOutfit");
 		let accessorUUIDs: string[] = [];
 
 		let ownerId = "";
@@ -313,7 +313,6 @@ export class ProtectedAvatarSingleton {
 		if (imageId === "" || imageId === undefined) {
 			return;
 		}
-		this.Log("Updating item with new image");
 		let res = InternalHttpManager.PatchAsync(
 			this.GetHttpUrl(`accessories/class-id/${classId}`),
 			json.encode({
@@ -329,10 +328,7 @@ export class ProtectedAvatarSingleton {
 	}
 
 	public async UploadImage(resourceId: string, filePath: string, fileSize: number): Promise<string> {
-		this.Log("Requesting image url: " + resourceId);
-
 		let postPath = `${AirshipUrl.ContentService}/images`;
-		this.Log("post path: " + postPath);
 		const res = InternalHttpManager.PostAsync(
 			postPath,
 			json.encode({
@@ -367,6 +363,72 @@ export class ProtectedAvatarSingleton {
 		} else {
 			CoreLogger.Error("Error Gettin item image resource: " + res.error);
 			return "";
+		}
+	}
+
+	public GearClothingSubcategoryToSlot(slot: GearClothingSubcategory): AccessorySlot {
+		switch (slot) {
+			case GearClothingSubcategory.Head:
+				return AccessorySlot.Head;
+			case GearClothingSubcategory.Hair:
+				return AccessorySlot.Hair;
+			case GearClothingSubcategory.Face:
+				return AccessorySlot.Face;
+			case GearClothingSubcategory.Neck:
+				return AccessorySlot.Neck;
+			case GearClothingSubcategory.Torso:
+				return AccessorySlot.Torso;
+			case GearClothingSubcategory.Legs:
+				return AccessorySlot.Legs;
+			case GearClothingSubcategory.Feet:
+				return AccessorySlot.Feet;
+			case GearClothingSubcategory.Backpack:
+				return AccessorySlot.Backpack;
+			case GearClothingSubcategory.Waist:
+				return AccessorySlot.Waist;
+			case GearClothingSubcategory.Hands:
+				return AccessorySlot.Hands;
+			case GearClothingSubcategory.LeftHand:
+				return AccessorySlot.LeftHand;
+			case GearClothingSubcategory.RightHand:
+				return AccessorySlot.RightHand;
+			default:
+				warn("unknown GearClothingSubcategory mapping: " + slot);
+				return AccessorySlot.Root;
+		}
+	}
+
+	public AccessorySlotToClothingSubcategory(slot: AccessorySlot): GearClothingSubcategory {
+		switch (slot) {
+			case AccessorySlot.Root:
+				return GearClothingSubcategory.Head;
+			case AccessorySlot.Hair:
+				return GearClothingSubcategory.Hair;
+			case AccessorySlot.Head:
+				return GearClothingSubcategory.Head;
+			case AccessorySlot.Face:
+				return GearClothingSubcategory.Face;
+			case AccessorySlot.Neck:
+				return GearClothingSubcategory.Neck;
+			case AccessorySlot.Torso:
+				return GearClothingSubcategory.Torso;
+			case AccessorySlot.Legs:
+				return GearClothingSubcategory.Legs;
+			case AccessorySlot.Feet:
+				return GearClothingSubcategory.Feet;
+			case AccessorySlot.Backpack:
+				return GearClothingSubcategory.Backpack;
+			case AccessorySlot.Waist:
+				return GearClothingSubcategory.Waist;
+			case AccessorySlot.Hands:
+				return GearClothingSubcategory.Hands;
+			case AccessorySlot.LeftHand:
+				return GearClothingSubcategory.LeftHand;
+			case AccessorySlot.RightHand:
+				return GearClothingSubcategory.RightHand;
+			default:
+				warn("unknown AccessorySlot mapping: " + slot);
+				return GearClothingSubcategory.Root;
 		}
 	}
 }

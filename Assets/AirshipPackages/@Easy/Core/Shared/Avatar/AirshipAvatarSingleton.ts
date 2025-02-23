@@ -1,6 +1,5 @@
 import { Airship } from "../Airship";
 import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
-import { InternalClothingMeta } from "../Airship/Util/InternalClothingMeta";
 import { Singleton } from "../Flamework";
 import { ColorUtil } from "../Util/ColorUtil";
 /**
@@ -139,15 +138,17 @@ export class AirshipAvatarSingleton {
 		for (let clothingDto of outfit.gear) {
 			promises.push(
 				new Promise((resolve) => {
-					const meta = InternalClothingMeta.get(clothingDto.class.classId);
-					if (!meta) return resolve();
+					if (clothingDto.class.gear.airAssets.size() === 0) return resolve();
 
 					// todo: why are we returning if first person?
 					if (builder.firstPerson) {
 						return resolve();
 					}
 
-					const clothing = PlatformGear.DownloadYielding(clothingDto.class.classId, meta.airId);
+					const clothing = PlatformGear.DownloadYielding(
+						clothingDto.class.classId,
+						clothingDto.class.gear.airAssets[0],
+					);
 					if (clothing) {
 						// print("Downloaded " + clothingDto.class.name + " " + (Time.time - start));
 						if (clothing.accessoryPrefabs && clothing.accessoryPrefabs.size() > 0) {

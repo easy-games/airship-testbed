@@ -39,23 +39,48 @@ export enum GearCategory {
 	Clothing = "Clothing",
 }
 
-// Todo: make this clothing gear subcategory
-export enum GearSubcategory {
-	Shirt = "Shirt",
-	Hat = "Hat",
+export enum GearClothingSubcategory {
+	Root = "Root",
+	Head = "Head",
 	Hair = "Hair",
-	Wrist = "Wrist",
+	Face = "Face",
+	Neck = "Neck",
+	Torso = "Torso",
+	RightHand = "RightHand",
+	LeftHand = "LeftHand",
 	Waist = "Waist",
-	Shoes = "Shoes",
-	ShirtOuter = "ShirtOuter",
-	FullBody = "FullBody",
+	Legs = "Legs",
+	Feet = "Feet",
+	Ears = "Ears",
+	Nose = "Nose",
+	TorsoOuter = "TorsoOuter",
+	TorsoInner = "TorsoInner",
+	Backpack = "Backpack",
+	Hands = "Hands",
+	HandsOuter = "HandsOuter",
+	LeftWrist = "LeftWrist",
+	RightWrist = "RightWrist",
+	LegsOuter = "LegsOuter",
+	LegsInner = "LegsInner",
+	FeetInner = "FeetInner",
+	LeftFoot = "LeftFoot",
+	RightFoot = "RightFoot",
+	LeftLegUpper = "LeftLegUpper",
+	LeftLegLower = "LeftLegLower",
+	RightLegUpper = "RightLegUpper",
+	RightLegLower = "RightLegLower",
+	LeftArmUpper = "LeftArmUpper",
+	LeftArmLower = "LeftArmLower",
+	RightArmUpper = "RightArmUpper",
+	RightArmLower = "RightArmLower",
+	FaceDecal = "FaceDecal",
 }
 
 export interface GearClass extends ItemClass {
 	gear: {
 		airAssets: string[];
 		category: GearCategory | undefined;
-		subcategory: GearSubcategory | undefined;
+		subcategory: GearClothingSubcategory | undefined;
 	};
 }
 
