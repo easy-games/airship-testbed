@@ -65,12 +65,12 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
-  - {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
-  - {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
-  - {fileID: 2100000, guid: 7ce144eff77fd488eb9f5c6c21698233, type: 2}
-  - {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
-  - {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
+  - {fileID: 2100000, guid: 25353a437b28a4465a8b064855c310c4, type: 2}
+  - {fileID: 2100000, guid: 25353a437b28a4465a8b064855c310c4, type: 2}
+  - {fileID: 2100000, guid: 25353a437b28a4465a8b064855c310c4, type: 2}
+  - {fileID: 2100000, guid: 25353a437b28a4465a8b064855c310c4, type: 2}
+  - {fileID: 2100000, guid: 25353a437b28a4465a8b064855c310c4, type: 2}
+  - {fileID: 2100000, guid: 25353a437b28a4465a8b064855c310c4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -177,12 +177,12 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
-  - {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
-  - {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
-  - {fileID: 2100000, guid: 7ce144eff77fd488eb9f5c6c21698233, type: 2}
-  - {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
-  - {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
+  - {fileID: 2100000, guid: 25353a437b28a4465a8b064855c310c4, type: 2}
+  - {fileID: 2100000, guid: 25353a437b28a4465a8b064855c310c4, type: 2}
+  - {fileID: 2100000, guid: 25353a437b28a4465a8b064855c310c4, type: 2}
+  - {fileID: 2100000, guid: 25353a437b28a4465a8b064855c310c4, type: 2}
+  - {fileID: 2100000, guid: 25353a437b28a4465a8b064855c310c4, type: 2}
+  - {fileID: 2100000, guid: 25353a437b28a4465a8b064855c310c4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -236,7 +236,7 @@ GameObject:
   - component: {fileID: 3293952003054000429}
   - component: {fileID: 4563459544018478780}
   m_Layer: 0
-  m_Name: Clothing_Hat_Frog
+  m_Name: FrogHat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -272,8 +272,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b74917b00f1d374c9a7136917a61ddf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serverClassId: 67f241df-d0d7-4ab9-84b1-891ed1e49c8f
-  serverClassIdStaging: d8f7a042-56ae-425e-83bf-d369eae9688a
   accessorySlot: 1
   visibilityMode: 0
   skinnedToCharacter: 0
@@ -281,7 +279,9 @@ MonoBehaviour:
   - {fileID: 4300000, guid: fc9f02f55c1714c85bdabcf626ecafc3, type: 2}
   - {fileID: 4300000, guid: a42afafd19a5e425bafac59c54e2b727, type: 2}
   canMeshCombine: 1
-  bodyMask: 0
+  bodyMask: 1
+  serverClassId: 67f241df-d0d7-4ab9-84b1-891ed1e49c8f
+  serverClassIdStaging: d8f7a042-56ae-425e-83bf-d369eae9688a
 --- !u!205 &4563459544018478780
 LODGroup:
   m_ObjectHideFlags: 0
@@ -374,12 +374,12 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
-  - {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
-  - {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
-  - {fileID: 2100000, guid: 7ce144eff77fd488eb9f5c6c21698233, type: 2}
-  - {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
-  - {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
+  - {fileID: 2100000, guid: 25353a437b28a4465a8b064855c310c4, type: 2}
+  - {fileID: 2100000, guid: 25353a437b28a4465a8b064855c310c4, type: 2}
+  - {fileID: 2100000, guid: 25353a437b28a4465a8b064855c310c4, type: 2}
+  - {fileID: 2100000, guid: 25353a437b28a4465a8b064855c310c4, type: 2}
+  - {fileID: 2100000, guid: 25353a437b28a4465a8b064855c310c4, type: 2}
+  - {fileID: 2100000, guid: 25353a437b28a4465a8b064855c310c4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

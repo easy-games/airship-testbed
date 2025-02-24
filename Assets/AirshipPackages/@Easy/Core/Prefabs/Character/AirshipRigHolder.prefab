@@ -502,14 +502,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b74917b00f1d374c9a7136917a61ddf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serverClassId: febca5e3-78b9-4f45-8907-28d4313d1a88
-  serverClassIdStaging: fba3a580-63dd-4cb6-8601-e8fe6865fe09
   accessorySlot: 9
   visibilityMode: 2
   skinnedToCharacter: 1
   meshLods: []
   canMeshCombine: 1
   bodyMask: 294912
+  serverClassId: febca5e3-78b9-4f45-8907-28d4313d1a88
+  serverClassIdStaging: fba3a580-63dd-4cb6-8601-e8fe6865fe09
 --- !u!1 &3114543442279630557
 GameObject:
   m_ObjectHideFlags: 0
