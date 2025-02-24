@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3987932168783664841}
   - component: {fileID: 6917948673111891309}
   m_Layer: 0
-  m_Name: Jeans Shorts_legs 1
+  m_Name: Jean Shorts 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -82,7 +82,7 @@ SkinnedMeshRenderer:
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
   m_SkinnedMotionVectors: 1
-  m_Mesh: {fileID: 6707945061561167290, guid: b270b681ec1451748a86d72d59a594e7, type: 3}
+  m_Mesh: {fileID: 4300000, guid: 557da88be6621439aa6263ce021800f2, type: 2}
   m_Bones:
   - {fileID: 0}
   - {fileID: 0}

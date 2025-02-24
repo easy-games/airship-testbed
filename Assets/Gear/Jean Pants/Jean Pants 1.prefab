@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2850903096163219873
+--- !u!1 &6882973092073411828
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,24 +8,24 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4227960757020304261}
-  - component: {fileID: 4774612104155725361}
-  - component: {fileID: 3987932168783664841}
-  - component: {fileID: 6917948673111891309}
+  - component: {fileID: 7481266704977078286}
+  - component: {fileID: 3617158241912730823}
+  - component: {fileID: 6365182933768155899}
+  - component: {fileID: 6261813539419311019}
   m_Layer: 0
-  m_Name: Jeans Shorts_legs 2
+  m_Name: Jean Pants 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4227960757020304261
+--- !u!4 &7481266704977078286
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2850903096163219873}
+  m_GameObject: {fileID: 6882973092073411828}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
@@ -34,13 +34,13 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!137 &4774612104155725361
+--- !u!137 &3617158241912730823
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2850903096163219873}
+  m_GameObject: {fileID: 6882973092073411828}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -57,7 +57,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: adb029644a82402409040aaec70d58b2, type: 2}
+  - {fileID: 2100000, guid: ecbfc36b7ee14514cb7cd94e9205847c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -82,7 +82,7 @@ SkinnedMeshRenderer:
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
   m_SkinnedMotionVectors: 1
-  m_Mesh: {fileID: 6707945061561167290, guid: b270b681ec1451748a86d72d59a594e7, type: 3}
+  m_Mesh: {fileID: 4300000, guid: c7d51d8e441444964a2294d83916f801, type: 2}
   m_Bones:
   - {fileID: 0}
   - {fileID: 0}
@@ -110,16 +110,16 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 0}
   m_AABB:
-    m_Center: {x: 0, y: -0.03410576, z: 0.6845479}
-    m_Extent: {x: 0.2789171, y: 0.14869641, z: 0.2768774}
+    m_Center: {x: 0.00000008940697, y: -0.006065473, z: 0.4862477}
+    m_Extent: {x: 0.33051303, y: 0.20480722, z: 0.47559437}
   m_DirtyAABB: 0
---- !u!114 &3987932168783664841
+--- !u!114 &6365182933768155899
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2850903096163219873}
+  m_GameObject: {fileID: 6882973092073411828}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
@@ -128,13 +128,13 @@ MonoBehaviour:
   colorSettings:
   - baseColor: {r: 1, g: 1, b: 1, a: 1}
   addedByEditorScript: 0
---- !u!114 &6917948673111891309
+--- !u!114 &6261813539419311019
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2850903096163219873}
+  m_GameObject: {fileID: 6882973092073411828}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0b74917b00f1d374c9a7136917a61ddf, type: 3}
@@ -144,9 +144,9 @@ MonoBehaviour:
   visibilityMode: 2
   skinnedToCharacter: 1
   meshLods:
-  - {fileID: 4300000, guid: 105da535c48294b1dbf2bba3efcf95a2, type: 2}
-  - {fileID: 4300000, guid: a49cabf2a40d24fc58832490cd2f9afa, type: 2}
+  - {fileID: 4300000, guid: 2ae0ad668977e48caab1b2c6359ea494, type: 2}
+  - {fileID: 4300000, guid: f3e4232cacefb4c1e92155c13835e031, type: 2}
   canMeshCombine: 1
-  bodyMask: 294912
-  serverClassId: fe3b77fa-bfca-487b-98bc-0dfa4f4c8d85
-  serverClassIdStaging: 
+  bodyMask: 77365248
+  serverClassId: ccb9e733-dc2b-4aab-9594-4d219a45d8e2
+  serverClassIdStaging: a2a4094f-94e7-43f4-a759-edb556f362e8
