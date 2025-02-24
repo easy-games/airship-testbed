@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gearList:
   - {fileID: 11400000, guid: b879889d6b8b34c738c5ddd4588a6294, type: 2}
-  airId: 
+  airId: 39386f34-4731-4a98-abc2-8a6fb1b87e8f
