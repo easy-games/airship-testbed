@@ -768,14 +768,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b74917b00f1d374c9a7136917a61ddf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serverClassId: a769f3ac-c03f-40f3-ba60-81b416c30c76
-  serverClassIdStaging: fbfc0590-62c0-4493-a009-37722f3cf09f
   accessorySlot: 1
   visibilityMode: 0
   skinnedToCharacter: 0
   meshLods: []
   canMeshCombine: 1
   bodyMask: 0
+  serverClassId: a769f3ac-c03f-40f3-ba60-81b416c30c76
+  serverClassIdStaging: fbfc0590-62c0-4493-a009-37722f3cf09f
 --- !u!114 &4907743349709968466
 MonoBehaviour:
   m_ObjectHideFlags: 0

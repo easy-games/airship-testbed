@@ -166,7 +166,7 @@ export class ProtectedAvatarSingleton {
 	}
 
 	private Log(message: string) {
-		print("Protected.Avatar: " + message);
+		// print("Protected.Avatar: " + message);
 	}
 
 	public GetHttpUrl(path: string) {

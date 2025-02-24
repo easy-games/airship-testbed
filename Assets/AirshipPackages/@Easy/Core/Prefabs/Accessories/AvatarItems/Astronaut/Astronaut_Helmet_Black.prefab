@@ -141,14 +141,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b74917b00f1d374c9a7136917a61ddf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serverClassId: e38390d3-cdbb-4f9c-aac5-bf96eb001b7d
-  serverClassIdStaging: 
   accessorySlot: 1
   visibilityMode: 0
   skinnedToCharacter: 1
   meshLods: []
   canMeshCombine: 1
   bodyMask: 0
+  serverClassId: e38390d3-cdbb-4f9c-aac5-bf96eb001b7d
+  serverClassIdStaging: 
 --- !u!1001 &184259644913605999
 PrefabInstance:
   m_ObjectHideFlags: 0

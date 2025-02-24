@@ -509,7 +509,13 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private AddItemButton(clothingDto: GearInstanceDto, onClickCallback: () => void) {
 		//let newButton = PoolManager.SpawnObject(this.itemButtonTemplate, this.mainContentHolder);
 		const newButton = Object.Instantiate(this.itemButtonTemplate!, this.mainContentHolder!);
-		this.itemButtonBin.AddEngineEventConnection(CanvasAPI.OnClickEvent(newButton, onClickCallback));
+		this.itemButtonBin.AddEngineEventConnection(
+			CanvasAPI.OnClickEvent(newButton, () => {
+				task.spawn(() => {
+					onClickCallback();
+				});
+			}),
+		);
 
 		const accessoryBtn = newButton.GetAirshipComponent<AvatarAccessoryBtn>()!;
 		accessoryBtn.scrollRedirect.redirectTarget = this.contentScrollRect;

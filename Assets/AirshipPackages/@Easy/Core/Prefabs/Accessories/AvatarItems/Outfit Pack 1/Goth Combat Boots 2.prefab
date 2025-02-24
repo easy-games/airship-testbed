@@ -140,8 +140,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b74917b00f1d374c9a7136917a61ddf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serverClassId: c825a817-5af6-4535-a940-a85960f2d7bc
-  serverClassIdStaging: 
   accessorySlot: 10
   visibilityMode: 2
   skinnedToCharacter: 1
@@ -150,3 +148,5 @@ MonoBehaviour:
   - {fileID: 4300000, guid: 0c2959c90700b4ff1b6053fdea0ac1d9, type: 2}
   canMeshCombine: 1
   bodyMask: 50331648
+  serverClassId: c825a817-5af6-4535-a940-a85960f2d7bc
+  serverClassIdStaging: 
