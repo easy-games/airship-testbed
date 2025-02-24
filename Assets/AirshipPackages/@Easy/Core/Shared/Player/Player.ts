@@ -129,6 +129,34 @@ export class Player {
 	}
 
 	/**
+	 * Wait for a character for this given player
+	 *
+	 * @param timeout The timeout to wait for the character
+	 * @yields Will yield the executing thread if a character does not yet exist on this player
+	 */
+	public WaitForCharacter(): Character;
+	public WaitForCharacter(timeoutSeconds: number): Character | undefined;
+	public WaitForCharacter(timeout?: number): Character | undefined {
+		let character: Character | undefined = this.character;
+
+		if (timeout !== undefined) {
+			let expirationTime = Time.time + timeout;
+			while (!character && Time.time < expirationTime) {
+				character = this.character;
+				task.wait();
+			}
+
+			return character;
+		} else {
+			while (!character) {
+				character = this.onCharacterChanged.Wait();
+			}
+
+			return character;
+		}
+	}
+
+	/**
 	 * Can yield if the player's outfit hasn't finished downloading.
 	 * @param position Spawn position of character
 	 * @param config.lookDirection Initial facing direction of character
