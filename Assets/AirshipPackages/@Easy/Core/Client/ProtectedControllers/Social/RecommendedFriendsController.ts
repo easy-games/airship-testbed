@@ -59,10 +59,10 @@ export class RecommendedFriendsController implements OnStart {
 
 		// Monitor players in game
 		if (Game.IsInGame()) {
-			Protected.protectedPlayers.ObservePlayers((p) => {
+			Protected.ProtectedPlayers.ObservePlayers((p) => {
 				const gameData = Game.WaitForGameData();
 
-				if (Protected.user.localUser?.uid === p.userId) return;
+				if (Protected.User.localUser?.uid === p.userId) return;
 				if (seenThisSession.has(p.userId)) return;
 				// If we're way over max recommendations stop adding new users. Otherwise we'll purge when saving.
 				if (this.recommendedFriends.recommendations.size() > MAX_RECOMMENDED_FRIENDS * 2) return;
@@ -94,7 +94,7 @@ export class RecommendedFriendsController implements OnStart {
 
 		// Monitor party
 		Dependency<MainMenuPartyController>().onPartyUpdated.Connect((newParty) => {
-			const localUid = Protected.user.WaitForLocalUser().uid;
+			const localUid = Protected.User.WaitForLocalUser().uid;
 			const friendsController = Dependency<ProtectedFriendsController>();
 			for (const member of newParty?.members ?? []) {
 				if (member.uid === localUid) continue;
@@ -184,7 +184,7 @@ export class RecommendedFriendsController implements OnStart {
 					};
 				},
 			);
-			
+
 			const steamFriendsWithAirship = Dependency<SteamFriendsProtectedController>().GetSteamFriendsWithAirship();
 			if (steamFriendsWithAirship) {
 				for (const [uid, data] of steamFriendsWithAirship) {
@@ -198,13 +198,13 @@ export class RecommendedFriendsController implements OnStart {
 					this.sortedRecommendations.push({
 						recommendation: rec,
 						uid: uid,
-					})
+					});
 				}
 			}
 
 			const localUserId = Dependency<ProtectedUserController>().localUser?.uid;
 			if (localUserId !== undefined) {
-				this.sortedRecommendations = this.sortedRecommendations.filter(r => {
+				this.sortedRecommendations = this.sortedRecommendations.filter((r) => {
 					return r.uid !== localUserId;
 				});
 			}
@@ -226,7 +226,7 @@ export class RecommendedFriendsController implements OnStart {
 		if (r.context.steamFriend) {
 			return math.huge;
 		}
-		
+
 		// 300,000 means a party encounter will be stronger than a game encounter for a few days (because score is based on lastSeen in seconds)
 		let score = r.context.partyEncounter ? 300_000 : 10_000;
 		score *= r.context.totalRecentEncounters;

@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c4968faf83d4945b20e087dcd456ddd, type: 3}
+  m_Name: BoxBoy - Head
+  m_EditorClassIdentifier: 
+  classId: ffbc21f2-f977-4452-bb98-43064890f0b8
+  accessoryPrefabs:
+  - {fileID: 2898188551610665634, guid: 512f0acf0c6b63748ace88580649e4c3, type: 3}

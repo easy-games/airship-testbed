@@ -45,9 +45,9 @@ export class MainMenuPartyController {
 	 */
 	public IsPartyLeader(): boolean {
 		if (!this.party) return false;
-		if (!Protected.user.localUser) return false;
+		if (!Protected.User.localUser) return false;
 
-		return this.party.leader === Protected.user.localUser.uid && this.party.members.size() > 1;
+		return this.party.leader === Protected.User.localUser.uid && this.party.members.size() > 1;
 	}
 
 	protected OnStart(): void {
@@ -109,7 +109,7 @@ export class MainMenuPartyController {
 		this.SetupReferences();
 
 		task.spawn(() => {
-			Protected.user.WaitForLocalUser();
+			Protected.User.WaitForLocalUser();
 			if (!this.partyUpdateReceived) {
 				const partyString = StateManager.GetString("airship:party");
 				if (partyString) {

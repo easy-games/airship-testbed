@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55587e6da00a44bf9f7d5798297ebf2b, type: 3}
   m_Name: GameConfig
   m_EditorClassIdentifier: 
-  gameId: 66158b436197f84bec646cff
-  startingScene: {fileID: 102900000, guid: d3e23cdc27fa047bdb3d8bdb895816e7, type: 3}
+  gameId: 319a92cb-c8b5-4559-8cff-0d1be7d230f3
+  startingScene: {fileID: 102900000, guid: 79c3e93f2ccdf5e44884e88c44848560, type: 3}
   gameScenes:
   - {fileID: 102900000, guid: 3c9ae368a8ce5be42a0926c8ff129454, type: 3}
   - {fileID: 102900000, guid: 497a63aec7ca045bab13a5e25c5d7bba, type: 3}
@@ -25,11 +25,10 @@ MonoBehaviour:
   - {fileID: 102900000, guid: a084c6e521979490f8d8737f1c807bf8, type: 3}
   - {fileID: 102900000, guid: 79c3e93f2ccdf5e44884e88c44848560, type: 3}
   - {fileID: 102900000, guid: 017f9e0c7f22c50478c482ac322a381a, type: 3}
-  - {fileID: 102900000, guid: d3e23cdc27fa047bdb3d8bdb895816e7, type: 3}
   packages:
   - id: '@Easy/Core'
-    assetVersion: 646
-    codeVersion: 746
+    assetVersion: 174
+    codeVersion: 420
     publishVersionNumber: 
     game: 0
     localSource: 1
@@ -60,8 +59,8 @@ MonoBehaviour:
   - VisuallyHidden
   - IgnoreCollision
   - AvatarEditor
-  - LocalStencilMask
-  - StencilMask
+  - 
+  - 
   - 
   - 
   - 

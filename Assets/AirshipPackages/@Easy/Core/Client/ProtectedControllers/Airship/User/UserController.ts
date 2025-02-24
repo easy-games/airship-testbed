@@ -35,7 +35,7 @@ export class ProtectedUserController {
 	private localUserLoaded = false;
 
 	constructor(private readonly authController: AuthController) {
-		Protected.user = this;
+		Protected.User = this;
 
 		contextbridge.callback<BridgeApiGetUserByUsername>(
 			UserControllerBridgeTopics.GetUserByUsername,

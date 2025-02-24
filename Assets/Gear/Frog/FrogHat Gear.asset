@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c4968faf83d4945b20e087dcd456ddd, type: 3}
+  m_Name: FrogHat Gear
+  m_EditorClassIdentifier: 
+  classId: 67f241df-d0d7-4ab9-84b1-891ed1e49c8f
+  accessoryPrefabs:
+  - {fileID: 3293952003054000429, guid: eda3579bb800288458aac57e6c6ede1e, type: 3}
+  face: {fileID: 0}

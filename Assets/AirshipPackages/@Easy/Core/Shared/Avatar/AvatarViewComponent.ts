@@ -4,10 +4,8 @@ import { Mouse } from "@Easy/Core/Shared/UserInput";
 import { MainMenuSingleton } from "../MainMenu/Singletons/MainMenuSingleton";
 import { Bin } from "../Util/Bin";
 import { CanvasAPI } from "../Util/CanvasAPI";
-import { ColorUtil } from "../Util/ColorUtil";
 import { Layer } from "../Util/Layer";
 import { OnUpdate } from "../Util/Timer";
-import AvatarBackdropComponent from "./AvatarBackdropComponent";
 
 export default class AvatarViewComponent extends AirshipBehaviour {
 	@Header("Templates")
@@ -71,8 +69,8 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 
 	public override Start(): void {
 		this.mainMenuSingleton = Dependency<MainMenuSingleton>();
-		let backdrop = this.backdropHolder?.GetAirshipComponent<AvatarBackdropComponent>();
-		backdrop?.SetSolidColorBackdrop(ColorUtil.HexToColor("#202122"));
+		// let backdrop = this.backdropHolder?.GetAirshipComponent<AvatarBackdropComponent>();
+		// backdrop?.SetSolidColorBackdrop(ColorUtil.HexToColor("#202122"));
 
 		if (this.humanEntityGo) {
 			this.accessoryBuilder = this.humanEntityGo.GetComponent<AccessoryBuilder>()!;

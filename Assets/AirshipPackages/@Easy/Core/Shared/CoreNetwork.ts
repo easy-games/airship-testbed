@@ -1,5 +1,4 @@
 import { OutfitDto } from "./Airship/Types/Outputs/AirshipPlatformInventory";
-import { AccessorySlot } from "./Character/Accessory/AccessorySlot";
 import { CharacterDto } from "./Character/CharacterDto";
 import { InventoryDto } from "./Inventory/Inventory";
 import { ItemStackDto } from "./Inventory/ItemStack";

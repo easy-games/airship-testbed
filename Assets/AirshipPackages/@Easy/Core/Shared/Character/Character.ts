@@ -179,7 +179,7 @@ export default class Character extends AirshipBehaviour {
 			if (player) {
 				this.SetMeshCacheId(`Player:${player.userId}`);
 			}
-			this.LoadUserOutfit(outfitDto);
+			this.LoadOutfit(outfitDto);
 		}
 
 		if (this.movement) {
@@ -197,21 +197,27 @@ export default class Character extends AirshipBehaviour {
 		// this.accessoryBuilder.meshCombiner.cacheId = cacheId ?? "";
 	}
 
-	public LoadUserOutfit(outfitDto: OutfitDto | undefined) {
+	public LoadOutfit(outfitDto: OutfitDto | undefined) {
 		if (!this.accessoryBuilder) {
 			warn("Cannot load outfit without Accessory Builder set on Character.");
 			return;
 		}
 
 		this.outfitDto = outfitDto;
-		//print("using outfit: " + outfitDto?.name);
+		// print("Character.LoadOutfit " + inspect(outfitDto));
 		if (Game.IsClient() && outfitDto && this.autoLoadAvatarOutfit) {
-			Airship.Avatar.LoadUserOutfitDto(outfitDto, this.accessoryBuilder, {
-				removeOldClothingAccessories: true,
-			});
-			if (this.IsLocalCharacter() && Airship.Characters.viewmodel) {
-				Airship.Avatar.LoadUserOutfitDto(outfitDto, Airship.Characters.viewmodel.accessoryBuilder, {
+			task.spawn(() => {
+				Airship.Avatar.LoadOutfit(this.accessoryBuilder, outfitDto, {
 					removeOldClothingAccessories: true,
+				});
+			});
+
+			// Viewmodel
+			if (this.IsLocalCharacter() && Airship.Characters.viewmodel) {
+				task.spawn(() => {
+					Airship.Avatar.LoadOutfit(Airship.Characters.viewmodel!.accessoryBuilder, outfitDto, {
+						removeOldClothingAccessories: true,
+					});
 				});
 			}
 		}

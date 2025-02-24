@@ -14,7 +14,7 @@ export class ProtectedPlayersSingleton {
 	public players: ProtectedPlayer[] = [];
 
 	constructor() {
-		Protected.protectedPlayers = this;
+		Protected.ProtectedPlayers = this;
 
 		contextbridge.callback("Players:OnPlayerJoined", (from, player: BridgedPlayer) => {
 			const protectedPlayer = new ProtectedPlayer(

@@ -126,7 +126,7 @@ export class AirshipCharactersSingleton {
 				}
 
 				if (outfitDto) {
-					character.LoadUserOutfit(outfitDto);
+					character.LoadOutfit(outfitDto);
 				}
 			});
 		}
@@ -223,11 +223,11 @@ export class AirshipCharactersSingleton {
 					accessoryTemplates = [...Airship.Inventory.GetAccessoriesForItemType(itemDef.itemType)];
 				}
 
-				character.accessoryBuilder?.RemoveAccessorySlot(AccessorySlot.LeftHand, false);
-				character.accessoryBuilder?.RemoveAccessorySlot(AccessorySlot.RightHand, false);
+				character.accessoryBuilder?.RemoveBySlot(AccessorySlot.LeftHand);
+				character.accessoryBuilder?.RemoveBySlot(AccessorySlot.RightHand);
 				if (viewmodelAccessoryBuilder) {
-					viewmodelAccessoryBuilder.RemoveAccessorySlot(AccessorySlot.LeftHand, false);
-					viewmodelAccessoryBuilder.RemoveAccessorySlot(AccessorySlot.RightHand, false);
+					viewmodelAccessoryBuilder.RemoveBySlot(AccessorySlot.LeftHand);
+					viewmodelAccessoryBuilder.RemoveBySlot(AccessorySlot.RightHand);
 				}
 
 				// const firstPerson = this.character.animator.IsFirstPerson();
@@ -236,9 +236,9 @@ export class AirshipCharactersSingleton {
 				// this.activeAccessoriesWorldmodel.clear();
 				// this.activeAccessoriesViewmodel.clear();
 				for (const accessoryTemplate of accessoryTemplates) {
-					character.accessoryBuilder?.AddSingleAccessory(accessoryTemplate, false);
+					character.accessoryBuilder?.Add(accessoryTemplate);
 					if (viewmodelAccessoryBuilder) {
-						viewmodelAccessoryBuilder.AddSingleAccessory(accessoryTemplate, false);
+						viewmodelAccessoryBuilder.Add(accessoryTemplate);
 					}
 
 					//Load the animator for the held item if one exists
@@ -361,10 +361,6 @@ export class AirshipCharactersSingleton {
 					"Failed to find player when spawning character. ownerConnectionId=" + dto.ownerConnectionId,
 				);
 				characterNetworkObj.gameObject.name = "Character_" + player.username;
-			}
-			if (player && Game.IsEditor() && !Game.IsHosting() && character.accessoryBuilder) {
-				// Hack to load your own outfit in dedicated mode
-				Airship.Avatar.LoadOutfitFromLocalUser(character.accessoryBuilder);
 			}
 			character.Init(player, dto.id, dto.outfitDto, dto.displayName);
 			Airship.Characters.RegisterCharacter(character);

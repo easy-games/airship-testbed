@@ -43,7 +43,7 @@ export default class PlayerList extends AirshipBehaviour {
 		this.content.gameObject.ClearChildren();
 
 		let i = 0;
-		for (let player of Protected.protectedPlayers.players) {
+		for (let player of Protected.ProtectedPlayers.players) {
 			const go = Object.Instantiate(this.playerEntryPrefab, this.content);
 			const entry = go.GetAirshipComponent<PlayerEntry>()!;
 

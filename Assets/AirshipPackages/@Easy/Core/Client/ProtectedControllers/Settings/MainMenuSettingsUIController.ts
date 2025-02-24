@@ -7,7 +7,7 @@ export class MainMenuSettingsUIController {
 	constructor(private readonly mainMenuController: MainMenuController) {}
 
 	protected OnStart(): void {
-		Protected.settings.WaitForSettingsLoaded().then(() => {
+		Protected.Settings.WaitForSettingsLoaded().then(() => {
 			this.Setup();
 		});
 	}

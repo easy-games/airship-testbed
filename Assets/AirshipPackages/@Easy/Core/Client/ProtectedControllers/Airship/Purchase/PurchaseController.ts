@@ -20,7 +20,7 @@ export class ProtectedPurchaseController {
 		contextbridge.callback<ClientBridgeApiRequestPurchase>(
 			PurchaseControllerBridgeTopics.RequestPurchase,
 			(_, productId, quantity, userId) => {
-				let targetUser: PublicUser | undefined = Protected.user.WaitForLocalUser(); // This shouldn't be undefined but it is
+				let targetUser: PublicUser | undefined = Protected.User.WaitForLocalUser(); // This shouldn't be undefined but it is
 				if (userId !== targetUser?.uid) {
 					targetUser = Dependency<ProtectedUserController>().GetUserById(userId).expect();
 				}

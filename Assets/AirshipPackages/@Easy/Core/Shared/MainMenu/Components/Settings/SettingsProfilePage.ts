@@ -30,11 +30,11 @@ export default class SettingsProfilePage extends AirshipBehaviour {
 	private bin = new Bin();
 
 	override Start(): void {
-		if (Protected.user.localUser) {
-			this.usernameLabel.text = Protected.user.localUser.username;
+		if (Protected.User.localUser) {
+			this.usernameLabel.text = Protected.User.localUser.username;
 		}
 		this.bin.Add(
-			Protected.user.onLocalUserUpdated.Connect((user) => {
+			Protected.User.onLocalUserUpdated.Connect((user) => {
 				this.usernameLabel.text = user.username;
 			}),
 		);
@@ -68,7 +68,7 @@ export default class SettingsProfilePage extends AirshipBehaviour {
 					}
 					if (result) {
 						Airship.Players.ClearProfilePictureCache(Game.localPlayer.userId);
-						Protected.user.FetchLocalUser();
+						Protected.User.FetchLocalUser();
 						await this.UpdateProfilePicturePreviews(false);
 					}
 					this.SetProfilePictureLoading(false);
@@ -87,7 +87,7 @@ export default class SettingsProfilePage extends AirshipBehaviour {
 					);
 					if (res.success) {
 						Airship.Players.ClearProfilePictureCache(Game.localPlayer.userId);
-						Protected.user.localUser!.profileImageId = undefined;
+						Protected.User.localUser!.profileImageId = undefined;
 						this.UpdateProfilePicturePreviews(false);
 					} else {
 						Debug.LogError(res.error);

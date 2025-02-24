@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c4968faf83d4945b20e087dcd456ddd, type: 3}
+  m_Name: BoxBoy - Shoes
+  m_EditorClassIdentifier: 
+  classId: b84b86d3-b11c-4b6e-b245-f202f33f06da
+  accessoryPrefabs:
+  - {fileID: 9024006274187796229, guid: 89d0a1892651f584f93a218f57a31cd5, type: 3}

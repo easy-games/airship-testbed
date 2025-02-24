@@ -99,10 +99,10 @@ export default class CharacterRendering extends AirshipBehaviour {
 		this.propertyBlock = new MaterialPropertyBlock();
 
 		this.bin.Add(
-			this.character.accessoryBuilder.OnAccessoryAdded.Connect((willCombine, accessories) => {
-				if (willCombine) {
-					return;
-				}
+			this.character.accessoryBuilder.OnAccessoryAdded.Connect((accessories) => {
+				// if (willCombine) {
+				// 	return;
+				// }
 				const useWallRenders = this.IsUsingWallMat();
 				const useAlpha = this.IsUsingAlpha();
 				for (let i = 0; i < accessories.size(); i++) {

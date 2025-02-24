@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c4968faf83d4945b20e087dcd456ddd, type: 3}
+  m_Name: Jean Pants 2 Gear
+  m_EditorClassIdentifier: 
+  classId: b713b180-5f68-4bc9-97ad-08b43a7f36fd
+  accessoryPrefabs:
+  - {fileID: 6261813539419311019, guid: a6c0150156e2e004fa9238ded96d7ee1, type: 3}
+  face: {fileID: 0}

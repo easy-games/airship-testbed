@@ -23,7 +23,7 @@ export default class SettingsSidebar extends AirshipBehaviour {
 
 	private SetupGameTab(): void {
 		const gameTabBtn = this.tabBtns[0];
-		if (Protected.settings.gameSettings.size() === 0) {
+		if (Protected.Settings.gameSettings.size() === 0) {
 			// no custom game settings, so we disable the tab.
 			this.hasGameTab = false;
 			gameTabBtn.gameObject.SetActive(false);

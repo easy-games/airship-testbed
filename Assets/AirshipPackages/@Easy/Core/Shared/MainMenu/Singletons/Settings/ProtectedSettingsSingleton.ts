@@ -56,7 +56,7 @@ export class ProtectedSettingsSingleton {
 	};
 
 	constructor() {
-		Protected.settings = this;
+		Protected.Settings = this;
 
 		this.data = defaultData;
 
