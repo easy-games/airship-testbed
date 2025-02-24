@@ -324,8 +324,8 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ugui": {
-      "version": "3.0.0",
-      "depth": 1,
+      "version": "2.0.0",
+      "depth": 0,
       "source": "builtin",
       "dependencies": {
         "com.unity.modules.ui": "1.0.0",

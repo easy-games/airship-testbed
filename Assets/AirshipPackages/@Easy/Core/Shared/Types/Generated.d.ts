@@ -48087,7 +48087,7 @@ interface StateSnapshotConstructor {
 }
 declare const StateSnapshot: StateSnapshotConstructor;
     
-interface BasicCharacterMovementState extends StateSnapshot {
+interface CharacterMovementState extends StateSnapshot {
     position: Vector3;
     velocity: Vector3;
     impulseVelocity: Vector3;
@@ -48115,21 +48115,21 @@ interface BasicCharacterMovementState extends StateSnapshot {
 
 
     CompareWithMargin(margin: number, snapshot: StateSnapshot): boolean;
-    CopyFrom(copyState: BasicCharacterMovementState): void;
+    CopyFrom(copyState: CharacterMovementState): void;
     ToString(): string;
 
 
 }
     
-interface BasicCharacterMovementStateConstructor {
+interface CharacterMovementStateConstructor {
 
 
-    new(): BasicCharacterMovementState;
+    new(): CharacterMovementState;
 
 
 
 }
-declare const BasicCharacterMovementState: BasicCharacterMovementStateConstructor;
+declare const CharacterMovementState: CharacterMovementStateConstructor;
     
 interface InputCommand {
     commandNumber: number;
@@ -48151,7 +48151,7 @@ interface InputCommandConstructor {
 }
 declare const InputCommand: InputCommandConstructor;
     
-interface BasicCharacterInputData extends InputCommand {
+interface CharacterInputData extends InputCommand {
     moveDir: Vector3;
     jump: boolean;
     crouch: boolean;
@@ -48165,17 +48165,17 @@ interface BasicCharacterInputData extends InputCommand {
 
 }
     
-interface BasicCharacterInputDataConstructor {
+interface CharacterInputDataConstructor {
 
 
-    new(): BasicCharacterInputData;
+    new(): CharacterInputData;
 
 
 
 }
-declare const BasicCharacterInputData: BasicCharacterInputDataConstructor;
+declare const CharacterInputData: CharacterInputDataConstructor;
     
-interface BasicCharacterMovementSettings extends MonoBehaviour {
+interface CharacterMovementSettings extends MonoBehaviour {
     characterHeight: number;
     characterRadius: number;
     colliderGroundOffset: number;
@@ -48229,17 +48229,17 @@ interface BasicCharacterMovementSettings extends MonoBehaviour {
 
 }
     
-interface BasicCharacterMovementSettingsConstructor {
+interface CharacterMovementSettingsConstructor {
 
 
-    new(): BasicCharacterMovementSettings;
+    new(): CharacterMovementSettings;
 
 
 
 }
-declare const BasicCharacterMovementSettings: BasicCharacterMovementSettingsConstructor;
+declare const CharacterMovementSettings: CharacterMovementSettingsConstructor;
     
-interface BasicCharacterAnimationSyncData {
+interface CharacterAnimationSyncData {
     state: BasicCharacterState;
     grounded: boolean;
     sprinting: boolean;
@@ -48256,15 +48256,15 @@ interface BasicCharacterAnimationSyncData {
 
 }
     
-interface BasicCharacterAnimationSyncDataConstructor {
+interface CharacterAnimationSyncDataConstructor {
 
 
-    new(): BasicCharacterAnimationSyncData;
+    new(): CharacterAnimationSyncData;
 
 
 
 }
-declare const BasicCharacterAnimationSyncData: BasicCharacterAnimationSyncDataConstructor;
+declare const CharacterAnimationSyncData: CharacterAnimationSyncDataConstructor;
     
 interface AirshipSteamFriendInfo {
     playingAirship: boolean;

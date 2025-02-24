@@ -681,7 +681,7 @@ MonoBehaviour:
       modified: 1
     - name: movement
       type: object
-      objectType: BasicCharacterMovement
+      objectType: CharacterMovement
       items:
         type: 
         objectType: 
@@ -1216,7 +1216,7 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  movementSystem: {fileID: 7877576865563315073}
+  stateSystem: {fileID: 7877576865563315073}
   maxServerCommandCatchup: 1
   maxServerCommandPrediction: 1
   serverAuth: 0

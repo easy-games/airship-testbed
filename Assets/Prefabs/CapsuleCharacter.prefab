@@ -278,7 +278,7 @@ MonoBehaviour:
     properties:
     - name: movement
       type: object
-      objectType: BasicCharacterMovement
+      objectType: CharacterMovement
       items:
         type: 
         objectType: 
@@ -297,7 +297,7 @@ MonoBehaviour:
       modified: 0
     - name: animationHelper
       type: object
-      objectType: BasicCharacterAnimationHelper
+      objectType: CharacterAnimationHelper
       items:
         type: 
         objectType: 

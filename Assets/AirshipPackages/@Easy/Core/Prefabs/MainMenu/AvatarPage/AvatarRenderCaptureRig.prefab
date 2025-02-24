@@ -1500,6 +1500,10 @@ PrefabInstance:
       propertyPath: headColor
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 4703897599598295703, guid: 6354d1c2926319242ba9081c0c3dd934, type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 4814564589446148080, guid: 6354d1c2926319242ba9081c0c3dd934, type: 3}
       propertyPath: m_Layer
       value: 10

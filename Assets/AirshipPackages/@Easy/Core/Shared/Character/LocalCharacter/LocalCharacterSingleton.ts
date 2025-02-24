@@ -12,7 +12,7 @@ import { LocalCharacterInputSignal } from "./LocalCharacterInputSignal";
 export class LocalCharacterSingleton {
 	public readonly stateChanged = new Signal<[newState: CharacterState]>();
 
-	private characterMovement: BasicCharacterMovement | undefined;
+	private characterMovement: CharacterMovement | undefined;
 	private screenshot: CameraScreenshotRecorder | undefined;
 	public input: CharacterInput | undefined;
 	private prevState: CharacterState = CharacterState.Idle;
@@ -61,7 +61,7 @@ export class LocalCharacterSingleton {
 
 			const bin = new Bin();
 
-			this.characterMovement = character.gameObject.GetComponent<BasicCharacterMovement>()!;
+			this.characterMovement = character.gameObject.GetComponent<CharacterMovement>()!;
 			this.input = new CharacterInput(character);
 
 			this.screenshot = character.gameObject.AddComponent<CameraScreenshotRecorder>();

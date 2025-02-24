@@ -137,6 +137,7 @@ export class AirshipAvatarSingleton {
 		if (options.removeOldClothingAccessories) {
 			builder.RemoveClothingAccessories(false);
 		}
+		if (outfit.accessories === undefined) return;
 		outfit.accessories.forEach((acc) => {
 			const accComponentTemplate = AvatarCollectionManager.instance.GetAccessoryFromClassId(acc.class.classId);
 			if (accComponentTemplate) {

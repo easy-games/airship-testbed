@@ -106,11 +106,11 @@ interface MoveModifier {
 	blockJump: boolean;
 }
 
-interface BasicCharacterMovement extends Component {
+interface CharacterMovement extends Component {
 	OnStateChanged(callback: (state: CharacterState) => void): EngineEventConnection;
 	OnSetCustomData(callback: () => void): EngineEventConnection;
-	OnBeginMove(callback: (stateData: BasicCharacterMovementState, isReplay: boolean) => void): EngineEventConnection;
-	OnEndMove(callback: (stateData: BasicCharacterMovementState, isReplay: boolean) => void): EngineEventConnection;
+	OnBeginMove(callback: (stateData: CharacterMovementState, isReplay: boolean) => void): EngineEventConnection;
+	OnEndMove(callback: (stateData: CharacterMovementState, isReplay: boolean) => void): EngineEventConnection;
 	OnDispatchCustomData(callback: (tick: number, customData: BinaryBlob) => void): EngineEventConnection;
 	OnImpactWithGround(callback: (velocity: Vector3, hitInfo: RaycastHit) => void): EngineEventConnection;
 	OnAdjustMove(callback: (modifier: MoveModifier) => void): EngineEventConnection;
@@ -158,13 +158,13 @@ interface BasicCharacterMovement extends Component {
 	airshipTransform: Transform; //The transform controlled by the movement script
 	graphicTransform: Transform; //A transform we can animate
 	slopeVisualizer: Transform; //A Transform that rotates to match the slope you are standing on
-	movementSettings: BasicCharacterMovementSettings;
+	movementSettings: CharacterMovementSettings;
 	animationHelper: CharacterAnimationHelper;
 	mainCollider: BoxCollider;
 
 	// Public Getters Private Setters
-	currentMoveState: BasicCharacterMovementState;
-	currentAnimState: BasicCharacterAnimationSyncData;
+	currentMoveState: CharacterMovementState;
+	currentAnimState: CharacterAnimationSyncData;
 	currentCharacterHeight: number;
 	standingCharacterHeight: number;
 	characterRadius: number;
@@ -603,7 +603,7 @@ interface CharacterAnimationHelper extends Component {
 	SetFirstPerson(firstPerson: boolean): void;
 	SetRootMovementLayer(itemInHand: boolean): void;
 	ClearStatesOnNonRootLayers(): void;
-	SetState(newState: BasicCharacterStateData);
+	SetState(newState: CharacterStateData);
 	SetVelocity(vel: Vector3);
 	SetGrounded(grounded: boolean);
 	GetPlaybackSpeed(): number;

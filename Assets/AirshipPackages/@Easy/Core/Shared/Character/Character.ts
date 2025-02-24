@@ -33,7 +33,7 @@ export default class Character extends AirshipBehaviour {
 	public networkIdentity!: NetworkIdentity;
 
 	@Header("Optional References")
-	public movement: BasicCharacterMovement;
+	public movement: CharacterMovement;
 	public animator: Animator;
 	public animationHelper!: CharacterAnimationHelper;
 	public accessoryBuilder: AccessoryBuilder;
@@ -76,7 +76,7 @@ export default class Character extends AirshipBehaviour {
 	 * Key Value pairs created using AddCustomMoveData will fire here during movement ticks that use them
 	 * Map<id, dataBlob>, inputData, isReplay
 	 */
-	public OnUseCustomMoveData = new Signal<[Map<string, unknown>, BasicCharacterMovementState, boolean]>();
+	public OnUseCustomMoveData = new Signal<[Map<string, unknown>, CharacterMovementState, boolean]>();
 
 	public Awake(): void {
 		this.inventory = this.gameObject.GetAirshipComponent<Inventory>()!;
@@ -238,7 +238,7 @@ export default class Character extends AirshipBehaviour {
 		this.movement?.SetCustomData(new BinaryBlob(customDataQueue));
 	}
 
-	private BeginMove(stateData: BasicCharacterMovementState, isReplay: boolean) {
+	private BeginMove(stateData: CharacterMovementState, isReplay: boolean) {
 		//Decode binary block into usable key value array
 		const allData = stateData.customData
 			? (stateData.customData.Decode() as { key: string; value: unknown }[])

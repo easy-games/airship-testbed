@@ -13,6 +13,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -1624083086148811293, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
+      propertyPath: m_metadata.properties.Array.data[1].objectType
+      value: CharacterMovement
+      objectReference: {fileID: 0}
+    - target: {fileID: -1624083086148811293, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       propertyPath: m_metadata.properties.Array.data[1].serializedObject
       value: 
       objectReference: {fileID: 6862533059437264041}

@@ -9,7 +9,7 @@ import { LocalCharacterSingleton } from "./LocalCharacterSingleton";
 
 export class CharacterInput {
 	private readonly bin = new Bin();
-	private readonly movement?: BasicCharacterMovement;
+	private readonly movement?: CharacterMovement;
 	private disablers = new Set<number>();
 	private disablerCounter = 1;
 

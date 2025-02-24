@@ -13,7 +13,7 @@ export default class VisualGraphTransform extends AirshipBehaviour {
 			this.graph = VisualGraphManager.ManagerAddGraph(this.graphName ?? this.gameObject.name + "_T");
 		}
 		if (this.useMovementTransform) {
-			let movement = this.gameObject.GetComponent<BasicCharacterMovement>();
+			let movement = this.gameObject.GetComponent<CharacterMovement>();
 			if (movement) {
 				this.bin.AddEngineEventConnection(
 					movement.OnEndMove(() => {
