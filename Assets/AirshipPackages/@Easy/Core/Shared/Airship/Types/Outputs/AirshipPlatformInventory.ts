@@ -9,7 +9,7 @@ export const enum ResourceType {
 	ORGANIZATION = "ORGANIZATION",
 }
 
-export interface ItemClass {
+export type ItemClass = {
 	/** The type of resource that owns this item class */
 	resourceType: ResourceType;
 	/** Either the game ID or the organization ID depending on the resource type */
@@ -33,10 +33,11 @@ export interface ItemClass {
 	marketable: {
 		permitted: boolean;
 	};
-}
+};
 
 export enum GearCategory {
 	Clothing = "Clothing",
+	FaceDecal = "FaceDecal",
 }
 
 export enum GearClothingSubcategory {
@@ -73,16 +74,25 @@ export enum GearClothingSubcategory {
 	LeftArmLower = "LeftArmLower",
 	RightArmUpper = "RightArmUpper",
 	RightArmLower = "RightArmLower",
-	FaceDecal = "FaceDecal",
 }
 
-export interface GearClass extends ItemClass {
-	gear: {
-		airAssets: string[];
-		category: GearCategory | undefined;
-		subcategory: GearClothingSubcategory | undefined;
-	};
-}
+export type GearClass = ItemClass &
+	(
+		| {
+				gear: {
+					airAssets: string[];
+					category: GearCategory.Clothing;
+					subcategory: GearClothingSubcategory;
+				};
+		  }
+		| {
+				gear: {
+					airAssets: string[];
+					category: GearCategory.FaceDecal;
+					subcategory: undefined;
+				};
+		  }
+	);
 
 export interface ProfilePictureClass extends ItemClass {
 	profilePicture: {

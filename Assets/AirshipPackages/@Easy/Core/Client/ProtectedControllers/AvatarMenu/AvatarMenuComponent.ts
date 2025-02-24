@@ -1,4 +1,8 @@
-import { GearInstanceDto, OutfitDto } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipPlatformInventory";
+import {
+	GearCategory,
+	GearInstanceDto,
+	OutfitDto,
+} from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipPlatformInventory";
 import AvatarViewComponent from "@Easy/Core/Shared/Avatar/AvatarViewComponent";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
@@ -418,6 +422,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		//Accessories
 		let validClothingItems = Protected.Avatar.ownedClothing.filter(
 			(c) =>
+				c.class.gear.category === GearCategory.Clothing &&
 				c.class.gear.subcategory !== undefined &&
 				Protected.Avatar.GearClothingSubcategoryToSlot(c.class.gear.subcategory) === slot,
 		);
@@ -444,7 +449,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	private DisplayFaceItems() {
 		let faceItems = Protected.Avatar.ownedClothing.filter((clothing) => {
-			return clothing.class.gear.subcategory && clothing.class.gear.subcategory === "FaceDecal";
+			return clothing.class.gear.category === GearCategory.FaceDecal;
 		});
 		if (faceItems) {
 			faceItems.forEach((clothingDto) => {
@@ -718,9 +723,9 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		for (let gearDto of this.viewedOutfit.gear) {
 			promises.push(
 				new Promise(async (resolve) => {
-					if (gearDto.class.gear.airAssets.size() === 0 || !gearDto.class.gear.subcategory) return resolve();
+					if (gearDto.class.gear.airAssets.size() === 0) return resolve();
 
-					if (gearDto.class.gear.subcategory === "FaceDecal") {
+					if (gearDto.class.gear.category === GearCategory.FaceDecal) {
 						await this.SelectFaceItem(gearDto);
 						return resolve();
 					}
