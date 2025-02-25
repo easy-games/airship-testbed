@@ -641,6 +641,7 @@ interface CharacterAnimationHelper extends Component {
 	animator: Animator;
 	animationEvents?: AnimationEventListener;
 	isSkidding: boolean;
+	skiddingSpeed: number;
 	SetForceLookForward(forceLookForward: boolean): void;
 	SetFirstPerson(firstPerson: boolean): void;
 	SetRootMovementLayer(itemInHand: boolean): void;
