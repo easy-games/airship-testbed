@@ -173,6 +173,11 @@ export class AudioManager {
 	}
 
 	public static PlayClipGlobal(audioResource: AudioResource, config?: PlaySoundConfig): AudioSource | undefined {
+		if (!audioResource) {
+			warn("Cannot play sound: AudioResource is undefined.");
+			return undefined;
+		}
+		
 		const audioSource = this.GetAudioSource(Vector3.zero, config?.audioSourceTemplate);
 		const providedAudioSource = config?.audioSourceTemplate !== undefined;
 
@@ -181,10 +186,6 @@ export class AudioManager {
 		if (config?.pitch !== undefined || !providedAudioSource) audioSource.pitch = config?.pitch ?? 1;
 		if (config?.volumeScale !== undefined || !providedAudioSource) audioSource.volume = config?.volumeScale ?? 1;
 		if (config?.mixerGroup !== undefined || !providedAudioSource) audioSource.outputAudioMixerGroup = config?.mixerGroup!;
-		if (!audioResource) {
-			warn("Trying to play unidentified clip: " + audioResource);
-			return undefined;
-		}
 
 		audioSource.resource = audioResource;
 		audioSource.Play();
@@ -234,15 +235,16 @@ export class AudioManager {
 		position: Vector3,
 		config?: PlaySoundConfig,
 	): AudioSource | undefined {
+		if (!audioResource) {
+			warn("Cannot play sound: AudioResource is undefined.");
+			return undefined;
+		}
+
 		const audioSource = this.GetAudioSource(position, config?.audioSourceTemplate);
 		const providedAudioSource = config?.audioSourceTemplate !== undefined;
 		audioSource.spatialBlend = 1;
 
 		if (config?.loop !== undefined || !providedAudioSource) audioSource.loop = config?.loop ?? false;
-		if (!audioResource) {
-			warn("Trying to play unidentified clip");
-			return undefined;
-		}
 		if (config?.rollOffMode !== undefined || !providedAudioSource)
 			audioSource.rolloffMode = config?.rollOffMode ?? AudioRolloffMode.Logarithmic;
 		if (config?.maxDistance !== undefined || !providedAudioSource)
