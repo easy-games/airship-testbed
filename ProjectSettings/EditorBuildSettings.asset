@@ -21,6 +21,9 @@ EditorBuildSettings:
     path: Packages/gg.easy.airship/Runtime/Scenes/AirshipUpdateApp.unity
     guid: 8efa5826c45cd4f45a9df7196e968b2d
   - enabled: 1
+    path: Assets/Scenes/V2ClientPrediction.unity
+    guid: d3e23cdc27fa047bdb3d8bdb895816e7
+  - enabled: 1
     path: Assets/Scenes/MovementMods.unity
     guid: 3c9ae368a8ce5be42a0926c8ff129454
   - enabled: 1

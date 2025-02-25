@@ -3668,12 +3668,17 @@ declare const enum LoadingStatus {
     Loading = 1,
     Loaded = 2,
 }
-declare const enum BasicCharacterState {
+declare const enum CharacterState {
     Idle = 0,
     Running = 1,
     Airborne = 2,
     Sprinting = 3,
     Crouching = 4,
+}
+declare const enum AccessoryAddMode {
+    ReplaceAll = 0,
+    Replace = 1,
+    AddIfNone = 2,
 }
 
     
@@ -10104,8 +10109,7 @@ interface Physics2DConstructor {
 }
 declare const Physics2D: Physics2DConstructor;
     
-
-
+    
 interface Coroutine extends YieldInstruction {
 
 
@@ -10114,7 +10118,6 @@ interface Coroutine extends YieldInstruction {
 
 }
     
-
     
 interface Debug {
 
@@ -38812,14 +38815,13 @@ interface AccessoryOutfit extends ScriptableObject {
 }
     
 interface AccessoryComponent extends MonoBehaviour {
-    serverClassId: string;
-    serverClassIdStaging: string;
     accessorySlot: AccessorySlot;
     visibilityMode: VisibilityMode;
     skinnedToCharacter: boolean;
     meshLods: Readonly<Mesh[]>;
-    matColors: Readonly<MaterialColorURP[]>;
     bodyMask: number;
+    serverClassId: string;
+    serverClassIdStaging: string;
     localPosition: Vector3;
     localRotation: Quaternion;
     localScale: Vector3;
@@ -39249,6 +39251,7 @@ interface AirshipPlatformUtil {
     
 interface AirshipPlatformUtilConstructor {
     livePlatforms: Readonly<number[]>;
+    betaPlatforms: Readonly<number[]>;
 
 
     new(): AirshipPlatformUtil;
@@ -39257,6 +39260,7 @@ interface AirshipPlatformUtilConstructor {
     FromBuildTarget(buildTarget: BuildTarget): AirshipPlatform;
     FromRuntimePlatform(runtimePlatform: RuntimePlatform): AirshipPlatform;
     GetLocalPlatform(): AirshipPlatform;
+    GetStringName(platform: AirshipPlatform): string;
     IsDeviceSimulator(): boolean;
     ToBuildTarget(platform: AirshipPlatform): BuildTarget;
 
@@ -45928,32 +45932,6 @@ interface FixedJointConstructor {
 }
 declare const FixedJoint: FixedJointConstructor;
     
-interface MoveInputData {
-    moveDir: Vector3;
-    jump: boolean;
-    crouch: boolean;
-    sprint: boolean;
-    lookVector: Vector3;
-    customData: BinaryBlob;
-
-
-
-    Equals(other: MoveInputData): boolean;
-    GetHashCode(): number;
-
-
-}
-    
-interface MoveInputDataConstructor {
-
-
-    new(moveDir: Vector3, jump: boolean, crouch: boolean, sprint: boolean, lookVector: Vector3, customData: BinaryBlob): MoveInputData;
-
-
-
-}
-declare const MoveInputData: MoveInputDataConstructor;
-    
 interface GridLayout extends Behaviour {
     /**
      * The size of each cell in the layout.
@@ -47854,29 +47832,6 @@ interface VoxelWorldConstructor {
 }
 declare const VoxelWorld: VoxelWorldConstructor;
     
-interface AccessorySkin extends ScriptableObject {
-    skinTextureDiffuse: Texture2D;
-    skinTextureNormal: Texture2D;
-    skinTextureORM: Texture2D;
-    faceTextureDiffuse: Texture2D;
-
-
-
-    ToString(): string;
-
-
-}
-    
-interface AccessorySkinConstructor {
-
-
-    new(): AccessorySkin;
-
-
-
-}
-declare const AccessorySkin: AccessorySkinConstructor;
-    
 interface ActiveAccessory {
     AccessoryComponent: AccessoryComponent;
     lodLevel: number;
@@ -47975,8 +47930,8 @@ interface CharacterMovementState extends StateSnapshot {
     prevStepUp: boolean;
     isGrounded: boolean;
     animGrounded: boolean;
-    state: BasicCharacterState;
-    prevState: BasicCharacterState;
+    state: CharacterState;
+    prevState: CharacterState;
     timeSinceBecameGrounded: number;
     timeSinceWasGrounded: number;
     timeSinceJump: number;
@@ -48004,7 +47959,6 @@ declare const CharacterMovementState: CharacterMovementStateConstructor;
     
 interface InputCommand {
     commandNumber: number;
-    time: number;
 
 
 
@@ -48032,6 +47986,7 @@ interface CharacterInputData extends InputCommand {
 
 
 
+    ToString(): string;
 
 
 }
@@ -48111,7 +48066,7 @@ interface CharacterMovementSettingsConstructor {
 declare const CharacterMovementSettings: CharacterMovementSettingsConstructor;
     
 interface CharacterAnimationSyncData {
-    state: BasicCharacterState;
+    state: CharacterState;
     grounded: boolean;
     sprinting: boolean;
     crouching: boolean;
