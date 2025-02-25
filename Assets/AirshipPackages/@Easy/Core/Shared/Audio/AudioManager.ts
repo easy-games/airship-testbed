@@ -54,6 +54,13 @@ export interface PlaySoundConfig {
 	mixerGroup?: AudioMixerGroup;
 }
 
+interface PositionalPlaySoundConfig extends PlaySoundConfig {
+	/**
+	 * If a position is supplied this sound will be played positionally.
+	 */
+	position?: Vector3;
+}
+
 interface CleanupQueueItem {
 	audioSource: AudioSource;
 	aliveUntil?: number;
@@ -148,6 +155,21 @@ export class AudioManager {
 			return undefined;
 		}
 		return this.PlayClipGlobal(clip, config);
+	}
+
+	/**
+	 * Plays an audio resource. It will play positionally if a position is supplied in the config. Otherwise
+	 * the audio will play globally.
+	 * 
+	 * @param audioResource Audio resource to play. This can be either an AudioClip or an AudioRandomConatiner.
+	 * @param config Configure how the sound is played.
+	 */
+	public static PlayClip(audioResource: AudioResource, config?: PositionalPlaySoundConfig): AudioSource | undefined {
+		if (config?.position) {
+			return this.PlayClipAtPosition(audioResource, config.position, config);
+		} else {
+			return this.PlayClipGlobal(audioResource, config);
+		}
 	}
 
 	public static PlayClipGlobal(audioResource: AudioResource, config?: PlaySoundConfig): AudioSource | undefined {
