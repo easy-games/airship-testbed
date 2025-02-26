@@ -1099,8 +1099,8 @@ MonoBehaviour:
   airshipTransform: {fileID: 7911948219130051474}
   graphicTransform: {fileID: 8307927661282889293}
   moveData: {fileID: 1645000729044007242}
-  animationHelper: {fileID: 903796914586745664}
   mainCollider: {fileID: 3569249470052007930}
+  animationHelper: {fileID: 903796914586745664}
   slopeVisualizer: {fileID: 473010626989301856}
   drawDebugGizmos_FORWARD: 0
   drawDebugGizmos_GROUND: 0
