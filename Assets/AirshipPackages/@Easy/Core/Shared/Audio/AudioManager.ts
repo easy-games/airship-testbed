@@ -97,7 +97,7 @@ export class AudioManager {
 					if (item.aliveUntil !== undefined) {
 						requiresCleanup = now >= item.aliveUntil;
 					} else {
-						requiresCleanup = !item.audioSource.isPlaying;
+						requiresCleanup = item.audioSource.IsDestroyed() || !item.audioSource.isPlaying;
 					}
 
 					if (requiresCleanup) {
@@ -177,7 +177,7 @@ export class AudioManager {
 			warn("Cannot play sound: AudioResource is undefined.");
 			return undefined;
 		}
-		
+
 		const audioSource = this.GetAudioSource(Vector3.zero, config?.audioSourceTemplate);
 		const providedAudioSource = config?.audioSourceTemplate !== undefined;
 
