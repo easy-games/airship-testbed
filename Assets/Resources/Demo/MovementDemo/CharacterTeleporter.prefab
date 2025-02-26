@@ -5007,6 +5007,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: Code/AirshipPlatformDemo/MovementModifications/CharacterTeleporter.ts
+      docs:
+        comments: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
