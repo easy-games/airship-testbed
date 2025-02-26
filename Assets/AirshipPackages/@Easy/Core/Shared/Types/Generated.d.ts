@@ -47898,6 +47898,7 @@ interface StateSnapshot {
 
 
 
+    Clone(): unknown;
     CompareWithMargin(margin: number, snapshot: StateSnapshot): boolean;
 
 
@@ -47940,6 +47941,7 @@ interface CharacterMovementState extends StateSnapshot {
 
 
 
+    Clone(): unknown;
     CompareWithMargin(margin: number, snapshot: StateSnapshot): boolean;
     CopyFrom(copyState: CharacterMovementState): void;
     ToString(): string;
@@ -47962,6 +47964,7 @@ interface InputCommand {
 
 
 
+    Clone(): unknown;
 
 
 }
@@ -47986,6 +47989,7 @@ interface CharacterInputData extends InputCommand {
 
 
 
+    Clone(): unknown;
     ToString(): string;
 
 

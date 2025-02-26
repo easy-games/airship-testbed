@@ -118,6 +118,7 @@ interface CharacterMovement extends Component {
 	OnJumped(callback: (velocity: Vector3) => void): EngineEventConnection;
 	OnNewLookVector(callback: (newLookVector: Vector3) => void): EngineEventConnection;
 	GetLookVector(): Vector3;
+	GetMoveDir(): Vector3;
 
 	SetMoveInput(
 		direction: Vector3,
