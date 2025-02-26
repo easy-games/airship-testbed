@@ -30,7 +30,6 @@ export class DevConsoleProtectedController implements OnStart {
 	private AddEscapeCloser() {
 		return Keyboard.OnKeyDown(Key.Escape, (e) => {
 			e.SetCancelled(true);
-			print("DevConsole escape");
 			DevConsole.CloseConsole();
 		});
 	}

@@ -657,6 +657,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      docs:
+        comments: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -672,6 +675,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      docs:
+        comments: []
+        tags: []
       decorators:
       - name: Header
         parameters:
@@ -691,6 +697,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      docs:
+        comments: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -706,6 +715,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      docs:
+        comments: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -721,6 +733,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      docs:
+        comments: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -736,6 +751,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      docs:
+        comments: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -751,6 +769,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      docs:
+        comments: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -766,6 +787,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      docs:
+        comments: []
+        tags: []
       decorators:
       - name: Header
         parameters:
@@ -785,6 +809,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      docs:
+        comments: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -829,6 +856,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      docs:
+        comments: []
+        tags: []
       decorators:
       - name: Header
         parameters:
@@ -848,6 +878,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      docs:
+        comments: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 0
@@ -863,6 +896,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      docs:
+        comments: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 1
@@ -878,6 +914,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      docs:
+        comments: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 0.3
@@ -893,6 +932,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      docs:
+        comments: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 0.5
@@ -908,6 +950,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      docs:
+        comments: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -923,6 +968,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      docs:
+        comments: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -938,6 +986,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      docs:
+        comments: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -953,6 +1004,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      docs:
+        comments: []
+        tags: []
       decorators:
       - name: Header
         parameters:
@@ -1001,6 +1055,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      docs:
+        comments: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 45
@@ -1016,6 +1073,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      docs:
+        comments: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 9
@@ -1031,6 +1091,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      docs:
+        comments: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 0
@@ -1046,6 +1109,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      docs:
+        comments: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -1061,6 +1127,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: AirshipPackages/@Easy/Core/Shared/Inventory/Inventory@InventoryModifyPermission
       fileRef: 
+      docs:
+        comments: []
+        tags: []
       decorators:
       - name: Header
         parameters:
@@ -1099,8 +1168,8 @@ MonoBehaviour:
   airshipTransform: {fileID: 7911948219130051474}
   graphicTransform: {fileID: 8307927661282889293}
   moveData: {fileID: 1645000729044007242}
-  animationHelper: {fileID: 903796914586745664}
   mainCollider: {fileID: 3569249470052007930}
+  animationHelper: {fileID: 903796914586745664}
   slopeVisualizer: {fileID: 473010626989301856}
   drawDebugGizmos_FORWARD: 0
   drawDebugGizmos_GROUND: 0
@@ -1229,6 +1298,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      docs:
+        comments: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -1244,6 +1316,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: AirshipPackages/@Easy/Core/Shared/Character/Character.ts
+      docs:
+        comments: []
+        tags: []
       decorators:
       - name: Header
         parameters:
@@ -1263,6 +1338,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      docs:
+        comments: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
