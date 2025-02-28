@@ -77,8 +77,7 @@ MonoBehaviour:
       refPath: 
       fileRef: 
       docs:
-        comments: []
-        tags: []
+        rid: -2
       decorators: []
       nullable: 0
       serializedValue: 
@@ -95,8 +94,7 @@ MonoBehaviour:
       refPath: 
       fileRef: 
       docs:
-        comments: []
-        tags: []
+        rid: -2
       decorators:
       - name: Header
         parameters:
@@ -117,8 +115,7 @@ MonoBehaviour:
       refPath: 
       fileRef: 
       docs:
-        comments: []
-        tags: []
+        rid: -2
       decorators:
       - name: Header
         parameters:
@@ -139,8 +136,7 @@ MonoBehaviour:
       refPath: 
       fileRef: 
       docs:
-        comments: []
-        tags: []
+        rid: -2
       decorators: []
       nullable: 0
       serializedValue: 
@@ -157,8 +153,7 @@ MonoBehaviour:
       refPath: 
       fileRef: 
       docs:
-        comments: []
-        tags: []
+        rid: -2
       decorators: []
       nullable: 0
       serializedValue: 
@@ -195,8 +190,7 @@ MonoBehaviour:
       refPath: 
       fileRef: 
       docs:
-        comments: []
-        tags: []
+        rid: -2
       decorators: []
       nullable: 0
       serializedValue: 
@@ -213,8 +207,7 @@ MonoBehaviour:
       refPath: 
       fileRef: 
       docs:
-        comments: []
-        tags: []
+        rid: -2
       decorators: []
       nullable: 0
       serializedValue: 0
@@ -231,8 +224,7 @@ MonoBehaviour:
       refPath: 
       fileRef: 
       docs:
-        comments: []
-        tags: []
+        rid: -2
       decorators:
       - name: Header
         parameters:
@@ -253,8 +245,7 @@ MonoBehaviour:
       refPath: 
       fileRef: 
       docs:
-        comments: []
-        tags: []
+        rid: -2
       decorators: []
       nullable: 0
       serializedValue: '{"r":0.6470588445663452,"g":0.4313725531101227,"b":0.2705882489681244,"a":1.0}'
@@ -263,6 +254,11 @@ MonoBehaviour:
     displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
 --- !u!1 &686835754178078473
 GameObject:
   m_ObjectHideFlags: 0

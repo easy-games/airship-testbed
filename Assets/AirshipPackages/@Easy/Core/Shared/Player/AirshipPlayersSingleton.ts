@@ -354,16 +354,19 @@ export class AirshipPlayersSingleton {
 		const SetOutfit = (outfitDto: OutfitDto | undefined) => {
 			player.selectedOutfit = outfitDto;
 			player.outfitLoaded = true;
+			// print("SetOutfit. userId: " + player.userId + ", outfit: " + inspect(outfitDto));
 			if (Game.IsEditor()) {
-				EditorSessionState.SetString("player_" + player.userId + "_outfit3", json.encode(outfitDto));
+				EditorSessionState.SetString("player_" + player.userId + "_outfit4", json.encode(outfitDto));
 			}
 		};
 
+		// print("fetch outfit. userId: " + player.userId);
 		// Uncomment to disable editor cache
 		if (Game.IsEditor() && !ignoreCache) {
 			//print("Using editor cache: " + player.userId);
-			const data = EditorSessionState.GetString("player_" + player.userId + "_outfit3");
-			if (data) {
+			const data = EditorSessionState.GetString("player_" + player.userId + "_outfit4");
+			if (data && data !== "") {
+				print("decoding: " + data);
 				const outfitDto = json.decode<OutfitDto>(data);
 				if (outfitDto) {
 					SetOutfit(outfitDto);

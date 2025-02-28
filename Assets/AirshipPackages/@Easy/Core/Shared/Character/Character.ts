@@ -170,6 +170,8 @@ export default class Character extends AirshipBehaviour {
 		this.initialized = true;
 		this.displayName = displayName || "";
 
+		// print("Outfitdto: " + inspect(outfitDto));
+
 		// Client side: update the player's selected outfit to whatever this character has.
 		// This may cause an issue if the character is init'd with a random outfit.
 		if (player && outfitDto && Game.IsClient()) {

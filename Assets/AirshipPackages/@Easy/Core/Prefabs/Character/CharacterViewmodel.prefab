@@ -71,8 +71,7 @@ MonoBehaviour:
       refPath: 
       fileRef: 
       docs:
-        comments: []
-        tags: []
+        rid: -2
       decorators: []
       nullable: 0
       serializedValue: 
@@ -89,8 +88,7 @@ MonoBehaviour:
       refPath: 
       fileRef: 
       docs:
-        comments: []
-        tags: []
+        rid: -2
       decorators: []
       nullable: 0
       serializedValue: 
@@ -107,8 +105,7 @@ MonoBehaviour:
       refPath: 
       fileRef: 
       docs:
-        comments: []
-        tags: []
+        rid: -2
       decorators: []
       nullable: 0
       serializedValue: 
@@ -117,6 +114,11 @@ MonoBehaviour:
     displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
 --- !u!114 &3891664184431752562
 MonoBehaviour:
   m_ObjectHideFlags: 0
