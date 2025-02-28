@@ -273,6 +273,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	}
 
 	public CreateRenderScene() {
+		assert(this.avatarRenderTemplate, "Missing avatar render template");
 		return Object.Instantiate(
 			this.avatarRenderTemplate,
 			this.transform,
