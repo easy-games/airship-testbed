@@ -142,11 +142,6 @@ interface ObjectConstructor {
 	Instantiate<T extends Object = GameObject>(original: T): T;
 	Instantiate<T extends Object = GameObject>(original: T, parent: Transform): T;
 	Instantiate<T extends Object = GameObject>(original: T, parent: Transform, instantiateInWorldSpace: boolean): T;
-	Instantiate<T>(original: T): T;
-	Instantiate<T>(original: T, position: Vector3, rotation: Quaternion): T;
-	Instantiate<T>(original: T, position: Vector3, rotation: Quaternion, parent: Transform): T;
-	Instantiate<T>(original: T, parent: Transform): T;
-	Instantiate<T>(original: T, parent: Transform, worldPositionStays: boolean): T;
 }
 declare const Object: ObjectConstructor;
 
@@ -2153,11 +2148,6 @@ interface GameObjectConstructor {
 	Instantiate<T extends Object = GameObject>(original: T): T;
 	Instantiate<T extends Object = GameObject>(original: T, parent: Transform): T;
 	Instantiate<T extends Object = GameObject>(original: T, parent: Transform, instantiateInWorldSpace: boolean): T;
-	Instantiate<T>(original: T): T;
-	Instantiate<T>(original: T, position: Vector3, rotation: Quaternion): T;
-	Instantiate<T>(original: T, position: Vector3, rotation: Quaternion, parent: Transform): T;
-	Instantiate<T>(original: T, parent: Transform): T;
-	Instantiate<T>(original: T, parent: Transform, worldPositionStays: boolean): T;
 }
 declare const GameObject: GameObjectConstructor;
 
