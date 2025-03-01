@@ -186,6 +186,7 @@ export class AirshipCharactersSingleton {
 					audioSource.transform.localPosition = new Vector3(0, 1.4, 0);
 					audioSource.spatialBlend = 1;
 					audioSource.maxDistance = 50;
+					audioSource.dopplerLevel = 0;
 					audioSource.rolloffMode = AudioRolloffMode.Linear;
 				}
 			});
