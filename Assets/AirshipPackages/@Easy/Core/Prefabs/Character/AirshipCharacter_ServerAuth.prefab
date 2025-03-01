@@ -136,6 +136,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      docs:
+        comments: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: Root Pos
@@ -151,6 +154,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      docs:
+        comments: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 0
@@ -200,6 +206,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      docs:
+        comments: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: Graphic Pos
@@ -215,6 +224,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      docs:
+        comments: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 0

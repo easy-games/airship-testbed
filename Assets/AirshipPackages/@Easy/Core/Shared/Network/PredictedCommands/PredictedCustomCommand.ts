@@ -1,0 +1,121 @@
+import Character from "../../Character/Character";
+
+export default class PredictedCustomCommand<Input, StateSnapshot> {
+	/**
+	 * The character the command is running on.
+	 */
+	public character: Character;
+
+	constructor(character: Character) {
+		this.character = character;
+	}
+
+	// Owning Client Only
+
+	/**
+	 * Called on fixed update for each tick to determine the inputs for the current tick. The returned input
+	 * is also sent to the server for processing.
+	 */
+	GetCommand(): Input | false {
+		return false;
+	}
+
+	// Server and Client
+
+	/**
+	 * Called before the first command is processed and when the command should begin having an effect on the world.
+	 * This may be called more than once if there is a replay. This function should be used to create any objects
+	 * in the world that you depend on during tick processing.
+	 *
+	 * You can also create things in OnTick, but keep in mind that sometimes ResetToSnapshot is called to check
+	 * a single point in time (like during lag compensation) without a tick being run, so you will have to encode
+	 * the existance of those objects in your state for that tick so that your ResetToSnapshot function can correctly
+	 * recreate the state of the world at that point in time.
+	 */
+	Create?(): void;
+
+	/**
+	 * Called when a new input is available to be processed. Make whatever changes are necesary to the last
+	 * state based on the provided input, and return a new state value. Make sure that your state value encodes
+	 * all values needed to reset your changes back to this point in time.
+	 *
+	 * This function is processed before character movement is run and can be used to modify things like
+	 * character speed or the user input used for movement processing.
+	 *
+	 * @param input
+	 * @param replay
+	 */
+	OnTick(input: Readonly<Input>, replay: boolean): void {}
+
+	/**
+	 * Return the current state of the system
+	 */
+	OnCaptureSnapshot(): StateSnapshot {
+		return undefined as StateSnapshot;
+	}
+
+	/**
+	 * Called on after the last input is processed and when the command should remove it's effects from the world.
+	 * This may be called more than once if there is a replay. See Create() for more information.
+	 */
+	Destroy?(): void;
+
+	/**
+	 * Set the state to the provided one. This is called during lag compensation and resimulation. Make sure that
+	 * everything you modify in OnTick is set back to the state encoded in the provided state value.
+	 *
+	 * For example, if you modify a characters position OnTick, you should encode this value in the state you return.
+	 * In this function, you set their position back to the position encoded in the state value.
+	 *
+	 * If this function recieves undefined as a parameter, that means that we are rolling back to a time before this
+	 * command was active. You should undo anything that affects physics when this occurs.
+	 * @param stateSnapshot One of the states previously returned from your tick function.
+	 */
+	ResetToSnapshot(stateSnapshot: Readonly<StateSnapshot> | undefined): void {}
+
+	/**
+	 * Compares two snapshots. If the snapshots are equal, return true. If not, return false.
+	 * @param a
+	 * @param b
+	 * @returns
+	 */
+	CompareSnapshots(a: Readonly<StateSnapshot>, b: Readonly<StateSnapshot>): boolean {
+		return false;
+	}
+
+	// Client and observer effects.
+
+	// /**
+	//  * Called on observers when the first state is observed. The state provided may not be the first state
+	//  * produced by the command due to the possibility of network loss.
+	//  *
+	//  * This function will only be called once.
+	//  *
+	//  * @param state The first state created or received for this command.
+	//  */
+	// OnObserverStart?(state: Readonly<StateSnapshot>): void;
+
+	/**
+	 * This function is called every frame for observers and allows you to interpolate effects based on the observed states for this
+	 * command. The provided delta time is 0 to 1 and represents the lerp progress between the two states.
+	 *
+	 * @param lastState
+	 * @param nextState
+	 * @param delta
+	 */
+	OnObserverUpdate?(lastState: Readonly<StateSnapshot>, nextState: Readonly<StateSnapshot>, delta: number): void;
+
+	/**
+	 * This function is called when an observer reaches a new state. The frequency this function is called is
+	 * deternined by your network update rate and network conditions. It is recommended that you update visuals
+	 * that can be interpolated in OnEffectUpdate for the smoothest visuals.
+	 *
+	 * @param state The new state that was reached.
+	 */
+	OnObserverReachedState?(state: Readonly<StateSnapshot>): void;
+
+	// /**
+	//  * Called on the tick after the last state is observed.
+	//  */
+	// OnObserverEnded?(): void;
+}

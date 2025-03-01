@@ -13,7 +13,7 @@ export default class CharacterTeleporter extends AirshipBehaviour {
 		Airship.Characters.onCharacterSpawned.Connect((character) => {
 			if (character.IsLocalCharacter() || Game.IsServer()) {
 				//Listen to custom data and modify movement based on values
-				character.OnUseCustomMoveData.Connect((customMoveData) => {
+				character.OnUseCustomInputData.Connect((customMoveData) => {
 					if (
 						customMoveData.get(this.key) &&
 						this.currentTargets.has(character.id) &&
@@ -39,7 +39,7 @@ export default class CharacterTeleporter extends AirshipBehaviour {
 	public OnTriggerStay(collider: Collider): void {
 		let character = collider.attachedRigidbody?.gameObject.GetAirshipComponent<Character>();
 		if (character && character?.IsLocalCharacter() && this.currentTargets.has(character.id)) {
-			character.AddCustomMoveData(this.key, true);
+			character.AddCustomInputData(this.key, true);
 		}
 	}
 

@@ -76,6 +76,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      docs:
+        comments: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -91,6 +94,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      docs:
+        comments: []
+        tags: []
       decorators:
       - name: Header
         parameters:
@@ -110,6 +116,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      docs:
+        comments: []
+        tags: []
       decorators:
       - name: Header
         parameters:
@@ -129,6 +138,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      docs:
+        comments: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -144,6 +156,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      docs:
+        comments: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -179,6 +194,9 @@ MonoBehaviour:
         - {fileID: 2137736817724690517}
       refPath: 
       fileRef: 
+      docs:
+        comments: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -194,6 +212,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      docs:
+        comments: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 0
@@ -209,6 +230,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      docs:
+        comments: []
+        tags: []
       decorators:
       - name: Header
         parameters:
@@ -228,6 +252,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      docs:
+        comments: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: '{"r":0.6470588445663452,"g":0.4313725531101227,"b":0.2705882489681244,"a":1.0}'

@@ -70,13 +70,71 @@ export default class Character extends AirshipBehaviour {
 	private despawned = false;
 	private prevOutfitEncoded = "";
 
-	/*
-	 * [Advanced]
-	 * Listen to custom data being sent through the movement system
-	 * Key Value pairs created using AddCustomMoveData will fire here during movement ticks that use them
-	 * Map<id, dataBlob>, inputData, isReplay
+	// Custom Move Data
+	private queuedCustomInputData = new Map<string, unknown>();
+	private queuedCustomSnapshotData = new Map<string, unknown>();
+	/**
+	 * Fires before command processing only for new commands. Does not fire on replays.
+	 *
+	 * This signal does not fire for observers.
 	 */
-	public OnUseCustomMoveData = new Signal<[Map<string, unknown>, CharacterMovementState, boolean]>();
+	public PreProcessCommand = new Signal<[Map<string, unknown>, CharacterInputData]>();
+	/**
+	 * Allows you to process custom move data attached to character input before the move function is executed.
+	 *
+	 * This signal does not fire for observers.
+	 */
+	public OnUseCustomInputData = new Signal<[Map<string, unknown>, CharacterInputData, boolean]>();
+	/**
+	 * Allows you to process custom move data attached to character input after the move function is executed.
+	 *
+	 * This signal does not fire for observers.
+	 */
+	public OnUseCustomInputDataAfterMove = new Signal<[Map<string, unknown>, CharacterInputData, boolean]>();
+	/**
+	 * Signals when a new input command is begin generated. Use AddCustomInputData() to add custom data to the
+	 * command being generated.
+	 *
+	 * This signal does not fire for observers.
+	 */
+	public OnAddCustomInputData = new Signal<[]>();
+	/**
+	 * Signals when a new snapshot of the current movement state is being generated. Use AddCustomStateData() to add
+	 * custom data to the snapshot being generated.
+	 *
+	 * This signal does not fire for observers.
+	 */
+	public OnAddCustomSnapshotData = new Signal<[]>();
+	/**
+	 * Signals that the movement system is being reset to a past snapshot. This will happen during re-simulation on
+	 * clients, and during lag compensation on the server. This signal will fire for an observed character if the local
+	 * client is replaying.
+	 */
+	public OnResetToSnapshot = new Signal<[Map<string, unknown>, CharacterSnapshotData]>();
+	/**
+	 * Signals that the movement system is displaying a character interpolating between the two provided snapshots.
+	 * This signal is fired every frame. This only fires for characters being observed. Does not fire on the server,
+	 * but may in the future.
+	 */
+	public OnInterpolateSnapshot = new Signal<
+		[Map<string, unknown>, CharacterSnapshotData, Map<string, unknown>, CharacterSnapshotData, number]
+	>();
+	/**
+	 * Signals that the movement system is displaying a character that has just reached the snapshot provided. This
+	 * fires during fixed update, but may not fire every fixed update. This only fires for characters being observed.
+	 * Will fire on the server for client authoritative characters.
+	 */
+	public OnInterpolateReachedSnapshot = new Signal<[Map<string, unknown>, CharacterSnapshotData]>();
+	private compareResult = true; // used internally for OnCompareSnapshot
+	/**
+	 * Signals that two snapshots are being compared. Use SetComparisonResult() in this signals callbacks
+	 * to modify the result of the comparison.
+	 *
+	 * This signal does not fire for observers.
+	 */
+	public OnCompareSnapshots = new Signal<
+		[Map<string, unknown>, CharacterSnapshotData, Map<string, unknown>, CharacterSnapshotData]
+	>();
 
 	public Awake(): void {
 		this.inventory = this.gameObject.GetAirshipComponent<Inventory>()!;
@@ -124,25 +182,7 @@ export default class Character extends AirshipBehaviour {
 
 		// Custom move command data handling:
 		if (this.movement) {
-			const customDataConn = this.movement.OnBeginMove((moveData, isReplay) => {
-				this.BeginMove(moveData, isReplay);
-			});
-			this.bin.Add(() => {
-				Bridge.DisconnectEvent(customDataConn);
-			});
-
-			{
-				// state change
-				const conn = this.movement.OnStateChanged((state) => {
-					if (this.state === state) return;
-					const oldState = this.state;
-					this.state = state;
-					this.onStateChanged.Fire(state, oldState);
-				});
-				this.bin.Add(() => {
-					Bridge.DisconnectEvent(conn);
-				});
-			}
+			this.SetupMovementConnections();
 		}
 	}
 
@@ -181,16 +221,78 @@ export default class Character extends AirshipBehaviour {
 			}
 			this.LoadOutfit(outfitDto);
 		}
+	}
 
-		if (this.movement) {
-			// Apply the queued custom data to movement
-			const customDataFlushedConn = this.movement.OnSetCustomData(() => {
-				this.ProccessCustomMoveData();
+	private SetupMovementConnections() {
+		const movementWithSignals = this.movement as CharacterMovement & CharacterMovementEngineEvents;
+
+		this.bin.AddEngineEventConnection(
+			movementWithSignals.OnProcessCommand((input, state, isReplay) => {
+				if (!isReplay) this.PreProcessCommand.Fire(this.ParseCustomInputData(input), input);
+				this.ProcessCommand(input, state, isReplay);
+			}),
+		);
+
+		this.bin.AddEngineEventConnection(
+			movementWithSignals.OnProcessedCommand((input, state, isReplay) => {
+				this.ProcessCommandAfterMove(input, state, isReplay);
+			}),
+		);
+
+		this.bin.AddEngineEventConnection(
+			movementWithSignals.OnInterpolateState((lastState, nextState, delta) => {
+				const lastCustomData = this.ParseCustomSnapshotData(lastState);
+				const nextCustomData = this.ParseCustomSnapshotData(nextState);
+				this.OnInterpolateSnapshot.Fire(lastCustomData, lastState, nextCustomData, nextState, delta);
+			}),
+		);
+
+		this.bin.AddEngineEventConnection(
+			movementWithSignals.OnInterpolateReachedState((state) => {
+				const customData = this.ParseCustomSnapshotData(state);
+				this.OnInterpolateReachedSnapshot.Fire(customData, state);
+			}),
+		);
+
+		this.bin.AddEngineEventConnection(
+			movementWithSignals.OnCreateCommand(() => {
+				this.CollectCustomInputData();
+			}),
+		);
+
+		this.bin.AddEngineEventConnection(
+			movementWithSignals.OnCaptureSnapshot(() => {
+				this.CollectCustomSnapshotData();
+			}),
+		);
+
+		this.bin.AddEngineEventConnection(
+			movementWithSignals.OnCompareSnapshots((a, b) => {
+				const aData = this.ParseCustomSnapshotData(a);
+				const bData = this.ParseCustomSnapshotData(b);
+				this.compareResult = true; // Reset to true for signal use
+				this.OnCompareSnapshots.Fire(aData, a, bData, b);
+				movementWithSignals.SetComparisonResult(this.compareResult);
+			}),
+		);
+
+		{
+			// state change
+			const conn = movementWithSignals.OnStateChanged((state) => {
+				if (this.state === state) return;
+				const oldState = this.state;
+				this.state = state;
+				this.onStateChanged.Fire(state, oldState);
 			});
 			this.bin.Add(() => {
-				Bridge.DisconnectEvent(customDataFlushedConn);
+				Bridge.DisconnectEvent(conn);
 			});
 		}
+	}
+
+	public SetComparisonResult(result: boolean) {
+		if (!this.compareResult) return;
+		this.compareResult = result;
 	}
 
 	public SetMeshCacheId(cacheId: string | undefined): void {
@@ -223,47 +325,85 @@ export default class Character extends AirshipBehaviour {
 		}
 	}
 
-	private queuedMoveData = new Map<string, unknown>();
 	/** Add custom data to the move data command stream. */
-	public AddCustomMoveData(key: string, value: unknown) {
-		this.queuedMoveData.set(key, value);
+	public AddCustomInputData(key: string, value: unknown) {
+		this.queuedCustomInputData.set(key, value);
 	}
 
-	private ProccessCustomMoveData() {
+	public AddCustomSnapshotData(key: string, value: unknown) {
+		this.queuedCustomSnapshotData.set(key, value);
+	}
+
+	private CollectCustomInputData() {
+		this.OnAddCustomInputData.Fire();
 		//Don't process if we have nothing queued
-		if (this.queuedMoveData.size() === 0) {
+		if (this.queuedCustomInputData.size() === 0) {
 			return;
 		}
 		//Convert queued data into binary blob
-		let customDataQueue: { key: string; value: unknown }[] = [];
-		this.queuedMoveData.forEach((value, key) => {
-			customDataQueue.push({ key: key, value: value });
+		let customInputDataQueue: { key: string; value: unknown }[] = [];
+		this.queuedCustomInputData.forEach((value, key) => {
+			customInputDataQueue.push({ key: key, value: value });
 		});
-		this.queuedMoveData.clear();
+		this.queuedCustomInputData.clear();
 		//Pass to C#
-		this.movement?.SetCustomData(new BinaryBlob(customDataQueue));
+		this.movement?.SetCustomData(new BinaryBlob(customInputDataQueue));
 	}
 
-	private BeginMove(stateData: CharacterMovementState, isReplay: boolean) {
+	private CollectCustomSnapshotData() {
+		this.OnAddCustomSnapshotData.Fire();
+		//Don't process if we have nothing queued
+		if (this.queuedCustomSnapshotData.size() === 0) {
+			return;
+		}
+		//Convert queued data into binary blob
+		let customSnapshotDataQueue: { key: string; value: unknown }[] = [];
+		this.queuedCustomSnapshotData.forEach((value, key) => {
+			customSnapshotDataQueue.push({ key: key, value: value });
+		});
+		this.queuedCustomSnapshotData.clear();
+		//Pass to C#
+		this.movement?.SetCustomData(new BinaryBlob(customSnapshotDataQueue));
+	}
+
+	private ParseCustomSnapshotData(snapshot: CharacterSnapshotData): Map<string, unknown> {
 		//Decode binary block into usable key value array
-		const allData = stateData.customData
-			? (stateData.customData.Decode() as { key: string; value: unknown }[])
+		const allData = snapshot.customData
+			? (snapshot.customData.Decode() as { key: string; value: unknown }[])
 			: undefined;
 		const allCustomData: Map<string, unknown> = new Map();
 		let usingCustomData = false;
 		if (allData) {
-			//print("ALLDATA: " + inspect(allData));
 			for (const data of allData) {
-				//print("Found custom data " + data.key + " with value: " + data.value);
 				allCustomData.set(data.key, data.value);
 				usingCustomData = true;
 			}
 		}
+		return allCustomData;
+	}
 
-		if (usingCustomData) {
-			//Local signal for parsing the key value pairs
-			this.OnUseCustomMoveData.Fire(allCustomData, stateData, isReplay);
+	private ParseCustomInputData(input: CharacterInputData): Map<string, unknown> {
+		//Decode binary block into usable key value array
+		const allData = input.customData ? (input.customData.Decode() as { key: string; value: unknown }[]) : undefined;
+		const allCustomData: Map<string, unknown> = new Map();
+		let usingCustomData = false;
+		if (allData) {
+			for (const data of allData) {
+				allCustomData.set(data.key, data.value);
+				usingCustomData = true;
+			}
 		}
+		return allCustomData;
+	}
+
+	private ProcessCommand(input: CharacterInputData, state: CharacterSnapshotData, isReplay: boolean) {
+		const data = this.ParseCustomInputData(input);
+		this.OnUseCustomInputData.Fire(data, input, isReplay);
+	}
+
+	private ProcessCommandAfterMove(input: CharacterInputData, state: CharacterSnapshotData, isReplay: boolean) {
+		const data = this.ParseCustomInputData(input);
+		this.OnUseCustomInputDataAfterMove.Fire(data, input, isReplay);
 	}
 
 	public IsInitialized() {

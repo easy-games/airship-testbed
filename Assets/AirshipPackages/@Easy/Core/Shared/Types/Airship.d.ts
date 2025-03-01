@@ -106,20 +106,44 @@ interface MoveModifier {
 	blockJump: boolean;
 }
 
+/**
+ * These events are part of the CharacterMovement API, but are not included in the default type
+ * to encourage the use of the signals provided on player.character. Using the signals defined below
+ * may have challenges in interacting with those signals due to the order of execution being determined
+ * by C# rather than our lua runtime.
+ */
+interface CharacterMovementEngineEvents {
+	// Processing events
+	OnCreateCommand(callback: () => void): EngineEventConnection;
+	OnProcessCommand(
+		callback: (inputData: CharacterInputData, stateData: CharacterSnapshotData, isReplay: boolean) => void,
+	): EngineEventConnection;
+	OnProcessedCommand(
+		callback: (inputData: CharacterInputData, stateData: CharacterSnapshotData, isReplay: boolean) => void,
+	): EngineEventConnection;
+	OnSetSnapshot(callback: (stateData: CharacterSnapshotData) => void): EngineEventConnection;
+	OnCaptureSnapshot(callback: () => void): EngineEventConnection;
+	OnInterpolateState(
+		callback: (lastState: CharacterSnapshotData, nextState: CharacterSnapshotData, delta: number) => void,
+	): EngineEventConnection;
+	OnInterpolateReachedState(callback: (state: CharacterSnapshotData) => void): EngineEventConnection;
+	OnCompareSnapshots(callback: (a: CharacterSnapshotData, b: CharacterSnapshotData) => void): EngineEventConnection;
+
+	// Used for communicating back snapshot comparison results
+	SetComparisonResult(result: boolean);
+}
+
 interface CharacterMovement extends Component {
+	// Interaction events
 	OnStateChanged(callback: (state: CharacterState) => void): EngineEventConnection;
-	OnSetCustomData(callback: () => void): EngineEventConnection;
-	OnBeginMove(callback: (stateData: CharacterMovementState, isReplay: boolean) => void): EngineEventConnection;
-	OnEndMove(callback: (stateData: CharacterMovementState, isReplay: boolean) => void): EngineEventConnection;
-	OnDispatchCustomData(callback: (tick: number, customData: BinaryBlob) => void): EngineEventConnection;
 	OnImpactWithGround(callback: (velocity: Vector3, hitInfo: RaycastHit) => void): EngineEventConnection;
-	OnAdjustMove(callback: (modifier: MoveModifier) => void): EngineEventConnection;
 	OnMoveDirectionChanged(callback: (direction: Vector3) => void): EngineEventConnection;
 	OnJumped(callback: (velocity: Vector3) => void): EngineEventConnection;
 	OnNewLookVector(callback: (newLookVector: Vector3) => void): EngineEventConnection;
+
+	// Functions
 	GetLookVector(): Vector3;
 	GetMoveDir(): Vector3;
-
 	SetMoveInput(
 		direction: Vector3,
 		jump: boolean,
@@ -164,7 +188,7 @@ interface CharacterMovement extends Component {
 	mainCollider: BoxCollider;
 
 	// Public Getters Private Setters
-	currentMoveState: CharacterMovementState;
+	currentMoveSnapshot: CharacterSnapshotData;
 	currentAnimState: CharacterAnimationSyncData;
 	currentCharacterHeight: number;
 	standingCharacterHeight: number;
@@ -173,6 +197,21 @@ interface CharacterMovement extends Component {
 	//isGrounded: boolean;
 	//isSprinting: boolean;
 	groundedRaycastHit: RaycastHit;
+}
+
+interface AirshipSimulationManager extends MonoBehaviour {
+	// TODO: these events likely do not work yet
+	OnSetPaused(callback: (paused: boolean) => void): EngineEventConnection;
+	OnSetSnapshot(callback: (time: number) => void): EngineEventConnection;
+	OnLagCompensationCheck(
+		callback: (clientId: number, currentTime: number, latency: number) => void,
+	): EngineEventConnection;
+	OnPerformTick(callback: (time: number, replay: boolean) => void): EngineEventConnection;
+	OnCaptureSnapshot(callback: (time: double, replay: boolean) => void): EngineEventConnection;
+
+	GetLastSimulationTime(time: number): number;
+	// ScheduleLagCompensation(client: NetworkConnectionToClient, checkCallback: CheckWorld, completeCallback: RollbackComplete): void;
+	// ScheduleResimulation(callback: PerformResimulationCallback): void;
 }
 
 interface Nullable<T> {

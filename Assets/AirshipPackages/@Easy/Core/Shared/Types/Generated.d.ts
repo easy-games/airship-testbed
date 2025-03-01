@@ -47914,7 +47914,7 @@ interface StateSnapshotConstructor {
 }
 declare const StateSnapshot: StateSnapshotConstructor;
     
-interface CharacterMovementState extends StateSnapshot {
+interface CharacterSnapshotData extends StateSnapshot {
     position: Vector3;
     velocity: Vector3;
     impulseVelocity: Vector3;
@@ -47943,21 +47943,21 @@ interface CharacterMovementState extends StateSnapshot {
 
     Clone(): unknown;
     CompareWithMargin(margin: number, snapshot: StateSnapshot): boolean;
-    CopyFrom(copyState: CharacterMovementState): void;
+    CopyFrom(copySnapshot: CharacterSnapshotData): void;
     ToString(): string;
 
 
 }
     
-interface CharacterMovementStateConstructor {
+interface CharacterSnapshotDataConstructor {
 
 
-    new(): CharacterMovementState;
+    new(): CharacterSnapshotData;
 
 
 
 }
-declare const CharacterMovementState: CharacterMovementStateConstructor;
+declare const CharacterSnapshotData: CharacterSnapshotDataConstructor;
     
 interface InputCommand {
     commandNumber: number;
@@ -48095,6 +48095,119 @@ interface CharacterAnimationSyncDataConstructor {
 
 }
 declare const CharacterAnimationSyncData: CharacterAnimationSyncDataConstructor;
+    
+interface AirshipSimulationManager extends MonoBehaviour {
+
+
+
+    ActivateSimulationManager(): void;
+    FixedUpdate(): void;
+    GetLastSimulationTime(time: number): number;
+    ScheduleLagCompensation(client: NetworkConnectionToClient, checkCallback: CheckWorld, completeCallback: RollbackComplete): void;
+    ScheduleResimulation(callback: PerformResimulationCallback): void;
+
+
+}
+    
+interface CheckWorld {
+
+
+
+    BeginInvoke(callback: unknown, object: unknown): unknown;
+    EndInvoke(result: unknown): void;
+    Invoke(): void;
+
+
+}
+    
+interface CheckWorldConstructor {
+
+
+    new(object: unknown, method: unknown): CheckWorld;
+
+
+
+}
+declare const CheckWorld: CheckWorldConstructor;
+    
+interface RollbackComplete {
+
+
+
+    BeginInvoke(callback: unknown, object: unknown): unknown;
+    EndInvoke(result: unknown): void;
+    Invoke(): void;
+
+
+}
+    
+interface RollbackCompleteConstructor {
+
+
+    new(object: unknown, method: unknown): RollbackComplete;
+
+
+
+}
+declare const RollbackComplete: RollbackCompleteConstructor;
+    
+interface PerformResimulationCallback {
+
+
+
+    BeginInvoke(simulateFunction: PerformResimulate, callback: unknown, object: unknown): unknown;
+    EndInvoke(result: unknown): void;
+    Invoke(simulateFunction: PerformResimulate): void;
+
+
+}
+    
+interface PerformResimulate {
+
+
+
+    BeginInvoke(baseTime: number, callback: unknown, object: unknown): unknown;
+    EndInvoke(result: unknown): void;
+    Invoke(baseTime: number): void;
+
+
+}
+    
+interface PerformResimulateConstructor {
+
+
+    new(object: unknown, method: unknown): PerformResimulate;
+
+
+
+}
+declare const PerformResimulate: PerformResimulateConstructor;
+    
+interface PerformResimulationCallbackConstructor {
+
+
+    new(object: unknown, method: unknown): PerformResimulationCallback;
+
+
+
+}
+declare const PerformResimulationCallback: PerformResimulationCallbackConstructor;
+    
+interface AirshipSimulationManagerConstructor {
+    instance: AirshipSimulationManager;
+    OnSetPaused: unknown;
+    OnSetSnapshot: unknown;
+    OnLagCompensationCheck: unknown;
+    OnPerformTick: unknown;
+    OnCaptureSnapshot: unknown;
+
+
+    new(): AirshipSimulationManager;
+
+
+
+}
+declare const AirshipSimulationManager: AirshipSimulationManagerConstructor;
     
 interface AirshipSteamFriendInfo {
     playingAirship: boolean;

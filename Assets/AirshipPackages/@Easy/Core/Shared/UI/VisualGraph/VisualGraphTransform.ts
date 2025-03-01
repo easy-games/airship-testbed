@@ -12,16 +12,16 @@ export default class VisualGraphTransform extends AirshipBehaviour {
 		if (!this.graph) {
 			this.graph = VisualGraphManager.ManagerAddGraph(this.graphName ?? this.gameObject.name + "_T");
 		}
-		if (this.useMovementTransform) {
-			let movement = this.gameObject.GetComponent<CharacterMovement>();
-			if (movement) {
-				this.bin.AddEngineEventConnection(
-					movement.OnEndMove(() => {
-						this.Tick(Time.fixedDeltaTime);
-					}),
-				);
-			}
-		}
+		// if (this.useMovementTransform) {
+		// 	let movement = this.gameObject.GetComponent<CharacterMovement>();
+		// 	if (movement) {
+		// 		this.bin.AddEngineEventConnection(
+		// 			movement.OnProcessedCommand(() => {
+		// 				this.Tick(Time.fixedDeltaTime);
+		// 			}),
+		// 		);
+		// 	}
+		// }
 	}
 
 	protected OnDisable(): void {
