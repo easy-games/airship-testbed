@@ -3675,6 +3675,11 @@ declare const enum CharacterState {
     Sprinting = 3,
     Crouching = 4,
 }
+declare const enum AccessoryAddMode {
+    ReplaceAll = 0,
+    Replace = 1,
+    AddIfNone = 2,
+}
 
     
 interface RaycastHit {
@@ -10104,8 +10109,7 @@ interface Physics2DConstructor {
 }
 declare const Physics2D: Physics2DConstructor;
     
-
-
+    
 interface Coroutine extends YieldInstruction {
 
 
@@ -10114,7 +10118,6 @@ interface Coroutine extends YieldInstruction {
 
 }
     
-
     
 interface Debug {
 
@@ -26505,6 +26508,7 @@ interface CoreLoadingScreen extends BundleLoadingScreen {
 
     ClickContinueButton(): void;
     Close(): void;
+    OnReload(): void;
     SetProgress(text: string, percent: number): void;
     SetTotalDownloadSize(sizeBytes: number): void;
 
@@ -36271,7 +36275,7 @@ interface AirshipUniVoiceNetwork extends NetworkBehaviour, IChatroomNetwork {
     JoinChatroom(data: unknown): void;
     LeaveChatroom(data: unknown): void;
     NetworkServer_OnDisconnected(connection: NetworkConnectionToClient): void;
-    OnReadyCommand(conn: NetworkConnectionToClient): void;
+    OnReadyCommand(sender: NetworkConnectionToClient): void;
     OnStartServer(): void;
     ToByteArray<T>(obj: T): Readonly<number[]>;
     Weaved(): boolean;
@@ -36632,6 +36636,7 @@ interface VoxelBlockDefinition extends ScriptableObject {
     description: string;
     contextStyle: ContextStyle;
     meshMaterial: Material;
+    halfBlock: boolean;
     topTexture: TextureSet;
     sideTexture: TextureSet;
     bottomTexture: TextureSet;
@@ -38810,14 +38815,13 @@ interface AccessoryOutfit extends ScriptableObject {
 }
     
 interface AccessoryComponent extends MonoBehaviour {
-    serverClassId: string;
-    serverClassIdStaging: string;
     accessorySlot: AccessorySlot;
     visibilityMode: VisibilityMode;
     skinnedToCharacter: boolean;
     meshLods: Readonly<Mesh[]>;
-    matColors: Readonly<MaterialColorURP[]>;
     bodyMask: number;
+    serverClassId: string;
+    serverClassIdStaging: string;
     localPosition: Vector3;
     localRotation: Quaternion;
     localScale: Vector3;
@@ -39247,6 +39251,7 @@ interface AirshipPlatformUtil {
     
 interface AirshipPlatformUtilConstructor {
     livePlatforms: Readonly<number[]>;
+    betaPlatforms: Readonly<number[]>;
 
 
     new(): AirshipPlatformUtil;
@@ -39255,6 +39260,7 @@ interface AirshipPlatformUtilConstructor {
     FromBuildTarget(buildTarget: BuildTarget): AirshipPlatform;
     FromRuntimePlatform(runtimePlatform: RuntimePlatform): AirshipPlatform;
     GetLocalPlatform(): AirshipPlatform;
+    GetStringName(platform: AirshipPlatform): string;
     IsDeviceSimulator(): boolean;
     ToBuildTarget(platform: AirshipPlatform): BuildTarget;
 
@@ -47693,6 +47699,7 @@ interface VoxelWorld extends MonoBehaviour {
     GetNumProcessingMeshChunks(): number;
     GetNumRadiosityProcessingChunks(): number;
     GetPrefabAt(pos: Vector3): GameObject;
+    GetRandomVoxelInWorld(): Vector3;
     GetVoxelAndChunkAt(pos: Vector3): unknown;
     GetVoxelAt(pos: Vector3): number;
     GetVoxelColorAt(pos: Vector3): Color32;
@@ -47803,6 +47810,7 @@ interface Chunk {
     readWriteVoxel: Readonly<number[]>;
     color: Readonly<number[]>;
     damageMap: CSDictionary<number, number>;
+    keysWithVoxels: Readonly<number[]>;
     materialPropertiesDirty: boolean;
     world: VoxelWorld;
     bottomLeftInt: Vector3;
@@ -47824,6 +47832,7 @@ interface Chunk {
     GetLocalVoxelAt(localX: number, localY: number, localZ: number): number;
     GetPrefabAt(worldPos: Vector3): GameObject;
     GetPriorityUpdate(): boolean;
+    GetRandomOccupiedVoxelPosition(): Vector3;
     GetVoxelAt(worldPos: Vector3): number;
     GetVoxelColorAt(worldPos: Vector3): Color32;
     HasVoxels(): boolean;
@@ -47831,6 +47840,7 @@ interface Chunk {
     IsLoaded(): boolean;
     MainthreadForceCollisionRebuild(): void;
     MainthreadUpdateMesh(world: VoxelWorld): boolean;
+    MarkKeysWithVoxelsDirty(): void;
     NeedsToCopyMeshToScene(): boolean;
     NeedsToGenerateMesh(): boolean;
     SetGeometryDirty(dirty: boolean, priority: boolean): void;
@@ -47902,6 +47912,7 @@ interface VoxelWorldConstructor {
     Floor(input: Vector3): Vector3;
     FloorInt(input: Vector3): Vector3;
     GetFirstInstance(): VoxelWorld;
+    GetScaleFromFlipBits(flipBits: number): Vector3;
     GetVoxelFlippedBits(voxel: number): number;
     HashCoordinates(x: number, y: number, z: number): number;
     SetVoxelFlippedBits(voxel: number, flippedBits: number): number;
@@ -47914,29 +47925,6 @@ interface VoxelWorldConstructor {
 
 }
 declare const VoxelWorld: VoxelWorldConstructor;
-    
-interface AccessorySkin extends ScriptableObject {
-    skinTextureDiffuse: Texture2D;
-    skinTextureNormal: Texture2D;
-    skinTextureORM: Texture2D;
-    faceTextureDiffuse: Texture2D;
-
-
-
-    ToString(): string;
-
-
-}
-    
-interface AccessorySkinConstructor {
-
-
-    new(): AccessorySkin;
-
-
-
-}
-declare const AccessorySkin: AccessorySkinConstructor;
     
 interface ActiveAccessory {
     AccessoryComponent: AccessoryComponent;
