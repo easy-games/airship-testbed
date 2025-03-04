@@ -1,18 +1,32 @@
 import { Airship } from "../../Airship";
 import Character from "../../Character/Character";
+import { Game } from "../../Game";
 import { Bin } from "../../Util/Bin";
 import PredictedCustomCommand from "./PredictedCustomCommand";
 
 export interface CommandConfiguration {
 	priority?: number;
+	/** Default is BeforeMove */
 	tickTiming?: "BeforeMove" | "AfterMove";
+	/**
+	 * By default, if a command receives no input for more than a few ticks, we will delete the command and stop processing. If tickWithNoInput is
+	 * set to true, the command will continue to process ticks even if no input is recieved from the client (OnTick's input will be undefined).
+	 * This means that your OnTick function must return false when you want the command to stop running. Returning false from
+	 * GetCommand will still cause the command to terminate even if tickWithNoInput is set to true.
+	 *
+	 * You may wish to use this option if your command should always run for a certain amount of time/ticks, even if client commands fail
+	 * to reach the server.
+	 *
+	 * Default is false.
+	 */
+	tickWithNoInput?: boolean;
 	handler: typeof PredictedCustomCommand<unknown, unknown>;
 }
 
 interface ActiveCommand {
 	config: CommandConfiguration;
 	customDataKey: string;
-	started: boolean;
+	created: boolean;
 	instance: PredictedCustomCommand<unknown, unknown>;
 	bin: Bin;
 }
@@ -26,28 +40,52 @@ interface CustomInputData {
 	data: Readonly<unknown>;
 }
 
+/** Data contained in the custom data key */
+interface KeyData {
+	commandId: string;
+	instanceId: string;
+}
+
 export default class PredictedCommandManager extends AirshipSingleton {
-	private CUSTOM_COMMAND_PREFIX = "cc:";
 	private commandHandlerMap: Record<string, CommandConfiguration> = {};
 	private activeCommands: Map<number, Map<string, ActiveCommand>>;
 	private globalBin = new Bin();
 
+	// Clients use this number to generate a unique instance id for each command run. The server uses the client instance
+	// IDs so we know which command input is for. Instance IDs are character scoped, so we don't have to worry about conflicts
+	// across clients.
+	private instanceId = 0;
+
+	/** Used by the client to queue commands to be set up on the next tick. */
+	private queuedCommands: string[] = [];
+
 	protected Start(): void {
 		Airship.Characters.ObserveCharacters((character) => {
-			// Handles creating new commands to process inputs the first time the input for a command is seen.
+			// Handles creating queued commands just before input processing on the client. This ensures we don't connect command callbacks
+			// in the middle of processing a tick. Commands should always start at the beginning of a tick before gathering input.
+			character.bin.Add(
+				character.PreCreateCommand.Connect(() => {
+					this.queuedCommands.forEach((commandId) => {
+						this.SetupCommand(character, commandId, `${++this.instanceId}`);
+					});
+					this.queuedCommands.clear();
+				}),
+			);
+
+			// Handles creating new commands to process inputs the first time the input for a command is seen on the server
 			character.bin.Add(
 				character.PreProcessCommand.Connect((customInputData, input) => {
 					(customInputData as Map<string, Readonly<CustomInputData>>).forEach((value, key) => {
 						// If it's not custom data controlled by us, ignore it
-						if (key.sub(0, 3) !== this.CUSTOM_COMMAND_PREFIX) return;
-						const commandId = key.sub(3);
+						const keyData = this.ParseCustomDataKey(key);
+						if (!keyData) return;
 
 						// See if the command is already running
-						const activeCommand = this.GetActiveCommandOnCharacter(character, commandId);
+						const activeCommand = this.GetActiveCommandOnCharacter(character, key);
 						if (activeCommand) return;
 
 						// Run the command if it's not already running
-						this.SetupCommand(character, commandId);
+						this.SetupCommand(character, keyData.commandId, keyData.instanceId);
 					});
 				}),
 			);
@@ -58,14 +96,14 @@ export default class PredictedCommandManager extends AirshipSingleton {
 					const commands = this.activeCommands.get(character.id);
 					commands?.forEach((command, key) => {
 						// Get the data for this command. If we don't have data on each side, then it definitely doesn't match
+						// The resulting reconcile will cause any unnecessary commands to be removed and missing commands to
+						// be created.
 						const aCommandData = (aCustom as Map<string, Readonly<CustomSnapshotData>>).get(key);
 						const bCommandData = (bCustom as Map<string, Readonly<CustomSnapshotData>>).get(key);
 						if (!aCommandData || !bCommandData) {
 							character.SetComparisonResult(false);
 							return;
 						}
-
-						// TODO: check for tombstone?
 
 						// Call the compare function and set the result for C# to use later
 						const result = command.instance.CompareSnapshots(aCommandData.data, bCommandData.data);
@@ -79,41 +117,48 @@ export default class PredictedCommandManager extends AirshipSingleton {
 			// was still running.
 			character.bin.Add(
 				character.OnResetToSnapshot.Connect((customSnapshotData) => {
-					// TODO: for all active commands that aren't part of the snapshot we are resetting to, we need to
-					// reset them to a null snapshot so that they disable themselves. Should we should mark these all as started =false
-					// so that we re-run the start functions? When we re set them back to their correct state, do we re-run the start/end
-					// functions and if so, would they be replays?
-					// Should we be doing the Start/End functions at all?
-					// It seems like set state would probably not be where you would want to do things like create a rigidbody or
-					// entity in the world, but it could be ok, just more checks
-					// I could change the implied meaning of start/end to Create()/Destroy() so that you know that's where those
-					// actions should happen. If I don't allow you to know it's a replay, then I can assume you will be creating and
-					// destroying the effects of the command and then setState will come in the middle of those.
-
-					// I think order matters here because we want to make sure that all existing active command reset everything to default
-					// first, then we create and set all the commands that are supposed to be active during that snapshot
-
-					(customSnapshotData as Map<string, Readonly<CustomSnapshotData>>).forEach((value, key) => {
-						// If it's not custom data controlled by us, ignore it
-						if (key.sub(0, 3) !== this.CUSTOM_COMMAND_PREFIX) return;
-						const commandId = key.sub(3);
-
-						// See if the command is already running
-						let activeCommand = this.GetActiveCommandOnCharacter(character, commandId);
-						if (!activeCommand) {
-							// If it's not running, create it
-							activeCommand = this.SetupCommand(character, commandId);
-							if (!activeCommand) {
-								warn(
-									`Failed to set up command ${commandId} for replay. This may cause unusual replay behavior.`,
-								);
-								return;
-							}
+					// First, make sure any commands that shouldn't be running at this snapshot are destroyed.
+					const currentCommands = this.activeCommands.get(character.id);
+					currentCommands?.forEach((activeCommand) => {
+						if (customSnapshotData.has(activeCommand.customDataKey)) {
+							// This command should be active, so we don't need to clean it up
+							return;
 						}
 
-						// Reset the command to the provided state snapshot.
-						activeCommand.instance.ResetToSnapshot(value.data);
+						// Remove all other commands.
+						activeCommand.bin.Clean();
 					});
+
+					// Handle reseting or creating commands that are part of the snapshot we are resetting to.
+					(customSnapshotData as Map<string, Readonly<CustomSnapshotData>>).forEach(
+						(value, customDataKey) => {
+							// If it's not custom data controlled by us, ignore it
+							const keyData = this.ParseCustomDataKey(customDataKey);
+							if (!keyData) return;
+
+							// See if the command is already running
+							let activeCommand = this.GetActiveCommandOnCharacter(character, customDataKey);
+							if (!activeCommand) {
+								// If it's not running, create it
+								activeCommand = this.SetupCommand(character, keyData.commandId, keyData.instanceId);
+								if (!activeCommand) {
+									warn(
+										`Failed to set up command ${keyData.commandId} (instance: ${keyData.instanceId}) for replay. This may cause unusual replay behavior.`,
+									);
+									return;
+								}
+							}
+
+							// If we need to use this command and it's not been created yet, create it.
+							if (!activeCommand.created) {
+								activeCommand.created = true;
+								activeCommand.instance.Create?.();
+							}
+
+							// Reset the command to the provided state snapshot.
+							activeCommand.instance.ResetToSnapshot(value.data);
+						},
+					);
 				}),
 			);
 
@@ -137,13 +182,28 @@ export default class PredictedCommandManager extends AirshipSingleton {
 	}
 
 	/**
-	 * Sets up the provided command on the given player's character. This function will
-	 * not perform any action if the player does not have a character.
-	 * @param player
+	 * Starts running the provided command on the character on the next tick. Returns a bin that can
+	 * be used to stop the command from running.
+	 * @param character
 	 * @param commandId
 	 * @returns
 	 */
-	private SetupCommand(character: Character, commandId: string) {
+	public RunCommand(commandId: string) {
+		if (Game.IsServer() && !Game.IsHosting()) {
+			return error("RunCommand() should not be called from the server.");
+		}
+
+		this.queuedCommands.push(commandId);
+	}
+
+	/**
+	 * Sets up the provided command on the given player's character. This function will
+	 * not perform any action if the player does not have a character.
+	 * @param commandId string that identifies the handler for the command
+	 * @param instanceId string that identifies the instance of this command
+	 * @returns
+	 */
+	private SetupCommand(character: Character, commandId: string, instanceId: string) {
 		const config = this.commandHandlerMap[commandId];
 		if (!config) {
 			warn(`Unable to find custom command with key ${commandId}. Has it been registered?`);
@@ -158,17 +218,22 @@ export default class PredictedCommandManager extends AirshipSingleton {
 
 		const activeCommand: ActiveCommand = {
 			config: config,
-			customDataKey: this.CUSTOM_COMMAND_PREFIX + commandId,
-			started: false,
+			customDataKey: this.BuildCustomDataKey({ commandId, instanceId }),
+			created: false,
 			instance: new config.handler(character),
 			bin: new Bin(),
 		};
+		let shouldTickAgain = true;
 
 		character.bin.Add(activeCommand.bin);
 
 		// Handles GetCommand call
 		activeCommand.bin.Add(
 			character.OnAddCustomInputData.Connect(() => {
+				// Last tick requested to end processing, so we no longer get input. The server
+				// should have also expected to end processing this tick and will not expect new input.
+				if (!shouldTickAgain) return;
+
 				const input = activeCommand.instance.GetCommand();
 				const inputWrapper: CustomInputData = {
 					finished: !!input,
@@ -187,22 +252,23 @@ export default class PredictedCommandManager extends AirshipSingleton {
 		// Handles OnTick call
 		activeCommand.bin.Add(
 			onUseInput.Connect((customData, input, replay) => {
-				// TODO: extract input for custom command
-				const customInput = (customData as Map<string, CustomInputData>).get(activeCommand.customDataKey);
-				// We are running a tick where we didn't have input for this command
-				if (!customInput) return;
-				if (customInput && !activeCommand.started) {
-					activeCommand.started = true;
-					activeCommand.instance.Create?.();
-				}
-				// The command was finished. Call complete and don't tick.
-				if (customInput.finished) {
-					activeCommand.started = false;
-					activeCommand.instance.Destroy?.();
+				// The last tick returned false, so we should stop ticking no matter what our input is.
+				if (!shouldTickAgain) {
 					activeCommand.bin.Clean();
 					return;
 				}
-				activeCommand.instance.OnTick(customInput, replay);
+
+				const customInput = (customData as Map<string, CustomInputData>).get(activeCommand.customDataKey);
+				if (customInput && !activeCommand.created) {
+					activeCommand.created = true;
+					activeCommand.instance.Create?.();
+				}
+				// The command was finished. Call complete and don't tick.
+				if (customInput && customInput.finished) {
+					activeCommand.bin.Clean();
+					return;
+				}
+				shouldTickAgain = activeCommand.instance.OnTick(customInput, replay) === false;
 			}),
 		);
 
@@ -217,26 +283,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 			}),
 		);
 
-		// // Handles ResetToSnapshot
-		// activeCommand.bin.Add(
-		// 	// TODO: this might actually need to be handled on a long lived connection so that we can create the command to handle
-		// 	// the rollback if we've already cleaned it up. Or we would have to find a way to keep the connection around until it's no
-		// 	// longer possible to need it again. Maybe AirshipSimulationManger could expose that as an event?
-		// 	character.OnResetToSnapshot.Connect((customSnapshotData) => {
-		// 		const state = (customSnapshotData as Map<string, CustomSnapshotData>).get(activeCommand.customDataKey);
-
-		// 		if (!state) {
-		// 			// we reset the started variable here since we only go backwards in time. That means that a state with no
-		// 			// data is a state where this command wasn't started yet. If it was after the command finished, we would
-		// 			// have cleaned up this event connection already. TODO: is that a problem?? what if we clean up then need to roll
-		// 			// back to when it was running....
-		// 			activeCommand.started = false;
-		// 		}
-
-		// 		activeCommand.instance.ResetToSnapshot(state);
-		// 	}),
-		// );
-
+		// Handles observer interpolation on each frame.
 		activeCommand.bin.Add(
 			character.OnInterpolateSnapshot.Connect((a, a_, b, b_, delta) => {
 				const aData = (a as Map<string, CustomSnapshotData>).get(activeCommand.customDataKey);
@@ -246,57 +293,54 @@ export default class PredictedCommandManager extends AirshipSingleton {
 					return;
 				}
 				if (bData === undefined) {
-					//activeCommand.instance.OnObserverEnded?.();
-					activeCommand.bin.Clean();
+					// Skip interpolating since we have nothing to interpolate to.
 					return;
 				}
 				activeCommand.instance.OnObserverUpdate?.(aData, bData, delta);
 			}),
 		);
 
+		// Handles when interpolation reaches a new state for an observed character.
 		activeCommand.bin.Add(
 			character.OnInterpolateReachedSnapshot.Connect((customData) => {
-				// if (!activeCommand.started) {
-				// 	activeCommand.started = true;
-				// 	activeCommand.instance.OnObserverStart?.(customData.get(activeCommand.key) as Readonly<unknown>);
-				// }
 				const commandData = (customData as Map<string, CustomSnapshotData>).get(activeCommand.customDataKey);
-				if (!commandData && activeCommand.started) {
+				if (!commandData && activeCommand.created) {
 					// We reached a tick where this command is no longer running. Complete it.
-					activeCommand.instance.Destroy?.();
+					activeCommand.bin.Clean();
 					return;
 				}
 
-				if (!commandData && !activeCommand.started) {
+				if (!commandData && !activeCommand.created) {
 					// We reached a tick where the command hasn't started yet. Don't do anything yet.
 					return;
 				}
 
-				if (!activeCommand.started) {
-					// We reached a tick where we do have command data, but we haven't started the command yet.
-					activeCommand.started = true;
+				if (!activeCommand.created) {
+					// We reached a tick where we do have command data, but we haven't created the command yet. Create it.
+					activeCommand.created = true;
 					activeCommand.instance.Create?.();
 				}
 				activeCommand.instance.OnObserverReachedState?.(customData);
 			}),
 		);
 
-		// TODO: this needs to be in a place where we know if it's a replay
-		// Handles OnCommandEnded so that it fires when the command is complete
-		// activeCommand.bin.Add(() => {
-		// 	activeCommand.instance.OnCommandEnded?.(false);
-		// });
+		// Ensures the destroy callback is done whenever the command is to be cleaned up.
+		activeCommand.bin.Add(() => {
+			if (!activeCommand.created) return;
+			activeCommand.created = false;
+			activeCommand.instance.Destroy?.();
+		});
 
 		this.AddActiveCommandToCharacter(character, activeCommand);
 		return activeCommand;
 	}
 
-	public GetActiveCommandOnCharacter(character: Character, commandId: string): ActiveCommand | undefined {
+	public GetActiveCommandOnCharacter(character: Character, customDataKey: string): ActiveCommand | undefined {
 		const characterCommands = this.activeCommands.get(character.id);
 		if (!characterCommands) return;
 
-		const activeCommand = characterCommands.get(commandId);
-		if (!commandId) return;
+		const activeCommand = characterCommands.get(customDataKey);
+		if (!activeCommand) return;
 
 		return activeCommand;
 	}
@@ -321,5 +365,18 @@ export default class PredictedCommandManager extends AirshipSingleton {
 
 	protected OnDestroy(): void {
 		this.globalBin.Clean();
+	}
+
+	private BuildCustomDataKey(keyData: { commandId: string; instanceId: string }) {
+		return "cc:" + keyData.commandId + ":" + keyData.instanceId;
+	}
+
+	private ParseCustomDataKey(dataKey: string): KeyData | undefined {
+		if (dataKey.sub(0, 3) !== "cc:") return;
+		const [commandId, instanceId] = dataKey.sub(3).split(":");
+		return {
+			commandId,
+			instanceId,
+		};
 	}
 }

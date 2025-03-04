@@ -32,7 +32,9 @@ class Test extends PredictedCustomCommand<{ charging: boolean }, { progress: num
 		return false;
 	}
 
-	OnTick(input: Readonly<{ charging: boolean }>, replay: boolean) {
+	OnTick(input: Readonly<{ charging: boolean }> | undefined, replay: boolean) {
+		if (!input) return false;
+
 		this.progress = this.progress + this.CHARGE_PER_TICK;
 		if (this.progress >= 100) {
 			Game.localPlayer.character?.movement.AddImpulse(new Vector3(0, 100, 0));

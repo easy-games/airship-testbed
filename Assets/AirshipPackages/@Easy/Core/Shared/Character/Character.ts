@@ -73,6 +73,16 @@ export default class Character extends AirshipBehaviour {
 	// Custom Move Data
 	private queuedCustomInputData = new Map<string, unknown>();
 	private queuedCustomSnapshotData = new Map<string, unknown>();
+
+	// TODO: we might have trouble with this running on fixed update before update runs since
+	// we would normally collect input in update to be committed in fixed update which is where
+	// GetCommand is called...
+	/**
+	 * Fires before a new command is created on the client. Use this signal to create anything that will need
+	 * to connect to OnAddCustomSnapshotData for the tick about to be processed. Only fires for the local
+	 * character.
+	 */
+	public PreCreateCommand = new Signal<[]>();
 	/**
 	 * Fires before command processing only for new commands. Does not fire on replays.
 	 *
@@ -256,6 +266,7 @@ export default class Character extends AirshipBehaviour {
 
 		this.bin.AddEngineEventConnection(
 			movementWithSignals.OnCreateCommand(() => {
+				this.PreCreateCommand.Fire();
 				this.CollectCustomInputData();
 			}),
 		);

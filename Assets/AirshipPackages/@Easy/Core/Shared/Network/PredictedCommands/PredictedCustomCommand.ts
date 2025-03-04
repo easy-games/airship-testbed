@@ -15,6 +15,8 @@ export default class PredictedCustomCommand<Input, StateSnapshot> {
 	/**
 	 * Called on fixed update for each tick to determine the inputs for the current tick. The returned input
 	 * is also sent to the server for processing.
+	 *
+	 * Returning false will end the command.
 	 */
 	GetCommand(): Input | false {
 		return false;
@@ -42,10 +44,18 @@ export default class PredictedCustomCommand<Input, StateSnapshot> {
 	 * This function is processed before character movement is run and can be used to modify things like
 	 * character speed or the user input used for movement processing.
 	 *
+	 * It is possible for there to be no input provided for a given tick. This may happen due to network issues
+	 * or client misbehavior. It's up to you to decide how to handle missing input.
+	 *
+	 * Returning false will stop the command from processing on the next tick. OnCaptureSnapshot will still be called
+	 * for the current tick.
+	 *
 	 * @param input
 	 * @param replay
 	 */
-	OnTick(input: Readonly<Input>, replay: boolean): void {}
+	OnTick(input: Readonly<Input> | undefined, replay: boolean): void | false {
+		return false;
+	}
 
 	/**
 	 * Return the current state of the system
@@ -64,14 +74,13 @@ export default class PredictedCustomCommand<Input, StateSnapshot> {
 	 * Set the state to the provided one. This is called during lag compensation and resimulation. Make sure that
 	 * everything you modify in OnTick is set back to the state encoded in the provided state value.
 	 *
-	 * For example, if you modify a characters position OnTick, you should encode this value in the state you return.
-	 * In this function, you set their position back to the position encoded in the state value.
+	 * For example, if you modify a characters position OnTick, you should encode this value in the state you return
+	 * from OnCaptureSnapshot. In ResetToSnapshot, you should set their position back to the position encoded in
+	 * the state value.
 	 *
-	 * If this function recieves undefined as a parameter, that means that we are rolling back to a time before this
-	 * command was active. You should undo anything that affects physics when this occurs.
-	 * @param stateSnapshot One of the states previously returned from your tick function.
+	 * @param stateSnapshot One of the states previously returned from your OnCaptureSnapshot function.
 	 */
-	ResetToSnapshot(stateSnapshot: Readonly<StateSnapshot> | undefined): void {}
+	ResetToSnapshot(stateSnapshot: Readonly<StateSnapshot>): void {}
 
 	/**
 	 * Compares two snapshots. If the snapshots are equal, return true. If not, return false.
@@ -80,7 +89,7 @@ export default class PredictedCustomCommand<Input, StateSnapshot> {
 	 * @returns
 	 */
 	CompareSnapshots(a: Readonly<StateSnapshot>, b: Readonly<StateSnapshot>): boolean {
-		return false;
+		return true;
 	}
 
 	// Client and observer effects.
