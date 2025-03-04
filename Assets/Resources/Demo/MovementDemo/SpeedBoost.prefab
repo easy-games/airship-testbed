@@ -371,8 +371,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: AirshipPackages/@Easy/Core/Shared/Types/Generated.d@Space
       fileRef: 
-      jsDocs:
-        text: []
+      docs:
+        comments: []
         tags: []
       decorators: []
       nullable: 0
@@ -389,8 +389,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      jsDocs:
-        text: []
+      docs:
+        comments: []
         tags: []
       decorators: []
       nullable: 0
@@ -407,8 +407,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      jsDocs:
-        text: []
+      docs:
+        comments: []
         tags: []
       decorators: []
       nullable: 0

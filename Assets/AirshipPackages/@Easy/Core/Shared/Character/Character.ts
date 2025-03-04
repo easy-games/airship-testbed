@@ -62,6 +62,7 @@ export default class Character extends AirshipBehaviour {
 	@NonSerialized() public onDespawn = new Signal<void>();
 	@NonSerialized() public onStateChanged = new Signal<[newState: CharacterState, oldState: CharacterState]>();
 	@NonSerialized() public onHealthChanged = new Signal<[newHealth: number, oldHealth: number]>();
+	@NonSerialized() public onMaxHealthChanged = new Signal<[newMaxHealth: number, oldMaxHealth: number]>();
 	@NonSerialized() public onEmoteStart = new Signal<EmoteStartSignal>();
 	@NonSerialized() public onEmoteEnd = new Signal<[]>();
 
@@ -370,7 +371,16 @@ export default class Character extends AirshipBehaviour {
 	}
 
 	public SetMaxHealth(maxHealth: number): void {
+		const oldMaxHealth = this.maxHealth;
+		if (oldMaxHealth === maxHealth) return;
+
 		this.maxHealth = maxHealth;
+		this.onMaxHealthChanged.Fire(this.maxHealth, oldMaxHealth);
+
+		// If we're a dedicated server network max health to clients
+		if (Game.IsServer() && !Game.IsClient()) {
+			CoreNetwork.ServerToClient.Character.SetMaxHealth.server.FireAllClients(this.id, this.maxHealth);
+		}
 	}
 
 	public SetDisplayName(displayName: string) {
