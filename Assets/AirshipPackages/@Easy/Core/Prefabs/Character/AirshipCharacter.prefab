@@ -657,8 +657,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators: []
       nullable: 0
@@ -675,8 +675,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators:
       - name: Header
@@ -697,8 +697,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators: []
       nullable: 0
@@ -715,8 +715,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators: []
       nullable: 0
@@ -733,8 +733,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators: []
       nullable: 0
@@ -751,8 +751,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators: []
       nullable: 0
@@ -769,8 +769,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators: []
       nullable: 0
@@ -787,8 +787,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators:
       - name: Header
@@ -809,8 +809,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators: []
       nullable: 0
@@ -856,8 +856,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators:
       - name: Header
@@ -878,8 +878,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators: []
       nullable: 0
@@ -896,8 +896,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators: []
       nullable: 0
@@ -914,8 +914,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators: []
       nullable: 0
@@ -932,8 +932,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators: []
       nullable: 0
@@ -950,8 +950,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators: []
       nullable: 0
@@ -968,8 +968,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators: []
       nullable: 0
@@ -986,8 +986,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators: []
       nullable: 0
@@ -1004,8 +1004,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators:
       - name: Header
@@ -1055,8 +1055,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators: []
       nullable: 0
@@ -1073,8 +1073,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators: []
       nullable: 0
@@ -1091,8 +1091,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators: []
       nullable: 0
@@ -1109,8 +1109,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators: []
       nullable: 0
@@ -1127,8 +1127,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: AirshipPackages/@Easy/Core/Shared/Inventory/Inventory@InventoryModifyPermission
       fileRef: 
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators:
       - name: Header
@@ -1298,8 +1298,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators: []
       nullable: 0
@@ -1316,8 +1316,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: AirshipPackages/@Easy/Core/Shared/Character/Character.ts
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators:
       - name: Header
@@ -1338,8 +1338,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators: []
       nullable: 0

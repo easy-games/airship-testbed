@@ -718,8 +718,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators: []
       nullable: 0

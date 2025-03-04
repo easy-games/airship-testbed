@@ -76,8 +76,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators: []
       nullable: 0
@@ -94,8 +94,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators:
       - name: Header
@@ -116,8 +116,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators:
       - name: Header
@@ -138,8 +138,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators: []
       nullable: 0
@@ -156,8 +156,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators: []
       nullable: 0
@@ -194,8 +194,8 @@ MonoBehaviour:
         - {fileID: 2137736817724690517}
       refPath: 
       fileRef: 
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators: []
       nullable: 0
@@ -212,8 +212,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators: []
       nullable: 0
@@ -230,8 +230,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators:
       - name: Header
@@ -252,8 +252,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators: []
       nullable: 0
