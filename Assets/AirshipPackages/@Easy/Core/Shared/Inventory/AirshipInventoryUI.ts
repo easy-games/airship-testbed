@@ -277,9 +277,15 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	/**
 	 * Binds the dragging events for the given {@link button} to the given {@link inventory}, with the slot index {@link slotIndex}
 	 */
-	private BindDragEventsOnButton(button: Button, inventory: Inventory, slotIndex: number): EngineEventConnection[] {
+	private BindDragEventsOnButton(
+		button: Button,
+		currentInventory: () => Inventory,
+		slotIndex: number,
+	): EngineEventConnection[] {
 		return [
 			CanvasAPI.OnBeginDragEvent(button.gameObject, () => {
+				const inventory = currentInventory();
+
 				this.draggingBin.Clean();
 				if (!this.IsBackpackShown()) return;
 				if (Keyboard.IsKeyDown(Key.LeftShift)) return;
@@ -317,7 +323,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 				this.draggingState = {
 					slot: slotIndex,
 					itemStack,
-					inventory,
+					inventory: inventory,
 					transform: cloneTransform,
 					consumed: false,
 				};
@@ -325,6 +331,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			CanvasAPI.OnDropEvent(button.gameObject, () => {
 				if (!this.IsBackpackShown()) return;
 				if (!this.draggingState) return;
+				const inventory = currentInventory();
 
 				Airship.Inventory.MoveToSlot(
 					this.draggingState.inventory,
@@ -473,7 +480,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 				}),
 			);
 
-			const connections = this.BindDragEventsOnButton(tile.button, inventory, i);
+			const connections = this.BindDragEventsOnButton(tile.button, () => inventory, i);
 			for (const connection of connections) {
 				bin.AddEngineEventConnection(connection);
 			}
@@ -603,20 +610,24 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 				// Prevent listening to connections multiple times
 				if (init) {
 					const tileComponent = tile.GetAirshipComponent<AirshipInventoryTile>()!;
-					CanvasAPI.OnClickEvent(tileComponent.button.gameObject, () => {
-						if (i < inv.hotbarSlots) {
-							// hotbar
-							if (this.IsBackpackShown()) {
-								Airship.Inventory.onInventorySlotClicked.Fire(new SlotInteractionEvent(inv, i));
+					this.bin.AddEngineEventConnection(
+						CanvasAPI.OnClickEvent(tileComponent.button.gameObject, () => {
+							if (i < inv.hotbarSlots) {
+								// hotbar
+								if (this.IsBackpackShown()) {
+									Airship.Inventory.onInventorySlotClicked.Fire(new SlotInteractionEvent(inv, i));
+								} else {
+									inv.SetHeldSlot(i);
+								}
 							} else {
-								inv.SetHeldSlot(i);
+								Airship.Inventory.onInventorySlotClicked.Fire(new SlotInteractionEvent(inv, i));
 							}
-						} else {
-							Airship.Inventory.onInventorySlotClicked.Fire(new SlotInteractionEvent(inv, i));
-						}
-					});
+						}),
+					);
 
-					this.BindDragEventsOnButton(tileComponent.button, Airship.Inventory.localInventory!, i);
+					this.BindDragEventsOnButton(tileComponent.button, () => inv, i).forEach((id) => {
+						this.bin.AddEngineEventConnection(id);
+					});
 				}
 			}
 			init = false;
