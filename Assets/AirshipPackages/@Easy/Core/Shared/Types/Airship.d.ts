@@ -1117,7 +1117,7 @@ declare const PlatformGear: PlatformGearConstructor;
 
 interface AirAssetBundle {
 	airId: string;
-	LoadAsync<T extends Object = Object>(path: string): Object | undefined;
+	LoadAsync<T extends Object = Object>(path: string): T | undefined;
 	GetPaths(): string[];
 }
 interface AirAssetBundleStatic {
