@@ -2,6 +2,9 @@ import { Airship } from "../../Airship";
 import Character from "../../Character/Character";
 import { Game } from "../../Game";
 import { Bin } from "../../Util/Bin";
+import { Cancellable } from "../../Util/Cancellable";
+import inspect from "../../Util/Inspect";
+import { Signal } from "../../Util/Signal";
 import PredictedCustomCommand from "./PredictedCustomCommand";
 
 export interface CommandConfiguration {
@@ -24,6 +27,8 @@ export interface CommandConfiguration {
 }
 
 interface ActiveCommand {
+	commandId: string;
+	instanceId: string;
 	config: CommandConfiguration;
 	customDataKey: string;
 	created: boolean;
@@ -41,14 +46,31 @@ interface CustomInputData {
 }
 
 /** Data contained in the custom data key */
-interface KeyData {
+export interface CommandInstanceIdentifier {
 	commandId: string;
 	instanceId: string;
 }
 
+class ValidateCommand extends Cancellable {
+	public constructor(public character: Character, public readonly commandId: string) {
+		super();
+	}
+}
+
 export default class PredictedCommandManager extends AirshipSingleton {
+	/**
+	 * Fires when a new command is starting. In server authoritative mode, this signal fires on both
+	 * the client and the server. If running in client authoritative mode, this signal will only fire
+	 * on the local client.
+	 *
+	 * Keep in mind that cancelling a command only on the server side will force a reconcile.
+	 *
+	 * Only fires for the local character on the client.
+	 */
+	public readonly onValidateCommand = new Signal<ValidateCommand>();
+
 	private commandHandlerMap: Record<string, CommandConfiguration> = {};
-	private activeCommands: Map<number, Map<string, ActiveCommand>>;
+	private activeCommands: Map<number, Map<string, ActiveCommand>> = new Map();
 	private globalBin = new Bin();
 
 	// Clients use this number to generate a unique instance id for each command run. The server uses the client instance
@@ -57,7 +79,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 	private instanceId = 0;
 
 	/** Used by the client to queue commands to be set up on the next tick. */
-	private queuedCommands: string[] = [];
+	private queuedCommands: CommandInstanceIdentifier[] = [];
 
 	protected Start(): void {
 		Airship.Characters.ObserveCharacters((character) => {
@@ -65,8 +87,12 @@ export default class PredictedCommandManager extends AirshipSingleton {
 			// in the middle of processing a tick. Commands should always start at the beginning of a tick before gathering input.
 			character.bin.Add(
 				character.PreCreateCommand.Connect(() => {
-					this.queuedCommands.forEach((commandId) => {
-						this.SetupCommand(character, commandId, `${++this.instanceId}`);
+					this.queuedCommands.forEach((key) => {
+						print("creating new command");
+						const event = this.onValidateCommand.Fire(new ValidateCommand(character, key.commandId));
+						print("event result" + event);
+						if (event.IsCancelled()) return; // Skip creating if something says we shouldn't create this
+						this.SetupCommand(character, key.commandId, key.instanceId);
 					});
 					this.queuedCommands.clear();
 				}),
@@ -93,20 +119,42 @@ export default class PredictedCommandManager extends AirshipSingleton {
 			// Handles comparing snapshot custom data
 			character.bin.Add(
 				character.OnCompareSnapshots.Connect((aCustom, a, bCustom, b) => {
-					const commands = this.activeCommands.get(character.id);
-					commands?.forEach((command, key) => {
+					const activeCommandKeys: Set<string> = new Set();
+					aCustom.forEach((_, key) => activeCommandKeys.add(key));
+					bCustom.forEach((_, key) => activeCommandKeys.add(key));
+
+					// Iterate over active keys for these snapshots and compare.
+					activeCommandKeys?.forEach((key) => {
+						// If the custom command key wasn't one of our managed keys, ignore it
+						const keyData = this.ParseCustomDataKey(key);
+						if (!keyData) return;
+
 						// Get the data for this command. If we don't have data on each side, then it definitely doesn't match
 						// The resulting reconcile will cause any unnecessary commands to be removed and missing commands to
 						// be created.
 						const aCommandData = (aCustom as Map<string, Readonly<CustomSnapshotData>>).get(key);
 						const bCommandData = (bCustom as Map<string, Readonly<CustomSnapshotData>>).get(key);
 						if (!aCommandData || !bCommandData) {
+							print("missing data for " + key);
 							character.SetComparisonResult(false);
 							return;
 						}
 
+						// To find the command instance we need to work on, we first check active commands to see if it's still operating,
+						// if it's not, we have to create it, then compare.
+						let instance = this.GetActiveCommandOnCharacter(character, key)?.instance;
+						if (!instance) {
+							const handler = this.commandHandlerMap[keyData.commandId].handler;
+							if (!handler) return;
+
+							// Instead of fully creating an active command using SetupCommand, we simply create an instance of it
+							// since all we want to do is call CompareSnapshots(). No ticking will be involved on this instance
+							// and it should be removed once this function completes.
+							instance = new handler(character);
+						}
+
 						// Call the compare function and set the result for C# to use later
-						const result = command.instance.CompareSnapshots(aCommandData.data, bCommandData.data);
+						const result = instance.CompareSnapshots(aCommandData.data, bCommandData.data);
 						character.SetComparisonResult(result);
 					});
 				}),
@@ -117,14 +165,21 @@ export default class PredictedCommandManager extends AirshipSingleton {
 			// was still running.
 			character.bin.Add(
 				character.OnResetToSnapshot.Connect((customSnapshotData) => {
+					print("resetting to snapshot with custom data set to:" + inspect(customSnapshotData));
+
 					// First, make sure any commands that shouldn't be running at this snapshot are destroyed.
 					const currentCommands = this.activeCommands.get(character.id);
 					currentCommands?.forEach((activeCommand) => {
 						if (customSnapshotData.has(activeCommand.customDataKey)) {
 							// This command should be active, so we don't need to clean it up
+							print(
+								"command is active on target snapshot, ignoring. Expect to reset " +
+									activeCommand.customDataKey,
+							);
 							return;
 						}
 
+						print("active command is not active on snapshot, removing" + activeCommand.customDataKey);
 						// Remove all other commands.
 						activeCommand.bin.Clean();
 					});
@@ -151,9 +206,16 @@ export default class PredictedCommandManager extends AirshipSingleton {
 
 							// If we need to use this command and it's not been created yet, create it.
 							if (!activeCommand.created) {
+								print(
+									"active command " +
+										activeCommand.customDataKey +
+										" was not created on target snapshot, creating",
+								);
 								activeCommand.created = true;
 								activeCommand.instance.Create?.();
 							}
+
+							print("resetting " + activeCommand.customDataKey);
 
 							// Reset the command to the provided state snapshot.
 							activeCommand.instance.ResetToSnapshot(value.data);
@@ -174,7 +236,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 		});
 	}
 
-	public RegisterCommands(map: Record<string, CommandConfiguration>) {
+	public RegisterCommands(map: { [commandId: string]: CommandConfiguration }) {
 		this.commandHandlerMap = {
 			...this.commandHandlerMap,
 			...map,
@@ -182,18 +244,91 @@ export default class PredictedCommandManager extends AirshipSingleton {
 	}
 
 	/**
-	 * Starts running the provided command on the character on the next tick. Returns a bin that can
+	 * Starts running the provided command on the local character on the next tick. Returns a bin that can
 	 * be used to stop the command from running.
 	 * @param character
 	 * @param commandId
 	 * @returns
 	 */
-	public RunCommand(commandId: string) {
+	public RunCommand(commandId: string): CommandInstanceIdentifier {
 		if (Game.IsServer() && !Game.IsHosting()) {
 			return error("RunCommand() should not be called from the server.");
 		}
 
-		this.queuedCommands.push(commandId);
+		print("running command");
+
+		const instanceData = { commandId, instanceId: `${++this.instanceId}` };
+		this.queuedCommands.push(instanceData);
+
+		return instanceData;
+	}
+
+	/**
+	 * Checks if a specific instance of a command is running. Character parameter is required on the server. Will also return true if
+	 * the command is pending.
+	 * @param commandInstance
+	 * @param character
+	 */
+	public IsCommandInstanceActive(commandInstance: CommandInstanceIdentifier, character?: Character): boolean {
+		if (!commandInstance) return false;
+		if (!character && Game.IsServer() && !Game.IsHosting()) {
+			warn(
+				"No character instance provided when calling IsCommandInstanceActive on the server. The character parameter is required on the server. This will always return false.",
+			);
+			return false;
+		}
+		const usedCharacter = character ?? Game.localPlayer.character;
+		if (!usedCharacter) {
+			warn(
+				`Character was undefined when checking for command ${commandInstance.commandId} (i: ${commandInstance.instanceId}). Does your character exist?"`,
+			);
+			return false;
+		}
+
+		if (
+			this.queuedCommands.find(
+				(cmd) => cmd.commandId === commandInstance.commandId && cmd.instanceId === commandInstance.instanceId,
+			)
+		) {
+			return true;
+		}
+
+		const cmd = this.GetActiveCommandOnCharacter(usedCharacter, this.BuildCustomDataKey(commandInstance));
+		return !!cmd;
+	}
+
+	/**
+	 * Checks if there is at least one instance of the provided command id running. commandId is
+	 * the key used in the map provided to the RegisterCommands() function. Will also return true if the command
+	 * is pending
+	 * @param commandId The command
+	 * @param character
+	 */
+	public IsCommandIdActive(commandId: string, character?: Character) {
+		if (!character && Game.IsServer() && !Game.IsHosting()) {
+			warn(
+				"No character instance provided when calling IsCommandIdActive on the server. The character parameter is required on the server. This will always return false.",
+			);
+			return false;
+		}
+		const usedCharacter = character ?? Game.localPlayer.character;
+		if (!usedCharacter) {
+			warn(`Character was undefined when checking for command ${commandId}. Does your character exist?"`);
+			return false;
+		}
+
+		for (const pending of this.queuedCommands) {
+			if (pending.commandId === commandId) return true;
+		}
+
+		const commands = this.activeCommands.get(usedCharacter.id);
+		if (!commands) return false;
+
+		for (const [customDataKey, command] of commands) {
+			if (command.commandId === commandId) return true;
+		}
+
+		return false;
 	}
 
 	/**
@@ -217,6 +352,8 @@ export default class PredictedCommandManager extends AirshipSingleton {
 		}
 
 		const activeCommand: ActiveCommand = {
+			commandId,
+			instanceId,
 			config: config,
 			customDataKey: this.BuildCustomDataKey({ commandId, instanceId }),
 			created: false,
@@ -235,8 +372,9 @@ export default class PredictedCommandManager extends AirshipSingleton {
 				if (!shouldTickAgain) return;
 
 				const input = activeCommand.instance.GetCommand();
+				print("generated input" + input);
 				const inputWrapper: CustomInputData = {
-					finished: !!input,
+					finished: !input,
 					data: input as Readonly<unknown>,
 				};
 
@@ -268,7 +406,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 					activeCommand.bin.Clean();
 					return;
 				}
-				shouldTickAgain = activeCommand.instance.OnTick(customInput, replay) === false;
+				shouldTickAgain = activeCommand.instance.OnTick(customInput, replay) !== false;
 			}),
 		);
 
@@ -329,6 +467,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 			if (!activeCommand.created) return;
 			activeCommand.created = false;
 			activeCommand.instance.Destroy?.();
+			warn("Active command " + activeCommand.customDataKey + " was destroyed.");
 		});
 
 		this.AddActiveCommandToCharacter(character, activeCommand);
@@ -371,9 +510,10 @@ export default class PredictedCommandManager extends AirshipSingleton {
 		return "cc:" + keyData.commandId + ":" + keyData.instanceId;
 	}
 
-	private ParseCustomDataKey(dataKey: string): KeyData | undefined {
+	private ParseCustomDataKey(dataKey: string): CommandInstanceIdentifier | undefined {
 		if (dataKey.sub(0, 3) !== "cc:") return;
-		const [commandId, instanceId] = dataKey.sub(3).split(":");
+		const [commandId, instanceId] = dataKey.sub(4).split(":");
+		print("parsed" + dataKey + " " + dataKey.sub(4) + "to: " + commandId + " - " + instanceId);
 		return {
 			commandId,
 			instanceId,

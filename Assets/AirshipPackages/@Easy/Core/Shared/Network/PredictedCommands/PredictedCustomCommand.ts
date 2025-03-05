@@ -6,11 +6,22 @@ export default class PredictedCustomCommand<Input, StateSnapshot> {
 	 */
 	public character: Character;
 
+	/**
+	 * Creates a predicted custom command instance. Command instances may be created and destroyed without
+	 * ticks being called. It's recommended to create and remove any dependencies in the Create() and Destory()
+	 * functions.
+	 * @param character
+	 */
 	constructor(character: Character) {
 		this.character = character;
 	}
 
 	// Owning Client Only
+
+	/**
+	 * Called on each frame to read input.
+	 */
+	GetFrameInput(): void {}
 
 	/**
 	 * Called on fixed update for each tick to determine the inputs for the current tick. The returned input

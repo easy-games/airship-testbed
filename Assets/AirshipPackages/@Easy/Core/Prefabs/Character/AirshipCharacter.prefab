@@ -1329,6 +1329,7 @@ MonoBehaviour:
   autoCalibrateSkiddingSpeed: 1
   observerRotationLerpMod: 1
   playAnimationOnServer: 1
+  compareResult: 0
 --- !u!114 &7270479773071441371
 MonoBehaviour:
   m_ObjectHideFlags: 0
