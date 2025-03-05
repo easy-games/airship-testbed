@@ -166,8 +166,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        rid: -2
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: Root Pos
@@ -183,8 +184,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        rid: -2
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 0
@@ -193,11 +195,6 @@ MonoBehaviour:
     displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0
-  references:
-    version: 2
-    RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
 --- !u!114 &3426884107082537107
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -234,8 +231,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        rid: -2
+      jsDocs:
+        text: []
+        tags: []
       decorators:
       - name: Header
         parameters:
@@ -248,11 +246,6 @@ MonoBehaviour:
     displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0
-  references:
-    version: 2
-    RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
 --- !u!114 &4944229044116784204
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -309,8 +302,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        rid: -2
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: Graphic Pos
@@ -326,8 +320,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        rid: -2
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 0
@@ -336,11 +331,6 @@ MonoBehaviour:
     displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0
-  references:
-    version: 2
-    RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
 --- !u!114 &6664317513368887607 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7931457288082626079, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
