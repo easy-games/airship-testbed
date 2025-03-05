@@ -1114,3 +1114,13 @@ interface PlatformGearConstructor {
 	DownloadYielding(classId: string, airId: string): PlatformGear | undefined;
 }
 declare const PlatformGear: PlatformGearConstructor;
+
+interface AirAssetBundle {
+	airId: string;
+	LoadAsync<T extends Object = Object>(path: string): Object | undefined;
+	GetPaths(): string[];
+}
+interface AirAssetBundleStatic {
+	DownloadYielding(airId: string): AirAssetBundle | undefined;
+}
+declare const AirAssetBundle: AirAssetBundleStatic;
