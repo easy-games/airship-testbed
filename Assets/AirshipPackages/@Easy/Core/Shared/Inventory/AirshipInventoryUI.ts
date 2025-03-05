@@ -3,15 +3,16 @@ import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
 import { Keyboard, Mouse } from "@Easy/Core/Shared/UserInput";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
-import { CanvasAPI, PointerButton, PointerDirection } from "@Easy/Core/Shared/Util/CanvasAPI";
+import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { OnUpdate } from "@Easy/Core/Shared/Util/Timer";
 import { Asset } from "../Asset";
+import { Game } from "../Game";
+import ProximityPrompt from "../Input/ProximityPrompts/ProximityPrompt";
+import StringUtils from "../Types/StringUtil";
 import { DraggingState } from "./AirshipDraggingState";
 import AirshipInventoryTile from "./AirshipInventoryTile";
 import Inventory from "./Inventory";
-import { Game } from "../Game";
-import StringUtils from "../Types/StringUtil";
-import ProximityPrompt from "../Input/ProximityPrompts/ProximityPrompt";
+import { InventoryUIVisibility } from "./InventoryUIVisibility";
 import { SlotInteractionEvent } from "./Signal/SlotInteractionEvent";
 
 export default class AirshipInventoryUI extends AirshipBehaviour {
@@ -125,6 +126,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 
 	public OpenBackpack(): void {
 		if (!this.inventoryEnabled || !this.backpackEnabled) return;
+		if (Airship.Inventory.uiVisibility === InventoryUIVisibility.Never) return;
 
 		this.backpackShown = true;
 
