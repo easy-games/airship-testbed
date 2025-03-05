@@ -617,7 +617,7 @@ MonoBehaviour:
   meshCombiner: {fileID: 5232673978488062214}
   firstPerson: 0
   lodCount: 3
-  currentOutfit: {fileID: 11400000, guid: 354eefa8bdce6e349b1a536d8c3656e9, type: 2}
+  currentOutfit: {fileID: 0}
   currentUserId: 
   currentUserName: 
   cancelPendingDownload: 0
@@ -1544,7 +1544,7 @@ PrefabInstance:
     - target: {fileID: 3664559219000330965, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2100000, guid: b4c67e2b57a298e4389ee3204f6d883b, type: 2}
     - target: {fileID: 4086383161009726856, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
       propertyPath: m_Layer
       value: 3
@@ -1651,11 +1651,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5420480753661590276, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
       propertyPath: m_Layer
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5420480753661590276, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5571321654954289231, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
       propertyPath: m_Layer

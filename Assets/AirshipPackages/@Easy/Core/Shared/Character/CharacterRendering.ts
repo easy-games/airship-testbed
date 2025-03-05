@@ -38,7 +38,7 @@ export default class CharacterRendering extends AirshipBehaviour {
 
             if(this.character.IsLocalCharacter()) {
                 if(this.useTransparentOnCameraClose && this.autoSetStencilLayer) {
-                    this.character.rig.gameObject.SetLayerRecursive(Layer.LOCAL_STENCIL_MASK);
+                    this.SetLayerRecursive(this.character.rig.transform, Layer.LOCAL_STENCIL_MASK);
                 }
                 this.SetAlpha(1);
             } 
@@ -47,6 +47,17 @@ export default class CharacterRendering extends AirshipBehaviour {
             //         this.character.rig.gameObject.SetLayerRecursive(Layer.STENCIL_MASK);
             //     }
             // }
+        }
+    }
+
+    private SetLayerRecursive(transform: Transform, layer: number){
+        //Check if we can change this game objects layer
+        if(transform.gameObject.layer !== Layer.TRANSPARENT_FX) {
+            transform.gameObject.layer = layer;
+        }
+        for(let i=0; i<transform.childCount; i++){
+            const t = transform.GetChild(i);
+            this.SetLayerRecursive(t, layer);
         }
     }
 
@@ -106,7 +117,7 @@ export default class CharacterRendering extends AirshipBehaviour {
         if (this.lastSetAlpha !== alpha) {
             this.lastSetAlpha = alpha;
             if(this.sharedTransparencyMat){
-                this.sharedTransparencyMat.SetFloat("_Transparency", alpha);
+                this.sharedTransparencyMat.SetFloat("_Transparency", math.clamp01(alpha));
             }
         }
     }
