@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c4968faf83d4945b20e087dcd456ddd, type: 3}
+  m_Name: PigSnout Gear
+  m_EditorClassIdentifier: 
+  classId: a9a26c72-8be1-4cba-8339-66b1aa8fb255
+  accessoryPrefabs:
+  - {fileID: 6848554845832426903, guid: 88cf862ac5e3a9a4899a2cc5309d77ff, type: 3}
+  face: {fileID: 0}
