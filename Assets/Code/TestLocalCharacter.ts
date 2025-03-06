@@ -20,13 +20,11 @@ export default class TestLocalCharacter extends AirshipSingleton {
 		Airship.Input.CreateAction("t", Binding.Key(Key.Q));
 
 		PredictedCommandManager.Get().onValidateCommand.Connect((event) => {
-			print("validating" + event.commandId);
 			if (event.commandId === this.CMD_IDENTIFIER && this.canUseAt > Time.time) {
-				print("can't use this yet");
 				event.SetCancelled(true);
 				return;
 			}
-			this.canUseAt = Time.time + 1;
+			this.canUseAt = Time.time + 3;
 		});
 	}
 

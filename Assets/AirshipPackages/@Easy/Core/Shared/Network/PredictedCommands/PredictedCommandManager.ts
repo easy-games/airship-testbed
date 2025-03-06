@@ -3,7 +3,6 @@ import Character from "../../Character/Character";
 import { Game } from "../../Game";
 import { Bin } from "../../Util/Bin";
 import { Cancellable } from "../../Util/Cancellable";
-import inspect from "../../Util/Inspect";
 import { Signal } from "../../Util/Signal";
 import PredictedCustomCommand from "./PredictedCustomCommand";
 
@@ -88,9 +87,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 			character.bin.Add(
 				character.PreCreateCommand.Connect(() => {
 					this.queuedCommands.forEach((key) => {
-						print("creating new command");
 						const event = this.onValidateCommand.Fire(new ValidateCommand(character, key.commandId));
-						print("event result" + event);
 						if (event.IsCancelled()) return; // Skip creating if something says we shouldn't create this
 						this.SetupCommand(character, key.commandId, key.instanceId);
 					});
@@ -165,21 +162,21 @@ export default class PredictedCommandManager extends AirshipSingleton {
 			// was still running.
 			character.bin.Add(
 				character.OnResetToSnapshot.Connect((customSnapshotData) => {
-					print("resetting to snapshot with custom data set to:" + inspect(customSnapshotData));
+					// print("resetting to snapshot with custom data set to:" + inspect(customSnapshotData));
 
 					// First, make sure any commands that shouldn't be running at this snapshot are destroyed.
 					const currentCommands = this.activeCommands.get(character.id);
 					currentCommands?.forEach((activeCommand) => {
 						if (customSnapshotData.has(activeCommand.customDataKey)) {
 							// This command should be active, so we don't need to clean it up
-							print(
-								"command is active on target snapshot, ignoring. Expect to reset " +
-									activeCommand.customDataKey,
-							);
+							// print(
+							// 	"command is active on target snapshot, ignoring. Expect to reset " +
+							// 		activeCommand.customDataKey,
+							// );
 							return;
 						}
 
-						print("active command is not active on snapshot, removing" + activeCommand.customDataKey);
+						//print("active command is not active on snapshot, removing" + activeCommand.customDataKey);
 						// Remove all other commands.
 						activeCommand.bin.Clean();
 					});
@@ -206,16 +203,16 @@ export default class PredictedCommandManager extends AirshipSingleton {
 
 							// If we need to use this command and it's not been created yet, create it.
 							if (!activeCommand.created) {
-								print(
-									"active command " +
-										activeCommand.customDataKey +
-										" was not created on target snapshot, creating",
-								);
+								// print(
+								// 	"active command " +
+								// 		activeCommand.customDataKey +
+								// 		" was not created on target snapshot, creating",
+								// );
 								activeCommand.created = true;
 								activeCommand.instance.Create?.();
 							}
 
-							print("resetting " + activeCommand.customDataKey);
+							//print("resetting " + activeCommand.customDataKey);
 
 							// Reset the command to the provided state snapshot.
 							activeCommand.instance.ResetToSnapshot(value.data);
@@ -254,8 +251,6 @@ export default class PredictedCommandManager extends AirshipSingleton {
 		if (Game.IsServer() && !Game.IsHosting()) {
 			return error("RunCommand() should not be called from the server.");
 		}
-
-		print("running command");
 
 		const instanceData = { commandId, instanceId: `${++this.instanceId}` };
 		this.queuedCommands.push(instanceData);
@@ -372,7 +367,6 @@ export default class PredictedCommandManager extends AirshipSingleton {
 				if (!shouldTickAgain) return;
 
 				const input = activeCommand.instance.GetCommand();
-				print("generated input" + input);
 				const inputWrapper: CustomInputData = {
 					finished: !input,
 					data: input as Readonly<unknown>,
@@ -467,7 +461,6 @@ export default class PredictedCommandManager extends AirshipSingleton {
 			if (!activeCommand.created) return;
 			activeCommand.created = false;
 			activeCommand.instance.Destroy?.();
-			warn("Active command " + activeCommand.customDataKey + " was destroyed.");
 		});
 
 		this.AddActiveCommandToCharacter(character, activeCommand);
@@ -513,7 +506,6 @@ export default class PredictedCommandManager extends AirshipSingleton {
 	private ParseCustomDataKey(dataKey: string): CommandInstanceIdentifier | undefined {
 		if (dataKey.sub(0, 3) !== "cc:") return;
 		const [commandId, instanceId] = dataKey.sub(4).split(":");
-		print("parsed" + dataKey + " " + dataKey.sub(4) + "to: " + commandId + " - " + instanceId);
 		return {
 			commandId,
 			instanceId,

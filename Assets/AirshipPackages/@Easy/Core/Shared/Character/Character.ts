@@ -10,7 +10,6 @@ import { DamageInfo, DamageInfoCustomData } from "../Damage/DamageInfo";
 import AirshipEmoteSingleton from "../Emote/AirshipEmoteSingleton";
 import { Dependency } from "../Flamework";
 import NametagComponent from "../Nametag/NametagComponent";
-import inspect from "../Util/Inspect";
 import CharacterAnimation from "./Animation/CharacterAnimation";
 import CharacterConfigSetup from "./CharacterConfigSetup";
 import { EmoteStartSignal } from "./Signal/EmoteStartSignal";
@@ -290,7 +289,6 @@ export default class Character extends AirshipBehaviour {
 
 		this.bin.AddEngineEventConnection(
 			movementWithSignals.OnSetSnapshot((snapshot) => {
-				print("reset event " + inspect(snapshot));
 				const data = this.ParseCustomSnapshotData(snapshot); // TODO: this is empty for some reason :/
 				this.OnResetToSnapshot.Fire(data, snapshot);
 			}),
@@ -391,7 +389,6 @@ export default class Character extends AirshipBehaviour {
 		const allData = snapshot.customData
 			? (snapshot.customData.Decode() as { key: string; value: unknown }[])
 			: undefined;
-		print("decoded custom snapshot data: " + inspect(allData));
 		const allCustomData: Map<string, unknown> = new Map();
 		if (allData) {
 			for (const data of allData) {

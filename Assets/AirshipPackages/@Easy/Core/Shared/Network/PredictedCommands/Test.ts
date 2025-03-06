@@ -31,12 +31,15 @@ export class TestPredictedCommand extends PredictedCustomCommand<{ charging: boo
 		return false;
 	}
 
-	OnTick(input: Readonly<{ charging: boolean }> | undefined, replay: boolean) {
+	override OnTick(input: Readonly<{ charging: boolean }> | undefined, replay: boolean) {
 		if (!input) return false;
 
 		this.progress = this.progress + this.CHARGE_PER_TICK;
+		print("Progress: " + this.progress);
 		if (this.progress >= 100) {
-			this.character.movement.AddImpulse(new Vector3(0, 10, 0));
+			print("launch!");
+			const look = this.character.movement.GetLookVector();
+			this.character.movement.AddImpulse(look.normalized.mul(20));
 			return false;
 		}
 	}

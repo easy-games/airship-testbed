@@ -135,9 +135,4 @@ export default class PredictedCustomCommand<Input, StateSnapshot> {
 	 * @param state The new state that was reached.
 	 */
 	OnObserverReachedState?(state: Readonly<StateSnapshot>): void;
-
-	// /**
-	//  * Called on the tick after the last state is observed.
-	//  */
-	// OnObserverEnded?(): void;
 }
