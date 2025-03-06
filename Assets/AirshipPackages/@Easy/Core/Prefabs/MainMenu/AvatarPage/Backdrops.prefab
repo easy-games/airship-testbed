@@ -718,6 +718,24 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 1204113646243484721}
+      modified: 1
+    - name: solidColor
+      type: object
+      objectType: MaterialColorURP
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
       docs:
         comments: []
         tags: []

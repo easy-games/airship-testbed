@@ -118,3 +118,6 @@ MonoBehaviour:
     displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0
+  references:
+    version: 2
+    RefIds: []

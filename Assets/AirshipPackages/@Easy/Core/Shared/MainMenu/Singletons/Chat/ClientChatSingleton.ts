@@ -413,7 +413,6 @@ export class ClientChatSingleton {
 		}
 
 		if (sendChatToServer) {
-			print("Send chat message from: " + contextbridge.current());
 			CoreNetwork.ClientToServer.SendChatMessage.client.FireServer(message);
 		}
 	}

@@ -684,6 +684,7 @@ interface CharacterAnimationHelper extends Component {
 	animator: Animator;
 	animationEvents?: AnimationEventListener;
 	isSkidding: boolean;
+	skiddingSpeed: number;
 	SetForceLookForward(forceLookForward: boolean): void;
 	SetFirstPerson(firstPerson: boolean): void;
 	SetRootMovementLayer(itemInHand: boolean): void;
@@ -1156,3 +1157,13 @@ interface PlatformGearConstructor {
 	DownloadYielding(classId: string, airId: string): PlatformGear | undefined;
 }
 declare const PlatformGear: PlatformGearConstructor;
+
+interface AirAssetBundle {
+	airId: string;
+	LoadAsync<T extends Object = Object>(path: string): T | undefined;
+	GetPaths(): string[];
+}
+interface AirAssetBundleStatic {
+	DownloadYielding(airId: string): AirAssetBundle | undefined;
+}
+declare const AirAssetBundle: AirAssetBundleStatic;

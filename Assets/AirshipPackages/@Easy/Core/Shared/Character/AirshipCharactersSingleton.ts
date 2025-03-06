@@ -186,6 +186,7 @@ export class AirshipCharactersSingleton {
 					audioSource.transform.localPosition = new Vector3(0, 1.4, 0);
 					audioSource.spatialBlend = 1;
 					audioSource.maxDistance = 50;
+					audioSource.dopplerLevel = 0;
 					audioSource.rolloffMode = AudioRolloffMode.Linear;
 				}
 			});
@@ -323,7 +324,7 @@ export class AirshipCharactersSingleton {
 			error("Player.SpawnCharacter must be called on the server.");
 		}
 
-		const go = Object.Instantiate(this.GetDefaultCharacterTemplate());
+		const go = Object.Instantiate(config?.customCharacterTemplate ?? this.GetDefaultCharacterTemplate());
 		go.name = `Character`;
 		const characterComponent = go.GetAirshipComponent<Character>();
 		if (!characterComponent) {

@@ -76,6 +76,200 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 1617938851901615750}
+      modified: 1
+    - name: cameraDistanceMod
+      type: number
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"Variables"'
+      nullable: 0
+      serializedValue: 0.5
+      serializedObject: {fileID: 0}
+      modified: 1
+    - name: cameraDistanceBase
+      type: number
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"Variables"'
+      nullable: 0
+      serializedValue: 0.5
+      serializedObject: {fileID: 0}
+      modified: 1
+    - name: backdropHolder
+      type: object
+      objectType: GameObject
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 505605248183491063}
+      modified: 1
+    - name: captureCamera
+      type: object
+      objectType: Camera
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 3874252681739290932}
+      modified: 1
+    - name: cameraTransforms
+      type: Array
+      objectType: 
+      items:
+        type: object
+        objectType: Transform
+        serializedItems:
+        - 
+        - 
+        - 
+        - 
+        - 
+        - 
+        - 
+        - 
+        - 
+        - 
+        objectRefs:
+        - {fileID: 7083393355989728072}
+        - {fileID: 7249214340425727762}
+        - {fileID: 1004259256691929209}
+        - {fileID: 3698223533719835230}
+        - {fileID: 3083248479172992898}
+        - {fileID: 5761255182816068094}
+        - {fileID: 452978600034721895}
+        - {fileID: 4178141494138768781}
+        - {fileID: 1721373046927976126}
+        - {fileID: 2137736817724690517}
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 1
+    - name: uploadThumbnails
+      type: boolean
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 0
+      serializedObject: {fileID: 0}
+      modified: 1
+    - name: itemSkinColor
+      type: Color
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"Variables"'
+      nullable: 0
+      serializedValue: '{"r":0.052643273025751117,"g":0.05934049189090729,"b":0.06603771448135376,"a":1.0}'
+      serializedObject: {fileID: 0}
+      modified: 1
+    - name: faceSkinColor
+      type: Color
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: '{"r":0.6470588445663452,"g":0.4313725531101227,"b":0.2705882489681244,"a":1.0}'
+      serializedObject: {fileID: 0}
+      modified: 1
+    - name: builder
+      type: object
+      objectType: AccessoryBuilder
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
       docs:
         comments: []
         tags: []
@@ -1404,7 +1598,7 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2805471641505318224, guid: 6354d1c2926319242ba9081c0c3dd934, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
+      propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: d52744ddcdb1f0d4f929fafe066a757d, type: 2}
     - target: {fileID: 2877730525593779106, guid: 6354d1c2926319242ba9081c0c3dd934, type: 3}
@@ -1418,6 +1612,10 @@ PrefabInstance:
     - target: {fileID: 2904205733920278602, guid: 6354d1c2926319242ba9081c0c3dd934, type: 3}
       propertyPath: lodCount
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2904205733920278602, guid: 6354d1c2926319242ba9081c0c3dd934, type: 3}
+      propertyPath: currentOutfit
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2904205733920278602, guid: 6354d1c2926319242ba9081c0c3dd934, type: 3}
       propertyPath: firstPersonLayer
@@ -1604,7 +1802,7 @@ PrefabInstance:
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6934070730800399764, guid: 6354d1c2926319242ba9081c0c3dd934, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
+      propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: d52744ddcdb1f0d4f929fafe066a757d, type: 2}
     - target: {fileID: 6999758559666578835, guid: 6354d1c2926319242ba9081c0c3dd934, type: 3}
@@ -1684,7 +1882,7 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8265595985995013709, guid: 6354d1c2926319242ba9081c0c3dd934, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
+      propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: d52744ddcdb1f0d4f929fafe066a757d, type: 2}
     - target: {fileID: 8306202539887065265, guid: 6354d1c2926319242ba9081c0c3dd934, type: 3}
@@ -1920,7 +2118,7 @@ PrefabInstance:
       value: 27.266998
       objectReference: {fileID: 0}
     - target: {fileID: 2941909821116429281, guid: 52fb0088414a8f943ae786eb695b40fa, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
+      propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 3610813fa7b7bea488b5b5f4a5d1dad2, type: 2}
     - target: {fileID: 2945948378453546357, guid: 52fb0088414a8f943ae786eb695b40fa, type: 3}

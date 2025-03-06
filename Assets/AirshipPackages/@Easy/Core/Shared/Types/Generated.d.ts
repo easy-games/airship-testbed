@@ -47609,6 +47609,7 @@ interface VoxelWorld extends MonoBehaviour {
     GetNumProcessingMeshChunks(): number;
     GetNumRadiosityProcessingChunks(): number;
     GetPrefabAt(pos: Vector3): GameObject;
+    GetRandomVoxelInWorld(): Vector3;
     GetVoxelAndChunkAt(pos: Vector3): unknown;
     GetVoxelAt(pos: Vector3): number;
     GetVoxelColorAt(pos: Vector3): Color32;
@@ -47719,6 +47720,7 @@ interface Chunk {
     readWriteVoxel: Readonly<number[]>;
     color: Readonly<number[]>;
     damageMap: CSDictionary<number, number>;
+    keysWithVoxels: Readonly<number[]>;
     materialPropertiesDirty: boolean;
     world: VoxelWorld;
     bottomLeftInt: Vector3;
@@ -47740,6 +47742,7 @@ interface Chunk {
     GetLocalVoxelAt(localX: number, localY: number, localZ: number): number;
     GetPrefabAt(worldPos: Vector3): GameObject;
     GetPriorityUpdate(): boolean;
+    GetRandomOccupiedVoxelPosition(): Vector3;
     GetVoxelAt(worldPos: Vector3): number;
     GetVoxelColorAt(worldPos: Vector3): Color32;
     HasVoxels(): boolean;
@@ -47747,6 +47750,7 @@ interface Chunk {
     IsLoaded(): boolean;
     MainthreadForceCollisionRebuild(): void;
     MainthreadUpdateMesh(world: VoxelWorld): boolean;
+    MarkKeysWithVoxelsDirty(): void;
     NeedsToCopyMeshToScene(): boolean;
     NeedsToGenerateMesh(): boolean;
     SetGeometryDirty(dirty: boolean, priority: boolean): void;

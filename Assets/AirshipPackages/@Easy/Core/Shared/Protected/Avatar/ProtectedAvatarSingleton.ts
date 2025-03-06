@@ -47,9 +47,9 @@ export class ProtectedAvatarSingleton {
 		Protected.Avatar = this;
 
 		contextbridge.callback("Avatar:GetUserEquippedOutfitDto", (from, userId: string) => {
-			let isSelf = userId === Protected.User.localUser?.uid;
+			let isSelf = Game.IsClient() && userId === Protected.User.localUser?.uid;
 			// Hack for editor
-			if (Game.IsEditor() && userId.size() <= 2) {
+			if (Game.IsEditor() && !Game.IsClone() && userId.size() <= 2) {
 				isSelf = true;
 			}
 
@@ -195,7 +195,7 @@ export class ProtectedAvatarSingleton {
 	}
 
 	public async GetUserEquippedOutfit(userId: string): Promise<OutfitDto | undefined> {
-		const res = InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/uid/${userId}/equipped`));
+		const res = HttpManager.GetAsync(this.GetHttpUrl(`outfits/uid/${userId}/equipped`));
 		if (res.success) {
 			return json.decode<{ outfit: OutfitDto | undefined }>(res.data).outfit;
 		} else {
