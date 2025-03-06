@@ -6,12 +6,13 @@ import PredictedCommandManager, {
 import { TestPredictedCommand } from "@Easy/Core/Shared/Network/PredictedCommands/Test";
 
 export default class TestLocalCharacter extends AirshipSingleton {
+	private CMD_IDENTIFIER = "cmd";
 	private cmd: CommandInstanceIdentifier;
 	private canUseAt = 0;
 
 	override Start(): void {
 		PredictedCommandManager.Get().RegisterCommands({
-			cmd: {
+			[this.CMD_IDENTIFIER]: {
 				handler: TestPredictedCommand,
 			},
 		});
@@ -20,7 +21,7 @@ export default class TestLocalCharacter extends AirshipSingleton {
 
 		PredictedCommandManager.Get().onValidateCommand.Connect((event) => {
 			print("validating" + event.commandId);
-			if (event.commandId === "cmd" && this.canUseAt > Time.time) {
+			if (event.commandId === this.CMD_IDENTIFIER && this.canUseAt > Time.time) {
 				print("can't use this yet");
 				event.SetCancelled(true);
 				return;
@@ -31,7 +32,7 @@ export default class TestLocalCharacter extends AirshipSingleton {
 
 	protected Update(dt: number): void {
 		if (Airship.Input.IsDown("t") && !PredictedCommandManager.Get().IsCommandInstanceActive(this.cmd)) {
-			this.cmd = PredictedCommandManager.Get().RunCommand("cmd");
+			this.cmd = PredictedCommandManager.Get().RunCommand(this.CMD_IDENTIFIER);
 		}
 	}
 

@@ -19,11 +19,6 @@ export default class PredictedCustomCommand<Input, StateSnapshot> {
 	// Owning Client Only
 
 	/**
-	 * Called on each frame to read input.
-	 */
-	GetFrameInput(): void {}
-
-	/**
 	 * Called on fixed update for each tick to determine the inputs for the current tick. The returned input
 	 * is also sent to the server for processing.
 	 *
@@ -82,8 +77,9 @@ export default class PredictedCustomCommand<Input, StateSnapshot> {
 	Destroy?(): void;
 
 	/**
-	 * Set the state to the provided one. This is called during lag compensation and resimulation. Make sure that
-	 * everything you modify in OnTick is set back to the state encoded in the provided state value.
+	 * Set the state to the provided one. This is called during lag compensation, resimulation, and when a non-authoritative
+	 * server processes a new client state. Make sure that everything you modify in OnTick is set back to the state encoded
+	 * in the provided state value.
 	 *
 	 * For example, if you modify a characters position OnTick, you should encode this value in the state you return
 	 * from OnCaptureSnapshot. In ResetToSnapshot, you should set their position back to the position encoded in
@@ -119,6 +115,9 @@ export default class PredictedCustomCommand<Input, StateSnapshot> {
 	 * This function is called every frame for observers and allows you to interpolate effects based on the observed states for this
 	 * command. The provided delta time is 0 to 1 and represents the lerp progress between the two states.
 	 *
+	 * When a character is in client authoritative mode, the server is considered an observer and this fuction will
+	 * be called.
+	 *
 	 * @param lastState
 	 * @param nextState
 	 * @param delta
@@ -129,6 +128,9 @@ export default class PredictedCustomCommand<Input, StateSnapshot> {
 	 * This function is called when an observer reaches a new state. The frequency this function is called is
 	 * deternined by your network update rate and network conditions. It is recommended that you update visuals
 	 * that can be interpolated in OnEffectUpdate for the smoothest visuals.
+	 *
+	 * When a character is in client authoritative mode, the server is considered an observer and this fuction will
+	 * be called.
 	 *
 	 * @param state The new state that was reached.
 	 */
