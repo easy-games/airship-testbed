@@ -209,6 +209,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 3
@@ -224,6 +227,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 0.3

@@ -3,15 +3,17 @@ import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
 import { Keyboard, Mouse } from "@Easy/Core/Shared/UserInput";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
-import { CanvasAPI, PointerButton, PointerDirection } from "@Easy/Core/Shared/Util/CanvasAPI";
+import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { OnUpdate } from "@Easy/Core/Shared/Util/Timer";
 import { Asset } from "../Asset";
+import { Game } from "../Game";
+import ProximityPrompt from "../Input/ProximityPrompts/ProximityPrompt";
+import StringUtils from "../Types/StringUtil";
 import { DraggingState } from "./AirshipDraggingState";
 import AirshipInventoryTile from "./AirshipInventoryTile";
 import Inventory from "./Inventory";
-import { Game } from "../Game";
-import StringUtils from "../Types/StringUtil";
-import ProximityPrompt from "../Input/ProximityPrompts/ProximityPrompt";
+import { InventoryUIVisibility } from "./InventoryUIVisibility";
+import { SlotInteractionEvent } from "./Signal/SlotInteractionEvent";
 
 export default class AirshipInventoryUI extends AirshipBehaviour {
 	@Header("Variables")
@@ -124,6 +126,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 
 	public OpenBackpack(): void {
 		if (!this.inventoryEnabled || !this.backpackEnabled) return;
+		if (Airship.Inventory.uiVisibility === InventoryUIVisibility.Never) return;
 
 		this.backpackShown = true;
 
@@ -316,7 +319,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 				this.draggingState = {
 					slot: slotIndex,
 					itemStack,
-					inventory,
+					inventory: inventory,
 					transform: cloneTransform,
 					consumed: false,
 				};
@@ -445,20 +448,20 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			const tile = tileGO.gameObject.GetAirshipComponentInChildren<AirshipInventoryTile>();
 			if (!tile) continue;
 
-			bin.AddEngineEventConnection(
-				CanvasAPI.OnPointerEvent(tile.button.gameObject, (direction, button) => {
-					if (direction === PointerDirection.UP && button === PointerButton.MIDDLE) {
-						const stack = inventory.GetItem(i);
-						if (!stack) return;
+			// bin.AddEngineEventConnection(
+			// 	CanvasAPI.OnPointerEvent(tile.button.gameObject, (direction, button) => {
+			// 		if (direction === PointerDirection.UP && button === PointerButton.MIDDLE) {
+			// 			const stack = inventory.GetItem(i);
+			// 			if (!stack) return;
 
-						const openSlot = inventory.GetFirstOpenSlot();
-						if (openSlot === -1) return;
+			// 			const openSlot = inventory.GetFirstOpenSlot();
+			// 			if (openSlot === -1) return;
 
-						const half = math.floor(stack.amount / 2);
-						Airship.Inventory.MoveToSlot(inventory, i, localInventory, openSlot, half);
-					}
-				}),
-			);
+			// 			const half = math.floor(stack.amount / 2);
+			// 			Airship.Inventory.MoveToSlot(inventory, i, localInventory, openSlot, half);
+			// 		}
+			// 	}),
+			// );
 
 			bin.AddEngineEventConnection(
 				CanvasAPI.OnClickEvent(tile.button.gameObject, () => {
@@ -599,28 +602,25 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 				const tile = this.slotToBackpackTileMap.get(i)!;
 				this.UpdateTile(tile, i, inv.GetItem(i));
 
-				// Prevent listening to connections multiple times
-				if (init) {
-					const tileComponent = tile.GetAirshipComponent<AirshipInventoryTile>()!;
+				const tileComponent = tile.GetAirshipComponent<AirshipInventoryTile>()!;
+
+				invBin.AddEngineEventConnection(
 					CanvasAPI.OnClickEvent(tileComponent.button.gameObject, () => {
 						if (i < inv.hotbarSlots) {
 							// hotbar
 							if (this.IsBackpackShown()) {
-								if (Keyboard.IsKeyDown(Key.LeftShift)) {
-									this.QuickMoveSlot(inv, i);
-								}
+								Airship.Inventory.onInventorySlotClicked.Fire(new SlotInteractionEvent(inv, i));
 							} else {
 								inv.SetHeldSlot(i);
 							}
 						} else {
-							// backpack
-							if (Keyboard.IsKeyDown(Key.LeftShift)) {
-								this.QuickMoveSlot(inv, i);
-							}
+							Airship.Inventory.onInventorySlotClicked.Fire(new SlotInteractionEvent(inv, i));
 						}
-					});
+					}),
+				);
 
-					this.BindDragEventsOnButton(tileComponent.button, Airship.Inventory.localInventory!, i);
+				for (const id of this.BindDragEventsOnButton(tileComponent.button, inv, i)) {
+					invBin.AddEngineEventConnection(id);
 				}
 			}
 			init = false;

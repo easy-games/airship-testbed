@@ -93,7 +93,7 @@ export default class PartyCard extends AirshipBehaviour {
 
 	public UpdateInfo(userStatus: UserStatusData | undefined) {
 		const party = Dependency<MainMenuPartyController>().party;
-		const isLeader = party?.leader === Protected.user.localUser?.uid;
+		const isLeader = party?.leader === Protected.User.localUser?.uid;
 
 		if (userStatus) {
 			StateManager.SetString("airship:party-leader-status", json.encode(userStatus));

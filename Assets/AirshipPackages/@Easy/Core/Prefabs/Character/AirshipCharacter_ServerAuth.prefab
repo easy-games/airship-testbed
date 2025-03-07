@@ -166,6 +166,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: Root Pos
@@ -181,6 +184,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 0
@@ -225,6 +231,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators:
       - name: Header
         parameters:
@@ -293,6 +302,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: Graphic Pos
@@ -308,6 +320,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 0

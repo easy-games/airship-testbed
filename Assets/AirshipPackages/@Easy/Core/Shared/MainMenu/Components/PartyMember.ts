@@ -38,7 +38,7 @@ export default class PartyMember extends AirshipBehaviour {
 		});
 
 		this.UpdateLeaderStatus(asLeader);
-		if (this.user.uid !== Protected.user.localUser?.uid) {
+		if (this.user.uid !== Protected.User.localUser?.uid) {
 			this.UpdateFriendButton();
 			Dependency<ProtectedFriendsController>().onFetchFriends.Connect(() => {
 				this.UpdateFriendButton();
@@ -67,7 +67,7 @@ export default class PartyMember extends AirshipBehaviour {
 		});
 		if (user.uid === Game.localPlayer?.userId) {
 			this.bin.Add(
-				Protected.user.onLocalUserUpdated.Connect(() => {
+				Protected.User.onLocalUserUpdated.Connect(() => {
 					this.UpdatePicture().then(() => {});
 				}),
 			);

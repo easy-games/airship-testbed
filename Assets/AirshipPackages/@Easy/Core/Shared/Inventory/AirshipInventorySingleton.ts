@@ -13,6 +13,8 @@ import AirshipInventoryUI from "./AirshipInventoryUI";
 import Inventory, { InventoryDto } from "./Inventory";
 import { InventoryUIVisibility } from "./InventoryUIVisibility";
 import { ItemStack } from "./ItemStack";
+import { MovingToSlotEvent } from "./Signal/MovingToSlotEvent";
+import { SlotInteractionEvent } from "./Signal/SlotInteractionEvent";
 
 interface InventoryEntry {
 	Inv: Inventory;
@@ -30,6 +32,28 @@ const itemDefinitions: {
 export class AirshipInventorySingleton {
 	public localInventory?: Inventory;
 	public localInventoryChanged = new Signal<Inventory>();
+
+	/**
+	 * Invoked when an inventory slot move is requested
+	 *
+	 * Can be used to cancel inventory transfers in certain situations e.g: non-tradeable items, or non-droppable items
+	 */
+	public readonly onMovingToSlot = new Signal<MovingToSlotEvent>();
+
+	/**
+	 * Event that is invoked when the inventory slot is clicked on the client
+	 * @client
+	 *
+	 * Can be used to implement custom inventory functionality, e.g. "quick move" on shift click:
+	 * ```ts
+	 * Airship.Inventory.onInventorySlotClicked.Connect((event) => {
+	 * 	if (Keyboard.IsKeyDown(Key.LeftShift)) {
+	 *			Airship.Inventory.QuickMoveSlot(event.inventory, event.slotIndex);
+	 *		}
+	 * });
+	 * ```
+	 */
+	public readonly onInventorySlotClicked = new Signal<SlotInteractionEvent>();
 
 	/**
 	 * If `true`, the Inventory UI will immediately be enabled for the player.
@@ -206,13 +230,17 @@ export class AirshipInventorySingleton {
 					return;
 				}
 
+				const event = this.onMovingToSlot.Fire(new MovingToSlotEvent(fromInv, fromSlot, toInv, toSlot, amount));
+				if (event.IsCancelled()) return;
+				amount = event.amount;
+
 				const fromItemStack = fromInv.GetItem(fromSlot);
 				if (!fromItemStack) return;
 
 				const toItemStack = toInv.GetItem(toSlot);
 				if (toItemStack !== undefined) {
 					if (toItemStack.CanMerge(fromItemStack)) {
-						if (toItemStack.amount + amount <= toItemStack.GetMaxStackSize()) {
+						if (event.allowMerging && toItemStack.amount + amount <= toItemStack.GetMaxStackSize()) {
 							toItemStack.SetAmount(toItemStack.amount + amount);
 							fromItemStack.Decrement(amount);
 							CoreNetwork.ClientToServer.Inventory.MoveToSlot.client.FireServer(
@@ -538,13 +566,22 @@ export class AirshipInventorySingleton {
 			return;
 		}
 
+		const event = this.onMovingToSlot.Fire(new MovingToSlotEvent(fromInv, fromSlot, toInv, toSlot, amount));
+		if (event.IsCancelled()) return;
+
+		// fromInv = event.fromInventory;
+		// toInv = event.toInventory;
+		// fromSlot = event.fromSlot;
+		// toSlot = event.toSlot;
+		amount = event.amount;
+
 		const fromItemStack = fromInv.GetItem(fromSlot);
 		if (!fromItemStack) return;
 
 		const toItemStack = toInv.GetItem(toSlot);
 		if (toItemStack !== undefined) {
 			if (toItemStack.CanMerge(fromItemStack)) {
-				if (toItemStack.amount + amount <= toItemStack.GetMaxStackSize()) {
+				if (event.allowMerging && toItemStack.amount + amount <= toItemStack.GetMaxStackSize()) {
 					toItemStack.SetAmount(toItemStack.amount + amount);
 					fromItemStack.Decrement(amount);
 					CoreNetwork.ClientToServer.Inventory.MoveToSlot.client.FireServer(

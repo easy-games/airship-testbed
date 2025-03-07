@@ -23,7 +23,7 @@ export default class ProfileOptionsButton extends AirshipBehaviour {
 		task.spawn(() => {
 			this.UpdatePicture();
 		});
-		Protected.user.onLocalUserUpdated.Connect(() => {
+		Protected.User.onLocalUserUpdated.Connect(() => {
 			task.spawn(() => {
 				this.UpdatePicture();
 			});
@@ -65,7 +65,7 @@ export default class ProfileOptionsButton extends AirshipBehaviour {
 				options.push({
 					text: "Sign out",
 					onClick: () => {
-						Protected.user.Logout();
+						Protected.User.Logout();
 					},
 				});
 				options.push({

@@ -59,15 +59,15 @@ export default class DemoManager extends AirshipBehaviour {
 		// 	print("Obj a: " + a);
 		// 	print("Obj b: " + b);
 		// });
-		for (let i = 0; i < this.testUserIds.size(); i++) {
-			let builder = this.testCharacterBuilders[i];
-			let userId = this.testUserIds[i];
-			if (builder && userId !== "") {
-				Airship.Avatar.LoadOutfitByUserId(userId, builder, {
-					removeOldClothingAccessories: true,
-				});
-			}
-		}
+		// for (let i = 0; i < this.testUserIds.size(); i++) {
+		// 	let builder = this.testCharacterBuilders[i];
+		// 	let userId = this.testUserIds[i];
+		// 	if (builder && userId !== "") {
+		// 		Airship.Avatar.LoadOutfitByUserId(userId, builder, {
+		// 			removeOldClothingAccessories: true,
+		// 		});
+		// 	}
+		// }
 
 		Airship.Input.CreateAction("interact", Binding.Key(Key.F));
 

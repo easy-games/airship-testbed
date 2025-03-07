@@ -62,6 +62,7 @@ export default class Character extends AirshipBehaviour {
 	@NonSerialized() public onDespawn = new Signal<void>();
 	@NonSerialized() public onStateChanged = new Signal<[newState: CharacterState, oldState: CharacterState]>();
 	@NonSerialized() public onHealthChanged = new Signal<[newHealth: number, oldHealth: number]>();
+	@NonSerialized() public onMaxHealthChanged = new Signal<[newMaxHealth: number, oldMaxHealth: number]>();
 	@NonSerialized() public onEmoteStart = new Signal<EmoteStartSignal>();
 	@NonSerialized() public onEmoteEnd = new Signal<[]>();
 
@@ -170,6 +171,8 @@ export default class Character extends AirshipBehaviour {
 		this.initialized = true;
 		this.displayName = displayName || "";
 
+		// print("Outfitdto: " + inspect(outfitDto));
+
 		// Client side: update the player's selected outfit to whatever this character has.
 		// This may cause an issue if the character is init'd with a random outfit.
 		if (player && outfitDto && Game.IsClient()) {
@@ -179,7 +182,7 @@ export default class Character extends AirshipBehaviour {
 			if (player) {
 				this.SetMeshCacheId(`Player:${player.userId}`);
 			}
-			this.LoadUserOutfit(outfitDto);
+			this.LoadOutfit(outfitDto);
 		}
 
 		if (this.movement) {
@@ -197,21 +200,27 @@ export default class Character extends AirshipBehaviour {
 		// this.accessoryBuilder.meshCombiner.cacheId = cacheId ?? "";
 	}
 
-	public LoadUserOutfit(outfitDto: OutfitDto | undefined) {
+	public LoadOutfit(outfitDto: OutfitDto | undefined) {
 		if (!this.accessoryBuilder) {
 			warn("Cannot load outfit without Accessory Builder set on Character.");
 			return;
 		}
 
 		this.outfitDto = outfitDto;
-		//print("using outfit: " + outfitDto?.name);
+		// print("Character.LoadOutfit " + inspect(outfitDto));
 		if (Game.IsClient() && outfitDto && this.autoLoadAvatarOutfit) {
-			Airship.Avatar.LoadUserOutfitDto(outfitDto, this.accessoryBuilder, {
-				removeOldClothingAccessories: true,
-			});
-			if (this.IsLocalCharacter() && Airship.Characters.viewmodel) {
-				Airship.Avatar.LoadUserOutfitDto(outfitDto, Airship.Characters.viewmodel.accessoryBuilder, {
+			task.spawn(() => {
+				Airship.Avatar.LoadOutfit(this.accessoryBuilder, outfitDto, {
 					removeOldClothingAccessories: true,
+				});
+			});
+
+			// Viewmodel
+			if (this.IsLocalCharacter() && Airship.Characters.viewmodel) {
+				task.spawn(() => {
+					Airship.Avatar.LoadOutfit(Airship.Characters.viewmodel!.accessoryBuilder, outfitDto, {
+						removeOldClothingAccessories: true,
+					});
 				});
 			}
 		}
@@ -362,7 +371,16 @@ export default class Character extends AirshipBehaviour {
 	}
 
 	public SetMaxHealth(maxHealth: number): void {
+		const oldMaxHealth = this.maxHealth;
+		if (oldMaxHealth === maxHealth) return;
+
 		this.maxHealth = maxHealth;
+		this.onMaxHealthChanged.Fire(this.maxHealth, oldMaxHealth);
+
+		// If we're a dedicated server network max health to clients
+		if (Game.IsServer() && !Game.IsClient()) {
+			CoreNetwork.ServerToClient.Character.SetMaxHealth.server.FireAllClients(this.id, this.maxHealth);
+		}
 	}
 
 	public SetDisplayName(displayName: string) {

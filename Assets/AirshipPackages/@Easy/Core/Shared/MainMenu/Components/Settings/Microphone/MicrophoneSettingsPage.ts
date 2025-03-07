@@ -27,7 +27,7 @@ export default class MicrophoneSettingsPage extends AirshipBehaviour {
 			micDeviceComponent.SetSelected(currentDeviceIndex === i);
 		}
 
-		const clientSettings = Protected.settings;
+		const clientSettings = Protected.Settings;
 		task.spawn(() => {
 			const permission = Bridge.HasMicrophonePermission() && clientSettings.data.microphoneEnabled;
 			this.voiceChatToggle.SetValue(permission, true);
@@ -66,7 +66,7 @@ export default class MicrophoneSettingsPage extends AirshipBehaviour {
 		Bridge.StopMicRecording();
 		Bridge.SetMicDeviceIndex(deviceIndex);
 
-		const clientSettings = Protected.settings;
+		const clientSettings = Protected.Settings;
 		clientSettings.data.micDeviceName = deviceName;
 		clientSettings.MarkAsDirty();
 

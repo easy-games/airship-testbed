@@ -11,7 +11,6 @@ import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { Asset } from "../Asset";
-import { AvatarPlatformAPI } from "../Avatar/AvatarPlatformAPI";
 import { CoreLogger } from "../Logger/CoreLogger";
 import { AirshipUrl } from "../Util/AirshipUrl";
 import { Levenshtein } from "../Util/Strings/Levenshtein";
@@ -355,15 +354,19 @@ export class AirshipPlayersSingleton {
 		const SetOutfit = (outfitDto: OutfitDto | undefined) => {
 			player.selectedOutfit = outfitDto;
 			player.outfitLoaded = true;
+			// print("SetOutfit. userId: " + player.userId + ", outfit: " + inspect(outfitDto));
 			if (Game.IsEditor()) {
-				EditorSessionState.SetString("player_" + player.userId + "_outfit", json.encode(outfitDto));
+				EditorSessionState.SetString("player_" + player.userId + "_outfit4", json.encode(outfitDto));
 			}
 		};
 
+		// print("fetch outfit. userId: " + player.userId);
+		// Uncomment to disable editor cache
 		if (Game.IsEditor() && !ignoreCache) {
 			//print("Using editor cache: " + player.userId);
-			const data = EditorSessionState.GetString("player_" + player.userId + "_outfit");
-			if (data) {
+			const data = EditorSessionState.GetString("player_" + player.userId + "_outfit4");
+			if (data && data !== "") {
+				print("decoding: " + data);
 				const outfitDto = json.decode<OutfitDto>(data);
 				if (outfitDto) {
 					SetOutfit(outfitDto);
@@ -372,19 +375,9 @@ export class AirshipPlayersSingleton {
 			}
 		}
 
-		// let diff = os.time() - (this.outfitFetchTime.get(player.userId) ?? 0);
-		// if (diff <= 0.5) {
-		// 	return;
-		// }
-		// this.outfitFetchTime.set(player.userId, os.time());
+		const outfit = await Airship.Avatar.GetUserEquippedOutfitDto(player.userId);
+		SetOutfit(outfit);
 
-		if (player.IsLocalPlayer() || Game.IsEditor()) {
-			//print("loading local outfit");
-			await AvatarPlatformAPI.GetEquippedOutfit().then(SetOutfit);
-		} else {
-			//print("loading outfit from server for player: " + player.userId);
-			await AvatarPlatformAPI.GetUserEquippedOutfit(player.userId).then(SetOutfit);
-		}
 		return true;
 	}
 

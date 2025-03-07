@@ -200,7 +200,7 @@ export class AirshipInputSingleton {
 		if (Game.IsProtectedLuauContext()) {
 			// Read **Core** keybinds from `ClientSettings.json` & apply overrides.
 			task.spawn(() => {
-				const clientSettings = Protected.settings.WaitForSettingsLoaded().expect();
+				const clientSettings = Protected.Settings.WaitForSettingsLoaded().expect();
 				const overrides = clientSettings.coreKeybindOverrides;
 				if (!overrides) return;
 				this.DeserializeCoreKeybinds(overrides);
@@ -1070,7 +1070,7 @@ export class AirshipInputSingleton {
 				coreKeybinds[coreAction] = serialized;
 			}
 		}
-		Protected.settings.SetCoreKeybindOverrides(coreKeybinds);
+		Protected.Settings.SetCoreKeybindOverrides(coreKeybinds);
 	}
 
 	/**
@@ -1100,7 +1100,7 @@ export class AirshipInputSingleton {
 		if (!Game.IsProtectedLuauContext()) return;
 		task.spawn(() => {
 			const gameId = Game.IsEditor() ? Game.gameId : Game.WaitForGameData().id;
-			Protected.settings.UpdateGameKeybindOverrides(gameId, action.GetSerializable());
+			Protected.Settings.UpdateGameKeybindOverrides(gameId, action.GetSerializable());
 		});
 	}
 
@@ -1114,7 +1114,7 @@ export class AirshipInputSingleton {
 		if (!Game.IsProtectedLuauContext()) return;
 		task.spawn(() => {
 			const gameId = Game.IsEditor() ? Game.gameId : Game.WaitForGameData().id;
-			const clientSettings = Protected.settings.WaitForSettingsLoaded().expect();
+			const clientSettings = Protected.Settings.WaitForSettingsLoaded().expect();
 			const gameOverrides = clientSettings.gameKeybindOverrides[gameId];
 			if (!gameOverrides) return;
 			const actionOverride = gameOverrides[action.name];

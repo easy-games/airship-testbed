@@ -401,9 +401,7 @@ export class AirshipCameraSingleton {
 	 * @returns The `CameraMode`, if it exists. Otherwise, `undefined`.
 	 */
 	public GetMode<T extends CameraMode = FixedCameraMode>(): T | undefined {
-		const mode = this.cameraSystem?.GetMode();
-		if (!mode) return undefined;
-		return mode as T;
+		return this.activeCameraMode as T;
 	}
 
 	/**

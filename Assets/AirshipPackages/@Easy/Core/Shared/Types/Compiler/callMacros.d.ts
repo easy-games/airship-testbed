@@ -80,11 +80,6 @@ declare function Instantiate<T extends Object = GameObject>(
 	parent: Transform,
 	instantiateInWorldSpace: boolean,
 ): T;
-declare function Instantiate<T>(original: T): T;
-declare function Instantiate<T>(original: T, position: Vector3, rotation: Quaternion): T;
-declare function Instantiate<T>(original: T, position: Vector3, rotation: Quaternion, parent: Transform): T;
-declare function Instantiate<T>(original: T, parent: Transform): T;
-declare function Instantiate<T>(original: T, parent: Transform, worldPositionStays: boolean): T;
 
 /**
  * Macro for `Object.Destroy`

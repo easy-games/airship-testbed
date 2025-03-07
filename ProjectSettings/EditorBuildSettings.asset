@@ -47,6 +47,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ClientPrediction.unity
     guid: 79c3e93f2ccdf5e44884e88c44848560
+  - enabled: 1
+    path: Assets/Scenes/InventoryTesting.unity
+    guid: 017f9e0c7f22c50478c482ac322a381a
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: db23642ed970b40389a45925eb39009c, type: 2}
   m_UseUCBPForAssetBundles: 0

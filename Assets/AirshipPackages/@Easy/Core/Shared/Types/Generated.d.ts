@@ -3675,6 +3675,11 @@ declare const enum CharacterState {
     Sprinting = 3,
     Crouching = 4,
 }
+declare const enum AccessoryAddMode {
+    ReplaceAll = 0,
+    Replace = 1,
+    AddIfNone = 2,
+}
 
     
 interface RaycastHit {
@@ -10104,127 +10109,6 @@ interface Physics2DConstructor {
 }
 declare const Physics2D: Physics2DConstructor;
     
-interface MonoBehaviour extends Behaviour {
-    /**
-     * Cancellation token raised when the MonoBehaviour is destroyed (Read Only).
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/MonoBehaviour-destroyCancellationToken.html | MonoBehaviour.destroyCancellationToken}
-     */
-    readonly destroyCancellationToken: unknown;
-    /**
-     * Disabling this lets you skip the GUI layout phase.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/MonoBehaviour-useGUILayout.html | MonoBehaviour.useGUILayout}
-     */
-    useGUILayout: boolean;
-    /**
-     * Returns a boolean value which represents if Start was called.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/MonoBehaviour-didStart.html | MonoBehaviour.didStart}
-     */
-    readonly didStart: boolean;
-    /**
-     * Returns a boolean value which represents if Awake was called.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/MonoBehaviour-didAwake.html | MonoBehaviour.didAwake}
-     */
-    readonly didAwake: boolean;
-    /**
-     * Allow a specific instance of a MonoBehaviour to run in edit mode (only available in the editor).
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/MonoBehaviour-runInEditMode.html | MonoBehaviour.runInEditMode}
-     */
-    runInEditMode: boolean;
-
-
-
-    /**
-     * Cancels all Invoke calls on this MonoBehaviour.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/MonoBehaviour.CancelInvoke.html | MonoBehaviour.CancelInvoke}
-     */
-    CancelInvoke(): void;
-    /**
-     * Cancels all Invoke calls with name methodName on this behaviour.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/MonoBehaviour.CancelInvoke.html | MonoBehaviour.CancelInvoke}
-     */
-    CancelInvoke(methodName: string): void;
-    /**
-     * Invokes the method methodName in time seconds.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/MonoBehaviour.Invoke.html | MonoBehaviour.Invoke}
-     */
-    Invoke(methodName: string, time: number): void;
-    /**
-     * Invokes the method methodName in time seconds, then repeatedly every repeatRate seconds.
-     * @param methodName The name of a method to invoke.
-     * @param time Start invoking after n seconds.
-     * @param repeatRate Repeat every n seconds.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/MonoBehaviour.InvokeRepeating.html | MonoBehaviour.InvokeRepeating}
-     */
-    InvokeRepeating(methodName: string, time: number, repeatRate: number): void;
-    /**
-     * Is any invoke pending on this MonoBehaviour?
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/MonoBehaviour.IsInvoking.html | MonoBehaviour.IsInvoking}
-     */
-    IsInvoking(): boolean;
-    /**
-     * Is any invoke on methodName pending?
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/MonoBehaviour.IsInvoking.html | MonoBehaviour.IsInvoking}
-     */
-    IsInvoking(methodName: string): boolean;
-    /**
-     * Starts a coroutine named methodName.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/MonoBehaviour.StartCoroutine.html | MonoBehaviour.StartCoroutine}
-     */
-    StartCoroutine(methodName: string): Coroutine;
-    /**
-     * Starts a coroutine named methodName.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/MonoBehaviour.StartCoroutine.html | MonoBehaviour.StartCoroutine}
-     */
-    StartCoroutine(methodName: string, value: unknown): Coroutine;
-    /**
-     * Starts a Coroutine.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/MonoBehaviour.StartCoroutine.html | MonoBehaviour.StartCoroutine}
-     */
-    StartCoroutine(routine: unknown): Coroutine;
-    /**
-     * Stops all coroutines running on this behaviour.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/MonoBehaviour.StopAllCoroutines.html | MonoBehaviour.StopAllCoroutines}
-     */
-    StopAllCoroutines(): void;
-    /**
-     * Stops the first coroutine named methodName, or the coroutine stored in routine running on this behaviour.
-     * @param routine Name of the function in code, including coroutines.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/MonoBehaviour.StopCoroutine.html | MonoBehaviour.StopCoroutine}
-     */
-    StopCoroutine(routine: unknown): void;
-    /**
-     * Stops the first coroutine named methodName, or the coroutine stored in routine running on this behaviour.
-     * @param routine Name of the function in code, including coroutines.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/MonoBehaviour.StopCoroutine.html | MonoBehaviour.StopCoroutine}
-     */
-    StopCoroutine(routine: Coroutine): void;
-    /**
-     * Stops the first coroutine named methodName, or the coroutine stored in routine running on this behaviour.
-     * @param methodName Name of coroutine.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/MonoBehaviour.StopCoroutine.html | MonoBehaviour.StopCoroutine}
-     */
-    StopCoroutine(methodName: string): void;
-
-
-}
     
 interface Coroutine extends YieldInstruction {
 
@@ -10234,16 +10118,6 @@ interface Coroutine extends YieldInstruction {
 
 }
     
-interface MonoBehaviourConstructor {
-
-
-    new(): MonoBehaviour;
-
-
-    print(message: unknown): void;
-
-}
-declare const MonoBehaviour: MonoBehaviourConstructor;
     
 interface Debug {
 
@@ -26634,6 +26508,7 @@ interface CoreLoadingScreen extends BundleLoadingScreen {
 
     ClickContinueButton(): void;
     Close(): void;
+    OnReload(): void;
     SetProgress(text: string, percent: number): void;
     SetTotalDownloadSize(sizeBytes: number): void;
 
@@ -36400,7 +36275,7 @@ interface AirshipUniVoiceNetwork extends NetworkBehaviour, IChatroomNetwork {
     JoinChatroom(data: unknown): void;
     LeaveChatroom(data: unknown): void;
     NetworkServer_OnDisconnected(connection: NetworkConnectionToClient): void;
-    OnReadyCommand(conn: NetworkConnectionToClient): void;
+    OnReadyCommand(sender: NetworkConnectionToClient): void;
     OnStartServer(): void;
     ToByteArray<T>(obj: T): Readonly<number[]>;
     Weaved(): boolean;
@@ -36761,6 +36636,7 @@ interface VoxelBlockDefinition extends ScriptableObject {
     description: string;
     contextStyle: ContextStyle;
     meshMaterial: Material;
+    halfBlock: boolean;
     topTexture: TextureSet;
     sideTexture: TextureSet;
     bottomTexture: TextureSet;
@@ -38939,14 +38815,13 @@ interface AccessoryOutfit extends ScriptableObject {
 }
     
 interface AccessoryComponent extends MonoBehaviour {
-    serverClassId: string;
-    serverClassIdStaging: string;
     accessorySlot: AccessorySlot;
     visibilityMode: VisibilityMode;
     skinnedToCharacter: boolean;
     meshLods: Readonly<Mesh[]>;
-    matColors: Readonly<MaterialColorURP[]>;
     bodyMask: number;
+    serverClassId: string;
+    serverClassIdStaging: string;
     localPosition: Vector3;
     localRotation: Quaternion;
     localScale: Vector3;
@@ -39376,6 +39251,7 @@ interface AirshipPlatformUtil {
     
 interface AirshipPlatformUtilConstructor {
     livePlatforms: Readonly<number[]>;
+    betaPlatforms: Readonly<number[]>;
 
 
     new(): AirshipPlatformUtil;
@@ -39384,6 +39260,7 @@ interface AirshipPlatformUtilConstructor {
     FromBuildTarget(buildTarget: BuildTarget): AirshipPlatform;
     FromRuntimePlatform(runtimePlatform: RuntimePlatform): AirshipPlatform;
     GetLocalPlatform(): AirshipPlatform;
+    GetStringName(platform: AirshipPlatform): string;
     IsDeviceSimulator(): boolean;
     ToBuildTarget(platform: AirshipPlatform): BuildTarget;
 
@@ -47822,6 +47699,7 @@ interface VoxelWorld extends MonoBehaviour {
     GetNumProcessingMeshChunks(): number;
     GetNumRadiosityProcessingChunks(): number;
     GetPrefabAt(pos: Vector3): GameObject;
+    GetRandomVoxelInWorld(): Vector3;
     GetVoxelAndChunkAt(pos: Vector3): unknown;
     GetVoxelAt(pos: Vector3): number;
     GetVoxelColorAt(pos: Vector3): Color32;
@@ -47932,6 +47810,7 @@ interface Chunk {
     readWriteVoxel: Readonly<number[]>;
     color: Readonly<number[]>;
     damageMap: CSDictionary<number, number>;
+    keysWithVoxels: Readonly<number[]>;
     materialPropertiesDirty: boolean;
     world: VoxelWorld;
     bottomLeftInt: Vector3;
@@ -47953,6 +47832,7 @@ interface Chunk {
     GetLocalVoxelAt(localX: number, localY: number, localZ: number): number;
     GetPrefabAt(worldPos: Vector3): GameObject;
     GetPriorityUpdate(): boolean;
+    GetRandomOccupiedVoxelPosition(): Vector3;
     GetVoxelAt(worldPos: Vector3): number;
     GetVoxelColorAt(worldPos: Vector3): Color32;
     HasVoxels(): boolean;
@@ -47960,6 +47840,7 @@ interface Chunk {
     IsLoaded(): boolean;
     MainthreadForceCollisionRebuild(): void;
     MainthreadUpdateMesh(world: VoxelWorld): boolean;
+    MarkKeysWithVoxelsDirty(): void;
     NeedsToCopyMeshToScene(): boolean;
     NeedsToGenerateMesh(): boolean;
     SetGeometryDirty(dirty: boolean, priority: boolean): void;
@@ -48031,6 +47912,7 @@ interface VoxelWorldConstructor {
     Floor(input: Vector3): Vector3;
     FloorInt(input: Vector3): Vector3;
     GetFirstInstance(): VoxelWorld;
+    GetScaleFromFlipBits(flipBits: number): Vector3;
     GetVoxelFlippedBits(voxel: number): number;
     HashCoordinates(x: number, y: number, z: number): number;
     SetVoxelFlippedBits(voxel: number, flippedBits: number): number;
@@ -48043,29 +47925,6 @@ interface VoxelWorldConstructor {
 
 }
 declare const VoxelWorld: VoxelWorldConstructor;
-    
-interface AccessorySkin extends ScriptableObject {
-    skinTextureDiffuse: Texture2D;
-    skinTextureNormal: Texture2D;
-    skinTextureORM: Texture2D;
-    faceTextureDiffuse: Texture2D;
-
-
-
-    ToString(): string;
-
-
-}
-    
-interface AccessorySkinConstructor {
-
-
-    new(): AccessorySkin;
-
-
-
-}
-declare const AccessorySkin: AccessorySkinConstructor;
     
 interface ActiveAccessory {
     AccessoryComponent: AccessoryComponent;

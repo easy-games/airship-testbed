@@ -35,7 +35,7 @@ export default class MicIndicator extends AirshipBehaviour {
 			Airship.Input.OnDown("PushToTalk").Connect((event) => {
 				if (event.uiProcessed) return;
 
-				if (!Protected.settings.data.microphoneEnabled) {
+				if (!Protected.Settings.data.microphoneEnabled) {
 					if (Time.time - this.errorMsgTime > 4) {
 						this.errorMsgTime = Time.time;
 						Game.localPlayer.SendMessage(

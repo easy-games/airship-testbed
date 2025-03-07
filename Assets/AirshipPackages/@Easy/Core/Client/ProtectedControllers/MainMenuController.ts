@@ -161,9 +161,10 @@ export class MainMenuController {
 		this.mainContentCanvas.enabled = true;
 		NativeTween.CanvasGroupAlpha(this.rootCanvasGroup, 1, duration).SetUseUnscaledTime(true);
 
-		if (this.currentPage) {
-			this.RouteToPage(this.currentPage.pageType, true, true);
-		}
+		// if (this.currentPage) {
+		// 	this.RouteToPage(this.currentPage.pageType, true, true);
+		// }
+		this.RouteToPage(MainMenuPageType.Game, true, true);
 
 		//CloudImage.PrintCache();
 	}
