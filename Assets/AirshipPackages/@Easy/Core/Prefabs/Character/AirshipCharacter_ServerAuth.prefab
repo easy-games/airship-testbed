@@ -162,42 +162,6 @@ MonoBehaviour:
       serializedValue: 0
       serializedObject: {fileID: 0}
       modified: 0
-    - name: graphName
-      type: string
-      objectType: 
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      docs:
-        comments: []
-        tags: []
-      decorators: []
-      nullable: 0
-      serializedValue: Root Pos
-      serializedObject: {fileID: 0}
-      modified: 1
-    - name: useMovementTransform
-      type: boolean
-      objectType: 
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      docs:
-        comments: []
-        tags: []
-      decorators: []
-      nullable: 0
-      serializedValue: 0
-      serializedObject: {fileID: 0}
-      modified: 0
     displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0
@@ -262,42 +226,6 @@ MonoBehaviour:
       fileRef: 
       jsDocs:
         text: []
-        tags: []
-      decorators: []
-      nullable: 0
-      serializedValue: 0
-      serializedObject: {fileID: 0}
-      modified: 0
-    - name: graphName
-      type: string
-      objectType: 
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      docs:
-        comments: []
-        tags: []
-      decorators: []
-      nullable: 0
-      serializedValue: Graphic Pos
-      serializedObject: {fileID: 0}
-      modified: 1
-    - name: useMovementTransform
-      type: boolean
-      objectType: 
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      docs:
-        comments: []
         tags: []
       decorators: []
       nullable: 0

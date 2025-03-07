@@ -27,7 +27,7 @@ export interface CommandConfiguration {
 
 interface ActiveCommand {
 	commandId: string;
-	instanceId: string;
+	instanceId: number;
 	config: CommandConfiguration;
 	customDataKey: string;
 	created: boolean;
@@ -46,8 +46,9 @@ interface CustomInputData {
 
 /** Data contained in the custom data key */
 export interface CommandInstanceIdentifier {
+	characterId: number;
 	commandId: string;
-	instanceId: string;
+	instanceId: number;
 }
 
 class ValidateCommand extends Cancellable {
@@ -69,6 +70,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 	public readonly onValidateCommand = new Signal<ValidateCommand>();
 
 	private commandHandlerMap: Record<string, CommandConfiguration> = {};
+	/** The active commands for the current tick. If read during a replay, it will contain the active command at that tick. */
 	private activeCommands: Map<number, Map<string, ActiveCommand>> = new Map();
 	private globalBin = new Bin();
 
@@ -77,8 +79,16 @@ export default class PredictedCommandManager extends AirshipSingleton {
 	// across clients.
 	private instanceId = 0;
 
+	// The server uses this map to track the highest completed commands. The makes it so we don't recreate and run input for commands
+	// that the server has authoritatively completed. The client doesn't need to track this, because it will reset to the server authoritative
+	// result when it is received.
+	private highestCompleteIdMap: Record<Character, { [commandId: string]: number }> = {};
+
 	/** Used by the client to queue commands to be set up on the next tick. */
 	private queuedCommands: CommandInstanceIdentifier[] = [];
+
+	/** Used to track requests to cancel running commands. */
+	private queuedCancellations: CommandInstanceIdentifier[] = [];
 
 	protected Start(): void {
 		Airship.Characters.ObserveCharacters((character) => {
@@ -100,12 +110,24 @@ export default class PredictedCommandManager extends AirshipSingleton {
 				character.PreProcessCommand.Connect((customInputData, input) => {
 					(customInputData as Map<string, Readonly<CustomInputData>>).forEach((value, key) => {
 						// If it's not custom data controlled by us, ignore it
-						const keyData = this.ParseCustomDataKey(key);
+						const keyData = this.ParseCustomDataKey(character.id, key);
 						if (!keyData) return;
 
+						// Invalid instance ids are ignored. 0 is never used as an instance id.
+						if (keyData.instanceId === 0) return;
+
 						// See if the command is already running
-						const activeCommand = this.GetActiveCommandOnCharacter(character, key);
+						const activeCommand = this.GetActiveCommandOnCharacter(character.id, key);
 						if (activeCommand) return;
+
+						if (Game.IsServer() && !Game.IsHosting()) {
+							const characterInstanceIds = this.highestCompleteIdMap[character.id] ?? {};
+							const highestInstance = characterInstanceIds[keyData.commandId] ?? 0;
+
+							// Highest instance is updated when the command _completes_ so if we see it again, that
+							// means we should ignore the command since the server has considered it complete.
+							if (keyData.instanceId <= highestInstance) return;
+						}
 
 						// Run the command if it's not already running
 						this.SetupCommand(character, keyData.commandId, keyData.instanceId);
@@ -123,7 +145,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 					// Iterate over active keys for these snapshots and compare.
 					activeCommandKeys?.forEach((key) => {
 						// If the custom command key wasn't one of our managed keys, ignore it
-						const keyData = this.ParseCustomDataKey(key);
+						const keyData = this.ParseCustomDataKey(character.id, key);
 						if (!keyData) return;
 
 						// Get the data for this command. If we don't have data on each side, then it definitely doesn't match
@@ -139,7 +161,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 
 						// To find the command instance we need to work on, we first check active commands to see if it's still operating,
 						// if it's not, we have to create it, then compare.
-						let instance = this.GetActiveCommandOnCharacter(character, key)?.instance;
+						let instance = this.GetActiveCommandOnCharacter(character.id, key)?.instance;
 						if (!instance) {
 							const handler = this.commandHandlerMap[keyData.commandId].handler;
 							if (!handler) return;
@@ -147,7 +169,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 							// Instead of fully creating an active command using SetupCommand, we simply create an instance of it
 							// since all we want to do is call CompareSnapshots(). No ticking will be involved on this instance
 							// and it should be removed once this function completes.
-							instance = new handler(character);
+							instance = new handler(character, keyData);
 						}
 
 						// Call the compare function and set the result for C# to use later
@@ -185,11 +207,11 @@ export default class PredictedCommandManager extends AirshipSingleton {
 					(customSnapshotData as Map<string, Readonly<CustomSnapshotData>>).forEach(
 						(value, customDataKey) => {
 							// If it's not custom data controlled by us, ignore it
-							const keyData = this.ParseCustomDataKey(customDataKey);
+							const keyData = this.ParseCustomDataKey(character.id, customDataKey);
 							if (!keyData) return;
 
 							// See if the command is already running
-							let activeCommand = this.GetActiveCommandOnCharacter(character, customDataKey);
+							let activeCommand = this.GetActiveCommandOnCharacter(character.id, customDataKey);
 							if (!activeCommand) {
 								// If it's not running, create it
 								activeCommand = this.SetupCommand(character, keyData.commandId, keyData.instanceId);
@@ -252,10 +274,26 @@ export default class PredictedCommandManager extends AirshipSingleton {
 			return error("RunCommand() should not be called from the server.");
 		}
 
-		const instanceData = { commandId, instanceId: `${++this.instanceId}` };
+		const character = Game.localPlayer.character;
+		if (!character) {
+			return error(`Character did not exist when attempting to run command ${commandId}`);
+		}
+
+		const instanceData = {
+			characterId: character.id,
+			commandId,
+			instanceId: ++this.instanceId,
+		};
 		this.queuedCommands.push(instanceData);
 
 		return instanceData;
+	}
+
+	/**
+	 * Cancels the running command on the next tick.
+	 */
+	public CancelCommand(commandInstance: CommandInstanceIdentifier) {
+		this.queuedCancellations.push(commandInstance);
 	}
 
 	/**
@@ -264,21 +302,8 @@ export default class PredictedCommandManager extends AirshipSingleton {
 	 * @param commandInstance
 	 * @param character
 	 */
-	public IsCommandInstanceActive(commandInstance: CommandInstanceIdentifier, character?: Character): boolean {
+	public IsCommandInstanceActive(commandInstance: CommandInstanceIdentifier): boolean {
 		if (!commandInstance) return false;
-		if (!character && Game.IsServer() && !Game.IsHosting()) {
-			warn(
-				"No character instance provided when calling IsCommandInstanceActive on the server. The character parameter is required on the server. This will always return false.",
-			);
-			return false;
-		}
-		const usedCharacter = character ?? Game.localPlayer.character;
-		if (!usedCharacter) {
-			warn(
-				`Character was undefined when checking for command ${commandInstance.commandId} (i: ${commandInstance.instanceId}). Does your character exist?"`,
-			);
-			return false;
-		}
 
 		if (
 			this.queuedCommands.find(
@@ -288,7 +313,10 @@ export default class PredictedCommandManager extends AirshipSingleton {
 			return true;
 		}
 
-		const cmd = this.GetActiveCommandOnCharacter(usedCharacter, this.BuildCustomDataKey(commandInstance));
+		const cmd = this.GetActiveCommandOnCharacter(
+			commandInstance.characterId,
+			this.BuildCustomDataKey(commandInstance),
+		);
 		return !!cmd;
 	}
 
@@ -333,26 +361,35 @@ export default class PredictedCommandManager extends AirshipSingleton {
 	 * @param instanceId string that identifies the instance of this command
 	 * @returns
 	 */
-	private SetupCommand(character: Character, commandId: string, instanceId: string) {
+	private SetupCommand(character: Character, commandId: string, instanceId: number) {
 		const config = this.commandHandlerMap[commandId];
 		if (!config) {
 			warn(`Unable to find custom command with key ${commandId}. Has it been registered?`);
 			return;
 		}
 
-		const existingCommand = this.GetActiveCommandOnCharacter(character, commandId);
+		const existingCommand = this.GetActiveCommandOnCharacter(character.id, commandId);
 		if (existingCommand) {
 			warn(`Command ${commandId} is already running on character ${character.id}`);
 			return;
 		}
 
+		// Note: active command data structure may be destroyed and recreated during replays.
+		// only store metadata about the current instance here and know that when retrieving
+		// activeCommand later using GetActiveCommandOnCharacter, it may not be the same data
+		// structure every time.
+		const commandIdentifier: CommandInstanceIdentifier = {
+			characterId: character.id,
+			commandId,
+			instanceId,
+		};
 		const activeCommand: ActiveCommand = {
 			commandId,
 			instanceId,
 			config: config,
 			customDataKey: this.BuildCustomDataKey({ commandId, instanceId }),
 			created: false,
-			instance: new config.handler(character),
+			instance: new config.handler(character, commandIdentifier),
 			bin: new Bin(),
 		};
 		let shouldTickAgain = true;
@@ -368,7 +405,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 
 				const input = activeCommand.instance.GetCommand();
 				const inputWrapper: CustomInputData = {
-					finished: !input,
+					finished: input === false,
 					data: input as Readonly<unknown>,
 				};
 
@@ -386,6 +423,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 			onUseInput.Connect((customData, input, replay) => {
 				// The last tick returned false, so we should stop ticking no matter what our input is.
 				if (!shouldTickAgain) {
+					this.SetHighestCompletedInstance(commandIdentifier);
 					activeCommand.bin.Clean();
 					return;
 				}
@@ -397,10 +435,20 @@ export default class PredictedCommandManager extends AirshipSingleton {
 				}
 				// The command was finished. Call complete and don't tick.
 				if (customInput && customInput.finished) {
+					this.SetHighestCompletedInstance(commandIdentifier);
 					activeCommand.bin.Clean();
 					return;
 				}
 				shouldTickAgain = activeCommand.instance.OnTick(customInput, replay) !== false;
+
+				const queuedCancel = this.queuedCancellations.findIndex(
+					(i) => i.characterId === character.id && i.commandId === commandId && i.instanceId === instanceId,
+				);
+				if (queuedCancel !== -1) {
+					shouldTickAgain = false;
+					this.queuedCancellations.remove(queuedCancel);
+					return;
+				}
 			}),
 		);
 
@@ -463,12 +511,12 @@ export default class PredictedCommandManager extends AirshipSingleton {
 			activeCommand.instance.Destroy?.();
 		});
 
-		this.AddActiveCommandToCharacter(character, activeCommand);
+		this.AddActiveCommandToCharacter(character.id, activeCommand);
 		return activeCommand;
 	}
 
-	public GetActiveCommandOnCharacter(character: Character, customDataKey: string): ActiveCommand | undefined {
-		const characterCommands = this.activeCommands.get(character.id);
+	private GetActiveCommandOnCharacter(characterId: number, customDataKey: string): ActiveCommand | undefined {
+		const characterCommands = this.activeCommands.get(characterId);
 		if (!characterCommands) return;
 
 		const activeCommand = characterCommands.get(customDataKey);
@@ -483,11 +531,11 @@ export default class PredictedCommandManager extends AirshipSingleton {
 	 * @param character
 	 * @param activeCommand
 	 */
-	private AddActiveCommandToCharacter(character: Character, activeCommand: ActiveCommand) {
-		let activeCommandsOnCharacter = this.activeCommands.get(character.id);
+	private AddActiveCommandToCharacter(characterId: number, activeCommand: ActiveCommand) {
+		let activeCommandsOnCharacter = this.activeCommands.get(characterId);
 		if (!activeCommandsOnCharacter) {
 			activeCommandsOnCharacter = new Map();
-			this.activeCommands.set(character.id, activeCommandsOnCharacter);
+			this.activeCommands.set(characterId, activeCommandsOnCharacter);
 		}
 		activeCommandsOnCharacter.set(activeCommand.customDataKey, activeCommand);
 		activeCommand.bin.Add(() => {
@@ -499,16 +547,30 @@ export default class PredictedCommandManager extends AirshipSingleton {
 		this.globalBin.Clean();
 	}
 
-	private BuildCustomDataKey(keyData: { commandId: string; instanceId: string }) {
+	private BuildCustomDataKey(keyData: { commandId: string; instanceId: number }) {
 		return "cc:" + keyData.commandId + ":" + keyData.instanceId;
 	}
 
-	private ParseCustomDataKey(dataKey: string): CommandInstanceIdentifier | undefined {
+	private ParseCustomDataKey(characterId: number, dataKey: string): CommandInstanceIdentifier | undefined {
 		if (dataKey.sub(0, 3) !== "cc:") return;
 		const [commandId, instanceId] = dataKey.sub(4).split(":");
+
 		return {
+			characterId,
 			commandId,
-			instanceId,
+			instanceId: tonumber(instanceId, 10) ?? 0,
 		};
+	}
+
+	private SetHighestCompletedInstance(commandInstance: CommandInstanceIdentifier) {
+		let characterHighest = this.highestCompleteIdMap[commandInstance.characterId];
+		if (!characterHighest) {
+			this.highestCompleteIdMap[commandInstance.characterId] = {};
+			characterHighest = this.highestCompleteIdMap[commandInstance.characterId];
+		}
+		const highestInstance = characterHighest[commandInstance.commandId];
+		if (highestInstance === undefined || highestInstance < commandInstance.instanceId) {
+			characterHighest[commandInstance.commandId] = commandInstance.instanceId;
+		}
 	}
 }

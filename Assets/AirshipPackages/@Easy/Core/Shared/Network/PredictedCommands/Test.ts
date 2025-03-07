@@ -1,5 +1,7 @@
+import { Game } from "../../Game";
 import { Keyboard } from "../../UserInput";
 import { Bin } from "../../Util/Bin";
+import PredictedCommandManager from "./PredictedCommandManager";
 import PredictedCustomCommand from "./PredictedCustomCommand";
 
 export class TestPredictedCommand extends PredictedCustomCommand<{ charging: boolean }, { progress: number }> {
@@ -33,6 +35,10 @@ export class TestPredictedCommand extends PredictedCustomCommand<{ charging: boo
 
 	override OnTick(input: Readonly<{ charging: boolean }> | undefined, replay: boolean) {
 		if (!input) return false;
+
+		if (this.progress >= 50 && Game.IsServer()) {
+			PredictedCommandManager.Get().CancelCommand(this.identifier);
+		}
 
 		this.progress = this.progress + this.CHARGE_PER_TICK;
 		print("Progress: " + this.progress);

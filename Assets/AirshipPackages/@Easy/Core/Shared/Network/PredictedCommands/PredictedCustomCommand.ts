@@ -1,4 +1,5 @@
 import Character from "../../Character/Character";
+import { CommandInstanceIdentifier } from "./PredictedCommandManager";
 
 export default class PredictedCustomCommand<Input, StateSnapshot> {
 	/**
@@ -7,13 +8,20 @@ export default class PredictedCustomCommand<Input, StateSnapshot> {
 	public character: Character;
 
 	/**
+	 * The identifier for the current command instance. This can be used externally to reference the running command
+	 * through PredictedCommandManager.
+	 */
+	public identifier: CommandInstanceIdentifier;
+
+	/**
 	 * Creates a predicted custom command instance. Command instances may be created and destroyed without
 	 * ticks being called. It's recommended to create and remove any dependencies in the Create() and Destory()
 	 * functions.
 	 * @param character
 	 */
-	constructor(character: Character) {
+	constructor(character: Character, identifier: CommandInstanceIdentifier) {
 		this.character = character;
+		this.identifier = identifier;
 	}
 
 	// Owning Client Only

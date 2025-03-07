@@ -726,24 +726,6 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 1204113646243484721}
       modified: 1
-    - name: solidColor
-      type: object
-      objectType: MaterialColorURP
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      docs:
-        comments: []
-        tags: []
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 1204113646243484721}
-      modified: 1
     displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0
