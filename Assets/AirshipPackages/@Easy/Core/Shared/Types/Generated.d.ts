@@ -36397,6 +36397,7 @@ interface BridgeConstructor {
     HasMicrophonePermission(): boolean;
     IsFullScreen(): boolean;
     IsMicRecording(): boolean;
+    IsSceneLoading(): boolean;
     LoadGlobalSceneByName(sceneName: string): void;
     LoadScene(sceneName: string, restartLuau: boolean, loadSceneMode: LoadSceneMode): void;
     LoadSceneAsyncFromAssetBundle(sceneName: string, loadSceneMode: LoadSceneMode): void;
@@ -45821,6 +45822,7 @@ interface NativeTweenConstructor {
     MaterialColor(self: GameObject, to: Color, duration: number): Tween<Color>;
     MaterialsColorProperty(self: Component, propertyName: string, from: Color, to: Color, duration: number): Tween<number>;
     MaterialsFloatProperty(self: Component, propertyName: string, from: number, to: number, duration: number): Tween<number>;
+    MaterialsVectorProperty(self: Component, propertyName: string, from: Vector4, to: Vector4, duration: number): Tween<number>;
     OffsetMax(self: Component, to: Vector2, duration: number): Tween<Vector2>;
     OffsetMax(self: GameObject, to: Vector2, duration: number): Tween<Vector2>;
     OffsetMin(self: Component, to: Vector2, duration: number): Tween<Vector2>;
