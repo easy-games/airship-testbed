@@ -140,6 +140,13 @@ export class SceneManager {
 	}
 
 	/**
+	 * Returns `true` if a scene is currently loading.
+	 */
+	public static IsSceneLoading(): boolean {
+		return Bridge.IsSceneLoading();
+	}
+
+	/**
 	 * Move a GameObject from its current Scene to a new Scene.
 	 *
 	 * You can only move root GameObjects from one Scene to another.
