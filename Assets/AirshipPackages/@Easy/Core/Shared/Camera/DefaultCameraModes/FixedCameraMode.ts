@@ -1,9 +1,8 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
-import { ControlScheme, Keyboard, Mouse, Preferred, Touchscreen } from "@Easy/Core/Shared/UserInput";
+import { ControlScheme, Mouse, Preferred, Touchscreen } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { MathUtil } from "@Easy/Core/Shared/Util/MathUtil";
 import { CameraMode, CameraTransform } from "..";
-import { Game } from "../../Game";
 import ObjectUtils from "../../Util/ObjectUtils";
 import { CameraConstants, FixedCameraConfig } from "../CameraConstants";
 import { OcclusionCameraManager } from "../OcclusionCameraManager";
@@ -163,13 +162,13 @@ export class FixedCameraMode extends CameraMode {
 			}),
 		);
 
-		this.OnStopBin.Add(
-			Keyboard.OnKeyDown(Key.K, (e) => {
-				if (e.uiProcessed) return;
-				this.useXOffsetInOcclusionCam = !this.useXOffsetInOcclusionCam;
-				Game.BroadcastMessage("Offset: " + this.useXOffsetInOcclusionCam);
-			}),
-		);
+		// this.OnStopBin.Add(
+		// 	Keyboard.OnKeyDown(Key.K, (e) => {
+		// 		if (e.uiProcessed) return;
+		// 		this.useXOffsetInOcclusionCam = !this.useXOffsetInOcclusionCam;
+		// 		Game.BroadcastMessage("Offset: " + this.useXOffsetInOcclusionCam);
+		// 	}),
+		// );
 	}
 
 	OnStop() {
