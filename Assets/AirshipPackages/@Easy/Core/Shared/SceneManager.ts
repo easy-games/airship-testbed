@@ -147,6 +147,27 @@ export class SceneManager {
 	}
 
 	/**
+	 * TEMPORARY. Returns a promise that resolves once the active
+	 * scene is no longer CoreScene.
+	 */
+	public static async WaitForNonCoreActiveScene(): Promise<void> {
+		return new Promise((resolve, reject, onCancel) => {
+			const thread = task.spawn(() => {
+				while (this.GetActiveScene().name.lower() === "corescene") {
+					task.wait();
+				}
+				resolve();
+			});
+
+			onCancel(() => {
+				if (coroutine.status(thread) === "suspended") {
+					task.cancel(thread);
+				}
+			});
+		});
+	}
+
+	/**
 	 * Move a GameObject from its current Scene to a new Scene.
 	 *
 	 * You can only move root GameObjects from one Scene to another.
