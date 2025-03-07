@@ -270,11 +270,9 @@ export class FixedCameraMode extends CameraMode {
 			}
 
 			//Collide camera with enviornment and send signal with new camera distance
-			this.onTargetDistance.Fire(
-				this.occlusionCam.BumpForOcclusion(targetPosition, OcclusionCameraManager.GetMask()),
-				this.occlusionCam.transform.position,
-				targetPosition,
-			);
+			this.occlusionCam.BumpForOcclusion(targetPosition, OcclusionCameraManager.GetMask());
+			// todo: distance is wrong here???
+			this.onTargetDistance.Fire(0, this.occlusionCam.transform.position, targetPosition);
 		}
 		this.cameraRightVector = cameraHolder.right;
 		this.cameraForwardVector = this.lookBehind ? cameraHolder.forward.mul(-1) : cameraHolder.forward;
