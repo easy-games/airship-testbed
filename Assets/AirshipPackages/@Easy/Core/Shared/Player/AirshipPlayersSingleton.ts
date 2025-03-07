@@ -366,7 +366,6 @@ export class AirshipPlayersSingleton {
 			//print("Using editor cache: " + player.userId);
 			const data = EditorSessionState.GetString("player_" + player.userId + "_outfit4");
 			if (data && data !== "") {
-				print("decoding: " + data);
 				const outfitDto = json.decode<OutfitDto>(data);
 				if (outfitDto) {
 					SetOutfit(outfitDto);

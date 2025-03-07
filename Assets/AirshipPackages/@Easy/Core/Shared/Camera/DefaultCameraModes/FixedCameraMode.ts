@@ -28,6 +28,13 @@ export class FixedCameraMode extends CameraMode {
 	private minRotX = math.rad(1);
 	private maxRotX = math.rad(179);
 
+	public useXOffsetInOcclusionCam = false;
+
+	/**
+	 * When set to `useXOffsetInOcclusionCam` is set to true, this will tween to `1`.
+	 */
+	private useXOffsetInOcclusionCamStrength = 0;
+
 	private lastTargetPos: Vector3 | undefined;
 	private lastRot: Quaternion | undefined;
 
@@ -154,6 +161,14 @@ export class FixedCameraMode extends CameraMode {
 				}
 			}),
 		);
+
+		// this.OnStopBin.Add(
+		// 	Keyboard.OnKeyDown(Key.K, (e) => {
+		// 		if (e.uiProcessed) return;
+		// 		this.useXOffsetInOcclusionCam = !this.useXOffsetInOcclusionCam;
+		// 		Game.BroadcastMessage("Offset: " + this.useXOffsetInOcclusionCam);
+		// 	}),
+		// );
 	}
 
 	OnStop() {
@@ -240,13 +255,24 @@ export class FixedCameraMode extends CameraMode {
 	OnPostUpdate(cameraHolder: Transform) {
 		if (this.shouldBumpForOcclusion && this.lastTargetPos) {
 			cameraHolder.LookAt(this.lastCameraPos);
-			const targetPosition = this.lastTargetPos.add(Vector3.up.mul(this.yOffset));
+			let targetPosition = this.lastTargetPos.add(Vector3.up.mul(this.yOffset));
+
+			{
+				let delta = Time.deltaTime * 10;
+				if (!this.useXOffsetInOcclusionCam) delta *= -1;
+
+				this.useXOffsetInOcclusionCamStrength = math.clamp(this.useXOffsetInOcclusionCamStrength + delta, 0, 1);
+				if (this.useXOffsetInOcclusionCamStrength > 0) {
+					targetPosition = targetPosition.add(
+						cameraHolder.right.mul(this.xOffset).mul(this.useXOffsetInOcclusionCamStrength),
+					);
+				}
+			}
+
 			//Collide camera with enviornment and send signal with new camera distance
-			this.onTargetDistance.Fire(
-				this.occlusionCam.BumpForOcclusion(targetPosition, OcclusionCameraManager.GetMask()),
-				this.occlusionCam.transform.position,
-				targetPosition,
-			);
+			this.occlusionCam.BumpForOcclusion(targetPosition, OcclusionCameraManager.GetMask());
+			// todo: distance is wrong here???
+			this.onTargetDistance.Fire(0, this.occlusionCam.transform.position, targetPosition);
 		}
 		this.cameraRightVector = cameraHolder.right;
 		this.cameraForwardVector = this.lookBehind ? cameraHolder.forward.mul(-1) : cameraHolder.forward;

@@ -393,6 +393,8 @@ export class ProtectedAvatarSingleton {
 				return AccessorySlot.LeftHand;
 			case GearClothingSubcategory.RightHand:
 				return AccessorySlot.RightHand;
+			case GearClothingSubcategory.Ears:
+				return AccessorySlot.Ears;
 			default:
 				warn("unknown GearClothingSubcategory mapping: " + slot);
 				return AccessorySlot.Root;
@@ -428,6 +430,8 @@ export class ProtectedAvatarSingleton {
 				return GearClothingSubcategory.LeftHand;
 			case AccessorySlot.RightHand:
 				return GearClothingSubcategory.RightHand;
+			case AccessorySlot.Ears:
+				return GearClothingSubcategory.Ears;
 			default:
 				warn("unknown AccessorySlot mapping: " + slot);
 				return GearClothingSubcategory.Root;

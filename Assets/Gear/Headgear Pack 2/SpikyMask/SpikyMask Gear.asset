@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c4968faf83d4945b20e087dcd456ddd, type: 3}
+  m_Name: SpikyMask Gear
+  m_EditorClassIdentifier: 
+  classId: 7bf5dcec-e479-4d5a-9ff8-25378f32dc7a
+  accessoryPrefabs:
+  - {fileID: 2141728125088774865, guid: 7df6bd8b258f5cc4d8cefab6a6e5ddde, type: 3}
+  face: {fileID: 0}
