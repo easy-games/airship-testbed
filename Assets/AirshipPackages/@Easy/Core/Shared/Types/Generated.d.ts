@@ -45189,6 +45189,29 @@ interface ShaderWarmupConstructor {
 }
 declare const ShaderWarmup: ShaderWarmupConstructor;
     
+interface OcclusionCam extends MonoBehaviour {
+    targetCamera: Camera;
+    clampYToHeadHeight: boolean;
+    clampYToHeadHeightThreshold: number;
+
+
+
+    BumpForOcclusion(attachToPos: Vector3, mask: number): void;
+    Init(camera: Camera): void;
+
+
+}
+    
+interface OcclusionCamConstructor {
+
+
+    new(): OcclusionCam;
+
+
+
+}
+declare const OcclusionCam: OcclusionCamConstructor;
+    
 interface NetworkServer {
 
 
