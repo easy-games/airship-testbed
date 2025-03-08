@@ -13,7 +13,11 @@ import { DraggingState } from "./AirshipDraggingState";
 import AirshipInventoryTile from "./AirshipInventoryTile";
 import Inventory from "./Inventory";
 import { InventoryUIVisibility } from "./InventoryUIVisibility";
-import { SlotInteractionEvent } from "./Signal/SlotInteractionEvent";
+import {
+	CancellableSlotInteractionEvent,
+	SlotDragEndedEvent,
+	SlotInteractionEvent,
+} from "./Signal/SlotInteractionEvent";
 
 export default class AirshipInventoryUI extends AirshipBehaviour {
 	@Header("Variables")
@@ -284,7 +288,10 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			CanvasAPI.OnBeginDragEvent(button.gameObject, () => {
 				this.draggingBin.Clean();
 				if (!this.IsBackpackShown()) return;
-				if (Keyboard.IsKeyDown(Key.LeftShift)) return;
+				const dragBeginEvent = Airship.Inventory.onInventorySlotDragBegin.Fire(
+					new CancellableSlotInteractionEvent(inventory, slotIndex),
+				);
+				if (dragBeginEvent.IsCancelled()) return;
 
 				const itemStack = inventory.GetItem(slotIndex);
 				if (!itemStack) return;
@@ -341,6 +348,14 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 				this.draggingBin.Clean();
 
 				if (this.draggingState) {
+					Airship.Inventory.onInventorySlotDragEnd.Fire(
+						new SlotDragEndedEvent(
+							this.draggingState.inventory,
+							this.draggingState.slot,
+							this.draggingState.consumed,
+						),
+					);
+
 					if (!this.draggingState.consumed) {
 						// Intent may be to drop item
 						// this.characterInvController.DropItemInSlot(
