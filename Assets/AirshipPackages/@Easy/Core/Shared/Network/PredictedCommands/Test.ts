@@ -58,6 +58,7 @@ export class TestPredictedCommand extends PredictedCustomCommand<{ charging: boo
 
 	ResetToSnapshot(state: Readonly<{ progress: number }>): void {
 		this.progress = state.progress;
+		print("reset to" + this.progress);
 	}
 
 	CompareSnapshots(a: Readonly<{ progress: number }>, b: Readonly<{ progress: number }>): boolean {

@@ -3,7 +3,10 @@ import Character from "../../Character/Character";
 import { Game } from "../../Game";
 import { Bin } from "../../Util/Bin";
 import { Cancellable } from "../../Util/Cancellable";
+import inspect from "../../Util/Inspect";
 import { Signal } from "../../Util/Signal";
+import { NetworkChannel } from "../NetworkAPI";
+import { NetworkSignal } from "../NetworkSignal";
 import PredictedCustomCommand from "./PredictedCustomCommand";
 
 export interface CommandConfiguration {
@@ -35,6 +38,23 @@ interface ActiveCommand {
 	bin: Bin;
 }
 
+/**
+ * TODO:
+ *
+ * I think what I need to do is actually have the server continue to pass the last state data processed once the command finishes
+ * until the client confirms that input is over and sends input false.
+ *
+ * The idea is that the server can cancel the command, but for both to agree on the end time and state, we need to ensure that the
+ * client gets the message that the command has ended and also has correctly reconciled to the state of the system at the end of
+ * processing.
+ *
+ * The trouble right now is that the command doesn't necessarily see the snapshot that the command ended, all it knows is that it received
+ * as snapshot where the command was over. I need the server to pass information that would allow the client to reconcile back further if
+ * the command ended on a snapshot before the one it saw.
+ *
+ * Hm.. do I though?? I don't want to reimplement the entire C# networking setup and that's pretty much what it looks like...
+ */
+
 interface CustomSnapshotData {
 	data: Readonly<unknown>;
 }
@@ -57,6 +77,10 @@ class ValidateCommand extends Cancellable {
 	}
 }
 
+const NetworkCommandEnd = new NetworkSignal<
+	[commandIdentifier: CommandInstanceIdentifier, lastCapturedState: CustomSnapshotData]
+>("PredictedCommands/CommandEnded", NetworkChannel.Reliable);
+
 export default class PredictedCommandManager extends AirshipSingleton {
 	/**
 	 * Fires when a new command is starting. In server authoritative mode, this signal fires on both
@@ -68,6 +92,11 @@ export default class PredictedCommandManager extends AirshipSingleton {
 	 * Only fires for the local character on the client.
 	 */
 	public readonly onValidateCommand = new Signal<ValidateCommand>();
+
+	/**
+	 * Fires when a command has authoritatively ended.
+	 */
+	public readonly onCommandEnded = new Signal<[CommandInstanceIdentifier, Readonly<unknown>]>();
 
 	private commandHandlerMap: Record<string, CommandConfiguration> = {};
 	/** The active commands for the current tick. If read during a replay, it will contain the active command at that tick. */
@@ -110,27 +139,27 @@ export default class PredictedCommandManager extends AirshipSingleton {
 				character.PreProcessCommand.Connect((customInputData, input) => {
 					(customInputData as Map<string, Readonly<CustomInputData>>).forEach((value, key) => {
 						// If it's not custom data controlled by us, ignore it
-						const keyData = this.ParseCustomDataKey(character.id, key);
-						if (!keyData) return;
+						const commandIdentifier = this.ParseCustomDataKey(character.id, key);
+						if (!commandIdentifier) return;
 
 						// Invalid instance ids are ignored. 0 is never used as an instance id.
-						if (keyData.instanceId === 0) return;
+						if (commandIdentifier.instanceId === 0) return;
 
 						// See if the command is already running
-						const activeCommand = this.GetActiveCommandOnCharacter(character.id, key);
+						const activeCommand = this.GetActiveCommandOnCharacter(commandIdentifier);
 						if (activeCommand) return;
 
 						if (Game.IsServer() && !Game.IsHosting()) {
 							const characterInstanceIds = this.highestCompleteIdMap[character.id] ?? {};
-							const highestInstance = characterInstanceIds[keyData.commandId] ?? 0;
+							const highestInstance = characterInstanceIds[commandIdentifier.commandId] ?? 0;
 
 							// Highest instance is updated when the command _completes_ so if we see it again, that
 							// means we should ignore the command since the server has considered it complete.
-							if (keyData.instanceId <= highestInstance) return;
+							if (commandIdentifier.instanceId <= highestInstance) return;
 						}
 
 						// Run the command if it's not already running
-						this.SetupCommand(character, keyData.commandId, keyData.instanceId);
+						this.SetupCommand(character, commandIdentifier.commandId, commandIdentifier.instanceId);
 					});
 				}),
 			);
@@ -145,8 +174,8 @@ export default class PredictedCommandManager extends AirshipSingleton {
 					// Iterate over active keys for these snapshots and compare.
 					activeCommandKeys?.forEach((key) => {
 						// If the custom command key wasn't one of our managed keys, ignore it
-						const keyData = this.ParseCustomDataKey(character.id, key);
-						if (!keyData) return;
+						const commandIdentifier = this.ParseCustomDataKey(character.id, key);
+						if (!commandIdentifier) return;
 
 						// Get the data for this command. If we don't have data on each side, then it definitely doesn't match
 						// The resulting reconcile will cause any unnecessary commands to be removed and missing commands to
@@ -154,22 +183,21 @@ export default class PredictedCommandManager extends AirshipSingleton {
 						const aCommandData = (aCustom as Map<string, Readonly<CustomSnapshotData>>).get(key);
 						const bCommandData = (bCustom as Map<string, Readonly<CustomSnapshotData>>).get(key);
 						if (!aCommandData || !bCommandData) {
-							print("missing data for " + key);
 							character.SetComparisonResult(false);
 							return;
 						}
 
 						// To find the command instance we need to work on, we first check active commands to see if it's still operating,
 						// if it's not, we have to create it, then compare.
-						let instance = this.GetActiveCommandOnCharacter(character.id, key)?.instance;
+						let instance = this.GetActiveCommandOnCharacter(commandIdentifier)?.instance;
 						if (!instance) {
-							const handler = this.commandHandlerMap[keyData.commandId].handler;
+							const handler = this.commandHandlerMap[commandIdentifier.commandId].handler;
 							if (!handler) return;
 
 							// Instead of fully creating an active command using SetupCommand, we simply create an instance of it
 							// since all we want to do is call CompareSnapshots(). No ticking will be involved on this instance
 							// and it should be removed once this function completes.
-							instance = new handler(character, keyData);
+							instance = new handler(character, commandIdentifier);
 						}
 
 						// Call the compare function and set the result for C# to use later
@@ -207,17 +235,21 @@ export default class PredictedCommandManager extends AirshipSingleton {
 					(customSnapshotData as Map<string, Readonly<CustomSnapshotData>>).forEach(
 						(value, customDataKey) => {
 							// If it's not custom data controlled by us, ignore it
-							const keyData = this.ParseCustomDataKey(character.id, customDataKey);
-							if (!keyData) return;
+							const commandIdentifier = this.ParseCustomDataKey(character.id, customDataKey);
+							if (!commandIdentifier) return;
 
 							// See if the command is already running
-							let activeCommand = this.GetActiveCommandOnCharacter(character.id, customDataKey);
+							let activeCommand = this.GetActiveCommandOnCharacter(commandIdentifier);
 							if (!activeCommand) {
 								// If it's not running, create it
-								activeCommand = this.SetupCommand(character, keyData.commandId, keyData.instanceId);
+								activeCommand = this.SetupCommand(
+									character,
+									commandIdentifier.commandId,
+									commandIdentifier.instanceId,
+								);
 								if (!activeCommand) {
 									warn(
-										`Failed to set up command ${keyData.commandId} (instance: ${keyData.instanceId}) for replay. This may cause unusual replay behavior.`,
+										`Failed to set up command ${commandIdentifier.commandId} (instance: ${commandIdentifier.instanceId}) for replay. This may cause unusual replay behavior.`,
 									);
 									return;
 								}
@@ -252,6 +284,27 @@ export default class PredictedCommandManager extends AirshipSingleton {
 				});
 				this.activeCommands.delete(character.id);
 			});
+		});
+
+		// Handles ending commands on the client when the server authoritatively completes the command.
+		// TODO: consider comparing last captured state and reconciling if needed?
+		// TODO: this fires before reconcile due to Mirror networking order :/
+		NetworkCommandEnd.client.OnServerEvent((commandIdentifier, stateData) => {
+			// No matter when we receive this, the server is done processing inputs, so if the command is
+			// active, we should cancel it. Most likely it won't be active because we will have reconciled it already.
+			// let activeCommand = this.GetActiveCommandOnCharacter(commandIdentifier);
+			// if (activeCommand) {
+			// 	this.CancelCommand(commandIdentifier);
+			// }
+			// TODO: is this firing at the correct time? Cancel occurs on the next tick, so technically I guess we could
+			// end up ticking after we fire onCommandEnded?
+			// this.onCommandEnded.Fire(commandIdentifier, stateData.data);
+			// ----- FOR MONDAY:
+			// Check if we need a resim
+			// if we do, request resim at the time in stateData.lastClientCommandTime
+			// in ResetToState make sure that you reset to the state we have in stateData (maybe?)
+			// queue command cancellation for the next tick so that next step in resim cancels
+			// the command just as the server did
 		});
 	}
 
@@ -313,10 +366,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 			return true;
 		}
 
-		const cmd = this.GetActiveCommandOnCharacter(
-			commandInstance.characterId,
-			this.BuildCustomDataKey(commandInstance),
-		);
+		const cmd = this.GetActiveCommandOnCharacter(commandInstance);
 		return !!cmd;
 	}
 
@@ -368,7 +418,13 @@ export default class PredictedCommandManager extends AirshipSingleton {
 			return;
 		}
 
-		const existingCommand = this.GetActiveCommandOnCharacter(character.id, commandId);
+		const commandIdentifier: CommandInstanceIdentifier = {
+			characterId: character.id,
+			commandId,
+			instanceId,
+		};
+
+		const existingCommand = this.GetActiveCommandOnCharacter(commandIdentifier);
 		if (existingCommand) {
 			warn(`Command ${commandId} is already running on character ${character.id}`);
 			return;
@@ -378,11 +434,6 @@ export default class PredictedCommandManager extends AirshipSingleton {
 		// only store metadata about the current instance here and know that when retrieving
 		// activeCommand later using GetActiveCommandOnCharacter, it may not be the same data
 		// structure every time.
-		const commandIdentifier: CommandInstanceIdentifier = {
-			characterId: character.id,
-			commandId,
-			instanceId,
-		};
 		const activeCommand: ActiveCommand = {
 			commandId,
 			instanceId,
@@ -393,6 +444,25 @@ export default class PredictedCommandManager extends AirshipSingleton {
 			bin: new Bin(),
 		};
 		let shouldTickAgain = true;
+		let lastCapturedState: CustomSnapshotData = {
+			data: undefined as unknown as Readonly<unknown>,
+		};
+
+		// Ends a command with the expectation that we will never run it again. For the server, that means
+		// we record the identifier as complete and send a report to the client that we have officially ended
+		// the command and will no longer accept input. On the client, we simply destroy the command. we will send
+		// the final onCommandEnded signal when the client recieves the report from the server.
+		const CommitEndedCommand = () => {
+			if (Game.IsServer()) {
+				this.SetHighestCompletedInstance(commandIdentifier);
+				this.onCommandEnded.Fire(commandIdentifier, lastCapturedState.data);
+				if (character.player) {
+					print("last cp" + inspect(lastCapturedState));
+					NetworkCommandEnd.server.FireClient(character.player, commandIdentifier, lastCapturedState);
+				}
+			}
+			activeCommand.bin.Clean();
+		};
 
 		character.bin.Add(activeCommand.bin);
 
@@ -423,8 +493,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 			onUseInput.Connect((customData, input, replay) => {
 				// The last tick returned false, so we should stop ticking no matter what our input is.
 				if (!shouldTickAgain) {
-					this.SetHighestCompletedInstance(commandIdentifier);
-					activeCommand.bin.Clean();
+					CommitEndedCommand();
 					return;
 				}
 
@@ -435,8 +504,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 				}
 				// The command was finished. Call complete and don't tick.
 				if (customInput && customInput.finished) {
-					this.SetHighestCompletedInstance(commandIdentifier);
-					activeCommand.bin.Clean();
+					CommitEndedCommand();
 					return;
 				}
 				shouldTickAgain = activeCommand.instance.OnTick(customInput, replay) !== false;
@@ -459,6 +527,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 				const stateWrapper: CustomSnapshotData = {
 					data: state as Readonly<unknown>,
 				};
+				lastCapturedState = stateWrapper;
 				character.AddCustomSnapshotData(activeCommand.customDataKey, stateWrapper);
 			}),
 		);
@@ -515,11 +584,11 @@ export default class PredictedCommandManager extends AirshipSingleton {
 		return activeCommand;
 	}
 
-	private GetActiveCommandOnCharacter(characterId: number, customDataKey: string): ActiveCommand | undefined {
-		const characterCommands = this.activeCommands.get(characterId);
+	private GetActiveCommandOnCharacter(commandIdenfitier: CommandInstanceIdentifier): ActiveCommand | undefined {
+		const characterCommands = this.activeCommands.get(commandIdenfitier.characterId);
 		if (!characterCommands) return;
 
-		const activeCommand = characterCommands.get(customDataKey);
+		const activeCommand = characterCommands.get(this.BuildCustomDataKey(commandIdenfitier));
 		if (!activeCommand) return;
 
 		return activeCommand;
@@ -558,11 +627,12 @@ export default class PredictedCommandManager extends AirshipSingleton {
 		return {
 			characterId,
 			commandId,
-			instanceId: tonumber(instanceId, 10) ?? 0,
+			instanceId: tonumber(instanceId) ?? 0,
 		};
 	}
 
 	private SetHighestCompletedInstance(commandInstance: CommandInstanceIdentifier) {
+		if (Game.IsClient()) return; // We don't want to track this on the client since it's what generates instanceIds. onCommandEnded is fired in OnCompareSnapshot
 		let characterHighest = this.highestCompleteIdMap[commandInstance.characterId];
 		if (!characterHighest) {
 			this.highestCompleteIdMap[commandInstance.characterId] = {};

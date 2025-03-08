@@ -4,6 +4,7 @@ import PredictedCommandManager, {
 	CommandInstanceIdentifier,
 } from "@Easy/Core/Shared/Network/PredictedCommands/PredictedCommandManager";
 import { TestPredictedCommand } from "@Easy/Core/Shared/Network/PredictedCommands/Test";
+import inspect from "@Easy/Core/Shared/Util/Inspect";
 
 export default class TestLocalCharacter extends AirshipSingleton {
 	private CMD_IDENTIFIER = "cmd";
@@ -25,6 +26,10 @@ export default class TestLocalCharacter extends AirshipSingleton {
 				return;
 			}
 			this.canUseAt = Time.time + 3;
+		});
+
+		PredictedCommandManager.Get().onCommandEnded.Connect((commandId) => {
+			print("Ended " + inspect(commandId));
 		});
 	}
 

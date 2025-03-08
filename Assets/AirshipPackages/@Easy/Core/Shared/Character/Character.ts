@@ -141,7 +141,8 @@ export default class Character extends AirshipBehaviour {
 	 * Signals that two snapshots are being compared. Use SetComparisonResult() in this signals callbacks
 	 * to modify the result of the comparison.
 	 *
-	 * This signal does not fire for observers.
+	 * This signal only fires when the local client needs to compare it's predicted state (first parameter), to the
+	 * server's authoritative state (second parameter).
 	 */
 	public OnCompareSnapshots = new Signal<
 		[Map<string, unknown>, CharacterSnapshotData, Map<string, unknown>, CharacterSnapshotData]
