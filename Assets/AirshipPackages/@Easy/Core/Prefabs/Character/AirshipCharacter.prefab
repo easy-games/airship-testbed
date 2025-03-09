@@ -635,7 +635,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   script: {fileID: -8502596097384394428, guid: 231b41c7c69568446b98353c21d6785d, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/Character.lua
-  context: 1
   forceContext: 0
   metadata:
     name: Character
@@ -828,7 +827,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   script: {fileID: 3379845904423814631, guid: b265ca149231a634a8b651b688c7a486, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/CharacterRendering.lua
-  context: 1
   forceContext: 0
   metadata:
     name: CharacterRendering
@@ -954,7 +952,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   script: {fileID: 6641073800188671112, guid: 8a394f76659097e498fcb014078bae54, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Inventory/Inventory.lua
-  context: 1
   forceContext: 0
   metadata:
     name: Inventory
@@ -1191,7 +1188,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   script: {fileID: 5399347344820012199, guid: 1d9ff343e68ebb247bb7a1dd2270fd63, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/Animation/CharacterAnimation.ts
-  context: 1
   forceContext: 0
   metadata:
     name: CharacterAnimation

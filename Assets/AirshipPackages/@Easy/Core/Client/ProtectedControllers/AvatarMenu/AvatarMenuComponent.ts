@@ -47,6 +47,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	public contentScrollRect!: ScrollRect;
 	public avatarLoadingContainer: RectTransform;
 	public avatarLoadingContainerMobile: RectTransform;
+	public gearLoadingIndicator: GameObject;
 
 	public grid: GridLayoutGroup;
 
@@ -93,6 +94,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private discardMessage = "Are you sure you want to discard changes to your outfit?";
 
 	private accessoryBuilder!: AccessoryBuilder;
+
+	private gearLoadingCounter = 0;
 
 	private Log(message: string) {
 		print("Avatar Editor: " + message + " (" + Time.time + ")");
@@ -590,13 +593,25 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.UpdateButtonGraphics();
 		this.SetDirty(true);
 
-		const gear = PlatformGear.DownloadYielding(clothingDto.class.classId, clothingDto.class.gear.airAssets[0]);
-		if (!gear) error("failed to download clothing.");
-		if (gear?.accessoryPrefabs === undefined) error("empty accessory prefabs.");
+		this.gearLoadingCounter++;
+		try {
+			const gear = PlatformGear.DownloadYielding(clothingDto.class.classId, clothingDto.class.gear.airAssets[0]);
+			if (!gear) error("failed to download clothing.");
+			if (gear?.accessoryPrefabs === undefined) error("empty accessory prefabs.");
 
-		for (let accessoryPrefab of gear.accessoryPrefabs) {
-			this.accessoryBuilder.Add(accessoryPrefab);
+			for (let accessoryPrefab of gear.accessoryPrefabs) {
+				this.accessoryBuilder.Add(accessoryPrefab);
+			}
+		} catch (err) {
+			Debug.LogError(err);
 		}
+		this.gearLoadingCounter--;
+	}
+
+	protected Update(dt: number): void {
+		this.gearLoadingIndicator.SetActive(
+			this.gearLoadingCounter > 0 && !this.avatarLoadingContainer.gameObject.activeInHierarchy,
+		);
 	}
 
 	private async SelectFaceItem(face: GearInstanceDto): Promise<void> {
@@ -611,11 +626,17 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 		if (face.class.gear.airAssets.size() === 0) return;
 
-		const clothing = PlatformGear.DownloadYielding(face.class.classId, face.class.gear.airAssets[0]);
-		if (clothing?.face) {
-			this.accessoryBuilder.SetFaceTexture(clothing.face.decalTexture);
-			this.accessoryBuilder.UpdateCombinedMesh();
+		this.gearLoadingCounter++;
+		try {
+			const clothing = PlatformGear.DownloadYielding(face.class.classId, face.class.gear.airAssets[0]);
+			if (clothing?.face) {
+				this.accessoryBuilder.SetFaceTexture(clothing.face.decalTexture);
+				this.accessoryBuilder.UpdateCombinedMesh();
+			}
+		} catch (err) {
+			Debug.LogError(err);
 		}
+		this.gearLoadingCounter--;
 	}
 
 	private SelectSkinColor(color: Color) {

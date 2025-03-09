@@ -187,7 +187,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   script: {fileID: -5316438272152554620, guid: ccc96a9e74b93b448abff1c16a6ea110, type: 3}
   scriptPath: Assets/Code/AirshipPlatformDemo/MovementModifications/CharacterMoveSlide.lua
-  context: 1
   forceContext: 0
   metadata:
     name: CharacterMoveSlide

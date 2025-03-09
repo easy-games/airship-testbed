@@ -144,7 +144,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   script: {fileID: -5013684570317190384, guid: d16f7b806f2baa74c809d1b7a5b66f68, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/UI/VisualGraph/VisualGraphTransform.lua
-  context: 1
   forceContext: 0
   metadata:
     name: VisualGraphTransform
@@ -203,7 +202,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   script: {fileID: 6929938930846345048, guid: 44926cdece2cd4612bf5615b39fba6f4, type: 3}
   scriptPath: Assets/Code/Components/Debugging/PredictedMovementDebugging.lua
-  context: 1
   forceContext: 0
   metadata:
     name: PredictedMovementDebugging
@@ -268,7 +266,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   script: {fileID: -5013684570317190384, guid: d16f7b806f2baa74c809d1b7a5b66f68, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/UI/VisualGraph/VisualGraphTransform.lua
-  context: 1
   forceContext: 0
   metadata:
     name: VisualGraphTransform

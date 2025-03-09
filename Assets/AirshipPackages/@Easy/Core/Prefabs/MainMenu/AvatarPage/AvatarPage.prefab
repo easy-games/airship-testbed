@@ -280,6 +280,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 3216045458453766036}
   - {fileID: 5413455739076116200}
   - {fileID: 6436582929737664107}
   m_Father: {fileID: 1737546173658115557}
@@ -394,16 +395,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptFile: {fileID: 6320299036104279480, guid: 5103b80322fed3c48a39781e5aecf7c2, type: 3}
-  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/AvatarMenuComponent.lua
-  m_error: 0
-  m_yielded: 0
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
+  script: {fileID: 6320299036104279480, guid: 5103b80322fed3c48a39781e5aecf7c2, type: 3}
+  scriptPath: Assets/AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/AvatarMenuComponent.lua
+  forceContext: 0
+  metadata:
     name: AvatarMenuComponent
     singleton: 0
     decorators: []
@@ -418,6 +413,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: AirshipPackages/@Easy/Core/Client/ProtectedControllers/MainMenuPageName@MainMenuPageType
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: Avatar
@@ -433,6 +431,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators:
       - name: Header
         parameters:
@@ -452,6 +453,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -467,6 +471,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -482,6 +489,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -497,6 +507,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -512,6 +525,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -527,6 +543,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -542,6 +561,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -557,6 +579,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators:
       - name: Header
         parameters:
@@ -576,6 +601,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -591,6 +619,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -606,6 +637,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -621,6 +655,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -636,6 +673,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -651,6 +691,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators:
       - name: Header
         parameters:
@@ -670,6 +713,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipButton.ts
+      jsDocs:
+        text: []
+        tags: []
       decorators:
       - name: Header
         parameters:
@@ -689,6 +735,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipButton.ts
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -704,6 +753,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -719,6 +771,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators:
       - name: Header
         parameters:
@@ -738,6 +793,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 0.1
@@ -753,6 +811,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -768,14 +829,34 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
       serializedObject: {fileID: 0}
       modified: 0
+    - name: gearLoadingIndicator
+      type: object
+      objectType: GameObject
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 8949250476120152049}
+      modified: 1
     displayIcon: {fileID: 0}
     displayName: 
-  contextOverwritten: 0
 --- !u!114 &7489676922720409085
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1110,16 +1191,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptFile: {fileID: 247699700030261788, guid: 6155702a7b8e9f445b9ce853cd33d000, type: 3}
-  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipButton.lua
-  m_error: 0
-  m_yielded: 0
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
+  script: {fileID: 247699700030261788, guid: 6155702a7b8e9f445b9ce853cd33d000, type: 3}
+  scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipButton.lua
+  forceContext: 0
+  metadata:
     name: AirshipButton
     singleton: 0
     decorators: []
@@ -1134,6 +1209,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -1149,6 +1227,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators:
       - name: Header
         parameters:
@@ -1168,6 +1249,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipButtonClickEffect@AirshipButtonClickEffect
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators:
       - name: Header
         parameters:
@@ -1187,6 +1271,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators:
       - name: Tooltip
         parameters:
@@ -1206,6 +1293,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -1213,7 +1303,6 @@ MonoBehaviour:
       modified: 0
     displayIcon: {fileID: 0}
     displayName: 
-  contextOverwritten: 0
 --- !u!114 &2348695858848215157
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1718,16 +1807,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptFile: {fileID: 247699700030261788, guid: 6155702a7b8e9f445b9ce853cd33d000, type: 3}
-  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipButton.lua
-  m_error: 0
-  m_yielded: 0
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
+  script: {fileID: 247699700030261788, guid: 6155702a7b8e9f445b9ce853cd33d000, type: 3}
+  scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipButton.lua
+  forceContext: 0
+  metadata:
     name: AirshipButton
     singleton: 0
     decorators: []
@@ -1742,6 +1825,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -1757,6 +1843,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators:
       - name: Header
         parameters:
@@ -1776,6 +1865,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipButtonClickEffect@AirshipButtonClickEffect
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators:
       - name: Header
         parameters:
@@ -1795,6 +1887,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators:
       - name: Tooltip
         parameters:
@@ -1814,6 +1909,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -1821,7 +1919,6 @@ MonoBehaviour:
       modified: 0
     displayIcon: {fileID: 0}
     displayName: 
-  contextOverwritten: 0
 --- !u!114 &5877901390576900711
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3158,16 +3255,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptFile: {fileID: -2929725894379022357, guid: f5196c097749304479eb91a6f809882c, type: 3}
-  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/AvatarMenuProfileComponent.lua
-  m_error: 0
-  m_yielded: 0
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
+  script: {fileID: -2929725894379022357, guid: f5196c097749304479eb91a6f809882c, type: 3}
+  scriptPath: Assets/AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/AvatarMenuProfileComponent.lua
+  forceContext: 0
+  metadata:
     name: AvatarMenuProfileComponent
     singleton: 0
     decorators: []
@@ -3182,6 +3273,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -3197,6 +3291,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -3212,6 +3309,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -3219,7 +3319,6 @@ MonoBehaviour:
       modified: 1
     displayIcon: {fileID: 0}
     displayName: 
-  contextOverwritten: 0
 --- !u!1 &5206208421496188203
 GameObject:
   m_ObjectHideFlags: 0
@@ -4023,7 +4122,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7470606204680333232}
   m_Layer: 0
-  m_Name: LoadingContainer
+  m_Name: AvatarLoaderContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4736,6 +4835,95 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &8107867855612277669
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6490003009131307568}
+  - component: {fileID: 4132399085304146247}
+  - component: {fileID: 1083905707447603404}
+  - component: {fileID: 8511779897631624429}
+  m_Layer: 0
+  m_Name: Image
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &6490003009131307568
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8107867855612277669}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3216045458453766036}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 33.5752, y: 33.5752}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &4132399085304146247
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8107867855612277669}
+  m_CullTransparentMesh: 1
+--- !u!114 &1083905707447603404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8107867855612277669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.54509807}
+  m_RaycastTarget: 0
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 0
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 5b3b62b8ee0304a858495b349054e78a, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!114 &8511779897631624429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8107867855612277669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 811df0891a3a542c982bdf11cd5c656f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotateSpeed: -150
 --- !u!1 &8549634946776560324
 GameObject:
   m_ObjectHideFlags: 0
@@ -4811,6 +4999,42 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &8949250476120152049
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3216045458453766036}
+  m_Layer: 0
+  m_Name: GearLoading
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &3216045458453766036
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8949250476120152049}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6490003009131307568}
+  m_Father: {fileID: 7664068802410899013}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -57.8, y: 70}
+  m_SizeDelta: {x: 75.6719, y: 75.672}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &9014915179316604801
 GameObject:
   m_ObjectHideFlags: 0

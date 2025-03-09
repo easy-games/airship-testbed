@@ -558,7 +558,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   script: {fileID: 5971327804806352644, guid: 1e6988b40f0812948b4b23d4fd4cb7c6, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Avatar/AvatarViewComponent.lua
-  context: 1
   forceContext: 0
   metadata:
     name: AvatarViewComponent

@@ -55,7 +55,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   script: {fileID: 2274059817351834353, guid: 79ffce5c465f94752bf5024d90c26922, type: 3}
   scriptPath: Assets/Code/Components/SimpleCharacterMovement.lua
-  context: 1
   forceContext: 0
   metadata:
     name: SimpleCharacterMovement
@@ -273,7 +272,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   script: {fileID: -8502596097384394428, guid: 231b41c7c69568446b98353c21d6785d, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/Character.lua
-  context: 1
   forceContext: 0
   metadata:
     name: Character

@@ -54,7 +54,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   script: {fileID: -5059136008333416200, guid: 5828a7049ad72ef44abcca87322e904e, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/AvatarRenderComponent.lua
-  context: 1
   forceContext: 0
   metadata:
     name: AvatarRenderComponent

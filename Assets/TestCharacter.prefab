@@ -103,7 +103,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   script: {fileID: 3282824997728861277, guid: da24e81f99ecc4dc88e742cfc9f66eae, type: 3}
   scriptPath: Assets/Code/Components/TestCharacter.lua
-  context: 1
   forceContext: 0
   metadata:
     name: TestCharacter

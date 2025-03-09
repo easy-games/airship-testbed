@@ -1544,7 +1544,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   script: {fileID: -8052405120146006952, guid: d8f271e34606d0a41a0745945b21b4c1, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/Animation/CharacterRagdoll.lua
-  context: 1
   forceContext: 0
   metadata:
     name: CharacterRagdoll

@@ -67,16 +67,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptFile: {fileID: -1031757675678672769, guid: 69275548b315d6d418c0233c65d6cfef, type: 3}
-  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/Accessory/DynamicColor.lua
-  m_error: 0
-  m_yielded: 0
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
+  script: {fileID: -1031757675678672769, guid: 69275548b315d6d418c0233c65d6cfef, type: 3}
+  scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/Accessory/DynamicColor.lua
+  forceContext: 0
+  metadata:
     name: DynamicColor
     singleton: 0
     decorators: []
@@ -271,7 +265,6 @@ MonoBehaviour:
       modified: 1
     displayIcon: {fileID: 0}
     displayName: 
-  contextOverwritten: 0
 --- !u!1001 &4388727875125286719
 PrefabInstance:
   m_ObjectHideFlags: 0
