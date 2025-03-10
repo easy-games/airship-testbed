@@ -869,28 +869,6 @@ MonoBehaviour:
       serializedValue: 0.6
       serializedObject: {fileID: 0}
       modified: 1
-    - name: sharedTransparencyMat
-      type: object
-      objectType: Material
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      jsDocs:
-        text: []
-        tags: []
-      decorators:
-      - name: Header
-        parameters:
-        - type: string
-          serializedValue: '"References"'
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 2100000, guid: 023700cd4761d4ff3917ced3f9784fd0, type: 2}
-      modified: 1
     - name: useTransparentOnCameraClose
       type: boolean
       objectType: 
@@ -1513,6 +1491,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
       objectReference: {fileID: 2100000, guid: 92798f4dd55bd614cbd0271dde95cc71, type: 2}
+    - target: {fileID: 3664559219000330965, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3664559219000330965, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
