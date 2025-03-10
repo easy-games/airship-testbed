@@ -71,7 +71,7 @@ export class NametagController {
 	}
 
 	public CreateNametag(parent: Transform): NametagComponent {
-		if(parent === undefined){
+		if (parent === undefined) {
 			error("Must pass in a valid transform to CreateNametag");
 		}
 		const nametagPrefab = Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/Nametag.prefab");
@@ -122,8 +122,8 @@ export class NametagController {
 
 	public DestroyNametag(nametag?: NametagComponent) {
 		if (nametag) {
-			for(let i=0; i<this.allNametags.size();i++){
-				if(nametag === this.allNametags[i]){
+			for (let i = 0; i < this.allNametags.size(); i++) {
+				if (nametag === this.allNametags[i]) {
 					this.allNametags.remove(i);
 					break;
 				}
@@ -132,7 +132,7 @@ export class NametagController {
 		}
 	}
 
-	public FindAndDestroyNametag(root: GameObject){
+	public FindAndDestroyNametag(root: GameObject) {
 		this.DestroyNametag(root.GetAirshipComponentInChildren<NametagComponent>());
 	}
 
