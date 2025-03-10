@@ -4,9 +4,6 @@ import { Layer } from "../Util/Layer";
 import Character from "./Character";
 
 export default class CharacterRendering extends AirshipBehaviour {
-	@Header("References")
-	public sharedTransparencyMat: Material;
-
 	@Header("Variables")
 	@Tooltip(
 		'When on you must set all of your renders to the layer "LocalStencilMask" for them to render with transparency',
@@ -123,9 +120,7 @@ export default class CharacterRendering extends AirshipBehaviour {
 	public SetAlpha(alpha: number) {
 		if (this.lastSetAlpha !== alpha) {
 			this.lastSetAlpha = alpha;
-			if (this.sharedTransparencyMat) {
-				this.sharedTransparencyMat.SetFloat("_Transparency", math.clamp01(alpha));
-			}
+			Shader.SetGlobalFloat("_LocalCharacterAlpha", math.clamp01(alpha));
 		}
 	}
 }
