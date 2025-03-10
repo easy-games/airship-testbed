@@ -8,6 +8,11 @@ export default class NametagComponent extends AirshipBehaviour {
 	@SerializeField() public nametagText: TMP_Text;
 	@SerializeField() public canvas: Canvas;
 	@SerializeField() public canvasGroup: CanvasGroup;
+	/**
+	 * Max distance from CameraRig until nametag canvas is disabled.
+	 *
+	 * Set to -1 to disable distance culling.
+	 */
 	@SerializeField() public maxDistance: number = 50;
 
 	private cameraTransform: Transform | undefined;
