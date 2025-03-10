@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c4968faf83d4945b20e087dcd456ddd, type: 3}
   m_Name: Spike Horns Gear
   m_EditorClassIdentifier: 
-  classId: 
+  classId: 445b767a-2b08-4491-bbc0-292c641f1676
   accessoryPrefabs:
   - {fileID: 1579890502809551285, guid: 11ff911994bb1fb4f9b8e74eff7107f9, type: 3}
   face: {fileID: 0}

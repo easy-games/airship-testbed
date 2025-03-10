@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c4968faf83d4945b20e087dcd456ddd, type: 3}
   m_Name: Flower Tiara Gear
   m_EditorClassIdentifier: 
-  classId: 
+  classId: 77e12d48-365e-4b56-bcc8-52db3bf5825c
   accessoryPrefabs:
   - {fileID: 7734897930739714476, guid: 78cb90108608f7547852fa386018cfe6, type: 3}
   face: {fileID: 0}

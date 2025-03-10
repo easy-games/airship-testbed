@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c4968faf83d4945b20e087dcd456ddd, type: 3}
   m_Name: Crown Gear
   m_EditorClassIdentifier: 
-  classId: 
+  classId: b5abca63-5927-458c-8feb-f870faaff5ed
   accessoryPrefabs:
   - {fileID: 3263286663884517608, guid: 957dee41caed46d41a34577d2e324477, type: 3}
   face: {fileID: 0}

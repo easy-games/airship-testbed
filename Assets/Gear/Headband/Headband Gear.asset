@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c4968faf83d4945b20e087dcd456ddd, type: 3}
   m_Name: Headband Gear
   m_EditorClassIdentifier: 
-  classId: 
+  classId: ea6a8c4d-8c8c-408c-9ba4-57ee05c5bbff
   accessoryPrefabs:
   - {fileID: 6840217864908005818, guid: f194c4ac81d2d1940a424e6d5e4fcf65, type: 3}
   face: {fileID: 0}

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c4968faf83d4945b20e087dcd456ddd, type: 3}
   m_Name: Spike Choker Gear
   m_EditorClassIdentifier: 
-  classId: 
-  accessoryPrefabs: []
+  classId: 4c3aaca4-1328-4191-ad7f-fb921284f623
+  accessoryPrefabs:
+  - {fileID: 848404338387456511, guid: 3d208e3ba29ea3442a73126379b5d6dd, type: 3}
   face: {fileID: 0}

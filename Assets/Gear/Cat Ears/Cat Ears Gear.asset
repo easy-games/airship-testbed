@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c4968faf83d4945b20e087dcd456ddd, type: 3}
   m_Name: Cat Ears Gear
   m_EditorClassIdentifier: 
-  classId: 95fe7abe-e9fa-43d7-8b11-6e604f6a5a03
+  classId: c13b4677-95d3-44ce-bb79-861cce22c16d
   accessoryPrefabs:
-  - {fileID: 5056596470837170095, guid: c96a0a010cc92754892e885afdcc5e88, type: 3}
+  - {fileID: 4322341351492434611, guid: a8edacb108a207d44a49cf133ca306f4, type: 3}
   face: {fileID: 0}
