@@ -172,7 +172,7 @@ export class Game {
 
 	public static GetNotchHeight(): number {
 		if (Game.IsPortrait()) {
-			let notchHeight = (Screen.height - Screen.safeArea.yMax) / 2;
+			let notchHeight = Screen.safeArea.y / 2;
 			return notchHeight;
 		}
 		return (Screen.width - Screen.safeArea.xMax) / 2;

@@ -11,15 +11,18 @@ import { SortId } from "../../../Client/Components/HomePage/Sort/SortId";
 import { MainMenuBlockSingleton } from "../../../Client/ProtectedControllers//Settings/MainMenuBlockSingleton";
 import { Asset } from "../../Asset";
 import DateParser from "../../DateParser";
+import { Game } from "../../Game";
 import inspect from "../../Util/Inspect";
 import DiscordHero from "./DiscordHero";
 import MainMenuPageComponent from "./MainMenuPageComponent";
 
 export default class HomePageComponent extends MainMenuPageComponent {
 	public mainContent!: Transform;
+	public mainSortedContentLayoutGroup: VerticalLayoutGroup;
 	public spacerPrefab!: GameObject;
 	public sortPrefab!: GameObject;
 	public scrollRect!: ScrollRect;
+	public verticalLayoutGroup: VerticalLayoutGroup;
 	private bin = new Bin();
 	private sorts = new Map<SortId, SortComponent>();
 	private addedDiscordHero = false;
@@ -27,6 +30,14 @@ export default class HomePageComponent extends MainMenuPageComponent {
 
 	protected Awake(): void {
 		this.animateInDuration = 0;
+	}
+
+	protected Start(): void {
+		if (Game.IsMobile()) {
+			this.verticalLayoutGroup.padding.left = 4;
+			this.scrollRect.movementType = MovementType.Elastic;
+			this.mainSortedContentLayoutGroup.padding.top = 20;
+		}
 	}
 
 	override OpenPage(params?: unknown): void {
@@ -144,7 +155,7 @@ export default class HomePageComponent extends MainMenuPageComponent {
 			Dependency<SearchSingleton>().AddGames([...data.recentlyUpdated, ...data.popular]);
 		});
 
-		if (!this.addedDiscordHero) {
+		if (!this.addedDiscordHero && !Game.IsMobile()) {
 			this.addedDiscordHero = true;
 			const go = Object.Instantiate(
 				Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/MainMenu/HomePage/DiscordHero.prefab"),

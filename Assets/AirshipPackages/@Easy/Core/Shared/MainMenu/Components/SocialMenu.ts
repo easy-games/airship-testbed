@@ -14,7 +14,7 @@ export default class SocialMenu extends AirshipBehaviour {
 	public serverCountText!: TMP_Text;
 	public scrollRect: ScrollRect;
 
-	public verticalLayout!: GameObject;
+	public verticalLayout: VerticalLayoutGroup;
 
 	@Header("Lost Connection")
 	public lostConnectionNotice!: GameObject;
@@ -29,6 +29,7 @@ export default class SocialMenu extends AirshipBehaviour {
 		}
 		if (Game.IsMobile()) {
 			this.scrollRect.movementType = MovementType.Elastic;
+			this.verticalLayout.padding.bottom = 200;
 		}
 
 		this.bin.Add(

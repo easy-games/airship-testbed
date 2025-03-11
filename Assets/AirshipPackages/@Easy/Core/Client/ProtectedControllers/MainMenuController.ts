@@ -3,6 +3,7 @@ import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
 import { Controller, Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import FriendsPage from "@Easy/Core/Shared/MainMenu/Components/Friends/FriendsPage";
 import HomePageComponent from "@Easy/Core/Shared/MainMenu/Components/HomePageComponent";
 import GameGeneralPage from "@Easy/Core/Shared/MainMenu/Components/Settings/General/GameGeneralPage";
 import { Mouse } from "@Easy/Core/Shared/UserInput";
@@ -95,7 +96,7 @@ export class MainMenuController {
 
 		this.pageMap.set(
 			MainMenuPageType.Friends,
-			this.refs.GetValue("Pages", "Friends").GetAirshipComponent<MainMenuPageComponent>()!,
+			this.refs.GetValue("Pages", "Friends").GetAirshipComponent<FriendsPage>()!,
 		);
 		this.pageMap.set(
 			MainMenuPageType.Game,
