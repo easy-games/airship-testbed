@@ -45191,9 +45191,11 @@ declare const ShaderWarmup: ShaderWarmupConstructor;
     
 interface OcclusionCam extends MonoBehaviour {
     targetCamera: Camera;
-    minAllowedDistance: number;
-    clampYToHeadHeight: boolean;
-    clampYToHeadHeightThreshold: number;
+    allowSmallObstructions: boolean;
+    allowedObstructionForwardDistance: number;
+    allowedObstructionBackwardDistance: number;
+    adjustToFirstPerson: boolean;
+    firstPersonHeightThreshold: number;
 
 
 
