@@ -174,7 +174,7 @@ export default class SettingsPage extends AirshipBehaviour {
 	}
 
 	public SetTab(settingsTab: SettingsTab): void {
-		if (Game.IsMobile()) return;
+		if (Protected.Util.IsPhoneMode()) return;
 
 		const sidebar = this.sidebar.gameObject.GetAirshipComponent<SettingsSidebar>()!;
 		for (let tabBtn of sidebar.tabBtns) {

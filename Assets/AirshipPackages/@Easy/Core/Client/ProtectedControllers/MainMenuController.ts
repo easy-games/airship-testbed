@@ -6,6 +6,7 @@ import { Game } from "@Easy/Core/Shared/Game";
 import FriendsPage from "@Easy/Core/Shared/MainMenu/Components/Friends/FriendsPage";
 import HomePageComponent from "@Easy/Core/Shared/MainMenu/Components/HomePageComponent";
 import GameGeneralPage from "@Easy/Core/Shared/MainMenu/Components/Settings/General/GameGeneralPage";
+import { MainMenuSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/MainMenuSingleton";
 import { Mouse } from "@Easy/Core/Shared/UserInput";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import inspect from "@Easy/Core/Shared/Util/Inspect";
@@ -72,7 +73,7 @@ export class MainMenuController {
 		]);
 
 		//Mobile specific pages
-		if (Game.IsMobile()) {
+		if (Game.IsMobile() && Dependency<MainMenuSingleton>().sizeType === "sm") {
 			this.pageMap.set(
 				MainMenuPageType.AvatarMobile,
 				this.refs.GetValue("Pages", "AvatarMobile").GetAirshipComponent<AvatarMenuComponent>()!,

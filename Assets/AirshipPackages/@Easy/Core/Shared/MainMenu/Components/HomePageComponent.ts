@@ -13,6 +13,7 @@ import { Asset } from "../../Asset";
 import DateParser from "../../DateParser";
 import { Game } from "../../Game";
 import inspect from "../../Util/Inspect";
+import { MainMenuSingleton } from "../Singletons/MainMenuSingleton";
 import DiscordHero from "./DiscordHero";
 import MainMenuPageComponent from "./MainMenuPageComponent";
 
@@ -33,10 +34,15 @@ export default class HomePageComponent extends MainMenuPageComponent {
 	}
 
 	protected Start(): void {
+		const mainMenu = Dependency<MainMenuSingleton>();
+		mainMenu.ObserveScreenSize((st) => {
+			if (Game.IsMobile() && st === "sm") {
+				this.mainSortedContentLayoutGroup.padding.top = 20;
+				this.verticalLayoutGroup.padding.left = 4;
+			}
+		});
 		if (Game.IsMobile()) {
-			this.verticalLayoutGroup.padding.left = 4;
 			this.scrollRect.movementType = MovementType.Elastic;
-			this.mainSortedContentLayoutGroup.padding.top = 20;
 		}
 	}
 

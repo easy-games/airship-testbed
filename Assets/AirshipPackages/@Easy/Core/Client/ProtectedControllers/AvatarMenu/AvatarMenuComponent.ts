@@ -130,7 +130,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 
 		// Hookup outfit buttons
-		if (!Game.IsMobile()) {
+		if (!this.IsPhoneMode()) {
 			if (!this.outfitBtns) {
 				error("Unable to find outfit btns on Avatar Editor Page");
 			}
@@ -229,7 +229,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 		// Load the character
 		if (this.mainMenu.avatarView === undefined) {
-			if (Game.IsMobile()) {
+			if (this.IsPhoneMode()) {
 				this.mainMenu.avatarView = Object.Instantiate(
 					this.mainMenu.refs.GetValue<GameObject>("AvatarMobile", "Avatar3DSceneTemplate"),
 					CoreRefs.protectedTransform,
@@ -261,7 +261,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			);
 		}
 
-		if (!Game.IsMobile()) {
+		if (!this.IsPhoneMode()) {
 			this.bin.Add(
 				Dependency<MainMenuController>().onBeforePageChange.Connect((event) => {
 					if (this.dirty && event.oldPage === MainMenuPageType.Avatar) {
@@ -327,12 +327,16 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 	}
 
+	private IsPhoneMode() {
+		return Game.IsMobile() && Dependency<MainMenuSingleton>().sizeType === "sm";
+	}
+
 	private SelectMainNav(index: number) {
 		if (this.activeMainIndex === index || !this.mainNavBtns || this.inThumbnailMode) {
 			return;
 		}
 
-		if (Game.IsMobile()) {
+		if (this.IsPhoneMode()) {
 			if (index === 0) {
 				// Skin color
 				this.grid.cellSize = new Vector2(120, 120);
@@ -557,7 +561,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private SetDirty(val: boolean): void {
-		if (Game.IsMobile()) {
+		if (this.IsPhoneMode()) {
 			if (val && this.finishedFirstOutfitLoad) {
 				task.delay(0, () => {
 					this.Save();

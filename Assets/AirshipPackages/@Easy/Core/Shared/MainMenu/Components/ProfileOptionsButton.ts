@@ -4,7 +4,6 @@ import { RightClickMenuButton } from "@Easy/Core/Client/ProtectedControllers/UI/
 import { RightClickMenuController } from "@Easy/Core/Client/ProtectedControllers/UI/RightClickMenu/RightClickMenuController";
 import { Airship } from "../../Airship";
 import { Dependency } from "../../Flamework";
-import { Game } from "../../Game";
 import { Protected } from "../../Protected";
 import { CanvasAPI, HoverState } from "../../Util/CanvasAPI";
 import { SettingsPageSingleton } from "../Singletons/SettingsPageSingleton";
@@ -19,7 +18,7 @@ export default class ProfileOptionsButton extends AirshipBehaviour {
 	override Start(): void {
 		this.usernameText.text = "";
 		this.profileImage.enabled = false;
-		if (Game.IsMobile()) {
+		if (Protected.Util.IsPhoneMode()) {
 			this.usernameText.gameObject.SetActive(false);
 		}
 		Bridge.UpdateLayout(this.transform as RectTransform, true);
@@ -42,7 +41,7 @@ export default class ProfileOptionsButton extends AirshipBehaviour {
 		});
 
 		CanvasAPI.OnClickEvent(this.gameObject, () => {
-			if (Game.IsMobile()) {
+			if (Protected.Util.IsPhoneMode()) {
 				Dependency<SettingsPageSingleton>().Open(SettingsTab.Account);
 				return;
 			}
