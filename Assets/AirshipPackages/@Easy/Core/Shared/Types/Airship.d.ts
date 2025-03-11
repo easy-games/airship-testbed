@@ -379,12 +379,6 @@ interface DestroyWatcher extends Component {
 	OnDestroyedEvent(callback: () => void): EngineEventConnection;
 }
 
-interface OcclusionCam extends Component {
-	targetCamera: Camera;
-	Init(camera: Camera);
-	BumpForOcclusion(attachToPos: Vector3, mask: number): number;
-}
-
 interface PredictedObject extends GameObject {
 	SetGraphicalObject(transform: Transform): void;
 }

@@ -45191,12 +45191,13 @@ declare const ShaderWarmup: ShaderWarmupConstructor;
     
 interface OcclusionCam extends MonoBehaviour {
     targetCamera: Camera;
+    minAllowedDistance: number;
     clampYToHeadHeight: boolean;
     clampYToHeadHeightThreshold: number;
 
 
 
-    BumpForOcclusion(attachToPos: Vector3, mask: number): void;
+    BumpForOcclusion(attachToPos: Vector3, mask: number): number;
     Init(camera: Camera): void;
 
 

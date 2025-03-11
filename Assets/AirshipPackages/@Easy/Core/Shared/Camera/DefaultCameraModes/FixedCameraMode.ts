@@ -253,8 +253,8 @@ export class FixedCameraMode extends CameraMode {
 	}
 
 	OnPostUpdate(cameraHolder: Transform) {
+		cameraHolder.LookAt(this.lastCameraPos);
 		if (this.shouldBumpForOcclusion && this.lastTargetPos) {
-			cameraHolder.LookAt(this.lastCameraPos);
 			let targetPosition = this.lastTargetPos.add(Vector3.up.mul(this.yOffset));
 
 			{
@@ -270,9 +270,8 @@ export class FixedCameraMode extends CameraMode {
 			}
 
 			//Collide camera with enviornment and send signal with new camera distance
-			this.occlusionCam.BumpForOcclusion(targetPosition, OcclusionCameraManager.GetMask());
-			// todo: distance is wrong here???
-			this.onTargetDistance.Fire(0, this.occlusionCam.transform.position, targetPosition);
+			const cameraDistance = this.occlusionCam.BumpForOcclusion(targetPosition, OcclusionCameraManager.GetMask());
+			this.onTargetDistance.Fire(cameraDistance, this.occlusionCam.transform.position, targetPosition);
 		}
 		this.cameraRightVector = cameraHolder.right;
 		this.cameraForwardVector = this.lookBehind ? cameraHolder.forward.mul(-1) : cameraHolder.forward;
