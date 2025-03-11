@@ -96,6 +96,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private accessoryBuilder!: AccessoryBuilder;
 
 	private gearLoadingCounter = 0;
+	private finishedFirstOutfitLoad = false;
 
 	private Log(message: string) {
 		print("Avatar Editor: " + message + " (" + Time.time + ")");
@@ -140,23 +141,21 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 				const outfitButton = go.GetAirshipComponent<OutfitButton>();
 				if (outfitButton) outfitButton.outfitIdx = i;
 
-				if (!Game.IsMobile()) {
-					CanvasAPI.OnClickEvent(go, () => {
-						task.spawn(async () => {
-							if (this.dirty) {
-								const res = await Dependency<MainMenuSingleton>().ShowConfirmModal(
-									this.discardTitle,
-									this.discardMessage,
-								);
-								if (!res) {
-									return;
-								}
+				CanvasAPI.OnClickEvent(go, () => {
+					task.spawn(async () => {
+						if (this.dirty) {
+							const res = await Dependency<MainMenuSingleton>().ShowConfirmModal(
+								this.discardTitle,
+								this.discardMessage,
+							);
+							if (!res) {
+								return;
 							}
+						}
 
-							this.SelectOutfit(outfitI);
-						});
+						this.SelectOutfit(outfitI);
 					});
-				}
+				});
 			}
 		}
 
@@ -559,7 +558,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	private SetDirty(val: boolean): void {
 		if (Game.IsMobile()) {
-			if (val) {
+			if (val && this.finishedFirstOutfitLoad) {
 				task.delay(0, () => {
 					this.Save();
 				});
@@ -778,6 +777,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.UpdateButtonGraphics();
 		this.SetDirty(false);
 		this.accessoryBuilder.UpdateCombinedMesh();
+		this.finishedFirstOutfitLoad = true;
 	}
 
 	private UpdateButtonGraphics() {
