@@ -77,97 +77,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        rid: -2
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 6513958322059157151}
-      modified: 1
-    - name: speed
-      type: number
-      objectType: 
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      docs:
-        rid: -2
-      decorators:
-      - name: Header
-        parameters:
-        - type: string
-          serializedValue: '"Variables"'
-      nullable: 0
-      serializedValue: 4
-      serializedObject: {fileID: 0}
-      modified: 1
-    - name: jumpHeight
-      type: number
-      objectType: 
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      docs:
-        rid: -2
-      decorators: []
-      nullable: 0
-      serializedValue: 2
-      serializedObject: {fileID: 0}
-      modified: 1
-    - name: gravity
-      type: number
-      objectType: 
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      docs:
-        rid: -2
-      decorators: []
-      nullable: 0
-      serializedValue: -20
-      serializedObject: {fileID: 0}
-      modified: 1
-    - name: networkIdentity
-      type: object
-      objectType: NetworkIdentity
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      docs:
-        rid: -2
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 5339340875940825027}
-      modified: 1
-    - name: characterController
-      type: object
-      objectType: CharacterController
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators: []
       nullable: 0
@@ -184,8 +95,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators:
       - name: Header
@@ -206,8 +117,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators: []
       nullable: 0
@@ -224,8 +135,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators: []
       nullable: 0
@@ -242,8 +153,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators: []
       nullable: 0
@@ -253,11 +164,6 @@ MonoBehaviour:
     displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0
-  references:
-    version: 2
-    RefIds:
-    - rid: -2
-      type: {class: '', ns: '', asm: ''}
 --- !u!33 &7751509272169087705
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -395,169 +301,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        rid: -2
-      decorators:
-      - name: Header
-        parameters:
-        - type: string
-          serializedValue: '"References"'
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 0
-    - name: animationHelper
-      type: object
-      objectType: CharacterAnimationHelper
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      docs:
-        rid: -2
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 0
-    - name: accessoryBuilder
-      type: object
-      objectType: AccessoryBuilder
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      docs:
-        rid: -2
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 0
-    - name: model
-      type: object
-      objectType: GameObject
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      docs:
-        rid: -2
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 1
-    - name: networkIdentity
-      type: object
-      objectType: NetworkIdentity
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      docs:
-        rid: -2
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 5339340875940825027}
-      modified: 1
-    - name: rigRoot
-      type: object
-      objectType: GameObject
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      docs:
-        rid: -2
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 1
-    - name: footstepAudioSource
-      type: object
-      objectType: AudioSource
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      docs:
-        rid: -2
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 1
-    - name: autoLoadAvatarOutfit
-      type: boolean
-      objectType: 
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      docs:
-        rid: -2
-      decorators:
-      - name: Header
-        parameters:
-        - type: string
-          serializedValue: '"Variables"'
-      nullable: 0
-      serializedValue: 0
-      serializedObject: {fileID: 0}
-      modified: 1
-    - name: animator
-      type: object
-      objectType: Animator
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      docs:
-        rid: -2
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 0
-    - name: movement
-      type: object
-      objectType: CharacterMovement
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators:
       - name: Header
@@ -578,8 +323,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators: []
       nullable: 0
@@ -596,8 +341,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators: []
       nullable: 0
@@ -614,8 +359,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators: []
       nullable: 0
@@ -632,8 +377,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators: []
       nullable: 0
@@ -650,8 +395,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators: []
       nullable: 0
@@ -668,8 +413,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators: []
       nullable: 0
@@ -686,8 +431,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators:
       - name: Header
@@ -708,8 +453,8 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      docs:
-        comments: []
+      jsDocs:
+        text: []
         tags: []
       decorators: []
       nullable: 0
@@ -719,11 +464,6 @@ MonoBehaviour:
     displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0
-  references:
-    version: 2
-    RefIds:
-    - rid: -2
-      type: {class: '', ns: '', asm: ''}
 --- !u!114 &5339340875940825027
 MonoBehaviour:
   m_ObjectHideFlags: 0

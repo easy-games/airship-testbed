@@ -235,42 +235,6 @@ MonoBehaviour:
       serializedValue: 0.3
       serializedObject: {fileID: 0}
       modified: 1
-    - name: slideForce
-      type: number
-      objectType: 
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      docs:
-        comments: []
-        tags: []
-      decorators: []
-      nullable: 0
-      serializedValue: 3
-      serializedObject: {fileID: 0}
-      modified: 1
-    - name: slideDurationInSeconds
-      type: number
-      objectType: 
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      docs:
-        comments: []
-        tags: []
-      decorators: []
-      nullable: 0
-      serializedValue: 0.3
-      serializedObject: {fileID: 0}
-      modified: 1
     displayIcon: {fileID: 0}
     displayName: 
   contextOverwritten: 0

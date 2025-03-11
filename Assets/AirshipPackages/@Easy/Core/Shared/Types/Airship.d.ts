@@ -122,7 +122,7 @@ interface CharacterMovementEngineEvents {
 		callback: (inputData: CharacterInputData, stateData: CharacterSnapshotData, isReplay: boolean) => void,
 	): EngineEventConnection;
 	OnSetSnapshot(callback: (stateData: CharacterSnapshotData) => void): EngineEventConnection;
-	OnCaptureSnapshot(callback: () => void): EngineEventConnection;
+	OnCaptureSnapshot(callback: (commandNumber: number, time: number) => void): EngineEventConnection;
 	OnInterpolateState(
 		callback: (lastState: CharacterSnapshotData, nextState: CharacterSnapshotData, delta: number) => void,
 	): EngineEventConnection;
@@ -175,6 +175,7 @@ interface CharacterMovement extends Component {
 	GetTimeSinceWasGrounded(): number;
 	GetTimeSinceBecameGrounded(): number;
 	// GetCurrentMoveInputData(): MoveInputData;
+	RequestResimulation(clientTime: number): void;
 
 	//Public
 	enabled: boolean;

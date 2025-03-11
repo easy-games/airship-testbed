@@ -78,7 +78,7 @@ class ValidateCommand extends Cancellable {
 }
 
 const NetworkCommandEnd = new NetworkSignal<
-	[commandIdentifier: CommandInstanceIdentifier, lastCapturedState: CustomSnapshotData]
+	[commandIdentifier: CommandInstanceIdentifier, clientTime: number, lastCapturedState: CustomSnapshotData]
 >("PredictedCommands/CommandEnded", NetworkChannel.Reliable);
 
 export default class PredictedCommandManager extends AirshipSingleton {
@@ -115,6 +115,13 @@ export default class PredictedCommandManager extends AirshipSingleton {
 
 	/** Used by the client to queue commands to be set up on the next tick. */
 	private queuedCommands: CommandInstanceIdentifier[] = [];
+
+	/** Used by the client to queue confirm final state data for a command. */
+	private unconfirmedFinalState: Map<CommandInstanceIdentifier, { time: number; snapshot: CustomSnapshotData }> =
+		new Map();
+	/** Used by the client to resimulate the confirmed final stat of a command. */
+	private confirmedFinalState: Map<CommandInstanceIdentifier, { time: number; snapshot: CustomSnapshotData }> =
+		new Map();
 
 	/** Used to track requests to cancel running commands. */
 	private queuedCancellations: CommandInstanceIdentifier[] = [];
@@ -182,8 +189,17 @@ export default class PredictedCommandManager extends AirshipSingleton {
 						// be created.
 						const aCommandData = (aCustom as Map<string, Readonly<CustomSnapshotData>>).get(key);
 						const bCommandData = (bCustom as Map<string, Readonly<CustomSnapshotData>>).get(key);
-						if (!aCommandData || !bCommandData) {
+
+						// If we don't have a command running on the client that we should have based on the server, resimulate so
+						// we can take that commands result into account on our client.
+						if (!aCommandData) {
 							character.SetComparisonResult(false);
+							return;
+						}
+
+						// If we don't have a command in server state that we have on the client, we'll wait for the authoritative
+						// final state to be sent to us by the server before resimming
+						if (!bCommandData) {
 							return;
 						}
 
@@ -287,24 +303,28 @@ export default class PredictedCommandManager extends AirshipSingleton {
 		});
 
 		// Handles ending commands on the client when the server authoritatively completes the command.
-		// TODO: consider comparing last captured state and reconciling if needed?
-		// TODO: this fires before reconcile due to Mirror networking order :/
-		NetworkCommandEnd.client.OnServerEvent((commandIdentifier, stateData) => {
-			// No matter when we receive this, the server is done processing inputs, so if the command is
-			// active, we should cancel it. Most likely it won't be active because we will have reconciled it already.
-			// let activeCommand = this.GetActiveCommandOnCharacter(commandIdentifier);
-			// if (activeCommand) {
-			// 	this.CancelCommand(commandIdentifier);
-			// }
-			// TODO: is this firing at the correct time? Cancel occurs on the next tick, so technically I guess we could
-			// end up ticking after we fire onCommandEnded?
-			// this.onCommandEnded.Fire(commandIdentifier, stateData.data);
-			// ----- FOR MONDAY:
-			// Check if we need a resim
-			// if we do, request resim at the time in stateData.lastClientCommandTime
-			// in ResetToState make sure that you reset to the state we have in stateData (maybe?)
-			// queue command cancellation for the next tick so that next step in resim cancels
-			// the command just as the server did
+		NetworkCommandEnd.client.OnServerEvent((commandIdentifier, clientTime, stateData) => {
+			// Get the predicted final state on the client
+			const lastState = this.unconfirmedFinalState.get(commandIdentifier);
+			this.unconfirmedFinalState.delete(commandIdentifier);
+
+			// temporary instance just for comparing snapshot data
+			const tempInstance = new this.commandHandlerMap[commandIdentifier.commandId].handler(
+				Game.localPlayer.character!,
+				commandIdentifier,
+			);
+			// if the final states match, then we are good. No resim required
+			if (
+				lastState &&
+				lastState.time === clientTime &&
+				tempInstance.CompareSnapshots(lastState?.snapshot.data, stateData.data)
+			)
+				return;
+
+			// If the states don't match or our local command hasn't stopped running, we have to resimulate
+			this.confirmedFinalState.set(commandIdentifier, { time: clientTime, snapshot: stateData });
+			print("Will schedule resim for client time" + clientTime);
+			Game.localPlayer.character!.movement.RequestResimulation(clientTime);
 		});
 	}
 
@@ -444,6 +464,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 			bin: new Bin(),
 		};
 		let shouldTickAgain = true;
+		let lastProcessedInputClientTime: number = 0;
 		let lastCapturedState: CustomSnapshotData = {
 			data: undefined as unknown as Readonly<unknown>,
 		};
@@ -458,8 +479,19 @@ export default class PredictedCommandManager extends AirshipSingleton {
 				this.onCommandEnded.Fire(commandIdentifier, lastCapturedState.data);
 				if (character.player) {
 					print("last cp" + inspect(lastCapturedState));
-					NetworkCommandEnd.server.FireClient(character.player, commandIdentifier, lastCapturedState);
+					NetworkCommandEnd.server.FireClient(
+						character.player,
+						commandIdentifier,
+						lastProcessedInputClientTime,
+						lastCapturedState,
+					);
 				}
+			}
+			if (Game.IsClient()) {
+				this.unconfirmedFinalState.set(commandIdentifier, {
+					time: lastProcessedInputClientTime,
+					snapshot: lastCapturedState,
+				});
 			}
 			activeCommand.bin.Clean();
 		};
@@ -497,18 +529,48 @@ export default class PredictedCommandManager extends AirshipSingleton {
 					return;
 				}
 
+				// Make sure the command exists and is created for processing.
 				const customInput = (customData as Map<string, CustomInputData>).get(activeCommand.customDataKey);
 				if (customInput && !activeCommand.created) {
 					activeCommand.created = true;
 					activeCommand.instance.Create?.();
 				}
+
+				// On replays, we check if we have confirmed final state to overwrite our local client predicted history with
+				if (replay) {
+					// confirmedFinalState will never exist on the server.
+					const confirmedFinalState = this.confirmedFinalState.get(commandIdentifier);
+					print("replay checking " + input.time + " agaisnt" + confirmedFinalState?.time);
+					// Check if we have final state from the server we should use for this tick. Final state means we should stop ticking
+					// the command after this.
+					if (confirmedFinalState && input.time === confirmedFinalState.time) {
+						// Make sure the command has been initialized since we are going to reset the state
+						if (!activeCommand.created) {
+							activeCommand.created = true;
+							activeCommand.instance.Create?.();
+						}
+
+						// Reset the command to the authoritative state and mark it to stop processing.
+						activeCommand.instance.ResetToSnapshot(confirmedFinalState.snapshot.data);
+						shouldTickAgain = false;
+						// Since we are processing confirmed state here, we don't need to queue our end state to be confirmed
+						// (meaning we don't need to call CommitEndedCommand)
+						return;
+					}
+				}
+
 				// The command was finished. Call complete and don't tick.
 				if (customInput && customInput.finished) {
 					CommitEndedCommand();
 					return;
 				}
-				shouldTickAgain = activeCommand.instance.OnTick(customInput, replay) !== false;
 
+				// Process a normal forward tick
+				shouldTickAgain = activeCommand.instance.OnTick(customInput, replay) !== false;
+				lastProcessedInputClientTime = input.time;
+
+				// If we have a queue'd cancellation from outside of our command processing functions, apply it here so
+				// that we do not tick again.
 				const queuedCancel = this.queuedCancellations.findIndex(
 					(i) => i.characterId === character.id && i.commandId === commandId && i.instanceId === instanceId,
 				);

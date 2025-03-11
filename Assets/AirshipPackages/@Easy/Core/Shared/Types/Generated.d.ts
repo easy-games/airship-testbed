@@ -3668,6 +3668,11 @@ declare const enum LoadingStatus {
     Loading = 1,
     Loaded = 2,
 }
+declare const enum NetworkedStateSystemMode {
+    Input = 0,
+    Authority = 1,
+    Observer = 2,
+}
 declare const enum CharacterState {
     Idle = 0,
     Running = 1,
@@ -47903,7 +47908,79 @@ interface StateSnapshot {
 
 
     Clone(): unknown;
-    CompareWithMargin(margin: number, snapshot: StateSnapshot): boolean;
+    Compare<TState, TInput>(system: NetworkedStateSystem<TState, TInput>, snapshot: TState): boolean;
+
+
+}
+    
+interface InputCommand {
+    commandNumber: number;
+    time: number;
+
+
+
+    Clone(): unknown;
+
+
+}
+    
+interface InputCommandConstructor {
+
+
+    new(): InputCommand;
+
+
+
+}
+declare const InputCommand: InputCommandConstructor;
+    
+interface NetworkedStateSystem<State extends StateSnapshot, Input extends InputCommand> extends NetworkBehaviour {
+    mode: NetworkedStateSystemMode;
+    manager: AirshipNetworkedStateManager<NetworkedStateSystem<State, Input>, State, Input>;
+
+
+
+    GetCommand(commandNumber: number, time: number): Input;
+    GetCurrentState(commandNumber: number, time: number): State;
+    Interpolate(delta: number, stateOld: State, stateNew: State): void;
+    InterpolateReachedState(state: State): void;
+    OnSetMode(mode: NetworkedStateSystemMode): void;
+    SetCurrentState(state: State): void;
+    Tick(command: Input, replay: boolean): void;
+    Weaved(): boolean;
+
+
+}
+    
+interface AirshipNetworkedStateManager<StateSystem extends NetworkedStateSystem<State, Input>, State extends StateSnapshot, Input extends InputCommand> extends NetworkBehaviour {
+    stateSystem: StateSystem;
+    maxServerCommandCatchup: number;
+    maxServerCommandPrediction: number;
+    serverAuth: boolean;
+    clientPredictionResimRequestor: boolean;
+
+
+
+    AuthClientCaptureSnapshot(time: number, replay: boolean): void;
+    AuthClientSetSnapshot(time: number): void;
+    AuthClientTick(time: number, replay: boolean): void;
+    AuthServerCaptureSnapshot(time: number, replay: boolean): void;
+    AuthServerSetSnapshot(time: number): void;
+    AuthServerTick(time: number, replay: boolean): void;
+    NonAuthClientCaptureSnapshot(time: number, replay: boolean): void;
+    NonAuthClientSetSnapshot(time: number): void;
+    NonAuthClientTick(time: number, replay: boolean): void;
+    NonAuthServerCaptureSnapshot(time: number, replay: boolean): void;
+    NonAuthServerSetSnapshot(time: number): void;
+    NonAuthServerTick(time: number, replay: boolean): void;
+    ObservingClientCaptureSnapshot(time: number, replay: boolean): void;
+    ObservingClientSetSnapshot(time: number): void;
+    ObservingClientTick(time: number, replay: boolean): void;
+    OnDestroy(): void;
+    SendClientInputToServer(input: Input): void;
+    SendClientSnapshotToServer(snapshot: State): void;
+    SendServerSnapshotToClients(snapshot: State): void;
+    Weaved(): boolean;
 
 
 }
@@ -47946,7 +48023,7 @@ interface CharacterSnapshotData extends StateSnapshot {
 
 
     Clone(): unknown;
-    CompareWithMargin(margin: number, snapshot: StateSnapshot): boolean;
+    Compare<TState, TInput>(system: NetworkedStateSystem<TState, TInput>, snapshot: TState): boolean;
     CopyFrom(copySnapshot: CharacterSnapshotData): void;
     ToString(): string;
 
@@ -47962,26 +48039,6 @@ interface CharacterSnapshotDataConstructor {
 
 }
 declare const CharacterSnapshotData: CharacterSnapshotDataConstructor;
-    
-interface InputCommand {
-    commandNumber: number;
-
-
-
-    Clone(): unknown;
-
-
-}
-    
-interface InputCommandConstructor {
-
-
-    new(): InputCommand;
-
-
-
-}
-declare const InputCommand: InputCommandConstructor;
     
 interface CharacterInputData extends InputCommand {
     moveDir: Vector3;
@@ -48107,6 +48164,7 @@ interface AirshipSimulationManager extends MonoBehaviour {
     ActivateSimulationManager(): void;
     FixedUpdate(): void;
     GetLastSimulationTime(time: number): number;
+    RequestResimulation(time: number): void;
     ScheduleLagCompensation(client: NetworkConnectionToClient, checkCallback: CheckWorld, completeCallback: RollbackComplete): void;
     ScheduleResimulation(callback: PerformResimulationCallback): void;
 
