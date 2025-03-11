@@ -23,7 +23,7 @@ export default class Searchbar extends AirshipBehaviour {
 					}
 				} else {
 					this.urlText.gameObject.SetActive(true);
-					this.layoutElement.preferredWidth = 392;
+					this.layoutElement.preferredWidth = 280;
 				}
 			}),
 		);
