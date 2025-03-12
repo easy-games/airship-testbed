@@ -3,7 +3,6 @@ import Character from "../../Character/Character";
 import { Game } from "../../Game";
 import { Bin } from "../../Util/Bin";
 import { Cancellable } from "../../Util/Cancellable";
-import inspect from "../../Util/Inspect";
 import { Signal } from "../../Util/Signal";
 import { NetworkChannel } from "../NetworkAPI";
 import { NetworkSignal } from "../NetworkSignal";
@@ -85,7 +84,7 @@ class ValidateCommand extends Cancellable {
 }
 
 const NetworkCommandEnd = new NetworkSignal<
-	[commandIdentifier: string, commandNumber: number, lastCapturedState: CustomSnapshotData]
+	[commandIdentifier: string, commandNumber: number, time: number, lastCapturedState: CustomSnapshotData]
 >("PredictedCommands/CommandEnded", NetworkChannel.Reliable);
 
 export default class PredictedCommandManager extends AirshipSingleton {
@@ -129,11 +128,13 @@ export default class PredictedCommandManager extends AirshipSingleton {
 	private queuedCommands: CommandInstanceIdentifier[] = [];
 
 	/** Used by the client to queue confirm final state data for a command. */
-	private unconfirmedFinalState: Map<string, { commandNumber: number; snapshot: CustomSnapshotData }> = new Map();
+	private unconfirmedFinalState: Map<string, { commandNumber: number; snapshot: CustomSnapshotData; time: number }> =
+		new Map();
 	/** Used by the client to resimulate the confirmed final stat of a command. */
 	// TODO: right now this grows infinitely because we have no way to know when we will never resimulate this command again. We could add an event from C# to know when a tick
 	// goes out of scope (but we would have to convert that to a command number. Doable tho)
-	private confirmedFinalState: Map<string, { commandNumber: number; snapshot: CustomSnapshotData }> = new Map();
+	private confirmedFinalState: Map<string, { commandNumber: number; snapshot: CustomSnapshotData; time: number }> =
+		new Map();
 
 	/** Used to track requests to cancel running commands. */
 	// TODO: chekc we clear this in all cases
@@ -300,7 +301,6 @@ export default class PredictedCommandManager extends AirshipSingleton {
 							const hasConfirmedState = this.confirmedFinalState.get(commandIdentifier.stringify());
 							// Overwrite with last confirmed data if required
 							if (hasConfirmedState) {
-								print("using confirmed data for snapshot");
 								data = hasConfirmedState.snapshot.data;
 							}
 							activeCommand.instance.ResetToSnapshot(data);
@@ -322,7 +322,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 
 		// Handles ending commands on the client when the server authoritatively completes the command.
 		// TODO: what happens when the client ends a request too early? Should that be possible? Client has to generate input, but we allow commands to run without input... maybe we shouldnt?
-		NetworkCommandEnd.client.OnServerEvent((commandIdentifierStr, commandNumber, stateData) => {
+		NetworkCommandEnd.client.OnServerEvent((commandIdentifierStr, commandNumber, time, stateData) => {
 			// Get the predicted final state on the client
 			const lastState = this.unconfirmedFinalState.get(commandIdentifierStr);
 			this.unconfirmedFinalState.delete(commandIdentifierStr);
@@ -347,10 +347,26 @@ export default class PredictedCommandManager extends AirshipSingleton {
 				this.confirmedFinalState.set(commandIdentifierStr, {
 					commandNumber: commandNumber,
 					snapshot: stateData,
+					time,
 				});
-				print("Will schedule resim from command number " + commandNumber);
 			}
 		});
+
+		if (Game.IsClient()) {
+			this.globalBin.AddEngineEventConnection(
+				AirshipSimulationManager.Instance.OnHistoryLifetimeReached((time) => {
+					// Clean up any data we will never need to use again
+
+					this.unconfirmedFinalState.forEach((data, key) => {
+						if (data.time < time) this.unconfirmedFinalState.delete(key);
+					});
+
+					this.confirmedFinalState.forEach((data, key) => {
+						if (data.time < time) this.confirmedFinalState.delete(key);
+					});
+				}),
+			);
+		}
 	}
 
 	public RegisterCommands(map: { [commandId: string]: CommandConfiguration }) {
@@ -482,6 +498,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 		};
 		let shouldTickAgain = true;
 		let lastProcessedInputCommandNumber: number = 0;
+		let lastProcessedInputTime: number = 0;
 		let lastCapturedState: CustomSnapshotData = {
 			data: undefined as unknown as Readonly<unknown>,
 		};
@@ -497,11 +514,11 @@ export default class PredictedCommandManager extends AirshipSingleton {
 				this.SetHighestCompletedInstance(commandIdentifier);
 				this.onCommandEnded.Fire(commandIdentifier, lastCapturedState.data);
 				if (character.player) {
-					print("last cp" + inspect(lastCapturedState));
 					NetworkCommandEnd.server.FireClient(
 						character.player,
 						commandIdentifierStr,
 						lastProcessedInputCommandNumber,
+						lastProcessedInputTime,
 						lastCapturedState,
 					);
 				}
@@ -511,6 +528,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 					this.unconfirmedFinalState.set(commandIdentifierStr, {
 						commandNumber: lastProcessedInputCommandNumber,
 						snapshot: lastCapturedState,
+						time: lastProcessedInputTime,
 					});
 				}
 			}
@@ -585,7 +603,8 @@ export default class PredictedCommandManager extends AirshipSingleton {
 
 				// Process a normal forward tick
 				shouldTickAgain = activeCommand.instance.OnTick(customInput, replay) !== false;
-				lastProcessedInputCommandNumber = input.commandNumber; // TODO: can input be null?
+				lastProcessedInputCommandNumber = input.commandNumber;
+				lastProcessedInputTime = input.time;
 
 				// If we have a queue'd cancellation from outside of our command processing functions, apply it here so
 				// that we do not tick again.

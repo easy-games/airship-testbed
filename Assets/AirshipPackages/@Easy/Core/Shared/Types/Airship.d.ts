@@ -133,6 +133,51 @@ interface CharacterMovementEngineEvents {
 	SetComparisonResult(result: boolean);
 }
 
+interface StateSnapshot {
+	lastProcessedCommand: number;
+	time: number;
+}
+
+interface CharacterSnapshotData extends StateSnapshot {
+	position: Vector3;
+	velocity: Vector3;
+	impulseVelocity: Vector3;
+	currentSpeed: number;
+	inputDisabled: boolean;
+	isFlying: boolean;
+	isSprinting: boolean;
+	jumpCount: number;
+	airborneFromImpulse: boolean;
+	alreadyJumped: boolean;
+	prevMoveDir: Vector3;
+	lastGroundedMoveDir: Vector3;
+	isCrouching: boolean;
+	prevStepUp: boolean;
+	isGrounded: boolean;
+	animGrounded: boolean;
+	state: CharacterState;
+	prevState: CharacterState;
+	timeSinceBecameGrounded: number;
+	timeSinceWasGrounded: number;
+	timeSinceJump: number;
+	lookVector: Vector3;
+	customData: BinaryBlob;
+}
+
+interface InputCommand {
+	commandNumber: number;
+	time: number;
+}
+
+interface CharacterInputData extends InputCommand {
+	moveDir: Vector3;
+	jump: boolean;
+	crouch: boolean;
+	sprint: boolean;
+	lookVector: Vector3;
+	customData: BinaryBlob;
+}
+
 interface CharacterMovement extends Component {
 	// Interaction events
 	OnStateChanged(callback: (state: CharacterState) => void): EngineEventConnection;
@@ -203,18 +248,24 @@ interface CharacterMovement extends Component {
 
 interface AirshipSimulationManager extends MonoBehaviour {
 	// TODO: these events likely do not work yet
-	OnSetPaused(callback: (paused: boolean) => void): EngineEventConnection;
-	OnSetSnapshot(callback: (time: number) => void): EngineEventConnection;
-	OnLagCompensationCheck(
-		callback: (clientId: number, currentTime: number, latency: number) => void,
-	): EngineEventConnection;
-	OnPerformTick(callback: (time: number, replay: boolean) => void): EngineEventConnection;
-	OnCaptureSnapshot(callback: (time: double, replay: boolean) => void): EngineEventConnection;
+	// OnSetPaused(callback: (paused: boolean) => void): EngineEventConnection;
+	// OnSetSnapshot(callback: (time: number) => void): EngineEventConnection;
+	// OnLagCompensationCheck(
+	// 	callback: (clientId: number, currentTime: number, latency: number) => void,
+	// ): EngineEventConnection;
+	// OnPerformTick(callback: (time: number, replay: boolean) => void): EngineEventConnection;
+	// OnCaptureSnapshot(callback: (time: number, replay: boolean) => void): EngineEventConnection;
+	OnHistoryLifetimeReached(callback: (time: number) => void): EngineEventConnection;
 
 	GetLastSimulationTime(time: number): number;
 	// ScheduleLagCompensation(client: NetworkConnectionToClient, checkCallback: CheckWorld, completeCallback: RollbackComplete): void;
 	// ScheduleResimulation(callback: PerformResimulationCallback): void;
 }
+
+interface AirshipSimulationManagerConstructor {
+	Instance: AirshipSimulationManager;
+}
+declare const AirshipSimulationManager: AirshipSimulationManagerConstructor;
 
 interface Nullable<T> {
 	HasValue: boolean;
