@@ -428,13 +428,7 @@ export class AirshipInputSingleton {
 			}
 		});
 
-		// We don't enable mobile controls until a character exists
-		let disconnect: () => void;
-		disconnect = Game.localPlayer.onCharacterChanged.Connect((character) => {
-			if (!character) return;
-			controls.Init();
-			disconnect();
-		});
+		controls.Init();
 	}
 
 	/**

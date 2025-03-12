@@ -112,16 +112,18 @@ export default class MobileControlsCanvas extends AirshipBehaviour {
 
 	public ShowCharacterControls(): void {
 		this.movementJoystick.gameObject.SetActive(true);
-		Airship.Input.ShowMobileButtons("Jump");
-		Airship.Input.ShowMobileButtons("Crouch");
-		Airship.Input.ShowMobileButtons("Sprint");
+
+		for (const [, button] of pairs(CoreMobileButton)) {
+			Airship.Input.ShowMobileButtons(button);
+		}
 	}
 
 	public HideCharacterControls(): void {
 		this.movementJoystick.gameObject.SetActive(false);
-		Airship.Input.HideMobileButtons("Jump");
-		Airship.Input.HideMobileButtons("Crouch");
-		Airship.Input.HideMobileButtons("Sprint");
+
+		for (const [, button] of pairs(CoreMobileButton)) {
+			Airship.Input.HideMobileButtons(button);
+		}
 	}
 
 	protected Update(dt: number): void {
