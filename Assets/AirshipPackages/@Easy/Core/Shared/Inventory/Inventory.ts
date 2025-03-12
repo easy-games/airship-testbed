@@ -2,15 +2,15 @@ import { Airship } from "@Easy/Core/Shared/Airship";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import Object from "@Easy/Core/Shared/Util/ObjectUtils";
-import { Signal } from "@Easy/Core/Shared/Util/Signal";
+import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { Game } from "../Game";
+import { Player } from "../Player/Player";
 import { Keyboard, Mouse } from "../UserInput";
 import { Cancellable } from "../Util/Cancellable";
+import { MapUtil } from "../Util/MapUtil";
 import { DraggingState } from "./AirshipDraggingState";
 import { ItemStack, ItemStackDto } from "./ItemStack";
 import { BeforeLocalInventoryHeldSlotChanged } from "./Signal/BeforeLocalInventoryHeldSlotChanged";
-import { MapUtil } from "../Util/MapUtil";
-import { Player } from "../Player/Player";
 
 export interface InventoryDto {
 	id: number;
@@ -314,14 +314,17 @@ export default class Inventory extends AirshipBehaviour {
 		return () => bin.Clean();
 	}
 
-	public ObserveHeldItem(callback: (itemStack: ItemStack | undefined) => CleanupFunc): Bin {
+	public ObserveHeldItem(
+		callback: (itemStack: ItemStack | undefined) => CleanupFunc,
+		priority: SignalPriority = SignalPriority.NORMAL,
+	): Bin {
 		const bin = new Bin();
 		this.observeHeldItemBins.push(bin);
 		let currentItemStack = this.items.get(this.heldSlot);
 		let cleanup = callback(currentItemStack);
 
 		bin.Add(
-			this.onHeldSlotChanged.Connect((newSlot) => {
+			this.onHeldSlotChanged.ConnectWithPriority(priority, (newSlot) => {
 				const selected = this.items.get(newSlot);
 				if (selected?.itemType === currentItemStack?.itemType) return;
 
@@ -337,7 +340,7 @@ export default class Inventory extends AirshipBehaviour {
 			}),
 		);
 		bin.Add(
-			this.onSlotChanged.Connect((slot, itemStack) => {
+			this.onSlotChanged.ConnectWithPriority(priority, (slot, itemStack) => {
 				if (slot === this.heldSlot) {
 					if (itemStack?.itemType === currentItemStack?.itemType) return;
 					if (cleanup !== undefined) {

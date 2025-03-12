@@ -8,7 +8,7 @@ import { Game } from "../Game";
 import { ItemDef } from "../Item/ItemDefinitionTypes";
 import { NetworkFunction } from "../Network/NetworkFunction";
 import { Bin } from "../Util/Bin";
-import { Signal } from "../Util/Signal";
+import { Signal, SignalPriority } from "../Util/Signal";
 import AirshipInventoryUI from "./AirshipInventoryUI";
 import Inventory, { InventoryDto } from "./Inventory";
 import { InventoryUIVisibility } from "./InventoryUIVisibility";
@@ -624,7 +624,10 @@ export class AirshipInventorySingleton {
 		this.localInventoryChanged.Fire(inventory);
 	}
 
-	public ObserveLocalInventory(callback: (inv: Inventory) => CleanupFunc): Bin {
+	public ObserveLocalInventory(
+		callback: (inv: Inventory) => CleanupFunc,
+		priority: SignalPriority = SignalPriority.NORMAL,
+	): Bin {
 		const bin = new Bin();
 		let cleanup: CleanupFunc;
 		if (this.localInventory) {
@@ -634,7 +637,7 @@ export class AirshipInventorySingleton {
 		}
 
 		bin.Add(
-			this.localInventoryChanged.Connect((inv) => {
+			this.localInventoryChanged.ConnectWithPriority(priority, (inv) => {
 				task.spawn(() => {
 					cleanup = callback(inv);
 				});
@@ -646,7 +649,10 @@ export class AirshipInventorySingleton {
 		return bin;
 	}
 
-	public ObserveLocalHeldItem(callback: (itemStack: ItemStack | undefined) => CleanupFunc): Bin {
+	public ObserveLocalHeldItem(
+		callback: (itemStack: ItemStack | undefined) => CleanupFunc,
+		priority: SignalPriority = SignalPriority.NORMAL,
+	): Bin {
 		const bin = new Bin();
 
 		let cleanup: CleanupFunc;
@@ -662,7 +668,7 @@ export class AirshipInventorySingleton {
 								cleanup?.();
 								cleanup = callback(itemStack);
 							});
-						}),
+						}, priority),
 					);
 				} else {
 					task.spawn(() => {
