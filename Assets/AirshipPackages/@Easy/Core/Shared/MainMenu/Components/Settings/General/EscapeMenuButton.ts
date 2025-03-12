@@ -21,10 +21,10 @@ export default class EscapeMenuButton extends AirshipBehaviour {
 						} else {
 							this.text.color = Color.white;
 						}
-						NativeTween.AnchoredPositionX(this.text.transform, 227, 0.12).SetEaseQuadOut();
+						NativeTween.AnchoredPositionX(this.text.transform, 77, 0.12).SetEaseQuadOut();
 					} else {
 						this.text.color = ColorUtil.HexToColor("D9D9D9");
-						NativeTween.AnchoredPositionX(this.text.transform, 221, 0.12).SetEaseQuadIn();
+						NativeTween.AnchoredPositionX(this.text.transform, 70, 0.12).SetEaseQuadIn();
 					}
 				}),
 			);
@@ -39,7 +39,7 @@ export default class EscapeMenuButton extends AirshipBehaviour {
 		if (this.animation) {
 			this.text.color = ColorUtil.HexToColor("D9D9D9");
 			const textRect = this.text.transform as RectTransform;
-			textRect.anchoredPosition = new Vector2(221, textRect.anchoredPosition.y);
+			textRect.anchoredPosition = new Vector2(70, textRect.anchoredPosition.y);
 		}
 	}
 }
