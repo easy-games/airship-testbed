@@ -108,7 +108,7 @@ export default class Character extends AirshipBehaviour {
 	 *
 	 * This signal does not fire for observers.
 	 */
-	public OnAddCustomInputData = new Signal<[]>();
+	public OnAddCustomInputData = new Signal<[commandNumber: number]>();
 	/**
 	 * Signals when a new snapshot of the current movement state is being generated. Use AddCustomStateData() to add
 	 * custom data to the snapshot being generated.
@@ -269,9 +269,9 @@ export default class Character extends AirshipBehaviour {
 		);
 
 		this.bin.AddEngineEventConnection(
-			movementWithSignals.OnCreateCommand(() => {
+			movementWithSignals.OnCreateCommand((commandNumber) => {
 				this.PreCreateCommand.Fire();
-				this.CollectCustomInputData();
+				this.CollectCustomInputData(commandNumber);
 			}),
 		);
 
@@ -356,8 +356,8 @@ export default class Character extends AirshipBehaviour {
 		this.queuedCustomSnapshotData.set(key, value);
 	}
 
-	private CollectCustomInputData() {
-		this.OnAddCustomInputData.Fire();
+	private CollectCustomInputData(commandNumber: number) {
+		this.OnAddCustomInputData.Fire(commandNumber);
 		//Don't process if we have nothing queued
 		if (this.queuedCustomInputData.size() === 0) {
 			return;

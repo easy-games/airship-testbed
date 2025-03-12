@@ -114,7 +114,7 @@ interface MoveModifier {
  */
 interface CharacterMovementEngineEvents {
 	// Processing events
-	OnCreateCommand(callback: () => void): EngineEventConnection;
+	OnCreateCommand(callback: (commandNumber: number) => void): EngineEventConnection;
 	OnProcessCommand(
 		callback: (inputData: CharacterInputData, stateData: CharacterSnapshotData, isReplay: boolean) => void,
 	): EngineEventConnection;
@@ -175,7 +175,7 @@ interface CharacterMovement extends Component {
 	GetTimeSinceWasGrounded(): number;
 	GetTimeSinceBecameGrounded(): number;
 	// GetCurrentMoveInputData(): MoveInputData;
-	RequestResimulation(clientTime: number): void;
+	RequestResimulation(commandNumber: number): boolean;
 
 	//Public
 	enabled: boolean;
