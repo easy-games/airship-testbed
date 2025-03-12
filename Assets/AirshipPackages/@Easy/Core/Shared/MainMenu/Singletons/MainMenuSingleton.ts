@@ -120,4 +120,10 @@ export class MainMenuSingleton {
 		const result = confirmModal.onResult.Wait();
 		return result;
 	}
+
+	public IsInGameNonTabletMobile() {
+		const isNonTableMobileInGame =
+			Game.IsMobile() && Game.IsInGame() && Game.deviceType !== AirshipDeviceType.Tablet;
+		return isNonTableMobileInGame;
+	}
 }

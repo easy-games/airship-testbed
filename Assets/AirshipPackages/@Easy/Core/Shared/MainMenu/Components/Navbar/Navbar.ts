@@ -22,6 +22,11 @@ export default class Navbar extends AirshipBehaviour {
 	private bin = new Bin();
 
 	override OnEnable(): void {
+		if (Dependency<MainMenuSingleton>().IsInGameNonTabletMobile()) {
+			this.gameObject.SetActive(false);
+			return;
+		}
+
 		const rect = this.transform as RectTransform;
 		const mainMenu = Dependency<MainMenuSingleton>();
 		this.bin.Add(

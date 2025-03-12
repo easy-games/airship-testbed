@@ -85,6 +85,8 @@ export default class MainMenuContent extends AirshipBehaviour {
 		// CoreLogger.Log("dpi: " + Screen.dpi);
 		// CoreLogger.Log("resolution: " + Screen.currentResolution.width + ", " + Screen.currentResolution.height);
 
+		const isNonTableMobileInGame = Dependency<MainMenuSingleton>().IsInGameNonTabletMobile();
+
 		if (Game.IsPortrait()) {
 			this.canvasScalar.matchWidthOrHeight = 1;
 			this.socialMenu.SetParent(this.friendsPage);
@@ -196,6 +198,16 @@ export default class MainMenuContent extends AirshipBehaviour {
 				);
 			}
 			this.socialMenu.gameObject.SetActive(!socialMenuHidden);
+
+			// If we're mobile, in-game and not tablet:
+			if (isNonTableMobileInGame) {
+				const socialMenuInset = new Vector2(30, 20);
+				this.socialMenu.anchoredPosition = new Vector2(-socialMenuInset.x, -socialMenuInset.y);
+				this.socialMenu.sizeDelta = new Vector2(
+					this.socialMenu.sizeDelta.x,
+					screenSize.y - socialMenuInset.y * 2,
+				);
+			}
 
 			// this.navbar.sizeDelta = new Vector2(this.navbar.sizeDelta.x, 67);
 			this.pages.offsetMax = new Vector2(0, 0);
