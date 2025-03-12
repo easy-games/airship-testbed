@@ -90,13 +90,6 @@ export class MainMenuController {
 			}
 
 			if (Game.IsInGame()) {
-				const socialMenu = this.mainMenu.socialMenu;
-				print("pos is", socialMenu.rectTransform.localPosition);
-				socialMenu.transform.position = socialMenu.transform.position.WithY(0);
-				task.delay(2, () => {
-					print("pos is now", socialMenu.rectTransform.localPosition);
-				});
-
 				this.mainMenu.gamePage.ClosePage();
 				this.pageMap.set(MainMenuPageType.Game, this.mainMenu.gamePageMobile);
 			}
