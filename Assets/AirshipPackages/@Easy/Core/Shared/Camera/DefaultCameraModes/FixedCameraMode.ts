@@ -28,15 +28,9 @@ export class FixedCameraMode extends CameraMode {
 	private minRotX = math.rad(1);
 	private maxRotX = math.rad(179);
 
-	public useXOffsetInOcclusionCam = false;
-
-	/**
-	 * When set to `useXOffsetInOcclusionCam` is set to true, this will tween to `1`.
-	 */
-	private useXOffsetInOcclusionCamStrength = 0;
-
-	private lastTargetPos: Vector3 | undefined;
-	private lastRot: Quaternion | undefined;
+	private lastTargetHeadPos: Vector3 = Vector3.zero;
+	private lastTargetPos: Vector3 = Vector3.zero;
+	private lastRot: Quaternion = Quaternion.identity;
 
 	private occlusionCam!: OcclusionCam;
 
@@ -221,7 +215,7 @@ export class FixedCameraMode extends CameraMode {
 	OnLateUpdate(dt: number) {
 		const characterTarget = this.GetCharacterTarget();
 		if (characterTarget && (characterTarget.IsDead() || characterTarget.IsDestroyed())) {
-			return new CameraTransform(this.lastTargetPos ?? Vector3.zero, this.lastRot ?? Quaternion.identity);
+			return new CameraTransform(this.lastTargetPos, this.lastRot);
 		}
 
 		let xOffset = this.xOffset;
@@ -238,13 +232,16 @@ export class FixedCameraMode extends CameraMode {
 		const yPos = this.zOffset * math.cos(this.rotationX);
 
 		const posOffset = new Vector3(xPos, yPos, zPos);
-		const targetPos = this.target?.transform.position ?? Vector3.zero;
+		let targetPos = this.target?.transform.position ?? Vector3.zero;
+		//Offset our target by variables
+		//Store the head pos
+		this.lastTargetHeadPos = targetPos.add(new Vector3(0, this.yOffset, 0));
+		targetPos = this.lastTargetHeadPos.add(this.cameraRightVector.mul(xOffset));
 		this.lastTargetPos = targetPos;
 
-		const cameraPos = targetPos.add(new Vector3(0, this.yOffset, 0)).add(this.cameraRightVector.mul(xOffset));
-		this.lastCameraPos = cameraPos;
+		const newCameraPos = targetPos.add(this.staticOffset ?? posOffset);
+		this.lastCameraPos = newCameraPos;
 
-		const newCameraPos = cameraPos.add(this.staticOffset ?? posOffset);
 		const lookVector = posOffset.mul(-1).normalized;
 		const rotation = Quaternion.LookRotation(lookVector, Vector3.up);
 		this.lastRot = rotation;
@@ -255,23 +252,13 @@ export class FixedCameraMode extends CameraMode {
 	OnPostUpdate(cameraHolder: Transform) {
 		cameraHolder.LookAt(this.lastCameraPos);
 		if (this.shouldBumpForOcclusion && this.lastTargetPos) {
-			let targetPosition = this.lastTargetPos.add(Vector3.up.mul(this.yOffset));
-
-			{
-				let delta = Time.deltaTime * 10;
-				if (!this.useXOffsetInOcclusionCam) delta *= -1;
-
-				this.useXOffsetInOcclusionCamStrength = math.clamp(this.useXOffsetInOcclusionCamStrength + delta, 0, 1);
-				if (this.useXOffsetInOcclusionCamStrength > 0) {
-					targetPosition = targetPosition.add(
-						cameraHolder.right.mul(this.xOffset).mul(this.useXOffsetInOcclusionCamStrength),
-					);
-				}
-			}
-
 			//Collide camera with enviornment and send signal with new camera distance
-			const cameraDistance = this.occlusionCam.BumpForOcclusion(targetPosition, OcclusionCameraManager.GetMask());
-			this.onTargetDistance.Fire(cameraDistance, this.occlusionCam.transform.position, targetPosition);
+			const cameraDistance = this.occlusionCam.BumpForOcclusion(
+				this.lastTargetHeadPos,
+				this.lastTargetPos,
+				OcclusionCameraManager.GetMask(),
+			);
+			this.onTargetDistance.Fire(cameraDistance, this.occlusionCam.transform.position, this.lastTargetPos);
 		}
 		this.cameraRightVector = cameraHolder.right;
 		this.cameraForwardVector = this.lookBehind ? cameraHolder.forward.mul(-1) : cameraHolder.forward;

@@ -275,7 +275,7 @@ export class OrbitCameraMode extends CameraMode {
 	/**
 	 * Sets camera's radius.
 	 *
-	 * @param xOffset The camera's new radius.
+	 * @param radius The camera's new radius.
 	 */
 	public SetRadius(radius: number): void {
 		this.radius = radius;
