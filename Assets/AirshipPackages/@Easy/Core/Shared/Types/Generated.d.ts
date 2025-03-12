@@ -30643,6 +30643,7 @@ interface GameConfig extends ScriptableObject {
     defaultSolverVelocityIterations: number;
     queriesHitBackfaces: boolean;
     queriesHitTriggers: boolean;
+    supportsMobile: boolean;
 
 
 
@@ -39252,7 +39253,6 @@ interface AirshipPlatformUtil {
     
 interface AirshipPlatformUtilConstructor {
     livePlatforms: Readonly<number[]>;
-    betaPlatforms: Readonly<number[]>;
 
 
     new(): AirshipPlatformUtil;
@@ -45191,15 +45191,12 @@ declare const ShaderWarmup: ShaderWarmupConstructor;
     
 interface OcclusionCam extends MonoBehaviour {
     targetCamera: Camera;
-    allowSmallObstructions: boolean;
-    allowedObstructionForwardDistance: number;
-    allowedObstructionBackwardDistance: number;
-    adjustToFirstPerson: boolean;
-    firstPersonHeightThreshold: number;
+    adjustToHead: boolean;
+    adjustToHeadHeightThreshold: number;
 
 
 
-    BumpForOcclusion(attachToPos: Vector3, mask: number): number;
+    BumpForOcclusion(attachToPos: Vector3, mask: number): void;
     Init(camera: Camera): void;
 
 
