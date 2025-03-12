@@ -75,6 +75,8 @@ export class MainMenuController {
 			[MainMenuPageType.Develop, this.refs.GetValue("Pages", "Develop").GetAirshipComponent<DevelopMenuPage>()!],
 		]);
 
+		const isNonTableMobileInGame = Dependency<MainMenuSingleton>().IsInGameNonTabletMobile();
+
 		//Mobile specific pages
 		if (Game.IsMobile()) {
 			if (Dependency<MainMenuSingleton>().sizeType === "sm") {
@@ -88,11 +90,6 @@ export class MainMenuController {
 				// ).GetAirshipComponent<AvatarViewComponent>()!;
 				this.refs.GetValue("Pages", "Avatar").SetActive(false);
 			}
-
-			if (Game.IsInGame()) {
-				this.mainMenu.gamePage.ClosePage();
-				this.pageMap.set(MainMenuPageType.Game, this.mainMenu.gamePageMobile);
-			}
 		} else {
 			this.pageMap.set(
 				MainMenuPageType.Avatar,
@@ -103,6 +100,12 @@ export class MainMenuController {
 			// 	CoreRefs.protectedTransform,
 			// ).GetAirshipComponent<AvatarViewComponent>()!;
 			this.refs.GetValue("Pages", "AvatarMobile").SetActive(false);
+		}
+
+		if (isNonTableMobileInGame) {
+			this.mainMenu.gamePage.ClosePage();
+			this.pageMap.set(MainMenuPageType.Game, this.mainMenu.gamePageMobile);
+		} else {
 			this.pageMap.set(MainMenuPageType.Game, this.mainMenu.gamePage);
 		}
 

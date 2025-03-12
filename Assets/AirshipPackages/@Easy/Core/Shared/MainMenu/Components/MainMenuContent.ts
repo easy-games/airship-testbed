@@ -85,8 +85,7 @@ export default class MainMenuContent extends AirshipBehaviour {
 		// CoreLogger.Log("dpi: " + Screen.dpi);
 		// CoreLogger.Log("resolution: " + Screen.currentResolution.width + ", " + Screen.currentResolution.height);
 
-		const isNonTableMobileInGame =
-			Game.IsMobile() && Game.IsInGame() && Game.deviceType !== AirshipDeviceType.Tablet;
+		const isNonTableMobileInGame = Dependency<MainMenuSingleton>().IsInGameNonTabletMobile();
 
 		if (Game.IsPortrait()) {
 			this.canvasScalar.matchWidthOrHeight = 1;
