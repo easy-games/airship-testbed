@@ -16,7 +16,7 @@ import { Binding, KeyBindingConfig, MouseBindingConfig } from "./Binding";
 import { InputAction, InputActionConfig, InputActionSchema, SerializableAction } from "./InputAction";
 import { InputActionEvent } from "./InputActionEvent";
 import { ActionInputType, InputUtil, KeyType, ModifierKey } from "./InputUtil";
-import { MobileButtonConfig } from "./Mobile/MobileButton";
+import { CoreMobileButton, MobileButtonConfig } from "./Mobile/MobileButton";
 import MobileControlsCanvas from "./Mobile/MobileControlsCanvas";
 import TouchJoystick from "./Mobile/TouchJoystick";
 import ProximityPrompt from "./ProximityPrompts/ProximityPrompt";
@@ -429,6 +429,17 @@ export class AirshipInputSingleton {
 		});
 
 		controls.Init();
+	}
+
+	/**
+	 * Gets all mobile buttons associated with the given action
+	 * @param actionName The action name
+	 * @returns The mobile buttons
+	 */
+	public GetMobileButtons(actionName: string): ReadonlyArray<GameObject> {
+		const lowerName = actionName.lower();
+		const mobileButtonsForAction = this.actionToMobileButtonTable.get(lowerName) ?? [];
+		return table.freeze(table.clone(mobileButtonsForAction)); // immutable copy
 	}
 
 	/**

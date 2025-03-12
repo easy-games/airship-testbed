@@ -20,3 +20,9 @@ export interface MobileButtonConfig {
 	 */
 	pivot?: Vector2;
 }
+
+export enum CoreMobileButton {
+	Jump = "Jump",
+	CrouchToggle = "CrouchToggle",
+	SprintToggle = "SprintToggle",
+}
