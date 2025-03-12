@@ -250,11 +250,9 @@ export class OrbitCameraMode extends CameraMode {
 	OnPostUpdate(cameraHolder: Transform) {
 		cameraHolder.LookAt(this.lastAttachToPos);
 		if (this.shouldBumpForOcclusion) {
-			const cameraDistance = this.occlusionCam.BumpForOcclusion(
-				this.lastAttachToPos,
-				OcclusionCameraManager.GetMask(),
-			);
-			this.onTargetDistance.Fire(cameraDistance, this.occlusionCam.transform.position, this.lastAttachToPos);
+			this.occlusionCam.BumpForOcclusion(this.lastAttachToPos, OcclusionCameraManager.GetMask());
+			const dist = cameraHolder.position.sub(this.lastAttachToPos).magnitude;
+			this.onTargetDistance.Fire(dist, this.occlusionCam.transform.position, this.lastAttachToPos);
 			this.cameraForwardVector = cameraHolder.forward;
 		}
 	}
