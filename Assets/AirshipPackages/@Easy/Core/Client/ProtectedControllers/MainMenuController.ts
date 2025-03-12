@@ -21,6 +21,7 @@ import { MainMenuPageChangeSignal } from "./MainMenuPageChangeSignal";
 import { MainMenuPageType } from "./MainMenuPageName";
 import { SocketController } from "./Socket/SocketController";
 import TransferToast from "./Transfer/TransferToast";
+import MainMenuComponent from "@Easy/Core/Shared/MainMenu/Components/MainMenuComponent";
 
 @Controller()
 export class MainMenuController {
@@ -48,6 +49,7 @@ export class MainMenuController {
 	private gameCursorLocked = false;
 
 	public activeTransferToast: TransferToast | undefined;
+	private mainMenu: MainMenuComponent;
 
 	constructor() {
 		const mainMenuPrefab = AssetBridge.Instance.LoadAsset(
@@ -55,6 +57,7 @@ export class MainMenuController {
 		);
 		this.mainMenuGo = Object.Instantiate(mainMenuPrefab, CoreRefs.protectedTransform) as GameObject;
 		this.refs = this.mainMenuGo.GetComponent<GameObjectReferences>()!;
+		this.mainMenu = this.mainMenuGo.GetAirshipComponent<MainMenuComponent>()!;
 		const wrapperGo = this.refs.GetValue("UI", "Wrapper");
 		this.wrapperRect = wrapperGo.GetComponent<RectTransform>()!;
 		this.rootCanvasGroup = this.mainMenuGo.GetComponent<CanvasGroup>()!;
@@ -73,16 +76,30 @@ export class MainMenuController {
 		]);
 
 		//Mobile specific pages
-		if (Game.IsMobile() && Dependency<MainMenuSingleton>().sizeType === "sm") {
-			this.pageMap.set(
-				MainMenuPageType.AvatarMobile,
-				this.refs.GetValue("Pages", "AvatarMobile").GetAirshipComponent<AvatarMenuComponent>()!,
-			);
-			// this.avatarView = Object.Instantiate(
-			// 	this.refs.GetValue<GameObject>("AvatarMobile", "Avatar3DSceneTemplate"),
-			// 	CoreRefs.protectedTransform,
-			// ).GetAirshipComponent<AvatarViewComponent>()!;
-			this.refs.GetValue("Pages", "Avatar").SetActive(false);
+		if (Game.IsMobile()) {
+			if (Dependency<MainMenuSingleton>().sizeType === "sm") {
+				this.pageMap.set(
+					MainMenuPageType.AvatarMobile,
+					this.refs.GetValue("Pages", "AvatarMobile").GetAirshipComponent<AvatarMenuComponent>()!,
+				);
+				// this.avatarView = Object.Instantiate(
+				// 	this.refs.GetValue<GameObject>("AvatarMobile", "Avatar3DSceneTemplate"),
+				// 	CoreRefs.protectedTransform,
+				// ).GetAirshipComponent<AvatarViewComponent>()!;
+				this.refs.GetValue("Pages", "Avatar").SetActive(false);
+			}
+
+			if (Game.IsInGame()) {
+				const socialMenu = this.mainMenu.socialMenu;
+				print("pos is", socialMenu.rectTransform.localPosition);
+				socialMenu.transform.position = socialMenu.transform.position.WithY(0);
+				task.delay(2, () => {
+					print("pos is now", socialMenu.rectTransform.localPosition);
+				});
+
+				this.mainMenu.gamePage.ClosePage();
+				this.pageMap.set(MainMenuPageType.Game, this.mainMenu.gamePageMobile);
+			}
 		} else {
 			this.pageMap.set(
 				MainMenuPageType.Avatar,
@@ -93,15 +110,12 @@ export class MainMenuController {
 			// 	CoreRefs.protectedTransform,
 			// ).GetAirshipComponent<AvatarViewComponent>()!;
 			this.refs.GetValue("Pages", "AvatarMobile").SetActive(false);
+			this.pageMap.set(MainMenuPageType.Game, this.mainMenu.gamePage);
 		}
 
 		this.pageMap.set(
 			MainMenuPageType.Friends,
 			this.refs.GetValue("Pages", "Friends").GetAirshipComponent<FriendsPage>()!,
-		);
-		this.pageMap.set(
-			MainMenuPageType.Game,
-			this.refs.GetValue("Pages", "Game").GetAirshipComponent<GameGeneralPage>()!,
 		);
 
 		if (Game.coreContext === CoreContext.GAME) {
@@ -112,7 +126,7 @@ export class MainMenuController {
 
 		this.gameBG = this.refs.GetValue("UI", "GameBG");
 		if (Game.IsMobile()) {
-			this.gameBG.GetComponent<Image>()!.color = new Color(0.223, 0.233, 0.264, 1);
+			this.gameBG.GetComponent<Image>()!.color = new Color(0.094, 0.098, 0.102, 0.995);
 		}
 
 		this.mainMenuBG = this.refs.GetValue("UI", "MainMenuBG");

@@ -10,7 +10,7 @@ export default class MainMenuPageComponent extends AirshipBehaviour {
 	public pageType: MainMenuPageType = MainMenuPageType.Home;
 	protected refs?: GameObjectReferences;
 
-	private activePage = false;
+	private activePage = this.gameObject.activeInHierarchy;
 	protected mainMenu: MainMenuController;
 
 	/**

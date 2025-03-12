@@ -23,6 +23,12 @@ export default class SocialMenu extends AirshipBehaviour {
 
 	private bin = new Bin();
 
+	@NonSerialized() public rectTransform: RectTransform;
+
+	protected Awake(): void {
+		this.rectTransform = this.gameObject.GetComponent<RectTransform>()!;
+	}
+
 	override Start(): void {
 		if (Game.deviceType === AirshipDeviceType.Phone) {
 			this.liveStats.gameObject.SetActive(false);
