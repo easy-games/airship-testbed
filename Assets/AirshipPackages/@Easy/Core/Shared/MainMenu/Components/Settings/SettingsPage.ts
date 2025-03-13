@@ -59,6 +59,7 @@ export default class SettingsPage extends AirshipBehaviour {
 						this.canvasScalar.referenceResolution = new Vector2(458, 1125);
 						this.canvasScalar.matchWidthOrHeight = 0;
 						this.verticalLayoutGroup.padding.right = 15;
+						this.verticalLayoutGroup.padding.left = 15;
 					} else {
 						this.canvasScalar.referenceResolution = new Vector2(1125, 458);
 						this.canvasScalar.matchWidthOrHeight = 0;
