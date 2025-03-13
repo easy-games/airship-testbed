@@ -16,7 +16,7 @@ export class ProtectedUtil {
 		let notchHeight: number;
 		// print(`safeArea.min: ${safeArea.min}, safeArea.max: ${safeArea.max}`);
 		if (Game.IsPortrait()) {
-			notchHeight = safeArea.yMin;
+			notchHeight = safeArea.y / 2;
 		} else {
 			notchHeight = Screen.height - safeArea.yMax;
 		}
