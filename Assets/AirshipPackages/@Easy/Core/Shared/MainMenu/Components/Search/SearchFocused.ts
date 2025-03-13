@@ -7,6 +7,7 @@ import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { MobileGameList } from "@Easy/Core/Shared/Util/MobileGameList";
+import { ProtectedUtil } from "@Easy/Core/Shared/Util/ProtectedUtil";
 import { OnFixedUpdate, OnLateUpdate } from "@Easy/Core/Shared/Util/Timer";
 import { MainMenuSingleton } from "../../Singletons/MainMenuSingleton";
 import GameSearchResult from "./GameSearchResult";
@@ -45,7 +46,7 @@ export default class SearchFocused extends AirshipBehaviour {
 	public OnEnable(): void {
 		const rect = this.transform as RectTransform;
 		if (Game.IsPortrait()) {
-			rect.offsetMax = new Vector2(0, -Game.GetNotchHeight());
+			rect.offsetMax = new Vector2(0, -ProtectedUtil.GetNotchHeight());
 		}
 
 		this.bin.Add(

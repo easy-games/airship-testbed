@@ -170,14 +170,6 @@ export class Game {
 		return !this.IsLandscape();
 	}
 
-	public static GetNotchHeight(): number {
-		if (Game.IsPortrait()) {
-			let notchHeight = Screen.safeArea.y / 2;
-			return notchHeight;
-		}
-		return (Screen.width - Screen.safeArea.xMax) / 2;
-	}
-
 	/**
 	 * @internal
 	 */

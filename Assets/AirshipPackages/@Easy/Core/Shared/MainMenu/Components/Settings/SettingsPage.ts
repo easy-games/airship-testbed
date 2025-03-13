@@ -3,6 +3,7 @@ import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Protected } from "@Easy/Core/Shared/Protected";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { ProtectedUtil } from "@Easy/Core/Shared/Util/ProtectedUtil";
 import { MainMenuSingleton } from "../../Singletons/MainMenuSingleton";
 import {
 	InternalGameSetting,
@@ -54,7 +55,7 @@ export default class SettingsPage extends AirshipBehaviour {
 		this.bin.Add(
 			mainMenu.ObserveScreenSize((size) => {
 				if (size === "sm" && Game.IsMobile()) {
-					const notchHeight = math.max(Game.GetNotchHeight(), 40);
+					const notchHeight = math.max(ProtectedUtil.GetNotchHeight(), 40);
 
 					this.sidebar.gameObject.SetActive(false);
 					// this.scrollView.offsetMax = new Vector2(-5, -7);
@@ -174,7 +175,7 @@ export default class SettingsPage extends AirshipBehaviour {
 	}
 
 	public SetTab(settingsTab: SettingsTab): void {
-		if (Protected.Util.IsPhoneMode()) return;
+		if (ProtectedUtil.IsPhoneMode()) return;
 
 		const sidebar = this.sidebar.gameObject.GetAirshipComponent<SettingsSidebar>()!;
 		for (let tabBtn of sidebar.tabBtns) {

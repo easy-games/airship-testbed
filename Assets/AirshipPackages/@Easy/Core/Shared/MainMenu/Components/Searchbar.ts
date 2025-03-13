@@ -17,7 +17,8 @@ export default class Searchbar extends AirshipBehaviour {
 				if (sizeType === "sm") {
 					// this.urlText.gameObject.SetActive(false);
 					if (Game.IsMobile()) {
-						this.layoutElement.preferredWidth = Game.IsLandscape() ? 185 : 280;
+						this.layoutElement.preferredWidth = Game.IsLandscape() ? 240 : 240;
+						this.layoutElement.flexibleWidth = 0;
 					} else {
 						this.layoutElement.preferredWidth = 200;
 					}

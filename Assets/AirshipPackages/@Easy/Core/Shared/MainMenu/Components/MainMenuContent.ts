@@ -2,6 +2,7 @@ import { CoreContext } from "../../CoreClientContext";
 import { Dependency } from "../../Flamework";
 import { Game } from "../../Game";
 import { Bin } from "../../Util/Bin";
+import { ProtectedUtil } from "../../Util/ProtectedUtil";
 import { MainMenuSingleton } from "../Singletons/MainMenuSingleton";
 
 export default class MainMenuContent extends AirshipBehaviour {
@@ -87,6 +88,8 @@ export default class MainMenuContent extends AirshipBehaviour {
 
 		const isNonTableMobileInGame = Dependency<MainMenuSingleton>().IsInGameNonTabletMobile();
 
+		const notchHeight = ProtectedUtil.GetNotchHeight();
+
 		if (Game.IsPortrait()) {
 			this.canvasScalar.matchWidthOrHeight = 1;
 			this.socialMenu.SetParent(this.friendsPage);
@@ -101,11 +104,11 @@ export default class MainMenuContent extends AirshipBehaviour {
 			this.contentWrapper.anchorMin = new Vector2(0.5, 1);
 			this.contentWrapper.anchorMax = new Vector2(0.5, 1);
 			this.contentWrapper.pivot = new Vector2(0.5, 1);
-			this.contentWrapper.anchoredPosition = new Vector2(0, -Game.GetNotchHeight());
+			this.contentWrapper.anchoredPosition = new Vector2(0, -notchHeight - 20);
 
 			this.navbar.sizeDelta = new Vector2(this.navbar.sizeDelta.x, 67);
 			this.pages.offsetMax = new Vector2(0, -69);
-			this.navbar.anchoredPosition = new Vector2(0, -Game.GetNotchHeight());
+			this.navbar.anchoredPosition = new Vector2(0, -notchHeight - 20);
 			for (let tab of this.navbarTabs) {
 				tab.gameObject.SetActive(false);
 			}
@@ -155,9 +158,9 @@ export default class MainMenuContent extends AirshipBehaviour {
 				this.contentWrapper.anchorMin = new Vector2(0, 1);
 				this.contentWrapper.anchorMax = new Vector2(0, 1);
 				this.contentWrapper.pivot = new Vector2(0, 1);
-				this.contentWrapper.anchoredPosition = new Vector2(math.max(Game.GetNotchHeight(), 25), -67);
+				this.contentWrapper.anchoredPosition = new Vector2(math.max(notchHeight, 25), -67);
 				this.contentWrapper.sizeDelta = new Vector2(
-					screenSize.x + (socialMenuHidden ? -100 : -360) - Game.GetNotchHeight(),
+					screenSize.x + (socialMenuHidden ? -100 : -360) - notchHeight,
 					screenSize.y - 67,
 				);
 
@@ -212,7 +215,7 @@ export default class MainMenuContent extends AirshipBehaviour {
 			// this.navbar.sizeDelta = new Vector2(this.navbar.sizeDelta.x, 67);
 			this.pages.offsetMax = new Vector2(0, 0);
 			if (Game.IsLandscape() && this.mainMenu.sizeType === "sm" && false) {
-				this.pages.offsetMin = new Vector2(Game.GetNotchHeight(), this.pages.offsetMin.y);
+				this.pages.offsetMin = new Vector2(notchHeight, this.pages.offsetMin.y);
 			} else {
 				this.pages.offsetMin = new Vector2(0, this.pages.offsetMin.y);
 			}

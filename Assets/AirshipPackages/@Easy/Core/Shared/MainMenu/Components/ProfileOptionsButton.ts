@@ -6,6 +6,7 @@ import { Airship } from "../../Airship";
 import { Dependency } from "../../Flamework";
 import { Protected } from "../../Protected";
 import { CanvasAPI, HoverState } from "../../Util/CanvasAPI";
+import { ProtectedUtil } from "../../Util/ProtectedUtil";
 import { SettingsPageSingleton } from "../Singletons/SettingsPageSingleton";
 import { SettingsTab } from "./Settings/SettingsPageName";
 
@@ -18,7 +19,7 @@ export default class ProfileOptionsButton extends AirshipBehaviour {
 	override Start(): void {
 		this.usernameText.text = "";
 		this.profileImage.enabled = false;
-		if (Protected.Util.IsPhoneMode()) {
+		if (ProtectedUtil.IsPhoneMode()) {
 			this.usernameText.gameObject.SetActive(false);
 		}
 		Bridge.UpdateLayout(this.transform as RectTransform, true);
@@ -41,7 +42,7 @@ export default class ProfileOptionsButton extends AirshipBehaviour {
 		});
 
 		CanvasAPI.OnClickEvent(this.gameObject, () => {
-			if (Protected.Util.IsPhoneMode()) {
+			if (ProtectedUtil.IsPhoneMode()) {
 				Dependency<SettingsPageSingleton>().Open(SettingsTab.Account);
 				return;
 			}
