@@ -54,8 +54,24 @@ export default class SettingsPage extends AirshipBehaviour {
 		mainMenu.SetHideMobileEscapeButton(true);
 		this.bin.Add(
 			mainMenu.ObserveScreenSize((size) => {
-				if (size === "sm" && Game.IsMobile()) {
-					const notchHeight = math.max(ProtectedUtil.GetNotchHeight(), 40);
+				if (size === "sm" || (size === "md" && Game.IsMobile())) {
+					if (Game.IsPortrait()) {
+						this.canvasScalar.referenceResolution = new Vector2(458, 1125);
+						this.canvasScalar.matchWidthOrHeight = 0;
+						this.verticalLayoutGroup.padding.right = 15;
+					} else {
+						this.canvasScalar.referenceResolution = new Vector2(1125, 458);
+						this.canvasScalar.matchWidthOrHeight = 1;
+
+						this.verticalLayoutGroup.padding.left = 220;
+						this.verticalLayoutGroup.padding.right = 120;
+						this.mobileCloseButtonWrapper.anchoredPosition = new Vector2(
+							120,
+							this.mobileCloseButtonWrapper.anchoredPosition.y,
+						);
+					}
+
+					const notchHeight = ProtectedUtil.GetNotchHeight();
 
 					this.sidebar.gameObject.SetActive(false);
 					// this.scrollView.offsetMax = new Vector2(-5, -7);
@@ -69,23 +85,12 @@ export default class SettingsPage extends AirshipBehaviour {
 					this.mobileHeader.sizeDelta = new Vector2(this.mobileHeader.sizeDelta.x, notchHeight + 40);
 
 					this.desktopCloseButtonWrapper.gameObject.SetActive(false);
-					this.canvasScalar.matchWidthOrHeight = 1;
 					this.rightSection.anchorMin = new Vector2(0, 0);
 					this.rightSection.anchoredPosition = new Vector2(0, 0);
 					this.verticalLayoutGroup.spacing = 60;
 					this.verticalLayoutGroup.padding.left = 15;
 					this.verticalLayoutGroup.padding.top = 20;
 					this.verticalLayoutGroup.padding.bottom = 80;
-
-					if (Game.IsLandscape()) {
-						this.verticalLayoutGroup.padding.left = 220;
-						this.verticalLayoutGroup.padding.right = 120;
-						this.canvasScalar.matchWidthOrHeight = 0;
-						this.mobileCloseButtonWrapper.anchoredPosition = new Vector2(
-							120,
-							this.mobileCloseButtonWrapper.anchoredPosition.y,
-						);
-					}
 
 					if (Game.deviceType === AirshipDeviceType.Phone) {
 						this.tabs.GetChild(1).gameObject.SetActive(true); // Profile

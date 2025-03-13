@@ -696,7 +696,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   script: {fileID: 5842661104909546540, guid: f53842464852d1744b908d0f1b4e597f, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Avatar/AvatarBackdropComponent.lua
-  context: 1
   forceContext: 0
   metadata:
     name: AvatarBackdropComponent
