@@ -20,6 +20,7 @@ import { CoreMobileButton, MobileButtonConfig } from "./Mobile/MobileButton";
 import MobileControlsCanvas from "./Mobile/MobileControlsCanvas";
 import TouchJoystick from "./Mobile/TouchJoystick";
 import ProximityPrompt from "./ProximityPrompts/ProximityPrompt";
+import AirshipMobileButton from "./Mobile/AirshipMobileButton";
 
 export enum InputActionDirection {
 	/**
@@ -450,12 +451,12 @@ export class AirshipInputSingleton {
 	 * @param config A `MobileButtonConfig` that describes the look and feel of this button.
 	 */
 	public CreateMobileButton(actionName: string, anchoredPosition: Vector2, config?: MobileButtonConfig): GameObject {
-		const mobileButton = Object.Instantiate(this.mobileButtonPrefab);
+		const mobileButton = Object.Instantiate(config?.prefab ?? this.mobileButtonPrefab);
 		mobileButton.name = "Mobile Button (" + actionName + ")";
 		mobileButton.transform.SetParent(this.mobileControlsContainer.transform);
-		mobileButton
-			.GetAirshipComponent<AirshipButton>()
-			?.SetStartingScale(config?.scale ? new Vector3(config.scale.x, config.scale.y, 1) : Vector3.one);
+
+		const airshipButton = mobileButton.GetAirshipComponent<AirshipMobileButton>();
+		airshipButton?.SetStartingScale(config?.scale ? new Vector3(config.scale.x, config.scale.y, 1) : Vector3.one);
 		const lowerName = actionName.lower();
 
 		const rect = mobileButton.GetComponent<RectTransform>()!;
@@ -465,12 +466,11 @@ export class AirshipInputSingleton {
 		if (config?.pivot) rect.pivot = config.pivot;
 		rect.anchoredPosition = anchoredPosition;
 
-		if (config?.icon) {
+		if (config?.icon && airshipButton) {
 			// Assets/AirshipPackages/@Easy/Core/Prefabs/Images/crouch-pose.png
 			const iconTexture = Asset.LoadAssetIfExists<Texture2D>(config.icon);
 			if (iconTexture) {
-				const img = mobileButton.transform.GetChild(0).GetComponent<Image>()!;
-				img.sprite = Bridge.MakeDefaultSprite(iconTexture);
+				airshipButton.SetIconFromTexture(iconTexture);
 			} else {
 				warn(`Unable to create icon for mobile button (${actionName}). Invalid icon path: ${config.icon}`);
 			}
