@@ -100,7 +100,14 @@ export default class PredictedCommandManager extends AirshipSingleton {
 	public readonly onValidateCommand = new Signal<ValidateCommand>();
 
 	/**
-	 * Fires when a command has authoritatively ended.
+	 * Fires when a command has authoritatively ended. This fires before processing the next forward tick on the client even
+	 * if the command was authoritatively ended one or more ticks before the current tick. This means you can check if the command
+	 * is still running locally using IsCommandInstanceActive() when this signal fires. The command will be reconciled after this signal
+	 * completes.
+	 *
+	 * This event may be useful in cases where it's important for external behaviors to know if a command ended and with what
+	 * state the command ended with. For example, perhaps you run an effect when the command ends and the efffect depends on the state
+	 * of the command when it ended. Keep in mind that this event is _not_ predicted, so there will be ping delay on this signal firing.
 	 */
 	public readonly onCommandEnded = new Signal<[CommandInstanceIdentifier, Readonly<unknown>]>();
 
@@ -282,6 +289,17 @@ export default class PredictedCommandManager extends AirshipSingleton {
 									return;
 								}
 							}
+							// Reset the command to the provided state snapshot.
+							let data = value.data;
+							const confirmedState = this.confirmedFinalState.get(commandIdentifier.stringify());
+							// Overwrite with last confirmed data if required
+							if (confirmedState) {
+								// Our authoritative state saying this command should already have ended, so don't create it.
+								if (confirmedState.commandNumber < snapshot.lastProcessedCommand) {
+									return;
+								}
+								data = confirmedState.snapshot.data;
+							}
 
 							// If we need to use this command and it's not been created yet, create it.
 							if (!activeCommand.created) {
@@ -296,13 +314,6 @@ export default class PredictedCommandManager extends AirshipSingleton {
 
 							//print("resetting " + activeCommand.customDataKey);
 
-							// Reset the command to the provided state snapshot.
-							let data = value.data;
-							const hasConfirmedState = this.confirmedFinalState.get(commandIdentifier.stringify());
-							// Overwrite with last confirmed data if required
-							if (hasConfirmedState) {
-								data = hasConfirmedState.snapshot.data;
-							}
 							activeCommand.instance.ResetToSnapshot(data);
 						},
 					);
@@ -327,8 +338,11 @@ export default class PredictedCommandManager extends AirshipSingleton {
 			const lastState = this.unconfirmedFinalState.get(commandIdentifierStr);
 			this.unconfirmedFinalState.delete(commandIdentifierStr);
 
-			// temporary instance just for comparing snapshot data
 			const commandIdenfitier = CommandInstanceIdentifier.fromString(commandIdentifierStr);
+
+			this.onCommandEnded.Fire(commandIdenfitier, stateData.data);
+
+			// temporary instance just for comparing snapshot data
 			const tempInstance = new this.commandHandlerMap[commandIdenfitier.commandId].handler(
 				Game.localPlayer.character!,
 				commandIdenfitier,
@@ -542,7 +556,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 
 		// Handles GetCommand call
 		activeCommand.bin.Add(
-			character.OnAddCustomInputData.Connect((commandNumber) => {
+			character.OnAddCustomInputData.Connect(() => {
 				// Last tick requested to end processing, so we no longer get input. The server
 				// should have also expected to end processing this tick and will not expect new input.
 				if (!shouldTickAgain) return;
@@ -571,17 +585,6 @@ export default class PredictedCommandManager extends AirshipSingleton {
 					return;
 				}
 
-				// Stop processing the command if we have confirmed state that says the command ended before the command we are now processing
-				print(
-					`checking ${this.confirmedFinalState.get(commandIdentifier.stringify())?.commandNumber} against ${
-						input.commandNumber
-					}`,
-				);
-				const finalCommandData = this.confirmedFinalState.get(commandIdentifier.stringify());
-				if (finalCommandData !== undefined && finalCommandData.commandNumber < input.commandNumber) {
-					return;
-				}
-
 				// Make sure the command exists and is created for processing.
 				const customInput = (customData as Map<string, CustomInputData>).get(activeCommand.customDataKey);
 				if (customInput && !activeCommand.created) {
@@ -589,6 +592,10 @@ export default class PredictedCommandManager extends AirshipSingleton {
 					activeCommand.instance.Create?.();
 				}
 
+				// If the command has been authoritatively ended on this command number, then we should reset it's state to the
+				// authoritative state for the command instead of processing a tick. We also mark it to stop processing on the next
+				// tick since this is the last tick that should be processed.
+				const finalCommandData = this.confirmedFinalState.get(commandIdentifier.stringify());
 				if (finalCommandData !== undefined && input.commandNumber === finalCommandData.commandNumber) {
 					activeCommand.instance.ResetToSnapshot(finalCommandData.snapshot);
 					shouldTickAgain = false;
@@ -603,7 +610,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 
 				// Process a normal forward tick
 				shouldTickAgain = activeCommand.instance.OnTick(customInput, replay) !== false;
-				lastProcessedInputCommandNumber = input.commandNumber;
+				lastProcessedInputCommandNumber = input.commandNumber; // TODO: can input be null?
 				lastProcessedInputTime = input.time;
 
 				// If we have a queue'd cancellation from outside of our command processing functions, apply it here so
