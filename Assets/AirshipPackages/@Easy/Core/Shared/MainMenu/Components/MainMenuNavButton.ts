@@ -52,7 +52,9 @@ export default class MainMenuNavButton extends AirshipBehaviour {
 	public SetSelected(val: boolean): void {
 		this.selected = val;
 
-		this.image.color = this.image.color = val ? this.selectedColor : this.unselectedColor;
+		if (this.image) {
+			this.image.color = this.image.color = val ? this.selectedColor : this.unselectedColor;
+		}
 
 		if (this.noTextColorChange) return;
 		this.text.color = val ? this.textColorActive : this.textColorNormal;

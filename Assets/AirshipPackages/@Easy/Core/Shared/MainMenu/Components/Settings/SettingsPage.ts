@@ -61,15 +61,33 @@ export default class SettingsPage extends AirshipBehaviour {
 						this.verticalLayoutGroup.padding.right = 15;
 					} else {
 						this.canvasScalar.referenceResolution = new Vector2(1125, 458);
-						this.canvasScalar.matchWidthOrHeight = 1;
+						this.canvasScalar.matchWidthOrHeight = 0;
 
-						this.verticalLayoutGroup.padding.left = 220;
-						this.verticalLayoutGroup.padding.right = 120;
+						const safeArea = Screen.safeArea;
+						// print(
+						// 	"safe area: " +
+						// 		safeArea +
+						// 		", yMax: " +
+						// 		safeArea.yMax +
+						// 		", yMin: " +
+						// 		safeArea.yMin +
+						// 		", screenHeight: " +
+						// 		Screen.height,
+						// );
+						// print(`safeArea.min: ${safeArea.min}, safeArea.max: ${safeArea.max}`);
+						// todo: this is wrong but works on iPhone... I cannot figure out how to make it work correctly with safeArea max.
+						// - Luke
+						this.verticalLayoutGroup.padding.left = safeArea.min.y;
+						this.verticalLayoutGroup.padding.right = safeArea.min.y;
 						this.mobileCloseButtonWrapper.anchoredPosition = new Vector2(
 							120,
 							this.mobileCloseButtonWrapper.anchoredPosition.y,
 						);
 					}
+					this.verticalLayoutGroup.spacing = 60;
+					// this.verticalLayoutGroup.padding.left = 15;
+					// this.verticalLayoutGroup.padding.top = 20;
+					// this.verticalLayoutGroup.padding.bottom = 80;
 
 					const notchHeight = ProtectedUtil.GetNotchHeight();
 
@@ -82,15 +100,11 @@ export default class SettingsPage extends AirshipBehaviour {
 					this.scrollView.offsetMin = new Vector2(0, 0);
 
 					this.mobileHeader.gameObject.SetActive(true);
-					this.mobileHeader.sizeDelta = new Vector2(this.mobileHeader.sizeDelta.x, notchHeight + 40);
+					this.mobileHeader.sizeDelta = new Vector2(this.mobileHeader.sizeDelta.x, notchHeight + 60);
 
 					this.desktopCloseButtonWrapper.gameObject.SetActive(false);
 					this.rightSection.anchorMin = new Vector2(0, 0);
 					this.rightSection.anchoredPosition = new Vector2(0, 0);
-					this.verticalLayoutGroup.spacing = 60;
-					this.verticalLayoutGroup.padding.left = 15;
-					this.verticalLayoutGroup.padding.top = 20;
-					this.verticalLayoutGroup.padding.bottom = 80;
 
 					if (Game.deviceType === AirshipDeviceType.Phone) {
 						this.tabs.GetChild(1).gameObject.SetActive(true); // Profile

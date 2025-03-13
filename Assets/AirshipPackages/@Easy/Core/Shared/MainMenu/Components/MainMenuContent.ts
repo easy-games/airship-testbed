@@ -104,11 +104,11 @@ export default class MainMenuContent extends AirshipBehaviour {
 			this.contentWrapper.anchorMin = new Vector2(0.5, 1);
 			this.contentWrapper.anchorMax = new Vector2(0.5, 1);
 			this.contentWrapper.pivot = new Vector2(0.5, 1);
-			this.contentWrapper.anchoredPosition = new Vector2(0, -notchHeight - 20);
+			this.contentWrapper.anchoredPosition = new Vector2(0, -notchHeight);
 
 			this.navbar.sizeDelta = new Vector2(this.navbar.sizeDelta.x, 67);
 			this.pages.offsetMax = new Vector2(0, -69);
-			this.navbar.anchoredPosition = new Vector2(0, -notchHeight - 20);
+			this.navbar.anchoredPosition = new Vector2(0, -notchHeight);
 			for (let tab of this.navbarTabs) {
 				tab.gameObject.SetActive(false);
 			}
@@ -158,7 +158,7 @@ export default class MainMenuContent extends AirshipBehaviour {
 				this.contentWrapper.anchorMin = new Vector2(0, 1);
 				this.contentWrapper.anchorMax = new Vector2(0, 1);
 				this.contentWrapper.pivot = new Vector2(0, 1);
-				this.contentWrapper.anchoredPosition = new Vector2(math.max(notchHeight, 25), -67);
+				this.contentWrapper.anchoredPosition = new Vector2(Screen.safeArea.yMin, -67);
 				this.contentWrapper.sizeDelta = new Vector2(
 					screenSize.x + (socialMenuHidden ? -100 : -360) - notchHeight,
 					screenSize.y - 67,

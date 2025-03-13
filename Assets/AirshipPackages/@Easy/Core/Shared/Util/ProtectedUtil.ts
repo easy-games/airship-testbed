@@ -12,10 +12,15 @@ export class ProtectedUtil {
 	}
 
 	public static GetNotchHeight(): number {
+		const safeArea = Screen.safeArea;
+		let notchHeight: number;
+		// print(`safeArea.min: ${safeArea.min}, safeArea.max: ${safeArea.max}`);
 		if (Game.IsPortrait()) {
-			let notchHeight = Screen.safeArea.y / 2;
-			return notchHeight;
+			notchHeight = safeArea.yMin;
+		} else {
+			notchHeight = Screen.height - safeArea.yMax;
 		}
-		return (Screen.width - Screen.safeArea.xMax) / 2;
+		// print(`notch height: ${notchHeight}`);
+		return notchHeight;
 	}
 }
