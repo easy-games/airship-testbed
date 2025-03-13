@@ -155,7 +155,13 @@ export default class SearchFocused extends AirshipBehaviour {
 
 		this.queryId++;
 		let thisQuery = this.queryId;
-		const res = InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/games/autocomplete?name=" + text);
+		const res = InternalHttpManager.GetAsync(
+			AirshipUrl.ContentService +
+				"/games/autocomplete?name=" +
+				text +
+				"&platform=" +
+				ProtectedUtil.GetLocalPlatformString(),
+		);
 		if (thisQuery !== this.queryId) return;
 		let games: GameDto[];
 		if (res.success) {

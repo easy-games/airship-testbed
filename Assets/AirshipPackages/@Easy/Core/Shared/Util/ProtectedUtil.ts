@@ -23,4 +23,20 @@ export class ProtectedUtil {
 		// print(`notch height: ${notchHeight}`);
 		return notchHeight;
 	}
+
+	public static GetLocalPlatformString(): string {
+		const platform = Game.platform;
+		switch (platform) {
+			case AirshipPlatform.iOS:
+				return "iOS";
+			case AirshipPlatform.Android:
+				return "Android";
+			case AirshipPlatform.Windows:
+				return "Windows";
+			case AirshipPlatform.Mac:
+				return "Mac";
+			case AirshipPlatform.Linux:
+				return "Linux";
+		}
+	}
 }

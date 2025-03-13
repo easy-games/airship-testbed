@@ -13,6 +13,7 @@ import { Asset } from "../../Asset";
 import DateParser from "../../DateParser";
 import { Game } from "../../Game";
 import inspect from "../../Util/Inspect";
+import { ProtectedUtil } from "../../Util/ProtectedUtil";
 import { MainMenuSingleton } from "../Singletons/MainMenuSingleton";
 import DiscordHero from "./DiscordHero";
 import MainMenuPageComponent from "./MainMenuPageComponent";
@@ -116,7 +117,9 @@ export default class HomePageComponent extends MainMenuPageComponent {
 	}
 
 	public FetchGames(): void {
-		const res = InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/games");
+		const res = InternalHttpManager.GetAsync(
+			AirshipUrl.ContentService + "/games?platform=" + ProtectedUtil.GetLocalPlatformString(),
+		);
 		if (!res.success) {
 			// warn("Failed to fetch games. Retrying in 1s..");
 			this.bin.Add(

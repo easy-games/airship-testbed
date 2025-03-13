@@ -3,6 +3,7 @@ import { Controller, Service } from "@Easy/Core/Shared/Flamework/flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
+import { ProtectedUtil } from "@Easy/Core/Shared/Util/ProtectedUtil";
 
 @Service({ loadOrder: -1000 })
 @Controller({ loadOrder: -1000 })
@@ -38,7 +39,11 @@ export default class SearchSingleton {
 	}
 
 	public FetchMyGames(retryDelay = 1): void {
-		const res = InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/memberships/games/self?liveStats=true");
+		const res = InternalHttpManager.GetAsync(
+			AirshipUrl.ContentService +
+				"/memberships/games/self?liveStats=true&platform=" +
+				ProtectedUtil.GetLocalPlatformString(),
+		);
 		if (!res.success) {
 			if (400 <= res.statusCode && res.statusCode < 500) {
 				warn("Failed to fetch my games: " + res.error);
@@ -70,7 +75,9 @@ export default class SearchSingleton {
 	}
 
 	public FetchPopularGames(): void {
-		const res = InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/games");
+		const res = InternalHttpManager.GetAsync(
+			AirshipUrl.ContentService + "/games?platform=" + ProtectedUtil.GetLocalPlatformString(),
+		);
 		if (!res.success) {
 			// warn("Failed to fetch games. Retrying in 1s..");
 			task.delay(1, () => {
