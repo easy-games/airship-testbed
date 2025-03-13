@@ -24,7 +24,7 @@ export default class AirshipButton extends AirshipBehaviour {
 	public disabledColorHex = "#2E3035";
 	public loadingIndicator?: GameObject;
 
-	public Awake(): void {
+	protected Awake(): void {
 		this.image = this.gameObject.GetComponent<Image>();
 		this.startingColor = this.image?.color;
 		this.button = this.gameObject.GetComponent<Button>()!;
