@@ -119,9 +119,7 @@ export class MainMenuController {
 		}
 
 		this.gameBG = this.refs.GetValue("UI", "GameBG");
-		if (Game.IsMobile()) {
-			this.gameBG.GetComponent<Image>()!.color = new Color(0.094, 0.098, 0.102, 0.995);
-		}
+		this.gameBG!.GetComponent<Image>()!.color = new Color(0.094, 0.098, 0.102, 1);
 
 		this.mainMenuBG = this.refs.GetValue("UI", "MainMenuBG");
 		this.ToggleGameBG(true);
@@ -292,6 +290,12 @@ export class MainMenuController {
 
 			if (this.currentPage) {
 				this.currentPage.OpenPage(params);
+
+				if (pageType === MainMenuPageType.Game) {
+					this.gameBG!.GetComponent<Image>()!.color = new Color(0.094, 0.098, 0.102, 0.995);
+				} else {
+					this.gameBG!.GetComponent<Image>()!.color = new Color(0.094, 0.098, 0.102, 1);
+				}
 			} else {
 				error("Trying to route to undefined page: " + pageType);
 			}
