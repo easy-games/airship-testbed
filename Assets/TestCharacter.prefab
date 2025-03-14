@@ -101,20 +101,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptFile: {fileID: 3282824997728861277, guid: da24e81f99ecc4dc88e742cfc9f66eae, type: 3}
-  m_fileFullPath: Assets/Code/Components/TestCharacter.lua
-  m_error: 0
-  m_yielded: 0
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
+  script: {fileID: 3282824997728861277, guid: da24e81f99ecc4dc88e742cfc9f66eae, type: 3}
+  scriptPath: Assets/Code/Components/TestCharacter.lua
+  forceContext: 0
+  metadata:
     name: TestCharacter
     singleton: 0
     decorators: []
     properties: []
     displayIcon: {fileID: 0}
     displayName: 
-  contextOverwritten: 0
