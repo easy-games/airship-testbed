@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c4968faf83d4945b20e087dcd456ddd, type: 3}
   m_Name: FaceAnime07 Gear
   m_EditorClassIdentifier: 
-  classId: 
+  classId: 8a925be2-cd78-4a7d-a2d6-102c850f4f5c
   accessoryPrefabs: []
   face: {fileID: 11400000, guid: 96150506309486f4ba940966500fa000, type: 2}
