@@ -26500,6 +26500,7 @@ interface CoreLoadingScreen extends BundleLoadingScreen {
     spinner: GameObject;
     gameImage: RawImage;
     editorGameImageColor: Color;
+    bottomCard: RectTransform;
     voiceChatCard: RectTransform;
     voiceChatToggle: InternalToggle;
     updatedByGame: boolean;
@@ -36548,6 +36549,7 @@ interface VoxelBlocks extends MonoBehaviour {
     Reload(useTexturesDirectlyFromDisk: boolean): void;
     SearchForBlockIdByString(stringId: string): number;
     UpdateVoxelBlockId(voxelValue: number, blockId: number): number;
+    WaitForLoaded(): void;
 
 
 }
