@@ -3,6 +3,7 @@ import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Protected } from "@Easy/Core/Shared/Protected";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { ProtectedUtil } from "@Easy/Core/Shared/Util/ProtectedUtil";
 import { MainMenuSingleton } from "../../Singletons/MainMenuSingleton";
 import {
 	InternalGameSetting,
@@ -53,8 +54,43 @@ export default class SettingsPage extends AirshipBehaviour {
 		mainMenu.SetHideMobileEscapeButton(true);
 		this.bin.Add(
 			mainMenu.ObserveScreenSize((size) => {
-				if (size === "sm" && Game.IsMobile()) {
-					const notchHeight = math.max(Game.GetNotchHeight(), 40);
+				if (size === "sm" || (size === "md" && Game.IsMobile())) {
+					if (Game.IsPortrait()) {
+						this.canvasScalar.referenceResolution = new Vector2(458, 1125);
+						this.canvasScalar.matchWidthOrHeight = 0;
+						this.verticalLayoutGroup.padding.right = 15;
+						this.verticalLayoutGroup.padding.left = 15;
+					} else {
+						this.canvasScalar.referenceResolution = new Vector2(1125, 458);
+						this.canvasScalar.matchWidthOrHeight = 0;
+
+						const safeArea = Screen.safeArea;
+						// print(
+						// 	"safe area: " +
+						// 		safeArea +
+						// 		", yMax: " +
+						// 		safeArea.yMax +
+						// 		", yMin: " +
+						// 		safeArea.yMin +
+						// 		", screenHeight: " +
+						// 		Screen.height,
+						// );
+						// print(`safeArea.min: ${safeArea.min}, safeArea.max: ${safeArea.max}`);
+						// todo: this is wrong but works on iPhone... I cannot figure out how to make it work correctly with safeArea max.
+						// - Luke
+						this.verticalLayoutGroup.padding.left = safeArea.min.y;
+						this.verticalLayoutGroup.padding.right = safeArea.min.y;
+						this.mobileCloseButtonWrapper.anchoredPosition = new Vector2(
+							120,
+							this.mobileCloseButtonWrapper.anchoredPosition.y,
+						);
+					}
+					this.verticalLayoutGroup.spacing = 60;
+					// this.verticalLayoutGroup.padding.left = 15;
+					// this.verticalLayoutGroup.padding.top = 20;
+					// this.verticalLayoutGroup.padding.bottom = 80;
+
+					const notchHeight = ProtectedUtil.GetNotchHeight();
 
 					this.sidebar.gameObject.SetActive(false);
 					// this.scrollView.offsetMax = new Vector2(-5, -7);
@@ -65,26 +101,11 @@ export default class SettingsPage extends AirshipBehaviour {
 					this.scrollView.offsetMin = new Vector2(0, 0);
 
 					this.mobileHeader.gameObject.SetActive(true);
-					this.mobileHeader.sizeDelta = new Vector2(this.mobileHeader.sizeDelta.x, notchHeight + 40);
+					this.mobileHeader.sizeDelta = new Vector2(this.mobileHeader.sizeDelta.x, notchHeight + 60);
 
 					this.desktopCloseButtonWrapper.gameObject.SetActive(false);
-					this.canvasScalar.matchWidthOrHeight = 1;
 					this.rightSection.anchorMin = new Vector2(0, 0);
 					this.rightSection.anchoredPosition = new Vector2(0, 0);
-					this.verticalLayoutGroup.spacing = 60;
-					this.verticalLayoutGroup.padding.left = 15;
-					this.verticalLayoutGroup.padding.top = 20;
-					this.verticalLayoutGroup.padding.bottom = 80;
-
-					if (Game.IsLandscape()) {
-						this.verticalLayoutGroup.padding.left = 220;
-						this.verticalLayoutGroup.padding.right = 120;
-						this.canvasScalar.matchWidthOrHeight = 0;
-						this.mobileCloseButtonWrapper.anchoredPosition = new Vector2(
-							120,
-							this.mobileCloseButtonWrapper.anchoredPosition.y,
-						);
-					}
 
 					if (Game.deviceType === AirshipDeviceType.Phone) {
 						this.tabs.GetChild(1).gameObject.SetActive(true); // Profile
@@ -174,7 +195,7 @@ export default class SettingsPage extends AirshipBehaviour {
 	}
 
 	public SetTab(settingsTab: SettingsTab): void {
-		if (Game.IsMobile()) return;
+		if (ProtectedUtil.IsPhoneMode()) return;
 
 		const sidebar = this.sidebar.gameObject.GetAirshipComponent<SettingsSidebar>()!;
 		for (let tabBtn of sidebar.tabBtns) {

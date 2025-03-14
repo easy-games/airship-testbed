@@ -505,19 +505,18 @@ export class AirshipCameraSingleton {
 				mode.SetYOffset(newOffsetY);
 			});
 
-			// When the fixed camera is targeting the local `Character`, synchronize the character &
-			// camera's look vectors.
+			//Every frame set the characters look vector to match the cameras
 			const lookVectorSync = OnLateUpdate.Connect(() => {
 				if (!character.movement) return;
 				if (character.movement.disableInput) return;
-				character.movement.SetLookVector(mode.cameraForwardVector);
+				character.movement.SetLookVectorRecurring(mode.cameraForwardVector);
 			});
 
 			if (character.movement) {
+				//If something else sets the characters look vector we need to update the camera
 				const lookVectorSyncInverse = character.movement.OnNewLookVector((lookVector) => {
 					if (!character.movement) return;
 					if (character.movement.disableInput) return;
-					character.movement.SetLookVectorRecurring(mode.cameraForwardVector);
 					mode.SetYAxisDirection(lookVector);
 				});
 				cleanup.Add(() => Bridge.DisconnectEvent(lookVectorSyncInverse));
@@ -544,19 +543,18 @@ export class AirshipCameraSingleton {
 				mode.SetYAxisDirection(character.movement.GetLookVector());
 			}
 
-			// When the fixed camera is targeting the local `Character`, synchronize the character &
-			// camera's look vectors.
+			//Every frame set the characters look vector to match the cameras
 			const lookVectorSync = OnLateUpdate.Connect(() => {
 				if (!character.movement) return;
 				if (character.movement.disableInput) return;
-				character.movement.SetLookVector(mode.cameraForwardVector);
+				character.movement.SetLookVectorRecurring(mode.cameraForwardVector);
 			});
 
 			if (character.movement) {
+				//If something else sets the characters look vector we need to update the camera
 				const lookVectorSyncInverse = character.movement.OnNewLookVector((lookVector) => {
 					if (!character.movement) return;
 					if (character.movement.disableInput) return;
-					character.movement.SetLookVectorRecurring(mode.cameraForwardVector);
 					mode.SetYAxisDirection(lookVector);
 				});
 				cleanup.Add(() => Bridge.DisconnectEvent(lookVectorSyncInverse));

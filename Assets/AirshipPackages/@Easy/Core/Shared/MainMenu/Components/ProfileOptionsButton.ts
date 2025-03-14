@@ -4,9 +4,9 @@ import { RightClickMenuButton } from "@Easy/Core/Client/ProtectedControllers/UI/
 import { RightClickMenuController } from "@Easy/Core/Client/ProtectedControllers/UI/RightClickMenu/RightClickMenuController";
 import { Airship } from "../../Airship";
 import { Dependency } from "../../Flamework";
-import { Game } from "../../Game";
 import { Protected } from "../../Protected";
 import { CanvasAPI, HoverState } from "../../Util/CanvasAPI";
+import { ProtectedUtil } from "../../Util/ProtectedUtil";
 import { SettingsPageSingleton } from "../Singletons/SettingsPageSingleton";
 import { SettingsTab } from "./Settings/SettingsPageName";
 
@@ -19,6 +19,9 @@ export default class ProfileOptionsButton extends AirshipBehaviour {
 	override Start(): void {
 		this.usernameText.text = "";
 		this.profileImage.enabled = false;
+		if (ProtectedUtil.IsPhoneMode()) {
+			this.usernameText.gameObject.SetActive(false);
+		}
 		Bridge.UpdateLayout(this.transform as RectTransform, true);
 		task.spawn(() => {
 			this.UpdatePicture();
@@ -39,42 +42,46 @@ export default class ProfileOptionsButton extends AirshipBehaviour {
 		});
 
 		CanvasAPI.OnClickEvent(this.gameObject, () => {
+			if (ProtectedUtil.IsPhoneMode()) {
+				Dependency<SettingsPageSingleton>().Open(SettingsTab.Account);
+				return;
+			}
+
 			const options: RightClickMenuButton[] = [];
-			if (!Game.IsMobile()) {
+			options.push({
+				text: "Settings",
+				onClick: () => {
+					Dependency<SettingsPageSingleton>().Open(SettingsTab.Account);
+				},
+			});
+			if (!Screen.fullScreen) {
 				options.push({
-					text: "Settings",
+					text: "Go Fullscreen",
 					onClick: () => {
-						Dependency<SettingsPageSingleton>().Open(SettingsTab.Account);
+						Screen.fullScreen = true;
 					},
 				});
-				if (!Screen.fullScreen) {
-					options.push({
-						text: "Go Fullscreen",
-						onClick: () => {
-							Screen.fullScreen = true;
-						},
-					});
-				} else {
-					options.push({
-						text: "Exit Fullscreen",
-						onClick: () => {
-							Screen.fullScreen = false;
-						},
-					});
-				}
+			} else {
 				options.push({
-					text: "Sign out",
+					text: "Exit Fullscreen",
 					onClick: () => {
-						Protected.User.Logout();
-					},
-				});
-				options.push({
-					text: "Quit",
-					onClick: () => {
-						Application.Quit();
+						Screen.fullScreen = false;
 					},
 				});
 			}
+			options.push({
+				text: "Sign out",
+				onClick: () => {
+					Protected.User.Logout();
+				},
+			});
+			options.push({
+				text: "Quit",
+				onClick: () => {
+					Application.Quit();
+				},
+			});
+
 			Dependency<RightClickMenuController>().OpenRightClickMenu(
 				Dependency<MainMenuController>().mainContentCanvas,
 				new Vector2(this.transform.position.x, this.transform.position.y),

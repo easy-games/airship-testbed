@@ -37,7 +37,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 60}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &7776571668119357925
 MonoBehaviour:
@@ -51,16 +51,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptFile: {fileID: -8466746093026454591, guid: 8f40ce6d72862a24d936da3b94a4f5d9, type: 3}
-  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/General/PlayerList.lua
-  m_error: 0
-  m_yielded: 0
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
+  script: {fileID: -8466746093026454591, guid: 8f40ce6d72862a24d936da3b94a4f5d9, type: 3}
+  scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/General/PlayerList.lua
+  forceContext: 0
+  metadata:
     name: PlayerList
     singleton: 0
     decorators: []
@@ -75,6 +69,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -90,6 +87,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -97,7 +97,6 @@ MonoBehaviour:
       modified: 1
     displayIcon: {fileID: 0}
     displayName: 
-  contextOverwritten: 0
 --- !u!114 &7268444074620157107
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -342,16 +341,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptFile: {fileID: 247699700030261788, guid: 6155702a7b8e9f445b9ce853cd33d000, type: 3}
-  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipButton.lua
-  m_error: 0
-  m_yielded: 0
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
+  script: {fileID: 247699700030261788, guid: 6155702a7b8e9f445b9ce853cd33d000, type: 3}
+  scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipButton.lua
+  forceContext: 0
+  metadata:
     name: AirshipButton
     singleton: 0
     decorators: []
@@ -366,6 +359,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -381,6 +377,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipButtonClickEffect@AirshipButtonClickEffect
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators:
       - name: Header
         parameters:
@@ -400,6 +399,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators:
       - name: Tooltip
         parameters:
@@ -419,6 +421,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators:
       - name: Header
         parameters:
@@ -438,6 +443,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -445,7 +453,6 @@ MonoBehaviour:
       modified: 0
     displayIcon: {fileID: 0}
     displayName: 
-  contextOverwritten: 0
 --- !u!1 &3500425740822536517
 GameObject:
   m_ObjectHideFlags: 0
@@ -1168,7 +1175,7 @@ RectTransform:
   m_Father: {fileID: 3901928890255834239}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1227,7 +1234,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1892863648341820217
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1273,16 +1280,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptFile: {fileID: -7023370088831765392, guid: d806647b2ab2963478aa72c83004a8dc, type: 3}
-  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/General/GameGeneralPage.lua
-  m_error: 0
-  m_yielded: 0
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
+  script: {fileID: -7023370088831765392, guid: d806647b2ab2963478aa72c83004a8dc, type: 3}
+  scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/General/GameGeneralPage.lua
+  forceContext: 0
+  metadata:
     name: GameGeneralPage
     singleton: 0
     decorators: []
@@ -1297,6 +1298,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: AirshipPackages/@Easy/Core/Client/ProtectedControllers/MainMenuPageName@MainMenuPageType
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: Home
@@ -1312,6 +1316,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -1327,6 +1334,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -1342,6 +1352,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 0.1
@@ -1357,6 +1370,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -1372,6 +1388,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -1387,6 +1406,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -1402,6 +1424,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -1417,6 +1442,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -1432,6 +1460,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators:
       - name: Header
         parameters:
@@ -1451,6 +1482,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -1466,6 +1500,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -1481,6 +1518,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/General/EscapeMenuButton.ts
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -1496,6 +1536,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -1511,6 +1554,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/General/EscapeMenuButton.ts
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -1526,6 +1572,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -1533,7 +1582,6 @@ MonoBehaviour:
       modified: 1
     displayIcon: {fileID: 0}
     displayName: 
-  contextOverwritten: 0
 --- !u!1 &7531834485871068568
 GameObject:
   m_ObjectHideFlags: 0
@@ -1569,9 +1617,9 @@ RectTransform:
   m_Father: {fileID: 2632455039229060834}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -17, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &134343592866152559
 CanvasRenderer:
@@ -1909,7 +1957,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 0.000030517578, y: 0}
-  m_SizeDelta: {x: 0, y: 146.7212}
+  m_SizeDelta: {x: 260.8377, y: 146.7212}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &3376404720358981840
 CanvasRenderer:
@@ -2032,7 +2080,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7539554840099469866, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7539554840099469866, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
       propertyPath: m_AnchorMin.x
@@ -2040,7 +2088,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7539554840099469866, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7539554840099469866, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
       propertyPath: m_SizeDelta.x
@@ -2080,11 +2128,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7539554840099469866, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 334.55814
       objectReference: {fileID: 0}
     - target: {fileID: 7539554840099469866, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -247.5
       objectReference: {fileID: 0}
     - target: {fileID: 7539554840099469866, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2111,11 +2159,19 @@ PrefabInstance:
       value: boolean
       objectReference: {fileID: 0}
     - target: {fileID: 8938595974970740049, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
+      propertyPath: metadata.properties.Array.data[2].modified
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8938595974970740049, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
       propertyPath: m_metadata.properties.Array.data[2].modified
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8938595974970740049, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
       propertyPath: m_metadata.properties.Array.data[3].modified
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8938595974970740049, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
+      propertyPath: metadata.properties.Array.data[2].serializedValue
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8938595974970740049, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
@@ -2184,7 +2240,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7539554840099469866, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7539554840099469866, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
       propertyPath: m_AnchorMin.x
@@ -2192,7 +2248,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7539554840099469866, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7539554840099469866, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
       propertyPath: m_SizeDelta.x
@@ -2232,11 +2288,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7539554840099469866, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 334.55814
       objectReference: {fileID: 0}
     - target: {fileID: 7539554840099469866, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -27.5
       objectReference: {fileID: 0}
     - target: {fileID: 7539554840099469866, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2420,11 +2476,19 @@ PrefabInstance:
       value: boolean
       objectReference: {fileID: 0}
     - target: {fileID: 8938595974970740049, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
+      propertyPath: metadata.properties.Array.data[2].modified
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8938595974970740049, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
       propertyPath: m_metadata.properties.Array.data[2].modified
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8938595974970740049, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
       propertyPath: m_metadata.properties.Array.data[3].modified
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8938595974970740049, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
+      propertyPath: metadata.properties.Array.data[2].serializedValue
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8938595974970740049, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
@@ -2475,22 +2539,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6075917880464281565}
     m_Modifications:
-    - target: {fileID: 1530745529032018625, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 26.5953
-      objectReference: {fileID: 0}
-    - target: {fileID: 1530745529032018625, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 26.5953
-      objectReference: {fileID: 0}
-    - target: {fileID: 1530745529032018625, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -360.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1530745529032018625, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1857674279183302683, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
       propertyPath: m_text
       value: Settings
@@ -2517,7 +2565,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7539554840099469866, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7539554840099469866, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
       propertyPath: m_AnchorMin.x
@@ -2525,7 +2573,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7539554840099469866, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7539554840099469866, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
       propertyPath: m_SizeDelta.x
@@ -2565,11 +2613,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7539554840099469866, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 334.55814
       objectReference: {fileID: 0}
     - target: {fileID: 7539554840099469866, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -192.5
       objectReference: {fileID: 0}
     - target: {fileID: 7539554840099469866, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2670,7 +2718,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7539554840099469866, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7539554840099469866, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
       propertyPath: m_AnchorMin.x
@@ -2678,7 +2726,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7539554840099469866, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7539554840099469866, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
       propertyPath: m_SizeDelta.x
@@ -2718,11 +2766,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7539554840099469866, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 334.55814
       objectReference: {fileID: 0}
     - target: {fileID: 7539554840099469866, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -137.5
       objectReference: {fileID: 0}
     - target: {fileID: 7539554840099469866, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2823,7 +2871,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7539554840099469866, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7539554840099469866, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
       propertyPath: m_AnchorMin.x
@@ -2831,7 +2879,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7539554840099469866, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7539554840099469866, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
       propertyPath: m_SizeDelta.x
@@ -2871,11 +2919,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7539554840099469866, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 334.55814
       objectReference: {fileID: 0}
     - target: {fileID: 7539554840099469866, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -82.5
       objectReference: {fileID: 0}
     - target: {fileID: 7539554840099469866, guid: 08ab287d5e1d1469dab53b19f4405a25, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2976,7 +3024,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6040946070538047698, guid: 4b1aa10aa3cc04b49a47dab2ebe1c3d6, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6040946070538047698, guid: 4b1aa10aa3cc04b49a47dab2ebe1c3d6, type: 3}
       propertyPath: m_AnchorMin.x
@@ -2984,11 +3032,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6040946070538047698, guid: 4b1aa10aa3cc04b49a47dab2ebe1c3d6, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6040946070538047698, guid: 4b1aa10aa3cc04b49a47dab2ebe1c3d6, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 495.42627
       objectReference: {fileID: 0}
     - target: {fileID: 6040946070538047698, guid: 4b1aa10aa3cc04b49a47dab2ebe1c3d6, type: 3}
       propertyPath: m_SizeDelta.y
@@ -3024,11 +3072,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6040946070538047698, guid: 4b1aa10aa3cc04b49a47dab2ebe1c3d6, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 247.71313
       objectReference: {fileID: 0}
     - target: {fileID: 6040946070538047698, guid: 4b1aa10aa3cc04b49a47dab2ebe1c3d6, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -30
       objectReference: {fileID: 0}
     - target: {fileID: 6040946070538047698, guid: 4b1aa10aa3cc04b49a47dab2ebe1c3d6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

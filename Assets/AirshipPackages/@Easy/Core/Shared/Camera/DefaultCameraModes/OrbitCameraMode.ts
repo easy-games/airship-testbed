@@ -30,6 +30,8 @@ export class OrbitCameraMode extends CameraMode {
 	private minRotX = math.rad(1);
 	private maxRotX = math.rad(179);
 
+	private shouldBumpForOcclusion = true;
+
 	private mouseLocked = false;
 	private mouseLockSwapped = false;
 	private mouseSmoothingEnabled = true;
@@ -52,6 +54,9 @@ export class OrbitCameraMode extends CameraMode {
 		this.SetYOffset(this.config.yOffset ?? CameraConstants.DefaultOrbitCameraConfig.yOffset);
 		this.SetMinRotX(this.config.minRotX ?? CameraConstants.DefaultOrbitCameraConfig.minRotX);
 		this.SetMaxRotX(this.config.maxRotX ?? CameraConstants.DefaultOrbitCameraConfig.maxRotX);
+		this.SetOcclusionBumping(
+			this.config.shouldOcclusionBump ?? CameraConstants.DefaultFixedCameraConfig.shouldOcclusionBump,
+		);
 		if (Airship.Camera.IsEnabled()) {
 			this.OnEnabled();
 		}
@@ -244,9 +249,12 @@ export class OrbitCameraMode extends CameraMode {
 
 	OnPostUpdate(cameraHolder: Transform) {
 		cameraHolder.LookAt(this.lastAttachToPos);
-		this.occlusionCam.BumpForOcclusion(this.lastAttachToPos, OcclusionCameraManager.GetMask());
-
-		this.cameraForwardVector = cameraHolder.forward;
+		if (this.shouldBumpForOcclusion) {
+			this.occlusionCam.BumpForOcclusion(this.lastAttachToPos, OcclusionCameraManager.GetMask());
+			const dist = cameraHolder.position.sub(this.lastAttachToPos).magnitude;
+			this.onTargetDistance.Fire(dist, this.occlusionCam.transform.position, this.lastAttachToPos);
+			this.cameraForwardVector = cameraHolder.forward;
+		}
 	}
 
 	/**
@@ -259,6 +267,7 @@ export class OrbitCameraMode extends CameraMode {
 		if (properties.yOffset) this.SetYOffset(properties.yOffset);
 		if (properties.minRotX) this.SetMinRotX(properties.minRotX);
 		if (properties.maxRotX) this.SetMaxRotX(properties.maxRotX);
+		if (properties.shouldOcclusionBump) this.SetOcclusionBumping(properties.shouldOcclusionBump);
 	}
 
 	/**
@@ -323,6 +332,15 @@ export class OrbitCameraMode extends CameraMode {
 	 */
 	public SetMaxRotX(maxX: number): void {
 		this.maxRotX = math.rad(maxX);
+	}
+
+	/**
+	 * Sets whether or not camera should bump for occlusion.
+	 *
+	 * @param shouldBump Whether or not camera should bump for occlusion.
+	 */
+	public SetOcclusionBumping(shouldBump: boolean): void {
+		this.shouldBumpForOcclusion = shouldBump;
 	}
 
 	/**

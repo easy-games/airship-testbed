@@ -1542,16 +1542,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptFile: {fileID: -8052405120146006952, guid: d8f271e34606d0a41a0745945b21b4c1, type: 3}
-  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/Animation/CharacterRagdoll.lua
-  m_error: 0
-  m_yielded: 0
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
+  script: {fileID: -8052405120146006952, guid: d8f271e34606d0a41a0745945b21b4c1, type: 3}
+  scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/Animation/CharacterRagdoll.lua
+  forceContext: 0
+  metadata:
     name: CharacterRagdoll
     singleton: 0
     decorators: []
@@ -1648,7 +1642,6 @@ MonoBehaviour:
       modified: 0
     displayIcon: {fileID: 0}
     displayName: 
-  contextOverwritten: 0
 --- !u!1 &8298377223078569888 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5572260395049890946, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}

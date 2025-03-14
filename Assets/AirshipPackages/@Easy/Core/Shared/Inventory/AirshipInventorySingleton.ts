@@ -14,7 +14,11 @@ import Inventory, { InventoryDto } from "./Inventory";
 import { InventoryUIVisibility } from "./InventoryUIVisibility";
 import { ItemStack } from "./ItemStack";
 import { MovingToSlotEvent } from "./Signal/MovingToSlotEvent";
-import { SlotInteractionEvent } from "./Signal/SlotInteractionEvent";
+import {
+	CancellableSlotInteractionEvent,
+	SlotDragEndedEvent,
+	SlotInteractionEvent,
+} from "./Signal/SlotInteractionEvent";
 
 interface InventoryEntry {
 	Inv: Inventory;
@@ -54,6 +58,19 @@ export class AirshipInventorySingleton {
 	 * ```
 	 */
 	public readonly onInventorySlotClicked = new Signal<SlotInteractionEvent>();
+	/**
+	 * Event that's invoked if there's a drag requested on a given inventory slot
+	 *
+	 * - You can cancel dragging through this event
+	 * - To listen for the drag end - use {@link onInventorySlotDragEnd}
+	 * - To listen for a slot being dropped on another slot - use {@link onMovingToSlot}.
+	 */
+	public readonly onInventorySlotDragBegin = new Signal<CancellableSlotInteractionEvent>();
+	/**
+	 * Event that's invoked if a slot that's being dragged, is no longer being dragged
+	 * - `consume` on the event will be true if it is dropping on another slot, that can be handled via {@link onMovingToSlot}.
+	 */
+	public readonly onInventorySlotDragEnd = new Signal<SlotDragEndedEvent>();
 
 	/**
 	 * If `true`, the Inventory UI will immediately be enabled for the player.

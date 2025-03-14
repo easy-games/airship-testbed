@@ -1,8 +1,9 @@
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { MainMenuSingleton } from "../../Singletons/MainMenuSingleton";
+import MainMenuPageComponent from "../MainMenuPageComponent";
 
-export default class FriendsPage extends AirshipBehaviour {
+export default class FriendsPage extends MainMenuPageComponent {
 	private bin = new Bin();
 
 	override OnEnable(): void {
@@ -11,7 +12,7 @@ export default class FriendsPage extends AirshipBehaviour {
 		this.bin.Add(
 			mainMenu.ObserveScreenSize((size) => {
 				if (size === "sm") {
-					rect.offsetMax = new Vector2(rect.offsetMax.x, -80);
+					rect.offsetMax = new Vector2(rect.offsetMax.x, -20);
 					rect.offsetMin = new Vector2(rect.offsetMin.x, 0);
 				} else {
 					rect.offsetMax = new Vector2(rect.offsetMax.x, 0);
@@ -21,6 +22,10 @@ export default class FriendsPage extends AirshipBehaviour {
 			}),
 		);
 	}
+
+	// override GetTargetAnchoredPositionY(): number {
+	// 	return 5;
+	// }
 
 	override OnDisable(): void {
 		this.bin.Clean();

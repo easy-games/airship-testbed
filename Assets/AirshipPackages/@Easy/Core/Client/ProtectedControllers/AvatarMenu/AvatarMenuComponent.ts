@@ -47,6 +47,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	public contentScrollRect!: ScrollRect;
 	public avatarLoadingContainer: RectTransform;
 	public avatarLoadingContainerMobile: RectTransform;
+	public gearLoadingIndicator: GameObject;
 
 	public grid: GridLayoutGroup;
 
@@ -94,6 +95,9 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	private accessoryBuilder!: AccessoryBuilder;
 
+	private gearLoadingCounter = 0;
+	private finishedFirstOutfitLoad = false;
+
 	private Log(message: string) {
 		print("Avatar Editor: " + message + " (" + Time.time + ")");
 	}
@@ -126,7 +130,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 
 		// Hookup outfit buttons
-		if (!Game.IsMobile()) {
+		if (!this.IsPhoneMode()) {
 			if (!this.outfitBtns) {
 				error("Unable to find outfit btns on Avatar Editor Page");
 			}
@@ -137,23 +141,21 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 				const outfitButton = go.GetAirshipComponent<OutfitButton>();
 				if (outfitButton) outfitButton.outfitIdx = i;
 
-				if (!Game.IsMobile()) {
-					CanvasAPI.OnClickEvent(go, () => {
-						task.spawn(async () => {
-							if (this.dirty) {
-								const res = await Dependency<MainMenuSingleton>().ShowConfirmModal(
-									this.discardTitle,
-									this.discardMessage,
-								);
-								if (!res) {
-									return;
-								}
+				CanvasAPI.OnClickEvent(go, () => {
+					task.spawn(async () => {
+						if (this.dirty) {
+							const res = await Dependency<MainMenuSingleton>().ShowConfirmModal(
+								this.discardTitle,
+								this.discardMessage,
+							);
+							if (!res) {
+								return;
 							}
+						}
 
-							this.SelectOutfit(outfitI);
-						});
+						this.SelectOutfit(outfitI);
 					});
-				}
+				});
 			}
 		}
 
@@ -227,7 +229,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 		// Load the character
 		if (this.mainMenu.avatarView === undefined) {
-			if (Game.IsMobile()) {
+			if (this.IsPhoneMode()) {
 				this.mainMenu.avatarView = Object.Instantiate(
 					this.mainMenu.refs.GetValue<GameObject>("AvatarMobile", "Avatar3DSceneTemplate"),
 					CoreRefs.protectedTransform,
@@ -259,7 +261,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			);
 		}
 
-		if (!Game.IsMobile()) {
+		if (!this.IsPhoneMode()) {
 			this.bin.Add(
 				Dependency<MainMenuController>().onBeforePageChange.Connect((event) => {
 					if (this.dirty && event.oldPage === MainMenuPageType.Avatar) {
@@ -325,12 +327,16 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 	}
 
+	private IsPhoneMode() {
+		return Game.IsMobile() && Dependency<MainMenuSingleton>().sizeType === "sm";
+	}
+
 	private SelectMainNav(index: number) {
 		if (this.activeMainIndex === index || !this.mainNavBtns || this.inThumbnailMode) {
 			return;
 		}
 
-		if (Game.IsMobile()) {
+		if (this.IsPhoneMode()) {
 			if (index === 0) {
 				// Skin color
 				this.grid.cellSize = new Vector2(120, 120);
@@ -555,8 +561,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private SetDirty(val: boolean): void {
-		if (Game.IsMobile()) {
-			if (val) {
+		if (this.IsPhoneMode()) {
+			if (val && this.finishedFirstOutfitLoad) {
 				task.delay(0, () => {
 					this.Save();
 				});
@@ -590,13 +596,25 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.UpdateButtonGraphics();
 		this.SetDirty(true);
 
-		const gear = PlatformGear.DownloadYielding(clothingDto.class.classId, clothingDto.class.gear.airAssets[0]);
-		if (!gear) error("failed to download clothing.");
-		if (gear?.accessoryPrefabs === undefined) error("empty accessory prefabs.");
+		this.gearLoadingCounter++;
+		try {
+			const gear = PlatformGear.DownloadYielding(clothingDto.class.classId, clothingDto.class.gear.airAssets[0]);
+			if (!gear) error("failed to download clothing.");
+			if (gear?.accessoryPrefabs === undefined) error("empty accessory prefabs.");
 
-		for (let accessoryPrefab of gear.accessoryPrefabs) {
-			this.accessoryBuilder.Add(accessoryPrefab);
+			for (let accessoryPrefab of gear.accessoryPrefabs) {
+				this.accessoryBuilder.Add(accessoryPrefab);
+			}
+		} catch (err) {
+			Debug.LogError(err);
 		}
+		this.gearLoadingCounter--;
+	}
+
+	protected Update(dt: number): void {
+		this.gearLoadingIndicator.SetActive(
+			this.gearLoadingCounter > 0 && !this.avatarLoadingContainer.gameObject.activeInHierarchy,
+		);
 	}
 
 	private async SelectFaceItem(face: GearInstanceDto): Promise<void> {
@@ -611,11 +629,17 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 		if (face.class.gear.airAssets.size() === 0) return;
 
-		const clothing = PlatformGear.DownloadYielding(face.class.classId, face.class.gear.airAssets[0]);
-		if (clothing?.face) {
-			this.accessoryBuilder.SetFaceTexture(clothing.face.decalTexture);
-			this.accessoryBuilder.UpdateCombinedMesh();
+		this.gearLoadingCounter++;
+		try {
+			const clothing = PlatformGear.DownloadYielding(face.class.classId, face.class.gear.airAssets[0]);
+			if (clothing?.face) {
+				this.accessoryBuilder.SetFaceTexture(clothing.face.decalTexture);
+				this.accessoryBuilder.UpdateCombinedMesh();
+			}
+		} catch (err) {
+			Debug.LogError(err);
 		}
+		this.gearLoadingCounter--;
 	}
 
 	private SelectSkinColor(color: Color) {
@@ -757,6 +781,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.UpdateButtonGraphics();
 		this.SetDirty(false);
 		this.accessoryBuilder.UpdateCombinedMesh();
+		this.finishedFirstOutfitLoad = true;
 	}
 
 	private UpdateButtonGraphics() {

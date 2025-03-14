@@ -15,15 +15,16 @@ export default class Searchbar extends AirshipBehaviour {
 		this.bin.Add(
 			mainMenu.ObserveScreenSize((sizeType, size) => {
 				if (sizeType === "sm") {
-					this.urlText.gameObject.SetActive(false);
+					// this.urlText.gameObject.SetActive(false);
 					if (Game.IsMobile()) {
-						this.layoutElement.preferredWidth = Game.IsLandscape() ? 185 : 280;
+						this.layoutElement.preferredWidth = Game.IsLandscape() ? 240 : 240;
+						this.layoutElement.flexibleWidth = 0;
 					} else {
 						this.layoutElement.preferredWidth = 200;
 					}
 				} else {
 					this.urlText.gameObject.SetActive(true);
-					this.layoutElement.preferredWidth = 392;
+					this.layoutElement.preferredWidth = 280;
 				}
 			}),
 		);

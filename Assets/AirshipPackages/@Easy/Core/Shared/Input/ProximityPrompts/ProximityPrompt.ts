@@ -190,6 +190,20 @@ export default class ProximityPrompt extends AirshipBehaviour {
 		// for button
 		this.backgroundImg.raycastTarget = Game.IsMobile() || this.mouseRaycastTarget;
 
+		if (Game.IsMobile()) {
+			this.backgroundImg.transform.localScale = new Vector3(2, 2, 2);
+			this.canvas.worldCamera = Camera.main;
+			this.shownBin.AddEngineEventConnection(
+				CanvasAPI.OnPointerEvent(this.backgroundImg.gameObject, (pointerDirection, button) => {
+					if (pointerDirection === PointerDirection.DOWN) {
+						Airship.Input.SetDown(this.actionName);
+					} else {
+						Airship.Input.SetUp(this.actionName);
+					}
+				}),
+			);
+		}
+
 		this.shownBin.Add(
 			Airship.Input.OnUp(this.actionName).Connect((event) => {
 				if (event.uiProcessed) return;

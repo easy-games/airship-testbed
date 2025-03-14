@@ -15,6 +15,7 @@ import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
 import { ChatUtil } from "@Easy/Core/Shared/Util/ChatUtil";
+import { ProtectedUtil } from "@Easy/Core/Shared/Util/ProtectedUtil";
 import { SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { SetInterval, SetTimeout } from "@Easy/Core/Shared/Util/Timer";
 import { MainMenuBlockSingleton } from "../../../../Client/ProtectedControllers//Settings/MainMenuBlockSingleton";
@@ -114,7 +115,7 @@ export class ClientChatSingleton {
 					// wrapperRect.offsetMax = new Vector2(0, 0);
 					// wrapperRect.offsetMin = new Vector2(0, 0);
 				}
-				wrapperRect.anchoredPosition = new Vector2(Game.GetNotchHeight() + 190, -14);
+				wrapperRect.anchoredPosition = new Vector2(ProtectedUtil.GetNotchHeight() + 190, -14);
 			} else {
 				const wrapperRect = this.wrapper.GetComponent<RectTransform>()!;
 				const wrapperImg = wrapperRect.GetComponent<Image>()!;

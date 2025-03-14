@@ -17,10 +17,16 @@ export default class Navbar extends AirshipBehaviour {
 	public left!: RectTransform;
 	public quitGameBtn!: RectTransform;
 	public searchWrapper: RectTransform;
+	public logoBtn: RectTransform;
 
 	private bin = new Bin();
 
 	override OnEnable(): void {
+		if (Dependency<MainMenuSingleton>().IsInGameNonTabletMobile()) {
+			this.gameObject.SetActive(false);
+			return;
+		}
+
 		const rect = this.transform as RectTransform;
 		const mainMenu = Dependency<MainMenuSingleton>();
 		this.bin.Add(
@@ -54,6 +60,18 @@ export default class Navbar extends AirshipBehaviour {
 				}
 			}),
 		);
+
+		if (Game.IsMobile() && !Game.IsInGame() && Game.IsPortrait()) {
+			this.left.offsetMax = new Vector2(-15, this.left.offsetMax.y);
+			const layout = this.searchWrapper.GetComponent<LayoutElement>()!;
+			layout.minWidth = 0;
+			layout.preferredWidth = 0;
+			layout.flexibleWidth = 1;
+		}
+
+		if (Game.IsMobile()) {
+			this.logoBtn.gameObject.SetActive(false);
+		}
 
 		// this.quitGameBtn.gameObject.SetActive(Screen.fullScreen);
 		this.quitGameBtn.gameObject.SetActive(false);

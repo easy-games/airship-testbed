@@ -348,10 +348,6 @@ export class ProtectedSettingsSingleton {
 		return this.data.ambientVolume;
 	}
 
-	public GetMusicVolume(): number {
-		return this.data.musicVolume;
-	}
-
 	public SetGlobalVolume(volume: number) {
 		this.data.globalVolume = volume;
 		Bridge.SetVolume(volume);

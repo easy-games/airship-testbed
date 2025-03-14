@@ -11,15 +11,20 @@ import { SortId } from "../../../Client/Components/HomePage/Sort/SortId";
 import { MainMenuBlockSingleton } from "../../../Client/ProtectedControllers//Settings/MainMenuBlockSingleton";
 import { Asset } from "../../Asset";
 import DateParser from "../../DateParser";
+import { Game } from "../../Game";
 import inspect from "../../Util/Inspect";
+import { ProtectedUtil } from "../../Util/ProtectedUtil";
+import { MainMenuSingleton } from "../Singletons/MainMenuSingleton";
 import DiscordHero from "./DiscordHero";
 import MainMenuPageComponent from "./MainMenuPageComponent";
 
 export default class HomePageComponent extends MainMenuPageComponent {
 	public mainContent!: Transform;
+	public mainSortedContentLayoutGroup: VerticalLayoutGroup;
 	public spacerPrefab!: GameObject;
 	public sortPrefab!: GameObject;
 	public scrollRect!: ScrollRect;
+	public verticalLayoutGroup: VerticalLayoutGroup;
 	private bin = new Bin();
 	private sorts = new Map<SortId, SortComponent>();
 	private addedDiscordHero = false;
@@ -27,6 +32,19 @@ export default class HomePageComponent extends MainMenuPageComponent {
 
 	protected Awake(): void {
 		this.animateInDuration = 0;
+	}
+
+	protected Start(): void {
+		const mainMenu = Dependency<MainMenuSingleton>();
+		mainMenu.ObserveScreenSize((st) => {
+			if (Game.IsMobile() && st === "sm") {
+				this.mainSortedContentLayoutGroup.padding.top = 20;
+				this.verticalLayoutGroup.padding.left = 4;
+			}
+		});
+		if (Game.IsMobile()) {
+			this.scrollRect.movementType = MovementType.Elastic;
+		}
 	}
 
 	override OpenPage(params?: unknown): void {
@@ -99,7 +117,9 @@ export default class HomePageComponent extends MainMenuPageComponent {
 	}
 
 	public FetchGames(): void {
-		const res = InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/games");
+		const res = InternalHttpManager.GetAsync(
+			AirshipUrl.ContentService + "/games?platform=" + ProtectedUtil.GetLocalPlatformString(),
+		);
 		if (!res.success) {
 			// warn("Failed to fetch games. Retrying in 1s..");
 			this.bin.Add(
@@ -144,7 +164,7 @@ export default class HomePageComponent extends MainMenuPageComponent {
 			Dependency<SearchSingleton>().AddGames([...data.recentlyUpdated, ...data.popular]);
 		});
 
-		if (!this.addedDiscordHero) {
+		if (!this.addedDiscordHero && !Game.IsMobile()) {
 			this.addedDiscordHero = true;
 			const go = Object.Instantiate(
 				Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/MainMenu/HomePage/DiscordHero.prefab"),

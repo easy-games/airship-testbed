@@ -30643,6 +30643,7 @@ interface GameConfig extends ScriptableObject {
     defaultSolverVelocityIterations: number;
     queriesHitBackfaces: boolean;
     queriesHitTriggers: boolean;
+    supportsMobile: boolean;
 
 
 
@@ -36397,6 +36398,7 @@ interface BridgeConstructor {
     HasMicrophonePermission(): boolean;
     IsFullScreen(): boolean;
     IsMicRecording(): boolean;
+    IsSceneLoading(): boolean;
     LoadGlobalSceneByName(sceneName: string): void;
     LoadScene(sceneName: string, restartLuau: boolean, loadSceneMode: LoadSceneMode): void;
     LoadSceneAsyncFromAssetBundle(sceneName: string, loadSceneMode: LoadSceneMode): void;
@@ -39251,7 +39253,6 @@ interface AirshipPlatformUtil {
     
 interface AirshipPlatformUtilConstructor {
     livePlatforms: Readonly<number[]>;
-    betaPlatforms: Readonly<number[]>;
 
 
     new(): AirshipPlatformUtil;
@@ -41585,6 +41586,244 @@ interface DecalProjectorConstructor {
 
 }
 declare const DecalProjector: DecalProjectorConstructor;
+    
+interface Time {
+
+
+
+
+
+}
+    
+interface RationalTime {
+    /**
+     * Returns the number of ticks.
+     */
+    readonly Count: number;
+    /**
+     * Returns the number of ticks per second.
+     */
+    readonly Ticks: TicksPerSecond;
+
+
+
+
+
+}
+    
+interface TicksPerSecond {
+    readonly Numerator: number;
+    readonly Denominator: number;
+    readonly Valid: boolean;
+
+
+
+    Equals(rhs: TicksPerSecond): boolean;
+    Equals(rhs: unknown): boolean;
+    GetHashCode(): number;
+
+
+}
+    
+interface TicksPerSecondConstructor {
+    readonly DefaultTicksPerSecond: TicksPerSecond;
+    readonly TicksPerSecond24: TicksPerSecond;
+    readonly TicksPerSecond25: TicksPerSecond;
+    readonly TicksPerSecond30: TicksPerSecond;
+    readonly TicksPerSecond50: TicksPerSecond;
+    readonly TicksPerSecond60: TicksPerSecond;
+    readonly TicksPerSecond120: TicksPerSecond;
+    readonly TicksPerSecond2397: TicksPerSecond;
+    readonly TicksPerSecond2425: TicksPerSecond;
+    readonly TicksPerSecond2997: TicksPerSecond;
+    readonly TicksPerSecond5994: TicksPerSecond;
+    readonly TicksPerSecond11988: TicksPerSecond;
+
+
+    new(num: number, den: number): TicksPerSecond;
+
+
+
+}
+declare const TicksPerSecond: TicksPerSecondConstructor;
+    
+interface RationalTimeConstructor {
+
+
+    new(count: number, ticks: TicksPerSecond): RationalTime;
+
+
+    FromDouble(t: number, ticksPerSecond: TicksPerSecond): RationalTime;
+
+}
+declare const RationalTime: RationalTimeConstructor;
+    
+interface TimeConstructor {
+    /**
+     * The time at the beginning of the current frame in seconds since the start of the application (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Time-time.html | Time.time}
+     */
+    readonly time: number;
+    /**
+     * The double precision time at the beginning of this frame (Read Only). This is the time in seconds since the start of the game.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Time-timeAsDouble.html | Time.timeAsDouble}
+     */
+    readonly timeAsDouble: number;
+    /**
+     * The time this frame has started (Read Only). This is the time in seconds since the start of the game represented as a RationalTime.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Time-timeAsRational.html | Time.timeAsRational}
+     */
+    readonly timeAsRational: RationalTime;
+    /**
+     * The time in seconds since the last non-additive scene finished loading (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Time-timeSinceLevelLoad.html | Time.timeSinceLevelLoad}
+     */
+    readonly timeSinceLevelLoad: number;
+    /**
+     * The double precision time in seconds since the last non-additive scene finished loading (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Time-timeSinceLevelLoadAsDouble.html | Time.timeSinceLevelLoadAsDouble}
+     */
+    readonly timeSinceLevelLoadAsDouble: number;
+    /**
+     * The interval in seconds from the last frame to the current one (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Time-deltaTime.html | Time.deltaTime}
+     */
+    readonly deltaTime: number;
+    /**
+     * The time at which the current MonoBehaviour.FixedUpdate started in seconds since the start of the game (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Time-fixedTime.html | Time.fixedTime}
+     */
+    readonly fixedTime: number;
+    /**
+     * The double precision time since the last MonoBehaviour.FixedUpdate started (Read Only). This is the time in seconds since the start of the game.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Time-fixedTimeAsDouble.html | Time.fixedTimeAsDouble}
+     */
+    readonly fixedTimeAsDouble: number;
+    /**
+     * The timeScale-independent time for this frame (Read Only). This is the time in seconds since the start of the game.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Time-unscaledTime.html | Time.unscaledTime}
+     */
+    readonly unscaledTime: number;
+    /**
+     * The double precision timeScale-independent time for this frame (Read Only). This is the time in seconds since the start of the game.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Time-unscaledTimeAsDouble.html | Time.unscaledTimeAsDouble}
+     */
+    readonly unscaledTimeAsDouble: number;
+    /**
+     * The timeScale-independent time at the beginning of the last MonoBehaviour.FixedUpdate phase (Read Only). This is the time in seconds since the start of the game.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Time-fixedUnscaledTime.html | Time.fixedUnscaledTime}
+     */
+    readonly fixedUnscaledTime: number;
+    /**
+     * The double precision timeScale-independent time at the beginning of the last MonoBehaviour.FixedUpdate (Read Only). This is the time in seconds since the start of the game.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Time-fixedUnscaledTimeAsDouble.html | Time.fixedUnscaledTimeAsDouble}
+     */
+    readonly fixedUnscaledTimeAsDouble: number;
+    /**
+     * The timeScale-independent interval in seconds from the last frame to the current one (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Time-unscaledDeltaTime.html | Time.unscaledDeltaTime}
+     */
+    readonly unscaledDeltaTime: number;
+    /**
+     * The interval in seconds of timeScale-independent (&quot;real&quot;) time at which physics and other fixed frame rate updates (like MonoBehaviour's MonoBehaviour.FixedUpdate) are performed.(Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Time-fixedUnscaledDeltaTime.html | Time.fixedUnscaledDeltaTime}
+     */
+    readonly fixedUnscaledDeltaTime: number;
+    /**
+     * The interval in seconds of in-game time at which physics and other fixed frame rate updates (like MonoBehaviour's MonoBehaviour.FixedUpdate) are performed.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Time-fixedDeltaTime.html | Time.fixedDeltaTime}
+     */
+    fixedDeltaTime: number;
+    /**
+     * The maximum value of Time.deltaTime in any given frame. This is a time in seconds that limits the increase of Time.time between two frames.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Time-maximumDeltaTime.html | Time.maximumDeltaTime}
+     */
+    maximumDeltaTime: number;
+    /**
+     * A smoothed out Time.deltaTime (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Time-smoothDeltaTime.html | Time.smoothDeltaTime}
+     */
+    readonly smoothDeltaTime: number;
+    /**
+     * The maximum time a frame can spend on particle updates. If the frame takes longer than this, then updates are split into multiple smaller updates.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Time-maximumParticleDeltaTime.html | Time.maximumParticleDeltaTime}
+     */
+    maximumParticleDeltaTime: number;
+    /**
+     * The scale at which time passes.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Time-timeScale.html | Time.timeScale}
+     */
+    timeScale: number;
+    /**
+     * The total number of frames since the start of the game (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Time-frameCount.html | Time.frameCount}
+     */
+    readonly frameCount: number;
+    readonly renderedFrameCount: number;
+    /**
+     * The real time in seconds since the game started (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Time-realtimeSinceStartup.html | Time.realtimeSinceStartup}
+     */
+    readonly realtimeSinceStartup: number;
+    /**
+     * The real time in seconds since the game started (Read Only). Double precision version of Time.realtimeSinceStartup.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Time-realtimeSinceStartupAsDouble.html | Time.realtimeSinceStartupAsDouble}
+     */
+    readonly realtimeSinceStartupAsDouble: number;
+    /**
+     * Slows your application&#8217;s playback time to allow Unity to save screenshots in between frames.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Time-captureDeltaTime.html | Time.captureDeltaTime}
+     */
+    captureDeltaTime: number;
+    /**
+     * Slows your application&#8217;s playback time to allow Unity to save screenshots in between frames.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Time-captureDeltaTimeRational.html | Time.captureDeltaTimeRational}
+     */
+    captureDeltaTimeRational: RationalTime;
+    /**
+     * The reciprocal of Time.captureDeltaTime.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Time-captureFramerate.html | Time.captureFramerate}
+     */
+    captureFramerate: number;
+    /**
+     * Returns true if called inside a fixed time step callback (like MonoBehaviour's MonoBehaviour.FixedUpdate), otherwise returns false (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Time-inFixedTimeStep.html | Time.inFixedTimeStep}
+     */
+    readonly inFixedTimeStep: boolean;
+
+
+    new(): Time;
+
+
+
+}
+declare const Time: TimeConstructor;
     
 interface BoxCollider2D extends Collider2D {
     /**
@@ -45124,6 +45363,29 @@ interface ShaderWarmupConstructor {
 }
 declare const ShaderWarmup: ShaderWarmupConstructor;
     
+interface OcclusionCam extends MonoBehaviour {
+    targetCamera: Camera;
+    adjustToHead: boolean;
+    adjustToHeadHeightThreshold: number;
+
+
+
+    BumpForOcclusion(attachToPos: Vector3, mask: number): void;
+    Init(camera: Camera): void;
+
+
+}
+    
+interface OcclusionCamConstructor {
+
+
+    new(): OcclusionCam;
+
+
+
+}
+declare const OcclusionCam: OcclusionCamConstructor;
+    
 interface NetworkServer {
 
 
@@ -45757,6 +46019,7 @@ interface NativeTweenConstructor {
     MaterialColor(self: GameObject, to: Color, duration: number): Tween<Color>;
     MaterialsColorProperty(self: Component, propertyName: string, from: Color, to: Color, duration: number): Tween<number>;
     MaterialsFloatProperty(self: Component, propertyName: string, from: number, to: number, duration: number): Tween<number>;
+    MaterialsVectorProperty(self: Component, propertyName: string, from: Vector4, to: Vector4, duration: number): Tween<number>;
     OffsetMax(self: Component, to: Vector2, duration: number): Tween<Vector2>;
     OffsetMax(self: GameObject, to: Vector2, duration: number): Tween<Vector2>;
     OffsetMin(self: Component, to: Vector2, duration: number): Tween<Vector2>;
