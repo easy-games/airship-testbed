@@ -650,16 +650,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptFile: {fileID: -8502596097384394428, guid: 231b41c7c69568446b98353c21d6785d, type: 3}
-  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/Character.lua
-  m_error: 0
-  m_yielded: 0
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
+  script: {fileID: -8502596097384394428, guid: 231b41c7c69568446b98353c21d6785d, type: 3}
+  scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/Character.lua
+  forceContext: 0
+  metadata:
     name: Character
     singleton: 0
     decorators: []
@@ -836,7 +830,6 @@ MonoBehaviour:
       modified: 1
     displayIcon: {fileID: 0}
     displayName: 
-  contextOverwritten: 0
 --- !u!114 &606316830658707215
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -849,16 +842,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptFile: {fileID: 3379845904423814631, guid: b265ca149231a634a8b651b688c7a486, type: 3}
-  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/CharacterRendering.lua
-  m_error: 0
-  m_yielded: 0
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
+  script: {fileID: 3379845904423814631, guid: b265ca149231a634a8b651b688c7a486, type: 3}
+  scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/CharacterRendering.lua
+  forceContext: 0
+  metadata:
     name: CharacterRendering
     singleton: 0
     decorators: []
@@ -898,28 +885,6 @@ MonoBehaviour:
       nullable: 0
       serializedValue: 0.6
       serializedObject: {fileID: 0}
-      modified: 1
-    - name: sharedTransparencyMat
-      type: object
-      objectType: Material
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      jsDocs:
-        text: []
-        tags: []
-      decorators:
-      - name: Header
-        parameters:
-        - type: string
-          serializedValue: '"References"'
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 2100000, guid: ca49173e5777762468a1bbc685bfe012, type: 2}
       modified: 1
     - name: useTransparentOnCameraClose
       type: boolean
@@ -968,7 +933,6 @@ MonoBehaviour:
       modified: 0
     displayIcon: {fileID: 0}
     displayName: 
-  contextOverwritten: 0
 --- !u!114 &7088081142443290682
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -981,16 +945,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptFile: {fileID: 6641073800188671112, guid: 8a394f76659097e498fcb014078bae54, type: 3}
-  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/Inventory/Inventory.lua
-  m_error: 0
-  m_yielded: 0
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
+  script: {fileID: 6641073800188671112, guid: 8a394f76659097e498fcb014078bae54, type: 3}
+  scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Inventory/Inventory.lua
+  forceContext: 0
+  metadata:
     name: Inventory
     singleton: 0
     decorators: []
@@ -1097,7 +1055,6 @@ MonoBehaviour:
       modified: 0
     displayIcon: {fileID: 0}
     displayName: 
-  contextOverwritten: 0
 --- !u!114 &7124091312930647041
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1110,16 +1067,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptFile: {fileID: 5399347344820012199, guid: 1d9ff343e68ebb247bb7a1dd2270fd63, type: 3}
-  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/Animation/CharacterAnimation.ts
-  m_error: 0
-  m_yielded: 0
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
+  script: {fileID: 5399347344820012199, guid: 1d9ff343e68ebb247bb7a1dd2270fd63, type: 3}
+  scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/Animation/CharacterAnimation.ts
+  forceContext: 0
+  metadata:
     name: CharacterAnimation
     singleton: 0
     decorators: []
@@ -1184,7 +1135,6 @@ MonoBehaviour:
       modified: 0
     displayIcon: {fileID: 0}
     displayName: 
-  contextOverwritten: 0
 --- !u!54 &5519949438957097557
 Rigidbody:
   m_ObjectHideFlags: 0
