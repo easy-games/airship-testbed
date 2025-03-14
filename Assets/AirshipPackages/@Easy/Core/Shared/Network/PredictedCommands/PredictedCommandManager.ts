@@ -352,8 +352,10 @@ export default class PredictedCommandManager extends AirshipSingleton {
 				lastState &&
 				lastState.commandNumber === commandNumber &&
 				tempInstance.CompareSnapshots(lastState?.snapshot.data, stateData.data)
-			)
+			) {
+				print("Final states match, no resim required.");
 				return;
+			}
 
 			// If the states don't match or our local command hasn't stopped running, we have to resimulate
 			const wasRequested = Game.localPlayer.character!.movement.RequestResimulation(commandNumber);
@@ -597,7 +599,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 				// tick since this is the last tick that should be processed.
 				const finalCommandData = this.confirmedFinalState.get(commandIdentifier.stringify());
 				if (finalCommandData !== undefined && input.commandNumber === finalCommandData.commandNumber) {
-					activeCommand.instance.ResetToSnapshot(finalCommandData.snapshot);
+					activeCommand.instance.ResetToSnapshot(finalCommandData.snapshot.data);
 					shouldTickAgain = false;
 					return;
 				}
@@ -609,7 +611,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 				}
 
 				// Process a normal forward tick
-				shouldTickAgain = activeCommand.instance.OnTick(customInput, replay) !== false;
+				shouldTickAgain = activeCommand.instance.OnTick(customInput?.data, replay) !== false;
 				lastProcessedInputCommandNumber = input.commandNumber; // TODO: can input be null?
 				lastProcessedInputTime = input.time;
 
@@ -651,7 +653,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 					// Skip interpolating since we have nothing to interpolate to.
 					return;
 				}
-				activeCommand.instance.OnObserverUpdate?.(aData, bData, delta);
+				activeCommand.instance.OnObserverUpdate?.(aData.data, bData.data, delta);
 			}),
 		);
 
@@ -675,7 +677,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 					activeCommand.created = true;
 					activeCommand.instance.Create?.();
 				}
-				activeCommand.instance.OnObserverReachedState?.(customData);
+				activeCommand.instance.OnObserverReachedState?.(commandData!.data);
 			}),
 		);
 

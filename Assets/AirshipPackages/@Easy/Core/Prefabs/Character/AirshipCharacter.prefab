@@ -1231,7 +1231,6 @@ MonoBehaviour:
   maxServerCommandCatchup: 1
   maxServerCommandPrediction: 1
   serverAuth: 0
-  clientPredictionResimRequestor: 0
 --- !u!114 &7877576865563315073
 MonoBehaviour:
   m_ObjectHideFlags: 0
