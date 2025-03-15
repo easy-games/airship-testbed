@@ -371,7 +371,7 @@ MonoBehaviour:
           serializedValue: '"Button Holders"'
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 8806872066784176757}
+      serializedObject: {fileID: 0}
       modified: 1
     - name: mainNavButtonHolder
       type: object
