@@ -161,7 +161,7 @@ export default class SearchFocused extends AirshipBehaviour {
 			text +
 			"&platform=" +
 			ProtectedUtil.GetLocalPlatformString();
-		print("search url: " + url);
+		// print("search url: " + url);
 		const res = InternalHttpManager.GetAsync(url);
 		if (res.error) {
 			Debug.LogError("search error: " + res.error);
