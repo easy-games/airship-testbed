@@ -87,6 +87,11 @@ const NetworkCommandEnd = new NetworkSignal<
 	[commandIdentifier: string, commandNumber: number, time: number, lastCapturedState: CustomSnapshotData]
 >("PredictedCommands/CommandEnded", NetworkChannel.Reliable);
 
+const NetworkCommandInvaild = new NetworkSignal<[commandIdentifier: string, commandNumber: number, time: number]>(
+	"PredictedCommands/CommandInvalid",
+	NetworkChannel.Reliable,
+);
+
 export default class PredictedCommandManager extends AirshipSingleton {
 	/**
 	 * Fires when a new command is starting. In server authoritative mode, this signal fires on both
@@ -109,7 +114,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 	 * state the command ended with. For example, perhaps you run an effect when the command ends and the efffect depends on the state
 	 * of the command when it ended. Keep in mind that this event is _not_ predicted, so there will be ping delay on this signal firing.
 	 */
-	public readonly onCommandEnded = new Signal<[CommandInstanceIdentifier, Readonly<unknown>]>();
+	public readonly onCommandEnded = new Signal<[CommandInstanceIdentifier, Readonly<unknown> | undefined]>();
 
 	private commandHandlerMap: Record<string, CommandConfiguration> = {};
 	/** The active commands for the current tick. If read during a replay, it will contain the active command at that tick. */
@@ -162,9 +167,11 @@ export default class PredictedCommandManager extends AirshipSingleton {
 				}),
 			);
 
-			// Handles creating new commands to process inputs the first time the input for a command is seen on the server
+			// Handles creating new commands to process inputs the first time the input for a command is seen. Clients generally
+			// have already created the command in PreCreateCommand, but still need to create new commands during replays, so they
+			// also run this event.
 			character.bin.Add(
-				character.PreProcessCommand.Connect((customInputData, input) => {
+				character.PreProcessCommand.Connect((customInputData, input, replay) => {
 					(customInputData as Map<string, Readonly<CustomInputData>>).forEach((value, key) => {
 						// If it's not custom data controlled by us, ignore it
 						const commandIdentifier = this.ParseCustomDataKey(character.id, key);
@@ -184,6 +191,39 @@ export default class PredictedCommandManager extends AirshipSingleton {
 							// Highest instance is updated when the command _completes_ so if we see it again, that
 							// means we should ignore the command since the server has considered it complete.
 							if (commandIdentifier.instanceId <= highestInstance) return;
+						}
+
+						// Check if the command should run if we are the server. The client already validates command creation in PreCreateCommand, so
+						// we don't need to do it again here.
+						if (Game.IsServer()) {
+							const result = this.onValidateCommand.Fire(
+								new ValidateCommand(character, commandIdentifier.commandId),
+							);
+							if (result.IsCancelled()) {
+								// Ignore input for this command in the future since it failed validation.
+								this.SetHighestCompletedInstance(commandIdentifier);
+								// We notify the client that the command has been invalidated
+								if (character.player) {
+									NetworkCommandInvaild.server.FireClient(
+										character.player,
+										commandIdentifier.stringify(),
+										input.commandNumber,
+										input.time,
+									);
+								}
+								return;
+							}
+						}
+
+						// Clients performing a replay need to ignore creating commands that have been cancelled authoritatively.
+						if (replay && Game.IsClient()) {
+							const confirmedState = this.confirmedFinalState.get(commandIdentifier.stringify());
+							if (confirmedState) {
+								// Our authoritative state saying this command should already have ended, so don't create it.
+								if (confirmedState.commandNumber < input.commandNumber) {
+									return;
+								}
+							}
 						}
 
 						// Run the command if it's not already running
@@ -332,7 +372,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 		});
 
 		// Handles ending commands on the client when the server authoritatively completes the command.
-		// TODO: what happens when the client ends a request too early? Should that be possible? Client has to generate input, but we allow commands to run without input... maybe we shouldnt?
+		// TODO: what happens when the client ends a command too early? Do we keep the server command running or not (that's config right now, but does it work?)
 		NetworkCommandEnd.client.OnServerEvent((commandIdentifierStr, commandNumber, time, stateData) => {
 			// Get the predicted final state on the client
 			const lastState = this.unconfirmedFinalState.get(commandIdentifierStr);
@@ -366,6 +406,19 @@ export default class PredictedCommandManager extends AirshipSingleton {
 					time,
 				});
 			}
+		});
+
+		// Handles commands that did not validate on the server.  These will be cancelled locally and resimulated every time.
+		NetworkCommandInvaild.client.OnServerEvent((commandIdentifierStr, commandNumber, time) => {
+			this.unconfirmedFinalState.delete(commandIdentifierStr);
+			const commandIdenfitier = CommandInstanceIdentifier.fromString(commandIdentifierStr);
+			this.onCommandEnded.Fire(commandIdenfitier, undefined);
+			this.confirmedFinalState.set(commandIdentifierStr, {
+				commandNumber: 0,
+				time: time, // This time is used for when we should remove the confirmedState, so it needs to be accurate
+				snapshot: { data: undefined as unknown as Readonly<unknown> },
+			});
+			Game.localPlayer.character!.movement.RequestResimulation(commandNumber);
 		});
 
 		if (Game.IsClient()) {
@@ -587,6 +640,14 @@ export default class PredictedCommandManager extends AirshipSingleton {
 					return;
 				}
 
+				// If the command is ticking after it's confirmed last processed command, end it. This captures commands invalidated
+				// by the server (commandNumber is 0), and commands have been confirmed to have ended.
+				const finalCommandData = this.confirmedFinalState.get(commandIdentifier.stringify());
+				if (finalCommandData !== undefined && input.commandNumber > finalCommandData.commandNumber) {
+					CommitEndedCommand();
+					return;
+				}
+
 				// Make sure the command exists and is created for processing.
 				const customInput = (customData as Map<string, CustomInputData>).get(activeCommand.customDataKey);
 				if (customInput && !activeCommand.created) {
@@ -597,7 +658,6 @@ export default class PredictedCommandManager extends AirshipSingleton {
 				// If the command has been authoritatively ended on this command number, then we should reset it's state to the
 				// authoritative state for the command instead of processing a tick. We also mark it to stop processing on the next
 				// tick since this is the last tick that should be processed.
-				const finalCommandData = this.confirmedFinalState.get(commandIdentifier.stringify());
 				if (finalCommandData !== undefined && input.commandNumber === finalCommandData.commandNumber) {
 					activeCommand.instance.ResetToSnapshot(finalCommandData.snapshot.data);
 					shouldTickAgain = false;

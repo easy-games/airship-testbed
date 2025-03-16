@@ -80,16 +80,16 @@ export default class Character extends AirshipBehaviour {
 	// GetCommand is called...
 	/**
 	 * Fires before a new command is created on the client. Use this signal to create anything that will need
-	 * to connect to OnAddCustomSnapshotData for the tick about to be processed. Only fires for the local
+	 * to connect to OnAddCustomInputData for the tick about to be processed. Only fires for the local
 	 * character.
 	 */
 	public PreCreateCommand = new Signal<[]>();
 	/**
-	 * Fires before command processing only for new commands. Does not fire on replays.
+	 * Fires before command processing only for new commands.
 	 *
 	 * This signal does not fire for observers.
 	 */
-	public PreProcessCommand = new Signal<[Map<string, unknown>, CharacterInputData]>();
+	public PreProcessCommand = new Signal<[Map<string, unknown>, CharacterInputData, boolean]>();
 	/**
 	 * Allows you to process custom move data attached to character input before the move function is executed.
 	 *
@@ -242,7 +242,7 @@ export default class Character extends AirshipBehaviour {
 
 		this.bin.AddEngineEventConnection(
 			movementWithSignals.OnProcessCommand((input, state, isReplay) => {
-				if (!isReplay) this.PreProcessCommand.Fire(this.ParseCustomInputData(input), input);
+				this.PreProcessCommand.Fire(this.ParseCustomInputData(input), input, isReplay);
 				this.ProcessCommand(input, state, isReplay);
 			}),
 		);
