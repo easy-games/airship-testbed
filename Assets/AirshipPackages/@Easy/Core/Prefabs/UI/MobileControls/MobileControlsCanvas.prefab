@@ -88,23 +88,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptFile: {fileID: -2688115457458467679, guid: 1376d254a60405a46b490bce8fd88542, type: 3}
-  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Overlay/MobileCameraMovement.lua
-  m_error: 0
-  m_yielded: 0
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
+  script: {fileID: -2688115457458467679, guid: 1376d254a60405a46b490bce8fd88542, type: 3}
+  scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Overlay/MobileCameraMovement.lua
+  forceContext: 0
+  metadata:
     name: MobileCameraMovement
     singleton: 0
     decorators: []
     properties: []
     displayIcon: {fileID: 0}
     displayName: 
-  contextOverwritten: 0
 --- !u!1 &5884413480130355966
 GameObject:
   m_ObjectHideFlags: 0
@@ -154,6 +147,7 @@ GameObject:
   - component: {fileID: 5231142010838910841}
   - component: {fileID: 8010347601195754013}
   - component: {fileID: 294958722685006519}
+  - component: {fileID: 7977411251819943117}
   m_Layer: 8
   m_Name: MobileControlsCanvas
   m_TagString: Untagged
@@ -203,7 +197,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!114 &5231142010838910841
 MonoBehaviour:
@@ -258,16 +252,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptFile: {fileID: 8055013979776776172, guid: bb73ad1bd27be4f90b53f430c880e071, type: 3}
-  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/Input/Mobile/MobileControlsCanvas.lua
-  m_error: 0
-  m_yielded: 0
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
+  script: {fileID: 8055013979776776172, guid: bb73ad1bd27be4f90b53f430c880e071, type: 3}
+  scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Input/Mobile/MobileControlsCanvas.lua
+  forceContext: 0
+  metadata:
     name: MobileControlsCanvas
     singleton: 0
     decorators: []
@@ -282,6 +270,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: AirshipPackages/@Easy/Core/Shared/Input/Mobile/TouchJoystick.ts
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -289,7 +280,23 @@ MonoBehaviour:
       modified: 1
     displayIcon: {fileID: 0}
     displayName: 
-  contextOverwritten: 0
+--- !u!114 &7977411251819943117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7090916502956745191}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1001 &7596473989274979551
 PrefabInstance:
   m_ObjectHideFlags: 0
