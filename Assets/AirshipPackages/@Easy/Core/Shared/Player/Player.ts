@@ -212,7 +212,7 @@ export class Player {
 		}
 
 		//Server initalizes character.
-		characterComponent.Init(this, Airship.Characters.MakeNewId(), this.selectedOutfit);
+		characterComponent.Init(this, Airship.Characters.MakeNewId(), this.selectedOutfit, 100, 100);
 		this.SetCharacter(characterComponent);
 		NetworkServer.Spawn(go, this.networkIdentity.connectionToClient!);
 		Airship.Characters.RegisterCharacter(characterComponent);
