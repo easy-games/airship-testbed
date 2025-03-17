@@ -6,7 +6,6 @@ import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
-import { MobileGameList } from "@Easy/Core/Shared/Util/MobileGameList";
 import { ProtectedUtil } from "@Easy/Core/Shared/Util/ProtectedUtil";
 import { OnFixedUpdate, OnLateUpdate } from "@Easy/Core/Shared/Util/Timer";
 import { MainMenuSingleton } from "../../Singletons/MainMenuSingleton";
@@ -152,16 +151,23 @@ export default class SearchFocused extends AirshipBehaviour {
 
 	public Query(): void {
 		let text = this.inputField.text;
+		if (text === "") return;
 
 		this.queryId++;
 		let thisQuery = this.queryId;
-		const res = InternalHttpManager.GetAsync(
+		const url =
 			AirshipUrl.ContentService +
-				"/games/autocomplete?name=" +
-				text +
-				"&platform=" +
-				ProtectedUtil.GetLocalPlatformString(),
-		);
+			"/games/autocomplete?name=" +
+			text +
+			"&platform=" +
+			ProtectedUtil.GetLocalPlatformString();
+		// print("search url: " + url);
+		const res = InternalHttpManager.GetAsync(url);
+		if (res.error) {
+			Debug.LogError("search error: " + res.error);
+		} else {
+			print("search result: " + res.data);
+		}
 		if (thisQuery !== this.queryId) return;
 		let games: GameDto[];
 		if (res.success) {
@@ -172,10 +178,6 @@ export default class SearchFocused extends AirshipBehaviour {
 		} else {
 			Debug.LogError("Search error: " + res.error);
 			games = [...Dependency<SearchSingleton>().games];
-		}
-
-		if (!Game.IsEditor() && Game.IsMobile()) {
-			games = games.filter((g) => MobileGameList.includes(g.id));
 		}
 
 		this.activeResult = undefined;

@@ -90,23 +90,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptFile: {fileID: -2739856260552626177, guid: cf627add2252c4aa68e919a5eb63da96, type: 3}
-  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/MobileNavbar.lua
-  m_error: 0
-  m_yielded: 0
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
+  script: {fileID: -2739856260552626177, guid: cf627add2252c4aa68e919a5eb63da96, type: 3}
+  scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/MobileNavbar.lua
+  forceContext: 0
+  metadata:
     name: MobileNavbar
     singleton: 0
     decorators: []
     properties: []
     displayIcon: {fileID: 0}
     displayName: 
-  contextOverwritten: 0
 --- !u!1 &4525214502547631868
 GameObject:
   m_ObjectHideFlags: 0
@@ -381,12 +374,32 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6768730929660228639, guid: 4245e93ed87754d2196fa82fcc505590, type: 3}
+      propertyPath: metadata.properties.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6768730929660228639, guid: 4245e93ed87754d2196fa82fcc505590, type: 3}
+      propertyPath: metadata.properties.Array.data[5].name
+      value: unselectedSprite
+      objectReference: {fileID: 0}
+    - target: {fileID: 6768730929660228639, guid: 4245e93ed87754d2196fa82fcc505590, type: 3}
+      propertyPath: metadata.properties.Array.data[5].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 6768730929660228639, guid: 4245e93ed87754d2196fa82fcc505590, type: 3}
       propertyPath: m_metadata.properties.Array.data[4].name
       value: page
       objectReference: {fileID: 0}
     - target: {fileID: 6768730929660228639, guid: 4245e93ed87754d2196fa82fcc505590, type: 3}
       propertyPath: m_metadata.properties.Array.data[4].type
       value: StringEnum
+      objectReference: {fileID: 0}
+    - target: {fileID: 6768730929660228639, guid: 4245e93ed87754d2196fa82fcc505590, type: 3}
+      propertyPath: metadata.properties.Array.data[4].modified
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6768730929660228639, guid: 4245e93ed87754d2196fa82fcc505590, type: 3}
+      propertyPath: metadata.properties.Array.data[5].modified
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6768730929660228639, guid: 4245e93ed87754d2196fa82fcc505590, type: 3}
       propertyPath: m_metadata.properties.Array.data[4].refPath
@@ -396,6 +409,18 @@ PrefabInstance:
       propertyPath: m_metadata.properties.Array.data[4].modified
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6768730929660228639, guid: 4245e93ed87754d2196fa82fcc505590, type: 3}
+      propertyPath: metadata.properties.Array.data[5].objectType
+      value: Sprite
+      objectReference: {fileID: 0}
+    - target: {fileID: 6768730929660228639, guid: 4245e93ed87754d2196fa82fcc505590, type: 3}
+      propertyPath: metadata.properties.Array.data[4].serializedValue
+      value: Home
+      objectReference: {fileID: 0}
+    - target: {fileID: 6768730929660228639, guid: 4245e93ed87754d2196fa82fcc505590, type: 3}
+      propertyPath: metadata.properties.Array.data[5].serializedObject
+      value: 
+      objectReference: {fileID: 21300000, guid: 738da05ac6349446bbfff5fe82254d9e, type: 3}
     - target: {fileID: 6768730929660228639, guid: 4245e93ed87754d2196fa82fcc505590, type: 3}
       propertyPath: m_metadata.properties.Array.data[4].serializedValue
       value: Home
@@ -515,6 +540,18 @@ PrefabInstance:
       value: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/MobileNavButton.lua
       objectReference: {fileID: 0}
     - target: {fileID: 6768730929660228639, guid: 4245e93ed87754d2196fa82fcc505590, type: 3}
+      propertyPath: metadata.properties.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6768730929660228639, guid: 4245e93ed87754d2196fa82fcc505590, type: 3}
+      propertyPath: metadata.properties.Array.data[5].name
+      value: unselectedSprite
+      objectReference: {fileID: 0}
+    - target: {fileID: 6768730929660228639, guid: 4245e93ed87754d2196fa82fcc505590, type: 3}
+      propertyPath: metadata.properties.Array.data[5].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 6768730929660228639, guid: 4245e93ed87754d2196fa82fcc505590, type: 3}
       propertyPath: m_metadata.properties.Array.data[4].name
       value: page
       objectReference: {fileID: 0}
@@ -523,9 +560,33 @@ PrefabInstance:
       value: StringEnum
       objectReference: {fileID: 0}
     - target: {fileID: 6768730929660228639, guid: 4245e93ed87754d2196fa82fcc505590, type: 3}
+      propertyPath: metadata.properties.Array.data[4].modified
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6768730929660228639, guid: 4245e93ed87754d2196fa82fcc505590, type: 3}
+      propertyPath: metadata.properties.Array.data[5].modified
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6768730929660228639, guid: 4245e93ed87754d2196fa82fcc505590, type: 3}
       propertyPath: m_metadata.properties.Array.data[4].refPath
       value: AirshipPackages/@Easy/Core/Client/ProtectedControllers/MainMenuPageName@MainMenuPageType
       objectReference: {fileID: 0}
+    - target: {fileID: 6768730929660228639, guid: 4245e93ed87754d2196fa82fcc505590, type: 3}
+      propertyPath: metadata.properties.Array.data[5].objectType
+      value: Sprite
+      objectReference: {fileID: 0}
+    - target: {fileID: 6768730929660228639, guid: 4245e93ed87754d2196fa82fcc505590, type: 3}
+      propertyPath: metadata.properties.Array.data[4].serializedValue
+      value: Home
+      objectReference: {fileID: 0}
+    - target: {fileID: 6768730929660228639, guid: 4245e93ed87754d2196fa82fcc505590, type: 3}
+      propertyPath: metadata.properties.Array.data[1].serializedObject
+      value: 
+      objectReference: {fileID: 21300000, guid: ca1d30af65aa8408d81e3df75197c62c, type: 3}
+    - target: {fileID: 6768730929660228639, guid: 4245e93ed87754d2196fa82fcc505590, type: 3}
+      propertyPath: metadata.properties.Array.data[5].serializedObject
+      value: 
+      objectReference: {fileID: 21300000, guid: 1d3c951c6f97a43f3b905efacf974634, type: 3}
     - target: {fileID: 6768730929660228639, guid: 4245e93ed87754d2196fa82fcc505590, type: 3}
       propertyPath: m_metadata.properties.Array.data[4].serializedValue
       value: AvatarMobile
@@ -657,6 +718,18 @@ PrefabInstance:
       value: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/MobileNavButton.lua
       objectReference: {fileID: 0}
     - target: {fileID: 6768730929660228639, guid: 4245e93ed87754d2196fa82fcc505590, type: 3}
+      propertyPath: metadata.properties.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6768730929660228639, guid: 4245e93ed87754d2196fa82fcc505590, type: 3}
+      propertyPath: metadata.properties.Array.data[5].name
+      value: unselectedSprite
+      objectReference: {fileID: 0}
+    - target: {fileID: 6768730929660228639, guid: 4245e93ed87754d2196fa82fcc505590, type: 3}
+      propertyPath: metadata.properties.Array.data[5].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 6768730929660228639, guid: 4245e93ed87754d2196fa82fcc505590, type: 3}
       propertyPath: m_metadata.properties.Array.data[4].name
       value: page
       objectReference: {fileID: 0}
@@ -665,9 +738,33 @@ PrefabInstance:
       value: StringEnum
       objectReference: {fileID: 0}
     - target: {fileID: 6768730929660228639, guid: 4245e93ed87754d2196fa82fcc505590, type: 3}
+      propertyPath: metadata.properties.Array.data[4].modified
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6768730929660228639, guid: 4245e93ed87754d2196fa82fcc505590, type: 3}
+      propertyPath: metadata.properties.Array.data[5].modified
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6768730929660228639, guid: 4245e93ed87754d2196fa82fcc505590, type: 3}
       propertyPath: m_metadata.properties.Array.data[4].refPath
       value: AirshipPackages/@Easy/Core/Client/ProtectedControllers/MainMenuPageName@MainMenuPageType
       objectReference: {fileID: 0}
+    - target: {fileID: 6768730929660228639, guid: 4245e93ed87754d2196fa82fcc505590, type: 3}
+      propertyPath: metadata.properties.Array.data[5].objectType
+      value: Sprite
+      objectReference: {fileID: 0}
+    - target: {fileID: 6768730929660228639, guid: 4245e93ed87754d2196fa82fcc505590, type: 3}
+      propertyPath: metadata.properties.Array.data[4].serializedValue
+      value: Home
+      objectReference: {fileID: 0}
+    - target: {fileID: 6768730929660228639, guid: 4245e93ed87754d2196fa82fcc505590, type: 3}
+      propertyPath: metadata.properties.Array.data[1].serializedObject
+      value: 
+      objectReference: {fileID: 21300000, guid: d249e4694b2c54bd4ba9b388d77ff031, type: 3}
+    - target: {fileID: 6768730929660228639, guid: 4245e93ed87754d2196fa82fcc505590, type: 3}
+      propertyPath: metadata.properties.Array.data[5].serializedObject
+      value: 
+      objectReference: {fileID: 21300000, guid: 0ff877fdf4b6748bcab1b792bc65d3d9, type: 3}
     - target: {fileID: 6768730929660228639, guid: 4245e93ed87754d2196fa82fcc505590, type: 3}
       propertyPath: m_metadata.properties.Array.data[4].serializedValue
       value: Friends
@@ -799,6 +896,18 @@ PrefabInstance:
       value: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/MobileNavButton.lua
       objectReference: {fileID: 0}
     - target: {fileID: 6768730929660228639, guid: 4245e93ed87754d2196fa82fcc505590, type: 3}
+      propertyPath: metadata.properties.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6768730929660228639, guid: 4245e93ed87754d2196fa82fcc505590, type: 3}
+      propertyPath: metadata.properties.Array.data[5].name
+      value: unselectedSprite
+      objectReference: {fileID: 0}
+    - target: {fileID: 6768730929660228639, guid: 4245e93ed87754d2196fa82fcc505590, type: 3}
+      propertyPath: metadata.properties.Array.data[5].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 6768730929660228639, guid: 4245e93ed87754d2196fa82fcc505590, type: 3}
       propertyPath: m_metadata.properties.Array.data[4].name
       value: page
       objectReference: {fileID: 0}
@@ -814,6 +923,14 @@ PrefabInstance:
       propertyPath: m_metadata.properties.Array.data[4].modified
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6768730929660228639, guid: 4245e93ed87754d2196fa82fcc505590, type: 3}
+      propertyPath: metadata.properties.Array.data[5].objectType
+      value: Sprite
+      objectReference: {fileID: 0}
+    - target: {fileID: 6768730929660228639, guid: 4245e93ed87754d2196fa82fcc505590, type: 3}
+      propertyPath: metadata.properties.Array.data[1].serializedObject
+      value: 
+      objectReference: {fileID: 21300000, guid: ae4a508ebc36b4a5e96171705a57cea5, type: 3}
     - target: {fileID: 6768730929660228639, guid: 4245e93ed87754d2196fa82fcc505590, type: 3}
       propertyPath: m_metadata.properties.Array.data[4].serializedValue
       value: 
