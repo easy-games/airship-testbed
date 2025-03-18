@@ -36,12 +36,16 @@ export class TestPredictedCommand extends PredictedCustomCommand<{ charging: boo
 	override OnTick(input: Readonly<{ charging: boolean }> | undefined, replay: boolean) {
 		if (!input) return false;
 
+		if (this.progress === 49 && Game.IsServer()) {
+			this.character.movement.AddImpulse(new Vector3(0, 10, 0));
+		}
+
 		if (this.progress >= 50 && Game.IsServer()) {
 			PredictedCommandManager.Get().CancelCommand(this.identifier);
 		}
 
 		this.progress = this.progress + this.CHARGE_PER_TICK;
-		print("Progress: " + this.progress);
+		print("R:" + replay + " Progress: " + this.progress);
 		if (this.progress >= 100) {
 			print("launch!");
 			const look = this.character.movement.GetLookVector();

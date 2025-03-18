@@ -3,6 +3,7 @@ import Character from "../../Character/Character";
 import { Game } from "../../Game";
 import { Bin } from "../../Util/Bin";
 import { Cancellable } from "../../Util/Cancellable";
+import inspect from "../../Util/Inspect";
 import { Signal } from "../../Util/Signal";
 import { NetworkChannel } from "../NetworkAPI";
 import { NetworkSignal } from "../NetworkSignal";
@@ -387,6 +388,11 @@ export default class PredictedCommandManager extends AirshipSingleton {
 				Game.localPlayer.character!,
 				commandIdenfitier,
 			);
+			print(
+				`Client recieved end report for ${commandIdentifierStr}. Ended cmd: ${commandNumber} Predicted state: ${inspect(
+					lastState,
+				)} Auth State: ${inspect(stateData)}`,
+			);
 			// if the final states match, then we are good. No resim required
 			if (
 				lastState &&
@@ -480,12 +486,14 @@ export default class PredictedCommandManager extends AirshipSingleton {
 	 * the command is pending.
 	 * @param commandInstance
 	 * @param character
+	 * @param includeQueued Include commands that are queued to run, but not yet active. Queued commands may not actually run if they are found to be invalid.
 	 */
-	public IsCommandInstanceActive(commandInstance: CommandInstanceIdentifier): boolean {
+	public IsCommandInstanceActive(commandInstance: CommandInstanceIdentifier, includeQueued = false): boolean {
 		if (!commandInstance) return false;
 
 		if (
-			this.queuedCommands.find(
+			includeQueued &&
+			this.queuedCommands.some(
 				(cmd) => cmd.commandId === commandInstance.commandId && cmd.instanceId === commandInstance.instanceId,
 			)
 		) {
@@ -502,8 +510,9 @@ export default class PredictedCommandManager extends AirshipSingleton {
 	 * is pending
 	 * @param commandId The command
 	 * @param character
+	 * @param includeQueued Include commands that are queued to run, but not yet active. Queued commands may not actually run if they are found to be invalid.
 	 */
-	public IsCommandIdActive(commandId: string, character?: Character) {
+	public IsCommandIdActive(commandId: string, character?: Character, includeQueued = false) {
 		if (!character && Game.IsServer() && !Game.IsHosting()) {
 			warn(
 				"No character instance provided when calling IsCommandIdActive on the server. The character parameter is required on the server. This will always return false.",
@@ -516,8 +525,8 @@ export default class PredictedCommandManager extends AirshipSingleton {
 			return false;
 		}
 
-		for (const pending of this.queuedCommands) {
-			if (pending.commandId === commandId) return true;
+		if (includeQueued && this.queuedCommands.some((cmd) => cmd.commandId === commandId)) {
+			return true;
 		}
 
 		const commands = this.activeCommands.get(usedCharacter.id);
@@ -593,12 +602,18 @@ export default class PredictedCommandManager extends AirshipSingleton {
 				}
 			}
 			if (Game.IsClient()) {
-				if (!this.confirmedFinalState.has(commandIdentifierStr)) {
+				// If we don't have a confirmed final state and we have ticked at least one command to generate a state
+				// then we write it to our unconfirmedFinalState. lastProcessedInputCommandNumber will be zero if we
+				// never actually ticked the command.
+				if (!this.confirmedFinalState.has(commandIdentifierStr) && lastProcessedInputCommandNumber !== 0) {
 					this.unconfirmedFinalState.set(commandIdentifierStr, {
 						commandNumber: lastProcessedInputCommandNumber,
 						snapshot: lastCapturedState,
 						time: lastProcessedInputTime,
 					});
+					print("setting unconfirmed state for " + commandIdentifierStr);
+				} else {
+					print("confirmed state already set for " + commandIdentifierStr);
 				}
 			}
 			this.queuedCancellations.remove(
@@ -646,6 +661,18 @@ export default class PredictedCommandManager extends AirshipSingleton {
 				if (finalCommandData !== undefined && input.commandNumber > finalCommandData.commandNumber) {
 					CommitEndedCommand();
 					return;
+				}
+
+				// Handles the case where a client has predicted the end of a command. During replays, the client must
+				// cancel this command from running after the end was predicted. There is also a special case for clients where they've incorrectly
+				// ended a command early. It handles this case by only checking _predicted_ command ends, which means that if an authoritative end
+				// exists, it will tick the command with empty input as the server would have.
+				if (replay && finalCommandData === undefined) {
+					const unconfirmedEnd = this.unconfirmedFinalState.get(commandIdentifier.stringify());
+					if (unconfirmedEnd !== undefined && input.commandNumber > unconfirmedEnd.commandNumber) {
+						CommitEndedCommand();
+						return;
+					}
 				}
 
 				// Make sure the command exists and is created for processing.
