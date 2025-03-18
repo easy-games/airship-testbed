@@ -106,7 +106,7 @@ export class OrbitCameraMode extends CameraMode {
 			OnUpdate.Connect((dt) => {
 				if (!isDown) return;
 
-				let rotXMod = -dir.y * dt * CameraConstants.ArrowKeySensitivityScalar;
+				let rotXMod = -dir.y * dt * CameraConstants.ArrowKeySensitivityScalar * 0.7;
 				this.rotationX = math.clamp(this.rotationX - rotXMod, this.minRotX, this.maxRotX);
 
 				let rotYMod = (dir.x * dt * CameraConstants.ArrowKeySensitivityScalar) % (math.pi * 2);
