@@ -22,6 +22,7 @@ import TouchJoystick from "./Mobile/TouchJoystick";
 import ProximityPrompt from "./ProximityPrompts/ProximityPrompt";
 import AirshipMobileButton from "./Mobile/AirshipMobileButton";
 import { MapUtil } from "../Util/MapUtil";
+import MobileCameraMovement from "../MainMenu/Components/Overlay/MobileCameraMovement";
 
 export enum InputActionDirection {
 	/**
@@ -524,6 +525,14 @@ export class AirshipInputSingleton {
 	 */
 	public GetMobileTouchJoystick(): TouchJoystick | undefined {
 		return this.mobileControlsContainer.GetAirshipComponentInChildren<TouchJoystick>(true);
+	}
+
+	/**
+	 * Gets the mobile camera movement component
+	 * @returns 
+	 */
+	public GetMobileCameraMovement(): MobileCameraMovement | undefined {
+		return this.mobileControlsContainer.GetAirshipComponentInChildren<MobileCameraMovement>(true);
 	}
 
 	/**
