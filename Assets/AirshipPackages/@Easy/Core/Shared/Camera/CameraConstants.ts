@@ -75,6 +75,7 @@ export class CameraConstants {
 	 * Raw camera sensitivity multiplier.
 	 */
 	public static SensitivityScalar = 15;
+	public static ArrowKeySensitivityScalar = 3.75;
 
 	/**
 	 * Default fixed camera configuration. This configuration is optimized for use with the default
