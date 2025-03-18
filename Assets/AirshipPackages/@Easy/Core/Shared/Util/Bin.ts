@@ -133,7 +133,7 @@ export class Bin {
 
 	private cleanupObj(track: Track) {
 		if (track.cleanup === FN_MARKER) {
-			(track.obj as () => void)();
+			task.spawnDetached(track.obj as () => void);
 		} else if (track.cleanup === THREAD_MARKER) {
 			coroutine.close(track.obj as thread);
 		} else if (track.cleanup === DISCONNECT_MARKER) {
@@ -141,7 +141,9 @@ export class Bin {
 		} else if (track.cleanup === DESTROY_MARKER) {
 			Object.Destroy(track.obj);
 		} else {
-			(track.obj as Record<string, (self: unknown) => void>)[track.cleanup](track.obj);
+			task.spawnDetached(() => {
+				(track.obj as Record<string, (self: unknown) => void>)[track.cleanup](track.obj);
+			});
 		}
 	}
 }
