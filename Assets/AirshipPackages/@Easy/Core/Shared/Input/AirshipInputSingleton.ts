@@ -21,6 +21,8 @@ import MobileControlsCanvas from "./Mobile/MobileControlsCanvas";
 import TouchJoystick from "./Mobile/TouchJoystick";
 import ProximityPrompt from "./ProximityPrompts/ProximityPrompt";
 import AirshipMobileButton from "./Mobile/AirshipMobileButton";
+import { MapUtil } from "../Util/MapUtil";
+import MobileCameraMovement from "../MainMenu/Components/Overlay/MobileCameraMovement";
 
 export enum InputActionDirection {
 	/**
@@ -433,17 +435,6 @@ export class AirshipInputSingleton {
 	}
 
 	/**
-	 * Gets all mobile buttons associated with the given action
-	 * @param actionName The action name
-	 * @returns The mobile buttons
-	 */
-	public GetMobileButtons(actionName: string): ReadonlyArray<GameObject> {
-		const lowerName = actionName.lower();
-		const mobileButtonsForAction = this.actionToMobileButtonTable.get(lowerName) ?? [];
-		return table.freeze(table.clone(mobileButtonsForAction)); // immutable copy
-	}
-
-	/**
 	 * Creates a mobile button that triggers the provided action.
 	 *
 	 * @param actionName The name of the action this button is associated with.
@@ -520,6 +511,39 @@ export class AirshipInputSingleton {
 		this.actionToMobileButtonTable.set(lowerName, mobileButtonsForAction);
 
 		return mobileButton;
+	}
+
+	/**
+	 * Returns a list of all the mobile button action names
+	 */
+	public GetMobileButtonActionNames(): readonly string[] {
+		return MapUtil.Keys(this.actionToMobileButtonTable);
+	}
+
+	/**
+	 * Get the mobile touch joystick
+	 */
+	public GetMobileTouchJoystick(): TouchJoystick | undefined {
+		return this.mobileControlsContainer.GetAirshipComponentInChildren<TouchJoystick>(true);
+	}
+
+	/**
+	 * Gets the mobile camera movement component
+	 * @returns 
+	 */
+	public GetMobileCameraMovement(): MobileCameraMovement | undefined {
+		return this.mobileControlsContainer.GetAirshipComponentInChildren<MobileCameraMovement>(true);
+	}
+
+	/**
+	 * Gets all mobile buttons associated with the given action
+	 * @param actionName The action name
+	 * @returns The mobile buttons
+	 */
+	public GetMobileButtons(actionName: string): ReadonlyArray<GameObject> {
+		const lowerName = actionName.lower();
+		const mobileButtonsForAction = this.actionToMobileButtonTable.get(lowerName) ?? [];
+		return table.freeze(table.clone(mobileButtonsForAction)); // immutable copy
 	}
 
 	/**

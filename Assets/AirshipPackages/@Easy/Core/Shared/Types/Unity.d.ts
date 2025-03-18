@@ -2093,18 +2093,14 @@ interface GameObject extends Object {
 	 */
 	GetComponentsInParent<T>(): T[];
 
-	GetAirshipComponentInChildren<T extends AirshipBehaviour>(): T | undefined;
-	GetAirshipComponentsInChildren<T extends AirshipBehaviour>(): T[];
-	GetAirshipComponents<T extends AirshipBehaviour>(): T[];
+	GetAirshipComponentInChildren<T extends AirshipBehaviour>(includeInactive?: boolean): T | undefined;
+	GetAirshipComponentsInChildren<T extends AirshipBehaviour>(includeInactive?: boolean): T[];
+	GetAirshipComponents<T extends AirshipBehaviour>(includeInactive?: boolean): T[];
 
-	GetAirshipComponentInParent<T extends AirshipBehaviour>(): T | undefined;
-	GetAirshipComponentsInParent<T extends AirshipBehaviour>(): T[];
+	GetAirshipComponentInParent<T extends AirshipBehaviour>(includeInactive?: boolean): T | undefined;
+	GetAirshipComponentsInParent<T extends AirshipBehaviour>(includeInactive?: boolean): T[];
 
-	GetAirshipComponent<T extends AirshipBehaviour>(): T | undefined;
-	/**
-	 * Throws error if no component found.
-	 */
-	GetAirshipComponent<T extends AirshipBehaviour>(name: string): T | undefined;
+	GetAirshipComponent<T extends AirshipBehaviour>(includeInactive?: boolean): T | undefined;
 	AddAirshipComponent<T extends AirshipBehaviour>(): T;
 
 	IsDestroyed(): boolean;

@@ -7,20 +7,18 @@ import { CanvasAPI } from "../../Util/CanvasAPI";
 import { ColorUtil } from "../../Util/ColorUtil";
 
 export default class MobileNavButton extends AirshipBehaviour {
-	public iconImage!: Image;
-	public selectedSprite!: Sprite;
-	public text!: TMP_Text;
-	public button!: Button;
+	public iconImage: Image;
+	public selectedSprite: Sprite;
+	public unselectedSprite: Sprite;
+	public text: TMP_Text;
+	public button: Button;
 	public page: MainMenuPageType;
-
-	private startingSprite!: Sprite;
 
 	private bin = new Bin();
 	private selected = false;
 	private deselectedColor = ColorUtil.HexToColor("898D90");
 
 	public Start(): void {
-		this.startingSprite = this.iconImage.sprite;
 		this.iconImage.color = this.deselectedColor;
 		this.text.color = this.deselectedColor;
 	}
@@ -55,7 +53,7 @@ export default class MobileNavButton extends AirshipBehaviour {
 			this.iconImage.color = Color.white;
 			this.text.color = Color.white;
 		} else {
-			this.iconImage.sprite = this.startingSprite;
+			this.iconImage.sprite = this.unselectedSprite;
 			this.iconImage.color = this.deselectedColor;
 			this.text.color = this.deselectedColor;
 		}

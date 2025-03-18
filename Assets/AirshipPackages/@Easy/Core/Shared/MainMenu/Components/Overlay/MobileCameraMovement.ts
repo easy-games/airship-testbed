@@ -14,8 +14,15 @@ export default class MobileCameraMovement extends AirshipBehaviour {
 	private touchStartRotX = 0;
 	private touchStartRotY = 0;
 	private touchPointerId = 0;
+	private image: Image;
 
-	override OnEnable(): void {
+	protected Awake(): void {
+		this.image = this.gameObject.GetComponent<Image>()!;	
+	}
+
+	protected override OnEnable(): void {
+		this.image.enabled = true;
+
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnBeginDragEvent(this.gameObject, (data) => {
 				const camSystem = Dependency<AirshipCameraSingleton>().cameraSystem;
@@ -61,11 +68,12 @@ export default class MobileCameraMovement extends AirshipBehaviour {
 		);
 	}
 
-	// public Update(dt: number): void {
-	// 	print("mouse locked: " + Mouse.global.IsLocked());
-	// }
-
-	override OnDisable(): void {
+	protected override OnDisable(): void {
 		this.bin.Clean();
+		this.image.enabled = false;
+	}
+
+	public SetActive(active: boolean) {
+		this.gameObject.SetActive(active);
 	}
 }

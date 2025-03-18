@@ -68,32 +68,15 @@ export class AirshipCharactersSingleton {
 	protected OnStart(): void {
 		if (Game.coreContext === CoreContext.MAIN_MENU) return;
 		if (Game.IsClient() && !Game.IsServer()) {
-			// Because the same character can come through `RequestCharacters` and `Character.Spawn`,
-			// simply enqueue the DTOs and process them sequentially.
 			task.spawn(() => {
 				const dtos = CoreNetwork.ClientToServer.Character.RequestCharacters.client.FireServer();
 				for (const dto of dtos) {
-					this.pendingCharacterDtos.set(dto.id, dto);
+					this.InitCharacter(dto);
 				}
 			});
 
 			CoreNetwork.ServerToClient.Character.Spawn.client.OnServerEvent((dto) => {
-				this.pendingCharacterDtos.set(dto.id, dto);
-			});
-
-			task.spawn(() => {
-				while (true) {
-					task.wait(0.05);
-					const toFlush = [];
-					for (const [cid, dto] of this.pendingCharacterDtos) {
-						this.InitCharacter(dto);
-						toFlush.push(cid);
-					}
-					// Flush the queue.
-					for (const cid of toFlush) {
-						this.pendingCharacterDtos.delete(cid);
-					}
-				}
+				this.InitCharacter(dto);
 			});
 
 			CoreNetwork.ServerToClient.Character.SetCharacter.client.OnServerEvent((connId, characterId) => {
@@ -141,6 +124,8 @@ export class AirshipCharactersSingleton {
 						ownerConnectionId: character.player?.connectionId,
 						outfitDto: character.outfitDto,
 						displayName: character.GetDisplayName(),
+						health: character.GetHealth(),
+						maxHealth: character.GetMaxHealth(),
 					});
 				}
 				return characters;
@@ -330,7 +315,7 @@ export class AirshipCharactersSingleton {
 		if (!characterComponent) {
 			error("Trying to spawn a character prefab without a character component on it!");
 		}
-		characterComponent.Init(undefined, Airship.Characters.MakeNewId(), undefined, go.name);
+		characterComponent.Init(undefined, Airship.Characters.MakeNewId(), undefined, 100, 100, go.name);
 		const rb = go.GetComponent<Rigidbody>();
 		if (rb) rb.position = position;
 		go.transform.position = position;
@@ -363,7 +348,7 @@ export class AirshipCharactersSingleton {
 				);
 				characterNetworkObj.gameObject.name = "Character_" + player.username;
 			}
-			character.Init(player, dto.id, dto.outfitDto, dto.displayName);
+			character.Init(player, dto.id, dto.outfitDto, dto.health, dto.maxHealth, dto.displayName);
 			Airship.Characters.RegisterCharacter(character);
 			player?.SetCharacter(character);
 			Airship.Characters.onCharacterSpawned.Fire(character);
@@ -437,6 +422,8 @@ export class AirshipCharactersSingleton {
 				ownerConnectionId: character.player?.connectionId,
 				outfitDto: character.outfitDto,
 				displayName: character.GetDisplayName(),
+				health: character.GetHealth(),
+				maxHealth: character.GetMaxHealth(),
 			});
 		}
 	}

@@ -211,13 +211,20 @@ export default class Character extends AirshipBehaviour {
 		}
 	}
 
-	public Init(player: Player | undefined, id: number, outfitDto: OutfitDto | undefined, displayName?: string): void {
+	public Init(
+		player: Player | undefined,
+		id: number,
+		outfitDto: OutfitDto | undefined,
+		health: number,
+		maxHealth: number,
+		displayName?: string,
+	): void {
 		this.player = player;
 		this.id = id;
 		this.outfitDto = outfitDto;
 		this.animation?.SetViewModelEnabled(player?.IsLocalPlayer() ?? false);
-		this.health = 100;
-		this.maxHealth = 100;
+		this.health = health;
+		this.maxHealth = maxHealth;
 		this.despawned = false;
 		this.initialized = true;
 		this.displayName = displayName || "";

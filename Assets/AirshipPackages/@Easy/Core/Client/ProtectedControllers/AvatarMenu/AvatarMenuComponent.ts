@@ -68,7 +68,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	@Header("Variables")
 	public avatarCameraOffset = new Vector3(0, 0, 0);
 
-	private outfitBtns: AvatarMenuBtn[] = [];
+	@NonSerialized() private outfitBtns: AvatarMenuBtn[] = [];
 	private mainNavBtns: AvatarMenuBtn[] = [];
 	//private subNavBtns: AvatarMenuBtn[] = [];
 	//private subBarBtns: AvatarMenuBtn[][] = [[]]; //Each sub category has its own list of buttons
@@ -107,7 +107,9 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.clientId = 9999; //Dependency<PlayerController>().clientId;
 
 		this.mainNavBtns = this.mainNavButtonHolder.gameObject.GetAirshipComponentsInChildren<AvatarMenuBtn>();
-		this.outfitBtns = this.outfitButtonHolder.gameObject.GetAirshipComponentsInChildren<AvatarMenuBtn>();
+		if (this.outfitButtonHolder) {
+			this.outfitBtns = this.outfitButtonHolder.gameObject.GetAirshipComponentsInChildren<AvatarMenuBtn>();
+		}
 		this.avatarProfileMenu = this.avatarProfileMenuGo?.GetAirshipComponent<AvatarMenuProfileComponent>();
 		this.avatarProfileMenu?.Init(mainMenu);
 
@@ -328,7 +330,9 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private IsPhoneMode() {
-		return Game.IsMobile() && Dependency<MainMenuSingleton>().sizeType === "sm";
+		if (!Game.IsMobile()) return false;
+		const st = Dependency<MainMenuSingleton>().sizeType;
+		return st === "sm" || st === "md";
 	}
 
 	private SelectMainNav(index: number) {
@@ -701,6 +705,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private SelectOutfit(index: number, notifyServer: boolean = true) {
+		print("SelectOutfit " + index + " " + debug.traceback());
 		if (index < 0 || index >= Protected.Avatar.outfits.size() || this.inThumbnailMode) {
 			error(`Index ${index} out of range of outfits`);
 		}
