@@ -195,6 +195,12 @@ export default class Character extends AirshipBehaviour {
 		// Custom move command data handling:
 		if (this.movement) {
 			this.SetupMovementConnections();
+
+			this.bin.Add(
+				this.OnAddCustomInputData.Connect(() => {
+					this.AddCustomInputData("heldSlot", this.inventory.GetHeldSlot());
+				}),
+			);
 		}
 	}
 

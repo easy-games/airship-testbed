@@ -612,13 +612,12 @@ export default class PredictedCommandManager extends AirshipSingleton {
 						time: lastProcessedInputTime,
 					});
 					print("setting unconfirmed state for " + commandIdentifierStr);
-				} else {
-					print("confirmed state already set for " + commandIdentifierStr);
 				}
 			}
-			this.queuedCancellations.remove(
-				this.queuedCancellations.findIndex((i) => i.stringify() === commandIdentifierStr),
-			);
+			const queueCancelIndex = this.queuedCancellations.findIndex((i) => i.stringify() === commandIdentifierStr);
+			if (queueCancelIndex !== -1) {
+				this.queuedCancellations.remove(queueCancelIndex);
+			}
 			activeCommand.bin.Clean();
 		};
 
@@ -702,14 +701,13 @@ export default class PredictedCommandManager extends AirshipSingleton {
 				lastProcessedInputCommandNumber = input.commandNumber; // TODO: can input be null?
 				lastProcessedInputTime = input.time;
 
-				// If we have a queue'd cancellation from outside of our command processing functions, apply it here so
+				// If we have a queued cancellation from outside of our command processing functions, apply it here so
 				// that we do not tick again.
 				const queuedCancel = this.queuedCancellations.findIndex(
 					(i) => i.characterId === character.id && i.commandId === commandId && i.instanceId === instanceId,
 				);
 				if (queuedCancel !== -1) {
 					shouldTickAgain = false;
-					this.queuedCancellations.remove(queuedCancel);
 					return;
 				}
 			}),
