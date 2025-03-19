@@ -6,8 +6,17 @@ import { CameraConstants, OrbitCameraConfig } from "../CameraConstants";
 import { CameraMode } from "../CameraMode";
 import { CameraTransform } from "../CameraTransform";
 import { OcclusionCameraManager } from "../OcclusionCameraManager";
+import { Binding } from "../../Input/Binding";
+import { OnUpdate } from "../../Util/Timer";
 
 const TAU = math.pi * 2;
+
+const enum OrbitArrowKey {
+	Left = "OrbitCameraLeft",
+	Right = "OrbitCameraRight",
+	Up = "OrbitCameraUp",
+	Down = "OrbitCameraDown",
+}
 
 export class OrbitCameraMode extends CameraMode {
 	GetFriendlyName(): string {
@@ -60,6 +69,57 @@ export class OrbitCameraMode extends CameraMode {
 		if (Airship.Camera.IsEnabled()) {
 			this.OnEnabled();
 		}
+
+		Airship.Input.CreateAction(OrbitArrowKey.Left, Binding.Key(Key.LeftArrow));
+		Airship.Input.CreateAction(OrbitArrowKey.Right, Binding.Key(Key.RightArrow));
+		Airship.Input.CreateAction(OrbitArrowKey.Down, Binding.Key(Key.DownArrow));
+		Airship.Input.CreateAction(OrbitArrowKey.Up, Binding.Key(Key.UpArrow));
+	}
+
+	private BindArrowKeyAxis(axis: OrbitArrowKey) {
+		let dir = new Vector2();
+		switch (axis) {
+			case OrbitArrowKey.Left:
+				dir = Vector2.left;
+				break;
+			case OrbitArrowKey.Right:
+				dir = Vector2.right;
+				break;
+			case OrbitArrowKey.Up:
+				dir = Vector2.up;
+				break;
+			case OrbitArrowKey.Down:
+				dir = Vector2.down;
+				break;
+		}
+
+		const bin = new Bin();
+
+		let isDown = false;
+		bin.Add(
+			Airship.Input.OnDown(axis).Connect(() => {
+				isDown = true;
+			}),
+		);
+
+		bin.Add(
+			OnUpdate.Connect((dt) => {
+				if (!isDown) return;
+
+				let rotXMod = -dir.y * dt * CameraConstants.ArrowKeySensitivityScalar * 0.7;
+				this.rotationX = math.clamp(this.rotationX - rotXMod, this.minRotX, this.maxRotX);
+
+				let rotYMod = (dir.x * dt * CameraConstants.ArrowKeySensitivityScalar) % (math.pi * 2);
+				this.rotationY = this.rotationY - rotYMod;
+			}),
+		);
+		bin.Add(
+			Airship.Input.OnUp(axis).Connect(() => {
+				isDown = false;
+			}),
+		);
+
+		return bin;
 	}
 
 	public OnEnabled(): void {
@@ -82,6 +142,11 @@ export class OrbitCameraMode extends CameraMode {
 				}
 			}),
 		);
+
+		this.OnStopBin.Add(this.BindArrowKeyAxis(OrbitArrowKey.Up));
+		this.OnStopBin.Add(this.BindArrowKeyAxis(OrbitArrowKey.Down));
+		this.OnStopBin.Add(this.BindArrowKeyAxis(OrbitArrowKey.Left));
+		this.OnStopBin.Add(this.BindArrowKeyAxis(OrbitArrowKey.Right));
 	}
 
 	private SetupMobileControls() {

@@ -113,6 +113,11 @@ export default class AirshipButton extends AirshipBehaviour {
 
 	public SetStartingScale(scale: Vector3): void {
 		this.startingScale = scale;
+		if (this.enabled)  this.transform.localScale = scale;
+	}
+
+	protected OnEnable(): void {
+		if (this.startingScale) this.transform.localScale = this.startingScale;
 	}
 
 	protected OnDisable(): void {
