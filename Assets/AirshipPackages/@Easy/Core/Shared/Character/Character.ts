@@ -214,6 +214,9 @@ export default class Character extends AirshipBehaviour {
 		// Custom move command data handling:
 		if (this.movement) {
 			this.SetupMovementConnections();
+		} else {
+			// TODO: in the future we might want to network held item even if they aren't using our movement networking
+			warn("Movement networking not available, held item will not be networked for this character.");
 		}
 
 		this.SetupHotbarControls();
@@ -267,18 +270,9 @@ export default class Character extends AirshipBehaviour {
 			}
 			this.LoadOutfit(outfitDto);
 		}
-
-		this.ObserveHeldItem((itemStack) => {
-			this.heldItem = itemStack;
-		}, SignalPriority.HIGHEST);
-
-		this.SetupHeldItemNetworking();
 	}
 
 	private SetupHeldItemNetworking() {
-		// TODO: in the future we might want to network held item even if they aren't using our movement networking
-		if (!this.movement) return;
-
 		// Send client held slot to the server
 		if (this.IsLocalCharacter()) {
 			if (this.movement.IsAuthority()) {
@@ -305,8 +299,15 @@ export default class Character extends AirshipBehaviour {
 				this.bin.Add(
 					this.OnUseCustomInputData.ConnectWithPriority(SignalPriority.HIGH, (data) => {
 						const held = data.get("heldSlot") as number;
+						if (held === undefined) return;
 						if (held === this.heldSlot) return;
 						this.SetHeldSlotInternal(held);
+					}),
+				);
+				// Add held item data to server snapshot so that observers can see it.
+				this.bin.Add(
+					this.OnAddCustomSnapshotData.ConnectWithPriority(SignalPriority.MONITOR, () => {
+						this.AddCustomSnapshotData("heldSlot", this.heldSlot);
 					}),
 				);
 			} else {
@@ -314,6 +315,7 @@ export default class Character extends AirshipBehaviour {
 				this.bin.Add(
 					this.OnInterpolateReachedSnapshot.ConnectWithPriority(SignalPriority.HIGH, (data) => {
 						const held = data.get("heldSlot") as number;
+						if (held === undefined) return;
 						if (held === this.heldSlot) return;
 						this.SetHeldSlotInternal(held);
 					}),
@@ -324,6 +326,12 @@ export default class Character extends AirshipBehaviour {
 
 	private SetupMovementConnections() {
 		const movementWithSignals = this.movement as CharacterMovement & CharacterMovementEngineEvents;
+
+		this.bin.AddEngineEventConnection(
+			movementWithSignals.OnSetMode((mode) => {
+				this.SetupHeldItemNetworking();
+			}),
+		);
 
 		this.bin.AddEngineEventConnection(
 			movementWithSignals.OnProcessCommand((input, state, isReplay) => {
@@ -742,6 +750,7 @@ export default class Character extends AirshipBehaviour {
 
 	private SetHeldSlotInternal(slot: number): void {
 		this.heldSlot = slot;
+		this.heldItem = this.GetHeldItem();
 		this.onHeldSlotChanged.Fire(slot);
 	}
 

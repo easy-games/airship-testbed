@@ -73,6 +73,12 @@ interface MoveModifier {
 	blockJump: boolean;
 }
 
+declare const enum NetworkStateSystemMode {
+	Input = 0,
+	Authority = 1,
+	Observer = 2,
+}
+
 /**
  * These events are part of the CharacterMovement API, but are not included in the default type
  * to encourage the use of the signals provided on player.character. Using the signals defined below
@@ -95,6 +101,7 @@ interface CharacterMovementEngineEvents {
 	): EngineEventConnection;
 	OnInterpolateReachedState(callback: (state: CharacterSnapshotData) => void): EngineEventConnection;
 	OnCompareSnapshots(callback: (a: CharacterSnapshotData, b: CharacterSnapshotData) => void): EngineEventConnection;
+	OnSetMode(callback: (mode: NetworkStateSystemMode) => void): EngineEventConnection;
 
 	// Used for communicating back snapshot comparison results
 	SetComparisonResult(result: boolean);
