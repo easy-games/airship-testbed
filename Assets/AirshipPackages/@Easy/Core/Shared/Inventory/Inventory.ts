@@ -2,20 +2,17 @@ import { Airship } from "@Easy/Core/Shared/Airship";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import Object from "@Easy/Core/Shared/Util/ObjectUtils";
-import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
+import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { Game } from "../Game";
 import { Player } from "../Player/Player";
-import { Keyboard, Mouse } from "../UserInput";
 import { Cancellable } from "../Util/Cancellable";
 import { MapUtil } from "../Util/MapUtil";
 import { DraggingState } from "./AirshipDraggingState";
 import { ItemStack, ItemStackDto } from "./ItemStack";
-import { BeforeLocalInventoryHeldSlotChanged } from "./Signal/BeforeLocalInventoryHeldSlotChanged";
 
 export interface InventoryDto {
 	id: number;
 	items: Map<number, ItemStackDto>;
-	heldSlot: number;
 }
 
 export const enum InventoryModifyPermission {
@@ -36,8 +33,6 @@ export default class Inventory extends AirshipBehaviour {
 
 	@Header("Slots")
 	public maxSlots = 45;
-	public hotbarSlots = 9;
-	public heldSlot = 0;
 
 	@Header("Permissions")
 	@Tooltip(
@@ -50,11 +45,9 @@ export default class Inventory extends AirshipBehaviour {
 
 	/** Fired at the start of AddItem. Can be used to modify the added ItemStack or cancel the operation. */
 	@NonSerialized() public readonly onBeforeAddItem = new Signal<OnBeforeAddItemEvent>();
-	/** Used to cancel changing held item slots. */
-	@NonSerialized() public readonly onBeforeLocalHeldSlotChanged = new Signal<BeforeLocalInventoryHeldSlotChanged>();
 	/** Fired when a `slot` points to a new `ItemStack`. Changes to the same ItemStack will **not** fire this event. */
 	@NonSerialized() public readonly onSlotChanged = new Signal<[slot: number, itemStack: ItemStack | undefined]>();
-	@NonSerialized() public readonly onHeldSlotChanged = new Signal<number>();
+
 	/**
 	 * Fired when the local player drags an item outside of their inventory.
 	 * This is often used to drop an item.
@@ -71,15 +64,6 @@ export default class Inventory extends AirshipBehaviour {
 	@NonSerialized() private slotConnections = new Map<number, Bin>();
 
 	private bin = new Bin();
-
-	// Controls
-	private controlsEnabled = true;
-	private lastScrollTime = 0;
-	private scrollCooldown = 0.05;
-	private disablers = new Set<number>();
-	private disablerCounter = 1;
-
-	private observeHeldItemBins: Bin[] = [];
 
 	public OnEnable(): void {
 		// Networking
@@ -113,43 +97,11 @@ export default class Inventory extends AirshipBehaviour {
 			if (!Game.IsServer()) {
 				Airship.Inventory.RegisterInventory(this);
 			}
-
-			// This seems like it should not be here! Why are we listening to network and calling SetHeldSlotInternal()?!
-			this.bin.Add(
-				CoreNetwork.ServerToClient.SetHeldInventorySlot.client.OnServerEvent((invId, slot) => {
-					if (invId === this.id) {
-						// print("SetHeldInventorySlot invId: " + invId + ", slot: " + slot);
-						// const selected = this.items.get(slot);
-						// if (selected?.itemType === currentItemStack?.itemType) return;
-
-						// if (cleanup !== undefined) {
-						// 	cleanup();
-						// }
-						// currentItemStack = selected;
-						this.SetHeldSlotInternal(slot);
-						// cleanup = callback(selected);
-					}
-				}),
-			);
 		};
 
 		const StartServer = () => {
 			// print("NetID (OnStartServer): " + this.networkIdentity.netId);
 			this.id = this.networkIdentity.netId;
-			this.bin.Add(
-				CoreNetwork.ClientToServer.SetHeldSlot.server.OnClientEvent((player, invId, slot) => {
-					if (this.id !== invId) return;
-
-					const character = Airship.Characters.FindByPlayer(player);
-					if (!character || character.inventory !== this) return;
-
-					if (!(Game.IsHosting() && Game.localPlayer === player)) {
-						this.SetHeldSlotInternal(slot);
-					}
-
-					CoreNetwork.ServerToClient.SetHeldInventorySlot.server.FireExcept(player, this.id, slot, true);
-				}),
-			);
 			Airship.Inventory.RegisterInventory(this);
 		};
 
@@ -172,86 +124,10 @@ export default class Inventory extends AirshipBehaviour {
 				StartClient();
 			}
 		}
-
-		// Controls
-		const controlsBin = new Bin();
-		this.bin.Add(controlsBin);
-		this.bin.Add(
-			Airship.Inventory.ObserveLocalInventory((inv) => {
-				controlsBin.Clean();
-				if (inv !== this) return;
-
-				const hotbarKeys = [
-					Key.Digit1,
-					Key.Digit2,
-					Key.Digit3,
-					Key.Digit4,
-					Key.Digit5,
-					Key.Digit6,
-					Key.Digit7,
-					Key.Digit8,
-					Key.Digit9,
-				];
-				for (const hotbarIndex of $range(0, hotbarKeys.size() - 1)) {
-					controlsBin.Add(
-						Keyboard.OnKeyDown(hotbarKeys[hotbarIndex], (event) => {
-							if (event.uiProcessed) return;
-							this.SetHeldSlot(hotbarIndex);
-						}),
-					);
-				}
-
-				// Scroll to select held item:
-				controlsBin.Add(
-					Mouse.onScrolled.Connect((event) => {
-						if (!this.controlsEnabled || event.uiProcessed || event.IsCancelled()) return;
-						if (Mouse.IsOverUI()) return;
-						// print("scroll: " + delta);
-						if (math.abs(event.delta) < 0.05) return;
-
-						const now = Time.time;
-						if (now - this.lastScrollTime < this.scrollCooldown) {
-							return;
-						}
-
-						this.lastScrollTime = now;
-
-						const selectedSlot = this.GetHeldSlot();
-						if (selectedSlot === undefined) return;
-
-						const inc = event.delta < 0 ? 1 : -1;
-						let trySlot = selectedSlot;
-
-						// Find the next available item in the hotbar:
-						for (const _ of $range(1, hotbarKeys.size())) {
-							trySlot += inc;
-
-							// Clamp index to hotbar items:
-							if (inc === 1 && trySlot >= hotbarKeys.size()) {
-								trySlot = 0;
-							} else if (inc === -1 && trySlot < 0) {
-								trySlot = hotbarKeys.size() - 1;
-							}
-
-							// If the item at the given `trySlot` index exists, set it as the held item:
-							const itemAtSlot = this.GetItem(trySlot);
-							if (itemAtSlot !== undefined) {
-								this.SetHeldSlot(trySlot);
-								break;
-							}
-						}
-					}),
-				);
-			}),
-		);
 	}
 
 	public OnDisable(): void {
 		Airship.Inventory.UnregisterInventory(this);
-		for (const bin of this.observeHeldItemBins) {
-			bin.Clean();
-		}
-		this.observeHeldItemBins.clear();
 		this.bin.Clean();
 	}
 
@@ -312,53 +188,6 @@ export default class Inventory extends AirshipBehaviour {
 		);
 
 		return () => bin.Clean();
-	}
-
-	public ObserveHeldItem(
-		callback: (itemStack: ItemStack | undefined) => CleanupFunc,
-		priority: SignalPriority = SignalPriority.NORMAL,
-	): Bin {
-		const bin = new Bin();
-		this.observeHeldItemBins.push(bin);
-		let currentItemStack = this.items.get(this.heldSlot);
-		let cleanup = callback(currentItemStack);
-
-		bin.Add(
-			this.onHeldSlotChanged.ConnectWithPriority(priority, (newSlot) => {
-				const selected = this.items.get(newSlot);
-				if (selected?.itemType === currentItemStack?.itemType) return;
-
-				if (cleanup !== undefined) {
-					task.spawn(() => {
-						cleanup!();
-					});
-				}
-				currentItemStack = selected;
-				task.spawn(() => {
-					cleanup = callback(selected);
-				});
-			}),
-		);
-		bin.Add(
-			this.onSlotChanged.ConnectWithPriority(priority, (slot, itemStack) => {
-				if (slot === this.heldSlot) {
-					if (itemStack?.itemType === currentItemStack?.itemType) return;
-					if (cleanup !== undefined) {
-						task.spawn(() => {
-							cleanup!();
-						});
-					}
-					currentItemStack = itemStack;
-					task.spawn(() => {
-						cleanup = callback(itemStack);
-					});
-				}
-			}),
-		);
-		bin.Add(() => {
-			cleanup?.();
-		});
-		return bin;
 	}
 
 	public SetItem(
@@ -496,37 +325,6 @@ export default class Inventory extends AirshipBehaviour {
 		return -1;
 	}
 
-	public GetHeldItem(): ItemStack | undefined {
-		return this.GetItem(this.heldSlot);
-	}
-
-	public GetHeldSlot(): number {
-		return this.heldSlot;
-	}
-
-	public SetHeldSlot(slot: number): void {
-		let isLocal = this.IsLocalInventory();
-		if (isLocal) {
-			const before = this.onBeforeLocalHeldSlotChanged.Fire(
-				new BeforeLocalInventoryHeldSlotChanged(slot, this.heldSlot),
-			);
-			if (before.IsCancelled()) return;
-		}
-
-		this.SetHeldSlotInternal(slot);
-
-		if (isLocal) {
-			CoreNetwork.ClientToServer.SetHeldSlot.client.FireServer(this.id, slot);
-		} else if (Game.IsServer()) {
-			CoreNetwork.ServerToClient.SetHeldInventorySlot.server.FireAllClients(this.id, slot, true);
-		}
-	}
-
-	private SetHeldSlotInternal(slot: number): void {
-		this.heldSlot = slot;
-		this.onHeldSlotChanged.Fire(slot);
-	}
-
 	public Encode(): InventoryDto {
 		let mappedItems = new Map<number, ItemStackDto>();
 		for (let item of this.items) {
@@ -535,7 +333,6 @@ export default class Inventory extends AirshipBehaviour {
 		return {
 			id: this.id,
 			items: mappedItems,
-			heldSlot: this.heldSlot,
 		};
 	}
 
@@ -544,7 +341,6 @@ export default class Inventory extends AirshipBehaviour {
 		for (let pair of dto.items) {
 			this.SetItem(pair[0], ItemStack.Decode(pair[1]));
 		}
-		this.SetHeldSlot(dto.heldSlot);
 	}
 
 	public GetItemCount(itemType: string): number {
@@ -569,10 +365,6 @@ export default class Inventory extends AirshipBehaviour {
 		return this.maxSlots;
 	}
 
-	public GetHotbarSlotCount(): number {
-		return this.hotbarSlots;
-	}
-
 	public FindSlotWithItemType(itemType: string): number | undefined {
 		for (let i = 0; i < this.maxSlots; i++) {
 			const itemStack = this.GetItem(i);
@@ -595,21 +387,6 @@ export default class Inventory extends AirshipBehaviour {
 
 	public GetAllItems(): ItemStack[] {
 		return Object.values(this.items);
-	}
-
-	public AddControlsDisabler(): () => void {
-		const id = this.disablerCounter;
-		this.disablerCounter++;
-		this.disablers.add(id);
-		this.controlsEnabled = false;
-		return () => {
-			this.disablers.delete(id);
-			if (this.disablers.size() === 0) {
-				this.controlsEnabled = true;
-			} else {
-				this.controlsEnabled = false;
-			}
-		};
 	}
 
 	/**

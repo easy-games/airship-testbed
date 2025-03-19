@@ -15,7 +15,9 @@ export const CoreNetwork = {
 			SwapSlots: new NetworkSignal<[fromInvId: number, fromSlot: number, toInvId: number, toSlot: number]>(
 				"Inventory",
 			),
-			QuickMoveSlot: new NetworkSignal<[fromInvId: number, fromSlot: number, toInvId: number]>("QuickMoveSlot"),
+			QuickMoveSlot: new NetworkSignal<
+				[fromInvId: number, fromSlot: number, fromHotbarSize: number, toInvId: number]
+			>("QuickMoveSlot"),
 			MoveToSlot: new NetworkSignal<
 				[fromInvId: number, fromSlot: number, toInvId: number, toSlot: number, amount: number]
 			>("MoveToSlot"),

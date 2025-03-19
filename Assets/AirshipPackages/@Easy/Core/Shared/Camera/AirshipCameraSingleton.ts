@@ -146,7 +146,8 @@ export class AirshipCameraSingleton {
 						});
 						flyingBin.Add(Dependency<LocalCharacterSingleton>().input!.AddDisabler());
 						if (Airship.Inventory.localInventory) {
-							flyingBin.Add(Airship.Inventory.localInventory.AddControlsDisabler());
+							// TODO: luke add back disablers
+							// flyingBin.Add(Airship.Inventory.localInventory.AddControlsDisabler());
 						}
 					}
 				}

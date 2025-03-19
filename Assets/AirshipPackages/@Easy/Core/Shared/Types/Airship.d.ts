@@ -188,6 +188,8 @@ interface CharacterMovement extends Component {
 	GetTimeSinceBecameGrounded(): number;
 	// GetCurrentMoveInputData(): MoveInputData;
 	RequestResimulation(commandNumber: number): boolean;
+	/** If this character movement has final authority on character position and values. */
+	IsAuthority(): boolean;
 
 	//Public
 	enabled: boolean;

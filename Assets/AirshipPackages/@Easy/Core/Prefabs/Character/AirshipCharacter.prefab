@@ -971,42 +971,6 @@ MonoBehaviour:
       serializedValue: 45
       serializedObject: {fileID: 0}
       modified: 1
-    - name: hotbarSlots
-      type: number
-      objectType: 
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      jsDocs:
-        text: []
-        tags: []
-      decorators: []
-      nullable: 0
-      serializedValue: 9
-      serializedObject: {fileID: 0}
-      modified: 0
-    - name: heldSlot
-      type: number
-      objectType: 
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      jsDocs:
-        text: []
-        tags: []
-      decorators: []
-      nullable: 0
-      serializedValue: 0
-      serializedObject: {fileID: 0}
-      modified: 0
     - name: networkIdentity
       type: object
       objectType: NetworkIdentity

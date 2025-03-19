@@ -9,7 +9,10 @@ import { CoreNetwork } from "../CoreNetwork";
 import { DamageInfo, DamageInfoCustomData } from "../Damage/DamageInfo";
 import AirshipEmoteSingleton from "../Emote/AirshipEmoteSingleton";
 import { Dependency } from "../Flamework";
+import { ItemStack } from "../Inventory/ItemStack";
+import { BeforeLocalInventoryHeldSlotChanged } from "../Inventory/Signal/BeforeLocalInventoryHeldSlotChanged";
 import NametagComponent from "../Nametag/NametagComponent";
+import { Keyboard, Mouse } from "../UserInput";
 import CharacterAnimation from "./Animation/CharacterAnimation";
 import CharacterConfigSetup from "./CharacterConfigSetup";
 import { EmoteStartSignal } from "./Signal/EmoteStartSignal";
@@ -53,7 +56,7 @@ export default class Character extends AirshipBehaviour {
 	private maxHealth = 100;
 	/** A bin that is cleaned when the entity despawns. */
 	@NonSerialized() public readonly bin = new Bin();
-	@NonSerialized() public inventory: Inventory;
+
 	@NonSerialized() public outfitDto: OutfitDto | undefined;
 	@NonSerialized() public isEmoting = false;
 
@@ -65,6 +68,22 @@ export default class Character extends AirshipBehaviour {
 	@NonSerialized() public onMaxHealthChanged = new Signal<[newMaxHealth: number, oldMaxHealth: number]>();
 	@NonSerialized() public onEmoteStart = new Signal<EmoteStartSignal>();
 	@NonSerialized() public onEmoteEnd = new Signal<[]>();
+
+	// Inventory and related
+	@Header("Inventory")
+	@NonSerialized()
+	public inventory: Inventory;
+	@NonSerialized() public heldItem?: ItemStack;
+	@NonSerialized() public heldSlot = -1;
+	@NonSerialized() public readonly onHeldSlotChanged = new Signal<number>();
+	/** Used to cancel changing held item slots. */
+	@NonSerialized() public readonly onBeforeLocalHeldSlotChanged = new Signal<BeforeLocalInventoryHeldSlotChanged>();
+	private observeHeldItemBins: Bin[] = [];
+
+	// Hotbar controlls
+	private controlsEnabled = true;
+	private lastScrollTime = 0;
+	private scrollCooldown = 0.05;
 
 	private displayName = "";
 	private initialized = false;
@@ -195,17 +214,17 @@ export default class Character extends AirshipBehaviour {
 		// Custom move command data handling:
 		if (this.movement) {
 			this.SetupMovementConnections();
-
-			this.bin.Add(
-				this.OnAddCustomInputData.Connect(() => {
-					this.AddCustomInputData("heldSlot", this.inventory.GetHeldSlot());
-				}),
-			);
 		}
+
+		this.SetupHotbarControls();
 	}
 
 	public OnDisable(): void {
 		Airship.Characters.UnregisterCharacter(this);
+		for (const bin of this.observeHeldItemBins) {
+			bin.Clean();
+		}
+		this.observeHeldItemBins.clear();
 		if (Game.IsClient() && !this.despawned) {
 			this.bin.Clean();
 			this.despawned = true;
@@ -247,6 +266,59 @@ export default class Character extends AirshipBehaviour {
 				this.SetMeshCacheId(`Player:${player.userId}`);
 			}
 			this.LoadOutfit(outfitDto);
+		}
+
+		this.ObserveHeldItem((itemStack) => {
+			this.heldItem = itemStack;
+		}, SignalPriority.HIGHEST);
+
+		this.SetupHeldItemNetworking();
+	}
+
+	private SetupHeldItemNetworking() {
+		// TODO: in the future we might want to network held item even if they aren't using our movement networking
+		if (!this.movement) return;
+
+		// Send client held slot to the server
+		if (this.IsLocalCharacter()) {
+			if (this.movement.IsAuthority()) {
+				// If we are authority, send held slot in the snapshot
+				this.bin.Add(
+					this.OnAddCustomSnapshotData.ConnectWithPriority(SignalPriority.MONITOR, () => {
+						this.AddCustomSnapshotData("heldSlot", this.heldSlot);
+					}),
+				);
+			} else {
+				// If we are not authority, send it in the input
+				this.bin.Add(
+					this.OnAddCustomInputData.ConnectWithPriority(SignalPriority.MONITOR, () => {
+						this.AddCustomInputData("heldSlot", this.heldSlot);
+					}),
+				);
+			}
+		}
+
+		// Networking for held slot (read held slot data and fire signals on change)
+		if (!this.IsLocalCharacter()) {
+			if (this.movement.IsAuthority()) {
+				// Read from client input and set if we are authority. Client has authority over held slot
+				this.bin.Add(
+					this.OnUseCustomInputData.ConnectWithPriority(SignalPriority.HIGH, (data) => {
+						const held = data.get("heldSlot") as number;
+						if (held === this.heldSlot) return;
+						this.SetHeldSlotInternal(held);
+					}),
+				);
+			} else {
+				// Read from interpolated state and set held item.
+				this.bin.Add(
+					this.OnInterpolateReachedSnapshot.ConnectWithPriority(SignalPriority.HIGH, (data) => {
+						const held = data.get("heldSlot") as number;
+						if (held === this.heldSlot) return;
+						this.SetHeldSlotInternal(held);
+					}),
+				);
+			}
 		}
 	}
 
@@ -599,5 +671,151 @@ export default class Character extends AirshipBehaviour {
 		if (Game.IsServer()) {
 			CoreNetwork.ServerToClient.Character.EmoteEnd.server.FireAllClients(this.id);
 		}
+	}
+
+	public ObserveHeldItem(
+		callback: (itemStack: ItemStack | undefined) => CleanupFunc,
+		priority: SignalPriority = SignalPriority.NORMAL,
+	): Bin {
+		const bin = new Bin();
+		this.observeHeldItemBins.push(bin);
+		let currentItemStack = this.inventory.GetItem(this.heldSlot);
+		let cleanup = callback(currentItemStack);
+
+		bin.Add(
+			this.onHeldSlotChanged.ConnectWithPriority(priority, (newSlot) => {
+				const selected = this.inventory.GetItem(newSlot);
+				if (selected?.itemType === currentItemStack?.itemType) return;
+
+				if (cleanup !== undefined) {
+					task.spawn(() => {
+						cleanup!();
+					});
+				}
+				currentItemStack = selected;
+				task.spawn(() => {
+					cleanup = callback(selected);
+				});
+			}),
+		);
+		bin.Add(
+			this.inventory.onSlotChanged.ConnectWithPriority(priority, (slot, itemStack) => {
+				if (slot === this.heldSlot) {
+					if (itemStack?.itemType === currentItemStack?.itemType) return;
+					if (cleanup !== undefined) {
+						task.spawn(() => {
+							cleanup!();
+						});
+					}
+					currentItemStack = itemStack;
+					task.spawn(() => {
+						cleanup = callback(itemStack);
+					});
+				}
+			}),
+		);
+		bin.Add(() => {
+			cleanup?.();
+		});
+		return bin;
+	}
+
+	public GetHeldItem(): ItemStack | undefined {
+		return this.inventory.GetItem(this.heldSlot);
+	}
+
+	public GetHeldSlot(): number {
+		return this.heldSlot;
+	}
+
+	public SetHeldSlot(slot: number): void {
+		// Only the client can set held slot.
+		if (!this.IsLocalCharacter()) return;
+
+		const before = this.onBeforeLocalHeldSlotChanged.Fire(
+			new BeforeLocalInventoryHeldSlotChanged(slot, this.heldSlot),
+		);
+		if (before.IsCancelled()) return;
+
+		this.SetHeldSlotInternal(slot);
+	}
+
+	private SetHeldSlotInternal(slot: number): void {
+		this.heldSlot = slot;
+		this.onHeldSlotChanged.Fire(slot);
+	}
+
+	private SetupHotbarControls() {
+		// Controls
+		const controlsBin = new Bin();
+		this.bin.Add(controlsBin);
+		this.bin.Add(
+			Airship.Inventory.ObserveLocalInventory((inv) => {
+				controlsBin.Clean();
+				if (inv !== this.inventory) return;
+
+				const hotbarKeys = [
+					Key.Digit1,
+					Key.Digit2,
+					Key.Digit3,
+					Key.Digit4,
+					Key.Digit5,
+					Key.Digit6,
+					Key.Digit7,
+					Key.Digit8,
+					Key.Digit9,
+				];
+				for (const hotbarIndex of $range(0, hotbarKeys.size() - 1)) {
+					controlsBin.Add(
+						Keyboard.OnKeyDown(hotbarKeys[hotbarIndex], (event) => {
+							if (event.uiProcessed) return;
+							this.SetHeldSlot(hotbarIndex);
+						}),
+					);
+				}
+
+				// Scroll to select held item:
+				controlsBin.Add(
+					Mouse.onScrolled.Connect((event) => {
+						if (!this.controlsEnabled || event.uiProcessed || event.IsCancelled()) return;
+						if (Mouse.IsOverUI()) return;
+						// print("scroll: " + delta);
+						if (math.abs(event.delta) < 0.05) return;
+
+						const now = Time.time;
+						if (now - this.lastScrollTime < this.scrollCooldown) {
+							return;
+						}
+
+						this.lastScrollTime = now;
+
+						const selectedSlot = this.GetHeldSlot();
+						if (selectedSlot === undefined) return;
+
+						const inc = event.delta < 0 ? 1 : -1;
+						let trySlot = selectedSlot;
+
+						// Find the next available item in the hotbar:
+						for (const _ of $range(1, hotbarKeys.size())) {
+							trySlot += inc;
+
+							// Clamp index to hotbar items:
+							if (inc === 1 && trySlot >= hotbarKeys.size()) {
+								trySlot = 0;
+							} else if (inc === -1 && trySlot < 0) {
+								trySlot = hotbarKeys.size() - 1;
+							}
+
+							// If the item at the given `trySlot` index exists, set it as the held item:
+							const itemAtSlot = inv.GetItem(trySlot);
+							if (itemAtSlot !== undefined) {
+								this.SetHeldSlot(trySlot);
+								break;
+							}
+						}
+					}),
+				);
+			}),
+		);
 	}
 }
