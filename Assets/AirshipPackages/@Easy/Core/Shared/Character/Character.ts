@@ -218,8 +218,6 @@ export default class Character extends AirshipBehaviour {
 			// TODO: in the future we might want to network held item even if they aren't using our movement networking
 			warn("Movement networking not available, held item will not be networked for this character.");
 		}
-
-		this.SetupHotbarControls();
 	}
 
 	public OnDisable(): void {
@@ -258,6 +256,9 @@ export default class Character extends AirshipBehaviour {
 		this.displayName = displayName || "";
 
 		// print("Outfitdto: " + inspect(outfitDto));
+		if (Game.IsClient() && this.IsLocalCharacter()) {
+			this.SetupHotbarControls();
+		}
 
 		// Client side: update the player's selected outfit to whatever this character has.
 		// This may cause an issue if the character is init'd with a random outfit.
@@ -273,6 +274,32 @@ export default class Character extends AirshipBehaviour {
 	}
 
 	private SetupHeldItemNetworking() {
+		if (true) {
+			if (Game.IsServer()) {
+				this.bin.Add(
+					CoreNetwork.ClientToServer.Character.SetHeldSlot.server.OnClientEvent((player, slot) => {
+						const characterId = player.character?.id;
+						if (characterId === undefined) return;
+						if (characterId !== this.id) return;
+						if (slot === this.heldSlot) return;
+						this.SetHeldSlotInternal(slot);
+						CoreNetwork.ServerToClient.Character.SetHeldSlot.server.FireExcept(player, characterId, slot);
+					}),
+				);
+			} else {
+				this.bin.Add(
+					CoreNetwork.ServerToClient.Character.SetHeldSlot.client.OnServerEvent((charId, slot) => {
+						if (this.id !== charId) return;
+						if (slot === this.heldSlot) return;
+
+						this.SetHeldSlotInternal(slot);
+					}),
+				);
+			}
+
+			return;
+		}
+
 		// Send client held slot to the server
 		if (this.IsLocalCharacter()) {
 			if (this.movement.IsAuthority()) {
@@ -295,6 +322,7 @@ export default class Character extends AirshipBehaviour {
 		// Networking for held slot (read held slot data and fire signals on change)
 		if (!this.IsLocalCharacter()) {
 			if (this.movement.IsAuthority()) {
+				let slot = this.heldSlot;
 				// Read from client input and set if we are authority. Client has authority over held slot
 				this.bin.Add(
 					this.OnUseCustomInputData.ConnectWithPriority(SignalPriority.HIGH, (data) => {
@@ -302,12 +330,15 @@ export default class Character extends AirshipBehaviour {
 						if (held === undefined) return;
 						if (held === this.heldSlot) return;
 						this.SetHeldSlotInternal(held);
+						slot = this.heldSlot;
 					}),
 				);
 				// Add held item data to server snapshot so that observers can see it.
 				this.bin.Add(
 					this.OnAddCustomSnapshotData.ConnectWithPriority(SignalPriority.MONITOR, () => {
-						this.AddCustomSnapshotData("heldSlot", this.heldSlot);
+						// We send what the client initially sent in the input since we want to client to
+						// be authoritative
+						this.AddCustomSnapshotData("heldSlot", slot);
 					}),
 				);
 			} else {
@@ -736,97 +767,101 @@ export default class Character extends AirshipBehaviour {
 		return this.heldSlot;
 	}
 
+	/**
+	 * Sets the held slot on the character. Can be set for non-local players, but will
+	 * be overwritten when a new update is recieved.
+	 * @param slot
+	 * @returns
+	 */
 	public SetHeldSlot(slot: number): void {
-		// Only the client can set held slot.
-		if (!this.IsLocalCharacter()) {
-			warn("Attempted to set held slot on non-local character. This will have no effect.");
-			return;
-		}
+		if (this.heldSlot === slot) return;
 
-		const before = this.onBeforeLocalHeldSlotChanged.Fire(
-			new BeforeLocalInventoryHeldSlotChanged(slot, this.heldSlot),
-		);
-		if (before.IsCancelled()) return;
+		// Only the client can set held slot.
+		if (this.IsLocalCharacter()) {
+			const before = this.onBeforeLocalHeldSlotChanged.Fire(
+				new BeforeLocalInventoryHeldSlotChanged(slot, this.heldSlot),
+			);
+			if (before.IsCancelled()) return;
+			if (Game.IsClient()) {
+				CoreNetwork.ClientToServer.Character.SetHeldSlot.client.FireServer(slot);
+			} else {
+				// If IsLocalCharacter on the server, that means it's a bot (todo)
+				CoreNetwork.ServerToClient.Character.SetHeldSlot.server.FireAllClients(this.id, slot);
+			}
+		}
 
 		this.SetHeldSlotInternal(slot);
 	}
 
 	private SetHeldSlotInternal(slot: number): void {
+		warn("setting char " + this.id + " held slot to " + slot);
 		this.heldSlot = slot;
 		this.heldItem = this.GetHeldItem();
 		this.onHeldSlotChanged.Fire(slot);
 	}
 
 	private SetupHotbarControls() {
+		print("setting up hotbar controls");
 		// Controls
-		const controlsBin = new Bin();
-		this.bin.Add(controlsBin);
-		this.bin.Add(
-			Airship.Inventory.ObserveLocalInventory((inv) => {
-				controlsBin.Clean();
-				if (inv !== this.inventory) return;
+		const hotbarKeys = [
+			Key.Digit1,
+			Key.Digit2,
+			Key.Digit3,
+			Key.Digit4,
+			Key.Digit5,
+			Key.Digit6,
+			Key.Digit7,
+			Key.Digit8,
+			Key.Digit9,
+		];
+		for (const hotbarIndex of $range(0, hotbarKeys.size() - 1)) {
+			this.bin.Add(
+				Keyboard.OnKeyDown(hotbarKeys[hotbarIndex], (event) => {
+					if (event.uiProcessed) return;
+					this.SetHeldSlot(hotbarIndex);
+				}),
+			);
+		}
 
-				const hotbarKeys = [
-					Key.Digit1,
-					Key.Digit2,
-					Key.Digit3,
-					Key.Digit4,
-					Key.Digit5,
-					Key.Digit6,
-					Key.Digit7,
-					Key.Digit8,
-					Key.Digit9,
-				];
-				for (const hotbarIndex of $range(0, hotbarKeys.size() - 1)) {
-					controlsBin.Add(
-						Keyboard.OnKeyDown(hotbarKeys[hotbarIndex], (event) => {
-							if (event.uiProcessed) return;
-							this.SetHeldSlot(hotbarIndex);
-						}),
-					);
+		// Scroll to select held item:
+		this.bin.Add(
+			Mouse.onScrolled.Connect((event) => {
+				if (!this.controlsEnabled || event.uiProcessed || event.IsCancelled()) return;
+				if (Mouse.IsOverUI()) return;
+				// print("scroll: " + delta);
+				if (math.abs(event.delta) < 0.05) return;
+
+				const now = Time.time;
+				if (now - this.lastScrollTime < this.scrollCooldown) {
+					return;
 				}
 
-				// Scroll to select held item:
-				controlsBin.Add(
-					Mouse.onScrolled.Connect((event) => {
-						if (!this.controlsEnabled || event.uiProcessed || event.IsCancelled()) return;
-						if (Mouse.IsOverUI()) return;
-						// print("scroll: " + delta);
-						if (math.abs(event.delta) < 0.05) return;
+				this.lastScrollTime = now;
 
-						const now = Time.time;
-						if (now - this.lastScrollTime < this.scrollCooldown) {
-							return;
-						}
+				const selectedSlot = this.GetHeldSlot();
+				if (selectedSlot === undefined) return;
 
-						this.lastScrollTime = now;
+				const inc = event.delta < 0 ? 1 : -1;
+				let trySlot = selectedSlot;
 
-						const selectedSlot = this.GetHeldSlot();
-						if (selectedSlot === undefined) return;
+				// Find the next available item in the hotbar:
+				for (const _ of $range(1, hotbarKeys.size())) {
+					trySlot += inc;
 
-						const inc = event.delta < 0 ? 1 : -1;
-						let trySlot = selectedSlot;
+					// Clamp index to hotbar items:
+					if (inc === 1 && trySlot >= hotbarKeys.size()) {
+						trySlot = 0;
+					} else if (inc === -1 && trySlot < 0) {
+						trySlot = hotbarKeys.size() - 1;
+					}
 
-						// Find the next available item in the hotbar:
-						for (const _ of $range(1, hotbarKeys.size())) {
-							trySlot += inc;
-
-							// Clamp index to hotbar items:
-							if (inc === 1 && trySlot >= hotbarKeys.size()) {
-								trySlot = 0;
-							} else if (inc === -1 && trySlot < 0) {
-								trySlot = hotbarKeys.size() - 1;
-							}
-
-							// If the item at the given `trySlot` index exists, set it as the held item:
-							const itemAtSlot = inv.GetItem(trySlot);
-							if (itemAtSlot !== undefined) {
-								this.SetHeldSlot(trySlot);
-								break;
-							}
-						}
-					}),
-				);
+					// If the item at the given `trySlot` index exists, set it as the held item:
+					const itemAtSlot = this.inventory.GetItem(trySlot);
+					if (itemAtSlot !== undefined) {
+						this.SetHeldSlot(trySlot);
+						break;
+					}
+				}
 			}),
 		);
 	}
