@@ -38,7 +38,7 @@ export default class GameGeneralPage extends MainMenuPageComponent {
 		this.playerListPage.SetActive(false);
 
 		const mainMenu = Dependency<MainMenuSingleton>();
-		if (mainMenu.leaveMatchButtonData) {
+		if (mainMenu.leaveMatchButtonData && !Game.IsMobile()) {
 			this.leaveMatchBtn.text.text = mainMenu.leaveMatchButtonData.text;
 			this.leaveMatchBtn.gameObject.SetActive(true);
 			this.leaveMatchSpacer.gameObject.SetActive(true);
