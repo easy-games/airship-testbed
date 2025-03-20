@@ -83,12 +83,16 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		this.externalInventoryContent?.gameObject.SetActive(false);
 		this.externalInventoryLabel?.gameObject.SetActive(false);
 
-		Airship.Inventory.ObserveLocalInventory((inv) => {
+		Airship.Inventory.ObserveLocalInventory(() => {
 			if (this.isSetup) return;
 
 			this.isSetup = true;
-			this.SetupHotbar();
-			this.SetupBackpack();
+			const hb = this.SetupHotbar();
+			const bp = this.SetupBackpack();
+			return () => {
+				hb.Clean();
+				bp.Clean();
+			};
 		});
 		Airship.Input.OnDown("Inventory").Connect((event) => {
 			if (event.uiProcessed || !this.inventoryEnabled || !this.isSetup) return;
@@ -165,25 +169,23 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		return this.hotbarSlots;
 	}
 
-	private SetupHotbar(): void {
+	private SetupHotbar(): Bin {
 		this.hotbarCanvas.enabled = true;
 
-		const inv = Airship.Inventory.localInventory!;
-		const character = Game.localPlayer.character;
-		if (!character) {
-			warn("Tried to set up hotbar while no character exists.");
-			return;
-		}
-		for (let i = 0; i < this.hotbarSlots; i++) {
-			this.UpdateHotbarSlot(i, character.GetHeldSlot() ?? 0, undefined, true);
-		}
+		let init = false; // TODO: @luke why is this false to start with? It looks like it's only ever false, but it works?
+		return Game.localPlayer.ObserveCharacter((character) => {
+			if (!character) {
+				warn("Tried to set up hotbar while no character exists.");
+				return;
+			}
+			for (let i = 0; i < this.hotbarSlots; i++) {
+				this.UpdateHotbarSlot(i, character.GetHeldSlot() ?? 0, undefined, true);
+			}
 
-		let init = false;
-		Airship.Inventory.ObserveLocalInventory((inv) => {
 			const invBin = new Bin();
 			const slotBinMap = new Map<number, Bin>();
 			invBin.Add(
-				inv.onSlotChanged.Connect((slot, itemStack) => {
+				character.inventory.onSlotChanged.Connect((slot, itemStack) => {
 					slotBinMap.get(slot)?.Clean();
 					if (slot < this.hotbarSlots) {
 						const slotBin = new Bin();
@@ -217,7 +219,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			invBin.Add(
 				character.onHeldSlotChanged.Connect((slot) => {
 					for (let i = 0; i < this.hotbarSlots; i++) {
-						const itemStack = inv.GetItem(i);
+						const itemStack = character.inventory.GetItem(i);
 
 						this.UpdateHotbarSlot(i, slot, itemStack);
 					}
@@ -226,7 +228,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			);
 
 			for (let i = 0; i < this.hotbarSlots; i++) {
-				const itemStack = inv.GetItem(i);
+				const itemStack = character.inventory.GetItem(i);
 				this.UpdateHotbarSlot(i, character.GetHeldSlot(), itemStack, init, true);
 			}
 			this.prevHeldSlot = character.GetHeldSlot();
@@ -561,7 +563,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		};
 	}
 
-	private SetupBackpack(): void {
+	private SetupBackpack(): Bin {
 		const inv = Airship.Inventory.localInventory!;
 
 		// backpack hotbar slots
@@ -590,7 +592,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 
 		const invBin = new Bin();
 		let init = true;
-		Airship.Inventory.ObserveLocalInventory((inv) => {
+		return Airship.Inventory.ObserveLocalInventory((inv) => {
 			invBin.Clean();
 			const slotBinMap = new Map<number, Bin>();
 

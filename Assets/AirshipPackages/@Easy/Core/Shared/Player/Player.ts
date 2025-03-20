@@ -314,6 +314,7 @@ export class Player {
 			}),
 		);
 
+		bin.Add(() => cleanup?.());
 		this.bin.Add(bin);
 		return bin;
 	}
