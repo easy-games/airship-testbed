@@ -738,7 +738,10 @@ export default class Character extends AirshipBehaviour {
 
 	public SetHeldSlot(slot: number): void {
 		// Only the client can set held slot.
-		if (!this.IsLocalCharacter()) return;
+		if (!this.IsLocalCharacter()) {
+			warn("Attempted to set held slot on non-local character. This will have no effect.");
+			return;
+		}
 
 		const before = this.onBeforeLocalHeldSlotChanged.Fire(
 			new BeforeLocalInventoryHeldSlotChanged(slot, this.heldSlot),
