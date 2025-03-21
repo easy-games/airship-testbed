@@ -74,11 +74,12 @@ export class DamageSingleton {
 		data?: DamageInfoCustomData,
 	): DamageInfo {
 		assert(damage >= 0, "Unable to InflictDamage with a negative damage amount.");
+		assert(Game.IsServer(), "InflictDamage: Should only be called on the server.");
 
 		const damageInfo = new DamageInfo(gameObject, damage, attacker, data ?? {});
 		this.onDamage.Fire(damageInfo);
 		if (damageInfo.IsCancelled()) return damageInfo;
-
+		
 		if (Game.IsServer() && this.autoNetwork) {
 			const nob = damageInfo.gameObject.GetComponentInParent<NetworkIdentity>();
 			const attackerNob = damageInfo.attacker?.GetComponentInParent<NetworkIdentity>();
@@ -91,6 +92,11 @@ export class DamageSingleton {
 				);
 			}
 		}
+		
+		if (damageInfo.character && damageInfo.character.GetHealth() <= 0 && Game.IsServer()) {
+			this.BroadcastDeath(damageInfo);
+		}
+		
 		return damageInfo;
 	}
 
