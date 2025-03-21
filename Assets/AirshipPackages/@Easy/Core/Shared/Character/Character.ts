@@ -108,10 +108,6 @@ export default class Character extends AirshipBehaviour {
 					let newHealth = math.max(0, this.health - damageInfo.damage);
 
 					this.SetHealth(newHealth, true, true);
-
-					if (Game.IsServer() && newHealth <= 0) {
-						Airship.Damage.BroadcastDeath(damageInfo);
-					}
 				}
 			}),
 		);
