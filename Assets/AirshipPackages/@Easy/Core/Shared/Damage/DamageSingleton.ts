@@ -41,7 +41,9 @@ export class DamageSingleton {
 				attackerNob = NetworkUtil.GetNetworkIdentity(attackerNobId);
 			}
 
-			this.InflictDamage(nob.gameObject, damage, attackerNob?.gameObject, data);
+			const damageInfo = new DamageInfo(nob.gameObject, damage, attackerNob?.gameObject, data ?? {});
+			this.onDamage.Fire(damageInfo);
+			if (damageInfo.IsCancelled()) return damageInfo;
 		});
 
 		this.deathRemote.client.OnServerEvent((nobId, damage, attackerNobId, data) => {
