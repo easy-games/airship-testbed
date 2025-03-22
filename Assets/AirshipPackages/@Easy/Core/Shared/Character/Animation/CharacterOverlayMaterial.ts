@@ -6,7 +6,7 @@ export default class CharacterOverlayMaterial extends AirshipBehaviour {
 
 	@Header("References")
 	public accessoryBuilder?: AccessoryBuilder;
-	public extraRenderers: Renderer[] = [];
+	public extraSkinnedMeshRenderers: SkinnedMeshRenderer[] = [];
 
 	@Header("Advanced")
 	public materialIndexOffset = 0;
@@ -35,16 +35,16 @@ export default class CharacterOverlayMaterial extends AirshipBehaviour {
 						this.currentStaticRenderers = [staticMesh];
 						this.currentRenderers = [skinnedMesh, staticMesh];
 					} else {
+						// Note: below code was disabled because "instanceof" doesn't work on C# classes. So it was doing nothing.
 						//Individual accessories
-						let allMeshes = this.accessoryBuilder.GetAllAccessoryRenderers();
-						for (const mesh of allMeshes) {
-							this.currentRenderers.push(mesh);
-							if (mesh instanceof SkinnedMeshRenderer) {
-								this.currentSkinnedRenderers.push(mesh as SkinnedMeshRenderer);
-							} else if (mesh instanceof MeshRenderer) {
-								this.currentStaticRenderers.push(mesh as MeshRenderer);
-							}
-						}
+						// let allMeshes = this.accessoryBuilder.GetAllAccessoryRenderers();
+						// for (const mesh of allMeshes) {
+						// 	this.currentRenderers.push(mesh);
+						// 	if (mesh instanceof SkinnedMeshRenderer) {
+						// 	} else if (mesh instanceof MeshRenderer) {
+						// 		this.currentStaticRenderers.push(mesh as MeshRenderer);
+						// 	}
+						// }
 					}
 					this.currentMaterial = undefined;
 					this.AddExtraRenderers();
@@ -56,13 +56,9 @@ export default class CharacterOverlayMaterial extends AirshipBehaviour {
 	}
 
 	private AddExtraRenderers() {
-		for (let ren of this.extraRenderers) {
+		for (let ren of this.extraSkinnedMeshRenderers) {
 			if (ren) {
-				if (ren instanceof SkinnedMeshRenderer) {
-					this.currentSkinnedRenderers.push(ren);
-				} else if (ren instanceof MeshRenderer) {
-					this.currentRenderers.push(ren);
-				}
+				this.currentSkinnedRenderers.push(ren);
 			}
 		}
 	}
