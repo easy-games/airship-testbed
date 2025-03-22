@@ -215,8 +215,9 @@ export default class Character extends AirshipBehaviour {
 		if (this.movement) {
 			this.SetupMovementConnections();
 		} else {
-			// TODO: in the future we might want to network held item even if they aren't using our movement networking
-			warn("Movement networking not available, held item will not be networked for this character.");
+			// We can still set up held item networking using regular signals if they
+			// have opted not to use our networked movement.
+			this.SetupHeldItemSignalNetworking();
 		}
 	}
 
@@ -273,33 +274,35 @@ export default class Character extends AirshipBehaviour {
 		}
 	}
 
-	private SetupHeldItemNetworking() {
-		if (true) {
-			if (Game.IsServer()) {
-				this.bin.Add(
-					CoreNetwork.ClientToServer.Character.SetHeldSlot.server.OnClientEvent((player, slot) => {
-						const characterId = player.character?.id;
-						if (characterId === undefined) return;
-						if (characterId !== this.id) return;
-						if (slot === this.heldSlot) return;
-						this.SetHeldSlotInternal(slot);
-						CoreNetwork.ServerToClient.Character.SetHeldSlot.server.FireExcept(player, characterId, slot);
-					}),
-				);
-			} else {
-				this.bin.Add(
-					CoreNetwork.ServerToClient.Character.SetHeldSlot.client.OnServerEvent((charId, slot) => {
-						if (this.id !== charId) return;
-						if (slot === this.heldSlot) return;
+	/**
+	 * Allows the use of signal based networking event if desired even if state based networking for held
+	 * items is unavailable.
+	 */
+	private SetupHeldItemSignalNetworking() {
+		if (Game.IsServer()) {
+			this.bin.Add(
+				CoreNetwork.ClientToServer.Character.SetHeldSlot.server.OnClientEvent((player, slot) => {
+					const characterId = player.character?.id;
+					if (characterId === undefined) return;
+					if (characterId !== this.id) return;
+					if (slot === this.heldSlot) return;
+					this.SetHeldSlotInternal(slot);
+					CoreNetwork.ServerToClient.Character.SetHeldSlot.server.FireExcept(player, characterId, slot);
+				}),
+			);
+		} else {
+			this.bin.Add(
+				CoreNetwork.ServerToClient.Character.SetHeldSlot.client.OnServerEvent((charId, slot) => {
+					if (this.id !== charId) return;
+					if (slot === this.heldSlot) return;
 
-						this.SetHeldSlotInternal(slot);
-					}),
-				);
-			}
-
-			return;
+					this.SetHeldSlotInternal(slot);
+				}),
+			);
 		}
+	}
 
+	private SetupHeldItemStateNetworking() {
 		// Send client held slot to the server
 		if (this.IsLocalCharacter()) {
 			if (this.movement.IsAuthority()) {
@@ -360,7 +363,7 @@ export default class Character extends AirshipBehaviour {
 
 		this.bin.AddEngineEventConnection(
 			movementWithSignals.OnSetMode((mode) => {
-				this.SetupHeldItemNetworking();
+				this.SetupHeldItemStateNetworking();
 			}),
 		);
 
@@ -782,11 +785,14 @@ export default class Character extends AirshipBehaviour {
 				new BeforeLocalInventoryHeldSlotChanged(slot, this.heldSlot),
 			);
 			if (before.IsCancelled()) return;
-			if (Game.IsClient()) {
-				CoreNetwork.ClientToServer.Character.SetHeldSlot.client.FireServer(slot);
-			} else {
-				// If IsLocalCharacter on the server, that means it's a bot (todo)
-				CoreNetwork.ServerToClient.Character.SetHeldSlot.server.FireAllClients(this.id, slot);
+			// Only use signal networking if state based networking is unavailable.
+			if (!this.movement) {
+				if (Game.IsClient()) {
+					CoreNetwork.ClientToServer.Character.SetHeldSlot.client.FireServer(slot);
+				} else {
+					// If IsLocalCharacter on the server, that means it's a bot (todo)
+					CoreNetwork.ServerToClient.Character.SetHeldSlot.server.FireAllClients(this.id, slot);
+				}
 			}
 		}
 

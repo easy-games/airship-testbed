@@ -29,7 +29,7 @@ MonoBehaviour:
   packages:
   - id: '@Easy/Core'
     assetVersion: 666
-    codeVersion: 803
+    codeVersion: 810
     publishVersionNumber: 
     game: 0
     localSource: 1
