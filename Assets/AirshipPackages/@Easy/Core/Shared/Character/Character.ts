@@ -114,6 +114,9 @@ export default class Character extends AirshipBehaviour {
 		this.bin.Add(
 			Airship.Damage.onDeath.ConnectWithPriority(SignalPriority.MONITOR, (damageInfo) => {
 				if (damageInfo.gameObject === this.gameObject) {
+					if (this.movement) {
+						this.movement.enabled = false;
+					}
 					this.onDeath.Fire();
 				}
 			}),
