@@ -27,6 +27,12 @@ interface BinaryBlob {
 	Decode(): unknown;
 }
 
+interface SyncedBlob extends NetworkBehaviour {
+	OnChanged(callback: (oldBlob: BinaryBlob, newBlob: BinaryBlob) => void): EngineEventConnection;
+	SetBlob(blob: BinaryBlob);
+	blob: BinaryBlob;
+}
+
 interface BinaryBlobConstructor {
 	new (data: unknown): BinaryBlob;
 }

@@ -117,10 +117,13 @@ export default class PredictedCommandManager extends AirshipSingleton {
 	 */
 	public readonly onCommandEnded = new Signal<[CommandInstanceIdentifier, Readonly<unknown> | undefined]>();
 
+	private readonly onInstanceCreated = new Signal<[CommandInstanceIdentifier, unknown]>();
+
 	private commandHandlerMap: Record<string, CommandConfiguration> = {};
 	/** The active commands for the current tick. If read during a replay, it will contain the active command at that tick. */
 	private activeCommands: Map<number, Map<string, ActiveCommand>> = new Map();
 	private globalBin = new Bin();
+	private observerBins = new Set<Bin>();
 
 	// Clients use this number to generate a unique instance id for each command run. The server uses the client instance
 	// IDs so we know which command input is for. Instance IDs are character scoped, so we don't have to worry about conflicts
@@ -485,6 +488,12 @@ export default class PredictedCommandManager extends AirshipSingleton {
 			Game.localPlayer.character!.movement.RequestResimulation(commandNumber);
 		});
 
+		this.globalBin.Add(() => {
+			this.observerBins.forEach((bin) => {
+				bin.Clean();
+			});
+		});
+
 		if (Game.IsClient()) {
 			this.globalBin.AddEngineEventConnection(
 				AirshipSimulationManager.Instance.OnHistoryLifetimeReached((time) => {
@@ -537,6 +546,43 @@ export default class PredictedCommandManager extends AirshipSingleton {
 	 */
 	public CancelCommand(commandInstance: CommandInstanceIdentifier) {
 		this.queuedCancellations.push(commandInstance);
+	}
+
+	/** Allows you to retrieve and operate on the specific instance of a command that is running. When a new instance matching the
+	 * command instance identifier is created, the callback will be called with the instance of the command that will be handling tick
+	 * operations.
+	 *
+	 * If the command is invalidated or authoritatively ends, the returned bin will be cleaned and the callback will no longer be
+	 * invoked.
+	 */
+	public ObserveInstance<T>(commandInstance: CommandInstanceIdentifier, callback: (instance: T) => CleanupFunc): Bin {
+		const bin = new Bin();
+		let callbackBin: CleanupFunc;
+
+		bin.Add(
+			this.onCommandEnded.Connect((commandId) => {
+				if (commandId.stringify() !== commandInstance.stringify()) return;
+				bin.Clean();
+			}),
+		);
+		bin.Add(
+			this.onInstanceCreated.Connect((commandId, instance) => {
+				if (commandId.stringify() !== commandInstance.stringify()) return;
+				callbackBin?.();
+				callbackBin = callback(instance as T);
+			}),
+		);
+		bin.Add(() => callbackBin?.());
+
+		const active = this.GetActiveCommandOnCharacter(commandInstance);
+		if (active) callbackBin = callback(active.instance as T);
+
+		this.observerBins.add(bin);
+		bin.Add(() => {
+			this.observerBins.delete(bin);
+		});
+
+		return bin;
 	}
 
 	/**
@@ -839,6 +885,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 		});
 
 		this.AddActiveCommandToCharacter(character.id, activeCommand);
+		this.onInstanceCreated.Fire(commandIdentifier, activeCommand.instance);
 		return activeCommand;
 	}
 

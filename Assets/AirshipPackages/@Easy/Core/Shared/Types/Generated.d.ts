@@ -31741,7 +31741,6 @@ interface ServerContextConstructor {
 declare const ServerContext: ServerContextConstructor;
     
 interface ServerBootstrapConstructor {
-    editorStartingSceneIntent: string;
 
 
     new(): ServerBootstrap;
@@ -48251,121 +48250,6 @@ interface CharacterAnimationSyncDataConstructor {
 
 }
 declare const CharacterAnimationSyncData: CharacterAnimationSyncDataConstructor;
-    
-interface AirshipSimulationManager extends MonoBehaviour {
-
-
-
-    ActivateSimulationManager(): void;
-    FixedUpdate(): void;
-    GetLastSimulationTime(time: number): number;
-    RequestResimulation(time: number): void;
-    ScheduleLagCompensation(client: NetworkConnectionToClient, checkCallback: CheckWorld, completeCallback: RollbackComplete): void;
-    ScheduleResimulation(callback: PerformResimulationCallback): void;
-
-
-}
-    
-interface CheckWorld {
-
-
-
-    BeginInvoke(callback: unknown, object: unknown): unknown;
-    EndInvoke(result: unknown): void;
-    Invoke(): void;
-
-
-}
-    
-interface CheckWorldConstructor {
-
-
-    new(object: unknown, method: unknown): CheckWorld;
-
-
-
-}
-declare const CheckWorld: CheckWorldConstructor;
-    
-interface RollbackComplete {
-
-
-
-    BeginInvoke(callback: unknown, object: unknown): unknown;
-    EndInvoke(result: unknown): void;
-    Invoke(): void;
-
-
-}
-    
-interface RollbackCompleteConstructor {
-
-
-    new(object: unknown, method: unknown): RollbackComplete;
-
-
-
-}
-declare const RollbackComplete: RollbackCompleteConstructor;
-    
-interface PerformResimulationCallback {
-
-
-
-    BeginInvoke(simulateFunction: PerformResimulate, callback: unknown, object: unknown): unknown;
-    EndInvoke(result: unknown): void;
-    Invoke(simulateFunction: PerformResimulate): void;
-
-
-}
-    
-interface PerformResimulate {
-
-
-
-    BeginInvoke(baseTime: number, callback: unknown, object: unknown): unknown;
-    EndInvoke(result: unknown): void;
-    Invoke(baseTime: number): void;
-
-
-}
-    
-interface PerformResimulateConstructor {
-
-
-    new(object: unknown, method: unknown): PerformResimulate;
-
-
-
-}
-declare const PerformResimulate: PerformResimulateConstructor;
-    
-interface PerformResimulationCallbackConstructor {
-
-
-    new(object: unknown, method: unknown): PerformResimulationCallback;
-
-
-
-}
-declare const PerformResimulationCallback: PerformResimulationCallbackConstructor;
-    
-interface AirshipSimulationManagerConstructor {
-    instance: AirshipSimulationManager;
-    OnSetPaused: unknown;
-    OnSetSnapshot: unknown;
-    OnLagCompensationCheck: unknown;
-    OnPerformTick: unknown;
-    OnCaptureSnapshot: unknown;
-    OnHistoryLifetimeReached: unknown;
-
-
-    new(): AirshipSimulationManager;
-
-
-
-}
-declare const AirshipSimulationManager: AirshipSimulationManagerConstructor;
     
 interface AirshipSteamFriendInfo {
     playingAirship: boolean;
