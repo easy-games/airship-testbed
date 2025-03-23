@@ -303,6 +303,8 @@ export default class Character extends AirshipBehaviour {
 	}
 
 	private SetupHeldItemStateNetworking() {
+		this.WaitForInit();
+
 		// Send client held slot to the server
 		if (this.IsLocalCharacter()) {
 			if (this.movement.IsAuthority()) {

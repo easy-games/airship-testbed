@@ -1,7 +1,10 @@
 import Character from "../../Character/Character";
-import { CommandInstanceIdentifier } from "./PredictedCommandManager";
+import { CommandConfiguration, CommandInstanceIdentifier } from "./PredictedCommandManager";
 
 export default class PredictedCustomCommand<Input, StateSnapshot> {
+	/** Configuration this command is running with. */
+	public commandConfig: CommandConfiguration;
+
 	/**
 	 * The character the command is running on.
 	 */
@@ -19,9 +22,10 @@ export default class PredictedCustomCommand<Input, StateSnapshot> {
 	 * functions.
 	 * @param character
 	 */
-	constructor(character: Character, identifier: CommandInstanceIdentifier) {
+	constructor(character: Character, identifier: CommandInstanceIdentifier, config: CommandConfiguration) {
 		this.character = character;
 		this.identifier = identifier;
+		this.commandConfig = config;
 	}
 
 	// Owning Client Only
@@ -33,7 +37,7 @@ export default class PredictedCustomCommand<Input, StateSnapshot> {
 	 * Returning false will end the command.
 	 */
 	GetCommand(): Input | false {
-		return false;
+		return this.commandConfig.tickWithNoInput ? ({} as Input) : false;
 	}
 
 	// Server and Client
@@ -68,7 +72,7 @@ export default class PredictedCustomCommand<Input, StateSnapshot> {
 	 * @param replay
 	 */
 	OnTick(input: Readonly<Input> | undefined, replay: boolean): void | false {
-		return false;
+		return this.commandConfig.tickWithNoInput ? undefined : false;
 	}
 
 	/**

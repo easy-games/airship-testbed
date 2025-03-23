@@ -674,7 +674,7 @@ MonoBehaviour:
       decorators: []
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 0}
+      serializedObject: {fileID: 3239827073778428190}
       modified: 1
     - name: movement
       type: object
@@ -696,7 +696,7 @@ MonoBehaviour:
           serializedValue: '"References"'
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 0}
+      serializedObject: {fileID: 7877576865563315073}
       modified: 1
     - name: accessoryBuilder
       type: object

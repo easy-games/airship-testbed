@@ -307,13 +307,14 @@ export default class PredictedCommandManager extends AirshipSingleton {
 						// if it's not, we have to create it, then compare.
 						let instance = this.GetActiveCommandOnCharacter(commandIdentifier)?.instance;
 						if (!instance) {
-							const handler = this.commandHandlerMap[commandIdentifier.commandId].handler;
+							const config = this.commandHandlerMap[commandIdentifier.commandId];
+							const handler = config.handler;
 							if (!handler) return;
 
 							// Instead of fully creating an active command using SetupCommand, we simply create an instance of it
 							// since all we want to do is call CompareSnapshots(). No ticking will be involved on this instance
 							// and it should be removed once this function completes.
-							instance = new handler(character, commandIdentifier);
+							instance = new handler(character, commandIdentifier, config);
 						}
 
 						// Call the compare function and set the result for C# to use later
@@ -452,10 +453,8 @@ export default class PredictedCommandManager extends AirshipSingleton {
 			this.onCommandEnded.Fire(commandIdenfitier, stateData.data);
 
 			// temporary instance just for comparing snapshot data
-			const tempInstance = new this.commandHandlerMap[commandIdenfitier.commandId].handler(
-				Game.localPlayer.character!,
-				commandIdenfitier,
-			);
+			const config = this.commandHandlerMap[commandIdenfitier.commandId];
+			const tempInstance = new config.handler(Game.localPlayer.character!, commandIdenfitier, config);
 			print(
 				`Client recieved end report for ${commandIdentifierStr}. Ended cmd: ${commandNumber} Predicted state: ${inspect(
 					lastState,
@@ -675,7 +674,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 			config: config,
 			customDataKey: this.BuildCustomDataKey({ commandId, instanceId }),
 			created: false,
-			instance: new config.handler(character, commandIdentifier),
+			instance: new config.handler(character, commandIdentifier, config),
 			bin: new Bin(),
 		};
 		let shouldTickAgain = true;
@@ -728,7 +727,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 
 		// Handles GetCommand call
 		activeCommand.bin.Add(
-			character.OnAddCustomInputData.Connect(() => {
+			character.OnAddCustomInputData.ConnectWithPriority(config.priority ?? SignalPriority.NORMAL, () => {
 				// Last tick requested to end processing, so we no longer get input. The server
 				// should have also expected to end processing this tick and will not expect new input.
 				if (!shouldTickAgain) return;
@@ -750,7 +749,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 				: character.OnUseCustomInputData;
 		// Handles OnTick call
 		activeCommand.bin.Add(
-			onUseInput.Connect((customData, input, replay) => {
+			onUseInput.ConnectWithPriority(config.priority ?? SignalPriority.NORMAL, (customData, input, replay) => {
 				// The last tick returned false, so we should stop ticking no matter what our input is.
 				if (!shouldTickAgain) {
 					// CommitEndedCommand();
@@ -818,7 +817,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 
 		// Handles OnCaptureSnapshot call
 		activeCommand.bin.Add(
-			character.OnAddCustomSnapshotData.Connect(() => {
+			character.OnAddCustomSnapshotData.ConnectWithPriority(config.priority ?? SignalPriority.NORMAL, () => {
 				const state = activeCommand.instance.OnCaptureSnapshot();
 				const stateWrapper: CustomSnapshotData = {
 					data: state as Readonly<unknown>,
@@ -834,47 +833,55 @@ export default class PredictedCommandManager extends AirshipSingleton {
 
 		// Handles observer interpolation on each frame.
 		activeCommand.bin.Add(
-			character.OnInterpolateSnapshot.Connect((a, a_, b, b_, delta) => {
-				const aData = (a as Map<string, CustomSnapshotData>).get(activeCommand.customDataKey);
-				const bData = (b as Map<string, CustomSnapshotData>).get(activeCommand.customDataKey);
-				if (aData === undefined) {
-					// Skip interpolating since we haven't reached a base state yet.
-					return;
-				}
-				if (bData === undefined) {
-					// Skip interpolating since we have nothing to interpolate to.
-					return;
-				}
-				activeCommand.instance.OnObserverUpdate?.(aData.data, bData.data, delta);
-			}),
+			character.OnInterpolateSnapshot.ConnectWithPriority(
+				config.priority ?? SignalPriority.NORMAL,
+				(a, a_, b, b_, delta) => {
+					const aData = (a as Map<string, CustomSnapshotData>).get(activeCommand.customDataKey);
+					const bData = (b as Map<string, CustomSnapshotData>).get(activeCommand.customDataKey);
+					if (aData === undefined) {
+						// Skip interpolating since we haven't reached a base state yet.
+						return;
+					}
+					if (bData === undefined) {
+						// Skip interpolating since we have nothing to interpolate to.
+						return;
+					}
+					activeCommand.instance.OnObserverUpdate?.(aData.data, bData.data, delta);
+				},
+			),
 		);
 
 		// Handles when interpolation reaches a new state for an observed character.
 		activeCommand.bin.Add(
-			character.OnInterpolateReachedSnapshot.Connect((customData) => {
-				const commandData = (customData as Map<string, CustomSnapshotData>).get(activeCommand.customDataKey);
+			character.OnInterpolateReachedSnapshot.ConnectWithPriority(
+				config.priority ?? SignalPriority.NORMAL,
+				(customData) => {
+					const commandData = (customData as Map<string, CustomSnapshotData>).get(
+						activeCommand.customDataKey,
+					);
 
-				// We reached a tick where this command is no longer running. Complete it.
-				if (!commandData && activeCommand.created) {
-					const confirmedFinalState = this.confirmedFinalState.get(commandIdentifier.stringify());
-					if (confirmedFinalState) this.onCommandEnded.Fire(commandIdentifier, confirmedFinalState);
-					this.SetHighestCompletedInstance(commandIdentifier);
-					activeCommand.bin.Clean();
-					return;
-				}
+					// We reached a tick where this command is no longer running. Complete it.
+					if (!commandData && activeCommand.created) {
+						const confirmedFinalState = this.confirmedFinalState.get(commandIdentifier.stringify());
+						if (confirmedFinalState) this.onCommandEnded.Fire(commandIdentifier, confirmedFinalState);
+						this.SetHighestCompletedInstance(commandIdentifier);
+						activeCommand.bin.Clean();
+						return;
+					}
 
-				// We reached a tick where the command hasn't started yet. Don't do anything yet.
-				if (!commandData && !activeCommand.created) {
-					return;
-				}
+					// We reached a tick where the command hasn't started yet. Don't do anything yet.
+					if (!commandData && !activeCommand.created) {
+						return;
+					}
 
-				// We reached a tick where we do have command data, but we haven't created the command yet. Create it.
-				if (!activeCommand.created) {
-					activeCommand.created = true;
-					activeCommand.instance.Create?.();
-				}
-				activeCommand.instance.OnObserverReachedState?.(commandData!.data);
-			}),
+					// We reached a tick where we do have command data, but we haven't created the command yet. Create it.
+					if (!activeCommand.created) {
+						activeCommand.created = true;
+						activeCommand.instance.Create?.();
+					}
+					activeCommand.instance.OnObserverReachedState?.(commandData!.data);
+				},
+			),
 		);
 
 		// Ensures the destroy callback is done whenever the command is to be cleaned up.
