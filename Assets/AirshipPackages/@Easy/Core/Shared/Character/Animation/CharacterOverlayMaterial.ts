@@ -6,6 +6,7 @@ export default class CharacterOverlayMaterial extends AirshipBehaviour {
 
 	@Header("References")
 	public accessoryBuilder?: AccessoryBuilder;
+	public extraMeshRenderers: MeshRenderer[] = [];
 	public extraSkinnedMeshRenderers: SkinnedMeshRenderer[] = [];
 
 	@Header("Advanced")
@@ -59,6 +60,13 @@ export default class CharacterOverlayMaterial extends AirshipBehaviour {
 		for (let ren of this.extraSkinnedMeshRenderers) {
 			if (ren) {
 				this.currentSkinnedRenderers.push(ren);
+				this.currentRenderers.push(ren);
+			}
+		}
+		for (let ren of this.extraMeshRenderers) {
+			if (ren) {
+				this.currentStaticRenderers.push(ren);
+				this.currentRenderers.push(ren);
 			}
 		}
 	}
@@ -73,7 +81,7 @@ export default class CharacterOverlayMaterial extends AirshipBehaviour {
 			if (!ren?.sharedMesh) {
 				continue;
 			}
-			ren.SetMaterial(ren.sharedMesh.subMeshCount - 1 + this.materialIndexOffset, newMaterial);
+			ren.SetMaterial(ren.sharedMesh.subMeshCount + this.materialIndexOffset, newMaterial);
 		}
 		for (let ren of this.currentStaticRenderers) {
 			if (!ren) {
@@ -81,7 +89,7 @@ export default class CharacterOverlayMaterial extends AirshipBehaviour {
 			}
 			const filter = ren.gameObject.GetComponent<MeshFilter>();
 			if (filter?.mesh) {
-				ren.SetMaterial(filter.mesh.subMeshCount - 1 + this.materialIndexOffset, newMaterial);
+				ren.SetMaterial(filter.mesh.subMeshCount + this.materialIndexOffset, newMaterial);
 			}
 		}
 	}
@@ -95,7 +103,7 @@ export default class CharacterOverlayMaterial extends AirshipBehaviour {
 			if (!ren?.sharedMesh) {
 				continue;
 			}
-			Bridge.ClearMaterial(ren, ren.sharedMesh.subMeshCount - 1 + this.materialIndexOffset);
+			Bridge.ClearMaterial(ren, ren.sharedMesh.subMeshCount + this.materialIndexOffset);
 		}
 		for (let ren of this.currentStaticRenderers) {
 			if (!ren) {
@@ -103,7 +111,7 @@ export default class CharacterOverlayMaterial extends AirshipBehaviour {
 			}
 			const filter = ren.gameObject.GetComponent<MeshFilter>();
 			if (filter?.mesh) {
-				Bridge.ClearMaterial(ren, filter.sharedMesh.subMeshCount - 1 + this.materialIndexOffset);
+				Bridge.ClearMaterial(ren, filter.sharedMesh.subMeshCount + this.materialIndexOffset);
 			}
 		}
 	}
