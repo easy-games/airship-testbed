@@ -94,9 +94,6 @@ export default class Character extends AirshipBehaviour {
 	private queuedCustomInputData = new Map<string, unknown>();
 	private queuedCustomSnapshotData = new Map<string, unknown>();
 
-	// TODO: we might have trouble with this running on fixed update before update runs since
-	// we would normally collect input in update to be committed in fixed update which is where
-	// GetCommand is called...
 	/**
 	 * Fires before a new command is created on the client. Use this signal to create anything that will need
 	 * to connect to OnAddCustomInputData for the tick about to be processed. Only fires for the local
@@ -802,14 +799,12 @@ export default class Character extends AirshipBehaviour {
 	}
 
 	private SetHeldSlotInternal(slot: number): void {
-		warn("setting char " + this.id + " held slot to " + slot);
 		this.heldSlot = slot;
 		this.heldItem = this.GetHeldItem();
 		this.onHeldSlotChanged.Fire(slot);
 	}
 
 	private SetupHotbarControls() {
-		print("setting up hotbar controls");
 		// Controls
 		const hotbarKeys = [
 			Key.Digit1,

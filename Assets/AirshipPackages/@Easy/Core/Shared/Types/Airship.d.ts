@@ -229,6 +229,7 @@ interface CharacterMovement extends Component {
 }
 
 interface AirshipSimulationManager extends MonoBehaviour {
+	replaying: boolean;
 	// TODO: these events likely do not work yet
 	// OnSetPaused(callback: (paused: boolean) => void): EngineEventConnection;
 	// OnSetSnapshot(callback: (time: number) => void): EngineEventConnection;

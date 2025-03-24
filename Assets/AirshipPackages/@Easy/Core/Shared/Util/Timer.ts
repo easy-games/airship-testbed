@@ -36,10 +36,10 @@ export const OnFixedUpdate = new Signal<[fixedDeltaTime: number]>().WithAllowYie
  * ```
  */
 export function SetTimeout<T extends unknown[]>(duration: number, callback: (...args: T) => void, ...args: T) {
-	const thread = task.delay(
+	let thread = task.delay(
 		duration,
 		(...args: T) => {
-			task.defer(callback, ...args);
+			thread = task.defer(callback, ...args);
 		},
 		...args,
 	);

@@ -175,7 +175,6 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		let init = false; // TODO: @luke why is this false to start with? It looks like it's only ever false, but it works?
 		return Game.localPlayer.ObserveCharacter((character) => {
 			if (!character) {
-				warn("Tried to set up hotbar while no character exists.");
 				return;
 			}
 			for (let i = 0; i < this.hotbarSlots; i++) {
