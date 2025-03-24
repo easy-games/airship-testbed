@@ -598,7 +598,7 @@ interface CharacterStateData {
 	crouching: boolean;
 	localVelocity: Vector3;
 }
-interface CharacterAnimationHelper extends Component {
+interface CharacterAnimationHelper extends MonoBehaviour {
 	animator: Animator;
 	animationEvents?: AnimationEventListener;
 	isSkidding: boolean;
