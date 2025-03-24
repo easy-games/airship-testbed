@@ -130,7 +130,7 @@ export class AuthController {
 			}
 			return true;
 		}
-		print("failed signup up anon: " + res.error);
+		print(`failed signup up anon: ${res.error ?? "unknown error"}`);
 		return false;
 	}
 
