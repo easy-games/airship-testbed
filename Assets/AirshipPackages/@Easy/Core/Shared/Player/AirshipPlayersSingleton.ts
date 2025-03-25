@@ -351,6 +351,9 @@ export class AirshipPlayersSingleton {
 	}
 
 	private async FetchEquippedOutfit(player: Player, ignoreCache: boolean): Promise<boolean> {
+		// disable to test networking:
+		// ignoreCache = true;
+
 		const SetOutfit = (outfitDto: OutfitDto | undefined) => {
 			player.selectedOutfit = outfitDto;
 			player.outfitLoaded = true;
@@ -374,7 +377,33 @@ export class AirshipPlayersSingleton {
 			}
 		}
 
-		const outfit = await Airship.Avatar.GetUserEquippedOutfitDto(player.userId);
+		let outfit = await Airship.Avatar.GetUserEquippedOutfitDto(player.userId);
+
+		// Minify outfitDto. None of this data is needed to render accessories on the character.
+		if (outfit) {
+			for (let gear of outfit.gear) {
+				gear.createdAt = undefined!;
+				gear.instanceId = undefined!;
+				gear.ownerId = undefined!;
+
+				gear.class.name = undefined!;
+				gear.class.default = undefined!;
+				gear.class.description = undefined!;
+				gear.class.imageId = undefined!;
+				gear.class.marketable = undefined!;
+				gear.class.resourceId = undefined!;
+				gear.class.resourceType = undefined!;
+				gear.class.tags = undefined!;
+				gear.class.tradable = undefined!;
+			}
+
+			outfit.createdAt = undefined!;
+			outfit.equipped = undefined!;
+			outfit.name = undefined!;
+			outfit.outfitId = undefined!;
+		}
+		// print("outfitDto: " + inspect(outfit));
+
 		SetOutfit(outfit);
 
 		return true;

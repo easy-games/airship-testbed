@@ -143,6 +143,7 @@ export interface OutfitCreateDto {
 export interface OutfitDto {
 	outfitId: string;
 	owner: string;
+	createdAt: string;
 
 	name: string;
 	/** Hex string */
