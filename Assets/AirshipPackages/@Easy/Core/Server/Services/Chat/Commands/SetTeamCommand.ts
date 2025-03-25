@@ -34,6 +34,11 @@ export class SetTeamCommand extends ChatCommand {
 			return;
 		}
 
+		/* Remove from old team. */
+		if (targetPlayer.team) {
+			targetPlayer.team.RemovePlayer(targetPlayer);
+		}
+
 		/* Assign to team. */
 		targetTeam.AddPlayer(targetPlayer);
 		Game.BroadcastMessage(

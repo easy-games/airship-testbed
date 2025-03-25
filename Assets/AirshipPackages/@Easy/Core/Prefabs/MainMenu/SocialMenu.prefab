@@ -10929,18 +10929,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3466166659044445645}
     m_Modifications:
-    - target: {fileID: 11624708807603581, guid: 767f9492a1be84efca58a92b3df7748f, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0.040000003
-      objectReference: {fileID: 0}
-    - target: {fileID: 529617343733423601, guid: 767f9492a1be84efca58a92b3df7748f, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1824620162593784262, guid: 767f9492a1be84efca58a92b3df7748f, type: 3}
-      propertyPath: m_metadata.properties.Array.data[2].refPath
-      value: AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipButtonClickEffect@AirshipButtonClickEffect
-      objectReference: {fileID: 0}
     - target: {fileID: 2962330411399591800, guid: 767f9492a1be84efca58a92b3df7748f, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -10955,7 +10943,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2962330411399591800, guid: 767f9492a1be84efca58a92b3df7748f, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2962330411399591800, guid: 767f9492a1be84efca58a92b3df7748f, type: 3}
       propertyPath: m_AnchorMin.x
@@ -10963,15 +10951,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2962330411399591800, guid: 767f9492a1be84efca58a92b3df7748f, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2962330411399591800, guid: 767f9492a1be84efca58a92b3df7748f, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 40
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2962330411399591800, guid: 767f9492a1be84efca58a92b3df7748f, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 40
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2962330411399591800, guid: 767f9492a1be84efca58a92b3df7748f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -11003,11 +10991,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2962330411399591800, guid: 767f9492a1be84efca58a92b3df7748f, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 32
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2962330411399591800, guid: 767f9492a1be84efca58a92b3df7748f, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -24
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2962330411399591800, guid: 767f9492a1be84efca58a92b3df7748f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -11021,26 +11009,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3189728880649269054, guid: 767f9492a1be84efca58a92b3df7748f, type: 3}
-      propertyPath: m_metadata.properties.Array.data[2].refPath
-      value: AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipButtonClickEffect@AirshipButtonClickEffect
-      objectReference: {fileID: 0}
-    - target: {fileID: 3367465566541962587, guid: 767f9492a1be84efca58a92b3df7748f, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4104610746172726480, guid: 767f9492a1be84efca58a92b3df7748f, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5110718461288529575, guid: 767f9492a1be84efca58a92b3df7748f, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 49.96
-      objectReference: {fileID: 0}
-    - target: {fileID: 5220623947920909375, guid: 767f9492a1be84efca58a92b3df7748f, type: 3}
-      propertyPath: m_AspectRatio
-      value: 0.001
-      objectReference: {fileID: 0}
     - target: {fileID: 7456303551240248902, guid: 767f9492a1be84efca58a92b3df7748f, type: 3}
       propertyPath: m_Material
       value: 
@@ -11048,10 +11016,6 @@ PrefabInstance:
     - target: {fileID: 8313791002780441663, guid: 767f9492a1be84efca58a92b3df7748f, type: 3}
       propertyPath: m_Name
       value: PartyMember
-      objectReference: {fileID: 0}
-    - target: {fileID: 8385120038032383805, guid: 767f9492a1be84efca58a92b3df7748f, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
