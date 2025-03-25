@@ -1254,7 +1254,6 @@ MonoBehaviour:
   animationEvents: {fileID: 6059025528528977290}
   sprintVfx: {fileID: 8366697698488531815}
   jumpPoofVfx: {fileID: 8321520850568583672}
-  slideVfx: {fileID: 4591070209699312083}
   minAirborneTime: 0.25
   particleMaxDistance: 25
   directionalBlendLerpMod: 15
@@ -1800,11 +1799,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e4f3504ea329924ca0e3824e6fc9389, type: 3}
---- !u!198 &4591070209699312083 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 6912367275794342687, guid: 5e4f3504ea329924ca0e3824e6fc9389, type: 3}
-  m_PrefabInstance: {fileID: 6943261370758517452}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7437986945175781148 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 532096394122571216, guid: 5e4f3504ea329924ca0e3824e6fc9389, type: 3}
