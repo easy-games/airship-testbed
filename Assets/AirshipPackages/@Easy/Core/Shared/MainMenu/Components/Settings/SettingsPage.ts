@@ -78,8 +78,8 @@ export default class SettingsPage extends AirshipBehaviour {
 						// print(`safeArea.min: ${safeArea.min}, safeArea.max: ${safeArea.max}`);
 						// todo: this is wrong but works on iPhone... I cannot figure out how to make it work correctly with safeArea max.
 						// - Luke
-						this.verticalLayoutGroup.padding.left = safeArea.min.y;
-						this.verticalLayoutGroup.padding.right = safeArea.min.y;
+						this.verticalLayoutGroup.padding.left = safeArea.min.y + 20;
+						this.verticalLayoutGroup.padding.right = safeArea.min.y + 20;
 						this.mobileCloseButtonWrapper.anchoredPosition = new Vector2(
 							120,
 							this.mobileCloseButtonWrapper.anchoredPosition.y,
