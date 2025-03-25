@@ -70,6 +70,7 @@ export class ProtectedFriendsController {
 		key: string,
 		title: string,
 		username: string,
+		userId: string,
 		onResult: (result: boolean) => void,
 	): void {
 		this.socialNotificationBin.Clean();
@@ -80,6 +81,13 @@ export class ProtectedFriendsController {
 		this.socialNotification.titleText.text = title.upper();
 		this.socialNotification.usernameText.text = username;
 		this.socialNotification.onResult.Connect(onResult);
+
+		task.spawn(async () => {
+			const texture = await Airship.Players.GetProfilePictureAsync(userId);
+			if (texture) {
+				this.socialNotification.userImage.texture = texture;
+			}
+		});
 	}
 
 	public ClearSocialNotification(): void {
@@ -141,17 +149,11 @@ export class ProtectedFriendsController {
 
 				this.socialNotification.usernameText.text = foundUser.username;
 
-				task.spawn(async () => {
-					const texture = await Airship.Players.GetProfilePictureAsync(foundUser.uid);
-					if (texture) {
-						this.socialNotification.userImage.texture = texture;
-					}
-				});
-
 				this.AddSocialNotification(
 					"friend-request:" + data.initiatorId,
 					"Friend Request",
 					foundUser.username,
+					foundUser.uid,
 					(result) => {
 						if (result) {
 							task.spawn(() => {
