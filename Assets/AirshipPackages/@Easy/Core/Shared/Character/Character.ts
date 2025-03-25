@@ -79,6 +79,7 @@ export default class Character extends AirshipBehaviour {
 	/** Used to cancel changing held item slots. */
 	@NonSerialized() public readonly onBeforeLocalHeldSlotChanged = new Signal<BeforeLocalInventoryHeldSlotChanged>();
 	private observeHeldItemBins: Bin[] = [];
+	private observeHeldSlotBins: Bin[] = [];
 
 	// Hotbar controlls
 	private controlsEnabled = true;
@@ -223,6 +224,10 @@ export default class Character extends AirshipBehaviour {
 			bin.Clean();
 		}
 		this.observeHeldItemBins.clear();
+		for (const bin of this.observeHeldSlotBins) {
+			bin.Clean();
+		}
+		this.observeHeldSlotBins.clear();
 		if (Game.IsClient() && !this.despawned) {
 			this.bin.Clean();
 			this.despawned = true;
@@ -711,6 +716,32 @@ export default class Character extends AirshipBehaviour {
 		if (Game.IsServer()) {
 			CoreNetwork.ServerToClient.Character.EmoteEnd.server.FireAllClients(this.id);
 		}
+	}
+
+	public ObserveHeldSlot(
+		callback: (heldSlot: number) => CleanupFunc,
+		priority: SignalPriority = SignalPriority.NORMAL,
+	) {
+		const bin = new Bin();
+		this.observeHeldItemBins.push(bin);
+		let cleanup = callback(this.heldSlot);
+
+		bin.Add(
+			this.onHeldSlotChanged.ConnectWithPriority(priority, (newSlot) => {
+				if (cleanup !== undefined) {
+					task.spawn(() => {
+						cleanup!();
+					});
+				}
+				task.spawn(() => {
+					cleanup = callback(newSlot);
+				});
+			}),
+		);
+		bin.Add(() => {
+			cleanup?.();
+		});
+		return bin;
 	}
 
 	public ObserveHeldItem(
