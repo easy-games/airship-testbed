@@ -483,6 +483,7 @@ export class AirshipInventorySingleton {
 	}
 
 	public UnregisterInventory(inventory: Inventory): void {
+		if (inventory.id === undefined) return;
 		this.inventories.delete(inventory.id);
 	}
 
