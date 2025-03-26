@@ -51,8 +51,8 @@ export default class HomePageComponent extends MainMenuPageComponent {
 		super.OpenPage(params);
 		this.ClearSorts();
 		this.addedDiscordHero = false;
-		this.CreateSort(SortId.RecentlyUpdated, "Recently Updated");
 		this.CreateSort(SortId.Popular, "Popular");
+		this.CreateSort(SortId.RecentlyUpdated, "Recently Updated");
 
 		Bridge.UpdateLayout(this.scrollRect.transform, true);
 		task.spawn(() => {
