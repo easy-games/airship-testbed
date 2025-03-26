@@ -281,9 +281,9 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	}
 
 	public PlayReaction(slotType: AccessorySlot) {
-		if (math.random() < this.oddsOfAReaction) {
-			this.anim.SetInteger("ReactionIndex", math.random(3) - 1);
-			this.anim.SetTrigger("React");
-		}
+		// if (math.random() < this.oddsOfAReaction) {
+		// 	this.anim.SetInteger("ReactionIndex", math.random(3) - 1);
+		// 	this.anim.SetTrigger("React");
+		// }
 	}
 }
