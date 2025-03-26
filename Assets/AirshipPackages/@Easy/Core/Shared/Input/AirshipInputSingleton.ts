@@ -92,6 +92,7 @@ export class AirshipInputSingleton {
 	 * Container that holds mobile control buttons.
 	 */
 	private mobileControlsContainer!: GameObject;
+	private mobileCameraControlContainer!: GameObject;
 	/**
 	 * The default mobile button prefab.
 	 */
@@ -413,7 +414,14 @@ export class AirshipInputSingleton {
 			Asset.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/UI/MobileControls/MobileControlsCanvas.prefab"),
 			CoreRefs.rootTransform,
 		);
+		const mobileCameraControlCanvas = Object.Instantiate(
+			Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/UI/MobileControls/MobileCameraCanvas.prefab"),
+			CoreRefs.rootTransform,
+		)
+
 		this.mobileControlsContainer = mobileControlsCanvas;
+		this.mobileCameraControlContainer = mobileCameraControlCanvas;
+
 		const controls = this.mobileControlsContainer.GetAirshipComponent<MobileControlsCanvas>()!;
 
 		this.controlManager.ObserveControlScheme((controlScheme) => {
@@ -532,7 +540,7 @@ export class AirshipInputSingleton {
 	 * @returns 
 	 */
 	public GetMobileCameraMovement(): MobileCameraMovement | undefined {
-		return this.mobileControlsContainer.GetAirshipComponentInChildren<MobileCameraMovement>(true);
+		return this.mobileCameraControlContainer.GetAirshipComponentInChildren<MobileCameraMovement>(true);
 	}
 
 	/**
