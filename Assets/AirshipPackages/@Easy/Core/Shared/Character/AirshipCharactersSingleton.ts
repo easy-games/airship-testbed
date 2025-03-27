@@ -239,7 +239,7 @@ export class AirshipCharactersSingleton {
 
 				//We aren't combineing held items
 				// this.entity.accessoryBuilder.TryCombineMeshes();
-			}, SignalPriority.HIGH);
+			}, SignalPriority.HIGHEST);
 		});
 	}
 
