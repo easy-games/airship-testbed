@@ -157,4 +157,20 @@ export class ColorUtil {
 
 		return new Color(r, g, b);
 	}
+
+	/**
+	 * Lerps between two Colors by lerping each HSV property (with hue taking the shortest path).
+	 * This creates a more satisfying color transition when compared to lerping RGB.
+	 */
+	public static LerpHsv(col1: Color, col2: Color, alpha: number): Color {
+		let [h1, s1, v1] = Color.RGBToHSV(col1);
+		let [h2, s2, v2] = Color.RGBToHSV(col2);
+
+		// Logic to ensure we take the "shortest" path because hue of 0 & 1 are the same.
+		if (math.abs(h1 - h2) > 0.5) {
+			if (h1 < h2) h1 += 1;
+			else h2 += 1;
+		}
+		return Color.HSVToRGB(math.lerp(h1, h2, alpha) % 1, math.lerp(s1, s2, alpha), math.lerp(v1, v2, alpha));
+	}
 }
