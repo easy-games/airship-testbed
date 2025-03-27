@@ -78,6 +78,7 @@ export class DamageSingleton {
 		assert(Game.IsServer(), "InflictDamage: Should only be called on the server.");
 
 		const damageInfo = new DamageInfo(gameObject, damage, attacker, data ?? {});
+		if (damageInfo.character === undefined || damageInfo.character.IsDead()) return damageInfo;
 		this.onDamage.Fire(damageInfo);
 		if (damageInfo.IsCancelled()) return damageInfo;
 		
