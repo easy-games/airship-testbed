@@ -171,6 +171,9 @@ export class ColorUtil {
 			if (h1 < h2) h1 += 1;
 			else h2 += 1;
 		}
-		return Color.HSVToRGB(math.lerp(h1, h2, alpha) % 1, math.lerp(s1, s2, alpha), math.lerp(v1, v2, alpha));
+
+		const result = Color.HSVToRGB(math.lerp(h1, h2, alpha) % 1, math.lerp(s1, s2, alpha), math.lerp(v1, v2, alpha));
+		result.a = math.lerp(col1.a, col2.a, alpha);
+		return result;
 	}
 }
