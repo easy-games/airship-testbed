@@ -1,4 +1,5 @@
 import { GameDto, GamesDto, MyGamesDto } from "@Easy/Core/Client/Components/HomePage/API/GamesAPI";
+import DateParser from "@Easy/Core/Shared/DateParser";
 import { Controller, Service } from "@Easy/Core/Shared/Flamework/flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
@@ -62,6 +63,13 @@ export default class SearchSingleton {
 			data = data.filter((g) => g.lastVersionUpdate !== undefined);
 			this.myGames = data;
 			this.myGamesIds.clear();
+			this.myGames = this.myGames.sort((a, b) => {
+				const aTime =
+					a.lastVersionUpdate !== undefined ? (DateParser.FromISO(a.lastVersionUpdate) as number) : 0;
+				const bTime =
+					b.lastVersionUpdate !== undefined ? (DateParser.FromISO(b.lastVersionUpdate) as number) : 0;
+				return aTime > bTime;
+			});
 			for (let g of this.myGames) {
 				this.myGamesIds.add(g.id);
 			}
