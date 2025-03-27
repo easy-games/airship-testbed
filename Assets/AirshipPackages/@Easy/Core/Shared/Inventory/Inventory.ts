@@ -233,12 +233,8 @@ export default class Inventory extends AirshipBehaviour {
 								trySlot = hotbarKeys.size() - 1;
 							}
 
-							// If the item at the given `trySlot` index exists, set it as the held item:
-							const itemAtSlot = this.GetItem(trySlot);
-							if (itemAtSlot !== undefined) {
-								this.SetHeldSlot(trySlot);
-								break;
-							}
+							this.SetHeldSlot(trySlot);
+							break;
 						}
 					}),
 				);
