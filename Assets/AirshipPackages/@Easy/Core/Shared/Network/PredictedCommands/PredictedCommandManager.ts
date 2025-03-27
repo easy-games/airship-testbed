@@ -318,7 +318,9 @@ export default class PredictedCommandManager extends AirshipSingleton {
 						}
 
 						// Call the compare function and set the result for C# to use later
-						const result = instance.CompareSnapshots(aCommandData.data, bCommandData.data);
+						const result = this.RunWithoutYield(() =>
+							instance.CompareSnapshots(aCommandData.data, bCommandData.data),
+						);
 						character.SetComparisonResult(result);
 					});
 				}),
@@ -391,12 +393,12 @@ export default class PredictedCommandManager extends AirshipSingleton {
 								// 		" was not created on target snapshot, creating",
 								// );
 								activeCommand.created = true;
-								activeCommand.instance.Create?.();
+								this.RunWithoutYield(() => activeCommand.instance.Create?.());
 							}
 
 							//print("resetting " + activeCommand.customDataKey);
 
-							activeCommand.instance.ResetToSnapshot(data);
+							this.RunWithoutYield(() => activeCommand.instance.ResetToSnapshot(data));
 						},
 					);
 				}),
@@ -689,7 +691,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 		// the command and will no longer accept input. On the client, we simply destroy the command. we will send
 		// the final onCommandEnded signal when the client recieves the report from the server.
 		const CommitEndedCommand = () => {
-			print("last processed input: " + lastProcessedInputCommandNumber);
+			warn("last processed input: " + lastProcessedInputCommandNumber);
 			const commandIdentifierStr = commandIdentifier.stringify();
 			if (Game.IsServer()) {
 				this.SetHighestCompletedInstance(commandIdentifier);
@@ -732,7 +734,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 				// should have also expected to end processing this tick and will not expect new input.
 				if (!shouldTickAgain) return;
 
-				const input = activeCommand.instance.GetCommand();
+				const input = this.RunWithoutYield(() => activeCommand.instance.GetCommand());
 				const inputWrapper: CustomInputData = {
 					finished: input === false,
 					data: input as Readonly<unknown>,
@@ -752,7 +754,6 @@ export default class PredictedCommandManager extends AirshipSingleton {
 			onUseInput.ConnectWithPriority(config.priority ?? SignalPriority.NORMAL, (customData, input, replay) => {
 				// The last tick returned false, so we should stop ticking no matter what our input is.
 				if (!shouldTickAgain) {
-					// CommitEndedCommand();
 					return;
 				}
 
@@ -780,7 +781,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 				const customInput = (customData as Map<string, CustomInputData>).get(activeCommand.customDataKey);
 				if (customInput && !activeCommand.created) {
 					activeCommand.created = true;
-					activeCommand.instance.Create?.();
+					this.RunWithoutYield(() => activeCommand.instance.Create?.());
 				}
 
 				// If the command has been authoritatively ended on this command number, then we should reset it's state to the
@@ -799,7 +800,8 @@ export default class PredictedCommandManager extends AirshipSingleton {
 				}
 
 				// Process a normal forward tick
-				shouldTickAgain = activeCommand.instance.OnTick(customInput?.data, replay) !== false;
+				const tickResult = this.RunWithoutYield(() => activeCommand.instance.OnTick(customInput?.data, replay));
+				shouldTickAgain = tickResult !== false;
 				lastProcessedInputCommandNumber = input.commandNumber; // TODO: can input be null?
 				lastProcessedInputTime = input.time;
 
@@ -818,7 +820,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 		// Handles OnCaptureSnapshot call
 		activeCommand.bin.Add(
 			character.OnAddCustomSnapshotData.ConnectWithPriority(config.priority ?? SignalPriority.NORMAL, () => {
-				const state = activeCommand.instance.OnCaptureSnapshot();
+				const state = this.RunWithoutYield(() => activeCommand.instance.OnCaptureSnapshot());
 				const stateWrapper: CustomSnapshotData = {
 					data: state as Readonly<unknown>,
 				};
@@ -846,7 +848,9 @@ export default class PredictedCommandManager extends AirshipSingleton {
 						// Skip interpolating since we have nothing to interpolate to.
 						return;
 					}
-					activeCommand.instance.OnObserverUpdate?.(aData.data, bData.data, delta);
+					this.RunWithoutYield(() =>
+						activeCommand.instance.OnObserverUpdate?.(aData.data, bData.data, delta),
+					);
 				},
 			),
 		);
@@ -879,7 +883,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 						activeCommand.created = true;
 						activeCommand.instance.Create?.();
 					}
-					activeCommand.instance.OnObserverReachedState?.(commandData!.data);
+					this.RunWithoutYield(() => activeCommand.instance.OnObserverReachedState?.(commandData!.data));
 				},
 			),
 		);
@@ -888,7 +892,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 		activeCommand.bin.Add(() => {
 			if (!activeCommand.created) return;
 			activeCommand.created = false;
-			activeCommand.instance.Destroy?.();
+			this.RunWithoutYield(() => activeCommand.instance.Destroy?.());
 		});
 
 		this.AddActiveCommandToCharacter(character.id, activeCommand);
@@ -956,5 +960,21 @@ export default class PredictedCommandManager extends AirshipSingleton {
 		if (highestInstance === undefined || highestInstance < commandIdentifier.instanceId) {
 			characterHighest[commandIdentifier.commandId] = commandIdentifier.instanceId;
 		}
+	}
+
+	private RunWithoutYield<T extends Callback>(callback: T) {
+		let result: ReturnType<T>;
+		const thread = task.spawnDetached(() => {
+			result = callback();
+		});
+		if (coroutine.status(thread) !== "dead") {
+			error(
+				debug.traceback(
+					thread,
+					"Yield detected in a predicted command callback! This will cause undefined behavior!",
+				),
+			);
+		}
+		return result!;
 	}
 }
