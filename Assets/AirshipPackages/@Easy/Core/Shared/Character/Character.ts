@@ -297,11 +297,6 @@ export default class Character extends AirshipBehaviour {
 			return;
 		}
 
-		if (this.IsDead()) {
-			warn("Cannot teleport character: character is dead.");
-			return;
-		}
-
 		if (lookVector) {
 			this.movement.TeleportAndLook(pos, lookVector);
 			if (Game.IsClient()) {
