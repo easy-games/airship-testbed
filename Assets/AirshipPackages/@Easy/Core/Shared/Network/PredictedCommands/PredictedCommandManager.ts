@@ -10,7 +10,7 @@ import { NetworkSignal } from "../NetworkSignal";
 import PredictedCustomCommand from "./PredictedCustomCommand";
 
 export interface CommandConfiguration {
-	priority?: number;
+	priority?: SignalPriority;
 	/** Default is BeforeMove */
 	tickTiming?: "BeforeMove" | "AfterMove";
 	/**
