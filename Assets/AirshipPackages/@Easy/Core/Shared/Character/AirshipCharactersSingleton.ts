@@ -317,8 +317,8 @@ export class AirshipCharactersSingleton {
 		if (!characterComponent) {
 			error("Trying to spawn a character prefab without a character component on it!");
 		}
-		if (config?.lookDirection) {
-			characterComponent.movement?.SetLookVector(config?.lookDirection);
+		if (config?.lookDirection && characterComponent.movement) {
+			characterComponent.movement.startingLookVector = config.lookDirection;
 		}
 		characterComponent.Init(undefined, Airship.Characters.MakeNewId(), undefined, 100, 100, go.name);
 		const rb = go.GetComponent<Rigidbody>();

@@ -1069,6 +1069,7 @@ MonoBehaviour:
   autoCalibrateSkiddingSpeed: 1
   observerRotationLerpMod: 10
   playAnimationOnServer: 1
+  lookVector: {x: 1, y: 1, z: 1}
 --- !u!114 &1645000729044007242
 MonoBehaviour:
   m_ObjectHideFlags: 0

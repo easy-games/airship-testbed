@@ -128,6 +128,7 @@ interface CharacterMovement extends Component {
 	moveData: CharacterMovementData;
 	animationHelper: CharacterAnimationHelper;
 	mainCollider: BoxCollider;
+	startingLookVector: Vector3;
 
 	//Public Getters Private Setters
 	currentMoveState: CharacterMovementState;
