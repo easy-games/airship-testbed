@@ -226,13 +226,13 @@ export class AirshipPlayersSingleton {
 	 */
 	private InitServer(): void {
 		const onPlayerPreJoin = (dto: PlayerInfoDto) => {
-			print(
-				`[${
-					contextbridge.current() === LuauContext.Game ? "Game" : "Protected"
-				}] player pre join. connectionId: ${dto.connectionId}, username: ${dto.username}, userId: ${
-					dto.userId
-				}`,
-			);
+			// print(
+			// 	`[${
+			// 		contextbridge.current() === LuauContext.Game ? "Game" : "Protected"
+			// 	}] player pre join. connectionId: ${dto.connectionId}, username: ${dto.username}, userId: ${
+			// 		dto.userId
+			// 	}`,
+			// );
 			// LocalPlayer is hardcoded, so we check if this client should be treated as local player.
 			let player: Player;
 			if (Game.IsHosting() && dto.connectionId === 0) {
