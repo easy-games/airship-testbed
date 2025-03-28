@@ -400,7 +400,15 @@ export class AirshipPlayersSingleton {
 
 		// Bots use a random outfit
 		if (player.IsBot()) {
-			userId = RandomUtil.FromArray(["vVCFVA6DPufQLWVorGvDmaH59zs1"]);
+			userId = RandomUtil.FromArray([
+				"vVCFVA6DPufQLWVorGvDmaH59zs1", // Luke
+				"cB3fE3DedvQ7A7YMIo1Sw2UK8aX2",
+				"j05IHcHVsUTn03I37OLoED6VCoH3",
+				"lPzZLComeoTQB3eKP7VDfMDXz3g1",
+				"oba5stTj31Z9HGKPx8AFvhATE7A2",
+				"pIlbgcnL8cRF3OIFEc2I281ehPs2",
+				"t54D9Bhr77Ot8MCaGEQ4Cg19w9p1",
+			]);
 		}
 
 		let outfit = await Airship.Avatar.GetUserEquippedOutfitDto(userId);
