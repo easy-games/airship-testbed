@@ -13,6 +13,7 @@ import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { Asset } from "../Asset";
 import { CoreLogger } from "../Logger/CoreLogger";
 import { AirshipUrl } from "../Util/AirshipUrl";
+import { RandomUtil } from "../Util/RandomUtil";
 import { Levenshtein } from "../Util/Strings/Levenshtein";
 import { OnUpdate } from "../Util/Timer";
 import { BridgedPlayer } from "./BridgedPlayer";
@@ -219,8 +220,19 @@ export class AirshipPlayersSingleton {
 		});
 	}
 
+	/**
+	 * Note: this is called from both the Game and Protected context.
+	 * So if you have prints, you should see them happening twice.
+	 */
 	private InitServer(): void {
 		const onPlayerPreJoin = (dto: PlayerInfoDto) => {
+			print(
+				`[${
+					contextbridge.current() === LuauContext.Game ? "Game" : "Protected"
+				}] player pre join. connectionId: ${dto.connectionId}, username: ${dto.username}, userId: ${
+					dto.userId
+				}`,
+			);
 			// LocalPlayer is hardcoded, so we check if this client should be treated as local player.
 			let player: Player;
 			if (Game.IsHosting() && dto.connectionId === 0) {
@@ -248,10 +260,17 @@ export class AirshipPlayersSingleton {
 			}
 
 			// Ready bots immediately
-			// if (dto.connectionId < 0) {
-			// 	this.playersPendingReady.delete(dto.connectionId);
-			// 	this.HandlePlayerReadyServer(player);
-			// }
+			if (player.IsBot()) {
+				this.playersPendingReady.delete(dto.connectionId);
+				this.HandlePlayerReadyServer(player);
+
+				if (Game.IsGameLuauContext()) {
+					// fetch outfit
+					task.spawn(() => {
+						this.FetchEquippedOutfit(player, false);
+					});
+				}
+			}
 
 			// Next, the client will send a ready request which we handle in HandlePlayerReadyServer()
 		};
@@ -359,7 +378,7 @@ export class AirshipPlayersSingleton {
 			player.outfitLoaded = true;
 			// print("SetOutfit. userId: " + player.userId + ", outfit: " + inspect(outfitDto));
 			if (Game.IsEditor()) {
-				EditorSessionState.SetString("player_" + player.userId + "_outfit4", json.encode(outfitDto));
+				EditorSessionState.SetString("player_" + player.userId + "_outfit5", json.encode(outfitDto));
 			}
 		};
 
@@ -367,7 +386,7 @@ export class AirshipPlayersSingleton {
 		// Uncomment to disable editor cache
 		if (Game.IsEditor() && !ignoreCache) {
 			//print("Using editor cache: " + player.userId);
-			const data = EditorSessionState.GetString("player_" + player.userId + "_outfit4");
+			const data = EditorSessionState.GetString("player_" + player.userId + "_outfit5");
 			if (data && data !== "") {
 				const outfitDto = json.decode<OutfitDto>(data);
 				if (outfitDto) {
@@ -377,7 +396,14 @@ export class AirshipPlayersSingleton {
 			}
 		}
 
-		let outfit = await Airship.Avatar.GetUserEquippedOutfitDto(player.userId);
+		let userId = player.userId;
+
+		// Bots use a random outfit
+		if (player.IsBot()) {
+			userId = RandomUtil.FromArray(["vVCFVA6DPufQLWVorGvDmaH59zs1"]);
+		}
+
+		let outfit = await Airship.Avatar.GetUserEquippedOutfitDto(userId);
 
 		// Minify outfitDto. None of this data is needed to render accessories on the character.
 		if (outfit) {
@@ -410,16 +436,19 @@ export class AirshipPlayersSingleton {
 	}
 
 	private HandlePlayerReadyServer(player: Player): void {
-		while (player.networkIdentity?.connectionToClient === undefined) {
-			task.unscaledWait();
-		}
-		const conn = player.networkIdentity.connectionToClient;
-		if (!conn?.isReady) {
-			CoreLogger.Log("Player " + player.username + "'s connection was not ready. Waiting for ready.");
-			while (!conn?.isReady) {
+		if (!player.IsBot()) {
+			while (player.networkIdentity?.connectionToClient === undefined) {
 				task.unscaledWait();
 			}
+			const conn = player.networkIdentity.connectionToClient;
+			if (!conn?.isReady) {
+				CoreLogger.Log("Player " + player.username + "'s connection was not ready. Waiting for ready.");
+				while (!conn?.isReady) {
+					task.unscaledWait();
+				}
+			}
 		}
+
 		if (Game.IsProtectedLuauContext()) {
 			CoreNetwork.ServerToClient.ServerInfo.server.FireClient(
 				player,
@@ -480,7 +509,6 @@ export class AirshipPlayersSingleton {
 	 * to a real player.
 	 */
 	public AddBotPlayer(): Player {
-		error("AddBotPlayer hasn't been implemented in Mirror yet. If you need this, ping Luke.");
 		if (!Game.IsServer()) {
 			error("AddBotPlayer() must be called on the server.");
 		}
@@ -488,7 +516,7 @@ export class AirshipPlayersSingleton {
 		let userId = `bot${this.server!.botCounter}`;
 		let username = `Bot${this.server!.botCounter}`;
 		let tag = "bot";
-		this.playerManagerBridge.AddBotPlayer(username, tag, userId);
+		this.playerManagerBridge.AddBotPlayer(username, userId, tag);
 
 		const botPlayer = this.FindByUserId(userId);
 		return botPlayer!;

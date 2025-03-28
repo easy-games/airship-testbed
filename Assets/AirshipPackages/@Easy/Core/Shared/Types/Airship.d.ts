@@ -37,7 +37,7 @@ interface PlayerManagerBridge extends Component {
 	OnPlayerAdded(callback: (clientInfo: PlayerInfoDto) => void): EngineEventConnection;
 	OnPlayerRemoved(callback: (clientInfo: PlayerInfoDto) => void): EngineEventConnection;
 	GetPlayers(): PlayerInfoDto[];
-	AddBotPlayer(username: string, tag: string, userId: string): void;
+	AddBotPlayer(username: string, userId: string, profilePictureId: string): void;
 	GetPlayerInfoByClientId(clientId: number): PlayerInfoDto;
 	localPlayer: PlayerInfo;
 }
