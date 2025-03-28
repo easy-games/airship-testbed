@@ -800,7 +800,9 @@ export default class PredictedCommandManager extends AirshipSingleton {
 				}
 
 				// Process a normal forward tick
-				const tickResult = this.RunWithoutYield(() => activeCommand.instance.OnTick(customInput?.data, replay));
+				const tickResult = this.RunWithoutYield(() =>
+					activeCommand.instance.OnTick(customInput?.data, replay, input),
+				);
 				shouldTickAgain = tickResult !== false;
 				lastProcessedInputCommandNumber = input.commandNumber; // TODO: can input be null?
 				lastProcessedInputTime = input.time;
