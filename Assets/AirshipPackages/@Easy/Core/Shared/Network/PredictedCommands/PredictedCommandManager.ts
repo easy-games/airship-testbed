@@ -163,6 +163,12 @@ export default class PredictedCommandManager extends AirshipSingleton {
 			character.bin.Add(
 				character.PreCreateCommand.Connect(() => {
 					this.queuedCommands.forEach((key) => {
+						if (this.IsCommandIdActive(key.commandId)) {
+							warn(
+								`Tried to run command ${key.commandId} on character ID ${key.characterId}, but it was already active. You can only run one command instance at a time.`,
+							);
+							return;
+						}
 						const event = this.onValidateCommand.Fire(new ValidateCommand(character, key.commandId));
 						if (event.IsCancelled()) return; // Skip creating if something says we shouldn't create this
 						this.SetupCommand(character, key.commandId, key.instanceId);
