@@ -8,7 +8,6 @@ import { Bin } from "@Easy/Core/Shared/Util/Bin";
  * A character spawner with multi-scene support.
  */
 export default class CharacterSpawner extends AirshipBehaviour {
-	public spawnPoint!: Transform;
 	public delay = 0;
 
 	private bin = new Bin();
@@ -62,15 +61,15 @@ export default class CharacterSpawner extends AirshipBehaviour {
 	protected Update(dt: number): void {
 		Airship.Characters.GetCharacters().forEach((character) => {
 			if (character.transform.position.y < -25) {
-				character.Teleport(this.spawnPoint.transform.position);
+				character.Teleport(this.transform.position);
 			}
 		});
 	}
 
 	public SpawnCharacter(player: Player): void {
 		print(`Spawning ${player.username} in scene ${this.gameObject.scene.name}`);
-		const character = player.SpawnCharacter(this.spawnPoint.position, {
-			lookDirection: this.spawnPoint.forward,
+		const character = player.SpawnCharacter(this.transform.position, {
+			lookDirection: this.transform.forward,
 		});
 		// character.inventory.AddItem(new ItemStack("WoodSword"));
 	}

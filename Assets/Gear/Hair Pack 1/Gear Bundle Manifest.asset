@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0832818dd13c4fcaa31b988d657c7d46, type: 3}
+  m_Name: Gear Bundle Manifest
+  m_EditorClassIdentifier: 
+  gearList:
+  - {fileID: 11400000, guid: 4fe348271c7ac49ce8fb29990948b0e7, type: 2}
+  - {fileID: 11400000, guid: cd736cd548e42452da9a754703cff375, type: 2}
+  - {fileID: 11400000, guid: 2a910b98030824fa98079002b0e96ce1, type: 2}
+  - {fileID: 11400000, guid: 2dc5c030bd6f34253a6910f1c0ce7a0e, type: 2}
+  - {fileID: 11400000, guid: 29518f0cb6271407e9d0978100af2e2a, type: 2}
+  - {fileID: 11400000, guid: c565d50202b3842748e71ec6cb518d6b, type: 2}
+  - {fileID: 11400000, guid: a096439a0e99d4dc9a47f8bf7cd3eda7, type: 2}
+  - {fileID: 11400000, guid: c9a0bc64a63b4446989ee4f8a18d7400, type: 2}
+  - {fileID: 11400000, guid: f2560e72039514852a3f6623c7cf1c62, type: 2}
+  - {fileID: 11400000, guid: 2ba5d052f73e2449687eaac31bcd4a4f, type: 2}
+  - {fileID: 11400000, guid: f6f3e8c6b8c194ee6addd45ee1f75982, type: 2}
+  - {fileID: 11400000, guid: 2628a183269c949c39e6b2a0aad8df9e, type: 2}
+  - {fileID: 11400000, guid: 9c2cf0083529949668c255ca1b98947b, type: 2}
+  - {fileID: 11400000, guid: bc3691a93420a45dbaee30e92db934ad, type: 2}
+  - {fileID: 11400000, guid: f4c7bca1f25b644c2a9cb1409ef8659b, type: 2}
+  - {fileID: 11400000, guid: 65a829ea881be435c8f0be754abbe175, type: 2}
+  airId: 71683a6e-46eb-434c-acb2-0e76d434d7fa

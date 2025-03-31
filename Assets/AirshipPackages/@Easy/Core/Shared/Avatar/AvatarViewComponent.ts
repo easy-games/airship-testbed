@@ -1,14 +1,11 @@
 import AvatarRenderComponent from "@Easy/Core/Client/ProtectedControllers//AvatarMenu/AvatarRenderComponent";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Mouse } from "@Easy/Core/Shared/UserInput";
-import { Game } from "../Game";
 import { MainMenuSingleton } from "../MainMenu/Singletons/MainMenuSingleton";
 import { Bin } from "../Util/Bin";
 import { CanvasAPI } from "../Util/CanvasAPI";
-import { ColorUtil } from "../Util/ColorUtil";
-import { OnUpdate } from "../Util/Timer";
-import AvatarBackdropComponent from "./AvatarBackdropComponent";
 import { Layer } from "../Util/Layer";
+import { OnUpdate } from "../Util/Timer";
 
 export default class AvatarViewComponent extends AirshipBehaviour {
 	@Header("Templates")
@@ -72,8 +69,8 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 
 	public override Start(): void {
 		this.mainMenuSingleton = Dependency<MainMenuSingleton>();
-		let backdrop = this.backdropHolder?.GetAirshipComponent<AvatarBackdropComponent>();
-		backdrop?.SetSolidColorBackdrop(ColorUtil.HexToColor("#202122"));
+		// let backdrop = this.backdropHolder?.GetAirshipComponent<AvatarBackdropComponent>();
+		// backdrop?.SetSolidColorBackdrop(ColorUtil.HexToColor("#202122"));
 
 		if (this.humanEntityGo) {
 			this.accessoryBuilder = this.humanEntityGo.GetComponent<AccessoryBuilder>()!;
@@ -118,8 +115,8 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 		if (!lights) {
 			error("Unable to find lights in scene");
 		}
-		for (let i = 0; i < lights.Length; i++) {
-			let light = lights.GetValue(i);
+		for (const i of $range(0, lights.size() - 1)) {
+			const light = lights[i];
 			if (light && light.gameObject.scene.name !== "CoreScene" && light.gameObject.scene.name !== "MainMenu") {
 				light.cullingMask &= ~(1 << Layer.AVATAR_EDITOR);
 			}
@@ -276,6 +273,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	}
 
 	public CreateRenderScene() {
+		assert(this.avatarRenderTemplate, "Missing avatar render template");
 		return Object.Instantiate(
 			this.avatarRenderTemplate,
 			this.transform,
@@ -283,9 +281,9 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	}
 
 	public PlayReaction(slotType: AccessorySlot) {
-		if (math.random() < this.oddsOfAReaction) {
-			this.anim.SetInteger("ReactionIndex", math.random(3) - 1);
-			this.anim.SetTrigger("React");
-		}
+		// if (math.random() < this.oddsOfAReaction) {
+		// 	this.anim.SetInteger("ReactionIndex", math.random(3) - 1);
+		// 	this.anim.SetTrigger("React");
+		// }
 	}
 }

@@ -27,10 +27,11 @@ export class AuthController {
 		const loginResult = this.TryAutoLogin();
 		if (!loginResult) {
 			let ignore = false;
-			if (Game.coreContext === CoreContext.GAME && RunUtil.IsEditor()) {
+			if (Game.coreContext === CoreContext.GAME && Game.IsEditor()) {
 				ignore = true;
 			}
 			if (!ignore) {
+				print("Auto login failed. Routing to login.");
 				Bridge.LoadScene("Login", true, LoadSceneMode.Single);
 			}
 		}
@@ -129,7 +130,7 @@ export class AuthController {
 			}
 			return true;
 		}
-		print("failed signup up anon: " + res.error);
+		print(`failed signup up anon: ${res.error ?? "unknown error"}`);
 		return false;
 	}
 

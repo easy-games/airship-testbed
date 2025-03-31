@@ -1,0 +1,414 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!200 &20000000
+ShaderVariantCollection:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: BWShaderVariants 1 (Raven)
+  m_Shaders:
+  - first: {fileID: 66, guid: 0000000000000000f000000000000000, type: 0}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 103, guid: 0000000000000000f000000000000000, type: 0}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 106, guid: 0000000000000000f000000000000000, type: 0}
+    second:
+      variants:
+      - keywords: _SUNDISK_SIMPLE
+        passType: 0
+  - first: {fileID: 211, guid: 0000000000000000f000000000000000, type: 0}
+    second:
+      variants:
+      - keywords: FOG_EXP2 _ALPHABLEND_ON
+        passType: 0
+      - keywords: _ALPHABLEND_ON
+        passType: 0
+      - keywords: PROCEDURAL_INSTANCING_ON _ALPHABLEND_ON
+        passType: 8
+  - first: {fileID: 9000, guid: 0000000000000000f000000000000000, type: 0}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 9001, guid: 0000000000000000f000000000000000, type: 0}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 9002, guid: 0000000000000000f000000000000000, type: 0}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 9003, guid: 0000000000000000f000000000000000, type: 0}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 9004, guid: 0000000000000000f000000000000000, type: 0}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 9007, guid: 0000000000000000f000000000000000, type: 0}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 9101, guid: 0000000000000000f000000000000000, type: 0}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 9103, guid: 0000000000000000f000000000000000, type: 0}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+      - keywords: UNITY_UI_ALPHACLIP
+        passType: 0
+      - keywords: UNITY_UI_CLIP_RECT
+        passType: 0
+  - first: {fileID: 19011, guid: 0000000000000000f000000000000000, type: 0}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: d6dae50ee9e1bfa4db75f19f99355220, type: 3}
+    second:
+      variants:
+      - keywords: _OUTPUT_DEPTH
+        passType: 0
+  - first: {fileID: 4800000, guid: ec9fec698a3456d4fb18cf8bacb7a2bc, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: e7857e9d0c934dc4f83f270f8447b006, type: 3}
+    second:
+      variants:
+      - keywords: _BLOOM_LQ _HDR_GRADING
+        passType: 0
+      - keywords: _HDR_GRADING
+        passType: 0
+  - first: {fileID: 4800000, guid: e6e9a19c3678ded42a3bc431ebef7dbd, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 93446b5c5339d4f00b85c159e1159b7c, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: f056d8bd2a1c7e44e9729144b4c70395, type: 3}
+    second:
+      variants:
+      - keywords: _DBUFFER_MRT3
+        passType: 0
+  - first: {fileID: 4800000, guid: 5f1864addb451f54bae8c86d230f736e, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: c49e63ed1bbcb334780a3bd19dfed403, type: 3}
+    second:
+      variants:
+      - keywords: _FXAA
+        passType: 0
+  - first: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 8
+      - keywords: 
+        passType: 13
+      - keywords: FOG_EXP2 PROBE_VOLUMES_L1 _ADDITIONAL_LIGHTS _DBUFFER_MRT3 _EMISSION
+          _MAIN_LIGHT_SHADOWS_CASCADE _METALLICSPECGLOSSMAP _NORMALMAP _OCCLUSIONMAP
+          _SHADOWS_SOFT
+        passType: 13
+      - keywords: FOG_EXP2 PROBE_VOLUMES_L1 _ADDITIONAL_LIGHTS _DBUFFER_MRT3 _MAIN_LIGHT_SHADOWS_CASCADE
+          _METALLICSPECGLOSSMAP _NORMALMAP _OCCLUSIONMAP _SHADOWS_SOFT
+        passType: 13
+      - keywords: FOG_EXP2 PROBE_VOLUMES_L1 _ADDITIONAL_LIGHTS _DBUFFER_MRT3 _MAIN_LIGHT_SHADOWS_CASCADE
+          _METALLICSPECGLOSSMAP _NORMALMAP _SHADOWS_SOFT
+        passType: 13
+      - keywords: FOG_EXP2 PROBE_VOLUMES_L1 _ADDITIONAL_LIGHTS _DBUFFER_MRT3 _MAIN_LIGHT_SHADOWS_CASCADE
+          _SHADOWS_SOFT
+        passType: 13
+      - keywords: PROBE_VOLUMES_L1 _ADDITIONAL_LIGHTS _DBUFFER_MRT3 _EMISSION _MAIN_LIGHT_SHADOWS
+          _METALLICSPECGLOSSMAP _NORMALMAP _OCCLUSIONMAP
+        passType: 13
+      - keywords: PROBE_VOLUMES_L1 _ADDITIONAL_LIGHTS _EMISSION _MAIN_LIGHT_SHADOWS
+          _METALLICSPECGLOSSMAP _NORMALMAP _OCCLUSIONMAP
+        passType: 13
+      - keywords: PROBE_VOLUMES_L1 _ADDITIONAL_LIGHTS _MAIN_LIGHT_SHADOWS
+        passType: 13
+      - keywords: PROBE_VOLUMES_L1 _ADDITIONAL_LIGHTS _MAIN_LIGHT_SHADOWS _METALLICSPECGLOSSMAP
+          _NORMALMAP _OCCLUSIONMAP
+        passType: 13
+      - keywords: PROBE_VOLUMES_L1 _ADDITIONAL_LIGHTS _MAIN_LIGHT_SHADOWS _NORMALMAP
+        passType: 13
+      - keywords: _NORMALMAP
+        passType: 13
+  - first: {fileID: 4800000, guid: 0406db5a14f94604a8c57ccfbc9f3b46, type: 3}
+    second:
+      variants:
+      - keywords: FOG_EXP2 PROBE_VOLUMES_L1 _FADING_ON _SOFTPARTICLES_ON _SURFACE_TYPE_TRANSPARENT
+        passType: 0
+      - keywords: FOG_EXP2 PROBE_VOLUMES_L1 _SURFACE_TYPE_TRANSPARENT
+        passType: 0
+      - keywords: PROBE_VOLUMES_L1 _FADING_ON _SOFTPARTICLES_ON
+        passType: 0
+      - keywords: PROBE_VOLUMES_L1 _FADING_ON _SOFTPARTICLES_ON _SURFACE_TYPE_TRANSPARENT
+        passType: 0
+  - first: {fileID: 4800000, guid: 36e335017ad71d54fbb10842863188ae, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: b552e385e8c7743738ed94f861911663, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+      - keywords: UNITY_UI_ALPHACLIP
+        passType: 0
+  - first: {fileID: 4800000, guid: bc1221b3045ce4f89a4ff6f9a595414e, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+      - keywords: UNDERLAY_ON
+        passType: 0
+      - keywords: UNITY_UI_CLIP_RECT
+        passType: 0
+  - first: {fileID: 4800000, guid: 099fff843f00846df8594e081e0e55a8, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: d81692c4b57a49aabf43f3423dc99e51, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 77361e944e5710f4993a94af0720a22f, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: -6465566751694194690, guid: 9e990a00340f4ce49a8e71953d0b9180, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 8
+  - first: {fileID: 4800000, guid: 650dd9526735d5b46b79224bc6e94025, type: 3}
+    second:
+      variants:
+      - keywords: FOG_EXP2 _ALPHATEST_ON _DBUFFER_MRT3 _SURFACE_TYPE_TRANSPARENT
+        passType: 0
+  - first: {fileID: 4800000, guid: 11ecd49e831fe6c4f8f68b583206390c, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: -6465566751694194690, guid: 00f5c0f514115344b837245f162be5fa, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 8
+      - keywords: 
+        passType: 13
+      - keywords: FOG_EXP2 PROBE_VOLUMES_L1 _ADDITIONAL_LIGHTS _DBUFFER_MRT3 _MAIN_LIGHT_SHADOWS
+        passType: 13
+      - keywords: FOG_EXP2 PROBE_VOLUMES_L1 _ADDITIONAL_LIGHTS _DBUFFER_MRT3 _MAIN_LIGHT_SHADOWS_CASCADE
+          _SHADOWS_SOFT
+        passType: 13
+  - first: {fileID: 4800000, guid: 6008c99da84ec4dd28fc548e9ee3cdd6, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: -6465566751694194690, guid: a6cdb7d9dd433401bab0d93082d70896, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 8
+      - keywords: 
+        passType: 13
+      - keywords: FOG_EXP2 PROBE_VOLUMES_L1 _ADDITIONAL_LIGHTS _DBUFFER_MRT3 _MAIN_LIGHT_SHADOWS
+        passType: 13
+      - keywords: FOG_EXP2 PROBE_VOLUMES_L1 _ADDITIONAL_LIGHTS _DBUFFER_MRT3 _MAIN_LIGHT_SHADOWS_CASCADE
+          _SHADOWS_SOFT
+        passType: 13
+  - first: {fileID: 4800000, guid: 94a9aa8a94e5b1b4d8c777819f86eb44, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+      - keywords: FOG_EXP2
+        passType: 0
+  - first: {fileID: 4800000, guid: bd6af5d577c618947b73aa60db554e51, type: 3}
+    second:
+      variants:
+      - keywords: FOG_EXP2
+        passType: 0
+  - first: {fileID: 4800000, guid: f2cb1b80b68b95a489fadaa5754bca06, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 8
+      - keywords: FOG_EXP2 PROBE_VOLUMES_L1 _ADDITIONAL_LIGHTS _DBUFFER_MRT3 _MAIN_LIGHT_SHADOWS_CASCADE
+          _SHADOWS_SOFT
+        passType: 13
+  - first: {fileID: 4800000, guid: b44c0e637f2ab1f41a5e2939616e0ff9, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 8
+      - keywords: 
+        passType: 13
+      - keywords: FOG_EXP2 PROBE_VOLUMES_L1 _ADDITIONAL_LIGHTS _DBUFFER_MRT3 _MAIN_LIGHT_SHADOWS_CASCADE
+          _SHADOWS_SOFT
+        passType: 13
+      - keywords: PROBE_VOLUMES_L1 _ADDITIONAL_LIGHTS _MAIN_LIGHT_SHADOWS
+        passType: 13
+  - first: {fileID: -6465566751694194690, guid: f357cd2b88ac2184b9bfbea024efc978, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+      - keywords: FOG_EXP2 _DBUFFER_MRT3
+        passType: 0
+      - keywords: 
+        passType: 8
+  - first: {fileID: -6465566751694194690, guid: 5bb82e528808994489697fa375b918dc, type: 3}
+    second:
+      variants:
+      - keywords: FOG_EXP2 _DBUFFER_MRT3
+        passType: 0
+      - keywords: 
+        passType: 8
+  - first: {fileID: 4800000, guid: cfdd144ceb76ec942b649cc196c1440c, type: 3}
+    second:
+      variants:
+      - keywords: FOG_EXP2
+        passType: 0
+  - first: {fileID: -6465566751694194690, guid: a7a74a6dea15feb4f900794ae0ad8c55, type: 3}
+    second:
+      variants:
+      - keywords: FOG_EXP2
+        passType: 0
+      - keywords: FOG_EXP2 _ALPHATEST_ON _DBUFFER_MRT3 _SURFACE_TYPE_TRANSPARENT
+        passType: 0
+      - keywords: _ALPHATEST_ON
+        passType: 8
+  - first: {fileID: -6465566751694194690, guid: 72d53d9c9984e4aa68acecaf6b558d61, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 8
+      - keywords: 
+        passType: 13
+      - keywords: FOG_EXP2 PROBE_VOLUMES_L1 _ADDITIONAL_LIGHTS _DBUFFER_MRT3 _MAIN_LIGHT_SHADOWS
+        passType: 13
+      - keywords: FOG_EXP2 PROBE_VOLUMES_L1 _ADDITIONAL_LIGHTS _DBUFFER_MRT3 _MAIN_LIGHT_SHADOWS_CASCADE
+          _SHADOWS_SOFT
+        passType: 13
+  - first: {fileID: 4800000, guid: b292d4a0bae788b44b40a2d6c7d6fcca, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 8
+      - keywords: LOD_FADE_CROSSFADE
+        passType: 8
+      - keywords: FOG_EXP2 LOD_FADE_CROSSFADE _ADDITIONAL_LIGHTS _DBUFFER_MRT3 _MAIN_LIGHT_SHADOWS_CASCADE
+          _SHADOWS_SOFT
+        passType: 13
+      - keywords: LOD_FADE_CROSSFADE
+        passType: 13
+  - first: {fileID: 4800000, guid: c47d9210692ed674187da9357a4bcd28, type: 3}
+    second:
+      variants:
+      - keywords: INSTANCING_ON LOD_FADE_CROSSFADE _ENABLEWIND_ON
+        passType: 8
+      - keywords: INSTANCING_ON _ENABLEWIND_ON
+        passType: 8
+      - keywords: FOG_EXP2 INSTANCING_ON LOD_FADE_CROSSFADE _ADDITIONAL_LIGHTS _COLOR2ENABLE_ON
+          _DBUFFER_MRT3 _ENABLEWIND_ON _MAIN_LIGHT_SHADOWS_CASCADE _SECONDCOLOROVERLAYTYPE_VERTEX_GRADIENT
+          _SHADOWS_SOFT
+        passType: 13
+      - keywords: FOG_EXP2 INSTANCING_ON _ADDITIONAL_LIGHTS _COLOR2ENABLE_ON _DBUFFER_MRT3
+          _ENABLEWIND_ON _MAIN_LIGHT_SHADOWS_CASCADE _SECONDCOLOROVERLAYTYPE_UV_GRADIENT
+          _SHADOWS_SOFT
+        passType: 13
+      - keywords: FOG_EXP2 INSTANCING_ON _ADDITIONAL_LIGHTS _COLOR2ENABLE_ON _DBUFFER_MRT3
+          _ENABLEWIND_ON _MAIN_LIGHT_SHADOWS_CASCADE _SECONDCOLOROVERLAYTYPE_VERTEX_GRADIENT
+          _SHADOWS_SOFT
+        passType: 13
+  - first: {fileID: -6465566751694194690, guid: a063e812fdd21c34dbf62b0815bfc784, type: 3}
+    second:
+      variants:
+      - keywords: FOG_EXP2 _DBUFFER_MRT3
+        passType: 0
+  - first: {fileID: -6465566751694194690, guid: 0e9f736e469a385439d937d56868edf2, type: 3}
+    second:
+      variants:
+      - keywords: _DIRECTION_HORIZONTAL
+        passType: 13
+      - keywords: _DIRECTION_VERTICAL
+        passType: 13
+  - first: {fileID: 4800000, guid: 8f34f93f7c8014a10a0cd7d030e8f642, type: 3}
+    second:
+      variants:
+      - keywords: INSTANCING_ON LOD_FADE_CROSSFADE _ENABLEWIND_ON
+        passType: 8
+      - keywords: INSTANCING_ON _ENABLEWIND_ON
+        passType: 8
+      - keywords: FOG_EXP2 INSTANCING_ON LOD_FADE_CROSSFADE _ADDITIONAL_LIGHTS _COLOR2ENABLE_ON
+          _DBUFFER_MRT3 _ENABLEWIND_ON _MAIN_LIGHT_SHADOWS_CASCADE _SECONDCOLOROVERLAYTYPE_VERTEX_GRADIENT
+          _SHADOWS_SOFT
+        passType: 13
+      - keywords: FOG_EXP2 INSTANCING_ON _ADDITIONAL_LIGHTS _COLOR2ENABLE_ON _DBUFFER_MRT3
+          _ENABLEWIND_ON _MAIN_LIGHT_SHADOWS_CASCADE _SECONDCOLOROVERLAYTYPE_VERTEX_GRADIENT
+          _SHADOWS_SOFT
+        passType: 13
+      - keywords: INSTANCING_ON LOD_FADE_CROSSFADE _ENABLEWIND_ON
+        passType: 13
+      - keywords: INSTANCING_ON _ENABLEWIND_ON
+        passType: 13
+  - first: {fileID: -6465566751694194690, guid: 8e01b5c4975a345f39469b9d797aec27, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 8
+      - keywords: 
+        passType: 13
+      - keywords: FOG_EXP2 PROBE_VOLUMES_L1 _ADDITIONAL_LIGHTS _DBUFFER_MRT3 _MAIN_LIGHT_SHADOWS
+        passType: 13
+      - keywords: FOG_EXP2 PROBE_VOLUMES_L1 _ADDITIONAL_LIGHTS _DBUFFER_MRT3 _MAIN_LIGHT_SHADOWS_CASCADE
+          _SHADOWS_SOFT
+        passType: 13
+  - first: {fileID: 4800000, guid: 2baebef67cf1c6b43a1342cbdd6a03a4, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: be268b5417c024e40aef0e5ca0a4d5bc, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0

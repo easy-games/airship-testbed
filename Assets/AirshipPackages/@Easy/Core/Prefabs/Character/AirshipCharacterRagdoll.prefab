@@ -363,7 +363,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 136299570488464682}
   serializedVersion: 4
-  m_Mass: 30
+  m_Mass: 0.3
   m_Drag: 1
   m_AngularDrag: 0.1
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -462,7 +462,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 268626011314219557}
   serializedVersion: 4
-  m_Mass: 15
+  m_Mass: 0.15
   m_Drag: 0.1
   m_AngularDrag: 0.03
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -568,7 +568,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2078227665661191268}
   serializedVersion: 4
-  m_Mass: 15
+  m_Mass: 0.15
   m_Drag: 0.1
   m_AngularDrag: 0.03
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -692,7 +692,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2628132781957065680}
   serializedVersion: 4
-  m_Mass: 15
+  m_Mass: 0.15
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -793,7 +793,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2898316919870986664}
   serializedVersion: 4
-  m_Mass: 15
+  m_Mass: 0.15
   m_Drag: 0
   m_AngularDrag: 0.1
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -871,7 +871,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3634079598327695979}
   serializedVersion: 4
-  m_Mass: 20
+  m_Mass: 0.2
   m_Drag: 0.1
   m_AngularDrag: 0.4
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -970,7 +970,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3652326427892873359}
   serializedVersion: 4
-  m_Mass: 40
+  m_Mass: 0.4
   m_Drag: 0.01
   m_AngularDrag: 0.01
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -1051,7 +1051,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3944711273205165765}
   serializedVersion: 4
-  m_Mass: 5
+  m_Mass: 0.05
   m_Drag: 0.1
   m_AngularDrag: 0.03
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -1152,7 +1152,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4907480020904884474}
   serializedVersion: 4
-  m_Mass: 15
+  m_Mass: 0.05
   m_Drag: 0.1
   m_AngularDrag: 0.03
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -1253,7 +1253,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5401232143652262890}
   serializedVersion: 4
-  m_Mass: 15
+  m_Mass: 0.15
   m_Drag: 0.01
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -1359,7 +1359,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6979240154816358497}
   serializedVersion: 4
-  m_Mass: 15
+  m_Mass: 0.15
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -1460,7 +1460,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7184338575986945064}
   serializedVersion: 4
-  m_Mass: 15
+  m_Mass: 0.15
   m_Drag: 0
   m_AngularDrag: 0.1
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -1542,16 +1542,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptFile: {fileID: -8052405120146006952, guid: d8f271e34606d0a41a0745945b21b4c1, type: 3}
-  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/Animation/CharacterRagdoll.lua
-  m_error: 0
-  m_yielded: 0
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
+  script: {fileID: -8052405120146006952, guid: d8f271e34606d0a41a0745945b21b4c1, type: 3}
+  scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/Animation/CharacterRagdoll.lua
+  forceContext: 0
+  metadata:
     name: CharacterRagdoll
     singleton: 0
     decorators: []
@@ -1566,6 +1560,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 0
@@ -1581,6 +1578,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: AirshipPackages/@Easy/Core/Shared/Types/Generated.d@RigidbodyInterpolation
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 1
@@ -1596,14 +1596,52 @@ MonoBehaviour:
         objectRefs: []
       refPath: AirshipPackages/@Easy/Core/Shared/Types/Generated.d@CollisionDetectionMode
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 1
       serializedObject: {fileID: 0}
       modified: 1
+    - name: testForce
+      type: number
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 10
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: toggleOffDuringRagdoll
+      type: Array
+      objectType: 
+      items:
+        type: object
+        objectType: MonoBehaviour
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
     displayIcon: {fileID: 0}
     displayName: 
-  contextOverwritten: 0
 --- !u!1 &8298377223078569888 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5572260395049890946, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
@@ -1640,7 +1678,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8298377223078569888}
   serializedVersion: 4
-  m_Mass: 15
+  m_Mass: 0.15
   m_Drag: 0.01
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}

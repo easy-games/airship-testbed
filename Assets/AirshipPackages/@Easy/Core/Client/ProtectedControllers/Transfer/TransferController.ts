@@ -71,6 +71,8 @@ export class TransferController {
 			};
 		}
 
+		print(`Transfer response:`, inspect(res.data));
+
 		return {
 			success: true,
 			data: undefined,
@@ -95,6 +97,8 @@ export class TransferController {
 			};
 		}
 
+		print(`Transfer response:`, inspect(res.data));
+
 		return {
 			success: true,
 			data: undefined,
@@ -115,6 +119,8 @@ export class TransferController {
 			warn(`Unable to complete transfer request. Status Code:  ${res.statusCode}.\n`, res.error);
 			return false;
 		}
+
+		print(`Transfer response:`, inspect(res.data));
 
 		return true;
 	}

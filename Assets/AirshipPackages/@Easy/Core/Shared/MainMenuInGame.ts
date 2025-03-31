@@ -42,25 +42,6 @@ fullGo.OnFixedUpdate(() => {
 	OnFixedUpdate.Fire(Time.fixedDeltaTime);
 });
 
-Flamework.AddPath("@easy/core/shared/mainmenu", "^.*singleton.ts$");
-Flamework.AddPath("@easy/core/client/protectedcontrollers", "^.*controller.ts$");
-Flamework.AddPath("@easy/core/client/protectedcontrollers", "^.*singleton.ts$");
-Flamework.AddPath("@easy/core/client/controllers/airship/user/airshipusercontroller", "^.*controller.ts$");
-Flamework.AddPath("@easy/core/shared/player/airshipplayerssingleton", "^.*singleton.ts$");
-Flamework.AddPath("@easy/core/shared/avatar/airshipavatarsingleton", "^.*singleton.ts$");
-Flamework.AddPath("@easy/core/shared/input/airshipinputsingleton", "^.*singleton.ts$");
-Flamework.AddPath("@easy/core/shared/protected", "^.*singleton.ts");
-
-if (Game.IsServer()) {
-	Flamework.AddPath("@easy/core/server/protectedservices", "^.*service.ts$");
-}
-
-Flamework.Ignite();
-
-const serverInfoRemoteFunction = new NetworkFunction<[], [gameId: string, serverId: string, orgId: string]>(
-	"Protected_CoreServerInfo",
-);
-
 if (Game.IsServer()) {
 	const autoShutdownBridge = GameObject.Find("AutoShutdownBridge").GetComponent<AutoShutdownBridge>()!;
 	if (autoShutdownBridge) {
@@ -88,6 +69,25 @@ if (Game.IsServer()) {
 
 	serverBootstrap.FinishedSetup();
 }
+
+Flamework.AddPath("@easy/core/shared/mainmenu", "^.*singleton.ts$");
+Flamework.AddPath("@easy/core/client/protectedcontrollers", "^.*controller.ts$");
+Flamework.AddPath("@easy/core/client/protectedcontrollers", "^.*singleton.ts$");
+Flamework.AddPath("@easy/core/client/controllers/airship/user/airshipusercontroller", "^.*controller.ts$");
+Flamework.AddPath("@easy/core/shared/player/airshipplayerssingleton", "^.*singleton.ts$");
+Flamework.AddPath("@easy/core/shared/avatar/airshipavatarsingleton", "^.*singleton.ts$");
+Flamework.AddPath("@easy/core/shared/input/airshipinputsingleton", "^.*singleton.ts$");
+Flamework.AddPath("@easy/core/shared/protected", "^.*singleton.ts");
+
+if (Game.IsServer()) {
+	Flamework.AddPath("@easy/core/server/protectedservices", "^.*service.ts$");
+}
+
+Flamework.Ignite();
+
+const serverInfoRemoteFunction = new NetworkFunction<[], [gameId: string, serverId: string, orgId: string]>(
+	"Protected_CoreServerInfo",
+);
 
 if (Game.IsClient()) {
 	// This is not working atm. Waiting on stephen to fix remotes in protected context.

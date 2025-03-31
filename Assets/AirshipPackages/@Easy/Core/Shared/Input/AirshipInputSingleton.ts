@@ -1,5 +1,4 @@
-import { ClientSettingsController } from "@Easy/Core/Client/ProtectedControllers/Settings/ClientSettingsController";
-import { Dependency, Singleton } from "@Easy/Core/Shared/Flamework";
+import { Singleton } from "@Easy/Core/Shared/Flamework";
 import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 import { Airship } from "../Airship";
 import { Asset } from "../Asset";
@@ -7,6 +6,7 @@ import { CoreContext } from "../CoreClientContext";
 import { CoreRefs } from "../CoreRefs";
 import { Game } from "../Game";
 import AirshipButton from "../MainMenu/Components/AirshipButton";
+import { Protected } from "../Protected";
 import { ControlScheme, Keyboard, Mouse, Preferred as PreferredControls } from "../UserInput";
 import { Bin } from "../Util/Bin";
 import { CanvasAPI, PointerDirection } from "../Util/CanvasAPI";
@@ -16,10 +16,13 @@ import { Binding, KeyBindingConfig, MouseBindingConfig } from "./Binding";
 import { InputAction, InputActionConfig, InputActionSchema, SerializableAction } from "./InputAction";
 import { InputActionEvent } from "./InputActionEvent";
 import { ActionInputType, InputUtil, KeyType, ModifierKey } from "./InputUtil";
-import { MobileButtonConfig } from "./Mobile/MobileButton";
+import { CoreMobileButton, MobileButtonConfig } from "./Mobile/MobileButton";
 import MobileControlsCanvas from "./Mobile/MobileControlsCanvas";
 import TouchJoystick from "./Mobile/TouchJoystick";
 import ProximityPrompt from "./ProximityPrompts/ProximityPrompt";
+import AirshipMobileButton from "./Mobile/AirshipMobileButton";
+import { MapUtil } from "../Util/MapUtil";
+import MobileCameraMovement from "../MainMenu/Components/Overlay/MobileCameraMovement";
 
 export enum InputActionDirection {
 	/**
@@ -89,6 +92,7 @@ export class AirshipInputSingleton {
 	 * Container that holds mobile control buttons.
 	 */
 	private mobileControlsContainer!: GameObject;
+	private mobileCameraControlContainer!: GameObject;
 	/**
 	 * The default mobile button prefab.
 	 */
@@ -200,7 +204,7 @@ export class AirshipInputSingleton {
 		if (Game.IsProtectedLuauContext()) {
 			// Read **Core** keybinds from `ClientSettings.json` & apply overrides.
 			task.spawn(() => {
-				const clientSettings = Dependency<ClientSettingsController>().WaitForSettingsLoaded().expect();
+				const clientSettings = Protected.Settings.WaitForSettingsLoaded().expect();
 				const overrides = clientSettings.coreKeybindOverrides;
 				if (!overrides) return;
 				this.DeserializeCoreKeybinds(overrides);
@@ -410,7 +414,14 @@ export class AirshipInputSingleton {
 			Asset.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/UI/MobileControls/MobileControlsCanvas.prefab"),
 			CoreRefs.rootTransform,
 		);
+		const mobileCameraControlCanvas = Object.Instantiate(
+			Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/UI/MobileControls/MobileCameraCanvas.prefab"),
+			CoreRefs.rootTransform,
+		)
+
 		this.mobileControlsContainer = mobileControlsCanvas;
+		this.mobileCameraControlContainer = mobileCameraControlCanvas;
+
 		const controls = this.mobileControlsContainer.GetAirshipComponent<MobileControlsCanvas>()!;
 
 		this.controlManager.ObserveControlScheme((controlScheme) => {
@@ -439,12 +450,12 @@ export class AirshipInputSingleton {
 	 * @param config A `MobileButtonConfig` that describes the look and feel of this button.
 	 */
 	public CreateMobileButton(actionName: string, anchoredPosition: Vector2, config?: MobileButtonConfig): GameObject {
-		const mobileButton = Object.Instantiate(this.mobileButtonPrefab);
+		const mobileButton = Object.Instantiate(config?.prefab ?? this.mobileButtonPrefab);
 		mobileButton.name = "Mobile Button (" + actionName + ")";
 		mobileButton.transform.SetParent(this.mobileControlsContainer.transform);
-		mobileButton
-			.GetAirshipComponent<AirshipButton>()
-			?.SetStartingScale(config?.scale ? new Vector3(config.scale.x, config.scale.y, 1) : Vector3.one);
+
+		const airshipButton = mobileButton.GetAirshipComponent<AirshipMobileButton>();
+		airshipButton?.SetStartingScale(config?.scale ? new Vector3(config.scale.x, config.scale.y, 1) : Vector3.one);
 		const lowerName = actionName.lower();
 
 		const rect = mobileButton.GetComponent<RectTransform>()!;
@@ -454,12 +465,11 @@ export class AirshipInputSingleton {
 		if (config?.pivot) rect.pivot = config.pivot;
 		rect.anchoredPosition = anchoredPosition;
 
-		if (config?.icon) {
+		if (config?.icon && airshipButton) {
 			// Assets/AirshipPackages/@Easy/Core/Prefabs/Images/crouch-pose.png
 			const iconTexture = Asset.LoadAssetIfExists<Texture2D>(config.icon);
 			if (iconTexture) {
-				const img = mobileButton.transform.GetChild(0).GetComponent<Image>()!;
-				img.sprite = Bridge.MakeDefaultSprite(iconTexture);
+				airshipButton.SetIconFromTexture(iconTexture);
 			} else {
 				warn(`Unable to create icon for mobile button (${actionName}). Invalid icon path: ${config.icon}`);
 			}
@@ -509,6 +519,39 @@ export class AirshipInputSingleton {
 		this.actionToMobileButtonTable.set(lowerName, mobileButtonsForAction);
 
 		return mobileButton;
+	}
+
+	/**
+	 * Returns a list of all the mobile button action names
+	 */
+	public GetMobileButtonActionNames(): readonly string[] {
+		return MapUtil.Keys(this.actionToMobileButtonTable);
+	}
+
+	/**
+	 * Get the mobile touch joystick
+	 */
+	public GetMobileTouchJoystick(): TouchJoystick | undefined {
+		return this.mobileControlsContainer.GetAirshipComponentInChildren<TouchJoystick>(true);
+	}
+
+	/**
+	 * Gets the mobile camera movement component
+	 * @returns 
+	 */
+	public GetMobileCameraMovement(): MobileCameraMovement | undefined {
+		return this.mobileCameraControlContainer.GetAirshipComponentInChildren<MobileCameraMovement>(true);
+	}
+
+	/**
+	 * Gets all mobile buttons associated with the given action
+	 * @param actionName The action name
+	 * @returns The mobile buttons
+	 */
+	public GetMobileButtons(actionName: string): ReadonlyArray<GameObject> {
+		const lowerName = actionName.lower();
+		const mobileButtonsForAction = this.actionToMobileButtonTable.get(lowerName) ?? [];
+		return table.freeze(table.clone(mobileButtonsForAction)); // immutable copy
 	}
 
 	/**
@@ -1070,7 +1113,7 @@ export class AirshipInputSingleton {
 				coreKeybinds[coreAction] = serialized;
 			}
 		}
-		Dependency<ClientSettingsController>().SetCoreKeybindOverrides(coreKeybinds);
+		Protected.Settings.SetCoreKeybindOverrides(coreKeybinds);
 	}
 
 	/**
@@ -1100,7 +1143,7 @@ export class AirshipInputSingleton {
 		if (!Game.IsProtectedLuauContext()) return;
 		task.spawn(() => {
 			const gameId = Game.IsEditor() ? Game.gameId : Game.WaitForGameData().id;
-			Dependency<ClientSettingsController>().UpdateGameKeybindOverrides(gameId, action.GetSerializable());
+			Protected.Settings.UpdateGameKeybindOverrides(gameId, action.GetSerializable());
 		});
 	}
 
@@ -1114,7 +1157,7 @@ export class AirshipInputSingleton {
 		if (!Game.IsProtectedLuauContext()) return;
 		task.spawn(() => {
 			const gameId = Game.IsEditor() ? Game.gameId : Game.WaitForGameData().id;
-			const clientSettings = Dependency<ClientSettingsController>().WaitForSettingsLoaded().expect();
+			const clientSettings = Protected.Settings.WaitForSettingsLoaded().expect();
 			const gameOverrides = clientSettings.gameKeybindOverrides[gameId];
 			if (!gameOverrides) return;
 			const actionOverride = gameOverrides[action.name];

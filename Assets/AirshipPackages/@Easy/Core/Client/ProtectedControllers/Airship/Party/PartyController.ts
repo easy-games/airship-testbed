@@ -2,16 +2,20 @@ import { Party } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipParty";
 import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
-import { SocketController } from "../../Socket/SocketController";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
+import { SocketController } from "../../Socket/SocketController";
 
 export const enum PartyControllerBridgeTopics {
 	GetParty = "PartyController:GetParty",
+	InviteToParty = "PartyController:InviteToParty",
+	RemoveFromParty = "PartyController:RemoveFromParty",
 	OnPartyChange = "PartyController:OnPartyChange",
 }
 
 export type ClientBridgeApiGetParty = () => Party;
+export type ClientBridgeApiInviteToParty = (userId: string) => void;
+export type ClientBridgeApiRemoveFromParty = (userId: string) => void;
 
 @Controller({})
 export class ProtectedPartyController {
@@ -25,10 +29,16 @@ export class ProtectedPartyController {
 			return this.GetParty().expect();
 		});
 
-		this.socketController.On<Party>("game-coordinator/party-update", (data) => {
-			this.onPartyChange.Fire(data);
-			contextbridge.invoke(PartyControllerBridgeTopics.OnPartyChange, LuauContext.Game, data);
+		contextbridge.callback<ClientBridgeApiInviteToParty>(PartyControllerBridgeTopics.InviteToParty, (_, userId) => {
+			return this.InviteToParty(userId).expect();
 		});
+
+		contextbridge.callback<ClientBridgeApiRemoveFromParty>(
+			PartyControllerBridgeTopics.RemoveFromParty,
+			(_, userId) => {
+				return this.RemoveFromParty(userId).expect();
+			},
+		);
 	}
 
 	public async GetParty(): Promise<ReturnType<ClientBridgeApiGetParty>> {
@@ -46,13 +56,41 @@ export class ProtectedPartyController {
 	}
 
 	public async InviteToParty(userId: string) {
-		await this.httpRetry(() => InternalHttpManager.PostAsync(
+		const res = await this.httpRetry(() => InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/parties/party/invite",
 			json.encode({
 				userToAdd: userId,
 			}),
 		), "InviteToParty");
+
+		if (!res.success || res.statusCode > 299) {
+			warn(`Unable to invite user to party. Status Code: ${res.statusCode}\n`, res.error);
+			throw res.error;
+		}
 	}
 
-	protected OnStart(): void {}
+	public async RemoveFromParty(userId: string) {
+		const res = InternalHttpManager.PostAsync(
+			AirshipUrl.GameCoordinator + "/parties/party/remove",
+			json.encode({
+				userToRemove: userId,
+			}),
+		);
+
+		if (!res.success || res.statusCode > 299) {
+			warn(`Unable to remove user from party. Status Code: ${res.statusCode}\n`, res.error);
+			throw res.error;
+		}
+	}
+
+	protected OnStart(): void {
+		this.socketController.On<Party>("game-coordinator/party-update", (data) => {
+			this.onPartyChange.Fire(data);
+
+			// We only invoke when in-game because it's the only time a callback is registered.
+			if (Game.IsInGame()) {
+				contextbridge.invoke(PartyControllerBridgeTopics.OnPartyChange, LuauContext.Game, data);
+			}
+		});
+	}
 }

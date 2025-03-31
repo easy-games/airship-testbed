@@ -11,16 +11,21 @@ import { SortId } from "../../../Client/Components/HomePage/Sort/SortId";
 import { MainMenuBlockSingleton } from "../../../Client/ProtectedControllers//Settings/MainMenuBlockSingleton";
 import { Asset } from "../../Asset";
 import DateParser from "../../DateParser";
+import { Game } from "../../Game";
 import inspect from "../../Util/Inspect";
+import { ProtectedUtil } from "../../Util/ProtectedUtil";
+import { MainMenuSingleton } from "../Singletons/MainMenuSingleton";
 import DiscordHero from "./DiscordHero";
 import MainMenuPageComponent from "./MainMenuPageComponent";
 import { HttpRetry } from "../../Http/HttpRetry";
 
 export default class HomePageComponent extends MainMenuPageComponent {
 	public mainContent!: Transform;
+	public mainSortedContentLayoutGroup: VerticalLayoutGroup;
 	public spacerPrefab!: GameObject;
 	public sortPrefab!: GameObject;
 	public scrollRect!: ScrollRect;
+	public verticalLayoutGroup: VerticalLayoutGroup;
 	private bin = new Bin();
 	private sorts = new Map<SortId, SortComponent>();
 	private addedDiscordHero = false;
@@ -30,12 +35,25 @@ export default class HomePageComponent extends MainMenuPageComponent {
 		this.animateInDuration = 0;
 	}
 
+	protected Start(): void {
+		const mainMenu = Dependency<MainMenuSingleton>();
+		mainMenu.ObserveScreenSize((st) => {
+			if (Game.IsMobile() && st === "sm") {
+				this.mainSortedContentLayoutGroup.padding.top = 20;
+				this.verticalLayoutGroup.padding.left = 4;
+			}
+		});
+		if (Game.IsMobile()) {
+			this.scrollRect.movementType = MovementType.Elastic;
+		}
+	}
+
 	override OpenPage(params?: unknown): void {
 		super.OpenPage(params);
 		this.ClearSorts();
 		this.addedDiscordHero = false;
-		this.CreateSort(SortId.RecentlyUpdated, "Recently Updated");
 		this.CreateSort(SortId.Popular, "Popular");
+		this.CreateSort(SortId.RecentlyUpdated, "Recently Updated");
 
 		Bridge.UpdateLayout(this.scrollRect.transform, true);
 		task.spawn(() => {
@@ -101,7 +119,7 @@ export default class HomePageComponent extends MainMenuPageComponent {
 
 	public FetchGames(): void {
 		const res = HttpRetry(
-			() => InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/games"),
+			() => InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/games?platform=" + ProtectedUtil.GetLocalPlatformString()),
 			"get/content-service/games",
 		).expect();
 		if (!res.success) {
@@ -131,8 +149,8 @@ export default class HomePageComponent extends MainMenuPageComponent {
 				if (g.lastVersionUpdate === undefined) return false;
 				let timeUpdatedSeconds = DateParser.FromISO(g.lastVersionUpdate) as number;
 
-				// Jul 16, 2024
-				if (timeUpdatedSeconds <= 1722442457) {
+				// Jan 6, 2025
+				if (timeUpdatedSeconds <= 1736205525) {
 					return false;
 				}
 
@@ -148,7 +166,7 @@ export default class HomePageComponent extends MainMenuPageComponent {
 			Dependency<SearchSingleton>().AddGames([...data.recentlyUpdated, ...data.popular]);
 		});
 
-		if (!this.addedDiscordHero) {
+		if (!this.addedDiscordHero && !Game.IsMobile()) {
 			this.addedDiscordHero = true;
 			const go = Object.Instantiate(
 				Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/MainMenu/HomePage/DiscordHero.prefab"),

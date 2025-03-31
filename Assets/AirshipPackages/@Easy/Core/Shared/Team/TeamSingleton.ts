@@ -29,11 +29,7 @@ export class TeamsSingleton {
 		if (Game.IsClient()) {
 			CoreNetwork.ServerToClient.AddTeams.client.OnServerEvent((teamDtos) => {
 				for (let dto of teamDtos) {
-					const team = new Team(
-						dto.name,
-						dto.id,
-						new Color(dto.color[0], dto.color[1], dto.color[2], dto.color[3]),
-					);
+					const team = new Team(dto.name, dto.id, new Color(dto.color[0], dto.color[1], dto.color[2], 1));
 					this.teams.set(dto.id, {
 						team,
 						bin: new Bin(),
@@ -154,7 +150,7 @@ export class TeamsSingleton {
 	 * @returns Team that corresponds to name, if it exists.
 	 */
 	public FindByName(teamName: string): Team | undefined {
-		return ObjectUtils.values(this.teams).find((entry) => entry.team.name === teamName)?.team;
+		return ObjectUtils.values(this.teams).find((entry) => entry.team.name.lower() === teamName.lower())?.team;
 	}
 
 	/**

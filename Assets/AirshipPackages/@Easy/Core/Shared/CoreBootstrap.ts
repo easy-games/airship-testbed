@@ -29,10 +29,22 @@ task.spawn(() => {
 // }
 
 // Force import of TimeUtil
-CanvasAPI.Init();
-AppManager.Init();
-AudioManager.Init();
-InitNet();
+task.spawn(() => {
+	debug.setmemorycategory("CanvasAPIInit");
+	CanvasAPI.Init();
+});
+task.spawn(() => {
+	debug.setmemorycategory("AppManagerInit");
+	AppManager.Init();
+});
+task.spawn(() => {
+	debug.setmemorycategory("AudioManagerInit");
+	AudioManager.Init();
+});
+task.spawn(() => {
+	debug.setmemorycategory("NetworkAPIInit");
+	InitNet();
+});
 
 const COREPATH = "@easy/core";
 

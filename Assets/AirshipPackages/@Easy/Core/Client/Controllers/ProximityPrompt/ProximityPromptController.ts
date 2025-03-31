@@ -49,6 +49,15 @@ export class ProximityPromptController {
 			let distanceMap = new Map<ProximityPrompt, number>();
 
 			while (task.unscaledWait(PROMPT_POLL_RATE)) {
+				/* Hide currently shown prompts if a player is dead with the property set*/
+				if (Game.localPlayer.character?.IsDead()) {
+					for (const prompt of this.shownPrompts) {
+						if (prompt.hideWhenDead) {
+							(prompt as unknown as { Hide(): void; }).Hide();
+							this.shownPrompts.delete(prompt);
+						}
+					}
+				}
 				/* If local character does _not_ have a position, fallback to `math.huge`. */
 				const localCharacterPosition = Game.localPlayer.character?.gameObject.transform.position;
 				if (!localCharacterPosition) continue;
@@ -57,6 +66,9 @@ export class ProximityPromptController {
 
 				let possiblePrompts = new Map<string, ProximityPrompt[]>();
 				for (let prompt of this.allPrompts) {
+					// If the player is dead and prompt is set to hide when dead, skip getting new prompts
+					if (Game.localPlayer.character?.IsDead() && prompt.hideWhenDead) continue;
+					
 					if (promptActionMap.has(prompt.actionName)) {
 						promptActionMap.get(prompt.actionName)!.push(prompt);
 					} else {

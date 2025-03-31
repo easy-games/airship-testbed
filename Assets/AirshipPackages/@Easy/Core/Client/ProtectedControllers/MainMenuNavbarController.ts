@@ -49,11 +49,11 @@ export class MainMenuNavbarController {
 
 		if (Game.coreContext === CoreContext.GAME) {
 			// settingsButton.SetActive(false);
-			disconnectButton.SetActive(true);
+			// disconnectButton.SetActive(true);
 			runningGameButton.SetActive(true);
 		} else {
 			runningGameButton.SetActive(false);
-			disconnectButton.SetActive(false);
+			// disconnectButton.SetActive(false);
 		}
 
 		CoreUI.SetupButton(homeButton, { noHoverSound: true });

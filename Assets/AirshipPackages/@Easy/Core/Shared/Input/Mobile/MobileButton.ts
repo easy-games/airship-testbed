@@ -19,4 +19,12 @@ export interface MobileButtonConfig {
 	 * The button's pivot.
 	 */
 	pivot?: Vector2;
+
+	prefab?: GameObject;
+}
+
+export enum CoreMobileButton {
+	Jump = "Jump",
+	CrouchToggle = "CrouchToggle",
+	SprintToggle = "SprintToggle",
 }

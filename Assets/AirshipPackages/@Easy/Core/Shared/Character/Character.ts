@@ -7,9 +7,12 @@ import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { CoreNetwork } from "../CoreNetwork";
 import { DamageInfo, DamageInfoCustomData } from "../Damage/DamageInfo";
+import AirshipEmoteSingleton from "../Emote/AirshipEmoteSingleton";
+import { Dependency } from "../Flamework";
 import NametagComponent from "../Nametag/NametagComponent";
 import CharacterAnimation from "./Animation/CharacterAnimation";
 import CharacterConfigSetup from "./CharacterConfigSetup";
+import { EmoteStartSignal } from "./Signal/EmoteStartSignal";
 
 /**
  * A character is a (typically human) object in the scene. It controls movement and default animation.
@@ -52,12 +55,16 @@ export default class Character extends AirshipBehaviour {
 	@NonSerialized() public readonly bin = new Bin();
 	@NonSerialized() public inventory: Inventory;
 	@NonSerialized() public outfitDto: OutfitDto | undefined;
+	@NonSerialized() public isEmoting = false;
 
 	// Signals
 	@NonSerialized() public onDeath = new Signal<void>();
 	@NonSerialized() public onDespawn = new Signal<void>();
 	@NonSerialized() public onStateChanged = new Signal<[newState: CharacterState, oldState: CharacterState]>();
 	@NonSerialized() public onHealthChanged = new Signal<[newHealth: number, oldHealth: number]>();
+	@NonSerialized() public onMaxHealthChanged = new Signal<[newMaxHealth: number, oldMaxHealth: number]>();
+	@NonSerialized() public onEmoteStart = new Signal<EmoteStartSignal>();
+	@NonSerialized() public onEmoteEnd = new Signal<[]>();
 
 	private displayName = "";
 	private initialized = false;
@@ -101,16 +108,15 @@ export default class Character extends AirshipBehaviour {
 					let newHealth = math.max(0, this.health - damageInfo.damage);
 
 					this.SetHealth(newHealth, true, true);
-
-					if (Game.IsServer() && newHealth <= 0) {
-						Airship.Damage.BroadcastDeath(damageInfo);
-					}
 				}
 			}),
 		);
 		this.bin.Add(
 			Airship.Damage.onDeath.ConnectWithPriority(SignalPriority.MONITOR, (damageInfo) => {
 				if (damageInfo.gameObject === this.gameObject) {
+					if (this.movement) {
+						this.movement.enabled = false;
+					}
 					this.onDeath.Fire();
 				}
 			}),
@@ -153,16 +159,25 @@ export default class Character extends AirshipBehaviour {
 		}
 	}
 
-	public Init(player: Player | undefined, id: number, outfitDto: OutfitDto | undefined, displayName?: string): void {
+	public Init(
+		player: Player | undefined,
+		id: number,
+		outfitDto: OutfitDto | undefined,
+		health: number,
+		maxHealth: number,
+		displayName?: string,
+	): void {
 		this.player = player;
 		this.id = id;
 		this.outfitDto = outfitDto;
 		this.animation?.SetViewModelEnabled(player?.IsLocalPlayer() ?? false);
-		this.health = 100;
-		this.maxHealth = 100;
+		this.health = health;
+		this.maxHealth = maxHealth;
 		this.despawned = false;
 		this.initialized = true;
 		this.displayName = displayName || "";
+
+		// print(`Character ${this.player?.username ?? "bot"} has outfitDto: ${inspect(outfitDto)}`);
 
 		// Client side: update the player's selected outfit to whatever this character has.
 		// This may cause an issue if the character is init'd with a random outfit.
@@ -173,7 +188,7 @@ export default class Character extends AirshipBehaviour {
 			if (player) {
 				this.SetMeshCacheId(`Player:${player.userId}`);
 			}
-			this.LoadUserOutfit(outfitDto);
+			this.LoadOutfit(outfitDto);
 		}
 
 		if (this.movement) {
@@ -191,21 +206,27 @@ export default class Character extends AirshipBehaviour {
 		// this.accessoryBuilder.meshCombiner.cacheId = cacheId ?? "";
 	}
 
-	public LoadUserOutfit(outfitDto: OutfitDto | undefined) {
+	public LoadOutfit(outfitDto: OutfitDto | undefined) {
 		if (!this.accessoryBuilder) {
 			warn("Cannot load outfit without Accessory Builder set on Character.");
 			return;
 		}
 
 		this.outfitDto = outfitDto;
-		//print("using outfit: " + outfitDto?.name);
+		// print("Character.LoadOutfit " + inspect(outfitDto));
 		if (Game.IsClient() && outfitDto && this.autoLoadAvatarOutfit) {
-			Airship.Avatar.LoadUserOutfitDto(outfitDto, this.accessoryBuilder, {
-				removeOldClothingAccessories: true,
-			});
-			if (this.IsLocalCharacter() && Airship.Characters.viewmodel) {
-				Airship.Avatar.LoadUserOutfitDto(outfitDto, Airship.Characters.viewmodel.accessoryBuilder, {
+			task.spawn(() => {
+				Airship.Avatar.LoadOutfit(this.accessoryBuilder, outfitDto, {
 					removeOldClothingAccessories: true,
+				});
+			});
+
+			// Viewmodel
+			if (this.IsLocalCharacter() && Airship.Characters.viewmodel) {
+				task.spawn(() => {
+					Airship.Avatar.LoadOutfit(Airship.Characters.viewmodel!.accessoryBuilder, outfitDto, {
+						removeOldClothingAccessories: true,
+					});
 				});
 			}
 		}
@@ -356,7 +377,16 @@ export default class Character extends AirshipBehaviour {
 	}
 
 	public SetMaxHealth(maxHealth: number): void {
+		const oldMaxHealth = this.maxHealth;
+		if (oldMaxHealth === maxHealth) return;
+
 		this.maxHealth = maxHealth;
+		this.onMaxHealthChanged.Fire(this.maxHealth, oldMaxHealth);
+
+		// If we're a dedicated server network max health to clients
+		if (Game.IsServer() && !Game.IsClient()) {
+			CoreNetwork.ServerToClient.Character.SetMaxHealth.server.FireAllClients(this.id, this.maxHealth);
+		}
 	}
 
 	public SetDisplayName(displayName: string) {
@@ -390,5 +420,22 @@ export default class Character extends AirshipBehaviour {
 			error("Tried to call IsLocalCharacter() before character was initialized. Please use WaitForInit()");
 		}
 		return Game.IsClient() && this.player?.userId === Game.localPlayer?.userId;
+	}
+
+	/**
+	 * Cancels emote if the character is emoting. Otherwise, does nothing.
+	 */
+	public CancelEmote(): void {
+		if (!this.isEmoting) return;
+
+		// Cancel immediately locally
+		Dependency<AirshipEmoteSingleton>().StopEmoting(this);
+
+		if (Game.IsClient() && this.IsLocalCharacter()) {
+			CoreNetwork.ClientToServer.Character.EmoteCancelRequest.client.FireServer();
+		}
+		if (Game.IsServer()) {
+			CoreNetwork.ServerToClient.Character.EmoteEnd.server.FireAllClients(this.id);
+		}
 	}
 }

@@ -29,7 +29,12 @@ export class LoadingScreenSingleton {
 		if (Game.coreContext === CoreContext.MAIN_MENU) return;
 		this.coreLoadingScreen = GameObject.Find("CoreLoadingScreen")?.GetComponent<CoreLoadingScreen>()!;
 		this.coreLoadingScreen.SetProgress("Building the World", 10);
-		this.loadingBin.Add(Mouse.AddUnlocker());
+
+		task.spawn(() => {
+			// AddUnlocker can yield, which we need to avoid in singleton constructors,
+			// so this is wrapped in a spawn for now.
+			this.loadingBin.Add(Mouse.AddUnlocker());
+		});
 
 		OnUpdate.Once(() => {
 			if (!this.hasUsed) {
@@ -42,10 +47,10 @@ export class LoadingScreenSingleton {
 
 	/**
 	 * Sets the current fill of the progress bar.
-	 * @param step
-	 * @param progress Value from 0-1.
+	 * @param step A short description of what's being loaded. This is shown on the loading screen.
+	 * @param progress Value from 0-1. This is currently not used but may in the future.
 	 */
-	public SetProgress(step: string, progress: number): void {
+	public SetProgress(step: string, progress: number = 0): void {
 		this.hasUsed = true;
 		this.coreLoadingScreen!.updatedByGame = true;
 		this.coreLoadingScreen!.SetProgress(step, 50 + progress / 2);

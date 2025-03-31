@@ -140,6 +140,34 @@ export class SceneManager {
 	}
 
 	/**
+	 * Returns `true` if a scene is currently loading.
+	 */
+	public static IsSceneLoading(): boolean {
+		return Bridge.IsSceneLoading();
+	}
+
+	/**
+	 * TEMPORARY. Returns a promise that resolves once the active
+	 * scene is no longer CoreScene.
+	 */
+	public static async WaitForNonCoreActiveScene(): Promise<void> {
+		return new Promise((resolve, reject, onCancel) => {
+			const thread = task.spawn(() => {
+				while (this.GetActiveScene().name.lower() === "corescene") {
+					task.wait();
+				}
+				resolve();
+			});
+
+			onCancel(() => {
+				if (coroutine.status(thread) === "suspended") {
+					task.cancel(thread);
+				}
+			});
+		});
+	}
+
+	/**
 	 * Move a GameObject from its current Scene to a new Scene.
 	 *
 	 * You can only move root GameObjects from one Scene to another.
@@ -161,8 +189,8 @@ export class SceneManager {
 	 *
 	 * @returns Array of scenes in the hierarchy.
 	 */
-	public static GetScenes(): Scene[] {
-		return CSArrayUtil.Convert(Bridge.GetScenes());
+	public static GetScenes(): Readonly<Scene[]> {
+		return Bridge.GetScenes();
 	}
 
 	/**

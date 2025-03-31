@@ -87,7 +87,6 @@ GameObject:
   - component: {fileID: 6624741053933692589}
   - component: {fileID: 6624741053933692588}
   - component: {fileID: 6624741053933692587}
-  - component: {fileID: 6533210449780192424}
   - component: {fileID: 5834984087847673655}
   m_Layer: 0
   m_Name: Canvas
@@ -134,7 +133,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 0
+  m_VertexColorAlwaysGammaSpace: 1
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -180,20 +179,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &6533210449780192424
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6624741053933692585}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7285fb0a325b41fcaa523ef35f6f28d7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  canvas: {fileID: 6624741053933692589}
-  maxDistance: 50
 --- !u!225 &5834984087847673655
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -253,7 +238,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 404441e1cd4fe4aea9259c55498a148d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Flipped: 0
+  camera: {fileID: 0}
+  flipped: 0
 --- !u!114 &2280940548742182689
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -291,16 +277,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptFile: {fileID: -8131947875739178776, guid: 385f81eeadef7ec4ca782e138e83045c, type: 3}
-  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/Nametag/NametagComponent.lua
-  m_error: 0
-  m_yielded: 0
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
+  script: {fileID: -8131947875739178776, guid: 385f81eeadef7ec4ca782e138e83045c, type: 3}
+  scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Nametag/NametagComponent.lua
+  forceContext: 0
+  metadata:
     name: NametagComponent
     singleton: 0
     decorators: []
@@ -315,6 +295,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -330,6 +313,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -345,6 +331,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -360,6 +349,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -375,14 +367,34 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
       serializedObject: {fileID: 5834984087847673655}
       modified: 1
+    - name: maxDistance
+      type: number
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 50
+      serializedObject: {fileID: 0}
+      modified: 1
     displayIcon: {fileID: 0}
     displayName: 
-  contextOverwritten: 0
 --- !u!1 &6624741054402371216
 GameObject:
   m_ObjectHideFlags: 0
@@ -534,10 +546,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 6624741054402371217}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 725.605, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 696.795, y: -240.7478}
+  m_SizeDelta: {x: 1393.59, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6624741055486560265
 CanvasRenderer:

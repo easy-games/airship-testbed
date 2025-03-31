@@ -1,3 +1,4 @@
+import { ProtectedPartyController } from "@Easy/Core/Client/ProtectedControllers/Airship/Party/PartyController";
 import { ProtectedFriendsController } from "@Easy/Core/Client/ProtectedControllers/Social/FriendsController";
 import { Airship } from "../../Airship";
 import { PublicUser } from "../../Airship/Types/Outputs/AirshipUser";
@@ -5,28 +6,48 @@ import { Dependency } from "../../Flamework";
 import { Game } from "../../Game";
 import { Protected } from "../../Protected";
 import { Bin } from "../../Util/Bin";
-import { CanvasAPI } from "../../Util/CanvasAPI";
+import { CanvasAPI, HoverState } from "../../Util/CanvasAPI";
 
 export default class PartyMember extends AirshipBehaviour {
 	@Header("References")
 	public profileImage!: RawImage;
 	public addFriendContainer!: GameObject;
 	public addFriendButton!: GameObject;
-	private layoutElement!: LayoutElement;
+	public layoutElement: LayoutElement;
+	public kickButton: Button;
+	public kickOverlay: GameObject;
 
 	public partyLeaderContainer!: GameObject;
 	private user!: PublicUser;
+	private isLocalPlayerThePartyLeader = false;
 
 	/** Holds add friend button functionality */
 	private addFriendButtonBin: Bin | undefined;
 	private bin = new Bin();
 
-	public Start(): void {
-		this.layoutElement = this.gameObject.GetComponent<LayoutElement>()!;
+	protected Start(): void {
+		this.kickOverlay.SetActive(false);
+		this.bin.Add(
+			this.kickButton.onClick.Connect((e) => {
+				if (!this.isLocalPlayerThePartyLeader) return;
+				if (this.user.uid === Game.localPlayer.userId) return;
+				Dependency<ProtectedPartyController>().RemoveFromParty(this.user.uid);
+			}),
+		);
+		CanvasAPI.OnHoverEvent(this.kickButton.gameObject, (hov) => {
+			if (!this.isLocalPlayerThePartyLeader) return;
+			if (this.user.uid === Game.localPlayer.userId) return;
+			if (hov === HoverState.ENTER) {
+				this.kickOverlay.SetActive(true);
+			} else {
+				this.kickOverlay.SetActive(false);
+			}
+		});
 	}
 
-	public SetUser(user: PublicUser, asLeader: boolean): void {
-		this.layoutElement.layoutPriority = asLeader ? 2 : 1;
+	public SetUser(user: PublicUser, isUserLeader: boolean, isLocalPlayerThePartyLeader: boolean): void {
+		this.isLocalPlayerThePartyLeader = isLocalPlayerThePartyLeader;
+		this.layoutElement.layoutPriority = isUserLeader ? 2 : 1;
 
 		this.bin.Clean();
 		this.user = user;
@@ -37,8 +58,8 @@ export default class PartyMember extends AirshipBehaviour {
 			this.partyLeaderContainer.SetActive(false);
 		});
 
-		this.UpdateLeaderStatus(asLeader);
-		if (this.user.uid !== Protected.user.localUser?.uid) {
+		this.UpdateLeaderStatus(isUserLeader);
+		if (this.user.uid !== Protected.User.localUser?.uid) {
 			this.UpdateFriendButton();
 			Dependency<ProtectedFriendsController>().onFetchFriends.Connect(() => {
 				this.UpdateFriendButton();
@@ -67,7 +88,7 @@ export default class PartyMember extends AirshipBehaviour {
 		});
 		if (user.uid === Game.localPlayer?.userId) {
 			this.bin.Add(
-				Protected.user.onLocalUserUpdated.Connect(() => {
+				Protected.User.onLocalUserUpdated.Connect(() => {
 					this.UpdatePicture().then(() => {});
 				}),
 			);

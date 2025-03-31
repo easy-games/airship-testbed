@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c4968faf83d4945b20e087dcd456ddd, type: 3}
+  m_Name: Astronaut_Boots Gear
+  m_EditorClassIdentifier: 
+  classId: cf76ceec-e7c5-4d35-b2a3-de6e04567bba
+  accessoryPrefabs:
+  - {fileID: 2831989622786123843, guid: 9daf93e4514b80e4cbec387c1e5d43f7, type: 3}
+  face: {fileID: 0}

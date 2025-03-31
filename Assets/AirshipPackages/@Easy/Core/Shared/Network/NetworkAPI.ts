@@ -83,21 +83,31 @@ function pack(id: number, args: unknown[]) {
 }
 
 function fireServer(id: number, args: unknown[], channel: NetworkChannel) {
+	if (!RunCore.IsClient()) error("This function can only be called from the client.");
+
 	const msg = pack(id, args);
 	NetworkCore.Net.BroadcastToServer(msg, channel === NetworkChannel.Reliable ? 1 : 0);
 }
 
 function fireAllClients(id: number, args: unknown[], channel: NetworkChannel) {
+	if (!RunCore.IsServer()) error("This function can only be called from the server.");
+
 	const msg = pack(id, args);
 	NetworkCore.Net.BroadcastToAllClients(msg, channel === NetworkChannel.Reliable ? 1 : 0);
 }
 
 function fireClient(id: number, player: Player, args: unknown[], channel: NetworkChannel) {
+	if (!RunCore.IsServer()) error("This function can only be called from the server.");
+
+	if (player.IsBot()) return;
+
 	const msg = pack(id, args);
 	NetworkCore.Net.BroadcastToClient(player.connectionId, msg, channel === NetworkChannel.Reliable ? 1 : 0);
 }
 
 function fireExcept(id: number, ignorePlayer: Player, args: unknown[], channel: NetworkChannel) {
+	if (!RunCore.IsServer()) error("This function can only be called from the server.");
+
 	const msg = pack(id, args);
 	NetworkCore.Net.BroadcastToAllExceptClient(
 		ignorePlayer.connectionId,
@@ -107,13 +117,14 @@ function fireExcept(id: number, ignorePlayer: Player, args: unknown[], channel: 
 }
 
 function fireClients(id: number, players: Player[], args: unknown[], channel: NetworkChannel) {
+	if (!RunCore.IsServer()) error("This function can only be called from the server.");
+
 	const msg = pack(id, args);
-	const clientIds = players.map((player) => player.connectionId);
-	NetworkCore.Net.BroadcastToClients(
-		clientIds as unknown as CSArray<number>,
-		msg,
-		channel === NetworkChannel.Reliable ? 1 : 0,
-	);
+	const clientIds = players.mapFiltered((player) => {
+		if (player.IsBot()) return undefined;
+		return player.connectionId;
+	});
+	NetworkCore.Net.BroadcastToClients(clientIds, msg, channel === NetworkChannel.Reliable ? 1 : 0);
 }
 
 function connect(asServer: boolean, id: number, callback: Callback): () => void {

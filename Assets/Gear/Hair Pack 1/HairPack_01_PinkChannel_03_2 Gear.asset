@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c4968faf83d4945b20e087dcd456ddd, type: 3}
+  m_Name: HairPack_01_PinkChannel_03_2 Gear
+  m_EditorClassIdentifier: 
+  classId: afa18c2d-2836-46d9-8f69-5a4e1e045837
+  accessoryPrefabs:
+  - {fileID: 5489493653108711801, guid: 73ef9ba97b576984c898362fac42e0e3, type: 3}
+  face: {fileID: 0}

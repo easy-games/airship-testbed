@@ -82,6 +82,7 @@ SkinnedMeshRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials: []
@@ -240,11 +241,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b25473de98e12c4b9fbe684210d426d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseMesh: {fileID: 6630487583680945871}
+  outputSkinnedMeshRenderers: []
+  outputBaseMeshMatColors: []
   rootBone: {fileID: 6679109793877019910}
-  executeOnLoad: 0
+  createOverlayMesh: 0
   hiddenSurfaces: []
-  sourceReferences: []
+  firstPerson: 0
+  rig: {fileID: 0}
 --- !u!1 &7502758568239949129
 GameObject:
   m_ObjectHideFlags: 0
@@ -328,6 +331,7 @@ MeshRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials: []
@@ -949,6 +953,10 @@ MonoBehaviour:
   armsMesh: {fileID: 49859478582656520}
   headMesh: {fileID: 1314679149229565393}
   faceMesh: {fileID: 1123584002726116015}
+  viewmodelArmsMesh: {fileID: 0}
+  bodyMeshLOD: []
+  armsMeshLOD: []
+  headMeshLOD: []
   rigHolder: {fileID: 1180507613299067262}
   rootMotion: {fileID: 6679109793877019910}
   master: {fileID: 1550453643144665313}
@@ -976,6 +984,10 @@ MonoBehaviour:
   spineChest: {fileID: 9103960562246501033}
   heldItemL: {fileID: 7851928764977798893}
   heldItemR: {fileID: 1855668378367972431}
+  headColor: {fileID: 0}
+  bodyColor: {fileID: 0}
+  armsColor: {fileID: 0}
+  viewmodelArmsColor: {fileID: 0}
 --- !u!114 &3897220116987940198
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1065,7 +1077,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7eb696a0152059a4896e326dc2378287, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  anim: {fileID: 0}
   minRepeatMessageTime: 0.075
 --- !u!4 &6679109793877019910 stripped
 Transform:

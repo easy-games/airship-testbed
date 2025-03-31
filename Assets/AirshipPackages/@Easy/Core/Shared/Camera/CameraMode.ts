@@ -34,6 +34,7 @@ export abstract class CameraMode {
 	 * Signal that is fired when the camera mode's target is changed.
 	 */
 	public onTargetChanged = new Signal<{ before: CameraTarget; after: CameraTarget }>();
+	public onTargetDistance = new Signal<[distance: number, cameraPosition: Vector3, targetPositin: Vector3]>();
 
 	public rotationX = math.rad(90);
 	public rotationY = math.rad(0);

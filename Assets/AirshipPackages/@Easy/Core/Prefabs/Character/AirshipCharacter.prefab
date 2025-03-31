@@ -169,6 +169,7 @@ TrailRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -528,6 +529,7 @@ MeshRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -564,6 +566,7 @@ GameObject:
   - component: {fileID: 8997996947095583982}
   - component: {fileID: 5043041770756594627}
   - component: {fileID: -1624083086148811293}
+  - component: {fileID: 606316830658707215}
   - component: {fileID: 7088081142443290682}
   - component: {fileID: 7931457288082626079}
   - component: {fileID: 1645000729044007242}
@@ -614,7 +617,7 @@ MonoBehaviour:
   meshCombiner: {fileID: 5232673978488062214}
   firstPerson: 0
   lodCount: 3
-  currentOutfit: {fileID: 11400000, guid: 354eefa8bdce6e349b1a536d8c3656e9, type: 2}
+  currentOutfit: {fileID: 0}
   currentUserId: 
   currentUserName: 
   cancelPendingDownload: 0
@@ -630,16 +633,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptFile: {fileID: -8502596097384394428, guid: 231b41c7c69568446b98353c21d6785d, type: 3}
-  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/Character.lua
-  m_error: 0
-  m_yielded: 0
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
+  script: {fileID: -8502596097384394428, guid: 231b41c7c69568446b98353c21d6785d, type: 3}
+  scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/Character.lua
+  forceContext: 0
+  metadata:
     name: Character
     singleton: 0
     decorators: []
@@ -654,6 +651,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -669,6 +669,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators:
       - name: Header
         parameters:
@@ -688,6 +691,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -703,6 +709,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -718,6 +727,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -733,6 +745,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -748,6 +763,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -763,6 +781,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators:
       - name: Header
         parameters:
@@ -782,6 +803,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -789,7 +813,109 @@ MonoBehaviour:
       modified: 1
     displayIcon: {fileID: 0}
     displayName: 
-  contextOverwritten: 0
+--- !u!114 &606316830658707215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8616685848737228372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  script: {fileID: 3379845904423814631, guid: b265ca149231a634a8b651b688c7a486, type: 3}
+  scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/CharacterRendering.lua
+  forceContext: 0
+  metadata:
+    name: CharacterRendering
+    singleton: 0
+    decorators: []
+    properties:
+    - name: transparentDistance
+      type: number
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 0.4
+      serializedObject: {fileID: 0}
+      modified: 1
+    - name: transparentMargin
+      type: number
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 0.6
+      serializedObject: {fileID: 0}
+      modified: 1
+    - name: useTransparentOnCameraClose
+      type: boolean
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"Variables"'
+      nullable: 0
+      serializedValue: 1
+      serializedObject: {fileID: 0}
+      modified: 1
+    - name: autoSetStencilLayer
+      type: boolean
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators:
+      - name: Tooltip
+        parameters:
+        - type: string
+          serializedValue: '"Will set everything under the rig to be on the StencilMask
+            or LocalStencilMask layer"'
+      nullable: 0
+      serializedValue: 1
+      serializedObject: {fileID: 0}
+      modified: 0
+    displayIcon: {fileID: 0}
+    displayName: 
 --- !u!114 &7088081142443290682
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -802,16 +928,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptFile: {fileID: 6641073800188671112, guid: 8a394f76659097e498fcb014078bae54, type: 3}
-  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/Inventory/Inventory.lua
-  m_error: 0
-  m_yielded: 0
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
+  script: {fileID: 6641073800188671112, guid: 8a394f76659097e498fcb014078bae54, type: 3}
+  scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Inventory/Inventory.lua
+  forceContext: 0
+  metadata:
     name: Inventory
     singleton: 0
     decorators: []
@@ -826,6 +946,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 45
@@ -841,6 +964,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 9
@@ -856,6 +982,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 0
@@ -871,14 +1000,44 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
       serializedObject: {fileID: 8440015110078338219}
       modified: 1
+    - name: modifyPermission
+      type: StringEnum
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: AirshipPackages/@Easy/Core/Shared/Inventory/Inventory@InventoryModifyPermission
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"Permissions"'
+      - name: Tooltip
+        parameters:
+        - type: string
+          serializedValue: '"Who can modify this inventory\n\n<b>Network Owner</b>:
+            The network owner of this Inventory''s NetworkIdentity\n<b>Everyone</b>:
+            Any client can modify the inventory"'
+      nullable: 0
+      serializedValue: OWNER
+      serializedObject: {fileID: 0}
+      modified: 0
     displayIcon: {fileID: 0}
     displayName: 
-  contextOverwritten: 0
 --- !u!114 &7931457288082626079
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -899,8 +1058,8 @@ MonoBehaviour:
   airshipTransform: {fileID: 7911948219130051474}
   graphicTransform: {fileID: 8307927661282889293}
   moveData: {fileID: 1645000729044007242}
-  animationHelper: {fileID: 903796914586745664}
   mainCollider: {fileID: 3569249470052007930}
+  animationHelper: {fileID: 903796914586745664}
   slopeVisualizer: {fileID: 473010626989301856}
   drawDebugGizmos_FORWARD: 0
   drawDebugGizmos_GROUND: 0
@@ -910,6 +1069,8 @@ MonoBehaviour:
   autoCalibrateSkiddingSpeed: 1
   observerRotationLerpMod: 10
   playAnimationOnServer: 1
+  lookVector: {x: 1, y: 1, z: 1}
+  startingLookVector: {x: 1, y: 1, z: 1}
 --- !u!114 &1645000729044007242
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -987,7 +1148,6 @@ MonoBehaviour:
   animationEvents: {fileID: 6059025528528977290}
   sprintVfx: {fileID: 8366697698488531815}
   jumpPoofVfx: {fileID: 8321520850568583672}
-  slideVfx: {fileID: 4591070209699312083}
   minAirborneTime: 0.25
   particleMaxDistance: 25
   directionalBlendLerpMod: 15
@@ -1005,16 +1165,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptFile: {fileID: 5399347344820012199, guid: 1d9ff343e68ebb247bb7a1dd2270fd63, type: 3}
-  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/Animation/CharacterAnimation.ts
-  m_error: 0
-  m_yielded: 0
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
+  script: {fileID: 5399347344820012199, guid: 1d9ff343e68ebb247bb7a1dd2270fd63, type: 3}
+  scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/Animation/CharacterAnimation.ts
+  forceContext: 0
+  metadata:
     name: CharacterAnimation
     singleton: 0
     decorators: []
@@ -1029,6 +1183,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -1044,6 +1201,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: AirshipPackages/@Easy/Core/Shared/Character/Character.ts
+      jsDocs:
+        text: []
+        tags: []
       decorators:
       - name: Header
         parameters:
@@ -1063,6 +1223,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -1070,7 +1233,6 @@ MonoBehaviour:
       modified: 0
     displayIcon: {fileID: 0}
     displayName: 
-  contextOverwritten: 0
 --- !u!54 &5519949438957097557
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1079,7 +1241,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8616685848737228372}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 5
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0.9, z: 0}
@@ -1230,6 +1392,162 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7911948219130051474}
     m_Modifications:
+    - target: {fileID: 231153956024787454, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 458897142975985939, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 754224085012934334, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 986719577151922536, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1148394170566631015, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1291918137899018184, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1359111650243768105, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1453987225971291100, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1499008822955581907, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2240477070732043286, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2531754576532806679, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2752598999053243109, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2775551324891126259, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: colorSettings.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2775551324891126259, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: colorSettings.Array.data[1].baseColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2775551324891126259, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: colorSettings.Array.data[1].baseColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2775551324891126259, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: colorSettings.Array.data[1].baseColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2775551324891126259, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: colorSettings.Array.data[1].baseColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2780983035165434834, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2874695418424766656, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3048756369540025053, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3058736905200607389, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3114543442279630557, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3351396969562174295, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3418875587636762027, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3418875587636762027, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 92798f4dd55bd614cbd0271dde95cc71, type: 2}
+    - target: {fileID: 3664559219000330965, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3664559219000330965, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c67e2b57a298e4389ee3204f6d883b, type: 2}
+    - target: {fileID: 4086383161009726856, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4230453897974672422, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: colorSettings.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4230453897974672422, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: colorSettings.Array.data[1].baseColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4230453897974672422, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: colorSettings.Array.data[1].baseColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4230453897974672422, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: colorSettings.Array.data[1].baseColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4230453897974672422, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: colorSettings.Array.data[1].baseColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4351895569960075558, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4369752075464307650, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4412226659580398169, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4466944578396753522, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4466944578396753522, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 92798f4dd55bd614cbd0271dde95cc71, type: 2}
+    - target: {fileID: 4530612716677830506, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4845036152095233570, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1270,12 +1588,133 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4971650534010296487, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5119675380177675186, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5120707740823773145, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5337063279671686071, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5420480753661590276, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Layer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5420480753661590276, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5571321654954289231, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5581504576965784556, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5675248435508204999, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6507705757905351095, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6965810205058615591, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7010096709717470901, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7048198672967568010, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302691505991219084, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7441228441499186000, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7659367395402348155, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7906126369897473893, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7933318673209200117, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: colorSettings.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7933318673209200117, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: colorSettings.Array.data[1].baseColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7933318673209200117, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: colorSettings.Array.data[1].baseColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7933318673209200117, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: colorSettings.Array.data[1].baseColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7933318673209200117, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: colorSettings.Array.data[1].baseColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7985141779382444844, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8578249998239130122, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 8802499123621670980, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
       propertyPath: m_Name
       value: AirshipRigHolder
       objectReference: {fileID: 0}
+    - target: {fileID: 8802499123621670980, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8874355582159802038, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8874355582159802038, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 92798f4dd55bd614cbd0271dde95cc71, type: 2}
+    - target: {fileID: 8943775630873165881, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9009168757252195563, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9016791168646278381, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 3048756369540025053, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
@@ -1416,11 +1855,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e4f3504ea329924ca0e3824e6fc9389, type: 3}
---- !u!198 &4591070209699312083 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 6912367275794342687, guid: 5e4f3504ea329924ca0e3824e6fc9389, type: 3}
-  m_PrefabInstance: {fileID: 6943261370758517452}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7437986945175781148 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 532096394122571216, guid: 5e4f3504ea329924ca0e3824e6fc9389, type: 3}

@@ -47,9 +47,9 @@ export class MainMenuPartyController {
 	 */
 	public IsPartyLeader(): boolean {
 		if (!this.party) return false;
-		if (!Protected.user.localUser) return false;
+		if (!Protected.User.localUser) return false;
 
-		return this.party.leader === Protected.user.localUser.uid && this.party.members.size() > 1;
+		return this.party.leader === Protected.User.localUser.uid && this.party.members.size() > 1;
 	}
 
 	protected OnStart(): void {
@@ -78,6 +78,7 @@ export class MainMenuPartyController {
 				"party-invite:" + data.leader,
 				"Party Invite",
 				data.members[0].username,
+				data.members[0].uid,
 				(result) => {
 					if (result) {
 						const res = this.httpRetry(() => InternalHttpManager.PostAsync(
@@ -111,7 +112,7 @@ export class MainMenuPartyController {
 		this.SetupReferences();
 
 		task.spawn(() => {
-			Protected.user.WaitForLocalUser();
+			Protected.User.WaitForLocalUser();
 			if (!this.partyUpdateReceived) {
 				const partyString = StateManager.GetString("airship:party");
 				if (partyString) {
@@ -173,7 +174,8 @@ export class MainMenuPartyController {
 		const partyMemberUids = this.party.members.map((m) => m.uid);
 
 		const leaveButton = this.mainMenuController.refs.GetValue("Social", "LeavePartyButton");
-		if (this.party.leader === Game.localPlayer.userId) {
+		const isLocalPlayerThePartyLeader = this.party.leader === Game.localPlayer.userId;
+		if (isLocalPlayerThePartyLeader) {
 			leaveButton.SetActive(false);
 		} else {
 			leaveButton.SetActive(true);
@@ -204,12 +206,12 @@ export class MainMenuPartyController {
 			if (alreadyAddedUids.includes(member.uid)) {
 				go = partyContent.transform.FindChild(member.uid)!.gameObject;
 			} else {
-				go = Object.Instantiate(this.partyMemberPrefab, partyContent.transform);
+				go = Instantiate(this.partyMemberPrefab, partyContent.transform);
 				init = true;
 			}
 
 			const partyMemberComponent = go.GetAirshipComponent<PartyMember>()!;
-			partyMemberComponent.SetUser(member, member.uid === this.party.leader);
+			partyMemberComponent.SetUser(member, member.uid === this.party.leader, isLocalPlayerThePartyLeader);
 		}
 
 		CanvasAPI.OnClickEvent(leaveButton, () => {

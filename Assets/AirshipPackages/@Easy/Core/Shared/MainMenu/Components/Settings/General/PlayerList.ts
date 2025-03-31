@@ -1,9 +1,9 @@
+import { ProtectedPartyController } from "@Easy/Core/Client/ProtectedControllers/Airship/Party/PartyController";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Protected } from "@Easy/Core/Shared/Protected";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { ProtectedPlayersSingleton } from "../../../Singletons/ProtectedPlayersSingleton";
 import PlayerEntry from "./PlayerEntry";
-import { ProtectedPartyController } from "@Easy/Core/Client/ProtectedControllers/Airship/Party/PartyController";
 
 export default class PlayerList extends AirshipBehaviour {
 	public content!: RectTransform;
@@ -43,7 +43,7 @@ export default class PlayerList extends AirshipBehaviour {
 		this.content.gameObject.ClearChildren();
 
 		let i = 0;
-		for (let player of Protected.protectedPlayers.players) {
+		for (let player of Protected.ProtectedPlayers.players) {
 			const go = Object.Instantiate(this.playerEntryPrefab, this.content);
 			const entry = go.GetAirshipComponent<PlayerEntry>()!;
 

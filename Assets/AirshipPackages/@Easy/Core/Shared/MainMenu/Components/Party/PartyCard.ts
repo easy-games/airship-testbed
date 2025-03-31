@@ -93,7 +93,7 @@ export default class PartyCard extends AirshipBehaviour {
 
 	public UpdateInfo(userStatus: UserStatusData | undefined) {
 		const party = Dependency<MainMenuPartyController>().party;
-		const isLeader = party?.leader === Protected.user.localUser?.uid;
+		const isLeader = party?.leader === Protected.User.localUser?.uid;
 
 		if (userStatus) {
 			StateManager.SetString("airship:party-leader-status", json.encode(userStatus));
@@ -110,16 +110,17 @@ export default class PartyCard extends AirshipBehaviour {
 			return;
 		}
 
-		if (!userStatus || userStatus.status !== UserStatus.IN_GAME) {
-			this.layoutElement.preferredHeight = 84;
-			this.layoutElement.gameObject.GetComponent<ImageWithRoundedCorners>()?.Refresh();
-			this.partyChatButton.gameObject.SetActive(false);
-			return;
-		}
+		// Party chat button visibility
 		if (Game.IsMobile()) {
 			this.partyChatButton.gameObject.SetActive(false);
 		} else {
 			this.partyChatButton.gameObject.SetActive(true);
+		}
+
+		if (!userStatus || userStatus.status !== UserStatus.IN_GAME) {
+			this.layoutElement.preferredHeight = 84;
+			this.layoutElement.gameObject.GetComponent<ImageWithRoundedCorners>()?.Refresh();
+			return;
 		}
 
 		this.layoutElement.preferredHeight = 124;

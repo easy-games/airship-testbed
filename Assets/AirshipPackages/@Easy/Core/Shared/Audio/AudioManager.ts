@@ -47,6 +47,24 @@ export interface PlaySoundConfig {
 	 * Defaults to 0.
 	 */
 	dopplerLevel?: number;
+
+	/**
+	 * Mixer group for sound to play in.
+	 */
+	mixerGroup?: AudioMixerGroup;
+}
+
+interface PositionalPlaySoundConfig extends PlaySoundConfig {
+	/**
+	 * If a position is supplied this sound will be played positionally.
+	 */
+	position?: Vector3;
+}
+
+interface CleanupQueueItem {
+	audioSource: AudioSource;
+	aliveUntil?: number;
+	isGlobal: boolean;
 }
 
 /**
@@ -56,21 +74,33 @@ export class AudioManager {
 	private static audioSourceTemplate: GameObject | undefined;
 	private static globalAudioSources: Map<number, AudioSource> = new Map();
 
-	private static cleanupQueue = new Set<{
-		audioSource: AudioSource;
-		aliveUntil: number;
-		isGlobal: boolean;
-	}>();
+	private static cleanupQueue = new Set<CleanupQueueItem>();
 
 	public static Init(): void {
 		this.CacheAudioSources();
 
 		task.spawn(() => {
-			let toRemove = [];
+			debug.setmemorycategory("AudioManagerCleanup");
+
+			const toRemove: CleanupQueueItem[] = [];
+
 			while (task.wait(1)) {
+				if (this.cleanupQueue.isEmpty()) {
+					continue;
+				}
+
 				const now = Time.unscaledTime;
-				for (let item of this.cleanupQueue) {
-					if (now >= item.aliveUntil) {
+				for (const item of this.cleanupQueue) {
+					let requiresCleanup = false;
+					// If audio is played through an AudioRandomContainer instead of clip
+					// then we don't know when it'll be done playing (just poll)
+					if (item.aliveUntil !== undefined) {
+						requiresCleanup = now >= item.aliveUntil;
+					} else {
+						requiresCleanup = item.audioSource.IsDestroyed() || !item.audioSource.isPlaying;
+					}
+
+					if (requiresCleanup) {
 						task.spawn(() => {
 							if (item.audioSource.IsDestroyed()) return;
 
@@ -83,9 +113,11 @@ export class AudioManager {
 						toRemove.push(item);
 					}
 				}
-				for (let item of toRemove) {
+
+				for (const item of toRemove) {
 					this.cleanupQueue.delete(item);
 				}
+				toRemove.clear();
 			}
 		});
 	}
@@ -125,7 +157,27 @@ export class AudioManager {
 		return this.PlayClipGlobal(clip, config);
 	}
 
-	public static PlayClipGlobal(clip: AudioClip, config?: PlaySoundConfig): AudioSource | undefined {
+	/**
+	 * Plays an audio resource. It will play positionally if a position is supplied in the config. Otherwise
+	 * the audio will play globally.
+	 * 
+	 * @param audioResource Audio resource to play. This can be either an AudioClip or an AudioRandomConatiner.
+	 * @param config Configure how the sound is played.
+	 */
+	public static PlayClip(audioResource: AudioResource, config?: PositionalPlaySoundConfig): AudioSource | undefined {
+		if (config?.position) {
+			return this.PlayClipAtPosition(audioResource, config.position, config);
+		} else {
+			return this.PlayClipGlobal(audioResource, config);
+		}
+	}
+
+	public static PlayClipGlobal(audioResource: AudioResource, config?: PlaySoundConfig): AudioSource | undefined {
+		if (!audioResource) {
+			warn("Cannot play sound: AudioResource is undefined.");
+			return undefined;
+		}
+
 		const audioSource = this.GetAudioSource(Vector3.zero, config?.audioSourceTemplate);
 		const providedAudioSource = config?.audioSourceTemplate !== undefined;
 
@@ -133,22 +185,17 @@ export class AudioManager {
 		if (config?.loop !== undefined || !providedAudioSource) audioSource.loop = config?.loop ?? false;
 		if (config?.pitch !== undefined || !providedAudioSource) audioSource.pitch = config?.pitch ?? 1;
 		if (config?.volumeScale !== undefined || !providedAudioSource) audioSource.volume = config?.volumeScale ?? 1;
-		if (!clip) {
-			warn("Trying to play unidentified clip");
-			return undefined;
-		}
-		if (config?.loop) {
-			audioSource.clip = clip;
-			audioSource.Play();
-		} else {
-			audioSource.PlayOneShot(clip);
-		}
-		//audioSource.PlayOneShot(clip, );
+		if (config?.mixerGroup !== undefined || !providedAudioSource) audioSource.outputAudioMixerGroup = config?.mixerGroup!;
+
+		audioSource.resource = audioResource;
+		audioSource.Play();
+		
 		this.globalAudioSources.set(audioSource.gameObject.GetInstanceID(), audioSource);
 		if (!audioSource.loop) {
+			const clip = audioSource.clip;
 			this.cleanupQueue.add({
 				audioSource,
-				aliveUntil: Time.unscaledTime + clip.length + 1,
+				aliveUntil: clip ? Time.unscaledTime + clip.length + 1 : undefined,
 				isGlobal: true,
 			});
 		}
@@ -184,19 +231,20 @@ export class AudioManager {
 	}
 
 	public static PlayClipAtPosition(
-		clip: AudioClip,
+		audioResource: AudioResource,
 		position: Vector3,
 		config?: PlaySoundConfig,
 	): AudioSource | undefined {
+		if (!audioResource) {
+			warn("Cannot play sound: AudioResource is undefined.");
+			return undefined;
+		}
+
 		const audioSource = this.GetAudioSource(position, config?.audioSourceTemplate);
 		const providedAudioSource = config?.audioSourceTemplate !== undefined;
 		audioSource.spatialBlend = 1;
 
 		if (config?.loop !== undefined || !providedAudioSource) audioSource.loop = config?.loop ?? false;
-		if (!clip) {
-			warn("Trying to play unidentified clip");
-			return undefined;
-		}
 		if (config?.rollOffMode !== undefined || !providedAudioSource)
 			audioSource.rolloffMode = config?.rollOffMode ?? AudioRolloffMode.Logarithmic;
 		if (config?.maxDistance !== undefined || !providedAudioSource)
@@ -208,16 +256,16 @@ export class AudioManager {
 		if (config?.dopplerLevel !== undefined || !providedAudioSource) {
 			audioSource.dopplerLevel = config?.dopplerLevel ?? 0;
 		}
-		if (config?.loop) {
-			audioSource.clip = clip;
-			audioSource.Play();
-		} else {
-			audioSource.PlayOneShot(clip);
-		}
+		if (config?.mixerGroup !== undefined || !providedAudioSource) audioSource.outputAudioMixerGroup = config?.mixerGroup!;
+		
+		audioSource.resource = audioResource;
+		audioSource.Play();
+		
 		if (!audioSource.loop) {
+			const clip = audioSource.clip;
 			this.cleanupQueue.add({
 				audioSource,
-				aliveUntil: Time.unscaledTime + clip.length + 1,
+				aliveUntil: clip ? Time.unscaledTime + clip.length + 1 : undefined,
 				isGlobal: false,
 			});
 		}

@@ -15,8 +15,7 @@ export class SteamFriendsProtectedController implements OnStart {
 
 		const steamFriends = SteamLuauAPI.GetSteamFriends();
 		const steamIds: string[] = [];
-		for (let i = 0; i < steamFriends.Length; i++) {
-			const friendInfo = steamFriends.GetValue(i);
+		for (const friendInfo of steamFriends) {
 			const airshipUid = `steam:${friendInfo.steamId}`;
 			steamIds.push(airshipUid);
 			this.steamFriends.set(airshipUid, friendInfo);

@@ -6,4 +6,6 @@ export interface CharacterDto {
 	displayName?: string;
 	ownerConnectionId?: number;
 	outfitDto?: OutfitDto;
+	health: number;
+	maxHealth: number;
 }

@@ -68,32 +68,15 @@ export class AirshipCharactersSingleton {
 	protected OnStart(): void {
 		if (Game.coreContext === CoreContext.MAIN_MENU) return;
 		if (Game.IsClient() && !Game.IsServer()) {
-			// Because the same character can come through `RequestCharacters` and `Character.Spawn`,
-			// simply enqueue the DTOs and process them sequentially.
 			task.spawn(() => {
 				const dtos = CoreNetwork.ClientToServer.Character.RequestCharacters.client.FireServer();
 				for (const dto of dtos) {
-					this.pendingCharacterDtos.set(dto.id, dto);
+					this.InitCharacter(dto);
 				}
 			});
 
 			CoreNetwork.ServerToClient.Character.Spawn.client.OnServerEvent((dto) => {
-				this.pendingCharacterDtos.set(dto.id, dto);
-			});
-
-			task.spawn(() => {
-				while (true) {
-					task.wait(0.05);
-					const toFlush = [];
-					for (const [cid, dto] of this.pendingCharacterDtos) {
-						this.InitCharacter(dto);
-						toFlush.push(cid);
-					}
-					// Flush the queue.
-					for (const cid of toFlush) {
-						this.pendingCharacterDtos.delete(cid);
-					}
-				}
+				this.InitCharacter(dto);
 			});
 
 			CoreNetwork.ServerToClient.Character.SetCharacter.client.OnServerEvent((connId, characterId) => {
@@ -126,7 +109,7 @@ export class AirshipCharactersSingleton {
 				}
 
 				if (outfitDto) {
-					character.LoadUserOutfit(outfitDto);
+					character.LoadOutfit(outfitDto);
 				}
 			});
 		}
@@ -141,6 +124,8 @@ export class AirshipCharactersSingleton {
 						ownerConnectionId: character.player?.connectionId,
 						outfitDto: character.outfitDto,
 						displayName: character.GetDisplayName(),
+						health: character.GetHealth(),
+						maxHealth: character.GetMaxHealth(),
 					});
 				}
 				return characters;
@@ -186,6 +171,7 @@ export class AirshipCharactersSingleton {
 					audioSource.transform.localPosition = new Vector3(0, 1.4, 0);
 					audioSource.spatialBlend = 1;
 					audioSource.maxDistance = 50;
+					audioSource.dopplerLevel = 0;
 					audioSource.rolloffMode = AudioRolloffMode.Linear;
 				}
 			});
@@ -223,11 +209,11 @@ export class AirshipCharactersSingleton {
 					accessoryTemplates = [...Airship.Inventory.GetAccessoriesForItemType(itemDef.itemType)];
 				}
 
-				character.accessoryBuilder?.RemoveAccessorySlot(AccessorySlot.LeftHand, false);
-				character.accessoryBuilder?.RemoveAccessorySlot(AccessorySlot.RightHand, false);
+				character.accessoryBuilder?.RemoveBySlot(AccessorySlot.LeftHand);
+				character.accessoryBuilder?.RemoveBySlot(AccessorySlot.RightHand);
 				if (viewmodelAccessoryBuilder) {
-					viewmodelAccessoryBuilder.RemoveAccessorySlot(AccessorySlot.LeftHand, false);
-					viewmodelAccessoryBuilder.RemoveAccessorySlot(AccessorySlot.RightHand, false);
+					viewmodelAccessoryBuilder.RemoveBySlot(AccessorySlot.LeftHand);
+					viewmodelAccessoryBuilder.RemoveBySlot(AccessorySlot.RightHand);
 				}
 
 				// const firstPerson = this.character.animator.IsFirstPerson();
@@ -236,9 +222,9 @@ export class AirshipCharactersSingleton {
 				// this.activeAccessoriesWorldmodel.clear();
 				// this.activeAccessoriesViewmodel.clear();
 				for (const accessoryTemplate of accessoryTemplates) {
-					character.accessoryBuilder?.AddSingleAccessory(accessoryTemplate, false);
+					character.accessoryBuilder?.Add(accessoryTemplate);
 					if (viewmodelAccessoryBuilder) {
-						viewmodelAccessoryBuilder.AddSingleAccessory(accessoryTemplate, false);
+						viewmodelAccessoryBuilder.Add(accessoryTemplate);
 					}
 
 					//Load the animator for the held item if one exists
@@ -253,7 +239,7 @@ export class AirshipCharactersSingleton {
 
 				//We aren't combineing held items
 				// this.entity.accessoryBuilder.TryCombineMeshes();
-			});
+			}, SignalPriority.HIGH);
 		});
 	}
 
@@ -278,10 +264,12 @@ export class AirshipCharactersSingleton {
 	): () => void {
 		const cleanupPerCharacter = new Map<Character, () => void>();
 		const observe = (character: Character) => {
-			const cleanup = observer(character);
-			if (cleanup !== undefined) {
-				cleanupPerCharacter.set(character, cleanup);
-			}
+			task.spawn(() => {
+				const cleanup = observer(character);
+				if (cleanup !== undefined) {
+					cleanupPerCharacter.set(character, cleanup);
+				}
+			});
 		};
 		for (const character of this.characters) {
 			observe(character);
@@ -315,19 +303,24 @@ export class AirshipCharactersSingleton {
 		position: Vector3,
 		config?: {
 			customCharacterTemplate?: GameObject;
+			lookDirection?: Vector3;
 		},
 	): Character {
 		if (!Game.IsServer()) {
 			error("Player.SpawnCharacter must be called on the server.");
 		}
 
-		const go = Object.Instantiate(this.GetDefaultCharacterTemplate());
+		const go = Object.Instantiate(config?.customCharacterTemplate ?? this.GetDefaultCharacterTemplate());
 		go.name = `Character`;
+
 		const characterComponent = go.GetAirshipComponent<Character>();
 		if (!characterComponent) {
 			error("Trying to spawn a character prefab without a character component on it!");
 		}
-		characterComponent.Init(undefined, Airship.Characters.MakeNewId(), undefined, go.name);
+		if (config?.lookDirection && characterComponent.movement) {
+			characterComponent.movement.startingLookVector = config.lookDirection;
+		}
+		characterComponent.Init(undefined, Airship.Characters.MakeNewId(), undefined, 100, 100, go.name);
 		const rb = go.GetComponent<Rigidbody>();
 		if (rb) rb.position = position;
 		go.transform.position = position;
@@ -360,11 +353,7 @@ export class AirshipCharactersSingleton {
 				);
 				characterNetworkObj.gameObject.name = "Character_" + player.username;
 			}
-			if (player && Game.IsEditor() && !Game.IsHosting() && character.accessoryBuilder) {
-				// Hack to load your own outfit in dedicated mode
-				Airship.Avatar.LoadOutfitFromLocalUser(character.accessoryBuilder);
-			}
-			character.Init(player, dto.id, dto.outfitDto, dto.displayName);
+			character.Init(player, dto.id, dto.outfitDto, dto.health, dto.maxHealth, dto.displayName);
 			Airship.Characters.RegisterCharacter(character);
 			player?.SetCharacter(character);
 			Airship.Characters.onCharacterSpawned.Fire(character);
@@ -421,15 +410,7 @@ export class AirshipCharactersSingleton {
 	}
 
 	public FindByCollider(collider: Collider): Character | undefined {
-		for (let character of this.characters) {
-			if (
-				character.gameObject === collider.gameObject ||
-				character.gameObject === collider.gameObject.transform.parent?.parent?.gameObject
-			) {
-				return character;
-			}
-		}
-		return undefined;
+		return collider.gameObject.GetAirshipComponentInParent<Character>();
 	}
 
 	/**
@@ -446,6 +427,8 @@ export class AirshipCharactersSingleton {
 				ownerConnectionId: character.player?.connectionId,
 				outfitDto: character.outfitDto,
 				displayName: character.GetDisplayName(),
+				health: character.GetHealth(),
+				maxHealth: character.GetMaxHealth(),
 			});
 		}
 	}

@@ -45,11 +45,17 @@ export class AirshipTransferService {
 	}
 
 	protected OnStart(): void {
-		contextbridge.callback("ServerShutdown", (from) => {
+		contextbridge.callback("ServerShutdown", async (from) => {
 			this.onShutdown.Fire();
 
 			if (this.transferPlayersOnShutdown) {
-				this.TransferGroupToGame(Airship.Players.GetPlayers(), Game.gameId);
+				// todo: if this fails, try transferring everyone individually
+				const res = await this.TransferGroupToGame(Airship.Players.GetPlayers(), Game.gameId);
+				if (!res.transfersRequested) {
+					for (let player of Airship.Players.GetPlayers()) {
+						this.TransferGroupToGame([player], Game.gameId);
+					}
+				}
 			}
 		});
 	}

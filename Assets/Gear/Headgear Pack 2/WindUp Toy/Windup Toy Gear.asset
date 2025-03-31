@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c4968faf83d4945b20e087dcd456ddd, type: 3}
+  m_Name: Windup Toy Gear
+  m_EditorClassIdentifier: 
+  classId: 4b4e97ba-7e94-402c-b4c6-c2fbe365cb7b
+  accessoryPrefabs:
+  - {fileID: 3811323883951466398, guid: f436ed8f82590af4daa86dc6c745decd, type: 3}
+  face: {fileID: 0}

@@ -267,7 +267,7 @@ PrefabInstance:
     - target: {fileID: 5043041770756594627, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       propertyPath: currentOutfit
       value: 
-      objectReference: {fileID: 11400000, guid: 354eefa8bdce6e349b1a536d8c3656e9, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 5043041770756594627, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       propertyPath: currentUserId
       value: 
@@ -453,6 +453,7 @@ PrefabInstance:
     - {fileID: 0}
     - {fileID: 2553089008290134946, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
     - {fileID: 8440015110078338219, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
+    - {fileID: 606316830658707215, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
     m_RemovedGameObjects:
     - {fileID: 1460775334046746424, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
     - {fileID: 1243123700181202754, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}

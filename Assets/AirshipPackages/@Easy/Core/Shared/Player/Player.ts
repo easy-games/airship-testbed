@@ -129,6 +129,34 @@ export class Player {
 	}
 
 	/**
+	 * Wait for a character for this given player
+	 *
+	 * @param timeout The timeout to wait for the character
+	 * @yields Will yield the executing thread if a character does not yet exist on this player
+	 */
+	public WaitForCharacter(): Character;
+	public WaitForCharacter(timeoutSeconds: number): Character | undefined;
+	public WaitForCharacter(timeout?: number): Character | undefined {
+		let character: Character | undefined = this.character;
+
+		if (timeout !== undefined) {
+			let expirationTime = Time.time + timeout;
+			while (!character && Time.time < expirationTime) {
+				character = this.character;
+				task.wait();
+			}
+
+			return character;
+		} else {
+			while (!character) {
+				character = this.onCharacterChanged.Wait();
+			}
+
+			return character;
+		}
+	}
+
+	/**
 	 * Can yield if the player's outfit hasn't finished downloading.
 	 * @param position Spawn position of character
 	 * @param config.lookDirection Initial facing direction of character
@@ -154,8 +182,8 @@ export class Player {
 		);
 		go.name = `Character_${this.username}`;
 		const characterComponent = go.GetAirshipComponent<Character>()!;
-		if (config?.lookDirection) {
-			characterComponent.movement?.SetLookVector(config?.lookDirection);
+		if (config?.lookDirection && characterComponent.movement) {
+			characterComponent.movement.startingLookVector = config.lookDirection;
 		}
 
 		if (!this.outfitLoaded) {
@@ -183,10 +211,14 @@ export class Player {
 			});
 		}
 
-		//Server initalizes character.
-		characterComponent.Init(this, Airship.Characters.MakeNewId(), this.selectedOutfit);
+		// Server initalizes character.
+		characterComponent.Init(this, Airship.Characters.MakeNewId(), this.selectedOutfit, 100, 100);
 		this.SetCharacter(characterComponent);
-		NetworkServer.Spawn(go, this.networkIdentity.connectionToClient!);
+		if (this.IsBot()) {
+			NetworkServer.Spawn(go);
+		} else {
+			NetworkServer.Spawn(go, this.networkIdentity.connectionToClient!);
+		}
 		Airship.Characters.RegisterCharacter(characterComponent);
 		Airship.Characters.onCharacterSpawned.Fire(characterComponent);
 
@@ -240,7 +272,7 @@ export class Player {
 	}
 
 	public IsBot(): boolean {
-		return this.connectionId < 0;
+		return this.connectionId > 0 && this.connectionId < 50_000;
 	}
 
 	public Encode(): PlayerDto {
@@ -279,8 +311,10 @@ export class Player {
 
 		bin.Add(
 			this.onCharacterChanged.Connect((newCharacter) => {
-				cleanup?.();
-				cleanup = observer(newCharacter);
+				task.spawn(() => {
+					cleanup?.();
+					cleanup = observer(newCharacter);
+				});
 			}),
 		);
 

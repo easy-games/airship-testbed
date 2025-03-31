@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c4968faf83d4945b20e087dcd456ddd, type: 3}
+  m_Name: Cowboy Hat Gear
+  m_EditorClassIdentifier: 
+  classId: f79b5d85-218c-4b64-ac00-fa9fd059a0e7
+  accessoryPrefabs:
+  - {fileID: 1578897727410021921, guid: 0836f31f59bea8a40afd4f9391fb8192, type: 3}
+  face: {fileID: 0}

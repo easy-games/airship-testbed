@@ -2,10 +2,12 @@ import { Airship } from "@Easy/Core/Shared/Airship";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import Object from "@Easy/Core/Shared/Util/ObjectUtils";
-import { Signal } from "@Easy/Core/Shared/Util/Signal";
+import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { Game } from "../Game";
+import { Player } from "../Player/Player";
 import { Keyboard, Mouse } from "../UserInput";
 import { Cancellable } from "../Util/Cancellable";
+import { MapUtil } from "../Util/MapUtil";
 import { DraggingState } from "./AirshipDraggingState";
 import { ItemStack, ItemStackDto } from "./ItemStack";
 import { BeforeLocalInventoryHeldSlotChanged } from "./Signal/BeforeLocalInventoryHeldSlotChanged";
@@ -16,6 +18,11 @@ export interface InventoryDto {
 	heldSlot: number;
 }
 
+export const enum InventoryModifyPermission {
+	NetworkOwner = "OWNER",
+	Everyone = "ALL",
+}
+
 class OnBeforeAddItemEvent extends Cancellable {
 	constructor(public itemStack: ItemStack) {
 		super();
@@ -23,11 +30,21 @@ class OnBeforeAddItemEvent extends Cancellable {
 }
 
 export default class Inventory extends AirshipBehaviour {
+	@Header("Networking")
 	public networkIdentity!: NetworkIdentity;
 	@NonSerialized() public id!: number;
+
+	@Header("Slots")
 	public maxSlots = 45;
 	public hotbarSlots = 9;
 	public heldSlot = 0;
+
+	@Header("Permissions")
+	@Tooltip(
+		"Who can modify this inventory\n\n<b>Network Owner</b>: The network owner of this Inventory's NetworkIdentity\n<b>Everyone</b>: Any client can modify the inventory",
+	)
+	@SerializeField()
+	protected modifyPermission = InventoryModifyPermission.NetworkOwner;
 
 	@NonSerialized() private items = new Map<number, ItemStack>();
 
@@ -96,21 +113,43 @@ export default class Inventory extends AirshipBehaviour {
 			if (!Game.IsServer()) {
 				Airship.Inventory.RegisterInventory(this);
 			}
+
+			// This seems like it should not be here! Why are we listening to network and calling SetHeldSlotInternal()?!
+			this.bin.Add(
+				CoreNetwork.ServerToClient.SetHeldInventorySlot.client.OnServerEvent((invId, slot) => {
+					if (invId === this.id) {
+						// print("SetHeldInventorySlot invId: " + invId + ", slot: " + slot);
+						// const selected = this.items.get(slot);
+						// if (selected?.itemType === currentItemStack?.itemType) return;
+
+						// if (cleanup !== undefined) {
+						// 	cleanup();
+						// }
+						// currentItemStack = selected;
+						this.SetHeldSlotInternal(slot);
+						// cleanup = callback(selected);
+					}
+				}),
+			);
 		};
 
 		const StartServer = () => {
 			// print("NetID (OnStartServer): " + this.networkIdentity.netId);
 			this.id = this.networkIdentity.netId;
-			CoreNetwork.ClientToServer.SetHeldSlot.server.OnClientEvent((player, invId, slot) => {
-				if (this.id !== invId) return;
+			this.bin.Add(
+				CoreNetwork.ClientToServer.SetHeldSlot.server.OnClientEvent((player, invId, slot) => {
+					if (this.id !== invId) return;
 
-				const character = Airship.Characters.FindByPlayer(player);
-				if (!character || character.inventory !== this) return;
+					const character = Airship.Characters.FindByPlayer(player);
+					if (!character || character.inventory !== this) return;
 
-				this.SetHeldSlotInternal(slot);
+					if (!(Game.IsHosting() && Game.localPlayer === player)) {
+						this.SetHeldSlotInternal(slot);
+					}
 
-				CoreNetwork.ServerToClient.SetHeldInventorySlot.server.FireExcept(player, this.id, slot, true);
-			});
+					CoreNetwork.ServerToClient.SetHeldInventorySlot.server.FireExcept(player, this.id, slot, true);
+				}),
+			);
 			Airship.Inventory.RegisterInventory(this);
 		};
 
@@ -154,51 +193,51 @@ export default class Inventory extends AirshipBehaviour {
 					Key.Digit9,
 				];
 				for (const hotbarIndex of $range(0, hotbarKeys.size() - 1)) {
-					Keyboard.OnKeyDown(hotbarKeys[hotbarIndex], (event) => {
-						if (event.uiProcessed) return;
-						this.SetHeldSlot(hotbarIndex);
-					});
+					controlsBin.Add(
+						Keyboard.OnKeyDown(hotbarKeys[hotbarIndex], (event) => {
+							if (event.uiProcessed) return;
+							this.SetHeldSlot(hotbarIndex);
+						}),
+					);
 				}
 
 				// Scroll to select held item:
-				Mouse.onScrolled.Connect((event) => {
-					if (!this.controlsEnabled || event.uiProcessed || event.IsCancelled()) return;
-					if (Mouse.IsOverUI()) return;
-					// print("scroll: " + delta);
-					if (math.abs(event.delta) < 0.05) return;
+				controlsBin.Add(
+					Mouse.onScrolled.Connect((event) => {
+						if (!this.controlsEnabled || event.uiProcessed || event.IsCancelled()) return;
+						if (Mouse.IsOverUI()) return;
+						// print("scroll: " + delta);
+						if (math.abs(event.delta) < 0.05) return;
 
-					const now = Time.time;
-					if (now - this.lastScrollTime < this.scrollCooldown) {
-						return;
-					}
-
-					this.lastScrollTime = now;
-
-					const selectedSlot = this.GetHeldSlot();
-					if (selectedSlot === undefined) return;
-
-					const inc = event.delta < 0 ? 1 : -1;
-					let trySlot = selectedSlot;
-
-					// Find the next available item in the hotbar:
-					for (const _ of $range(1, hotbarKeys.size())) {
-						trySlot += inc;
-
-						// Clamp index to hotbar items:
-						if (inc === 1 && trySlot >= hotbarKeys.size()) {
-							trySlot = 0;
-						} else if (inc === -1 && trySlot < 0) {
-							trySlot = hotbarKeys.size() - 1;
+						const now = Time.time;
+						if (now - this.lastScrollTime < this.scrollCooldown) {
+							return;
 						}
 
-						// If the item at the given `trySlot` index exists, set it as the held item:
-						const itemAtSlot = this.GetItem(trySlot);
-						if (itemAtSlot !== undefined) {
+						this.lastScrollTime = now;
+
+						const selectedSlot = this.GetHeldSlot();
+						if (selectedSlot === undefined) return;
+
+						const inc = event.delta < 0 ? 1 : -1;
+						let trySlot = selectedSlot;
+
+						// Find the next available item in the hotbar:
+						for (const _ of $range(1, hotbarKeys.size())) {
+							trySlot += inc;
+
+							// Clamp index to hotbar items:
+							if (inc === 1 && trySlot >= hotbarKeys.size()) {
+								trySlot = 0;
+							} else if (inc === -1 && trySlot < 0) {
+								trySlot = hotbarKeys.size() - 1;
+							}
+
 							this.SetHeldSlot(trySlot);
 							break;
 						}
-					}
-				});
+					}),
+				);
 			}),
 		);
 	}
@@ -239,51 +278,76 @@ export default class Inventory extends AirshipBehaviour {
 		return undefined;
 	}
 
-	public ObserveHeldItem(callback: (itemStack: ItemStack | undefined) => CleanupFunc): Bin {
+	/**
+	 * Observes the slots of this inventory
+	 */
+	public ObserveSlots(observer: (stack: ItemStack | undefined, index: number) => CleanupFunc) {
+		const bin = this.bin.Extend();
+
+		const slotBins = new Map<number, Bin>();
+		for (let i = 0; i < this.maxSlots; i++) {
+			const atSlot = this.GetItem(i);
+
+			const slotBin = MapUtil.GetOrCreate(slotBins, i, () => bin.Extend());
+			const cleanupFn = observer(atSlot, i);
+			if (typeIs(cleanupFn, "function")) {
+				slotBin.Add(cleanupFn);
+			}
+		}
+
+		bin.Add(
+			this.onSlotChanged.Connect((slot, stack) => {
+				const slotBin = MapUtil.GetOrCreate(slotBins, slot, () => bin.Extend());
+				slotBin.Clean();
+
+				const result = observer(stack, slot);
+				if (typeIs(result, "function")) {
+					slotBin.Add(result);
+				}
+			}),
+		);
+
+		return () => bin.Clean();
+	}
+
+	public ObserveHeldItem(
+		callback: (itemStack: ItemStack | undefined) => CleanupFunc,
+		signalPriority = SignalPriority.NORMAL,
+	): Bin {
 		const bin = new Bin();
 		this.observeHeldItemBins.push(bin);
 		let currentItemStack = this.items.get(this.heldSlot);
 		let cleanup = callback(currentItemStack);
 
-		// This seems like it should not be here! Why are we listening to network and calling SetHeldSlotInternal()?!
 		bin.Add(
-			CoreNetwork.ServerToClient.SetHeldInventorySlot.client.OnServerEvent((invId, slot) => {
-				if (invId === this.id) {
-					// print("SetHeldInventorySlot invId: " + invId + ", slot: " + slot);
-					const selected = this.items.get(slot);
-					if (selected?.itemType === currentItemStack?.itemType) return;
-
-					if (cleanup !== undefined) {
-						cleanup();
-					}
-					currentItemStack = selected;
-					this.SetHeldSlotInternal(slot);
-					cleanup = callback(selected);
-				}
-			}),
-		);
-
-		bin.Add(
-			this.onHeldSlotChanged.Connect((newSlot) => {
+			this.onHeldSlotChanged.ConnectWithPriority(signalPriority, (newSlot) => {
 				const selected = this.items.get(newSlot);
 				if (selected?.itemType === currentItemStack?.itemType) return;
 
 				if (cleanup !== undefined) {
-					cleanup();
+					task.spawn(() => {
+						cleanup!();
+					});
 				}
 				currentItemStack = selected;
-				cleanup = callback(selected);
+				task.spawn(() => {
+					cleanup = callback(selected);
+				});
 			}),
 		);
 		bin.Add(
-			this.onSlotChanged.Connect((slot, itemStack) => {
+			this.onSlotChanged.ConnectWithPriority(signalPriority, (slot, itemStack) => {
 				if (slot === this.heldSlot) {
 					if (itemStack?.itemType === currentItemStack?.itemType) return;
 					if (cleanup !== undefined) {
-						cleanup();
+						task.spawn(() => {
+							cleanup!();
+						});
 					}
 					currentItemStack = itemStack;
-					cleanup = callback(itemStack);
+					task.spawn(() => {
+						cleanup = callback(itemStack);
+					});
 				}
 			}),
 		);
@@ -515,6 +579,16 @@ export default class Inventory extends AirshipBehaviour {
 		return undefined;
 	}
 
+	public FindMergeableSlotWithItemType(itemType: string) {
+		for (let i = 0; i < this.maxSlots; i++) {
+			const itemStack = this.GetItem(i);
+			if (itemStack?.itemType === itemType && itemStack.amount < itemStack.GetMaxStackSize()) {
+				return i;
+			}
+		}
+		return undefined;
+	}
+
 	public GetAllItems(): ItemStack[] {
 		return Object.values(this.items);
 	}
@@ -532,5 +606,28 @@ export default class Inventory extends AirshipBehaviour {
 				this.controlsEnabled = false;
 			}
 		};
+	}
+
+	/**
+	 * Gets the value of the {@link modifyPermission | Modify Permission} property for this inventory
+	 */
+	public GetModifyPermission(): InventoryModifyPermission {
+		return this.modifyPermission;
+	}
+
+	/**
+	 * Returns true if the player has permissions to modify this inventory
+	 * @param player
+	 * @returns
+	 */
+	public CanPlayerModifyInventory(player: Player): boolean {
+		const permission = this.modifyPermission;
+		if (permission === InventoryModifyPermission.NetworkOwner) {
+			return Game.IsClient()
+				? player === Game.localPlayer && this.networkIdentity.isOwned
+				: this.networkIdentity.connectionToClient?.connectionId === player.connectionId;
+		} else {
+			return true;
+		}
 	}
 }

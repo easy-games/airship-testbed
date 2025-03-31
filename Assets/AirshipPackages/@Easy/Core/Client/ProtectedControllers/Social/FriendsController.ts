@@ -12,6 +12,7 @@ import FriendCard from "@Easy/Core/Shared/MainMenu/Components/Friends/FriendCard
 import NoFriendsCardComponent from "@Easy/Core/Shared/MainMenu/Components/Friends/NoFriendsCardComponent";
 import SocialFriendRequestsButtonComponent from "@Easy/Core/Shared/MainMenu/Components/SocialFriendRequestsButtonComponent";
 import SocialNotificationComponent from "@Easy/Core/Shared/MainMenu/Components/SocialNotificationComponent";
+import { Protected } from "@Easy/Core/Shared/Protected";
 import { CoreUI } from "@Easy/Core/Shared/UI/CoreUI";
 import { Mouse } from "@Easy/Core/Shared/UserInput";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
@@ -25,7 +26,6 @@ import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { ProtectedPartyController } from "../Airship/Party/PartyController";
 import { AuthController } from "../Auth/AuthController";
 import { MainMenuController } from "../MainMenuController";
-import { ClientSettingsController } from "../Settings/ClientSettingsController";
 import { SocketController } from "../Socket/SocketController";
 import { TransferController } from "../Transfer/TransferController";
 import { RightClickMenuButton } from "../UI/RightClickMenu/RightClickMenuButton";
@@ -62,7 +62,6 @@ export class ProtectedFriendsController {
 		private readonly socketController: SocketController,
 		private readonly mainMenuController: MainMenuController,
 		private readonly rightClickMenuController: RightClickMenuController,
-		private readonly clientSettingsController: ClientSettingsController,
 	) {
 		contextbridge.callback("FriendsController:SendStatusUpdate", (from) => {
 			this.SendStatusUpdateYielding();
@@ -73,6 +72,7 @@ export class ProtectedFriendsController {
 		key: string,
 		title: string,
 		username: string,
+		userId: string,
 		onResult: (result: boolean) => void,
 	): void {
 		this.socialNotificationBin.Clean();
@@ -83,6 +83,13 @@ export class ProtectedFriendsController {
 		this.socialNotification.titleText.text = title.upper();
 		this.socialNotification.usernameText.text = username;
 		this.socialNotification.onResult.Connect(onResult);
+
+		task.spawn(async () => {
+			const texture = await Airship.Players.GetProfilePictureAsync(userId);
+			if (texture) {
+				this.socialNotification.userImage.texture = texture;
+			}
+		});
 	}
 
 	public ClearSocialNotification(): void {
@@ -144,17 +151,11 @@ export class ProtectedFriendsController {
 
 				this.socialNotification.usernameText.text = foundUser.username;
 
-				task.spawn(async () => {
-					const texture = await Airship.Players.GetProfilePictureAsync(foundUser.uid);
-					if (texture) {
-						this.socialNotification.userImage.texture = texture;
-					}
-				});
-
 				this.AddSocialNotification(
 					"friend-request:" + data.initiatorId,
 					"Friend Request",
 					foundUser.username,
+					foundUser.uid,
 					(result) => {
 						if (result) {
 							task.spawn(async () => {
@@ -247,8 +248,8 @@ export class ProtectedFriendsController {
 		const statusTextInput = this.mainMenuController.refs.GetValue("Social", "StatusInputField") as TMP_InputField;
 		let savedStatus = StateManager.GetString("social:status-text");
 		if (!savedStatus || savedStatus === "") {
-			this.clientSettingsController.WaitForSettingsLoaded();
-			savedStatus = this.clientSettingsController.data.statusText;
+			Protected.Settings.WaitForSettingsLoaded();
+			savedStatus = Protected.Settings.data.statusText;
 		}
 		if (savedStatus) {
 			this.SetStatusText(savedStatus);
@@ -275,8 +276,8 @@ export class ProtectedFriendsController {
 	public SetStatusText(text: string): void {
 		this.statusText = text;
 		StateManager.SetString("social:status-text", text);
-		this.clientSettingsController.data.statusText = text;
-		this.clientSettingsController.MarkAsDirty();
+		Protected.Settings.data.statusText = text;
+		Protected.Settings.MarkAsDirty();
 		this.SendStatusUpdateYielding();
 	}
 

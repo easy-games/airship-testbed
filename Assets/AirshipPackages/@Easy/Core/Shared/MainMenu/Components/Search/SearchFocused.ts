@@ -6,7 +6,7 @@ import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
-import { MobileGameList } from "@Easy/Core/Shared/Util/MobileGameList";
+import { ProtectedUtil } from "@Easy/Core/Shared/Util/ProtectedUtil";
 import { OnFixedUpdate, OnLateUpdate } from "@Easy/Core/Shared/Util/Timer";
 import { MainMenuSingleton } from "../../Singletons/MainMenuSingleton";
 import GameSearchResult from "./GameSearchResult";
@@ -46,7 +46,7 @@ export default class SearchFocused extends AirshipBehaviour {
 	public OnEnable(): void {
 		const rect = this.transform as RectTransform;
 		if (Game.IsPortrait()) {
-			rect.offsetMax = new Vector2(0, -Game.GetNotchHeight());
+			rect.offsetMax = new Vector2(0, -ProtectedUtil.GetNotchHeight());
 		}
 
 		this.bin.Add(
@@ -152,13 +152,27 @@ export default class SearchFocused extends AirshipBehaviour {
 
 	public Query(): void {
 		let text = this.inputField.text;
+		if (text === "") return;
 
 		this.queryId++;
 		let thisQuery = this.queryId;
+		const url =
+			AirshipUrl.ContentService +
+			"/games/autocomplete?name=" +
+			text +
+			"&platform=" +
+			ProtectedUtil.GetLocalPlatformString();
+		// print("search url: " + url);
 		const res = HttpRetry(
 			() => InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/games/autocomplete?name=" + text),
 			"get/content-service/games/autocomplete",
 		).expect();
+
+		if (res.error) {
+			Debug.LogError("search error: " + res.error);
+		} else {
+			print("search result: " + res.data);
+		}
 		if (thisQuery !== this.queryId) return;
 		let games: GameDto[];
 		if (res.success) {
@@ -169,10 +183,6 @@ export default class SearchFocused extends AirshipBehaviour {
 		} else {
 			Debug.LogError("Search error: " + res.error);
 			games = [...Dependency<SearchSingleton>().games];
-		}
-
-		if (!Game.IsEditor() && Game.IsMobile()) {
-			games = games.filter((g) => MobileGameList.includes(g.id));
 		}
 
 		this.activeResult = undefined;

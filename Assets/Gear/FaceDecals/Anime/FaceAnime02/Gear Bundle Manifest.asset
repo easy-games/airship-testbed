@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0832818dd13c4fcaa31b988d657c7d46, type: 3}
+  m_Name: Gear Bundle Manifest
+  m_EditorClassIdentifier: 
+  gearList:
+  - {fileID: 11400000, guid: f6e6aee1feceb49279239df7b26ea3eb, type: 2}
+  airId: ed54a76c-3949-4d2c-9a71-69b7f65298b6

@@ -1,5 +1,4 @@
-import { ClientSettingsController } from "@Easy/Core/Client/ProtectedControllers/Settings/ClientSettingsController";
-import { Dependency } from "@Easy/Core/Shared/Flamework";
+import { Protected } from "@Easy/Core/Shared/Protected";
 import AirshipToggle from "../../AirshipToggle";
 import MicDevice from "./MicDevice";
 
@@ -13,8 +12,8 @@ export default class MicrophoneSettingsPage extends AirshipBehaviour {
 
 		const currentDeviceIndex = Bridge.GetCurrentMicDeviceIndex();
 		const deviceNames = Bridge.GetMicDevices();
-		for (let i = 0; i < deviceNames.Length; i++) {
-			const deviceName = deviceNames.GetValue(i);
+		for (const i of $range(0, deviceNames.size() - 1)) {
+			const deviceName = deviceNames[i];
 			const btnGo = Object.Instantiate(
 				AssetBridge.Instance.LoadAsset(
 					"Assets/AirshipPackages/@Easy/Core/Prefabs/MainMenu/SettingsPage/MicDevice.prefab",
@@ -28,7 +27,7 @@ export default class MicrophoneSettingsPage extends AirshipBehaviour {
 			micDeviceComponent.SetSelected(currentDeviceIndex === i);
 		}
 
-		const clientSettings = Dependency<ClientSettingsController>();
+		const clientSettings = Protected.Settings;
 		task.spawn(() => {
 			const permission = Bridge.HasMicrophonePermission() && clientSettings.data.microphoneEnabled;
 			this.voiceChatToggle.SetValue(permission, true);
@@ -38,6 +37,8 @@ export default class MicrophoneSettingsPage extends AirshipBehaviour {
 				if (val) {
 					if (Bridge.HasMicrophonePermission()) {
 						clientSettings.PickMicAndStartRecording();
+						clientSettings.SetMicrophoneEnabled(true);
+						clientSettings.MarkAsDirty();
 					} else {
 						Bridge.RequestMicrophonePermissionAsync();
 						if (!Bridge.HasMicrophonePermission()) {
@@ -45,12 +46,14 @@ export default class MicrophoneSettingsPage extends AirshipBehaviour {
 							this.voiceChatToggle.SetValue(false);
 							return;
 						}
+						// user said "yes"
+						clientSettings.SetMicrophoneEnabled(true);
+						clientSettings.MarkAsDirty();
 					}
 				} else {
 					clientSettings.SetMicrophoneEnabled(false);
+					clientSettings.MarkAsDirty();
 				}
-				clientSettings.SetMicrophoneEnabled(val);
-				clientSettings.MarkAsDirty();
 			});
 		});
 	}
@@ -63,7 +66,7 @@ export default class MicrophoneSettingsPage extends AirshipBehaviour {
 		Bridge.StopMicRecording();
 		Bridge.SetMicDeviceIndex(deviceIndex);
 
-		const clientSettings = Dependency<ClientSettingsController>();
+		const clientSettings = Protected.Settings;
 		clientSettings.data.micDeviceName = deviceName;
 		clientSettings.MarkAsDirty();
 

@@ -1,5 +1,4 @@
 import { OutfitDto } from "./Airship/Types/Outputs/AirshipPlatformInventory";
-import { AccessorySlot } from "./Character/Accessory/AccessorySlot";
 import { CharacterDto } from "./Character/CharacterDto";
 import { InventoryDto } from "./Inventory/Inventory";
 import { ItemStackDto } from "./Inventory/ItemStack";
@@ -24,6 +23,8 @@ export const CoreNetwork = {
 		},
 		Character: {
 			RequestCharacters: new NetworkFunction<[], CharacterDto[]>("RequestCharacters"),
+			EmoteRequest: new NetworkSignal<[emoteId: string]>("AirshipEmoteRequest"),
+			EmoteCancelRequest: new NetworkSignal("AirshipEmoteCancelRequest"),
 		},
 		SendChatMessage: new NetworkSignal<[text: string]>("SendChatMessage"),
 		ChangedOutfit: new NetworkSignal("ChangedOutfit"),
@@ -82,6 +83,8 @@ export const CoreNetwork = {
 			SetCharacter: new NetworkSignal<[connectionId: number, characterId: number | undefined]>(
 				"AirshipSetCharacter",
 			),
+			EmoteStart: new NetworkSignal<[characterId: number, emoteId: string]>("AirshipEmoteStart"),
+			EmoteEnd: new NetworkSignal<[characterId: number]>("AirshipEmoteEnd"),
 		},
 
 		Purchase: {

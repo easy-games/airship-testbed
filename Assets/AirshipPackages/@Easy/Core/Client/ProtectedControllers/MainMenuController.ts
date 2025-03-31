@@ -3,8 +3,10 @@ import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
 import { Controller, Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import FriendsPage from "@Easy/Core/Shared/MainMenu/Components/Friends/FriendsPage";
 import HomePageComponent from "@Easy/Core/Shared/MainMenu/Components/HomePageComponent";
-import GameGeneralPage from "@Easy/Core/Shared/MainMenu/Components/Settings/General/GameGeneralPage";
+import MainMenuComponent from "@Easy/Core/Shared/MainMenu/Components/MainMenuComponent";
+import { MainMenuSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/MainMenuSingleton";
 import { Mouse } from "@Easy/Core/Shared/UserInput";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import inspect from "@Easy/Core/Shared/Util/Inspect";
@@ -46,6 +48,7 @@ export class MainMenuController {
 	private gameCursorLocked = false;
 
 	public activeTransferToast: TransferToast | undefined;
+	private mainMenu: MainMenuComponent;
 
 	constructor() {
 		const mainMenuPrefab = AssetBridge.Instance.LoadAsset(
@@ -53,6 +56,7 @@ export class MainMenuController {
 		);
 		this.mainMenuGo = Object.Instantiate(mainMenuPrefab, CoreRefs.protectedTransform) as GameObject;
 		this.refs = this.mainMenuGo.GetComponent<GameObjectReferences>()!;
+		this.mainMenu = this.mainMenuGo.GetAirshipComponent<MainMenuComponent>()!;
 		const wrapperGo = this.refs.GetValue("UI", "Wrapper");
 		this.wrapperRect = wrapperGo.GetComponent<RectTransform>()!;
 		this.rootCanvasGroup = this.mainMenuGo.GetComponent<CanvasGroup>()!;
@@ -70,8 +74,11 @@ export class MainMenuController {
 			[MainMenuPageType.Develop, this.refs.GetValue("Pages", "Develop").GetAirshipComponent<DevelopMenuPage>()!],
 		]);
 
+		const isNonTableMobileInGame = Dependency<MainMenuSingleton>().IsInGameNonTabletMobile();
+
 		//Mobile specific pages
-		if (Game.IsMobile()) {
+		const st = Dependency<MainMenuSingleton>().sizeType;
+		if (Game.IsMobile() && (st === "sm" || st === "md")) {
 			this.pageMap.set(
 				MainMenuPageType.AvatarMobile,
 				this.refs.GetValue("Pages", "AvatarMobile").GetAirshipComponent<AvatarMenuComponent>()!,
@@ -93,13 +100,16 @@ export class MainMenuController {
 			this.refs.GetValue("Pages", "AvatarMobile").SetActive(false);
 		}
 
+		if (isNonTableMobileInGame) {
+			this.mainMenu.gamePage.ClosePage();
+			this.pageMap.set(MainMenuPageType.Game, this.mainMenu.gamePageMobile);
+		} else {
+			this.pageMap.set(MainMenuPageType.Game, this.mainMenu.gamePage);
+		}
+
 		this.pageMap.set(
 			MainMenuPageType.Friends,
-			this.refs.GetValue("Pages", "Friends").GetAirshipComponent<MainMenuPageComponent>()!,
-		);
-		this.pageMap.set(
-			MainMenuPageType.Game,
-			this.refs.GetValue("Pages", "Game").GetAirshipComponent<GameGeneralPage>()!,
+			this.refs.GetValue("Pages", "Friends").GetAirshipComponent<FriendsPage>()!,
 		);
 
 		if (Game.coreContext === CoreContext.GAME) {
@@ -109,9 +119,7 @@ export class MainMenuController {
 		}
 
 		this.gameBG = this.refs.GetValue("UI", "GameBG");
-		if (Game.IsMobile()) {
-			this.gameBG.GetComponent<Image>()!.color = new Color(0.223, 0.233, 0.264, 1);
-		}
+		this.gameBG!.GetComponent<Image>()!.color = new Color(0.094, 0.098, 0.102, 1);
 
 		this.mainMenuBG = this.refs.GetValue("UI", "MainMenuBG");
 		this.ToggleGameBG(true);
@@ -161,9 +169,10 @@ export class MainMenuController {
 		this.mainContentCanvas.enabled = true;
 		NativeTween.CanvasGroupAlpha(this.rootCanvasGroup, 1, duration).SetUseUnscaledTime(true);
 
-		if (this.currentPage) {
-			this.RouteToPage(this.currentPage.pageType, true, true);
-		}
+		// if (this.currentPage) {
+		// 	this.RouteToPage(this.currentPage.pageType, true, true);
+		// }
+		this.RouteToPage(MainMenuPageType.Game, true, true);
 
 		//CloudImage.PrintCache();
 	}
@@ -281,6 +290,12 @@ export class MainMenuController {
 
 			if (this.currentPage) {
 				this.currentPage.OpenPage(params);
+
+				if (pageType === MainMenuPageType.Game) {
+					this.gameBG!.GetComponent<Image>()!.color = new Color(0.094, 0.098, 0.102, 0.995);
+				} else {
+					this.gameBG!.GetComponent<Image>()!.color = new Color(0.094, 0.098, 0.102, 1);
+				}
 			} else {
 				error("Trying to route to undefined page: " + pageType);
 			}

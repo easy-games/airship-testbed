@@ -41,7 +41,8 @@ export class DamageSingleton {
 				attackerNob = NetworkUtil.GetNetworkIdentity(attackerNobId);
 			}
 
-			this.InflictDamage(nob.gameObject, damage, attackerNob?.gameObject, data);
+			const damageInfo = new DamageInfo(nob.gameObject, damage, attackerNob?.gameObject, data ?? {});
+			this.onDamage.Fire(damageInfo);
 		});
 
 		this.deathRemote.client.OnServerEvent((nobId, damage, attackerNobId, data) => {
@@ -74,11 +75,13 @@ export class DamageSingleton {
 		data?: DamageInfoCustomData,
 	): DamageInfo {
 		assert(damage >= 0, "Unable to InflictDamage with a negative damage amount.");
+		assert(Game.IsServer(), "InflictDamage: Should only be called on the server.");
 
 		const damageInfo = new DamageInfo(gameObject, damage, attacker, data ?? {});
+		if (damageInfo.character === undefined || damageInfo.character.IsDead()) return damageInfo;
 		this.onDamage.Fire(damageInfo);
 		if (damageInfo.IsCancelled()) return damageInfo;
-
+		
 		if (Game.IsServer() && this.autoNetwork) {
 			const nob = damageInfo.gameObject.GetComponentInParent<NetworkIdentity>();
 			const attackerNob = damageInfo.attacker?.GetComponentInParent<NetworkIdentity>();
@@ -91,6 +94,11 @@ export class DamageSingleton {
 				);
 			}
 		}
+		
+		if (damageInfo.character && damageInfo.character.GetHealth() <= 0 && Game.IsServer()) {
+			this.BroadcastDeath(damageInfo);
+		}
+		
 		return damageInfo;
 	}
 

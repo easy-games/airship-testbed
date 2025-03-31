@@ -1,6 +1,8 @@
-import { OutfitDto } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipPlatformInventory";
-import { AvatarCollectionManager } from "@Easy/Core/Shared/Avatar/AvatarCollectionManager";
-import { AvatarPlatformAPI } from "@Easy/Core/Shared/Avatar/AvatarPlatformAPI";
+import {
+	GearCategory,
+	GearInstanceDto,
+	OutfitDto,
+} from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipPlatformInventory";
 import AvatarViewComponent from "@Easy/Core/Shared/Avatar/AvatarViewComponent";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
@@ -9,6 +11,7 @@ import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import AirshipButton from "@Easy/Core/Shared/MainMenu/Components/AirshipButton";
 import { MainMenuSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/MainMenuSingleton";
+import { Protected } from "@Easy/Core/Shared/Protected";
 import { Keyboard } from "@Easy/Core/Shared/UserInput";
 import { Mouse } from "@Easy/Core/Shared/UserInput/Mouse";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
@@ -23,8 +26,6 @@ import AvatarMenuProfileComponent from "./AvatarMenuProfileComponent";
 import AvatarRenderComponent from "./AvatarRenderComponent";
 import OutfitButton from "./Outfit/OutfitButtonComponent";
 import OutfitButtonNameComponent from "./Outfit/OutfitButtonNameComponent";
-import { Airship } from "@Easy/Core/Shared/Airship";
-import { CoreAction } from "@Easy/Core/Shared/Input/AirshipCoreAction";
 
 export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private readonly generalHookupKey = "General";
@@ -38,12 +39,15 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	public avatarRenderHolder?: GameObject;
 	public avatarCenterRect?: RectTransform;
 	public categoryLabelTxt?: TextMeshProUGUI;
-	public mainContentHolder?: Transform;
+	public mainContentHolder: Transform;
 	public avatarProfileMenuGo?: GameObject;
 	public avatarToolbar!: RectTransform;
 	public avatarOptionsHolder!: RectTransform;
 	public avatar3DHolder!: RectTransform;
 	public contentScrollRect!: ScrollRect;
+	public avatarLoadingContainer: RectTransform;
+	public avatarLoadingContainerMobile: RectTransform;
+	public gearLoadingIndicator: GameObject;
 
 	public grid: GridLayoutGroup;
 
@@ -64,7 +68,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	@Header("Variables")
 	public avatarCameraOffset = new Vector3(0, 0, 0);
 
-	private outfitBtns: AvatarMenuBtn[] = [];
+	@NonSerialized() private outfitBtns: AvatarMenuBtn[] = [];
 	private mainNavBtns: AvatarMenuBtn[] = [];
 	//private subNavBtns: AvatarMenuBtn[] = [];
 	//private subBarBtns: AvatarMenuBtn[][] = [[]]; //Each sub category has its own list of buttons
@@ -73,8 +77,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private activeSubIndex = -1;
 	private activeAccessories = new Map<AccessorySlot, string>();
 	//private currentSlot: AccessorySlot = AccessorySlot.Root;
-	private outfits?: OutfitDto[];
-	private currentUserOutfit?: OutfitDto;
+	private viewedOutfit?: OutfitDto;
 	private currentUserOutfitIndex = -1;
 	private currentContentBtns: { id: string; button: AvatarAccessoryBtn }[] = [];
 	private clientId = -1;
@@ -85,31 +88,36 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private currentFocusedSlot: AccessorySlot = AccessorySlot.Root;
 	private avatarProfileMenu?: AvatarMenuProfileComponent;
 	private dirty = false;
+	private hasMeshCombinedOnce = false;
 
 	private discardTitle = "Discarding Changes!";
 	private discardMessage = "Are you sure you want to discard changes to your outfit?";
 
+	private accessoryBuilder!: AccessoryBuilder;
+
+	private gearLoadingCounter = 0;
+	private finishedFirstOutfitLoad = false;
+
 	private Log(message: string) {
-		//print("Avatar Editor: " + message + " (" + Time.time + ")");
+		print("Avatar Editor: " + message + " (" + Time.time + ")");
 	}
 
 	override Init(mainMenu: MainMenuController, pageType: MainMenuPageType): void {
 		super.Init(mainMenu, pageType);
-		this.Log("Initializing Avatar Menu");
 		this.clientId = 9999; //Dependency<PlayerController>().clientId;
 
 		this.mainNavBtns = this.mainNavButtonHolder.gameObject.GetAirshipComponentsInChildren<AvatarMenuBtn>();
-		this.outfitBtns = this.outfitButtonHolder.gameObject.GetAirshipComponentsInChildren<AvatarMenuBtn>();
+		if (this.outfitButtonHolder) {
+			this.outfitBtns = this.outfitButtonHolder.gameObject.GetAirshipComponentsInChildren<AvatarMenuBtn>();
+		}
 		this.avatarProfileMenu = this.avatarProfileMenuGo?.GetAirshipComponent<AvatarMenuProfileComponent>();
 		this.avatarProfileMenu?.Init(mainMenu);
 
-		//Remove any dummy content
-		if (this.mainContentHolder) {
-			this.mainContentHolder.gameObject.ClearChildren();
-		}
+		// Remove any dummy content
+		this.mainContentHolder.gameObject.ClearChildren();
 
 		let i = 0;
-		//Hookup Nav buttons
+		// Hookup Nav buttons
 		if (!this.mainNavBtns) {
 			warn("Unable to find main nav btns on Avatar Editor Page");
 			return;
@@ -123,8 +131,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			});
 		}
 
-		//Hookup outfit buttons
-		if (!Game.IsMobile()) {
+		// Hookup outfit buttons
+		if (!this.IsPhoneMode()) {
 			if (!this.outfitBtns) {
 				error("Unable to find outfit btns on Avatar Editor Page");
 			}
@@ -135,27 +143,25 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 				const outfitButton = go.GetAirshipComponent<OutfitButton>();
 				if (outfitButton) outfitButton.outfitIdx = i;
 
-				if (!Game.IsMobile()) {
-					CanvasAPI.OnClickEvent(go, () => {
-						task.spawn(async () => {
-							if (this.dirty) {
-								const res = await Dependency<MainMenuSingleton>().ShowConfirmModal(
-									this.discardTitle,
-									this.discardMessage,
-								);
-								if (!res) {
-									return;
-								}
+				CanvasAPI.OnClickEvent(go, () => {
+					task.spawn(async () => {
+						if (this.dirty) {
+							const res = await Dependency<MainMenuSingleton>().ShowConfirmModal(
+								this.discardTitle,
+								this.discardMessage,
+							);
+							if (!res) {
+								return;
 							}
+						}
 
-							this.SelectOutfit(outfitI);
-						});
+						this.SelectOutfit(outfitI);
 					});
-				}
+				});
 			}
 		}
 
-		//Hookup general buttons
+		// Hookup general buttons
 		if (this.avatarInteractionBtn) {
 			CanvasAPI.OnBeginDragEvent(this.avatarInteractionBtn.gameObject, () => {
 				this.OnDragAvatar(true);
@@ -177,7 +183,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			});
 		}
 
-		this.ClearItembuttons();
+		this.DestroyItemButtons();
 
 		if (Game.IsEditor()) {
 			Keyboard.OnKeyDown(Key.PrintScreen, (event) => {
@@ -208,25 +214,24 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	override OpenPage(params?: unknown): void {
 		super.OpenPage(params);
 
-		AvatarCollectionManager.instance.Setup();
-
+		if (!this.downloadedAccessories) {
+			this.downloadedAccessories = true;
+			task.spawn(async () => {
+				// const start = Time.time;
+				await Protected.Avatar.LoadInventory();
+				// print("Loaded inventory in " + (Time.time - start));
+				this.LoadAllOutfits();
+			});
+		}
 		this.SetDirty(false);
-		this.LoadAllOutfits();
 
 		const mainMenuSingleton = Dependency<MainMenuSingleton>();
 
 		this.bin.Add(mainMenuSingleton.socialMenuModifier.Add({ hidden: true }));
 
-		if (!this.downloadedAccessories) {
-			this.downloadedAccessories = true;
-			AvatarCollectionManager.instance.DownloadAllAccessories().then(() => {
-				this.LoadAllOutfits();
-			});
-		}
-
 		// Load the character
 		if (this.mainMenu.avatarView === undefined) {
-			if (Game.IsMobile()) {
+			if (this.IsPhoneMode()) {
 				this.mainMenu.avatarView = Object.Instantiate(
 					this.mainMenu.refs.GetValue<GameObject>("AvatarMobile", "Avatar3DSceneTemplate"),
 					CoreRefs.protectedTransform,
@@ -237,6 +242,13 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 					CoreRefs.protectedTransform,
 				).GetAirshipComponent<AvatarViewComponent>()!;
 			}
+		}
+		this.accessoryBuilder = this.mainMenu.avatarView.accessoryBuilder!;
+
+		if (!this.hasMeshCombinedOnce) {
+			const charTransform = this.mainMenu.avatarView?.humanEntityGo?.transform!;
+			charTransform.localPosition = new Vector3(0, -200, 0);
+			this.avatarLoadingContainer.gameObject.SetActive(true);
 		}
 
 		let rawImage = this.avatarRenderHolder?.GetComponent<RawImage>();
@@ -251,11 +263,10 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			);
 		}
 
-		if (!Game.IsMobile()) {
+		if (!this.IsPhoneMode()) {
 			this.bin.Add(
 				Dependency<MainMenuController>().onBeforePageChange.Connect((event) => {
 					if (this.dirty && event.oldPage === MainMenuPageType.Avatar) {
-						print("showing confirm..");
 						const [success, res] = Dependency<MainMenuSingleton>()
 							.ShowConfirmModal(this.discardTitle, this.discardMessage)
 							.await();
@@ -284,7 +295,6 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 		this.avatarOptionsHolder.gameObject.SetActive(true);
 
-		this.Log("Open AVATAR");
 		if (this.avatarRenderHolder) {
 			this.avatarRenderHolder?.SetActive(true);
 		} else {
@@ -309,7 +319,6 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	override ClosePage(): void {
 		super.ClosePage();
-		this.Log("Close AVATAR");
 		this.bin.Clean();
 		this.avatarRenderHolder?.SetActive(false);
 		this.mainMenu?.ToggleGameBG(true);
@@ -320,12 +329,18 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 	}
 
+	private IsPhoneMode() {
+		if (!Game.IsMobile()) return false;
+		const st = Dependency<MainMenuSingleton>().sizeType;
+		return st === "sm" || st === "md";
+	}
+
 	private SelectMainNav(index: number) {
 		if (this.activeMainIndex === index || !this.mainNavBtns || this.inThumbnailMode) {
 			return;
 		}
 
-		if (Game.IsMobile()) {
+		if (this.IsPhoneMode()) {
 			if (index === 0) {
 				// Skin color
 				this.grid.cellSize = new Vector2(120, 120);
@@ -334,7 +349,6 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			}
 		}
 
-		this.Log("Selecting MAIN nav: " + index);
 		let i = 0;
 		this.activeMainIndex = index;
 
@@ -344,7 +358,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			nav.SetSelected(i === index);
 			if (i === index && this.categoryLabelTxt) {
 				this.categoryLabelTxt.text =
-					nav.gameObject.GetComponentsInChildren<TextMeshProUGUI>().GetValue(0).text ?? "No Category";
+					nav.gameObject.GetComponentsInChildren<TextMeshProUGUI>()[0].text ?? "No Category";
 			}
 		}
 
@@ -357,12 +371,11 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 		this.activeSubIndex = subIndex;
 
-		this.ClearItembuttons();
+		this.DestroyItemButtons();
 
 		switch (this.activeMainIndex) {
 			case 0:
 				//SKIN COLOR
-				this.Log("DisplayColorScheme");
 				this.DisplayColorScheme();
 				break;
 			case 1:
@@ -414,39 +427,45 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private DisplayItemsOfType(slot: AccessorySlot) {
-		this.Log("Displaying item type: " + tostring(slot));
-
 		//this.currentSlot = slot;
 
 		//Accessories
-		let foundItems = AvatarCollectionManager.instance.GetAllAvatarItems(slot);
-		if (foundItems) {
-			this.DisplayItems(foundItems);
-		}
+		let validClothingItems = Protected.Avatar.ownedClothing.filter(
+			(c) =>
+				c.class.gear.category === GearCategory.Clothing &&
+				c.class.gear.subcategory !== undefined &&
+				Protected.Avatar.GearClothingSubcategoryToSlot(c.class.gear.subcategory) === slot,
+		);
+		this.DisplayClothingItems(validClothingItems);
 		this.currentFocusedSlot = slot;
 		this.mainMenu?.avatarView?.CameraFocusSlot(slot);
 	}
 
-	private DisplayItems(items: { instanceId: string; item: AccessoryComponent }[]) {
-		if (items && items.size() > 0) {
-			items.forEach((value) => {
-				this.AddItemButton(value.item.GetServerClassId(), value.instanceId, value.name, () => {
-					//Accessory
-					this.SelectItem(value.instanceId, value.item);
+	private async DisplayClothingItems(clothing: GearInstanceDto[]) {
+		// const ownedItems = await Platform.Client.Inventory.GetItems({ queryType: "tag", tags: ["Clothing"] });
+		// for (let item of ownedItems) {
+		// 	const clothing = Clothing.DownloadYielding(item.classId, "airId", "versionHash");
+		// }
+
+		if (clothing && clothing.size() > 0) {
+			clothing.forEach((c) => {
+				this.AddItemButton(c, async () => {
+					await this.SelectItem(c);
+					this.accessoryBuilder.UpdateCombinedMesh();
 				});
 			});
-		} else {
-			this.Log("Displaying no items");
 		}
 	}
 
 	private DisplayFaceItems() {
-		let faceItems = AvatarCollectionManager.instance.GetAllAvatarFaceItems();
+		let faceItems = Protected.Avatar.ownedClothing.filter((clothing) => {
+			return clothing.class.gear.category === GearCategory.FaceDecal;
+		});
 		if (faceItems) {
-			faceItems.forEach((value) => {
-				this.AddItemButton(value.GetServerClassId(), value.serverInstanceId, value.name, () => {
-					//Accessory
-					this.SelectFaceItem(value);
+			faceItems.forEach((clothingDto) => {
+				this.AddItemButton(clothingDto, async () => {
+					await this.SelectFaceItem(clothingDto);
+					this.accessoryBuilder.UpdateCombinedMesh();
 				});
 			});
 		}
@@ -454,37 +473,19 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private itemButtonBin: Bin = new Bin();
-	private ClearItembuttons() {
-		this.Log("ClearItemButtons");
-		//Highlight selected items
-		for (let i = 0; i < this.currentContentBtns.size(); i++) {
-			//PoolManager.ReleaseObject(this.currentContentBtns[i].button.gameObject);
-			Object.Destroy(this.currentContentBtns[i].button.gameObject);
-		}
+
+	private DestroyItemButtons() {
 		this.itemButtonBin.Clean();
 		this.currentContentBtns.clear();
+		this.mainContentHolder.gameObject.ClearChildren();
 	}
 
 	private DisplayColorScheme() {
-		for (let i = 0; i < AvatarCollectionManager.instance.skinColors.size(); i++) {
-			this.AddColorButton(AvatarCollectionManager.instance.skinColors[i]);
+		for (let color of Protected.Avatar.skinColors) {
+			this.AddColorButton(ColorUtil.HexToColor(color));
 		}
 		this.UpdateButtonGraphics();
 		this.mainMenu?.avatarView?.CameraFocusSlot(AccessorySlot.Root);
-	}
-
-	private DisplaySkinTextures() {
-		let items = AvatarCollectionManager.instance.GetAllAvatarSkins();
-		if (items && items.size() > 0) {
-			items.forEach((value) => {
-				this.AddItemButton(value.ToString(), "", value.ToString(), () => {
-					//Accessory
-					this.SelectSkinItem(value);
-				});
-			});
-		} else {
-			this.Log("Displaying no skin items");
-		}
 	}
 
 	private AddColorButton(color: Color) {
@@ -493,6 +494,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			let eventIndex = CanvasAPI.OnClickEvent(newButton, () => {
 				//Skin Color
 				this.SelectSkinColor(color);
+				this.accessoryBuilder.UpdateCombinedMesh();
 			});
 
 			this.itemButtonBin.Add(() => {
@@ -514,62 +516,57 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 	}
 
-	private AddItemButton(classId: string, instanceId: string, itemName: string, onClickCallback: () => void) {
-		if (this.itemButtonTemplate && this.mainContentHolder) {
-			//let newButton = PoolManager.SpawnObject(this.itemButtonTemplate, this.mainContentHolder);
-			let newButton = Object.Instantiate(this.itemButtonTemplate, this.mainContentHolder);
-			let eventIndex = CanvasAPI.OnClickEvent(newButton, onClickCallback);
-			this.itemButtonBin.Add(() => {
-				Bridge.DisconnectEvent(eventIndex);
-			});
-
-			let accessoryBtn = newButton.GetAirshipComponent<AvatarAccessoryBtn>();
-			if (accessoryBtn) {
-				accessoryBtn.scrollRedirect.redirectTarget = this.contentScrollRect;
-				accessoryBtn.classId = classId;
-				accessoryBtn.instanceId = instanceId;
-				accessoryBtn.SetText(itemName);
-				accessoryBtn.noColorChanges = false;
-				//TODO: Removed the image until we can load it from the server
-				accessoryBtn.iconImage.enabled = false;
-				this.currentContentBtns.push({ id: instanceId, button: accessoryBtn });
-
-				//download the items thumbnail
-				let cloudImage = newButton.gameObject.GetComponent<CloudImage>()!;
-				if (cloudImage === undefined) {
-					cloudImage = newButton.gameObject.AddComponent<CloudImage>();
-				}
-				cloudImage.downloadOnStart = false;
-				cloudImage.image = accessoryBtn.iconImage;
-				cloudImage.url = AvatarCollectionManager.instance.GetClassThumbnailUrl(classId);
-
-				const downloadConn = cloudImage.OnFinishedLoading.Connect((success) => {
-					if (success) {
-						cloudImage.image.enabled = true;
-						cloudImage.image.color = new Color(1, 1, 1, 1);
-						if (accessoryBtn) {
-							accessoryBtn.labelText.enabled = false;
-						}
-					}
+	private AddItemButton(clothingDto: GearInstanceDto, onClickCallback: () => void) {
+		//let newButton = PoolManager.SpawnObject(this.itemButtonTemplate, this.mainContentHolder);
+		const newButton = Object.Instantiate(this.itemButtonTemplate!, this.mainContentHolder!);
+		this.itemButtonBin.AddEngineEventConnection(
+			CanvasAPI.OnClickEvent(newButton, () => {
+				task.spawn(() => {
+					onClickCallback();
 				});
-				this.bin.Add(() => {
-					downloadConn.Disconnect();
-				});
+			}),
+		);
 
-				//print("Downloading: " + cloudImage.url);
-				cloudImage.StartDownload();
-				return accessoryBtn;
-			} else {
-				error("Unable to find AvatarMenuBtn on item button");
-			}
-		} else {
-			error("Missing item template or holder for items on AvatarEditor");
+		const accessoryBtn = newButton.GetAirshipComponent<AvatarAccessoryBtn>()!;
+		accessoryBtn.scrollRedirect.redirectTarget = this.contentScrollRect;
+		accessoryBtn.classId = clothingDto.class.classId;
+		accessoryBtn.instanceId = clothingDto.instanceId;
+		accessoryBtn.SetText(clothingDto.class.name);
+		accessoryBtn.noColorChanges = false;
+		//TODO: Removed the image until we can load it from the server
+		accessoryBtn.iconImage.enabled = false;
+		this.currentContentBtns.push({ id: clothingDto.instanceId, button: accessoryBtn });
+
+		//download the items thumbnail
+		let cloudImage = newButton.gameObject.GetComponent<CloudImage>()!;
+		if (cloudImage === undefined) {
+			cloudImage = newButton.gameObject.AddComponent<CloudImage>();
 		}
+		cloudImage.downloadOnStart = false;
+		cloudImage.image = accessoryBtn.iconImage;
+		cloudImage.url = Protected.Avatar.GetImageUrl(clothingDto.class.imageId);
+
+		const downloadConn = cloudImage.OnFinishedLoading.Connect((success) => {
+			if (success) {
+				cloudImage.image.enabled = true;
+				cloudImage.image.color = new Color(1, 1, 1, 1);
+				if (accessoryBtn) {
+					accessoryBtn.labelText.enabled = false;
+				}
+			}
+		});
+		this.bin.Add(() => {
+			downloadConn.Disconnect();
+		});
+
+		//print("Downloading: " + cloudImage.url);
+		cloudImage.StartDownload();
+		return accessoryBtn;
 	}
 
 	private SetDirty(val: boolean): void {
-		if (Game.IsMobile()) {
-			if (val) {
+		if (this.IsPhoneMode()) {
+			if (val && this.finishedFirstOutfitLoad) {
 				task.delay(0, () => {
 					this.Save();
 				});
@@ -585,69 +582,80 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 	}
 
-	private SelectItem(instanceId: string, accTemplate?: AccessoryComponent, instantRefresh = true) {
-		if (!accTemplate) {
-			return;
-		}
-		const alreadySelected = this.activeAccessories.get(accTemplate.GetSlotNumber()) === instanceId;
-		this.RemoveItem(accTemplate.GetSlotNumber(), instantRefresh);
+	private async SelectItem(clothingDto: GearInstanceDto): Promise<void> {
+		if (clothingDto.class.gear.airAssets.size() === 0 || !clothingDto.class.gear.subcategory) return;
+		const slot = Protected.Avatar.GearClothingSubcategoryToSlot(clothingDto.class.gear.subcategory);
+
+		const alreadySelected = this.activeAccessories.get(slot) === clothingDto.instanceId;
+		this.RemoveItem(slot);
 		if (alreadySelected) {
-			//Already selected this item so just deselect it
+			// Already selected this item so just deselect it
 			this.UpdateButtonGraphics();
 			return;
 		}
-		this.Log("Selecting item: " + accTemplate.ToString());
-		let acc = this.mainMenu?.avatarView?.accessoryBuilder?.AddSingleAccessory(accTemplate, instantRefresh);
-		acc?.AccessoryComponent.SetInstanceId(instanceId);
-		this.mainMenu?.avatarView?.PlayReaction(acc?.AccessoryComponent.accessorySlot ?? AccessorySlot.Root);
-		this.activeAccessories.set(accTemplate.GetSlotNumber(), instanceId);
-		this.selectedAccessories.set(instanceId, true);
+
+		this.mainMenu?.avatarView?.PlayReaction(slot);
+		this.activeAccessories.set(slot, clothingDto.instanceId);
+		this.selectedAccessories.set(clothingDto.instanceId, true);
 		this.UpdateButtonGraphics();
 		this.SetDirty(true);
 
-		//Make these objects not use baked lighting settings
-		if (acc) {
-			for (let i = 0; i < acc.renderers.Length; i++) {
-				let ren = acc.renderers.GetValue(i);
-				if (ren) {
-					ren.lightProbeUsage = LightProbeUsage.CustomProvided;
-				}
+		this.gearLoadingCounter++;
+		try {
+			const gear = PlatformGear.DownloadYielding(clothingDto.class.classId, clothingDto.class.gear.airAssets[0]);
+			if (!gear) error("failed to download clothing.");
+			if (gear?.accessoryPrefabs === undefined) error("empty accessory prefabs.");
+
+			for (let accessoryPrefab of gear.accessoryPrefabs) {
+				this.accessoryBuilder.Add(accessoryPrefab);
 			}
+		} catch (err) {
+			Debug.LogError(err);
 		}
+		this.gearLoadingCounter--;
 	}
 
-	private SelectFaceItem(face: AccessoryFace, instantRefresh = true) {
+	protected Update(dt: number): void {
+		this.gearLoadingIndicator.SetActive(
+			this.gearLoadingCounter > 0 && !this.avatarLoadingContainer.gameObject.activeInHierarchy,
+		);
+	}
+
+	private async SelectFaceItem(face: GearInstanceDto): Promise<void> {
 		if (!face) {
 			print("Missing face item: " + face);
 			return;
 		}
-		const accBuilder = this.mainMenu?.avatarView?.accessoryBuilder;
-		this.mainMenu?.avatarView?.accessoryBuilder?.SetFaceTexture(face.decalTexture);
-		this.selectedFaceId = face.serverInstanceId;
+
+		this.selectedFaceId = face.instanceId;
 		this.UpdateButtonGraphics();
 		this.SetDirty(true);
-	}
 
-	private SelectSkinItem(acc: AccessorySkin, instantRefresh = true) {
-		if (!acc) {
-			return;
+		if (face.class.gear.airAssets.size() === 0) return;
+
+		this.gearLoadingCounter++;
+		try {
+			const clothing = PlatformGear.DownloadYielding(face.class.classId, face.class.gear.airAssets[0]);
+			if (clothing?.face) {
+				this.accessoryBuilder.SetFaceTexture(clothing.face.decalTexture);
+				this.accessoryBuilder.UpdateCombinedMesh();
+			}
+		} catch (err) {
+			Debug.LogError(err);
 		}
-		this.Log("Selecting skin item: " + acc.ToString());
-		this.mainMenu?.avatarView?.accessoryBuilder?.AddSkinAccessory(acc, instantRefresh);
-		this.SetDirty(true);
+		this.gearLoadingCounter--;
 	}
 
-	private SelectSkinColor(color: Color, instantRefresh = true) {
-		this.Log("Selecting Color: " + color);
-		this.mainMenu?.avatarView?.accessoryBuilder?.SetSkinColor(color, instantRefresh);
+	private SelectSkinColor(color: Color) {
+		this.accessoryBuilder.SetSkinColor(color);
 		this.mainMenu?.avatarView?.PlayReaction(AccessorySlot.Root);
 		this.selectedColor = ColorUtil.ColorToHex(color);
 		this.UpdateButtonGraphics();
 		this.SetDirty(true);
 	}
 
-	private RemoveItem(slot: AccessorySlot, instantRefresh = true) {
-		this.mainMenu?.avatarView?.accessoryBuilder?.RemoveAccessorySlot(slot, instantRefresh);
+	private RemoveItem(slot: AccessorySlot) {
+		this.mainMenu?.avatarView?.accessoryBuilder?.RemoveBySlot(slot);
 		let instanceId = this.activeAccessories.get(slot);
 		if (instanceId && instanceId !== "") {
 			this.selectedAccessories.delete(instanceId);
@@ -662,128 +670,129 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private LoadAllOutfits() {
-		this.Log("LoadAllOutfits");
-		AvatarPlatformAPI.GetAllOutfits().then((outfits) => {
-			this.outfits = outfits;
-			const outfitSize = this.outfits ? this.outfits.size() : 0;
-			if (outfitSize <= 0) {
-				warn("No outfits exist on user");
+		const outfitSize = Protected.Avatar.outfits.size();
+		if (outfitSize <= 0) {
+			warn("No outfits exist on user");
+		}
+
+		for (let i = 0; i < this.outfitBtns.size(); i++) {
+			// Disable Outfit buttons that we don't need
+			if (i >= outfitSize) {
+				this.outfitBtns[i].gameObject.SetActive(false);
+			} else {
+				const outfit = Protected.Avatar.outfits[i];
+				if (outfit.name.match("Default%d+")[0]) continue;
+
+				// Set name on outfits
+				const nameComp =
+					this.outfitBtns[i].gameObject.GetAirshipComponentInChildren<OutfitButtonNameComponent>();
+				if (!nameComp) continue;
+
+				nameComp.UpdateDisplayName(outfit.name);
 			}
+		}
 
-			if (this.outfitBtns) {
-				for (let i = 0; i < this.outfitBtns.size(); i++) {
-					// Disable Outfit buttons that we don't need
-					if (i >= outfitSize) {
-						this.outfitBtns[i].gameObject.SetActive(false);
-					} else if (outfits) {
-						const outfit = outfits[i];
-						if (outfit.name.match("Default%d+")[0]) continue;
-
-						// Set name on outfits
-						const nameComp =
-							this.outfitBtns[i].gameObject.GetAirshipComponentInChildren<OutfitButtonNameComponent>();
-						if (!nameComp) continue;
-
-						nameComp.UpdateDisplayName(outfit.name);
-					}
-				}
-			}
-
-			AvatarPlatformAPI.GetEquippedOutfit().then((equippedOutfit) => {
-				if (equippedOutfit && this.outfits) {
-					let i = 0;
-					for (let outfit of this.outfits) {
-						if (outfit.outfitId === equippedOutfit.outfitId) {
-							//Select equipped outfit
-							this.Log("Found default outfit index: " + i);
-							this.SelectOutfit(i, false);
-							return;
-						}
-						i++;
-					}
-				}
-
-				//Select the first outfit if no outfit was found
+		if (Protected.Avatar.equippedOutfit) {
+			let index = Protected.Avatar.outfits.indexOf(Protected.Avatar.equippedOutfit);
+			if (index > -1) {
+				this.SelectOutfit(index, false);
+			} else {
 				this.SelectOutfit(0, false);
-			});
-		});
+			}
+		} else {
+			this.SelectOutfit(0, false);
+		}
 	}
 
 	private SelectOutfit(index: number, notifyServer: boolean = true) {
-		this.Log("SelectOutfit: " + index);
-
-		if (!this.outfits || index < 0 || index >= this.outfits.size() || this.inThumbnailMode) {
+		print("SelectOutfit " + index + " " + debug.traceback());
+		if (index < 0 || index >= Protected.Avatar.outfits.size() || this.inThumbnailMode) {
 			error(`Index ${index} out of range of outfits`);
 		}
 		this.currentUserOutfitIndex = index;
 		for (let i = 0; i < this.outfitBtns.size(); i++) {
 			this.outfitBtns[i].SetSelected(i === index);
 		}
-		this.currentUserOutfit = this.outfits[index];
+		this.viewedOutfit = Protected.Avatar.outfits[index];
 		if (notifyServer) {
-			AvatarPlatformAPI.EquipAvatarOutfit(this.currentUserOutfit.outfitId).then(() => {
+			Protected.Avatar.EquipAvatarOutfit(this.viewedOutfit.outfitId).then(() => {
 				if (Game.coreContext === CoreContext.GAME) {
 					CoreNetwork.ClientToServer.ChangedOutfit.client.FireServer();
 				}
 			});
 		}
 
-		this.LoadCurrentOutfit();
+		this.LoadCurrentOutfit().expect();
 	}
 
 	public RenameOutfit(index: number, newName: string) {
-		this.Log("RenameOutfit: " + index);
-		if (!this.outfits || index < 0 || index >= this.outfits.size() || this.inThumbnailMode) {
+		if (index < 0 || index >= Protected.Avatar.outfits.size() || this.inThumbnailMode) {
 			error(`Index ${index} out of range of outfits`);
 		}
 
-		const relevantOutfit = this.outfits[index];
+		const relevantOutfit = Protected.Avatar.outfits[index];
 		if (relevantOutfit.name === newName) return;
 
-		AvatarPlatformAPI.RenameOutfit(relevantOutfit.outfitId, newName).catch((e) => {
+		Protected.Avatar.RenameOutfit(relevantOutfit.outfitId, newName).catch((e) => {
 			print("Failed to rename outfit.");
 			print(e);
 		});
 	}
 
-	private ClearAllAccessories() {
-		this.mainMenu?.avatarView?.accessoryBuilder?.RemoveAllAccessories(true);
+	private RemoveAllAccessories() {
+		this.accessoryBuilder.RemoveAll();
 		this.selectedAccessories.clear();
 		this.activeAccessories.clear();
 	}
 
-	private LoadCurrentOutfit() {
-		if (!this.currentUserOutfit) {
+	private async LoadCurrentOutfit() {
+		if (!this.viewedOutfit) {
 			return;
 		}
-		this.Log("Loading outfit: " + this.currentUserOutfit.name);
-		this.ClearAllAccessories();
 
-		this.currentUserOutfit.accessories.forEach((acc, index) => {
-			this.Log("Outfit acc: " + acc.class.name + ": " + acc.class.classId);
-			let accComponent = AvatarCollectionManager.instance.GetAccessoryFromClassId(acc.class.classId);
-			if (accComponent) {
-				this.SelectItem(acc.instanceId, accComponent, false);
-			} else {
-				let face = AvatarCollectionManager.instance.GetAccessoryFaceFromClassId(acc.class.classId);
-				if (face) {
-					this.SelectFaceItem(face, false);
-				}
-			}
-		});
+		this.RemoveAllAccessories();
 
-		this.SelectSkinColor(ColorUtil.HexToColor(this.currentUserOutfit.skinColor), true);
+		// Download all accessories in parallel with Promise.all
+		// We won't mesh combine until after all this is done.
+		let promises: Promise<void>[] = [];
+		for (let gearDto of this.viewedOutfit.gear) {
+			promises.push(
+				new Promise(async (resolve) => {
+					if (gearDto.class.gear.airAssets.size() === 0) return resolve();
+
+					if (gearDto.class.gear.category === GearCategory.FaceDecal) {
+						await this.SelectFaceItem(gearDto);
+						return resolve();
+					}
+
+					await this.SelectItem(gearDto);
+					resolve();
+				}),
+			);
+		}
+		await Promise.all(promises);
+
+		const charTransform = this.mainMenu.avatarView?.humanEntityGo?.transform!;
+		if (!this.hasMeshCombinedOnce) {
+			this.accessoryBuilder.OnMeshCombined.Once(() => {
+				charTransform.localPosition = Vector3.zero;
+				this.avatarLoadingContainer.gameObject.SetActive(false);
+				this.hasMeshCombinedOnce = true;
+			});
+		}
+
+		this.SelectSkinColor(ColorUtil.HexToColor(this.viewedOutfit.skinColor));
 
 		this.UpdateButtonGraphics();
 		this.SetDirty(false);
-		//builder.TryCombineMeshes();
+		this.accessoryBuilder.UpdateCombinedMesh();
+		this.finishedFirstOutfitLoad = true;
 	}
 
 	private UpdateButtonGraphics() {
 		//Highlight selected items
 		for (let i = 0; i < this.currentContentBtns.size(); i++) {
 			let button = this.currentContentBtns[i];
-			this.Log("Checking button: " + button.id);
 			//Found matching class ID or this button is the active color
 			let active =
 				this.selectedColor === button.id ||
@@ -794,12 +803,12 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private Save() {
-		if (this.inThumbnailMode) {
-			this.RenderThumbnails();
-			return;
-		}
+		// if (this.inThumbnailMode) {
+		// 	this.RenderThumbnails();
+		// 	return;
+		// }
 
-		if (!this.currentUserOutfit) {
+		if (!this.viewedOutfit) {
 			warn("Trying to save with no outfit selected!");
 			return;
 		}
@@ -817,14 +826,16 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 				}
 				accessoryIds.push(instanceId);
 			}
-			accessoryIds.push(this.selectedFaceId);
+			if (this.selectedFaceId !== "") {
+				accessoryIds.push(this.selectedFaceId);
+			}
 		}
 
-		AvatarPlatformAPI.SaveOutfitAccessories(this.currentUserOutfit.outfitId, this.selectedColor, accessoryIds).then(
+		Protected.Avatar.SaveOutfitAccessories(this.viewedOutfit.outfitId, this.selectedColor, accessoryIds).then(
 			(value) => {
-				this.currentUserOutfit = value;
-				if (this.outfits && this.currentUserOutfit) {
-					this.outfits[this.currentUserOutfitIndex] = this.currentUserOutfit;
+				this.viewedOutfit = value;
+				if (Protected.Avatar.outfits && this.viewedOutfit) {
+					Protected.Avatar.outfits[this.currentUserOutfitIndex] = this.viewedOutfit;
 				}
 				if (Game.coreContext === CoreContext.GAME) {
 					CoreNetwork.ClientToServer.ChangedOutfit.client.FireServer();
@@ -836,7 +847,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private Revert() {
-		this.LoadCurrentOutfit();
+		this.LoadCurrentOutfit().expect();
 	}
 
 	private thumbnailRenderList: Map<string, { accesory: AccessoryComponent; button: AvatarAccessoryBtn }> = new Map();
@@ -849,64 +860,64 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	 * @internal
 	 */
 	public EnterThumbnailMode() {
-		if (!this.renderSetup) {
-			this.renderSetup = this.mainMenu?.avatarView?.CreateRenderScene();
-		}
-		print("Entering Thumbnail Mode");
-		this.mainMenu?.avatarView?.backdropHolder?.gameObject.SetActive(false);
-		this.inThumbnailMode = true;
-		this.SetDirty(true);
-		this.ClearItembuttons();
-		this.ClearAllAccessories();
-		//Accessories
-		let foundItems = AvatarCollectionManager.instance.GetAllPossibleAvatarItems();
-		let foundFaces = AvatarCollectionManager.instance.GetAllAvatarFaceItems();
-		if (foundItems) {
-			let allItems: { instanceId: string; item: AccessoryComponent }[] = [];
-			for (let [key, value] of foundItems) {
-				if (value && value.GetServerClassId() !== undefined && value.GetServerClassId() !== "") {
-					let button = this.AddItemButton(
-						value.GetServerClassId(),
-						value.GetServerClassId(),
-						value.name,
-						() => {
-							const alreadySelected = this.thumbnailRenderList
-								.get(value.GetServerClassId())
-								?.button.GetSelected();
-							this.Log("Selecting item: " + value.ToString() + ": " + alreadySelected);
-							this.thumbnailRenderList
-								.get(value.GetServerClassId())
-								?.button.SetSelected(!alreadySelected);
-						},
-					);
-					button.SetSelected(false);
-					this.thumbnailRenderList.set(value.GetServerClassId(), { accesory: value, button: button });
-				}
-			}
-			for (let value of foundFaces) {
-				if (value && value.GetServerClassId() !== undefined && value.GetServerClassId() !== "") {
-					let button = this.AddItemButton(
-						value.GetServerClassId(),
-						value.GetServerClassId(),
-						value.name,
-						() => {
-							const alreadySelected = this.thumbnailFaceRenderList
-								.get(value.GetServerClassId())
-								?.button.GetSelected();
-							this.Log("Selecting face: " + value.ToString() + ": " + alreadySelected);
-							this.thumbnailFaceRenderList
-								.get(value.GetServerClassId())
-								?.button.SetSelected(!alreadySelected);
-						},
-					);
-					button.SetSelected(false);
-					this.thumbnailFaceRenderList.set(value.GetServerClassId(), { accesory: value, button: button });
-				}
-			}
-			this.DisplayItems(allItems);
-		}
-		this.currentFocusedSlot = AccessorySlot.Root;
-		this.mainMenu?.avatarView?.CameraFocusSlot(this.currentFocusedSlot);
+		// if (!this.renderSetup) {
+		// 	this.renderSetup = this.mainMenu?.avatarView?.CreateRenderScene();
+		// }
+		// print("Entering Thumbnail Mode");
+		// this.mainMenu?.avatarView?.backdropHolder?.gameObject.SetActive(false);
+		// this.inThumbnailMode = true;
+		// this.SetDirty(true);
+		// this.ClearItembuttons();
+		// this.RemoveAllAccessories();
+		// //Accessories
+		// let foundItems = AvatarCollectionManager.instance.GetAllPossibleAvatarItems();
+		// let foundFaces = AvatarCollectionManager.instance.GetAllAvatarFaceItems();
+		// if (foundItems) {
+		// 	let allItems: { instanceId: string; item: AccessoryComponent }[] = [];
+		// 	for (let [key, value] of foundItems) {
+		// 		if (value && value.GetServerClassId() !== undefined && value.GetServerClassId() !== "") {
+		// 			let button = this.AddItemButton(
+		// 				value.GetServerClassId(),
+		// 				value.GetServerClassId(),
+		// 				value.name,
+		// 				() => {
+		// 					const alreadySelected = this.thumbnailRenderList
+		// 						.get(value.GetServerClassId())
+		// 						?.button.GetSelected();
+		// 					this.Log("Selecting item: " + value.ToString() + ": " + alreadySelected);
+		// 					this.thumbnailRenderList
+		// 						.get(value.GetServerClassId())
+		// 						?.button.SetSelected(!alreadySelected);
+		// 				},
+		// 			);
+		// 			button.SetSelected(false);
+		// 			this.thumbnailRenderList.set(value.GetServerClassId(), { accesory: value, button: button });
+		// 		}
+		// 	}
+		// 	for (let value of foundFaces) {
+		// 		if (value && value.GetServerClassId() !== undefined && value.GetServerClassId() !== "") {
+		// 			let button = this.AddItemButton(
+		// 				value.GetServerClassId(),
+		// 				value.GetServerClassId(),
+		// 				value.name,
+		// 				() => {
+		// 					const alreadySelected = this.thumbnailFaceRenderList
+		// 						.get(value.GetServerClassId())
+		// 						?.button.GetSelected();
+		// 					this.Log("Selecting face: " + value.ToString() + ": " + alreadySelected);
+		// 					this.thumbnailFaceRenderList
+		// 						.get(value.GetServerClassId())
+		// 						?.button.SetSelected(!alreadySelected);
+		// 				},
+		// 			);
+		// 			button.SetSelected(false);
+		// 			this.thumbnailFaceRenderList.set(value.GetServerClassId(), { accesory: value, button: button });
+		// 		}
+		// 	}
+		// 	this.DisplayClothingItems(allItems);
+		// }
+		// this.currentFocusedSlot = AccessorySlot.Root;
+		// this.mainMenu?.avatarView?.CameraFocusSlot(this.currentFocusedSlot);
 	}
 
 	/**
@@ -919,7 +930,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		if (this.renderSetup) {
 			Object.Destroy(this.renderSetup);
 		}
-		this.ClearItembuttons();
+		this.DestroyItemButtons();
 		this.thumbnailRenderList.clear();
 		this.mainMenu?.avatarView?.backdropHolder?.gameObject.SetActive(true);
 		this.OpenPage();
@@ -930,30 +941,30 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	 *
 	 * @internal
 	 */
-	private RenderThumbnails() {
-		if (!this.renderSetup) {
-			return;
-		}
+	// private RenderThumbnails() {
+	// 	if (!this.renderSetup) {
+	// 		return;
+	// 	}
 
-		this.renderSetup.uploadThumbnails = true;
-		if(Airship.Input.IsDown(CoreAction.Sprint)){
-			print("Rendering All Items");
-			this.renderSetup.RenderAllItems();
-		}else{
-			print("Rendering Selected Items");
-			this.renderSetup.CreateItemCamera();
-			this.renderSetup?.SetupForRenders(false);
-			for (let [key, value] of this.thumbnailRenderList) {
-				if (value && value.button.GetSelected()) {
-					this.renderSetup?.RenderItem(value.accesory);
-				}
-			}
-			this.renderSetup?.SetupForRenders(true);
-			for (let [key, value] of this.thumbnailFaceRenderList) {
-				if (value && value.button.GetSelected()) {
-					this.renderSetup?.RenderFace(value.accesory);
-				}
-			}
-		}
-	}
+	// 	this.renderSetup.uploadThumbnails = true;
+	// 	if (Airship.Input.IsDown(CoreAction.Sprint)) {
+	// 		print("Rendering All Items");
+	// 		this.renderSetup.RenderAllItems();
+	// 	} else {
+	// 		print("Rendering Selected Items");
+	// 		this.renderSetup.CreateItemCamera();
+	// 		this.renderSetup?.SetupForRenders(false);
+	// 		for (let [key, value] of this.thumbnailRenderList) {
+	// 			if (value && value.button.GetSelected()) {
+	// 				this.renderSetup?.RenderItem(value.accesory);
+	// 			}
+	// 		}
+	// 		this.renderSetup?.SetupForRenders(true);
+	// 		for (let [key, value] of this.thumbnailFaceRenderList) {
+	// 			if (value && value.button.GetSelected()) {
+	// 				this.renderSetup?.RenderFace(value.accesory);
+	// 			}
+	// 		}
+	// 	}
+	// }
 }

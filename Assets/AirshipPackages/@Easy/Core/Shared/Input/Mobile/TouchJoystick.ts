@@ -84,5 +84,9 @@ export default class TouchJoystick extends AirshipBehaviour {
 		return Vector2.zero;
 	}
 
+	public SetActive(active: boolean) {
+		this.gameObject.SetActive(active);
+	}
+
 	override OnDestroy(): void {}
 }

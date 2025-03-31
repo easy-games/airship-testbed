@@ -49,8 +49,7 @@ export namespace Flamework {
 		}
 
 		const files = EasyFileService.GetFilesInPath(path, searchPattern);
-		for (let i = 0; i < files.Length; i++) {
-			let filePath = files.GetValue(i);
+		for (let filePath of files) {
 			if (ignorePatterns !== undefined) {
 				let ignored = false;
 				for (let ignorePattern of ignorePatterns) {
@@ -209,9 +208,18 @@ export namespace Flamework {
 			if (IsStartableDependency(dependency)) start.set(dependency, getIdentifier(dependency));
 		}
 
+		const getMemCat = (identifier: string) => {
+			const parts = identifier.split("@");
+			if (parts.size() === 0) {
+				return identifier;
+			}
+			return parts[parts.size() - 1];
+		};
+
 		for (const [dependency, identifier] of init) {
 			if (startedIdentifiers.has(identifier)) continue;
-			// debug.setmemorycategory(identifier);
+
+			debug.setmemorycategory(getMemCat(identifier));
 			const initResult = dependency.OnInit();
 			if (Promise.is(initResult)) {
 				const [status, value] = initResult.awaitStatus();
@@ -219,7 +227,7 @@ export namespace Flamework {
 					throw `OnInit failed for dependency '${identifier}'. ${tostring(value)}`;
 				}
 			}
-			// debug.resetmemorycategory();
+			debug.resetmemorycategory();
 		}
 
 		isInitialized = true;
@@ -227,9 +235,10 @@ export namespace Flamework {
 		for (const [dependency, identifier] of start) {
 			if (startedIdentifiers.has(identifier)) continue;
 			startedIdentifiers.add(identifier);
-			coroutine.wrap(() => {
+			task.spawn(() => {
+				debug.setmemorycategory(getMemCat(identifier));
 				dependency.OnStart();
-			})();
+			});
 		}
 
 		return dependencies;

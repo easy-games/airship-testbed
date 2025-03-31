@@ -15,7 +15,7 @@ export default class SocialMenu extends AirshipBehaviour {
 	public serverCountText!: TMP_Text;
 	public scrollRect: ScrollRect;
 
-	public verticalLayout!: GameObject;
+	public verticalLayout: VerticalLayoutGroup;
 
 	@Header("Lost Connection")
 	public lostConnectionNotice!: GameObject;
@@ -24,12 +24,19 @@ export default class SocialMenu extends AirshipBehaviour {
 
 	private bin = new Bin();
 
+	@NonSerialized() public rectTransform: RectTransform;
+
+	protected Awake(): void {
+		this.rectTransform = this.gameObject.GetComponent<RectTransform>()!;
+	}
+
 	override Start(): void {
 		if (Game.deviceType === AirshipDeviceType.Phone) {
 			this.liveStats.gameObject.SetActive(false);
 		}
 		if (Game.IsMobile()) {
 			this.scrollRect.movementType = MovementType.Elastic;
+			this.verticalLayout.padding.bottom = 200;
 		}
 
 		this.bin.Add(
@@ -79,7 +86,7 @@ export default class SocialMenu extends AirshipBehaviour {
 		);
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnClickEvent(this.logoutbutton.gameObject, () => {
-				Protected.user.Logout();
+				Protected.User.Logout();
 			}),
 		);
 	}

@@ -33,44 +33,11 @@ interface BinaryBlobConstructor {
 
 declare const BinaryBlob: BinaryBlobConstructor;
 
-interface Time {
-	/**
-	 * The time at the beginning of the current frame in seconds since the start of the application (Read Only).
-	 *
-	 * This is the time in seconds since the start of the application, which Time.timeScale scales and Time.maximumDeltaTime adjusts. When called from inside AirshipBehaviour.FixedUpdate, it returns Time.fixedTime.
-	 *
-	 * This value is undefined during Awake messages and starts after all of these messages are finished. This value does not update if the Editor is paused. See Time.realtimeSinceStartup for a time value that is unaffected by pausing.
-	 */
-	time: number;
-
-	/**
-	 * The interval in seconds from the last frame to the current one (Read Only).
-	 *
-	 * When this is called from inside AirshipBehaviour.FixedUpdate, it returns Time.fixedDeltaTime. The maximum value for deltaTime is defined by Time.maximumDeltaTime.
-	 */
-	deltaTime: number;
-	fixedDeltaTime: number;
-
-	/**
-	 * The total number of frames since the start of the game (Read Only).
-	 *
-	 * This value starts at 0 and increases by 1 on each Update phase.
-	 *
-	 * Internally, Unity uses a 64 bit integer which it downcasts to 32 bits when this is called, and discards the most significant (i.e. top) 32 bits.
-	 */
-	frameCount: number;
-	timeScale: number;
-	unscaledDeltaTime: number;
-	unscaledTime: number;
-}
-
-declare const Time: Time;
-
 interface PlayerManagerBridge extends Component {
 	OnPlayerAdded(callback: (clientInfo: PlayerInfoDto) => void): EngineEventConnection;
 	OnPlayerRemoved(callback: (clientInfo: PlayerInfoDto) => void): EngineEventConnection;
-	GetPlayers(): CSArray<PlayerInfoDto>;
-	AddBotPlayer(username: string, tag: string, userId: string): void;
+	GetPlayers(): PlayerInfoDto[];
+	AddBotPlayer(username: string, userId: string, profilePictureId: string): void;
 	GetPlayerInfoByClientId(clientId: number): PlayerInfoDto;
 	localPlayer: PlayerInfo;
 }
@@ -126,6 +93,7 @@ interface CharacterMovement extends Component {
 		crouch: boolean,
 		moveDirWorldSpace: boolean,
 	): void;
+	SetMovementEnabled(isEnabled: boolean): void;
 	SetLookVector(lookVector: Vector3): void;
 	SetLookVectorRecurring(lookVector: Vector3): void;
 	SetCustomData(customData: BinaryBlob): void;
@@ -160,6 +128,7 @@ interface CharacterMovement extends Component {
 	moveData: CharacterMovementData;
 	animationHelper: CharacterAnimationHelper;
 	mainCollider: BoxCollider;
+	startingLookVector: Vector3;
 
 	//Public Getters Private Setters
 	currentMoveState: CharacterMovementState;
@@ -378,12 +347,6 @@ interface DestroyWatcher extends Component {
 	OnDestroyedEvent(callback: () => void): EngineEventConnection;
 }
 
-interface OcclusionCam extends Component {
-	targetCamera: Camera;
-	Init(camera: Camera);
-	BumpForOcclusion(attachToPos: Vector3, mask: number): void;
-}
-
 interface PredictedObject extends GameObject {
 	SetGraphicalObject(transform: Transform): void;
 }
@@ -409,38 +372,84 @@ interface AccessoryBuilder extends MonoBehaviour {
 	cancelPendingDownload: boolean;
 	meshCombiner: MeshCombiner;
 
-	AddAccessories(
-		accessoryTemplates: CSArray<AccessoryComponent>,
-		addMode: AccessoryAddMode,
-		rebuildMeshImmediately: boolean,
-	): CSArray<ActiveAccessory>;
-	AddSingleAccessory(
-		accessoryTemplate: AccessoryComponent,
-		rebuildMeshImmediately: boolean,
-	): ActiveAccessory | undefined;
-	AddSkinAccessory(skin: AccessorySkin, rebuildMeshImmediately: boolean): void;
-	EquipAccessoryOutfit(outfit: AccessoryOutfit, rebuildMeshImmediately: boolean): CSArray<ActiveAccessory>;
-	GetAccessoryMeshes(slot: AccessorySlot): CSArray<Renderer>;
-	GetAccessoryParticles(slot: AccessorySlot): CSArray<ParticleSystem>;
-	GetActiveAccessories(): CSArray<ActiveAccessory>;
-	GetActiveAccessoryBySlot(target: AccessorySlot): ActiveAccessory;
-	GetAllAccessoryMeshes(): CSArray<Renderer>;
+	/**
+	 * Adds an array of accessories.
+	 *
+	 * **Skinned mesh accessories will not be added until you call `UpdateImmediately()`**
+	 */
+	// AddRange(accessoryTemplates: AccessoryComponent[]): ActiveAccessory[];
+	/**
+	 * Adds a single accessory.
+	 *
+	 * **Skinned mesh accessories will not be added until you call `UpdateImmediately()`**
+	 */
+	Add(accessoryTemplate: AccessoryComponent): ActiveAccessory | undefined;
+	/**
+	 * Sets the skin.
+	 *
+	 * **Will not take effect until you call `UpdateImmediately()`**
+	 */
+	SetSkin(skin: AccessorySkin): void;
+	/**
+	 *
+	 * **Will not update until you call `UpdateImmediately()`**
+	 */
+	LoadOutfit(outfit: AccessoryOutfit): ActiveAccessory[];
+	GetAccessoryRenderers(slot: AccessorySlot): Renderer[];
+	GetAccessoryParticles(slot: AccessorySlot): ParticleSystem[];
+	GetActiveAccessories(): ActiveAccessory[];
+	GetActiveAccessoryBySlot(target: AccessorySlot): ActiveAccessory | undefined;
+	GetAllAccessoryRenderers(): Renderer[];
 	GetCombinedSkinnedMesh(): SkinnedMeshRenderer;
 	GetCombinedStaticMesh(): MeshRenderer;
-	RemoveAccessorySlot(slot: AccessorySlot, rebuildMeshImmediately: boolean): void;
-	RemoveAllAccessories(rebuildMeshImmediately: boolean): void;
-	RemoveClothingAccessories(rebuildMeshImmediately: boolean): void;
-	SetAccessoryColor(slot: AccessorySlot, color: Color, rebuildMeshImmediately: boolean): void;
+	/**
+	 * Removes an active accessory on the given slot (if one exists).
+	 *
+	 * **Skinned mesh accessories will not be added until you call `UpdateImmediately()`**
+	 */
+	RemoveBySlot(slot: AccessorySlot): void;
+	/**
+	 * Removes all accessories.
+	 *
+	 * **Skinned mesh accessories will not be added until you call `UpdateImmediately()`**
+	 */
+	RemoveAll(): void;
+	/**
+	 * Removes all accessories sitting in "clothing" slots.
+	 * This means everything except for the right and left hand. Clothing slots may change in the future.
+	 *
+	 * **Skinned mesh accessories will not be added until you call `UpdateImmediately()`**
+	 */
+	RemoveClothingAccessories(): void;
 	SetCreateOverlayMeshOnCombine(on: boolean): void;
+	/**
+	 *
+	 * **Will not take effect until you call `UpdateImmediately()`**
+	 */
 	SetFaceTexture(texture: Texture2D): void;
-	SetSkinColor(color: Color, rebuildMeshImmediately: boolean): void;
-	TryCombineMeshes(): void;
+	/**
+	 *
+	 * **Will not take effect until you call `UpdateImmediately()`**
+	 */
+	SetSkinColor(color: Color): void;
+
+	/**
+	 * Regenerates the combined skinned mesh. Skinned mesh accessories will not be visible until this method is called.
+	 *
+	 * This involves reconstructing the character mesh and LOD's which is expensive. You should limit usage of this method.
+	 *
+	 * **If you are only equipping a static mesh (such as a sword or hat), you do not need to call this method.** However, if you are equipping a skinned mesh shirt that bends with the character, you would need to call this method.
+	 */
+	UpdateCombinedMesh(): void;
 
 	OnMeshCombined: MonoSignal<[usedMeshCombiner: boolean, skinnedMesh: SkinnedMeshRenderer, staticMesh: MeshRenderer]>;
+	OnAccessoryAdded: MonoSignal<[accessories: ActiveAccessory[]]>;
+	OnAccessoryRemoved: MonoSignal<[accessories: ActiveAccessory[]]>;
 }
 
 interface MeshCombiner extends MonoBehaviour {
 	cacheId: string;
+	DisableBaseRenderers(): void;
 }
 interface MeshCombinerConstructor {
 	public RemoveMeshCache(cacheId: string): void;
@@ -519,6 +528,21 @@ declare namespace debug {
 		: T extends `${infer A}${infer _}`
 		? LuaTuple<TS.InfoFlags<[A]>>
 		: LuaTuple<[unknown, unknown, unknown, unknown, unknown]>;
+
+	/**
+	 * Sets the memory category for the current thread and any threads that spawn off of the current thread.
+	 */
+	function setmemorycategory(category: string): void;
+
+	/**
+	 * Gets the memory usage in bytes for the given category.
+	 */
+	function getmemorycategory(category: string): number;
+
+	/**
+	 * Resets the memory category for the current thread to the default category (the name of the script).
+	 */
+	function resetmemorycategory(): void;
 }
 
 interface TimeManager {
@@ -575,10 +599,11 @@ interface CharacterStateData {
 	crouching: boolean;
 	localVelocity: Vector3;
 }
-interface CharacterAnimationHelper extends Component {
+interface CharacterAnimationHelper extends MonoBehaviour {
 	animator: Animator;
 	animationEvents?: AnimationEventListener;
 	isSkidding: boolean;
+	skiddingSpeed: number;
 	SetForceLookForward(forceLookForward: boolean): void;
 	SetFirstPerson(firstPerson: boolean): void;
 	SetRootMovementLayer(itemInHand: boolean): void;
@@ -720,13 +745,27 @@ interface DiskManager {
 	/** Will return empty string if file not found. */
 	ReadFileAsync(path: string): string | undefined;
 	WriteFileAsync(path: string, content: string): boolean;
+	EnsureDirectory(path: string): void;
 }
 declare const DiskManager: DiskManager;
 
+interface EngineEventConnection extends Number {
+	/**
+	 * **NOTE**: Engine Event Connections are integer-based
+	 *
+	 * If you want to disconnect an engine event - use
+	 * ```ts
+	 * Bridge.DisconnectEvent(eventConnection)
+	 * ```
+	 * @hidden
+	 * @deprecated
+	 */
+	readonly _nominal_EngineEventConnection: unique symbol;
+}
 /**
  * To disconnect, call `Bridge.DisconnectEvent(eventConnection)`
  */
-type EngineEventConnection = number;
+// type EngineEventConnection = number & { /** @deprecated */ readonly _nominal_EngineEventConnection: unique symbol };
 
 interface BridgeConstructor {
 	DisconnectEvent(eventConnection: EngineEventConnection): void;
@@ -741,7 +780,7 @@ interface SteamLuauAPIConstructor {
 	OnRichPresenceGameJoinRequest(callback: (connectStr: string, steamId: number) => void): EngineEventConnection;
 	OnNewLaunchParams(callback: (gameId: string, serverId: string, customData: string) => void): EngineEventConnection;
 	ProcessPendingJoinRequests(): void;
-	GetSteamFriends(): CSArray<AirshipSteamFriendInfo>;
+	GetSteamFriends(): AirshipSteamFriendInfo[];
 	IsSteamInitialized(): boolean;
 }
 declare const SteamLuauAPI: SteamLuauAPIConstructor;
@@ -837,7 +876,7 @@ interface NetworkIdentity extends MonoBehaviour {
 	 * Server's network connection to the client. This is only valid for client-owned objects (including the Player object) on the server.
 	 */
 	readonly connectionToClient: NetworkConnectionToClient | undefined;
-	readonly NetworkBehaviours: CSArray<NetworkBehaviour>;
+	readonly NetworkBehaviours: NetworkBehaviour[];
 	readonly SpawnedFromInstantiate: boolean;
 
 	/**
@@ -951,6 +990,20 @@ interface Volume extends MonoBehaviour {
 	sharedProfile: VolumeProfile;
 }
 
+interface TubeRendererCS extends MonoBehaviour {
+	SetPositions(positions: Vector3[]): void;
+	SetStartRadius(radius: number): void;
+	GetStartRadius(): number;
+	SetEndRadius(radius: number): void;
+	GetEndRadius(): number;
+	SetSides(sides: number): void;
+}
+
+interface TubeRendererCSConstructor {
+	new (): TubeRendererCS;
+}
+declare const TubeRendererCS: TubeRendererCSConstructor;
+
 interface NetworkBehaviour extends MonoBehaviour {}
 
 interface LagCompensator extends NetworkBehaviour {
@@ -1013,3 +1066,23 @@ interface AnimatorClipReplacer extends MonoBehaviour {
 	 */
 	RuntimeAnimator: RuntimeAnimatorController | null;
 }
+
+interface PlatformGear {
+	classId: string;
+	accessoryPrefabs: AccessoryComponent[];
+	face: AccessoryFace | undefined;
+}
+interface PlatformGearConstructor {
+	DownloadYielding(classId: string, airId: string): PlatformGear | undefined;
+}
+declare const PlatformGear: PlatformGearConstructor;
+
+interface AirAssetBundle {
+	airId: string;
+	LoadAsync<T extends Object = Object>(path: string): T | undefined;
+	GetPaths(): string[];
+}
+interface AirAssetBundleStatic {
+	DownloadYielding(airId: string): AirAssetBundle | undefined;
+}
+declare const AirAssetBundle: AirAssetBundleStatic;

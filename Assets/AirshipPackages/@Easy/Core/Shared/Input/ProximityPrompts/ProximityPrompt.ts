@@ -26,6 +26,8 @@ export default class ProximityPrompt extends AirshipBehaviour {
 	public static = false;
 	@Tooltip("If true this prompt can be activated at any time by having the activation key in the down state.")
 	public activateWhenDown = false;
+	@Tooltip("If true the prompt will be hidden when a player is dead")
+	public hideWhenDead = false;
 
 	@Header("References")
 	public canvas!: Canvas;
@@ -128,6 +130,10 @@ export default class ProximityPrompt extends AirshipBehaviour {
 		this.objectTextLabel.text = val;
 	}
 
+	public GetObjectText() {
+		return this.objectText;
+	}
+
 	public SetActionText(val: string): void {
 		(this.actionText as string) = val;
 		this.actionTextLabel.text = val;
@@ -185,6 +191,20 @@ export default class ProximityPrompt extends AirshipBehaviour {
 
 		// for button
 		this.backgroundImg.raycastTarget = Game.IsMobile() || this.mouseRaycastTarget;
+
+		if (Game.IsMobile()) {
+			this.backgroundImg.transform.localScale = new Vector3(2, 2, 2);
+			this.canvas.worldCamera = Camera.main;
+			this.shownBin.AddEngineEventConnection(
+				CanvasAPI.OnPointerEvent(this.backgroundImg.gameObject, (pointerDirection, button) => {
+					if (pointerDirection === PointerDirection.DOWN) {
+						Airship.Input.SetDown(this.actionName);
+					} else {
+						Airship.Input.SetUp(this.actionName);
+					}
+				}),
+			);
+		}
 
 		this.shownBin.Add(
 			Airship.Input.OnUp(this.actionName).Connect((event) => {

@@ -15,6 +15,7 @@ import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
 import { ChatUtil } from "@Easy/Core/Shared/Util/ChatUtil";
+import { ProtectedUtil } from "@Easy/Core/Shared/Util/ProtectedUtil";
 import { SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { SetInterval, SetTimeout } from "@Easy/Core/Shared/Util/Timer";
 import { MainMenuBlockSingleton } from "../../../../Client/ProtectedControllers//Settings/MainMenuBlockSingleton";
@@ -114,7 +115,7 @@ export class ClientChatSingleton {
 					// wrapperRect.offsetMax = new Vector2(0, 0);
 					// wrapperRect.offsetMin = new Vector2(0, 0);
 				}
-				wrapperRect.anchoredPosition = new Vector2(Game.GetNotchHeight() + 190, -14);
+				wrapperRect.anchoredPosition = new Vector2(ProtectedUtil.GetNotchHeight() + 190, -14);
 			} else {
 				const wrapperRect = this.wrapper.GetComponent<RectTransform>()!;
 				const wrapperImg = wrapperRect.GetComponent<Image>()!;
@@ -168,7 +169,7 @@ export class ClientChatSingleton {
 	public AddMessage(rawText: string, nameWithPrefix: string | undefined, senderClientId: number | undefined): void {
 		let sender: ProtectedPlayer | undefined;
 		if (senderClientId !== undefined) {
-			sender = Protected.protectedPlayers.FindByClientId(senderClientId);
+			sender = Protected.ProtectedPlayers.FindByClientId(senderClientId);
 			if (sender) {
 				if (Dependency<MainMenuBlockSingleton>().IsUserIdBlocked(sender.userId)) {
 					return;
@@ -186,9 +187,12 @@ export class ClientChatSingleton {
 		const isMainMenu = Game.coreContext === CoreContext.MAIN_MENU;
 		if (isMainMenu) return;
 
-		contextbridge.subscribe("Chat:AddLocalMessage", (context: LuauContext, rawText: string, nameWithPrefix?: string, senderClientId?: number) => {
-			this.AddMessage(rawText, nameWithPrefix, senderClientId);
-		});
+		contextbridge.subscribe(
+			"Chat:AddLocalMessage",
+			(context: LuauContext, rawText: string, nameWithPrefix?: string, senderClientId?: number) => {
+				this.AddMessage(rawText, nameWithPrefix, senderClientId);
+			},
+		);
 
 		CoreNetwork.ServerToClient.ChatMessage.client.OnServerEvent((rawText, nameWithPrefix, senderClientId) => {
 			this.AddMessage(rawText, nameWithPrefix, senderClientId);
@@ -210,6 +214,7 @@ export class ClientChatSingleton {
 		Keyboard.OnKeyDown(
 			Key.Enter,
 			(event) => {
+				if (DevConsole.IsOpen) return;
 				if (EventSystem.current.currentSelectedGameObject && !this.selected) return;
 				if (this.selected) {
 					this.SubmitInputField();
@@ -409,7 +414,6 @@ export class ClientChatSingleton {
 		}
 
 		if (sendChatToServer) {
-			print("Send chat message from: " + contextbridge.current());
 			CoreNetwork.ClientToServer.SendChatMessage.client.FireServer(message);
 		}
 	}

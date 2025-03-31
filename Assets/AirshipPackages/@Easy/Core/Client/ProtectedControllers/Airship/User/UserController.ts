@@ -37,7 +37,7 @@ export class ProtectedUserController {
 	private localUserLoaded = false;
 
 	constructor(private readonly authController: AuthController) {
-		Protected.user = this;
+		Protected.User = this;
 
 		contextbridge.callback<BridgeApiGetUserByUsername>(
 			UserControllerBridgeTopics.GetUserByUsername,
@@ -206,6 +206,7 @@ export class ProtectedUserController {
 					ignore = true;
 				}
 				if (!ignore) {
+					print("users/self did not contain user. routing to login screen. full response: " + res.data);
 					Bridge.LoadScene("Login", true, LoadSceneMode.Single);
 				}
 				return;
