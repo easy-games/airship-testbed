@@ -76,13 +76,13 @@ export class ChangeUsernameController {
 
 	public SubmitNameChange(): void {
 		const text = this.inputField.text;
-		const res = HttpManager.PatchAsync(
+		const res = this.httpRetry(() => HttpManager.PatchAsync(
 			AirshipUrl.GameCoordinator + "/users",
 			json.encode({
 				username: text,
 			}),
 			this.authController.GetAuthHeaders(),
-		);
+		), "ChangeUsername").expect();
 		if (res.success) {
 			this.SetResponseText("success", `Success! Your name has been changed to "${text}".`);
 			(

@@ -1,4 +1,4 @@
-import { Airship } from "@Easy/Core/Shared/Airship";
+import { Airship, Platform } from "@Easy/Core/Shared/Airship";
 import { Game } from "@Easy/Core/Shared/Game";
 import { HttpRetryConfig, HttpRetry } from "@Easy/Core/Shared/Http/HttpRetry";
 import { Binding } from "@Easy/Core/Shared/Input/Binding";
@@ -9,6 +9,7 @@ export enum RateLimitingAction {
     CallRateLimited5Seconds = "CallRateLimited5Seconds",
     CallRateLimited10Seconds = "CallRateLimited10Seconds",
     CallRateLimited30Seconds = "CallRateLimited30Seconds",
+    CallGetParty = "CallGetParty",
 }
 
 const RateLimitConfig: HttpRetryConfig = {
@@ -64,6 +65,7 @@ export default class RateLimitingButton extends AirshipBehaviour {
         Airship.Input.CreateAction(RateLimitingAction.CallRateLimited5Seconds, Binding.Key(Key.X));
         Airship.Input.CreateAction(RateLimitingAction.CallRateLimited10Seconds, Binding.Key(Key.C));
         Airship.Input.CreateAction(RateLimitingAction.CallRateLimited30Seconds, Binding.Key(Key.V));
+        Airship.Input.CreateAction(RateLimitingAction.CallGetParty, Binding.Key(Key.B));
     }
 
     protected override Start(): void {
@@ -88,6 +90,9 @@ export default class RateLimitingButton extends AirshipBehaviour {
                 break;
             case RateLimitingAction.CallRateLimited30Seconds:
                 this.CallRateLimited30Seconds().expect();
+                break;
+            case RateLimitingAction.CallGetParty:
+                this.CallGetParty().expect();
                 break;
             default:
                 print("Unknown action");
@@ -125,5 +130,14 @@ export default class RateLimitingButton extends AirshipBehaviour {
         print(`<-> (${me}) Enter "RateLimitingButton#CallRateLimited30Seconds" <->`); 
         await HttpRetry(RateLimitedXSeconds(30), RateLimitConfig);
         print(`=== (${me}) Exit "RateLimitingButton#CallRateLimited30Seconds" ===`);
+    }
+
+    private async CallGetParty(): Promise<void> {
+        const me = syncValue;
+        syncValue++;
+        print(`<-> (${me}) Enter "RateLimitingButton#CallGetParty" <->`); 
+        const party = await Platform.Client.Party.GetParty();
+        print(`=== (${me}) Exit "RateLimitingButton#CallGetParty" ===`);
+        print(`Party: ${json.encode(party)}`);
     }
 }

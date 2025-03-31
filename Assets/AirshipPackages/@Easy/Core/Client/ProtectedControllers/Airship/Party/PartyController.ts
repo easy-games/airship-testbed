@@ -70,12 +70,12 @@ export class ProtectedPartyController {
 	}
 
 	public async RemoveFromParty(userId: string) {
-		const res = InternalHttpManager.PostAsync(
+		const res = await this.httpRetry(() => InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/parties/party/remove",
 			json.encode({
 				userToRemove: userId,
 			}),
-		);
+		), "RemoveFromParty");
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to remove user from party. Status Code: ${res.statusCode}\n`, res.error);

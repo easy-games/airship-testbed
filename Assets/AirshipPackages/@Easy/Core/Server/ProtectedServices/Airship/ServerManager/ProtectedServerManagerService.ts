@@ -281,7 +281,7 @@ export class ProtectedServerManagerService {
 	}
 
 	public async GetRegions() {
-		const res = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/servers/regions`);
+		const res = await this.httpRetry(() => InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/servers/regions`), "GetRegions");
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to get regions. Status Code:  ${res.statusCode}.\n`, res.error);
