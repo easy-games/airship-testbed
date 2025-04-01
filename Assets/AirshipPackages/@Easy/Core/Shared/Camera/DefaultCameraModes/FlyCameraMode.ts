@@ -17,7 +17,7 @@ const MIN_FOV = 5;
 const MAX_FOV = 120;
 const START_FOV = 70;
 
-const FOV_SCROLL_SENSITIVITY = 10;
+const FOV_SCROLL_SENSITIVITY = 2;
 
 let MOUSE_SENS_SCALAR = 0.02;
 if (Game.IsMac()) {
@@ -52,7 +52,7 @@ export class FlyCameraMode extends CameraMode {
 		this.positionSpring = new Spring(transform.position, 5);
 		this.xRotSpring = new Spring(new Vector3(math.rad(90), 0, 0), 5);
 		this.yRotVelSpring = new Spring(new Vector3(0, 0, 0), 3);
-		this.fovSpring = new Spring(new Vector3(0, 0, camera.fieldOfView), 5);
+		this.fovSpring = new Spring(new Vector3(0, 0, camera.fieldOfView), 3);
 		this.fovSpring.goal = new Vector3(0, 0, START_FOV);
 
 		this.camera = camera;
@@ -97,7 +97,7 @@ export class FlyCameraMode extends CameraMode {
 		}
 
 		this.bin.Connect(Mouse.onScrolled, (event) => {
-			const delta = -event.delta * FOV_SCROLL_SENSITIVITY;
+			const delta = math.clamp(-event.delta * FOV_SCROLL_SENSITIVITY, -1, 1);
 			this.fovSpring.goal = new Vector3(0, 0, math.clamp(this.fovSpring.goal.z + delta, MIN_FOV, MAX_FOV));
 		});
 
