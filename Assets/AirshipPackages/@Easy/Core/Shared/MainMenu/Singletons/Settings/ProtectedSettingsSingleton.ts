@@ -187,6 +187,7 @@ export class ProtectedSettingsSingleton {
 			return;
 		}
 		task.wait();
+		task.wait();
 		if (showUI) {
 			Game.localPlayer.SendMessage(
 				ColorUtil.ColoredText(Theme.yellow, `Captured screenshot: ${screenshotFilename}`),
