@@ -38935,18 +38935,6 @@ interface CameraScreenshotRecorder extends MonoBehaviour {
     resWidth: number;
     resHeight: number;
     readonly FolderName: string;
-
-
-
-    SaveRenderTexture(rt: RenderTexture, fileName: string, png: boolean): CameraScreenshotResponse;
-    SaveTexture(texture: Texture2D, fileName: string, png: boolean): CameraScreenshotResponse;
-    ScreenShotName(width: number, height: number, png: boolean): string;
-    ScreenShotName(filename: string, png: boolean): string;
-    TakeCameraScreenshot(camera: Camera, fileName: string, superSampleSize: number): void;
-    TakeCameraScreenshotCo(camera: Camera, fileName: string, superSampleSize: number): unknown;
-    TakeScreenshot(fileName: string, superSampleSize: number, png: boolean): void;
-
-
 }
     
 interface CameraScreenshotResponse {
@@ -38991,17 +38979,16 @@ interface OnPictureTakenConstructor {
 }
 declare const OnPictureTaken: OnPictureTakenConstructor;
     
-interface CameraScreenshotRecorderConstructor {
+interface InternalCameraScreenshotRecorderConstructor {
     onPictureTaken: OnPictureTaken;
     readonly GetScreenshotTexture: Texture2D;
-
-
+    
     new(): CameraScreenshotRecorder;
 
-
-
+    TakeScreenshot(fileName: string, superSampleSize: number, png: boolean): void;
+    TakeCameraScreenshot(camera: Camera, fileName: string, superSampleSize: number): void;
 }
-declare const CameraScreenshotRecorder: CameraScreenshotRecorderConstructor;
+declare const InternalCameraScreenshotRecorder: InternalCameraScreenshotRecorderConstructor;
     
 interface DevConsole {
 
