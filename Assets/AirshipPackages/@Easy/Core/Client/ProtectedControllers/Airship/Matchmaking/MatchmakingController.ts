@@ -3,6 +3,7 @@ import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { SocketController } from "../../Socket/SocketController";
+import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
 
 export const enum MatchmakingControllerBridgeTopics {
 	GetGroupForSelf = "MatchmakingController:GetGroupForSelf",
@@ -15,6 +16,8 @@ export type ClientBridgeApiLeaveQueue = () => undefined;
 
 @Controller({})
 export class ProtectedMatchmakingController {
+	private readonly httpRetry = HttpRetryInstance();
+
 	constructor(private readonly socketController: SocketController) {
 		if (!Game.IsClient()) return;
 
@@ -33,9 +36,9 @@ export class ProtectedMatchmakingController {
 
 	public async GetCurrentGroup(): Promise<ReturnType<ClientBridgeApiGetGroupForSelf>> {
 		const currentGameId = Game.gameId;
-		const result = InternalHttpManager.GetAsync(
+		const result = await this.httpRetry(() => InternalHttpManager.GetAsync(
 			`${AirshipUrl.GameCoordinator}/groups/game-id/${currentGameId}/self`,
-		);
+		), "GetCurrentGroup");
 
 		if (!result.success || result.statusCode > 299) {
 			warn(
@@ -50,12 +53,12 @@ export class ProtectedMatchmakingController {
 
 	public async LeaveQueue(): Promise<ReturnType<ClientBridgeApiLeaveQueue>> {
 		const currentGameId = Game.gameId;
-		const result = InternalHttpManager.PostAsync(
+		const result = await this.httpRetry(() => InternalHttpManager.PostAsync(
 			`${AirshipUrl.GameCoordinator}/matchmaking/queue/leave/self`,
 			json.encode({
 				gameId: currentGameId,
 			}),
-		);
+		), "LeaveQueue");
 
 		if (!result.success || result.statusCode > 299) {
 			warn(

@@ -22,9 +22,11 @@ import { MainMenuController } from "../../MainMenuController";
 import { ProtectedFriendsController } from "../FriendsController";
 import { MainMenuPartyController } from "../MainMenuPartyController";
 import { DirectMessage } from "./DirectMessage";
+import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
 
 @Controller({})
 export class DirectMessageController {
+	private readonly httpRetry = HttpRetryInstance();
 	private incomingMessagePrefab = AssetBridge.Instance.LoadAsset(
 		"AirshipPackages/@Easy/Core/Prefabs/UI/Messages/IncomingMessage.prefab",
 	) as GameObject;
@@ -256,13 +258,13 @@ export class DirectMessageController {
 		}
 
 		if (message === "") return;
-		InternalHttpManager.PostAsync(
+		this.httpRetry(() => InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/chat/message/direct",
 			json.encode({
 				target: uid,
 				text: message,
 			}),
-		);
+		), "SendDirectMessage").expect();
 		this.inputField!.text = "";
 		const sentMessage: DirectMessage = {
 			sender: Game.localPlayer.userId,
@@ -287,12 +289,12 @@ export class DirectMessageController {
 
 	public SendPartyMessage(message: string): void {
 		if (message === "") return;
-		InternalHttpManager.PostAsync(
+		this.httpRetry(() => InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/chat/message/party",
 			json.encode({
 				text: message,
 			}),
-		);
+		), "SendPartyMessage").expect();
 		this.inputField!.text = "";
 		const sentMessage: DirectMessage = {
 			sender: Game.localPlayer.userId,

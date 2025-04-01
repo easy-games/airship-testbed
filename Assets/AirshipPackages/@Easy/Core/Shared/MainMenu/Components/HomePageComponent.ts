@@ -17,6 +17,7 @@ import { ProtectedUtil } from "../../Util/ProtectedUtil";
 import { MainMenuSingleton } from "../Singletons/MainMenuSingleton";
 import DiscordHero from "./DiscordHero";
 import MainMenuPageComponent from "./MainMenuPageComponent";
+import { HttpRetry } from "../../Http/HttpRetry";
 
 export default class HomePageComponent extends MainMenuPageComponent {
 	public mainContent!: Transform;
@@ -117,9 +118,10 @@ export default class HomePageComponent extends MainMenuPageComponent {
 	}
 
 	public FetchGames(): void {
-		const res = InternalHttpManager.GetAsync(
-			AirshipUrl.ContentService + "/games?platform=" + ProtectedUtil.GetLocalPlatformString(),
-		);
+		const res = HttpRetry(
+			() => InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/games?platform=" + ProtectedUtil.GetLocalPlatformString()),
+			"get/content-service/games",
+		).expect();
 		if (!res.success) {
 			// warn("Failed to fetch games. Retrying in 1s..");
 			this.bin.Add(

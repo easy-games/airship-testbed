@@ -14,6 +14,7 @@ import { AirshipUrl } from "../../Util/AirshipUrl";
 import { ColorUtil } from "../../Util/ColorUtil";
 import { RandomUtil } from "../../Util/RandomUtil";
 import { Signal } from "../../Util/Signal";
+import { HttpRetryInstance } from "../../Http/HttpRetry";
 
 @Singleton()
 export class ProtectedAvatarSingleton {
@@ -29,6 +30,8 @@ export class ProtectedAvatarSingleton {
 	public outfits: OutfitDto[] = [];
 	public ownedClothing: GearInstanceDto[] = [];
 	public equippedOutfit: OutfitDto | undefined;
+
+	private readonly httpRetry = HttpRetryInstance();
 
 	public skinColors = [
 		"#FFF3EA",
@@ -179,14 +182,14 @@ export class ProtectedAvatarSingleton {
 	}
 
 	public async GetAllOutfits(): Promise<OutfitDto[] | undefined> {
-		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits`));
+		let res = await this.httpRetry(() => InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits`)), "getAllOutfits");
 		if (res.success) {
 			return json.decode(res.data) as OutfitDto[];
 		}
 	}
 
 	public async GetEquippedOutfit(): Promise<OutfitDto | undefined> {
-		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/equipped/self`));
+		let res = await this.httpRetry(() => InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/equipped/self`)), "getEquippedOutfit");
 		if (res.success) {
 			return json.decode<{ outfit: OutfitDto | undefined }>(res.data).outfit;
 		} else {
@@ -195,7 +198,7 @@ export class ProtectedAvatarSingleton {
 	}
 
 	public async GetUserEquippedOutfit(userId: string): Promise<OutfitDto | undefined> {
-		const res = HttpManager.GetAsync(this.GetHttpUrl(`outfits/uid/${userId}/equipped`));
+		const res = await this.httpRetry(() => HttpManager.GetAsync(this.GetHttpUrl(`outfits/uid/${userId}/equipped`)), "getUserEquippedOutfit");
 		if (res.success) {
 			return json.decode<{ outfit: OutfitDto | undefined }>(res.data).outfit;
 		} else {
@@ -204,7 +207,7 @@ export class ProtectedAvatarSingleton {
 	}
 
 	public async GetAvatarOutfit(outfitId: string): Promise<OutfitDto | undefined> {
-		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/outfit-id/${outfitId}`));
+		let res = await this.httpRetry(() => InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/outfit-id/${outfitId}`)), "getAvatarOutfit");
 		if (res.success) {
 			return json.decode<{ outfit: OutfitDto | undefined }>(res.data).outfit;
 		} else {
@@ -214,7 +217,7 @@ export class ProtectedAvatarSingleton {
 
 	public async CreateAvatarOutfit(outfit: OutfitCreateDto) {
 		this.Log("CreateAvatarOutfit: " + this.GetHttpUrl(`outfits`) + " data: " + json.encode(outfit));
-		let res = InternalHttpManager.PostAsync(this.GetHttpUrl(`outfits`), json.encode(outfit));
+		let res = await this.httpRetry(() => InternalHttpManager.PostAsync(this.GetHttpUrl(`outfits`), json.encode(outfit)), "createAvatarOutfit");
 		if (res.success) {
 			this.Log("CREATED OUTFIT: " + res.data);
 			return json.decode<{ outfit: OutfitDto }>(res.data).outfit;
@@ -224,7 +227,7 @@ export class ProtectedAvatarSingleton {
 	}
 
 	public async EquipAvatarOutfit(outfitId: string) {
-		let res = InternalHttpManager.PostAsync(this.GetHttpUrl(`outfits/outfit-id/${outfitId}/equip`));
+		let res = await this.httpRetry(() => InternalHttpManager.PostAsync(this.GetHttpUrl(`outfits/outfit-id/${outfitId}/equip`)), "equipAvatarOutfit");
 		if (res.success) {
 			this.Log("EQUIPPED OUTFIT: " + res.data);
 		} else {
@@ -233,7 +236,7 @@ export class ProtectedAvatarSingleton {
 	}
 
 	public async GetGear() {
-		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`gear/self`));
+		let res = await this.httpRetry(() => InternalHttpManager.GetAsync(this.GetHttpUrl(`gear/self`)), "getGear");
 		if (res.success) {
 			//this.Log("Got acc: " + res.data);
 			return json.decode<GearInstanceDto[]>(res.data);
@@ -290,7 +293,7 @@ export class ProtectedAvatarSingleton {
 	}
 
 	private UpdateOutfit(outfitId: string, update: Partial<OutfitPatch>) {
-		let res = InternalHttpManager.PatchAsync(this.GetHttpUrl(`outfits/outfit-id/${outfitId}`), json.encode(update));
+		let res = this.httpRetry(() => InternalHttpManager.PatchAsync(this.GetHttpUrl(`outfits/outfit-id/${outfitId}`), json.encode(update)), "updateOutfit").expect();
 		if (res.success) {
 			return json.decode<{ outfit: OutfitDto }>(res.data).outfit;
 		} else {
@@ -299,7 +302,7 @@ export class ProtectedAvatarSingleton {
 	}
 
 	public async LoadImage(fileId: string) {
-		let res = InternalHttpManager.GetAsync(this.GetImageUrl(fileId));
+		let res = await this.httpRetry(() => InternalHttpManager.GetAsync(this.GetImageUrl(fileId)), "loadImage");
 		if (res.success) {
 			return json.decode<GearInstanceDto[]>(res.data);
 		} else {
@@ -312,13 +315,13 @@ export class ProtectedAvatarSingleton {
 		if (imageId === "" || imageId === undefined) {
 			return;
 		}
-		let res = InternalHttpManager.PatchAsync(
+		let res = await this.httpRetry(() => InternalHttpManager.PatchAsync(
 			this.GetHttpUrl(`accessories/class-id/${classId}`),
 			json.encode({
 				image: undefined,
 				imageId,
 			}),
-		);
+		), "uploadItemImage");
 		if (res.success) {
 			this.Log("Finished updating item");
 		} else {
@@ -328,7 +331,7 @@ export class ProtectedAvatarSingleton {
 
 	public async UploadImage(resourceId: string, filePath: string, fileSize: number): Promise<string> {
 		let postPath = `${AirshipUrl.ContentService}/images`;
-		const res = InternalHttpManager.PostAsync(
+		const res = await this.httpRetry(() => InternalHttpManager.PostAsync(
 			postPath,
 			json.encode({
 				contentType: "image/png",
@@ -336,14 +339,14 @@ export class ProtectedAvatarSingleton {
 				resourceId,
 				namespace: "items",
 			}),
-		);
+		), "uploadImage");
 
 		if (res.success) {
 			const data = json.decode<{ url: string; imageId: string }>(res.data);
 			const url = data.url;
 			const imageId = data.imageId;
 			this.Log("Got image url: " + url);
-			const uploadRes = InternalHttpManager.PutImageAsync(url, filePath);
+			const uploadRes = await this.httpRetry(() => InternalHttpManager.PutImageAsync(url, filePath), "uploadImagePut");
 			if (uploadRes.success) {
 				this.Log("UPLOAD COMPLETE: " + url);
 			} else {

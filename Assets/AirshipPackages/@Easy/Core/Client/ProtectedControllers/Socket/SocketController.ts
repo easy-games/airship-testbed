@@ -7,9 +7,11 @@ import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
 import { AuthController } from "../Auth/AuthController";
+import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
 
 @Controller({})
 export class SocketController {
+	private readonly httpRetry = HttpRetryInstance();
 	private onEvent = new Signal<[eventName: string, data: string]>();
 	public onSocketConnectionChanged = new Signal<[connected: boolean]>();
 	public doReconnect = true;
@@ -38,9 +40,9 @@ export class SocketController {
 			this.cancelSessionReportTask = SetInterval(
 				60 * 5,
 				async () => {
-					const regions = InternalHttpManager.GetAsync(
+					const regions = await this.httpRetry(() => InternalHttpManager.GetAsync(
 						AirshipUrl.GameCoordinator + "/servers/regions/ping-servers",
-					);
+					), "GetPingServers");
 					if (!regions.success) {
 						return warn("Unable to retrieve ping servers from GC. Region selection may not be possible.");
 					}
@@ -64,12 +66,12 @@ export class SocketController {
 						task.unscaledWait(0.25);
 					}
 					print(`Region Latency Report:`, inspect(regionLatencies));
-					InternalHttpManager.PutAsync(
+					await this.httpRetry(() => InternalHttpManager.PutAsync(
 						AirshipUrl.GameCoordinator + "/user-session/data",
 						json.encode({
 							regionLatencies,
 						}),
-					);
+					), "UpdateUserSessionData");
 				},
 				true,
 			);
