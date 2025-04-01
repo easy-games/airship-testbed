@@ -172,7 +172,7 @@ export class ProtectedSettingsSingleton {
 		// 	return;
 		// }
 		const supersample = showUI;
-		let screenshotFilename = os.date("Screenshot-%Y-%m-%d-%H-%M-%S");
+		let screenshotFilename = os.date(`${Game.gameData?.name ?? "Airship"}-%Y-%m-%d-%H-%M-%S`);
 		const superSampleSize = supersample ? 4 : 1;
 		print(`Capturing screenshot. UI: ${showUI} Supersample: ${superSampleSize} Name: ${screenshotFilename}`);
 		if (showUI) {
