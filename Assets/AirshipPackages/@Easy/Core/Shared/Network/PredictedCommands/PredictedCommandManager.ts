@@ -118,6 +118,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 	public readonly onCommandEnded = new Signal<[CommandInstanceIdentifier, Readonly<unknown> | undefined]>();
 
 	private readonly onInstanceCreated = new Signal<[CommandInstanceIdentifier, unknown]>();
+	private readonly onInstanceDestroyed = new Signal<[CommandInstanceIdentifier]>();
 
 	private commandHandlerMap: Record<string, CommandConfiguration> = {};
 	/** The active commands for the current tick. If read during a replay, it will contain the active command at that tick. */
@@ -191,7 +192,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 						if (commandIdentifier.instanceId === 0) return;
 
 						// See if the command is already running
-						const activeCommand = this.GetActiveCommandOnCharacter(commandIdentifier);
+						const activeCommand = this.GetActiveCommandByIdentifier(commandIdentifier);
 						if (activeCommand) return;
 
 						if (Game.IsServer() && !Game.IsHosting()) {
@@ -255,7 +256,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 							if (!commandIdentifier) return;
 
 							// See if the command is already running
-							let activeCommand = this.GetActiveCommandOnCharacter(commandIdentifier);
+							let activeCommand = this.GetActiveCommandByIdentifier(commandIdentifier);
 							if (activeCommand) return;
 
 							// If it's not running, create it
@@ -311,7 +312,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 
 						// To find the command instance we need to work on, we first check active commands to see if it's still operating,
 						// if it's not, we have to create it, then compare.
-						let instance = this.GetActiveCommandOnCharacter(commandIdentifier)?.instance;
+						let instance = this.GetActiveCommandByIdentifier(commandIdentifier)?.instance;
 						if (!instance) {
 							const config = this.commandHandlerMap[commandIdentifier.commandId];
 							const handler = config.handler;
@@ -362,7 +363,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 							if (!commandIdentifier) return;
 
 							// See if the command is already running
-							let activeCommand = this.GetActiveCommandOnCharacter(commandIdentifier);
+							let activeCommand = this.GetActiveCommandByIdentifier(commandIdentifier);
 							if (!activeCommand) {
 								// If it's not running, create it
 								activeCommand = this.SetupCommand(
@@ -555,14 +556,14 @@ export default class PredictedCommandManager extends AirshipSingleton {
 		this.queuedCancellations.push(commandInstance);
 	}
 
-	/** Allows you to retrieve and operate on the specific instance of a command that is running. When a new instance matching the
-	 * command instance identifier is created, the callback will be called with the instance of the command that will be handling tick
+	/** Allows you to retrieve and operate on the specific handler instance for a running command. When a new handler instance matching the
+	 * command instance identifier is created, the callback will be called with the handler instance of the command that will be performing tick
 	 * operations.
 	 *
 	 * If the command is invalidated or authoritatively ends, the returned bin will be cleaned and the callback will no longer be
 	 * invoked.
 	 */
-	public ObserveInstance<T>(commandInstance: CommandInstanceIdentifier, callback: (instance: T) => CleanupFunc): Bin {
+	public ObserveHandler<T>(commandInstance: CommandInstanceIdentifier, callback: (instance: T) => CleanupFunc): Bin {
 		const bin = new Bin();
 		let callbackBin: CleanupFunc;
 
@@ -581,8 +582,50 @@ export default class PredictedCommandManager extends AirshipSingleton {
 		);
 		bin.Add(() => callbackBin?.());
 
-		const active = this.GetActiveCommandOnCharacter(commandInstance);
+		const active = this.GetActiveCommandByIdentifier(commandInstance);
 		if (active) callbackBin = callback(active.instance as T);
+
+		this.observerBins.add(bin);
+		bin.Add(() => {
+			this.observerBins.delete(bin);
+		});
+
+		return bin;
+	}
+
+	/**
+	 * Observes the command instance currently running for a provided command id. This allows you to track the specific
+	 * command instance identifier that is running. This fires when the active command changes, meaning that on the client,
+	 * this callback will fire during replays if the command instance being run changes.
+	 * @param commandId The command id used to run the command.
+	 * @param callback
+	 */
+	public ObserveCommand(
+		character: Character,
+		commandId: string,
+		callback: (commandIdentifier: CommandInstanceIdentifier | undefined) => CleanupFunc,
+	) {
+		const bin = new Bin();
+		let callbackBin: CleanupFunc;
+
+		bin.Add(
+			this.onInstanceCreated.Connect((identifier) => {
+				if (identifier.commandId !== commandId) return;
+				callbackBin?.();
+				callbackBin = callback(identifier);
+			}),
+		);
+		bin.Add(
+			this.onInstanceDestroyed.Connect((identifier) => {
+				if (identifier.commandId !== commandId) return;
+				callbackBin?.();
+				callbackBin = callback(undefined);
+			}),
+		);
+		bin.Add(() => callbackBin?.());
+
+		const identifier = this.GetActiveCommandByCommandId(character, commandId);
+		if (identifier) callbackBin = callback(identifier);
 
 		this.observerBins.add(bin);
 		bin.Add(() => {
@@ -611,7 +654,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 			return true;
 		}
 
-		const cmd = this.GetActiveCommandOnCharacter(commandInstance);
+		const cmd = this.GetActiveCommandByIdentifier(commandInstance);
 		return !!cmd;
 	}
 
@@ -666,7 +709,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 
 		const commandIdentifier = new CommandInstanceIdentifier(character.id, commandId, instanceId);
 
-		const existingCommand = this.GetActiveCommandOnCharacter(commandIdentifier);
+		const existingCommand = this.GetActiveCommandByIdentifier(commandIdentifier);
 		if (existingCommand) {
 			warn(`Command ${commandId} is already running on character ${character.id}`);
 			return;
@@ -898,9 +941,13 @@ export default class PredictedCommandManager extends AirshipSingleton {
 
 		// Ensures the destroy callback is done whenever the command is to be cleaned up.
 		activeCommand.bin.Add(() => {
-			if (!activeCommand.created) return;
+			if (!activeCommand.created) {
+				this.onInstanceDestroyed.Fire(commandIdentifier);
+				return;
+			}
 			activeCommand.created = false;
 			this.RunWithoutYield(() => activeCommand.instance.Destroy?.());
+			this.onInstanceDestroyed.Fire(commandIdentifier);
 		});
 
 		this.AddActiveCommandToCharacter(character.id, activeCommand);
@@ -908,7 +955,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 		return activeCommand;
 	}
 
-	private GetActiveCommandOnCharacter(commandIdenfitier: CommandInstanceIdentifier): ActiveCommand | undefined {
+	private GetActiveCommandByIdentifier(commandIdenfitier: CommandInstanceIdentifier): ActiveCommand | undefined {
 		const characterCommands = this.activeCommands.get(commandIdenfitier.characterId);
 		if (!characterCommands) return;
 
@@ -916,6 +963,20 @@ export default class PredictedCommandManager extends AirshipSingleton {
 		if (!activeCommand) return;
 
 		return activeCommand;
+	}
+
+	/**
+	 * Returns the currently running command instance if there is one.
+	 */
+	private GetActiveCommandByCommandId(character: Character, commandId: string) {
+		const commands = this.activeCommands.get(character.id);
+		if (!commands) return;
+
+		for (const [customDataKey, command] of commands) {
+			if (command.commandId === commandId) {
+				return new CommandInstanceIdentifier(character.id, command.commandId, command.instanceId);
+			}
+		}
 	}
 
 	/**
