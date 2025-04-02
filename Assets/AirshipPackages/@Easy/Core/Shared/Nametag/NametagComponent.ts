@@ -56,7 +56,8 @@ export default class NametagComponent extends AirshipBehaviour {
 
 	public SetTeam(team: Team | undefined) {
 		if (team) {
-			this.teamImage.color = team.color;
+			let c = new Color(team.color.r, team.color.g, team.color.b, 1);
+			this.teamImage.color = c;
 			this.teamImage.gameObject.SetActive(true);
 		} else {
 			this.teamImage.gameObject.SetActive(false);
