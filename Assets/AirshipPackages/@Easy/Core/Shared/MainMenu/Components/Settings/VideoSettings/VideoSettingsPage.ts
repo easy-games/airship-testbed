@@ -8,12 +8,12 @@ export default class VideoSettingsPage extends AirshipBehaviour {
 	override Start(): void {
 		const pipelineAsset = GraphicsSettings.currentRenderPipeline as UniversalRenderPipelineAsset;
 
-		this.msaaToggle.Init("Anti Aliasing", false);
+		this.msaaToggle.Init("Anti Aliasing", pipelineAsset.msaaSampleCount === 4);
 		this.msaaToggle.toggle.onValueChanged.Connect((val) => {
 			pipelineAsset.msaaSampleCount = val ? 4 : 1;
 		});
 
-		this.hdShadowsToggle.Init("HD Shadows", false);
+		this.hdShadowsToggle.Init("HD Shadows", QualitySettings.shadows === ShadowQuality.All);
 		this.hdShadowsToggle.toggle.onValueChanged.Connect((val) => {
 			if (val) {
 				// High Quality Settings
