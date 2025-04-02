@@ -128,7 +128,7 @@ export default class Character extends AirshipBehaviour {
 					if (this.IsDead()) return;
 					let newHealth = math.min(this.maxHealth, this.health + healInfo.healAmount);
 
-					this.SetHealth(newHealth, true, true);
+					this.SetHealth(newHealth);
 				}
 			}),
 		)
