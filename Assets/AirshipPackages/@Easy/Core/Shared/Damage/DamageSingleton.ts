@@ -130,6 +130,9 @@ export class DamageSingleton {
 		this.onHeal.Fire(healInfo);
 		if (healInfo.IsCancelled()) return healInfo;
 
+		// Clamp the heal amount to return if player is max health after the event.
+		healInfo.healAmount = math.clamp(healInfo.healAmount, 0, healInfo.character.GetMaxHealth() - healInfo.character.GetHealth());
+
 		if (Game.IsServer() && this.autoNetwork) {
 			const nob = healInfo.gameObject.GetComponentInParent<NetworkIdentity>();
 			if (nob) {
