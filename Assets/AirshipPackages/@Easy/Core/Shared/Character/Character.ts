@@ -122,6 +122,17 @@ export default class Character extends AirshipBehaviour {
 			}),
 		);
 
+		this.bin.Add(
+			Airship.Damage.onHeal.ConnectWithPriority(SignalPriority.MONITOR, (healInfo) => {
+				if (healInfo.gameObject.GetInstanceID() === this.gameObject.GetInstanceID()) {
+					if (this.IsDead()) return;
+					let newHealth = math.min(this.maxHealth, this.health + healInfo.healAmount);
+
+					this.SetHealth(newHealth, true, true);
+				}
+			}),
+		)
+
 		// Custom move command data handling:
 		if (this.movement) {
 			const customDataConn = this.movement.OnBeginMove((moveData, isReplay) => {

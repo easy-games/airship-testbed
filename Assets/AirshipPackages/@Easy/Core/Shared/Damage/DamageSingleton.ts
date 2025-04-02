@@ -7,12 +7,14 @@ import { NetworkSignal } from "../Network/NetworkSignal";
 import { OnUpdate } from "../Util/Timer";
 import { CanClientDamageInfo } from "./CanClientDamageInfo";
 import { DamageInfo, DamageInfoCustomData } from "./DamageInfo";
+import { HealInfo, HealInfoCustomData } from "./HealInfo";
 
 @Singleton()
 export class DamageSingleton {
 	public readonly onDamage = new Signal<DamageInfo>();
 	public readonly onCanClientDamage = new Signal<CanClientDamageInfo>();
 	public readonly onDeath = new Signal<DamageInfo>();
+	public readonly onHeal = new Signal<HealInfo>();
 
 	public autoNetwork = true;
 
@@ -23,6 +25,9 @@ export class DamageSingleton {
 	private deathRemote = new NetworkSignal<
 		[nobId: number, damage: number, attackerNobId: number | undefined, data: DamageInfoCustomData]
 	>("DeathRemote");
+
+	private healRemote = new NetworkSignal<
+		[nobId: number, healAmount: number, data: HealInfoCustomData]>("HealRemote");
 
 	constructor() {
 		Airship.Damage = this;
@@ -58,6 +63,14 @@ export class DamageSingleton {
 
 			const damageInfo = new DamageInfo(nob.gameObject, damage, attackerNob?.gameObject, data);
 			this.BroadcastDeath(damageInfo);
+		});
+
+		this.healRemote.client.OnServerEvent((nobId, healAmount, data) => {
+			if (Game.IsHosting()) return;
+			const nob = NetworkUtil.GetNetworkIdentity(nobId);
+			if (nob === undefined) return;
+			const healInfo = new HealInfo(nob.gameObject, healAmount, data);
+			this.onHeal.Fire(healInfo);
 		});
 	}
 
@@ -100,6 +113,31 @@ export class DamageSingleton {
 		}
 		
 		return damageInfo;
+	}
+
+	/**
+	 * 
+	 * @param gameObject If this GameObject has an attached NetworkObject, this heal signal will be replicated to the client.
+	 * @param healAmount 
+	 * @param data 
+	 */
+	public Heal(gameObject: GameObject, healAmount: number, data?: HealInfoCustomData) {
+		assert(healAmount >= 0, "Unable to Heal with a negative heal amount.");
+		assert(Game.IsServer(), "Heal: Should only be called on the server.");
+
+		const healInfo = new HealInfo(gameObject, healAmount, data ?? {});
+		if (healInfo.character === undefined || healInfo.character.IsDead()) return healInfo;
+		this.onHeal.Fire(healInfo);
+		if (healInfo.IsCancelled()) return healInfo;
+
+		if (Game.IsServer() && this.autoNetwork) {
+			const nob = healInfo.gameObject.GetComponentInParent<NetworkIdentity>();
+			if (nob) {
+				this.healRemote.server.FireAllClients(nob.netId, healInfo.healAmount, healInfo.data);
+			}
+		}
+
+		return healInfo;
 	}
 
 	/**
