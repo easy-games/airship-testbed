@@ -8,7 +8,7 @@ import { LocalCharacterSingleton } from "../Character/LocalCharacter/LocalCharac
 import { Game } from "../Game";
 import { Keyboard } from "../UserInput";
 import { Bin } from "../Util/Bin";
-import { Signal } from "../Util/Signal";
+import { Signal, SignalPriority } from "../Util/Signal";
 import { OnLateUpdate, OnUpdate } from "../Util/Timer";
 import { CameraConstants } from "./CameraConstants";
 import { CameraReferences } from "./CameraReferences";
@@ -507,7 +507,7 @@ export class AirshipCameraSingleton {
 			});
 
 			//Every frame set the characters look vector to match the cameras
-			const lookVectorSync = OnLateUpdate.Connect(() => {
+			const lookVectorSync = OnLateUpdate.ConnectWithPriority(SignalPriority.HIGHEST, () => {
 				if (!character.movement) return;
 				if (character.movement.disableInput) return;
 				character.movement.SetLookVectorRecurring(mode.cameraForwardVector);
