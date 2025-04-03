@@ -79,12 +79,15 @@ export class RecommendedFriendsController implements OnStart {
 				);
 				rf.lastSeen = os.time();
 
-				if (!rf.context.gameEncounters.some((g) => g.id === gameData.id)) {
-					rf.context.gameEncounters.push({
-						cachedName: gameData.name,
-						id: gameData.id,
-					});
+				if (gameData) {
+					if (!rf.context.gameEncounters.some((g) => g.id === gameData.id)) {
+						rf.context.gameEncounters.push({
+							cachedName: gameData.name,
+							id: gameData.id,
+						});
+					}
 				}
+
 				rf.context.totalRecentEncounters++;
 
 				this.sortOutdated = true;

@@ -121,6 +121,7 @@ export default class GameGeneralPage extends MainMenuPageComponent {
 			if (!Game.gameData) {
 				Game.onGameDataLoaded.Wait();
 			}
+			if (!Game.gameData) return;
 			this.gameTitle.text = Game.gameData!.name;
 			this.gameDesc.text = Game.gameData!.description;
 
