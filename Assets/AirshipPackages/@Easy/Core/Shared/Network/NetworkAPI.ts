@@ -99,6 +99,8 @@ function fireAllClients(id: number, args: unknown[], channel: NetworkChannel) {
 function fireClient(id: number, player: Player, args: unknown[], channel: NetworkChannel) {
 	if (!RunCore.IsServer()) error("This function can only be called from the server.");
 
+	if (player.IsBot()) return;
+
 	const msg = pack(id, args);
 	NetworkCore.Net.BroadcastToClient(player.connectionId, msg, channel === NetworkChannel.Reliable ? 1 : 0);
 }
@@ -118,7 +120,10 @@ function fireClients(id: number, players: Player[], args: unknown[], channel: Ne
 	if (!RunCore.IsServer()) error("This function can only be called from the server.");
 
 	const msg = pack(id, args);
-	const clientIds = players.map((player) => player.connectionId);
+	const clientIds = players.mapFiltered((player) => {
+		if (player.IsBot()) return undefined;
+		return player.connectionId;
+	});
 	NetworkCore.Net.BroadcastToClients(clientIds, msg, channel === NetworkChannel.Reliable ? 1 : 0);
 }
 

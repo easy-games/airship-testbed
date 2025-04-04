@@ -1,6 +1,9 @@
 import { Game } from "@Easy/Core/Shared/Game";
 import { ClientSettingsFile } from "@Easy/Core/Shared/MainMenu/Singletons/Settings/ClientSettingsFile";
+import { Keyboard } from "@Easy/Core/Shared/UserInput";
+import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
+import { Theme } from "@Easy/Core/Shared/Util/Theme";
 import { Singleton } from "../../../Flamework";
 import { CoreAction } from "../../../Input/AirshipCoreAction";
 import { SerializableAction } from "../../../Input/InputAction";
@@ -152,6 +155,48 @@ export class ProtectedSettingsSingleton {
 		contextbridge.callback("Settings:AddSpacer", (from: LuauContext) => {
 			this.gameSettingsOrdered.push("space");
 		});
+
+		// Screenshot:
+		Keyboard.OnKeyDown(Key.F2, (event) => {
+			if (event.uiProcessed) return;
+			this.TakeScreenshot(true);
+		});
+		Keyboard.OnKeyDown(Key.F4, (event) => {
+			if (event.uiProcessed) return;
+			this.TakeScreenshot(false);
+		});
+	}
+
+	private TakeScreenshot(showUI: boolean) {
+		// if (!this.screenshot) {
+		// 	return;
+		// }
+		const supersample = showUI;
+		let screenshotFilename = os.date(`${Game.gameData?.name ?? "Airship"}-%Y-%m-%d-%H-%M-%S`);
+		const superSampleSize = supersample ? 4 : 1;
+		print(`Capturing screenshot. UI: ${showUI} Supersample: ${superSampleSize} Name: ${screenshotFilename}`);
+		if (showUI) {
+			InternalCameraScreenshotRecorder.TakeScreenshot(screenshotFilename, superSampleSize, true);
+		} else {
+			InternalCameraScreenshotRecorder.TakeCameraScreenshot(Camera.main, screenshotFilename, superSampleSize);
+		}
+		if (supersample && !showUI) {
+			Game.localPlayer.SendMessage(
+				ColorUtil.ColoredText(Theme.red, "HD withoutout UI is currently not supported"),
+			);
+			return;
+		}
+		task.wait();
+		task.wait();
+		if (showUI) {
+			Game.localPlayer.SendMessage(
+				ColorUtil.ColoredText(Theme.yellow, `Captured screenshot: ${screenshotFilename}`),
+			);
+		} else {
+			Game.localPlayer.SendMessage(
+				ColorUtil.ColoredText(Theme.yellow, `Captured screenshot without UI: ${screenshotFilename}`),
+			);
+		}
 	}
 
 	public SetGameSetting(name: string, value: unknown): void {

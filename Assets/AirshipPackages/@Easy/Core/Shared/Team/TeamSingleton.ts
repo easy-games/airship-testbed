@@ -4,7 +4,6 @@ import { Singleton } from "@Easy/Core/Shared/Flamework";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
-import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { Game } from "../Game";
 import { Team } from "./Team";
@@ -29,11 +28,7 @@ export class TeamsSingleton {
 		if (Game.IsClient()) {
 			CoreNetwork.ServerToClient.AddTeams.client.OnServerEvent((teamDtos) => {
 				for (let dto of teamDtos) {
-					const team = new Team(
-						dto.name,
-						dto.id,
-						new Color(dto.color[0], dto.color[1], dto.color[2], dto.color[3]),
-					);
+					const team = new Team(dto.name, dto.id, new Color(dto.color[0], dto.color[1], dto.color[2], 1));
 					this.teams.set(dto.id, {
 						team,
 						bin: new Bin(),
@@ -97,7 +92,7 @@ export class TeamsSingleton {
 	 * @returns
 	 */
 	public RegisterTeam(team: Team): void {
-		if (!RunUtil.IsServer()) {
+		if (!Game.IsServer()) {
 			error("RegisterTeam can only be called by the server.");
 		}
 		if (this.teams.has(team.id)) {

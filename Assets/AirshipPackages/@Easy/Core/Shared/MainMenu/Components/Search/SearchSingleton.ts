@@ -1,6 +1,8 @@
 import { GameDto, GamesDto, MyGamesDto } from "@Easy/Core/Client/Components/HomePage/API/GamesAPI";
+import DateParser from "@Easy/Core/Shared/DateParser";
 import { Controller, Service } from "@Easy/Core/Shared/Flamework/flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import { HttpRetry } from "@Easy/Core/Shared/Http/HttpRetry";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 import { ProtectedUtil } from "@Easy/Core/Shared/Util/ProtectedUtil";
@@ -39,11 +41,14 @@ export default class SearchSingleton {
 	}
 
 	public FetchMyGames(retryDelay = 1): void {
-		const res = InternalHttpManager.GetAsync(
-			AirshipUrl.ContentService +
-				"/memberships/games/self?liveStats=true&platform=" +
-				ProtectedUtil.GetLocalPlatformString(),
-		);
+		const res = HttpRetry(
+			() => InternalHttpManager.GetAsync(
+					AirshipUrl.ContentService +
+					"/memberships/games/self?liveStats=true&platform=" +
+					ProtectedUtil.GetLocalPlatformString()
+				),
+			"get/content-service/memberships/games/self",
+		).expect();
 		if (!res.success) {
 			if (400 <= res.statusCode && res.statusCode < 500) {
 				warn("Failed to fetch my games: " + res.error);
@@ -62,6 +67,13 @@ export default class SearchSingleton {
 			data = data.filter((g) => g.lastVersionUpdate !== undefined);
 			this.myGames = data;
 			this.myGamesIds.clear();
+			this.myGames = this.myGames.sort((a, b) => {
+				const aTime =
+					a.lastVersionUpdate !== undefined ? (DateParser.FromISO(a.lastVersionUpdate) as number) : 0;
+				const bTime =
+					b.lastVersionUpdate !== undefined ? (DateParser.FromISO(b.lastVersionUpdate) as number) : 0;
+				return aTime > bTime;
+			});
 			for (let g of this.myGames) {
 				this.myGamesIds.add(g.id);
 			}
@@ -75,9 +87,10 @@ export default class SearchSingleton {
 	}
 
 	public FetchPopularGames(): void {
-		const res = InternalHttpManager.GetAsync(
-			AirshipUrl.ContentService + "/games?platform=" + ProtectedUtil.GetLocalPlatformString(),
-		);
+		const res = HttpRetry(
+			() => InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/games?platform=" + ProtectedUtil.GetLocalPlatformString()),
+			"get/content-service/games",
+		).expect();
 		if (!res.success) {
 			// warn("Failed to fetch games. Retrying in 1s..");
 			task.delay(1, () => {

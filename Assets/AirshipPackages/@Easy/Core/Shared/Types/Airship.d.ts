@@ -43,7 +43,7 @@ interface PlayerManagerBridge extends Component {
 	OnPlayerAdded(callback: (clientInfo: PlayerInfoDto) => void): EngineEventConnection;
 	OnPlayerRemoved(callback: (clientInfo: PlayerInfoDto) => void): EngineEventConnection;
 	GetPlayers(): PlayerInfoDto[];
-	AddBotPlayer(username: string, tag: string, userId: string): void;
+	AddBotPlayer(username: string, userId: string, profilePictureId: string): void;
 	GetPlayerInfoByClientId(clientId: number): PlayerInfoDto;
 	localPlayer: PlayerInfo;
 }
@@ -215,6 +215,7 @@ interface CharacterMovement extends Component {
 	movementSettings: CharacterMovementSettings;
 	animationHelper: CharacterAnimationHelper;
 	mainCollider: BoxCollider;
+	startingLookVector: Vector3;
 
 	// Public Getters Private Setters
 	currentMoveSnapshot: CharacterSnapshotData;

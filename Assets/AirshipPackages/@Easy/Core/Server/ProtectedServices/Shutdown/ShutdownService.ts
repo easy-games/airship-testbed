@@ -66,8 +66,9 @@ export class ShutdownService {
 	private FireOnShutdown(): void {
 		if (this.fireOnShutdownStarted) return;
 		this.fireOnShutdownStarted = true;
-		print("FireOnShutdown");
 		let done = false;
+
+		print("Received shutdown event in TS.");
 
 		const Done = () => {
 			if (done) return;
@@ -82,7 +83,7 @@ export class ShutdownService {
 		});
 		task.spawn(() => {
 			contextbridge.invoke("ServerShutdown", LuauContext.Game);
-			Done();
+			// Done();
 		});
 	}
 }

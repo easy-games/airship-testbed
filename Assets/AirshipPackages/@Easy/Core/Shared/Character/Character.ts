@@ -208,6 +208,17 @@ export default class Character extends AirshipBehaviour {
 			}),
 		);
 
+		this.bin.Add(
+			Airship.Damage.onHeal.ConnectWithPriority(SignalPriority.MONITOR, (healInfo) => {
+				if (healInfo.gameObject.GetInstanceID() === this.gameObject.GetInstanceID()) {
+					if (this.IsDead()) return;
+					let newHealth = math.min(this.maxHealth, this.health + healInfo.healAmount);
+
+					this.SetHealth(newHealth);
+				}
+			}),
+		);
+
 		// Custom move command data handling:
 		if (this.movement) {
 			this.SetupMovementConnections();
@@ -888,12 +899,8 @@ export default class Character extends AirshipBehaviour {
 						trySlot = hotbarKeys.size() - 1;
 					}
 
-					// If the item at the given `trySlot` index exists, set it as the held item:
-					const itemAtSlot = this.inventory.GetItem(trySlot);
-					if (itemAtSlot !== undefined) {
-						this.SetHeldSlot(trySlot);
-						break;
-					}
+					this.SetHeldSlot(trySlot);
+					break;
 				}
 			}),
 		);

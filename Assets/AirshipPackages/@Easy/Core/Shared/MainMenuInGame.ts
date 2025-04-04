@@ -17,6 +17,7 @@ import { AirshipUrl } from "./Util/AirshipUrl";
 import { AppManager } from "./Util/AppManager";
 import { CanvasAPI } from "./Util/CanvasAPI";
 import { OnFixedUpdate, OnLateUpdate, OnUpdate } from "./Util/Timer";
+import { HttpRetry } from "./Http/HttpRetry";
 
 CoreRefs.Init();
 
@@ -106,12 +107,15 @@ if (Game.IsClient()) {
 	});
 }
 
-task.spawn(() => {
+task.spawn(async () => {
 	while (Game.gameId === undefined) {
 		task.wait();
 		continue;
 	}
-	const res = InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/games/game-id/" + Game.gameId);
+	const res = await HttpRetry(
+		() => InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/games/game-id/" + Game.gameId),
+		"get/content-service/games/game-id/:gameId"
+	);
 	if (res.success) {
 		// note: this can be undefined but right now we do not handle that case so the type system does not allow it
 		const gameData = json.decode<{ game: GameDto /* | undefined */ }>(res.data).game;

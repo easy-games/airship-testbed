@@ -18,9 +18,11 @@ import { MainMenuController } from "../MainMenuController";
 import { SocketController } from "../Socket/SocketController";
 import { ProtectedFriendsController } from "./FriendsController";
 import { MainMenuAddFriendsController } from "./MainMenuAddFriendsController";
+import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
 
 @Controller({})
 export class MainMenuPartyController {
+	private readonly httpRetry = HttpRetryInstance();
 	public party: Party | undefined;
 	public onPartyUpdated = new Signal<[newParty: Party | undefined, oldParty: Party | undefined]>();
 
@@ -79,12 +81,12 @@ export class MainMenuPartyController {
 				data.members[0].uid,
 				(result) => {
 					if (result) {
-						const res = InternalHttpManager.PostAsync(
+						const res = this.httpRetry(() => InternalHttpManager.PostAsync(
 							AirshipUrl.GameCoordinator + "/parties/party/join",
 							json.encode({
 								partyId: data.partyId,
 							}),
-						);
+						), "JoinParty").expect();
 						if (res.success) {
 							Dependency<ProtectedFriendsController>().FireNotificationKey("party-invite:" + data.leader);
 						} else {
@@ -213,12 +215,12 @@ export class MainMenuPartyController {
 		}
 
 		CanvasAPI.OnClickEvent(leaveButton, () => {
-			InternalHttpManager.PostAsync(
+			this.httpRetry(() => InternalHttpManager.PostAsync(
 				AirshipUrl.GameCoordinator + "/parties/party/remove",
 				json.encode({
 					userToRemove: Game.localPlayer.userId,
 				}),
-			);
+			), "LeaveParty").expect();
 		});
 	}
 
@@ -227,10 +229,10 @@ export class MainMenuPartyController {
 	 * @param userIdToAdd The userId of the user to invite
 	 */
 	public async InviteUser(userIdToAdd: string): Promise<Result<undefined, undefined>> {
-		const res = InternalHttpManager.PostAsync(
+		const res = await this.httpRetry(() => InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/parties/party/invite",
 			json.encode({ userToAdd: userIdToAdd }),
-		);
+		), "InviteUserToParty");
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to invite user to party. Status Code: ${res.statusCode}\n`, res.error);
@@ -249,10 +251,12 @@ export class MainMenuPartyController {
 	 * @param userIdToRemove
 	 */
 	public async RemoveUser(userIdToRemove: string): Promise<Result<undefined, undefined>> {
-		const res = InternalHttpManager.PostAsync(
+		const res = await this.httpRetry(() => InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/parties/party/remove",
-			json.encode({ userToRemove: userIdToRemove }),
-		);
+			json.encode({
+				userToRemove: userIdToRemove,
+			}),
+		), "RemoveUserFromParty");
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to remove user from party. Status Code: ${res.statusCode}\n`, res.error);
@@ -270,10 +274,10 @@ export class MainMenuPartyController {
 	 * @param partyId The id of the party
 	 */
 	public async JoinParty(partyId: string): Promise<Result<undefined, undefined>> {
-		const res = InternalHttpManager.PostAsync(
+		const res = await this.httpRetry(() => InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/parties/party/join",
 			json.encode({ partyId }),
-		);
+		), "JoinParty");
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to join party. Status Code: ${res.statusCode}\n`, res.error);

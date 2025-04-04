@@ -7,7 +7,7 @@ export interface TeamDto {
 	name: string;
 	id: string;
 	userIds: string[];
-	color: [r: number, g: number, b: number, a: number];
+	color: [r: number, g: number, b: number];
 }
 
 export class Team {
@@ -52,7 +52,7 @@ export class Team {
 			name: this.name,
 			id: this.id,
 			userIds: playerIds,
-			color: [this.color.r, this.color.g, this.color.b, this.color.a],
+			color: [this.color.r, this.color.g, this.color.b],
 		};
 	}
 

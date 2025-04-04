@@ -9,6 +9,7 @@ import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { AuthController } from "../../Auth/AuthController";
 import { ProtectedFriendsController } from "../../Social/FriendsController";
 import { User } from "../../User/User";
+import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
 
 export const enum UserControllerBridgeTopics {
 	GetUserByUsername = "UserController:GetUserByUsername",
@@ -29,6 +30,7 @@ export type BrigdeApiIsFriendsWith = (userId: string) => boolean;
 
 @Controller({})
 export class ProtectedUserController {
+	private readonly httpRetry = HttpRetryInstance();
 	public localUser: User | undefined;
 
 	public onLocalUserUpdated = new Signal<User>();
@@ -72,7 +74,10 @@ export class ProtectedUserController {
 	 * @internal
 	 */
 	public async IsFriendsWith(userId: string): Promise<ReturnType<BrigdeApiIsFriendsWith>> {
-		const res = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/friends/uid/${userId}/status`);
+		const res = await this.httpRetry(
+			() => InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/friends/uid/${userId}/status`),
+			"IsFriendsWith"
+		);
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to get friends. Status Code ${res.statusCode}.\n`, res.error);
@@ -90,7 +95,10 @@ export class ProtectedUserController {
 	 * @internal
 	 */
 	public async GetUserById(userId: string): Promise<ReturnType<BridgeApiGetUserById>> {
-		const res = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/users/uid/${userId}`);
+		const res = await this.httpRetry(
+			() => InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/users/uid/${userId}`),
+			"GetUserById"
+		);
 
 		if (res.statusCode === 404) {
 			return undefined;
@@ -105,7 +113,10 @@ export class ProtectedUserController {
 	}
 
 	public async GetUserByUsername(username: string): Promise<ReturnType<BridgeApiGetUserByUsername>> {
-		const res = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/users/user?username=${username}`);
+		const res = await this.httpRetry(
+			() => InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/users/user?username=${username}`),
+			"GetUserByUsername"
+		);
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to get user. Status Code:  ${res.statusCode}.\n`, res.error);
@@ -123,10 +134,13 @@ export class ProtectedUserController {
 			};
 		}
 
-		const res = InternalHttpManager.GetAsync(
-			`${AirshipUrl.GameCoordinator}/users?users[]=${userIds.join("&users[]=")}&strict=${
-				strict ? "true" : "false"
-			}`,
+		const res = await this.httpRetry(
+			() => InternalHttpManager.GetAsync(
+				`${AirshipUrl.GameCoordinator}/users?users[]=${userIds.join("&users[]=")}&strict=${
+					strict ? "true" : "false"
+				}`,
+			),
+			"GetUsersById"
 		);
 
 		if (!res.success || res.statusCode > 299) {
@@ -152,7 +166,10 @@ export class ProtectedUserController {
 	}
 
 	public async GetFriends(): Promise<ReturnType<BridgeApiGetFriends>> {
-		const res = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/friends/self`);
+		const res = await this.httpRetry(
+			() => InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/friends/self`),
+			"GetFriends"
+		);
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to get friends. Status Code ${res.statusCode}.\n`, res.error);
@@ -164,8 +181,8 @@ export class ProtectedUserController {
 
 	protected OnStart(): void {
 		this.authController.onAuthenticated.Connect(() => {
-			task.spawn(() => {
-				this.FetchLocalUser();
+			task.spawn(async () => {
+				await this.FetchLocalUser();
 			});
 		});
 
@@ -174,8 +191,11 @@ export class ProtectedUserController {
 		});
 	}
 
-	public FetchLocalUser(): void {
-		const res = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/users/self`);
+	public async FetchLocalUser(): Promise<void> {
+		const res = await this.httpRetry(
+			() => InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/users/self`),
+			"FetchLocalUser"
+		);
 		let success = false;
 		if (res.success) {
 			const { user } = json.decode<{ user: User | undefined }>(res.data);

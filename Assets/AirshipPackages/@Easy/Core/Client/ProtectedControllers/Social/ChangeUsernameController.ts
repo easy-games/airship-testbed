@@ -12,9 +12,11 @@ import { SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { OnFixedUpdate } from "@Easy/Core/Shared/Util/Timer";
 import { ProtectedUserController } from "../Airship/User/UserController";
 import { AuthController } from "../Auth/AuthController";
+import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
 
 @Controller({})
 export class ChangeUsernameController {
+	private readonly httpRetry = HttpRetryInstance();
 	private canvas: Canvas;
 	private responseText: TMP_Text;
 	private submitButton: GameObject;
@@ -74,13 +76,13 @@ export class ChangeUsernameController {
 
 	public SubmitNameChange(): void {
 		const text = this.inputField.text;
-		const res = HttpManager.PatchAsync(
+		const res = this.httpRetry(() => HttpManager.PatchAsync(
 			AirshipUrl.GameCoordinator + "/users",
 			json.encode({
 				username: text,
 			}),
 			this.authController.GetAuthHeaders(),
-		);
+		), "ChangeUsername").expect();
 		if (res.success) {
 			this.SetResponseText("success", `Success! Your name has been changed to "${text}".`);
 			(
@@ -118,9 +120,12 @@ export class ChangeUsernameController {
 		}
 
 		this.lastCheckedUsername = username;
-		const res = InternalHttpManager.GetAsync(
-			AirshipUrl.GameCoordinator + "/users/availability?username=" + username,
-		);
+		const res = this.httpRetry(
+			() => InternalHttpManager.GetAsync(
+				AirshipUrl.GameCoordinator + "/users/availability?username=" + username,
+			),
+			"CheckUsername"
+		).expect();
 		if (res.success) {
 			const data = json.decode<{ available: boolean }>(res.data);
 			if (data.available) {

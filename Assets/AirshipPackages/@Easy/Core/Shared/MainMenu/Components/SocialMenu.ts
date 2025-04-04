@@ -7,6 +7,7 @@ import { Bin } from "../../Util/Bin";
 import { CanvasAPI } from "../../Util/CanvasAPI";
 import { ChatColor } from "../../Util/ChatColor";
 import { SetInterval } from "../../Util/Timer";
+import { HttpRetry } from "../../Http/HttpRetry";
 
 export default class SocialMenu extends AirshipBehaviour {
 	public liveStats!: GameObject;
@@ -100,7 +101,10 @@ export default class SocialMenu extends AirshipBehaviour {
 	}
 
 	private FetchLiveStats(): void {
-		const res = InternalHttpManager.GetAsync(AirshipUrl.GameCoordinator + "/stats");
+		const res = HttpRetry(
+			() => InternalHttpManager.GetAsync(AirshipUrl.GameCoordinator + "/stats"),
+			"get/game-coordinator/stats",
+		).expect();
 		if (!res.success) return;
 
 		const data = json.decode<{

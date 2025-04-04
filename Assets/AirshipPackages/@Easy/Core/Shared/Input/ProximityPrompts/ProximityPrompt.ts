@@ -26,6 +26,8 @@ export default class ProximityPrompt extends AirshipBehaviour {
 	public static = false;
 	@Tooltip("If true this prompt can be activated at any time by having the activation key in the down state.")
 	public activateWhenDown = false;
+	@Tooltip("If true the prompt will be hidden when a player is dead")
+	public hideWhenDead = false;
 
 	@Header("References")
 	public canvas!: Canvas;

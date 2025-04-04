@@ -303,6 +303,7 @@ export class AirshipCharactersSingleton {
 		position: Vector3,
 		config?: {
 			customCharacterTemplate?: GameObject;
+			lookDirection?: Vector3;
 		},
 	): Character {
 		if (!Game.IsServer()) {
@@ -311,9 +312,13 @@ export class AirshipCharactersSingleton {
 
 		const go = Object.Instantiate(config?.customCharacterTemplate ?? this.GetDefaultCharacterTemplate());
 		go.name = `Character`;
+
 		const characterComponent = go.GetAirshipComponent<Character>();
 		if (!characterComponent) {
 			error("Trying to spawn a character prefab without a character component on it!");
+		}
+		if (config?.lookDirection && characterComponent.movement) {
+			characterComponent.movement.startingLookVector = config.lookDirection;
 		}
 		characterComponent.Init(undefined, Airship.Characters.MakeNewId(), undefined, 100, 100, go.name);
 		const rb = go.GetComponent<Rigidbody>();

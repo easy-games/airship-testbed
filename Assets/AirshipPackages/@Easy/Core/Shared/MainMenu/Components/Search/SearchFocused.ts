@@ -13,6 +13,7 @@ import GameSearchResult from "./GameSearchResult";
 import { SearchResultDto } from "./SearchAPI";
 import SearchResult from "./SearchResult";
 import SearchSingleton from "./SearchSingleton";
+import { HttpRetry } from "@Easy/Core/Shared/Http/HttpRetry";
 
 export default class SearchFocused extends AirshipBehaviour {
 	@Header("References")
@@ -162,7 +163,11 @@ export default class SearchFocused extends AirshipBehaviour {
 			"&platform=" +
 			ProtectedUtil.GetLocalPlatformString();
 		// print("search url: " + url);
-		const res = InternalHttpManager.GetAsync(url);
+		const res = HttpRetry(
+			() => InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/games/autocomplete?name=" + text),
+			"get/content-service/games/autocomplete",
+		).expect();
+
 		if (res.error) {
 			Debug.LogError("search error: " + res.error);
 		} else {

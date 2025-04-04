@@ -31,9 +31,11 @@ import { TransferController } from "../Transfer/TransferController";
 import { RightClickMenuButton } from "../UI/RightClickMenu/RightClickMenuButton";
 import { User } from "../User/User";
 import { DirectMessageController } from "./DirectMessages/DirectMessageController";
+import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
 
 @Controller({})
 export class ProtectedFriendsController {
+	private readonly httpRetry = HttpRetryInstance();
 	public friends: User[] = [];
 	public incomingFriendRequests: User[] = [];
 	public outgoingFriendRequests: User[] = [];
@@ -156,14 +158,14 @@ export class ProtectedFriendsController {
 					foundUser.uid,
 					(result) => {
 						if (result) {
-							task.spawn(() => {
+							task.spawn(async () => {
 								this.socialNotification.gameObject.SetActive(false);
-								this.AcceptFriendRequestAsync(foundUser.username, foundUser.uid);
+								await this.AcceptFriendRequestAsync(foundUser.username, foundUser.uid);
 							});
 						} else {
-							task.spawn(() => {
+							task.spawn(async () => {
 								this.socialNotification.gameObject.SetActive(false);
-								this.RejectFriendRequestAsync(foundUser.uid);
+								await this.RejectFriendRequestAsync(foundUser.uid);
 							});
 						}
 					},
@@ -301,11 +303,17 @@ export class ProtectedFriendsController {
 			},
 		};
 		// CoreLogger.Log("send status update: " + json.encode(status));
-		InternalHttpManager.PutAsync(AirshipUrl.GameCoordinator + "/user-status/self", json.encode(status));
+		this.httpRetry(
+			() => InternalHttpManager.PutAsync(AirshipUrl.GameCoordinator + "/user-status/self", json.encode(status)),
+			"SendStatusUpdate"
+		).expect();
 	}
 
 	public FetchFriends(): void {
-		const res = InternalHttpManager.GetAsync(AirshipUrl.GameCoordinator + "/friends/requests/self");
+		const res = this.httpRetry(
+			() => InternalHttpManager.GetAsync(AirshipUrl.GameCoordinator + "/friends/requests/self"),
+			"FetchFriends"
+		).expect();
 		if (!res.success) {
 			return;
 		}
@@ -324,8 +332,8 @@ export class ProtectedFriendsController {
 		// auto decline
 		// for (const user of this.incomingFriendRequests) {
 		// 	task.spawn(() => {
-		// 		const res = InternalHttpManager.DeleteAsync(AirshipUrl.GameCoordinator + "/friends/uid/" + user.uid);
-		// 		InternalHttpManager.GetAsync(AirshipUrl.GameCoordinator + "/user-status/friends");
+		// 		// const res = InternalHttpManager.DeleteAsync(AirshipUrl.GameCoordinator + "/friends/uid/" + user.uid);
+		// 		// InternalHttpManager.GetAsync(AirshipUrl.GameCoordinator + "/user-status/friends");
 		// 	});
 		// }
 
@@ -340,18 +348,19 @@ export class ProtectedFriendsController {
 		// 			this.authController.GetAuthHeaders(),
 		// 		);
 
-		// 		InternalHttpManager.GetAsync(AirshipUrl.GameCoordinator + "/user-status/friends");
+		// 		// InternalHttpManager.GetAsync(AirshipUrl.GameCoordinator + "/user-status/friends");
 		// 	});
 		// }
 	}
 
-	public AcceptFriendRequestAsync(username: string, userId: string): boolean {
-		const res = InternalHttpManager.PostAsync(
+	public async AcceptFriendRequestAsync(username: string, userId: string): Promise<boolean> {
+		const res = await this.httpRetry(() => InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/friends/requests/self",
 			json.encode({
 				username: username,
 			}),
-		);
+		), "AcceptFriendRequest");
+
 		if (res.success) {
 			this.SetIncomingFriendRequests(this.incomingFriendRequests.filter((u) => u.uid !== userId));
 
@@ -361,8 +370,11 @@ export class ProtectedFriendsController {
 		return res.success;
 	}
 
-	public RejectFriendRequestAsync(userId: string): boolean {
-		const res = InternalHttpManager.DeleteAsync(AirshipUrl.GameCoordinator + "/friends/uid/" + userId);
+	public async RejectFriendRequestAsync(userId: string): Promise<boolean> {
+		const res = await this.httpRetry(
+			() => InternalHttpManager.DeleteAsync(AirshipUrl.GameCoordinator + "/friends/uid/" + userId),
+			"RejectFriendRequest",
+		);
 		if (res.success) {
 			this.friendStatuses = this.friendStatuses.filter((f) => f.userId !== userId);
 			this.UpdateFriendsList();
@@ -388,12 +400,12 @@ export class ProtectedFriendsController {
 
 	public SendFriendRequest(username: string): boolean {
 		print('adding friend: "' + username + '"');
-		const res = InternalHttpManager.PostAsync(
+		const res = this.httpRetry(() => InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/friends/requests/self",
 			json.encode({
 				username: username,
 			}),
-		);
+		), "SendFriendRequest").expect();
 		if (res.success) {
 			print("Sent friend request to " + username);
 			return true;
@@ -504,14 +516,14 @@ export class ProtectedFriendsController {
 							{
 								text: "Join Party",
 								onClick: () => {
-									task.spawn(() => {
-										const res = InternalHttpManager.PostAsync(
+									task.spawn(async () => {
+										const res = await this.httpRetry(() => InternalHttpManager.PostAsync(
 											AirshipUrl.GameCoordinator + "/parties/party/join",
 											json.encode({
 												uid: friend.userId,
 												// partyId: friend,
 											}),
-										);
+										), "JoinParty");
 										if (!res.success) {
 											Debug.LogError(res.error);
 										}

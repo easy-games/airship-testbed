@@ -3614,6 +3614,444 @@ declare const enum PassType {
     ScriptableRenderPipelineDefaultUnlit = 14,
     GrabPass = 15,
 }
+declare const enum ShadowQuality {
+    Disable = 0,
+    HardOnly = 1,
+    All = 2,
+}
+declare const enum ShadowProjection {
+    CloseFit = 0,
+    StableFit = 1,
+}
+declare const enum ShadowResolution {
+    Low = 0,
+    Medium = 1,
+    High = 2,
+    VeryHigh = 3,
+}
+declare const enum ShadowmaskMode {
+    Shadowmask = 0,
+    DistanceShadowmask = 1,
+}
+declare const enum TerrainQualityOverrides {
+    None = 0,
+    PixelError = 1,
+    BasemapDistance = 2,
+    DetailDensity = 4,
+    DetailDistance = 8,
+    TreeDistance = 16,
+    BillboardStart = 32,
+    FadeLength = 64,
+    MaxTrees = 128,
+}
+declare const enum TextureMipmapLimitBiasMode {
+    OffsetGlobalLimit = 0,
+    OverrideGlobalLimit = 1,
+}
+declare const enum VideoShadersIncludeMode {
+    Never = 0,
+    Referenced = 1,
+    Always = 2,
+}
+declare const enum LightProbeOutsideHullStrategy {
+    kLightProbeSearchTetrahedralHull = 0,
+    kLightProbeUseAmbientProbe = 1,
+}
+declare const enum BuiltinShaderType {
+    DeferredShading = 0,
+    DeferredReflections = 1,
+    LegacyDeferredLighting = 2,
+    ScreenSpaceShadows = 3,
+    DepthNormals = 4,
+    MotionVectors = 5,
+    LightHalo = 6,
+    LensFlare = 7,
+}
+declare const enum BuiltinShaderMode {
+    Disabled = 0,
+    UseBuiltin = 1,
+    UseCustom = 2,
+}
+declare const enum BuiltinShaderDefine {
+    UNITY_NO_DXT5nm = 0,
+    UNITY_NO_RGBM = 1,
+    UNITY_USE_NATIVE_HDR = 2,
+    UNITY_ENABLE_REFLECTION_BUFFERS = 3,
+    UNITY_FRAMEBUFFER_FETCH_AVAILABLE = 4,
+    UNITY_ENABLE_NATIVE_SHADOW_LOOKUPS = 5,
+    UNITY_METAL_SHADOWS_USE_POINT_FILTERING = 6,
+    UNITY_NO_CUBEMAP_ARRAY = 7,
+    UNITY_NO_SCREENSPACE_SHADOWS = 8,
+    UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS = 9,
+    UNITY_PBS_USE_BRDF1 = 10,
+    UNITY_PBS_USE_BRDF2 = 11,
+    UNITY_PBS_USE_BRDF3 = 12,
+    UNITY_NO_FULL_STANDARD_SHADER = 13,
+    UNITY_SPECCUBE_BOX_PROJECTION = 14,
+    UNITY_SPECCUBE_BLENDING = 15,
+    UNITY_ENABLE_DETAIL_NORMALMAP = 16,
+    SHADER_API_MOBILE = 17,
+    SHADER_API_DESKTOP = 18,
+    UNITY_HARDWARE_TIER1 = 19,
+    UNITY_HARDWARE_TIER2 = 20,
+    UNITY_HARDWARE_TIER3 = 21,
+    UNITY_COLORSPACE_GAMMA = 22,
+    UNITY_LIGHT_PROBE_PROXY_VOLUME = 23,
+    UNITY_HALF_PRECISION_FRAGMENT_SHADER_REGISTERS = 24,
+    UNITY_LIGHTMAP_DLDR_ENCODING = 25,
+    UNITY_LIGHTMAP_RGBM_ENCODING = 26,
+    UNITY_LIGHTMAP_FULL_HDR = 27,
+    UNITY_VIRTUAL_TEXTURING = 28,
+    UNITY_PRETRANSFORM_TO_DISPLAY_ORIENTATION = 29,
+    UNITY_ASTC_NORMALMAP_ENCODING = 30,
+    SHADER_API_GLES30 = 31,
+    UNITY_UNIFIED_SHADER_PRECISION_MODEL = 32,
+    UNITY_PLATFORM_SUPPORTS_WAVE_32 = 33,
+    UNITY_PLATFORM_SUPPORTS_WAVE_64 = 34,
+    UNITY_NEEDS_RENDERPASS_FBFETCH_FALLBACK = 35,
+    UNITY_PLATFORM_SUPPORTS_DEPTH_FETCH = 36,
+}
+declare const enum GPUResidentDrawerMode {
+    Disabled = 0,
+    InstancedDrawing = 1,
+}
+declare const enum ProbeVolumeSHBands {
+    SphericalHarmonicsL1 = 1,
+    SphericalHarmonicsL2 = 2,
+}
+declare const enum TextureSizeMode {
+    Explicit = 0,
+    Scale = 1,
+    Functor = 2,
+}
+declare const enum MSAASamples {
+    None = 1,
+    MSAA2x = 2,
+    MSAA4x = 4,
+    MSAA8x = 8,
+}
+declare const enum FastMemoryFlags {
+    None = 0,
+    SpillTop = 1,
+    SpillBottom = 2,
+}
+declare const enum DepthBits {
+    None = 0,
+    Depth8 = 8,
+    Depth16 = 16,
+    Depth24 = 24,
+    Depth32 = 32,
+}
+declare const enum AccessFlags {
+    None = 0,
+    Read = 1,
+    Write = 2,
+    ReadWrite = 3,
+    Discard = 4,
+    WriteAll = 6,
+}
+declare const enum GizmoSubset {
+    PreImageEffects = 0,
+    PostImageEffects = 1,
+}
+declare const enum SortingCriteria {
+    None = 0,
+    SortingLayer = 1,
+    RenderQueue = 2,
+    BackToFront = 4,
+    QuantizedFrontToBack = 8,
+    OptimizeStateChanges = 16,
+    CommonTransparent = 23,
+    CanvasOrder = 32,
+    CommonOpaque = 59,
+    RendererPriority = 64,
+}
+declare const enum PerObjectData {
+    None = 0,
+    LightProbe = 1,
+    ReflectionProbes = 2,
+    LightProbeProxyVolume = 4,
+    Lightmaps = 8,
+    LightData = 16,
+    MotionVectors = 32,
+    LightIndices = 64,
+    ReflectionProbeData = 128,
+    OcclusionProbe = 256,
+    OcclusionProbeProxyVolume = 512,
+    ShadowMask = 1024,
+}
+declare const enum ColorWriteMask {
+    Alpha = 1,
+    Blue = 2,
+    Green = 4,
+    Red = 8,
+    All = 15,
+}
+declare const enum BlendMode {
+    Zero = 0,
+    One = 1,
+    DstColor = 2,
+    SrcColor = 3,
+    OneMinusDstColor = 4,
+    SrcAlpha = 5,
+    OneMinusSrcColor = 6,
+    DstAlpha = 7,
+    OneMinusDstAlpha = 8,
+    SrcAlphaSaturate = 9,
+    OneMinusSrcAlpha = 10,
+}
+declare const enum BlendOp {
+    Add = 0,
+    Subtract = 1,
+    ReverseSubtract = 2,
+    Min = 3,
+    Max = 4,
+    LogicalClear = 5,
+    LogicalSet = 6,
+    LogicalCopy = 7,
+    LogicalCopyInverted = 8,
+    LogicalNoop = 9,
+    LogicalInvert = 10,
+    LogicalAnd = 11,
+    LogicalNand = 12,
+    LogicalOr = 13,
+    LogicalNor = 14,
+    LogicalXor = 15,
+    LogicalEquivalence = 16,
+    LogicalAndReverse = 17,
+    LogicalAndInverted = 18,
+    LogicalOrReverse = 19,
+    LogicalOrInverted = 20,
+    Multiply = 21,
+    Screen = 22,
+    Overlay = 23,
+    Darken = 24,
+    Lighten = 25,
+    ColorDodge = 26,
+    ColorBurn = 27,
+    HardLight = 28,
+    SoftLight = 29,
+    Difference = 30,
+    Exclusion = 31,
+    HSLHue = 32,
+    HSLSaturation = 33,
+    HSLColor = 34,
+    HSLLuminosity = 35,
+}
+declare const enum CullMode {
+    Off = 0,
+    Front = 1,
+    Back = 2,
+}
+declare const enum CompareFunction {
+    Disabled = 0,
+    Never = 1,
+    Less = 2,
+    Equal = 3,
+    LessEqual = 4,
+    Greater = 5,
+    NotEqual = 6,
+    GreaterEqual = 7,
+    Always = 8,
+}
+declare const enum StencilOp {
+    Keep = 0,
+    Zero = 1,
+    Replace = 2,
+    IncrementSaturate = 3,
+    DecrementSaturate = 4,
+    Invert = 5,
+    IncrementWrap = 6,
+    DecrementWrap = 7,
+}
+declare const enum RenderStateMask {
+    Nothing = 0,
+    Blend = 1,
+    Raster = 2,
+    Depth = 4,
+    Stencil = 8,
+    Everything = 15,
+}
+declare const enum Allocator {
+    Invalid = 0,
+    None = 1,
+    Temp = 2,
+    TempJob = 3,
+    Persistent = 4,
+    AudioKernel = 5,
+    Domain = 6,
+    FirstUserIndex = 64,
+}
+declare const enum DistanceMetric {
+    Perspective = 0,
+    Orthographic = 1,
+    CustomAxis = 2,
+}
+declare const enum UISubset {
+    UIToolkit_UGUI = 1,
+    LowLevel = 2,
+    All = -1,
+}
+declare const enum BatchCullingProjectionType {
+    Unknown = 0,
+    Perspective = 1,
+    Orthographic = 2,
+}
+declare const enum RendererListStatus {
+    kRendererListEmpty = 0,
+    kRendererListPopulated = 1,
+    kRendererListInvalid = -2,
+    kRendererListProcessing = -1,
+}
+declare const enum DepthAccess {
+    Read = 1,
+    Write = 2,
+    ReadWrite = 3,
+}
+declare const enum Flags {
+    None = 0,
+    EditorOnly = 2,
+    RuntimeOnly = 4,
+    EditorForceUpdate = 8,
+    FrequentlyUsed = 16,
+}
+declare const enum RenderPassEvent {
+    BeforeRendering = 0,
+    BeforeRenderingShadows = 50,
+    AfterRenderingShadows = 100,
+    BeforeRenderingPrePasses = 150,
+    AfterRenderingPrePasses = 200,
+    BeforeRenderingGbuffer = 210,
+    AfterRenderingGbuffer = 220,
+    BeforeRenderingDeferredLights = 230,
+    AfterRenderingDeferredLights = 240,
+    BeforeRenderingOpaques = 250,
+    AfterRenderingOpaques = 300,
+    BeforeRenderingSkybox = 350,
+    AfterRenderingSkybox = 400,
+    BeforeRenderingTransparents = 450,
+    AfterRenderingTransparents = 500,
+    BeforeRenderingPostProcessing = 550,
+    AfterRenderingPostProcessing = 600,
+    AfterRendering = 1000,
+}
+declare const enum ScriptableRenderPassInput {
+    None = 0,
+    Depth = 1,
+    Normal = 2,
+    Color = 4,
+    Motion = 8,
+}
+declare const enum ClearFlag {
+    None = 0,
+    Color = 1,
+    Depth = 2,
+    Stencil = 4,
+    ColorStencil = 5,
+    DepthStencil = 6,
+    All = 7,
+}
+declare const enum RenderingMode {
+    Forward = 0,
+    Deferred = 1,
+    ForwardPlus = 2,
+}
+declare const enum CameraRenderType {
+    Base = 0,
+    Overlay = 1,
+}
+declare const enum AntialiasingMode {
+    None = 0,
+    FastApproximateAntialiasing = 1,
+    SubpixelMorphologicalAntiAliasing = 2,
+    TemporalAntiAliasing = 3,
+}
+declare const enum AntialiasingQuality {
+    Low = 0,
+    Medium = 1,
+    High = 2,
+}
+declare const enum CullingOptions {
+    None = 0,
+    ForceEvenIfCameraIsNotActive = 1,
+    OcclusionCull = 2,
+    NeedsLighting = 4,
+    NeedsReflectionProbes = 8,
+    Stereo = 16,
+    DisablePerObjectCulling = 32,
+    ShadowCasters = 64,
+}
+declare const enum ReflectionProbeSortingCriteria {
+    None = 0,
+    Importance = 1,
+    Size = 2,
+    ImportanceThenSize = 3,
+}
+declare const enum Downsampling {
+    None = 0,
+    _2xBilinear = 1,
+    _4xBox = 2,
+    _4xBilinear = 3,
+}
+declare const enum StoreActionsOptimization {
+    Auto = 0,
+    Discard = 1,
+    Store = 2,
+}
+declare const enum HDRColorBufferPrecision {
+    _32Bits = 0,
+    _64Bits = 1,
+}
+declare const enum LODCrossFadeDitheringType {
+    BayerMatrix = 0,
+    BlueNoise = 1,
+}
+declare const enum UpscalingFilterSelection {
+    Auto = 0,
+    Linear = 1,
+    Point = 2,
+    FSR = 3,
+    STP = 4,
+}
+declare const enum ShEvalMode {
+    Auto = 0,
+    PerVertex = 1,
+    Mixed = 2,
+    PerPixel = 3,
+}
+declare const enum LightProbeSystem {
+    LegacyLightProbes = 0,
+    ProbeVolumes = 1,
+}
+declare const enum ProbeVolumeTextureMemoryBudget {
+    MemoryBudgetLow = 512,
+    MemoryBudgetMedium = 1024,
+    MemoryBudgetHigh = 2048,
+}
+declare const enum ProbeVolumeBlendingTextureMemoryBudget {
+    MemoryBudgetLow = 128,
+    MemoryBudgetMedium = 256,
+    MemoryBudgetHigh = 512,
+}
+declare const enum LightRenderingMode {
+    Disabled = 0,
+    PerPixel = 1,
+    PerVertex = 2,
+}
+declare const enum VolumeFrameworkUpdateMode {
+    EveryFrame = 0,
+    ViaScripting = 1,
+    UsePipelineSettings = 2,
+}
+declare const enum ColorGradingMode {
+    LowDynamicRange = 0,
+    HighDynamicRange = 1,
+}
+declare const enum RendererType {
+    Custom = 0,
+    UniversalRenderer = 1,
+    _2DRenderer = 2,
+}
 declare const enum RemovePlayerOptions {
     KeepActive = 0,
     Unspawn = 1,
@@ -38497,18 +38935,6 @@ interface CameraScreenshotRecorder extends MonoBehaviour {
     resWidth: number;
     resHeight: number;
     readonly FolderName: string;
-
-
-
-    SaveRenderTexture(rt: RenderTexture, fileName: string, png: boolean): CameraScreenshotResponse;
-    SaveTexture(texture: Texture2D, fileName: string, png: boolean): CameraScreenshotResponse;
-    ScreenShotName(width: number, height: number, png: boolean): string;
-    ScreenShotName(filename: string, png: boolean): string;
-    TakeCameraScreenshot(camera: Camera, fileName: string, superSampleSize: number): void;
-    TakeCameraScreenshotCo(camera: Camera, fileName: string, superSampleSize: number): unknown;
-    TakeScreenshot(fileName: string, superSampleSize: number, png: boolean): void;
-
-
 }
     
 interface CameraScreenshotResponse {
@@ -38553,17 +38979,16 @@ interface OnPictureTakenConstructor {
 }
 declare const OnPictureTaken: OnPictureTakenConstructor;
     
-interface CameraScreenshotRecorderConstructor {
+interface InternalCameraScreenshotRecorderConstructor {
     onPictureTaken: OnPictureTaken;
     readonly GetScreenshotTexture: Texture2D;
-
-
+    
     new(): CameraScreenshotRecorder;
 
-
-
+    TakeScreenshot(fileName: string, superSampleSize: number, png: boolean): void;
+    TakeCameraScreenshot(camera: Camera, fileName: string, superSampleSize: number): void;
 }
-declare const CameraScreenshotRecorder: CameraScreenshotRecorderConstructor;
+declare const InternalCameraScreenshotRecorder: InternalCameraScreenshotRecorderConstructor;
     
 interface DevConsole {
 
@@ -45386,6 +45811,4651 @@ interface OcclusionCamConstructor {
 
 }
 declare const OcclusionCam: OcclusionCamConstructor;
+    
+interface QualitySettings extends Object {
+
+
+
+
+
+}
+    
+interface RenderPipelineAsset extends ScriptableObject {
+    /**
+     * The render index for the terrain brush in the editor.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RenderPipelineAsset-terrainBrushPassIndex.html | Rendering.RenderPipelineAsset.terrainBrushPassIndex}
+     */
+    readonly terrainBrushPassIndex: number;
+    /**
+     * Return the default Material for this pipeline.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RenderPipelineAsset-defaultMaterial.html | Rendering.RenderPipelineAsset.defaultMaterial}
+     */
+    readonly defaultMaterial: Material;
+    /**
+     * Retrieves the default Autodesk Interactive Shader for this pipeline.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RenderPipelineAsset-autodeskInteractiveShader.html | Rendering.RenderPipelineAsset.autodeskInteractiveShader}
+     */
+    readonly autodeskInteractiveShader: Shader;
+    /**
+     * Retrieves the default Autodesk Interactive transparent Shader for this pipeline.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RenderPipelineAsset-autodeskInteractiveTransparentShader.html | Rendering.RenderPipelineAsset.autodeskInteractiveTransparentShader}
+     */
+    readonly autodeskInteractiveTransparentShader: Shader;
+    /**
+     * Retrieves the default Autodesk Interactive masked Shader for this pipeline.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RenderPipelineAsset-autodeskInteractiveMaskedShader.html | Rendering.RenderPipelineAsset.autodeskInteractiveMaskedShader}
+     */
+    readonly autodeskInteractiveMaskedShader: Shader;
+    /**
+     * Return the detail lit Shader for this pipeline.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RenderPipelineAsset-terrainDetailLitShader.html | Rendering.RenderPipelineAsset.terrainDetailLitShader}
+     */
+    readonly terrainDetailLitShader: Shader;
+    /**
+     * Return the detail grass Shader for this pipeline.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RenderPipelineAsset-terrainDetailGrassShader.html | Rendering.RenderPipelineAsset.terrainDetailGrassShader}
+     */
+    readonly terrainDetailGrassShader: Shader;
+    /**
+     * Return the detail grass billboard Shader for this pipeline.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RenderPipelineAsset-terrainDetailGrassBillboardShader.html | Rendering.RenderPipelineAsset.terrainDetailGrassBillboardShader}
+     */
+    readonly terrainDetailGrassBillboardShader: Shader;
+    /**
+     * Return the default particle Material for this pipeline.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RenderPipelineAsset-defaultParticleMaterial.html | Rendering.RenderPipelineAsset.defaultParticleMaterial}
+     */
+    readonly defaultParticleMaterial: Material;
+    /**
+     * Return the default Line Material for this pipeline.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RenderPipelineAsset-defaultLineMaterial.html | Rendering.RenderPipelineAsset.defaultLineMaterial}
+     */
+    readonly defaultLineMaterial: Material;
+    /**
+     * Return the default Terrain  Material for this pipeline.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RenderPipelineAsset-defaultTerrainMaterial.html | Rendering.RenderPipelineAsset.defaultTerrainMaterial}
+     */
+    readonly defaultTerrainMaterial: Material;
+    /**
+     * Return the default UI Material for this pipeline.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RenderPipelineAsset-defaultUIMaterial.html | Rendering.RenderPipelineAsset.defaultUIMaterial}
+     */
+    readonly defaultUIMaterial: Material;
+    /**
+     * Return the default UI overdraw Material for this pipeline.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RenderPipelineAsset-defaultUIOverdrawMaterial.html | Rendering.RenderPipelineAsset.defaultUIOverdrawMaterial}
+     */
+    readonly defaultUIOverdrawMaterial: Material;
+    /**
+     * Return the default UI ETC1  Material for this pipeline.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RenderPipelineAsset-defaultUIETC1SupportedMaterial.html | Rendering.RenderPipelineAsset.defaultUIETC1SupportedMaterial}
+     */
+    readonly defaultUIETC1SupportedMaterial: Material;
+    /**
+     * Return the default 2D Material for this pipeline.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RenderPipelineAsset-default2DMaterial.html | Rendering.RenderPipelineAsset.default2DMaterial}
+     */
+    readonly default2DMaterial: Material;
+    /**
+     * Gets the default 2D Mask Material used by Sprite Masks in Universal Render Pipeline.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RenderPipelineAsset-default2DMaskMaterial.html | Rendering.RenderPipelineAsset.default2DMaskMaterial}
+     */
+    readonly default2DMaskMaterial: Material;
+    /**
+     * Return the default Shader for this pipeline.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RenderPipelineAsset-defaultShader.html | Rendering.RenderPipelineAsset.defaultShader}
+     */
+    readonly defaultShader: Shader;
+    /**
+     * Return the default SpeedTree v7 Shader for this pipeline.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RenderPipelineAsset-defaultSpeedTree7Shader.html | Rendering.RenderPipelineAsset.defaultSpeedTree7Shader}
+     */
+    readonly defaultSpeedTree7Shader: Shader;
+    /**
+     * Return the default SpeedTree v8 Shader for this pipeline.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RenderPipelineAsset-defaultSpeedTree8Shader.html | Rendering.RenderPipelineAsset.defaultSpeedTree8Shader}
+     */
+    readonly defaultSpeedTree8Shader: Shader;
+    /**
+     * Return the default SpeedTree v9 Shader for this pipeline.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RenderPipelineAsset-defaultSpeedTree9Shader.html | Rendering.RenderPipelineAsset.defaultSpeedTree9Shader}
+     */
+    readonly defaultSpeedTree9Shader: Shader;
+    /**
+     * Returns the Shader Tag value for the render pipeline that is described by this asset.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RenderPipelineAsset-renderPipelineShaderTag.html | Rendering.RenderPipelineAsset.renderPipelineShaderTag}
+     */
+    readonly renderPipelineShaderTag: string;
+    /**
+     * Returns a RenderPipeline type associated with the given RenderPipelineAsset instance.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RenderPipelineAsset-pipelineType.html | Rendering.RenderPipelineAsset.pipelineType}
+     */
+    readonly pipelineType: unknown;
+
+
+
+
+
+}
+    
+interface TextureMipmapLimitSettings {
+    /**
+     * Indicates whether the limitBias functions as an offset to the global texture mipmap limit or, instead, acts as an override to it.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/TextureMipmapLimitSettings-limitBiasMode.html | TextureMipmapLimitSettings.limitBiasMode}
+     */
+    limitBiasMode: TextureMipmapLimitBiasMode;
+    /**
+     * The new value to apply on top of the global texture mipmap limit. Can act as an offset (default) or an override to it.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/TextureMipmapLimitSettings-limitBias.html | TextureMipmapLimitSettings.limitBias}
+     */
+    limitBias: number;
+
+
+
+
+
+}
+    
+interface QualitySettingsConstructor {
+    /**
+     * The maximum number of pixel lights that should affect any object.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-pixelLightCount.html | QualitySettings.pixelLightCount}
+     */
+    pixelLightCount: number;
+    /**
+     * Real-time Shadows type to be used.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-shadows.html | QualitySettings.shadows}
+     */
+    shadows: ShadowQuality;
+    /**
+     * Directional light shadow projection.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-shadowProjection.html | QualitySettings.shadowProjection}
+     */
+    shadowProjection: ShadowProjection;
+    /**
+     * Number of cascades to use for directional light shadows.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-shadowCascades.html | QualitySettings.shadowCascades}
+     */
+    shadowCascades: number;
+    /**
+     * Shadow drawing distance.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-shadowDistance.html | QualitySettings.shadowDistance}
+     */
+    shadowDistance: number;
+    /**
+     * The default resolution of the shadow maps.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-shadowResolution.html | QualitySettings.shadowResolution}
+     */
+    shadowResolution: ShadowResolution;
+    /**
+     * The rendering mode of Shadowmask.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-shadowmaskMode.html | QualitySettings.shadowmaskMode}
+     */
+    shadowmaskMode: ShadowmaskMode;
+    /**
+     * Offset shadow frustum near plane.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-shadowNearPlaneOffset.html | QualitySettings.shadowNearPlaneOffset}
+     */
+    shadowNearPlaneOffset: number;
+    /**
+     * The normalized cascade distribution for a 2 cascade setup. The value defines the position of the cascade with respect to Zero.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-shadowCascade2Split.html | QualitySettings.shadowCascade2Split}
+     */
+    shadowCascade2Split: number;
+    /**
+     * The normalized cascade start position for a 4 cascade setup. Each member of the vector defines the normalized position of the coresponding cascade with respect to Zero.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-shadowCascade4Split.html | QualitySettings.shadowCascade4Split}
+     */
+    shadowCascade4Split: Vector3;
+    /**
+     * Global multiplier for the LOD's switching distance.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-lodBias.html | QualitySettings.lodBias}
+     */
+    lodBias: number;
+    /**
+     * Global anisotropic filtering mode.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-anisotropicFiltering.html | QualitySettings.anisotropicFiltering}
+     */
+    anisotropicFiltering: AnisotropicFiltering;
+    /**
+     * Indicates how many of the highest-resolution mips of each texture Unity does not upload at the given quality level. To set more specific mipmap limits, you can flag textures to ignore mipmap limits or assign them to mipmap limit groups.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-globalTextureMipmapLimit.html | QualitySettings.globalTextureMipmapLimit}
+     */
+    globalTextureMipmapLimit: number;
+    /**
+     * A maximum LOD level. All LOD groups.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-maximumLODLevel.html | QualitySettings.maximumLODLevel}
+     */
+    maximumLODLevel: number;
+    /**
+     * Enables or disables LOD Cross Fade.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-enableLODCrossFade.html | QualitySettings.enableLODCrossFade}
+     */
+    enableLODCrossFade: boolean;
+    /**
+     * Budget for how many ray casts can be performed per frame for approximate collision testing.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-particleRaycastBudget.html | QualitySettings.particleRaycastBudget}
+     */
+    particleRaycastBudget: number;
+    /**
+     * Should soft blending be used for particles?
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-softParticles.html | QualitySettings.softParticles}
+     */
+    softParticles: boolean;
+    /**
+     * Use a two-pass shader for the vegetation in the terrain engine.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-softVegetation.html | QualitySettings.softVegetation}
+     */
+    softVegetation: boolean;
+    /**
+     * Represents the number of vertical syncs that should pass between each frame.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-vSyncCount.html | QualitySettings.vSyncCount}
+     */
+    vSyncCount: number;
+    /**
+     * How much CPU usage to assign to the final lighting calculations at runtime.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-realtimeGICPUUsage.html | QualitySettings.realtimeGICPUUsage}
+     */
+    realtimeGICPUUsage: number;
+    /**
+     * Choose the level of Multi-Sample Anti-aliasing (MSAA) that the GPU performs.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-antiAliasing.html | QualitySettings.antiAliasing}
+     */
+    antiAliasing: number;
+    /**
+     * Async texture upload provides timesliced async texture upload on the render thread with tight control over memory and timeslicing. There are no allocations except for the ones which driver has to do. To read data and upload texture data a ringbuffer whose size can be controlled is re-used.
+
+Use asyncUploadTimeSlice to set the time-slice in milliseconds for asynchronous texture uploads per
+frame. Minimum value is 1 and maximum is 33.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-asyncUploadTimeSlice.html | QualitySettings.asyncUploadTimeSlice}
+     */
+    asyncUploadTimeSlice: number;
+    /**
+     * Asynchronous texture and mesh data upload provides timesliced async texture and mesh data upload on the render thread with tight control over memory and timeslicing. There are no allocations except for the ones which driver has to do. To read data and upload texture and mesh data, Unity re-uses a ringbuffer whose size can be controlled.
+
+Use asyncUploadBufferSize to set the buffer size for asynchronous texture and mesh data uploads. The minimum value is 2 megabytes and the maximum value is 2047 megabytes. The buffer resizes automatically to fit the largest texture currently loading. To avoid a buffer resize (which can use extra system resources) set this value to the size of the largest texture in the Scene. If you have issues with excessive memory usage, you may need to reduce the value of this buffer or disable asyncUploadPersistentBuffer. Memory fragmentation can occur if you choose the latter option.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-asyncUploadBufferSize.html | QualitySettings.asyncUploadBufferSize}
+     */
+    asyncUploadBufferSize: number;
+    /**
+     * This flag controls if the async upload pipeline's ring buffer remains allocated when there are no active loading operations.
+Set this to true, to make the ring buffer allocation persist after all upload operations have completed.
+If you have issues with excessive memory usage, you can set this to false. This means you reduce the runtime memory footprint, but memory fragmentation can occur.
+The default value is true.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-asyncUploadPersistentBuffer.html | QualitySettings.asyncUploadPersistentBuffer}
+     */
+    asyncUploadPersistentBuffer: boolean;
+    /**
+     * Enables or disables real-time reflection probes.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-realtimeReflectionProbes.html | QualitySettings.realtimeReflectionProbes}
+     */
+    realtimeReflectionProbes: boolean;
+    /**
+     * If enabled, billboards will face towards camera position rather than camera orientation.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-billboardsFaceCameraPosition.html | QualitySettings.billboardsFaceCameraPosition}
+     */
+    billboardsFaceCameraPosition: boolean;
+    /**
+     * Use the legacy pre-2022.2 algorithm for distributing details on terrain.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-useLegacyDetailDistribution.html | QualitySettings.useLegacyDetailDistribution}
+     */
+    useLegacyDetailDistribution: boolean;
+    /**
+     * In resolution scaling mode, this factor is used to multiply with the target Fixed DPI specified to get the actual Fixed DPI to use for this quality setting.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-resolutionScalingFixedDPIFactor.html | QualitySettings.resolutionScalingFixedDPIFactor}
+     */
+    resolutionScalingFixedDPIFactor: number;
+    /**
+     * Controls which fields should have their values overriden in active Terrains.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-terrainQualityOverrides.html | QualitySettings.terrainQualityOverrides}
+     */
+    terrainQualityOverrides: TerrainQualityOverrides;
+    /**
+     * Value set to Terrain.heightmapPixelError if TerrainQualityOverrides.PixelError is set in terrainQualityOverrides.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-terrainPixelError.html | QualitySettings.terrainPixelError}
+     */
+    terrainPixelError: number;
+    /**
+     * Value set to Terrain.detailObjectDensity if TerrainQualityOverrides.DetailDensity is set in terrainQualityOverrides.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-terrainDetailDensityScale.html | QualitySettings.terrainDetailDensityScale}
+     */
+    terrainDetailDensityScale: number;
+    /**
+     * Value set to Terrain.basemapDistance if TerrainQualityOverrides.BasemapDistance is set in terrainQualityOverrides.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-terrainBasemapDistance.html | QualitySettings.terrainBasemapDistance}
+     */
+    terrainBasemapDistance: number;
+    /**
+     * Value set to Terrain.detailObjectDistance if TerrainQualityOverrides.DetailDistance is set in terrainQualityOverrides.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-terrainDetailDistance.html | QualitySettings.terrainDetailDistance}
+     */
+    terrainDetailDistance: number;
+    /**
+     * Value set to Terrain.treeDistance if TerrainQualityOverrides.TreeDistance is set in terrainQualityOverrides.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-terrainTreeDistance.html | QualitySettings.terrainTreeDistance}
+     */
+    terrainTreeDistance: number;
+    /**
+     * Value set to Terrain.treeBillboardDistance if TerrainQualityOverrides.BillboardStart is set in terrainQualityOverrides.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-terrainBillboardStart.html | QualitySettings.terrainBillboardStart}
+     */
+    terrainBillboardStart: number;
+    /**
+     * Value set to Terrain.treeCrossFadeLength if TerrainQualityOverrides.FadeLength is set in terrainQualityOverrides.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-terrainFadeLength.html | QualitySettings.terrainFadeLength}
+     */
+    terrainFadeLength: number;
+    /**
+     * Value set to Terrain.treeMaximumFullLODCount if TerrainQualityOverrides.MaxTrees is set in terrainQualityOverrides.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-terrainMaxTrees.html | QualitySettings.terrainMaxTrees}
+     */
+    terrainMaxTrees: number;
+    /**
+     * The RenderPipelineAsset that defines the override render pipeline for the current quality level.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-renderPipeline.html | QualitySettings.renderPipeline}
+     */
+    renderPipeline: RenderPipelineAsset;
+    /**
+     * The maximum number of bones per vertex that are taken into account during skinning, for all meshes in the project.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-skinWeights.html | QualitySettings.skinWeights}
+     */
+    skinWeights: SkinWeights;
+    /**
+     * The number of Quality Levels.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-count.html | QualitySettings.count}
+     */
+    readonly count: number;
+    /**
+     * Enable automatic streaming of texture mipmap levels based on their distance from all active cameras.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-streamingMipmapsActive.html | QualitySettings.streamingMipmapsActive}
+     */
+    streamingMipmapsActive: boolean;
+    /**
+     * The total amount of memory (in megabytes) to be used by streaming and non-streaming textures.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-streamingMipmapsMemoryBudget.html | QualitySettings.streamingMipmapsMemoryBudget}
+     */
+    streamingMipmapsMemoryBudget: number;
+    /**
+     * The number of renderer instances that are processed each frame when calculating which texture mipmap levels should be streamed.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-streamingMipmapsRenderersPerFrame.html | QualitySettings.streamingMipmapsRenderersPerFrame}
+     */
+    streamingMipmapsRenderersPerFrame: number;
+    /**
+     * The maximum number of mipmap levels to discard for each texture.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-streamingMipmapsMaxLevelReduction.html | QualitySettings.streamingMipmapsMaxLevelReduction}
+     */
+    streamingMipmapsMaxLevelReduction: number;
+    /**
+     * Process all enabled Cameras for texture streaming (rather than just those with StreamingController components).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-streamingMipmapsAddAllCameras.html | QualitySettings.streamingMipmapsAddAllCameras}
+     */
+    streamingMipmapsAddAllCameras: boolean;
+    /**
+     * The maximum number of active texture file IO requests from the texture streaming system.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-streamingMipmapsMaxFileIORequests.html | QualitySettings.streamingMipmapsMaxFileIORequests}
+     */
+    streamingMipmapsMaxFileIORequests: number;
+    /**
+     * Maximum number of frames queued up by graphics driver.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-maxQueuedFrames.html | QualitySettings.maxQueuedFrames}
+     */
+    maxQueuedFrames: number;
+    /**
+     * The indexed list of available Quality Settings.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-names.html | QualitySettings.names}
+     */
+    readonly names: Readonly<string[]>;
+    /**
+     * Desired color space (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-desiredColorSpace.html | QualitySettings.desiredColorSpace}
+     */
+    readonly desiredColorSpace: ColorSpace;
+    /**
+     * Active color space (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/QualitySettings-activeColorSpace.html | QualitySettings.activeColorSpace}
+     */
+    readonly activeColorSpace: ColorSpace;
+
+
+
+
+    DecreaseLevel(applyExpensiveChanges: boolean): void;
+    DecreaseLevel(): void;
+    ForEach(callback: unknown): void;
+    ForEach(callback: unknown): void;
+    GetActiveQualityLevelsForPlatform(buildTargetGroupName: string): Readonly<number[]>;
+    GetActiveQualityLevelsForPlatformCount(buildTargetGroupName: string): number;
+    GetAllRenderPipelineAssetsForPlatform(buildTargetGroupName: string, renderPipelineAssets: Readonly<RenderPipelineAsset[]>): void;
+    GetQualityLevel(): number;
+    GetQualitySettings(): Object;
+    GetRenderPipelineAssetAt(index: number): RenderPipelineAsset;
+    GetRenderPipelineAssetsForPlatform<T>(buildTargetGroupName: string, uniqueRenderPipelineAssets: Readonly<T[]>): void;
+    GetRenderPipelineAssetsForPlatform<T>(buildTargetGroupName: string, uniqueRenderPipelineAssets: Readonly<T[]>, allLevelsAreOverridden: unknown): void;
+    GetTextureMipmapLimitSettings(groupName: string): TextureMipmapLimitSettings;
+    IncreaseLevel(applyExpensiveChanges: boolean): void;
+    IncreaseLevel(): void;
+    IsPlatformIncluded(buildTargetGroupName: string, index: number): boolean;
+    SetLODSettings(lodBias: number, maximumLODLevel: number, setDirty: boolean): void;
+    SetQualityLevel(index: number): void;
+    SetQualityLevel(index: number, applyExpensiveChanges: boolean): void;
+    SetTextureMipmapLimitSettings(groupName: string, textureMipmapLimitSettings: TextureMipmapLimitSettings): void;
+    TryExcludePlatformAt(buildTargetGroupName: string, index: number, error: unknown): boolean;
+    TryIncludePlatformAt(buildTargetGroupName: string, index: number, error: unknown): boolean;
+
+    readonly activeQualityLevelChanged: MonoSignal<number, number>;
+}
+declare const QualitySettings: QualitySettingsConstructor;
+    
+interface GraphicsSettings extends Object {
+
+
+
+
+
+}
+    
+interface RenderPipelineGlobalSettings extends ScriptableObject, ISerializationCallbackReceiver {
+
+
+
+    /**
+     * Editor-only function that initializes the RenderPipelineGlobalSettings.
+     * @param source RenderPipelineGlobalSettings that Unity will copy values from. Optional.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RenderPipelineGlobalSettings.Initialize.html | Rendering.RenderPipelineGlobalSettings.Initialize}
+     */
+    Initialize(source: RenderPipelineGlobalSettings): void;
+    OnAfterDeserialize(): void;
+    OnBeforeSerialize(): void;
+
+
+}
+    
+interface IRenderPipelineGraphicsSettings {
+    /**
+     * The current version of this settings.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.IRenderPipelineGraphicsSettings-version.html | Rendering.IRenderPipelineGraphicsSettings.version}
+     */
+    readonly version: number;
+    /**
+     * If the setting is available in player build.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.IRenderPipelineGraphicsSettings-isAvailableInPlayerBuild.html | Rendering.IRenderPipelineGraphicsSettings.isAvailableInPlayerBuild}
+     */
+    readonly isAvailableInPlayerBuild: boolean;
+
+
+
+    /**
+     * Optional method to perform custom reset logic.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.IRenderPipelineGraphicsSettings.Reset.html | Rendering.IRenderPipelineGraphicsSettings.Reset}
+     */
+    Reset(): void;
+
+
+}
+    
+interface GraphicsSettingsConstructor {
+    /**
+     * Transparent object sorting mode.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.GraphicsSettings-transparencySortMode.html | Rendering.GraphicsSettings.transparencySortMode}
+     */
+    transparencySortMode: TransparencySortMode;
+    /**
+     * An axis that describes the direction along which the distances of objects are measured for the purpose of sorting.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.GraphicsSettings-transparencySortAxis.html | Rendering.GraphicsSettings.transparencySortAxis}
+     */
+    transparencySortAxis: Vector3;
+    /**
+     * Is the current render pipeline capable of rendering direct lighting for rectangular area Lights?
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.GraphicsSettings-realtimeDirectRectangularAreaLights.html | Rendering.GraphicsSettings.realtimeDirectRectangularAreaLights}
+     */
+    realtimeDirectRectangularAreaLights: boolean;
+    /**
+     * If this is true, Light intensity is multiplied against linear color values. If it is false, gamma color values are used.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.GraphicsSettings-lightsUseLinearIntensity.html | Rendering.GraphicsSettings.lightsUseLinearIntensity}
+     */
+    lightsUseLinearIntensity: boolean;
+    /**
+     * Whether to use a Light's color temperature when calculating the final color of that Light.&quot;
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.GraphicsSettings-lightsUseColorTemperature.html | Rendering.GraphicsSettings.lightsUseColorTemperature}
+     */
+    lightsUseColorTemperature: boolean;
+    /**
+     * Stores the default value for the GateFit property of newly created Cameras.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.GraphicsSettings-defaultGateFitMode.html | Rendering.GraphicsSettings.defaultGateFitMode}
+     */
+    defaultGateFitMode: GateFitMode;
+    /**
+     * Enable/Disable SRP batcher (experimental) at runtime.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.GraphicsSettings-useScriptableRenderPipelineBatching.html | Rendering.GraphicsSettings.useScriptableRenderPipelineBatching}
+     */
+    useScriptableRenderPipelineBatching: boolean;
+    /**
+     * If this is true, a log entry is made each time a shader is compiled at application runtime.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.GraphicsSettings-logWhenShaderIsCompiled.html | Rendering.GraphicsSettings.logWhenShaderIsCompiled}
+     */
+    logWhenShaderIsCompiled: boolean;
+    /**
+     * Disables the built-in update loop for Custom Render Textures, so that you can write your own update loop.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.GraphicsSettings-disableBuiltinCustomRenderTextureUpdate.html | Rendering.GraphicsSettings.disableBuiltinCustomRenderTextureUpdate}
+     */
+    disableBuiltinCustomRenderTextureUpdate: boolean;
+    /**
+     * If and when to include video shaders in the build.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.GraphicsSettings-videoShadersIncludeMode.html | Rendering.GraphicsSettings.videoShadersIncludeMode}
+     */
+    videoShadersIncludeMode: VideoShadersIncludeMode;
+    /**
+     * Defines the way Unity chooses a probe to light a Renderer that is lit by Light Probes but positioned outside the bounds of the Light Probe tetrahedral hull.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.GraphicsSettings-lightProbeOutsideHullStrategy.html | Rendering.GraphicsSettings.lightProbeOutsideHullStrategy}
+     */
+    lightProbeOutsideHullStrategy: LightProbeOutsideHullStrategy;
+    /**
+     * The RenderPipelineAsset that defines the active render pipeline for the current quality level.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.GraphicsSettings-currentRenderPipeline.html | Rendering.GraphicsSettings.currentRenderPipeline}
+     */
+    readonly currentRenderPipeline: RenderPipelineAsset;
+    /**
+     * If the value is true, a Scriptable Render Pipeline is active.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.GraphicsSettings-isScriptableRenderPipelineEnabled.html | Rendering.GraphicsSettings.isScriptableRenderPipelineEnabled}
+     */
+    readonly isScriptableRenderPipelineEnabled: boolean;
+    /**
+     * The type of the currently active RenderPipelineAsset, or null if there's no currently active Asset.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.GraphicsSettings-currentRenderPipelineAssetType.html | Rendering.GraphicsSettings.currentRenderPipelineAssetType}
+     */
+    readonly currentRenderPipelineAssetType: unknown;
+    /**
+     * The RenderPipelineAsset that defines the default render pipeline.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.GraphicsSettings-defaultRenderPipeline.html | Rendering.GraphicsSettings.defaultRenderPipeline}
+     */
+    defaultRenderPipeline: RenderPipelineAsset;
+    /**
+     * An array containing the RenderPipelineAsset instances that describe the default render pipeline and any quality level overrides.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.GraphicsSettings-allConfiguredRenderPipelines.html | Rendering.GraphicsSettings.allConfiguredRenderPipelines}
+     */
+    readonly allConfiguredRenderPipelines: Readonly<RenderPipelineAsset[]>;
+    /**
+     * Enable or disable using the camera position as the reference point for culling lights.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.GraphicsSettings-cameraRelativeLightCulling.html | Rendering.GraphicsSettings.cameraRelativeLightCulling}
+     */
+    cameraRelativeLightCulling: boolean;
+    /**
+     * Enable or disable using the camera position as the reference point for culling shadows.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.GraphicsSettings-cameraRelativeShadowCulling.html | Rendering.GraphicsSettings.cameraRelativeShadowCulling}
+     */
+    cameraRelativeShadowCulling: boolean;
+
+
+
+
+    ForEach(callback: unknown): void;
+    GetCustomShader(type: BuiltinShaderType): Shader;
+    GetGraphicsSettings(): Object;
+    GetRenderPipelineSettings<T>(): T;
+    GetSettingsForRenderPipeline<T>(): RenderPipelineGlobalSettings;
+    GetSettingsForRenderPipeline(renderPipelineType: unknown): RenderPipelineGlobalSettings;
+    GetShaderMode(type: BuiltinShaderType): BuiltinShaderMode;
+    HasShaderDefine(tier: GraphicsTier, defineHash: BuiltinShaderDefine): boolean;
+    HasShaderDefine(defineHash: BuiltinShaderDefine): boolean;
+    SetCustomShader(type: BuiltinShaderType, shader: Shader): void;
+    SetShaderMode(type: BuiltinShaderType, mode: BuiltinShaderMode): void;
+    Subscribe<TChild>(callback: unknown): void;
+    TryGetCurrentRenderPipelineGlobalSettings(asset: unknown): boolean;
+    TryGetRenderPipelineSettings<T>(settings: unknown): boolean;
+    Unsubscribe<TChild>(callback: unknown): void;
+
+}
+declare const GraphicsSettings: GraphicsSettingsConstructor;
+    
+interface IGPUResidentRenderPipeline {
+    readonly gpuResidentDrawerSettings: GPUResidentDrawerSettings;
+    gpuResidentDrawerMode: GPUResidentDrawerMode;
+
+
+
+    IsGPUResidentDrawerSupportedBySRP(logReason: boolean): boolean;
+    IsGPUResidentDrawerSupportedBySRP(message: Readonly<string[]>, severity: unknown): boolean;
+
+
+}
+    
+interface GPUResidentDrawerSettings {
+    mode: GPUResidentDrawerMode;
+    supportDitheringCrossFade: boolean;
+    enableOcclusionCulling: boolean;
+    allowInEditMode: boolean;
+    smallMeshScreenPercentage: number;
+    pickingShader: Shader;
+    errorShader: Shader;
+    loadingShader: Shader;
+
+
+
+
+
+}
+    
+interface IGPUResidentRenderPipelineConstructor {
+
+
+
+
+    IsGPUResidentDrawerEnabled(): boolean;
+    IsGPUResidentDrawerSupportedByProjectConfiguration(logReason: boolean): boolean;
+    ReinitializeGPUResidentDrawer(): void;
+
+}
+declare const IGPUResidentRenderPipeline: IGPUResidentRenderPipelineConstructor;
+    
+interface IRenderGraphEnabledRenderPipeline {
+    readonly isImmediateModeSupported: boolean;
+
+
+
+
+
+}
+    
+interface IProbeVolumeEnabledRenderPipeline {
+    readonly supportProbeVolume: boolean;
+    readonly maxSHBands: ProbeVolumeSHBands;
+
+
+
+
+
+}
+    
+interface ISTPEnabledRenderPipeline {
+    readonly isStpUsed: boolean;
+
+
+
+
+
+}
+    
+interface RenderPipeline {
+    /**
+     * Returns true when the RenderPipeline is invalid or destroyed.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RenderPipeline-disposed.html | Rendering.RenderPipeline.disposed}
+     */
+    readonly disposed: boolean;
+    readonly defaultSettings: RenderPipelineGlobalSettings;
+
+
+
+
+
+}
+    
+interface RenderPipelineConstructor {
+
+
+
+
+    SubmitRenderRequest<RequestData>(camera: Camera, data: RequestData): void;
+    SupportsRenderRequest<RequestData>(camera: Camera, data: RequestData): boolean;
+
+}
+declare const RenderPipeline: RenderPipelineConstructor;
+    
+interface UniversalRenderPipeline extends RenderPipeline {
+    readonly defaultSettings: RenderPipelineGlobalSettings;
+
+
+
+    ToString(): string;
+
+
+}
+    
+interface RenderPipelineAsset<TRenderPipeline extends RenderPipeline> extends RenderPipelineAsset {
+    readonly pipelineType: unknown;
+    readonly renderPipelineShaderTag: string;
+
+
+
+
+
+}
+    
+interface UniversalRenderPipelineAsset extends RenderPipelineAsset<UniversalRenderPipeline>, ISerializationCallbackReceiver, IGPUResidentRenderPipeline, IRenderGraphEnabledRenderPipeline, IProbeVolumeEnabledRenderPipeline, ISTPEnabledRenderPipeline {
+    readonly rendererDataList: unknown;
+    readonly renderers: unknown;
+    readonly isImmediateModeSupported: boolean;
+    readonly scriptableRenderer: ScriptableRenderer;
+    supportsCameraDepthTexture: boolean;
+    supportsCameraOpaqueTexture: boolean;
+    readonly opaqueDownsampling: Downsampling;
+    readonly supportsTerrainHoles: boolean;
+    storeActionsOptimization: StoreActionsOptimization;
+    supportsHDR: boolean;
+    hdrColorBufferPrecision: HDRColorBufferPrecision;
+    msaaSampleCount: number;
+    renderScale: number;
+    readonly enableLODCrossFade: boolean;
+    readonly lodCrossFadeDitheringType: LODCrossFadeDitheringType;
+    upscalingFilter: UpscalingFilterSelection;
+    fsrOverrideSharpness: boolean;
+    fsrSharpness: number;
+    readonly shEvalMode: ShEvalMode;
+    readonly lightProbeSystem: LightProbeSystem;
+    readonly probeVolumeMemoryBudget: ProbeVolumeTextureMemoryBudget;
+    readonly probeVolumeBlendingMemoryBudget: ProbeVolumeBlendingTextureMemoryBudget;
+    readonly supportProbeVolumeGPUStreaming: boolean;
+    readonly supportProbeVolumeDiskStreaming: boolean;
+    readonly supportProbeVolumeScenarios: boolean;
+    readonly supportProbeVolumeScenarioBlending: boolean;
+    readonly probeVolumeSHBands: ProbeVolumeSHBands;
+    readonly mainLightRenderingMode: LightRenderingMode;
+    readonly supportsMainLightShadows: boolean;
+    mainLightShadowmapResolution: number;
+    readonly additionalLightsRenderingMode: LightRenderingMode;
+    maxAdditionalLightsCount: number;
+    readonly supportsAdditionalLightShadows: boolean;
+    additionalLightsShadowmapResolution: number;
+    readonly additionalLightsShadowResolutionTierLow: number;
+    readonly additionalLightsShadowResolutionTierMedium: number;
+    readonly additionalLightsShadowResolutionTierHigh: number;
+    readonly reflectionProbeBlending: boolean;
+    readonly reflectionProbeBoxProjection: boolean;
+    shadowDistance: number;
+    shadowCascadeCount: number;
+    cascade2Split: number;
+    cascade3Split: Vector2;
+    cascade4Split: Vector3;
+    cascadeBorder: number;
+    shadowDepthBias: number;
+    shadowNormalBias: number;
+    readonly supportsSoftShadows: boolean;
+    supportsDynamicBatching: boolean;
+    readonly supportsMixedLighting: boolean;
+    readonly supportsLightCookies: boolean;
+    readonly useRenderingLayers: boolean;
+    readonly volumeFrameworkUpdateMode: VolumeFrameworkUpdateMode;
+    volumeProfile: VolumeProfile;
+    useSRPBatcher: boolean;
+    colorGradingMode: ColorGradingMode;
+    colorGradingLutSize: number;
+    readonly allowPostProcessAlphaOutput: boolean;
+    readonly useFastSRGBLinearConversion: boolean;
+    readonly supportScreenSpaceLensFlare: boolean;
+    readonly supportDataDrivenLensFlare: boolean;
+    useAdaptivePerformance: boolean;
+    conservativeEnclosingSphere: boolean;
+    numIterationsEnclosingSphere: number;
+    readonly renderPipelineShaderTag: string;
+    gpuResidentDrawerMode: GPUResidentDrawerMode;
+    gpuResidentDrawerEnableOcclusionCullingInCameras: boolean;
+    smallMeshScreenPercentage: number;
+    readonly supportProbeVolume: boolean;
+    readonly maxSHBands: ProbeVolumeSHBands;
+    readonly isStpUsed: boolean;
+    readonly defaultMaterial: Material;
+    readonly defaultParticleMaterial: Material;
+    readonly defaultLineMaterial: Material;
+    readonly defaultTerrainMaterial: Material;
+    readonly default2DMaterial: Material;
+    readonly default2DMaskMaterial: Material;
+    readonly decalMaterial: Material;
+    readonly defaultShader: Shader;
+    readonly autodeskInteractiveShader: Shader;
+    readonly autodeskInteractiveTransparentShader: Shader;
+    readonly autodeskInteractiveMaskedShader: Shader;
+    readonly terrainDetailLitShader: Shader;
+    readonly terrainDetailGrassShader: Shader;
+    readonly terrainDetailGrassBillboardShader: Shader;
+    readonly defaultSpeedTree7Shader: Shader;
+    readonly defaultSpeedTree8Shader: Shader;
+    readonly defaultSpeedTree9Shader: Shader;
+
+
+
+    GetRenderer(index: number): ScriptableRenderer;
+    IsGPUResidentDrawerSupportedBySRP(message: Readonly<string[]>, severty: unknown): boolean;
+    LoadBuiltinRendererData(type: RendererType): ScriptableRendererData;
+    OnAfterDeserialize(): void;
+    OnBeforeSerialize(): void;
+
+
+}
+    
+interface ScriptableRenderer {
+    supportedRenderingFeatures: RenderingFeatures;
+    unsupportedGraphicsDeviceTypes: Readonly<number[]>;
+    readonly supportsGPUOcclusion: boolean;
+
+
+
+    Dispose(): void;
+    EnqueuePass(pass: ScriptableRenderPass): void;
+    FinishRendering(cmd: CommandBuffer): void;
+    OnBeginRenderGraphFrame(): void;
+    OnEndRenderGraphFrame(): void;
+    SetupCullingParameters(cullingParameters: unknown, cameraData: unknown): void;
+    SupportedCameraStackingTypes(): number;
+    SupportsCameraStackingType(cameraRenderType: CameraRenderType): boolean;
+
+
+}
+    
+interface RenderingFeatures {
+    msaa: boolean;
+
+
+
+
+
+}
+    
+interface RenderingFeaturesConstructor {
+
+
+    new(): RenderingFeatures;
+
+
+
+}
+declare const RenderingFeatures: RenderingFeaturesConstructor;
+    
+interface IRenderGraphRecorder {
+
+
+
+    RecordRenderGraph(renderGraph: RenderGraph, frameData: ContextContainer): void;
+
+
+}
+    
+interface RenderGraph {
+    nativeRenderPassesEnabled: boolean;
+    readonly name: string;
+    readonly defaultResources: RenderGraphDefaultResources;
+
+
+
+    AddComputePass<PassData>(passName: string, passData: unknown, file: string, line: number): IComputeRenderGraphBuilder;
+    AddComputePass<PassData>(passName: string, passData: unknown, sampler: ProfilingSampler, file: string, line: number): IComputeRenderGraphBuilder;
+    AddRasterRenderPass<PassData>(passName: string, passData: unknown, file: string, line: number): IRasterRenderGraphBuilder;
+    AddRasterRenderPass<PassData>(passName: string, passData: unknown, sampler: ProfilingSampler, file: string, line: number): IRasterRenderGraphBuilder;
+    AddRenderPass<PassData>(passName: string, passData: unknown, sampler: ProfilingSampler, file: string, line: number): RenderGraphBuilder;
+    AddRenderPass<PassData>(passName: string, passData: unknown, file: string, line: number): RenderGraphBuilder;
+    AddUnsafePass<PassData>(passName: string, passData: unknown, file: string, line: number): IUnsafeRenderGraphBuilder;
+    AddUnsafePass<PassData>(passName: string, passData: unknown, sampler: ProfilingSampler, file: string, line: number): IUnsafeRenderGraphBuilder;
+    BeginProfilingSampler(sampler: ProfilingSampler, file: string, line: number): void;
+    BeginRecording(parameters: unknown): void;
+    Cleanup(): void;
+    CreateBuffer(desc: unknown): BufferHandle;
+    CreateBuffer(graphicsBuffer: unknown): BufferHandle;
+    CreateGizmoRendererList(camera: unknown, gizmoSubset: unknown): RendererListHandle;
+    CreateRendererList(desc: unknown): RendererListHandle;
+    CreateRendererList(desc: unknown): RendererListHandle;
+    CreateShadowRendererList(shadowDrawingSettings: unknown): RendererListHandle;
+    CreateSharedTexture(desc: unknown, explicitRelease: boolean): TextureHandle;
+    CreateSkyboxRendererList(camera: unknown): RendererListHandle;
+    CreateSkyboxRendererList(camera: unknown, projectionMatrix: Matrix4x4, viewMatrix: Matrix4x4): RendererListHandle;
+    CreateSkyboxRendererList(camera: unknown, projectionMatrixL: Matrix4x4, viewMatrixL: Matrix4x4, projectionMatrixR: Matrix4x4, viewMatrixR: Matrix4x4): RendererListHandle;
+    CreateTexture(desc: unknown): TextureHandle;
+    CreateTexture(texture: TextureHandle): TextureHandle;
+    CreateTextureIfInvalid(desc: unknown, texture: unknown): void;
+    CreateUIOverlayRendererList(camera: unknown): RendererListHandle;
+    CreateUIOverlayRendererList(camera: unknown, uiSubset: unknown): RendererListHandle;
+    CreateWireOverlayRendererList(camera: unknown): RendererListHandle;
+    EndFrame(): void;
+    EndProfilingSampler(sampler: ProfilingSampler, file: string, line: number): void;
+    EndRecordingAndExecute(): void;
+    GetBufferDesc(graphicsBuffer: unknown): BufferDesc;
+    GetRenderTargetInfo(texture: TextureHandle): RenderTargetInfo;
+    GetTextureDesc(texture: TextureHandle): TextureDesc;
+    ImportBackbuffer(rt: RenderTargetIdentifier, info: RenderTargetInfo, importParams: ImportResourceParams): TextureHandle;
+    ImportBackbuffer(rt: RenderTargetIdentifier): TextureHandle;
+    ImportBuffer(graphicsBuffer: GraphicsBuffer, forceRelease: boolean): BufferHandle;
+    ImportRayTracingAccelerationStructure(accelStruct: unknown, name: string): RayTracingAccelerationStructureHandle;
+    ImportTexture(rt: RTHandle): TextureHandle;
+    ImportTexture(rt: RTHandle, importParams: ImportResourceParams): TextureHandle;
+    ImportTexture(rt: RTHandle, info: RenderTargetInfo, importParams: ImportResourceParams): TextureHandle;
+    RefreshSharedTextureDesc(handle: TextureHandle, desc: unknown): void;
+    RegisterDebug(panel: Panel): void;
+    ReleaseSharedTexture(texture: TextureHandle): void;
+    UnRegisterDebug(): void;
+
+
+}
+    
+interface RenderGraphDefaultResources {
+    readonly blackTexture: TextureHandle;
+    readonly whiteTexture: TextureHandle;
+    readonly clearTextureXR: TextureHandle;
+    readonly magentaTextureXR: TextureHandle;
+    readonly blackTextureXR: TextureHandle;
+    readonly blackTextureArrayXR: TextureHandle;
+    readonly blackUIntTextureXR: TextureHandle;
+    readonly blackTexture3DXR: TextureHandle;
+    readonly whiteTextureXR: TextureHandle;
+    readonly defaultShadowTexture: TextureHandle;
+
+
+
+
+
+}
+    
+interface TextureHandle {
+
+
+
+    GetDescriptor(renderGraph: RenderGraph): TextureDesc;
+    IsValid(): boolean;
+
+
+}
+    
+interface TextureDesc {
+    sizeMode: TextureSizeMode;
+    width: number;
+    height: number;
+    slices: number;
+    scale: Vector2;
+    func: ScaleFunc;
+    format: GraphicsFormat;
+    filterMode: FilterMode;
+    wrapMode: TextureWrapMode;
+    dimension: TextureDimension;
+    enableRandomWrite: boolean;
+    useMipMap: boolean;
+    autoGenerateMips: boolean;
+    isShadowMap: boolean;
+    anisoLevel: number;
+    mipMapBias: number;
+    msaaSamples: MSAASamples;
+    bindTextureMS: boolean;
+    useDynamicScale: boolean;
+    useDynamicScaleExplicit: boolean;
+    memoryless: RenderTextureMemoryless;
+    vrUsage: VRTextureUsage;
+    name: string;
+    fastMemoryDesc: FastMemoryDesc;
+    fallBackToBlackTexture: boolean;
+    disableFallBackToImportedTexture: boolean;
+    clearBuffer: boolean;
+    clearColor: Color;
+    discardBuffer: boolean;
+    depthBufferBits: DepthBits;
+    colorFormat: GraphicsFormat;
+
+
+
+    CalculateFinalDimensions(): Vector2Int;
+    GetHashCode(): number;
+
+
+}
+    
+interface ScaleFunc {
+
+
+
+    BeginInvoke(size: Vector2Int, callback: unknown, object: unknown): unknown;
+    EndInvoke(result: unknown): Vector2Int;
+    Invoke(size: Vector2Int): Vector2Int;
+
+
+}
+    
+interface ScaleFuncConstructor {
+
+
+    new(object: unknown, method: unknown): ScaleFunc;
+
+
+
+}
+declare const ScaleFunc: ScaleFuncConstructor;
+    
+interface FastMemoryDesc {
+    inFastMemory: boolean;
+    flags: FastMemoryFlags;
+    residencyFraction: number;
+
+
+
+
+
+}
+    
+interface TextureDescConstructor {
+
+
+    new(width: number, height: number, dynamicResolution: boolean, xrReady: boolean): TextureDesc;
+    new(scale: Vector2, dynamicResolution: boolean, xrReady: boolean): TextureDesc;
+    new(func: ScaleFunc, dynamicResolution: boolean, xrReady: boolean): TextureDesc;
+    new(input: TextureDesc): TextureDesc;
+    new(input: RenderTextureDescriptor): TextureDesc;
+    new(input: RenderTexture): TextureDesc;
+
+
+
+}
+declare const TextureDesc: TextureDescConstructor;
+    
+interface TextureHandleConstructor {
+    readonly nullHandle: TextureHandle;
+
+
+
+
+
+}
+declare const TextureHandle: TextureHandleConstructor;
+    
+interface IBaseRenderGraphBuilder {
+
+
+
+    AllowGlobalStateModification(value: boolean): void;
+    AllowPassCulling(value: boolean): void;
+    CreateTransientBuffer(desc: unknown): BufferHandle;
+    CreateTransientBuffer(computebuffer: unknown): BufferHandle;
+    CreateTransientTexture(desc: unknown): TextureHandle;
+    CreateTransientTexture(texture: unknown): TextureHandle;
+    EnableAsyncCompute(value: boolean): void;
+    EnableFoveatedRasterization(value: boolean): void;
+    SetGlobalTextureAfterPass(input: unknown, propertyId: number): void;
+    UseAllGlobalTextures(enable: boolean): void;
+    UseBuffer(input: unknown, flags: AccessFlags): BufferHandle;
+    UseGlobalTexture(propertyId: number, flags: AccessFlags): void;
+    UseRendererList(input: unknown): void;
+    UseTexture(input: unknown, flags: AccessFlags): void;
+
+
+}
+    
+interface BufferHandle {
+
+
+
+    IsValid(): boolean;
+
+
+}
+    
+interface BufferHandleConstructor {
+    readonly nullHandle: BufferHandle;
+
+
+
+
+
+}
+declare const BufferHandle: BufferHandleConstructor;
+    
+interface IComputeRenderGraphBuilder extends IBaseRenderGraphBuilder {
+
+
+
+    SetRenderFunc<PassData>(renderFunc: BaseRenderFunc<PassData, ComputeGraphContext>): void;
+
+
+}
+    
+interface IDerivedRendergraphContext {
+
+
+
+    FromInternalContext(context: InternalRenderGraphContext): void;
+
+
+}
+    
+interface InternalRenderGraphContext {
+
+
+
+
+
+}
+    
+interface InternalRenderGraphContextConstructor {
+
+
+    new(): InternalRenderGraphContext;
+
+
+
+}
+declare const InternalRenderGraphContext: InternalRenderGraphContextConstructor;
+    
+interface ComputeGraphContext extends IDerivedRendergraphContext {
+    cmd: ComputeCommandBuffer;
+    readonly defaultResources: RenderGraphDefaultResources;
+    readonly renderGraphPool: RenderGraphObjectPool;
+
+
+
+    FromInternalContext(context: InternalRenderGraphContext): void;
+
+
+}
+    
+interface IBaseCommandBuffer {
+
+
+
+    BeginSample(name: string): void;
+    BeginSample(sampler: CustomSampler): void;
+    BeginSample(marker: ProfilerMarker): void;
+    DisableKeyword(keyword: unknown): void;
+    DisableKeyword(material: Material, keyword: unknown): void;
+    DisableKeyword(computeShader: ComputeShader, keyword: unknown): void;
+    DisableScissorRect(): void;
+    DisableShaderKeyword(keyword: string): void;
+    EnableKeyword(keyword: unknown): void;
+    EnableKeyword(material: Material, keyword: unknown): void;
+    EnableKeyword(computeShader: ComputeShader, keyword: unknown): void;
+    EnableScissorRect(scissor: Rect): void;
+    EnableShaderKeyword(keyword: string): void;
+    EndSample(name: string): void;
+    EndSample(sampler: CustomSampler): void;
+    EndSample(marker: ProfilerMarker): void;
+    IncrementUpdateCount(dest: RenderTargetIdentifier): void;
+    InvokeOnRenderObjectCallbacks(): void;
+    IssuePluginCustomBlit(callback: unknown, command: number, source: RenderTargetIdentifier, dest: RenderTargetIdentifier, commandParam: number, commandFlags: number): void;
+    IssuePluginCustomTextureUpdateV2(callback: unknown, targetTexture: Texture, userData: number): void;
+    IssuePluginEvent(callback: unknown, eventID: number): void;
+    IssuePluginEventAndData(callback: unknown, eventID: number, data: unknown): void;
+    MarkLateLatchMatrixShaderPropertyID(matrixPropertyType: CameraLateLatchMatrixType, shaderPropertyID: number): void;
+    SetGlobalBuffer(name: string, value: ComputeBuffer): void;
+    SetGlobalBuffer(nameID: number, value: ComputeBuffer): void;
+    SetGlobalBuffer(name: string, value: GraphicsBuffer): void;
+    SetGlobalBuffer(nameID: number, value: GraphicsBuffer): void;
+    SetGlobalColor(nameID: number, value: Color): void;
+    SetGlobalColor(name: string, value: Color): void;
+    SetGlobalConstantBuffer(buffer: ComputeBuffer, nameID: number, offset: number, size: number): void;
+    SetGlobalConstantBuffer(buffer: ComputeBuffer, name: string, offset: number, size: number): void;
+    SetGlobalConstantBuffer(buffer: GraphicsBuffer, nameID: number, offset: number, size: number): void;
+    SetGlobalConstantBuffer(buffer: GraphicsBuffer, name: string, offset: number, size: number): void;
+    SetGlobalDepthBias(bias: number, slopeBias: number): void;
+    SetGlobalFloat(nameID: number, value: number): void;
+    SetGlobalFloat(name: string, value: number): void;
+    SetGlobalFloatArray(nameID: number, values: Readonly<number[]>): void;
+    SetGlobalFloatArray(propertyName: string, values: Readonly<number[]>): void;
+    SetGlobalFloatArray(nameID: number, values: Readonly<number[]>): void;
+    SetGlobalFloatArray(propertyName: string, values: Readonly<number[]>): void;
+    SetGlobalInt(nameID: number, value: number): void;
+    SetGlobalInt(name: string, value: number): void;
+    SetGlobalInteger(nameID: number, value: number): void;
+    SetGlobalInteger(name: string, value: number): void;
+    SetGlobalMatrix(nameID: number, value: Matrix4x4): void;
+    SetGlobalMatrix(name: string, value: Matrix4x4): void;
+    SetGlobalMatrixArray(nameID: number, values: Readonly<Matrix4x4[]>): void;
+    SetGlobalMatrixArray(propertyName: string, values: Readonly<Matrix4x4[]>): void;
+    SetGlobalMatrixArray(nameID: number, values: Readonly<Matrix4x4[]>): void;
+    SetGlobalMatrixArray(propertyName: string, values: Readonly<Matrix4x4[]>): void;
+    SetGlobalTexture(name: string, value: TextureHandle): void;
+    SetGlobalTexture(nameID: number, value: TextureHandle): void;
+    SetGlobalTexture(name: string, value: TextureHandle, element: RenderTextureSubElement): void;
+    SetGlobalTexture(nameID: number, value: TextureHandle, element: RenderTextureSubElement): void;
+    SetGlobalVector(nameID: number, value: Vector4): void;
+    SetGlobalVector(name: string, value: Vector4): void;
+    SetGlobalVectorArray(nameID: number, values: Readonly<Vector4[]>): void;
+    SetGlobalVectorArray(propertyName: string, values: Readonly<Vector4[]>): void;
+    SetGlobalVectorArray(nameID: number, values: Readonly<Vector4[]>): void;
+    SetGlobalVectorArray(propertyName: string, values: Readonly<Vector4[]>): void;
+    SetInvertCulling(invertCulling: boolean): void;
+    SetKeyword(keyword: unknown, value: boolean): void;
+    SetKeyword(material: Material, keyword: unknown, value: boolean): void;
+    SetKeyword(computeShader: ComputeShader, keyword: unknown, value: boolean): void;
+    SetLateLatchProjectionMatrices(projectionMat: Readonly<Matrix4x4[]>): void;
+    SetShadowSamplingMode(shadowmap: RenderTargetIdentifier, mode: ShadowSamplingMode): void;
+    SetSinglePassStereo(mode: SinglePassStereoMode): void;
+    SetupCameraProperties(camera: Camera): void;
+    SetViewport(pixelRect: Rect): void;
+    SetViewProjectionMatrices(view: Matrix4x4, proj: Matrix4x4): void;
+    UnmarkLateLatchMatrix(matrixPropertyType: CameraLateLatchMatrixType): void;
+
+
+}
+    
+interface IComputeCommandBuffer extends IBaseCommandBuffer {
+
+
+
+    BuildRayTracingAccelerationStructure(accelerationStructure: RayTracingAccelerationStructure): void;
+    BuildRayTracingAccelerationStructure(accelerationStructure: RayTracingAccelerationStructure, relativeOrigin: Vector3): void;
+    CopyCounterValue(src: ComputeBuffer, dst: ComputeBuffer, dstOffsetBytes: number): void;
+    CopyCounterValue(src: GraphicsBuffer, dst: ComputeBuffer, dstOffsetBytes: number): void;
+    CopyCounterValue(src: ComputeBuffer, dst: GraphicsBuffer, dstOffsetBytes: number): void;
+    CopyCounterValue(src: GraphicsBuffer, dst: GraphicsBuffer, dstOffsetBytes: number): void;
+    DispatchCompute(computeShader: ComputeShader, kernelIndex: number, threadGroupsX: number, threadGroupsY: number, threadGroupsZ: number): void;
+    DispatchCompute(computeShader: ComputeShader, kernelIndex: number, indirectBuffer: ComputeBuffer, argsOffset: number): void;
+    DispatchCompute(computeShader: ComputeShader, kernelIndex: number, indirectBuffer: GraphicsBuffer, argsOffset: number): void;
+    DispatchRays(rayTracingShader: RayTracingShader, rayGenName: string, width: number, height: number, depth: number, camera: Camera): void;
+    SetBufferCounterValue(buffer: ComputeBuffer, counterValue: number): void;
+    SetBufferCounterValue(buffer: GraphicsBuffer, counterValue: number): void;
+    SetBufferData(buffer: ComputeBuffer, data: unknown): void;
+    SetBufferData<T>(buffer: ComputeBuffer, data: Readonly<T[]>): void;
+    SetBufferData<T>(buffer: ComputeBuffer, data: Readonly<T[]>): void;
+    SetBufferData(buffer: ComputeBuffer, data: unknown, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
+    SetBufferData<T>(buffer: ComputeBuffer, data: Readonly<T[]>, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
+    SetBufferData<T>(buffer: ComputeBuffer, data: Readonly<T[]>, nativeBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
+    SetBufferData(buffer: GraphicsBuffer, data: unknown): void;
+    SetBufferData<T>(buffer: GraphicsBuffer, data: Readonly<T[]>): void;
+    SetBufferData<T>(buffer: GraphicsBuffer, data: Readonly<T[]>): void;
+    SetBufferData(buffer: GraphicsBuffer, data: unknown, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
+    SetBufferData<T>(buffer: GraphicsBuffer, data: Readonly<T[]>, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
+    SetBufferData<T>(buffer: GraphicsBuffer, data: Readonly<T[]>, nativeBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
+    SetComputeBufferParam(computeShader: ComputeShader, kernelIndex: number, nameID: number, buffer: ComputeBuffer): void;
+    SetComputeBufferParam(computeShader: ComputeShader, kernelIndex: number, name: string, buffer: ComputeBuffer): void;
+    SetComputeBufferParam(computeShader: ComputeShader, kernelIndex: number, nameID: number, bufferHandle: GraphicsBufferHandle): void;
+    SetComputeBufferParam(computeShader: ComputeShader, kernelIndex: number, name: string, bufferHandle: GraphicsBufferHandle): void;
+    SetComputeBufferParam(computeShader: ComputeShader, kernelIndex: number, nameID: number, buffer: GraphicsBuffer): void;
+    SetComputeBufferParam(computeShader: ComputeShader, kernelIndex: number, name: string, buffer: GraphicsBuffer): void;
+    SetComputeConstantBufferParam(computeShader: ComputeShader, nameID: number, buffer: ComputeBuffer, offset: number, size: number): void;
+    SetComputeConstantBufferParam(computeShader: ComputeShader, name: string, buffer: ComputeBuffer, offset: number, size: number): void;
+    SetComputeConstantBufferParam(computeShader: ComputeShader, nameID: number, buffer: GraphicsBuffer, offset: number, size: number): void;
+    SetComputeConstantBufferParam(computeShader: ComputeShader, name: string, buffer: GraphicsBuffer, offset: number, size: number): void;
+    SetComputeFloatParam(computeShader: ComputeShader, nameID: number, val: number): void;
+    SetComputeFloatParam(computeShader: ComputeShader, name: string, val: number): void;
+    SetComputeFloatParams(computeShader: ComputeShader, name: string, values: Readonly<number[]>): void;
+    SetComputeFloatParams(computeShader: ComputeShader, nameID: number, values: Readonly<number[]>): void;
+    SetComputeIntParam(computeShader: ComputeShader, nameID: number, val: number): void;
+    SetComputeIntParam(computeShader: ComputeShader, name: string, val: number): void;
+    SetComputeIntParams(computeShader: ComputeShader, name: string, values: Readonly<number[]>): void;
+    SetComputeIntParams(computeShader: ComputeShader, nameID: number, values: Readonly<number[]>): void;
+    SetComputeMatrixArrayParam(computeShader: ComputeShader, nameID: number, values: Readonly<Matrix4x4[]>): void;
+    SetComputeMatrixArrayParam(computeShader: ComputeShader, name: string, values: Readonly<Matrix4x4[]>): void;
+    SetComputeMatrixParam(computeShader: ComputeShader, nameID: number, val: Matrix4x4): void;
+    SetComputeMatrixParam(computeShader: ComputeShader, name: string, val: Matrix4x4): void;
+    SetComputeTextureParam(computeShader: ComputeShader, kernelIndex: number, name: string, rt: TextureHandle): void;
+    SetComputeTextureParam(computeShader: ComputeShader, kernelIndex: number, nameID: number, rt: TextureHandle): void;
+    SetComputeTextureParam(computeShader: ComputeShader, kernelIndex: number, name: string, rt: TextureHandle, mipLevel: number): void;
+    SetComputeTextureParam(computeShader: ComputeShader, kernelIndex: number, nameID: number, rt: TextureHandle, mipLevel: number): void;
+    SetComputeTextureParam(computeShader: ComputeShader, kernelIndex: number, name: string, rt: TextureHandle, mipLevel: number, element: RenderTextureSubElement): void;
+    SetComputeTextureParam(computeShader: ComputeShader, kernelIndex: number, nameID: number, rt: TextureHandle, mipLevel: number, element: RenderTextureSubElement): void;
+    SetComputeVectorArrayParam(computeShader: ComputeShader, nameID: number, values: Readonly<Vector4[]>): void;
+    SetComputeVectorArrayParam(computeShader: ComputeShader, name: string, values: Readonly<Vector4[]>): void;
+    SetComputeVectorParam(computeShader: ComputeShader, nameID: number, val: Vector4): void;
+    SetComputeVectorParam(computeShader: ComputeShader, name: string, val: Vector4): void;
+    SetRayTracingAccelerationStructure(rayTracingShader: RayTracingShader, name: string, rayTracingAccelerationStructure: RayTracingAccelerationStructure): void;
+    SetRayTracingAccelerationStructure(rayTracingShader: RayTracingShader, nameID: number, rayTracingAccelerationStructure: RayTracingAccelerationStructure): void;
+    SetRayTracingAccelerationStructure(computeShader: ComputeShader, kernelIndex: number, name: string, rayTracingAccelerationStructure: RayTracingAccelerationStructure): void;
+    SetRayTracingAccelerationStructure(computeShader: ComputeShader, kernelIndex: number, nameID: number, rayTracingAccelerationStructure: RayTracingAccelerationStructure): void;
+    SetRayTracingBufferParam(rayTracingShader: RayTracingShader, name: string, buffer: ComputeBuffer): void;
+    SetRayTracingBufferParam(rayTracingShader: RayTracingShader, nameID: number, buffer: ComputeBuffer): void;
+    SetRayTracingBufferParam(rayTracingShader: RayTracingShader, name: string, buffer: GraphicsBuffer): void;
+    SetRayTracingBufferParam(rayTracingShader: RayTracingShader, nameID: number, buffer: GraphicsBuffer): void;
+    SetRayTracingBufferParam(rayTracingShader: RayTracingShader, name: string, bufferHandle: GraphicsBufferHandle): void;
+    SetRayTracingBufferParam(rayTracingShader: RayTracingShader, nameID: number, bufferHandle: GraphicsBufferHandle): void;
+    SetRayTracingConstantBufferParam(rayTracingShader: RayTracingShader, nameID: number, buffer: ComputeBuffer, offset: number, size: number): void;
+    SetRayTracingConstantBufferParam(rayTracingShader: RayTracingShader, name: string, buffer: ComputeBuffer, offset: number, size: number): void;
+    SetRayTracingConstantBufferParam(rayTracingShader: RayTracingShader, nameID: number, buffer: GraphicsBuffer, offset: number, size: number): void;
+    SetRayTracingConstantBufferParam(rayTracingShader: RayTracingShader, name: string, buffer: GraphicsBuffer, offset: number, size: number): void;
+    SetRayTracingFloatParam(rayTracingShader: RayTracingShader, name: string, val: number): void;
+    SetRayTracingFloatParam(rayTracingShader: RayTracingShader, nameID: number, val: number): void;
+    SetRayTracingFloatParams(rayTracingShader: RayTracingShader, name: string, values: Readonly<number[]>): void;
+    SetRayTracingFloatParams(rayTracingShader: RayTracingShader, nameID: number, values: Readonly<number[]>): void;
+    SetRayTracingIntParam(rayTracingShader: RayTracingShader, name: string, val: number): void;
+    SetRayTracingIntParam(rayTracingShader: RayTracingShader, nameID: number, val: number): void;
+    SetRayTracingIntParams(rayTracingShader: RayTracingShader, name: string, values: Readonly<number[]>): void;
+    SetRayTracingIntParams(rayTracingShader: RayTracingShader, nameID: number, values: Readonly<number[]>): void;
+    SetRayTracingMatrixArrayParam(rayTracingShader: RayTracingShader, name: string, values: Readonly<Matrix4x4[]>): void;
+    SetRayTracingMatrixArrayParam(rayTracingShader: RayTracingShader, nameID: number, values: Readonly<Matrix4x4[]>): void;
+    SetRayTracingMatrixParam(rayTracingShader: RayTracingShader, name: string, val: Matrix4x4): void;
+    SetRayTracingMatrixParam(rayTracingShader: RayTracingShader, nameID: number, val: Matrix4x4): void;
+    SetRayTracingTextureParam(rayTracingShader: RayTracingShader, name: string, rt: TextureHandle): void;
+    SetRayTracingTextureParam(rayTracingShader: RayTracingShader, nameID: number, rt: TextureHandle): void;
+    SetRayTracingVectorArrayParam(rayTracingShader: RayTracingShader, name: string, values: Readonly<Vector4[]>): void;
+    SetRayTracingVectorArrayParam(rayTracingShader: RayTracingShader, nameID: number, values: Readonly<Vector4[]>): void;
+    SetRayTracingVectorParam(rayTracingShader: RayTracingShader, name: string, val: Vector4): void;
+    SetRayTracingVectorParam(rayTracingShader: RayTracingShader, nameID: number, val: Vector4): void;
+
+
+}
+    
+interface BaseCommandBuffer {
+    readonly name: string;
+    readonly sizeInBytes: number;
+
+
+
+
+
+}
+    
+interface ComputeCommandBuffer extends BaseCommandBuffer, IComputeCommandBuffer {
+
+
+
+    BeginSample(name: string): void;
+    BeginSample(sampler: CustomSampler): void;
+    BeginSample(marker: ProfilerMarker): void;
+    BuildRayTracingAccelerationStructure(accelerationStructure: RayTracingAccelerationStructure): void;
+    BuildRayTracingAccelerationStructure(accelerationStructure: RayTracingAccelerationStructure, relativeOrigin: Vector3): void;
+    CopyCounterValue(src: ComputeBuffer, dst: ComputeBuffer, dstOffsetBytes: number): void;
+    CopyCounterValue(src: GraphicsBuffer, dst: ComputeBuffer, dstOffsetBytes: number): void;
+    CopyCounterValue(src: ComputeBuffer, dst: GraphicsBuffer, dstOffsetBytes: number): void;
+    CopyCounterValue(src: GraphicsBuffer, dst: GraphicsBuffer, dstOffsetBytes: number): void;
+    DisableKeyword(keyword: unknown): void;
+    DisableKeyword(material: Material, keyword: unknown): void;
+    DisableKeyword(computeShader: ComputeShader, keyword: unknown): void;
+    DisableScissorRect(): void;
+    DisableShaderKeyword(keyword: string): void;
+    DispatchCompute(computeShader: ComputeShader, kernelIndex: number, threadGroupsX: number, threadGroupsY: number, threadGroupsZ: number): void;
+    DispatchCompute(computeShader: ComputeShader, kernelIndex: number, indirectBuffer: ComputeBuffer, argsOffset: number): void;
+    DispatchCompute(computeShader: ComputeShader, kernelIndex: number, indirectBuffer: GraphicsBuffer, argsOffset: number): void;
+    DispatchRays(rayTracingShader: RayTracingShader, rayGenName: string, width: number, height: number, depth: number, camera: Camera): void;
+    EnableKeyword(keyword: unknown): void;
+    EnableKeyword(material: Material, keyword: unknown): void;
+    EnableKeyword(computeShader: ComputeShader, keyword: unknown): void;
+    EnableScissorRect(scissor: Rect): void;
+    EnableShaderKeyword(keyword: string): void;
+    EndSample(name: string): void;
+    EndSample(sampler: CustomSampler): void;
+    EndSample(marker: ProfilerMarker): void;
+    IncrementUpdateCount(dest: RenderTargetIdentifier): void;
+    InvokeOnRenderObjectCallbacks(): void;
+    IssuePluginCustomBlit(callback: unknown, command: number, source: RenderTargetIdentifier, dest: RenderTargetIdentifier, commandParam: number, commandFlags: number): void;
+    IssuePluginCustomTextureUpdateV2(callback: unknown, targetTexture: Texture, userData: number): void;
+    IssuePluginEvent(callback: unknown, eventID: number): void;
+    IssuePluginEventAndData(callback: unknown, eventID: number, data: unknown): void;
+    MarkLateLatchMatrixShaderPropertyID(matrixPropertyType: CameraLateLatchMatrixType, shaderPropertyID: number): void;
+    SetBufferCounterValue(buffer: ComputeBuffer, counterValue: number): void;
+    SetBufferCounterValue(buffer: GraphicsBuffer, counterValue: number): void;
+    SetBufferData(buffer: ComputeBuffer, data: unknown): void;
+    SetBufferData<T>(buffer: ComputeBuffer, data: Readonly<T[]>): void;
+    SetBufferData<T>(buffer: ComputeBuffer, data: Readonly<T[]>): void;
+    SetBufferData(buffer: ComputeBuffer, data: unknown, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
+    SetBufferData<T>(buffer: ComputeBuffer, data: Readonly<T[]>, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
+    SetBufferData<T>(buffer: ComputeBuffer, data: Readonly<T[]>, nativeBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
+    SetBufferData(buffer: GraphicsBuffer, data: unknown): void;
+    SetBufferData<T>(buffer: GraphicsBuffer, data: Readonly<T[]>): void;
+    SetBufferData<T>(buffer: GraphicsBuffer, data: Readonly<T[]>): void;
+    SetBufferData(buffer: GraphicsBuffer, data: unknown, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
+    SetBufferData<T>(buffer: GraphicsBuffer, data: Readonly<T[]>, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
+    SetBufferData<T>(buffer: GraphicsBuffer, data: Readonly<T[]>, nativeBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
+    SetComputeBufferParam(computeShader: ComputeShader, kernelIndex: number, nameID: number, buffer: ComputeBuffer): void;
+    SetComputeBufferParam(computeShader: ComputeShader, kernelIndex: number, name: string, buffer: ComputeBuffer): void;
+    SetComputeBufferParam(computeShader: ComputeShader, kernelIndex: number, nameID: number, bufferHandle: GraphicsBufferHandle): void;
+    SetComputeBufferParam(computeShader: ComputeShader, kernelIndex: number, name: string, bufferHandle: GraphicsBufferHandle): void;
+    SetComputeBufferParam(computeShader: ComputeShader, kernelIndex: number, nameID: number, buffer: GraphicsBuffer): void;
+    SetComputeBufferParam(computeShader: ComputeShader, kernelIndex: number, name: string, buffer: GraphicsBuffer): void;
+    SetComputeConstantBufferParam(computeShader: ComputeShader, nameID: number, buffer: ComputeBuffer, offset: number, size: number): void;
+    SetComputeConstantBufferParam(computeShader: ComputeShader, name: string, buffer: ComputeBuffer, offset: number, size: number): void;
+    SetComputeConstantBufferParam(computeShader: ComputeShader, nameID: number, buffer: GraphicsBuffer, offset: number, size: number): void;
+    SetComputeConstantBufferParam(computeShader: ComputeShader, name: string, buffer: GraphicsBuffer, offset: number, size: number): void;
+    SetComputeFloatParam(computeShader: ComputeShader, nameID: number, val: number): void;
+    SetComputeFloatParam(computeShader: ComputeShader, name: string, val: number): void;
+    SetComputeFloatParams(computeShader: ComputeShader, name: string, values: Readonly<number[]>): void;
+    SetComputeFloatParams(computeShader: ComputeShader, nameID: number, values: Readonly<number[]>): void;
+    SetComputeIntParam(computeShader: ComputeShader, nameID: number, val: number): void;
+    SetComputeIntParam(computeShader: ComputeShader, name: string, val: number): void;
+    SetComputeIntParams(computeShader: ComputeShader, name: string, values: Readonly<number[]>): void;
+    SetComputeIntParams(computeShader: ComputeShader, nameID: number, values: Readonly<number[]>): void;
+    SetComputeMatrixArrayParam(computeShader: ComputeShader, nameID: number, values: Readonly<Matrix4x4[]>): void;
+    SetComputeMatrixArrayParam(computeShader: ComputeShader, name: string, values: Readonly<Matrix4x4[]>): void;
+    SetComputeMatrixParam(computeShader: ComputeShader, nameID: number, val: Matrix4x4): void;
+    SetComputeMatrixParam(computeShader: ComputeShader, name: string, val: Matrix4x4): void;
+    SetComputeTextureParam(computeShader: ComputeShader, kernelIndex: number, name: string, rt: TextureHandle): void;
+    SetComputeTextureParam(computeShader: ComputeShader, kernelIndex: number, nameID: number, rt: TextureHandle): void;
+    SetComputeTextureParam(computeShader: ComputeShader, kernelIndex: number, name: string, rt: TextureHandle, mipLevel: number): void;
+    SetComputeTextureParam(computeShader: ComputeShader, kernelIndex: number, nameID: number, rt: TextureHandle, mipLevel: number): void;
+    SetComputeTextureParam(computeShader: ComputeShader, kernelIndex: number, name: string, rt: TextureHandle, mipLevel: number, element: RenderTextureSubElement): void;
+    SetComputeTextureParam(computeShader: ComputeShader, kernelIndex: number, nameID: number, rt: TextureHandle, mipLevel: number, element: RenderTextureSubElement): void;
+    SetComputeVectorArrayParam(computeShader: ComputeShader, nameID: number, values: Readonly<Vector4[]>): void;
+    SetComputeVectorArrayParam(computeShader: ComputeShader, name: string, values: Readonly<Vector4[]>): void;
+    SetComputeVectorParam(computeShader: ComputeShader, nameID: number, val: Vector4): void;
+    SetComputeVectorParam(computeShader: ComputeShader, name: string, val: Vector4): void;
+    SetGlobalBuffer(name: string, value: ComputeBuffer): void;
+    SetGlobalBuffer(nameID: number, value: ComputeBuffer): void;
+    SetGlobalBuffer(name: string, value: GraphicsBuffer): void;
+    SetGlobalBuffer(nameID: number, value: GraphicsBuffer): void;
+    SetGlobalColor(nameID: number, value: Color): void;
+    SetGlobalColor(name: string, value: Color): void;
+    SetGlobalConstantBuffer(buffer: ComputeBuffer, nameID: number, offset: number, size: number): void;
+    SetGlobalConstantBuffer(buffer: ComputeBuffer, name: string, offset: number, size: number): void;
+    SetGlobalConstantBuffer(buffer: GraphicsBuffer, nameID: number, offset: number, size: number): void;
+    SetGlobalConstantBuffer(buffer: GraphicsBuffer, name: string, offset: number, size: number): void;
+    SetGlobalDepthBias(bias: number, slopeBias: number): void;
+    SetGlobalFloat(nameID: number, value: number): void;
+    SetGlobalFloat(name: string, value: number): void;
+    SetGlobalFloatArray(nameID: number, values: Readonly<number[]>): void;
+    SetGlobalFloatArray(propertyName: string, values: Readonly<number[]>): void;
+    SetGlobalFloatArray(nameID: number, values: Readonly<number[]>): void;
+    SetGlobalFloatArray(propertyName: string, values: Readonly<number[]>): void;
+    SetGlobalInt(nameID: number, value: number): void;
+    SetGlobalInt(name: string, value: number): void;
+    SetGlobalInteger(nameID: number, value: number): void;
+    SetGlobalInteger(name: string, value: number): void;
+    SetGlobalMatrix(nameID: number, value: Matrix4x4): void;
+    SetGlobalMatrix(name: string, value: Matrix4x4): void;
+    SetGlobalMatrixArray(nameID: number, values: Readonly<Matrix4x4[]>): void;
+    SetGlobalMatrixArray(propertyName: string, values: Readonly<Matrix4x4[]>): void;
+    SetGlobalMatrixArray(nameID: number, values: Readonly<Matrix4x4[]>): void;
+    SetGlobalMatrixArray(propertyName: string, values: Readonly<Matrix4x4[]>): void;
+    SetGlobalTexture(name: string, value: TextureHandle): void;
+    SetGlobalTexture(nameID: number, value: TextureHandle): void;
+    SetGlobalTexture(name: string, value: TextureHandle, element: RenderTextureSubElement): void;
+    SetGlobalTexture(nameID: number, value: TextureHandle, element: RenderTextureSubElement): void;
+    SetGlobalVector(nameID: number, value: Vector4): void;
+    SetGlobalVector(name: string, value: Vector4): void;
+    SetGlobalVectorArray(nameID: number, values: Readonly<Vector4[]>): void;
+    SetGlobalVectorArray(propertyName: string, values: Readonly<Vector4[]>): void;
+    SetGlobalVectorArray(nameID: number, values: Readonly<Vector4[]>): void;
+    SetGlobalVectorArray(propertyName: string, values: Readonly<Vector4[]>): void;
+    SetInvertCulling(invertCulling: boolean): void;
+    SetKeyword(keyword: unknown, value: boolean): void;
+    SetKeyword(material: Material, keyword: unknown, value: boolean): void;
+    SetKeyword(computeShader: ComputeShader, keyword: unknown, value: boolean): void;
+    SetLateLatchProjectionMatrices(projectionMat: Readonly<Matrix4x4[]>): void;
+    SetRayTracingAccelerationStructure(rayTracingShader: RayTracingShader, name: string, rayTracingAccelerationStructure: RayTracingAccelerationStructure): void;
+    SetRayTracingAccelerationStructure(rayTracingShader: RayTracingShader, nameID: number, rayTracingAccelerationStructure: RayTracingAccelerationStructure): void;
+    SetRayTracingAccelerationStructure(computeShader: ComputeShader, kernelIndex: number, name: string, rayTracingAccelerationStructure: RayTracingAccelerationStructure): void;
+    SetRayTracingAccelerationStructure(computeShader: ComputeShader, kernelIndex: number, nameID: number, rayTracingAccelerationStructure: RayTracingAccelerationStructure): void;
+    SetRayTracingBufferParam(rayTracingShader: RayTracingShader, name: string, buffer: ComputeBuffer): void;
+    SetRayTracingBufferParam(rayTracingShader: RayTracingShader, nameID: number, buffer: ComputeBuffer): void;
+    SetRayTracingBufferParam(rayTracingShader: RayTracingShader, name: string, buffer: GraphicsBuffer): void;
+    SetRayTracingBufferParam(rayTracingShader: RayTracingShader, nameID: number, buffer: GraphicsBuffer): void;
+    SetRayTracingBufferParam(rayTracingShader: RayTracingShader, name: string, bufferHandle: GraphicsBufferHandle): void;
+    SetRayTracingBufferParam(rayTracingShader: RayTracingShader, nameID: number, bufferHandle: GraphicsBufferHandle): void;
+    SetRayTracingConstantBufferParam(rayTracingShader: RayTracingShader, nameID: number, buffer: ComputeBuffer, offset: number, size: number): void;
+    SetRayTracingConstantBufferParam(rayTracingShader: RayTracingShader, name: string, buffer: ComputeBuffer, offset: number, size: number): void;
+    SetRayTracingConstantBufferParam(rayTracingShader: RayTracingShader, nameID: number, buffer: GraphicsBuffer, offset: number, size: number): void;
+    SetRayTracingConstantBufferParam(rayTracingShader: RayTracingShader, name: string, buffer: GraphicsBuffer, offset: number, size: number): void;
+    SetRayTracingFloatParam(rayTracingShader: RayTracingShader, name: string, val: number): void;
+    SetRayTracingFloatParam(rayTracingShader: RayTracingShader, nameID: number, val: number): void;
+    SetRayTracingFloatParams(rayTracingShader: RayTracingShader, name: string, values: Readonly<number[]>): void;
+    SetRayTracingFloatParams(rayTracingShader: RayTracingShader, nameID: number, values: Readonly<number[]>): void;
+    SetRayTracingIntParam(rayTracingShader: RayTracingShader, name: string, val: number): void;
+    SetRayTracingIntParam(rayTracingShader: RayTracingShader, nameID: number, val: number): void;
+    SetRayTracingIntParams(rayTracingShader: RayTracingShader, name: string, values: Readonly<number[]>): void;
+    SetRayTracingIntParams(rayTracingShader: RayTracingShader, nameID: number, values: Readonly<number[]>): void;
+    SetRayTracingMatrixArrayParam(rayTracingShader: RayTracingShader, name: string, values: Readonly<Matrix4x4[]>): void;
+    SetRayTracingMatrixArrayParam(rayTracingShader: RayTracingShader, nameID: number, values: Readonly<Matrix4x4[]>): void;
+    SetRayTracingMatrixParam(rayTracingShader: RayTracingShader, name: string, val: Matrix4x4): void;
+    SetRayTracingMatrixParam(rayTracingShader: RayTracingShader, nameID: number, val: Matrix4x4): void;
+    SetRayTracingTextureParam(rayTracingShader: RayTracingShader, name: string, rt: TextureHandle): void;
+    SetRayTracingTextureParam(rayTracingShader: RayTracingShader, nameID: number, rt: TextureHandle): void;
+    SetRayTracingVectorArrayParam(rayTracingShader: RayTracingShader, name: string, values: Readonly<Vector4[]>): void;
+    SetRayTracingVectorArrayParam(rayTracingShader: RayTracingShader, nameID: number, values: Readonly<Vector4[]>): void;
+    SetRayTracingVectorParam(rayTracingShader: RayTracingShader, name: string, val: Vector4): void;
+    SetRayTracingVectorParam(rayTracingShader: RayTracingShader, nameID: number, val: Vector4): void;
+    SetShadowSamplingMode(shadowmap: RenderTargetIdentifier, mode: ShadowSamplingMode): void;
+    SetSinglePassStereo(mode: SinglePassStereoMode): void;
+    SetupCameraProperties(camera: Camera): void;
+    SetViewport(pixelRect: Rect): void;
+    SetViewProjectionMatrices(view: Matrix4x4, proj: Matrix4x4): void;
+    UnmarkLateLatchMatrix(matrixPropertyType: CameraLateLatchMatrixType): void;
+
+
+}
+    
+interface RenderGraphObjectPool {
+
+
+
+    GetTempArray<T>(size: number): Readonly<T[]>;
+    GetTempMaterialPropertyBlock(): MaterialPropertyBlock;
+
+
+}
+    
+interface ComputeGraphContextConstructor {
+
+
+    new(): ComputeGraphContext;
+
+
+
+}
+declare const ComputeGraphContext: ComputeGraphContextConstructor;
+    
+interface BaseRenderFunc<PassData, ContextType> {
+
+
+
+    BeginInvoke(data: PassData, renderGraphContext: ContextType, callback: unknown, object: unknown): unknown;
+    EndInvoke(result: unknown): void;
+    Invoke(data: PassData, renderGraphContext: ContextType): void;
+
+
+}
+    
+interface BaseRenderFuncConstructor {
+
+
+    new(object: unknown, method: unknown): BaseRenderFunc<PassData, ContextType>;
+
+
+
+}
+declare const BaseRenderFunc: BaseRenderFuncConstructor;
+    
+interface ProfilingSampler {
+    readonly name: string;
+    enableRecording: boolean;
+    readonly gpuElapsedTime: number;
+    readonly gpuSampleCount: number;
+    readonly cpuElapsedTime: number;
+    readonly cpuSampleCount: number;
+    readonly inlineCpuElapsedTime: number;
+    readonly inlineCpuSampleCount: number;
+
+
+
+    Begin(cmd: CommandBuffer): void;
+    End(cmd: CommandBuffer): void;
+
+
+}
+    
+interface ProfilingSamplerConstructor {
+
+
+    new(name: string): ProfilingSampler;
+
+
+    Get<TEnum>(marker: TEnum): ProfilingSampler;
+
+}
+declare const ProfilingSampler: ProfilingSamplerConstructor;
+    
+interface IRasterRenderGraphBuilder extends IBaseRenderGraphBuilder {
+
+
+
+    SetInputAttachment(tex: TextureHandle, index: number, flags: AccessFlags): void;
+    SetInputAttachment(tex: TextureHandle, index: number, flags: AccessFlags, mipLevel: number, depthSlice: number): void;
+    SetRandomAccessAttachment(tex: TextureHandle, index: number, flags: AccessFlags): TextureHandle;
+    SetRenderAttachment(tex: TextureHandle, index: number, flags: AccessFlags): void;
+    SetRenderAttachment(tex: TextureHandle, index: number, flags: AccessFlags, mipLevel: number, depthSlice: number): void;
+    SetRenderAttachmentDepth(tex: TextureHandle, flags: AccessFlags): void;
+    SetRenderAttachmentDepth(tex: TextureHandle, flags: AccessFlags, mipLevel: number, depthSlice: number): void;
+    SetRenderFunc<PassData>(renderFunc: BaseRenderFunc<PassData, RasterGraphContext>): void;
+    UseBufferRandomAccess(tex: BufferHandle, index: number, flags: AccessFlags): BufferHandle;
+    UseBufferRandomAccess(tex: BufferHandle, index: number, preserveCounterValue: boolean, flags: AccessFlags): BufferHandle;
+
+
+}
+    
+interface RasterGraphContext extends IDerivedRendergraphContext {
+    cmd: RasterCommandBuffer;
+    readonly defaultResources: RenderGraphDefaultResources;
+    readonly renderGraphPool: RenderGraphObjectPool;
+
+
+
+    FromInternalContext(context: InternalRenderGraphContext): void;
+
+
+}
+    
+interface IRasterCommandBuffer extends IBaseCommandBuffer {
+
+
+
+    ClearRenderTarget(clearDepth: boolean, clearColor: boolean, backgroundColor: Color): void;
+    ClearRenderTarget(clearDepth: boolean, clearColor: boolean, backgroundColor: Color, depth: number): void;
+    ClearRenderTarget(clearDepth: boolean, clearColor: boolean, backgroundColor: Color, depth: number, stencil: number): void;
+    ClearRenderTarget(clearFlags: RTClearFlags, backgroundColor: Color, depth: number, stencil: number): void;
+    ClearRenderTarget(clearFlags: RTClearFlags, backgroundColors: Readonly<Color[]>, depth: number, stencil: number): void;
+    ConfigureFoveatedRendering(platformData: unknown): void;
+    DrawMesh(mesh: Mesh, matrix: Matrix4x4, material: Material, submeshIndex: number, shaderPass: number, properties: MaterialPropertyBlock): void;
+    DrawMesh(mesh: Mesh, matrix: Matrix4x4, material: Material, submeshIndex: number, shaderPass: number): void;
+    DrawMesh(mesh: Mesh, matrix: Matrix4x4, material: Material, submeshIndex: number): void;
+    DrawMesh(mesh: Mesh, matrix: Matrix4x4, material: Material): void;
+    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, matrices: Readonly<Matrix4x4[]>, count: number, properties: MaterialPropertyBlock): void;
+    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, matrices: Readonly<Matrix4x4[]>, count: number): void;
+    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, matrices: Readonly<Matrix4x4[]>): void;
+    DrawMeshInstancedIndirect(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, bufferWithArgs: ComputeBuffer, argsOffset: number, properties: MaterialPropertyBlock): void;
+    DrawMeshInstancedIndirect(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, bufferWithArgs: ComputeBuffer, argsOffset: number): void;
+    DrawMeshInstancedIndirect(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, bufferWithArgs: ComputeBuffer): void;
+    DrawMeshInstancedIndirect(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, bufferWithArgs: GraphicsBuffer, argsOffset: number, properties: MaterialPropertyBlock): void;
+    DrawMeshInstancedIndirect(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, bufferWithArgs: GraphicsBuffer, argsOffset: number): void;
+    DrawMeshInstancedIndirect(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, bufferWithArgs: GraphicsBuffer): void;
+    DrawMeshInstancedProcedural(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, count: number, properties: MaterialPropertyBlock): void;
+    DrawMultipleMeshes(matrices: Readonly<Matrix4x4[]>, meshes: Readonly<Mesh[]>, subsetIndices: Readonly<number[]>, count: number, material: Material, shaderPass: number, properties: MaterialPropertyBlock): void;
+    DrawOcclusionMesh(normalizedCamViewport: RectInt): void;
+    DrawProcedural(matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, vertexCount: number, instanceCount: number, properties: MaterialPropertyBlock): void;
+    DrawProcedural(matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, vertexCount: number, instanceCount: number): void;
+    DrawProcedural(matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, vertexCount: number): void;
+    DrawProcedural(indexBuffer: GraphicsBuffer, matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, indexCount: number, instanceCount: number, properties: MaterialPropertyBlock): void;
+    DrawProcedural(indexBuffer: GraphicsBuffer, matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, indexCount: number, instanceCount: number): void;
+    DrawProcedural(indexBuffer: GraphicsBuffer, matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, indexCount: number): void;
+    DrawProceduralIndirect(matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, bufferWithArgs: ComputeBuffer, argsOffset: number, properties: MaterialPropertyBlock): void;
+    DrawProceduralIndirect(matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, bufferWithArgs: ComputeBuffer, argsOffset: number): void;
+    DrawProceduralIndirect(matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, bufferWithArgs: ComputeBuffer): void;
+    DrawProceduralIndirect(indexBuffer: GraphicsBuffer, matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, bufferWithArgs: ComputeBuffer, argsOffset: number, properties: MaterialPropertyBlock): void;
+    DrawProceduralIndirect(indexBuffer: GraphicsBuffer, matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, bufferWithArgs: ComputeBuffer, argsOffset: number): void;
+    DrawProceduralIndirect(indexBuffer: GraphicsBuffer, matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, bufferWithArgs: ComputeBuffer): void;
+    DrawProceduralIndirect(matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, bufferWithArgs: GraphicsBuffer, argsOffset: number, properties: MaterialPropertyBlock): void;
+    DrawProceduralIndirect(matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, bufferWithArgs: GraphicsBuffer, argsOffset: number): void;
+    DrawProceduralIndirect(matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, bufferWithArgs: GraphicsBuffer): void;
+    DrawProceduralIndirect(indexBuffer: GraphicsBuffer, matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, bufferWithArgs: GraphicsBuffer, argsOffset: number, properties: MaterialPropertyBlock): void;
+    DrawProceduralIndirect(indexBuffer: GraphicsBuffer, matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, bufferWithArgs: GraphicsBuffer, argsOffset: number): void;
+    DrawProceduralIndirect(indexBuffer: GraphicsBuffer, matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, bufferWithArgs: GraphicsBuffer): void;
+    DrawRenderer(renderer: Renderer, material: Material, submeshIndex: number, shaderPass: number): void;
+    DrawRenderer(renderer: Renderer, material: Material, submeshIndex: number): void;
+    DrawRenderer(renderer: Renderer, material: Material): void;
+    DrawRendererList(rendererList: RendererList): void;
+    SetFoveatedRenderingMode(foveatedRenderingMode: FoveatedRenderingMode): void;
+    SetInstanceMultiplier(multiplier: number): void;
+    SetWireframe(enable: boolean): void;
+
+
+}
+    
+interface RasterCommandBuffer extends BaseCommandBuffer, IRasterCommandBuffer {
+
+
+
+    BeginSample(name: string): void;
+    BeginSample(sampler: CustomSampler): void;
+    BeginSample(marker: ProfilerMarker): void;
+    ClearRenderTarget(clearDepth: boolean, clearColor: boolean, backgroundColor: Color): void;
+    ClearRenderTarget(clearDepth: boolean, clearColor: boolean, backgroundColor: Color, depth: number): void;
+    ClearRenderTarget(clearDepth: boolean, clearColor: boolean, backgroundColor: Color, depth: number, stencil: number): void;
+    ClearRenderTarget(clearFlags: RTClearFlags, backgroundColor: Color, depth: number, stencil: number): void;
+    ClearRenderTarget(clearFlags: RTClearFlags, backgroundColors: Readonly<Color[]>, depth: number, stencil: number): void;
+    ConfigureFoveatedRendering(platformData: unknown): void;
+    DisableKeyword(keyword: unknown): void;
+    DisableKeyword(material: Material, keyword: unknown): void;
+    DisableKeyword(computeShader: ComputeShader, keyword: unknown): void;
+    DisableScissorRect(): void;
+    DisableShaderKeyword(keyword: string): void;
+    DrawMesh(mesh: Mesh, matrix: Matrix4x4, material: Material, submeshIndex: number, shaderPass: number, properties: MaterialPropertyBlock): void;
+    DrawMesh(mesh: Mesh, matrix: Matrix4x4, material: Material, submeshIndex: number, shaderPass: number): void;
+    DrawMesh(mesh: Mesh, matrix: Matrix4x4, material: Material, submeshIndex: number): void;
+    DrawMesh(mesh: Mesh, matrix: Matrix4x4, material: Material): void;
+    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, matrices: Readonly<Matrix4x4[]>, count: number, properties: MaterialPropertyBlock): void;
+    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, matrices: Readonly<Matrix4x4[]>, count: number): void;
+    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, matrices: Readonly<Matrix4x4[]>): void;
+    DrawMeshInstancedIndirect(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, bufferWithArgs: ComputeBuffer, argsOffset: number, properties: MaterialPropertyBlock): void;
+    DrawMeshInstancedIndirect(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, bufferWithArgs: ComputeBuffer, argsOffset: number): void;
+    DrawMeshInstancedIndirect(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, bufferWithArgs: ComputeBuffer): void;
+    DrawMeshInstancedIndirect(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, bufferWithArgs: GraphicsBuffer, argsOffset: number, properties: MaterialPropertyBlock): void;
+    DrawMeshInstancedIndirect(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, bufferWithArgs: GraphicsBuffer, argsOffset: number): void;
+    DrawMeshInstancedIndirect(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, bufferWithArgs: GraphicsBuffer): void;
+    DrawMeshInstancedProcedural(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, count: number, properties: MaterialPropertyBlock): void;
+    DrawMultipleMeshes(matrices: Readonly<Matrix4x4[]>, meshes: Readonly<Mesh[]>, subsetIndices: Readonly<number[]>, count: number, material: Material, shaderPass: number, properties: MaterialPropertyBlock): void;
+    DrawOcclusionMesh(normalizedCamViewport: RectInt): void;
+    DrawProcedural(matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, vertexCount: number, instanceCount: number, properties: MaterialPropertyBlock): void;
+    DrawProcedural(matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, vertexCount: number, instanceCount: number): void;
+    DrawProcedural(matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, vertexCount: number): void;
+    DrawProcedural(indexBuffer: GraphicsBuffer, matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, indexCount: number, instanceCount: number, properties: MaterialPropertyBlock): void;
+    DrawProcedural(indexBuffer: GraphicsBuffer, matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, indexCount: number, instanceCount: number): void;
+    DrawProcedural(indexBuffer: GraphicsBuffer, matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, indexCount: number): void;
+    DrawProceduralIndirect(matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, bufferWithArgs: ComputeBuffer, argsOffset: number, properties: MaterialPropertyBlock): void;
+    DrawProceduralIndirect(matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, bufferWithArgs: ComputeBuffer, argsOffset: number): void;
+    DrawProceduralIndirect(matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, bufferWithArgs: ComputeBuffer): void;
+    DrawProceduralIndirect(indexBuffer: GraphicsBuffer, matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, bufferWithArgs: ComputeBuffer, argsOffset: number, properties: MaterialPropertyBlock): void;
+    DrawProceduralIndirect(indexBuffer: GraphicsBuffer, matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, bufferWithArgs: ComputeBuffer, argsOffset: number): void;
+    DrawProceduralIndirect(indexBuffer: GraphicsBuffer, matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, bufferWithArgs: ComputeBuffer): void;
+    DrawProceduralIndirect(matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, bufferWithArgs: GraphicsBuffer, argsOffset: number, properties: MaterialPropertyBlock): void;
+    DrawProceduralIndirect(matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, bufferWithArgs: GraphicsBuffer, argsOffset: number): void;
+    DrawProceduralIndirect(matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, bufferWithArgs: GraphicsBuffer): void;
+    DrawProceduralIndirect(indexBuffer: GraphicsBuffer, matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, bufferWithArgs: GraphicsBuffer, argsOffset: number, properties: MaterialPropertyBlock): void;
+    DrawProceduralIndirect(indexBuffer: GraphicsBuffer, matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, bufferWithArgs: GraphicsBuffer, argsOffset: number): void;
+    DrawProceduralIndirect(indexBuffer: GraphicsBuffer, matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, bufferWithArgs: GraphicsBuffer): void;
+    DrawRenderer(renderer: Renderer, material: Material, submeshIndex: number, shaderPass: number): void;
+    DrawRenderer(renderer: Renderer, material: Material, submeshIndex: number): void;
+    DrawRenderer(renderer: Renderer, material: Material): void;
+    DrawRendererList(rendererList: RendererList): void;
+    EnableKeyword(keyword: unknown): void;
+    EnableKeyword(material: Material, keyword: unknown): void;
+    EnableKeyword(computeShader: ComputeShader, keyword: unknown): void;
+    EnableScissorRect(scissor: Rect): void;
+    EnableShaderKeyword(keyword: string): void;
+    EndSample(name: string): void;
+    EndSample(sampler: CustomSampler): void;
+    EndSample(marker: ProfilerMarker): void;
+    IncrementUpdateCount(dest: RenderTargetIdentifier): void;
+    InvokeOnRenderObjectCallbacks(): void;
+    IssuePluginCustomBlit(callback: unknown, command: number, source: RenderTargetIdentifier, dest: RenderTargetIdentifier, commandParam: number, commandFlags: number): void;
+    IssuePluginCustomTextureUpdateV2(callback: unknown, targetTexture: Texture, userData: number): void;
+    IssuePluginEvent(callback: unknown, eventID: number): void;
+    IssuePluginEventAndData(callback: unknown, eventID: number, data: unknown): void;
+    MarkLateLatchMatrixShaderPropertyID(matrixPropertyType: CameraLateLatchMatrixType, shaderPropertyID: number): void;
+    SetFoveatedRenderingMode(foveatedRenderingMode: FoveatedRenderingMode): void;
+    SetGlobalBuffer(name: string, value: ComputeBuffer): void;
+    SetGlobalBuffer(nameID: number, value: ComputeBuffer): void;
+    SetGlobalBuffer(name: string, value: GraphicsBuffer): void;
+    SetGlobalBuffer(nameID: number, value: GraphicsBuffer): void;
+    SetGlobalColor(nameID: number, value: Color): void;
+    SetGlobalColor(name: string, value: Color): void;
+    SetGlobalConstantBuffer(buffer: ComputeBuffer, nameID: number, offset: number, size: number): void;
+    SetGlobalConstantBuffer(buffer: ComputeBuffer, name: string, offset: number, size: number): void;
+    SetGlobalConstantBuffer(buffer: GraphicsBuffer, nameID: number, offset: number, size: number): void;
+    SetGlobalConstantBuffer(buffer: GraphicsBuffer, name: string, offset: number, size: number): void;
+    SetGlobalDepthBias(bias: number, slopeBias: number): void;
+    SetGlobalFloat(nameID: number, value: number): void;
+    SetGlobalFloat(name: string, value: number): void;
+    SetGlobalFloatArray(nameID: number, values: Readonly<number[]>): void;
+    SetGlobalFloatArray(propertyName: string, values: Readonly<number[]>): void;
+    SetGlobalFloatArray(nameID: number, values: Readonly<number[]>): void;
+    SetGlobalFloatArray(propertyName: string, values: Readonly<number[]>): void;
+    SetGlobalInt(nameID: number, value: number): void;
+    SetGlobalInt(name: string, value: number): void;
+    SetGlobalInteger(nameID: number, value: number): void;
+    SetGlobalInteger(name: string, value: number): void;
+    SetGlobalMatrix(nameID: number, value: Matrix4x4): void;
+    SetGlobalMatrix(name: string, value: Matrix4x4): void;
+    SetGlobalMatrixArray(nameID: number, values: Readonly<Matrix4x4[]>): void;
+    SetGlobalMatrixArray(propertyName: string, values: Readonly<Matrix4x4[]>): void;
+    SetGlobalMatrixArray(nameID: number, values: Readonly<Matrix4x4[]>): void;
+    SetGlobalMatrixArray(propertyName: string, values: Readonly<Matrix4x4[]>): void;
+    SetGlobalTexture(name: string, value: TextureHandle): void;
+    SetGlobalTexture(nameID: number, value: TextureHandle): void;
+    SetGlobalTexture(name: string, value: TextureHandle, element: RenderTextureSubElement): void;
+    SetGlobalTexture(nameID: number, value: TextureHandle, element: RenderTextureSubElement): void;
+    SetGlobalVector(nameID: number, value: Vector4): void;
+    SetGlobalVector(name: string, value: Vector4): void;
+    SetGlobalVectorArray(nameID: number, values: Readonly<Vector4[]>): void;
+    SetGlobalVectorArray(propertyName: string, values: Readonly<Vector4[]>): void;
+    SetGlobalVectorArray(nameID: number, values: Readonly<Vector4[]>): void;
+    SetGlobalVectorArray(propertyName: string, values: Readonly<Vector4[]>): void;
+    SetInstanceMultiplier(multiplier: number): void;
+    SetInvertCulling(invertCulling: boolean): void;
+    SetKeyword(keyword: unknown, value: boolean): void;
+    SetKeyword(material: Material, keyword: unknown, value: boolean): void;
+    SetKeyword(computeShader: ComputeShader, keyword: unknown, value: boolean): void;
+    SetLateLatchProjectionMatrices(projectionMat: Readonly<Matrix4x4[]>): void;
+    SetShadowSamplingMode(shadowmap: RenderTargetIdentifier, mode: ShadowSamplingMode): void;
+    SetSinglePassStereo(mode: SinglePassStereoMode): void;
+    SetupCameraProperties(camera: Camera): void;
+    SetViewport(pixelRect: Rect): void;
+    SetViewProjectionMatrices(view: Matrix4x4, proj: Matrix4x4): void;
+    SetWireframe(enable: boolean): void;
+    UnmarkLateLatchMatrix(matrixPropertyType: CameraLateLatchMatrixType): void;
+
+
+}
+    
+interface RenderGraphBuilder {
+
+
+
+    AllowPassCulling(value: boolean): void;
+    AllowRendererListCulling(value: boolean): void;
+    CreateTransientBuffer(desc: unknown): BufferHandle;
+    CreateTransientBuffer(graphicsbuffer: unknown): BufferHandle;
+    CreateTransientTexture(desc: unknown): TextureHandle;
+    CreateTransientTexture(texture: unknown): TextureHandle;
+    DependsOn(input: unknown): RendererListHandle;
+    Dispose(): void;
+    EnableAsyncCompute(value: boolean): void;
+    EnableFoveatedRasterization(value: boolean): void;
+    ReadBuffer(input: unknown): BufferHandle;
+    ReadRayTracingAccelerationStructure(input: unknown): RayTracingAccelerationStructureHandle;
+    ReadTexture(input: unknown): TextureHandle;
+    ReadWriteTexture(input: unknown): TextureHandle;
+    SetRenderFunc<PassData>(renderFunc: BaseRenderFunc<PassData, RenderGraphContext>): void;
+    UseColorBuffer(input: unknown, index: number): TextureHandle;
+    UseDepthBuffer(input: unknown, flags: DepthAccess): TextureHandle;
+    UseRendererList(input: unknown): RendererListHandle;
+    WriteBuffer(input: unknown): BufferHandle;
+    WriteRayTracingAccelerationStructure(input: unknown): RayTracingAccelerationStructureHandle;
+    WriteTexture(input: unknown): TextureHandle;
+
+
+}
+    
+interface RendererListHandle {
+
+
+
+    IsValid(): boolean;
+
+
+}
+    
+interface RayTracingAccelerationStructureHandle {
+
+
+
+    IsValid(): boolean;
+
+
+}
+    
+interface RayTracingAccelerationStructureHandleConstructor {
+    readonly nullHandle: RayTracingAccelerationStructureHandle;
+
+
+
+
+
+}
+declare const RayTracingAccelerationStructureHandle: RayTracingAccelerationStructureHandleConstructor;
+    
+interface RenderGraphContext extends IDerivedRendergraphContext {
+    readonly renderContext: ScriptableRenderContext;
+    readonly cmd: CommandBuffer;
+    readonly renderGraphPool: RenderGraphObjectPool;
+    readonly defaultResources: RenderGraphDefaultResources;
+
+
+
+    FromInternalContext(context: InternalRenderGraphContext): void;
+
+
+}
+    
+interface ScriptableRenderContext {
+
+
+
+    BeginRenderPass(width: number, height: number, volumeDepth: number, samples: number, attachments: Readonly<AttachmentDescriptor[]>, depthAttachmentIndex: number): void;
+    BeginRenderPass(width: number, height: number, samples: number, attachments: Readonly<AttachmentDescriptor[]>, depthAttachmentIndex: number): void;
+    BeginScopedRenderPass(width: number, height: number, samples: number, attachments: Readonly<AttachmentDescriptor[]>, depthAttachmentIndex: number): ScopedRenderPass;
+    BeginScopedSubPass(colors: Readonly<number[]>, inputs: Readonly<number[]>, isDepthReadOnly: boolean, isStencilReadOnly: boolean): ScopedSubPass;
+    BeginScopedSubPass(colors: Readonly<number[]>, inputs: Readonly<number[]>, isDepthStencilReadOnly: boolean): ScopedSubPass;
+    BeginScopedSubPass(colors: Readonly<number[]>, isDepthReadOnly: boolean, isStencilReadOnly: boolean): ScopedSubPass;
+    BeginScopedSubPass(colors: Readonly<number[]>, isDepthStencilReadOnly: boolean): ScopedSubPass;
+    BeginSubPass(colors: Readonly<number[]>, inputs: Readonly<number[]>, isDepthReadOnly: boolean, isStencilReadOnly: boolean): void;
+    BeginSubPass(colors: Readonly<number[]>, inputs: Readonly<number[]>, isDepthStencilReadOnly: boolean): void;
+    BeginSubPass(colors: Readonly<number[]>, isDepthReadOnly: boolean, isStencilReadOnly: boolean): void;
+    BeginSubPass(colors: Readonly<number[]>, isDepthStencilReadOnly: boolean): void;
+    /**
+     * Creates a new Gizmo RendererList.
+     * @param camera The camera that is used for rendering the Gizmo.
+     * @param gizmoSubset Specify how gizmos should be rendered.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableRenderContext.CreateGizmoRendererList.html | Rendering.ScriptableRenderContext.CreateGizmoRendererList}
+     */
+    CreateGizmoRendererList(camera: Camera, gizmoSubset: GizmoSubset): RendererList;
+    /**
+     * Creates a new renderers RendererList.
+     * @param desc A high level descriptor that represents the set of GameObjects the RendererList contains.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableRenderContext.CreateRendererList.html | Rendering.ScriptableRenderContext.CreateRendererList}
+     */
+    CreateRendererList(desc: RendererListDesc): RendererList;
+    /**
+     * Creates a new renderers RendererList.
+     * @param param The parameters used to derive the set of GameObjects the RendererList contains.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableRenderContext.CreateRendererList.html | Rendering.ScriptableRenderContext.CreateRendererList}
+     */
+    CreateRendererList(param: unknown): RendererList;
+    /**
+     * Creates a new shadow RendererList.
+     * @param settings The settings used to derive the set of GameObjects the RendererList contains when drawing shadows.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableRenderContext.CreateShadowRendererList.html | Rendering.ScriptableRenderContext.CreateShadowRendererList}
+     */
+    CreateShadowRendererList(settings: unknown): RendererList;
+    /**
+     * Creates a new skybox RendererList.
+     * @param camera The camera that is used for rendering the skybox.
+     * @param projectionMatrixL The left eye projection matrix used during Legacy single pass XR rendering of the skybox.
+     * @param viewMatrixL The left eye view matrix used during Legacy single pass XR rendering of the skybox.
+     * @param projectionMatrixR The right eye projection matrix used during Legacy single pass XR rendering of the skybox.
+     * @param viewMatrixR The right eye view matrix used during Legacy single pass XR rendering of the skybox.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableRenderContext.CreateSkyboxRendererList.html | Rendering.ScriptableRenderContext.CreateSkyboxRendererList}
+     */
+    CreateSkyboxRendererList(camera: Camera, projectionMatrixL: Matrix4x4, viewMatrixL: Matrix4x4, projectionMatrixR: Matrix4x4, viewMatrixR: Matrix4x4): RendererList;
+    /**
+     * Creates a new skybox RendererList.
+     * @param camera The camera that is used for rendering the skybox.
+     * @param projectionMatrix The projection matrix used during XR rendering of the skybox.
+     * @param viewMatrix The view matrix used during XR rendering of the skybox.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableRenderContext.CreateSkyboxRendererList.html | Rendering.ScriptableRenderContext.CreateSkyboxRendererList}
+     */
+    CreateSkyboxRendererList(camera: Camera, projectionMatrix: Matrix4x4, viewMatrix: Matrix4x4): RendererList;
+    /**
+     * Creates a new skybox RendererList.
+     * @param camera The camera that is used for rendering the skybox.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableRenderContext.CreateSkyboxRendererList.html | Rendering.ScriptableRenderContext.CreateSkyboxRendererList}
+     */
+    CreateSkyboxRendererList(camera: Camera): RendererList;
+    /**
+     * Creates a new UIOverlay RendererList.
+     * @param camera The camera that is used for rendering the UIOverlay.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableRenderContext.CreateUIOverlayRendererList.html | Rendering.ScriptableRenderContext.CreateUIOverlayRendererList}
+     */
+    CreateUIOverlayRendererList(camera: Camera): RendererList;
+    /**
+     * Creates a new UIOverlay RendererList.
+     * @param camera The camera that is used for rendering the UIOverlay.
+     * @param uiSubset The UISubset to be rendered.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableRenderContext.CreateUIOverlayRendererList.html | Rendering.ScriptableRenderContext.CreateUIOverlayRendererList}
+     */
+    CreateUIOverlayRendererList(camera: Camera, uiSubset: UISubset): RendererList;
+    /**
+     * Creates a new WireOverlay RendererList.
+     * @param camera The camera that is used for rendering the WireOverlay.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableRenderContext.CreateWireOverlayRendererList.html | Rendering.ScriptableRenderContext.CreateWireOverlayRendererList}
+     */
+    CreateWireOverlayRendererList(camera: Camera): RendererList;
+    /**
+     * Performs culling based on the ScriptableCullingParameters typically obtained from the Camera currently being rendered.
+     * @param parameters Parameters for culling.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableRenderContext.Cull.html | Rendering.ScriptableRenderContext.Cull}
+     */
+    Cull(parameters: unknown): CullingResults;
+    /**
+     * Performs shadow casters culling for all the visible lights.
+     * @param cullingResults Culling results to use.
+     * @param infos Shadow casters culling information.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableRenderContext.CullShadowCasters.html | Rendering.ScriptableRenderContext.CullShadowCasters}
+     */
+    CullShadowCasters(cullingResults: CullingResults, infos: ShadowCastersCullingInfos): void;
+    /**
+     * Schedules the drawing of a subset of Gizmos (before or after post-processing) for the given Camera.
+     * @param camera The camera of the current view.
+     * @param gizmoSubset Set to GizmoSubset.PreImageEffects to draw Gizmos that should be affected by postprocessing, or GizmoSubset.PostImageEffects to draw Gizmos that should not be affected by postprocessing. See also: GizmoSubset.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableRenderContext.DrawGizmos.html | Rendering.ScriptableRenderContext.DrawGizmos}
+     */
+    DrawGizmos(camera: Camera, gizmoSubset: GizmoSubset): void;
+    /**
+     * Draw the UI overlay.
+     * @param camera The camera of the current view.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableRenderContext.DrawUIOverlay.html | Rendering.ScriptableRenderContext.DrawUIOverlay}
+     */
+    DrawUIOverlay(camera: Camera): void;
+    /**
+     * Schedules the drawing of a wireframe overlay for a given Scene view Camera.
+     * @param camera The Scene view Camera to draw the overlay for.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableRenderContext.DrawWireOverlay.html | Rendering.ScriptableRenderContext.DrawWireOverlay}
+     */
+    DrawWireOverlay(camera: Camera): void;
+    /**
+     * Schedules the end of a currently active render pass.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableRenderContext.EndRenderPass.html | Rendering.ScriptableRenderContext.EndRenderPass}
+     */
+    EndRenderPass(): void;
+    /**
+     * Schedules the end of the currently active sub pass.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableRenderContext.EndSubPass.html | Rendering.ScriptableRenderContext.EndSubPass}
+     */
+    EndSubPass(): void;
+    Equals(other: ScriptableRenderContext): boolean;
+    Equals(obj: unknown): boolean;
+    /**
+     * Schedules the execution of a custom graphics Command Buffer.
+     * @param commandBuffer Specifies the Command Buffer to execute.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableRenderContext.ExecuteCommandBuffer.html | Rendering.ScriptableRenderContext.ExecuteCommandBuffer}
+     */
+    ExecuteCommandBuffer(commandBuffer: CommandBuffer): void;
+    /**
+     * Schedules the execution of a Command Buffer on an async compute queue. The ComputeQueueType that you pass in determines the queue order.
+     * @param commandBuffer The CommandBuffer to be executed.
+     * @param queueType Describes the desired async compute queue the supplied CommandBuffer should be executed on.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableRenderContext.ExecuteCommandBufferAsync.html | Rendering.ScriptableRenderContext.ExecuteCommandBufferAsync}
+     */
+    ExecuteCommandBufferAsync(commandBuffer: CommandBuffer, queueType: ComputeQueueType): void;
+    GetHashCode(): number;
+    /**
+     * Check if any objects in the scene have OnRenderObject callbacks registered.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableRenderContext.HasInvokeOnRenderObjectCallbacks.html | Rendering.ScriptableRenderContext.HasInvokeOnRenderObjectCallbacks}
+     */
+    HasInvokeOnRenderObjectCallbacks(): boolean;
+    /**
+     * Schedules an invocation of the OnRenderObject callback for MonoBehaviour scripts.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableRenderContext.InvokeOnRenderObjectCallback.html | Rendering.ScriptableRenderContext.InvokeOnRenderObjectCallback}
+     */
+    InvokeOnRenderObjectCallback(): void;
+    PrepareRendererListsAsync(rendererLists: Readonly<RendererList[]>): void;
+    /**
+     * Queries the status of a RendererList.
+     * @param rendererList The RendererList to query.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableRenderContext.QueryRendererListStatus.html | Rendering.ScriptableRenderContext.QueryRendererListStatus}
+     */
+    QueryRendererListStatus(rendererList: RendererList): RendererListStatus;
+    /**
+     * Schedules the setup of Camera specific global Shader variables.
+     * @param camera Camera to setup shader variables for.
+     * @param stereoSetup Set up the stereo shader variables and state.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableRenderContext.SetupCameraProperties.html | Rendering.ScriptableRenderContext.SetupCameraProperties}
+     */
+    SetupCameraProperties(camera: Camera, stereoSetup: boolean): void;
+    /**
+     * Schedules the setup of Camera specific global Shader variables.
+     * @param camera Camera to setup shader variables for.
+     * @param stereoSetup Set up the stereo shader variables and state.
+     * @param eye The current eye to be rendered.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableRenderContext.SetupCameraProperties.html | Rendering.ScriptableRenderContext.SetupCameraProperties}
+     */
+    SetupCameraProperties(camera: Camera, stereoSetup: boolean, eye: number): void;
+    /**
+     * Schedules a fine-grained beginning of stereo rendering on the ScriptableRenderContext.
+     * @param camera Camera to enable stereo rendering on.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableRenderContext.StartMultiEye.html | Rendering.ScriptableRenderContext.StartMultiEye}
+     */
+    StartMultiEye(camera: Camera): void;
+    /**
+     * Schedules a fine-grained beginning of stereo rendering on the ScriptableRenderContext.
+     * @param camera Camera to enable stereo rendering on.
+     * @param eye The current eye to be rendered.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableRenderContext.StartMultiEye.html | Rendering.ScriptableRenderContext.StartMultiEye}
+     */
+    StartMultiEye(camera: Camera, eye: number): void;
+    /**
+     * Schedule notification of completion of stereo rendering on a single frame.
+     * @param camera Camera to indicate completion of stereo rendering.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableRenderContext.StereoEndRender.html | Rendering.ScriptableRenderContext.StereoEndRender}
+     */
+    StereoEndRender(camera: Camera): void;
+    /**
+     * Schedule notification of completion of stereo rendering on a single frame.
+     * @param camera Camera to indicate completion of stereo rendering.
+     * @param eye The current eye to be rendered.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableRenderContext.StereoEndRender.html | Rendering.ScriptableRenderContext.StereoEndRender}
+     */
+    StereoEndRender(camera: Camera, eye: number): void;
+    /**
+     * Schedule notification of completion of stereo rendering on a single frame.
+     * @param camera Camera to indicate completion of stereo rendering.
+     * @param eye The current eye to be rendered.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableRenderContext.StereoEndRender.html | Rendering.ScriptableRenderContext.StereoEndRender}
+     */
+    StereoEndRender(camera: Camera, eye: number, isFinalPass: boolean): void;
+    /**
+     * Schedules a stop of stereo rendering on the ScriptableRenderContext.
+     * @param camera Camera to disable stereo rendering on.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableRenderContext.StopMultiEye.html | Rendering.ScriptableRenderContext.StopMultiEye}
+     */
+    StopMultiEye(camera: Camera): void;
+    /**
+     * Submits all the scheduled commands to the rendering loop for execution.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableRenderContext.Submit.html | Rendering.ScriptableRenderContext.Submit}
+     */
+    Submit(): void;
+    /**
+     * This method submits all the scheduled commands to the rendering loop for validation. The validation checks whether render passes that were started with the BeginRenderPass call can execute the scheduled commands.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableRenderContext.SubmitForRenderPassValidation.html | Rendering.ScriptableRenderContext.SubmitForRenderPassValidation}
+     */
+    SubmitForRenderPassValidation(): boolean;
+
+
+}
+    
+interface ScopedRenderPass {
+
+
+
+    /**
+     * Ends the current render pass in the ScriptableRenderContext that was used to create the ScopedRenderPass.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScopedRenderPass.Dispose.html | Rendering.ScopedRenderPass.Dispose}
+     */
+    Dispose(): void;
+
+
+}
+    
+interface ScopedSubPass {
+
+
+
+    /**
+     * Ends the current sub pass in the ScriptableRenderContext that was used to create the ScopedSubPass.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScopedSubPass.Dispose.html | Rendering.ScopedSubPass.Dispose}
+     */
+    Dispose(): void;
+
+
+}
+    
+interface RendererListDesc {
+    sortingCriteria: SortingCriteria;
+    rendererConfiguration: PerObjectData;
+    renderQueueRange: RenderQueueRange;
+    stateBlock?: RenderStateBlock;
+    overrideShader: Shader;
+    overrideMaterial: Material;
+    excludeObjectMotionVectors: boolean;
+    layerMask: number;
+    renderingLayerMask: number;
+    overrideMaterialPassIndex: number;
+    overrideShaderPassIndex: number;
+    /**
+     * The batch layer mask to use for filtering this RendererList.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RendererUtils.RendererListDesc-batchLayerMask.html | Rendering.RendererUtils.RendererListDesc.batchLayerMask}
+     */
+    batchLayerMask: number;
+
+
+
+    /**
+     * Checks whether the RendererListDesc is valid.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RendererUtils.RendererListDesc.IsValid.html | Rendering.RendererUtils.RendererListDesc.IsValid}
+     */
+    IsValid(): boolean;
+
+
+}
+    
+interface RenderQueueRange {
+    /**
+     * Inclusive lower bound for the range.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RenderQueueRange-lowerBound.html | Rendering.RenderQueueRange.lowerBound}
+     */
+    lowerBound: number;
+    /**
+     * Inclusive upper bound for the range.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RenderQueueRange-upperBound.html | Rendering.RenderQueueRange.upperBound}
+     */
+    upperBound: number;
+
+
+
+    Equals(other: RenderQueueRange): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+
+
+}
+    
+interface RenderQueueRangeConstructor {
+    readonly minimumBound: number;
+    readonly maximumBound: number;
+    /**
+     * A range that includes all objects.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RenderQueueRange-all.html | Rendering.RenderQueueRange.all}
+     */
+    readonly all: RenderQueueRange;
+    /**
+     * A range that includes only opaque objects.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RenderQueueRange-opaque.html | Rendering.RenderQueueRange.opaque}
+     */
+    readonly opaque: RenderQueueRange;
+    /**
+     * A range that includes only transparent objects.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RenderQueueRange-transparent.html | Rendering.RenderQueueRange.transparent}
+     */
+    readonly transparent: RenderQueueRange;
+
+
+    new(lowerBound: number, upperBound: number): RenderQueueRange;
+
+
+
+}
+declare const RenderQueueRange: RenderQueueRangeConstructor;
+    
+interface RenderStateBlock {
+    /**
+     * Specifies the new blend state.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RenderStateBlock-blendState.html | Rendering.RenderStateBlock.blendState}
+     */
+    blendState: BlendState;
+    /**
+     * Specifies the new raster state.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RenderStateBlock-rasterState.html | Rendering.RenderStateBlock.rasterState}
+     */
+    rasterState: RasterState;
+    /**
+     * Specifies the new depth state.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RenderStateBlock-depthState.html | Rendering.RenderStateBlock.depthState}
+     */
+    depthState: DepthState;
+    /**
+     * Specifies the new stencil state.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RenderStateBlock-stencilState.html | Rendering.RenderStateBlock.stencilState}
+     */
+    stencilState: StencilState;
+    /**
+     * The value to be compared against and/or the value to be written to the buffer, based on the stencil state.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RenderStateBlock-stencilReference.html | Rendering.RenderStateBlock.stencilReference}
+     */
+    stencilReference: number;
+    /**
+     * Specifies which parts of the GPU's render state to override.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RenderStateBlock-mask.html | Rendering.RenderStateBlock.mask}
+     */
+    mask: RenderStateMask;
+
+
+
+    Equals(other: RenderStateBlock): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+
+
+}
+    
+interface BlendState {
+    /**
+     * Determines whether each render target uses a separate blend state.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.BlendState-separateMRTBlendStates.html | Rendering.BlendState.separateMRTBlendStates}
+     */
+    separateMRTBlendStates: boolean;
+    /**
+     * Turns on alpha-to-coverage.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.BlendState-alphaToMask.html | Rendering.BlendState.alphaToMask}
+     */
+    alphaToMask: boolean;
+    /**
+     * Blend state for render target 0.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.BlendState-blendState0.html | Rendering.BlendState.blendState0}
+     */
+    blendState0: RenderTargetBlendState;
+    /**
+     * Blend state for render target 1.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.BlendState-blendState1.html | Rendering.BlendState.blendState1}
+     */
+    blendState1: RenderTargetBlendState;
+    /**
+     * Blend state for render target 2.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.BlendState-blendState2.html | Rendering.BlendState.blendState2}
+     */
+    blendState2: RenderTargetBlendState;
+    /**
+     * Blend state for render target 3.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.BlendState-blendState3.html | Rendering.BlendState.blendState3}
+     */
+    blendState3: RenderTargetBlendState;
+    /**
+     * Blend state for render target 4.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.BlendState-blendState4.html | Rendering.BlendState.blendState4}
+     */
+    blendState4: RenderTargetBlendState;
+    /**
+     * Blend state for render target 5.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.BlendState-blendState5.html | Rendering.BlendState.blendState5}
+     */
+    blendState5: RenderTargetBlendState;
+    /**
+     * Blend state for render target 6.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.BlendState-blendState6.html | Rendering.BlendState.blendState6}
+     */
+    blendState6: RenderTargetBlendState;
+    /**
+     * Blend state for render target 7.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.BlendState-blendState7.html | Rendering.BlendState.blendState7}
+     */
+    blendState7: RenderTargetBlendState;
+
+
+
+    Equals(other: BlendState): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+
+
+}
+    
+interface RenderTargetBlendState {
+    /**
+     * Specifies which color components will get written into the target framebuffer.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RenderTargetBlendState-writeMask.html | Rendering.RenderTargetBlendState.writeMask}
+     */
+    writeMask: ColorWriteMask;
+    /**
+     * Blend factor used for the color (RGB) channel of the source.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RenderTargetBlendState-sourceColorBlendMode.html | Rendering.RenderTargetBlendState.sourceColorBlendMode}
+     */
+    sourceColorBlendMode: BlendMode;
+    /**
+     * Blend factor used for the color (RGB) channel of the destination.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RenderTargetBlendState-destinationColorBlendMode.html | Rendering.RenderTargetBlendState.destinationColorBlendMode}
+     */
+    destinationColorBlendMode: BlendMode;
+    /**
+     * Blend factor used for the alpha (A) channel of the source.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RenderTargetBlendState-sourceAlphaBlendMode.html | Rendering.RenderTargetBlendState.sourceAlphaBlendMode}
+     */
+    sourceAlphaBlendMode: BlendMode;
+    /**
+     * Blend factor used for the alpha (A) channel of the destination.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RenderTargetBlendState-destinationAlphaBlendMode.html | Rendering.RenderTargetBlendState.destinationAlphaBlendMode}
+     */
+    destinationAlphaBlendMode: BlendMode;
+    /**
+     * Operation used for blending the color (RGB) channel.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RenderTargetBlendState-colorBlendOperation.html | Rendering.RenderTargetBlendState.colorBlendOperation}
+     */
+    colorBlendOperation: BlendOp;
+    /**
+     * Operation used for blending the alpha (A) channel.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RenderTargetBlendState-alphaBlendOperation.html | Rendering.RenderTargetBlendState.alphaBlendOperation}
+     */
+    alphaBlendOperation: BlendOp;
+
+
+
+    Equals(other: RenderTargetBlendState): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+
+
+}
+    
+interface RenderTargetBlendStateConstructor {
+    /**
+     * Default values for the blend state.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RenderTargetBlendState-defaultValue.html | Rendering.RenderTargetBlendState.defaultValue}
+     */
+    readonly defaultValue: RenderTargetBlendState;
+
+
+    new(writeMask: ColorWriteMask, sourceColorBlendMode: BlendMode, destinationColorBlendMode: BlendMode, sourceAlphaBlendMode: BlendMode, destinationAlphaBlendMode: BlendMode, colorBlendOperation: BlendOp, alphaBlendOperation: BlendOp): RenderTargetBlendState;
+
+
+
+}
+declare const RenderTargetBlendState: RenderTargetBlendStateConstructor;
+    
+interface BlendStateConstructor {
+    /**
+     * Default values for the blend state.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.BlendState-defaultValue.html | Rendering.BlendState.defaultValue}
+     */
+    readonly defaultValue: BlendState;
+
+
+    new(separateMRTBlend: boolean, alphaToMask: boolean): BlendState;
+
+
+
+}
+declare const BlendState: BlendStateConstructor;
+    
+interface RasterState {
+    /**
+     * Controls which sides of polygons should be culled (not drawn).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RasterState-cullingMode.html | Rendering.RasterState.cullingMode}
+     */
+    cullingMode: CullMode;
+    /**
+     * Enable clipping based on depth.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RasterState-depthClip.html | Rendering.RasterState.depthClip}
+     */
+    depthClip: boolean;
+    /**
+     * Enables conservative rasterization. Before using check for support via SystemInfo.supportsConservativeRaster property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RasterState-conservative.html | Rendering.RasterState.conservative}
+     */
+    conservative: boolean;
+    /**
+     * Scales the minimum resolvable depth buffer value in the GPU's depth bias setting.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RasterState-offsetUnits.html | Rendering.RasterState.offsetUnits}
+     */
+    offsetUnits: number;
+    /**
+     * Scales the maximum Z slope in the GPU's depth bias setting.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RasterState-offsetFactor.html | Rendering.RasterState.offsetFactor}
+     */
+    offsetFactor: number;
+
+
+
+    Equals(other: RasterState): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+
+
+}
+    
+interface RasterStateConstructor {
+    readonly defaultValue: RasterState;
+
+
+    new(cullingMode: CullMode, offsetUnits: number, offsetFactor: number, depthClip: boolean): RasterState;
+
+
+
+}
+declare const RasterState: RasterStateConstructor;
+    
+interface DepthState {
+    /**
+     * Controls whether pixels from this object are written to the depth buffer.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.DepthState-writeEnabled.html | Rendering.DepthState.writeEnabled}
+     */
+    writeEnabled: boolean;
+    /**
+     * How should depth testing be performed.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.DepthState-compareFunction.html | Rendering.DepthState.compareFunction}
+     */
+    compareFunction: CompareFunction;
+
+
+
+    Equals(other: DepthState): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+
+
+}
+    
+interface DepthStateConstructor {
+    /**
+     * Default values for the depth state.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.DepthState-defaultValue.html | Rendering.DepthState.defaultValue}
+     */
+    readonly defaultValue: DepthState;
+
+
+    new(writeEnabled: boolean, compareFunction: CompareFunction): DepthState;
+
+
+
+}
+declare const DepthState: DepthStateConstructor;
+    
+interface StencilState {
+    /**
+     * Controls whether the stencil buffer is enabled.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.StencilState-enabled.html | Rendering.StencilState.enabled}
+     */
+    enabled: boolean;
+    /**
+     * An 8 bit mask as an 0&#8211;255 integer, used when comparing the reference value with the contents of the buffer.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.StencilState-readMask.html | Rendering.StencilState.readMask}
+     */
+    readMask: number;
+    /**
+     * An 8 bit mask as an 0&#8211;255 integer, used when writing to the buffer.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.StencilState-writeMask.html | Rendering.StencilState.writeMask}
+     */
+    writeMask: number;
+    /**
+     * The function used to compare the reference value to the current contents of the buffer for front-facing geometry.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.StencilState-compareFunctionFront.html | Rendering.StencilState.compareFunctionFront}
+     */
+    compareFunctionFront: CompareFunction;
+    /**
+     * What to do with the contents of the buffer if the stencil test (and the depth test) passes for front-facing geometry.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.StencilState-passOperationFront.html | Rendering.StencilState.passOperationFront}
+     */
+    passOperationFront: StencilOp;
+    /**
+     * What to do with the contents of the buffer if the stencil test fails for front-facing geometry.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.StencilState-failOperationFront.html | Rendering.StencilState.failOperationFront}
+     */
+    failOperationFront: StencilOp;
+    /**
+     * What to do with the contents of the buffer if the stencil test passes, but the depth test fails for front-facing geometry.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.StencilState-zFailOperationFront.html | Rendering.StencilState.zFailOperationFront}
+     */
+    zFailOperationFront: StencilOp;
+    /**
+     * The function used to compare the reference value to the current contents of the buffer for back-facing geometry.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.StencilState-compareFunctionBack.html | Rendering.StencilState.compareFunctionBack}
+     */
+    compareFunctionBack: CompareFunction;
+    /**
+     * What to do with the contents of the buffer if the stencil test (and the depth test) passes for back-facing geometry.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.StencilState-passOperationBack.html | Rendering.StencilState.passOperationBack}
+     */
+    passOperationBack: StencilOp;
+    /**
+     * What to do with the contents of the buffer if the stencil test fails for back-facing geometry.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.StencilState-failOperationBack.html | Rendering.StencilState.failOperationBack}
+     */
+    failOperationBack: StencilOp;
+    /**
+     * What to do with the contents of the buffer if the stencil test passes, but the depth test fails for back-facing geometry.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.StencilState-zFailOperationBack.html | Rendering.StencilState.zFailOperationBack}
+     */
+    zFailOperationBack: StencilOp;
+
+
+
+    Equals(other: StencilState): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    /**
+     * The function used to compare the reference value to the current contents of the buffer.
+     * @param value The value to set.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.StencilState.SetCompareFunction.html | Rendering.StencilState.SetCompareFunction}
+     */
+    SetCompareFunction(value: CompareFunction): void;
+    /**
+     * What to do with the contents of the buffer if the stencil test fails.
+     * @param value The value to set.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.StencilState.SetFailOperation.html | Rendering.StencilState.SetFailOperation}
+     */
+    SetFailOperation(value: StencilOp): void;
+    /**
+     * What to do with the contents of the buffer if the stencil test (and the depth test) passes.
+     * @param value The value to set.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.StencilState.SetPassOperation.html | Rendering.StencilState.SetPassOperation}
+     */
+    SetPassOperation(value: StencilOp): void;
+    /**
+     * What to do with the contents of the buffer if the stencil test passes, but the depth test fails.
+     * @param value The value to set.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.StencilState.SetZFailOperation.html | Rendering.StencilState.SetZFailOperation}
+     */
+    SetZFailOperation(value: StencilOp): void;
+
+
+}
+    
+interface StencilStateConstructor {
+    /**
+     * Default values for the stencil state.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.StencilState-defaultValue.html | Rendering.StencilState.defaultValue}
+     */
+    readonly defaultValue: StencilState;
+
+
+    new(enabled: boolean, readMask: number, writeMask: number, compareFunction: CompareFunction, passOperation: StencilOp, failOperation: StencilOp, zFailOperation: StencilOp): StencilState;
+    new(enabled: boolean, readMask: number, writeMask: number, compareFunctionFront: CompareFunction, passOperationFront: StencilOp, failOperationFront: StencilOp, zFailOperationFront: StencilOp, compareFunctionBack: CompareFunction, passOperationBack: StencilOp, failOperationBack: StencilOp, zFailOperationBack: StencilOp): StencilState;
+
+
+
+}
+declare const StencilState: StencilStateConstructor;
+    
+interface RenderStateBlockConstructor {
+
+
+    new(mask: RenderStateMask): RenderStateBlock;
+
+
+
+}
+declare const RenderStateBlock: RenderStateBlockConstructor;
+    
+interface RendererListParams {
+    cullingResults: CullingResults;
+    drawSettings: DrawingSettings;
+    filteringSettings: FilteringSettings;
+    tagName: ShaderTagId;
+    isPassTagName: boolean;
+    tagValues?: Readonly<ShaderTagId[]>;
+    stateBlocks?: Readonly<RenderStateBlock[]>;
+
+
+
+    Equals(other: RendererListParams): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+
+
+}
+    
+interface CullingResults {
+    /**
+     * Array of visible lights.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CullingResults-visibleLights.html | Rendering.CullingResults.visibleLights}
+     */
+    readonly visibleLights: Readonly<VisibleLight[]>;
+    /**
+     * Off-screen lights that still affect visible vertices.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CullingResults-visibleOffscreenVertexLights.html | Rendering.CullingResults.visibleOffscreenVertexLights}
+     */
+    readonly visibleOffscreenVertexLights: Readonly<VisibleLight[]>;
+    /**
+     * Array of visible reflection probes.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CullingResults-visibleReflectionProbes.html | Rendering.CullingResults.visibleReflectionProbes}
+     */
+    readonly visibleReflectionProbes: Readonly<VisibleReflectionProbe[]>;
+    /**
+     * Gets the number of per-object light indices.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CullingResults-lightIndexCount.html | Rendering.CullingResults.lightIndexCount}
+     */
+    readonly lightIndexCount: number;
+    /**
+     * Gets the number of per-object reflection probe indices.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CullingResults-reflectionProbeIndexCount.html | Rendering.CullingResults.reflectionProbeIndexCount}
+     */
+    readonly reflectionProbeIndexCount: number;
+    /**
+     * Gets the number of per-object light and reflection probe indices.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CullingResults-lightAndReflectionProbeIndexCount.html | Rendering.CullingResults.lightAndReflectionProbeIndexCount}
+     */
+    readonly lightAndReflectionProbeIndexCount: number;
+
+
+
+    /**
+     * Calculates the view and projection matrices and shadow split data for a directional light.
+     * @param activeLightIndex The index into the active light array.
+     * @param splitIndex The cascade index.
+     * @param splitCount The number of cascades.
+     * @param splitRatio The cascade ratios.
+     * @param shadowResolution The resolution of the shadowmap.
+     * @param shadowNearPlaneOffset The near plane offset for the light.
+     * @param viewMatrix The computed view matrix.
+     * @param projMatrix The computed projection matrix.
+     * @param shadowSplitData The computed cascade data.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CullingResults.ComputeDirectionalShadowMatricesAndCullingPrimitives.html | Rendering.CullingResults.ComputeDirectionalShadowMatricesAndCullingPrimitives}
+     */
+    ComputeDirectionalShadowMatricesAndCullingPrimitives(activeLightIndex: number, splitIndex: number, splitCount: number, splitRatio: Vector3, shadowResolution: number, shadowNearPlaneOffset: number, viewMatrix: unknown, projMatrix: unknown, shadowSplitData: unknown): boolean;
+    /**
+     * Calculates the view and projection matrices and shadow split data for a point light.
+     * @param activeLightIndex The index into the active light array.
+     * @param cubemapFace The cubemap face to be rendered.
+     * @param fovBias The amount by which to increase the camera FOV above 90 degrees.
+     * @param viewMatrix The computed view matrix.
+     * @param projMatrix The computed projection matrix.
+     * @param shadowSplitData The computed split data.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CullingResults.ComputePointShadowMatricesAndCullingPrimitives.html | Rendering.CullingResults.ComputePointShadowMatricesAndCullingPrimitives}
+     */
+    ComputePointShadowMatricesAndCullingPrimitives(activeLightIndex: number, cubemapFace: CubemapFace, fovBias: number, viewMatrix: unknown, projMatrix: unknown, shadowSplitData: unknown): boolean;
+    /**
+     * Calculates the view and projection matrices and shadow split data for a spot light.
+     * @param activeLightIndex The index into the active light array.
+     * @param viewMatrix The computed view matrix.
+     * @param projMatrix The computed projection matrix.
+     * @param shadowSplitData The computed split data.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CullingResults.ComputeSpotShadowMatricesAndCullingPrimitives.html | Rendering.CullingResults.ComputeSpotShadowMatricesAndCullingPrimitives}
+     */
+    ComputeSpotShadowMatricesAndCullingPrimitives(activeLightIndex: number, viewMatrix: unknown, projMatrix: unknown, shadowSplitData: unknown): boolean;
+    Equals(other: CullingResults): boolean;
+    Equals(obj: unknown): boolean;
+    /**
+     * Fills a buffer with per-object light indices.
+     * @param computeBuffer The compute buffer object to fill.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CullingResults.FillLightAndReflectionProbeIndices.html | Rendering.CullingResults.FillLightAndReflectionProbeIndices}
+     */
+    FillLightAndReflectionProbeIndices(computeBuffer: ComputeBuffer): void;
+    /**
+     * Fills a buffer with per-object light indices.
+     * @param buffer The buffer object to fill.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CullingResults.FillLightAndReflectionProbeIndices.html | Rendering.CullingResults.FillLightAndReflectionProbeIndices}
+     */
+    FillLightAndReflectionProbeIndices(buffer: GraphicsBuffer): void;
+    GetHashCode(): number;
+    /**
+     * If a RenderPipeline sorts or otherwise modifies the VisibleLight list, an index remap will be necessary to properly make use of per-object light lists.
+     * @param allocator The allocator to use.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CullingResults.GetLightIndexMap.html | Rendering.CullingResults.GetLightIndexMap}
+     */
+    GetLightIndexMap(allocator: Allocator): Readonly<number[]>;
+    /**
+     * If a RenderPipeline sorts or otherwise modifies the VisibleReflectionProbe list, an index remap will be necessary to properly make use of per-object reflection probe lists.
+     * @param allocator The allocator to use.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CullingResults.GetReflectionProbeIndexMap.html | Rendering.CullingResults.GetReflectionProbeIndexMap}
+     */
+    GetReflectionProbeIndexMap(allocator: Allocator): Readonly<number[]>;
+    /**
+     * Returns the bounding box that encapsulates the visible shadow casters.  Can be used to, for instance, dynamically adjust cascade ranges.
+     * @param lightIndex The index of the shadow-casting light.
+     * @param outBounds The bounds to be computed.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CullingResults.GetShadowCasterBounds.html | Rendering.CullingResults.GetShadowCasterBounds}
+     */
+    GetShadowCasterBounds(lightIndex: number, outBounds: unknown): boolean;
+    SetLightIndexMap(lightIndexMap: Readonly<number[]>): void;
+    SetReflectionProbeIndexMap(lightIndexMap: Readonly<number[]>): void;
+
+
+}
+    
+interface VisibleLight {
+    /**
+     * Accessor to Light component.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.VisibleLight-light.html | Rendering.VisibleLight.light}
+     */
+    readonly light: Light;
+    /**
+     * Light type.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.VisibleLight-lightType.html | Rendering.VisibleLight.lightType}
+     */
+    lightType: LightType;
+    /**
+     * Light color multiplied by intensity.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.VisibleLight-finalColor.html | Rendering.VisibleLight.finalColor}
+     */
+    finalColor: Color;
+    /**
+     * Light's influence rectangle on screen.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.VisibleLight-screenRect.html | Rendering.VisibleLight.screenRect}
+     */
+    screenRect: Rect;
+    /**
+     * Light transformation matrix.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.VisibleLight-localToWorldMatrix.html | Rendering.VisibleLight.localToWorldMatrix}
+     */
+    localToWorldMatrix: Matrix4x4;
+    /**
+     * Light range.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.VisibleLight-range.html | Rendering.VisibleLight.range}
+     */
+    range: number;
+    /**
+     * Spot light angle.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.VisibleLight-spotAngle.html | Rendering.VisibleLight.spotAngle}
+     */
+    spotAngle: number;
+    /**
+     * Light intersects near clipping plane.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.VisibleLight-intersectsNearPlane.html | Rendering.VisibleLight.intersectsNearPlane}
+     */
+    intersectsNearPlane: boolean;
+    /**
+     * Light intersects far clipping plane.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.VisibleLight-intersectsFarPlane.html | Rendering.VisibleLight.intersectsFarPlane}
+     */
+    intersectsFarPlane: boolean;
+    /**
+     * Has the light been forced to be visibile.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.VisibleLight-forcedVisible.html | Rendering.VisibleLight.forcedVisible}
+     */
+    readonly forcedVisible: boolean;
+
+
+
+    Equals(other: VisibleLight): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+
+
+}
+    
+interface VisibleReflectionProbe {
+    /**
+     * Probe texture.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.VisibleReflectionProbe-texture.html | Rendering.VisibleReflectionProbe.texture}
+     */
+    readonly texture: Texture;
+    /**
+     * Accessor to ReflectionProbe component.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.VisibleReflectionProbe-reflectionProbe.html | Rendering.VisibleReflectionProbe.reflectionProbe}
+     */
+    readonly reflectionProbe: ReflectionProbe;
+    /**
+     * The probe's world space axis-aligned bounding box in which the probe can contribute to reflections.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.VisibleReflectionProbe-bounds.html | Rendering.VisibleReflectionProbe.bounds}
+     */
+    bounds: Bounds;
+    /**
+     * Probe transformation matrix.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.VisibleReflectionProbe-localToWorldMatrix.html | Rendering.VisibleReflectionProbe.localToWorldMatrix}
+     */
+    localToWorldMatrix: Matrix4x4;
+    /**
+     * Shader data for probe HDR texture decoding.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.VisibleReflectionProbe-hdrData.html | Rendering.VisibleReflectionProbe.hdrData}
+     */
+    hdrData: Vector4;
+    /**
+     * The center of the probe's bounding box in which the probe can contribute to reflections. The center is relative to the position of the probe.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.VisibleReflectionProbe-center.html | Rendering.VisibleReflectionProbe.center}
+     */
+    center: Vector3;
+    /**
+     * Probe blending distance.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.VisibleReflectionProbe-blendDistance.html | Rendering.VisibleReflectionProbe.blendDistance}
+     */
+    blendDistance: number;
+    /**
+     * Probe importance.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.VisibleReflectionProbe-importance.html | Rendering.VisibleReflectionProbe.importance}
+     */
+    importance: number;
+    /**
+     * Should probe use box projection.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.VisibleReflectionProbe-isBoxProjection.html | Rendering.VisibleReflectionProbe.isBoxProjection}
+     */
+    isBoxProjection: boolean;
+
+
+
+    Equals(other: VisibleReflectionProbe): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+
+
+}
+    
+interface DrawingSettings {
+    /**
+     * How to sort objects during rendering.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.DrawingSettings-sortingSettings.html | Rendering.DrawingSettings.sortingSettings}
+     */
+    sortingSettings: SortingSettings;
+    /**
+     * What kind of per-object data to setup during rendering.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.DrawingSettings-perObjectData.html | Rendering.DrawingSettings.perObjectData}
+     */
+    perObjectData: PerObjectData;
+    /**
+     * Controls whether dynamic batching is enabled.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.DrawingSettings-enableDynamicBatching.html | Rendering.DrawingSettings.enableDynamicBatching}
+     */
+    enableDynamicBatching: boolean;
+    /**
+     * Controls whether instancing is enabled.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.DrawingSettings-enableInstancing.html | Rendering.DrawingSettings.enableInstancing}
+     */
+    enableInstancing: boolean;
+    /**
+     * Sets the Material to use for all drawers that would render in this group.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.DrawingSettings-overrideMaterial.html | Rendering.DrawingSettings.overrideMaterial}
+     */
+    overrideMaterial: Material;
+    /**
+     * Sets the shader to use for all drawers that would render in this group. Override shaders do not override existing material properties.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.DrawingSettings-overrideShader.html | Rendering.DrawingSettings.overrideShader}
+     */
+    overrideShader: Shader;
+    /**
+     * Selects which pass of the override material to use.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.DrawingSettings-overrideMaterialPassIndex.html | Rendering.DrawingSettings.overrideMaterialPassIndex}
+     */
+    overrideMaterialPassIndex: number;
+    /**
+     * Selects which pass of the override shader to use.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.DrawingSettings-overrideShaderPassIndex.html | Rendering.DrawingSettings.overrideShaderPassIndex}
+     */
+    overrideShaderPassIndex: number;
+    /**
+     * Sets the Material to use for any drawers in this group that don't meet the requirements.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.DrawingSettings-fallbackMaterial.html | Rendering.DrawingSettings.fallbackMaterial}
+     */
+    fallbackMaterial: Material;
+    /**
+     * Configures what light should be used as main light.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.DrawingSettings-mainLightIndex.html | Rendering.DrawingSettings.mainLightIndex}
+     */
+    mainLightIndex: number;
+
+
+
+    Equals(other: DrawingSettings): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    /**
+     * Get the name of the shader pass.
+     * @param index Index of the shader pass to use.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.DrawingSettings.GetShaderPassName.html | Rendering.DrawingSettings.GetShaderPassName}
+     */
+    GetShaderPassName(index: number): ShaderTagId;
+    /**
+     * Set the name of the shader pass.
+     * @param index Index of the shader pass to use.
+     * @param shaderPassName Name of the shader pass.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.DrawingSettings.SetShaderPassName.html | Rendering.DrawingSettings.SetShaderPassName}
+     */
+    SetShaderPassName(index: number, shaderPassName: ShaderTagId): void;
+
+
+}
+    
+interface SortingSettings {
+    /**
+     * Used to calculate the distance to objects.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.SortingSettings-worldToCameraMatrix.html | Rendering.SortingSettings.worldToCameraMatrix}
+     */
+    worldToCameraMatrix: Matrix4x4;
+    /**
+     * Used to calculate the distance to objects.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.SortingSettings-cameraPosition.html | Rendering.SortingSettings.cameraPosition}
+     */
+    cameraPosition: Vector3;
+    /**
+     * Used to calculate distance to objects, by comparing the positions of objects to this axis.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.SortingSettings-customAxis.html | Rendering.SortingSettings.customAxis}
+     */
+    customAxis: Vector3;
+    /**
+     * What kind of sorting to do while rendering.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.SortingSettings-criteria.html | Rendering.SortingSettings.criteria}
+     */
+    criteria: SortingCriteria;
+    /**
+     * Type of sorting to use while rendering.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.SortingSettings-distanceMetric.html | Rendering.SortingSettings.distanceMetric}
+     */
+    distanceMetric: DistanceMetric;
+
+
+
+    Equals(other: SortingSettings): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+
+
+}
+    
+interface SortingSettingsConstructor {
+
+
+    new(camera: Camera): SortingSettings;
+
+
+
+}
+declare const SortingSettings: SortingSettingsConstructor;
+    
+interface DrawingSettingsConstructor {
+    readonly maxShaderPasses: number;
+
+
+    new(shaderPassName: ShaderTagId, sortingSettings: SortingSettings): DrawingSettings;
+
+
+
+}
+declare const DrawingSettings: DrawingSettingsConstructor;
+    
+interface FilteringSettings {
+    /**
+     * Unity renders objects whose Material.renderQueue value is within range specified by this Rendering.RenderQueueRange.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.FilteringSettings-renderQueueRange.html | Rendering.FilteringSettings.renderQueueRange}
+     */
+    renderQueueRange: RenderQueueRange;
+    /**
+     * Unity renders objects whose GameObject.layer value is enabled in this bit mask.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.FilteringSettings-layerMask.html | Rendering.FilteringSettings.layerMask}
+     */
+    layerMask: number;
+    /**
+     * Unity renders objects whose Renderer.renderingLayerMask value is enabled in this bit mask.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.FilteringSettings-renderingLayerMask.html | Rendering.FilteringSettings.renderingLayerMask}
+     */
+    renderingLayerMask: number;
+    /**
+     * Represents which Rendering.BatchRendererGroup batch layers to enable for rendering.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.FilteringSettings-batchLayerMask.html | Rendering.FilteringSettings.batchLayerMask}
+     */
+    batchLayerMask: number;
+    /**
+     * Determines if Unity excludes GameObjects that are in motion from rendering. This refers to GameObjects that have an active Motion Vector pass assigned to their Material or have set the Motion Vector mode to per object motion (Menu: Mesh Renderer &gt; Additional Settings &gt; Motion Vectors &gt; Per Object Motion).
+For Unity to exclude a GameObject from rendering, the GameObject must have moved since the last frame. To exclude a GameObject manually, enable a pass.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.FilteringSettings-excludeMotionVectorObjects.html | Rendering.FilteringSettings.excludeMotionVectorObjects}
+     */
+    excludeMotionVectorObjects: boolean;
+    /**
+     * Determines if Unity renders not moving GameObjects in motion vector pass. This refers to GameObjects that have an active Motion Vector pass assigned to their Material and did not move since the last frame. This flag can be used to render both moving objects and not moving objects in the motion vector pass to populate object motion data and scene depth data together.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.FilteringSettings-forceAllMotionVectorObjects.html | Rendering.FilteringSettings.forceAllMotionVectorObjects}
+     */
+    forceAllMotionVectorObjects: boolean;
+    /**
+     * Unity renders objects whose SortingLayer.value value is within range specified by this Rendering.SortingLayerRange.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.FilteringSettings-sortingLayerRange.html | Rendering.FilteringSettings.sortingLayerRange}
+     */
+    sortingLayerRange: SortingLayerRange;
+
+
+
+    Equals(other: FilteringSettings): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+
+
+}
+    
+interface SortingLayerRange {
+    /**
+     * Inclusive lower bound for the range.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.SortingLayerRange-lowerBound.html | Rendering.SortingLayerRange.lowerBound}
+     */
+    lowerBound: number;
+    /**
+     * Inclusive upper bound for the range.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.SortingLayerRange-upperBound.html | Rendering.SortingLayerRange.upperBound}
+     */
+    upperBound: number;
+
+
+
+    Equals(other: SortingLayerRange): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+
+
+}
+    
+interface SortingLayerRangeConstructor {
+    /**
+     * A range that includes all objects.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.SortingLayerRange-all.html | Rendering.SortingLayerRange.all}
+     */
+    readonly all: SortingLayerRange;
+
+
+    new(lowerBound: number, upperBound: number): SortingLayerRange;
+
+
+
+}
+declare const SortingLayerRange: SortingLayerRangeConstructor;
+    
+interface FilteringSettingsConstructor {
+    /**
+     * Creates a FilteringSettings struct that contains default values for all properties. With these default values, Unity does not perform any filtering.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.FilteringSettings-defaultValue.html | Rendering.FilteringSettings.defaultValue}
+     */
+    readonly defaultValue: FilteringSettings;
+
+
+    new(renderQueueRange: unknown, layerMask: number, renderingLayerMask: number, excludeMotionVectorObjects: number): FilteringSettings;
+
+
+
+}
+declare const FilteringSettings: FilteringSettingsConstructor;
+    
+interface RendererListParamsConstructor {
+    readonly Invalid: RendererListParams;
+
+
+    new(cullingResults: CullingResults, drawSettings: DrawingSettings, filteringSettings: FilteringSettings): RendererListParams;
+
+
+
+}
+declare const RendererListParams: RendererListParamsConstructor;
+    
+interface RendererListDescConstructor {
+
+
+    new(passName: ShaderTagId, cullingResult: CullingResults, camera: Camera): RendererListDesc;
+    new(passNames: Readonly<ShaderTagId[]>, cullingResult: CullingResults, camera: Camera): RendererListDesc;
+
+
+    ConvertToParameters(desc: unknown): RendererListParams;
+
+}
+declare const RendererListDesc: RendererListDescConstructor;
+    
+interface ShadowCastersCullingInfos {
+    splitBuffer: Readonly<ShadowSplitData[]>;
+    perLightInfos: Readonly<LightShadowCasterCullingInfo[]>;
+
+
+
+
+
+}
+    
+interface ShadowSplitData {
+    /**
+     * The number of culling planes.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ShadowSplitData-cullingPlaneCount.html | Rendering.ShadowSplitData.cullingPlaneCount}
+     */
+    cullingPlaneCount: number;
+    /**
+     * The culling sphere.  The first three components of the vector describe the sphere center, and the last component specifies the radius.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ShadowSplitData-cullingSphere.html | Rendering.ShadowSplitData.cullingSphere}
+     */
+    cullingSphere: Vector4;
+    /**
+     * The model view projection matrix Unity uses to cull objects it renders into this shadow map.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ShadowSplitData-cullingMatrix.html | Rendering.ShadowSplitData.cullingMatrix}
+     */
+    cullingMatrix: Matrix4x4;
+    /**
+     * The near plane distance that Unity uses to cull objects. Unity transforms the objects with ShadowSplitData.cullingMatrix, and then culls the ones that are farther than the near plane distance.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ShadowSplitData-cullingNearPlane.html | Rendering.ShadowSplitData.cullingNearPlane}
+     */
+    cullingNearPlane: number;
+    /**
+     * A multiplier applied to the radius of the culling sphere.
+
+Values must be in the range 0 to 1. With higher values, Unity culls more objects. Lower makes the cascades share more rendered objects. Using lower values allows blending between different cascades as they then share objects.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ShadowSplitData-shadowCascadeBlendCullingFactor.html | Rendering.ShadowSplitData.shadowCascadeBlendCullingFactor}
+     */
+    shadowCascadeBlendCullingFactor: number;
+
+
+
+    Equals(other: ShadowSplitData): boolean;
+    Equals(obj: unknown): boolean;
+    /**
+     * Gets a culling plane.
+     * @param index The culling plane index.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ShadowSplitData.GetCullingPlane.html | Rendering.ShadowSplitData.GetCullingPlane}
+     */
+    GetCullingPlane(index: number): Plane;
+    GetHashCode(): number;
+    /**
+     * Sets a culling plane.
+     * @param index The index of the culling plane to set.
+     * @param plane The culling plane.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ShadowSplitData.SetCullingPlane.html | Rendering.ShadowSplitData.SetCullingPlane}
+     */
+    SetCullingPlane(index: number, plane: Plane): void;
+
+
+}
+    
+interface ShadowSplitDataConstructor {
+    readonly maximumCullingPlaneCount: number;
+
+
+
+
+
+}
+declare const ShadowSplitData: ShadowSplitDataConstructor;
+    
+interface LightShadowCasterCullingInfo {
+    splitRange: RangeInt;
+    projectionType: BatchCullingProjectionType;
+    splitExclusionMask: number;
+
+
+
+
+
+}
+    
+interface ScriptableRenderContextConstructor {
+
+
+
+
+    EmitGeometryForCamera(camera: Camera): void;
+    EmitWorldGeometryForSceneView(cullingCamera: Camera): void;
+    PopDisableApiRenderers(): void;
+    PushDisableApiRenderers(): void;
+
+}
+declare const ScriptableRenderContext: ScriptableRenderContextConstructor;
+    
+interface IUnsafeRenderGraphBuilder extends IBaseRenderGraphBuilder {
+
+
+
+    SetRenderFunc<PassData>(renderFunc: BaseRenderFunc<PassData, UnsafeGraphContext>): void;
+
+
+}
+    
+interface UnsafeGraphContext extends IDerivedRendergraphContext {
+    cmd: UnsafeCommandBuffer;
+    readonly defaultResources: RenderGraphDefaultResources;
+    readonly renderGraphPool: RenderGraphObjectPool;
+
+
+
+    FromInternalContext(context: InternalRenderGraphContext): void;
+
+
+}
+    
+interface IUnsafeCommandBuffer extends IComputeCommandBuffer, IRasterCommandBuffer {
+
+
+
+    Clear(): void;
+    SetRenderTarget(rt: RenderTargetIdentifier): void;
+    SetRenderTarget(rt: RenderTargetIdentifier, loadAction: RenderBufferLoadAction, storeAction: RenderBufferStoreAction): void;
+    SetRenderTarget(rt: RenderTargetIdentifier, colorLoadAction: RenderBufferLoadAction, colorStoreAction: RenderBufferStoreAction, depthLoadAction: RenderBufferLoadAction, depthStoreAction: RenderBufferStoreAction): void;
+    SetRenderTarget(rt: RenderTargetIdentifier, mipLevel: number): void;
+    SetRenderTarget(rt: RenderTargetIdentifier, mipLevel: number, cubemapFace: CubemapFace): void;
+    SetRenderTarget(rt: RenderTargetIdentifier, mipLevel: number, cubemapFace: CubemapFace, depthSlice: number): void;
+    SetRenderTarget(color: RenderTargetIdentifier, depth: RenderTargetIdentifier): void;
+    SetRenderTarget(color: RenderTargetIdentifier, depth: RenderTargetIdentifier, mipLevel: number): void;
+    SetRenderTarget(color: RenderTargetIdentifier, depth: RenderTargetIdentifier, mipLevel: number, cubemapFace: CubemapFace): void;
+    SetRenderTarget(color: RenderTargetIdentifier, depth: RenderTargetIdentifier, mipLevel: number, cubemapFace: CubemapFace, depthSlice: number): void;
+    SetRenderTarget(color: RenderTargetIdentifier, colorLoadAction: RenderBufferLoadAction, colorStoreAction: RenderBufferStoreAction, depth: RenderTargetIdentifier, depthLoadAction: RenderBufferLoadAction, depthStoreAction: RenderBufferStoreAction): void;
+    SetRenderTarget(colors: Readonly<RenderTargetIdentifier[]>, depth: RenderTargetIdentifier): void;
+    SetRenderTarget(colors: Readonly<RenderTargetIdentifier[]>, depth: RenderTargetIdentifier, mipLevel: number, cubemapFace: CubemapFace, depthSlice: number): void;
+    SetRenderTarget(binding: RenderTargetBinding, mipLevel: number, cubemapFace: CubemapFace, depthSlice: number): void;
+    SetRenderTarget(binding: RenderTargetBinding): void;
+
+
+}
+    
+interface UnsafeCommandBuffer extends BaseCommandBuffer, IUnsafeCommandBuffer {
+
+
+
+    BeginSample(name: string): void;
+    BeginSample(sampler: CustomSampler): void;
+    BeginSample(marker: ProfilerMarker): void;
+    BuildRayTracingAccelerationStructure(accelerationStructure: RayTracingAccelerationStructure): void;
+    BuildRayTracingAccelerationStructure(accelerationStructure: RayTracingAccelerationStructure, relativeOrigin: Vector3): void;
+    Clear(): void;
+    ClearRenderTarget(clearDepth: boolean, clearColor: boolean, backgroundColor: Color): void;
+    ClearRenderTarget(clearDepth: boolean, clearColor: boolean, backgroundColor: Color, depth: number): void;
+    ClearRenderTarget(clearDepth: boolean, clearColor: boolean, backgroundColor: Color, depth: number, stencil: number): void;
+    ClearRenderTarget(clearFlags: RTClearFlags, backgroundColor: Color, depth: number, stencil: number): void;
+    ClearRenderTarget(clearFlags: RTClearFlags, backgroundColors: Readonly<Color[]>, depth: number, stencil: number): void;
+    ConfigureFoveatedRendering(platformData: unknown): void;
+    CopyCounterValue(src: ComputeBuffer, dst: ComputeBuffer, dstOffsetBytes: number): void;
+    CopyCounterValue(src: GraphicsBuffer, dst: ComputeBuffer, dstOffsetBytes: number): void;
+    CopyCounterValue(src: ComputeBuffer, dst: GraphicsBuffer, dstOffsetBytes: number): void;
+    CopyCounterValue(src: GraphicsBuffer, dst: GraphicsBuffer, dstOffsetBytes: number): void;
+    DisableKeyword(keyword: unknown): void;
+    DisableKeyword(material: Material, keyword: unknown): void;
+    DisableKeyword(computeShader: ComputeShader, keyword: unknown): void;
+    DisableScissorRect(): void;
+    DisableShaderKeyword(keyword: string): void;
+    DispatchCompute(computeShader: ComputeShader, kernelIndex: number, threadGroupsX: number, threadGroupsY: number, threadGroupsZ: number): void;
+    DispatchCompute(computeShader: ComputeShader, kernelIndex: number, indirectBuffer: ComputeBuffer, argsOffset: number): void;
+    DispatchCompute(computeShader: ComputeShader, kernelIndex: number, indirectBuffer: GraphicsBuffer, argsOffset: number): void;
+    DispatchRays(rayTracingShader: RayTracingShader, rayGenName: string, width: number, height: number, depth: number, camera: Camera): void;
+    DrawMesh(mesh: Mesh, matrix: Matrix4x4, material: Material, submeshIndex: number, shaderPass: number, properties: MaterialPropertyBlock): void;
+    DrawMesh(mesh: Mesh, matrix: Matrix4x4, material: Material, submeshIndex: number, shaderPass: number): void;
+    DrawMesh(mesh: Mesh, matrix: Matrix4x4, material: Material, submeshIndex: number): void;
+    DrawMesh(mesh: Mesh, matrix: Matrix4x4, material: Material): void;
+    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, matrices: Readonly<Matrix4x4[]>, count: number, properties: MaterialPropertyBlock): void;
+    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, matrices: Readonly<Matrix4x4[]>, count: number): void;
+    DrawMeshInstanced(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, matrices: Readonly<Matrix4x4[]>): void;
+    DrawMeshInstancedIndirect(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, bufferWithArgs: ComputeBuffer, argsOffset: number, properties: MaterialPropertyBlock): void;
+    DrawMeshInstancedIndirect(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, bufferWithArgs: ComputeBuffer, argsOffset: number): void;
+    DrawMeshInstancedIndirect(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, bufferWithArgs: ComputeBuffer): void;
+    DrawMeshInstancedIndirect(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, bufferWithArgs: GraphicsBuffer, argsOffset: number, properties: MaterialPropertyBlock): void;
+    DrawMeshInstancedIndirect(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, bufferWithArgs: GraphicsBuffer, argsOffset: number): void;
+    DrawMeshInstancedIndirect(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, bufferWithArgs: GraphicsBuffer): void;
+    DrawMeshInstancedProcedural(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, count: number, properties: MaterialPropertyBlock): void;
+    DrawMultipleMeshes(matrices: Readonly<Matrix4x4[]>, meshes: Readonly<Mesh[]>, subsetIndices: Readonly<number[]>, count: number, material: Material, shaderPass: number, properties: MaterialPropertyBlock): void;
+    DrawOcclusionMesh(normalizedCamViewport: RectInt): void;
+    DrawProcedural(matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, vertexCount: number, instanceCount: number, properties: MaterialPropertyBlock): void;
+    DrawProcedural(matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, vertexCount: number, instanceCount: number): void;
+    DrawProcedural(matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, vertexCount: number): void;
+    DrawProcedural(indexBuffer: GraphicsBuffer, matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, indexCount: number, instanceCount: number, properties: MaterialPropertyBlock): void;
+    DrawProcedural(indexBuffer: GraphicsBuffer, matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, indexCount: number, instanceCount: number): void;
+    DrawProcedural(indexBuffer: GraphicsBuffer, matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, indexCount: number): void;
+    DrawProceduralIndirect(matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, bufferWithArgs: ComputeBuffer, argsOffset: number, properties: MaterialPropertyBlock): void;
+    DrawProceduralIndirect(matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, bufferWithArgs: ComputeBuffer, argsOffset: number): void;
+    DrawProceduralIndirect(matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, bufferWithArgs: ComputeBuffer): void;
+    DrawProceduralIndirect(indexBuffer: GraphicsBuffer, matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, bufferWithArgs: ComputeBuffer, argsOffset: number, properties: MaterialPropertyBlock): void;
+    DrawProceduralIndirect(indexBuffer: GraphicsBuffer, matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, bufferWithArgs: ComputeBuffer, argsOffset: number): void;
+    DrawProceduralIndirect(indexBuffer: GraphicsBuffer, matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, bufferWithArgs: ComputeBuffer): void;
+    DrawProceduralIndirect(matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, bufferWithArgs: GraphicsBuffer, argsOffset: number, properties: MaterialPropertyBlock): void;
+    DrawProceduralIndirect(matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, bufferWithArgs: GraphicsBuffer, argsOffset: number): void;
+    DrawProceduralIndirect(matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, bufferWithArgs: GraphicsBuffer): void;
+    DrawProceduralIndirect(indexBuffer: GraphicsBuffer, matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, bufferWithArgs: GraphicsBuffer, argsOffset: number, properties: MaterialPropertyBlock): void;
+    DrawProceduralIndirect(indexBuffer: GraphicsBuffer, matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, bufferWithArgs: GraphicsBuffer, argsOffset: number): void;
+    DrawProceduralIndirect(indexBuffer: GraphicsBuffer, matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, bufferWithArgs: GraphicsBuffer): void;
+    DrawRenderer(renderer: Renderer, material: Material, submeshIndex: number, shaderPass: number): void;
+    DrawRenderer(renderer: Renderer, material: Material, submeshIndex: number): void;
+    DrawRenderer(renderer: Renderer, material: Material): void;
+    DrawRendererList(rendererList: RendererList): void;
+    EnableKeyword(keyword: unknown): void;
+    EnableKeyword(material: Material, keyword: unknown): void;
+    EnableKeyword(computeShader: ComputeShader, keyword: unknown): void;
+    EnableScissorRect(scissor: Rect): void;
+    EnableShaderKeyword(keyword: string): void;
+    EndSample(name: string): void;
+    EndSample(sampler: CustomSampler): void;
+    EndSample(marker: ProfilerMarker): void;
+    IncrementUpdateCount(dest: RenderTargetIdentifier): void;
+    InvokeOnRenderObjectCallbacks(): void;
+    IssuePluginCustomBlit(callback: unknown, command: number, source: RenderTargetIdentifier, dest: RenderTargetIdentifier, commandParam: number, commandFlags: number): void;
+    IssuePluginCustomTextureUpdateV2(callback: unknown, targetTexture: Texture, userData: number): void;
+    IssuePluginEvent(callback: unknown, eventID: number): void;
+    IssuePluginEventAndData(callback: unknown, eventID: number, data: unknown): void;
+    MarkLateLatchMatrixShaderPropertyID(matrixPropertyType: CameraLateLatchMatrixType, shaderPropertyID: number): void;
+    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: ComputeBuffer, callback: unknown): void;
+    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: ComputeBuffer, size: number, offset: number, callback: unknown): void;
+    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: GraphicsBuffer, callback: unknown): void;
+    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: GraphicsBuffer, size: number, offset: number, callback: unknown): void;
+    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: Texture, callback: unknown): void;
+    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, callback: unknown): void;
+    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, dstFormat: TextureFormat, callback: unknown): void;
+    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, dstFormat: GraphicsFormat, callback: unknown): void;
+    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, x: number, width: number, y: number, height: number, z: number, depth: number, callback: unknown): void;
+    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, x: number, width: number, y: number, height: number, z: number, depth: number, dstFormat: TextureFormat, callback: unknown): void;
+    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, x: number, width: number, y: number, height: number, z: number, depth: number, dstFormat: GraphicsFormat, callback: unknown): void;
+    SetBufferCounterValue(buffer: ComputeBuffer, counterValue: number): void;
+    SetBufferCounterValue(buffer: GraphicsBuffer, counterValue: number): void;
+    SetBufferData(buffer: ComputeBuffer, data: unknown): void;
+    SetBufferData<T>(buffer: ComputeBuffer, data: Readonly<T[]>): void;
+    SetBufferData<T>(buffer: ComputeBuffer, data: Readonly<T[]>): void;
+    SetBufferData(buffer: ComputeBuffer, data: unknown, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
+    SetBufferData<T>(buffer: ComputeBuffer, data: Readonly<T[]>, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
+    SetBufferData<T>(buffer: ComputeBuffer, data: Readonly<T[]>, nativeBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
+    SetBufferData(buffer: GraphicsBuffer, data: unknown): void;
+    SetBufferData<T>(buffer: GraphicsBuffer, data: Readonly<T[]>): void;
+    SetBufferData<T>(buffer: GraphicsBuffer, data: Readonly<T[]>): void;
+    SetBufferData(buffer: GraphicsBuffer, data: unknown, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
+    SetBufferData<T>(buffer: GraphicsBuffer, data: Readonly<T[]>, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
+    SetBufferData<T>(buffer: GraphicsBuffer, data: Readonly<T[]>, nativeBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
+    SetComputeBufferParam(computeShader: ComputeShader, kernelIndex: number, nameID: number, buffer: ComputeBuffer): void;
+    SetComputeBufferParam(computeShader: ComputeShader, kernelIndex: number, name: string, buffer: ComputeBuffer): void;
+    SetComputeBufferParam(computeShader: ComputeShader, kernelIndex: number, nameID: number, bufferHandle: GraphicsBufferHandle): void;
+    SetComputeBufferParam(computeShader: ComputeShader, kernelIndex: number, name: string, bufferHandle: GraphicsBufferHandle): void;
+    SetComputeBufferParam(computeShader: ComputeShader, kernelIndex: number, nameID: number, buffer: GraphicsBuffer): void;
+    SetComputeBufferParam(computeShader: ComputeShader, kernelIndex: number, name: string, buffer: GraphicsBuffer): void;
+    SetComputeConstantBufferParam(computeShader: ComputeShader, nameID: number, buffer: ComputeBuffer, offset: number, size: number): void;
+    SetComputeConstantBufferParam(computeShader: ComputeShader, name: string, buffer: ComputeBuffer, offset: number, size: number): void;
+    SetComputeConstantBufferParam(computeShader: ComputeShader, nameID: number, buffer: GraphicsBuffer, offset: number, size: number): void;
+    SetComputeConstantBufferParam(computeShader: ComputeShader, name: string, buffer: GraphicsBuffer, offset: number, size: number): void;
+    SetComputeFloatParam(computeShader: ComputeShader, nameID: number, val: number): void;
+    SetComputeFloatParam(computeShader: ComputeShader, name: string, val: number): void;
+    SetComputeFloatParams(computeShader: ComputeShader, name: string, values: Readonly<number[]>): void;
+    SetComputeFloatParams(computeShader: ComputeShader, nameID: number, values: Readonly<number[]>): void;
+    SetComputeIntParam(computeShader: ComputeShader, nameID: number, val: number): void;
+    SetComputeIntParam(computeShader: ComputeShader, name: string, val: number): void;
+    SetComputeIntParams(computeShader: ComputeShader, name: string, values: Readonly<number[]>): void;
+    SetComputeIntParams(computeShader: ComputeShader, nameID: number, values: Readonly<number[]>): void;
+    SetComputeMatrixArrayParam(computeShader: ComputeShader, nameID: number, values: Readonly<Matrix4x4[]>): void;
+    SetComputeMatrixArrayParam(computeShader: ComputeShader, name: string, values: Readonly<Matrix4x4[]>): void;
+    SetComputeMatrixParam(computeShader: ComputeShader, nameID: number, val: Matrix4x4): void;
+    SetComputeMatrixParam(computeShader: ComputeShader, name: string, val: Matrix4x4): void;
+    SetComputeTextureParam(computeShader: ComputeShader, kernelIndex: number, name: string, rt: TextureHandle): void;
+    SetComputeTextureParam(computeShader: ComputeShader, kernelIndex: number, nameID: number, rt: TextureHandle): void;
+    SetComputeTextureParam(computeShader: ComputeShader, kernelIndex: number, name: string, rt: TextureHandle, mipLevel: number): void;
+    SetComputeTextureParam(computeShader: ComputeShader, kernelIndex: number, nameID: number, rt: TextureHandle, mipLevel: number): void;
+    SetComputeTextureParam(computeShader: ComputeShader, kernelIndex: number, name: string, rt: TextureHandle, mipLevel: number, element: RenderTextureSubElement): void;
+    SetComputeTextureParam(computeShader: ComputeShader, kernelIndex: number, nameID: number, rt: TextureHandle, mipLevel: number, element: RenderTextureSubElement): void;
+    SetComputeVectorArrayParam(computeShader: ComputeShader, nameID: number, values: Readonly<Vector4[]>): void;
+    SetComputeVectorArrayParam(computeShader: ComputeShader, name: string, values: Readonly<Vector4[]>): void;
+    SetComputeVectorParam(computeShader: ComputeShader, nameID: number, val: Vector4): void;
+    SetComputeVectorParam(computeShader: ComputeShader, name: string, val: Vector4): void;
+    SetFoveatedRenderingMode(foveatedRenderingMode: FoveatedRenderingMode): void;
+    SetGlobalBuffer(name: string, value: ComputeBuffer): void;
+    SetGlobalBuffer(nameID: number, value: ComputeBuffer): void;
+    SetGlobalBuffer(name: string, value: GraphicsBuffer): void;
+    SetGlobalBuffer(nameID: number, value: GraphicsBuffer): void;
+    SetGlobalColor(nameID: number, value: Color): void;
+    SetGlobalColor(name: string, value: Color): void;
+    SetGlobalConstantBuffer(buffer: ComputeBuffer, nameID: number, offset: number, size: number): void;
+    SetGlobalConstantBuffer(buffer: ComputeBuffer, name: string, offset: number, size: number): void;
+    SetGlobalConstantBuffer(buffer: GraphicsBuffer, nameID: number, offset: number, size: number): void;
+    SetGlobalConstantBuffer(buffer: GraphicsBuffer, name: string, offset: number, size: number): void;
+    SetGlobalDepthBias(bias: number, slopeBias: number): void;
+    SetGlobalFloat(nameID: number, value: number): void;
+    SetGlobalFloat(name: string, value: number): void;
+    SetGlobalFloatArray(nameID: number, values: Readonly<number[]>): void;
+    SetGlobalFloatArray(propertyName: string, values: Readonly<number[]>): void;
+    SetGlobalFloatArray(nameID: number, values: Readonly<number[]>): void;
+    SetGlobalFloatArray(propertyName: string, values: Readonly<number[]>): void;
+    SetGlobalInt(nameID: number, value: number): void;
+    SetGlobalInt(name: string, value: number): void;
+    SetGlobalInteger(nameID: number, value: number): void;
+    SetGlobalInteger(name: string, value: number): void;
+    SetGlobalMatrix(nameID: number, value: Matrix4x4): void;
+    SetGlobalMatrix(name: string, value: Matrix4x4): void;
+    SetGlobalMatrixArray(nameID: number, values: Readonly<Matrix4x4[]>): void;
+    SetGlobalMatrixArray(propertyName: string, values: Readonly<Matrix4x4[]>): void;
+    SetGlobalMatrixArray(nameID: number, values: Readonly<Matrix4x4[]>): void;
+    SetGlobalMatrixArray(propertyName: string, values: Readonly<Matrix4x4[]>): void;
+    SetGlobalTexture(name: string, value: TextureHandle): void;
+    SetGlobalTexture(nameID: number, value: TextureHandle): void;
+    SetGlobalTexture(name: string, value: TextureHandle, element: RenderTextureSubElement): void;
+    SetGlobalTexture(nameID: number, value: TextureHandle, element: RenderTextureSubElement): void;
+    SetGlobalVector(nameID: number, value: Vector4): void;
+    SetGlobalVector(name: string, value: Vector4): void;
+    SetGlobalVectorArray(nameID: number, values: Readonly<Vector4[]>): void;
+    SetGlobalVectorArray(propertyName: string, values: Readonly<Vector4[]>): void;
+    SetGlobalVectorArray(nameID: number, values: Readonly<Vector4[]>): void;
+    SetGlobalVectorArray(propertyName: string, values: Readonly<Vector4[]>): void;
+    SetInstanceMultiplier(multiplier: number): void;
+    SetInvertCulling(invertCulling: boolean): void;
+    SetKeyword(keyword: unknown, value: boolean): void;
+    SetKeyword(material: Material, keyword: unknown, value: boolean): void;
+    SetKeyword(computeShader: ComputeShader, keyword: unknown, value: boolean): void;
+    SetLateLatchProjectionMatrices(projectionMat: Readonly<Matrix4x4[]>): void;
+    SetRayTracingAccelerationStructure(rayTracingShader: RayTracingShader, name: string, rayTracingAccelerationStructure: RayTracingAccelerationStructure): void;
+    SetRayTracingAccelerationStructure(rayTracingShader: RayTracingShader, nameID: number, rayTracingAccelerationStructure: RayTracingAccelerationStructure): void;
+    SetRayTracingAccelerationStructure(computeShader: ComputeShader, kernelIndex: number, name: string, rayTracingAccelerationStructure: RayTracingAccelerationStructure): void;
+    SetRayTracingAccelerationStructure(computeShader: ComputeShader, kernelIndex: number, nameID: number, rayTracingAccelerationStructure: RayTracingAccelerationStructure): void;
+    SetRayTracingBufferParam(rayTracingShader: RayTracingShader, name: string, buffer: ComputeBuffer): void;
+    SetRayTracingBufferParam(rayTracingShader: RayTracingShader, nameID: number, buffer: ComputeBuffer): void;
+    SetRayTracingBufferParam(rayTracingShader: RayTracingShader, name: string, buffer: GraphicsBuffer): void;
+    SetRayTracingBufferParam(rayTracingShader: RayTracingShader, nameID: number, buffer: GraphicsBuffer): void;
+    SetRayTracingBufferParam(rayTracingShader: RayTracingShader, name: string, bufferHandle: GraphicsBufferHandle): void;
+    SetRayTracingBufferParam(rayTracingShader: RayTracingShader, nameID: number, bufferHandle: GraphicsBufferHandle): void;
+    SetRayTracingConstantBufferParam(rayTracingShader: RayTracingShader, nameID: number, buffer: ComputeBuffer, offset: number, size: number): void;
+    SetRayTracingConstantBufferParam(rayTracingShader: RayTracingShader, name: string, buffer: ComputeBuffer, offset: number, size: number): void;
+    SetRayTracingConstantBufferParam(rayTracingShader: RayTracingShader, nameID: number, buffer: GraphicsBuffer, offset: number, size: number): void;
+    SetRayTracingConstantBufferParam(rayTracingShader: RayTracingShader, name: string, buffer: GraphicsBuffer, offset: number, size: number): void;
+    SetRayTracingFloatParam(rayTracingShader: RayTracingShader, name: string, val: number): void;
+    SetRayTracingFloatParam(rayTracingShader: RayTracingShader, nameID: number, val: number): void;
+    SetRayTracingFloatParams(rayTracingShader: RayTracingShader, name: string, values: Readonly<number[]>): void;
+    SetRayTracingFloatParams(rayTracingShader: RayTracingShader, nameID: number, values: Readonly<number[]>): void;
+    SetRayTracingIntParam(rayTracingShader: RayTracingShader, name: string, val: number): void;
+    SetRayTracingIntParam(rayTracingShader: RayTracingShader, nameID: number, val: number): void;
+    SetRayTracingIntParams(rayTracingShader: RayTracingShader, name: string, values: Readonly<number[]>): void;
+    SetRayTracingIntParams(rayTracingShader: RayTracingShader, nameID: number, values: Readonly<number[]>): void;
+    SetRayTracingMatrixArrayParam(rayTracingShader: RayTracingShader, name: string, values: Readonly<Matrix4x4[]>): void;
+    SetRayTracingMatrixArrayParam(rayTracingShader: RayTracingShader, nameID: number, values: Readonly<Matrix4x4[]>): void;
+    SetRayTracingMatrixParam(rayTracingShader: RayTracingShader, name: string, val: Matrix4x4): void;
+    SetRayTracingMatrixParam(rayTracingShader: RayTracingShader, nameID: number, val: Matrix4x4): void;
+    SetRayTracingTextureParam(rayTracingShader: RayTracingShader, name: string, rt: TextureHandle): void;
+    SetRayTracingTextureParam(rayTracingShader: RayTracingShader, nameID: number, rt: TextureHandle): void;
+    SetRayTracingVectorArrayParam(rayTracingShader: RayTracingShader, name: string, values: Readonly<Vector4[]>): void;
+    SetRayTracingVectorArrayParam(rayTracingShader: RayTracingShader, nameID: number, values: Readonly<Vector4[]>): void;
+    SetRayTracingVectorParam(rayTracingShader: RayTracingShader, name: string, val: Vector4): void;
+    SetRayTracingVectorParam(rayTracingShader: RayTracingShader, nameID: number, val: Vector4): void;
+    SetRenderTarget(rt: RenderTargetIdentifier): void;
+    SetRenderTarget(rt: RenderTargetIdentifier, loadAction: RenderBufferLoadAction, storeAction: RenderBufferStoreAction): void;
+    SetRenderTarget(rt: RenderTargetIdentifier, colorLoadAction: RenderBufferLoadAction, colorStoreAction: RenderBufferStoreAction, depthLoadAction: RenderBufferLoadAction, depthStoreAction: RenderBufferStoreAction): void;
+    SetRenderTarget(rt: RenderTargetIdentifier, mipLevel: number): void;
+    SetRenderTarget(rt: RenderTargetIdentifier, mipLevel: number, cubemapFace: CubemapFace): void;
+    SetRenderTarget(rt: RenderTargetIdentifier, mipLevel: number, cubemapFace: CubemapFace, depthSlice: number): void;
+    SetRenderTarget(color: RenderTargetIdentifier, depth: RenderTargetIdentifier): void;
+    SetRenderTarget(color: RenderTargetIdentifier, depth: RenderTargetIdentifier, mipLevel: number): void;
+    SetRenderTarget(color: RenderTargetIdentifier, depth: RenderTargetIdentifier, mipLevel: number, cubemapFace: CubemapFace): void;
+    SetRenderTarget(color: RenderTargetIdentifier, depth: RenderTargetIdentifier, mipLevel: number, cubemapFace: CubemapFace, depthSlice: number): void;
+    SetRenderTarget(color: RenderTargetIdentifier, colorLoadAction: RenderBufferLoadAction, colorStoreAction: RenderBufferStoreAction, depth: RenderTargetIdentifier, depthLoadAction: RenderBufferLoadAction, depthStoreAction: RenderBufferStoreAction): void;
+    SetRenderTarget(colors: Readonly<RenderTargetIdentifier[]>, depth: RenderTargetIdentifier): void;
+    SetRenderTarget(colors: Readonly<RenderTargetIdentifier[]>, depth: RenderTargetIdentifier, mipLevel: number, cubemapFace: CubemapFace, depthSlice: number): void;
+    SetRenderTarget(binding: RenderTargetBinding, mipLevel: number, cubemapFace: CubemapFace, depthSlice: number): void;
+    SetRenderTarget(binding: RenderTargetBinding): void;
+    SetShadowSamplingMode(shadowmap: RenderTargetIdentifier, mode: ShadowSamplingMode): void;
+    SetSinglePassStereo(mode: SinglePassStereoMode): void;
+    SetupCameraProperties(camera: Camera): void;
+    SetViewport(pixelRect: Rect): void;
+    SetViewProjectionMatrices(view: Matrix4x4, proj: Matrix4x4): void;
+    SetWireframe(enable: boolean): void;
+    UnmarkLateLatchMatrix(matrixPropertyType: CameraLateLatchMatrixType): void;
+
+
+}
+    
+interface UnsafeGraphContextConstructor {
+
+
+    new(): UnsafeGraphContext;
+
+
+
+}
+declare const UnsafeGraphContext: UnsafeGraphContextConstructor;
+    
+interface BufferDesc {
+    count: number;
+    stride: number;
+    name: string;
+    target: Target;
+    usageFlags: UsageFlags;
+
+
+
+    GetHashCode(): number;
+
+
+}
+    
+interface BufferDescConstructor {
+
+
+    new(count: number, stride: number): BufferDesc;
+    new(count: number, stride: number, target: Target): BufferDesc;
+
+
+
+}
+declare const BufferDesc: BufferDescConstructor;
+    
+interface RenderTargetInfo {
+    width: number;
+    height: number;
+    volumeDepth: number;
+    msaaSamples: number;
+    format: GraphicsFormat;
+    bindMS: boolean;
+
+
+
+
+
+}
+    
+interface ImportResourceParams {
+    clearOnFirstUse: boolean;
+    clearColor: Color;
+    discardOnLastUse: boolean;
+
+
+
+
+
+}
+    
+interface RTHandle {
+    readonly scaleFactor: Vector2;
+    readonly useScaling: boolean;
+    readonly referenceSize: Vector2Int;
+    readonly rtHandleProperties: RTHandleProperties;
+    readonly rt: RenderTexture;
+    readonly externalTexture: Texture;
+    readonly nameID: RenderTargetIdentifier;
+    readonly name: string;
+    readonly isMSAAEnabled: boolean;
+
+
+
+    ClearCustomHandleProperties(): void;
+    CopyToFastMemory(cmd: CommandBuffer, residencyFraction: number, flags: FastMemoryFlags): void;
+    GetInstanceID(): number;
+    GetScaledSize(refSize: Vector2Int): Vector2Int;
+    GetScaledSize(): Vector2Int;
+    Release(): void;
+    SetCustomHandleProperties(properties: unknown): void;
+    SwitchOutFastMemory(cmd: CommandBuffer, copyContents: boolean): void;
+    SwitchToFastMemory(cmd: CommandBuffer, residencyFraction: number, flags: FastMemoryFlags, copyContents: boolean): void;
+
+
+}
+    
+interface RTHandleProperties {
+    previousViewportSize: Vector2Int;
+    previousRenderTargetSize: Vector2Int;
+    currentViewportSize: Vector2Int;
+    currentRenderTargetSize: Vector2Int;
+    rtHandleScale: Vector4;
+
+
+
+
+
+}
+    
+interface IContainer {
+    readonly children: Readonly<Widget[]>;
+    displayName: string;
+    readonly queryPath: string;
+
+
+
+
+
+}
+    
+interface Widget {
+    isHiddenCallback: unknown;
+    readonly panel: Panel;
+    readonly parent: IContainer;
+    flags: Flags;
+    displayName: string;
+    tooltip: string;
+    readonly queryPath: string;
+    readonly isEditorOnly: boolean;
+    readonly isRuntimeOnly: boolean;
+    readonly isInactiveInEditor: boolean;
+    readonly isHidden: boolean;
+    nameAndTooltip: NameAndTooltip;
+
+
+
+    GetHashCode(): number;
+
+
+}
+    
+interface Panel extends IContainer {
+    flags: Flags;
+    displayName: string;
+    groupIndex: number;
+    readonly queryPath: string;
+    readonly isEditorOnly: boolean;
+    readonly isRuntimeOnly: boolean;
+    readonly isInactiveInEditor: boolean;
+    readonly editorForceUpdate: boolean;
+    readonly children: Readonly<Widget[]>;
+
+    readonly onSetDirty: MonoSignal<Panel>;
+
+
+    GetHashCode(): number;
+    SetDirty(): void;
+
+
+}
+    
+interface PanelConstructor {
+
+
+    new(): Panel;
+
+
+
+}
+declare const Panel: PanelConstructor;
+    
+interface NameAndTooltip {
+    name: string;
+    tooltip: string;
+
+
+
+
+
+}
+    
+interface Panel extends IContainer {
+    flags: Flags;
+    displayName: string;
+    groupIndex: number;
+    readonly queryPath: string;
+    readonly isEditorOnly: boolean;
+    readonly isRuntimeOnly: boolean;
+    readonly isInactiveInEditor: boolean;
+    readonly editorForceUpdate: boolean;
+    readonly children: Readonly<Widget[]>;
+
+    readonly onSetDirty: MonoSignal<Panel>;
+
+
+    GetHashCode(): number;
+    SetDirty(): void;
+
+
+}
+    
+interface PanelConstructor {
+
+
+    new(): Panel;
+
+
+
+}
+declare const Panel: PanelConstructor;
+    
+interface RenderGraphConstructor {
+    readonly kMaxMRTCount: number;
+    readonly isRenderGraphViewerActive: boolean;
+
+
+    new(name: string): RenderGraph;
+
+
+    GetRegisteredRenderGraphs(): Readonly<RenderGraph[]>;
+
+}
+declare const RenderGraph: RenderGraphConstructor;
+    
+interface ContextContainer {
+
+
+
+    Contains<T>(): boolean;
+    Create<T>(): T;
+    Dispose(): void;
+    Get<T>(): T;
+    GetOrCreate<T>(): T;
+
+
+}
+    
+interface ContextContainerConstructor {
+
+
+    new(): ContextContainer;
+
+
+
+}
+declare const ContextContainer: ContextContainerConstructor;
+    
+interface ScriptableRenderPass extends IRenderGraphRecorder {
+    renderPassEvent: RenderPassEvent;
+    readonly colorAttachmentHandles: Readonly<RTHandle[]>;
+    readonly colorAttachmentHandle: RTHandle;
+    readonly depthAttachmentHandle: RTHandle;
+    readonly colorStoreActions: Readonly<number[]>;
+    readonly depthStoreAction: RenderBufferStoreAction;
+    readonly input: ScriptableRenderPassInput;
+    readonly clearFlag: ClearFlag;
+    readonly clearColor: Color;
+    requiresIntermediateTexture: boolean;
+
+
+
+    ConfigureInput(passInput: ScriptableRenderPassInput): void;
+    CreateDrawingSettings(shaderTagId: ShaderTagId, renderingData: unknown, sortingCriteria: SortingCriteria): DrawingSettings;
+    CreateDrawingSettings(shaderTagId: ShaderTagId, renderingData: UniversalRenderingData, cameraData: UniversalCameraData, lightData: UniversalLightData, sortingCriteria: SortingCriteria): DrawingSettings;
+    CreateDrawingSettings(shaderTagIdList: Readonly<ShaderTagId[]>, renderingData: unknown, sortingCriteria: SortingCriteria): DrawingSettings;
+    CreateDrawingSettings(shaderTagIdList: Readonly<ShaderTagId[]>, renderingData: UniversalRenderingData, cameraData: UniversalCameraData, lightData: UniversalLightData, sortingCriteria: SortingCriteria): DrawingSettings;
+    FrameCleanup(cmd: CommandBuffer): void;
+    OnCameraCleanup(cmd: CommandBuffer): void;
+    RecordRenderGraph(renderGraph: RenderGraph, frameData: ContextContainer): void;
+
+
+}
+    
+interface ContextItem {
+
+
+
+    Reset(): void;
+
+
+}
+    
+interface UniversalRenderingData extends ContextItem {
+    cullResults: CullingResults;
+    supportsDynamicBatching: boolean;
+    perObjectData: PerObjectData;
+    readonly renderingMode: RenderingMode;
+    readonly opaqueLayerMask: LayerMask;
+    readonly transparentLayerMask: LayerMask;
+
+
+
+    Reset(): void;
+
+
+}
+    
+interface UniversalRenderingDataConstructor {
+
+
+    new(): UniversalRenderingData;
+
+
+
+}
+declare const UniversalRenderingData: UniversalRenderingDataConstructor;
+    
+interface UniversalCameraData extends ContextItem {
+    camera: Camera;
+    renderType: CameraRenderType;
+    targetTexture: RenderTexture;
+    cameraTargetDescriptor: RenderTextureDescriptor;
+    renderScale: number;
+    clearDepth: boolean;
+    cameraType: CameraType;
+    isDefaultViewport: boolean;
+    isHdrEnabled: boolean;
+    allowHDROutput: boolean;
+    isAlphaOutputEnabled: boolean;
+    requiresDepthTexture: boolean;
+    requiresOpaqueTexture: boolean;
+    postProcessingRequiresDepthTexture: boolean;
+    xrRendering: boolean;
+    defaultOpaqueSortFlags: SortingCriteria;
+    maxShadowDistance: number;
+    postProcessEnabled: boolean;
+    captureActions: unknown;
+    volumeLayerMask: LayerMask;
+    volumeTrigger: Transform;
+    isStopNaNEnabled: boolean;
+    isDitheringEnabled: boolean;
+    antialiasing: AntialiasingMode;
+    antialiasingQuality: AntialiasingQuality;
+    renderer: ScriptableRenderer;
+    resolveFinalTarget: boolean;
+    worldSpaceCameraPos: Vector3;
+    backgroundColor: Color;
+    baseCamera: Camera;
+    readonly scaledWidth: number;
+    readonly scaledHeight: number;
+    historyManager: UniversalCameraHistory;
+    readonly isGameCamera: boolean;
+    readonly isSceneViewCamera: boolean;
+    readonly isPreviewCamera: boolean;
+    readonly isHDROutputActive: boolean;
+    readonly hdrDisplayInformation: HDRDisplayInformation;
+    readonly hdrDisplayColorGamut: ColorGamut;
+    readonly rendersOverlayUI: boolean;
+    readonly xr: XRPass;
+
+
+
+    GetGPUProjectionMatrix(viewIndex: number): Matrix4x4;
+    GetGPUProjectionMatrixNoJitter(viewIndex: number): Matrix4x4;
+    GetProjectionMatrix(viewIndex: number): Matrix4x4;
+    GetViewMatrix(viewIndex: number): Matrix4x4;
+    IsCameraProjectionMatrixFlipped(): boolean;
+    IsHandleYFlipped(handle: RTHandle): boolean;
+    IsRenderTargetProjectionMatrixFlipped(color: RTHandle, depth: RTHandle): boolean;
+    Reset(): void;
+
+
+}
+    
+interface IPerFrameHistoryAccessTracker {
+
+
+
+    RequestAccess<Type>(): void;
+
+
+}
+    
+interface ICameraHistoryWriteAccess {
+
+
+
+    GetHistoryForWrite<Type>(): Type;
+    IsAccessRequested<Type>(): boolean;
+    IsWritten<Type>(): boolean;
+
+
+}
+    
+interface ICameraHistoryReadAccess {
+
+    readonly OnGatherHistoryRequests: MonoSignal<void>;
+
+
+    GetHistoryForRead<Type>(): Type;
+
+
+}
+    
+interface UniversalCameraHistory extends IPerFrameHistoryAccessTracker, ICameraHistoryWriteAccess, ICameraHistoryReadAccess {
+
+    readonly OnGatherHistoryRequests: MonoSignal<void>;
+
+
+    Dispose(): void;
+    GetHistoryForRead<Type>(): Type;
+    GetHistoryForWrite<Type>(): Type;
+    IsAccessRequested<Type>(): boolean;
+    IsWritten<Type>(): boolean;
+    RequestAccess<Type>(): void;
+
+
+}
+    
+interface HDRDisplayInformation {
+    maxFullFrameToneMapLuminance: number;
+    maxToneMapLuminance: number;
+    minToneMapLuminance: number;
+    paperWhiteNits: number;
+
+
+
+
+
+}
+    
+interface HDRDisplayInformationConstructor {
+
+
+    new(maxFullFrameToneMapLuminance: number, maxToneMapLuminance: number, minToneMapLuminance: number, hdrPaperWhiteNits: number): HDRDisplayInformation;
+
+
+
+}
+declare const HDRDisplayInformation: HDRDisplayInformationConstructor;
+    
+interface XRPass {
+    readonly enabled: boolean;
+    readonly supportsFoveatedRendering: boolean;
+    readonly copyDepth: boolean;
+    readonly hasMotionVectorPass: boolean;
+    readonly isFirstCameraPass: boolean;
+    readonly isLastCameraPass: boolean;
+    readonly multipassId: number;
+    readonly cullingPassId: number;
+    readonly renderTarget: RenderTargetIdentifier;
+    readonly renderTargetDesc: RenderTextureDescriptor;
+    readonly motionVectorRenderTarget: RenderTargetIdentifier;
+    readonly motionVectorRenderTargetDesc: RenderTextureDescriptor;
+    readonly cullingParams: ScriptableCullingParameters;
+    readonly viewCount: number;
+    readonly singlePassEnabled: boolean;
+    readonly foveatedRenderingInfo: unknown;
+    readonly isHDRDisplayOutputActive: boolean;
+    readonly hdrDisplayOutputColorGamut: ColorGamut;
+    readonly hdrDisplayOutputInformation: HDRDisplayInformation;
+    readonly occlusionMeshScale: number;
+    readonly hasValidOcclusionMesh: boolean;
+
+
+
+    ApplyXRViewCenterOffset(center: Vector2): Vector4;
+    GetOcclusionMesh(viewIndex: number): Mesh;
+    GetPrevViewMatrix(viewIndex: number): Matrix4x4;
+    GetPrevViewValid(viewIndex: number): boolean;
+    GetProjMatrix(viewIndex: number): Matrix4x4;
+    GetTextureArraySlice(viewIndex: number): number;
+    GetViewMatrix(viewIndex: number): Matrix4x4;
+    GetViewport(viewIndex: number): Rect;
+    InitBase(createInfo: XRPassCreateInfo): void;
+    Release(): void;
+    RenderDebugXRViewsFrustum(): void;
+    RenderOcclusionMesh(cmd: CommandBuffer, renderIntoTexture: boolean): void;
+    RenderOcclusionMesh(cmd: RasterCommandBuffer, renderIntoTexture: boolean): void;
+    StartSinglePass(cmd: CommandBuffer): void;
+    StartSinglePass(cmd: IRasterCommandBuffer): void;
+    StopSinglePass(cmd: CommandBuffer): void;
+    StopSinglePass(cmd: BaseCommandBuffer): void;
+
+
+}
+    
+interface ScriptableCullingParameters {
+    /**
+     * This parameter controls how many visible lights are allowed.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableCullingParameters-maximumVisibleLights.html | Rendering.ScriptableCullingParameters.maximumVisibleLights}
+     */
+    maximumVisibleLights: number;
+    /**
+     * This property enables a conservative method for calculating the size and position of the minimal enclosing sphere around the frustum cascade corner points for shadow culling.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableCullingParameters-conservativeEnclosingSphere.html | Rendering.ScriptableCullingParameters.conservativeEnclosingSphere}
+     */
+    conservativeEnclosingSphere: boolean;
+    numIterationsEnclosingSphere: number;
+    /**
+     * Number of culling planes to use.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableCullingParameters-cullingPlaneCount.html | Rendering.ScriptableCullingParameters.cullingPlaneCount}
+     */
+    cullingPlaneCount: number;
+    /**
+     * Is the cull orthographic.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableCullingParameters-isOrthographic.html | Rendering.ScriptableCullingParameters.isOrthographic}
+     */
+    isOrthographic: boolean;
+    /**
+     * LODParameters for culling.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableCullingParameters-lodParameters.html | Rendering.ScriptableCullingParameters.lodParameters}
+     */
+    lodParameters: LODParameters;
+    /**
+     * The mask for the culling operation.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableCullingParameters-cullingMask.html | Rendering.ScriptableCullingParameters.cullingMask}
+     */
+    cullingMask: number;
+    /**
+     * The matrix for the culling operation.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableCullingParameters-cullingMatrix.html | Rendering.ScriptableCullingParameters.cullingMatrix}
+     */
+    cullingMatrix: Matrix4x4;
+    /**
+     * Position for the origin of the cull.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableCullingParameters-origin.html | Rendering.ScriptableCullingParameters.origin}
+     */
+    origin: Vector3;
+    /**
+     * Shadow distance to use for the cull.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableCullingParameters-shadowDistance.html | Rendering.ScriptableCullingParameters.shadowDistance}
+     */
+    shadowDistance: number;
+    /**
+     * Offset to apply to the near camera plane when performing shadow map rendering.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableCullingParameters-shadowNearPlaneOffset.html | Rendering.ScriptableCullingParameters.shadowNearPlaneOffset}
+     */
+    shadowNearPlaneOffset: number;
+    /**
+     * Flags to configure a culling operation in the Scriptable Render Pipeline.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableCullingParameters-cullingOptions.html | Rendering.ScriptableCullingParameters.cullingOptions}
+     */
+    cullingOptions: CullingOptions;
+    /**
+     * Reflection Probe Sort options for the cull.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableCullingParameters-reflectionProbeSortingCriteria.html | Rendering.ScriptableCullingParameters.reflectionProbeSortingCriteria}
+     */
+    reflectionProbeSortingCriteria: ReflectionProbeSortingCriteria;
+    /**
+     * Camera Properties used for culling.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableCullingParameters-cameraProperties.html | Rendering.ScriptableCullingParameters.cameraProperties}
+     */
+    cameraProperties: CameraProperties;
+    /**
+     * The view matrix generated for single-pass stereo culling.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableCullingParameters-stereoViewMatrix.html | Rendering.ScriptableCullingParameters.stereoViewMatrix}
+     */
+    stereoViewMatrix: Matrix4x4;
+    /**
+     * The projection matrix generated for single-pass stereo culling.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableCullingParameters-stereoProjectionMatrix.html | Rendering.ScriptableCullingParameters.stereoProjectionMatrix}
+     */
+    stereoProjectionMatrix: Matrix4x4;
+    /**
+     * Distance between the virtual eyes.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableCullingParameters-stereoSeparationDistance.html | Rendering.ScriptableCullingParameters.stereoSeparationDistance}
+     */
+    stereoSeparationDistance: number;
+    /**
+     * This parameter determines query distance for occlusion culling.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableCullingParameters-accurateOcclusionThreshold.html | Rendering.ScriptableCullingParameters.accurateOcclusionThreshold}
+     */
+    accurateOcclusionThreshold: number;
+    /**
+     * This parameter controls how many active jobs contribute to occlusion culling.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableCullingParameters-maximumPortalCullingJobs.html | Rendering.ScriptableCullingParameters.maximumPortalCullingJobs}
+     */
+    maximumPortalCullingJobs: number;
+
+
+
+    Equals(other: ScriptableCullingParameters): boolean;
+    Equals(obj: unknown): boolean;
+    /**
+     * Fetch the culling plane at the given index.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableCullingParameters.GetCullingPlane.html | Rendering.ScriptableCullingParameters.GetCullingPlane}
+     */
+    GetCullingPlane(index: number): Plane;
+    GetHashCode(): number;
+    /**
+     * Get the distance for the culling of a specific layer.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableCullingParameters.GetLayerCullingDistance.html | Rendering.ScriptableCullingParameters.GetLayerCullingDistance}
+     */
+    GetLayerCullingDistance(layerIndex: number): number;
+    /**
+     * Set the culling plane at a given index.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableCullingParameters.SetCullingPlane.html | Rendering.ScriptableCullingParameters.SetCullingPlane}
+     */
+    SetCullingPlane(index: number, plane: Plane): void;
+    /**
+     * Set the distance for the culling of a specific layer.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableCullingParameters.SetLayerCullingDistance.html | Rendering.ScriptableCullingParameters.SetLayerCullingDistance}
+     */
+    SetLayerCullingDistance(layerIndex: number, distance: number): void;
+
+
+}
+    
+interface LODParameters {
+    /**
+     * Indicates whether camera is orthographic.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.LODParameters-isOrthographic.html | Rendering.LODParameters.isOrthographic}
+     */
+    isOrthographic: boolean;
+    /**
+     * Camera position.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.LODParameters-cameraPosition.html | Rendering.LODParameters.cameraPosition}
+     */
+    cameraPosition: Vector3;
+    /**
+     * Camera's field of view.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.LODParameters-fieldOfView.html | Rendering.LODParameters.fieldOfView}
+     */
+    fieldOfView: number;
+    /**
+     * Orhographic camera size.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.LODParameters-orthoSize.html | Rendering.LODParameters.orthoSize}
+     */
+    orthoSize: number;
+    /**
+     * Rendering view height in pixels.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.LODParameters-cameraPixelHeight.html | Rendering.LODParameters.cameraPixelHeight}
+     */
+    cameraPixelHeight: number;
+
+
+
+    Equals(other: LODParameters): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+
+
+}
+    
+interface CameraProperties {
+
+
+
+    Equals(other: CameraProperties): boolean;
+    Equals(obj: unknown): boolean;
+    /**
+     * Get a camera culling plane.
+     * @param index Plane index (up to 5).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CameraProperties.GetCameraCullingPlane.html | Rendering.CameraProperties.GetCameraCullingPlane}
+     */
+    GetCameraCullingPlane(index: number): Plane;
+    GetHashCode(): number;
+    /**
+     * Get a shadow culling plane.
+     * @param index Plane index (up to 5).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CameraProperties.GetShadowCullingPlane.html | Rendering.CameraProperties.GetShadowCullingPlane}
+     */
+    GetShadowCullingPlane(index: number): Plane;
+    /**
+     * Set a camera culling plane.
+     * @param index Plane index (up to 5).
+     * @param plane Camera culling plane.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CameraProperties.SetCameraCullingPlane.html | Rendering.CameraProperties.SetCameraCullingPlane}
+     */
+    SetCameraCullingPlane(index: number, plane: Plane): void;
+    /**
+     * Set a shadow culling plane.
+     * @param index Plane index (up to 5).
+     * @param plane Shadow culling plane.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CameraProperties.SetShadowCullingPlane.html | Rendering.CameraProperties.SetShadowCullingPlane}
+     */
+    SetShadowCullingPlane(index: number, plane: Plane): void;
+
+
+}
+    
+interface ScriptableCullingParametersConstructor {
+    readonly maximumCullingPlaneCount: number;
+    readonly layerCount: number;
+    /**
+     * The lower limit to the value ScriptableCullingParameters.maximumPortalCullingJobs.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableCullingParameters-cullingJobsLowerLimit.html | Rendering.ScriptableCullingParameters.cullingJobsLowerLimit}
+     */
+    readonly cullingJobsLowerLimit: number;
+    /**
+     * The upper limit to the value ScriptableCullingParameters.maximumPortalCullingJobs.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableCullingParameters-cullingJobsUpperLimit.html | Rendering.ScriptableCullingParameters.cullingJobsUpperLimit}
+     */
+    readonly cullingJobsUpperLimit: number;
+
+
+
+
+
+}
+declare const ScriptableCullingParameters: ScriptableCullingParametersConstructor;
+    
+interface XRPassCreateInfo {
+
+
+
+
+
+}
+    
+interface XRPassConstructor {
+
+
+    new(): XRPass;
+
+
+    CreateDefault(createInfo: XRPassCreateInfo): XRPass;
+
+}
+declare const XRPass: XRPassConstructor;
+    
+interface UniversalCameraDataConstructor {
+
+
+    new(): UniversalCameraData;
+
+
+
+}
+declare const UniversalCameraData: UniversalCameraDataConstructor;
+    
+interface UniversalLightData extends ContextItem {
+    mainLightIndex: number;
+    additionalLightsCount: number;
+    maxPerObjectAdditionalLightsCount: number;
+    visibleLights: Readonly<VisibleLight[]>;
+    shadeAdditionalLightsPerVertex: boolean;
+    supportsMixedLighting: boolean;
+    reflectionProbeBoxProjection: boolean;
+    reflectionProbeBlending: boolean;
+    supportsLightLayers: boolean;
+    supportsAdditionalLights: boolean;
+
+
+
+    Reset(): void;
+
+
+}
+    
+interface UniversalLightDataConstructor {
+
+
+    new(): UniversalLightData;
+
+
+
+}
+declare const UniversalLightData: UniversalLightDataConstructor;
+    
+interface ScriptableRenderPassConstructor {
+
+
+    new(): ScriptableRenderPass;
+
+
+
+}
+declare const ScriptableRenderPass: ScriptableRenderPassConstructor;
+    
+interface ScriptableRendererConstructor {
+
+
+    new(data: ScriptableRendererData): ScriptableRenderer;
+
+
+    SetCameraMatrices(cmd: CommandBuffer, cameraData: unknown, setInverseMatrices: boolean): void;
+    SetCameraMatrices(cmd: CommandBuffer, cameraData: UniversalCameraData, setInverseMatrices: boolean): void;
+
+}
+declare const ScriptableRenderer: ScriptableRendererConstructor;
+    
+interface ScriptableRendererData extends ScriptableObject {
+    readonly rendererFeatures: Readonly<ScriptableRendererFeature[]>;
+    useNativeRenderPass: boolean;
+
+
+
+    SetDirty(): void;
+    TryGetRendererFeature<T>(rendererFeature: unknown): boolean;
+
+
+}
+    
+interface ScriptableRendererFeature extends ScriptableObject {
+    readonly isActive: boolean;
+
+
+
+    AddRenderPasses(renderer: ScriptableRenderer, renderingData: unknown): void;
+    Create(): void;
+    Dispose(): void;
+    OnCameraPreCull(renderer: ScriptableRenderer, cameraData: unknown): void;
+    SetActive(active: boolean): void;
+    SetupRenderPasses(renderer: ScriptableRenderer, renderingData: unknown): void;
+
+
+}
+    
+interface UniversalRenderPipelineAssetConstructor {
+    k_MinLutSize: number;
+    k_MaxLutSize: number;
+    readonly AdditionalLightsDefaultShadowResolutionTierLow: number;
+    readonly AdditionalLightsDefaultShadowResolutionTierMedium: number;
+    readonly AdditionalLightsDefaultShadowResolutionTierHigh: number;
+    readonly packagePath: string;
+
+
+    new(): UniversalRenderPipelineAsset;
+
+
+    Create(rendererData: ScriptableRendererData): UniversalRenderPipelineAsset;
+
+}
+declare const UniversalRenderPipelineAsset: UniversalRenderPipelineAssetConstructor;
+    
+interface UniversalRenderPipelineConstructor {
+    k_ShaderTagName: string;
+    readonly maxShadowBias: number;
+    readonly minRenderScale: number;
+    readonly maxRenderScale: number;
+    readonly maxNumIterationsEnclosingSphere: number;
+    readonly maxPerObjectLights: number;
+    readonly maxVisibleAdditionalLights: number;
+    readonly asset: UniversalRenderPipelineAsset;
+
+
+    new(asset: UniversalRenderPipelineAsset): UniversalRenderPipeline;
+
+
+    GetLightAttenuationAndSpotDirection(lightType: LightType, lightRange: number, lightLocalToWorldMatrix: Matrix4x4, spotAngle: number, innerSpotAngle: unknown, lightAttenuation: unknown, lightSpotDir: unknown): void;
+    InitializeLightConstants_Common(lights: Readonly<VisibleLight[]>, lightIndex: number, lightPos: unknown, lightColor: unknown, lightAttenuation: unknown, lightSpotDir: unknown, lightOcclusionProbeChannel: unknown): void;
+    IsGameCamera(camera: Camera): boolean;
+
+}
+declare const UniversalRenderPipeline: UniversalRenderPipelineConstructor;
+    
+interface UniversalRenderPipelineAsset extends RenderPipelineAsset<UniversalRenderPipeline>, ISerializationCallbackReceiver, IGPUResidentRenderPipeline, IRenderGraphEnabledRenderPipeline, IProbeVolumeEnabledRenderPipeline, ISTPEnabledRenderPipeline {
+    readonly rendererDataList: unknown;
+    readonly renderers: unknown;
+    readonly isImmediateModeSupported: boolean;
+    readonly scriptableRenderer: ScriptableRenderer;
+    supportsCameraDepthTexture: boolean;
+    supportsCameraOpaqueTexture: boolean;
+    readonly opaqueDownsampling: Downsampling;
+    readonly supportsTerrainHoles: boolean;
+    storeActionsOptimization: StoreActionsOptimization;
+    supportsHDR: boolean;
+    hdrColorBufferPrecision: HDRColorBufferPrecision;
+    msaaSampleCount: number;
+    renderScale: number;
+    readonly enableLODCrossFade: boolean;
+    readonly lodCrossFadeDitheringType: LODCrossFadeDitheringType;
+    upscalingFilter: UpscalingFilterSelection;
+    fsrOverrideSharpness: boolean;
+    fsrSharpness: number;
+    readonly shEvalMode: ShEvalMode;
+    readonly lightProbeSystem: LightProbeSystem;
+    readonly probeVolumeMemoryBudget: ProbeVolumeTextureMemoryBudget;
+    readonly probeVolumeBlendingMemoryBudget: ProbeVolumeBlendingTextureMemoryBudget;
+    readonly supportProbeVolumeGPUStreaming: boolean;
+    readonly supportProbeVolumeDiskStreaming: boolean;
+    readonly supportProbeVolumeScenarios: boolean;
+    readonly supportProbeVolumeScenarioBlending: boolean;
+    readonly probeVolumeSHBands: ProbeVolumeSHBands;
+    readonly mainLightRenderingMode: LightRenderingMode;
+    readonly supportsMainLightShadows: boolean;
+    mainLightShadowmapResolution: number;
+    readonly additionalLightsRenderingMode: LightRenderingMode;
+    maxAdditionalLightsCount: number;
+    readonly supportsAdditionalLightShadows: boolean;
+    additionalLightsShadowmapResolution: number;
+    readonly additionalLightsShadowResolutionTierLow: number;
+    readonly additionalLightsShadowResolutionTierMedium: number;
+    readonly additionalLightsShadowResolutionTierHigh: number;
+    readonly reflectionProbeBlending: boolean;
+    readonly reflectionProbeBoxProjection: boolean;
+    shadowDistance: number;
+    shadowCascadeCount: number;
+    cascade2Split: number;
+    cascade3Split: Vector2;
+    cascade4Split: Vector3;
+    cascadeBorder: number;
+    shadowDepthBias: number;
+    shadowNormalBias: number;
+    readonly supportsSoftShadows: boolean;
+    supportsDynamicBatching: boolean;
+    readonly supportsMixedLighting: boolean;
+    readonly supportsLightCookies: boolean;
+    readonly useRenderingLayers: boolean;
+    readonly volumeFrameworkUpdateMode: VolumeFrameworkUpdateMode;
+    volumeProfile: VolumeProfile;
+    useSRPBatcher: boolean;
+    colorGradingMode: ColorGradingMode;
+    colorGradingLutSize: number;
+    readonly allowPostProcessAlphaOutput: boolean;
+    readonly useFastSRGBLinearConversion: boolean;
+    readonly supportScreenSpaceLensFlare: boolean;
+    readonly supportDataDrivenLensFlare: boolean;
+    useAdaptivePerformance: boolean;
+    conservativeEnclosingSphere: boolean;
+    numIterationsEnclosingSphere: number;
+    readonly renderPipelineShaderTag: string;
+    gpuResidentDrawerMode: GPUResidentDrawerMode;
+    gpuResidentDrawerEnableOcclusionCullingInCameras: boolean;
+    smallMeshScreenPercentage: number;
+    readonly supportProbeVolume: boolean;
+    readonly maxSHBands: ProbeVolumeSHBands;
+    readonly isStpUsed: boolean;
+    readonly defaultMaterial: Material;
+    readonly defaultParticleMaterial: Material;
+    readonly defaultLineMaterial: Material;
+    readonly defaultTerrainMaterial: Material;
+    readonly default2DMaterial: Material;
+    readonly default2DMaskMaterial: Material;
+    readonly decalMaterial: Material;
+    readonly defaultShader: Shader;
+    readonly autodeskInteractiveShader: Shader;
+    readonly autodeskInteractiveTransparentShader: Shader;
+    readonly autodeskInteractiveMaskedShader: Shader;
+    readonly terrainDetailLitShader: Shader;
+    readonly terrainDetailGrassShader: Shader;
+    readonly terrainDetailGrassBillboardShader: Shader;
+    readonly defaultSpeedTree7Shader: Shader;
+    readonly defaultSpeedTree8Shader: Shader;
+    readonly defaultSpeedTree9Shader: Shader;
+
+
+
+    GetRenderer(index: number): ScriptableRenderer;
+    IsGPUResidentDrawerSupportedBySRP(message: Readonly<string[]>, severty: unknown): boolean;
+    LoadBuiltinRendererData(type: RendererType): ScriptableRendererData;
+    OnAfterDeserialize(): void;
+    OnBeforeSerialize(): void;
+
+
+}
+    
+interface UniversalRenderPipelineAssetConstructor {
+    k_MinLutSize: number;
+    k_MaxLutSize: number;
+    readonly AdditionalLightsDefaultShadowResolutionTierLow: number;
+    readonly AdditionalLightsDefaultShadowResolutionTierMedium: number;
+    readonly AdditionalLightsDefaultShadowResolutionTierHigh: number;
+    readonly packagePath: string;
+
+
+    new(): UniversalRenderPipelineAsset;
+
+
+    Create(rendererData: ScriptableRendererData): UniversalRenderPipelineAsset;
+
+}
+declare const UniversalRenderPipelineAsset: UniversalRenderPipelineAssetConstructor;
     
 interface NetworkServer {
 

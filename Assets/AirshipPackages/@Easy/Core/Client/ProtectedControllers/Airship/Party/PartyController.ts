@@ -3,6 +3,7 @@ import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
+import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
 import { SocketController } from "../../Socket/SocketController";
 
 export const enum PartyControllerBridgeTopics {
@@ -18,6 +19,7 @@ export type ClientBridgeApiRemoveFromParty = (userId: string) => void;
 
 @Controller({})
 export class ProtectedPartyController {
+	private readonly httpRetry = HttpRetryInstance();
 	public readonly onPartyChange = new Signal<Party>();
 
 	constructor(private readonly socketController: SocketController) {
@@ -40,7 +42,10 @@ export class ProtectedPartyController {
 	}
 
 	public async GetParty(): Promise<ReturnType<ClientBridgeApiGetParty>> {
-		const res = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/parties/party/self`);
+		const res = await this.httpRetry(() =>
+			InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/parties/party/self`),
+			"GetParty"
+		);
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to get user pary. Status Code: ${res.statusCode}.\n`, res.error);
@@ -51,12 +56,12 @@ export class ProtectedPartyController {
 	}
 
 	public async InviteToParty(userId: string) {
-		const res = InternalHttpManager.PostAsync(
+		const res = await this.httpRetry(() => InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/parties/party/invite",
 			json.encode({
 				userToAdd: userId,
 			}),
-		);
+		), "InviteToParty");
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to invite user to party. Status Code: ${res.statusCode}\n`, res.error);
@@ -65,12 +70,12 @@ export class ProtectedPartyController {
 	}
 
 	public async RemoveFromParty(userId: string) {
-		const res = InternalHttpManager.PostAsync(
+		const res = await this.httpRetry(() => InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/parties/party/remove",
 			json.encode({
 				userToRemove: userId,
 			}),
-		);
+		), "RemoveFromParty");
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to remove user from party. Status Code: ${res.statusCode}\n`, res.error);

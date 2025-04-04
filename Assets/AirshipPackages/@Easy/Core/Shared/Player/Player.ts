@@ -182,8 +182,8 @@ export class Player {
 		);
 		go.name = `Character_${this.username}`;
 		const characterComponent = go.GetAirshipComponent<Character>()!;
-		if (config?.lookDirection) {
-			characterComponent.movement?.SetLookVector(config?.lookDirection);
+		if (config?.lookDirection && characterComponent.movement) {
+			characterComponent.movement.startingLookVector = config.lookDirection;
 		}
 
 		if (!this.outfitLoaded) {
@@ -211,10 +211,14 @@ export class Player {
 			});
 		}
 
-		//Server initalizes character.
+		// Server initalizes character.
 		characterComponent.Init(this, Airship.Characters.MakeNewId(), this.selectedOutfit, 100, 100);
 		this.SetCharacter(characterComponent);
-		NetworkServer.Spawn(go, this.networkIdentity.connectionToClient!);
+		if (this.IsBot()) {
+			NetworkServer.Spawn(go);
+		} else {
+			NetworkServer.Spawn(go, this.networkIdentity.connectionToClient!);
+		}
 		Airship.Characters.RegisterCharacter(characterComponent);
 		Airship.Characters.onCharacterSpawned.Fire(characterComponent);
 
@@ -268,7 +272,7 @@ export class Player {
 	}
 
 	public IsBot(): boolean {
-		return this.connectionId < 0;
+		return this.connectionId > 0 && this.connectionId < 50_000;
 	}
 
 	public Encode(): PlayerDto {

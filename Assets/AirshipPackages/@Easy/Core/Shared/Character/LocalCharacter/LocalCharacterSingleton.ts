@@ -13,7 +13,6 @@ export class LocalCharacterSingleton {
 	public readonly stateChanged = new Signal<[newState: CharacterState]>();
 
 	private characterMovement: CharacterMovement | undefined;
-	private screenshot: CameraScreenshotRecorder | undefined;
 	public input: CharacterInput | undefined;
 	private prevState: CharacterState = CharacterState.Idle;
 	private currentState: CharacterState = CharacterState.Idle;
@@ -29,29 +28,6 @@ export class LocalCharacterSingleton {
 	 */
 	public readonly onBeforeLocalEntityInput = new Signal<LocalCharacterInputSignal>();
 
-	private TakeScreenshot() {
-		// if (!this.screenshot) {
-		// 	return;
-		// }
-		// const clientSettings = Dependency<ClientSettingsController>();
-		// const showUI = clientSettings.GetScreenshotShowUI();
-		// const supersample = clientSettings.GetScreenshotRenderHD();
-		// let screenshotFilename = os.date("Screenshot-%Y-%m-%d-%H-%M-%S");
-		// const superSampleSize = supersample ? 4 : 1;
-		// print(`Capturing screenshot. UI: ${showUI} Supersample: ${superSampleSize} Name: ${screenshotFilename}`);
-		// if (showUI) {
-		// 	this.screenshot.TakeScreenshot(screenshotFilename, superSampleSize, true);
-		// } else {
-		// 	this.screenshot.TakeCameraScreenshot(Camera.main, screenshotFilename, superSampleSize);
-		// }
-		// if (supersample && !showUI) {
-		// 	Game.localPlayer.SendMessage(
-		// 		ColorUtil.ColoredText(Theme.red, "HD withoutout UI is currently not supported"),
-		// 	);
-		// }
-		// Game.localPlayer.SendMessage(ColorUtil.ColoredText(Theme.yellow, `Captured screenshot ${screenshotFilename}`));
-	}
-
 	OnStart() {
 		if (!Game.IsClient()) return;
 		Game.localPlayer.ObserveCharacter((character) => {
@@ -63,8 +39,6 @@ export class LocalCharacterSingleton {
 
 			this.characterMovement = character.gameObject.GetComponent<CharacterMovement>()!;
 			this.input = new CharacterInput(character);
-
-			this.screenshot = character.gameObject.AddComponent<CameraScreenshotRecorder>();
 
 			// Set up camera
 			const cameraController = Dependency<AirshipCameraSingleton>();
@@ -102,14 +76,6 @@ export class LocalCharacterSingleton {
 					GizmoUtils.TogglePauseEngine();
 				}
 			});
-
-			// Screenshot:
-			bin.Add(
-				Keyboard.OnKeyDown(Key.F2, (event) => {
-					if (event.uiProcessed) return;
-					this.TakeScreenshot();
-				}),
-			);
 
 			// keyboard.OnKeyDown(KeyCode.Semicolon, (event) => {
 			// 	CoreNetwork.ClientToServer.TestKnockback2.client.FireServer();
