@@ -7,6 +7,7 @@ import { Dependency } from "../Flamework";
 import { Game } from "../Game";
 import { InventoryUIVisibility } from "../Inventory/InventoryUIVisibility";
 import { CharacterCameraMode } from "./LocalCharacter/CharacterCameraMode";
+import { MoveDirectionMode } from "./LocalCharacter/MoveDirectionMode";
 
 /**
  * Use to configure basic properties of Airship character system.
@@ -82,7 +83,9 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 		if (Game.IsClient()) {
 			//Movement
 			//Control how client inputs are recieved by the movement system
-			Airship.Characters.localCharacterManager.SetMoveDirWorldSpace(this.movementSpace === Space.World);
+			Airship.Characters.localCharacterManager.SetMoveDirMode(
+				this.movementSpace === Space.World ? MoveDirectionMode.World : MoveDirectionMode.Character,
+			);
 			Airship.Characters.localCharacterManager.SetDefaultMovementEnabled(this.useDefaultMovement);
 
 			//Camera

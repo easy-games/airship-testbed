@@ -6,6 +6,7 @@ import { OnUpdate } from "@Easy/Core/Shared/Util/Timer";
 import { Airship } from "../../Airship";
 import { LocalCharacterInputSignal } from "./LocalCharacterInputSignal";
 import { LocalCharacterSingleton } from "./LocalCharacterSingleton";
+import { MoveDirectionMode } from "./MoveDirectionMode";
 
 export class CharacterInput {
 	private readonly bin = new Bin();
@@ -33,7 +34,8 @@ export class CharacterInput {
 	public SetEnabled(enabled: boolean) {
 		this.enabled = enabled;
 		if (!enabled) {
-			this.movement?.SetMoveInput(Vector3.zero, false, false, false, false);
+			const localCharacterSingleton = Dependency<LocalCharacterSingleton>();
+			this.movement?.SetMoveInput(Vector3.zero, false, false, false, localCharacterSingleton.GetMoveDirMode());
 		}
 	}
 
@@ -68,6 +70,7 @@ export class CharacterInput {
 
 	private InitControls() {
 		const preferred = this.bin.Add(new Preferred());
+		const localCharacterSingleton = Dependency<LocalCharacterSingleton>();
 
 		const updateMouseKeyboardControls = (dt: number) => {
 			if (!this.enabled) return;
@@ -91,10 +94,9 @@ export class CharacterInput {
 
 		const onMobileJoystickChanged = (position: Vector3, phase: MobileJoystickPhase) => {
 			if (!this.enabled) return;
-			this.movement?.SetMoveInput(position, false, false, false, false);
+			this.movement?.SetMoveInput(position, false, false, false, localCharacterSingleton.GetMoveDirMode());
 		};
 
-		const localCharacterSingleton = Dependency<LocalCharacterSingleton>();
 		this.bin.Add(
 			OnUpdate.Connect((dt) => {
 				if (!localCharacterSingleton.IsDefaultMovementEnabled()) return;
@@ -114,7 +116,7 @@ export class CharacterInput {
 					moveSignal.jump,
 					moveSignal.sprinting,
 					moveSignal.crouch,
-					localCharacterSingleton.IsMoveDirWorldSpace(),
+					MoveDirectionMode.Camera, //localCharacterSingleton.GetMoveDirMode(),
 				);
 			}),
 		);

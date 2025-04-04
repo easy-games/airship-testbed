@@ -86,16 +86,11 @@ interface CharacterMovement extends Component {
 	OnNewLookVector(callback: (newLookVector: Vector3) => void): EngineEventConnection;
 	GetLookVector(): Vector3;
 
-	SetMoveInput(
-		direction: Vector3,
-		jump: boolean,
-		sprinting: boolean,
-		crouch: boolean,
-		moveDirWorldSpace: boolean,
-	): void;
+	SetMoveInput(direction: Vector3, jump: boolean, sprinting: boolean, crouch: boolean, moveDirMode: number): void;
 	SetMovementEnabled(isEnabled: boolean): void;
 	SetLookVector(lookVector: Vector3): void;
 	SetLookVectorRecurring(lookVector: Vector3): void;
+	SetLookVectorRecurringToMoveDir(): void;
 	SetCustomData(customData: BinaryBlob): void;
 	SetFlying(enabled: boolean): void;
 	SetDebugFlying(enabled: boolean): void;

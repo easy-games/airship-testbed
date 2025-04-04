@@ -6,6 +6,7 @@ import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { AirshipCameraSingleton } from "../../Camera/AirshipCameraSingleton";
 import { CharacterInput } from "./CharacterInput";
 import { LocalCharacterInputSignal } from "./LocalCharacterInputSignal";
+import { MoveDirectionMode } from "./MoveDirectionMode";
 @Singleton({
 	loadOrder: 10000,
 })
@@ -20,7 +21,8 @@ export class LocalCharacterSingleton {
 	private firstSpawn = true;
 	private sprintOverlayEmission?: EmissionModule;
 
-	private moveDirWorldSpace = false;
+	// private moveDirWorldSpace = false;
+	private moveDirMode = MoveDirectionMode.World;
 	private movementEnabled = true;
 
 	/**
@@ -162,8 +164,12 @@ export class LocalCharacterSingleton {
 	 * The default value is false.
 	 * @param worldSpace True if should use world space. False if should use local space.
 	 */
-	public SetMoveDirWorldSpace(worldSpace: boolean): void {
-		this.moveDirWorldSpace = worldSpace;
+	public SetMoveDirMode(mode: MoveDirectionMode): void {
+		this.moveDirMode = mode;
+	}
+
+	public GetMoveDirMode() {
+		return this.moveDirMode;
 	}
 
 	public SetDefaultMovementEnabled(enabled: boolean) {
@@ -172,10 +178,6 @@ export class LocalCharacterSingleton {
 
 	public IsDefaultMovementEnabled() {
 		return this.movementEnabled;
-	}
-
-	public IsMoveDirWorldSpace(): boolean {
-		return this.moveDirWorldSpace;
 	}
 
 	/**

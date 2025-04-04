@@ -547,7 +547,8 @@ export class AirshipCameraSingleton {
 			const lookVectorSync = OnLateUpdate.Connect(() => {
 				if (!character.movement) return;
 				if (character.movement.disableInput) return;
-				character.movement.SetLookVectorRecurring(mode.cameraForwardVector);
+				// character.movement.SetLookVectorRecurring(mode.cameraForwardVector);
+				character.movement.SetLookVectorRecurringToMoveDir();
 			});
 
 			if (character.movement) {
@@ -555,7 +556,7 @@ export class AirshipCameraSingleton {
 				const lookVectorSyncInverse = character.movement.OnNewLookVector((lookVector) => {
 					if (!character.movement) return;
 					if (character.movement.disableInput) return;
-					mode.SetYAxisDirection(lookVector);
+					// mode.SetYAxisDirection(lookVector);
 				});
 				cleanup.Add(() => Bridge.DisconnectEvent(lookVectorSyncInverse));
 			}
