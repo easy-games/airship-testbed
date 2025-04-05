@@ -158,6 +158,8 @@ interface CharacterInputData extends InputCommand {
 	customData: BinaryBlob;
 }
 
+interface CharacterNetworkedStateManager extends Component {}
+
 interface CharacterMovement extends Component {
 	// Interaction events
 	OnStateChanged(callback: (state: CharacterState) => void): EngineEventConnection;
@@ -215,7 +217,6 @@ interface CharacterMovement extends Component {
 	movementSettings: CharacterMovementSettings;
 	animationHelper: CharacterAnimationHelper;
 	mainCollider: BoxCollider;
-	startingLookVector: Vector3;
 
 	// Public Getters Private Setters
 	currentMoveSnapshot: CharacterSnapshotData;

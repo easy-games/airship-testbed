@@ -116,6 +116,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  guid: b96e8b41-7956-48b5-a8d1-e3592fbd2fa6
+  hash: f642256f6b9b3429b114b7f8ef52b8a6
   script: {fileID: -5013684570317190384, guid: d16f7b806f2baa74c809d1b7a5b66f68, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/UI/VisualGraph/VisualGraphTransform.lua
   forceContext: 0
@@ -179,6 +181,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  guid: e73f1d15-c6a7-4694-982d-ffef933064cb
+  hash: f642256f6b9b3429b114b7f8ef52b8a6
   script: {fileID: -5013684570317190384, guid: d16f7b806f2baa74c809d1b7a5b66f68, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/UI/VisualGraph/VisualGraphTransform.lua
   forceContext: 0

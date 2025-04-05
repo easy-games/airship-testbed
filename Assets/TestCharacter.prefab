@@ -101,6 +101,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  guid: 01574b9d-ce57-403a-8584-4c17ed5b2095
+  hash: 4cfe0f0f741621d6b99f38a8ed69d553
   script: {fileID: 3282824997728861277, guid: da24e81f99ecc4dc88e742cfc9f66eae, type: 3}
   scriptPath: Assets/Code/Components/TestCharacter.lua
   forceContext: 0

@@ -553,6 +553,8 @@ export default class PredictedCommandManager extends AirshipSingleton {
 	 * Cancels the running command on the next tick.
 	 */
 	public CancelCommand(commandInstance: CommandInstanceIdentifier) {
+		const index = this.queuedCommands.findIndex((i) => i.stringify() === commandInstance.stringify());
+		if (index !== -1) this.queuedCommands.remove(index);
 		this.queuedCancellations.push(commandInstance);
 	}
 

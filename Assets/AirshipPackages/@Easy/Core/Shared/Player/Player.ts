@@ -183,7 +183,7 @@ export class Player {
 		go.name = `Character_${this.username}`;
 		const characterComponent = go.GetAirshipComponent<Character>()!;
 		if (config?.lookDirection && characterComponent.movement) {
-			characterComponent.movement.startingLookVector = config.lookDirection;
+			characterComponent.movement.SetLookVector(config.lookDirection); // todo: this might be broken now
 		}
 
 		if (!this.outfitLoaded) {

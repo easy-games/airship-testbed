@@ -2937,6 +2937,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  guid: 403003b2-3886-421c-b159-550df9053944
+  hash: b7c3e884dba365a7112bbc0b4fc46883
   script: {fileID: 796400153169862170, guid: c4fa48bfb1281a04baca6e795001cd63, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/CharacterConfigSetup.lua
   forceContext: 0
@@ -3956,6 +3958,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  guid: abb348d9-b95c-4c35-a282-863b484ca7d9
+  hash: 39a88b65a3f1c651dcfd9a2c44bb0e5a
   script: {fileID: -8126574244563333576, guid: fd958897383c97546bf057c713bccfeb, type: 3}
   scriptPath: Assets/Code/AirshipPlatformDemo/ClientPrediction/ClientPredictionManager.lua
   forceContext: 0
@@ -4080,6 +4084,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  guid: 054fcab6-e538-4192-9786-b751f074f5f6
+  hash: 703ba84875eac8c75b696d4ba932f32a
   script: {fileID: -938344475688608531, guid: ea70673a889c767468ce1b291ca92c1a, type: 3}
   scriptPath: Assets/Code/AirshipPlatformDemo/CharacterMovementTestKeys.lua
   forceContext: 0
@@ -4192,6 +4198,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  guid: 41dac2cf-f55b-47e4-9d5c-79ccbc585f27
+  hash: 01cf4124f6d29a55e76e926b89d0da76
   script: {fileID: 1503148616603724034, guid: 7c6ed26240ff242caa728b7876c547b3, type: 3}
   scriptPath: Assets/Code/TestLocalCharacter.lua
   forceContext: 0
@@ -4451,6 +4459,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  guid: 49726477-c87f-41f3-9cb0-840decd07d44
+  hash: f642256f6b9b3429b114b7f8ef52b8a6
   script: {fileID: -5013684570317190384, guid: d16f7b806f2baa74c809d1b7a5b66f68, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/UI/VisualGraph/VisualGraphTransform.lua
   forceContext: 0
@@ -5310,6 +5320,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  guid: 7dd5b486-dddd-4637-931a-ca9cff22b41a
+  hash: c1490ba2b3e81b78d3121a15893b7c89
   script: {fileID: 3874102147928444048, guid: d7cc5f546129a45968eb53cc5ac77acb, type: 3}
   scriptPath: Assets/Code/Components/CharacterSpawner.lua
   forceContext: 0
@@ -5318,24 +5330,6 @@ MonoBehaviour:
     singleton: 0
     decorators: []
     properties:
-    - name: spawnPoint
-      type: object
-      objectType: Transform
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      jsDocs:
-        text: []
-        tags: []
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 131862466}
-      modified: 1
     - name: delay
       type: number
       objectType: 

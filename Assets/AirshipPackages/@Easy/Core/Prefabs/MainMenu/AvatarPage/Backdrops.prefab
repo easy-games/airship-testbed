@@ -694,6 +694,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  guid: 4340a20f-989c-43b3-96ab-10e54f87fe5c
+  hash: 90cad078ab0bebcad22f809d839b4a6d
   script: {fileID: 5842661104909546540, guid: f53842464852d1744b908d0f1b4e597f, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Avatar/AvatarBackdropComponent.lua
   forceContext: 0
