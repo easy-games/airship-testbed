@@ -198,6 +198,7 @@ interface CharacterMovement extends Component {
 	IsIgnoringCollider(collider: Collider): boolean;
 	SetVelocity(velocity: Vector3): void;
 	GetVelocity(): Vector3;
+	GetPosition(): Vector3;
 	GetState(): CharacterState;
 	GetTimeSinceWasGrounded(): number;
 	GetTimeSinceBecameGrounded(): number;

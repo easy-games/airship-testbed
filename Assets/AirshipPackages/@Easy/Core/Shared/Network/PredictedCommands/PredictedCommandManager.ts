@@ -300,6 +300,13 @@ export default class PredictedCommandManager extends AirshipSingleton {
 						// If we don't have a command running on the client that we should have based on the server, resimulate so
 						// we can take that commands result into account on our client.
 						if (!aCommandData) {
+							warn(
+								"Command " +
+									commandIdentifier.stringify() +
+									" was running on the server, but didn't run on the client for cmd #" +
+									a.lastProcessedCommand +
+									". Resimulation required.",
+							);
 							character.SetComparisonResult(false);
 							return;
 						}
@@ -328,6 +335,18 @@ export default class PredictedCommandManager extends AirshipSingleton {
 						const result = this.RunWithoutYield(() =>
 							instance.CompareSnapshots(aCommandData.data, bCommandData.data),
 						);
+						if (!result) {
+							warn(
+								"Misprediction for " +
+									commandIdentifier.stringify() +
+									" on cmd #" +
+									a.lastProcessedCommand +
+									". Predicted: " +
+									inspect(aCommandData.data) +
+									" Expected: " +
+									inspect(bCommandData.data),
+							);
+						}
 						character.SetComparisonResult(result);
 					});
 				}),
@@ -742,8 +761,8 @@ export default class PredictedCommandManager extends AirshipSingleton {
 		// the command and will no longer accept input. On the client, we simply destroy the command. we will send
 		// the final onCommandEnded signal when the client recieves the report from the server.
 		const CommitEndedCommand = () => {
-			warn("last processed input: " + lastProcessedInputCommandNumber);
 			const commandIdentifierStr = commandIdentifier.stringify();
+			warn("last processed input for " + commandIdentifierStr + " : " + lastProcessedInputCommandNumber);
 			if (Game.IsServer()) {
 				this.SetHighestCompletedInstance(commandIdentifier);
 				this.onCommandEnded.Fire(commandIdentifier, lastCapturedState.data);
@@ -784,6 +803,11 @@ export default class PredictedCommandManager extends AirshipSingleton {
 				// Last tick requested to end processing, so we no longer get input. The server
 				// should have also expected to end processing this tick and will not expect new input.
 				if (!shouldTickAgain) return;
+
+				if (!activeCommand.created) {
+					activeCommand.created = true;
+					this.RunWithoutYield(() => activeCommand.instance.Create?.());
+				}
 
 				const input = this.RunWithoutYield(() => activeCommand.instance.GetCommand());
 				const inputWrapper: CustomInputData = {
