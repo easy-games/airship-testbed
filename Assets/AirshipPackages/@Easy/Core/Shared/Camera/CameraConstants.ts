@@ -54,6 +54,10 @@ export interface OrbitCameraConfig {
 	 * from being positioned inside of objects.
 	 */
 	shouldOcclusionBump?: boolean;
+	/*
+	 * Whether or not character is locked to camera rotation.
+	 */
+	characterLocked?: boolean;
 }
 
 /**
@@ -100,6 +104,7 @@ export class CameraConstants {
 		minRotX: 1,
 		maxRotX: 179,
 		shouldOcclusionBump: true,
+		characterLocked: false,
 	};
 
 	/**

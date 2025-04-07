@@ -346,6 +346,8 @@ export class AirshipCameraSingleton {
 			this.SetMode(CharacterCameraMode.Fixed);
 		} else if (this.characterCameraMode === CharacterCameraMode.Orbit) {
 			this.SetMode(CharacterCameraMode.Orbit);
+		} else if (this.characterCameraMode === CharacterCameraMode.OrbitFixed) {
+			this.SetMode(CharacterCameraMode.OrbitFixed);
 		}
 
 		//Set up first person camera
@@ -420,7 +422,9 @@ export class AirshipCameraSingleton {
 			this.SetModeInternal(mode);
 			return mode;
 		} else {
-			const mode = new OrbitCameraMode(target);
+			const mode = new OrbitCameraMode(target, {
+				characterLocked: characterCameraMode === CharacterCameraMode.OrbitFixed,
+			});
 			this.SetModeInternal(mode);
 			return mode;
 		}
@@ -534,12 +538,16 @@ export class AirshipCameraSingleton {
 	/**
 	 * @internal
 	 */
-	public ManageOrbitCameraForLocalCharacter(mode: OrbitCameraMode, character: Character): Bin {
+	public ManageOrbitCameraForLocalCharacter(
+		mode: OrbitCameraMode,
+		character: Character,
+		characterLocked: boolean,
+	): Bin {
 		const cleanup = new Bin();
 		if (character.IsLocalCharacter()) {
 			// The first thing we do for `Character` targets is synchronize the camera
 			// with their current look vector.
-			if (character.movement) {
+			if (character.movement && characterLocked) {
 				mode.SetYAxisDirection(character.movement.GetLookVector());
 			}
 
@@ -547,10 +555,14 @@ export class AirshipCameraSingleton {
 			const lookVectorSync = OnLateUpdate.Connect(() => {
 				if (!character.movement) return;
 				if (character.movement.disableInput) return;
-				character.movement.SetLookVectorRecurring(mode.cameraForwardVector);
+				if (characterLocked) {
+					character.movement.SetLookVectorRecurring(mode.cameraForwardVector);
+				} else {
+					character.movement.SetLookVectorRecurringToMoveDir();
+				}
 			});
 
-			if (character.movement) {
+			if (character.movement && characterLocked) {
 				//If something else sets the characters look vector we need to update the camera
 				const lookVectorSyncInverse = character.movement.OnNewLookVector((lookVector) => {
 					if (!character.movement) return;
