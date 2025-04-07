@@ -6,7 +6,6 @@ import { OnUpdate } from "@Easy/Core/Shared/Util/Timer";
 import { Airship } from "../../Airship";
 import { LocalCharacterInputSignal } from "./LocalCharacterInputSignal";
 import { LocalCharacterSingleton } from "./LocalCharacterSingleton";
-import { MoveDirectionMode } from "./MoveDirectionMode";
 
 export class CharacterInput {
 	private readonly bin = new Bin();
@@ -116,7 +115,7 @@ export class CharacterInput {
 					moveSignal.jump,
 					moveSignal.sprinting,
 					moveSignal.crouch,
-					MoveDirectionMode.Camera, //localCharacterSingleton.GetMoveDirMode(),
+					localCharacterSingleton.GetMoveDirMode(),
 				);
 			}),
 		);

@@ -128,7 +128,11 @@ export class OrbitCameraMode extends CameraMode {
 		// is changed?
 		let characterLogicBin: Bin | undefined;
 		if (this.character && this.character.IsLocalCharacter()) {
-			characterLogicBin = Airship.Camera.ManageOrbitCameraForLocalCharacter(this, this.character);
+			characterLogicBin = Airship.Camera.ManageOrbitCameraForLocalCharacter(
+				this,
+				this.character,
+				this.config.characterLocked ?? false,
+			);
 			this.OnStopBin.Add(() => characterLogicBin!.Clean());
 		}
 		this.OnStopBin.Add(
@@ -137,7 +141,11 @@ export class OrbitCameraMode extends CameraMode {
 					characterLogicBin.Clean();
 				}
 				if (event.after.character?.IsLocalCharacter()) {
-					characterLogicBin = Airship.Camera.ManageOrbitCameraForLocalCharacter(this, event.after.character);
+					characterLogicBin = Airship.Camera.ManageOrbitCameraForLocalCharacter(
+						this,
+						event.after.character,
+						this.config.characterLocked ?? false,
+					);
 					this.OnStopBin.Add(() => characterLogicBin!.Clean());
 				}
 			}),

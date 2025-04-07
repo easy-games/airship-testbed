@@ -84,7 +84,11 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 			//Movement
 			//Control how client inputs are recieved by the movement system
 			Airship.Characters.localCharacterManager.SetMoveDirMode(
-				this.movementSpace === Space.World ? MoveDirectionMode.World : MoveDirectionMode.Character,
+				this.movementSpace === Space.World
+					? MoveDirectionMode.World
+					: this.characterCameraMode === CharacterCameraMode.Orbit
+					? MoveDirectionMode.Camera
+					: MoveDirectionMode.Character,
 			);
 			Airship.Characters.localCharacterManager.SetDefaultMovementEnabled(this.useDefaultMovement);
 
@@ -116,6 +120,7 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 					maxRotX: this.orbitMaxRotX,
 					minRotX: this.orbitMinRotX,
 					shouldOcclusionBump: CameraConstants.DefaultOrbitCameraConfig.shouldOcclusionBump,
+					characterLocked: false,
 				});
 
 				const activeCameraMode = Dependency<AirshipCameraSingleton>().activeCameraMode;
