@@ -1,5 +1,6 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
+import { MoveDirectionMode } from "@Easy/Core/Shared/Character/LocalCharacter/MoveDirectionMode";
 import { ChatCommand } from "@Easy/Core/Shared/Commands/ChatCommand";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
@@ -53,14 +54,14 @@ export class BotCommand extends ChatCommand {
 
 		const doMove = () => {
 			if (!character.movement) return;
-			
+
 			let direction = new Vector3(randDirectionComponent(), 0, randDirectionComponent());
 			character.movement.SetMoveInput(
 				direction,
 				math.random() < 0.2,
 				math.random() < 0.5,
 				math.random() < 0.2,
-				false,
+				MoveDirectionMode.Character,
 			);
 			let lookVec = new Vector3(
 				randDirectionComponent() * math.random(),
