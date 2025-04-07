@@ -569,6 +569,10 @@ export default class Inventory extends AirshipBehaviour {
 		return this.hotbarSlots;
 	}
 
+	/**
+	 * Finds the first slot with the given item type, or undefined if there is none
+	 * @param itemType The item type you want to find the slot of
+	 */
 	public FindSlotWithItemType(itemType: string): number | undefined {
 		for (let i = 0; i < this.maxSlots; i++) {
 			const itemStack = this.GetItem(i);
@@ -579,10 +583,32 @@ export default class Inventory extends AirshipBehaviour {
 		return undefined;
 	}
 
-	public FindMergeableSlotWithItemType(itemType: string) {
+	/**
+	 * Finds the first mergable slot with the given item type, or undefined if there is none
+	 * @param itemType The item type of what you want to merge
+	 * @param [amount=1] The amount of the item you want to merge
+	 */
+	public FindMergeableSlotWithItemType(itemType: string, amount = 1): number | undefined {
 		for (let i = 0; i < this.maxSlots; i++) {
 			const itemStack = this.GetItem(i);
-			if (itemStack?.itemType === itemType && itemStack.amount < itemStack.GetMaxStackSize()) {
+			if (itemStack?.itemType === itemType && itemStack.amount + amount <= itemStack.GetMaxStackSize()) {
+				return i;
+			}
+		}
+		return undefined;
+	}
+
+	/**
+	 * Finds the first mergable slot with the given item stack, or undefined if there is none
+	 * @param stackToMerge The stack you are wanting to merge into this inventory
+	 */
+	public FindMergableSlot(stackToMerge: ItemStack): number | undefined {
+		const itemType = stackToMerge.itemType;
+		const amount = stackToMerge.amount;
+
+		for (let i = 0; i < this.maxSlots; i++) {
+			const itemStack = this.GetItem(i);
+			if (itemStack?.itemType === itemType && itemStack.amount + amount <= itemStack.GetMaxStackSize()) {
 				return i;
 			}
 		}

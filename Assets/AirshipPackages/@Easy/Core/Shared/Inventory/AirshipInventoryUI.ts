@@ -51,6 +51,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	// public onDropOutsideInventory = new Signal<[slot: number, itemStack: ItemStack]>();
 
 	// private hotbarSlots = 9;
+	private externalInventory?: Inventory;
 	private backpackShown = false;
 
 	// private healthBar: Healthbar;
@@ -421,9 +422,9 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		}
 	}
 
-	private externalInventory?: Inventory;
 	private SetupExternalInventory(inventory: Inventory) {
 		const localInventory = Airship.Inventory.localInventory;
+
 		if (!localInventory) return;
 		if (!this.externalInventoryContent) {
 			warn("External Inventory not supported by this inventory prefab");
@@ -640,6 +641,13 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			}
 			init = false;
 		});
+	}
+
+	/**
+	 * Gets the active external inventory (if applicable)
+	 */
+	public GetActiveExternalInventory(): Inventory | undefined {
+		return this.externalInventory;
 	}
 
 	public IsBackpackShown(): boolean {
