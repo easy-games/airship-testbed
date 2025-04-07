@@ -25,7 +25,7 @@ export class TeamsSingleton {
 	}
 
 	protected OnStart(): void {
-		if (Game.IsClient()) {
+		if (Game.IsClient() && !Game.IsServer()) {
 			CoreNetwork.ServerToClient.AddTeams.client.OnServerEvent((teamDtos) => {
 				for (let dto of teamDtos) {
 					const team = new Team(dto.name, dto.id, new Color(dto.color[0], dto.color[1], dto.color[2], 1));
