@@ -30,6 +30,28 @@ export class NametagController {
 			this.nametagBins.get(character)?.Clean();
 			this.nametagBins.delete(character);
 		});
+
+		// Update nametage for other players when they change teams
+		Airship.Teams.onPlayerChangeTeam.Connect((player, newTeam, oldTeam) => {
+			if (!this.nametagsEnabled) return;
+			if (newTeam) {
+				for (const p of newTeam.GetPlayers()) {
+					if (p.IsLocalPlayer()) continue;
+					
+					const character = p.character;
+					if (!character) continue;
+					this.UpdateNametag(character);
+				}
+			}
+
+			if (oldTeam) {
+				for (const p of oldTeam.GetPlayers()) {
+					const character = p.character;
+					if (!character) continue;
+					this.UpdateNametag(character);
+				}
+			}
+		});
 	}
 
 	private HookCharacterNametag(character: Character): Bin | undefined {
