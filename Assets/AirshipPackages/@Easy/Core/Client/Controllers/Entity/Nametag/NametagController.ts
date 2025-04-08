@@ -36,19 +36,19 @@ export class NametagController {
 			if (!this.nametagsEnabled) return;
 			if (newTeam) {
 				for (const p of newTeam.GetPlayers()) {
-					if (p.IsLocalPlayer()) continue;
-					
-					const character = p.character;
-					if (!character) continue;
-					this.UpdateNametag(character);
+					if (p === player || p.IsLocalPlayer()) continue;
+
+					if (p.character) {
+						this.UpdateNametag(p.character);
+					}
 				}
 			}
 
 			if (oldTeam) {
 				for (const p of oldTeam.GetPlayers()) {
-					const character = p.character;
-					if (!character) continue;
-					this.UpdateNametag(character);
+					if (p.character) {
+						this.UpdateNametag(p.character);
+					}
 				}
 			}
 		});
