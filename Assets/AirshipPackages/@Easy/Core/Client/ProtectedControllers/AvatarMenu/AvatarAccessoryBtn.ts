@@ -11,6 +11,7 @@ export default class AvatarAccessoryBtn extends AirshipBehaviour {
 	public bgImage!: Image;
 	public equippedBadge!: GameObject;
 	public scrollRedirect!: AirshipRedirectScroll;
+	public outline: MonoBehaviour;
 
 	@Header("Data")
 	public classId = "";
@@ -28,11 +29,10 @@ export default class AvatarAccessoryBtn extends AirshipBehaviour {
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnHoverEvent(this.gameObject, (hoverState) => {
 				if (this.noColorChanges) return;
-				if (this.selected) return;
-				if (hoverState === HoverState.ENTER) {
-					this.bgImage.color = new Color(0.29, 0.31, 0.36, 0.43);
+				if (hoverState === HoverState.ENTER && !this.selected) {
+					this.outline.enabled = true;
 				} else {
-					this.bgImage.color = new Color(0.19, 0.2, 0.23, 0.43);
+					this.outline.enabled = false;
 				}
 			}),
 		);
@@ -62,8 +62,9 @@ export default class AvatarAccessoryBtn extends AirshipBehaviour {
 		this.selected = val;
 		if (!this.noColorChanges) {
 			if (val) {
+				this.outline.enabled = false;
 			} else {
-				this.bgImage.color = new Color(0.19, 0.2, 0.23, 0.43);
+				// this.bgImage.color = new Color(0.19, 0.2, 0.23, 0.43);
 			}
 		}
 		// if (val) {
