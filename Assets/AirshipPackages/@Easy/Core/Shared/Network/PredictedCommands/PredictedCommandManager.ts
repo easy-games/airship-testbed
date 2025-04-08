@@ -136,8 +136,11 @@ export default class PredictedCommandManager extends AirshipSingleton {
 		new Map();
 
 	/** Used to track requests to cancel running commands. */
-	// TODO: chekc we clear this in all cases
 	private queuedCancellations: CommandInstanceIdentifier[] = [];
+	/**
+	 * Used on the client to track when a command was cancelled on the client so that it can be re-cancelled during replays.
+	 */
+	private predictedCancellations: Map<string, { commandNumber: number; time: number }> = new Map();
 
 	protected Start(): void {
 		Airship.Characters.ObserveCharacters((character) => {
@@ -445,6 +448,15 @@ export default class PredictedCommandManager extends AirshipSingleton {
 								this.unconfirmedFinalState.delete(commandIdentifier.stringify());
 							}
 
+							if (Game.IsClient()) {
+								// If the client predicted a cancellation that didn't occur (since we are seeing snapshot data for it after the cancel
+								// should have occured), remove it so that we don't use it in our resimulations.
+								const predictedCancel = this.predictedCancellations.get(commandIdentifier.stringify());
+								if (predictedCancel && predictedCancel.commandNumber < snapshot.lastProcessedCommand) {
+									this.predictedCancellations.delete(commandIdentifier.stringify());
+								}
+							}
+
 							// If we need to use this command and it's not been created yet, create it.
 							if (!activeCommand.created) {
 								print(
@@ -558,6 +570,9 @@ export default class PredictedCommandManager extends AirshipSingleton {
 			this.globalBin.AddEngineEventConnection(
 				AirshipSimulationManager.Instance.OnHistoryLifetimeReached((time) => {
 					// Clean up any data we will never need to use again
+					this.predictedCancellations.forEach((data, key) => {
+						if (data.time < time) this.predictedCancellations.delete(key);
+					});
 
 					this.unconfirmedFinalState.forEach((data, key) => {
 						if (data.time < time) this.unconfirmedFinalState.delete(key);
@@ -843,6 +858,12 @@ export default class PredictedCommandManager extends AirshipSingleton {
 			const queueCancelIndex = this.queuedCancellations.findIndex((i) => i.stringify() === commandIdentifierStr);
 			if (queueCancelIndex !== -1) {
 				this.queuedCancellations.remove(queueCancelIndex);
+				if (Game.IsClient()) {
+					this.predictedCancellations.set(commandIdentifierStr, {
+						commandNumber: lastProcessedInputCommandNumber,
+						time: lastProcessedInputTime,
+					});
+				}
 			}
 			activeCommand.bin.Clean();
 		};
@@ -931,10 +952,24 @@ export default class PredictedCommandManager extends AirshipSingleton {
 					shouldTickAgain = false;
 					return;
 				}
+
+				// If the client has a predicted cancelation stored for this tick, then cancel the command.
+				if (Game.IsClient()) {
+					const predictedCancel = this.predictedCancellations.get(commandIdentifier.stringify());
+					if (predictedCancel && predictedCancel.commandNumber === lastProcessedInputCommandNumber) {
+						shouldTickAgain = false;
+						return;
+					}
+				}
 			}),
 		);
 
 		// Handles OnCaptureSnapshot call
+		// TODO: we are not garuanteed to have a snapshot call after every tick. This may make the server end
+		// call delayed by an extra tick due to command catchup. ie. client recieves data in snapshot from tick 6,
+		// but the snapshot is marked as last tick 7. (tick 6 OnTick marks as shoulTickAgain false, but tick 7 capture
+		// fires CommitEndedCommand() and data is included as tick 7 snapshot. The network event will correctly say tick 6 as
+		// end though, so I think this is ok for now.)
 		activeCommand.bin.Add(
 			character.OnAddCustomSnapshotData.ConnectWithPriority(config.priority ?? SignalPriority.NORMAL, () => {
 				const state = this.RunWithoutYield(() => activeCommand.instance.OnCaptureSnapshot());
