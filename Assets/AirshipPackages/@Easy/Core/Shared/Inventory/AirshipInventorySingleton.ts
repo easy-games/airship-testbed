@@ -579,18 +579,57 @@ export class AirshipInventorySingleton {
 		// });
 	}
 
-	public MoveToSlot(fromInv: Inventory, fromSlot: number, toInv: Inventory, toSlot: number, amount: number): void {
+	/**
+	 * Will perform a move to slot, but store the item in the best available slot
+	 *
+	 * This internally uses `MoveToSlot`
+	 * @param sourceInventory The inventory to move the stack from
+	 * @param sourceSlotIndex The slot index of the stack
+	 * @param destinationInventory The destination inventory
+	 * @param [canMerge=true] Whether or not to use a merge if there's already the item exising in the target inventory (defaults to true)
+	 */
+	public MoveToInventory(
+		sourceInventory: Inventory,
+		sourceSlotIndex: number,
+		destinationInventory: Inventory,
+		amount?: number,
+		canMerge = true,
+	) {
+		const stackAtSlot = sourceInventory.GetItem(sourceSlotIndex);
+		if (!stackAtSlot) return; // there should be an item here, however!
+
+		if (canMerge) {
+			const destination =
+				destinationInventory.FindMergeableSlotWithItemType(stackAtSlot.itemType) ??
+				destinationInventory.GetFirstOpenSlot();
+			if (destination === -1) return;
+
+			return this.MoveToSlot(sourceInventory, sourceSlotIndex, destinationInventory, destination, amount);
+		} else {
+			const destination = destinationInventory.GetFirstOpenSlot();
+			if (destination === -1) return;
+
+			return this.MoveToSlot(sourceInventory, sourceSlotIndex, destinationInventory, destination, amount);
+		}
+	}
+
+	/**
+	 * Moves items or the slot from a source inventory, to a destination inventory slot
+	 * @param fromInv The source inventory
+	 * @param fromSlot The source inventory slot
+	 * @param toInv The destination inventory
+	 * @param toSlot The destination inventory slot
+	 * @param amount The amount to transfer - will default to the full amount
+	 * @returns
+	 */
+	public MoveToSlot(fromInv: Inventory, fromSlot: number, toInv: Inventory, toSlot: number, amount?: number): void {
 		if (!fromInv.CanPlayerModifyInventory(Game.localPlayer) || !toInv.CanPlayerModifyInventory(Game.localPlayer)) {
 			return;
 		}
 
 		const event = this.onMovingToSlot.Fire(new MovingToSlotEvent(fromInv, fromSlot, toInv, toSlot, amount));
-		if (event.IsCancelled()) return;
+		if (event.IsCancelled() || event.amount < 1) return;
 
-		// fromInv = event.fromInventory;
-		// toInv = event.toInventory;
-		// fromSlot = event.fromSlot;
-		// toSlot = event.toSlot;
 		amount = event.amount;
 
 		const fromItemStack = fromInv.GetItem(fromSlot);
