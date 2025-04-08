@@ -36,24 +36,8 @@ interface ActiveCommand {
 	created: boolean;
 	instance: PredictedCustomCommand<unknown, unknown>;
 	bin: Bin;
+	ResetInstance: () => void;
 }
-
-/**
- * TODO:
- *
- * I think what I need to do is actually have the server continue to pass the last state data processed once the command finishes
- * until the client confirms that input is over and sends input false.
- *
- * The idea is that the server can cancel the command, but for both to agree on the end time and state, we need to ensure that the
- * client gets the message that the command has ended and also has correctly reconciled to the state of the system at the end of
- * processing.
- *
- * The trouble right now is that the command doesn't necessarily see the snapshot that the command ended, all it knows is that it received
- * as snapshot where the command was over. I need the server to pass information that would allow the client to reconcile back further if
- * the command ended on a snapshot before the one it saw.
- *
- * Hm.. do I though?? I don't want to reimplement the entire C# networking setup and that's pretty much what it looks like...
- */
 
 interface CustomSnapshotData {
 	data: Readonly<unknown>;
@@ -148,8 +132,6 @@ export default class PredictedCommandManager extends AirshipSingleton {
 	private unconfirmedFinalState: Map<string, { commandNumber: number; snapshot: CustomSnapshotData; time: number }> =
 		new Map();
 	/** Used by the client to resimulate the confirmed final stat of a command. */
-	// TODO: right now this grows infinitely because we have no way to know when we will never resimulate this command again. We could add an event from C# to know when a tick
-	// goes out of scope (but we would have to convert that to a command number. Doable tho)
 	private confirmedFinalState: Map<string, { commandNumber: number; snapshot: CustomSnapshotData; time: number }> =
 		new Map();
 
@@ -193,7 +175,10 @@ export default class PredictedCommandManager extends AirshipSingleton {
 
 						// See if the command is already running
 						const activeCommand = this.GetActiveCommandByIdentifier(commandIdentifier);
-						if (activeCommand) return;
+						if (activeCommand) {
+							// Consider cleaning up the command if it has unconfirmed end?
+							return;
+						}
 
 						if (Game.IsServer() && !Game.IsHosting()) {
 							const highestInstance = this.GetHighestCompletedInstance(
@@ -228,18 +213,47 @@ export default class PredictedCommandManager extends AirshipSingleton {
 							}
 						}
 
-						// Clients performing a replay need to ignore creating commands that have been cancelled authoritatively.
-						if (replay && Game.IsClient()) {
-							const confirmedState = this.confirmedFinalState.get(commandIdentifier.stringify());
-							if (confirmedState) {
-								// Our authoritative state saying this command should already have ended, so don't create it.
-								if (confirmedState.commandNumber < input.commandNumber) {
-									return;
-								}
+						// Clients should ignore creating commands that have been cancelled or ended authoritatively.
+						const confirmedState = this.confirmedFinalState.get(commandIdentifier.stringify());
+						if (confirmedState) {
+							print(
+								"confirmed final state for " +
+									commandIdentifier.stringify() +
+									" is cmd  #" +
+									confirmedState.commandNumber,
+							);
+							// Our authoritative state saying this command should already have ended, so don't create it.
+							if (confirmedState.commandNumber < input.commandNumber) {
+								print("Will not create cmd since we are processing " + input.commandNumber);
+								return;
+							}
+						} else {
+							// This saves us from the edge case where a command was mispredicted so far into the future that there are inputs
+							// for that command available even after it's confirmedFinalState has been cleared from our local history.
+							const highestInstance = this.GetHighestCompletedInstance(
+								commandIdentifier.characterId,
+								commandIdentifier.commandId,
+							);
+							print("highest instance for " + commandIdentifier.stringify() + " is " + highestInstance);
+							if (highestInstance >= commandIdentifier.instanceId) {
+								print("Attempting to run command that has been authoritatively completed. Ignoring.");
+								return;
+							}
+						}
+
+						// Our current prediction has decided that this command should no longer run. Don't recreate it even if
+						// there are inputs available from previous predictions. This is a confusing side effect of
+						// resimulating with previous inputs.
+						const unconfirmedFinalState = this.unconfirmedFinalState.get(commandIdentifier.stringify());
+						if (unconfirmedFinalState) {
+							if (unconfirmedFinalState.commandNumber < input.commandNumber) {
+								print("will not create command because it was predicted to have ended during a resim.");
+								return;
 							}
 						}
 
 						// Run the command if it's not already running
+						print("setting up command " + commandIdentifier.stringify() + " before processing");
 						this.SetupCommand(character, commandIdentifier.commandId, commandIdentifier.instanceId);
 					});
 				}),
@@ -362,14 +376,15 @@ export default class PredictedCommandManager extends AirshipSingleton {
 					currentCommands?.forEach((activeCommand) => {
 						if (customSnapshotData.has(activeCommand.customDataKey)) {
 							// This command should be active, so we don't need to clean it up
-							// print(
-							// 	"command is active on target snapshot, ignoring. Expect to reset " +
-							// 		activeCommand.customDataKey,
-							// );
+							print(
+								"command is active on target snapshot, ignoring. Expect to reset " +
+									activeCommand.customDataKey,
+							);
+							activeCommand.ResetInstance(); // Resets the internal instance fields so they are fresh for the replay
 							return;
 						}
 
-						//print("active command is not active on snapshot, removing" + activeCommand.customDataKey);
+						print("active command is not active on snapshot, removing" + activeCommand.customDataKey);
 						// Remove all other commands.
 						activeCommand.bin.Clean();
 					});
@@ -384,6 +399,10 @@ export default class PredictedCommandManager extends AirshipSingleton {
 							// See if the command is already running
 							let activeCommand = this.GetActiveCommandByIdentifier(commandIdentifier);
 							if (!activeCommand) {
+								print(
+									"command was not active when resetting. Expect to create " +
+										commandIdentifier.stringify(),
+								);
 								// If it's not running, create it
 								activeCommand = this.SetupCommand(
 									character,
@@ -399,31 +418,45 @@ export default class PredictedCommandManager extends AirshipSingleton {
 									return;
 								}
 							}
+
 							// Reset the command to the provided state snapshot.
 							let data = value.data;
 							const confirmedState = this.confirmedFinalState.get(commandIdentifier.stringify());
 							// Overwrite with last confirmed data if required
 							if (confirmedState) {
-								// Our authoritative state saying this command should already have ended, so don't create it.
+								// Our authoritative state is saying this command should already have ended, so don't create it.
 								if (confirmedState.commandNumber < snapshot.lastProcessedCommand) {
+									print(
+										"Confirmed state for " +
+											commandIdentifier.stringify() +
+											" exists but it's before this command, ignoring reset.",
+									);
+									activeCommand.bin.Clean(); // Remove the command since the snapshot shouldn't have had this command in it.
 									return;
 								}
 								data = confirmedState.snapshot.data;
 							}
 
+							// If the command was predicted to end before this snapshot and we are seeing the command
+							// as part of the snapshot, reset the unconfirmedFinalState, since our prediction was obviously inaccurate.
+							const unconfirmedEnd = this.unconfirmedFinalState.get(commandIdentifier.stringify());
+							if (unconfirmedEnd && unconfirmedEnd.commandNumber < snapshot.lastProcessedCommand) {
+								print("deleting invalid unconfirmed state for " + commandIdentifier.stringify());
+								this.unconfirmedFinalState.delete(commandIdentifier.stringify());
+							}
+
 							// If we need to use this command and it's not been created yet, create it.
 							if (!activeCommand.created) {
-								// print(
-								// 	"active command " +
-								// 		activeCommand.customDataKey +
-								// 		" was not created on target snapshot, creating",
-								// );
+								print(
+									"active command " +
+										activeCommand.customDataKey +
+										" was not intialized on target snapshot, creating",
+								);
 								activeCommand.created = true;
 								this.RunWithoutYield(() => activeCommand.instance.Create?.());
 							}
 
-							//print("resetting " + activeCommand.customDataKey);
-
+							print("resetting " + activeCommand.customDataKey);
 							this.RunWithoutYield(() => activeCommand.instance.ResetToSnapshot(data));
 						},
 					);
@@ -531,7 +564,14 @@ export default class PredictedCommandManager extends AirshipSingleton {
 					});
 
 					this.confirmedFinalState.forEach((data, key) => {
-						if (data.time < time) this.confirmedFinalState.delete(key);
+						if (data.time < time) {
+							print("removing confirmed final state for " + key);
+							// We set the highest completed instance here since the client will need to resim up to the confirmed final state
+							// during replays. The instance hasn't really "completed" until we can be sure that it will never run again on the
+							// client.
+							this.SetHighestCompletedInstance(CommandInstanceIdentifier.fromString(key));
+							this.confirmedFinalState.delete(key);
+						}
 					});
 				}),
 			);
@@ -736,6 +776,12 @@ export default class PredictedCommandManager extends AirshipSingleton {
 			return;
 		}
 
+		let shouldTickAgain = true;
+		let lastProcessedInputCommandNumber: number = 0;
+		let lastProcessedInputTime: number = 0;
+		let lastCapturedState: CustomSnapshotData = {
+			data: undefined as unknown as Readonly<unknown>,
+		};
 		// Note: active command data structure may be destroyed and recreated during replays.
 		// only store metadata about the current instance here and know that when retrieving
 		// activeCommand later using GetActiveCommandOnCharacter, it may not be the same data
@@ -748,12 +794,18 @@ export default class PredictedCommandManager extends AirshipSingleton {
 			created: false,
 			instance: new config.handler(character, commandIdentifier, config),
 			bin: new Bin(),
-		};
-		let shouldTickAgain = true;
-		let lastProcessedInputCommandNumber: number = 0;
-		let lastProcessedInputTime: number = 0;
-		let lastCapturedState: CustomSnapshotData = {
-			data: undefined as unknown as Readonly<unknown>,
+			// We use this to "reset" the instance data when we roll back to a specific snapshot
+			// since we will reuse instances during replays. Todo: this is a super confusing setup,
+			// and we should redo this. Ideally these instances should send the end command on the tick
+			// that the command ended, but we have to wait until capture snapshot completes, so we end up
+			// doing it one tick later and need to keep data like this around :/
+			ResetInstance: () => {
+				lastProcessedInputCommandNumber = 0;
+				lastProcessedInputTime = 0;
+				lastCapturedState = {
+					data: undefined as unknown as Readonly<unknown>,
+				};
+			},
 		};
 
 		// Ends a command with the expectation that we will never run it again. For the server, that means
@@ -840,21 +892,8 @@ export default class PredictedCommandManager extends AirshipSingleton {
 					return;
 				}
 
-				// Handles the case where a client has predicted the end of a command. During replays, the client must
-				// cancel this command from running after the end was predicted. There is also a special case for clients where they've incorrectly
-				// ended a command early. It handles this case by only checking _predicted_ command ends, which means that if an authoritative end
-				// exists, it will tick the command with empty input as the server would have.
-				if (replay && finalCommandData === undefined) {
-					const unconfirmedEnd = this.unconfirmedFinalState.get(commandIdentifier.stringify());
-					if (unconfirmedEnd !== undefined && input.commandNumber > unconfirmedEnd.commandNumber) {
-						CommitEndedCommand();
-						return;
-					}
-				}
-
-				// Make sure the command exists and is created for processing.
-				const customInput = (customData as Map<string, CustomInputData>).get(activeCommand.customDataKey);
-				if (customInput && !activeCommand.created) {
+				// Make sure the command is created for processing.
+				if (!activeCommand.created) {
 					activeCommand.created = true;
 					this.RunWithoutYield(() => activeCommand.instance.Create?.());
 				}
@@ -869,6 +908,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 				}
 
 				// The command was finished. Call complete and don't tick.
+				const customInput = (customData as Map<string, CustomInputData>).get(activeCommand.customDataKey);
 				if (customInput && customInput.finished) {
 					CommitEndedCommand();
 					return;
@@ -978,6 +1018,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 
 		this.AddActiveCommandToCharacter(character.id, activeCommand);
 		this.onInstanceCreated.Fire(commandIdentifier, activeCommand.instance);
+		// print(`Command created ${commandIdentifier.stringify()}`);
 		return activeCommand;
 	}
 
@@ -1045,7 +1086,6 @@ export default class PredictedCommandManager extends AirshipSingleton {
 	}
 
 	private SetHighestCompletedInstance(commandIdentifier: CommandInstanceIdentifier) {
-		if (Game.IsClient()) return; // We don't want to track this on the client since it's what generates instanceIds. onCommandEnded is fired in OnCompareSnapshot
 		let characterHighest = this.highestCompleteIdMap[commandIdentifier.characterId];
 		if (!characterHighest) {
 			this.highestCompleteIdMap[commandIdentifier.characterId] = {};

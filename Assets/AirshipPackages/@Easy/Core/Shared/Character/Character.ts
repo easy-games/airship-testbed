@@ -102,7 +102,7 @@ export default class Character extends AirshipBehaviour {
 	 */
 	public PreCreateCommand = new Signal<[]>();
 	/**
-	 * Fires before command processing only for new commands.
+	 * Fires before command processing.
 	 *
 	 * This signal does not fire for observers.
 	 */
