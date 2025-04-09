@@ -208,7 +208,7 @@ interface CharacterMovement extends Component {
 	 * Get's the simulation time that generated the provided command number. This returns the time in the local
 	 * simulation timeline.
 	 * */
-	GetLocalSimulationTimeFromCommandNumber(commandNumber: number): boolean;
+	GetLocalSimulationTimeFromCommandNumber(commandNumber: number): number;
 	/** If this character movement has final authority on character position and values. */
 	IsAuthority(): boolean;
 

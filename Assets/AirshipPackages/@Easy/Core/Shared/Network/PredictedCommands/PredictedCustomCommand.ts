@@ -37,7 +37,7 @@ export default class PredictedCustomCommand<Input, StateSnapshot> {
 	 * Returning false will end the command.
 	 */
 	GetCommand(): Input | false {
-		return this.commandConfig.tickWithNoInput ? ({} as Input) : false;
+		return {} as Input;
 	}
 
 	// Server and Client
@@ -73,7 +73,7 @@ export default class PredictedCustomCommand<Input, StateSnapshot> {
 	 * @param fullCommandData The full command data for this tick. Includes basic Airship character movement input.
 	 */
 	OnTick(input: Readonly<Input> | undefined, replay: boolean, fullCommandData: CharacterInputData): void | false {
-		return this.commandConfig.tickWithNoInput ? undefined : false;
+		return;
 	}
 
 	/**
@@ -113,16 +113,6 @@ export default class PredictedCustomCommand<Input, StateSnapshot> {
 	}
 
 	// Client and observer effects.
-
-	// /**
-	//  * Called on observers when the first state is observed. The state provided may not be the first state
-	//  * produced by the command due to the possibility of network loss.
-	//  *
-	//  * This function will only be called once.
-	//  *
-	//  * @param state The first state created or received for this command.
-	//  */
-	// OnObserverStart?(state: Readonly<StateSnapshot>): void;
 
 	/**
 	 * This function is called every frame for observers and allows you to interpolate effects based on the observed states for this

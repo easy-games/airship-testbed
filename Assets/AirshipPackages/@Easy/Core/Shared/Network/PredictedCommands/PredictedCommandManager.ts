@@ -13,18 +13,6 @@ export interface CommandConfiguration {
 	priority?: SignalPriority;
 	/** Default is BeforeMove */
 	tickTiming?: "BeforeMove" | "AfterMove";
-	/**
-	 * By default, if a command receives no input for more than a few ticks, we will delete the command and stop processing. If tickWithNoInput is
-	 * set to true, the command will continue to process ticks even if no input is recieved from the client (OnTick's input will be undefined).
-	 * This means that your OnTick function must return false when you want the command to stop running. Returning false from
-	 * GetCommand will still cause the command to terminate even if tickWithNoInput is set to true.
-	 *
-	 * You may wish to use this option if your command should always run for a certain amount of time/ticks, even if client commands fail
-	 * to reach the server.
-	 *
-	 * Default is false.
-	 */
-	tickWithNoInput?: boolean;
 	handler: typeof PredictedCustomCommand<unknown, unknown>;
 }
 
@@ -69,7 +57,7 @@ class ValidateCommand extends Cancellable {
 }
 
 const NetworkCommandEnd = new NetworkSignal<
-	[commandIdentifier: string, commandNumber: number, time: number, lastCapturedState: CustomSnapshotData]
+	[commandIdentifier: string, commandNumber: number, lastCapturedState: CustomSnapshotData]
 >("PredictedCommands/CommandEnded", NetworkChannel.Reliable);
 
 const NetworkCommandInvaild = new NetworkSignal<[commandIdentifier: string, commandNumber: number, time: number]>(
@@ -165,7 +153,8 @@ export default class PredictedCommandManager extends AirshipSingleton {
 
 			// Handles creating new commands to process inputs the first time the input for a command is seen. Clients generally
 			// have already created the command in PreCreateCommand, but still need to create new commands during replays, so they
-			// also run this event.
+			// also run this event. It's important that we don't remove commands on preprocess since we can get empty input data
+			// if there's no input available for a tick.
 			character.bin.Add(
 				character.PreProcessCommand.Connect((customInputData, input, replay) => {
 					(customInputData as Map<string, Readonly<CustomInputData>>).forEach((value, key) => {
@@ -488,16 +477,19 @@ export default class PredictedCommandManager extends AirshipSingleton {
 
 		// Handles ending commands on the client when the server authoritatively completes the command.
 		// TODO: what happens when the client ends a command too early? Do we keep the server command running or not (that's config right now, but does it work?)
-		NetworkCommandEnd.client.OnServerEvent((commandIdentifierStr, commandNumber, time, stateData) => {
+		NetworkCommandEnd.client.OnServerEvent((commandIdentifierStr, commandNumber, stateData) => {
 			// Get the predicted final state on the client
 			const lastState = this.unconfirmedFinalState.get(commandIdentifierStr);
 			this.unconfirmedFinalState.delete(commandIdentifierStr);
 
 			const commandIdenfitier = CommandInstanceIdentifier.fromString(commandIdentifierStr);
+			const character = Airship.Characters.FindById(commandIdenfitier.characterId);
+
+			if (!character) return; // If the character doesn't exist, then this information is no longer relevant.
 
 			// If we are an observer, we don't have any unconfirmed end state to resimulate and we will need to store
 			// the confirmed state for later since we buffer our ticks locally.
-			if (commandIdenfitier.characterId !== Game.localPlayer.character?.id) {
+			if (!character.IsLocalCharacter()) {
 				// If we've already completed the command by the time the final state arrives (unusual for observers due to buffering)
 				// then we should fire the command end right away. We don't need to store the final state for later.
 				if (
@@ -513,7 +505,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 				this.confirmedFinalState.set(commandIdentifierStr, {
 					commandNumber: commandNumber,
 					snapshot: stateData,
-					time,
+					time: character.movement.GetLocalSimulationTimeFromCommandNumber(commandNumber),
 				});
 				return;
 			}
@@ -521,7 +513,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 			this.confirmedFinalState.set(commandIdentifierStr, {
 				commandNumber: commandNumber,
 				snapshot: stateData,
-				time,
+				time: character.movement.GetLocalSimulationTimeFromCommandNumber(commandNumber),
 			});
 			this.onCommandEnded.Fire(commandIdenfitier, stateData.data);
 
@@ -793,7 +785,6 @@ export default class PredictedCommandManager extends AirshipSingleton {
 
 		let shouldTickAgain = true;
 		let lastProcessedInputCommandNumber: number = 0;
-		let lastProcessedInputTime: number = 0;
 		let lastCapturedState: CustomSnapshotData = {
 			data: undefined as unknown as Readonly<unknown>,
 		};
@@ -816,7 +807,6 @@ export default class PredictedCommandManager extends AirshipSingleton {
 			// doing it one tick later and need to keep data like this around :/
 			ResetInstance: () => {
 				lastProcessedInputCommandNumber = 0;
-				lastProcessedInputTime = 0;
 				lastCapturedState = {
 					data: undefined as unknown as Readonly<unknown>,
 				};
@@ -837,7 +827,6 @@ export default class PredictedCommandManager extends AirshipSingleton {
 					NetworkCommandEnd.server.FireAllClients(
 						commandIdentifierStr,
 						lastProcessedInputCommandNumber,
-						lastProcessedInputTime,
 						lastCapturedState,
 					);
 				}
@@ -850,7 +839,9 @@ export default class PredictedCommandManager extends AirshipSingleton {
 					this.unconfirmedFinalState.set(commandIdentifierStr, {
 						commandNumber: lastProcessedInputCommandNumber,
 						snapshot: lastCapturedState,
-						time: lastProcessedInputTime,
+						time: Game.localPlayer.character!.movement.GetLocalSimulationTimeFromCommandNumber(
+							lastProcessedInputCommandNumber,
+						),
 					});
 					print("setting unconfirmed state for " + commandIdentifierStr);
 				}
@@ -861,7 +852,9 @@ export default class PredictedCommandManager extends AirshipSingleton {
 				if (Game.IsClient()) {
 					this.predictedCancellations.set(commandIdentifierStr, {
 						commandNumber: lastProcessedInputCommandNumber,
-						time: lastProcessedInputTime,
+						time: Game.localPlayer.character!.movement.GetLocalSimulationTimeFromCommandNumber(
+							lastProcessedInputCommandNumber,
+						),
 					});
 				}
 			}
@@ -940,8 +933,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 					activeCommand.instance.OnTick(customInput?.data, replay, input),
 				);
 				shouldTickAgain = tickResult !== false;
-				lastProcessedInputCommandNumber = input.commandNumber; // TODO: can input be null?
-				lastProcessedInputTime = input.time;
+				lastProcessedInputCommandNumber = input.commandNumber;
 
 				// If we have a queued cancellation from outside of our command processing functions, apply it here so
 				// that we do not tick again.
