@@ -250,6 +250,7 @@ interface AirshipSimulationManager extends MonoBehaviour {
 	// 	callback: (clientId: number, currentTime: number, latency: number) => void,
 	// ): EngineEventConnection;
 	// OnPerformTick(callback: (time: number, replay: boolean) => void): EngineEventConnection;
+	OnTick(callback: (time: number, replay: boolean) => void): EngineEventConnection;
 	// OnCaptureSnapshot(callback: (time: number, replay: boolean) => void): EngineEventConnection;
 	OnHistoryLifetimeReached(callback: (time: number) => void): EngineEventConnection;
 
