@@ -5,6 +5,7 @@ import { Bin } from "../../Util/Bin";
 import { Cancellable } from "../../Util/Cancellable";
 import inspect from "../../Util/Inspect";
 import { Signal, SignalPriority } from "../../Util/Signal";
+import { TaskUtil } from "../../Util/TaskUtil";
 import { NetworkChannel } from "../NetworkAPI";
 import { NetworkSignal } from "../NetworkSignal";
 import PredictedCustomCommand from "./PredictedCustomCommand";
@@ -338,7 +339,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 						}
 
 						// Call the compare function and set the result for C# to use later
-						const result = this.RunWithoutYield(() =>
+						const result = TaskUtil.RunWithoutYield(() =>
 							instance.CompareSnapshots(aCommandData.data, bCommandData.data),
 						);
 						if (!result) {
@@ -454,11 +455,11 @@ export default class PredictedCommandManager extends AirshipSingleton {
 										" was not intialized on target snapshot, creating",
 								);
 								activeCommand.created = true;
-								this.RunWithoutYield(() => activeCommand.instance.Create?.());
+								TaskUtil.RunWithoutYield(() => activeCommand.instance.Create?.());
 							}
 
 							print("resetting " + activeCommand.customDataKey);
-							this.RunWithoutYield(() => activeCommand.instance.ResetToSnapshot(data));
+							TaskUtil.RunWithoutYield(() => activeCommand.instance.ResetToSnapshot(data));
 						},
 					);
 				}),
@@ -872,10 +873,10 @@ export default class PredictedCommandManager extends AirshipSingleton {
 
 				if (!activeCommand.created) {
 					activeCommand.created = true;
-					this.RunWithoutYield(() => activeCommand.instance.Create?.());
+					TaskUtil.RunWithoutYield(() => activeCommand.instance.Create?.());
 				}
 
-				const input = this.RunWithoutYield(() => activeCommand.instance.GetCommand());
+				const input = TaskUtil.RunWithoutYield(() => activeCommand.instance.GetCommand());
 				const inputWrapper: CustomInputData = {
 					finished: input === false,
 					data: input as Readonly<unknown>,
@@ -909,7 +910,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 				// Make sure the command is created for processing.
 				if (!activeCommand.created) {
 					activeCommand.created = true;
-					this.RunWithoutYield(() => activeCommand.instance.Create?.());
+					TaskUtil.RunWithoutYield(() => activeCommand.instance.Create?.());
 				}
 
 				// If the command has been authoritatively ended on this command number, then we should reset it's state to the
@@ -929,7 +930,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 				}
 
 				// Process a normal forward tick
-				const tickResult = this.RunWithoutYield(() =>
+				const tickResult = TaskUtil.RunWithoutYield(() =>
 					activeCommand.instance.OnTick(customInput?.data, replay, input),
 				);
 				shouldTickAgain = tickResult !== false;
@@ -964,7 +965,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 		// end though, so I think this is ok for now.)
 		activeCommand.bin.Add(
 			character.OnAddCustomSnapshotData.ConnectWithPriority(config.priority ?? SignalPriority.NORMAL, () => {
-				const state = this.RunWithoutYield(() => activeCommand.instance.OnCaptureSnapshot());
+				const state = TaskUtil.RunWithoutYield(() => activeCommand.instance.OnCaptureSnapshot());
 				const stateWrapper: CustomSnapshotData = {
 					data: state as Readonly<unknown>,
 				};
@@ -992,7 +993,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 						// Skip interpolating since we have nothing to interpolate to.
 						return;
 					}
-					this.RunWithoutYield(() =>
+					TaskUtil.RunWithoutYield(() =>
 						activeCommand.instance.OnObserverUpdate?.(aData.data, bData.data, delta),
 					);
 				},
@@ -1027,7 +1028,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 						activeCommand.created = true;
 						activeCommand.instance.Create?.();
 					}
-					this.RunWithoutYield(() => activeCommand.instance.OnObserverReachedState?.(commandData!.data));
+					TaskUtil.RunWithoutYield(() => activeCommand.instance.OnObserverReachedState?.(commandData!.data));
 				},
 			),
 		);
@@ -1039,7 +1040,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 				return;
 			}
 			activeCommand.created = false;
-			this.RunWithoutYield(() => activeCommand.instance.Destroy?.());
+			TaskUtil.RunWithoutYield(() => activeCommand.instance.Destroy?.());
 			this.onInstanceDestroyed.Fire(commandIdentifier);
 		});
 
@@ -1122,21 +1123,5 @@ export default class PredictedCommandManager extends AirshipSingleton {
 		if (highestInstance === undefined || highestInstance < commandIdentifier.instanceId) {
 			characterHighest[commandIdentifier.commandId] = commandIdentifier.instanceId;
 		}
-	}
-
-	private RunWithoutYield<T extends Callback>(callback: T) {
-		let result: ReturnType<T>;
-		const thread = task.spawnDetached(() => {
-			result = callback();
-		});
-		if (coroutine.status(thread) !== "dead") {
-			error(
-				debug.traceback(
-					thread,
-					"Yield detected in a predicted command callback! This will cause undefined behavior!",
-				),
-			);
-		}
-		return result!;
 	}
 }

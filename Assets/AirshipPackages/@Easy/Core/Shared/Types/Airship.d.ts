@@ -111,6 +111,11 @@ interface CharacterMovementEngineEvents {
 
 	// Used for communicating back snapshot comparison results
 	SetComparisonResult(result: boolean);
+
+	OnLagCompensationCheck(callback: (id: string) => void): EngineEventConnection;
+	OnLagCompensationComplete(callback: (id: string) => void): EngineEventConnection;
+	/** Returns the id that will be passed in the lag compensation engine events */
+	RequestLagCompensationCheck(): string;
 }
 
 interface StateSnapshot {
