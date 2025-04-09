@@ -651,7 +651,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   guid: eee4abff-d43c-4ddf-9a14-88999aaac89d
-  hash: 027a90836e9c67e586f491dd050088aa
+  hash: 09d8187eda9087ce9be12867423e9884
   script: {fileID: -8502596097384394428, guid: 231b41c7c69568446b98353c21d6785d, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/Character.lua
   forceContext: 0
@@ -1153,6 +1153,7 @@ MonoBehaviour:
   maxServerCommandCatchup: 1
   maxServerCommandPrediction: 1
   serverAuth: 0
+  serverGeneratesCommands: 0
 --- !u!114 &7877576865563315073
 MonoBehaviour:
   m_ObjectHideFlags: 0
