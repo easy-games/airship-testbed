@@ -73,6 +73,7 @@ export default class CharacterOverlayMaterial extends AirshipBehaviour {
 
 	public SetOverlayMaterial(newMaterial: Material | undefined) {
 		if (newMaterial === this.currentMaterial) {
+			//print("Ignoring set overlay");
 			return;
 		}
 		this.currentMaterial = newMaterial;
@@ -113,7 +114,7 @@ export default class CharacterOverlayMaterial extends AirshipBehaviour {
 			if (!ren?.sharedMesh) {
 				continue;
 			}
-			Bridge.ClearMaterial(ren, ren.sharedMesh.subMeshCount + this.materialIndexOffset);
+			Bridge.RemoveMaterial(ren, ren.sharedMesh.subMeshCount + this.materialIndexOffset);
 		}
 		for (let ren of this.currentStaticRenderers) {
 			if (!ren) {
@@ -121,7 +122,7 @@ export default class CharacterOverlayMaterial extends AirshipBehaviour {
 			}
 			const filter = ren.gameObject.GetComponent<MeshFilter>();
 			if (filter?.mesh) {
-				Bridge.ClearMaterial(ren, filter.sharedMesh.subMeshCount + this.materialIndexOffset);
+				Bridge.RemoveMaterial(ren, filter.sharedMesh.subMeshCount + this.materialIndexOffset);
 			}
 		}
 	}
