@@ -2,7 +2,7 @@ import { Bin } from "@Easy/Core/Shared/Util/Bin";
 
 export default class CharacterOverlayMaterial extends AirshipBehaviour {
 	@Header("Templates")
-	public defaultOverlayMaterialTemplate: Material;
+	public defaultOverlayMaterialTemplate?: Material;
 
 	@Header("References")
 	public accessoryBuilder?: AccessoryBuilder;
@@ -71,7 +71,7 @@ export default class CharacterOverlayMaterial extends AirshipBehaviour {
 		}
 	}
 
-	public SetOverlayMaterial(newMaterial: Material) {
+	public SetOverlayMaterial(newMaterial: Material | undefined) {
 		if (newMaterial === this.currentMaterial) {
 			return;
 		}
@@ -81,7 +81,12 @@ export default class CharacterOverlayMaterial extends AirshipBehaviour {
 			if (!ren?.sharedMesh) {
 				continue;
 			}
-			ren.SetMaterial(ren.sharedMesh.subMeshCount + this.materialIndexOffset, newMaterial);
+			const index = ren.sharedMesh.subMeshCount + this.materialIndexOffset;
+			if (newMaterial) {
+				ren.SetMaterial(index, newMaterial);
+			} else {
+				Bridge.RemoveMaterial(ren, index);
+			}
 		}
 		for (let ren of this.currentStaticRenderers) {
 			if (!ren) {
@@ -89,7 +94,12 @@ export default class CharacterOverlayMaterial extends AirshipBehaviour {
 			}
 			const filter = ren.gameObject.GetComponent<MeshFilter>();
 			if (filter?.mesh) {
-				ren.SetMaterial(filter.mesh.subMeshCount + this.materialIndexOffset, newMaterial);
+				const index = filter.sharedMesh.subMeshCount + this.materialIndexOffset;
+				if (newMaterial) {
+					ren.SetMaterial(index, newMaterial);
+				} else {
+					Bridge.RemoveMaterial(ren, index);
+				}
 			}
 		}
 	}
