@@ -3,6 +3,7 @@ import { Airship } from "@Easy/Core/Shared/Airship";
 import { Group } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipMatchmaking";
 import { Dependency, OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
+import { Game } from "../Game";
 
 @Singleton({})
 export class AirshipMenuSingleton implements OnStart {
@@ -37,6 +38,7 @@ export class AirshipMenuSingleton implements OnStart {
 	}
 
 	public SetTabListEnabled(enabled: boolean): void {
+		if (!Game.IsClient()) return;
 		Dependency<TabListController>().tablistEnabled = enabled;
 		if (!enabled) {
 			Dependency<TabListController>().Hide(true, true);
