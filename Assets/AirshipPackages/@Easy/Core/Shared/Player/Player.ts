@@ -215,6 +215,11 @@ export class Player {
 		characterComponent.Init(this, Airship.Characters.MakeNewId(), this.selectedOutfit, 100, 100);
 		this.SetCharacter(characterComponent);
 		if (this.IsBot()) {
+			const movementNetworking = go.GetComponent<CharacterNetworkedStateManager>();
+			if (movementNetworking) {
+				movementNetworking.serverAuth = true;
+				movementNetworking.serverGeneratesCommands = true;
+			}
 			NetworkServer.Spawn(go);
 		} else {
 			NetworkServer.Spawn(go, this.networkIdentity.connectionToClient!);

@@ -163,7 +163,10 @@ interface CharacterInputData extends InputCommand {
 	customData: BinaryBlob;
 }
 
-interface CharacterNetworkedStateManager extends Component {}
+interface CharacterNetworkedStateManager extends Component {
+	serverAuth: boolean;
+	serverGeneratesCommands: boolean;
+}
 
 interface CharacterMovement extends Component {
 	// Interaction events
