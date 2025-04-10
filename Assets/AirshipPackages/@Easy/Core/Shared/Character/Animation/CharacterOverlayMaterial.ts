@@ -9,6 +9,9 @@ export default class CharacterOverlayMaterial extends AirshipBehaviour {
 	public extraMeshRenderers: MeshRenderer[] = [];
 	public extraSkinnedMeshRenderers: SkinnedMeshRenderer[] = [];
 
+	@Header("Variables")
+	public overlayStaticRenderers = true;
+
 	@Header("Advanced")
 	public materialIndexOffset = 0;
 
@@ -31,7 +34,11 @@ export default class CharacterOverlayMaterial extends AirshipBehaviour {
 					this.currentSkinnedRenderers.clear();
 					this.currentStaticRenderers.clear();
 					this.currentRenderers.clear();
-					if (usedMeshCombiner) {
+
+					if (this.overlayStaticRenderers) {
+						this.currentStaticRenderers = this.accessoryBuilder.GetAllMeshRenderers();
+						this.currentSkinnedRenderers = this.accessoryBuilder.GetAllSkinnedMeshRenderers();
+					} else if (usedMeshCombiner) {
 						this.currentSkinnedRenderers = [skinnedMesh];
 						this.currentStaticRenderers = [staticMesh];
 						this.currentRenderers = [skinnedMesh, staticMesh];
@@ -95,7 +102,7 @@ export default class CharacterOverlayMaterial extends AirshipBehaviour {
 			}
 			const filter = ren.gameObject.GetComponent<MeshFilter>();
 			if (filter?.mesh) {
-				const index = filter.sharedMesh.subMeshCount + this.materialIndexOffset;
+				const index = filter.sharedMesh.subMeshCount + this.materialIndexOffset + 1; //+1 because static meshes don't get an extra combined mesh from accessoryBuilder
 				if (newMaterial) {
 					ren.SetMaterial(index, newMaterial);
 				} else {
@@ -122,9 +129,10 @@ export default class CharacterOverlayMaterial extends AirshipBehaviour {
 			}
 			const filter = ren.gameObject.GetComponent<MeshFilter>();
 			if (filter?.mesh) {
-				Bridge.RemoveMaterial(ren, filter.sharedMesh.subMeshCount + this.materialIndexOffset);
+				Bridge.RemoveMaterial(ren, filter.sharedMesh.subMeshCount + this.materialIndexOffset + 1); //+1 because static meshes don't get an extra combined mesh from accessoryBuilder
 			}
 		}
+		this.currentMaterial = undefined;
 	}
 
 	public GetAllRenderers() {
