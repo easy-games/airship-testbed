@@ -215,6 +215,9 @@ interface CharacterMovement extends Component {
 	/**
 	 * Get's the simulation time that generated the provided command number. This returns the time in the local
 	 * simulation timeline.
+	 *
+	 * **Note: This only works for command numbers which have been completed, meaning that using this function in the OnTick and passing the input command number
+	 * will result in 0 as the simulation time. The local simulation time for an input is always included with the command number in the input object.**
 	 * */
 	GetLocalSimulationTimeFromCommandNumber(commandNumber: number): number;
 	/** If this character movement has final authority on character position and values. */
