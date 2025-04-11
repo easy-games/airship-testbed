@@ -943,7 +943,7 @@ export default class Character extends AirshipBehaviour {
 		});
 		this.bin.AddEngineEventConnection(checkConnection);
 
-		const completeConnection = movementWithEvents.OnLagCompensationCheck((id) => {
+		const completeConnection = movementWithEvents.OnLagCompensationComplete((id) => {
 			if (checkId !== id) return;
 			TaskUtil.RunWithoutYield(() => {
 				completeFunc(checkResult);
