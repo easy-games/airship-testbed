@@ -395,6 +395,8 @@ interface AccessoryBuilder extends MonoBehaviour {
 	GetActiveAccessories(): ActiveAccessory[];
 	GetActiveAccessoryBySlot(target: AccessorySlot): ActiveAccessory | undefined;
 	GetAllAccessoryRenderers(): Renderer[];
+	GetAllMeshRenderers(): MeshRenderer[];
+	GetAllSkinnedMeshRenderers(): SkinnedMeshRenderer[];
 	GetCombinedSkinnedMesh(): SkinnedMeshRenderer;
 	GetCombinedStaticMesh(): MeshRenderer;
 	/**

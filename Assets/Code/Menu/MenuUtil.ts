@@ -50,6 +50,11 @@ export class MenuUtil {
 			title: "Rate Limiting",
 			subtitle: "Rate limiting testing scene.",
 			sceneName: "RateLimiting",
+		},
+		{
+			title: "Local Http",
+			subtitle: "Local http testing scene.",
+			sceneName: "LocalHttp",
 		}
 	];
 
