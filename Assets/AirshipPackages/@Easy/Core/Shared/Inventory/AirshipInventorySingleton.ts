@@ -260,13 +260,14 @@ export class AirshipInventorySingleton {
 						if (event.allowMerging && toItemStack.amount + amount <= toItemStack.GetMaxStackSize()) {
 							toItemStack.SetAmount(toItemStack.amount + amount);
 							fromItemStack.Decrement(amount);
-							CoreNetwork.ClientToServer.Inventory.MoveToSlot.client.FireServer(
-								fromInv.id,
-								fromSlot,
-								toInv.id,
-								toSlot,
-								amount,
-							);
+
+							// CoreNetwork.ClientToServer.Inventory.MoveToSlot.client.FireServer(
+							// 	fromInv.id,
+							// 	fromSlot,
+							// 	toInv.id,
+							// 	toSlot,
+							// 	amount,
+							// );
 							return;
 						}
 						// can't merge so do nothing
@@ -641,13 +642,16 @@ export class AirshipInventorySingleton {
 				if (event.allowMerging && toItemStack.amount + amount <= toItemStack.GetMaxStackSize()) {
 					toItemStack.SetAmount(toItemStack.amount + amount);
 					fromItemStack.Decrement(amount);
-					CoreNetwork.ClientToServer.Inventory.MoveToSlot.client.FireServer(
-						fromInv.id,
-						fromSlot,
-						toInv.id,
-						toSlot,
-						amount,
-					);
+					
+					if (Game.IsClient()) {
+						CoreNetwork.ClientToServer.Inventory.MoveToSlot.client.FireServer(
+							fromInv.id,
+							fromSlot,
+							toInv.id,
+							toSlot,
+							amount,
+						);
+					}
 					return;
 				}
 				// can't merge so do nothing
@@ -663,13 +667,15 @@ export class AirshipInventorySingleton {
 			});
 		}
 
-		CoreNetwork.ClientToServer.Inventory.MoveToSlot.client.FireServer(
-			fromInv.id,
-			fromSlot,
-			toInv.id,
-			toSlot,
-			amount,
-		);
+		if (Game.IsClient()) {
+			CoreNetwork.ClientToServer.Inventory.MoveToSlot.client.FireServer(
+				fromInv.id,
+				fromSlot,
+				toInv.id,
+				toSlot,
+				amount,
+			);
+		}
 	}
 
 	public SetInventoryUIPrefab(prefab: GameObject): void {
