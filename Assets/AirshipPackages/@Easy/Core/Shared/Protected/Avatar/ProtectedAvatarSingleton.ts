@@ -112,6 +112,12 @@ export class ProtectedAvatarSingleton {
 					name = "Outfit " + (i + 1);
 					// let outfitId = "Outfit" + i;
 					print("Creating missing outfit: " + name);
+
+					// Need to wait for owned clothing to populate (promise is running parallel to this)
+					while (this.ownedClothing === undefined) {
+						task.wait();
+					}
+
 					let outfit = await Protected.Avatar.CreateDefaultAvatarOutfit(
 						firstOutfit,
 						name,
@@ -269,8 +275,8 @@ export class ProtectedAvatarSingleton {
 		let defaultAccessoryClassIds = [
 			"320fc23c-82fb-40dd-84dc-79cba582d431", // Face
 			// "3def9a06-13f2-4abe-b12f-69e468dd05a5", // Skull Hoodie
-			"c7363912-17e6-4713-b4de-113549f9356e", // Jeans Pants
-			"30d05506-7e13-4bb8-b515-dc674d96a159", // Hair
+			// "c7363912-17e6-4713-b4de-113549f9356e", // Jeans Pants
+			// "30d05506-7e13-4bb8-b515-dc674d96a159", // Hair
 		];
 
 		for (let classId of defaultAccessoryClassIds) {

@@ -705,7 +705,6 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private SelectOutfit(index: number, notifyServer: boolean = true) {
-		print("SelectOutfit " + index + " " + debug.traceback());
 		if (index < 0 || index >= Protected.Avatar.outfits.size() || this.inThumbnailMode) {
 			error(`Index ${index} out of range of outfits`);
 		}
