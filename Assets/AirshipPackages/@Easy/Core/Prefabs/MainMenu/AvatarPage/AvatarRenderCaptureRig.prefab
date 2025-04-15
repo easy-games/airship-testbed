@@ -52,6 +52,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  guid: 6277a18a-d559-44a6-a396-02851b6a3f93
+  hash: d181d9f42c2b95f583bc95bb7948c60c
   script: {fileID: -5059136008333416200, guid: 5828a7049ad72ef44abcca87322e904e, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/AvatarRenderComponent.lua
   forceContext: 0
