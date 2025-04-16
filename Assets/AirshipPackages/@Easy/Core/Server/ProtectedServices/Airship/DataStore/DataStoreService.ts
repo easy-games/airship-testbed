@@ -1,5 +1,6 @@
 import {
 	AirshipDataStoreLockData,
+	AirshipDataStoreLockedMetadata,
 	AirshipDataStoreLockMode,
 } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipDataStore";
 import { Service } from "@Easy/Core/Shared/Flamework";
@@ -29,6 +30,9 @@ export interface DataStoreRecord<T> {
 	value: T;
 	metadata: {
 		etag: string;
+        createdAt: string;
+        lastUpdated: string | null;
+        lockData?: AirshipDataStoreLockedMetadata;
 	};
 }
 
