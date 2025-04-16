@@ -45,15 +45,33 @@ export class AirshipTransferService {
 	}
 
 	protected OnStart(): void {
-		contextbridge.callback("ServerShutdown", async (from) => {
+		contextbridge.callback("ServerShutdown", (from) => {
 			this.onShutdown.Fire();
 
 			if (this.transferPlayersOnShutdown) {
 				// todo: if this fails, try transferring everyone individually
-				const res = await this.TransferGroupToGame(Airship.Players.GetPlayers(), Game.gameId);
-				if (!res.transfersRequested) {
-					for (let player of Airship.Players.GetPlayers()) {
-						this.TransferGroupToGame([player], Game.gameId);
+				const players = Airship.Players.GetPlayers();
+				if (players.size() === 0) {
+					return;
+				} else {
+					const res = this.TransferGroupToGame(Airship.Players.GetPlayers(), Game.gameId).expect();
+					if (!res.transfersRequested) {
+						for (let player of Airship.Players.GetPlayers()) {
+							this.TransferGroupToGame([player], Game.gameId).expect();
+						}
+					}
+					let maxWaitTime = 10;
+					let numWaits = 0;
+					while(numWaits < maxWaitTime) {
+						task.unscaledWait(1);
+						numWaits++;
+						const players = Airship.Players.GetPlayers();
+						if (players.size() === 0) {
+							break;
+						}
+						if (numWaits >= maxWaitTime) {
+							break;
+						}
 					}
 				}
 			}
