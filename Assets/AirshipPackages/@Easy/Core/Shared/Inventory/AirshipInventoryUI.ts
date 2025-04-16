@@ -466,7 +466,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 
 			bin.AddEngineEventConnection(
 				CanvasAPI.OnPointerEvent(tile.button.gameObject, (direction, button) => {
-					if (direction !== PointerDirection.UP) return;
+					if (direction !== PointerDirection.UP || this.draggingState) return;
 
 					const openSlot = localInventory.GetFirstOpenSlot();
 					if (openSlot === -1) return;
@@ -609,7 +609,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 
 				invBin.AddEngineEventConnection(
 					CanvasAPI.OnPointerEvent(tileComponent.button.gameObject, (direction, button) => {
-						if (direction !== PointerDirection.UP) return;
+						if (direction !== PointerDirection.UP || this.draggingState) return;
 
 						if (i < inv.hotbarSlots) {
 							// hotbar
