@@ -30,9 +30,9 @@ export interface DataStoreRecord<T> {
 	value: T;
 	metadata: {
 		etag: string;
-        createdAt: string;
-        lastUpdated: string | null;
-        lockData?: AirshipDataStoreLockedMetadata;
+		createdAt: string;
+		lastUpdated: string | null;
+		lockData?: AirshipDataStoreLockedMetadata;
 	};
 }
 
