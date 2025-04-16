@@ -44930,20 +44930,6 @@ interface ShaderWarmupConstructor {
 }
 declare const ShaderWarmup: ShaderWarmupConstructor;
 
-interface OcclusionCam extends MonoBehaviour {
-	targetCamera: Camera;
-	adjustToHead: boolean;
-	adjustToHeadHeightThreshold: number;
-
-	BumpForOcclusion(attachToPos: Vector3, mask: number): void;
-	Init(camera: Camera): void;
-}
-
-interface OcclusionCamConstructor {
-	new (): OcclusionCam;
-}
-declare const OcclusionCam: OcclusionCamConstructor;
-
 interface QualitySettings extends Object {}
 
 interface RenderPipelineAsset extends ScriptableObject {

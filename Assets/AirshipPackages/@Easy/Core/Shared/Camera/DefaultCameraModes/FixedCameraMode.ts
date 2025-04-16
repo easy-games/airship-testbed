@@ -270,7 +270,11 @@ export class FixedCameraMode extends CameraMode {
 			}
 
 			//Collide camera with enviornment and send signal with new camera distance
-			this.occlusionCam.BumpForOcclusion(targetPosition, OcclusionCameraManager.GetMask());
+			this.occlusionCam.BumpForOcclusion(
+				targetPosition,
+				this.character?.rig.head.position ?? targetPosition,
+				OcclusionCameraManager.GetMask(),
+			);
 			const dist = cameraHolder.position.sub(targetPosition).magnitude;
 			this.onTargetDistance.Fire(dist, this.occlusionCam.transform.position, targetPosition);
 		}

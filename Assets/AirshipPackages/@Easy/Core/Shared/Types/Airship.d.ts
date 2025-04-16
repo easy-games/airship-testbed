@@ -1083,3 +1083,16 @@ interface AirAssetBundleStatic {
 	DownloadYielding(airId: string): AirAssetBundle | undefined;
 }
 declare const AirAssetBundle: AirAssetBundleStatic;
+
+interface OcclusionCam extends MonoBehaviour {
+	targetCamera: Camera;
+	adjustToHead: boolean;
+	adjustToHeadHeightThreshold: number;
+
+	BumpForOcclusion(targetPos: Vector3, characterPos: Vector3, mask: number): void;
+	Init(camera: Camera): void;
+}
+interface OcclusionCamConstructor {
+	new (): OcclusionCam;
+}
+declare const OcclusionCam: OcclusionCamConstructor;

@@ -107,17 +107,11 @@ export default class CharacterRendering extends AirshipBehaviour {
 	}
 
 	protected EvaluateCameraDistance(distance: number, camPos: Vector3, targetPos: Vector3) {
-		let flatDistance = Vector3.Distance(camPos.WithY(targetPos.y), targetPos);
-		let verticalMod = math.clamp01(camPos.y - targetPos.y);
+		let flatDistance = Vector3.Distance(camPos, targetPos);
 
 		if (this.useTransparentOnCameraClose) {
-			this.SetAlpha(
-				math.lerp(
-					math.max(0, flatDistance - this.transparentDistance) / this.transparentMargin,
-					1,
-					verticalMod,
-				),
-			);
+			let alpha = math.max(0, flatDistance - this.transparentDistance) / this.transparentMargin;
+			this.SetAlpha(alpha);
 		} else {
 			this.character.rig?.gameObject?.SetActive(distance > this.transparentDistance);
 		}
