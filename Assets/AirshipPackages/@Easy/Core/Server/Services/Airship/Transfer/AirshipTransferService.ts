@@ -69,9 +69,6 @@ export class AirshipTransferService {
 						if (players.size() === 0) {
 							break;
 						}
-						if (numWaits >= maxWaitTime) {
-							break;
-						}
 					}
 				}
 			}
