@@ -13,11 +13,11 @@ import AirshipInventoryUI from "./AirshipInventoryUI";
 import Inventory, { InventoryDto } from "./Inventory";
 import { InventoryUIVisibility } from "./InventoryUIVisibility";
 import { ItemStack } from "./ItemStack";
-import { MovingToSlotEvent } from "./Signal/MovingToSlotEvent";
+import { InventoryMovingToSlotEvent } from "./Signal/MovingToSlotEvent";
 import {
-	CancellableSlotInteractionEvent,
+	CancellableInventorySlotInteractionEvent,
 	SlotDragEndedEvent,
-	SlotInteractionEvent,
+	InventorySlotMouseClickEvent as InventorySlotMouseClickEvent,
 } from "./Signal/SlotInteractionEvent";
 
 interface InventoryEntry {
@@ -42,22 +42,22 @@ export class AirshipInventorySingleton {
 	 *
 	 * Can be used to cancel inventory transfers in certain situations e.g: non-tradeable items, or non-droppable items
 	 */
-	public readonly onMovingToSlot = new Signal<MovingToSlotEvent>();
+	public readonly onMovingToSlot = new Signal<InventoryMovingToSlotEvent>();
 
 	/**
 	 * Event that is invoked when the inventory slot is clicked on the client
 	 * @client
 	 *
-	 * Can be used to implement custom inventory functionality, e.g. "quick move" on shift click:
+	 * Can be used to implement custom inventory functionality, e.g. "quick move" on shift left-click:
 	 * ```ts
 	 * Airship.Inventory.onInventorySlotClicked.Connect((event) => {
-	 * 	if (Keyboard.IsKeyDown(Key.LeftShift)) {
+	 * 	if (event.button === PointerButton.LEFT && Keyboard.IsKeyDown(Key.LeftShift)) {
 	 *			Airship.Inventory.QuickMoveSlot(event.inventory, event.slotIndex);
 	 *		}
 	 * });
 	 * ```
 	 */
-	public readonly onInventorySlotClicked = new Signal<SlotInteractionEvent>();
+	public readonly onInventorySlotClicked = new Signal<InventorySlotMouseClickEvent>();
 	/**
 	 * Event that's invoked if there's a drag requested on a given inventory slot
 	 *
@@ -65,7 +65,7 @@ export class AirshipInventorySingleton {
 	 * - To listen for the drag end - use {@link onInventorySlotDragEnd}
 	 * - To listen for a slot being dropped on another slot - use {@link onMovingToSlot}.
 	 */
-	public readonly onInventorySlotDragBegin = new Signal<CancellableSlotInteractionEvent>();
+	public readonly onInventorySlotDragBegin = new Signal<CancellableInventorySlotInteractionEvent>();
 	/**
 	 * Event that's invoked if a slot that's being dragged, is no longer being dragged
 	 * - `consume` on the event will be true if it is dropping on another slot, that can be handled via {@link onMovingToSlot}.
@@ -247,7 +247,7 @@ export class AirshipInventorySingleton {
 					return;
 				}
 
-				const event = this.onMovingToSlot.Fire(new MovingToSlotEvent(fromInv, fromSlot, toInv, toSlot, amount));
+				const event = this.onMovingToSlot.Fire(new InventoryMovingToSlotEvent(fromInv, fromSlot, toInv, toSlot, amount));
 				if (event.IsCancelled()) return;
 				amount = event.amount;
 
@@ -628,7 +628,7 @@ export class AirshipInventorySingleton {
 			return;
 		}
 
-		const event = this.onMovingToSlot.Fire(new MovingToSlotEvent(fromInv, fromSlot, toInv, toSlot, amount));
+		const event = this.onMovingToSlot.Fire(new InventoryMovingToSlotEvent(fromInv, fromSlot, toInv, toSlot, amount));
 		if (event.IsCancelled() || event.amount < 1) return;
 
 		amount = event.amount;
