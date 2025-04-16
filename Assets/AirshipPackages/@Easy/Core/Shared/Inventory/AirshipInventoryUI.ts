@@ -464,21 +464,6 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			const tile = tileGO.gameObject.GetAirshipComponentInChildren<AirshipInventoryTile>();
 			if (!tile) continue;
 
-			// bin.AddEngineEventConnection(
-			// 	CanvasAPI.OnPointerEvent(tile.button.gameObject, (direction, button) => {
-			// 		if (direction === PointerDirection.UP && button === PointerButton.MIDDLE) {
-			// 			const stack = inventory.GetItem(i);
-			// 			if (!stack) return;
-
-			// 			const openSlot = inventory.GetFirstOpenSlot();
-			// 			if (openSlot === -1) return;
-
-			// 			const half = math.floor(stack.amount / 2);
-			// 			Airship.Inventory.MoveToSlot(inventory, i, localInventory, openSlot, half);
-			// 		}
-			// 	}),
-			// );
-
 			bin.AddEngineEventConnection(
 				CanvasAPI.OnClickEvent(tile.button.gameObject, () => {
 					const openSlot = localInventory.GetFirstOpenSlot();
@@ -487,7 +472,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 					const stack = inventory.GetItem(i);
 					if (!stack) return;
 
-					Airship.Inventory.MoveToSlot(inventory, i, localInventory, openSlot, stack.amount);
+					Airship.Inventory.onInventorySlotClicked.Fire(new SlotInteractionEvent(inventory, i));
 				}),
 			);
 

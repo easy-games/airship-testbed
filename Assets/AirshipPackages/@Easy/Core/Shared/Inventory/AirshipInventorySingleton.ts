@@ -601,7 +601,7 @@ export class AirshipInventorySingleton {
 
 		if (canMerge) {
 			const destination =
-				destinationInventory.FindMergeableSlotWithItemType(stackAtSlot.itemType) ??
+				destinationInventory.FindMergableSlot(stackAtSlot) ??
 				destinationInventory.GetFirstOpenSlot();
 			if (destination === -1) return;
 
