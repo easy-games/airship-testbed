@@ -1,5 +1,6 @@
 import { Airship } from "../../Airship";
 import { Cancellable } from "../../Util/Cancellable";
+import { PointerButton } from "../../Util/CanvasAPI";
 import Inventory from "../Inventory";
 
 interface InventorySlotEvent { // mainly so documentation applies to all of 'em
@@ -21,8 +22,8 @@ interface InventorySlotEvent { // mainly so documentation applies to all of 'em
 	IsLocalInventory(): boolean;
 }
 
-export class SlotInteractionEvent implements InventorySlotEvent {
-	public constructor(public readonly inventory: Inventory, public readonly slotIndex: number) {}
+export class InventorySlotMouseClickEvent implements InventorySlotEvent {
+	public constructor(public readonly inventory: Inventory, public readonly slotIndex: number, public readonly button: PointerButton) {}
 
 	public IsExternalInventory(): boolean {
 		return this.inventory === Airship.Inventory.ui?.GetActiveExternalInventory();
@@ -33,7 +34,7 @@ export class SlotInteractionEvent implements InventorySlotEvent {
 	}
 }
 
-export class CancellableSlotInteractionEvent extends Cancellable implements InventorySlotEvent {
+export class CancellableInventorySlotInteractionEvent extends Cancellable implements InventorySlotEvent {
 	public constructor(public readonly inventory: Inventory, public readonly slotIndex: number) {
 		super();
 	}
