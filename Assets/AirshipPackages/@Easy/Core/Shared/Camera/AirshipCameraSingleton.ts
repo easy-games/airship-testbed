@@ -450,6 +450,7 @@ export class AirshipCameraSingleton {
 			// The first thing we do for `Character` targets is synchronize the camera
 			// with their current look vector.
 			if (character.movement) {
+				// print("[fixed]: setting look dir: " + character.movement.startingLookVector);
 				mode.SetYAxisDirection(character.movement.GetLookVector());
 			}
 
@@ -547,8 +548,9 @@ export class AirshipCameraSingleton {
 		if (character.IsLocalCharacter()) {
 			// The first thing we do for `Character` targets is synchronize the camera
 			// with their current look vector.
-			if (character.movement && characterLocked) {
-				mode.SetYAxisDirection(character.movement.GetLookVector());
+			if (character.movement) {
+				// print("setting look vec: " + character.movement.startingLookVector);
+				mode.SetYAxisDirection(character.movement.startingLookVector);
 			}
 
 			//Every frame set the characters look vector to match the cameras
