@@ -8,6 +8,7 @@ import { Game } from "@Easy/Core/Shared/Game";
 import { MainMenuSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/MainMenuSingleton";
 import { ProtectedPlayer } from "@Easy/Core/Shared/Player/ProtectedPlayer";
 import { Protected } from "@Easy/Core/Shared/Protected";
+import StringUtils from "@Easy/Core/Shared/Types/StringUtil";
 import { Keyboard, Mouse } from "@Easy/Core/Shared/UserInput";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
@@ -444,10 +445,13 @@ export class ClientChatSingleton {
 			}
 
 			const domainPattern = "%f[%w][%w-]+%.[a-z]+[%w%p]*%f[%A]";
-			const match = string.match(string.lower(Bridge.RemoveRichText(message)), domainPattern);
+			const match = string.match(Bridge.RemoveRichText(message), domainPattern);
 			if (match !== undefined && match.size() > 0) {
-				const url = match[0] as string;
-				print("found url: " + url);
+				let url = match[0] as string;
+				if (!StringUtils.startsWith(url.lower(), "https://")) {
+					url = "https://" + url;
+				}
+				print("found chat url: " + url);
 				chatMessage.SetUrl(url);
 			}
 
