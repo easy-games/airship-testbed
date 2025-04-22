@@ -633,6 +633,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  guid: 3deb3c79-0c65-41a5-a1d9-8dae0acb4826
+  hash: ddd75c2ac7bfa25a3e102653d54159aa
   script: {fileID: -8502596097384394428, guid: 231b41c7c69568446b98353c21d6785d, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/Character.lua
   forceContext: 0
@@ -825,6 +827,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  guid: 63d77f38-b5e5-4d0b-bb8a-e4a11b6390cd
+  hash: adca315c3fa4e38e9cb0ea3dd306dfcc
   script: {fileID: 3379845904423814631, guid: b265ca149231a634a8b651b688c7a486, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/CharacterRendering.lua
   forceContext: 0
@@ -928,6 +932,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  guid: dcc56b78-a9b6-4218-bcbb-3bfb25941ac0
+  hash: 6dcdcdb27f065abd455dc8756cc0a70f
   script: {fileID: 6641073800188671112, guid: 8a394f76659097e498fcb014078bae54, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Inventory/Inventory.lua
   forceContext: 0
@@ -1153,6 +1159,9 @@ MonoBehaviour:
   directionalBlendLerpMod: 15
   skiddingSpeed: 7.5
   idleRectionLength: 15
+  animWalkSpeed: 4.4444447
+  animRunSpeed: 6.6666665
+  animCrouchSpeed: 2.1233335
 --- !u!114 &7124091312930647041
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1165,6 +1174,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  guid: eb4661d5-016a-4fe7-9335-065c54e235bf
+  hash: 6dfc8c3edb5ba6e20ca59751b901763a
   script: {fileID: 5399347344820012199, guid: 1d9ff343e68ebb247bb7a1dd2270fd63, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/Animation/CharacterAnimation.ts
   forceContext: 0

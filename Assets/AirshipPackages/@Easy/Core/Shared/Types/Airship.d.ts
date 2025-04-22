@@ -402,31 +402,31 @@ interface AccessoryBuilder extends MonoBehaviour {
 	/**
 	 * Removes an active accessory on the given slot (if one exists).
 	 *
-	 * **Skinned mesh accessories will not be added until you call `UpdateImmediately()`**
+	 * **Skinned mesh accessories will not be added until you call `UpdateCombinedMesh()`**
 	 */
 	RemoveBySlot(slot: AccessorySlot): void;
 	/**
 	 * Removes all accessories.
 	 *
-	 * **Skinned mesh accessories will not be added until you call `UpdateImmediately()`**
+	 * **Skinned mesh accessories will not be added until you call `UpdateCombinedMesh()`**
 	 */
 	RemoveAll(): void;
 	/**
 	 * Removes all accessories sitting in "clothing" slots.
 	 * This means everything except for the right and left hand. Clothing slots may change in the future.
 	 *
-	 * **Skinned mesh accessories will not be added until you call `UpdateImmediately()`**
+	 * **Skinned mesh accessories will not be added until you call `UpdateCombinedMesh()`**
 	 */
 	RemoveClothingAccessories(): void;
 	SetCreateOverlayMeshOnCombine(on: boolean): void;
 	/**
 	 *
-	 * **Will not take effect until you call `UpdateImmediately()`**
+	 * **Will not take effect until you call `UpdateCombinedMesh()`**
 	 */
 	SetFaceTexture(texture: Texture2D): void;
 	/**
 	 *
-	 * **Will not take effect until you call `UpdateImmediately()`**
+	 * **Will not take effect until you call `UpdateCombinedMesh()`**
 	 */
 	SetSkinColor(color: Color): void;
 
@@ -1083,3 +1083,16 @@ interface AirAssetBundleStatic {
 	DownloadYielding(airId: string): AirAssetBundle | undefined;
 }
 declare const AirAssetBundle: AirAssetBundleStatic;
+
+interface OcclusionCam extends MonoBehaviour {
+	targetCamera: Camera;
+	adjustToHead: boolean;
+	adjustToHeadHeightThreshold: number;
+
+	BumpForOcclusion(targetPos: Vector3, characterPos: Vector3, mask: number): void;
+	Init(camera: Camera): void;
+}
+interface OcclusionCamConstructor {
+	new (): OcclusionCam;
+}
+declare const OcclusionCam: OcclusionCamConstructor;

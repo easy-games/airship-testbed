@@ -1,13 +1,13 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { ControlScheme, Mouse, Preferred, Touchscreen } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { Binding } from "../../Input/Binding";
 import ObjectUtils from "../../Util/ObjectUtils";
+import { OnUpdate } from "../../Util/Timer";
 import { CameraConstants, OrbitCameraConfig } from "../CameraConstants";
 import { CameraMode } from "../CameraMode";
 import { CameraTransform } from "../CameraTransform";
 import { OcclusionCameraManager } from "../OcclusionCameraManager";
-import { Binding } from "../../Input/Binding";
-import { OnUpdate } from "../../Util/Timer";
 
 const TAU = math.pi * 2;
 
@@ -323,7 +323,11 @@ export class OrbitCameraMode extends CameraMode {
 	OnPostUpdate(cameraHolder: Transform) {
 		cameraHolder.LookAt(this.lastAttachToPos);
 		if (this.shouldBumpForOcclusion) {
-			this.occlusionCam.BumpForOcclusion(this.lastAttachToPos, OcclusionCameraManager.GetMask());
+			this.occlusionCam.BumpForOcclusion(
+				this.lastAttachToPos,
+				this.character?.rig.head.position ?? this.lastAttachToPos,
+				OcclusionCameraManager.GetMask(),
+			);
 			const dist = cameraHolder.position.sub(this.lastAttachToPos).magnitude;
 			this.onTargetDistance.Fire(dist, this.occlusionCam.transform.position, this.lastAttachToPos);
 			this.cameraForwardVector = cameraHolder.forward;

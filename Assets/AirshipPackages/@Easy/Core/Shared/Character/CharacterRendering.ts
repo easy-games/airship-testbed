@@ -16,6 +16,8 @@ export default class CharacterRendering extends AirshipBehaviour {
 	@Tooltip("When using transparency how much distance between fully opaque and fully transparent")
 	public transparentMargin = 0.5;
 
+	private enableIfNotLocalCharacter = false;
+
 	private bin = new Bin();
 	private cameraBin = new Bin();
 	private character: Character;
@@ -29,7 +31,7 @@ export default class CharacterRendering extends AirshipBehaviour {
 		this.bin.Clean();
 		this.cameraBin.Clean();
 
-		if (this.character.IsLocalCharacter()) {
+		if (this.character.IsLocalCharacter() || this.enableIfNotLocalCharacter) {
 			this.SetAlpha(1);
 		}
 	}
@@ -39,18 +41,21 @@ export default class CharacterRendering extends AirshipBehaviour {
 			//Wait for init so we can check things on character
 			this.character.WaitForInit();
 
-			if (this.character.IsLocalCharacter()) {
+			if (this.character.IsLocalCharacter() || this.enableIfNotLocalCharacter) {
 				if (this.useTransparentOnCameraClose && this.autoSetStencilLayer) {
 					this.SetLayerRecursive(this.character.rig.transform, Layer.LOCAL_STENCIL_MASK);
 				}
 				this.SetAlpha(1);
+			} else {
+				this.SetLayerRecursive(this.character.rig.transform, Layer.CHARACTER);
 			}
-			// else{
-			//     if(this.autoSetStencilLayer){
-			//         this.character.rig.gameObject.SetLayerRecursive(Layer.STENCIL_MASK);
-			//     }
-			// }
 		}
+	}
+
+	public SetEnabledIfNotLocalCharacter(enabled: boolean): void {
+		this.enableIfNotLocalCharacter = enabled;
+		this.Init();
+		this.Refresh();
 	}
 
 	private SetLayerRecursive(transform: Transform, layer: number) {
@@ -78,14 +83,15 @@ export default class CharacterRendering extends AirshipBehaviour {
 		this.bin.Clean();
 		this.cameraBin.Clean();
 
-		if (this.character?.IsLocalCharacter()) {
+		if (this.character?.IsLocalCharacter() || this.enableIfNotLocalCharacter) {
+			const headTransform = this.character.rig.head;
 			//Camera
 			this.bin.Add(
 				Airship.Camera.onCameraModeChanged.Connect((mode) => {
 					this.cameraBin.Clean();
 					this.cameraBin.Add(
 						mode.onTargetDistance.Connect((distance, camPos, targetPos) => {
-							this.EvaluateCameraDistance(distance, camPos, targetPos);
+							this.EvaluateCameraDistance(distance, camPos, headTransform.position);
 						}),
 					);
 				}),
@@ -93,7 +99,7 @@ export default class CharacterRendering extends AirshipBehaviour {
 			if (Airship.Camera.activeCameraMode) {
 				this.cameraBin.Add(
 					Airship.Camera.activeCameraMode?.onTargetDistance.Connect((distance, camPos, targetPos) => {
-						this.EvaluateCameraDistance(distance, camPos, targetPos);
+						this.EvaluateCameraDistance(distance, camPos, headTransform.position);
 					}),
 				);
 			}
@@ -101,17 +107,11 @@ export default class CharacterRendering extends AirshipBehaviour {
 	}
 
 	protected EvaluateCameraDistance(distance: number, camPos: Vector3, targetPos: Vector3) {
-		let flatDistance = Vector3.Distance(camPos.WithY(targetPos.y), targetPos);
-		let verticalMod = math.clamp01(camPos.y - targetPos.y);
+		let flatDistance = Vector3.Distance(camPos, targetPos);
 
 		if (this.useTransparentOnCameraClose) {
-			this.SetAlpha(
-				math.lerp(
-					math.max(0, flatDistance - this.transparentDistance) / this.transparentMargin,
-					1,
-					verticalMod,
-				),
-			);
+			let alpha = math.max(0, flatDistance - this.transparentDistance) / this.transparentMargin;
+			this.SetAlpha(alpha);
 		} else {
 			this.character.rig?.gameObject?.SetActive(distance > this.transparentDistance);
 		}

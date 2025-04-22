@@ -556,6 +556,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  guid: 97dc6e61-4702-46f8-b925-3e525f70e841
+  hash: 14db509df959c3d06b435589c8cf49eb
   script: {fileID: 5971327804806352644, guid: 1e6988b40f0812948b4b23d4fd4cb7c6, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Avatar/AvatarViewComponent.lua
   forceContext: 0

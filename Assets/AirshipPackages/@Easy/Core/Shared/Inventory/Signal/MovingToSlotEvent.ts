@@ -3,7 +3,7 @@ import { Cancellable } from "../../Util/Cancellable";
 import Inventory from "../Inventory";
 import { ItemStack } from "../ItemStack";
 
-export class MovingToSlotEvent extends Cancellable {
+export class InventoryMovingToSlotEvent extends Cancellable {
 	public amount: number;
 	public readonly fromItem: ItemStack | undefined;
 

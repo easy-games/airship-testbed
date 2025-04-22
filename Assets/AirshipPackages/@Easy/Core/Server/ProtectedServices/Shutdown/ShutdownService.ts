@@ -82,8 +82,10 @@ export class ShutdownService {
 			Done();
 		});
 		task.spawn(() => {
+			print("Waiting for contextbridge callback to finish...");
 			contextbridge.invoke("ServerShutdown", LuauContext.Game);
-			// Done();
+			print("Contextbridge callback finished, shutting down server...");
+			Done();
 		});
 	}
 }
