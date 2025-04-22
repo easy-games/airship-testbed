@@ -120,7 +120,6 @@ export class AirshipChatSingleton {
 				} else {
 					moderationResult = {
 						messageBlocked: false,
-						messageBlockedReasons: [],
 					}
 				}
 				if (moderationResult.messageBlocked) {
