@@ -59,9 +59,11 @@ export class ProtectedAvatarSingleton {
 				return outfit;
 			}
 		});
+
+		this.LoadInventory();
 	}
 
-	public async LoadInventory(): Promise<void> {
+	private async LoadInventory(): Promise<void> {
 		if (this.isInventoryLoaded) return;
 		if (this.isLoadingInventory) {
 			Debug.LogWarning("Tried to load inventory when already loading.");
