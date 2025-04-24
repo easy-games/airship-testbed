@@ -31,7 +31,7 @@ export default class CharacterRendering extends AirshipBehaviour {
 		this.bin.Clean();
 		this.cameraBin.Clean();
 
-		if (this.character.IsLocalCharacter() || this.enableIfNotLocalCharacter) {
+		if ((this.character.IsInitialized() && this.character.IsLocalCharacter()) || this.enableIfNotLocalCharacter) {
 			this.SetAlpha(1);
 		}
 	}
@@ -83,7 +83,7 @@ export default class CharacterRendering extends AirshipBehaviour {
 		this.bin.Clean();
 		this.cameraBin.Clean();
 
-		if (this.character?.IsLocalCharacter() || this.enableIfNotLocalCharacter) {
+		if ((this.character.IsInitialized() && this.character?.IsLocalCharacter()) || this.enableIfNotLocalCharacter) {
 			const headTransform = this.character.rig.head;
 			//Camera
 			this.bin.Add(
