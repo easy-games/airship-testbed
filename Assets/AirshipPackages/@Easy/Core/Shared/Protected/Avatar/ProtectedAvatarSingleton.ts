@@ -60,7 +60,9 @@ export class ProtectedAvatarSingleton {
 			}
 		});
 
-		this.LoadInventory();
+		task.spawn(() => {
+			this.LoadInventory();
+		});
 	}
 
 	private async LoadInventory(): Promise<void> {
@@ -71,6 +73,7 @@ export class ProtectedAvatarSingleton {
 		}
 
 		await Dependency<AuthController>().WaitForAuthed();
+		Protected.User.WaitForLocalUser();
 
 		const promises: Promise<void>[] = [];
 
