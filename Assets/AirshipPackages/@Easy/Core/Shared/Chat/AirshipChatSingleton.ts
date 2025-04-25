@@ -112,6 +112,7 @@ export class AirshipChatSingleton {
 
 				let nameWithPrefix = player.username + ": ";
 				const result = this.onChatMessage.Fire(new ChatMessageEvent(player, nameWithPrefix, text));
+				if (result.IsCancelled()) return;
 				CoreNetwork.ServerToClient.ChatMessage.server.FireAllClients(result.message, result.nametag, player.connectionId);
 			},
 		);
