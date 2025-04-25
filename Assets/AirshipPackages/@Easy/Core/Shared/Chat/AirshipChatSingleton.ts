@@ -48,6 +48,7 @@ class ChatMessageEvent extends Cancellable {
 @Singleton({})
 export class AirshipChatSingleton {
 	private commands = new Map<string, ChatCommand>();
+	private mutedPlayers = new Set<string>();
 
 	public readonly canUseRichText = true;
 	/**
@@ -107,6 +108,11 @@ export class AirshipChatSingleton {
 					}
 
 					player.SendMessage(`Invalid command: ${text}`);
+					return;
+				}
+
+				if (this.mutedPlayers.has(player.userId)) {
+					player.SendMessage("You are muted and cannot send messages.");
 					return;
 				}
 
@@ -190,5 +196,17 @@ export class AirshipChatSingleton {
 
 	public GetCommands(): ChatCommand[] {
 		return ObjectUtils.values(this.commands);
+	}
+
+	public MutePlayer(playerUid: string): void {
+		if (!Game.IsServer()) return;
+
+		this.mutedPlayers.add(playerUid);
+	}
+
+	public UnmutePlayer(playerUid: string): void {
+		if (!Game.IsServer()) return;
+
+		this.mutedPlayers.delete(playerUid);
 	}
 }
