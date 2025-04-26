@@ -2087,6 +2087,33 @@ declare const enum LanguageDirection {
     LTR = 1,
     RTL = 2,
 }
+declare const enum GradientMode {
+    Blend = 0,
+    Fixed = 1,
+    PerceptualBlend = 2,
+}
+declare const enum ColorSpace {
+    Gamma = 0,
+    Linear = 1,
+    Uninitialized = -1,
+}
+declare const enum LineJoin {
+    Miter = 0,
+    Bevel = 1,
+    Round = 2,
+}
+declare const enum LineCap {
+    Butt = 0,
+    Round = 1,
+}
+declare const enum ArcDirection {
+    Clockwise = 0,
+    CounterClockwise = 1,
+}
+declare const enum FillRule {
+    NonZero = 0,
+    OddEven = 1,
+}
 declare const enum PropertyPathPartKind {
     Name = 0,
     Index = 1,
@@ -2412,16 +2439,6 @@ declare const enum ParticleSystemGradientMode {
     TwoColors = 2,
     TwoGradients = 3,
     RandomColor = 4,
-}
-declare const enum GradientMode {
-    Blend = 0,
-    Fixed = 1,
-    PerceptualBlend = 2,
-}
-declare const enum ColorSpace {
-    Gamma = 0,
-    Linear = 1,
-    Uninitialized = -1,
 }
 declare const enum ParticleSystemGravitySource {
     Physics3D = 0,
@@ -2889,6 +2906,12 @@ declare const enum CollisionType {
     None = 0,
     Solid = 1,
     Slope = 2,
+}
+declare const enum Rotations {
+    None = 0,
+    Y90 = 1,
+    Y180 = 2,
+    Y270 = 3,
 }
 declare const enum CollisionFlags {
     None = 0,
@@ -4052,6 +4075,16 @@ declare const enum RendererType {
     UniversalRenderer = 1,
     _2DRenderer = 2,
 }
+declare const enum TransportError {
+    DnsResolve = 0,
+    Refused = 1,
+    Timeout = 2,
+    Congestion = 3,
+    InvalidReceive = 4,
+    InvalidSend = 5,
+    ConnectionClosed = 6,
+    Unexpected = 7,
+}
 declare const enum RemovePlayerOptions {
     KeepActive = 0,
     Unspawn = 1,
@@ -4213,7 +4246,6 @@ interface RaycastHit {
     
     
     
-    
 interface FrustumPlanes {
     left: number;
     right: number;
@@ -4282,7 +4314,7 @@ interface Plane {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Plane.Raycast.html | Plane.Raycast}
      */
-    Raycast(ray: Ray, enter: unknown): boolean;
+    Raycast(ray: Ray, enter: Single&): boolean;
     /**
      * Are two points on the same side of the plane?
      * 
@@ -4308,7 +4340,7 @@ interface Plane {
     SetNormalAndPosition(inNormal: Vector3, inPoint: Vector3): void;
     ToString(): string;
     ToString(format: string): string;
-    ToString(format: string, formatProvider: unknown): string;
+    ToString(format: string, formatProvider: IFormatProvider): string;
     /**
      * Moves the plane in space by the translation vector.
      * @param translation The offset in space to move the plane with.
@@ -4334,7 +4366,6 @@ interface PlaneConstructor {
 
 }
 declare const Plane: PlaneConstructor;
-    
     
     
 interface Scene {
@@ -4399,6 +4430,7 @@ A Scene may be invalid if, for example, you tried to open a Scene that does not 
 
 }
     
+    
 interface TagHandle {
 
 
@@ -4417,8 +4449,6 @@ interface TagHandleConstructor {
 
 }
 declare const TagHandle: TagHandleConstructor;
-    
-    
     
     
 interface InstantiateParameters {
@@ -4553,7 +4583,7 @@ interface Awaiter<T> {
 
 
     GetResult(): Readonly<T[]>;
-    OnCompleted(continuation: unknown): void;
+    OnCompleted(continuation: Action): void;
 
 
 }
@@ -5023,9 +5053,9 @@ interface Rigidbody extends Component {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rigidbody.SweepTest.html | Rigidbody.SweepTest}
      */
-    SweepTest(direction: Vector3, hitInfo: unknown, maxDistance: number, queryTriggerInteraction: QueryTriggerInteraction): boolean;
-    SweepTest(direction: Vector3, hitInfo: unknown, maxDistance: number): boolean;
-    SweepTest(direction: Vector3, hitInfo: unknown): boolean;
+    SweepTest(direction: Vector3, hitInfo: RaycastHit&, maxDistance: number, queryTriggerInteraction: QueryTriggerInteraction): boolean;
+    SweepTest(direction: Vector3, hitInfo: RaycastHit&, maxDistance: number): boolean;
+    SweepTest(direction: Vector3, hitInfo: RaycastHit&): boolean;
     /**
      * Like Rigidbody.SweepTest, but returns all hits.
      * @param direction The direction into which to sweep the rigidbody.
@@ -5481,7 +5511,7 @@ interface ArticulationBody extends Behaviour {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/ArticulationBody.GetDenseJacobian.html | ArticulationBody.GetDenseJacobian}
      */
-    GetDenseJacobian(jacobian: unknown): number;
+    GetDenseJacobian(jacobian: ArticulationJacobian&): number;
     GetDofStartIndices(dofStartIndices: Readonly<number[]>): number;
     GetDriveForces(forces: Readonly<number[]>): number;
     GetDriveTargets(targets: Readonly<number[]>): number;
@@ -5753,7 +5783,7 @@ interface Bounds {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Bounds.IntersectRay.html | Bounds.IntersectRay}
      */
-    IntersectRay(ray: Ray, distance: unknown): boolean;
+    IntersectRay(ray: Ray, distance: Single&): boolean;
     /**
      * Does another bounding box intersect with this bounding box?
      * 
@@ -5792,7 +5822,7 @@ interface Bounds {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Bounds.ToString.html | Bounds.ToString}
      */
-    ToString(format: string, formatProvider: unknown): string;
+    ToString(format: string, formatProvider: IFormatProvider): string;
 
 
 }
@@ -5907,8 +5937,8 @@ interface PhysicsScene {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/PhysicsScene.BoxCast.html | PhysicsScene.BoxCast}
      */
-    BoxCast(center: Vector3, halfExtents: Vector3, direction: Vector3, hitInfo: unknown, orientation: Quaternion, maxDistance: number, layerMask: number, queryTriggerInteraction: QueryTriggerInteraction): boolean;
-    BoxCast(center: Vector3, halfExtents: Vector3, direction: Vector3, hitInfo: unknown): boolean;
+    BoxCast(center: Vector3, halfExtents: Vector3, direction: Vector3, hitInfo: RaycastHit&, orientation: Quaternion, maxDistance: number, layerMask: number, queryTriggerInteraction: QueryTriggerInteraction): boolean;
+    BoxCast(center: Vector3, halfExtents: Vector3, direction: Vector3, hitInfo: RaycastHit&): boolean;
     /**
      * Casts the box along a ray and returns detailed information on what was hit.
      * @param center Center of the box.
@@ -5937,7 +5967,7 @@ interface PhysicsScene {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/PhysicsScene.CapsuleCast.html | PhysicsScene.CapsuleCast}
      */
-    CapsuleCast(point1: Vector3, point2: Vector3, radius: number, direction: Vector3, hitInfo: unknown, maxDistance: number, layerMask: number, queryTriggerInteraction: QueryTriggerInteraction): boolean;
+    CapsuleCast(point1: Vector3, point2: Vector3, radius: number, direction: Vector3, hitInfo: RaycastHit&, maxDistance: number, layerMask: number, queryTriggerInteraction: QueryTriggerInteraction): boolean;
     /**
      * Casts a capsule against all colliders in this physics scene and returns detailed information on what was hit.
      * @param point1 The center of the sphere at the start of the capsule.
@@ -6031,7 +6061,7 @@ interface PhysicsScene {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/PhysicsScene.Raycast.html | PhysicsScene.Raycast}
      */
-    Raycast(origin: Vector3, direction: Vector3, hitInfo: unknown, maxDistance: number, layerMask: number, queryTriggerInteraction: QueryTriggerInteraction): boolean;
+    Raycast(origin: Vector3, direction: Vector3, hitInfo: RaycastHit&, maxDistance: number, layerMask: number, queryTriggerInteraction: QueryTriggerInteraction): boolean;
     /**
      * Casts a ray, from point origin, in direction direction, of length maxDistance, against all colliders in the Scene.
      * @param origin The starting point and direction of the ray.
@@ -6078,7 +6108,7 @@ interface PhysicsScene {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/PhysicsScene.SphereCast.html | PhysicsScene.SphereCast}
      */
-    SphereCast(origin: Vector3, radius: number, direction: Vector3, hitInfo: unknown, maxDistance: number, layerMask: number, queryTriggerInteraction: QueryTriggerInteraction): boolean;
+    SphereCast(origin: Vector3, radius: number, direction: Vector3, hitInfo: RaycastHit&, maxDistance: number, layerMask: number, queryTriggerInteraction: QueryTriggerInteraction): boolean;
     /**
      * Cast sphere along the direction and store the results into buffer.
      * @param origin The center of the sphere at the start of the sweep.
@@ -8756,14 +8786,14 @@ interface Mesh extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.GetNativeIndexBufferPtr.html | Mesh.GetNativeIndexBufferPtr}
      */
-    GetNativeIndexBufferPtr(): unknown;
+    GetNativeIndexBufferPtr(): IntPtr;
     /**
      * Retrieves a native (underlying graphics API) pointer to the vertex buffer.
      * @param index Which vertex buffer to get (some Meshes might have more than one). See vertexBufferCount.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Mesh.GetNativeVertexBufferPtr.html | Mesh.GetNativeVertexBufferPtr}
      */
-    GetNativeVertexBufferPtr(index: number): unknown;
+    GetNativeVertexBufferPtr(index: number): IntPtr;
     GetNormals(normals: Readonly<Vector3[]>): void;
     /**
      * Get information about a sub-mesh of the Mesh.
@@ -9469,7 +9499,7 @@ interface Color32 {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Color32.ToString.html | Color32.ToString}
      */
-    ToString(format: string, formatProvider: unknown): string;
+    ToString(format: string, formatProvider: IFormatProvider): string;
 
 
 }
@@ -9653,7 +9683,7 @@ interface GraphicsBuffer {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/GraphicsBuffer.GetData.html | GraphicsBuffer.GetData}
      */
-    GetData(data: unknown): void;
+    GetData(data: Array): void;
     /**
      * Read data values from the buffer into an array. The array can only use &lt;a href=&quot;https:docs.microsoft.comen-usdotnetframeworkinteropblittable-and-non-blittable-types&quot;&gt;blittable&lt;a&gt; types.
      * @param data An array to receive the data.
@@ -9663,13 +9693,13 @@ interface GraphicsBuffer {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/GraphicsBuffer.GetData.html | GraphicsBuffer.GetData}
      */
-    GetData(data: unknown, managedBufferStartIndex: number, computeBufferStartIndex: number, count: number): void;
+    GetData(data: Array, managedBufferStartIndex: number, computeBufferStartIndex: number, count: number): void;
     /**
      * Retrieve a native (underlying graphics API) pointer to the buffer.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/GraphicsBuffer.GetNativeBufferPtr.html | GraphicsBuffer.GetNativeBufferPtr}
      */
-    GetNativeBufferPtr(): unknown;
+    GetNativeBufferPtr(): IntPtr;
     /**
      * Returns true if this graphics buffer is valid, or false otherwise.
      * 
@@ -9703,7 +9733,7 @@ interface GraphicsBuffer {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/GraphicsBuffer.SetData.html | GraphicsBuffer.SetData}
      */
-    SetData(data: unknown): void;
+    SetData(data: Array): void;
     SetData<T>(data: Readonly<T[]>): void;
     SetData<T>(data: Readonly<T[]>): void;
     /**
@@ -9715,7 +9745,7 @@ interface GraphicsBuffer {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/GraphicsBuffer.SetData.html | GraphicsBuffer.SetData}
      */
-    SetData(data: unknown, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
+    SetData(data: Array, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
     SetData<T>(data: Readonly<T[]>, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
     SetData<T>(data: Readonly<T[]>, nativeBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
     /**
@@ -9786,7 +9816,7 @@ interface ComputeBuffer {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/ComputeBuffer.GetData.html | ComputeBuffer.GetData}
      */
-    GetData(data: unknown): void;
+    GetData(data: Array): void;
     /**
      * Partial read of data values from the buffer into an array.
      * @param data An array to receive the data.
@@ -9796,13 +9826,13 @@ interface ComputeBuffer {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/ComputeBuffer.GetData.html | ComputeBuffer.GetData}
      */
-    GetData(data: unknown, managedBufferStartIndex: number, computeBufferStartIndex: number, count: number): void;
+    GetData(data: Array, managedBufferStartIndex: number, computeBufferStartIndex: number, count: number): void;
     /**
      * Retrieve a native (underlying graphics API) pointer to the buffer.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/ComputeBuffer.GetNativeBufferPtr.html | ComputeBuffer.GetNativeBufferPtr}
      */
-    GetNativeBufferPtr(): unknown;
+    GetNativeBufferPtr(): IntPtr;
     /**
      * Returns true if this compute buffer is valid and false otherwise.
      * 
@@ -9828,7 +9858,7 @@ interface ComputeBuffer {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/ComputeBuffer.SetData.html | ComputeBuffer.SetData}
      */
-    SetData(data: unknown): void;
+    SetData(data: Array): void;
     SetData<T>(data: Readonly<T[]>): void;
     SetData<T>(data: Readonly<T[]>): void;
     /**
@@ -9840,7 +9870,7 @@ interface ComputeBuffer {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/ComputeBuffer.SetData.html | ComputeBuffer.SetData}
      */
-    SetData(data: unknown, managedBufferStartIndex: number, computeBufferStartIndex: number, count: number): void;
+    SetData(data: Array, managedBufferStartIndex: number, computeBufferStartIndex: number, count: number): void;
     SetData<T>(data: Readonly<T[]>, managedBufferStartIndex: number, computeBufferStartIndex: number, count: number): void;
     SetData<T>(data: Readonly<T[]>, nativeBufferStartIndex: number, computeBufferStartIndex: number, count: number): void;
 
@@ -10582,7 +10612,7 @@ interface DebugConstructor {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Debug-unityLogger.html | Debug.unityLogger}
      */
-    readonly unityLogger: unknown;
+    readonly unityLogger: ILogger;
     /**
      * Allows you to enable or disable the developer console.
      * 
@@ -10626,7 +10656,7 @@ interface DebugConstructor {
     DrawRay(start: Vector3, dir: Vector3, color: Color): void;
     DrawRay(start: Vector3, dir: Vector3): void;
     DrawRay(start: Vector3, dir: Vector3, color: Color, duration: number, depthTest: boolean): void;
-    ExtractStackTraceNoAlloc(buffer: unknown, bufferMax: number, projectFolder: string): number;
+    ExtractStackTraceNoAlloc(buffer: Byte, bufferMax: number, projectFolder: string): number;
     IsValidationLevelEnabled(level: ValidationLevel): boolean;
     Log(message: unknown): void;
     Log(message: unknown, context: Object): void;
@@ -10638,8 +10668,8 @@ interface DebugConstructor {
     LogError(message: unknown, context: Object): void;
     LogErrorFormat(format: string, args: Readonly<unknown[]>): void;
     LogErrorFormat(context: Object, format: string, args: Readonly<unknown[]>): void;
-    LogException(exception: unknown): void;
-    LogException(exception: unknown, context: Object): void;
+    LogException(exception: Exception): void;
+    LogException(exception: Exception, context: Object): void;
     LogFormat(format: string, args: Readonly<unknown[]>): void;
     LogFormat(context: Object, format: string, args: Readonly<unknown[]>): void;
     LogFormat(logType: LogType, logOptions: LogOption, context: Object, format: string, args: Readonly<unknown[]>): void;
@@ -10977,7 +11007,7 @@ interface Rect {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rect.ToString.html | Rect.ToString}
      */
-    ToString(format: string, formatProvider: unknown): string;
+    ToString(format: string, formatProvider: IFormatProvider): string;
 
 
 }
@@ -11115,7 +11145,7 @@ interface Texture extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Texture.GetNativeTexturePtr.html | Texture.GetNativeTexturePtr}
      */
-    GetNativeTexturePtr(): unknown;
+    GetNativeTexturePtr(): IntPtr;
     /**
      * Increment the update counter.
      * 
@@ -11149,7 +11179,7 @@ interface Hash128 {
     Append<T>(data: Readonly<T[]>, start: number, count: number): void;
     Append<T>(data: Readonly<T[]>): void;
     Append<T>(data: Readonly<T[]>, start: number, count: number): void;
-    Append<T>(val: unknown): void;
+    Append<T>(val: T&): void;
     /**
      * Hash new input data and combine with the current hash value.
      * @param val Input value.
@@ -11171,7 +11201,7 @@ interface Hash128 {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Hash128.Append.html | Hash128.Append}
      */
-    Append(data: unknown, size: number): void;
+    Append(data: Void, size: number): void;
     CompareTo(rhs: Hash128): number;
     CompareTo(obj: unknown): number;
     Equals(obj: unknown): boolean;
@@ -11201,10 +11231,10 @@ interface Hash128Constructor {
     Compute<T>(data: Readonly<T[]>, start: number, count: number): Hash128;
     Compute<T>(data: Readonly<T[]>): Hash128;
     Compute<T>(data: Readonly<T[]>, start: number, count: number): Hash128;
-    Compute<T>(val: unknown): Hash128;
+    Compute<T>(val: T&): Hash128;
     Compute(val: number): Hash128;
     Compute(val: number): Hash128;
-    Compute(data: unknown, size: number): Hash128;
+    Compute(data: Void, size: number): Hash128;
     Parse(hashString: string): Hash128;
 
 }
@@ -11645,7 +11675,7 @@ interface Texture2D extends Texture {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2D.LoadRawTextureData.html | Texture2D.LoadRawTextureData}
      */
-    LoadRawTextureData(data: unknown, size: number): void;
+    LoadRawTextureData(data: IntPtr, size: number): void;
     /**
      * Sets the raw data of an entire texture in CPU memory.
      * @param data The array of data to use.
@@ -11792,7 +11822,7 @@ interface Texture2D extends Texture {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2D.UpdateExternalTexture.html | Texture2D.UpdateExternalTexture}
      */
-    UpdateExternalTexture(nativeTex: unknown): void;
+    UpdateExternalTexture(nativeTex: IntPtr): void;
 
 
 }
@@ -11854,7 +11884,7 @@ interface Texture2DConstructor {
     new(width: number, height: number): Texture2D;
 
 
-    CreateExternalTexture(width: number, height: number, format: TextureFormat, mipChain: boolean, linear: boolean, nativeTex: unknown): Texture2D;
+    CreateExternalTexture(width: number, height: number, format: TextureFormat, mipChain: boolean, linear: boolean, nativeTex: IntPtr): Texture2D;
     GenerateAtlas(sizes: Readonly<Vector2[]>, padding: number, atlasSize: number, results: Readonly<Rect[]>): boolean;
 
 }
@@ -11875,7 +11905,7 @@ interface ScriptableObjectConstructor {
 
 
     CreateInstance(className: string): ScriptableObject;
-    CreateInstance(type: unknown): ScriptableObject;
+    CreateInstance(type: Type): ScriptableObject;
     CreateInstance<T>(): T;
 
 }
@@ -11950,7 +11980,7 @@ interface TextAssetConstructor {
 
     new(): TextAsset;
     new(text: string): TextAsset;
-    new(bytes: unknown): TextAsset;
+    new(bytes: ReadOnlySpan<number>): TextAsset;
 
 
 
@@ -11995,24 +12025,24 @@ interface ResourcesConstructor {
     new(): Resources;
 
 
-    FindObjectsOfTypeAll(type: unknown): Readonly<Object[]>;
+    FindObjectsOfTypeAll(type: Type): Readonly<Object[]>;
     FindObjectsOfTypeAll<T>(): Readonly<T[]>;
-    GetBuiltinResource(type: unknown, path: string): Object;
+    GetBuiltinResource(type: Type, path: string): Object;
     GetBuiltinResource<T>(path: string): T;
     InstanceIDIsValid(instanceId: number): boolean;
     InstanceIDsToValidArray(instanceIDs: Readonly<number[]>, validArray: Readonly<boolean[]>): void;
-    InstanceIDsToValidArray(instanceIDs: unknown, validArray: unknown): void;
+    InstanceIDsToValidArray(instanceIDs: ReadOnlySpan<number>, validArray: Span<boolean>): void;
     InstanceIDToObject(instanceID: number): Object;
     InstanceIDToObjectList(instanceIDs: Readonly<number[]>, objects: Readonly<Object[]>): void;
     Load(path: string): Object;
     Load<T>(path: string): T;
-    Load(path: string, systemTypeInstance: unknown): Object;
-    LoadAll(path: string, systemTypeInstance: unknown): Readonly<Object[]>;
+    Load(path: string, systemTypeInstance: Type): Object;
+    LoadAll(path: string, systemTypeInstance: Type): Readonly<Object[]>;
     LoadAll(path: string): Readonly<Object[]>;
     LoadAll<T>(path: string): Readonly<T[]>;
     LoadAsync(path: string): ResourceRequest;
     LoadAsync<T>(path: string): ResourceRequest;
-    LoadAsync(path: string, type: unknown): ResourceRequest;
+    LoadAsync(path: string, type: Type): ResourceRequest;
     UnloadAsset(assetToUnload: Object): void;
     UnloadUnusedAssets(): AsyncOperation;
 
@@ -12788,7 +12818,7 @@ If called outside of a rendering callback and stereo is enabled, it will return 
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Camera.TryGetCullingParameters.html | Camera.TryGetCullingParameters}
      */
-    TryGetCullingParameters(cullingParameters: unknown): boolean;
+    TryGetCullingParameters(cullingParameters: ScriptableCullingParameters&): boolean;
     /**
      * Get culling parameters for a camera.
      * @param stereoAware Generate single-pass stereo aware culling parameters.
@@ -12796,7 +12826,7 @@ If called outside of a rendering callback and stereo is enabled, it will return 
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Camera.TryGetCullingParameters.html | Camera.TryGetCullingParameters}
      */
-    TryGetCullingParameters(stereoAware: boolean, cullingParameters: unknown): boolean;
+    TryGetCullingParameters(stereoAware: boolean, cullingParameters: ScriptableCullingParameters&): boolean;
     ViewportPointToRay(pos: Vector3, eye: MonoOrStereoscopicEye): Ray;
     /**
      * Returns a ray going from camera through a viewport point.
@@ -13014,7 +13044,7 @@ Currently, most platforms only support R8_UInt (DirectX11, DirectX12).
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/RenderTexture.GetNativeDepthBufferPtr.html | RenderTexture.GetNativeDepthBufferPtr}
      */
-    GetNativeDepthBufferPtr(): unknown;
+    GetNativeDepthBufferPtr(): IntPtr;
     /**
      * Is the render texture actually created?
      * 
@@ -13059,7 +13089,7 @@ interface RenderBuffer {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/RenderBuffer.GetNativeRenderBufferPtr.html | RenderBuffer.GetNativeRenderBufferPtr}
      */
-    GetNativeRenderBufferPtr(): unknown;
+    GetNativeRenderBufferPtr(): IntPtr;
 
 
 }
@@ -13302,8 +13332,8 @@ interface CommandBuffer {
 
     BeginRenderPass(width: number, height: number, samples: number, attachments: Readonly<AttachmentDescriptor[]>, depthAttachmentIndex: number, subPasses: Readonly<SubPassDescriptor[]>): void;
     BeginRenderPass(width: number, height: number, volumeDepth: number, samples: number, attachments: Readonly<AttachmentDescriptor[]>, depthAttachmentIndex: number, subPasses: Readonly<SubPassDescriptor[]>): void;
-    BeginRenderPass(width: number, height: number, samples: number, attachments: Readonly<AttachmentDescriptor[]>, depthAttachmentIndex: number, subPasses: Readonly<SubPassDescriptor[]>, debugNameUtf8: unknown): void;
-    BeginRenderPass(width: number, height: number, volumeDepth: number, samples: number, attachments: Readonly<AttachmentDescriptor[]>, depthAttachmentIndex: number, subPasses: Readonly<SubPassDescriptor[]>, debugNameUtf8: unknown): void;
+    BeginRenderPass(width: number, height: number, samples: number, attachments: Readonly<AttachmentDescriptor[]>, depthAttachmentIndex: number, subPasses: Readonly<SubPassDescriptor[]>, debugNameUtf8: ReadOnlySpan<number>): void;
+    BeginRenderPass(width: number, height: number, volumeDepth: number, samples: number, attachments: Readonly<AttachmentDescriptor[]>, depthAttachmentIndex: number, subPasses: Readonly<SubPassDescriptor[]>, debugNameUtf8: ReadOnlySpan<number>): void;
     /**
      * Adds a command to begin profile sampling.
      * @param name Name of the profile information used for sampling.
@@ -13515,7 +13545,7 @@ interface CommandBuffer {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.ConfigureFoveatedRendering.html | Rendering.CommandBuffer.ConfigureFoveatedRendering}
      */
-    ConfigureFoveatedRendering(platformData: unknown): void;
+    ConfigureFoveatedRendering(platformData: IntPtr): void;
     /**
      * Adds a command to copy the pixel data from one texture, convert the data into a different format, and copy it into another texture.
      * @param src The source texture. The texture must be a Texture2D or Cubemap.
@@ -13653,7 +13683,7 @@ interface CommandBuffer {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.DisableKeyword.html | Rendering.CommandBuffer.DisableKeyword}
      */
-    DisableKeyword(keyword: unknown): void;
+    DisableKeyword(keyword: GlobalKeyword&): void;
     /**
      * Adds a command to disable a global or local shader keyword.
      * @param material The material on which to disable the local shader keyword.
@@ -13661,7 +13691,7 @@ interface CommandBuffer {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.DisableKeyword.html | Rendering.CommandBuffer.DisableKeyword}
      */
-    DisableKeyword(material: Material, keyword: unknown): void;
+    DisableKeyword(material: Material, keyword: LocalKeyword&): void;
     /**
      * Adds a command to disable a global or local shader keyword.
      * @param computeShader The compute shader for which to disable the local shader keyword.
@@ -13669,7 +13699,7 @@ interface CommandBuffer {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.DisableKeyword.html | Rendering.CommandBuffer.DisableKeyword}
      */
-    DisableKeyword(computeShader: ComputeShader, keyword: unknown): void;
+    DisableKeyword(computeShader: ComputeShader, keyword: LocalKeyword&): void;
     /**
      * Add a command to disable the hardware scissor rectangle.
      * 
@@ -14196,7 +14226,7 @@ InvalidOperationException will be thrown if the current platform doesn't support
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.EnableKeyword.html | Rendering.CommandBuffer.EnableKeyword}
      */
-    EnableKeyword(keyword: unknown): void;
+    EnableKeyword(keyword: GlobalKeyword&): void;
     /**
      * Adds a command to enable a global or local shader keyword.
      * @param material The material on which to enable the local shader keyword.
@@ -14204,7 +14234,7 @@ InvalidOperationException will be thrown if the current platform doesn't support
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.EnableKeyword.html | Rendering.CommandBuffer.EnableKeyword}
      */
-    EnableKeyword(material: Material, keyword: unknown): void;
+    EnableKeyword(material: Material, keyword: LocalKeyword&): void;
     /**
      * Adds a command to enable a global or local shader keyword.
      * @param computeShader The compute shader for which to enable the local shader keyword.
@@ -14212,7 +14242,7 @@ InvalidOperationException will be thrown if the current platform doesn't support
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.EnableKeyword.html | Rendering.CommandBuffer.EnableKeyword}
      */
-    EnableKeyword(computeShader: ComputeShader, keyword: unknown): void;
+    EnableKeyword(computeShader: ComputeShader, keyword: LocalKeyword&): void;
     /**
      * Add a command to enable the hardware scissor rectangle.
      * @param scissor Viewport rectangle in pixel coordinates.
@@ -14645,7 +14675,7 @@ InvalidOperationException will be thrown if the current platform doesn't support
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.IssuePluginCustomBlit.html | Rendering.CommandBuffer.IssuePluginCustomBlit}
      */
-    IssuePluginCustomBlit(callback: unknown, command: number, source: RenderTargetIdentifier, dest: RenderTargetIdentifier, commandParam: number, commandFlags: number): void;
+    IssuePluginCustomBlit(callback: IntPtr, command: number, source: RenderTargetIdentifier, dest: RenderTargetIdentifier, commandParam: number, commandFlags: number): void;
     /**
      * Send a texture update event to a native code plugin.
      * @param callback Native code callback to queue for Unity's renderer to invoke.
@@ -14654,7 +14684,7 @@ InvalidOperationException will be thrown if the current platform doesn't support
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.IssuePluginCustomTextureUpdateV2.html | Rendering.CommandBuffer.IssuePluginCustomTextureUpdateV2}
      */
-    IssuePluginCustomTextureUpdateV2(callback: unknown, targetTexture: Texture, userData: number): void;
+    IssuePluginCustomTextureUpdateV2(callback: IntPtr, targetTexture: Texture, userData: number): void;
     /**
      * Send a user-defined event to a native code plugin.
      * @param callback Native code callback to queue for Unity's renderer to invoke.
@@ -14662,7 +14692,7 @@ InvalidOperationException will be thrown if the current platform doesn't support
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.IssuePluginEvent.html | Rendering.CommandBuffer.IssuePluginEvent}
      */
-    IssuePluginEvent(callback: unknown, eventID: number): void;
+    IssuePluginEvent(callback: IntPtr, eventID: number): void;
     /**
      * Send a user-defined event to a native code plugin with custom data.
      * @param callback Native code callback to queue for Unity's renderer to invoke.
@@ -14671,7 +14701,7 @@ InvalidOperationException will be thrown if the current platform doesn't support
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.IssuePluginEventAndData.html | Rendering.CommandBuffer.IssuePluginEventAndData}
      */
-    IssuePluginEventAndData(callback: unknown, eventID: number, data: unknown): void;
+    IssuePluginEventAndData(callback: IntPtr, eventID: number, data: IntPtr): void;
     /**
      * Send a user-defined event to a native code plugin with custom data and callback flags.
      * @param callback Native code callback to queue for Unity's renderer to invoke.
@@ -14681,7 +14711,7 @@ InvalidOperationException will be thrown if the current platform doesn't support
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.IssuePluginEventAndDataWithFlags.html | Rendering.CommandBuffer.IssuePluginEventAndDataWithFlags}
      */
-    IssuePluginEventAndDataWithFlags(callback: unknown, eventID: number, flags: CustomMarkerCallbackFlags, data: unknown): void;
+    IssuePluginEventAndDataWithFlags(callback: IntPtr, eventID: number, flags: CustomMarkerCallbackFlags, data: IntPtr): void;
     /**
      * Mark a global shader property id to be late latched.  Possible shader properties include view, inverseView, viewProjection, and inverseViewProjection matrices. The Universal Render Pipeline (URP) uses this function to support late latching of shader properties. If you call this function when using built-in Unity rendering or the High-Definition Rendering Pipeline (HDRP), the results are ignored.
      * @param matrixPropertyType Camera matrix property type to be late latched.
@@ -14696,7 +14726,7 @@ InvalidOperationException will be thrown if the current platform doesn't support
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.NextSubPass.html | Rendering.CommandBuffer.NextSubPass}
      */
     NextSubPass(): void;
-    ProcessVTFeedback(rt: RenderTargetIdentifier, resolver: unknown, slice: number, x: number, width: number, y: number, height: number, mip: number): void;
+    ProcessVTFeedback(rt: RenderTargetIdentifier, resolver: IntPtr, slice: number, x: number, width: number, y: number, height: number, mip: number): void;
     Release(): void;
     /**
      * Add a &quot;release a temporary render texture&quot; command.
@@ -14705,39 +14735,39 @@ InvalidOperationException will be thrown if the current platform doesn't support
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.ReleaseTemporaryRT.html | Rendering.CommandBuffer.ReleaseTemporaryRT}
      */
     ReleaseTemporaryRT(nameID: number): void;
-    RequestAsyncReadback(src: ComputeBuffer, callback: unknown): void;
-    RequestAsyncReadback(src: GraphicsBuffer, callback: unknown): void;
-    RequestAsyncReadback(src: ComputeBuffer, size: number, offset: number, callback: unknown): void;
-    RequestAsyncReadback(src: GraphicsBuffer, size: number, offset: number, callback: unknown): void;
-    RequestAsyncReadback(src: Texture, callback: unknown): void;
-    RequestAsyncReadback(src: Texture, mipIndex: number, callback: unknown): void;
-    RequestAsyncReadback(src: Texture, mipIndex: number, dstFormat: TextureFormat, callback: unknown): void;
-    RequestAsyncReadback(src: Texture, mipIndex: number, dstFormat: GraphicsFormat, callback: unknown): void;
-    RequestAsyncReadback(src: Texture, mipIndex: number, x: number, width: number, y: number, height: number, z: number, depth: number, callback: unknown): void;
-    RequestAsyncReadback(src: Texture, mipIndex: number, x: number, width: number, y: number, height: number, z: number, depth: number, dstFormat: TextureFormat, callback: unknown): void;
-    RequestAsyncReadback(src: Texture, mipIndex: number, x: number, width: number, y: number, height: number, z: number, depth: number, dstFormat: GraphicsFormat, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: ComputeBuffer, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: ComputeBuffer, size: number, offset: number, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: GraphicsBuffer, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: GraphicsBuffer, size: number, offset: number, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: Texture, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, dstFormat: TextureFormat, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, dstFormat: GraphicsFormat, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, x: number, width: number, y: number, height: number, z: number, depth: number, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, x: number, width: number, y: number, height: number, z: number, depth: number, dstFormat: TextureFormat, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, x: number, width: number, y: number, height: number, z: number, depth: number, dstFormat: GraphicsFormat, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeSlice<T>(output: Readonly<T[]>, src: ComputeBuffer, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeSlice<T>(output: Readonly<T[]>, src: ComputeBuffer, size: number, offset: number, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeSlice<T>(output: Readonly<T[]>, src: GraphicsBuffer, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeSlice<T>(output: Readonly<T[]>, src: GraphicsBuffer, size: number, offset: number, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeSlice<T>(output: Readonly<T[]>, src: Texture, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeSlice<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeSlice<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, dstFormat: TextureFormat, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeSlice<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, dstFormat: GraphicsFormat, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeSlice<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, x: number, width: number, y: number, height: number, z: number, depth: number, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeSlice<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, x: number, width: number, y: number, height: number, z: number, depth: number, dstFormat: TextureFormat, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeSlice<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, x: number, width: number, y: number, height: number, z: number, depth: number, dstFormat: GraphicsFormat, callback: unknown): void;
+    RequestAsyncReadback(src: ComputeBuffer, callback: Action<AsyncGPUReadbackRequest>): void;
+    RequestAsyncReadback(src: GraphicsBuffer, callback: Action<AsyncGPUReadbackRequest>): void;
+    RequestAsyncReadback(src: ComputeBuffer, size: number, offset: number, callback: Action<AsyncGPUReadbackRequest>): void;
+    RequestAsyncReadback(src: GraphicsBuffer, size: number, offset: number, callback: Action<AsyncGPUReadbackRequest>): void;
+    RequestAsyncReadback(src: Texture, callback: Action<AsyncGPUReadbackRequest>): void;
+    RequestAsyncReadback(src: Texture, mipIndex: number, callback: Action<AsyncGPUReadbackRequest>): void;
+    RequestAsyncReadback(src: Texture, mipIndex: number, dstFormat: TextureFormat, callback: Action<AsyncGPUReadbackRequest>): void;
+    RequestAsyncReadback(src: Texture, mipIndex: number, dstFormat: GraphicsFormat, callback: Action<AsyncGPUReadbackRequest>): void;
+    RequestAsyncReadback(src: Texture, mipIndex: number, x: number, width: number, y: number, height: number, z: number, depth: number, callback: Action<AsyncGPUReadbackRequest>): void;
+    RequestAsyncReadback(src: Texture, mipIndex: number, x: number, width: number, y: number, height: number, z: number, depth: number, dstFormat: TextureFormat, callback: Action<AsyncGPUReadbackRequest>): void;
+    RequestAsyncReadback(src: Texture, mipIndex: number, x: number, width: number, y: number, height: number, z: number, depth: number, dstFormat: GraphicsFormat, callback: Action<AsyncGPUReadbackRequest>): void;
+    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: ComputeBuffer, callback: Action<AsyncGPUReadbackRequest>): void;
+    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: ComputeBuffer, size: number, offset: number, callback: Action<AsyncGPUReadbackRequest>): void;
+    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: GraphicsBuffer, callback: Action<AsyncGPUReadbackRequest>): void;
+    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: GraphicsBuffer, size: number, offset: number, callback: Action<AsyncGPUReadbackRequest>): void;
+    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: Texture, callback: Action<AsyncGPUReadbackRequest>): void;
+    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, callback: Action<AsyncGPUReadbackRequest>): void;
+    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, dstFormat: TextureFormat, callback: Action<AsyncGPUReadbackRequest>): void;
+    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, dstFormat: GraphicsFormat, callback: Action<AsyncGPUReadbackRequest>): void;
+    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, x: number, width: number, y: number, height: number, z: number, depth: number, callback: Action<AsyncGPUReadbackRequest>): void;
+    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, x: number, width: number, y: number, height: number, z: number, depth: number, dstFormat: TextureFormat, callback: Action<AsyncGPUReadbackRequest>): void;
+    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, x: number, width: number, y: number, height: number, z: number, depth: number, dstFormat: GraphicsFormat, callback: Action<AsyncGPUReadbackRequest>): void;
+    RequestAsyncReadbackIntoNativeSlice<T>(output: Readonly<T[]>, src: ComputeBuffer, callback: Action<AsyncGPUReadbackRequest>): void;
+    RequestAsyncReadbackIntoNativeSlice<T>(output: Readonly<T[]>, src: ComputeBuffer, size: number, offset: number, callback: Action<AsyncGPUReadbackRequest>): void;
+    RequestAsyncReadbackIntoNativeSlice<T>(output: Readonly<T[]>, src: GraphicsBuffer, callback: Action<AsyncGPUReadbackRequest>): void;
+    RequestAsyncReadbackIntoNativeSlice<T>(output: Readonly<T[]>, src: GraphicsBuffer, size: number, offset: number, callback: Action<AsyncGPUReadbackRequest>): void;
+    RequestAsyncReadbackIntoNativeSlice<T>(output: Readonly<T[]>, src: Texture, callback: Action<AsyncGPUReadbackRequest>): void;
+    RequestAsyncReadbackIntoNativeSlice<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, callback: Action<AsyncGPUReadbackRequest>): void;
+    RequestAsyncReadbackIntoNativeSlice<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, dstFormat: TextureFormat, callback: Action<AsyncGPUReadbackRequest>): void;
+    RequestAsyncReadbackIntoNativeSlice<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, dstFormat: GraphicsFormat, callback: Action<AsyncGPUReadbackRequest>): void;
+    RequestAsyncReadbackIntoNativeSlice<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, x: number, width: number, y: number, height: number, z: number, depth: number, callback: Action<AsyncGPUReadbackRequest>): void;
+    RequestAsyncReadbackIntoNativeSlice<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, x: number, width: number, y: number, height: number, z: number, depth: number, dstFormat: TextureFormat, callback: Action<AsyncGPUReadbackRequest>): void;
+    RequestAsyncReadbackIntoNativeSlice<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, x: number, width: number, y: number, height: number, z: number, depth: number, dstFormat: GraphicsFormat, callback: Action<AsyncGPUReadbackRequest>): void;
     /**
      * Force an antialiased render texture to be resolved.
      * @param rt The antialiased render texture to resolve.
@@ -14769,7 +14799,7 @@ InvalidOperationException will be thrown if the current platform doesn't support
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.SetBufferData.html | Rendering.CommandBuffer.SetBufferData}
      */
-    SetBufferData(buffer: ComputeBuffer, data: unknown): void;
+    SetBufferData(buffer: ComputeBuffer, data: Array): void;
     SetBufferData<T>(buffer: ComputeBuffer, data: Readonly<T[]>): void;
     SetBufferData<T>(buffer: ComputeBuffer, data: Readonly<T[]>): void;
     /**
@@ -14782,7 +14812,7 @@ InvalidOperationException will be thrown if the current platform doesn't support
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.SetBufferData.html | Rendering.CommandBuffer.SetBufferData}
      */
-    SetBufferData(buffer: ComputeBuffer, data: unknown, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
+    SetBufferData(buffer: ComputeBuffer, data: Array, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
     SetBufferData<T>(buffer: ComputeBuffer, data: Readonly<T[]>, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
     SetBufferData<T>(buffer: ComputeBuffer, data: Readonly<T[]>, nativeBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
     /**
@@ -14792,7 +14822,7 @@ InvalidOperationException will be thrown if the current platform doesn't support
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.SetBufferData.html | Rendering.CommandBuffer.SetBufferData}
      */
-    SetBufferData(buffer: GraphicsBuffer, data: unknown): void;
+    SetBufferData(buffer: GraphicsBuffer, data: Array): void;
     SetBufferData<T>(buffer: GraphicsBuffer, data: Readonly<T[]>): void;
     SetBufferData<T>(buffer: GraphicsBuffer, data: Readonly<T[]>): void;
     /**
@@ -14805,7 +14835,7 @@ InvalidOperationException will be thrown if the current platform doesn't support
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.SetBufferData.html | Rendering.CommandBuffer.SetBufferData}
      */
-    SetBufferData(buffer: GraphicsBuffer, data: unknown, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
+    SetBufferData(buffer: GraphicsBuffer, data: Array, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
     SetBufferData<T>(buffer: GraphicsBuffer, data: Readonly<T[]>, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
     SetBufferData<T>(buffer: GraphicsBuffer, data: Readonly<T[]>, nativeBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
     /**
@@ -15403,7 +15433,7 @@ Polygons that are not parallel to the near and far clip planes have Z slope. Adj
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.SetKeyword.html | Rendering.CommandBuffer.SetKeyword}
      */
-    SetKeyword(keyword: unknown, value: boolean): void;
+    SetKeyword(keyword: GlobalKeyword&, value: boolean): void;
     /**
      * Adds a command to set the state of a global or local shader keyword.
      * @param material The material for which to set the state of the local shader keyword.
@@ -15412,7 +15442,7 @@ Polygons that are not parallel to the near and far clip planes have Z slope. Adj
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.SetKeyword.html | Rendering.CommandBuffer.SetKeyword}
      */
-    SetKeyword(material: Material, keyword: unknown, value: boolean): void;
+    SetKeyword(material: Material, keyword: LocalKeyword&, value: boolean): void;
     /**
      * Adds a command to set the state of a global or local shader keyword.
      * @param computeShader The compute shader for which to set the state of the local shader keyword.
@@ -15421,7 +15451,7 @@ Polygons that are not parallel to the near and far clip planes have Z slope. Adj
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CommandBuffer.SetKeyword.html | Rendering.CommandBuffer.SetKeyword}
      */
-    SetKeyword(computeShader: ComputeShader, keyword: unknown, value: boolean): void;
+    SetKeyword(computeShader: ComputeShader, keyword: LocalKeyword&, value: boolean): void;
     /**
      * Set the current stereo projection matrices for late latching. Stereo matrices is passed in as an array of two matrices.
      * @param projectionMat Stereo projection matrices.
@@ -16325,7 +16355,7 @@ interface ProfilerMarker {
     /**
      * Gets native handle of the ProfilerMarker.
      */
-    readonly Handle: unknown;
+    readonly Handle: IntPtr;
 
 
 
@@ -16363,11 +16393,11 @@ interface ProfilerMarkerConstructor {
 
 
     new(name: string): ProfilerMarker;
-    new(name: unknown, nameLen: number): ProfilerMarker;
+    new(name: Char, nameLen: number): ProfilerMarker;
     new(category: ProfilerCategory, name: string): ProfilerMarker;
-    new(category: ProfilerCategory, name: unknown, nameLen: number): ProfilerMarker;
+    new(category: ProfilerCategory, name: Char, nameLen: number): ProfilerMarker;
     new(category: ProfilerCategory, name: string, flags: MarkerFlags): ProfilerMarker;
-    new(category: ProfilerCategory, name: unknown, nameLen: number, flags: MarkerFlags): ProfilerMarker;
+    new(category: ProfilerCategory, name: Char, nameLen: number, flags: MarkerFlags): ProfilerMarker;
 
 
 
@@ -16518,7 +16548,7 @@ interface Material extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Material.DisableKeyword.html | Material.DisableKeyword}
      */
-    DisableKeyword(keyword: unknown): void;
+    DisableKeyword(keyword: LocalKeyword&): void;
     /**
      * Enables a local shader keyword for this material.
      * @param keyword The name of the Rendering.LocalKeyword to enable.
@@ -16532,7 +16562,7 @@ interface Material extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Material.EnableKeyword.html | Material.EnableKeyword}
      */
-    EnableKeyword(keyword: unknown): void;
+    EnableKeyword(keyword: LocalKeyword&): void;
     /**
      * Returns the index of the pass passName.
      * 
@@ -16949,7 +16979,7 @@ interface Material extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Material.IsKeywordEnabled.html | Material.IsKeywordEnabled}
      */
-    IsKeywordEnabled(keyword: unknown): boolean;
+    IsKeywordEnabled(keyword: LocalKeyword&): boolean;
     /**
      * Checks whether a property is locked by this material.
      * @param nameID Property name ID, use Shader.PropertyToID to get it.
@@ -17197,7 +17227,7 @@ interface Material extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Material.SetKeyword.html | Material.SetKeyword}
      */
-    SetKeyword(keyword: unknown, value: boolean): void;
+    SetKeyword(keyword: LocalKeyword&, value: boolean): void;
     /**
      * Sets a named matrix for the shader.
      * @param name Property name, e.g. &quot;_CubemapRotation&quot;.
@@ -17455,7 +17485,7 @@ interface Shader extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Shader.FindTextureStack.html | Shader.FindTextureStack}
      */
-    FindTextureStack(propertyIndex: number, stackName: Readonly<string[]>, layerIndex: unknown): boolean;
+    FindTextureStack(propertyIndex: number, stackName: Readonly<string[]>, layerIndex: Int32&): boolean;
     /**
      * Returns the dependency shader.
      * @param name The name of the dependency to query.
@@ -17732,12 +17762,12 @@ interface RayTracingAccelerationStructure {
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RayTracingAccelerationStructure.AddInstance.html | Rendering.RayTracingAccelerationStructure.AddInstance}
      */
     AddInstance(config: RayTracingAABBsInstanceConfig, matrix: Matrix4x4, id: number): number;
-    AddInstance(config: unknown, matrix: Matrix4x4, prevMatrix: unknown, id: number): number;
-    AddInstance(config: unknown, matrix: Matrix4x4, prevMatrix: unknown, id: number): number;
-    AddInstances<T>(config: unknown, instanceData: Readonly<T[]>, instanceCount: number, startInstance: number, id: number): number;
-    AddInstances<T>(config: unknown, instanceData: Readonly<T[]>, instanceCount: number, startInstance: number, id: number): number;
-    AddInstances<T>(config: unknown, instanceData: Readonly<T[]>, instanceCount: number, startInstance: number, id: number): number;
-    AddInstances<T>(config: unknown, instanceData: Readonly<T[]>, id: number): number;
+    AddInstance(config: RayTracingMeshInstanceConfig&, matrix: Matrix4x4, prevMatrix: Nullable<Matrix4x4>, id: number): number;
+    AddInstance(config: RayTracingGeometryInstanceConfig&, matrix: Matrix4x4, prevMatrix: Nullable<Matrix4x4>, id: number): number;
+    AddInstances<T>(config: RayTracingMeshInstanceConfig&, instanceData: Readonly<T[]>, instanceCount: number, startInstance: number, id: number): number;
+    AddInstances<T>(config: RayTracingMeshInstanceConfig&, instanceData: Readonly<T[]>, instanceCount: number, startInstance: number, id: number): number;
+    AddInstances<T>(config: RayTracingMeshInstanceConfig&, instanceData: Readonly<T[]>, instanceCount: number, startInstance: number, id: number): number;
+    AddInstances<T>(config: RayTracingMeshInstanceConfig&, instanceData: Readonly<T[]>, id: number): number;
     /**
      * Adds the ray tracing instances associated with a VFXRenderer to the RayTracingAccelerationStructure.
      * @param targetRenderer The Renderer to add to the RayTracingAccelerationStructure.
@@ -17771,7 +17801,7 @@ interface RayTracingAccelerationStructure {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RayTracingAccelerationStructure.CullInstances.html | Rendering.RayTracingAccelerationStructure.CullInstances}
      */
-    CullInstances(cullingConfig: unknown): RayTracingInstanceCullingResults;
+    CullInstances(cullingConfig: RayTracingInstanceCullingConfig&): RayTracingInstanceCullingResults;
     /**
      * Destroys this RayTracingAccelerationStructure and frees the GPU memory used for storing acceleration structure data.
      * 
@@ -19303,9 +19333,9 @@ interface ShaderConstructor {
 
 
     DisableKeyword(keyword: string): void;
-    DisableKeyword(keyword: unknown): void;
+    DisableKeyword(keyword: GlobalKeyword&): void;
     EnableKeyword(keyword: string): void;
-    EnableKeyword(keyword: unknown): void;
+    EnableKeyword(keyword: GlobalKeyword&): void;
     Find(name: string): Shader;
     GetGlobalColor(name: string): Color;
     GetGlobalColor(nameID: number): Color;
@@ -19334,7 +19364,7 @@ interface ShaderConstructor {
     GetGlobalVectorArray(name: string, values: Readonly<Vector4[]>): void;
     GetGlobalVectorArray(nameID: number, values: Readonly<Vector4[]>): void;
     IsKeywordEnabled(keyword: string): boolean;
-    IsKeywordEnabled(keyword: unknown): boolean;
+    IsKeywordEnabled(keyword: GlobalKeyword&): boolean;
     PropertyToID(name: string): number;
     SetGlobalBuffer(name: string, value: ComputeBuffer): void;
     SetGlobalBuffer(nameID: number, value: ComputeBuffer): void;
@@ -19374,7 +19404,7 @@ interface ShaderConstructor {
     SetGlobalVectorArray(nameID: number, values: Readonly<Vector4[]>): void;
     SetGlobalVectorArray(name: string, values: Readonly<Vector4[]>): void;
     SetGlobalVectorArray(nameID: number, values: Readonly<Vector4[]>): void;
-    SetKeyword(keyword: unknown, value: boolean): void;
+    SetKeyword(keyword: GlobalKeyword&, value: boolean): void;
     WarmupAllShaders(): void;
 
 }
@@ -19441,7 +19471,7 @@ interface ComputeShader extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/ComputeShader.DisableKeyword.html | ComputeShader.DisableKeyword}
      */
-    DisableKeyword(keyword: unknown): void;
+    DisableKeyword(keyword: LocalKeyword&): void;
     /**
      * Execute a compute shader.
      * @param kernelIndex Which kernel to execute. A single compute shader asset can have multiple kernel entry points.
@@ -19485,7 +19515,7 @@ interface ComputeShader extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/ComputeShader.EnableKeyword.html | ComputeShader.EnableKeyword}
      */
-    EnableKeyword(keyword: unknown): void;
+    EnableKeyword(keyword: LocalKeyword&): void;
     /**
      * Find ComputeShader kernel index.
      * @param name Name of kernel function.
@@ -19502,7 +19532,7 @@ interface ComputeShader extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/ComputeShader.GetKernelThreadGroupSizes.html | ComputeShader.GetKernelThreadGroupSizes}
      */
-    GetKernelThreadGroupSizes(kernelIndex: number, x: unknown, y: unknown, z: unknown): void;
+    GetKernelThreadGroupSizes(kernelIndex: number, x: UInt32&, y: UInt32&, z: UInt32&): void;
     /**
      * Checks whether a shader contains a given kernel.
      * @param name The name of the kernel to look for.
@@ -19523,7 +19553,7 @@ interface ComputeShader extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/ComputeShader.IsKeywordEnabled.html | ComputeShader.IsKeywordEnabled}
      */
-    IsKeywordEnabled(keyword: unknown): boolean;
+    IsKeywordEnabled(keyword: LocalKeyword&): boolean;
     /**
      * Allows you to check whether the current end user device supports the features required to run the specified compute shader kernel.
      * @param kernelIndex Which kernel to query.
@@ -19694,7 +19724,7 @@ interface ComputeShader extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/ComputeShader.SetKeyword.html | ComputeShader.SetKeyword}
      */
-    SetKeyword(keyword: unknown, value: boolean): void;
+    SetKeyword(keyword: LocalKeyword&, value: boolean): void;
     /**
      * Set a Matrix parameter.
      * @param nameID Property name ID, use Shader.PropertyToID to get it.
@@ -20324,7 +20354,7 @@ interface RectInt {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/RectInt.ToString.html | RectInt.ToString}
      */
-    ToString(format: string, formatProvider: unknown): string;
+    ToString(format: string, formatProvider: IFormatProvider): string;
 
 
 }
@@ -20393,6 +20423,81 @@ interface RendererListConstructor {
 
 }
 declare const RendererList: RendererListConstructor;
+    
+interface AsyncGPUReadbackRequest {
+    /**
+     * Checks whether the request has been processed.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.AsyncGPUReadbackRequest-done.html | Rendering.AsyncGPUReadbackRequest.done}
+     */
+    readonly done: boolean;
+    /**
+     * This property is true if the request has encountered an error.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.AsyncGPUReadbackRequest-hasError.html | Rendering.AsyncGPUReadbackRequest.hasError}
+     */
+    readonly hasError: boolean;
+    /**
+     * Number of layers in the current request.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.AsyncGPUReadbackRequest-layerCount.html | Rendering.AsyncGPUReadbackRequest.layerCount}
+     */
+    readonly layerCount: number;
+    /**
+     * The size in bytes of one layer of the readback data.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.AsyncGPUReadbackRequest-layerDataSize.html | Rendering.AsyncGPUReadbackRequest.layerDataSize}
+     */
+    readonly layerDataSize: number;
+    /**
+     * The width of the requested GPU data.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.AsyncGPUReadbackRequest-width.html | Rendering.AsyncGPUReadbackRequest.width}
+     */
+    readonly width: number;
+    /**
+     * When reading data from a ComputeBuffer, height is 1, otherwise, the property takes the value of the requested height from the texture.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.AsyncGPUReadbackRequest-height.html | Rendering.AsyncGPUReadbackRequest.height}
+     */
+    readonly height: number;
+    /**
+     * When reading data from a ComputeBuffer, depth is 1, otherwise, the property takes the value of the requested depth from the texture.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.AsyncGPUReadbackRequest-depth.html | Rendering.AsyncGPUReadbackRequest.depth}
+     */
+    readonly depth: number;
+    /**
+     * In the Editor, defines whether the Player loop is updated while the GPU request is in flight.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.AsyncGPUReadbackRequest-forcePlayerLoopUpdate.html | Rendering.AsyncGPUReadbackRequest.forcePlayerLoopUpdate}
+     */
+    forcePlayerLoopUpdate: boolean;
+
+
+
+    /**
+     * Fetches the data of a successful request.
+     * @param layer The index of the layer to retrieve.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.AsyncGPUReadbackRequest.GetData.html | Rendering.AsyncGPUReadbackRequest.GetData}
+     */
+    GetData<T>(layer: number): Readonly<T[]>;
+    /**
+     * Triggers an update of the request.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.AsyncGPUReadbackRequest.Update.html | Rendering.AsyncGPUReadbackRequest.Update}
+     */
+    Update(): void;
+    /**
+     * Waits for completion of the request.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.AsyncGPUReadbackRequest.WaitForCompletion.html | Rendering.AsyncGPUReadbackRequest.WaitForCompletion}
+     */
+    WaitForCompletion(): void;
+
+
+}
     
 interface RenderTargetBinding {
     /**
@@ -20641,7 +20746,7 @@ interface Cubemap extends Texture {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Cubemap.UpdateExternalTexture.html | Cubemap.UpdateExternalTexture}
      */
-    UpdateExternalTexture(nativeTexture: unknown): void;
+    UpdateExternalTexture(nativeTexture: IntPtr): void;
 
 
 }
@@ -20659,17 +20764,17 @@ interface CubemapConstructor {
     new(width: number, format: TextureFormat, mipCount: number, createUninitialized: boolean): Cubemap;
 
 
-    CreateExternalTexture(width: number, format: TextureFormat, mipmap: boolean, nativeTex: unknown): Cubemap;
+    CreateExternalTexture(width: number, format: TextureFormat, mipmap: boolean, nativeTex: IntPtr): Cubemap;
 
 }
 declare const Cubemap: CubemapConstructor;
     
-interface CameraCallback {
+interface CameraCallback extends MulticastDelegate {
 
 
 
-    BeginInvoke(cam: Camera, callback: unknown, object: unknown): unknown;
-    EndInvoke(result: unknown): void;
+    BeginInvoke(cam: Camera, callback: AsyncCallback, object: unknown): IAsyncResult;
+    EndInvoke(result: IAsyncResult): void;
     Invoke(cam: Camera): void;
 
 
@@ -20678,7 +20783,7 @@ interface CameraCallback {
 interface CameraCallbackConstructor {
 
 
-    new(object: unknown, method: unknown): CameraCallback;
+    new(object: unknown, method: IntPtr): CameraCallback;
 
 
 
@@ -20742,7 +20847,7 @@ interface CameraConstructor {
     new(): Camera;
 
 
-    CalculateProjectionMatrixFromPhysicalProperties(output: unknown, focalLength: number, sensorSize: Vector2, lensShift: Vector2, nearClip: number, farClip: number, gateFitParameters: GateFitParameters): void;
+    CalculateProjectionMatrixFromPhysicalProperties(output: Matrix4x4&, focalLength: number, sensorSize: Vector2, lensShift: Vector2, nearClip: number, farClip: number, gateFitParameters: GateFitParameters): void;
     FieldOfViewToFocalLength(fieldOfView: number, sensorSize: number): number;
     FocalLengthToFieldOfView(focalLength: number, sensorSize: number): number;
     GetAllCameras(cameras: Readonly<Camera[]>): number;
@@ -22260,12 +22365,12 @@ interface CanvasRendererConstructor {
 }
 declare const CanvasRenderer: CanvasRendererConstructor;
     
-interface UnityAction {
+interface UnityAction extends MulticastDelegate {
 
 
 
-    BeginInvoke(callback: unknown, object: unknown): unknown;
-    EndInvoke(result: unknown): void;
+    BeginInvoke(callback: AsyncCallback, object: unknown): IAsyncResult;
+    EndInvoke(result: IAsyncResult): void;
     Invoke(): void;
 
 
@@ -22274,7 +22379,7 @@ interface UnityAction {
 interface UnityActionConstructor {
 
 
-    new(object: unknown, method: unknown): UnityAction;
+    new(object: unknown, method: IntPtr): UnityAction;
 
 
 
@@ -23526,7 +23631,7 @@ interface AnimationClip extends Motion {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/AnimationClip.SetCurve.html | AnimationClip.SetCurve}
      */
-    SetCurve(relativePath: string, type: unknown, propertyName: string, curve: AnimationCurve): void;
+    SetCurve(relativePath: string, type: Type, propertyName: string, curve: AnimationCurve): void;
 
 
 }
@@ -24339,7 +24444,7 @@ interface PlayableOutput extends IPlayableOutput {
 
     Equals(other: PlayableOutput): boolean;
     GetHandle(): PlayableOutputHandle;
-    GetPlayableOutputType(): unknown;
+    GetPlayableOutputType(): Type;
     IsPlayableOutputOfType<T>(): boolean;
 
 
@@ -24378,7 +24483,7 @@ interface IExposedPropertyTable {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/IExposedPropertyTable.GetReferenceValue.html | IExposedPropertyTable.GetReferenceValue}
      */
-    GetReferenceValue(id: PropertyName, idValid: unknown): Object;
+    GetReferenceValue(id: PropertyName, idValid: Boolean&): Object;
     /**
      * Assigns a value for an ExposedReference.
      * @param id Identifier of the ExposedReference.
@@ -24468,7 +24573,7 @@ interface Playable extends IPlayable {
 
     Equals(other: Playable): boolean;
     GetHandle(): PlayableHandle;
-    GetPlayableType(): unknown;
+    GetPlayableType(): Type;
     IsPlayableOfType<T>(): boolean;
 
 
@@ -25184,7 +25289,7 @@ interface TMP_Text extends MaskableGraphic {
     SetText(sourceText: string, arg0: number, arg1: number, arg2: number, arg3: number, arg4: number, arg5: number): void;
     SetText(sourceText: string, arg0: number, arg1: number, arg2: number, arg3: number, arg4: number, arg5: number, arg6: number): void;
     SetText(sourceText: string, arg0: number, arg1: number, arg2: number, arg3: number, arg4: number, arg5: number, arg6: number, arg7: number): void;
-    SetText(sourceText: unknown): void;
+    SetText(sourceText: StringBuilder): void;
     SetText(sourceText: Readonly<string[]>): void;
     SetText(sourceText: Readonly<string[]>, start: number, length: number): void;
     SetVertices(vertices: Readonly<Vector3[]>): void;
@@ -25469,7 +25574,7 @@ interface Font extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Font.GetCharacterInfo.html | Font.GetCharacterInfo}
      */
-    GetCharacterInfo(ch: string, info: unknown, size: number, style: FontStyle): boolean;
+    GetCharacterInfo(ch: string, info: CharacterInfo&, size: number, style: FontStyle): boolean;
     /**
      * Get rendering info for a specific character.
      * @param ch The character you need rendering information for.
@@ -25478,7 +25583,7 @@ interface Font extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Font.GetCharacterInfo.html | Font.GetCharacterInfo}
      */
-    GetCharacterInfo(ch: string, info: unknown, size: number): boolean;
+    GetCharacterInfo(ch: string, info: CharacterInfo&, size: number): boolean;
     /**
      * Get rendering info for a specific character.
      * @param ch The character you need rendering information for.
@@ -25486,7 +25591,7 @@ interface Font extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Font.GetCharacterInfo.html | Font.GetCharacterInfo}
      */
-    GetCharacterInfo(ch: string, info: unknown): boolean;
+    GetCharacterInfo(ch: string, info: CharacterInfo&): boolean;
     /**
      * Does this font have a specific character?
      * @param c The character to check for.
@@ -26223,8 +26328,8 @@ interface TMP_SpriteAssetConstructor {
     new(): TMP_SpriteAsset;
 
 
-    SearchForSpriteByHashCode(spriteAsset: TMP_SpriteAsset, hashCode: number, includeFallbacks: boolean, spriteIndex: unknown): TMP_SpriteAsset;
-    SearchForSpriteByUnicode(spriteAsset: TMP_SpriteAsset, unicode: number, includeFallbacks: boolean, spriteIndex: unknown): TMP_SpriteAsset;
+    SearchForSpriteByHashCode(spriteAsset: TMP_SpriteAsset, hashCode: number, includeFallbacks: boolean, spriteIndex: Int32&): TMP_SpriteAsset;
+    SearchForSpriteByUnicode(spriteAsset: TMP_SpriteAsset, unicode: number, includeFallbacks: boolean, spriteIndex: Int32&): TMP_SpriteAsset;
 
 }
 declare const TMP_SpriteAsset: TMP_SpriteAssetConstructor;
@@ -26791,7 +26896,7 @@ interface Animation extends Behaviour {
      * More info: {@link https://docs.unity3d.com/ScriptReference/Animation.GetClipCount.html | Animation.GetClipCount}
      */
     GetClipCount(): number;
-    GetEnumerator(): unknown;
+    GetEnumerator(): IEnumerator;
     /**
      * Is the animation named name playing?
      * 
@@ -26967,7 +27072,7 @@ interface RawImage extends MaskableGraphic {
 }
     
 interface InternalToggle extends MonoBehaviour {
-    onValueChanged: unknown;
+    onValueChanged: Action<boolean>;
     bgImage: Image;
     handle: RectTransform;
     activeColor: Color;
@@ -27327,12 +27432,12 @@ interface ITransitionAnimations {
      * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.ITransitionAnimations.Size.html | UIElements.Experimental.ITransitionAnimations.Size}
      */
     Size(to: Vector2, durationMs: number): ValueAnimation<Vector2>;
-    Start(from: number, to: number, durationMs: number, onValueChanged: unknown): ValueAnimation<number>;
-    Start(from: Rect, to: Rect, durationMs: number, onValueChanged: unknown): ValueAnimation<Rect>;
-    Start(from: Color, to: Color, durationMs: number, onValueChanged: unknown): ValueAnimation<Color>;
-    Start(from: Vector3, to: Vector3, durationMs: number, onValueChanged: unknown): ValueAnimation<Vector3>;
-    Start(from: Vector2, to: Vector2, durationMs: number, onValueChanged: unknown): ValueAnimation<Vector2>;
-    Start(from: Quaternion, to: Quaternion, durationMs: number, onValueChanged: unknown): ValueAnimation<Quaternion>;
+    Start(from: number, to: number, durationMs: number, onValueChanged: Action<VisualElement, number>): ValueAnimation<number>;
+    Start(from: Rect, to: Rect, durationMs: number, onValueChanged: Action<VisualElement, Rect>): ValueAnimation<Rect>;
+    Start(from: Color, to: Color, durationMs: number, onValueChanged: Action<VisualElement, Color>): ValueAnimation<Color>;
+    Start(from: Vector3, to: Vector3, durationMs: number, onValueChanged: Action<VisualElement, Vector3>): ValueAnimation<Vector3>;
+    Start(from: Vector2, to: Vector2, durationMs: number, onValueChanged: Action<VisualElement, Vector2>): ValueAnimation<Vector2>;
+    Start(from: Quaternion, to: Quaternion, durationMs: number, onValueChanged: Action<VisualElement, Quaternion>): ValueAnimation<Quaternion>;
     /**
      * Starts a transition animation on this VisualElement.
      * @param from Start value.
@@ -27350,12 +27455,12 @@ interface ITransitionAnimations {
      * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Experimental.ITransitionAnimations.Start.html | UIElements.Experimental.ITransitionAnimations.Start}
      */
     Start(to: StyleValues, durationMs: number): ValueAnimation<StyleValues>;
-    Start(fromValueGetter: unknown, to: number, durationMs: number, onValueChanged: unknown): ValueAnimation<number>;
-    Start(fromValueGetter: unknown, to: Rect, durationMs: number, onValueChanged: unknown): ValueAnimation<Rect>;
-    Start(fromValueGetter: unknown, to: Color, durationMs: number, onValueChanged: unknown): ValueAnimation<Color>;
-    Start(fromValueGetter: unknown, to: Vector3, durationMs: number, onValueChanged: unknown): ValueAnimation<Vector3>;
-    Start(fromValueGetter: unknown, to: Vector2, durationMs: number, onValueChanged: unknown): ValueAnimation<Vector2>;
-    Start(fromValueGetter: unknown, to: Quaternion, durationMs: number, onValueChanged: unknown): ValueAnimation<Quaternion>;
+    Start(fromValueGetter: Func<VisualElement, number>, to: number, durationMs: number, onValueChanged: Action<VisualElement, number>): ValueAnimation<number>;
+    Start(fromValueGetter: Func<VisualElement, Rect>, to: Rect, durationMs: number, onValueChanged: Action<VisualElement, Rect>): ValueAnimation<Rect>;
+    Start(fromValueGetter: Func<VisualElement, Color>, to: Color, durationMs: number, onValueChanged: Action<VisualElement, Color>): ValueAnimation<Color>;
+    Start(fromValueGetter: Func<VisualElement, Vector3>, to: Vector3, durationMs: number, onValueChanged: Action<VisualElement, Vector3>): ValueAnimation<Vector3>;
+    Start(fromValueGetter: Func<VisualElement, Vector2>, to: Vector2, durationMs: number, onValueChanged: Action<VisualElement, Vector2>): ValueAnimation<Vector2>;
+    Start(fromValueGetter: Func<VisualElement, Quaternion>, to: Quaternion, durationMs: number, onValueChanged: Action<VisualElement, Quaternion>): ValueAnimation<Quaternion>;
     /**
      * Triggers an animation changing this element's positioning style values.
      * 
@@ -27418,14 +27523,14 @@ interface IVisualElementScheduler {
 
 
 
-    Execute(timerUpdateEvent: unknown): IVisualElementScheduledItem;
+    Execute(timerUpdateEvent: Action<TimerState>): IVisualElementScheduledItem;
     /**
      * Schedule this action to be executed later.
      * @param updateEvent The action to be executed.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IVisualElementScheduler.Execute.html | UIElements.IVisualElementScheduler.Execute}
      */
-    Execute(updateEvent: unknown): IVisualElementScheduledItem;
+    Execute(updateEvent: Action): IVisualElementScheduledItem;
 
 
 }
@@ -27486,7 +27591,48 @@ interface IVisualElementScheduledItem {
      * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.IVisualElementScheduledItem.StartingIn.html | UIElements.IVisualElementScheduledItem.StartingIn}
      */
     StartingIn(delayMs: number): IVisualElementScheduledItem;
-    Until(stopCondition: unknown): IVisualElementScheduledItem;
+    Until(stopCondition: Func<boolean>): IVisualElementScheduledItem;
+
+
+}
+    
+interface TimerState {
+    /**
+     * Start time in milliseconds, or last callback time for repeatable IScheduledItem.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.TimerState-start.html | UIElements.TimerState.start}
+     */
+    start: number;
+    /**
+     * Current time in milliseconds.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.TimerState-now.html | UIElements.TimerState.now}
+     */
+    now: number;
+    /**
+     * Time difference in milliseconds between now and the previous callback.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.TimerState-deltaTime.html | UIElements.TimerState.deltaTime}
+     */
+    readonly deltaTime: number;
+
+
+
+    /**
+     * Compare this object with another object and return true if they are equal.
+     * @param obj The object to compare with.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.TimerState.Equals.html | UIElements.TimerState.Equals}
+     */
+    Equals(obj: unknown): boolean;
+    /**
+     * Compare this object with another object and return true if they are equal.
+     * @param other The object to compare with.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.TimerState.Equals.html | UIElements.TimerState.Equals}
+     */
+    Equals(other: TimerState): boolean;
+    GetHashCode(): number;
 
 
 }
@@ -28650,22 +28796,22 @@ interface IStylePropertyAnimations {
     CancelAnimation(id: StylePropertyId): void;
     GetAllAnimations(outPropertyIds: Readonly<StylePropertyId[]>): void;
     HasRunningAnimation(id: StylePropertyId): boolean;
-    Start(id: StylePropertyId, from: number, to: number, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: number, to: number, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: Length, to: Length, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: Color, to: Color, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: Background, to: Background, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: FontDefinition, to: FontDefinition, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: Font, to: Font, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: TextShadow, to: TextShadow, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: Scale, to: Scale, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: Translate, to: Translate, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: Rotate, to: Rotate, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: TransformOrigin, to: TransformOrigin, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: BackgroundPosition, to: BackgroundPosition, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: BackgroundRepeat, to: BackgroundRepeat, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: BackgroundSize, to: BackgroundSize, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    StartEnum(id: StylePropertyId, from: number, to: number, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: number, to: number, durationMs: number, delayMs: number, easingCurve: Func<number, number>): boolean;
+    Start(id: StylePropertyId, from: number, to: number, durationMs: number, delayMs: number, easingCurve: Func<number, number>): boolean;
+    Start(id: StylePropertyId, from: Length, to: Length, durationMs: number, delayMs: number, easingCurve: Func<number, number>): boolean;
+    Start(id: StylePropertyId, from: Color, to: Color, durationMs: number, delayMs: number, easingCurve: Func<number, number>): boolean;
+    Start(id: StylePropertyId, from: Background, to: Background, durationMs: number, delayMs: number, easingCurve: Func<number, number>): boolean;
+    Start(id: StylePropertyId, from: FontDefinition, to: FontDefinition, durationMs: number, delayMs: number, easingCurve: Func<number, number>): boolean;
+    Start(id: StylePropertyId, from: Font, to: Font, durationMs: number, delayMs: number, easingCurve: Func<number, number>): boolean;
+    Start(id: StylePropertyId, from: TextShadow, to: TextShadow, durationMs: number, delayMs: number, easingCurve: Func<number, number>): boolean;
+    Start(id: StylePropertyId, from: Scale, to: Scale, durationMs: number, delayMs: number, easingCurve: Func<number, number>): boolean;
+    Start(id: StylePropertyId, from: Translate, to: Translate, durationMs: number, delayMs: number, easingCurve: Func<number, number>): boolean;
+    Start(id: StylePropertyId, from: Rotate, to: Rotate, durationMs: number, delayMs: number, easingCurve: Func<number, number>): boolean;
+    Start(id: StylePropertyId, from: TransformOrigin, to: TransformOrigin, durationMs: number, delayMs: number, easingCurve: Func<number, number>): boolean;
+    Start(id: StylePropertyId, from: BackgroundPosition, to: BackgroundPosition, durationMs: number, delayMs: number, easingCurve: Func<number, number>): boolean;
+    Start(id: StylePropertyId, from: BackgroundRepeat, to: BackgroundRepeat, durationMs: number, delayMs: number, easingCurve: Func<number, number>): boolean;
+    Start(id: StylePropertyId, from: BackgroundSize, to: BackgroundSize, durationMs: number, delayMs: number, easingCurve: Func<number, number>): boolean;
+    StartEnum(id: StylePropertyId, from: number, to: number, durationMs: number, delayMs: number, easingCurve: Func<number, number>): boolean;
     UpdateAnimation(id: StylePropertyId): void;
 
 
@@ -29133,12 +29279,12 @@ interface CallbackEventHandler extends IEventHandler {
 
 }
     
-interface EventCallback<TEventType> {
+interface EventCallback<TEventType> extends MulticastDelegate {
 
 
 
-    BeginInvoke(evt: TEventType, callback: unknown, object: unknown): unknown;
-    EndInvoke(result: unknown): void;
+    BeginInvoke(evt: TEventType, callback: AsyncCallback, object: unknown): IAsyncResult;
+    EndInvoke(result: IAsyncResult): void;
     Invoke(evt: TEventType): void;
 
 
@@ -29147,19 +29293,19 @@ interface EventCallback<TEventType> {
 interface EventCallbackConstructor {
 
 
-    new(object: unknown, method: unknown): EventCallback<TEventType>;
+    new(object: unknown, method: IntPtr): EventCallback<TEventType>;
 
 
 
 }
 declare const EventCallback: EventCallbackConstructor;
     
-interface EventCallback<TEventType, TCallbackArgs> {
+interface EventCallback<TEventType, TCallbackArgs> extends MulticastDelegate {
 
 
 
-    BeginInvoke(evt: TEventType, userArgs: TCallbackArgs, callback: unknown, object: unknown): unknown;
-    EndInvoke(result: unknown): void;
+    BeginInvoke(evt: TEventType, userArgs: TCallbackArgs, callback: AsyncCallback, object: unknown): IAsyncResult;
+    EndInvoke(result: IAsyncResult): void;
     Invoke(evt: TEventType, userArgs: TCallbackArgs): void;
 
 
@@ -29168,7 +29314,7 @@ interface EventCallback<TEventType, TCallbackArgs> {
 interface EventCallbackConstructor {
 
 
-    new(object: unknown, method: unknown): EventCallback<TEventType, TCallbackArgs>;
+    new(object: unknown, method: IntPtr): EventCallback<TEventType, TCallbackArgs>;
 
 
 
@@ -29257,6 +29403,432 @@ interface FocusControllerConstructor {
 }
 declare const FocusController: FocusControllerConstructor;
     
+    
+interface MeshGenerationContext {
+    /**
+     * The element for which VisualElement.generateVisualContent was invoked.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.MeshGenerationContext-visualElement.html | UIElements.MeshGenerationContext.visualElement}
+     */
+    readonly visualElement: VisualElement;
+    /**
+     * The vector painter object used to issue drawing commands.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.MeshGenerationContext-painter2D.html | UIElements.MeshGenerationContext.painter2D}
+     */
+    readonly painter2D: Painter2D;
+
+
+
+    /**
+     * Instructs the renderer to wait for the completion of the provided JobHandle before beginning processing the meshes.
+     * @param jobHandle JobHandle to wait for.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.MeshGenerationContext.AddMeshGenerationJob.html | UIElements.MeshGenerationContext.AddMeshGenerationJob}
+     */
+    AddMeshGenerationJob(jobHandle: JobHandle): void;
+    /**
+     * Allocates and draws the specified number of vertices and indices required to express geometry for drawing the content of a VisualElement.
+     * @param vertexCount The number of vertices to allocate. The maximum is 65535 (or UInt16.MaxValue).
+     * @param indexCount The number of triangle list indices to allocate. Each 3 indices represent one triangle, so this value should be multiples of 3.
+     * @param texture An optional texture to be applied on the triangles allocated. Pass null to rely on vertex colors only.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.MeshGenerationContext.Allocate.html | UIElements.MeshGenerationContext.Allocate}
+     */
+    Allocate(vertexCount: number, indexCount: number, texture: Texture): MeshWriteData;
+    AllocateTempMesh(vertexCount: number, indexCount: number, vertices: Readonly<Vertex[]>, indices: Readonly<number[]>): void;
+    DrawMesh(vertices: Readonly<Vertex[]>, indices: Readonly<number[]>, texture: Texture): void;
+    /**
+     * Draw a string of text.
+     * @param text The text to display.
+     * @param pos The start position where the text will be displayed.
+     * @param fontSize The font size to use.
+     * @param color The text color.
+     * @param font The font asset to use. If the value is null, the font asset of the VisualElement style is used instead. For more information, refer to &lt;see cref=&quot;IStyle.unityFontDefinition&quot; /&gt;.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.MeshGenerationContext.DrawText.html | UIElements.MeshGenerationContext.DrawText}
+     */
+    DrawText(text: string, pos: Vector2, fontSize: number, color: Color, font: FontAsset): void;
+    /**
+     * Draws a VectorImage asset.
+     * @param vectorImage The vector image to draw.
+     * @param offset The position offset where to draw the vector image.
+     * @param rotationAngle The rotation of the vector image.
+     * @param scale The scale of the vector image
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.MeshGenerationContext.DrawVectorImage.html | UIElements.MeshGenerationContext.DrawVectorImage}
+     */
+    DrawVectorImage(vectorImage: VectorImage, offset: Vector2, rotationAngle: Angle, scale: Vector2): void;
+    /**
+     * Returns an allocator that can be used to safely allocate temporary meshes from the job system. The meshes
+ have the same scope as those allocated by AllocateTempMesh.
+     * @param allocator The allocator.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.MeshGenerationContext.GetTempMeshAllocator.html | UIElements.MeshGenerationContext.GetTempMeshAllocator}
+     */
+    GetTempMeshAllocator(allocator: TempMeshAllocator&): void;
+    /**
+     * Inserts a node into the rendering tree that can be populated from the job system.
+     * @param node The inserted mesh generation node.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.MeshGenerationContext.InsertMeshGenerationNode.html | UIElements.MeshGenerationContext.InsertMeshGenerationNode}
+     */
+    InsertMeshGenerationNode(node: MeshGenerationNode&): void;
+
+
+}
+    
+interface Painter2D {
+    /**
+     * The line width of draw paths when using Stroke.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Painter2D-lineWidth.html | UIElements.Painter2D.lineWidth}
+     */
+    lineWidth: number;
+    /**
+     * The color of draw paths when using Stroke.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Painter2D-strokeColor.html | UIElements.Painter2D.strokeColor}
+     */
+    strokeColor: Color;
+    /**
+     * The stroke gradient to use when using Stroke.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Painter2D-strokeGradient.html | UIElements.Painter2D.strokeGradient}
+     */
+    strokeGradient: Gradient;
+    /**
+     * The color used for fill paths when using Fill.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Painter2D-fillColor.html | UIElements.Painter2D.fillColor}
+     */
+    fillColor: Color;
+    /**
+     * The join to use when drawing paths using Stroke.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Painter2D-lineJoin.html | UIElements.Painter2D.lineJoin}
+     */
+    lineJoin: LineJoin;
+    /**
+     * The cap to use when drawing paths using Stroke.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Painter2D-lineCap.html | UIElements.Painter2D.lineCap}
+     */
+    lineCap: LineCap;
+    /**
+     * When using LineJoin.Miter joins, this defines the limit on the ratio of the miter length to the
+ stroke width before converting the miter to a bevel.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Painter2D-miterLimit.html | UIElements.Painter2D.miterLimit}
+     */
+    miterLimit: number;
+
+
+
+    /**
+     * Adds an arc to the current sub-path to the provided position, radius and angles.
+     * @param center The center position of the arc.
+     * @param radius The radius of the arc.
+     * @param startAngle The starting angle the arc.
+     * @param endAngle The ending angle of the arc.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Painter2D.Arc.html | UIElements.Painter2D.Arc}
+     */
+    Arc(center: Vector2, radius: number, startAngle: Angle, endAngle: Angle, direction: ArcDirection): void;
+    /**
+     * Adds an arc to the current sub-path to the provided position using a control point.
+     * @param p1 The first control point of the arc.
+     * @param p2 The final point of the arc.
+     * @param radius The radius of the arc.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Painter2D.ArcTo.html | UIElements.Painter2D.ArcTo}
+     */
+    ArcTo(p1: Vector2, p2: Vector2, radius: number): void;
+    /**
+     * Begins a new path and empties the list of recorded sub-paths.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Painter2D.BeginPath.html | UIElements.Painter2D.BeginPath}
+     */
+    BeginPath(): void;
+    /**
+     * Adds a cubic bezier curve to the current sub-path to the provided position using two control points.
+     * @param p1 The first control point of the cubic bezier.
+     * @param p2 The second control point of the cubic bezier.
+     * @param p3 The final position of the cubic bezier.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Painter2D.BezierCurveTo.html | UIElements.Painter2D.BezierCurveTo}
+     */
+    BezierCurveTo(p1: Vector2, p2: Vector2, p3: Vector2): void;
+    /**
+     * When created as a detached painter, clears the current content. Does nothing otherwise.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Painter2D.Clear.html | UIElements.Painter2D.Clear}
+     */
+    Clear(): void;
+    /**
+     * Closes the current sub-path with a straight line. If the sub-path is already closed, this does nothing.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Painter2D.ClosePath.html | UIElements.Painter2D.ClosePath}
+     */
+    ClosePath(): void;
+    /**
+     * Dispose the Painter2D object and free its internal unmanaged resources.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Painter2D.Dispose.html | UIElements.Painter2D.Dispose}
+     */
+    Dispose(): void;
+    /**
+     * Fills the currently defined path.
+     * @param fillRule The fill rule (non-zero or odd-even) to use. Default is non-zero.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Painter2D.Fill.html | UIElements.Painter2D.Fill}
+     */
+    Fill(fillRule: FillRule): void;
+    /**
+     * Adds a straight line to the current sub-path to the provided position.
+     * @param pos The end position of the line.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Painter2D.LineTo.html | UIElements.Painter2D.LineTo}
+     */
+    LineTo(pos: Vector2): void;
+    /**
+     * Begins a new sub-path at the provied coordinate.
+     * @param pos The position of the new sub-path.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Painter2D.MoveTo.html | UIElements.Painter2D.MoveTo}
+     */
+    MoveTo(pos: Vector2): void;
+    /**
+     * Adds a quadratic bezier curve to the current sub-path to the provided position using a control point.
+     * @param p1 The control point of the quadratic bezier.
+     * @param p2 The final position of the quadratic bezier.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Painter2D.QuadraticCurveTo.html | UIElements.Painter2D.QuadraticCurveTo}
+     */
+    QuadraticCurveTo(p1: Vector2, p2: Vector2): void;
+    /**
+     * Saves the content of this Painter2D to a VectorImage object.
+     * @param vectorImage The VectorImage object that will be initialized with this painter. This object should not be null.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Painter2D.SaveToVectorImage.html | UIElements.Painter2D.SaveToVectorImage}
+     */
+    SaveToVectorImage(vectorImage: VectorImage): boolean;
+    /**
+     * Strokes the currently defined path.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.Painter2D.Stroke.html | UIElements.Painter2D.Stroke}
+     */
+    Stroke(): void;
+
+
+}
+    
+interface Gradient {
+    /**
+     * All color keys defined in the gradient.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Gradient-colorKeys.html | Gradient.colorKeys}
+     */
+    colorKeys: Readonly<GradientColorKey[]>;
+    /**
+     * All alpha keys defined in the gradient.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Gradient-alphaKeys.html | Gradient.alphaKeys}
+     */
+    alphaKeys: Readonly<GradientAlphaKey[]>;
+    /**
+     * Controls how the gradient colors are interpolated.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Gradient-mode.html | Gradient.mode}
+     */
+    mode: GradientMode;
+    /**
+     * Indicates the color space that the gradient color keys are using.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Gradient-colorSpace.html | Gradient.colorSpace}
+     */
+    colorSpace: ColorSpace;
+
+
+
+    Equals(o: unknown): boolean;
+    Equals(other: Gradient): boolean;
+    /**
+     * Calculate color at a given time.
+     * @param time Time of the evaluation (0 - 1).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Gradient.Evaluate.html | Gradient.Evaluate}
+     */
+    Evaluate(time: number): Color;
+    GetHashCode(): number;
+    /**
+     * Setup Gradient with an array of color keys and alpha keys.
+     * @param colorKeys Color keys of the gradient (maximum 8 color keys).
+     * @param alphaKeys Alpha keys of the gradient (maximum 8 alpha keys).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Gradient.SetKeys.html | Gradient.SetKeys}
+     */
+    SetKeys(colorKeys: Readonly<GradientColorKey[]>, alphaKeys: Readonly<GradientAlphaKey[]>): void;
+
+
+}
+    
+interface GradientColorKey {
+    color: Color;
+    time: number;
+
+
+
+
+
+}
+    
+interface GradientColorKeyConstructor {
+
+
+    new(col: Color, time: number): GradientColorKey;
+
+
+
+}
+declare const GradientColorKey: GradientColorKeyConstructor;
+    
+interface GradientAlphaKey {
+    alpha: number;
+    time: number;
+
+
+
+
+
+}
+    
+interface GradientAlphaKeyConstructor {
+
+
+    new(alpha: number, time: number): GradientAlphaKey;
+
+
+
+}
+declare const GradientAlphaKey: GradientAlphaKeyConstructor;
+    
+interface GradientConstructor {
+
+
+    new(): Gradient;
+
+
+
+}
+declare const Gradient: GradientConstructor;
+    
+interface Painter2DConstructor {
+
+
+    new(): Painter2D;
+
+
+
+}
+declare const Painter2D: Painter2DConstructor;
+    
+interface JobHandle {
+    /**
+     * Determines if a task is running.
+     */
+    readonly IsCompleted: boolean;
+
+
+
+    /**
+     * Ensures that a job has completed.
+     */
+    Complete(): void;
+    Equals(other: JobHandle): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+
+
+}
+    
+interface JobHandleConstructor {
+
+
+
+
+    CheckFenceIsDependencyOrDidSyncFence(jobHandle: JobHandle, dependsOn: JobHandle): boolean;
+    CombineDependencies(job0: JobHandle, job1: JobHandle): JobHandle;
+    CombineDependencies(job0: JobHandle, job1: JobHandle, job2: JobHandle): JobHandle;
+    CombineDependencies(jobs: Readonly<JobHandle[]>): JobHandle;
+    CombineDependencies(jobs: Readonly<JobHandle[]>): JobHandle;
+    CompleteAll(job0: JobHandle&, job1: JobHandle&): void;
+    CompleteAll(job0: JobHandle&, job1: JobHandle&, job2: JobHandle&): void;
+    CompleteAll(jobs: Readonly<JobHandle[]>): void;
+    ScheduleBatchedJobs(): void;
+
+}
+declare const JobHandle: JobHandleConstructor;
+    
+interface MeshWriteData {
+    /**
+     * The number of vertices successfully allocated for VisualElement content drawing.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.MeshWriteData-vertexCount.html | UIElements.MeshWriteData.vertexCount}
+     */
+    readonly vertexCount: number;
+    /**
+     * The number of indices successfully allocated for VisualElement content drawing.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.MeshWriteData-indexCount.html | UIElements.MeshWriteData.indexCount}
+     */
+    readonly indexCount: number;
+
+
+
+    SetAllIndices(indices: Readonly<number[]>): void;
+    SetAllIndices(indices: Readonly<number[]>): void;
+    /**
+     * Fills the values of the allocated vertices with values copied directly from an array.
+ When this method is called, it is not possible to use SetNextVertex to fill the allocated vertices array.
+     * @param vertices The array of vertices to copy from. The length of the array must match the allocated vertex count.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.MeshWriteData.SetAllVertices.html | UIElements.MeshWriteData.SetAllVertices}
+     */
+    SetAllVertices(vertices: Readonly<Vertex[]>): void;
+    SetAllVertices(vertices: Readonly<Vertex[]>): void;
+    SetNextIndex(index: number): void;
+    /**
+     * Assigns the value of the next vertex of the allocated vertices list.
+     * @param vertex The value of the next vertex.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.MeshWriteData.SetNextVertex.html | UIElements.MeshWriteData.SetNextVertex}
+     */
+    SetNextVertex(vertex: Vertex): void;
+
+
+}
+    
+interface Vertex {
+    position: Vector3;
+    tint: Color32;
+    uv: Vector2;
+
+
+
+
+
+}
+    
+interface VertexConstructor {
+    readonly nearZ: number;
+
+
+
+
+
+}
+declare const Vertex: VertexConstructor;
     
 interface PropertyPath {
     /**
@@ -29354,7 +29926,7 @@ interface IProperty {
     /**
      * Returns the declared value type of the property.
      */
-    DeclaredValueType(): unknown;
+    DeclaredValueType(): Type;
     /**
      * Returns the first attribute of the given type.
      */
@@ -29366,7 +29938,7 @@ interface IProperty {
     /**
      * Returns all attribute for this property.
      */
-    GetAttributes(): Readonly<unknown[]>;
+    GetAttributes(): Readonly<Attribute[]>;
     /**
      * Returns true if the property has any attributes of the given type.
      */
@@ -29381,20 +29953,20 @@ interface PropertyPathConstructor {
     new(path: string): PropertyPath;
 
 
-    AppendIndex(path: unknown, index: number): PropertyPath;
-    AppendKey(path: unknown, key: unknown): PropertyPath;
-    AppendName(path: unknown, name: string): PropertyPath;
-    AppendPart(path: unknown, part: unknown): PropertyPath;
-    AppendProperty(path: unknown, property: IProperty): PropertyPath;
-    Combine(path: unknown, pathToAppend: unknown): PropertyPath;
-    Combine(path: unknown, pathToAppend: string): PropertyPath;
+    AppendIndex(path: PropertyPath&, index: number): PropertyPath;
+    AppendKey(path: PropertyPath&, key: unknown): PropertyPath;
+    AppendName(path: PropertyPath&, name: string): PropertyPath;
+    AppendPart(path: PropertyPath&, part: PropertyPathPart&): PropertyPath;
+    AppendProperty(path: PropertyPath&, property: IProperty): PropertyPath;
+    Combine(path: PropertyPath&, pathToAppend: PropertyPath&): PropertyPath;
+    Combine(path: PropertyPath&, pathToAppend: string): PropertyPath;
     FromIndex(index: number): PropertyPath;
     FromKey(key: unknown): PropertyPath;
     FromName(name: string): PropertyPath;
-    FromPart(part: unknown): PropertyPath;
-    Pop(path: unknown): PropertyPath;
-    SubPath(path: unknown, startIndex: number): PropertyPath;
-    SubPath(path: unknown, startIndex: number, length: number): PropertyPath;
+    FromPart(part: PropertyPathPart&): PropertyPath;
+    Pop(path: PropertyPath&): PropertyPath;
+    SubPath(path: PropertyPath&, startIndex: number): PropertyPath;
+    SubPath(path: PropertyPath&, startIndex: number, length: number): PropertyPath;
 
 }
 declare const PropertyPath: PropertyPathConstructor;
@@ -29417,7 +29989,7 @@ interface Hierarchy {
     Insert(index: number, child: VisualElement): void;
     Remove(child: VisualElement): void;
     RemoveAt(index: number): void;
-    Sort(comp: unknown): void;
+    Sort(comp: Comparison<VisualElement>): void;
 
 
 }
@@ -29566,7 +30138,7 @@ interface VisualTreeAsset extends ScriptableObject {
      * More info: {@link https://docs.unity3d.com/ScriptReference/UIElements.VisualTreeAsset.CloneTree.html | UIElements.VisualTreeAsset.CloneTree}
      */
     CloneTree(target: VisualElement): void;
-    CloneTree(target: VisualElement, firstElementIndex: unknown, elementAddedCount: unknown): void;
+    CloneTree(target: VisualElement, firstElementIndex: Int32&, elementAddedCount: Int32&): void;
     /**
      * Build a tree of VisualElements from the asset.
      * 
@@ -30349,14 +30921,14 @@ interface ICustomStyle {
 
 
 
-    TryGetValue(property: CustomStyleProperty<number>, value: unknown): boolean;
-    TryGetValue(property: CustomStyleProperty<number>, value: unknown): boolean;
-    TryGetValue(property: CustomStyleProperty<boolean>, value: unknown): boolean;
-    TryGetValue(property: CustomStyleProperty<Color>, value: unknown): boolean;
-    TryGetValue(property: CustomStyleProperty<Texture2D>, value: unknown): boolean;
-    TryGetValue(property: CustomStyleProperty<Sprite>, value: unknown): boolean;
-    TryGetValue(property: CustomStyleProperty<VectorImage>, value: unknown): boolean;
-    TryGetValue<T>(property: CustomStyleProperty<T>, value: unknown): boolean;
+    TryGetValue(property: CustomStyleProperty<number>, value: Single&): boolean;
+    TryGetValue(property: CustomStyleProperty<number>, value: Int32&): boolean;
+    TryGetValue(property: CustomStyleProperty<boolean>, value: Boolean&): boolean;
+    TryGetValue(property: CustomStyleProperty<Color>, value: Color&): boolean;
+    TryGetValue(property: CustomStyleProperty<Texture2D>, value: Texture2D&): boolean;
+    TryGetValue(property: CustomStyleProperty<Sprite>, value: Sprite&): boolean;
+    TryGetValue(property: CustomStyleProperty<VectorImage>, value: VectorImage&): boolean;
+    TryGetValue<T>(property: CustomStyleProperty<T>, value: T&): boolean;
     TryGetValue(property: CustomStyleProperty<string>, value: Readonly<string[]>): boolean;
 
 
@@ -30460,7 +31032,7 @@ interface BindingIdConstructor {
 
 
     new(path: string): BindingId;
-    new(path: unknown): BindingId;
+    new(path: PropertyPath&): BindingId;
 
 
 
@@ -30556,14 +31128,12 @@ interface DataSourceContext {
 interface DataSourceContextConstructor {
 
 
-    new(dataSource: unknown, dataSourcePath: unknown): DataSourceContext;
+    new(dataSource: unknown, dataSourcePath: PropertyPath&): DataSourceContext;
 
 
 
 }
 declare const DataSourceContext: DataSourceContextConstructor;
-    
-    
     
     
     
@@ -31730,7 +32300,7 @@ interface AgonesSdk extends MonoBehaviour {
     Connect(): boolean;
     GameServer(): GameServer;
     Ready(): boolean;
-    Reserve(duration: unknown): boolean;
+    Reserve(duration: TimeSpan): boolean;
     SetAnnotation(key: string, value: string): boolean;
     SetLabel(key: string, value: string): boolean;
     Shutdown(): boolean;
@@ -31918,12 +32488,12 @@ interface GameServerConstructor {
 }
 declare const GameServer: GameServerConstructor;
     
-interface WatchGameServerCallback {
+interface WatchGameServerCallback extends MulticastDelegate {
 
 
 
-    BeginInvoke(gameServer: GameServer, callback: unknown, object: unknown): unknown;
-    EndInvoke(result: unknown): void;
+    BeginInvoke(gameServer: GameServer, callback: AsyncCallback, object: unknown): IAsyncResult;
+    EndInvoke(result: IAsyncResult): void;
     Invoke(gameServer: GameServer): void;
 
 
@@ -31932,7 +32502,7 @@ interface WatchGameServerCallback {
 interface WatchGameServerCallbackConstructor {
 
 
-    new(object: unknown, method: unknown): WatchGameServerCallback;
+    new(object: unknown, method: IntPtr): WatchGameServerCallback;
 
 
 
@@ -32009,6 +32579,7 @@ interface NetworkConnectionToClient extends NetworkConnection {
     remoteTimescale: number;
     snapshotBufferSizeLimit: number;
     readonly address: string;
+    readonly bufferTime: number;
     readonly rtt: number;
 
 
@@ -32026,7 +32597,7 @@ interface Unbatcher {
 
 
     AddBatch(batch: Readonly<number[]>): boolean;
-    GetNextMessage(message: Readonly<number[]>, remoteTimeStamp: unknown): boolean;
+    GetNextMessage(message: Readonly<number[]>, remoteTimeStamp: Double&): boolean;
 
 
 }
@@ -32133,7 +32704,7 @@ interface NetworkWriter {
     Write<T>(value: T): void;
     WriteByte(value: number): void;
     WriteBytes(array: Readonly<number[]>, offset: number, count: number): void;
-    WriteBytes(ptr: unknown, offset: number, size: number): boolean;
+    WriteBytes(ptr: Byte, offset: number, size: number): boolean;
 
 
 }
@@ -32930,12 +33501,12 @@ interface Application {
 
 }
     
-interface AdvertisingIdentifierCallback {
+interface AdvertisingIdentifierCallback extends MulticastDelegate {
 
 
 
-    BeginInvoke(advertisingId: string, trackingEnabled: boolean, errorMsg: string, callback: unknown, object: unknown): unknown;
-    EndInvoke(result: unknown): void;
+    BeginInvoke(advertisingId: string, trackingEnabled: boolean, errorMsg: string, callback: AsyncCallback, object: unknown): IAsyncResult;
+    EndInvoke(result: IAsyncResult): void;
     Invoke(advertisingId: string, trackingEnabled: boolean, errorMsg: string): void;
 
 
@@ -32944,7 +33515,7 @@ interface AdvertisingIdentifierCallback {
 interface AdvertisingIdentifierCallbackConstructor {
 
 
-    new(object: unknown, method: unknown): AdvertisingIdentifierCallback;
+    new(object: unknown, method: IntPtr): AdvertisingIdentifierCallback;
 
 
 
@@ -33131,7 +33702,7 @@ interface ApplicationConstructor {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Application-exitCancellationToken.html | Application.exitCancellationToken}
      */
-    readonly exitCancellationToken: unknown;
+    readonly exitCancellationToken: CancellationToken;
     /**
      * Whether the game is running inside the Unity Editor (Read Only).
      * 
@@ -33465,7 +34036,7 @@ interface ParticleSystem extends Component {
      * More info: {@link https://docs.unity3d.com/ScriptReference/ParticleSystem.GetTrails.html | ParticleSystem.GetTrails}
      */
     GetTrails(): Trails;
-    GetTrails(trailData: unknown): number;
+    GetTrails(trailData: Trails&): number;
     /**
      * Does the Particle System contain any live particles, or will it produce more?
      * @param withChildren Check all child Particle Systems as well.
@@ -33576,7 +34147,7 @@ interface ParticleSystem extends Component {
      * More info: {@link https://docs.unity3d.com/ScriptReference/ParticleSystem.TriggerSubEmitter.html | ParticleSystem.TriggerSubEmitter}
      */
     TriggerSubEmitter(subEmitterIndex: number): void;
-    TriggerSubEmitter(subEmitterIndex: number, particle: unknown): void;
+    TriggerSubEmitter(subEmitterIndex: number, particle: Particle&): void;
     TriggerSubEmitter(subEmitterIndex: number, particles: Readonly<Particle[]>): void;
 
 
@@ -33682,106 +34253,6 @@ interface MinMaxGradient {
 
 
 }
-    
-interface Gradient {
-    /**
-     * All color keys defined in the gradient.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Gradient-colorKeys.html | Gradient.colorKeys}
-     */
-    colorKeys: Readonly<GradientColorKey[]>;
-    /**
-     * All alpha keys defined in the gradient.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Gradient-alphaKeys.html | Gradient.alphaKeys}
-     */
-    alphaKeys: Readonly<GradientAlphaKey[]>;
-    /**
-     * Controls how the gradient colors are interpolated.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Gradient-mode.html | Gradient.mode}
-     */
-    mode: GradientMode;
-    /**
-     * Indicates the color space that the gradient color keys are using.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Gradient-colorSpace.html | Gradient.colorSpace}
-     */
-    colorSpace: ColorSpace;
-
-
-
-    Equals(o: unknown): boolean;
-    Equals(other: Gradient): boolean;
-    /**
-     * Calculate color at a given time.
-     * @param time Time of the evaluation (0 - 1).
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Gradient.Evaluate.html | Gradient.Evaluate}
-     */
-    Evaluate(time: number): Color;
-    GetHashCode(): number;
-    /**
-     * Setup Gradient with an array of color keys and alpha keys.
-     * @param colorKeys Color keys of the gradient (maximum 8 color keys).
-     * @param alphaKeys Alpha keys of the gradient (maximum 8 alpha keys).
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Gradient.SetKeys.html | Gradient.SetKeys}
-     */
-    SetKeys(colorKeys: Readonly<GradientColorKey[]>, alphaKeys: Readonly<GradientAlphaKey[]>): void;
-
-
-}
-    
-interface GradientColorKey {
-    color: Color;
-    time: number;
-
-
-
-
-
-}
-    
-interface GradientColorKeyConstructor {
-
-
-    new(col: Color, time: number): GradientColorKey;
-
-
-
-}
-declare const GradientColorKey: GradientColorKeyConstructor;
-    
-interface GradientAlphaKey {
-    alpha: number;
-    time: number;
-
-
-
-
-
-}
-    
-interface GradientAlphaKeyConstructor {
-
-
-    new(alpha: number, time: number): GradientAlphaKey;
-
-
-
-}
-declare const GradientAlphaKey: GradientAlphaKeyConstructor;
-    
-interface GradientConstructor {
-
-
-    new(): Gradient;
-
-
-
-}
-declare const Gradient: GradientConstructor;
     
 interface MinMaxGradientConstructor {
 
@@ -33967,12 +34438,12 @@ interface SpriteRenderer extends Renderer {
 
 }
     
-interface UnityAction<T0> {
+interface UnityAction<T0> extends MulticastDelegate {
 
 
 
-    BeginInvoke(arg0: T0, callback: unknown, object: unknown): unknown;
-    EndInvoke(result: unknown): void;
+    BeginInvoke(arg0: T0, callback: AsyncCallback, object: unknown): IAsyncResult;
+    EndInvoke(result: IAsyncResult): void;
     Invoke(arg0: T0): void;
 
 
@@ -33981,7 +34452,7 @@ interface UnityAction<T0> {
 interface UnityActionConstructor {
 
 
-    new(object: unknown, method: unknown): UnityAction<T0>;
+    new(object: unknown, method: IntPtr): UnityAction<T0>;
 
 
 
@@ -34515,7 +34986,7 @@ interface Texture3D extends Texture {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Texture3D.UpdateExternalTexture.html | Texture3D.UpdateExternalTexture}
      */
-    UpdateExternalTexture(nativeTex: unknown): void;
+    UpdateExternalTexture(nativeTex: IntPtr): void;
 
 
 }
@@ -34528,14 +34999,14 @@ interface Texture3DConstructor {
     new(width: number, height: number, depth: number, format: GraphicsFormat, flags: TextureCreationFlags): Texture3D;
     new(width: number, height: number, depth: number, format: GraphicsFormat, flags: TextureCreationFlags, mipCount: number): Texture3D;
     new(width: number, height: number, depth: number, textureFormat: TextureFormat, mipCount: number): Texture3D;
-    new(width: number, height: number, depth: number, textureFormat: TextureFormat, mipCount: number, nativeTex: unknown): Texture3D;
-    new(width: number, height: number, depth: number, textureFormat: TextureFormat, mipCount: number, nativeTex: unknown, createUninitialized: boolean): Texture3D;
+    new(width: number, height: number, depth: number, textureFormat: TextureFormat, mipCount: number, nativeTex: IntPtr): Texture3D;
+    new(width: number, height: number, depth: number, textureFormat: TextureFormat, mipCount: number, nativeTex: IntPtr, createUninitialized: boolean): Texture3D;
     new(width: number, height: number, depth: number, textureFormat: TextureFormat, mipChain: boolean): Texture3D;
     new(width: number, height: number, depth: number, textureFormat: TextureFormat, mipChain: boolean, createUninitialized: boolean): Texture3D;
-    new(width: number, height: number, depth: number, textureFormat: TextureFormat, mipChain: boolean, nativeTex: unknown): Texture3D;
+    new(width: number, height: number, depth: number, textureFormat: TextureFormat, mipChain: boolean, nativeTex: IntPtr): Texture3D;
 
 
-    CreateExternalTexture(width: number, height: number, depth: number, format: TextureFormat, mipChain: boolean, nativeTex: unknown): Texture3D;
+    CreateExternalTexture(width: number, height: number, depth: number, format: TextureFormat, mipChain: boolean, nativeTex: IntPtr): Texture3D;
 
 }
 declare const Texture3D: Texture3DConstructor;
@@ -35032,7 +35503,7 @@ interface ParticleSystemRenderer extends Renderer {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/ParticleSystemRenderer.BakeTexture.html | ParticleSystemRenderer.BakeTexture}
      */
-    BakeTexture(verticesTexture: unknown, options: ParticleSystemBakeTextureOptions): number;
+    BakeTexture(verticesTexture: Texture2D&, options: ParticleSystemBakeTextureOptions): number;
     /**
      * Creates a snapshot of ParticleSystemRenderer and stores it in a Texture2D.
      * @param verticesTexture A Texture2D to receive the snapshot of the particle vertices.
@@ -35041,7 +35512,7 @@ interface ParticleSystemRenderer extends Renderer {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/ParticleSystemRenderer.BakeTexture.html | ParticleSystemRenderer.BakeTexture}
      */
-    BakeTexture(verticesTexture: unknown, camera: Camera, options: ParticleSystemBakeTextureOptions): number;
+    BakeTexture(verticesTexture: Texture2D&, camera: Camera, options: ParticleSystemBakeTextureOptions): number;
     /**
      * Creates a snapshot of ParticleSystemRenderer and stores it in a Texture2D.
      * @param verticesTexture A Texture2D to receive the snapshot of the particle vertices.
@@ -35050,7 +35521,7 @@ interface ParticleSystemRenderer extends Renderer {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/ParticleSystemRenderer.BakeTexture.html | ParticleSystemRenderer.BakeTexture}
      */
-    BakeTexture(verticesTexture: unknown, indicesTexture: unknown, options: ParticleSystemBakeTextureOptions): number;
+    BakeTexture(verticesTexture: Texture2D&, indicesTexture: Texture2D&, options: ParticleSystemBakeTextureOptions): number;
     /**
      * Creates a snapshot of ParticleSystemRenderer and stores it in a Texture2D.
      * @param verticesTexture A Texture2D to receive the snapshot of the particle vertices.
@@ -35060,7 +35531,7 @@ interface ParticleSystemRenderer extends Renderer {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/ParticleSystemRenderer.BakeTexture.html | ParticleSystemRenderer.BakeTexture}
      */
-    BakeTexture(verticesTexture: unknown, indicesTexture: unknown, camera: Camera, options: ParticleSystemBakeTextureOptions): number;
+    BakeTexture(verticesTexture: Texture2D&, indicesTexture: Texture2D&, camera: Camera, options: ParticleSystemBakeTextureOptions): number;
     /**
      * Creates a snapshot of ParticleSystem Trails and stores them in a mesh.
      * @param mesh A static Mesh to receive the snapshot of the particle trails.
@@ -35086,7 +35557,7 @@ interface ParticleSystemRenderer extends Renderer {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/ParticleSystemRenderer.BakeTrailsTexture.html | ParticleSystemRenderer.BakeTrailsTexture}
      */
-    BakeTrailsTexture(verticesTexture: unknown, indicesTexture: unknown, options: ParticleSystemBakeTextureOptions): number;
+    BakeTrailsTexture(verticesTexture: Texture2D&, indicesTexture: Texture2D&, options: ParticleSystemBakeTextureOptions): number;
     /**
      * Creates a snapshot of ParticleSystem Trails and stores them in a Texture2D.
      * @param verticesTexture A Texture2D to receive the snapshot of the particle trail vertices.
@@ -35096,7 +35567,7 @@ interface ParticleSystemRenderer extends Renderer {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/ParticleSystemRenderer.BakeTrailsTexture.html | ParticleSystemRenderer.BakeTrailsTexture}
      */
-    BakeTrailsTexture(verticesTexture: unknown, indicesTexture: unknown, camera: Camera, options: ParticleSystemBakeTextureOptions): number;
+    BakeTrailsTexture(verticesTexture: Texture2D&, indicesTexture: Texture2D&, camera: Camera, options: ParticleSystemBakeTextureOptions): number;
     GetActiveTrailVertexStreams(streams: Readonly<ParticleSystemVertexStream[]>): void;
     GetActiveVertexStreams(streams: Readonly<ParticleSystemVertexStream[]>): void;
     /**
@@ -35323,12 +35794,12 @@ interface ProfilerConstructor {
     BeginSample(name: string): void;
     BeginSample(name: string, targetObject: Object): void;
     BeginThreadProfiling(threadGroupName: string, threadName: string): void;
-    EmitFrameMetaData(id: unknown, tag: number, data: unknown): void;
-    EmitFrameMetaData<T>(id: unknown, tag: number, data: Readonly<T[]>): void;
-    EmitFrameMetaData<T>(id: unknown, tag: number, data: Readonly<T[]>): void;
-    EmitSessionMetaData(id: unknown, tag: number, data: unknown): void;
-    EmitSessionMetaData<T>(id: unknown, tag: number, data: Readonly<T[]>): void;
-    EmitSessionMetaData<T>(id: unknown, tag: number, data: Readonly<T[]>): void;
+    EmitFrameMetaData(id: Guid, tag: number, data: Array): void;
+    EmitFrameMetaData<T>(id: Guid, tag: number, data: Readonly<T[]>): void;
+    EmitFrameMetaData<T>(id: Guid, tag: number, data: Readonly<T[]>): void;
+    EmitSessionMetaData(id: Guid, tag: number, data: Array): void;
+    EmitSessionMetaData<T>(id: Guid, tag: number, data: Readonly<T[]>): void;
+    EmitSessionMetaData<T>(id: Guid, tag: number, data: Readonly<T[]>): void;
     EndSample(): void;
     EndThreadProfiling(): void;
     GetAllCategories(categories: Readonly<ProfilerCategory[]>): void;
@@ -35541,12 +36012,12 @@ interface Scrollbar extends Selectable, IBeginDragHandler, IInitializePotentialD
 
 }
     
-interface OnValidateInput {
+interface OnValidateInput extends MulticastDelegate {
 
 
 
-    BeginInvoke(text: string, charIndex: number, addedChar: string, callback: unknown, object: unknown): unknown;
-    EndInvoke(result: unknown): string;
+    BeginInvoke(text: string, charIndex: number, addedChar: string, callback: AsyncCallback, object: unknown): IAsyncResult;
+    EndInvoke(result: IAsyncResult): string;
     Invoke(text: string, charIndex: number, addedChar: string): string;
 
 
@@ -35555,7 +36026,7 @@ interface OnValidateInput {
 interface OnValidateInputConstructor {
 
 
-    new(object: unknown, method: unknown): OnValidateInput;
+    new(object: unknown, method: IntPtr): OnValidateInput;
 
 
 
@@ -35566,7 +36037,7 @@ interface TMP_InputValidator extends ScriptableObject {
 
 
 
-    Validate(text: Readonly<string[]>, pos: unknown, ch: string): string;
+    Validate(text: Readonly<string[]>, pos: Int32&, ch: string): string;
 
 
 }
@@ -36171,7 +36642,7 @@ interface AudioSource extends AudioBehaviour {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/AudioSource.GetAmbisonicDecoderFloat.html | AudioSource.GetAmbisonicDecoderFloat}
      */
-    GetAmbisonicDecoderFloat(index: number, value: unknown): boolean;
+    GetAmbisonicDecoderFloat(index: number, value: Single&): boolean;
     /**
      * Get the current custom curve for the given AudioSourceCurveType.
      * @param type The curve type to get.
@@ -36194,7 +36665,7 @@ interface AudioSource extends AudioBehaviour {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/AudioSource.GetSpatializerFloat.html | AudioSource.GetSpatializerFloat}
      */
-    GetSpatializerFloat(index: number, value: unknown): boolean;
+    GetSpatializerFloat(index: number, value: Single&): boolean;
     /**
      * Provides the block of audio frequencies (spectrum data) of the AudioSource that is currently playing.
      * @param samples The array to populate with frequency domain representations of audio samples. The array length must be a power of 2 (such as 128, 256, 512). Also, the length must not be less than 64 or greater than 8192.
@@ -36382,7 +36853,7 @@ interface AudioClip extends AudioResource {
 
 
 
-    GetData(data: unknown, offsetSamples: number): boolean;
+    GetData(data: Span<number>, offsetSamples: number): boolean;
     /**
      * Fills an array with sample data from the clip.
      * 
@@ -36401,7 +36872,7 @@ interface AudioClip extends AudioResource {
      * More info: {@link https://docs.unity3d.com/ScriptReference/AudioClip.SetData.html | AudioClip.SetData}
      */
     SetData(data: Readonly<number[]>, offsetSamples: number): boolean;
-    SetData(data: unknown, offsetSamples: number): boolean;
+    SetData(data: ReadOnlySpan<number>, offsetSamples: number): boolean;
     /**
      * Unloads the audio data associated with the clip. This works only for AudioClips that are based on actual sound file assets.
      * 
@@ -36412,12 +36883,12 @@ interface AudioClip extends AudioResource {
 
 }
     
-interface PCMReaderCallback {
+interface PCMReaderCallback extends MulticastDelegate {
 
 
 
-    BeginInvoke(data: Readonly<number[]>, callback: unknown, object: unknown): unknown;
-    EndInvoke(result: unknown): void;
+    BeginInvoke(data: Readonly<number[]>, callback: AsyncCallback, object: unknown): IAsyncResult;
+    EndInvoke(result: IAsyncResult): void;
     Invoke(data: Readonly<number[]>): void;
 
 
@@ -36426,19 +36897,19 @@ interface PCMReaderCallback {
 interface PCMReaderCallbackConstructor {
 
 
-    new(object: unknown, method: unknown): PCMReaderCallback;
+    new(object: unknown, method: IntPtr): PCMReaderCallback;
 
 
 
 }
 declare const PCMReaderCallback: PCMReaderCallbackConstructor;
     
-interface PCMSetPositionCallback {
+interface PCMSetPositionCallback extends MulticastDelegate {
 
 
 
-    BeginInvoke(position: number, callback: unknown, object: unknown): unknown;
-    EndInvoke(result: unknown): void;
+    BeginInvoke(position: number, callback: AsyncCallback, object: unknown): IAsyncResult;
+    EndInvoke(result: IAsyncResult): void;
     Invoke(position: number): void;
 
 
@@ -36447,7 +36918,7 @@ interface PCMSetPositionCallback {
 interface PCMSetPositionCallbackConstructor {
 
 
-    new(object: unknown, method: unknown): PCMSetPositionCallback;
+    new(object: unknown, method: IntPtr): PCMSetPositionCallback;
 
 
 
@@ -36527,7 +36998,7 @@ interface AudioMixer extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Audio.AudioMixer.GetFloat.html | Audio.AudioMixer.GetFloat}
      */
-    GetFloat(name: string, value: unknown): boolean;
+    GetFloat(name: string, value: Single&): boolean;
     /**
      * Sets the value of the exposed parameter specified. When a parameter is exposed, it is not controlled by mixer snapshots. You can only change the parameter with this function.
      * @param name The name of an exposed Audio Mixer group parameter. To expose a parameter, go to the Audio Mixer group's Inspector window, right click the parameter you want to expose, and choose Expose [parameter name] to script.
@@ -36639,7 +37110,7 @@ interface Tween<DriverValueType> extends MonoBehaviour, ITween {
     SetRandomTime(): Tween<DriverValueType>;
     SetTime(time: number): Tween<DriverValueType>;
     SetUseUnscaledTime(useUnscaledTime: boolean): Tween<DriverValueType>;
-    Yield(): unknown;
+    Yield(): IEnumerator;
 
 
 }
@@ -36657,10 +37128,10 @@ interface IChatroomNetwork {
     readonly PeerIDs: Readonly<number[]>;
 
     readonly OnCreatedChatroom: MonoSignal<void>;
-    readonly OnChatroomCreationFailed: MonoSignal<unknown>;
+    readonly OnChatroomCreationFailed: MonoSignal<Exception>;
     readonly OnClosedChatroom: MonoSignal<void>;
     readonly OnJoinedChatroom: MonoSignal<number>;
-    readonly OnChatroomJoinFailed: MonoSignal<unknown>;
+    readonly OnChatroomJoinFailed: MonoSignal<Exception>;
     readonly OnLeftChatroom: MonoSignal<void>;
     readonly OnPeerJoinedChatroom: MonoSignal<number, number, AudioSource>;
     readonly OnPeerLeftChatroom: MonoSignal<number>;
@@ -36695,10 +37166,10 @@ interface AirshipUniVoiceNetwork extends NetworkBehaviour, IChatroomNetwork {
     readonly PeerIDs: Readonly<number[]>;
 
     readonly OnCreatedChatroom: MonoSignal<void>;
-    readonly OnChatroomCreationFailed: MonoSignal<unknown>;
+    readonly OnChatroomCreationFailed: MonoSignal<Exception>;
     readonly OnClosedChatroom: MonoSignal<void>;
     readonly OnJoinedChatroom: MonoSignal<number>;
-    readonly OnChatroomJoinFailed: MonoSignal<unknown>;
+    readonly OnChatroomJoinFailed: MonoSignal<Exception>;
     readonly OnLeftChatroom: MonoSignal<void>;
     readonly OnPeerJoinedChatroom: MonoSignal<number, number, AudioSource>;
     readonly OnPeerLeftChatroom: MonoSignal<number>;
@@ -36724,7 +37195,7 @@ interface AirshipUniVoiceNetwork extends NetworkBehaviour, IChatroomNetwork {
     
 interface ChatroomAgent {
     PeerOutputs: CSDictionary<number, IAudioOutput>;
-    OnModeChanged: unknown;
+    OnModeChanged: Action<ChatroomAgentMode>;
     PeerSettings: CSDictionary<number, ChatroomPeerSettings>;
     readonly Network: IChatroomNetwork;
     readonly AudioInput: IAudioInput;
@@ -37221,7 +37692,7 @@ interface LodSet {
 }
     
 interface VoxelMeshCopy {
-    quaternions: Readonly<unknown[]>;
+    quaternions: Readonly<KeyValuePair<Rotations, Quaternion>[]>;
     flip: Readonly<PrecalculatedFlip[]>;
     rotation: Readonly<PrecalculatedRotation[]>;
     srcUvs: Readonly<Vector2[]>;
@@ -37818,7 +38289,7 @@ interface MainMenuSceneManager extends MonoBehaviour {
 
 
 
-    CheckForFailedStartup(): unknown;
+    CheckForFailedStartup(): IEnumerator;
     CompletedTSLoad(): void;
     Retry(): void;
 
@@ -37870,29 +38341,29 @@ interface IPromise<PromisedT> {
 
 
 
-    Catch(onRejected: unknown): IPromise;
-    Catch(onRejected: unknown): IPromise<PromisedT>;
-    ContinueWith(onResolved: unknown): IPromise;
-    ContinueWith<ConvertedT>(onComplete: unknown): IPromise<ConvertedT>;
-    Done(onResolved: unknown, onRejected: unknown): void;
-    Done(onResolved: unknown): void;
+    Catch(onRejected: Action<Exception>): IPromise;
+    Catch(onRejected: Func<Exception, PromisedT>): IPromise<PromisedT>;
+    ContinueWith(onResolved: Func<IPromise>): IPromise;
+    ContinueWith<ConvertedT>(onComplete: Func<IPromise<ConvertedT>>): IPromise<ConvertedT>;
+    Done(onResolved: Action<PromisedT>, onRejected: Action<Exception>): void;
+    Done(onResolved: Action<PromisedT>): void;
     Done(): void;
-    Finally(onComplete: unknown): IPromise<PromisedT>;
-    Progress(onProgress: unknown): IPromise<PromisedT>;
-    Then<ConvertedT>(onResolved: unknown): IPromise<ConvertedT>;
-    Then(onResolved: unknown): IPromise;
-    Then(onResolved: unknown): IPromise;
-    Then<ConvertedT>(onResolved: unknown, onRejected: unknown): IPromise<ConvertedT>;
-    Then(onResolved: unknown, onRejected: unknown): IPromise;
-    Then(onResolved: unknown, onRejected: unknown): IPromise;
-    Then<ConvertedT>(onResolved: unknown, onRejected: unknown, onProgress: unknown): IPromise<ConvertedT>;
-    Then(onResolved: unknown, onRejected: unknown, onProgress: unknown): IPromise;
-    Then(onResolved: unknown, onRejected: unknown, onProgress: unknown): IPromise;
-    Then<ConvertedT>(transform: unknown): IPromise<ConvertedT>;
-    ThenAll<ConvertedT>(chain: unknown): IPromise<Readonly<ConvertedT[]>>;
-    ThenAll(chain: unknown): IPromise;
-    ThenRace<ConvertedT>(chain: unknown): IPromise<ConvertedT>;
-    ThenRace(chain: unknown): IPromise;
+    Finally(onComplete: Action): IPromise<PromisedT>;
+    Progress(onProgress: Action<number>): IPromise<PromisedT>;
+    Then<ConvertedT>(onResolved: Func<PromisedT, IPromise<ConvertedT>>): IPromise<ConvertedT>;
+    Then(onResolved: Func<PromisedT, IPromise>): IPromise;
+    Then(onResolved: Action<PromisedT>): IPromise;
+    Then<ConvertedT>(onResolved: Func<PromisedT, IPromise<ConvertedT>>, onRejected: Func<Exception, IPromise<ConvertedT>>): IPromise<ConvertedT>;
+    Then(onResolved: Func<PromisedT, IPromise>, onRejected: Action<Exception>): IPromise;
+    Then(onResolved: Action<PromisedT>, onRejected: Action<Exception>): IPromise;
+    Then<ConvertedT>(onResolved: Func<PromisedT, IPromise<ConvertedT>>, onRejected: Func<Exception, IPromise<ConvertedT>>, onProgress: Action<number>): IPromise<ConvertedT>;
+    Then(onResolved: Func<PromisedT, IPromise>, onRejected: Action<Exception>, onProgress: Action<number>): IPromise;
+    Then(onResolved: Action<PromisedT>, onRejected: Action<Exception>, onProgress: Action<number>): IPromise;
+    Then<ConvertedT>(transform: Func<PromisedT, ConvertedT>): IPromise<ConvertedT>;
+    ThenAll<ConvertedT>(chain: Func<PromisedT, Readonly<IPromise<ConvertedT>[]>>): IPromise<Readonly<ConvertedT[]>>;
+    ThenAll(chain: Func<PromisedT, Readonly<IPromise[]>>): IPromise;
+    ThenRace<ConvertedT>(chain: Func<PromisedT, Readonly<IPromise<ConvertedT>[]>>): IPromise<ConvertedT>;
+    ThenRace(chain: Func<PromisedT, Readonly<IPromise[]>>): IPromise;
     WithName(name: string): IPromise<PromisedT>;
 
 
@@ -37903,28 +38374,28 @@ interface IPromise {
 
 
 
-    Catch(onRejected: unknown): IPromise;
-    ContinueWith(onResolved: unknown): IPromise;
-    ContinueWith<ConvertedT>(onComplete: unknown): IPromise<ConvertedT>;
-    Done(onResolved: unknown, onRejected: unknown): void;
-    Done(onResolved: unknown): void;
+    Catch(onRejected: Action<Exception>): IPromise;
+    ContinueWith(onResolved: Func<IPromise>): IPromise;
+    ContinueWith<ConvertedT>(onComplete: Func<IPromise<ConvertedT>>): IPromise<ConvertedT>;
+    Done(onResolved: Action, onRejected: Action<Exception>): void;
+    Done(onResolved: Action): void;
     Done(): void;
-    Finally(onComplete: unknown): IPromise;
-    Progress(onProgress: unknown): IPromise;
-    Then<ConvertedT>(onResolved: unknown): IPromise<ConvertedT>;
-    Then(onResolved: unknown): IPromise;
-    Then(onResolved: unknown): IPromise;
-    Then<ConvertedT>(onResolved: unknown, onRejected: unknown): IPromise<ConvertedT>;
-    Then(onResolved: unknown, onRejected: unknown): IPromise;
-    Then(onResolved: unknown, onRejected: unknown): IPromise;
-    Then<ConvertedT>(onResolved: unknown, onRejected: unknown, onProgress: unknown): IPromise<ConvertedT>;
-    Then(onResolved: unknown, onRejected: unknown, onProgress: unknown): IPromise;
-    Then(onResolved: unknown, onRejected: unknown, onProgress: unknown): IPromise;
-    ThenAll(chain: unknown): IPromise;
-    ThenAll<ConvertedT>(chain: unknown): IPromise<Readonly<ConvertedT[]>>;
-    ThenRace(chain: unknown): IPromise;
-    ThenRace<ConvertedT>(chain: unknown): IPromise<ConvertedT>;
-    ThenSequence(chain: unknown): IPromise;
+    Finally(onComplete: Action): IPromise;
+    Progress(onProgress: Action<number>): IPromise;
+    Then<ConvertedT>(onResolved: Func<IPromise<ConvertedT>>): IPromise<ConvertedT>;
+    Then(onResolved: Func<IPromise>): IPromise;
+    Then(onResolved: Action): IPromise;
+    Then<ConvertedT>(onResolved: Func<IPromise<ConvertedT>>, onRejected: Func<Exception, IPromise<ConvertedT>>): IPromise<ConvertedT>;
+    Then(onResolved: Func<IPromise>, onRejected: Action<Exception>): IPromise;
+    Then(onResolved: Action, onRejected: Action<Exception>): IPromise;
+    Then<ConvertedT>(onResolved: Func<IPromise<ConvertedT>>, onRejected: Func<Exception, IPromise<ConvertedT>>, onProgress: Action<number>): IPromise<ConvertedT>;
+    Then(onResolved: Func<IPromise>, onRejected: Action<Exception>, onProgress: Action<number>): IPromise;
+    Then(onResolved: Action, onRejected: Action<Exception>, onProgress: Action<number>): IPromise;
+    ThenAll(chain: Func<Readonly<IPromise[]>>): IPromise;
+    ThenAll<ConvertedT>(chain: Func<Readonly<IPromise<ConvertedT>[]>>): IPromise<Readonly<ConvertedT[]>>;
+    ThenRace(chain: Func<Readonly<IPromise[]>>): IPromise;
+    ThenRace<ConvertedT>(chain: Func<Readonly<IPromise<ConvertedT>[]>>): IPromise<ConvertedT>;
+    ThenSequence(chain: Func<Readonly<Func<IPromise>[]>>): IPromise;
     WithName(name: string): IPromise;
 
 
@@ -37984,8 +38455,8 @@ interface RequestHelper {
     Retries: number;
     RetrySecondsDelay: number;
     RetryCallbackOnlyOnNetworkErrors: boolean;
-    RetryCallback: unknown;
-    ProgressCallback: unknown;
+    RetryCallback: Action<RequestException, number>;
+    ProgressCallback: Action<number>;
     EnableDebug: boolean;
     UseHttpContinue?: boolean;
     RedirectLimit?: number;
@@ -38014,6 +38485,32 @@ interface RequestHelper {
 
 
 }
+    
+interface RequestException extends Exception {
+    readonly Request: RequestHelper;
+    readonly IsHttpError: boolean;
+    readonly IsNetworkError: boolean;
+    readonly StatusCode: number;
+    ServerMessage: string;
+    Response: string;
+
+
+
+
+
+}
+    
+interface RequestExceptionConstructor {
+
+
+    new(): RequestException;
+    new(message: string): RequestException;
+    new(request: RequestHelper, message: string, isHttpError: boolean, isNetworkError: boolean, statusCode: number, response: string): RequestException;
+
+
+
+}
+declare const RequestException: RequestExceptionConstructor;
     
 interface WWWForm {
     /**
@@ -38060,7 +38557,7 @@ interface WWWForm {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/WWWForm.AddField.html | WWWForm.AddField}
      */
-    AddField(fieldName: string, value: string, e: unknown): void;
+    AddField(fieldName: string, value: string, e: Encoding): void;
     /**
      * Adds a simple field to the form.
      * 
@@ -38251,7 +38748,7 @@ interface UnityWebRequest {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Networking.UnityWebRequest-uri.html | Networking.UnityWebRequest.uri}
      */
-    uri: unknown;
+    uri: Uri;
     /**
      * The numeric HTTP response code returned by the server, such as 200, 404 or 500. (Read Only)
      * 
@@ -38418,44 +38915,44 @@ interface UnityWebRequestConstructor {
 
     new(): UnityWebRequest;
     new(url: string): UnityWebRequest;
-    new(uri: unknown): UnityWebRequest;
+    new(uri: Uri): UnityWebRequest;
     new(url: string, method: string): UnityWebRequest;
-    new(uri: unknown, method: string): UnityWebRequest;
+    new(uri: Uri, method: string): UnityWebRequest;
     new(url: string, method: string, downloadHandler: DownloadHandler, uploadHandler: UploadHandler): UnityWebRequest;
-    new(uri: unknown, method: string, downloadHandler: DownloadHandler, uploadHandler: UploadHandler): UnityWebRequest;
+    new(uri: Uri, method: string, downloadHandler: DownloadHandler, uploadHandler: UploadHandler): UnityWebRequest;
 
 
     ClearCookieCache(): void;
-    ClearCookieCache(uri: unknown): void;
+    ClearCookieCache(uri: Uri): void;
     Delete(uri: string): UnityWebRequest;
-    Delete(uri: unknown): UnityWebRequest;
+    Delete(uri: Uri): UnityWebRequest;
     EscapeURL(s: string): string;
-    EscapeURL(s: string, e: unknown): string;
+    EscapeURL(s: string, e: Encoding): string;
     GenerateBoundary(): Readonly<number[]>;
     Get(uri: string): UnityWebRequest;
-    Get(uri: unknown): UnityWebRequest;
+    Get(uri: Uri): UnityWebRequest;
     Head(uri: string): UnityWebRequest;
-    Head(uri: unknown): UnityWebRequest;
+    Head(uri: Uri): UnityWebRequest;
     Post(uri: string, postData: string, contentType: string): UnityWebRequest;
-    Post(uri: unknown, postData: string, contentType: string): UnityWebRequest;
+    Post(uri: Uri, postData: string, contentType: string): UnityWebRequest;
     Post(uri: string, formData: WWWForm): UnityWebRequest;
-    Post(uri: unknown, formData: WWWForm): UnityWebRequest;
+    Post(uri: Uri, formData: WWWForm): UnityWebRequest;
     Post(uri: string, multipartFormSections: Readonly<IMultipartFormSection[]>): UnityWebRequest;
-    Post(uri: unknown, multipartFormSections: Readonly<IMultipartFormSection[]>): UnityWebRequest;
+    Post(uri: Uri, multipartFormSections: Readonly<IMultipartFormSection[]>): UnityWebRequest;
     Post(uri: string, multipartFormSections: Readonly<IMultipartFormSection[]>, boundary: Readonly<number[]>): UnityWebRequest;
-    Post(uri: unknown, multipartFormSections: Readonly<IMultipartFormSection[]>, boundary: Readonly<number[]>): UnityWebRequest;
+    Post(uri: Uri, multipartFormSections: Readonly<IMultipartFormSection[]>, boundary: Readonly<number[]>): UnityWebRequest;
     Post(uri: string, formFields: CSDictionary<string, string>): UnityWebRequest;
-    Post(uri: unknown, formFields: CSDictionary<string, string>): UnityWebRequest;
+    Post(uri: Uri, formFields: CSDictionary<string, string>): UnityWebRequest;
     PostWwwForm(uri: string, form: string): UnityWebRequest;
-    PostWwwForm(uri: unknown, form: string): UnityWebRequest;
+    PostWwwForm(uri: Uri, form: string): UnityWebRequest;
     Put(uri: string, bodyData: Readonly<number[]>): UnityWebRequest;
-    Put(uri: unknown, bodyData: Readonly<number[]>): UnityWebRequest;
+    Put(uri: Uri, bodyData: Readonly<number[]>): UnityWebRequest;
     Put(uri: string, bodyData: string): UnityWebRequest;
-    Put(uri: unknown, bodyData: string): UnityWebRequest;
+    Put(uri: Uri, bodyData: string): UnityWebRequest;
     SerializeFormSections(multipartFormSections: Readonly<IMultipartFormSection[]>, boundary: Readonly<number[]>): Readonly<number[]>;
     SerializeSimpleForm(formFields: CSDictionary<string, string>): Readonly<number[]>;
     UnEscapeURL(s: string): string;
-    UnEscapeURL(s: string, e: unknown): string;
+    UnEscapeURL(s: string, e: Encoding): string;
 
 }
 declare const UnityWebRequest: UnityWebRequestConstructor;
@@ -38732,7 +39229,7 @@ interface RectOffset {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/RectOffset.ToString.html | RectOffset.ToString}
      */
-    ToString(format: string, formatProvider: unknown): string;
+    ToString(format: string, formatProvider: IFormatProvider): string;
 
 
 }
@@ -38872,9 +39369,9 @@ interface RectTransformUtilityConstructor {
     RectangleContainsScreenPoint(rect: RectTransform, screenPoint: Vector2): boolean;
     RectangleContainsScreenPoint(rect: RectTransform, screenPoint: Vector2, cam: Camera): boolean;
     RectangleContainsScreenPoint(rect: RectTransform, screenPoint: Vector2, cam: Camera, offset: Vector4): boolean;
-    ScreenPointToLocalPointInRectangle(rect: RectTransform, screenPoint: Vector2, cam: Camera, localPoint: unknown): boolean;
+    ScreenPointToLocalPointInRectangle(rect: RectTransform, screenPoint: Vector2, cam: Camera, localPoint: Vector2&): boolean;
     ScreenPointToRay(cam: Camera, screenPos: Vector2): Ray;
-    ScreenPointToWorldPointInRectangle(rect: RectTransform, screenPoint: Vector2, cam: Camera, worldPoint: unknown): boolean;
+    ScreenPointToWorldPointInRectangle(rect: RectTransform, screenPoint: Vector2, cam: Camera, worldPoint: Vector3&): boolean;
     WorldToScreenPoint(cam: Camera, worldPoint: Vector3): Vector2;
 
 }
@@ -38929,12 +39426,42 @@ interface ScrollRect extends UIBehaviour, ILayoutGroup, IBeginDragHandler, IInit
 
 }
     
-interface CameraScreenshotRecorder extends MonoBehaviour {
+interface Singleton<T extends MonoBehaviour> extends MonoBehaviour {
+
+
+
+    OnApplicationQuit(): void;
+
+
+}
+    
+interface SingletonConstructor {
+    readonly IsAwake: boolean;
+    readonly Instance: T;
+
+
+
+
+
+}
+declare const Singleton: SingletonConstructor;
+    
+interface InternalCameraScreenshotRecorder extends Singleton<InternalCameraScreenshotRecorder> {
     saveFolder: SaveFolder;
     shouldSaveCaptures: boolean;
     resWidth: number;
     resHeight: number;
     readonly FolderName: string;
+
+
+
+    SaveRenderTexture(rt: RenderTexture, fileName: string, png: boolean): CameraScreenshotResponse;
+    SaveTexture(texture: Texture2D, fileName: string, png: boolean): CameraScreenshotResponse;
+    ScreenShotName(width: number, height: number, png: boolean): string;
+    ScreenShotName(filename: string, png: boolean): string;
+    TakeCameraScreenshotCo(camera: Camera, fileName: string, superSampleSize: number): IEnumerator;
+
+
 }
     
 interface CameraScreenshotResponse {
@@ -38958,12 +39485,12 @@ interface CameraScreenshotResponseConstructor {
 }
 declare const CameraScreenshotResponse: CameraScreenshotResponseConstructor;
     
-interface OnPictureTaken {
+interface OnPictureTaken extends MulticastDelegate {
 
 
 
-    BeginInvoke(screenshot: Texture2D, callback: unknown, object: unknown): unknown;
-    EndInvoke(result: unknown): void;
+    BeginInvoke(screenshot: Texture2D, callback: AsyncCallback, object: unknown): IAsyncResult;
+    EndInvoke(result: IAsyncResult): void;
     Invoke(screenshot: Texture2D): void;
 
 
@@ -38972,7 +39499,7 @@ interface OnPictureTaken {
 interface OnPictureTakenConstructor {
 
 
-    new(object: unknown, method: unknown): OnPictureTaken;
+    new(object: unknown, method: IntPtr): OnPictureTaken;
 
 
 
@@ -38982,11 +39509,14 @@ declare const OnPictureTaken: OnPictureTakenConstructor;
 interface InternalCameraScreenshotRecorderConstructor {
     onPictureTaken: OnPictureTaken;
     readonly GetScreenshotTexture: Texture2D;
-    
-    new(): CameraScreenshotRecorder;
 
-    TakeScreenshot(fileName: string, superSampleSize: number, png: boolean): void;
+
+    new(): InternalCameraScreenshotRecorder;
+
+
     TakeCameraScreenshot(camera: Camera, fileName: string, superSampleSize: number): void;
+    TakeScreenshot(fileName: string, superSampleSize: number, png: boolean): void;
+
 }
 declare const InternalCameraScreenshotRecorder: InternalCameraScreenshotRecorderConstructor;
     
@@ -39048,7 +39578,7 @@ interface Command {
 }
     
 interface Parameter {
-    readonly Type: unknown;
+    readonly Type: Type;
     readonly FriendlyTypeName: string;
     readonly Name: string;
     readonly HelpText: string;
@@ -39076,12 +39606,12 @@ interface CommandConstructor {
 
 
 
-    Create(name: string, aliases: string, helpText: string, callback: unknown): Command;
-    Create<T1>(name: string, aliases: string, helpText: string, p1: Parameter, callback: unknown, defaultCallback: unknown): Command;
-    Create<T1, T2>(name: string, aliases: string, helpText: string, p1: Parameter, p2: Parameter, callback: unknown, defaultCallback: unknown): Command;
-    Create<T1, T2, T3>(name: string, aliases: string, helpText: string, p1: Parameter, p2: Parameter, p3: Parameter, callback: unknown, defaultCallback: unknown): Command;
-    Create<T1, T2, T3, T4>(name: string, aliases: string, helpText: string, p1: Parameter, p2: Parameter, p3: Parameter, p4: Parameter, callback: unknown, defaultCallback: unknown): Command;
-    Create<T1, T2, T3, T4, T5>(name: string, aliases: string, helpText: string, p1: Parameter, p2: Parameter, p3: Parameter, p4: Parameter, p5: Parameter, callback: unknown, defaultCallback: unknown): Command;
+    Create(name: string, aliases: string, helpText: string, callback: Action): Command;
+    Create<T1>(name: string, aliases: string, helpText: string, p1: Parameter, callback: Action<T1>, defaultCallback: Action): Command;
+    Create<T1, T2>(name: string, aliases: string, helpText: string, p1: Parameter, p2: Parameter, callback: Action<T1, T2>, defaultCallback: Action): Command;
+    Create<T1, T2, T3>(name: string, aliases: string, helpText: string, p1: Parameter, p2: Parameter, p3: Parameter, callback: Action<T1, T2, T3>, defaultCallback: Action): Command;
+    Create<T1, T2, T3, T4>(name: string, aliases: string, helpText: string, p1: Parameter, p2: Parameter, p3: Parameter, p4: Parameter, callback: Action<T1, T2, T3, T4>, defaultCallback: Action): Command;
+    Create<T1, T2, T3, T4, T5>(name: string, aliases: string, helpText: string, p1: Parameter, p2: Parameter, p3: Parameter, p4: Parameter, p5: Parameter, callback: Action<T1, T2, T3, T4, T5>, defaultCallback: Action): Command;
 
 }
 declare const Command: CommandConstructor;
@@ -39101,7 +39631,7 @@ interface DevConsoleConstructor {
 
 
     AddCommand(command: Command, onlyInDevBuild: boolean): boolean;
-    AddParameterType<T>(parseFunc: unknown): boolean;
+    AddParameterType<T>(parseFunc: Func<string, T>): boolean;
     ClearActiveConsoleContext(): void;
     ClearConsole(): void;
     CloseConsole(): void;
@@ -39109,16 +39639,16 @@ interface DevConsoleConstructor {
     DisableToggleKey(): void;
     EnableConsole(): void;
     GetCommand(name: string): Command;
-    GetCommand(name: string, command: unknown): boolean;
-    InvokeCoroutine(enumerator: unknown): Coroutine;
-    InvokeDelayed(action: unknown, delay: number): Coroutine;
+    GetCommand(name: string, command: Command&): boolean;
+    InvokeCoroutine(enumerator: IEnumerator): Coroutine;
+    InvokeDelayed(action: Action, delay: number): Coroutine;
     Log(message: unknown, context: LogContext, prepend: boolean): void;
     Log(message: unknown, colour: Color, context: LogContext, prepend: boolean): void;
-    LogCollection<T>(collection: Readonly<T[]>, toString: unknown, prefix: string, suffix: string): void;
+    LogCollection<T>(collection: Readonly<T[]>, toString: Func<T, string>, prefix: string, suffix: string): void;
     LogCommand(): void;
     LogCommand(name: string): void;
     LogError(message: unknown, context: LogContext, prepend: boolean): void;
-    LogException(exception: unknown, context: LogContext, prepend: boolean): void;
+    LogException(exception: Exception, context: LogContext, prepend: boolean): void;
     LogSeperator(message: unknown): void;
     LogSuccess(message: unknown, context: LogContext): void;
     LogVariable(variableName: string, value: unknown, suffix: string): void;
@@ -39127,8 +39657,8 @@ interface DevConsoleConstructor {
     RemoveCommand(name: string): boolean;
     RemoveTrackedStat(name: string): boolean;
     RunCommand(input: string): boolean;
-    SetToggleKey(toggleKey: unknown): void;
-    SetTrackedStat(name: string, func: unknown, startEnabled: boolean): void;
+    SetToggleKey(toggleKey: Nullable<Key>): void;
+    SetTrackedStat(name: string, func: Func<unknown>, startEnabled: boolean): void;
 
     readonly OnConsoleEnabled: MonoSignal<void>;
     readonly OnConsoleDisabled: MonoSignal<void>;
@@ -39567,7 +40097,7 @@ interface VertexHelper {
     Dispose(): void;
     FillMesh(mesh: Mesh): void;
     GetUIVertexStream(stream: Readonly<UIVertex[]>): void;
-    PopulateUIVertex(vertex: unknown, i: number): void;
+    PopulateUIVertex(vertex: UIVertex&, i: number): void;
     SetUIVertex(vertex: UIVertex, i: number): void;
 
 
@@ -40665,7 +41195,7 @@ interface ScreenConstructor {
 
 
     GetDisplayLayout(displayLayout: Readonly<DisplayInfo[]>): void;
-    MoveMainWindowTo(display: unknown, position: Vector2Int): AsyncOperation;
+    MoveMainWindowTo(display: DisplayInfo&, position: Vector2Int): AsyncOperation;
     SetMSAASamples(numSamples: number): void;
     SetResolution(width: number, height: number, fullscreenMode: FullScreenMode, preferredRefreshRate: RefreshRate): void;
     SetResolution(width: number, height: number, fullscreenMode: FullScreenMode): void;
@@ -40723,8 +41253,8 @@ interface GizmosConstructor {
     DrawIcon(center: Vector3, name: string, allowScaling: boolean, tint: Color): void;
     DrawIcon(center: Vector3, name: string): void;
     DrawLine(from: Vector3, to: Vector3): void;
-    DrawLineList(points: unknown): void;
-    DrawLineStrip(points: unknown, looped: boolean): void;
+    DrawLineList(points: ReadOnlySpan<Vector3>): void;
+    DrawLineStrip(points: ReadOnlySpan<Vector3>, looped: boolean): void;
     DrawMesh(mesh: Mesh, submeshIndex: number, position: Vector3, rotation: Quaternion, scale: Vector3): void;
     DrawMesh(mesh: Mesh, position: Vector3, rotation: Quaternion): void;
     DrawMesh(mesh: Mesh, position: Vector3): void;
@@ -41063,7 +41593,7 @@ interface NavMeshAgent extends Behaviour {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/AI.NavMeshAgent.FindClosestEdge.html | AI.NavMeshAgent.FindClosestEdge}
      */
-    FindClosestEdge(hit: unknown): boolean;
+    FindClosestEdge(hit: NavMeshHit&): boolean;
     /**
      * Gets the cost for path calculation when crossing area of a particular type.
      * @param areaIndex Area Index.
@@ -41085,7 +41615,7 @@ interface NavMeshAgent extends Behaviour {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/AI.NavMeshAgent.Raycast.html | AI.NavMeshAgent.Raycast}
      */
-    Raycast(targetPosition: Vector3, hit: unknown): boolean;
+    Raycast(targetPosition: Vector3, hit: NavMeshHit&): boolean;
     /**
      * Clears the current path.
      * 
@@ -41100,7 +41630,7 @@ interface NavMeshAgent extends Behaviour {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/AI.NavMeshAgent.SamplePathPosition.html | AI.NavMeshAgent.SamplePathPosition}
      */
-    SamplePathPosition(areaMask: number, maxDistance: number, hit: unknown): boolean;
+    SamplePathPosition(areaMask: number, maxDistance: number, hit: NavMeshHit&): boolean;
     /**
      * Sets the cost for traversing over areas of the area type.
      * @param areaIndex Area cost.
@@ -41232,12 +41762,12 @@ interface NavMeshAgentConstructor {
 declare const NavMeshAgent: NavMeshAgentConstructor;
     
     
-interface OnNavMeshPreUpdate {
+interface OnNavMeshPreUpdate extends MulticastDelegate {
 
 
 
-    BeginInvoke(callback: unknown, object: unknown): unknown;
-    EndInvoke(result: unknown): void;
+    BeginInvoke(callback: AsyncCallback, object: unknown): IAsyncResult;
+    EndInvoke(result: IAsyncResult): void;
     Invoke(): void;
 
 
@@ -41246,7 +41776,7 @@ interface OnNavMeshPreUpdate {
 interface OnNavMeshPreUpdateConstructor {
 
 
-    new(object: unknown, method: unknown): OnNavMeshPreUpdate;
+    new(object: unknown, method: IntPtr): OnNavMeshPreUpdate;
 
 
 
@@ -41894,7 +42424,7 @@ interface RepeatButton extends TextElement {
 
 
 
-    SetAction(clickEvent: unknown, delay: number, interval: number): void;
+    SetAction(clickEvent: Action, delay: number, interval: number): void;
 
 
 }
@@ -41904,7 +42434,7 @@ interface RepeatButtonConstructor {
 
 
     new(): RepeatButton;
-    new(clickEvent: unknown, delay: number, interval: number): RepeatButton;
+    new(clickEvent: Action, delay: number, interval: number): RepeatButton;
 
 
 
@@ -41921,7 +42451,7 @@ interface ScrollerConstructor {
 
 
     new(): Scroller;
-    new(lowValue: number, highValue: number, valueChanged: unknown, direction: SliderDirection): Scroller;
+    new(lowValue: number, highValue: number, valueChanged: Action<number>, direction: SliderDirection): Scroller;
 
 
 
@@ -42876,7 +43406,7 @@ interface WheelCollider extends Collider {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/WheelCollider.GetGroundHit.html | WheelCollider.GetGroundHit}
      */
-    GetGroundHit(hit: unknown): boolean;
+    GetGroundHit(hit: WheelHit&): boolean;
     /**
      * Gets the world space pose of the wheel accounting for ground contact, suspension limits, steer angle, and rotation angle (angles in degrees).
      * @param pos Position of the wheel in world space.
@@ -42884,7 +43414,7 @@ interface WheelCollider extends Collider {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/WheelCollider.GetWorldPose.html | WheelCollider.GetWorldPose}
      */
-    GetWorldPose(pos: unknown, quat: unknown): void;
+    GetWorldPose(pos: Vector3&, quat: Quaternion&): void;
     /**
      * Reset the sprung masses of the vehicle.
      * 
@@ -43174,7 +43704,7 @@ interface TerrainData extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/TerrainData.ComputeDetailInstanceTransforms.html | TerrainData.ComputeDetailInstanceTransforms}
      */
-    ComputeDetailInstanceTransforms(patchX: number, patchY: number, layer: number, density: number, bounds: unknown): Readonly<DetailInstanceTransform[]>;
+    ComputeDetailInstanceTransforms(patchX: number, patchY: number, layer: number, density: number, bounds: Bounds&): Readonly<DetailInstanceTransform[]>;
     /**
      * Copies the specified part of the active RenderTexture to the Terrain heightmap texture.
      * @param sourceRect The part of the active Render Texture to copy.
@@ -43221,7 +43751,7 @@ interface TerrainData extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/TerrainData.GetAlphamaps.html | TerrainData.GetAlphamaps}
      */
-    GetAlphamaps(x: number, y: number, width: number, height: number): unknown;
+    GetAlphamaps(x: number, y: number, width: number, height: number): Single[,,];
     /**
      * Returns the alphamap texture at the specified index.
      * @param index Index of the alphamap.
@@ -43246,8 +43776,8 @@ interface TerrainData extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/TerrainData.GetDetailLayer.html | TerrainData.GetDetailLayer}
      */
-    GetDetailLayer(xBase: number, yBase: number, width: number, height: number, layer: number): unknown;
-    GetDetailLayer(positionBase: Vector2Int, size: Vector2Int, layer: number): unknown;
+    GetDetailLayer(xBase: number, yBase: number, width: number, height: number, layer: number): Int32[,];
+    GetDetailLayer(positionBase: Vector2Int, size: Vector2Int, layer: number): Int32[,];
     /**
      * Gets the world space height of the Terrain at a certain point x,y without adding the Terrain's world position y.
      * 
@@ -43263,7 +43793,7 @@ interface TerrainData extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/TerrainData.GetHeights.html | TerrainData.GetHeights}
      */
-    GetHeights(xBase: number, yBase: number, width: number, height: number): unknown;
+    GetHeights(xBase: number, yBase: number, width: number, height: number): Single[,];
     /**
      * Gets an array of Terrain holes samples.
      * @param xBase First x index of Terrain holes samples to retrieve.
@@ -43273,7 +43803,7 @@ interface TerrainData extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/TerrainData.GetHoles.html | TerrainData.GetHoles}
      */
-    GetHoles(xBase: number, yBase: number, width: number, height: number): unknown;
+    GetHoles(xBase: number, yBase: number, width: number, height: number): Boolean[,];
     /**
      * Gets an interpolated height at a point x,y. The x and y coordinates are clamped to [0, 1].
      * @param x X coordinate of the point in the range of [0, 1].
@@ -43293,7 +43823,7 @@ interface TerrainData extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/TerrainData.GetInterpolatedHeights.html | TerrainData.GetInterpolatedHeights}
      */
-    GetInterpolatedHeights(xBase: number, yBase: number, xCount: number, yCount: number, xInterval: number, yInterval: number): unknown;
+    GetInterpolatedHeights(xBase: number, yBase: number, xCount: number, yCount: number, xInterval: number, yInterval: number): Single[,];
     /**
      * Fills the array with Terrain height values using normalized x,y coordinates.
      * @param results The array to fill with height values.
@@ -43308,7 +43838,7 @@ interface TerrainData extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/TerrainData.GetInterpolatedHeights.html | TerrainData.GetInterpolatedHeights}
      */
-    GetInterpolatedHeights(results: unknown, resultXOffset: number, resultYOffset: number, xBase: number, yBase: number, xCount: number, yCount: number, xInterval: number, yInterval: number): void;
+    GetInterpolatedHeights(results: Single[,], resultXOffset: number, resultYOffset: number, xBase: number, yBase: number, xCount: number, yCount: number, xInterval: number, yInterval: number): void;
     /**
      * Get an interpolated normal at a given location.
      * 
@@ -43390,7 +43920,7 @@ interface TerrainData extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/TerrainData.SetAlphamaps.html | TerrainData.SetAlphamaps}
      */
-    SetAlphamaps(x: number, y: number, map: unknown): void;
+    SetAlphamaps(x: number, y: number, map: Single[,,]): void;
     /**
      * Marks the terrain data as dirty to trigger an update of the terrain basemap texture.
      * 
@@ -43402,8 +43932,8 @@ interface TerrainData extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/TerrainData.SetDetailLayer.html | TerrainData.SetDetailLayer}
      */
-    SetDetailLayer(xBase: number, yBase: number, layer: number, details: unknown): void;
-    SetDetailLayer(basePosition: Vector2Int, layer: number, details: unknown): void;
+    SetDetailLayer(xBase: number, yBase: number, layer: number, details: Int32[,]): void;
+    SetDetailLayer(basePosition: Vector2Int, layer: number, details: Int32[,]): void;
     /**
      * Sets the resolution of the detail map.
      * @param detailResolution Specifies the number of pixels in the detail resolution map. A larger detailResolution, leads to more accurate detail object painting.
@@ -43426,7 +43956,7 @@ interface TerrainData extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/TerrainData.SetHeights.html | TerrainData.SetHeights}
      */
-    SetHeights(xBase: number, yBase: number, heights: unknown): void;
+    SetHeights(xBase: number, yBase: number, heights: Single[,]): void;
     /**
      * Sets an array of heightmap samples.
      * @param xBase First x index of heightmap samples to set.
@@ -43435,7 +43965,7 @@ interface TerrainData extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/TerrainData.SetHeightsDelayLOD.html | TerrainData.SetHeightsDelayLOD}
      */
-    SetHeightsDelayLOD(xBase: number, yBase: number, heights: unknown): void;
+    SetHeightsDelayLOD(xBase: number, yBase: number, heights: Single[,]): void;
     /**
      * Sets an array of Terrain holes samples.
      * @param xBase First x index of Terrain holes samples to set.
@@ -43444,7 +43974,7 @@ interface TerrainData extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/TerrainData.SetHoles.html | TerrainData.SetHoles}
      */
-    SetHoles(xBase: number, yBase: number, holes: unknown): void;
+    SetHoles(xBase: number, yBase: number, holes: Boolean[,]): void;
     /**
      * Sets an array of Terrain holes samples.
      * @param xBase First x index of Terrain holes samples to set.
@@ -43453,7 +43983,7 @@ interface TerrainData extends Object {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/TerrainData.SetHolesDelayLOD.html | TerrainData.SetHolesDelayLOD}
      */
-    SetHolesDelayLOD(xBase: number, yBase: number, holes: unknown): void;
+    SetHolesDelayLOD(xBase: number, yBase: number, holes: Boolean[,]): void;
     /**
      * This function sets the terrainLayers property, and in addition, registers the action to the Editor's undo stack.
      * @param terrainLayers The Terrain Layer assets to set.
@@ -44323,16 +44853,16 @@ interface GraphicsConstructor {
     DrawTexture(screenRect: Rect, texture: Texture): void;
     ExecuteCommandBuffer(buffer: CommandBuffer): void;
     ExecuteCommandBufferAsync(buffer: CommandBuffer, queueType: ComputeQueueType): void;
-    RenderMesh(rparams: unknown, mesh: Mesh, submeshIndex: number, objectToWorld: Matrix4x4, prevObjectToWorld: unknown): void;
-    RenderMeshIndirect(rparams: unknown, mesh: Mesh, commandBuffer: GraphicsBuffer, commandCount: number, startCommand: number): void;
-    RenderMeshInstanced<T>(rparams: unknown, mesh: Mesh, submeshIndex: number, instanceData: Readonly<T[]>, instanceCount: number, startInstance: number): void;
-    RenderMeshInstanced<T>(rparams: unknown, mesh: Mesh, submeshIndex: number, instanceData: Readonly<T[]>, instanceCount: number, startInstance: number): void;
+    RenderMesh(rparams: RenderParams&, mesh: Mesh, submeshIndex: number, objectToWorld: Matrix4x4, prevObjectToWorld: Nullable<Matrix4x4>): void;
+    RenderMeshIndirect(rparams: RenderParams&, mesh: Mesh, commandBuffer: GraphicsBuffer, commandCount: number, startCommand: number): void;
+    RenderMeshInstanced<T>(rparams: RenderParams&, mesh: Mesh, submeshIndex: number, instanceData: Readonly<T[]>, instanceCount: number, startInstance: number): void;
+    RenderMeshInstanced<T>(rparams: RenderParams&, mesh: Mesh, submeshIndex: number, instanceData: Readonly<T[]>, instanceCount: number, startInstance: number): void;
     RenderMeshInstanced<T>(rparams: RenderParams, mesh: Mesh, submeshIndex: number, instanceData: Readonly<T[]>, instanceCount: number, startInstance: number): void;
-    RenderMeshPrimitives(rparams: unknown, mesh: Mesh, submeshIndex: number, instanceCount: number): void;
-    RenderPrimitives(rparams: unknown, topology: MeshTopology, vertexCount: number, instanceCount: number): void;
-    RenderPrimitivesIndexed(rparams: unknown, topology: MeshTopology, indexBuffer: GraphicsBuffer, indexCount: number, startIndex: number, instanceCount: number): void;
-    RenderPrimitivesIndexedIndirect(rparams: unknown, topology: MeshTopology, indexBuffer: GraphicsBuffer, commandBuffer: GraphicsBuffer, commandCount: number, startCommand: number): void;
-    RenderPrimitivesIndirect(rparams: unknown, topology: MeshTopology, commandBuffer: GraphicsBuffer, commandCount: number, startCommand: number): void;
+    RenderMeshPrimitives(rparams: RenderParams&, mesh: Mesh, submeshIndex: number, instanceCount: number): void;
+    RenderPrimitives(rparams: RenderParams&, topology: MeshTopology, vertexCount: number, instanceCount: number): void;
+    RenderPrimitivesIndexed(rparams: RenderParams&, topology: MeshTopology, indexBuffer: GraphicsBuffer, indexCount: number, startIndex: number, instanceCount: number): void;
+    RenderPrimitivesIndexedIndirect(rparams: RenderParams&, topology: MeshTopology, indexBuffer: GraphicsBuffer, commandBuffer: GraphicsBuffer, commandCount: number, startCommand: number): void;
+    RenderPrimitivesIndirect(rparams: RenderParams&, topology: MeshTopology, commandBuffer: GraphicsBuffer, commandCount: number, startCommand: number): void;
     SetRandomWriteTarget(index: number, uav: RenderTexture): void;
     SetRandomWriteTarget(index: number, uav: ComputeBuffer, preserveCounterValue: boolean): void;
     SetRandomWriteTarget(index: number, uav: GraphicsBuffer, preserveCounterValue: boolean): void;
@@ -44391,14 +44921,14 @@ interface StandaloneFileBrowserConstructor {
 
     OpenFilePanel(title: string, directory: string, extension: string, multiselect: boolean): Readonly<string[]>;
     OpenFilePanel(title: string, directory: string, extensions: Readonly<ExtensionFilter[]>, multiselect: boolean): Readonly<string[]>;
-    OpenFilePanelAsync(title: string, directory: string, extension: string, multiselect: boolean, cb: unknown): void;
-    OpenFilePanelAsync(title: string, directory: string, extensions: Readonly<ExtensionFilter[]>, multiselect: boolean, cb: unknown): void;
+    OpenFilePanelAsync(title: string, directory: string, extension: string, multiselect: boolean, cb: Action<Readonly<string[]>>): void;
+    OpenFilePanelAsync(title: string, directory: string, extensions: Readonly<ExtensionFilter[]>, multiselect: boolean, cb: Action<Readonly<string[]>>): void;
     OpenFolderPanel(title: string, directory: string, multiselect: boolean): Readonly<string[]>;
-    OpenFolderPanelAsync(title: string, directory: string, multiselect: boolean, cb: unknown): void;
+    OpenFolderPanelAsync(title: string, directory: string, multiselect: boolean, cb: Action<Readonly<string[]>>): void;
     SaveFilePanel(title: string, directory: string, defaultName: string, extension: string): string;
     SaveFilePanel(title: string, directory: string, defaultName: string, extensions: Readonly<ExtensionFilter[]>): string;
-    SaveFilePanelAsync(title: string, directory: string, defaultName: string, extension: string, cb: unknown): void;
-    SaveFilePanelAsync(title: string, directory: string, defaultName: string, extensions: Readonly<ExtensionFilter[]>, cb: unknown): void;
+    SaveFilePanelAsync(title: string, directory: string, defaultName: string, extension: string, cb: Action<string>): void;
+    SaveFilePanelAsync(title: string, directory: string, defaultName: string, extensions: Readonly<ExtensionFilter[]>, cb: Action<string>): void;
 
 }
 declare const StandaloneFileBrowser: StandaloneFileBrowserConstructor;
@@ -44460,11 +44990,11 @@ interface UnityWebRequestTextureConstructor {
 
 
     GetTexture(uri: string): UnityWebRequest;
-    GetTexture(uri: unknown): UnityWebRequest;
+    GetTexture(uri: Uri): UnityWebRequest;
     GetTexture(uri: string, nonReadable: boolean): UnityWebRequest;
-    GetTexture(uri: unknown, nonReadable: boolean): UnityWebRequest;
+    GetTexture(uri: Uri, nonReadable: boolean): UnityWebRequest;
     GetTexture(uri: string, parameters: DownloadedTextureParams): UnityWebRequest;
-    GetTexture(uri: unknown, parameters: DownloadedTextureParams): UnityWebRequest;
+    GetTexture(uri: Uri, parameters: DownloadedTextureParams): UnityWebRequest;
 
 }
 declare const UnityWebRequestTexture: UnityWebRequestTextureConstructor;
@@ -44983,8 +45513,8 @@ interface IApplyRevertPropertyContextMenuItemProvider {
 
     GetSourceName(comp: Component): string;
     GetSourceTerm(): string;
-    TryGetApplyMethodForFieldName(property: SerializedProperty, applyMethod: unknown): boolean;
-    TryGetRevertMethodForFieldName(property: SerializedProperty, revertMethod: unknown): boolean;
+    TryGetApplyMethodForFieldName(property: SerializedProperty, applyMethod: Action): boolean;
+    TryGetRevertMethodForFieldName(property: SerializedProperty, revertMethod: Action): boolean;
 
 
 }
@@ -45064,7 +45594,7 @@ interface SerializedProperty {
     GetArrayElementAtIndex(index: number): SerializedProperty;
     GetEndProperty(): SerializedProperty;
     GetEndProperty(includeInvisible: boolean): SerializedProperty;
-    GetEnumerator(): unknown;
+    GetEnumerator(): IEnumerator;
     GetFixedBufferElementAtIndex(index: number): SerializedProperty;
     InsertArrayElementAtIndex(index: number): void;
     MoveArrayElement(srcIndex: number, dstIndex: number): boolean;
@@ -45250,7 +45780,7 @@ interface BoundsInt {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/BoundsInt.ToString.html | BoundsInt.ToString}
      */
-    ToString(format: string, formatProvider: unknown): string;
+    ToString(format: string, formatProvider: IFormatProvider): string;
 
 
 }
@@ -45313,8 +45843,8 @@ interface VolumeComponent extends ScriptableObject, IApplyRevertPropertyContextM
     Override(state: VolumeComponent, interpFactor: number): void;
     Release(): void;
     SetAllOverridesTo(state: boolean): void;
-    TryGetApplyMethodForFieldName(property: SerializedProperty, applyMethod: unknown): boolean;
-    TryGetRevertMethodForFieldName(property: SerializedProperty, revertMethod: unknown): boolean;
+    TryGetApplyMethodForFieldName(property: SerializedProperty, applyMethod: Action): boolean;
+    TryGetRevertMethodForFieldName(property: SerializedProperty, revertMethod: Action): boolean;
 
 
 }
@@ -45338,7 +45868,7 @@ interface VolumeParameterConstructor {
 
 
 
-    IsObjectParameter(type: unknown): boolean;
+    IsObjectParameter(type: Type): boolean;
 
 }
 declare const VolumeParameter: VolumeParameterConstructor;
@@ -45952,7 +46482,7 @@ interface RenderPipelineAsset extends ScriptableObject {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RenderPipelineAsset-pipelineType.html | Rendering.RenderPipelineAsset.pipelineType}
      */
-    readonly pipelineType: unknown;
+    readonly pipelineType: Type;
 
 
 
@@ -46295,8 +46825,8 @@ The default value is true.
 
     DecreaseLevel(applyExpensiveChanges: boolean): void;
     DecreaseLevel(): void;
-    ForEach(callback: unknown): void;
-    ForEach(callback: unknown): void;
+    ForEach(callback: Action): void;
+    ForEach(callback: Action<number, string>): void;
     GetActiveQualityLevelsForPlatform(buildTargetGroupName: string): Readonly<number[]>;
     GetActiveQualityLevelsForPlatformCount(buildTargetGroupName: string): number;
     GetAllRenderPipelineAssetsForPlatform(buildTargetGroupName: string, renderPipelineAssets: Readonly<RenderPipelineAsset[]>): void;
@@ -46304,7 +46834,7 @@ The default value is true.
     GetQualitySettings(): Object;
     GetRenderPipelineAssetAt(index: number): RenderPipelineAsset;
     GetRenderPipelineAssetsForPlatform<T>(buildTargetGroupName: string, uniqueRenderPipelineAssets: Readonly<T[]>): void;
-    GetRenderPipelineAssetsForPlatform<T>(buildTargetGroupName: string, uniqueRenderPipelineAssets: Readonly<T[]>, allLevelsAreOverridden: unknown): void;
+    GetRenderPipelineAssetsForPlatform<T>(buildTargetGroupName: string, uniqueRenderPipelineAssets: Readonly<T[]>, allLevelsAreOverridden: Boolean&): void;
     GetTextureMipmapLimitSettings(groupName: string): TextureMipmapLimitSettings;
     IncreaseLevel(applyExpensiveChanges: boolean): void;
     IncreaseLevel(): void;
@@ -46313,8 +46843,8 @@ The default value is true.
     SetQualityLevel(index: number): void;
     SetQualityLevel(index: number, applyExpensiveChanges: boolean): void;
     SetTextureMipmapLimitSettings(groupName: string, textureMipmapLimitSettings: TextureMipmapLimitSettings): void;
-    TryExcludePlatformAt(buildTargetGroupName: string, index: number, error: unknown): boolean;
-    TryIncludePlatformAt(buildTargetGroupName: string, index: number, error: unknown): boolean;
+    TryExcludePlatformAt(buildTargetGroupName: string, index: number, error: Exception&): boolean;
+    TryIncludePlatformAt(buildTargetGroupName: string, index: number, error: Exception&): boolean;
 
     readonly activeQualityLevelChanged: MonoSignal<number, number>;
 }
@@ -46324,23 +46854,6 @@ interface GraphicsSettings extends Object {
 
 
 
-
-
-}
-    
-interface RenderPipelineGlobalSettings extends ScriptableObject, ISerializationCallbackReceiver {
-
-
-
-    /**
-     * Editor-only function that initializes the RenderPipelineGlobalSettings.
-     * @param source RenderPipelineGlobalSettings that Unity will copy values from. Optional.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RenderPipelineGlobalSettings.Initialize.html | Rendering.RenderPipelineGlobalSettings.Initialize}
-     */
-    Initialize(source: RenderPipelineGlobalSettings): void;
-    OnAfterDeserialize(): void;
-    OnBeforeSerialize(): void;
 
 
 }
@@ -46367,6 +46880,23 @@ interface IRenderPipelineGraphicsSettings {
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.IRenderPipelineGraphicsSettings.Reset.html | Rendering.IRenderPipelineGraphicsSettings.Reset}
      */
     Reset(): void;
+
+
+}
+    
+interface RenderPipelineGlobalSettings extends ScriptableObject, ISerializationCallbackReceiver {
+
+
+
+    /**
+     * Editor-only function that initializes the RenderPipelineGlobalSettings.
+     * @param source RenderPipelineGlobalSettings that Unity will copy values from. Optional.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.RenderPipelineGlobalSettings.Initialize.html | Rendering.RenderPipelineGlobalSettings.Initialize}
+     */
+    Initialize(source: RenderPipelineGlobalSettings): void;
+    OnAfterDeserialize(): void;
+    OnBeforeSerialize(): void;
 
 
 }
@@ -46455,7 +46985,7 @@ interface GraphicsSettingsConstructor {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.GraphicsSettings-currentRenderPipelineAssetType.html | Rendering.GraphicsSettings.currentRenderPipelineAssetType}
      */
-    readonly currentRenderPipelineAssetType: unknown;
+    readonly currentRenderPipelineAssetType: Type;
     /**
      * The RenderPipelineAsset that defines the default render pipeline.
      * 
@@ -46484,21 +47014,21 @@ interface GraphicsSettingsConstructor {
 
 
 
-    ForEach(callback: unknown): void;
+    ForEach(callback: Action<IRenderPipelineGraphicsSettings>): void;
     GetCustomShader(type: BuiltinShaderType): Shader;
     GetGraphicsSettings(): Object;
     GetRenderPipelineSettings<T>(): T;
     GetSettingsForRenderPipeline<T>(): RenderPipelineGlobalSettings;
-    GetSettingsForRenderPipeline(renderPipelineType: unknown): RenderPipelineGlobalSettings;
+    GetSettingsForRenderPipeline(renderPipelineType: Type): RenderPipelineGlobalSettings;
     GetShaderMode(type: BuiltinShaderType): BuiltinShaderMode;
     HasShaderDefine(tier: GraphicsTier, defineHash: BuiltinShaderDefine): boolean;
     HasShaderDefine(defineHash: BuiltinShaderDefine): boolean;
     SetCustomShader(type: BuiltinShaderType, shader: Shader): void;
     SetShaderMode(type: BuiltinShaderType, mode: BuiltinShaderMode): void;
-    Subscribe<TChild>(callback: unknown): void;
-    TryGetCurrentRenderPipelineGlobalSettings(asset: unknown): boolean;
-    TryGetRenderPipelineSettings<T>(settings: unknown): boolean;
-    Unsubscribe<TChild>(callback: unknown): void;
+    Subscribe<TChild>(callback: Action<TChild, string>): void;
+    TryGetCurrentRenderPipelineGlobalSettings(asset: RenderPipelineGlobalSettings&): boolean;
+    TryGetRenderPipelineSettings<T>(settings: T&): boolean;
+    Unsubscribe<TChild>(callback: Action<TChild, string>): void;
 
 }
 declare const GraphicsSettings: GraphicsSettingsConstructor;
@@ -46510,7 +47040,7 @@ interface IGPUResidentRenderPipeline {
 
 
     IsGPUResidentDrawerSupportedBySRP(logReason: boolean): boolean;
-    IsGPUResidentDrawerSupportedBySRP(message: Readonly<string[]>, severity: unknown): boolean;
+    IsGPUResidentDrawerSupportedBySRP(message: Readonly<string[]>, severity: LogType&): boolean;
 
 
 }
@@ -46607,8 +47137,100 @@ interface UniversalRenderPipeline extends RenderPipeline {
 
 }
     
+interface VisibleLight {
+    /**
+     * Accessor to Light component.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.VisibleLight-light.html | Rendering.VisibleLight.light}
+     */
+    readonly light: Light;
+    /**
+     * Light type.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.VisibleLight-lightType.html | Rendering.VisibleLight.lightType}
+     */
+    lightType: LightType;
+    /**
+     * Light color multiplied by intensity.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.VisibleLight-finalColor.html | Rendering.VisibleLight.finalColor}
+     */
+    finalColor: Color;
+    /**
+     * Light's influence rectangle on screen.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.VisibleLight-screenRect.html | Rendering.VisibleLight.screenRect}
+     */
+    screenRect: Rect;
+    /**
+     * Light transformation matrix.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.VisibleLight-localToWorldMatrix.html | Rendering.VisibleLight.localToWorldMatrix}
+     */
+    localToWorldMatrix: Matrix4x4;
+    /**
+     * Light range.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.VisibleLight-range.html | Rendering.VisibleLight.range}
+     */
+    range: number;
+    /**
+     * Spot light angle.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.VisibleLight-spotAngle.html | Rendering.VisibleLight.spotAngle}
+     */
+    spotAngle: number;
+    /**
+     * Light intersects near clipping plane.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.VisibleLight-intersectsNearPlane.html | Rendering.VisibleLight.intersectsNearPlane}
+     */
+    intersectsNearPlane: boolean;
+    /**
+     * Light intersects far clipping plane.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.VisibleLight-intersectsFarPlane.html | Rendering.VisibleLight.intersectsFarPlane}
+     */
+    intersectsFarPlane: boolean;
+    /**
+     * Has the light been forced to be visibile.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.VisibleLight-forcedVisible.html | Rendering.VisibleLight.forcedVisible}
+     */
+    readonly forcedVisible: boolean;
+
+
+
+    Equals(other: VisibleLight): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+
+
+}
+    
+interface UniversalRenderPipelineConstructor {
+    k_ShaderTagName: string;
+    readonly maxShadowBias: number;
+    readonly minRenderScale: number;
+    readonly maxRenderScale: number;
+    readonly maxNumIterationsEnclosingSphere: number;
+    readonly maxPerObjectLights: number;
+    readonly maxVisibleAdditionalLights: number;
+    readonly asset: UniversalRenderPipelineAsset;
+
+
+    new(asset: UniversalRenderPipelineAsset): UniversalRenderPipeline;
+
+
+    GetLightAttenuationAndSpotDirection(lightType: LightType, lightRange: number, lightLocalToWorldMatrix: Matrix4x4, spotAngle: number, innerSpotAngle: Nullable<number>, lightAttenuation: Vector4&, lightSpotDir: Vector4&): void;
+    InitializeLightConstants_Common(lights: Readonly<VisibleLight[]>, lightIndex: number, lightPos: Vector4&, lightColor: Vector4&, lightAttenuation: Vector4&, lightSpotDir: Vector4&, lightOcclusionProbeChannel: Vector4&): void;
+    IsGameCamera(camera: Camera): boolean;
+
+}
+declare const UniversalRenderPipeline: UniversalRenderPipelineConstructor;
+    
 interface RenderPipelineAsset<TRenderPipeline extends RenderPipeline> extends RenderPipelineAsset {
-    readonly pipelineType: unknown;
+    readonly pipelineType: Type;
     readonly renderPipelineShaderTag: string;
 
 
@@ -46618,8 +47240,8 @@ interface RenderPipelineAsset<TRenderPipeline extends RenderPipeline> extends Re
 }
     
 interface UniversalRenderPipelineAsset extends RenderPipelineAsset<UniversalRenderPipeline>, ISerializationCallbackReceiver, IGPUResidentRenderPipeline, IRenderGraphEnabledRenderPipeline, IProbeVolumeEnabledRenderPipeline, ISTPEnabledRenderPipeline {
-    readonly rendererDataList: unknown;
-    readonly renderers: unknown;
+    readonly rendererDataList: ReadOnlySpan<ScriptableRendererData>;
+    readonly renderers: ReadOnlySpan<ScriptableRenderer>;
     readonly isImmediateModeSupported: boolean;
     readonly scriptableRenderer: ScriptableRenderer;
     supportsCameraDepthTexture: boolean;
@@ -46710,10 +47332,37 @@ interface UniversalRenderPipelineAsset extends RenderPipelineAsset<UniversalRend
 
 
     GetRenderer(index: number): ScriptableRenderer;
-    IsGPUResidentDrawerSupportedBySRP(message: Readonly<string[]>, severty: unknown): boolean;
+    IsGPUResidentDrawerSupportedBySRP(message: Readonly<string[]>, severty: LogType&): boolean;
     LoadBuiltinRendererData(type: RendererType): ScriptableRendererData;
     OnAfterDeserialize(): void;
     OnBeforeSerialize(): void;
+
+
+}
+    
+interface ScriptableRendererData extends ScriptableObject {
+    readonly rendererFeatures: Readonly<ScriptableRendererFeature[]>;
+    useNativeRenderPass: boolean;
+
+
+
+    SetDirty(): void;
+    TryGetRendererFeature<T>(rendererFeature: T&): boolean;
+
+
+}
+    
+interface ScriptableRendererFeature extends ScriptableObject {
+    readonly isActive: boolean;
+
+
+
+    AddRenderPasses(renderer: ScriptableRenderer, renderingData: RenderingData&): void;
+    Create(): void;
+    Dispose(): void;
+    OnCameraPreCull(renderer: ScriptableRenderer, cameraData: CameraData&): void;
+    SetActive(active: boolean): void;
+    SetupRenderPasses(renderer: ScriptableRenderer, renderingData: RenderingData&): void;
 
 
 }
@@ -46730,7 +47379,7 @@ interface ScriptableRenderer {
     FinishRendering(cmd: CommandBuffer): void;
     OnBeginRenderGraphFrame(): void;
     OnEndRenderGraphFrame(): void;
-    SetupCullingParameters(cullingParameters: unknown, cameraData: unknown): void;
+    SetupCullingParameters(cullingParameters: ScriptableCullingParameters&, cameraData: CameraData&): void;
     SupportedCameraStackingTypes(): number;
     SupportsCameraStackingType(cameraRenderType: CameraRenderType): boolean;
 
@@ -46772,47 +47421,47 @@ interface RenderGraph {
 
 
 
-    AddComputePass<PassData>(passName: string, passData: unknown, file: string, line: number): IComputeRenderGraphBuilder;
-    AddComputePass<PassData>(passName: string, passData: unknown, sampler: ProfilingSampler, file: string, line: number): IComputeRenderGraphBuilder;
-    AddRasterRenderPass<PassData>(passName: string, passData: unknown, file: string, line: number): IRasterRenderGraphBuilder;
-    AddRasterRenderPass<PassData>(passName: string, passData: unknown, sampler: ProfilingSampler, file: string, line: number): IRasterRenderGraphBuilder;
-    AddRenderPass<PassData>(passName: string, passData: unknown, sampler: ProfilingSampler, file: string, line: number): RenderGraphBuilder;
-    AddRenderPass<PassData>(passName: string, passData: unknown, file: string, line: number): RenderGraphBuilder;
-    AddUnsafePass<PassData>(passName: string, passData: unknown, file: string, line: number): IUnsafeRenderGraphBuilder;
-    AddUnsafePass<PassData>(passName: string, passData: unknown, sampler: ProfilingSampler, file: string, line: number): IUnsafeRenderGraphBuilder;
+    AddComputePass<PassData>(passName: string, passData: PassData&, file: string, line: number): IComputeRenderGraphBuilder;
+    AddComputePass<PassData>(passName: string, passData: PassData&, sampler: ProfilingSampler, file: string, line: number): IComputeRenderGraphBuilder;
+    AddRasterRenderPass<PassData>(passName: string, passData: PassData&, file: string, line: number): IRasterRenderGraphBuilder;
+    AddRasterRenderPass<PassData>(passName: string, passData: PassData&, sampler: ProfilingSampler, file: string, line: number): IRasterRenderGraphBuilder;
+    AddRenderPass<PassData>(passName: string, passData: PassData&, sampler: ProfilingSampler, file: string, line: number): RenderGraphBuilder;
+    AddRenderPass<PassData>(passName: string, passData: PassData&, file: string, line: number): RenderGraphBuilder;
+    AddUnsafePass<PassData>(passName: string, passData: PassData&, file: string, line: number): IUnsafeRenderGraphBuilder;
+    AddUnsafePass<PassData>(passName: string, passData: PassData&, sampler: ProfilingSampler, file: string, line: number): IUnsafeRenderGraphBuilder;
     BeginProfilingSampler(sampler: ProfilingSampler, file: string, line: number): void;
-    BeginRecording(parameters: unknown): void;
+    BeginRecording(parameters: RenderGraphParameters&): void;
     Cleanup(): void;
-    CreateBuffer(desc: unknown): BufferHandle;
-    CreateBuffer(graphicsBuffer: unknown): BufferHandle;
-    CreateGizmoRendererList(camera: unknown, gizmoSubset: unknown): RendererListHandle;
-    CreateRendererList(desc: unknown): RendererListHandle;
-    CreateRendererList(desc: unknown): RendererListHandle;
-    CreateShadowRendererList(shadowDrawingSettings: unknown): RendererListHandle;
-    CreateSharedTexture(desc: unknown, explicitRelease: boolean): TextureHandle;
-    CreateSkyboxRendererList(camera: unknown): RendererListHandle;
-    CreateSkyboxRendererList(camera: unknown, projectionMatrix: Matrix4x4, viewMatrix: Matrix4x4): RendererListHandle;
-    CreateSkyboxRendererList(camera: unknown, projectionMatrixL: Matrix4x4, viewMatrixL: Matrix4x4, projectionMatrixR: Matrix4x4, viewMatrixR: Matrix4x4): RendererListHandle;
-    CreateTexture(desc: unknown): TextureHandle;
+    CreateBuffer(desc: BufferDesc&): BufferHandle;
+    CreateBuffer(graphicsBuffer: BufferHandle&): BufferHandle;
+    CreateGizmoRendererList(camera: Camera&, gizmoSubset: GizmoSubset&): RendererListHandle;
+    CreateRendererList(desc: RendererListDesc&): RendererListHandle;
+    CreateRendererList(desc: RendererListParams&): RendererListHandle;
+    CreateShadowRendererList(shadowDrawingSettings: ShadowDrawingSettings&): RendererListHandle;
+    CreateSharedTexture(desc: TextureDesc&, explicitRelease: boolean): TextureHandle;
+    CreateSkyboxRendererList(camera: Camera&): RendererListHandle;
+    CreateSkyboxRendererList(camera: Camera&, projectionMatrix: Matrix4x4, viewMatrix: Matrix4x4): RendererListHandle;
+    CreateSkyboxRendererList(camera: Camera&, projectionMatrixL: Matrix4x4, viewMatrixL: Matrix4x4, projectionMatrixR: Matrix4x4, viewMatrixR: Matrix4x4): RendererListHandle;
+    CreateTexture(desc: TextureDesc&): TextureHandle;
     CreateTexture(texture: TextureHandle): TextureHandle;
-    CreateTextureIfInvalid(desc: unknown, texture: unknown): void;
-    CreateUIOverlayRendererList(camera: unknown): RendererListHandle;
-    CreateUIOverlayRendererList(camera: unknown, uiSubset: unknown): RendererListHandle;
-    CreateWireOverlayRendererList(camera: unknown): RendererListHandle;
+    CreateTextureIfInvalid(desc: TextureDesc&, texture: TextureHandle&): void;
+    CreateUIOverlayRendererList(camera: Camera&): RendererListHandle;
+    CreateUIOverlayRendererList(camera: Camera&, uiSubset: UISubset&): RendererListHandle;
+    CreateWireOverlayRendererList(camera: Camera&): RendererListHandle;
     EndFrame(): void;
     EndProfilingSampler(sampler: ProfilingSampler, file: string, line: number): void;
     EndRecordingAndExecute(): void;
-    GetBufferDesc(graphicsBuffer: unknown): BufferDesc;
+    GetBufferDesc(graphicsBuffer: BufferHandle&): BufferDesc;
     GetRenderTargetInfo(texture: TextureHandle): RenderTargetInfo;
     GetTextureDesc(texture: TextureHandle): TextureDesc;
     ImportBackbuffer(rt: RenderTargetIdentifier, info: RenderTargetInfo, importParams: ImportResourceParams): TextureHandle;
     ImportBackbuffer(rt: RenderTargetIdentifier): TextureHandle;
     ImportBuffer(graphicsBuffer: GraphicsBuffer, forceRelease: boolean): BufferHandle;
-    ImportRayTracingAccelerationStructure(accelStruct: unknown, name: string): RayTracingAccelerationStructureHandle;
+    ImportRayTracingAccelerationStructure(accelStruct: RayTracingAccelerationStructure&, name: string): RayTracingAccelerationStructureHandle;
     ImportTexture(rt: RTHandle): TextureHandle;
     ImportTexture(rt: RTHandle, importParams: ImportResourceParams): TextureHandle;
     ImportTexture(rt: RTHandle, info: RenderTargetInfo, importParams: ImportResourceParams): TextureHandle;
-    RefreshSharedTextureDesc(handle: TextureHandle, desc: unknown): void;
+    RefreshSharedTextureDesc(handle: TextureHandle, desc: TextureDesc&): void;
     RegisterDebug(panel: Panel): void;
     ReleaseSharedTexture(texture: TextureHandle): void;
     UnRegisterDebug(): void;
@@ -46889,12 +47538,12 @@ interface TextureDesc {
 
 }
     
-interface ScaleFunc {
+interface ScaleFunc extends MulticastDelegate {
 
 
 
-    BeginInvoke(size: Vector2Int, callback: unknown, object: unknown): unknown;
-    EndInvoke(result: unknown): Vector2Int;
+    BeginInvoke(size: Vector2Int, callback: AsyncCallback, object: unknown): IAsyncResult;
+    EndInvoke(result: IAsyncResult): Vector2Int;
     Invoke(size: Vector2Int): Vector2Int;
 
 
@@ -46903,7 +47552,7 @@ interface ScaleFunc {
 interface ScaleFuncConstructor {
 
 
-    new(object: unknown, method: unknown): ScaleFunc;
+    new(object: unknown, method: IntPtr): ScaleFunc;
 
 
 
@@ -46952,18 +47601,18 @@ interface IBaseRenderGraphBuilder {
 
     AllowGlobalStateModification(value: boolean): void;
     AllowPassCulling(value: boolean): void;
-    CreateTransientBuffer(desc: unknown): BufferHandle;
-    CreateTransientBuffer(computebuffer: unknown): BufferHandle;
-    CreateTransientTexture(desc: unknown): TextureHandle;
-    CreateTransientTexture(texture: unknown): TextureHandle;
+    CreateTransientBuffer(desc: BufferDesc&): BufferHandle;
+    CreateTransientBuffer(computebuffer: BufferHandle&): BufferHandle;
+    CreateTransientTexture(desc: TextureDesc&): TextureHandle;
+    CreateTransientTexture(texture: TextureHandle&): TextureHandle;
     EnableAsyncCompute(value: boolean): void;
     EnableFoveatedRasterization(value: boolean): void;
-    SetGlobalTextureAfterPass(input: unknown, propertyId: number): void;
+    SetGlobalTextureAfterPass(input: TextureHandle&, propertyId: number): void;
     UseAllGlobalTextures(enable: boolean): void;
-    UseBuffer(input: unknown, flags: AccessFlags): BufferHandle;
+    UseBuffer(input: BufferHandle&, flags: AccessFlags): BufferHandle;
     UseGlobalTexture(propertyId: number, flags: AccessFlags): void;
-    UseRendererList(input: unknown): void;
-    UseTexture(input: unknown, flags: AccessFlags): void;
+    UseRendererList(input: RendererListHandle&): void;
+    UseTexture(input: TextureHandle&, flags: AccessFlags): void;
 
 
 }
@@ -47042,14 +47691,14 @@ interface IBaseCommandBuffer {
     BeginSample(name: string): void;
     BeginSample(sampler: CustomSampler): void;
     BeginSample(marker: ProfilerMarker): void;
-    DisableKeyword(keyword: unknown): void;
-    DisableKeyword(material: Material, keyword: unknown): void;
-    DisableKeyword(computeShader: ComputeShader, keyword: unknown): void;
+    DisableKeyword(keyword: GlobalKeyword&): void;
+    DisableKeyword(material: Material, keyword: LocalKeyword&): void;
+    DisableKeyword(computeShader: ComputeShader, keyword: LocalKeyword&): void;
     DisableScissorRect(): void;
     DisableShaderKeyword(keyword: string): void;
-    EnableKeyword(keyword: unknown): void;
-    EnableKeyword(material: Material, keyword: unknown): void;
-    EnableKeyword(computeShader: ComputeShader, keyword: unknown): void;
+    EnableKeyword(keyword: GlobalKeyword&): void;
+    EnableKeyword(material: Material, keyword: LocalKeyword&): void;
+    EnableKeyword(computeShader: ComputeShader, keyword: LocalKeyword&): void;
     EnableScissorRect(scissor: Rect): void;
     EnableShaderKeyword(keyword: string): void;
     EndSample(name: string): void;
@@ -47057,10 +47706,10 @@ interface IBaseCommandBuffer {
     EndSample(marker: ProfilerMarker): void;
     IncrementUpdateCount(dest: RenderTargetIdentifier): void;
     InvokeOnRenderObjectCallbacks(): void;
-    IssuePluginCustomBlit(callback: unknown, command: number, source: RenderTargetIdentifier, dest: RenderTargetIdentifier, commandParam: number, commandFlags: number): void;
-    IssuePluginCustomTextureUpdateV2(callback: unknown, targetTexture: Texture, userData: number): void;
-    IssuePluginEvent(callback: unknown, eventID: number): void;
-    IssuePluginEventAndData(callback: unknown, eventID: number, data: unknown): void;
+    IssuePluginCustomBlit(callback: IntPtr, command: number, source: RenderTargetIdentifier, dest: RenderTargetIdentifier, commandParam: number, commandFlags: number): void;
+    IssuePluginCustomTextureUpdateV2(callback: IntPtr, targetTexture: Texture, userData: number): void;
+    IssuePluginEvent(callback: IntPtr, eventID: number): void;
+    IssuePluginEventAndData(callback: IntPtr, eventID: number, data: IntPtr): void;
     MarkLateLatchMatrixShaderPropertyID(matrixPropertyType: CameraLateLatchMatrixType, shaderPropertyID: number): void;
     SetGlobalBuffer(name: string, value: ComputeBuffer): void;
     SetGlobalBuffer(nameID: number, value: ComputeBuffer): void;
@@ -47100,9 +47749,9 @@ interface IBaseCommandBuffer {
     SetGlobalVectorArray(nameID: number, values: Readonly<Vector4[]>): void;
     SetGlobalVectorArray(propertyName: string, values: Readonly<Vector4[]>): void;
     SetInvertCulling(invertCulling: boolean): void;
-    SetKeyword(keyword: unknown, value: boolean): void;
-    SetKeyword(material: Material, keyword: unknown, value: boolean): void;
-    SetKeyword(computeShader: ComputeShader, keyword: unknown, value: boolean): void;
+    SetKeyword(keyword: GlobalKeyword&, value: boolean): void;
+    SetKeyword(material: Material, keyword: LocalKeyword&, value: boolean): void;
+    SetKeyword(computeShader: ComputeShader, keyword: LocalKeyword&, value: boolean): void;
     SetLateLatchProjectionMatrices(projectionMat: Readonly<Matrix4x4[]>): void;
     SetShadowSamplingMode(shadowmap: RenderTargetIdentifier, mode: ShadowSamplingMode): void;
     SetSinglePassStereo(mode: SinglePassStereoMode): void;
@@ -47130,16 +47779,16 @@ interface IComputeCommandBuffer extends IBaseCommandBuffer {
     DispatchRays(rayTracingShader: RayTracingShader, rayGenName: string, width: number, height: number, depth: number, camera: Camera): void;
     SetBufferCounterValue(buffer: ComputeBuffer, counterValue: number): void;
     SetBufferCounterValue(buffer: GraphicsBuffer, counterValue: number): void;
-    SetBufferData(buffer: ComputeBuffer, data: unknown): void;
+    SetBufferData(buffer: ComputeBuffer, data: Array): void;
     SetBufferData<T>(buffer: ComputeBuffer, data: Readonly<T[]>): void;
     SetBufferData<T>(buffer: ComputeBuffer, data: Readonly<T[]>): void;
-    SetBufferData(buffer: ComputeBuffer, data: unknown, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
+    SetBufferData(buffer: ComputeBuffer, data: Array, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
     SetBufferData<T>(buffer: ComputeBuffer, data: Readonly<T[]>, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
     SetBufferData<T>(buffer: ComputeBuffer, data: Readonly<T[]>, nativeBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
-    SetBufferData(buffer: GraphicsBuffer, data: unknown): void;
+    SetBufferData(buffer: GraphicsBuffer, data: Array): void;
     SetBufferData<T>(buffer: GraphicsBuffer, data: Readonly<T[]>): void;
     SetBufferData<T>(buffer: GraphicsBuffer, data: Readonly<T[]>): void;
-    SetBufferData(buffer: GraphicsBuffer, data: unknown, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
+    SetBufferData(buffer: GraphicsBuffer, data: Array, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
     SetBufferData<T>(buffer: GraphicsBuffer, data: Readonly<T[]>, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
     SetBufferData<T>(buffer: GraphicsBuffer, data: Readonly<T[]>, nativeBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
     SetComputeBufferParam(computeShader: ComputeShader, kernelIndex: number, nameID: number, buffer: ComputeBuffer): void;
@@ -47233,18 +47882,18 @@ interface ComputeCommandBuffer extends BaseCommandBuffer, IComputeCommandBuffer 
     CopyCounterValue(src: GraphicsBuffer, dst: ComputeBuffer, dstOffsetBytes: number): void;
     CopyCounterValue(src: ComputeBuffer, dst: GraphicsBuffer, dstOffsetBytes: number): void;
     CopyCounterValue(src: GraphicsBuffer, dst: GraphicsBuffer, dstOffsetBytes: number): void;
-    DisableKeyword(keyword: unknown): void;
-    DisableKeyword(material: Material, keyword: unknown): void;
-    DisableKeyword(computeShader: ComputeShader, keyword: unknown): void;
+    DisableKeyword(keyword: GlobalKeyword&): void;
+    DisableKeyword(material: Material, keyword: LocalKeyword&): void;
+    DisableKeyword(computeShader: ComputeShader, keyword: LocalKeyword&): void;
     DisableScissorRect(): void;
     DisableShaderKeyword(keyword: string): void;
     DispatchCompute(computeShader: ComputeShader, kernelIndex: number, threadGroupsX: number, threadGroupsY: number, threadGroupsZ: number): void;
     DispatchCompute(computeShader: ComputeShader, kernelIndex: number, indirectBuffer: ComputeBuffer, argsOffset: number): void;
     DispatchCompute(computeShader: ComputeShader, kernelIndex: number, indirectBuffer: GraphicsBuffer, argsOffset: number): void;
     DispatchRays(rayTracingShader: RayTracingShader, rayGenName: string, width: number, height: number, depth: number, camera: Camera): void;
-    EnableKeyword(keyword: unknown): void;
-    EnableKeyword(material: Material, keyword: unknown): void;
-    EnableKeyword(computeShader: ComputeShader, keyword: unknown): void;
+    EnableKeyword(keyword: GlobalKeyword&): void;
+    EnableKeyword(material: Material, keyword: LocalKeyword&): void;
+    EnableKeyword(computeShader: ComputeShader, keyword: LocalKeyword&): void;
     EnableScissorRect(scissor: Rect): void;
     EnableShaderKeyword(keyword: string): void;
     EndSample(name: string): void;
@@ -47252,23 +47901,23 @@ interface ComputeCommandBuffer extends BaseCommandBuffer, IComputeCommandBuffer 
     EndSample(marker: ProfilerMarker): void;
     IncrementUpdateCount(dest: RenderTargetIdentifier): void;
     InvokeOnRenderObjectCallbacks(): void;
-    IssuePluginCustomBlit(callback: unknown, command: number, source: RenderTargetIdentifier, dest: RenderTargetIdentifier, commandParam: number, commandFlags: number): void;
-    IssuePluginCustomTextureUpdateV2(callback: unknown, targetTexture: Texture, userData: number): void;
-    IssuePluginEvent(callback: unknown, eventID: number): void;
-    IssuePluginEventAndData(callback: unknown, eventID: number, data: unknown): void;
+    IssuePluginCustomBlit(callback: IntPtr, command: number, source: RenderTargetIdentifier, dest: RenderTargetIdentifier, commandParam: number, commandFlags: number): void;
+    IssuePluginCustomTextureUpdateV2(callback: IntPtr, targetTexture: Texture, userData: number): void;
+    IssuePluginEvent(callback: IntPtr, eventID: number): void;
+    IssuePluginEventAndData(callback: IntPtr, eventID: number, data: IntPtr): void;
     MarkLateLatchMatrixShaderPropertyID(matrixPropertyType: CameraLateLatchMatrixType, shaderPropertyID: number): void;
     SetBufferCounterValue(buffer: ComputeBuffer, counterValue: number): void;
     SetBufferCounterValue(buffer: GraphicsBuffer, counterValue: number): void;
-    SetBufferData(buffer: ComputeBuffer, data: unknown): void;
+    SetBufferData(buffer: ComputeBuffer, data: Array): void;
     SetBufferData<T>(buffer: ComputeBuffer, data: Readonly<T[]>): void;
     SetBufferData<T>(buffer: ComputeBuffer, data: Readonly<T[]>): void;
-    SetBufferData(buffer: ComputeBuffer, data: unknown, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
+    SetBufferData(buffer: ComputeBuffer, data: Array, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
     SetBufferData<T>(buffer: ComputeBuffer, data: Readonly<T[]>, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
     SetBufferData<T>(buffer: ComputeBuffer, data: Readonly<T[]>, nativeBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
-    SetBufferData(buffer: GraphicsBuffer, data: unknown): void;
+    SetBufferData(buffer: GraphicsBuffer, data: Array): void;
     SetBufferData<T>(buffer: GraphicsBuffer, data: Readonly<T[]>): void;
     SetBufferData<T>(buffer: GraphicsBuffer, data: Readonly<T[]>): void;
-    SetBufferData(buffer: GraphicsBuffer, data: unknown, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
+    SetBufferData(buffer: GraphicsBuffer, data: Array, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
     SetBufferData<T>(buffer: GraphicsBuffer, data: Readonly<T[]>, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
     SetBufferData<T>(buffer: GraphicsBuffer, data: Readonly<T[]>, nativeBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
     SetComputeBufferParam(computeShader: ComputeShader, kernelIndex: number, nameID: number, buffer: ComputeBuffer): void;
@@ -47341,9 +47990,9 @@ interface ComputeCommandBuffer extends BaseCommandBuffer, IComputeCommandBuffer 
     SetGlobalVectorArray(nameID: number, values: Readonly<Vector4[]>): void;
     SetGlobalVectorArray(propertyName: string, values: Readonly<Vector4[]>): void;
     SetInvertCulling(invertCulling: boolean): void;
-    SetKeyword(keyword: unknown, value: boolean): void;
-    SetKeyword(material: Material, keyword: unknown, value: boolean): void;
-    SetKeyword(computeShader: ComputeShader, keyword: unknown, value: boolean): void;
+    SetKeyword(keyword: GlobalKeyword&, value: boolean): void;
+    SetKeyword(material: Material, keyword: LocalKeyword&, value: boolean): void;
+    SetKeyword(computeShader: ComputeShader, keyword: LocalKeyword&, value: boolean): void;
     SetLateLatchProjectionMatrices(projectionMat: Readonly<Matrix4x4[]>): void;
     SetRayTracingAccelerationStructure(rayTracingShader: RayTracingShader, name: string, rayTracingAccelerationStructure: RayTracingAccelerationStructure): void;
     SetRayTracingAccelerationStructure(rayTracingShader: RayTracingShader, nameID: number, rayTracingAccelerationStructure: RayTracingAccelerationStructure): void;
@@ -47407,12 +48056,12 @@ interface ComputeGraphContextConstructor {
 }
 declare const ComputeGraphContext: ComputeGraphContextConstructor;
     
-interface BaseRenderFunc<PassData, ContextType> {
+interface BaseRenderFunc<PassData, ContextType> extends MulticastDelegate {
 
 
 
-    BeginInvoke(data: PassData, renderGraphContext: ContextType, callback: unknown, object: unknown): unknown;
-    EndInvoke(result: unknown): void;
+    BeginInvoke(data: PassData, renderGraphContext: ContextType, callback: AsyncCallback, object: unknown): IAsyncResult;
+    EndInvoke(result: IAsyncResult): void;
     Invoke(data: PassData, renderGraphContext: ContextType): void;
 
 
@@ -47421,7 +48070,7 @@ interface BaseRenderFunc<PassData, ContextType> {
 interface BaseRenderFuncConstructor {
 
 
-    new(object: unknown, method: unknown): BaseRenderFunc<PassData, ContextType>;
+    new(object: unknown, method: IntPtr): BaseRenderFunc<PassData, ContextType>;
 
 
 
@@ -47496,7 +48145,7 @@ interface IRasterCommandBuffer extends IBaseCommandBuffer {
     ClearRenderTarget(clearDepth: boolean, clearColor: boolean, backgroundColor: Color, depth: number, stencil: number): void;
     ClearRenderTarget(clearFlags: RTClearFlags, backgroundColor: Color, depth: number, stencil: number): void;
     ClearRenderTarget(clearFlags: RTClearFlags, backgroundColors: Readonly<Color[]>, depth: number, stencil: number): void;
-    ConfigureFoveatedRendering(platformData: unknown): void;
+    ConfigureFoveatedRendering(platformData: IntPtr): void;
     DrawMesh(mesh: Mesh, matrix: Matrix4x4, material: Material, submeshIndex: number, shaderPass: number, properties: MaterialPropertyBlock): void;
     DrawMesh(mesh: Mesh, matrix: Matrix4x4, material: Material, submeshIndex: number, shaderPass: number): void;
     DrawMesh(mesh: Mesh, matrix: Matrix4x4, material: Material, submeshIndex: number): void;
@@ -47554,10 +48203,10 @@ interface RasterCommandBuffer extends BaseCommandBuffer, IRasterCommandBuffer {
     ClearRenderTarget(clearDepth: boolean, clearColor: boolean, backgroundColor: Color, depth: number, stencil: number): void;
     ClearRenderTarget(clearFlags: RTClearFlags, backgroundColor: Color, depth: number, stencil: number): void;
     ClearRenderTarget(clearFlags: RTClearFlags, backgroundColors: Readonly<Color[]>, depth: number, stencil: number): void;
-    ConfigureFoveatedRendering(platformData: unknown): void;
-    DisableKeyword(keyword: unknown): void;
-    DisableKeyword(material: Material, keyword: unknown): void;
-    DisableKeyword(computeShader: ComputeShader, keyword: unknown): void;
+    ConfigureFoveatedRendering(platformData: IntPtr): void;
+    DisableKeyword(keyword: GlobalKeyword&): void;
+    DisableKeyword(material: Material, keyword: LocalKeyword&): void;
+    DisableKeyword(computeShader: ComputeShader, keyword: LocalKeyword&): void;
     DisableScissorRect(): void;
     DisableShaderKeyword(keyword: string): void;
     DrawMesh(mesh: Mesh, matrix: Matrix4x4, material: Material, submeshIndex: number, shaderPass: number, properties: MaterialPropertyBlock): void;
@@ -47598,9 +48247,9 @@ interface RasterCommandBuffer extends BaseCommandBuffer, IRasterCommandBuffer {
     DrawRenderer(renderer: Renderer, material: Material, submeshIndex: number): void;
     DrawRenderer(renderer: Renderer, material: Material): void;
     DrawRendererList(rendererList: RendererList): void;
-    EnableKeyword(keyword: unknown): void;
-    EnableKeyword(material: Material, keyword: unknown): void;
-    EnableKeyword(computeShader: ComputeShader, keyword: unknown): void;
+    EnableKeyword(keyword: GlobalKeyword&): void;
+    EnableKeyword(material: Material, keyword: LocalKeyword&): void;
+    EnableKeyword(computeShader: ComputeShader, keyword: LocalKeyword&): void;
     EnableScissorRect(scissor: Rect): void;
     EnableShaderKeyword(keyword: string): void;
     EndSample(name: string): void;
@@ -47608,10 +48257,10 @@ interface RasterCommandBuffer extends BaseCommandBuffer, IRasterCommandBuffer {
     EndSample(marker: ProfilerMarker): void;
     IncrementUpdateCount(dest: RenderTargetIdentifier): void;
     InvokeOnRenderObjectCallbacks(): void;
-    IssuePluginCustomBlit(callback: unknown, command: number, source: RenderTargetIdentifier, dest: RenderTargetIdentifier, commandParam: number, commandFlags: number): void;
-    IssuePluginCustomTextureUpdateV2(callback: unknown, targetTexture: Texture, userData: number): void;
-    IssuePluginEvent(callback: unknown, eventID: number): void;
-    IssuePluginEventAndData(callback: unknown, eventID: number, data: unknown): void;
+    IssuePluginCustomBlit(callback: IntPtr, command: number, source: RenderTargetIdentifier, dest: RenderTargetIdentifier, commandParam: number, commandFlags: number): void;
+    IssuePluginCustomTextureUpdateV2(callback: IntPtr, targetTexture: Texture, userData: number): void;
+    IssuePluginEvent(callback: IntPtr, eventID: number): void;
+    IssuePluginEventAndData(callback: IntPtr, eventID: number, data: IntPtr): void;
     MarkLateLatchMatrixShaderPropertyID(matrixPropertyType: CameraLateLatchMatrixType, shaderPropertyID: number): void;
     SetFoveatedRenderingMode(foveatedRenderingMode: FoveatedRenderingMode): void;
     SetGlobalBuffer(name: string, value: ComputeBuffer): void;
@@ -47653,9 +48302,9 @@ interface RasterCommandBuffer extends BaseCommandBuffer, IRasterCommandBuffer {
     SetGlobalVectorArray(propertyName: string, values: Readonly<Vector4[]>): void;
     SetInstanceMultiplier(multiplier: number): void;
     SetInvertCulling(invertCulling: boolean): void;
-    SetKeyword(keyword: unknown, value: boolean): void;
-    SetKeyword(material: Material, keyword: unknown, value: boolean): void;
-    SetKeyword(computeShader: ComputeShader, keyword: unknown, value: boolean): void;
+    SetKeyword(keyword: GlobalKeyword&, value: boolean): void;
+    SetKeyword(material: Material, keyword: LocalKeyword&, value: boolean): void;
+    SetKeyword(computeShader: ComputeShader, keyword: LocalKeyword&, value: boolean): void;
     SetLateLatchProjectionMatrices(projectionMat: Readonly<Matrix4x4[]>): void;
     SetShadowSamplingMode(shadowmap: RenderTargetIdentifier, mode: ShadowSamplingMode): void;
     SetSinglePassStereo(mode: SinglePassStereoMode): void;
@@ -47674,25 +48323,25 @@ interface RenderGraphBuilder {
 
     AllowPassCulling(value: boolean): void;
     AllowRendererListCulling(value: boolean): void;
-    CreateTransientBuffer(desc: unknown): BufferHandle;
-    CreateTransientBuffer(graphicsbuffer: unknown): BufferHandle;
-    CreateTransientTexture(desc: unknown): TextureHandle;
-    CreateTransientTexture(texture: unknown): TextureHandle;
-    DependsOn(input: unknown): RendererListHandle;
+    CreateTransientBuffer(desc: BufferDesc&): BufferHandle;
+    CreateTransientBuffer(graphicsbuffer: BufferHandle&): BufferHandle;
+    CreateTransientTexture(desc: TextureDesc&): TextureHandle;
+    CreateTransientTexture(texture: TextureHandle&): TextureHandle;
+    DependsOn(input: RendererListHandle&): RendererListHandle;
     Dispose(): void;
     EnableAsyncCompute(value: boolean): void;
     EnableFoveatedRasterization(value: boolean): void;
-    ReadBuffer(input: unknown): BufferHandle;
-    ReadRayTracingAccelerationStructure(input: unknown): RayTracingAccelerationStructureHandle;
-    ReadTexture(input: unknown): TextureHandle;
-    ReadWriteTexture(input: unknown): TextureHandle;
+    ReadBuffer(input: BufferHandle&): BufferHandle;
+    ReadRayTracingAccelerationStructure(input: RayTracingAccelerationStructureHandle&): RayTracingAccelerationStructureHandle;
+    ReadTexture(input: TextureHandle&): TextureHandle;
+    ReadWriteTexture(input: TextureHandle&): TextureHandle;
     SetRenderFunc<PassData>(renderFunc: BaseRenderFunc<PassData, RenderGraphContext>): void;
-    UseColorBuffer(input: unknown, index: number): TextureHandle;
-    UseDepthBuffer(input: unknown, flags: DepthAccess): TextureHandle;
-    UseRendererList(input: unknown): RendererListHandle;
-    WriteBuffer(input: unknown): BufferHandle;
-    WriteRayTracingAccelerationStructure(input: unknown): RayTracingAccelerationStructureHandle;
-    WriteTexture(input: unknown): TextureHandle;
+    UseColorBuffer(input: TextureHandle&, index: number): TextureHandle;
+    UseDepthBuffer(input: TextureHandle&, flags: DepthAccess): TextureHandle;
+    UseRendererList(input: RendererListHandle&): RendererListHandle;
+    WriteBuffer(input: BufferHandle&): BufferHandle;
+    WriteRayTracingAccelerationStructure(input: RayTracingAccelerationStructureHandle&): RayTracingAccelerationStructureHandle;
+    WriteTexture(input: TextureHandle&): TextureHandle;
 
 
 }
@@ -47774,14 +48423,14 @@ interface ScriptableRenderContext {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableRenderContext.CreateRendererList.html | Rendering.ScriptableRenderContext.CreateRendererList}
      */
-    CreateRendererList(param: unknown): RendererList;
+    CreateRendererList(param: RendererListParams&): RendererList;
     /**
      * Creates a new shadow RendererList.
      * @param settings The settings used to derive the set of GameObjects the RendererList contains when drawing shadows.
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableRenderContext.CreateShadowRendererList.html | Rendering.ScriptableRenderContext.CreateShadowRendererList}
      */
-    CreateShadowRendererList(settings: unknown): RendererList;
+    CreateShadowRendererList(settings: ShadowDrawingSettings&): RendererList;
     /**
      * Creates a new skybox RendererList.
      * @param camera The camera that is used for rendering the skybox.
@@ -47837,7 +48486,7 @@ interface ScriptableRenderContext {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.ScriptableRenderContext.Cull.html | Rendering.ScriptableRenderContext.Cull}
      */
-    Cull(parameters: unknown): CullingResults;
+    Cull(parameters: ScriptableCullingParameters&): CullingResults;
     /**
      * Performs shadow casters culling for all the visible lights.
      * @param cullingResults Culling results to use.
@@ -48606,7 +49255,7 @@ interface CullingResults {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CullingResults.ComputeDirectionalShadowMatricesAndCullingPrimitives.html | Rendering.CullingResults.ComputeDirectionalShadowMatricesAndCullingPrimitives}
      */
-    ComputeDirectionalShadowMatricesAndCullingPrimitives(activeLightIndex: number, splitIndex: number, splitCount: number, splitRatio: Vector3, shadowResolution: number, shadowNearPlaneOffset: number, viewMatrix: unknown, projMatrix: unknown, shadowSplitData: unknown): boolean;
+    ComputeDirectionalShadowMatricesAndCullingPrimitives(activeLightIndex: number, splitIndex: number, splitCount: number, splitRatio: Vector3, shadowResolution: number, shadowNearPlaneOffset: number, viewMatrix: Matrix4x4&, projMatrix: Matrix4x4&, shadowSplitData: ShadowSplitData&): boolean;
     /**
      * Calculates the view and projection matrices and shadow split data for a point light.
      * @param activeLightIndex The index into the active light array.
@@ -48618,7 +49267,7 @@ interface CullingResults {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CullingResults.ComputePointShadowMatricesAndCullingPrimitives.html | Rendering.CullingResults.ComputePointShadowMatricesAndCullingPrimitives}
      */
-    ComputePointShadowMatricesAndCullingPrimitives(activeLightIndex: number, cubemapFace: CubemapFace, fovBias: number, viewMatrix: unknown, projMatrix: unknown, shadowSplitData: unknown): boolean;
+    ComputePointShadowMatricesAndCullingPrimitives(activeLightIndex: number, cubemapFace: CubemapFace, fovBias: number, viewMatrix: Matrix4x4&, projMatrix: Matrix4x4&, shadowSplitData: ShadowSplitData&): boolean;
     /**
      * Calculates the view and projection matrices and shadow split data for a spot light.
      * @param activeLightIndex The index into the active light array.
@@ -48628,7 +49277,7 @@ interface CullingResults {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CullingResults.ComputeSpotShadowMatricesAndCullingPrimitives.html | Rendering.CullingResults.ComputeSpotShadowMatricesAndCullingPrimitives}
      */
-    ComputeSpotShadowMatricesAndCullingPrimitives(activeLightIndex: number, viewMatrix: unknown, projMatrix: unknown, shadowSplitData: unknown): boolean;
+    ComputeSpotShadowMatricesAndCullingPrimitives(activeLightIndex: number, viewMatrix: Matrix4x4&, projMatrix: Matrix4x4&, shadowSplitData: ShadowSplitData&): boolean;
     Equals(other: CullingResults): boolean;
     Equals(obj: unknown): boolean;
     /**
@@ -48667,80 +49316,9 @@ interface CullingResults {
      * 
      * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.CullingResults.GetShadowCasterBounds.html | Rendering.CullingResults.GetShadowCasterBounds}
      */
-    GetShadowCasterBounds(lightIndex: number, outBounds: unknown): boolean;
+    GetShadowCasterBounds(lightIndex: number, outBounds: Bounds&): boolean;
     SetLightIndexMap(lightIndexMap: Readonly<number[]>): void;
     SetReflectionProbeIndexMap(lightIndexMap: Readonly<number[]>): void;
-
-
-}
-    
-interface VisibleLight {
-    /**
-     * Accessor to Light component.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.VisibleLight-light.html | Rendering.VisibleLight.light}
-     */
-    readonly light: Light;
-    /**
-     * Light type.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.VisibleLight-lightType.html | Rendering.VisibleLight.lightType}
-     */
-    lightType: LightType;
-    /**
-     * Light color multiplied by intensity.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.VisibleLight-finalColor.html | Rendering.VisibleLight.finalColor}
-     */
-    finalColor: Color;
-    /**
-     * Light's influence rectangle on screen.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.VisibleLight-screenRect.html | Rendering.VisibleLight.screenRect}
-     */
-    screenRect: Rect;
-    /**
-     * Light transformation matrix.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.VisibleLight-localToWorldMatrix.html | Rendering.VisibleLight.localToWorldMatrix}
-     */
-    localToWorldMatrix: Matrix4x4;
-    /**
-     * Light range.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.VisibleLight-range.html | Rendering.VisibleLight.range}
-     */
-    range: number;
-    /**
-     * Spot light angle.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.VisibleLight-spotAngle.html | Rendering.VisibleLight.spotAngle}
-     */
-    spotAngle: number;
-    /**
-     * Light intersects near clipping plane.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.VisibleLight-intersectsNearPlane.html | Rendering.VisibleLight.intersectsNearPlane}
-     */
-    intersectsNearPlane: boolean;
-    /**
-     * Light intersects far clipping plane.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.VisibleLight-intersectsFarPlane.html | Rendering.VisibleLight.intersectsFarPlane}
-     */
-    intersectsFarPlane: boolean;
-    /**
-     * Has the light been forced to be visibile.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Rendering.VisibleLight-forcedVisible.html | Rendering.VisibleLight.forcedVisible}
-     */
-    readonly forcedVisible: boolean;
-
-
-
-    Equals(other: VisibleLight): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
 
 
 }
@@ -49060,7 +49638,7 @@ interface FilteringSettingsConstructor {
     readonly defaultValue: FilteringSettings;
 
 
-    new(renderQueueRange: unknown, layerMask: number, renderingLayerMask: number, excludeMotionVectorObjects: number): FilteringSettings;
+    new(renderQueueRange: Nullable<RenderQueueRange>, layerMask: number, renderingLayerMask: number, excludeMotionVectorObjects: number): FilteringSettings;
 
 
 
@@ -49085,7 +49663,7 @@ interface RendererListDescConstructor {
     new(passNames: Readonly<ShaderTagId[]>, cullingResult: CullingResults, camera: Camera): RendererListDesc;
 
 
-    ConvertToParameters(desc: unknown): RendererListParams;
+    ConvertToParameters(desc: RendererListDesc&): RendererListParams;
 
 }
 declare const RendererListDesc: RendererListDescConstructor;
@@ -49252,14 +49830,14 @@ interface UnsafeCommandBuffer extends BaseCommandBuffer, IUnsafeCommandBuffer {
     ClearRenderTarget(clearDepth: boolean, clearColor: boolean, backgroundColor: Color, depth: number, stencil: number): void;
     ClearRenderTarget(clearFlags: RTClearFlags, backgroundColor: Color, depth: number, stencil: number): void;
     ClearRenderTarget(clearFlags: RTClearFlags, backgroundColors: Readonly<Color[]>, depth: number, stencil: number): void;
-    ConfigureFoveatedRendering(platformData: unknown): void;
+    ConfigureFoveatedRendering(platformData: IntPtr): void;
     CopyCounterValue(src: ComputeBuffer, dst: ComputeBuffer, dstOffsetBytes: number): void;
     CopyCounterValue(src: GraphicsBuffer, dst: ComputeBuffer, dstOffsetBytes: number): void;
     CopyCounterValue(src: ComputeBuffer, dst: GraphicsBuffer, dstOffsetBytes: number): void;
     CopyCounterValue(src: GraphicsBuffer, dst: GraphicsBuffer, dstOffsetBytes: number): void;
-    DisableKeyword(keyword: unknown): void;
-    DisableKeyword(material: Material, keyword: unknown): void;
-    DisableKeyword(computeShader: ComputeShader, keyword: unknown): void;
+    DisableKeyword(keyword: GlobalKeyword&): void;
+    DisableKeyword(material: Material, keyword: LocalKeyword&): void;
+    DisableKeyword(computeShader: ComputeShader, keyword: LocalKeyword&): void;
     DisableScissorRect(): void;
     DisableShaderKeyword(keyword: string): void;
     DispatchCompute(computeShader: ComputeShader, kernelIndex: number, threadGroupsX: number, threadGroupsY: number, threadGroupsZ: number): void;
@@ -49304,9 +49882,9 @@ interface UnsafeCommandBuffer extends BaseCommandBuffer, IUnsafeCommandBuffer {
     DrawRenderer(renderer: Renderer, material: Material, submeshIndex: number): void;
     DrawRenderer(renderer: Renderer, material: Material): void;
     DrawRendererList(rendererList: RendererList): void;
-    EnableKeyword(keyword: unknown): void;
-    EnableKeyword(material: Material, keyword: unknown): void;
-    EnableKeyword(computeShader: ComputeShader, keyword: unknown): void;
+    EnableKeyword(keyword: GlobalKeyword&): void;
+    EnableKeyword(material: Material, keyword: LocalKeyword&): void;
+    EnableKeyword(computeShader: ComputeShader, keyword: LocalKeyword&): void;
     EnableScissorRect(scissor: Rect): void;
     EnableShaderKeyword(keyword: string): void;
     EndSample(name: string): void;
@@ -49314,34 +49892,34 @@ interface UnsafeCommandBuffer extends BaseCommandBuffer, IUnsafeCommandBuffer {
     EndSample(marker: ProfilerMarker): void;
     IncrementUpdateCount(dest: RenderTargetIdentifier): void;
     InvokeOnRenderObjectCallbacks(): void;
-    IssuePluginCustomBlit(callback: unknown, command: number, source: RenderTargetIdentifier, dest: RenderTargetIdentifier, commandParam: number, commandFlags: number): void;
-    IssuePluginCustomTextureUpdateV2(callback: unknown, targetTexture: Texture, userData: number): void;
-    IssuePluginEvent(callback: unknown, eventID: number): void;
-    IssuePluginEventAndData(callback: unknown, eventID: number, data: unknown): void;
+    IssuePluginCustomBlit(callback: IntPtr, command: number, source: RenderTargetIdentifier, dest: RenderTargetIdentifier, commandParam: number, commandFlags: number): void;
+    IssuePluginCustomTextureUpdateV2(callback: IntPtr, targetTexture: Texture, userData: number): void;
+    IssuePluginEvent(callback: IntPtr, eventID: number): void;
+    IssuePluginEventAndData(callback: IntPtr, eventID: number, data: IntPtr): void;
     MarkLateLatchMatrixShaderPropertyID(matrixPropertyType: CameraLateLatchMatrixType, shaderPropertyID: number): void;
-    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: ComputeBuffer, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: ComputeBuffer, size: number, offset: number, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: GraphicsBuffer, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: GraphicsBuffer, size: number, offset: number, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: Texture, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, dstFormat: TextureFormat, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, dstFormat: GraphicsFormat, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, x: number, width: number, y: number, height: number, z: number, depth: number, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, x: number, width: number, y: number, height: number, z: number, depth: number, dstFormat: TextureFormat, callback: unknown): void;
-    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, x: number, width: number, y: number, height: number, z: number, depth: number, dstFormat: GraphicsFormat, callback: unknown): void;
+    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: ComputeBuffer, callback: Action<AsyncGPUReadbackRequest>): void;
+    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: ComputeBuffer, size: number, offset: number, callback: Action<AsyncGPUReadbackRequest>): void;
+    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: GraphicsBuffer, callback: Action<AsyncGPUReadbackRequest>): void;
+    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: GraphicsBuffer, size: number, offset: number, callback: Action<AsyncGPUReadbackRequest>): void;
+    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: Texture, callback: Action<AsyncGPUReadbackRequest>): void;
+    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, callback: Action<AsyncGPUReadbackRequest>): void;
+    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, dstFormat: TextureFormat, callback: Action<AsyncGPUReadbackRequest>): void;
+    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, dstFormat: GraphicsFormat, callback: Action<AsyncGPUReadbackRequest>): void;
+    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, x: number, width: number, y: number, height: number, z: number, depth: number, callback: Action<AsyncGPUReadbackRequest>): void;
+    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, x: number, width: number, y: number, height: number, z: number, depth: number, dstFormat: TextureFormat, callback: Action<AsyncGPUReadbackRequest>): void;
+    RequestAsyncReadbackIntoNativeArray<T>(output: Readonly<T[]>, src: Texture, mipIndex: number, x: number, width: number, y: number, height: number, z: number, depth: number, dstFormat: GraphicsFormat, callback: Action<AsyncGPUReadbackRequest>): void;
     SetBufferCounterValue(buffer: ComputeBuffer, counterValue: number): void;
     SetBufferCounterValue(buffer: GraphicsBuffer, counterValue: number): void;
-    SetBufferData(buffer: ComputeBuffer, data: unknown): void;
+    SetBufferData(buffer: ComputeBuffer, data: Array): void;
     SetBufferData<T>(buffer: ComputeBuffer, data: Readonly<T[]>): void;
     SetBufferData<T>(buffer: ComputeBuffer, data: Readonly<T[]>): void;
-    SetBufferData(buffer: ComputeBuffer, data: unknown, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
+    SetBufferData(buffer: ComputeBuffer, data: Array, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
     SetBufferData<T>(buffer: ComputeBuffer, data: Readonly<T[]>, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
     SetBufferData<T>(buffer: ComputeBuffer, data: Readonly<T[]>, nativeBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
-    SetBufferData(buffer: GraphicsBuffer, data: unknown): void;
+    SetBufferData(buffer: GraphicsBuffer, data: Array): void;
     SetBufferData<T>(buffer: GraphicsBuffer, data: Readonly<T[]>): void;
     SetBufferData<T>(buffer: GraphicsBuffer, data: Readonly<T[]>): void;
-    SetBufferData(buffer: GraphicsBuffer, data: unknown, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
+    SetBufferData(buffer: GraphicsBuffer, data: Array, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
     SetBufferData<T>(buffer: GraphicsBuffer, data: Readonly<T[]>, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
     SetBufferData<T>(buffer: GraphicsBuffer, data: Readonly<T[]>, nativeBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
     SetComputeBufferParam(computeShader: ComputeShader, kernelIndex: number, nameID: number, buffer: ComputeBuffer): void;
@@ -49416,9 +49994,9 @@ interface UnsafeCommandBuffer extends BaseCommandBuffer, IUnsafeCommandBuffer {
     SetGlobalVectorArray(propertyName: string, values: Readonly<Vector4[]>): void;
     SetInstanceMultiplier(multiplier: number): void;
     SetInvertCulling(invertCulling: boolean): void;
-    SetKeyword(keyword: unknown, value: boolean): void;
-    SetKeyword(material: Material, keyword: unknown, value: boolean): void;
-    SetKeyword(computeShader: ComputeShader, keyword: unknown, value: boolean): void;
+    SetKeyword(keyword: GlobalKeyword&, value: boolean): void;
+    SetKeyword(material: Material, keyword: LocalKeyword&, value: boolean): void;
+    SetKeyword(computeShader: ComputeShader, keyword: LocalKeyword&, value: boolean): void;
     SetLateLatchProjectionMatrices(projectionMat: Readonly<Matrix4x4[]>): void;
     SetRayTracingAccelerationStructure(rayTracingShader: RayTracingShader, name: string, rayTracingAccelerationStructure: RayTracingAccelerationStructure): void;
     SetRayTracingAccelerationStructure(rayTracingShader: RayTracingShader, nameID: number, rayTracingAccelerationStructure: RayTracingAccelerationStructure): void;
@@ -49557,7 +50135,7 @@ interface RTHandle {
     GetScaledSize(refSize: Vector2Int): Vector2Int;
     GetScaledSize(): Vector2Int;
     Release(): void;
-    SetCustomHandleProperties(properties: unknown): void;
+    SetCustomHandleProperties(properties: RTHandleProperties&): void;
     SwitchOutFastMemory(cmd: CommandBuffer, copyContents: boolean): void;
     SwitchToFastMemory(cmd: CommandBuffer, residencyFraction: number, flags: FastMemoryFlags, copyContents: boolean): void;
 
@@ -49589,7 +50167,7 @@ interface IContainer {
 }
     
 interface Widget {
-    isHiddenCallback: unknown;
+    isHiddenCallback: Func<boolean>;
     readonly panel: Panel;
     readonly parent: IContainer;
     flags: Flags;
@@ -49608,36 +50186,6 @@ interface Widget {
 
 
 }
-    
-interface Panel extends IContainer {
-    flags: Flags;
-    displayName: string;
-    groupIndex: number;
-    readonly queryPath: string;
-    readonly isEditorOnly: boolean;
-    readonly isRuntimeOnly: boolean;
-    readonly isInactiveInEditor: boolean;
-    readonly editorForceUpdate: boolean;
-    readonly children: Readonly<Widget[]>;
-
-    readonly onSetDirty: MonoSignal<Panel>;
-
-
-    GetHashCode(): number;
-    SetDirty(): void;
-
-
-}
-    
-interface PanelConstructor {
-
-
-    new(): Panel;
-
-
-
-}
-declare const Panel: PanelConstructor;
     
 interface NameAndTooltip {
     name: string;
@@ -49730,9 +50278,9 @@ interface ScriptableRenderPass extends IRenderGraphRecorder {
 
 
     ConfigureInput(passInput: ScriptableRenderPassInput): void;
-    CreateDrawingSettings(shaderTagId: ShaderTagId, renderingData: unknown, sortingCriteria: SortingCriteria): DrawingSettings;
+    CreateDrawingSettings(shaderTagId: ShaderTagId, renderingData: RenderingData&, sortingCriteria: SortingCriteria): DrawingSettings;
     CreateDrawingSettings(shaderTagId: ShaderTagId, renderingData: UniversalRenderingData, cameraData: UniversalCameraData, lightData: UniversalLightData, sortingCriteria: SortingCriteria): DrawingSettings;
-    CreateDrawingSettings(shaderTagIdList: Readonly<ShaderTagId[]>, renderingData: unknown, sortingCriteria: SortingCriteria): DrawingSettings;
+    CreateDrawingSettings(shaderTagIdList: Readonly<ShaderTagId[]>, renderingData: RenderingData&, sortingCriteria: SortingCriteria): DrawingSettings;
     CreateDrawingSettings(shaderTagIdList: Readonly<ShaderTagId[]>, renderingData: UniversalRenderingData, cameraData: UniversalCameraData, lightData: UniversalLightData, sortingCriteria: SortingCriteria): DrawingSettings;
     FrameCleanup(cmd: CommandBuffer): void;
     OnCameraCleanup(cmd: CommandBuffer): void;
@@ -49794,7 +50342,7 @@ interface UniversalCameraData extends ContextItem {
     defaultOpaqueSortFlags: SortingCriteria;
     maxShadowDistance: number;
     postProcessEnabled: boolean;
-    captureActions: unknown;
+    captureActions: IEnumerator<Action<RenderTargetIdentifier, CommandBuffer>>;
     volumeLayerMask: LayerMask;
     volumeTrigger: Transform;
     isStopNaNEnabled: boolean;
@@ -49915,7 +50463,7 @@ interface XRPass {
     readonly cullingParams: ScriptableCullingParameters;
     readonly viewCount: number;
     readonly singlePassEnabled: boolean;
-    readonly foveatedRenderingInfo: unknown;
+    readonly foveatedRenderingInfo: IntPtr;
     readonly isHDRDisplayOutputActive: boolean;
     readonly hdrDisplayOutputColorGamut: ColorGamut;
     readonly hdrDisplayOutputInformation: HDRDisplayInformation;
@@ -50268,177 +50816,11 @@ interface ScriptableRendererConstructor {
     new(data: ScriptableRendererData): ScriptableRenderer;
 
 
-    SetCameraMatrices(cmd: CommandBuffer, cameraData: unknown, setInverseMatrices: boolean): void;
+    SetCameraMatrices(cmd: CommandBuffer, cameraData: CameraData&, setInverseMatrices: boolean): void;
     SetCameraMatrices(cmd: CommandBuffer, cameraData: UniversalCameraData, setInverseMatrices: boolean): void;
 
 }
 declare const ScriptableRenderer: ScriptableRendererConstructor;
-    
-interface ScriptableRendererData extends ScriptableObject {
-    readonly rendererFeatures: Readonly<ScriptableRendererFeature[]>;
-    useNativeRenderPass: boolean;
-
-
-
-    SetDirty(): void;
-    TryGetRendererFeature<T>(rendererFeature: unknown): boolean;
-
-
-}
-    
-interface ScriptableRendererFeature extends ScriptableObject {
-    readonly isActive: boolean;
-
-
-
-    AddRenderPasses(renderer: ScriptableRenderer, renderingData: unknown): void;
-    Create(): void;
-    Dispose(): void;
-    OnCameraPreCull(renderer: ScriptableRenderer, cameraData: unknown): void;
-    SetActive(active: boolean): void;
-    SetupRenderPasses(renderer: ScriptableRenderer, renderingData: unknown): void;
-
-
-}
-    
-interface UniversalRenderPipelineAssetConstructor {
-    k_MinLutSize: number;
-    k_MaxLutSize: number;
-    readonly AdditionalLightsDefaultShadowResolutionTierLow: number;
-    readonly AdditionalLightsDefaultShadowResolutionTierMedium: number;
-    readonly AdditionalLightsDefaultShadowResolutionTierHigh: number;
-    readonly packagePath: string;
-
-
-    new(): UniversalRenderPipelineAsset;
-
-
-    Create(rendererData: ScriptableRendererData): UniversalRenderPipelineAsset;
-
-}
-declare const UniversalRenderPipelineAsset: UniversalRenderPipelineAssetConstructor;
-    
-interface UniversalRenderPipelineConstructor {
-    k_ShaderTagName: string;
-    readonly maxShadowBias: number;
-    readonly minRenderScale: number;
-    readonly maxRenderScale: number;
-    readonly maxNumIterationsEnclosingSphere: number;
-    readonly maxPerObjectLights: number;
-    readonly maxVisibleAdditionalLights: number;
-    readonly asset: UniversalRenderPipelineAsset;
-
-
-    new(asset: UniversalRenderPipelineAsset): UniversalRenderPipeline;
-
-
-    GetLightAttenuationAndSpotDirection(lightType: LightType, lightRange: number, lightLocalToWorldMatrix: Matrix4x4, spotAngle: number, innerSpotAngle: unknown, lightAttenuation: unknown, lightSpotDir: unknown): void;
-    InitializeLightConstants_Common(lights: Readonly<VisibleLight[]>, lightIndex: number, lightPos: unknown, lightColor: unknown, lightAttenuation: unknown, lightSpotDir: unknown, lightOcclusionProbeChannel: unknown): void;
-    IsGameCamera(camera: Camera): boolean;
-
-}
-declare const UniversalRenderPipeline: UniversalRenderPipelineConstructor;
-    
-interface UniversalRenderPipelineAsset extends RenderPipelineAsset<UniversalRenderPipeline>, ISerializationCallbackReceiver, IGPUResidentRenderPipeline, IRenderGraphEnabledRenderPipeline, IProbeVolumeEnabledRenderPipeline, ISTPEnabledRenderPipeline {
-    readonly rendererDataList: unknown;
-    readonly renderers: unknown;
-    readonly isImmediateModeSupported: boolean;
-    readonly scriptableRenderer: ScriptableRenderer;
-    supportsCameraDepthTexture: boolean;
-    supportsCameraOpaqueTexture: boolean;
-    readonly opaqueDownsampling: Downsampling;
-    readonly supportsTerrainHoles: boolean;
-    storeActionsOptimization: StoreActionsOptimization;
-    supportsHDR: boolean;
-    hdrColorBufferPrecision: HDRColorBufferPrecision;
-    msaaSampleCount: number;
-    renderScale: number;
-    readonly enableLODCrossFade: boolean;
-    readonly lodCrossFadeDitheringType: LODCrossFadeDitheringType;
-    upscalingFilter: UpscalingFilterSelection;
-    fsrOverrideSharpness: boolean;
-    fsrSharpness: number;
-    readonly shEvalMode: ShEvalMode;
-    readonly lightProbeSystem: LightProbeSystem;
-    readonly probeVolumeMemoryBudget: ProbeVolumeTextureMemoryBudget;
-    readonly probeVolumeBlendingMemoryBudget: ProbeVolumeBlendingTextureMemoryBudget;
-    readonly supportProbeVolumeGPUStreaming: boolean;
-    readonly supportProbeVolumeDiskStreaming: boolean;
-    readonly supportProbeVolumeScenarios: boolean;
-    readonly supportProbeVolumeScenarioBlending: boolean;
-    readonly probeVolumeSHBands: ProbeVolumeSHBands;
-    readonly mainLightRenderingMode: LightRenderingMode;
-    readonly supportsMainLightShadows: boolean;
-    mainLightShadowmapResolution: number;
-    readonly additionalLightsRenderingMode: LightRenderingMode;
-    maxAdditionalLightsCount: number;
-    readonly supportsAdditionalLightShadows: boolean;
-    additionalLightsShadowmapResolution: number;
-    readonly additionalLightsShadowResolutionTierLow: number;
-    readonly additionalLightsShadowResolutionTierMedium: number;
-    readonly additionalLightsShadowResolutionTierHigh: number;
-    readonly reflectionProbeBlending: boolean;
-    readonly reflectionProbeBoxProjection: boolean;
-    shadowDistance: number;
-    shadowCascadeCount: number;
-    cascade2Split: number;
-    cascade3Split: Vector2;
-    cascade4Split: Vector3;
-    cascadeBorder: number;
-    shadowDepthBias: number;
-    shadowNormalBias: number;
-    readonly supportsSoftShadows: boolean;
-    supportsDynamicBatching: boolean;
-    readonly supportsMixedLighting: boolean;
-    readonly supportsLightCookies: boolean;
-    readonly useRenderingLayers: boolean;
-    readonly volumeFrameworkUpdateMode: VolumeFrameworkUpdateMode;
-    volumeProfile: VolumeProfile;
-    useSRPBatcher: boolean;
-    colorGradingMode: ColorGradingMode;
-    colorGradingLutSize: number;
-    readonly allowPostProcessAlphaOutput: boolean;
-    readonly useFastSRGBLinearConversion: boolean;
-    readonly supportScreenSpaceLensFlare: boolean;
-    readonly supportDataDrivenLensFlare: boolean;
-    useAdaptivePerformance: boolean;
-    conservativeEnclosingSphere: boolean;
-    numIterationsEnclosingSphere: number;
-    readonly renderPipelineShaderTag: string;
-    gpuResidentDrawerMode: GPUResidentDrawerMode;
-    gpuResidentDrawerEnableOcclusionCullingInCameras: boolean;
-    smallMeshScreenPercentage: number;
-    readonly supportProbeVolume: boolean;
-    readonly maxSHBands: ProbeVolumeSHBands;
-    readonly isStpUsed: boolean;
-    readonly defaultMaterial: Material;
-    readonly defaultParticleMaterial: Material;
-    readonly defaultLineMaterial: Material;
-    readonly defaultTerrainMaterial: Material;
-    readonly default2DMaterial: Material;
-    readonly default2DMaskMaterial: Material;
-    readonly decalMaterial: Material;
-    readonly defaultShader: Shader;
-    readonly autodeskInteractiveShader: Shader;
-    readonly autodeskInteractiveTransparentShader: Shader;
-    readonly autodeskInteractiveMaskedShader: Shader;
-    readonly terrainDetailLitShader: Shader;
-    readonly terrainDetailGrassShader: Shader;
-    readonly terrainDetailGrassBillboardShader: Shader;
-    readonly defaultSpeedTree7Shader: Shader;
-    readonly defaultSpeedTree8Shader: Shader;
-    readonly defaultSpeedTree9Shader: Shader;
-
-
-
-    GetRenderer(index: number): ScriptableRenderer;
-    IsGPUResidentDrawerSupportedBySRP(message: Readonly<string[]>, severty: unknown): boolean;
-    LoadBuiltinRendererData(type: RendererType): ScriptableRendererData;
-    OnAfterDeserialize(): void;
-    OnBeforeSerialize(): void;
-
-
-}
     
 interface UniversalRenderPipelineAssetConstructor {
     k_MinLutSize: number;
@@ -50530,10 +50912,10 @@ interface NetworkServerConstructor {
     exceptionsDisconnect: boolean;
     disconnectInactiveConnections: boolean;
     disconnectInactiveTimeout: number;
-    OnConnectedEvent: unknown;
-    OnDisconnectedEvent: unknown;
-    OnErrorEvent: unknown;
-    OnTransportExceptionEvent: unknown;
+    OnConnectedEvent: Action<NetworkConnectionToClient>;
+    OnDisconnectedEvent: Action<NetworkConnectionToClient>;
+    OnErrorEvent: Action<NetworkConnectionToClient, TransportError, string>;
+    OnTransportExceptionEvent: Action<NetworkConnectionToClient, Exception>;
     actualTickRate: number;
     earlyUpdateDuration: TimeSample;
     lateUpdateDuration: TimeSample;
@@ -50558,13 +50940,13 @@ interface NetworkServerConstructor {
     HasExternalConnections(): boolean;
     Listen(maxConns: number): void;
     RebuildObservers(identity: NetworkIdentity, initialize: boolean): void;
-    RegisterHandler<T>(handler: unknown, requireAuthentication: boolean): void;
-    RegisterHandler<T>(handler: unknown, requireAuthentication: boolean): void;
+    RegisterHandler<T>(handler: Action<NetworkConnectionToClient, T>, requireAuthentication: boolean): void;
+    RegisterHandler<T>(handler: Action<NetworkConnectionToClient, T, number>, requireAuthentication: boolean): void;
     RemoveConnection(connectionId: number): boolean;
     RemovePlayerForConnection(conn: NetworkConnectionToClient, removeOptions: RemovePlayerOptions): void;
-    ReplaceHandler<T>(handler: unknown, requireAuthentication: boolean): void;
-    ReplaceHandler<T>(handler: unknown, requireAuthentication: boolean): void;
-    ReplaceHandler<T>(handler: unknown, requireAuthentication: boolean): void;
+    ReplaceHandler<T>(handler: Action<T>, requireAuthentication: boolean): void;
+    ReplaceHandler<T>(handler: Action<NetworkConnectionToClient, T>, requireAuthentication: boolean): void;
+    ReplaceHandler<T>(handler: Action<NetworkConnectionToClient, T, number>, requireAuthentication: boolean): void;
     ReplacePlayerForConnection(conn: NetworkConnectionToClient, player: GameObject, keepAuthority: boolean): boolean;
     ReplacePlayerForConnection(conn: NetworkConnectionToClient, player: GameObject, assetId: number, keepAuthority: boolean): boolean;
     SendToAll<T>(message: T, channelId: number, sendToReadyOnly: boolean): void;
@@ -50622,12 +51004,12 @@ interface SnapshotInterpolationSettingsConstructor {
 }
 declare const SnapshotInterpolationSettings: SnapshotInterpolationSettingsConstructor;
     
-interface SpawnDelegate {
+interface SpawnDelegate extends MulticastDelegate {
 
 
 
-    BeginInvoke(position: Vector3, assetId: number, callback: unknown, object: unknown): unknown;
-    EndInvoke(result: unknown): GameObject;
+    BeginInvoke(position: Vector3, assetId: number, callback: AsyncCallback, object: unknown): IAsyncResult;
+    EndInvoke(result: IAsyncResult): GameObject;
     Invoke(position: Vector3, assetId: number): GameObject;
 
 
@@ -50636,19 +51018,19 @@ interface SpawnDelegate {
 interface SpawnDelegateConstructor {
 
 
-    new(object: unknown, method: unknown): SpawnDelegate;
+    new(object: unknown, method: IntPtr): SpawnDelegate;
 
 
 
 }
 declare const SpawnDelegate: SpawnDelegateConstructor;
     
-interface UnSpawnDelegate {
+interface UnSpawnDelegate extends MulticastDelegate {
 
 
 
-    BeginInvoke(spawned: GameObject, callback: unknown, object: unknown): unknown;
-    EndInvoke(result: unknown): void;
+    BeginInvoke(spawned: GameObject, callback: AsyncCallback, object: unknown): IAsyncResult;
+    EndInvoke(result: IAsyncResult): void;
     Invoke(spawned: GameObject): void;
 
 
@@ -50657,19 +51039,19 @@ interface UnSpawnDelegate {
 interface UnSpawnDelegateConstructor {
 
 
-    new(object: unknown, method: unknown): UnSpawnDelegate;
+    new(object: unknown, method: IntPtr): UnSpawnDelegate;
 
 
 
 }
 declare const UnSpawnDelegate: UnSpawnDelegateConstructor;
     
-interface SpawnHandlerDelegate {
+interface SpawnHandlerDelegate extends MulticastDelegate {
 
 
 
-    BeginInvoke(msg: SpawnMessage, callback: unknown, object: unknown): unknown;
-    EndInvoke(result: unknown): GameObject;
+    BeginInvoke(msg: SpawnMessage, callback: AsyncCallback, object: unknown): IAsyncResult;
+    EndInvoke(result: IAsyncResult): GameObject;
     Invoke(msg: SpawnMessage): GameObject;
 
 
@@ -50703,7 +51085,7 @@ interface SpawnMessage extends NetworkMessage {
 interface SpawnHandlerDelegateConstructor {
 
 
-    new(object: unknown, method: unknown): SpawnHandlerDelegate;
+    new(object: unknown, method: IntPtr): SpawnHandlerDelegate;
 
 
 
@@ -50714,10 +51096,10 @@ interface NetworkClientConstructor {
     exceptionsDisconnect: boolean;
     readonly spawned: CSDictionary<number, NetworkIdentity>;
     ready: boolean;
-    OnConnectedEvent: unknown;
-    OnDisconnectedEvent: unknown;
-    OnErrorEvent: unknown;
-    OnTransportExceptionEvent: unknown;
+    OnConnectedEvent: Action;
+    OnDisconnectedEvent: Action;
+    OnErrorEvent: Action<TransportError, string>;
+    OnTransportExceptionEvent: Action<Exception>;
     readonly prefabs: CSDictionary<number, GameObject>;
     aoi: InterestManagementBase;
     isLoadingScene: boolean;
@@ -50748,17 +51130,17 @@ interface NetworkClientConstructor {
     AddPlayer(): boolean;
     ClearSpawners(): void;
     Connect(address: string): void;
-    Connect(uri: unknown): void;
+    Connect(uri: Uri): void;
     ConnectHost(): void;
     DestroyAllClientObjects(): void;
     Disconnect(): void;
-    GetPrefab(assetId: number, prefab: unknown): boolean;
+    GetPrefab(assetId: number, prefab: GameObject&): boolean;
     OnGUI(): void;
     OnTimeSnapshot(snap: TimeSnapshot): void;
     PrepareToSpawnSceneObjects(): void;
     Ready(): boolean;
-    RegisterHandler<T>(handler: unknown, requireAuthentication: boolean): void;
-    RegisterHandler<T>(handler: unknown, requireAuthentication: boolean): void;
+    RegisterHandler<T>(handler: Action<T>, requireAuthentication: boolean): void;
+    RegisterHandler<T>(handler: Action<T, number>, requireAuthentication: boolean): void;
     RegisterPrefab(prefab: GameObject, newAssetId: number): void;
     RegisterPrefab(prefab: GameObject): void;
     RegisterPrefab(prefab: GameObject, newAssetId: number, spawnHandler: SpawnDelegate, unspawnHandler: UnSpawnDelegate): void;
@@ -50767,8 +51149,8 @@ interface NetworkClientConstructor {
     RegisterPrefab(prefab: GameObject, spawnHandler: SpawnHandlerDelegate, unspawnHandler: UnSpawnDelegate): void;
     RegisterSpawnHandler(assetId: number, spawnHandler: SpawnDelegate, unspawnHandler: UnSpawnDelegate): void;
     RegisterSpawnHandler(assetId: number, spawnHandler: SpawnHandlerDelegate, unspawnHandler: UnSpawnDelegate): void;
-    ReplaceHandler<T>(handler: unknown, requireAuthentication: boolean): void;
-    ReplaceHandler<T>(handler: unknown, requireAuthentication: boolean): void;
+    ReplaceHandler<T>(handler: Action<T>, requireAuthentication: boolean): void;
+    ReplaceHandler<T>(handler: Action<T, number>, requireAuthentication: boolean): void;
     Send<T>(message: T, channelId: number): void;
     Shutdown(): void;
     UnregisterHandler<T>(): boolean;
@@ -50892,7 +51274,7 @@ declare const NetworkTransformReliable: NetworkTransformReliableConstructor;
 interface NetworkAnimator extends NetworkBehaviour {
     clientAuthority: boolean;
     animator: Animator;
-    _Mirror_SyncVarHookDelegate_animatorSpeed: unknown;
+    _Mirror_SyncVarHookDelegate_animatorSpeed: Action<number, number>;
     NetworkanimatorSpeed: number;
 
 
@@ -50982,8 +51364,8 @@ interface PredictedRigidbodyConstructor {
     new(): PredictedRigidbody;
 
 
-    IsPredicted(rb: Rigidbody, predictedRigidbody: unknown): boolean;
-    IsPredicted(co: Collider, predictedRigidbody: unknown): boolean;
+    IsPredicted(rb: Rigidbody, predictedRigidbody: PredictedRigidbody&): boolean;
+    IsPredicted(co: Collider, predictedRigidbody: PredictedRigidbody&): boolean;
 
 }
 declare const PredictedRigidbody: PredictedRigidbodyConstructor;
@@ -51129,14 +51511,14 @@ interface NativeTweenConstructor {
     TextMeshProColor(self: GameObject, to: Color, duration: number): Tween<Color>;
     TweenLocalRotationZ(self: Component, to: number, duration: number): Tween<number>;
     TweenLocalRotationZ(self: GameObject, to: number, duration: number): Tween<number>;
-    ValueColor(self: Component, to: Color, duration: number, onUpdate: unknown): Tween<Color>;
-    ValueColor(self: GameObject, to: Color, duration: number, onUpdate: unknown): Tween<Color>;
-    ValueFloat(self: Component, to: number, duration: number, onUpdate: unknown): Tween<number>;
-    ValueFloat(self: GameObject, to: number, duration: number, onUpdate: unknown): Tween<number>;
-    ValueVector2(self: Component, to: Vector2, duration: number, onUpdate: unknown): Tween<Vector2>;
-    ValueVector2(self: GameObject, to: Vector2, duration: number, onUpdate: unknown): Tween<Vector2>;
-    ValueVector3(self: Component, to: Vector3, duration: number, onUpdate: unknown): Tween<Vector3>;
-    ValueVector3(self: GameObject, to: Vector3, duration: number, onUpdate: unknown): Tween<Vector3>;
+    ValueColor(self: Component, to: Color, duration: number, onUpdate: Action<Color>): Tween<Color>;
+    ValueColor(self: GameObject, to: Color, duration: number, onUpdate: Action<Color>): Tween<Color>;
+    ValueFloat(self: Component, to: number, duration: number, onUpdate: Action<number>): Tween<number>;
+    ValueFloat(self: GameObject, to: number, duration: number, onUpdate: Action<number>): Tween<number>;
+    ValueVector2(self: Component, to: Vector2, duration: number, onUpdate: Action<Vector2>): Tween<Vector2>;
+    ValueVector2(self: GameObject, to: Vector2, duration: number, onUpdate: Action<Vector2>): Tween<Vector2>;
+    ValueVector3(self: Component, to: Vector3, duration: number, onUpdate: Action<Vector3>): Tween<Vector3>;
+    ValueVector3(self: GameObject, to: Vector3, duration: number, onUpdate: Action<Vector3>): Tween<Vector3>;
     VolumeWeight(self: Component, to: number, duration: number): Tween<number>;
     VolumeWeight(self: GameObject, to: number, duration: number): Tween<number>;
 
@@ -51471,7 +51853,7 @@ interface UIScrollRectEventBubblerConstructor {
 declare const UIScrollRectEventBubbler: UIScrollRectEventBubblerConstructor;
     
 interface VisualEffect extends Behaviour {
-    outputEventReceived: unknown;
+    outputEventReceived: Action<VFXOutputEventArgs>;
     /**
      * Use this property to set the pause state of the visual effect.
      * 
@@ -52298,75 +52680,25 @@ interface VisualEffect extends Behaviour {
 
 }
     
-interface VisualEffectObject extends Object {
+interface VFXOutputEventArgs {
+    /**
+     * Stores the nameId of the source output event context that triggered this event.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXOutputEventArgs-nameId.html | VFX.VFXOutputEventArgs.nameId}
+     */
+    readonly nameId: number;
+    /**
+     * Stores the current event attribute.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VFXOutputEventArgs-eventAttribute.html | VFX.VFXOutputEventArgs.eventAttribute}
+     */
+    readonly eventAttribute: VFXEventAttribute;
 
 
 
 
 
 }
-    
-interface VisualEffectAsset extends VisualEffectObject {
-
-
-
-    GetEvents(names: Readonly<string[]>): void;
-    GetExposedProperties(exposedProperties: Readonly<VFXExposedProperty[]>): void;
-    /**
-     * Provides the configured space of an exposed property in VisualEffectAsset.
-     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffectAsset.GetExposedSpace.html | VFX.VisualEffectAsset.GetExposedSpace}
-     */
-    GetExposedSpace(nameID: number): VFXSpace;
-    /**
-     * Provides the configured space of an exposed property in VisualEffectAsset.
-     * @param name The name of the property.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffectAsset.GetExposedSpace.html | VFX.VisualEffectAsset.GetExposedSpace}
-     */
-    GetExposedSpace(name: string): VFXSpace;
-    /**
-     * Gets the TextureDimension of a named exposed Texture.
-     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffectAsset.GetTextureDimension.html | VFX.VisualEffectAsset.GetTextureDimension}
-     */
-    GetTextureDimension(nameID: number): TextureDimension;
-    /**
-     * Gets the TextureDimension of a named exposed Texture.
-     * @param name The name of the property.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffectAsset.GetTextureDimension.html | VFX.VisualEffectAsset.GetTextureDimension}
-     */
-    GetTextureDimension(name: string): TextureDimension;
-
-
-}
-    
-interface VFXExposedProperty {
-    name: string;
-    type: unknown;
-
-
-
-
-
-}
-    
-interface VisualEffectAssetConstructor {
-    PlayEventName: string;
-    StopEventName: string;
-    readonly PlayEventID: number;
-    readonly StopEventID: number;
-
-
-    new(): VisualEffectAsset;
-
-
-
-}
-declare const VisualEffectAsset: VisualEffectAssetConstructor;
     
 interface VFXEventAttribute {
 
@@ -52746,6 +53078,86 @@ interface VFXEventAttributeConstructor {
 }
 declare const VFXEventAttribute: VFXEventAttributeConstructor;
     
+interface VFXOutputEventArgsConstructor {
+
+
+    new(nameId: number, eventAttribute: VFXEventAttribute): VFXOutputEventArgs;
+
+
+
+}
+declare const VFXOutputEventArgs: VFXOutputEventArgsConstructor;
+    
+interface VisualEffectObject extends Object {
+
+
+
+
+
+}
+    
+interface VisualEffectAsset extends VisualEffectObject {
+
+
+
+    GetEvents(names: Readonly<string[]>): void;
+    GetExposedProperties(exposedProperties: Readonly<VFXExposedProperty[]>): void;
+    /**
+     * Provides the configured space of an exposed property in VisualEffectAsset.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffectAsset.GetExposedSpace.html | VFX.VisualEffectAsset.GetExposedSpace}
+     */
+    GetExposedSpace(nameID: number): VFXSpace;
+    /**
+     * Provides the configured space of an exposed property in VisualEffectAsset.
+     * @param name The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffectAsset.GetExposedSpace.html | VFX.VisualEffectAsset.GetExposedSpace}
+     */
+    GetExposedSpace(name: string): VFXSpace;
+    /**
+     * Gets the TextureDimension of a named exposed Texture.
+     * @param nameID The ID of the property. This is the same ID that Shader.PropertyToID returns.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffectAsset.GetTextureDimension.html | VFX.VisualEffectAsset.GetTextureDimension}
+     */
+    GetTextureDimension(nameID: number): TextureDimension;
+    /**
+     * Gets the TextureDimension of a named exposed Texture.
+     * @param name The name of the property.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/VFX.VisualEffectAsset.GetTextureDimension.html | VFX.VisualEffectAsset.GetTextureDimension}
+     */
+    GetTextureDimension(name: string): TextureDimension;
+
+
+}
+    
+interface VFXExposedProperty {
+    name: string;
+    type: Type;
+
+
+
+
+
+}
+    
+interface VisualEffectAssetConstructor {
+    PlayEventName: string;
+    StopEventName: string;
+    readonly PlayEventID: number;
+    readonly StopEventID: number;
+
+
+    new(): VisualEffectAsset;
+
+
+
+}
+declare const VisualEffectAsset: VisualEffectAssetConstructor;
+    
 interface VFXParticleSystemInfo {
     aliveCount: number;
     capacity: number;
@@ -52944,7 +53356,7 @@ interface VoxelWorld extends MonoBehaviour {
     GetNumRadiosityProcessingChunks(): number;
     GetPrefabAt(pos: Vector3): GameObject;
     GetRandomVoxelInWorld(): Vector3;
-    GetVoxelAndChunkAt(pos: Vector3): unknown;
+    GetVoxelAndChunkAt(pos: Vector3): ValueTuple<number, Chunk>;
     GetVoxelAt(pos: Vector3): number;
     GetVoxelColorAt(pos: Vector3): Color32;
     InvokeOnFinishedReplicatingChunksFromServer(): void;
@@ -52952,7 +53364,7 @@ interface VoxelWorld extends MonoBehaviour {
     LoadWorldFromSaveFile(file: WorldSaveFile): void;
     OnRenderObject(): void;
     RaycastVoxel(pos: Vector3, direction: Vector3, maxDistance: number): VoxelRaycastResult;
-    RaycastVoxel_Internal(pos: Vector3, direction: Vector3, maxDistance: number, debug: boolean): unknown;
+    RaycastVoxel_Internal(pos: Vector3, direction: Vector3, maxDistance: number, debug: boolean): ValueTuple<boolean, number, Vector3, Vector3>;
     RaycastVoxelForLighting(pos: Vector3, direction: Vector3, maxDistance: number, debug: boolean): number;
     ReadVoxelAt(pos: Vector3): number;
     RegenerateAllMeshes(): void;
@@ -52967,6 +53379,7 @@ interface VoxelWorld extends MonoBehaviour {
     TransformVectorToWorldSpace(vec: Vector3): Vector3;
     Update(): void;
     WaitForChunkToLoad(voxel: Vector3): void;
+    WriteTemporaryVoxelCollisionAt(pos: Vector3, num: number): void;
     WriteVoxelAt(pos: Vector3, num: number, priority: boolean): void;
     WriteVoxelGroupAt(positions: Readonly<Vector3[]>, nums: Readonly<number[]>, priority: boolean): void;
     WriteVoxelGroupAtTS(blob: unknown, priority: boolean): void;
@@ -52997,7 +53410,7 @@ interface SaveChunk {
 
 
 
-    Serialize(writer: unknown, version: number): void;
+    Serialize(writer: BinaryWriter, version: number): void;
 
 
 }
@@ -53008,7 +53421,7 @@ interface SaveChunkConstructor {
     new(key: Vector3, data: Readonly<number[]>, color: Readonly<number[]>): SaveChunk;
 
 
-    Deserialize(reader: unknown, version: number, voxelData: Readonly<number[]>, colors: Readonly<number[]>): Vector3;
+    Deserialize(reader: BinaryReader, version: number, voxelData: Readonly<number[]>, colors: Readonly<number[]>): Vector3;
 
 }
 declare const SaveChunk: SaveChunkConstructor;
@@ -53090,6 +53503,7 @@ interface Chunk {
     SetGeometryDirty(dirty: boolean, priority: boolean): void;
     SetWorld(world: VoxelWorld): void;
     WaitForLoaded(): void;
+    WriteTemporaryCollision(position: Vector3, hasCollision: boolean): void;
     WriteVoxel(worldPos: Vector3, num: number): void;
     WriteVoxelColor(worldPos: Vector3, col: Color32): void;
     WriteVoxelDamage(worldPos: Vector3, dmg: number): void;
