@@ -1,9 +1,3 @@
-export interface ProfilePicture {
-	uid: string;
-	instanceId: string;
-	imageId: string;
-}
-
 export const enum ResourceType {
 	GAME = "GAME",
 	ORGANIZATION = "ORGANIZATION",
@@ -94,12 +88,6 @@ export type GearClass = ItemClass &
 		  }
 	);
 
-export interface ProfilePictureClass extends ItemClass {
-	profilePicture: {
-		imageId: string;
-	};
-}
-
 export interface ItemInstanceDto {
 	ownerId: string;
 	class: ItemClass;
@@ -110,16 +98,6 @@ export interface ItemInstanceDto {
 
 export interface GearInstanceDto extends ItemInstanceDto {
 	class: GearClass;
-}
-
-export interface ProfilePictureInstanceDto extends ItemInstanceDto {
-	class: ProfilePictureClass;
-}
-
-export interface EquippedProfilePicture {
-	uid: string;
-	instanceId: string;
-	imageId: string;
 }
 
 export interface OutfitPatch {
@@ -151,35 +129,4 @@ export interface OutfitDto {
 	gear: Array<GearInstanceDto>;
 
 	equipped: boolean;
-}
-
-/** Describes an item that was gained in a transaction */
-export interface GainedItemSummary {
-	/** The userId of the user that gained the item */
-	uid: string;
-	resourceType: string;
-	resourceId: string;
-	classId: string;
-	instanceId: string;
-}
-
-/** Describes an item that was lost in a transaction */
-export interface LostItemSummary {
-	/** The userId of the user that lost the item */
-	uid: string;
-	resourceType: string;
-	resourceId: string;
-	classId: string;
-	instanceId: string;
-}
-
-export interface Transaction {
-	/** Describes the items gained in the transaction */
-	itemsGained: GainedItemSummary[];
-	/** Describes the items lost in the transaction */
-	itemsLost: LostItemSummary[];
-
-	type: "GAME_BROKERED_TRADE";
-	transactionId: string;
-	createdAt: string;
 }

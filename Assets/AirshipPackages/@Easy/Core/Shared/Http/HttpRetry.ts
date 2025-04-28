@@ -267,7 +267,7 @@ function executeHttpTask(httpTask: HttpTask): void {
 }
 
 type HttpCallback = () => HttpResponse;
-type HttpRetryCallback = 
+export type HttpRetryCallback = 
     ((httpRequest: HttpCallback, config?: HttpRetryConfig) => Promise<HttpResponse>)
     &
     ((httpRequest: HttpCallback, retryKey: string) => Promise<HttpResponse>);
