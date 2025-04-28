@@ -415,6 +415,7 @@ export class AirshipCameraSingleton {
 	 * @param characterCameraMode A `CharacterCameraMode`.
 	 */
 	public SetMode(characterCameraMode: CharacterCameraMode): CameraMode {
+		warn("mode set to " + characterCameraMode);
 		this.characterCameraMode = characterCameraMode;
 		const target =
 			Game.localPlayer.character?.model ?? GameObject.CreateAtPos(Vector3.zero, "CameraTargetPlaceholder");
@@ -551,7 +552,7 @@ export class AirshipCameraSingleton {
 			// with their current look vector.
 			if (character.movement) {
 				// print("setting look vec: " + character.movement.startingLookVector);
-				mode.SetYAxisDirection(character.movement.startingLookVector);
+				mode.SetYAxisDirection(character.movement.GetLookVector());
 			}
 
 			//Every frame set the characters look vector to match the cameras

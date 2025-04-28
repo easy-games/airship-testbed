@@ -389,11 +389,11 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8712362769775679849, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
-      propertyPath: hiddenSurfaces.Array.data[0]
+      propertyPath: 'hiddenSurfaces.Array.data[0]'
       value: 
       objectReference: {fileID: 2251630991205864077}
     - target: {fileID: 8712362769775679849, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
-      propertyPath: baseMeshMatColors.Array.data[0]
+      propertyPath: 'baseMeshMatColors.Array.data[0]'
       value: 
       objectReference: {fileID: 2369860718999573607}
     - target: {fileID: 8712362769775679849, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
@@ -401,7 +401,7 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8712362769775679849, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
-      propertyPath: outputBaseMeshMatColors.Array.data[0]
+      propertyPath: 'outputBaseMeshMatColors.Array.data[0]'
       value: 
       objectReference: {fileID: 576573197197490131}
     - target: {fileID: 8712362769775679849, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
@@ -409,7 +409,7 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8712362769775679849, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
-      propertyPath: outputSkinnedMeshRenderers.Array.data[0]
+      propertyPath: 'outputSkinnedMeshRenderers.Array.data[0]'
       value: 
       objectReference: {fileID: 1826325905645677443}
     - target: {fileID: 8802499123621670980, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
