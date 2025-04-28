@@ -8,7 +8,7 @@ export function encodeURIComponent(component: string): string {
 	return component;
 }
 
-function buildQueryString(query: Required<HttpRequestParams["query"]>) {
+function buildQueryString(query: Required<HttpRequestParams>["query"]) {
 	let queryString = "";
 	for (const [key, value] of entries(query)) {
 		if (queryString === "") {

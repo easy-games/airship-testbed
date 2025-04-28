@@ -1,6 +1,6 @@
 import { encodeURIComponent } from "./UnityMakeRequest";
-
-export interface HttpRequestParams<Query extends Record<string, string | number | boolean | readonly string[]> = any> {
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface HttpRequestParams<Query extends Record<string, string | number | boolean | readonly string[]> = {}> {
     method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH" | "TRACE" | "HEAD";
     path: string;
 
@@ -56,10 +56,10 @@ export namespace ContentServicePrisma {
         gameId: string;
         type: string;
         name: string;
-        note: string | null;
+        note: string | undefined;
         createdAt: string;
         size: number;
-        uploadedAt: string | null;
+        uploadedAt: string | undefined;
     };
     // eslint-disable-next-line @typescript-eslint/naming-convention
     export const CurrencyType = {
@@ -79,11 +79,11 @@ export namespace ContentServicePrisma {
         platformFeePercent: number;
         usageFeeAmount: number;
         processed: boolean;
-        processedAt: string | null;
+        processedAt: string | undefined;
         createdAt: string;
-        platformFeeAmount: number | null;
-        finalBalance: number | null;
-        usageData: unknown | null;
+        platformFeeAmount: number | undefined;
+        finalBalance: number | undefined;
+        usageData: unknown | undefined;
     };
     export type Organization = {
         id: string;
@@ -102,26 +102,26 @@ export namespace ContentServicePrisma {
     };
     export type Game = {
         id: string;
-        slug: string | null;
-        slugProperCase: string | null;
+        slug: string | undefined;
+        slugProperCase: string | undefined;
         name: string;
         description: string;
         iconImageId: string;
         organizationId: string;
         createdAt: string;
         visibility: ContentServicePrisma.GameVisibility;
-        lastVersionUpdate: string | null;
-        archivedAt: string | null;
-        loadingScreenImageId: string | null;
-        logoImageId: string | null;
-        links: unknown | null;
-        videoId: string | null;
+        lastVersionUpdate: string | undefined;
+        archivedAt: string | undefined;
+        loadingScreenImageId: string | undefined;
+        logoImageId: string | undefined;
+        links: unknown | undefined;
+        videoId: string | undefined;
         platforms: string[];
         plays: number;
         favorites: number;
         plays24h: number;
         uniquePlays24h: number;
-        adminForceVisibility: ContentServicePrisma.GameVisibility | null;
+        adminForceVisibility: ContentServicePrisma.GameVisibility | undefined;
     };
     export type Package = {
         id: string;
@@ -132,8 +132,8 @@ export namespace ContentServicePrisma {
         iconImageId: string;
         organizationId: string;
         createdAt: string;
-        lastVersionUpdate: string | null;
-        archivedAt: string | null;
+        lastVersionUpdate: string | undefined;
+        archivedAt: string | undefined;
         platforms: string[];
         plays: number;
         plays24h: number;
@@ -144,8 +144,8 @@ export namespace ContentServicePrisma {
         currencyType: ContentServicePrisma.CurrencyType;
         amount: number;
         state: ContentServicePrisma.CurrencyPayoutRequestState;
-        processedBy: string | null;
-        processedAt: string | null;
+        processedBy: string | undefined;
+        processedAt: string | undefined;
         createdAt: string;
         organizationId: string;
     };
@@ -166,7 +166,7 @@ export namespace ContentServicePrisma {
         createdAt: string;
         airAssets: string[];
         category: string;
-        subcategory: string | null;
+        subcategory: string | undefined;
     };
     // eslint-disable-next-line @typescript-eslint/naming-convention
     export const TransactionType = {
@@ -186,7 +186,7 @@ export namespace ContentServicePrisma {
         type: ContentServicePrisma.TransactionType;
         createdAt: string;
         transactionId: string;
-        details: ContentServicePrisma.TransactionDetails | null;
+        details: ContentServicePrisma.TransactionDetails | undefined;
     };
     // eslint-disable-next-line @typescript-eslint/naming-convention
     export const ProductFullfillmentMethod = {
@@ -235,10 +235,10 @@ export namespace ContentServicePrisma {
         productResourceType: ContentServicePrisma.ResourceType;
         productName: string;
         createdAt: string;
-        completedAt: string | null;
-        summaryId: string | null;
-        itemTransactionId: string | null;
-        refundItemTransactionId: string | null;
+        completedAt: string | undefined;
+        summaryId: string | undefined;
+        itemTransactionId: string | undefined;
+        refundItemTransactionId: string | undefined;
     };
 }
 // ====+==== Artifacts TYPES ====+====
@@ -273,7 +273,7 @@ export namespace ContentServiceArtifacts {
         };
     };
     export type ObjectUploadedPushArgs = {
-        data: any;
+        data: unknown;
     };
 
     export interface ContentServiceArtifactsClient {
@@ -391,7 +391,7 @@ export namespace ContentServiceCurrency {
         getOrgEarnings(
             args: GetOrgEarningsArgs["params"],
             options?: RequestOptions,
-        ): Promise<{ cursor: string | null; results: ContentServicePrisma.CurrencyEarningsSummary[] }>;
+        ): Promise<{ cursor: string | undefined; results: ContentServicePrisma.CurrencyEarningsSummary[] }>;
         getSummary(
             args: GetSummaryArgs["params"],
             options?: RequestOptions,
@@ -441,7 +441,7 @@ export namespace ContentServiceCurrency {
         async getOrgEarnings(
             args: GetOrgEarningsArgs["params"],
             options?: RequestOptions,
-        ): Promise<{ cursor: string | null; results: ContentServicePrisma.CurrencyEarningsSummary[] }> {
+        ): Promise<{ cursor: string | undefined; results: ContentServicePrisma.CurrencyEarningsSummary[] }> {
             return await this.makeRequest({
                 method: "GET",
                 path: `/currency/organization-id/${encodeURIComponent(args.orgId)}/summaries`,
@@ -506,20 +506,20 @@ export namespace ContentServiceFavorites {
     export type DeploymentPlatform = (typeof DeploymentPlatform)[keyof typeof DeploymentPlatform];
     export interface PublicGame {
         id: string;
-        slug: string | null;
-        slugProperCase: string | null;
+        slug: string | undefined;
+        slugProperCase: string | undefined;
         name: string;
         description: string;
         iconImageId: string;
         organizationId: string;
         createdAt: string;
         visibility: ContentServicePrisma.GameVisibility;
-        lastVersionUpdate: string | null;
-        archivedAt: string | null;
-        loadingScreenImageId: string | null;
-        logoImageId: string | null;
-        videoId: string | null;
-        links: GameLink[] | null;
+        lastVersionUpdate: string | undefined;
+        archivedAt: string | undefined;
+        loadingScreenImageId: string | undefined;
+        logoImageId: string | undefined;
+        videoId: string | undefined;
+        links: GameLink[] | undefined;
         plays: number;
         favorites: number;
         plays24h: number;
@@ -641,10 +641,10 @@ export namespace ContentServiceGames {
         slugProperCase?: string;
         description?: string;
         iconImageId?: string;
-        loadingScreenImageId?: string | null;
-        logoImageId?: string | null;
-        videoId?: string | null;
-        links?: GameLinkDto[] | null;
+        loadingScreenImageId?: string | undefined;
+        logoImageId?: string | undefined;
+        videoId?: string | undefined;
+        links?: GameLinkDto[] | undefined;
         visibility?: ContentServicePrisma.GameVisibility;
         archived?: boolean;
     }
@@ -719,7 +719,7 @@ export namespace ContentServiceGames {
         };
     };
     export interface AdminUpdateStatusDto {
-        forceVisibility: ContentServicePrisma.GameVisibility | null;
+        forceVisibility: ContentServicePrisma.GameVisibility | undefined;
     }
     export type AdminSetGameStatusArgs = {
         params: {
@@ -733,20 +733,20 @@ export namespace ContentServiceGames {
     }
     export interface PublicGame {
         id: string;
-        slug: string | null;
-        slugProperCase: string | null;
+        slug: string | undefined;
+        slugProperCase: string | undefined;
         name: string;
         description: string;
         iconImageId: string;
         organizationId: string;
         createdAt: string;
         visibility: ContentServicePrisma.GameVisibility;
-        lastVersionUpdate: string | null;
-        archivedAt: string | null;
-        loadingScreenImageId: string | null;
-        logoImageId: string | null;
-        videoId: string | null;
-        links: GameLink[] | null;
+        lastVersionUpdate: string | undefined;
+        archivedAt: string | undefined;
+        loadingScreenImageId: string | undefined;
+        logoImageId: string | undefined;
+        videoId: string | undefined;
+        links: GameLink[] | undefined;
         plays: number;
         favorites: number;
         plays24h: number;
@@ -782,8 +782,8 @@ export namespace ContentServiceGames {
     }
     export interface PublicImageResource {
         imageId: string;
-        name: string | null;
-        description: string | null;
+        name: string | undefined;
+        description: string | undefined;
         size: number;
         createdAt: string;
     }
@@ -828,11 +828,11 @@ export namespace ContentServiceGames {
         adminGetGameStatus(
             args: AdminGetGameStatusArgs["params"],
             options?: RequestOptions,
-        ): Promise<{ forceVisibility: ContentServicePrisma.GameVisibility | null }>;
+        ): Promise<{ forceVisibility: ContentServicePrisma.GameVisibility | undefined }>;
         adminSetGameStatus(
             args: AdminSetGameStatusArgs,
             options?: RequestOptions,
-        ): Promise<{ forceVisibility: ContentServicePrisma.GameVisibility | null }>;
+        ): Promise<{ forceVisibility: ContentServicePrisma.GameVisibility | undefined }>;
     }
 
     export class ContentServiceGamesBaseClient implements ContentServiceGamesClient {
@@ -987,7 +987,7 @@ export namespace ContentServiceGames {
         async adminGetGameStatus(
             args: AdminGetGameStatusArgs["params"],
             options?: RequestOptions,
-        ): Promise<{ forceVisibility: ContentServicePrisma.GameVisibility | null }> {
+        ): Promise<{ forceVisibility: ContentServicePrisma.GameVisibility | undefined }> {
             return await this.makeRequest({
                 method: "GET",
                 path: `/games/admin-status/game-id/${encodeURIComponent(args.id)}`,
@@ -999,7 +999,7 @@ export namespace ContentServiceGames {
         async adminSetGameStatus(
             args: AdminSetGameStatusArgs,
             options?: RequestOptions,
-        ): Promise<{ forceVisibility: ContentServicePrisma.GameVisibility | null }> {
+        ): Promise<{ forceVisibility: ContentServicePrisma.GameVisibility | undefined }> {
             return await this.makeRequest({
                 method: "PATCH",
                 path: `/games/admin-status/game-id/${encodeURIComponent(args.params.id)}`,
@@ -1061,12 +1061,12 @@ export namespace ContentServiceImages {
         data: ScheduleDeletionBody;
     };
     export type ObjectUploadedPushArgs = {
-        data: any;
+        data: unknown;
     };
     export interface PublicImageResource {
         imageId: string;
-        name: string | null;
-        description: string | null;
+        name: string | undefined;
+        description: string | undefined;
         size: number;
         createdAt: string;
     }
@@ -1205,20 +1205,20 @@ export namespace ContentServiceMemberships {
     export type DeploymentPlatform = (typeof DeploymentPlatform)[keyof typeof DeploymentPlatform];
     export interface PublicGame {
         id: string;
-        slug: string | null;
-        slugProperCase: string | null;
+        slug: string | undefined;
+        slugProperCase: string | undefined;
         name: string;
         description: string;
         iconImageId: string;
         organizationId: string;
         createdAt: string;
         visibility: ContentServicePrisma.GameVisibility;
-        lastVersionUpdate: string | null;
-        archivedAt: string | null;
-        loadingScreenImageId: string | null;
-        logoImageId: string | null;
-        videoId: string | null;
-        links: GameLink[] | null;
+        lastVersionUpdate: string | undefined;
+        archivedAt: string | undefined;
+        loadingScreenImageId: string | undefined;
+        logoImageId: string | undefined;
+        videoId: string | undefined;
+        links: GameLink[] | undefined;
         plays: number;
         favorites: number;
         plays24h: number;
@@ -1390,8 +1390,8 @@ export namespace ContentServiceOrganizations {
     }
     export interface PublicImageResource {
         imageId: string;
-        name: string | null;
-        description: string | null;
+        name: string | undefined;
+        description: string | undefined;
         size: number;
         createdAt: string;
     }
@@ -1599,8 +1599,8 @@ export namespace ContentServicePackages {
     }
     export interface PublicImageResource {
         imageId: string;
-        name: string | null;
-        description: string | null;
+        name: string | undefined;
+        description: string | undefined;
         size: number;
         createdAt: string;
     }
@@ -1720,7 +1720,7 @@ export namespace ContentServicePayments {
         data: CreateXsollaPaymentDto;
     };
     export type XsollaWebhookArgs = {
-        data: any;
+        data: unknown;
     };
     export interface CreateSteamPayment {
         steamId: string;
@@ -1840,7 +1840,7 @@ export namespace ContentServicePayouts {
         id: string;
         currencyType: ContentServicePrisma.CurrencyType;
         amount: number;
-        processedAt: string | null;
+        processedAt: string | undefined;
         createdAt: string;
         state: ContentServicePrisma.CurrencyPayoutRequestState;
         organizationId: string;
@@ -1854,7 +1854,7 @@ export namespace ContentServicePayouts {
         getRecentOrgPayoutRequest(
             args: GetRecentOrgPayoutRequestArgs["params"],
             options?: RequestOptions,
-        ): Promise<{ payoutRequest: PublicCurrencyPayoutRequestData | null; payoutInfo: boolean }>;
+        ): Promise<{ payoutRequest: PublicCurrencyPayoutRequestData | undefined; payoutInfo: boolean }>;
         createPayoutRequest(
             args: CreatePayoutRequestArgs["data"],
             options?: RequestOptions,
@@ -1889,7 +1889,7 @@ export namespace ContentServicePayouts {
         async getRecentOrgPayoutRequest(
             args: GetRecentOrgPayoutRequestArgs["params"],
             options?: RequestOptions,
-        ): Promise<{ payoutRequest: PublicCurrencyPayoutRequestData | null; payoutInfo: boolean }> {
+        ): Promise<{ payoutRequest: PublicCurrencyPayoutRequestData | undefined; payoutInfo: boolean }> {
             return await this.makeRequest({
                 method: "GET",
                 path: `/payouts/organization-id/${encodeURIComponent(args.orgId)}`,
@@ -1966,7 +1966,7 @@ export namespace ContentServicePermissions {
             message?: string;
             member?: ContentServicePrisma.Member & { role: ContentServicePrisma.OrganizationRole };
         }>;
-        getSchema(options?: RequestOptions): Promise<{ schema: readonly PermissionNode[] | null }>;
+        getSchema(options?: RequestOptions): Promise<{ schema: readonly PermissionNode[] | undefined }>;
     }
 
     export class ContentServicePermissionsBaseClient implements ContentServicePermissionsClient {
@@ -1993,7 +1993,7 @@ export namespace ContentServicePermissions {
                 retryKey: options?.retryKey,
             });
         }
-        async getSchema(options?: RequestOptions): Promise<{ schema: readonly PermissionNode[] | null }> {
+        async getSchema(options?: RequestOptions): Promise<{ schema: readonly PermissionNode[] | undefined }> {
             return await this.makeRequest({
                 method: "GET",
                 path: `/permissions/schema`,
@@ -2115,7 +2115,7 @@ export namespace ContentServiceGear {
     export interface UpdateGearDto extends UpdateItemClassDto {
         airAssets?: string[];
         category?: string;
-        subcategory?: string | null;
+        subcategory?: string | undefined;
     }
     export type UpdateGearClassForResourceArgs = {
         params: {
@@ -2164,10 +2164,10 @@ export namespace ContentServiceGear {
         default: boolean;
         tradable: { permitted: boolean };
         marketable: { permitted: boolean };
-        gear: Omit<ContentServicePrisma.Gear, "classId" | "createdAt"> | null | undefined;
+        gear: Omit<ContentServicePrisma.Gear, "classId" | "createdAt"> | undefined | undefined;
     }
     export interface SelectedGear extends SelectedItemClass {
-        gear: { airAssets: string[]; category: string; subcategory: string | null };
+        gear: { airAssets: string[]; category: string; subcategory: string | undefined };
     }
     export interface SelectedItem {
         class: SelectedItemClass;
@@ -2340,12 +2340,12 @@ export namespace ContentServiceItemClasses {
         default: boolean;
         tradable: { permitted: boolean };
         marketable: { permitted: boolean };
-        gear: Omit<ContentServicePrisma.Gear, "classId" | "createdAt"> | null | undefined;
+        gear: Omit<ContentServicePrisma.Gear, "classId" | "createdAt"> | undefined | undefined;
     }
     export interface PublicImageResource {
         imageId: string;
-        name: string | null;
-        description: string | null;
+        name: string | undefined;
+        description: string | undefined;
         size: number;
         createdAt: string;
     }
@@ -2612,7 +2612,7 @@ export namespace ContentServiceItems {
         default: boolean;
         tradable: { permitted: boolean };
         marketable: { permitted: boolean };
-        gear: Omit<ContentServicePrisma.Gear, "classId" | "createdAt"> | null | undefined;
+        gear: Omit<ContentServicePrisma.Gear, "classId" | "createdAt"> | undefined | undefined;
     }
     export interface SelectedItem {
         class: SelectedItemClass;
@@ -2764,7 +2764,7 @@ export namespace ContentServiceOutfits {
         default: boolean;
         tradable: { permitted: boolean };
         marketable: { permitted: boolean };
-        gear: Omit<ContentServicePrisma.Gear, "classId" | "createdAt"> | null | undefined;
+        gear: Omit<ContentServicePrisma.Gear, "classId" | "createdAt"> | undefined | undefined;
     }
     export interface SelectedItem {
         class: SelectedItemClass;
@@ -2774,7 +2774,7 @@ export namespace ContentServiceOutfits {
         createdAt: string;
     }
     export interface SelectedGear extends SelectedItemClass {
-        gear: { airAssets: string[]; category: string; subcategory: string | null };
+        gear: { airAssets: string[]; category: string; subcategory: string | undefined };
     }
     export interface SelectedGearItem extends SelectedItem {
         class: SelectedGear;
@@ -2784,7 +2784,7 @@ export namespace ContentServiceOutfits {
         name: string;
         skinColor: string;
         gear: SelectedGearItem[];
-        metadata: unknown | null;
+        metadata: unknown | undefined;
         equipped: boolean;
         createdAt: string;
     }
@@ -2945,7 +2945,7 @@ export namespace ContentServiceOrganizationRoles {
         deleteRole(
             args: DeleteRoleArgs["params"],
             options?: RequestOptions,
-        ): Promise<{ role: ContentServicePrisma.OrganizationRole | null }>;
+        ): Promise<{ role: ContentServicePrisma.OrganizationRole | undefined }>;
         getRoles(
             args: GetRolesArgs["params"],
             options?: RequestOptions,
@@ -2988,7 +2988,7 @@ export namespace ContentServiceOrganizationRoles {
         async deleteRole(
             args: DeleteRoleArgs["params"],
             options?: RequestOptions,
-        ): Promise<{ role: ContentServicePrisma.OrganizationRole | null }> {
+        ): Promise<{ role: ContentServicePrisma.OrganizationRole | undefined }> {
             return await this.makeRequest({
                 method: "DELETE",
                 path: `/organizations/roles/organization-id/${encodeURIComponent(args.orgId)}/role-name/${encodeURIComponent(args.roleName)}`,
