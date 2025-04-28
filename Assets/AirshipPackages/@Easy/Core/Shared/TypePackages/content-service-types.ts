@@ -7,14 +7,10 @@ export interface HttpRequestParams<Query extends Record<string, string | number 
     query?: Query;
     body?: unknown;
 
-    authentication?: string | (() => string) | (() => Promise<string>);
-    headers?: Record<string, string>;
     retryKey?: string;
 }
 
 export interface RequestOptions {
-    authentication?: string | (() => string) | (() => Promise<string>);
-    headers?: Record<string, string>;
     retryKey?: string;
 }
 
@@ -303,10 +299,8 @@ export namespace ContentServiceArtifacts {
             return await this.makeRequest({
                 method: "GET",
                 path: `/artifacts/game-id/${encodeURIComponent(args.params.gameId)}/type/${encodeURIComponent(args.params.type)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                query: args.query,
                 retryKey: options?.retryKey,
+                query: args.query,
             });
         }
         async getSignedUrl(
@@ -316,10 +310,8 @@ export namespace ContentServiceArtifacts {
             return await this.makeRequest({
                 method: "POST",
                 path: `/artifacts/signed-url`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                body: args,
                 retryKey: options?.retryKey,
+                body: args,
             });
         }
         async downloadArtifact(
@@ -329,8 +321,6 @@ export namespace ContentServiceArtifacts {
             return await this.makeRequest({
                 method: "GET",
                 path: `/artifacts/artifact-id/${encodeURIComponent(args.artifactId)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
                 retryKey: options?.retryKey,
             });
         }
@@ -341,10 +331,8 @@ export namespace ContentServiceArtifacts {
             return await this.makeRequest({
                 method: "POST",
                 path: `/artifacts/push`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                body: args,
                 retryKey: options?.retryKey,
+                body: args,
             });
         }
     }
@@ -409,8 +397,6 @@ export namespace ContentServiceCurrency {
             return await this.makeRequest({
                 method: "GET",
                 path: `/currency/`,
-                authentication: options?.authentication,
-                headers: options?.headers,
                 retryKey: options?.retryKey,
             });
         }
@@ -421,8 +407,6 @@ export namespace ContentServiceCurrency {
             return await this.makeRequest({
                 method: "GET",
                 path: `/currency/organization-id/${encodeURIComponent(args.orgId)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
                 retryKey: options?.retryKey,
             });
         }
@@ -433,8 +417,6 @@ export namespace ContentServiceCurrency {
             return await this.makeRequest({
                 method: "GET",
                 path: `/currency/resource-id/${encodeURIComponent(args.resourceId)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
                 retryKey: options?.retryKey,
             });
         }
@@ -445,8 +427,6 @@ export namespace ContentServiceCurrency {
             return await this.makeRequest({
                 method: "GET",
                 path: `/currency/organization-id/${encodeURIComponent(args.orgId)}/summaries`,
-                authentication: options?.authentication,
-                headers: options?.headers,
                 retryKey: options?.retryKey,
             });
         }
@@ -457,8 +437,6 @@ export namespace ContentServiceCurrency {
             return await this.makeRequest({
                 method: "GET",
                 path: `/currency/organization-id/${encodeURIComponent(args.orgId)}/summary/${encodeURIComponent(args.summaryId)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
                 retryKey: options?.retryKey,
             });
         }
@@ -555,10 +533,8 @@ export namespace ContentServiceFavorites {
             return await this.makeRequest({
                 method: "POST",
                 path: `/favorites/${encodeURIComponent(args.params.favorites_type)}/`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                body: args.data,
                 retryKey: options?.retryKey,
+                body: args.data,
             });
         }
         async getFavorites(
@@ -571,8 +547,6 @@ export namespace ContentServiceFavorites {
             return await this.makeRequest({
                 method: "GET",
                 path: `/favorites/${encodeURIComponent(args.favorites_type)}/`,
-                authentication: options?.authentication,
-                headers: options?.headers,
                 retryKey: options?.retryKey,
             });
         }
@@ -849,10 +823,8 @@ export namespace ContentServiceGames {
             return await this.makeRequest({
                 method: "GET",
                 path: `/games/`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                query: args,
                 retryKey: options?.retryKey,
+                query: args,
             });
         }
         async getAdminGameSorts(
@@ -862,10 +834,8 @@ export namespace ContentServiceGames {
             return await this.makeRequest({
                 method: "GET",
                 path: `/games/admin/sorts`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                query: args,
                 retryKey: options?.retryKey,
+                query: args,
             });
         }
         async getGameBySlug(
@@ -875,10 +845,8 @@ export namespace ContentServiceGames {
             return await this.makeRequest({
                 method: "GET",
                 path: `/games/slug/${encodeURIComponent(args.params.slug)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                query: args.query,
                 retryKey: options?.retryKey,
+                query: args.query,
             });
         }
         async getGameById(
@@ -888,10 +856,8 @@ export namespace ContentServiceGames {
             return await this.makeRequest({
                 method: "GET",
                 path: `/games/game-id/${encodeURIComponent(args.params.id)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                query: args.query,
                 retryKey: options?.retryKey,
+                query: args.query,
             });
         }
         async autocompleteGame(
@@ -901,10 +867,8 @@ export namespace ContentServiceGames {
             return await this.makeRequest({
                 method: "GET",
                 path: `/games/autocomplete`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                query: args,
                 retryKey: options?.retryKey,
+                query: args,
             });
         }
         async adminAutocompleteGame(
@@ -914,50 +878,40 @@ export namespace ContentServiceGames {
             return await this.makeRequest({
                 method: "GET",
                 path: `/games/admin/autocomplete`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                query: args,
                 retryKey: options?.retryKey,
+                query: args,
             });
         }
         async patchGame(args: PatchGameArgs, options?: RequestOptions): Promise<{ game: PublicGameWithOrg }> {
             return await this.makeRequest({
                 method: "PATCH",
                 path: `/games/game-id/${encodeURIComponent(args.params.id)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                body: args.data,
                 retryKey: options?.retryKey,
+                body: args.data,
             });
         }
         async createGame(args: CreateGameArgs["data"], options?: RequestOptions): Promise<{ game: PublicGameWithOrg }> {
             return await this.makeRequest({
                 method: "POST",
                 path: `/games/`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                body: args,
                 retryKey: options?.retryKey,
+                body: args,
             });
         }
         async getSignedGameImage(args: GetSignedGameImageArgs, options?: RequestOptions): Promise<SignedImageUrl> {
             return await this.makeRequest({
                 method: "GET",
                 path: `/games/game-id/${encodeURIComponent(args.params.id)}/namespace/${encodeURIComponent(args.params.namespace)}/signed-url`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                query: args.query,
                 retryKey: options?.retryKey,
+                query: args.query,
             });
         }
         async gameUpdatedNotification(args: GameUpdatedNotificationArgs, options?: RequestOptions): Promise<void> {
             return await this.makeRequest({
                 method: "POST",
                 path: `/games/game-id/${encodeURIComponent(args.params.gameId)}/updated`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                body: args.data,
                 retryKey: options?.retryKey,
+                body: args.data,
             });
         }
         async addGameToFeaturedList(
@@ -967,8 +921,6 @@ export namespace ContentServiceGames {
             return await this.makeRequest({
                 method: "PUT",
                 path: `/games/game-id/${encodeURIComponent(args.id)}/featured`,
-                authentication: options?.authentication,
-                headers: options?.headers,
                 retryKey: options?.retryKey,
             });
         }
@@ -979,8 +931,6 @@ export namespace ContentServiceGames {
             return await this.makeRequest({
                 method: "DELETE",
                 path: `/games/game-id/${encodeURIComponent(args.id)}/featured`,
-                authentication: options?.authentication,
-                headers: options?.headers,
                 retryKey: options?.retryKey,
             });
         }
@@ -991,8 +941,6 @@ export namespace ContentServiceGames {
             return await this.makeRequest({
                 method: "GET",
                 path: `/games/admin-status/game-id/${encodeURIComponent(args.id)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
                 retryKey: options?.retryKey,
             });
         }
@@ -1003,10 +951,8 @@ export namespace ContentServiceGames {
             return await this.makeRequest({
                 method: "PATCH",
                 path: `/games/admin-status/game-id/${encodeURIComponent(args.params.id)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                body: args.data,
                 retryKey: options?.retryKey,
+                body: args.data,
             });
         }
     }
@@ -1105,8 +1051,6 @@ export namespace ContentServiceImages {
             return await this.makeRequest({
                 method: "GET",
                 path: `/images/resource-type/${encodeURIComponent(args.resourceType)}/resource-id/${encodeURIComponent(args.resourceId)}/namespace/${encodeURIComponent(args.namespace)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
                 retryKey: options?.retryKey,
             });
         }
@@ -1114,10 +1058,8 @@ export namespace ContentServiceImages {
             return await this.makeRequest({
                 method: "POST",
                 path: `/images/`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                body: args,
                 retryKey: options?.retryKey,
+                body: args,
             });
         }
         async validateImageAttributes(
@@ -1127,20 +1069,16 @@ export namespace ContentServiceImages {
             return await this.makeRequest({
                 method: "POST",
                 path: `/images/validate`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                body: args,
                 retryKey: options?.retryKey,
+                body: args,
             });
         }
         async scheduleDeleteImage(args: ScheduleDeleteImageArgs["data"], options?: RequestOptions): Promise<void> {
             return await this.makeRequest({
                 method: "POST",
                 path: `/images/schedule-delete`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                body: args,
                 retryKey: options?.retryKey,
+                body: args,
             });
         }
         async objectUploadedPush(
@@ -1150,10 +1088,8 @@ export namespace ContentServiceImages {
             return await this.makeRequest({
                 method: "POST",
                 path: `/images/push`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                body: args,
                 retryKey: options?.retryKey,
+                body: args,
             });
         }
     }
@@ -1264,8 +1200,6 @@ export namespace ContentServiceMemberships {
             return await this.makeRequest({
                 method: "GET",
                 path: `/memberships/organizations/self`,
-                authentication: options?.authentication,
-                headers: options?.headers,
                 retryKey: options?.retryKey,
             });
         }
@@ -1276,18 +1210,14 @@ export namespace ContentServiceMemberships {
             return await this.makeRequest({
                 method: "GET",
                 path: `/memberships/games/self`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                query: args,
                 retryKey: options?.retryKey,
+                query: args,
             });
         }
         async getUserGames(args: GetUserGamesArgs["params"], options?: RequestOptions): Promise<{ gameIds: string[] }> {
             return await this.makeRequest({
                 method: "GET",
                 path: `/memberships/games/user-id/${encodeURIComponent(args.userId)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
                 retryKey: options?.retryKey,
             });
         }
@@ -1298,10 +1228,8 @@ export namespace ContentServiceMemberships {
             return await this.makeRequest({
                 method: "GET",
                 path: `/memberships/game`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                query: args,
                 retryKey: options?.retryKey,
+                query: args,
             });
         }
         async getMembershipForGame(
@@ -1311,8 +1239,6 @@ export namespace ContentServiceMemberships {
             return await this.makeRequest({
                 method: "GET",
                 path: `/memberships/game-organization/user-id/${encodeURIComponent(args.userId)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
                 retryKey: options?.retryKey,
             });
         }
@@ -1439,8 +1365,6 @@ export namespace ContentServiceOrganizations {
             return await this.makeRequest({
                 method: "GET",
                 path: `/organizations/slug/${encodeURIComponent(args.slug)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
                 retryKey: options?.retryKey,
             });
         }
@@ -1451,8 +1375,6 @@ export namespace ContentServiceOrganizations {
             return await this.makeRequest({
                 method: "GET",
                 path: `/organizations/organization-id/${encodeURIComponent(args.id)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
                 retryKey: options?.retryKey,
             });
         }
@@ -1463,10 +1385,8 @@ export namespace ContentServiceOrganizations {
             return await this.makeRequest({
                 method: "PATCH",
                 path: `/organizations/organization-id/${encodeURIComponent(args.params.id)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                body: args.data,
                 retryKey: options?.retryKey,
+                body: args.data,
             });
         }
         async createOrganization(
@@ -1476,10 +1396,8 @@ export namespace ContentServiceOrganizations {
             return await this.makeRequest({
                 method: "POST",
                 path: `/organizations/`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                body: args,
                 retryKey: options?.retryKey,
+                body: args,
             });
         }
         async getMember(
@@ -1489,8 +1407,6 @@ export namespace ContentServiceOrganizations {
             return await this.makeRequest({
                 method: "GET",
                 path: `/organizations/organization-id/${encodeURIComponent(args.id)}/member-uid/${encodeURIComponent(args.uid)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
                 retryKey: options?.retryKey,
             });
         }
@@ -1498,18 +1414,14 @@ export namespace ContentServiceOrganizations {
             return await this.makeRequest({
                 method: "PUT",
                 path: `/organizations/organization-id/${encodeURIComponent(args.params.id)}/member`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                body: args.data,
                 retryKey: options?.retryKey,
+                body: args.data,
             });
         }
         async deleteMember(args: DeleteMemberArgs["params"], options?: RequestOptions): Promise<AugmentedMember[]> {
             return await this.makeRequest({
                 method: "DELETE",
                 path: `/organizations/organization-id/${encodeURIComponent(args.id)}/member-uid/${encodeURIComponent(args.uid)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
                 retryKey: options?.retryKey,
             });
         }
@@ -1517,10 +1429,8 @@ export namespace ContentServiceOrganizations {
             return await this.makeRequest({
                 method: "GET",
                 path: `/organizations/thumbnails/organization-id/${encodeURIComponent(args.params.id)}/signed-url`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                query: args.query,
                 retryKey: options?.retryKey,
+                query: args.query,
             });
         }
     }
@@ -1634,8 +1544,6 @@ export namespace ContentServicePackages {
             return await this.makeRequest({
                 method: "GET",
                 path: `/packages/slug/${encodeURIComponent(args.orgSlug)}/${encodeURIComponent(args.packageSlug)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
                 retryKey: options?.retryKey,
             });
         }
@@ -1646,8 +1554,6 @@ export namespace ContentServicePackages {
             return await this.makeRequest({
                 method: "GET",
                 path: `/packages/package-id/${encodeURIComponent(args.id)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
                 retryKey: options?.retryKey,
             });
         }
@@ -1655,10 +1561,8 @@ export namespace ContentServicePackages {
             return await this.makeRequest({
                 method: "PATCH",
                 path: `/packages/package-id/${encodeURIComponent(args.params.id)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                body: args.data,
                 retryKey: options?.retryKey,
+                body: args.data,
             });
         }
         async createPackage(
@@ -1668,10 +1572,8 @@ export namespace ContentServicePackages {
             return await this.makeRequest({
                 method: "POST",
                 path: `/packages/`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                body: args,
                 retryKey: options?.retryKey,
+                body: args,
             });
         }
         async getSignedPackageImage(
@@ -1681,10 +1583,8 @@ export namespace ContentServicePackages {
             return await this.makeRequest({
                 method: "GET",
                 path: `/packages/thumbnails/package-id/${encodeURIComponent(args.params.id)}/signed-url`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                query: args.query,
                 retryKey: options?.retryKey,
+                query: args.query,
             });
         }
         async packageUpdatedNotification(
@@ -1694,10 +1594,8 @@ export namespace ContentServicePackages {
             return await this.makeRequest({
                 method: "POST",
                 path: `/packages/package-slug/${encodeURIComponent(args.params.orgSlug)}/${encodeURIComponent(args.params.packageSlug)}/updated`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                body: args.data,
                 retryKey: options?.retryKey,
+                body: args.data,
             });
         }
     }
@@ -1760,38 +1658,30 @@ export namespace ContentServicePayments {
             return await this.makeRequest({
                 method: "POST",
                 path: `/payments/xsolla/create`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                body: args,
                 retryKey: options?.retryKey,
+                body: args,
             });
         }
         async xsollaWebhook(args: XsollaWebhookArgs["data"], options?: RequestOptions): Promise<void> {
             return await this.makeRequest({
                 method: "POST",
                 path: `/payments/xsolla/webhook`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                body: args,
                 retryKey: options?.retryKey,
+                body: args,
             });
         }
         async initSteamPurchase(args: InitSteamPurchaseArgs["data"], options?: RequestOptions): Promise<void> {
             return await this.makeRequest({
                 method: "POST",
                 path: `/payments/steam/init`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                body: args,
                 retryKey: options?.retryKey,
+                body: args,
             });
         }
         async executeSteamPurchase(args: ExecuteSteamPurchaseArgs["params"], options?: RequestOptions): Promise<void> {
             return await this.makeRequest({
                 method: "POST",
                 path: `/payments/steam/order-id/${encodeURIComponent(args.orderId)}/finalize`,
-                authentication: options?.authentication,
-                headers: options?.headers,
                 retryKey: options?.retryKey,
             });
         }
@@ -1880,10 +1770,8 @@ export namespace ContentServicePayouts {
             return await this.makeRequest({
                 method: "GET",
                 path: `/payouts/`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                query: args,
                 retryKey: options?.retryKey,
+                query: args,
             });
         }
         async getRecentOrgPayoutRequest(
@@ -1893,8 +1781,6 @@ export namespace ContentServicePayouts {
             return await this.makeRequest({
                 method: "GET",
                 path: `/payouts/organization-id/${encodeURIComponent(args.orgId)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
                 retryKey: options?.retryKey,
             });
         }
@@ -1905,10 +1791,8 @@ export namespace ContentServicePayouts {
             return await this.makeRequest({
                 method: "POST",
                 path: `/payouts/request`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                body: args,
                 retryKey: options?.retryKey,
+                body: args,
             });
         }
         async updatePayout(
@@ -1918,20 +1802,16 @@ export namespace ContentServicePayouts {
             return await this.makeRequest({
                 method: "PUT",
                 path: `/payouts/payout-id/${encodeURIComponent(args.params.payoutId)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                body: args.data,
                 retryKey: options?.retryKey,
+                body: args.data,
             });
         }
         async updateOrgContact(args: UpdateOrgContactArgs, options?: RequestOptions): Promise<void> {
             return await this.makeRequest({
                 method: "PUT",
                 path: `/payouts/organization-id/${encodeURIComponent(args.params.orgId)}/contact`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                body: args.data,
                 retryKey: options?.retryKey,
+                body: args.data,
             });
         }
     }
@@ -1987,18 +1867,14 @@ export namespace ContentServicePermissions {
             return await this.makeRequest({
                 method: "POST",
                 path: `/permissions/validate`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                body: args,
                 retryKey: options?.retryKey,
+                body: args,
             });
         }
         async getSchema(options?: RequestOptions): Promise<{ schema: readonly PermissionNode[] | undefined }> {
             return await this.makeRequest({
                 method: "GET",
                 path: `/permissions/schema`,
-                authentication: options?.authentication,
-                headers: options?.headers,
                 retryKey: options?.retryKey,
             });
         }
@@ -2047,10 +1923,8 @@ export namespace ContentServiceWebhooks {
             return await this.makeRequest({
                 method: "POST",
                 path: `/webhooks/`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                body: args,
                 retryKey: options?.retryKey,
+                body: args,
             });
         }
         async getWebhooks(
@@ -2060,8 +1934,6 @@ export namespace ContentServiceWebhooks {
             return await this.makeRequest({
                 method: "GET",
                 path: `/webhooks/resource-id/${encodeURIComponent(args.resourceId)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
                 retryKey: options?.retryKey,
             });
         }
@@ -2072,8 +1944,6 @@ export namespace ContentServiceWebhooks {
             return await this.makeRequest({
                 method: "DELETE",
                 path: `/webhooks/webhook-id/${encodeURIComponent(args.id)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
                 retryKey: options?.retryKey,
             });
         }
@@ -2210,10 +2080,8 @@ export namespace ContentServiceGear {
             return await this.makeRequest({
                 method: "POST",
                 path: `/gear/resource-id/${encodeURIComponent(args.params.resourceId)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                body: args.data,
                 retryKey: options?.retryKey,
+                body: args.data,
             });
         }
         async updateGearClassForResource(
@@ -2223,18 +2091,14 @@ export namespace ContentServiceGear {
             return await this.makeRequest({
                 method: "PATCH",
                 path: `/gear/class-id/${encodeURIComponent(args.params.classId)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                body: args.data,
                 retryKey: options?.retryKey,
+                body: args.data,
             });
         }
         async getGear(args: GetGearArgs["params"], options?: RequestOptions): Promise<SelectedGear[]> {
             return await this.makeRequest({
                 method: "GET",
                 path: `/gear/resource-id/${encodeURIComponent(args.resourceId)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
                 retryKey: options?.retryKey,
             });
         }
@@ -2242,10 +2106,8 @@ export namespace ContentServiceGear {
             return await this.makeRequest({
                 method: "GET",
                 path: `/gear/self`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                query: args,
                 retryKey: options?.retryKey,
+                query: args,
             });
         }
         async getUserGearForResource(
@@ -2255,18 +2117,14 @@ export namespace ContentServiceGear {
             return await this.makeRequest({
                 method: "GET",
                 path: `/gear/uid/${encodeURIComponent(args.params.uid)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                query: args.query,
                 retryKey: options?.retryKey,
+                query: args.query,
             });
         }
         async grantGear(args: GrantGearArgs["params"], options?: RequestOptions): Promise<SelectedGearItem> {
             return await this.makeRequest({
                 method: "POST",
                 path: `/gear/uid/${encodeURIComponent(args.uid)}/class-id/${encodeURIComponent(args.classId)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
                 retryKey: options?.retryKey,
             });
         }
@@ -2274,8 +2132,6 @@ export namespace ContentServiceGear {
             return await this.makeRequest({
                 method: "DELETE",
                 path: `/gear/item-id/${encodeURIComponent(args.itemId)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
                 retryKey: options?.retryKey,
             });
         }
@@ -2381,8 +2237,6 @@ export namespace ContentServiceItemClasses {
             return await this.makeRequest({
                 method: "GET",
                 path: `/item-classes/default-items/platform`,
-                authentication: options?.authentication,
-                headers: options?.headers,
                 retryKey: options?.retryKey,
             });
         }
@@ -2393,10 +2247,8 @@ export namespace ContentServiceItemClasses {
             return await this.makeRequest({
                 method: "POST",
                 path: `/item-classes/resource-id/${encodeURIComponent(args.params.resourceId)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                body: args.data,
                 retryKey: options?.retryKey,
+                body: args.data,
             });
         }
         async updateClassForResource(
@@ -2406,10 +2258,8 @@ export namespace ContentServiceItemClasses {
             return await this.makeRequest({
                 method: "PATCH",
                 path: `/item-classes/class-id/${encodeURIComponent(args.params.classId)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                body: args.data,
                 retryKey: options?.retryKey,
+                body: args.data,
             });
         }
         async getItemClassesForResource(
@@ -2419,8 +2269,6 @@ export namespace ContentServiceItemClasses {
             return await this.makeRequest({
                 method: "GET",
                 path: `/item-classes/resource-id/${encodeURIComponent(args.resourceId)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
                 retryKey: options?.retryKey,
             });
         }
@@ -2431,10 +2279,8 @@ export namespace ContentServiceItemClasses {
             return await this.makeRequest({
                 method: "GET",
                 path: `/item-classes/images/resource-id/${encodeURIComponent(args.params.resourceId)}/signed-url`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                query: args.query,
                 retryKey: options?.retryKey,
+                query: args.query,
             });
         }
     }
@@ -2492,10 +2338,8 @@ export namespace ContentServiceItemTags {
             return await this.makeRequest({
                 method: "PUT",
                 path: `/item-tags/resource-id/${encodeURIComponent(args.params.resourceId)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                body: args.data,
                 retryKey: options?.retryKey,
+                body: args.data,
             });
         }
         async getItemTagsForResource(
@@ -2505,8 +2349,6 @@ export namespace ContentServiceItemTags {
             return await this.makeRequest({
                 method: "GET",
                 path: `/item-tags/resource-id/${encodeURIComponent(args.resourceId)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
                 retryKey: options?.retryKey,
             });
         }
@@ -2517,8 +2359,6 @@ export namespace ContentServiceItemTags {
             return await this.makeRequest({
                 method: "DELETE",
                 path: `/item-tags/resource-id/${encodeURIComponent(args.resourceId)}/tag-name/${encodeURIComponent(args.tagName)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
                 retryKey: options?.retryKey,
             });
         }
@@ -2553,10 +2393,8 @@ export namespace ContentServiceItemTransactions {
             return await this.makeRequest({
                 method: "POST",
                 path: `/transactions/trade`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                body: args,
                 retryKey: options?.retryKey,
+                body: args,
             });
         }
     }
@@ -2648,18 +2486,14 @@ export namespace ContentServiceItems {
             return await this.makeRequest({
                 method: "POST",
                 path: `/items/default-items/grant`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                body: args,
                 retryKey: options?.retryKey,
+                body: args,
             });
         }
         async grantPlatformItems(args: GrantPlatformItemsArgs["params"], options?: RequestOptions): Promise<void> {
             return await this.makeRequest({
                 method: "POST",
                 path: `/items/default-items/uid/${encodeURIComponent(args.uid)}/grant-platform`,
-                authentication: options?.authentication,
-                headers: options?.headers,
                 retryKey: options?.retryKey,
             });
         }
@@ -2670,8 +2504,6 @@ export namespace ContentServiceItems {
             return await this.makeRequest({
                 method: "POST",
                 path: `/items/uid/${encodeURIComponent(args.uid)}/class-id/${encodeURIComponent(args.classId)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
                 retryKey: options?.retryKey,
             });
         }
@@ -2682,8 +2514,6 @@ export namespace ContentServiceItems {
             return await this.makeRequest({
                 method: "DELETE",
                 path: `/items/item-id/${encodeURIComponent(args.itemId)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
                 retryKey: options?.retryKey,
             });
         }
@@ -2694,10 +2524,8 @@ export namespace ContentServiceItems {
             return await this.makeRequest({
                 method: "GET",
                 path: `/items/self`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                query: args,
                 retryKey: options?.retryKey,
+                query: args,
             });
         }
         async getUserInventoryForResource(
@@ -2707,10 +2535,8 @@ export namespace ContentServiceItems {
             return await this.makeRequest({
                 method: "GET",
                 path: `/items/uid/${encodeURIComponent(args.params.uid)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                query: args.query,
                 retryKey: options?.retryKey,
+                query: args.query,
             });
         }
     }
@@ -2816,8 +2642,6 @@ export namespace ContentServiceOutfits {
             return await this.makeRequest({
                 method: "GET",
                 path: `/outfits/`,
-                authentication: options?.authentication,
-                headers: options?.headers,
                 retryKey: options?.retryKey,
             });
         }
@@ -2825,8 +2649,6 @@ export namespace ContentServiceOutfits {
             return await this.makeRequest({
                 method: "GET",
                 path: `/outfits/equipped/self`,
-                authentication: options?.authentication,
-                headers: options?.headers,
                 retryKey: options?.retryKey,
             });
         }
@@ -2837,8 +2659,6 @@ export namespace ContentServiceOutfits {
             return await this.makeRequest({
                 method: "GET",
                 path: `/outfits/uid/${encodeURIComponent(args.uid)}/equipped`,
-                authentication: options?.authentication,
-                headers: options?.headers,
                 retryKey: options?.retryKey,
             });
         }
@@ -2849,8 +2669,6 @@ export namespace ContentServiceOutfits {
             return await this.makeRequest({
                 method: "GET",
                 path: `/outfits/outfit-id/${encodeURIComponent(args.outfitId)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
                 retryKey: options?.retryKey,
             });
         }
@@ -2861,8 +2679,6 @@ export namespace ContentServiceOutfits {
             return await this.makeRequest({
                 method: "POST",
                 path: `/outfits/outfit-id/${encodeURIComponent(args.outfitId)}/equip`,
-                authentication: options?.authentication,
-                headers: options?.headers,
                 retryKey: options?.retryKey,
             });
         }
@@ -2873,20 +2689,16 @@ export namespace ContentServiceOutfits {
             return await this.makeRequest({
                 method: "POST",
                 path: `/outfits/`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                body: args,
                 retryKey: options?.retryKey,
+                body: args,
             });
         }
         async updateOutfit(args: UpdateOutfitArgs, options?: RequestOptions): Promise<{ outfit: SelectedOutfit }> {
             return await this.makeRequest({
                 method: "PATCH",
                 path: `/outfits/outfit-id/${encodeURIComponent(args.params.outfitId)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                body: args.data,
                 retryKey: options?.retryKey,
+                body: args.data,
             });
         }
     }
@@ -2966,10 +2778,8 @@ export namespace ContentServiceOrganizationRoles {
             return await this.makeRequest({
                 method: "POST",
                 path: `/organizations/roles/organization-id/${encodeURIComponent(args.params.orgId)}/create`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                body: args.data,
                 retryKey: options?.retryKey,
+                body: args.data,
             });
         }
         async updateRole(
@@ -2979,10 +2789,8 @@ export namespace ContentServiceOrganizationRoles {
             return await this.makeRequest({
                 method: "PUT",
                 path: `/organizations/roles/organization-id/${encodeURIComponent(args.params.orgId)}/role-name/${encodeURIComponent(args.params.roleName)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                body: args.data,
                 retryKey: options?.retryKey,
+                body: args.data,
             });
         }
         async deleteRole(
@@ -2992,8 +2800,6 @@ export namespace ContentServiceOrganizationRoles {
             return await this.makeRequest({
                 method: "DELETE",
                 path: `/organizations/roles/organization-id/${encodeURIComponent(args.orgId)}/role-name/${encodeURIComponent(args.roleName)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
                 retryKey: options?.retryKey,
             });
         }
@@ -3004,8 +2810,6 @@ export namespace ContentServiceOrganizationRoles {
             return await this.makeRequest({
                 method: "GET",
                 path: `/organizations/roles/organization-id/${encodeURIComponent(args.orgId)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
                 retryKey: options?.retryKey,
             });
         }
@@ -3098,10 +2902,8 @@ export namespace ContentServiceProducts {
             return await this.makeRequest({
                 method: "POST",
                 path: `/shop/products/`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                body: args,
                 retryKey: options?.retryKey,
+                body: args,
             });
         }
         async updateProduct(
@@ -3111,10 +2913,8 @@ export namespace ContentServiceProducts {
             return await this.makeRequest({
                 method: "PATCH",
                 path: `/shop/products/product-id/${encodeURIComponent(args.params.id)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                body: args.data,
                 retryKey: options?.retryKey,
+                body: args.data,
             });
         }
         async deleteProduct(
@@ -3124,8 +2924,6 @@ export namespace ContentServiceProducts {
             return await this.makeRequest({
                 method: "DELETE",
                 path: `/shop/products/product-id/${encodeURIComponent(args.id)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
                 retryKey: options?.retryKey,
             });
         }
@@ -3136,10 +2934,8 @@ export namespace ContentServiceProducts {
             return await this.makeRequest({
                 method: "GET",
                 path: `/shop/products/`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                query: args,
                 retryKey: options?.retryKey,
+                query: args,
             });
         }
         async getProduct(
@@ -3149,8 +2945,6 @@ export namespace ContentServiceProducts {
             return await this.makeRequest({
                 method: "GET",
                 path: `/shop/products/product-id/${encodeURIComponent(args.productId)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
                 retryKey: options?.retryKey,
             });
         }
@@ -3233,20 +3027,16 @@ export namespace ContentServicePurchase {
             return await this.makeRequest({
                 method: "POST",
                 path: `/shop/purchase/validate`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                body: args,
                 retryKey: options?.retryKey,
+                body: args,
             });
         }
         async purchase(args: PurchaseArgs["data"], options?: RequestOptions): Promise<{ receiptId: string }> {
             return await this.makeRequest({
                 method: "POST",
                 path: `/shop/purchase/`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                body: args,
                 retryKey: options?.retryKey,
+                body: args,
             });
         }
         async claimReceipt(
@@ -3256,20 +3046,16 @@ export namespace ContentServicePurchase {
             return await this.makeRequest({
                 method: "POST",
                 path: `/shop/purchase/receipt/claim`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                body: args,
                 retryKey: options?.retryKey,
+                body: args,
             });
         }
         async completeReceipt(args: CompleteReceiptArgs["data"], options?: RequestOptions): Promise<void> {
             return await this.makeRequest({
                 method: "POST",
                 path: `/shop/purchase/receipt/complete`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                body: args,
                 retryKey: options?.retryKey,
+                body: args,
             });
         }
     }
@@ -3373,10 +3159,8 @@ export namespace ContentServiceShopTransactions {
             return await this.makeRequest({
                 method: "GET",
                 path: `/shop/transactions/resource-id/${encodeURIComponent(args.params.resourceId)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                query: args.query,
                 retryKey: options?.retryKey,
+                query: args.query,
             });
         }
         async getResourceTransaction(
@@ -3386,8 +3170,6 @@ export namespace ContentServiceShopTransactions {
             return await this.makeRequest({
                 method: "GET",
                 path: `/shop/transactions/resource-id/${encodeURIComponent(args.resourceId)}/transaction-id/${encodeURIComponent(args.transactionId)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
                 retryKey: options?.retryKey,
             });
         }
@@ -3398,10 +3180,8 @@ export namespace ContentServiceShopTransactions {
             return await this.makeRequest({
                 method: "GET",
                 path: `/shop/transactions/self`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                query: args,
                 retryKey: options?.retryKey,
+                query: args,
             });
         }
         async getTransactionForProduct(
@@ -3411,8 +3191,6 @@ export namespace ContentServiceShopTransactions {
             return await this.makeRequest({
                 method: "GET",
                 path: `/shop/transactions/user-id/${encodeURIComponent(args.userId)}/product-id/${encodeURIComponent(args.productId)}`,
-                authentication: options?.authentication,
-                headers: options?.headers,
                 retryKey: options?.retryKey,
             });
         }
@@ -3423,8 +3201,6 @@ export namespace ContentServiceShopTransactions {
             return await this.makeRequest({
                 method: "GET",
                 path: `/shop/transactions/transaction-id/${encodeURIComponent(args.transactionId)}/refund/details`,
-                authentication: options?.authentication,
-                headers: options?.headers,
                 retryKey: options?.retryKey,
             });
         }
@@ -3435,10 +3211,8 @@ export namespace ContentServiceShopTransactions {
             return await this.makeRequest({
                 method: "POST",
                 path: `/shop/transactions/transaction/refund`,
-                authentication: options?.authentication,
-                headers: options?.headers,
-                body: args,
                 retryKey: options?.retryKey,
+                body: args,
             });
         }
     }
