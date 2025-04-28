@@ -13,11 +13,11 @@ import AirshipInventoryUI from "./AirshipInventoryUI";
 import Inventory, { InventoryDto } from "./Inventory";
 import { InventoryUIVisibility } from "./InventoryUIVisibility";
 import { ItemStack } from "./ItemStack";
-import { MovingToSlotEvent } from "./Signal/MovingToSlotEvent";
+import { InventoryMovingToSlotEvent } from "./Signal/MovingToSlotEvent";
 import {
-	CancellableSlotInteractionEvent,
+	CancellableInventorySlotInteractionEvent,
 	SlotDragEndedEvent,
-	SlotInteractionEvent,
+	InventorySlotMouseClickEvent as InventorySlotMouseClickEvent,
 } from "./Signal/SlotInteractionEvent";
 
 interface InventoryEntry {
@@ -42,22 +42,22 @@ export class AirshipInventorySingleton {
 	 *
 	 * Can be used to cancel inventory transfers in certain situations e.g: non-tradeable items, or non-droppable items
 	 */
-	public readonly onMovingToSlot = new Signal<MovingToSlotEvent>();
+	public readonly onMovingToSlot = new Signal<InventoryMovingToSlotEvent>();
 
 	/**
 	 * Event that is invoked when the inventory slot is clicked on the client
 	 * @client
 	 *
-	 * Can be used to implement custom inventory functionality, e.g. "quick move" on shift click:
+	 * Can be used to implement custom inventory functionality, e.g. "quick move" on shift left-click:
 	 * ```ts
 	 * Airship.Inventory.onInventorySlotClicked.Connect((event) => {
-	 * 	if (Keyboard.IsKeyDown(Key.LeftShift)) {
+	 * 	if (event.button === PointerButton.LEFT && Keyboard.IsKeyDown(Key.LeftShift)) {
 	 *			Airship.Inventory.QuickMoveSlot(event.inventory, event.slotIndex);
 	 *		}
 	 * });
 	 * ```
 	 */
-	public readonly onInventorySlotClicked = new Signal<SlotInteractionEvent>();
+	public readonly onInventorySlotClicked = new Signal<InventorySlotMouseClickEvent>();
 	/**
 	 * Event that's invoked if there's a drag requested on a given inventory slot
 	 *
@@ -65,7 +65,7 @@ export class AirshipInventorySingleton {
 	 * - To listen for the drag end - use {@link onInventorySlotDragEnd}
 	 * - To listen for a slot being dropped on another slot - use {@link onMovingToSlot}.
 	 */
-	public readonly onInventorySlotDragBegin = new Signal<CancellableSlotInteractionEvent>();
+	public readonly onInventorySlotDragBegin = new Signal<CancellableInventorySlotInteractionEvent>();
 	/**
 	 * Event that's invoked if a slot that's being dragged, is no longer being dragged
 	 * - `consume` on the event will be true if it is dropping on another slot, that can be handled via {@link onMovingToSlot}.
@@ -247,7 +247,7 @@ export class AirshipInventorySingleton {
 					return;
 				}
 
-				const event = this.onMovingToSlot.Fire(new MovingToSlotEvent(fromInv, fromSlot, toInv, toSlot, amount));
+				const event = this.onMovingToSlot.Fire(new InventoryMovingToSlotEvent(fromInv, fromSlot, toInv, toSlot, amount));
 				if (event.IsCancelled()) return;
 				amount = event.amount;
 
@@ -260,13 +260,14 @@ export class AirshipInventorySingleton {
 						if (event.allowMerging && toItemStack.amount + amount <= toItemStack.GetMaxStackSize()) {
 							toItemStack.SetAmount(toItemStack.amount + amount);
 							fromItemStack.Decrement(amount);
-							CoreNetwork.ClientToServer.Inventory.MoveToSlot.client.FireServer(
-								fromInv.id,
-								fromSlot,
-								toInv.id,
-								toSlot,
-								amount,
-							);
+
+							// CoreNetwork.ClientToServer.Inventory.MoveToSlot.client.FireServer(
+							// 	fromInv.id,
+							// 	fromSlot,
+							// 	toInv.id,
+							// 	toSlot,
+							// 	amount,
+							// );
 							return;
 						}
 						// can't merge so do nothing
@@ -582,18 +583,57 @@ export class AirshipInventorySingleton {
 		// });
 	}
 
-	public MoveToSlot(fromInv: Inventory, fromSlot: number, toInv: Inventory, toSlot: number, amount: number): void {
+	/**
+	 * Will perform a move to slot, but store the item in the best available slot
+	 *
+	 * This internally uses `MoveToSlot`
+	 * @param sourceInventory The inventory to move the stack from
+	 * @param sourceSlotIndex The slot index of the stack
+	 * @param destinationInventory The destination inventory
+	 * @param [canMerge=true] Whether or not to use a merge if there's already the item exising in the target inventory (defaults to true)
+	 */
+	public MoveToInventory(
+		sourceInventory: Inventory,
+		sourceSlotIndex: number,
+		destinationInventory: Inventory,
+		amount?: number,
+		canMerge = true,
+	) {
+		const stackAtSlot = sourceInventory.GetItem(sourceSlotIndex);
+		if (!stackAtSlot) return; // there should be an item here, however!
+
+		if (canMerge) {
+			const destination =
+				destinationInventory.FindMergableSlot(stackAtSlot) ??
+				destinationInventory.GetFirstOpenSlot();
+			if (destination === -1) return;
+
+			return this.MoveToSlot(sourceInventory, sourceSlotIndex, destinationInventory, destination, amount);
+		} else {
+			const destination = destinationInventory.GetFirstOpenSlot();
+			if (destination === -1) return;
+
+			return this.MoveToSlot(sourceInventory, sourceSlotIndex, destinationInventory, destination, amount);
+		}
+	}
+
+	/**
+	 * Moves items or the slot from a source inventory, to a destination inventory slot
+	 * @param fromInv The source inventory
+	 * @param fromSlot The source inventory slot
+	 * @param toInv The destination inventory
+	 * @param toSlot The destination inventory slot
+	 * @param amount The amount to transfer - will default to the full amount
+	 * @returns
+	 */
+	public MoveToSlot(fromInv: Inventory, fromSlot: number, toInv: Inventory, toSlot: number, amount?: number): void {
 		if (!fromInv.CanPlayerModifyInventory(Game.localPlayer) || !toInv.CanPlayerModifyInventory(Game.localPlayer)) {
 			return;
 		}
 
-		const event = this.onMovingToSlot.Fire(new MovingToSlotEvent(fromInv, fromSlot, toInv, toSlot, amount));
-		if (event.IsCancelled()) return;
+		const event = this.onMovingToSlot.Fire(new InventoryMovingToSlotEvent(fromInv, fromSlot, toInv, toSlot, amount));
+		if (event.IsCancelled() || event.amount < 1) return;
 
-		// fromInv = event.fromInventory;
-		// toInv = event.toInventory;
-		// fromSlot = event.fromSlot;
-		// toSlot = event.toSlot;
 		amount = event.amount;
 
 		const fromItemStack = fromInv.GetItem(fromSlot);
@@ -605,13 +645,16 @@ export class AirshipInventorySingleton {
 				if (event.allowMerging && toItemStack.amount + amount <= toItemStack.GetMaxStackSize()) {
 					toItemStack.SetAmount(toItemStack.amount + amount);
 					fromItemStack.Decrement(amount);
-					CoreNetwork.ClientToServer.Inventory.MoveToSlot.client.FireServer(
-						fromInv.id,
-						fromSlot,
-						toInv.id,
-						toSlot,
-						amount,
-					);
+					
+					if (Game.IsClient()) {
+						CoreNetwork.ClientToServer.Inventory.MoveToSlot.client.FireServer(
+							fromInv.id,
+							fromSlot,
+							toInv.id,
+							toSlot,
+							amount,
+						);
+					}
 					return;
 				}
 				// can't merge so do nothing
@@ -627,13 +670,15 @@ export class AirshipInventorySingleton {
 			});
 		}
 
-		CoreNetwork.ClientToServer.Inventory.MoveToSlot.client.FireServer(
-			fromInv.id,
-			fromSlot,
-			toInv.id,
-			toSlot,
-			amount,
-		);
+		if (Game.IsClient()) {
+			CoreNetwork.ClientToServer.Inventory.MoveToSlot.client.FireServer(
+				fromInv.id,
+				fromSlot,
+				toInv.id,
+				toSlot,
+				amount,
+			);
+		}
 	}
 
 	public SetInventoryUIPrefab(prefab: GameObject): void {

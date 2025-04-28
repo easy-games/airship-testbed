@@ -5,10 +5,10 @@ import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
 import { Dependency, Singleton } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { GameObjectUtil } from "@Easy/Core/Shared/GameObject/GameObjectUtil";
 import { MainMenuSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/MainMenuSingleton";
 import { ProtectedPlayer } from "@Easy/Core/Shared/Player/ProtectedPlayer";
 import { Protected } from "@Easy/Core/Shared/Protected";
+import StringUtils from "@Easy/Core/Shared/Types/StringUtil";
 import { Keyboard, Mouse } from "@Easy/Core/Shared/UserInput";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
@@ -19,6 +19,7 @@ import { ProtectedUtil } from "@Easy/Core/Shared/Util/ProtectedUtil";
 import { SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { SetInterval, SetTimeout } from "@Easy/Core/Shared/Util/Timer";
 import { MainMenuBlockSingleton } from "../../../../Client/ProtectedControllers//Settings/MainMenuBlockSingleton";
+import ChatMessage from "./ChatMessage";
 import ChatWindow from "./ChatWindow";
 import { MessageCommand } from "./ClientCommands/MessageCommand";
 import { ReplyCommand } from "./ClientCommands/ReplyCommand";
@@ -65,7 +66,7 @@ export class ClientChatSingleton {
 	public canvas!: Canvas;
 	private content: GameObject;
 	private wrapper: RectTransform;
-	private chatMessagePrefab: Object;
+	private chatMessagePrefab: GameObject;
 	private inputField: TMP_InputField;
 	private inputWrapperImage: Image;
 	private inputTransform!: RectTransform;
@@ -420,8 +421,9 @@ export class ClientChatSingleton {
 
 	public RenderChatMessage(message: string, sender?: ProtectedPlayer): void {
 		try {
-			const chatMessage = GameObjectUtil.InstantiateIn(this.chatMessagePrefab, this.content.transform);
-			const refs = chatMessage.GetComponent<GameObjectReferences>()!;
+			const chatMessageGO = Instantiate<GameObject>(this.chatMessagePrefab, this.content.transform);
+			const chatMessage = chatMessageGO.GetAirshipComponent<ChatMessage>()!;
+			const refs = chatMessageGO.GetComponent<GameObjectReferences>()!;
 
 			const textGui = refs.GetValue<TMP_Text>("UI", "Text");
 			textGui.text = message;
@@ -442,7 +444,18 @@ export class ClientChatSingleton {
 				profileImage.gameObject.SetActive(false);
 			}
 
-			const element = new ChatMessageElement(chatMessage, os.clock());
+			const domainPattern = "%f[%w][%w-]+%.[a-z]+[%w%p]*%f[%A]";
+			const match = string.match(Bridge.RemoveRichText(message), domainPattern);
+			if (match !== undefined && match.size() > 0) {
+				let url = match[0] as string;
+				if (!StringUtils.startsWith(url.lower(), "https://")) {
+					url = "https://" + url;
+				}
+				print("found chat url: " + url);
+				chatMessage.SetUrl(url);
+			}
+
+			const element = new ChatMessageElement(chatMessageGO, os.clock());
 			this.chatMessageElements.push(element);
 
 			// if (Time.time > this.lastChatMessageRenderedTime && this.canvas.gameObject.activeInHierarchy) {

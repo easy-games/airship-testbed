@@ -8,21 +8,16 @@ import {
 } from "../../Airship/Types/Outputs/AirshipPlatformInventory";
 import { Dependency, Singleton } from "../../Flamework";
 import { Game } from "../../Game";
+import { HttpRetryInstance } from "../../Http/HttpRetry";
 import { CoreLogger } from "../../Logger/CoreLogger";
 import { Protected } from "../../Protected";
 import { AirshipUrl } from "../../Util/AirshipUrl";
 import { ColorUtil } from "../../Util/ColorUtil";
 import { RandomUtil } from "../../Util/RandomUtil";
 import { Signal } from "../../Util/Signal";
-import { HttpRetryInstance } from "../../Http/HttpRetry";
 
 @Singleton()
 export class ProtectedAvatarSingleton {
-	public defaultFace?: GearInstanceDto;
-	public defaultShirt?: GearInstanceDto;
-	public defaultPants?: GearInstanceDto;
-	public defaultShoes?: GearInstanceDto;
-
 	private isLoadingInventory = false;
 	public isInventoryLoaded = false;
 	public onInventoryLoaded = new Signal();
@@ -64,9 +59,13 @@ export class ProtectedAvatarSingleton {
 				return outfit;
 			}
 		});
+
+		task.spawn(() => {
+			this.LoadInventory();
+		});
 	}
 
-	public async LoadInventory(): Promise<void> {
+	private async LoadInventory(): Promise<void> {
 		if (this.isInventoryLoaded) return;
 		if (this.isLoadingInventory) {
 			Debug.LogWarning("Tried to load inventory when already loading.");
@@ -74,6 +73,7 @@ export class ProtectedAvatarSingleton {
 		}
 
 		await Dependency<AuthController>().WaitForAuthed();
+		Protected.User.WaitForLocalUser();
 
 		const promises: Promise<void>[] = [];
 
@@ -112,18 +112,26 @@ export class ProtectedAvatarSingleton {
 				let equippedOutfitId = "";
 				let firstOutfit = true;
 
-				//Create missing outfits up to 5
+				// Create missing outfits up to 5
 				for (let i = numberOfOutfits; i < maxNumberOfOutfits; i++) {
-					name = "Default" + i;
+					name = "Outfit " + (i + 1);
+					// let outfitId = "Outfit" + i;
 					print("Creating missing outfit: " + name);
+
+					// Need to wait for owned clothing to populate (promise is running parallel to this)
+					while (this.ownedClothing === undefined) {
+						task.wait();
+					}
+
 					let outfit = await Protected.Avatar.CreateDefaultAvatarOutfit(
 						firstOutfit,
 						name,
+						Protected.User.localUser!.uid,
 						name,
 						ColorUtil.HexToColor(RandomUtil.FromArray(this.skinColors)),
 					);
 					if (!outfit) {
-						error("Unable to make a new outfit :(");
+						error("Unable to make a new outfit.");
 					} else if (firstOutfit) {
 						firstOutfit = false;
 						equippedOutfitId = outfit.outfitId;
@@ -189,7 +197,10 @@ export class ProtectedAvatarSingleton {
 	}
 
 	public async GetEquippedOutfit(): Promise<OutfitDto | undefined> {
-		let res = await this.httpRetry(() => InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/equipped/self`)), "getEquippedOutfit");
+		let res = await this.httpRetry(
+			() => InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/equipped/self`)),
+			"getEquippedOutfit",
+		);
 		if (res.success) {
 			return json.decode<{ outfit: OutfitDto | undefined }>(res.data).outfit;
 		} else {
@@ -198,7 +209,10 @@ export class ProtectedAvatarSingleton {
 	}
 
 	public async GetUserEquippedOutfit(userId: string): Promise<OutfitDto | undefined> {
-		const res = await this.httpRetry(() => HttpManager.GetAsync(this.GetHttpUrl(`outfits/uid/${userId}/equipped`)), "getUserEquippedOutfit");
+		const res = await this.httpRetry(
+			() => HttpManager.GetAsync(this.GetHttpUrl(`outfits/uid/${userId}/equipped`)),
+			"getUserEquippedOutfit",
+		);
 		if (res.success) {
 			return json.decode<{ outfit: OutfitDto | undefined }>(res.data).outfit;
 		} else {
@@ -207,7 +221,10 @@ export class ProtectedAvatarSingleton {
 	}
 
 	public async GetAvatarOutfit(outfitId: string): Promise<OutfitDto | undefined> {
-		let res = await this.httpRetry(() => InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/outfit-id/${outfitId}`)), "getAvatarOutfit");
+		let res = await this.httpRetry(
+			() => InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/outfit-id/${outfitId}`)),
+			"getAvatarOutfit",
+		);
 		if (res.success) {
 			return json.decode<{ outfit: OutfitDto | undefined }>(res.data).outfit;
 		} else {
@@ -217,7 +234,10 @@ export class ProtectedAvatarSingleton {
 
 	public async CreateAvatarOutfit(outfit: OutfitCreateDto) {
 		this.Log("CreateAvatarOutfit: " + this.GetHttpUrl(`outfits`) + " data: " + json.encode(outfit));
-		let res = await this.httpRetry(() => InternalHttpManager.PostAsync(this.GetHttpUrl(`outfits`), json.encode(outfit)), "createAvatarOutfit");
+		let res = await this.httpRetry(
+			() => InternalHttpManager.PostAsync(this.GetHttpUrl(`outfits`), json.encode(outfit)),
+			"createAvatarOutfit",
+		);
 		if (res.success) {
 			this.Log("CREATED OUTFIT: " + res.data);
 			return json.decode<{ outfit: OutfitDto }>(res.data).outfit;
@@ -227,7 +247,10 @@ export class ProtectedAvatarSingleton {
 	}
 
 	public async EquipAvatarOutfit(outfitId: string) {
-		let res = await this.httpRetry(() => InternalHttpManager.PostAsync(this.GetHttpUrl(`outfits/outfit-id/${outfitId}/equip`)), "equipAvatarOutfit");
+		let res = await this.httpRetry(
+			() => InternalHttpManager.PostAsync(this.GetHttpUrl(`outfits/outfit-id/${outfitId}/equip`)),
+			"equipAvatarOutfit",
+		);
 		if (res.success) {
 			this.Log("EQUIPPED OUTFIT: " + res.data);
 		} else {
@@ -245,31 +268,33 @@ export class ProtectedAvatarSingleton {
 		}
 	}
 
-	public async CreateDefaultAvatarOutfit(equipped: boolean, outfitId: string, name: string, skinColor: Color) {
-		let accessorUUIDs: string[] = [];
+	public async CreateDefaultAvatarOutfit(
+		equipped: boolean,
+		outfitId: string,
+		ownerId: string,
+		name: string,
+		skinColor: Color,
+	) {
+		let accessoryInstanceIds: string[] = [];
 
-		let ownerId = "";
-		if (this.defaultFace) {
-			ownerId = this.defaultFace.ownerId;
-			accessorUUIDs.push(this.defaultFace.instanceId);
-		}
-		if (this.defaultShirt) {
-			ownerId = this.defaultShirt.ownerId;
-			accessorUUIDs.push(this.defaultShirt.instanceId);
-		}
-		if (this.defaultPants) {
-			ownerId = this.defaultPants.ownerId;
-			accessorUUIDs.push(this.defaultPants.instanceId);
-		}
-		if (this.defaultShoes) {
-			ownerId = this.defaultShoes.ownerId;
-			accessorUUIDs.push(this.defaultShoes.instanceId);
+		let defaultAccessoryClassIds = [
+			"320fc23c-82fb-40dd-84dc-79cba582d431", // Face
+			// "3def9a06-13f2-4abe-b12f-69e468dd05a5", // Skull Hoodie
+			// "c7363912-17e6-4713-b4de-113549f9356e", // Jeans Pants
+			// "30d05506-7e13-4bb8-b515-dc674d96a159", // Hair
+		];
+
+		for (let classId of defaultAccessoryClassIds) {
+			const found = this.ownedClothing.find((g) => g.class.classId === classId);
+			if (found) {
+				accessoryInstanceIds.push(found.instanceId);
+			}
 		}
 
 		let outfit: OutfitCreateDto = {
 			name: name,
 			outfitId: outfitId,
-			gear: accessorUUIDs,
+			gear: accessoryInstanceIds,
 			equipped: equipped,
 			owner: ownerId,
 			skinColor: ColorUtil.ColorToHex(skinColor),
@@ -293,7 +318,10 @@ export class ProtectedAvatarSingleton {
 	}
 
 	private UpdateOutfit(outfitId: string, update: Partial<OutfitPatch>) {
-		let res = this.httpRetry(() => InternalHttpManager.PatchAsync(this.GetHttpUrl(`outfits/outfit-id/${outfitId}`), json.encode(update)), "updateOutfit").expect();
+		let res = this.httpRetry(
+			() => InternalHttpManager.PatchAsync(this.GetHttpUrl(`outfits/outfit-id/${outfitId}`), json.encode(update)),
+			"updateOutfit",
+		).expect();
 		if (res.success) {
 			return json.decode<{ outfit: OutfitDto }>(res.data).outfit;
 		} else {
@@ -315,13 +343,17 @@ export class ProtectedAvatarSingleton {
 		if (imageId === "" || imageId === undefined) {
 			return;
 		}
-		let res = await this.httpRetry(() => InternalHttpManager.PatchAsync(
-			this.GetHttpUrl(`accessories/class-id/${classId}`),
-			json.encode({
-				image: undefined,
-				imageId,
-			}),
-		), "uploadItemImage");
+		let res = await this.httpRetry(
+			() =>
+				InternalHttpManager.PatchAsync(
+					this.GetHttpUrl(`accessories/class-id/${classId}`),
+					json.encode({
+						image: undefined,
+						imageId,
+					}),
+				),
+			"uploadItemImage",
+		);
 		if (res.success) {
 			this.Log("Finished updating item");
 		} else {
@@ -331,22 +363,29 @@ export class ProtectedAvatarSingleton {
 
 	public async UploadImage(resourceId: string, filePath: string, fileSize: number): Promise<string> {
 		let postPath = `${AirshipUrl.ContentService}/images`;
-		const res = await this.httpRetry(() => InternalHttpManager.PostAsync(
-			postPath,
-			json.encode({
-				contentType: "image/png",
-				contentLength: fileSize,
-				resourceId,
-				namespace: "items",
-			}),
-		), "uploadImage");
+		const res = await this.httpRetry(
+			() =>
+				InternalHttpManager.PostAsync(
+					postPath,
+					json.encode({
+						contentType: "image/png",
+						contentLength: fileSize,
+						resourceId,
+						namespace: "items",
+					}),
+				),
+			"uploadImage",
+		);
 
 		if (res.success) {
 			const data = json.decode<{ url: string; imageId: string }>(res.data);
 			const url = data.url;
 			const imageId = data.imageId;
 			this.Log("Got image url: " + url);
-			const uploadRes = await this.httpRetry(() => InternalHttpManager.PutImageAsync(url, filePath), "uploadImagePut");
+			const uploadRes = await this.httpRetry(
+				() => InternalHttpManager.PutImageAsync(url, filePath),
+				"uploadImagePut",
+			);
 			if (uploadRes.success) {
 				this.Log("UPLOAD COMPLETE: " + url);
 			} else {

@@ -24,6 +24,8 @@ export class AuthController {
 	}
 
 	protected OnStart(): void {
+		if (!Game.IsClient()) return;
+
 		const loginResult = this.TryAutoLogin();
 		if (!loginResult) {
 			let ignore = false;

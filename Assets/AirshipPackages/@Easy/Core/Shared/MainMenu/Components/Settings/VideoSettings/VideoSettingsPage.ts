@@ -13,7 +13,7 @@ export default class VideoSettingsPage extends AirshipBehaviour {
 			pipelineAsset.msaaSampleCount = val ? 4 : 1;
 		});
 
-		this.hdShadowsToggle.Init("HD Shadows", QualitySettings.shadows === ShadowQuality.All);
+		this.hdShadowsToggle.Init("HD Shadows", QualitySettings.shadowResolution === ShadowResolution.VeryHigh);
 		this.hdShadowsToggle.toggle.onValueChanged.Connect((val) => {
 			if (val) {
 				// High Quality Settings
@@ -23,16 +23,11 @@ export default class VideoSettingsPage extends AirshipBehaviour {
 
 				pipelineAsset.shadowCascadeCount = 4;
 				pipelineAsset.cascade4Split = new Vector3(0.067, 0.2, 0.467);
-				pipelineAsset.shadowDepthBias = 0.8;
-				pipelineAsset.shadowNormalBias = 0.6;
 			} else {
-				QualitySettings.shadowResolution = ShadowResolution.Low;
-				QualitySettings.shadowDistance = 50;
+				QualitySettings.shadowResolution = ShadowResolution.Medium;
+				QualitySettings.shadowDistance = 100;
 
-				pipelineAsset.msaaSampleCount = 1;
-				pipelineAsset.shadowCascadeCount = 1;
-				pipelineAsset.shadowDepthBias = 1.5;
-				pipelineAsset.shadowNormalBias = 1.5;
+				pipelineAsset.shadowCascadeCount = 2;
 			}
 		});
 

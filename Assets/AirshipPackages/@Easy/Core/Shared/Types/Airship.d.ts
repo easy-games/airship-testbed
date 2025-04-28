@@ -179,16 +179,11 @@ interface CharacterMovement extends Component {
 	// Functions
 	GetLookVector(): Vector3;
 	GetMoveDir(): Vector3;
-	SetMoveInput(
-		direction: Vector3,
-		jump: boolean,
-		sprinting: boolean,
-		crouch: boolean,
-		moveDirWorldSpace: boolean,
-	): void;
+	SetMoveInput(direction: Vector3, jump: boolean, sprinting: boolean, crouch: boolean, moveDirMode: number): void;
 	SetMovementEnabled(isEnabled: boolean): void;
 	SetLookVector(lookVector: Vector3): void;
 	SetLookVectorRecurring(lookVector: Vector3): void;
+	SetLookVectorRecurringToMoveDir(): void;
 	SetCustomInputData(customData: BinaryBlob): void;
 	SetCustomSnapshotData(customData: BinaryBlob): void;
 	SetFlying(enabled: boolean): void;
@@ -529,36 +524,38 @@ interface AccessoryBuilder extends MonoBehaviour {
 	GetActiveAccessories(): ActiveAccessory[];
 	GetActiveAccessoryBySlot(target: AccessorySlot): ActiveAccessory | undefined;
 	GetAllAccessoryRenderers(): Renderer[];
+	GetAllMeshRenderers(): MeshRenderer[];
+	GetAllSkinnedMeshRenderers(): SkinnedMeshRenderer[];
 	GetCombinedSkinnedMesh(): SkinnedMeshRenderer;
 	GetCombinedStaticMesh(): MeshRenderer;
 	/**
 	 * Removes an active accessory on the given slot (if one exists).
 	 *
-	 * **Skinned mesh accessories will not be added until you call `UpdateImmediately()`**
+	 * **Skinned mesh accessories will not be added until you call `UpdateCombinedMesh()`**
 	 */
 	RemoveBySlot(slot: AccessorySlot): void;
 	/**
 	 * Removes all accessories.
 	 *
-	 * **Skinned mesh accessories will not be added until you call `UpdateImmediately()`**
+	 * **Skinned mesh accessories will not be added until you call `UpdateCombinedMesh()`**
 	 */
 	RemoveAll(): void;
 	/**
 	 * Removes all accessories sitting in "clothing" slots.
 	 * This means everything except for the right and left hand. Clothing slots may change in the future.
 	 *
-	 * **Skinned mesh accessories will not be added until you call `UpdateImmediately()`**
+	 * **Skinned mesh accessories will not be added until you call `UpdateCombinedMesh()`**
 	 */
 	RemoveClothingAccessories(): void;
 	SetCreateOverlayMeshOnCombine(on: boolean): void;
 	/**
 	 *
-	 * **Will not take effect until you call `UpdateImmediately()`**
+	 * **Will not take effect until you call `UpdateCombinedMesh()`**
 	 */
 	SetFaceTexture(texture: Texture2D): void;
 	/**
 	 *
-	 * **Will not take effect until you call `UpdateImmediately()`**
+	 * **Will not take effect until you call `UpdateCombinedMesh()`**
 	 */
 	SetSkinColor(color: Color): void;
 
@@ -1216,3 +1213,16 @@ interface AirAssetBundleStatic {
 	DownloadYielding(airId: string): AirAssetBundle | undefined;
 }
 declare const AirAssetBundle: AirAssetBundleStatic;
+
+interface OcclusionCam extends MonoBehaviour {
+	targetCamera: Camera;
+	adjustToHead: boolean;
+	adjustToHeadHeightThreshold: number;
+
+	BumpForOcclusion(targetPos: Vector3, characterPos: Vector3, mask: number): void;
+	Init(camera: Camera): void;
+}
+interface OcclusionCamConstructor {
+	new (): OcclusionCam;
+}
+declare const OcclusionCam: OcclusionCamConstructor;

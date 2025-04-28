@@ -214,21 +214,6 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	override OpenPage(params?: unknown): void {
 		super.OpenPage(params);
 
-		if (!this.downloadedAccessories) {
-			this.downloadedAccessories = true;
-			task.spawn(async () => {
-				// const start = Time.time;
-				await Protected.Avatar.LoadInventory();
-				// print("Loaded inventory in " + (Time.time - start));
-				this.LoadAllOutfits();
-			});
-		}
-		this.SetDirty(false);
-
-		const mainMenuSingleton = Dependency<MainMenuSingleton>();
-
-		this.bin.Add(mainMenuSingleton.socialMenuModifier.Add({ hidden: true }));
-
 		// Load the character
 		if (this.mainMenu.avatarView === undefined) {
 			if (this.IsPhoneMode()) {
@@ -243,7 +228,25 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 				).GetAirshipComponent<AvatarViewComponent>()!;
 			}
 		}
-		this.accessoryBuilder = this.mainMenu.avatarView.accessoryBuilder!;
+		this.accessoryBuilder = this.mainMenu.avatarView.accessoryBuilder;
+
+		if (!this.downloadedAccessories) {
+			this.downloadedAccessories = true;
+			task.spawn(async () => {
+				while (!Protected.Avatar.isInventoryLoaded) {
+					task.wait();
+				}
+				// const start = Time.time;
+				// await Protected.Avatar.LoadInventory();
+				// print("Loaded inventory in " + (Time.time - start));
+				this.LoadAllOutfits();
+			});
+		}
+		this.SetDirty(false);
+
+		const mainMenuSingleton = Dependency<MainMenuSingleton>();
+
+		this.bin.Add(mainMenuSingleton.socialMenuModifier.Add({ hidden: true }));
 
 		if (!this.hasMeshCombinedOnce) {
 			const charTransform = this.mainMenu.avatarView?.humanEntityGo?.transform!;
@@ -705,7 +708,6 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private SelectOutfit(index: number, notifyServer: boolean = true) {
-		print("SelectOutfit " + index + " " + debug.traceback());
 		if (index < 0 || index >= Protected.Avatar.outfits.size() || this.inThumbnailMode) {
 			error(`Index ${index} out of range of outfits`);
 		}

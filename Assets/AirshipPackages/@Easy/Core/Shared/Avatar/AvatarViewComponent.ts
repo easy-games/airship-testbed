@@ -15,7 +15,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	public humanEntityGo?: GameObject;
 	public avatarHolder?: Transform;
 	public anim!: Animator;
-	public accessoryBuilder?: AccessoryBuilder;
+	public accessoryBuilder: AccessoryBuilder;
 	public cameraRigTransform?: Transform;
 	public avatarCamera?: Camera;
 	public backdropHolder?: GameObject;
@@ -71,10 +71,6 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 		this.mainMenuSingleton = Dependency<MainMenuSingleton>();
 		// let backdrop = this.backdropHolder?.GetAirshipComponent<AvatarBackdropComponent>();
 		// backdrop?.SetSolidColorBackdrop(ColorUtil.HexToColor("#202122"));
-
-		if (this.humanEntityGo) {
-			this.accessoryBuilder = this.humanEntityGo.GetComponent<AccessoryBuilder>()!;
-		}
 
 		Mouse.onMoved.Connect((pos: Vector2) => {
 			if (this.dragging) {

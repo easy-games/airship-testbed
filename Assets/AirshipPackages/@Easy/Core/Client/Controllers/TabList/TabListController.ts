@@ -32,6 +32,8 @@ export class TabListController {
 	private tweenDistance = 10;
 	private tweenDuration = 0.06;
 
+	public tablistEnabled = true;
+
 	constructor() {
 		this.tablistGO = Object.Instantiate(
 			Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/UI/TabList.prefab"),
@@ -61,6 +63,8 @@ export class TabListController {
 		});
 
 		OnLateUpdate.Connect(() => {
+			if (!this.tablistEnabled) return;
+
 			if (this.dirty) {
 				this.dirty = false;
 				Profiler.BeginSample("TabList.FullUpdate");
@@ -71,12 +75,15 @@ export class TabListController {
 
 		Keyboard.OnKeyDown(Key.Tab, (e) => {
 			if (e.uiProcessed) return;
+			if (!this.tablistEnabled) return;
+
 			// if (!Application.isFocused) return;
 			if (!Keyboard.IsEitherKeyDown(Key.LeftAlt, Key.LeftCommand)) {
 				this.Show();
 			}
 		});
 		Keyboard.OnKeyUp(Key.Tab, (e) => {
+			if (!this.tablistEnabled) return;
 			this.Hide();
 		});
 
@@ -88,6 +95,8 @@ export class TabListController {
 		// });
 
 		Application.focusChanged.Connect((focused) => {
+			if (!this.tablistEnabled) return;
+
 			this.Hide(true, true);
 			task.unscaledDelay(0, () => {
 				this.Hide(true, true);
@@ -96,6 +105,8 @@ export class TabListController {
 	}
 
 	public FullUpdate(): void {
+		if (!this.tablistEnabled) return;
+
 		let teams = Airship.Teams.GetTeams();
 
 		let players = Airship.Players.GetPlayers().sort((a, b) => {

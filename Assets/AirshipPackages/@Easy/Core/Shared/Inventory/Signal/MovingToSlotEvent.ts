@@ -1,8 +1,12 @@
 import { Airship } from "../../Airship";
 import { Cancellable } from "../../Util/Cancellable";
 import Inventory from "../Inventory";
+import { ItemStack } from "../ItemStack";
 
-export class MovingToSlotEvent extends Cancellable {
+export class InventoryMovingToSlotEvent extends Cancellable {
+	public amount: number;
+	public readonly fromItem: ItemStack | undefined;
+
 	/**
 	 * Allows merging of stacks if they have the same `itemType`
 	 *
@@ -30,13 +34,19 @@ export class MovingToSlotEvent extends Cancellable {
 		/**
 		 * The amount that will be transferred
 		 */
-		public amount: number,
+		amount?: number,
 	) {
 		super();
+	
+		const fromStack = fromInventory.GetItem(fromSlot);
+		amount ??= fromStack?.amount ?? 0;
+		
+		this.amount = amount;
+		this.fromItem = fromStack;
 	}
 
 	public GetSourceItemStack() {
-		return this.fromInventory.GetItem(this.fromSlot);
+		return this.fromItem;
 	}
 
 	public GetTargetItemStack() {

@@ -20,8 +20,8 @@ MonoBehaviour:
   manageTypescriptProject: 0
   safeguardBundleModification: 1
   selfCompileAllShaders: 0
-  useProjectReconcileOption: 0
-  projectReconcilerVersion: 0
+  useProjectReconcileOption: 1
+  projectReconcilerVersion: 2
   promptIfLuauPluginChanged: 1
   luauScriptTimeout: 10
   typescriptVerbose: 0

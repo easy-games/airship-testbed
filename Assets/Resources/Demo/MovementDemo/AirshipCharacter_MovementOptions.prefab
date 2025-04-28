@@ -185,8 +185,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  guid: 4030dad8-83ca-47d4-93b7-84e173d924ee
-  hash: fb740676e440ef38143e2481aa96dfe7
+  guid: 1966231e-682d-4db1-80ec-76f3399e0135
+  hash: 9d57790ff825373040dac216aced7e3b
   script: {fileID: -5316438272152554620, guid: ccc96a9e74b93b448abff1c16a6ea110, type: 3}
   scriptPath: Assets/Code/AirshipPlatformDemo/MovementModifications/CharacterMoveSlide.lua
   forceContext: 0

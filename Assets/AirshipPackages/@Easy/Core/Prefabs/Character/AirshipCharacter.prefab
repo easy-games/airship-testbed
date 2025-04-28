@@ -601,23 +601,6 @@ Transform:
   - {fileID: 275988063163131779}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8440015110078338219
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8616685848737228372}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneId: 0
-  _assetId: 1161710179
-  serverOnly: 0
-  visibility: 0
-  hasSpawned: 0
 --- !u!114 &5043041770756594627
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -650,8 +633,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  guid: eee4abff-d43c-4ddf-9a14-88999aaac89d
-  hash: 85130889f246231a41aefa2ad5ca9f46
+  guid: 3deb3c79-0c65-41a5-a1d9-8dae0acb4826
+  hash: ddd75c2ac7bfa25a3e102653d54159aa
   script: {fileID: -8502596097384394428, guid: 231b41c7c69568446b98353c21d6785d, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/Character.lua
   forceContext: 0
@@ -844,8 +827,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  guid: 8525a7b4-2ade-4e3a-bccc-b4aa80520195
-  hash: f460c20e791d466d43c3355e172b87c2
+  guid: 63d77f38-b5e5-4d0b-bb8a-e4a11b6390cd
+  hash: adca315c3fa4e38e9cb0ea3dd306dfcc
   script: {fileID: 3379845904423814631, guid: b265ca149231a634a8b651b688c7a486, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/CharacterRendering.lua
   forceContext: 0
@@ -949,8 +932,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  guid: 7f04d65a-b908-4663-b6d2-ceea3d25efb8
-  hash: 1d399f624f1ea47f55879f999d548b08
+  guid: dcc56b78-a9b6-4218-bcbb-3bfb25941ac0
+  hash: 6dcdcdb27f065abd455dc8756cc0a70f
   script: {fileID: 6641073800188671112, guid: 8a394f76659097e498fcb014078bae54, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Inventory/Inventory.lua
   forceContext: 0
@@ -1037,8 +1020,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  guid: b26c3507-f3e9-43b8-b662-c11bbae54b9c
-  hash: 964be68097b2b4aaff1b95a5697848ea
+  guid: eb4661d5-016a-4fe7-9335-065c54e235bf
+  hash: 6dfc8c3edb5ba6e20ca59751b901763a
   script: {fileID: 5399347344820012199, guid: 1d9ff343e68ebb247bb7a1dd2270fd63, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/Animation/CharacterAnimation.ts
   forceContext: 0
@@ -1268,6 +1251,23 @@ MonoBehaviour:
   directionalBlendLerpMod: 15
   skiddingSpeed: 7.5
   idleRectionLength: 15
+--- !u!114 &8440015110078338219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8616685848737228372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 0
+  _assetId: 1161710179
+  serverOnly: 0
+  visibility: 0
+  hasSpawned: 0
 --- !u!1001 &3212846051738532583
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1446,11 +1446,11 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3418875587636762027, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
-      propertyPath: 'm_Materials.Array.data[1]'
+      propertyPath: m_Materials.Array.data[1]
       value: 
       objectReference: {fileID: 2100000, guid: 92798f4dd55bd614cbd0271dde95cc71, type: 2}
     - target: {fileID: 3664559219000330965, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
+      propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: b4c67e2b57a298e4389ee3204f6d883b, type: 2}
     - target: {fileID: 4086383161009726856, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
@@ -1494,7 +1494,7 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4466944578396753522, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
-      propertyPath: 'm_Materials.Array.data[1]'
+      propertyPath: m_Materials.Array.data[1]
       value: 
       objectReference: {fileID: 2100000, guid: 92798f4dd55bd614cbd0271dde95cc71, type: 2}
     - target: {fileID: 4530612716677830506, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
@@ -1650,7 +1650,7 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8874355582159802038, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
-      propertyPath: 'm_Materials.Array.data[1]'
+      propertyPath: m_Materials.Array.data[1]
       value: 
       objectReference: {fileID: 2100000, guid: 92798f4dd55bd614cbd0271dde95cc71, type: 2}
     - target: {fileID: 8943775630873165881, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
