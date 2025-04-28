@@ -6,7 +6,7 @@ import { Player } from "@Easy/Core/Shared/Player/Player";
 
 export class MessageCommand extends ChatCommand {
 	constructor() {
-		super("msg", ["message"]);
+		super("msg", ["message", "w"]);
 	}
 
 	public Execute(player: Player, args: string[]): void {
