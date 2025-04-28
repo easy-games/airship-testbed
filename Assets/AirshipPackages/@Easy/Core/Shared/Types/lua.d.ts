@@ -676,6 +676,9 @@ declare namespace math {
 
 	/** Checks if `value` is NaN. */
 	function isNaN(value: number | Vector2 | Vector3 | Vector4): boolean;
+
+	/** Returns `n` mapped from one range `[inMin, inMax]` to another `[outMin, outMax]`. */
+	function map(n: number, inMin: number, inMax: number, outMin: number, outMax: number): number;
 }
 
 interface buffer {
