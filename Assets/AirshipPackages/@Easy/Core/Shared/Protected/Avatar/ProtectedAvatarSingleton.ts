@@ -59,9 +59,13 @@ export class ProtectedAvatarSingleton {
 				return outfit;
 			}
 		});
+
+		task.spawn(() => {
+			this.LoadInventory();
+		});
 	}
 
-	public async LoadInventory(): Promise<void> {
+	private async LoadInventory(): Promise<void> {
 		if (this.isInventoryLoaded) return;
 		if (this.isLoadingInventory) {
 			Debug.LogWarning("Tried to load inventory when already loading.");
@@ -69,6 +73,7 @@ export class ProtectedAvatarSingleton {
 		}
 
 		await Dependency<AuthController>().WaitForAuthed();
+		Protected.User.WaitForLocalUser();
 
 		const promises: Promise<void>[] = [];
 
