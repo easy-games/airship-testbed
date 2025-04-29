@@ -828,7 +828,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   guid: 63d77f38-b5e5-4d0b-bb8a-e4a11b6390cd
-  hash: adca315c3fa4e38e9cb0ea3dd306dfcc
+  hash: 5bd2f497ee13522e7be3f0dacd1697e9
   script: {fileID: 3379845904423814631, guid: b265ca149231a634a8b651b688c7a486, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/CharacterRendering.lua
   forceContext: 0

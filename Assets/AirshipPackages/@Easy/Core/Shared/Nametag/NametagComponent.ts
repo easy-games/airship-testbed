@@ -1,6 +1,8 @@
 import { Airship } from "../Airship";
+import Character from "../Character/Character";
 import { Game } from "../Game";
 import { Team } from "../Team/Team";
+import { Bin } from "../Util/Bin";
 
 export default class NametagComponent extends AirshipBehaviour {
 	@SerializeField() public teamImage: Image;
@@ -8,6 +10,14 @@ export default class NametagComponent extends AirshipBehaviour {
 	@SerializeField() public nametagText: TMP_Text;
 	@SerializeField() public canvas: Canvas;
 	@SerializeField() public canvasGroup: CanvasGroup;
+	@SerializeField() public microphoneWrapper: GameObject;
+	@SerializeField() public microphoneFillMask: RectMask2D;
+
+	@NonSerialized() public character: Character;
+	private currentSpeakingLevel: number = 0;
+
+	private bin = new Bin();
+
 	/**
 	 * Max distance from CameraRig until nametag canvas is disabled.
 	 *
@@ -20,6 +30,10 @@ export default class NametagComponent extends AirshipBehaviour {
 
 	protected Start(): void {
 		this.cameraTransform = Airship.Camera.cameraRig?.transform;
+	}
+
+	public SetCharacter(character: Character): void {
+		this.character = character;
 	}
 
 	public SetAlpha(alpha: number) {
@@ -43,13 +57,40 @@ export default class NametagComponent extends AirshipBehaviour {
 			const camPos = this.cameraTransform.position;
 			const distance = camPos.sub(this.transform.position).magnitude;
 			if (distance <= this.maxDistance) {
-				if (this.isCanvasEnabled) return;
-				this.isCanvasEnabled = true;
-				this.canvas.enabled = true;
+				if (!this.isCanvasEnabled) {
+					this.isCanvasEnabled = true;
+					this.canvas.enabled = true;
+				}
 			} else {
-				if (!this.isCanvasEnabled) return;
-				this.isCanvasEnabled = false;
-				this.canvas.enabled = false;
+				if (this.isCanvasEnabled) {
+					this.isCanvasEnabled = false;
+					this.canvas.enabled = false;
+				}
+			}
+		}
+
+		// Microphone
+		if (this.isCanvasEnabled) {
+			let speakingLevel = 0;
+			const connectionId = this.character.player?.connectionId;
+			if (connectionId !== undefined) {
+				speakingLevel = contextbridge.invoke("VoiceChat:GetSpeakingLevel", LuauContext.Protected, connectionId);
+			}
+
+			// Smooth the the volume level for UI
+			const smoothingSpeed = 10; // Higher = snappier, lower = smoother
+			this.currentSpeakingLevel = math.lerp(
+				this.currentSpeakingLevel,
+				speakingLevel,
+				Time.deltaTime * smoothingSpeed,
+			);
+
+			// print("speaking level: " + speakingLevel);
+			if (this.currentSpeakingLevel > 0.01) {
+				this.microphoneWrapper.SetActive(true);
+				this.microphoneFillMask.padding = new Vector4(0, 0, 0, 400 - this.currentSpeakingLevel * 400);
+			} else {
+				this.microphoneWrapper.SetActive(false);
 			}
 		}
 	}
@@ -62,5 +103,9 @@ export default class NametagComponent extends AirshipBehaviour {
 		} else {
 			this.teamImage.gameObject.SetActive(false);
 		}
+	}
+
+	protected OnDestroy(): void {
+		this.bin.Clean();
 	}
 }

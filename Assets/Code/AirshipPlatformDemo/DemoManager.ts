@@ -1,8 +1,10 @@
 import SteamRichPresence from "@Easy/Core/Client/Airship/Steam/SteamRichPresence";
+import { NametagController } from "@Easy/Core/Client/Controllers/Entity/Nametag/NametagController";
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { Asset } from "@Easy/Core/Shared/Asset";
 
 import Character from "@Easy/Core/Shared/Character/Character";
+import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Binding } from "@Easy/Core/Shared/Input/Binding";
 import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
@@ -34,6 +36,8 @@ export default class DemoManager extends AirshipBehaviour {
 				Game.localPlayer.SendMessage(ChatColor.Green("Teleporting back to the Lobby..."));
 			});
 		}
+
+		Dependency<NametagController>().showSelfNametag = true;
 
 		Airship.Settings.AddSlider("Background Music", 1, 0, 2);
 		// Airship.Settings.ObserveSlider("Background Music", (val) => {

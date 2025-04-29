@@ -96,32 +96,34 @@ export class ClientChatSingleton {
 		this.inputWrapperImage = this.inputTransform.GetComponent<Image>()!;
 		this.content.gameObject.ClearChildren();
 
-		Dependency<MainMenuSingleton>().ObserveScreenSize((st, size) => {
-			if (Game.IsMobile()) {
-				const scaler = this.canvas.GetComponent<CanvasScaler>()!;
-				scaler.uiScaleMode = ScaleMode.ConstantPixelSize;
-				scaler.scaleFactor = Game.GetScaleFactor();
-				const wrapperRect = this.wrapper.GetComponent<RectTransform>()!;
+		task.spawn(() => {
+			Dependency<MainMenuSingleton>().ObserveScreenSize((st, size) => {
+				if (Game.IsMobile()) {
+					const scaler = this.canvas.GetComponent<CanvasScaler>()!;
+					scaler.uiScaleMode = ScaleMode.ConstantPixelSize;
+					scaler.scaleFactor = Game.GetScaleFactor();
+					const wrapperRect = this.wrapper.GetComponent<RectTransform>()!;
 
-				if (Game.deviceType === AirshipDeviceType.Phone) {
-					wrapperRect.anchorMin = new Vector2(0, 0);
-					wrapperRect.anchorMax = new Vector2(0, 1);
-					wrapperRect.pivot = new Vector2(0, 1);
-					wrapperRect.offsetMin = new Vector2(wrapperRect.offsetMin.x, 216);
+					if (Game.deviceType === AirshipDeviceType.Phone) {
+						wrapperRect.anchorMin = new Vector2(0, 0);
+						wrapperRect.anchorMax = new Vector2(0, 1);
+						wrapperRect.pivot = new Vector2(0, 1);
+						wrapperRect.offsetMin = new Vector2(wrapperRect.offsetMin.x, 216);
+					} else {
+						wrapperRect.anchorMax = new Vector2(0, 1);
+						wrapperRect.anchorMin = new Vector2(0, 0.55);
+						wrapperRect.pivot = new Vector2(0, 1);
+						wrapperRect.offsetMin = new Vector2(wrapperRect.offsetMin.x, 0);
+						// wrapperRect.offsetMax = new Vector2(0, 0);
+						// wrapperRect.offsetMin = new Vector2(0, 0);
+					}
+					wrapperRect.anchoredPosition = new Vector2(ProtectedUtil.GetNotchHeight() + 190, -14);
 				} else {
-					wrapperRect.anchorMax = new Vector2(0, 1);
-					wrapperRect.anchorMin = new Vector2(0, 0.55);
-					wrapperRect.pivot = new Vector2(0, 1);
-					wrapperRect.offsetMin = new Vector2(wrapperRect.offsetMin.x, 0);
-					// wrapperRect.offsetMax = new Vector2(0, 0);
-					// wrapperRect.offsetMin = new Vector2(0, 0);
+					const wrapperRect = this.wrapper.GetComponent<RectTransform>()!;
+					const wrapperImg = wrapperRect.GetComponent<Image>()!;
+					wrapperImg.color = new Color(0, 0, 0, 0);
 				}
-				wrapperRect.anchoredPosition = new Vector2(ProtectedUtil.GetNotchHeight() + 190, -14);
-			} else {
-				const wrapperRect = this.wrapper.GetComponent<RectTransform>()!;
-				const wrapperImg = wrapperRect.GetComponent<Image>()!;
-				wrapperImg.color = new Color(0, 0, 0, 0);
-			}
+			});
 		});
 
 		if (Game.IsProtectedLuauContext()) {
