@@ -92,7 +92,7 @@ export class NametagController {
 		return bin;
 	}
 
-	public CreateNametag(character: Character, parent: Transform): NametagComponent {
+	public CreateNametag(parent: Transform, character?: Character): NametagComponent {
 		if (parent === undefined) {
 			error("Must pass in a valid transform to CreateNametag");
 		}
@@ -102,7 +102,9 @@ export class NametagController {
 
 		const nametag = nametagGo.GetAirshipComponent<NametagComponent>();
 		assert(nametag, "Missing NametagComponent");
-		nametag.SetCharacter(character);
+		if (character) {
+			nametag.SetCharacter(character);
+		}
 
 		this.allNametags.push(nametag);
 
@@ -117,7 +119,7 @@ export class NametagController {
 
 		let nameTag = character.gameObject.GetAirshipComponentInChildren<NametagComponent>();
 		if (nameTag === undefined) {
-			nameTag = this.CreateNametag(character, character.rig?.head);
+			nameTag = this.CreateNametag(character.rig?.head, character);
 		}
 
 		// Username text
