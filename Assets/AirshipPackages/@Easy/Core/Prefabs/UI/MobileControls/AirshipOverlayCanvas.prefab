@@ -32,11 +32,11 @@ RectTransform:
   - {fileID: 2208426359147481670}
   m_Father: {fileID: 279624506939109690}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 920, y: 500}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -22, y: -22}
   m_SizeDelta: {x: 43.228394, y: 43.228394}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 1, y: 1}
 --- !u!114 &8348663571544085473
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -50,7 +50,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   guid: edd104cb-b700-47e8-83c9-024e8eb5604f
-  hash: 3b459713fe29b2ac36a58d26cd13d3ac
+  hash: 2d2c40f1ea295469e9af386971e1b808
   script: {fileID: -5374682861176321385, guid: d47d161ec37da694184ffeb6dd7bbea3, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Overlay/MicIndicator.lua
   forceContext: 0
