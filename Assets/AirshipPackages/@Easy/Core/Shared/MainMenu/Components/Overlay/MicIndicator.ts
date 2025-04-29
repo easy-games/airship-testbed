@@ -98,7 +98,7 @@ export default class MicIndicator extends AirshipBehaviour {
 					Time.deltaTime * smoothingSpeed,
 				);
 
-				this.microphoneFillMask.padding = new Vector4(0, 0, 0, 38 - this.currentSpeakingLevel * 38);
+				this.microphoneFillMask.padding = new Vector4(0, 0, 0, 34 - this.currentSpeakingLevel * 34);
 			};
 			UpdateFill();
 			this.stateBin.Add(
