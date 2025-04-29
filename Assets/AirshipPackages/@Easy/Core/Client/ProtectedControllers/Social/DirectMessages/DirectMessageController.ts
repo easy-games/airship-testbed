@@ -24,6 +24,17 @@ import { MainMenuPartyController } from "../MainMenuPartyController";
 import { DirectMessage } from "./DirectMessage";
 import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
 
+interface SendMessageSuccess {
+    messageSent: true;
+}
+interface SendMessageFailure {
+    messageSent: false;
+    reason: string;
+}
+
+type SendMessageResponse = SendMessageSuccess | SendMessageFailure;
+
+
 @Controller({})
 export class DirectMessageController {
 	private readonly httpRetry = HttpRetryInstance();
@@ -258,55 +269,80 @@ export class DirectMessageController {
 		}
 
 		if (message === "") return;
-		this.httpRetry(() => InternalHttpManager.PostAsync(
+		const {data} = this.httpRetry(() => InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/chat/message/direct",
 			json.encode({
 				target: uid,
 				text: message,
 			}),
 		), "SendDirectMessage").expect();
+		const sendResponse = json.decode(data) as SendMessageResponse;
 		this.inputField!.text = "";
-		const sentMessage: DirectMessage = {
-			sender: Game.localPlayer.userId,
-			sentAt: os.time(),
-			text: message,
-		};
-		this.GetMessages(uid).push(sentMessage);
-		this.RenderChatMessage(sentMessage, true);
-		AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/SendMessage.ogg", {
-			volumeScale: 0.8,
-			pitch: 1.5,
-		});
+		if (sendResponse.messageSent) {
+			let sentMessage: DirectMessage = {
+				sender: Game.localPlayer.userId,
+				sentAt: os.time(),
+				text: message,
+			};
+			this.GetMessages(uid).push(sentMessage);
+			this.RenderChatMessage(sentMessage, true);
+			AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/SendMessage.ogg", {
+				volumeScale: 0.8,
+				pitch: 1.5,
+			});
 
-		if (Game.coreContext === CoreContext.GAME) {
-			let text =
-				ColorUtil.ColoredText(Theme.pink, "To ") +
-				ColorUtil.ColoredText(Theme.white, status.username) +
-				ColorUtil.ColoredText(Theme.gray, ": " + message);
-			Dependency<ClientChatSingleton>().RenderChatMessage(text);
+			if (Game.coreContext === CoreContext.GAME) {
+				let text =
+					ColorUtil.ColoredText(Theme.pink, "To ") +
+					ColorUtil.ColoredText(Theme.white, status.username) +
+					ColorUtil.ColoredText(Theme.gray, ": " + message);
+				Dependency<ClientChatSingleton>().RenderChatMessage(text);
+			}
+		} else {
+			let sentMessage: DirectMessage = {
+				sender: Game.localPlayer.userId,
+				sentAt: os.time(),
+				text: sendResponse.reason,
+			};
+			this.GetMessages(uid).push(sentMessage);
+			this.RenderChatMessage(sentMessage, true);
+			AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/UI_Error.ogg");
 		}
+
 	}
 
 	public SendPartyMessage(message: string): void {
 		if (message === "") return;
-		this.httpRetry(() => InternalHttpManager.PostAsync(
+		const {data} = this.httpRetry(() => InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/chat/message/party",
 			json.encode({
 				text: message,
 			}),
 		), "SendPartyMessage").expect();
-		this.inputField!.text = "";
-		const sentMessage: DirectMessage = {
-			sender: Game.localPlayer.userId,
-			sentAt: os.time(),
-			text: message,
-		};
-		this.GetMessages("party").push(sentMessage);
-		this.RenderChatMessage(sentMessage, true, true);
-		AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/SendMessage.ogg", {
-			volumeScale: 0.8,
-			pitch: 1.5,
-		});
+		const sendResponse = json.decode(data) as SendMessageResponse;
+		if (sendResponse.messageSent) {
+			this.inputField!.text = "";
+			const sentMessage: DirectMessage = {
+				sender: Game.localPlayer.userId,
+				sentAt: os.time(),
+				text: message,
+			};
+			this.GetMessages("party").push(sentMessage);
+			this.RenderChatMessage(sentMessage, true, true);
+			AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/SendMessage.ogg", {
+				volumeScale: 0.8,
+				pitch: 1.5,
+			});
+		} else {
+			let sentMessage: DirectMessage = {
+				sender: Game.localPlayer.userId,
+				sentAt: os.time(),
+				text: sendResponse.reason,
+			};
+			this.GetMessages("party").push(sentMessage);
+			this.RenderChatMessage(sentMessage, true, true);
+			AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/UI_Error.ogg");
+		}
 
 		// predict send for sender
 		// if (Game.coreContext === CoreContext.GAME) {
