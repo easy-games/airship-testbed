@@ -7,13 +7,12 @@ import { Platform } from "@Easy/Core/Shared/Airship";
 import { Group } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipMatchmaking";
 import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import inspect from "@Easy/Core/Shared/Util/Inspect";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 
 @Controller({})
 export class AirshipMatchmakingController {
 	public readonly onGroupChange: Signal<[newGroup: Group, oldGroup?: Group]> = new Signal();
-	private oldGroup: Group | undefined;
+	private currentGroup: Group | undefined;
 
 	constructor() {
 		if (!Game.IsClient()) return;
@@ -21,11 +20,9 @@ export class AirshipMatchmakingController {
 		Platform.Client.Matchmaking = this;
 
 		contextbridge.callback(MatchmakingControllerBridgeTopics.OnGroupChange, (_, group) => {
-			const previous = this.oldGroup;
-			print("oldGroup: " + inspect(this.oldGroup));
-			print("newGroup: " + inspect(group));
+			const previous = this.currentGroup;
+			this.currentGroup = group;
 			this.onGroupChange.Fire(group, previous);
-			this.oldGroup = group;
 		});
 	}
 
