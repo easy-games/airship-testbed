@@ -647,18 +647,22 @@ export default class PredictedCommandManager extends AirshipSingleton {
 	 * If the command is invalidated or authoritatively ends, the returned bin will be cleaned and the callback will no longer be
 	 * invoked.
 	 */
-	public ObserveHandler<T>(commandInstance: CommandInstanceIdentifier, callback: (instance: T) => CleanupFunc): Bin {
+	public ObserveHandler<T>(
+		commandInstance: CommandInstanceIdentifier,
+		callback: (instance: T) => CleanupFunc,
+		priority: SignalPriority = SignalPriority.NORMAL,
+	): Bin {
 		const bin = new Bin();
 		let callbackBin: CleanupFunc;
 
 		bin.Add(
-			this.onCommandEnded.Connect((commandId) => {
+			this.onCommandEnded.ConnectWithPriority(priority, (commandId) => {
 				if (commandId.stringify() !== commandInstance.stringify()) return;
 				bin.Clean();
 			}),
 		);
 		bin.Add(
-			this.onInstanceCreated.Connect((commandId, instance) => {
+			this.onInstanceCreated.ConnectWithPriority(priority, (commandId, instance) => {
 				if (commandId.stringify() !== commandInstance.stringify()) return;
 				callbackBin?.();
 				callbackBin = callback(instance as T);
@@ -688,19 +692,20 @@ export default class PredictedCommandManager extends AirshipSingleton {
 		character: Character,
 		commandId: string,
 		callback: (commandIdentifier: CommandInstanceIdentifier | undefined) => CleanupFunc,
+		priority: SignalPriority = SignalPriority.NORMAL,
 	) {
 		const bin = new Bin();
 		let callbackBin: CleanupFunc;
 
 		bin.Add(
-			this.onInstanceCreated.Connect((identifier) => {
+			this.onInstanceCreated.ConnectWithPriority(priority, (identifier) => {
 				if (identifier.commandId !== commandId) return;
 				callbackBin?.();
 				callbackBin = callback(identifier);
 			}),
 		);
 		bin.Add(
-			this.onInstanceDestroyed.Connect((identifier) => {
+			this.onInstanceDestroyed.ConnectWithPriority(priority, (identifier) => {
 				if (identifier.commandId !== commandId) return;
 				callbackBin?.();
 				callbackBin = callback(undefined);
