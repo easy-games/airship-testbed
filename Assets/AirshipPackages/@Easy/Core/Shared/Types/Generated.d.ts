@@ -36652,7 +36652,7 @@ interface Bridge {
 }
     
 interface IChatroomNetwork {
-    readonly OwnID: number;
+    readonly LocalPeerId: number;
     readonly PeerIDs: Readonly<number[]>;
 
     readonly OnCreatedChatroom: MonoSignal<void>;
@@ -36793,6 +36793,7 @@ interface BridgeConstructor {
     GetVolume(): number;
     HasMicrophonePermission(): boolean;
     IsFullScreen(): boolean;
+    IsLowEndDevice(): boolean;
     IsMicRecording(): boolean;
     IsSceneLoading(): boolean;
     LoadGlobalSceneByName(sceneName: string): void;
