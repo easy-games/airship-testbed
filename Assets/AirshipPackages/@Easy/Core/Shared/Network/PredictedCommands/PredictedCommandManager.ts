@@ -348,9 +348,9 @@ export default class PredictedCommandManager extends AirshipSingleton {
 									commandIdentifier.stringify() +
 									" on cmd #" +
 									a.lastProcessedCommand +
-									". Predicted: " +
+									". Predicted Result: " +
 									inspect(aCommandData.data) +
-									" Expected: " +
+									" Actual Result: " +
 									inspect(bCommandData.data),
 							);
 						}
@@ -844,7 +844,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 		// the final onCommandEnded signal when the client recieves the report from the server.
 		const CommitEndedCommand = () => {
 			const commandIdentifierStr = commandIdentifier.stringify();
-			warn("last processed cmd# for " + commandIdentifierStr + ": " + lastProcessedInputCommandNumber);
+			// print("last processed cmd# for " + commandIdentifierStr + ": " + lastProcessedInputCommandNumber);
 			if (Game.IsServer()) {
 				this.SetHighestCompletedInstance(commandIdentifier);
 				this.onCommandEnded.Fire(commandIdentifier, lastCapturedState.data);
