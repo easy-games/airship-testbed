@@ -415,7 +415,6 @@ export class AirshipCameraSingleton {
 	 * @param characterCameraMode A `CharacterCameraMode`.
 	 */
 	public SetMode(characterCameraMode: CharacterCameraMode): CameraMode {
-		warn("mode set to " + characterCameraMode);
 		this.characterCameraMode = characterCameraMode;
 		const target =
 			Game.localPlayer.character?.model ?? GameObject.CreateAtPos(Vector3.zero, "CameraTargetPlaceholder");
