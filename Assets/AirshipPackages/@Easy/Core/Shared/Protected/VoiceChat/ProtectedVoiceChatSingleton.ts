@@ -26,6 +26,7 @@ export class ProtectedVoiceChatSingleton implements OnStart {
 	OnStart(): void {
 		const uniVoiceNetwork = Bridge.GetAirshipVoiceChatNetwork();
 		uniVoiceNetwork.onPlayerSpeakingLevel.Connect((connectionId, speakingLevel) => {
+			// print(`Player speaking connectionId=${connectionId} speakingLevel=${speakingLevel}`);
 			this.connectionIdToSpeakingLevel.set(connectionId, {
 				speakingLevel,
 				time: Time.time,
