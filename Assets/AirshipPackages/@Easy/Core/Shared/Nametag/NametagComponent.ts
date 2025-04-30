@@ -13,7 +13,7 @@ export default class NametagComponent extends AirshipBehaviour {
 	@SerializeField() public microphoneWrapper: GameObject;
 	@SerializeField() public microphoneFillMask: RectMask2D;
 
-	@NonSerialized() public character: Character;
+	@NonSerialized() public character: Character | undefined;
 	private currentSpeakingLevel: number = 0;
 
 	private bin = new Bin();
@@ -30,6 +30,7 @@ export default class NametagComponent extends AirshipBehaviour {
 
 	protected Start(): void {
 		this.cameraTransform = Airship.Camera.cameraRig?.transform;
+		this.microphoneWrapper.SetActive(false);
 	}
 
 	public SetCharacter(character: Character): void {
@@ -70,9 +71,9 @@ export default class NametagComponent extends AirshipBehaviour {
 		}
 
 		// Microphone
-		if (this.isCanvasEnabled) {
+		if (this.isCanvasEnabled && this.character?.player) {
 			let speakingLevel = 0;
-			const connectionId = this.character.player?.connectionId;
+			const connectionId = this.character?.player?.connectionId;
 			if (connectionId !== undefined) {
 				speakingLevel = contextbridge.invoke("VoiceChat:GetSpeakingLevel", LuauContext.Protected, connectionId);
 			}
