@@ -251,8 +251,13 @@ export class ProtectedSettingsSingleton {
 			this.data = defaultData;
 
 			const platform = Game.platform;
-			let lowEndDevice =
-				Bridge.IsLowEndDevice() || platform === AirshipPlatform.iOS || platform === AirshipPlatform.Android;
+			let lowEndDevice = platform === AirshipPlatform.iOS || platform === AirshipPlatform.Android;
+			try {
+				// try catch because of non required c# update
+				if (Bridge.IsLowEndDevice()) {
+					lowEndDevice = true;
+				}
+			} catch (err) {}
 			if (!lowEndDevice) {
 				this.data.antiAliasing = 1;
 				this.data.shadowLevel = 1;
