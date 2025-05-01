@@ -247,7 +247,9 @@ export class AirshipInventorySingleton {
 					return;
 				}
 
-				const event = this.onMovingToSlot.Fire(new InventoryMovingToSlotEvent(fromInv, fromSlot, toInv, toSlot, amount));
+				const event = this.onMovingToSlot.Fire(
+					new InventoryMovingToSlotEvent(fromInv, fromSlot, toInv, toSlot, amount),
+				);
 				if (event.IsCancelled()) return;
 				amount = event.amount;
 
@@ -604,8 +606,7 @@ export class AirshipInventorySingleton {
 
 		if (canMerge) {
 			const destination =
-				destinationInventory.FindMergableSlot(stackAtSlot) ??
-				destinationInventory.GetFirstOpenSlot();
+				destinationInventory.FindMergableSlot(stackAtSlot) ?? destinationInventory.GetFirstOpenSlot();
 			if (destination === -1) return;
 
 			return this.MoveToSlot(sourceInventory, sourceSlotIndex, destinationInventory, destination, amount);
@@ -631,7 +632,9 @@ export class AirshipInventorySingleton {
 			return;
 		}
 
-		const event = this.onMovingToSlot.Fire(new InventoryMovingToSlotEvent(fromInv, fromSlot, toInv, toSlot, amount));
+		const event = this.onMovingToSlot.Fire(
+			new InventoryMovingToSlotEvent(fromInv, fromSlot, toInv, toSlot, amount),
+		);
 		if (event.IsCancelled() || event.amount < 1) return;
 
 		amount = event.amount;
@@ -645,7 +648,7 @@ export class AirshipInventorySingleton {
 				if (event.allowMerging && toItemStack.amount + amount <= toItemStack.GetMaxStackSize()) {
 					toItemStack.SetAmount(toItemStack.amount + amount);
 					fromItemStack.Decrement(amount);
-					
+
 					if (Game.IsClient()) {
 						CoreNetwork.ClientToServer.Inventory.MoveToSlot.client.FireServer(
 							fromInv.id,
@@ -856,10 +859,10 @@ export class AirshipInventorySingleton {
 	/**
 	 * Allows you to open another inventory
 	 */
-	public OpenExternalInventory(inventory: Inventory): CleanupFunc {
+	public OpenExternalInventory(inventory: Inventory, onComplete?: () => void): CleanupFunc {
 		const ui = this.ui;
 		if (!ui) return;
 
-		return ui.OpenBackpackWithExternalInventory(inventory);
+		return ui.OpenBackpackWithExternalInventory(inventory, onComplete);
 	}
 }
