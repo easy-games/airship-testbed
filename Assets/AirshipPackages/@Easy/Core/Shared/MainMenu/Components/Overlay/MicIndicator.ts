@@ -3,12 +3,15 @@ import { Game } from "@Easy/Core/Shared/Game";
 import { Protected } from "@Easy/Core/Shared/Protected";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
+import { OnUpdate } from "@Easy/Core/Shared/Util/Timer";
 
 type VoiceState = "talking" | "silent";
 
 export default class MicIndicator extends AirshipBehaviour {
 	@Header("References")
 	public canvasGroup!: CanvasGroup;
+	public microphoneWrapper: GameObject;
+	public microphoneFillMask: RectMask2D;
 
 	private prevState: VoiceState = "silent";
 	private bin = new Bin();
@@ -17,12 +20,14 @@ export default class MicIndicator extends AirshipBehaviour {
 	private voiceChat = Bridge.GetAirshipVoiceChatNetwork();
 	private agent: ChatroomAgent | undefined;
 	private hasAgent = false;
+	private currentSpeakingLevel: number = 0;
 
 	private errorMsgTime = 0;
 
 	override OnEnable(): void {}
 
 	protected Start(): void {
+		this.microphoneWrapper.SetActive(false);
 		task.spawn(() => {
 			while (!this.voiceChat.gameObject.activeInHierarchy || !this.voiceChat.agent) {
 				task.unscaledWait();
@@ -52,7 +57,6 @@ export default class MicIndicator extends AirshipBehaviour {
 				this.agent!.MuteSelf = true;
 			});
 		});
-		this.canvasGroup.alpha = 0;
 	}
 
 	public Update(dt: number): void {
@@ -69,18 +73,41 @@ export default class MicIndicator extends AirshipBehaviour {
 		this.stateBin.Clean();
 
 		if (state === "talking") {
-			this.canvasGroup.alpha = 1;
-			const t1 = NativeTween.LocalScale(this.transform, new Vector3(1.14, 1.14, 1), 0.38)
-				.SetPingPong()
-				.SetEase(EaseType.QuadOut)
-				.SetLoopCount(100)
-				.SetUseUnscaledTime(true);
-			this.stateBin.Add(() => {
-				t1.Cancel();
-				this.transform.localScale = Vector3.one;
-			});
+			this.microphoneWrapper.SetActive(true);
+			// const t1 = NativeTween.LocalScale(this.transform, new Vector3(1.14, 1.14, 1), 0.38)
+			// 	.SetPingPong()
+			// 	.SetEase(EaseType.QuadOut)
+			// 	.SetLoopCount(100)
+			// 	.SetUseUnscaledTime(true);
+			// this.stateBin.Add(() => {
+			// 	t1.Cancel();
+			// 	this.transform.localScale = Vector3.one;
+			// });
+
+			const connectionId = Game.localPlayer.connectionId;
+			const UpdateFill = () => {
+				let speakingLevel = contextbridge.invoke(
+					"VoiceChat:GetSpeakingLevel",
+					LuauContext.Protected,
+					connectionId,
+				);
+				const smoothingSpeed = 10; // Higher = snappier, lower = smoother
+				this.currentSpeakingLevel = math.lerp(
+					this.currentSpeakingLevel,
+					speakingLevel,
+					Time.deltaTime * smoothingSpeed,
+				);
+
+				this.microphoneFillMask.padding = new Vector4(0, 0, 0, 34 - this.currentSpeakingLevel * 34);
+			};
+			UpdateFill();
+			this.stateBin.Add(
+				OnUpdate.Connect(() => {
+					UpdateFill();
+				}),
+			);
 		} else if (state === "silent") {
-			this.canvasGroup.alpha = 0;
+			this.microphoneWrapper.SetActive(false);
 		}
 
 		this.prevState = state;

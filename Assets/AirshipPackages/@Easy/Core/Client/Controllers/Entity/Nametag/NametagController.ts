@@ -13,7 +13,7 @@ import { Theme } from "@Easy/Core/Shared/Util/Theme";
 export class NametagController {
 	private readonly nameTagId = "Nametag";
 	private readonly graphicsBundleName = "Graphics";
-	private showSelfNametag = false;
+	public showSelfNametag = false;
 	private nametagsEnabled = true;
 	// Clean to destroy nametag & related connections
 	private nametagBins = new Map<Character, Bin>();
@@ -92,7 +92,7 @@ export class NametagController {
 		return bin;
 	}
 
-	public CreateNametag(parent: Transform): NametagComponent {
+	public CreateNametag(parent: Transform, character?: Character): NametagComponent {
 		if (parent === undefined) {
 			error("Must pass in a valid transform to CreateNametag");
 		}
@@ -102,6 +102,9 @@ export class NametagController {
 
 		const nametag = nametagGo.GetAirshipComponent<NametagComponent>();
 		assert(nametag, "Missing NametagComponent");
+		if (character) {
+			nametag.SetCharacter(character);
+		}
 
 		this.allNametags.push(nametag);
 
@@ -116,7 +119,7 @@ export class NametagController {
 
 		let nameTag = character.gameObject.GetAirshipComponentInChildren<NametagComponent>();
 		if (nameTag === undefined) {
-			nameTag = this.CreateNametag(character.rig?.head);
+			nameTag = this.CreateNametag(character.rig?.head, character);
 		}
 
 		// Username text

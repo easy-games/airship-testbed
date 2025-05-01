@@ -1226,3 +1226,114 @@ interface OcclusionCamConstructor {
 	new (): OcclusionCam;
 }
 declare const OcclusionCam: OcclusionCamConstructor;
+
+interface InternalCameraScreenshotRecorderConstructor {
+	onPictureTaken: OnPictureTaken;
+	readonly GetScreenshotTexture: Texture2D;
+
+	new (): CameraScreenshotRecorder;
+
+	TakeScreenshot(fileName: string, superSampleSize: number, png: boolean): void;
+	TakeCameraScreenshot(camera: Camera, fileName: string, superSampleSize: number): void;
+}
+declare const InternalCameraScreenshotRecorder: InternalCameraScreenshotRecorderConstructor;
+
+interface CameraScreenshotRecorder extends MonoBehaviour {
+	saveFolder: SaveFolder;
+	shouldSaveCaptures: boolean;
+	resWidth: number;
+	resHeight: number;
+	readonly FolderName: string;
+}
+
+interface CameraScreenshotResponse {
+	path: string;
+	filesize: number;
+	extension: string;
+}
+
+interface CameraScreenshotResponseConstructor {
+	new (): CameraScreenshotResponse;
+}
+declare const CameraScreenshotResponse: CameraScreenshotResponseConstructor;
+
+interface AirshipUniVoiceNetworkConstructor {
+	new (): AirshipUniVoiceNetwork;
+}
+declare const AirshipUniVoiceNetwork: AirshipUniVoiceNetworkConstructor;
+
+interface AirshipUniVoiceNetwork extends NetworkBehaviour, IChatroomNetwork {
+	agent: ChatroomAgent;
+	readonly OwnID: number;
+	readonly PeerIDs: Readonly<number[]>;
+
+	onPlayerSpeakingLevel: MonoSignal<[connectionId: number, speakingLevel: number]>;
+	onLocalSpeakingLevel: MonoSignal<[connectionId: number, speakingLevel: number]>;
+	readonly OnCreatedChatroom: MonoSignal<void>;
+	readonly OnChatroomCreationFailed: MonoSignal<unknown>;
+	readonly OnClosedChatroom: MonoSignal<void>;
+	readonly OnJoinedChatroom: MonoSignal<number>;
+	readonly OnChatroomJoinFailed: MonoSignal<unknown>;
+	readonly OnLeftChatroom: MonoSignal<void>;
+	readonly OnPeerJoinedChatroom: MonoSignal<number, number, AudioSource>;
+	readonly OnPeerLeftChatroom: MonoSignal<number>;
+	readonly OnAudioReceived: MonoSignal<number, ChatroomAudioSegment>;
+	readonly OnAudioBroadcasted: MonoSignal<ChatroomAudioSegment>;
+
+	BroadcastAudioSegment(data: ChatroomAudioSegment): void;
+	CloseChatroom(data: unknown): void;
+	Dispose(): void;
+	FromByteArray<T>(data: Readonly<number[]>): T;
+	GetSpeakingLevel(connectionId: number): number;
+	HostChatroom(data: unknown): void;
+	JoinChatroom(data: unknown): void;
+	LeaveChatroom(data: unknown): void;
+	NetworkServer_OnDisconnected(connection: NetworkConnectionToClient): void;
+	OnReadyCommand(sender: NetworkConnectionToClient): void;
+	OnStartServer(): void;
+	ToByteArray<T>(obj: T): Readonly<number[]>;
+	Weaved(): boolean;
+}
+
+interface IChatroomNetwork {
+	readonly OwnID: number;
+	readonly PeerIDs: Readonly<number[]>;
+
+	readonly OnCreatedChatroom: MonoSignal<void>;
+	readonly OnChatroomCreationFailed: MonoSignal<unknown>;
+	readonly OnClosedChatroom: MonoSignal<void>;
+	readonly OnJoinedChatroom: MonoSignal<number>;
+	readonly OnChatroomJoinFailed: MonoSignal<unknown>;
+	readonly OnLeftChatroom: MonoSignal<void>;
+	readonly OnPeerJoinedChatroom: MonoSignal<number, number, AudioSource>;
+	readonly OnPeerLeftChatroom: MonoSignal<number>;
+	readonly OnAudioReceived: MonoSignal<number, ChatroomAudioSegment>;
+	readonly OnAudioBroadcasted: MonoSignal<ChatroomAudioSegment>;
+
+	BroadcastAudioSegment(data: ChatroomAudioSegment): void;
+	CloseChatroom(data: unknown): void;
+	HostChatroom(data: unknown): void;
+	JoinChatroom(data: unknown): void;
+	LeaveChatroom(data: unknown): void;
+}
+
+interface ChatroomAudioSegment {
+	segmentIndex: number;
+	frequency: number;
+	channelCount: number;
+	samples: Readonly<number[]>;
+}
+
+interface ChatroomAgent {
+	PeerOutputs: CSDictionary<number, IAudioOutput>;
+	OnModeChanged: unknown;
+	PeerSettings: CSDictionary<number, ChatroomPeerSettings>;
+	readonly Network: IChatroomNetwork;
+	readonly AudioInput: IAudioInput;
+	readonly AudioOutputFactory: IAudioOutputFactory;
+	readonly CurrentMode: ChatroomAgentMode;
+	MuteOthers: boolean;
+	MuteSelf: boolean;
+
+	Dispose(): void;
+}

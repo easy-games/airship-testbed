@@ -2967,11 +2967,6 @@ declare const enum ScrollbarVisibility {
     AutoHide = 1,
     AutoHideAndExpandViewport = 2,
 }
-declare const enum SaveFolder {
-    ApplicationData = 0,
-    PicturesFolder = 1,
-    Documents = 2,
-}
 declare const enum LogContext {
     Client = 0,
     Server = 1,
@@ -37128,7 +37123,7 @@ interface Bridge {
 }
     
 interface IChatroomNetwork {
-    readonly OwnID: number;
+    readonly LocalPeerId: number;
     readonly PeerIDs: Readonly<number[]>;
 
     readonly OnCreatedChatroom: MonoSignal<void>;
@@ -37164,38 +37159,6 @@ interface ChatroomAudioSegment {
 
 }
     
-interface AirshipUniVoiceNetwork extends NetworkBehaviour, IChatroomNetwork {
-    agent: ChatroomAgent;
-    readonly OwnID: number;
-    readonly PeerIDs: Readonly<number[]>;
-
-    readonly OnCreatedChatroom: MonoSignal<void>;
-    readonly OnChatroomCreationFailed: MonoSignal<Exception>;
-    readonly OnClosedChatroom: MonoSignal<void>;
-    readonly OnJoinedChatroom: MonoSignal<number>;
-    readonly OnChatroomJoinFailed: MonoSignal<Exception>;
-    readonly OnLeftChatroom: MonoSignal<void>;
-    readonly OnPeerJoinedChatroom: MonoSignal<number, number, AudioSource>;
-    readonly OnPeerLeftChatroom: MonoSignal<number>;
-    readonly OnAudioReceived: MonoSignal<number, ChatroomAudioSegment>;
-    readonly OnAudioBroadcasted: MonoSignal<ChatroomAudioSegment>;
-
-
-    BroadcastAudioSegment(data: ChatroomAudioSegment): void;
-    CloseChatroom(data: unknown): void;
-    Dispose(): void;
-    FromByteArray<T>(data: Readonly<number[]>): T;
-    HostChatroom(data: unknown): void;
-    JoinChatroom(data: unknown): void;
-    LeaveChatroom(data: unknown): void;
-    NetworkServer_OnDisconnected(connection: NetworkConnectionToClient): void;
-    OnReadyCommand(sender: NetworkConnectionToClient): void;
-    OnStartServer(): void;
-    ToByteArray<T>(obj: T): Readonly<number[]>;
-    Weaved(): boolean;
-
-
-}
     
 interface ChatroomAgent {
     PeerOutputs: CSDictionary<number, IAudioOutput>;
@@ -37277,15 +37240,6 @@ interface ChatroomAgentConstructor {
 }
 declare const ChatroomAgent: ChatroomAgentConstructor;
     
-interface AirshipUniVoiceNetworkConstructor {
-
-
-    new(): AirshipUniVoiceNetwork;
-
-
-
-}
-declare const AirshipUniVoiceNetwork: AirshipUniVoiceNetworkConstructor;
     
 interface BridgeConstructor {
 
@@ -37310,6 +37264,7 @@ interface BridgeConstructor {
     GetVolume(): number;
     HasMicrophonePermission(): boolean;
     IsFullScreen(): boolean;
+    IsLowEndDevice(): boolean;
     IsMicRecording(): boolean;
     IsSceneLoading(): boolean;
     LoadGlobalSceneByName(sceneName: string): void;
@@ -39078,6 +39033,7 @@ interface CrossSceneStateConstructor {
     ServerTransferData: ServerTransferData;
     UseLocalBundles: boolean;
     kickMessage: string;
+    kickForceLogout: boolean;
     disconnectKicked: boolean;
 
 
@@ -39430,100 +39386,6 @@ interface ScrollRect extends UIBehaviour, ILayoutGroup, IBeginDragHandler, IInit
 
 
 }
-    
-interface Singleton<T extends MonoBehaviour> extends MonoBehaviour {
-
-
-
-    OnApplicationQuit(): void;
-
-
-}
-    
-interface SingletonConstructor {
-    readonly IsAwake: boolean;
-    readonly Instance: T;
-
-
-
-
-
-}
-declare const Singleton: SingletonConstructor;
-    
-interface InternalCameraScreenshotRecorder extends Singleton<InternalCameraScreenshotRecorder> {
-    saveFolder: SaveFolder;
-    shouldSaveCaptures: boolean;
-    resWidth: number;
-    resHeight: number;
-    readonly FolderName: string;
-
-
-
-    SaveRenderTexture(rt: RenderTexture, fileName: string, png: boolean): CameraScreenshotResponse;
-    SaveTexture(texture: Texture2D, fileName: string, png: boolean): CameraScreenshotResponse;
-    ScreenShotName(width: number, height: number, png: boolean): string;
-    ScreenShotName(filename: string, png: boolean): string;
-    TakeCameraScreenshotCo(camera: Camera, fileName: string, superSampleSize: number): IEnumerator;
-
-
-}
-    
-interface CameraScreenshotResponse {
-    path: string;
-    filesize: number;
-    extension: string;
-
-
-
-
-
-}
-    
-interface CameraScreenshotResponseConstructor {
-
-
-    new(): CameraScreenshotResponse;
-
-
-
-}
-declare const CameraScreenshotResponse: CameraScreenshotResponseConstructor;
-    
-interface OnPictureTaken extends MulticastDelegate {
-
-
-
-    BeginInvoke(screenshot: Texture2D, callback: AsyncCallback, object: unknown): IAsyncResult;
-    EndInvoke(result: IAsyncResult): void;
-    Invoke(screenshot: Texture2D): void;
-
-
-}
-    
-interface OnPictureTakenConstructor {
-
-
-    new(object: unknown, method: IntPtr): OnPictureTaken;
-
-
-
-}
-declare const OnPictureTaken: OnPictureTakenConstructor;
-    
-interface InternalCameraScreenshotRecorderConstructor {
-    onPictureTaken: OnPictureTaken;
-    readonly GetScreenshotTexture: Texture2D;
-
-
-    new(): InternalCameraScreenshotRecorder;
-
-
-    TakeCameraScreenshot(camera: Camera, fileName: string, superSampleSize: number): void;
-    TakeScreenshot(fileName: string, superSampleSize: number, png: boolean): void;
-
-}
-declare const InternalCameraScreenshotRecorder: InternalCameraScreenshotRecorderConstructor;
     
 interface DevConsole {
 
@@ -53724,6 +53586,32 @@ interface CharacterAnimationSyncDataConstructor {
 
 }
 declare const CharacterAnimationSyncData: CharacterAnimationSyncDataConstructor;
+    
+interface IClipper {
+
+
+
+    PerformClipping(): void;
+
+
+}
+    
+interface RectMask2D extends UIBehaviour, ICanvasRaycastFilter, IClipper {
+    padding: Vector4;
+    softness: Vector2Int;
+    readonly canvasRect: Rect;
+    readonly rectTransform: RectTransform;
+
+
+
+    AddClippable(clippable: IClippable): void;
+    IsRaycastLocationValid(sp: Vector2, eventCamera: Camera): boolean;
+    PerformClipping(): void;
+    RemoveClippable(clippable: IClippable): void;
+    UpdateClipSoftness(): void;
+
+
+}
     
 interface AirshipSteamFriendInfo {
     playingAirship: boolean;
